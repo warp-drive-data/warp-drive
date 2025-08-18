@@ -319,6 +319,7 @@ export {
 export {
   createRequestSubscription,
   getRequestState,
+  createPaginationSubscription,
   getPaginationState,
   type RequestSubscription,
   type RequestLoadingState,
