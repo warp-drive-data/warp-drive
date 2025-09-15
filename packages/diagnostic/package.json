@@ -27,17 +27,17 @@
   "files": [
     "addon-main.cjs",
     "dist/",
-    "server/",
+    "dist-server/",
     "README.md",
     "LICENSE.md",
     "logos"
   ],
   "exports": {
     "./server": {
-      "node": "./server/index.js",
-      "bun": "./server/index.js",
-      "deno": "./server/index.js",
-      "default": "./server/index.js"
+      "node": "./dist-server/index.js",
+      "bun": "./dist-server/index.js",
+      "deno": "./dist-server/index.js",
+      "default": "./dist-server/index.js"
     },
     ".": {
       "types": "./dist/index.d.ts",
@@ -47,9 +47,9 @@
       "default": "./dist/*.css"
     },
     "./server/*": {
-      "node": "./server/*.js",
-      "bun": "./server/*.js",
-      "deno": "./server/*.js"
+      "node": "./dist-server/*.js",
+      "bun": "./dist-server/*.js",
+      "deno": "./dist-server/*.js"
     },
     "./ember": {
       "types": "./dist/ember.d.ts",
@@ -62,7 +62,7 @@
   },
   "scripts": {
     "build:tests": "rm -rf dist-test && cp -R test dist-test && mkdir -p dist-test/@warp-drive && cp -R dist dist-test/@warp-drive/diagnostic",
-    "build:pkg": "NODE_ENV=production node node_modules/tsdown/dist/run.mjs",
+    "build:pkg": "NODE_ENV=production node node_modules/tsdown/dist/run.mjs && NODE_ENV=production node node_modules/tsdown/dist/run.mjs -c ./tsdown.config-server.mjs",
     "prepack": "pnpm run build:pkg",
     "sync": "echo \"syncing\"",
     "start": "node node_modules/tsdown/dist/run.mjs --watch"
@@ -106,6 +106,8 @@
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.7",
     "@warp-drive/internal-config": "workspace:*",
+    "@types/debug": "^4.1.13",
+    "@types/node": "^24.3.0",
     "bun-types": "^1.4.2",
     "ember-source": "catalog:",
     "tsdown": "^0.23.0",

@@ -19,10 +19,10 @@
     "build:tests": "export IS_TESTING=true; export NODE_ENV=development; vite build -m development --outDir dist-test",
     "_temporarily_deactivated_build:production": "export IS_TESTING=true; export NODE_ENV=production; vite build --outDir dist-test",
     "check:types": "node ./node_modules/typescript-7/bin/tsc --noEmit",
-    "test": "export IS_TESTING=true; export NODE_ENV=development; bun ./diagnostic.js",
-    "_temporarily_deactivated_test:production": "export IS_TESTING=true; export NODE_ENV=production; bun ./diagnostic.js",
+    "test": "export IS_TESTING=true; export NODE_ENV=development; node ./diagnostic.js",
+    "_temporarily_deactivated_test:production": "export IS_TESTING=true; export NODE_ENV=production; node ./diagnostic.js",
     "start": "export IS_TESTING=true; export NODE_ENV=development; vite build -m development --watch --outDir dist-test",
-    "test:start": "bun ./diagnostic.js --serve --no-launch"
+    "test:start": "node ./diagnostic.js --serve --no-launch"
   },
   "devDependencies": {
     "@babel/core": "^7.29.7",

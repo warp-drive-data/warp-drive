@@ -1,7 +1,6 @@
-import fs from 'fs';
+import fs from 'node:fs';
+import path from 'node:path';
 import { styleText } from 'node:util';
-import path from 'path';
-import { exit } from 'process';
 
 const SLOW_TEST_COUNT = 50;
 const DEFAULT_TIMEOUT = 8_000;
@@ -9,7 +8,7 @@ const TIMEOUT_BUFFER = 0;
 const DEFAULT_TEST_TIMEOUT = 21_000;
 const failedTestsFile = path.join(process.cwd(), './diagnostic-failed-test-log.txt');
 
-function indent(text, width = 2) {
+function indent(text: string, width = 2): string {
   return text
     .split('\n')
     .map((line) => {
@@ -18,11 +17,72 @@ function indent(text, width = 2) {
     .join('\n');
 }
 
+/**
+ * The server's reporter receives whatever shape the diagnostic wire protocol
+ * emits over the websocket (see ../serve/socket-handler.ts) -- a JSON.parse()'d
+ * message keyed by `name`, with server-only bookkeeping fields (testNo,
+ * launcherDescription, _testStarted, etc.) mutated onto it in place as the run
+ * progresses. There is no shared type with the client's emitter for this wire
+ * shape, so this is intentionally loose.
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type ReportMessage = Record<string, any>;
+
 const HEADER_STR = '===================================================================';
 
-export default class CustomDotReporter {
+interface ReporterConfig {
+  mode: 'dot' | 'compact' | 'verbose';
+}
+
+export class CustomDotReporter {
+  config: ReporterConfig;
+  isDotFormat: boolean;
+  isCompactFormat: boolean;
+  isVerboseFormat: boolean;
+
+  out: NodeJS.WriteStream;
+
+  launchers: Record<string, ReportMessage>;
+  tabs: Map<string, { running: Map<string, ReportMessage> }>;
+  idsToStartNumber: Map<string, number>;
+
+  startNumber: number;
+  startTime: number | null;
+  realStartTime: number | null;
+  timeZero: number;
+  dateTimeZero: number;
+
+  // results
+  results: ReportMessage[];
+  failedTests: ReportMessage[];
+  globalFailures: ReportMessage[];
+  failedTestIds: Set<string>;
+  total: number;
+  pass: number;
+  skip: number;
+  todo: number;
+  fail: number;
+
+  // display info
+  shouldPrintHungTests: boolean;
+
+  // dot display info
+  lineFailures: ReportMessage[];
+  currentLineChars: number;
+  maxLineChars: number;
+  totalLines: number;
+
+  declare serverConfig: {
+    port: number;
+    hostname: string;
+    protocol: string;
+    url: string;
+  };
+
+  _timeoutId: ReturnType<typeof setTimeout> | null = null;
+
   // serverConfig will be injected by the server
-  constructor(config) {
+  constructor(config: ReporterConfig) {
     this.config = config;
 
     // what format to print
@@ -84,13 +144,13 @@ export default class CustomDotReporter {
     this.totalLines = 0;
   }
 
-  write(str) {
+  write(str: string) {
     this.out.write(str);
   }
 
   // Hooks
   // ==============
-  onRunStart(runInfo) {
+  onRunStart(runInfo: ReportMessage) {
     this.startTime = performance.now();
     this.realStartTime = runInfo.timestamp;
 
@@ -108,11 +168,11 @@ export default class CustomDotReporter {
     );
   }
 
-  onSuiteStart(suiteInfo) {
+  onSuiteStart(suiteInfo: ReportMessage) {
     this.addLauncher(suiteInfo);
   }
 
-  onTestStart(report) {
+  onTestStart(report: ReportMessage) {
     this.getTab(report).running.set(report.data.testId, report);
     report.testNo = this.startNumber++;
     report._testStarted = this.now();
@@ -130,7 +190,7 @@ export default class CustomDotReporter {
     }
   }
 
-  onTestFinish(report) {
+  onTestFinish(report: ReportMessage) {
     const tab = this.getTab(report);
     const startNoKey = `${report.browserId}:${report.windowId}:${report.data.testId}`;
     const startNo = this.idsToStartNumber.get(startNoKey);
@@ -177,14 +237,14 @@ export default class CustomDotReporter {
     }
   }
 
-  onGlobalFailure(report) {
+  onGlobalFailure(report: ReportMessage) {
     this.globalFailures.push(report);
     this.fail++;
   }
 
   onSuiteFinish() {}
 
-  onRunFinish(runReport) {
+  onRunFinish(runReport: ReportMessage): number {
     if (this.failedTests.length) {
       this.write(
         styleText(
@@ -238,7 +298,7 @@ export default class CustomDotReporter {
     return exitCode;
   }
 
-  addLauncher(data) {
+  addLauncher(data: ReportMessage) {
     this.launchers = this.launchers || {};
     this.tabs = this.tabs || new Map();
 
@@ -261,14 +321,14 @@ export default class CustomDotReporter {
     });
   }
 
-  getTab(test) {
+  getTab(test: ReportMessage) {
     const { windowId, browserId } = test;
     const tabId = `${browserId}:${windowId}`;
 
-    return this.tabs.get(tabId);
+    return this.tabs.get(tabId)!;
   }
 
-  now() {
+  now(): number {
     return performance.now() - this.startTime;
   }
 
@@ -281,7 +341,7 @@ export default class CustomDotReporter {
     this.write('\n\n\t');
   }
 
-  displayDotResult(report) {
+  displayDotResult(report: ReportMessage) {
     // complete line
     if (this.currentLineChars > this.maxLineChars) {
       if (this.shouldPrintHungTests) {
@@ -321,7 +381,7 @@ export default class CustomDotReporter {
     this.currentLineChars += 1;
   }
 
-  displayFullResult(report, verbose) {
+  displayFullResult(report: ReportMessage, verbose: boolean) {
     const result = report.data;
     const name = `${styleText('grey', result.runDuration.toLocaleString('en-US') + 'ms')} ${styleText(
       'white',
@@ -352,7 +412,7 @@ export default class CustomDotReporter {
       styleText('red', '# fail  ' + this.fail),
     ];
 
-    if (this.pass + this.skipped + this.todo === this.total) {
+    if (this.pass + this.skip + this.todo === this.total) {
       lines.push('');
       lines.push('# ok');
     }
@@ -571,11 +631,11 @@ export default class CustomDotReporter {
 // Instead of completely removing, we replace the contents with an empty string so that CI will still cache it.
 // While this shouldn't ever really be necessary it's a bit more correct to make sure that the log gets cleared
 // in the cache as well.
-function remove(filePath) {
+function remove(filePath: string) {
   fs.writeFileSync(filePath, '', { encoding: 'utf-8' });
 }
 
-function printValue(value, tabs = 0) {
+function printValue(value: unknown, tabs = 0): string | number {
   if (typeof value === 'string') {
     return value;
   } else if (typeof value === 'number') {
@@ -590,5 +650,7 @@ function printValue(value, tabs = 0) {
     return indent(`[\n ${value.map((v) => printValue(v, tabs + 1)).join(',\n ')}\n]`, tabs);
   } else if (typeof value === 'object') {
     return JSON.stringify(value, null, tabs * 4);
+  } else {
+    return String(value);
   }
 }
