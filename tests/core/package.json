@@ -1,13 +1,13 @@
 {
-  "name": "warp-drive__schema-record",
+  "name": "core-tests",
   "version": "5.8.0-alpha.22",
-  "description": "Provides tests for @warp-drive/schema-record",
+  "description": "Provides tests for @warp-drive/core",
   "private": true,
   "keywords": [],
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com:warp-drive-data/warp-drive.git",
-    "directory": "tests/warp-drive__schema-record"
+    "directory": "tests/core"
   },
   "license": "MIT",
   "author": "",
