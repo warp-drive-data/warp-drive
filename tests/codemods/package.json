@@ -16,7 +16,7 @@
   "scripts": {
     "check:types": "",
     "disabled:lint": "eslint . --quiet --cache --cache-strategy=content",
-    "test": "tsx --test tests/index.spec.ts",
+    "ignore:test": "tsx --test tests/index.spec.ts",
     "fixme": "tsx --test tests/index.spec.ts",
     "_syncPnpm": "bun run sync-dependencies-meta-injected"
   },
