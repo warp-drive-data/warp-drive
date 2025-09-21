@@ -558,7 +558,7 @@ export class JSONAPICache implements Cache {
       }
 
       const { type, id, lid } = identifier;
-      const attributes = Object.assign({}, peeked.remoteAttrs) as ObjectValue;
+      const attributes = structuredClone(peeked.remoteAttrs) as ObjectValue;
       const relationships: ResourceObject['relationships'] = {};
 
       const rels = this.__graph.identifiers.get(identifier);
@@ -568,7 +568,7 @@ export class JSONAPICache implements Cache {
           if (rel.definition.isImplicit) {
             return;
           } else {
-            relationships[key] = this.__graph.getData(identifier, key);
+            relationships[key] = structuredClone(this.__graph.getData(identifier, key));
           }
         });
       }
