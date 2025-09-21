@@ -23,7 +23,9 @@ import { ACCEPT_HEADER_VALUE } from './-utils.ts';
  * import { findRecord } from '@warp-drive/utilities/json-api';
  * import type { Person } from '#/data/types';
  *
- * const result = await store.request(findRecord<Person>('person', '1'));
+ * const result = await store.request(
+ *   findRecord<Person>('person', '1')
+ * );
  * ```
  *
  * == With Options
@@ -32,8 +34,12 @@ import { ACCEPT_HEADER_VALUE } from './-utils.ts';
  * import { findRecord } from '@warp-drive/utilities/json-api';
  * import type { Person } from '#/data/types';
  *
- * const options = findRecord<Person>('person', '1', { include: ['pets', 'friends'] });
- * const data = await store.request(options);
+ * const data = await store.request(
+ *   findRecord<Person>(
+ *     'person', '1',
+ *     { include: ['pets', 'friends'] }
+ *   )
+ * );
  * ```
  *
  * == With an Identifier
@@ -42,8 +48,12 @@ import { ACCEPT_HEADER_VALUE } from './-utils.ts';
  * import { findRecord } from '@warp-drive/utilities/json-api';
  * import type { Person } from '#/data/types';
  *
- * const options = findRecord<Person>({ type: 'person', id: '1' }, { include: ['pets', 'friends'] });
- * const data = await store.request(options);
+ * const data = await store.request(
+ *   findRecord<Person>(
+ *     { type: 'person', id: '1' },
+ *     { include: ['pets', 'friends'] }
+ *   )
+ * );
  * ```
  *
  * :::
@@ -65,8 +75,13 @@ import { ACCEPT_HEADER_VALUE } from './-utils.ts';
  * ```ts
  * import { findRecord } from '@warp-drive/utilities/json-api';
  *
- * const options = findRecord('person', '1', { include: ['pets', 'friends'] }, { namespace: 'api/v2' });
- * const data = await store.request(options);
+ * const data = await store.request(
+ *   findRecord(
+ *     'person', '1',
+ *     { include: ['pets', 'friends'] },
+ *     { namespace: 'api/v2' }
+ *   )
+ * );
  * ```
  *
  * @public

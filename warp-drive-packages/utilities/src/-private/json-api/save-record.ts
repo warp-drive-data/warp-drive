@@ -25,6 +25,11 @@ function isExisting(identifier: ResourceKey): identifier is PersistedResourceKey
 }
 
 /**
+ * :::warning ⚠️ **These Mutation Builders DO NOT Set the Request Body**
+ * While this may come as a surprise, the app providing the body ensures that only
+ * desired and correctly formatted data is sent with the request.
+ * :::
+ *
  * Builds request options to delete record for resources,
  * configured for the url, method and header expectations of most JSON:API APIs.
  *
@@ -105,16 +110,31 @@ export function deleteRecord(record: unknown, options: ConstrainedRequestOptions
 }
 
 /**
+ * :::warning ⚠️ **These Mutation Builders DO NOT Set the necessary Request Body**
+ * While this may come as a surprise, the app providing the body ensures that only
+ * desired and correctly formatted data is sent with the request.
+ * :::
+ *
  * Builds request options to create new record for resources,
  * configured for the url, method and header expectations of most JSON:API APIs.
  *
  * **Basic Usage**
  *
  * ```ts
+ * import { cacheKeyFor } from '@warp-drive/core';
  * import { createRecord } from '@warp-drive/utilities/json-api';
+ * import type { Person } from '#/data/types';
  *
- * const person = store.createRecord('person', { name: 'Ted' });
- * const data = await store.request(createRecord(person));
+ * const person = store.createRecord<Person>('person', { name: 'Ted' });
+ * const init = createRecord(person);
+ * init.body = JSON.stringify(
+ *  {
+ *    // it's likely you will want to transform this data
+ *    // somewhat
+ *    data: store.cache.peek(cacheKeyFor(person))
+ *  }
+ * );
+ * const data = await store.request(init);
  * ```
  *
  * **Supplying Options to Modify the Request Behavior**
@@ -174,18 +194,32 @@ export function createRecord(record: unknown, options: ConstrainedRequestOptions
 }
 
 /**
+ * :::warning ⚠️ **These Mutation Builders DO NOT Set the necessary Request Body**
+ * While this may come as a surprise, the app providing the body ensures that only
+ * desired and correctly formatted data is sent with the request.
+ * :::
  * Builds request options to update existing record for resources,
  * configured for the url, method and header expectations of most JSON:API APIs.
  *
- * **Basic Usage**
+ * **Example Usage**
  *
  * ```ts
+ * import { cacheKeyFor } from '@warp-drive/core';
  * import { updateRecord } from '@warp-drive/utilities/json-api';
+ * import type { EditablePerson } from '#/data/types';
  *
- * const person = store.peekRecord('person', '1');
- * person.name = 'Chris';
- * const data = await store.request(updateRecord(person));
+ * const mutable = await checkout<EditablePerson>(person);
+ * mutable.name = 'Chris';
+ * const init = updateRecord(mutable);
+ *
+ * init.body = JSON.stringify(
+ *  // it's likely you will want to transform this data
+ *  // somewhat, or serialize only specific properties instead
+ *  serializePatch(store.cache, cacheKeyFor(mutable))
+ * );
+ * const data = await store.request(init);
  * ```
+ *
  *
  * **Supplying Options to Modify the Request Behavior**
  *

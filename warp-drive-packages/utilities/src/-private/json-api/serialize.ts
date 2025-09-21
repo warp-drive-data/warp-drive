@@ -23,6 +23,13 @@ export type JsonApiResourcePatch =
     };
 
 /**
+ * :::warning ⚠️ **This util often won't produce the necessary body for a {json:api} request**
+ *
+ * While this may come as a surprise, they are intended to serialize cache state for more
+ * generalized usage. {json:api} has a large variance in acceptable shapes, and only your
+ * app can ensure that the body is correctly formatted and contains all necessary data.
+ * :::
+ *
  * Serializes the current state of a resource or array of resources for use with POST or PUT requests.
  *
  * @public
@@ -104,7 +111,14 @@ function _serializeResource(cache: Cache, identifier: ResourceKey): ResourceObje
 }
 
 /**
- * Serializes changes to a resource for use with PATCH requests.
+ * :::warning ⚠️ **This util often won't produce the necessary body for a {json:api} request**
+ *
+ * While this may come as a surprise, they are intended to serialize cache state for more
+ * generalized usage. {json:api} has a large variance in acceptable shapes, and only your
+ * app can ensure that the body is correctly formatted and contains all necessary data.
+ * :::
+ *
+ * Serializes changes to a resource. Useful for use with building bodies for PATCH requests.
  *
  * Only attributes which are changed are serialized.
  * Only relationships which are changed are serialized.
