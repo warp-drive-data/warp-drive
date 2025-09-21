@@ -1,13 +1,13 @@
-import { module, test } from 'qunit';
+import type { Type } from '@warp-drive/core/types/symbols';
+import { module, setupTest, test } from '@warp-drive/diagnostic/ember';
+import { JSONAPICache } from '@warp-drive/json-api';
+import { useLegacyStore } from '@warp-drive/legacy';
+import { withRestoredDeprecatedModelRequestBehaviors as withLegacy } from '@warp-drive/legacy/model/migration-support';
 
-import { setupTest } from 'ember-qunit';
-
-import {
-  registerDerivations as registerLegacyDerivations,
-  withRestoredDeprecatedModelRequestBehaviors as withLegacy,
-} from '@ember-data/model/migration-support';
-import type Store from '@ember-data/store';
-import type { Type } from '@warp-drive/core-types/symbols';
+const Store = useLegacyStore({
+  linksMode: false,
+  cache: JSONAPICache,
+});
 
 module('Legacy | Reads | SourceKey', function (hooks) {
   setupTest(hooks);
@@ -20,9 +20,8 @@ module('Legacy | Reads | SourceKey', function (hooks) {
       bestFriend: User | null;
       [Type]: 'user';
     };
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
     const { schema } = store;
-    registerLegacyDerivations(schema);
 
     schema.registerResource(
       withLegacy({
@@ -74,10 +73,10 @@ module('Legacy | Reads | SourceKey', function (hooks) {
     });
     const Matt = store.peekRecord<User>('user', '2')!;
 
-    assert.strictEqual(Rey.id, '1', 'id is accessible');
-    assert.strictEqual(Rey.name, 'Rey Skybarker', 'name is accessible');
-    assert.strictEqual(Rey.bestFriend, Matt, 'Rey has Matt as bestFriend');
-    assert.strictEqual(Matt.bestFriend, Rey, 'Matt has Rey as bestFriend');
+    assert.equal(Rey.id, '1', 'id is accessible');
+    assert.equal(Rey.name, 'Rey Skybarker', 'name is accessible');
+    assert.equal(Rey.bestFriend, Matt, 'Rey has Matt as bestFriend');
+    assert.equal(Matt.bestFriend, Rey, 'Matt has Rey as bestFriend');
   });
 
   test('hasMany can use sourceKey', function (assert) {
@@ -88,9 +87,8 @@ module('Legacy | Reads | SourceKey', function (hooks) {
       friends: User[];
       [Type]: 'user';
     };
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
     const { schema } = store;
-    registerLegacyDerivations(schema);
 
     schema.registerResource(
       withLegacy({
@@ -142,11 +140,11 @@ module('Legacy | Reads | SourceKey', function (hooks) {
     });
     const Matt = store.peekRecord<User>('user', '2')!;
 
-    assert.strictEqual(Rey.id, '1', 'id is accessible');
-    assert.strictEqual(Rey.name, 'Rey Skybarker', 'name is accessible');
-    assert.strictEqual(Rey.friends.length, 1, 'Rey has only one friend :(');
-    assert.strictEqual(Matt.friends.length, 1, 'Matt has only one friend :(');
-    assert.strictEqual(Rey.friends[0], Matt, 'Rey has Matt as bestFriend');
-    assert.strictEqual(Matt.friends[0], Rey, 'Matt has Rey as bestFriend');
+    assert.equal(Rey.id, '1', 'id is accessible');
+    assert.equal(Rey.name, 'Rey Skybarker', 'name is accessible');
+    assert.equal(Rey.friends.length, 1, 'Rey has only one friend :(');
+    assert.equal(Matt.friends.length, 1, 'Matt has only one friend :(');
+    assert.equal(Rey.friends[0], Matt, 'Rey has Matt as bestFriend');
+    assert.equal(Matt.friends[0], Rey, 'Matt has Rey as bestFriend');
   });
 });

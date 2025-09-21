@@ -51,11 +51,11 @@ export {
 /**
  * Options for setting up a Store instance with `useRecommendedStore`.
  */
-export interface StoreSetupOptions {
+export interface StoreSetupOptions<T extends Cache = Cache> {
   /**
    * The Cache implementation to use
    */
-  cache: new (capabilities: CacheCapabilitiesManager) => Cache;
+  cache: new (capabilities: CacheCapabilitiesManager) => T;
   /**
    * The Cache policy to use.
    *

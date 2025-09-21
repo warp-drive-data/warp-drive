@@ -83,7 +83,8 @@ export interface Diagnostic {
   notEqual<T>(actual: T, expected: T, message?: string): void;
   deepEqual<T>(actual: T, expected: T, message?: string): void;
   notDeepEqual<T>(actual: T, expected: T, message?: string): void;
-  throws(fn: () => Promise<void>, expected?: string | RegExp, message?: string): Promise<void>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  throws(fn: () => Promise<any>, expected?: string | RegExp, message?: string): Promise<void>;
   throws(fn: () => void, expected?: string | RegExp, message?: string): void;
   doesNotThrow(fn: () => Promise<void>, expected?: string | RegExp, message?: string): Promise<void>;
   doesNotThrow(fn: () => void, expected?: string | RegExp, message?: string): void;

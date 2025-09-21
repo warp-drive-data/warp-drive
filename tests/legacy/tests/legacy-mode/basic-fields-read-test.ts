@@ -1,19 +1,17 @@
 import EmberObject from '@ember/object';
+import { setOwner } from '@ember/owner';
 
-import { module, test } from 'qunit';
-
-import { setupTest } from 'ember-qunit';
-
+import { recordIdentifierFor } from '@warp-drive/core';
+import type { Transformation } from '@warp-drive/core/reactive';
+import type { ResourceKey } from '@warp-drive/core/types';
+import { Type } from '@warp-drive/core/types/symbols';
+import { module, setupTest, test } from '@warp-drive/diagnostic/ember';
+import { JSONAPICache } from '@warp-drive/json-api';
+import { useLegacyStore } from '@warp-drive/legacy';
 import {
   registerDerivations as registerLegacyDerivations,
   withRestoredDeprecatedModelRequestBehaviors as withLegacy,
-} from '@ember-data/model/migration-support';
-import { recordIdentifierFor } from '@ember-data/store';
-import type { ResourceKey } from '@warp-drive/core-types';
-import { Type } from '@warp-drive/core-types/symbols';
-import type { SchemaRecord, Transformation } from '@warp-drive/schema-record';
-
-import type Store from 'warp-drive__schema-record/services/store';
+} from '@warp-drive/legacy/model/migration-support';
 
 interface User {
   id: string | null;
@@ -25,11 +23,16 @@ interface User {
   rank: number;
 }
 
+const Store = useLegacyStore({
+  linksMode: false,
+  cache: JSONAPICache,
+});
+
 module('Legacy | Reads | basic fields', function (hooks) {
   setupTest(hooks);
 
   test('we can use simple fields with no `type`', function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
     const { schema } = store;
     registerLegacyDerivations(schema);
 
@@ -48,14 +51,14 @@ module('Legacy | Reads | basic fields', function (hooks) {
 
     const record = store.createRecord('user', { name: 'Rey Skybarker' }) as User;
 
-    assert.strictEqual(record.id, null, 'id is accessible');
-    assert.strictEqual(
+    assert.equal(record.id, null, 'id is accessible');
+    assert.equal(
       (record.constructor as { modelName?: string }).modelName,
       'user',
       'constructor.modelName is accessible'
     );
 
-    assert.strictEqual(record.name, 'Rey Skybarker', 'name is accessible');
+    assert.equal(record.name, 'Rey Skybarker', 'name is accessible');
 
     try {
       // @ts-expect-error intentionally accessing unknown field
@@ -63,7 +66,7 @@ module('Legacy | Reads | basic fields', function (hooks) {
       record.lastName;
       assert.ok(false, 'should error when accessing unknown field');
     } catch (e) {
-      assert.strictEqual(
+      assert.equal(
         (e as Error).message,
         'No field named lastName on user',
         'should error when accessing unknown field'
@@ -72,7 +75,8 @@ module('Legacy | Reads | basic fields', function (hooks) {
   });
 
   test('we can use simple fields with a `type`', function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
+    setOwner(store, this.owner);
     const { schema } = store;
     registerLegacyDerivations(schema);
 
@@ -89,11 +93,11 @@ module('Legacy | Reads | basic fields', function (hooks) {
     );
 
     const FloatTransform: Transformation<string | number, number> = {
-      serialize(value: string | number, options: { precision?: number } | null, _record: SchemaRecord): never {
+      serialize(value: string | number, options: { precision?: number } | null, _record: unknown): never {
         assert.ok(false, 'unexpected serialize');
         throw new Error('unexpected serialize');
       },
-      hydrate(value: string, _options: { precision?: number } | null, _record: SchemaRecord): number {
+      hydrate(value: string, _options: { precision?: number } | null, _record: unknown): number {
         assert.ok(false, 'unexpected hydrate');
         throw new Error('unexpected hydrate');
       },
@@ -156,38 +160,34 @@ module('Legacy | Reads | basic fields', function (hooks) {
     }) as User;
     const identifier = recordIdentifierFor(record);
 
-    assert.strictEqual(record.id, null, 'id is accessible');
-    assert.strictEqual(
+    assert.equal(record.id, null, 'id is accessible');
+    assert.equal(
       (record.constructor as { modelName?: string }).modelName,
       'user',
       'constructor.modelName is accessible'
     );
-    assert.strictEqual(record.name, 'Rey Skybarker', 'name is accessible');
-    assert.strictEqual(record.age, 42, 'age is accessible');
-    assert.strictEqual(record.netWorth, 1_000_000.009, 'netWorth is accessible');
-    assert.strictEqual(record.coolometer, 100.0, 'coolometer is accessible');
-    assert.strictEqual(record.rank, 0, 'rank is accessible');
+    assert.equal(record.name, 'Rey Skybarker', 'name is accessible');
+    assert.equal(record.age, 42, 'age is accessible');
+    assert.equal(record.netWorth, 1_000_000.009, 'netWorth is accessible');
+    assert.equal(record.coolometer, 100.0, 'coolometer is accessible');
+    assert.equal(record.rank, 0, 'rank is accessible');
     // @ts-expect-error intentionally have not typed the property on the record
-    assert.strictEqual(record.lastName, undefined, 'lastName is accessible even though its transform does not exist');
+    assert.equal(record.lastName, undefined, 'lastName is accessible even though its transform does not exist');
 
     const resource = store.cache.peek(identifier)!;
 
-    assert.strictEqual(store.cache.getAttr(identifier, 'name'), 'Rey Skybarker', 'cache value for name is correct');
-    assert.strictEqual(store.cache.getAttr(identifier, 'age'), 42, 'cache value for age is correct');
-    assert.strictEqual(
-      store.cache.getAttr(identifier, 'netWorth'),
-      1_000_000.009,
-      'cache value for netWorth is correct'
-    );
-    assert.strictEqual(store.cache.getAttr(identifier, 'coolometer'), 100.0, 'cache value for coolometer is correct');
-    assert.strictEqual(store.cache.getAttr(identifier, 'rank'), 0, 'cache value for rank is correct');
+    assert.equal(store.cache.getAttr(identifier, 'name'), 'Rey Skybarker', 'cache value for name is correct');
+    assert.equal(store.cache.getAttr(identifier, 'age'), 42, 'cache value for age is correct');
+    assert.equal(store.cache.getAttr(identifier, 'netWorth'), 1_000_000.009, 'cache value for netWorth is correct');
+    assert.equal(store.cache.getAttr(identifier, 'coolometer'), 100.0, 'cache value for coolometer is correct');
+    assert.equal(store.cache.getAttr(identifier, 'rank'), 0, 'cache value for rank is correct');
 
-    assert.strictEqual(resource.type, 'user', 'resource cache type is correct');
-    assert.strictEqual(resource.id, null, 'resource cache id is correct');
-    assert.strictEqual(resource.attributes?.name, 'Rey Skybarker', 'resource cache value for name is correct');
-    assert.strictEqual(resource.attributes?.age, 42, 'resource cache value for age is correct');
-    assert.strictEqual(resource.attributes?.netWorth, 1_000_000.009, 'resource cache value for netWorth is correct');
-    assert.strictEqual(resource.attributes?.coolometer, 100.0, 'resource cache value for coolometer is correct');
-    assert.strictEqual(resource.attributes?.rank, 0, 'resource cache value for rank is correct');
+    assert.equal(resource.type, 'user', 'resource cache type is correct');
+    assert.equal(resource.id, null, 'resource cache id is correct');
+    assert.equal(resource.attributes?.name, 'Rey Skybarker', 'resource cache value for name is correct');
+    assert.equal(resource.attributes?.age, 42, 'resource cache value for age is correct');
+    assert.equal(resource.attributes?.netWorth, 1_000_000.009, 'resource cache value for netWorth is correct');
+    assert.equal(resource.attributes?.coolometer, 100.0, 'resource cache value for coolometer is correct');
+    assert.equal(resource.attributes?.rank, 0, 'resource cache value for rank is correct');
   });
 });

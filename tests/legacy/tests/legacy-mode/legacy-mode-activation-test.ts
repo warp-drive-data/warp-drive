@@ -1,20 +1,19 @@
-import { module, test } from 'qunit';
+import { setOwner } from '@ember/owner';
 
-import { setupRenderingTest } from 'ember-qunit';
-
-import { adapterFor, LegacyNetworkHandler, serializeRecord, serializerFor } from '@ember-data/legacy-compat';
-import type { Snapshot } from '@ember-data/legacy-compat/-private';
-import type Model from '@ember-data/model';
+import { CacheHandler, RequestManager } from '@warp-drive/core';
+import { registerDerivations, withDefaults } from '@warp-drive/core/reactive';
+import { Context } from '@warp-drive/core/reactive/-private';
+import type { Type } from '@warp-drive/core/types/symbols';
+import { module, setupRenderingTest, test } from '@warp-drive/diagnostic/ember';
+import { JSONAPICache } from '@warp-drive/json-api';
+import { useLegacyStore } from '@warp-drive/legacy';
+import { adapterFor, LegacyNetworkHandler, serializeRecord, serializerFor } from '@warp-drive/legacy/compat';
+import type { Snapshot } from '@warp-drive/legacy/compat/-private';
+import type Model from '@warp-drive/legacy/model';
 import {
   registerDerivations as registerLegacyDerivations,
   withRestoredDeprecatedModelRequestBehaviors as withLegacyFields,
-} from '@ember-data/model/migration-support';
-import RequestManager from '@ember-data/request';
-import type Store from '@ember-data/store';
-import { CacheHandler } from '@ember-data/store';
-import type { Type } from '@warp-drive/core-types/symbols';
-import { registerDerivations, withDefaults } from '@warp-drive/schema-record';
-import { Context } from '@warp-drive/schema-record/-private';
+} from '@warp-drive/legacy/model/migration-support';
 
 type Errors = Model['errors'];
 type RecordState = Model['currentState'];
@@ -57,13 +56,17 @@ interface User {
   [Type]: 'user';
 }
 
+const Store = useLegacyStore({
+  linksMode: false,
+  cache: JSONAPICache,
+});
+
 module('Legacy Mode', function (hooks) {
   setupRenderingTest(hooks);
 
   test('we can create a record in legacy mode', function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
     const { schema } = store;
-    registerLegacyDerivations(schema);
 
     schema.registerResource(
       withLegacyFields({
@@ -86,8 +89,8 @@ module('Legacy Mode', function (hooks) {
       },
     });
 
-    assert.strictEqual(record.id, '1', 'id is accessible');
-    assert.strictEqual(record.name, 'Rey Pupatine', 'name is accessible');
+    assert.equal(record.id, '1', 'id is accessible');
+    assert.equal(record.name, 'Rey Pupatine', 'name is accessible');
     assert.true(record[Context].legacy, 'record is in legacy mode');
     assert.true(record[Context].editable, 'record is editable');
 
@@ -96,12 +99,12 @@ module('Legacy Mode', function (hooks) {
       record.$type;
       assert.ok(false, 'record.$type should throw');
     } catch (e) {
-      assert.strictEqual((e as Error).message, 'No field named $type on user', 'record.$type throws');
+      assert.equal((e as Error).message, 'No field named $type on user', 'record.$type throws');
     }
   });
 
   test('records not in legacy mode do not set their constructor modelName value to their type', function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
     const { schema } = store;
     registerDerivations(schema);
 
@@ -132,17 +135,17 @@ module('Legacy Mode', function (hooks) {
       (record.constructor as { modelName?: string }).modelName;
       assert.ok(false, 'record.constructor.modelName should throw');
     } catch (e) {
-      assert.strictEqual(
+      assert.equal(
         (e as Error).message,
         'record.constructor.modelName is not available outside of legacy mode',
         `record.constructor.modelName throws: ${(e as Error).message}`
       );
     }
-    assert.strictEqual(record.constructor.name, 'ReactiveResource<user>', 'it has a useful constructor name');
+    assert.equal(record.constructor.name, 'ReactiveResource<user>', 'it has a useful constructor name');
   });
 
   test('records in legacy mode set their constructor modelName value to the correct type', function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
     const { schema } = store;
     registerLegacyDerivations(schema);
 
@@ -168,17 +171,17 @@ module('Legacy Mode', function (hooks) {
     });
 
     assert.true(record[Context].legacy, 'record is in legacy mode');
-    assert.strictEqual(
+    assert.equal(
       (record.constructor as { modelName?: string }).modelName,
       'user',
       'record constructor modelName is correct'
     );
 
-    assert.strictEqual(record.constructor.name, 'Record<user>', 'it has a useful constructor name');
+    assert.equal(record.constructor.name, 'Record<user>', 'it has a useful constructor name');
   });
 
   test('we can access errors', function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
     const { schema } = store;
     registerLegacyDerivations(schema);
 
@@ -208,14 +211,14 @@ module('Legacy Mode', function (hooks) {
       assert.ok(true, 'record.errors should be available');
 
       const errors2 = record.errors;
-      assert.strictEqual(errors, errors2, 'record.errors should be stable');
+      assert.equal(errors, errors2, 'record.errors should be stable');
     } catch (e) {
       assert.ok(false, `record.errors should be available: ${(e as Error).message}`);
     }
   });
 
   test('we can access currentState', function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
     const { schema } = store;
     registerLegacyDerivations(schema);
 
@@ -245,16 +248,16 @@ module('Legacy Mode', function (hooks) {
       assert.ok(true, 'record.currentState should be available');
 
       const currentState2 = record.currentState;
-      assert.strictEqual(currentState, currentState2, 'record.currentState should be stable');
+      assert.equal(currentState, currentState2, 'record.currentState should be stable');
 
-      assert.strictEqual(currentState.stateName, 'root.loaded.saved', 'currentState.stateName is correct');
+      assert.equal(currentState.stateName, 'root.loaded.saved', 'currentState.stateName is correct');
     } catch (e) {
       assert.ok(false, `record.currentState should be available: ${(e as Error).message}`);
     }
   });
 
   test('we can use unloadRecord', function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
     const { schema } = store;
     registerLegacyDerivations(schema);
 
@@ -283,14 +286,14 @@ module('Legacy Mode', function (hooks) {
       record.unloadRecord();
       assert.ok(true, 'record.unloadRecord should be available');
       const recordAgain = store.peekRecord('user', '1');
-      assert.strictEqual(recordAgain, null, 'record is unloaded');
+      assert.equal(recordAgain, null, 'record is unloaded');
     } catch (e) {
       assert.ok(false, `record.unloadRecord should be available: ${(e as Error).message}`);
     }
   });
 
   test('we can use deleteRecord', function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
     const { schema } = store;
     registerLegacyDerivations(schema);
 
@@ -317,11 +320,11 @@ module('Legacy Mode', function (hooks) {
 
     record.deleteRecord();
     assert.true(record.isDeleted, 'state flag is updated');
-    assert.strictEqual(record.currentState.stateName, 'root.deleted.uncommitted', 'state is updated');
+    assert.equal(record.currentState.stateName, 'root.deleted.uncommitted', 'state is updated');
   });
 
   test('we can use _createSnapshot', function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
     const { schema } = store;
     registerLegacyDerivations(schema);
 
@@ -348,13 +351,13 @@ module('Legacy Mode', function (hooks) {
 
     const snapshot = record._createSnapshot();
     assert.ok(snapshot, 'snapshot is created');
-    assert.strictEqual(snapshot.id, '1', 'snapshot id is correct');
-    assert.strictEqual(snapshot.modelName, 'user', 'snapshot modelName is correct');
-    assert.strictEqual(snapshot.attributes().name, 'Rey Pupatine', 'snapshot attribute is correct');
+    assert.equal(snapshot.id, '1', 'snapshot id is correct');
+    assert.equal(snapshot.modelName, 'user', 'snapshot modelName is correct');
+    assert.equal(snapshot.attributes().name, 'Rey Pupatine', 'snapshot attribute is correct');
   });
 
   test('we can access state flags', function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
     const { schema } = store;
     registerLegacyDerivations(schema);
 
@@ -379,8 +382,8 @@ module('Legacy Mode', function (hooks) {
       },
     });
 
-    assert.strictEqual(record.dirtyType, '', 'dirtyType is correct');
-    assert.strictEqual(record.adapterError, null, 'adapterError is correct');
+    assert.equal(record.dirtyType, '', 'dirtyType is correct');
+    assert.equal(record.adapterError, null, 'adapterError is correct');
     assert.false(record.hasDirtyAttributes, 'hasDirtyAttributes is correct');
     assert.false(record.isDeleted, 'isDeleted is correct');
     assert.false(record.isEmpty, 'isEmpty is correct');
@@ -393,7 +396,7 @@ module('Legacy Mode', function (hooks) {
   });
 
   test('we can access object lifecycle flags', function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
     const { schema } = store;
     registerLegacyDerivations(schema);
 
@@ -439,7 +442,8 @@ module('Legacy Mode', function (hooks) {
         }
       }
     );
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
+    setOwner(store, this.owner);
 
     store.serializerFor = serializerFor;
     store.serializeRecord = function () {
@@ -491,7 +495,7 @@ module('Legacy Mode', function (hooks) {
     this.owner.register(
       'adapter:user',
       class UserAdapter {
-        findRecord(_store: Store, _schema: unknown, snapshot: Snapshot) {
+        findRecord(_store: typeof Store, _schema: unknown, snapshot: Snapshot) {
           assert.step('findRecord');
           return {
             data: {
@@ -507,7 +511,8 @@ module('Legacy Mode', function (hooks) {
       }
     );
 
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
+    setOwner(store, this.owner);
     store.adapterFor = adapterFor;
     store.serializerFor = serializerFor;
     store.requestManager = new RequestManager();
@@ -537,16 +542,16 @@ module('Legacy Mode', function (hooks) {
       },
     });
 
-    assert.strictEqual(record.name, 'Rey Pupatine', 'name is initialized');
+    assert.equal(record.name, 'Rey Pupatine', 'name is initialized');
 
     await record.reload();
 
-    assert.strictEqual(record.name, 'Rey Skybarker', 'name is updated');
+    assert.equal(record.name, 'Rey Skybarker', 'name is updated');
     assert.verifySteps(['findRecord']);
   });
 
   test('we can rollbackAttributes', function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
     const { schema } = store;
     registerLegacyDerivations(schema);
 
@@ -573,8 +578,8 @@ module('Legacy Mode', function (hooks) {
 
     record.name = 'Rey Skybarker';
     assert.true(record.hasDirtyAttributes, 'hasDirtyAttributes is correct');
-    assert.strictEqual(record.name, 'Rey Skybarker', 'name is updated');
-    assert.strictEqual(record.dirtyType, 'updated', 'dirtyType is correct');
+    assert.equal(record.name, 'Rey Skybarker', 'name is updated');
+    assert.equal(record.dirtyType, 'updated', 'dirtyType is correct');
     assert.deepEqual(
       record.changedAttributes(),
       { name: ['Rey Pupatine', 'Rey Skybarker'] },
@@ -584,16 +589,16 @@ module('Legacy Mode', function (hooks) {
     record.rollbackAttributes();
 
     assert.false(record.hasDirtyAttributes, 'hasDirtyAttributes is correct');
-    assert.strictEqual(record.dirtyType, '', 'dirtyType is correct');
+    assert.equal(record.dirtyType, '', 'dirtyType is correct');
     assert.deepEqual(record.changedAttributes(), {}, 'changedAttributes is correct');
-    assert.strictEqual(record.name, 'Rey Pupatine', 'name is updated');
+    assert.equal(record.name, 'Rey Pupatine', 'name is updated');
   });
 
   test('we can save', async function (assert) {
     this.owner.register(
       'adapter:user',
       class UserAdapter {
-        updateRecord(_store: Store, _schema: unknown, snapshot: Snapshot) {
+        updateRecord(_store: unknown, _schema: unknown, snapshot: Snapshot) {
           assert.step('updateRecord');
           return {
             data: {
@@ -609,7 +614,8 @@ module('Legacy Mode', function (hooks) {
       }
     );
 
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
+    setOwner(store, this.owner);
     store.adapterFor = adapterFor;
     store.serializerFor = serializerFor;
     store.requestManager = new RequestManager();
@@ -641,7 +647,7 @@ module('Legacy Mode', function (hooks) {
 
     record.name = 'Rey Skybarker';
     assert.true(record.hasDirtyAttributes, 'hasDirtyAttributes is correct');
-    assert.strictEqual(record.dirtyType, 'updated', 'dirtyType is correct');
+    assert.equal(record.dirtyType, 'updated', 'dirtyType is correct');
     assert.deepEqual(
       record.changedAttributes(),
       { name: ['Rey Pupatine', 'Rey Skybarker'] },
@@ -651,9 +657,9 @@ module('Legacy Mode', function (hooks) {
     await record.save();
 
     assert.false(record.hasDirtyAttributes, 'hasDirtyAttributes is correct');
-    assert.strictEqual(record.dirtyType, '', 'dirtyType is correct');
+    assert.equal(record.dirtyType, '', 'dirtyType is correct');
     assert.deepEqual(record.changedAttributes(), {}, 'changedAttributes is correct');
-    assert.strictEqual(record.name, 'Rey Skybarker', 'name is updated');
+    assert.equal(record.name, 'Rey Skybarker', 'name is updated');
     assert.verifySteps(['updateRecord']);
   });
 
@@ -661,7 +667,7 @@ module('Legacy Mode', function (hooks) {
     this.owner.register(
       'adapter:user',
       class UserAdapter {
-        deleteRecord(_store: Store, _schema: unknown, snapshot: Snapshot) {
+        deleteRecord(_store: unknown, _schema: unknown, snapshot: Snapshot) {
           assert.step('deleteRecord');
           return {
             data: null,
@@ -673,7 +679,8 @@ module('Legacy Mode', function (hooks) {
       }
     );
 
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
+    setOwner(store, this.owner);
     store.adapterFor = adapterFor;
     store.serializerFor = serializerFor;
     store.requestManager = new RequestManager();
@@ -711,7 +718,7 @@ module('Legacy Mode', function (hooks) {
 
     assert.true(record.isDestroyed, 'state flag is updated');
     assert.true(record.isDestroying, 'state flag is updated');
-    assert.strictEqual(store.peekRecord('user', '1'), null, 'record is unloaded');
+    assert.equal(store.peekRecord('user', '1'), null, 'record is unloaded');
     assert.verifySteps(['deleteRecord']);
   });
 });

@@ -1,22 +1,18 @@
 import EmberObject from '@ember/object';
 import { rerender } from '@ember/test-helpers';
 
-import { module, test } from 'qunit';
+import { recordIdentifierFor } from '@warp-drive/core';
+import type { ReactiveResource, Transformation } from '@warp-drive/core/reactive';
+import type { ResourceKey } from '@warp-drive/core/types';
+import { Type } from '@warp-drive/core/types/symbols';
+import type { RenderingTestContext } from '@warp-drive/diagnostic/ember';
+import { module, setupRenderingTest, test } from '@warp-drive/diagnostic/ember';
+import { JSONAPICache } from '@warp-drive/json-api';
+import { useLegacyStore } from '@warp-drive/legacy';
+import { withRestoredDeprecatedModelRequestBehaviors as withLegacy } from '@warp-drive/legacy/model/migration-support';
 
-import { setupRenderingTest } from 'ember-qunit';
-
-import {
-  registerDerivations as registerLegacyDerivations,
-  withRestoredDeprecatedModelRequestBehaviors as withLegacy,
-} from '@ember-data/model/migration-support';
-import type Store from '@ember-data/store';
-import { recordIdentifierFor } from '@ember-data/store';
-import type { ResourceKey } from '@warp-drive/core-types';
-import { Type } from '@warp-drive/core-types/symbols';
-import type { SchemaRecord, Transformation } from '@warp-drive/schema-record';
-
-import { simplePayloadNormalize } from '../-utils/normalize-payload';
-import { reactiveContext } from '../-utils/reactive-context';
+import { simplePayloadNormalize } from '../-utils/normalize-payload.ts';
+import { reactiveContext } from '../-utils/reactive-context.ts';
 
 interface User {
   id: string | null;
@@ -28,13 +24,17 @@ interface User {
   [Type]: 'user';
 }
 
-module('Legacy | Reactivity | basic fields can receive remote updates', function (hooks) {
+const Store = useLegacyStore({
+  linksMode: false,
+  cache: JSONAPICache,
+});
+
+module<RenderingTestContext>('Legacy | Reactivity | basic fields can receive remote updates', function (hooks) {
   setupRenderingTest(hooks);
 
-  test('we can use simple fields with no `type`', async function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
+  test<RenderingTestContext>('we can use simple fields with no `type`', async function (assert) {
+    const store = new Store();
     const { schema } = store;
-    registerLegacyDerivations(schema);
 
     schema.registerResource(
       withLegacy({
@@ -58,14 +58,14 @@ module('Legacy | Reactivity | basic fields can receive remote updates', function
       },
     });
 
-    assert.strictEqual(record.id, '1', 'id is accessible');
-    assert.strictEqual(record.name, 'Rey Pupatine', 'name is accessible');
+    assert.equal(record.id, '1', 'id is accessible');
+    assert.equal(record.name, 'Rey Pupatine', 'name is accessible');
 
-    const { counters, fieldOrder } = await reactiveContext(record, resource);
+    const { counters, fieldOrder } = await reactiveContext(this, record, resource);
     const nameIndex = fieldOrder.indexOf('name');
 
-    assert.strictEqual(counters.id, 1, 'idCount is 1');
-    assert.strictEqual(counters.name, 1, 'nameCount is 1');
+    assert.equal(counters.id, 1, 'idCount is 1');
+    assert.equal(counters.name, 1, 'nameCount is 1');
 
     assert.dom(`li:nth-child(${nameIndex + 1})`).hasText('name: Rey Pupatine', 'name is rendered');
 
@@ -78,21 +78,20 @@ module('Legacy | Reactivity | basic fields can receive remote updates', function
       },
     });
 
-    assert.strictEqual(record.id, '1', 'id is accessible');
-    assert.strictEqual(record.name, 'Rey Skybarker', 'name is accessible');
+    assert.equal(record.id, '1', 'id is accessible');
+    assert.equal(record.name, 'Rey Skybarker', 'name is accessible');
 
     await rerender();
 
-    assert.strictEqual(counters.id, 1, 'idCount is 1');
-    assert.strictEqual(counters.name, 2, 'nameCount is 1');
+    assert.equal(counters.id, 1, 'idCount is 1');
+    assert.equal(counters.name, 2, 'nameCount is 1');
 
     assert.dom(`li:nth-child(${nameIndex + 1})`).hasText('name: Rey Skybarker', 'name is rendered');
   });
 
-  test('we can use simple fields with a `type`', async function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
+  test<RenderingTestContext>('we can use simple fields with a `type`', async function (assert) {
+    const store = new Store();
     const { schema } = store;
-    registerLegacyDerivations(schema);
 
     this.owner.register(
       'transform:float',
@@ -108,11 +107,11 @@ module('Legacy | Reactivity | basic fields can receive remote updates', function
     );
 
     const FloatTransform: Transformation<string | number, number> = {
-      serialize(value: string | number, options: { precision?: number } | null, _record: SchemaRecord): never {
+      serialize(value: string | number, options: { precision?: number } | null, _record: ReactiveResource): never {
         assert.ok(false, 'unexpected serialize');
         throw new Error('unexpected serialize');
       },
-      hydrate(value: string, _options: { precision?: number } | null, _record: SchemaRecord): number {
+      hydrate(value: string, _options: { precision?: number } | null, _record: ReactiveResource): number {
         assert.ok(false, 'unexpected hydrate');
         throw new Error('unexpected hydrate');
       },
@@ -164,7 +163,7 @@ module('Legacy | Reactivity | basic fields can receive remote updates', function
 
     const resource = schema.resource({ type: 'user' });
     const record = store.push(
-      simplePayloadNormalize(this.owner, {
+      simplePayloadNormalize(store, this.owner, {
         data: {
           type: 'user',
           id: '1',
@@ -180,22 +179,22 @@ module('Legacy | Reactivity | basic fields can receive remote updates', function
 
     assert.verifySteps(['legacy deserialize:3', 'legacy deserialize:1000000.01', 'legacy deserialize:100.000']);
 
-    assert.strictEqual(record.id, '1', 'id is accessible');
-    assert.strictEqual(record.name, 'Rey Pupatine', 'name is accessible');
-    assert.strictEqual(record.age, 3, 'age is accessible');
-    assert.strictEqual(record.netWorth, 1_000_000.01, 'netWorth is accessible');
-    assert.strictEqual(record.coolometer, 100, 'coolometer is accessible');
-    assert.strictEqual(record.rank, 0, 'rank is accessible');
+    assert.equal(record.id, '1', 'id is accessible');
+    assert.equal(record.name, 'Rey Pupatine', 'name is accessible');
+    assert.equal(record.age, 3, 'age is accessible');
+    assert.equal(record.netWorth, 1_000_000.01, 'netWorth is accessible');
+    assert.equal(record.coolometer, 100, 'coolometer is accessible');
+    assert.equal(record.rank, 0, 'rank is accessible');
 
-    const { counters, fieldOrder } = await reactiveContext(record, resource);
+    const { counters, fieldOrder } = await reactiveContext(this, record, resource);
     const nameIndex = fieldOrder.indexOf('name');
 
-    assert.strictEqual(counters.id, 1, 'idCount is 1');
-    assert.strictEqual(counters.name, 1, 'nameCount is 1');
-    assert.strictEqual(counters.age, 1, 'ageCount is 1');
-    assert.strictEqual(counters.netWorth, 1, 'netWorthCount is 1');
-    assert.strictEqual(counters.coolometer, 1, 'coolometerCount is 1');
-    assert.strictEqual(counters.rank, 1, 'rankCount is 1');
+    assert.equal(counters.id, 1, 'idCount is 1');
+    assert.equal(counters.name, 1, 'nameCount is 1');
+    assert.equal(counters.age, 1, 'ageCount is 1');
+    assert.equal(counters.netWorth, 1, 'netWorthCount is 1');
+    assert.equal(counters.coolometer, 1, 'coolometerCount is 1');
+    assert.equal(counters.rank, 1, 'rankCount is 1');
 
     assert.dom(`li:nth-child(${nameIndex + 1})`).hasText('name: Rey Pupatine', 'name is rendered');
     assert.dom(`li:nth-child(${nameIndex + 3})`).hasText('rank: 0', 'rank is rendered');
@@ -205,7 +204,7 @@ module('Legacy | Reactivity | basic fields can receive remote updates', function
 
     // remote update
     store.push(
-      simplePayloadNormalize(this.owner, {
+      simplePayloadNormalize(store, this.owner, {
         data: {
           type: 'user',
           id: '1',
@@ -227,21 +226,21 @@ module('Legacy | Reactivity | basic fields can receive remote updates', function
       'legacy deserialize:10',
     ]);
 
-    assert.strictEqual(record.id, '1', 'id is accessible');
-    assert.strictEqual(record.name, 'Rey Skybarker', 'name is accessible');
-    assert.strictEqual(record.age, 4, 'age is accessible');
-    assert.strictEqual(record.netWorth, 1_000_000.01, 'netWorth is accessible');
-    assert.strictEqual(record.coolometer, 100.001, 'coolometer is accessible');
-    assert.strictEqual(record.rank, 10, 'rank is accessible');
+    assert.equal(record.id, '1', 'id is accessible');
+    assert.equal(record.name, 'Rey Skybarker', 'name is accessible');
+    assert.equal(record.age, 4, 'age is accessible');
+    assert.equal(record.netWorth, 1_000_000.01, 'netWorth is accessible');
+    assert.equal(record.coolometer, 100.001, 'coolometer is accessible');
+    assert.equal(record.rank, 10, 'rank is accessible');
 
     await rerender();
 
-    assert.strictEqual(counters.id, 1, 'idCount is 1');
-    assert.strictEqual(counters.name, 2, 'nameCount is 2');
-    assert.strictEqual(counters.age, 2, 'ageCount is 2');
-    assert.strictEqual(counters.netWorth, 1, 'netWorthCount is 1');
-    assert.strictEqual(counters.coolometer, 2, 'coolometerCount is 2');
-    assert.strictEqual(counters.rank, 2, 'rankCount is 2');
+    assert.equal(counters.id, 1, 'idCount is 1');
+    assert.equal(counters.name, 2, 'nameCount is 2');
+    assert.equal(counters.age, 2, 'ageCount is 2');
+    assert.equal(counters.netWorth, 1, 'netWorthCount is 1');
+    assert.equal(counters.coolometer, 2, 'coolometerCount is 2');
+    assert.equal(counters.rank, 2, 'rankCount is 2');
 
     assert.dom(`li:nth-child(${nameIndex + 1})`).hasText('name: Rey Skybarker', 'name is rendered');
     assert.dom(`li:nth-child(${nameIndex + 3})`).hasText('rank: 10', 'rank is rendered');
@@ -250,10 +249,9 @@ module('Legacy | Reactivity | basic fields can receive remote updates', function
     assert.dom(`li:nth-child(${nameIndex + 9})`).hasText('coolometer: 100.001', 'coolometer is rendered');
   });
 
-  test('When attribute does not declare defaultValue but a matching new-style transform does, we ignore it', async function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
+  test<RenderingTestContext>('When attribute does not declare defaultValue but a matching new-style transform does, we ignore it', async function (assert) {
+    const store = new Store();
     const { schema } = store;
-    registerLegacyDerivations(schema);
 
     this.owner.register(
       'transform:float',
@@ -269,11 +267,11 @@ module('Legacy | Reactivity | basic fields can receive remote updates', function
     );
 
     const FloatTransform: Transformation<string | number, number> = {
-      serialize(value: string | number, options: { precision?: number } | null, _record: SchemaRecord): never {
+      serialize(value: string | number, options: { precision?: number } | null, _record: ReactiveResource): never {
         assert.ok(false, 'unexpected serialize');
         throw new Error('unexpected serialize');
       },
-      hydrate(value: string, _options: { precision?: number } | null, _record: SchemaRecord): number {
+      hydrate(value: string, _options: { precision?: number } | null, _record: ReactiveResource): number {
         assert.ok(false, 'unexpected hydrate');
         throw new Error('unexpected hydrate');
       },
@@ -306,7 +304,7 @@ module('Legacy | Reactivity | basic fields can receive remote updates', function
 
     const resource = schema.resource({ type: 'user' });
     const record = store.push(
-      simplePayloadNormalize(this.owner, {
+      simplePayloadNormalize(store, this.owner, {
         data: {
           type: 'user',
           id: '1',
@@ -317,22 +315,22 @@ module('Legacy | Reactivity | basic fields can receive remote updates', function
       })
     ) as User;
 
-    assert.strictEqual(record.id, '1', 'id is accessible');
-    assert.strictEqual(record.name, 'Rey Pupatine', 'name is accessible');
-    assert.strictEqual(record.coolometer, undefined, 'coolometer is accessible');
-    const { counters, fieldOrder } = await reactiveContext(record, resource);
+    assert.equal(record.id, '1', 'id is accessible');
+    assert.equal(record.name, 'Rey Pupatine', 'name is accessible');
+    assert.equal(record.coolometer, undefined, 'coolometer is accessible');
+    const { counters, fieldOrder } = await reactiveContext(this, record, resource);
     const nameIndex = fieldOrder.indexOf('name');
 
-    assert.strictEqual(counters.id, 1, 'idCount is 1');
-    assert.strictEqual(counters.name, 1, 'nameCount is 1');
-    assert.strictEqual(counters.coolometer, 1, 'coolometerCount is 1');
+    assert.equal(counters.id, 1, 'idCount is 1');
+    assert.equal(counters.name, 1, 'nameCount is 1');
+    assert.equal(counters.coolometer, 1, 'coolometerCount is 1');
 
     assert.dom(`li:nth-child(${nameIndex + 1})`).hasText('name: Rey Pupatine', 'name is rendered');
     assert.dom(`li:nth-child(${nameIndex + 3})`).hasText('coolometer:', 'coolometer is rendered');
 
     // remote update
     store.push(
-      simplePayloadNormalize(this.owner, {
+      simplePayloadNormalize(store, this.owner, {
         data: {
           type: 'user',
           id: '1',
@@ -343,24 +341,23 @@ module('Legacy | Reactivity | basic fields can receive remote updates', function
       })
     );
 
-    assert.strictEqual(record.id, '1', 'id is accessible');
-    assert.strictEqual(record.name, 'Rey Skybarker', 'name is accessible');
-    assert.strictEqual(record.coolometer, undefined, 'coolometer is accessible');
+    assert.equal(record.id, '1', 'id is accessible');
+    assert.equal(record.name, 'Rey Skybarker', 'name is accessible');
+    assert.equal(record.coolometer, undefined, 'coolometer is accessible');
 
     await rerender();
 
-    assert.strictEqual(counters.id, 1, 'idCount is 1');
-    assert.strictEqual(counters.name, 2, 'nameCount is 2');
-    assert.strictEqual(counters.coolometer, 1, 'coolometerCount is 1');
+    assert.equal(counters.id, 1, 'idCount is 1');
+    assert.equal(counters.name, 2, 'nameCount is 2');
+    assert.equal(counters.coolometer, 1, 'coolometerCount is 1');
 
     assert.dom(`li:nth-child(${nameIndex + 1})`).hasText('name: Rey Skybarker', 'name is rendered');
     assert.dom(`li:nth-child(${nameIndex + 3})`).hasText('coolometer:', 'coolometer is rendered');
   });
 
-  test('id works when updated after createRecord', async function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
+  test<RenderingTestContext>('id works when updated after createRecord', async function (assert) {
+    const store = new Store();
     const { schema } = store;
-    registerLegacyDerivations(schema);
 
     schema.registerResource(
       withLegacy({
@@ -378,25 +375,24 @@ module('Legacy | Reactivity | basic fields can receive remote updates', function
     const record = store.createRecord<User>('user', {});
     const resource = schema.resource({ type: 'user' });
 
-    const { counters, fieldOrder } = await reactiveContext(record, resource);
+    const { counters, fieldOrder } = await reactiveContext(this, record, resource);
     const idIndex = fieldOrder.indexOf('id');
 
-    assert.strictEqual(record.id, null, 'id is accessible');
-    assert.strictEqual(counters.id, 1, 'idCount is 1');
+    assert.equal(record.id, null, 'id is accessible');
+    assert.equal(counters.id, 1, 'idCount is 1');
     assert.dom(`li:nth-child(${idIndex + 1})`).hasText('id:', 'id is rendered');
 
     record.id = '1';
-    assert.strictEqual(record.id, '1', 'id is accessible');
+    assert.equal(record.id, '1', 'id is accessible');
 
     await rerender();
-    assert.strictEqual(counters.id, 2, 'idCount is 2');
+    assert.equal(counters.id, 2, 'idCount is 2');
     assert.dom(`li:nth-child(${idIndex + 1})`).hasText('id: 1', 'id is rendered');
   });
 
-  test('id works when updated after save', async function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
+  test<RenderingTestContext>('id works when updated after save', async function (assert) {
+    const store = new Store();
     const { schema } = store;
-    registerLegacyDerivations(schema);
 
     schema.registerResource(
       withLegacy({
@@ -415,11 +411,11 @@ module('Legacy | Reactivity | basic fields can receive remote updates', function
     const identifier = recordIdentifierFor(record);
     const resource = schema.resource({ type: 'user' });
 
-    const { counters, fieldOrder } = await reactiveContext(record, resource);
+    const { counters, fieldOrder } = await reactiveContext(this, record, resource);
     const idIndex = fieldOrder.indexOf('id');
 
-    assert.strictEqual(record.id, null, 'id is accessible');
-    assert.strictEqual(counters.id, 1, 'idCount is 1');
+    assert.equal(record.id, null, 'id is accessible');
+    assert.equal(counters.id, 1, 'idCount is 1');
     assert.dom(`li:nth-child(${idIndex + 1})`).hasText('id:', 'id is rendered');
 
     store.push({
@@ -433,9 +429,9 @@ module('Legacy | Reactivity | basic fields can receive remote updates', function
       },
     });
 
-    assert.strictEqual(record.id, '1', 'id is accessible');
+    assert.equal(record.id, '1', 'id is accessible');
     await rerender();
-    assert.strictEqual(counters.id, 2, 'idCount is 2');
+    assert.equal(counters.id, 2, 'idCount is 2');
     assert.dom(`li:nth-child(${idIndex + 1})`).hasText('id: 1', 'id is rendered');
   });
 });

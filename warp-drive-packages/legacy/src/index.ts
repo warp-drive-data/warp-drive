@@ -16,6 +16,7 @@ import { instantiateRecord, registerDerivations, SchemaService, teardownRecord }
 import type { Handler } from '@warp-drive/core/request';
 import { DefaultCachePolicy } from '@warp-drive/core/store';
 import type { CacheCapabilitiesManager, ModelSchema, ResourceKey } from '@warp-drive/core/types';
+import type { Cache } from '@warp-drive/core/types/cache';
 import type { TypeFromInstance } from '@warp-drive/core/types/record';
 import type { ObjectSchema, ResourceSchema } from '@warp-drive/core/types/schema/fields';
 
@@ -37,7 +38,7 @@ import { FragmentArrayExtension, FragmentExtension } from './model-fragments';
 import { fragmentsModelFor } from './model-fragments/hooks/model-for';
 import { restoreDeprecatedStoreBehaviors } from './store';
 
-interface _LegacyStoreSetupOptions extends Omit<StoreSetupOptions, 'schemas'> {
+interface _LegacyStoreSetupOptions<T extends Cache> extends Omit<StoreSetupOptions<T>, 'schemas'> {
   schemas?: Array<ResourceSchema | ObjectSchema>;
 
   /**
@@ -46,7 +47,7 @@ interface _LegacyStoreSetupOptions extends Omit<StoreSetupOptions, 'schemas'> {
   modelFragments?: boolean;
 }
 
-export interface LegacyModelStoreSetupOptions extends _LegacyStoreSetupOptions {
+export interface LegacyModelStoreSetupOptions<T extends Cache> extends _LegacyStoreSetupOptions<T> {
   /**
    * If true, it is presumed that no requests require use of the LegacyNetworkHandler
    * and associated adapters/serializer methods.
@@ -59,7 +60,7 @@ export interface LegacyModelStoreSetupOptions extends _LegacyStoreSetupOptions {
   legacyRequests?: false;
 }
 
-export interface LegacyModelAndNetworkStoreSetupOptions extends _LegacyStoreSetupOptions {
+export interface LegacyModelAndNetworkStoreSetupOptions<T extends Cache> extends _LegacyStoreSetupOptions<T> {
   /**
    * If true, it is presumed that no requests require use of the LegacyNetworkHandler
    * and associated adapters/serializer methods.
@@ -72,7 +73,7 @@ export interface LegacyModelAndNetworkStoreSetupOptions extends _LegacyStoreSetu
   legacyRequests?: false;
 }
 
-export interface LegacyModelAndNetworkAndRequestStoreSetupOptions extends _LegacyStoreSetupOptions {
+export interface LegacyModelAndNetworkAndRequestStoreSetupOptions<T extends Cache> extends _LegacyStoreSetupOptions<T> {
   /**
    * If true, it is presumed that no requests require use of the LegacyNetworkHandler
    * and associated adapters/serializer methods.
@@ -85,24 +86,37 @@ export interface LegacyModelAndNetworkAndRequestStoreSetupOptions extends _Legac
   legacyRequests: true;
 }
 
-export type LegacyStoreSetupOptions =
-  | LegacyModelStoreSetupOptions
-  | LegacyModelAndNetworkStoreSetupOptions
-  | LegacyModelAndNetworkAndRequestStoreSetupOptions;
+//export type ConfiguredStore<T = unknown> = typeof Store;
+
+export type LegacyStoreSetupOptions<T extends Cache = Cache> =
+  | LegacyModelStoreSetupOptions<T>
+  | LegacyModelAndNetworkStoreSetupOptions<T>
+  | LegacyModelAndNetworkAndRequestStoreSetupOptions<T>;
+
+export declare class ConfiguredStore<T extends { cache: Cache }> extends Store {
+  // get cache(): T extends OptionsWithCache<infer R> ? R : never;
+  createCache(capabilities: CacheCapabilitiesManager): T['cache'];
+}
 
 /**
  * Use the legacy store with the given options.
  */
-export function useLegacyStore(options: LegacyModelStoreSetupOptions, StoreKlass?: typeof Store): typeof Store;
-export function useLegacyStore(
-  options: LegacyModelAndNetworkStoreSetupOptions,
+export function useLegacyStore<T extends Cache>(
+  options: LegacyModelStoreSetupOptions<T>,
   StoreKlass?: typeof Store
-): typeof Store;
-export function useLegacyStore(
-  options: LegacyModelAndNetworkAndRequestStoreSetupOptions,
+): typeof ConfiguredStore<{ cache: T }>;
+export function useLegacyStore<T extends Cache>(
+  options: LegacyModelAndNetworkStoreSetupOptions<T>,
   StoreKlass?: typeof Store
-): typeof Store;
-export function useLegacyStore(options: LegacyStoreSetupOptions, StoreKlass: typeof Store = Store): typeof Store {
+): typeof ConfiguredStore<{ cache: T }>;
+export function useLegacyStore<T extends Cache>(
+  options: LegacyModelAndNetworkAndRequestStoreSetupOptions<T>,
+  StoreKlass?: typeof Store
+): typeof ConfiguredStore<{ cache: T }>;
+export function useLegacyStore<T extends Cache>(
+  options: LegacyStoreSetupOptions<T>,
+  StoreKlass: typeof Store = Store
+): typeof ConfiguredStore<{ cache: T }> {
   assert(`If legacyRequests is true, linksMode must be false`, !(options.linksMode && options.legacyRequests));
   // we extend the store to ensure we don't leak our prototype overrides to other stores below.
   class BaseKlass extends StoreKlass {}
@@ -281,7 +295,7 @@ export function useLegacyStore(options: LegacyStoreSetupOptions, StoreKlass: typ
     restoreDeprecatedStoreBehaviors(BaseKlass);
   }
 
-  return LegacyConfiguredStore;
+  return LegacyConfiguredStore as typeof ConfiguredStore;
 }
 
 function assertType(schema: DelegatingSchemaService, type: string) {

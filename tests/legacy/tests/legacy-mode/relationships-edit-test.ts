@@ -1,15 +1,17 @@
-import { module, test } from 'qunit';
-
-import { setupTest } from 'ember-qunit';
-
-import { PromiseBelongsTo, PromiseManyArray } from '@ember-data/model/-private';
+import type { Type } from '@warp-drive/core/types/symbols';
+import { module, setupTest, test } from '@warp-drive/diagnostic/ember';
+import { JSONAPICache } from '@warp-drive/json-api';
+import { useLegacyStore } from '@warp-drive/legacy';
+import { PromiseBelongsTo, PromiseManyArray } from '@warp-drive/legacy/model/-private';
 import {
   registerDerivations as registerLegacyDerivations,
   withRestoredDeprecatedModelRequestBehaviors as withLegacy,
-} from '@ember-data/model/migration-support';
-import type { Type } from '@warp-drive/core-types/symbols';
+} from '@warp-drive/legacy/model/migration-support';
 
-import type Store from 'warp-drive__schema-record/services/store';
+const Store = useLegacyStore({
+  linksMode: false,
+  cache: JSONAPICache,
+});
 
 module('Legacy | Edit | relationships', function (hooks) {
   setupTest(hooks);
@@ -23,7 +25,7 @@ module('Legacy | Edit | relationships', function (hooks) {
       friends: User[];
       [Type]: 'user';
     };
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
     const { schema } = store;
     registerLegacyDerivations(schema);
 
@@ -89,17 +91,17 @@ module('Legacy | Edit | relationships', function (hooks) {
     const Matt = store.peekRecord<User>('user', '2')!;
     const Wes = store.peekRecord<User>('user', '3')!;
 
-    assert.strictEqual(Rey.id, '1', 'id is accessible');
-    assert.strictEqual(Rey.name, 'Rey Skybarker', 'name is accessible');
-    assert.strictEqual(Rey.bestFriend, Matt, 'Rey has Matt as bestFriend');
-    assert.strictEqual(Matt.bestFriend, Rey, 'Matt has Rey as bestFriend');
-    assert.strictEqual(Wes.bestFriend, null, 'Wesley has no bestFriend');
+    assert.equal(Rey.id, '1', 'id is accessible');
+    assert.equal(Rey.name, 'Rey Skybarker', 'name is accessible');
+    assert.equal(Rey.bestFriend, Matt, 'Rey has Matt as bestFriend');
+    assert.equal(Matt.bestFriend, Rey, 'Matt has Rey as bestFriend');
+    assert.equal(Wes.bestFriend, null, 'Wesley has no bestFriend');
 
     Rey.bestFriend = Wes;
 
-    assert.strictEqual(Rey.bestFriend, Wes, 'Wes is now the bestFriend of Rey');
-    assert.strictEqual(Wes.bestFriend, Rey, 'Rey is now the bestFriend of Wes');
-    assert.strictEqual(Matt.bestFriend, null, 'Matt no longer has a bestFriend');
+    assert.equal(Rey.bestFriend, Wes, 'Wes is now the bestFriend of Rey');
+    assert.equal(Wes.bestFriend, Rey, 'Rey is now the bestFriend of Wes');
+    assert.equal(Matt.bestFriend, null, 'Matt no longer has a bestFriend');
   });
 
   test('we can replace a sync hasMany', function (assert) {
@@ -111,7 +113,7 @@ module('Legacy | Edit | relationships', function (hooks) {
       friends: User[];
       [Type]: 'user';
     };
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
     const { schema } = store;
     registerLegacyDerivations(schema);
 
@@ -177,21 +179,21 @@ module('Legacy | Edit | relationships', function (hooks) {
     const Matt = store.peekRecord<User>('user', '2')!;
     const Wes = store.peekRecord<User>('user', '3')!;
 
-    assert.strictEqual(Rey.friends.length, 1, 'Rey has only one friend :(');
-    assert.strictEqual(Matt.friends.length, 1, 'Matt has only one friend :(');
-    assert.strictEqual(Wes.friends.length, 0, 'Wes has no friends :(');
-    assert.strictEqual(Rey.friends[0], Matt, 'Rey has Matt as a friend');
-    assert.strictEqual(Matt.friends[0], Rey, 'Matt has Rey as a friend');
-    assert.strictEqual(Wes.friends[0], undefined, 'Wes truly has no friends');
+    assert.equal(Rey.friends.length, 1, 'Rey has only one friend :(');
+    assert.equal(Matt.friends.length, 1, 'Matt has only one friend :(');
+    assert.equal(Wes.friends.length, 0, 'Wes has no friends :(');
+    assert.equal(Rey.friends[0], Matt, 'Rey has Matt as a friend');
+    assert.equal(Matt.friends[0], Rey, 'Matt has Rey as a friend');
+    assert.equal(Wes.friends[0], undefined, 'Wes truly has no friends');
 
     Rey.friends = [Wes];
 
-    assert.strictEqual(Rey.friends.length, 1, 'Rey still has only one friend');
-    assert.strictEqual(Matt.friends.length, 0, 'Matt now has no friends');
-    assert.strictEqual(Wes.friends.length, 1, 'Wes now has one friend :)');
-    assert.strictEqual(Rey.friends[0], Wes, 'Rey has Wes as a friend');
-    assert.strictEqual(Wes.friends[0], Rey, 'Wes has Rey as a friend');
-    assert.strictEqual(Matt.friends[0], undefined, 'Matt has no friends');
+    assert.equal(Rey.friends.length, 1, 'Rey still has only one friend');
+    assert.equal(Matt.friends.length, 0, 'Matt now has no friends');
+    assert.equal(Wes.friends.length, 1, 'Wes now has one friend :)');
+    assert.equal(Rey.friends[0], Wes, 'Rey has Wes as a friend');
+    assert.equal(Wes.friends[0], Rey, 'Wes has Rey as a friend');
+    assert.equal(Matt.friends[0], undefined, 'Matt has no friends');
   });
 
   test('we can edit a sync hasMany', function (assert) {
@@ -203,7 +205,7 @@ module('Legacy | Edit | relationships', function (hooks) {
       friends: User[];
       [Type]: 'user';
     };
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
     const { schema } = store;
     registerLegacyDerivations(schema);
 
@@ -269,22 +271,22 @@ module('Legacy | Edit | relationships', function (hooks) {
     const Matt = store.peekRecord<User>('user', '2')!;
     const Wes = store.peekRecord<User>('user', '3')!;
 
-    assert.strictEqual(Rey.friends.length, 1, 'Rey has only one friend :(');
-    assert.strictEqual(Matt.friends.length, 1, 'Matt has only one friend :(');
-    assert.strictEqual(Wes.friends.length, 0, 'Wes has no friends :(');
-    assert.strictEqual(Rey.friends[0], Matt, 'Rey has Matt as a friend');
-    assert.strictEqual(Matt.friends[0], Rey, 'Matt has Rey as a friend');
-    assert.strictEqual(Wes.friends[0], undefined, 'Wes truly has no friends');
+    assert.equal(Rey.friends.length, 1, 'Rey has only one friend :(');
+    assert.equal(Matt.friends.length, 1, 'Matt has only one friend :(');
+    assert.equal(Wes.friends.length, 0, 'Wes has no friends :(');
+    assert.equal(Rey.friends[0], Matt, 'Rey has Matt as a friend');
+    assert.equal(Matt.friends[0], Rey, 'Matt has Rey as a friend');
+    assert.equal(Wes.friends[0], undefined, 'Wes truly has no friends');
 
     Rey.friends.push(Wes);
 
-    assert.strictEqual(Rey.friends.length, 2, 'Rey now has two friends');
-    assert.strictEqual(Matt.friends.length, 1, 'Matt still has one friend');
-    assert.strictEqual(Wes.friends.length, 1, 'Wes now has one friend :)');
-    assert.strictEqual(Rey.friends[0], Matt, 'Rey has Matt as a friend');
-    assert.strictEqual(Rey.friends[1], Wes, 'Rey has Wes as a friend');
-    assert.strictEqual(Wes.friends[0], Rey, 'Wes has Rey as a friend');
-    assert.strictEqual(Matt.friends[0], Rey, 'Matt has Rey as a friend');
+    assert.equal(Rey.friends.length, 2, 'Rey now has two friends');
+    assert.equal(Matt.friends.length, 1, 'Matt still has one friend');
+    assert.equal(Wes.friends.length, 1, 'Wes now has one friend :)');
+    assert.equal(Rey.friends[0], Matt, 'Rey has Matt as a friend');
+    assert.equal(Rey.friends[1], Wes, 'Rey has Wes as a friend');
+    assert.equal(Wes.friends[0], Rey, 'Wes has Rey as a friend');
+    assert.equal(Matt.friends[0], Rey, 'Matt has Rey as a friend');
   });
 
   test('we can edit an async belongsTo', async function (assert) {
@@ -294,7 +296,7 @@ module('Legacy | Edit | relationships', function (hooks) {
       bestFriend: PromiseBelongsTo<User | null>;
       [Type]: 'user';
     };
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
     const { schema } = store;
     registerLegacyDerivations(schema);
 
@@ -364,15 +366,15 @@ module('Legacy | Edit | relationships', function (hooks) {
     const MattBestFriend = await Matt.bestFriend;
     const WesBestFriend = await Wes.bestFriend;
 
-    assert.strictEqual(Rey.id, '1', 'id is accessible');
-    assert.strictEqual(Rey.name, 'Rey Skybarker', 'name is accessible');
+    assert.equal(Rey.id, '1', 'id is accessible');
+    assert.equal(Rey.name, 'Rey Skybarker', 'name is accessible');
     assert.true(Rey.bestFriend instanceof PromiseBelongsTo, 'Rey has an async bestFriend');
     assert.true(Matt.bestFriend instanceof PromiseBelongsTo, 'Matt has an async bestFriend');
     assert.true(Wes.bestFriend instanceof PromiseBelongsTo, 'Wes has an async bestFriend');
 
-    assert.strictEqual(ReyBestFriend, Matt, 'Rey has Matt as bestFriend');
-    assert.strictEqual(MattBestFriend, Rey, 'Matt has Rey as bestFriend');
-    assert.strictEqual(WesBestFriend, null, 'Wes has no bestFriend');
+    assert.equal(ReyBestFriend, Matt, 'Rey has Matt as bestFriend');
+    assert.equal(MattBestFriend, Rey, 'Matt has Rey as bestFriend');
+    assert.equal(WesBestFriend, null, 'Wes has no bestFriend');
 
     // @ts-expect-error setting an async belongsTo cannot be properly typed
     Rey.bestFriend = Wes;
@@ -381,9 +383,9 @@ module('Legacy | Edit | relationships', function (hooks) {
     const MattBestFriend2 = await Matt.bestFriend;
     const WesBestFriend2 = await Wes.bestFriend;
 
-    assert.strictEqual(ReyBestFriend2, Wes, 'Rey now has Wes as bestFriend');
-    assert.strictEqual(MattBestFriend2, null, 'Matt now has no bestFriend');
-    assert.strictEqual(WesBestFriend2, Rey, 'Wes is now the bestFriend of Rey');
+    assert.equal(ReyBestFriend2, Wes, 'Rey now has Wes as bestFriend');
+    assert.equal(MattBestFriend2, null, 'Matt now has no bestFriend');
+    assert.equal(WesBestFriend2, Rey, 'Wes is now the bestFriend of Rey');
   });
 
   test('we can replace an async hasMany', async function (assert) {
@@ -393,7 +395,7 @@ module('Legacy | Edit | relationships', function (hooks) {
       friends: PromiseManyArray<User>;
       [Type]: 'user';
     };
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
     const { schema } = store;
     registerLegacyDerivations(schema);
 
@@ -463,42 +465,42 @@ module('Legacy | Edit | relationships', function (hooks) {
     const MattFriends = await Matt.friends;
     const WesFriends = await Wes.friends;
 
-    assert.strictEqual(Rey.id, '1', 'id is accessible');
-    assert.strictEqual(Rey.name, 'Rey Skybarker', 'name is accessible');
+    assert.equal(Rey.id, '1', 'id is accessible');
+    assert.equal(Rey.name, 'Rey Skybarker', 'name is accessible');
 
-    assert.strictEqual(Rey.friends.length, 1, 'Rey has only one friend :(');
-    assert.strictEqual(Matt.friends.length, 1, 'Matt has only one friend :(');
+    assert.equal(Rey.friends.length, 1, 'Rey has only one friend :(');
+    assert.equal(Matt.friends.length, 1, 'Matt has only one friend :(');
     assert.true(Rey.friends instanceof PromiseManyArray, 'Rey has async friends');
     assert.true(Matt.friends instanceof PromiseManyArray, 'Matt has async friends');
     assert.true(Wes.friends instanceof PromiseManyArray, 'Wes has async friends');
 
-    assert.strictEqual(ReyFriends.length, 1, 'Rey has only one friend :(');
-    assert.strictEqual(MattFriends.length, 1, 'Matt has only one friend :(');
-    assert.strictEqual(WesFriends.length, 0, 'Wes has no friends');
-    assert.strictEqual(ReyFriends[0], Matt, 'Rey has Matt as a friend');
-    assert.strictEqual(MattFriends[0], Rey, 'Matt has Rey as a friend');
-    assert.strictEqual(WesFriends[0], undefined, 'Rey really has no friends');
+    assert.equal(ReyFriends.length, 1, 'Rey has only one friend :(');
+    assert.equal(MattFriends.length, 1, 'Matt has only one friend :(');
+    assert.equal(WesFriends.length, 0, 'Wes has no friends');
+    assert.equal(ReyFriends[0], Matt, 'Rey has Matt as a friend');
+    assert.equal(MattFriends[0], Rey, 'Matt has Rey as a friend');
+    assert.equal(WesFriends[0], undefined, 'Rey really has no friends');
 
     // @ts-expect-error async hasMany cannot have a sync setter type :(
     Rey.friends = [Wes];
 
-    assert.strictEqual(Rey.friends.length, 1, 'Rey still has only one friend');
-    assert.strictEqual(Matt.friends.length, 0, 'Matt now has no friends');
-    assert.strictEqual(Wes.friends.length, 1, 'Wes now has one friend :)');
-    assert.strictEqual(ReyFriends[0], Wes, 'Rey has Wes as a friend');
-    assert.strictEqual(WesFriends[0], Rey, 'Wes has Rey as a friend');
-    assert.strictEqual(MattFriends[0], undefined, 'Matt has no friends');
+    assert.equal(Rey.friends.length, 1, 'Rey still has only one friend');
+    assert.equal(Matt.friends.length, 0, 'Matt now has no friends');
+    assert.equal(Wes.friends.length, 1, 'Wes now has one friend :)');
+    assert.equal(ReyFriends[0], Wes, 'Rey has Wes as a friend');
+    assert.equal(WesFriends[0], Rey, 'Wes has Rey as a friend');
+    assert.equal(MattFriends[0], undefined, 'Matt has no friends');
 
     const ReyFriends2 = await Rey.friends;
     const MattFriends2 = await Matt.friends;
     const WesFriends2 = await Wes.friends;
 
-    assert.strictEqual(Rey.friends.length, 1, 'Rey still has only one friend');
-    assert.strictEqual(Matt.friends.length, 0, 'Matt now has no friends');
-    assert.strictEqual(Wes.friends.length, 1, 'Wes now has one friend :)');
-    assert.strictEqual(ReyFriends2[0], Wes, 'Rey has Wes as a friend');
-    assert.strictEqual(WesFriends2[0], Rey, 'Wes has Rey as a friend');
-    assert.strictEqual(MattFriends2[0], undefined, 'Matt has no friends');
+    assert.equal(Rey.friends.length, 1, 'Rey still has only one friend');
+    assert.equal(Matt.friends.length, 0, 'Matt now has no friends');
+    assert.equal(Wes.friends.length, 1, 'Wes now has one friend :)');
+    assert.equal(ReyFriends2[0], Wes, 'Rey has Wes as a friend');
+    assert.equal(WesFriends2[0], Rey, 'Wes has Rey as a friend');
+    assert.equal(MattFriends2[0], undefined, 'Matt has no friends');
   });
 
   test('we can edit an async hasMany', async function (assert) {
@@ -508,7 +510,7 @@ module('Legacy | Edit | relationships', function (hooks) {
       friends: PromiseManyArray<User>;
       [Type]: 'user';
     };
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
     const { schema } = store;
     registerLegacyDerivations(schema);
 
@@ -578,42 +580,42 @@ module('Legacy | Edit | relationships', function (hooks) {
     const MattFriends = await Matt.friends;
     const WesFriends = await Wes.friends;
 
-    assert.strictEqual(Rey.id, '1', 'id is accessible');
-    assert.strictEqual(Rey.name, 'Rey Skybarker', 'name is accessible');
+    assert.equal(Rey.id, '1', 'id is accessible');
+    assert.equal(Rey.name, 'Rey Skybarker', 'name is accessible');
 
-    assert.strictEqual(Rey.friends.length, 1, 'Rey has only one friend :(');
-    assert.strictEqual(Matt.friends.length, 1, 'Matt has only one friend :(');
+    assert.equal(Rey.friends.length, 1, 'Rey has only one friend :(');
+    assert.equal(Matt.friends.length, 1, 'Matt has only one friend :(');
     assert.true(Rey.friends instanceof PromiseManyArray, 'Rey has async friends');
     assert.true(Matt.friends instanceof PromiseManyArray, 'Matt has async friends');
     assert.true(Wes.friends instanceof PromiseManyArray, 'Wes has async friends');
 
-    assert.strictEqual(ReyFriends.length, 1, 'Rey has only one friend :(');
-    assert.strictEqual(MattFriends.length, 1, 'Matt has only one friend :(');
-    assert.strictEqual(WesFriends.length, 0, 'Wes has no friends');
-    assert.strictEqual(ReyFriends[0], Matt, 'Rey has Matt as a friend');
-    assert.strictEqual(MattFriends[0], Rey, 'Matt has Rey as a friend');
-    assert.strictEqual(WesFriends[0], undefined, 'Rey really has no friends');
+    assert.equal(ReyFriends.length, 1, 'Rey has only one friend :(');
+    assert.equal(MattFriends.length, 1, 'Matt has only one friend :(');
+    assert.equal(WesFriends.length, 0, 'Wes has no friends');
+    assert.equal(ReyFriends[0], Matt, 'Rey has Matt as a friend');
+    assert.equal(MattFriends[0], Rey, 'Matt has Rey as a friend');
+    assert.equal(WesFriends[0], undefined, 'Rey really has no friends');
 
     ReyFriends.push(Wes);
 
-    assert.strictEqual(Rey.friends.length, 2, 'Rey now has two friends');
-    assert.strictEqual(Matt.friends.length, 1, 'Matt still has one friends');
-    assert.strictEqual(Wes.friends.length, 1, 'Wes now has one friend :)');
-    assert.strictEqual(ReyFriends[0], Matt, 'Rey has Matt as a friend');
-    assert.strictEqual(ReyFriends[1], Wes, 'Rey has Wes as a friend');
-    assert.strictEqual(WesFriends[0], Rey, 'Wes has Rey as a friend');
-    assert.strictEqual(MattFriends[0], Rey, 'Matt has Rey as a friend');
+    assert.equal(Rey.friends.length, 2, 'Rey now has two friends');
+    assert.equal(Matt.friends.length, 1, 'Matt still has one friends');
+    assert.equal(Wes.friends.length, 1, 'Wes now has one friend :)');
+    assert.equal(ReyFriends[0], Matt, 'Rey has Matt as a friend');
+    assert.equal(ReyFriends[1], Wes, 'Rey has Wes as a friend');
+    assert.equal(WesFriends[0], Rey, 'Wes has Rey as a friend');
+    assert.equal(MattFriends[0], Rey, 'Matt has Rey as a friend');
 
     const ReyFriends2 = await Rey.friends;
     const MattFriends2 = await Matt.friends;
     const WesFriends2 = await Wes.friends;
 
-    assert.strictEqual(Rey.friends.length, 2, 'Rey now has two friends');
-    assert.strictEqual(Matt.friends.length, 1, 'Matt still has one friends');
-    assert.strictEqual(Wes.friends.length, 1, 'Wes now has one friend :)');
-    assert.strictEqual(ReyFriends2[0], Matt, 'Rey has Matt as a friend');
-    assert.strictEqual(ReyFriends2[1], Wes, 'Rey has Wes as a friend');
-    assert.strictEqual(WesFriends2[0], Rey, 'Wes has Rey as a friend');
-    assert.strictEqual(MattFriends2[0], Rey, 'Matt has Rey as a friend');
+    assert.equal(Rey.friends.length, 2, 'Rey now has two friends');
+    assert.equal(Matt.friends.length, 1, 'Matt still has one friends');
+    assert.equal(Wes.friends.length, 1, 'Wes now has one friend :)');
+    assert.equal(ReyFriends2[0], Matt, 'Rey has Matt as a friend');
+    assert.equal(ReyFriends2[1], Wes, 'Rey has Wes as a friend');
+    assert.equal(WesFriends2[0], Rey, 'Wes has Rey as a friend');
+    assert.equal(MattFriends2[0], Rey, 'Matt has Rey as a friend');
   });
 });

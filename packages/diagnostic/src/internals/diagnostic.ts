@@ -320,9 +320,11 @@ export class Diagnostic<TC extends TestContext> {
     }
   }
 
-  throws(fn: () => Promise<void>, expected?: string | RegExp, message?: string): Promise<void>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  throws(fn: () => Promise<any>, expected?: string | RegExp, message?: string): Promise<void>;
   throws(fn: () => void, expected?: string | RegExp, message?: string): void;
-  throws(fn: () => void | Promise<void>, expected?: string | RegExp, message?: string): Promise<void> | void {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  throws(fn: () => void | Promise<any>, expected?: string | RegExp, message?: string): Promise<void> | void {
     try {
       const result = fn();
       const resolved = Promise.resolve(result);
