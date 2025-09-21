@@ -753,7 +753,7 @@ export function createRequestState<RT, E>(
  * ```
  *
  * If looking to use in a template, consider also the `<Request />` component
- * which offers a numbe of additional capabilities for requests *beyond* what
+ * which offers a number of additional capabilities for requests *beyond* what
  * `RequestState` provides.
  *
  */
