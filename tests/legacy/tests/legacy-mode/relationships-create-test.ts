@@ -1,13 +1,12 @@
+import { setOwner } from '@ember/owner';
+
 import type { Type } from '@warp-drive/core/types/symbols';
 import { module, setupTest, test } from '@warp-drive/diagnostic/ember';
 import { JSONAPICache } from '@warp-drive/json-api';
 import { useLegacyStore } from '@warp-drive/legacy';
 import type { AsyncHasMany } from '@warp-drive/legacy/model';
 import { PromiseBelongsTo, PromiseManyArray } from '@warp-drive/legacy/model/-private';
-import {
-  registerDerivations as registerLegacyDerivations,
-  withRestoredDeprecatedModelRequestBehaviors as withLegacy,
-} from '@warp-drive/legacy/model/migration-support';
+import { withRestoredDeprecatedModelRequestBehaviors as withLegacy } from '@warp-drive/legacy/model/migration-support';
 
 const Store = useLegacyStore({
   linksMode: false,
@@ -26,8 +25,8 @@ module('Legacy | Create | relationships', function (hooks) {
       [Type]: 'user';
     };
     const store = new Store();
+    setOwner(store, this.owner);
     const { schema } = store;
-    registerLegacyDerivations(schema);
 
     schema.registerResource(
       withLegacy({
@@ -83,8 +82,8 @@ module('Legacy | Create | relationships', function (hooks) {
       [Type]: 'user';
     };
     const store = new Store();
+    setOwner(store, this.owner);
     const { schema } = store;
-    registerLegacyDerivations(schema);
 
     schema.registerResource(
       withLegacy({
@@ -143,8 +142,8 @@ module('Legacy | Create | relationships', function (hooks) {
       [Type]: 'user';
     };
     const store = new Store();
+    setOwner(store, this.owner);
     const { schema } = store;
-    registerLegacyDerivations(schema);
 
     schema.registerResource(
       withLegacy({
@@ -205,8 +204,8 @@ module('Legacy | Create | relationships', function (hooks) {
       [Type]: 'user';
     };
     const store = new Store();
+    setOwner(store, this.owner);
     const { schema } = store;
-    registerLegacyDerivations(schema);
 
     schema.registerResource(
       withLegacy({

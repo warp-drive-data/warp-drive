@@ -1,10 +1,9 @@
+import { setOwner } from '@ember/owner';
+
 import { module, setupTest, test } from '@warp-drive/diagnostic/ember';
 import { JSONAPICache } from '@warp-drive/json-api';
 import { useLegacyStore } from '@warp-drive/legacy';
-import {
-  registerDerivations as registerLegacyDerivations,
-  withRestoredDeprecatedModelRequestBehaviors as withLegacy,
-} from '@warp-drive/legacy/model/migration-support';
+import { withRestoredDeprecatedModelRequestBehaviors as withLegacy } from '@warp-drive/legacy/model/migration-support';
 
 interface User {
   id: string | null;
@@ -32,6 +31,7 @@ module('Legacy | Create | basic fields', function (hooks) {
 
   test('attributes work when passed to createRecord', function (assert) {
     const store = new Store();
+    setOwner(store, this.owner);
     const { schema } = store;
 
     schema.registerResource(
@@ -55,8 +55,8 @@ module('Legacy | Create | basic fields', function (hooks) {
 
   test('id works when passed to createRecord', function (assert) {
     const store = new Store();
+    setOwner(store, this.owner);
     const { schema } = store;
-    registerLegacyDerivations(schema);
 
     schema.registerResource(
       withLegacy({
@@ -79,8 +79,8 @@ module('Legacy | Create | basic fields', function (hooks) {
 
   test('attributes work when updated after createRecord', function (assert) {
     const store = new Store();
+    setOwner(store, this.owner);
     const { schema } = store;
-    registerLegacyDerivations(schema);
 
     schema.registerResource(
       withLegacy({
@@ -103,8 +103,8 @@ module('Legacy | Create | basic fields', function (hooks) {
 
   test('id works when updated after createRecord', function (assert) {
     const store = new Store();
+    setOwner(store, this.owner);
     const { schema } = store;
-    registerLegacyDerivations(schema);
 
     schema.registerResource(
       withLegacy({

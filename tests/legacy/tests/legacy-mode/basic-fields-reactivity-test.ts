@@ -1,4 +1,5 @@
 import EmberObject from '@ember/object';
+import { setOwner } from '@ember/owner';
 import { rerender } from '@ember/test-helpers';
 
 import { recordIdentifierFor } from '@warp-drive/core';
@@ -34,6 +35,7 @@ module<RenderingTestContext>('Legacy | Reactivity | basic fields can receive rem
 
   test<RenderingTestContext>('we can use simple fields with no `type`', async function (assert) {
     const store = new Store();
+    setOwner(store, this.owner);
     const { schema } = store;
 
     schema.registerResource(
@@ -91,6 +93,7 @@ module<RenderingTestContext>('Legacy | Reactivity | basic fields can receive rem
 
   test<RenderingTestContext>('we can use simple fields with a `type`', async function (assert) {
     const store = new Store();
+    setOwner(store, this.owner);
     const { schema } = store;
 
     this.owner.register(
@@ -251,6 +254,7 @@ module<RenderingTestContext>('Legacy | Reactivity | basic fields can receive rem
 
   test<RenderingTestContext>('When attribute does not declare defaultValue but a matching new-style transform does, we ignore it', async function (assert) {
     const store = new Store();
+    setOwner(store, this.owner);
     const { schema } = store;
 
     this.owner.register(
@@ -357,6 +361,7 @@ module<RenderingTestContext>('Legacy | Reactivity | basic fields can receive rem
 
   test<RenderingTestContext>('id works when updated after createRecord', async function (assert) {
     const store = new Store();
+    setOwner(store, this.owner);
     const { schema } = store;
 
     schema.registerResource(
@@ -392,6 +397,7 @@ module<RenderingTestContext>('Legacy | Reactivity | basic fields can receive rem
 
   test<RenderingTestContext>('id works when updated after save', async function (assert) {
     const store = new Store();
+    setOwner(store, this.owner);
     const { schema } = store;
 
     schema.registerResource(

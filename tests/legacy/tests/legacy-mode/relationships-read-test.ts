@@ -1,3 +1,4 @@
+import { setOwner } from '@ember/owner';
 import type { TestContext } from '@ember/test-helpers';
 
 import type { NextFn } from '@warp-drive/core/request';
@@ -30,6 +31,7 @@ module('Legacy | Reads | relationships', function (hooks) {
       [Type]: 'user';
     };
     const store = new Store();
+    setOwner(store, this.owner);
     const { schema } = store;
 
     schema.registerResource(
@@ -97,6 +99,7 @@ module('Legacy | Reads | relationships', function (hooks) {
       [Type]: 'user';
     };
     const store = new Store();
+    setOwner(store, this.owner);
     const { schema } = store;
 
     schema.registerResource(
@@ -164,6 +167,7 @@ module('Legacy | Reads | relationships', function (hooks) {
       [Type]: 'user';
     };
     const store = new Store();
+    setOwner(store, this.owner);
     const { schema } = store;
 
     schema.registerResource(
@@ -235,6 +239,7 @@ module('Legacy | Reads | relationships', function (hooks) {
       [Type]: 'user';
     };
     const store = new Store();
+    setOwner(store, this.owner);
     const { schema } = store;
 
     schema.registerResource(

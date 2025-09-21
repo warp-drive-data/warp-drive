@@ -1,3 +1,4 @@
+import { setOwner } from '@ember/owner';
 import { rerender } from '@ember/test-helpers';
 
 import type { Type } from '@warp-drive/core/types/symbols';
@@ -29,6 +30,7 @@ module('Legacy | Reactivity | relationships', function (hooks) {
       [Type]: 'user';
     };
     const store = new Store();
+    setOwner(store, this.owner);
     const { schema } = store;
 
     schema.registerResource(
@@ -149,6 +151,7 @@ module('Legacy | Reactivity | relationships', function (hooks) {
       [Type]: 'user';
     };
     const store = new Store();
+    setOwner(store, this.owner);
     const { schema } = store;
 
     schema.registerResource(
@@ -275,6 +278,7 @@ module('Legacy | Reactivity | relationships', function (hooks) {
       [Type]: 'user';
     };
     const store = new Store();
+    setOwner(store, this.owner);
     const { schema } = store;
 
     schema.registerResource(
@@ -403,6 +407,7 @@ module('Legacy | Reactivity | relationships', function (hooks) {
       [Type]: 'user';
     };
     const store = new Store();
+    setOwner(store, this.owner);
     const { schema } = store;
 
     schema.registerResource(
@@ -534,6 +539,7 @@ module('Legacy | Reactivity | relationships', function (hooks) {
       [Type]: 'user';
     };
     const store = new Store();
+    setOwner(store, this.owner);
     const { schema } = store;
 
     schema.registerResource(
@@ -676,6 +682,7 @@ module('Legacy | Reactivity | relationships', function (hooks) {
       [Type]: 'user';
     };
     const store = new Store();
+    setOwner(store, this.owner);
     const { schema } = store;
 
     schema.registerResource(
@@ -825,6 +832,7 @@ module('Legacy | Reactivity | relationships', function (hooks) {
       [Type]: 'user';
     };
     const store = new Store();
+    setOwner(store, this.owner);
     const { schema } = store;
 
     schema.registerResource(

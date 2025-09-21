@@ -33,8 +33,8 @@ module('Legacy | Reads | basic fields', function (hooks) {
 
   test('we can use simple fields with no `type`', function (assert) {
     const store = new Store();
+    setOwner(store, this.owner);
     const { schema } = store;
-    registerLegacyDerivations(schema);
 
     schema.registerResource(
       withLegacy({
@@ -78,7 +78,6 @@ module('Legacy | Reads | basic fields', function (hooks) {
     const store = new Store();
     setOwner(store, this.owner);
     const { schema } = store;
-    registerLegacyDerivations(schema);
 
     this.owner.register(
       'transform:float',

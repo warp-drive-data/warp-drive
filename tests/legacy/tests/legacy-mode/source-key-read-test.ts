@@ -1,3 +1,5 @@
+import { setOwner } from '@ember/owner';
+
 import type { Type } from '@warp-drive/core/types/symbols';
 import { module, setupTest, test } from '@warp-drive/diagnostic/ember';
 import { JSONAPICache } from '@warp-drive/json-api';
@@ -21,6 +23,7 @@ module('Legacy | Reads | SourceKey', function (hooks) {
       [Type]: 'user';
     };
     const store = new Store();
+    setOwner(store, this.owner);
     const { schema } = store;
 
     schema.registerResource(
@@ -88,6 +91,7 @@ module('Legacy | Reads | SourceKey', function (hooks) {
       [Type]: 'user';
     };
     const store = new Store();
+    setOwner(store, this.owner);
     const { schema } = store;
 
     schema.registerResource(

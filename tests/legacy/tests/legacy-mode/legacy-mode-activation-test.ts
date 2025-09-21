@@ -2,7 +2,7 @@
 import { setOwner } from '@ember/owner';
 
 import { CacheHandler, RequestManager } from '@warp-drive/core';
-import { registerDerivations, withDefaults } from '@warp-drive/core/reactive';
+import { withDefaults } from '@warp-drive/core/reactive';
 import { Context } from '@warp-drive/core/reactive/-private';
 import type { Type } from '@warp-drive/core/types/symbols';
 import { module, setupRenderingTest, test } from '@warp-drive/diagnostic/ember';
@@ -11,10 +11,7 @@ import { useLegacyStore } from '@warp-drive/legacy';
 import { adapterFor, LegacyNetworkHandler, serializeRecord, serializerFor } from '@warp-drive/legacy/compat';
 import type { Snapshot } from '@warp-drive/legacy/compat/-private';
 import type Model from '@warp-drive/legacy/model';
-import {
-  registerDerivations as registerLegacyDerivations,
-  withRestoredDeprecatedModelRequestBehaviors as withLegacyFields,
-} from '@warp-drive/legacy/model/migration-support';
+import { withRestoredDeprecatedModelRequestBehaviors as withLegacyFields } from '@warp-drive/legacy/model/migration-support';
 
 type Errors = Model['errors'];
 type RecordState = Model['currentState'];
@@ -67,6 +64,7 @@ module('Legacy Mode', function (hooks) {
 
   test('we can create a record in legacy mode', function (assert) {
     const store = new Store();
+    setOwner(store, this.owner);
     const { schema } = store;
 
     schema.registerResource(
@@ -106,8 +104,8 @@ module('Legacy Mode', function (hooks) {
 
   test('records not in legacy mode do not set their constructor modelName value to their type', function (assert) {
     const store = new Store();
+    setOwner(store, this.owner);
     const { schema } = store;
-    registerDerivations(schema);
 
     schema.registerResource(
       withDefaults({
@@ -147,8 +145,8 @@ module('Legacy Mode', function (hooks) {
 
   test('records in legacy mode set their constructor modelName value to the correct type', function (assert) {
     const store = new Store();
+    setOwner(store, this.owner);
     const { schema } = store;
-    registerLegacyDerivations(schema);
 
     schema.registerResource(
       withLegacyFields({
@@ -183,8 +181,8 @@ module('Legacy Mode', function (hooks) {
 
   test('we can access errors', function (assert) {
     const store = new Store();
+    setOwner(store, this.owner);
     const { schema } = store;
-    registerLegacyDerivations(schema);
 
     schema.registerResource(
       withLegacyFields({
@@ -220,8 +218,8 @@ module('Legacy Mode', function (hooks) {
 
   test('we can access currentState', function (assert) {
     const store = new Store();
+    setOwner(store, this.owner);
     const { schema } = store;
-    registerLegacyDerivations(schema);
 
     schema.registerResource(
       withLegacyFields({
@@ -259,8 +257,8 @@ module('Legacy Mode', function (hooks) {
 
   test('we can use unloadRecord', function (assert) {
     const store = new Store();
+    setOwner(store, this.owner);
     const { schema } = store;
-    registerLegacyDerivations(schema);
 
     schema.registerResource(
       withLegacyFields({
@@ -295,8 +293,8 @@ module('Legacy Mode', function (hooks) {
 
   test('we can use deleteRecord', function (assert) {
     const store = new Store();
+    setOwner(store, this.owner);
     const { schema } = store;
-    registerLegacyDerivations(schema);
 
     schema.registerResource(
       withLegacyFields({
@@ -326,8 +324,8 @@ module('Legacy Mode', function (hooks) {
 
   test('we can use _createSnapshot', function (assert) {
     const store = new Store();
+    setOwner(store, this.owner);
     const { schema } = store;
-    registerLegacyDerivations(schema);
 
     schema.registerResource(
       withLegacyFields({
@@ -359,8 +357,8 @@ module('Legacy Mode', function (hooks) {
 
   test('we can access state flags', function (assert) {
     const store = new Store();
+    setOwner(store, this.owner);
     const { schema } = store;
-    registerLegacyDerivations(schema);
 
     schema.registerResource(
       withLegacyFields({
@@ -398,8 +396,8 @@ module('Legacy Mode', function (hooks) {
 
   test('we can access object lifecycle flags', function (assert) {
     const store = new Store();
+    setOwner(store, this.owner);
     const { schema } = store;
-    registerLegacyDerivations(schema);
 
     schema.registerResource(
       withLegacyFields({
@@ -453,7 +451,6 @@ module('Legacy Mode', function (hooks) {
       return serializeRecord.apply(this, arguments);
     };
     const { schema } = store;
-    registerLegacyDerivations(schema);
 
     schema.registerResource(
       withLegacyFields({
@@ -520,7 +517,6 @@ module('Legacy Mode', function (hooks) {
     store.requestManager.useCache(CacheHandler);
     store.requestManager.use([LegacyNetworkHandler]);
     const { schema } = store;
-    registerLegacyDerivations(schema);
 
     schema.registerResource(
       withLegacyFields({
@@ -554,7 +550,6 @@ module('Legacy Mode', function (hooks) {
   test('we can rollbackAttributes', function (assert) {
     const store = new Store();
     const { schema } = store;
-    registerLegacyDerivations(schema);
 
     schema.registerResource(
       withLegacyFields({
@@ -623,7 +618,6 @@ module('Legacy Mode', function (hooks) {
     store.requestManager.useCache(CacheHandler);
     store.requestManager.use([LegacyNetworkHandler]);
     const { schema } = store;
-    registerLegacyDerivations(schema);
 
     schema.registerResource(
       withLegacyFields({
@@ -688,7 +682,6 @@ module('Legacy Mode', function (hooks) {
     store.requestManager.useCache(CacheHandler);
     store.requestManager.use([LegacyNetworkHandler]);
     const { schema } = store;
-    registerLegacyDerivations(schema);
 
     schema.registerResource(
       withLegacyFields({
