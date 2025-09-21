@@ -5,12 +5,12 @@ import { DEBUG, TESTING } from '@warp-drive/core/build-config/env';
 import { name, version } from '../../package.json';
 
 type UniversalTransientKey =
-  // @ember-data/request
+  // @warp-drive/core/request
   'REQ_ID';
 
 type UniversalKey =
   | `(transient) ${UniversalTransientKey}`
-  // @ember-data/request
+  // @warp-drive/core/request
   | 'RequestMap'
   | 'PromiseCache'
   | 'RequestCache'
@@ -21,9 +21,9 @@ type UniversalKey =
   | 'WarpDriveRuntimeConfig';
 
 type TransientKey =
-  // @ember-data/graph
+  // @warp-drive/core/graph
   | 'transactionRef'
-  // @ember-data/store
+  // @warp-drive/core/store
   | 'configuredGenerationMethod'
   | 'configuredUpdateMethod'
   | 'configuredForgetMethod'
@@ -33,7 +33,7 @@ type TransientKey =
 
 type GlobalKey =
   | `(transient) ${TransientKey}`
-  // @ember-data/adapter
+  // @warp-drive/legacy/adapter
   | 'AdapterError'
   | 'InvalidError'
   | 'TimeoutError'
@@ -43,50 +43,50 @@ type GlobalKey =
   | 'NotFoundError'
   | 'ConflictError'
   | 'ServerError'
-  // @ember-data/store/reactivity
+  // @warp-drive/core/store/reactivity
   | '#{}'
   | '#[]'
   | 'Signals'
-  // @ember-data/store LegacySupport
+  // @warp-drive/legacy LegacySupport
   | 'AvailableShims'
-  // @ember-data/store RecordArrayManager
+  // @warp-drive/core RecordArrayManager
   | 'FAKE_ARR'
-  // @ember-data/store IdentifierArray
+  // @warp-drive/core ReactiveArray
   | '#source'
   | '#update'
   | '#notify'
   | 'IS_COLLECTION'
-  // @ember-data/store RequestCache
+  // @warp-drive/core RequestCache
   | 'Touching'
   | 'RequestPromise'
-  // @ember-data/legacy-compat FetchManager
+  // @warp-drive/legacy/compat FetchManager
   | 'SaveOp'
-  // @ember-data/model
+  // @warp-drive/legacy Model
   | 'LEGACY_SUPPORT'
   | 'LegacySupport'
-  // @ember-data/graph
+  // @warp-drive/core/graph
   | 'Graphs'
-  // @ember-data/request
+  // @warp-drive/core/request
   | 'IS_FROZEN'
   | 'IS_CACHE_HANDLER'
-  // @ember-data/request-utils
+  // @warp-drive/utilities
   | 'CONFIG'
-  // @ember-data/store IdentityCache
+  // @warp-drive/core CacheKeyManager
   | 'DEBUG_MAP'
   | 'IDENTIFIERS'
   | 'DOCUMENTS'
-  // @ember-data/store InstanceCache
+  // @warp-drive/core InstanceCache
   | 'RecordCache'
   | 'StoreMap'
-  // @warp-drive/core-types/symbols
+  // @warp-drive/core/types/symbols
   | 'Store'
   | '$type'
   | 'TransformName'
   | 'RequestSignature'
-  // @warp-drive/core-types/request
+  // @warp-drive/core/types/request
   | 'IS_FUTURE'
   | 'DOC'
-  // @warp-drive/schema-record
+  // @warp-drive/core/reactive
   | 'ManagedArrayMap'
   | 'ManagedObjectMap'
   | 'Support'

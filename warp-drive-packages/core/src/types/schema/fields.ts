@@ -1421,8 +1421,9 @@ export interface LegacyBelongsToField {
     polymorphic?: boolean;
 
     /**
-     * Whether this field should ever make use of the legacy support infra
-     * from @ember-data/model and the LegacyNetworkMiddleware for adapters and serializers.
+     * Whether this field should ever make use of the legacy request infra
+     * from @warp-drive/legacy/compat and the LegacyNetworkMiddleware for
+     * adapters and serializers.
      *
      * When true, none of the legacy support will be utilized. Sync relationships
      * will be expected to already have all their data. When reloading a sync relationship

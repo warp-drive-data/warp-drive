@@ -12,8 +12,9 @@
  *
  * ```ts [input.ts]
  * import { findRecord } from '@warp-drive/utilities/json-api';
+ * import type { EmberDeveloper } from '#/data/types';
  *
- * const options = findRecord('ember-developer', '1', { include: ['pets', 'friends'] });
+ * const options = findRecord<EmberDeveloper>('ember-developer', '1', { include: ['pets', 'friends'] });
  * ```
  *
  * ```ts [output.ts]
