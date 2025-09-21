@@ -9,10 +9,7 @@ import { Type } from '@warp-drive/core/types/symbols';
 import { module, setupTest, test } from '@warp-drive/diagnostic/ember';
 import { JSONAPICache } from '@warp-drive/json-api';
 import { useLegacyStore } from '@warp-drive/legacy';
-import {
-  registerDerivations as registerLegacyDerivations,
-  withRestoredDeprecatedModelRequestBehaviors as withLegacy,
-} from '@warp-drive/legacy/model/migration-support';
+import { withRestoredDeprecatedModelRequestBehaviors as withLegacy } from '@warp-drive/legacy/model/migration-support';
 
 interface User {
   id: string | null;
