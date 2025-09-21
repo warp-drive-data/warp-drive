@@ -12,7 +12,7 @@ import { useLegacyStore } from '@warp-drive/legacy';
 import { withRestoredDeprecatedModelRequestBehaviors as withLegacy } from '@warp-drive/legacy/model/migration-support';
 
 import { simplePayloadNormalize } from '../-utils/normalize-payload.ts';
-import { reactiveContext } from '../-utils/reactive-context.ts';
+import { reactiveContext } from '../-utils/reactive-context.gts';
 
 interface User {
   id: string | null;
