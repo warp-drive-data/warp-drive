@@ -216,7 +216,7 @@ export function useLegacyStore<T extends Cache>(
       return teardownRecord(record);
     }
 
-    modelFor<T>(type: TypeFromInstance<T>): ModelSchema<T>;
+    modelFor<InstanceType>(type: TypeFromInstance<InstanceType>): ModelSchema<InstanceType>;
     modelFor(type: string): ModelSchema;
     modelFor(type: string): ModelSchema {
       assertType(this.schema, type);
