@@ -25,7 +25,7 @@ function isExisting(identifier: ResourceKey): identifier is PersistedResourceKey
 }
 
 /**
- * :::warning ⚠️ **These Mutation Builders DO NOT Set the Request Body**
+ * :::warning ⚠️ **These Mutation Builders DO NOT Set The Request Body**
  * While this may come as a surprise, the app providing the body ensures that only
  * desired and correctly formatted data is sent with the request.
  * :::
@@ -110,7 +110,7 @@ export function deleteRecord(record: unknown, options: ConstrainedRequestOptions
 }
 
 /**
- * :::warning ⚠️ **These Mutation Builders DO NOT Set the necessary Request Body**
+ * :::warning ⚠️ **These Mutation Builders DO NOT Set The Necessary Request Body**
  * While this may come as a surprise, the app providing the body ensures that only
  * desired and correctly formatted data is sent with the request.
  * :::
@@ -194,10 +194,11 @@ export function createRecord(record: unknown, options: ConstrainedRequestOptions
 }
 
 /**
- * :::warning ⚠️ **These Mutation Builders DO NOT Set the necessary Request Body**
+ * :::warning ⚠️ **These Mutation Builders DO NOT Set The Necessary Request Body**
  * While this may come as a surprise, the app providing the body ensures that only
  * desired and correctly formatted data is sent with the request.
  * :::
+ *
  * Builds request options to update existing record for resources,
  * configured for the url, method and header expectations of most JSON:API APIs.
  *
