@@ -2,6 +2,7 @@ import EmberObject from '@ember/object';
 import { setOwner } from '@ember/owner';
 
 import { recordIdentifierFor } from '@warp-drive/core';
+import { DEBUG } from '@warp-drive/core/build-config/env';
 import type { Transformation } from '@warp-drive/core/reactive';
 import type { ResourceKey } from '@warp-drive/core/types';
 import { Type } from '@warp-drive/core/types/symbols';
@@ -60,17 +61,19 @@ module('Legacy | Reads | basic fields', function (hooks) {
 
     assert.equal(record.name, 'Rey Skybarker', 'name is accessible');
 
-    try {
-      // @ts-expect-error intentionally accessing unknown field
-      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-      record.lastName;
-      assert.ok(false, 'should error when accessing unknown field');
-    } catch (e) {
-      assert.equal(
-        (e as Error).message,
-        'No field named lastName on user',
-        'should error when accessing unknown field'
-      );
+    if (DEBUG) {
+      try {
+        // @ts-expect-error intentionally accessing unknown field
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+        record.lastName;
+        assert.ok(false, 'should error when accessing unknown field');
+      } catch (e) {
+        assert.equal(
+          (e as Error).message,
+          'No field named lastName on user',
+          'should error when accessing unknown field'
+        );
+      }
     }
   });
 

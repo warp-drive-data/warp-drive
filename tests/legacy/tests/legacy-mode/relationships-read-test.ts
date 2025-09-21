@@ -1,6 +1,7 @@
 import { setOwner } from '@ember/owner';
 import type { TestContext } from '@ember/test-helpers';
 
+import { DEBUG } from '@warp-drive/core/build-config/env';
 import type { NextFn } from '@warp-drive/core/request';
 import type { RequestContext } from '@warp-drive/core/types/request';
 import type { Type } from '@warp-drive/core/types/symbols';
@@ -424,99 +425,101 @@ module('Legacy | Reads | relationships', function (hooks) {
     assert.equal(record.bestFriend?.name, 'Ray', 'bestFriend.name is correct');
   });
 
-  test('sync belongsTo reload will error if no links in response in linksMode', async function (this: TestContext, assert) {
-    const TestStore = useLegacyStore({
-      linksMode: false,
-      handlers: [
-        {
-          request<T>(context: RequestContext, next: NextFn<T>): Promise<T> {
-            assert.step(`op=${context.request.op ?? 'UNKNOWN OP CODE'}, url=${context.request.url ?? 'UNKNOWN URL'}`);
-            return Promise.resolve({
-              data: {
-                type: 'user',
-                id: '3',
-                attributes: {
-                  name: 'Ray',
-                },
-                relationships: {
-                  bestFriend: {
-                    data: { type: 'user', id: '1' },
+  if (DEBUG) {
+    test('sync belongsTo reload will error if no links in response in linksMode', async function (this: TestContext, assert) {
+      const TestStore = useLegacyStore({
+        linksMode: false,
+        handlers: [
+          {
+            request<T>(context: RequestContext, next: NextFn<T>): Promise<T> {
+              assert.step(`op=${context.request.op ?? 'UNKNOWN OP CODE'}, url=${context.request.url ?? 'UNKNOWN URL'}`);
+              return Promise.resolve({
+                data: {
+                  type: 'user',
+                  id: '3',
+                  attributes: {
+                    name: 'Ray',
+                  },
+                  relationships: {
+                    bestFriend: {
+                      data: { type: 'user', id: '1' },
+                    },
                   },
                 },
+              } as T);
+            },
+          },
+        ],
+        cache: JSONAPICache,
+        schemas: [
+          withLegacy({
+            type: 'user',
+            fields: [
+              {
+                name: 'name',
+                kind: 'attribute',
               },
-            } as T);
-          },
-        },
-      ],
-      cache: JSONAPICache,
-      schemas: [
-        withLegacy({
-          type: 'user',
-          fields: [
-            {
-              name: 'name',
-              kind: 'attribute',
-            },
-            {
-              name: 'bestFriend',
-              type: 'user',
-              kind: 'belongsTo',
-              options: { inverse: 'bestFriend', async: false, linksMode: true },
-            },
-          ],
-        }),
-      ],
-    });
-    const store = new TestStore();
+              {
+                name: 'bestFriend',
+                type: 'user',
+                kind: 'belongsTo',
+                options: { inverse: 'bestFriend', async: false, linksMode: true },
+              },
+            ],
+          }),
+        ],
+      });
+      const store = new TestStore();
 
-    type LegacyUser = WithLegacyDerivations<{
-      [Type]: 'user';
-      id: string;
-      name: string;
-      bestFriend: LegacyUser | null;
-    }>;
+      type LegacyUser = WithLegacyDerivations<{
+        [Type]: 'user';
+        id: string;
+        name: string;
+        bestFriend: LegacyUser | null;
+      }>;
 
-    const record = store.push<LegacyUser>({
-      data: {
-        type: 'user',
-        id: '1',
-        attributes: {
-          name: 'Chris',
-        },
-        relationships: {
-          bestFriend: {
-            links: { related: '/user/1/bestFriend' },
-            data: { type: 'user', id: '2' },
-          },
-        },
-      },
-      included: [
-        {
+      const record = store.push<LegacyUser>({
+        data: {
           type: 'user',
-          id: '2',
+          id: '1',
           attributes: {
-            name: 'Rey',
+            name: 'Chris',
           },
           relationships: {
             bestFriend: {
-              links: { related: '/user/2/bestFriend' },
-              data: { type: 'user', id: '1' },
+              links: { related: '/user/1/bestFriend' },
+              data: { type: 'user', id: '2' },
             },
           },
         },
-      ],
+        included: [
+          {
+            type: 'user',
+            id: '2',
+            attributes: {
+              name: 'Rey',
+            },
+            relationships: {
+              bestFriend: {
+                links: { related: '/user/2/bestFriend' },
+                data: { type: 'user', id: '1' },
+              },
+            },
+          },
+        ],
+      });
+
+      assert.equal(record.id, '1', 'id is correct');
+      assert.equal(record.name, 'Chris', 'name is correct');
+      assert.equal(record.bestFriend?.id, '2', 'bestFriend.id is correct');
+      assert.equal(record.bestFriend?.name, 'Rey', 'bestFriend.name is correct');
+
+      await assert.throws(
+        () => record.belongsTo('bestFriend').reload(),
+        'Cannot fetch user.bestFriend because the field is in linksMode but the related link is missing'
+      );
+
+      assert.verifySteps(['op=findBelongsTo, url=/user/1/bestFriend'], 'op and url are correct');
     });
-
-    assert.equal(record.id, '1', 'id is correct');
-    assert.equal(record.name, 'Chris', 'name is correct');
-    assert.equal(record.bestFriend?.id, '2', 'bestFriend.id is correct');
-    assert.equal(record.bestFriend?.name, 'Rey', 'bestFriend.name is correct');
-
-    await assert.throws(
-      () => record.belongsTo('bestFriend').reload(),
-      'Cannot fetch user.bestFriend because the field is in linksMode but the related link is missing'
-    );
-
-    assert.verifySteps(['op=findBelongsTo, url=/user/1/bestFriend'], 'op and url are correct');
-  });
+  }
 });

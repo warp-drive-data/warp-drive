@@ -37,10 +37,12 @@ import type { TypedRecordInstance, TypeFromInstance } from '@warp-drive/core/typ
 import type { Derivation, HashFn, Transformation } from '@warp-drive/core/types/schema/concepts';
 import type {
   ArrayField,
+  CacheableFieldSchema,
   DerivedField,
   FieldSchema,
   GenericField,
   HashField,
+  IdentityField,
   LegacyBelongsToField,
   LegacyHasManyField,
   LegacyResourceSchema,
@@ -568,6 +570,14 @@ export class DelegatingSchemaService implements SchemaService {
       return this._preferred.fields(resource);
     }
     return this._secondary.fields(resource);
+  }
+  cacheFields?(resource: { type: string }): Map<string, Exclude<CacheableFieldSchema, IdentityField>> {
+    if (this._preferred.cacheFields?.(resource)) {
+      return this._preferred.cacheFields(resource);
+    }
+
+    // @ts-expect-error
+    return this._secondary.cacheFields?.(resource);
   }
   transformation(field: GenericField | ObjectField | ArrayField | { type: string }): Transformation {
     return this._preferred.transformation(field);

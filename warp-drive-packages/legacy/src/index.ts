@@ -234,9 +234,6 @@ export function useLegacyStore<T extends Cache>(
         // fallback to ShimModelClass
         super.modelFor(type);
 
-      // eslint-disable-next-line no-console
-      console.log(`model for ${type}`, klass);
-
       return klass;
     }
 

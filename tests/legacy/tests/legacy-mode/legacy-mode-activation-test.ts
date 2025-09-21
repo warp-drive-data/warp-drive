@@ -2,6 +2,7 @@
 import { setOwner } from '@ember/owner';
 
 import { CacheHandler, RequestManager } from '@warp-drive/core';
+import { DEBUG } from '@warp-drive/core/build-config/env';
 import { withDefaults } from '@warp-drive/core/reactive';
 import { Context } from '@warp-drive/core/reactive/-private';
 import type { Type } from '@warp-drive/core/types/symbols';
@@ -93,12 +94,14 @@ module('Legacy Mode', function (hooks) {
     assert.true(record[Context].legacy, 'record is in legacy mode');
     assert.true(record[Context].editable, 'record is editable');
 
-    try {
-      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-      record.$type;
-      assert.ok(false, 'record.$type should throw');
-    } catch (e) {
-      assert.equal((e as Error).message, 'No field named $type on user', 'record.$type throws');
+    if (DEBUG) {
+      try {
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+        record.$type;
+        assert.ok(false, 'record.$type should throw');
+      } catch (e) {
+        assert.equal((e as Error).message, 'No field named $type on user', 'record.$type throws');
+      }
     }
   });
 
@@ -129,16 +132,18 @@ module('Legacy Mode', function (hooks) {
 
     assert.false(record[Context].legacy, 'record is in legacy mode');
 
-    try {
-      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-      (record.constructor as { modelName?: string }).modelName;
-      assert.ok(false, 'record.constructor.modelName should throw');
-    } catch (e) {
-      assert.equal(
-        (e as Error).message,
-        'record.constructor.modelName is not available outside of legacy mode',
-        `record.constructor.modelName throws: ${(e as Error).message}`
-      );
+    if (DEBUG) {
+      try {
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+        (record.constructor as { modelName?: string }).modelName;
+        assert.ok(false, 'record.constructor.modelName should throw');
+      } catch (e) {
+        assert.equal(
+          (e as Error).message,
+          'record.constructor.modelName is not available outside of legacy mode',
+          `record.constructor.modelName throws: ${(e as Error).message}`
+        );
+      }
     }
     assert.equal(record.constructor.name, 'ReactiveResource<user>', 'it has a useful constructor name');
   });
