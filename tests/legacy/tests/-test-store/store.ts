@@ -3,8 +3,7 @@ import { getOwner } from '@ember/owner';
 
 import { CacheHandler, Fetch, RequestManager, Store as BaseStore } from '@warp-drive/core';
 import { instantiateRecord, SchemaService, teardownRecord } from '@warp-drive/core/reactive';
-import type { CacheCapabilitiesManager } from '@warp-drive/core/types';
-import type { ResourceKey } from '@warp-drive/core-types';
+import type { CacheCapabilitiesManager, ResourceKey } from '@warp-drive/core/types';
 import { installAdapterFor, MockServerHandler } from '@warp-drive/holodeck';
 import { JSONAPICache } from '@warp-drive/json-api';
 import type { LegacyModelAndNetworkAndRequestStoreSetupOptions, LegacyStoreSetupOptions } from '@warp-drive/legacy';

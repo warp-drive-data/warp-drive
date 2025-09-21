@@ -24,8 +24,8 @@ module<AppTestContext>('Unit - `FragmentArray`', function (hooks) {
     );
   });
 
-  test('fragment arrays have an owner', async function (this: AppTestContext, assert) {
-    this.store.push({
+  test('fragment arrays have an owner', function (this: AppTestContext, assert) {
+    const person = this.store.push<Person>({
       data: {
         type: 'person',
         id: '1',
@@ -40,7 +40,6 @@ module<AppTestContext>('Unit - `FragmentArray`', function (hooks) {
       },
     });
 
-    const person = await this.store.findRecord<Person>('person', '1');
     // @ts-expect-error TODO: fix this type error
     assert.equal(person.names.owner, person);
   });
@@ -80,8 +79,8 @@ module<AppTestContext>('Unit - `FragmentArray`', function (hooks) {
     );
   });
 
-  test('fragments can be added to the fragment array', async function (this: AppTestContext, assert) {
-    this.store.push({
+  test('fragments can be added to the fragment array', function (this: AppTestContext, assert) {
+    const person = this.store.push<Person>({
       data: {
         type: 'person',
         id: '1',
@@ -96,7 +95,6 @@ module<AppTestContext>('Unit - `FragmentArray`', function (hooks) {
       },
     });
 
-    const person = await this.store.findRecord<Person>('person', '1');
     const fragments = person.names!;
     const length = fragments.length;
 
