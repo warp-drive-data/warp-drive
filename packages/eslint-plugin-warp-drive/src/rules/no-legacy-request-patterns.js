@@ -34,7 +34,7 @@ module.exports = {
       [RULE_ID]: `Use \`store.request()\` instead of \`{{ objectName }}.{{propertyName}}()\``,
     },
     schema: {
-      properties: [],
+      properties: {},
     },
     docs: {
       description: 'require the use of `store.request()` instead of legacy request patterns',
