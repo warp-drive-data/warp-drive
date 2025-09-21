@@ -78,8 +78,8 @@ module<AppTestContext>('Unit - `Fragment`', function (hooks) {
     assert.deepEqual(newName, { first: 'Loras', last: 'Baratheon' }, 'new fragment is indicated in the diff object');
   });
 
-  test('fragmentArrays default to empty arrays on access and can be mutated', async function (this: AppTestContext, assert) {
-    this.store.push({
+  test('fragmentArrays default to empty arrays on access and can be mutated', function (this: AppTestContext, assert) {
+    const person = this.store.push<Person>({
       data: {
         type: 'person',
         id: '1',
@@ -93,7 +93,6 @@ module<AppTestContext>('Unit - `Fragment`', function (hooks) {
       },
     });
 
-    const person = await this.store.findRecord<Person>('person', '1');
     const { prefixes } = person.name as Name;
 
     assert.deepEqual(prefixes, [], 'fragment array defaults to an empty array');
@@ -103,8 +102,8 @@ module<AppTestContext>('Unit - `Fragment`', function (hooks) {
     assert.satisfies(prefixes, [{ name: 'Lord' }], 'new prefix is added to the fragment array');
   });
 
-  test("fragment properties that are set to null are indicated in the owner record's `changedAttributes`", async function (this: AppTestContext, assert) {
-    this.store.push({
+  test("fragment properties that are set to null are indicated in the owner record's `changedAttributes`", function (this: AppTestContext, assert) {
+    const person = this.store.push<Person>({
       data: {
         type: 'person',
         id: '1',
@@ -117,7 +116,6 @@ module<AppTestContext>('Unit - `Fragment`', function (hooks) {
       },
     });
 
-    const person = await this.store.findRecord<Person>('person', '1');
     person.set('name', null);
 
     const [oldName, newName] = person.changedAttributes().name;
@@ -125,8 +123,8 @@ module<AppTestContext>('Unit - `Fragment`', function (hooks) {
     assert.deepEqual(newName, null, 'new fragment is indicated in the diff object');
   });
 
-  test("fragment properties that are initially null are indicated in the owner record's `changedAttributes`", async function (this: AppTestContext, assert) {
-    this.store.push({
+  test("fragment properties that are initially null are indicated in the owner record's `changedAttributes`", function (this: AppTestContext, assert) {
+    const person = this.store.push<Person>({
       data: {
         type: 'person',
         id: '1',
@@ -136,7 +134,6 @@ module<AppTestContext>('Unit - `Fragment`', function (hooks) {
       },
     });
 
-    const person = await this.store.findRecord<Person>('person', '1');
     person.set('name', {
       first: 'Rob',
       last: 'Stark',
@@ -407,6 +404,7 @@ module<AppTestContext>('Unit - `Fragment`', function (hooks) {
       assert.ok(person.names, 'names is not null');
       assert.notOk(person.nickName, 'nickName is not set');
 
+      // eslint-disable-next-line warp-drive/no-legacy-request-patterns
       await person.save();
 
       assert.equal(person.nickName, 'Johnner', 'nickName is correctly loaded');
@@ -458,6 +456,7 @@ module<AppTestContext>('Unit - `Fragment`', function (hooks) {
       assert.equal(person.names, null, 'names is null');
       assert.notOk(person.nickName, 'nickName is not set');
 
+      // eslint-disable-next-line warp-drive/no-legacy-request-patterns
       await person.save();
 
       assert.equal(person.nickName, 'Johnner', 'nickName is correctly loaded');

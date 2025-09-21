@@ -1,4 +1,4 @@
-import type { ObjectSchema } from '@warp-drive/core-types/schema/fields';
+import type { ObjectSchema } from '@warp-drive/core/types/schema/fields';
 import type { TestContext } from '@warp-drive/diagnostic/ember';
 import { module, setupRenderingTest, test } from '@warp-drive/diagnostic/ember';
 import {
