@@ -5,6 +5,7 @@ import * as typescript from '@warp-drive/internal-config/eslint/typescript.js';
 import * as diagnostic from '@warp-drive/internal-config/eslint/diagnostic.js';
 import * as js from '@warp-drive/internal-config/eslint/browser.js';
 import * as gts from '@warp-drive/internal-config/eslint/gts.js';
+import WarpDrive from 'eslint-plugin-warp-drive/recommended';
 
 const AllowedImports = [
   '@ember/application',
@@ -27,7 +28,7 @@ const AllowedImports = [
   '@glimmer/validator',
 ];
 
-/** @type {import('eslint').Linter.FlatConfig[]} */
+/** @type {import('eslint').Linter.Config[]} */
 export default [
   // all ================
   globalIgnores(),
@@ -62,6 +63,13 @@ export default [
       '@typescript-eslint/no-unsafe-call': 'off',
     },
   }),
+
+  ...WarpDrive,
+  {
+    rules: {
+      'warp-drive/no-legacy-request-patterns': ['error', { allowPeekRecord: true }],
+    },
+  },
 
   // files converted to strict must pass these rules before they can be removed from
   // the files list here

@@ -1,4 +1,4 @@
-import type { Type } from '@warp-drive/core-types/symbols';
+import type { Type } from '@warp-drive/core/types/symbols';
 import type { WithFragment } from '@warp-drive/legacy/model-fragments';
 import { withFragmentDefaults, withLegacy } from '@warp-drive/legacy/model-fragments';
 

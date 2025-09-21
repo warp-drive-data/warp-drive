@@ -77,8 +77,8 @@ export function createTestStore(options: Partial<LegacyStoreSetupOptions> = {}, 
       schemas: [],
     },
     options
-  );
-  const AppStore = useLegacyStore(config as LegacyModelAndNetworkAndRequestStoreSetupOptions);
+  ) as LegacyModelAndNetworkAndRequestStoreSetupOptions<JSONAPICache>;
+  const AppStore = useLegacyStore(config);
   class TestStore extends AppStore {
     _adapter?: ApplicationAdapter;
     _serializer?: typeof RESTSerializer;

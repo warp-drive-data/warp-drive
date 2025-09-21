@@ -3092,6 +3092,9 @@ importers:
       ember-strict-application-resolver:
         specifier: ^0.1.0
         version: 0.1.0(@babel/core@7.28.3)
+      eslint-plugin-warp-drive:
+        specifier: workspace:*
+        version: file:packages/eslint-plugin-warp-drive(@babel/core@7.28.3)
       rollup:
         specifier: ^4.46.2
         version: 4.48.1
@@ -9377,6 +9380,9 @@ packages:
     resolution: {integrity: sha512-6nuzu4xwQtE3332Uz0to+TxDQYRLTKRESSc2hefVT48Zc8JthmN23Gx9lnYhu0FtkRSL1oxny3kJ2aveVhmOVA==}
     peerDependencies:
       eslint: '>=5.0.0'
+
+  eslint-plugin-warp-drive@file:packages/eslint-plugin-warp-drive:
+    resolution: {directory: packages/eslint-plugin-warp-drive, type: directory}
 
   eslint-scope@5.1.1:
     resolution: {integrity: sha512-2NxwbF/hZ0KpepYN0cNbo+FN6XoK7GaHlQhgx/hIZl6Va0bF45RQOOwhLIy8lQDbuCiadSLCBnH2CFYquit5bw==}
@@ -22437,6 +22443,15 @@ snapshots:
   eslint-plugin-simple-import-sort@12.1.1(eslint@9.34.0):
     dependencies:
       eslint: 9.34.0
+
+  eslint-plugin-warp-drive@file:packages/eslint-plugin-warp-drive(@babel/core@7.28.3):
+    dependencies:
+      '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.28.3)
+      '@warp-drive/utilities': file:warp-drive-packages/utilities(ac1631a7da983377f84b100525d730a6)
+      requireindex: 1.2.0
+    transitivePeerDependencies:
+      - '@babel/core'
+      - supports-color
 
   eslint-scope@5.1.1:
     dependencies:

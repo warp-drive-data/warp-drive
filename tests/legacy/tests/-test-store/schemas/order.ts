@@ -1,5 +1,5 @@
-import type { ObjectSchema } from '@warp-drive/core-types/schema/fields';
-import type { Type } from '@warp-drive/core-types/symbols';
+import type { ObjectSchema } from '@warp-drive/core/types/schema/fields';
+import type { Type } from '@warp-drive/core/types/symbols';
 import type { WithFragment, WithFragmentArray } from '@warp-drive/legacy/model-fragments';
 import { withFragmentArrayDefaults, withFragmentDefaults } from '@warp-drive/legacy/model-fragments';
 

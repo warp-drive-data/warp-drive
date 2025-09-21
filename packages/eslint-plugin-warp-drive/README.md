@@ -24,6 +24,7 @@
 | [no-external-request-patterns](./docs/no-external-request-patterns.md) | Restricts usage of discouraged non-warp-drive request patterns | 🏆 | ✅ |
 | [no-invalid-resource-types](./docs/no-invalid-resource-types.md) | Ensures resource types follow a conventional pattern when used in common APIs | 🏆 | ✅🛠️ |
 | [no-invalid-resource-ids](./docs/no-invalid-resource-ids.md) | Ensures resource ids are strings when used in common APIs | 🏆 | ✅🛠️ |
+| [no-legacy-imports](./docs/no-legacy-imports.md) | Ensures imports use paths specified by the Package Unification RFC | 🏆 | ✅🛠️ |
 
 ## Usage
 

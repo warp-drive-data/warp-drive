@@ -49,6 +49,7 @@
     "@warp-drive/json-api": "workspace:*",
     "@warp-drive/legacy": "workspace:*",
     "@warp-drive/utilities": "workspace:*",
+    "eslint-plugin-warp-drive": "workspace:*",
     "babel-plugin-ember-template-compilation": "^2.2.5",
     "decorator-transforms": "^2.2.2",
     "ember-source": "^6.6.0",

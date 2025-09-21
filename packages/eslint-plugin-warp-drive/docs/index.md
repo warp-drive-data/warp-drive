@@ -8,3 +8,4 @@
 - [no-external-request-patterns](./no-external-request-patterns.md)
 - [no-invalid-resource-types](./no-invalid-resource-types.md)
 - [no-invalid-resource-ids](./no-invalid-resource-ids.md)
+- [no-legacy-imports](./no-legacy-imports.md)

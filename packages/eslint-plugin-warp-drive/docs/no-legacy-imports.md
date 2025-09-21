@@ -10,7 +10,7 @@
 > diffs for these splits.
 
 > [!NOTE]
-> Rewrites legacy Ember Data import module specifiers to their
+> Rewrites legacy EmberData import module specifiers to their
 > modern replacements using the enriched public exports mapping embedded from
 > `public-exports-mapping-5.5.enriched.json`.
 

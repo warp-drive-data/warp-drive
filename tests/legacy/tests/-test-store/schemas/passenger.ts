@@ -1,4 +1,4 @@
-import type { ObjectSchema } from '@warp-drive/core-types/schema/fields';
+import type { ObjectSchema } from '@warp-drive/core/types/schema/fields';
 import type { WithEmberObject } from '@warp-drive/legacy/compat/extensions';
 import { withFragmentDefaults } from '@warp-drive/legacy/model-fragments';
 

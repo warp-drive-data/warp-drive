@@ -21,7 +21,8 @@ const OBJECT_PROPERTY_NAMES = new Set([
 ]);
 const ANY_METHOD_NAMES = new Set(['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'QUERY']);
 const OBJECT_NAMES = new Set(['$', 'jQuery', 'jQ', 'najax']);
-const FUNCTION_NAMES = new Set(['fetch', 'najax', 'GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'QUERY']);
+const FUNCTION_NAMES = new Set(['fetch', 'najax']);
+const ADDITIONAL_FUNCTION_NAMES = new Set(['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'QUERY']);
 const CONSTRUCTOR_NAMES = new Set(['XMLHttpRequest']);
 const RULE_ID = 'warp-drive.no-external-request-patterns';
 
@@ -63,6 +64,8 @@ module.exports = {
               messageId: `${RULE_ID}.no-method`,
               data: { functionName: node.callee.name },
             });
+          } else if (node.callee.type === 'Identifier' && ADDITIONAL_FUNCTION_NAMES.has(node.callee.name)) {
+            // TODO enable this via config
           }
 
           return;

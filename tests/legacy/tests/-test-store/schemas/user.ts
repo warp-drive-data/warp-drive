@@ -1,4 +1,4 @@
-import type { Type } from '@warp-drive/core-types/symbols';
+import type { Type } from '@warp-drive/core/types/symbols';
 import type { WithEmberObject } from '@warp-drive/legacy/compat/extensions';
 import type { WithLegacy } from '@warp-drive/legacy/model/migration-support';
 import type { WithFragmentArray } from '@warp-drive/legacy/model-fragments';

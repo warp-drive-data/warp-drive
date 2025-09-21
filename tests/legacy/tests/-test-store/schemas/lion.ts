@@ -1,4 +1,4 @@
-import type { ObjectSchema } from '@warp-drive/core-types/schema/fields';
+import type { ObjectSchema } from '@warp-drive/core/types/schema/fields';
 
 export const LionSchema = {
   type: 'lion',

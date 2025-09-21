@@ -1,4 +1,4 @@
-import type { Type } from '@warp-drive/core-types/symbols';
+import type { Type } from '@warp-drive/core/types/symbols';
 import type { TestContext } from '@warp-drive/diagnostic/ember';
 import { module, setupRenderingTest, skip, test } from '@warp-drive/diagnostic/ember';
 import { PUT } from '@warp-drive/holodeck/mock';
@@ -66,7 +66,7 @@ module('Integration - Nested fragments', function (hooks) {
       ],
     };
 
-    this.store.push({
+    const user = this.store.push<User>({
       data: {
         type: 'user',
         id: '1',
@@ -91,8 +91,6 @@ module('Integration - Nested fragments', function (hooks) {
       }
     );
 
-    const user = await this.store.findRecord<User>('user', '1');
-
     assert.equal(
       user.orders!.firstObject!.products.firstObject!.name,
       'Tears of Lys',
@@ -111,6 +109,7 @@ module('Integration - Nested fragments', function (hooks) {
     user.orders!.firstObject!.products.removeAt(0);
     assert.ok(user.hasDirtyAttributes, 'dirty state propagates to owner');
 
+    // eslint-disable-next-line warp-drive/no-legacy-request-patterns
     await user.save();
 
     assert.notOk(user.hasDirtyAttributes, 'owner record is clean');

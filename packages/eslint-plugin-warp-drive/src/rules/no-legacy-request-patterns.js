@@ -15,12 +15,26 @@ const STORE_SERVICE_NAMES = new Set(['store', 'db', 'v2Store', 'v1Store']);
 const MODEL_METHOD_NAMES = new Set(['save', 'destroyRecord', 'reload']);
 const RULE_ID = 'warp-drive.no-legacy-request-patterns';
 
+function mergeConfig(userConfigs = []) {
+  if (userConfigs.length > 1) {
+    throw new Error(`Expected only one configuration object for the rule ${RULE_ID}`);
+  }
+  const userConfig = userConfigs[0] ?? {};
+  return {
+    allowPeekRecord: typeof userConfig.allowPeekRecord === 'boolean' ? userConfig.allowPeekRecord : false,
+    allowPeekAll: typeof userConfig.allowPeekAll === 'boolean' ? userConfig.allowPeekAll : false,
+  };
+}
+
 /** @type {import('eslint').Rule.RuleModule} */
 module.exports = {
   meta: {
     type: 'problem',
     messages: {
       [RULE_ID]: `Use \`store.request()\` instead of \`{{ objectName }}.{{propertyName}}()\``,
+    },
+    schema: {
+      properties: [],
     },
     docs: {
       description: 'require the use of `store.request()` instead of legacy request patterns',
@@ -31,6 +45,7 @@ module.exports = {
   },
 
   create(context) {
+    const options = mergeConfig(context.options);
     return {
       CallExpression(node) {
         // only match call expressions that are member expressions
@@ -81,6 +96,8 @@ module.exports = {
 
         if (STORE_SERVICE_NAMES.has(objectName)) {
           if (STORE_METHOD_NAMES.has(propertyName)) {
+            if (propertyName === 'peekRecord' && options.allowPeekRecord) return;
+            if (propertyName === 'peekAll' && options.allowPeekAll) return;
             context.report({
               node,
               messageId: RULE_ID,

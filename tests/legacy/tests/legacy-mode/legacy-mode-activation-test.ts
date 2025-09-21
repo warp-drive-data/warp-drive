@@ -1,3 +1,4 @@
+/* eslint-disable warp-drive/no-legacy-request-patterns */
 import { setOwner } from '@ember/owner';
 
 import { CacheHandler, RequestManager } from '@warp-drive/core';
