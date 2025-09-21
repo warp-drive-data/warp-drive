@@ -1,3 +1,4 @@
+import type Store from 'core-tests/services/store';
 import { module, test } from 'qunit';
 
 import { setupTest } from 'ember-qunit';
@@ -5,8 +6,6 @@ import { setupTest } from 'ember-qunit';
 import { recordIdentifierFor } from '@ember-data/store';
 import type { Type } from '@warp-drive/core-types/symbols';
 import { Checkout, registerDerivations, withDefaults } from '@warp-drive/schema-record';
-
-import type Store from 'warp-drive__schema-record/services/store';
 
 type address = {
   street: string;

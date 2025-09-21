@@ -24,7 +24,7 @@
     "declaration": true,
     "types": ["ember-source/types"],
     "paths": {
-      "warp-drive__schema-record/*": ["./app/*"],
+      "core-tests/*": ["./app/*"],
       "@ember-data/debug": ["../../packages/debug/unstable-preview-types"],
       "@ember-data/debug/*": ["../../packages/debug/unstable-preview-types/*"],
       "@ember-data/graph": ["../../packages/graph/unstable-preview-types"],

@@ -1,3 +1,4 @@
+import type Store from 'core-tests/services/store';
 import { module, test } from 'qunit';
 
 import { setupTest } from 'ember-qunit';
@@ -7,8 +8,6 @@ import type { ResourceKey } from '@warp-drive/core-types';
 import { Type } from '@warp-drive/core-types/symbols';
 import type { SchemaRecord, Transformation } from '@warp-drive/schema-record';
 import { registerDerivations, withDefaults } from '@warp-drive/schema-record';
-
-import type Store from 'warp-drive__schema-record/services/store';
 
 interface User {
   id: string | null;
