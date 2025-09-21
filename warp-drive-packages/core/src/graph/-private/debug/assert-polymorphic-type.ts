@@ -137,6 +137,7 @@ if (DEBUG) {
   function inverseDefinition(definition: UpgradedMeta): UpgradedMeta {
     return {
       key: definition.inverseKey,
+      name: definition.inverseName,
       type: definition.inverseType,
       kind: definition.inverseKind,
       isAsync: definition.inverseIsAsync,
@@ -145,6 +146,7 @@ if (DEBUG) {
       isCollection: definition.inverseIsCollection,
       isImplicit: definition.inverseIsImplicit,
       inverseKey: definition.key,
+      inverseName: definition.name,
       inverseType: definition.type,
       inverseKind: definition.kind,
       inverseIsAsync: definition.isAsync,
