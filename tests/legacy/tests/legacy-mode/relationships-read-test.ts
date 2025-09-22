@@ -8,6 +8,7 @@ import type { Type } from '@warp-drive/core/types/symbols';
 import { module, setupTest, test } from '@warp-drive/diagnostic/ember';
 import { JSONAPICache } from '@warp-drive/json-api';
 import { useLegacyStore } from '@warp-drive/legacy';
+import { JSONAPIAdapter } from '@warp-drive/legacy/adapter/json-api';
 import { PromiseBelongsTo, PromiseManyArray } from '@warp-drive/legacy/model/-private';
 import {
   type WithLegacyDerivations,
@@ -22,6 +23,10 @@ const Store = useLegacyStore({
 module('Legacy | Reads | relationships', function (hooks) {
   setupTest(hooks);
 
+  hooks.beforeEach(function () {
+    this.owner.register('adapter:application', JSONAPIAdapter);
+  });
+
   test('we can use sync belongsTo', function (assert) {
     type User = {
       id: string | null;
@@ -33,6 +38,7 @@ module('Legacy | Reads | relationships', function (hooks) {
     };
     const store = new Store();
     setOwner(store, this.owner);
+    this.owner.register('service:store', store, { instantiate: false });
     const { schema } = store;
 
     schema.registerResource(
@@ -101,6 +107,7 @@ module('Legacy | Reads | relationships', function (hooks) {
     };
     const store = new Store();
     setOwner(store, this.owner);
+    this.owner.register('service:store', store, { instantiate: false });
     const { schema } = store;
 
     schema.registerResource(
@@ -169,6 +176,7 @@ module('Legacy | Reads | relationships', function (hooks) {
     };
     const store = new Store();
     setOwner(store, this.owner);
+    this.owner.register('service:store', store, { instantiate: false });
     const { schema } = store;
 
     schema.registerResource(
@@ -241,6 +249,7 @@ module('Legacy | Reads | relationships', function (hooks) {
     };
     const store = new Store();
     setOwner(store, this.owner);
+    this.owner.register('service:store', store, { instantiate: false });
     const { schema } = store;
 
     schema.registerResource(

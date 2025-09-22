@@ -6,6 +6,7 @@ import type { RenderingTestContext } from '@warp-drive/diagnostic/ember';
 import { module, setupRenderingTest, test } from '@warp-drive/diagnostic/ember';
 import { JSONAPICache } from '@warp-drive/json-api';
 import { useLegacyStore } from '@warp-drive/legacy';
+import { JSONAPIAdapter } from '@warp-drive/legacy/adapter/json-api';
 import type { PromiseManyArray } from '@warp-drive/legacy/model/-private';
 import { PromiseBelongsTo } from '@warp-drive/legacy/model/-private';
 import { withRestoredDeprecatedModelRequestBehaviors as withLegacy } from '@warp-drive/legacy/model/migration-support';
@@ -20,6 +21,10 @@ const Store = useLegacyStore({
 module('Legacy | Reactivity | relationships', function (hooks) {
   setupRenderingTest(hooks);
 
+  hooks.beforeEach(function () {
+    this.owner.register('adapter:application', JSONAPIAdapter);
+  });
+
   test<RenderingTestContext>('sync belongsTo is reactive', async function (assert) {
     type User = {
       id: string | null;
@@ -31,6 +36,7 @@ module('Legacy | Reactivity | relationships', function (hooks) {
     };
     const store = new Store();
     setOwner(store, this.owner);
+    this.owner.register('service:store', store, { instantiate: false });
     const { schema } = store;
 
     schema.registerResource(
@@ -152,6 +158,7 @@ module('Legacy | Reactivity | relationships', function (hooks) {
     };
     const store = new Store();
     setOwner(store, this.owner);
+    this.owner.register('service:store', store, { instantiate: false });
     const { schema } = store;
 
     schema.registerResource(
@@ -279,6 +286,7 @@ module('Legacy | Reactivity | relationships', function (hooks) {
     };
     const store = new Store();
     setOwner(store, this.owner);
+    this.owner.register('service:store', store, { instantiate: false });
     const { schema } = store;
 
     schema.registerResource(
@@ -408,6 +416,7 @@ module('Legacy | Reactivity | relationships', function (hooks) {
     };
     const store = new Store();
     setOwner(store, this.owner);
+    this.owner.register('service:store', store, { instantiate: false });
     const { schema } = store;
 
     schema.registerResource(
@@ -540,6 +549,7 @@ module('Legacy | Reactivity | relationships', function (hooks) {
     };
     const store = new Store();
     setOwner(store, this.owner);
+    this.owner.register('service:store', store, { instantiate: false });
     const { schema } = store;
 
     schema.registerResource(
@@ -683,6 +693,7 @@ module('Legacy | Reactivity | relationships', function (hooks) {
     };
     const store = new Store();
     setOwner(store, this.owner);
+    this.owner.register('service:store', store, { instantiate: false });
     const { schema } = store;
 
     schema.registerResource(
@@ -833,6 +844,7 @@ module('Legacy | Reactivity | relationships', function (hooks) {
     };
     const store = new Store();
     setOwner(store, this.owner);
+    this.owner.register('service:store', store, { instantiate: false });
     const { schema } = store;
 
     schema.registerResource(

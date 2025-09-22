@@ -4,6 +4,7 @@ import type { Type } from '@warp-drive/core/types/symbols';
 import { module, setupTest, test } from '@warp-drive/diagnostic/ember';
 import { JSONAPICache } from '@warp-drive/json-api';
 import { useLegacyStore } from '@warp-drive/legacy';
+import { JSONAPIAdapter } from '@warp-drive/legacy/adapter/json-api';
 import type { AsyncHasMany } from '@warp-drive/legacy/model';
 import { PromiseBelongsTo, PromiseManyArray } from '@warp-drive/legacy/model/-private';
 import { withRestoredDeprecatedModelRequestBehaviors as withLegacy } from '@warp-drive/legacy/model/migration-support';
@@ -16,6 +17,10 @@ const Store = useLegacyStore({
 module('Legacy | Create | relationships', function (hooks) {
   setupTest(hooks);
 
+  hooks.beforeEach(function () {
+    this.owner.register('adapter:application', JSONAPIAdapter);
+  });
+
   test('we can create with a belongsTo', function (assert) {
     type User = {
       id: string | null;
@@ -26,6 +31,7 @@ module('Legacy | Create | relationships', function (hooks) {
     };
     const store = new Store();
     setOwner(store, this.owner);
+    this.owner.register('service:store', store, { instantiate: false });
     const { schema } = store;
 
     schema.registerResource(
@@ -83,6 +89,7 @@ module('Legacy | Create | relationships', function (hooks) {
     };
     const store = new Store();
     setOwner(store, this.owner);
+    this.owner.register('service:store', store, { instantiate: false });
     const { schema } = store;
 
     schema.registerResource(
@@ -143,6 +150,7 @@ module('Legacy | Create | relationships', function (hooks) {
     };
     const store = new Store();
     setOwner(store, this.owner);
+    this.owner.register('service:store', store, { instantiate: false });
     const { schema } = store;
 
     schema.registerResource(
@@ -205,6 +213,7 @@ module('Legacy | Create | relationships', function (hooks) {
     };
     const store = new Store();
     setOwner(store, this.owner);
+    this.owner.register('service:store', store, { instantiate: false });
     const { schema } = store;
 
     schema.registerResource(
