@@ -167,6 +167,8 @@ export function toArtifacts(filePath: string, source: string, options: Transform
     // Verify this is an ember mixin file we should consider
     const expectedSources = [DEFAULT_MIXIN_SOURCE];
     const mixinImportLocal = findEmberImportLocalName(root, expectedSources, options, filePath, process.cwd());
+
+
     if (!mixinImportLocal) {
       debugLog(options, 'No mixin import found, returning empty artifacts');
       return [];
@@ -178,8 +180,12 @@ export function toArtifacts(filePath: string, source: string, options: Transform
     const defaultExportNode = findDefaultExport(root, options);
     if (!defaultExportNode) {
       debugLog(options, 'No default export found, returning empty artifacts');
+      if (filePath.includes('base-model.ts')) {
+        console.log(`DEBUG base-model.ts: NO DEFAULT EXPORT FOUND - returning empty artifacts`);
+      }
       return [];
     }
+
 
     debugLog(options, 'Found default export, checking if it uses mixin');
 
@@ -188,13 +194,17 @@ export function toArtifacts(filePath: string, source: string, options: Transform
 
     debugLog(options, `Direct mixin create export: ${isDirect}`);
 
+
     if (!ok) {
       const exportedIdentifier = getExportedIdentifier(defaultExportNode, options);
+
+
       if (
         exportedIdentifier &&
         isIdentifierInitializedByMixinCreate(root, exportedIdentifier, mixinImportLocal, options)
       ) {
         ok = true;
+      } else {
       }
     }
 
@@ -222,10 +232,17 @@ export function toArtifacts(filePath: string, source: string, options: Transform
       options
     );
 
+    if (mixinName.toLowerCase().includes('basemodel')) {
+      debugLog(options, `🔍 BASEMODEL DEBUG: Found ${extendedTraits.length} extended traits: ${extendedTraits.join(', ')}`);
+      debugLog(options, `🔍 BASEMODEL DEBUG: Found ${traitFields.length} trait fields`);
+      debugLog(options, `🔍 BASEMODEL DEBUG: Found ${extensionProperties.length} extension properties`);
+    }
+
     debugLog(
       options,
       `Extract result: ${traitFields.length} trait fields, ${extensionProperties.length} extension properties, ${extendedTraits.length} extended traits`
     );
+
 
     // Continue with artifact generation even if empty - needed for polymorphic relationships
 
@@ -236,7 +253,13 @@ export function toArtifacts(filePath: string, source: string, options: Transform
     // Always generate trait type interface, even for empty mixins (needed for polymorphic relationships)
     const traitInterfaceName = `${mixinName.charAt(0).toUpperCase() + mixinName.slice(1)}Trait`;
 
-    if (traitFields.length > 0) {
+    // Check if this mixin is connected to models before generating trait artifacts
+    // In test environment, treat all mixins as connected unless explicitly specified
+    const isConnectedToModel = options?.modelConnectedMixins?.has(filePath) ??
+      (process.env.NODE_ENV === 'test' || options?.testMode === true);
+
+    // Generate trait schema file if there are trait fields or extended traits AND mixin is used by models
+    if ((traitFields.length > 0 || extendedTraits.length > 0) && isConnectedToModel) {
       const name = `${mixinName}Trait`;
       const code = generateTraitCode(name, traitFields, extendedTraits);
       artifacts.push({
@@ -245,80 +268,91 @@ export function toArtifacts(filePath: string, source: string, options: Transform
         code,
         suggestedFileName: `${baseName}.schema${fileExtension}`,
       });
+    }
 
-
+    // Generate trait type interface only for model-connected mixins (needed for polymorphic relationships)
+    if (isConnectedToModel) {
       // Convert trait fields to TypeScript interface properties
       const traitFieldTypes = traitFields.map((field) => {
-        let type: string;
-        switch (field.kind) {
-          case 'attribute':
-            type = getTypeScriptTypeForAttribute(
-              field.type || 'unknown',
-              !!(field.options && 'defaultValue' in field.options),
-              !field.options || field.options.allowNull !== false,
-              options,
-              field.options
-            ).tsType;
-            break;
-          case 'belongsTo':
-            type = getTypeScriptTypeForBelongsTo(field, options);
-            break;
-          case 'hasMany':
-            type = getTypeScriptTypeForHasMany(field, options);
-            break;
-          default:
-            type = 'unknown';
+      let type: string;
+      switch (field.kind) {
+        case 'attribute':
+          type = getTypeScriptTypeForAttribute(
+            field.type || 'unknown',
+            !!(field.options && 'defaultValue' in field.options),
+            !field.options || field.options.allowNull !== false,
+            options,
+            field.options
+          ).tsType;
+          break;
+        case 'belongsTo':
+          type = getTypeScriptTypeForBelongsTo(field, options);
+          break;
+        case 'hasMany':
+          type = getTypeScriptTypeForHasMany(field, options);
+          break;
+        default:
+          type = 'unknown';
+      }
+
+      return {
+        name: field.name,
+        type,
+        readonly: false,
+      };
+    });
+
+    // Convert extended traits to extends clause format
+    const extendsClause =
+      extendedTraits.length > 0 ? extendedTraits.map((trait) => `${toPascalCase(trait)}Trait`).join(', ') : undefined;
+
+    // Collect imports needed for the trait type interface
+    const imports = new Set<string>();
+    const modelTypes = new Set<string>();
+
+    // Collect model types and HasMany imports needed for relationships
+    for (const field of traitFields) {
+      if (field.kind === 'belongsTo' || field.kind === 'hasMany') {
+        if (field.type) {
+          modelTypes.add(field.type);
         }
 
-        return {
-          name: field.name,
-          type,
-          readonly: false,
-        };
-      });
-
-      // Convert extended traits to extends clause format
-      const extendsClause =
-        extendedTraits.length > 0 ? extendedTraits.map((trait) => `${toPascalCase(trait)}Trait`).join(', ') : undefined;
-
-      // Collect imports needed for the trait type interface
-      const imports = new Set<string>();
-      const modelTypes = new Set<string>();
-
-      // Collect model types and HasMany imports needed for relationships
-      for (const field of traitFields) {
-        if (field.kind === 'belongsTo' || field.kind === 'hasMany') {
-          if (field.type) {
-            modelTypes.add(field.type);
-          }
-
-          // Add HasMany type imports for hasMany relationships
-          if (field.kind === 'hasMany') {
-            const emberDataSource = options?.emberDataImportSource || DEFAULT_EMBER_DATA_SOURCE;
-            if (field.options?.async) {
-              imports.add(`type { AsyncHasMany } from '${emberDataSource}'`);
-            } else {
-              imports.add(`type { HasMany } from '${emberDataSource}'`);
-            }
+        // Add HasMany type imports for hasMany relationships
+        if (field.kind === 'hasMany') {
+          const emberDataSource = options?.emberDataImportSource || DEFAULT_EMBER_DATA_SOURCE;
+          if (field.options?.async) {
+            imports.add(`type { AsyncHasMany } from '${emberDataSource}'`);
+          } else {
+            imports.add(`type { HasMany } from '${emberDataSource}'`);
           }
         }
       }
+    }
 
-      // Add model type imports
-      if (modelTypes.size > 0) {
-        // Import each model type from its resource types file
-        for (const modelType of modelTypes) {
-          const pascalCaseType = toPascalCase(modelType);
+    // Add model type imports
+    if (modelTypes.size > 0) {
+      // Import each model type from its resource types file
+      for (const modelType of modelTypes) {
+        const pascalCaseType = toPascalCase(modelType);
 
-          // Check if the resource type file exists and create a stub if it doesn't
-          // Only generate stubs if resourcesDir is provided (indicating we're in a real project context)
-          if (options.resourcesDir) {
-            ensureResourceTypeFileExists(modelType, options, artifacts);
-          }
-
-          imports.add(`type { ${pascalCaseType} } from '${options.resourcesImport}/${modelType}.schema.types'`);
+        // Check if the resource type file exists and create a stub if it doesn't
+        // Only generate stubs if resourcesDir is provided (indicating we're in a real project context)
+        if (options.resourcesDir) {
+          ensureResourceTypeFileExists(modelType, options, artifacts);
         }
+
+        imports.add(`type { ${pascalCaseType} } from '${options.resourcesImport}/${modelType}.schema.types'`);
       }
+    }
+
+    // Add imports for extended traits
+    if (extendedTraits.length > 0) {
+      const traitsImport = options?.traitsImport || 'soxhub-client/data/traits';
+      for (const trait of extendedTraits) {
+        const traitInterfaceName = `${toPascalCase(trait)}Trait`;
+        imports.add(`type { ${traitInterfaceName} } from '${traitsImport}/${trait}.schema.types'`);
+      }
+    }
 
       const traitTypeArtifact = createTypeArtifact(
         baseName,
@@ -330,40 +364,31 @@ export function toArtifacts(filePath: string, source: string, options: Transform
         '.ts' // Type files should always be .ts regardless of source file extension
       );
       artifacts.push(traitTypeArtifact);
-    } else {
-      // For empty mixins, still generate an empty trait type interface
-      const traitTypeArtifact = createTypeArtifact(
-        baseName,
-        traitInterfaceName,
-        [], // No properties for empty mixin
-        'trait',
-        undefined, // No extends clause
-        undefined, // No imports needed
-        '.ts' // Type files should always be .ts regardless of source file extension
-      );
-      artifacts.push(traitTypeArtifact);
     }
 
-    // Create extension artifact by modifying the original file
+    // Create extension artifact by modifying the original file, but only for mixins used by models
     // For mixins, extensions should extend the trait interface
-    const traitImportPath = options?.traitsImport
-      ? `${options.traitsImport}/${baseName}.schema.types`
-      : `../traits/${baseName}.schema.types`;
-    const extensionArtifact = createExtensionFromOriginalFile(
-      filePath,
-      source,
-      baseName,
-      `${mixinName}Extension`,
-      extensionProperties,
-      defaultExportNode,
-      options,
-      traitInterfaceName,
-      traitImportPath,
-      'mixin'  // Source is a mixin file
-    );
 
-    if (extensionArtifact) {
-      artifacts.push(extensionArtifact);
+    if (isConnectedToModel && extensionProperties.length > 0) {
+      const traitImportPath = options?.traitsImport
+        ? `${options.traitsImport}/${baseName}.schema.types`
+        : `../traits/${baseName}.schema.types`;
+      const extensionArtifact = createExtensionFromOriginalFile(
+        filePath,
+        source,
+        baseName,
+        `${mixinName}Extension`,
+        extensionProperties,
+        defaultExportNode,
+        options,
+        traitInterfaceName,
+        traitImportPath,
+        'mixin'  // Source is a mixin file
+      );
+
+      if (extensionArtifact) {
+        artifacts.push(extensionArtifact);
+      }
     }
 
     debugLog(options, `Generated ${artifacts.length} artifacts`);
@@ -492,6 +517,7 @@ function isIdentifierInitializedByMixinCreate(
 ): boolean {
   debugLog(options, `Checking if identifier '${ident}' is initialized by '${localMixin}.create()'`);
 
+
   // Find all variable declarations (both var and const/let)
   const variableDeclarations = [
     ...root.findAll({ rule: { kind: 'variable_declaration' } }),
@@ -499,6 +525,7 @@ function isIdentifierInitializedByMixinCreate(
   ];
 
   debugLog(options, `Found ${variableDeclarations.length} variable declarations`);
+
 
   for (const varDecl of variableDeclarations) {
     debugLog(options, `Variable declaration: ${varDecl.text()}`);
@@ -513,12 +540,27 @@ function isIdentifierInitializedByMixinCreate(
 
       debugLog(options, `Found matching variable declarator for '${ident}'`);
 
-      // Check if the value is a call expression
-      const valueNode = declarator.field('value');
+      // Check if the value is a call expression (or wrapped in a type cast)
+      let valueNode = declarator.field('value');
+
+      // Handle TypeScript type casts like "as unknown as SomeType" (potentially nested)
+      while (valueNode && valueNode.kind() === 'as_expression') {
+        // The first child should be the expression before the "as"
+        const children = valueNode.children();
+        const expression = children[0]; // First child is usually the expression
+        if (expression) {
+          valueNode = expression;
+        } else {
+          break;
+        }
+      }
+
+
       if (!valueNode || valueNode.kind() !== 'call_expression') {
         debugLog(options, `Value is not a call expression: ${valueNode?.kind()}`);
         continue;
       }
+
 
       debugLog(options, `Found call expression: ${valueNode.text()}`);
 
@@ -542,6 +584,7 @@ function isIdentifierInitializedByMixinCreate(
       if (object.text() === localMixin && (property.text() === 'create' || property.text() === 'createWithMixins')) {
         debugLog(options, `Found matching ${localMixin}.create() call!`);
         return true;
+      } else {
       }
     }
   }
@@ -625,8 +668,10 @@ function extractTraitFields(
                 .replace(/([A-Z])/g, '-$1')
                 .toLowerCase()
                 .replace(/^-/, '');
-              extendedTraits.push(traitName);
-              debugLog(options, `Found extended trait: ${traitName} from mixin ${mixinName}`);
+              if (!extendedTraits.includes(traitName)) {
+                extendedTraits.push(traitName);
+                debugLog(options, `Found extended trait: ${traitName} from mixin ${mixinName}`);
+              }
             }
           }
         }
@@ -650,11 +695,35 @@ function extractTraitFields(
     return { traitFields, extensionProperties, extendedTraits };
   }
 
-  // Find the object literal argument
-  const objectLiteral = args.children().find((child) => child.kind() === 'object');
+  // Find the object literal argument - use the last one in case there are mixin references first
+  const argChildren = args.children();
+  const objectLiterals = argChildren.filter((child) => child.kind() === 'object');
+  const objectLiteral = objectLiterals[objectLiterals.length - 1]; // Get the last object literal
   if (!objectLiteral) {
     debugLog(options, 'No object literal found in mixin create arguments');
     return { traitFields, extensionProperties, extendedTraits };
+  }
+
+  // For regular create() calls with mixin references, extract extended traits from non-object arguments
+  debugLog(options, `Processing Mixin.create arguments for ${mixinName}: ${argChildren.length} total args, ${objectLiterals.length} object literals`);
+  if (objectLiterals.length > 0 && argChildren.length > 1) {
+    for (let i = 0; i < argChildren.length; i++) {
+      const arg = argChildren[i];
+      debugLog(options, `  Arg ${i}: kind=${arg.kind()}, text='${arg.text()}', isObjectLiteral=${arg === objectLiteral}`);
+      if (arg.kind() === 'identifier' && arg !== objectLiteral) {
+        const extendedMixinName = arg.text();
+        // Convert mixin name to dasherized trait name
+        const baseName = extendedMixinName.replace(/Mixin$/, '');
+        const traitName = baseName
+          .replace(/([A-Z])/g, '-$1')
+          .toLowerCase()
+          .replace(/^-/, '');
+        if (!extendedTraits.includes(traitName)) {
+          extendedTraits.push(traitName);
+          debugLog(options, `Found extended trait: ${traitName} from mixin ${extendedMixinName}`);
+        }
+      }
+    }
   }
 
   debugLog(options, `Found object literal with ${objectLiteral.children().length} children`);

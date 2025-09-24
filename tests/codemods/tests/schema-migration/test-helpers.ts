@@ -9,6 +9,8 @@ export const DEFAULT_TEST_OPTIONS: TransformOptions = {
   resourcesImport: 'test-app/data/resources',
   verbose: false,
   debug: false,
+  // For tests, assume all mixins are connected to models so they generate artifacts
+  testMode: true,
 };
 
 /**

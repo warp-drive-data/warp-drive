@@ -629,6 +629,90 @@ export default Mixin.create({
     expect(generatedSchema).toContain('custom-select-option'); // Should contain model identifier
   });
 
+  it('places intermediate model extensions in extensionsDir not fallback directory', async () => {
+    // This test ensures intermediate model extensions go to extensionsDir, not app/schemas/
+
+    // Create an intermediate model with both fields (trait) and methods (extension)
+    const intermediateModelWithMethods = `
+import Model, { attr } from '@ember-data/model';
+
+export default class BaseModelWithMethods extends Model {
+  @attr('string') baseField;
+
+  // This should create an extension artifact
+  get computedValue() {
+    return this.baseField + ' computed';
+  }
+
+  someMethod() {
+    return 'from base model';
+  }
+}
+`;
+
+    // Create a regular model that extends the intermediate model
+    const regularModel = `
+import BaseModelWithMethods from '../core/base-model-with-methods';
+
+export default class RegularModel extends BaseModelWithMethods {
+}
+`;
+
+    // Setup directories
+    const coreDir = join(tempDir, 'app/core');
+    const modelsDir = join(tempDir, 'app/models');
+    mkdirSync(coreDir, { recursive: true });
+    mkdirSync(modelsDir, { recursive: true });
+
+    // Write files
+    writeFileSync(join(coreDir, 'base-model-with-methods.js'), intermediateModelWithMethods);
+    writeFileSync(join(modelsDir, 'regular-model.ts'), regularModel);
+
+    // Configure options with intermediate model paths
+    const testOptions: MigrateOptions = {
+      ...options,
+      intermediateModelPaths: [
+        'soxhub-client/core/base-model-with-methods'
+      ],
+      additionalModelSources: [
+        {
+          pattern: 'soxhub-client/core/*',
+          dir: join(tempDir, 'app/core/*')
+        }
+      ]
+    };
+
+    // Change to temp directory for the migration
+    const originalCwd = process.cwd();
+    process.chdir(tempDir);
+
+    try {
+      // Run migration
+      await runMigration(testOptions);
+    } finally {
+      // Restore original working directory
+      process.chdir(originalCwd);
+    }
+
+    // Verify that intermediate model extension goes to extensionsDir, NOT fallback
+    const extensionPath = join(tempDir, 'app/data/extensions/base-model-with-methods.js');
+    const fallbackPath = join(tempDir, 'app/schemas/base-model-with-methods.js');
+
+    expect(existsSync(extensionPath)).toBe(true);
+    expect(existsSync(fallbackPath)).toBe(false);
+
+    // Also verify that trait was generated correctly
+    expect(existsSync(join(tempDir, 'app/data/traits/base-model-with-methods.schema.js'))).toBe(true);
+    expect(existsSync(join(tempDir, 'app/data/traits/base-model-with-methods.schema.types.ts'))).toBe(true);
+
+    // Verify that the fallback directory (app/schemas) doesn't exist at all
+    expect(existsSync(join(tempDir, 'app/schemas'))).toBe(false);
+
+    // Check that regular model was processed normally
+    expect(existsSync(join(tempDir, 'app/data/resources/regular-model.schema.ts'))).toBe(true);
+    expect(existsSync(join(tempDir, 'app/data/resources/regular-model.schema.types.ts'))).toBe(true);
+  });
+
   it('ensures resources and traits include .schema with matching suffixes', async () => {
     // This test specifically verifies the new naming requirement:
     // resources and traits should include .schema in their filename

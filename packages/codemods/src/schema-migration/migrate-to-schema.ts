@@ -212,14 +212,17 @@ function getArtifactOutputPath(
   } else if (artifact.type === 'extension' || artifact.type === 'extension-type') {
     // Extension files go to extensionsDir
     outputDir = finalOptions.extensionsDir || './app/data/extensions';
-    const sourceDir = isFromMixin
-      ? resolve(finalOptions.mixinSourceDir || './app/mixins')
-      : resolve(finalOptions.modelSourceDir || './app/models');
-    const relativePath = filePath.replace(sourceDir, '');
+    // Use the suggested filename from the artifact instead of calculating relative path
+    // This handles external package files correctly
     const outputName = artifact.type === 'extension'
-      ? relativePath // Extensions keep original filename and extension
-      : relativePath.replace(/\.(js|ts)$/, '.schema.types.ts');
+      ? artifact.suggestedFileName || 'unknown-extension.ts'
+      : artifact.suggestedFileName?.replace(/\.(js|ts)$/, '.schema.types.ts') || 'unknown-extension-type.ts';
     outputPath = join(resolve(outputDir), outputName);
+  } else if (artifact.type === 'resource-type-stub') {
+    // Resource type stubs go to resourcesDir like other resource types
+    console.log(`RESOURCE-TYPE-STUB: redirecting to resources dir`);
+    outputDir = finalOptions.resourcesDir || './app/data/resources';
+    outputPath = join(resolve(outputDir), artifact.suggestedFileName || 'unknown-stub.ts');
   } else {
     // Default fallback
     outputDir = finalOptions.outputDir ?? './app/schemas';
@@ -725,6 +728,18 @@ export async function runMigration(options: MigrateOptions): Promise<void> {
           // Generate type file name from the trait artifact name
           const typeFileName = artifact.suggestedFileName.replace(/\.js$/, '.schema.types.ts');
           outputPath = join(resolve(outputDir), typeFileName);
+        } else if (artifact.type === 'extension') {
+          // Extension files go to extensionsDir
+          outputDir = finalOptions.extensionsDir || './app/data/extensions';
+          outputPath = join(resolve(outputDir), artifact.suggestedFileName);
+        } else if (artifact.type === 'extension-type') {
+          // Extension type files go to extensionsDir
+          outputDir = finalOptions.extensionsDir || './app/data/extensions';
+          outputPath = join(resolve(outputDir), artifact.suggestedFileName);
+        } else if (artifact.type === 'resource-type-stub') {
+          // Resource type stubs go to resourcesDir like other resource types
+          outputDir = finalOptions.resourcesDir || './app/data/resources';
+          outputPath = join(resolve(outputDir), artifact.suggestedFileName);
         } else {
           // Default fallback
           outputDir = finalOptions.outputDir ?? './app/schemas';
@@ -843,6 +858,7 @@ export async function runMigration(options: MigrateOptions): Promise<void> {
       // Apply the mixin transform to get artifacts
       const { toArtifacts } = await import('./mixin-to-schema.js');
       const artifacts = toArtifacts(filePath, source, enhancedOptions);
+
 
       if (artifacts.length > 0) {
         processed++;

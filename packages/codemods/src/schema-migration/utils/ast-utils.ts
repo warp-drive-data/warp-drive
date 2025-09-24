@@ -9,6 +9,8 @@ export interface TransformOptions {
   dryRun?: boolean;
   /** Use @warp-drive-mirror instead of @warp-drive for imports */
   mirror?: boolean;
+  /** Test mode - treats all mixins as connected to models (for testing) */
+  testMode?: boolean;
   /** Set of absolute file paths for mixins that are connected to models */
   modelConnectedMixins?: Set<string>;
   /** List of all discovered mixin file paths (for polymorphic detection) */

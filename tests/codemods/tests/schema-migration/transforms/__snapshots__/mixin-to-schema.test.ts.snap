@@ -753,6 +753,8 @@ exports[`mixin-to-schema transform (artifacts) > mixin inheritance > produces tr
 exports[`mixin-to-schema transform (artifacts) > mixin inheritance > produces trait with extended traits when using createWithMixins > inheritance type code 1`] = `
 "import type { HasMany } from '@ember-data/model';
 import type { File } from 'undefined/file.schema.types';
+import type { BaseModelTrait } from 'soxhub-client/data/traits/base-model.schema.types';
+import type { TimestampTrait } from 'soxhub-client/data/traits/timestamp.schema.types';
 
 export interface FileableTrait extends BaseModelTrait, TimestampTrait {
 	description: string | null;
@@ -779,7 +781,9 @@ exports[`mixin-to-schema transform (artifacts) > mixin inheritance > produces tr
 `;
 
 exports[`mixin-to-schema transform (artifacts) > mixin inheritance > produces trait with single extended trait > single inheritance type code 1`] = `
-"export interface DescribableTrait extends BaseModelTrait {
+"import type { BaseModelTrait } from 'soxhub-client/data/traits/base-model.schema.types';
+
+export interface DescribableTrait extends BaseModelTrait {
 	description: string | null;
 }
 "

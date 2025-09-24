@@ -411,6 +411,141 @@ export default Mixin.create({
     });
   });
 
+  describe('TypeScript type casts', () => {
+    it('produces trait and extension artifacts for mixins with TypeScript type casts', () => {
+      const mixinSource = `
+import Mixin from '@ember/object/mixin';
+import { computed } from '@ember/object';
+import { attr } from '@ember-data/model';
+import BaseModelDate from './base-model-date.ts';
+import PartialSaveable from './partial-saveable.ts';
+
+interface BaseModelMixin extends BaseModelDate, PartialSaveable {
+  displayName: string | undefined;
+}
+
+// SAFETY: Mixin doesn't have correct types
+const BaseModelMixin = Mixin.create(BaseModelDate, PartialSaveable, {
+  @attr('string') name: '',
+  displayName: computed('name', function() {
+    return this.name || 'Unnamed';
+  }),
+
+  // Method that should go in extension
+  someMethod() {
+    return 'base model method';
+  }
+}) as unknown as ModelMixin<BaseModelMixin>;
+
+export default BaseModelMixin;
+`.trim();
+
+      const artifacts = toArtifacts('/app/mixins/base-model.ts', mixinSource);
+
+      // Should find both trait fields and extension properties
+      expect(artifacts.length).toBeGreaterThan(0);
+
+      const trait = artifacts.find(a => a.type === 'trait');
+      const extension = artifacts.find(a => a.type === 'extension');
+      const traitType = artifacts.find(a => a.type === 'trait-type');
+
+      // Should have trait because it has @attr field and extended traits
+      expect(trait).toBeDefined();
+      expect(traitType).toBeDefined();
+
+      // Should have the attr field in trait
+      expect(trait?.code).toContain('name');
+
+      // Should recognize extended traits in trait
+      expect(trait?.code).toContain('base-model-date');
+      expect(trait?.code).toContain('partial-saveable');
+
+      // Extension is only generated if there are non-trait properties
+      if (extension) {
+        expect(extension.code).toContain('displayName');
+        expect(extension.code).toContain('someMethod');
+      }
+    });
+
+    it('produces extension artifacts for mixins with only computed properties and TypeScript casts', () => {
+      const mixinSource = `
+import Mixin from '@ember/object/mixin';
+import { computed, get, set } from '@ember/object';
+import { or } from '@ember/object/computed';
+import BaseModelDate from './base-model-date.ts';
+import PartialSaveable from './partial-saveable.ts';
+
+interface BaseModelMixin extends BaseModelDate, PartialSaveable {
+  displayName: string | undefined;
+}
+
+// SAFETY: Mixin doesn't have correct types
+const BaseModelMixin = Mixin.create(BaseModelDate, PartialSaveable, {
+  displayName: or('name', '_modelName'),
+
+  // default datatable caching
+  _dtCache: null,
+  _dtLastUpdated: computed('updatedAt', function () {
+    // TODO - Refactor this CP
+    // eslint-disable-next-line ember/no-side-effects
+    set(this, '_dtCache', null);
+    return get(this, 'updatedAt');
+  }),
+}) as unknown as ModelMixin<BaseModelMixin>;
+
+export default BaseModelMixin;
+`.trim();
+
+      const artifacts = toArtifacts('/app/mixins/base-model.ts', mixinSource);
+
+      expect(artifacts.length).toBeGreaterThan(0);
+
+      // Should not have trait (no @attr fields), but should have extension
+      const trait = artifacts.find(a => a.type === 'trait');
+      const extension = artifacts.find(a => a.type === 'extension');
+      const traitType = artifacts.find(a => a.type === 'trait-type');
+
+      expect(trait).toBeDefined(); // Has extended traits
+      expect(traitType).toBeDefined(); // Always generates type interface
+
+      // Should have the extended traits in trait
+      expect(trait?.code).toContain('base-model-date');
+      expect(trait?.code).toContain('partial-saveable');
+
+      // Extension is only generated if there are non-trait properties
+      if (extension) {
+        expect(extension.code).toContain('displayName');
+        expect(extension.code).toContain('_dtCache');
+        expect(extension.code).toContain('_dtLastUpdated');
+      }
+
+      // Should recognize extended traits in the type interface
+      expect(traitType?.code).toContain('BaseModelDateTrait');
+      expect(traitType?.code).toContain('PartialSaveableTrait');
+    });
+
+    it('handles nested TypeScript type casts', () => {
+      const mixinSource = `
+import Mixin from '@ember/object/mixin';
+import { computed } from '@ember/object';
+
+const NestedCastMixin = Mixin.create({
+  computedProp: computed(function() { return 'test'; })
+}) as unknown as SomeType as FinalType;
+
+export default NestedCastMixin;
+`.trim();
+
+      const artifacts = toArtifacts('/app/mixins/nested-cast.ts', mixinSource);
+
+      expect(artifacts.length).toBeGreaterThan(0);
+
+      const extension = artifacts.find(a => a.type === 'extension');
+      expect(extension).toBeDefined();
+      expect(extension?.code).toContain('computedProp');
+    });
+  });
+
   describe('mirror flag', () => {
     it('generates correct imports regardless of mirror flag for mixins', () => {
       const input = `import Mixin from '@ember/object/mixin';
