@@ -1,13 +1,14 @@
 import { parse } from '@ast-grep/napi';
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs';
 import { glob } from 'glob';
-import { basename,dirname, join, resolve } from 'path';
+import { basename, dirname, extname, join, resolve } from 'path';
 
 import { processIntermediateModelsToTraits } from './model-to-schema.js';
 import type { TransformOptions } from './utils/ast-utils.js';
 import {
   debugLog,
   DEFAULT_MIXIN_SOURCE,
+  extractBaseName,
   findEmberImportLocalName,
   getLanguageFromPath,
   isModelFile as astIsModelFile
@@ -88,13 +89,14 @@ function analyzeModelMixinUsage(
     logger.info(`📊 Found ${modelFiles.length} models and ${mixinFiles.length} mixins`);
   }
 
-  // Analyze model files for direct mixin usage
+  // Analyze model files for direct mixin usage AND polymorphic relationships
   let modelsProcessed = 0;
   for (const modelFile of modelFiles) {
     try {
       const source = fileSourceCache.get(modelFile);
       if (!source) continue;
 
+      // Extract direct mixin imports
       const mixinsUsedByModel = extractMixinImports(source, modelFile, options);
 
       modelsProcessed++;
@@ -109,7 +111,23 @@ function analyzeModelMixinUsage(
         }
       }
 
-      if (options.verbose && mixinsUsedByModel.length === 0) {
+      // Also check for polymorphic relationships that reference mixins
+      const polymorphicMixins = extractPolymorphicMixinReferences(source, modelFile, mixinFiles, options);
+      if (polymorphicMixins.length > 0) {
+        if (options.verbose) {
+          logger.info(`🔍 Found ${polymorphicMixins.length} polymorphic mixin references in ${modelFile}`);
+        }
+      } else if (modelFile.includes('share-record') && options.verbose) {
+        logger.info(`🔍 No polymorphic references found in share-record, checking why...`);
+      }
+      for (const mixinPath of polymorphicMixins) {
+        modelMixins.add(mixinPath);
+        if (options.verbose) {
+          logger.info(`📋 Model ${modelFile} has polymorphic relationship to mixin ${mixinPath}`);
+        }
+      }
+
+      if (options.verbose && mixinsUsedByModel.length === 0 && polymorphicMixins.length === 0) {
         logger.info(`📋 Model ${modelFile} uses no mixins`);
       }
     } catch (error) {
@@ -186,7 +204,17 @@ function getArtifactOutputPath(
   if (artifact.type === 'schema') {
     // Schema files go to resourcesDir
     outputDir = finalOptions.resourcesDir || './app/data/resources';
-    const relativePath = filePath.replace(resolve(finalOptions.modelSourceDir || './app/models'), '');
+
+    // Handle external models when generateExternalResources is enabled
+    let relativePath = filePath.replace(resolve(finalOptions.modelSourceDir || './app/models'), '');
+
+    // If the replace operation didn't work (external model), and generateExternalResources is enabled,
+    // extract just the filename for external models
+    if (relativePath === filePath && finalOptions.generateExternalResources) {
+      const fileName = basename(filePath);  // Keep the extension
+      relativePath = `/${fileName}`;
+    }
+
     // Resources should include .schema and match original source file extension
     const extension = filePath.endsWith('.ts') ? '.ts' : '.js';
     const outputName = relativePath.replace(/\.(js|ts)$/, `.schema${extension}`);
@@ -194,7 +222,17 @@ function getArtifactOutputPath(
   } else if (artifact.type === 'resource-type') {
     // Type files are colocated with their schemas in resourcesDir
     outputDir = finalOptions.resourcesDir || './app/data/resources';
-    const relativePath = filePath.replace(resolve(finalOptions.modelSourceDir || './app/models'), '');
+
+    // Handle external models when generateExternalResources is enabled
+    let relativePath = filePath.replace(resolve(finalOptions.modelSourceDir || './app/models'), '');
+
+    // If the replace operation didn't work (external model), and generateExternalResources is enabled,
+    // extract just the filename for external models
+    if (relativePath === filePath && finalOptions.generateExternalResources) {
+      const fileName = basename(filePath);  // Keep the extension
+      relativePath = `/${fileName}`;
+    }
+
     outputPath = join(resolve(outputDir), relativePath.replace(/\.(js|ts)$/, '.schema.types.ts'));
   } else if (artifact.type === 'trait') {
     // Trait files go to traitsDir
@@ -218,9 +256,13 @@ function getArtifactOutputPath(
       ? artifact.suggestedFileName || 'unknown-extension.ts'
       : artifact.suggestedFileName?.replace(/\.(js|ts)$/, '.schema.types.ts') || 'unknown-extension-type.ts';
     outputPath = join(resolve(outputDir), outputName);
+  } else if (artifact.type === 'resource-type') {
+    // Resource type interfaces go to resourcesDir
+    outputDir = finalOptions.resourcesDir || './app/data/resources';
+    outputPath = join(resolve(outputDir), artifact.suggestedFileName || 'unknown-resource-type.ts');
   } else if (artifact.type === 'resource-type-stub') {
     // Resource type stubs go to resourcesDir like other resource types
-    console.log(`RESOURCE-TYPE-STUB: redirecting to resources dir`);
+    debugLog(finalOptions, `RESOURCE-TYPE-STUB: redirecting to resources dir`);
     outputDir = finalOptions.resourcesDir || './app/data/resources';
     outputPath = join(resolve(outputDir), artifact.suggestedFileName || 'unknown-stub.ts');
   } else {
@@ -263,6 +305,122 @@ function getRelativePathForMixin(filePath: string, options: TransformOptions): s
 
   // Fallback: use just the filename
   return basename(filePath);
+}
+
+/**
+ * Extract polymorphic mixin references from model relationships
+ */
+function extractPolymorphicMixinReferences(
+  source: string,
+  filePath: string,
+  mixinFiles: string[],
+  options: TransformOptions
+): string[] {
+  const polymorphicMixins: string[] = [];
+
+  try {
+    const lang = getLanguageFromPath(filePath);
+    const ast = parse(lang, source);
+    const root = ast.root();
+
+    // Find all decorator nodes (for @belongsTo syntax)
+    const decorators = root.findAll({ rule: { kind: 'decorator' } });
+
+    if (decorators.length > 0 && options.verbose) {
+      debugLog(options, `Found ${decorators.length} decorators in ${filePath}`);
+    }
+
+    for (const decorator of decorators) {
+      const decoratorText = decorator.text();
+      if (!decoratorText.includes('belongsTo')) continue;
+
+      // Extract the call expression from the decorator
+      const callExpr = decorator.find({ rule: { kind: 'call_expression' } });
+      if (!callExpr) continue;
+
+      const args = callExpr.field('arguments');
+      if (!args) continue;
+
+      // Get the string and object arguments directly
+      const stringArgs = args.findAll({ rule: { kind: 'string' } });
+      const objectArgs = args.findAll({ rule: { kind: 'object' } });
+
+      if (stringArgs.length < 1) continue;
+
+      const typeName = stringArgs[0].text().replace(/['"]/g, '');
+
+      // Check if there's an object argument with polymorphic: true
+      if (objectArgs.length >= 1) {
+        const optionsText = objectArgs[0].text();
+        if (optionsText.includes('polymorphic') && optionsText.includes('true')) {
+          // This is a polymorphic relationship - check if the type matches a mixin
+          for (const mixinFile of mixinFiles) {
+            const mixinName = extractBaseName(mixinFile);
+            if (mixinName === typeName) {
+              if (!polymorphicMixins.includes(mixinFile)) {
+                polymorphicMixins.push(mixinFile);
+                if (options.verbose) {
+                  debugLog(options, `Found polymorphic reference to mixin '${typeName}' in ${filePath}`);
+                }
+              }
+              break;
+            }
+          }
+        }
+      }
+    }
+
+    // Also check for regular function calls (non-decorator syntax)
+    const callExpressions = root.findAll({ rule: { kind: 'call_expression' } });
+
+    for (const call of callExpressions) {
+      const fn = call.field('function');
+      if (!fn) continue;
+
+      // Check if this is a belongsTo call (but not inside a decorator, which we already handled)
+      const fnText = fn.text();
+      if (!fnText.includes('belongsTo')) continue;
+
+      // Skip if this call is inside a decorator (already handled above)
+      const parentDecorator = call.parent()?.parent();
+      if (parentDecorator && parentDecorator.kind() === 'decorator') continue;
+
+      const args = call.field('arguments');
+      if (!args) continue;
+
+      // Get the string and object arguments directly
+      const stringArgs = args.findAll({ rule: { kind: 'string' } });
+      const objectArgs = args.findAll({ rule: { kind: 'object' } });
+
+      if (stringArgs.length < 1) continue;
+
+      const typeName = stringArgs[0].text().replace(/['"]/g, '');
+
+      // Check if there's an object argument with polymorphic: true
+      if (objectArgs.length >= 1) {
+        const optionsText = objectArgs[0].text();
+        if (optionsText.includes('polymorphic') && optionsText.includes('true')) {
+          // This is a polymorphic relationship - check if the type matches a mixin
+          for (const mixinFile of mixinFiles) {
+            const mixinName = extractBaseName(mixinFile);
+            if (mixinName === typeName) {
+              if (!polymorphicMixins.includes(mixinFile)) {
+                polymorphicMixins.push(mixinFile);
+                if (options.verbose) {
+                  debugLog(options, `Found polymorphic reference to mixin '${typeName}' in ${filePath}`);
+                }
+              }
+              break;
+            }
+          }
+        }
+      }
+    }
+  } catch (error) {
+    debugLog(options, `Error extracting polymorphic mixin references from ${filePath}: ${String(error)}`);
+  }
+
+  return polymorphicMixins;
 }
 
 /**
@@ -554,6 +712,37 @@ export async function runMigration(options: MigrateOptions): Promise<void> {
       )
     );
 
+    // Also discover files from additionalModelSources
+    if (finalOptions.additionalModelSources) {
+      for (const source of finalOptions.additionalModelSources) {
+        // Convert dir pattern to glob pattern (e.g., "path/to/models/*" -> "path/to/models/**/*.{js,ts}")
+        let dirGlobPattern = source.dir;
+        if (dirGlobPattern.endsWith('*')) {
+          // Replace trailing * with **/*.{js,ts}
+          dirGlobPattern = dirGlobPattern.replace(/\*$/, '**/*.{js,ts}');
+        } else {
+          // Add **/*.{js,ts} if no glob pattern
+          dirGlobPattern = join(dirGlobPattern, '**/*.{js,ts}');
+        }
+
+        try {
+          const resolvedPattern = resolve(dirGlobPattern);
+          const additionalModelFiles = await glob(resolvedPattern);
+          filesToProcess.push(
+            ...additionalModelFiles.filter(
+              (file) => existsSync(file) && (!options.skipProcessed || !isAlreadyProcessed(file, finalOptions))
+            )
+          );
+
+          if (finalOptions.verbose) {
+            logger.info(`📋 Found ${additionalModelFiles.length} additional model files from ${source.pattern}`);
+          }
+        } catch (error) {
+          logger.error(`Failed to process additional model source ${source.pattern}: ${error}`);
+        }
+      }
+    }
+
     if (finalOptions.verbose) {
       logger.info(`📋 Found ${modelFiles.length} model files`);
     }
@@ -583,7 +772,7 @@ export async function runMigration(options: MigrateOptions): Promise<void> {
         }
 
         try {
-          const additionalMixinFiles = await glob(dirGlobPattern);
+          const additionalMixinFiles = await glob(resolve(dirGlobPattern));
           filesToProcess.push(
             ...additionalMixinFiles.filter(
               (file) => existsSync(file) && (!options.skipProcessed || !isAlreadyProcessed(file, finalOptions))
@@ -621,6 +810,10 @@ export async function runMigration(options: MigrateOptions): Promise<void> {
   const fileSourceCache = new Map<string, string>();
 
   for (const file of filesToProcess) {
+    // Add debug for client-core files
+    if (file.includes('client-core')) {
+    }
+
     try {
       const source = readFileSync(file, 'utf-8');
       fileSourceCache.set(file, source);
@@ -644,7 +837,7 @@ export async function runMigration(options: MigrateOptions): Promise<void> {
 
       // Check model first if it's in models directory, otherwise check both
       if (isLikelyModel) {
-        const isModel = isModelFile(file, source);
+        const isModel = isModelFile(file, source, finalOptions);
         if (finalOptions.verbose) {
           logger.debug(`📋 AST analysis result for ${file}: isModel=${isModel}`);
         }
@@ -661,7 +854,7 @@ export async function runMigration(options: MigrateOptions): Promise<void> {
         }
       } else {
         // File is not in expected directory, check both types
-        const isModel = isModelFile(file, source);
+        const isModel = isModelFile(file, source, finalOptions);
         const isMixin = isMixinFile(file, source, finalOptions);
         if (finalOptions.verbose) {
           logger.debug(`📋 AST analysis result for ${file}: isModel=${isModel}, isMixin=${isMixin}`);
@@ -736,6 +929,10 @@ export async function runMigration(options: MigrateOptions): Promise<void> {
           // Extension type files go to extensionsDir
           outputDir = finalOptions.extensionsDir || './app/data/extensions';
           outputPath = join(resolve(outputDir), artifact.suggestedFileName);
+        } else if (artifact.type === 'resource-type') {
+          // Resource type interfaces go to resourcesDir
+          outputDir = finalOptions.resourcesDir || './app/data/resources';
+          outputPath = join(resolve(outputDir), artifact.suggestedFileName);
         } else if (artifact.type === 'resource-type-stub') {
           // Resource type stubs go to resourcesDir like other resource types
           outputDir = finalOptions.resourcesDir || './app/data/resources';
@@ -788,6 +985,8 @@ export async function runMigration(options: MigrateOptions): Promise<void> {
   // Process model files individually using the model transform
   for (const filePath of modelFiles) {
     try {
+      if (filePath.includes('client-core')) {
+      }
       if (finalOptions.verbose) {
         logger.debug(`🔄 Processing: ${filePath}`);
       }
@@ -804,12 +1003,14 @@ export async function runMigration(options: MigrateOptions): Promise<void> {
       const { toArtifacts } = await import('./model-to-schema.js');
       const artifacts = toArtifacts(filePath, source, enhancedOptions);
 
+
       if (artifacts.length > 0) {
         processed++;
 
         // Write each artifact to the appropriate directory
         for (const artifact of artifacts) {
           const { outputPath } = getArtifactOutputPath(artifact, filePath, finalOptions, false);
+
 
           if (!finalOptions.dryRun) {
             // Ensure output directory exists
@@ -918,10 +1119,10 @@ function isAlreadyProcessed(filePath: string, options: TransformOptions): boolea
 /**
  * Determine if a file is a model file using AST analysis
  */
-function isModelFile(filePath: string, source?: string): boolean {
+function isModelFile(filePath: string, source?: string, options?: TransformOptions): boolean {
   try {
     const fileSource = source || readFileSync(filePath, 'utf-8');
-    return astIsModelFile(filePath, fileSource);
+    return astIsModelFile(filePath, fileSource, options);
   } catch {
     return false;
   }

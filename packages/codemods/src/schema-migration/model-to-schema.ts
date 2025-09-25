@@ -1,7 +1,7 @@
 import type { SgNode } from '@ast-grep/napi';
 import { parse } from '@ast-grep/napi';
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs';
-import { dirname, join } from 'path';
+import { dirname, join, resolve } from 'path';
 
 import type { SchemaField, TransformArtifact, TransformOptions } from './utils/ast-utils.js';
 import {
@@ -30,6 +30,7 @@ import {
   getTypeScriptTypeForAttribute,
   getTypeScriptTypeForBelongsTo,
   getTypeScriptTypeForHasMany,
+  isModelFile,
   mixinNameToTraitName,
   parseDecoratorArgumentsWithNodes,
   toPascalCase,
@@ -113,7 +114,12 @@ function analyzeModelFile(filePath: string, source: string, options: TransformOp
     const root = ast.root();
 
     // Verify this is an ember model file we should consider
-    const expectedSources = [options?.emberDataImportSource || DEFAULT_EMBER_DATA_SOURCE];
+    // Include both the configured source and common WarpDrive sources
+    const expectedSources = [
+      options?.emberDataImportSource || DEFAULT_EMBER_DATA_SOURCE,
+      '@auditboard/warp-drive/v1/model', // AuditBoard WarpDrive
+      '@warp-drive/model', // Standard WarpDrive
+    ];
     const modelImportLocal = findEmberImportLocalName(root, expectedSources, options, filePath, process.cwd());
     debugLog(options, `DEBUG: Model import local: ${modelImportLocal}`);
 
@@ -125,7 +131,7 @@ function analyzeModelFile(filePath: string, source: string, options: TransformOp
     }
 
     // Check if this is a valid model class (either with EmberData decorators or extending intermediate models)
-    const isValidModel = isModelClass(defaultExportNode, modelImportLocal ?? undefined, undefined, root, options);
+    const isValidModel = isModelClass(defaultExportNode, modelImportLocal ?? undefined, undefined, root, options, filePath);
     debugLog(options, `DEBUG: Is valid model: ${isValidModel}`);
     if (!isValidModel) {
       debugLog(options, 'DEBUG: Not a valid model class, skipping');
@@ -446,16 +452,16 @@ export function processIntermediateModelsToTraits(
  * This does not modify the original source. The CLI can use this to write
  * files to the requested output directories.
  */
-export function toArtifacts(filePath: string, source: string, options: TransformOptions): TransformArtifact[] {
-  debugLog(options, `=== DEBUG: Processing ${filePath} ===`);
 
-  const analysis = analyzeModelFile(filePath, source, options);
-
-  if (!analysis.isValid) {
-    debugLog(options, 'Model analysis failed, skipping artifact generation');
-    return [];
-  }
-
+/**
+ * Generate artifacts for regular models (both internal and external)
+ */
+function generateRegularModelArtifacts(
+  filePath: string,
+  source: string,
+  analysis: ModelAnalysisResult,
+  options: TransformOptions
+): TransformArtifact[] {
   const { schemaFields, extensionProperties, mixinTraits, mixinExtensions, modelName, baseName, defaultExportNode } =
     analysis;
 
@@ -676,11 +682,97 @@ export class ${extensionClassName} extends Base {`
     debugLog(options, `Extension file length after adding signature: ${extensionArtifact.code.length}`);
   }
 
-  // Generate trait type interfaces for mixins
-  // TODO: This would require analyzing the mixin files, which is out of scope for this transform
-  // For now, we'll just note which traits are needed
+  return artifacts;
+}
+
+/**
+ * Generate basic artifacts for external models that passed initial categorization
+ * but failed detailed analysis
+ */
+function generateArtifactsFromMinimalAnalysis(
+  filePath: string,
+  source: string,
+  analysis: ModelAnalysisResult,
+  options: TransformOptions
+): TransformArtifact[] {
+  const { schemaFields, extensionProperties, mixinTraits, mixinExtensions, modelName, baseName, defaultExportNode } =
+    analysis;
+
+  // Parse the source to get the root node for class detection
+  const language = getLanguageFromPath(filePath);
+  const ast = parse(language, source);
+  const root = ast.root();
+
+  const artifacts: TransformArtifact[] = [];
+
+  // Always create a schema artifact (even if it only has traits/extensions from mixins)
+  const schemaName = `${modelName}Schema`;
+  const code = generateSchemaCode(
+    schemaName,
+    baseName,
+    schemaFields,
+    mixinTraits,
+    mixinExtensions,
+    source,
+    defaultExportNode ?? null,
+    root
+  );
+  // Determine the file extension based on the original model file
+  const originalExtension = filePath.endsWith('.ts') ? '.ts' : '.js';
+
+  artifacts.push({
+    type: 'schema',
+    name: schemaName,
+    code,
+    suggestedFileName: `${baseName}.schema${originalExtension}`,
+  });
+
+  // Create schema type interface
+  const schemaInterfaceName = `${modelName}`;
+
+  // Collect imports needed for schema interface
+  const schemaImports = new Set<string>();
+
+  // Collect schema field types - start with [Type] symbol
+  const schemaFieldTypes = [
+    {
+      name: '[Type]',
+      type: `'${baseName.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase()}'`,
+      readonly: true,
+    },
+  ];
+
+  // Collect schema field types
+  const commonImports = generateCommonWarpDriveImports(options);
+  schemaImports.add(commonImports.typeImport);
+
+  // Create type artifact
+  const schemaTypeArtifact = createTypeArtifact(
+    baseName,
+    schemaInterfaceName,
+    schemaFieldTypes,
+    'resource',
+    '', // No extends clause for minimal analysis
+    Array.from(schemaImports),
+    '.ts' // Type files should always be .ts regardless of source file extension
+  );
+  artifacts.push(schemaTypeArtifact);
 
   return artifacts;
+}
+
+export function toArtifacts(filePath: string, source: string, options: TransformOptions): TransformArtifact[] {
+  debugLog(options, `=== DEBUG: Processing ${filePath} ===`);
+
+  const analysis = analyzeModelFile(filePath, source, options);
+
+  if (!analysis.isValid) {
+    debugLog(options, 'Model analysis failed, skipping artifact generation');
+    return [];
+  }
+
+  // Use the shared artifact generation function for regular models
+  return generateRegularModelArtifacts(filePath, source, analysis, options);
 }
 
 /**
@@ -901,12 +993,73 @@ function generateIntermediateModelTraitArtifacts(
 function getIntermediateModelLocalNames(
   root: SgNode,
   intermediateModelPaths: string[],
-  options?: TransformOptions
+  options?: TransformOptions,
+  fromFile?: string
 ): string[] {
   const localNames: string[] = [];
 
   for (const modelPath of intermediateModelPaths) {
-    const localName = findEmberImportLocalName(root, [modelPath], options, undefined, process.cwd());
+
+    // First try direct matching
+    let localName = findEmberImportLocalName(root, [modelPath], options, fromFile, process.cwd());
+
+    // If no direct match, try to find imports that resolve to the expected intermediate model
+    // This handles cases where the configured path doesn't match the actual import path
+    if (!localName && fromFile && options?.intermediateModelPaths?.includes(modelPath)) {
+      const importStatements = root.findAll({ rule: { kind: 'import_statement' } });
+
+      for (const importNode of importStatements) {
+        const source = importNode.field('source');
+        if (!source) continue;
+
+        const sourceText = source.text().replace(/['"]/g, '');
+
+        // Check if this is a relative import that could be our intermediate model
+        if (sourceText.startsWith('./') || sourceText.startsWith('../')) {
+          try {
+            // Use the same path resolution logic as in the isModelFile fix
+            const resolvedPath = require('path').resolve(require('path').dirname(fromFile), sourceText);
+
+            // Check if the resolved path corresponds to the configured intermediate model path
+            // by checking if it ends with the same pattern as the configured path
+            const expectedFilePath = modelPath.split('/').slice(-1)[0]; // e.g., "-auditboard-model"
+            const possiblePaths = [`${resolvedPath}.ts`, `${resolvedPath}.js`, resolvedPath];
+
+
+            for (const possiblePath of possiblePaths) {
+              if (require('fs').existsSync(possiblePath)) {
+                // Check if this resolved path matches the expected intermediate model
+                if (possiblePath.includes(expectedFilePath)) {
+                  try {
+                    const content = require('fs').readFileSync(possiblePath, 'utf8');
+                    // Verify it's actually a model file
+                    const isModel = isModelFile(possiblePath, content, options);
+                    if (isModel) {
+                      const importClause = importNode.children().find((child) => child.kind() === 'import_clause');
+                      if (importClause) {
+                        const identifiers = importClause.findAll({ rule: { kind: 'identifier' } });
+                        if (identifiers.length > 0) {
+                          localName = identifiers[0].text();
+                          break;
+                        }
+                      }
+                    }
+                  } catch (error) {
+                    // Continue checking other possibilities
+                  }
+                }
+                break;
+              }
+            }
+
+            if (localName) break;
+          } catch (error) {
+            // Continue checking other imports
+          }
+        }
+      }
+    }
+
     if (localName) {
       localNames.push(localName);
       debugLog(options, `DEBUG: Found intermediate model local name: ${localName} for path: ${modelPath}`);
@@ -924,7 +1077,8 @@ function isModelClass(
   modelLocalName: string | undefined,
   baseModelLocalName: string | undefined,
   root: SgNode,
-  options?: TransformOptions
+  options?: TransformOptions,
+  filePath?: string
 ): boolean {
   debugLog(
     options,
@@ -1017,7 +1171,7 @@ function isModelClass(
   // Check for chained extends through configured intermediate classes
   let isChainedExtension = false;
   if (options?.intermediateModelPaths && options.intermediateModelPaths.length > 0) {
-    const intermediateLocalNames = getIntermediateModelLocalNames(root, options.intermediateModelPaths, options);
+    const intermediateLocalNames = getIntermediateModelLocalNames(root, options.intermediateModelPaths, options, filePath);
     isChainedExtension = intermediateLocalNames.some((localName) => extendsText.includes(localName));
     if (isChainedExtension) {
       debugLog(

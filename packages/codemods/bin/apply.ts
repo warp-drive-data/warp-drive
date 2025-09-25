@@ -31,7 +31,7 @@ export function createApplyCommand(program: Command, codemods: CodemodConfig[]) 
     }
 
     command
-      .addOption(new Option('-d, --dry', 'dry run (no changes are made to files)').default(false))
+      .addOption(new Option('-d, --dry', 'dry run (no changes are made to files)'))
       .addOption(
         new Option('-v, --verbose <level>', 'Show more information about the transform process')
           .choices(['0', '1', '2'])
@@ -79,12 +79,13 @@ export function createApplyCommand(program: Command, codemods: CodemodConfig[]) 
   if (migrateToSchema) {
     migrateToSchema
       .addOption(new Option('--config <path>', 'Path to configuration file'))
-      .addOption(new Option('--models-only', 'Only process model files').default(false))
-      .addOption(new Option('--mixins-only', 'Only process mixin files').default(false))
-      .addOption(new Option('--skip-processed', 'Skip files that have already been processed').default(false))
+      .addOption(new Option('--models-only', 'Only process model files'))
+      .addOption(new Option('--mixins-only', 'Only process mixin files'))
+      .addOption(new Option('--skip-processed', 'Skip files that have already been processed'))
       .addOption(new Option('--model-source-dir <path>', 'Directory containing model files').default('./app/models'))
       .addOption(new Option('--mixin-source-dir <path>', 'Directory containing mixin files').default('./app/mixins'))
-      .addOption(new Option('--output-dir <path>', 'Output directory for generated schemas').default('./app/schemas'));
+      .addOption(new Option('--output-dir <path>', 'Output directory for generated schemas').default('./app/schemas'))
+      .addOption(new Option('--generate-external-resources', 'Generate resource schema files for external package models in the consuming app'));
   }
 }
 
@@ -114,15 +115,16 @@ function createApplyAction(transformName: string) {
       const cliOptions = {
         ...options,
         inputDir,
-        dryRun: Boolean(options.dry),
-        verbose: options.verbose === '1' || options.verbose === '2',
-        debug: Boolean(options.debug),
-        modelsOnly: Boolean(options.modelsOnly),
-        mixinsOnly: Boolean(options.mixinsOnly),
-        skipProcessed: Boolean(options.skipProcessed),
+        ...(options.dry !== undefined && { dryRun: Boolean(options.dry) }),
+        ...(options.verbose !== undefined && { verbose: options.verbose === '1' || options.verbose === '2' }),
+        ...(options.debug !== undefined && { debug: Boolean(options.debug) }),
+        ...(options.modelsOnly !== undefined && { modelsOnly: Boolean(options.modelsOnly) }),
+        ...(options.mixinsOnly !== undefined && { mixinsOnly: Boolean(options.mixinsOnly) }),
+        ...(options.skipProcessed !== undefined && { skipProcessed: Boolean(options.skipProcessed) }),
         modelSourceDir: String(options.modelSourceDir || './app/models'),
         mixinSourceDir: String(options.mixinSourceDir || './app/mixins'),
         outputDir: String(options.outputDir || './app/schemas'),
+        ...(options.generateExternalResources !== undefined && { generateExternalResources: Boolean(options.generateExternalResources) }),
         // Ensure intermediateModelPaths is an array if provided
         intermediateModelPaths: Array.isArray(options.intermediateModelPaths)
           ? options.intermediateModelPaths

@@ -181,7 +181,7 @@ export function toArtifacts(filePath: string, source: string, options: Transform
     if (!defaultExportNode) {
       debugLog(options, 'No default export found, returning empty artifacts');
       if (filePath.includes('base-model.ts')) {
-        console.log(`DEBUG base-model.ts: NO DEFAULT EXPORT FOUND - returning empty artifacts`);
+        debugLog(options, `DEBUG base-model.ts: NO DEFAULT EXPORT FOUND - returning empty artifacts`);
       }
       return [];
     }
@@ -243,6 +243,15 @@ export function toArtifacts(filePath: string, source: string, options: Transform
       `Extract result: ${traitFields.length} trait fields, ${extensionProperties.length} extension properties, ${extendedTraits.length} extended traits`
     );
 
+    // Check if this mixin is connected to models (directly or transitively)
+    // In test environment, treat all mixins as connected unless explicitly specified
+    const isConnectedToModel = options?.modelConnectedMixins?.has(filePath) ??
+      (process.env.NODE_ENV === 'test' || options?.testMode === true);
+
+    if (!isConnectedToModel) {
+      debugLog(options, `Skipping ${mixinName}: not connected to any models`);
+      return [];
+    }
 
     // Continue with artifact generation even if empty - needed for polymorphic relationships
 
@@ -253,53 +262,45 @@ export function toArtifacts(filePath: string, source: string, options: Transform
     // Always generate trait type interface, even for empty mixins (needed for polymorphic relationships)
     const traitInterfaceName = `${mixinName.charAt(0).toUpperCase() + mixinName.slice(1)}Trait`;
 
-    // Check if this mixin is connected to models before generating trait artifacts
-    // In test environment, treat all mixins as connected unless explicitly specified
-    const isConnectedToModel = options?.modelConnectedMixins?.has(filePath) ??
-      (process.env.NODE_ENV === 'test' || options?.testMode === true);
+    // Always generate trait schema file, even for empty mixins (needed for polymorphic relationships)
+    const name = `${mixinName}Trait`;
+    const code = generateTraitCode(name, traitFields, extendedTraits);
+    artifacts.push({
+      type: 'trait',
+      name,
+      code,
+      suggestedFileName: `${baseName}.schema${fileExtension}`,
+    });
 
-    // Generate trait schema file if there are trait fields or extended traits AND mixin is used by models
-    if ((traitFields.length > 0 || extendedTraits.length > 0) && isConnectedToModel) {
-      const name = `${mixinName}Trait`;
-      const code = generateTraitCode(name, traitFields, extendedTraits);
-      artifacts.push({
-        type: 'trait',
-        name,
-        code,
-        suggestedFileName: `${baseName}.schema${fileExtension}`,
-      });
+    // Always generate trait type interface, even for empty mixins (needed for polymorphic relationships)
+    // Convert trait fields to TypeScript interface properties
+    const traitFieldTypes = traitFields.map((field) => {
+    let type: string;
+    switch (field.kind) {
+      case 'attribute':
+        type = getTypeScriptTypeForAttribute(
+          field.type || 'unknown',
+          !!(field.options && 'defaultValue' in field.options),
+          !field.options || field.options.allowNull !== false,
+          options,
+          field.options
+        ).tsType;
+        break;
+      case 'belongsTo':
+        type = getTypeScriptTypeForBelongsTo(field, options);
+        break;
+      case 'hasMany':
+        type = getTypeScriptTypeForHasMany(field, options);
+        break;
+      default:
+        type = 'unknown';
     }
 
-    // Generate trait type interface only for model-connected mixins (needed for polymorphic relationships)
-    if (isConnectedToModel) {
-      // Convert trait fields to TypeScript interface properties
-      const traitFieldTypes = traitFields.map((field) => {
-      let type: string;
-      switch (field.kind) {
-        case 'attribute':
-          type = getTypeScriptTypeForAttribute(
-            field.type || 'unknown',
-            !!(field.options && 'defaultValue' in field.options),
-            !field.options || field.options.allowNull !== false,
-            options,
-            field.options
-          ).tsType;
-          break;
-        case 'belongsTo':
-          type = getTypeScriptTypeForBelongsTo(field, options);
-          break;
-        case 'hasMany':
-          type = getTypeScriptTypeForHasMany(field, options);
-          break;
-        default:
-          type = 'unknown';
-      }
-
-      return {
-        name: field.name,
-        type,
-        readonly: false,
-      };
+    return {
+      name: field.name,
+      type,
+      readonly: false,
+    };
     });
 
     // Convert extended traits to extends clause format
@@ -354,22 +355,20 @@ export function toArtifacts(filePath: string, source: string, options: Transform
       }
     }
 
-      const traitTypeArtifact = createTypeArtifact(
-        baseName,
-        traitInterfaceName,
-        traitFieldTypes,
-        'trait',
-        extendsClause,
-        imports.size > 0 ? Array.from(imports) : undefined,
-        '.ts' // Type files should always be .ts regardless of source file extension
-      );
-      artifacts.push(traitTypeArtifact);
-    }
+    const traitTypeArtifact = createTypeArtifact(
+      baseName,
+      traitInterfaceName,
+      traitFieldTypes,
+      'trait',
+      extendsClause,
+      imports.size > 0 ? Array.from(imports) : undefined,
+      '.ts' // Type files should always be .ts regardless of source file extension
+    );
+    artifacts.push(traitTypeArtifact);
 
-    // Create extension artifact by modifying the original file, but only for mixins used by models
+    // Create extension artifact for mixins that have extension properties
     // For mixins, extensions should extend the trait interface
-
-    if (isConnectedToModel && extensionProperties.length > 0) {
+    if (extensionProperties.length > 0) {
       const traitImportPath = options?.traitsImport
         ? `${options.traitsImport}/${baseName}.schema.types`
         : `../traits/${baseName}.schema.types`;

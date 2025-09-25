@@ -1337,6 +1337,17 @@ export function withTransformWrapper<T>(
  */
 export function isModelFile(filePath: string, source: string, options?: TransformOptions): boolean {
   try {
+
+    // Special case: if this file itself is listed as an intermediate model, it's a model by definition
+    if (options?.intermediateModelPaths) {
+      for (const intermediatePath of options.intermediateModelPaths) {
+        const expectedFileName = intermediatePath.split('/').pop(); // e.g., "-auditboard-model"
+        if (expectedFileName && filePath.includes(expectedFileName)) {
+          return true;
+        }
+      }
+    }
+
     const lang = getLanguageFromPath(filePath);
     const ast = parse(lang, source);
     const root = ast.root();
@@ -1386,12 +1397,119 @@ export function isModelFile(filePath: string, source: string, options?: Transfor
       return false;
     }
 
-    const extendsText = heritageClause.text();
+    // Parse the heritage clause to find what this class actually extends
+    const identifiers = heritageClause.findAll({ rule: { kind: 'identifier' } });
+    const extendedClasses = identifiers.map(id => id.text());
 
-    // Check for common model patterns
-    const modelPatterns = ['BaseModel', 'Model', '.extend(', 'BaseModelMixin', 'Permissable'];
+    debugLog(options, `Class extends: ${extendedClasses.join(', ')}`);
 
-    return modelPatterns.some((pattern) => extendsText.includes(pattern));
+    // Use emberDataImportSource to determine what classes are base models
+    const baseModelSources = [];
+    if (options?.emberDataImportSource) {
+      baseModelSources.push(options.emberDataImportSource);
+    }
+    if (options?.intermediateModelPaths) {
+      baseModelSources.push(...options.intermediateModelPaths);
+    }
+
+    if (baseModelSources.length === 0) {
+      debugLog(options, `No base model sources provided, cannot determine if this is a model`);
+      return false;
+    }
+
+    // Extract imported class names from base model sources by looking at actual imports
+    const expectedBaseModels: string[] = [];
+    const importStatements = root.findAll({ rule: { kind: 'import_statement' } });
+
+    for (const importNode of importStatements) {
+      const source = importNode.field('source');
+      if (!source) continue;
+
+      const sourceText = source.text().replace(/['"]/g, '');
+
+      // Check for direct matches with base model sources
+      let isBaseModelImport = baseModelSources.includes(sourceText);
+
+      // If not a direct match, check if it's a relative import that resolves to an intermediate model
+      if (!isBaseModelImport && sourceText.startsWith('.') && options?.intermediateModelPaths) {
+        try {
+          // Resolve relative path to absolute path
+          const resolvedPath = resolve(dirname(filePath), sourceText);
+          debugLog(options, `Checking relative import ${sourceText} -> ${resolvedPath}`);
+
+          // Debug for client-core files
+
+          // Check if this resolved path corresponds to any intermediate model
+          for (const intermediatePath of options.intermediateModelPaths) {
+            // Use additionalModelSources to map from import path to file path
+            if (options.additionalModelSources) {
+              for (const { pattern, dir } of options.additionalModelSources) {
+                if (intermediatePath.startsWith(pattern.replace('/*', ''))) {
+                  // Convert intermediate path to file path using the mapping
+                  const relativePart = intermediatePath.replace(pattern.replace('/*', ''), '');
+                  const expectedFilePath = dir.replace('/*', relativePart);
+
+                  // Check both .ts and .js extensions
+                  const possiblePaths = [`${expectedFilePath}.ts`, `${expectedFilePath}.js`];
+                  // The resolvedPath might already have an extension, or might not
+                  const pathMatches = possiblePaths.some(p => {
+                    // Check if resolvedPath matches exactly
+                    if (resolvedPath === p) return true;
+                    // Check if resolvedPath without extension matches
+                    if (`${resolvedPath}.ts` === p || `${resolvedPath}.js` === p) return true;
+                    return false;
+                  });
+                  if (pathMatches) {
+                    debugLog(options, `Found match: ${sourceText} resolves to intermediate model ${intermediatePath}`);
+                    isBaseModelImport = true;
+                    break;
+                  }
+                }
+              }
+            }
+          }
+        } catch (error) {
+          // Ignore path resolution errors
+          debugLog(options, `Failed to resolve relative path ${sourceText}: ${error}`);
+        }
+      }
+
+      if (isBaseModelImport) {
+        // Get the import clause to find imported identifiers
+        const importClause = importNode.children().find((child) => child.kind() === 'import_clause');
+        if (!importClause) continue;
+
+        // Check for default import - it's the first identifier child in the import clause
+        const children = importClause.children();
+        const firstChild = children[0];
+        if (firstChild && firstChild.kind() === 'identifier') {
+          expectedBaseModels.push(firstChild.text());
+        }
+
+        // Check for named imports (e.g., import { BaseModel } from 'some/path')
+        const namedImports = importClause.findAll({ rule: { kind: 'named_imports' } });
+        for (const namedImportNode of namedImports) {
+          const importSpecifiers = namedImportNode.findAll({ rule: { kind: 'import_specifier' } });
+          for (const specifier of importSpecifiers) {
+            const nameNode = specifier.field('name');
+            if (nameNode) {
+              expectedBaseModels.push(nameNode.text());
+            }
+          }
+        }
+      }
+    }
+
+    debugLog(options, `Expected base models from imports: ${expectedBaseModels.join(', ')}`);
+    debugLog(options, `Extended classes found: ${extendedClasses.join(', ')}`);
+    debugLog(options, `Base model sources searched: ${baseModelSources.join(', ')}`);
+
+    // Check if any of the extended classes match our expected base models
+    const result = expectedBaseModels.some(baseModel =>
+      extendedClasses.some(extended => extended.includes(baseModel))
+    );
+    debugLog(options, `Model detection result: ${result}`);
+    return result;
   } catch (error) {
     debugLog(options, `Error checking if file is model: ${String(error)}`);
     return false;

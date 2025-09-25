@@ -24,6 +24,7 @@ export interface ConfigOptions {
   modelsOnly?: boolean;
   mixinsOnly?: boolean;
   skipProcessed?: boolean;
+  generateExternalResources?: boolean;
   config?: string;
   input?: string;
   output?: string;
