@@ -8,9 +8,9 @@ Resource Schemas are the foundation of ***Warp*Drive**’s data layer.
 They describe the shape of your resources in a **plain object**, replacing the old `DS.Model` pattern with something universal, explicit, and future-ready.
 
 Instead of writing classes with decorators, you define a schema with a `type`, an identity field, and a list of fields.  
-This schema becomes the single source of truth for your resource — clear, predictable, and framework-agnostic.
+This schema becomes the single source of truth for your resource that is clear, predictable, and framework-agnostic.
 
-They work anywhere: Ember, React, Node, or even without a DOM.
+They work anywhere: Ember, React, Vue, or even without a DOM.
 
 ---
 
@@ -32,7 +32,7 @@ export const UserSchema = withDefaults({
 });
 ```
 
-- `type` → the name of the resource (`user`)  
+- `type` → the name of the resource (eg: `user`)  
 - `@id` → the identity field (primary key)  
 - `field` → plain attributes  
 
@@ -68,7 +68,7 @@ store.schema.registerResource({
 ```
 
 - `identity` → defines the primary key  
-- `sourceKey` → maps API field names to local names (`first-name` → `firstName`)  
+- `sourceKey` → maps API field names to local names (`first_name` → `firstName`)  
 - `resource` and `collection` → relationships to other schemas (belongsTo / hasMany)  
 - `type` on a field → plugs in transforms for dates, URLs, decimals, etc.  
 
