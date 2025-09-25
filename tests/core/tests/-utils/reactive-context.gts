@@ -2,8 +2,8 @@ import { get } from '@ember/helper';
 import { render } from '@ember/test-helpers';
 import Component from '@glimmer/component';
 
-import type { ResourceRelationship } from '@warp-drive/core-types/cache/relationship';
-import type { FieldSchema, IdentityField, ObjectSchema, ResourceSchema } from '@warp-drive/core-types/schema/fields';
+import type { ResourceRelationship } from '@warp-drive/core/types/cache/relationship';
+import type { FieldSchema, IdentityField, ObjectSchema, ResourceSchema } from '@warp-drive/core/types/schema/fields';
 
 type Template<T> = {
   [key in keyof T & string]?: string;
@@ -72,7 +72,7 @@ export async function reactiveContext<T>(record: T, resource: ResourceSchema | O
             let value = record[field.name as keyof T] as { [key: string]: string };
 
             if (field.options.async) {
-              // @ts-expect-error promise proxy reach through
+              // promise proxy reach through
               // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
               value = record[field.name].content as { [key: string]: string };
             }
@@ -87,7 +87,7 @@ export async function reactiveContext<T>(record: T, resource: ResourceSchema | O
             let arr = record[field.name as keyof T] as Array<{ [key: string]: string }>;
 
             if (field.options.async) {
-              // @ts-expect-error promise proxy reach through
+              // promise proxy reach through
               // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
               arr = record[field.name].content as Array<{ [key: string]: string }>;
             }

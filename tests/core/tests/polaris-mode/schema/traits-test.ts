@@ -1,11 +1,8 @@
 import type { TestContext } from '@ember/test-helpers';
 
-import { module, test } from 'qunit';
-
-import { setupTest } from 'ember-qunit';
-
 import type { Store } from '@warp-drive/core';
 import { registerDerivations, withDefaults } from '@warp-drive/core/reactive';
+import { module, setupTest, test } from '@warp-drive/diagnostic/ember';
 
 module('SchemaService | Traits', function (hooks) {
   setupTest(hooks);

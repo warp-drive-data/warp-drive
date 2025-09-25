@@ -103,7 +103,7 @@ export interface Diagnostic {
    * @param expected
    * @param message
    */
-  satisfies<T extends object, J extends T>(actual: J, expected: T, message?: string): void;
+  satisfies<T extends object, J extends T>(actual: T, expected: J, message?: string): void;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
