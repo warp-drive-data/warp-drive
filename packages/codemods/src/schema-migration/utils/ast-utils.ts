@@ -2170,6 +2170,34 @@ export interface SchemaField {
   kind: 'attribute' | 'belongsTo' | 'hasMany';
   type?: string;
   options?: Record<string, unknown>;
+  comment?: string;
+}
+
+/**
+ * Extract JSDoc comments from an AST node
+ */
+export function extractJSDocComment(node: SgNode): string | undefined {
+  // Look for JSDoc comments (/** ... */) preceding the node
+  // We need to check the source text around the node's position
+  const source = node.root().text();
+  const nodeText = node.text();
+  const nodeIndex = source.indexOf(nodeText);
+
+  if (nodeIndex === -1) return undefined;
+
+  // Look backwards from the node to find JSDoc comments
+  const textBeforeNode = source.substring(0, nodeIndex);
+
+  // Match JSDoc comments - /** ... */ with potential whitespace/newlines
+  const jsdocRegex = /\/\*\*[\s\S]*?\*\/\s*$/;
+  const match = textBeforeNode.match(jsdocRegex);
+
+  if (match) {
+    // Clean up the JSDoc comment - remove /** */ and normalize whitespace
+    return match[0].trim();
+  }
+
+  return undefined;
 }
 
 /**
@@ -2477,7 +2505,9 @@ export function generateInterfaceCode(
   // Add properties
   properties.forEach((prop) => {
     if (prop.comment) {
-      lines.push(`	/** ${prop.comment} */`);
+      // Wrap comment in JSDoc format if not already formatted
+      const formattedComment = prop.comment.startsWith('/**') ? prop.comment : `/** ${prop.comment} */`;
+      lines.push(`	${formattedComment}`);
     }
 
     const readonly = prop.readonly ? 'readonly ' : '';

@@ -533,6 +533,7 @@ function generateRegularModelArtifacts(
         name: field.name,
         type,
         readonly: true,
+        comment: field.comment,
       };
     }),
   ];
@@ -1609,9 +1610,10 @@ function transformModelImportsInSource(source: string, root: SgNode): string {
       const [fullMatch, typeName, relativePath] = relativeImportMatch;
 
       // Transform to named import from schema.types
-      // e.g., import type SomeThing from './some-thing';
+      // e.g., import type SomeThing from './some-thing.ts';
       // becomes import type { SomeThing } from './some-thing.schema.types';
-      const transformedImport = `import type { ${typeName} } from '${relativePath}.schema.types';`;
+      const pathWithoutExtension = relativePath.replace(/\.(js|ts)$/, '');
+      const transformedImport = `import type { ${typeName} } from '${pathWithoutExtension}.schema.types';`;
 
       result = result.replace(fullMatch, transformedImport);
     }
