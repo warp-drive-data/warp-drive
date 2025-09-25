@@ -1,16 +1,16 @@
-import { rerender } from '@ember/test-helpers';
-
-import { module, test } from 'qunit';
-
-import { setupRenderingTest } from 'ember-qunit';
-
-import type Store from '@ember-data/store';
-import type { ResourceKey } from '@warp-drive/core-types';
-import { Type } from '@warp-drive/core-types/symbols';
-import type { SchemaRecord, Transformation } from '@warp-drive/schema-record';
-import { registerDerivations, withDefaults } from '@warp-drive/schema-record';
+import { useRecommendedStore } from '@warp-drive/core';
+import type { ReactiveResource, Transformation } from '@warp-drive/core/reactive';
+import { withDefaults } from '@warp-drive/core/reactive';
+import type { ResourceKey } from '@warp-drive/core/types';
+import { Type } from '@warp-drive/core/types/symbols';
+import { module, setupRenderingTest, test } from '@warp-drive/diagnostic/ember';
+import { JSONAPICache } from '@warp-drive/json-api';
 
 import { reactiveContext } from '../-utils/reactive-context';
+
+const Store = useRecommendedStore({
+  cache: JSONAPICache,
+});
 
 interface User {
   id: string | null;
@@ -26,9 +26,8 @@ module('Reactivity | basic fields can receive remote updates', function (hooks) 
   setupRenderingTest(hooks);
 
   test('we can use simple fields with no `type`', async function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
     const { schema } = store;
-    registerDerivations(schema);
 
     schema.registerResource(
       withDefaults({
@@ -50,16 +49,16 @@ module('Reactivity | basic fields can receive remote updates', function (hooks) 
       },
     }) as User;
 
-    assert.strictEqual(record.id, '1', 'id is accessible');
-    assert.strictEqual(record.$type, 'user', '$type is accessible');
-    assert.strictEqual(record.name, 'Rey Pupatine', 'name is accessible');
+    assert.equal(record.id, '1', 'id is accessible');
+    assert.equal(record.$type, 'user', '$type is accessible');
+    assert.equal(record.name, 'Rey Pupatine', 'name is accessible');
 
     const { counters, fieldOrder } = await reactiveContext(record, resource);
     const nameIndex = fieldOrder.indexOf('name');
 
-    assert.strictEqual(counters.id, 1, 'idCount is 1');
-    assert.strictEqual(counters.$type, 1, '$typeCount is 1');
-    assert.strictEqual(counters.name, 1, 'nameCount is 1');
+    assert.equal(counters.id, 1, 'idCount is 1');
+    assert.equal(counters.$type, 1, '$typeCount is 1');
+    assert.equal(counters.name, 1, 'nameCount is 1');
 
     assert.dom(`li:nth-child(${nameIndex + 1})`).hasText('name: Rey Pupatine', 'name is rendered');
 
@@ -72,31 +71,30 @@ module('Reactivity | basic fields can receive remote updates', function (hooks) 
       },
     });
 
-    assert.strictEqual(record.id, '1', 'id is accessible');
-    assert.strictEqual(record.$type, 'user', '$type is accessible');
-    assert.strictEqual(record.name, 'Rey Skybarker', 'name is accessible');
+    assert.equal(record.id, '1', 'id is accessible');
+    assert.equal(record.$type, 'user', '$type is accessible');
+    assert.equal(record.name, 'Rey Skybarker', 'name is accessible');
 
-    await rerender();
+    await this.h.rerender();
 
-    assert.strictEqual(counters.id, 1, 'idCount is 1');
-    assert.strictEqual(counters.$type, 1, '$typeCount is 1');
-    assert.strictEqual(counters.name, 2, 'nameCount is 1');
+    assert.equal(counters.id, 1, 'idCount is 1');
+    assert.equal(counters.$type, 1, '$typeCount is 1');
+    assert.equal(counters.name, 2, 'nameCount is 1');
 
     assert.dom(`li:nth-child(${nameIndex + 1})`).hasText('name: Rey Skybarker', 'name is rendered');
   });
 
   test('we can use simple fields with a `type`', async function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
     const { schema } = store;
-    registerDerivations(schema);
 
     const FloatTransform: Transformation<string | number, number> = {
-      serialize(value: string | number, options: { precision?: number } | null, _record: SchemaRecord): string {
+      serialize(value: string | number, options: { precision?: number } | null, _record: ReactiveResource): string {
         return typeof value === 'number'
           ? value.toFixed(options?.precision ?? 3)
           : Number(value).toFixed(options?.precision ?? 3);
       },
-      hydrate(value: string, _options: { precision?: number } | null, _record: SchemaRecord): number {
+      hydrate(value: string, _options: { precision?: number } | null, _record: ReactiveResource): number {
         if (value === undefined || value === null) {
           return 0;
         }
@@ -160,24 +158,24 @@ module('Reactivity | basic fields can receive remote updates', function (hooks) 
       },
     }) as User;
 
-    assert.strictEqual(record.id, '1', 'id is accessible');
-    assert.strictEqual(record.$type, 'user', '$type is accessible');
-    assert.strictEqual(record.name, 'Rey Pupatine', 'name is accessible');
-    assert.strictEqual(record.age, 3, 'age is accessible');
-    assert.strictEqual(record.netWorth, 1_000_000.01, 'netWorth is accessible');
-    assert.strictEqual(record.coolometer, 100, 'coolometer is accessible');
-    assert.strictEqual(record.rank, 0, 'rank is accessible');
+    assert.equal(record.id, '1', 'id is accessible');
+    assert.equal(record.$type, 'user', '$type is accessible');
+    assert.equal(record.name, 'Rey Pupatine', 'name is accessible');
+    assert.equal(record.age, 3, 'age is accessible');
+    assert.equal(record.netWorth, 1_000_000.01, 'netWorth is accessible');
+    assert.equal(record.coolometer, 100, 'coolometer is accessible');
+    assert.equal(record.rank, 0, 'rank is accessible');
 
     const { counters, fieldOrder } = await reactiveContext(record, resource);
     const nameIndex = fieldOrder.indexOf('name');
 
-    assert.strictEqual(counters.id, 1, 'idCount is 1');
-    assert.strictEqual(counters.$type, 1, '$typeCount is 1');
-    assert.strictEqual(counters.name, 1, 'nameCount is 1');
-    assert.strictEqual(counters.age, 1, 'ageCount is 1');
-    assert.strictEqual(counters.netWorth, 1, 'netWorthCount is 1');
-    assert.strictEqual(counters.coolometer, 1, 'coolometerCount is 1');
-    assert.strictEqual(counters.rank, 1, 'rankCount is 1');
+    assert.equal(counters.id, 1, 'idCount is 1');
+    assert.equal(counters.$type, 1, '$typeCount is 1');
+    assert.equal(counters.name, 1, 'nameCount is 1');
+    assert.equal(counters.age, 1, 'ageCount is 1');
+    assert.equal(counters.netWorth, 1, 'netWorthCount is 1');
+    assert.equal(counters.coolometer, 1, 'coolometerCount is 1');
+    assert.equal(counters.rank, 1, 'rankCount is 1');
 
     assert.dom(`li:nth-child(${nameIndex + 1})`).hasText('name: Rey Pupatine', 'name is rendered');
     assert.dom(`li:nth-child(${nameIndex + 3})`).hasText('rank: 0', 'rank is rendered');
@@ -200,23 +198,23 @@ module('Reactivity | basic fields can receive remote updates', function (hooks) 
       },
     });
 
-    assert.strictEqual(record.id, '1', 'id is accessible');
-    assert.strictEqual(record.$type, 'user', '$type is accessible');
-    assert.strictEqual(record.name, 'Rey Skybarker', 'name is accessible');
-    assert.strictEqual(record.age, 4, 'age is accessible');
-    assert.strictEqual(record.netWorth, 1_000_000.01, 'netWorth is accessible');
-    assert.strictEqual(record.coolometer, 100.001, 'coolometer is accessible');
-    assert.strictEqual(record.rank, 10, 'rank is accessible');
+    assert.equal(record.id, '1', 'id is accessible');
+    assert.equal(record.$type, 'user', '$type is accessible');
+    assert.equal(record.name, 'Rey Skybarker', 'name is accessible');
+    assert.equal(record.age, 4, 'age is accessible');
+    assert.equal(record.netWorth, 1_000_000.01, 'netWorth is accessible');
+    assert.equal(record.coolometer, 100.001, 'coolometer is accessible');
+    assert.equal(record.rank, 10, 'rank is accessible');
 
-    await rerender();
+    await this.h.rerender();
 
-    assert.strictEqual(counters.id, 1, 'idCount is 1');
-    assert.strictEqual(counters.$type, 1, '$typeCount is 1');
-    assert.strictEqual(counters.name, 2, 'nameCount is 2');
-    assert.strictEqual(counters.age, 2, 'ageCount is 2');
-    assert.strictEqual(counters.netWorth, 1, 'netWorthCount is 1');
-    assert.strictEqual(counters.coolometer, 2, 'coolometerCount is 2');
-    assert.strictEqual(counters.rank, 2, 'rankCount is 2');
+    assert.equal(counters.id, 1, 'idCount is 1');
+    assert.equal(counters.$type, 1, '$typeCount is 1');
+    assert.equal(counters.name, 2, 'nameCount is 2');
+    assert.equal(counters.age, 2, 'ageCount is 2');
+    assert.equal(counters.netWorth, 1, 'netWorthCount is 1');
+    assert.equal(counters.coolometer, 2, 'coolometerCount is 2');
+    assert.equal(counters.rank, 2, 'rankCount is 2');
 
     assert.dom(`li:nth-child(${nameIndex + 1})`).hasText('name: Rey Skybarker', 'name is rendered');
     assert.dom(`li:nth-child(${nameIndex + 3})`).hasText('rank: 10', 'rank is rendered');

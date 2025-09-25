@@ -1,13 +1,13 @@
-import type Store from 'core-tests/services/store';
-import { module, test } from 'qunit';
+import { recordIdentifierFor, useRecommendedStore } from '@warp-drive/core';
+import type { Transformation } from '@warp-drive/core/reactive';
+import { withDefaults } from '@warp-drive/core/reactive';
+import { Type } from '@warp-drive/core/types/symbols';
+import { module, setupTest, test } from '@warp-drive/diagnostic/ember';
+import { JSONAPICache } from '@warp-drive/json-api';
 
-import { setupTest } from 'ember-qunit';
-
-import { recordIdentifierFor } from '@ember-data/store';
-import { Type } from '@warp-drive/core-types/symbols';
-import type { Transformation } from '@warp-drive/schema-record';
-import { registerDerivations, withDefaults } from '@warp-drive/schema-record';
-
+const Store = useRecommendedStore({
+  cache: JSONAPICache,
+});
 type address = {
   street: string;
   city: string;
@@ -27,9 +27,8 @@ module('Reads | object fields', function (hooks) {
   setupTest(hooks);
 
   test('we can use simple object fields with no `type`', function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
     const { schema } = store;
-    registerDerivations(schema);
 
     schema.registerResource(
       withDefaults({
@@ -55,22 +54,22 @@ module('Reads | object fields', function (hooks) {
     };
     const record = store.createRecord<CreateUserType>('user', { name: 'Rey Skybarker', address: sourceAddress });
 
-    assert.strictEqual(record.id, null, 'id is accessible');
-    assert.strictEqual(record.$type, 'user', '$type is accessible');
-    assert.strictEqual(record.name, 'Rey Skybarker', 'name is accessible');
+    assert.equal(record.id, null, 'id is accessible');
+    assert.equal(record.$type, 'user', '$type is accessible');
+    assert.equal(record.name, 'Rey Skybarker', 'name is accessible');
     assert.deepEqual(
       record.address,
       { street: '123 Main St', city: 'Anytown', state: 'NY', zip: '12345' },
       'we can access address object'
     );
-    assert.strictEqual(record.address, record.address, 'We have a stable object reference');
-    assert.notStrictEqual(record.address, sourceAddress);
+    assert.equal(record.address, record.address, 'We have a stable object reference');
+    assert.notEqual(record.address, sourceAddress);
 
     // test that the data entered the cache properly
     const identifier = recordIdentifierFor(record);
     const cachedResourceData = store.cache.peek(identifier);
 
-    assert.notStrictEqual(
+    assert.notEqual(
       cachedResourceData?.attributes?.address,
       sourceAddress,
       'with no transform we will still divorce the object reference'
@@ -88,9 +87,8 @@ module('Reads | object fields', function (hooks) {
   });
 
   test('we can use simple object fields with a `type`', function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
     const { schema } = store;
-    registerDerivations(schema);
     schema.registerResource(
       withDefaults({
         type: 'user',
@@ -141,9 +139,9 @@ module('Reads | object fields', function (hooks) {
       zip: 12345,
     };
     const record = store.createRecord<CreateUserType>('user', { name: 'Rey Skybarker', address: sourceAddress });
-    assert.strictEqual(record.id, null, 'id is accessible');
-    assert.strictEqual(record.$type, 'user', '$type is accessible');
-    assert.strictEqual(record.name, 'Rey Skybarker', 'name is accessible');
+    assert.equal(record.id, null, 'id is accessible');
+    assert.equal(record.$type, 'user', '$type is accessible');
+    assert.equal(record.name, 'Rey Skybarker', 'name is accessible');
     assert.deepEqual(
       record.address,
       {
@@ -154,12 +152,12 @@ module('Reads | object fields', function (hooks) {
       },
       'We have the correct object members'
     );
-    assert.strictEqual(record.address, record.address, 'We have a stable object reference');
-    assert.notStrictEqual(record.address, sourceAddress);
+    assert.equal(record.address, record.address, 'We have a stable object reference');
+    assert.notEqual(record.address, sourceAddress);
     // test that the data entered the cache properly
     const identifier = recordIdentifierFor(record);
     const cachedResourceData = store.cache.peek(identifier);
-    assert.notStrictEqual(
+    assert.notEqual(
       cachedResourceData?.attributes?.address,
       sourceAddress,
       'with transform we will still divorce the array reference'

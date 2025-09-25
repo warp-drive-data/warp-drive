@@ -1,11 +1,11 @@
-import { module, test } from 'qunit';
+import { useRecommendedStore } from '@warp-drive/core';
+import type { Type } from '@warp-drive/core/types/symbols';
+import { module, setupTest, test } from '@warp-drive/diagnostic/ember';
+import { JSONAPICache } from '@warp-drive/json-api';
 
-import { setupTest } from 'ember-qunit';
-
-import type Store from '@ember-data/store';
-import type { Type } from '@warp-drive/core-types/symbols';
-import { registerDerivations } from '@warp-drive/schema-record';
-
+const Store = useRecommendedStore({
+  cache: JSONAPICache,
+});
 interface User {
   id: string;
   $type: 'user';
@@ -18,9 +18,8 @@ module('ManagedArray | Iterable Behaviors', function (hooks) {
   setupTest(hooks);
 
   test('we can use `JSON.stringify` on a ManagedArray', function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
     const { schema } = store;
-    registerDerivations(schema);
 
     schema.registerResource({
       type: 'user',
@@ -67,9 +66,8 @@ module('ManagedArray | Iterable Behaviors', function (hooks) {
   });
 
   test('we can use `[ ...record.qualties ]` on a ManagedArray', function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
     const { schema } = store;
-    registerDerivations(schema);
 
     schema.registerResource({
       type: 'user',
@@ -99,7 +97,7 @@ module('ManagedArray | Iterable Behaviors', function (hooks) {
     try {
       const value = [...record.qualities] as string[];
       assert.true(true, 'spread should not throw');
-      assert.arrayStrictEquals(
+      assert.arrayEquals(
         value,
         ['smart', 'funny', 'cool'],
         'spread should remove constructor and include all other fields in the schema'
@@ -110,9 +108,8 @@ module('ManagedArray | Iterable Behaviors', function (hooks) {
   });
 
   test('we can use `for (const value of record.qualities)` on a record', function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
     const { schema } = store;
-    registerDerivations(schema);
 
     schema.registerResource({
       type: 'user',
@@ -147,16 +144,15 @@ module('ManagedArray | Iterable Behaviors', function (hooks) {
       }
 
       assert.true(true, 'for...of should not throw');
-      assert.arrayStrictEquals(value, ['smart', 'funny', 'cool'], 'for...of should work');
+      assert.arrayEquals(value, ['smart', 'funny', 'cool'], 'for...of should work');
     } catch (e: unknown) {
       assert.true(false, `for...of should not throw: ${(e as Error).message}`);
     }
   });
 
   test('we can use `Array.from(record.qualities)` as expected', function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
     const { schema } = store;
-    registerDerivations(schema);
 
     schema.registerResource({
       type: 'user',
@@ -186,7 +182,7 @@ module('ManagedArray | Iterable Behaviors', function (hooks) {
     try {
       const value = Array.from(record.qualities);
       assert.true(true, 'Array.from should not throw');
-      assert.arrayStrictEquals(value, ['smart', 'funny', 'cool'], 'Array.from should work');
+      assert.arrayEquals(value, ['smart', 'funny', 'cool'], 'Array.from should work');
     } catch (e: unknown) {
       assert.true(false, `Array.from should not throw: ${(e as Error).message}`);
     }

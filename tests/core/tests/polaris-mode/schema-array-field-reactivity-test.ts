@@ -1,15 +1,15 @@
-import { rerender } from '@ember/test-helpers';
-
-import { module, test } from 'qunit';
-
-import { setupRenderingTest } from 'ember-qunit';
-
-import type Store from '@ember-data/store';
-import type { ObjectValue } from '@warp-drive/core-types/json/raw';
-import { Type } from '@warp-drive/core-types/symbols';
-import { registerDerivations, withDefaults } from '@warp-drive/schema-record';
+import { useRecommendedStore } from '@warp-drive/core';
+import { withDefaults } from '@warp-drive/core/reactive';
+import type { ObjectValue } from '@warp-drive/core/types/json/raw';
+import { Type } from '@warp-drive/core/types/symbols';
+import { module, setupRenderingTest, test } from '@warp-drive/diagnostic/ember';
+import { JSONAPICache } from '@warp-drive/json-api';
 
 import { reactiveContext } from '../-utils/reactive-context';
+
+const Store = useRecommendedStore({
+  cache: JSONAPICache,
+});
 
 interface address {
   street: string;
@@ -28,15 +28,15 @@ interface User {
   netWorth: number;
   coolometer: number;
   rank: number;
+  [Type]: 'user';
 }
 
 module('Reactivity | schema-array fields can receive remote updates', function (hooks) {
   setupRenderingTest(hooks);
 
   test('we can use simple fields with no `type`', async function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
     const { schema } = store;
-    registerDerivations(schema);
 
     function hashAddress<T extends object>(data: T, options: ObjectValue | null, prop: string | null): string {
       const newData = data as address;
@@ -87,7 +87,7 @@ module('Reactivity | schema-array fields can receive remote updates', function (
 
     const fields = schema.resource({ type: 'user' });
 
-    const record = store.push({
+    const record = store.push<User>({
       data: {
         type: 'user',
         id: '1',
@@ -99,21 +99,21 @@ module('Reactivity | schema-array fields can receive remote updates', function (
           ],
         },
       },
-    }) as User;
+    });
 
-    assert.strictEqual(record.id, '1', 'id is accessible');
-    assert.strictEqual(record.$type, 'user', '$type is accessible');
+    assert.equal(record.id, '1', 'id is accessible');
+    assert.equal(record.$type, 'user', '$type is accessible');
     assert.deepEqual(record.favoriteNumbers, ['1', '2'], 'favoriteNumbers is accessible');
-    assert.strictEqual(record.addresses?.length, 2, 'addresses is accessible');
-    assert.strictEqual(record.addresses![0], record.addresses![0], 'addresses are stable by index');
-    assert.strictEqual(record.addresses![1], record.addresses![1], 'addresses are stable by index');
-    assert.notStrictEqual(
+    assert.equal(record.addresses?.length, 2, 'addresses is accessible');
+    assert.equal(record.addresses![0], record.addresses![0], 'addresses are stable by index');
+    assert.equal(record.addresses![1], record.addresses![1], 'addresses are stable by index');
+    assert.notEqual(
       record.addresses![1],
       record.addresses![0],
       'embeded SchemaRecord instances are not accidentally reused'
     );
-    assert.strictEqual(record.addresses![0]!.street, '123 Main St', 'addresses are accessible');
-    assert.strictEqual(record.addresses![1]!.street, '456 Elm St', 'addresses are accessible');
+    assert.equal(record.addresses![0]!.street, '123 Main St', 'addresses are accessible');
+    assert.equal(record.addresses![1]!.street, '456 Elm St', 'addresses are accessible');
 
     const addressRecord0 = record.addresses![0]!;
     const addressRecord1 = record.addresses![1]!;
@@ -121,10 +121,10 @@ module('Reactivity | schema-array fields can receive remote updates', function (
     const { counters, fieldOrder } = await reactiveContext(record, fields);
     const favoriteNumbersIndex = fieldOrder.indexOf('favoriteNumbers');
 
-    assert.strictEqual(counters.id, 1, 'idCount is 1');
-    assert.strictEqual(counters.$type, 1, '$typeCount is 1');
-    assert.strictEqual(counters.favoriteNumbers, 1, 'favoriteNumbersCount is 1');
-    assert.strictEqual(counters.addresses, 1, 'addressesCount is 1');
+    assert.equal(counters.id, 1, 'idCount is 1');
+    assert.equal(counters.$type, 1, '$typeCount is 1');
+    assert.equal(counters.favoriteNumbers, 1, 'favoriteNumbersCount is 1');
+    assert.equal(counters.addresses, 1, 'addressesCount is 1');
 
     assert
       .dom(`li:nth-child(${favoriteNumbersIndex + 1})`)
@@ -146,30 +146,30 @@ module('Reactivity | schema-array fields can receive remote updates', function (
       },
     });
 
-    assert.strictEqual(record.id, '1', 'id is accessible');
-    assert.strictEqual(record.$type, 'user', '$type is accessible');
+    assert.equal(record.id, '1', 'id is accessible');
+    assert.equal(record.$type, 'user', '$type is accessible');
     assert.deepEqual(record.favoriteNumbers, ['3', '4'], 'favoriteNumbers is accessible');
-    assert.strictEqual(record.addresses?.length, 3, 'addresses is accessible');
-    assert.strictEqual(record.addresses![0], record.addresses![0], 'addresses are stable by index');
-    assert.strictEqual(record.addresses![1], record.addresses![1], 'addresses are stable by index');
-    assert.strictEqual(record.addresses![2], record.addresses![2], 'addresses are stable by index');
-    assert.notStrictEqual(
+    assert.equal(record.addresses?.length, 3, 'addresses is accessible');
+    assert.equal(record.addresses![0], record.addresses![0], 'addresses are stable by index');
+    assert.equal(record.addresses![1], record.addresses![1], 'addresses are stable by index');
+    assert.equal(record.addresses![2], record.addresses![2], 'addresses are stable by index');
+    assert.notEqual(
       record.addresses![1],
       record.addresses![0],
       'embeded SchemaRecord instances are not accidentally reused'
     );
-    assert.strictEqual(record.addresses![0]!.street, '123 Main St', 'addresses are accessible');
-    assert.strictEqual(record.addresses![1]!.street, '678 Broadway St', 'addresses are accessible');
-    assert.strictEqual(record.addresses![2]!.street, '911 Emergency St', 'addresses are accessible');
-    assert.strictEqual(record.addresses![0], addressRecord0, 'addressRecord0 is stable');
-    assert.notStrictEqual(record.addresses![1], addressRecord1, 'addressRecord1 is a new object');
+    assert.equal(record.addresses![0]!.street, '123 Main St', 'addresses are accessible');
+    assert.equal(record.addresses![1]!.street, '678 Broadway St', 'addresses are accessible');
+    assert.equal(record.addresses![2]!.street, '911 Emergency St', 'addresses are accessible');
+    assert.equal(record.addresses![0], addressRecord0, 'addressRecord0 is stable');
+    assert.notEqual(record.addresses![1], addressRecord1, 'addressRecord1 is a new object');
 
-    await rerender();
+    await this.h.rerender();
 
-    assert.strictEqual(counters.id, 1, 'idCount is 1');
-    assert.strictEqual(counters.$type, 1, '$typeCount is 1');
-    assert.strictEqual(counters.favoriteNumbers, 2, 'favoriteNumbersCount is 2');
-    assert.strictEqual(counters.addresses, 2, 'addressesCount is 2');
+    assert.equal(counters.id, 1, 'idCount is 1');
+    assert.equal(counters.$type, 1, '$typeCount is 1');
+    assert.equal(counters.favoriteNumbers, 2, 'favoriteNumbersCount is 2');
+    assert.equal(counters.addresses, 2, 'addressesCount is 2');
 
     assert
       .dom(`li:nth-child(${favoriteNumbersIndex + 1})`)

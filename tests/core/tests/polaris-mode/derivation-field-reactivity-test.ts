@@ -1,16 +1,15 @@
-import { rerender } from '@ember/test-helpers';
-
-import { module, test } from 'qunit';
-
-import { setupRenderingTest } from 'ember-qunit';
-
-import type Store from '@ember-data/store';
-import { Type } from '@warp-drive/core-types/symbols';
-import type { SchemaRecord } from '@warp-drive/schema-record';
-import { registerDerivations, withDefaults } from '@warp-drive/schema-record';
+import { useRecommendedStore } from '@warp-drive/core';
+import type { ReactiveResource } from '@warp-drive/core/reactive';
+import { withDefaults } from '@warp-drive/core/reactive';
+import { Type } from '@warp-drive/core/types/symbols';
+import { module, setupRenderingTest, test } from '@warp-drive/diagnostic/ember';
+import { JSONAPICache } from '@warp-drive/json-api';
 
 import { reactiveContext } from '../-utils/reactive-context';
 
+const Store = useRecommendedStore({
+  cache: JSONAPICache,
+});
 interface User {
   id: string | null;
   $type: 'user';
@@ -23,11 +22,11 @@ module('Reactivity | derivation', function (hooks) {
   setupRenderingTest(hooks);
 
   test('we can derive from simple fields', async function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
     const { schema } = store;
 
     function concat(
-      record: SchemaRecord & { [key: string]: unknown },
+      record: ReactiveResource & { [key: string]: unknown },
       options: Record<string, unknown> | null,
       _prop: string
     ): string {
@@ -38,7 +37,6 @@ module('Reactivity | derivation', function (hooks) {
     concat[Type] = 'concat';
 
     schema.registerDerivation(concat);
-    registerDerivations(schema);
 
     schema.registerResource(
       withDefaults({
@@ -74,20 +72,20 @@ module('Reactivity | derivation', function (hooks) {
       },
     }) as User;
 
-    assert.strictEqual(record.id, '1', 'id is accessible');
-    assert.strictEqual(record.$type, 'user', '$type is accessible');
-    assert.strictEqual(record.firstName, 'Rey', 'firstName is accessible');
-    assert.strictEqual(record.lastName, 'Pupatine', 'lastName is accessible');
-    assert.strictEqual(record.fullName, 'Rey Pupatine', 'fullName is accessible');
+    assert.equal(record.id, '1', 'id is accessible');
+    assert.equal(record.$type, 'user', '$type is accessible');
+    assert.equal(record.firstName, 'Rey', 'firstName is accessible');
+    assert.equal(record.lastName, 'Pupatine', 'lastName is accessible');
+    assert.equal(record.fullName, 'Rey Pupatine', 'fullName is accessible');
 
     const { counters, fieldOrder } = await reactiveContext(record, resource);
     const nameIndex = fieldOrder.indexOf('firstName');
 
-    assert.strictEqual(counters.id, 1, 'id Count is 1');
-    assert.strictEqual(counters.$type, 1, '$type Count is 1');
-    assert.strictEqual(counters.firstName, 1, 'firstName Count is 1');
-    assert.strictEqual(counters.lastName, 1, 'lastName Count is 1');
-    assert.strictEqual(counters.fullName, 1, 'fullName Count is 1');
+    assert.equal(counters.id, 1, 'id Count is 1');
+    assert.equal(counters.$type, 1, '$type Count is 1');
+    assert.equal(counters.firstName, 1, 'firstName Count is 1');
+    assert.equal(counters.lastName, 1, 'lastName Count is 1');
+    assert.equal(counters.fullName, 1, 'fullName Count is 1');
 
     assert.dom(`li:nth-child(${nameIndex + 1})`).hasText('firstName: Rey', 'firstName is rendered');
     assert.dom(`li:nth-child(${nameIndex + 3})`).hasText('lastName: Pupatine', 'lastName is rendered');
@@ -104,17 +102,17 @@ module('Reactivity | derivation', function (hooks) {
       },
     });
 
-    assert.strictEqual(record.firstName, 'Rey', 'firstName is accessible');
-    assert.strictEqual(record.lastName, 'Skybarker', 'lastName is accessible');
-    assert.strictEqual(record.fullName, 'Rey Skybarker', 'fullName is accessible');
+    assert.equal(record.firstName, 'Rey', 'firstName is accessible');
+    assert.equal(record.lastName, 'Skybarker', 'lastName is accessible');
+    assert.equal(record.fullName, 'Rey Skybarker', 'fullName is accessible');
 
-    await rerender();
+    await this.h.rerender();
 
-    assert.strictEqual(counters.id, 1, 'id Count is 1');
-    assert.strictEqual(counters.$type, 1, '$type Count is 1');
-    assert.strictEqual(counters.firstName, 1, 'firstName Count is 1');
-    assert.strictEqual(counters.lastName, 2, 'lastName Count is 2');
-    assert.strictEqual(counters.fullName, 2, 'fullName Count is 2');
+    assert.equal(counters.id, 1, 'id Count is 1');
+    assert.equal(counters.$type, 1, '$type Count is 1');
+    assert.equal(counters.firstName, 1, 'firstName Count is 1');
+    assert.equal(counters.lastName, 2, 'lastName Count is 2');
+    assert.equal(counters.fullName, 2, 'fullName Count is 2');
 
     assert.dom(`li:nth-child(${nameIndex + 1})`).hasText('firstName: Rey', 'firstName is rendered');
     assert.dom(`li:nth-child(${nameIndex + 3})`).hasText('lastName: Skybarker', 'lastName is rendered');
@@ -122,12 +120,11 @@ module('Reactivity | derivation', function (hooks) {
   });
 
   test('derivations do not re-run unless the tracked state they consume is dirtied', function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
     const { schema } = store;
-    registerDerivations(schema);
 
     function concat(
-      record: SchemaRecord & { [key: string]: unknown },
+      record: ReactiveResource & { [key: string]: unknown },
       options: Record<string, unknown> | null,
       _prop: string
     ): string {
@@ -178,14 +175,14 @@ module('Reactivity | derivation', function (hooks) {
       },
     }) as User;
 
-    assert.strictEqual(record.id, '1', 'id is accessible');
-    assert.strictEqual(record.$type, 'user', '$type is accessible');
-    assert.strictEqual(record.firstName, 'Rey', 'firstName is accessible');
-    assert.strictEqual(record.lastName, 'Pupatine', 'lastName is accessible');
+    assert.equal(record.id, '1', 'id is accessible');
+    assert.equal(record.$type, 'user', '$type is accessible');
+    assert.equal(record.firstName, 'Rey', 'firstName is accessible');
+    assert.equal(record.lastName, 'Pupatine', 'lastName is accessible');
     assert.verifySteps([], 'no concat yet');
-    assert.strictEqual(record.fullName, 'Rey Pupatine', 'fullName is accessible');
+    assert.equal(record.fullName, 'Rey Pupatine', 'fullName is accessible');
     assert.verifySteps(['concat: Rey Pupatine'], 'concat happened');
-    assert.strictEqual(record.fullName, 'Rey Pupatine', 'fullName is accessible');
+    assert.equal(record.fullName, 'Rey Pupatine', 'fullName is accessible');
     assert.verifySteps([], 'no additional concat');
 
     store.push({
@@ -200,7 +197,7 @@ module('Reactivity | derivation', function (hooks) {
       },
     }) as User;
 
-    assert.strictEqual(record.fullName, 'Rey Pupatine', 'fullName is accessible');
+    assert.equal(record.fullName, 'Rey Pupatine', 'fullName is accessible');
     assert.verifySteps([], 'no additional concat');
 
     store.push({
@@ -215,7 +212,7 @@ module('Reactivity | derivation', function (hooks) {
       },
     }) as User;
 
-    assert.strictEqual(record.fullName, 'Rey Porcupine', 'fullName is accessible');
+    assert.equal(record.fullName, 'Rey Porcupine', 'fullName is accessible');
 
     assert.verifySteps(['concat: Rey Porcupine'], 'it recomputed!');
   });

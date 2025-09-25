@@ -1,11 +1,12 @@
-import type Store from 'core-tests/services/store';
-import { module, test } from 'qunit';
+import { recordIdentifierFor, useRecommendedStore } from '@warp-drive/core';
+import { withDefaults } from '@warp-drive/core/reactive';
+import type { Type } from '@warp-drive/core/types/symbols';
+import { module, setupTest, test } from '@warp-drive/diagnostic/ember';
+import { JSONAPICache } from '@warp-drive/json-api';
 
-import { setupTest } from 'ember-qunit';
-
-import { recordIdentifierFor } from '@ember-data/store';
-import type { Type } from '@warp-drive/core-types/symbols';
-import { registerDerivations, withDefaults } from '@warp-drive/schema-record';
+const Store = useRecommendedStore({
+  cache: JSONAPICache,
+});
 
 interface User {
   id: string | null;
@@ -22,9 +23,8 @@ module('Polaris | Create | basic fields', function (hooks) {
   setupTest(hooks);
 
   test('fields work when passed to createRecord', function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
     const { schema } = store;
-    registerDerivations(schema);
 
     schema.registerResource(
       withDefaults({
@@ -40,14 +40,13 @@ module('Polaris | Create | basic fields', function (hooks) {
 
     const record = store.createRecord<User>('user', { name: 'Rey Skybarker' });
 
-    assert.strictEqual(record.id, null, 'id is accessible');
-    assert.strictEqual(record.name, 'Rey Skybarker', 'name is accessible');
+    assert.equal(record.id, null, 'id is accessible');
+    assert.equal(record.name, 'Rey Skybarker', 'name is accessible');
   });
 
   test('id works when passed to createRecord', function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
     const { schema } = store;
-    registerDerivations(schema);
 
     schema.registerResource(
       withDefaults({
@@ -63,14 +62,13 @@ module('Polaris | Create | basic fields', function (hooks) {
 
     const record = store.createRecord<User>('user', { id: '1' });
 
-    assert.strictEqual(record.id, '1', 'id is accessible');
-    assert.strictEqual(record.name, undefined, 'name is accessible');
+    assert.equal(record.id, '1', 'id is accessible');
+    assert.equal(record.name, undefined, 'name is accessible');
   });
 
   test('attributes work when updated after createRecord', function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
     const { schema } = store;
-    registerDerivations(schema);
 
     schema.registerResource(
       withDefaults({
@@ -85,15 +83,14 @@ module('Polaris | Create | basic fields', function (hooks) {
     );
 
     const record = store.createRecord<User>('user', {});
-    assert.strictEqual(record.name, undefined, 'name is accessible');
+    assert.equal(record.name, undefined, 'name is accessible');
     record.name = 'Rey Skybarker';
-    assert.strictEqual(record.name, 'Rey Skybarker', 'name is accessible');
+    assert.equal(record.name, 'Rey Skybarker', 'name is accessible');
   });
 
   test('id works when updated after createRecord', function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
     const { schema } = store;
-    registerDerivations(schema);
 
     schema.registerResource(
       withDefaults({
@@ -108,14 +105,13 @@ module('Polaris | Create | basic fields', function (hooks) {
     );
 
     const record = store.createRecord<User>('user', {});
-    assert.strictEqual(record.id, null, 'id is accessible');
+    assert.equal(record.id, null, 'id is accessible');
     record.id = '1';
-    assert.strictEqual(record.id, '1', 'id is accessible');
+    assert.equal(record.id, '1', 'id is accessible');
   });
 
   test('we can create a new record with a pre-set lid', function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
-    registerDerivations(store.schema);
+    const store = new Store();
 
     store.schema.registerResource(
       withDefaults({
@@ -131,12 +127,11 @@ module('Polaris | Create | basic fields', function (hooks) {
     const lid = '@test/lid:user-chris-asdf-1234';
     const record = store.createRecord('user', { name: 'Chris' }, { lid: '@test/lid:user-chris-asdf-1234' });
     const identifier = recordIdentifierFor(record);
-    assert.strictEqual(identifier.lid, lid, 'we used the custom lid');
+    assert.equal(identifier.lid, lid, 'we used the custom lid');
   });
 
   test('createRecord does not return the primary record', function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
-    registerDerivations(store.schema);
+    const store = new Store();
 
     store.schema.registerResource(
       withDefaults({
@@ -159,8 +154,7 @@ module('Polaris | Create | basic fields', function (hooks) {
   });
 
   test('the primary record is not editable', function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
-    registerDerivations(store.schema);
+    const store = new Store();
 
     store.schema.registerResource(
       withDefaults({
@@ -181,19 +175,18 @@ module('Polaris | Create | basic fields', function (hooks) {
       primaryRecord!.name = 'James';
       assert.ok(false, 'we should error');
     } catch (e) {
-      assert.strictEqual(
+      assert.equal(
         (e as Error).message,
         'Cannot set name on user because the record is not editable',
         'we cannot mutate the primary record'
       );
     }
 
-    assert.strictEqual(primaryRecord?.name, undefined, 'the primary record does not show the creation value');
+    assert.equal(primaryRecord?.name, undefined, 'the primary record does not show the creation value');
   });
 
   test('the primary record is not included peekAll', function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
-    registerDerivations(store.schema);
+    const store = new Store();
 
     store.schema.registerResource(
       withDefaults({
@@ -208,13 +201,13 @@ module('Polaris | Create | basic fields', function (hooks) {
     );
     store.createRecord<User>('user', { name: 'Chris' });
 
+    // eslint-disable-next-line warp-drive/no-legacy-request-patterns
     const all = store.peekAll<User>('user');
-    assert.strictEqual(all.length, 0, 'Our empty new record does not appear in the list of all records');
+    assert.equal(all.length, 0, 'Our empty new record does not appear in the list of all records');
   });
 
   test('we can unload via the primary record', function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
-    registerDerivations(store.schema);
+    const store = new Store();
 
     store.schema.registerResource(
       withDefaults({
@@ -235,17 +228,16 @@ module('Polaris | Create | basic fields', function (hooks) {
 
     // peekRecord should now be `null`
     const peeked = store.peekRecord<User>(identifier);
-    assert.strictEqual(peeked, null, 'we can no longer peek the record');
+    assert.equal(peeked, null, 'we can no longer peek the record');
     const cacheEntry = store.cache.peek(identifier);
-    assert.strictEqual(cacheEntry, null, 'there is no cache entry');
+    assert.equal(cacheEntry, null, 'there is no cache entry');
 
     // this check should become `$state.isDestroyed` once that is a thing
-    assert.strictEqual(record.___notifications, null, 'the record was destroyed');
+    assert.equal(record.___notifications, null, 'the record was destroyed');
   });
 
   test('we can unload via the editable record', function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
-    registerDerivations(store.schema);
+    const store = new Store();
 
     store.schema.registerResource(
       withDefaults({
@@ -264,11 +256,11 @@ module('Polaris | Create | basic fields', function (hooks) {
     store.unloadRecord(record);
 
     const primaryRecord = store.peekRecord<User>(identifier);
-    assert.strictEqual(primaryRecord, null, 'the primary record no longer exists');
+    assert.equal(primaryRecord, null, 'the primary record no longer exists');
     const cacheEntry = store.cache.peek(identifier);
-    assert.strictEqual(cacheEntry, null, 'there is no cache entry');
+    assert.equal(cacheEntry, null, 'there is no cache entry');
 
     // this check should become `$state.isDestroyed` once that is a thing
-    assert.strictEqual(record.___notifications, null, 'the record was destroyed');
+    assert.equal(record.___notifications, null, 'the record was destroyed');
   });
 });

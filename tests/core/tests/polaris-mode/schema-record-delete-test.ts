@@ -1,5 +1,3 @@
-import { settled } from '@ember/test-helpers';
-
 import { recordIdentifierFor } from '@warp-drive/core';
 import { checkout } from '@warp-drive/core/reactive';
 import { module, setupTest, test } from '@warp-drive/diagnostic/ember';
@@ -46,7 +44,7 @@ module('SchemaRecord | Polaris | Delete Operations', function (hooks) {
     assert.ok(store.peekRecord('user', '1'), 'record exists initially');
 
     store.deleteRecord(editableRecord);
-    await settled();
+    await this.h.settled();
 
     const fetchedRecord = store.peekRecord<User>('user', '1');
     assert.ok(fetchedRecord, 'record still exists in store');

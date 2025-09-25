@@ -98,12 +98,14 @@ export interface Diagnostic {
   /**
    * Asserts that the actual value has at least the properties of the expected value.
    * If additional properties are present on the actual value, they are ignored.
-   *
-   * @param actual
-   * @param expected
-   * @param message
    */
   satisfies<T extends object, J extends T>(actual: T, expected: J, message?: string): void;
+
+  /**
+   * Asserts that every item in the actual array is strictly equal (===) to the corresponding
+   * item in the expected array.
+   */
+  arrayEquals<T>(actual: T[], expected: T[], message: string): void;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type

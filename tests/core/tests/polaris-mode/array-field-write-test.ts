@@ -1,12 +1,13 @@
-import type Store from 'core-tests/services/store';
-import { module, test } from 'qunit';
+import { recordIdentifierFor, useRecommendedStore } from '@warp-drive/core';
+import type { Transformation } from '@warp-drive/core/reactive';
+import { checkout, withDefaults } from '@warp-drive/core/reactive';
+import { Type } from '@warp-drive/core/types/symbols';
+import { module, setupTest, test } from '@warp-drive/diagnostic/ember';
+import { JSONAPICache } from '@warp-drive/json-api';
 
-import { setupTest } from 'ember-qunit';
-
-import { recordIdentifierFor } from '@ember-data/store';
-import { Type } from '@warp-drive/core-types/symbols';
-import type { Transformation } from '@warp-drive/schema-record';
-import { Checkout, registerDerivations, withDefaults } from '@warp-drive/schema-record';
+const Store = useRecommendedStore({
+  cache: JSONAPICache,
+});
 
 type EditableUser = {
   readonly id: string;
@@ -21,15 +22,14 @@ type User = Readonly<{
   $type: 'user';
   name: string;
   favoriteNumbers: string[] | null;
-  [Type]: 'user';
-  [Checkout](): Promise<EditableUser>;
+  readonly [Type]: 'user';
 }>;
 interface CreateUserType {
   id: string | null;
   $type: 'user';
   name: string | null;
   favoriteNumbers: string[] | null;
-  [Type]: 'user';
+  readonly [Type]: 'user';
 }
 
 module('Writes | array fields', function (hooks) {
@@ -37,9 +37,8 @@ module('Writes | array fields', function (hooks) {
 
   module('Immutability', function () {
     test('we cannot update to a new array', function (assert) {
-      const store = this.owner.lookup('service:store') as Store;
+      const store = new Store();
       const { schema } = store;
-      registerDerivations(schema);
 
       schema.registerResource(
         withDefaults({
@@ -65,12 +64,12 @@ module('Writes | array fields', function (hooks) {
         },
       });
 
-      assert.strictEqual(record.id, '1', 'id is accessible');
-      assert.strictEqual(record.$type, 'user', '$type is accessible');
-      assert.strictEqual(record.name, 'Rey Pupatine', 'name is accessible');
+      assert.equal(record.id, '1', 'id is accessible');
+      assert.equal(record.$type, 'user', '$type is accessible');
+      assert.equal(record.name, 'Rey Pupatine', 'name is accessible');
       assert.true(Array.isArray(record.favoriteNumbers), 'we can access favoriteNumber array');
       assert.deepEqual(record.favoriteNumbers?.slice(), ['1', '2'], 'We have the correct array members');
-      assert.strictEqual(record.favoriteNumbers, record.favoriteNumbers, 'We have a stable array reference');
+      assert.equal(record.favoriteNumbers, record.favoriteNumbers, 'We have a stable array reference');
       assert.throws(() => {
         // @ts-expect-error we're testing the immutability of the array
         record.favoriteNumbers = ['3', '4'];
@@ -79,9 +78,8 @@ module('Writes | array fields', function (hooks) {
     });
 
     test('we cannot update to null', function (assert) {
-      const store = this.owner.lookup('service:store') as Store;
+      const store = new Store();
       const { schema } = store;
-      registerDerivations(schema);
 
       schema.registerResource(
         withDefaults({
@@ -107,12 +105,12 @@ module('Writes | array fields', function (hooks) {
         },
       });
 
-      assert.strictEqual(record.id, '1', 'id is accessible');
-      assert.strictEqual(record.$type, 'user', '$type is accessible');
-      assert.strictEqual(record.name, 'Rey Pupatine', 'name is accessible');
+      assert.equal(record.id, '1', 'id is accessible');
+      assert.equal(record.$type, 'user', '$type is accessible');
+      assert.equal(record.name, 'Rey Pupatine', 'name is accessible');
       assert.true(Array.isArray(record.favoriteNumbers), 'we can access favoriteNumber array');
       assert.deepEqual(record.favoriteNumbers?.slice(), ['1', '2'], 'We have the correct array members');
-      assert.strictEqual(record.favoriteNumbers, record.favoriteNumbers, 'We have a stable array reference');
+      assert.equal(record.favoriteNumbers, record.favoriteNumbers, 'We have a stable array reference');
       assert.throws(() => {
         // @ts-expect-error we're testing the immutability of the array
         record.favoriteNumbers = null;
@@ -121,9 +119,8 @@ module('Writes | array fields', function (hooks) {
     });
 
     test('we cannot update a single value in the array', function (assert) {
-      const store = this.owner.lookup('service:store') as Store;
+      const store = new Store();
       const { schema } = store;
-      registerDerivations(schema);
 
       schema.registerResource(
         withDefaults({
@@ -157,9 +154,8 @@ module('Writes | array fields', function (hooks) {
     });
 
     test('we cannot push a new value on to the array', function (assert) {
-      const store = this.owner.lookup('service:store') as Store;
+      const store = new Store();
       const { schema } = store;
-      registerDerivations(schema);
 
       schema.registerResource(
         withDefaults({
@@ -185,12 +181,12 @@ module('Writes | array fields', function (hooks) {
         },
       });
 
-      assert.strictEqual(record.id, '1', 'id is accessible');
-      assert.strictEqual(record.$type, 'user', '$type is accessible');
-      assert.strictEqual(record.name, 'Rey Pupatine', 'name is accessible');
+      assert.equal(record.id, '1', 'id is accessible');
+      assert.equal(record.$type, 'user', '$type is accessible');
+      assert.equal(record.name, 'Rey Pupatine', 'name is accessible');
       assert.true(Array.isArray(record.favoriteNumbers), 'we can access favoriteNumber array');
       assert.deepEqual(record.favoriteNumbers?.slice(), ['1', '2'], 'We have the correct array members');
-      assert.strictEqual(record.favoriteNumbers, record.favoriteNumbers, 'We have a stable array reference');
+      assert.equal(record.favoriteNumbers, record.favoriteNumbers, 'We have a stable array reference');
       assert.throws(() => {
         record.favoriteNumbers?.push('3');
       }, /Error: Mutating this array via push is not allowed because the record is not editable/);
@@ -199,9 +195,8 @@ module('Writes | array fields', function (hooks) {
     });
 
     test('we cannot pop a value off of the array', function (assert) {
-      const store = this.owner.lookup('service:store') as Store;
+      const store = new Store();
       const { schema } = store;
-      registerDerivations(schema);
 
       schema.registerResource(
         withDefaults({
@@ -227,12 +222,12 @@ module('Writes | array fields', function (hooks) {
         },
       });
 
-      assert.strictEqual(record.id, '1', 'id is accessible');
-      assert.strictEqual(record.$type, 'user', '$type is accessible');
-      assert.strictEqual(record.name, 'Rey Pupatine', 'name is accessible');
+      assert.equal(record.id, '1', 'id is accessible');
+      assert.equal(record.$type, 'user', '$type is accessible');
+      assert.equal(record.name, 'Rey Pupatine', 'name is accessible');
       assert.true(Array.isArray(record.favoriteNumbers), 'we can access favoriteNumber array');
       assert.deepEqual(record.favoriteNumbers?.slice(), ['1', '2'], 'We have the correct array members');
-      assert.strictEqual(record.favoriteNumbers, record.favoriteNumbers, 'We have a stable array reference');
+      assert.equal(record.favoriteNumbers, record.favoriteNumbers, 'We have a stable array reference');
       assert.throws(() => {
         record.favoriteNumbers?.pop();
       }, /Error: Mutating this array via pop is not allowed because the record is not editable/);
@@ -240,9 +235,8 @@ module('Writes | array fields', function (hooks) {
     });
 
     test('we cannot unshift a value on to the array', function (assert) {
-      const store = this.owner.lookup('service:store') as Store;
+      const store = new Store();
       const { schema } = store;
-      registerDerivations(schema);
 
       schema.registerResource(
         withDefaults({
@@ -268,12 +262,12 @@ module('Writes | array fields', function (hooks) {
         },
       });
 
-      assert.strictEqual(record.id, '1', 'id is accessible');
-      assert.strictEqual(record.$type, 'user', '$type is accessible');
-      assert.strictEqual(record.name, 'Rey Pupatine', 'name is accessible');
+      assert.equal(record.id, '1', 'id is accessible');
+      assert.equal(record.$type, 'user', '$type is accessible');
+      assert.equal(record.name, 'Rey Pupatine', 'name is accessible');
       assert.true(Array.isArray(record.favoriteNumbers), 'we can access favoriteNumber array');
       assert.deepEqual(record.favoriteNumbers?.slice(), ['1', '2'], 'We have the correct array members');
-      assert.strictEqual(record.favoriteNumbers, record.favoriteNumbers, 'We have a stable array reference');
+      assert.equal(record.favoriteNumbers, record.favoriteNumbers, 'We have a stable array reference');
       assert.throws(() => {
         record.favoriteNumbers?.unshift('3');
       }, /Error: Mutating this array via unshift is not allowed because the record is not editable/);
@@ -281,9 +275,8 @@ module('Writes | array fields', function (hooks) {
     });
 
     test('we cannot shift a value off of the array', function (assert) {
-      const store = this.owner.lookup('service:store') as Store;
+      const store = new Store();
       const { schema } = store;
-      registerDerivations(schema);
 
       schema.registerResource(
         withDefaults({
@@ -309,12 +302,12 @@ module('Writes | array fields', function (hooks) {
         },
       });
 
-      assert.strictEqual(record.id, '1', 'id is accessible');
-      assert.strictEqual(record.$type, 'user', '$type is accessible');
-      assert.strictEqual(record.name, 'Rey Pupatine', 'name is accessible');
+      assert.equal(record.id, '1', 'id is accessible');
+      assert.equal(record.$type, 'user', '$type is accessible');
+      assert.equal(record.name, 'Rey Pupatine', 'name is accessible');
       assert.true(Array.isArray(record.favoriteNumbers), 'we can access favoriteNumber array');
       assert.deepEqual(record.favoriteNumbers?.slice(), ['1', '2'], 'We have the correct array members');
-      assert.strictEqual(record.favoriteNumbers, record.favoriteNumbers, 'We have a stable array reference');
+      assert.equal(record.favoriteNumbers, record.favoriteNumbers, 'We have a stable array reference');
       assert.throws(() => {
         record.favoriteNumbers?.shift();
       }, /Error: Mutating this array via shift is not allowed because the record is not editable/);
@@ -322,9 +315,8 @@ module('Writes | array fields', function (hooks) {
     });
 
     test('we cannot assign an array value to another record', function (assert) {
-      const store = this.owner.lookup('service:store') as Store;
+      const store = new Store();
       const { schema } = store;
-      registerDerivations(schema);
 
       schema.registerResource(
         withDefaults({
@@ -358,27 +350,26 @@ module('Writes | array fields', function (hooks) {
         },
       });
 
-      assert.strictEqual(record.id, '1', 'id is accessible');
-      assert.strictEqual(record.$type, 'user', '$type is accessible');
-      assert.strictEqual(record.name, 'Rey Pupatine', 'name is accessible');
-      assert.strictEqual(record2.id, '2', 'id is accessible');
-      assert.strictEqual(record2.$type, 'user', '$type is accessible');
-      assert.strictEqual(record2.name, 'Luke Skybarker', 'name is accessible');
+      assert.equal(record.id, '1', 'id is accessible');
+      assert.equal(record.$type, 'user', '$type is accessible');
+      assert.equal(record.name, 'Rey Pupatine', 'name is accessible');
+      assert.equal(record2.id, '2', 'id is accessible');
+      assert.equal(record2.$type, 'user', '$type is accessible');
+      assert.equal(record2.name, 'Luke Skybarker', 'name is accessible');
       assert.true(Array.isArray(record.favoriteNumbers), 'we can access favoriteNumber array');
       assert.deepEqual(record.favoriteNumbers?.slice(), ['1', '2'], 'We have the correct array members');
-      assert.strictEqual(record.favoriteNumbers, record.favoriteNumbers, 'We have a stable array reference');
+      assert.equal(record.favoriteNumbers, record.favoriteNumbers, 'We have a stable array reference');
       assert.throws(() => {
         // @ts-expect-error we're testing the immutability of the array
         record2.favoriteNumbers = record.favoriteNumbers;
       }, /Error: Cannot set favoriteNumbers on user because the record is not editable/);
 
-      assert.strictEqual(record2.favoriteNumbers, null, 'the second record array has not been updated');
+      assert.equal(record2.favoriteNumbers, null, 'the second record array has not been updated');
     });
 
     test('we cannot edit simple array fields with a `type`', function (assert) {
-      const store = this.owner.lookup('service:store') as Store;
+      const store = new Store();
       const { schema } = store;
-      registerDerivations(schema);
 
       schema.registerResource(
         withDefaults({
@@ -421,13 +412,13 @@ module('Writes | array fields', function (hooks) {
         },
       });
 
-      assert.strictEqual(record.id, '1', 'id is accessible');
-      assert.strictEqual(record.$type, 'user', '$type is accessible');
-      assert.strictEqual(record.name, 'Rey Skybarker', 'name is accessible');
+      assert.equal(record.id, '1', 'id is accessible');
+      assert.equal(record.$type, 'user', '$type is accessible');
+      assert.equal(record.name, 'Rey Skybarker', 'name is accessible');
       assert.true(Array.isArray(record.favoriteNumbers), 'we can access favoriteNumber array');
       assert.deepEqual(record.favoriteNumbers!.slice(), ['1', '2'], 'We have the correct array members');
 
-      assert.strictEqual(record.favoriteNumbers, record.favoriteNumbers, 'We have a stable array reference');
+      assert.equal(record.favoriteNumbers, record.favoriteNumbers, 'We have a stable array reference');
 
       assert.throws(() => {
         // @ts-expect-error we're testing the immutability of the array
@@ -438,9 +429,8 @@ module('Writes | array fields', function (hooks) {
     });
 
     test('we cannot edit single values in array fields with a `type`', function (assert) {
-      const store = this.owner.lookup('service:store') as Store;
+      const store = new Store();
       const { schema } = store;
-      registerDerivations(schema);
 
       schema.registerResource(
         withDefaults({
@@ -483,13 +473,13 @@ module('Writes | array fields', function (hooks) {
         },
       });
 
-      assert.strictEqual(record.id, '1', 'id is accessible');
-      assert.strictEqual(record.$type, 'user', '$type is accessible');
-      assert.strictEqual(record.name, 'Rey Skybarker', 'name is accessible');
+      assert.equal(record.id, '1', 'id is accessible');
+      assert.equal(record.$type, 'user', '$type is accessible');
+      assert.equal(record.name, 'Rey Skybarker', 'name is accessible');
       assert.true(Array.isArray(record.favoriteNumbers), 'we can access favoriteNumber array');
       assert.deepEqual(record.favoriteNumbers?.slice(), ['1', '2'], 'We have the correct array members');
 
-      assert.strictEqual(record.favoriteNumbers, record.favoriteNumbers, 'We have a stable array reference');
+      assert.equal(record.favoriteNumbers, record.favoriteNumbers, 'We have a stable array reference');
 
       assert.throws(() => {
         record.favoriteNumbers![0] = '3';
@@ -499,9 +489,8 @@ module('Writes | array fields', function (hooks) {
     });
 
     test('we cannot push a new value on to array fields with a `type`', function (assert) {
-      const store = this.owner.lookup('service:store') as Store;
+      const store = new Store();
       const { schema } = store;
-      registerDerivations(schema);
 
       schema.registerResource(
         withDefaults({
@@ -543,13 +532,13 @@ module('Writes | array fields', function (hooks) {
           attributes: { name: 'Rey Skybarker', favoriteNumbers: [1, 2] },
         },
       });
-      assert.strictEqual(record.id, '1', 'id is accessible');
-      assert.strictEqual(record.$type, 'user', '$type is accessible');
-      assert.strictEqual(record.name, 'Rey Skybarker', 'name is accessible');
+      assert.equal(record.id, '1', 'id is accessible');
+      assert.equal(record.$type, 'user', '$type is accessible');
+      assert.equal(record.name, 'Rey Skybarker', 'name is accessible');
       assert.true(Array.isArray(record.favoriteNumbers), 'we can access favoriteNumber array');
       assert.deepEqual(record.favoriteNumbers?.slice(), ['1', '2'], 'We have the correct array members');
 
-      assert.strictEqual(record.favoriteNumbers, record.favoriteNumbers, 'We have a stable array reference');
+      assert.equal(record.favoriteNumbers, record.favoriteNumbers, 'We have a stable array reference');
 
       assert.throws(() => {
         record.favoriteNumbers?.push('3');
@@ -559,9 +548,8 @@ module('Writes | array fields', function (hooks) {
     });
 
     test('we can pop a value off of an array fields with a `type`', function (assert) {
-      const store = this.owner.lookup('service:store') as Store;
+      const store = new Store();
       const { schema } = store;
-      registerDerivations(schema);
 
       schema.registerResource(
         withDefaults({
@@ -603,13 +591,13 @@ module('Writes | array fields', function (hooks) {
           attributes: { name: 'Rey Skybarker', favoriteNumbers: [1, 2] },
         },
       });
-      assert.strictEqual(record.id, '1', 'id is accessible');
-      assert.strictEqual(record.$type, 'user', '$type is accessible');
-      assert.strictEqual(record.name, 'Rey Skybarker', 'name is accessible');
+      assert.equal(record.id, '1', 'id is accessible');
+      assert.equal(record.$type, 'user', '$type is accessible');
+      assert.equal(record.name, 'Rey Skybarker', 'name is accessible');
       assert.true(Array.isArray(record.favoriteNumbers), 'we can access favoriteNumber array');
       assert.deepEqual(record.favoriteNumbers?.slice(), ['1', '2'], 'We have the correct array members');
 
-      assert.strictEqual(record.favoriteNumbers, record.favoriteNumbers, 'We have a stable array reference');
+      assert.equal(record.favoriteNumbers, record.favoriteNumbers, 'We have a stable array reference');
 
       assert.throws(() => {
         record.favoriteNumbers?.pop();
@@ -621,9 +609,8 @@ module('Writes | array fields', function (hooks) {
 
   // Editable tests
   test('we can update to a new array', async function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
     const { schema } = store;
-    registerDerivations(schema);
 
     schema.registerResource(
       withDefaults({
@@ -649,18 +636,18 @@ module('Writes | array fields', function (hooks) {
       },
     });
 
-    const record = await immutableRecord[Checkout]();
+    const record = await checkout<EditableUser>(immutableRecord);
 
-    assert.strictEqual(record.id, '1', 'id is accessible');
-    assert.strictEqual(record.$type, 'user', '$type is accessible');
-    assert.strictEqual(record.name, 'Rey Pupatine', 'name is accessible');
+    assert.equal(record.id, '1', 'id is accessible');
+    assert.equal(record.$type, 'user', '$type is accessible');
+    assert.equal(record.name, 'Rey Pupatine', 'name is accessible');
     assert.true(Array.isArray(record.favoriteNumbers), 'we can access favoriteNumber array');
     assert.deepEqual(record.favoriteNumbers?.slice(), ['1', '2'], 'We have the correct array members');
-    assert.strictEqual(record.favoriteNumbers, record.favoriteNumbers, 'We have a stable array reference');
+    assert.equal(record.favoriteNumbers, record.favoriteNumbers, 'We have a stable array reference');
     const favoriteNumbers = record.favoriteNumbers;
     record.favoriteNumbers = ['3', '4'];
     assert.deepEqual(record.favoriteNumbers.slice(), ['3', '4'], 'We have the correct array members');
-    assert.strictEqual(favoriteNumbers, record.favoriteNumbers, 'Array reference does not change');
+    assert.equal(favoriteNumbers, record.favoriteNumbers, 'Array reference does not change');
 
     // test that the data entered the cache properly
     const identifier = recordIdentifierFor(record);
@@ -674,9 +661,8 @@ module('Writes | array fields', function (hooks) {
   });
 
   test('we can update to null', async function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
     const { schema } = store;
-    registerDerivations(schema);
 
     schema.registerResource(
       withDefaults({
@@ -701,16 +687,16 @@ module('Writes | array fields', function (hooks) {
         attributes: { name: 'Rey Pupatine', favoriteNumbers: ['1', '2'] },
       },
     });
-    const record = await immutableRecord[Checkout]();
+    const record = await checkout<EditableUser>(immutableRecord);
 
-    assert.strictEqual(record.id, '1', 'id is accessible');
-    assert.strictEqual(record.$type, 'user', '$type is accessible');
-    assert.strictEqual(record.name, 'Rey Pupatine', 'name is accessible');
+    assert.equal(record.id, '1', 'id is accessible');
+    assert.equal(record.$type, 'user', '$type is accessible');
+    assert.equal(record.name, 'Rey Pupatine', 'name is accessible');
     assert.true(Array.isArray(record.favoriteNumbers), 'we can access favoriteNumber array');
     assert.deepEqual(record.favoriteNumbers?.slice(), ['1', '2'], 'We have the correct array members');
-    assert.strictEqual(record.favoriteNumbers, record.favoriteNumbers, 'We have a stable array reference');
+    assert.equal(record.favoriteNumbers, record.favoriteNumbers, 'We have a stable array reference');
     record.favoriteNumbers = null;
-    assert.strictEqual(record.favoriteNumbers, null, 'The array is correctly set to null');
+    assert.equal(record.favoriteNumbers, null, 'The array is correctly set to null');
 
     // test that the data entered the cache properly
     const identifier = recordIdentifierFor(record);
@@ -722,9 +708,8 @@ module('Writes | array fields', function (hooks) {
   });
 
   test('we can update a single value in the array', async function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
     const { schema } = store;
-    registerDerivations(schema);
 
     schema.registerResource(
       withDefaults({
@@ -749,13 +734,13 @@ module('Writes | array fields', function (hooks) {
         attributes: { name: 'Rey Pupatine', favoriteNumbers: ['1', '2'] },
       },
     });
-    const record = await immutableRecord[Checkout]();
+    const record = await checkout<EditableUser>(immutableRecord);
 
     assert.deepEqual(record.favoriteNumbers?.slice(), ['1', '2'], 'We have the correct array members');
     const favoriteNumbers = record.favoriteNumbers;
     record.favoriteNumbers![0] = '3';
     assert.deepEqual(record.favoriteNumbers?.slice(), ['3', '2'], 'We have the correct array members');
-    assert.strictEqual(favoriteNumbers, record.favoriteNumbers, 'Array reference does not change');
+    assert.equal(favoriteNumbers, record.favoriteNumbers, 'Array reference does not change');
 
     // test that the data entered the cache properly
     const identifier = recordIdentifierFor(record);
@@ -769,9 +754,8 @@ module('Writes | array fields', function (hooks) {
   });
 
   test('we can push a new value on to the array', async function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
     const { schema } = store;
-    registerDerivations(schema);
 
     schema.registerResource(
       withDefaults({
@@ -796,18 +780,18 @@ module('Writes | array fields', function (hooks) {
         attributes: { name: 'Rey Pupatine', favoriteNumbers: ['1', '2'] },
       },
     });
-    const record = await immutableRecord[Checkout]();
+    const record = await checkout<EditableUser>(immutableRecord);
 
-    assert.strictEqual(record.id, '1', 'id is accessible');
-    assert.strictEqual(record.$type, 'user', '$type is accessible');
-    assert.strictEqual(record.name, 'Rey Pupatine', 'name is accessible');
+    assert.equal(record.id, '1', 'id is accessible');
+    assert.equal(record.$type, 'user', '$type is accessible');
+    assert.equal(record.name, 'Rey Pupatine', 'name is accessible');
     assert.true(Array.isArray(record.favoriteNumbers), 'we can access favoriteNumber array');
     assert.deepEqual(record.favoriteNumbers?.slice(), ['1', '2'], 'We have the correct array members');
-    assert.strictEqual(record.favoriteNumbers, record.favoriteNumbers, 'We have a stable array reference');
+    assert.equal(record.favoriteNumbers, record.favoriteNumbers, 'We have a stable array reference');
     const favoriteNumbers = record.favoriteNumbers;
     record.favoriteNumbers?.push('3');
     assert.deepEqual(record.favoriteNumbers?.slice(), ['1', '2', '3'], 'We have the correct array members');
-    assert.strictEqual(favoriteNumbers, record.favoriteNumbers, 'Array reference does not change');
+    assert.equal(favoriteNumbers, record.favoriteNumbers, 'Array reference does not change');
 
     // test that the data entered the cache properly
     const identifier = recordIdentifierFor(record);
@@ -821,9 +805,8 @@ module('Writes | array fields', function (hooks) {
   });
 
   test('we can pop a value off of the array', async function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
     const { schema } = store;
-    registerDerivations(schema);
 
     schema.registerResource(
       withDefaults({
@@ -848,19 +831,19 @@ module('Writes | array fields', function (hooks) {
         attributes: { name: 'Rey Pupatine', favoriteNumbers: ['1', '2'] },
       },
     });
-    const record = await immutableRecord[Checkout]();
+    const record = await checkout<EditableUser>(immutableRecord);
 
-    assert.strictEqual(record.id, '1', 'id is accessible');
-    assert.strictEqual(record.$type, 'user', '$type is accessible');
-    assert.strictEqual(record.name, 'Rey Pupatine', 'name is accessible');
+    assert.equal(record.id, '1', 'id is accessible');
+    assert.equal(record.$type, 'user', '$type is accessible');
+    assert.equal(record.name, 'Rey Pupatine', 'name is accessible');
     assert.true(Array.isArray(record.favoriteNumbers), 'we can access favoriteNumber array');
     assert.deepEqual(record.favoriteNumbers?.slice(), ['1', '2'], 'We have the correct array members');
-    assert.strictEqual(record.favoriteNumbers, record.favoriteNumbers, 'We have a stable array reference');
+    assert.equal(record.favoriteNumbers, record.favoriteNumbers, 'We have a stable array reference');
     const favoriteNumbers = record.favoriteNumbers;
     const num = record.favoriteNumbers?.pop();
-    assert.strictEqual(num, '2', 'the correct value was popped off the array');
+    assert.equal(num, '2', 'the correct value was popped off the array');
     assert.deepEqual(record.favoriteNumbers?.slice(), ['1'], 'We have the correct array members');
-    assert.strictEqual(favoriteNumbers, record.favoriteNumbers, 'Array reference does not change');
+    assert.equal(favoriteNumbers, record.favoriteNumbers, 'Array reference does not change');
 
     // test that the data entered the cache properly
     const identifier = recordIdentifierFor(record);
@@ -870,9 +853,8 @@ module('Writes | array fields', function (hooks) {
   });
 
   test('we can unshift a value on to the array', async function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
     const { schema } = store;
-    registerDerivations(schema);
 
     schema.registerResource(
       withDefaults({
@@ -897,18 +879,18 @@ module('Writes | array fields', function (hooks) {
         attributes: { name: 'Rey Pupatine', favoriteNumbers: ['1', '2'] },
       },
     });
-    const record = await immutableRecord[Checkout]();
+    const record = await checkout<EditableUser>(immutableRecord);
 
-    assert.strictEqual(record.id, '1', 'id is accessible');
-    assert.strictEqual(record.$type, 'user', '$type is accessible');
-    assert.strictEqual(record.name, 'Rey Pupatine', 'name is accessible');
+    assert.equal(record.id, '1', 'id is accessible');
+    assert.equal(record.$type, 'user', '$type is accessible');
+    assert.equal(record.name, 'Rey Pupatine', 'name is accessible');
     assert.true(Array.isArray(record.favoriteNumbers), 'we can access favoriteNumber array');
     assert.deepEqual(record.favoriteNumbers?.slice(), ['1', '2'], 'We have the correct array members');
-    assert.strictEqual(record.favoriteNumbers, record.favoriteNumbers, 'We have a stable array reference');
+    assert.equal(record.favoriteNumbers, record.favoriteNumbers, 'We have a stable array reference');
     const favoriteNumbers = record.favoriteNumbers;
     record.favoriteNumbers?.unshift('3');
     assert.deepEqual(record.favoriteNumbers?.slice(), ['3', '1', '2'], 'We have the correct array members');
-    assert.strictEqual(favoriteNumbers, record.favoriteNumbers, 'Array reference does not change');
+    assert.equal(favoriteNumbers, record.favoriteNumbers, 'Array reference does not change');
 
     // test that the data entered the cache properly
     const identifier = recordIdentifierFor(record);
@@ -922,9 +904,8 @@ module('Writes | array fields', function (hooks) {
   });
 
   test('we can shift a value off of the array', async function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
     const { schema } = store;
-    registerDerivations(schema);
 
     schema.registerResource(
       withDefaults({
@@ -949,19 +930,19 @@ module('Writes | array fields', function (hooks) {
         attributes: { name: 'Rey Pupatine', favoriteNumbers: ['1', '2'] },
       },
     });
-    const record = await immutableRecord[Checkout]();
+    const record = await checkout<EditableUser>(immutableRecord);
 
-    assert.strictEqual(record.id, '1', 'id is accessible');
-    assert.strictEqual(record.$type, 'user', '$type is accessible');
-    assert.strictEqual(record.name, 'Rey Pupatine', 'name is accessible');
+    assert.equal(record.id, '1', 'id is accessible');
+    assert.equal(record.$type, 'user', '$type is accessible');
+    assert.equal(record.name, 'Rey Pupatine', 'name is accessible');
     assert.true(Array.isArray(record.favoriteNumbers), 'we can access favoriteNumber array');
     assert.deepEqual(record.favoriteNumbers?.slice(), ['1', '2'], 'We have the correct array members');
-    assert.strictEqual(record.favoriteNumbers, record.favoriteNumbers, 'We have a stable array reference');
+    assert.equal(record.favoriteNumbers, record.favoriteNumbers, 'We have a stable array reference');
     const favoriteNumbers = record.favoriteNumbers;
     const num = record.favoriteNumbers?.shift();
-    assert.strictEqual(num, '1', 'the correct value was popped off the array');
+    assert.equal(num, '1', 'the correct value was popped off the array');
     assert.deepEqual(record.favoriteNumbers?.slice(), ['2'], 'We have the correct array members');
-    assert.strictEqual(favoriteNumbers, record.favoriteNumbers, 'Array reference does not change');
+    assert.equal(favoriteNumbers, record.favoriteNumbers, 'Array reference does not change');
 
     // test that the data entered the cache properly
     const identifier = recordIdentifierFor(record);
@@ -971,9 +952,8 @@ module('Writes | array fields', function (hooks) {
   });
 
   test('we can assign an array value to another record', async function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
     const { schema } = store;
-    registerDerivations(schema);
 
     schema.registerResource(
       withDefaults({
@@ -1006,22 +986,22 @@ module('Writes | array fields', function (hooks) {
         attributes: { name: 'Luke Skybarker' },
       },
     });
-    const record2 = await record2Immutable[Checkout]();
+    const record2 = await checkout<EditableUser>(record2Immutable);
 
-    assert.strictEqual(record.id, '1', 'id is accessible');
-    assert.strictEqual(record.$type, 'user', '$type is accessible');
-    assert.strictEqual(record.name, 'Rey Pupatine', 'name is accessible');
-    assert.strictEqual(record2.id, '2', 'id is accessible');
-    assert.strictEqual(record2.$type, 'user', '$type is accessible');
-    assert.strictEqual(record2.name, 'Luke Skybarker', 'name is accessible');
+    assert.equal(record.id, '1', 'id is accessible');
+    assert.equal(record.$type, 'user', '$type is accessible');
+    assert.equal(record.name, 'Rey Pupatine', 'name is accessible');
+    assert.equal(record2.id, '2', 'id is accessible');
+    assert.equal(record2.$type, 'user', '$type is accessible');
+    assert.equal(record2.name, 'Luke Skybarker', 'name is accessible');
     assert.true(Array.isArray(record.favoriteNumbers), 'we can access favoriteNumber array');
     assert.deepEqual(record.favoriteNumbers?.slice(), ['1', '2'], 'We have the correct array members');
-    assert.strictEqual(record.favoriteNumbers, record.favoriteNumbers, 'We have a stable array reference');
+    assert.equal(record.favoriteNumbers, record.favoriteNumbers, 'We have a stable array reference');
     const favoriteNumbers = record.favoriteNumbers;
     record2.favoriteNumbers = record.favoriteNumbers;
     assert.deepEqual(record2.favoriteNumbers?.slice(), ['1', '2'], 'We have the correct array members');
-    assert.strictEqual(favoriteNumbers, record.favoriteNumbers, 'Array reference does not change');
-    assert.notStrictEqual(favoriteNumbers, record2.favoriteNumbers, 'This is weird');
+    assert.equal(favoriteNumbers, record.favoriteNumbers, 'Array reference does not change');
+    assert.notEqual(favoriteNumbers, record2.favoriteNumbers, 'This is weird');
     // test that the data entered the cache properly
     const identifier = recordIdentifierFor(record2);
     const cachedResourceData = store.cache.peek(identifier);
@@ -1034,9 +1014,8 @@ module('Writes | array fields', function (hooks) {
   });
 
   test('we can edit simple array fields with a `type`', function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
     const { schema } = store;
-    registerDerivations(schema);
 
     schema.registerResource(
       withDefaults({
@@ -1074,20 +1053,20 @@ module('Writes | array fields', function (hooks) {
     const sourceArray = ['1', '2'];
     const record = store.createRecord<CreateUserType>('user', { name: 'Rey Skybarker', favoriteNumbers: sourceArray });
 
-    assert.strictEqual(record.id, null, 'id is accessible');
-    assert.strictEqual(record.$type, 'user', '$type is accessible');
-    assert.strictEqual(record.name, 'Rey Skybarker', 'name is accessible');
+    assert.equal(record.id, null, 'id is accessible');
+    assert.equal(record.$type, 'user', '$type is accessible');
+    assert.equal(record.name, 'Rey Skybarker', 'name is accessible');
     assert.true(Array.isArray(record.favoriteNumbers), 'we can access favoriteNumber array');
     assert.deepEqual(record.favoriteNumbers!.slice(), ['1', '2'], 'We have the correct array members');
 
-    assert.strictEqual(record.favoriteNumbers, record.favoriteNumbers, 'We have a stable array reference');
-    assert.notStrictEqual(record.favoriteNumbers, sourceArray);
+    assert.equal(record.favoriteNumbers, record.favoriteNumbers, 'We have a stable array reference');
+    assert.notEqual(record.favoriteNumbers, sourceArray);
 
     const favoriteNumbers = record.favoriteNumbers;
 
     record.favoriteNumbers = ['3', '4'];
     assert.deepEqual(record.favoriteNumbers.slice(), ['3', '4'], 'We have the correct array members');
-    assert.strictEqual(favoriteNumbers, record.favoriteNumbers, 'Array reference does not change');
+    assert.equal(favoriteNumbers, record.favoriteNumbers, 'Array reference does not change');
 
     // test that the data entered the cache properly
     const identifier = recordIdentifierFor(record);
@@ -1102,9 +1081,8 @@ module('Writes | array fields', function (hooks) {
   });
 
   test('we can edit single values in array fields with a `type`', function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
     const { schema } = store;
-    registerDerivations(schema);
 
     schema.registerResource(
       withDefaults({
@@ -1142,20 +1120,20 @@ module('Writes | array fields', function (hooks) {
     const sourceArray = ['1', '2'];
     const record = store.createRecord<CreateUserType>('user', { name: 'Rey Skybarker', favoriteNumbers: sourceArray });
 
-    assert.strictEqual(record.id, null, 'id is accessible');
-    assert.strictEqual(record.$type, 'user', '$type is accessible');
-    assert.strictEqual(record.name, 'Rey Skybarker', 'name is accessible');
+    assert.equal(record.id, null, 'id is accessible');
+    assert.equal(record.$type, 'user', '$type is accessible');
+    assert.equal(record.name, 'Rey Skybarker', 'name is accessible');
     assert.true(Array.isArray(record.favoriteNumbers), 'we can access favoriteNumber array');
     assert.deepEqual(record.favoriteNumbers?.slice(), ['1', '2'], 'We have the correct array members');
 
-    assert.strictEqual(record.favoriteNumbers, record.favoriteNumbers, 'We have a stable array reference');
-    assert.notStrictEqual(record.favoriteNumbers, sourceArray);
+    assert.equal(record.favoriteNumbers, record.favoriteNumbers, 'We have a stable array reference');
+    assert.notEqual(record.favoriteNumbers, sourceArray);
 
     const favoriteNumbers = record.favoriteNumbers;
 
     record.favoriteNumbers![0] = '3';
     assert.deepEqual(record.favoriteNumbers?.slice(), ['3', '2'], 'We have the correct array members');
-    assert.strictEqual(favoriteNumbers, record.favoriteNumbers, 'Array reference does not change');
+    assert.equal(favoriteNumbers, record.favoriteNumbers, 'Array reference does not change');
 
     // test that the data entered the cache properly
     const identifier = recordIdentifierFor(record);
@@ -1170,9 +1148,8 @@ module('Writes | array fields', function (hooks) {
   });
 
   test('we can push a new value on to array fields with a `type`', function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
     const { schema } = store;
-    registerDerivations(schema);
 
     schema.registerResource(
       withDefaults({
@@ -1210,20 +1187,20 @@ module('Writes | array fields', function (hooks) {
     const sourceArray = ['1', '2'];
     const record = store.createRecord<CreateUserType>('user', { name: 'Rey Skybarker', favoriteNumbers: sourceArray });
 
-    assert.strictEqual(record.id, null, 'id is accessible');
-    assert.strictEqual(record.$type, 'user', '$type is accessible');
-    assert.strictEqual(record.name, 'Rey Skybarker', 'name is accessible');
+    assert.equal(record.id, null, 'id is accessible');
+    assert.equal(record.$type, 'user', '$type is accessible');
+    assert.equal(record.name, 'Rey Skybarker', 'name is accessible');
     assert.true(Array.isArray(record.favoriteNumbers), 'we can access favoriteNumber array');
     assert.deepEqual(record.favoriteNumbers?.slice(), ['1', '2'], 'We have the correct array members');
 
-    assert.strictEqual(record.favoriteNumbers, record.favoriteNumbers, 'We have a stable array reference');
-    assert.notStrictEqual(record.favoriteNumbers, sourceArray);
+    assert.equal(record.favoriteNumbers, record.favoriteNumbers, 'We have a stable array reference');
+    assert.notEqual(record.favoriteNumbers, sourceArray);
 
     const favoriteNumbers = record.favoriteNumbers;
 
     record.favoriteNumbers?.push('3');
     assert.deepEqual(record.favoriteNumbers?.slice(), ['1', '2', '3'], 'We have the correct array members');
-    assert.strictEqual(favoriteNumbers, record.favoriteNumbers, 'Array reference does not change');
+    assert.equal(favoriteNumbers, record.favoriteNumbers, 'Array reference does not change');
 
     // test that the data entered the cache properly
     const identifier = recordIdentifierFor(record);
@@ -1238,9 +1215,8 @@ module('Writes | array fields', function (hooks) {
   });
 
   test('we can pop a value off of an array fields with a `type`', function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
     const { schema } = store;
-    registerDerivations(schema);
 
     schema.registerResource(
       withDefaults({
@@ -1278,21 +1254,21 @@ module('Writes | array fields', function (hooks) {
     const sourceArray = ['1', '2'];
     const record = store.createRecord<CreateUserType>('user', { name: 'Rey Skybarker', favoriteNumbers: sourceArray });
 
-    assert.strictEqual(record.id, null, 'id is accessible');
-    assert.strictEqual(record.$type, 'user', '$type is accessible');
-    assert.strictEqual(record.name, 'Rey Skybarker', 'name is accessible');
+    assert.equal(record.id, null, 'id is accessible');
+    assert.equal(record.$type, 'user', '$type is accessible');
+    assert.equal(record.name, 'Rey Skybarker', 'name is accessible');
     assert.true(Array.isArray(record.favoriteNumbers), 'we can access favoriteNumber array');
     assert.deepEqual(record.favoriteNumbers?.slice(), ['1', '2'], 'We have the correct array members');
 
-    assert.strictEqual(record.favoriteNumbers, record.favoriteNumbers, 'We have a stable array reference');
-    assert.notStrictEqual(record.favoriteNumbers, sourceArray);
+    assert.equal(record.favoriteNumbers, record.favoriteNumbers, 'We have a stable array reference');
+    assert.notEqual(record.favoriteNumbers, sourceArray);
 
     const favoriteNumbers = record.favoriteNumbers;
 
     const val = record.favoriteNumbers?.pop();
-    assert.strictEqual(val, '2', 'the correct value was popped off the array');
+    assert.equal(val, '2', 'the correct value was popped off the array');
     assert.deepEqual(record.favoriteNumbers?.slice(), ['1'], 'We have the correct array members');
-    assert.strictEqual(favoriteNumbers, record.favoriteNumbers, 'Array reference does not change');
+    assert.equal(favoriteNumbers, record.favoriteNumbers, 'Array reference does not change');
 
     // test that the data entered the cache properly
     const identifier = recordIdentifierFor(record);

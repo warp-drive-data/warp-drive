@@ -1,13 +1,13 @@
-import type Store from 'core-tests/services/store';
-import { module, test } from 'qunit';
+import { recordIdentifierFor, useRecommendedStore } from '@warp-drive/core';
+import { withDefaults } from '@warp-drive/core/reactive';
+import type { ObjectValue } from '@warp-drive/core/types/json/raw';
+import { Type } from '@warp-drive/core/types/symbols';
+import { module, setupTest, test } from '@warp-drive/diagnostic/ember';
+import { JSONAPICache } from '@warp-drive/json-api';
 
-import { setupTest } from 'ember-qunit';
-
-import { recordIdentifierFor } from '@ember-data/store';
-import type { ObjectValue } from '@warp-drive/core-types/json/raw';
-import { Type } from '@warp-drive/core-types/symbols';
-import { registerDerivations, withDefaults } from '@warp-drive/schema-record';
-
+const Store = useRecommendedStore({
+  cache: JSONAPICache,
+});
 interface address {
   street: string;
   city: string;
@@ -33,9 +33,8 @@ module('Reads | schema-array fields', function (hooks) {
   setupTest(hooks);
 
   test('we can use simple schema-array fields', function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
     const { schema } = store;
-    registerDerivations(schema);
 
     schema.registerResource({
       identity: null,
@@ -95,11 +94,11 @@ module('Reads | schema-array fields', function (hooks) {
       addresses: sourceArray,
     });
 
-    assert.strictEqual(record.id, null, 'id is accessible');
-    assert.strictEqual(record.$type, 'user', '$type is accessible');
-    assert.strictEqual(record.name, 'Rey Skybarker', 'name is accessible');
+    assert.equal(record.id, null, 'id is accessible');
+    assert.equal(record.$type, 'user', '$type is accessible');
+    assert.equal(record.name, 'Rey Skybarker', 'name is accessible');
     assert.true(Array.isArray(record.addresses), 'we can access address array');
-    assert.propContains(
+    assert.satisfies(
       record.addresses?.slice(),
       [
         {
@@ -117,14 +116,14 @@ module('Reads | schema-array fields', function (hooks) {
       ],
       'We have the correct array members'
     );
-    assert.strictEqual(record.addresses, record.addresses, 'We have a stable array reference');
-    assert.notStrictEqual(record.addresses, sourceArray);
+    assert.equal(record.addresses, record.addresses, 'We have a stable array reference');
+    assert.notEqual(record.addresses, sourceArray);
 
     // test that the data entered the cache properly
     const identifier = recordIdentifierFor(record);
     const cachedResourceData = store.cache.peek(identifier);
 
-    assert.notStrictEqual(
+    assert.notEqual(
       cachedResourceData?.attributes?.addresses,
       sourceArray,
       'with no transform we will still divorce the array reference'
@@ -150,9 +149,8 @@ module('Reads | schema-array fields', function (hooks) {
   });
 
   test('we can nest schema objects within schema-array fields', function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
     const { schema } = store;
-    registerDerivations(schema);
 
     schema.registerResource({
       identity: null,
@@ -233,11 +231,11 @@ module('Reads | schema-array fields', function (hooks) {
       businesses: sourceArray,
     });
 
-    assert.strictEqual(record.id, null, 'id is accessible');
-    assert.strictEqual(record.$type, 'user', '$type is accessible');
-    assert.strictEqual(record.name, 'Rey Skybarker', 'name is accessible');
+    assert.equal(record.id, null, 'id is accessible');
+    assert.equal(record.$type, 'user', '$type is accessible');
+    assert.equal(record.name, 'Rey Skybarker', 'name is accessible');
     assert.true(Array.isArray(record.businesses), 'we can access businesses array');
-    assert.propEqual(
+    assert.deepEqual(
       record.businesses?.slice(),
       [
         {
@@ -261,14 +259,14 @@ module('Reads | schema-array fields', function (hooks) {
       ],
       'We have the correct array members'
     );
-    assert.strictEqual(record.businesses, record.businesses, 'We have a stable array reference');
-    assert.notStrictEqual(record.businesses, sourceArray);
+    assert.equal(record.businesses, record.businesses, 'We have a stable array reference');
+    assert.notEqual(record.businesses, sourceArray);
 
     // test that the data entered the cache properly
     const identifier = recordIdentifierFor(record);
     const cachedResourceData = store.cache.peek(identifier);
 
-    assert.notStrictEqual(
+    assert.notEqual(
       cachedResourceData?.attributes?.businesses,
       sourceArray,
       'with no transform we will still divorce the array reference'
@@ -326,9 +324,8 @@ module('Reads | schema-array fields', function (hooks) {
       addresses: Address[];
       [Type]: 'user';
     }
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
     const { schema } = store;
-    registerDerivations(schema);
 
     schema.registerResource({
       identity: { kind: '@hash', type: '@computeAddressIdentity', name: null },
@@ -432,22 +429,18 @@ module('Reads | schema-array fields', function (hooks) {
       },
     });
 
-    assert.strictEqual(record.id, '1', 'id is accessible');
-    assert.strictEqual(record.$type, 'user', '$type is accessible');
-    assert.strictEqual(record.name, 'Rey Skybarker', 'name is accessible');
+    assert.equal(record.id, '1', 'id is accessible');
+    assert.equal(record.$type, 'user', '$type is accessible');
+    assert.equal(record.name, 'Rey Skybarker', 'name is accessible');
     assert.step('^^ precursors ^^');
 
-    assert.propEqual(
+    assert.deepEqual(
       record.addresses[0],
       { type: 'business', name: 'AuditBoard', zip: '12345' },
       'we can access address object'
     );
-    assert.strictEqual(record.addresses[0], record.addresses[0], 'We have a stable object reference');
-    assert.strictEqual(
-      record.addresses[0].type === 'business' && record.addresses[0]?.zip,
-      '12345',
-      'we can access zip'
-    );
+    assert.equal(record.addresses[0], record.addresses[0], 'We have a stable object reference');
+    assert.equal(record.addresses[0].type === 'business' && record.addresses[0]?.zip, '12345', 'we can access zip');
 
     // test that the data entered the cache properly
     const identifier = recordIdentifierFor(record);
@@ -485,17 +478,13 @@ module('Reads | schema-array fields', function (hooks) {
       },
     });
 
-    assert.propEqual(
+    assert.deepEqual(
       record.addresses[0],
       { type: 'business', name: 'AuditBoard Inc.', zip: '12345' },
       'we can access address object'
     );
-    assert.strictEqual(record.addresses[0], originalAddress, 'We have a stable object reference');
-    assert.strictEqual(
-      record.addresses[0].type === 'business' && record.addresses[0].zip,
-      '12345',
-      'we can access zip'
-    );
+    assert.equal(record.addresses[0], originalAddress, 'We have a stable object reference');
+    assert.equal(record.addresses[0].type === 'business' && record.addresses[0].zip, '12345', 'we can access zip');
     assert.step('^^ new payload with same values ^^');
 
     // check what happens when we DO "change identity"
@@ -515,18 +504,14 @@ module('Reads | schema-array fields', function (hooks) {
       },
     });
 
-    assert.propEqual(
+    assert.deepEqual(
       record.addresses[0],
       { type: 'business', name: 'AuditBoard Inc.', zip: '54321' },
       'we can access address object'
     );
-    assert.notStrictEqual(record.addresses[0], originalAddress, 'We changed object references');
-    assert.strictEqual(record.addresses[0], record.addresses[0], 'We have a stable object reference');
-    assert.strictEqual(
-      record.addresses[0].type === 'business' && record.addresses[0].zip,
-      '54321',
-      'we can access zip'
-    );
+    assert.notEqual(record.addresses[0], originalAddress, 'We changed object references');
+    assert.equal(record.addresses[0], record.addresses[0], 'We have a stable object reference');
+    assert.equal(record.addresses[0].type === 'business' && record.addresses[0].zip, '54321', 'we can access zip');
     const lastBusinessAddress = record.addresses[0];
     assert.step('^^ new payload with new identity ^^');
 
@@ -546,14 +531,14 @@ module('Reads | schema-array fields', function (hooks) {
       },
     });
 
-    assert.propEqual(
+    assert.deepEqual(
       record.addresses[0],
       { type: 'single-family-home', street: 'Sunset Hills' },
       'we can access address object'
     );
-    assert.notStrictEqual(record.addresses[0], lastBusinessAddress, 'We changed object references');
-    assert.strictEqual(record.addresses[0], record.addresses[0], 'We have a stable object reference');
-    assert.strictEqual(
+    assert.notEqual(record.addresses[0], lastBusinessAddress, 'We changed object references');
+    assert.equal(record.addresses[0], record.addresses[0], 'We have a stable object reference');
+    assert.equal(
       record.addresses[0].type === 'single-family-home' && record.addresses[0].street,
       'Sunset Hills',
       'we can access street'
@@ -579,14 +564,14 @@ module('Reads | schema-array fields', function (hooks) {
       },
     });
 
-    assert.propEqual(
+    assert.deepEqual(
       record.addresses[0],
       { type: 'condominium-home', street: 'Sunset Hills', unit: 5 },
       'we can access address object'
     );
-    assert.notStrictEqual(record.addresses[0], lastHomeAddress, 'We changed object references');
-    assert.strictEqual(record.addresses[0], record.addresses[0], 'We have a stable object reference');
-    assert.strictEqual(
+    assert.notEqual(record.addresses[0], lastHomeAddress, 'We changed object references');
+    assert.equal(record.addresses[0], record.addresses[0], 'We have a stable object reference');
+    assert.equal(
       record.addresses[0].type === 'condominium-home' && record.addresses[0].street,
       'Sunset Hills',
       'we can access street'

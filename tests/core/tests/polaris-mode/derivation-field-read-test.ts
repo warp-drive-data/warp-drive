@@ -1,12 +1,13 @@
-import { module, test } from 'qunit';
+import { useRecommendedStore } from '@warp-drive/core';
+import type { ReactiveResource } from '@warp-drive/core/reactive';
+import { withDefaults } from '@warp-drive/core/reactive';
+import { Type } from '@warp-drive/core/types/symbols';
+import { module, setupTest, test } from '@warp-drive/diagnostic/ember';
+import { JSONAPICache } from '@warp-drive/json-api';
 
-import { setupTest } from 'ember-qunit';
-
-import type Store from '@ember-data/store';
-import { Type } from '@warp-drive/core-types/symbols';
-import type { SchemaRecord } from '@warp-drive/schema-record';
-import { registerDerivations, withDefaults } from '@warp-drive/schema-record';
-
+const Store = useRecommendedStore({
+  cache: JSONAPICache,
+});
 interface User {
   id: string | null;
   $type: 'user';
@@ -19,11 +20,11 @@ module('Reads | derivation', function (hooks) {
   setupTest(hooks);
 
   test('we can use simple fields with no `type`', function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
     const { schema } = store;
 
     function concat(
-      record: SchemaRecord & { [key: string]: unknown },
+      record: ReactiveResource & { [key: string]: unknown },
       options: Record<string, unknown> | null,
       _prop: string
     ): string {
@@ -34,7 +35,6 @@ module('Reads | derivation', function (hooks) {
     concat[Type] = 'concat';
 
     schema.registerDerivation(concat);
-    registerDerivations(schema);
 
     schema.registerResource(
       withDefaults({
@@ -60,18 +60,17 @@ module('Reads | derivation', function (hooks) {
 
     const record = store.createRecord('user', { firstName: 'Rey', lastName: 'Skybarker' }) as User;
 
-    assert.strictEqual(record.id, null, 'id is accessible');
-    assert.strictEqual(record.$type, 'user', '$type is accessible');
+    assert.equal(record.id, null, 'id is accessible');
+    assert.equal(record.$type, 'user', '$type is accessible');
 
-    assert.strictEqual(record.firstName, 'Rey', 'firstName is accessible');
-    assert.strictEqual(record.lastName, 'Skybarker', 'lastName is accessible');
-    assert.strictEqual(record.fullName, 'Rey Skybarker', 'fullName is accessible');
+    assert.equal(record.firstName, 'Rey', 'firstName is accessible');
+    assert.equal(record.lastName, 'Skybarker', 'lastName is accessible');
+    assert.equal(record.fullName, 'Rey Skybarker', 'fullName is accessible');
   });
 
   test('throws an error if derivation is not found', function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
     const { schema } = store;
-    registerDerivations(schema);
 
     schema.registerResource(
       withDefaults({
@@ -111,7 +110,7 @@ module('Reads | derivation', function (hooks) {
       record.fullName;
       assert.ok(false, 'record.fullName should throw');
     } catch (e) {
-      assert.strictEqual(
+      assert.equal(
         (e as Error).message,
         "No 'concat' derivation registered for use by the 'derived' field 'fullName'",
         'record.fullName throws'

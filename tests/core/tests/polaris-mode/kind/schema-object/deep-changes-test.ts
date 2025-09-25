@@ -1,11 +1,16 @@
-import type { Store } from '@warp-drive/core';
-import { recordIdentifierFor } from '@warp-drive/core';
+import { recordIdentifierFor, useRecommendedStore } from '@warp-drive/core';
 import type { ReactiveResource } from '@warp-drive/core/reactive';
-import { checkout, registerDerivations, withDefaults } from '@warp-drive/core/reactive';
+import { checkout, withDefaults } from '@warp-drive/core/reactive';
+import type { SchemaService } from '@warp-drive/core/types';
 import type { ObjectValue } from '@warp-drive/core/types/json/raw';
 import type { ObjectSchema } from '@warp-drive/core/types/schema/fields';
 import { Type } from '@warp-drive/core/types/symbols';
 import { module, setupRenderingTest, test } from '@warp-drive/diagnostic/ember';
+import { JSONAPICache } from '@warp-drive/json-api';
+
+const Store = useRecommendedStore({
+  cache: JSONAPICache,
+});
 
 interface City {
   name: string;
@@ -143,20 +148,18 @@ const UserSchema = withDefaults({
   ],
 });
 
-function registerUserSchemas(store: Store) {
-  store.schema.registerHashFn(hashName);
-  store.schema.registerHashFn(hashAddress);
-  store.schema.registerResources([CitySchema, ParkSchema, AddressSchema, WaypointSchema, TrailSchema, UserSchema]);
+function registerUserSchemas(schema: SchemaService) {
+  schema.registerHashFn(hashName);
+  schema.registerHashFn(hashAddress);
+  schema.registerResources([CitySchema, ParkSchema, AddressSchema, WaypointSchema, TrailSchema, UserSchema]);
 }
 
 module('Kind | schema-object | Reactivity | deep changes', function (hooks) {
   setupRenderingTest(hooks);
 
   test('We can perform and rollback deep mutations on an embedded path at the leaf', async function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
-    const { schema } = store;
-    registerDerivations(schema);
-    registerUserSchemas(store);
+    const store = new Store();
+    registerUserSchemas(store.schema);
 
     const readable = store.push({
       data: {
@@ -340,10 +343,9 @@ module('Kind | schema-object | Reactivity | deep changes', function (hooks) {
   });
 
   test('We can perform and rollback deep mutations on an embedded path in the middle of the segment', async function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
     const { schema } = store;
-    registerDerivations(schema);
-    registerUserSchemas(store);
+    registerUserSchemas(schema);
 
     const readable = store.push({
       data: {
@@ -643,10 +645,9 @@ module('Kind | schema-object | Reactivity | deep changes', function (hooks) {
   });
 
   test('We can perform and rollback deep mutations on an embedded path at the root', async function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
     const { schema } = store;
-    registerDerivations(schema);
-    registerUserSchemas(store);
+    registerUserSchemas(schema);
 
     const readable = store.push({
       data: {
@@ -834,10 +835,9 @@ module('Kind | schema-object | Reactivity | deep changes', function (hooks) {
   });
 
   test('We can perform and rollback deep mutations on an embedded path with an array index in it', async function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
     const { schema } = store;
-    registerDerivations(schema);
-    registerUserSchemas(store);
+    registerUserSchemas(schema);
 
     const readable = store.push({
       data: {
@@ -1235,10 +1235,9 @@ module('Kind | schema-object | Reactivity | deep changes', function (hooks) {
   });
 
   test('We can perform and rollback deep mutations on an embedded path with an array index at its root', async function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
     const { schema } = store;
-    registerDerivations(schema);
-    registerUserSchemas(store);
+    registerUserSchemas(schema);
 
     const readable = store.push({
       data: {

@@ -33,7 +33,7 @@ export { Store, CacheHandler, type CachePolicy };
 export { type StoreRequestContext, type StoreRequestInput, storeFor } from './store/-private.ts';
 
 /**
- * @deprecated use `ReactiveDocument` instead
+ * @deprecated use {@link ReactiveDocument} instead
  */
 export type Document<T> = ReactiveDocument<T>;
 
@@ -105,6 +105,11 @@ export interface StoreSetupOptions<T extends Cache = Cache> {
   CAUTION_MEGA_DANGER_ZONE_extensions?: CAUTION_MEGA_DANGER_ZONE_Extension[];
 }
 
+export declare class ConfiguredStore<T extends { cache: Cache }> extends Store {
+  // get cache(): T extends OptionsWithCache<infer R> ? R : never;
+  createCache(capabilities: CacheCapabilitiesManager): T['cache'];
+}
+
 /**
  * Creates a configured Store class with recommended defaults
  * for schema handling, reactivity, caching, and request management.
@@ -119,8 +124,11 @@ export interface StoreSetupOptions<T extends Cache = Cache> {
  * });
  * ```
  */
-export function useRecommendedStore(options: StoreSetupOptions, StoreKlass: typeof Store = Store): typeof Store {
-  return class ConfiguredStore extends StoreKlass {
+export function useRecommendedStore<T extends Cache>(
+  options: StoreSetupOptions<T>,
+  StoreKlass: typeof Store = Store
+): typeof ConfiguredStore<{ cache: T }> {
+  return class AppStore extends StoreKlass {
     requestManager = new RequestManager().use([...(options.handlers ?? []), Fetch]).useCache(CacheHandler);
 
     lifetimes =
@@ -187,5 +195,5 @@ export function useRecommendedStore(options: StoreSetupOptions, StoreKlass: type
     teardownRecord(record: unknown): void {
       return teardownRecord(record);
     }
-  };
+  } as typeof ConfiguredStore;
 }

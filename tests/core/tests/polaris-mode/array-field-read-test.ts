@@ -1,12 +1,13 @@
-import type Store from 'core-tests/services/store';
-import { module, test } from 'qunit';
+import { recordIdentifierFor, useRecommendedStore } from '@warp-drive/core';
+import type { Transformation } from '@warp-drive/core/reactive';
+import { withDefaults } from '@warp-drive/core/reactive';
+import { Type } from '@warp-drive/core/types/symbols';
+import { module, setupTest, test } from '@warp-drive/diagnostic/ember';
+import { JSONAPICache } from '@warp-drive/json-api';
 
-import { setupTest } from 'ember-qunit';
-
-import { recordIdentifierFor } from '@ember-data/store';
-import { Type } from '@warp-drive/core-types/symbols';
-import type { Transformation } from '@warp-drive/schema-record';
-import { registerDerivations, withDefaults } from '@warp-drive/schema-record';
+const Store = useRecommendedStore({
+  cache: JSONAPICache,
+});
 
 interface CreateUserType {
   id: string | null;
@@ -20,9 +21,8 @@ module('Reads | array fields', function (hooks) {
   setupTest(hooks);
 
   test('we can use simple array fields with no `type`', function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
     const { schema } = store;
-    registerDerivations(schema);
 
     schema.registerResource(
       withDefaults({
@@ -43,19 +43,19 @@ module('Reads | array fields', function (hooks) {
     const sourceArray = ['1', '2'];
     const record = store.createRecord<CreateUserType>('user', { name: 'Rey Skybarker', favoriteNumbers: sourceArray });
 
-    assert.strictEqual(record.id, null, 'id is accessible');
-    assert.strictEqual(record.$type, 'user', '$type is accessible');
-    assert.strictEqual(record.name, 'Rey Skybarker', 'name is accessible');
+    assert.equal(record.id, null, 'id is accessible');
+    assert.equal(record.$type, 'user', '$type is accessible');
+    assert.equal(record.name, 'Rey Skybarker', 'name is accessible');
     assert.true(Array.isArray(record.favoriteNumbers), 'we can access favoriteNumber array');
     assert.deepEqual(record.favoriteNumbers?.slice(), ['1', '2'], 'We have the correct array members');
-    assert.strictEqual(record.favoriteNumbers, record.favoriteNumbers, 'We have a stable array reference');
-    assert.notStrictEqual(record.favoriteNumbers, sourceArray);
+    assert.equal(record.favoriteNumbers, record.favoriteNumbers, 'We have a stable array reference');
+    assert.notEqual(record.favoriteNumbers, sourceArray);
 
     // test that the data entered the cache properly
     const identifier = recordIdentifierFor(record);
     const cachedResourceData = store.cache.peek(identifier);
 
-    assert.notStrictEqual(
+    assert.notEqual(
       cachedResourceData?.attributes?.favoriteNumbers,
       sourceArray,
       'with no transform we will still divorce the array reference'
@@ -68,9 +68,8 @@ module('Reads | array fields', function (hooks) {
   });
 
   test('we can use simple array fields with a `type`', function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
     const { schema } = store;
-    registerDerivations(schema);
 
     schema.registerResource(
       withDefaults({
@@ -108,19 +107,19 @@ module('Reads | array fields', function (hooks) {
     const sourceArray = ['1', '2'];
     const record = store.createRecord<CreateUserType>('user', { name: 'Rey Skybarker', favoriteNumbers: sourceArray });
 
-    assert.strictEqual(record.id, null, 'id is accessible');
-    assert.strictEqual(record.$type, 'user', '$type is accessible');
-    assert.strictEqual(record.name, 'Rey Skybarker', 'name is accessible');
+    assert.equal(record.id, null, 'id is accessible');
+    assert.equal(record.$type, 'user', '$type is accessible');
+    assert.equal(record.name, 'Rey Skybarker', 'name is accessible');
     assert.true(Array.isArray(record.favoriteNumbers), 'we can access favoriteNumber array');
     assert.deepEqual(record.favoriteNumbers?.slice(), ['1', '2'], 'We have the correct array members');
-    assert.strictEqual(record.favoriteNumbers, record.favoriteNumbers, 'We have a stable array reference');
-    assert.notStrictEqual(record.favoriteNumbers, sourceArray);
+    assert.equal(record.favoriteNumbers, record.favoriteNumbers, 'We have a stable array reference');
+    assert.notEqual(record.favoriteNumbers, sourceArray);
 
     // test that the data entered the cache properly
     const identifier = recordIdentifierFor(record);
     const cachedResourceData = store.cache.peek(identifier);
 
-    assert.notStrictEqual(
+    assert.notEqual(
       cachedResourceData?.attributes?.favoriteNumbers,
       sourceArray,
       'with no transform we will still divorce the array reference'
@@ -134,9 +133,8 @@ module('Reads | array fields', function (hooks) {
   });
 
   test('we can have null values for simple array fields', function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
     const { schema } = store;
-    registerDerivations(schema);
 
     schema.registerResource(
       withDefaults({
@@ -156,16 +154,16 @@ module('Reads | array fields', function (hooks) {
 
     const record = store.createRecord<CreateUserType>('user', { name: 'Rey Skybarker', favoriteNumbers: null });
 
-    assert.strictEqual(record.id, null, 'id is accessible');
-    assert.strictEqual(record.$type, 'user', '$type is accessible');
-    assert.strictEqual(record.name, 'Rey Skybarker', 'name is accessible');
-    assert.strictEqual(record.favoriteNumbers, null);
+    assert.equal(record.id, null, 'id is accessible');
+    assert.equal(record.$type, 'user', '$type is accessible');
+    assert.equal(record.name, 'Rey Skybarker', 'name is accessible');
+    assert.equal(record.favoriteNumbers, null);
 
     // test that the data entered the cache properly
     const identifier = recordIdentifierFor(record);
     const cachedResourceData = store.cache.peek(identifier);
 
-    assert.strictEqual(cachedResourceData?.attributes?.favoriteNumbers, null, 'the value in the cache is null');
+    assert.equal(cachedResourceData?.attributes?.favoriteNumbers, null, 'the value in the cache is null');
     assert.deepEqual(
       cachedResourceData?.attributes?.favoriteNumbers,
       null,
@@ -174,9 +172,8 @@ module('Reads | array fields', function (hooks) {
   });
 
   test('we can update to null values for simple array fields', function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
     const { schema } = store;
-    registerDerivations(schema);
 
     schema.registerResource(
       withDefaults({
@@ -197,19 +194,19 @@ module('Reads | array fields', function (hooks) {
     const sourceArray = ['1', '2'];
     const record = store.createRecord<CreateUserType>('user', { name: 'Rey Skybarker', favoriteNumbers: sourceArray });
 
-    assert.strictEqual(record.id, null, 'id is accessible');
-    assert.strictEqual(record.$type, 'user', '$type is accessible');
-    assert.strictEqual(record.name, 'Rey Skybarker', 'name is accessible');
+    assert.equal(record.id, null, 'id is accessible');
+    assert.equal(record.$type, 'user', '$type is accessible');
+    assert.equal(record.name, 'Rey Skybarker', 'name is accessible');
     assert.true(Array.isArray(record.favoriteNumbers), 'we can access favoriteNumber array');
     assert.deepEqual(record.favoriteNumbers?.slice(), ['1', '2'], 'We have the correct array members');
-    assert.strictEqual(record.favoriteNumbers, record.favoriteNumbers, 'We have a stable array reference');
-    assert.notStrictEqual(record.favoriteNumbers, sourceArray);
+    assert.equal(record.favoriteNumbers, record.favoriteNumbers, 'We have a stable array reference');
+    assert.notEqual(record.favoriteNumbers, sourceArray);
 
     // test that the data entered the cache properly
     const identifier = recordIdentifierFor(record);
     const cachedResourceData = store.cache.peek(identifier);
 
-    assert.notStrictEqual(
+    assert.notEqual(
       cachedResourceData?.attributes?.favoriteNumbers,
       sourceArray,
       'with no transform we will still divorce the array reference'
@@ -221,12 +218,12 @@ module('Reads | array fields', function (hooks) {
     );
 
     record.favoriteNumbers = null;
-    assert.strictEqual(record.favoriteNumbers, null);
+    assert.equal(record.favoriteNumbers, null);
 
     // test that the data entered the cache properly
     const cachedResourceData2 = store.cache.peek(identifier);
 
-    assert.strictEqual(cachedResourceData2?.attributes?.favoriteNumbers, null, 'the value in the cache is null');
+    assert.equal(cachedResourceData2?.attributes?.favoriteNumbers, null, 'the value in the cache is null');
     assert.deepEqual(
       cachedResourceData2?.attributes?.favoriteNumbers,
       null,

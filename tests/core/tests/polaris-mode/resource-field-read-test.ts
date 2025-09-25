@@ -1,31 +1,31 @@
-import type { TestContext } from '@ember/test-helpers';
+import { useRecommendedStore } from '@warp-drive/core';
+import type { ReactiveDocument, ReactiveResource } from '@warp-drive/core/reactive';
+import { withDefaults } from '@warp-drive/core/reactive';
+import { Type } from '@warp-drive/core/types/symbols';
+import { module, setupTest, test } from '@warp-drive/diagnostic/ember';
+import { JSONAPICache } from '@warp-drive/json-api';
 
-import { module, test } from 'qunit';
-
-import { setupTest } from 'ember-qunit';
-
-import type Store from '@ember-data/store';
-import type { Document } from '@ember-data/store';
-import { Type } from '@warp-drive/core-types/symbols';
-import type { SchemaRecord } from '@warp-drive/schema-record';
-import { registerDerivations, withDefaults } from '@warp-drive/schema-record';
+const Store = useRecommendedStore({
+  cache: JSONAPICache,
+});
 
 interface User {
   id: string | null;
   $type: 'user';
   name: string;
-  bestFriend: Document<User | null>;
+  bestFriend: ReactiveDocument<User | null>;
+  [Type]: 'user';
 }
 
 module('Reads | resource', function (hooks) {
   setupTest(hooks);
 
-  test('we can use simple fields with no `type`', function (this: TestContext, assert) {
-    const store = this.owner.lookup('service:store') as Store;
+  test('we can use simple fields with no `type`', function (assert) {
+    const store = new Store();
     const { schema } = store;
 
     function concat(
-      record: SchemaRecord & { [key: string]: unknown },
+      record: ReactiveResource & { [key: string]: unknown },
       options: Record<string, unknown> | null,
       _prop: string
     ): string {
@@ -36,7 +36,6 @@ module('Reads | resource', function (hooks) {
     concat[Type] = 'concat';
 
     schema.registerDerivation(concat);
-    registerDerivations(schema);
 
     schema.registerResource(
       withDefaults({
@@ -58,7 +57,7 @@ module('Reads | resource', function (hooks) {
       })
     );
 
-    const record = store.push({
+    const record = store.push<User>({
       data: {
         type: 'user',
         id: '1',
@@ -85,13 +84,13 @@ module('Reads | resource', function (hooks) {
           },
         },
       ],
-    }) as User;
+    });
 
-    assert.strictEqual(record.id, '1', 'id is accessible');
-    assert.strictEqual(record.$type, 'user', '$type is accessible');
-    assert.strictEqual(record.name, 'Chris', 'name is accessible');
-    assert.strictEqual(record.bestFriend.data?.id, '2', 'bestFriend.id is accessible');
-    assert.strictEqual(record.bestFriend.data?.$type, 'user', 'bestFriend.user is accessible');
-    assert.strictEqual(record.bestFriend.data?.name, 'Rey', 'bestFriend.name is accessible');
+    assert.equal(record.id, '1', 'id is accessible');
+    assert.equal(record.$type, 'user', '$type is accessible');
+    assert.equal(record.name, 'Chris', 'name is accessible');
+    assert.equal(record.bestFriend.data?.id, '2', 'bestFriend.id is accessible');
+    assert.equal(record.bestFriend.data?.$type, 'user', 'bestFriend.user is accessible');
+    assert.equal(record.bestFriend.data?.name, 'Rey', 'bestFriend.name is accessible');
   });
 });

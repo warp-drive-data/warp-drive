@@ -1,14 +1,13 @@
-import { rerender } from '@ember/test-helpers';
-
-import { module, test } from 'qunit';
-
-import { setupRenderingTest } from 'ember-qunit';
-
-import type Store from '@ember-data/store';
-import { registerDerivations, withDefaults } from '@warp-drive/schema-record';
+import { useRecommendedStore } from '@warp-drive/core';
+import { withDefaults } from '@warp-drive/core/reactive';
+import { module, setupRenderingTest, test } from '@warp-drive/diagnostic/ember';
+import { JSONAPICache } from '@warp-drive/json-api';
 
 import { reactiveContext } from '../-utils/reactive-context';
 
+const Store = useRecommendedStore({
+  cache: JSONAPICache,
+});
 interface Address {
   street: string;
   city: string;
@@ -31,9 +30,8 @@ module('Reactivity | schema object fields can receive remote updates', function 
   setupRenderingTest(hooks);
 
   test('we can use simple fields with no `type`', async function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
     const { schema } = store;
-    registerDerivations(schema);
 
     schema.registerResource({
       identity: null,
@@ -85,9 +83,9 @@ module('Reactivity | schema object fields can receive remote updates', function 
       },
     }) as User;
 
-    assert.strictEqual(record.id, '1', 'id is accessible');
-    assert.strictEqual(record.$type, 'user', '$type is accessible');
-    assert.propEqual(
+    assert.equal(record.id, '1', 'id is accessible');
+    assert.equal(record.$type, 'user', '$type is accessible');
+    assert.deepEqual(
       record.address,
       {
         street: '123 Main St',
@@ -102,9 +100,9 @@ module('Reactivity | schema object fields can receive remote updates', function 
     // TODO: actually render the address object and verify
     // const addressIndex = fieldOrder.indexOf('address');
 
-    assert.strictEqual(counters.id, 1, 'idCount is 1');
-    assert.strictEqual(counters.$type, 1, '$typeCount is 1');
-    assert.strictEqual(counters.address, 1, 'addressCount is 1');
+    assert.equal(counters.id, 1, 'idCount is 1');
+    assert.equal(counters.$type, 1, '$typeCount is 1');
+    assert.equal(counters.address, 1, 'addressCount is 1');
 
     // remote update
     store.push({
@@ -122,9 +120,9 @@ module('Reactivity | schema object fields can receive remote updates', function 
       },
     });
 
-    assert.strictEqual(record.id, '1', 'id is accessible');
-    assert.strictEqual(record.$type, 'user', '$type is accessible');
-    assert.propEqual(
+    assert.equal(record.id, '1', 'id is accessible');
+    assert.equal(record.$type, 'user', '$type is accessible');
+    assert.deepEqual(
       record.address,
       {
         street: '456 Elm St',
@@ -135,17 +133,16 @@ module('Reactivity | schema object fields can receive remote updates', function 
       'address is accessible'
     );
 
-    await rerender();
+    await this.h.rerender();
 
-    assert.strictEqual(counters.id, 1, 'idCount is 1');
-    assert.strictEqual(counters.$type, 1, '$typeCount is 1');
-    assert.strictEqual(counters.address, 2, 'addressCount is 2');
+    assert.equal(counters.id, 1, 'idCount is 1');
+    assert.equal(counters.$type, 1, '$typeCount is 1');
+    assert.equal(counters.address, 2, 'addressCount is 2');
   });
 
   test('we can use simple fields with sourceKeys', async function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
     const { schema } = store;
-    registerDerivations(schema);
 
     schema.registerResource({
       identity: null,
@@ -184,9 +181,9 @@ module('Reactivity | schema object fields can receive remote updates', function 
       },
     }) as User;
 
-    assert.strictEqual(record.id, '1', 'id is accessible');
-    assert.strictEqual(record.$type, 'user', '$type is accessible');
-    assert.propEqual(
+    assert.equal(record.id, '1', 'id is accessible');
+    assert.equal(record.$type, 'user', '$type is accessible');
+    assert.deepEqual(
       record.address,
       {
         zip: 90219,
@@ -198,9 +195,9 @@ module('Reactivity | schema object fields can receive remote updates', function 
     // TODO: actually render the address object and verify
     // const addressIndex = fieldOrder.indexOf('address');
 
-    assert.strictEqual(counters.id, 1, 'idCount is 1');
-    assert.strictEqual(counters.$type, 1, '$typeCount is 1');
-    assert.strictEqual(counters.address, 1, 'addressCount is 1');
+    assert.equal(counters.id, 1, 'idCount is 1');
+    assert.equal(counters.$type, 1, '$typeCount is 1');
+    assert.equal(counters.address, 1, 'addressCount is 1');
 
     // remote update
     store.push({
@@ -215,9 +212,9 @@ module('Reactivity | schema object fields can receive remote updates', function 
       },
     });
 
-    assert.strictEqual(record.id, '1', 'id is accessible');
-    assert.strictEqual(record.$type, 'user', '$type is accessible');
-    assert.propEqual(
+    assert.equal(record.id, '1', 'id is accessible');
+    assert.equal(record.$type, 'user', '$type is accessible');
+    assert.deepEqual(
       record.address,
       {
         zip: 90210,
@@ -225,10 +222,10 @@ module('Reactivity | schema object fields can receive remote updates', function 
       'address is accessible'
     );
 
-    await rerender();
+    await this.h.rerender();
 
-    assert.strictEqual(counters.id, 1, 'idCount is 1');
-    assert.strictEqual(counters.$type, 1, '$typeCount is 1');
-    assert.strictEqual(counters.address, 2, 'addressCount is 2');
+    assert.equal(counters.id, 1, 'idCount is 1');
+    assert.equal(counters.$type, 1, '$typeCount is 1');
+    assert.equal(counters.address, 2, 'addressCount is 2');
   });
 });

@@ -1,12 +1,12 @@
-import type { TestContext } from '@ember/test-helpers';
+import { useRecommendedStore } from '@warp-drive/core';
+import { withDefaults } from '@warp-drive/core/reactive';
+import type { Type } from '@warp-drive/core/types/symbols';
+import { module, setupTest, test } from '@warp-drive/diagnostic/ember';
+import { JSONAPICache } from '@warp-drive/json-api';
 
-import { module, test } from 'qunit';
-
-import { setupTest } from 'ember-qunit';
-
-import type Store from '@ember-data/store';
-import type { Type } from '@warp-drive/core-types/symbols';
-import { registerDerivations, withDefaults } from '@warp-drive/schema-record';
+const Store = useRecommendedStore({
+  cache: JSONAPICache,
+});
 
 type User = {
   id: string | null;
@@ -19,11 +19,9 @@ type User = {
 module('Reads | belongsTo in linksMode', function (hooks) {
   setupTest(hooks);
 
-  test('we can use sync belongsTo in linksMode', function (this: TestContext, assert) {
-    const store = this.owner.lookup('service:store') as Store;
+  test('we can use sync belongsTo in linksMode', function (assert) {
+    const store = new Store();
     const { schema } = store;
-
-    registerDerivations(schema);
 
     schema.registerResource(
       withDefaults({
@@ -74,20 +72,18 @@ module('Reads | belongsTo in linksMode', function (hooks) {
       ],
     });
 
-    assert.strictEqual(record.id, '1', 'id is accessible');
-    assert.strictEqual(record.$type, 'user', '$type is accessible');
-    assert.strictEqual(record.name, 'Chris', 'name is accessible');
-    assert.strictEqual(record.bestFriend?.id, '2', 'bestFriend.id is accessible');
-    assert.strictEqual(record.bestFriend?.$type, 'user', 'bestFriend.user is accessible');
-    assert.strictEqual(record.bestFriend?.name, 'Rey', 'bestFriend.name is accessible');
-    assert.strictEqual(record.bestFriend?.bestFriend?.id, record.id, 'bestFriend is reciprocal');
+    assert.equal(record.id, '1', 'id is accessible');
+    assert.equal(record.$type, 'user', '$type is accessible');
+    assert.equal(record.name, 'Chris', 'name is accessible');
+    assert.equal(record.bestFriend?.id, '2', 'bestFriend.id is accessible');
+    assert.equal(record.bestFriend?.$type, 'user', 'bestFriend.user is accessible');
+    assert.equal(record.bestFriend?.name, 'Rey', 'bestFriend.name is accessible');
+    assert.equal(record.bestFriend?.bestFriend?.id, record.id, 'bestFriend is reciprocal');
   });
 
-  test('we can update sync belongsTo in linksMode', function (this: TestContext, assert) {
-    const store = this.owner.lookup('service:store') as Store;
+  test('we can update sync belongsTo in linksMode', function (assert) {
+    const store = new Store();
     const { schema } = store;
-
-    registerDerivations(schema);
 
     schema.registerResource(
       withDefaults({
@@ -138,10 +134,10 @@ module('Reads | belongsTo in linksMode', function (hooks) {
       ],
     });
 
-    assert.strictEqual(record.id, '1', 'id is accessible');
-    assert.strictEqual(record.name, 'Chris', 'name is accessible');
-    assert.strictEqual(record.bestFriend?.id, '2', 'bestFriend.id is accessible');
-    assert.strictEqual(record.bestFriend?.name, 'Rey', 'bestFriend.name is accessible');
+    assert.equal(record.id, '1', 'id is accessible');
+    assert.equal(record.name, 'Chris', 'name is accessible');
+    assert.equal(record.bestFriend?.id, '2', 'bestFriend.id is accessible');
+    assert.equal(record.bestFriend?.name, 'Rey', 'bestFriend.name is accessible');
 
     store.push<User>({
       data: {
@@ -174,17 +170,15 @@ module('Reads | belongsTo in linksMode', function (hooks) {
       ],
     });
 
-    assert.strictEqual(record.id, '1', 'id is accessible');
-    assert.strictEqual(record.name, 'Chris', 'name is accessible');
-    assert.strictEqual(record.bestFriend?.id, '3', 'bestFriend.id is accessible');
-    assert.strictEqual(record.bestFriend?.name, 'Ray', 'bestFriend.name is accessible');
+    assert.equal(record.id, '1', 'id is accessible');
+    assert.equal(record.name, 'Chris', 'name is accessible');
+    assert.equal(record.bestFriend?.id, '3', 'bestFriend.id is accessible');
+    assert.equal(record.bestFriend?.name, 'Ray', 'bestFriend.name is accessible');
   });
 
-  test('we error in linksMode if the relationship does not include a link', async function (this: TestContext, assert) {
-    const store = this.owner.lookup('service:store') as Store;
+  test('we error in linksMode if the relationship does not include a link', async function (assert) {
+    const store = new Store();
     const { schema } = store;
-
-    registerDerivations(schema);
 
     schema.registerResource(
       withDefaults({
@@ -240,11 +234,9 @@ module('Reads | belongsTo in linksMode', function (hooks) {
     );
   });
 
-  test('we error in linksMode if the relationship includes do not include a link', async function (this: TestContext, assert) {
-    const store = this.owner.lookup('service:store') as Store;
+  test('we error in linksMode if the relationship includes do not include a link', async function (assert) {
+    const store = new Store();
     const { schema } = store;
-
-    registerDerivations(schema);
 
     schema.registerResource(
       withDefaults({
@@ -300,11 +292,9 @@ module('Reads | belongsTo in linksMode', function (hooks) {
     );
   });
 
-  test('we error in linksMode if the relationships are not included', async function (this: TestContext, assert) {
-    const store = this.owner.lookup('service:store') as Store;
+  test('we error in linksMode if the relationships are not included', async function (assert) {
+    const store = new Store();
     const { schema } = store;
-
-    registerDerivations(schema);
 
     schema.registerResource(
       withDefaults({
@@ -346,11 +336,9 @@ module('Reads | belongsTo in linksMode', function (hooks) {
     );
   });
 
-  test('we error in linksMode if the relationship data is undefined', async function (this: TestContext, assert) {
-    const store = this.owner.lookup('service:store') as Store;
+  test('we error in linksMode if the relationship data is undefined', async function (assert) {
+    const store = new Store();
     const { schema } = store;
-
-    registerDerivations(schema);
 
     schema.registerResource(
       withDefaults({
@@ -406,11 +394,9 @@ module('Reads | belongsTo in linksMode', function (hooks) {
     );
   });
 
-  test('we do not error in linksMode if the relationship data is null', function (this: TestContext, assert) {
-    const store = this.owner.lookup('service:store') as Store;
+  test('we do not error in linksMode if the relationship data is null', function (assert) {
+    const store = new Store();
     const { schema } = store;
-
-    registerDerivations(schema);
 
     schema.registerResource(
       withDefaults({
@@ -447,17 +433,15 @@ module('Reads | belongsTo in linksMode', function (hooks) {
       included: [],
     });
 
-    assert.strictEqual(record.id, '1', 'id is accessible');
-    assert.strictEqual(record.$type, 'user', '$type is accessible');
-    assert.strictEqual(record.name, 'Chris', 'name is accessible');
-    assert.strictEqual(record.bestFriend, null, 'bestFriend is null');
+    assert.equal(record.id, '1', 'id is accessible');
+    assert.equal(record.$type, 'user', '$type is accessible');
+    assert.equal(record.name, 'Chris', 'name is accessible');
+    assert.equal(record.bestFriend, null, 'bestFriend is null');
   });
 
-  test('we error for async belongsTo access in linksMode because we are not implemented yet', async function (this: TestContext, assert) {
-    const store = this.owner.lookup('service:store') as Store;
+  test('we error for async belongsTo access in linksMode because we are not implemented yet', async function (assert) {
+    const store = new Store();
     const { schema } = store;
-
-    registerDerivations(schema);
 
     schema.registerResource(
       withDefaults({

@@ -1,11 +1,11 @@
-import { module, test } from 'qunit';
+import { useRecommendedStore } from '@warp-drive/core';
+import type { Type } from '@warp-drive/core/types/symbols';
+import { module, setupTest, test } from '@warp-drive/diagnostic/ember';
+import { JSONAPICache } from '@warp-drive/json-api';
 
-import { setupTest } from 'ember-qunit';
-
-import type Store from '@ember-data/store';
-import type { Type } from '@warp-drive/core-types/symbols';
-import { registerDerivations } from '@warp-drive/schema-record';
-
+const Store = useRecommendedStore({
+  cache: JSONAPICache,
+});
 interface User {
   id: string;
   $type: 'user';
@@ -17,9 +17,8 @@ module('RecordArray | Iterable Behaviors', function (hooks) {
   setupTest(hooks);
 
   test('we can use `JSON.stringify` on a RecordArray', function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
     const { schema } = store;
-    registerDerivations(schema);
 
     schema.registerResource({
       type: 'user',
@@ -75,9 +74,8 @@ module('RecordArray | Iterable Behaviors', function (hooks) {
   });
 
   test('we can use `[ ...record ]` on a RecordArray', function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
     const { schema } = store;
-    registerDerivations(schema);
 
     schema.registerResource({
       type: 'user',
@@ -122,9 +120,8 @@ module('RecordArray | Iterable Behaviors', function (hooks) {
   });
 
   test('we can use `for (const value of record)` on a record', function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
     const { schema } = store;
-    registerDerivations(schema);
 
     schema.registerResource({
       type: 'user',
@@ -170,9 +167,8 @@ module('RecordArray | Iterable Behaviors', function (hooks) {
   });
 
   test('we can use `Array.from(records)` as expected', function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
     const { schema } = store;
-    registerDerivations(schema);
 
     schema.registerResource({
       type: 'user',

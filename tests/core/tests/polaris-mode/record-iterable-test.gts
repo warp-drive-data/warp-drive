@@ -1,13 +1,12 @@
-import { render } from '@ember/test-helpers';
+import { useRecommendedStore } from '@warp-drive/core';
+import type { Type } from '@warp-drive/core/types/symbols';
+import type { RenderingTestContext } from '@warp-drive/diagnostic/ember';
+import { module, setupRenderingTest, setupTest, test } from '@warp-drive/diagnostic/ember';
+import { JSONAPICache } from '@warp-drive/json-api';
 
-import { module, test } from 'qunit';
-
-import { setupRenderingTest, setupTest } from 'ember-qunit';
-
-import type Store from '@ember-data/store';
-import type { Type } from '@warp-drive/core-types/symbols';
-import { registerDerivations } from '@warp-drive/schema-record';
-
+const Store = useRecommendedStore({
+  cache: JSONAPICache,
+});
 interface User {
   id: string | null;
   $type: 'user';
@@ -23,9 +22,8 @@ module('SchemaRecord | Iterable Behaviors', function (hooks) {
   setupTest(hooks);
 
   test('we can use `JSON.stringify` on a record without providing toJSON in the schema', function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
     const { schema } = store;
-    registerDerivations(schema);
 
     schema.registerResource({
       type: 'user',
@@ -76,9 +74,8 @@ module('SchemaRecord | Iterable Behaviors', function (hooks) {
   });
 
   test('we can use `{ ...record }` on a record', function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
     const { schema } = store;
-    registerDerivations(schema);
 
     schema.registerResource({
       type: 'user',
@@ -127,9 +124,8 @@ module('SchemaRecord | Iterable Behaviors', function (hooks) {
   });
 
   test('we can use `for (let key in record)` on a record', function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
     const { schema } = store;
-    registerDerivations(schema);
 
     schema.registerResource({
       type: 'user',
@@ -183,9 +179,8 @@ module('SchemaRecord | Iterable Behaviors', function (hooks) {
   });
 
   test('we can use `for (const [key, value] of record)` on a record', function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
     const { schema } = store;
-    registerDerivations(schema);
 
     schema.registerResource({
       type: 'user',
@@ -240,9 +235,8 @@ module('SchemaRecord | Iterable Behaviors', function (hooks) {
   });
 
   test('we can use `Object.keys(record)` on a record', function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
     const { schema } = store;
-    registerDerivations(schema);
 
     schema.registerResource({
       type: 'user',
@@ -276,7 +270,7 @@ module('SchemaRecord | Iterable Behaviors', function (hooks) {
     try {
       const keys = Object.keys(record);
       assert.true(true, 'Object.keys should not throw');
-      assert.arrayStrictEquals(
+      assert.arrayEquals(
         keys,
         ['id', '$type', 'name'],
         'Object.keys should remove constructor and include all other fields in the schema'
@@ -287,9 +281,8 @@ module('SchemaRecord | Iterable Behaviors', function (hooks) {
   });
 
   test('we can use `Object.value(record)` on a record', function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
     const { schema } = store;
-    registerDerivations(schema);
 
     schema.registerResource({
       type: 'user',
@@ -323,7 +316,7 @@ module('SchemaRecord | Iterable Behaviors', function (hooks) {
     try {
       const values = Object.values(record);
       assert.true(true, 'Object.values should not throw');
-      assert.arrayStrictEquals(
+      assert.arrayEquals(
         values,
         ['1', 'user', 'Rey Pupatine'],
         'Object.values should remove constructor and include all other fields in the schema'
@@ -334,9 +327,8 @@ module('SchemaRecord | Iterable Behaviors', function (hooks) {
   });
 
   test('we can use `Object.entries(record)` on a record', function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
+    const store = new Store();
     const { schema } = store;
-    registerDerivations(schema);
 
     schema.registerResource({
       type: 'user',
@@ -388,10 +380,9 @@ module('SchemaRecord | Iterable Behaviors', function (hooks) {
 module('SchemaRecord | Iterable Behaviors | Rendering', function (hooks) {
   setupRenderingTest(hooks);
 
-  test('we can use `{{#each-in record as |key value|}}` in a template', async function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
+  test('we can use `{{#each-in record as |key value|}}` in a template', async function (this: RenderingTestContext, assert) {
+    const store = new Store();
     const { schema } = store;
-    registerDerivations(schema);
 
     schema.registerResource({
       type: 'user',
@@ -423,7 +414,7 @@ module('SchemaRecord | Iterable Behaviors | Rendering', function (hooks) {
       },
     });
 
-    await render(
+    await this.render(
       <template>
         {{#each-in record as |key value|}}
           <div data-test-key={{key}}>{{value}}</div>
@@ -436,10 +427,9 @@ module('SchemaRecord | Iterable Behaviors | Rendering', function (hooks) {
     assert.dom('[data-test-key="name"]').hasText('Rey Pupatine');
   });
 
-  test('we can use `{{#each record as |entry|}}` in a template', async function (assert) {
-    const store = this.owner.lookup('service:store') as Store;
+  test('we can use `{{#each record as |entry|}}` in a template', async function (this: RenderingTestContext, assert) {
+    const store = new Store();
     const { schema } = store;
-    registerDerivations(schema);
 
     schema.registerResource({
       type: 'user',
@@ -473,7 +463,7 @@ module('SchemaRecord | Iterable Behaviors | Rendering', function (hooks) {
 
     const get = (entry: [string, string], index: number) => entry[index];
 
-    await render(
+    await this.render(
       <template>
         {{#each record as |entry|}}
           <div data-test-key={{get entry 0}}>{{get entry 1}}</div>

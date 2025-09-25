@@ -226,6 +226,57 @@ export class Diagnostic<TC extends TestContext> {
     }
   }
 
+  arrayEquals<T>(actual: T[], expected: T[], message: string): void {
+    if (!Array.isArray(actual)) {
+      this.pushResult({
+        message: 'Expected the value for "actual" to be an array | ' + message,
+        stack: '',
+        passed: false,
+        actual: false,
+        expected: true,
+      });
+      return;
+    }
+    if (!Array.isArray(expected)) {
+      this.pushResult({
+        message: 'Expected the value for "expected" to be an array',
+        stack: '',
+        passed: false,
+        actual: false,
+        expected: true,
+      });
+      return;
+    }
+    let passed = actual.length === expected.length;
+
+    const actualRefs = new Map<T, string>();
+    const actualSerialized: string[] = actual.map((item, index) => {
+      const ref = refFromIndex(index, '');
+      actualRefs.set(item, ref);
+      return ref;
+    });
+    const expectedSerialized: string[] = expected.map((item, index) => {
+      return getRefForItem(actualRefs, item, index);
+    });
+
+    if (passed) {
+      for (let i = 0; i < actual.length; i++) {
+        if (actual[i] !== expected[i]) {
+          passed = false;
+          break;
+        }
+      }
+    }
+
+    this.pushResult({
+      message,
+      stack: '',
+      passed,
+      actual: actualSerialized,
+      expected: expectedSerialized,
+    });
+  }
+
   notDeepEqual<T>(actual: T, expected: T, message?: string): void {
     const isEqual = equiv(actual, expected, true);
     if (isEqual) {
@@ -395,4 +446,15 @@ export class Diagnostic<TC extends TestContext> {
       }
     }
   }
+}
+
+function refFromIndex(index: number, suffix: string): string {
+  return `<ref:@${index}${suffix}>`;
+}
+function getRefForItem<T>(map: Map<T, string>, item: T, index: number): string {
+  let ref = map.get(item);
+  if (ref === undefined) {
+    ref = refFromIndex(index, 'b');
+  }
+  return ref;
 }

@@ -1,4 +1,4 @@
-import type { Document, Store } from '@warp-drive/core';
+import type { ReactiveDocument, Store } from '@warp-drive/core';
 import { DEBUG } from '@warp-drive/core/build-config/env';
 import { assert } from '@warp-drive/core/build-config/macros';
 import type { CollectionEdge, Graph, GraphEdge, ResourceEdge, UpgradedMeta } from '@warp-drive/core/graph/-private';
@@ -617,7 +617,7 @@ export class LegacySupport {
       const future = this.store.request<ResourceKey | null>(req);
       this._pending[name] = future
         .then((doc) =>
-          field.options.linksMode ? (doc.content as unknown as Document<ResourceKey | null>).data! : doc.content
+          field.options.linksMode ? (doc.content as unknown as ReactiveDocument<ResourceKey | null>).data! : doc.content
         )
         .finally(() => {
           this._pending[name] = undefined;

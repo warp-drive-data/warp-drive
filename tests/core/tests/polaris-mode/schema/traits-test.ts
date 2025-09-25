@@ -1,17 +1,18 @@
-import type { TestContext } from '@ember/test-helpers';
-
-import type { Store } from '@warp-drive/core';
-import { registerDerivations, withDefaults } from '@warp-drive/core/reactive';
+import { useRecommendedStore } from '@warp-drive/core';
+import { withDefaults } from '@warp-drive/core/reactive';
 import { module, setupTest, test } from '@warp-drive/diagnostic/ember';
+import { JSONAPICache } from '@warp-drive/json-api';
+
+const Store = useRecommendedStore({
+  cache: JSONAPICache,
+});
 
 module('SchemaService | Traits', function (hooks) {
   setupTest(hooks);
 
-  test('We can register and use a trait', function (this: TestContext, assert) {
-    const store = this.owner.lookup('service:store') as Store;
+  test('We can register and use a trait', function (assert) {
+    const store = new Store();
     const { schema } = store;
-
-    registerDerivations(schema);
 
     schema.registerResource(
       withDefaults({
@@ -67,11 +68,9 @@ module('SchemaService | Traits', function (hooks) {
     );
   });
 
-  test('Traits may have traits', function (this: TestContext, assert) {
-    const store = this.owner.lookup('service:store') as Store;
+  test('Traits may have traits', function (assert) {
+    const store = new Store();
     const { schema } = store;
-
-    registerDerivations(schema);
 
     schema.registerResource(
       withDefaults({
