@@ -44,7 +44,7 @@
     "@warp-drive/core": "workspace:*",
     "@warp-drive/diagnostic": "workspace:*",
     "@warp-drive/ember": "workspace:*",
-    "@warp-drive/utilties": "workspace:*",
+    "@warp-drive/utilities": "workspace:*",
     "@warp-drive/holodeck": "workspace:*",
     "@warp-drive/internal-config": "workspace:*",
     "@warp-drive/json-api": "workspace:*",
