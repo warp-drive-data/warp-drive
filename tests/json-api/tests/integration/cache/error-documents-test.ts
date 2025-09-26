@@ -68,7 +68,6 @@ module('Integration | @ember-data/json-api Cach.put(<ErrorDocument>)', function 
 
       // error.content is present
       assert.satisfies(
-        // @ts-expect-error content property is loosely typed
         e.content,
         {
           errors: [

@@ -139,7 +139,6 @@ module<LocalTestContext>('Integration | get-request-state', function (hooks) {
     assert.true(requestState.isError, 'The request state is an error');
     assert.equal(requestState.result, null);
     assert.satisfies(
-      // @ts-expect-error
       requestState.error,
       {
         code: 404,
@@ -189,7 +188,6 @@ module<LocalTestContext>('Integration | get-request-state', function (hooks) {
     assert.true(requestState.isError, 'The request state is an error');
     assert.equal(requestState.result, null);
     assert.satisfies(
-      // @ts-expect-error
       requestState.error,
       {
         code: 20,

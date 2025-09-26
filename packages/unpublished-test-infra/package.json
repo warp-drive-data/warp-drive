@@ -45,8 +45,6 @@
     "qunit": "^2.20.1",
     "testem": "^3.12.0",
     "@warp-drive/diagnostic": "workspace:*",
-    "@warp-drive/utilities": "workspace:*",
-    "@warp-drive/core": "workspace:*",
     "@ember/test-helpers": "3.3.0 || ^4.0.4 || ^5.1.0"
   },
   "peerDependenciesMeta": {
@@ -62,6 +60,8 @@
   },
   "dependencies": {
     "@embroider/macros": "^1.18.1",
+    "@warp-drive/utilities": "workspace:*",
+    "@warp-drive/core": "workspace:*",
     "chalk": "^4.1.2",
     "semver": "^7.7.2"
   },
@@ -74,8 +74,6 @@
     "@glimmer/component": "^2.0.0",
     "@types/semver": "^7.7.0",
     "@types/qunit": "2.19.10",
-    "@warp-drive/core": "workspace:*",
-    "@warp-drive/utilities": "workspace:*",
     "@warp-drive/diagnostic": "workspace:*",
     "@warp-drive/internal-config": "workspace:*",
     "ember-source": "~6.6.0",
