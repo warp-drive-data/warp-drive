@@ -4,19 +4,18 @@ order: 1
 
 # Resource Schemas
 
-Resource Schemas are the foundation of ***Warp*Drive**’s data layer.  
-They describe the shape of your resources in a **plain object**, replacing the old `DS.Model` pattern with something universal, explicit, and future-ready.
+Resource Schemas define the top level resources in your data layer.  
+They describe your application’s data structure in one place, including fields, relationships and embedded objects, without hidden magic.
 
-Instead of writing classes with decorators, you define a schema with a `type`, an identity field, and a list of fields.  
-This schema becomes the single source of truth for your resource that is clear, predictable, and framework-agnostic.
+A Resource Schema is the backbone of how WarpDrive understands your data.
 
-They work anywhere: Ember, React, Vue, or even without a DOM.
+## Why Resource Schemas Matter
 
----
+Resource Schemas give you clarity by making every field and relationship explicit. They provide consistency because the schema drives the cache, transforms and UI bindings. They bring reactivity so changes anywhere in a resource flow through to your app automatically. They also work across any JavaScript environment including Ember, React or a Node process without a DOM.
 
-## Defining a Resource Schema
+## Creating a Resource Schema
 
-Here’s a simple example:
+The easiest way to create a Resource Schema is to use `withDefaults`. This sets up sensible defaults such as the primary key.
 
 ```ts [schemas/user.ts]
 import { withDefaults } from '@warp-drive/core/reactive';
@@ -24,34 +23,38 @@ import { withDefaults } from '@warp-drive/core/reactive';
 export const UserSchema = withDefaults({
   type: 'user',
   fields: [
-    { name: 'id', kind: '@id' },
     { name: 'firstName', kind: 'field' },
     { name: 'lastName', kind: 'field' },
-    { name: 'email', kind: 'field' }
+    { name: 'email', kind: 'field' },
+    { name: 'team', kind: 'resource', type: 'team' }
   ]
 });
 ```
 
-- `type` → the name of the resource (eg: `user`)  
-- `@id` → the identity field (primary key)  
-- `field` → plain attributes  
+### Key Points
 
-This creates a contract between your API and your app — no hidden magic, no guessing.
+The `type` identifies the resource (the Resource Type).  
+`fields` describes each piece of data:
 
----
+* `field` for primitive data  
+* `resource` for a single related resource  
+* `collection` for multiple related resources  
+* `schema-object` for an embedded object schema  
 
-## Registering a Schema in the Store
+`withDefaults` automatically provides an identity field of `{ name: 'id', kind: '@id' }` unless you override it.
 
-Schemas need to be registered with the store before use:
+## Registering a Resource Schema
+
+Once defined, register your schema with the store so WarpDrive can use it at runtime.
 
 ```ts [store/index.ts]
 store.schema.registerResource({
   type: 'user',
   identity: { kind: '@id', name: 'id' },
   fields: [
-    { kind: 'field', name: 'firstName', sourceKey: 'first-name' },
-    { kind: 'field', name: 'lastName', sourceKey: 'last-name' },
-    { kind: 'field', name: 'lastSeen', sourceKey: 'last-seen', type: 'date-time' },
+    { kind: 'field', name: 'firstName', sourceKey: 'first_name' },
+    { kind: 'field', name: 'lastName', sourceKey: 'last_name' },
+    { kind: 'field', name: 'lastSeen', sourceKey: 'last_seen', type: 'date-time' },
     {
       kind: 'resource',
       name: 'bestFriend',
@@ -66,7 +69,6 @@ store.schema.registerResource({
   ]
 });
 ```
-
 - `identity` → defines the primary key  
 - `sourceKey` → maps API field names to local names (`first_name` → `firstName`)  
 - `resource` and `collection` → relationships to other schemas (belongsTo / hasMany)  
@@ -74,14 +76,20 @@ store.schema.registerResource({
 
 ---
 
-## Why Resource Schemas?
+After registering you can fetch or create data for that resource:
 
-- 📖 **Explicit** — no hidden magic, everything is declared up front  
-- 🔑 **Stable identity** — `type` + `@id` uniquely identify a record  
-- 🔄 **Consistent** — API ↔ App data flow is schema-driven  
-- ⚡ **Universal** — works in Ember, React, or any JS environment  
+```ts
+const user = await store.request(findRecord('user', '1'));
+console.log(user.firstName);
+```
 
-Schemas replace the “magical” behavior of models with explicit contracts between your API and your app.  
-They’re lightweight, easy to reason about, and the foundation for WarpDrive’s traits, derivations, and transformations.
+## Common Field Kinds
 
----
+| Kind           | Purpose                                          |
+| -------------- | ------------------------------------------------ |
+| `field`        | Basic data (string, number, boolean)              |
+| `resource`     | One related record (similar to a belongs-to)       |
+| `collection`   | Multiple related records (similar to a has-many)   |
+| `schema-object`| Embedded object schema with no top level identity  |
+
+By defining your data with Resource Schemas, you create a clear contract between your API, your cache and your UI. This makes your application more maintainable, predictable and ready for the future.
