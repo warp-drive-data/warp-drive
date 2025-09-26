@@ -2,8 +2,7 @@ import { Store } from '@warp-drive/core';
 import { graphFor } from '@warp-drive/core/graph/-private';
 import type { PrivateStore } from '@warp-drive/core/store/-private';
 import { isPrivateStore } from '@warp-drive/core/store/-private';
-import { module, test } from '@warp-drive/diagnostic';
-import { setupTest } from '@warp-drive/diagnostic/ember';
+import { module, setupTest, test } from '@warp-drive/diagnostic/ember';
 
 module('Integration | Graph | Configuration', function (hooks) {
   setupTest(hooks);

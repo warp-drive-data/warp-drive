@@ -2,8 +2,7 @@ import type { ResourceEdge } from '@warp-drive/core/graph/-private';
 import { graphFor } from '@warp-drive/core/graph/-private';
 import { isPrivateStore } from '@warp-drive/core/store/-private';
 import type { ResourceKey } from '@warp-drive/core/types/identifier';
-import { module, test } from '@warp-drive/diagnostic';
-import { setupTest } from '@warp-drive/diagnostic/ember';
+import { module, setupTest, test } from '@warp-drive/diagnostic/ember';
 import Model, { attr, belongsTo } from '@warp-drive/legacy/model';
 
 module('Integration | Graph | Unload', function (hooks) {

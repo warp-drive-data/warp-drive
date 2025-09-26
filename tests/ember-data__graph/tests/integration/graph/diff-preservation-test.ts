@@ -1,8 +1,7 @@
 import { DEPRECATE_RELATIONSHIP_REMOTE_UPDATE_CLEARING_LOCAL_STATE } from '@warp-drive/core/build-config/deprecations';
 import { graphFor } from '@warp-drive/core/graph/-private';
 import { isPrivateStore } from '@warp-drive/core/store/-private';
-import { module, test } from '@warp-drive/diagnostic';
-import { setupTest } from '@warp-drive/diagnostic/ember';
+import { module, setupTest, test } from '@warp-drive/diagnostic/ember';
 import Model, { attr, belongsTo, hasMany } from '@warp-drive/legacy/model';
 
 import { deprecatedTest } from '../../setup-test';

@@ -37,7 +37,7 @@
       "@warp-drive/utilities": ["../../warp-drive-packages/utilities/declarations"],
       "@warp-drive/utilities/*": ["../../warp-drive-packages/utilities/declarations/*"]
     },
-    "types": ["ember-source/types"],
+    "types": ["ember-source/types", "@ember-data/unpublished-test-infra/test-support/asserts/index"],
     "allowImportingTsExtensions": true,
     "composite": true,
     "declarationDir": "unstable-preview-types",

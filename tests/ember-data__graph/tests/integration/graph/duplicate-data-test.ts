@@ -2,8 +2,7 @@ import { DEPRECATE_NON_UNIQUE_PAYLOADS } from '@warp-drive/core/build-config/dep
 import { DEBUG } from '@warp-drive/core/build-config/env';
 import { graphFor } from '@warp-drive/core/graph/-private';
 import { isPrivateStore } from '@warp-drive/core/store/-private';
-import { module, test } from '@warp-drive/diagnostic';
-import { setupTest } from '@warp-drive/diagnostic/ember';
+import { module, setupTest, test } from '@warp-drive/diagnostic/ember';
 import Model, { attr, hasMany } from '@warp-drive/legacy/model';
 
 import { deprecatedTest } from '../../setup-test';
