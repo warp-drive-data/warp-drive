@@ -1,5 +1,5 @@
 import type { ResourceKey } from '@warp-drive/core/types';
-import type { Diagnostic, TestContext } from '@warp-drive/diagnostic/-types';
+import type { Diagnostic } from '@warp-drive/diagnostic/-types';
 
 import type { CacheOperation, NotificationType } from '@warp-drive/core';
 import type { RequestKey } from '@warp-drive/core/types/identifier';
@@ -10,7 +10,7 @@ import { configureBetterAsserts } from './assert-better';
 import { configureDeprecationHandler, DeprecationConfig, FoundDeprecation } from './assert-deprecation';
 import { configureNotificationsAssert } from './assert-notification';
 import { configureWarningHandler, WarningConfig } from './assert-warning';
-import { RenderingTestContext } from '@warp-drive/diagnostic/ember';
+import type { RenderingTestContext } from '@warp-drive/diagnostic/ember';
 
 declare module '@warp-drive/diagnostic/-types' {
   export interface Diagnostic {
@@ -91,7 +91,7 @@ function upgradeHooks(hooks: NestedHooks): ExpandedHooks {
 export default function configureAsserts(hooks: NestedHooks): void {
   const upgraded = upgradeHooks(hooks);
 
-  upgraded.beforeEach(function (this: RenderingTestContext, assert: Diagnostic) {
+  upgraded.beforeEach(function (this: RenderingTestContext, assert) {
     configureAssertionHandler(assert);
     configureDeprecationHandler(assert);
     configureWarningHandler(assert);
