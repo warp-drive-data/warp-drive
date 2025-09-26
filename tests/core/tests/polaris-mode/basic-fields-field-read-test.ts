@@ -1,4 +1,5 @@
 import { recordIdentifierFor, useRecommendedStore } from '@warp-drive/core';
+import { DEBUG } from '@warp-drive/core/build-config/env';
 import type { ReactiveResource, Transformation } from '@warp-drive/core/reactive';
 import { checkout, withDefaults } from '@warp-drive/core/reactive';
 import type { ResourceKey } from '@warp-drive/core/types';
@@ -59,17 +60,19 @@ module('Reads | basic fields', function (hooks) {
 
     assert.equal(record.name, 'Rey Skybarker', 'name is accessible');
 
-    try {
-      // @ts-expect-error intentionally accessing unknown field
-      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-      record.lastName;
-      assert.ok(false, 'should error when accessing unknown field');
-    } catch (e) {
-      assert.equal(
-        (e as Error).message,
-        'No field named lastName on user',
-        'should error when accessing unknown field'
-      );
+    if (DEBUG) {
+      try {
+        // @ts-expect-error intentionally accessing unknown field
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+        record.lastName;
+        assert.ok(false, 'should error when accessing unknown field');
+      } catch (e) {
+        assert.equal(
+          (e as Error).message,
+          'No field named lastName on user',
+          'should error when accessing unknown field'
+        );
+      }
     }
   });
 
@@ -162,7 +165,9 @@ module('Reads | basic fields', function (hooks) {
     } catch (e) {
       assert.equal(
         (e as Error).message,
-        `No transformation registered with name 'string' for 'field' field 'lastName'`,
+        DEBUG
+          ? `No transformation registered with name 'string' for 'field' field 'lastName'`
+          : "Cannot read properties of undefined (reading 'hydrate')",
         'should error when accessing unknown field transform'
       );
     }
@@ -221,9 +226,15 @@ module('Reads | basic fields', function (hooks) {
     assert.equal(immutableRecord.id, '1', 'id is accessible');
     assert.equal(immutableRecord.name, 'Rey Skybarker', 'name is accessible');
 
-    assert.throws(() => {
-      immutableRecord.name = 'Gilfoyle';
-    }, /Error: Cannot set name on user because the record is not editable/);
+    assert.throws(
+      () => {
+        immutableRecord.name = 'Gilfoyle';
+      },
+      DEBUG
+        ? /Error: Cannot set name on user because the ReactiveResource is not editable/
+        : /'set' on proxy: trap returned falsish for property 'name'/,
+      'name cannot be mutated'
+    );
 
     // Verify address remains unchanged
     assert.equal(immutableRecord.name, 'Rey Skybarker', 'name remains unchanged after failed mutation attempt');

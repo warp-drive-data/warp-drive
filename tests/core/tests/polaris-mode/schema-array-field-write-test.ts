@@ -1,4 +1,5 @@
 import { recordIdentifierFor, useRecommendedStore } from '@warp-drive/core';
+import { DEBUG } from '@warp-drive/core/build-config/env';
 import { withDefaults } from '@warp-drive/core/reactive';
 import type { Type } from '@warp-drive/core/types/symbols';
 import { module, setupTest, test } from '@warp-drive/diagnostic/ember';
@@ -124,23 +125,28 @@ module('Writes | schema-array fields', function (hooks) {
         ],
         'We have the correct array members'
       );
-      assert.throws(() => {
-        // @ts-expect-error we're testing the immutability of the array
-        record.addresses = [
-          {
-            street: '789 Maple St',
-            city: 'Thistown',
-            state: 'TX',
-            zip: '67890',
-          },
-          {
-            street: '012 Oak St',
-            city: 'ThatTown',
-            state: 'FL',
-            zip: '09876',
-          },
-        ];
-      }, /Error: Cannot set addresses on user because the record is not editable/);
+      assert.throws(
+        () => {
+          // @ts-expect-error we're testing the immutability of the array
+          record.addresses = [
+            {
+              street: '789 Maple St',
+              city: 'Thistown',
+              state: 'TX',
+              zip: '67890',
+            },
+            {
+              street: '012 Oak St',
+              city: 'ThatTown',
+              state: 'FL',
+              zip: '09876',
+            },
+          ];
+        },
+        DEBUG
+          ? /Error: Cannot set addresses on user because the ReactiveResource is not editable/
+          : /'set' on proxy: trap returned falsish for property 'addresses'/
+      );
 
       assert.satisfies(
         record.addresses?.slice(),
@@ -252,14 +258,19 @@ module('Writes | schema-array fields', function (hooks) {
         ],
         'We have the correct array members'
       );
-      assert.throws(() => {
-        record.addresses![0] = {
-          street: '789 Maple St',
-          city: 'Thistown',
-          state: 'TX',
-          zip: '67890',
-        };
-      }, /Error: Cannot set 0 on addresses because the record is not editable/);
+      assert.throws(
+        () => {
+          record.addresses![0] = {
+            street: '789 Maple St',
+            city: 'Thistown',
+            state: 'TX',
+            zip: '67890',
+          };
+        },
+        DEBUG
+          ? /Error: Cannot set 0 on addresses because the ReactiveResource is not editable/
+          : /'set' on proxy: trap returned falsish for property '0'/
+      );
 
       assert.satisfies(
         record.addresses?.slice(),
@@ -370,9 +381,14 @@ module('Writes | schema-array fields', function (hooks) {
         ],
         'We have the correct array members'
       );
-      assert.throws(() => {
-        record.addresses![0] = null;
-      }, /Error: Cannot set 0 on addresses because the record is not editable/);
+      assert.throws(
+        () => {
+          record.addresses![0] = null;
+        },
+        DEBUG
+          ? /Error: Cannot set 0 on addresses because the ReactiveResource is not editable/
+          : /'set' on proxy: trap returned falsish for property '0'/
+      );
 
       assert.satisfies(
         record.addresses?.slice(),
@@ -484,9 +500,14 @@ module('Writes | schema-array fields', function (hooks) {
         ],
         'We have the correct array members'
       );
-      assert.throws(() => {
-        record.addresses![0]!.street = '789 Maple St';
-      }, /Error: Cannot set street on address because the record is not editable/);
+      assert.throws(
+        () => {
+          record.addresses![0]!.street = '789 Maple St';
+        },
+        DEBUG
+          ? /Error: Cannot set street on address because the ReactiveResource is not editable/
+          : /'set' on proxy: trap returned falsish for property 'street'/
+      );
 
       assert.satisfies(
         record.addresses?.slice(),

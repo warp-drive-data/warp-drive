@@ -1,4 +1,5 @@
 import { recordIdentifierFor, useRecommendedStore } from '@warp-drive/core';
+import { DEBUG } from '@warp-drive/core/build-config/env';
 import type { Transformation } from '@warp-drive/core/reactive';
 import { checkout, withDefaults } from '@warp-drive/core/reactive';
 import { Type } from '@warp-drive/core/types/symbols';
@@ -70,10 +71,15 @@ module('Writes | array fields', function (hooks) {
       assert.true(Array.isArray(record.favoriteNumbers), 'we can access favoriteNumber array');
       assert.deepEqual(record.favoriteNumbers?.slice(), ['1', '2'], 'We have the correct array members');
       assert.equal(record.favoriteNumbers, record.favoriteNumbers, 'We have a stable array reference');
-      assert.throws(() => {
-        // @ts-expect-error we're testing the immutability of the array
-        record.favoriteNumbers = ['3', '4'];
-      }, /Cannot set favoriteNumbers on user because the record is not editable/);
+      assert.throws(
+        () => {
+          // @ts-expect-error we're testing the immutability of the array
+          record.favoriteNumbers = ['3', '4'];
+        },
+        DEBUG
+          ? /Cannot set favoriteNumbers on user because the ReactiveResource is not editable/
+          : /'set' on proxy: trap returned falsish for property 'favoriteNumbers'/
+      );
       assert.deepEqual(record.favoriteNumbers?.slice(), ['1', '2'], 'We have the correct array members');
     });
 
@@ -111,10 +117,15 @@ module('Writes | array fields', function (hooks) {
       assert.true(Array.isArray(record.favoriteNumbers), 'we can access favoriteNumber array');
       assert.deepEqual(record.favoriteNumbers?.slice(), ['1', '2'], 'We have the correct array members');
       assert.equal(record.favoriteNumbers, record.favoriteNumbers, 'We have a stable array reference');
-      assert.throws(() => {
-        // @ts-expect-error we're testing the immutability of the array
-        record.favoriteNumbers = null;
-      }, /Cannot set favoriteNumbers on user because the record is not editable/);
+      assert.throws(
+        () => {
+          // @ts-expect-error we're testing the immutability of the array
+          record.favoriteNumbers = null;
+        },
+        DEBUG
+          ? /Cannot set favoriteNumbers on user because the ReactiveResource is not editable/
+          : /'set' on proxy: trap returned falsish for property 'favoriteNumbers'/
+      );
       assert.deepEqual(record.favoriteNumbers?.slice(), ['1', '2'], 'We have the correct array members');
     });
 
@@ -147,9 +158,14 @@ module('Writes | array fields', function (hooks) {
       });
 
       assert.deepEqual(record.favoriteNumbers?.slice(), ['1', '2'], 'We have the correct array members');
-      assert.throws(() => {
-        record.favoriteNumbers![0] = '3';
-      }, /Cannot set 0 on favoriteNumbers because the record is not editable/);
+      assert.throws(
+        () => {
+          record.favoriteNumbers![0] = '3';
+        },
+        DEBUG
+          ? /Cannot set 0 on favoriteNumbers because the ReactiveResource is not editable/
+          : /'set' on proxy: trap returned falsish for property '0'/
+      );
       assert.deepEqual(record.favoriteNumbers?.slice(), ['1', '2'], 'We have the correct array members');
     });
 
@@ -189,7 +205,7 @@ module('Writes | array fields', function (hooks) {
       assert.equal(record.favoriteNumbers, record.favoriteNumbers, 'We have a stable array reference');
       assert.throws(() => {
         record.favoriteNumbers?.push('3');
-      }, /Mutating this array via push is not allowed because the record is not editable/);
+      }, /Mutating this array via push is not allowed because the ReactiveResource is not editable/);
 
       assert.deepEqual(record.favoriteNumbers?.slice(), ['1', '2'], 'We have the correct array members');
     });
@@ -230,7 +246,7 @@ module('Writes | array fields', function (hooks) {
       assert.equal(record.favoriteNumbers, record.favoriteNumbers, 'We have a stable array reference');
       assert.throws(() => {
         record.favoriteNumbers?.pop();
-      }, /Mutating this array via pop is not allowed because the record is not editable/);
+      }, /Mutating this array via pop is not allowed because the ReactiveResource is not editable/);
       assert.deepEqual(record.favoriteNumbers?.slice(), ['1', '2'], 'We have the correct array members');
     });
 
@@ -270,7 +286,7 @@ module('Writes | array fields', function (hooks) {
       assert.equal(record.favoriteNumbers, record.favoriteNumbers, 'We have a stable array reference');
       assert.throws(() => {
         record.favoriteNumbers?.unshift('3');
-      }, /Mutating this array via unshift is not allowed because the record is not editable/);
+      }, /Mutating this array via unshift is not allowed because the ReactiveResource is not editable/);
       assert.deepEqual(record.favoriteNumbers?.slice(), ['1', '2'], 'We have the correct array members');
     });
 
@@ -310,7 +326,7 @@ module('Writes | array fields', function (hooks) {
       assert.equal(record.favoriteNumbers, record.favoriteNumbers, 'We have a stable array reference');
       assert.throws(() => {
         record.favoriteNumbers?.shift();
-      }, /Mutating this array via shift is not allowed because the record is not editable/);
+      }, /Mutating this array via shift is not allowed because the ReactiveResource is not editable/);
       assert.deepEqual(record.favoriteNumbers?.slice(), ['1', '2'], 'We have the correct array members');
     });
 
@@ -359,10 +375,15 @@ module('Writes | array fields', function (hooks) {
       assert.true(Array.isArray(record.favoriteNumbers), 'we can access favoriteNumber array');
       assert.deepEqual(record.favoriteNumbers?.slice(), ['1', '2'], 'We have the correct array members');
       assert.equal(record.favoriteNumbers, record.favoriteNumbers, 'We have a stable array reference');
-      assert.throws(() => {
-        // @ts-expect-error we're testing the immutability of the array
-        record2.favoriteNumbers = record.favoriteNumbers;
-      }, /Cannot set favoriteNumbers on user because the record is not editable/);
+      assert.throws(
+        () => {
+          // @ts-expect-error we're testing the immutability of the array
+          record2.favoriteNumbers = record.favoriteNumbers;
+        },
+        DEBUG
+          ? /Cannot set favoriteNumbers on user because the ReactiveResource is not editable/
+          : /'set' on proxy: trap returned falsish for property 'favoriteNumbers'/
+      );
 
       assert.equal(record2.favoriteNumbers, null, 'the second record array has not been updated');
     });
@@ -420,10 +441,15 @@ module('Writes | array fields', function (hooks) {
 
       assert.equal(record.favoriteNumbers, record.favoriteNumbers, 'We have a stable array reference');
 
-      assert.throws(() => {
-        // @ts-expect-error we're testing the immutability of the array
-        record.favoriteNumbers = ['3', '4'];
-      }, /Cannot set favoriteNumbers on user because the record is not editable/);
+      assert.throws(
+        () => {
+          // @ts-expect-error we're testing the immutability of the array
+          record.favoriteNumbers = ['3', '4'];
+        },
+        DEBUG
+          ? /Cannot set favoriteNumbers on user because the ReactiveResource is not editable/
+          : /'set' on proxy: trap returned falsish for property 'favoriteNumbers'/
+      );
 
       assert.deepEqual(record.favoriteNumbers!.slice(), ['1', '2'], 'We have the correct array members');
     });
@@ -481,9 +507,14 @@ module('Writes | array fields', function (hooks) {
 
       assert.equal(record.favoriteNumbers, record.favoriteNumbers, 'We have a stable array reference');
 
-      assert.throws(() => {
-        record.favoriteNumbers![0] = '3';
-      }, /Cannot set 0 on favoriteNumbers because the record is not editable/);
+      assert.throws(
+        () => {
+          record.favoriteNumbers![0] = '3';
+        },
+        DEBUG
+          ? /Cannot set 0 on favoriteNumbers because the ReactiveResource is not editable/
+          : /'set' on proxy: trap returned falsish for property '0'/
+      );
 
       assert.deepEqual(record.favoriteNumbers?.slice(), ['1', '2'], 'We have the correct array members');
     });
@@ -542,7 +573,7 @@ module('Writes | array fields', function (hooks) {
 
       assert.throws(() => {
         record.favoriteNumbers?.push('3');
-      }, /Mutating this array via push is not allowed because the record is not editable/);
+      }, /Mutating this array via push is not allowed because the ReactiveResource is not editable/);
 
       assert.deepEqual(record.favoriteNumbers?.slice(), ['1', '2'], 'We have the correct array members');
     });
@@ -601,7 +632,7 @@ module('Writes | array fields', function (hooks) {
 
       assert.throws(() => {
         record.favoriteNumbers?.pop();
-      }, /Mutating this array via pop is not allowed because the record is not editable/);
+      }, /Mutating this array via pop is not allowed because the ReactiveResource is not editable/);
 
       assert.deepEqual(record.favoriteNumbers?.slice(), ['1', '2'], 'We have the correct array members');
     });

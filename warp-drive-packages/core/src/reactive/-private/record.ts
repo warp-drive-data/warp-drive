@@ -528,7 +528,7 @@ export class ReactiveResource {
 
         if (!context.editable) {
           assert(
-            `Cannot set ${String(prop)} on ${context.path !== null ? context.value : resourceKey.type} because the record is not editable`
+            `Cannot set ${String(prop)} on ${context.path !== null ? context.value : resourceKey.type} because the ReactiveResource is not editable`
           );
           return false;
         }

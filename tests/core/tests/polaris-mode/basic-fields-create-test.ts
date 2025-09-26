@@ -1,4 +1,5 @@
 import { recordIdentifierFor, useRecommendedStore } from '@warp-drive/core';
+import { DEBUG } from '@warp-drive/core/build-config/env';
 import { withDefaults } from '@warp-drive/core/reactive';
 import type { Type } from '@warp-drive/core/types/symbols';
 import { module, setupTest, test } from '@warp-drive/diagnostic/ember';
@@ -177,7 +178,9 @@ module('Polaris | Create | basic fields', function (hooks) {
     } catch (e) {
       assert.equal(
         (e as Error).message,
-        'Cannot set name on user because the record is not editable',
+        DEBUG
+          ? 'Cannot set name on user because the ReactiveResource is not editable'
+          : "'set' on proxy: trap returned falsish for property 'name'",
         'we cannot mutate the primary record'
       );
     }

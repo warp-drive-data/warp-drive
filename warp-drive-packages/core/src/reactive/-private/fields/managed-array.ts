@@ -342,7 +342,7 @@ export class ManagedArray {
             fn = function () {
               if (!IS_EDITABLE) {
                 throw new Error(
-                  `Mutating this array via ${String(prop)} is not allowed because the record is not editable`
+                  `Mutating this array via ${String(prop)} is not allowed because the ReactiveResource is not editable`
                 );
               }
               consumeInternalSignal(_SIGNAL);
@@ -376,7 +376,8 @@ export class ManagedArray {
           if (context.path) {
             errorPath = context.path[context.path.length - 1];
           }
-          throw new Error(`Cannot set ${String(prop)} on ${errorPath} because the record is not editable`);
+          assert(`Cannot set ${String(prop)} on ${errorPath} because the ReactiveResource is not editable`);
+          return false;
         }
         if (prop === 'identifier') {
           self.identifier = value as ResourceKey;

@@ -1,4 +1,5 @@
 import { recordIdentifierFor, useRecommendedStore } from '@warp-drive/core';
+import { DEBUG } from '@warp-drive/core/build-config/env';
 import { checkout, withDefaults } from '@warp-drive/core/reactive';
 import type { Type } from '@warp-drive/core/types/symbols';
 import { module, setupTest, test } from '@warp-drive/diagnostic/ember';
@@ -108,10 +109,15 @@ module('Writes | schema-object fields', function (hooks) {
         { street: '123 Main Street', city: 'Anytown', state: 'NY', zip: '12345' },
         'We have the correct address object'
       );
-      assert.throws(() => {
-        // @ts-expect-error we are testing the immutability of the object
-        record.address = { street: '456 Elm Street', city: 'Sometown', state: 'NJ', zip: '23456' };
-      }, /Error: Cannot set address on user because the record is not editable/);
+      assert.throws(
+        () => {
+          // @ts-expect-error we are testing the immutability of the object
+          record.address = { street: '456 Elm Street', city: 'Sometown', state: 'NJ', zip: '23456' };
+        },
+        DEBUG
+          ? /Error: Cannot set address on user because the ReactiveResource is not editable/
+          : /'set' on proxy: trap returned falsish for property 'address'/
+      );
       assert.satisfies(
         record.address,
         { street: '123 Main Street', city: 'Anytown', state: 'NY', zip: '12345' },
@@ -188,10 +194,15 @@ module('Writes | schema-object fields', function (hooks) {
         },
         'We have the correct address object'
       );
-      assert.throws(() => {
-        // @ts-expect-error we are testing the immutability of the object
-        record.address = null;
-      }, /Error: Cannot set address on user because the record is not editable/);
+      assert.throws(
+        () => {
+          // @ts-expect-error we are testing the immutability of the object
+          record.address = null;
+        },
+        DEBUG
+          ? /Error: Cannot set address on user because the ReactiveResource is not editable/
+          : /'set' on proxy: trap returned falsish for property 'address'/
+      );
 
       assert.satisfies(
         record.address,
@@ -266,9 +277,14 @@ module('Writes | schema-object fields', function (hooks) {
         },
         'We have the correct address object'
       );
-      assert.throws(() => {
-        record.address!.state = 'NJ';
-      }, /Error: Cannot set state on address because the record is not editable/);
+      assert.throws(
+        () => {
+          record.address!.state = 'NJ';
+        },
+        DEBUG
+          ? /Error: Cannot set state on address because the ReactiveResource is not editable/
+          : /'set' on proxy: trap returned falsish for property 'state'/
+      );
       assert.satisfies(
         record.address,
         {
@@ -361,10 +377,15 @@ module('Writes | schema-object fields', function (hooks) {
         'We have the correct address object'
       );
       assert.equal(record.address, record.address, 'We have a stable object reference');
-      assert.throws(() => {
-        // @ts-expect-error we are testing the immutability of the object
-        record2.address = record.address;
-      }, /Error: Cannot set address on user because the record is not editable/);
+      assert.throws(
+        () => {
+          // @ts-expect-error we are testing the immutability of the object
+          record2.address = record.address;
+        },
+        DEBUG
+          ? /Error: Cannot set address on user because the ReactiveResource is not editable/
+          : /'set' on proxy: trap returned falsish for property 'address'/
+      );
 
       assert.equal(record2.address, null, 'We have the correct address object');
     });
@@ -496,9 +517,14 @@ module('Writes | schema-object fields', function (hooks) {
         },
         'the cache values are correct for a nested object field'
       );
-      assert.throws(() => {
-        record.business!.address = { street: '789 Oak St', city: 'Sometown', state: 'NJ', zip: '23456' };
-      }, /Error: Cannot set address on business because the record is not editable/);
+      assert.throws(
+        () => {
+          record.business!.address = { street: '789 Oak St', city: 'Sometown', state: 'NJ', zip: '23456' };
+        },
+        DEBUG
+          ? /Error: Cannot set address on business because the ReactiveResource is not editable/
+          : /'set' on proxy: trap returned falsish for property 'address'/
+      );
 
       assert.satisfies(
         record.business?.address,
@@ -614,9 +640,14 @@ module('Writes | schema-object fields', function (hooks) {
         { street: '789 Oak St', city: 'Sometown', state: 'NJ', zip: '23456' },
       ]);
       assert.equal(record.business?.addresses, record.business?.addresses, 'We have a stable array reference');
-      assert.throws(() => {
-        record.business!.addresses![0] = { street: '123 Main St', city: 'Anytown', state: 'NY', zip: '12345' };
-      }, /Error: Cannot set 0 on addresses because the record is not editable/);
+      assert.throws(
+        () => {
+          record.business!.addresses![0] = { street: '123 Main St', city: 'Anytown', state: 'NY', zip: '12345' };
+        },
+        DEBUG
+          ? /Error: Cannot set 0 on addresses because the ReactiveResource is not editable/
+          : /'set' on proxy: trap returned falsish for property '0'/
+      );
       assert.satisfies(
         record.business?.addresses,
         [
@@ -1078,20 +1109,30 @@ module('Writes | schema-object fields', function (hooks) {
       'We have the correct address object'
     );
     assert.equal(record.address, record.address, 'We have a stable object reference');
-    assert.throws(() => {
-      //@ts-expect-error
-      record.address!.notAField = 'This should throw';
-    }, /There is no settable field named notAField on address/);
-    assert.throws(() => {
-      record.address = {
-        street: '456 Elm Street',
-        city: 'Sometown',
-        state: 'NJ',
-        zip: '23456',
+    assert.throws(
+      () => {
         //@ts-expect-error
-        notAField: 'This should throw',
-      };
-    }, /Field notAField does not exist on schema object address/);
+        record.address!.notAField = 'This should throw';
+      },
+      DEBUG
+        ? /There is no settable field named notAField on address/
+        : /'set' on proxy: trap returned falsish for property 'notAField'/
+    );
+    assert.throws(
+      () => {
+        record.address = {
+          street: '456 Elm Street',
+          city: 'Sometown',
+          state: 'NJ',
+          zip: '23456',
+          //@ts-expect-error
+          notAField: 'This should throw',
+        };
+      },
+      DEBUG
+        ? /Field notAField does not exist on schema object address/
+        : /'set' on proxy: trap returned falsish for property 'address'/
+    );
   });
 
   test('we can edit nested schema-object fields', async function (assert) {

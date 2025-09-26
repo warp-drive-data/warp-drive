@@ -1,4 +1,5 @@
 import { recordIdentifierFor, useRecommendedStore } from '@warp-drive/core';
+import { DEBUG } from '@warp-drive/core/build-config/env';
 import type { Transformation } from '@warp-drive/core/reactive';
 import { checkout, withDefaults } from '@warp-drive/core/reactive';
 import { Type } from '@warp-drive/core/types/symbols';
@@ -88,10 +89,15 @@ module('Writes | object fields', function (hooks) {
         { street: '123 Main Street', city: 'Anytown', state: 'NY', zip: '12345' },
         'We have the correct address object'
       );
-      assert.throws(() => {
-        // @ts-expect-error we're testing the immutability of the object
-        record.address = { street: '456 Elm Street', city: 'Sometown', state: 'NJ', zip: '23456' };
-      }, /Error: Cannot set address on user because the record is not editable/);
+      assert.throws(
+        () => {
+          // @ts-expect-error we're testing the immutability of the object
+          record.address = { street: '456 Elm Street', city: 'Sometown', state: 'NJ', zip: '23456' };
+        },
+        DEBUG
+          ? /Error: Cannot set address on user because the ReactiveResource is not editable/
+          : /'set' on proxy: trap returned falsish for property 'address'/
+      );
 
       assert.deepEqual(
         record.address,
@@ -147,10 +153,15 @@ module('Writes | object fields', function (hooks) {
         },
         'We have the correct address object'
       );
-      assert.throws(() => {
-        // @ts-expect-error we're testing the immutability of the object
-        record.address = null;
-      }, /Error: Cannot set address on user because the record is not editable/);
+      assert.throws(
+        () => {
+          // @ts-expect-error we're testing the immutability of the object
+          record.address = null;
+        },
+        DEBUG
+          ? /Error: Cannot set address on user because the ReactiveResource is not editable/
+          : /'set' on proxy: trap returned falsish for property 'address'/
+      );
 
       assert.deepEqual(
         record.address,
@@ -203,9 +214,14 @@ module('Writes | object fields', function (hooks) {
         },
         'We have the correct address object'
       );
-      assert.throws(() => {
-        record.address!.state = 'NJ';
-      }, /Error: Cannot set read-only property 'state' on ManagedObject/);
+      assert.throws(
+        () => {
+          record.address!.state = 'NJ';
+        },
+        DEBUG
+          ? /Error: Cannot set read-only property 'state' on ManagedObject/
+          : /'set' on proxy: trap returned falsish for property 'state'/
+      );
       assert.deepEqual(
         record.address,
         {
@@ -276,10 +292,15 @@ module('Writes | object fields', function (hooks) {
         'We have the correct address object'
       );
       assert.equal(record.address, record.address, 'We have a stable object reference');
-      assert.throws(() => {
-        // @ts-expect-error we're testing the immutability of the object
-        record2.address = record.address;
-      }, /Error: Cannot set address on user because the record is not editable/);
+      assert.throws(
+        () => {
+          // @ts-expect-error we're testing the immutability of the object
+          record2.address = record.address;
+        },
+        DEBUG
+          ? /Error: Cannot set address on user because the ReactiveResource is not editable/
+          : /'set' on proxy: trap returned falsish for property 'address'/
+      );
       assert.equal(record2.address, null, 'Record2 address object is not updated');
     });
 
@@ -360,15 +381,20 @@ module('Writes | object fields', function (hooks) {
         'We have the correct object members'
       );
       assert.equal(record.address, record.address, 'We have a stable object reference');
-      assert.throws(() => {
-        // @ts-expect-error we're testing the immutability of the object
-        record.address = {
-          street: '456 Elm St',
-          city: 'Sometown',
-          state: 'NJ',
-          zip: '23456',
-        };
-      }, /Error: Cannot set address on user because the record is not editable/);
+      assert.throws(
+        () => {
+          // @ts-expect-error we're testing the immutability of the object
+          record.address = {
+            street: '456 Elm St',
+            city: 'Sometown',
+            state: 'NJ',
+            zip: '23456',
+          };
+        },
+        DEBUG
+          ? /Error: Cannot set address on user because the ReactiveResource is not editable/
+          : /'set' on proxy: trap returned falsish for property 'address'/
+      );
 
       assert.deepEqual(
         record.address,
@@ -460,9 +486,14 @@ module('Writes | object fields', function (hooks) {
       );
       assert.equal(record.address, record.address, 'We have a stable object reference');
       assert.equal(record.address?.zip, '12345', 'zip is accessible');
-      assert.throws(() => {
-        record.address!.zip = '23456';
-      }, /Error: Cannot set read-only property 'zip' on ManagedObject/);
+      assert.throws(
+        () => {
+          record.address!.zip = '23456';
+        },
+        DEBUG
+          ? /Error: Cannot set read-only property 'zip' on ManagedObject/
+          : /'set' on proxy: trap returned falsish for property 'zip'/
+      );
 
       assert.deepEqual(
         record.address,

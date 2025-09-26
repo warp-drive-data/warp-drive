@@ -1,4 +1,5 @@
 import { useRecommendedStore } from '@warp-drive/core';
+import { DEBUG } from '@warp-drive/core/build-config/env';
 import type { ReactiveResource } from '@warp-drive/core/reactive';
 import { withDefaults } from '@warp-drive/core/reactive';
 import { Type } from '@warp-drive/core/types/symbols';
@@ -112,7 +113,9 @@ module('Reads | derivation', function (hooks) {
     } catch (e) {
       assert.equal(
         (e as Error).message,
-        "No 'concat' derivation registered for use by the 'derived' field 'fullName'",
+        DEBUG
+          ? "No 'concat' derivation registered for use by the 'derived' field 'fullName'"
+          : 't.derivation(...) is not a function',
         'record.fullName throws'
       );
     }
