@@ -73,7 +73,7 @@ module('Writes | array fields', function (hooks) {
       assert.throws(() => {
         // @ts-expect-error we're testing the immutability of the array
         record.favoriteNumbers = ['3', '4'];
-      }, /Error: Cannot set favoriteNumbers on user because the record is not editable/);
+      }, /Cannot set favoriteNumbers on user because the record is not editable/);
       assert.deepEqual(record.favoriteNumbers?.slice(), ['1', '2'], 'We have the correct array members');
     });
 
@@ -114,7 +114,7 @@ module('Writes | array fields', function (hooks) {
       assert.throws(() => {
         // @ts-expect-error we're testing the immutability of the array
         record.favoriteNumbers = null;
-      }, /Error: Cannot set favoriteNumbers on user because the record is not editable/);
+      }, /Cannot set favoriteNumbers on user because the record is not editable/);
       assert.deepEqual(record.favoriteNumbers?.slice(), ['1', '2'], 'We have the correct array members');
     });
 
@@ -149,7 +149,7 @@ module('Writes | array fields', function (hooks) {
       assert.deepEqual(record.favoriteNumbers?.slice(), ['1', '2'], 'We have the correct array members');
       assert.throws(() => {
         record.favoriteNumbers![0] = '3';
-      }, /Error: Cannot set 0 on favoriteNumbers because the record is not editable/);
+      }, /Cannot set 0 on favoriteNumbers because the record is not editable/);
       assert.deepEqual(record.favoriteNumbers?.slice(), ['1', '2'], 'We have the correct array members');
     });
 
@@ -189,7 +189,7 @@ module('Writes | array fields', function (hooks) {
       assert.equal(record.favoriteNumbers, record.favoriteNumbers, 'We have a stable array reference');
       assert.throws(() => {
         record.favoriteNumbers?.push('3');
-      }, /Error: Mutating this array via push is not allowed because the record is not editable/);
+      }, /Mutating this array via push is not allowed because the record is not editable/);
 
       assert.deepEqual(record.favoriteNumbers?.slice(), ['1', '2'], 'We have the correct array members');
     });
@@ -230,7 +230,7 @@ module('Writes | array fields', function (hooks) {
       assert.equal(record.favoriteNumbers, record.favoriteNumbers, 'We have a stable array reference');
       assert.throws(() => {
         record.favoriteNumbers?.pop();
-      }, /Error: Mutating this array via pop is not allowed because the record is not editable/);
+      }, /Mutating this array via pop is not allowed because the record is not editable/);
       assert.deepEqual(record.favoriteNumbers?.slice(), ['1', '2'], 'We have the correct array members');
     });
 
@@ -270,7 +270,7 @@ module('Writes | array fields', function (hooks) {
       assert.equal(record.favoriteNumbers, record.favoriteNumbers, 'We have a stable array reference');
       assert.throws(() => {
         record.favoriteNumbers?.unshift('3');
-      }, /Error: Mutating this array via unshift is not allowed because the record is not editable/);
+      }, /Mutating this array via unshift is not allowed because the record is not editable/);
       assert.deepEqual(record.favoriteNumbers?.slice(), ['1', '2'], 'We have the correct array members');
     });
 
@@ -310,7 +310,7 @@ module('Writes | array fields', function (hooks) {
       assert.equal(record.favoriteNumbers, record.favoriteNumbers, 'We have a stable array reference');
       assert.throws(() => {
         record.favoriteNumbers?.shift();
-      }, /Error: Mutating this array via shift is not allowed because the record is not editable/);
+      }, /Mutating this array via shift is not allowed because the record is not editable/);
       assert.deepEqual(record.favoriteNumbers?.slice(), ['1', '2'], 'We have the correct array members');
     });
 
@@ -362,7 +362,7 @@ module('Writes | array fields', function (hooks) {
       assert.throws(() => {
         // @ts-expect-error we're testing the immutability of the array
         record2.favoriteNumbers = record.favoriteNumbers;
-      }, /Error: Cannot set favoriteNumbers on user because the record is not editable/);
+      }, /Cannot set favoriteNumbers on user because the record is not editable/);
 
       assert.equal(record2.favoriteNumbers, null, 'the second record array has not been updated');
     });
@@ -423,7 +423,7 @@ module('Writes | array fields', function (hooks) {
       assert.throws(() => {
         // @ts-expect-error we're testing the immutability of the array
         record.favoriteNumbers = ['3', '4'];
-      }, /Error: Cannot set favoriteNumbers on user because the record is not editable/);
+      }, /Cannot set favoriteNumbers on user because the record is not editable/);
 
       assert.deepEqual(record.favoriteNumbers!.slice(), ['1', '2'], 'We have the correct array members');
     });
@@ -483,7 +483,7 @@ module('Writes | array fields', function (hooks) {
 
       assert.throws(() => {
         record.favoriteNumbers![0] = '3';
-      }, /Error: Cannot set 0 on favoriteNumbers because the record is not editable/);
+      }, /Cannot set 0 on favoriteNumbers because the record is not editable/);
 
       assert.deepEqual(record.favoriteNumbers?.slice(), ['1', '2'], 'We have the correct array members');
     });
@@ -542,7 +542,7 @@ module('Writes | array fields', function (hooks) {
 
       assert.throws(() => {
         record.favoriteNumbers?.push('3');
-      }, /Error: Mutating this array via push is not allowed because the record is not editable/);
+      }, /Mutating this array via push is not allowed because the record is not editable/);
 
       assert.deepEqual(record.favoriteNumbers?.slice(), ['1', '2'], 'We have the correct array members');
     });
@@ -601,7 +601,7 @@ module('Writes | array fields', function (hooks) {
 
       assert.throws(() => {
         record.favoriteNumbers?.pop();
-      }, /Error: Mutating this array via pop is not allowed because the record is not editable/);
+      }, /Mutating this array via pop is not allowed because the record is not editable/);
 
       assert.deepEqual(record.favoriteNumbers?.slice(), ['1', '2'], 'We have the correct array members');
     });

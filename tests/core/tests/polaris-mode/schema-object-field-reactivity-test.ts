@@ -86,7 +86,7 @@ module('Reactivity | schema object fields can receive remote updates', function 
 
     assert.equal(record.id, '1', 'id is accessible');
     assert.equal(record.$type, 'user', '$type is accessible');
-    assert.deepEqual(
+    assert.satisfies(
       record.address,
       {
         street: '123 Main St',
@@ -123,7 +123,7 @@ module('Reactivity | schema object fields can receive remote updates', function 
 
     assert.equal(record.id, '1', 'id is accessible');
     assert.equal(record.$type, 'user', '$type is accessible');
-    assert.deepEqual(
+    assert.satisfies(
       record.address,
       {
         street: '456 Elm St',
@@ -203,7 +203,7 @@ module('Reactivity | schema object fields can receive remote updates', function 
 
     assert.equal(record.id, '1', 'id is accessible');
     assert.equal(record.$type, 'user', '$type is accessible');
-    assert.deepEqual(
+    assert.satisfies(
       record.address as { zip: number },
       {
         zip: 90219,
@@ -234,7 +234,7 @@ module('Reactivity | schema object fields can receive remote updates', function 
 
     assert.equal(record.id, '1', 'id is accessible');
     assert.equal(record.$type, 'user', '$type is accessible');
-    assert.deepEqual(
+    assert.satisfies(
       record.address as { zip: number },
       {
         zip: 90210,

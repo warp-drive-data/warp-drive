@@ -24,12 +24,12 @@ if (SHOULD_RECORD) {
   console.info('Holodeck Recording Disabled\n=========================');
 }
 
-const MockHost = `https://${window.location.hostname}:${Number(window.location.port) + 1}`;
-setBuildURLConfig({
-  host: MockHost,
-  namespace: '',
-});
-setConfig({ host: MockHost });
+// const MockHost = `https://${window.location.hostname}:${Number(window.location.port) + 1}`;
+// setBuildURLConfig({
+//   host: MockHost,
+//   namespace: '',
+// });
+// setConfig({ host: MockHost });
 
 configure();
 

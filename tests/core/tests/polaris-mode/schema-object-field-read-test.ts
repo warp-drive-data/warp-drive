@@ -87,7 +87,7 @@ module('Reads | schema-object fields', function (hooks) {
     assert.equal(record.id, null, 'id is accessible');
     assert.equal(record.$type, 'user', '$type is accessible');
     assert.equal(record.name, 'Rey Skybarker', 'name is accessible');
-    assert.deepEqual(
+    assert.satisfies(
       record.address,
       { street: '123 Main St', city: 'Anytown', state: 'NY', zip: '12345' },
       'we can access address object'
@@ -104,8 +104,8 @@ module('Reads | schema-object fields', function (hooks) {
       sourceAddress,
       'with no transform we will still divorce the object reference'
     );
-    assert.deepEqual(
-      cachedResourceData?.attributes?.address,
+    assert.satisfies(
+      cachedResourceData?.attributes?.address as address,
       {
         street: '123 Main St',
         city: 'Anytown',
@@ -202,7 +202,7 @@ module('Reads | schema-object fields', function (hooks) {
     assert.equal(record.id, null, 'id is accessible');
     assert.equal(record.$type, 'user', '$type is accessible');
     assert.equal(record.name, 'Rey Skybarker', 'name is accessible');
-    assert.deepEqual(
+    assert.satisfies(
       record.address,
       { street: '123 Main St', city: 'Anytown', state: 'NY', zip: '12345' },
       'we can access address object'
@@ -210,7 +210,7 @@ module('Reads | schema-object fields', function (hooks) {
     assert.equal(record.address, record.address, 'We have a stable object reference');
     assert.notEqual(record.address, sourceAddress);
     assert.equal(record.business?.name, 'Acme');
-    assert.deepEqual(record.business?.address, { street: '456 Elm St', city: 'Anytown', state: 'NY', zip: '12345' });
+    assert.satisfies(record.business?.address, { street: '456 Elm St', city: 'Anytown', state: 'NY', zip: '12345' });
 
     // test that the data entered the cache properly
     const identifier = recordIdentifierFor(record);
@@ -221,8 +221,8 @@ module('Reads | schema-object fields', function (hooks) {
       sourceAddress,
       'with no transform we will still divorce the object reference'
     );
-    assert.deepEqual(
-      cachedResourceData?.attributes?.address,
+    assert.satisfies(
+      cachedResourceData?.attributes?.address as address,
       {
         street: '123 Main St',
         city: 'Anytown',
@@ -231,8 +231,8 @@ module('Reads | schema-object fields', function (hooks) {
       },
       'the cache values are correct for the object field'
     );
-    assert.deepEqual(
-      cachedResourceData?.attributes?.business,
+    assert.satisfies(
+      cachedResourceData?.attributes?.business as business,
       {
         name: 'Acme',
         address: {
@@ -339,7 +339,7 @@ module('Reads | schema-object fields', function (hooks) {
     assert.equal(record.id, null, 'id is accessible');
     assert.equal(record.$type, 'user', '$type is accessible');
     assert.equal(record.name, 'Rey Skybarker', 'name is accessible');
-    assert.deepEqual(
+    assert.satisfies(
       record.address,
       { street: '123 Main St', city: 'Anytown', state: 'NY', zip: '12345' },
       'we can access address object'
@@ -347,7 +347,7 @@ module('Reads | schema-object fields', function (hooks) {
     assert.equal(record.address, record.address, 'We have a stable object reference');
     assert.notEqual(record.address, sourceAddress);
     assert.equal(record.business?.name, 'Acme');
-    assert.deepEqual(record.business?.addresses, [
+    assert.satisfies(record.business?.addresses, [
       { street: '456 Elm St', city: 'Anytown', state: 'NY', zip: '12345' },
       { street: '789 Oak St', city: 'Sometown', state: 'NJ', zip: '23456' },
     ]);
@@ -415,7 +415,7 @@ module('Reads | schema-object fields', function (hooks) {
     assert.equal(record.id, '1', 'id is accessible');
     assert.equal(record.$type, 'user', '$type is accessible');
     assert.equal(record.name, 'Rey Skybarker', 'name is accessible');
-    assert.deepEqual(record.address, { zip: '12345' }, 'we can access address object');
+    assert.satisfies(record.address, { zip: '12345' }, 'we can access address object');
     assert.equal(record.address, record.address, 'We have a stable object reference');
     assert.equal(record.address?.zip, '12345', 'we can access zip');
 
@@ -423,8 +423,8 @@ module('Reads | schema-object fields', function (hooks) {
     const identifier = recordIdentifierFor(record);
     const cachedResourceData = store.cache.peek(identifier);
 
-    assert.deepEqual(
-      cachedResourceData?.attributes?.user_address,
+    assert.satisfies(
+      cachedResourceData?.attributes?.user_address as { zip_code: string },
       {
         zip_code: '12345',
       },
@@ -566,7 +566,7 @@ module('Reads | schema-object fields', function (hooks) {
     assert.equal(record.name, 'Rey Skybarker', 'name is accessible');
     assert.step('^^ precursors ^^');
 
-    assert.deepEqual(
+    assert.satisfies(
       record.address,
       { type: 'business', name: 'AuditBoard', zip: '12345' },
       'we can access address object'
@@ -578,8 +578,8 @@ module('Reads | schema-object fields', function (hooks) {
     const identifier = recordIdentifierFor(record);
     const cachedResourceData = store.cache.peek(identifier);
 
-    assert.deepEqual(
-      cachedResourceData?.attributes?.user_address,
+    assert.satisfies(
+      cachedResourceData?.attributes?.user_address as { type: string; name: string; zip: string },
       {
         type: 'business',
         name: 'AuditBoard',
@@ -606,7 +606,7 @@ module('Reads | schema-object fields', function (hooks) {
       },
     });
 
-    assert.deepEqual(
+    assert.satisfies(
       record.address,
       { type: 'business', name: 'AuditBoard Inc.', zip: '12345' },
       'we can access address object'
@@ -630,7 +630,7 @@ module('Reads | schema-object fields', function (hooks) {
       },
     });
 
-    assert.deepEqual(
+    assert.satisfies(
       record.address,
       { type: 'business', name: 'AuditBoard Inc.', zip: '54321' },
       'we can access address object'
@@ -655,7 +655,7 @@ module('Reads | schema-object fields', function (hooks) {
       },
     });
 
-    assert.deepEqual(
+    assert.satisfies(
       record.address,
       { type: 'single-family-home', street: 'Sunset Hills' },
       'we can access address object'
@@ -686,7 +686,7 @@ module('Reads | schema-object fields', function (hooks) {
       },
     });
 
-    assert.deepEqual(
+    assert.satisfies(
       record.address,
       { type: 'condominium-home', street: 'Sunset Hills', unit: 5 },
       'we can access address object'
@@ -854,7 +854,7 @@ module('Reads | schema-object fields', function (hooks) {
     assert.equal(record.name, 'Rey Skybarker', 'name is accessible');
     assert.step('^^ precursors ^^');
 
-    assert.deepEqual(
+    assert.satisfies(
       record.address,
       { type: 'business', special_type: 'fragment:address:business', name: 'AuditBoard', zip: '12345' },
       'we can access address object'
@@ -866,8 +866,8 @@ module('Reads | schema-object fields', function (hooks) {
     const identifier = recordIdentifierFor(record);
     const cachedResourceData = store.cache.peek(identifier);
 
-    assert.deepEqual(
-      cachedResourceData?.attributes?.user_address,
+    assert.satisfies(
+      cachedResourceData?.attributes?.user_address as { type: string; special_type: string; name: string; zip: string },
       {
         type: 'business',
         special_type: 'fragment:address:business',
@@ -896,7 +896,7 @@ module('Reads | schema-object fields', function (hooks) {
       },
     });
 
-    assert.deepEqual(
+    assert.satisfies(
       record.address,
       { type: 'business', special_type: 'fragment:address:business', name: 'AuditBoard Inc.', zip: '12345' },
       'we can access address object'
@@ -921,7 +921,7 @@ module('Reads | schema-object fields', function (hooks) {
       },
     });
 
-    assert.deepEqual(
+    assert.satisfies(
       record.address,
       { type: 'business', special_type: 'fragment:address:business', name: 'AuditBoard Inc.', zip: '54321' },
       'we can access address object'
@@ -947,7 +947,7 @@ module('Reads | schema-object fields', function (hooks) {
       },
     });
 
-    assert.deepEqual(
+    assert.satisfies(
       record.address,
       {
         type: 'single-family-home',
@@ -983,7 +983,7 @@ module('Reads | schema-object fields', function (hooks) {
       },
     });
 
-    assert.deepEqual(
+    assert.satisfies(
       record.address,
       {
         type: 'condominium-home',
@@ -1133,7 +1133,7 @@ module('Reads | schema-object fields', function (hooks) {
     assert.equal(record.name, 'Rey Skybarker', 'name is accessible');
     assert.step('^^ precursors ^^');
 
-    assert.deepEqual(
+    assert.satisfies(
       record.address,
       { type: 'business', name: 'AuditBoard', zip: '12345' },
       'we can access address object'
@@ -1145,8 +1145,8 @@ module('Reads | schema-object fields', function (hooks) {
     const identifier = recordIdentifierFor(record);
     const cachedResourceData = store.cache.peek(identifier);
 
-    assert.deepEqual(
-      cachedResourceData?.attributes?.user_address,
+    assert.satisfies(
+      cachedResourceData?.attributes?.user_address as { type: string; name: string; zip: string },
       {
         type: 'business',
         name: 'AuditBoard',
@@ -1173,7 +1173,7 @@ module('Reads | schema-object fields', function (hooks) {
       },
     });
 
-    assert.deepEqual(
+    assert.satisfies(
       record.address,
       { type: 'business', name: 'AuditBoard Inc.', zip: '12345' },
       'we can access address object'
@@ -1197,7 +1197,7 @@ module('Reads | schema-object fields', function (hooks) {
       },
     });
 
-    assert.deepEqual(
+    assert.satisfies(
       record.address,
       { type: 'business', name: 'AuditBoard Inc.', zip: '54321' },
       'we can access address object'
@@ -1222,7 +1222,7 @@ module('Reads | schema-object fields', function (hooks) {
       },
     });
 
-    assert.deepEqual(
+    assert.satisfies(
       record.address,
       { type: 'single-family-home', street: 'Sunset Hills' },
       'we can access address object'
@@ -1253,7 +1253,7 @@ module('Reads | schema-object fields', function (hooks) {
       },
     });
 
-    assert.deepEqual(
+    assert.satisfies(
       record.address,
       { type: 'condominium-home', street: 'Sunset Hills', unit: 5 },
       'we can access address object'

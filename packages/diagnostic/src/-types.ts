@@ -99,7 +99,7 @@ export interface Diagnostic {
    * Asserts that the actual value has at least the properties of the expected value.
    * If additional properties are present on the actual value, they are ignored.
    */
-  satisfies<T extends object, J extends T>(actual: T, expected: J, message?: string): void;
+  satisfies<T extends object, J extends T>(actual: T | undefined | null, expected: J, message?: string): void;
 
   /**
    * Asserts that every item in the actual array is strictly equal (===) to the corresponding

@@ -10,7 +10,17 @@ module('WarpDrive | ReactiveResource | Edit Workflow', function (hooks) {
   setupTest(hooks);
 
   test('we can edit a record', async function (assert) {
-    const store = createStore(this.owner);
+    const store = createStore(this.owner, {
+      handlers: [
+        {
+          request({ request }) {
+            const { url, method, body } = request;
+            assert.step(`${method} ${url}`);
+            return Promise.resolve(JSON.parse(body as string));
+          },
+        },
+      ],
+    });
     const user = store.push<User>({
       data: {
         id: '1',
@@ -41,7 +51,17 @@ module('WarpDrive | ReactiveResource | Edit Workflow', function (hooks) {
   });
 
   test('we can serialize an editable record', async function (assert) {
-    const store = createStore(this.owner);
+    const store = createStore(this.owner, {
+      handlers: [
+        {
+          request({ request }) {
+            const { url, method, body } = request;
+            assert.step(`${method} ${url}`);
+            return Promise.resolve(JSON.parse(body as string));
+          },
+        },
+      ],
+    });
     const user = store.push<User>({
       data: {
         id: '1',
@@ -72,7 +92,17 @@ module('WarpDrive | ReactiveResource | Edit Workflow', function (hooks) {
   });
 
   test('serializing the immutable record serializes the edits', async function (assert) {
-    const store = createStore(this.owner);
+    const store = createStore(this.owner, {
+      handlers: [
+        {
+          request({ request }) {
+            const { url, method, body } = request;
+            assert.step(`${method} ${url}`);
+            return Promise.resolve(JSON.parse(body as string));
+          },
+        },
+      ],
+    });
     const user = store.push<User>({
       data: {
         id: '1',
@@ -103,7 +133,17 @@ module('WarpDrive | ReactiveResource | Edit Workflow', function (hooks) {
   });
 
   test('we can commit an editable record', async function (assert) {
-    const store = createStore(this.owner);
+    const store = createStore(this.owner, {
+      handlers: [
+        {
+          request({ request }) {
+            const { url, method, body } = request;
+            assert.step(`${method} ${url}`);
+            return Promise.resolve(JSON.parse(body as string));
+          },
+        },
+      ],
+    });
     const user = store.push<User>({
       data: {
         id: '1',

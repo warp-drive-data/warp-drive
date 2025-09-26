@@ -191,7 +191,7 @@ export class Diagnostic<TC extends TestContext> {
    * environment.
    *
    */
-  satisfies<T extends object, J extends T>(actual: J, expected: T, message?: string): void {
+  satisfies<T extends object, J extends T>(actual: J | undefined | null, expected: T, message?: string): void {
     const isEqual = equiv(actual, expected, false);
     if (!isEqual) {
       if (!this.__config.params.noTryCatch.value) {
@@ -402,9 +402,32 @@ export class Diagnostic<TC extends TestContext> {
     } catch (err) {
       if (expected) {
         if (typeof expected === 'string') {
-          this.equal(err instanceof Error ? err.message : err, expected, message);
+          const result = err instanceof Error ? err.message === expected || String(err) === expected : err === expected;
+          this.pushResult({
+            message: message || 'expected an error to be thrown',
+            stack:
+              err instanceof Error || (typeof err === 'object' && err !== null)
+                ? ((err as { stack?: string }).stack ?? '')
+                : '',
+            passed: result,
+            actual: err instanceof Error ? err.message : (err as string),
+            expected,
+          });
         } else {
-          this.equal(expected.test(err instanceof Error ? err.message : (err as string)), true, message);
+          const result =
+            err instanceof Error
+              ? expected.test(err.message) || expected.test(String(err))
+              : expected.test(err as string);
+          this.pushResult({
+            message: message || 'expected an error to be thrown',
+            stack:
+              err instanceof Error || (typeof err === 'object' && err !== null)
+                ? ((err as { stack?: string }).stack ?? '')
+                : '',
+            passed: result,
+            actual: err instanceof Error ? err.message : (err as string),
+            expected,
+          });
         }
       }
     }

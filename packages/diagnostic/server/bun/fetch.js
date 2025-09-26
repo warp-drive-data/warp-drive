@@ -62,9 +62,27 @@ export function handleBunFetch(config, state, req, server) {
     }
 
     const route = pathParts.join('/');
-    if (route === 'favicon.ico' || route === 'NCC-1701-a-gold_100.svg') {
+    if (route === 'favicon.ico') {
+      const dir = import.meta.dir;
+      const asset = path.join(dir, '../favicon.ico');
+
+      return new Response(Bun.file(asset));
+    }
+    if (route === 'NCC-1701-a-gold_100.svg') {
       const dir = import.meta.dir;
       const asset = path.join(dir, '../NCC-1701-a-gold_100.svg');
+
+      return new Response(Bun.file(asset));
+    }
+    if (route === 'prefers-color-w.svg') {
+      const dir = import.meta.dir;
+      const asset = path.join(dir, '../prefers-color-w.svg');
+
+      return new Response(Bun.file(asset));
+    }
+    if (route === 'logo-yellow-slab.svg') {
+      const dir = import.meta.dir;
+      const asset = path.join(dir, '../logo-yellow-slab.svg');
 
       return new Response(Bun.file(asset));
     }

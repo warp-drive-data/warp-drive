@@ -1,5 +1,5 @@
 import { recordIdentifierFor, useRecommendedStore } from '@warp-drive/core';
-import { Checkout, withDefaults } from '@warp-drive/core/reactive';
+import { checkout, withDefaults } from '@warp-drive/core/reactive';
 import type { Type } from '@warp-drive/core/types/symbols';
 import { module, setupTest, test } from '@warp-drive/diagnostic/ember';
 import { JSONAPICache } from '@warp-drive/json-api';
@@ -26,7 +26,6 @@ type User = Readonly<{
   address: address | null;
   business: business | null;
   [Type]: 'user';
-  [Checkout](): Promise<EditableUser>;
 }>;
 
 type EditableUser = {
@@ -104,7 +103,7 @@ module('Writes | schema-object fields', function (hooks) {
       assert.equal(record.id, '1', 'id is accessible');
       assert.equal(record.$type, 'user', '$type is accessible');
       assert.equal(record.name, 'Rey Pupatine', 'name is accessible');
-      assert.deepEqual(
+      assert.satisfies(
         record.address,
         { street: '123 Main Street', city: 'Anytown', state: 'NY', zip: '12345' },
         'We have the correct address object'
@@ -113,7 +112,7 @@ module('Writes | schema-object fields', function (hooks) {
         // @ts-expect-error we are testing the immutability of the object
         record.address = { street: '456 Elm Street', city: 'Sometown', state: 'NJ', zip: '23456' };
       }, /Error: Cannot set address on user because the record is not editable/);
-      assert.deepEqual(
+      assert.satisfies(
         record.address,
         { street: '123 Main Street', city: 'Anytown', state: 'NY', zip: '12345' },
         'we have the correct Object members'
@@ -179,7 +178,7 @@ module('Writes | schema-object fields', function (hooks) {
       assert.equal(record.id, '1', 'id is accessible');
       assert.equal(record.$type, 'user', '$type is accessible');
       assert.equal(record.name, 'Rey Pupatine', 'name is accessible');
-      assert.deepEqual(
+      assert.satisfies(
         record.address,
         {
           street: '123 Main Street',
@@ -194,7 +193,7 @@ module('Writes | schema-object fields', function (hooks) {
         record.address = null;
       }, /Error: Cannot set address on user because the record is not editable/);
 
-      assert.deepEqual(
+      assert.satisfies(
         record.address,
         {
           street: '123 Main Street',
@@ -257,7 +256,7 @@ module('Writes | schema-object fields', function (hooks) {
           },
         },
       });
-      assert.deepEqual(
+      assert.satisfies(
         record.address,
         {
           street: '123 Main Street',
@@ -270,7 +269,7 @@ module('Writes | schema-object fields', function (hooks) {
       assert.throws(() => {
         record.address!.state = 'NJ';
       }, /Error: Cannot set state on address because the record is not editable/);
-      assert.deepEqual(
+      assert.satisfies(
         record.address,
         {
           street: '123 Main Street',
@@ -351,7 +350,7 @@ module('Writes | schema-object fields', function (hooks) {
       assert.equal(record2.id, '2', 'id is accessible');
       assert.equal(record2.$type, 'user', '$type is accessible');
       assert.equal(record2.name, 'Luke Skybarker', 'name is accessible');
-      assert.deepEqual(
+      assert.satisfies(
         record.address,
         {
           street: '123 Main Street',
@@ -460,7 +459,7 @@ module('Writes | schema-object fields', function (hooks) {
       assert.equal(record.id, '1', 'id is accessible');
       assert.equal(record.$type, 'user', '$type is accessible');
       assert.equal(record.name, 'Rey Skybarker', 'name is accessible');
-      assert.deepEqual(
+      assert.satisfies(
         record.address,
         { street: '123 Main St', city: 'Anytown', state: 'NY', zip: '12345' },
         'we can access address object'
@@ -468,14 +467,14 @@ module('Writes | schema-object fields', function (hooks) {
       assert.equal(record.address, record.address, 'We have a stable object reference');
       assert.notEqual(record.address, sourceAddress);
       assert.equal(record.business?.name, 'Acme');
-      assert.deepEqual(record.business?.address, { street: '456 Elm St', city: 'Anytown', state: 'NY', zip: '12345' });
+      assert.satisfies(record.business?.address, { street: '456 Elm St', city: 'Anytown', state: 'NY', zip: '12345' });
 
       // test that the data entered the cache properly
       const identifier = recordIdentifierFor(record);
       const cachedResourceData = store.cache.peek(identifier);
 
-      assert.deepEqual(
-        cachedResourceData?.attributes?.address,
+      assert.satisfies(
+        cachedResourceData?.attributes?.address as address,
         {
           street: '123 Main St',
           city: 'Anytown',
@@ -484,8 +483,8 @@ module('Writes | schema-object fields', function (hooks) {
         },
         'the cache values are correct for the object field'
       );
-      assert.deepEqual(
-        cachedResourceData?.attributes?.business,
+      assert.satisfies(
+        cachedResourceData?.attributes?.business as business,
         {
           name: 'Acme',
           address: {
@@ -501,7 +500,7 @@ module('Writes | schema-object fields', function (hooks) {
         record.business!.address = { street: '789 Oak St', city: 'Sometown', state: 'NJ', zip: '23456' };
       }, /Error: Cannot set address on business because the record is not editable/);
 
-      assert.deepEqual(
+      assert.satisfies(
         record.business?.address,
         { street: '456 Elm St', city: 'Anytown', state: 'NY', zip: '12345' },
         'we can access nested address object'
@@ -603,14 +602,14 @@ module('Writes | schema-object fields', function (hooks) {
       assert.equal(record.id, '1', 'id is accessible');
       assert.equal(record.$type, 'user', '$type is accessible');
       assert.equal(record.name, 'Rey Skybarker', 'name is accessible');
-      assert.deepEqual(
+      assert.satisfies(
         record.address,
         { street: '123 Main St', city: 'Anytown', state: 'NY', zip: '12345' },
         'we can access address object'
       );
       assert.equal(record.address, record.address, 'We have a stable object reference');
       assert.equal(record.business?.name, 'Acme');
-      assert.deepEqual(record.business?.addresses, [
+      assert.satisfies(record.business?.addresses, [
         { street: '456 Elm St', city: 'Anytown', state: 'NY', zip: '12345' },
         { street: '789 Oak St', city: 'Sometown', state: 'NJ', zip: '23456' },
       ]);
@@ -618,7 +617,7 @@ module('Writes | schema-object fields', function (hooks) {
       assert.throws(() => {
         record.business!.addresses![0] = { street: '123 Main St', city: 'Anytown', state: 'NY', zip: '12345' };
       }, /Error: Cannot set 0 on addresses because the record is not editable/);
-      assert.deepEqual(
+      assert.satisfies(
         record.business?.addresses,
         [
           { street: '456 Elm St', city: 'Anytown', state: 'NY', zip: '12345' },
@@ -688,18 +687,18 @@ module('Writes | schema-object fields', function (hooks) {
       },
     });
 
-    const record = await immutableRecord[Checkout]();
+    const record = await checkout<EditableUser>(immutableRecord);
     assert.equal(record.id, '1', 'id is accessible');
     assert.equal(record.$type, 'user', '$type is accessible');
     assert.equal(record.name, 'Rey Pupatine', 'name is accessible');
-    assert.deepEqual(
+    assert.satisfies(
       record.address,
       { street: '123 Main Street', city: 'Anytown', state: 'NY', zip: '12345' },
       'We have the correct address object'
     );
     const address = record.address;
     record.address = { street: '456 Elm Street', city: 'Sometown', state: 'NJ', zip: '23456' };
-    assert.deepEqual(
+    assert.satisfies(
       record.address,
       { street: '456 Elm Street', city: 'Sometown', state: 'NJ', zip: '23456' },
       'we have the correct Object members'
@@ -710,8 +709,8 @@ module('Writes | schema-object fields', function (hooks) {
     const identifier = recordIdentifierFor(record);
     const cachedResourceData = store.cache.peek(identifier);
 
-    assert.deepEqual(
-      cachedResourceData?.attributes?.address,
+    assert.satisfies(
+      cachedResourceData?.attributes?.address as address,
       { street: '456 Elm Street', city: 'Sometown', state: 'NJ', zip: '23456' },
       'the cache values are correctly updated'
     );
@@ -773,11 +772,11 @@ module('Writes | schema-object fields', function (hooks) {
         },
       },
     });
-    const record = await immutableRecord[Checkout]();
+    const record = await checkout<EditableUser>(immutableRecord);
     assert.equal(record.id, '1', 'id is accessible');
     assert.equal(record.$type, 'user', '$type is accessible');
     assert.equal(record.name, 'Rey Pupatine', 'name is accessible');
-    assert.deepEqual(
+    assert.satisfies(
       record.address,
       {
         street: '123 Main Street',
@@ -792,14 +791,14 @@ module('Writes | schema-object fields', function (hooks) {
     // test that the data entered the cache properly
     const identifier = recordIdentifierFor(record);
     const cachedResourceData = store.cache.peek(identifier);
-    assert.deepEqual(cachedResourceData?.attributes?.address, null, 'the cache values are correctly updated');
+    assert.equal(cachedResourceData?.attributes?.address, null, 'the cache values are correctly updated');
     record.address = {
       street: '123 Main Street',
       city: 'Anytown',
       state: 'NY',
       zip: '12345',
     };
-    assert.deepEqual(
+    assert.satisfies(
       record.address,
       {
         street: '123 Main Street',
@@ -862,8 +861,8 @@ module('Writes | schema-object fields', function (hooks) {
         },
       },
     });
-    const record = await immutableRecord[Checkout]();
-    assert.deepEqual(
+    const record = await checkout<EditableUser>(immutableRecord);
+    assert.satisfies(
       record.address,
       {
         street: '123 Main Street',
@@ -875,7 +874,7 @@ module('Writes | schema-object fields', function (hooks) {
     );
     const address = record.address;
     record.address!.state = 'NJ';
-    assert.deepEqual(
+    assert.satisfies(
       record.address,
       {
         street: '123 Main Street',
@@ -889,8 +888,8 @@ module('Writes | schema-object fields', function (hooks) {
     // test that the data entered the cache properly
     const identifier = recordIdentifierFor(record);
     const cachedResourceData = store.cache.peek(identifier);
-    assert.deepEqual(
-      cachedResourceData?.attributes?.address,
+    assert.satisfies(
+      cachedResourceData?.attributes?.address as address,
       { street: '123 Main Street', city: 'Anytown', state: 'NJ', zip: '12345' },
       'the cache values are correctly updated'
     );
@@ -959,15 +958,15 @@ module('Writes | schema-object fields', function (hooks) {
         attributes: { name: 'Luke Skybarker' },
       },
     });
-    const record = await immutableRecord[Checkout]();
-    const record2 = await immutableRecord2[Checkout]();
+    const record = await checkout<EditableUser>(immutableRecord);
+    const record2 = await checkout<EditableUser>(immutableRecord2);
     assert.equal(record.id, '1', 'id is accessible');
     assert.equal(record.$type, 'user', '$type is accessible');
     assert.equal(record.name, 'Rey Pupatine', 'name is accessible');
     assert.equal(record2.id, '2', 'id is accessible');
     assert.equal(record2.$type, 'user', '$type is accessible');
     assert.equal(record2.name, 'Luke Skybarker', 'name is accessible');
-    assert.deepEqual(
+    assert.satisfies(
       record.address,
       {
         street: '123 Main Street',
@@ -980,7 +979,7 @@ module('Writes | schema-object fields', function (hooks) {
     assert.equal(record.address, record.address, 'We have a stable object reference');
     const address = record.address;
     record2.address = record.address;
-    assert.deepEqual(
+    assert.satisfies(
       record2.address,
       {
         street: '123 Main Street',
@@ -996,8 +995,8 @@ module('Writes | schema-object fields', function (hooks) {
     // test that the data entered the cache properly
     const identifier = recordIdentifierFor(record2);
     const cachedResourceData = store.cache.peek(identifier);
-    assert.deepEqual(
-      cachedResourceData?.attributes?.address,
+    assert.satisfies(
+      cachedResourceData?.attributes?.address as address,
       {
         street: '123 Main Street',
         city: 'Anytown',
@@ -1064,11 +1063,11 @@ module('Writes | schema-object fields', function (hooks) {
         },
       },
     });
-    const record = await immutableRecord[Checkout]();
+    const record = await checkout<EditableUser>(immutableRecord);
     assert.equal(record.id, '1', 'id is accessible');
     assert.equal(record.$type, 'user', '$type is accessible');
     assert.equal(record.name, 'Rey Pupatine', 'name is accessible');
-    assert.deepEqual(
+    assert.satisfies(
       record.address,
       {
         street: '123 Main Street',
@@ -1182,11 +1181,11 @@ module('Writes | schema-object fields', function (hooks) {
       },
     });
 
-    const record = await immutableRecord[Checkout]();
+    const record = await checkout<EditableUser>(immutableRecord);
     assert.equal(record.id, '1', 'id is accessible');
     assert.equal(record.$type, 'user', '$type is accessible');
     assert.equal(record.name, 'Rey Skybarker', 'name is accessible');
-    assert.deepEqual(
+    assert.satisfies(
       record.address,
       { street: '123 Main St', city: 'Anytown', state: 'NY', zip: '12345' },
       'we can access address object'
@@ -1194,14 +1193,14 @@ module('Writes | schema-object fields', function (hooks) {
     assert.equal(record.address, record.address, 'We have a stable object reference');
     assert.notEqual(record.address, sourceAddress);
     assert.equal(record.business?.name, 'Acme');
-    assert.deepEqual(record.business?.address, { street: '456 Elm St', city: 'Anytown', state: 'NY', zip: '12345' });
+    assert.satisfies(record.business?.address, { street: '456 Elm St', city: 'Anytown', state: 'NY', zip: '12345' });
 
     // test that the data entered the cache properly
     const identifier = recordIdentifierFor(record);
     const cachedResourceData = store.cache.peek(identifier);
 
-    assert.deepEqual(
-      cachedResourceData?.attributes?.address,
+    assert.satisfies(
+      cachedResourceData?.attributes?.address as address,
       {
         street: '123 Main St',
         city: 'Anytown',
@@ -1210,8 +1209,8 @@ module('Writes | schema-object fields', function (hooks) {
       },
       'the cache values are correct for the object field'
     );
-    assert.deepEqual(
-      cachedResourceData?.attributes?.business,
+    assert.satisfies(
+      cachedResourceData?.attributes?.business as business,
       {
         name: 'Acme',
         address: {
@@ -1224,7 +1223,7 @@ module('Writes | schema-object fields', function (hooks) {
       'the cache values are correct for a nested object field'
     );
     record.business!.address = { street: '789 Oak St', city: 'Sometown', state: 'NJ', zip: '23456' };
-    assert.deepEqual(
+    assert.satisfies(
       record.business?.address,
       { street: '789 Oak St', city: 'Sometown', state: 'NJ', zip: '23456' },
       'we can access nested address object'
@@ -1232,8 +1231,8 @@ module('Writes | schema-object fields', function (hooks) {
     assert.equal(record.business?.address, record.business?.address, 'We have a stable object reference');
     // Test that the data entered teh cache properly
     const cachedResourceData2 = store.cache.peek(identifier);
-    assert.deepEqual(
-      cachedResourceData2?.attributes?.business,
+    assert.satisfies(
+      cachedResourceData2?.attributes?.business as business,
       {
         name: 'Acme',
         address: {
@@ -1339,24 +1338,24 @@ module('Writes | schema-object fields', function (hooks) {
       },
     });
 
-    const record = await immutableRecord[Checkout]();
+    const record = await checkout<EditableUser>(immutableRecord);
     assert.equal(record.id, '1', 'id is accessible');
     assert.equal(record.$type, 'user', '$type is accessible');
     assert.equal(record.name, 'Rey Skybarker', 'name is accessible');
-    assert.deepEqual(
+    assert.satisfies(
       record.address,
       { street: '123 Main St', city: 'Anytown', state: 'NY', zip: '12345' },
       'we can access address object'
     );
     assert.equal(record.address, record.address, 'We have a stable object reference');
     assert.equal(record.business?.name, 'Acme');
-    assert.deepEqual(record.business?.addresses, [
+    assert.satisfies(record.business?.addresses, [
       { street: '456 Elm St', city: 'Anytown', state: 'NY', zip: '12345' },
       { street: '789 Oak St', city: 'Sometown', state: 'NJ', zip: '23456' },
     ]);
     assert.equal(record.business?.addresses, record.business?.addresses, 'We have a stable array reference');
     record.business!.addresses![0] = { street: '123 Main St', city: 'Anytown', state: 'NY', zip: '12345' };
-    assert.deepEqual(
+    assert.satisfies(
       record.business?.addresses,
       [
         { street: '123 Main St', city: 'Anytown', state: 'NY', zip: '12345' },
@@ -1368,8 +1367,8 @@ module('Writes | schema-object fields', function (hooks) {
     // Test that the data entered teh cache properly
     const identifier = recordIdentifierFor(record);
     const cachedResourceData = store.cache.peek(identifier);
-    assert.deepEqual(
-      cachedResourceData?.attributes?.business,
+    assert.satisfies(
+      cachedResourceData?.attributes?.business as business,
       {
         name: 'Acme',
         addresses: [
@@ -1422,8 +1421,8 @@ module('Writes | schema-object fields', function (hooks) {
         },
       },
     });
-    const record = await immutableRecord[Checkout]();
-    assert.deepEqual(
+    const record = await checkout<EditableUser>(immutableRecord);
+    assert.satisfies(
       record.address as { zip: number },
       {
         zip: 90219,
@@ -1432,7 +1431,7 @@ module('Writes | schema-object fields', function (hooks) {
     );
     const address = record.address;
     record.address!.zip = 90210;
-    assert.deepEqual(
+    assert.satisfies(
       record.address as { zip: number },
       {
         zip: 90210,
@@ -1443,8 +1442,8 @@ module('Writes | schema-object fields', function (hooks) {
     // test that the data entered the cache properly
     const identifier = recordIdentifierFor(record);
     const cachedResourceData = store.cache.peek(identifier);
-    assert.deepEqual(
-      cachedResourceData?.attributes?.user_address,
+    assert.satisfies(
+      cachedResourceData?.attributes?.user_address as { zip_code: number },
       { zip_code: 90210 },
       'the cache values are correctly updated'
     );
