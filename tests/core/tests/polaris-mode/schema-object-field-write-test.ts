@@ -1424,7 +1424,7 @@ module('Writes | schema-object fields', function (hooks) {
     });
     const record = await immutableRecord[Checkout]();
     assert.deepEqual(
-      record.address,
+      record.address as { zip: number },
       {
         zip: 90219,
       },
@@ -1433,7 +1433,7 @@ module('Writes | schema-object fields', function (hooks) {
     const address = record.address;
     record.address!.zip = 90210;
     assert.deepEqual(
-      record.address,
+      record.address as { zip: number },
       {
         zip: 90210,
       },

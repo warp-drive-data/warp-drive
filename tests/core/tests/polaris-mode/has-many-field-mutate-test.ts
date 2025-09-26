@@ -2,7 +2,7 @@
 import type { TestContext } from '@ember/test-helpers';
 
 import { useRecommendedStore } from '@warp-drive/core';
-import { Checkout, withDefaults } from '@warp-drive/core/reactive';
+import { checkout, withDefaults } from '@warp-drive/core/reactive';
 import type { Type } from '@warp-drive/core/types/symbols';
 import { module, setupTest, test } from '@warp-drive/diagnostic/ember';
 import { JSONAPICache } from '@warp-drive/json-api';
@@ -16,7 +16,6 @@ type User = {
   name: string;
   friends: User[] | null;
   [Type]: 'user';
-  [Checkout]: () => Promise<User>;
 };
 
 module('Mutate | hasMany in linksMode', function (hooks) {
@@ -141,7 +140,7 @@ module('Mutate | hasMany in linksMode', function (hooks) {
     };
 
     assertRemoteState();
-    const editable = await record[Checkout]();
+    const editable = await checkout<User>(record);
 
     // we should have a separate ManyArray reference
     assert.true(editable.friends !== record.friends, 'editable.friends is a different reference than record.friends');

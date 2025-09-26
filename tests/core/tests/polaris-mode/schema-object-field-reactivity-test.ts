@@ -1,5 +1,6 @@
 import { useRecommendedStore } from '@warp-drive/core';
 import { withDefaults } from '@warp-drive/core/reactive';
+import type { Type } from '@warp-drive/core/types/symbols';
 import { module, setupRenderingTest, test } from '@warp-drive/diagnostic/ember';
 import { JSONAPICache } from '@warp-drive/json-api';
 
@@ -141,6 +142,25 @@ module('Reactivity | schema object fields can receive remote updates', function 
   });
 
   test('we can use simple fields with sourceKeys', async function (assert) {
+    interface TestAddress {
+      street: string;
+      city: string;
+      state: string;
+      zip: number;
+    }
+    interface TestUser {
+      id: string | null;
+      $type: 'user';
+      name: string;
+      favoriteNumbers: string[];
+      address: TestAddress;
+      age: number;
+      netWorth: number;
+      coolometer: number;
+      rank: number;
+      [Type]: 'user';
+    }
+
     const store = new Store();
     const { schema } = store;
 
@@ -169,7 +189,7 @@ module('Reactivity | schema object fields can receive remote updates', function 
       })
     );
     const resource = schema.resource({ type: 'user' });
-    const record = store.push({
+    const record = store.push<TestUser>({
       data: {
         type: 'user',
         id: '1',
@@ -179,12 +199,12 @@ module('Reactivity | schema object fields can receive remote updates', function 
           },
         },
       },
-    }) as User;
+    });
 
     assert.equal(record.id, '1', 'id is accessible');
     assert.equal(record.$type, 'user', '$type is accessible');
     assert.deepEqual(
-      record.address,
+      record.address as { zip: number },
       {
         zip: 90219,
       },
@@ -215,7 +235,7 @@ module('Reactivity | schema object fields can receive remote updates', function 
     assert.equal(record.id, '1', 'id is accessible');
     assert.equal(record.$type, 'user', '$type is accessible');
     assert.deepEqual(
-      record.address,
+      record.address as { zip: number },
       {
         zip: 90210,
       },

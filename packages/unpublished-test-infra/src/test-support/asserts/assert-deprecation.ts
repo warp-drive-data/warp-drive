@@ -5,7 +5,7 @@ import semver from 'semver';
 
 import type Assert from 'ember-data-qunit-asserts';
 
-import { DEBUG } from '@warp-drive/build-config/env';
+import { DEBUG } from '@warp-drive/core/build-config/env';
 
 import { checkMatcher } from './check-matcher';
 import isThenable from './utils/is-thenable';
@@ -137,7 +137,7 @@ function verifyNoDeprecation(filter?: (deprecation: FoundDeprecation) => boolean
   };
 }
 
-export function configureDeprecationHandler(assert: Assert): void {
+export function configureDeprecationHandler(assert: unknown): void {
   if (!HAS_REGISTERED) {
     registerDeprecationHandler(function (message, options /*, next*/) {
       if (DEPRECATIONS_FOR_TEST && options) {
@@ -159,8 +159,8 @@ export function configureDeprecationHandler(assert: Assert): void {
   DEPRECATIONS_FOR_TEST = [];
   HANDLED_DEPRECATIONS_FOR_TEST = [];
 
-  assert.expectDeprecation = expectDeprecation;
-  assert.expectNoDeprecation = expectNoDeprecation;
+  (assert as Assert).expectDeprecation = expectDeprecation;
+  (assert as Assert).expectNoDeprecation = expectNoDeprecation;
 }
 
 async function expectDeprecation(

@@ -1,6 +1,6 @@
 import type Assert from 'ember-data-qunit-asserts';
 
-import { DEBUG } from '@warp-drive/build-config/env';
+import { DEBUG } from '@warp-drive/core/build-config/env';
 
 import { checkMatcher } from './check-matcher';
 import isThenable from './utils/is-thenable';
@@ -39,9 +39,9 @@ function verifyNoAssertion(message: string | undefined, label?: string): AssertN
   };
 }
 
-export function configureAssertionHandler(assert: Assert): void {
-  assert.expectAssertion = expectAssertion;
-  assert.expectNoAssertion = expectNoAssertion;
+export function configureAssertionHandler(assert: unknown): void {
+  (assert as Assert).expectAssertion = expectAssertion;
+  (assert as Assert).expectNoAssertion = expectNoAssertion;
 }
 
 async function expectAssertion(

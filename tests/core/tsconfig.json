@@ -23,7 +23,7 @@
     "experimentalDecorators": true,
     "incremental": true,
     "declaration": true,
-    "types": ["ember-source/types", "vite/client"],
+    "types": ["ember-source/types", "vite/client", "@ember-data/unpublished-test-infra/test-support/asserts/index"],
     "paths": {
       "@warp-drive/holodeck": ["../../packages/holodeck/declarations"],
       "@warp-drive/holodeck/*": ["../../packages/holodeck/declarations/*"],
@@ -36,7 +36,9 @@
       "@warp-drive/json-api": ["../../warp-drive-packages/json-api/declarations"],
       "@warp-drive/json-api/*": ["../../warp-drive-packages/json-api/declarations/*"],
       "@warp-drive/utilities": ["../../warp-drive-packages/utilities/declarations"],
-      "@warp-drive/utilities/*": ["../../warp-drive-packages/utilities/declarations/*"]
+      "@warp-drive/utilities/*": ["../../warp-drive-packages/utilities/declarations/*"],
+      "@ember-data/unpublished-test-infra": ["../../packages/unpublished-test-infra/unstable-preview-types"],
+      "@ember-data/unpublished-test-infra/*": ["../../packages/unpublished-test-infra/unstable-preview-types/*"]
     },
     "allowImportingTsExtensions": true,
     "composite": true,
@@ -67,6 +69,9 @@
     },
     {
       "path": "../../warp-drive-packages/utilities"
+    },
+    {
+      "path": "../../packages/unpublished-test-infra"
     }
   ]
 }

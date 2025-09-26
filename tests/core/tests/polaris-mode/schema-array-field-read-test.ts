@@ -98,7 +98,7 @@ module('Reads | schema-array fields', function (hooks) {
     assert.equal(record.$type, 'user', '$type is accessible');
     assert.equal(record.name, 'Rey Skybarker', 'name is accessible');
     assert.true(Array.isArray(record.addresses), 'we can access address array');
-    assert.satisfies(
+    assert.deepEqual(
       record.addresses?.slice(),
       [
         {

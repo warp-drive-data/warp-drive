@@ -1160,9 +1160,6 @@ importers:
       '@embroider/macros':
         specifier: ^1.18.1
         version: 1.18.1(@babel/core@7.28.3)
-      '@warp-drive/build-config':
-        specifier: workspace:*
-        version: file:warp-drive-packages/build-config(@babel/core@7.28.3)
       chalk:
         specifier: ^4.1.2
         version: 4.1.2
@@ -1182,15 +1179,6 @@ importers:
       '@babel/preset-typescript':
         specifier: ^7.27.1
         version: 7.27.1(@babel/core@7.28.3)
-      '@ember-data/request':
-        specifier: workspace:*
-        version: file:packages/request(@babel/core@7.28.3)
-      '@ember-data/request-utils':
-        specifier: workspace:*
-        version: file:packages/request-utils(@babel/core@7.28.3)
-      '@ember-data/store':
-        specifier: workspace:*
-        version: file:packages/store(@babel/core@7.28.3)
       '@ember/test-helpers':
         specifier: 5.2.0
         version: 5.2.0(patch_hash=a1670a4e3977c846a5c2454f317f5a17cbd284aef3a676b190c98141536afb04)(a28950a1e4cd07d337893daf47c6f294)
@@ -1203,15 +1191,18 @@ importers:
       '@types/semver':
         specifier: ^7.7.0
         version: 7.7.0
-      '@warp-drive/core-types':
+      '@warp-drive/core':
         specifier: workspace:*
-        version: file:packages/core-types(@babel/core@7.28.3)
+        version: file:warp-drive-packages/core(@babel/core@7.28.3)
       '@warp-drive/diagnostic':
         specifier: workspace:*
         version: file:packages/diagnostic(aee654df6dc3ed0e82ba2e6019020ca6)
       '@warp-drive/internal-config':
         specifier: workspace:*
         version: file:tools/internal-config
+      '@warp-drive/utilities':
+        specifier: workspace:*
+        version: file:warp-drive-packages/utilities(ac1631a7da983377f84b100525d730a6)
       ember-source:
         specifier: ~6.6.0
         version: 6.6.0(@glimmer/component@2.0.0)
@@ -1523,6 +1514,9 @@ importers:
       '@babel/runtime':
         specifier: ^7.28.2
         version: 7.28.3
+      '@ember-data/unpublished-test-infra':
+        specifier: workspace:*
+        version: file:packages/unpublished-test-infra(5ddef2af8272955f74fc53a279be9fdb)
       '@ember/test-helpers':
         specifier: 5.2.0
         version: 5.2.0(patch_hash=a1670a4e3977c846a5c2454f317f5a17cbd284aef3a676b190c98141536afb04)(a28950a1e4cd07d337893daf47c6f294)
@@ -15997,7 +15991,6 @@ snapshots:
       '@ember-data/store': file:packages/store(1adf99e055abba96ff2ddb1d049f661d)
       '@ember/test-helpers': 5.2.0(patch_hash=a1670a4e3977c846a5c2454f317f5a17cbd284aef3a676b190c98141536afb04)(a28950a1e4cd07d337893daf47c6f294)
       '@embroider/macros': 1.18.1(@babel/core@7.28.3)
-      '@warp-drive/build-config': file:warp-drive-packages/build-config(@babel/core@7.28.3)
       '@warp-drive/core-types': file:packages/core-types(@babel/core@7.28.3)
       chalk: 4.1.2
       semver: 7.7.2
@@ -16012,7 +16005,6 @@ snapshots:
       '@ember-data/store': file:packages/store(1adf99e055abba96ff2ddb1d049f661d)
       '@ember/test-helpers': 5.2.0(patch_hash=a1670a4e3977c846a5c2454f317f5a17cbd284aef3a676b190c98141536afb04)(a28950a1e4cd07d337893daf47c6f294)
       '@embroider/macros': 1.18.1(@babel/core@7.28.3)
-      '@warp-drive/build-config': file:warp-drive-packages/build-config(@babel/core@7.28.3)
       '@warp-drive/core-types': file:packages/core-types(@babel/core@7.28.3)
       chalk: 4.1.2
       semver: 7.7.2
@@ -16027,7 +16019,6 @@ snapshots:
       '@ember-data/store': file:packages/store(1adf99e055abba96ff2ddb1d049f661d)
       '@ember/test-helpers': 5.2.0(patch_hash=a1670a4e3977c846a5c2454f317f5a17cbd284aef3a676b190c98141536afb04)(a28950a1e4cd07d337893daf47c6f294)
       '@embroider/macros': 1.18.1(@babel/core@7.28.3)
-      '@warp-drive/build-config': file:warp-drive-packages/build-config(@babel/core@7.28.3)
       '@warp-drive/core-types': file:packages/core-types(@babel/core@7.28.3)
       chalk: 4.1.2
       semver: 7.7.2
@@ -16040,7 +16031,6 @@ snapshots:
       '@ember-data/store': file:packages/store(1adf99e055abba96ff2ddb1d049f661d)
       '@ember/test-helpers': 5.2.0(patch_hash=a1670a4e3977c846a5c2454f317f5a17cbd284aef3a676b190c98141536afb04)(a28950a1e4cd07d337893daf47c6f294)
       '@embroider/macros': 1.18.1(@babel/core@7.28.3)
-      '@warp-drive/build-config': file:warp-drive-packages/build-config(@babel/core@7.28.3)
       '@warp-drive/core-types': file:packages/core-types(@babel/core@7.28.3)
       chalk: 4.1.2
       semver: 7.7.2
@@ -16051,11 +16041,22 @@ snapshots:
       - '@babel/core'
       - supports-color
 
+  '@ember-data/unpublished-test-infra@file:packages/unpublished-test-infra(5ddef2af8272955f74fc53a279be9fdb)':
+    dependencies:
+      '@ember/test-helpers': 5.2.0(patch_hash=a1670a4e3977c846a5c2454f317f5a17cbd284aef3a676b190c98141536afb04)(a28950a1e4cd07d337893daf47c6f294)
+      '@embroider/macros': 1.18.1(@babel/core@7.28.3)
+      chalk: 4.1.2
+      semver: 7.7.2
+    optionalDependencies:
+      '@warp-drive/diagnostic': file:packages/diagnostic(aee654df6dc3ed0e82ba2e6019020ca6)
+    transitivePeerDependencies:
+      - '@babel/core'
+      - supports-color
+
   '@ember-data/unpublished-test-infra@file:packages/unpublished-test-infra(7cfc70a9288f389f29625f5dc635deed)':
     dependencies:
       '@ember/test-helpers': 5.2.0(patch_hash=a1670a4e3977c846a5c2454f317f5a17cbd284aef3a676b190c98141536afb04)(a28950a1e4cd07d337893daf47c6f294)
       '@embroider/macros': 1.18.1(@babel/core@7.28.3)
-      '@warp-drive/build-config': file:warp-drive-packages/build-config(@babel/core@7.28.3)
       chalk: 4.1.2
       semver: 7.7.2
     optionalDependencies:
@@ -16068,7 +16069,6 @@ snapshots:
     dependencies:
       '@ember/test-helpers': 5.2.0(patch_hash=a1670a4e3977c846a5c2454f317f5a17cbd284aef3a676b190c98141536afb04)(a28950a1e4cd07d337893daf47c6f294)
       '@embroider/macros': 1.18.1(@babel/core@7.28.3)
-      '@warp-drive/build-config': file:warp-drive-packages/build-config(@babel/core@7.28.3)
       chalk: 4.1.2
       semver: 7.7.2
     optionalDependencies:
@@ -16083,7 +16083,6 @@ snapshots:
       '@ember-data/store': file:packages/store(1adf99e055abba96ff2ddb1d049f661d)
       '@ember/test-helpers': 5.2.0(patch_hash=a1670a4e3977c846a5c2454f317f5a17cbd284aef3a676b190c98141536afb04)(a28950a1e4cd07d337893daf47c6f294)
       '@embroider/macros': 1.18.1(@babel/core@7.28.3)
-      '@warp-drive/build-config': file:warp-drive-packages/build-config(@babel/core@7.28.3)
       '@warp-drive/core-types': file:packages/core-types(@babel/core@7.28.3)
       chalk: 4.1.2
       semver: 7.7.2

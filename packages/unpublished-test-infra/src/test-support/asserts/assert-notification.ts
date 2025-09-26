@@ -1,12 +1,9 @@
 import { TestContext } from '@ember/test-helpers';
 
-import type { ResourceKey } from '@warp-drive/core-types';
-
 import type Assert from 'ember-data-qunit-asserts';
 
-import type Store from '@ember-data/store';
-import type { DocumentCacheOperation, NotificationType } from '@ember-data/store';
-import type { RequestKey } from '@warp-drive/core-types/identifier';
+import type { Store, DocumentCacheOperation, NotificationType } from '@warp-drive/core';
+import type { ResourceKey, RequestKey } from '@warp-drive/core/types/identifier';
 
 type Counter = { count: number; delivered: number; ignored: number };
 type NotificationStorage = Map<
@@ -91,16 +88,16 @@ function setupNotifications(context: TestContext, store: Store) {
   };
 }
 
-export function configureNotificationsAssert(this: TestContext, assert: Assert): void {
+export function configureNotificationsAssert(this: TestContext, assert: unknown): void {
   // eslint-disable-next-line @typescript-eslint/no-this-alias
   const context = this;
 
-  assert.watchNotifications = function (store?: Store) {
+  (assert as Assert).watchNotifications = function (store?: Store) {
     store = store ?? (context.owner.lookup('service:store') as unknown as Store);
     setupNotifications(context, store);
   };
 
-  assert.notified = function (
+  (assert as Assert).notified = function (
     this: Assert,
     cacheKey: ResourceKey | RequestKey,
     bucket: NotificationType | DocumentCacheOperation,
@@ -120,7 +117,7 @@ export function configureNotificationsAssert(this: TestContext, assert: Assert):
     counter.count = 0;
   };
 
-  assert.clearNotifications = function () {
+  (assert as Assert).clearNotifications = function () {
     clearNotifications(context);
   };
 }

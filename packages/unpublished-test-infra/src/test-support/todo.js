@@ -1,6 +1,6 @@
 import QUnit, { skip, test } from 'qunit';
 
-import { DEBUG } from '@warp-drive/build-config/env';
+import { DEBUG } from '@warp-drive/core/build-config/env';
 
 export default function todo(description, callback) {
   if (DEBUG) {

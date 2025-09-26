@@ -2,7 +2,7 @@ import { registerWarnHandler } from '@ember/debug';
 
 import type Assert from 'ember-data-qunit-asserts';
 
-import { DEBUG } from '@warp-drive/build-config/env';
+import { DEBUG } from '@warp-drive/core/build-config/env';
 
 import { checkMatcher } from './check-matcher';
 import isThenable from './utils/is-thenable';
@@ -101,7 +101,7 @@ function verifyNoWarning(label?: string): AssertNoneResult {
   };
 }
 
-export function configureWarningHandler(assert: Assert): void {
+export function configureWarningHandler(assert: unknown): void {
   if (HAS_REGISTERED !== true) {
     registerWarnHandler(function (message, options /*, next*/) {
       if (WARNINGS_FOR_TEST && options) {
@@ -115,8 +115,8 @@ export function configureWarningHandler(assert: Assert): void {
   WARNINGS_FOR_TEST = [];
   HANDLED_WARNINGS_FOR_TEST = [];
 
-  assert.expectWarning = expectWarning;
-  assert.expectNoWarning = expectNoWarning;
+  (assert as Assert).expectWarning = expectWarning;
+  (assert as Assert).expectNoWarning = expectNoWarning;
 }
 
 async function expectWarning(

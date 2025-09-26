@@ -1,6 +1,6 @@
 import { recordIdentifierFor, useRecommendedStore } from '@warp-drive/core';
 import type { Transformation } from '@warp-drive/core/reactive';
-import { Checkout, withDefaults } from '@warp-drive/core/reactive';
+import { checkout, withDefaults } from '@warp-drive/core/reactive';
 import { Type } from '@warp-drive/core/types/symbols';
 import { module, setupTest, test } from '@warp-drive/diagnostic/ember';
 import { JSONAPICache } from '@warp-drive/json-api';
@@ -21,7 +21,6 @@ type User = Readonly<{
   name: string;
   address: address | null;
   [Type]: 'user';
-  [Checkout](): Promise<EditableUser>;
 }>;
 
 type EditableUser = {
@@ -515,7 +514,7 @@ module('Writes | object fields', function (hooks) {
       },
     });
 
-    const record = await immutableRecord[Checkout]();
+    const record = await checkout<EditableUser>(immutableRecord);
     assert.equal(record.id, '1', 'id is accessible');
     assert.equal(record.$type, 'user', '$type is accessible');
     assert.equal(record.name, 'Rey Pupatine', 'name is accessible');
@@ -578,7 +577,7 @@ module('Writes | object fields', function (hooks) {
       },
     });
 
-    const record = await immutableRecord[Checkout]();
+    const record = await checkout<EditableUser>(immutableRecord);
     assert.equal(record.id, '1', 'id is accessible');
     assert.equal(record.$type, 'user', '$type is accessible');
     assert.equal(record.name, 'Rey Pupatine', 'name is accessible');
@@ -645,7 +644,7 @@ module('Writes | object fields', function (hooks) {
       },
     });
 
-    const record = await immutableRecord[Checkout]();
+    const record = await checkout<EditableUser>(immutableRecord);
     assert.deepEqual(
       record.address,
       {
@@ -720,8 +719,8 @@ module('Writes | object fields', function (hooks) {
       },
     });
 
-    const record = await immutableRecord[Checkout]();
-    const record2 = await immutableRecord2[Checkout]();
+    const record = await checkout<EditableUser>(immutableRecord);
+    const record2 = await checkout<EditableUser>(immutableRecord2);
 
     assert.equal(record.id, '1', 'id is accessible');
     assert.equal(record.$type, 'user', '$type is accessible');
@@ -1030,7 +1029,7 @@ module('Writes | object fields', function (hooks) {
         },
       });
 
-      const record = await immutableRecord[Checkout]();
+      const record = await checkout<EditableUser>(immutableRecord);
       assert.deepEqual(
         record.address,
         {

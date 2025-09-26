@@ -30,18 +30,12 @@
     "types": ["ember-source/types"],
     "paths": {
       "ember-data-qunit-asserts": ["../../@types/ember-data-qunit-asserts"],
-      "@ember-data/store": ["../store/unstable-preview-types"],
-      "@ember-data/store/*": ["../store/unstable-preview-types/*"],
-      "@warp-drive/build-config": ["../../warp-drive-packages/build-config/declarations"],
-      "@warp-drive/build-config/*": ["../../warp-drive-packages/build-config/declarations/*"],
-      "@warp-drive/core-types": ["../core-types/unstable-preview-types"],
-      "@warp-drive/core-types/*": ["../core-types/unstable-preview-types/*"],
       "@warp-drive/diagnostic": ["../diagnostic/unstable-preview-types"],
       "@warp-drive/diagnostic/*": ["../diagnostic/unstable-preview-types/*"],
-      "@ember-data/request": ["../request/unstable-preview-types"],
-      "@ember-data/request/*": ["../request/unstable-preview-types/*"],
-      "@ember-data/request-utils": ["../request-utils/unstable-preview-types"],
-      "@ember-data/request-utils/*": ["../request-utils/unstable-preview-types/*"]
+      "@warp-drive/core": ["../../warp-drive-packages/core/declarations"],
+      "@warp-drive/core/*": ["../../warp-drive-packages/core/declarations/*"],
+      "@warp-drive/utilities": ["../../warp-drive-packages/utilities/declarations"],
+      "@warp-drive/utilities/*": ["../../warp-drive-packages/utilities/declarations/*"]
     },
     "allowImportingTsExtensions": true,
     "erasableSyntaxOnly": true,
@@ -55,19 +49,10 @@
       "path": "../diagnostic"
     },
     {
-      "path": "../../warp-drive-packages/build-config"
+      "path": "../../warp-drive-packages/core"
     },
     {
-      "path": "../store"
-    },
-    {
-      "path": "../request"
-    },
-    {
-      "path": "../core-types"
-    },
-    {
-      "path": "../request-utils"
+      "path": "../../warp-drive-packages/utilities"
     }
   ]
 }

@@ -1,6 +1,5 @@
 import { recordIdentifierFor, useRecommendedStore } from '@warp-drive/core';
-import { Checkout, withDefaults } from '@warp-drive/core/reactive';
-import type { ResourceObject } from '@warp-drive/core/types/spec/json-api-raw';
+import { withDefaults } from '@warp-drive/core/reactive';
 import type { Type } from '@warp-drive/core/types/symbols';
 import { module, setupTest, test } from '@warp-drive/diagnostic/ember';
 import { JSONAPICache } from '@warp-drive/json-api';
@@ -29,16 +28,7 @@ type User = Readonly<{
   name: string | null;
   addresses: Array<address | null> | null;
   [Type]: 'user';
-  [Checkout](): Promise<EditableUser>;
 }>;
-
-type EditableUser = {
-  readonly id: string | null;
-  readonly $type: 'user';
-  name: string | null;
-  addresses: Array<address | null> | null;
-  readonly [Type]: 'user';
-};
 
 module('Writes | schema-array fields', function (hooks) {
   setupTest(hooks);
@@ -116,7 +106,7 @@ module('Writes | schema-array fields', function (hooks) {
       assert.equal(record.$type, 'user', '$type is accessible');
       assert.equal(record.name, 'Rey Skybarker', 'name is accessible');
       assert.true(Array.isArray(record.addresses), 'we can access favoriteNumber array');
-      assert.satisfies(
+      assert.deepEqual(
         record.addresses?.slice(),
         [
           {
@@ -152,7 +142,7 @@ module('Writes | schema-array fields', function (hooks) {
         ];
       }, /Error: Cannot set addresses on user because the record is not editable/);
 
-      assert.satisfies(
+      assert.deepEqual(
         record.addresses?.slice(),
         [
           {
@@ -244,7 +234,7 @@ module('Writes | schema-array fields', function (hooks) {
       assert.equal(record.$type, 'user', '$type is accessible');
       assert.equal(record.name, 'Rey Skybarker', 'name is accessible');
       assert.true(Array.isArray(record.addresses), 'we can access favoriteNumber array');
-      assert.satisfies(
+      assert.deepEqual(
         record.addresses?.slice(),
         [
           {
@@ -271,7 +261,7 @@ module('Writes | schema-array fields', function (hooks) {
         };
       }, /Error: Cannot set 0 on addresses because the record is not editable/);
 
-      assert.satisfies(
+      assert.deepEqual(
         record.addresses?.slice(),
         [
           {
@@ -362,7 +352,7 @@ module('Writes | schema-array fields', function (hooks) {
       assert.equal(record.$type, 'user', '$type is accessible');
       assert.equal(record.name, 'Rey Skybarker', 'name is accessible');
       assert.true(Array.isArray(record.addresses), 'we can access favoriteNumber array');
-      assert.satisfies(
+      assert.deepEqual(
         record.addresses?.slice(),
         [
           {
@@ -384,7 +374,7 @@ module('Writes | schema-array fields', function (hooks) {
         record.addresses![0] = null;
       }, /Error: Cannot set 0 on addresses because the record is not editable/);
 
-      assert.satisfies(
+      assert.deepEqual(
         record.addresses?.slice(),
         [
           {
@@ -476,7 +466,7 @@ module('Writes | schema-array fields', function (hooks) {
       assert.equal(record.$type, 'user', '$type is accessible');
       assert.equal(record.name, 'Rey Skybarker', 'name is accessible');
       assert.true(Array.isArray(record.addresses), 'we can access favoriteNumber array');
-      assert.satisfies(
+      assert.deepEqual(
         record.addresses?.slice(),
         [
           {
@@ -498,7 +488,7 @@ module('Writes | schema-array fields', function (hooks) {
         record.addresses![0]!.street = '789 Maple St';
       }, /Error: Cannot set street on address because the record is not editable/);
 
-      assert.satisfies(
+      assert.deepEqual(
         record.addresses?.slice(),
         [
           {
@@ -583,7 +573,7 @@ module('Writes | schema-array fields', function (hooks) {
     assert.equal(record.$type, 'user', '$type is accessible');
     assert.equal(record.name, 'Rey Skybarker', 'name is accessible');
     assert.true(Array.isArray(record.addresses), 'we can access favoriteNumber array');
-    assert.satisfies(
+    assert.deepEqual(
       record.addresses?.slice(),
       [
         {
@@ -638,7 +628,7 @@ module('Writes | schema-array fields', function (hooks) {
 
     // test that the data entered the cache properly
     const identifier = recordIdentifierFor(record);
-    const cachedResourceData = store.cache.peek<ResourceObject>(identifier);
+    const cachedResourceData = store.cache.peek(identifier);
 
     assert.notEqual(
       cachedResourceData?.attributes?.favoriteNumbers,
@@ -730,7 +720,7 @@ module('Writes | schema-array fields', function (hooks) {
     assert.equal(record.$type, 'user', '$type is accessible');
     assert.equal(record.name, 'Rey Skybarker', 'name is accessible');
     assert.true(Array.isArray(record.addresses), 'we can access favoriteNumber array');
-    assert.satisfies(
+    assert.deepEqual(
       record.addresses?.slice(),
       [
         {
@@ -754,7 +744,7 @@ module('Writes | schema-array fields', function (hooks) {
       state: 'TX',
       zip: '67890',
     };
-    assert.satisfies(
+    assert.deepEqual(
       record.addresses?.slice(),
       [
         {
@@ -777,7 +767,7 @@ module('Writes | schema-array fields', function (hooks) {
 
     // test that the data entered the cache properly
     const identifier = recordIdentifierFor(record);
-    const cachedResourceData = store.cache.peek<ResourceObject>(identifier);
+    const cachedResourceData = store.cache.peek(identifier);
 
     assert.notEqual(
       cachedResourceData?.attributes?.favoriteNumbers,
@@ -869,7 +859,7 @@ module('Writes | schema-array fields', function (hooks) {
     assert.equal(record.$type, 'user', '$type is accessible');
     assert.equal(record.name, 'Rey Skybarker', 'name is accessible');
     assert.true(Array.isArray(record.addresses), 'we can access favoriteNumber array');
-    assert.satisfies(
+    assert.deepEqual(
       record.addresses?.slice(),
       [
         {
@@ -889,7 +879,7 @@ module('Writes | schema-array fields', function (hooks) {
     );
     record.addresses![0]!.street = '789 Maple St';
 
-    assert.satisfies(
+    assert.deepEqual(
       record.addresses?.slice(),
       [
         {
@@ -912,7 +902,7 @@ module('Writes | schema-array fields', function (hooks) {
 
     // test that the data entered the cache properly
     const identifier = recordIdentifierFor(record);
-    const cachedResourceData = store.cache.peek<ResourceObject>(identifier);
+    const cachedResourceData = store.cache.peek(identifier);
 
     assert.notEqual(
       cachedResourceData?.attributes?.favoriteNumbers,

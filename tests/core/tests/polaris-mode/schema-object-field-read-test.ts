@@ -720,13 +720,13 @@ module('Reads | schema-object fields', function (hooks) {
 
     type HomeAddress = {
       type: 'single-family-home';
-      special_type: 'fragment:address:business';
+      special_type: 'fragment:address:single-family-home';
       street: string;
     };
 
     type CondoAddress = {
       type: 'condominium-home';
-      special_type: 'fragment:address:business';
+      special_type: 'fragment:address:condominium-home';
       street: string;
       unit: number;
     };
@@ -949,7 +949,11 @@ module('Reads | schema-object fields', function (hooks) {
 
     assert.deepEqual(
       record.address,
-      { type: 'single-family-home', special_type: 'fragment:address:single-family-home', street: 'Sunset Hills' },
+      {
+        type: 'single-family-home',
+        special_type: 'fragment:address:single-family-home',
+        street: 'Sunset Hills',
+      },
       'we can access address object'
     );
     assert.notEqual(record.address, lastBusinessAddress, 'We changed object references');
