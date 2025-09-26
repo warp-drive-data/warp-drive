@@ -44,9 +44,9 @@
   "peerDependencies": {
     "qunit": "^2.20.1",
     "testem": "^3.12.0",
-    "@ember-data/store": "workspace:*",
     "@warp-drive/diagnostic": "workspace:*",
-    "@warp-drive/core-types": "workspace:*",
+    "@warp-drive/utilities": "workspace:*",
+    "@warp-drive/core": "workspace:*",
     "@ember/test-helpers": "3.3.0 || ^4.0.4 || ^5.1.0"
   },
   "peerDependenciesMeta": {
