@@ -1,7 +1,8 @@
-import type { ReactiveDocument, Store } from '@warp-drive/core';
+import type { Store } from '@warp-drive/core';
 import { DEBUG } from '@warp-drive/core/build-config/env';
 import { assert } from '@warp-drive/core/build-config/macros';
 import type { CollectionEdge, Graph, GraphEdge, ResourceEdge, UpgradedMeta } from '@warp-drive/core/graph/-private';
+import type { ReactiveDocument } from '@warp-drive/core/reactive';
 import { Context } from '@warp-drive/core/reactive/-private';
 import type { LegacyManyArray, PrivateReactiveResourceArray, PrivateStore } from '@warp-drive/core/store/-private';
 import {
