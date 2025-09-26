@@ -34,7 +34,7 @@
       "types": "./declarations/index.d.ts",
       "default": "./dist/index.js"
     },
-    "./*.cjs": {
+    "./build-config/*.cjs": {
       "default": "./cjs-dist/*.cjs"
     },
     "./*": {
