@@ -25,6 +25,8 @@ export interface TransformOptions {
   modelImportSource?: string;
   /** Specify base import path for existing mixin imports to detect and replace (optional) */
   mixinImportSource?: string;
+  /** Map source directories to their import paths for relative import resolution */
+  directoryImportMapping?: Record<string, string>;
   /** Directory containing model files for resolving absolute model imports */
   modelSourceDir?: string;
   /** Directory containing mixin files for resolving absolute mixin imports */
@@ -230,7 +232,48 @@ export function transformModelToResourceImport(
 
   // Default to resource import (either we found a model, or we're assuming it's a resource)
   const resourcesImport = getResourcesImport(options);
+
+
   return `type { ${modelName} } from '${resourcesImport}/${relatedType}.schema.types'`;
+}
+
+/**
+ * Extract mapping from model types to their imported names by analyzing import statements
+ * e.g., 'import type UserModel from "./user"' maps "user" -> "UserModel"
+ */
+export function extractTypeNameMapping(root: SgNode, options?: TransformOptions): Map<string, string> {
+  const mapping = new Map<string, string>();
+
+  try {
+    // Find all import declarations
+    const imports = root.findAll({ rule: { kind: 'import_statement' } });
+
+    for (const importNode of imports) {
+      const importText = importNode.text();
+
+      // Match default imports from model paths
+      // Pattern: import type SomeName from './some-path' or 'soxhub-client/models/some-path'
+      const defaultImportMatch = importText.match(/import\s+type\s+(\w+)\s+from\s+['"](?:\.\/([^'"]+)|soxhub-client\/models\/([^'"]+))['"];?/);
+
+      if (defaultImportMatch) {
+        const [, importName, relativePath, absolutePath] = defaultImportMatch;
+        const modelPath = relativePath || absolutePath;
+
+        if (modelPath) {
+          // Extract the model type from the path (e.g., "user" from "./user" or "soxhub-client/models/user")
+          const modelType = modelPath.replace(/\.(js|ts)$/, '').split('/').pop();
+          if (modelType) {
+            debugLog(options, `Mapping model type '${modelType}' to import name '${importName}'`);
+            mapping.set(modelType, importName);
+          }
+        }
+      }
+    }
+  } catch (error) {
+    debugLog(options, `Error extracting type name mapping: ${error}`);
+  }
+
+  return mapping;
 }
 
 /**
@@ -816,9 +859,22 @@ function processImports(source: string, filePath: string, baseDir: string, optio
               `Found .schema.types import in TypeScript file, converting default to named: ${originalImport}`
             );
             // Convert "import type ModelName from 'path'" to "import type { ModelName } from 'path'"
-            newImport = newImport.replace(/import\s+type\s+([A-Z][a-zA-Z0-9]*)\s+from/g, 'import type { $1 } from');
+            // Handle Model suffix by creating aliased imports
+            newImport = newImport.replace(/import\s+type\s+([A-Z][a-zA-Z0-9]*)\s+from/g, (match, typeName) => {
+              if (typeName.endsWith('Model')) {
+                const interfaceName = typeName.slice(0, -5); // Remove 'Model' suffix
+                return `import type { ${interfaceName} as ${typeName} } from`;
+              }
+              return `import type { ${typeName} } from`;
+            });
             // Also handle imports without 'type' keyword
-            newImport = newImport.replace(/import\s+([A-Z][a-zA-Z0-9]*)\s+from/g, 'import type { $1 } from');
+            newImport = newImport.replace(/import\s+([A-Z][a-zA-Z0-9]*)\s+from/g, (match, typeName) => {
+              if (typeName.endsWith('Model')) {
+                const interfaceName = typeName.slice(0, -5); // Remove 'Model' suffix
+                return `import type { ${interfaceName} as ${typeName} } from`;
+              }
+              return `import type { ${typeName} } from`;
+            });
             debugLog(options, `Converted default import to named import: ${newImport}`);
           } else if (convertedImport.includes('.schema.types') && filePath.endsWith('.js')) {
             debugLog(
@@ -1175,6 +1231,10 @@ export function createExtensionFromOriginalFile(
 
     debugLog(options, `Creating extension from ${filePath} with ${extensionProperties.length} properties`);
 
+    // Update relative imports for the new extension location
+    const updatedSource = updateRelativeImportsForExtensions(source, root, options, filePath);
+    debugLog(options, `Updated relative imports in source`);
+
     // Determine format based on source type: mixins use object format, models use class format
     const format = sourceType === 'mixin' ? 'object' : 'class';
 
@@ -1192,7 +1252,7 @@ export function createExtensionFromOriginalFile(
     );
 
     // Use a simpler approach: remove the main class and append extension code
-    let modifiedSource = source;
+    let modifiedSource = updatedSource;
 
     // The main class will be handled in the export processing loop below
 
@@ -1246,6 +1306,121 @@ export function createExtensionFromOriginalFile(
     errorLog(options, `Error creating extension from original file: ${String(error)}`);
     return null;
   }
+}
+
+/**
+ * Update relative imports when moving from models/ to extensions/
+ * Uses directoryImportMapping to resolve relative imports to their original packages
+ */
+function updateRelativeImportsForExtensions(source: string, root: SgNode, options?: TransformOptions, sourceFilePath?: string): string {
+  let result = source;
+
+  // Find all import statements
+  const imports = root.findAll({ rule: { kind: 'import_statement' } });
+
+  for (const importNode of imports) {
+    const sourceField = importNode.field('source');
+    if (!sourceField) continue;
+
+    const importSource = sourceField.text();
+    const importPath = removeQuotes(importSource);
+
+    // Transform relative imports to reference the appropriate package
+    if (importPath.startsWith('./') || importPath.startsWith('../')) {
+      let absoluteImportPath: string | undefined;
+
+      // First try directory import mapping if available
+      if (options?.directoryImportMapping && sourceFilePath) {
+        // Extract the base directory structure from the source file
+        const sourceDir = sourceFilePath.replace(/\/[^\/]+\.(js|ts)$/, '');
+
+        // Look for a mapping that matches the source directory structure
+        for (const [mappedDir, importBase] of Object.entries(options.directoryImportMapping)) {
+          if (sourceDir.includes(mappedDir)) {
+            // Calculate the resolved path from the source directory
+            let resolvedPath: string;
+
+            if (importPath.startsWith('./')) {
+              // Same directory: ./file -> {importBase}/{currentDir}/file
+              const mappedDirIndex = sourceDir.indexOf(mappedDir);
+              if (mappedDirIndex !== -1) {
+                const sourceRelativeDir = sourceDir.substring(mappedDirIndex + mappedDir.length);
+                const sourceParts = sourceRelativeDir.split('/').filter(part => part !== '');
+                const filePath = importPath.replace('./', '').replace(/\.(js|ts)$/, '');
+
+                if (sourceParts.length > 0) {
+                  resolvedPath = `${importBase}/${sourceParts.join('/')}/${filePath}`;
+                } else {
+                  resolvedPath = `${importBase}/${filePath}`;
+                }
+              } else {
+                const filePath = importPath.replace('./', '').replace(/\.(js|ts)$/, '');
+                resolvedPath = `${importBase}/${filePath}`;
+              }
+            } else {
+              // Parent directory: ../file -> resolve relative to the source structure
+              const mappedDirIndex = sourceDir.indexOf(mappedDir);
+              if (mappedDirIndex !== -1) {
+                // Get the directory part of the source file relative to the mapped directory
+                const sourceRelativeDir = sourceDir.substring(mappedDirIndex + mappedDir.length);
+                const sourceParts = sourceRelativeDir.split('/').filter(part => part !== '');
+
+                // Parse the relative import path
+                const relativePath = importPath.replace(/\.(js|ts)$/, '');
+                const importParts = relativePath.split('/');
+
+                // Start from the current directory (sourceParts)
+                let resultParts = [...sourceParts];
+
+                // Process the import parts
+                for (const part of importParts) {
+                  if (part === '..') {
+                    resultParts.pop(); // Go up one directory
+                  } else if (part !== '.' && part !== '') {
+                    resultParts.push(part);
+                  }
+                }
+
+                // Build the final import path
+                resolvedPath = `${importBase}/${resultParts.join('/')}`;
+              } else {
+                // Fallback if we can't resolve the structure
+                resolvedPath = importPath;
+              }
+            }
+
+            absoluteImportPath = resolvedPath;
+            break;
+          }
+        }
+      }
+
+      // Fallback to modelImportSource for ./ imports only
+      if (!absoluteImportPath && importPath.startsWith('./') && options?.modelImportSource) {
+        const filePath = importPath.replace('./', '').replace(/\.(js|ts)$/, '');
+        absoluteImportPath = `${options.modelImportSource}/${filePath}`;
+      }
+
+      if (absoluteImportPath) {
+        const newImportSource = importSource.replace(importPath, absoluteImportPath);
+        result = result.replace(importSource, newImportSource);
+      } else {
+        // Final fallback to relative path adjustment
+        if (importPath.startsWith('./')) {
+          const newPath = importPath.replace('./', '../../models/');
+          const newImportSource = importSource.replace(importPath, newPath);
+          result = result.replace(importSource, newImportSource);
+        } else if (importPath.startsWith('../')) {
+          // Transform ../file to ../../file (going up one more level)
+          const newPath = importPath.replace('../', '../../');
+          const newImportSource = importSource.replace(importPath, newPath);
+          result = result.replace(importSource, newImportSource);
+        }
+      }
+    }
+  }
+
+  return result;
 }
 
 /**

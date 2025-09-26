@@ -1,7 +1,6 @@
-import type { SgNode } from '@ast-grep/napi';
-import { parse } from '@ast-grep/napi';
+import { parse, type SgNode } from '@ast-grep/napi';
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs';
-import { dirname, join, resolve } from 'path';
+import { dirname, join } from 'path';
 
 import type { SchemaField, TransformArtifact, TransformOptions } from './utils/ast-utils.js';
 import {
@@ -470,6 +469,7 @@ function generateRegularModelArtifacts(
   const ast = parse(language, source);
   const root = ast.root();
 
+
   const artifacts: TransformArtifact[] = [];
 
   // Always create a schema artifact (even if it only has traits/extensions from mixins)
@@ -813,6 +813,11 @@ function generateIntermediateModelTraitArtifacts(
     debugLog(options, `Intermediate model ${modelPath} analysis failed, skipping trait generation`);
     return [];
   }
+
+  // Parse the source to get the root node for type name mapping extraction
+  const language = getLanguageFromPath(filePath);
+  const ast = parse(language, source);
+  const root = ast.root();
 
   const { schemaFields, extensionProperties, mixinTraits, defaultExportNode } = analysis;
   debugLog(
@@ -1468,6 +1473,37 @@ function extractIntermediateModelTraits(
 }
 
 /**
+ * Check if an import path represents a local mixin (not an external dependency)
+ */
+function isLocalMixin(importPath: string): boolean {
+  // Node modules don't have slashes at the beginning or are package names
+  if (!importPath.includes('/')) {
+    return false; // Simple package name like 'lodash'
+  }
+
+  // Paths starting with relative indicators are local
+  if (importPath.startsWith('./') || importPath.startsWith('../')) {
+    return true;
+  }
+
+  // Absolute paths that include common local directories are likely local
+  if (importPath.includes('/mixins/') ||
+      importPath.startsWith('app/') ||
+      importPath.startsWith('addon/') ||
+      importPath.startsWith('soxhub-client/')) {
+    return true;
+  }
+
+  // Package names with organization scopes like '@ember/object'
+  if (importPath.startsWith('@') && !importPath.includes('/mixins/')) {
+    return false;
+  }
+
+  // Default to treating it as local if we're not sure
+  return true;
+}
+
+/**
  * Extract mixin names from heritage clause and convert to trait names
  */
 function extractMixinTraits(
@@ -1518,8 +1554,8 @@ function extractMixinTraits(
         // Try to get the import path for this mixin
         const importPath = mixinImports.get(mixinName);
 
-        // Check if this is an external dependency (not from soxhub-client) - skip it as it's a true base model
-        if (importPath && !importPath.startsWith('soxhub-client/')) {
+        // Skip external node module dependencies (but not local app mixins)
+        if (importPath && !isLocalMixin(importPath)) {
           debugLog(
             options,
             `DEBUG: Skipping ${mixinName} as it's an external dependency (${importPath}), not a local mixin`
@@ -1603,8 +1639,10 @@ function transformModelImportsInSource(source: string, root: SgNode): string {
     const importText = importNode.text();
 
     // Check if this is a relative import to another model file
-    // Pattern: import type SomeThing from './some-thing';
+    // Pattern 1: import type SomeThing from './some-thing';
     const relativeImportMatch = importText.match(/import\s+type\s+(\w+)\s+from\s+['"](\.\/.+?)['"];?/);
+    // Pattern 2: import type { SomeThing } from './some-thing.schema.types';
+    const namedImportMatch = importText.match(/import\s+type\s+\{\s*(\w+)\s*\}\s+from\s+['"](\.\/.+?)['"];?/);
 
     if (relativeImportMatch) {
       const [fullMatch, typeName, relativePath] = relativeImportMatch;
@@ -1612,17 +1650,36 @@ function transformModelImportsInSource(source: string, root: SgNode): string {
       // Transform to named import from schema.types
       // e.g., import type SomeThing from './some-thing.ts';
       // becomes import type { SomeThing } from './some-thing.schema.types';
+      // But remove 'Model' suffix if present since interfaces don't use it
       const pathWithoutExtension = relativePath.replace(/\.(js|ts)$/, '');
-      const transformedImport = `import type { ${typeName} } from '${pathWithoutExtension}.schema.types';`;
+      const interfaceName = typeName.endsWith('Model') ? typeName.slice(0, -5) : typeName;
+
+
+      const transformedImport = typeName !== interfaceName
+        ? `import type { ${interfaceName} as ${typeName} } from '${pathWithoutExtension}.schema.types';`
+        : `import type { ${typeName} } from '${pathWithoutExtension}.schema.types';`;
+
 
       result = result.replace(fullMatch, transformedImport);
+    } else if (namedImportMatch) {
+      const [fullMatch, typeName, relativePath] = namedImportMatch;
+
+      // Handle named imports from schema.types files - fix Model suffix issue
+      if (relativePath.includes('.schema.types') && typeName.endsWith('Model')) {
+        const pathWithoutExtension = relativePath.replace(/\.schema\.types$/, '');
+        const interfaceName = typeName.slice(0, -5); // Remove 'Model' suffix
+        const transformedImport = `import type { ${interfaceName} as ${typeName} } from '${pathWithoutExtension}.schema.types';`;
+
+        result = result.replace(fullMatch, transformedImport);
+      }
     }
   }
 
   return result;
 }
 
-/** Generate schema code by preserving existing file content and replacing model with schema */
+
+/** Generate schema code - only contains necessary imports for schema references and the schema export */
 function generateSchemaCode(
   schemaName: string,
   type: string,
@@ -1639,66 +1696,9 @@ function generateSchemaCode(
   const useSingleQuotes = detectQuoteStyle(originalSource) === 'single';
   const exportStatement = generateExportStatement(schemaName, legacySchema, useSingleQuotes);
 
-  // Transform relative model imports to schema type imports
-  const transformedSource = transformModelImportsInSource(originalSource, root);
-
-  // If no default export node, just append the schema to the existing content
-  if (!defaultExportNode) {
-    return `${transformedSource}\n\n${exportStatement}`;
-  }
-
-  // Use the already-parsed AST root node
-
-  // Check if the export contains a class declaration directly
-  let classDeclaration = defaultExportNode.find({ rule: { kind: 'class_declaration' } });
-  debugLog({}, `DEBUG: Class declaration in export: ${classDeclaration ? 'found' : 'not found'}`);
-
-  // If no class declaration found in export, check if export references a class by name
-  if (!classDeclaration) {
-    // Get the exported identifier name
-    const exportedIdentifier = getExportedIdentifier(defaultExportNode, {});
-    debugLog({}, `DEBUG: Exported identifier: ${exportedIdentifier}`);
-    if (exportedIdentifier) {
-      // Look for a class declaration with this name in the root
-      classDeclaration = root.find({
-        rule: {
-          kind: 'class_declaration',
-          has: {
-            kind: 'identifier',
-            regex: exportedIdentifier,
-          },
-        },
-      });
-      debugLog({}, `DEBUG: Class declaration found by name: ${classDeclaration ? 'found' : 'not found'}`);
-    }
-  }
-
-  if (classDeclaration) {
-    // Check if the class is directly in the export (export default class) or separate
-    const exportText = defaultExportNode.text();
-
-    if (exportText.includes('class ')) {
-      // Class is directly in the export (export default class XcSuggestion)
-      // Remove the entire export statement
-      let result = transformedSource.replace(exportText, '');
-      // Clean up extra newlines
-      result = result.replace(/\n\n\n+/g, '\n\n');
-      return `${result}\n${exportStatement}`;
-    }
-    // Class is separate from export (class XcSuggestion + export default XcSuggestion)
-    // Remove both the class declaration and the export statement
-    const classText = classDeclaration.text();
-
-    let result = transformedSource.replace(classText, '');
-    result = result.replace(exportText, '');
-
-    // Clean up extra newlines
-    result = result.replace(/\n\n\n+/g, '\n\n');
-    return `${result}\n${exportStatement}`;
-  }
-
-  // Fallback: just replace the export statement
-  const original = defaultExportNode.text();
-  return transformedSource.replace(original, exportStatement);
+  // For now, schema files should only contain the schema export
+  // In the future, we may need to analyze the schema for complex default values
+  // that require imports, but currently schemas don't have complex default values
+  return exportStatement;
 }
 
