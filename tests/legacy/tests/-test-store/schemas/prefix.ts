@@ -1,5 +1,4 @@
 import type { ObjectSchema } from '@warp-drive/core/types/schema/fields';
-import type { Type } from '@warp-drive/core/types/symbols';
 import type { WithFragment } from '@warp-drive/legacy/model-fragments';
 
 export const PrefixSchema = {
@@ -12,5 +11,4 @@ export const PrefixSchema = {
 export type Prefix = WithFragment<{
   id: null;
   name: string;
-  [Type]: 'fragment:prefix';
 }>;

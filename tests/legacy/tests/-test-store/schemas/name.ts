@@ -1,5 +1,4 @@
 import type { ObjectSchema } from '@warp-drive/core/types/schema/fields';
-import type { Type } from '@warp-drive/core/types/symbols';
 import type { WithFragment } from '@warp-drive/legacy/model-fragments';
 import { withFragmentArrayDefaults } from '@warp-drive/legacy/model-fragments';
 
@@ -17,5 +16,4 @@ export type Name = WithFragment<{
   first: string;
   last: string;
   prefixes: Array<Prefix>;
-  [Type]: 'fragment:name';
 }>;

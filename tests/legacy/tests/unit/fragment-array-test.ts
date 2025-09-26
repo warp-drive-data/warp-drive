@@ -104,7 +104,6 @@ module<AppTestContext>('Unit - `FragmentArray`', function (hooks) {
 
     assert.equal(fragments.length, length + 1, 'property size is correct');
     assert.satisfies(
-      // @ts-expect-error TODO: fix this type error
       fragments.objectAt(1),
       {
         first: 'Yollo',
