@@ -1,12 +1,11 @@
+/* eslint-disable warp-drive/no-legacy-request-patterns */
 import EmberObject from '@ember/object';
 
-import { module, test } from 'qunit';
+import { module, setupTest, test } from '@warp-drive/diagnostic/ember';
+import { JSONAPIAdapter } from '@warp-drive/legacy/adapter/json-api';
+import Model, { attr } from '@warp-drive/legacy/model';
 
-import Store from 'ember-data__serializer/services/store';
-import { setupTest } from 'ember-qunit';
-
-import JSONAPIAdapter from '@ember-data/adapter/json-api';
-import Model, { attr } from '@ember-data/model';
+import Store from './store';
 
 class Person extends Model {
   @attr
@@ -45,8 +44,8 @@ module('Serializer Contract | running createRecord with minimum serializer', fun
       serialize(snapshot, options) {
         serializeCalled++;
 
-        assert.strictEqual(snapshot.id, '1', 'id is correct');
-        assert.strictEqual(snapshot.modelName, 'person', 'modelName is correct');
+        assert.equal(snapshot.id, '1', 'id is correct');
+        assert.equal(snapshot.modelName, 'person', 'modelName is correct');
         assert.deepEqual(snapshot.attributes(), { firstName: 'John', lastName: 'Smith' }, 'attributes are correct');
 
         const serializedResource = {
@@ -61,7 +60,7 @@ module('Serializer Contract | running createRecord with minimum serializer', fun
       normalizeResponse(store, schema, rawPayload, id, requestType) {
         normalizeResponseCalled++;
 
-        assert.strictEqual(requestType, 'createRecord', 'expected method name is correct');
+        assert.equal(requestType, 'createRecord', 'expected method name is correct');
         assert.deepEqual(rawPayload, {
           id: '1m',
           type: 'person',
@@ -111,8 +110,8 @@ module('Serializer Contract | running createRecord with minimum serializer', fun
 
     await person.save();
 
-    assert.strictEqual(normalizeResponseCalled, 1, 'normalizeResponse called once');
-    assert.strictEqual(serializeCalled, 1, 'serialize called once');
+    assert.equal(normalizeResponseCalled, 1, 'normalizeResponse called once');
+    assert.equal(serializeCalled, 1, 'serialize called once');
     assert.deepEqual(person.toJSON(), {
       id: '1m',
       type: 'person',
@@ -138,8 +137,8 @@ module('Serializer Contract | running createRecord with minimum serializer', fun
       serialize(snapshot, options) {
         serializeCalled++;
 
-        assert.strictEqual(snapshot.id, '1', 'id is correct');
-        assert.strictEqual(snapshot.modelName, 'person', 'modelName is correct');
+        assert.equal(snapshot.id, '1', 'id is correct');
+        assert.equal(snapshot.modelName, 'person', 'modelName is correct');
         assert.deepEqual(snapshot.attributes(), { firstName: 'John', lastName: 'Smith' }, 'attributes are correct');
 
         const serializedResource = {
@@ -154,7 +153,7 @@ module('Serializer Contract | running createRecord with minimum serializer', fun
       normalizeResponse(store, schema, rawPayload, id, requestType) {
         normalizeResponseCalled++;
 
-        assert.strictEqual(requestType, 'createRecord', 'expected method name is correct');
+        assert.equal(requestType, 'createRecord', 'expected method name is correct');
         assert.deepEqual(rawPayload, {
           person: {
             id: '1m',
@@ -208,9 +207,9 @@ module('Serializer Contract | running createRecord with minimum serializer', fun
 
     await person.save();
 
-    assert.strictEqual(normalizeResponseCalled, 1, 'normalizeResponse called once');
-    assert.strictEqual(serializeIntoHashCalled, 1, 'serializeIntoHash called once');
-    assert.strictEqual(serializeCalled, 1, 'serialize called once');
+    assert.equal(normalizeResponseCalled, 1, 'normalizeResponse called once');
+    assert.equal(serializeIntoHashCalled, 1, 'serializeIntoHash called once');
+    assert.equal(serializeCalled, 1, 'serialize called once');
     assert.deepEqual(person.toJSON(), {
       id: '1m',
       type: 'person',

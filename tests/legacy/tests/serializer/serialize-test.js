@@ -1,11 +1,9 @@
 import EmberObject from '@ember/object';
 
-import { module, test } from 'qunit';
+import { module, setupTest, test } from '@warp-drive/diagnostic/ember';
+import Model, { attr } from '@warp-drive/legacy/model';
 
-import Store from 'ember-data__serializer/services/store';
-import { setupTest } from 'ember-qunit';
-
-import Model, { attr } from '@ember-data/model';
+import Store from './store';
 
 class Person extends Model {
   @attr
@@ -43,8 +41,8 @@ module('Serializer Contract | serialize methods forward to Serializer#serialize'
       serialize(snapshot, options) {
         serializeCalled++;
 
-        assert.strictEqual(snapshot.id, '1', 'id is correct');
-        assert.strictEqual(snapshot.modelName, 'person', 'modelName is correct');
+        assert.equal(snapshot.id, '1', 'id is correct');
+        assert.equal(snapshot.modelName, 'person', 'modelName is correct');
         assert.deepEqual(snapshot.attributes(), { firstName: 'John', lastName: 'Smith' }, 'attributes are correct');
 
         const serializedResource = {
@@ -80,7 +78,7 @@ module('Serializer Contract | serialize methods forward to Serializer#serialize'
 
     const serializedPerson = person.serialize();
 
-    assert.strictEqual(serializeCalled, 1, 'serialize called once');
+    assert.equal(serializeCalled, 1, 'serialize called once');
     assert.deepEqual(serializedPerson, {
       id: '1',
       type: 'person',
@@ -98,8 +96,8 @@ module('Serializer Contract | serialize methods forward to Serializer#serialize'
       serialize(snapshot, options) {
         serializeCalled++;
 
-        assert.strictEqual(snapshot.id, '1', 'id is correct');
-        assert.strictEqual(snapshot.modelName, 'person', 'modelName is correct');
+        assert.equal(snapshot.id, '1', 'id is correct');
+        assert.equal(snapshot.modelName, 'person', 'modelName is correct');
         assert.deepEqual(snapshot.attributes(), { firstName: 'John', lastName: 'Smith' }, 'attributes are correct');
 
         const serializedResource = {
@@ -135,7 +133,7 @@ module('Serializer Contract | serialize methods forward to Serializer#serialize'
 
     const serializedPerson = person._createSnapshot().serialize();
 
-    assert.strictEqual(serializeCalled, 1, 'serialize called once');
+    assert.equal(serializeCalled, 1, 'serialize called once');
     assert.deepEqual(serializedPerson, {
       id: '1',
       type: 'person',
@@ -153,8 +151,8 @@ module('Serializer Contract | serialize methods forward to Serializer#serialize'
       serialize(snapshot, options) {
         serializeCalled++;
 
-        assert.strictEqual(snapshot.id, '1', 'id is correct');
-        assert.strictEqual(snapshot.modelName, 'person', 'modelName is correct');
+        assert.equal(snapshot.id, '1', 'id is correct');
+        assert.equal(snapshot.modelName, 'person', 'modelName is correct');
         assert.deepEqual(snapshot.attributes(), { firstName: 'John', lastName: 'Smith' }, 'attributes are correct');
 
         const serializedResource = {
@@ -190,7 +188,7 @@ module('Serializer Contract | serialize methods forward to Serializer#serialize'
 
     const serializedPerson = store.serializeRecord(person);
 
-    assert.strictEqual(serializeCalled, 1, 'serialize called once');
+    assert.equal(serializeCalled, 1, 'serialize called once');
     assert.deepEqual(serializedPerson, {
       id: '1',
       type: 'person',

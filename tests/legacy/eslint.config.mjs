@@ -35,6 +35,7 @@ export default [
 
   // browser (js) ================
   js.browser({
+    dirname: import.meta.dirname,
     srcDirs: ['app', 'tests'],
     allowedImports: AllowedImports,
     globals: { gc: true },

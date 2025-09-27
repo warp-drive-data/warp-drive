@@ -1,12 +1,11 @@
+/* eslint-disable warp-drive/no-legacy-request-patterns */
 import EmberObject from '@ember/object';
 
-import { module, test } from 'qunit';
+import { module, setupTest, test } from '@warp-drive/diagnostic/ember';
+import { JSONAPIAdapter } from '@warp-drive/legacy/adapter/json-api';
+import Model, { attr } from '@warp-drive/legacy/model';
 
-import Store from 'ember-data__serializer/services/store';
-import { setupTest } from 'ember-qunit';
-
-import JSONAPIAdapter from '@ember-data/adapter/json-api';
-import Model, { attr } from '@ember-data/model';
+import Store from './store';
 
 class Person extends Model {
   @attr
@@ -55,7 +54,7 @@ module('Serializer Contract | running deleteRecord with minimum serializer', fun
       normalizeResponse(store, schema, rawPayload, id, requestType) {
         normalizeResponseCalled++;
 
-        assert.strictEqual(requestType, 'findRecord', 'expected method name is correct');
+        assert.equal(requestType, 'findRecord', 'expected method name is correct');
         assert.deepEqual(
           rawPayload,
           {
@@ -87,7 +86,7 @@ module('Serializer Contract | running deleteRecord with minimum serializer', fun
 
     const store = this.owner.lookup('service:store');
 
-    const person = await store.findRecord('person', 1);
+    const person = await store.findRecord('person', '1');
 
     assert.deepEqual(person.toJSON(), {
       id: '1',
@@ -101,7 +100,7 @@ module('Serializer Contract | running deleteRecord with minimum serializer', fun
     person.deleteRecord();
     await person.save();
 
-    assert.strictEqual(normalizeResponseCalled, 1, 'normalizeResponse called once');
+    assert.equal(normalizeResponseCalled, 1, 'normalizeResponse called once');
   });
 
   test('save after deleting record does not call normalizeResponse and serializeIntoHash if implemented', async function (assert) {
@@ -132,7 +131,7 @@ module('Serializer Contract | running deleteRecord with minimum serializer', fun
       normalizeResponse(store, schema, rawPayload, id, requestType) {
         normalizeResponseCalled++;
 
-        assert.strictEqual(requestType, 'findRecord', 'expected method name is correct');
+        assert.equal(requestType, 'findRecord', 'expected method name is correct');
         assert.deepEqual(
           rawPayload,
           {
@@ -164,7 +163,7 @@ module('Serializer Contract | running deleteRecord with minimum serializer', fun
 
     const store = this.owner.lookup('service:store');
 
-    const person = await store.findRecord('person', 1);
+    const person = await store.findRecord('person', '1');
 
     assert.deepEqual(person.toJSON(), {
       id: '1',
@@ -178,9 +177,9 @@ module('Serializer Contract | running deleteRecord with minimum serializer', fun
     person.deleteRecord();
     await person.save();
 
-    assert.strictEqual(normalizeResponseCalled, 1, 'normalizeResponse called once');
-    assert.strictEqual(serializeIntoHashCalled, 0, 'serializeIntoHash not called');
-    assert.strictEqual(serializeCalled, 0, 'serialize not called');
+    assert.equal(normalizeResponseCalled, 1, 'normalizeResponse called once');
+    assert.equal(serializeIntoHashCalled, 0, 'serializeIntoHash not called');
+    assert.equal(serializeCalled, 0, 'serialize not called');
   });
 
   test('save after deleting record does call normalizeResponse if response provided', async function (assert) {
@@ -207,7 +206,7 @@ module('Serializer Contract | running deleteRecord with minimum serializer', fun
       normalizeResponse(store, schema, rawPayload, id, requestType) {
         normalizeResponseCalled++;
 
-        assert.strictEqual(requestType, this._methods.shift(), 'expected method name is correct');
+        assert.equal(requestType, this._methods.shift(), 'expected method name is correct');
         assert.deepEqual(rawPayload, this._payloads.shift(), 'payload is correct');
 
         return {
@@ -228,7 +227,7 @@ module('Serializer Contract | running deleteRecord with minimum serializer', fun
 
     const store = this.owner.lookup('service:store');
 
-    const person = await store.findRecord('person', 1);
+    const person = await store.findRecord('person', '1');
 
     assert.deepEqual(person.toJSON(), {
       id: '1',
@@ -242,6 +241,6 @@ module('Serializer Contract | running deleteRecord with minimum serializer', fun
     person.deleteRecord();
     await person.save();
 
-    assert.strictEqual(normalizeResponseCalled, 2, 'normalizeResponse called twice');
+    assert.equal(normalizeResponseCalled, 2, 'normalizeResponse called twice');
   });
 });

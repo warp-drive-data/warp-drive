@@ -1,12 +1,11 @@
+/* eslint-disable warp-drive/no-legacy-request-patterns */
 import EmberObject from '@ember/object';
 
-import { module, test } from 'qunit';
+import { module, setupTest, test } from '@warp-drive/diagnostic/ember';
+import { JSONAPIAdapter } from '@warp-drive/legacy/adapter/json-api';
+import Model, { attr } from '@warp-drive/legacy/model';
 
-import Store from 'ember-data__serializer/services/store';
-import { setupTest } from 'ember-qunit';
-
-import JSONAPIAdapter from '@ember-data/adapter/json-api';
-import Model, { attr } from '@ember-data/model';
+import Store from './store';
 
 class Person extends Model {
   @attr
@@ -52,15 +51,15 @@ module(
       const store = this.owner.lookup('service:Store');
       let errors;
       try {
-        await store.findRecord('person', 1);
+        await store.findRecord('person', '1');
         assert.notOk('should never reach here.');
       } catch (adapterError) {
         ({ errors } = adapterError);
       }
 
-      assert.strictEqual(errors.length, 1, 'error recorded');
-      assert.strictEqual(errors[0].status, '404', 'error status is correct');
-      assert.strictEqual(errors[0].detail, 'file not found', 'error detail is correct');
+      assert.equal(errors.length, 1, 'error recorded');
+      assert.equal(errors[0].status, '404', 'error status is correct');
+      assert.equal(errors[0].detail, 'file not found', 'error detail is correct');
     });
 
     test('can retrieve errors after save', async function (assert) {
@@ -94,9 +93,9 @@ module(
         ({ errors } = adapterError);
       }
 
-      assert.strictEqual(errors.length, 2, 'both errors recorded');
-      assert.strictEqual(errors[0].detail, 'firstName is required', 'first error is that firstName is required');
-      assert.strictEqual(errors[1].detail, 'lastName is required', 'second error is that lastName is required');
+      assert.equal(errors.length, 2, 'both errors recorded');
+      assert.equal(errors[0].detail, 'firstName is required', 'first error is that firstName is required');
+      assert.equal(errors[1].detail, 'lastName is required', 'second error is that lastName is required');
     });
   }
 );

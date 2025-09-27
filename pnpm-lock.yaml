@@ -2043,123 +2043,6 @@ importers:
         specifier: 5.101.3
         version: 5.101.3
 
-  tests/ember-data__serializer:
-    devDependencies:
-      '@babel/core':
-        specifier: ^7.28.3
-        version: 7.28.3
-      '@babel/runtime':
-        specifier: ^7.28.3
-        version: 7.28.3
-      '@ember-data/adapter':
-        specifier: workspace:*
-        version: file:packages/adapter(@babel/core@7.28.3)
-      '@ember-data/debug':
-        specifier: workspace:*
-        version: file:packages/debug(@babel/core@7.28.3)
-      '@ember-data/graph':
-        specifier: workspace:*
-        version: file:packages/graph(@babel/core@7.28.3)
-      '@ember-data/json-api':
-        specifier: workspace:*
-        version: file:packages/json-api(@babel/core@7.28.3)
-      '@ember-data/legacy-compat':
-        specifier: workspace:*
-        version: file:packages/legacy-compat(@babel/core@7.28.3)
-      '@ember-data/model':
-        specifier: workspace:*
-        version: file:packages/model(@babel/core@7.28.3)
-      '@ember-data/request':
-        specifier: workspace:*
-        version: file:packages/request(@babel/core@7.28.3)
-      '@ember-data/request-utils':
-        specifier: workspace:*
-        version: file:packages/request-utils(@babel/core@7.28.3)
-      '@ember-data/store':
-        specifier: workspace:*
-        version: file:packages/store(1adf99e055abba96ff2ddb1d049f661d)
-      '@ember-data/unpublished-test-infra':
-        specifier: workspace:*
-        version: file:packages/unpublished-test-infra(acac8c9638cd3c3d11c27bdb11b48233)
-      '@ember/optional-features':
-        specifier: ^2.2.0
-        version: 2.2.0
-      '@ember/test-helpers':
-        specifier: 5.2.0
-        version: 5.2.0(patch_hash=a1670a4e3977c846a5c2454f317f5a17cbd284aef3a676b190c98141536afb04)(a28950a1e4cd07d337893daf47c6f294)
-      '@ember/test-waiters':
-        specifier: ^4.1.1
-        version: 4.1.1(@babel/core@7.28.3)
-      '@glimmer/component':
-        specifier: ^2.0.0
-        version: 2.0.0
-      '@warp-drive/build-config':
-        specifier: workspace:*
-        version: file:warp-drive-packages/build-config(@babel/core@7.28.3)
-      '@warp-drive/core':
-        specifier: workspace:*
-        version: file:warp-drive-packages/core(@babel/core@7.28.3)
-      '@warp-drive/core-types':
-        specifier: workspace:*
-        version: file:packages/core-types(@babel/core@7.28.3)
-      '@warp-drive/ember':
-        specifier: workspace:*
-        version: file:warp-drive-packages/ember(1adf99e055abba96ff2ddb1d049f661d)
-      '@warp-drive/internal-config':
-        specifier: workspace:*
-        version: file:tools/internal-config
-      ember-auto-import:
-        specifier: ^2.10.0
-        version: 2.10.0
-      ember-cli:
-        specifier: ~6.6.0
-        version: 6.6.0
-      ember-cli-babel:
-        specifier: ^8.2.0
-        version: 8.2.0(@babel/core@7.28.3)
-      ember-cli-dependency-checker:
-        specifier: ^3.3.3
-        version: 3.3.3(ember-cli@6.6.0)
-      ember-cli-htmlbars:
-        specifier: ^6.3.0
-        version: 6.3.0
-      ember-cli-inject-live-reload:
-        specifier: ^2.1.0
-        version: 2.1.0
-      ember-load-initializers:
-        specifier: ^3.0.1
-        version: 3.0.1(8354954e5b80d7b1c35cb7ab63dbceb9)
-      ember-maybe-import-regenerator:
-        specifier: ^1.0.0
-        version: 1.0.0(@babel/core@7.28.3)
-      ember-qunit:
-        specifier: 8.0.2
-        version: 8.0.2(3f9a343127e9728bedbcb4a45003eb38)
-      ember-resolver:
-        specifier: ^13.1.1
-        version: 13.1.1(@babel/core@7.28.3)
-      ember-source:
-        specifier: ~6.6.0
-        version: 6.6.0(@glimmer/component@2.0.0)
-      loader.js:
-        specifier: ^4.7.0
-        version: 4.7.0
-      qunit:
-        specifier: 2.19.4
-        version: 2.19.4(patch_hash=44177f0047189d474ebdeba20fc8ddc3c8c2a5777d65cbb5f0fac0979bf66301)
-      qunit-dom:
-        specifier: ^3.5.0
-        version: 3.5.0
-      testem:
-        specifier: ~3.11.0
-        version: 3.11.0(patch_hash=cf147865cff81f2d0f3ed51d274f9fdee7b4ad675a902248aa317c07272fbea5)
-      typescript:
-        specifier: 5.9.2
-        version: 5.9.2
-      webpack:
-        specifier: 5.101.3
-        version: 5.101.3
-
   tests/example-app-ember:
     devDependencies:
       '@babel/core':
@@ -2939,6 +2822,9 @@ importers:
       '@babel/runtime':
         specifier: ^7.28.2
         version: 7.28.3
+      '@ember-data/unpublished-test-infra':
+        specifier: workspace:*
+        version: file:packages/unpublished-test-infra(5ddef2af8272955f74fc53a279be9fdb)
       '@ember/test-helpers':
         specifier: 5.2.0
         version: 5.2.0(patch_hash=a1670a4e3977c846a5c2454f317f5a17cbd284aef3a676b190c98141536afb04)(a28950a1e4cd07d337893daf47c6f294)

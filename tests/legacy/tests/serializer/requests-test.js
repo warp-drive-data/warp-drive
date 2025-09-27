@@ -1,12 +1,11 @@
+/* eslint-disable warp-drive/no-legacy-request-patterns */
 import EmberObject from '@ember/object';
 
-import { module, test } from 'qunit';
+import { module, setupTest, test } from '@warp-drive/diagnostic/ember';
+import { JSONAPIAdapter } from '@warp-drive/legacy/adapter/json-api';
+import Model, { attr } from '@warp-drive/legacy/model';
 
-import Store from 'ember-data__serializer/services/store';
-import { setupTest } from 'ember-qunit';
-
-import JSONAPIAdapter from '@ember-data/adapter/json-api';
-import Model, { attr } from '@ember-data/model';
+import Store from './store';
 
 module('Serializer Contract | running requests with minimum serializer', function (hooks) {
   setupTest(hooks);
@@ -27,7 +26,7 @@ module('Serializer Contract | running requests with minimum serializer', functio
     class TestMinimumSerializer extends EmberObject {
       normalizeResponse(store, schema, rawPayload, id, requestType) {
         normalizeResponseCalled++;
-        assert.strictEqual(requestType, 'findAll', 'expected method name is correct');
+        assert.equal(requestType, 'findAll', 'expected method name is correct');
         assert.deepEqual(rawPayload, { data: [] });
         return {
           data: [
@@ -55,7 +54,7 @@ module('Serializer Contract | running requests with minimum serializer', functio
 
     const response = await store.findAll('person');
 
-    assert.strictEqual(normalizeResponseCalled, 1, 'normalizeResponse is called once');
+    assert.equal(normalizeResponseCalled, 1, 'normalizeResponse is called once');
     assert.deepEqual(
       response.map((r) => r.id),
       ['urn:person:1'],
@@ -69,7 +68,7 @@ module('Serializer Contract | running requests with minimum serializer', functio
     class TestMinimumSerializer extends EmberObject {
       normalizeResponse(store, schema, rawPayload, id, requestType) {
         normalizeResponseCalled++;
-        assert.strictEqual(requestType, 'findRecord', 'expected method name is correct');
+        assert.equal(requestType, 'findRecord', 'expected method name is correct');
         assert.deepEqual(rawPayload, {
           data: {
             type: 'person',
@@ -111,7 +110,7 @@ module('Serializer Contract | running requests with minimum serializer', functio
 
     const response = await store.findRecord('person', 'urn:person:1');
 
-    assert.strictEqual(normalizeResponseCalled, 1, 'normalizeResponse is called once');
+    assert.equal(normalizeResponseCalled, 1, 'normalizeResponse is called once');
     assert.deepEqual(response.name, 'John', 'response is expected response');
   });
 
@@ -121,7 +120,7 @@ module('Serializer Contract | running requests with minimum serializer', functio
     class TestMinimumSerializer extends EmberObject {
       normalizeResponse(store, schema, rawPayload, id, requestType) {
         normalizeResponseCalled++;
-        assert.strictEqual(requestType, 'query', 'expected method name is correct');
+        assert.equal(requestType, 'query', 'expected method name is correct');
         assert.deepEqual(rawPayload, { data: [] });
         return {
           data: [
@@ -149,7 +148,7 @@ module('Serializer Contract | running requests with minimum serializer', functio
 
     const response = await store.query('person', { name: 'Chris' });
 
-    assert.strictEqual(normalizeResponseCalled, 1, 'normalizeResponse is called once');
+    assert.equal(normalizeResponseCalled, 1, 'normalizeResponse is called once');
     assert.deepEqual(
       response.map((r) => r.id),
       ['urn:person:1'],
@@ -163,7 +162,7 @@ module('Serializer Contract | running requests with minimum serializer', functio
     class TestMinimumSerializer extends EmberObject {
       normalizeResponse(store, schema, rawPayload, id, requestType) {
         normalizeResponseCalled++;
-        assert.strictEqual(requestType, 'queryRecord', 'expected method name is correct');
+        assert.equal(requestType, 'queryRecord', 'expected method name is correct');
         assert.deepEqual(rawPayload, {
           data: {
             type: 'person',
@@ -205,7 +204,7 @@ module('Serializer Contract | running requests with minimum serializer', functio
 
     const response = await store.queryRecord('person', { name: 'Chris' });
 
-    assert.strictEqual(normalizeResponseCalled, 1, 'normalizeResponse is called once');
+    assert.equal(normalizeResponseCalled, 1, 'normalizeResponse is called once');
     assert.deepEqual(response.name, 'John', 'response is expected response');
   });
 });

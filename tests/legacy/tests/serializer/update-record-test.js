@@ -1,12 +1,11 @@
+/* eslint-disable warp-drive/no-legacy-request-patterns */
 import EmberObject from '@ember/object';
 
-import { module, test } from 'qunit';
+import { module, setupTest, test } from '@warp-drive/diagnostic/ember';
+import { JSONAPIAdapter } from '@warp-drive/legacy/adapter/json-api';
+import Model, { attr } from '@warp-drive/legacy/model';
 
-import Store from 'ember-data__serializer/services/store';
-import { setupTest } from 'ember-qunit';
-
-import JSONAPIAdapter from '@ember-data/adapter/json-api';
-import Model, { attr } from '@ember-data/model';
+import Store from './store';
 
 class Person extends Model {
   @attr
@@ -63,8 +62,8 @@ module('Serializer Contract | running createRecord [update] with minimum seriali
       serialize(snapshot, options) {
         serializeCalled++;
 
-        assert.strictEqual(snapshot.id, '1', 'id is correct');
-        assert.strictEqual(snapshot.modelName, 'person', 'modelName is correct');
+        assert.equal(snapshot.id, '1', 'id is correct');
+        assert.equal(snapshot.modelName, 'person', 'modelName is correct');
         assert.deepEqual(snapshot.attributes(), { firstName: 'Chris', lastName: 'Thoburn' }, 'attributes are correct');
 
         const serializedResource = {
@@ -83,7 +82,7 @@ module('Serializer Contract | running createRecord [update] with minimum seriali
       normalizeResponse(store, schema, rawPayload, id, requestType) {
         normalizeResponseCalled++;
 
-        assert.strictEqual(requestType, this._methods.shift(), 'expected method name is correct');
+        assert.equal(requestType, this._methods.shift(), 'expected method name is correct');
         assert.deepEqual(rawPayload, this._payloads.shift(), 'payload is correct');
 
         return {
@@ -104,7 +103,7 @@ module('Serializer Contract | running createRecord [update] with minimum seriali
 
     const store = this.owner.lookup('service:store');
 
-    const person = await store.findRecord('person', 1);
+    const person = await store.findRecord('person', '1');
 
     assert.deepEqual(person.toJSON(), {
       id: '1',
@@ -120,8 +119,8 @@ module('Serializer Contract | running createRecord [update] with minimum seriali
 
     await person.save();
 
-    assert.strictEqual(normalizeResponseCalled, 2, 'normalizeResponse called twice');
-    assert.strictEqual(serializeCalled, 1, 'serialize called once');
+    assert.equal(normalizeResponseCalled, 2, 'normalizeResponse called twice');
+    assert.equal(serializeCalled, 1, 'serialize called once');
     assert.deepEqual(person.toJSON(), {
       id: '1',
       type: 'person',
@@ -166,8 +165,8 @@ module('Serializer Contract | running createRecord [update] with minimum seriali
       serialize(snapshot, options) {
         serializeCalled++;
 
-        assert.strictEqual(snapshot.id, '1', 'id is correct');
-        assert.strictEqual(snapshot.modelName, 'person', 'modelName is correct');
+        assert.equal(snapshot.id, '1', 'id is correct');
+        assert.equal(snapshot.modelName, 'person', 'modelName is correct');
         assert.deepEqual(snapshot.attributes(), { firstName: 'Chris', lastName: 'Thoburn' }, 'attributes are correct');
 
         const serializedResource = {
@@ -186,7 +185,7 @@ module('Serializer Contract | running createRecord [update] with minimum seriali
       normalizeResponse(store, schema, rawPayload, id, requestType) {
         normalizeResponseCalled++;
 
-        assert.strictEqual(requestType, this._methods.shift(), 'expected method name is correct');
+        assert.equal(requestType, this._methods.shift(), 'expected method name is correct');
         assert.deepEqual(rawPayload, this._payloads.shift(), 'payload is correct');
 
         return {
@@ -207,7 +206,7 @@ module('Serializer Contract | running createRecord [update] with minimum seriali
 
     const store = this.owner.lookup('service:store');
 
-    const person = await store.findRecord('person', 1);
+    const person = await store.findRecord('person', '1');
 
     assert.deepEqual(person.toJSON(), {
       id: '1',
@@ -223,9 +222,9 @@ module('Serializer Contract | running createRecord [update] with minimum seriali
 
     await person.save();
 
-    assert.strictEqual(normalizeResponseCalled, 2, 'normalizeResponse called twice');
-    assert.strictEqual(serializeIntoHashCalled, 1, 'serializeIntoHash called once');
-    assert.strictEqual(serializeCalled, 1, 'serialize called once');
+    assert.equal(normalizeResponseCalled, 2, 'normalizeResponse called twice');
+    assert.equal(serializeIntoHashCalled, 1, 'serializeIntoHash called once');
+    assert.equal(serializeCalled, 1, 'serialize called once');
     assert.deepEqual(person.toJSON(), {
       id: '1',
       type: 'person',

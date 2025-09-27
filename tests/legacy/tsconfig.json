@@ -39,7 +39,9 @@
       "@warp-drive/diagnostic": ["../../warp-drive-packages/diagnostic/declarations"],
       "@warp-drive/diagnostic/*": ["../../warp-drive-packages/diagnostic/declarations/*"],
       "@warp-drive/json-api": ["../../warp-drive-packages/json-api/declarations"],
-      "@warp-drive/json-api/*": ["../../warp-drive-packages/json-api/declarations/*"]
+      "@warp-drive/json-api/*": ["../../warp-drive-packages/json-api/declarations/*"],
+      "@ember-data/unpublished-test-infra": ["../../packages/unpublished-test-infra/unstable-preview-types"],
+      "@ember-data/unpublished-test-infra/*": ["../../packages/unpublished-test-infra/unstable-preview-types/*"]
     },
     "allowImportingTsExtensions": true,
     "composite": true,
@@ -73,6 +75,9 @@
     },
     {
       "path": "../../warp-drive-packages/json-api"
+    },
+    {
+      "path": "../../packages/unpublished-test-infra"
     }
   ]
 }

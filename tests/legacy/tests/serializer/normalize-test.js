@@ -1,12 +1,10 @@
 import EmberObject from '@ember/object';
 
-import { module, test } from 'qunit';
+import { DEBUG } from '@warp-drive/core/build-config/env';
+import { module, setupTest, test } from '@warp-drive/diagnostic/ember';
+import Model, { attr } from '@warp-drive/legacy/model';
 
-import Store from 'ember-data__serializer/services/store';
-import { setupTest } from 'ember-qunit';
-
-import Model, { attr } from '@ember-data/model';
-import testInDebug from '@ember-data/unpublished-test-infra/test-support/test-in-debug';
+import Store from './store';
 
 class Person extends Model {
   @attr
@@ -31,7 +29,7 @@ module('Serializer Contract | normalize method forwards to Serializer#normalize'
       normalize(modelClass, rawPayload) {
         normalizeCalled++;
 
-        assert.strictEqual(modelClass.name, 'Person', 'modelClass was passed to normalize');
+        assert.equal(modelClass.name, 'Person', 'modelClass was passed to normalize');
         assert.deepEqual(
           rawPayload,
           {
@@ -63,7 +61,7 @@ module('Serializer Contract | normalize method forwards to Serializer#normalize'
       },
     });
 
-    assert.strictEqual(normalizeCalled, 1, 'normalize called once');
+    assert.equal(normalizeCalled, 1, 'normalize called once');
     assert.deepEqual(
       payload,
       {
@@ -80,21 +78,23 @@ module('Serializer Contract | normalize method forwards to Serializer#normalize'
     );
   });
 
-  testInDebug('Store#normalize throws an error if Serializer#normalize is not implemented', async function (assert) {
-    class TestMinimumSerializer extends EmberObject {}
-    this.owner.register('serializer:application', TestMinimumSerializer);
+  if (DEBUG) {
+    test('Store#normalize throws an error if Serializer#normalize is not implemented', async function (assert) {
+      class TestMinimumSerializer extends EmberObject {}
+      this.owner.register('serializer:application', TestMinimumSerializer);
 
-    const store = this.owner.lookup('service:store');
+      const store = this.owner.lookup('service:store');
 
-    assert.throws(() => {
-      store.normalize('person', {
-        id: '1',
-        type: 'person',
-        attributes: {
-          firstName: 'John',
-          lastName: 'Smith',
-        },
-      });
-    }, /You must define a normalize method in your serializer in order to call store.normalize/);
-  });
+      assert.throws(() => {
+        store.normalize('person', {
+          id: '1',
+          type: 'person',
+          attributes: {
+            firstName: 'John',
+            lastName: 'Smith',
+          },
+        });
+      }, /You must define a normalize method in your serializer in order to call store.normalize/);
+    });
+  }
 });
