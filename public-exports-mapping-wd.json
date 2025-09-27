@@ -695,13 +695,6 @@
   {
     "filePath": "warp-drive-packages/core/src/reactive.ts",
     "module": "@warp-drive/core/reactive",
-    "export": "getExpensiveRequestSubscription",
-    "typeOnly": false,
-    "replacement": {}
-  },
-  {
-    "filePath": "warp-drive-packages/core/src/reactive.ts",
-    "module": "@warp-drive/core/reactive",
     "export": "getPromiseState",
     "typeOnly": false,
     "replacement": {}

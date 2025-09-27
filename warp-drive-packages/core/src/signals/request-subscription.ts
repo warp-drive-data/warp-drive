@@ -1,13 +1,13 @@
 import { DEBUG } from '@warp-drive/build-config/env';
 import { assert } from '@warp-drive/core/build-config/macros';
 
-import type { RequestManager, Store, StoreRequestInput } from '../../../index.ts';
-import type { Future } from '../../../request.ts';
-import type { RequestKey } from '../../../types/identifier.ts';
-import type { StructuredErrorDocument } from '../../../types/request.ts';
-import type { RequestState } from '../../-private.ts';
-import { defineSignal, getRequestState, memoized } from '../../-private.ts';
-import type { PrivateRequestState } from './request-state.ts';
+import type { RequestManager, Store, StoreRequestInput } from '../index.ts';
+import type { Future } from '../request.ts';
+import type { RequestKey } from '../types/identifier.ts';
+import type { StructuredErrorDocument } from '../types/request.ts';
+import { defineSignal, memoized } from './reactivity/signal.ts';
+import type { PrivateRequestState, RequestState } from './request-state.ts';
+import { getRequestState } from './request-state.ts';
 
 // default to 30 seconds unavailable before we refresh
 const DEFAULT_DEADLINE = 30_000;

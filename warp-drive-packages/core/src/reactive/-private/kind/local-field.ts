@@ -1,4 +1,4 @@
-import { consumeInternalSignal, getOrCreateInternalSignal, notifyInternalSignal } from '../../../store/-private';
+import { consumeInternalSignal, getOrCreateInternalSignal, notifyInternalSignal } from '../../../signals/-private';
 import type { LocalField } from '../../../types/schema/fields';
 import type { KindContext } from '../default-mode';
 

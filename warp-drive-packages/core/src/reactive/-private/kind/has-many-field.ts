@@ -1,7 +1,8 @@
 import { assert } from '@warp-drive/build-config/macros';
 
+import { entangleSignal } from '../../../signals/-private.ts';
 import type { RelatedCollection as ManyArray } from '../../../store/-private.ts';
-import { createLegacyManyArray, entangleSignal } from '../../../store/-private.ts';
+import { createLegacyManyArray } from '../../../store/-private.ts';
 import type { ResourceKey } from '../../../types/identifier.ts';
 import type { LegacyHasManyField } from '../../../types/schema/fields.ts';
 import type { CollectionResourceRelationship } from '../../../types/spec/json-api-raw.ts';

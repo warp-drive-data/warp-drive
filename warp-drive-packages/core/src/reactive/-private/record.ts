@@ -2,17 +2,16 @@ import { DEBUG } from '@warp-drive/core/build-config/env';
 import { assert } from '@warp-drive/core/build-config/macros';
 
 import type { NotificationType } from '../../index.ts';
-import type { LegacyManyArray, Store } from '../../store/-private.ts';
 import {
   ARRAY_SIGNAL,
   entangleSignal,
   notifyInternalSignal,
   OBJECT_SIGNAL,
-  recordIdentifierFor,
-  setRecordIdentifier,
   Signals,
   withSignalStore,
-} from '../../store/-private.ts';
+} from '../../signals/-private.ts';
+import type { LegacyManyArray, Store } from '../../store/-private.ts';
+import { recordIdentifierFor, setRecordIdentifier } from '../../store/-private.ts';
 import { removeRecordIdentifier } from '../../store/-private/caches/instance-cache.ts';
 import type { ResourceKey } from '../../types/identifier.ts';
 import { STRUCTURED } from '../../types/request.ts';

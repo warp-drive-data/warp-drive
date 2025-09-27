@@ -1,6 +1,6 @@
 import { Fetch, RequestManager } from '@warp-drive/core';
+import { getRequestState } from '@warp-drive/core/reactive';
 import type { CacheHandler, Future, NextFn } from '@warp-drive/core/request';
-import { getRequestState } from '@warp-drive/core/store/-private';
 import type { RequestContext, StructuredDataDocument } from '@warp-drive/core/types/request';
 import { spec, type SpecTest, type SuiteBuilder } from '@warp-drive/diagnostic/spec';
 import { mock, MockServerHandler } from '@warp-drive/holodeck';

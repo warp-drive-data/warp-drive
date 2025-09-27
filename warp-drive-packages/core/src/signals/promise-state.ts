@@ -1,7 +1,7 @@
 import { assert } from '@warp-drive/build-config/macros';
 
-import type { Awaitable } from '../../../request.ts';
-import { getPromiseResult, setPromiseResult } from '../../../request.ts';
+import type { Awaitable } from '../request.ts';
+import { getPromiseResult, setPromiseResult } from '../request.ts';
 import { defineSignal } from './reactivity/signal.ts';
 
 const PromiseCache = new WeakMap<Awaitable, PromiseState>();

@@ -1,4 +1,4 @@
-import { entangleSignal, OBJECT_SIGNAL } from '../../../store/-private';
+import { entangleSignal, OBJECT_SIGNAL } from '../../../signals/-private';
 import type { ObjectValue, Value } from '../../../types/json/raw';
 import type { ObjectField } from '../../../types/schema/fields';
 import type { KindContext } from '../default-mode';

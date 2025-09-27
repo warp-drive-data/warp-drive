@@ -1,5 +1,5 @@
+import type { SignalStore } from '../../signals/-private.ts';
 import type { Store } from '../../store/-private.ts';
-import type { SignalStore } from '../../store/-private/new-core-tmp/reactivity/internal.ts';
 import type { ResourceKey } from '../../types.ts';
 import type {
   FieldSchema,

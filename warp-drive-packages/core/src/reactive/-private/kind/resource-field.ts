@@ -2,7 +2,8 @@ import { DEBUG } from '@warp-drive/build-config/env';
 import { assert } from '@warp-drive/build-config/macros';
 
 import type { Future } from '../../../request';
-import { defineSignal, entangleSignal, type StoreRequestInput } from '../../../store/-private';
+import { defineSignal, entangleSignal } from '../../../signals/-private';
+import type { StoreRequestInput } from '../../../store/-private';
 import type { ResourceField } from '../../../types/schema/fields';
 import type { Link, Links, SingleResourceRelationship } from '../../../types/spec/json-api-raw';
 import type { KindContext } from '../default-mode';

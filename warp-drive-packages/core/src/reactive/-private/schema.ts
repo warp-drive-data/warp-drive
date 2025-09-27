@@ -6,8 +6,8 @@ import { ENABLE_LEGACY_SCHEMA_SERVICE } from '@warp-drive/core/build-config/depr
 import { assert } from '@warp-drive/core/build-config/macros';
 
 import { recordIdentifierFor } from '../../index.ts';
-import type { Store, WarpDriveSignal } from '../../store/-private.ts';
-import { createInternalMemo, withSignalStore } from '../../store/-private.ts';
+import { createInternalMemo, type WarpDriveSignal, withSignalStore } from '../../signals/-private.ts';
+import type { Store } from '../../store/-private.ts';
 import type { SchemaService as SchemaServiceInterface } from '../../types.ts';
 import { getOrSetGlobal } from '../../types/-private.ts';
 import type { ResourceKey } from '../../types/identifier.ts';

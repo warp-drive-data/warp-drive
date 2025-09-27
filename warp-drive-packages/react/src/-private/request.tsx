@@ -1,20 +1,22 @@
 import {
-  AutorefreshBehaviorCombos,
   createRequestSubscription,
+  type RequestLoadingState,
+  type RequestState,
+  type RequestSubscription,
+} from "@warp-drive/core/reactive";
+import {
+  AutorefreshBehaviorCombos,
   DISPOSE,
   RequestArgs,
   signal,
   type ContentFeatures,
   type RecoveryFeatures,
-  type RequestLoadingState,
-  type RequestState,
-  type RequestSubscription,
-} from "@warp-drive/core/store/-private";
+  type SubscriptionArgs,
+} from "@warp-drive/core/signals/-leaked";
 import type { StructuredErrorDocument } from "@warp-drive/core/types/request";
 import { JSX, ReactNode, useEffect, useMemo, useRef } from "react";
 import { useStore } from "./store-provider";
 import { ReactiveContext } from "./reactive-context";
-import { SubscriptionArgs } from "@warp-drive/core/store/-private";
 import { Future } from "@warp-drive/core/request";
 import { StoreRequestInput } from "@warp-drive/core";
 import { DEBUG } from "@warp-drive/core/build-config/env";

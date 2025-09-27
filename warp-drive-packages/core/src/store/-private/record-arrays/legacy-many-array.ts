@@ -4,6 +4,7 @@ import { DEPRECATE_MANY_ARRAY_DUPLICATES } from '@warp-drive/core/build-config/d
 import { assert } from '@warp-drive/core/build-config/macros';
 
 import { Context } from '../../../reactive/-private.ts';
+import { notifyInternalSignal, type WarpDriveSignal } from '../../../signals/-private.ts';
 import type { BaseFinderOptions, ResourceKey } from '../../../types.ts';
 import type { LocalRelationshipOperation } from '../../../types/graph.ts';
 import type { ObjectValue } from '../../../types/json/raw.ts';
@@ -12,7 +13,6 @@ import type { LegacyHasManyField, LinksModeHasManyField } from '../../../types/s
 import type { Links, Meta, PaginationLinks } from '../../../types/spec/json-api-raw.ts';
 import { recordIdentifierFor } from '../caches/instance-cache.ts';
 import { isResourceKey } from '../managers/cache-key-manager.ts';
-import { notifyInternalSignal, type WarpDriveSignal } from '../new-core-tmp/reactivity/internal.ts';
 import type { CreateRecordProperties } from '../store-service.ts';
 import { save } from './-utils.ts';
 import type { LegacyLiveArrayCreateOptions } from './legacy-live-array.ts';

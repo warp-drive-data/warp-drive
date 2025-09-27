@@ -1,6 +1,6 @@
 import { assert } from '@warp-drive/build-config/macros';
 
-import { entangleSignal } from '../../../store/-private';
+import { entangleSignal } from '../../../signals/-private';
 import type { ObjectValue, Value } from '../../../types/json/raw';
 import type { ObjectSchema, SchemaObjectField } from '../../../types/schema/fields';
 import type { KindContext } from '../default-mode';

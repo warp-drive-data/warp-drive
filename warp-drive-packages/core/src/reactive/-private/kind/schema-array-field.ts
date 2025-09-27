@@ -1,6 +1,6 @@
 import { assert } from '@warp-drive/build-config/macros';
 
-import { ARRAY_SIGNAL, peekInternalSignal } from '../../../store/-private';
+import { ARRAY_SIGNAL, peekInternalSignal } from '../../../signals/-private';
 import type { ArrayValue } from '../../../types/json/raw';
 import type { SchemaArrayField } from '../../../types/schema/fields';
 import type { KindContext } from '../default-mode';

@@ -1,9 +1,9 @@
 import { LOG_METRIC_COUNTS, LOG_NOTIFICATIONS } from '@warp-drive/core/build-config/debugging';
 import { assert } from '@warp-drive/core/build-config/macros';
 
+import { willSyncFlushWatchers } from '../../../signals/-private.ts';
 import type { RequestKey, ResourceKey } from '../../../types/identifier.ts';
 import { log } from '../debug/utils.ts';
-import { willSyncFlushWatchers } from '../new-core-tmp/reactivity/configure.ts';
 import type { Store } from '../store-service.ts';
 import { isRequestKey, isResourceKey } from './cache-key-manager.ts';
 

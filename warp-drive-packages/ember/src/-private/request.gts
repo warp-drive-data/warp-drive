@@ -7,15 +7,10 @@ import type { ComponentLike } from '@glint/template';
 
 import type { RequestManager, Store } from '@warp-drive/core';
 import { assert } from '@warp-drive/core/build-config/macros';
-import type {
-  ContentFeatures,
-  RecoveryFeatures,
-  RequestArgs,
-  RequestLoadingState,
-  RequestState,
-  RequestSubscription,
-} from '@warp-drive/core/store/-private';
-import { createRequestSubscription, DISPOSE, memoized } from '@warp-drive/core/store/-private';
+import type { RequestLoadingState, RequestState, RequestSubscription } from '@warp-drive/core/reactive';
+import { createRequestSubscription } from '@warp-drive/core/reactive';
+import type { ContentFeatures, RecoveryFeatures, RequestArgs } from '@warp-drive/core/signals/-leaked';
+import { DISPOSE, memoized } from '@warp-drive/core/signals/-leaked';
 import type { StructuredErrorDocument } from '@warp-drive/core/types/request';
 
 import { and, Throw } from './await.gts';

@@ -1,21 +1,21 @@
 import { assert } from '@warp-drive/build-config/macros';
 
-import type { Awaitable, Future } from '../../../request.ts';
-import { getPromiseResult, setPromiseResult } from '../../../request.ts';
-import type { RequestManager } from '../../../request/-private/manager.ts';
+import type { Awaitable, Future } from '../request.ts';
+import { getPromiseResult, setPromiseResult } from '../request.ts';
+import type { RequestManager } from '../request/-private/manager.ts';
+import type { Store } from '../store/-private/store-service.ts';
 import type {
   ImmutableRequestInfo,
   RequestInfo,
   ResponseInfo,
   StructuredDataDocument,
   StructuredErrorDocument,
-} from '../../../types/request.ts';
-import type { Store } from '../store-service.ts';
+} from '../types/request.ts';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { PendingPromise, PromiseState, RejectedPromise, ResolvedPromise } from './promise-state.ts';
 import { defineNonEnumerableSignal, defineSignal } from './reactivity/signal.ts';
 
-const RequestCache = new WeakMap<Future<unknown>, RequestCacheRequestState>();
+const RequestCache = new WeakMap<Future<unknown>, RequestState>();
 
 function isAbortError(error: unknown): boolean {
   return error instanceof DOMException && error.name === 'AbortError';
@@ -568,7 +568,7 @@ export interface PrivateRequestState {
  * - {@link CancelledRequest}
  *
  */
-export type RequestCacheRequestState<RT = unknown, E extends StructuredErrorDocument = StructuredErrorDocument> =
+export type RequestState<RT = unknown, E extends StructuredErrorDocument = StructuredErrorDocument> =
   | PendingRequest
   | ResolvedRequest<RT>
   | RejectedRequest<RT, E>
@@ -614,12 +614,12 @@ defineSignal(RequestStateProto, 'request', null);
 defineSignal(RequestStateProto, 'response', null);
 
 Object.defineProperty(RequestStateProto, 'isCancelled', {
-  get(this: RequestCacheRequestState): boolean {
+  get(this: RequestState): boolean {
     return this.isError && isAbortError(this.reason);
   },
 });
 Object.defineProperty(RequestStateProto, 'loadingState', {
-  get(this: RequestCacheRequestState & PrivateRequestState): RequestLoadingState {
+  get(this: RequestState & PrivateRequestState): RequestLoadingState {
     if (!this._loadingState) {
       this._loadingState = new RequestLoadingState(this._request);
     }
@@ -628,13 +628,11 @@ Object.defineProperty(RequestStateProto, 'loadingState', {
   },
 });
 
-export function createRequestState<RT, E>(
-  future: Future<RT>
-): Readonly<RequestCacheRequestState<RT, StructuredErrorDocument<E>>> {
+export function createRequestState<RT, E>(future: Future<RT>): Readonly<RequestState<RT, StructuredErrorDocument<E>>> {
   const state = getPromiseResult(
     future as unknown as Awaitable<StructuredDataDocument<RT>, StructuredErrorDocument<E>>
   );
-  const promiseState = Object.create(RequestStateProto) as RequestCacheRequestState<RT, StructuredErrorDocument<E>> &
+  const promiseState = Object.create(RequestStateProto) as RequestState<RT, StructuredErrorDocument<E>> &
     PrivateRequestState;
   promiseState._request = future;
   // @ts-expect-error - we still attach it for PendingState
@@ -757,9 +755,7 @@ export function createRequestState<RT, E>(
  * `RequestState` provides.
  *
  */
-export function getRequestState<RT, E>(
-  future: Future<RT>
-): Readonly<RequestCacheRequestState<RT, StructuredErrorDocument<E>>> {
+export function getRequestState<RT, E>(future: Future<RT>): Readonly<RequestState<RT, StructuredErrorDocument<E>>> {
   let state = RequestCache.get(future);
 
   if (!state) {
@@ -767,5 +763,5 @@ export function getRequestState<RT, E>(
     RequestCache.set(future, state);
   }
 
-  return state as Readonly<RequestCacheRequestState<RT, StructuredErrorDocument<E>>>;
+  return state as Readonly<RequestState<RT, StructuredErrorDocument<E>>>;
 }

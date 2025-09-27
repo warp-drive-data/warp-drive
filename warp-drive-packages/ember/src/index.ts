@@ -11,6 +11,6 @@ export {
   createRequestSubscription,
   type RequestLoadingState,
   type RequestState,
-} from '@warp-drive/core/store/-private';
+} from '@warp-drive/core/reactive';
 
 export { getPromiseState, type PromiseState } from '@warp-drive/core/reactive';

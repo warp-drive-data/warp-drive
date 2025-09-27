@@ -8,9 +8,10 @@ import {
   teardownRecord,
   withDefaults,
 } from '@warp-drive/core/reactive';
+import { getRequestState } from '@warp-drive/core/reactive';
 import type { CacheHandler, Future, NextFn } from '@warp-drive/core/request';
-import type { RecoveryFeatures } from '@warp-drive/core/store/-private';
-import { getRequestState, signal } from '@warp-drive/core/store/-private';
+import type { RecoveryFeatures } from '@warp-drive/core/signals/-leaked';
+import { signal } from '@warp-drive/core/signals/-leaked';
 import type { CacheCapabilitiesManager } from '@warp-drive/core/types';
 import type { Cache } from '@warp-drive/core/types/cache';
 import type { ResourceKey } from '@warp-drive/core/types/identifier';

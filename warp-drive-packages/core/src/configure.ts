@@ -5,4 +5,4 @@
  * @module
  */
 
-export { setupSignals, type HooksOptions, type SignalHooks } from './store/-private/new-core-tmp/reactivity/configure';
+export { setupSignals, type HooksOptions, type SignalHooks } from './signals/-private.ts';

@@ -1,10 +1,7 @@
 import { assert } from '@warp-drive/build-config/macros';
 
-import type { SignalStore, WarpDriveSignal } from '../../../store/-private/new-core-tmp/reactivity/internal';
-import {
-  consumeInternalSignal,
-  getOrCreateInternalSignal,
-} from '../../../store/-private/new-core-tmp/reactivity/internal';
+import type { SignalStore, WarpDriveSignal } from '../../../signals/-private';
+import { consumeInternalSignal, getOrCreateInternalSignal } from '../../../signals/-private';
 import type { ExtensionDef } from '../schema';
 
 export type ProxiedMethod = (...args: unknown[]) => unknown;

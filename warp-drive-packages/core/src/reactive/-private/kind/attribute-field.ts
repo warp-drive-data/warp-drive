@@ -1,4 +1,4 @@
-import { entangleInitiallyStaleSignal } from '../../../store/-private';
+import { entangleInitiallyStaleSignal } from '../../../signals/-private';
 import type { Value } from '../../../types/json/raw';
 import type { LegacyAttributeField } from '../../../types/schema/fields';
 import type { KindContext } from '../default-mode';

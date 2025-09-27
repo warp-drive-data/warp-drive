@@ -7,7 +7,7 @@ import { RequestSpec } from "@warp-drive-internal/specs/request-component.spec";
 // import { RequestSpec } from "./request-component.spec";
 import { useReact } from "@warp-drive/diagnostic/react";
 import { DEBUG } from "@warp-drive/core/build-config/env";
-import { getRequestState } from "@warp-drive/core/store/-private";
+import { getRequestState } from "@warp-drive/core/reactive";
 
 function useBetterMemo<T>(getValue: () => T, deps: React.DependencyList) {
   const count = useRef<{ invoked: number; last: T }>({ invoked: 0, last: null as unknown as T });

@@ -9,6 +9,16 @@ import {
   performArrayExtensionGet,
   performExtensionSet,
 } from '../../../reactive/-private/fields/extension.ts';
+import type { SignalStore, WarpDriveSignal } from '../../../signals/-private.ts';
+import {
+  ARRAY_SIGNAL,
+  consumeInternalSignal,
+  createInternalSignal,
+  createSignalDescriptor,
+  notifyInternalSignal,
+  Signals,
+  withSignalStore,
+} from '../../../signals/-private.ts';
 import { getOrSetGlobal } from '../../../types/-private.ts';
 import type { RequestKey, ResourceKey } from '../../../types/identifier.ts';
 import type { ObjectValue, Value } from '../../../types/json/raw.ts';
@@ -16,16 +26,6 @@ import type { CollectionField } from '../../../types/schema/fields.ts';
 import type { OpaqueRecordInstance } from '../../-types/q/record-instance.ts';
 import { recordIdentifierFor } from '../caches/instance-cache.ts';
 import { isResourceKey } from '../managers/cache-key-manager.ts';
-import type { SignalStore, WarpDriveSignal } from '../new-core-tmp/reactivity/internal.ts';
-import {
-  ARRAY_SIGNAL,
-  consumeInternalSignal,
-  createInternalSignal,
-  notifyInternalSignal,
-  Signals,
-  withSignalStore,
-} from '../new-core-tmp/reactivity/internal.ts';
-import { createSignalDescriptor } from '../new-core-tmp/reactivity/signal.ts';
 import type { Store } from '../store-service.ts';
 import type { ForEachCB, KeyType, MinimumManager } from './-utils.ts';
 import { convertToInt, isArrayGetter, isArraySetter, safeForEach } from './-utils.ts';

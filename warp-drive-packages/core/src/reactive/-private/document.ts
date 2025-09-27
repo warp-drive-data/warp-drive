@@ -1,13 +1,8 @@
 import { assert } from '@warp-drive/core/build-config/macros';
 
 import { withBrand } from '../../request.ts';
+import { defineGate, notifyInternalSignal, peekInternalSignal, withSignalStore } from '../../signals/-private.ts';
 import type { DocumentCacheOperation, UnsubscribeToken } from '../../store/-private/managers/notification-manager.ts';
-import {
-  notifyInternalSignal,
-  peekInternalSignal,
-  withSignalStore,
-} from '../../store/-private/new-core-tmp/reactivity/internal.ts';
-import { defineGate } from '../../store/-private/new-core-tmp/reactivity/signal.ts';
 import type { Store } from '../../store/-private/store-service.ts';
 import type { ResourceKey } from '../../types.ts';
 import type { RequestKey } from '../../types/identifier.ts';

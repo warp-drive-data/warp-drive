@@ -2,7 +2,7 @@ import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
 import GlimmerComponent from '@glimmer/component';
 
-import { memoized } from '@warp-drive/core/store/-private';
+import { memoized } from '@warp-drive/core/signals/-leaked';
 import type { SingleResourceDataDocument } from '@warp-drive/core/types/spec/document';
 import type { Type } from '@warp-drive/core/types/symbols';
 import { useEmber } from '@warp-drive/diagnostic/ember';

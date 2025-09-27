@@ -1,6 +1,6 @@
 import { assert } from '@warp-drive/build-config/macros';
 
-import { entangleSignal } from '../../../store/-private';
+import { entangleSignal } from '../../../signals/-private';
 import type { LegacyBelongsToField } from '../../../types/schema/fields';
 import type { SingleResourceRelationship } from '../../../types/spec/json-api-raw';
 import type { KindContext } from '../default-mode';

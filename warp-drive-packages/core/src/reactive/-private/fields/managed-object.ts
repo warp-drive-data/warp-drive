@@ -7,7 +7,7 @@ import {
   OBJECT_SIGNAL,
   type WarpDriveSignal,
   withSignalStore,
-} from '../../../store/-private.ts';
+} from '../../../signals/-private.ts';
 import { getOrSetGlobal } from '../../../types/-private.ts';
 import type { ObjectValue, Value } from '../../../types/json/raw.ts';
 import type { ObjectField, SchemaObjectField } from '../../../types/schema/fields.ts';

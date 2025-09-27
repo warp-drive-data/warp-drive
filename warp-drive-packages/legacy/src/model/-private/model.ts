@@ -5,15 +5,8 @@ import type { NotificationType, Store } from '@warp-drive/core';
 import { recordIdentifierFor, storeFor } from '@warp-drive/core';
 import { DEBUG } from '@warp-drive/core/build-config/env';
 import { assert } from '@warp-drive/core/build-config/macros';
-import {
-  assertPrivateStore,
-  coerceId,
-  defineGate,
-  entangleSignal,
-  gate,
-  memoized,
-  withSignalStore,
-} from '@warp-drive/core/store/-private';
+import { defineGate, entangleSignal, gate, memoized, withSignalStore } from '@warp-drive/core/signals/-leaked';
+import { assertPrivateStore, coerceId } from '@warp-drive/core/store/-private';
 import type { ModelSchema, ResourceKey } from '@warp-drive/core/types';
 import type { ChangedAttributesHash } from '@warp-drive/core/types/cache';
 import type { LegacyAttributeField, LegacyRelationshipField } from '@warp-drive/core/types/schema/fields';

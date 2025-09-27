@@ -3,8 +3,8 @@ import { DEBUG } from '@warp-drive/build-config/env';
 import { assert } from '@warp-drive/core/build-config/macros';
 
 import type { Store } from '../../../index.ts';
-import type { WarpDriveSignal } from '../../../store/-private.ts';
-import { ARRAY_SIGNAL, consumeInternalSignal, entangleSignal, withSignalStore } from '../../../store/-private.ts';
+import type { WarpDriveSignal } from '../../../signals/-private.ts';
+import { ARRAY_SIGNAL, consumeInternalSignal, entangleSignal, withSignalStore } from '../../../signals/-private.ts';
 import type { ResourceKey } from '../../../types/identifier.ts';
 import type { ArrayValue, ObjectValue, Value } from '../../../types/json/raw.ts';
 import type { OpaqueRecordInstance } from '../../../types/record.ts';

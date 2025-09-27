@@ -1,7 +1,7 @@
 import { DEBUG } from '@warp-drive/build-config/env';
 import { assert } from '@warp-drive/core/build-config/macros';
 
-import { getOrSetGlobal } from '../../../../types/-private.ts';
+import { getOrSetGlobal } from '../../types/-private.ts';
 import {
   ARRAY_SIGNAL,
   consumeSignal,

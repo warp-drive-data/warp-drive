@@ -1,6 +1,6 @@
 import { assert } from '@warp-drive/build-config/macros';
 
-import { entangleSignal } from '../../../store/-private.ts';
+import { entangleSignal } from '../../../signals/-private.ts';
 import type { IdentityField } from '../../../types/schema/fields.ts';
 import type { KindContext } from '../default-mode.ts';
 

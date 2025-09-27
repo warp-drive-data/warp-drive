@@ -1,6 +1,6 @@
 import { DEBUG, TESTING } from '@warp-drive/core/build-config/env';
 
-import { waitFor } from '../../store/-private/new-core-tmp/reactivity/configure';
+import { waitFor } from '../../signals/-private';
 import { peekUniversalTransient, setUniversalTransient } from '../../types/-private';
 import type { RequestKey } from '../../types/identifier';
 import { EnableHydration, type RequestInfo, type StructuredErrorDocument } from '../../types/request';

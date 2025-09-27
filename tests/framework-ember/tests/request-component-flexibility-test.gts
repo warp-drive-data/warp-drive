@@ -3,6 +3,7 @@ import { on } from '@ember/modifier';
 
 import { CacheHandler, Fetch, RequestManager, Store } from '@warp-drive/core';
 import { PRODUCTION } from '@warp-drive/core/build-config/env';
+import type { RequestState } from '@warp-drive/core/reactive';
 import {
   instantiateRecord,
   registerDerivations,
@@ -12,8 +13,8 @@ import {
 } from '@warp-drive/core/reactive';
 import type { Future, Handler, NextFn } from '@warp-drive/core/request';
 import { createDeferred } from '@warp-drive/core/request';
+import { signal } from '@warp-drive/core/signals/-leaked';
 import { DefaultCachePolicy } from '@warp-drive/core/store';
-import { type RequestState, signal } from '@warp-drive/core/store/-private';
 import type { CacheCapabilitiesManager } from '@warp-drive/core/types';
 import type { ResourceKey } from '@warp-drive/core/types/identifier';
 import type { RequestContext } from '@warp-drive/core/types/request';
