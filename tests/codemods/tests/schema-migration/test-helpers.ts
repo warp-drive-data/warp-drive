@@ -11,6 +11,11 @@ export const DEFAULT_TEST_OPTIONS: TransformOptions = {
   debug: false,
   // For tests, assume all mixins are connected to models so they generate artifacts
   testMode: true,
+  // Configure mixin sources for test patterns
+  additionalMixinSources: [
+    { pattern: 'app/mixins/', name: 'app mixins' },
+    { pattern: '../mixins/', name: 'relative mixins' },
+  ],
 };
 
 /**

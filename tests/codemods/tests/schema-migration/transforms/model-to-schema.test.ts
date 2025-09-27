@@ -546,7 +546,9 @@ export default class TestModel extends Model {
       // Should preserve non-relative imports
       expect(result).toContain("import type { ConnectedEntityType } from 'soxhub-client/components/module-automations/const/automation-workflow-instance';");
 
-      // Should not transform the original relative import syntax
+      // Should not contain bad import paths with double extensions
+      expect(result).not.toContain('.ts.schema.types');
+      expect(result).not.toContain('.js.schema.types');
       expect(result).not.toContain("import type AuditableEntity from './auditable-entity';");
       expect(result).not.toContain("import type AutomationWorkflowVersion from './automation-workflow-version';");
 
@@ -618,4 +620,249 @@ export default class TestModel extends Model.extend(WorkstreamableMixin) {
       }
     });
   });
+
+  describe('utility function handling', () => {
+    it('excludes utility functions from schema files', () => {
+      const input = `import Model, { attr, hasMany } from '@ember-data/model';
+
+function buildFullName(first, last) {
+  return \`\${first} \${last}\`;
+}
+
+export function formatDate(date) {
+  return date.toISOString();
+}
+
+export default class User extends Model {
+  @attr('string') firstName;
+  @attr('string') lastName;
+  @hasMany('post') posts;
+
+  get fullName() {
+    return buildFullName(this.firstName, this.lastName);
+  }
+}`;
+
+      const artifacts = toArtifacts('app/models/user.js', input, DEFAULT_TEST_OPTIONS);
+      const schema = artifacts.find((a) => a.type === 'schema');
+
+      // Schema should not contain utility functions
+      expect(schema?.code).not.toContain('function buildFullName');
+      expect(schema?.code).not.toContain('export function formatDate');
+
+      // Schema should only contain the schema export (no imports needed since no complex default values)
+      expect(schema?.code).toContain('export const UserSchema');
+      expect(schema?.code).not.toContain('get fullName');
+      expect(schema?.code).not.toContain('import'); // No imports should be present
+    });
+
+    it('preserves utility functions in extension files', () => {
+      const input = `import Model, { attr } from '@ember-data/model';
+
+function helperFunction(value) {
+  return value.toUpperCase();
+}
+
+export default class Product extends Model {
+  @attr('string') name;
+
+  processName() {
+    return helperFunction(this.name);
+  }
+}`;
+
+      const artifacts = toArtifacts('app/models/product.js', input, DEFAULT_TEST_OPTIONS);
+      const extension = artifacts.find((a) => a.type === 'extension');
+
+      // Extension should contain the method and helper function
+      expect(extension?.code).toContain('processName()');
+      expect(extension?.code).toContain('function helperFunction');
+      expect(extension?.code).toContain('return helperFunction(this.name)');
+    });
+
+    it('updates relative imports when moving utility functions to extension files', () => {
+      const input = `import Model, { attr } from '@ember-data/model';
+import type SomeType from './some-type';
+import AnotherType from '../shared/another-type';
+import { GlobalUtil } from 'global-package';
+import { helperUtil } from './utils/helper';
+
+function helperFunction(value: SomeType): string {
+  return value.name.toUpperCase();
+}
+
+export default class Product extends Model {
+  @attr('string') name;
+
+  processName() {
+    return helperFunction(this.someValue);
+  }
+}`;
+
+      const artifacts = toArtifacts('app/models/product.js', input, DEFAULT_TEST_OPTIONS);
+      const extension = artifacts.find((a) => a.type === 'extension');
+
+      // Extension should normalize relative imports to reference the configured package source
+      expect(extension?.code).toContain("import type SomeType from 'test-app/models/some-type';");
+      expect(extension?.code).toContain("import { helperUtil } from 'test-app/models/utils/helper';");
+      expect(extension?.code).toContain("import AnotherType from '../../shared/another-type';");
+      // Absolute imports should remain unchanged
+      expect(extension?.code).toContain("import { GlobalUtil } from 'global-package';");
+      expect(extension?.code).toContain('function helperFunction');
+    });
+
+    it('uses directory import mapping for relative imports when configured', () => {
+      const input = `import Model, { attr } from '@ember-data/model';
+import type Translation from './translation';
+import { CoreUtil } from './core/utils';
+
+function helperFunction(value: Translation): string {
+  return value.text.toUpperCase();
+}
+
+export default class Translatable extends Model {
+  @attr('string') text;
+
+  processText() {
+    return helperFunction(this);
+  }
+}`;
+
+      const optionsWithMapping = createTestOptions({
+        directoryImportMapping: {
+          'client-core/models': '@auditboard/client-core/models',
+          'shared-lib/models': '@company/shared-lib/models'
+        }
+      });
+
+      const artifacts = toArtifacts('client-core/models/translatable.js', input, optionsWithMapping);
+      const extension = artifacts.find((a) => a.type === 'extension');
+
+      // Should use directory mapping instead of modelImportSource
+      expect(extension?.code).toContain("import type Translation from '@auditboard/client-core/models/translation';");
+      expect(extension?.code).toContain("import { CoreUtil } from '@auditboard/client-core/models/core/utils';");
+      expect(extension?.code).toContain('function helperFunction');
+    });
+
+    it('handles parent directory imports with directory mapping', () => {
+      const input = `import Model, { attr } from '@ember-data/model';
+import type { TranslatableModel } from '../types/models/translatable-model';
+import { BaseValidator } from '../validators/base-validator';
+import SharedUtil from '../../shared/utils';
+
+function processTranslatable(model: TranslatableModel): string {
+  return model.text.toUpperCase();
+}
+
+export default class Translatable extends Model {
+  @attr('string') text;
+
+  validate() {
+    return BaseValidator.validate(this);
+  }
+}`;
+
+      const optionsWithMapping = createTestOptions({
+        directoryImportMapping: {
+          'client-core/package/src': '@auditboard/client-core'
+        }
+      });
+
+      const artifacts = toArtifacts('client-core/package/src/models/translatable.js', input, optionsWithMapping);
+      const extension = artifacts.find((a) => a.type === 'extension');
+
+      // Should resolve ../types/models/translatable-model to @auditboard/client-core/types/models/translatable-model
+      expect(extension?.code).toContain("import type { TranslatableModel } from '@auditboard/client-core/types/models/translatable-model';");
+      // Should resolve ../validators/base-validator to @auditboard/client-core/validators/base-validator
+      expect(extension?.code).toContain("import { BaseValidator } from '@auditboard/client-core/validators/base-validator';");
+      // Should resolve ../../shared/utils to @auditboard/client-core/shared/utils
+      expect(extension?.code).toContain("import SharedUtil from '@auditboard/client-core/shared/utils';");
+      expect(extension?.code).toContain('function processTranslatable');
+    });
+  });
+
+  describe('memberAction handling', () => {
+    it('does not extract after methods from memberAction calls', () => {
+      const input = `
+        import Model, { attr } from '@ember-data/model';
+        import { memberAction } from 'test-app/decorators/api-actions';
+
+        export default class TestModel extends Model {
+          @attr('string') name;
+
+          startProcess = memberAction({
+            path: 'start_process',
+            type: 'POST',
+            after(this: TestModel, response: TestModel): TestModel {
+              console.log('Process started');
+              return response;
+            }
+          });
+
+          finishProcess = memberAction({
+            path: 'finish_process',
+            type: 'POST',
+            after(response: any): void {
+              this.store.pushPayload(response);
+            }
+          });
+
+        }
+      `;
+
+      const artifacts = toArtifacts('app/models/test-model.js', input, DEFAULT_TEST_OPTIONS);
+
+      // Should have schema, extension and resource-type artifacts
+      expect(artifacts).toHaveLength(3);
+
+      const extension = artifacts.find((a) => a.type === 'extension');
+      expect(extension).toBeDefined();
+
+      if (extension?.code) {
+        // Should include the memberAction calls as properties
+        expect(extension.code).toContain('startProcess = memberAction');
+        expect(extension.code).toContain('finishProcess = memberAction');
+
+        // Should NOT include standalone "after" methods
+        // Count truly standalone after methods (not nested within memberAction calls)
+        const lines = extension.code.split('\n');
+        let standaloneAfterMethods = 0;
+        let insideMemberAction = false;
+        let memberActionBraceDepth = 0;
+
+        for (const line of lines) {
+          // Track if we're inside a memberAction call
+          if (line.includes('memberAction(')) {
+            insideMemberAction = true;
+            memberActionBraceDepth = 0;
+          }
+
+          if (insideMemberAction) {
+            // Count braces to track memberAction scope
+            for (const char of line) {
+              if (char === '{') memberActionBraceDepth++;
+              if (char === '}') memberActionBraceDepth--;
+            }
+
+            // If braces are balanced, we've exited the memberAction
+            if (memberActionBraceDepth === 0 && line.includes('}')) {
+              insideMemberAction = false;
+            }
+          }
+
+          // Count after methods only if they're NOT inside a memberAction
+          if (/^\s*after\s*\(/g.test(line) && !insideMemberAction) {
+            standaloneAfterMethods++;
+          }
+        }
+
+        expect(standaloneAfterMethods).toBe(0);
+
+        // But the after methods should still exist within the memberAction calls
+        expect(extension.code).toContain('after(this: TestModel, response: TestModel)');
+        expect(extension.code).toContain('after(response: any)');
+      }
+    });
+  });
+
 });

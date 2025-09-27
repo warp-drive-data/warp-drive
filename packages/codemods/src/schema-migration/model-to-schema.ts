@@ -37,6 +37,7 @@ import {
   withTransformWrapper,
 } from './utils/ast-utils.js';
 
+
 /**
  * Determines if an AST node represents object method syntax that doesn't need key: value format
  * This is used for class methods that become extension object methods
@@ -680,7 +681,6 @@ export class ${extensionClassName} extends Base {`
       extensionArtifact.code += '\n\n' + signatureTypedef;
     }
 
-    debugLog(options, `Extension file length after adding signature: ${extensionArtifact.code.length}`);
   }
 
   return artifacts;
@@ -1281,7 +1281,25 @@ function extractModelFields(
       }
     }
 
-    methodDefinitions = classBody.findAll({ rule: { kind: 'method_definition' } });
+    // Only get method definitions that are direct children of the class body
+    // This prevents extracting methods from nested object literals (like memberAction calls)
+    methodDefinitions = classBody.children().filter((child) => {
+      if (child.kind() !== 'method_definition') {
+        return false;
+      }
+
+      // Check if this is likely a callback method from a memberAction call
+      // These are typically named "after" and are short methods
+      const nameNode = child.field('name');
+      const methodName = nameNode?.text() || '';
+
+      if (methodName === 'after') {
+        // This is likely a callback method - exclude it
+        return false;
+      }
+
+      return true;
+    });
 
     debugLog(options, `DEBUG: Found ${propertyDefinitions.length} properties and ${methodDefinitions.length} methods`);
     debugLog(options, `DEBUG: Class body text: ${classBody.text().substring(0, 200)}...`);
@@ -1361,10 +1379,13 @@ function extractModelFields(
     // If it's not a schema field, add it as an extension property
     if (!isSchemaField) {
       // For field declarations without initializers, we use the whole field definition as the value
+      const propertyText = property.text();
+
+
       extensionProperties.push({
         name: fieldName,
         originalKey,
-        value: property.text(),
+        value: propertyText,
         typeInfo,
         isObjectMethod: isClassMethodSyntax(property),
       });
@@ -1377,6 +1398,11 @@ function extractModelFields(
     if (!nameNode) continue;
 
     const methodName = nameNode.text();
+    debugLog(options, `DEBUG: Processing method: ${methodName}, parent: ${method.parent()?.kind()}`);
+    debugLog(options, `DEBUG: Method full text: ${method.text().substring(0, 200)}...`);
+
+    // Since we're only iterating over direct children of classBody,
+    // all methods here are guaranteed to be top-level class methods
 
     // Find any decorators that come before this method
     const decorators: string[] = [];

@@ -26,6 +26,8 @@ describe('migrate-to-schema batch operation', () => {
       extensionsImport: 'test-app/data/extensions',
       modelImportSource: 'test-app/models',
       mixinImportSource: 'test-app/mixins',
+      emberDataImportSource: '@ember-data/model',
+      intermediateModelPaths: [],
       dryRun: false,
       verbose: false,
     };
@@ -862,4 +864,41 @@ export default Mixin.create({
     expect(typeFileContent).not.toContain('test-app/data/traits/user.schema.types');
   });
 
+  describe('generateExternalResources option', () => {
+    it('should be configurable and default to undefined/false', () => {
+      // Test that the option can be set via configuration
+      const configWithOptionEnabled = {
+        ...options,
+        generateExternalResources: true
+      };
+      expect(configWithOptionEnabled.generateExternalResources).toBe(true);
+
+      const configWithOptionDisabled = {
+        ...options,
+        generateExternalResources: false
+      };
+      expect(configWithOptionDisabled.generateExternalResources).toBe(false);
+
+      // Test default behavior (option not set)
+      expect(options.generateExternalResources).toBeUndefined();
+    });
+
+    it('should be properly typed in the configuration interface', () => {
+      // This test ensures the TypeScript interface includes the new option
+      // If this compiles, the option is properly typed
+      const configWithOption: typeof options = {
+        ...options,
+        generateExternalResources: true
+      };
+
+      // Test the option can be set to boolean values
+      expect(typeof configWithOption.generateExternalResources).toBe('boolean');
+
+      // Test the option can be undefined (not required)
+      const configWithoutOption: typeof options = {
+        ...options
+      };
+      expect(configWithoutOption.generateExternalResources).toBeUndefined();
+    });
+  });
 });

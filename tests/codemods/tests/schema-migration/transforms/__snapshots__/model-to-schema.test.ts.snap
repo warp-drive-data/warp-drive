@@ -95,10 +95,7 @@ export interface UnknownTypesModel {
 `;
 
 exports[`model-to-schema transform (artifacts) > basic functionality > handles complex field options correctly > complex field options 1`] = `
-"import Model, { attr, belongsTo, hasMany } from '@ember-data/model';
-
-
-export const ComplexModelSchema = {
+"export const ComplexModelSchema = {
   'type': 'complex-model',
   'legacy': true,
   'identity': {
@@ -147,12 +144,7 @@ export const ComplexModelSchema = {
 `;
 
 exports[`model-to-schema transform (artifacts) > basic functionality > handles model with mixins > schema with mixins 1`] = `
-"import Model, { attr } from '@ember-data/model';
-import FileableMixin from 'app/mixins/fileable';
-import TimestampableMixin from 'app/mixins/timestampable';
-
-
-export const DocumentSchema = {
+"export const DocumentSchema = {
   'type': 'document',
   'legacy': true,
   'identity': {
@@ -170,6 +162,10 @@ export const DocumentSchema = {
       'name': 'content',
       'type': 'string'
     }
+  ],
+  'traits': [
+    'fileable',
+    'timestampable'
   ]
 };"
 `;
@@ -242,10 +238,7 @@ export class UserExtension extends Base {
 `;
 
 exports[`model-to-schema transform (artifacts) > basic functionality > produces schema and extension artifacts for basic model > schema code 1`] = `
-"import Model, { attr, hasMany, belongsTo } from '@ember-data/model';
-
-
-export const UserSchema = {
+"export const UserSchema = {
   'type': 'user',
   'legacy': true,
   'identity': {
@@ -294,10 +287,7 @@ export const UserSchema = {
 `;
 
 exports[`model-to-schema transform (artifacts) > basic functionality > supports alternate import sources > custom import source 1`] = `
-"import Model, { attr, hasMany } from '@auditboard/warp-drive/v1/model';
-
-
-export const CustomModelSchema = {
+"export const CustomModelSchema = {
   'type': 'custom-model',
   'legacy': true,
   'identity': {
@@ -346,10 +336,7 @@ export interface UnmappedTypesModel {
 `;
 
 exports[`model-to-schema transform (artifacts) > edge cases > handles aliased imports correctly > aliased imports 1`] = `
-"import Model, { attr as attribute, hasMany as manyRelation } from '@ember-data/model';
-
-
-export const AliasedModelSchema = {
+"export const AliasedModelSchema = {
   'type': 'aliased-model',
   'legacy': true,
   'identity': {
@@ -372,10 +359,7 @@ export const AliasedModelSchema = {
 `;
 
 exports[`model-to-schema transform (artifacts) > edge cases > preserves complex object literal options > complex options 1`] = `
-"import Model, { belongsTo } from '@ember-data/model';
-
-
-export const ComplexOptionsModelSchema = {
+"export const ComplexOptionsModelSchema = {
   'type': 'complex-options-model',
   'legacy': true,
   'identity': {
@@ -417,11 +401,7 @@ export interface RelationshipModel {
 `;
 
 exports[`model-to-schema transform (artifacts) > mixin handling > extracts mixin names and converts them to trait references > single mixin schema 1`] = `
-"import Model, { attr } from '@ember-data/model';
-import FileableMixin from '../mixins/fileable';
-
-
-export const DocumentSchema = {
+"export const DocumentSchema = {
   'type': 'document',
   'legacy': true,
   'identity': {
@@ -434,18 +414,15 @@ export const DocumentSchema = {
       'name': 'title',
       'type': 'string'
     }
+  ],
+  'traits': [
+    'fileable'
   ]
 };"
 `;
 
 exports[`model-to-schema transform (artifacts) > mixin handling > handles multiple mixins correctly > multiple mixins schema 1`] = `
-"import Model, { attr } from '@ember-data/model';
-import FileableMixin from '../mixins/fileable';
-import TimestampableMixin from '../mixins/timestampable';
-import AuditableMixin from '../mixins/auditable';
-
-
-export const ComplexDocumentSchema = {
+"export const ComplexDocumentSchema = {
   'type': 'complex-document',
   'legacy': true,
   'identity': {
@@ -458,6 +435,11 @@ export const ComplexDocumentSchema = {
       'name': 'title',
       'type': 'string'
     }
+  ],
+  'traits': [
+    'fileable',
+    'timestampable',
+    'auditable'
   ]
 };"
 `;

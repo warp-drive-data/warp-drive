@@ -2354,7 +2354,12 @@ export interface SchemaField {
 export function extractJSDocComment(node: SgNode): string | undefined {
   // Look for JSDoc comments (/** ... */) preceding the node
   // We need to check the source text around the node's position
-  const source = node.root().text();
+  // Get the source text from the parent context
+  let currentNode = node;
+  while (currentNode.parent()) {
+    currentNode = currentNode.parent()!;
+  }
+  const source = currentNode.text();
   const nodeText = node.text();
   const nodeIndex = source.indexOf(nodeText);
 
