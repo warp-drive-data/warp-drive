@@ -17,7 +17,7 @@ const Macros = buildMacros({
   setConfig: {
     '@ember-data/unpublished-test-infra': {
       VERSION: pkg.version,
-      ASSERT_ALL_DEPRECATIONS: Boolean(process.env.ASSERT_ALL_DEPRECATIONS),
+      ASSERT_ALL_DEPRECATIONS: process.env.ASSERT_ALL_DEPRECATIONS === 'true',
     },
   },
 });

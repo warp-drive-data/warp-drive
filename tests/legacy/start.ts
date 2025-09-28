@@ -34,7 +34,7 @@ setConfig({ host: MockHost });
 configure();
 
 setupGlobalHooks((hooks) => {
-  configureAsserts(hooks);
+  configureAsserts(hooks, { assertAllDeprecations: false });
 
   hooks.beforeEach(function (assert) {
     setTestId(this, (assert as unknown as { test: { testId: string } }).test.testId);

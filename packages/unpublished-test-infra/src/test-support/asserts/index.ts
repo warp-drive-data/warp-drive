@@ -111,7 +111,10 @@ function upgradeHooks(hooks: Hooks | NestedHooks): ExpandedHooks {
   return upgraded;
 }
 
-export default function configureAsserts(hooks: Hooks | NestedHooks): void {
+export default function configureAsserts(
+  hooks: Hooks | NestedHooks,
+  options?: { assertAllDeprecations: boolean }
+): void {
   const upgraded = upgradeHooks(hooks);
 
   upgraded.beforeEach(function (this: RenderingTestContext, assert) {
@@ -121,5 +124,7 @@ export default function configureAsserts(hooks: Hooks | NestedHooks): void {
     configureBetterAsserts(assert);
     configureNotificationsAssert.call(this, assert);
   });
-  configureAssertAllDeprecations(upgraded);
+  if (options?.assertAllDeprecations ?? true) {
+    configureAssertAllDeprecations(upgraded);
+  }
 }
