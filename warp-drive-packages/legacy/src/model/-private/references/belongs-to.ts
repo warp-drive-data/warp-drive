@@ -1,7 +1,8 @@
 import type { NotificationType, Store } from '@warp-drive/core';
 import { DEBUG } from '@warp-drive/core/build-config/env';
 import type { Graph, ResourceEdge } from '@warp-drive/core/graph/-private';
-import { assertPrivateStore, defineNonEnumerableSignal, memoized } from '@warp-drive/core/store/-private';
+import { defineNonEnumerableSignal, memoized } from '@warp-drive/core/signals/-leaked';
+import { assertPrivateStore } from '@warp-drive/core/store/-private';
 import type { PersistedResourceKey, ResourceKey } from '@warp-drive/core/types/identifier';
 import type { TypeFromInstance, TypeFromInstanceOrString } from '@warp-drive/core/types/record';
 import type {

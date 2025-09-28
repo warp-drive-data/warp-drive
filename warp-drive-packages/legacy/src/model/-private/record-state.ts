@@ -1,16 +1,16 @@
 import type { NotificationType, Store } from '@warp-drive/core';
 import { storeFor } from '@warp-drive/core';
 import { assert } from '@warp-drive/core/build-config/macros';
-import type { RequestCacheRequestState, RequestStateService } from '@warp-drive/core/store/-private';
 import {
   defineSignal,
   gate,
   memoized,
   notifyInternalSignal,
   peekInternalSignal,
-  recordIdentifierFor,
   withSignalStore,
-} from '@warp-drive/core/store/-private';
+} from '@warp-drive/core/signals/-leaked';
+import type { RequestCacheRequestState, RequestStateService } from '@warp-drive/core/store/-private';
+import { recordIdentifierFor } from '@warp-drive/core/store/-private';
 import type { Cache } from '@warp-drive/core/types/cache';
 import type { ResourceKey } from '@warp-drive/core/types/identifier';
 

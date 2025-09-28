@@ -4,6 +4,7 @@ import { assert } from '@warp-drive/core/build-config/macros';
 import type { CollectionEdge, Graph, GraphEdge, ResourceEdge, UpgradedMeta } from '@warp-drive/core/graph/-private';
 import type { ReactiveDocument } from '@warp-drive/core/reactive';
 import { Context } from '@warp-drive/core/reactive/-private';
+import { notifyInternalSignal } from '@warp-drive/core/signals/-leaked';
 import type { LegacyManyArray, PrivateReactiveResourceArray, PrivateStore } from '@warp-drive/core/store/-private';
 import {
   assertPrivateStore,
@@ -11,7 +12,6 @@ import {
   fastPush,
   isPrivateStore,
   isResourceKey,
-  notifyInternalSignal,
   recordIdentifierFor,
   storeFor,
 } from '@warp-drive/core/store/-private';

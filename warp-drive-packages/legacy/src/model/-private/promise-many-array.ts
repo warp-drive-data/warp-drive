@@ -1,7 +1,7 @@
 import { DEPRECATE_COMPUTED_CHAINS } from '@warp-drive/core/build-config/deprecations';
 import { assert } from '@warp-drive/core/build-config/macros';
+import { defineSignal, memoized } from '@warp-drive/core/signals/-leaked';
 import type { RelatedCollection as ManyArray } from '@warp-drive/core/store/-private';
-import { defineSignal, memoized } from '@warp-drive/core/store/-private';
 import type { BaseFinderOptions } from '@warp-drive/core/types';
 import type { Links } from '@warp-drive/core/types/spec/json-api-raw';
 

@@ -4,7 +4,7 @@ import type ObjectProxy from '@ember/object/proxy';
 
 import type { Store } from '@warp-drive/core';
 import { assert } from '@warp-drive/core/build-config/macros';
-import { memoized } from '@warp-drive/core/store/-private';
+import { memoized } from '@warp-drive/core/signals/-leaked';
 import type { OpaqueRecordInstance, TypeFromInstanceOrString } from '@warp-drive/core/types/record';
 
 import type { LegacySupport } from './legacy-relationships-support.ts';
