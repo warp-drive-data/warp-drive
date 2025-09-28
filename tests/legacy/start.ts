@@ -11,6 +11,8 @@ import EmberRouter from '@ember/routing/router';
 import { setApplication } from '@ember/test-helpers';
 import EmberApp from 'ember-strict-application-resolver';
 
+import configureAsserts from '@ember-data/unpublished-test-infra/test-support/asserts/index';
+
 import.meta.glob('./tests/**/*-test.{js,ts,gjs,gts}', { eager: true });
 
 if (SHOULD_RECORD) {
@@ -32,6 +34,8 @@ setConfig({ host: MockHost });
 configure();
 
 setupGlobalHooks((hooks) => {
+  configureAsserts(hooks);
+
   hooks.beforeEach(function (assert) {
     setTestId(this, (assert as unknown as { test: { testId: string } }).test.testId);
   });
