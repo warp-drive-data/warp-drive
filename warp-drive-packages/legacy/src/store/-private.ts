@@ -1,8 +1,8 @@
 import type { NotificationType } from '@warp-drive/core';
 import { assert } from '@warp-drive/core/build-config/macros';
+import { defineSignal } from '@warp-drive/core/signals/-leaked';
 import {
   assertPrivateStore,
-  defineSignal,
   ensureStringId,
   type InstanceCache,
   recordIdentifierFor,
