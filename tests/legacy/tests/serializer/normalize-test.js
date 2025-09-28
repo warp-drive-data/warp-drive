@@ -29,7 +29,7 @@ module('Serializer Contract | normalize method forwards to Serializer#normalize'
       normalize(modelClass, rawPayload) {
         normalizeCalled++;
 
-        assert.equal(modelClass.modelName, 'Person', 'modelClass was passed to normalize');
+        assert.equal(modelClass.modelName, 'person', 'modelClass was passed to normalize');
         assert.deepEqual(
           rawPayload,
           {
