@@ -4,6 +4,7 @@ import type { Store } from '@warp-drive/core';
 import { DEBUG, TESTING } from '@warp-drive/core/build-config/env';
 import { assert } from '@warp-drive/core/build-config/macros';
 import { createDeferred } from '@warp-drive/core/request';
+import { waitFor } from '@warp-drive/core/signals/-leaked';
 import type {
   FindRecordQuery,
   InstanceCache,
@@ -11,7 +12,7 @@ import type {
   Request,
   SaveRecordMutation,
 } from '@warp-drive/core/store/-private';
-import { assertPrivateStore, coerceId, waitFor } from '@warp-drive/core/store/-private';
+import { assertPrivateStore, coerceId } from '@warp-drive/core/store/-private';
 import type { PrivateRequestStateService } from '@warp-drive/core/store/-private/network/request-cache.js';
 import type { FindRecordOptions, ModelSchema } from '@warp-drive/core/types';
 import { getOrSetGlobal } from '@warp-drive/core/types/-private';

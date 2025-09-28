@@ -4,6 +4,7 @@ export {
   defineSignal,
   entangleSignal,
   signal,
+  waitFor,
   gate,
   DISPOSE,
   memoized,
