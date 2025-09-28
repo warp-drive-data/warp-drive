@@ -1,5 +1,5 @@
 import type { ResourceKey } from '@warp-drive/core/types';
-import type { Diagnostic } from '@warp-drive/diagnostic/-types';
+import type { Diagnostic, Hooks } from '@warp-drive/diagnostic/-types';
 
 import type { CacheOperation, NotificationType } from '@warp-drive/core';
 import type { RequestKey } from '@warp-drive/core/types/identifier';
@@ -71,7 +71,30 @@ export interface ExpandedHooks {
   afterEach: (cb: (assert: Diagnostic) => void | Promise<void>) => void;
 }
 
-function upgradeHooks(hooks: NestedHooks): ExpandedHooks {
+interface NestedHooks {
+  /**
+   * Runs after the last test. If additional tests are defined after the
+   * module's queue has emptied, it will not run this hook again.
+   */
+  after(fn: (assert: Assert) => void | Promise<void>): void;
+
+  /**
+   * Runs after each test.
+   */
+  afterEach(fn: (assert: Assert) => void | Promise<void>): void;
+
+  /**
+   * Runs before the first test.
+   */
+  before(fn: (assert: Assert) => void | Promise<void>): void;
+
+  /**
+   * Runs before each test.
+   */
+  beforeEach(fn: (assert: Assert) => void | Promise<void>): void;
+}
+
+function upgradeHooks(hooks: Hooks | NestedHooks): ExpandedHooks {
   const upgraded = hooks as unknown as ExpandedHooks;
   // eslint-disable-next-line no-restricted-globals
   const Framework = typeof QUnit !== 'undefined' ? QUnit : null;
@@ -81,14 +104,14 @@ function upgradeHooks(hooks: NestedHooks): ExpandedHooks {
     // eslint-disable-next-line @typescript-eslint/unbound-method
     upgraded.onSuiteFinish = Framework.done;
     // eslint-disable-next-line @typescript-eslint/unbound-method
-    upgraded.beforeModule = hooks.before;
+    upgraded.beforeModule = (hooks as NestedHooks).before;
     // eslint-disable-next-line @typescript-eslint/unbound-method
-    upgraded.afterModule = hooks.after;
+    upgraded.afterModule = (hooks as NestedHooks).after;
   }
   return upgraded;
 }
 
-export default function configureAsserts(hooks: NestedHooks): void {
+export default function configureAsserts(hooks: Hooks | NestedHooks): void {
   const upgraded = upgradeHooks(hooks);
 
   upgraded.beforeEach(function (this: RenderingTestContext, assert) {

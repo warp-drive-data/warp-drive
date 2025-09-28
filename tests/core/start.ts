@@ -4,8 +4,7 @@ import { SHOULD_RECORD } from '@warp-drive/core/build-config/env';
 import { setupGlobalHooks } from '@warp-drive/diagnostic';
 import { configure } from '@warp-drive/diagnostic/ember';
 import { start } from '@warp-drive/diagnostic/runners/dom';
-import { setConfig, setIsRecording, setTestId } from '@warp-drive/holodeck';
-import { setBuildURLConfig } from '@warp-drive/utilities';
+import { setIsRecording, setTestId } from '@warp-drive/holodeck';
 
 import EmberRouter from '@ember/routing/router';
 import { setApplication } from '@ember/test-helpers';

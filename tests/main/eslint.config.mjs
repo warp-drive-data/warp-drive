@@ -28,13 +28,14 @@ const AllowedImports = [
   'qunit',
 ];
 
-/** @type {import('eslint').Linter.FlatConfig[]} */
+/** @type {import('eslint').Linter.Config[]} */
 export default [
   // all ================
   globalIgnores(),
 
   // browser (js) ================
   js.browser({
+    dirname: import.meta.dirname,
     srcDirs: ['app', 'tests'],
     allowedImports: AllowedImports,
     globals: { gc: true },

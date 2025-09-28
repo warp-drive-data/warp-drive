@@ -1,5 +1,5 @@
 {
-  "include": ["config/**/*", "tests/**/*"],
+  "include": ["tests/**/*"],
   "glint": {
     "environment": ["ember-loose", "ember-template-imports"]
   },
