@@ -1,9 +1,7 @@
 import { recordIdentifierFor, useRecommendedStore } from '@warp-drive/core';
-import { DEBUG } from '@warp-drive/core/build-config/env';
 import { withDefaults } from '@warp-drive/core/reactive';
 import type { Context } from '@warp-drive/core/request';
 import type { RelatedCollection } from '@warp-drive/core/store/-private';
-import { CACHE_OWNER } from '@warp-drive/core/types/identifier';
 import type { Type } from '@warp-drive/core/types/symbols';
 import { module, setupTest, skip, test } from '@warp-drive/diagnostic/ember';
 import { JSONAPICache } from '@warp-drive/json-api';
@@ -1087,7 +1085,7 @@ module('Reads | hasMany in linksMode', function (hooks) {
           name: 'Karel',
         },
         relationships: {
-          friends: {
+          pets: {
             links: { related: '/pet-owner/1/pets' },
             data: [{ type: 'pet', id: '3' }],
           },
@@ -1133,7 +1131,7 @@ module('Reads | hasMany in linksMode', function (hooks) {
         relationships: {
           pets: {
             links: { related: '/pet-owner/1/pets' },
-            data: [{ type: 'pet', id: '3', lid: '@lid:pet-owner-3' }],
+            data: [{ type: 'pet', id: '3', lid: '@lid:pet-3' }],
           },
         },
       },
@@ -1263,7 +1261,7 @@ module('Reads | hasMany in linksMode', function (hooks) {
           name: 'Karel',
         },
         relationships: {
-          friends: {
+          pets: {
             links: { related: '/pet-owner/1/pets' },
             data: [{ type: 'pet', id: '3' }],
           },
@@ -1300,7 +1298,7 @@ module('Reads | hasMany in linksMode', function (hooks) {
         relationships: {
           pets: {
             links: { related: '/pet-owner/1/pets' },
-            data: [{ type: 'pet', id: '3', lid: '@lid:pet-owner-3' }],
+            data: [{ type: 'pet', id: '3', lid: '@lid:pet-3' }],
           },
         },
       },
