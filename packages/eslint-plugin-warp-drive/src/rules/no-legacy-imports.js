@@ -1,33 +1,11 @@
-/**
- * {@include ./no-legacy-imports.md}
- * @module
- */
 'use strict';
 
 const path = require('path');
 
 const RULE_ID = 'warp-drive.no-legacy-imports';
 
-// TODO: determine where this thing should live long-term
 function buildMapping() {
-  // Attempt to load the enriched mapping JSON from the repo root.
-  // In this monorepo, this file lives at: <repoRoot>/public-exports-mapping-5.5.enriched.json
-  const candidates = [
-    // from this file at packages/eslint-plugin-warp-drive/src/rules/, walk up to repo root
-    path.join(__dirname, '../public-exports-mapping-5.5.enriched.json'),
-    // from package root (if tests change CWD)
-    path.join(process.cwd(), 'public-exports-mapping-5.5.enriched.json'),
-  ];
-
-  let mappingArray = null;
-  for (const candidate of candidates) {
-    try {
-      mappingArray = require(candidate);
-      break;
-    } catch (_e) {
-      // continue
-    }
-  }
+  const mappingArray = require(path.join(__dirname, '../public-exports-mapping-5.5.enriched.json'));
 
   /**
    * Map key: `${module}::${exportName}` where exportName can be 'default'.
@@ -37,8 +15,6 @@ function buildMapping() {
 
   if (Array.isArray(mappingArray)) {
     for (const entry of mappingArray) {
-      // Only consider non-type exports and entries that have a clear replacement.module
-      if (!entry || entry.typeOnly) continue;
       const srcMod = entry.module;
       const exp = entry.export;
       const repl = entry.replacement && entry.replacement.module;
@@ -131,7 +107,7 @@ module.exports = {
     schema: false,
     docs: {
       description:
-        'Rewrites legacy WarpDrive import module specifiers to their modern replacements using an embedded mapping.',
+        'Rewrites legacy Ember Data import module specifiers to their modern replacements using an embedded mapping.',
       recommended: false,
       url: 'https://github.com/warp-drive-data/warp-drive/tree/main/packages/eslint-plugin-warp-drive/docs/no-legacy-imports.md',
     },
