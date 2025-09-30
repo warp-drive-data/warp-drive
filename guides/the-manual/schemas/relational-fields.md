@@ -5,7 +5,7 @@ order: 4
 # Relational Fields
 
 Relational Fields describe how resources are connected. They allow you to define belongs-to and has-many style relationships in a clear and reactive way.  
-They are always defined inside a [Resource Schema](./resource-schemas.md).
+They are always defined inside a [ResourceSchema](./resource-schemas.md).
 
 ## Defining Relationships
 
