@@ -4,6 +4,15 @@ order: 0
 categoryOrder: 3
 ---
 
+:::warning **🚧 Pardon Our Stardust!**
+✨ [PolarisMode](./resources/polaris-mode.md) Resources Aren't quite ready!
+
+Ember apps should currently use [LegacyMode](./resources/legacy-mode.md) and additionally install both `@warp-drive/legacy` and `@warp-drive/utilities`.
+
+Non-Ember apps should wait for PolarisMode to become recommended in V6, or limit usage to experimental
+exploration.
+:::
+
 # Schemas
 
 Schemas are how ***Warp*Drive** understands the structure of your data, powering features like caching, relational data, and reactivity.
@@ -16,7 +25,7 @@ Schemas are also how [ReactiveResource](/api/@warp-drive/core/reactive/interface
 
 ## ResourceSchema
 
-[ResourceSchemas](/api/@warp-drive/core/types/schema/fields/type-aliases/ResourceSchema) define the structure of the data for a specific `ResourceType`, for instance `'user'`.
+[ResourceSchemas](/api/@warp-drive/core/types/schema/fields/type-aliases/ResourceSchema) define the structure of the data for a specific `ResourceType`, for instance `'user'` and set its [Mode](#modes)
 
 Take for instance the following resource data for a user.
 
@@ -96,3 +105,14 @@ Something you'll maybe note right away: schemas are JSON, which ensures a high d
 - ResourceSchema
 - ObjectSchema
 - Traits
+
+## Modes {#modes}
+
+ResourceSchemas define a "mode" which instructs WarpDrive on how a ReactiveResource using that schema should behave.
+
+There are currently two modes:
+
+- [LegacyMode (recommended)](./resources/legacy-mode.md) - which we recommend for new and existing Ember apps.
+- [PolarisMode (preview)](./resources/polaris-mode.md) - which we recommend only for intrepid explorers probing the boundaries of our universe, and which will become the recommendation in V6.
+
+

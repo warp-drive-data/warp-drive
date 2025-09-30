@@ -20,9 +20,9 @@ a [Store](#quick-store-setup) to manage our data.
 
 ***Warp*Drive** uses a [babel plugin](https://www.npmjs.com/package/@embroider/macros) to inject app-specific [configuration](/api/@warp-drive/core/build-config/interfaces/WarpDriveConfig) allowing us to provide advanced dev-mode debugging features, deprecation management, and canary feature toggles.
 
-For Ember apps, this plugin comes built-in to the toolchain and all you need to do is provide it
-the desired configuration in `ember-cli-build`. For other projects, the configuration
-is done inside of the project's babel configuration file.
+For most projects, the configuration is done inside of the project's babel configuration file.
+For ember apps that still have an `ember-cli-build` file, this plugin comes built-in to the
+toolchain and all you need to do is provide it the desired configuration in `ember-cli-build`.
 
 ::: tabs key:paradigm
 
@@ -119,7 +119,10 @@ with recommended defaults](/api/@warp-drive/core/functions/useRecommendedStore).
 
 :::tabs
 
-== PolarisMode
+== 🚧 PolarisMode (preview)
+
+>[!WARNING]
+> [PolarisMode](/guides/the-manual/schemas/resources/polaris-mode.md) Isn't quite ready!
 
 ```ts
 import { useRecommendedStore } from '@warp-drive/core';
@@ -133,7 +136,11 @@ export default useRecommendedStore({
 });
 ```
 
-== Legacy Mode (Ember Only)
+== LegacyMode (recommended, Ember Only)
+
+>[!TIP]
+> While [LegacyMode](/guides/the-manual/schemas/resources/legacy-mode.md) can work with
+> Non-Ember apps, we recommend waiting for [PolarisMode](/guides/the-manual/schemas/resources/polaris-mode.md) to become recommended in V6, or limit usage to experimental exploration.
 
 ```ts
 import { useLegacyStore } from '@warp-drive/legacy';

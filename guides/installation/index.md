@@ -4,7 +4,13 @@ categoryOrder: 0
 order: 0
 ---
 
-::: warning 💡 Looking for the [Legacy Package Guide](../configuration/legacy-package-setup/index.md)?
+:::warning **🚧 Pardon Our Stardust!**
+✨ [PolarisMode](/guides/the-manual/schemas/resources/polaris-mode.md) Resources Aren't quite ready!
+
+Ember apps should currently use [LegacyMode](/guides/the-manual/schemas/resources/legacy-mode.md) and additionally install both `@warp-drive/legacy` and `@warp-drive/utilities`.
+
+Non-Ember apps should wait for PolarisMode to become recommended in V6, or limit usage to experimental
+exploration.
 :::
 
 # Installation
@@ -115,8 +121,8 @@ Don't see your framework listed yet? Reactive frameworks can typically be implem
 
 ## Lockstep Versioning
 
-::: warning ⚠️ Caution
-We find this means its best to use exact versions instead of ranges as all WarpDrive packages should be upgraded together at once.
+:::tip 💡 **TIP** Use Exact Versions in package.json
+We find its best to use exact versions instead of ranges as all ***Warp*Drive** packages should be upgraded together at once.
 :::
 
 ***Warp*Drive** packages follow a lockstep versioning approach: all dependencies and peer-dependencies between the project's own packages are version-locked at the time of publish.
