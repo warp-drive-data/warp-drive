@@ -19,7 +19,7 @@
  *       "filePath": "<relative path from repo root to source file>",
  *       "module": "<packageName or packageName/subpath>",
  *       "export": "default" | "*" | "<identifier>",
- *       "typeOnly": boolean,
+ *       "isTypeExport": boolean,
  *       "replacement": {}
  *     }
  *
@@ -34,9 +34,7 @@
  *   - No attempt to interpret package.json "exports" field; we ONLY trust vite configs.
  *
  * Limitations:
- *   - Naive export detector relying on regex; good for typical patterns in this repo.
- *   - Does not parse complex multi-line declarations with unusual formatting or
- *     conditional compilation wrappers.
+ *   - Uses Babel’s parser; extremely unusual syntax may still fail to parse.
  *   - Does not resolve star exports into concrete names.
  *
  * Node Version: >= 18 (per repository engines)
@@ -45,13 +43,31 @@
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
 import url from 'node:url';
+import { parse } from '@babel/parser';
+import traverseModule from '@babel/traverse';
+import * as t from '@babel/types';
+
+const traverse = typeof traverseModule === 'function' ? traverseModule : traverseModule.default;
+
+const PARSER_PLUGINS = [
+  'typescript',
+  'decorators-legacy',
+  'classProperties',
+  'classPrivateProperties',
+  'classPrivateMethods',
+  'jsx',
+  'dynamicImport',
+  'exportDefaultFrom',
+  'exportNamespaceFrom',
+  'topLevelAwait',
+];
 
 const REPO_ROOT = path.resolve(path.dirname(url.fileURLToPath(import.meta.url)), '..'); // data/
-// const PACKAGES_DIR = path.join(REPO_ROOT, 'packages');
-const PACKAGES_DIR = path.join(REPO_ROOT, 'warp-drive-packages');
-// const OUTPUT_FILE = path.join(REPO_ROOT, 'public-exports-mapping-5.5.json');
+const PACKAGES_DIR = path.join(REPO_ROOT, 'packages');
+// const PACKAGES_DIR = path.join(REPO_ROOT, 'warp-drive-packages');
+const OUTPUT_FILE = path.join(REPO_ROOT, 'public-exports-mapping-5.5.json');
 // const OUTPUT_FILE = path.join(REPO_ROOT, 'public-exports-mapping-main.json');
-const OUTPUT_FILE = path.join(REPO_ROOT, 'public-exports-mapping-wd.json');
+// const OUTPUT_FILE = path.join(REPO_ROOT, 'public-exports-mapping-wd.json');
 
 const STAR = '*';
 
@@ -102,7 +118,7 @@ const STAR = '*';
             filePath: path.relative(REPO_ROOT, absFile).replace(/\\/g, '/'),
             module: moduleSpecifier,
             export: exp.name,
-            typeOnly: exp.typeOnly,
+            isTypeExport: exp.isTypeExport,
             replacement: {},
           });
         }
@@ -380,90 +396,130 @@ function buildModuleSpecifier(packageName, relFromSrc) {
  *   export type Name ...
  */
 function extractExports(source) {
-  // Strip comments to avoid false positives from documentation examples.
-  // Replace removed comment content with spaces to keep rough positional alignment.
-  const stripped = source.replace(/\/\*[\s\S]*?\*\//g, (m) => ' '.repeat(m.length)).replace(/(^|[^:])\/\/.*$/gm, '$1');
+  const ast = parse(source, { sourceType: 'module', plugins: PARSER_PLUGINS });
+  const seen = new Map();
 
-  const exports = [];
-  const add = (name, typeOnly = false) => exports.push({ name, typeOnly });
-
-  // default
-  if (/export\s+default\b/.test(stripped)) {
-    add('default', false);
-  }
-
-  // star re-exports
-  {
-    const starRegex = /export\s+\*\s+from\s+['"][^'"]+['"]/g;
-    if (starRegex.test(stripped)) {
-      add(STAR, false);
+  const add = (name, isTypeExport = false) => {
+    const key = `${name}:${isTypeExport}`;
+    if (!seen.has(key)) {
+      seen.set(key, { name, isTypeExport });
     }
-  }
+  };
 
-  // named grouped exports
-  {
-    const groupRegex = /export\s+\{([^}]+)\}(\s+from\s+['"][^'"]+['"])?/g;
-    let m;
-    while ((m = groupRegex.exec(stripped))) {
-      const body = m[1];
-      body
-        .split(',')
-        .map((s) => s.trim())
-        .filter(Boolean)
-        .forEach((item) => {
-          let typeOnly = false;
-          let token = item;
+  const recordFromDeclaration = (declaration, forcedType = false) => {
+    const addId = (identifier, isType) => {
+      if (identifier) add(identifier, forcedType || isType);
+    };
 
-          if (token.startsWith('type ')) {
-            typeOnly = true;
-            token = token.slice(5).trim();
-          }
-
-          if (/^default\s+as\s+/.test(token)) {
-            const target = token.split(/\s+as\s+/)[1];
-            if (target) add(target.trim(), false);
-            return;
-          }
-
-          if (token.includes(' as ')) {
-            const [, alias] = token.split(/\s+as\s+/);
-            add(alias.trim(), typeOnly);
-            return;
-          }
-
-          add(token.trim(), typeOnly);
-        });
+    switch (declaration.type) {
+      case 'FunctionDeclaration':
+      case 'ClassDeclaration':
+      case 'TSDeclareFunction':
+        addId(declaration.id?.name, declaration.declare === true);
+        break;
+      case 'VariableDeclaration':
+        for (const declarator of declaration.declarations) {
+          collectPatternIds(declarator.id, (idName) => add(idName, forcedType || declaration.declare === true));
+        }
+        break;
+      case 'TSTypeAliasDeclaration':
+      case 'TSInterfaceDeclaration':
+        add(declaration.id?.name, true);
+        break;
+      case 'TSEnumDeclaration':
+        add(declaration.id?.name, forcedType || declaration.declare === true);
+        break;
+      case 'TSModuleDeclaration':
+        if (t.isIdentifier(declaration.id)) {
+          add(declaration.id.name, forcedType || declaration.declare === true);
+        }
+        break;
+      default:
+        break;
     }
-  }
+  };
 
-  // declaration exports line-by-line
-  const declPatterns = [
-    { re: /export\s+(?:abstract\s+)?class\s+([A-Za-z0-9_$]+)/, type: false },
-    { re: /export\s+(?:async\s+)?function\s+([A-Za-z0-9_$]+)/, type: false },
-    { re: /export\s+const\s+([A-Za-z0-9_$]+)/, type: false },
-    { re: /export\s+let\s+([A-Za-z0-9_$]+)/, type: false },
-    { re: /export\s+var\s+([A-Za-z0-9_$]+)/, type: false },
-    { re: /export\s+enum\s+([A-Za-z0-9_$]+)/, type: false },
-    { re: /export\s+interface\s+([A-Za-z0-9_$]+)/, type: true },
-    { re: /export\s+type\s+([A-Za-z0-9_$]+)/, type: true },
-  ];
+  traverse(ast, {
+    ExportDefaultDeclaration() {
+      add('default', false);
+    },
+    ExportAllDeclaration(path) {
+      const { node } = path;
+      if (node.exported) {
+        const exportedName = getExportedName(node.exported);
+        add(exportedName, node.exportKind === 'type');
+      } else {
+        add(STAR, node.exportKind === 'type');
+      }
+    },
+    ExportNamedDeclaration(path) {
+      const { node } = path;
+      const forcedType = node.exportKind === 'type';
 
-  const lines = stripped.split(/\r?\n/);
-  for (const line of lines) {
-    for (const pat of declPatterns) {
-      const mm = pat.re.exec(line);
-      if (mm) add(mm[1], pat.type);
-    }
-  }
+      if (node.declaration) {
+        recordFromDeclaration(node.declaration, forcedType);
+      }
 
-  // De-dupe (keeping earliest)
-  const seen = new Set();
-  return exports.filter((e) => {
-    const key = `${e.name}:${e.typeOnly}`;
-    if (seen.has(key)) return false;
-    seen.add(key);
-    return true;
+      for (const spec of node.specifiers) {
+        if (spec.type === 'ExportSpecifier') {
+          const exportedName = getExportedName(spec.exported);
+          const isType = forcedType || spec.exportKind === 'type';
+          add(exportedName, isType);
+          if (node.source) {
+            const localName = getExportedName(spec.local);
+            if (localName) add(localName, isType);
+          }
+        } else if (spec.type === 'ExportNamespaceSpecifier') {
+          const exportedName = getExportedName(spec.exported) ?? STAR;
+          add(exportedName, forcedType);
+        }
+      }
+    },
   });
+
+  return Array.from(seen.values());
+}
+
+function collectPatternIds(node, visit) {
+  if (!node) return;
+  if (t.isIdentifier(node)) {
+    visit(node.name);
+    return;
+  }
+  if (t.isObjectPattern(node)) {
+    for (const prop of node.properties) {
+      if (t.isRestElement(prop)) {
+        collectPatternIds(prop.argument, visit);
+      } else if (t.isObjectProperty(prop)) {
+        collectPatternIds(prop.value, visit);
+      }
+    }
+    return;
+  }
+  if (t.isArrayPattern(node)) {
+    for (const elem of node.elements) {
+      collectPatternIds(elem, visit);
+    }
+    return;
+  }
+  if (t.isAssignmentPattern(node)) {
+    collectPatternIds(node.left, visit);
+    return;
+  }
+  if (t.isRestElement(node)) {
+    collectPatternIds(prop.argument, visit);
+    return;
+  }
+  if (typeof t.isTSParameterProperty === 'function' && t.isTSParameterProperty(node)) {
+    collectPatternIds(node.parameter, visit);
+  }
+}
+
+function getExportedName(node) {
+  if (!node) return null;
+  if (t.isIdentifier(node)) return node.name;
+  if (t.isStringLiteral(node)) return node.value;
+  return null;
 }
 
 /* ------------------------------------------------------------------------------------------------
@@ -481,7 +537,7 @@ async function safeReadFile(file) {
 function dedupeAndSort(records) {
   const map = new Map();
   for (const r of records) {
-    const key = `${r.module}::${r.export}::${r.typeOnly}`;
+    const key = `${r.module}::${r.export}::${r.isTypeExport}`;
     if (!map.has(key)) map.set(key, r);
   }
   const arr = Array.from(map.values());
@@ -492,8 +548,7 @@ function dedupeAndSort(records) {
     const rb = rank(b.export);
     if (ra !== rb) return ra - rb;
     if (a.export !== b.export) return a.export < b.export ? -1 : 1;
-    // type-only after value exports if same name (shouldn't happen realistically)
-    if (a.typeOnly !== b.typeOnly) return a.typeOnly ? 1 : -1;
+    if (a.isTypeExport !== b.isTypeExport) return a.isTypeExport ? 1 : -1;
     return 0;
   });
   return arr;
