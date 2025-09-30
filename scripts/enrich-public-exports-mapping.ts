@@ -60,7 +60,7 @@
  *     [--interactive] [--debug]
  */
 
-import { readFileSync, writeFileSync, readdirSync, statSync } from 'node:fs';
+import { readFileSync, writeFileSync } from 'node:fs';
 import { resolve, dirname, relative, extname, basename, sep, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import readline from 'node:readline';
@@ -70,26 +70,63 @@ interface MappingEntry {
   filePath: string;
   module: string;
   export: string;
-  typeOnly: boolean;
-  replacement: Record<string, unknown>;
+  isTypeExport: boolean;
+  replacement: Replacement;
+}
+interface Replacement {
+  module?: string;
+  export?: string;
+  sourceFile?: string;
+  isTypeExport?: boolean;
+  score?: number;
+  all?: Array<{
+    module: string;
+    export: string;
+    sourceFile: string;
+    isTypeExport: boolean;
+    score: number;
+    isRoot: boolean;
+  }>;
+  notFound?: true;
+  missing?: true;
+  starExportFilePath?: string;
+  userSelectedIndex?: number;
+  userAction?: string;
 }
 interface ExportCandidate {
   module: string;
   export: string;
   sourceFile: string;
-  typeOnly: boolean;
+  isTypeExport: boolean;
 }
 interface ScoredCandidate extends ExportCandidate {
   score: number;
   isRoot: boolean;
 }
+interface CompactMappingEntry {
+  filePath: string;
+  module: string;
+  export: string;
+  isTypeExport: boolean;
+  replacement: SimplifiedReplacement;
+}
+interface SimplifiedReplacement {
+  module?: string;
+  export?: string;
+  sourceFile?: string;
+  isTypeExport?: boolean;
+  notFound?: true;
+  missing?: true;
+  starExportFilePath?: string;
+}
 interface CliOptions {
   in: string;
   wd: string;
   out?: string;
+  flatOut?: string;
   debug: boolean;
   interactive: boolean;
-  showSnippets?: boolean; // NEW
+  showSnippets?: boolean;
 }
 
 const __filename = fileURLToPath(import.meta.url);
@@ -106,6 +143,8 @@ const SCORE_ROOT_MODULE = 2;
 const SCORE_UNMATCHED_PENALTY = 0.5;
 const SCORE_LITERAL_MATCH = 0.5;
 const SCORE_LITERAL_SEGMENT = 1;
+const SCORE_TYPE_MATCH = 5;
+const SCORE_TYPE_MISMATCH_PENALTY = -4;
 
 function readJsonFile<T>(filePath: string): T {
   try {
@@ -127,6 +166,8 @@ function parseArgs(): CliOptions {
       opts.wd = resolve(process.cwd(), args[++i]);
     } else if ((a === '--out' || a === '-o') && args[i + 1]) {
       opts.out = resolve(process.cwd(), args[++i]);
+    } else if ((a === '--flat-out' || a === '-f') && args[i + 1]) {
+      opts.flatOut = resolve(process.cwd(), args[++i]);
     } else if (a === '--debug') {
       opts.debug = true;
     } else if (a === '--interactive' || a === '-I') {
@@ -135,7 +176,8 @@ function parseArgs(): CliOptions {
       opts.showSnippets = true;
     } else if (a === '--help' || a === '-h') {
       console.log(
-        `Usage: enrich-public-exports-mapping [--in path] [--wd path] [--out path] [--interactive] [--debug] [--show-snippets]\n\n` +
+        `Usage: enrich-public-exports-mapping [--in path] [--wd path] [--out path] [--flat-out path]\n` +
+          `                                  [--interactive] [--debug] [--show-snippets]\n\n` +
           `Interactive prompt commands:\n` +
           `  v <n>   View snippet for candidate at index n\n` +
           `  vo      View snippet for the original mapping file/export\n` +
@@ -147,31 +189,31 @@ function parseArgs(): CliOptions {
   if (!opts.out) {
     opts.out = opts.in.replace(/\.json$/i, '') + '.enriched.json';
   }
+  if (!opts.flatOut) {
+    opts.flatOut = opts.out.replace(/\.json$/i, '') + '.replacement.json';
+  }
   return opts;
 }
 
 /* ----------------------------- Export Index Builder -------------------------- */
 function buildExportIndex(wdFile: string): Map<string, ExportCandidate[]> {
   const index = new Map<string, ExportCandidate[]>();
-  const wdEntries: MappingEntry[] = readJsonFile(wdFile);
+  const wdEntries = readJsonFile<MappingEntry[]>(wdFile);
 
   for (const entry of wdEntries) {
     const candidate: ExportCandidate = {
       module: entry.module,
       export: entry.export,
       sourceFile: entry.filePath,
-      typeOnly: entry.typeOnly,
+      isTypeExport: entry.isTypeExport,
     };
     addToIndex(index, entry.export, candidate);
-
-    // For default exports, also index by the "main" export name
     if (entry.export === 'default') {
       handleDefaultExport(index, entry, candidate);
     }
   }
   return index;
 }
-
 function addToIndex(index: Map<string, ExportCandidate[]>, name: string, candidate: ExportCandidate) {
   let arr = index.get(name);
   if (!arr) {
@@ -180,7 +222,6 @@ function addToIndex(index: Map<string, ExportCandidate[]>, name: string, candida
   }
   arr.push(candidate);
 }
-
 function handleDefaultExport(index: Map<string, ExportCandidate[]>, entry: MappingEntry, candidate: ExportCandidate) {
   const moduleParts = entry.module.split('/');
   const lastPart = moduleParts[moduleParts.length - 1];
@@ -581,7 +622,7 @@ async function interactiveSelect(
       module: c.module,
       export: c.export,
       sourceFile: c.sourceFile,
-      typeOnly: c.typeOnly,
+      typeOnly: c.isTypeExport,
       score: Number(c.score.toFixed(2)),
       isRoot: c.isRoot,
     };
@@ -714,23 +755,27 @@ async function processEntry(
     }
   }
 
-  const scored: ScoredCandidate[] = allCandidates.map((c) => ({
-    ...c,
-    score: scoreCandidate(entry.module, c),
-    isRoot: isRootModule(c),
-  }));
+  const scored: ScoredCandidate[] = allCandidates.map((c) => {
+    const baseScore = scoreCandidate(entry.module, c);
+    const typeAdjustment = entry.isTypeExport === c.isTypeExport ? SCORE_TYPE_MATCH : SCORE_TYPE_MISMATCH_PENALTY;
+    return {
+      ...c,
+      score: baseScore + typeAdjustment,
+      isRoot: isRootModule(c),
+    };
+  });
 
   let primary = choosePrimary(scored);
 
   // Deterministic ordering
-  const allSorted = scored.sort(
+  const allSorted = [...scored].sort(
     (a, b) => b.score - a.score || (a.isRoot === b.isRoot ? a.module.localeCompare(b.module) : a.isRoot ? -1 : 1)
   );
   const allForReplacement = allSorted.map((c) => ({
     module: c.module,
     export: c.export,
     sourceFile: c.sourceFile,
-    typeOnly: c.typeOnly,
+    isTypeExport: c.isTypeExport,
     score: Number(c.score.toFixed(2)),
     isRoot: c.isRoot,
   }));
@@ -761,7 +806,7 @@ async function processEntry(
     replacement.module = primary.module;
     replacement.export = primary.export;
     replacement.sourceFile = primary.sourceFile;
-    replacement.typeOnly = primary.typeOnly;
+    replacement.isTypeExport = primary.isTypeExport;
     replacement.score = Number(primary.score.toFixed(2));
   }
 
@@ -797,10 +842,10 @@ async function processEntry(
 
 /* -------------------------------- Entry Point -------------------------------- */
 async function main() {
-  const { in: inFile, wd: wdFile, out, debug, interactive, showSnippets } = parseArgs();
+  const { in: inFile, wd: wdFile, out, debug, interactive, showSnippets, flatOut } = parseArgs();
   const repoRoot = resolve(__dirname, '..');
 
-  const entries: MappingEntry[] = readJsonFile(inFile);
+  const entries = readJsonFile<MappingEntry[]>(inFile);
 
   console.log('Building export index from warp-drive mapping file...');
   const exportIndex = buildExportIndex(wdFile);
@@ -818,9 +863,33 @@ async function main() {
 
   writeFileSync(out!, JSON.stringify(enriched, null, 2) + '\n', 'utf8');
   console.log(`Wrote enriched mapping to ${out}`);
+  const compact = createCompactEntries(enriched);
+  writeFileSync(flatOut!, JSON.stringify(compact, null, 2) + '\n', 'utf8');
+  console.log(`Wrote compact mapping to ${flatOut}`);
 }
 
 main().catch((e) => {
   console.error(e);
   process.exit(1);
 });
+
+function createCompactEntries(entries: MappingEntry[]): CompactMappingEntry[] {
+  return entries.map(({ filePath, module, export: exportName, isTypeExport, replacement }) => {
+    const simplified: SimplifiedReplacement = {};
+    if (replacement?.module) simplified.module = replacement.module;
+    if (replacement?.export) simplified.export = replacement.export;
+    if (replacement?.sourceFile) simplified.sourceFile = replacement.sourceFile;
+    if (replacement?.isTypeExport !== undefined) simplified.isTypeExport = replacement.isTypeExport;
+    if (replacement?.notFound) simplified.notFound = true;
+    if (replacement?.missing) simplified.missing = true;
+    if (replacement?.starExportFilePath) simplified.starExportFilePath = replacement.starExportFilePath;
+
+    return {
+      filePath,
+      module,
+      export: exportName,
+      isTypeExport,
+      replacement: simplified,
+    };
+  });
+}
