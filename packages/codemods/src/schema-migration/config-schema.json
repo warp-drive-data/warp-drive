@@ -41,6 +41,19 @@
       "description": "Alternate import source for EmberData decorators",
       "default": "@ember-data/model"
     },
+    "enableFragments": {
+      "type": "boolean",
+      "description": "Enable fragment decorator support",
+      "default": true
+    },
+    "fragmentImportSources": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Import sources for fragment decorators",
+      "default": ["ember-data-model-fragments/attributes"]
+    },
     "intermediateModelPaths": {
       "type": "array",
       "items": {

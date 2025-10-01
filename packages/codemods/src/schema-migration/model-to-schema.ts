@@ -11,6 +11,7 @@ import {
   createTypeArtifact,
   debugLog,
   DEFAULT_EMBER_DATA_SOURCE,
+  DEFAULT_FRAGMENT_IMPORT_SOURCES,
   detectQuoteStyle,
   errorLog,
   extractBaseName,
@@ -31,6 +32,8 @@ import {
   getTypeScriptTypeForAttribute,
   getTypeScriptTypeForBelongsTo,
   getTypeScriptTypeForHasMany,
+  getTypeScriptTypeForFragment,
+  getTypeScriptTypeForSchemaObject,
   mixinNameToTraitName,
   parseDecoratorArgumentsWithNodes,
   toPascalCase,
@@ -426,7 +429,6 @@ export function toArtifacts(filePath: string, source: string, options: Transform
   debugLog(options, `=== DEBUG: Processing ${filePath} ===`);
 
   const analysis = analyzeModelFile(filePath, source, options);
-
   if (!analysis.isValid) {
     debugLog(options, 'Model analysis failed, skipping artifact generation');
     return [];
@@ -452,7 +454,8 @@ export function toArtifacts(filePath: string, source: string, options: Transform
     mixinExtensions,
     source,
     defaultExportNode,
-    root
+    root,
+    options
   );
   // Determine the file extension based on the original model file
   const originalExtension = filePath.endsWith('.ts') ? '.ts' : '.js';
@@ -494,6 +497,12 @@ export function toArtifacts(filePath: string, source: string, options: Transform
           break;
         case 'hasMany':
           type = getTypeScriptTypeForHasMany(field, options);
+          break;
+        case 'fragment':
+          type = getTypeScriptTypeForFragment(field, options);
+          break;
+        case 'schema-object':
+          type = getTypeScriptTypeForSchemaObject(field, options);
           break;
         default:
           type = 'unknown';
@@ -742,6 +751,12 @@ function generateIntermediateModelTraitArtifacts(
         break;
       case 'hasMany':
         type = getTypeScriptTypeForHasMany(field, options);
+        break;
+      case 'fragment':
+        type = getTypeScriptTypeForFragment(field, options);
+        break;
+      case 'schema-object':
+        type = getTypeScriptTypeForSchemaObject(field, options);
         break;
       default:
         type = 'unknown';
@@ -1423,6 +1438,36 @@ function generateLegacyResourceSchema(
   return generateExportStatement(schemaName, legacySchema, useSingleQuotes);
 }
 
+/**
+ * Remove fragment imports from source code since they're not needed in the generated schema
+ */
+function removeFragmentImports(source: string, options?: TransformOptions): string {
+  // Skip if fragments are disabled
+  if (options?.enableFragments === false) {
+    return source;
+  }
+
+  // Get fragment import sources to remove
+  const fragmentSources = options?.fragmentImportSources || DEFAULT_FRAGMENT_IMPORT_SOURCES;
+
+  const lines = source.split('\n');
+  const filteredLines = lines.filter((line) => {
+    // Check if this line contains a fragment import
+    const trimmedLine = line.trim();
+    if (trimmedLine.startsWith('import')) {
+      // Check if this import is from any of the configured fragment sources
+      for (const fragmentSource of fragmentSources) {
+        if (trimmedLine.includes(fragmentSource)) {
+          return false; // Remove this line
+        }
+      }
+    }
+    return true; // Keep this line
+  });
+
+  return filteredLines.join('\n');
+}
+
 /** Generate schema code by preserving existing file content and replacing model with schema */
 function generateSchemaCode(
   schemaName: string,
@@ -1432,17 +1477,21 @@ function generateSchemaCode(
   mixinExtensions: string[],
   originalSource: string,
   defaultExportNode: SgNode | null,
-  root: SgNode
+  root: SgNode,
+  options?: TransformOptions
 ): string {
   const legacySchema = buildLegacySchemaObject(type, schemaFields, mixinTraits, mixinExtensions);
 
-  // Detect quote style from original source
-  const useSingleQuotes = detectQuoteStyle(originalSource) === 'single';
+  // Remove fragment imports since they're not needed in the generated schema
+  const filteredSource = removeFragmentImports(originalSource, options);
+
+  // Detect quote style from filtered source
+  const useSingleQuotes = detectQuoteStyle(filteredSource) === 'single';
   const exportStatement = generateExportStatement(schemaName, legacySchema, useSingleQuotes);
 
   // If no default export node, just append the schema to the existing content
   if (!defaultExportNode) {
-    return `${originalSource}\n\n${exportStatement}`;
+    return `${filteredSource}\n\n${exportStatement}`;
   }
 
   // Use the already-parsed AST root node
@@ -1478,7 +1527,7 @@ function generateSchemaCode(
     if (exportText.includes('class ')) {
       // Class is directly in the export (export default class XcSuggestion)
       // Remove the entire export statement
-      let result = originalSource.replace(exportText, '');
+      let result = filteredSource.replace(exportText, '');
       // Clean up extra newlines
       result = result.replace(/\n\n\n+/g, '\n\n');
       return `${result}\n${exportStatement}`;
@@ -1487,7 +1536,7 @@ function generateSchemaCode(
     // Remove both the class declaration and the export statement
     const classText = classDeclaration.text();
 
-    let result = originalSource.replace(classText, '');
+    let result = filteredSource.replace(classText, '');
     result = result.replace(exportText, '');
 
     // Clean up extra newlines
@@ -1497,7 +1546,7 @@ function generateSchemaCode(
 
   // Fallback: just replace the export statement
   const original = defaultExportNode.text();
-  return originalSource.replace(original, exportStatement);
+  return filteredSource.replace(original, exportStatement);
 }
 
 /** Generate only the schema code block (legacy function for compatibility) */

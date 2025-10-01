@@ -7,7 +7,6 @@ describe('model-to-schema transform (artifacts)', () => {
   describe('basic functionality', () => {
     it('produces schema and extension artifacts for basic model', () => {
       const input = `import Model, { attr, hasMany, belongsTo } from '@ember-data/model';
-
 export default class User extends Model {
 	@attr('string') name;
 	@attr('string') email;
@@ -152,6 +151,48 @@ export default class ProjectPlan extends Model {
       expect(artifacts[0]?.code).toContain("'type': 'project-plan'");
       expect(artifacts[0]?.code).toContain('export const ProjectPlanSchema');
       expect(artifacts[0]?.code).toContain("'name': 'title'");
+    });
+  });
+
+  describe.only('fragment handling', () => {
+    it('handles fragments correctly inside of models', () => {
+      const input = `import Model, { attr } from '@ember-data/model';
+      import { fragment } from 'ember-data-model-fragments/attributes';
+
+export default class FragmentModel extends Model {
+	@attr('string') name;
+  @fragment('address') address;
+}`;
+
+      const artifacts = toArtifacts('app/models/fragment-model.js', input, DEFAULT_TEST_OPTIONS);
+      console.log('******** RSGTEST **********', artifacts);
+      expect(artifacts).toHaveLength(2);
+      expect(artifacts[0]?.name).toBe('FragmentModelSchema');
+      expect(artifacts[0]?.suggestedFileName).toBe('fragment-model.schema.js');
+      expect(artifacts[0]?.code).toContain("'type': 'fragment-model'");
+      expect(artifacts[0]?.code).toContain('export const FragmentModelSchema');
+      expect(artifacts[0]?.code).toContain("'name': 'address'");
+    });
+
+    it('disables fragment support when enableFragments is false', () => {
+      const input = `import Model, { attr } from '@ember-data/model';
+      import { fragment } from 'ember-data-model-fragments/attributes';
+
+export default class FragmentModel extends Model {
+	@attr('string') name;
+  @fragment('address') address;
+}`;
+
+      const artifacts = toArtifacts(
+        'app/models/fragment-model.js',
+        input,
+        createTestOptions({ enableFragments: false })
+      );
+      expect(artifacts).toHaveLength(3); // Should have extension artifact since fragment is treated as extension property
+      expect(artifacts[0]?.name).toBe('FragmentModelSchema');
+      expect(artifacts[0]?.code).toContain("'name': 'name'");
+      expect(artifacts[0]?.code).not.toContain("'name': 'address'"); // Fragment should not be in schema
+      expect(artifacts[0]?.code).toContain("import { fragment } from 'ember-data-model-fragments/attributes';"); // Fragment import should be preserved
     });
   });
 

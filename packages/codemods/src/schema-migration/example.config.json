@@ -7,6 +7,8 @@
   "debug": false,
   "mirror": false,
   "emberDataImportSource": "@ember-data/model",
+  "enableFragments": true,
+  "fragmentImportSources": ["ember-data-model-fragments/attributes"],
   "baseModelImportPath": "my-app/core/base-model",
   "modelImportSource": "my-app/models",
   "resourcesImport": "my-app/data/resources",

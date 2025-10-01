@@ -37,6 +37,10 @@ export interface TransformOptions {
   extensionsImport?: string;
   /** Custom type mappings for EmberData transform types (e.g., 'uuid' -> 'string') */
   typeMapping?: Record<string, string>;
+  /** Enable fragment decorator support (default: true) */
+  enableFragments?: boolean;
+  /** Import sources for fragment decorators (default: ['ember-data-model-fragments/attributes']) */
+  fragmentImportSources?: string[];
   /** Internal flag to indicate we're processing an intermediate model that should become a trait */
   processingIntermediateModel?: boolean;
 }
@@ -46,6 +50,7 @@ export interface TransformOptions {
  */
 export const DEFAULT_EMBER_DATA_SOURCE = '@ember-data/model';
 export const DEFAULT_MIXIN_SOURCE = '@ember/object/mixin';
+export const DEFAULT_FRAGMENT_IMPORT_SOURCES = ['ember-data-model-fragments/attributes'];
 // Note: modelImportSource and resourcesImport must be explicitly configured
 // No defaults are provided to avoid hardcoding project-specific paths
 
@@ -269,7 +274,14 @@ export function getEmberDataImports(
 ): Map<string, string> {
   const emberDataImports = new Map<string, string>();
 
-  debugLog(options, 'Looking for EmberData imports from:', expectedSources);
+  // Add fragment imports to the expected sources if fragments are enabled
+  const allExpectedSources = [...expectedSources];
+  if (options?.enableFragments !== false) {
+    const fragmentSources = options?.fragmentImportSources || DEFAULT_FRAGMENT_IMPORT_SOURCES;
+    allExpectedSources.push(...fragmentSources);
+  }
+
+  debugLog(options, 'Looking for EmberData imports from:', allExpectedSources);
 
   // Find all import statements
   const importStatements = root.findAll({ rule: { kind: 'import_statement' } });
@@ -284,7 +296,7 @@ export function getEmberDataImports(
     const cleanSourceText = removeQuotes(sourceText);
 
     // Check if this import is from one of our expected sources
-    if (!expectedSources.includes(cleanSourceText)) {
+    if (!allExpectedSources.includes(cleanSourceText)) {
       continue;
     }
 
@@ -1236,6 +1248,8 @@ export function getFieldKindFromDecorator(decoratorName: string): string {
       return 'belongsTo';
     case 'attr':
       return 'attribute';
+    case 'fragment':
+      return 'fragment';
     default:
       return 'field'; // fallback
   }
@@ -1815,7 +1829,10 @@ export function extractTypeFromDecoratorWithNodes(
           imports: imports.length > 0 ? imports : undefined,
         };
       }
-
+      case 'fragment': {
+        debugLog(options, '**********RSG: found fragment decorator 4********');
+        return null;
+      }
       default:
         return null;
     }
@@ -1927,6 +1944,10 @@ export function extractTypeFromDecorator(
           imports,
         };
       }
+      case 'fragment': {
+        debugLog(options, '**********RSG: found fragment decorator 3********');
+        return null;
+      }
 
       default:
         debugLog(options, `Unknown decorator type for type extraction: ${decoratorType}`);
@@ -2008,12 +2029,53 @@ export function getTypeScriptTypeForHasMany(
 }
 
 /**
+ * Generate TypeScript type for a fragment field
+ * Shared between model-to-schema and mixin-to-schema transforms
+ */
+export function getTypeScriptTypeForFragment(
+  field: { type?: string; options?: Record<string, unknown> },
+  options?: TransformOptions
+): string {
+  if (!field.type) {
+    return 'unknown';
+  }
+
+  const typeName = toPascalCase(field.type);
+
+  // For fragments, we assume they can be null by default for safety
+  return `${typeName} | null`;
+}
+
+/**
+ * Generate TypeScript type for a schema-object field (fragments)
+ * Shared between model-to-schema and mixin-to-schema transforms
+ */
+export function getTypeScriptTypeForSchemaObject(
+  field: { type?: string; options?: Record<string, unknown> },
+  options?: TransformOptions
+): string {
+  if (!field.type) {
+    return 'unknown';
+  }
+
+  // Extract the fragment type from the "fragment:type" format
+  const fragmentType = field.type.startsWith('fragment:')
+    ? field.type.substring(9) // Remove "fragment:" prefix
+    : field.type;
+
+  const typeName = toPascalCase(fragmentType);
+
+  // For schema-object fields (fragments), we assume they can be null by default for safety
+  return `${typeName} | null`;
+}
+
+/**
  * Interface for schema field information
  * Shared between model-to-schema and mixin-to-schema transforms
  */
 export interface SchemaField {
   name: string;
-  kind: 'attribute' | 'belongsTo' | 'hasMany';
+  kind: 'attribute' | 'belongsTo' | 'hasMany' | 'fragment' | 'schema-object';
   type?: string;
   options?: Record<string, unknown>;
 }
@@ -2076,6 +2138,26 @@ export function convertToSchemaFieldWithNodes(
         options: Object.keys(options).length > 0 ? options : undefined,
       };
     }
+    case 'fragment': {
+      const type = args.text[0] ? removeQuotes(args.text[0]) : undefined;
+      const optionsNode = args.nodes[1];
+      let options: Record<string, unknown> = {};
+
+      if (optionsNode && optionsNode.kind() === 'object') {
+        options = parseObjectLiteralFromNode(optionsNode);
+      }
+
+      // Fragment fields need to be structured as schema-object with specific properties
+      return {
+        name,
+        kind: 'schema-object' as const,
+        type: type ? `fragment:${type}` : undefined,
+        options: {
+          objectExtensions: ['ember-object', 'fragment'],
+          ...options,
+        },
+      };
+    }
     default:
       return null;
   }
@@ -2133,6 +2215,26 @@ export function convertToSchemaField(name: string, decoratorType: string, args: 
         kind: getFieldKindFromDecorator('hasMany') as 'hasMany',
         type,
         options: Object.keys(options).length > 0 ? options : undefined,
+      };
+    }
+    case 'fragment': {
+      const type = args[0] ? removeQuotes(args[0]) : undefined;
+      const optionsText = args[1];
+      let options: Record<string, unknown> = {};
+
+      if (optionsText) {
+        options = parseObjectLiteral(optionsText);
+      }
+
+      // Fragment fields need to be structured as schema-object with specific properties
+      return {
+        name,
+        kind: 'schema-object' as const,
+        type: type ? `fragment:${type}` : undefined,
+        options: {
+          objectExtensions: ['ember-object', 'fragment'],
+          ...options,
+        },
       };
     }
     default:

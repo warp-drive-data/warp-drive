@@ -8,7 +8,7 @@ export const DEFAULT_TEST_OPTIONS: TransformOptions = {
   modelImportSource: 'test-app/models',
   resourcesImport: 'test-app/data/resources',
   verbose: false,
-  debug: false,
+  debug: true,
 };
 
 /**
