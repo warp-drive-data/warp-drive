@@ -154,14 +154,16 @@ export default class ProjectPlan extends Model {
     });
   });
 
-  describe.only('fragment handling', () => {
-    it('handles fragments correctly inside of models', () => {
+  describe.only('fragment, array, and fragmentArray handling', () => {
+    it('handles fragments, arrays, and fragmentArrays correctly inside of models', () => {
       const input = `import Model, { attr } from '@ember-data/model';
-      import { fragment } from 'ember-data-model-fragments/attributes';
+      import { fragment, array, fragmentArray } from 'ember-data-model-fragments/attributes';
 
 export default class FragmentModel extends Model {
 	@attr('string') name;
   @fragment('address') address;
+  @array('string') tags;
+  @fragmentArray('address') addresses;
 }`;
 
       const artifacts = toArtifacts('app/models/fragment-model.js', input, DEFAULT_TEST_OPTIONS);
@@ -172,15 +174,22 @@ export default class FragmentModel extends Model {
       expect(artifacts[0]?.code).toContain("'type': 'fragment-model'");
       expect(artifacts[0]?.code).toContain('export const FragmentModelSchema');
       expect(artifacts[0]?.code).toContain("'name': 'address'");
+      expect(artifacts[0]?.code).toContain("'name': 'tags'");
+      expect(artifacts[0]?.code).toContain("'name': 'addresses'");
+      expect(artifacts[0]?.code).toContain("'kind': 'schema-object'");
+      expect(artifacts[0]?.code).toContain("'kind': 'array'");
+      expect(artifacts[0]?.code).toContain("'kind': 'schema-array'");
     });
 
-    it('disables fragment support when enableFragments is false', () => {
+    it('disables fragment, array, and fragmentArray support when enableFragments is false', () => {
       const input = `import Model, { attr } from '@ember-data/model';
-      import { fragment } from 'ember-data-model-fragments/attributes';
+      import { fragment, array, fragmentArray } from 'ember-data-model-fragments/attributes';
 
 export default class FragmentModel extends Model {
 	@attr('string') name;
   @fragment('address') address;
+  @array('string') tags;
+  @fragmentArray('address') addresses;
 }`;
 
       const artifacts = toArtifacts(
@@ -188,11 +197,15 @@ export default class FragmentModel extends Model {
         input,
         createTestOptions({ enableFragments: false })
       );
-      expect(artifacts).toHaveLength(3); // Should have extension artifact since fragment is treated as extension property
+      expect(artifacts).toHaveLength(3); // Should have extension artifact since fragment, array, and fragmentArray are treated as extension properties
       expect(artifacts[0]?.name).toBe('FragmentModelSchema');
       expect(artifacts[0]?.code).toContain("'name': 'name'");
       expect(artifacts[0]?.code).not.toContain("'name': 'address'"); // Fragment should not be in schema
-      expect(artifacts[0]?.code).toContain("import { fragment } from 'ember-data-model-fragments/attributes';"); // Fragment import should be preserved
+      expect(artifacts[0]?.code).not.toContain("'name': 'tags'"); // Array should not be in schema
+      expect(artifacts[0]?.code).not.toContain("'name': 'addresses'"); // FragmentArray should not be in schema
+      expect(artifacts[0]?.code).toContain(
+        "import { fragment, array, fragmentArray } from 'ember-data-model-fragments/attributes';"
+      ); // Fragment, array, and fragmentArray imports should be preserved
     });
   });
 

@@ -39,7 +39,7 @@ export interface TransformOptions {
   typeMapping?: Record<string, string>;
   /** Enable fragment decorator support (default: true) */
   enableFragments?: boolean;
-  /** Import sources for fragment decorators (default: ['ember-data-model-fragments/attributes']) */
+  /** Import sources for fragment and array decorators (default: ['ember-data-model-fragments/attributes']) */
   fragmentImportSources?: string[];
   /** Internal flag to indicate we're processing an intermediate model that should become a trait */
   processingIntermediateModel?: boolean;
@@ -1250,6 +1250,10 @@ export function getFieldKindFromDecorator(decoratorName: string): string {
       return 'attribute';
     case 'fragment':
       return 'fragment';
+    case 'array':
+      return 'array';
+    case 'fragmentArray':
+      return 'schema-array';
     default:
       return 'field'; // fallback
   }
@@ -1984,6 +1988,39 @@ export function toPascalCase(str: string): string {
 }
 
 /**
+ * Simple pluralization function
+ * Shared between model-to-schema and mixin-to-schema transforms
+ */
+export function pluralize(str: string): string {
+  if (str.endsWith('y')) {
+    return str.slice(0, -1) + 'ies';
+  } else if (str.endsWith('s') || str.endsWith('sh') || str.endsWith('ch') || str.endsWith('x') || str.endsWith('z')) {
+    return str + 'es';
+  } else {
+    return str + 's';
+  }
+}
+
+/**
+ * Simple singularization function
+ * Shared between model-to-schema and mixin-to-schema transforms
+ */
+export function singularize(str: string): string {
+  if (str.endsWith('ies')) {
+    return str.slice(0, -3) + 'y';
+  } else if (
+    str.endsWith('es') &&
+    (str.endsWith('ches') || str.endsWith('shes') || str.endsWith('xes') || str.endsWith('zes'))
+  ) {
+    return str.slice(0, -2);
+  } else if (str.endsWith('s') && !str.endsWith('ss')) {
+    return str.slice(0, -1);
+  } else {
+    return str;
+  }
+}
+
+/**
  * Generate TypeScript type for a belongsTo field
  * Shared between model-to-schema and mixin-to-schema transforms
  */
@@ -2070,12 +2107,58 @@ export function getTypeScriptTypeForSchemaObject(
 }
 
 /**
+ * Generate TypeScript type for an array field
+ * Shared between model-to-schema and mixin-to-schema transforms
+ */
+export function getTypeScriptTypeForArray(
+  field: { type?: string; options?: Record<string, unknown> },
+  options?: TransformOptions
+): string {
+  if (!field.type) {
+    return 'unknown[]';
+  }
+
+  // Extract the array type from the "array:type" format
+  const arrayType = field.type.startsWith('array:')
+    ? field.type.substring(6) // Remove "array:" prefix
+    : field.type;
+
+  const typeName = toPascalCase(arrayType);
+
+  // For array fields, we generate an array type
+  return `${typeName}[]`;
+}
+
+/**
+ * Generate TypeScript type for a schema-array field (fragment-arrays)
+ * Shared between model-to-schema and mixin-to-schema transforms
+ */
+export function getTypeScriptTypeForSchemaArray(
+  field: { type?: string; options?: Record<string, unknown> },
+  options?: TransformOptions
+): string {
+  if (!field.type) {
+    return 'unknown[]';
+  }
+
+  // Extract the fragment type from the "fragment:type" format
+  const fragmentType = field.type.startsWith('fragment:')
+    ? field.type.substring(9) // Remove "fragment:" prefix
+    : field.type;
+
+  const typeName = toPascalCase(fragmentType);
+
+  // For schema-array fields (fragment-arrays), we generate an array of fragment types
+  return `${typeName}[]`;
+}
+
+/**
  * Interface for schema field information
  * Shared between model-to-schema and mixin-to-schema transforms
  */
 export interface SchemaField {
   name: string;
-  kind: 'attribute' | 'belongsTo' | 'hasMany' | 'fragment' | 'schema-object';
+  kind: 'attribute' | 'belongsTo' | 'hasMany' | 'fragment' | 'schema-object' | 'array' | 'schema-array';
   type?: string;
   options?: Record<string, unknown>;
 }
@@ -2158,6 +2241,51 @@ export function convertToSchemaFieldWithNodes(
         },
       };
     }
+    case 'array': {
+      const type = args.text[0] ? removeQuotes(args.text[0]) : undefined;
+      const optionsNode = args.nodes[1];
+      let options: Record<string, unknown> = {};
+
+      if (optionsNode && optionsNode.kind() === 'object') {
+        options = parseObjectLiteralFromNode(optionsNode);
+      }
+
+      // Array fields need to be structured according to withArrayDefaults
+      return {
+        name,
+        kind: 'array' as const,
+        type: type ? `array:${type}` : undefined,
+        options: {
+          arrayExtensions: ['ember-object', 'ember-array-like', 'fragment-array'],
+          ...options,
+        },
+      };
+    }
+    case 'fragmentArray': {
+      const type = args.text[0] ? removeQuotes(args.text[0]) : undefined;
+      const optionsNode = args.nodes[1];
+      let options: Record<string, unknown> = {};
+
+      if (optionsNode && optionsNode.kind() === 'object') {
+        options = parseObjectLiteralFromNode(optionsNode);
+      }
+
+      // Fragment-array fields need to be structured according to withFragmentArrayDefaults
+      const fragmentArrayType = type || name;
+      const singularType = singularize(fragmentArrayType);
+      const pluralName = pluralize(fragmentArrayType);
+
+      return {
+        name: pluralName,
+        kind: 'schema-array' as const,
+        type: `fragment:${singularType}`,
+        options: {
+          arrayExtensions: ['ember-object', 'ember-array-like', 'fragment-array'],
+          defaultValue: true,
+          ...options,
+        },
+      };
+    }
     default:
       return null;
   }
@@ -2233,6 +2361,51 @@ export function convertToSchemaField(name: string, decoratorType: string, args: 
         type: type ? `fragment:${type}` : undefined,
         options: {
           objectExtensions: ['ember-object', 'fragment'],
+          ...options,
+        },
+      };
+    }
+    case 'array': {
+      const type = args[0] ? removeQuotes(args[0]) : undefined;
+      const optionsText = args[1];
+      let options: Record<string, unknown> = {};
+
+      if (optionsText) {
+        options = parseObjectLiteral(optionsText);
+      }
+
+      // Array fields need to be structured according to withArrayDefaults
+      return {
+        name,
+        kind: 'array' as const,
+        type: type ? `array:${type}` : undefined,
+        options: {
+          arrayExtensions: ['ember-object', 'ember-array-like', 'fragment-array'],
+          ...options,
+        },
+      };
+    }
+    case 'fragmentArray': {
+      const type = args[0] ? removeQuotes(args[0]) : undefined;
+      const optionsText = args[1];
+      let options: Record<string, unknown> = {};
+
+      if (optionsText) {
+        options = parseObjectLiteral(optionsText);
+      }
+
+      // Fragment-array fields need to be structured according to withFragmentArrayDefaults
+      const fragmentArrayType = type || name;
+      const singularType = singularize(fragmentArrayType);
+      const pluralName = pluralize(fragmentArrayType);
+
+      return {
+        name: pluralName,
+        kind: 'schema-array' as const,
+        type: `fragment:${singularType}`,
+        options: {
+          arrayExtensions: ['ember-object', 'ember-array-like', 'fragment-array'],
+          defaultValue: true,
           ...options,
         },
       };

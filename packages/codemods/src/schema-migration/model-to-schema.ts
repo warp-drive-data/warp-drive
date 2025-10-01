@@ -34,6 +34,8 @@ import {
   getTypeScriptTypeForHasMany,
   getTypeScriptTypeForFragment,
   getTypeScriptTypeForSchemaObject,
+  getTypeScriptTypeForArray,
+  getTypeScriptTypeForSchemaArray,
   mixinNameToTraitName,
   parseDecoratorArgumentsWithNodes,
   toPascalCase,
@@ -504,6 +506,12 @@ export function toArtifacts(filePath: string, source: string, options: Transform
         case 'schema-object':
           type = getTypeScriptTypeForSchemaObject(field, options);
           break;
+        case 'array':
+          type = getTypeScriptTypeForArray(field, options);
+          break;
+        case 'schema-array':
+          type = getTypeScriptTypeForSchemaArray(field, options);
+          break;
         default:
           type = 'unknown';
       }
@@ -757,6 +765,12 @@ function generateIntermediateModelTraitArtifacts(
         break;
       case 'schema-object':
         type = getTypeScriptTypeForSchemaObject(field, options);
+        break;
+      case 'array':
+        type = getTypeScriptTypeForArray(field, options);
+        break;
+      case 'schema-array':
+        type = getTypeScriptTypeForSchemaArray(field, options);
         break;
       default:
         type = 'unknown';
