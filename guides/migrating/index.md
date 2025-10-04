@@ -15,7 +15,7 @@ This guide is primarily intended for apps that got ***"stuck"*** on either 4.6 (
 Note - it is not actually a requirement of 5.x to replace Models with Schemas (nor to replace adapters/serializers with requests). These things are deprecated *in* 5.x, but they still work.
 
 The reason to take the approach outlined in this guide is
-because we have used capabilities provided by the [@warp-drive/legacy package](/api/@warp-drive/legacy/) and by [LegacyMode](/guides/the-manual/misc/reactivity/legacy/overview) schemas together with [Extensions](/api/@warp-drive/core/reactive/interfaces/CAUTION_MEGA_DANGER_ZONE_Extension) to mimic much of the removed API surface to allow apps to bridge the gap to 5.x more easily. 
+because we have used capabilities provided by the [@warp-drive/legacy package](/api/@warp-drive/legacy/) and by [LegacyMode](../the-manual/schemas/resources/polaris-mode.md) schemas together with [Extensions](/api/@warp-drive/core/reactive/interfaces/CAUTION_MEGA_DANGER_ZONE_Extension) to mimic much of the removed API surface to allow apps to bridge the gap to 5.x more easily. 
 
 ## Pre-Migration (update to Native Types)
 
@@ -499,14 +499,15 @@ import { cached } from '@glimmer/tracking';
 import { computed } from '@ember/object';
 import { User } from './type.ts';
 
+export interface UserExtension extends User {}
 export class UserExtension {
   @cached
-  get fullName(this: User) {
+  get fullName() {
     return this.firstName + ' ' + this.lastName;
   }
 
   @computed('firstName')
-  get greeting(this: User) {
+  get greeting() {
     return 'Hello ' + this.firstName + '!';
   }
 

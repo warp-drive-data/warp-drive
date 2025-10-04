@@ -1,9 +1,7 @@
 import { recordIdentifierFor, useRecommendedStore } from '@warp-drive/core';
-import { DEBUG } from '@warp-drive/core/build-config/env';
 import { withDefaults } from '@warp-drive/core/reactive';
 import type { Context } from '@warp-drive/core/request';
 import type { RelatedCollection } from '@warp-drive/core/store/-private';
-import { CACHE_OWNER } from '@warp-drive/core/types/identifier';
 import type { Type } from '@warp-drive/core/types/symbols';
 import { module, setupTest, skip, test } from '@warp-drive/diagnostic/ember';
 import { JSONAPICache } from '@warp-drive/json-api';
@@ -936,5 +934,375 @@ module('Reads | hasMany in linksMode', function (hooks) {
     //   () => record.friends,
     //   'Cannot fetch user.friends because the field is in linksMode but async is not yet supported'
     // );
+  });
+
+  test('we can update sync hasMany in linksMode (with an inverse belongsTo)', function (assert) {
+    type Pet = {
+      id: string | null;
+      $type: 'pet';
+      name: string;
+      owner: PetOwner;
+      [Type]: 'pet';
+    };
+
+    type PetOwner = {
+      id: string | null;
+      $type: 'pet-owner';
+      name: string;
+      pets: Pet[] | null;
+      [Type]: 'pet-owner';
+    };
+
+    const store = new Store();
+    const { schema } = store;
+
+    schema.registerResource(
+      withDefaults({
+        type: 'pet',
+        fields: [
+          {
+            name: 'name',
+            kind: 'field',
+          },
+          {
+            name: 'owner',
+            type: 'pet-owner',
+            kind: 'belongsTo',
+            options: { inverse: 'pets', async: false, linksMode: true },
+          },
+        ],
+      })
+    );
+    schema.registerResource(
+      withDefaults({
+        type: 'pet-owner',
+        fields: [
+          {
+            name: 'name',
+            kind: 'field',
+          },
+          {
+            name: 'pets',
+            type: 'pet',
+            kind: 'hasMany',
+            options: { inverse: 'owner', async: false, linksMode: true },
+          },
+        ],
+      })
+    );
+
+    const record = store.push<PetOwner>({
+      data: {
+        type: 'pet-owner',
+        id: '1',
+        attributes: {
+          name: 'Karel',
+        },
+        relationships: {
+          pets: {
+            links: { related: '/pet-owner/1/pets' },
+            data: [
+              { type: 'pet', id: '2' },
+              { type: 'pet', id: '3' },
+            ],
+          },
+        },
+      },
+      included: [
+        {
+          type: 'pet',
+          id: '2',
+          attributes: {
+            name: 'Jeanne',
+          },
+          relationships: {
+            owner: {
+              links: { related: '/pet/2/owner' },
+              data: {
+                id: '1',
+                type: 'pet-owner',
+              },
+            },
+          },
+        },
+        {
+          type: 'pet',
+          id: '3',
+          attributes: {
+            name: 'Billie',
+          },
+          relationships: {
+            owner: {
+              links: { related: '/pet/3/owner' },
+              data: {
+                id: '1',
+                type: 'pet-owner',
+              },
+            },
+          },
+        },
+      ],
+    });
+
+    assert.equal(record.id, '1', 'id is accessible');
+    assert.equal(record.name, 'Karel', 'name is accessible');
+    assert.equal(record.pets?.length, 2, 'pets.length is accessible');
+    assert.equal(record.pets?.[0]?.id, '2', 'pets[0].id is accessible');
+    assert.equal(record.pets?.[0]?.name, 'Jeanne', 'pets[0].name is accessible');
+    assert.equal(record.pets?.[0]?.owner.id, '1', 'pets[0].owner.id is accessible');
+    assert.equal(record.pets?.[0]?.owner.name, 'Karel', 'pets[0].owner.name is accessible');
+
+    // ensure cache is still accurate
+    const serialized = store.cache.peek(recordIdentifierFor(record));
+    assert.satisfies(
+      serialized,
+      {
+        type: 'pet-owner',
+        id: '1',
+        lid: '@lid:pet-owner-1',
+        attributes: {
+          name: 'Karel',
+        },
+        relationships: {
+          pets: {
+            links: { related: '/pet-owner/1/pets' },
+            data: [
+              { type: 'pet', id: '2', lid: '@lid:pet-2' },
+              { type: 'pet', id: '3', lid: '@lid:pet-3' },
+            ],
+          },
+        },
+      },
+      'cache is accurate'
+    );
+
+    // Sadly, one of the pets had to go :'(
+    store.push<PetOwner>({
+      data: {
+        type: 'pet-owner',
+        id: '1',
+        attributes: {
+          name: 'Karel',
+        },
+        relationships: {
+          pets: {
+            links: { related: '/pet-owner/1/pets' },
+            data: [{ type: 'pet', id: '3' }],
+          },
+        },
+      },
+      included: [
+        {
+          type: 'pet',
+          id: '3',
+          attributes: {
+            name: 'Billie',
+          },
+          relationships: {
+            owner: {
+              data: {
+                id: '1',
+                type: 'pet-owner',
+              },
+              links: { related: '/pet/3/owner' },
+            },
+          },
+        },
+      ],
+    });
+
+    assert.equal(record.id, '1', 'id is accessible');
+    assert.equal(record.name, 'Karel', 'name is accessible');
+    assert.equal(record.pets?.length, 1, 'pets.length is accessible');
+    assert.equal(record.pets?.[0]?.id, '3', 'pets[0].id is accessible');
+    assert.equal(record.pets?.[0]?.name, 'Billie', 'pets[0].name is accessible');
+
+    // ensure cache is still accurate
+    const serialized2 = store.cache.peek(recordIdentifierFor(record));
+    assert.satisfies(
+      serialized2,
+      {
+        type: 'pet-owner',
+        id: '1',
+        lid: '@lid:pet-owner-1',
+        attributes: {
+          name: 'Karel',
+        },
+        relationships: {
+          pets: {
+            links: { related: '/pet-owner/1/pets' },
+            data: [{ type: 'pet', id: '3', lid: '@lid:pet-3' }],
+          },
+        },
+      },
+      'cache is accurate'
+    );
+  });
+
+  test('we can update sync hasMany in linksMode (without an inverse)', function (assert) {
+    type Pet = {
+      id: string | null;
+      $type: 'pet';
+      name: string;
+      [Type]: 'pet';
+    };
+
+    type PetOwner = {
+      id: string | null;
+      $type: 'pet-owner';
+      name: string;
+      pets: Pet[] | null;
+      [Type]: 'pet-owner';
+    };
+
+    const store = new Store();
+    const { schema } = store;
+
+    schema.registerResource(
+      withDefaults({
+        type: 'pet',
+        fields: [
+          {
+            name: 'name',
+            kind: 'field',
+          },
+        ],
+      })
+    );
+    schema.registerResource(
+      withDefaults({
+        type: 'pet-owner',
+        fields: [
+          {
+            name: 'name',
+            kind: 'field',
+          },
+          {
+            name: 'pets',
+            type: 'pet',
+            kind: 'hasMany',
+            options: { inverse: null, async: false, linksMode: true },
+          },
+        ],
+      })
+    );
+
+    const record = store.push<PetOwner>({
+      data: {
+        type: 'pet-owner',
+        id: '1',
+        attributes: {
+          name: 'Karel',
+        },
+        relationships: {
+          pets: {
+            links: { related: '/pet-owner/1/pets' },
+            data: [
+              { type: 'pet', id: '2' },
+              { type: 'pet', id: '3' },
+            ],
+          },
+        },
+      },
+      included: [
+        {
+          type: 'pet',
+          id: '2',
+          attributes: {
+            name: 'Jeanne',
+          },
+        },
+        {
+          type: 'pet',
+          id: '3',
+          attributes: {
+            name: 'Billie',
+          },
+        },
+      ],
+    });
+
+    assert.equal(record.id, '1', 'id is accessible');
+    assert.equal(record.name, 'Karel', 'name is accessible');
+    assert.equal(record.pets?.length, 2, 'pets.length is accessible');
+    assert.equal(record.pets?.[0]?.id, '2', 'pets[0].id is accessible');
+    assert.equal(record.pets?.[0]?.name, 'Jeanne', 'pets[0].name is accessible');
+
+    // ensure cache is still accurate
+    const serialized = store.cache.peek(recordIdentifierFor(record));
+    assert.satisfies(
+      serialized,
+      {
+        type: 'pet-owner',
+        id: '1',
+        lid: '@lid:pet-owner-1',
+        attributes: {
+          name: 'Karel',
+        },
+        relationships: {
+          pets: {
+            links: { related: '/pet-owner/1/pets' },
+            data: [
+              { type: 'pet', id: '2', lid: '@lid:pet-2' },
+              { type: 'pet', id: '3', lid: '@lid:pet-3' },
+            ],
+          },
+        },
+      },
+      'cache is accurate'
+    );
+
+    // Sadly, one of the pets had to go :'(
+    store.push<PetOwner>({
+      data: {
+        type: 'pet-owner',
+        id: '1',
+        attributes: {
+          name: 'Karel',
+        },
+        relationships: {
+          pets: {
+            links: { related: '/pet-owner/1/pets' },
+            data: [{ type: 'pet', id: '3' }],
+          },
+        },
+      },
+      included: [
+        {
+          type: 'pet',
+          id: '3',
+          attributes: {
+            name: 'Billie',
+          },
+        },
+      ],
+    });
+
+    assert.equal(record.id, '1', 'id is accessible');
+    assert.equal(record.name, 'Karel', 'name is accessible');
+    assert.equal(record.pets?.length, 1, 'pets.length is accessible');
+    assert.equal(record.pets?.[0]?.id, '3', 'pets[0].id is accessible');
+    assert.equal(record.pets?.[0]?.name, 'Billie', 'pets[0].name is accessible');
+
+    // ensure cache is still accurate
+    const serialized2 = store.cache.peek(recordIdentifierFor(record));
+    assert.satisfies(
+      serialized2,
+      {
+        type: 'pet-owner',
+        id: '1',
+        lid: '@lid:pet-owner-1',
+        attributes: {
+          name: 'Karel',
+        },
+        relationships: {
+          pets: {
+            links: { related: '/pet-owner/1/pets' },
+            data: [{ type: 'pet', id: '3', lid: '@lid:pet-3' }],
+          },
+        },
+      },
+      'cache is accurate'
+    );
   });
 });
