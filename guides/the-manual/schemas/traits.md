@@ -1,13 +1,15 @@
 ---
-order: 6
+order: 5
 ---
 
 # Traits
 
-A Trait is a reusable set of fields that can be shared across multiple ResourceSchemas.  
-They help keep your schema definitions consistent and concise by avoiding repetition.
+Traits are reusable groups of fields that you can include in multiple ResourceSchemas.  
+They help keep schemas consistent and reduce duplication.
 
-## Defining a Trait
+A Trait is defined as a plain object with fields, and then registered so it can be reused anywhere.
+
+## Creating a Trait
 
 ```ts [schemas/traits/timestamps.ts]
 export const Timestamps = {
@@ -20,7 +22,7 @@ export const Timestamps = {
 
 ## Registering a Trait
 
-A Trait must be registered with the schema service before it can be used:
+Once defined, register the trait with the SchemaService using [registerTrait](https://canary.warp-drive.io/api/@warp-drive/core/types/schema/schema-service/interfaces/SchemaService#registertrait)
 
 ```ts [store/index.ts]
 import { store } from './store';
@@ -39,9 +41,30 @@ export const UserSchema = withDefaults({
   fields: [
     { name: 'id', kind: '@id' },
     { name: 'name', kind: 'field' },
+  ]
+  traits: ['timestamps']
+});
+```
+
+The `timestamps` Trait is now mixed into the `user` ResourceSchema.
+
+## Reuse Example
+
+Traits can be shared across multiple schemas:
+
+```ts [schemas/post.ts]
+import { withDefaults } from '@warp-drive/core/reactive';
+
+export const PostSchema = withDefaults({
+  type: 'post',
+  fields: [
+    { name: 'id', kind: '@id' },
+    { name: 'title', kind: 'field' }
   ],
   traits: ['timestamps']
 });
 ```
+
+Both `UserSchema` and `PostSchema` now automatically include `createdAt` and `updatedAt`.
 
 By registering and reusing Traits, you can apply consistent sets of fields such as audit information, metadata, or tracking properties across different ResourceSchemas without duplicating code.
