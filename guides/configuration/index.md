@@ -24,6 +24,24 @@ For most projects, the configuration is done inside of the project's babel confi
 For ember apps that still have an `ember-cli-build` file, this plugin comes built-in to the
 toolchain and all you need to do is provide it the desired configuration in `ember-cli-build`.
 
+::: code-group
+
+```sh [pnpm]
+pnpm add -E @warp-drive/build-config@latest;
+```
+
+```sh [npm]
+npm add -E @warp-drive/build-config@latest;
+```
+
+```sh [yarn]
+yarn add -E @warp-drive/build-config@latest;
+```
+
+```sh [bun]
+bun add --exact @warp-drive/build-config@latest;
+```
+
 ::: tabs key:paradigm
 
 == Simple Config
