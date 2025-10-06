@@ -12,7 +12,10 @@ const eslintTester = new RuleTester({
       babelOptions: {
         babelrc: false,
         configFile: false,
-        plugins: [[require.resolve('@babel/plugin-proposal-decorators'), { legacy: true }]],
+        plugins: [
+          [require.resolve('@babel/plugin-proposal-decorators'), { legacy: true }],
+          require.resolve('@babel/plugin-syntax-typescript'),
+        ],
       },
     },
   },
@@ -59,6 +62,18 @@ eslintTester.run('no-legacy-imports', rule, {
     {
       code: `import Model, { hasMany, Unknown } from '@ember-data/model';`,
       output: `import Model, { hasMany } from '@warp-drive/legacy/model';\nimport { Unknown } from '@ember-data/model';`,
+      errors: [{ messageId: msg }],
+    },
+    // Type-only import
+    {
+      code: `import type Store from '@ember-data/store';`,
+      output: `import type Store from '@warp-drive/core';`,
+      errors: [{ messageId: msg }],
+    },
+    // Default import to named import rewrite
+    {
+      code: `import RequestManager from '@ember-data/request';`,
+      output: `import { RequestManager } from '@warp-drive/core';`,
       errors: [{ messageId: msg }],
     },
   ],

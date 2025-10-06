@@ -69,7 +69,11 @@ module.exports = {
               data: { functionName: node.callee.name },
             });
           } else if (node.callee.type === 'Identifier' && ADDITIONAL_FUNCTION_NAMES.has(node.callee.name)) {
-            // TODO enable this via config
+            context.report({
+              node,
+              messageId: `${RULE_ID}.no-method`,
+              data: { functionName: node.callee.name },
+            });
           }
 
           return;

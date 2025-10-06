@@ -677,6 +677,9 @@ importers:
       '@babel/plugin-proposal-decorators':
         specifier: 7.28.0
         version: 7.28.0(@babel/core@7.28.3)
+      '@babel/plugin-syntax-typescript':
+        specifier: ^7.24.7
+        version: 7.27.1(@babel/core@7.28.3)
       '@warp-drive/internal-config':
         specifier: workspace:*
         version: file:tools/internal-config

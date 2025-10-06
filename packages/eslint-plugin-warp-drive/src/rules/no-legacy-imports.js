@@ -17,9 +17,13 @@ function buildMapping() {
     for (const entry of mappingArray) {
       const srcMod = entry.module;
       const exp = entry.export;
-      const repl = entry.replacement && entry.replacement.module;
-      if (!srcMod || !exp || !repl) continue;
-      lookup.set(`${srcMod}::${exp}`, repl);
+      const repl = entry.replacement;
+      if (!srcMod || !exp || !repl || !repl.module) continue;
+      lookup.set(`${srcMod}::${exp}`, {
+        module: repl.module,
+        exportName: repl.export ?? 'default',
+        isType: Boolean(repl.isTypeExport),
+      });
     }
   }
 
@@ -45,48 +49,144 @@ function createHelpers(context) {
     return null;
   }
 
-  function groupImportSpecifiersByTarget(moduleName, specifiers) {
-    /** @type {Record<string, import('estree').ImportSpecifier[] | any[]>} */
-    const groups = Object.create(null);
+  function getSpecifierImportKind(spec, declarationKind) {
+    if (spec.importKind) {
+      return spec.importKind;
+    }
+    if (declarationKind) {
+      return declarationKind;
+    }
+    return 'value';
+  }
+
+  function groupImportSpecifiersByTarget(moduleName, specifiers, declarationKind) {
+    /** @type {Map<string, any[]>} */
+    const groups = new Map();
+    /** @type {string[]} */
+    const order = [];
+
+    const ensureGroup = (mod) => {
+      if (!groups.has(mod)) {
+        groups.set(mod, []);
+        order.push(mod);
+      }
+      return groups.get(mod);
+    };
+
     for (const spec of specifiers) {
-      const expName = getImportExportNameFromImportSpecifier(spec);
-      if (!expName) {
-        // namespace or unknown – keep under original module
-        groups[moduleName] ||= [];
-        groups[moduleName].push(spec);
+      if (spec.type === 'ImportNamespaceSpecifier') {
+        const info = {
+          spec,
+          targetModule: moduleName,
+          originalImportedName: '*',
+          targetExportName: '*',
+          importKind: 'value',
+          localName: spec.local ? spec.local.name : null,
+          isNamespace: true,
+          isDefault: false,
+          originalText: sourceCode.getText(spec),
+        };
+        ensureGroup(moduleName).push(info);
         continue;
       }
-      const key = `${moduleName}::${expName}`;
-      const target = MAPPING.get(key);
-      const targetModule = target || moduleName; // unknowns remain under original module
-      groups[targetModule] ||= [];
-      groups[targetModule].push(spec);
+
+      const expName = getImportExportNameFromImportSpecifier(spec);
+      const mapping = expName ? MAPPING.get(`${moduleName}::${expName}`) : null;
+      const targetModule = mapping ? mapping.module : moduleName;
+      const targetExportName = mapping ? mapping.exportName : expName;
+      const info = {
+        spec,
+        targetModule,
+        originalImportedName: expName,
+        targetExportName,
+        importKind: getSpecifierImportKind(spec, declarationKind),
+        localName: spec.local ? spec.local.name : null,
+        isNamespace: false,
+        isDefault: spec.type === 'ImportDefaultSpecifier',
+        originalText: sourceCode.getText(spec),
+      };
+      ensureGroup(targetModule).push(info);
     }
-    return groups;
+
+    return { groups, order };
   }
 
   function hasAnyMappedTarget(groups, originalModule) {
-    return Object.keys(groups).some((mod) => mod !== originalModule);
+    for (const [targetModule, items] of groups) {
+      if (targetModule !== originalModule) {
+        return true;
+      }
+      for (const item of items) {
+        if (!item.isNamespace && item.targetExportName && item.targetExportName !== item.originalImportedName) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
-  function buildImportTextForGroup(groupModule, specs, quote) {
-    const defaultSpecs = specs.filter((s) => s.type === 'ImportDefaultSpecifier');
-    const namedSpecs = specs.filter((s) => s.type === 'ImportSpecifier');
-
-    const parts = ['import '];
-    if (defaultSpecs.length) {
-      // There can only be one default spec per declaration originally, but after grouping we still guard
-      parts.push(defaultSpecs.map((s) => sourceCode.getText(s)).join(', '));
-    }
-    if (namedSpecs.length) {
-      if (defaultSpecs.length) parts.push(', ');
-      const body = namedSpecs.map((s) => sourceCode.getText(s)).join(', ');
-      parts.push('{ ', body, ' }');
-    }
-    if (!defaultSpecs.length && !namedSpecs.length) {
-      // Should not happen, but avoid generating invalid code
+  function buildImportTextForGroup(groupModule, entries, quote) {
+    if (!entries.length) {
       return '';
     }
+
+    if (entries.some((entry) => entry.isNamespace)) {
+      // Namespace imports are not auto-fixed to avoid generating invalid syntax.
+      return '';
+    }
+
+    const defaultEntries = [];
+    const namedEntries = [];
+    for (const entry of entries) {
+      const treatAsDefault = entry.targetExportName === 'default' || (entry.isDefault && entry.importKind === 'type');
+      if (treatAsDefault) {
+        defaultEntries.push(entry);
+      } else {
+        namedEntries.push(entry);
+      }
+    }
+
+    if (defaultEntries.length > 1) {
+      return '';
+    }
+
+    const allType = entries.every((entry) => entry.importKind === 'type');
+    const useTopLevelType = allType && !(defaultEntries.length && namedEntries.length);
+
+    if (defaultEntries.length === 1 && defaultEntries[0].importKind === 'type' && !useTopLevelType) {
+      return '';
+    }
+
+    if (!defaultEntries.length && !namedEntries.length) {
+      return '';
+    }
+
+    const parts = ['import '];
+    if (useTopLevelType) {
+      parts.push('type ');
+    }
+
+    if (defaultEntries.length) {
+      const entry = defaultEntries[0];
+      const localName = entry.localName || 'default';
+      parts.push(localName);
+    }
+
+    if (namedEntries.length) {
+      if (defaultEntries.length) {
+        parts.push(', ');
+      }
+      parts.push('{ ');
+      const namedTexts = namedEntries.map((entry) => {
+        const typePrefix = entry.importKind === 'type' && !useTopLevelType ? 'type ' : '';
+        const importedName = entry.targetExportName;
+        const alias = entry.localName && entry.localName !== importedName ? ` as ${entry.localName}` : '';
+        return `${typePrefix}${importedName}${alias}`;
+      });
+      parts.push(namedTexts.join(', '));
+      parts.push(' }');
+    }
+
     parts.push(' from ', quote, groupModule, quote, ';');
     return parts.join('');
   }
@@ -123,38 +223,45 @@ module.exports = {
       if (!node.source || !node.source.value || !node.specifiers || node.specifiers.length === 0) return;
       const fromModule = String(node.source.value);
 
-      const groups = helpers.groupImportSpecifiersByTarget(fromModule, node.specifiers);
+      const { groups, order } = helpers.groupImportSpecifiersByTarget(fromModule, node.specifiers, node.importKind);
       const hasMapped = helpers.hasAnyMappedTarget(groups, fromModule);
       if (!hasMapped) return;
 
-      const groupKeys = Object.keys(groups);
       const quote = helpers.getQuoteChar(node);
 
-      // Simple case: all specifiers map to a single replacement module and none remain at original
-      if (groupKeys.length === 1 && groupKeys[0] !== fromModule) {
-        const target = groupKeys[0];
-        context.report({
-          node,
-          messageId: RULE_ID,
-          data: { kind: 'import', from: fromModule },
-          fix(fixer) {
-            const newText = `${quote}${target}${quote}`;
-            return fixer.replaceText(node.source, newText);
-          },
-        });
-        return;
+      if (groups.size === 1) {
+        const onlyModule = order[0];
+        const entries = groups.get(onlyModule) || [];
+        const canUpdateModuleOnly =
+          onlyModule !== fromModule && entries.every((entry) => entry.targetExportName === entry.originalImportedName);
+
+        if (canUpdateModuleOnly) {
+          context.report({
+            node,
+            messageId: RULE_ID,
+            data: { kind: 'import', from: fromModule },
+            fix(fixer) {
+              const newText = `${quote}${onlyModule}${quote}`;
+              return fixer.replaceText(node.source, newText);
+            },
+          });
+          return;
+        }
       }
 
-      // Split into multiple imports
       context.report({
         node,
         messageId: RULE_ID,
         data: { kind: 'import', from: fromModule },
         fix(fixer) {
           const pieces = [];
-          for (const mod of groupKeys) {
-            const text = helpers.buildImportTextForGroup(mod, groups[mod], quote);
-            if (text) pieces.push(text);
+          for (const mod of order) {
+            const specs = groups.get(mod) || [];
+            const text = helpers.buildImportTextForGroup(mod, specs, quote);
+            if (!text) {
+              return null;
+            }
+            pieces.push(text);
           }
           const replacement = pieces.join('\n');
           return fixer.replaceText(node, replacement);

@@ -1679,9 +1679,9 @@
     "export": "default",
     "isTypeExport": false,
     "replacement": {
-      "module": "@warp-drive/ember",
-      "export": "Request",
-      "sourceFile": "warp-drive-packages/ember/src/index.ts",
+      "module": "@warp-drive/core",
+      "export": "RequestManager",
+      "sourceFile": "warp-drive-packages/core/src/index.ts",
       "isTypeExport": false,
       "missing": true,
       "starExportFilePath": "packages/request/src/index.ts"
