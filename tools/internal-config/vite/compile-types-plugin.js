@@ -5,7 +5,7 @@ export function CompileTypesPlugin(useGlint) {
     name: 'compile-types-with-tsc',
 
     closeBundle: () => {
-      child_process.spawnSync(useGlint ? 'glint' : 'tsc', ['--build'], { stdio: 'inherit' });
+      child_process.spawnSync(useGlint ? 'ember-tsc' : 'tsc', ['--build'], { stdio: 'inherit' });
     },
   };
 }

@@ -29,7 +29,7 @@
     "start": "vite",
     "start:server": "node serve.js",
     "lint": "eslint . --quiet --cache --cache-strategy=content",
-    "check:types": "tsc --noEmit",
+    "check:types": "ember-tsc --noEmit",
     "test:examples": "vite build --mode development && testem ci"
   },
   "devDependencies": {
@@ -48,10 +48,9 @@
     "ember-strict-application-resolver": "^0.1.0",
     "@rollup/plugin-babel": "^6.0.4",
     "babel-plugin-ember-template-compilation": "^2.4.1",
-    "@glint/core": "alpha",
-    "@glint/environment-ember-loose": "alpha",
-    "@glint/environment-ember-template-imports": "alpha",
-    "@glint/template": "alpha",
+    "@glint/ember-tsc": "^1.0.3",
+    "@glint/template": "^1.6.1",
+    "@glint/tsserver-plugin": "^2.0.3",
     "@glimmer/component": "^2.0.0",
     "@html-next/vertical-collection": "github:NullVoxPopuli/vertical-collection#upgrade-raf-scheduler&path:vertical-collection",
     "@types/morgan": "^1.9.10",

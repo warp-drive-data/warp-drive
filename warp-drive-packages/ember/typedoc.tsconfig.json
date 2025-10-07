@@ -1,8 +1,5 @@
 {
   "include": ["./declarations/**/*", "./src/**/*.md"],
-  "glint": {
-    "environment": ["ember-loose", "ember-template-imports"]
-  },
   "compilerOptions": {
     "target": "ESNext",
     "module": "ESNext",
@@ -37,7 +34,7 @@
     "inlineSourceMap": true,
     "inlineSources": true,
     "baseUrl": ".",
-    "types": ["ember-source/types"],
+    "types": ["@glint/ember-tsc/types", "ember-source/types"],
     "allowImportingTsExtensions": true,
     "paths": {
       "@warp-drive/core": ["../core/declarations"],

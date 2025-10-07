@@ -20,7 +20,7 @@
     "noImplicitOverride": false,
     "incremental": true,
     "declaration": true,
-    "types": ["ember-source/types", "vite/client"],
+    "types": ["ember-source/types", "vite/client", "@glint/ember-tsc/types"],
     // "baseUrl": ".",
     "paths": {
       "@warp-drive/ember": ["../../warp-drive-packages/ember/declarations"],

@@ -34,14 +34,12 @@
       "@ember-data/request-utils/unstable-preview-types",
       "@ember-data/store/unstable-preview-types",
       "@ember-data/serializer/unstable-preview-types",
-      "@warp-drive/core-types/unstable-preview-types"
+      "@warp-drive/core-types/unstable-preview-types",
+      "@glint/ember-tsc/types"
     ],
     "paths": {
       "@ember-data/smoke-tests-native-types/*": ["./app/*"],
       "@ember-data/smoke-tests-native-types/tests/*": ["./tess/*"]
     }
-  },
-  "glint": {
-    "environment": []
   }
 }
