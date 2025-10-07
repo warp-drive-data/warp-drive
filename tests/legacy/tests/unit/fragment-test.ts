@@ -373,6 +373,7 @@ module<AppTestContext>('Unit - `Fragment`', function (hooks) {
 
   module<AppTestContext>('fragment bug when initially set to `null`', function () {
     test('`person` fragments/fragment arrays are not initially `null`', async function (this: AppTestContext, assert) {
+      // eslint-disable-next-line warp-drive/no-external-request-patterns
       await POST(
         this,
         '/people',
@@ -425,6 +426,7 @@ module<AppTestContext>('Unit - `Fragment`', function (hooks) {
     });
 
     test('`person` fragments/fragment arrays are initially `null`', async function (this: AppTestContext, assert) {
+      // eslint-disable-next-line warp-drive/no-external-request-patterns
       await POST(
         this,
         '/people',

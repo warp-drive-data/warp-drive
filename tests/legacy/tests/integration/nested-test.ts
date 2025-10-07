@@ -74,6 +74,7 @@ module('Integration - Nested fragments', function (hooks) {
       },
     });
 
+    // eslint-disable-next-line warp-drive/no-external-request-patterns
     await PUT(
       this,
       '/users/1',
