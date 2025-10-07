@@ -2156,6 +2156,29 @@ export interface PolarisResourceSchema {
   legacy?: false;
 
   /**
+   * WarpDrive's internal logic for notifying signals of changes
+   * has the ability to operate on a granular per-field basis,
+   * or per-category (attributes, relationships, etc.), per-resource
+   * or even per-type.
+   *
+   * Historically, WarpDrive has always operated in 'field' mode,
+   * which continues to be the recommended default.
+   *
+   * However, there are cases where an application may want to
+   * fine-tune this behavior for performance reasons. For these
+   * cases the following reactivity modes are available:
+   *
+   * - 'field' - (default) signals are notified when individual fields change
+   * - 'category' - fields in a category (relationships, attributes, etc.) share a common signal. This means when any field in a category changes, all fields in that category notify updates.
+   * - 'relationships' - relationships will be in field mode, everything else will be in category mode
+   * - 'resource' - all fields and all categories share a single common signal
+   * - 'immutable' - the resource has no signal and is treated as permanently immutable, and any change in any field value will raise an error in dev.
+   *
+   * @default 'field'
+   */
+  reactivityMode?: 'field' | 'category' | 'relationships' | 'resource' | 'immutable';
+
+  /**
    * For primary resources, this should be an IdentityField
    *
    * for schema-objects, this should be either a HashField or null
@@ -2223,6 +2246,29 @@ export interface LegacyResourceSchema {
    * @public
    */
   legacy: true;
+
+  /**
+   * WarpDrive's internal logic for notifying signals of changes
+   * has the ability to operate on a granular per-field basis,
+   * or per-category (attributes, relationships, etc.), per-resource
+   * or even per-type.
+   *
+   * Historically, WarpDrive has always operated in 'field' mode,
+   * which continues to be the recommended default.
+   *
+   * However, there are cases where an application may want to
+   * fine-tune this behavior for performance reasons. For these
+   * cases the following reactivity modes are available:
+   *
+   * - 'field' - (default) signals are notified when individual fields change
+   * - 'category' - fields in a category (relationships, attributes, etc.) share a common signal. This means when any field in a category changes, all fields in that category notify updates.
+   * - 'relationships' - relationships will be in field mode, everything else will be in category mode
+   * - 'resource' - all fields and all categories share a single common signal
+   * - 'immutable' - the resource has no signal and is treated as permanently immutable, and any change in any field value will raise an error in dev.
+   *
+   * @default 'field'
+   */
+  reactivityMode?: 'field' | 'category' | 'relationships' | 'resource' | 'immutable';
 
   /**
    * This should be an IdentityField.
