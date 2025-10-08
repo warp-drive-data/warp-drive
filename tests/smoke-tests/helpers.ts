@@ -34,11 +34,11 @@ export function banner(text: string) {
 export async function typecheck(packageManager: string, cwd: string) {
   switch (packageManager) {
     case 'npm':
-      return runNoThrow(cwd, `npm exec ember-tsc -- --noEmit`);
+      return runNoThrow(cwd, `npm exec ember-tsc`);
     case 'yarn':
-      return runNoThrow(cwd, `yarn ember-tsc --noEmit`);
+      return runNoThrow(cwd, `yarn ember-tsc`);
     case 'pnpm':
-      return runNoThrow(cwd, `pnpm ember-tsc --noEmit`);
+      return runNoThrow(cwd, `pnpm ember-tsc`);
   }
 }
 export async function build(packageManager: string, cwd: string) {

@@ -21,7 +21,7 @@ const CLASSIC_TEST_APP = {
 };
 
 const GLINT_TEST_APP = {
-  'check:types': 'ember-tsc --noEmit',
+  'check:types': 'ember-tsc',
 };
 
 const EXAM_TEST_APP = {
