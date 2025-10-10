@@ -11,8 +11,10 @@ export {
   getRequestState,
   createRequestSubscription,
   getPaginationState,
+  createPaginationSubscription,
   type RequestLoadingState,
   type RequestState,
+  type PaginationState,
 } from '@warp-drive/core/reactive';
 
 export { getPromiseState, type PromiseState } from '@warp-drive/core/reactive';

@@ -7,8 +7,9 @@ import { importSync, macroCondition, moduleExists } from '@embroider/macros';
 import type { Document, Store } from '@warp-drive/core';
 import { assert } from '@warp-drive/core/build-config/macros';
 import type { Future } from '@warp-drive/core/request';
-import { getPaginationState, createPaginationSubscription, DISPOSE } from '@warp-drive/core/store/-private';
-import type { PaginationState, Page } from '@warp-drive/core/store/-private';
+import { createPaginationSubscription } from '@warp-drive/core/reactive';
+import { DISPOSE } from '@warp-drive/core/signals/-leaked';
+import type { PaginationState, Page } from '@warp-drive/core/reactive';
 import type { StructuredErrorDocument } from '@warp-drive/core/types/request';
 
 import { Request } from './request.gts';

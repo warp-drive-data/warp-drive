@@ -324,6 +324,7 @@ export {
   type RequestSubscription,
   type RequestLoadingState,
   type RequestState,
+  type PaginationState,
 } from './signals/-private';
 
 export {

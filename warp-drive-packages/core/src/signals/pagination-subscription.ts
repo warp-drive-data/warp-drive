@@ -1,9 +1,9 @@
-import type { RequestManager, Store, StoreRequestInput } from '../../../index';
-import type { Future } from '../../../request';
-import type { StructuredErrorDocument } from '../../../types/request';
-import type { PaginationState, RequestSubscription } from '../../-private';
-import { createRequestSubscription, getPaginationState, memoized } from '../../-private';
-import { DISPOSE, SubscriptionArgs } from './request-subscription.ts';
+import type { RequestManager, Store } from '../index';
+import type { Future } from '../request';
+import type { StructuredErrorDocument } from '../types/request';
+import { createRequestSubscription, DISPOSE, RequestSubscription, SubscriptionArgs } from './request-subscription.ts';
+import { getPaginationState, PaginationState } from './pagination-state.ts';
+import { memoized } from './-private.ts';
 
 interface ErrorFeatures {
   isHidden: boolean;
@@ -36,6 +36,8 @@ export interface PaginationSubscription<RT, E> {
   [DISPOSE](): void;
 }
 
+export interface PaginationSubscriptionArgs<RT, E> extends SubscriptionArgs<RT, E> {}
+
 /**
  * A reactive class
  *
@@ -47,11 +49,11 @@ export class PaginationSubscription<RT, E> {
   /** @internal */
   declare private _subscribedTo: object | null;
   /** @internal */
-  declare private _args: SubscriptionArgs<RT, E>;
+  declare private _args: PaginationSubscriptionArgs<RT, E>;
   /** @internal */
   declare store: Store | RequestManager;
 
-  constructor(store: Store | RequestManager, args: SubscriptionArgs<RT, E>) {
+  constructor(store: Store | RequestManager, args: PaginationSubscriptionArgs<RT, E>) {
     this._args = args;
     this.store = store;
     this.isDestroyed = false;
@@ -101,9 +103,10 @@ export class PaginationSubscription<RT, E> {
    * Loads a specific page by its URL.
    */
   loadPage = async (url: string): Promise<void> => {
-    const page = this.paginationState.getPageState(url);
-    this.paginationState.activatePage(page);
-    if (!page.request) {
+    let { paginationState } = this;
+    const page = paginationState.getPageState(url);
+    paginationState.activatePage(page);
+    if (!page.isLoaded) {
       const request = this.store.request({ method: 'GET', url });
       await page.load(request);
     }
