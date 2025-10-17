@@ -1,7 +1,7 @@
 name: 0. Release
 
 concurrency:
-  group: ci-release
+  group: ci-publish-release
   # only one job at a time, job must complete before another can run
 
 permissions:
