@@ -6,10 +6,13 @@ import { on } from '@ember/modifier';
 import { fn } from '@ember/helper';
 
 const PageLink: TOC<{
-  link: string;
-  title: string;
-  text: string;
-  action: (link: string) => void;
+  Element: HTMLButtonElement;
+  Args: {
+    link: string;
+    title: string;
+    text: string;
+    action: (link: string) => void;
+  };
 }> = <template>
   {{#if (or (eq @link ".") (eq @link "..."))}}{{@link}}{{else}}
     <button
