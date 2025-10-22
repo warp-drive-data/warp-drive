@@ -155,6 +155,33 @@ export default class ProjectPlan extends Model {
     });
   });
 
+  describe('fragment handling', () => {
+    it('handles fragments correctly inside of models', () => {
+      const input = `import Model, { attr } from '@ember-data/model';
+import { fragment } from 'ember-data-model-fragments/attributes';
+
+export default class FragmentModel extends Model {
+	@attr('string') name;
+  @fragment('address') address;
+}`;
+
+      const artifacts = toArtifacts('app/models/fragment-model.js', input, DEFAULT_TEST_OPTIONS);
+      expect(artifacts).toHaveLength(2);
+      expect(artifacts[0]?.name).toBe('FragmentModelSchema');
+      expect(artifacts[0]?.suggestedFileName).toBe('fragment-model.schema.js');
+      expect(artifacts[0]?.code).toContain("'type': 'fragment-model'");
+      expect(artifacts[0]?.code).toContain('export const FragmentModelSchema');
+
+      // Check fragment field uses withFragmentDefaults format
+      expect(artifacts[0]?.code).toContain("'name': 'address'");
+      expect(artifacts[0]?.code).toContain("'kind': 'schema-object'");
+      expect(artifacts[0]?.code).toContain("'type': 'fragment:address'");
+      expect(artifacts[0]?.code).toContain("'objectExtensions'");
+      expect(artifacts[0]?.code).toContain("'ember-object'");
+      expect(artifacts[0]?.code).toContain("'fragment'");
+    });
+  });
+
   describe('edge cases', () => {
     it('skips files that do not import from model sources', () => {
       const input = `import Component from '@glimmer/component';
@@ -541,10 +568,14 @@ export default class TestModel extends Model {
 
       // Should transform relative imports to schema type imports
       expect(result).toContain("import type { AuditableEntity } from './auditable-entity.schema.types';");
-      expect(result).toContain("import type { AutomationWorkflowVersion } from './automation-workflow-version.schema.types';");
+      expect(result).toContain(
+        "import type { AutomationWorkflowVersion } from './automation-workflow-version.schema.types';"
+      );
 
       // Should preserve non-relative imports
-      expect(result).toContain("import type { ConnectedEntityType } from 'soxhub-client/components/module-automations/const/automation-workflow-instance';");
+      expect(result).toContain(
+        "import type { ConnectedEntityType } from 'soxhub-client/components/module-automations/const/automation-workflow-instance';"
+      );
 
       // Should not contain bad import paths with double extensions
       expect(result).not.toContain('.ts.schema.types');
@@ -731,8 +762,8 @@ export default class Translatable extends Model {
       const optionsWithMapping = createTestOptions({
         directoryImportMapping: {
           'client-core/models': '@auditboard/client-core/models',
-          'shared-lib/models': '@company/shared-lib/models'
-        }
+          'shared-lib/models': '@company/shared-lib/models',
+        },
       });
 
       const artifacts = toArtifacts('client-core/models/translatable.js', input, optionsWithMapping);
@@ -764,17 +795,21 @@ export default class Translatable extends Model {
 
       const optionsWithMapping = createTestOptions({
         directoryImportMapping: {
-          'client-core/package/src': '@auditboard/client-core'
-        }
+          'client-core/package/src': '@auditboard/client-core',
+        },
       });
 
       const artifacts = toArtifacts('client-core/package/src/models/translatable.js', input, optionsWithMapping);
       const extension = artifacts.find((a) => a.type === 'extension');
 
       // Should resolve ../types/models/translatable-model to @auditboard/client-core/types/models/translatable-model
-      expect(extension?.code).toContain("import type { TranslatableModel } from '@auditboard/client-core/types/models/translatable-model';");
+      expect(extension?.code).toContain(
+        "import type { TranslatableModel } from '@auditboard/client-core/types/models/translatable-model';"
+      );
       // Should resolve ../validators/base-validator to @auditboard/client-core/validators/base-validator
-      expect(extension?.code).toContain("import { BaseValidator } from '@auditboard/client-core/validators/base-validator';");
+      expect(extension?.code).toContain(
+        "import { BaseValidator } from '@auditboard/client-core/validators/base-validator';"
+      );
       // Should resolve ../../shared/utils to @auditboard/client-core/shared/utils
       expect(extension?.code).toContain("import SharedUtil from '@auditboard/client-core/shared/utils';");
       expect(extension?.code).toContain('function processTranslatable');
@@ -864,5 +899,4 @@ export default class Translatable extends Model {
       }
     });
   });
-
 });

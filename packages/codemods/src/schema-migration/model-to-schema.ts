@@ -37,7 +37,6 @@ import {
   withTransformWrapper,
 } from './utils/ast-utils.js';
 
-
 /**
  * Determines if an AST node represents object method syntax that doesn't need key: value format
  * This is used for class methods that become extension object methods
@@ -72,7 +71,13 @@ interface ModelAnalysisResult {
   modelImportLocal?: string;
   defaultExportNode?: SgNode;
   schemaFields: SchemaField[];
-  extensionProperties: Array<{ name: string; originalKey: string; value: string; typeInfo?: ExtractedType; isObjectMethod?: boolean }>;
+  extensionProperties: Array<{
+    name: string;
+    originalKey: string;
+    value: string;
+    typeInfo?: ExtractedType;
+    isObjectMethod?: boolean;
+  }>;
   mixinTraits: string[];
   mixinExtensions: string[];
   modelName: string;
@@ -119,6 +124,7 @@ function analyzeModelFile(filePath: string, source: string, options: TransformOp
       options?.emberDataImportSource || DEFAULT_EMBER_DATA_SOURCE,
       '@auditboard/warp-drive/v1/model', // AuditBoard WarpDrive
       '@warp-drive/model', // Standard WarpDrive
+      'ember-data-model-fragments/attributes', // Fragment support
     ];
     const modelImportLocal = findEmberImportLocalName(root, expectedSources, options, filePath, process.cwd());
     debugLog(options, `DEBUG: Model import local: ${modelImportLocal}`);
@@ -131,7 +137,14 @@ function analyzeModelFile(filePath: string, source: string, options: TransformOp
     }
 
     // Check if this is a valid model class (either with EmberData decorators or extending intermediate models)
-    const isValidModel = isModelClass(defaultExportNode, modelImportLocal ?? undefined, undefined, root, options, filePath);
+    const isValidModel = isModelClass(
+      defaultExportNode,
+      modelImportLocal ?? undefined,
+      undefined,
+      root,
+      options,
+      filePath
+    );
     debugLog(options, `DEBUG: Is valid model: ${isValidModel}`);
     if (!isValidModel) {
       debugLog(options, 'DEBUG: Not a valid model class, skipping');
@@ -406,10 +419,7 @@ export function processIntermediateModelsToTraits(
         for (const artifact of traitArtifacts) {
           let baseDir: string | undefined;
 
-          if (
-            (artifact.type === 'trait' || artifact.type === 'trait-type') &&
-            options.traitsDir
-          ) {
+          if ((artifact.type === 'trait' || artifact.type === 'trait-type') && options.traitsDir) {
             baseDir = options.traitsDir;
           } else if ((artifact.type === 'extension' || artifact.type === 'extension-type') && options.extensionsDir) {
             baseDir = options.extensionsDir;
@@ -469,7 +479,6 @@ function generateRegularModelArtifacts(
   const language = getLanguageFromPath(filePath);
   const ast = parse(language, source);
   const root = ast.root();
-
 
   const artifacts: TransformArtifact[] = [];
 
@@ -630,7 +639,7 @@ function generateRegularModelArtifacts(
     options,
     modelInterfaceName,
     modelImportPath,
-    'model'  // Source is a model file
+    'model' // Source is a model file
   );
 
   debugLog(options, `Extension artifact created: ${!!extensionArtifact}`);
@@ -680,7 +689,6 @@ export class ${extensionClassName} extends Base {`
       const signatureTypedef = `/** @typedef {typeof ${extensionClassName}} ${extensionSignatureType} */`;
       extensionArtifact.code += '\n\n' + signatureTypedef;
     }
-
   }
 
   return artifacts;
@@ -954,7 +962,7 @@ function generateIntermediateModelTraitArtifacts(
       options,
       traitInterfaceName,
       traitImportPath,
-      'model'  // Source is a model file (intermediate model generating trait)
+      'model' // Source is a model file (intermediate model generating trait)
     );
     if (extensionArtifact) {
       artifacts.push(extensionArtifact);
@@ -1005,7 +1013,6 @@ function getIntermediateModelLocalNames(
   const localNames: string[] = [];
 
   for (const modelPath of intermediateModelPaths) {
-
     // First try direct matching
     let localName = findEmberImportLocalName(root, [modelPath], options, fromFile, process.cwd());
 
@@ -1030,7 +1037,6 @@ function getIntermediateModelLocalNames(
             // by checking if it ends with the same pattern as the configured path
             const expectedFilePath = modelPath.split('/').slice(-1)[0]; // e.g., "-auditboard-model"
             const possiblePaths = [`${resolvedPath}.ts`, `${resolvedPath}.js`, resolvedPath];
-
 
             for (const possiblePath of possiblePaths) {
               if (require('fs').existsSync(possiblePath)) {
@@ -1177,7 +1183,12 @@ function isModelClass(
   // Check for chained extends through configured intermediate classes
   let isChainedExtension = false;
   if (options?.intermediateModelPaths && options.intermediateModelPaths.length > 0) {
-    const intermediateLocalNames = getIntermediateModelLocalNames(root, options.intermediateModelPaths, options, filePath);
+    const intermediateLocalNames = getIntermediateModelLocalNames(
+      root,
+      options.intermediateModelPaths,
+      options,
+      filePath
+    );
     isChainedExtension = intermediateLocalNames.some((localName) => extendsText.includes(localName));
     if (isChainedExtension) {
       debugLog(
@@ -1206,12 +1217,24 @@ function extractModelFields(
   options?: TransformOptions
 ): {
   schemaFields: SchemaField[];
-  extensionProperties: Array<{ name: string; originalKey: string; value: string; typeInfo?: ExtractedType; isObjectMethod?: boolean }>;
+  extensionProperties: Array<{
+    name: string;
+    originalKey: string;
+    value: string;
+    typeInfo?: ExtractedType;
+    isObjectMethod?: boolean;
+  }>;
   mixinTraits: string[];
   mixinExtensions: string[];
 } {
   const schemaFields: SchemaField[] = [];
-  const extensionProperties: Array<{ name: string; originalKey: string; value: string; typeInfo?: ExtractedType; isObjectMethod?: boolean }> = [];
+  const extensionProperties: Array<{
+    name: string;
+    originalKey: string;
+    value: string;
+    typeInfo?: ExtractedType;
+    isObjectMethod?: boolean;
+  }> = [];
   const mixinTraits: string[] = [];
   const mixinExtensions: string[] = [];
 
@@ -1381,7 +1404,6 @@ function extractModelFields(
       // For field declarations without initializers, we use the whole field definition as the value
       const propertyText = property.text();
 
-
       extensionProperties.push({
         name: fieldName,
         originalKey,
@@ -1513,10 +1535,12 @@ function isLocalMixin(importPath: string): boolean {
   }
 
   // Absolute paths that include common local directories are likely local
-  if (importPath.includes('/mixins/') ||
-      importPath.startsWith('app/') ||
-      importPath.startsWith('addon/') ||
-      importPath.startsWith('soxhub-client/')) {
+  if (
+    importPath.includes('/mixins/') ||
+    importPath.startsWith('app/') ||
+    importPath.startsWith('addon/') ||
+    importPath.startsWith('soxhub-client/')
+  ) {
     return true;
   }
 
@@ -1680,11 +1704,10 @@ function transformModelImportsInSource(source: string, root: SgNode): string {
       const pathWithoutExtension = relativePath.replace(/\.(js|ts)$/, '');
       const interfaceName = typeName.endsWith('Model') ? typeName.slice(0, -5) : typeName;
 
-
-      const transformedImport = typeName !== interfaceName
-        ? `import type { ${interfaceName} as ${typeName} } from '${pathWithoutExtension}.schema.types';`
-        : `import type { ${typeName} } from '${pathWithoutExtension}.schema.types';`;
-
+      const transformedImport =
+        typeName !== interfaceName
+          ? `import type { ${interfaceName} as ${typeName} } from '${pathWithoutExtension}.schema.types';`
+          : `import type { ${typeName} } from '${pathWithoutExtension}.schema.types';`;
 
       result = result.replace(fullMatch, transformedImport);
     } else if (namedImportMatch) {
@@ -1703,7 +1726,6 @@ function transformModelImportsInSource(source: string, root: SgNode): string {
 
   return result;
 }
-
 
 /** Generate schema code - only contains necessary imports for schema references and the schema export */
 function generateSchemaCode(
@@ -1727,4 +1749,3 @@ function generateSchemaCode(
   // that require imports, but currently schemas don't have complex default values
   return exportStatement;
 }
-

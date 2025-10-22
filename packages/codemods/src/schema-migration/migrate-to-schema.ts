@@ -11,7 +11,7 @@ import {
   extractBaseName,
   findEmberImportLocalName,
   getLanguageFromPath,
-  isModelFile as astIsModelFile
+  isModelFile as astIsModelFile,
 } from './utils/ast-utils.js';
 import { Logger } from './utils/logger.js';
 
@@ -37,7 +37,11 @@ export default function (): never {
 /**
  * Validate that a file can be parsed as valid JavaScript/TypeScript
  */
-function validateFileAST(filePath: string, source: string, options?: TransformOptions): { valid: boolean; error?: string } {
+function validateFileAST(
+  filePath: string,
+  source: string,
+  options?: TransformOptions
+): { valid: boolean; error?: string } {
   try {
     const lang = getLanguageFromPath(filePath);
     const ast = parse(lang, source);
@@ -46,7 +50,7 @@ function validateFileAST(filePath: string, source: string, options?: TransformOp
   } catch (error) {
     return {
       valid: false,
-      error: error instanceof Error ? error.message : String(error)
+      error: error instanceof Error ? error.message : String(error),
     };
   }
 }
@@ -179,7 +183,9 @@ function analyzeModelMixinUsage(
   }
 
   if (options.verbose) {
-    logger.info(`✅ Found ${transitiveModelMixins.size} mixins connected to models (${modelMixins.size} direct, ${transitiveModelMixins.size - modelMixins.size} transitive)`);
+    logger.info(
+      `✅ Found ${transitiveModelMixins.size} mixins connected to models (${modelMixins.size} direct, ${transitiveModelMixins.size - modelMixins.size} transitive)`
+    );
     logger.info(`📋 Model-connected mixins:`);
     for (const mixinPath of transitiveModelMixins) {
       logger.info(`   - ${mixinPath}`);
@@ -211,7 +217,7 @@ function getArtifactOutputPath(
     // If the replace operation didn't work (external model), and generateExternalResources is enabled,
     // extract just the filename for external models
     if (relativePath === filePath && finalOptions.generateExternalResources) {
-      const fileName = basename(filePath);  // Keep the extension
+      const fileName = basename(filePath); // Keep the extension
       relativePath = `/${fileName}`;
     }
 
@@ -229,7 +235,7 @@ function getArtifactOutputPath(
     // If the replace operation didn't work (external model), and generateExternalResources is enabled,
     // extract just the filename for external models
     if (relativePath === filePath && finalOptions.generateExternalResources) {
-      const fileName = basename(filePath);  // Keep the extension
+      const fileName = basename(filePath); // Keep the extension
       relativePath = `/${fileName}`;
     }
 
@@ -252,9 +258,10 @@ function getArtifactOutputPath(
     outputDir = finalOptions.extensionsDir || './app/data/extensions';
     // Use the suggested filename from the artifact instead of calculating relative path
     // This handles external package files correctly
-    const outputName = artifact.type === 'extension'
-      ? artifact.suggestedFileName || 'unknown-extension.ts'
-      : artifact.suggestedFileName?.replace(/\.(js|ts)$/, '.schema.types.ts') || 'unknown-extension-type.ts';
+    const outputName =
+      artifact.type === 'extension'
+        ? artifact.suggestedFileName || 'unknown-extension.ts'
+        : artifact.suggestedFileName?.replace(/\.(js|ts)$/, '.schema.types.ts') || 'unknown-extension-type.ts';
     outputPath = join(resolve(outputDir), outputName);
   } else if (artifact.type === 'resource-type') {
     // Resource type interfaces go to resourcesDir
@@ -439,7 +446,10 @@ function extractMixinImports(source: string, filePath: string, options: Transfor
 
     // Find all import statements
     const importStatements = root.findAll({ rule: { kind: 'import_statement' } });
-    debugLog(options, `[DEBUG] extractMixinImports for ${filePath}: found ${importStatements.length} import statements`);
+    debugLog(
+      options,
+      `[DEBUG] extractMixinImports for ${filePath}: found ${importStatements.length} import statements`
+    );
 
     for (const importStatement of importStatements) {
       const sourceNode = importStatement.find({ rule: { kind: 'string' } });
@@ -506,10 +516,10 @@ function extractMixinImports(source: string, filePath: string, options: Transfor
           has: {
             field: 'property',
             kind: 'property_identifier',
-            regex: 'extend'
-          }
-        }
-      }
+            regex: 'extend',
+          },
+        },
+      },
     });
 
     debugLog(options, `[DEBUG] Found ${extendCalls.length} extend calls`);
@@ -561,11 +571,7 @@ function resolveMixinPath(importPath: string, currentFilePath: string, options: 
     // Handle relative paths
     if (importPath.startsWith('.')) {
       const resolvedPath = resolve(dirname(currentFilePath), importPath);
-      const possiblePaths = [
-        resolvedPath,
-        `${resolvedPath}.js`,
-        `${resolvedPath}.ts`,
-      ];
+      const possiblePaths = [resolvedPath, `${resolvedPath}.js`, `${resolvedPath}.ts`];
 
       const mixinSourceDir = resolve(options.mixinSourceDir || './app/mixins');
 
@@ -585,17 +591,21 @@ function resolveMixinPath(importPath: string, currentFilePath: string, options: 
     // Handle external/package imports using additionalMixinSources
     if (options.additionalMixinSources) {
       if (options.verbose) {
-        debugLog(options, `📋 Trying to resolve external import '${importPath}' using ${options.additionalMixinSources.length} additional sources`);
+        debugLog(
+          options,
+          `📋 Trying to resolve external import '${importPath}' using ${options.additionalMixinSources.length} additional sources`
+        );
       }
 
       for (const source of options.additionalMixinSources) {
         // Convert glob pattern to regex
-        const patternRegex = new RegExp(
-          '^' + source.pattern.replace(/\*/g, '(.*)') + '$'
-        );
+        const patternRegex = new RegExp('^' + source.pattern.replace(/\*/g, '(.*)') + '$');
 
         if (options.verbose) {
-          debugLog(options, `📋 Testing pattern '${source.pattern}' (regex: ${patternRegex}) against import '${importPath}'`);
+          debugLog(
+            options,
+            `📋 Testing pattern '${source.pattern}' (regex: ${patternRegex}) against import '${importPath}'`
+          );
         }
 
         const match = importPath.match(patternRegex);
@@ -607,11 +617,7 @@ function resolveMixinPath(importPath: string, currentFilePath: string, options: 
           }
 
           // Try different extensions
-          const possiblePaths = [
-            targetDir,
-            `${targetDir}.js`,
-            `${targetDir}.ts`,
-          ];
+          const possiblePaths = [targetDir, `${targetDir}.js`, `${targetDir}.ts`];
 
           if (options.verbose) {
             debugLog(options, `📋 Trying to resolve external mixin '${importPath}' to '${targetDir}'`);
@@ -633,16 +639,10 @@ function resolveMixinPath(importPath: string, currentFilePath: string, options: 
     const mixinSourceDir = resolve(options.mixinSourceDir || './app/mixins');
 
     // For local module imports like 'soxhub-client/mixins/foo', extract just the last part
-    const localMixinPath = importPath.includes('/mixins/')
-      ? importPath.split('/mixins/')[1]
-      : importPath;
+    const localMixinPath = importPath.includes('/mixins/') ? importPath.split('/mixins/')[1] : importPath;
 
     const localResolvedPath = resolve(mixinSourceDir, localMixinPath);
-    const possiblePaths = [
-      localResolvedPath,
-      `${localResolvedPath}.js`,
-      `${localResolvedPath}.ts`,
-    ];
+    const possiblePaths = [localResolvedPath, `${localResolvedPath}.js`, `${localResolvedPath}.ts`];
 
     for (const path of possiblePaths) {
       if (existsSync(path)) {
@@ -975,7 +975,7 @@ export async function runMigration(options: MigrateOptions): Promise<void> {
   // Pass the model-connected mixins to the transform options
   const enhancedOptions = {
     ...finalOptions,
-    modelConnectedMixins
+    modelConnectedMixins,
   };
 
   let processed = 0;
@@ -1003,14 +1003,12 @@ export async function runMigration(options: MigrateOptions): Promise<void> {
       const { toArtifacts } = await import('./model-to-schema.js');
       const artifacts = toArtifacts(filePath, source, enhancedOptions);
 
-
       if (artifacts.length > 0) {
         processed++;
 
         // Write each artifact to the appropriate directory
         for (const artifact of artifacts) {
           const { outputPath } = getArtifactOutputPath(artifact, filePath, finalOptions, false);
-
 
           if (!finalOptions.dryRun) {
             // Ensure output directory exists
@@ -1039,7 +1037,6 @@ export async function runMigration(options: MigrateOptions): Promise<void> {
     }
   }
 
-
   // Process mixin files (only model mixins will be transformed)
   for (const filePath of mixinFiles) {
     try {
@@ -1055,11 +1052,9 @@ export async function runMigration(options: MigrateOptions): Promise<void> {
         continue;
       }
 
-
       // Apply the mixin transform to get artifacts
       const { toArtifacts } = await import('./mixin-to-schema.js');
       const artifacts = toArtifacts(filePath, source, enhancedOptions);
-
 
       if (artifacts.length > 0) {
         processed++;

@@ -129,10 +129,7 @@ export function getResourcesImport(options?: TransformOptions): string {
  * Check if a type should be imported from traits instead of resources
  * This checks if the type corresponds to a connected mixin or intermediate model
  */
-function shouldImportFromTraits(
-  relatedType: string,
-  options?: TransformOptions
-): boolean {
+function shouldImportFromTraits(relatedType: string, options?: TransformOptions): boolean {
   // Check if any of the connected mixins correspond to this related type
   const connectedMixins = options?.modelConnectedMixins;
   if (connectedMixins) {
@@ -233,7 +230,6 @@ export function transformModelToResourceImport(
   // Default to resource import (either we found a model, or we're assuming it's a resource)
   const resourcesImport = getResourcesImport(options);
 
-
   return `type { ${modelName} } from '${resourcesImport}/${relatedType}.schema.types'`;
 }
 
@@ -253,7 +249,9 @@ export function extractTypeNameMapping(root: SgNode, options?: TransformOptions)
 
       // Match default imports from model paths
       // Pattern: import type SomeName from './some-path' or 'soxhub-client/models/some-path'
-      const defaultImportMatch = importText.match(/import\s+type\s+(\w+)\s+from\s+['"](?:\.\/([^'"]+)|soxhub-client\/models\/([^'"]+))['"];?/);
+      const defaultImportMatch = importText.match(
+        /import\s+type\s+(\w+)\s+from\s+['"](?:\.\/([^'"]+)|soxhub-client\/models\/([^'"]+))['"];?/
+      );
 
       if (defaultImportMatch) {
         const [, importName, relativePath, absolutePath] = defaultImportMatch;
@@ -261,7 +259,10 @@ export function extractTypeNameMapping(root: SgNode, options?: TransformOptions)
 
         if (modelPath) {
           // Extract the model type from the path (e.g., "user" from "./user" or "soxhub-client/models/user")
-          const modelType = modelPath.replace(/\.(js|ts)$/, '').split('/').pop();
+          const modelType = modelPath
+            .replace(/\.(js|ts)$/, '')
+            .split('/')
+            .pop();
           if (modelType) {
             debugLog(options, `Mapping model type '${modelType}' to import name '${importName}'`);
             mapping.set(modelType, importName);
@@ -778,6 +779,25 @@ export function debugLog(options: TransformOptions | undefined, ...args: unknown
 }
 
 /**
+ * Remove imports that are not needed in extension artifacts
+ * This only removes fragment imports since they're not needed in schema-record
+ */
+function removeUnnecessaryImports(source: string, options?: TransformOptions): string {
+  const linesToRemove = ['ember-data-model-fragments/attributes'];
+
+  const lines = source.split('\n');
+  const filteredLines = lines.filter((line) => {
+    // Check if this line is an import statement that should be removed
+    if (line.trim().startsWith('import ')) {
+      return !linesToRemove.some((importToRemove) => line.includes(importToRemove));
+    }
+    return true;
+  });
+
+  return filteredLines.join('\n');
+}
+
+/**
  * Process imports in source code to resolve relative imports and convert them to appropriate types
  */
 function processImports(source: string, filePath: string, baseDir: string, options?: TransformOptions): string {
@@ -1129,7 +1149,7 @@ function convertImportToAbsolute(
   try {
     // Check if the resolved file is a model file
     try {
-        const source = readFileSync(resolvedPath, 'utf8');
+      const source = readFileSync(resolvedPath, 'utf8');
       if (isModelFile(resolvedPath, source, options)) {
         // Convert model import to resource schema import
         const modelName = extractBaseName(resolvedPath);
@@ -1283,6 +1303,11 @@ export function createExtensionFromOriginalFile(
     debugLog(options, `Processing imports for extension file: ${filePath}`);
     modifiedSource = processImports(modifiedSource, filePath, baseDir, options);
 
+    // Remove fragment imports only from model extensions (not mixin extensions)
+    if (sourceType === 'model') {
+      modifiedSource = removeUnnecessaryImports(modifiedSource, options);
+    }
+
     // Clean up extra whitespace and add the extension code
     modifiedSource = modifiedSource.trim() + '\n\n' + extensionCode;
 
@@ -1312,7 +1337,12 @@ export function createExtensionFromOriginalFile(
  * Update relative imports when moving from models/ to extensions/
  * Uses directoryImportMapping to resolve relative imports to their original packages
  */
-function updateRelativeImportsForExtensions(source: string, root: SgNode, options?: TransformOptions, sourceFilePath?: string): string {
+function updateRelativeImportsForExtensions(
+  source: string,
+  root: SgNode,
+  options?: TransformOptions,
+  sourceFilePath?: string
+): string {
   let result = source;
 
   // Find all import statements
@@ -1345,7 +1375,7 @@ function updateRelativeImportsForExtensions(source: string, root: SgNode, option
               const mappedDirIndex = sourceDir.indexOf(mappedDir);
               if (mappedDirIndex !== -1) {
                 const sourceRelativeDir = sourceDir.substring(mappedDirIndex + mappedDir.length);
-                const sourceParts = sourceRelativeDir.split('/').filter(part => part !== '');
+                const sourceParts = sourceRelativeDir.split('/').filter((part) => part !== '');
                 const filePath = importPath.replace('./', '').replace(/\.(js|ts)$/, '');
 
                 if (sourceParts.length > 0) {
@@ -1363,7 +1393,7 @@ function updateRelativeImportsForExtensions(source: string, root: SgNode, option
               if (mappedDirIndex !== -1) {
                 // Get the directory part of the source file relative to the mapped directory
                 const sourceRelativeDir = sourceDir.substring(mappedDirIndex + mappedDir.length);
-                const sourceParts = sourceRelativeDir.split('/').filter(part => part !== '');
+                const sourceParts = sourceRelativeDir.split('/').filter((part) => part !== '');
 
                 // Parse the relative import path
                 const relativePath = importPath.replace(/\.(js|ts)$/, '');
@@ -1445,6 +1475,8 @@ export function getFieldKindFromDecorator(decoratorName: string): string {
       return 'belongsTo';
     case 'attr':
       return 'attribute';
+    case 'fragment':
+      return 'schema-object';
     default:
       return 'field'; // fallback
   }
@@ -1512,7 +1544,6 @@ export function withTransformWrapper<T>(
  */
 export function isModelFile(filePath: string, source: string, options?: TransformOptions): boolean {
   try {
-
     // Special case: if this file itself is listed as an intermediate model, it's a model by definition
     if (options?.intermediateModelPaths) {
       for (const intermediatePath of options.intermediateModelPaths) {
@@ -1574,7 +1605,7 @@ export function isModelFile(filePath: string, source: string, options?: Transfor
 
     // Parse the heritage clause to find what this class actually extends
     const identifiers = heritageClause.findAll({ rule: { kind: 'identifier' } });
-    const extendedClasses = identifiers.map(id => id.text());
+    const extendedClasses = identifiers.map((id) => id.text());
 
     debugLog(options, `Class extends: ${extendedClasses.join(', ')}`);
 
@@ -1627,7 +1658,7 @@ export function isModelFile(filePath: string, source: string, options?: Transfor
                   // Check both .ts and .js extensions
                   const possiblePaths = [`${expectedFilePath}.ts`, `${expectedFilePath}.js`];
                   // The resolvedPath might already have an extension, or might not
-                  const pathMatches = possiblePaths.some(p => {
+                  const pathMatches = possiblePaths.some((p) => {
                     // Check if resolvedPath matches exactly
                     if (resolvedPath === p) return true;
                     // Check if resolvedPath without extension matches
@@ -1680,8 +1711,8 @@ export function isModelFile(filePath: string, source: string, options?: Transfor
     debugLog(options, `Base model sources searched: ${baseModelSources.join(', ')}`);
 
     // Check if any of the extended classes match our expected base models
-    const result = expectedBaseModels.some(baseModel =>
-      extendedClasses.some(extended => extended.includes(baseModel))
+    const result = expectedBaseModels.some((baseModel) =>
+      extendedClasses.some((extended) => extended.includes(baseModel))
     );
     debugLog(options, `Model detection result: ${result}`);
     return result;
@@ -1700,7 +1731,6 @@ export function resolveRelativeImport(importPath: string, fromFile: string, base
   }
 
   try {
-
     const fromDir = dirname(fromFile);
     const resolvedPath = resolve(fromDir, importPath);
 
@@ -1783,7 +1813,7 @@ export function findEmberImportLocalName(
       const resolvedPath = resolveRelativeImport(cleanSourceText, fromFile, baseDir);
       if (resolvedPath) {
         try {
-                const fileContent = readFileSync(resolvedPath, 'utf8');
+          const fileContent = readFileSync(resolvedPath, 'utf8');
 
           if (isModelFile(resolvedPath, fileContent, options)) {
             debugLog(options, `Found relative import pointing to model file: ${cleanSourceText} -> ${resolvedPath}`);
@@ -2342,7 +2372,7 @@ export function getTypeScriptTypeForHasMany(
  */
 export interface SchemaField {
   name: string;
-  kind: 'attribute' | 'belongsTo' | 'hasMany';
+  kind: 'attribute' | 'belongsTo' | 'hasMany' | 'schema-object';
   type?: string;
   options?: Record<string, unknown>;
   comment?: string;
@@ -2438,6 +2468,26 @@ export function convertToSchemaFieldWithNodes(
         options: Object.keys(options).length > 0 ? options : undefined,
       };
     }
+    case 'fragment': {
+      const fragmentType = args.text[0] ? removeQuotes(args.text[0]) : name;
+      const optionsNode = args.nodes[1];
+      let userOptions: Record<string, unknown> = {};
+
+      if (optionsNode && optionsNode.kind() === 'object') {
+        userOptions = parseObjectLiteralFromNode(optionsNode);
+      }
+
+      // Use withFragmentDefaults format
+      return {
+        name,
+        kind: getFieldKindFromDecorator('fragment') as 'schema-object',
+        type: `fragment:${fragmentType}`,
+        options: {
+          objectExtensions: ['ember-object', 'fragment'],
+          ...userOptions,
+        },
+      };
+    }
     default:
       return null;
   }
@@ -2495,6 +2545,26 @@ export function convertToSchemaField(name: string, decoratorType: string, args: 
         kind: getFieldKindFromDecorator('hasMany') as 'hasMany',
         type,
         options: Object.keys(options).length > 0 ? options : undefined,
+      };
+    }
+    case 'fragment': {
+      const fragmentType = args[0] ? removeQuotes(args[0]) : name;
+      const optionsText = args[1];
+      let userOptions: Record<string, unknown> = {};
+
+      if (optionsText) {
+        userOptions = parseObjectLiteral(optionsText);
+      }
+
+      // Use withFragmentDefaults format
+      return {
+        name,
+        kind: getFieldKindFromDecorator('fragment') as 'schema-object',
+        type: `fragment:${fragmentType}`,
+        options: {
+          objectExtensions: ['ember-object', 'fragment'],
+          ...userOptions,
+        },
       };
     }
     default:
