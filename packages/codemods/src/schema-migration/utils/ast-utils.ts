@@ -1477,6 +1477,8 @@ export function getFieldKindFromDecorator(decoratorName: string): string {
       return 'attribute';
     case 'fragment':
       return 'schema-object';
+    case 'fragmentArray':
+      return 'schema-array';
     default:
       return 'field'; // fallback
   }
@@ -2372,7 +2374,7 @@ export function getTypeScriptTypeForHasMany(
  */
 export interface SchemaField {
   name: string;
-  kind: 'attribute' | 'belongsTo' | 'hasMany' | 'schema-object';
+  kind: 'attribute' | 'belongsTo' | 'hasMany' | 'schema-object' | 'schema-array';
   type?: string;
   options?: Record<string, unknown>;
   comment?: string;
@@ -2488,6 +2490,27 @@ export function convertToSchemaFieldWithNodes(
         },
       };
     }
+    case 'fragmentArray': {
+      const fragmentType = args.text[0] ? removeQuotes(args.text[0]) : name;
+      const optionsNode = args.nodes[1];
+      let userOptions: Record<string, unknown> = {};
+
+      if (optionsNode && optionsNode.kind() === 'object') {
+        userOptions = parseObjectLiteralFromNode(optionsNode);
+      }
+
+      // Use withFragmentArrayDefaults format
+      return {
+        name,
+        kind: getFieldKindFromDecorator('fragmentArray') as 'schema-array',
+        type: `fragment:${fragmentType}`,
+        options: {
+          arrayExtensions: ['ember-object', 'ember-array-like', 'fragment-array'],
+          defaultValue: true,
+          ...userOptions,
+        },
+      };
+    }
     default:
       return null;
   }
@@ -2563,6 +2586,27 @@ export function convertToSchemaField(name: string, decoratorType: string, args: 
         type: `fragment:${fragmentType}`,
         options: {
           objectExtensions: ['ember-object', 'fragment'],
+          ...userOptions,
+        },
+      };
+    }
+    case 'fragmentArray': {
+      const fragmentType = args[0] ? removeQuotes(args[0]) : name;
+      const optionsText = args[1];
+      let userOptions: Record<string, unknown> = {};
+
+      if (optionsText) {
+        userOptions = parseObjectLiteral(optionsText);
+      }
+
+      // Use withFragmentArrayDefaults format
+      return {
+        name,
+        kind: getFieldKindFromDecorator('fragmentArray') as 'schema-array',
+        type: `fragment:${fragmentType}`,
+        options: {
+          arrayExtensions: ['ember-object', 'ember-array-like', 'fragment-array'],
+          defaultValue: true,
           ...userOptions,
         },
       };

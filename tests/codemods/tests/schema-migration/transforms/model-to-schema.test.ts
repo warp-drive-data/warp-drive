@@ -180,6 +180,33 @@ export default class FragmentModel extends Model {
       expect(artifacts[0]?.code).toContain("'ember-object'");
       expect(artifacts[0]?.code).toContain("'fragment'");
     });
+
+    it('handles fragmentArray correctly inside of models', () => {
+      const input = `import Model, { attr } from '@ember-data/model';
+import { fragmentArray } from 'ember-data-model-fragments/attributes';
+
+export default class FragmentArrayModel extends Model {
+	@attr('string') name;
+  @fragmentArray('address') addresses;
+}`;
+
+      const artifacts = toArtifacts('app/models/fragment-array-model.js', input, DEFAULT_TEST_OPTIONS);
+      expect(artifacts).toHaveLength(2);
+      expect(artifacts[0]?.name).toBe('FragmentArrayModelSchema');
+      expect(artifacts[0]?.suggestedFileName).toBe('fragment-array-model.schema.js');
+      expect(artifacts[0]?.code).toContain("'type': 'fragment-array-model'");
+      expect(artifacts[0]?.code).toContain('export const FragmentArrayModelSchema');
+
+      // Check fragmentArray field uses withFragmentArrayDefaults format
+      expect(artifacts[0]?.code).toContain("'name': 'addresses'");
+      expect(artifacts[0]?.code).toContain("'kind': 'schema-array'");
+      expect(artifacts[0]?.code).toContain("'type': 'fragment:address'");
+      expect(artifacts[0]?.code).toContain("'arrayExtensions'");
+      expect(artifacts[0]?.code).toContain("'ember-object'");
+      expect(artifacts[0]?.code).toContain("'ember-array-like'");
+      expect(artifacts[0]?.code).toContain("'fragment-array'");
+      expect(artifacts[0]?.code).toContain("'defaultValue': true");
+    });
   });
 
   describe('edge cases', () => {
