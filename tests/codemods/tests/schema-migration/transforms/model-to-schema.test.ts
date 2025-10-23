@@ -156,7 +156,7 @@ export default class ProjectPlan extends Model {
   });
 
   describe('fragment handling', () => {
-    it('handles fragments correctly inside of models', () => {
+    it('handles fragment decorator correctly inside of models', () => {
       const input = `import Model, { attr } from '@ember-data/model';
 import { fragment } from 'ember-data-model-fragments/attributes';
 
@@ -179,6 +179,36 @@ export default class FragmentModel extends Model {
       expect(artifacts[0]?.code).toContain("'objectExtensions'");
       expect(artifacts[0]?.code).toContain("'ember-object'");
       expect(artifacts[0]?.code).toContain("'fragment'");
+    });
+
+    it('handles classes extending Fragment base class', () => {
+      const input = `import Fragment, { attr } from 'ember-data-model-fragments/fragment';
+
+export default class Address extends Fragment {
+  @attr('string') street;
+  @attr('string') city;
+  @attr('string') state;
+  @attr('string') zip;
+}`;
+
+      const artifacts = toArtifacts('app/models/address.js', input, DEFAULT_TEST_OPTIONS);
+      expect(artifacts).toHaveLength(2);
+      expect(artifacts[0]?.name).toBe('AddressSchema');
+      expect(artifacts[0]?.suggestedFileName).toBe('address.schema.js');
+      expect(artifacts[0]?.code).toContain('export const AddressSchema');
+
+      // Fragment classes should have different schema structure
+      expect(artifacts[0]?.code).toContain("'type': 'fragment:address'"); // type is fragment:{name}
+      expect(artifacts[0]?.code).toContain("'identity': null"); // identity is null
+      expect(artifacts[0]?.code).toContain("'objectExtensions'"); // has objectExtensions
+      expect(artifacts[0]?.code).toContain("'ember-object'");
+      expect(artifacts[0]?.code).toContain("'fragment'");
+
+      // Check fields are properly extracted
+      expect(artifacts[0]?.code).toContain("'name': 'street'");
+      expect(artifacts[0]?.code).toContain("'name': 'city'");
+      expect(artifacts[0]?.code).toContain("'name': 'state'");
+      expect(artifacts[0]?.code).toContain("'name': 'zip'");
     });
 
     it('handles fragmentArray correctly inside of models', () => {
@@ -206,6 +236,34 @@ export default class FragmentArrayModel extends Model {
       expect(artifacts[0]?.code).toContain("'ember-array-like'");
       expect(artifacts[0]?.code).toContain("'fragment-array'");
       expect(artifacts[0]?.code).toContain("'defaultValue': true");
+    });
+
+    it('handles array correctly inside of models', () => {
+      const input = `import Model, { attr } from '@ember-data/model';
+import { array } from 'ember-data-model-fragments/attributes';
+
+export default class ArrayModel extends Model {
+	@attr('string') name;
+  @array() tags;
+}`;
+
+      const artifacts = toArtifacts('app/models/array-model.js', input, DEFAULT_TEST_OPTIONS);
+      expect(artifacts).toHaveLength(2);
+      expect(artifacts[0]?.name).toBe('ArrayModelSchema');
+      expect(artifacts[0]?.suggestedFileName).toBe('array-model.schema.js');
+      expect(artifacts[0]?.code).toContain("'type': 'array-model'");
+      expect(artifacts[0]?.code).toContain('export const ArrayModelSchema');
+
+      // Check array field uses withArrayDefaults format
+      expect(artifacts[0]?.code).toContain("'name': 'tags'");
+      expect(artifacts[0]?.code).toContain("'kind': 'array'");
+      expect(artifacts[0]?.code).toContain("'type': 'array:tags'");
+      expect(artifacts[0]?.code).toContain("'arrayExtensions'");
+      expect(artifacts[0]?.code).toContain("'ember-object'");
+      expect(artifacts[0]?.code).toContain("'ember-array-like'");
+      expect(artifacts[0]?.code).toContain("'fragment-array'");
+      // array decorator does not include defaultValue: true
+      expect(artifacts[0]?.code).not.toContain("'defaultValue'");
     });
   });
 

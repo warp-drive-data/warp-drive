@@ -1479,6 +1479,8 @@ export function getFieldKindFromDecorator(decoratorName: string): string {
       return 'schema-object';
     case 'fragmentArray':
       return 'schema-array';
+    case 'array':
+      return 'array';
     default:
       return 'field'; // fallback
   }
@@ -1616,6 +1618,10 @@ export function isModelFile(filePath: string, source: string, options?: Transfor
     if (options?.emberDataImportSource) {
       baseModelSources.push(options.emberDataImportSource);
     }
+    // Add default EmberData sources
+    baseModelSources.push('@ember-data/model', '@warp-drive/model', '@auditboard/warp-drive/v1/model');
+    // Add Fragment base class support
+    baseModelSources.push('ember-data-model-fragments/fragment');
     if (options?.intermediateModelPaths) {
       baseModelSources.push(...options.intermediateModelPaths);
     }
@@ -2374,7 +2380,7 @@ export function getTypeScriptTypeForHasMany(
  */
 export interface SchemaField {
   name: string;
-  kind: 'attribute' | 'belongsTo' | 'hasMany' | 'schema-object' | 'schema-array';
+  kind: 'attribute' | 'belongsTo' | 'hasMany' | 'schema-object' | 'schema-array' | 'array';
   type?: string;
   options?: Record<string, unknown>;
   comment?: string;
@@ -2511,6 +2517,26 @@ export function convertToSchemaFieldWithNodes(
         },
       };
     }
+    case 'array': {
+      const optionsNode = args.nodes[0];
+      let userOptions: Record<string, unknown> = {};
+
+      if (optionsNode && optionsNode.kind() === 'object') {
+        userOptions = parseObjectLiteralFromNode(optionsNode);
+      }
+
+      // Use withArrayDefaults format - type is array:singularized(name)
+      // Note: The singularization will be done at schema generation time
+      return {
+        name,
+        kind: getFieldKindFromDecorator('array') as 'array',
+        type: `array:${name}`, // Will be singularized during schema generation
+        options: {
+          arrayExtensions: ['ember-object', 'ember-array-like', 'fragment-array'],
+          ...userOptions,
+        },
+      };
+    }
     default:
       return null;
   }
@@ -2611,6 +2637,26 @@ export function convertToSchemaField(name: string, decoratorType: string, args: 
         },
       };
     }
+    case 'array': {
+      const optionsText = args[0];
+      let userOptions: Record<string, unknown> = {};
+
+      if (optionsText) {
+        userOptions = parseObjectLiteral(optionsText);
+      }
+
+      // Use withArrayDefaults format - type is array:singularized(name)
+      // Note: The singularization will be done at schema generation time
+      return {
+        name,
+        kind: getFieldKindFromDecorator('array') as 'array',
+        type: `array:${name}`, // Will be singularized during schema generation
+        options: {
+          arrayExtensions: ['ember-object', 'ember-array-like', 'fragment-array'],
+          ...userOptions,
+        },
+      };
+    }
     default:
       return null;
   }
@@ -2645,12 +2691,13 @@ export function buildLegacySchemaObject(
   type: string,
   schemaFields: SchemaField[],
   mixinTraits: string[],
-  mixinExtensions: string[]
+  mixinExtensions: string[],
+  isFragment?: boolean
 ): Record<string, unknown> {
   const legacySchema: Record<string, unknown> = {
-    type,
+    type: isFragment ? `fragment:${type}` : type,
     legacy: true,
-    identity: { kind: '@id', name: 'id' },
+    identity: isFragment ? null : { kind: '@id', name: 'id' },
     fields: schemaFields.map(schemaFieldToLegacyFormat),
   };
 
@@ -2658,7 +2705,13 @@ export function buildLegacySchemaObject(
     legacySchema.traits = mixinTraits;
   }
 
-  if (mixinExtensions.length > 0) {
+  // For Fragment classes, always add objectExtensions ['ember-object', 'fragment']
+  // Otherwise, only add mixinExtensions if they exist
+  if (isFragment) {
+    const fragmentExtensions = ['ember-object', 'fragment'];
+    legacySchema.objectExtensions =
+      mixinExtensions.length > 0 ? [...fragmentExtensions, ...mixinExtensions] : fragmentExtensions;
+  } else if (mixinExtensions.length > 0) {
     legacySchema.objectExtensions = mixinExtensions;
   }
 

@@ -69,6 +69,7 @@ function isClassMethodSyntax(methodNode: SgNode): boolean {
 interface ModelAnalysisResult {
   isValid: boolean;
   modelImportLocal?: string;
+  isFragment?: boolean;
   defaultExportNode?: SgNode;
   schemaFields: SchemaField[];
   extensionProperties: Array<{
@@ -124,10 +125,21 @@ function analyzeModelFile(filePath: string, source: string, options: TransformOp
       options?.emberDataImportSource || DEFAULT_EMBER_DATA_SOURCE,
       '@auditboard/warp-drive/v1/model', // AuditBoard WarpDrive
       '@warp-drive/model', // Standard WarpDrive
-      'ember-data-model-fragments/attributes', // Fragment support
+      'ember-data-model-fragments/attributes', // Fragment decorator support
+      'ember-data-model-fragments/fragment', // Fragment base class support
     ];
     const modelImportLocal = findEmberImportLocalName(root, expectedSources, options, filePath, process.cwd());
     debugLog(options, `DEBUG: Model import local: ${modelImportLocal}`);
+
+    // Also check specifically for Fragment base class import
+    const fragmentImportLocal = findEmberImportLocalName(
+      root,
+      ['ember-data-model-fragments/fragment'],
+      options,
+      filePath,
+      process.cwd()
+    );
+    debugLog(options, `DEBUG: Fragment import local: ${fragmentImportLocal}`);
 
     // Validate there is a default export extending the model
     const defaultExportNode = findDefaultExport(root, options);
@@ -137,10 +149,11 @@ function analyzeModelFile(filePath: string, source: string, options: TransformOp
     }
 
     // Check if this is a valid model class (either with EmberData decorators or extending intermediate models)
+    // Also accept classes extending Fragment
     const isValidModel = isModelClass(
       defaultExportNode,
       modelImportLocal ?? undefined,
-      undefined,
+      fragmentImportLocal ?? undefined,
       root,
       options,
       filePath
@@ -151,8 +164,12 @@ function analyzeModelFile(filePath: string, source: string, options: TransformOp
       return invalidResult;
     }
 
+    // Determine if this is a Fragment class (extends Fragment rather than Model)
+    const isFragment = !!fragmentImportLocal && isClassExtendingFragment(defaultExportNode, fragmentImportLocal, root);
+    debugLog(options, `DEBUG: Is Fragment class: ${isFragment}`);
+
     // If no EmberData decorator imports found, check if it extends from intermediate models
-    if (!modelImportLocal) {
+    if (!modelImportLocal && !isFragment) {
       debugLog(options, 'DEBUG: No EmberData decorator imports found, checking for intermediate model extension');
       // We'll continue processing even without decorator imports if it's a valid model class
     }
@@ -185,6 +202,7 @@ function analyzeModelFile(filePath: string, source: string, options: TransformOp
     return {
       isValid: true,
       modelImportLocal: modelImportLocal ?? undefined,
+      isFragment,
       defaultExportNode,
       schemaFields,
       extensionProperties,
@@ -472,8 +490,16 @@ function generateRegularModelArtifacts(
   analysis: ModelAnalysisResult,
   options: TransformOptions
 ): TransformArtifact[] {
-  const { schemaFields, extensionProperties, mixinTraits, mixinExtensions, modelName, baseName, defaultExportNode } =
-    analysis;
+  const {
+    schemaFields,
+    extensionProperties,
+    mixinTraits,
+    mixinExtensions,
+    modelName,
+    baseName,
+    defaultExportNode,
+    isFragment,
+  } = analysis;
 
   // Parse the source to get the root node for class detection
   const language = getLanguageFromPath(filePath);
@@ -492,7 +518,8 @@ function generateRegularModelArtifacts(
     mixinExtensions,
     source,
     defaultExportNode ?? null,
-    root
+    root,
+    isFragment
   );
   // Determine the file extension based on the original model file
   const originalExtension = filePath.endsWith('.ts') ? '.ts' : '.js';
@@ -704,8 +731,16 @@ function generateArtifactsFromMinimalAnalysis(
   analysis: ModelAnalysisResult,
   options: TransformOptions
 ): TransformArtifact[] {
-  const { schemaFields, extensionProperties, mixinTraits, mixinExtensions, modelName, baseName, defaultExportNode } =
-    analysis;
+  const {
+    schemaFields,
+    extensionProperties,
+    mixinTraits,
+    mixinExtensions,
+    modelName,
+    baseName,
+    defaultExportNode,
+    isFragment,
+  } = analysis;
 
   // Parse the source to get the root node for class detection
   const language = getLanguageFromPath(filePath);
@@ -724,7 +759,8 @@ function generateArtifactsFromMinimalAnalysis(
     mixinExtensions,
     source,
     defaultExportNode ?? null,
-    root
+    root,
+    isFragment
   );
   // Determine the file extension based on the original model file
   const originalExtension = filePath.endsWith('.ts') ? '.ts' : '.js';
@@ -1082,19 +1118,57 @@ function getIntermediateModelLocalNames(
 }
 
 /**
- * Check if a default export is a class extending a Model
+ * Check if a class extends Fragment
+ */
+function isClassExtendingFragment(exportNode: SgNode, fragmentLocalName: string, root: SgNode): boolean {
+  // Look for a class declaration in the export
+  let classDeclaration = exportNode.find({ rule: { kind: 'class_declaration' } });
+
+  // If no class declaration found in export, check if export references a class by name
+  if (!classDeclaration) {
+    const exportedIdentifier = getExportedIdentifier(exportNode, undefined);
+    if (exportedIdentifier) {
+      classDeclaration = root.find({
+        rule: {
+          kind: 'class_declaration',
+          has: {
+            kind: 'identifier',
+            regex: exportedIdentifier,
+          },
+        },
+      });
+    }
+  }
+
+  if (!classDeclaration) {
+    return false;
+  }
+
+  // Check if the class has a heritage clause (extends)
+  const heritageClause = classDeclaration.find({ rule: { kind: 'class_heritage' } });
+  if (!heritageClause) {
+    return false;
+  }
+
+  // Check if it extends the Fragment local name
+  const extendsText = heritageClause.text();
+  return extendsText.includes(fragmentLocalName) || extendsText.includes(`${fragmentLocalName}.extend(`);
+}
+
+/**
+ * Check if a default export is a class extending a Model or Fragment
  */
 function isModelClass(
   exportNode: SgNode,
   modelLocalName: string | undefined,
-  baseModelLocalName: string | undefined,
+  fragmentOrBaseModelLocalName: string | undefined,
   root: SgNode,
   options?: TransformOptions,
   filePath?: string
 ): boolean {
   debugLog(
     options,
-    `DEBUG: Checking if export extends model '${modelLocalName}' or base model '${baseModelLocalName}'`
+    `DEBUG: Checking if export extends model '${modelLocalName}' or fragment/base model '${fragmentOrBaseModelLocalName}'`
   );
 
   // Look for a class declaration in the export
@@ -1173,11 +1247,12 @@ function isModelClass(
     isMixinExtension = extendsText.includes(`${modelLocalName}.extend(`);
   }
 
-  // Check for custom base model extension
+  // Check for custom base model or Fragment extension
   let isBaseModelExtension = false;
-  if (baseModelLocalName) {
+  if (fragmentOrBaseModelLocalName) {
     isBaseModelExtension =
-      extendsText.includes(baseModelLocalName) || extendsText.includes(`${baseModelLocalName}.extend(`);
+      extendsText.includes(fragmentOrBaseModelLocalName) ||
+      extendsText.includes(`${fragmentOrBaseModelLocalName}.extend(`);
   }
 
   // Check for chained extends through configured intermediate classes
@@ -1736,9 +1811,10 @@ function generateSchemaCode(
   mixinExtensions: string[],
   originalSource: string,
   defaultExportNode: SgNode | null,
-  root: SgNode
+  root: SgNode,
+  isFragment?: boolean
 ): string {
-  const legacySchema = buildLegacySchemaObject(type, schemaFields, mixinTraits, mixinExtensions);
+  const legacySchema = buildLegacySchemaObject(type, schemaFields, mixinTraits, mixinExtensions, isFragment);
 
   // Detect quote style from original source
   const useSingleQuotes = detectQuoteStyle(originalSource) === 'single';
