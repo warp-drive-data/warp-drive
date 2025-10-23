@@ -211,6 +211,35 @@ export default class Address extends Fragment {
       expect(artifacts[0]?.code).toContain("'name': 'zip'");
     });
 
+    it('handles classes extending intermediate fragment classes', () => {
+      const input = `import Fragment from 'ember-data-model-fragments/fragment';
+import BaseFragment from './base-fragment';
+import { attr } from 'ember-data-model-fragments/fragment';
+
+export default class Address extends BaseFragment {
+  @attr('string') street;
+  @attr('string') city;
+}`;
+
+      const artifacts = toArtifacts(
+        'app/models/address.js',
+        input,
+        createTestOptions({
+          intermediateFragmentPaths: ['./base-fragment', 'base-fragment'],
+        })
+      );
+
+      expect(artifacts).toHaveLength(2);
+      expect(artifacts[0]?.name).toBe('AddressSchema');
+
+      // Should still be treated as a Fragment (with fragment schema structure)
+      expect(artifacts[0]?.code).toContain("'type': 'fragment:address'");
+      expect(artifacts[0]?.code).toContain("'identity': null");
+      expect(artifacts[0]?.code).toContain("'objectExtensions'");
+      expect(artifacts[0]?.code).toContain("'ember-object'");
+      expect(artifacts[0]?.code).toContain("'fragment'");
+    });
+
     it('handles fragmentArray correctly inside of models', () => {
       const input = `import Model, { attr } from '@ember-data/model';
 import { fragmentArray } from 'ember-data-model-fragments/attributes';

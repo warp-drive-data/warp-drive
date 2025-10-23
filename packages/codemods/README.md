@@ -195,6 +195,10 @@ For complex projects, you can use a JSON configuration file:
     "@my-org/client-core/core/custom-model",
     "my-client/core/base-model",
   ],
+  "intermediateFragmentPaths": [
+    "my-client/fragments/base-fragment",
+    "@my-org/client-core/fragments/custom-fragment"
+  ],
   "modelImportSource": "my-client/models",
   "mixinImportSource": "my-client/mixins",
   "modelSourceDir": "./apps/client/app/models",

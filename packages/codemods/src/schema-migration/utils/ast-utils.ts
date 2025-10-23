@@ -21,6 +21,8 @@ export interface TransformOptions {
   emberDataImportSource?: string;
   /** List of intermediate model class import paths that should be converted to traits (e.g., ['soxhub-client/core/base-model', 'soxhub-client/core/data-field-model']) */
   intermediateModelPaths?: string[];
+  /** List of intermediate fragment class import paths that should be converted to traits (e.g., ['app/fragments/base-fragment']) */
+  intermediateFragmentPaths?: string[];
   /** Specify base import path for existing model imports to detect and replace (required) */
   modelImportSource?: string;
   /** Specify base import path for existing mixin imports to detect and replace (optional) */
@@ -1625,6 +1627,9 @@ export function isModelFile(filePath: string, source: string, options?: Transfor
     if (options?.intermediateModelPaths) {
       baseModelSources.push(...options.intermediateModelPaths);
     }
+    if (options?.intermediateFragmentPaths) {
+      baseModelSources.push(...options.intermediateFragmentPaths);
+    }
 
     if (baseModelSources.length === 0) {
       debugLog(options, `No base model sources provided, cannot determine if this is a model`);
@@ -1644,8 +1649,12 @@ export function isModelFile(filePath: string, source: string, options?: Transfor
       // Check for direct matches with base model sources
       let isBaseModelImport = baseModelSources.includes(sourceText);
 
-      // If not a direct match, check if it's a relative import that resolves to an intermediate model
-      if (!isBaseModelImport && sourceText.startsWith('.') && options?.intermediateModelPaths) {
+      // If not a direct match, check if it's a relative import that resolves to an intermediate model or fragment
+      if (
+        !isBaseModelImport &&
+        sourceText.startsWith('.') &&
+        (options?.intermediateModelPaths || options?.intermediateFragmentPaths)
+      ) {
         try {
           // Resolve relative path to absolute path
           const resolvedPath = resolve(dirname(filePath), sourceText);
@@ -1654,29 +1663,66 @@ export function isModelFile(filePath: string, source: string, options?: Transfor
           // Debug for client-core files
 
           // Check if this resolved path corresponds to any intermediate model
-          for (const intermediatePath of options.intermediateModelPaths) {
-            // Use additionalModelSources to map from import path to file path
-            if (options.additionalModelSources) {
-              for (const { pattern, dir } of options.additionalModelSources) {
-                if (intermediatePath.startsWith(pattern.replace('/*', ''))) {
-                  // Convert intermediate path to file path using the mapping
-                  const relativePart = intermediatePath.replace(pattern.replace('/*', ''), '');
-                  const expectedFilePath = dir.replace('/*', relativePart);
+          if (options.intermediateModelPaths) {
+            for (const intermediatePath of options.intermediateModelPaths) {
+              // Use additionalModelSources to map from import path to file path
+              if (options.additionalModelSources) {
+                for (const { pattern, dir } of options.additionalModelSources) {
+                  if (intermediatePath.startsWith(pattern.replace('/*', ''))) {
+                    // Convert intermediate path to file path using the mapping
+                    const relativePart = intermediatePath.replace(pattern.replace('/*', ''), '');
+                    const expectedFilePath = dir.replace('/*', relativePart);
 
-                  // Check both .ts and .js extensions
-                  const possiblePaths = [`${expectedFilePath}.ts`, `${expectedFilePath}.js`];
-                  // The resolvedPath might already have an extension, or might not
-                  const pathMatches = possiblePaths.some((p) => {
-                    // Check if resolvedPath matches exactly
-                    if (resolvedPath === p) return true;
-                    // Check if resolvedPath without extension matches
-                    if (`${resolvedPath}.ts` === p || `${resolvedPath}.js` === p) return true;
-                    return false;
-                  });
-                  if (pathMatches) {
-                    debugLog(options, `Found match: ${sourceText} resolves to intermediate model ${intermediatePath}`);
-                    isBaseModelImport = true;
-                    break;
+                    // Check both .ts and .js extensions
+                    const possiblePaths = [`${expectedFilePath}.ts`, `${expectedFilePath}.js`];
+                    // The resolvedPath might already have an extension, or might not
+                    const pathMatches = possiblePaths.some((p) => {
+                      // Check if resolvedPath matches exactly
+                      if (resolvedPath === p) return true;
+                      // Check if resolvedPath without extension matches
+                      if (`${resolvedPath}.ts` === p || `${resolvedPath}.js` === p) return true;
+                      return false;
+                    });
+                    if (pathMatches) {
+                      debugLog(
+                        options,
+                        `Found match: ${sourceText} resolves to intermediate model ${intermediatePath}`
+                      );
+                      isBaseModelImport = true;
+                      break;
+                    }
+                  }
+                }
+              }
+            }
+          }
+
+          // Check if this resolved path corresponds to any intermediate fragment
+          if (!isBaseModelImport && options.intermediateFragmentPaths) {
+            for (const intermediatePath of options.intermediateFragmentPaths) {
+              // Use additionalModelSources to map from import path to file path
+              if (options.additionalModelSources) {
+                for (const { pattern, dir } of options.additionalModelSources) {
+                  if (intermediatePath.startsWith(pattern.replace('/*', ''))) {
+                    // Convert intermediate path to file path using the mapping
+                    const relativePart = intermediatePath.replace(pattern.replace('/*', ''), '');
+                    const expectedFilePath = dir.replace('/*', relativePart);
+
+                    // Check both .ts and .js extensions
+                    const possiblePaths = [`${expectedFilePath}.ts`, `${expectedFilePath}.js`];
+                    const pathMatches = possiblePaths.some((p) => {
+                      if (resolvedPath === p) return true;
+                      if (`${resolvedPath}.ts` === p || `${resolvedPath}.js` === p) return true;
+                      return false;
+                    });
+                    if (pathMatches) {
+                      debugLog(
+                        options,
+                        `Found match: ${sourceText} resolves to intermediate fragment ${intermediatePath}`
+                      );
+                      isBaseModelImport = true;
+                      break;
+                    }
                   }
                 }
               }

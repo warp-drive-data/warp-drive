@@ -165,7 +165,23 @@ function analyzeModelFile(filePath: string, source: string, options: TransformOp
     }
 
     // Determine if this is a Fragment class (extends Fragment rather than Model)
-    const isFragment = !!fragmentImportLocal && isClassExtendingFragment(defaultExportNode, fragmentImportLocal, root);
+    // This can be either:
+    // 1. Direct Fragment import and extends Fragment
+    // 2. Extends an intermediate fragment path (even without direct Fragment import)
+    let isFragment = false;
+    if (fragmentImportLocal) {
+      isFragment = isClassExtendingFragment(defaultExportNode, fragmentImportLocal, root, options, filePath);
+    }
+    // Also check if it extends an intermediate fragment path (even without Fragment import)
+    if (!isFragment && options?.intermediateFragmentPaths && options.intermediateFragmentPaths.length > 0) {
+      const intermediateLocalNames = getIntermediateFragmentLocalNames(root, options, filePath);
+      for (const localName of intermediateLocalNames) {
+        if (isClassExtendingFragment(defaultExportNode, localName, root, options, filePath)) {
+          isFragment = true;
+          break;
+        }
+      }
+    }
     debugLog(options, `DEBUG: Is Fragment class: ${isFragment}`);
 
     // If no EmberData decorator imports found, check if it extends from intermediate models
@@ -1118,9 +1134,76 @@ function getIntermediateModelLocalNames(
 }
 
 /**
- * Check if a class extends Fragment
+ * Get local names for intermediate fragment imports in the current file
  */
-function isClassExtendingFragment(exportNode: SgNode, fragmentLocalName: string, root: SgNode): boolean {
+function getIntermediateFragmentLocalNames(root: SgNode, options: TransformOptions, fromFile: string): string[] {
+  const localNames: string[] = [];
+  const intermediateFragmentPaths = options.intermediateFragmentPaths || [];
+
+  for (const fragmentPath of intermediateFragmentPaths) {
+    // First try direct matching
+    let localName = findEmberImportLocalName(root, [fragmentPath], options, fromFile, process.cwd());
+
+    // If no direct match, try to find imports that resolve to the expected intermediate fragment
+    if (!localName) {
+      const importStatements = root.findAll({ rule: { kind: 'import_statement' } });
+
+      for (const importNode of importStatements) {
+        const source = importNode.field('source');
+        if (!source) continue;
+
+        const sourceText = source.text().replace(/['"]/g, '');
+
+        // Check if this is a relative import that could be our intermediate fragment
+        if (sourceText.startsWith('./') || sourceText.startsWith('../')) {
+          try {
+            const resolvedPath = require('path').resolve(require('path').dirname(fromFile), sourceText);
+            const expectedFilePath = fragmentPath.split('/').slice(-1)[0];
+            const possiblePaths = [`${resolvedPath}.ts`, `${resolvedPath}.js`, resolvedPath];
+
+            for (const possiblePath of possiblePaths) {
+              if (require('fs').existsSync(possiblePath)) {
+                if (possiblePath.includes(expectedFilePath)) {
+                  const importClause = importNode.children().find((child) => child.kind() === 'import_clause');
+                  if (importClause) {
+                    const identifiers = importClause.findAll({ rule: { kind: 'identifier' } });
+                    if (identifiers.length > 0) {
+                      localName = identifiers[0].text();
+                      break;
+                    }
+                  }
+                }
+                break;
+              }
+            }
+
+            if (localName) break;
+          } catch (error) {
+            // Continue checking
+          }
+        }
+      }
+    }
+
+    if (localName) {
+      localNames.push(localName);
+      debugLog(options, `DEBUG: Found intermediate fragment local name: ${localName} for path: ${fragmentPath}`);
+    }
+  }
+
+  return localNames;
+}
+
+/**
+ * Check if a class extends Fragment (including intermediate fragment paths)
+ */
+function isClassExtendingFragment(
+  exportNode: SgNode,
+  fragmentLocalName: string,
+  root: SgNode,
+  options?: TransformOptions,
+  filePath?: string
+): boolean {
   // Look for a class declaration in the export
   let classDeclaration = exportNode.find({ rule: { kind: 'class_declaration' } });
 
@@ -1152,7 +1235,24 @@ function isClassExtendingFragment(exportNode: SgNode, fragmentLocalName: string,
 
   // Check if it extends the Fragment local name
   const extendsText = heritageClause.text();
-  return extendsText.includes(fragmentLocalName) || extendsText.includes(`${fragmentLocalName}.extend(`);
+  const extendsFragmentDirectly =
+    extendsText.includes(fragmentLocalName) || extendsText.includes(`${fragmentLocalName}.extend(`);
+
+  if (extendsFragmentDirectly) {
+    return true;
+  }
+
+  // Check if it extends an intermediate fragment path
+  if (options?.intermediateFragmentPaths && filePath) {
+    const intermediateLocalNames = getIntermediateFragmentLocalNames(root, options, filePath);
+    for (const localName of intermediateLocalNames) {
+      if (extendsText.includes(localName) || extendsText.includes(`${localName}.extend(`)) {
+        return true;
+      }
+    }
+  }
+
+  return false;
 }
 
 /**

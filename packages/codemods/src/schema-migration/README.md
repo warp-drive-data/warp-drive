@@ -81,6 +81,9 @@ Create a `schema-migration.config.json` file for complex projects:
   },
   "intermediateModelPaths": [
     "my-app/core/base-model"
+  ],
+  "intermediateFragmentPaths": [
+    "my-app/fragments/base-fragment"
   ]
 }
 ```
@@ -123,6 +126,7 @@ The JSON configuration file supports additional options not available via CLI:
 | `resourcesDir` | Directory to write schemas | `./app/schemas` |
 | `typeMapping` | Custom transform type mappings | `{}` |
 | `intermediateModelPaths` | Intermediate model classes to convert to traits | `[]` |
+| `intermediateFragmentPaths` | Intermediate fragment classes to treat as fragments | `[]` |
 | `emberDataImportSource` | Alternate import source for EmberData decorators | `@ember-data/model` |
 | `mirror` | Use @warp-drive-mirror instead of @warp-drive | `false` |
 | `additionalModelSources` | Additional model source patterns | `[]` |
@@ -254,6 +258,24 @@ If you have base model classes that multiple models extend, you can configure th
 ```
 
 These will be converted to traits that other models can include.
+
+### Intermediate Fragments
+
+Similarly, if you have base fragment classes that multiple fragments extend (from `ember-data-model-fragments`), you can configure them as intermediate fragments:
+
+```json
+{
+  "intermediateFragmentPaths": [
+    "my-app/fragments/base-fragment",
+    "my-app/fragments/auditable-fragment"
+  ]
+}
+```
+
+Classes extending these intermediate fragments will be recognized as fragment classes and generate fragment schemas with:
+- `type: 'fragment:{name}'` format
+- `identity: null` (fragments don't have their own identity)
+- `objectExtensions: ['ember-object', 'fragment']`
 
 ### Custom Type Mappings
 
