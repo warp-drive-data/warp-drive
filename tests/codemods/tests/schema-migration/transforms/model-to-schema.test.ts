@@ -211,7 +211,7 @@ export default class Address extends Fragment {
       expect(artifacts[0]?.code).toContain("'name': 'zip'");
     });
 
-    it('handles classes extending intermediate fragment classes', () => {
+    it('handles classes extending intermediate fragment classes (relative path)', () => {
       const input = `import Fragment from 'ember-data-model-fragments/fragment';
 import BaseFragment from './base-fragment';
 import { attr } from 'ember-data-model-fragments/fragment';
@@ -238,6 +238,43 @@ export default class Address extends BaseFragment {
       expect(artifacts[0]?.code).toContain("'objectExtensions'");
       expect(artifacts[0]?.code).toContain("'ember-object'");
       expect(artifacts[0]?.code).toContain("'fragment'");
+    });
+
+    it('handles classes extending intermediate fragment classes (absolute module path)', () => {
+      const input = `import BaseFragment from 'codemod/models/base-fragment';
+import { attr } from '@ember-data/model';
+
+export default class Address extends BaseFragment {
+  @attr('string') street;
+  @attr('string') city;
+  @attr('string') state;
+  @attr('string') zip;
+}`;
+
+      const artifacts = toArtifacts(
+        '/Users/test/codemod/models/address.js',
+        input,
+        createTestOptions({
+          intermediateFragmentPaths: ['codemod/models/base-fragment'],
+        })
+      );
+
+      expect(artifacts).toHaveLength(2);
+      expect(artifacts[0]?.name).toBe('AddressSchema');
+      expect(artifacts[0]?.suggestedFileName).toBe('address.schema.js');
+
+      // Should be treated as a Fragment (with fragment schema structure)
+      expect(artifacts[0]?.code).toContain("'type': 'fragment:address'");
+      expect(artifacts[0]?.code).toContain("'identity': null");
+      expect(artifacts[0]?.code).toContain("'objectExtensions'");
+      expect(artifacts[0]?.code).toContain("'ember-object'");
+      expect(artifacts[0]?.code).toContain("'fragment'");
+
+      // Check fields are properly extracted
+      expect(artifacts[0]?.code).toContain("'name': 'street'");
+      expect(artifacts[0]?.code).toContain("'name': 'city'");
+      expect(artifacts[0]?.code).toContain("'name': 'state'");
+      expect(artifacts[0]?.code).toContain("'name': 'zip'");
     });
 
     it('handles fragmentArray correctly inside of models', () => {

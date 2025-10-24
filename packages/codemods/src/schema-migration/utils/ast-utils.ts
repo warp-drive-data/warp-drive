@@ -1550,10 +1550,18 @@ export function withTransformWrapper<T>(
  */
 export function isModelFile(filePath: string, source: string, options?: TransformOptions): boolean {
   try {
-    // Special case: if this file itself is listed as an intermediate model, it's a model by definition
+    // Special case: if this file itself is listed as an intermediate model or fragment, it's a model by definition
     if (options?.intermediateModelPaths) {
       for (const intermediatePath of options.intermediateModelPaths) {
         const expectedFileName = intermediatePath.split('/').pop(); // e.g., "-auditboard-model"
+        if (expectedFileName && filePath.includes(expectedFileName)) {
+          return true;
+        }
+      }
+    }
+    if (options?.intermediateFragmentPaths) {
+      for (const intermediatePath of options.intermediateFragmentPaths) {
+        const expectedFileName = intermediatePath.split('/').pop(); // e.g., "base-fragment"
         if (expectedFileName && filePath.includes(expectedFileName)) {
           return true;
         }

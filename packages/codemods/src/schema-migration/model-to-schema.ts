@@ -149,8 +149,8 @@ function analyzeModelFile(filePath: string, source: string, options: TransformOp
     }
 
     // Check if this is a valid model class (either with EmberData decorators or extending intermediate models)
-    // Also accept classes extending Fragment
-    const isValidModel = isModelClass(
+    // Also accept classes extending Fragment or intermediate fragments
+    let isValidModel = isModelClass(
       defaultExportNode,
       modelImportLocal ?? undefined,
       fragmentImportLocal ?? undefined,
@@ -158,6 +158,19 @@ function analyzeModelFile(filePath: string, source: string, options: TransformOp
       options,
       filePath
     );
+
+    // If not valid yet, check if it extends an intermediate fragment path
+    if (!isValidModel && options?.intermediateFragmentPaths && options.intermediateFragmentPaths.length > 0) {
+      const intermediateLocalNames = getIntermediateFragmentLocalNames(root, options, filePath);
+      for (const localName of intermediateLocalNames) {
+        if (isModelClass(defaultExportNode, undefined, localName, root, options, filePath)) {
+          isValidModel = true;
+          debugLog(options, `DEBUG: Valid model via intermediate fragment path: ${localName}`);
+          break;
+        }
+      }
+    }
+
     debugLog(options, `DEBUG: Is valid model: ${isValidModel}`);
     if (!isValidModel) {
       debugLog(options, 'DEBUG: Not a valid model class, skipping');
@@ -1139,12 +1152,14 @@ function getIntermediateModelLocalNames(
 function getIntermediateFragmentLocalNames(root: SgNode, options: TransformOptions, fromFile: string): string[] {
   const localNames: string[] = [];
   const intermediateFragmentPaths = options.intermediateFragmentPaths || [];
+  const path = require('path');
+  const fs = require('fs');
 
   for (const fragmentPath of intermediateFragmentPaths) {
     // First try direct matching
     let localName = findEmberImportLocalName(root, [fragmentPath], options, fromFile, process.cwd());
 
-    // If no direct match, try to find imports that resolve to the expected intermediate fragment
+    // If no direct match, try to find imports that match the configured path
     if (!localName) {
       const importStatements = root.findAll({ rule: { kind: 'import_statement' } });
 
@@ -1154,21 +1169,86 @@ function getIntermediateFragmentLocalNames(root: SgNode, options: TransformOptio
 
         const sourceText = source.text().replace(/['"]/g, '');
 
+        // Normalize both paths for comparison
+        const normalizedFragmentPath = fragmentPath.replace(/\\/g, '/');
+        const normalizedSourceText = sourceText.replace(/\\/g, '/');
+
+        // Check for direct module path match (e.g., 'codemod/models/base-fragment')
+        if (normalizedSourceText === normalizedFragmentPath) {
+          const importClause = importNode.children().find((child) => child.kind() === 'import_clause');
+          if (importClause) {
+            const identifiers = importClause.findAll({ rule: { kind: 'identifier' } });
+            if (identifiers.length > 0) {
+              localName = identifiers[0].text();
+              debugLog(
+                options,
+                `DEBUG: Matched intermediate fragment (direct): ${sourceText} for config: ${fragmentPath}`
+              );
+              break;
+            }
+          }
+        }
+
         // Check if this is a relative import that could be our intermediate fragment
         if (sourceText.startsWith('./') || sourceText.startsWith('../')) {
           try {
-            const resolvedPath = require('path').resolve(require('path').dirname(fromFile), sourceText);
-            const expectedFilePath = fragmentPath.split('/').slice(-1)[0];
+            const resolvedPath = path.resolve(path.dirname(fromFile), sourceText);
+
+            // Normalize the configured path to check against
+            // fragmentPath could be like "codemod/models/base-fragment" or "app/fragments/base-fragment"
+            // We need to check if the resolved path ends with this pattern
+            const pathSegments = normalizedFragmentPath.split('/');
+
+            // Check if resolved path ends with the configured path segments
             const possiblePaths = [`${resolvedPath}.ts`, `${resolvedPath}.js`, resolvedPath];
 
             for (const possiblePath of possiblePaths) {
-              if (require('fs').existsSync(possiblePath)) {
-                if (possiblePath.includes(expectedFilePath)) {
+              if (fs.existsSync(possiblePath)) {
+                const normalizedPossiblePath = possiblePath.replace(/\\/g, '/');
+
+                // Check if the resolved path ends with the configured fragment path
+                // or contains all the path segments in order
+                let matches = false;
+
+                // Method 1: Check if it ends with the full path
+                if (
+                  normalizedPossiblePath.endsWith(normalizedFragmentPath) ||
+                  normalizedPossiblePath.endsWith(`${normalizedFragmentPath}.ts`) ||
+                  normalizedPossiblePath.endsWith(`${normalizedFragmentPath}.js`)
+                ) {
+                  matches = true;
+                }
+
+                // Method 2: Check if all path segments appear in order
+                if (!matches && pathSegments.length > 0) {
+                  const possiblePathParts = normalizedPossiblePath.split('/');
+                  let segmentIndex = 0;
+
+                  for (let i = possiblePathParts.length - 1; i >= 0 && segmentIndex < pathSegments.length; i--) {
+                    const part = possiblePathParts[i].replace(/\.(ts|js)$/, '');
+                    const expectedSegment = pathSegments[pathSegments.length - 1 - segmentIndex];
+
+                    if (part === expectedSegment) {
+                      segmentIndex++;
+                    } else if (segmentIndex > 0) {
+                      // If we've already started matching but this doesn't match, reset
+                      break;
+                    }
+                  }
+
+                  matches = segmentIndex === pathSegments.length;
+                }
+
+                if (matches) {
                   const importClause = importNode.children().find((child) => child.kind() === 'import_clause');
                   if (importClause) {
                     const identifiers = importClause.findAll({ rule: { kind: 'identifier' } });
                     if (identifiers.length > 0) {
                       localName = identifiers[0].text();
+                      debugLog(
+                        options,
+                        `DEBUG: Matched intermediate fragment (relative): ${sourceText} -> ${possiblePath} for config: ${fragmentPath}`
+                      );
                       break;
                     }
                   }
@@ -1179,7 +1259,7 @@ function getIntermediateFragmentLocalNames(root: SgNode, options: TransformOptio
 
             if (localName) break;
           } catch (error) {
-            // Continue checking
+            debugLog(options, `DEBUG: Error resolving intermediate fragment path: ${error}`);
           }
         }
       }

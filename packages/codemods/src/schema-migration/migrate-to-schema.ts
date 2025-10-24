@@ -828,14 +828,14 @@ export async function runMigration(options: MigrateOptions): Promise<void> {
       }
 
       // Use AST to determine file type, with directory hints as optimization
-      const isLikelyModel = file.includes('/models/');
+      const isLikelyModel = file.includes('/models/') || file.includes('/fragments/');
       const isLikelyMixin = file.includes('/mixins/');
 
       if (finalOptions.verbose) {
         logger.debug(`🔍 Analyzing file: ${file} (likely model: ${isLikelyModel}, likely mixin: ${isLikelyMixin})`);
       }
 
-      // Check model first if it's in models directory, otherwise check both
+      // Check model first if it's in models or fragments directory, otherwise check both
       if (isLikelyModel) {
         const isModel = isModelFile(file, source, finalOptions);
         if (finalOptions.verbose) {
