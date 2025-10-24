@@ -101,6 +101,18 @@ export class PageState<RT = unknown, E = unknown> {
     return url ? this.manager.getPageState(url) : null;
   }
 
+  @memoized
+  get first(): PageState<RT, E> | null {
+    const url = this.firstLink;
+    return url ? this.manager.getPageState(url) : null;
+  }
+
+  @memoized
+  get last(): PageState<RT, E> | null {
+    const url = this.lastLink;
+    return url ? this.manager.getPageState(url) : null;
+  }
+
   load = async (request: Future<unknown>): Promise<ReactiveDocument<RT[]> | null> => {
     try {
       this.request = request as Future<RT>;
@@ -174,6 +186,12 @@ export class PageState<RT = unknown, E = unknown> {
     }
     if (next) {
       this.nextLink = next;
+    }
+    if (first) {
+      this.firstLink = first;
+    }
+    if (last) {
+      this.lastLink = last;
     }
   };
 
