@@ -50,10 +50,10 @@ This handler would need to be added to the request manager configuration:
 ```ts
 import RequestManager from '@ember-data/request';
 import Fetch from '@ember-data/request/fetch';
-import { AuthHandler } from './auth-handler.ts';
+import { AuthHandler } from './auth-handler.ts'; // [!code focus]
 
-const manager = new RequestManager()
-  .use([AuthHandler, Fetch]);
+const manager = new RequestManager() // [!code focus]
+  .use([AuthHandler, Fetch]); // [!code focus]
 ```
 
 This way every request that was made using this request manager will have `Authorization` header added to it.
@@ -100,11 +100,11 @@ import { AuthHandler } from './auth-handler.ts';
 
 export default {
   create(args) {
-    const authHandler = new AuthHandler();
-    setOwner(authHandler, getOwner(args));
+    const authHandler = new AuthHandler(); // [!code focus]
+    setOwner(authHandler, getOwner(args)); // [!code focus]
 
-    return new RequestManager()
-      .use([authHandler, Fetch]);
+    return new RequestManager() // [!code focus]
+      .use([authHandler, Fetch]); // [!code focus]
   }
 }
 ```
@@ -163,10 +163,10 @@ This handler would need to be added to request manager configuration:
 ```ts
 import RequestManager from '@ember-data/request';
 import Fetch from '@ember-data/request/fetch';
-import { AuthHandler } from './auth-handler.ts';
+import { AuthHandler } from './auth-handler.ts'; // [!code focus]
 
-const manager = new RequestManager()
-  .use([AuthHandler, Fetch]);
+const manager = new RequestManager() // [!code focus]
+  .use([AuthHandler, Fetch]); // [!code focus]
 ```
 
 This way every request that was made using this request manager will have `X-CSRF-Token` header added to it when needed.
