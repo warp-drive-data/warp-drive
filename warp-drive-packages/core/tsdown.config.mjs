@@ -23,6 +23,7 @@ export const entryPoints = [
   './src/types/spec/**.ts',
   './src/types/cache.ts',
   './src/types/graph.ts',
+  './src/types/graphql-request.ts',
   './src/types/identifier.ts',
   './src/types.ts',
   './src/types/params.ts',
