@@ -19,7 +19,7 @@ export const PersonSchema = withLegacy({
     withFragmentDefaults('name'),
     withFragmentArrayDefaults('names'),
     withFragmentArrayDefaults('addresses'),
-    withArrayDefaults('string', 'titles'),
+    withArrayDefaults('titles', 'string'),
   ],
 });
 
