@@ -1,9 +1,12 @@
 import { useRecommendedStore } from '@warp-drive/core';
+import { PRODUCTION } from '@warp-drive/core/build-config/env';
 import { withDefaults } from '@warp-drive/core/reactive';
-import { module, test } from '@warp-drive/diagnostic';
+import { module, skip, test as runTest } from '@warp-drive/diagnostic';
 import { JSONAPICache } from '@warp-drive/json-api';
 
 import { captureLoggedReport } from './utils';
+
+const test = PRODUCTION ? skip : runTest;
 
 module('Validator | 7.4 Full Linkage', function () {
   test('It errors when data related to a primary resource is missing', async function (assert) {
