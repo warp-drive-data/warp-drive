@@ -7,6 +7,8 @@ import type { ResourceDocument } from '@warp-drive/core/types/spec/document';
 
 import { validateTopLevelDocumentMembers } from './1.1/7.1_top-level-document-members';
 import { validateDocumentResources } from './1.1/7.2_resource-objects';
+import { validateFullLinkage } from './1.1/7.4_full-linkage';
+import { validateNoDuplicateResources } from './1.1/7.4_no-duplicate-resources';
 import { validateLinks } from './1.1/links';
 import { isErrorDocument, isMetaDocument, isPushedDocument, Reporter } from './utils';
 
@@ -59,6 +61,8 @@ function validateResourceDocument(reporter: Reporter, doc: StructuredDataDocumen
     'data' in doc.content && Array.isArray(doc.content?.data) ? 'collection-document' : 'resource-document'
   );
   validateDocumentResources(reporter, doc.content);
+  validateNoDuplicateResources(reporter, doc.content);
+  validateFullLinkage(reporter, doc.content);
 
   // TODO @runspired - validateMeta on document
   // TODO @runspired - validateMeta on resource

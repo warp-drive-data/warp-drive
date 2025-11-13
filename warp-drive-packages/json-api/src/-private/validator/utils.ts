@@ -18,6 +18,7 @@ import type {
   ResourceErrorDocument,
   ResourceMetaDocument,
 } from '@warp-drive/core/types/spec/document';
+import type { ResourceObject } from '@warp-drive/core/types/spec/json-api-raw';
 
 export function inspectType(obj: unknown): string {
   if (obj === null) {
@@ -93,6 +94,22 @@ interface ErrorReport {
   type: 'error' | 'warning' | 'info';
   kind: 'key' | 'value';
 }
+
+export interface ResourcePresence {
+  data: Map<string, Map<string, ResourceInfo[]>>;
+  included: Map<string, Map<string, ResourceInfo[]>>;
+  all: Map<string, Map<string, ResourceInfo[]>>;
+}
+
+export interface ResourceInfo {
+  data: ResourceObject;
+  /**
+   * null if the only primary data member
+   */
+  index: number | null;
+  location: 'data' | 'included';
+}
+
 export class Reporter {
   capabilities: CacheCapabilitiesManager;
   contextDocument: StructuredDocument<ResourceDocument>;
@@ -107,7 +124,49 @@ export class Reporter {
     unknownType: true,
     unknownAttribute: true,
     unknownRelationship: true,
+    enforceReachable: true,
   };
+
+  _presence: ResourcePresence | null = null;
+
+  get presence(): ResourcePresence {
+    if (this._presence) {
+      return this._presence;
+    }
+
+    const primaryResources = new Map<string, Map<string, ResourceInfo[]>>();
+    const includedResources = new Map<string, Map<string, ResourceInfo[]>>();
+    const allResources = new Map<string, Map<string, ResourceInfo[]>>();
+
+    const doc = this.contextDocument.content;
+    if (doc) {
+      if ('data' in doc && doc.data) {
+        if (Array.isArray(doc.data)) {
+          for (let i = 0; i < doc.data.length; i++) {
+            addResourceToMap(primaryResources, doc.data[i], i, 'data');
+            addResourceToMap(allResources, doc.data[i], i, 'data');
+          }
+        } else {
+          addResourceToMap(primaryResources, doc.data, null, 'data');
+          addResourceToMap(allResources, doc.data, null, 'data');
+        }
+      }
+    }
+
+    if (doc && 'included' in doc && Array.isArray(doc.included)) {
+      for (let i = 0; i < doc.included.length; i++) {
+        addResourceToMap(includedResources, doc.included[i], i, 'included');
+        addResourceToMap(allResources, doc.included[i], i, 'included');
+      }
+    }
+
+    this._presence = {
+      data: primaryResources,
+      included: includedResources,
+      all: allResources,
+    };
+    return this._presence;
+  }
 
   constructor(capabilities: CacheCapabilitiesManager, doc: StructuredDocument<ResourceDocument>) {
     this.capabilities = capabilities;
@@ -306,7 +365,7 @@ export class Reporter {
       }
     }
 
-    const contextStr = `${counts.error} errors and ${counts.warning} warnings found in the {json:api} document returned by ${this.contextDocument.request?.method} ${this.contextDocument.request?.url}`;
+    const contextStr = `${counts.error} errors and ${counts.warning} warnings found in the {json:api} document returned by ${this.contextDocument.request?.method ?? 'GET'} ${this.contextDocument.request?.url}`;
     const errorString = contextStr + `\n\n` + errorLines.join('\n');
 
     // eslint-disable-next-line no-console, @typescript-eslint/no-unused-expressions
@@ -391,4 +450,30 @@ export function getRemoteField(fields: Map<string, FieldSchema>, key: string): F
     return undefined;
   }
   return field;
+}
+
+function addResourceToMap(
+  map: Map<string, Map<string, ResourceInfo[]>>,
+  resource: ResourceObject,
+  index: number | null,
+  location: 'data' | 'included'
+): void {
+  if (!map.has(resource.type)) {
+    map.set(resource.type, new Map());
+  }
+  if (!map.get(resource.type)!.has(resource.id!)) {
+    map.get(resource.type)!.set(resource.id!, []);
+  }
+  map.get(resource.type)!.get(resource.id!)!.push({ data: resource, index, location });
+}
+
+export function checkResourceInMap(
+  map: Map<string, Map<string, ResourceInfo[]>>,
+  resource: { type: string; id: string }
+): boolean {
+  return map.has(resource.type) && map.get(resource.type)!.has(resource.id);
+}
+
+export function checkResourcePresent(presence: ResourcePresence, resource: { type: string; id: string }): boolean {
+  return checkResourceInMap(presence.data, resource) || checkResourceInMap(presence.included, resource);
 }
