@@ -39,10 +39,22 @@ import { fragmentsModelFor } from './model-fragments/hooks/model-for';
 import { restoreDeprecatedStoreBehaviors } from './store';
 
 interface _LegacyStoreSetupOptions<T extends Cache> extends Omit<StoreSetupOptions<T>, 'schemas'> {
+  /**
+   * The {@link ResourceSchema | ResourceSchemas} or {@link ObjectSchema | ObjectSchemas} of entities
+   * migrated to no longer use {@link Model}.
+   *
+   * :::caution
+   * {@link Model} is still able to be used directly as a source of schema when using {@link useLegacyStore},
+   * however, its reliance on EmberObject, classic computeds and resolver behaviors mean that Model
+   * will stop working when these things are deprecated in Ember.
+   * :::
+   */
   schemas?: Array<ResourceSchema | ObjectSchema>;
 
   /**
    * Whether to include support for ModelFragments migrations.
+   *
+   * @default false
    */
   modelFragments?: boolean;
 }
@@ -51,11 +63,19 @@ export interface LegacyModelStoreSetupOptions<T extends Cache> extends _LegacySt
   /**
    * If true, it is presumed that no requests require use of the LegacyNetworkHandler
    * and associated adapters/serializer methods.
+   *
+   * If legacyRequests is true, {@link linksMode} must be false
+   *
+   * @default false
    */
   linksMode: true;
   /**
    * if true, all legacy request methods and supporting infrastructure will
    * be available on the store.
+   *
+   * If legacyRequests is true, {@link linksMode} must be false
+   *
+   * @default false
    */
   legacyRequests?: false;
 }
@@ -64,11 +84,17 @@ export interface LegacyModelAndNetworkStoreSetupOptions<T extends Cache> extends
   /**
    * If true, it is presumed that no requests require use of the LegacyNetworkHandler
    * and associated adapters/serializer methods.
+   *
+   * @default false
    */
   linksMode: false;
   /**
    * if true, all legacy request methods and supporting infrastructure will
    * be available on the store.
+   *
+   * If legacyRequests is true, {@link linksMode} must be false
+   *
+   * @default false
    */
   legacyRequests?: false;
 }
@@ -77,11 +103,17 @@ export interface LegacyModelAndNetworkAndRequestStoreSetupOptions<T extends Cach
   /**
    * If true, it is presumed that no requests require use of the LegacyNetworkHandler
    * and associated adapters/serializer methods.
+   *
+   * @default false
    */
   linksMode: false;
   /**
    * if true, all legacy request methods and supporting infrastructure will
    * be available on the store.
+   *
+   * If legacyRequests is true, {@link linksMode} must be false
+   *
+   * @default false
    */
   legacyRequests: true;
 }

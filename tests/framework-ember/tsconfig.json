@@ -1,8 +1,5 @@
 {
   "include": ["tests/**/*", "start.ts"],
-  "glint": {
-    "environment": ["ember-loose", "ember-template-imports"]
-  },
   "compilerOptions": {
     "lib": ["DOM", "ESNext"],
     "module": "esnext",
@@ -24,7 +21,7 @@
     "noImplicitOverride": false,
     "incremental": true,
     "declaration": true,
-    "types": ["ember-source/types", "vite/client"],
+    "types": ["@glint/ember-tsc/types", "ember-source/types", "vite/client"],
     // "baseUrl": ".",
     "paths": {
       "@ember-data/unpublished-test-infra": ["../../packages/unpublished-test-infra/unstable-preview-types"],

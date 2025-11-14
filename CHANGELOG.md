@@ -1,5 +1,10 @@
 # WarpDrive Changelog
 
+## v5.8.0 (2025-10-20)
+
+#### Committers: (0)
+
+
 ## v5.3.4 (2024-06-15)
 
 #### :evergreen_tree: New Deprecation

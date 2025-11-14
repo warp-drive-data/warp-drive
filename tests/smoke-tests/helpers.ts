@@ -21,7 +21,7 @@ export async function debugTypes() {
   }
 }
 
-export function banner(text) {
+export function banner(text: string) {
   console.info(`
 --------------------------------
 
@@ -34,11 +34,11 @@ export function banner(text) {
 export async function typecheck(packageManager: string, cwd: string) {
   switch (packageManager) {
     case 'npm':
-      return runNoThrow(cwd, `npm exec glint`);
+      return runNoThrow(cwd, `npm exec ember-tsc`);
     case 'yarn':
-      return runNoThrow(cwd, `yarn glint`);
+      return runNoThrow(cwd, `yarn ember-tsc`);
     case 'pnpm':
-      return runNoThrow(cwd, `pnpm glint`);
+      return runNoThrow(cwd, `pnpm ember-tsc`);
   }
 }
 export async function build(packageManager: string, cwd: string) {

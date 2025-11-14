@@ -2366,7 +2366,10 @@ function getCacheFields(
   identifier: ResourceKey
 ): Map<string, Exclude<CacheableFieldSchema, IdentityField>> {
   if (cache._capabilities.schema.cacheFields) {
-    return cache._capabilities.schema.cacheFields(identifier);
+    const result = cache._capabilities.schema.cacheFields(identifier);
+    if (result) {
+      return result;
+    }
   }
 
   // the model schema service cannot process fields that are not cache fields

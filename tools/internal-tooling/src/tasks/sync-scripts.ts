@@ -21,7 +21,7 @@ const CLASSIC_TEST_APP = {
 };
 
 const GLINT_TEST_APP = {
-  'check:types': 'glint',
+  'check:types': 'ember-tsc',
 };
 
 const EXAM_TEST_APP = {
@@ -60,7 +60,7 @@ const PUBLIC_PACKAGES_EXCEPT_BUILD_CONFIG_AND_TOOLING = {
 function usesGlint(project: ProjectPackage) {
   const availableDependencies = Object.assign({}, project.pkg.dependencies, project.pkg.devDependencies);
 
-  if (availableDependencies['@glint/environment-ember-loose']) {
+  if (availableDependencies['@glint/ember-tsc']) {
     return true;
   }
 

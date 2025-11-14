@@ -6,7 +6,6 @@ import type { Store } from '@warp-drive/core';
 import type { ReactiveDocument } from '@warp-drive/core/reactive';
 
 import type { Book } from '../schemas/book';
-// @ts-expect-error
 import VerticalCollection from '@html-next/vertical-collection';
 
 export interface InfiniteBookSignature {

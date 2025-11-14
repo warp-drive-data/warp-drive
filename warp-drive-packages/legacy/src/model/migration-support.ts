@@ -589,8 +589,9 @@ export class DelegatingSchemaService implements SchemaService {
     return this._secondary.fields(resource);
   }
   cacheFields?(resource: { type: string }): Map<string, Exclude<CacheableFieldSchema, IdentityField>> {
-    if (this._preferred.cacheFields?.(resource)) {
-      return this._preferred.cacheFields(resource);
+    if (this._preferred.hasResource?.(resource)) {
+      // @ts-expect-error
+      return this._preferred.cacheFields?.(resource);
     }
 
     // @ts-expect-error

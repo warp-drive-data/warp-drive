@@ -7,7 +7,7 @@ import { withArrayDefaults } from '@warp-drive/legacy/model-fragments';
 export const InfoSchema = {
   type: 'fragment:info',
   identity: null,
-  fields: [{ kind: 'field', name: 'name' }, withArrayDefaults('notes')],
+  fields: [{ kind: 'field', name: 'name' }, withArrayDefaults('notes', 'string')],
   objectExtensions: ['ember-object', 'fragment'],
 } satisfies ObjectSchema;
 

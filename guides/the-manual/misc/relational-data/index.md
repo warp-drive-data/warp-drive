@@ -14,12 +14,12 @@
 -->
 
 ## Configuration
-- [1:none](./configuration/one-to-none.md) (One To None)
-- [1:1](./configuration/one-to-one.md) (One To One)
-- [1:Many](./configuration/one-to-many.md) (One To Many)
-- [Many:None](./configuration/many-to-none.md) (Many To None)
-- [Many:1](./configuration/many-to-one.md) (Many To One)
-- [Many:Many](./configuration/many-to-many.md) (Many To Many)
+- [One To None](./configuration/one-to-none.md) (1:0)
+- [One To One](./configuration/one-to-one.md) (1:1)
+- [One To Many](./configuration/one-to-many.md) (1:N)
+- [Many To None](./configuration/many-to-none.md) (N:0)
+- [Many To One](./configuration/many-to-one.md) (N:1)
+- [Many To Many](./configuration/many-to-many.md) (N:N)
 
 <!--
 ## Mutating Relationships

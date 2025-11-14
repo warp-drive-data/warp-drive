@@ -27,7 +27,11 @@ module<AppTestContext>('Integration | Application', function (hooks) {
   test('Fragment and FragmentArray are setup correctly', function (this: AppTestContext, assert) {
     const PersonSchema = withLegacy({
       type: 'person',
-      fields: [withFragmentDefaults('name'), withFragmentArrayDefaults('addresses'), withArrayDefaults('titles')],
+      fields: [
+        withFragmentDefaults('name'),
+        withFragmentArrayDefaults('addresses'),
+        withArrayDefaults('titles', 'string'),
+      ],
     });
 
     const NameSchema = {
