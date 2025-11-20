@@ -25,15 +25,15 @@ all recent planning discussions and work is properly accounted for.
 In order to release WarpDrive you must have commit rights to `warp-drive-data/warp-drive` on GITHUB.
 Everything else is handled by automation.
 
-In the event you do need to perform a manuall release, you must also have permission
+In the event you do need to perform a manual release, you must also have permission
 to push to protected branches, and access tokens for npm and github with permissions
 to the related package scopes. For more information about manual releases run 
 `bun release about` in the repository.
 
-For manually releases you will need to ensure at least the following:
+For manual releases, you will need to ensure at least the following:
 
 - You have `commit` rights to `ember-data` on GitHub
-- You have an account on `npm` and belongs to the `ember-data` and `warp-drive` organizations on NPM
+- You have an account on `npm` and it belongs to the `ember-data` and `warp-drive` organizations on NPM
 - You have `publish` rights within the `ember-data` and `warp-drive` organizations on NPM
 - You have configured your NPM account to use `2fa` (two factor authentication)
 - You have logged into your NPM account on your machine (typically sessions preserve nearly forever once you have)
@@ -68,8 +68,8 @@ First, update the Release Notes on Github
   - Only set the release as latest if it should be the `latest` tag on npm as well (e.g. the `release` channel). LTS/Beta/Canary/LTS-prev/Release-prev should never be marked as `latest`.
 
 Once you have finished this release process, we recommend posting an announcement to your
-Threads/Mastadon/Twitter accounts and the crosslinking the announcement to the following
-Discord channels.
+Threads/Mastadon/Twitter accounts and them crosslinking the announcement to the following
+Discord channels:
 
 ### WarpDrive
 - [#subspace-transmissions](https://discord.com/channels/999914805215367219/1400670702348271708)
