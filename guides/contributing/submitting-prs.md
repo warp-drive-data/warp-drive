@@ -1,4 +1,5 @@
 ---
+title: Submitting PRs
 order: 6
 ---
 
