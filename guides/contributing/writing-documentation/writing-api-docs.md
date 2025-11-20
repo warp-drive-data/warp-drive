@@ -28,10 +28,10 @@ auto-discover documentation. It documents everything reachable, public or privat
 code docs. It uses typescript to understand the source-code and builds documentation from the combination of Type signatures and TSDoc comments.
 
 This is great, but it means that its very easy to leak private APIs
-into the docs, use `/** @internal */` on things that should not be
+into the docs. Use `/** @internal */` on things that should not be
 put into the public docs.
 
-While API Documentation lives with the source-code, the code itself plays no-part in the documentation
+While API Documentation lives with the source-code, the code itself plays no part in the documentation
 that is generated: everything is compiled from comments alone.
 
 The below guide will walk through best practices for writing doc comments, important
@@ -247,9 +247,9 @@ and some documentation may be unexpectedly truncated.
 
 ### Documenting Packages and Subpackages
 
-To create an overview for a module path e.g. `@warp-drive/core-types` or `@warp-drive/core-types/symbol` all that is needed is a doc comment at the top of the file with the tag `@module.
+To create an overview for a module path e.g. `@warp-drive/core-types` or `@warp-drive/core-types/symbol` all that is needed is a doc comment at the top of the file with the tag `@module`.
 
-For instance, to write documentation giving an overview of `@warp-drive/core-types`
+For instance, to write documentation giving an overview of `@warp-drive/core-types`,
 we would do the following in `packages/core-types/src/index.ts`
 
 ```ts
@@ -284,12 +284,12 @@ we would do the following in `packages/core-types/src/index.ts`
 class ReactiveResource {}
 ```
 
-Methods are documented with `@method` and attatch to the most recent class the parser has
+Methods are documented with `@method` and attach to the most recent class the parser has
 seen.
 
 ### Don't document types in @param and @return
 
-Because types are parsed from the typescript, @param and @return should
+Because types are parsed from the typescript, `@param` and `@return` should
 be used to give a meaningful description only.
 
 ```ts
@@ -309,7 +309,7 @@ function add(a: number, b: number): number {}
 
 <br>
 
-## Documentation Hygeine
+## Documentation Hygiene
 
 <br>
 
