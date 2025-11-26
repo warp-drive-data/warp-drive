@@ -1,1 +1,1 @@
-{"url":"users/5","status":200,"statusText":"OK","headers":{"Content-Type":"application/vnd.api+json","Content-Encoding":"br","Cache-Control":"no-store","Content-Length":131},"method":"GET","requestBody":null}
+{"url":"users/5","status":200,"statusText":"OK","headers":{"Content-Type":"application/vnd.api+json","Content-Encoding":"br","Cache-Control":"no-store","Content-Length":140},"method":"GET","requestBody":null}

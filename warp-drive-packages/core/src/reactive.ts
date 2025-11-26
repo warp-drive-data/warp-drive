@@ -321,10 +321,16 @@ export {
   getRequestState,
   createPaginationSubscription,
   getPaginationState,
+  createPaginationLinksSubscription,
+  getPaginationLinks,
   type RequestSubscription,
   type RequestLoadingState,
   type RequestState,
   type PaginationState,
+  type PaginationLinks,
+  type PaginationLink,
+  type RealPaginationLink,
+  type PlaceholderPaginationLink,
 } from './signals/-private';
 
 export {

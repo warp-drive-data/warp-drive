@@ -8,11 +8,10 @@ import { Link } from '../types/spec/json-api-raw.ts';
 import { StructuredErrorDocument } from '../types/request.ts';
 import { Future } from '../request.ts';
 import { ReactiveDocument } from '../reactive.ts';
-import { PaginationLinks } from './pagination-links.ts';
 
 const PaginationCache = new WeakMap<Future<unknown>, PaginationState>();
 
-function getHref(link?: Link | null): string | null {
+export function getHref(link?: Link | null): string | null {
   if (!link) {
     return null;
   }
@@ -38,10 +37,11 @@ export class PageState<RT = unknown, E = unknown> {
   @signal declare nextLink: string | null;
   @signal declare firstLink: string | null;
   @signal declare lastLink: string | null;
-  @signal declare pageNumber: number | null;
+  @signal declare pageNumber: number;
 
   constructor(manager: PaginationState<RT, E>, futureOrLink: Future<RT> | string) {
     this.manager = manager;
+    this.pageNumber = 0;
     if (typeof futureOrLink === 'string') {
       this.selfLink = futureOrLink;
     } else {
@@ -60,8 +60,13 @@ export class PageState<RT = unknown, E = unknown> {
   }
 
   @memoized
-  get isLoaded(): boolean {
+  get isRequested(): boolean {
     return Boolean(this.state);
+  }
+
+  @memoized
+  get isLoaded(): boolean {
+    return this.isSuccess || this.isError;
   }
 
   @memoized
@@ -171,7 +176,7 @@ export class PageState<RT = unknown, E = unknown> {
     return currentPage;
   };
 
-  getTotalPages = (document: ReactiveDocument<unknown>): number | null => {
+  getTotalPages = (document: ReactiveDocument<unknown>): number => {
     const totalPages = (document.meta?.totalPages ?? 0) as number;
     assert(
       'Could not determine the total pages from the document meta. Make sure to include a `totalPages` property.',
@@ -205,15 +210,14 @@ export class PageState<RT = unknown, E = unknown> {
 export class PaginationState<RT = unknown, E = unknown> {
   @signal declare initialPage: Readonly<PageState<RT, E>>;
   @signal declare activePage: Readonly<PageState<RT, E>>;
-  @signal declare totalPages: number | null;
+  @signal declare totalPages: number;
   declare pagesCache: Map<string, PageState>;
-  declare links: PaginationLinks<RT, E>;
 
   constructor(request: Future<RT>) {
     this.pagesCache = new Map<string, PageState>();
     this.initialPage = new PageState<RT, E>(this, request);
     this.activePage = this.initialPage;
-    this.links = new PaginationLinks(this);
+    this.totalPages = 0;
   }
 
   @memoized
@@ -247,28 +251,6 @@ export class PaginationState<RT = unknown, E = unknown> {
       page = page.next;
     }
     return page;
-  }
-
-  @memoized
-  get prevPages(): Readonly<PageState<RT, E>[]> {
-    let pages = [];
-    let page = this.activePage?.prev;
-    while (page) {
-      pages.unshift(page);
-      page = page.prev;
-    }
-    return pages;
-  }
-
-  @memoized
-  get nextPages(): Readonly<PageState<RT, E>[]> {
-    let pages = [];
-    let page = this.activePage?.next;
-    while (page) {
-      pages.push(page);
-      page = page.next;
-    }
-    return pages;
   }
 
   @memoized

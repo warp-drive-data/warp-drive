@@ -12,7 +12,15 @@ export {
 } from './request-subscription.ts';
 export { getRequestState, type RequestLoadingState, type RequestState } from './request-state.ts';
 export { getPaginationState, type PaginationState } from './pagination-state.ts';
+export {
+  getPaginationLinks,
+  type PaginationLinks,
+  type PaginationLink,
+  type RealPaginationLink,
+  type PlaceholderPaginationLink,
+} from './pagination-links.ts';
 export { createPaginationSubscription } from './pagination-subscription.ts';
+export { createPaginationLinksSubscription } from './pagination-links-subscription.ts';
 export {
   getPromiseState,
   type PromiseState,
