@@ -83,7 +83,7 @@ export const UserSchema = withDefaults({
     { name: 'id', kind: '@id' },
     { name: 'firstName', kind: 'field' },
     { name: 'permissions', kind: 'field' },
-    { name: 'canEdit', kind: 'derived', type: 'boolean' }
+    { name: 'canEdit', kind: 'derived', type: 'canEdit' } // The type in the case of custom derivation should be the name used to register the derivation.
   ]
 });
 ```
