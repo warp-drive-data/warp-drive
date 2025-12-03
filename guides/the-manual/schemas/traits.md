@@ -13,25 +13,29 @@ A Trait is defined as a plain object with fields, and then registered so it can 
 
 ```ts [schemas/traits/timestamps.ts]
 export const Timestamps = {
+  name: 'timestamps',
+  mode: 'polaris',
   fields: [
-    { name: 'createdAt', kind: 'field', type: 'date-time' },
-    { name: 'updatedAt', kind: 'field', type: 'date-time' }
-  ]
+    { name: 'createdAt', kind: 'field', type: 'date' },
+    { name: 'updatedAt', kind: 'field', type: 'date' }
+  ],
 };
 ```
 
 ## Registering a Trait
 
-Once defined, register the trait with the SchemaService using [registerTrait](https://canary.warp-drive.io/api/@warp-drive/core/types/schema/schema-service/interfaces/SchemaService#registertrait)
+Register the Trait with the SchemaService using [`registerTrait`](https://canary.warp-drive.io/api/@warp-drive/core/reactive/classes/SchemaService#registertrait).
 
 ```ts [store/index.ts]
 import { store } from './store';
 import { Timestamps } from './schemas/traits/timestamps';
 
-store.schema.registerTrait('timestamps', Timestamps);
+schema.registerTrait(Timestamps);
 ```
 
 ## Using a Trait in a ResourceSchema
+
+Once registered, include the Trait name inside the `traits` array.
 
 ```ts [schemas/user.ts]
 import { withDefaults } from '@warp-drive/core/reactive';
@@ -46,11 +50,11 @@ export const UserSchema = withDefaults({
 });
 ```
 
-The `timestamps` Trait is now mixed into the `user` ResourceSchema.
+The `timestamps` Trait is now merged into the `user` ResourceSchema.
 
 ## Reuse Example
 
-Traits can be shared across multiple schemas:
+Traits can be shared across multiple schemas.
 
 ```ts [schemas/post.ts]
 import { withDefaults } from '@warp-drive/core/reactive';
@@ -65,6 +69,7 @@ export const PostSchema = withDefaults({
 });
 ```
 
-Both `UserSchema` and `PostSchema` now automatically include `createdAt` and `updatedAt`.
+Both `UserSchema` and `PostSchema` now include `createdAt` and `updatedAt` automatically.
 
-By registering and reusing Traits, you can apply consistent sets of fields such as audit information, metadata, or tracking properties across different ResourceSchemas without duplicating code.
+
+By defining and registering Traits, you can reuse consistent sets of fields across your ResourceSchemas without duplicating code.
