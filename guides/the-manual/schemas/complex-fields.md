@@ -5,7 +5,7 @@ order: 5
 # Complex Fields
 
 Complex Fields let you model nested or repeated structures inside a resource. They are useful when a resource contains structured data that is not itself a top-level resource.  
-They always appear inside a [ResourceSchema](./resource-schemas.md).
+They always appear inside a [ResourceSchema](./resources/index.md#ResourceSchemas).
 
 ## Schema Objects
 
@@ -92,4 +92,4 @@ Complex Fields come in two forms:
 * `schema-array` for a list of embedded objects.  
 
 They are ideal for representing nested data like addresses, translations, or metadata while keeping everything reactive and consistent.  
-For defining the top-level shape of your data, see [ResourceSchemas](./resource-schemas.md).
+For defining the top-level shape of your data, see [ResourceSchemas](./resources/index.md#ResourceSchemas).
