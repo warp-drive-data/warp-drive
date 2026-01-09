@@ -237,7 +237,7 @@ In PolarisMode using `resource` and `collection`, sync relationships will also g
 relationships will instead provide access to a [ReactiveDocument](/api/@warp-drive/core/reactive/type-aliases/ReactiveDocument).
 
 So for instance, if `user.homeAddress` were `async: false`, then its value would be an instance of an `Address` record.
-But if `user.homeAddress` were `asunc: true`, it would instead be a reactive class with `links`, `meta` and (only-if-loaded) `data`.
+But if `user.homeAddress` were `async: true`, it would instead be a reactive class with `links`, `meta` and (only-if-loaded) `data`.
 
 - `user.homeAddress.links` would provide access to its associated links
 - `user.homeAddress.meta` would provide access to any associated meta
