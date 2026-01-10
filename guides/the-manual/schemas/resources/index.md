@@ -1,7 +1,7 @@
 ---
 order: 0
 categoryTitle: Resources
-categoryOrder: 1
+categoryOrder: 2
 title: ResourceSchemas
 ---
 
