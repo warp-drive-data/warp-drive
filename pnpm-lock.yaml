@@ -3843,9 +3843,21 @@ importers:
 
   warp-drive-packages/legacy:
     dependencies:
+      '@ember/edition-utils':
+        specifier: ^1.2.0
+        version: 1.2.0
       '@embroider/macros':
         specifier: ^1.18.1
         version: 1.18.1(@babel/core@7.28.3)
+      ember-cli-string-utils:
+        specifier: ^1.1.0
+        version: 1.1.0
+      ember-cli-test-info:
+        specifier: ^1.0.0
+        version: 1.0.0
+      inflection:
+        specifier: ~3.0.2
+        version: 3.0.2
     devDependencies:
       '@babel/core':
         specifier: ^7.28.3
@@ -19505,9 +19517,13 @@ snapshots:
 
   '@warp-drive/legacy@file:warp-drive-packages/legacy(da2d8626017c763d07445c649af78d55)':
     dependencies:
+      '@ember/edition-utils': 1.2.0
       '@embroider/macros': 1.18.1(@babel/core@7.28.3)
       '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.28.3)
       '@warp-drive/utilities': file:warp-drive-packages/utilities(ac1631a7da983377f84b100525d730a6)
+      ember-cli-string-utils: 1.1.0
+      ember-cli-test-info: 1.0.0
+      inflection: 3.0.2
     transitivePeerDependencies:
       - '@babel/core'
       - supports-color
