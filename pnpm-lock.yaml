@@ -1740,8 +1740,8 @@ importers:
         specifier: ^4.1.1
         version: 4.1.1(@babel/core@7.28.3)
       '@embroider/addon-shim':
-        specifier: ^1.10.0
-        version: 1.10.0
+        specifier: ^1.10.2
+        version: 1.10.2
       '@glimmer/component':
         specifier: ^2.0.0
         version: 2.0.0
@@ -1830,8 +1830,8 @@ importers:
         specifier: ^4.1.1
         version: 4.1.1(@babel/core@7.28.3)
       '@embroider/addon-shim':
-        specifier: ^1.10.0
-        version: 1.10.0
+        specifier: ^1.10.2
+        version: 1.10.2
       '@embroider/macros':
         specifier: ^1.18.1
         version: 1.18.1(@babel/core@7.28.3)
@@ -1956,8 +1956,8 @@ importers:
         specifier: ^4.1.1
         version: 4.1.1(@babel/core@7.28.3)
       '@embroider/addon-shim':
-        specifier: ^1.10.0
-        version: 1.10.0
+        specifier: ^1.10.2
+        version: 1.10.2
       '@embroider/macros':
         specifier: ^1.18.1
         version: 1.18.1(@babel/core@7.28.3)
@@ -2052,8 +2052,8 @@ importers:
         specifier: ^4.1.1
         version: 4.1.1(@babel/core@7.28.3)
       '@embroider/addon-shim':
-        specifier: ^1.10.0
-        version: 1.10.0
+        specifier: ^1.10.2
+        version: 1.10.2
       '@embroider/macros':
         specifier: ^1.18.1
         version: 1.18.1(@babel/core@7.28.3)
@@ -2823,8 +2823,8 @@ importers:
         specifier: ^4.1.1
         version: 4.1.1(@babel/core@7.28.3)
       '@embroider/addon-shim':
-        specifier: ^1.10.0
-        version: 1.10.0
+        specifier: ^1.10.2
+        version: 1.10.2
       '@embroider/macros':
         specifier: ^1.18.1
         version: 1.18.1(@babel/core@7.28.3)
@@ -3183,8 +3183,8 @@ importers:
         specifier: ^4.1.1
         version: 4.1.1(@babel/core@7.28.3)
       '@embroider/addon-shim':
-        specifier: ^1.10.0
-        version: 1.10.0
+        specifier: ^1.10.2
+        version: 1.10.2
       '@glimmer/component':
         specifier: ^2.0.0
         version: 2.0.0
@@ -3611,8 +3611,8 @@ importers:
   warp-drive-packages/build-config:
     dependencies:
       '@embroider/addon-shim':
-        specifier: ^1.10.0
-        version: 1.10.0
+        specifier: ^1.10.2
+        version: 1.10.2
       '@embroider/macros':
         specifier: ^1.18.1
         version: 1.18.1(@babel/core@7.28.3)
@@ -5086,8 +5086,8 @@ packages:
       rollup:
         optional: true
 
-  '@embroider/addon-shim@1.10.0':
-    resolution: {integrity: sha512-gcJuHiXgnrzaU8NyU+2bMbtS6PNOr5v5B8OXBqaBvTCsMpXLvKo8OBOQFCoUN0rPX2J6VaFqrbi/371sMvzZug==}
+  '@embroider/addon-shim@1.10.2':
+    resolution: {integrity: sha512-EfI9cJ5/3QSUJtwm7x1MXrx3TEa2p7RNgSHefy7fvGm8/DP1xUFL25nST1NaHbHcqR1UhMlrTtv5iUIDoVzeQQ==}
     engines: {node: 12.* || 14.* || >= 16}
 
   '@embroider/compat@4.1.2':
@@ -5127,6 +5127,10 @@ packages:
 
   '@embroider/shared-internals@3.0.0':
     resolution: {integrity: sha512-5J5ipUMCAinQS38WW7wedruq5Z4VnHvNo+ZgOduw0PtI9w0CQWx7/HE+98PBDW8jclikeF+aHwF317vc1hwuzg==}
+    engines: {node: 12.* || 14.* || >= 16}
+
+  '@embroider/shared-internals@3.0.2':
+    resolution: {integrity: sha512-/SusdG+zgosc3t+9sPFVKSFOYyiSgLfXOT6lYNWoG1YtnhWDxlK4S8leZ0jhcVjemdaHln5rTyxCnq8oFLxqpQ==}
     engines: {node: 12.* || 14.* || >= 16}
 
   '@embroider/vite@1.2.0':
@@ -13994,16 +13998,16 @@ packages:
       jsdom:
         optional: true
 
-  volar-service-html@0.0.64:
-    resolution: {integrity: sha512-5xknMYKmZBFzp2399RlsnGce25PfNu9ViXa1s63Q8NP6xeXcF3lInFsV+1o2DWBoXZdnXcuRvWOA+K+JIZLEcA==}
+  volar-service-html@0.0.68:
+    resolution: {integrity: sha512-fru9gsLJxy33xAltXOh4TEdi312HP80hpuKhpYQD4O5hDnkNPEBdcQkpB+gcX0oK0VxRv1UOzcGQEUzWCVHLfA==}
     peerDependencies:
       '@volar/language-service': ~2.4.0
     peerDependenciesMeta:
       '@volar/language-service':
         optional: true
 
-  volar-service-typescript@0.0.65:
-    resolution: {integrity: sha512-zPJuLIMs7lkQCvL+Rza8+3/EIoXEIkX8+DL7bNNfPgnbalbvRDhqWLVMJ6Zk3pINjLJafDqyhSbw8srfkUv97w==}
+  volar-service-typescript@0.0.68:
+    resolution: {integrity: sha512-z7B/7CnJ0+TWWFp/gh2r5/QwMObHNDiQiv4C9pTBNI2Wxuwymd4bjEORzrJ/hJ5Yd5+OzeYK+nFCKevoGEEeKw==}
     peerDependencies:
       '@volar/language-service': ~2.4.0
     peerDependenciesMeta:
@@ -16331,7 +16335,7 @@ snapshots:
   '@ember/test-helpers@5.2.0(patch_hash=a1670a4e3977c846a5c2454f317f5a17cbd284aef3a676b190c98141536afb04)(@babel/core@7.28.3)(ember-source@6.6.0)':
     dependencies:
       '@ember/test-waiters': 4.1.1(@babel/core@7.28.3)
-      '@embroider/addon-shim': 1.10.0
+      '@embroider/addon-shim': 1.10.2
       '@embroider/macros': 1.18.1(@babel/core@7.28.3)
       '@simple-dom/interface': 1.4.0
       decorator-transforms: 2.3.0(@babel/core@7.28.3)
@@ -16349,7 +16353,7 @@ snapshots:
   '@ember/test-helpers@5.2.0(patch_hash=a1670a4e3977c846a5c2454f317f5a17cbd284aef3a676b190c98141536afb04)(a28950a1e4cd07d337893daf47c6f294)':
     dependencies:
       '@ember/test-waiters': 4.1.1(@babel/core@7.28.3)
-      '@embroider/addon-shim': 1.10.0
+      '@embroider/addon-shim': 1.10.2
       '@embroider/macros': 1.18.1(@babel/core@7.28.3)
       '@simple-dom/interface': 1.4.0
       decorator-transforms: 2.3.0(@babel/core@7.28.3)
@@ -16366,7 +16370,7 @@ snapshots:
 
   '@ember/test-waiters@4.1.1(@babel/core@7.28.3)':
     dependencies:
-      '@embroider/addon-shim': 1.10.0
+      '@embroider/addon-shim': 1.10.2
       '@embroider/macros': 1.18.1(@babel/core@7.28.3)
     transitivePeerDependencies:
       - '@babel/core'
@@ -16391,9 +16395,9 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  '@embroider/addon-shim@1.10.0':
+  '@embroider/addon-shim@1.10.2':
     dependencies:
-      '@embroider/shared-internals': 3.0.0
+      '@embroider/shared-internals': 3.0.2
       broccoli-funnel: 3.0.8
       common-ancestor-path: 1.0.1
       semver: 7.7.2
@@ -16610,6 +16614,24 @@ snapshots:
       - supports-color
 
   '@embroider/shared-internals@3.0.0':
+    dependencies:
+      babel-import-util: 3.0.1
+      debug: 4.4.1
+      ember-rfc176-data: 0.3.18
+      fs-extra: 9.1.0
+      is-subdir: 1.2.0
+      js-string-escape: 1.0.1
+      lodash: 4.17.21
+      minimatch: 3.1.2
+      pkg-entry-points: 1.1.1
+      resolve-package-path: 4.0.3
+      resolve.exports: 2.0.3
+      semver: 7.7.2
+      typescript-memoize: 1.1.1
+    transitivePeerDependencies:
+      - supports-color
+
+  '@embroider/shared-internals@3.0.2':
     dependencies:
       babel-import-util: 3.0.1
       debug: 4.4.1
@@ -16941,7 +16963,7 @@ snapshots:
 
   '@glimmer/component@2.0.0':
     dependencies:
-      '@embroider/addon-shim': 1.10.0
+      '@embroider/addon-shim': 1.10.2
       '@glimmer/env': 0.1.7
     transitivePeerDependencies:
       - supports-color
@@ -17210,8 +17232,8 @@ snapshots:
       silent-error: 1.1.1
       typescript: 5.9.2
       uuid: 8.3.2
-      volar-service-html: 0.0.64(@volar/language-service@2.4.23)
-      volar-service-typescript: 0.0.65(@volar/language-service@2.4.23)
+      volar-service-html: 0.0.68(@volar/language-service@2.4.23)
+      volar-service-typescript: 0.0.68(@volar/language-service@2.4.23)
       vscode-languageserver-protocol: 3.17.5
       vscode-languageserver-textdocument: 1.0.12
       vscode-uri: 3.1.0
@@ -17237,8 +17259,8 @@ snapshots:
       silent-error: 1.1.1
       typescript: 5.9.2
       uuid: 8.3.2
-      volar-service-html: 0.0.64(@volar/language-service@2.4.23)
-      volar-service-typescript: 0.0.65(@volar/language-service@2.4.23)
+      volar-service-html: 0.0.68(@volar/language-service@2.4.23)
+      volar-service-typescript: 0.0.68(@volar/language-service@2.4.23)
       vscode-languageserver-protocol: 3.17.5
       vscode-languageserver-textdocument: 1.0.12
       vscode-uri: 3.1.0
@@ -18947,7 +18969,7 @@ snapshots:
 
   '@warp-drive/build-config@file:warp-drive-packages/build-config':
     dependencies:
-      '@embroider/addon-shim': 1.10.0
+      '@embroider/addon-shim': 1.10.2
       '@embroider/macros': 1.18.1
       babel-import-util: 2.1.1
       babel-plugin-debug-macros: 2.0.0
@@ -18958,7 +18980,7 @@ snapshots:
 
   '@warp-drive/build-config@file:warp-drive-packages/build-config(@babel/core@7.28.3)':
     dependencies:
-      '@embroider/addon-shim': 1.10.0
+      '@embroider/addon-shim': 1.10.2
       '@embroider/macros': 1.18.1(@babel/core@7.28.3)
       babel-import-util: 2.1.1
       babel-plugin-debug-macros: 2.0.0(@babel/core@7.28.3)
@@ -22148,7 +22170,7 @@ snapshots:
 
   ember-inflector@6.0.0(@babel/core@7.28.3):
     dependencies:
-      '@embroider/addon-shim': 1.10.0
+      '@embroider/addon-shim': 1.10.2
       decorator-transforms: 2.3.0(@babel/core@7.28.3)
     transitivePeerDependencies:
       - '@babel/core'
@@ -22170,7 +22192,7 @@ snapshots:
 
   ember-modifier@4.2.2(@babel/core@7.28.3):
     dependencies:
-      '@embroider/addon-shim': 1.10.0
+      '@embroider/addon-shim': 1.10.2
       decorator-transforms: 2.3.0(@babel/core@7.28.3)
       ember-cli-normalize-entity-name: 1.0.0
       ember-cli-string-utils: 1.1.0
@@ -22180,7 +22202,7 @@ snapshots:
 
   ember-page-title@9.0.3(102b6eb8bd5c8762c16e3c7c1e24111d):
     dependencies:
-      '@embroider/addon-shim': 1.10.0
+      '@embroider/addon-shim': 1.10.2
       '@glimmer/component': 2.0.0
       '@simple-dom/document': 1.4.0
       ember-source: 6.6.0(@glimmer/component@2.0.0)
@@ -22190,7 +22212,7 @@ snapshots:
   ember-provide-consume-context@0.8.0(f4f33c1bd73c537f2d6daaec15330a22):
     dependencies:
       '@ember/test-helpers': 5.2.0(patch_hash=a1670a4e3977c846a5c2454f317f5a17cbd284aef3a676b190c98141536afb04)(a28950a1e4cd07d337893daf47c6f294)
-      '@embroider/addon-shim': 1.10.0
+      '@embroider/addon-shim': 1.10.2
       '@glimmer/component': 2.0.0
       ember-source: 6.6.0(@glimmer/component@2.0.0)
     transitivePeerDependencies:
@@ -22199,7 +22221,7 @@ snapshots:
   ember-qunit@8.0.2(3f9a343127e9728bedbcb4a45003eb38):
     dependencies:
       '@ember/test-helpers': 5.2.0(patch_hash=a1670a4e3977c846a5c2454f317f5a17cbd284aef3a676b190c98141536afb04)(a28950a1e4cd07d337893daf47c6f294)
-      '@embroider/addon-shim': 1.10.0
+      '@embroider/addon-shim': 1.10.2
       '@embroider/macros': 1.18.1(@babel/core@7.28.3)
       ember-cli-test-loader: 3.1.0(@babel/core@7.28.3)
       ember-source: 6.6.0(@glimmer/component@2.0.0)
@@ -22211,7 +22233,7 @@ snapshots:
   ember-qunit@9.0.1(3f9a343127e9728bedbcb4a45003eb38):
     dependencies:
       '@ember/test-helpers': 5.2.0(patch_hash=a1670a4e3977c846a5c2454f317f5a17cbd284aef3a676b190c98141536afb04)(a28950a1e4cd07d337893daf47c6f294)
-      '@embroider/addon-shim': 1.10.0
+      '@embroider/addon-shim': 1.10.2
       '@embroider/macros': 1.18.1(@babel/core@7.28.3)
       ember-source: 6.6.0(@glimmer/component@2.0.0)
       qunit: 2.19.4(patch_hash=44177f0047189d474ebdeba20fc8ddc3c8c2a5777d65cbb5f0fac0979bf66301)
@@ -22223,7 +22245,7 @@ snapshots:
   ember-qunit@9.0.3(529ed4101966945b9a18832a103c0d31):
     dependencies:
       '@ember/test-helpers': 5.2.0(patch_hash=a1670a4e3977c846a5c2454f317f5a17cbd284aef3a676b190c98141536afb04)(a28950a1e4cd07d337893daf47c6f294)
-      '@embroider/addon-shim': 1.10.0
+      '@embroider/addon-shim': 1.10.2
       '@embroider/macros': 1.18.1(@babel/core@7.28.3)
       qunit: 2.19.4(patch_hash=44177f0047189d474ebdeba20fc8ddc3c8c2a5777d65cbb5f0fac0979bf66301)
       qunit-theme-ember: 1.0.0
@@ -22234,7 +22256,7 @@ snapshots:
   ember-raf-scheduler@0.5.0(@babel/core@7.28.3):
     dependencies:
       '@ember/test-waiters': 4.1.1(@babel/core@7.28.3)
-      '@embroider/addon-shim': 1.10.0
+      '@embroider/addon-shim': 1.10.2
       '@embroider/macros': 1.18.1(@babel/core@7.28.3)
     transitivePeerDependencies:
       - '@babel/core'
@@ -22251,7 +22273,7 @@ snapshots:
 
   ember-route-template@1.0.3:
     dependencies:
-      '@embroider/addon-shim': 1.10.0
+      '@embroider/addon-shim': 1.10.2
     transitivePeerDependencies:
       - supports-color
 
@@ -22273,7 +22295,7 @@ snapshots:
     dependencies:
       '@babel/core': 7.28.3
       '@ember/edition-utils': 1.2.0
-      '@embroider/addon-shim': 1.10.0
+      '@embroider/addon-shim': 1.10.2
       '@glimmer/compiler': 0.92.4
       '@glimmer/component': 2.0.0
       '@glimmer/destroyable': 0.92.3
@@ -22327,7 +22349,7 @@ snapshots:
     dependencies:
       '@babel/core': 7.28.3
       '@ember/edition-utils': 1.2.0
-      '@embroider/addon-shim': 1.10.0
+      '@embroider/addon-shim': 1.10.2
       '@glimmer/compiler': 0.94.10
       '@glimmer/destroyable': 0.94.8
       '@glimmer/global-context': 0.93.4
@@ -22378,7 +22400,7 @@ snapshots:
     dependencies:
       '@babel/core': 7.28.3
       '@ember/edition-utils': 1.2.0
-      '@embroider/addon-shim': 1.10.0
+      '@embroider/addon-shim': 1.10.2
       '@glimmer/compiler': 0.94.10
       '@glimmer/component': 2.0.0
       '@glimmer/destroyable': 0.94.8
@@ -22428,7 +22450,7 @@ snapshots:
 
   ember-strict-application-resolver@0.1.0(@babel/core@7.28.3):
     dependencies:
-      '@embroider/addon-shim': 1.10.0
+      '@embroider/addon-shim': 1.10.2
       decorator-transforms: 2.3.0(@babel/core@7.28.3)
     transitivePeerDependencies:
       - '@babel/core'
@@ -22492,7 +22514,7 @@ snapshots:
 
   ember-welcome-page@7.0.2:
     dependencies:
-      '@embroider/addon-shim': 1.10.0
+      '@embroider/addon-shim': 1.10.2
     transitivePeerDependencies:
       - supports-color
 
@@ -27708,7 +27730,7 @@ snapshots:
 
   tracked-built-ins@4.0.0(@babel/core@7.28.3):
     dependencies:
-      '@embroider/addon-shim': 1.10.0
+      '@embroider/addon-shim': 1.10.2
       decorator-transforms: 2.3.0(@babel/core@7.28.3)
       ember-tracked-storage-polyfill: 1.0.0(@babel/core@7.28.3)
     transitivePeerDependencies:
@@ -28364,7 +28386,7 @@ snapshots:
       - supports-color
       - terser
 
-  volar-service-html@0.0.64(@volar/language-service@2.4.23):
+  volar-service-html@0.0.68(@volar/language-service@2.4.23):
     dependencies:
       vscode-html-languageservice: 5.4.0
       vscode-languageserver-textdocument: 1.0.12
@@ -28372,7 +28394,7 @@ snapshots:
     optionalDependencies:
       '@volar/language-service': 2.4.23
 
-  volar-service-typescript@0.0.65(@volar/language-service@2.4.23):
+  volar-service-typescript@0.0.68(@volar/language-service@2.4.23):
     dependencies:
       path-browserify: 1.0.1
       semver: 7.7.2
