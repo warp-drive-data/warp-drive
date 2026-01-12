@@ -1,5 +1,10 @@
 # WarpDrive Changelog
 
+## v5.8.1 (2026-01-12)
+
+#### Committers: (0)
+
+
 ## v5.8.0 (2025-10-20)
 
 #### Committers: (0)
