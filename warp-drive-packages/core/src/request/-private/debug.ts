@@ -16,6 +16,7 @@ const ValidKeys = new Map<string, string | string[] | typeof BODY_TYPES>([
   ['disableTestWaiter', 'boolean'],
   ['options', 'object'],
   ['cacheOptions', 'object'],
+  ['priority', ['high', 'low', 'auto']],
   ['op', 'string'],
   ['store', 'object'],
   ['url', 'string'],
