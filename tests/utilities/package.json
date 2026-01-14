@@ -57,6 +57,7 @@
     "ember-inflector": "catalog:",
     "ember-source": "catalog:",
     "ember-strict-application-resolver": "catalog:",
+    "graphql": "^16.8.1",
     "terser": "catalog:",
     "typescript-7": "catalog:",
     "vite": "catalog:"
