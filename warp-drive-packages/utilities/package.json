@@ -44,7 +44,9 @@
     }
   },
   "peerDependencies": {
-    "@warp-drive/core": "workspace:*"
+    "@warp-drive/core": "workspace:*",
+    "graphql": "^16.12.0",
+    "graphql-tag": "^2.12.6"
   },
   "dependencies": {
     "@embroider/macros": "^1.19.6"
@@ -55,10 +57,16 @@
     "@babel/preset-typescript": "^7.27.1",
     "@warp-drive/internal-config": "workspace:*",
     "@warp-drive/core": "workspace:*",
+    "graphql": "^16.12.0",
     "decorator-transforms": "^2.3.0",
     "expect-type": "^1.2.2",
     "typescript": "^5.9.3",
     "vite": "^7.3.1"
+  },
+  "peerDependenciesMeta": {
+    "graphql": {
+      "optional": true
+    }
   },
   "volta": {
     "extends": "../../package.json"

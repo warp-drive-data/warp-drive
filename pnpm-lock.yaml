@@ -3929,6 +3929,9 @@ importers:
       expect-type:
         specifier: ^1.2.2
         version: 1.2.2
+      graphql:
+        specifier: ^16.12.0
+        version: 16.14.2
       typescript:
         specifier: 5.9.2
         version: 5.9.2
@@ -7433,6 +7436,11 @@ packages:
     resolution: {directory: warp-drive-packages/utilities, type: directory}
     peerDependencies:
       '@warp-drive/core': workspace:*
+      graphql: ^16.12.0
+      graphql-tag: ^2.12.6
+    peerDependenciesMeta:
+      graphql:
+        optional: true
 
   '@warp-drive/vue@file:warp-drive-packages/vue':
     resolution: {directory: warp-drive-packages/vue, type: directory}
@@ -10367,6 +10375,10 @@ packages:
 
   graphemer@1.4.0:
     resolution: {integrity: sha512-EtKwoO6kxCL9WO5xipiHTZlSzBm7WLT627TqC/uVRd0HKmq8NXyebnNYxDoBi7wt8eTWrUrKXCOVaFq9x1kgag==}
+
+  graphql@16.14.2:
+    resolution: {integrity: sha512-Chq1s4CY7jmh8gO2qvLIJyfCDIN+EHLFW/9iShnp1z8FjBQMoodWP1kDC36VAMXXIvAjj4ARa7ntfAV2BrjsbA==}
+    engines: {node: ^12.22.0 || ^14.16.0 || ^16.0.0 || >=17.0.0}
 
   gray-matter@4.0.3:
     resolution: {integrity: sha512-5v6yZd4JK3eMI3FqqCouswVqwugaA9r4dNZB1wwcmrD02QkV5H0y7XBQW8QwQqEaZY1pM9aqORSORhJRdNK44Q==}
@@ -16248,6 +16260,8 @@ snapshots:
     transitivePeerDependencies:
       - '@babel/core'
       - '@glint/template'
+      - graphql
+      - graphql-tag
       - supports-color
 
   '@ember-data/adapter@file:packages/adapter(@babel/core@7.28.3)':
@@ -16263,6 +16277,8 @@ snapshots:
     transitivePeerDependencies:
       - '@babel/core'
       - '@glint/template'
+      - graphql
+      - graphql-tag
       - supports-color
 
   '@ember-data/adapter@file:packages/adapter(f9dfbf4fac3dbc0e0370b14ce6056988)':
@@ -16278,6 +16294,8 @@ snapshots:
     transitivePeerDependencies:
       - '@babel/core'
       - '@glint/template'
+      - graphql
+      - graphql-tag
       - supports-color
 
   '@ember-data/codemods@file:packages/codemods':
@@ -16306,6 +16324,8 @@ snapshots:
     transitivePeerDependencies:
       - '@babel/core'
       - '@glint/template'
+      - graphql
+      - graphql-tag
       - supports-color
 
   '@ember-data/debug@file:packages/debug(f9dfbf4fac3dbc0e0370b14ce6056988)':
@@ -16317,6 +16337,8 @@ snapshots:
     transitivePeerDependencies:
       - '@babel/core'
       - '@glint/template'
+      - graphql
+      - graphql-tag
       - supports-color
 
   '@ember-data/graph@file:packages/graph(@babel/core@7.28.3)':
@@ -16346,6 +16368,8 @@ snapshots:
     transitivePeerDependencies:
       - '@babel/core'
       - '@glint/template'
+      - graphql
+      - graphql-tag
       - supports-color
 
   '@ember-data/json-api@file:packages/json-api(f9dfbf4fac3dbc0e0370b14ce6056988)':
@@ -16357,6 +16381,8 @@ snapshots:
     transitivePeerDependencies:
       - '@babel/core'
       - '@glint/template'
+      - graphql
+      - graphql-tag
       - supports-color
 
   '@ember-data/legacy-compat@file:packages/legacy-compat(@babel/core@7.28.3)':
@@ -16368,6 +16394,8 @@ snapshots:
     transitivePeerDependencies:
       - '@babel/core'
       - '@glint/template'
+      - graphql
+      - graphql-tag
       - supports-color
 
   '@ember-data/legacy-compat@file:packages/legacy-compat(f9dfbf4fac3dbc0e0370b14ce6056988)':
@@ -16379,6 +16407,8 @@ snapshots:
     transitivePeerDependencies:
       - '@babel/core'
       - '@glint/template'
+      - graphql
+      - graphql-tag
       - supports-color
 
   '@ember-data/model@file:packages/model(@babel/core@7.28.3)':
@@ -16394,6 +16424,8 @@ snapshots:
     transitivePeerDependencies:
       - '@babel/core'
       - '@glint/template'
+      - graphql
+      - graphql-tag
       - supports-color
 
   '@ember-data/model@file:packages/model(f9dfbf4fac3dbc0e0370b14ce6056988)':
@@ -16409,6 +16441,8 @@ snapshots:
     transitivePeerDependencies:
       - '@babel/core'
       - '@glint/template'
+      - graphql
+      - graphql-tag
       - supports-color
 
   '@ember-data/request-utils@file:packages/request-utils(2614f833b55f24250877f0261f5ce108)':
@@ -16421,6 +16455,8 @@ snapshots:
     transitivePeerDependencies:
       - '@babel/core'
       - '@glint/template'
+      - graphql
+      - graphql-tag
       - supports-color
 
   '@ember-data/request-utils@file:packages/request-utils(@babel/core@7.28.3)':
@@ -16431,6 +16467,8 @@ snapshots:
     transitivePeerDependencies:
       - '@babel/core'
       - '@glint/template'
+      - graphql
+      - graphql-tag
       - supports-color
 
   '@ember-data/request-utils@file:packages/request-utils(c9a293889c353246379e328a55edb6c0)':
@@ -16443,6 +16481,8 @@ snapshots:
     transitivePeerDependencies:
       - '@babel/core'
       - '@glint/template'
+      - graphql
+      - graphql-tag
       - supports-color
 
   '@ember-data/request-utils@file:packages/request-utils(f9dfbf4fac3dbc0e0370b14ce6056988)':
@@ -16453,6 +16493,8 @@ snapshots:
     transitivePeerDependencies:
       - '@babel/core'
       - '@glint/template'
+      - graphql
+      - graphql-tag
       - supports-color
 
   '@ember-data/request@file:packages/request(@babel/core@7.28.3)':
@@ -16481,6 +16523,8 @@ snapshots:
     transitivePeerDependencies:
       - '@babel/core'
       - '@glint/template'
+      - graphql
+      - graphql-tag
       - supports-color
 
   '@ember-data/rfc395-data@0.0.4': {}
@@ -16498,6 +16542,8 @@ snapshots:
     transitivePeerDependencies:
       - '@babel/core'
       - '@glint/template'
+      - graphql
+      - graphql-tag
       - supports-color
 
   '@ember-data/serializer@file:packages/serializer(f9dfbf4fac3dbc0e0370b14ce6056988)':
@@ -16513,6 +16559,8 @@ snapshots:
     transitivePeerDependencies:
       - '@babel/core'
       - '@glint/template'
+      - graphql
+      - graphql-tag
       - supports-color
 
   '@ember-data/store@file:packages/store(1adf99e055abba96ff2ddb1d049f661d)':
@@ -16592,6 +16640,8 @@ snapshots:
     transitivePeerDependencies:
       - '@babel/core'
       - '@glint/template'
+      - graphql
+      - graphql-tag
       - supports-color
 
   '@ember-data/unpublished-test-infra@file:packages/unpublished-test-infra(6973837de3488c5faaacd5ffabd6ca05)':
@@ -16607,6 +16657,8 @@ snapshots:
     transitivePeerDependencies:
       - '@babel/core'
       - '@glint/template'
+      - graphql
+      - graphql-tag
       - supports-color
 
   '@ember-data/unpublished-test-infra@file:packages/unpublished-test-infra(70f18ac7fb426a44ca1eb8bc74329986)':
@@ -16622,6 +16674,8 @@ snapshots:
     transitivePeerDependencies:
       - '@babel/core'
       - '@glint/template'
+      - graphql
+      - graphql-tag
       - supports-color
 
   '@ember-data/unpublished-test-infra@file:packages/unpublished-test-infra(9ef2583a3505a68898a2a019ffb6e1bd)':
@@ -16637,6 +16691,8 @@ snapshots:
     transitivePeerDependencies:
       - '@babel/core'
       - '@glint/template'
+      - graphql
+      - graphql-tag
       - supports-color
 
   '@ember-data/unpublished-test-infra@file:packages/unpublished-test-infra(d133cfd222b08807991c53b894341aa1)':
@@ -16653,6 +16709,8 @@ snapshots:
     transitivePeerDependencies:
       - '@babel/core'
       - '@glint/template'
+      - graphql
+      - graphql-tag
       - supports-color
 
   '@ember-tooling/blueprint-blueprint@0.2.1': {}
@@ -19074,6 +19132,9 @@ snapshots:
       '@types/ember__controller': 4.0.12
       '@types/ember__object': 4.0.12
       '@types/ember__service': 4.0.9
+    transitivePeerDependencies:
+      - '@babel/core'
+      - supports-color
 
   '@types/ember__runloop@4.0.10':
     dependencies:
@@ -23042,6 +23103,8 @@ snapshots:
       - '@glint/template'
       - ember-inflector
       - ember-provide-consume-context
+      - graphql
+      - graphql-tag
       - supports-color
 
   ember-data@file:packages/-ember-data(fe8b84b81fe82fbcf687afc20032cd10):
@@ -23074,6 +23137,8 @@ snapshots:
       - '@glint/template'
       - ember-inflector
       - ember-provide-consume-context
+      - graphql
+      - graphql-tag
       - supports-color
 
   ember-decorators-polyfill@1.1.5(@babel/core@7.28.3):
@@ -23814,6 +23879,8 @@ snapshots:
     transitivePeerDependencies:
       - '@babel/core'
       - '@glint/template'
+      - graphql
+      - graphql-tag
       - supports-color
 
   eslint-scope@5.1.1:
@@ -24796,6 +24863,8 @@ snapshots:
   grapheme-splitter@1.0.4: {}
 
   graphemer@1.4.0: {}
+
+  graphql@16.14.2: {}
 
   gray-matter@4.0.3:
     dependencies:

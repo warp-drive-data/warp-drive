@@ -1,4 +1,4 @@
-import type { DocumentNode, OperationDefinitionNode } from 'graphql';
+import type { DocumentNode } from 'graphql';
 
 import type { ReactiveDataDocument, ReactiveDocument } from '@warp-drive/core/reactive';
 import type { Future } from '@warp-drive/core/request';
@@ -34,11 +34,13 @@ export function get(
   options: ConstrainedRequestOptions = {}
 ): GraphqlQueryRequestOptions {
   const cacheOptions = extractCacheOptions(options);
-  const operationDefinition = query.definitions?.[0] as OperationDefinitionNode;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+  const operationDefinition = (query as any).definitions?.[0];
 
   const urlOptions: GraphqlUrlOptions = {
     identifier: { type },
-    operationName: operationDefinition?.name?.value ?? '',
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    operationName: (operationDefinition?.name?.value ?? '') as string,
     op: 'query',
   };
 
@@ -51,8 +53,7 @@ export function get(
 
   const url = buildBaseURL(urlOptions);
   const headers = new Headers();
-  headers.append('Accept', 'application/json');
-  headers.append('Content-Type', 'application/json');
+  headers.append('Accept', 'application/vnd.api+json');
 
   return {
     url,
