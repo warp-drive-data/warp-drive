@@ -34,7 +34,9 @@ export function get(
   options: ConstrainedRequestOptions = {}
 ): GraphqlQueryRequestOptions {
   const cacheOptions = extractCacheOptions(options);
-  const operationDefinition = query.definitions?.[0] as OperationDefinitionNode;
+  const operationDefinition = query.definitions.find(
+    (definition): definition is OperationDefinitionNode => definition.kind === 'OperationDefinition'
+  );
 
   const urlOptions: GraphqlUrlOptions = {
     identifier: { type },
@@ -51,8 +53,7 @@ export function get(
 
   const url = buildBaseURL(urlOptions);
   const headers = new Headers();
-  headers.append('Accept', 'application/json');
-  headers.append('Content-Type', 'application/json');
+  headers.append('Accept', 'application/vnd.api+json');
 
   return {
     url,
