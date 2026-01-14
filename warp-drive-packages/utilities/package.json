@@ -43,7 +43,9 @@
     }
   },
   "peerDependencies": {
-    "@warp-drive/core": "workspace:*"
+    "@warp-drive/core": "workspace:*",
+    "graphql": "^16.12.0",
+    "graphql-tag": "^2.12.6"
   },
   "dependencies": {
     "@embroider/macros": "^1.20.7"
@@ -56,8 +58,14 @@
     "@warp-drive/internal-config": "workspace:*",
     "decorator-transforms": "^2.4.0",
     "expect-type": "^1.4.0",
+    "graphql": "^16.12.0",
     "tsdown": "^0.23.0",
     "typescript-7": "npm:typescript@7.1.0-dev.20260907.1"
+  },
+  "peerDependenciesMeta": {
+    "graphql": {
+      "optional": true
+    }
   },
   "ember-addon": {
     "main": "addon-main.cjs",
