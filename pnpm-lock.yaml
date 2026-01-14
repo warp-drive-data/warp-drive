@@ -2791,37 +2791,37 @@ importers:
         version: 7.29.7
       '@ember-data/active-record':
         specifier: workspace:*
-        version: file:packages/active-record(@babel/core@7.29.7)
+        version: file:packages/active-record(@babel/core@7.29.7)(graphql@16.14.2)
       '@ember-data/debug':
         specifier: workspace:*
-        version: file:packages/debug(@babel/core@7.29.7)
+        version: file:packages/debug(@babel/core@7.29.7)(graphql@16.14.2)
       '@ember-data/graph':
         specifier: workspace:*
         version: file:packages/graph(@babel/core@7.29.7)
       '@ember-data/json-api':
         specifier: workspace:*
-        version: file:packages/json-api(@babel/core@7.29.7)
+        version: file:packages/json-api(@babel/core@7.29.7)(graphql@16.14.2)
       '@ember-data/legacy-compat':
         specifier: workspace:*
-        version: file:packages/legacy-compat(@babel/core@7.29.7)
+        version: file:packages/legacy-compat(@babel/core@7.29.7)(graphql@16.14.2)
       '@ember-data/model':
         specifier: workspace:*
-        version: file:packages/model(@babel/core@7.29.7)
+        version: file:packages/model(@babel/core@7.29.7)(graphql@16.14.2)
       '@ember-data/request':
         specifier: workspace:*
         version: file:packages/request(@babel/core@7.29.7)
       '@ember-data/request-utils':
         specifier: workspace:*
-        version: file:packages/request-utils(3a23d15216661fdc31ba79ef395bed77)
+        version: file:packages/request-utils(9f09d8de7bf2a9d4539611f88acba93b)
       '@ember-data/rest':
         specifier: workspace:*
-        version: file:packages/rest(@babel/core@7.29.7)
+        version: file:packages/rest(@babel/core@7.29.7)(graphql@16.14.2)
       '@ember-data/store':
         specifier: workspace:*
         version: file:packages/store(55de178235eb5990a078df764e61b44e)
       '@ember-data/unpublished-test-infra':
         specifier: workspace:*
-        version: file:packages/unpublished-test-infra(dd29d282d81898c8d7babe76c3e0a4e0)
+        version: file:packages/unpublished-test-infra(22d2782f670958edf96b8a97122fd264)
       '@ember/test-helpers':
         specifier: 5.4.3
         version: 5.4.3(patch_hash=86f2f8b3084fb3708a58dfcf3bad3e5afe71bdead6f4f6ce10b8964db8e5de99)(@babel/core@7.29.7)
@@ -2876,6 +2876,9 @@ importers:
       ember-strict-application-resolver:
         specifier: ^0.1.1
         version: 0.1.1(@babel/core@7.29.7)
+      graphql:
+        specifier: ^16.8.1
+        version: 16.14.2
       terser:
         specifier: ^5.51.2
         version: 5.51.2
@@ -12068,11 +12071,11 @@ snapshots:
 
   '@docsearch/sidepanel-js@4.7.0': {}
 
-  '@ember-data/active-record@file:packages/active-record(@babel/core@7.29.7)':
+  '@ember-data/active-record@file:packages/active-record(@babel/core@7.29.7)(graphql@16.14.2)':
     dependencies:
       '@embroider/macros': 1.20.7
       '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.29.7)
-      '@warp-drive/utilities': file:warp-drive-packages/utilities(4ded94bf05a058c4d301833388abca58)
+      '@warp-drive/utilities': file:warp-drive-packages/utilities(d59150c2e950b805009fbcd4ceb07e4d)
     transitivePeerDependencies:
       - '@babel/core'
       - '@glint/template'
@@ -12125,6 +12128,19 @@ snapshots:
       - graphql-tag
       - supports-color
 
+  '@ember-data/debug@file:packages/debug(@babel/core@7.29.7)(graphql@16.14.2)':
+    dependencies:
+      '@ember/edition-utils': 1.2.0
+      '@embroider/macros': 1.20.7
+      '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.29.7)
+      '@warp-drive/utilities': file:warp-drive-packages/utilities(d59150c2e950b805009fbcd4ceb07e4d)
+    transitivePeerDependencies:
+      - '@babel/core'
+      - '@glint/template'
+      - graphql
+      - graphql-tag
+      - supports-color
+
   '@ember-data/debug@file:packages/debug(e0ff4349d3585fabae29421d7a4b80a6)':
     dependencies:
       '@ember/edition-utils': 1.2.0
@@ -12169,6 +12185,19 @@ snapshots:
       - graphql-tag
       - supports-color
 
+  '@ember-data/json-api@file:packages/json-api(@babel/core@7.29.7)(graphql@16.14.2)':
+    dependencies:
+      '@embroider/macros': 1.20.7
+      '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.29.7)
+      '@warp-drive/json-api': file:warp-drive-packages/json-api(4ded94bf05a058c4d301833388abca58)
+      '@warp-drive/utilities': file:warp-drive-packages/utilities(d59150c2e950b805009fbcd4ceb07e4d)
+    transitivePeerDependencies:
+      - '@babel/core'
+      - '@glint/template'
+      - graphql
+      - graphql-tag
+      - supports-color
+
   '@ember-data/json-api@file:packages/json-api(e0ff4349d3585fabae29421d7a4b80a6)':
     dependencies:
       '@embroider/macros': 1.20.7(@glint/template@1.9.0)
@@ -12188,6 +12217,19 @@ snapshots:
       '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.29.7)
       '@warp-drive/legacy': file:warp-drive-packages/legacy(a510bc545ed25bc6a53fefeb5da03d5b)
       '@warp-drive/utilities': file:warp-drive-packages/utilities(4ded94bf05a058c4d301833388abca58)
+    transitivePeerDependencies:
+      - '@babel/core'
+      - '@glint/template'
+      - graphql
+      - graphql-tag
+      - supports-color
+
+  '@ember-data/legacy-compat@file:packages/legacy-compat(@babel/core@7.29.7)(graphql@16.14.2)':
+    dependencies:
+      '@embroider/macros': 1.20.7
+      '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.29.7)
+      '@warp-drive/legacy': file:warp-drive-packages/legacy(054a26c90b1acd653dd8326f653ba31a)
+      '@warp-drive/utilities': file:warp-drive-packages/utilities(d59150c2e950b805009fbcd4ceb07e4d)
     transitivePeerDependencies:
       - '@babel/core'
       - '@glint/template'
@@ -12222,6 +12264,20 @@ snapshots:
       - graphql-tag
       - supports-color
 
+  '@ember-data/model@file:packages/model(@babel/core@7.29.7)(graphql@16.14.2)':
+    dependencies:
+      '@embroider/macros': 1.20.7
+      '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.29.7)
+      '@warp-drive/legacy': file:warp-drive-packages/legacy(054a26c90b1acd653dd8326f653ba31a)
+      '@warp-drive/utilities': file:warp-drive-packages/utilities(d59150c2e950b805009fbcd4ceb07e4d)
+      warp-drive: file:packages/-warp-drive(@babel/core@7.29.7)
+    transitivePeerDependencies:
+      - '@babel/core'
+      - '@glint/template'
+      - graphql
+      - graphql-tag
+      - supports-color
+
   '@ember-data/model@file:packages/model(e0ff4349d3585fabae29421d7a4b80a6)':
     dependencies:
       '@embroider/macros': 1.20.7(@glint/template@1.9.0)
@@ -12236,11 +12292,11 @@ snapshots:
       - graphql-tag
       - supports-color
 
-  '@ember-data/request-utils@file:packages/request-utils(3a23d15216661fdc31ba79ef395bed77)':
+  '@ember-data/request-utils@file:packages/request-utils(3daec088a365faaf05f548d322c3a0f9)':
     dependencies:
-      '@embroider/macros': 1.20.7
-      '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.29.7)
-      '@warp-drive/utilities': file:warp-drive-packages/utilities(4ded94bf05a058c4d301833388abca58)
+      '@embroider/macros': 1.20.7(@glint/template@1.9.0)
+      '@warp-drive/core': file:warp-drive-packages/core(e0ff4349d3585fabae29421d7a4b80a6)
+      '@warp-drive/utilities': file:warp-drive-packages/utilities(edee9e53a6af44fd6387ab28cd9cc109)
     optionalDependencies:
       ember-inflector: 6.0.0(@babel/core@7.29.7)
     transitivePeerDependencies:
@@ -12250,11 +12306,11 @@ snapshots:
       - graphql-tag
       - supports-color
 
-  '@ember-data/request-utils@file:packages/request-utils(3daec088a365faaf05f548d322c3a0f9)':
+  '@ember-data/request-utils@file:packages/request-utils(9f09d8de7bf2a9d4539611f88acba93b)':
     dependencies:
-      '@embroider/macros': 1.20.7(@glint/template@1.9.0)
-      '@warp-drive/core': file:warp-drive-packages/core(e0ff4349d3585fabae29421d7a4b80a6)
-      '@warp-drive/utilities': file:warp-drive-packages/utilities(edee9e53a6af44fd6387ab28cd9cc109)
+      '@embroider/macros': 1.20.7
+      '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.29.7)
+      '@warp-drive/utilities': file:warp-drive-packages/utilities(d59150c2e950b805009fbcd4ceb07e4d)
     optionalDependencies:
       ember-inflector: 6.0.0(@babel/core@7.29.7)
     transitivePeerDependencies:
@@ -12306,11 +12362,11 @@ snapshots:
       - '@glint/template'
       - supports-color
 
-  '@ember-data/rest@file:packages/rest(@babel/core@7.29.7)':
+  '@ember-data/rest@file:packages/rest(@babel/core@7.29.7)(graphql@16.14.2)':
     dependencies:
       '@embroider/macros': 1.20.7
       '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.29.7)
-      '@warp-drive/utilities': file:warp-drive-packages/utilities(4ded94bf05a058c4d301833388abca58)
+      '@warp-drive/utilities': file:warp-drive-packages/utilities(d59150c2e950b805009fbcd4ceb07e4d)
     transitivePeerDependencies:
       - '@babel/core'
       - '@glint/template'
@@ -12422,6 +12478,22 @@ snapshots:
     optionalDependencies:
       qunit: 2.26.0
       testem: 3.20.2(@babel/core@7.29.7)
+    transitivePeerDependencies:
+      - '@babel/core'
+      - '@glint/template'
+      - graphql
+      - graphql-tag
+      - supports-color
+
+  '@ember-data/unpublished-test-infra@file:packages/unpublished-test-infra(22d2782f670958edf96b8a97122fd264)':
+    dependencies:
+      '@ember/test-helpers': 5.4.3(patch_hash=86f2f8b3084fb3708a58dfcf3bad3e5afe71bdead6f4f6ce10b8964db8e5de99)(@babel/core@7.29.7)
+      '@embroider/macros': 1.20.7
+      '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.29.7)
+      '@warp-drive/utilities': file:warp-drive-packages/utilities(d59150c2e950b805009fbcd4ceb07e4d)
+      semver: 7.8.5
+    optionalDependencies:
+      '@warp-drive/diagnostic': file:packages/diagnostic(6a458261938665ef4bc4d5414f096c5f)
     transitivePeerDependencies:
       - '@babel/core'
       - '@glint/template'
@@ -15843,6 +15915,15 @@ snapshots:
       - '@glint/template'
       - supports-color
 
+  '@warp-drive/legacy@file:warp-drive-packages/legacy(054a26c90b1acd653dd8326f653ba31a)':
+    dependencies:
+      '@embroider/macros': 1.20.7
+      '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.29.7)
+      '@warp-drive/utilities': file:warp-drive-packages/utilities(d59150c2e950b805009fbcd4ceb07e4d)
+    transitivePeerDependencies:
+      - '@glint/template'
+      - supports-color
+
   '@warp-drive/legacy@file:warp-drive-packages/legacy(3f8bc03ddae2558c38d0ba7a4612f4c1)':
     dependencies:
       '@embroider/macros': 1.20.7(@glint/template@1.9.0)
@@ -15935,6 +16016,16 @@ snapshots:
     dependencies:
       '@embroider/macros': 1.20.7
       '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.29.7)
+    transitivePeerDependencies:
+      - '@glint/template'
+      - supports-color
+
+  '@warp-drive/utilities@file:warp-drive-packages/utilities(d59150c2e950b805009fbcd4ceb07e4d)':
+    dependencies:
+      '@embroider/macros': 1.20.7
+      '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.29.7)
+    optionalDependencies:
+      graphql: 16.14.2
     transitivePeerDependencies:
       - '@glint/template'
       - supports-color
