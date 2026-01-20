@@ -80,6 +80,59 @@ _constructor[Type] = '@constructor';
  * This should only be used for temporary migration purposes
  * to the new schema system when migrating from either Model
  * or ModelFragments.
+ *
+ * ## Built-in Extensions
+ *
+ * WarpDrive provides 5 built-in extensions via `@warp-drive/legacy`:
+ *
+ * ### Object Extensions
+ *
+ * - **`'ember-object'`** (kind: `'object'` or `'array'`)
+ *   - Provides EmberObject methods: `get`, `set`, `getProperties`, `setProperties`,
+ *     `notifyPropertyChange`, `incrementProperty`, `decrementProperty`, `toggleProperty`,
+ *     `addObserver`, `removeObserver`, `cacheFor`
+ *   - Auto-registered when using `useLegacyStore()`
+ *
+ * - **`'fragment'`** (kind: `'object'`)
+ *   - Provides Fragment behaviors: `hasDirtyAttributes`, `rollbackAttributes`,
+ *     `isFragment`, `isDestroying`, `isDestroyed`, `$type`
+ *   - Auto-registered when using `useLegacyStore({ modelFragments: true })`
+ *
+ * - **`'deprecated-model-behaviors'`** (kind: `'object'`)
+ *   - Provides deprecated Model behaviors for migration compatibility
+ *   - Added automatically by `withDefaults()` helper
+ *
+ * ### Array Extensions
+ *
+ * - **`'ember-array-like'`** (kind: `'array'`)
+ *   - Provides MutableArray methods: `addObject`, `removeObject`, `pushObject`,
+ *     `popObject`, `insertAt`, `removeAt`, `clear`, `compact`, `filterBy`,
+ *     `findBy`, `mapBy`, `sortBy`, `uniq`, `firstObject`, `lastObject`, and more
+ *   - Auto-registered when using `useLegacyStore()`
+ *
+ * - **`'fragment-array'`** (kind: `'array'`)
+ *   - Provides FragmentArray methods: `addFragment`, `createFragment`,
+ *     `removeFragment`, `rollbackAttributes`
+ *   - Auto-registered when using `useLegacyStore({ modelFragments: true })`
+ *
+ * ## Registering Extensions
+ *
+ * Built-in extensions can be imported and manually registered:
+ *
+ * ```ts
+ * import {
+ *   EmberObjectExtension,
+ *   EmberArrayLikeExtension,
+ *   FragmentExtension,
+ *   FragmentArrayExtension
+ * } from '@warp-drive/legacy';
+ *
+ * store.schema.CAUTION_MEGA_DANGER_ZONE_registerExtension(EmberObjectExtension);
+ * ```
+ *
+ * Custom extensions can also be registered for app-specific migration needs.
+ *
+ * @public
  */
 export interface CAUTION_MEGA_DANGER_ZONE_Extension {
   /**
@@ -733,6 +786,20 @@ export class SchemaService implements SchemaServiceInterface {
   }
 
   CAUTION_MEGA_DANGER_ZONE_registerExtension(extension: CAUTION_MEGA_DANGER_ZONE_Extension): void {
+    const builtInExtensions = {
+      object: ['ember-object', 'fragment', 'deprecated-model-behaviors'],
+      array: ['ember-object', 'ember-array-like', 'fragment-array'],
+    };
+    const isBuiltIn = builtInExtensions[extension.kind].includes(extension.name);
+    
+    warn(
+      `You are registering an extension named '${extension.name}' which conflicts with a built-in WarpDrive extension. This may cause unexpected behavior. Consider using a different name for your custom extension.`,
+      !isBuiltIn,
+      {
+        id: 'warp-drive:overriding-built-in-extension',
+      }
+    );
+    
     assert(
       `an extension named ${extension.name} for ${extension.kind} already exists!`,
       !this._extensions[extension.kind].has(extension.name)

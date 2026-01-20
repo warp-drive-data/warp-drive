@@ -372,7 +372,42 @@ export interface SchemaService {
   resourceTypes(): Readonly<string[]>;
 
   /**
-   * Register an extension for either objects or arrays
+   * Register an extension for either objects or arrays.
+   *
+   * Extensions provide non-schema driven behaviors to ReactiveResources,
+   * ReactiveArrays, and ReactiveObjects. They should only be used for
+   * temporary migration purposes when moving from Model or ModelFragments.
+   *
+   * ## Built-in Extensions
+   *
+   * WarpDrive provides 5 built-in extensions via `@warp-drive/legacy`:
+   *
+   * - **Object extensions** (`'ember-object'`, `'fragment'`, `'deprecated-model-behaviors'`)
+   * - **Array extensions** (`'ember-object'`, `'ember-array-like'`, `'fragment-array'`)
+   *
+   * Built-in extensions are automatically registered by `useLegacyStore()`,
+   * but can also be manually imported and registered from `@warp-drive/legacy`.
+   *
+   * ## Extension Merging
+   *
+   * Extensions can be specified at multiple levels:
+   *
+   * - On `ResourceSchema` or `ObjectSchema` via `objectExtensions`
+   * - On individual fields via `options.objectExtensions` or `options.arrayExtensions`
+   *
+   * Field-level extensions **merge with and override** schema-level extensions.
+   * When multiple extensions are applied, later extensions override earlier ones.
+   *
+   * ## Usage with Helper Functions
+   *
+   * Helper functions like `withFragmentDefaults()` and `withFragmentArrayDefaults()`
+   * from `@warp-drive/legacy/model-fragments` automatically configure the appropriate
+   * extensions for fragment fields.
+   *
+   * ## Warning
+   *
+   * Registering a custom extension with a name matching a built-in extension
+   * will generate a warning, as this may cause unexpected behavior.
    *
    * See also {@link CAUTION_MEGA_DANGER_ZONE_Extension}
    *

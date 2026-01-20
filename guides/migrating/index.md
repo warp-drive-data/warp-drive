@@ -431,6 +431,155 @@ export default useLegacyStore({
   - [EmberArrayLike Extension](/api/@warp-drive/legacy/compat/extensions/variables/EmberArrayLikeExtension)
 - [Legacy Store Methods](/api/@warp-drive/legacy/store/functions/restoreDeprecatedStoreBehaviors)
 
+### Understanding Extensions
+
+Extensions allow you to add non-schema driven behaviors (methods, getters, computed properties) to your resources, objects, and arrays during migration. They should only be used temporarily while migrating from Model or ModelFragments to the new schema system.
+
+#### Built-in Extensions
+
+WarpDrive provides **5 built-in extensions** in `@warp-drive/legacy`:
+
+**Object Extensions** (for resources and objects):
+
+- **`ember-object`**: Provides EmberObject methods like `get()`, `set()`, `getProperties()`, `setProperties()`, `notifyPropertyChange()`, etc.
+- **`fragment`**: Provides Fragment-specific behaviors like `hasDirtyAttributes`, `rollbackAttributes()`, `isFragment`
+- **`deprecated-model-behaviors`**: Provides deprecated Model behaviors for compatibility (auto-added by helper functions)
+
+**Array Extensions**:
+
+- **`ember-object`**: EmberObject methods for arrays
+- **`ember-array-like`**: MutableArray methods like `addObject()`, `removeObject()`, `filterBy()`, `sortBy()`, `firstObject`, `lastObject`, etc.
+- **`fragment-array`**: FragmentArray methods like `addFragment()`, `createFragment()`, `removeFragment()`
+
+#### Auto-Registration
+
+When using `useLegacyStore()`:
+
+- `ember-object`, `ember-object` (array), and `ember-array-like` are **automatically registered**
+- `fragment` and `fragment-array` are **automatically registered** only when `modelFragments: true`
+
+```ts
+// All Ember extensions auto-registered
+const Store = useLegacyStore({
+  legacyRequests: true,
+  cache: JSONAPICache,
+});
+
+// Fragment extensions also auto-registered
+const Store = useLegacyStore({
+  legacyRequests: true,
+  modelFragments: true,
+  cache: JSONAPICache,
+});
+```
+
+#### Using Extension Helpers
+
+Helper functions automatically configure the appropriate extensions:
+
+```ts
+import { withFragmentDefaults, withFragmentArrayDefaults } from '@warp-drive/legacy/model-fragments';
+
+export const UserSchema = withDefaults({
+  type: 'user',
+  fields: [
+    withFragmentDefaults('address'), // Adds ['ember-object', 'fragment']
+    withFragmentArrayDefaults('phoneNumbers'), // Adds ['ember-object', 'ember-array-like', 'fragment-array']
+  ],
+});
+```
+
+#### Manual Registration
+
+You can also manually import and register extensions:
+
+```ts
+import {
+  EmberObjectExtension,
+  EmberArrayLikeExtension,
+  FragmentExtension,
+  FragmentArrayExtension
+} from '@warp-drive/legacy';
+
+store.schema.CAUTION_MEGA_DANGER_ZONE_registerExtension(EmberObjectExtension);
+store.schema.CAUTION_MEGA_DANGER_ZONE_registerExtension(EmberArrayLikeExtension);
+store.schema.CAUTION_MEGA_DANGER_ZONE_registerExtension(FragmentExtension);
+store.schema.CAUTION_MEGA_DANGER_ZONE_registerExtension(FragmentArrayExtension);
+```
+
+#### Custom Extensions
+
+For app-specific migration needs, you can register custom extensions:
+
+```ts
+// Using plain object with methods
+store.schema.CAUTION_MEGA_DANGER_ZONE_registerExtension({
+  kind: 'object',
+  name: 'my-custom-extension',
+  features: {
+    myMethod(this: { name: string }) {
+      return `Hello ${this.name}!`;
+    },
+    get myGetter() {
+      const self = this as unknown as { name: string };
+      return self.name.toUpperCase();
+    }
+  },
+});
+
+// Using a class with decorators
+class MyFeatures {
+  @cached
+  get expensiveComputation() {
+    const self = this as unknown as { value: number };
+    return self.value * 2;
+  }
+  
+  doSomething() {
+    console.log('Doing something!');
+  }
+}
+
+store.schema.CAUTION_MEGA_DANGER_ZONE_registerExtension({
+  kind: 'object',
+  name: 'my-features',
+  features: MyFeatures,
+});
+
+// Then use in schema
+export const MySchema = withDefaults({
+  type: 'my-resource',
+  fields: [/* ... */],
+  objectExtensions: ['my-custom-extension', 'my-features'],
+});
+```
+
+#### Extension Merging
+
+Extensions can be specified at multiple levels and will merge:
+
+```ts
+// Schema-level extensions apply to all instances
+export const AddressSchema = {
+  type: 'fragment:address',
+  identity: null,
+  fields: [/* ... */],
+  objectExtensions: ['ember-object', 'fragment'], // Applied to all address objects
+};
+
+// Field-level extensions override and merge with schema-level
+{
+  kind: 'schema-object',
+  name: 'primaryAddress',
+  type: 'fragment:address',
+  options: {
+    objectExtensions: ['my-custom-extension'], // Merges with schema-level extensions
+  },
+}
+```
+
+When multiple extensions are applied, **later extensions override earlier ones**. Field-level extensions are applied last and take precedence.
+
 ### Step 5 - Convert + Profit
 
 Key concepts:
@@ -988,24 +1137,102 @@ export const TimestampedExtension = {
 
 == Before
 
-```ts
-TBD
+:::code-group
+
+```ts [app/models/person.js]
+import Model, { attr } from '@ember-data/model';
+import {
+  fragment,
+  fragmentArray,
+  array,
+} from 'ember-data-model-fragments/attributes';
+
+export default class Person extends Model {
+  @attr('string') title;
+  @attr('string') nickName;
+  @fragment('name') name;
+  @fragmentArray('address') addresses;
+  @array() titles;
+}
+```
+
+```ts [app/models/name.js]
+import Fragment from 'ember-data-model-fragments/fragment';
+import { attr } from '@ember-data/model';
+import {
+  fragmentArray,
+  fragmentOwner,
+} from 'ember-data-model-fragments/attributes';
+
+export default class Name extends Fragment {
+  @attr('string') first;
+  @attr('string') last;
+  @fragmentArray('prefix') prefixes;
+}
 ```
 
 == After
 
 :::code-group
 
-```ts [app/data/user/schema.ts]
-TBD
+```ts [app/models/person.ts]
+import type { Type } from '@warp-drive/core/types/symbols';
+import type { WithEmberObject } from '@warp-drive/legacy/compat/extensions';
+import type { WithLegacy } from '@warp-drive/legacy/model/migration-support';
+import type { WithFragmentArray } from '@warp-drive/legacy/model-fragments';
+import {
+  withArrayDefaults,
+  withFragmentArrayDefaults,
+  withFragmentDefaults,
+  withLegacy,
+} from '@warp-drive/legacy/model-fragments';
+
+import type { Name } from './name';
+
+export const PersonSchema = withLegacy({
+  type: 'person',
+  fields: [
+    { kind: 'field', name: 'title' },
+    { kind: 'field', name: 'nickName' },
+    withFragmentDefaults('name'),
+    withFragmentArrayDefaults('addresses'),
+    withArrayDefaults('titles'),
+  ],
+});
+
+export type Person = WithLegacy<
+  WithEmberObject<{
+    id: string;
+    title: string;
+    nickName: string;
+    name: Name | null;
+    names: WithFragmentArray<Name> | null;
+    [Type]: 'person';
+  }>
+>;
 ```
 
-```ts [app/data/user/type.ts]
-TBD
-```
+```ts [app/models/name.ts]
+import type { ObjectSchema } from '@warp-drive/core/types/schema/fields';
+import type { WithFragment } from '@warp-drive/legacy/model-fragments';
+import { withFragmentArrayDefaults } from '@warp-drive/legacy/model-fragments';
 
-```ts [app/data/user/ext.ts]
-TBD
+import type { Prefix } from './prefix';
+
+export const NameSchema = {
+  type: 'fragment:name',
+  identity: null,
+  fields: [{ kind: 'field', name: 'first' }, { kind: 'field', name: 'last' }, withFragmentArrayDefaults('prefixes')],
+  objectExtensions: ['ember-object', 'fragment'],
+} satisfies ObjectSchema;
+
+export type Name = WithFragment<{
+  id: null;
+  first: string;
+  last: string;
+  prefixes: Array<Prefix>;
+}>;
+
 ```
 
 :::
