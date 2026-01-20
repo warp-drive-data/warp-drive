@@ -791,7 +791,7 @@ export class SchemaService implements SchemaServiceInterface {
       array: ['ember-object', 'ember-array-like', 'fragment-array'],
     };
     const isBuiltIn = builtInExtensions[extension.kind].includes(extension.name);
-    
+
     warn(
       `You are registering an extension named '${extension.name}' which conflicts with a built-in WarpDrive extension. This may cause unexpected behavior. Consider using a different name for your custom extension.`,
       !isBuiltIn,
@@ -799,7 +799,7 @@ export class SchemaService implements SchemaServiceInterface {
         id: 'warp-drive:overriding-built-in-extension',
       }
     );
-    
+
     assert(
       `an extension named ${extension.name} for ${extension.kind} already exists!`,
       !this._extensions[extension.kind].has(extension.name)

@@ -332,9 +332,5 @@ function assertType(schema: DelegatingSchemaService, type: string) {
 }
 
 // Export built-in extensions for flexible usage
-export {
-  EmberArrayLikeExtension,
-  EmberObjectArrayExtension,
-  EmberObjectExtension,
-} from './compat/extensions';
+export { EmberArrayLikeExtension, EmberObjectArrayExtension, EmberObjectExtension } from './compat/extensions';
 export { FragmentArrayExtension, FragmentExtension } from './model-fragments';
