@@ -40,10 +40,10 @@ jobs:
           echo $originSha > tmp/sha-for-commit.txt
           git show --format=short --no-patch $originSha
       - uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda # v4.1.0
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           registry-url: 'https://registry.npmjs.org'
-          node-version-file: 'package.json'
+          node-version: 25.5
           cache: 'pnpm'
       - uses: oven-sh/setup-bun@v2
         with:
