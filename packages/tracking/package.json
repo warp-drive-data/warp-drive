@@ -50,12 +50,7 @@
   "ember-addon": {
     "main": "addon-main.cjs",
     "type": "addon",
-    "version": 2,
-    "externals": [
-      "@ember/-internals",
-      "@ember/-internals/metal",
-      "@glimmer/validator"
-    ]
+    "version": 2
   },
   "devDependencies": {
     "@babel/core": "^7.28.3",
