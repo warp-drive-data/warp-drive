@@ -30,7 +30,7 @@
     "@babel/plugin-transform-typescript": "^7.28.0",
     "@rollup/plugin-babel": "^6.0.4",
     "babel-plugin-debug-macros": "^2.0.0",
-    "@embroider/macros": "^1.18.1",
+    "@embroider/macros": "^1.19.6",
     "@vitejs/plugin-vue": "^6.0.1",
     "@vue/babel-plugin-jsx": "^1.5.0",
     "@warp-drive/vue": "workspace:*",
@@ -44,7 +44,7 @@
     "decorator-transforms": "^2.3.0",
     "vue": "^3.5.19",
     "vue-tsc": "^3.0.6",
-    "vite": "^7.1.3",
+    "vite": "^7.3.1",
     "typescript": "^5.9.2"
   },
   "volta": {
