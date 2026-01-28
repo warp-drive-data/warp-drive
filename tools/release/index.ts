@@ -1,14 +1,14 @@
 #!/usr/bin/env bun
 import chalk from 'chalk';
-import { printHelpDocs } from './help/docs';
-import { normalizeFlag } from './utils/parse-args';
-import { getCommands } from './utils/flags-config';
-import { printAbout } from './help/sections/about';
-import { executePublish } from './core/publish';
-import { executeReleaseNoteGeneration } from './core/release-notes';
-import { write } from './utils/write';
-import { promoteToLTS } from './core/promote';
-import { latestFor } from './core/latest-for';
+import { printHelpDocs } from './help/docs.ts';
+import { normalizeFlag } from './utils/parse-args.ts';
+import { getCommands } from './utils/flags-config.ts';
+import { printAbout } from './help/sections/about.ts';
+import { executePublish } from './core/publish/index.ts';
+import { executeReleaseNoteGeneration } from './core/release-notes/index.ts';
+import { write } from './utils/write.ts';
+import { promoteToLTS } from './core/promote/index.ts';
+import { latestFor } from './core/latest-for/index.ts';
 
 const COMMANDS = {
   help: printHelpDocs,

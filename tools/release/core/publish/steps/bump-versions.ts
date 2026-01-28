@@ -1,6 +1,6 @@
 import chalk from 'chalk';
-import { exec } from '../../../utils/cmd';
-import { APPLIED_STRATEGY, Package } from '../../../utils/package';
+import { exec } from '../../../utils/cmd.ts';
+import { APPLIED_STRATEGY, Package } from '../../../utils/package.ts';
 
 /**
  * This function will consume the strategy, bump the versions of all packages,

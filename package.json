@@ -38,7 +38,6 @@
     "@glimmer/component": "^2.0.0",
     "@glint/ember-tsc": "^1.0.9",
     "@glint/template": "^1.7.3",
-    "@types/semver": "^7.7.0",
     "@warp-drive/internal-docs-viewer": "workspace:*",
     "@warp-drive/internal-tooling": "workspace:*",
     "badge-maker": "5.0.2",

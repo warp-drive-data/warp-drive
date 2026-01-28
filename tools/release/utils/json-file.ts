@@ -36,7 +36,7 @@ export class JSONFile<T extends object = Record<string, unknown>> {
   async read(logRaw: boolean = false): Promise<T> {
     if (this.contents === null) {
       const fileHandle = await this.#getHandle();
-      const data = await fileHandle.json<T>().catch(async (e) => {
+      const data = await fileHandle.json().catch(async (e) => {
         console.log(e);
         const strData = await fileHandle.text();
         console.log(strData);
@@ -46,7 +46,7 @@ export class JSONFile<T extends object = Record<string, unknown>> {
       this.#lastKnown = JSON.stringify(data, null, 2);
     }
 
-    return this.contents;
+    return this.contents as T;
   }
 
   async write(allowNoop?: boolean): Promise<void> {

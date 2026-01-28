@@ -1,9 +1,9 @@
-import { PROJECT_ROOT, TARBALL_DIR, toTarballName } from './generate-tarballs';
+import { PROJECT_ROOT, TARBALL_DIR, toTarballName } from './generate-tarballs.ts';
 
-import { exec } from '../../../utils/cmd';
+import { exec } from '../../../utils/cmd.ts';
 import path from 'path';
 import fs from 'fs';
-import { APPLIED_STRATEGY, Package } from '../../../utils/package';
+import { APPLIED_STRATEGY, Package } from '../../../utils/package.ts';
 
 const INVALID_FILES = new Set([
   'src',

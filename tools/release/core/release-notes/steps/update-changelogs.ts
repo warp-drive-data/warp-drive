@@ -1,6 +1,6 @@
-import { Package, STRATEGY } from '../../../utils/package';
-import { AppliedStrategy } from '../../publish/steps/generate-strategy';
-import { Committers, Entry, LernaChangeset } from './get-changes';
+import { Package, STRATEGY } from '../../../utils/package.ts';
+import { AppliedStrategy } from '../../publish/steps/generate-strategy.ts';
+import { Committers, Entry, LernaChangeset } from './get-changes.ts';
 import path from 'path';
 import chalk from 'chalk';
 import { BunFile } from 'bun';

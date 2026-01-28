@@ -1,14 +1,14 @@
-import { promote_flags_config } from '../../utils/flags-config';
-import { parseRawFlags } from '../../utils/parse-args';
-import { GIT_TAG, getAllPackagesForGitTag, getGitState, pushLTSTagToRemoteBranch } from '../../utils/git';
-import { printHelpDocs } from '../../help/docs';
-import { Package } from '../../utils/package';
-import { SEMVER_VERSION } from '../../utils/channel';
+import { promote_flags_config } from '../../utils/flags-config.ts';
+import { parseRawFlags } from '../../utils/parse-args.ts';
+import { GIT_TAG, getAllPackagesForGitTag, getGitState, pushLTSTagToRemoteBranch } from '../../utils/git.ts';
+import { printHelpDocs } from '../../help/docs.ts';
+import { Package } from '../../utils/package.ts';
+import { SEMVER_VERSION } from '../../utils/channel.ts';
 import chalk from 'chalk';
-import { colorName } from '../publish/steps/print-strategy';
-import { exec } from '../../utils/cmd';
-import { question } from '../publish/steps/confirm-strategy';
-import { RETRY_TRUSTED_PUBLISHING } from '../publish/steps/publish-packages';
+import { colorName } from '../publish/steps/print-strategy.ts';
+import { exec } from '../../utils/cmd.ts';
+import { question } from '../publish/steps/confirm-strategy.ts';
+import { RETRY_TRUSTED_PUBLISHING } from '../publish/steps/publish-packages.ts';
 
 export async function promoteToLTS(args: string[]) {
   // get user supplied config

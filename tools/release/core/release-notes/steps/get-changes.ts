@@ -1,5 +1,5 @@
-import { exec } from '../../../utils/cmd';
-import { Package, STRATEGY } from '../../../utils/package';
+import { exec } from '../../../utils/cmd.ts';
+import { Package, STRATEGY } from '../../../utils/package.ts';
 import path from 'path';
 
 export const Committers = Symbol('Committers');

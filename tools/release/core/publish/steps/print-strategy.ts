@@ -1,7 +1,7 @@
-import { TYPE_STRATEGY } from '../../../utils/channel';
-import { getCharLength, getPadding } from '../../../help/-utils';
+import { TYPE_STRATEGY } from '../../../utils/channel.ts';
+import { getCharLength, getPadding } from '../../../help/-utils.ts';
 import chalk from 'chalk';
-import { AppliedStrategy } from './generate-strategy';
+import { AppliedStrategy } from './generate-strategy.ts';
 
 export const COLORS_BY_STRATEGY: Record<TYPE_STRATEGY, 'red' | 'yellow' | 'green' | 'cyan'> = {
   private: 'red',
