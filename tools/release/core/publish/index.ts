@@ -15,6 +15,7 @@ import { confirmCommitChangelogs } from '../release-notes/steps/confirm-changelo
 import { updateChangelogs } from '../release-notes/steps/update-changelogs.ts';
 import { getChanges } from '../release-notes/steps/get-changes.ts';
 import { generateTypesTarballs } from './steps/generate-types-tarballs.ts';
+import { readFileSync } from 'node:fs';
 
 export async function executePublish(args: string[]) {
   // get user supplied config
@@ -75,8 +76,11 @@ export async function executePublish(args: string[]) {
   // ========================
   if (config.full.get('pack')) {
     await generatePackageTarballs(config.full, packages, applied.public_pks);
+    await printDirtyFiles('Primary Packages');
     await generateMirrorTarballs(config.full, packages, applied.public_pks);
+    await printDirtyFiles('Mirror Packages');
     await generateTypesTarballs(config.full, packages, applied.public_pks);
+    await printDirtyFiles('Types Packages');
   } else {
     console.log(`Skipped Pack`);
   }
@@ -87,4 +91,34 @@ export async function executePublish(args: string[]) {
   // ========================
   if (config.full.get('publish')) await publishPackages(config.full, packages, applied.public_pks);
   else console.log(`Skipped Publish`);
+}
+
+export async function printDirtyFiles(label: string) {
+  const { execSync } = await import('node:child_process');
+  const dirtyFiles = execSync('git ls-files -m').toString().trim();
+  if (dirtyFiles) {
+    console.log(`The following files were modified in ${label}:`);
+    console.log(dirtyFiles);
+  } else {
+    console.log('No files were modified.');
+  }
+
+  // check the specific dist file we are having issues with
+  // warp-drive-packages/utilities/dist/index.js
+  const filePath = 'warp-drive-packages/utilities/dist/index.js';
+  const fullPath = `${process.cwd()}/${filePath}`;
+  const fileContents = readFileSync(fullPath, 'utf-8');
+
+  // check if we are accidentally in cjs format
+  if (isCjsModule(fileContents)) {
+    throw new Error(`Detected CommonJS module format in ${filePath} after ${label}. Expected ES Module format.`);
+  }
+}
+
+const CjsModulePattern = `Object.defineProperty(exports, Symbol.toStringTag, {
+  value: 'Module'
+});`;
+
+function isCjsModule(fileContents: string): boolean {
+  return fileContents.includes(CjsModulePattern);
 }
