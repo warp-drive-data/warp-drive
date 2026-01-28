@@ -15,6 +15,5 @@
   "scripts": {},
   "volta": {
     "extends": "../../package.json"
-  },
-  "packageManager": "pnpm@10.28.2"
+  }
 }
