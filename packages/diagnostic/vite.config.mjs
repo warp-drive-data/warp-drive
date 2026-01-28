@@ -1,5 +1,5 @@
 import { keepAssets } from '@warp-drive/internal-config/vite/keep-assets';
-import { createConfig } from '@warp-drive/internal-config/vite/config.js';
+import { createConfig } from '@warp-drive/internal-config/vite/config';
 
 export const externals = [
   '@ember/runloop',

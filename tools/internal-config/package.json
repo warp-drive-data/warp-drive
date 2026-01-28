@@ -28,11 +28,11 @@
     "eslint-plugin-qunit": "^8.1.2",
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "rollup": "^4.48.0",
-    "typescript": "^5.9.2",
+    "typescript": "^5.9.3",
     "vite": "^7.3.1"
   },
   "volta": {
-    "extends": "../package.json"
+    "extends": "../../package.json"
   },
   "packageManager": "pnpm@10.28.2"
 }

@@ -44,7 +44,7 @@
     "jscodeshift": "^17.3.0",
     "prettier": "3.6.2",
     "strip-ansi": "^7.1.0",
-    "typescript": "^5.9.2",
+    "typescript": "^5.9.3",
     "winston": "^3.17.0"
   },
   "devDependencies": {

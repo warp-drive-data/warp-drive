@@ -310,7 +310,7 @@ And update any necessary scripts in `package.json`
 ```diff
 {
   "scripts": {
-     "build" "ember build",
+     "build" "vite build",
 -    "test": "ember test"
 +    "test": "bun run build && bun ./diagnostic.js"
   }

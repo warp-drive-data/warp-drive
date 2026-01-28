@@ -43,8 +43,8 @@
     "@embroider/macros": "^1.19.6",
     "@embroider/vite": "^1.5.0",
     "@glimmer/component": "^2.0.0",
-    "@glint/ember-tsc": "^1.0.3",
-    "@glint/template": "^1.6.1",
+    "@glint/ember-tsc": "^1.0.9",
+    "@glint/template": "^1.7.3",
     "@glint/tsserver-plugin": "^2.0.3",
     "@rollup/plugin-babel": "^6.0.4",
     "@warp-drive/build-config": "workspace:*",
@@ -62,7 +62,7 @@
     "ember-strict-application-resolver": "^0.1.0",
     "rollup": "^4.48.0",
     "terser": "^5.43.1",
-    "typescript": "^5.9.2",
+    "typescript": "^5.9.3",
     "vite": "^7.3.1"
   },
   "ember": {

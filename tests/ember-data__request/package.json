@@ -45,7 +45,7 @@
     "@warp-drive/internal-config": "workspace:*",
     "bun-types": "^1.2.20",
     "ember-auto-import": "^2.12.0",
-    "ember-cli": "~6.6.0",
+    "ember-cli": "~6.10.0",
     "ember-cli-babel": "^8.2.0",
     "ember-cli-dependency-checker": "^3.3.3",
     "ember-cli-htmlbars": "^6.3.0",
@@ -57,12 +57,12 @@
     "ember-load-initializers": "^3.0.1",
     "ember-maybe-import-regenerator": "^1.0.0",
     "ember-resolver": "^13.1.1",
-    "ember-source": "~6.6.0",
+    "ember-source": "~6.10.0",
     "ember-source-channel-url": "^3.0.0",
     "ember-try": "^4.0.0",
     "loader.js": "^4.7.0",
     "silent-error": "^1.1.1",
-    "typescript": "^5.9.2",
+    "typescript": "^5.9.3",
     "webpack": "^5.101.3"
   },
   "ember": {

@@ -50,7 +50,7 @@
     "@warp-drive/internal-config": "workspace:*",
     "@warp-drive/core": "workspace:*",
     "svelte": "^5.38.3",
-    "typescript": "^5.9.2",
+    "typescript": "^5.9.3",
     "vite": "^7.3.1"
   },
   "volta": {
