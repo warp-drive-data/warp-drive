@@ -18,7 +18,7 @@
     "warp-drive"
   ],
   "scripts": {
-    "build:pkg": "vite build;",
+    "build:pkg": "vite build",
     "prepack": "pnpm run build:pkg",
     "sync": "echo \"syncing\"",
     "lint": "eslint . --quiet --cache --cache-strategy=content",

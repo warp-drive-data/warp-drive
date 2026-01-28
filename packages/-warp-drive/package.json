@@ -24,7 +24,7 @@
   "license": "MIT",
   "author": "Chris Thoburn <runspired@users.noreply.github.com>",
   "scripts": {
-    "build:pkg": "vite build;",
+    "build:pkg": "vite build",
     "prepack": "pnpm run build:pkg",
     "sync": "echo \"syncing\"",
     "_temporarily_deactivated_lint": "eslint . --quiet --cache --cache-strategy=content",
