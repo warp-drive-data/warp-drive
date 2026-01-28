@@ -81,9 +81,10 @@ export interface FrameworkConfig {
   setup<TC extends SpecTestContext<object>>(hooks: Hooks<TC>): void;
 }
 
-class Spec<LocalContext extends object, T extends { [key: string]: SpecTest<LocalContext, object> }>
-  implements SpecBuilder<LocalContext, T>
-{
+class Spec<
+  LocalContext extends object,
+  T extends { [key: string]: SpecTest<LocalContext, object> },
+> implements SpecBuilder<LocalContext, T> {
   private name: string;
   private setup: (hooks: Hooks<SpecTestContext<T>>) => void;
   private isBuilt = false;

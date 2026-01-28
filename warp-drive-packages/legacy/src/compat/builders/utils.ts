@@ -9,9 +9,9 @@ export function isMaybeIdentifier(
 ): maybeIdentifier is ResourceIdentifierObject {
   return Boolean(
     maybeIdentifier !== null &&
-      typeof maybeIdentifier === 'object' &&
-      (('id' in maybeIdentifier && 'type' in maybeIdentifier && maybeIdentifier.id && maybeIdentifier.type) ||
-        maybeIdentifier.lid)
+    typeof maybeIdentifier === 'object' &&
+    (('id' in maybeIdentifier && 'type' in maybeIdentifier && maybeIdentifier.id && maybeIdentifier.type) ||
+      maybeIdentifier.lid)
   );
 }
 
