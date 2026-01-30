@@ -6,6 +6,15 @@ categoryOrder: 0
 
 # Schema DSL
 
+:::warning **🚧 WIP**
+The Schema DSL is under active development. Currently implemented:
+- [@Resource decorator](./resource.md) - Define resource schemas
+- `@field` decorator - Define primitive fields
+- `@id` decorator - Custom identity fields
+
+See the [implementation guide](./resource.md) for what's available today.
+:::
+
 ***Warp*Drive** offers a TypeScript based compile-time DSL for producing `JSON` resource schemas. Using `JSON` for the output ensures flexibility, composability, and interopability, while using `TypeScript` for authoring syntax provides a conveninent DX.
 
 ::: info 💡Read More
@@ -26,7 +35,7 @@ The Schema DSL uses TypeScript **class syntax**, **type annotations**, and **dec
 Here's a simple resource schema using the DSL:
 
 ```typescript
-import { Resource, field } from '@warp-drive/schema-dsl';
+import { Resource, field, compileResourceSchemas } from '@warp-drive/core/schema-dsl';
 
 @Resource
 class User {
@@ -34,6 +43,10 @@ class User {
   @field declare lastName: string;
   @field declare email: string;
 }
+
+// Compile and register with the store
+const schemas = compileResourceSchemas([User]);
+store.schema.registerResources(schemas);
 ```
 
 This generates the equivalent JSON schema:
@@ -41,11 +54,13 @@ This generates the equivalent JSON schema:
 ```typescript
 {
   type: 'user', // derived from class name
-  identity: { kind: '@id', name: '@id' },
+  identity: { kind: '@id', name: 'id' },
   fields: [
+    { kind: 'derived', name: '$type', type: '@identity', options: { key: 'type' } },
     { kind: 'field', name: 'firstName' },
     { kind: 'field', name: 'lastName' },
-    { kind: 'field', name: 'email' }
+    { kind: 'field', name: 'email' },
+    { kind: 'derived', name: 'constructor', type: '@constructor' }
   ]
 }
 ```
