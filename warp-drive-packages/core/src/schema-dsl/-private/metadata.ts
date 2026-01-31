@@ -11,10 +11,6 @@
 
 import type { GenericField, IdentityField } from '../../types/schema/fields.ts';
 
-// =========================================
-// Types
-// =========================================
-
 export interface ResourceMetadata {
   /**
    * The resource type name.
@@ -56,10 +52,6 @@ export interface FieldMetadata {
   sourceKey?: string;
 }
 
-// =========================================
-// Metadata Storage
-// =========================================
-
 /**
  * Stores resource-level metadata keyed by constructor function.
  */
@@ -71,13 +63,6 @@ const ResourceMetaStore = new WeakMap<object, ResourceMetadata>();
  */
 const FieldMetaStore = new WeakMap<object, Map<string, FieldMetadata>>();
 
-// =========================================
-// Metadata Accessors
-// =========================================
-
-/**
- * Get resource metadata for a class.
- */
 export function getResourceMeta(target: object): ResourceMetadata | undefined {
   return ResourceMetaStore.get(target);
 }
@@ -122,10 +107,6 @@ export function addFieldMeta(target: object, propertyKey: string, meta: FieldMet
   const fields = getOrCreateFieldMeta(target);
   fields.set(propertyKey, meta);
 }
-
-// =========================================
-// Compiled Schema Types
-// =========================================
 
 /**
  * The internal representation of a compiled field,

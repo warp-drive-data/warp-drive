@@ -8,7 +8,7 @@ import {
   Resource,
 } from '@warp-drive/core/schema-dsl';
 import type { ResourceSchema, Schema } from '@warp-drive/core/types/schema/fields';
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports -- Type is used as value (symbol key) in UserRecord
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { Type } from '@warp-drive/core/types/symbols';
 import { module, setupTest, test } from '@warp-drive/diagnostic/ember';
 import { JSONAPICache } from '@warp-drive/json-api';
@@ -17,10 +17,6 @@ const Store = useRecommendedStore({
   cache: JSONAPICache,
 });
 
-/**
- * Shape of the record returned by the store for the 'user' resource
- * when using the DSL schema (firstName, lastName + id, $type from compilation).
- */
 interface UserRecord {
   id: string | null;
   $type: 'user';
@@ -45,7 +41,6 @@ module('Schema DSL | @Resource decorator', function (hooks) {
     assert.equal(schema.identity.kind, '@id', 'identity kind is @id');
     assert.equal(schema.identity.name, 'id', 'identity name defaults to id');
 
-    // Check fields (including derived fields)
     const fieldNames = schema.fields.map((f: { name: string }) => f.name);
     assert.ok(fieldNames.includes('firstName'), 'firstName field is present');
     assert.ok(fieldNames.includes('lastName'), 'lastName field is present');
@@ -73,7 +68,6 @@ module('Schema DSL | @Resource decorator', function (hooks) {
     assert.equal(schema.type, 'post', 'type is derived from class name');
     assert.true('legacy' in schema && schema.legacy === true, 'legacy flag is set');
 
-    // Legacy mode should not include $type and constructor derived fields
     const fieldNames = schema.fields.map((f: { name: string }) => f.name);
     assert.ok(fieldNames.includes('title'), 'title field is present');
     assert.notOk(fieldNames.includes('$type'), '$type is not included in legacy mode');

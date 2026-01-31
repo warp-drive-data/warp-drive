@@ -8,11 +8,9 @@ categoryOrder: 0
 
 :::warning **🚧 WIP**
 The Schema DSL is under active development. Currently implemented:
-- [@Resource decorator](./resource.md) - Define resource schemas
-- `@field` decorator - Define primitive fields
-- `@id` decorator - Custom identity fields
+- [Resources](./resource.md) - Define resource schemas with `@Resource`, `@field`, and `@id`
 
-See the [implementation guide](./resource.md) for what's available today.
+See the [Resources guide](./resource.md) for what's available today.
 :::
 
 ***Warp*Drive** offers a TypeScript based compile-time DSL for producing `JSON` resource schemas. Using `JSON` for the output ensures flexibility, composability, and interopability, while using `TypeScript` for authoring syntax provides a conveninent DX.

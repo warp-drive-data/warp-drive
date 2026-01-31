@@ -1,10 +1,4 @@
 /**
- * Schema compilation for the DSL.
- *
- * This module transforms DSL metadata (collected by decorators)
- * into canonical ResourceSchema objects that can be registered
- * with the SchemaService.
- *
  * @module
  * @internal
  */
@@ -20,21 +14,11 @@ import type {
 import { deriveTypeName } from './decorators.ts';
 import { getFieldMeta, getResourceMeta, hasResourceMeta, type FieldMetadata } from './metadata.ts';
 
-// =========================================
-// Default Fields (aligned with withDefaults)
-// =========================================
-
-/**
- * Default identity field.
- */
 const DefaultIdentityField: IdentityField = {
   kind: '@id',
   name: 'id',
 };
 
-/**
- * Derived field for $type (resource type from identity).
- */
 const TypeField: DerivedField = {
   kind: 'derived',
   name: '$type',
@@ -42,56 +26,18 @@ const TypeField: DerivedField = {
   options: { key: 'type' },
 };
 
-/**
- * Derived field for constructor (provides constructor.name).
- */
 const ConstructorField: DerivedField = {
   kind: 'derived',
   name: 'constructor',
   type: '@constructor',
 };
 
-// =========================================
-// Compilation
-// =========================================
-
 export interface CompileOptions {
-  /**
-   * Whether to include the default $type and constructor derived fields.
-   * Defaults to true for Polaris mode, false for legacy mode.
-   */
   includeDefaults?: boolean;
 }
 
 /**
- * Compiles a single DSL-decorated class into a canonical ResourceSchema.
- *
- * @param ResourceClass - A class decorated with @Resource
- * @param options - Compilation options
- * @returns The compiled ResourceSchema
- * @throws If the class is not decorated with @Resource
- *
- * @example
- * ```ts
- * @Resource
- * class User {
- *   @field declare firstName: string;
- *   @field declare lastName: string;
- * }
- *
- * const schema = compileResourceSchema(User);
- * // Result:
- * // {
- * //   type: 'user',
- * //   identity: { kind: '@id', name: 'id' },
- * //   fields: [
- * //     { kind: 'derived', name: '$type', type: '@identity', options: { key: 'type' } },
- * //     { kind: 'field', name: 'firstName' },
- * //     { kind: 'field', name: 'lastName' },
- * //     { kind: 'derived', name: 'constructor', type: '@constructor' }
- * //   ]
- * // }
- * ```
+ * Compiles a DSL-decorated class into a canonical ResourceSchema.
  */
 export function compileResourceSchema(
   ResourceClass: new (...args: unknown[]) => object,
@@ -107,17 +53,12 @@ export function compileResourceSchema(
   const resourceMeta = getResourceMeta(ResourceClass)!;
   const fieldMeta = getFieldMeta(ResourceClass);
 
-  // Derive type name from class name if not explicitly provided
   const type = resourceMeta.type ?? deriveTypeName(ResourceClass.name);
-
-  // Determine if this is legacy mode
   const isLegacy = resourceMeta.legacy === true;
 
-  // Build identity field
   let identity: IdentityField;
   let customIdentityField: FieldMetadata | undefined;
 
-  // Check if user defined an @id field
   if (fieldMeta) {
     for (const [, meta] of fieldMeta) {
       if (meta.kind === '@id') {
@@ -142,22 +83,17 @@ export function compileResourceSchema(
     identity = DefaultIdentityField;
   }
 
-  // Build fields array
   const fields: (GenericField | DerivedField)[] = [];
-
-  // Determine whether to include default derived fields
   const includeDefaults = options?.includeDefaults ?? !isLegacy;
 
-  // Add $type derived field at the beginning (for Polaris mode)
   if (includeDefaults) {
     fields.push(TypeField);
   }
 
-  // Add user-defined fields (skip @id fields, they go in identity)
   if (fieldMeta) {
     for (const [, meta] of fieldMeta) {
       if (meta.kind === '@id') {
-        continue; // Identity is handled separately
+        continue;
       }
 
       const field: GenericField = {
@@ -177,12 +113,10 @@ export function compileResourceSchema(
     }
   }
 
-  // Add constructor derived field at the end (for Polaris mode)
   if (includeDefaults) {
     fields.push(ConstructorField);
   }
 
-  // Build the schema
   if (isLegacy) {
     const schema: LegacyResourceSchema = {
       legacy: true,
@@ -204,26 +138,6 @@ export function compileResourceSchema(
 
 /**
  * Compiles multiple DSL-decorated classes into ResourceSchema objects.
- *
- * @param classes - Array of classes decorated with @Resource
- * @param options - Compilation options (applied to all)
- * @returns Array of compiled ResourceSchema objects
- *
- * @example
- * ```ts
- * @Resource
- * class User {
- *   @field declare name: string;
- * }
- *
- * @Resource
- * class Post {
- *   @field declare title: string;
- * }
- *
- * const schemas = compileResourceSchemas([User, Post]);
- * store.schema.registerResources(schemas);
- * ```
  */
 export function compileResourceSchemas(
   classes: Array<new (...args: unknown[]) => object>,

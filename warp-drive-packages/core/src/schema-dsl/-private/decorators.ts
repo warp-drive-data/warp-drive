@@ -11,10 +11,6 @@
 import { dasherize } from '../../utils/string.ts';
 import { addFieldMeta, type FieldMetadata, type ResourceMetadata, setResourceMeta } from './metadata.ts';
 
-// =========================================
-// @Resource Decorator
-// =========================================
-
 export interface ResourceOptions {
   /**
    * Enable legacy mode for compatibility with @warp-drive/legacy/model.
@@ -88,17 +84,12 @@ export function Resource(
         ...(maybeOptions || {}),
       };
     } else {
-      // @Resource(options)
       meta = targetOrTypeOrOptions || {};
     }
 
     setResourceMeta(target, meta);
   };
 }
-
-// =========================================
-// @field Decorator
-// =========================================
 
 export interface FieldOptions {
   /**
@@ -163,14 +154,7 @@ export function field(
   };
 }
 
-// =========================================
-// @id Decorator
-// =========================================
-
 export interface IdOptions {
-  /**
-   * Alternative name in the cache if different from property name.
-   */
   sourceKey?: string;
 }
 
@@ -218,9 +202,6 @@ export function id(
   };
 }
 
-// =========================================
-// Utility: Derive type name from class name
-// =========================================
 
 /**
  * Derives a resource type name from a class name.
