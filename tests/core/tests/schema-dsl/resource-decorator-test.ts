@@ -1,12 +1,6 @@
 import { useRecommendedStore } from '@warp-drive/core';
 import { registerDerivations } from '@warp-drive/core/reactive';
-import {
-  compileResourceSchema,
-  compileResourceSchemas,
-  field,
-  id,
-  Resource,
-} from '@warp-drive/core/schema-dsl';
+import { compileResourceSchema, compileResourceSchemas, field, id, Resource } from '@warp-drive/core/schema-dsl';
 import type { ResourceSchema, Schema } from '@warp-drive/core/types/schema/fields';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { Type } from '@warp-drive/core/types/symbols';
@@ -99,11 +93,7 @@ module('Schema DSL | @Resource decorator', function (hooks) {
 
     const createdAtField = schema.fields.find((f: { name: string }) => f.name === 'createdAt');
     assert.ok(createdAtField, 'createdAt field exists');
-    assert.equal(
-      (createdAtField as { type?: string })?.type,
-      'date-time',
-      'type option is set'
-    );
+    assert.equal((createdAtField as { type?: string })?.type, 'date-time', 'type option is set');
 
     const emailField = schema.fields.find((f: { name: string }) => f.name === 'email');
     assert.ok(emailField, 'email field exists');

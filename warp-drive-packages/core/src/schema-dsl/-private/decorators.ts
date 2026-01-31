@@ -58,10 +58,7 @@ export interface ResourceOptions {
 export function Resource(target: new (...args: unknown[]) => object): void;
 export function Resource(type: string): (target: new (...args: unknown[]) => object) => void;
 export function Resource(options: ResourceOptions): (target: new (...args: unknown[]) => object) => void;
-export function Resource(
-  type: string,
-  options: ResourceOptions
-): (target: new (...args: unknown[]) => object) => void;
+export function Resource(type: string, options: ResourceOptions): (target: new (...args: unknown[]) => object) => void;
 export function Resource(
   targetOrTypeOrOptions?: (new (...args: unknown[]) => object) | string | ResourceOptions,
   maybeOptions?: ResourceOptions
@@ -201,7 +198,6 @@ export function id(
     addFieldMeta(target.constructor, key, meta);
   };
 }
-
 
 /**
  * Derives a resource type name from a class name.
