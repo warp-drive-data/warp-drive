@@ -30,10 +30,7 @@ export { field, id, Resource, type FieldOptions, type IdOptions, type ResourceOp
  * registerSchemas(store.schema, [User, Post]);
  * ```
  */
-export function registerSchemas(
-  schema: SchemaService,
-  classes: Array<new (...args: unknown[]) => object>
-): void {
+export function registerSchemas(schema: SchemaService, classes: Array<new (...args: unknown[]) => object>): void {
   const schemas = classes.map((cls) => compileResourceSchema(cls));
   schema.registerResources(schemas);
 }

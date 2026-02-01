@@ -6,6 +6,11 @@ import { module, setupTest, test } from '@warp-drive/diagnostic/ember';
 import { JSONAPICache } from '@warp-drive/json-api';
 import { field, id, registerSchemas, Resource } from '@warp-drive/schema-dsl';
 
+// Note: Tests use explicit type names like @Resource('user') because these tests
+// run at runtime in minified production builds where class names get shortened.
+// In real apps, the Vite plugin compiles schemas at build time before minification,
+// so @Resource without an argument works correctly.
+
 const Store = useRecommendedStore({
   cache: JSONAPICache,
 });
@@ -59,7 +64,7 @@ module('Schema DSL | @Resource decorator', function (hooks) {
   setupTest(hooks);
 
   test('registers a basic resource schema', function (assert) {
-    @Resource
+    @Resource('user')
     class User {
       @field declare firstName: string;
       @field declare lastName: string;
@@ -94,7 +99,7 @@ module('Schema DSL | @Resource decorator', function (hooks) {
   });
 
   test('supports custom identity field with @id', function (assert) {
-    @Resource
+    @Resource('user')
     class User {
       @id declare uuid: string;
       @field declare name: string;
@@ -109,7 +114,7 @@ module('Schema DSL | @Resource decorator', function (hooks) {
   });
 
   test('supports multiple fields', function (assert) {
-    @Resource
+    @Resource('user')
     class User {
       @field declare firstName: string;
       @field declare lastName: string;
@@ -132,12 +137,12 @@ module('Schema DSL | @Resource decorator', function (hooks) {
   });
 
   test('registers multiple schemas', function (assert) {
-    @Resource
+    @Resource('user')
     class User {
       @field declare name: string;
     }
 
-    @Resource
+    @Resource('post')
     class Post {
       @field declare title: string;
     }
