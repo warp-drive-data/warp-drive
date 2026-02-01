@@ -1426,6 +1426,9 @@ importers:
       '@warp-drive/json-api':
         specifier: workspace:*
         version: file:warp-drive-packages/json-api(14783ff7abfecaf4a15600481cda861e)
+      '@warp-drive/schema-dsl':
+        specifier: workspace:*
+        version: file:warp-drive-packages/schema-dsl(f9dfbf4fac3dbc0e0370b14ce6056988)
       '@warp-drive/utilities':
         specifier: workspace:*
         version: file:warp-drive-packages/utilities(14783ff7abfecaf4a15600481cda861e)
@@ -3892,6 +3895,37 @@ importers:
       rollup:
         specifier: ^4.48.0
         version: 4.48.1
+      typescript:
+        specifier: 5.9.2
+        version: 5.9.2
+      vite:
+        specifier: ^7.1.3
+        version: 7.1.3
+
+  warp-drive-packages/schema-dsl:
+    dependencies:
+      '@warp-drive/core':
+        specifier: workspace:*
+        version: file:warp-drive-packages/core(@babel/core@7.28.3)
+      '@warp-drive/utilities':
+        specifier: workspace:*
+        version: file:warp-drive-packages/utilities(ac1631a7da983377f84b100525d730a6)
+    devDependencies:
+      '@babel/core':
+        specifier: ^7.28.3
+        version: 7.28.3
+      '@babel/plugin-transform-typescript':
+        specifier: ^7.28.0
+        version: 7.28.0(@babel/core@7.28.3)
+      '@babel/preset-typescript':
+        specifier: ^7.27.1
+        version: 7.27.1(@babel/core@7.28.3)
+      '@warp-drive/internal-config':
+        specifier: workspace:*
+        version: file:tools/internal-config
+      decorator-transforms:
+        specifier: ^2.3.0
+        version: 2.3.0(@babel/core@7.28.3)
       typescript:
         specifier: 5.9.2
         version: 5.9.2
@@ -7105,6 +7139,9 @@ packages:
 
   '@warp-drive/react@file:warp-drive-packages/react':
     resolution: {directory: warp-drive-packages/react, type: directory}
+
+  '@warp-drive/schema-dsl@file:warp-drive-packages/schema-dsl':
+    resolution: {directory: warp-drive-packages/schema-dsl, type: directory}
 
   '@warp-drive/schema-record@file:packages/schema-record':
     resolution: {directory: packages/schema-record, type: directory}
@@ -14558,7 +14595,7 @@ snapshots:
       '@babel/parser': 7.28.4
       '@babel/template': 7.27.2
       '@babel/traverse': 7.28.4
-      '@babel/types': 7.28.2
+      '@babel/types': 7.28.4
       convert-source-map: 2.0.0
       debug: 4.4.1
       gensync: 1.0.0-beta.2
@@ -14780,11 +14817,11 @@ snapshots:
   '@babel/helpers@7.28.3':
     dependencies:
       '@babel/template': 7.27.2
-      '@babel/types': 7.28.2
+      '@babel/types': 7.28.4
 
   '@babel/parser@7.28.3':
     dependencies:
-      '@babel/types': 7.28.2
+      '@babel/types': 7.28.4
 
   '@babel/parser@7.28.4':
     dependencies:
@@ -15853,14 +15890,14 @@ snapshots:
   '@babel/preset-modules@0.1.6-no-external-plugins':
     dependencies:
       '@babel/helper-plugin-utils': 7.27.1
-      '@babel/types': 7.28.2
+      '@babel/types': 7.28.4
       esutils: 2.0.3
 
   '@babel/preset-modules@0.1.6-no-external-plugins(@babel/core@7.28.3)':
     dependencies:
       '@babel/core': 7.28.3
       '@babel/helper-plugin-utils': 7.27.1
-      '@babel/types': 7.28.2
+      '@babel/types': 7.28.4
       esutils: 2.0.3
 
   '@babel/preset-react@7.27.1(@babel/core@7.28.3)':
@@ -15905,7 +15942,7 @@ snapshots:
     dependencies:
       '@babel/code-frame': 7.27.1
       '@babel/parser': 7.28.4
-      '@babel/types': 7.28.2
+      '@babel/types': 7.28.4
 
   '@babel/traverse@7.28.3':
     dependencies:
@@ -19939,6 +19976,15 @@ snapshots:
       '@warp-drive/tc39-proposal-signals': file:warp-drive-packages/tc39-proposal-signals(f9dfbf4fac3dbc0e0370b14ce6056988)
       react: 19.1.1
       signal-polyfill: 0.2.2
+    transitivePeerDependencies:
+      - '@babel/core'
+      - '@glint/template'
+      - supports-color
+
+  '@warp-drive/schema-dsl@file:warp-drive-packages/schema-dsl(f9dfbf4fac3dbc0e0370b14ce6056988)':
+    dependencies:
+      '@warp-drive/core': file:warp-drive-packages/core(f9dfbf4fac3dbc0e0370b14ce6056988)
+      '@warp-drive/utilities': file:warp-drive-packages/utilities(14783ff7abfecaf4a15600481cda861e)
     transitivePeerDependencies:
       - '@babel/core'
       - '@glint/template'

@@ -48,9 +48,6 @@ export const entryPoints = [
   './src/reactive.ts',
   './src/reactive/-private.ts',
 
-  // schema-dsl
-  './src/schema-dsl.ts',
-
   // build-config
   './src/build-config.ts',
   './src/build-config/babel-macros.ts',

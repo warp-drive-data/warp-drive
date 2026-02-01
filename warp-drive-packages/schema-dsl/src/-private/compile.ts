@@ -10,7 +10,8 @@ import type {
   LegacyResourceSchema,
   PolarisResourceSchema,
   ResourceSchema,
-} from '../../types/schema/fields.ts';
+} from '@warp-drive/core/types/schema/fields';
+
 import { deriveTypeName } from './decorators.ts';
 import { getFieldMeta, getResourceMeta, hasResourceMeta, type FieldMetadata } from './metadata.ts';
 
@@ -32,17 +33,7 @@ const ConstructorField: DerivedField = {
   type: '@constructor',
 };
 
-export interface CompileOptions {
-  includeDefaults?: boolean;
-}
-
-/**
- * Compiles a DSL-decorated class into a canonical ResourceSchema.
- */
-export function compileResourceSchema(
-  ResourceClass: new (...args: unknown[]) => object,
-  options?: CompileOptions
-): ResourceSchema {
+export function compileResourceSchema(ResourceClass: new (...args: unknown[]) => object): ResourceSchema {
   if (!hasResourceMeta(ResourceClass)) {
     throw new Error(
       `Cannot compile schema for '${ResourceClass.name}': class is not decorated with @Resource. ` +
@@ -84,7 +75,7 @@ export function compileResourceSchema(
   }
 
   const fields: (GenericField | DerivedField)[] = [];
-  const includeDefaults = options?.includeDefaults ?? !isLegacy;
+  const includeDefaults = !isLegacy;
 
   if (includeDefaults) {
     fields.push(TypeField);
@@ -134,14 +125,4 @@ export function compileResourceSchema(
   };
 
   return schema;
-}
-
-/**
- * Compiles multiple DSL-decorated classes into ResourceSchema objects.
- */
-export function compileResourceSchemas(
-  classes: Array<new (...args: unknown[]) => object>,
-  options?: CompileOptions
-): ResourceSchema[] {
-  return classes.map((cls) => compileResourceSchema(cls, options));
 }

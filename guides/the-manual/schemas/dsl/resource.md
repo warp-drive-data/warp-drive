@@ -5,12 +5,10 @@ order: 1
 
 # Defining Resources
 
-Define resource schemas using `@Resource` and `@field` decorators.
-
-## Basic Usage
+Use `@Resource` to define a resource schema and `@field` to define its fields.
 
 ```ts
-import { Resource, field, compileResourceSchemas } from '@warp-drive/core/schema-dsl';
+import { Resource, field, registerSchemas } from '@warp-drive/schema-dsl';
 
 @Resource
 class User {
@@ -19,18 +17,18 @@ class User {
   @field declare email: string;
 }
 
-const schemas = compileResourceSchemas([User]);
-store.schema.registerResources(schemas);
+// Register with your store
+registerSchemas(store.schema, [User]);
 ```
 
-## Custom Type Name
+## Type Name
 
-By default, the type is derived from the class name:
+The resource type is derived from the class name:
 
 - `User` → `'user'`
 - `UserProfile` → `'user-profile'`
 
-Override it by passing a string:
+Override with a string argument:
 
 ```ts
 @Resource('person')
@@ -41,23 +39,19 @@ class User {
 
 ## Field Options
 
-Apply a transformation with `type`:
-
 ```ts
+// Apply a transformation
 @field({ type: 'date-time' })
 declare createdAt: Date;
-```
 
-Map to a different cache key with `sourceKey`:
-
-```ts
+// Map to a different cache key
 @field({ sourceKey: 'email_address' })
 declare email: string;
 ```
 
 ## Custom Identity
 
-Use `@id` when your identity field isn't called `id`:
+Use `@id` when your identity field isn't `id`:
 
 ```ts
 @Resource
@@ -76,21 +70,4 @@ For apps using `@warp-drive/legacy/model`:
 class Post {
   @field declare title: string;
 }
-```
-
-## Multiple Resources
-
-```ts
-@Resource
-class User {
-  @field declare name: string;
-}
-
-@Resource
-class Post {
-  @field declare title: string;
-}
-
-const schemas = compileResourceSchemas([User, Post]);
-store.schema.registerResources(schemas);
 ```
