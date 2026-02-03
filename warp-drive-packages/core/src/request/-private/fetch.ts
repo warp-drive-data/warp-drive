@@ -152,7 +152,7 @@ const Fetch = {
 
     context.setResponse(response);
 
-    if (response.status === 204) {
+    if (response.status === 204 || context.request.method === 'HEAD') {
       return null as T;
     }
 
