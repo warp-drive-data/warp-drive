@@ -52,7 +52,7 @@
     "@glint/template": "^1.7.3",
     "@glint/tsserver-plugin": "^2.0.3",
     "@glimmer/component": "^2.0.0",
-    "@html-next/vertical-collection": "github:NullVoxPopuli/vertical-collection#upgrade-raf-scheduler&path:vertical-collection",
+    "@html-next/vertical-collection": "^5.0.0",
     "@types/morgan": "^1.9.10",
     "@warp-drive/internal-config": "workspace:*",
     "@warp-drive/ember": "workspace:*",

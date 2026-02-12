@@ -2174,8 +2174,8 @@ importers:
         specifier: 2.0.3
         version: 2.0.3
       '@html-next/vertical-collection':
-        specifier: github:NullVoxPopuli/vertical-collection#upgrade-raf-scheduler&path:vertical-collection
-        version: https://codeload.github.com/NullVoxPopuli/vertical-collection/tar.gz/95c4b101634c437ee1dc54eb18b376c4538b0dec#path:vertical-collection(f9dfbf4fac3dbc0e0370b14ce6056988)
+        specifier: ^5.0.0
+        version: 5.0.2(@babel/core@7.28.3)
       '@rollup/plugin-babel':
         specifier: ^6.0.4
         version: 6.0.4(@babel/core@7.28.3)
@@ -5094,6 +5094,10 @@ packages:
     resolution: {integrity: sha512-gcJuHiXgnrzaU8NyU+2bMbtS6PNOr5v5B8OXBqaBvTCsMpXLvKo8OBOQFCoUN0rPX2J6VaFqrbi/371sMvzZug==}
     engines: {node: 12.* || 14.* || >= 16}
 
+  '@embroider/addon-shim@1.10.2':
+    resolution: {integrity: sha512-EfI9cJ5/3QSUJtwm7x1MXrx3TEa2p7RNgSHefy7fvGm8/DP1xUFL25nST1NaHbHcqR1UhMlrTtv5iUIDoVzeQQ==}
+    engines: {node: 12.* || 14.* || >= 16}
+
   '@embroider/compat@4.1.12':
     resolution: {integrity: sha512-lFvwT7NcflF94+WbtxATa/foo1JKwUQLZTczV6ceV5PbpEKpp4HaYlx9GA8P9fk+JwWLyHdSM9Buo/aEN7WgnQ==}
     engines: {node: 12.* || 14.* || >= 16}
@@ -5838,9 +5842,8 @@ packages:
     peerDependencies:
       hono: ^4
 
-  '@html-next/vertical-collection@https://codeload.github.com/NullVoxPopuli/vertical-collection/tar.gz/95c4b101634c437ee1dc54eb18b376c4538b0dec#path:vertical-collection':
-    resolution: {path: vertical-collection, tarball: https://codeload.github.com/NullVoxPopuli/vertical-collection/tar.gz/95c4b101634c437ee1dc54eb18b376c4538b0dec}
-    version: 4.0.2
+  '@html-next/vertical-collection@5.0.2':
+    resolution: {integrity: sha512-JS51MIlKo6VCP9+vWSDJ7XY5F93Szv4tN99b5VhQeWgiofJ1QeO+JvRR7uLtQkktNTiod/1h7CJ7117OU7j96Q==}
     engines: {node: '>= 18'}
 
   '@humanfs/core@0.19.1':
@@ -9552,8 +9555,9 @@ packages:
       '@ember/test-helpers': '>=3.0.3'
       qunit: 2.19.4
 
-  ember-raf-scheduler@0.5.0:
-    resolution: {integrity: sha512-YB9qXLPcaKD0ihqWAgrkOwbHEcUJbT2n/AXCQZDhzbAGqqQDhFez5TAnJNaSkAuLFR0XTHGmJ+me88cR+5jubg==}
+  ember-raf-scheduler@0.3.0:
+    resolution: {integrity: sha512-i8JWQidNCX7n5TOTIKRDR0bnsQN9aJh/GtOJKINz2Wr+I7L7sYVhli6MFqMYNGKC9j9e6iWsznfAIxddheyEow==}
+    engines: {node: 12.* || 14.* || >= 16}
 
   ember-resolver@13.1.1:
     resolution: {integrity: sha512-rA4RDuTm/F9AzYX2+g7EY3QWU48kyF9+Ck8IE8VQipnlwv2Q42kdRWiw7hfeQbRxx6XoSZCak6nzAG9ePd/+Ug==}
@@ -17245,6 +17249,15 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  '@embroider/addon-shim@1.10.2':
+    dependencies:
+      '@embroider/shared-internals': 3.0.2
+      broccoli-funnel: 3.0.8
+      common-ancestor-path: 1.0.1
+      semver: 7.7.3
+    transitivePeerDependencies:
+      - supports-color
+
   '@embroider/compat@4.1.12(@embroider/core@4.4.2)':
     dependencies:
       '@babel/code-frame': 7.27.1
@@ -18346,22 +18359,13 @@ snapshots:
     dependencies:
       hono: 4.9.4
 
-  '@html-next/vertical-collection@https://codeload.github.com/NullVoxPopuli/vertical-collection/tar.gz/95c4b101634c437ee1dc54eb18b376c4538b0dec#path:vertical-collection(f9dfbf4fac3dbc0e0370b14ce6056988)':
+  '@html-next/vertical-collection@5.0.2(@babel/core@7.28.3)':
     dependencies:
-      ember-auto-import: 2.12.0(@glint/template@1.6.1)
-      ember-cli-babel: 8.2.0(@babel/core@7.28.3)
-      ember-cli-htmlbars: 6.3.0
-      ember-cli-version-checker: 5.1.2
-      ember-raf-scheduler: 0.5.0(f9dfbf4fac3dbc0e0370b14ce6056988)
-      ember-template-imports: 4.3.0
+      '@embroider/addon-shim': 1.10.2
+      ember-raf-scheduler: 0.3.0(@babel/core@7.28.3)
     transitivePeerDependencies:
       - '@babel/core'
-      - '@glint/template'
-      - '@swc/core'
-      - esbuild
       - supports-color
-      - uglify-js
-      - webpack-cli
 
   '@humanfs/core@0.19.1': {}
 
@@ -23793,14 +23797,11 @@ snapshots:
       - '@glint/template'
       - supports-color
 
-  ember-raf-scheduler@0.5.0(f9dfbf4fac3dbc0e0370b14ce6056988):
+  ember-raf-scheduler@0.3.0(@babel/core@7.28.3):
     dependencies:
-      '@ember/test-waiters': 4.1.1(f9dfbf4fac3dbc0e0370b14ce6056988)
-      '@embroider/addon-shim': 1.10.0
-      '@embroider/macros': 1.19.6(f9dfbf4fac3dbc0e0370b14ce6056988)
+      ember-cli-babel: 8.2.0(@babel/core@7.28.3)
     transitivePeerDependencies:
       - '@babel/core'
-      - '@glint/template'
       - supports-color
 
   ember-resolver@13.1.1(@babel/core@7.28.3):
