@@ -3604,6 +3604,9 @@ importers:
       '@types/node':
         specifier: ^20.19.11
         version: 20.19.11
+      '@types/semver':
+        specifier: ^7.7.1
+        version: 7.7.1
       '@warp-drive/internal-config':
         specifier: workspace:*
         version: file:tools/internal-config(08d339ab80698bc6d2b26efaef736218)
