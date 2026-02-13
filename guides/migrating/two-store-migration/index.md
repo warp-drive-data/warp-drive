@@ -1,3 +1,8 @@
+---
+order: 0
+title: Motivation and Tradeoffs
+---
+
 # Migrating Between Versions Using The Two Store Approach
 
 Sometimes apps build over features, private APIs 🙈, or 3rd party libraries that later become deprecated and removed.

@@ -107,17 +107,6 @@ export type User = WithLegacy<{
 }>
 ```
 
-### Migration
+### Migration from Model to Schemas
 
-We recommend migrating from Model to ReactiveResource in LegacyMode before exploring PolarisMode.
-Starting in 5.7, `@warp-drive/legacy` enables restoring features deprecated in 4.x and removed in 5.0 - including Model behaviors when using LegacyMode.
-
-This means that migrating from Model to LegacyMode provides an avenue for apps that have not yet
-completed removal of deprecated 4.x behaviors a fast path to rejoin the library at the latest
-version (before resuming work complete removal of the deprecated features). A codemod is currently being tested that will perform this migration for you.
-
-Further Reading
-
-- [The Two Store Approach](../../../migrating/two-store-migration.md). This approach enables migrating while also upgrading versions and starting relatively fresh. This enables the same ResourceType (for instance `user`) to be used as a Model in some areas of the app and via ReactiveResource in others by sourcing data from separately configured store instances.
-- [The V4 to V5 Migration Guide](../../../migrating/index.md)
-
+In existing Ember apps relying on EmberData Model, see the [Migrating guides](../../../migrating/index.md) to adopt LegacyMode Schemas incrementally.
