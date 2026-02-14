@@ -31,26 +31,9 @@
 <p align="center">Provides JSON, REST and JSON:API Implementations of the legacy <a href="https://api.emberjs.com/ember-data/release/classes/%3CInterface%3E%20Serializer">Serializer Interface</a></p>
 
 > [!WARNING]
-> **Legacy Package**
+> **⚠️ This is a legacy package** not recommended for new applications.
 >
-> **Serializers are a LEGACY feature** that is no longer encouraged for new applications.
->
-> **Why it's legacy:** The Serializer pattern was designed to transform data between your API format and the format expected by Models. This approach:
-> - Creates tight coupling between API payloads and your data layer
-> - Makes it difficult to handle multiple API response formats in the same app
-> - Requires verbose normalization/serialization code for each resource type
-> - Lacks type safety and compile-time validation
-> - Increases runtime overhead with class instantiation and method dispatch
->
-> **Modern alternative:** Use [Handlers](https://warp-drive.io/api/@warp-drive/core/request/interfaces/Handler) with the [RequestManager](https://warp-drive.io/api/@warp-drive/core/classes/RequestManager). Modern WarpDrive:
-> - Uses transformation utilities in Handlers for data normalization
-> - Leverages cache implementations (like `JSONAPICache`) that understand your API format natively
-> - Provides better tree shaking since transformations are functions, not classes
-> - Works with schemas for type-safe data access without runtime parsing
->
-> **When you still need this:** Only use Serializers if you're maintaining an existing Ember application that uses `@ember-data/model` and Adapters. For new projects, use `@warp-drive/core` with Handlers and cache implementations.
->
-> **Migration path:** See the [Request Handlers Guide](https://canary.warp-drive.io/guides/the-manual/requests/handlers) for the modern alternative to Adapters and Serializers.
+> Use [Handlers](https://warp-drive.io/api/@warp-drive/core/request/interfaces/Handler) with [@warp-drive/core](https://warp-drive.io/api/@warp-drive/core/) instead.
 
 ## Installation
 

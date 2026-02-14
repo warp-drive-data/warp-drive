@@ -28,6 +28,11 @@
 
 # @warp-drive/schema-record
 
+> [!WARNING]
+> **⚠️ This is a legacy package** not recommended for new applications.
+>
+> Use [@warp-drive/core](https://warp-drive.io/api/@warp-drive/core/) instead.
+
 <h3 align="center">Your Data, Managed.</h3>
 <p align="center">🌲 Get back to Nature 🐿️ Or shipping 💚</p>
 

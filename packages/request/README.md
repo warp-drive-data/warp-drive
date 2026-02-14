@@ -28,6 +28,11 @@
 
 # @ember-data/request
 
+> [!WARNING]
+> **⚠️ This package only exists for backwards compatibility**
+>
+> Newer apps should use [@warp-drive/core](https://warp-drive.io/api/@warp-drive/core/)
+
 <p align="center">⚡️ a simple abstraction over fetch to enable easy management of request/response flows</p>
 
 This package provides [*Ember***Data**](https://github.com/warp-drive-data/warp-drive/)'s `RequestManager`, a framework agnostic library that can be integrated with any Javascript application to make [fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) happen.

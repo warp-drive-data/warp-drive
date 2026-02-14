@@ -1,4 +1,4 @@
-# @warp-drive/schema-record
+# @warp-drive/core-types
 
 :::warning ⚠️ This is a legacy package not recommended for new applications
 Use {@link @warp-drive/core! | @warp-drive/core} instead.
