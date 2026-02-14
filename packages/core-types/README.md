@@ -28,14 +28,10 @@
 
 # @warp-drive/core-types
 
-> [!WARNING]
-> **⚠️ This is a legacy package** not recommended for new applications.
->
-> Use [@warp-drive/core](https://warp-drive.io/api/@warp-drive/core/) instead.
-
 This package provides types, type utils and symbols for apps still installing the older ember-data packages.
 
-These features are now included in [@warp-drive/core](https://www.npmjs.com/package/@warp-drive/core).
+> [!WARNING]
+> **⚠️ This package** has been merged into [@warp-drive/core](https://warp-drive.io/api/@warp-drive/core/) and is not recommended for new applications.
 
 **Tagged Releases**
 

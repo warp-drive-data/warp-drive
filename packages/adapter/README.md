@@ -29,7 +29,7 @@
 # @ember-data/adapter
 
 > [!WARNING]
-> **⚠️ This is a legacy package** not recommended for new applications.
+> **⚠️ This is a legacy package** not recommended for new applications and **Adapters are a LEGACY feature** that is no longer encouraged.
 >
 > Use [Handlers](https://warp-drive.io/api/@warp-drive/core/request/interfaces/Handler) with [@warp-drive/core](https://warp-drive.io/api/@warp-drive/core/) instead.
 

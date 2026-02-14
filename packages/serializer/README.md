@@ -33,7 +33,10 @@
 > [!WARNING]
 > **⚠️ This is a legacy package** not recommended for new applications.
 >
-> Use [Handlers](https://warp-drive.io/api/@warp-drive/core/request/interfaces/Handler) with [@warp-drive/core](https://warp-drive.io/api/@warp-drive/core/) instead.
+> **This is LEGACY documentation** for a feature that is no longer encouraged to be used.
+
+> If starting a new app or thinking of implementing a new serializer, consider writing a [Handler](https://warp-drive.io/api/@warp-drive/core/request/interfaces/Handler)
+> instead to be used with the [RequestManager](https://warp-drive.io/api/@warp-drive/core/classes/RequestManager)
 
 ## Installation
 
