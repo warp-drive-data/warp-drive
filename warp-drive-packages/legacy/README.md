@@ -26,6 +26,38 @@ Decommissioned Features from <em>Warp</em><strong>Drive</strong> that your App m
 
 <br>
 
+> [!WARNING]
+> This package provides support for older ***Warp*Drive** features that have been
+> deprecated and removed from [@warp-drive/core](https://canary.warp-drive.io/api/@warp-drive/core/).
+>
+> **Projects using these features should refactor away from them with urgency**
+>
+> **What's included:** This package bundles legacy implementations that were removed from the core WarpDrive packages, including:
+> - Deprecated utility functions and compatibility helpers
+> - Legacy snapshot implementations
+> - Older patterns for working with relationships and records
+> - Runtime helpers that have been replaced by more performant alternatives
+>
+> **Why these features were decommissioned:**
+> - They relied on runtime overhead that impacted performance
+> - They were tightly coupled to older architectural patterns (Models, Adapters, Serializers)
+> - They prevented WarpDrive from being framework-agnostic
+> - Modern alternatives provide better type safety, performance, and developer experience
+>
+> **Modern alternatives:** Use the core `@warp-drive/*` packages:
+> - `@warp-drive/core` - Core Store, RequestManager, and schema primitives
+> - `@warp-drive/json-api` - JSON:API cache implementation
+> - `@warp-drive/utilities` - Modern utility functions
+>
+> **When you still need this:** Only install this package if:
+> - You're maintaining an existing application using legacy EmberData patterns
+> - You're in the middle of a migration and need these features temporarily
+> - You depend on packages that require legacy APIs (`@ember-data/model`, `@ember-data/adapter`, etc.)
+>
+> **For new projects:** Do not use this package. Start with modern WarpDrive patterns using `@warp-drive/core`.
+>
+> **Migration path:** See the [V4 to V5 Migration Guide](https://canary.warp-drive.io/guides/migrating) for migrating away from legacy patterns.
+
 ## Documentation
 
 *Get Started* → [Guides](https://docs.warp-drive.io)

@@ -28,6 +28,27 @@
 
 # @ember-data/legacy-compat
 
+> [!CAUTION]
+> **Legacy Compatibility Package**
+>
+> This package provides **compatibility shims** to bridge legacy EmberData patterns (Models, Adapters, Serializers) with modern WarpDrive infrastructure (RequestManager, Handlers, Cache).
+>
+> **Why it exists:** When migrating from legacy EmberData to modern WarpDrive, you may need to:
+> - Use `@ember-data/model` classes with the new `RequestManager`
+> - Keep Adapters/Serializers working while adopting new patterns incrementally
+> - Maintain backward compatibility during a gradual migration
+>
+> **What it provides:**
+> - `LegacyNetworkHandler` - Allows Adapters and Serializers to work with RequestManager
+> - Compatibility layers that translate between legacy APIs and modern WarpDrive internals
+> - Hooks to integrate Model classes with the modern Store
+>
+> **When to use this:** Only use this package during a migration from legacy EmberData to modern WarpDrive. It allows you to adopt modern patterns incrementally while keeping your existing code working.
+>
+> **For new projects:** Do not use this package. Start with `@warp-drive/core` and modern patterns (schemas, Handlers, request builders).
+>
+> **Migration path:** See the [V4 to V5 Migration Guide](https://canary.warp-drive.io/guides/migrating) and [Two Store Migration Strategy](https://canary.warp-drive.io/guides/migrating/two-store-migration) for strategies to incrementally migrate away from legacy patterns.
+
 **Tagged Releases**
 
 - ![NPM Canary Version](https://img.shields.io/npm/v/%40ember-data/legacy-compat/canary?label=%40canary&color=FFBF00)

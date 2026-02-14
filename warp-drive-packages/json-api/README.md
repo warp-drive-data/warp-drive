@@ -18,7 +18,7 @@
 
 # @warp-drive/json-api
 
-A {json:api} Cache Implementation for ***Warp*Drive**.
+A [{json:api}](https://jsonapi.org) Cache Implementation for ***Warp*Drive**.
 
 `{json:api}` excels at simplifying common complex problems around cache consistency and information density, especially in regards to relational or polymorphic data.
 
