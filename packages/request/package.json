@@ -1,6 +1,6 @@
 {
   "name": "@ember-data/request",
-  "description": "⚡️ A simple, small and fast framework-agnostic library to make `fetch` happen",
+  "description": "(Legacy) A simple, small and fast framework-agnostic library to make `fetch` happen",
   "version": "5.9.0-alpha.8",
   "license": "MIT",
   "author": "Chris Thoburn <runspired@users.noreply.github.com>",

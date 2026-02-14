@@ -1,6 +1,6 @@
 {
   "name": "@ember-data/legacy-compat",
-  "description": "Compatibility Shims for Older EmberData",
+  "description": "Compatibility Shims for Older (Legacy) EmberData",
   "version": "5.9.0-alpha.8",
   "license": "MIT",
   "author": "Chris Thoburn <runspired@users.noreply.github.com>",

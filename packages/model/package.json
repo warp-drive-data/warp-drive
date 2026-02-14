@@ -1,7 +1,7 @@
 {
   "name": "@ember-data/model",
   "version": "5.9.0-alpha.8",
-  "description": "A basic Ember implementation of a resource presentation layer for use with @ember-data/store",
+  "description": "(Legacy) Ember implementation of a resource presentation layer for use with @ember-data/store",
   "keywords": [
     "ember-addon"
   ],

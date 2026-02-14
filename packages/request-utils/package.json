@@ -1,6 +1,6 @@
 {
   "name": "@ember-data/request-utils",
-  "description": "Request Building Utilities for use with EmberData",
+  "description": "(Legacy) Request Building Utilities for use with EmberData",
   "version": "5.9.0-alpha.8",
   "private": false,
   "license": "MIT",

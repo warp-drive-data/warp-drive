@@ -1,6 +1,6 @@
 {
   "name": "@ember-data/active-record",
-  "description": "ActiveRecord Format Support for EmberData",
+  "description": "(Legacy) ActiveRecord Format Support for EmberData",
   "version": "5.9.0-alpha.8",
   "private": false,
   "license": "MIT",

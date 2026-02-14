@@ -1,6 +1,6 @@
 {
   "name": "@ember-data/rest",
-  "description": "REST Format Support for EmberData",
+  "description": "(Legacy) REST Format Support for EmberData",
   "version": "5.9.0-alpha.8",
   "private": false,
   "license": "MIT",
