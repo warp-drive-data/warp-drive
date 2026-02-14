@@ -76,3 +76,6 @@ docs-viewer/docs.warp-drive.io/public/logos
 vite.config.mjs.timestamp-*
 
 node-compile-cache
+
+# Claude Code local files
+.claude/*.local.*
