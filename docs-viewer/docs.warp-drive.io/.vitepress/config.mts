@@ -190,6 +190,8 @@ export default withPwa(
         {
           text: 'Legacy API Docs',
           collapsed: true,
+          // If you uncomment this, it makes the Legacy API Docs sidebar state mirror the API Docs sidebar state,
+          // which feels super weird.
           // link: '/api/',
           items: TypeDocSidebar.oldPackages,
         },

@@ -35,6 +35,7 @@ For an alternative modern pattern to Serializers, see the [Request Handlers Guid
 ⚠️ **This is LEGACY documentation** for a feature that is no longer encouraged to be used.
 If starting a new app or thinking of implementing a new serializer, consider writing a
 {@link Handler} instead to be used with the {@link RequestManager}.
+:::
 
 In order to properly manage and present your data, EmberData
 needs to understand the structure of data it receives.
