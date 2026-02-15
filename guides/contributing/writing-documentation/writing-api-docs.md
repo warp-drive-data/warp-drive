@@ -235,6 +235,22 @@ and some documentation may be unexpectedly truncated.
 */
 ```
 
+### Documenting Packages and Subpackages
+
+To create an overview for a module path e.g. `@warp-drive/core-types` or `@warp-drive/core-types/symbol` all that is needed is a doc comment at the top of the file with the tag `@module`.
+
+For instance, to write documentation giving an overview of `@warp-drive/core-types`,
+we would do the following in `packages/core-types/src/index.ts`
+
+```ts
+/**
+ * This package provides essential types and symbols used
+ * by all the other WarpDrive packages.
+ *
+ * @module
+ */
+```
+
 ### Always specify `@since` on non-type public APIs
 
 ```ts
