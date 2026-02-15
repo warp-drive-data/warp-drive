@@ -3,43 +3,33 @@ title: Documenting APIs
 order: 1
 ---
 
-# Writing Documentation
+# Writing API Documentation
 
-There are two sources of documentation in this repository:
-
-- [Guides](../../index.md) - markdown files that are compiled into the manual for the website
-- inline code comments and types - from which the API Docs are compiled
-
-Both are previewable by following the instructions in the [Docs Viewer](https://github.com/warp-drive-data/warp-drive/blob/main/docs-viewer/README.md)
-
-Great documentation requires both guides and docs. We encourage updating any associated guides affected by code changes as you make them, and writing new guides when appropriate.
-
+Our [API Docs](../../../api/) are compiled from inline code comments and types as well as `src/index.md` files.
 
 ## API Documentation Infra Overview
 
 API Documentation is generated from [TSDoc](https://tsdoc.org/) comments in the source code
 compiled with [TypeDoc](https://typedoc.org/) and transformed for [Vitepress](https://vitepress.dev/) using [typedoc-plugin-markdown](https://www.typedoc-plugin-markdown.org/plugins/vitepress)
 
-TSDoc syntax is similar to YUIDoc and JSDoc but there are occassional nuances where it becomes best to know the underlying grammar is TSDoc
+TSDoc syntax is similar to YUIDoc and JSDoc but there are occasional nuances where it becomes best to know that the underlying grammar is TSDoc
 and parser is TypeDoc.
 
 TypeDoc is configured to follow our public package entrypoints to
 auto-discover documentation. It documents everything reachable, public or private including properties and methods that have no associated
-code docs. It uses typescript to understand the source-code and builds documentation from the combination of Type signatures and TSDoc comments.
+code docs. It uses typescript to understand the source-code and builds documentation from the combination of Type signatures and TSDoc comments. This is great, but it means that its very easy to leak private APIs
+into the docs.
 
-This is great, but it means that its very easy to leak private APIs
-into the docs. Use `/** @internal */` on things that should not be
+::: warning Avoid leaking private APIs into the public docs!
+Use `/** @internal */` on things that should not be
 put into the public docs.
+:::
 
 While API Documentation lives with the source-code, the code itself plays no part in the documentation
 that is generated: everything is compiled from comments alone.
 
 The below guide will walk through best practices for writing doc comments, important
 nuances and syntaxes to know, as well as how to test and preview the doc comments.
-
-<br>
-
----
 
 <br>
 
@@ -129,7 +119,7 @@ for fellow developers that shouldn't be exposed to end consumers.
 /**
  * This is a private utility for updating the state
  * of a relationship.
- * 
+ *
  * @internal
  */
 function somethingInside() {}
@@ -158,15 +148,15 @@ For instance
 ```ts
 /**
  * ## Overview
- * 
+ *
  * Some details
- * 
+ *
  * ### An Example
- * 
+ *
  * ```ts
  * new Store();
  * ```
- * 
+ *
  * @public
  */
 ```
@@ -179,15 +169,15 @@ This means we can do code examples that toggle between files or formats.
 ```ts
 /**
  * ::: code-group
- * 
+ *
  * ```ts [example.ts]
  * export function numberFromStrong(str: string): number {}
  * ```
- * 
+ *
  * ```js [example.js]
  * export function numberFromStrong(str) {}
  * ```
- * 
+ *
  * :::
  */
 ```
@@ -210,17 +200,17 @@ and some documentation may be unexpectedly truncated.
 ```ts
 /**
  * ## Overview
- * 
+ *
  * Some details
- * 
+ *
  * ### An Example
- * 
+ *
  * ```ts
  * class User extends Model {
  *   @attr name;
  * }
  * ```
- * 
+ *
  * @public
  */
 ```
@@ -230,41 +220,22 @@ and some documentation may be unexpectedly truncated.
 ```ts
 /**
  ## Overview
- 
+
  Some details
- 
+
  ### An Example
- 
+
  \```ts
  class User extends Model {
    @attr name;
  }
  \```
- 
+
  @public
 */
 ```
 
-### Documenting Packages and Subpackages
-
-To create an overview for a module path e.g. `@warp-drive/core-types` or `@warp-drive/core-types/symbol` all that is needed is a doc comment at the top of the file with the tag `@module`.
-
-For instance, to write documentation giving an overview of `@warp-drive/core-types`,
-we would do the following in `packages/core-types/src/index.ts`
-
-```ts
-/**
- * This package provides essential types and symbols used
- * by all the other WarpDrive packages.
- * 
- * @module
- */
-```
-
-<br>
-
 ### Always specify `@since` on non-type public APIs
-
 
 ```ts
 /**
@@ -295,19 +266,13 @@ be used to give a meaningful description only.
 ```ts
 /**
  * Adds two numbers
- * 
+ *
  * @param a - the first number to add
  * @param b - the second number to add
  * @return the sum of the two numbers
  */
 function add(a: number, b: number): number {}
 ```
-
-<br>
-
----
-
-<br>
 
 ## Documentation Hygiene
 
@@ -342,7 +307,7 @@ From inside the `docs-viewer` directory
 > migrate to tsdoc and typedoc. Once the migration is nearing
 > completion we will create a transform to restore these docs.
 
-Run `bun preview-api-docs` from the project root or the `docs-viewer` directory. 
+Run `bun preview-api-docs` from the project root or the `docs-viewer` directory.
 
 This will build and run the (external) api-docs app with the current state of the api docs in the repo.
 

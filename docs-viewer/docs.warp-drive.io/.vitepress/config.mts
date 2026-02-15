@@ -178,16 +178,17 @@ export default withPwa(
         {
           text: 'API Docs',
           collapsed: true,
-          // link: '/api/',
+          // Ensures that this sidebar item is active when you load /api/ or any of its sub-pages
+          link: '/api/',
           items: [
-            { text: 'Universal' },
+            { text: 'Universal Packages' },
             ...TypeDocSidebar.corePackages.items,
-            { text: 'Frameworks' },
+            { text: 'Framework Packages' },
             ...TypeDocSidebar.frameworkPackages.items,
           ],
         },
         {
-          text: 'Legacy Packages',
+          text: 'Legacy API Docs',
           collapsed: true,
           // link: '/api/',
           items: TypeDocSidebar.oldPackages,
