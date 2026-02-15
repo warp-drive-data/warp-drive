@@ -12,7 +12,7 @@ A Transformation handles two things:
 - **Hydration**: converting the API value into something useful inside your app.  
 - **Serialization**: converting that value back into the correct API format when saving.
 
-Transformations are applied automatically when reading from or writing to the store, keeping your data consistent everywhere.
+Transformations are applied automatically when reading from or writing to the cache, keeping your data consistent everywhere.
 
 ## Why Transformations Matter
 
