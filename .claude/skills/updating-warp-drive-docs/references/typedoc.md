@@ -1,8 +1,62 @@
-# Complete TSDoc and TypeDoc Guide for WarpDrive
+# TypeDoc and TSDoc Complete Reference
 
-This document contains comprehensive details about TSDoc syntax and TypeDoc configuration used in WarpDrive.
+Comprehensive reference for TypeDoc and TSDoc in WarpDrive, covering TypeDoc configuration, TSDoc syntax, plugins, and best practices.
 
-## TSDoc Comment Syntax in Detail
+## Table of Contents
+
+- [Overview](#overview)
+- [Project Configuration](#project-configuration)
+- [TSDoc Comment Syntax](#tsdoc-comment-syntax)
+- [Symbol Documentation](#symbol-documentation)
+- [Tags Reference](#tags-reference)
+- [Markdown Features](#markdown-features)
+- [Module Documentation](#module-documentation)
+- [Plugin-Specific Features](#plugin-specific-features)
+- [Common Patterns](#common-patterns)
+- [Best Practices](#best-practices)
+- [Troubleshooting](#troubleshooting)
+- [Quick Reference Card](#quick-reference-card)
+
+---
+
+## Overview
+
+WarpDrive uses TypeDoc with several plugins to generate comprehensive API documentation from TypeScript source code.
+
+### Ecosystem
+
+- **[TypeDoc](https://typedoc.org/)** - Documentation generator for TypeScript projects
+- **[TSDoc](https://tsdoc.org/)** - Microsoft's standard for TypeScript documentation comments
+- **[typedoc-plugin-markdown](https://www.typedoc-plugin-markdown.org/docs)** - Generates markdown documentation
+- **[typedoc-plugin-no-inherit](https://github.com/jonchardy/typedoc-plugin-no-inherit#readme)** - Controls documentation inheritance
+- **[typedoc-plugin-mdn-links](https://github.com/Gerrit0/typedoc-plugin-mdn-links#readme)** - Links to MDN web docs
+- **[typedoc-vitepress-theme](https://www.typedoc-plugin-markdown.org/plugins/vitepress)** - Integrates with VitePress
+
+### Documentation Resources
+
+Use Context7 to query official documentation when needed. If Context7 doesn't have the information, fetch from official documentation URLs listed above.
+
+## Project Configuration
+
+WarpDrive uses TypeDoc in a monorepo setup with central configuration in `docs-viewer/typedoc.config.mjs`.
+
+### Package-Level Configuration
+
+Individual packages have minimal configuration at `packages/<package-name>/typedoc.config.mjs`.
+
+### Development Workflow
+
+```bash
+# Start dev server with live reload
+cd docs-viewer
+pnpm start
+
+# Build for production
+cd docs-viewer
+pnpm build
+```
+
+## TSDoc Comment Syntax
 
 ### Valid Documentation Comments
 
@@ -55,7 +109,7 @@ Without `*` on every line, the parser can misinterpret content:
 
 The asterisk pattern tells the parser "this is still part of the comment" and prevents false tag detection.
 
-## Symbol Documentation Placement
+## Symbol Documentation
 
 ### Classes
 
@@ -201,8 +255,8 @@ function clearInternalCache() {}
 
 Defines module-level documentation. Place at top of entry point file.
 
+**Preferred:** Use `@mergeModuleWith` plus an `index.md` file for richer module documentation:
 
-Preferred: Use `@mergeModuleWith` plus an `index.md` file for richer module documentation:
 ```ts
 /**
  * @module
@@ -210,7 +264,8 @@ Preferred: Use `@mergeModuleWith` plus an `index.md` file for richer module docu
  */
 ```
 
-Alternatively, for simple module descriptions only:
+**Alternatively,** for simple module descriptions only:
+
 ```ts
 /**
  * Core types and symbols for WarpDrive packages.
@@ -288,7 +343,7 @@ class Container<T> {}
 
 ### @deprecated
 
-Marks APIs as deprecated:
+Marks APIs as deprecated. Always provide an alternative:
 
 ```ts
 /**
@@ -299,8 +354,6 @@ Marks APIs as deprecated:
  */
 function fetchData() {}
 ```
-
-Always provide an alternative when deprecating.
 
 ### @example
 
@@ -323,7 +376,7 @@ Provides usage examples:
 function formatDate(date: Date): string {}
 ```
 
-## No Longer Needed: Auto-Associated Tags
+### Auto-Associated Tags (Do Not Use)
 
 TypeDoc automatically determines these from TypeScript:
 - `@module` (except for module overviews)
@@ -386,6 +439,9 @@ Use language tags for syntax highlighting:
 ### Links
 
 **Cross-references (TypeDoc links):**
+
+Use TypeDoc's `{@link}` syntax, not markdown links:
+
 ```ts
 /**
  * See {@link Store} for the main interface.
@@ -394,7 +450,16 @@ Use language tags for syntax highlighting:
  */
 ```
 
+```markdown
+<!-- YES! -->
+See the {@link Store} API documentation.
+
+<!-- NO! -->
+See the [Store](../api/store/) API documentation.
+```
+
 **External links (standard markdown):**
+
 ```ts
 /**
  * External link: [TypeDoc Documentation](https://typedoc.org/)
@@ -457,15 +522,32 @@ Show multiple versions/languages:
  */
 ```
 
-## Module Documentation with index.md
+## Module Documentation
 
-In addition to TSDoc comments, add `index.md` files in package `src/` directories for additional module documentation:
+### Option 1: index.md Files (Preferred)
+
+Create rich landing pages with `src/index.md`:
+
+**In typedoc.config.mjs:**
+```javascript
+{
+  readme: 'src/index.md'
+}
+```
+
+**In src/index.ts:**
+```typescript
+/**
+ * @module
+ * @mergeModuleWith <project>
+ */
+```
+
+**Format:** Pure markdown (NOT TSDoc syntax), can use VitePress features
 
 **Location:** `packages/your-package/src/index.md`
 
-**Purpose:** Provides landing page content for the package's API docs. Gets integrated into TypeDoc output.
-
-**Format:** Standard markdown (not TSDoc)
+**Purpose:** Provides landing page content for the package's API docs.
 
 **Example:**
 ```markdown
@@ -489,6 +571,53 @@ npm install @warp-drive/active-record
 import { ActiveRecord } from '@warp-drive/active-record';
 \`\`\`
 ```
+
+### Option 2: @module Tag (Brief Descriptions)
+
+For simple packages without elaborate documentation:
+
+**In typedoc.config.mjs:**
+```javascript
+{
+  readme: 'none'
+}
+```
+
+**In src/index.ts:**
+```typescript
+/**
+ * This package provides essential types and symbols used
+ * by all the other WarpDrive packages.
+ *
+ * @module
+ */
+```
+
+## Plugin-Specific Features
+
+### typedoc-plugin-markdown
+
+- Generates markdown output instead of HTML
+- Works with the VitePress theme
+- Supports code blocks via `useCodeBlocks: true`
+
+### typedoc-plugin-no-inherit
+
+- Controls documentation inheritance
+- Use `@noInheritDoc` to prevent inheriting parent documentation
+- Useful when child method has significantly different behavior
+
+### typedoc-plugin-mdn-links
+
+- Automatically creates links to MDN for Web APIs
+- Works with built-in types like `Promise`, `Array`, etc.
+- No special syntax needed - automatic
+
+### typedoc-vitepress-theme
+
+- Integrates TypeDoc output with VitePress
+- Creates sidebar navigation
+- Supports VitePress markdown extensions in doc comments
 
 ## Common Patterns
 
@@ -561,6 +690,217 @@ function process(value: string | number): string | number {
 export function attr(target: any, propertyKey: string) {}
 ```
 
+### Documenting Classes (Complete Example)
+
+```ts
+/**
+ * Manages user data and authentication state.
+ *
+ * ## Overview
+ *
+ * The UserManager handles all user-related operations including
+ * authentication, profile management, and session handling.
+ *
+ * ## Example
+ *
+ * ```ts
+ * const manager = new UserManager();
+ * await manager.login(credentials);
+ * ```
+ *
+ * @since 1.0.0
+ */
+class UserManager {
+  /**
+   * Authenticates a user with credentials.
+   *
+   * @param credentials - user login credentials
+   * @return authentication result with token
+   * @since 1.0.0
+   */
+  async login(credentials: Credentials): Promise<AuthResult> {}
+}
+```
+
+### Documenting Interfaces (Complete Example)
+
+```ts
+/**
+ * Configuration options for the store.
+ *
+ * @since 2.0.0
+ */
+interface StoreConfig {
+  /**
+   * API endpoint URL
+   *
+   * @required
+   */
+  apiUrl: string;
+
+  /**
+   * Request timeout in milliseconds
+   *
+   * @optional
+   * @defaultValue 5000
+   */
+  timeout?: number;
+}
+```
+
+### Documenting Type Aliases
+
+```ts
+/**
+ * Represents a user identifier.
+ *
+ * Can be either a numeric ID or a string username.
+ *
+ * @since 1.0.0
+ */
+type UserId = number | string;
+```
+
+### Documenting Functions (Complete Example)
+
+```ts
+/**
+ * Transforms user data into a normalized format.
+ *
+ * This utility ensures all user objects have consistent
+ * structure regardless of their source.
+ *
+ * @param rawUser - raw user data from API
+ * @return normalized user object
+ * @since 1.5.0
+ */
+function normalizeUser(rawUser: RawUser): User {}
+```
+
+## Best Practices
+
+### 1. Always Use @since for Public APIs
+
+```typescript
+/**
+ * Adds two numbers
+ *
+ * @since 1.13.0
+ * @public
+ */
+function add(a: number, b: number): number {
+  return a + b;
+}
+```
+
+### 2. Use @internal for Private APIs
+
+```typescript
+/**
+ * Internal utility for managing state.
+ * Not exposed to end users.
+ *
+ * @internal
+ */
+function updateInternal() {}
+```
+
+### 3. Hide Constructors When Not User-Facing
+
+```typescript
+/**
+ * ReactiveResource is created internally by the store.
+ * Users don't instantiate it directly.
+ *
+ * @hideconstructor
+ */
+class ReactiveResource {}
+```
+
+### 4. Don't Duplicate TypeScript Types
+
+**BAD:**
+```typescript
+/**
+ * @param a - number - the first number
+ * @return number - the sum
+ */
+function add(a: number, b: number): number {}
+```
+
+**GOOD:**
+```typescript
+/**
+ * @param a - the first number to add
+ * @param b - the second number to add
+ * @return the sum of both numbers
+ */
+function add(a: number, b: number): number {}
+```
+
+TypeScript types are automatically extracted. Only describe the *meaning*, not the type.
+
+### 5. Use Markdown Fully
+
+Documentation supports full markdown:
+
+```typescript
+/**
+ * ## Overview
+ *
+ * Brief description
+ *
+ * ### Key Features
+ *
+ * - Feature 1
+ * - Feature 2
+ *
+ * ### Example
+ *
+ * ```ts
+ * const result = myFunction();
+ * ```
+ *
+ * :::tip
+ * This works best with X
+ * :::
+ */
+```
+
+### 6. VitePress Features Work
+
+Use VitePress extensions in documentation:
+
+```typescript
+/**
+ * ::: code-group
+ *
+ * ```ts [TypeScript]
+ * const x: number = 1;
+ * ```
+ *
+ * ```js [JavaScript]
+ * const x = 1;
+ * ```
+ *
+ * :::
+ *
+ * :::warning
+ * Be careful with this API
+ * :::
+ */
+```
+
+### 7. Use TypeDoc Link Syntax
+
+```markdown
+<!-- YES! -->
+See the {@link Store} API documentation.
+
+<!-- NO! -->
+See the [Store](../api/store/) API documentation.
+```
+
 ## Troubleshooting
 
 ### Documentation Not Appearing
@@ -579,7 +919,7 @@ export function attr(target: any, propertyKey: string) {}
 - Remove `@internal` if should be public
 - Check export path
 - Add `*` to every line
-- Rebuild with `pnpm typedoc`
+- Rebuild with `pnpm typedoc` from `docs-viewer/`
 
 ### Truncated Documentation
 
@@ -622,8 +962,29 @@ export function attr(target: any, propertyKey: string) {}
 
 Every line, including code blocks, needs the asterisk.
 
-## Best Practices Summary
+### Links Not Working
 
+- Use TypeDoc's link syntax: `{@link SymbolName}`
+- For external packages: `{@link @package/name!SymbolName}`
+- For URLs: Standard markdown `[text](url)`
+
+### Tags Not Working
+
+- Check if tag is in `blockTags` or `modifierTags` config
+- Block tags need content, modifier tags don't
+- Don't mix them up
+
+## Quick Reference Card
+
+**Essential Tags:**
+- `@since` - Version (REQUIRED for public APIs)
+- `@internal` - Exclude from docs (REQUIRED for private)
+- `@param` - Parameter (description only, no type)
+- `@return` - Return value (description only, no type)
+- `@hideconstructor` - Hide constructor
+- `@module` - Package overview (index.ts only)
+
+**Best Practices:**
 ✅ **DO:**
 - Use `/**` (double-star) for all doc comments
 - Put `*` on every line (including blank lines and code blocks)
@@ -643,3 +1004,27 @@ Every line, including code blocks, needs the asterisk.
 - Include types in @param/@return (TypeScript provides them)
 - Document internal implementation details in public APIs
 - Forget to rebuild docs after changes
+
+**Remember:**
+- Every line must start with `*`
+- Use `/**` not `/*`
+- No types in @param/@return
+- Always @since for public APIs
+- Rebuild: `pnpm typedoc` from docs-viewer/
+
+## Working with TypeDoc
+
+When working with TypeDoc:
+
+1. **Check project config first** - Read relevant typedoc.config.mjs files
+2. **Query documentation if needed** - Use context7 or WebFetch for official docs
+3. **Provide accurate guidance** - Based on project config and TypeDoc best practices
+4. **Show examples** - Provide code examples following project conventions
+5. **Reference config** - Point to specific configuration when relevant
+
+Be proactive about:
+- Catching incorrect TSDoc syntax
+- Recommending proper tag usage
+- Suggesting markdown enhancements
+- Ensuring VitePress features are used correctly
+- Verifying configuration alignment

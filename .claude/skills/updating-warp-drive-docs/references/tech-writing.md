@@ -1,56 +1,65 @@
----
-name: tech-writer-expert
-description: Expert technical writer with knowledge of WarpDrive documentation best practices. Use for any documentation changes.
----
+# Technical Writing Best Practices
 
-You are a technical writing expert with deep knowledge of documentation best practices, especially in the context of developer documentation for open source projects and WarpDrive specifically. You help ensure that all documentation is clear, comprehensive, and well-structured for all audiences, including developers, LLMs, and search engines.
+Technical writing expert guidance for WarpDrive documentation, covering best practices for developer documentation in open source projects.
+
+## Table of Contents
+
+- [Documentation Audiences](#documentation-audiences)
+  - [For Humans](#for-humans)
+  - [For LLMs](#for-llms)
+  - [For SEO](#for-seo)
+- [Cross-Documentation Strategy](#cross-documentation-strategy)
+- [Documentation Workflow](#documentation-workflow)
+- [Integration with Development](#integration-with-development)
+
+---
 
 ## Documentation Audiences
 
-All WarpDrive documentation should be optimized for **three audiences**:
+Optimize all WarpDrive documentation for **three audiences**:
 
-### 1. For Humans
+### For Humans
 
 **Clarity:**
-- Clear, concise language
-- Logical content flow
-- Practical examples
+- Use clear, concise language
+- Ensure logical content flow
+- Provide practical examples
 - Explain "why" not just "how"
 
 **Scannability:**
-- Descriptive headings
-- Short paragraphs
-- Bullet points and lists
-- Code examples with comments
+- Write descriptive headings
+- Keep paragraphs short
+- Use bullet points and lists
+- Add code examples with comments
 
-### 2. For LLMs
+### For LLMs
 
 **Context:**
-- Complete information in context
-- Consistent terminology
-- Clear relationships between concepts
-- Comprehensive examples
+- Provide complete information in context
+- Maintain consistent terminology
+- Show clear relationships between concepts
+- Include comprehensive examples
 - Clearly denote recommended, legacy, and deprecated patterns
 
 **Structure:**
-- Hierarchical organization
-- Progressive disclosure
-- Explicit cross-references
-- Well-defined sections
+- Organize content hierarchically
+- Apply progressive disclosure
+- Include explicit cross-references
+- Define sections clearly
 
-### 3. For SEO
+### For SEO
 
 **Discoverability:**
-- Descriptive titles and headers
-- Natural keyword usage
-- Semantic HTML/markdown structure
-- Comprehensive topic coverage
+- Write descriptive titles and headers
+- Use keywords naturally
+- Follow semantic HTML/markdown structure
+- Provide comprehensive topic coverage
 
 **Linking:**
-- Internal links between related topics
-- External links to authoritative sources
-- Proper anchor text
-- No broken links
+- Create internal links between related topics
+- Link to external authoritative sources
+- Use proper anchor text
+- Avoid broken links
 
 ## Cross-Documentation Strategy
 
@@ -123,7 +132,7 @@ Requires comprehensive updates:
 
 ### Before Writing
 
-1. **Choose format** - API docs, guide, README, or a combination thereof?
+1. **Choose format** - API docs, guide, README, or a combination?
 2. **Check existing** - What's already documented?
 3. **Plan structure** - How should it be organized?
 
@@ -142,10 +151,10 @@ Requires comprehensive updates:
 
 ## Integration with Development
 
-Documentation should be updated:
+Update documentation at these points:
 
 **During Development:**
-- Add TSDoc comments as you write code
+- Add TSDoc comments as code is written
 
 **Before Opening PRs:**
 - Update guides when changing features
