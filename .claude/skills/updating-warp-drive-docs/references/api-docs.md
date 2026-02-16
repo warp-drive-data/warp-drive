@@ -15,7 +15,7 @@ Comprehensive guidance for creating and maintaining API documentation in WarpDri
   - [Legacy Packages](#legacy-packages)
   - [Internal Packages](#internal-packages)
   - [Transitional Packages](#transitional-packages)
-- [Integration with TypeDoc](#integration-with-typedog)
+- [Integration with TypeDoc](#integration-with-typedoc)
 - [Preview and Testing](#preview-and-testing)
 - [Best Practices](#best-practices)
 - [Troubleshooting](#troubleshooting)
