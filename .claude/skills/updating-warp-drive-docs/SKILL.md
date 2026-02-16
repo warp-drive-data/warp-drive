@@ -114,11 +114,11 @@ WarpDrive uses three distinct documentation systems:
 
 1. Read [references/guides.md](./references/guides.md) for guide patterns
 2. Read [references/vitepress.md](./references/vitepress.md) VitePress markdown features for formatting
-2. Determine guide type (tutorial, concept, migration, or API reference)
-3. Review relevant example in [examples/guides/](./examples/guides/)
-4. Create markdown file in appropriate `guides/` subdirectory
-5. Add YAML frontmatter with required fields
-6. Preview: `cd docs-viewer && pnpm start`
+3. Determine guide type (tutorial, concept, migration, or API reference)
+4. Review relevant example in [examples/guides/](./examples/guides/)
+5. Create markdown file in appropriate `guides/` subdirectory
+6. Add YAML frontmatter with required fields
+7. Preview: `cd docs-viewer && pnpm start`
 
 ### Updating a README
 
