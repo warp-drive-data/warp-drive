@@ -1,6 +1,6 @@
 ---
 name: updating-warp-drive-docs
-description: This skill should be used when the user asks to "update docs", "write documentation", "add TSDoc", "create guide", "update README", "document code", "improve documentation", "write API docs", "add documentation comments", "help with VitePress", "configure VitePress", or mentions TypeDoc, TSDoc, technical writing, guides, or READMEs for WarpDrive. Comprehensive documentation expertise for all WarpDrive documentation types including API docs, guides, READMEs, and VitePress site configuration.
+description: This skill should be used when the user asks to "update docs", "write documentation", "add TSDoc", "create guide", "update README", "document code", "improve documentation", "write API docs", "document the API", "add documentation comments", "help with VitePress", "configure VitePress", or mentions TypeDoc, TSDoc, technical writing, guides, or READMEs for WarpDrive. Comprehensive documentation expertise for all WarpDrive documentation types including API docs, guides, READMEs, and VitePress site configuration.
 ---
 
 # WarpDrive Documentation
@@ -9,7 +9,7 @@ Comprehensive documentation expertise for all WarpDrive documentation types.
 
 ## Overview
 
-This skill provides guidance for all WarpDrive documentation tasks, covering API documentation, guides, READMEs, technical writing, TypeDoc, and VitePress. Use this skill as the single entry point for any documentation work.
+This skill provides guidance for all WarpDrive documentation tasks, covering API documentation, guides, READMEs, technical writing, TypeDoc, and VitePress. This skill serves as the single entry point for any documentation work.
 
 ## Documentation Architecture
 
