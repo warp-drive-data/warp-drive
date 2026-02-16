@@ -325,43 +325,10 @@ High-level overview of main APIs with links to detailed docs.
 
 ## VitePress Features Reference
 
-All templates above support VitePress extensions:
+All templates above support VitePress and TypeDoc markdown extensions.
 
-### Callouts
-
-```markdown
-::: tip
-Helpful tips for users
-:::
-
-::: info
-Additional information
-:::
-
-::: warning
-Important warnings
-:::
-
-::: danger
-Critical warnings
-:::
-```
-
-### Code Groups
-
-```markdown
-::: code-group
-
-\`\`\`ts [TypeScript]
-const example: Type = value;
-\`\`\`
-
-\`\`\`js [JavaScript]
-const example = value;
-\`\`\`
-
-:::
-```
+See [vitepress.md](../../references/vitepress.md) for a reference of VitePress features and markdown extensions that can be used in these templates.
+See [typedoc.md](../../references/typedoc.md) for TypeDoc Markdown features that can be used in these templates (especially `{@link}` as shown below).
 
 ### Links
 

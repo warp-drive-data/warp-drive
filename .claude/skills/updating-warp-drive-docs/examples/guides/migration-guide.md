@@ -1,11 +1,11 @@
 ---
-title: Migrating from v3 to v4
+title: Migrating from v4 to v5
 order: 1
 ---
 
-# Migrating from v3 to v4
+# Migrating from v4 to v5
 
-This guide helps you upgrade from WarpDrive v3.x to v4.0.
+This guide helps you upgrade from WarpDrive v4.x to v5.0.
 
 ## Overview
 
@@ -13,34 +13,43 @@ Version 4.0 introduces several breaking changes focused on improving type safety
 
 ## Breaking Changes
 
-### Change 1: Async Record Operations
+### Change 1: Reactive Resources and Request Management
 
-All record operations are now properly async.
+All record operations now use reactive resources that automatically update your UI.
 
-**Old way (v3):**
+**Old way (v4):**
 ```ts
 const user = store.findRecord('user', id);
 // Synchronous access (could be incomplete)
 ```
 
-**New way (v4):**
+**New way (v5):**
 ```ts
-const user = await store.findRecord('user', id);
+import { findRecord } from '@warp-drive/core';
+
+// Access reactive content directly
+const { content: user } = findRecord(store, 'user', id);
+// Reactive - automatically updates when data changes
+
+// Or await the full request
+const userResource = findRecord(store, 'user', id);
+const user = await userResource.request;
 // Properly awaited, guaranteed to be loaded
 ```
 
-**Why:** Async operations are now properly awaited, ensuring data is loaded before access.
+**Why:** Reactive resources provide automatic UI updates and better separation between loading state and content access.
 
 **Migration steps:**
-1. Add `await` to all `findRecord()` calls
-2. Ensure parent functions are marked `async`
-3. Add proper error handling with try/catch
+1. Import `findRecord` from `@warp-drive/core`
+2. Destructure `content` for immediate reactive access, or `await` the `request` property
+3. Ensure parent functions are marked `async` when awaiting
+4. Add proper error handling with try/catch
 
-### Change 2: Model Definition Syntax
+### Change 2: Schema-Driven Resource Definition
 
-Model decorators have changed.
+Model decorators have been replaced with schema-driven resource definitions for better performance and type safety.
 
-**Old way (v3):**
+**Old way (v4):**
 ```ts
 import { attr, belongsTo } from '@ember-data/model';
 
@@ -51,7 +60,33 @@ export default class User extends Model {
 }
 ```
 
-**New way (v4):**
+**New way (v5) - Schema-Based:**
+```ts
+import type { SchemaService } from '@warp-drive/core-types/schema';
+import type { ResourceSchema } from '@warp-drive/core-types/schema/concepts';
+
+// Define schema
+const UserSchema: ResourceSchema = {
+  type: 'user',
+  identity: { name: 'id', kind: '@id' },
+  fields: [
+    { name: 'name', kind: 'attribute', type: 'string' },
+    { name: 'createdAt', kind: 'attribute', type: 'date' },
+    { name: 'account', kind: 'belongsTo', type: 'account' }
+  ]
+};
+
+// Register with schema service
+class MySchemaService implements SchemaService {
+  schemas = new Map([['user', UserSchema]]);
+
+  resource(type: string) {
+    return this.schemas.get(type);
+  }
+}
+```
+
+**Alternative (v5) - Legacy Decorator Compatibility:**
 ```ts
 import { Model, attr, belongsTo } from '@warp-drive/model';
 
@@ -62,19 +97,20 @@ export class User extends Model {
 }
 ```
 
-**Why:** Better TypeScript support with explicit type declarations.
+**Why:** Schema-driven approach provides better performance, type safety, and enables treeshaking. Decorator support maintained for gradual migration.
 
 **Migration steps:**
-1. Update import paths from `@ember-data/*` to `@warp-drive/*`
-2. Add `declare` keyword to all decorated properties
-3. Add explicit type annotations
-4. Remove decorator type arguments (e.g., `@attr('string')` → `@attr`)
+1. **Preferred:** Define schemas using `ResourceSchema` and register with `SchemaService`
+2. **Alternative:** Update import paths from `@ember-data/*` to `@warp-drive/*`
+3. Add `declare` keyword to all decorated properties
+4. Add explicit type annotations
+5. Remove decorator type arguments (e.g., `@attr('string')` → `@attr`)
 
-### Change 3: Store Configuration
+### Change 3: Request Management and Store Configuration
 
-Store initialization has changed.
+Store initialization now uses RequestManager for flexible, composable request handling.
 
-**Old way (v3):**
+**Old way (v4):**
 ```ts
 import Store from '@ember-data/store';
 
@@ -83,75 +119,164 @@ const store = Store.create({
 });
 ```
 
-**New way (v4):**
+**New way (v5):**
 ```ts
 import { Store } from '@warp-drive/core';
+import RequestManager from '@warp-drive/request';
+import Fetch from '@warp-drive/request/fetch';
+import { CacheHandler } from '@ember-data/json-api/request';
 
+// Create RequestManager with handlers
+const manager = new RequestManager();
+manager.use([Fetch, CacheHandler]);
+
+// Create store with RequestManager
 const store = new Store({
-  adapter: new JSONAPIAdapter()
+  requestManager: manager
 });
+
+// Use legacy adapter pattern (compatibility)
+import { LegacyNetworkHandler } from '@ember-data/legacy-compat';
+const legacyManager = new RequestManager();
+legacyManager.use([LegacyNetworkHandler]);
 ```
 
-**Why:** More flexible instantiation and better tree-shaking.
+**Why:** RequestManager provides composable request handling, middleware-like handlers, and better control over caching and network requests.
 
 **Migration steps:**
-1. Change from `Store.create()` to `new Store()`
-2. Instantiate adapters explicitly
-3. Update configuration options
+1. Create a `RequestManager` instance
+2. Register handlers with `manager.use()` (e.g., `Fetch`, `CacheHandler`)
+3. Pass `requestManager` to `Store` constructor
+4. For gradual migration, use `LegacyNetworkHandler` to maintain adapter compatibility
+5. Update configuration options
 
 ## Deprecated APIs
 
-### Removed: `store.peekRecord()` synchronous access
+### Removed: `model.save()` instance method
 
 **Old:**
 ```ts
-const user = store.peekRecord('user', '1');
+user.name = 'Updated';
+await user.save();
 ```
 
 **New:**
 ```ts
-const user = store.cache.peek('user', '1');
-// Or use async:
-const user = await store.findRecord('user', '1');
+import { updateRecord, saveRecord } from '@warp-drive/core';
+
+// Update the record
+updateRecord(store, user, { name: 'Updated' });
+
+// Save using functional API
+await saveRecord(store, user);
 ```
 
-### Removed: `model.save()` return type
+**Why:** Functional API provides better composability and reduces instance method bloat.
 
-**Old:** Returned the saved model
-**New:** Returns a promise that resolves to the model
+## New Features in v5
 
-## New Features in v4
+### Reactive Resources
+
+```ts
+import { findRecord, query } from '@warp-drive/core';
+
+// Reactive resources automatically update UI
+const userResource = findRecord(store, 'user', '1');
+const { content: user, isSuccess, isError } = userResource;
+
+// Access loading state
+if (userResource.isPending) {
+  // Show loading state
+}
+
+// Query returns reactive collection
+const usersResource = query(store, 'user', { filter: { active: true } });
+const users = usersResource.content;
+```
+
+### Request Management
+
+```ts
+import RequestManager from '@warp-drive/request';
+
+// Composable request handlers
+const manager = new RequestManager();
+manager.use([
+  CacheHandler,
+  Fetch,
+  CustomAuthHandler
+]);
+
+// Direct request API
+const response = await manager.request({
+  url: '/api/users/1',
+  method: 'GET'
+});
+```
+
+### Schema-Driven Architecture
+
+```ts
+import type { ResourceSchema } from '@warp-drive/core-types/schema/concepts';
+
+// Define schemas without classes
+const UserSchema: ResourceSchema = {
+  type: 'user',
+  identity: { name: 'id', kind: '@id' },
+  fields: [
+    { name: 'name', kind: 'attribute', type: 'string' },
+    { name: 'email', kind: 'attribute', type: 'string' }
+  ]
+};
+
+// Enables better treeshaking and performance
+```
 
 ### Improved Cache Control
 
 ```ts
+import { peekRecord } from '@warp-drive/core';
+
 // Explicit cache management
-store.cache.put({
+const identifier = store.identifierCache.getOrCreateRecordIdentifier({
   type: 'user',
-  id: '1',
-  attributes: { name: 'Alice' }
+  id: '1'
 });
 
-const cached = store.cache.peek('user', '1');
+store.cache.put({
+  content: {
+    type: 'user',
+    id: '1',
+    attributes: { name: 'Alice' }
+  }
+});
+
+const cached = peekRecord(store, identifier);
 ```
 
 ### Better Type Inference
 
 ```ts
+import { findRecord } from '@warp-drive/core';
+
 // TypeScript now infers the correct type
-const user = await store.findRecord('user', '1');
-// user is typed as User, not Model
+const { content: user } = findRecord(store, 'user', '1');
+// user is properly typed based on schema
 ```
 
 ## Migration Checklist
 
 - [ ] Update all package imports from `@ember-data/*` to `@warp-drive/*`
-- [ ] Add `await` to all record operations
-- [ ] Add `declare` keyword to model properties
+- [ ] Import functional APIs from `@warp-drive/core` (`findRecord`, `updateRecord`, `saveRecord`, etc.)
+- [ ] Replace `store.findRecord()` with reactive `findRecord(store, type, id)`
+- [ ] Replace instance methods like `model.save()` with `saveRecord(store, model)`
+- [ ] Replace direct property mutation with `updateRecord(store, model, changes)`
+- [ ] Set up `RequestManager` with appropriate handlers
+- [ ] Consider migrating to schema-driven resource definitions
+- [ ] Replace `store.peekRecord()` with `peekRecord()` functional API
+- [ ] Add `declare` keyword to model properties (if using decorators)
 - [ ] Add explicit type annotations
-- [ ] Update store instantiation
-- [ ] Replace `peekRecord()` with cache API or async calls
-- [ ] Update tests to handle async operations
+- [ ] Update tests to handle reactive resources and async operations
 - [ ] Run full test suite
 
 ## Getting Help

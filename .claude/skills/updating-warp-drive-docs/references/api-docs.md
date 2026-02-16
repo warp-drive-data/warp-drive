@@ -9,8 +9,7 @@ Comprehensive guidance for creating and maintaining API documentation in WarpDri
 - [Core Principles](#core-principles)
 - [Documentation Approaches](#documentation-approaches)
   - [Markdown Landing Pages (index.md)](#markdown-landing-pages-indexmd)
-  - [TSDoc @module Tag](#tsdoc-module-tag)
-- [TSDoc for Code Structures](#tsdoc-for-code-structures)
+  - [TSDoc for Code Structures](#tsdoc-for-code-structures)
 - [Landing Page Patterns](#landing-page-patterns)
   - [Modern Packages](#modern-packages)
   - [Legacy Packages](#legacy-packages)
@@ -36,9 +35,9 @@ Document APIs when:
 - **Adding complex functionality** - Advanced features benefit from detailed explanations
 - **Supporting legacy code** - Maintain documentation for backwards compatibility
 
-Skip documentation for:
+Skip documentation for the following unless they are explicitly requested to be documented:
 
-- **Internal implementations** - Mark with `@internal` tag to exclude from public docs
+- **Internal implementations** - ALWAYS mark with `@internal` tag to exclude from public docs
 - **Private members** - TypeDoc excludes private class members automatically
 - **Self-explanatory code** - Simple getters/setters with obvious purpose
 
@@ -95,7 +94,7 @@ Choose the appropriate documentation approach based on package needs.
 - Use code groups for TypeScript/JavaScript examples
 - Use `{@link}` syntax for internal cross-references
 
-See [typedoc.md](./typedoc.md) for complete markdown syntax and features.
+See [typedoc.md](./typedoc.md) and [vitepress.md](./vitepress.md) for complete markdown syntax and features.
 
 #### Content Guidelines
 
@@ -111,48 +110,9 @@ Structure landing pages to provide:
 - API Overview with links to detailed documentation
 - Related Packages connecting to the broader ecosystem
 
-See [examples/api-docs/](../examples/api-docs/) for complete landing page templates.
+See [examples/api-docs/](../examples/api-docs/index-md-templates.md) for complete landing page templates.
 
-### TSDoc @module Tag
-
-**Minimal approach** for packages requiring only brief descriptions without extensive documentation.
-
-#### How It Works
-
-1. Configure TypeDoc in `typedoc.config.mjs`:
-   ```js
-   export default {
-     readme: 'none',
-     // ... other config
-   };
-   ```
-2. Add `@module` tag at the top of `src/index.ts`:
-   ```ts
-   /**
-    * This package provides essential types and symbols used
-    * by all the other WarpDrive packages.
-    *
-    * @module
-    */
-   ```
-3. Description appears at `/api/{package-name}/` alongside exports
-
-#### When to Use
-
-Use `@module` tag for:
-
-- Simple utility packages with minimal context needed
-- Internal packages with straightforward purposes
-- Packages where the exports speak for themselves
-
-Use `index.md` for:
-
-- User-facing packages requiring installation guidance
-- Complex packages needing conceptual explanations
-- Packages with multiple usage patterns to demonstrate
-- Legacy packages requiring migration guidance
-
-## TSDoc for Code Structures
+### TSDoc for Code Structures
 
 TSDoc provides specialized syntax for different code structures. See [typedoc.md](./typedoc.md) for comprehensive details on:
 
@@ -162,7 +122,7 @@ TSDoc provides specialized syntax for different code structures. See [typedoc.md
 - **Generics** - Type parameter documentation
 - **Special tags** - `@deprecated`, `@internal`, `@example`, etc.
 
-### Quick Reference
+#### Quick Reference
 
 Common TSDoc patterns:
 
@@ -205,7 +165,7 @@ Use for actively maintained packages that users should install and use.
 - Tips and Best Practices with callouts
 - Related Packages connecting the ecosystem
 
-See [examples/api-docs/modern-package.md](../examples/api-docs/modern-package.md) for complete template.
+See [examples/api-docs/index-md-templates.md#example-1-modern-package](../examples/api-docs/index-md-templates.md#example-1-modern-package) for complete template.
 
 ### Legacy Packages
 
@@ -231,7 +191,7 @@ See the [migration guide](#migration-path) for upgrade instructions.
 :::
 ```
 
-See [examples/api-docs/legacy-package.md](../examples/api-docs/legacy-package.md) for complete template.
+See [examples/api-docs/index-md-templates.md#example-2-legacy-package](../examples/api-docs/index-md-templates.md#example-2-legacy-package) for complete template.
 
 ### Internal Packages
 
@@ -253,7 +213,7 @@ You should not install it separately. Install the main package instead.
 :::
 ```
 
-See [examples/api-docs/internal-package.md](../examples/api-docs/internal-package.md) for complete template.
+See [examples/api-docs/index-md-templates.md#example-3-internal-package-not-separately-installable](../examples/api-docs/index-md-templates.md#example-3-internal-package-not-separately-installable) for complete template.
 
 ### Transitional Packages
 
@@ -276,7 +236,7 @@ Use for packages that were previously installed separately but are now internal,
 :::
 ```
 
-See [examples/api-docs/transitional-package.md](../examples/api-docs/transitional-package.md) for complete template.
+See [examples/api-docs/index-md-templates.md#example-4-internal-package-legacy-separate-installation-still-supported](../examples/api-docs/index-md-templates.md#example-4-internal-package-legacy-separate-installation-still-supported) for complete template.
 
 ## Integration with TypeDoc
 
@@ -346,11 +306,7 @@ Use the chrome-devtools MCP (if available) to preview changes in the context of 
 
 ### Writing Style
 
-- Use imperative/infinitive verb forms: "Create a builder" not "Creates a builder"
-- Avoid second person: "configure options" not "you configure options"
-- Be concise and direct
-- Focus on practical usage over implementation details
-- Provide context explaining "why" not just "what"
+Follow guidelines from [tech-writing.md](./tech-writing.md).
 
 ### Code Examples
 
@@ -406,8 +362,9 @@ Common issues:
 ## Related References
 
 - [typedoc.md](./typedoc.md) - Comprehensive TypeDoc and TSDoc reference
+- [vitepress.md](./vitepress.md) - VitePress features and markdown extensions
 - [tech-writing.md](./tech-writing.md) - Writing style and documentation best practices
-- [examples/api-docs/](../examples/api-docs/) - Complete index.md templates
+- [examples/api-docs/](../examples/api-docs/) - API Docs examples
 
 For specific questions:
 

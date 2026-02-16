@@ -14,17 +14,14 @@ Technical writing expert guidance for WarpDrive documentation, covering best pra
 
 ---
 
-## Documentation Audiences
-
-Optimize all WarpDrive documentation for **three audiences**:
-
-### For Humans
+### In General
 
 **Clarity:**
 - Use clear, concise language
 - Ensure logical content flow
 - Provide practical examples
 - Explain "why" not just "how"
+- Focus on practical usage over implementation details
 
 **Scannability:**
 - Write descriptive headings
@@ -32,34 +29,132 @@ Optimize all WarpDrive documentation for **three audiences**:
 - Use bullet points and lists
 - Add code examples with comments
 
-### For LLMs
+## Documentation Audiences
 
-**Context:**
-- Provide complete information in context
-- Maintain consistent terminology
-- Show clear relationships between concepts
-- Include comprehensive examples
-- Clearly denote recommended, legacy, and deprecated patterns
+WarpDrive Guides serve several distinct audiences, each with different needs and knowledge levels:
 
-**Structure:**
-- Organize content hierarchically
+**1. VPs and Directors**
+- Evaluating if WarpDrive solves business problems
+- Often heard about it at conferences
+- Need business value and problem-solving focus
+- Require accessible, compelling content
+
+**2. Tech Leads and Architects**
+- Deciding if it solves technical needs
+- Need architectural understanding
+- Require technical depth and patterns
+- Want to understand integration points
+
+**3. Hobbyists**
+- Trying it for weekend projects
+- Need quick-start paths
+- Want clear, simple examples
+- Require minimal setup friction
+
+**4. New Engineers**
+- Learning what their company uses
+- Need foundational concepts
+- Require step-by-step guidance
+- Want clear explanations without jargon
+
+**5. Existing Users**
+- Finding documentation
+- Learning deeper features
+- Upgrading between versions
+- Need reference and migration paths
+
+**6. LLMs**
+- Need consistent terminology
+- Require clear structure and relationships
+- Require clearly denoted recommended, legacy, and deprecated patterns
+- Want complete information in context
+- Require clear relationships between concepts
+- Require comprehensive examples
+- Require content organized hierarchically
 - Apply progressive disclosure
-- Include explicit cross-references
-- Define sections clearly
 
-### For SEO
-
-**Discoverability:**
+**7. Search Engines (SEO)**
 - Write descriptive titles and headers
 - Use keywords naturally
 - Follow semantic HTML/markdown structure
 - Provide comprehensive topic coverage
-
-**Linking:**
 - Create internal links between related topics
 - Link to external authoritative sources
 - Use proper anchor text
 - Avoid broken links
+
+**Default Assumption:** Reader doesn't use WarpDrive yet or is just getting started.
+
+### Audience-Specific Approaches
+
+#### Landing Pages and Introductions (Audiences 1-3, 6-7)
+
+Target decision makers and evaluators.
+
+**Guidelines:**
+- Entice decision makers with value propositions
+- Highlight business value and ROI
+- Show what problems WarpDrive solves
+- Keep content accessible and compelling
+- Avoid deep technical jargon
+- Lead with benefits, not features
+
+#### Guide Material (Audiences 1-4, 6-7)
+
+Target learners and new users.
+
+**Guidelines:**
+- Start from zero historical context
+- Explain concepts clearly without assumptions
+- Cross-link related concepts on first introduction
+- Use practical, runnable examples
+- Avoid jargon without explanation
+- Define terms on first use
+- Build knowledge progressively
+
+#### Migration Guides (Audiences 4-5, 6-7)
+
+Target existing users upgrading versions.
+
+**Guidelines:**
+- Can presume historical knowledge of older concepts
+- Must NOT presume knowledge of newer concepts
+- Clearly mark as "Migration" in title and path
+- Provide complete upgrade paths
+- Explain rationale for breaking changes
+- Include before/after comparisons
+- Offer migration checklists
+
+#### Legacy Content (Audiences 4-5, 6-7)
+
+Target existing users of older patterns.
+
+**Guidelines:**
+- Keep separate from main guides
+- Clearly label as "Legacy" in titles
+- Example: "Setup - Legacy (Ember)" helps existing users without confusing new ones
+- Shows decision makers there's support for transitions
+- Provide migration paths to modern approaches
+- Don't remove until usage drops significantly
+
+### Balance Example
+
+Balance competing audience needs through structure.
+
+**Good Structure:**
+- Top-level "Migrations" section for experienced users
+- Explicitly named legacy pages (e.g., `/guides/configuration/ember`)
+- Main guides assume no prior knowledge
+- Clear labeling helps everyone find what they need
+- Separation prevents confusion
+- All audiences served without compromise
+
+**Poor Structure:**
+- Mixing legacy and modern approaches
+- Assuming prior knowledge in main guides
+- No clear navigation paths
+- Unlabeled legacy content
+- Confusing new users with historical context
 
 ## Cross-Documentation Strategy
 

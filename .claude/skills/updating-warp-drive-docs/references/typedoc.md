@@ -278,6 +278,8 @@ Defines module-level documentation. Place at top of entry point file.
 export * from './types';
 ```
 
+See [examples/api-docs/index-md-templates.mdo](../examples/api-docs/index-md-templates.md) for examples.
+
 ### @hideconstructor
 
 Hides constructor from documentation. Use when users don't directly instantiate:
@@ -379,7 +381,7 @@ function formatDate(date: Date): string {}
 ### Auto-Associated Tags (Do Not Use)
 
 TypeDoc automatically determines these from TypeScript:
-- `@module` (except for module overviews)
+- `@module` (except for module overviews at package entrypoints)
 - `@class`
 - `@method`
 - `@static`
@@ -467,6 +469,8 @@ See the [Store](../api/store/) API documentation.
 ```
 
 ### VitePress Extensions
+
+See [vitepress.md](./vitepress.md) for other VitePress Markdown features, which can be used in TSDoc comments.
 
 #### Code Groups
 

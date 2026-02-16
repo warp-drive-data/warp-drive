@@ -17,7 +17,7 @@ WarpDrive uses three distinct documentation systems:
 
 ### 1. API Documentation (TSDoc + TypeDoc + VitePress)
 
-**Location:** Inline `/** */` comments in source code
+**Location:** Inline `/** */` comments in source code + markdown landing pages (`src/index.md`) for each package
 **Build Process:** TypeDoc → Markdown → VitePress
 **Output:** [docs.warp-drive.io/api/](https://docs.warp-drive.io/api/)
 
@@ -34,11 +34,14 @@ WarpDrive uses three distinct documentation systems:
 - Marking internal vs public APIs
 
 **References:**
-- **[references/api-docs.md](references/api-docs.md)** - API documentation patterns and when to use them
-- **[references/typedoc.md](references/typedoc.md)** - Complete TypeDoc and TSDoc reference
+- **[references/api-docs.md](./references/api-docs.md)** - API documentation patterns and when to use them
+- **[references/typedoc.md](./references/typedoc.md)** - Complete TypeDoc and TSDoc reference
+- **[references/vitepress.md](./references/vitepress.md)** - VitePress reference
+- **[references/tech-writing.md](./references/tech-writing.md)** - writing principles
 
 **Examples:**
-- **[examples/typedoc/well-documented-class.ts](examples/typedoc/well-documented-class.ts)** - Well-documented TypeScript class
+- **[examples/typedoc/well-documented-class.ts](./examples/typedoc/well-documented-class.ts)** - Well-documented TypeScript class
+- **[examples/api-docs/index-md-templates.md](./examples/api-docs/index-md-templates.md)** - `index.md` package landing page templates
 
 ### 2. Guide Documentation (VitePress)
 
@@ -59,20 +62,20 @@ WarpDrive uses three distinct documentation systems:
 - Documenting migration paths
 
 **References:**
-- **[references/guides.md](references/guides.md)** - Guide documentation patterns for all guide types
+- **[references/guides.md](./references/guides.md)** - Guide documentation patterns for all guide types
+- **[references/tech-writing.md](./references/tech-writing.md)** - writing principles
 
 **Examples:**
-- **[examples/guides/good-tutorial.md](examples/guides/good-tutorial.md)** - Tutorial guide pattern
-- **[examples/guides/good-concept.md](examples/guides/good-concept.md)** - Concept guide pattern
-- **[examples/guides/migration-guide.md](examples/guides/migration-guide.md)** - Migration guide pattern
-- **[examples/guides/api-reference-guide.md](examples/guides/api-reference-guide.md)** - API reference guide pattern
-- **[examples/guides/effective-guide-pattern.md](examples/guides/effective-guide-pattern.md)** - Guide structure template
+- **[examples/guides/good-tutorial.md](./examples/guides/good-tutorial.md)** - Tutorial guide pattern
+- **[examples/guides/good-concept.md](./examples/guides/good-concept.md)** - Concept guide pattern
+- **[examples/guides/migration-guide.md](./examples/guides/migration-guide.md)** - Migration guide pattern
+- **[examples/guides/effective-guide-pattern.md](./examples/guides/effective-guide-pattern.md)** - Guide structure template
 
 ### 3. README Documentation (GitHub Markdown)
 
 **Location:** Package and project root `README.md` files
-**Build Process:** Direct GitHub rendering
-**Output:** GitHub repository and npm package pages
+**Build Process:** n/a
+**Output:** GitHub repository and npm repository package pages
 
 **Purpose:**
 - Optimized for viewing on GitHub and npm registry
@@ -88,49 +91,52 @@ WarpDrive uses three distinct documentation systems:
 - Installation and setup instructions
 
 **References:**
-- **[references/readmes.md](references/readmes.md)** - README documentation patterns for packages and projects
+- **[references/readmes.md](./references/readmes.md)** - README documentation patterns for packages and projects
+- **[references/tech-writing.md](./references/tech-writing.md)** - writing principles
 
 **Examples:**
-- **[examples/readmes/package-readme-pattern.md](examples/readmes/package-readme-pattern.md)** - Package README structure
-- **[examples/readmes/package-readme.md](examples/readmes/package-readme.md)** - Complete package README example
-- **[examples/readmes/github-markdown.md](examples/readmes/github-markdown.md)** - GitHub markdown reference
+- **[examples/readmes/package-readme-pattern.md](./examples/readmes/package-readme-pattern.md)** - Package README structure
+- **[examples/readmes/package-readme.md](./examples/readmes/package-readme.md)** - Complete package README example
+- **[examples/readmes/github-markdown.md](./examples/readmes/github-markdown.md)** - GitHub markdown reference
 
 ## Quick Workflows
 
 ### Adding TSDoc to Code
 
-1. Read [references/api-docs.md](references/api-docs.md) for API documentation patterns
-2. Read [references/typedoc.md](references/typedoc.md) for comprehensive TSDoc syntax
-3. Add `/** */` comments above code with appropriate tags
-4. Use `@since` for public APIs, `@internal` for private
-5. Preview: `cd docs-viewer && pnpm start`
+1. Read [references/api-docs.md](./references/api-docs.md) for API documentation patterns
+2. Read [references/typedoc.md](./references/typedoc.md) for comprehensive TSDoc syntax
+3. Read [references/vitepress.md](./references/vitepress.md) VitePress markdown features for formatting
+4. Add `/** */` comments above code with appropriate tags
+5. Use `@since` for public APIs, `@internal` for private
+6. Preview: `cd docs-viewer && pnpm start`
 
 ### Creating a New Guide
 
-1. Read [references/guides.md](references/guides.md) for guide patterns
+1. Read [references/guides.md](./references/guides.md) for guide patterns
+2. Read [references/vitepress.md](./references/vitepress.md) VitePress markdown features for formatting
 2. Determine guide type (tutorial, concept, migration, or API reference)
-3. Review relevant example in [examples/guides/](examples/guides/)
+3. Review relevant example in [examples/guides/](./examples/guides/)
 4. Create markdown file in appropriate `guides/` subdirectory
 5. Add YAML frontmatter with required fields
 6. Preview: `cd docs-viewer && pnpm start`
 
 ### Updating a README
 
-1. Read [references/readmes.md](references/readmes.md) for README patterns
-2. Review examples in [examples/readmes/](examples/readmes/)
+1. Read [references/readmes.md](./references/readmes.md) for README patterns
+2. Review examples in [examples/readmes/](./examples/readmes/)
 3. Update relevant README.md file
 4. Preview on GitHub or locally
 
 ### VitePress Configuration
 
-1. Read [references/vitepress.md](references/vitepress.md) for VitePress features
+1. Read [references/vitepress.md](./references/vitepress.md) for VitePress features
 2. Configuration files: `docs-viewer/.vitepress/config.ts`
 3. Reference plugin documentation in vitepress.md
 4. Test: `cd docs-viewer && pnpm start`
 
 ### Technical Writing Review
 
-1. Read [references/tech-writing.md](references/tech-writing.md) for writing principles
+1. Read [references/tech-writing.md](./references/tech-writing.md) for writing principles
 2. Check for clarity, scannability, and audience optimization
 3. Verify documentation works for humans, LLMs, and SEO
 
@@ -180,22 +186,22 @@ Coordinate updates across all relevant documentation types for consistency.
 
 All detailed documentation expertise is in reference files:
 
-- **[references/tech-writing.md](references/tech-writing.md)** - Technical writing principles and best practices
-- **[references/typedoc.md](references/typedoc.md)** - Complete TypeDoc and TSDoc reference (~1,000 lines)
-- **[references/vitepress.md](references/vitepress.md)** - Complete VitePress reference (~1,000 lines)
-- **[references/api-docs.md](references/api-docs.md)** - API documentation patterns
-- **[references/guides.md](references/guides.md)** - Guide documentation patterns
-- **[references/readmes.md](references/readmes.md)** - README documentation patterns
+- **[references/tech-writing.md](./references/tech-writing.md)** - Technical writing principles and best practices
+- **[references/typedoc.md](./references/typedoc.md)** - Complete TypeDoc and TSDoc reference
+- **[references/vitepress.md](./references/vitepress.md)** - Complete VitePress reference
+- **[references/api-docs.md](./references/api-docs.md)** - API documentation patterns
+- **[references/guides.md](./references/guides.md)** - Guide documentation patterns
+- **[references/readmes.md](./references/readmes.md)** - README documentation patterns
 
 ## Examples Directory
 
 Working examples organized by type:
 
-- **[examples/api-docs/](examples/api-docs/)** - API documentation templates
-- **[examples/guides/](examples/guides/)** - Guide examples (5 patterns)
-- **[examples/readmes/](examples/readmes/)** - README examples and templates
-- **[examples/typedoc/](examples/typedoc/)** - TypeDoc code examples
-- **[examples/vitepress/](examples/vitepress/)** - VitePress markdown features
+- **[examples/api-docs/](./examples/api-docs/)** - API documentation templates
+- **[examples/guides/](./examples/guides/)** - Guide examples (5 patterns)
+- **[examples/readmes/](./examples/readmes/)** - README examples and templates
+- **[examples/typedoc/](./examples/typedoc/)** - TypeDoc code examples
+- **[examples/vitepress/](./examples/vitepress/)** - VitePress markdown features
 
 ## Quick Reference Card
 
@@ -203,14 +209,14 @@ Working examples organized by type:
 
 | Task | Reference | Examples |
 |------|-----------|----------|
-| Document a function/class | [api-docs.md](references/api-docs.md), [typedoc.md](references/typedoc.md) | [well-documented-class.ts](examples/typedoc/well-documented-class.ts) |
-| Write a tutorial | [guides.md](references/guides.md) | [good-tutorial.md](examples/guides/good-tutorial.md) |
-| Add quick-start | [readmes.md](references/readmes.md) | [package-readme-pattern.md](examples/readmes/package-readme-pattern.md) |
-| Create migration guide | [guides.md](references/guides.md) | [migration-guide.md](examples/guides/migration-guide.md) |
-| Update package overview | [readmes.md](references/readmes.md) | [package-readme.md](examples/readmes/package-readme.md) |
-| Explain a concept | [guides.md](references/guides.md) | [good-concept.md](examples/guides/good-concept.md) |
-| Configure VitePress | [vitepress.md](references/vitepress.md) | [markdown-features.md](examples/vitepress/markdown-features.md) |
-| Improve writing quality | [tech-writing.md](references/tech-writing.md) | - |
+| Document a function/class | [api-docs.md](./references/api-docs.md), [typedoc.md](./references/typedoc.md) | [well-documented-class.ts](./examples/typedoc/well-documented-class.ts) |
+| Write a tutorial | [guides.md](./references/guides.md) | [good-tutorial.md](./examples/guides/good-tutorial.md) |
+| Add quick-start | [readmes.md](./references/readmes.md) | [package-readme-pattern.md](./examples/readmes/package-readme-pattern.md) |
+| Create migration guide | [guides.md](./references/guides.md) | [migration-guide.md](./examples/guides/migration-guide.md) |
+| Update package overview | [readmes.md](./references/readmes.md) | [package-readme.md](./examples/readmes/package-readme.md) |
+| Explain a concept | [guides.md](./references/guides.md) | [good-concept.md](./examples/guides/good-concept.md) |
+| Configure VitePress | [vitepress.md](./references/vitepress.md) | [markdown-features.md](./examples/vitepress/markdown-features.md) |
+| Improve writing quality | [tech-writing.md](./references/tech-writing.md) | - |
 
 **Essential Tags for TSDoc:**
 - `@since` - Version (REQUIRED for public APIs)
