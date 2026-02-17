@@ -8,6 +8,39 @@ import {
   getTypeScriptTypeForAttribute,
   transformModelToResourceImport,
 } from '../../../../../packages/codemods/src/schema-migration/utils/ast-utils.js';
+import type { ParsedFile } from '../../../../../packages/codemods/src/schema-migration/utils/file-parser.js';
+import type {
+  EntityKind,
+  SchemaEntityRegistry,
+} from '../../../../../packages/codemods/src/schema-migration/utils/schema-entity.js';
+import { SchemaEntity } from '../../../../../packages/codemods/src/schema-migration/utils/schema-entity.js';
+
+function createMockEntity(baseName: string, kind: EntityKind, path: string): SchemaEntity {
+  const parsed = {
+    baseName,
+    pascalName: baseName.replace(/(^|-)(\w)/g, (_m: string, _sep: string, c: string) => c.toUpperCase()),
+    camelName: baseName.replace(/-(\w)/g, (_m: string, c: string) => c.toUpperCase()),
+    path,
+    name: baseName,
+    extension: '.js' as const,
+    imports: [],
+    fields: [],
+    behaviors: [],
+    fileType: kind === 'mixin' ? ('mixin' as const) : ('model' as const),
+    traits: [],
+    hasExtension: false,
+    source: '',
+  } as ParsedFile;
+  return SchemaEntity.fromParsedFile(parsed, kind);
+}
+
+function buildTestRegistry(entries: Array<{ baseName: string; kind: EntityKind; path: string }>): SchemaEntityRegistry {
+  const registry: SchemaEntityRegistry = new Map();
+  for (const entry of entries) {
+    registry.set(entry.path, createMockEntity(entry.baseName, entry.kind, entry.path));
+  }
+  return registry;
+}
 
 describe('AST utilities', () => {
   describe('getTypeScriptTypeForAttribute', () => {
@@ -158,7 +191,7 @@ describe('AST utilities', () => {
     it('includes extends clause and imports when provided', () => {
       const properties = [{ name: 'name', type: 'string', readonly: true, optional: false }];
 
-      const artifact = createTypeArtifact('user', 'UserInterface', properties, 'schema', 'BaseInterface', [
+      const artifact = createTypeArtifact('user', 'UserInterface', properties, 'resource', 'BaseInterface', [
         'import type BaseInterface from "./base";',
       ]);
 
@@ -175,7 +208,7 @@ describe('AST utilities', () => {
           name: 'displayName',
           originalKey: 'displayName',
           value: 'computed("name", function() { return this.name; })',
-          typeInfo: { name: 'displayName', type: 'function', optional: false, readonly: false },
+          typeInfo: { type: 'function', optional: false, readonly: false },
         },
       ];
 
@@ -261,8 +294,17 @@ describe('AST utilities', () => {
     });
 
     it('generates trait imports for connected mixins', () => {
+      const registry = buildTestRegistry([
+        { baseName: 'workstreamable', kind: 'mixin', path: '/path/to/workstreamable.js' },
+        { baseName: 'user', kind: 'model', path: '/path/to/user.js' },
+      ]);
+      // Link the mixin as a trait of the model
+      const modelEntity = registry.get('/path/to/user.js')!;
+      const mixinEntity = registry.get('/path/to/workstreamable.js')!;
+      modelEntity.addTrait(mixinEntity);
+
       const options = {
-        modelConnectedMixins: new Set(['/path/to/workstreamable.js']),
+        entityRegistry: registry,
         traitsImport: 'my-app/data/traits',
         resourcesImport: 'my-app/data/resources',
       };
@@ -275,8 +317,12 @@ describe('AST utilities', () => {
 
     it('prioritizes resources, falls back to traits when no model exists', () => {
       const options = {
-        allModelFiles: ['/app/models/user.js', '/app/models/company.js'],
-        allMixinFiles: ['/app/mixins/shareable.js', '/app/mixins/suggested.js'],
+        entityRegistry: buildTestRegistry([
+          { baseName: 'user', kind: 'model', path: '/app/models/user.js' },
+          { baseName: 'company', kind: 'model', path: '/app/models/company.js' },
+          { baseName: 'shareable', kind: 'mixin', path: '/app/mixins/shareable.js' },
+          { baseName: 'suggested', kind: 'mixin', path: '/app/mixins/suggested.js' },
+        ]),
         traitsImport: 'my-app/data/traits',
         resourcesImport: 'my-app/data/resources',
       };
@@ -300,8 +346,12 @@ describe('AST utilities', () => {
 
     it('handles models with same name as mixins by prioritizing model', () => {
       const options = {
-        allModelFiles: ['/app/models/user.js', '/app/models/notification.js'],
-        allMixinFiles: ['/app/mixins/shareable.js', '/app/mixins/notification.js'], // notification exists as both
+        entityRegistry: buildTestRegistry([
+          { baseName: 'user', kind: 'model', path: '/app/models/user.js' },
+          { baseName: 'notification', kind: 'model', path: '/app/models/notification.js' },
+          { baseName: 'shareable', kind: 'mixin', path: '/app/mixins/shareable.js' },
+          { baseName: 'notification', kind: 'mixin', path: '/app/mixins/notification.js' }, // notification exists as both
+        ]),
         traitsImport: 'my-app/data/traits',
         resourcesImport: 'my-app/data/resources',
       };
@@ -319,7 +369,6 @@ describe('AST utilities', () => {
       // Note: Types are now imported from .schema files regardless of extensions
       // Extensions (.ext files) contain runtime behavior, not types
       const options = {
-        modelsWithExtensions: new Set(['user', 'audit-survey']),
         resourcesImport: 'my-app/data/resources',
       };
 
@@ -338,8 +387,10 @@ describe('AST utilities', () => {
     it('prefers extension imports over resource imports when both available', () => {
       // Note: Types are now imported from .schema files regardless of extensions
       const options = {
-        modelsWithExtensions: new Set(['user']),
-        allModelFiles: ['/app/models/user.js', '/app/models/company.js'],
+        entityRegistry: buildTestRegistry([
+          { baseName: 'user', kind: 'model', path: '/app/models/user.js' },
+          { baseName: 'company', kind: 'model', path: '/app/models/company.js' },
+        ]),
         resourcesImport: 'my-app/data/resources',
       };
 
@@ -352,9 +403,8 @@ describe('AST utilities', () => {
       expect(result2).toBe("type { Company } from 'my-app/data/resources/company.schema'");
     });
 
-    it('handles empty modelsWithExtensions set', () => {
+    it('handles empty entityRegistry', () => {
       const options = {
-        modelsWithExtensions: new Set<string>(),
         resourcesImport: 'my-app/data/resources',
       };
 
@@ -365,7 +415,6 @@ describe('AST utilities', () => {
     it('uses default resource path when resourcesImport not provided', () => {
       // Note: Types are now imported from .schema files
       const options = {
-        modelsWithExtensions: new Set(['user']),
         resourcesImport: 'my-app/data/resources',
       };
 

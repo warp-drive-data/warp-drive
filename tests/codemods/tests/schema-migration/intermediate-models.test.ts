@@ -124,7 +124,7 @@ export default class DataFieldModel extends Model {
       [
         {
           "code": "import type { BelongsToReference, HasManyReference, Errors } from '@warp-drive/legacy/model/-private';
-      const DataFieldTrait = {
+      const DataFieldSchema = {
         'fields': [
           {
             'kind': 'attribute',
@@ -134,7 +134,7 @@ export default class DataFieldModel extends Model {
         ]
       } as const;
 
-      export default DataFieldTrait;
+      export default DataFieldSchema;
 
       export interface DataFieldTrait {
         id: string | null;
@@ -160,7 +160,7 @@ export default class DataFieldModel extends Model {
         readonly adapterError: Error | null;
         readonly isReloading: boolean;
       }",
-          "name": "DataFieldTrait",
+          "name": "DataFieldSchema",
           "suggestedFileName": "data-field.schema.ts",
           "type": "trait",
         },

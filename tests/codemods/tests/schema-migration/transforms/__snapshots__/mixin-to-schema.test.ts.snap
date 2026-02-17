@@ -192,7 +192,7 @@ exports[`mixin-to-schema transform (artifacts) > basic functionality > converts 
 "import Mixin from '@ember/object/mixin';
 import { computed } from '@ember/object';
 
-export const NotraitsExtension = {
+export const NoTraitsExtension = {
   complexMethod() { return 'processed'; },
   computedValue: computed(function() { return 'computed'; })
 };"
@@ -206,7 +206,7 @@ exports[`mixin-to-schema transform (artifacts) > basic functionality > converts 
     "type": "trait",
   },
   {
-    "name": "NotraitsExtension",
+    "name": "NoTraitsExtension",
     "suggestedFileName": "no-traits.ext.js",
     "type": "trait-extension",
   },
@@ -336,10 +336,10 @@ export default CustomSourceSchema;",
 import { attr, hasMany } from '@my-custom/model';
 import { computed } from '@ember/object';
 
-export const CustomsourceExtension = {
+export const CustomSourceExtension = {
   customProp: computed('name', function() { return this.name; })
 };",
-    "name": "CustomsourceExtension",
+    "name": "CustomSourceExtension",
     "suggestedFileName": "custom-source.ext.js",
     "type": "trait-extension",
   },
@@ -383,10 +383,10 @@ export default RenamedMixedSourcesSchema;",
 import { hasMany as many } from '@ember-data/model';
 import { attr as attribute } from '@unsupported/source';
 
-export const RenamedmixedsourcesExtension = {
+export const RenamedMixedSourcesExtension = {
   name: attribute('string')
 };",
-    "name": "RenamedmixedsourcesExtension",
+    "name": "RenamedMixedSourcesExtension",
     "suggestedFileName": "renamed-mixed-sources.ext.js",
     "type": "trait-extension",
   },
@@ -499,11 +499,11 @@ import { attr } from '@ember-data/model';
 import { hasMany } from '@unsupported/source';
 import { computed } from '@ember/object';
 
-export const UnsupportedsourceExtension = {
+export const UnsupportedSourceExtension = {
   files: hasMany('file'),
   customProp: computed('name', function() { return this.name; })
 };",
-    "name": "UnsupportedsourceExtension",
+    "name": "UnsupportedSourceExtension",
     "suggestedFileName": "unsupported-source.ext.js",
     "type": "trait-extension",
   },
@@ -521,7 +521,7 @@ exports[`mixin-to-schema transform (artifacts) > import validation > only proces
     "type": "trait",
   },
   {
-    "name": "DefaultsourceExtension",
+    "name": "DefaultSourceExtension",
     "type": "trait-extension",
   },
 ]
@@ -558,7 +558,7 @@ export default DefaultSourceSchema;",
 import { attr, hasMany } from '@ember-data/model';
 import { computed } from '@ember/object';
 
-export const DefaultsourceExtension = {
+export const DefaultSourceExtension = {
   customProp: computed('name', function() { return this.name; })
 };",
 ]
@@ -621,11 +621,11 @@ export default NoValidImportsSchema;",
 import { computed } from '@ember/object';
 import { attr } from '@unsupported/source';
 
-export const NovalidimportsExtension = {
+export const NoValidImportsExtension = {
   name: attr('string'),
   customProp: computed('name', function() { return this.name; })
 };",
-    "name": "NovalidimportsExtension",
+    "name": "NoValidImportsExtension",
     "suggestedFileName": "no-valid-imports.ext.js",
     "type": "trait-extension",
   },
@@ -674,10 +674,10 @@ export default AuditboardSourceSchema;",
 import { attr, hasMany } from '@auditboard/warp-drive/v1/model';
 import { computed } from '@ember/object';
 
-export const AuditboardsourceExtension = {
+export const AuditboardSourceExtension = {
   customProp: computed('name', function() { return this.name; })
 };",
-    "name": "AuditboardsourceExtension",
+    "name": "AuditboardSourceExtension",
     "suggestedFileName": "auditboard-source.ext.js",
     "type": "trait-extension",
   },

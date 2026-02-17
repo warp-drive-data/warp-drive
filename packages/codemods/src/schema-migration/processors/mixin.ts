@@ -15,7 +15,8 @@ import {
   mapFieldsToTypeProperties,
   toPascalCase,
 } from '../utils/ast-utils.js';
-import type { ParsedFile } from '../utils/file-parser.js';
+import type { SchemaEntity } from '../utils/schema-entity.js';
+import { isConnectedToModel as isConnectedToModelInRegistry } from '../utils/schema-entity.js';
 import { pascalToKebab } from '../utils/string.js';
 
 const log = logger.for('mixin-processor');
@@ -76,7 +77,8 @@ export interface ${typeName} {
  * This does not modify the original source. The CLI can use this to write
  * files to the requested output directories.
  */
-export function toArtifacts(parsedFile: ParsedFile, options: TransformOptions): TransformerResult {
+export function toArtifacts(entity: SchemaEntity, options: TransformOptions): TransformerResult {
+  const parsedFile = entity.parsedFile;
   const { path: filePath, source, baseName, camelName: mixinName } = parsedFile;
 
   if (parsedFile.fileType !== 'mixin') {
@@ -102,17 +104,19 @@ export function toArtifacts(parsedFile: ParsedFile, options: TransformOptions): 
   const extendedTraits = [...parsedFile.traits];
 
   // Check if this mixin is connected to models (directly or transitively)
-  // In test environment, treat all mixins as connected unless explicitly specified
-  const isConnectedToModel =
-    options?.modelConnectedMixins?.has(filePath) ?? (process.env.NODE_ENV === 'test' || options?.testMode === true);
+  // In test environment without a registry, treat all mixins as connected
+  const isConnected = options?.entityRegistry
+    ? isConnectedToModelInRegistry(options.entityRegistry, filePath)
+    : process.env.NODE_ENV === 'test' || options?.testMode === true;
 
-  if (!isConnectedToModel) {
+  if (!isConnected) {
     log.debug(`Skipping ${mixinName}: not connected to any models`);
     return { artifacts: [], skipReason: 'mixin-not-connected' };
   }
 
   return {
     artifacts: generateMixinArtifacts(
+      entity,
       filePath,
       source,
       baseName,
@@ -129,6 +133,7 @@ export function toArtifacts(parsedFile: ParsedFile, options: TransformOptions): 
  * Shared artifact generation logic
  */
 function generateMixinArtifacts(
+  entity: SchemaEntity,
   filePath: string,
   source: string,
   baseName: string,
@@ -142,7 +147,7 @@ function generateMixinArtifacts(
   const fileExtension = getFileExtension(filePath);
   const isTypeScript = fileExtension === '.ts';
 
-  const traitInterfaceName = `${mixinName.charAt(0).toUpperCase() + mixinName.slice(1)}Trait`;
+  const traitInterfaceName = entity.traitInterfaceName;
 
   const traitFieldTypes = mapFieldsToTypeProperties(traitFields as SchemaField[], options, false);
 
@@ -180,7 +185,7 @@ function generateMixinArtifacts(
 
   collectTraitImports(extendedTraits, imports, options);
 
-  const traitSchemaName = `${toPascalCase(baseName)}Schema`;
+  const traitSchemaName = entity.schemaName;
   const traitInternalName = pascalToKebab(mixinName);
   const traitSchemaObject = buildTraitSchemaObject(traitFields as SchemaField[], extendedTraits, {
     name: traitInternalName,
@@ -213,7 +218,7 @@ function generateMixinArtifacts(
       filePath,
       source,
       baseName,
-      `${toPascalCase(mixinName)}Extension`,
+      entity.extensionName,
       extensionProperties,
       options,
       traitInterfaceName,

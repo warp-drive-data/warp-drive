@@ -166,7 +166,8 @@ export default RelationshipModelSchema;"
 `;
 
 exports[`model-to-schema transform (artifacts) > TypeScript type artifacts > uses unknown type for unsupported transforms > unknown types in merged schema 1`] = `
-"const UnknownTypesModelSchema = {
+"import type { Type } from '@ember-data/core-types/symbols';
+const UnknownTypesModelSchema = {
   'type': 'unknown-types-model',
   'legacy': true,
   'identity': {
@@ -190,9 +191,16 @@ exports[`model-to-schema transform (artifacts) > TypeScript type artifacts > use
       'type': 'string'
     }
   ]
-};
+} as const;
 
-export default UnknownTypesModelSchema;"
+export default UnknownTypesModelSchema;
+
+export interface UnknownTypesModel {
+  readonly [Type]: 'unknown-types-model';
+  readonly customField: unknown | null;
+  readonly anotherField: unknown | null;
+  readonly knownField: string | null;
+}"
 `;
 
 exports[`model-to-schema transform (artifacts) > basic functionality > handles Typescript model with mixins > schema with mixins 1`] = `

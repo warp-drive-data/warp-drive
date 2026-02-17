@@ -16,6 +16,12 @@ import {
   toPascalCase,
 } from './path-utils.js';
 import {
+  deriveExtensionName,
+  deriveTraitInterfaceName,
+  findEntityByBaseName,
+  isConnectedToModel,
+} from './schema-entity.js';
+import {
   EXT_FILE_PATH_REGEX,
   FILE_EXTENSION_REGEX,
   IMPORT_DEFAULT_REGEX,
@@ -109,7 +115,7 @@ export function generateCommonWarpDriveImports(options?: TransformOptions): {
  *   "type { ShareableTrait } from '../traits/shareable.schema'"
  */
 export function generateTraitImport(traitName: string, options?: TransformOptions): string {
-  const traitTypeName = `${toPascalCase(traitName)}Trait`;
+  const traitTypeName = deriveTraitInterfaceName(traitName);
   if (options?.traitsImport) {
     return `type { ${traitTypeName} } from '${options.traitsImport}/${traitName}.schema'`;
   }
@@ -141,15 +147,12 @@ export function getResourcesImport(options?: TransformOptions): string {
  * This checks if the type corresponds to a connected mixin or intermediate model
  */
 function shouldImportFromTraits(relatedType: string, options?: TransformOptions): boolean {
-  // Check if any of the connected mixins correspond to this related type
-  const connectedMixins = options?.modelConnectedMixins;
-  if (connectedMixins) {
-    for (const mixinPath of connectedMixins) {
-      // Extract the mixin name from the path
-      const mixinName = extractBaseName(mixinPath);
-      if (mixinName === relatedType) {
-        return true;
-      }
+  // Check if a connected mixin corresponds to this related type via the entity registry
+  const registry = options?.entityRegistry;
+  if (registry) {
+    const mixinEntity = findEntityByBaseName(registry, relatedType, 'mixin');
+    if (mixinEntity && isConnectedToModel(registry, mixinEntity.path)) {
+      return true;
     }
   }
 
@@ -196,47 +199,32 @@ export function transformModelToResourceImport(
   if (shouldImportFromTraits(relatedType, options)) {
     const traitsImport = options?.traitsImport;
     // Trait interfaces are named with 'Trait' suffix but aliased back to non-suffix for backward compatibility
-    const traitInterfaceName = `${toPascalCase(relatedType)}Trait`;
+    const traitName = deriveTraitInterfaceName(relatedType);
     const aliasName = toPascalCase(relatedType); // Use the original name as alias for backward compatibility
     if (traitsImport) {
-      return `type { ${traitInterfaceName} as ${aliasName} } from '${traitsImport}/${relatedType}.schema'`;
+      return `type { ${traitName} as ${aliasName} } from '${traitsImport}/${relatedType}.schema'`;
     } else {
-      return `type { ${traitInterfaceName} as ${aliasName} } from '../traits/${relatedType}.schema'`;
+      return `type { ${traitName} as ${aliasName} } from '../traits/${relatedType}.schema'`;
     }
   }
 
-  // Check if we have a model for this related type
-  let hasModel = false;
-  const allModelFiles = options?.allModelFiles;
-  if (allModelFiles) {
-    for (const modelPath of allModelFiles) {
-      const modelBaseName = extractBaseName(modelPath);
-      if (modelBaseName === relatedType) {
-        hasModel = true;
-        log.debug(`Found model for ${relatedType}, using resource import`);
-        break;
-      }
-    }
-  }
+  // Check if we have a model for this related type using registry
+  const registry = options?.entityRegistry;
+  const hasModel = registry ? !!findEntityByBaseName(registry, relatedType, 'model') : false;
 
   // If no model found, check if we have a mixin/trait to fall back to
-  if (!hasModel) {
-    const allMixinFiles = options?.allMixinFiles;
-    if (allMixinFiles) {
-      for (const mixinPath of allMixinFiles) {
-        const mixinName = extractBaseName(mixinPath);
-        if (mixinName === relatedType) {
-          // Fall back to trait import
-          const traitsImport = options?.traitsImport;
-          const traitInterfaceName = `${toPascalCase(relatedType)}Trait`;
-          const aliasName = toPascalCase(relatedType);
-          log.debug(`No model found for ${relatedType}, falling back to trait`);
-          if (traitsImport) {
-            return `type { ${traitInterfaceName} as ${aliasName} } from '${traitsImport}/${relatedType}.schema'`;
-          } else {
-            return `type { ${traitInterfaceName} as ${aliasName} } from '../traits/${relatedType}.schema'`;
-          }
-        }
+  if (!hasModel && registry) {
+    const mixinEntity = findEntityByBaseName(registry, relatedType, 'mixin');
+    if (mixinEntity) {
+      // Fall back to trait import
+      const traitsImport = options?.traitsImport;
+      const traitName = deriveTraitInterfaceName(relatedType);
+      const aliasName = toPascalCase(relatedType);
+      log.debug(`No model found for ${relatedType}, falling back to trait`);
+      if (traitsImport) {
+        return `type { ${traitName} as ${aliasName} } from '${traitsImport}/${relatedType}.schema'`;
+      } else {
+        return `type { ${traitName} as ${aliasName} } from '../traits/${relatedType}.schema'`;
       }
     }
   }
@@ -923,7 +911,7 @@ export function processImports(source: string, filePath: string, baseDir: string
               }
               // For trait imports, the export is *Trait but the import name might not have Trait suffix
               if (isTraitImport && baseName && !typeName.endsWith('Trait')) {
-                const traitClassName = toPascalCase(baseName) + 'Trait';
+                const traitClassName = deriveTraitInterfaceName(baseName);
                 return `import type { ${traitClassName} as ${typeName} } from`;
               }
               return `import type { ${typeName} } from`;
@@ -937,7 +925,7 @@ export function processImports(source: string, filePath: string, baseDir: string
                 return `import type { ${interfaceName} as ${typeName} } from`;
               }
               if (isTraitImport && baseName && !typeName.endsWith('Trait')) {
-                const traitClassName = toPascalCase(baseName) + 'Trait';
+                const traitClassName = deriveTraitInterfaceName(baseName);
                 return `import type { ${traitClassName} as ${typeName} } from`;
               }
               return `import type { ${typeName} } from`;
@@ -959,7 +947,7 @@ export function processImports(source: string, filePath: string, baseDir: string
             // Extract the model base name from the import path to get correct Extension class name
             const extensionPathMatch = convertedImport.match(EXT_FILE_PATH_REGEX);
             const modelBaseName = extensionPathMatch ? extensionPathMatch[1] : null;
-            const extensionClassName = modelBaseName ? toPascalCase(modelBaseName) + 'Extension' : null;
+            const extensionClassName = modelBaseName ? deriveExtensionName(modelBaseName) : null;
 
             if (extensionClassName) {
               newImport = newImport.replace(IMPORT_TYPE_DEFAULT_REGEX, (_match: string, typeName: string) => {

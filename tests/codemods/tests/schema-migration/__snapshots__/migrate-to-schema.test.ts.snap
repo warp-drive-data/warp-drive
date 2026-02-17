@@ -790,7 +790,7 @@ const TsModelWithMixinSchema = {
     'ts'
   ],
   'objectExtensions': [
-    'TsmixinExtension'
+    'TsMixinExtension'
   ]
 } as const;
 
@@ -821,9 +821,9 @@ import { attr } from '@ember-data/model';
 
 import type { TsMixinTrait } from 'test-app/data/traits/ts-mixin.schema';
 
-export interface TsmixinExtension extends TsMixinTrait {}
+export interface TsMixinExtension extends TsMixinTrait {}
 
-export const TsmixinExtension = {
+export const TsMixinExtension = {
   toggleEnabled() {
     this.set('isEnabled', !this.isEnabled);
   }
@@ -1048,13 +1048,13 @@ export interface WorkstreamableTrait {
 exports[`migrate-to-schema batch operation > places intermediate model extensions in extensionsDir not fallback directory > intermediate model extensions app structure 1`] = `
 [
   "core/",
-  "core/base-model-with-methods.js",
+  "core/base-model-with-methods.ts",
   "data/",
   "data/resources/",
   "data/resources/regular-model.schema.ts",
   "data/traits/",
-  "data/traits/base-model-with-methods.ext.js",
-  "data/traits/base-model-with-methods.schema.js",
+  "data/traits/base-model-with-methods.ext.ts",
+  "data/traits/base-model-with-methods.schema.ts",
   "models/",
   "models/regular-model.ts",
 ]
@@ -1082,8 +1082,12 @@ export interface RegularModel {
   readonly [Type]: 'regular-model';
 }",
   "traits/": "__dir__",
-  "traits/base-model-with-methods.ext.js": "
+  "traits/base-model-with-methods.ext.ts": "
 import Model, { attr } from '@ember-data/model';
+
+import type { BaseModelWithMethodsTrait } from 'test-app/data/traits/base-model-with-methods.schema';
+
+export interface BaseModelWithMethodsExtension extends BaseModelWithMethodsTrait {}
 
 export class BaseModelWithMethodsExtension {
   get computedValue() {
@@ -1094,8 +1098,9 @@ export class BaseModelWithMethodsExtension {
       return 'from base model';
     }
 }",
-  "traits/base-model-with-methods.schema.js": "
-const BaseModelWithMethodsTrait = {
+  "traits/base-model-with-methods.schema.ts": "
+import type { BelongsToReference, HasManyReference, Errors } from '@warp-drive/legacy/model/-private';
+const BaseModelWithMethodsSchema = {
   'fields': [
     {
       'kind': 'attribute',
@@ -1103,9 +1108,34 @@ const BaseModelWithMethodsTrait = {
       'type': 'string'
     }
   ]
-};
+} as const;
 
-export default BaseModelWithMethodsTrait;",
+export default BaseModelWithMethodsSchema;
+
+export interface BaseModelWithMethodsTrait {
+  id: string | null;
+  readonly baseField: string | null;
+  readonly isNew: boolean;
+  readonly hasDirtyAttributes: boolean;
+  readonly isDeleted: boolean;
+  readonly isSaving: boolean;
+  readonly isValid: boolean;
+  readonly isError: boolean;
+  readonly isLoaded: boolean;
+  readonly isEmpty: boolean;
+  save: (options?: Record<string, unknown>) => Promise<this>;
+  reload: (options?: Record<string, unknown>) => Promise<this>;
+  deleteRecord: () => void;
+  unloadRecord: () => void;
+  destroyRecord: (options?: Record<string, unknown>) => Promise<void>;
+  rollbackAttributes: () => void;
+  belongsTo: (propertyName: string) => BelongsToReference;
+  hasMany: (propertyName: string) => HasManyReference;
+  serialize: (options?: Record<string, unknown>) => unknown;
+  readonly errors: Errors;
+  readonly adapterError: Error | null;
+  readonly isReloading: boolean;
+}",
 }
 `;
 
@@ -1141,11 +1171,11 @@ exports[`migrate-to-schema batch operation > processes intermediateModelPaths to
 {
   "base.schema.ts": "
 import type { BelongsToReference, HasManyReference, Errors } from '@warp-drive/legacy/model/-private';
-const BaseTrait = {
+const BaseSchema = {
   'fields': []
 } as const;
 
-export default BaseTrait;
+export default BaseSchema;
 
 export interface BaseTrait {
   id: string | null;
@@ -1172,7 +1202,7 @@ export interface BaseTrait {
 }",
   "data-field.schema.ts": "
 import type { BelongsToReference, HasManyReference, Errors } from '@warp-drive/legacy/model/-private';
-const DataFieldTrait = {
+const DataFieldSchema = {
   'fields': [
     {
       'kind': 'attribute',
@@ -1190,7 +1220,7 @@ const DataFieldTrait = {
   ]
 } as const;
 
-export default DataFieldTrait;
+export default DataFieldSchema;
 
 export interface DataFieldTrait extends BaseModelTrait {
   id: string | null;

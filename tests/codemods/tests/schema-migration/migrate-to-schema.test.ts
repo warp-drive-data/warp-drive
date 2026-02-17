@@ -433,7 +433,7 @@ export default Mixin.create({
 
   it('places intermediate model extensions in extensionsDir not fallback directory', async () => {
     prepareFiles(tempDir, {
-      'app/core/base-model-with-methods.js': `
+      'app/core/base-model-with-methods.ts': `
 import Model, { attr } from '@ember-data/model';
 
 export default class BaseModelWithMethods extends Model {

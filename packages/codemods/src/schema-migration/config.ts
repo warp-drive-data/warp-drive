@@ -1,4 +1,4 @@
-import type { connectedMixins, modelToMixinsMap } from './processors/mixin-analyzer';
+import type { SchemaEntityRegistry } from './utils/schema-entity';
 
 export interface TransformOptions {
   verbose?: boolean;
@@ -8,13 +8,6 @@ export interface TransformOptions {
   mirror?: boolean;
   /** Test mode - treats all mixins as connected to models (for testing) */
   testMode?: boolean;
-  /** Set of absolute file paths for mixins that are connected to models */
-  modelConnectedMixins?: connectedMixins;
-  modelToMixinsMap?: modelToMixinsMap;
-  /** List of all discovered mixin file paths (for polymorphic detection) */
-  allMixinFiles?: string[];
-  /** List of all discovered model file paths (for resource vs trait detection) */
-  allModelFiles?: string[];
   /** Specify alternate import sources for EmberData decorators (default: '@ember-data/model') */
   emberDataImportSource?: string;
   /** List of intermediate model class import paths that should be converted to traits (e.g., ['my-app/core/base-model', 'my-app/core/data-field-model']) */
@@ -58,8 +51,6 @@ export interface TransformOptions {
     /** Import path for the Store type (e.g., 'my-app/services/store') */
     import: string;
   };
-  /** Set of model base names that have extension files generated (for preferring extension imports) */
-  modelsWithExtensions?: Set<string>;
   /** Generate resource schemas for external (non-local) model files */
   generateExternalResources?: boolean;
   /**
@@ -72,6 +63,8 @@ export interface TransformOptions {
     extension?: string;
     trait?: string;
   }>;
+  /** Registry of SchemaEntity instances keyed by file path */
+  entityRegistry?: SchemaEntityRegistry;
 }
 
 export interface MigrateOptions extends Partial<TransformOptions> {

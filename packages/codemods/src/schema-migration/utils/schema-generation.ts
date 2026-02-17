@@ -9,6 +9,7 @@ import type { ExtensionContext } from './extension-generation.js';
 import { getExtensionArtifactType } from './extension-generation.js';
 import { generateCommonWarpDriveImports, generateTraitImport, transformModelToResourceImport } from './import-utils.js';
 import { removeQuotes, toPascalCase } from './path-utils.js';
+import { deriveTraitInterfaceName } from './schema-entity.js';
 import type { ExtractedType } from './type-utils.js';
 import { schemaFieldToTypeScriptType } from './type-utils.js';
 
@@ -517,13 +518,6 @@ export interface MergedSchemaOptions {
 }
 
 /**
- * Convert trait name (kebab-case) to interface name (PascalCase + 'Trait' suffix)
- */
-function traitNameToInterfaceName(traitName: string): string {
-  return `${toPascalCase(traitName)}Trait`;
-}
-
-/**
  * Generate TypeScript import statements
  */
 function generateTypeScriptImports(imports: Set<string>): string {
@@ -657,7 +651,7 @@ export function generateMergedSchemaCode(opts: MergedSchemaOptions): string {
       sections.push(fieldInterfaceCode);
 
       // Composite interface merges field interface, extension, and trait interfaces
-      const traitInterfaces = traits.map(traitNameToInterfaceName);
+      const traitInterfaces = traits.map(deriveTraitInterfaceName);
       const compositeExtends = [fieldInterfaceName, extensionName, ...traitInterfaces].join(', ');
       sections.push('');
       sections.push(`export interface ${interfaceName} extends ${compositeExtends} {}`);
@@ -665,7 +659,7 @@ export function generateMergedSchemaCode(opts: MergedSchemaOptions): string {
       // Standard pattern: single interface with optional trait extends
       let extendsClause: string | undefined;
       if (traits.length > 0) {
-        const traitInterfaces = traits.map(traitNameToInterfaceName);
+        const traitInterfaces = traits.map(deriveTraitInterfaceName);
         extendsClause = traitInterfaces.join(', ');
       }
 
