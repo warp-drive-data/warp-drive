@@ -36,7 +36,13 @@ exports[`model-to-schema transform (artifacts) > TypeScript type artifacts > gen
   ]
 };
 
-export default ProcessedModelSchema;"
+export default ProcessedModelSchema;
+
+export interface ProcessedModel {
+  readonly [Type]: 'processed-model';
+  readonly name: string | null;
+  readonly content: string | null;
+}"
 `;
 
 exports[`model-to-schema transform (artifacts) > TypeScript type artifacts > generates schema with merged types for basic models > basic schema with merged types 1`] = `
@@ -80,7 +86,15 @@ exports[`model-to-schema transform (artifacts) > TypeScript type artifacts > gen
   ]
 };
 
-export default UserSchema;"
+export default UserSchema;
+
+export interface User {
+  readonly [Type]: 'user';
+  readonly name: string | null;
+  readonly isActive: boolean | null;
+  readonly company: Company | null;
+  readonly projects: AsyncHasMany<Project>;
+}"
 `;
 
 exports[`model-to-schema transform (artifacts) > TypeScript type artifacts > handles custom type mappings in merged schema files > custom type mappings in merged schema 1`] = `
@@ -110,7 +124,14 @@ exports[`model-to-schema transform (artifacts) > TypeScript type artifacts > han
   ]
 };
 
-export default TypedModelSchema;"
+export default TypedModelSchema;
+
+export interface TypedModel {
+  readonly [Type]: 'typed-model';
+  readonly id: string | null;
+  readonly amount: number | null;
+  readonly metadata: Record<string, unknown> | null;
+}"
 `;
 
 exports[`model-to-schema transform (artifacts) > TypeScript type artifacts > handles relationship types correctly in merged schema files > relationship types in merged schema 1`] = `
@@ -162,7 +183,16 @@ exports[`model-to-schema transform (artifacts) > TypeScript type artifacts > han
   ]
 };
 
-export default RelationshipModelSchema;"
+export default RelationshipModelSchema;
+
+export interface RelationshipModel {
+  readonly [Type]: 'relationship-model';
+  readonly name: string | null;
+  readonly owner: User | null;
+  readonly company: Promise<Company>;
+  readonly attachments: HasMany<File>;
+  readonly tags: AsyncHasMany<Tag>;
+}"
 `;
 
 exports[`model-to-schema transform (artifacts) > TypeScript type artifacts > uses unknown type for unsupported transforms > unknown types in merged schema 1`] = `
@@ -192,7 +222,14 @@ exports[`model-to-schema transform (artifacts) > TypeScript type artifacts > use
   ]
 };
 
-export default UnknownTypesModelSchema;"
+export default UnknownTypesModelSchema;
+
+export interface UnknownTypesModel {
+  readonly [Type]: 'unknown-types-model';
+  readonly customField: unknown | null;
+  readonly anotherField: unknown | null;
+  readonly knownField: string | null;
+}"
 `;
 
 exports[`model-to-schema transform (artifacts) > basic functionality > handles complex field options correctly > complex field options 1`] = `
@@ -243,7 +280,15 @@ exports[`model-to-schema transform (artifacts) > basic functionality > handles c
   ]
 };
 
-export default ComplexModelSchema;"
+export default ComplexModelSchema;
+
+export interface ComplexModel {
+  readonly [Type]: 'complex-model';
+  readonly name: string;
+  readonly birthDate: Date | null;
+  readonly owner: Promise<User>;
+  readonly attachments: HasMany<File>;
+}"
 `;
 
 exports[`model-to-schema transform (artifacts) > basic functionality > handles model with mixins > schema with mixins 1`] = `
@@ -272,16 +317,22 @@ exports[`model-to-schema transform (artifacts) > basic functionality > handles m
   ]
 };
 
-export default DocumentSchema;"
+export default DocumentSchema;
+
+export interface Document extends FileableTrait, TimestampableTrait {
+  readonly [Type]: 'document';
+  readonly title: string | null;
+  readonly content: string | null;
+}"
 `;
 
 exports[`model-to-schema transform (artifacts) > basic functionality > preserves TypeScript syntax in extension properties > typescript extension 1`] = `
 "import Model, { attr } from '@ember-data/model';
 import { service } from '@ember/service';
 
-import type { TypedModel } from 'test-app/data/resources/typed-model.schema';
+import type { TypedModelTrait } from 'test-app/data/resources/typed-model.schema';
 
-export interface TypedModelExtension extends TypedModel {}
+export interface TypedModelExtension extends TypedModelTrait {}
 
 export class TypedModelExtension {
   @service declare router: RouterService
@@ -295,9 +346,7 @@ export class TypedModelExtension {
   get computedValue(): string {
   		return \`Processed: \${this.name}\`;
   	}
-}
-
-export type TypedModelExtensionSignature = typeof TypedModelExtension;"
+}"
 `;
 
 exports[`model-to-schema transform (artifacts) > basic functionality > produces schema and extension artifacts for basic model > artifact metadata 1`] = `
@@ -377,7 +426,16 @@ exports[`model-to-schema transform (artifacts) > basic functionality > produces 
   ]
 };
 
-export default UserSchema;"
+export default UserSchema;
+
+export interface User {
+  readonly [Type]: 'user';
+  readonly name: string | null;
+  readonly email: string | null;
+  readonly isActive: boolean | null;
+  readonly company: Company | null;
+  readonly projects: AsyncHasMany<Project>;
+}"
 `;
 
 exports[`model-to-schema transform (artifacts) > basic functionality > supports alternate import sources > custom import source 1`] = `
@@ -405,7 +463,13 @@ exports[`model-to-schema transform (artifacts) > basic functionality > supports 
   ]
 };
 
-export default CustomModelSchema;"
+export default CustomModelSchema;
+
+export interface CustomModel {
+  readonly [Type]: 'custom-model';
+  readonly name: string | null;
+  readonly items: HasMany<Item>;
+}"
 `;
 
 exports[`model-to-schema transform (artifacts) > custom type mappings > applies custom type mappings to attribute types > custom type mappings in merged schema 1`] = `
@@ -435,7 +499,14 @@ exports[`model-to-schema transform (artifacts) > custom type mappings > applies 
   ]
 };
 
-export default CustomTypesModelSchema;"
+export default CustomTypesModelSchema;
+
+export interface CustomTypesModel {
+  readonly [Type]: 'custom-types-model';
+  readonly id: string | null;
+  readonly createdAt: Date | null;
+  readonly price: number | null;
+}"
 `;
 
 exports[`model-to-schema transform (artifacts) > custom type mappings > falls back to unknown for unmapped custom types > unknown fallback for unmapped types 1`] = `
@@ -460,7 +531,13 @@ exports[`model-to-schema transform (artifacts) > custom type mappings > falls ba
   ]
 };
 
-export default UnmappedTypesModelSchema;"
+export default UnmappedTypesModelSchema;
+
+export interface UnmappedTypesModel {
+  readonly [Type]: 'unmapped-types-model';
+  readonly field1: unknown | null;
+  readonly field2: unknown | null;
+}"
 `;
 
 exports[`model-to-schema transform (artifacts) > edge cases > handles aliased imports correctly > aliased imports 1`] = `
@@ -485,7 +562,13 @@ exports[`model-to-schema transform (artifacts) > edge cases > handles aliased im
   ]
 };
 
-export default AliasedModelSchema;"
+export default AliasedModelSchema;
+
+export interface AliasedModel {
+  readonly [Type]: 'aliased-model';
+  readonly name: string | null;
+  readonly items: HasMany<Item>;
+}"
 `;
 
 exports[`model-to-schema transform (artifacts) > edge cases > preserves complex object literal options > complex options 1`] = `
@@ -511,7 +594,12 @@ exports[`model-to-schema transform (artifacts) > edge cases > preserves complex 
   ]
 };
 
-export default ComplexOptionsModelSchema;"
+export default ComplexOptionsModelSchema;
+
+export interface ComplexOptionsModel {
+  readonly [Type]: 'complex-options-model';
+  readonly owner: Promise<User>;
+}"
 `;
 
 exports[`model-to-schema transform (artifacts) > mirror flag > uses configured emberDataImportSource for HasMany types in merged schema > custom EmberData source for HasMany types in merged schema 1`] = `
@@ -555,7 +643,15 @@ exports[`model-to-schema transform (artifacts) > mirror flag > uses configured e
   ]
 };
 
-export default RelationshipModelSchema;"
+export default RelationshipModelSchema;
+
+export interface RelationshipModel {
+  readonly [Type]: 'relationship-model';
+  readonly name: string | null;
+  readonly tags: HasMany<Tag>;
+  readonly projects: AsyncHasMany<Project>;
+  readonly owner: User | null;
+}"
 `;
 
 exports[`model-to-schema transform (artifacts) > mixin handling > extracts mixin names and converts them to trait references > single mixin schema 1`] = `
@@ -578,7 +674,12 @@ exports[`model-to-schema transform (artifacts) > mixin handling > extracts mixin
   ]
 };
 
-export default DocumentSchema;"
+export default DocumentSchema;
+
+export interface Document extends FileableTrait {
+  readonly [Type]: 'document';
+  readonly title: string | null;
+}"
 `;
 
 exports[`model-to-schema transform (artifacts) > mixin handling > handles multiple mixins correctly > multiple mixins schema 1`] = `
@@ -603,5 +704,10 @@ exports[`model-to-schema transform (artifacts) > mixin handling > handles multip
   ]
 };
 
-export default ComplexDocumentSchema;"
+export default ComplexDocumentSchema;
+
+export interface ComplexDocument extends FileableTrait, TimestampableTrait, AuditableTrait {
+  readonly [Type]: 'complex-document';
+  readonly title: string | null;
+}"
 `;

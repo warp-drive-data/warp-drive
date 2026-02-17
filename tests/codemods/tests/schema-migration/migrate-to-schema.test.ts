@@ -1,10 +1,10 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-assignment */
 import { mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'os';
 import { join } from 'path';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
-import type { MigrateOptions } from '../../../../packages/codemods/src/schema-migration/codemod.js';
+import type { MigrateOptions } from '@ember-data/codemods/schema-migration/config.js';
+
 import { runMigration } from '../../../../packages/codemods/src/schema-migration/tasks/migrate.js';
 import { collectFilesSnapshot, collectFileStructure, prepareFiles } from './test-helpers.ts';
 
@@ -22,7 +22,6 @@ describe('migrate-to-schema batch operation', () => {
       traitsDir: join(tempDir, 'app/data/traits'),
       modelSourceDir: join(tempDir, 'app/models'),
       mixinSourceDir: join(tempDir, 'app/mixins'),
-      appImportPrefix: 'test-app',
       resourcesImport: 'test-app/data/resources',
       traitsImport: 'test-app/data/traits',
       modelImportSource: 'test-app/models',
@@ -779,9 +778,9 @@ export default class TestModel extends BaseModel {
         "resources/typed.ext.ts": "
       import BaseModel from 'test-app/models/base-model';
 
-      import type { Typed } from 'test-app/data/resources/typed.schema';
+      import type { TypedTrait } from 'test-app/data/resources/typed.schema';
 
-      export interface TypedExtension extends Typed {}
+      export interface TypedExtension extends TypedTrait {}
 
       export class TypedExtension {
         @attr('string') declare name: string | null
@@ -791,12 +790,11 @@ export default class TestModel extends BaseModel {
 
         @hasMany('tag', { async: true, inverse: null })
           declare tags: unknown
-      }
-
-      export type TypedExtensionSignature = typeof TypedExtension;",
+      }",
         "resources/typed.schema.ts": "
       import type { Type } from '@ember-data/core-types/symbols';
       import type { StaticBaseModelTraitTrait } from 'test-app/data/traits/static-base-model-trait.schema';
+      import type { TypedExtension } from 'test-app/data/resources/typed.ext';
       const TypedSchema = {
         'type': 'typed',
         'legacy': true,
@@ -815,9 +813,11 @@ export default class TestModel extends BaseModel {
 
       export default TypedSchema;
 
-      export interface Typed extends StaticBaseModelTraitTrait {
+      export interface TypedTrait {
         readonly [Type]: 'typed';
-      }",
+      }
+
+      export interface Typed extends TypedTrait, TypedExtension, StaticBaseModelTraitTrait {}",
         "traits/": "__dir__",
       }
     `);
@@ -856,9 +856,9 @@ export default class TestModel extends BaseModel {
         "resources/typed.ext.ts": "
       import BaseModel from 'test-app/models/base-model.js';
 
-      import type { Typed } from 'test-app/data/resources/typed.schema';
+      import type { TypedTrait } from 'test-app/data/resources/typed.schema';
 
-      export interface TypedExtension extends Typed {}
+      export interface TypedExtension extends TypedTrait {}
 
       export class TypedExtension {
         @attr('string') declare name: string | null
@@ -868,12 +868,11 @@ export default class TestModel extends BaseModel {
 
         @hasMany('tag', { async: true, inverse: null })
           declare tags: unknown
-      }
-
-      export type TypedExtensionSignature = typeof TypedExtension;",
+      }",
         "resources/typed.schema.ts": "
       import type { Type } from '@ember-data/core-types/symbols';
       import type { StaticBaseModelTraitTrait } from 'test-app/data/traits/static-base-model-trait.schema';
+      import type { TypedExtension } from 'test-app/data/resources/typed.ext';
       const TypedSchema = {
         'type': 'typed',
         'legacy': true,
@@ -892,12 +891,58 @@ export default class TestModel extends BaseModel {
 
       export default TypedSchema;
 
-      export interface Typed extends StaticBaseModelTraitTrait {
+      export interface TypedTrait {
         readonly [Type]: 'typed';
-      }",
+      }
+
+      export interface Typed extends TypedTrait, TypedExtension, StaticBaseModelTraitTrait {}",
         "traits/": "__dir__",
       }
     `);
+  });
+
+  it('README example: model with mixin, belongsTo, hasMany, and extension methods', async () => {
+    prepareFiles(tempDir, {
+      'app/models/user.ts': `
+import Model, { attr, belongsTo, hasMany } from '@ember-data/model';
+import Timestampable from '../mixins/timestampable';
+
+export default class User extends Model.extend(Timestampable) {
+  @attr('string') declare name: string;
+  @attr('string') declare email: string;
+  @belongsTo('company', { async: false }) declare company: Company;
+  @hasMany('project', { async: true }) declare projects: Project[];
+
+  get displayName() {
+    return this.name || this.email;
+  }
+
+  async updateProfile(data) {
+    this.setProperties(data);
+    return this.save();
+  }
+}
+`,
+      'app/mixins/timestampable.ts': `
+import Mixin from '@ember/object/mixin';
+import { attr } from '@ember-data/model';
+
+export default Mixin.create({
+  createdAt: attr('date'),
+  updatedAt: attr('date'),
+
+  timeSince() {
+    return Date.now() - this.updatedAt;
+  }
+});
+`,
+    });
+
+    await runMigration(options);
+
+    const dataDir = join(tempDir, 'app/data');
+    expect(collectFileStructure(dataDir)).toMatchSnapshot('readme_example_structure');
+    expect(collectFilesSnapshot(dataDir)).toMatchSnapshot('readme_example');
   });
 
   it('regression: ember-data import without default import is respected', async () => {

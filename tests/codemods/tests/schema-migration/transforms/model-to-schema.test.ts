@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-return */
 import { describe, expect, it } from 'vitest';
 
 import transform, { toArtifacts } from '../../../../../packages/codemods/src/schema-migration/processors/model.js';
@@ -82,8 +81,8 @@ export default class Document extends Model.extend(FileableMixin, TimestampableM
       expect(artifacts).toHaveLength(2);
 
       const schema = artifacts.find((a) => a.type === 'schema');
-      expect(schema?.code).toContain('fileable');
-      expect(schema?.code).toContain('timestampable');
+      expect(schema?.code).toContain('Fileable');
+      expect(schema?.code).toContain('Timestampable');
       expect(schema?.code).toMatchSnapshot('schema with mixins');
     });
 
@@ -853,7 +852,12 @@ export default class TestModel extends Model.extend(WorkstreamableMixin) {
           ]
         };
 
-        export default TestModelSchema;"
+        export default TestModelSchema;
+
+        export interface TestModel extends WorkstreamableTrait {
+          readonly [Type]: 'test-model';
+          readonly workstreamable: Workstreamable | null;
+        }"
       `);
     });
   });
@@ -1120,7 +1124,12 @@ export default class Translatable extends Model {
           ]
         };
 
-        export default TestModelSchema;",
+        export default TestModelSchema;
+
+        export interface TestModel {
+          readonly [Type]: 'test-model';
+          readonly name: string | null;
+        }",
           "name": "TestModelSchema",
           "suggestedFileName": "test-model.schema.js",
           "type": "schema",
@@ -1170,17 +1179,15 @@ export default class Amendment extends Model {
 
         const INTERNAL_HELPER = 'helper';
 
-        import type { Amendment } from 'test-app/data/resources/amendment.schema';
+        import type { AmendmentTrait } from 'test-app/data/resources/amendment.schema';
 
-        export interface AmendmentExtension extends Amendment {}
+        export interface AmendmentExtension extends AmendmentTrait {}
 
         export class AmendmentExtension {
           get changes(): DisplayableChange[] {
               return [];
             }
-        }
-
-        export type AmendmentExtensionSignature = typeof AmendmentExtension;"
+        }"
       `);
     });
 
@@ -1252,17 +1259,15 @@ export default class Task extends Model {
 
         export type Priority = 'low' | 'medium' | 'high';
 
-        import type { Task } from 'test-app/data/resources/task.schema';
+        import type { TaskTrait } from 'test-app/data/resources/task.schema';
 
-        export interface TaskExtension extends Task {}
+        export interface TaskExtension extends TaskTrait {}
 
         export class TaskExtension {
           get config(): Config {
               return { enabled: true, threshold: 100 };
             }
-        }
-
-        export type TaskExtensionSignature = typeof TaskExtension;"
+        }"
       `);
     });
   });

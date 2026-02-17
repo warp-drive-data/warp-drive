@@ -54,7 +54,7 @@ import {
   NODE_KIND_METHOD_DEFINITION,
   NODE_KIND_PROPERTY_IDENTIFIER,
 } from '../utils/code-processing.js';
-import { appendExtensionSignatureType, createExtensionFromOriginalFile } from '../utils/extension-generation.js';
+import { createExtensionFromOriginalFile } from '../utils/extension-generation.js';
 import type { ParsedFile } from '../utils/file-parser.js';
 import { isClassMethodSyntax } from '../utils/file-parser.js';
 import { replaceWildcardPattern } from '../utils/path-utils.js';
@@ -294,7 +294,7 @@ function extractHeritageInfo(
     const mixinImports = getMixinImports(root, options);
     mixinTraits.push(...extractMixinTraits(heritageClause, root, mixinImports, options));
 
-    const mixinExts = extractMixinExtensions(heritageClause, root, mixinImports, filePath, options);
+    const mixinExts = extractMixinExtensions(filePath, options);
     mixinExtensions.push(...mixinExts);
 
     if (options?.intermediateModelPaths && options.intermediateModelPaths.length > 0) {
@@ -649,6 +649,7 @@ function generateRegularModelArtifacts(
   const schemaObject = buildLegacySchemaObject(baseName, schemaFields, mixinTraits, mixinExtensions, isFragment);
 
   // Generate merged schema code (schema + types in one file)
+  const extensionName = extensionProperties.length > 0 ? `${modelName}Extension` : undefined;
   const mergedSchemaCode = generateMergedSchemaCode({
     baseName,
     interfaceName: modelName,
@@ -659,6 +660,7 @@ function generateRegularModelArtifacts(
     imports: schemaImports,
     isTypeScript,
     options,
+    extensionName,
   });
 
   artifacts.push({
@@ -668,8 +670,7 @@ function generateRegularModelArtifacts(
     suggestedFileName: `${baseName}.schema${originalExtension}`,
   });
 
-  // Create extension artifact preserving original file content
-  const modelInterfaceName = modelName;
+  const modelInterfaceName = `${modelName}Trait`;
   const modelImportPath = options?.resourcesImport
     ? `${options.resourcesImport}/${baseName}.schema`
     : `../resources/${baseName}.schema`;
@@ -690,15 +691,6 @@ function generateRegularModelArtifacts(
   log.debug(`Extension artifact created: ${!!extensionArtifact}`);
   if (extensionArtifact) {
     artifacts.push(extensionArtifact);
-  }
-
-  // Create extension signature type alias if there are extension properties
-  log.debug(
-    `Extension properties length: ${extensionProperties.length}, extensionArtifact exists: ${!!extensionArtifact}`
-  );
-  log.debug(`Extension properties: ${JSON.stringify(extensionProperties.map((p) => p.name))}`);
-  if (extensionProperties.length > 0 && extensionArtifact) {
-    appendExtensionSignatureType(extensionArtifact, modelName);
   }
 
   return artifacts;
@@ -919,9 +911,6 @@ function generateIntermediateModelTraitArtifacts(
     );
     if (extensionArtifact) {
       artifacts.push(extensionArtifact);
-
-      // Create extension signature type alias if there are extension properties
-      appendExtensionSignatureType(extensionArtifact, traitPascalName);
     }
   }
 
@@ -1689,17 +1678,9 @@ function extractMixinTraits(
 }
 
 /**
- * Extract mixin extensions for a model file
- * Uses the pre-computed modelToMixinsMap to look up which mixins this model uses,
- * then checks the mixinExtensionCache to get extension names for mixins with extension properties
+ * Get mixin extension names based on model imports.
  */
-function extractMixinExtensions(
-  _heritageClause: SgNode,
-  _root: SgNode,
-  _mixinImports: Map<string, string>,
-  filePath: string,
-  options?: TransformOptions
-): string[] {
+function extractMixinExtensions(filePath: string, options?: TransformOptions): string[] {
   const mixinExtensions: string[] = [];
 
   const modelMixins = options?.modelToMixinsMap?.get(filePath);
@@ -1711,7 +1692,8 @@ function extractMixinExtensions(
     // Check the mixinExtensionCache to see if this mixin has an extension
     const cacheEntry = mixinExtensionCache.get(mixinFilePath);
     if (cacheEntry?.hasExtension && cacheEntry.extensionName) {
-      mixinExtensions.push(cacheEntry.extensionName);
+      const basePart = cacheEntry.extensionName.replace(/Extension$/, '');
+      mixinExtensions.push(`${toPascalCase(basePart)}Extension`);
     }
   }
 

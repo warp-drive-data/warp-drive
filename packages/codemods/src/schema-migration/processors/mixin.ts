@@ -231,7 +231,7 @@ function generateMixinArtifacts(
 
   collectTraitImports(extendedTraits, imports, options);
 
-  const traitSchemaName = traitInterfaceName;
+  const traitSchemaName = `${toPascalCase(baseName)}Schema`;
   const traitInternalName = pascalToKebab(mixinName);
   const traitSchemaObject = buildTraitSchemaObject(traitFields as SchemaField[], extendedTraits, {
     name: traitInternalName,
@@ -264,7 +264,7 @@ function generateMixinArtifacts(
       filePath,
       source,
       baseName,
-      `${mixinName}Extension`,
+      `${toPascalCase(mixinName)}Extension`,
       extensionProperties,
       options,
       traitInterfaceName,

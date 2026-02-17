@@ -1,5 +1,138 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
+exports[`migrate-to-schema batch operation > README example: model with mixin, belongsTo, hasMany, and extension methods > readme_example 1`] = `
+{
+  "resources/": "__dir__",
+  "resources/user.ext.ts": "
+import Model, { attr, belongsTo, hasMany } from '@ember-data/model';
+
+import type { UserTrait } from 'test-app/data/resources/user.schema';
+
+export interface UserExtension extends UserTrait {}
+
+export class UserExtension {
+  get displayName() {
+      return this.name || this.email;
+    }
+
+  async updateProfile(data) {
+      this.setProperties(data);
+      return this.save();
+    }
+}",
+  "resources/user.schema.ts": "
+import type { Type } from '@ember-data/core-types/symbols';
+import type { Company } from 'test-app/data/resources/company.schema';
+import type { Project } from 'test-app/data/resources/project.schema';
+import type { AsyncHasMany } from '@ember-data/model';
+import type { TimestampableTrait } from 'test-app/data/traits/timestampable.schema';
+import type { UserExtension } from 'test-app/data/resources/user.ext';
+const UserSchema = {
+  'type': 'user',
+  'legacy': true,
+  'identity': {
+    'kind': '@id',
+    'name': 'id'
+  },
+  'fields': [
+    {
+      'kind': 'attribute',
+      'name': 'name',
+      'type': 'string'
+    },
+    {
+      'kind': 'attribute',
+      'name': 'email',
+      'type': 'string'
+    },
+    {
+      'kind': 'belongsTo',
+      'name': 'company',
+      'type': 'company',
+      'options': {
+        'async': false
+      }
+    },
+    {
+      'kind': 'hasMany',
+      'name': 'projects',
+      'type': 'project',
+      'options': {
+        'async': true
+      }
+    }
+  ],
+  'traits': [
+    'timestampable'
+  ],
+  'objectExtensions': [
+    'TimestampableExtension'
+  ]
+} as const;
+
+export default UserSchema;
+
+export interface UserTrait {
+  readonly [Type]: 'user';
+  readonly name: string | null;
+  readonly email: string | null;
+  readonly company: Company | null;
+  readonly projects: AsyncHasMany<Project>;
+}
+
+export interface User extends UserTrait, UserExtension, TimestampableTrait {}",
+  "traits/": "__dir__",
+  "traits/timestampable.ext.ts": "
+import Mixin from '@ember/object/mixin';
+import { attr } from '@ember-data/model';
+
+import type { TimestampableTrait } from 'test-app/data/traits/timestampable.schema';
+
+export interface TimestampableExtension extends TimestampableTrait {}
+
+export const TimestampableExtension = {
+  timeSince() {
+    return Date.now() - this.updatedAt;
+  }
+};",
+  "traits/timestampable.schema.ts": "
+const TimestampableSchema = {
+  'name': 'timestampable',
+  'mode': 'legacy',
+  'fields': [
+    {
+      'name': 'createdAt',
+      'kind': 'attribute',
+      'type': 'date'
+    },
+    {
+      'name': 'updatedAt',
+      'kind': 'attribute',
+      'type': 'date'
+    }
+  ]
+} as const;
+
+export default TimestampableSchema;
+
+export interface TimestampableTrait {
+  createdAt: Date | null;
+  updatedAt: Date | null;
+}",
+}
+`;
+
+exports[`migrate-to-schema batch operation > README example: model with mixin, belongsTo, hasMany, and extension methods > readme_example_structure 1`] = `
+[
+  "resources/",
+  "resources/user.ext.ts",
+  "resources/user.schema.ts",
+  "traits/",
+  "traits/timestampable.ext.ts",
+  "traits/timestampable.schema.ts",
+]
+`;
+
 exports[`migrate-to-schema batch operation > colocates type files with their corresponding schemas and traits > nested directory files 1`] = `
 {
   "resources/": "__dir__",
@@ -59,7 +192,7 @@ export interface NestedModel {
   "traits/": "__dir__",
   "traits/admin/": "__dir__",
   "traits/admin/connected.schema.ts": "
-const ConnectedTrait = {
+const ConnectedSchema = {
   'name': 'connected',
   'mode': 'legacy',
   'fields': [
@@ -71,7 +204,7 @@ const ConnectedTrait = {
   ]
 } as const;
 
-export default ConnectedTrait;
+export default ConnectedSchema;
 
 export interface ConnectedTrait {
   commonField: string | null;
@@ -177,7 +310,7 @@ export interface AuditedRecord {
 }",
   "traits/": "__dir__",
   "traits/auditable.schema.ts": "
-const AuditableTrait = {
+const AuditableSchema = {
   'name': 'auditable',
   'mode': 'legacy',
   'fields': [
@@ -194,7 +327,7 @@ const AuditableTrait = {
   ]
 } as const;
 
-export default AuditableTrait;
+export default AuditableSchema;
 
 export interface AuditableTrait {
   auditStatus: string | null;
@@ -295,7 +428,7 @@ export interface User {
 }",
   "traits/": "__dir__",
   "traits/workstreamable.schema.ts": "
-const WorkstreamableTrait = {
+const WorkstreamableSchema = {
   'name': 'workstreamable',
   'mode': 'legacy',
   'fields': [
@@ -307,7 +440,7 @@ const WorkstreamableTrait = {
   ]
 } as const;
 
-export default WorkstreamableTrait;
+export default WorkstreamableSchema;
 
 export interface WorkstreamableTrait {
   workstreamType: string | null;
@@ -361,17 +494,15 @@ exports[`migrate-to-schema batch operation > generates multiple artifacts when p
   "resources/company.ext.ts": "
 import Model, { attr, hasMany } from '@ember-data/model';
 
-import type { Company } from 'test-app/data/resources/company.schema';
+import type { CompanyTrait } from 'test-app/data/resources/company.schema';
 
-export interface CompanyExtension extends Company {}
+export interface CompanyExtension extends CompanyTrait {}
 
 export class CompanyExtension {
   get userCount() {
       return this.users.length;
     }
-}
-
-export type CompanyExtensionSignature = typeof CompanyExtension;",
+}",
   "resources/company.schema.ts": "
 import type { Type } from '@ember-data/core-types/symbols';
 import type { User } from 'test-app/data/resources/user.schema';
@@ -457,17 +588,15 @@ exports[`migrate-to-schema batch operation > generates schema and type artifacts
   "resources/user.ext.ts": "
 import Model, { attr, belongsTo } from '@ember-data/model';
 
-import type { User } from 'test-app/data/resources/user.schema';
+import type { UserTrait } from 'test-app/data/resources/user.schema';
 
-export interface UserExtension extends User {}
+export interface UserExtension extends UserTrait {}
 
 export class UserExtension {
   get displayName() {
       return this.name || this.email;
     }
-}
-
-export type UserExtensionSignature = typeof UserExtension;",
+}",
   "resources/user.schema.ts": "
 import type { Type } from '@ember-data/core-types/symbols';
 import type { Company } from 'test-app/data/resources/company.schema';
@@ -557,7 +686,7 @@ export interface TestModel extends ExternalTrait, LocalTrait {
 }",
   "traits/": "__dir__",
   "traits/external-mixin.schema.ts": "
-const ExternalMixinTrait = {
+const ExternalMixinSchema = {
   'name': 'external-mixin',
   'mode': 'legacy',
   'fields': [
@@ -569,13 +698,13 @@ const ExternalMixinTrait = {
   ]
 } as const;
 
-export default ExternalMixinTrait;
+export default ExternalMixinSchema;
 
 export interface ExternalMixinTrait {
   externalField: string | null;
 }",
   "traits/local-mixin.schema.ts": "
-const LocalMixinTrait = {
+const LocalMixinSchema = {
   'name': 'local-mixin',
   'mode': 'legacy',
   'fields': [
@@ -587,7 +716,7 @@ const LocalMixinTrait = {
   ]
 } as const;
 
-export default LocalMixinTrait;
+export default LocalMixinSchema;
 
 export interface LocalMixinTrait {
   localField: string | null;
@@ -613,7 +742,6 @@ exports[`migrate-to-schema batch operation > handles mixed js and ts files corre
   "resources/": "__dir__",
   "resources/js-model-with-mixin.ext.js": "
 import Model, { attr } from '@ember-data/model';
-import JsMixin from '../../mixins/js-mixin';
 
 export class JsModelWithMixinExtension {
   get displayName() {
@@ -640,7 +768,12 @@ const JsModelWithMixinSchema = {
   ]
 };
 
-export default JsModelWithMixinSchema;",
+export default JsModelWithMixinSchema;
+
+export interface JsModelWithMixin extends JsTrait {
+  readonly [Type]: 'js-model-with-mixin';
+  readonly name: string | null;
+}",
   "resources/ts-model-with-mixin.schema.ts": "
 import type { Type } from '@ember-data/core-types/symbols';
 import type { TsTrait } from 'test-app/data/traits/ts.schema';
@@ -662,7 +795,7 @@ const TsModelWithMixinSchema = {
     'ts'
   ],
   'objectExtensions': [
-    'tsMixinExtension'
+    'TsmixinExtension'
   ]
 } as const;
 
@@ -674,7 +807,7 @@ export interface TsModelWithMixin extends TsTrait {
 }",
   "traits/": "__dir__",
   "traits/js-mixin.schema.js": "
-const JsMixinTrait = {
+const JsMixinSchema = {
   'name': 'js-mixin',
   'mode': 'legacy',
   'fields': [
@@ -686,22 +819,26 @@ const JsMixinTrait = {
   ]
 };
 
-export default JsMixinTrait;",
+export default JsMixinSchema;
+
+export interface JsMixinTrait {
+  createdAt: Date | null;
+}",
   "traits/ts-mixin.ext.ts": "
 import Mixin from '@ember/object/mixin';
 import { attr } from '@ember-data/model';
 
 import type { TsMixinTrait } from 'test-app/data/traits/ts-mixin.schema';
 
-export interface tsMixinExtension extends TsMixinTrait {}
+export interface TsmixinExtension extends TsMixinTrait {}
 
-export const tsMixinExtension = {
+export const TsmixinExtension = {
   toggleEnabled() {
     this.set('isEnabled', !this.isEnabled);
   }
 };",
   "traits/ts-mixin.schema.ts": "
-const TsMixinTrait = {
+const TsMixinSchema = {
   'name': 'ts-mixin',
   'mode': 'legacy',
   'fields': [
@@ -713,7 +850,7 @@ const TsMixinTrait = {
   ]
 } as const;
 
-export default TsMixinTrait;
+export default TsMixinSchema;
 
 export interface TsMixinTrait {
   isEnabled: boolean | null;
@@ -792,7 +929,7 @@ export interface User {
 }",
   "traits/": "__dir__",
   "traits/workstreamable.schema.ts": "
-const WorkstreamableTrait = {
+const WorkstreamableSchema = {
   'name': 'workstreamable',
   'mode': 'legacy',
   'fields': [
@@ -804,7 +941,7 @@ const WorkstreamableTrait = {
   ]
 } as const;
 
-export default WorkstreamableTrait;
+export default WorkstreamableSchema;
 
 export interface WorkstreamableTrait {
   workstreamType: string | null;
@@ -849,7 +986,7 @@ const TestModelSchema = {
     'workstreamable'
   ],
   'objectExtensions': [
-    'workstreamableExtension'
+    'WorkstreamableExtension'
   ]
 } as const;
 
@@ -891,13 +1028,13 @@ import { attr } from '@ember-data/model';
 
 import type { WorkstreamableTrait } from 'test-app/data/traits/workstreamable.schema';
 
-export interface workstreamableExtension extends WorkstreamableTrait {}
+export interface WorkstreamableExtension extends WorkstreamableTrait {}
 
-export const workstreamableExtension = {
+export const WorkstreamableExtension = {
   imAnObjectExtensionNow() {}
 };",
   "traits/workstreamable.schema.ts": "
-const WorkstreamableTrait = {
+const WorkstreamableSchema = {
   'name': 'workstreamable',
   'mode': 'legacy',
   'fields': [
@@ -909,7 +1046,7 @@ const WorkstreamableTrait = {
   ]
 } as const;
 
-export default WorkstreamableTrait;
+export default WorkstreamableSchema;
 
 export interface WorkstreamableTrait {
   workstreamType: string | null;
@@ -977,7 +1114,32 @@ const BaseModelWithMethodsTrait = {
   ]
 };
 
-export default BaseModelWithMethodsTrait;",
+export default BaseModelWithMethodsTrait;
+
+export interface BaseModelWithMethodsTrait {
+  id: string | null;
+  readonly baseField: string | null;
+  readonly isNew: boolean;
+  readonly hasDirtyAttributes: boolean;
+  readonly isDeleted: boolean;
+  readonly isSaving: boolean;
+  readonly isValid: boolean;
+  readonly isError: boolean;
+  readonly isLoaded: boolean;
+  readonly isEmpty: boolean;
+  save: (options?: Record<string, unknown>) => Promise<this>;
+  reload: (options?: Record<string, unknown>) => Promise<this>;
+  deleteRecord: () => void;
+  unloadRecord: () => void;
+  destroyRecord: (options?: Record<string, unknown>) => Promise<void>;
+  rollbackAttributes: () => void;
+  belongsTo: (propertyName: string) => BelongsToReference;
+  hasMany: (propertyName: string) => HasManyReference;
+  serialize: (options?: Record<string, unknown>) => unknown;
+  readonly errors: Errors;
+  readonly adapterError: Error | null;
+  readonly isReloading: boolean;
+}",
 }
 `;
 
@@ -1005,7 +1167,11 @@ const CustomSelectOptionSchema = {
   ]
 };
 
-export default CustomSelectOptionSchema;",
+export default CustomSelectOptionSchema;
+
+export interface CustomSelectOption {
+  readonly [Type]: 'custom-select-option';
+}",
 }
 `;
 

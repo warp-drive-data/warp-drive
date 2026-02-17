@@ -1,7 +1,7 @@
 import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 import { join, relative } from 'path';
 
-import type { TransformOptions } from '../../../../packages/codemods/src/schema-migration/utils/ast-utils.js';
+import type { TransformOptions } from '@ember-data/codemods/schema-migration/config.js';
 
 export function prepareFiles(baseDir: string, files: Record<string, string>) {
   for (const [key, content] of Object.entries(files)) {
@@ -79,8 +79,8 @@ export const DEFAULT_TEST_OPTIONS: TransformOptions = {
   testMode: true,
   // Configure mixin sources for test patterns
   additionalMixinSources: [
-    { pattern: 'app/mixins/', name: 'app mixins' },
-    { pattern: '../mixins/', name: 'relative mixins' },
+    { dir: 'app/mixins/', pattern: 'app/mixins/' },
+    { dir: '../mixins/', pattern: '../mixins/' },
   ],
 };
 

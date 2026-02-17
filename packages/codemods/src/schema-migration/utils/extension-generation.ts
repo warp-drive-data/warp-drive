@@ -123,7 +123,7 @@ function shouldKeepExported(exportNode: SgNode): boolean {
  * This only removes fragment imports since they're not needed in schema-record
  */
 function removeUnnecessaryImports(source: string, options?: TransformOptions): string {
-  const linesToRemove = ['ember-data-model-fragments/attributes'];
+  const linesToRemove = ['ember-data-model-fragments/attributes', '@ember/object/mixin', '/mixins/'];
 
   const lines = source.split('\n');
   const filteredLines = lines.filter((line) => {
@@ -282,23 +282,6 @@ function updateRelativeImportsForExtensions(
   }
 
   return result;
-}
-
-/**
- * Append extension signature type alias to an extension artifact
- * This creates a TypeScript type alias like: export type UserExtensionSignature = typeof UserExtension;
- */
-export function appendExtensionSignatureType(extensionArtifact: TransformArtifact, entityName: string): void {
-  const isTypeScript = extensionArtifact.suggestedFileName.endsWith('.ts');
-  if (!isTypeScript) {
-    return;
-  }
-
-  const signatureType = `${entityName}ExtensionSignature`;
-  const className = `${entityName}Extension`;
-  const signatureCode = `export type ${signatureType} = typeof ${className};`;
-
-  extensionArtifact.code += '\n\n' + signatureCode;
 }
 
 /**

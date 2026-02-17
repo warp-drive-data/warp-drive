@@ -1,10 +1,9 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return */
 import { mkdtempSync, rmSync } from 'fs';
 import { tmpdir } from 'os';
 import { join } from 'path';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
-import type { FinalOptions } from '@ember-data/codemods/schema-migration/codemod.js';
+import type { FinalOptions } from '@ember-data/codemods/schema-migration/config.js';
 
 import { toArtifacts } from '../../../../../packages/codemods/src/schema-migration/processors/mixin.ts';
 import { parseFile } from '../../../../../packages/codemods/src/schema-migration/utils/file-parser.js';
@@ -24,7 +23,6 @@ describe('mixin-to-schema transform (artifacts)', () => {
       traitsDir: join(tempDir, 'app/data/traits'),
       modelSourceDir: join(tempDir, 'app/models'),
       mixinSourceDir: join(tempDir, 'app/mixins'),
-      appImportPrefix: 'test-app',
       resourcesImport: 'test-app/data/resources',
       traitsImport: 'test-app/data/traits',
       modelImportSource: 'test-app/models',
@@ -52,14 +50,17 @@ export default Mixin.create({});`;
       const trait = artifacts.find((a) => a.type === 'trait');
       expect(trait).toMatchInlineSnapshot(`
         {
-          "code": "const EmptyTrait = {
+          "code": "const EmptySchema = {
           'name': 'empty',
           'mode': 'legacy',
           'fields': []
         };
 
-        export default EmptyTrait;",
-          "name": "EmptyTrait",
+        export default EmptySchema;
+
+        export interface EmptyTrait {
+        }",
+          "name": "EmptySchema",
           "suggestedFileName": "empty.schema.js",
           "type": "trait",
         }
@@ -85,7 +86,7 @@ export default Mixin.create({
       const extension = artifacts.find((a) => a.type === 'trait-extension');
       expect(trait).toMatchInlineSnapshot(`
         {
-          "code": "const FileableTrait = {
+          "code": "const FileableSchema = {
           'name': 'fileable',
           'mode': 'legacy',
           'fields': [
@@ -114,8 +115,14 @@ export default Mixin.create({
           ]
         };
 
-        export default FileableTrait;",
-          "name": "FileableTrait",
+        export default FileableSchema;
+
+        export interface FileableTrait {
+          files: HasMany<File>;
+          name: string | null;
+          isActive: boolean | null;
+        }",
+          "name": "FileableSchema",
           "suggestedFileName": "fileable.schema.js",
           "type": "trait",
         }
@@ -126,10 +133,10 @@ export default Mixin.create({
         import Mixin from '@ember/object/mixin';
         import { computed } from '@ember/object';
 
-        export const fileableExtension = {
+        export const FileableExtension = {
           titleCaseName: computed('name', function () { return (this.name || '').toUpperCase(); })
         };",
-          "name": "fileableExtension",
+          "name": "FileableExtension",
           "suggestedFileName": "fileable.ext.js",
           "type": "trait-extension",
         }
@@ -763,10 +770,10 @@ export default Mixin.create({
 });`;
 
       options = {
+        kind: 'finalized',
         modelImportSource: 'test-app/models',
         resourcesImport: 'test-app/data/resources',
         resourcesDir: './test-output/resources',
-        appImportPrefix: 'test-app',
         verbose: false,
         debug: false,
       };
@@ -805,10 +812,10 @@ export default Mixin.create({
 });`;
 
       options = {
+        kind: 'finalized',
         modelImportSource: 'test-app/models',
         resourcesImport: 'test-app/data/resources',
         resourcesDir: './test-output/resources',
-        appImportPrefix: 'test-app',
         verbose: false,
         debug: false,
       };
