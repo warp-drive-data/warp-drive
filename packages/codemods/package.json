@@ -12,6 +12,7 @@
   "bin": "dist/index.js",
   "scripts": {
     "build:cli": "bun build src/cli/index.ts --target node --outdir dist --sourcemap",
+    "build:pkg": "tsc",
     "prepack": "pnpm run build:cli",
     "lint": "eslint . --quiet --cache --cache-strategy=content"
   },
