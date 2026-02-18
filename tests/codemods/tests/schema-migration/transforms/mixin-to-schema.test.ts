@@ -56,10 +56,7 @@ export default Mixin.create({});`;
           'fields': []
         };
 
-        export default EmptySchema;
-
-        export interface EmptyTrait {
-        }",
+        export default EmptySchema;",
           "name": "EmptySchema",
           "suggestedFileName": "empty.schema.js",
           "type": "trait",
@@ -115,13 +112,7 @@ export default Mixin.create({
           ]
         };
 
-        export default FileableSchema;
-
-        export interface FileableTrait {
-          files: HasMany<File>;
-          name: string | null;
-          isActive: boolean | null;
-        }",
+        export default FileableSchema;",
           "name": "FileableSchema",
           "suggestedFileName": "fileable.schema.js",
           "type": "trait",

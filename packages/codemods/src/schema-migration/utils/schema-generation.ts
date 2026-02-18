@@ -648,30 +648,31 @@ export function generateMergedSchemaCode(opts: MergedSchemaOptions): string {
   // Generate default export
   sections.push(`\nexport default ${schemaName};`);
 
-  // Generate interface (only for TypeScript)
-  if (useComposite) {
-    // Composite pattern: field interface is {Name}Trait, composite is {Name}
-    const fieldInterfaceName = `${interfaceName}Trait`;
-    const fieldInterfaceCode = generateInterfaceOnly(fieldInterfaceName, properties);
-    sections.push('');
-    sections.push(fieldInterfaceCode);
+  if (isTypeScript) {
+    if (useComposite) {
+      // Composite pattern: field interface is {Name}Trait, composite is {Name}
+      const fieldInterfaceName = `${interfaceName}Trait`;
+      const fieldInterfaceCode = generateInterfaceOnly(fieldInterfaceName, properties);
+      sections.push('');
+      sections.push(fieldInterfaceCode);
 
-    // Composite interface merges field interface, extension, and trait interfaces
-    const traitInterfaces = traits.map(traitNameToInterfaceName);
-    const compositeExtends = [fieldInterfaceName, extensionName, ...traitInterfaces].join(', ');
-    sections.push('');
-    sections.push(`export interface ${interfaceName} extends ${compositeExtends} {}`);
-  } else {
-    // Standard pattern: single interface with optional trait extends
-    let extendsClause: string | undefined;
-    if (traits.length > 0) {
+      // Composite interface merges field interface, extension, and trait interfaces
       const traitInterfaces = traits.map(traitNameToInterfaceName);
-      extendsClause = traitInterfaces.join(', ');
-    }
+      const compositeExtends = [fieldInterfaceName, extensionName, ...traitInterfaces].join(', ');
+      sections.push('');
+      sections.push(`export interface ${interfaceName} extends ${compositeExtends} {}`);
+    } else {
+      // Standard pattern: single interface with optional trait extends
+      let extendsClause: string | undefined;
+      if (traits.length > 0) {
+        const traitInterfaces = traits.map(traitNameToInterfaceName);
+        extendsClause = traitInterfaces.join(', ');
+      }
 
-    const interfaceCode = generateInterfaceOnly(interfaceName, properties, extendsClause);
-    sections.push('');
-    sections.push(interfaceCode);
+      const interfaceCode = generateInterfaceOnly(interfaceName, properties, extendsClause);
+      sections.push('');
+      sections.push(interfaceCode);
+    }
   }
 
   return sections.join('\n');

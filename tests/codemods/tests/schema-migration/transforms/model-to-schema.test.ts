@@ -59,6 +59,33 @@ export default class SimpleModel extends Model {
       expect(artifacts[0]?.name).toBe('SimpleModelSchema');
     });
 
+    it('handles Typescript model with mixins', () => {
+      const input = `import Model, { attr } from '@ember-data/model';
+import FileableMixin from 'app/mixins/fileable';
+import TimestampableMixin from 'app/mixins/timestampable';
+
+export default class Document extends Model.extend(FileableMixin, TimestampableMixin) {
+	@attr('string') title;
+	@attr('string') content;
+
+	get wordCount() {
+		return (this.content || '').split(' ').length;
+	}
+}`;
+
+      const artifacts = toArtifacts(
+        parseFile('app/models/document.ts', input, DEFAULT_TEST_OPTIONS),
+        DEFAULT_TEST_OPTIONS
+      );
+      // Schema now includes merged types, so we have: schema (with types) + extension
+      expect(artifacts).toHaveLength(2);
+
+      const schema = artifacts.find((a) => a.type === 'schema');
+      expect(schema?.code).toContain('Fileable');
+      expect(schema?.code).toContain('Timestampable');
+      expect(schema?.code).toMatchSnapshot('schema with mixins');
+    });
+
     it('handles model with mixins', () => {
       const input = `import Model, { attr } from '@ember-data/model';
 import FileableMixin from 'app/mixins/fileable';
@@ -81,8 +108,8 @@ export default class Document extends Model.extend(FileableMixin, TimestampableM
       expect(artifacts).toHaveLength(2);
 
       const schema = artifacts.find((a) => a.type === 'schema');
-      expect(schema?.code).toContain('Fileable');
-      expect(schema?.code).toContain('Timestampable');
+      expect(schema?.code).toContain('fileable');
+      expect(schema?.code).toContain('timestampable');
       expect(schema?.code).toMatchSnapshot('schema with mixins');
     });
 
@@ -852,12 +879,7 @@ export default class TestModel extends Model.extend(WorkstreamableMixin) {
           ]
         };
 
-        export default TestModelSchema;
-
-        export interface TestModel extends WorkstreamableTrait {
-          readonly [Type]: 'test-model';
-          readonly workstreamable: Workstreamable | null;
-        }"
+        export default TestModelSchema;"
       `);
     });
   });
@@ -1124,12 +1146,7 @@ export default class Translatable extends Model {
           ]
         };
 
-        export default TestModelSchema;
-
-        export interface TestModel {
-          readonly [Type]: 'test-model';
-          readonly name: string | null;
-        }",
+        export default TestModelSchema;",
           "name": "TestModelSchema",
           "suggestedFileName": "test-model.schema.js",
           "type": "schema",

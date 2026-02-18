@@ -21,12 +21,7 @@ exports[`mixin-to-schema transform (artifacts) > TypeScript type artifacts > gen
   ]
 };
 
-export default SimpleSchema;
-
-export interface SimpleTrait {
-  title: string | null;
-  author: Promise<User>;
-}"
+export default SimpleSchema;"
 `;
 
 exports[`mixin-to-schema transform (artifacts) > TypeScript type artifacts > generates trait and extension artifacts when mixin has computed properties and methods > mixin extension code 1`] = `
@@ -57,11 +52,7 @@ exports[`mixin-to-schema transform (artifacts) > TypeScript type artifacts > gen
   ]
 };
 
-export default NameableSchema;
-
-export interface NameableTrait {
-  name: string | null;
-}"
+export default NameableSchema;"
 `;
 
 exports[`mixin-to-schema transform (artifacts) > TypeScript type artifacts > generates trait artifact with merged types for basic mixins > basic trait type interface 1`] = `
@@ -94,13 +85,7 @@ exports[`mixin-to-schema transform (artifacts) > TypeScript type artifacts > gen
   ]
 };
 
-export default FileableSchema;
-
-export interface FileableTrait {
-  files: HasMany<File>;
-  name: string | null;
-  isActive: boolean | null;
-}"
+export default FileableSchema;"
 `;
 
 exports[`mixin-to-schema transform (artifacts) > TypeScript type artifacts > handles custom type mappings in mixin trait type interfaces > mixin custom type mappings interface 1`] = `
@@ -126,13 +111,7 @@ exports[`mixin-to-schema transform (artifacts) > TypeScript type artifacts > han
   ]
 };
 
-export default TypedSchema;
-
-export interface TypedTrait {
-  id: string | null;
-  amount: number | null;
-  metadata: Record<string, unknown> | null;
-}"
+export default TypedSchema;"
 `;
 
 exports[`mixin-to-schema transform (artifacts) > basic functionality > collects the real fileable mixin shape into trait and extension artifacts > artifact metadata 1`] = `
@@ -206,12 +185,7 @@ exports[`mixin-to-schema transform (artifacts) > basic functionality > collects 
   ]
 };
 
-export default FileableSchema;
-
-export interface FileableTrait {
-  files: HasMany<File>;
-  showFilesRequiringReviewError: boolean | null;
-}"
+export default FileableSchema;"
 `;
 
 exports[`mixin-to-schema transform (artifacts) > basic functionality > converts mixin with no trait fields to extension artifact > code 1`] = `
@@ -307,11 +281,7 @@ exports[`mixin-to-schema transform (artifacts) > basic functionality > supports 
   ]
 };
 
-export default AliasedSchema;
-
-export interface AliasedTrait {
-  name: string | null;
-}"
+export default AliasedSchema;"
 `;
 
 exports[`mixin-to-schema transform (artifacts) > basic functionality > supports alias of Mixin import and still produces a trait artifact > metadata 1`] = `
@@ -356,12 +326,7 @@ export interface File {
   ]
 };
 
-export default CustomSourceSchema;
-
-export interface CustomSourceTrait {
-  name: string | null;
-  files: HasMany<File>;
-}",
+export default CustomSourceSchema;",
     "name": "CustomSourceSchema",
     "suggestedFileName": "custom-source.schema.js",
     "type": "trait",
@@ -408,11 +373,7 @@ export interface File {
   ]
 };
 
-export default RenamedMixedSourcesSchema;
-
-export interface RenamedMixedSourcesTrait {
-  files: HasMany<File>;
-}",
+export default RenamedMixedSourcesSchema;",
     "name": "RenamedMixedSourcesSchema",
     "suggestedFileName": "renamed-mixed-sources.schema.js",
     "type": "trait",
@@ -447,11 +408,7 @@ exports[`mixin-to-schema transform (artifacts) > import validation > handles CLI
   ]
 };
 
-export default CliOptionSchema;
-
-export interface CliOptionTrait {
-  name: string | null;
-}",
+export default CliOptionSchema;",
     "name": "CliOptionSchema",
     "suggestedFileName": "cli-option.schema.js",
     "type": "trait",
@@ -508,13 +465,7 @@ export interface User {
   ]
 };
 
-export default AliasedImportsSchema;
-
-export interface AliasedImportsTrait {
-  name: string | null;
-  files: HasMany<File>;
-  owner: User | null;
-}",
+export default AliasedImportsSchema;",
     "name": "AliasedImportsSchema",
     "suggestedFileName": "aliased-imports.schema.js",
     "type": "trait",
@@ -537,11 +488,7 @@ exports[`mixin-to-schema transform (artifacts) > import validation > ignores dec
   ]
 };
 
-export default UnsupportedSourceSchema;
-
-export interface UnsupportedSourceTrait {
-  name: string | null;
-}",
+export default UnsupportedSourceSchema;",
     "name": "UnsupportedSourceSchema",
     "suggestedFileName": "unsupported-source.schema.js",
     "type": "trait",
@@ -606,12 +553,7 @@ export interface File {
   ]
 };
 
-export default DefaultSourceSchema;
-
-export interface DefaultSourceTrait {
-  name: string | null;
-  files: HasMany<File>;
-}",
+export default DefaultSourceSchema;",
   "import Mixin from '@ember/object/mixin';
 import { attr, hasMany } from '@ember-data/model';
 import { computed } from '@ember/object';
@@ -652,11 +594,7 @@ export interface User {
   ]
 };
 
-export default BelongsToSchema;
-
-export interface BelongsToTrait {
-  owner: Promise<User>;
-}",
+export default BelongsToSchema;",
     "name": "BelongsToSchema",
     "suggestedFileName": "belongs-to.schema.js",
     "type": "trait",
@@ -673,10 +611,7 @@ exports[`mixin-to-schema transform (artifacts) > import validation > produces an
   'fields': []
 };
 
-export default NoValidImportsSchema;
-
-export interface NoValidImportsTrait {
-}",
+export default NoValidImportsSchema;",
     "name": "NoValidImportsSchema",
     "suggestedFileName": "no-valid-imports.schema.js",
     "type": "trait",
@@ -729,12 +664,7 @@ export interface File {
   ]
 };
 
-export default AuditboardSourceSchema;
-
-export interface AuditboardSourceTrait {
-  name: string | null;
-  files: HasMany<File>;
-}",
+export default AuditboardSourceSchema;",
     "name": "AuditboardSourceSchema",
     "suggestedFileName": "auditboard-source.schema.js",
     "type": "trait",
@@ -794,12 +724,7 @@ exports[`mixin-to-schema transform (artifacts) > mixin inheritance > produces tr
   ]
 };
 
-export default FileableSchema;
-
-export interface FileableTrait extends BaseModelTrait, TimestampTrait {
-  description: string | null;
-  files: HasMany<File>;
-}"
+export default FileableSchema;"
 `;
 
 exports[`mixin-to-schema transform (artifacts) > mixin inheritance > produces trait with single extended trait > single inheritance trait code 1`] = `
@@ -818,11 +743,7 @@ exports[`mixin-to-schema transform (artifacts) > mixin inheritance > produces tr
   ]
 };
 
-export default DescribableSchema;
-
-export interface DescribableTrait extends BaseModelTrait {
-  description: string | null;
-}"
+export default DescribableSchema;"
 `;
 
 exports[`mixin-to-schema transform (artifacts) > mixin inheritance > produces trait without traits property when no inheritance > no inheritance trait code 1`] = `
@@ -838,9 +759,5 @@ exports[`mixin-to-schema transform (artifacts) > mixin inheritance > produces tr
   ]
 };
 
-export default DescribableSchema;
-
-export interface DescribableTrait {
-  description: string | null;
-}"
+export default DescribableSchema;"
 `;

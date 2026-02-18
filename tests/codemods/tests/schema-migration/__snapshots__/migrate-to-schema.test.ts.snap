@@ -768,12 +768,7 @@ const JsModelWithMixinSchema = {
   ]
 };
 
-export default JsModelWithMixinSchema;
-
-export interface JsModelWithMixin extends JsTrait {
-  readonly [Type]: 'js-model-with-mixin';
-  readonly name: string | null;
-}",
+export default JsModelWithMixinSchema;",
   "resources/ts-model-with-mixin.schema.ts": "
 import type { Type } from '@ember-data/core-types/symbols';
 import type { TsTrait } from 'test-app/data/traits/ts.schema';
@@ -819,11 +814,7 @@ const JsMixinSchema = {
   ]
 };
 
-export default JsMixinSchema;
-
-export interface JsMixinTrait {
-  createdAt: Date | null;
-}",
+export default JsMixinSchema;",
   "traits/ts-mixin.ext.ts": "
 import Mixin from '@ember/object/mixin';
 import { attr } from '@ember-data/model';
@@ -1114,32 +1105,7 @@ const BaseModelWithMethodsTrait = {
   ]
 };
 
-export default BaseModelWithMethodsTrait;
-
-export interface BaseModelWithMethodsTrait {
-  id: string | null;
-  readonly baseField: string | null;
-  readonly isNew: boolean;
-  readonly hasDirtyAttributes: boolean;
-  readonly isDeleted: boolean;
-  readonly isSaving: boolean;
-  readonly isValid: boolean;
-  readonly isError: boolean;
-  readonly isLoaded: boolean;
-  readonly isEmpty: boolean;
-  save: (options?: Record<string, unknown>) => Promise<this>;
-  reload: (options?: Record<string, unknown>) => Promise<this>;
-  deleteRecord: () => void;
-  unloadRecord: () => void;
-  destroyRecord: (options?: Record<string, unknown>) => Promise<void>;
-  rollbackAttributes: () => void;
-  belongsTo: (propertyName: string) => BelongsToReference;
-  hasMany: (propertyName: string) => HasManyReference;
-  serialize: (options?: Record<string, unknown>) => unknown;
-  readonly errors: Errors;
-  readonly adapterError: Error | null;
-  readonly isReloading: boolean;
-}",
+export default BaseModelWithMethodsTrait;",
 }
 `;
 
@@ -1167,11 +1133,7 @@ const CustomSelectOptionSchema = {
   ]
 };
 
-export default CustomSelectOptionSchema;
-
-export interface CustomSelectOption {
-  readonly [Type]: 'custom-select-option';
-}",
+export default CustomSelectOptionSchema;",
 }
 `;
 
