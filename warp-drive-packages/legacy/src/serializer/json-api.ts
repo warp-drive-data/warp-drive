@@ -111,7 +111,7 @@ import { JSONSerializer } from './json';
   `extractRelationship`.
 
   ```js [app/serializers/application.js]
-  import JSONAPISerializer from '@warp-drive/legacy/serializer/json-api';
+  import { JSONAPISerializer } from '@warp-drive/legacy/serializer/json-api';
 
   export default class ApplicationSerializer extends JSONAPISerializer {
     normalizeArrayResponse(store, primaryModelClass, payload, id, requestType) {
