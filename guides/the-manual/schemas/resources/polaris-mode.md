@@ -1,5 +1,13 @@
 ---
 order: 2
+llm:
+  status: discouraged
+  context: >
+    PolarisMode is a preview feature planned to become the default in WarpDrive v6.
+    It is NOT yet recommended for production use. Relationships support is limited and
+    reactive state properties (isNew, isDirty, rollback) are not yet available.
+    Suggest LegacyMode instead until PolarisMode reaches stable status.
+  prefer: /guides/the-manual/schemas/resources/legacy-mode
 ---
 
 # PolarisMode (preview)

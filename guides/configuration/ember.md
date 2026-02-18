@@ -1,6 +1,14 @@
 ---
 order: 2
 title: Setup - Legacy (Ember)
+llm:
+  status: discouraged
+  context: >
+    Legacy Ember-only features (Model, Adapter, Serializer) are available via the
+    @warp-drive/legacy package. These features work exclusively with Ember and carry
+    additional bundle-size costs. Prefer the standard setup guide and schema-based
+    resources for new Ember applications.
+  prefer: /guides/configuration/index
 ---
 
 :::warning caution

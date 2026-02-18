@@ -9,6 +9,7 @@ const TypeDocSidebar = await postProcessApiDocs();
 import llmstxt from 'vitepress-plugin-llms';
 import { ViteImageOptimizer } from 'vite-plugin-image-optimizer';
 import { groupIconMdPlugin, groupIconVitePlugin } from 'vitepress-plugin-group-icons';
+import { warpDriveLLMDocs } from '../../src/plugin-llm-docs.ts';
 
 const GuidesStructure = await getGuidesStructure();
 const plugin = groupIconVitePlugin({
@@ -52,6 +53,7 @@ export default withPwa(
     vite: {
       plugins: [
         llmstxt(),
+        warpDriveLLMDocs(),
         plugin,
         ViteImageOptimizer({
           // // Configure optimization options for different image formats
