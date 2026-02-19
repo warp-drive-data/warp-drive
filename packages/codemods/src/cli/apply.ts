@@ -1,10 +1,10 @@
 import type { Command } from 'commander';
 import { Argument, Option } from 'commander';
 
-import type { RunOptions } from '../src/legacy-compat-builders/run.js';
-import type { MigrateOptions } from '../src/schema-migration/config.ts';
-import { type ConfigOptions, loadConfig, mergeOptions } from '../src/schema-migration/utils/config.js';
-import { logger } from '../utils/logger.js';
+import { logger } from '../../utils/logger.js';
+import type { RunOptions } from '../legacy-compat-builders/run.js';
+import type { MigrateOptions } from '../schema-migration/config.ts';
+import { type ConfigOptions, loadConfig, mergeOptions } from '../schema-migration/utils/config.js';
 import type { SharedCodemodOptions } from './index.js';
 
 export function createApplyCommand(program: Command) {
@@ -94,7 +94,7 @@ function createLegacyCompatBuildersCommand(applyCommand: Command) {
 }
 
 async function handleLegacyCompatBuilders(patterns: string[] | string, options: SharedCodemodOptions & RunOptions) {
-  const { runTransform } = await import('../src/legacy-compat-builders/run.js');
+  const { runTransform } = await import('../legacy-compat-builders/run.js');
   const patternArray = Array.isArray(patterns) ? patterns : [patterns];
 
   await runTransform({
@@ -111,7 +111,7 @@ async function handleMigrateToSchema(
   options: SharedCodemodOptions & Record<string, unknown>
 ) {
   const log = logger.for('migrate-to-schema');
-  const { runMigration } = await import('../src/schema-migration/tasks/migrate.js');
+  const { runMigration } = await import('../schema-migration/tasks/migrate.js');
   const inputDir = (typeof patterns === 'string' ? patterns : patterns[0]) || './app';
 
   let configOptions = {};
