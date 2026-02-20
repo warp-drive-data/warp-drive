@@ -19,35 +19,6 @@ Transformations are applied automatically when reading from or writing to the ca
 APIs often return data as plain strings or numbers, but your app might need more expressive or typed values like `Date` objects, numbers with precision, or even `Map`s.  
 Transformations let you define exactly how those conversions happen, in a reusable and declarative way.
 
-## Using a Built-in Transformation
-
-WarpDrive ships with several built-in transformations.  
-For example, the `date-time` transformation converts ISO date strings into JavaScript `Date` objects.
-
-```ts [schemas/task.ts]
-import { withDefaults } from '@warp-drive/core/reactive';
-
-export const TaskSchema = withDefaults({
-  type: 'task',
-  fields: [
-    { name: 'title', kind: 'field' },
-    { name: 'dueAt', kind: 'field', type: 'date-time' }
-  ]
-});
-```
-
-When the API returns a record like this:
-
-```json
-{
-  "title": "Deadline",
-  "dueAt": "2025-10-03T18:00:00.000Z"
-}
-```
-
-WarpDrive automatically hydrates `dueAt` into a `Date` object.  
-When you save the record again, it serializes the `Date` back to an ISO string.
-
 ## Creating a Custom Transformation
 
 You can define your own Transformation for any data type or format you need.
@@ -144,7 +115,7 @@ and everything remains reactive.
 
 - Transformations define how data moves between API and app.  
 - They always run both directions: **hydrate** and **serialize**.  
-- Built-ins like `date-time` handle common cases; you can register your own for custom needs.  
+- You can register your own transformations for custom needs.  
 - Once registered, they can be referenced in any ResourceSchema field using `type`.  
 - They keep your data layer predictable, typed, and consistent.
 
