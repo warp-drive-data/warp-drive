@@ -1,8 +1,5 @@
 {
   "include": ["tests/**/*"],
-  "glint": {
-    "environment": ["ember-loose", "ember-template-imports"]
-  },
   "compilerOptions": {
     "lib": ["DOM", "ESNext"],
     "module": "esnext",
@@ -24,7 +21,12 @@
     "experimentalDecorators": true,
     "incremental": true,
     "declaration": true,
-    "types": ["ember-source/types", "vite/client", "@ember-data/unpublished-test-infra/test-support/asserts/index"],
+    "types": [
+      "@glint/ember-tsc/types",
+      "ember-source/types",
+      "vite/client",
+      "@ember-data/unpublished-test-infra/test-support/asserts/index"
+    ],
     "paths": {
       "@warp-drive/holodeck": ["../../packages/holodeck/declarations"],
       "@warp-drive/holodeck/*": ["../../packages/holodeck/declarations/*"],

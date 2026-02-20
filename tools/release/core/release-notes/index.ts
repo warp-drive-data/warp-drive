@@ -1,15 +1,15 @@
-import { parseRawFlags } from '../../utils/parse-args';
-import { printHelpDocs } from '../../help/docs';
-import { GIT_TAG, getAllPackagesForGitTag, getGitState } from '../../utils/git';
-import { gatherPackages, loadStrategy } from '../../utils/package';
-import { applyStrategy } from '../publish/steps/generate-strategy';
-import { printStrategy } from '../publish/steps/print-strategy';
-import { confirmStrategy } from '../publish/steps/confirm-strategy';
-import { release_notes_flags_config } from '../../utils/flags-config';
-import { SEMVER_VERSION } from '../../utils/channel';
-import { updateChangelogs } from './steps/update-changelogs';
-import { getChanges } from './steps/get-changes';
-import { confirmCommitChangelogs } from './steps/confirm-changelogs';
+import { parseRawFlags } from '../../utils/parse-args.ts';
+import { printHelpDocs } from '../../help/docs.ts';
+import { GIT_TAG, getAllPackagesForGitTag, getGitState } from '../../utils/git.ts';
+import { gatherPackages, loadStrategy } from '../../utils/package.ts';
+import { applyStrategy } from '../publish/steps/generate-strategy.ts';
+import { printStrategy } from '../publish/steps/print-strategy.ts';
+import { confirmStrategy } from '../publish/steps/confirm-strategy.ts';
+import { release_notes_flags_config } from '../../utils/flags-config.ts';
+import { SEMVER_VERSION } from '../../utils/channel.ts';
+import { updateChangelogs } from './steps/update-changelogs.ts';
+import { getChanges } from './steps/get-changes.ts';
+import { confirmCommitChangelogs } from './steps/confirm-changelogs.ts';
 
 export async function executeReleaseNoteGeneration(args: string[]) {
   // remove the command itself from the list

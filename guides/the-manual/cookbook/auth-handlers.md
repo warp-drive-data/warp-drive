@@ -32,7 +32,7 @@ In WarpDrive we can create our own custom handler to add authentication header t
 import type { Handler, NextFn, RequestContext } from '@ember-data/request';
 
 const ourSecureToken = '<token>'
-const AuthHandler: Handler = {
+export const AuthHandler: Handler = {
   async request<T>(context: RequestContext, next: NextFn<T>) {
     const headers = new Headers(context.request.headers);
     headers.append(
@@ -50,10 +50,10 @@ This handler would need to be added to the request manager configuration:
 ```ts
 import RequestManager from '@ember-data/request';
 import Fetch from '@ember-data/request/fetch';
-import AuthHandler from './auth-handler.ts';
+import { AuthHandler } from './auth-handler.ts'; // [!code focus]
 
-const manager = new RequestManager()
-  .use([AuthHandler, Fetch]);
+const manager = new RequestManager() // [!code focus]
+  .use([AuthHandler, Fetch]); // [!code focus]
 ```
 
 This way every request that was made using this request manager will have `Authorization` header added to it.
@@ -70,7 +70,7 @@ Lets imagine we are using [Ember Simple Auth](https://github.com/simplabs/ember-
 import { service } from '@ember/service';
 import type { NextFn, RequestContext } from '@ember-data/request';
 
-export default class AuthHandler {
+export class AuthHandler {
   @service session;
 
   request<T>(context: RequestContext, next: NextFn<T>) {
@@ -96,15 +96,15 @@ To use this handler we need to register it in our request manager service, but a
 import RequestManager from '@ember-data/request';
 import Fetch from '@ember-data/request/fetch';
 import { getOwner, setOwner } from '@ember/owner';
-import AuthHandler from './auth-handler';
+import { AuthHandler } from './auth-handler.ts';
 
 export default {
   create(args) {
-    const authHandler = new AuthHandler();
-    setOwner(authHandler, getOwner(args));
+    const authHandler = new AuthHandler(); // [!code focus]
+    setOwner(authHandler, getOwner(args)); // [!code focus]
 
-    return new RequestManager()
-      .use([authHandler, Fetch]);
+    return new RequestManager() // [!code focus]
+      .use([authHandler, Fetch]); // [!code focus]
   }
 }
 ```
@@ -142,7 +142,7 @@ Usually this token is stored in a cookie, so we need to extract it from there. A
 import type { Handler, NextFn, RequestContext } from '@ember-data/request';
 
 const MUTATION_OPS = new Set(['createRecord', 'updateRecord', 'deleteRecord']);
-const AuthHandler: Handler = {
+export const AuthHandler: Handler = {
   async request<T>(context: RequestContext, next: NextFn<T>) {
     if (MUTATION_OPS.has(context.request.op)) {
       const headers = new Headers(context.request.headers);
@@ -163,10 +163,10 @@ This handler would need to be added to request manager configuration:
 ```ts
 import RequestManager from '@ember-data/request';
 import Fetch from '@ember-data/request/fetch';
-import AuthHandler from './auth-handler';
+import { AuthHandler } from './auth-handler.ts'; // [!code focus]
 
-const manager = new RequestManager()
-  .use([AuthHandler, Fetch]);
+const manager = new RequestManager() // [!code focus]
+  .use([AuthHandler, Fetch]); // [!code focus]
 ```
 
 This way every request that was made using this request manager will have `X-CSRF-Token` header added to it when needed.

@@ -7,10 +7,10 @@ import {
   SEMVER_VERSION,
   VALID_BRANCHES,
   VALID_TRAINS,
-} from './channel';
-import { getFile } from './json-file';
-import { exec } from './cmd';
-import { gatherPackages, loadStrategy, Package } from './package';
+} from './channel.ts';
+import { getFile } from './json-file.ts';
+import { exec } from './cmd.ts';
+import { gatherPackages, loadStrategy, Package } from './package.ts';
 import path from 'path';
 
 export type LTS_TAG = `lts-${number}-${number}`;
@@ -22,6 +22,7 @@ export type GIT_TAG =
 
 export type CHANNEL_VERSIONS = {
   latest: SEMVER_VERSION;
+  'v4-latest': SEMVER_VERSION;
   beta: SEMVER_VERSION;
   canary: SEMVER_VERSION;
   lts: SEMVER_VERSION;

@@ -1,0 +1,607 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`model-to-schema transform (artifacts) > TypeScript type artifacts > generates schema and extension artifacts when model has methods and computed properties > model extension code 1`] = `
+"import Model, { attr } from '@ember-data/model';
+
+export class ProcessedModelExtension {
+  get displayName() {
+  		return \`Processed: \${this.name}\`;
+  	}
+
+  processContent() {
+  		return (this.content || '').toUpperCase();
+  	}
+}"
+`;
+
+exports[`model-to-schema transform (artifacts) > TypeScript type artifacts > generates schema and extension artifacts when model has methods and computed properties > model schema with merged types 1`] = `
+"const ProcessedModelSchema = {
+  'type': 'processed-model',
+  'legacy': true,
+  'identity': {
+    'kind': '@id',
+    'name': 'id'
+  },
+  'fields': [
+    {
+      'kind': 'attribute',
+      'name': 'name',
+      'type': 'string'
+    },
+    {
+      'kind': 'attribute',
+      'name': 'content',
+      'type': 'string'
+    }
+  ]
+};
+
+export default ProcessedModelSchema;"
+`;
+
+exports[`model-to-schema transform (artifacts) > TypeScript type artifacts > generates schema with merged types for basic models > basic schema with merged types 1`] = `
+"const UserSchema = {
+  'type': 'user',
+  'legacy': true,
+  'identity': {
+    'kind': '@id',
+    'name': 'id'
+  },
+  'fields': [
+    {
+      'kind': 'attribute',
+      'name': 'name',
+      'type': 'string'
+    },
+    {
+      'kind': 'attribute',
+      'name': 'isActive',
+      'type': 'boolean',
+      'options': {
+        'defaultValue': false
+      }
+    },
+    {
+      'kind': 'belongsTo',
+      'name': 'company',
+      'type': 'company',
+      'options': {
+        'async': false
+      }
+    },
+    {
+      'kind': 'hasMany',
+      'name': 'projects',
+      'type': 'project',
+      'options': {
+        'async': true
+      }
+    }
+  ]
+};
+
+export default UserSchema;"
+`;
+
+exports[`model-to-schema transform (artifacts) > TypeScript type artifacts > handles custom type mappings in merged schema files > custom type mappings in merged schema 1`] = `
+"const TypedModelSchema = {
+  'type': 'typed-model',
+  'legacy': true,
+  'identity': {
+    'kind': '@id',
+    'name': 'id'
+  },
+  'fields': [
+    {
+      'kind': 'attribute',
+      'name': 'id',
+      'type': 'uuid'
+    },
+    {
+      'kind': 'attribute',
+      'name': 'amount',
+      'type': 'currency'
+    },
+    {
+      'kind': 'attribute',
+      'name': 'metadata',
+      'type': 'json'
+    }
+  ]
+};
+
+export default TypedModelSchema;"
+`;
+
+exports[`model-to-schema transform (artifacts) > TypeScript type artifacts > handles relationship types correctly in merged schema files > relationship types in merged schema 1`] = `
+"const RelationshipModelSchema = {
+  'type': 'relationship-model',
+  'legacy': true,
+  'identity': {
+    'kind': '@id',
+    'name': 'id'
+  },
+  'fields': [
+    {
+      'kind': 'attribute',
+      'name': 'name',
+      'type': 'string'
+    },
+    {
+      'kind': 'belongsTo',
+      'name': 'owner',
+      'type': 'user',
+      'options': {
+        'async': false
+      }
+    },
+    {
+      'kind': 'belongsTo',
+      'name': 'company',
+      'type': 'company',
+      'options': {
+        'async': true
+      }
+    },
+    {
+      'kind': 'hasMany',
+      'name': 'attachments',
+      'type': 'file',
+      'options': {
+        'async': false
+      }
+    },
+    {
+      'kind': 'hasMany',
+      'name': 'tags',
+      'type': 'tag',
+      'options': {
+        'async': true
+      }
+    }
+  ]
+};
+
+export default RelationshipModelSchema;"
+`;
+
+exports[`model-to-schema transform (artifacts) > TypeScript type artifacts > uses unknown type for unsupported transforms > unknown types in merged schema 1`] = `
+"const UnknownTypesModelSchema = {
+  'type': 'unknown-types-model',
+  'legacy': true,
+  'identity': {
+    'kind': '@id',
+    'name': 'id'
+  },
+  'fields': [
+    {
+      'kind': 'attribute',
+      'name': 'customField',
+      'type': 'custom-transform'
+    },
+    {
+      'kind': 'attribute',
+      'name': 'anotherField',
+      'type': 'another-unknown'
+    },
+    {
+      'kind': 'attribute',
+      'name': 'knownField',
+      'type': 'string'
+    }
+  ]
+};
+
+export default UnknownTypesModelSchema;"
+`;
+
+exports[`model-to-schema transform (artifacts) > basic functionality > handles complex field options correctly > complex field options 1`] = `
+"const ComplexModelSchema = {
+  'type': 'complex-model',
+  'legacy': true,
+  'identity': {
+    'kind': '@id',
+    'name': 'id'
+  },
+  'fields': [
+    {
+      'kind': 'attribute',
+      'name': 'name',
+      'type': 'string',
+      'options': {
+        'defaultValue': 'default'
+      }
+    },
+    {
+      'kind': 'attribute',
+      'name': 'birthDate',
+      'type': 'date',
+      'options': {
+        'allowNull': true
+      }
+    },
+    {
+      'kind': 'belongsTo',
+      'name': 'owner',
+      'type': 'user',
+      'options': {
+        'async': true,
+        'inverse': 'profile',
+        'polymorphic': true
+      }
+    },
+    {
+      'kind': 'hasMany',
+      'name': 'attachments',
+      'type': 'file',
+      'options': {
+        'async': false,
+        'inverse': null,
+        'as': 'fileable'
+      }
+    }
+  ]
+};
+
+export default ComplexModelSchema;"
+`;
+
+exports[`model-to-schema transform (artifacts) > basic functionality > handles model with mixins > schema with mixins 1`] = `
+"const DocumentSchema = {
+  'type': 'document',
+  'legacy': true,
+  'identity': {
+    'kind': '@id',
+    'name': 'id'
+  },
+  'fields': [
+    {
+      'kind': 'attribute',
+      'name': 'title',
+      'type': 'string'
+    },
+    {
+      'kind': 'attribute',
+      'name': 'content',
+      'type': 'string'
+    }
+  ],
+  'traits': [
+    'fileable',
+    'timestampable'
+  ]
+};
+
+export default DocumentSchema;"
+`;
+
+exports[`model-to-schema transform (artifacts) > basic functionality > preserves TypeScript syntax in extension properties > typescript extension 1`] = `
+"import Model, { attr } from '@ember-data/model';
+import { service } from '@ember/service';
+
+import type { TypedModel } from 'test-app/data/resources/typed-model.schema';
+
+export interface TypedModelExtension extends TypedModel {}
+
+export class TypedModelExtension {
+  @service declare router: RouterService
+
+  complexMethod(): Promise<void> {
+  		return new Promise(resolve => {
+  			setTimeout(() => resolve(), 1000);
+  		});
+  	}
+
+  get computedValue(): string {
+  		return \`Processed: \${this.name}\`;
+  	}
+}
+
+export type TypedModelExtensionSignature = typeof TypedModelExtension;"
+`;
+
+exports[`model-to-schema transform (artifacts) > basic functionality > produces schema and extension artifacts for basic model > artifact metadata 1`] = `
+[
+  {
+    "name": "UserSchema",
+    "suggestedFileName": "user.schema.js",
+    "type": "schema",
+  },
+  {
+    "name": "UserExtension",
+    "suggestedFileName": "user.ext.js",
+    "type": "resource-extension",
+  },
+]
+`;
+
+exports[`model-to-schema transform (artifacts) > basic functionality > produces schema and extension artifacts for basic model > extension code 1`] = `
+"import Model, { attr, hasMany, belongsTo } from '@ember-data/model';
+
+export class UserExtension {
+  get displayName() {
+  		return this.name || this.email;
+  	}
+
+  async save() {
+  		return super.save();
+  	}
+}"
+`;
+
+exports[`model-to-schema transform (artifacts) > basic functionality > produces schema and extension artifacts for basic model > schema code 1`] = `
+"const UserSchema = {
+  'type': 'user',
+  'legacy': true,
+  'identity': {
+    'kind': '@id',
+    'name': 'id'
+  },
+  'fields': [
+    {
+      'kind': 'attribute',
+      'name': 'name',
+      'type': 'string'
+    },
+    {
+      'kind': 'attribute',
+      'name': 'email',
+      'type': 'string'
+    },
+    {
+      'kind': 'attribute',
+      'name': 'isActive',
+      'type': 'boolean',
+      'options': {
+        'defaultValue': false
+      }
+    },
+    {
+      'kind': 'belongsTo',
+      'name': 'company',
+      'type': 'company',
+      'options': {
+        'async': false,
+        'inverse': null
+      }
+    },
+    {
+      'kind': 'hasMany',
+      'name': 'projects',
+      'type': 'project',
+      'options': {
+        'async': true,
+        'inverse': 'owner'
+      }
+    }
+  ]
+};
+
+export default UserSchema;"
+`;
+
+exports[`model-to-schema transform (artifacts) > basic functionality > supports alternate import sources > custom import source 1`] = `
+"const CustomModelSchema = {
+  'type': 'custom-model',
+  'legacy': true,
+  'identity': {
+    'kind': '@id',
+    'name': 'id'
+  },
+  'fields': [
+    {
+      'kind': 'attribute',
+      'name': 'name',
+      'type': 'string'
+    },
+    {
+      'kind': 'hasMany',
+      'name': 'items',
+      'type': 'item',
+      'options': {
+        'async': false
+      }
+    }
+  ]
+};
+
+export default CustomModelSchema;"
+`;
+
+exports[`model-to-schema transform (artifacts) > custom type mappings > applies custom type mappings to attribute types > custom type mappings in merged schema 1`] = `
+"const CustomTypesModelSchema = {
+  'type': 'custom-types-model',
+  'legacy': true,
+  'identity': {
+    'kind': '@id',
+    'name': 'id'
+  },
+  'fields': [
+    {
+      'kind': 'attribute',
+      'name': 'id',
+      'type': 'uuid'
+    },
+    {
+      'kind': 'attribute',
+      'name': 'createdAt',
+      'type': 'timestamp'
+    },
+    {
+      'kind': 'attribute',
+      'name': 'price',
+      'type': 'currency'
+    }
+  ]
+};
+
+export default CustomTypesModelSchema;"
+`;
+
+exports[`model-to-schema transform (artifacts) > custom type mappings > falls back to unknown for unmapped custom types > unknown fallback for unmapped types 1`] = `
+"const UnmappedTypesModelSchema = {
+  'type': 'unmapped-types-model',
+  'legacy': true,
+  'identity': {
+    'kind': '@id',
+    'name': 'id'
+  },
+  'fields': [
+    {
+      'kind': 'attribute',
+      'name': 'field1',
+      'type': 'unknown-transform'
+    },
+    {
+      'kind': 'attribute',
+      'name': 'field2',
+      'type': 'another-unknown'
+    }
+  ]
+};
+
+export default UnmappedTypesModelSchema;"
+`;
+
+exports[`model-to-schema transform (artifacts) > edge cases > handles aliased imports correctly > aliased imports 1`] = `
+"const AliasedModelSchema = {
+  'type': 'aliased-model',
+  'legacy': true,
+  'identity': {
+    'kind': '@id',
+    'name': 'id'
+  },
+  'fields': [
+    {
+      'kind': 'attribute',
+      'name': 'name',
+      'type': 'string'
+    },
+    {
+      'kind': 'hasMany',
+      'name': 'items',
+      'type': 'item'
+    }
+  ]
+};
+
+export default AliasedModelSchema;"
+`;
+
+exports[`model-to-schema transform (artifacts) > edge cases > preserves complex object literal options > complex options 1`] = `
+"const ComplexOptionsModelSchema = {
+  'type': 'complex-options-model',
+  'legacy': true,
+  'identity': {
+    'kind': '@id',
+    'name': 'id'
+  },
+  'fields': [
+    {
+      'kind': 'belongsTo',
+      'name': 'owner',
+      'type': 'user',
+      'options': {
+        'async': true,
+        'inverse': 'profile',
+        'polymorphic': false,
+        'resetOnRemoteUpdate': false
+      }
+    }
+  ]
+};
+
+export default ComplexOptionsModelSchema;"
+`;
+
+exports[`model-to-schema transform (artifacts) > mirror flag > uses configured emberDataImportSource for HasMany types in merged schema > custom EmberData source for HasMany types in merged schema 1`] = `
+"const RelationshipModelSchema = {
+  'type': 'relationship-model',
+  'legacy': true,
+  'identity': {
+    'kind': '@id',
+    'name': 'id'
+  },
+  'fields': [
+    {
+      'kind': 'attribute',
+      'name': 'name',
+      'type': 'string'
+    },
+    {
+      'kind': 'hasMany',
+      'name': 'tags',
+      'type': 'tag',
+      'options': {
+        'async': false
+      }
+    },
+    {
+      'kind': 'hasMany',
+      'name': 'projects',
+      'type': 'project',
+      'options': {
+        'async': true
+      }
+    },
+    {
+      'kind': 'belongsTo',
+      'name': 'owner',
+      'type': 'user',
+      'options': {
+        'async': false
+      }
+    }
+  ]
+};
+
+export default RelationshipModelSchema;"
+`;
+
+exports[`model-to-schema transform (artifacts) > mixin handling > extracts mixin names and converts them to trait references > single mixin schema 1`] = `
+"const DocumentSchema = {
+  'type': 'document',
+  'legacy': true,
+  'identity': {
+    'kind': '@id',
+    'name': 'id'
+  },
+  'fields': [
+    {
+      'kind': 'attribute',
+      'name': 'title',
+      'type': 'string'
+    }
+  ],
+  'traits': [
+    'fileable'
+  ]
+};
+
+export default DocumentSchema;"
+`;
+
+exports[`model-to-schema transform (artifacts) > mixin handling > handles multiple mixins correctly > multiple mixins schema 1`] = `
+"const ComplexDocumentSchema = {
+  'type': 'complex-document',
+  'legacy': true,
+  'identity': {
+    'kind': '@id',
+    'name': 'id'
+  },
+  'fields': [
+    {
+      'kind': 'attribute',
+      'name': 'title',
+      'type': 'string'
+    }
+  ],
+  'traits': [
+    'fileable',
+    'timestampable',
+    'auditable'
+  ]
+};
+
+export default ComplexDocumentSchema;"
+`;

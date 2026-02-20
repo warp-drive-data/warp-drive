@@ -13,13 +13,14 @@ export function createConfig(options, resolve) {
   options.fixModule = options.fixModule ?? true;
   options.rollupTypes = options.rollupTypes ?? false;
   options.compileTypes = options.compileTypes ?? true;
+  options.outDir = options.outDir ?? 'dist';
 
   return defineConfig({
     esbuild: options.esbuild ?? false,
     logLevel: 'error',
     reportCompressedSize: false,
     build: {
-      outDir: 'dist',
+      outDir: options.outDir,
       emptyOutDir: options.emptyOutDir ?? true,
       target: options.target ?? ['esnext', 'firefox121'],
       minify: false,

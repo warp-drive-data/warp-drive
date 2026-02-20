@@ -1,10 +1,10 @@
-import { PROJECT_ROOT, TARBALL_DIR, toTarballName } from './generate-tarballs';
+import { PROJECT_ROOT, TARBALL_DIR, toTarballName } from './generate-tarballs.ts';
 
 import { Glob } from 'bun';
-import { exec } from '../../../utils/cmd';
+import { exec } from '../../../utils/cmd.ts';
 import path from 'path';
 import fs from 'fs';
-import { APPLIED_STRATEGY, Package } from '../../../utils/package';
+import { APPLIED_STRATEGY, Package } from '../../../utils/package.ts';
 
 export async function generateMirrorTarballs(
   config: Map<string, string | number | boolean | null>,

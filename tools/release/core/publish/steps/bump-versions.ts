@@ -1,6 +1,6 @@
 import chalk from 'chalk';
-import { exec } from '../../../utils/cmd';
-import { APPLIED_STRATEGY, Package } from '../../../utils/package';
+import { exec } from '../../../utils/cmd.ts';
+import { APPLIED_STRATEGY, Package } from '../../../utils/package.ts';
 
 /**
  * This function will consume the strategy, bump the versions of all packages,
@@ -41,8 +41,7 @@ export async function bumpAllPackages(
   else commitCommand = `pnpm install && ` + commitCommand;
   commitCommand += ` && git tag v${nextVersion}`;
 
-  // Let the github action determine whether to push the tag to remote
-  if (!dryRun && config.get('upstream')) {
+  if (!dryRun && config.get('upstream') && willPublish) {
     commitCommand += ` && git push && git push origin v${nextVersion}`;
   }
 

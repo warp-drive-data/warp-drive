@@ -5,10 +5,14 @@ order: 1
 # LegacyMode (recommended)
 
 :::tip 💡 **Using LegacyMode is Our Current Recommendation for Most Apps**
+Don't confuse **LegacyMode** with **legacy packages**.
+
+**You can (and should) use LegacyMode WITHOUT using legacy packages.** LegacyMode is part of modern WarpDrive and provides a stable, well-tested API while the team finalizes PolarisMode for V6.
+
 In the upcoming V6 our recommendation will change to [PolarisMode (preview)](./polaris-mode.md)
 :::
 
-**LegacyMode** can be used to emulate the behaviors and capabilities of The `Model` class from `@ewarp-drive/legacy/model` that was the default way to define reactive objects with schemas for much of WarpDrive's history.
+**LegacyMode** can be used to emulate the behaviors and capabilities of The `Model` class from `@warp-drive/legacy/model` that was the default way to define reactive objects with schemas for much of WarpDrive's history.
 
 The advantage of using ReactiveResource in LegacyMode is that it allows adopting many newer schema-driven features before fully refactoring away from behaviors of Model that won't be supported by PolarisMode.
 
@@ -120,4 +124,3 @@ Further Reading
 
 - [The Two Store Approach](../../../migrating/two-store-migration.md). This approach enables migrating while also upgrading versions and starting relatively fresh. This enables the same ResourceType (for instance `user`) to be used as a Model in some areas of the app and via ReactiveResource in others by sourcing data from separately configured store instances.
 - [The V4 to V5 Migration Guide](../../../migrating/index.md)
-

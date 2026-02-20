@@ -38,8 +38,8 @@ if (DEBUG) {
   IS_MAYBE_MIRAGE = () =>
     Boolean(
       typeof window !== 'undefined' &&
-        ((window as { server?: { pretender: unknown } }).server?.pretender ||
-          window.fetch.toString().replace(/\s+/g, '') !== 'function fetch() { [native code] }'.replace(/\s+/g, ''))
+      ((window as { server?: { pretender: unknown } }).server?.pretender ||
+        window.fetch.toString().replace(/\s+/g, '') !== 'function fetch() { [native code] }'.replace(/\s+/g, ''))
     );
 }
 
@@ -152,7 +152,7 @@ const Fetch = {
 
     context.setResponse(response);
 
-    if (response.status === 204) {
+    if (response.status === 204 || context.request.method === 'HEAD') {
       return null as T;
     }
 

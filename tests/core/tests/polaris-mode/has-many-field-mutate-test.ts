@@ -167,5 +167,9 @@ module('Mutate | hasMany in linksMode', function (hooks) {
     assert.equal(editable.friends?.[1].id, '5', 'friends[1].id is accessible');
     assert.arrayEquals(editable.friends?.map((friend) => friend.id)!, ['6', '5', '2', '3', '4'], 'friends are correct');
     assertRemoteState();
+
+    // splice all records, currently failing, omitting deleteCount does not work
+    editable.friends?.splice(0);
+    assert.equal(editable.friends?.length, 0, 'friends has 0 items after splice(0)');
   });
 });

@@ -28,6 +28,11 @@
 
 # @ember-data/store
 
+> [!WARNING]
+> **⚠️ This is a legacy package** not recommended for new applications.
+>
+> Use [@warp-drive/core](https://warp-drive.io/api/@warp-drive/core/) instead.
+
 <p align="center">⚡️ The lightweight reactive data library for JavaScript applications</p>
 
 This package provides [*Ember***Data**](https://github.com/warp-drive-data/warp-drive/)'s `Store` class.

@@ -46,7 +46,7 @@
       "items": {
         "type": "string"
       },
-      "description": "List of intermediate model class import paths that should be converted to traits (e.g., ['soxhub-client/core/base-model', 'soxhub-client/core/data-field-model'])"
+      "description": "List of intermediate model class import paths that should be converted to traits (e.g., ['my-app/core/base-model', 'my-app/core/data-field-model'])"
     },
     "modelImportSource": {
       "type": "string",
@@ -112,14 +112,6 @@
       "type": "string",
       "description": "Base import path for trait type imports (optional, defaults to relative imports)"
     },
-    "extensionsDir": {
-      "type": "string",
-      "description": "Directory to write generated Extensions to (required for all transforms)"
-    },
-    "extensionsImport": {
-      "type": "string",
-      "description": "Base import path for extension type imports (optional, defaults to relative imports)"
-    },
     "resourcesDir": {
       "type": "string",
       "description": "Directory to write generated Resources to (required for model-to-schema transforms)"
@@ -155,6 +147,44 @@
     "prettierConfigPath": {
       "type": "string",
       "description": "Path to Prettier configuration file (optional, uses project defaults)"
+    },
+    "importSubstitutes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "import": {
+            "type": "string",
+            "description": "Import path for the custom base class (e.g., 'my-app/models/base-model')"
+          },
+          "extension": {
+            "type": "string",
+            "description": "Extension name to add to models extending this base class"
+          },
+          "trait": {
+            "type": "string",
+            "description": "Trait name to add to models extending this base class"
+          }
+        },
+        "required": ["import"]
+      },
+      "description": "Array of custom base class configurations. Models importing from these paths are recognized as model files, with optional trait/extension injection."
+    },
+    "storeType": {
+      "type": "object",
+      "description": "Configuration for the Store type to include in generated intermediate model traits. If not specified, store property is not added to traits.",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name of the Store type (e.g., 'Store')",
+          "default": "Store"
+        },
+        "import": {
+          "type": "string",
+          "description": "Import path for the Store type (e.g., 'my-app/services/store')"
+        }
+      },
+      "required": ["import"]
     }
   },
   "additionalProperties": false

@@ -7,11 +7,16 @@
   "debug": false,
   "mirror": false,
   "emberDataImportSource": "@ember-data/model",
-  "baseModelImportPath": "my-app/core/base-model",
+  "importSubstitutes": [
+    {
+      "import": "my-app/core/base-model",
+      "trait": "base-model-trait",
+      "extension": "base-model-extension"
+    }
+  ],
   "modelImportSource": "my-app/models",
   "resourcesImport": "my-app/data/resources",
   "traitsDir": "./generated/traits",
-  "extensionsDir": "./generated/extensions",
   "resourcesDir": "./generated/schemas",
   "typeMapping": {
     "uuid": "string",

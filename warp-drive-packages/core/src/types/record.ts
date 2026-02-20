@@ -136,9 +136,9 @@ type ExtractUnion<
 > = Exclude<
   IncludePrefix extends true
     ? // if we want to include prefix, we union with the prefix. Outer Exclude will filter any "NONE" types
-      _ExtractUnion<MAX_DEPTH, T, IncludePrefix, Ignore, Pre, DEPTH> | Pre
+        _ExtractUnion<MAX_DEPTH, T, IncludePrefix, Ignore, Pre, DEPTH> | Pre
     : // Else we just union the types.
-      _ExtractUnion<MAX_DEPTH, T, IncludePrefix, Ignore, Pre, DEPTH> | T[typeof Type],
+        _ExtractUnion<MAX_DEPTH, T, IncludePrefix, Ignore, Pre, DEPTH> | T[typeof Type],
   NONE
 >;
 

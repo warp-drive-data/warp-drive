@@ -1,7 +1,7 @@
 {
   "name": "@ember-data/model",
-  "version": "5.8.0-alpha.40",
-  "description": "A basic Ember implementation of a resource presentation layer for use with @ember-data/store",
+  "version": "5.9.0-alpha.8",
+  "description": "(Legacy) Ember implementation of a resource presentation layer for use with @ember-data/store",
   "keywords": [
     "ember-addon"
   ],
@@ -15,7 +15,7 @@
   "directories": {},
   "scripts": {
     "lint": "eslint . --quiet --cache --cache-strategy=content",
-    "build:pkg": "vite build;",
+    "build:pkg": "vite build",
     "prepack": "pnpm run build:pkg",
     "sync": "echo \"syncing\"",
     "start": "vite"
@@ -50,7 +50,7 @@
   "peerDependencies": {},
   "dependencies": {
     "@ember/edition-utils": "^1.2.0",
-    "@embroider/macros": "^1.18.1",
+    "@embroider/macros": "^1.19.6",
     "ember-cli-string-utils": "^1.1.0",
     "ember-cli-test-info": "^1.0.0",
     "inflection": "~3.0.2",
@@ -65,11 +65,10 @@
     "@babel/preset-typescript": "^7.27.1",
     "@warp-drive/internal-config": "workspace:*",
     "expect-type": "^1.2.2",
-    "typescript": "^5.9.2",
-    "vite": "^7.1.3"
+    "typescript": "^5.9.3",
+    "vite": "^7.3.1"
   },
   "volta": {
     "extends": "../../package.json"
-  },
-  "packageManager": "pnpm@10.15.0"
+  }
 }

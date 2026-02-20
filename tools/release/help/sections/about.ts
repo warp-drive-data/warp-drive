@@ -1,4 +1,4 @@
-import { color, indent, rebalanceLines } from '../-utils';
+import { color, indent, rebalanceLines } from '../-utils.ts';
 
 export const ABOUT = new Set([
   'about',

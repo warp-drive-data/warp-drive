@@ -1,8 +1,5 @@
 {
   "include": ["app/**/*", "config/**/*", "tests/**/*", "../../@types/ember-data-qunit-asserts"],
-  "glint": {
-    "environment": ["ember-loose", "ember-template-imports"]
-  },
   "compilerOptions": {
     "lib": ["DOM", "ESNext"],
     "module": "esnext",
@@ -25,7 +22,7 @@
     "experimentalDecorators": true,
     "incremental": true,
     "declaration": true,
-    "types": ["ember-source/types"],
+    "types": ["@glint/ember-tsc/types", "ember-source/types"],
     "paths": {
       "main-test-app/*": ["./app/*"],
       "@ember-data/adapter": ["../../packages/adapter/unstable-preview-types"],

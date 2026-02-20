@@ -365,8 +365,10 @@ export interface ResolvedRequest<RT> extends ResolvedPromise<RT> {
  * Extends the {@link RejectedPromise} interface.
  *
  */
-export interface RejectedRequest<RT, E extends StructuredErrorDocument = StructuredErrorDocument>
-  extends RejectedPromise<E> {
+export interface RejectedRequest<
+  RT,
+  E extends StructuredErrorDocument = StructuredErrorDocument,
+> extends RejectedPromise<E> {
   /**
    * Retries the request with high (blocking) priority. This is the
    * same as having passed `cacheOptions.reload = true` on the original

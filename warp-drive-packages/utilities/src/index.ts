@@ -46,7 +46,7 @@ const CONFIG: BuildURLConfig = getOrSetGlobal('CONFIG', {
  * Example:
  *
  * ```ts
- * import { setBuildURLConfig } from '@ember-data/request-utils';
+ * import { setBuildURLConfig } from '@warp-drive/utilities';
  *
  * setBuildURLConfig({
  *   host: 'https://api.example.com',
@@ -201,7 +201,7 @@ function resourcePathForType(options: UrlOptions): string {
  * Usage:
  *
  * ```ts
- * import { buildBaseURL } from '@ember-data/request-utils';
+ * import { buildBaseURL } from '@warp-drive/utilities';
  *
  * const url = buildBaseURL({
  *   host: 'https://api.example.com',

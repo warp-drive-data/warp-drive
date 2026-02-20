@@ -1,6 +1,6 @@
 {
   "name": "warp-drive__schema",
-  "version": "5.8.0-alpha.40",
+  "version": "5.9.0-alpha.8",
   "private": true,
   "description": "Tests for the @warp-drive/schema package",
   "keywords": [],
@@ -15,6 +15,5 @@
   "scripts": {},
   "volta": {
     "extends": "../../package.json"
-  },
-  "packageManager": "pnpm@10.15.0"
+  }
 }

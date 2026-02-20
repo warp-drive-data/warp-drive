@@ -28,9 +28,11 @@
 
 
 <h3 align="center">🛠️ @warp-drive/build-config</h3>
+
 <p align="center">Enables providing a build config to optimize application assets</p>
 
-Note - you do not need to install or use this package if using @warp-drive/core.
+> [!WARNING]
+> **⚠️ This package** has been merged into [@warp-drive/core](https://warp-drive.io/api/@warp-drive/core/) and is not recommended for new applications.
 
 **Tagged Releases**
 

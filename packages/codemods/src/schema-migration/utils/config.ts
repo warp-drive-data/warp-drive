@@ -17,16 +17,18 @@ export interface ConfigOptions {
   resourcesImport?: string;
   traitsDir?: string;
   traitsImport?: string;
-  extensionsDir?: string;
-  extensionsImport?: string;
   resourcesDir?: string;
   typeMapping?: Record<string, string> | string;
   modelsOnly?: boolean;
   mixinsOnly?: boolean;
   skipProcessed?: boolean;
+  generateExternalResources?: boolean;
+  importSubstitutes?: Array<{ import: string; extension?: string; trait?: string }>;
   config?: string;
   input?: string;
+  inputDir?: string;
   output?: string;
+  outputDir?: string;
   runPostTransformLinting?: boolean;
   runPostTransformPrettier?: boolean;
   eslintConfigPath?: string;
@@ -52,7 +54,8 @@ export function loadConfig(configPath: string): ConfigOptions {
     const config = JSON.parse(content) as FullConfig;
 
     // Remove metadata fields that shouldn't be used as CLI options
-    const { $schema: _schema, version: _version, description: _description, ...options } = config;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { $schema, version, description, ...options } = config;
 
     // Resolve relative paths in config relative to the config file's directory
     const resolvedOptions = resolveConfigPaths(options, dirname(configPath));
@@ -84,9 +87,10 @@ export function saveConfig(configPath: string, options: ConfigOptions): void {
 
 /**
  * Merge CLI options with config file options, with CLI taking precedence
+ * Generic version that preserves the CLI options type
  */
-export function mergeOptions(cliOptions: ConfigOptions, configOptions: ConfigOptions = {}): ConfigOptions {
-  const merged: ConfigOptions = { ...configOptions };
+export function mergeOptions<T extends ConfigOptions>(cliOptions: T, configOptions: ConfigOptions = {}): T {
+  const merged = { ...configOptions } as T;
 
   // CLI options override config file options
   for (const [key, value] of Object.entries(cliOptions)) {
@@ -105,7 +109,9 @@ export async function generateConfig(): Promise<ConfigOptions> {
   // Dynamic import to avoid type issues with inquirer
   const { default: inquirer } = await import('inquirer');
 
+  // eslint-disable-next-line no-console
   console.log('🔧 Warp Drive Codemod Configuration Generator\n');
+  // eslint-disable-next-line no-console
   console.log('This tool will help you create a configuration file for consistent codemod execution.\n');
 
   // Default to configuring for both transform types
@@ -148,21 +154,9 @@ export async function generateConfig(): Promise<ConfigOptions> {
     const modelAnswers: Record<string, unknown> = await inquirer.prompt([
       {
         type: 'input',
-        name: 'baseModelImportPath',
-        message: 'Base model import path to recognize (leave empty for default):',
-        default: '',
-      },
-      {
-        type: 'input',
         name: 'resourcesDir',
         message: 'Directory to write generated Schemas to:',
-        default: './schemas',
-      },
-      {
-        type: 'input',
-        name: 'extensionsDir',
-        message: 'Directory to write generated Extensions to:',
-        default: './extensions',
+        default: './resources',
       },
     ]);
     Object.assign(answers, modelAnswers);
@@ -176,13 +170,6 @@ export async function generateConfig(): Promise<ConfigOptions> {
         name: 'traitsDir',
         message: 'Directory to write generated trait schemas to:',
         default: './traits',
-      },
-      {
-        type: 'input',
-        name: 'extensionsDir',
-        message: 'Directory to write generated Extensions to (if not already set):',
-        default: (answers.extensionsDir as string) || './extensions',
-        when: !answers.extensionsDir,
       },
     ]);
     Object.assign(answers, mixinAnswers);
@@ -228,6 +215,7 @@ export async function generateConfig(): Promise<ConfigOptions> {
 
   const typeMapping: Record<string, string> = {};
   if (typeMappingAnswer.configureTypeMapping) {
+    // eslint-disable-next-line no-console
     console.log('\nConfigure type mappings for custom EmberData transforms:');
     let addMore = true;
     while (addMore) {
@@ -262,7 +250,8 @@ export async function generateConfig(): Promise<ConfigOptions> {
   }
 
   // Clean up the answers object and remove empty string values
-  const { transformType: _transformType, ...config } = answers;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { transformType, ...config } = answers;
 
   const finalConfig: ConfigOptions = {
     ...(Object.keys(typeMapping).length > 0 && { typeMapping }),
@@ -300,15 +289,9 @@ export function validateConfigForTransform(
     if (!config.resourcesDir) {
       errors.push('resourcesDir is required for model-to-schema transforms');
     }
-    if (!config.extensionsDir) {
-      errors.push('extensionsDir is required for model-to-schema transforms');
-    }
   } else if (transformType === 'mixin-to-schema') {
     if (!config.traitsDir) {
       errors.push('traitsDir is required for mixin-to-schema transforms');
-    }
-    if (!config.extensionsDir) {
-      errors.push('extensionsDir is required for mixin-to-schema transforms');
     }
   }
 
@@ -316,23 +299,19 @@ export function validateConfigForTransform(
 }
 
 /**
- * Resolve relative paths in configuration options relative to a base directory
- * @param config The configuration options
- * @param baseDir The base directory to resolve relative paths against (typically the config file's directory)
+ * List of config properties that contain paths
  */
-export function resolveConfigPaths(config: ConfigOptions, baseDir: string): ConfigOptions {
+const PATH_PROPERTIES: Array<keyof ConfigOptions> = ['traitsDir', 'resourcesDir', 'modelSourceDir', 'mixinSourceDir'];
+
+/**
+ * Internal helper to resolve paths in configuration options relative to a base directory
+ * @param config The configuration options
+ * @param baseDir The base directory to resolve relative paths against
+ */
+function resolvePathsInternal(config: ConfigOptions, baseDir: string): ConfigOptions {
   const resolved = { ...config };
 
-  // List of config properties that contain paths
-  const pathProperties: Array<keyof ConfigOptions> = [
-    'traitsDir',
-    'extensionsDir',
-    'resourcesDir',
-    'modelSourceDir',
-    'mixinSourceDir',
-  ];
-
-  for (const prop of pathProperties) {
+  for (const prop of PATH_PROPERTIES) {
     const value = resolved[prop];
     if (typeof value === 'string' && value) {
       // If the path is relative, resolve it relative to the base directory
@@ -361,46 +340,19 @@ export function resolveConfigPaths(config: ConfigOptions, baseDir: string): Conf
 }
 
 /**
+ * Resolve relative paths in configuration options relative to a base directory
+ * @param config The configuration options
+ * @param baseDir The base directory to resolve relative paths against (typically the config file's directory)
+ */
+export function resolveConfigPaths(config: ConfigOptions, baseDir: string): ConfigOptions {
+  return resolvePathsInternal(config, baseDir);
+}
+
+/**
  * Normalize directory paths from CLI arguments
  * @param options The configuration options from CLI
  * @param cwd The current working directory
  */
 export function normalizeCliPaths(options: ConfigOptions, cwd: string = process.cwd()): ConfigOptions {
-  const normalized = { ...options };
-
-  // List of config properties that contain paths
-  const pathProperties: Array<keyof ConfigOptions> = [
-    'traitsDir',
-    'extensionsDir',
-    'resourcesDir',
-    'modelSourceDir',
-    'mixinSourceDir',
-  ];
-
-  for (const prop of pathProperties) {
-    const value = normalized[prop];
-    if (typeof value === 'string' && value) {
-      // If the path is relative, resolve it relative to cwd
-      if (!isAbsolute(value)) {
-        (normalized as Record<string, unknown>)[prop] = resolve(cwd, value);
-      }
-    }
-  }
-
-  // Handle additionalModelSources and additionalMixinSources arrays
-  if (normalized.additionalModelSources) {
-    normalized.additionalModelSources = normalized.additionalModelSources.map((source) => ({
-      ...source,
-      dir: isAbsolute(source.dir) ? source.dir : resolve(cwd, source.dir),
-    }));
-  }
-
-  if (normalized.additionalMixinSources) {
-    normalized.additionalMixinSources = normalized.additionalMixinSources.map((source) => ({
-      ...source,
-      dir: isAbsolute(source.dir) ? source.dir : resolve(cwd, source.dir),
-    }));
-  }
-
-  return normalized;
+  return resolvePathsInternal(options, cwd);
 }

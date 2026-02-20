@@ -1,5 +1,5 @@
-import { JSONFile, getFile } from './json-file';
-import { NPM_DIST_TAG, SEMVER_VERSION, STRATEGY_TYPE, TYPE_STRATEGY } from './channel';
+import { JSONFile, getFile } from './json-file.ts';
+import { NPM_DIST_TAG, SEMVER_VERSION, STRATEGY_TYPE, TYPE_STRATEGY } from './channel.ts';
 import { Glob } from 'bun';
 import path from 'path';
 export class Package {

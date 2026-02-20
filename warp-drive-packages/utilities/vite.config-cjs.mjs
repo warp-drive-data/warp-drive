@@ -18,6 +18,7 @@ export default createConfig(
     emptyOutDir: false,
     fixModule: false,
     compileTypes: false,
+    outDir: 'cjs-dist',
   },
   import.meta.resolve
 );

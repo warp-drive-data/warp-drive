@@ -1,6 +1,6 @@
 {
   "name": "example-app-ember",
-  "version": "5.8.0-alpha.40",
+  "version": "5.9.0-alpha.8",
   "private": true,
   "type": "module",
   "description": "Demos the incremental adoption of new EmberData for JSON:API",
@@ -29,7 +29,7 @@
     "start": "vite",
     "start:server": "node serve.js",
     "lint": "eslint . --quiet --cache --cache-strategy=content",
-    "check:types": "tsc --noEmit",
+    "check:types": "ember-tsc --noEmit",
     "test:examples": "vite build --mode development && testem ci"
   },
   "devDependencies": {
@@ -43,17 +43,16 @@
     "@ember/test-helpers": "5.2.0",
     "@ember/test-waiters": "^4.1.1",
     "@embroider/compat": "^4.1.3",
-    "@embroider/core": "^4.1.3",
-    "@embroider/vite": "^1.2.0",
+    "@embroider/core": "^4.4.2",
+    "@embroider/vite": "^1.5.0",
     "ember-strict-application-resolver": "^0.1.0",
     "@rollup/plugin-babel": "^6.0.4",
     "babel-plugin-ember-template-compilation": "^2.4.1",
-    "@glint/core": "alpha",
-    "@glint/environment-ember-loose": "alpha",
-    "@glint/environment-ember-template-imports": "alpha",
-    "@glint/template": "alpha",
+    "@glint/ember-tsc": "^1.0.9",
+    "@glint/template": "^1.7.3",
+    "@glint/tsserver-plugin": "^2.0.3",
     "@glimmer/component": "^2.0.0",
-    "@html-next/vertical-collection": "github:NullVoxPopuli/vertical-collection#upgrade-raf-scheduler&path:vertical-collection",
+    "@html-next/vertical-collection": "^5.0.0",
     "@types/morgan": "^1.9.10",
     "@warp-drive/internal-config": "workspace:*",
     "@warp-drive/ember": "workspace:*",
@@ -64,7 +63,7 @@
     "ember-page-title": "^9.0.3",
     "ember-qunit": "^9.0.3",
     "decorator-transforms": "^2.3.0",
-    "ember-source": "~6.6.0",
+    "ember-source": "~6.10.0",
     "ember-source-channel-url": "^3.0.0",
     "ember-try": "^4.0.0",
     "express": "^5.1.0",
@@ -73,15 +72,14 @@
     "qunit": "^2.20.1",
     "qunit-console-grouper": "^0.3.0",
     "qunit-dom": "^3.5.0",
-    "typescript": "^5.9.2",
+    "typescript": "^5.9.3",
     "testem": "^3.16.0",
-    "vite": "^7.1.3"
+    "vite": "^7.3.1"
   },
   "ember": {
     "edition": "octane"
   },
   "volta": {
     "extends": "../../package.json"
-  },
-  "packageManager": "pnpm@10.15.0"
+  }
 }

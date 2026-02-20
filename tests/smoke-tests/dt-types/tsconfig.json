@@ -1,6 +1,5 @@
 {
   "include": ["app/**/*", "config/**/*", "tests/**/*"],
-  "glint": { "environment": [] },
   "compilerOptions": {
     "lib": ["DOM", "ESNext"],
     "module": "esnext",
@@ -22,7 +21,7 @@
     "incremental": true,
     "noEmit": true,
     "declaration": false,
-    "types": ["@embroider/core/virtual"],
+    "types": ["@embroider/core/virtual", "@glint/ember-tsc/types"],
     "paths": {
       "vite-basic-compat/*": ["./app/*"],
       "vite-basic-compat/tests/*": ["./tess/*"],

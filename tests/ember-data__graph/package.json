@@ -1,6 +1,6 @@
 {
   "name": "ember-data__graph",
-  "version": "5.8.0-alpha.40",
+  "version": "5.9.0-alpha.8",
   "private": true,
   "description": "Provides tests for @ember-data/graph",
   "keywords": [],
@@ -33,7 +33,7 @@
     "@ember/test-helpers": "5.2.0",
     "@ember/test-waiters": "^4.1.1",
     "@embroider/addon-shim": "^1.10.0",
-    "@embroider/macros": "^1.18.1",
+    "@embroider/macros": "^1.19.6",
     "@glimmer/component": "^2.0.0",
     "@warp-drive/core": "workspace:*",
     "@warp-drive/legacy": "workspace:*",
@@ -42,8 +42,8 @@
     "@warp-drive/ember": "workspace:*",
     "@warp-drive/json-api": "workspace:*",
     "@warp-drive/utilities": "workspace:*",
-    "ember-auto-import": "2.10.0",
-    "ember-cli": "~6.6.0",
+    "ember-auto-import": "^2.12.0",
+    "ember-cli": "~6.10.0",
     "ember-cli-babel": "^8.2.0",
     "ember-cli-dependency-checker": "^3.3.3",
     "ember-cli-htmlbars": "^6.3.0",
@@ -53,12 +53,12 @@
     "ember-load-initializers": "^3.0.1",
     "ember-maybe-import-regenerator": "^1.0.0",
     "ember-resolver": "^13.1.1",
-    "ember-source": "~6.6.0",
+    "ember-source": "~6.10.0",
     "ember-source-channel-url": "^3.0.0",
     "ember-try": "^4.0.0",
     "loader.js": "^4.7.0",
     "silent-error": "^1.1.1",
-    "typescript": "^5.9.2",
+    "typescript": "^5.9.3",
     "webpack": "^5.101.3"
   },
   "ember": {
@@ -66,6 +66,5 @@
   },
   "volta": {
     "extends": "../../package.json"
-  },
-  "packageManager": "pnpm@10.15.0"
+  }
 }

@@ -69,15 +69,24 @@ function formatMessage(raw: unknown, sanitize = (message: string) => message): s
   return Bun.inspect(raw);
 }
 
-const formatForConsole = winstonFormat.printf((info: Logform.TransformableInfo) => {
-  const { level, label, timestamp } = info as PrintInfo;
-  return `${chalk.gray(timestamp)} [${label}] ${level}: ${formatMessage(info)}`;
+function createFormatter(options: {
+  formatTimestamp: (timestamp: string) => string;
+  sanitize?: (message: string) => string;
+}) {
+  return winstonFormat.printf((info: Logform.TransformableInfo) => {
+    const { level, label, timestamp } = info as PrintInfo;
+    assert(typeof timestamp === 'string', `Expected timestamp value to be a string. Instead was ${typeof timestamp}`);
+    return `${options.formatTimestamp(timestamp)} [${label}] ${level}: ${formatMessage(info, options.sanitize)}`;
+  });
+}
+
+const formatForConsole = createFormatter({
+  formatTimestamp: (timestamp) => chalk.gray(timestamp),
 });
 
-const formatForFile = winstonFormat.printf((info: Logform.TransformableInfo) => {
-  const { level, label, timestamp } = info as PrintInfo;
-  assert(typeof timestamp === 'string', `Expected timestamp value to be a string. Instead was ${typeof timestamp}`);
-  return `${timestamp} [${label}] ${level}: ${formatMessage(info, stripAnsi)}`;
+const formatForFile = createFormatter({
+  formatTimestamp: (timestamp) => timestamp,
+  sanitize: stripAnsi,
 });
 
 /**

@@ -1,8 +1,5 @@
 {
-  "include": ["app/**/*", "config/**/*", "tests/**/*"],
-  "glint": {
-    "environment": ["ember-loose", "ember-template-imports"]
-  },
+  "include": ["app/**/*", "config/**/*", "tests/**/*", "types/**/*"],
   "compilerOptions": {
     "lib": ["DOM", "ESNext"],
     "module": "esnext",
@@ -22,7 +19,7 @@
     "experimentalDecorators": true,
     "incremental": true,
     "declaration": true,
-    "types": ["ember-source/types", "vite/client"],
+    "types": ["@glint/ember-tsc/types", "ember-source/types", "vite/client"],
     "paths": {
       "@warp-drive/ember": ["../../warp-drive-packages/ember/declarations"],
       "@warp-drive/ember/*": ["../../warp-drive-packages/ember/declarations/*"],

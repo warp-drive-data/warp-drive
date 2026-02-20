@@ -1,7 +1,7 @@
 {
   "name": "@warp-drive/holodeck",
   "description": "⚡️ Simple, Fast HTTP Mocking for Tests",
-  "version": "0.1.0-alpha.40",
+  "version": "0.1.0-alpha.51",
   "license": "MIT",
   "author": "Chris Thoburn <runspired@users.noreply.github.com>",
   "repository": {
@@ -40,7 +40,7 @@
   },
   "scripts": {
     "check:pkg-types": "tsc --noEmit",
-    "build:pkg": "vite build;",
+    "build:pkg": "vite build",
     "prepack": "pnpm run build:pkg",
     "sync": "echo \"syncing\"",
     "_temporarily_deactivated_lint": "eslint . --quiet --cache --cache-strategy=content",
@@ -69,7 +69,7 @@
     "@warp-drive/legacy": "workspace:*",
     "@warp-drive/core": "workspace:*",
     "@warp-drive/internal-config": "workspace:*",
-    "vite": "^7.1.3"
+    "vite": "^7.3.1"
   },
   "exports": {
     ".": {

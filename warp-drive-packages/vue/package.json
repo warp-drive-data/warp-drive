@@ -1,7 +1,7 @@
 {
   "name": "@warp-drive/vue",
   "description": "Data bindings and utilities for vuejs applications using WarpDrive",
-  "version": "5.8.0-alpha.40",
+  "version": "5.9.0-alpha.8",
   "license": "MIT",
   "author": "Chris Thoburn <runspired@users.noreply.github.com>",
   "type": "module",
@@ -19,7 +19,7 @@
     "warpdrive"
   ],
   "scripts": {
-    "build:pkg": "vite build;",
+    "build:pkg": "vite build",
     "prepack": "pnpm run build:pkg",
     "sync": "echo \"syncing\"",
     "lint": "eslint . --quiet --cache --cache-strategy=content",
@@ -47,7 +47,7 @@
     "vue": "^3.5.19"
   },
   "dependencies": {
-    "@embroider/macros": "^1.18.1",
+    "@embroider/macros": "^1.19.6",
     "@warp-drive/core": "workspace:*"
   },
   "peerDependenciesMeta": {},
@@ -65,8 +65,8 @@
     "rollup": "^4.48.0",
     "vue": "^3.5.19",
     "vue-tsc": "^3.0.6",
-    "typescript": "^5.9.2",
-    "vite": "^7.1.3"
+    "typescript": "^5.9.3",
+    "vite": "^7.3.1"
   },
   "volta": {
     "extends": "../../package.json"

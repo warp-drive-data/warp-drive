@@ -1,7 +1,7 @@
 name: 0. Release
 
 concurrency:
-  group: ci-release
+  group: ci-publish-release
   # only one job at a time, job must complete before another can run
 
 permissions:
@@ -105,6 +105,12 @@ on:
         required: true
         default: false
         type: boolean
+      skipPublish:
+        name: Skip Publish
+        description: '[All]: Whether to skip publishing to NPM'
+        required: false
+        default: false
+        type: boolean
   schedule:
     - cron: '0 20 * * 2' # weekly (Tuesday) 12 PM PST
     - cron: '0 20 * * 5' # weekly (Friday) 12 PM PST
@@ -154,13 +160,13 @@ jobs:
       - uses: ./.github/actions/setup
         with:
           install: true
-          repo-token: ${{ secrets.GH_DEPLOY_TOKEN }}
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Make sure git user is setup
         run: |
           git config --local user.email ${{ secrets.GH_DEPLOY_EMAIL }}
           git config --local user.name ${{ secrets.GH_DEPLOY_NAME }}
       - name: Publish with script
-        run: bun release exec canary --train=${{ github.event.inputs.train }} --increment=${{ github.event.inputs.increment }} --dry-run=${{ github.event.inputs.dryRun }}
+        run: bun release exec canary --publish=${{ github.event.inputs.skipPublish != 'true' }} --train=${{ github.event.inputs.train }} --increment=${{ github.event.inputs.increment }} --dry-run=${{ github.event.inputs.dryRun }}
         env:
           FORCE_COLOR: 2
           CI: true
@@ -220,13 +226,13 @@ jobs:
         # For beta-cycle we always increment from the branch state
         # For mirror we increment from the last beta version, unless it's start of a new cycle.
         if: github.event.inputs.beta_kind == 'beta-cycle' || github.event.inputs.is-cycle-start == 'true'
-        run: bun release exec publish beta --train=${{ github.event.inputs.train }} --dry-run=${{ github.event.inputs.dryRun }}
+        run: bun release exec publish beta --publish=${{ github.event.inputs.skipPublish != 'true' }} --train=${{ github.event.inputs.train }} --dry-run=${{ github.event.inputs.dryRun }}
         env:
           FORCE_COLOR: 2
           CI: true
       - name: Publish New Mirror Release
         if: github.event.inputs.beta_kind == 'mirror'
-        run: bun release exec publish beta --train=${{ github.event.inputs.train }} --from=${{ steps.version.outputs.value }} --dry-run=${{ github.event.inputs.dryRun }}
+        run: bun release exec publish beta --publish=${{ github.event.inputs.skipPublish != 'true' }} --train=${{ github.event.inputs.train }} --from=${{ steps.version.outputs.value }} --dry-run=${{ github.event.inputs.dryRun }}
         env:
           FORCE_COLOR: 2
           CI: true
@@ -284,7 +290,7 @@ jobs:
         # Then we do the default patch increment from the current branch state.
         # This handles both start-of-cycle and bugfix releases.
         if: github.event.inputs.from-version == null
-        run: bun release publish release --train=${{ github.event.inputs.train }} --dry-run=${{ github.event.inputs.dryRun }}
+        run: bun release publish release --publish=${{ github.event.inputs.skipPublish != 'true' }} --train=${{ github.event.inputs.train }} --dry-run=${{ github.event.inputs.dryRun }}
         env:
           FORCE_COLOR: 2
           CI: true
@@ -294,7 +300,7 @@ jobs:
         # Then we increment from the branch with the supplied increment
         # This handles both upversioning and downversioning
         if: github.event.inputs.from-version != null
-        run: bun release publish release --train=${{ github.event.inputs.train }} --from=${{ github.event.inputs.from-version }} --increment=${{ github.event.inputs.increment }} --dry-run=${{ github.event.inputs.dryRun }}
+        run: bun release publish release --publish=${{ github.event.inputs.skipPublish != 'true' }} --train=${{ github.event.inputs.train }} --from=${{ github.event.inputs.from-version }} --increment=${{ github.event.inputs.increment }} --dry-run=${{ github.event.inputs.dryRun }}
         env:
           FORCE_COLOR: 2
           CI: true
@@ -331,7 +337,7 @@ jobs:
           repo-token: ${{ secrets.GH_DEPLOY_TOKEN }}
       - name: Publish New LTS Release
         # We always increment from the branch state
-        run: bun release publish ${{ github.event.inputs.channel }} --dry-run=${{ github.event.inputs.dryRun }}
+        run: bun release publish ${{ github.event.inputs.channel }} --publish=${{ github.event.inputs.skipPublish != 'true' }} --dry-run=${{ github.event.inputs.dryRun }}
         env:
           FORCE_COLOR: 2
           CI: true

@@ -1,7 +1,7 @@
 {
   "name": "@ember-data/rest",
-  "description": "REST Format Support for EmberData",
-  "version": "5.8.0-alpha.40",
+  "description": "(Legacy) REST Format Support for EmberData",
+  "version": "5.9.0-alpha.8",
   "private": false,
   "license": "MIT",
   "author": "Chris Thoburn <runspired@users.noreply.github.com>",
@@ -19,7 +19,7 @@
     "extends": "../../package.json"
   },
   "dependencies": {
-    "@embroider/macros": "^1.18.1",
+    "@embroider/macros": "^1.19.6",
     "@warp-drive/core": "workspace:*",
     "@warp-drive/utilities": "workspace:*"
   },
@@ -40,7 +40,7 @@
   },
   "scripts": {
     "lint": "eslint . --quiet --cache --cache-strategy=content",
-    "build:pkg": "vite build;",
+    "build:pkg": "vite build",
     "prepack": "pnpm run build:pkg",
     "sync": "echo \"syncing\"",
     "start": "vite"
@@ -56,7 +56,7 @@
     "@babel/preset-env": "^7.28.3",
     "@babel/preset-typescript": "^7.27.1",
     "@warp-drive/internal-config": "workspace:*",
-    "vite": "^7.1.3"
+    "vite": "^7.3.1"
   },
   "ember": {
     "edition": "octane"

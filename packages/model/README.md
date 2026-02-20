@@ -28,6 +28,11 @@
 
 # @ember-data/model
 
+> [!WARNING]
+> **⚠️ This is a legacy package** not recommended for new applications.
+>
+> Use schema objects from [@warp-drive/core](https://warp-drive.io/api/@warp-drive/core/) instead.
+
 Runtime classes for use as a source of ResourceSchema and as a ReactiveResource for older "legacy" EmberData/WarpDrive configurations.
 
 If using more recent versions of WarpDrive, install this via [@warp-drive/legacy](https://www.npmjs.com/package/@warp-drive/legacy) instead.

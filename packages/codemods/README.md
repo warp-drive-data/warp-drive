@@ -32,13 +32,16 @@ Codemods for WarpDrive/EmberData paradigms.
 
 ## Usage
 
-### List all available codemod commands
-
+### List all available codemods 
 ```
 npx @ember-data/codemods apply --help
 ```
 
-The available codemods will be listed under the "Commands" heading.
+### List available CLI options for a given codemod
+```
+npx @ember-data/codemods apply migrate-to-schema --help
+npx @ember-data/codemods apply legacy-compat-builders --help
+```
 
 ### Run a codemod
 
@@ -52,135 +55,87 @@ For example:
 npx @ember-data/codemods apply legacy-compat-builders ./app/**/*.{js,ts}
 ```
 
-#### Codemod options
-
-To list the available options for a particular codemod, you can run:
-
-```
-npx @ember-data/codemods apply <codemod-name> --help
-```
-
 ## Codemods
 
-### schema-migration
+### Available codemods
 
-A set of codemods to help migrate EmberData models and mixins to WarpDrive schemas.
+- [`legacy-compat-builders`](#legacy-compat-builders) - Migrates both EmberData models and mixins to WarpDrive schemas
+- [`migrate-to-schema`](#migrate-to-schema) - Migrates both EmberData models and mixins to WarpDrive schemas
 
-#### Migrate Both Models and Mixins
-
-```
-npx @ember-data/codemods apply migrate-to-schema --help
-Usage: @ember-data/codemods apply migrate-to-schema [options] [input-dir]
-
-Migrates both EmberData models and mixins to WarpDrive schemas in batch.
-
-Arguments:
-  input-dir                              Input directory to search for models and mixins (default: "./app")
-
-Options:
-  -d, --dry                              dry run (no changes are made to files) (default: false)
-  -v, --verbose <level>                  Show more information about the transform process (choices: "0", "1",
-                                         "2", default: "0")
-  -l, --log-file [path]                  Write logs to a file. If option is set but no path is provided, logs are
-                                         written to ember-data-codemods.log
-  -i, --ignore <ignore-glob-pattern...>  Ignores the given file or glob pattern. If using glob pattern, wrap in
-                                         single quotes.
-  --config <path>                        Path to configuration file
-  --models-only                          Only process model files (default: false)
-  --mixins-only                          Only process mixin files (default: false)
-  --skip-processed                       Skip files that have already been processed (default: false)
-  --model-source-dir <path>              Directory containing model files (default: "./app/models")
-  --mixin-source-dir <path>              Directory containing mixin files (default: "./app/mixins")
-  --output-dir <path>                    Output directory for generated schemas (default: "./app/schemas")
-  -h, --help                             display help for command
-```
-
-```
-npx @ember-data/codemods apply model-to-schema --help
-Usage: @ember-data/codemods apply model-to-schema [options] <target-glob-pattern...>
-
-Transforms EmberData models to schema definitions for WarpDrive.
-
-Arguments:
-  target-glob-pattern                    Path to files or glob pattern. If using glob pattern, wrap in single
-                                         quotes.
-
-Options:
-  -d, --dry                              dry run (no changes are made to files) (default: false)
-  -v, --verbose <level>                  Show more information about the transform process (choices: "0", "1",
-                                         "2", default: "0")
-  -l, --log-file [path]                  Write logs to a file. If option is set but no path is provided, logs are
-                                         written to ember-data-codemods.log
-  -i, --ignore <ignore-glob-pattern...>  Ignores the given file or glob pattern. If using glob pattern, wrap in
-                                         single quotes.
-  --input-dir <path>                     Input directory containing models (default: "./app/models")
-  --output-dir <path>                    Output directory for schemas (default: "./app/schemas")
-  --config <path>                        Path to configuration file
-  -h, --help                             display help for command
-```
-
-```
-npx @ember-data/codemods apply mixin-to-schema --help
-Usage: @ember-data/codemods apply mixin-to-schema [options] <target-glob-pattern...>
-
-Transforms EmberData mixins to schema traits for WarpDrive.
-
-Arguments:
-  target-glob-pattern                    Path to files or glob pattern. If using glob pattern, wrap in single
-                                         quotes.
-
-Options:
-  -d, --dry                              dry run (no changes are made to files) (default: false)
-  -v, --verbose <level>                  Show more information about the transform process (choices: "0", "1",
-                                         "2", default: "0")
-  -l, --log-file [path]                  Write logs to a file. If option is set but no path is provided, logs are
-                                         written to ember-data-codemods.log
-  -i, --ignore <ignore-glob-pattern...>  Ignores the given file or glob pattern. If using glob pattern, wrap in
-                                         single quotes.
-  --input-dir <path>                     Input directory containing mixins (default: "./app/mixins")
-  --output-dir <path>                    Output directory for traits (default: "./app/traits")
-  --config <path>                        Path to configuration file
-  -h, --help                             display help for command
-```
+### migrate-to-schema
 
 This codemod transforms EmberData models and mixins into WarpDrive's schema format, generating:
 - **Schema files**: Define the data structure using `LegacyResourceSchema`
 - **Extension files**: Preserve computed properties, methods, and other non-data logic
-- **Type files**: TypeScript interfaces for type safety
 - **Trait files**: Reusable schema components from mixins
+
+> [!NOTE]
+> At this time the codemod is able to analyze Models and generate accurate WarpDrive structures.
+> The codemod is under an active development and there're missing features and bugs are expected.
+> Please report any issues you find!
+
+By default the codemod is expected to be ran at the root of your project, at the same level as the `/app` directory.
+The codemod is **non-destructive** meaning that the analyzed models aren't removed. Instead the codemod generates new files located at `app/data/` directory.
+
+#### Migrating models and mixins
+
+WarpDrive doesn't require users to follow a specific file structure, but it does come with a recommendation.
+
+
+#### Caveats
+
+> [!TIP]
+> The codemod includes "knobs" to help with this situation that can be configured via a json file.
+> [`example.config.json`](https://github.com/mainmatter/warp-drive/blob/4f736d04a4a03706b05bbf108f2e16a205fba53c/packages/codemods/src/schema-migration/example.config.json). See all available options in [`config.ts`](https://github.com/mainmatter/warp-drive/blob/4f736d04a4a03706b05bbf108f2e16a205fba53c/packages/codemods/src/schema-migration/config.ts#L3)
+> `npx @ember-data/codemods apply migrate-to-schema --config=./example-codemod.config.json` 
+
+- Codemod requires manual input and additional configuration for deep hierarchies. Such as "Base classes" or Re-exported models or models imported from libraries.
 
 #### Basic Usage
 
 ```bash
-# Transform all models and mixins in your app (batch mode)
-npx @ember-data/codemods apply migrate-to-schema ./app
+# Transform all models and mixins in your app (looks at ./app by default)
+npx @ember-data/codemods apply migrate-to-schema 
+```
 
-# Transform with custom output directory
-npx @ember-data/codemods apply migrate-to-schema \
-  --output-dir './app/data/schemas' \
-  ./app
-
-# Transform only models
-npx @ember-data/codemods apply migrate-to-schema \
-  --models-only \
-  ./app
-
-# Transform specific model files
-npx @ember-data/codemods apply model-to-schema './app/models/**/*.{js,ts}'
-
-# Transform specific mixin files
-npx @ember-data/codemods apply mixin-to-schema './app/mixins/**/*.{js,ts}'
-
-# Use a configuration file for complex setups
-npx @ember-data/codemods apply migrate-to-schema \
-  --config './schema-migration.config.json' \
-  ./app
+```bash
+# With custom search path
+npx @ember-data/codemods apply migrate-to-schema ./packages/ember-app/app 
 ```
 
 #### Configuration File
 
-For complex projects, you can use a JSON configuration file:
+Simple example:
+```json
+{
+  "$schema": "./tools/warp-drive-codemod/config-schema.json",
+  "version": "1.0.0",
+  "description": "Example configuration for warp-drive-codemod",
+  "dryRun": false,
+  "verbose": false,
+  "debug": false,
+  "mirror": false,
+  "importSubstitutes": [
+    {
+      "import": "my-app/core/base-model",
+      "trait": "base-model-trait",
+      "extension": "base-model-extension"
+    }
+  ],
+  "modelImportSource": "my-app/models",
+  "resourcesImport": "my-app/data/resources",
+  "traitsDir": "./app/data/traits",
+  "resourcesDir": "./app/data/resources",
+  "typeMapping": {
+    "uuid": "string",
+    "currency": "number",
+    "json": "unknown"
+  }
+}
+```
 
+
+Complex example:
 ```json
 {
   "$schema": "./tools/warp-drive-codemod/config-schema.json",
@@ -195,10 +150,21 @@ For complex projects, you can use a JSON configuration file:
     "@my-org/client-core/core/custom-model",
     "my-client/core/base-model",
   ],
+  "intermediateFragmentPaths": [
+    "my-client/fragments/base-fragment",
+    "@my-org/client-core/fragments/custom-fragment"
+  ],
   "modelImportSource": "my-client/models",
   "mixinImportSource": "my-client/mixins",
   "modelSourceDir": "./apps/client/app/models",
   "mixinSourceDir": "./apps/client/app/mixins",
+  "importSubstitutes": [
+    {
+      "import": "my-app/core/base-model",
+      "trait": "base-model-trait",
+      "extension": "base-model-extension"
+    }
+  ],
   "additionalModelSources": [
     {
       "pattern": "@my-org/client-core/core/custom-model",
@@ -251,8 +217,8 @@ export default class User extends Model {
 
 **After (Generated Schema):**
 ```ts
-// app/schemas/user.schema.ts
-export const UserSchema = {
+// app/resources/user.schema.ts
+const UserSchema = {
   type: 'user',
   fields: {
     name: { kind: 'attribute', type: 'string' },
@@ -261,11 +227,30 @@ export const UserSchema = {
     projects: { kind: 'hasMany', type: 'project', options: { async: true } }
   }
 };
+
+export default UserSchema;
+
+export interface UserTrait {
+  [Type]: 'user';
+  name: string;
+  email: string;
+  company: Company;
+  projects: Project[];
+}
+
+// NOTE: The codemod is expected to also "extend" this interface with the `extension` properties (TBD)
+// import { UserExtension } './user.ext';
+// export interface User extends UserTrait, UserExtension {}
 ```
 
 **Generated Extension:**
 ```ts
-// app/extensions/user.ts
+// app/resources/user.ext.ts
+
+// NOTE: The codemod is expected to also "extend" this interface with the `extension` properties (TBD)
+// import { UserTrait } './user.schema';
+// export interface UserExtension extends UserTrait {};
+
 export class UserExtension {
   get displayName() {
     return this.name || this.email;
@@ -278,17 +263,6 @@ export class UserExtension {
 }
 ```
 
-**Generated Types:**
-```ts
-// app/schemas/user.schema.types.ts
-export interface User {
-  [Type]: 'user';
-  name: string;
-  email: string;
-  company: Company;
-  projects: Project[];
-}
-```
 
 ### legacy-compat-builders
 

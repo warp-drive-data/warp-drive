@@ -1,8 +1,8 @@
 import chalk from 'chalk';
-import { CHANNEL, npmDistTagForChannelAndVersion, VALID_TRAINS } from '../../../utils/channel';
+import { CHANNEL, npmDistTagForChannelAndVersion, VALID_TRAINS } from '../../../utils/channel.ts';
 
-import { APPLIED_STRATEGY, Package, STRATEGY } from '../../../utils/package';
-import { getNextVersion } from '../../utils/next-version';
+import { APPLIED_STRATEGY, Package, STRATEGY } from '../../../utils/package.ts';
+import { getNextVersion } from '../../utils/next-version.ts';
 import path from 'path';
 import semver from 'semver';
 

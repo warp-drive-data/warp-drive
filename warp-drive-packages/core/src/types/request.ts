@@ -278,6 +278,10 @@ interface NativeRequestInit {
    *
    */
   mode?: RequestMode;
+  /**
+   * provides an explicit priority hint for the request.
+   */
+  priority?: RequestPriority;
   /** Returns the redirect mode associated with request, which is a string indicating how redirects for the request will be handled during fetching. A request will follow redirects by default.
    */
   redirect?: RequestRedirect;

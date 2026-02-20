@@ -29,7 +29,7 @@
     "declarationDir": "unstable-preview-types",
     "inlineSourceMap": true,
     "inlineSources": true,
-    "types": [],
+    "types": ["@glint/ember-tsc/types", "ember-source/types"],
     "paths": {
       "@warp-drive/core": ["../../warp-drive-packages/core/declarations"],
       "@warp-drive/core/*": ["../../warp-drive-packages/core/declarations/*"],

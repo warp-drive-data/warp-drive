@@ -1,11 +1,9 @@
 {
   "resourcesImport": "app/data/resources",
-  "extensionsImport": "app/extensions",
   "traitsImport": "app/traits",
   "emberDataImportSource": "@ember-data/model",
   "modelImportSource": "app/models",
   "outputDir": "./app/schemas",
   "resourcesDir": "./app/resources",
-  "extensionsDir": "./app/extensions",
   "traitsDir": "./app/traits"
 }

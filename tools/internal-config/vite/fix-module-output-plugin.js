@@ -28,13 +28,15 @@ export const FixModuleOutputPlugin = {
       DEBUG && console.log(`\t⚠️ Renamed MJS module ${file} to JS in a CJS package`);
     }
 
+    const pkgDir = path.join(import.meta.dirname, '../');
     // babel ./dist --out-dir dist --plugins=../../config/babel/fix-mjs.js
     const distDir = path.join(process.cwd(), 'dist');
-    const babelPlugin = path.join(import.meta.dirname, '../babel/fix-mjs.cjs');
+    const babelPlugin = path.join(pkgDir, './babel/fix-mjs.cjs');
     const args = ['exec', 'babel', distDir, '--out-dir', distDir, '--plugins', babelPlugin];
+
     child_process.spawnSync('pnpm', args, {
       stdio: 'inherit',
-      cwd: import.meta.dirname,
+      cwd: pkgDir,
       env: { ...process.env, ADDON_LOCATION: process.cwd() },
     });
     DEBUG && console.log(`\t⚠️ Fixes ${files.length} files to import/export from .js instead of .mjs`);
