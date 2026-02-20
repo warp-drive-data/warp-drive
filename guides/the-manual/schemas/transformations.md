@@ -19,6 +19,10 @@ Transformations are applied automatically when reading from or writing to the ca
 APIs often return data as plain strings or numbers, but your app might need more expressive or typed values like `Date` objects, numbers with precision, or even `Map`s.  
 Transformations let you define exactly how those conversions happen, in a reusable and declarative way.
 
+:::note
+You must register each transformation with the schema service before you can use it in a schema.
+:::
+
 ## Creating a Custom Transformation
 
 You can define your own Transformation for any data type or format you need.
