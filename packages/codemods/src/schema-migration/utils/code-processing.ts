@@ -2,8 +2,6 @@ import type { SgNode } from '@ast-grep/napi';
 
 import { removeQuoteChars } from './string.js';
 
-export { parseObjectPropertiesFromNode } from './ast-helpers.js';
-
 /** AST node kind for identifier nodes */
 export const NODE_KIND_IDENTIFIER = 'identifier';
 

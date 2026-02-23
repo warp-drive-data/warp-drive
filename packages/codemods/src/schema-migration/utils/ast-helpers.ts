@@ -97,7 +97,7 @@ export function findClassDeclaration(exportNode: SgNode, root: SgNode, options?:
           kind: 'class_declaration',
           has: {
             kind: 'identifier',
-            regex: exportedIdentifier,
+            regex: `^${exportedIdentifier}$`,
           },
         },
       });

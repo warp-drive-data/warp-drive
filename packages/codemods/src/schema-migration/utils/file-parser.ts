@@ -10,6 +10,7 @@ import { parse, type SgNode } from '@ast-grep/napi';
 
 import type { TransformOptions } from '../config.js';
 import {
+  findClassDeclaration,
   findDefaultExport,
   getEmberDataImports,
   getMixinImports,
@@ -243,33 +244,7 @@ function findClassDeclarationInRoot(root: SgNode, options?: TransformOptions): S
     return root.find({ rule: { kind: NODE_KIND_CLASS_DECLARATION } });
   }
 
-  // Try to find class declaration in the export
-  let classDeclaration = defaultExport.find({ rule: { kind: NODE_KIND_CLASS_DECLARATION } });
-  if (classDeclaration) {
-    return classDeclaration;
-  }
-
-  // Check if export references a class by identifier
-  const identifiers = defaultExport.children().filter((child) => child.kind() === NODE_KIND_IDENTIFIER);
-  for (const identifier of identifiers) {
-    const name = identifier.text();
-    if (name !== 'default' && name !== 'export') {
-      classDeclaration = root.find({
-        rule: {
-          kind: NODE_KIND_CLASS_DECLARATION,
-          has: {
-            kind: NODE_KIND_IDENTIFIER,
-            regex: `^${name}$`,
-          },
-        },
-      });
-      if (classDeclaration) {
-        return classDeclaration;
-      }
-    }
-  }
-
-  return null;
+  return findClassDeclaration(defaultExport, root, options);
 }
 
 export function isClassMethodSyntax(methodNode: SgNode): boolean {

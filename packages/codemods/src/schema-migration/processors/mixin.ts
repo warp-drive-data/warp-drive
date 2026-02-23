@@ -26,6 +26,7 @@ import {
   getFileExtension,
   getLanguageFromPath,
   mapFieldsToTypeProperties,
+  parseObjectPropertiesFromNode,
   toPascalCase,
   withTransformWrapper,
 } from '../utils/ast-utils.js';
@@ -44,7 +45,6 @@ import {
   NODE_KIND_PAIR,
   NODE_KIND_VARIABLE_DECLARATION,
   NODE_KIND_VARIABLE_DECLARATOR,
-  parseObjectPropertiesFromNode,
 } from '../utils/code-processing.js';
 import type { ParsedFile } from '../utils/file-parser.js';
 import { mixinNameToKebab, pascalToKebab } from '../utils/string.js';
