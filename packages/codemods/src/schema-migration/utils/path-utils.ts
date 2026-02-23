@@ -166,7 +166,7 @@ const DEFAULT_EXTENSIONS = ['.ts', '.js'];
  * Convert a glob/wildcard pattern to a regex
  * e.g., 'my-app/models/*' -> /^my-app/models\/(.*)$/
  */
-function wildcardPatternToRegex(pattern: string): RegExp {
+export function wildcardPatternToRegex(pattern: string): RegExp {
   return new RegExp('^' + pattern.replace(/\*/g, '(.*)') + '$');
 }
 
@@ -197,7 +197,7 @@ export function replaceWildcardPattern(pattern: string, value: string, replaceme
 /**
  * Try to find a file with various extensions
  */
-function resolveWithExtensions(basePath: string, extensions: string[] = DEFAULT_EXTENSIONS): string | null {
+export function resolveWithExtensions(basePath: string, extensions: string[] = DEFAULT_EXTENSIONS): string | null {
   // First try the base path as-is
   if (existsSync(basePath)) {
     return basePath;

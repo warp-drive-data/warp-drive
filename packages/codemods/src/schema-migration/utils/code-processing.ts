@@ -1,5 +1,4 @@
 import type { SgNode } from '@ast-grep/napi';
-import { existsSync } from 'fs';
 
 import { removeQuoteChars } from './string.js';
 
@@ -94,9 +93,6 @@ export const FILE_EXTENSION_TS = '.ts';
 
 /** JavaScript file extension */
 export const FILE_EXTENSION_JS = '.js';
-
-/** Regex to convert glob pattern wildcards to regex */
-export const GLOB_WILDCARD_REGEX = /\*/g;
 
 /**
  * Find import statements in the AST root
@@ -217,28 +213,6 @@ export function findObjectArgument(argNodes: SgNode[]): SgNode | null {
     }
   }
   return null;
-}
-
-/**
- * Try to find a file with common extensions (.js, .ts)
- */
-export function findFileWithExtensions(basePath: string): string | null {
-  const possiblePaths = [basePath, `${basePath}${FILE_EXTENSION_JS}`, `${basePath}${FILE_EXTENSION_TS}`];
-
-  for (const path of possiblePaths) {
-    if (existsSync(path)) {
-      return path;
-    }
-  }
-
-  return null;
-}
-
-/**
- * Convert a glob pattern to a regex pattern
- */
-export function globPatternToRegex(pattern: string): RegExp {
-  return new RegExp('^' + pattern.replace(GLOB_WILDCARD_REGEX, '(.*)') + '$');
 }
 
 /**
