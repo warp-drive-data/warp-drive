@@ -3,11 +3,11 @@ import { readFile } from 'fs/promises';
 import { glob } from 'glob';
 import { basename, extname, join, resolve } from 'path';
 
+import { InstanciatedLogger } from '../../utils/logger.js';
 import type { FinalOptions } from './config.js';
 import { analyzeModelMixinUsage } from './processors/mixin-analyzer.js';
 import type { ParsedFile } from './utils/file-parser.js';
 import { parseFile } from './utils/file-parser.js';
-import type { Logger } from './utils/logger.js';
 import { FILE_EXTENSION_REGEX, TRAILING_SINGLE_WILDCARD_REGEX, TRAILING_WILDCARD_REGEX } from './utils/string.js';
 
 export type Filename = string;
@@ -68,7 +68,7 @@ async function findFiles(
   sources: string[],
   predicate: (file: string) => boolean,
   finalOptions: FinalOptions,
-  logger: Logger
+  logger: InstanciatedLogger
 ): Promise<{ output: InputFile[]; skipped: string[]; errors: Error[] }> {
   const output: InputFile[] = [];
   const errors: Error[] = [];
@@ -112,14 +112,14 @@ export class Input {
 }
 
 export class Codemod {
-  logger: Logger;
+  logger: InstanciatedLogger;
   finalOptions: FinalOptions;
   input: Input = new Input();
 
   mixinsImportedByModels: Set<string> = new Set();
   modelsWithExtensions: Set<string> = new Set();
 
-  constructor(logger: Logger, finalOptions: FinalOptions) {
+  constructor(logger: InstanciatedLogger, finalOptions: FinalOptions) {
     this.logger = logger;
     this.finalOptions = finalOptions;
   }

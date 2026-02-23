@@ -3,9 +3,9 @@ import { parse } from '@ast-grep/napi';
 import { existsSync, readFileSync } from 'fs';
 import { dirname, resolve } from 'path';
 
+import { logger } from '../../../utils/logger.js';
 import type { TransformOptions } from '../config.js';
 import { findClassDeclaration, findDefaultExport } from './ast-helpers.js';
-import { debugLog } from './logging.js';
 import {
   extractBaseName,
   getImportSourceConfig,
@@ -27,6 +27,8 @@ import {
   SCHEMA_PATH_REGEX,
   UPPERCASE_LETTER_REGEX,
 } from './string.js';
+
+const log = logger.for('import-utils');
 
 /**
  * Default import sources for common Ember patterns
@@ -211,7 +213,7 @@ export function transformModelToResourceImport(
       const modelBaseName = extractBaseName(modelPath);
       if (modelBaseName === relatedType) {
         hasModel = true;
-        debugLog(options, `Found model for ${relatedType}, using resource import`);
+        log.debug(`Found model for ${relatedType}, using resource import`);
         break;
       }
     }
@@ -228,7 +230,7 @@ export function transformModelToResourceImport(
           const traitsImport = options?.traitsImport;
           const traitInterfaceName = `${toPascalCase(relatedType)}Trait`;
           const aliasName = toPascalCase(relatedType);
-          debugLog(options, `No model found for ${relatedType}, falling back to trait`);
+          log.debug(`No model found for ${relatedType}, falling back to trait`);
           if (traitsImport) {
             return `type { ${traitInterfaceName} as ${aliasName} } from '${traitsImport}/${relatedType}.schema'`;
           } else {
@@ -257,13 +259,13 @@ type ImportSourceType = 'model' | 'mixin';
 function isImportPathOfType(importPath: string, sourceType: ImportSourceType, options?: TransformOptions): boolean {
   const config = getImportSourceConfig(sourceType, options);
 
-  debugLog(options, `Checking if import path is ${sourceType}: ${importPath}`);
-  debugLog(options, `Primary source: ${config.primarySource}`);
-  debugLog(options, `Additional sources: ${JSON.stringify(config.additionalSources)}`);
+  log.debug(`Checking if import path is ${sourceType}: ${importPath}`);
+  log.debug(`Primary source: ${config.primarySource}`);
+  log.debug(`Additional sources: ${JSON.stringify(config.additionalSources)}`);
 
   // Check against configured primary source
   if (config.primarySource && importPath.startsWith(config.primarySource)) {
-    debugLog(options, `Matched configured ${sourceType} import source: ${config.primarySource}`);
+    log.debug(`Matched configured ${sourceType} import source: ${config.primarySource}`);
     return true;
   }
 
@@ -271,16 +273,16 @@ function isImportPathOfType(importPath: string, sourceType: ImportSourceType, op
   if (config.additionalSources && Array.isArray(config.additionalSources)) {
     const matched = config.additionalSources.some((source) => {
       const matches = importPath.startsWith(source.pattern);
-      debugLog(options, `Checking pattern ${source.pattern}: ${matches}`);
+      log.debug(`Checking pattern ${source.pattern}: ${matches}`);
       return matches;
     });
     if (matched) {
-      debugLog(options, `Matched additional ${sourceType} source`);
+      log.debug(`Matched additional ${sourceType} source`);
       return true;
     }
   }
 
-  debugLog(options, `No ${sourceType} source match found`);
+  log.debug(`No ${sourceType} source match found`);
   return false;
 }
 
@@ -326,19 +328,19 @@ function resolveSpecialMixinImport(importPath: string, baseDir: string, options?
       const mixinSourceDir = options?.mixinSourceDir;
       if (mixinSourceDir) {
         const mixinPath = `${mixinSourceDir}/workflowable.js`;
-        debugLog(options, `Resolved special mixin import ${importPath} to: ${mixinPath}`);
+        log.debug(`Resolved special mixin import ${importPath} to: ${mixinPath}`);
         return mixinPath;
       }
       // Fallback: try to infer from baseDir
       const mixinPath = `${baseDir}/app/mixins/workflowable.js`;
-      debugLog(options, `Resolved special mixin import ${importPath} to: ${mixinPath}`);
+      log.debug(`Resolved special mixin import ${importPath} to: ${mixinPath}`);
       return mixinPath;
     }
 
     // Add other special cases here as needed
     return null;
   } catch (error) {
-    debugLog(options, `Error resolving special mixin import: ${String(error)}`);
+    log.debug(`Error resolving special mixin import: ${String(error)}`);
     return null;
   }
 }
@@ -353,7 +355,7 @@ function resolveAbsoluteImport(
   options?: TransformOptions
 ): string | null {
   try {
-    debugLog(options, `Resolving absolute ${sourceType} import: ${importPath}`);
+    log.debug(`Resolving absolute ${sourceType} import: ${importPath}`);
 
     // Get configuration for this source type
     const config = getImportSourceConfig(sourceType, options);
@@ -371,44 +373,44 @@ function resolveAbsoluteImport(
       sources.push(...config.additionalSources);
     }
 
-    debugLog(options, `${sourceType} sources: ${JSON.stringify(sources)}`);
+    log.debug(`${sourceType} sources: ${JSON.stringify(sources)}`);
 
     // Find matching source
     const matchedSource = sources.find((source) => importPath.startsWith(source.pattern));
     if (!matchedSource) {
-      debugLog(options, `No matching ${sourceType} source found for import: ${importPath}`);
+      log.debug(`No matching ${sourceType} source found for import: ${importPath}`);
       return null;
     }
 
-    debugLog(options, `Found matching ${sourceType} source: ${JSON.stringify(matchedSource)}`);
+    log.debug(`Found matching ${sourceType} source: ${JSON.stringify(matchedSource)}`);
 
     // Extract the name from the import path
     // e.g., 'my-app/models/notification-message' -> 'notification-message'
     const name = importPath.replace(matchedSource.pattern, '');
-    debugLog(options, `Extracted ${sourceType} name: ${name}`);
+    log.debug(`Extracted ${sourceType} name: ${name}`);
 
     // Try .ts extension first (source.dir is already an absolute path)
     const tsFilePath = `${matchedSource.dir}/${name}.ts`;
-    debugLog(options, `Trying file path: ${tsFilePath}`);
+    log.debug(`Trying file path: ${tsFilePath}`);
 
     if (existsSync(tsFilePath)) {
-      debugLog(options, `Found ${sourceType} file: ${tsFilePath}`);
+      log.debug(`Found ${sourceType} file: ${tsFilePath}`);
       return tsFilePath;
     }
 
     // Try .js extension
     const jsFilePath = `${matchedSource.dir}/${name}.js`;
-    debugLog(options, `Trying JS file path: ${jsFilePath}`);
+    log.debug(`Trying JS file path: ${jsFilePath}`);
 
     if (existsSync(jsFilePath)) {
-      debugLog(options, `Found ${sourceType} file: ${jsFilePath}`);
+      log.debug(`Found ${sourceType} file: ${jsFilePath}`);
       return jsFilePath;
     }
 
-    debugLog(options, `${sourceType} file not found for import: ${importPath} (tried ${tsFilePath} and ${jsFilePath})`);
+    log.debug(`${sourceType} file not found for import: ${importPath} (tried ${tsFilePath} and ${jsFilePath})`);
     return null;
   } catch (error) {
-    debugLog(options, `Error resolving absolute ${sourceType} import: ${String(error)}`);
+    log.debug(`Error resolving absolute ${sourceType} import: ${String(error)}`);
     return null;
   }
 }
@@ -457,7 +459,7 @@ export function isMixinFile(filePath: string, options?: TransformOptions): boole
 
     return false;
   } catch (error) {
-    debugLog(options, `Error checking if file is mixin: ${String(error)}`);
+    log.debug(`Error checking if file is mixin: ${String(error)}`);
     return false;
   }
 }
@@ -495,7 +497,7 @@ function matchesIntermediatePath(
         });
 
         if (pathMatches) {
-          debugLog(options, `Found match: resolved path ${resolvedPath} matches intermediate path ${intermediatePath}`);
+          log.debug(`Found match: resolved path ${resolvedPath} matches intermediate path ${intermediatePath}`);
           return true;
         }
       }
@@ -555,7 +557,7 @@ export function isModelFile(filePath: string, source: string, options?: Transfor
     const identifiers = heritageClause.findAll({ rule: { kind: 'identifier' } });
     const extendedClasses = identifiers.map((id) => id.text());
 
-    debugLog(options, `Class extends: ${extendedClasses.join(', ')}`);
+    log.debug(`Class extends: ${extendedClasses.join(', ')}`);
 
     // Use emberDataImportSource to determine what classes are base models
     const baseModelSources = [];
@@ -577,7 +579,7 @@ export function isModelFile(filePath: string, source: string, options?: Transfor
     }
 
     if (baseModelSources.length === 0) {
-      debugLog(options, `No base model sources provided, cannot determine if this is a model`);
+      log.debug(`No base model sources provided, cannot determine if this is a model`);
       return false;
     }
 
@@ -603,7 +605,7 @@ export function isModelFile(filePath: string, source: string, options?: Transfor
         try {
           // Resolve relative path to absolute path
           const resolvedPath = resolve(dirname(filePath), sourceText);
-          debugLog(options, `Checking relative import ${sourceText} -> ${resolvedPath}`);
+          log.debug(`Checking relative import ${sourceText} -> ${resolvedPath}`);
 
           // Check if this resolved path corresponds to any intermediate model or fragment
           if (
@@ -624,7 +626,7 @@ export function isModelFile(filePath: string, source: string, options?: Transfor
           }
         } catch (error: unknown) {
           // Ignore path resolution errors
-          debugLog(options, `Failed to resolve relative path ${sourceText}: ${String(error)}`);
+          log.debug(`Failed to resolve relative path ${sourceText}: ${String(error)}`);
         }
       }
 
@@ -654,18 +656,18 @@ export function isModelFile(filePath: string, source: string, options?: Transfor
       }
     }
 
-    debugLog(options, `Expected base models from imports: ${expectedBaseModels.join(', ')}`);
-    debugLog(options, `Extended classes found: ${extendedClasses.join(', ')}`);
-    debugLog(options, `Base model sources searched: ${baseModelSources.join(', ')}`);
+    log.debug(`Expected base models from imports: ${expectedBaseModels.join(', ')}`);
+    log.debug(`Extended classes found: ${extendedClasses.join(', ')}`);
+    log.debug(`Base model sources searched: ${baseModelSources.join(', ')}`);
 
     // Check if any of the extended classes match our expected base models
     const result = expectedBaseModels.some((baseModel) =>
       extendedClasses.some((extended) => extended.includes(baseModel))
     );
-    debugLog(options, `Model detection result: ${result}`);
+    log.debug(`Model detection result: ${result}`);
     return result;
   } catch (error) {
-    debugLog(options, `Error checking if file is model: ${String(error)}`);
+    log.debug(`Error checking if file is model: ${String(error)}`);
     return false;
   }
 }
@@ -681,7 +683,7 @@ export function findEmberImportLocalName(
   fromFile?: string,
   baseDir?: string
 ): string | null {
-  debugLog(options, `Looking for imports from sources:`, expectedSources);
+  log.debug(`Looking for imports from sources:`, expectedSources);
 
   const importStatements = root.findAll({ rule: { kind: 'import_statement' } });
 
@@ -695,7 +697,7 @@ export function findEmberImportLocalName(
     if (expectedSources.includes(cleanSourceText)) {
       const importClause = importNode.children().find((child) => child.kind() === 'import_clause');
       if (!importClause) {
-        debugLog(options, 'No import clause found in children');
+        log.debug('No import clause found in children');
         continue;
       }
 
@@ -707,7 +709,7 @@ export function findEmberImportLocalName(
         return localName;
       }
 
-      debugLog(options, 'No default import found (only named imports)');
+      log.debug('No default import found (only named imports)');
     }
 
     // Check if this is a relative import that points to a model file
@@ -718,7 +720,7 @@ export function findEmberImportLocalName(
           const fileContent = readFileSync(resolvedPath, 'utf8');
 
           if (isModelFile(resolvedPath, fileContent, options)) {
-            debugLog(options, `Found relative import pointing to model file: ${cleanSourceText} -> ${resolvedPath}`);
+            log.debug(`Found relative import pointing to model file: ${cleanSourceText} -> ${resolvedPath}`);
 
             const importClause = importNode.children().find((child) => child.kind() === 'import_clause');
             if (importClause) {
@@ -727,19 +729,19 @@ export function findEmberImportLocalName(
               const firstChild = children[0];
               if (firstChild && firstChild.kind() === 'identifier') {
                 const localName = firstChild.text();
-                debugLog(options, `Found relative model import with local name: ${localName}`);
+                log.debug(`Found relative model import with local name: ${localName}`);
                 return localName;
               }
             }
           }
         } catch (error) {
-          debugLog(options, `Error reading resolved file ${resolvedPath}: ${String(error)}`);
+          log.debug(`Error reading resolved file ${resolvedPath}: ${String(error)}`);
         }
       }
     }
   }
 
-  debugLog(options, `No valid import found for sources: ${expectedSources.join(', ')}`);
+  log.debug(`No valid import found for sources: ${expectedSources.join(', ')}`);
   return null;
 }
 
@@ -757,10 +759,10 @@ function convertToAbsoluteImportPath(resolvedPath: string, baseDir: string, opti
     // Convert to import path format
     const importPath = pathWithoutExt.startsWith('apps/') ? pathWithoutExt.replace('apps/', '') : pathWithoutExt;
 
-    debugLog(options, `Converted resolved path ${resolvedPath} to import path: ${importPath}`);
+    log.debug(`Converted resolved path ${resolvedPath} to import path: ${importPath}`);
     return importPath;
   } catch (error) {
-    debugLog(options, `Error converting to absolute import path: ${String(error)}`);
+    log.debug(`Error converting to absolute import path: ${String(error)}`);
     return null;
   }
 }
@@ -789,12 +791,12 @@ function convertImportToAbsolute(
         // Extract just the import path from the full import statement
         const importPathMatch = resourceImport.match(IMPORT_PATH_SINGLE_QUOTE_REGEX);
         if (importPathMatch) {
-          debugLog(options, `Converting model import ${originalImport} to resource import: ${importPathMatch[1]}`);
+          log.debug(`Converting model import ${originalImport} to resource import: ${importPathMatch[1]}`);
           return importPathMatch[1];
         }
       }
     } catch (fileError) {
-      debugLog(options, `Error reading file ${resolvedPath}: ${String(fileError)}`);
+      log.debug(`Error reading file ${resolvedPath}: ${String(fileError)}`);
     }
 
     // Check if this is a special mixin import
@@ -806,7 +808,7 @@ function convertImportToAbsolute(
         ? `${options.traitsImport}/${traitName}.schema`
         : `../traits/${traitName}.schema`;
 
-      debugLog(options, `Converting special mixin import ${originalImport} to trait import: ${traitImport}`);
+      log.debug(`Converting special mixin import ${originalImport} to trait import: ${traitImport}`);
       return traitImport;
     }
 
@@ -819,7 +821,7 @@ function convertImportToAbsolute(
         ? `${options.traitsImport}/${traitName}.schema`
         : `../traits/${traitName}.schema`;
 
-      debugLog(options, `Converting mixin import ${originalImport} to trait import: ${traitImport}`);
+      log.debug(`Converting mixin import ${originalImport} to trait import: ${traitImport}`);
       return traitImport;
     }
 
@@ -827,7 +829,7 @@ function convertImportToAbsolute(
     const absoluteImportPath = convertToAbsoluteImportPath(resolvedPath, baseDir, options);
     return absoluteImportPath;
   } catch (error) {
-    debugLog(options, `Error converting import: ${String(error)}`);
+    log.debug(`Error converting import: ${String(error)}`);
     return null;
   }
 }
@@ -859,26 +861,26 @@ export function processImports(source: string, filePath: string, baseDir: string
 
       // Skip processing if this is already a resource import (to avoid double-processing)
       if (options?.resourcesImport && cleanSourceText.startsWith(options.resourcesImport)) {
-        debugLog(options, `Skipping already processed resource import: ${cleanSourceText}`);
+        log.debug(`Skipping already processed resource import: ${cleanSourceText}`);
         continue;
       }
 
       if (cleanSourceText.startsWith('./') || cleanSourceText.startsWith('../')) {
         // Handle relative imports
-        debugLog(options, `Processing relative import: ${cleanSourceText}`);
+        log.debug(`Processing relative import: ${cleanSourceText}`);
         isRelativeImport = true;
         resolvedPath = resolveRelativeImport(cleanSourceText, filePath, baseDir);
       } else if (isSpecialMixinImport(cleanSourceText, options)) {
         // Handle special cases where model imports are actually mixins (e.g., workflowable)
-        debugLog(options, `Processing special mixin import: ${cleanSourceText}`);
+        log.debug(`Processing special mixin import: ${cleanSourceText}`);
         resolvedPath = resolveSpecialMixinImport(cleanSourceText, baseDir, options);
       } else if (isModelImportPath(cleanSourceText, options)) {
         // Handle absolute imports that point to model files
-        debugLog(options, `Processing absolute model import: ${cleanSourceText}`);
+        log.debug(`Processing absolute model import: ${cleanSourceText}`);
         resolvedPath = resolveAbsoluteModelImport(cleanSourceText, baseDir, options);
       } else if (isMixinImportPath(cleanSourceText, options)) {
         // Handle absolute imports that point to mixin files
-        debugLog(options, `Processing absolute mixin import: ${cleanSourceText}`);
+        log.debug(`Processing absolute mixin import: ${cleanSourceText}`);
         resolvedPath = resolveAbsoluteMixinImport(cleanSourceText, baseDir, options);
       }
 
@@ -894,7 +896,7 @@ export function processImports(source: string, filePath: string, baseDir: string
         );
 
         if (convertedImport) {
-          debugLog(options, `Converted import: ${cleanSourceText} -> ${convertedImport}`);
+          log.debug(`Converted import: ${cleanSourceText} -> ${convertedImport}`);
 
           // Replace the import with the converted import, always using single quotes
           const originalImport = importNode.text();
@@ -903,10 +905,7 @@ export function processImports(source: string, filePath: string, baseDir: string
           // If the target is a .schema file, convert default imports to named imports
           // But only for TypeScript files (.ts), not JavaScript files (.js)
           if (convertedImport.includes('.schema') && filePath.endsWith('.ts')) {
-            debugLog(
-              options,
-              `Found .schema import in TypeScript file, converting default to named: ${originalImport}`
-            );
+            log.debug(`Found .schema import in TypeScript file, converting default to named: ${originalImport}`);
 
             // Check if this is a trait import (from traits/ directory)
             const isTraitImport = convertedImport.includes('/traits/');
@@ -945,10 +944,9 @@ export function processImports(source: string, filePath: string, baseDir: string
             });
             // Reset regex lastIndex for reuse
             IMPORT_DEFAULT_REGEX.lastIndex = 0;
-            debugLog(options, `Converted default import to named import: ${newImport}`);
+            log.debug(`Converted default import to named import: ${newImport}`);
           } else if (convertedImport.includes('.schema') && filePath.endsWith('.js')) {
-            debugLog(
-              options,
+            log.debug(
               `Found .schema import in JavaScript file, skipping TypeScript syntax conversion: ${originalImport}`
             );
             // For JavaScript files, we should not use TypeScript import type syntax
@@ -957,10 +955,7 @@ export function processImports(source: string, filePath: string, baseDir: string
             // Extension files (.ext.ts) export named classes with 'Extension' suffix
             // Convert "import type User from '.../user.ext'" to
             // "import type { UserExtension as User } from '.../user.ext'"
-            debugLog(
-              options,
-              `Found extension import in TypeScript file, converting default to named: ${originalImport}`
-            );
+            log.debug(`Found extension import in TypeScript file, converting default to named: ${originalImport}`);
             // Extract the model base name from the import path to get correct Extension class name
             const extensionPathMatch = convertedImport.match(EXT_FILE_PATH_REGEX);
             const modelBaseName = extensionPathMatch ? extensionPathMatch[1] : null;
@@ -979,10 +974,10 @@ export function processImports(source: string, filePath: string, baseDir: string
               });
               // Reset regex lastIndex for reuse
               IMPORT_DEFAULT_REGEX.lastIndex = 0;
-              debugLog(options, `Converted extension import to named import: ${newImport}`);
+              log.debug(`Converted extension import to named import: ${newImport}`);
             }
           } else {
-            debugLog(options, `Not a .schema or .ext import, skipping conversion: ${convertedImport}`);
+            log.debug(`Not a .schema or .ext import, skipping conversion: ${convertedImport}`);
           }
 
           processedSource = processedSource.replace(originalImport, newImport);
@@ -992,7 +987,7 @@ export function processImports(source: string, filePath: string, baseDir: string
 
     return processedSource;
   } catch (error) {
-    debugLog(options, `Error processing imports: ${String(error)}`);
+    log.debug(`Error processing imports: ${String(error)}`);
     return source; // Return original source if processing fails
   }
 }

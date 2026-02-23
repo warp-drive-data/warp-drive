@@ -2,6 +2,7 @@ import { parse, type SgNode } from '@ast-grep/napi';
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs';
 import { dirname, join, resolve } from 'path';
 
+import { logger } from '../../../utils/logger.js';
 import type { Filename } from '../codemod.js';
 import type { TransformOptions } from '../config.js';
 import type { SchemaField, TransformArtifact } from '../utils/ast-utils.js';
@@ -11,9 +12,7 @@ import {
   collectRelationshipImports,
   collectTraitImports,
   convertToSchemaField,
-  debugLog,
   DEFAULT_EMBER_DATA_SOURCE,
-  errorLog,
   extractBaseName,
   extractPascalCaseName,
   extractTypeFromDeclaration,
@@ -91,6 +90,8 @@ const FRAGMENT_DECORATOR_SOURCE = 'ember-data-model-fragments/attributes';
 
 /** Fragment base class import source */
 const FRAGMENT_BASE_SOURCE = 'ember-data-model-fragments/fragment';
+
+const log = logger.for('model-processor');
 
 /** Cache for mixin extension analysis results to avoid re-parsing mixin files */
 const mixinExtensionCache = new Map<string, { hasExtension: boolean; extensionName: string | null }>();
@@ -221,13 +222,13 @@ function validateModelAST(filePath: string, source: string, options: TransformOp
 
   const expectedSources = getExpectedModelImportSources(options);
   const modelImportLocal = findEmberImportLocalName(root, expectedSources, options, filePath, process.cwd());
-  debugLog(options, `DEBUG: Model import local: ${modelImportLocal}`);
+  log.debug(`DEBUG: Model import local: ${modelImportLocal}`);
 
   const fragmentImportLocal = findEmberImportLocalName(root, [FRAGMENT_BASE_SOURCE], options, filePath, process.cwd());
-  debugLog(options, `DEBUG: Fragment import local: ${fragmentImportLocal}`);
+  log.debug(`DEBUG: Fragment import local: ${fragmentImportLocal}`);
 
   const defaultExportNode = findDefaultExport(root, options);
-  debugLog(options, `DEBUG: Default export node: ${defaultExportNode ? 'found' : 'not found'}`);
+  log.debug(`DEBUG: Default export node: ${defaultExportNode ? 'found' : 'not found'}`);
   if (!defaultExportNode) {
     return null;
   }
@@ -246,15 +247,15 @@ function validateModelAST(filePath: string, source: string, options: TransformOp
     for (const localName of intermediateLocalNames) {
       if (isModelClass(defaultExportNode, undefined, localName, root, options, filePath)) {
         isValidModel = true;
-        debugLog(options, `DEBUG: Valid model via intermediate fragment path: ${localName}`);
+        log.debug(`DEBUG: Valid model via intermediate fragment path: ${localName}`);
         break;
       }
     }
   }
 
-  debugLog(options, `DEBUG: Is valid model: ${isValidModel}`);
+  log.debug(`DEBUG: Is valid model: ${isValidModel}`);
   if (!isValidModel) {
-    debugLog(options, 'DEBUG: Not a valid model class, skipping');
+    log.debug('DEBUG: Not a valid model class, skipping');
     return null;
   }
 
@@ -271,7 +272,7 @@ function validateModelAST(filePath: string, source: string, options: TransformOp
       }
     }
   }
-  debugLog(options, `DEBUG: Is Fragment class: ${isFragment}`);
+  log.debug(`DEBUG: Is Fragment class: ${isFragment}`);
 
   const emberDataImports = getEmberDataImports(root, expectedSources, options);
 
@@ -355,8 +356,7 @@ function analyzeModelFile(filePath: string, source: string, options: TransformOp
     // Extract heritage info (mixin traits and extensions)
     const { mixinTraits, mixinExtensions } = extractHeritageInfo(root, filePath, options);
 
-    debugLog(
-      options,
+    log.debug(
       `DEBUG: Returning from analyzeModelFile with defaultExportNode: ${defaultExportNode ? 'defined' : 'undefined'}`
     );
     return {
@@ -372,7 +372,7 @@ function analyzeModelFile(filePath: string, source: string, options: TransformOp
       baseName,
     };
   } catch (error) {
-    debugLog(options, `DEBUG: Error analyzing model file: ${String(error)}`);
+    log.debug(`DEBUG: Error analyzing model file: ${String(error)}`);
     return createInvalidResult(modelName, baseName);
   }
 }
@@ -390,7 +390,7 @@ export default function transform(filePath: string, source: string, options: Tra
       const analysis = analyzeModelFile(filePathParam, sourceContent, optionsParam);
 
       if (!analysis.isValid) {
-        debugLog(optionsParam, 'Model analysis failed, skipping transform');
+        log.debug('Model analysis failed, skipping transform');
         return sourceContent;
       }
 
@@ -404,10 +404,7 @@ export default function transform(filePath: string, source: string, options: Tra
         baseName,
       } = analysis;
 
-      debugLog(
-        optionsParam,
-        `Found ${schemaFields.length} schema fields and ${extensionProperties.length} extension properties`
-      );
+      log.debug(`Found ${schemaFields.length} schema fields and ${extensionProperties.length} extension properties`);
 
       // Transform relative model imports to schema type imports first
       const transformedSource = transformModelImportsInSource(sourceContent, _root);
@@ -499,23 +496,23 @@ export function processIntermediateModelsToTraits(
       additionalModelSources || [],
       additionalMixinSources || []
     );
-    debugLog(options, `Resolved intermediate model path ${modelPath} to: ${relativePath}`);
+    log.debug(`Resolved intermediate model path ${modelPath} to: ${relativePath}`);
     const possiblePaths = [`${relativePath}.ts`, `${relativePath}.js`];
 
     let filePath: string | null = null;
     let source: string | null = null;
 
-    debugLog(options, `Checking intermediate model paths for ${modelPath}: ${possiblePaths.join(', ')}`);
+    log.debug(`Checking intermediate model paths for ${modelPath}: ${possiblePaths.join(', ')}`);
     for (const possiblePath of possiblePaths) {
       try {
         if (existsSync(possiblePath)) {
           filePath = possiblePath;
           source = readFileSync(possiblePath, 'utf-8');
-          debugLog(options, `Found intermediate model file: ${possiblePath}`);
+          log.debug(`Found intermediate model file: ${possiblePath}`);
           break;
         }
       } catch (error) {
-        debugLog(options, `Could not read ${possiblePath}: ${String(error)}`);
+        log.debug(`Could not read ${possiblePath}: ${String(error)}`);
       }
     }
 
@@ -554,7 +551,7 @@ export function processIntermediateModelsToTraits(
 
     // Now process this model
     try {
-      debugLog(options, `Processing intermediate model: ${modelPath}`);
+      log.debug(`Processing intermediate model: ${modelPath}`);
 
       // Process the intermediate model to generate trait artifacts
       const traitArtifacts = generateIntermediateModelTraitArtifacts(
@@ -591,13 +588,13 @@ export function processIntermediateModelsToTraits(
             mkdirSync(dirname(artifactPath), { recursive: true });
             // Write the file
             writeFileSync(artifactPath, artifact.code, 'utf-8');
-            debugLog(options, `Wrote ${artifact.type}: ${artifactPath}`);
+            log.debug(`Wrote ${artifact.type}: ${artifactPath}`);
           }
         }
       }
 
       artifacts.push(...traitArtifacts);
-      debugLog(options, `Generated ${traitArtifacts.length} artifacts for ${modelPath}`);
+      log.debug(`Generated ${traitArtifacts.length} artifacts for ${modelPath}`);
     } catch (error) {
       errors.push(`Error processing intermediate model ${modelPath}: ${String(error)}`);
     }
@@ -700,17 +697,16 @@ function generateRegularModelArtifacts(
     'resource'
   );
 
-  debugLog(options, `Extension artifact created: ${!!extensionArtifact}`);
+  log.debug(`Extension artifact created: ${!!extensionArtifact}`);
   if (extensionArtifact) {
     artifacts.push(extensionArtifact);
   }
 
   // Create extension signature type alias if there are extension properties
-  debugLog(
-    options,
+  log.debug(
     `Extension properties length: ${extensionProperties.length}, extensionArtifact exists: ${!!extensionArtifact}`
   );
-  debugLog(options, `Extension properties: ${JSON.stringify(extensionProperties.map((p) => p.name))}`);
+  log.debug(`Extension properties: ${JSON.stringify(extensionProperties.map((p) => p.name))}`);
   if (extensionProperties.length > 0 && extensionArtifact) {
     appendExtensionSignatureType(extensionArtifact, modelName);
   }
@@ -719,11 +715,11 @@ function generateRegularModelArtifacts(
 }
 
 export function toArtifacts(parsedFile: ParsedFile, options: TransformOptions): TransformArtifact[] {
-  debugLog(options, `=== DEBUG: Processing ${parsedFile.path} ===`);
+  log.debug(`=== DEBUG: Processing ${parsedFile.path} ===`);
 
   const analysis = analyzeModelFromParsed(parsedFile, options);
   if (!analysis.isValid) {
-    debugLog(options, 'Model analysis failed, skipping artifact generation');
+    log.debug('Model analysis failed, skipping artifact generation');
     return [];
   }
   return generateRegularModelArtifacts(parsedFile.path, parsedFile.source, analysis, options);
@@ -781,7 +777,7 @@ function analyzeModelFromParsed(parsedFile: ParsedFile, options: TransformOption
       baseName,
     };
   } catch (error) {
-    debugLog(options, `Error analyzing parsed model: ${String(error)}`);
+    log.debug(`Error analyzing parsed model: ${String(error)}`);
     return createInvalidResult(modelName, baseName);
   }
 }
@@ -813,7 +809,7 @@ function generateIntermediateModelTraitArtifacts(
   const analysis = analyzeModelFile(filePath, source, options);
 
   if (!analysis.isValid) {
-    debugLog(options, `Intermediate model ${modelPath} analysis failed, skipping trait generation`);
+    log.debug(`Intermediate model ${modelPath} analysis failed, skipping trait generation`);
     return [];
   }
 
@@ -838,7 +834,7 @@ function generateIntermediateModelTraitArtifacts(
       type: 'string | null',
       readonly: false, // id can be set on new records
     });
-    debugLog(options, `DEBUG: Added id property to ${traitName} trait`);
+    log.debug(`DEBUG: Added id property to ${traitName} trait`);
   }
 
   // Add `store` property if storeType is configured
@@ -852,7 +848,7 @@ function generateIntermediateModelTraitArtifacts(
       type: storeTypeName,
       readonly: true, // store is injected and should not be modified
     });
-    debugLog(options, `DEBUG: Added store property with type ${storeTypeName} to ${traitName} trait`);
+    log.debug(`DEBUG: Added store property with type ${storeTypeName} to ${traitName} trait`);
   }
 
   // Add Model base properties (isNew, save, belongsTo, etc.) to trait types
@@ -869,7 +865,7 @@ function generateIntermediateModelTraitArtifacts(
       });
     }
   }
-  debugLog(options, `DEBUG: Added ${modelBaseProperties.length} Model base properties to ${traitName} trait`);
+  log.debug(`DEBUG: Added ${modelBaseProperties.length} Model base properties to ${traitName} trait`);
 
   // Collect imports for trait interface
   const traitImports = new Set<string>();
@@ -884,7 +880,7 @@ function generateIntermediateModelTraitArtifacts(
     const storeTypeName = options.storeType.name || 'Store';
     const storeImport = `type { ${storeTypeName} } from '${options.storeType.import}'`;
     traitImports.add(storeImport);
-    debugLog(options, `DEBUG: Added Store type import: ${storeImport}`);
+    log.debug(`DEBUG: Added Store type import: ${storeImport}`);
   }
 
   // Build the trait schema object
@@ -1021,7 +1017,7 @@ function getIntermediateModelLocalNames(
 
     if (localName) {
       localNames.push(localName);
-      debugLog(options, `DEBUG: Found intermediate model local name: ${localName} for path: ${modelPath}`);
+      log.debug(`DEBUG: Found intermediate model local name: ${localName} for path: ${modelPath}`);
     }
   }
 
@@ -1060,10 +1056,7 @@ function getIntermediateFragmentLocalNames(root: SgNode, options: TransformOptio
             const identifiers = importClause.findAll({ rule: { kind: NODE_KIND_IDENTIFIER } });
             if (identifiers.length > 0) {
               localName = identifiers[0].text();
-              debugLog(
-                options,
-                `DEBUG: Matched intermediate fragment (direct): ${sourceText} for config: ${fragmentPath}`
-              );
+              log.debug(`DEBUG: Matched intermediate fragment (direct): ${sourceText} for config: ${fragmentPath}`);
               break;
             }
           }
@@ -1129,8 +1122,7 @@ function getIntermediateFragmentLocalNames(root: SgNode, options: TransformOptio
                     const identifiers = importClause.findAll({ rule: { kind: NODE_KIND_IDENTIFIER } });
                     if (identifiers.length > 0) {
                       localName = identifiers[0].text();
-                      debugLog(
-                        options,
+                      log.debug(
                         `DEBUG: Matched intermediate fragment (relative): ${sourceText} -> ${possiblePath} for config: ${fragmentPath}`
                       );
                       break;
@@ -1143,7 +1135,7 @@ function getIntermediateFragmentLocalNames(root: SgNode, options: TransformOptio
 
             if (localName) break;
           } catch (error: unknown) {
-            debugLog(options, `DEBUG: Error resolving intermediate fragment path: ${String(error)}`);
+            log.debug(`DEBUG: Error resolving intermediate fragment path: ${String(error)}`);
           }
         }
       }
@@ -1151,7 +1143,7 @@ function getIntermediateFragmentLocalNames(root: SgNode, options: TransformOptio
 
     if (localName) {
       localNames.push(localName);
-      debugLog(options, `DEBUG: Found intermediate fragment local name: ${localName} for path: ${fragmentPath}`);
+      log.debug(`DEBUG: Found intermediate fragment local name: ${localName} for path: ${fragmentPath}`);
     }
   }
 
@@ -1237,21 +1229,19 @@ function isModelClass(
   options?: TransformOptions,
   filePath?: string
 ): boolean {
-  debugLog(
-    options,
+  log.debug(
     `DEBUG: Checking if export extends model '${modelLocalName}' or fragment/base model '${fragmentOrBaseModelLocalName}'`
   );
 
   const classDeclaration = findClassDeclaration(exportNode, root, options);
 
   if (!classDeclaration) {
-    debugLog(options, 'DEBUG: No class declaration found in export or by name');
+    log.debug('DEBUG: No class declaration found in export or by name');
     return false;
   }
 
-  debugLog(options, `DEBUG: Found class declaration: ${classDeclaration.text().slice(0, 100)}...`);
-  debugLog(
-    options,
+  log.debug(`DEBUG: Found class declaration: ${classDeclaration.text().slice(0, 100)}...`);
+  log.debug(
     `DEBUG: Class children: ${classDeclaration
       .children()
       .map((c) => `${c.kind()}:${c.text().slice(0, 20)}`)
@@ -1261,13 +1251,13 @@ function isModelClass(
   // Check if the class has a heritage clause (extends)
   const heritageClause = classDeclaration.find({ rule: { kind: NODE_KIND_CLASS_HERITAGE } });
   if (!heritageClause) {
-    debugLog(options, 'DEBUG: No class_heritage found in class');
+    log.debug('DEBUG: No class_heritage found in class');
     return false;
   }
 
   // Check if it extends our model local name or calls .extend() on it
   const extendsText = heritageClause.text();
-  debugLog(options, `DEBUG: Heritage clause: ${extendsText}`);
+  log.debug(`DEBUG: Heritage clause: ${extendsText}`);
 
   // Check for direct Model extension
   const isDirectExtension = modelLocalName ? extendsLocalName(extendsText, modelLocalName) : false;
@@ -1288,15 +1278,13 @@ function isModelClass(
     );
     isChainedExtension = intermediateLocalNames.some((localName) => extendsText.includes(localName));
     if (isChainedExtension) {
-      debugLog(
-        options,
+      log.debug(
         `DEBUG: Found chained extension through intermediate model: ${intermediateLocalNames.find((name) => extendsText.includes(name))}`
       );
     }
   }
 
-  debugLog(
-    options,
+  log.debug(
     `DEBUG: Direct extension: ${isDirectExtension}, Base model extension: ${isBaseModelExtension}, Chained extension: ${isChainedExtension}`
   );
 
@@ -1318,12 +1306,12 @@ function findPropertyDefinitions(classBody: SgNode, options?: TransformOptions):
     try {
       const propertyDefinitions = classBody.findAll({ rule: { kind: nodeType } });
       if (propertyDefinitions.length > 0) {
-        debugLog(options, `DEBUG: Found ${propertyDefinitions.length} properties using node type: ${nodeType}`);
+        log.debug(`DEBUG: Found ${propertyDefinitions.length} properties using node type: ${nodeType}`);
         return propertyDefinitions;
       }
     } catch {
       // Node type not supported in this AST, continue to next
-      debugLog(options, `DEBUG: Node type ${nodeType} not supported, trying next...`);
+      log.debug(`DEBUG: Node type ${nodeType} not supported, trying next...`);
     }
   }
   return [];
@@ -1380,18 +1368,18 @@ function extractModelFields(
   // Find the class declaration
   const classDeclaration = root.find({ rule: { kind: NODE_KIND_CLASS_DECLARATION } });
   if (!classDeclaration) {
-    debugLog(options, 'DEBUG: No class declaration found in extractModelFields');
+    log.debug('DEBUG: No class declaration found in extractModelFields');
     return { schemaFields, extensionProperties };
   }
-  debugLog(options, 'DEBUG: Found class declaration in extractModelFields');
+  log.debug('DEBUG: Found class declaration in extractModelFields');
 
   // Get the class body
   const classBody = classDeclaration.find({ rule: { kind: NODE_KIND_CLASS_BODY } });
   if (!classBody) {
-    debugLog(options, 'DEBUG: No class body found');
+    log.debug('DEBUG: No class body found');
     return { schemaFields, extensionProperties };
   }
-  debugLog(options, 'DEBUG: Found class body, looking for properties...');
+  log.debug('DEBUG: Found class body, looking for properties...');
 
   // Get all property definitions within the class body
   let propertyDefinitions: SgNode[] = [];
@@ -1402,7 +1390,7 @@ function extractModelFields(
     if (options?.debug) {
       const allChildren = classBody.children();
       const nodeTypes = allChildren.map((child) => child.kind()).join(', ');
-      debugLog(options, `DEBUG: All class body node types: ${nodeTypes}`);
+      log.debug(`DEBUG: All class body node types: ${nodeTypes}`);
     }
 
     // Try different possible AST node types for class fields with error handling
@@ -1412,16 +1400,16 @@ function extractModelFields(
     // This prevents extracting methods from nested object literals (like memberAction calls)
     methodDefinitions = findMethodDefinitions(classBody);
 
-    debugLog(options, `DEBUG: Found ${propertyDefinitions.length} properties and ${methodDefinitions.length} methods`);
-    debugLog(options, `DEBUG: Class body text: ${classBody.text().substring(0, 200)}...`);
+    log.debug(`DEBUG: Found ${propertyDefinitions.length} properties and ${methodDefinitions.length} methods`);
+    log.debug(`DEBUG: Class body text: ${classBody.text().substring(0, 200)}...`);
     // List all child node types in the class body
     const childTypes = classBody
       .children()
       .map((child) => child.kind())
       .join(', ');
-    debugLog(options, `DEBUG: Class body child types: ${childTypes}`);
+    log.debug(`DEBUG: Class body child types: ${childTypes}`);
   } catch (error) {
-    errorLog(options, `DEBUG: Error finding properties: ${String(error)}`);
+    log.warn(`DEBUG: Error finding properties: ${String(error)}`);
     return { schemaFields, extensionProperties };
   }
 
@@ -1445,7 +1433,7 @@ function extractModelFields(
       try {
         typeInfo = extractTypeFromDeclaration(property, options) ?? undefined;
       } catch (error) {
-        debugLog(options, `DEBUG: Error extracting type for ${fieldName}: ${String(error)}`);
+        log.debug(`DEBUG: Error extracting type for ${fieldName}: ${String(error)}`);
       }
     }
 
@@ -1474,7 +1462,7 @@ function extractModelFields(
           try {
             typeInfo = extractTypeFromDecorator(originalDecoratorName, decoratorArgs, options) ?? undefined;
           } catch (error) {
-            debugLog(options, `DEBUG: Error extracting type from decorator for ${fieldName}: ${String(error)}`);
+            log.debug(`DEBUG: Error extracting type from decorator for ${fieldName}: ${String(error)}`);
           }
         }
 
@@ -1508,8 +1496,8 @@ function extractModelFields(
     if (!nameNode) continue;
 
     const methodName = nameNode.text();
-    debugLog(options, `DEBUG: Processing method: ${methodName}, parent: ${method.parent()?.kind()}`);
-    debugLog(options, `DEBUG: Method full text: ${method.text().substring(0, 200)}...`);
+    log.debug(`DEBUG: Processing method: ${methodName}, parent: ${method.parent()?.kind()}`);
+    log.debug(`DEBUG: Method full text: ${method.text().substring(0, 200)}...`);
 
     // Since we're only iterating over direct children of classBody,
     // all methods here are guaranteed to be top-level class methods
@@ -1541,7 +1529,7 @@ function extractModelFields(
       try {
         typeInfo = extractTypeFromMethod(method, options) ?? undefined;
       } catch (error) {
-        debugLog(options, `DEBUG: Error extracting type for method ${methodName}: ${String(error)}`);
+        log.debug(`DEBUG: Error extracting type for method ${methodName}: ${String(error)}`);
       }
     }
 
@@ -1556,10 +1544,7 @@ function extractModelFields(
   }
 
   if (options?.debug) {
-    debugLog(
-      options,
-      `Extracted ${schemaFields.length} schema fields, ${extensionProperties.length} extension properties`
-    );
+    log.debug(`Extracted ${schemaFields.length} schema fields, ${extensionProperties.length} extension properties`);
   }
 
   return { schemaFields, extensionProperties };
@@ -1596,7 +1581,7 @@ function extractIntermediateModelTraits(
         const dasherizedName = pascalToKebab(traitName).replace(TRAILING_MODEL_SUFFIX_REGEX, ''); // Remove trailing -model or model
 
         intermediateTraits.push(dasherizedName);
-        debugLog(options, `DEBUG: Found intermediate model trait: ${dasherizedName} from ${modelPath}`);
+        log.debug(`DEBUG: Found intermediate model trait: ${dasherizedName} from ${modelPath}`);
       }
       break; // Only process the first match since a class can only extend one parent
     }
@@ -1675,7 +1660,7 @@ function extractMixinTraits(
 
       for (const identifierNode of mixinIdentifiers) {
         const mixinName = identifierNode.text();
-        debugLog(options, `Found mixin identifier: ${mixinName}`);
+        log.debug(`Found mixin identifier: ${mixinName}`);
 
         // Check if this is an intermediate model import - if so, skip it as it's handled elsewhere
         if (options?.intermediateModelPaths) {
@@ -1684,7 +1669,7 @@ function extractMixinTraits(
             return localName === mixinName;
           });
           if (isIntermediateModel) {
-            debugLog(options, `DEBUG: Skipping ${mixinName} as it's an intermediate model, not a mixin`);
+            log.debug(`DEBUG: Skipping ${mixinName} as it's an intermediate model, not a mixin`);
             continue;
           }
         }
@@ -1694,10 +1679,7 @@ function extractMixinTraits(
 
         // Skip external node module dependencies (but not local app mixins)
         if (importPath && !isLocalMixin(importPath, options)) {
-          debugLog(
-            options,
-            `DEBUG: Skipping ${mixinName} as it's an external dependency (${importPath}), not a local mixin`
-          );
+          log.debug(`DEBUG: Skipping ${mixinName} as it's an external dependency (${importPath}), not a local mixin`);
           continue;
         }
         if (importPath) {
@@ -1755,7 +1737,7 @@ export function preAnalyzeConnectedMixinExtensions(
   options: TransformOptions
 ): void {
   if (!options.modelConnectedMixins || options.modelConnectedMixins.size === 0) {
-    debugLog(options, 'No modelConnectedMixins to pre-analyze');
+    log.debug('No modelConnectedMixins to pre-analyze');
     return;
   }
 

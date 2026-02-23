@@ -2,8 +2,8 @@ import type { SgNode } from '@ast-grep/napi';
 import { parse } from '@ast-grep/napi';
 import { dirname, join, relative, resolve, sep } from 'path';
 
+import { logger } from '../../../utils/logger.js';
 import type { TransformOptions } from '../config.js';
-import { debugLog, errorLog } from './logging.js';
 import { getFileExtension, getLanguageFromPath, indentCode, removeQuotes } from './path-utils.js';
 import type { TransformArtifact } from './schema-generation.js';
 import {
@@ -14,6 +14,8 @@ import {
   removeFileExtension,
   removeSameDirPrefix,
 } from './string.js';
+
+const log = logger.for('extension-generation');
 
 /**
  * Extension artifact context - determines where the extension file is placed
@@ -325,7 +327,7 @@ export function createExtensionFromOriginalFile(
     const ast = parse(lang, source);
     const root = ast.root();
 
-    debugLog(options, `Creating extension from ${filePath} with ${extensionProperties.length} properties`);
+    log.debug(`Creating extension from ${filePath} with ${extensionProperties.length} properties`);
 
     const extFileName = `${baseName}.ext${getFileExtension(filePath)}`;
 
@@ -337,12 +339,12 @@ export function createExtensionFromOriginalFile(
 
     // Update relative imports for the new extension location
     const updatedSource = updateRelativeImportsForExtensions(source, root, options, filePath, targetFilePath);
-    debugLog(options, `Updated relative imports in source`);
+    log.debug(`Updated relative imports in source`);
 
     // Determine format based on source type: mixins use object format, models use class format
     const format = sourceType === 'mixin' ? 'object' : 'class';
 
-    debugLog(options, `Extension generation for ${sourceType} using ${format} format`);
+    log.debug(`Extension generation for ${sourceType} using ${format} format`);
 
     const extensionCode = generateExtensionCode(
       extensionName,
@@ -360,35 +362,35 @@ export function createExtensionFromOriginalFile(
 
     // Remove all export statements except the default export, but preserve their content
     const allExports = root.findAll({ rule: { kind: 'export_statement' } });
-    debugLog(options, `Found ${allExports.length} export statements to process`);
+    log.debug(`Found ${allExports.length} export statements to process`);
     for (const exportNode of allExports) {
       const exportText = exportNode.text();
-      debugLog(options, `Processing export: ${exportText.substring(0, 100)}...`);
+      log.debug(`Processing export: ${exportText.substring(0, 100)}...`);
 
       // Check if this is the default export (the main model class)
       const isDefaultExport = exportText.includes('export default');
       if (isDefaultExport) {
-        debugLog(options, `Removing default export (main model class)`);
+        log.debug(`Removing default export (main model class)`);
         modifiedSource = modifiedSource.replace(exportText, '');
         continue;
       }
 
       // Check if this is a type definition that should remain exported
       if (shouldKeepExported(exportNode)) {
-        debugLog(options, `Keeping export for type definition: ${exportText.substring(0, 50)}...`);
+        log.debug(`Keeping export for type definition: ${exportText.substring(0, 50)}...`);
         continue;
       }
 
       // For non-type exports, remove the export keyword but keep the content
       // Simply replace "export " with empty string
       const contentWithoutExport = exportText.replace(EXPORT_KEYWORD_REGEX, '');
-      debugLog(options, `Removing export keyword, keeping content: ${contentWithoutExport.substring(0, 50)}...`);
+      log.debug(`Removing export keyword, keeping content: ${contentWithoutExport.substring(0, 50)}...`);
       modifiedSource = modifiedSource.replace(exportText, contentWithoutExport);
     }
 
     // Process imports to resolve relative imports to absolute imports
     const baseDir = process.cwd();
-    debugLog(options, `Processing imports for extension file: ${filePath}`);
+    log.debug(`Processing imports for extension file: ${filePath}`);
     if (processImports) {
       modifiedSource = processImports(modifiedSource, filePath, baseDir, options);
     }
@@ -405,8 +407,8 @@ export function createExtensionFromOriginalFile(
     modifiedSource = modifiedSource.replace(EXPORT_DEFAULT_LINE_END_REGEX, '');
     modifiedSource = modifiedSource.replace(EXPORT_LINE_END_REGEX, '');
 
-    debugLog(options, `Generated extension code (first 200 chars): ${modifiedSource.substring(0, 200)}...`);
-    debugLog(options, `Extension code to add: ${extensionCode.substring(0, 200)}...`);
+    log.debug(`Generated extension code (first 200 chars): ${modifiedSource.substring(0, 200)}...`);
+    log.debug(`Extension code to add: ${extensionCode.substring(0, 200)}...`);
 
     return {
       type: getExtensionArtifactType(extensionContext),
@@ -415,7 +417,7 @@ export function createExtensionFromOriginalFile(
       suggestedFileName: extFileName,
     };
   } catch (error) {
-    errorLog(options, `Error creating extension from original file: ${String(error)}`);
+    log.warn(`Error creating extension from original file: ${String(error)}`);
     return null;
   }
 }

@@ -3,13 +3,13 @@ import { Lang } from '@ast-grep/napi';
 import { existsSync } from 'fs';
 import { join } from 'path';
 
+import { logger } from '../../../utils/logger.js';
 import type { TransformOptions } from '../config.js';
 import type { ExtractedType, PropertyInfo, SchemaField, TransformArtifact } from '../utils/ast-utils.js';
 import {
   buildTraitSchemaObject,
   collectTraitImports,
   createExtensionFromOriginalFile,
-  debugLog,
   DEFAULT_EMBER_DATA_SOURCE,
   DEFAULT_MIXIN_SOURCE,
   extractCamelCaseName,
@@ -49,6 +49,8 @@ import {
 import type { ParsedFile } from '../utils/file-parser.js';
 import { mixinNameToKebab, pascalToKebab } from '../utils/string.js';
 
+const log = logger.for('mixin-processor');
+
 /** Mixin.create() method name */
 const MIXIN_METHOD_CREATE = 'create';
 
@@ -71,7 +73,7 @@ function ensureResourceTypeFileExists(
 
   // Check if the file exists
   if (!existsSync(resourceTypeFilePath)) {
-    debugLog(options, `Resource type file does not exist: ${resourceTypeFilePath}, creating stub`);
+    log.debug(`Resource type file does not exist: ${resourceTypeFilePath}, creating stub`);
 
     // Create a stub interface
     const stubCode = generateStubResourceTypeInterface(pascalCaseType);
@@ -131,7 +133,7 @@ export function toArtifacts(parsedFile: ParsedFile, options: TransformOptions): 
   const { path: filePath, source, baseName, camelName: mixinName } = parsedFile;
 
   if (parsedFile.fileType !== 'mixin') {
-    debugLog(options, 'Not a mixin file, returning empty artifacts');
+    log.debug('Not a mixin file, returning empty artifacts');
     return [];
   }
 
@@ -158,7 +160,7 @@ export function toArtifacts(parsedFile: ParsedFile, options: TransformOptions): 
     options?.modelConnectedMixins?.has(filePath) ?? (process.env.NODE_ENV === 'test' || options?.testMode === true);
 
   if (!isConnectedToModel) {
-    debugLog(options, `Skipping ${mixinName}: not connected to any models`);
+    log.debug(`Skipping ${mixinName}: not connected to any models`);
     return [];
   }
 
@@ -277,7 +279,7 @@ function generateMixinArtifacts(
     }
   }
 
-  debugLog(options, `Generated ${artifacts.length} artifacts`);
+  log.debug(`Generated ${artifacts.length} artifacts`);
   return artifacts;
 }
 
@@ -292,11 +294,11 @@ function handleMixinTransform(root: SgNode, source: string, filePath: string, op
     const mixinSources = [DEFAULT_MIXIN_SOURCE];
     const mixinImportLocal = findEmberImportLocalName(root, mixinSources, options, filePath, process.cwd());
     if (options?.debug) {
-      debugLog(options, `Found mixin import local: ${mixinImportLocal}`);
+      log.debug(`Found mixin import local: ${mixinImportLocal}`);
     }
     if (!mixinImportLocal) {
       if (options?.debug) {
-        debugLog(options, 'No ember/object/mixin import found; skipping transform');
+        log.debug('No ember/object/mixin import found; skipping transform');
       }
       // No ember/object/mixin import found; do not transform
       return source;
@@ -306,7 +308,7 @@ function handleMixinTransform(root: SgNode, source: string, filePath: string, op
     const emberDataSources = [options?.emberDataImportSource || DEFAULT_EMBER_DATA_SOURCE];
     const emberDataImports = getEmberDataImports(root, emberDataSources, options);
     if (options?.debug) {
-      debugLog(options, 'Found EmberData imports:', emberDataImports);
+      log.debug('Found EmberData imports:', emberDataImports);
     }
 
     // Extract the mixin name from the file path
@@ -322,14 +324,13 @@ function handleMixinTransform(root: SgNode, source: string, filePath: string, op
       options
     );
     if (options?.debug) {
-      debugLog(
-        options,
+      log.debug(
         `Found ${traitFields.length} trait fields, ${extensionProperties.length} extension properties, and ${extendedTraits.length} extended traits`
       );
     }
     if (traitFields.length === 0 && extensionProperties.length === 0) {
       if (options?.debug) {
-        debugLog(options, 'No trait fields or extension properties found; skipping transform');
+        log.debug('No trait fields or extension properties found; skipping transform');
       }
       return source;
     }
@@ -429,14 +430,14 @@ function isIdentifierInitializedByMixinCreate(
   localMixin: string,
   options?: TransformOptions
 ): boolean {
-  debugLog(options, `Checking if identifier '${ident}' is initialized by '${localMixin}.create()'`);
+  log.debug(`Checking if identifier '${ident}' is initialized by '${localMixin}.create()'`);
 
   const variableDeclarations = findAllVariableDeclarations(root);
 
-  debugLog(options, `Found ${variableDeclarations.length} variable declarations`);
+  log.debug(`Found ${variableDeclarations.length} variable declarations`);
 
   for (const varDecl of variableDeclarations) {
-    debugLog(options, `Variable declaration: ${varDecl.text()}`);
+    log.debug(`Variable declaration: ${varDecl.text()}`);
 
     // Get all declarators in this declaration
     const declarators = varDecl.findAll({ rule: { kind: NODE_KIND_VARIABLE_DECLARATOR } });
@@ -446,22 +447,22 @@ function isIdentifierInitializedByMixinCreate(
       const nameNode = declarator.field('name');
       if (!nameNode || nameNode.text() !== ident) continue;
 
-      debugLog(options, `Found matching variable declarator for '${ident}'`);
+      log.debug(`Found matching variable declarator for '${ident}'`);
 
       // Check if the value is a call expression (or wrapped in a type cast)
       const valueNode = unwrapTypeCastExpressions(declarator.field('value'));
 
       if (!valueNode || valueNode.kind() !== NODE_KIND_CALL_EXPRESSION) {
-        debugLog(options, `Value is not a call expression: ${valueNode?.kind()}`);
+        log.debug(`Value is not a call expression: ${valueNode?.kind()}`);
         continue;
       }
 
-      debugLog(options, `Found call expression: ${valueNode.text()}`);
+      log.debug(`Found call expression: ${valueNode.text()}`);
 
       // Check if it's calling localMixin.create or localMixin.createWithMixins
       const functionNode = valueNode.field('function');
       if (!functionNode || functionNode.kind() !== NODE_KIND_MEMBER_EXPRESSION) {
-        debugLog(options, `Function is not a member expression: ${functionNode?.kind()}`);
+        log.debug(`Function is not a member expression: ${functionNode?.kind()}`);
         continue;
       }
 
@@ -469,20 +470,20 @@ function isIdentifierInitializedByMixinCreate(
       const property = functionNode.field('property');
 
       if (!object || !property) {
-        debugLog(options, 'Missing object or property in member expression');
+        log.debug('Missing object or property in member expression');
         continue;
       }
 
-      debugLog(options, `Member expression: ${object.text()}.${property.text()}`);
+      log.debug(`Member expression: ${object.text()}.${property.text()}`);
 
       if (object.text() === localMixin && isMixinCreateMethod(property.text())) {
-        debugLog(options, `Found matching ${localMixin}.create() call!`);
+        log.debug(`Found matching ${localMixin}.create() call!`);
         return true;
       }
     }
   }
 
-  debugLog(options, 'No matching Mixin.create() initialization found');
+  log.debug('No matching Mixin.create() initialization found');
 
   return false;
 }
@@ -528,7 +529,7 @@ function extractExtendedTraitsFromArgs(
       const traitName = mixinNameToKebab(extendedMixinName);
       if (!extendedTraits.includes(traitName)) {
         extendedTraits.push(traitName);
-        debugLog(options, `Found extended trait: ${traitName} from mixin ${mixinName}`);
+        log.debug(`Found extended trait: ${traitName} from mixin ${mixinName}`);
       }
     }
   }
@@ -609,13 +610,13 @@ export function extractTraitFields(
 
   if (associatedInterface) {
     interfaceTypes = extractTypesFromInterface(associatedInterface, options);
-    debugLog(options, `Found ${interfaceTypes.size} types from associated interface`);
+    log.debug(`Found ${interfaceTypes.size} types from associated interface`);
   }
 
   // Find calls like <mixinLocalName>.create({ ... }) or .createWithMixins
   const mixinCreateCalls = findMixinCreateCalls(root, mixinLocalName);
 
-  debugLog(options, `Found ${mixinCreateCalls.length} mixin create calls`);
+  log.debug(`Found ${mixinCreateCalls.length} mixin create calls`);
 
   // Extract extended traits from createWithMixins calls
   processExtendedTraitsFromCalls(mixinCreateCalls, extendedTraits, mixinName, options);
@@ -632,7 +633,7 @@ export function extractTraitFields(
 
   const args = mixinCall.field('arguments');
   if (!args) {
-    debugLog(options, 'No arguments found in mixin create call');
+    log.debug('No arguments found in mixin create call');
     return { traitFields, extensionProperties, extendedTraits };
   }
 
@@ -641,40 +642,36 @@ export function extractTraitFields(
   const objectLiterals = findObjectLiteralsInArgs(args);
   const objectLiteral = objectLiterals[objectLiterals.length - 1]; // Get the last object literal
   if (!objectLiteral) {
-    debugLog(options, 'No object literal found in mixin create arguments');
+    log.debug('No object literal found in mixin create arguments');
     return { traitFields, extensionProperties, extendedTraits };
   }
 
   // For regular create() calls with mixin references, extract extended traits from non-object arguments
-  debugLog(
-    options,
+  log.debug(
     `Processing Mixin.create arguments for ${mixinName}: ${argChildren.length} total args, ${objectLiterals.length} object literals`
   );
   if (objectLiterals.length > 0 && argChildren.length > 1) {
     for (let i = 0; i < argChildren.length; i++) {
       const arg = argChildren[i];
-      debugLog(
-        options,
-        `  Arg ${i}: kind=${arg.kind()}, text='${arg.text()}', isObjectLiteral=${arg === objectLiteral}`
-      );
+      log.debug(`  Arg ${i}: kind=${arg.kind()}, text='${arg.text()}', isObjectLiteral=${arg === objectLiteral}`);
       if (arg.kind() === NODE_KIND_IDENTIFIER && arg !== objectLiteral) {
         const extendedMixinName = arg.text();
         // Convert mixin name to dasherized trait name
         const traitName = mixinNameToKebab(extendedMixinName);
         if (!extendedTraits.includes(traitName)) {
           extendedTraits.push(traitName);
-          debugLog(options, `Found extended trait: ${traitName} from mixin ${extendedMixinName}`);
+          log.debug(`Found extended trait: ${traitName} from mixin ${extendedMixinName}`);
         }
       }
     }
   }
 
-  debugLog(options, `Found object literal with ${objectLiteral.children().length} children`);
+  log.debug(`Found object literal with ${objectLiteral.children().length} children`);
 
   // Get direct properties of the object literal - both pairs and method definitions
   const directProperties = getObjectLiteralProperties(objectLiteral);
 
-  debugLog(options, `Found ${directProperties.length} direct properties`);
+  log.debug(`Found ${directProperties.length} direct properties`);
 
   for (const property of directProperties) {
     let keyNode: SgNode | null;
@@ -718,21 +715,21 @@ export function extractTraitFields(
 
     if (!keyNode || !valueNode || !fieldName) continue;
 
-    debugLog(options, `Processing property: ${fieldName}`);
+    log.debug(`Processing property: ${fieldName}`);
 
     // Check if this is an EmberData trait field (only applies to regular pairs)
     if (property.kind() === NODE_KIND_PAIR && valueNode.kind() === NODE_KIND_CALL_EXPRESSION) {
       const functionNode = valueNode.field('function');
       if (functionNode) {
         const functionName = functionNode.text();
-        debugLog(options, `Property ${fieldName} has function call: ${functionName}`);
+        log.debug(`Property ${fieldName} has function call: ${functionName}`);
 
         // Only process if this function is a properly imported EmberData decorator
         if (emberDataImports.has(functionName)) {
           const originalDecoratorName = emberDataImports.get(functionName);
           if (!originalDecoratorName) continue;
 
-          debugLog(options, `Found EmberData decorator: ${functionName} -> ${originalDecoratorName}`);
+          log.debug(`Found EmberData decorator: ${functionName} -> ${originalDecoratorName}`);
 
           // Map EmberData field types to WarpDrive LegacyTrait field kinds
           const kind = getFieldKindFromDecorator(originalDecoratorName);
@@ -760,7 +757,7 @@ export function extractTraitFields(
 
     // If we reach here, it's not a trait field, so add it as an extension property
     // This includes computed properties, methods, service injections, etc.
-    debugLog(options, `Adding ${fieldName} as extension property`);
+    log.debug(`Adding ${fieldName} as extension property`);
     extensionProperties.push({
       name: fieldName,
       originalKey,
@@ -770,8 +767,7 @@ export function extractTraitFields(
     });
   }
 
-  debugLog(
-    options,
+  log.debug(
     `Final results: ${traitFields.length} trait fields, ${extensionProperties.length} extension properties, ${extendedTraits.length} extended traits`
   );
   return { traitFields, extensionProperties, extendedTraits };
@@ -844,23 +840,23 @@ function extractTypeAndOptionsFromCallExpression(
   callNode: SgNode,
   options?: TransformOptions
 ): { type: string; options: Record<string, unknown> } | null {
-  debugLog(options, `Extracting options from call expression: ${callNode.text()}`);
+  log.debug(`Extracting options from call expression: ${callNode.text()}`);
   try {
     const args = callNode.field('arguments');
     if (!args) {
-      debugLog(options, 'No arguments found in call expression');
+      log.debug('No arguments found in call expression');
       return null;
     }
 
     const argNodes = args.children();
-    debugLog(options, `Found ${argNodes.length} arguments in call expression`);
+    log.debug(`Found ${argNodes.length} arguments in call expression`);
 
     // Debug: show all arguments (only in debug mode)
     if (options?.debug) {
       for (let i = 0; i < argNodes.length; i++) {
         const argNode = argNodes[i];
         if (argNode) {
-          debugLog(options, `Argument ${i}: kind=${argNode.kind()}, text="${argNode.text()}"`);
+          log.debug(`Argument ${i}: kind=${argNode.kind()}, text="${argNode.text()}"`);
         }
       }
     }
@@ -869,7 +865,7 @@ function extractTypeAndOptionsFromCallExpression(
     const type = findStringArgument(argNodes);
 
     if (!type) {
-      debugLog(options, 'No string type argument found in call expression');
+      log.debug('No string type argument found in call expression');
       return null;
     }
 
@@ -877,18 +873,18 @@ function extractTypeAndOptionsFromCallExpression(
     const optionsNode = findObjectArgument(argNodes);
 
     if (!optionsNode) {
-      debugLog(options, 'No object argument found in call expression');
+      log.debug('No object argument found in call expression');
       return { type, options: {} };
     }
-    debugLog(options, `Second argument kind: ${optionsNode.kind()}`);
+    log.debug(`Second argument kind: ${optionsNode.kind()}`);
 
     // Parse the object literal to extract key-value pairs
     const optionsObj = parseObjectPropertiesFromNode(optionsNode);
 
-    debugLog(options, `Extracted type: ${type}, options: ${JSON.stringify(optionsObj)}`);
+    log.debug(`Extracted type: ${type}, options: ${JSON.stringify(optionsObj)}`);
     return { type, options: optionsObj };
   } catch (error) {
-    debugLog(options, `Error extracting options: ${String(error)}`);
+    log.debug(`Error extracting options: ${String(error)}`);
     return null;
   }
 }

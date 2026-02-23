@@ -163,4 +163,5 @@ class Logger {
   }
 }
 
+export type InstanciatedLogger = InstanceType<typeof Logger>;
 export const logger = Logger;

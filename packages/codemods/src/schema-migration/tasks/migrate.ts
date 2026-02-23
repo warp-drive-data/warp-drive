@@ -1,6 +1,7 @@
 import { existsSync, mkdirSync, writeFileSync } from 'fs';
 import { basename, dirname, join, resolve } from 'path';
 
+import { InstanciatedLogger, logger } from '../../../utils/logger.js';
 import { Codemod } from '../codemod.js';
 import type { FinalOptions, MigrateOptions, TransformOptions } from '../config.js';
 import { toArtifacts as mixinToArtifacts } from '../processors/mixin.js';
@@ -9,9 +10,9 @@ import {
   processIntermediateModelsToTraits,
   toArtifacts as modelToArtifacts,
 } from '../processors/model.js';
-import { debugLog } from '../utils/ast-utils.js';
 import type { ParsedFile } from '../utils/file-parser.js';
-import { Logger } from '../utils/logger.js';
+
+const migrateLog = logger.for('migrate');
 
 /**
  * JSCodeshift transform function that throws an error
@@ -210,7 +211,7 @@ function getArtifactOutputPath(
 
   // Debug logging for resource-type-stub
   if (artifact.type === 'resource-type-stub') {
-    debugLog(options, `RESOURCE-TYPE-STUB: redirecting to resources dir`);
+    migrateLog.debug(`RESOURCE-TYPE-STUB: redirecting to resources dir`);
   }
 
   // Calculate relative path based on artifact type
@@ -233,17 +234,13 @@ function getArtifactOutputPath(
 interface WriteArtifactOptions {
   dryRun: boolean;
   verbose: boolean;
-  logger: Logger;
+  log: InstanciatedLogger;
 }
 
 /**
  * Write a single artifact to disk
  */
-function writeArtifact(
-  artifact: Artifact,
-  outputPath: string,
-  { dryRun, verbose, logger }: WriteArtifactOptions
-): void {
+function writeArtifact(artifact: Artifact, outputPath: string, { dryRun, verbose, log }: WriteArtifactOptions): void {
   if (!dryRun) {
     const outputDirPath = dirname(outputPath);
     if (!existsSync(outputDirPath)) {
@@ -251,17 +248,17 @@ function writeArtifact(
     }
     writeFileSync(outputPath, artifact.code, 'utf-8');
     if (verbose) {
-      logger.info(`✅ Generated ${artifact.type}: ${outputPath}`);
+      log.info(`✅ Generated ${artifact.type}: ${outputPath}`);
     }
   } else if (verbose) {
-    logger.info(`✅ Would generate ${artifact.type}: ${outputPath} (dry run)`);
+    log.info(`✅ Would generate ${artifact.type}: ${outputPath} (dry run)`);
   }
 }
 
 /**
  * Write intermediate model trait artifacts to disk
  */
-function writeIntermediateArtifacts(artifacts: Artifact[], finalOptions: FinalOptions, logger: Logger): void {
+function writeIntermediateArtifacts(artifacts: Artifact[], finalOptions: FinalOptions, log: InstanciatedLogger): void {
   for (const artifact of artifacts) {
     // For intermediate artifacts, we use the suggested filename directly
     const outputDir = getOutputDirectory(artifact.type, finalOptions);
@@ -275,7 +272,7 @@ function writeIntermediateArtifacts(artifacts: Artifact[], finalOptions: FinalOp
     writeArtifact(artifact, outputPath, {
       dryRun: finalOptions.dryRun ?? false,
       verbose: finalOptions.verbose ?? false,
-      logger,
+      log,
     });
   }
 }
@@ -286,14 +283,14 @@ interface ProcessFilesOptions {
   parsedFiles: Map<string, ParsedFile>;
   transformer: ArtifactTransformer;
   finalOptions: FinalOptions;
-  logger: Logger;
+  log: InstanciatedLogger;
 }
 
 /**
  * Generic file processor for both models and mixins
  * Uses pre-parsed ParsedFile data for efficient processing
  */
-function processFiles({ parsedFiles, transformer, finalOptions, logger }: ProcessFilesOptions): ProcessingResult {
+function processFiles({ parsedFiles, transformer, finalOptions, log }: ProcessFilesOptions): ProcessingResult {
   let processed = 0;
   const skipped = [];
   const errors = [];
@@ -301,7 +298,7 @@ function processFiles({ parsedFiles, transformer, finalOptions, logger }: Proces
   for (const [filePath, parsedFile] of parsedFiles) {
     try {
       if (finalOptions.verbose) {
-        logger.debug(`🔄 Processing: ${filePath}`);
+        log.debug(`🔄 Processing: ${filePath}`);
       }
 
       const artifacts = transformer(parsedFile, finalOptions);
@@ -315,7 +312,7 @@ function processFiles({ parsedFiles, transformer, finalOptions, logger }: Proces
           writeArtifact(artifact, outputPath, {
             dryRun: finalOptions.dryRun ?? false,
             verbose: finalOptions.verbose ?? false,
-            logger,
+            log,
           });
         }
       } else {
@@ -323,7 +320,7 @@ function processFiles({ parsedFiles, transformer, finalOptions, logger }: Proces
       }
     } catch (error) {
       errors.push(filePath);
-      logger.error(`❌ Error processing ${filePath}: ${error instanceof Error ? error.message : String(error)}`);
+      log.error(`❌ Error processing ${filePath}: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
 
@@ -345,12 +342,12 @@ export async function runMigration(options: MigrateOptions): Promise<void> {
     ...options,
   };
 
-  const logger = new Logger(finalOptions.verbose);
-  logger.info(`🚀 Starting schema migration...`);
-  logger.info(`📁 Input directory: ${resolve(finalOptions.inputDir || './app')}`);
-  logger.info(`📁 Output directory: ${resolve(finalOptions.outputDir || './app/schemas')}`);
+  const log = logger.for('migrate-to-schema');
+  log.info(`🚀 Starting schema migration...`);
+  log.info(`📁 Input directory: ${resolve(finalOptions.inputDir || './app')}`);
+  log.info(`📁 Output directory: ${resolve(finalOptions.outputDir || './app/schemas')}`);
 
-  const codemod = new Codemod(logger, finalOptions);
+  const codemod = new Codemod(log, finalOptions);
 
   // Ensure output directories exist (specific directories are created as needed)
   if (!finalOptions.dryRun) {
@@ -375,15 +372,15 @@ export async function runMigration(options: MigrateOptions): Promise<void> {
   const filesToProcess: number = codemod.input.mixins.size + codemod.input.models.size;
 
   if (filesToProcess === 0) {
-    logger.info('✅ No files found to process.');
+    log.info('✅ No files found to process.');
     return;
   }
 
-  logger.info(`📋 Processing ${filesToProcess} files total`);
-  logger.info(`📋 Found ${codemod.input.models.size} model and ${codemod.input.mixins.size} mixin files`);
+  log.info(`📋 Processing ${filesToProcess} files total`);
+  log.info(`📋 Found ${codemod.input.models.size} model and ${codemod.input.mixins.size} mixin files`);
 
-  logger.warn(`📋 Skipped ${codemod.input.skipped.length} files total`);
-  logger.warn(`📋 Errors found while reading files: ${codemod.input.errors.length}`);
+  log.warn(`📋 Skipped ${codemod.input.skipped.length} files total`);
+  log.warn(`📋 Errors found while reading files: ${codemod.input.errors.length}`);
 
   // Unfortunately a lot of the utils rely on the options object to carry a lot of the data currently
   // It'd take a lot of changes to make them use the codemod instance instead.
@@ -397,7 +394,7 @@ export async function runMigration(options: MigrateOptions): Promise<void> {
   // This must be done before processing regular models that extend these intermediate models
   if (finalOptions.intermediateModelPaths && finalOptions.intermediateModelPaths.length > 0) {
     try {
-      logger.info(`🔄 Processing ${finalOptions.intermediateModelPaths.length} intermediate models...`);
+      log.info(`🔄 Processing ${finalOptions.intermediateModelPaths.length} intermediate models...`);
       const intermediateResults = processIntermediateModelsToTraits(
         Array.isArray(finalOptions.intermediateModelPaths)
           ? finalOptions.intermediateModelPaths
@@ -408,18 +405,18 @@ export async function runMigration(options: MigrateOptions): Promise<void> {
       );
 
       // Write intermediate model trait artifacts
-      writeIntermediateArtifacts(intermediateResults.artifacts, finalOptions, logger);
+      writeIntermediateArtifacts(intermediateResults.artifacts, finalOptions, log);
 
       if (intermediateResults.errors.length > 0) {
-        logger.error(`⚠️ Errors processing intermediate models:`);
+        log.error(`⚠️ Errors processing intermediate models:`);
         for (const error of intermediateResults.errors) {
-          logger.error(`   ${String(error)}`);
+          log.error(`   ${String(error)}`);
         }
       }
 
-      logger.info(`✅ Processed ${intermediateResults.artifacts.length} intermediate model artifacts`);
+      log.info(`✅ Processed ${intermediateResults.artifacts.length} intermediate model artifacts`);
     } catch (error) {
-      logger.error(`❌ Error processing intermediate models: ${String(error)}`);
+      log.error(`❌ Error processing intermediate models: ${String(error)}`);
     }
   }
 
@@ -428,7 +425,7 @@ export async function runMigration(options: MigrateOptions): Promise<void> {
     parsedFiles: codemod.input.parsedModels,
     transformer: modelToArtifacts,
     finalOptions,
-    logger,
+    log,
   });
 
   // Process mixin files using pre-parsed data
@@ -436,7 +433,7 @@ export async function runMigration(options: MigrateOptions): Promise<void> {
     parsedFiles: codemod.input.parsedMixins,
     transformer: mixinToArtifacts,
     finalOptions,
-    logger,
+    log,
   });
 
   // Aggregate results
@@ -444,18 +441,18 @@ export async function runMigration(options: MigrateOptions): Promise<void> {
   const skipped = modelResults.skipped.length + mixinResults.skipped.length;
   const errors = modelResults.errors.length + mixinResults.errors.length;
 
-  logger.info(`\n✅ Migration complete!`);
-  logger.info(`   📊 Processed: ${processed}`);
-  logger.info(
+  log.info(`\n✅ Migration complete!`);
+  log.info(`   📊 Processed: ${processed}`);
+  log.info(
     `   ⏭️  Skipped: ${skipped} - Mixins: ${mixinResults.skipped.length}, Models: ${modelResults.skipped.length}`
   );
 
   if (options.verbose) {
-    logger.warn(
+    log.warn(
       `Skipped:\n   Mixins:\n ${mixinResults.skipped.join(', ')}\n   Models: ${modelResults.skipped.join(', ')}`
     );
   }
   if (errors > 0) {
-    logger.info(`   ❌ Errors: ${errors} files`);
+    log.info(`   ❌ Errors: ${errors} files`);
   }
 }

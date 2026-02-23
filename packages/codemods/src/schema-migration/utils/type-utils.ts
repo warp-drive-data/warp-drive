@@ -1,10 +1,12 @@
 import type { SgNode } from '@ast-grep/napi';
 
+import { logger } from '../../../utils/logger.js';
 import type { TransformOptions } from '../config.js';
 import { parseObjectLiteralFromNode } from './ast-helpers.js';
 import { DEFAULT_EMBER_DATA_SOURCE, DEFAULT_MIXIN_SOURCE } from './import-utils.js';
-import { debugLog } from './logging.js';
 import { removeQuotes, toPascalCase } from './path-utils.js';
+
+const log = logger.for('type-utils');
 
 // Re-export constants for backward compatibility
 export { DEFAULT_EMBER_DATA_SOURCE, DEFAULT_MIXIN_SOURCE };
@@ -195,19 +197,19 @@ export function extractTypeFromDeclaration(propertyNode: SgNode, options?: Trans
     // Look for type annotation in the property declaration
     const typeAnnotation = propertyNode.find({ rule: { kind: 'type_annotation' } });
     if (!typeAnnotation) {
-      debugLog(options, 'No type annotation found for property');
+      log.debug('No type annotation found for property');
       return null;
     }
 
     // Extract the type from the annotation
     const typeNode = typeAnnotation.children().find((child) => child.kind() !== ':');
     if (!typeNode) {
-      debugLog(options, 'No type node found in type annotation');
+      log.debug('No type node found in type annotation');
       return null;
     }
 
     const typeText = typeNode.text();
-    debugLog(options, `Extracted type: ${typeText}`);
+    log.debug(`Extracted type: ${typeText}`);
 
     // Check for readonly modifier
     const readonly = propertyNode.text().includes('readonly ');
@@ -225,7 +227,7 @@ export function extractTypeFromDeclaration(propertyNode: SgNode, options?: Trans
       imports: imports.length > 0 ? imports : undefined,
     };
   } catch (error) {
-    debugLog(options, `Error extracting type: ${String(error)}`);
+    log.debug(`Error extracting type: ${String(error)}`);
     return null;
   }
 }
@@ -346,7 +348,7 @@ export function extractTypeFromDecorator(
 
     return extractTypeFromDecoratorCore(decoratorType, firstArg, parsedOptions, options);
   } catch (error) {
-    debugLog(options, `Error extracting type from decorator: ${String(error)}`);
+    log.debug(`Error extracting type from decorator: ${String(error)}`);
     return null;
   }
 }
@@ -388,7 +390,7 @@ export function extractTypeFromMethod(methodNode: SgNode, options?: TransformOpt
     // For regular methods without explicit return type
     return { type: 'unknown' };
   } catch (error) {
-    debugLog(options, `Error extracting type from method: ${String(error)}`);
+    log.debug(`Error extracting type from method: ${String(error)}`);
     return null;
   }
 }
@@ -406,7 +408,7 @@ export function extractTypesFromInterface(
   // Find the interface body
   const body = interfaceNode.find({ rule: { kind: 'object_type' } });
   if (!body) {
-    debugLog(options, 'No interface body found');
+    log.debug('No interface body found');
     return typeMap;
   }
 
@@ -435,7 +437,7 @@ export function extractTypesFromInterface(
       imports: extractImportsFromType(typeText, emberDataImportSource),
     });
 
-    debugLog(options, `Extracted type for ${propertyName}: ${typeText}`);
+    log.debug(`Extracted type for ${propertyName}: ${typeText}`);
   }
 
   return typeMap;

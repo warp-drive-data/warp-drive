@@ -1,10 +1,10 @@
 import { resolve } from 'path';
 
+import type { InstanciatedLogger } from '../../../utils/logger.js';
 import type { Codemod } from '../codemod.js';
 import type { FinalOptions } from '../config.js';
 import { extractBaseName } from '../utils/ast-utils.js';
 import type { ParsedFile } from '../utils/file-parser.js';
-import type { Logger } from '../utils/logger.js';
 import { getImportSourceConfig, resolveImportPath, resolveRelativeImport } from '../utils/path-utils.js';
 
 /**
@@ -157,7 +157,7 @@ export function analyzeModelMixinUsage(codemod: Codemod, options: FinalOptions):
 function extractMixinImportsFromParsed(
   parsedFile: ParsedFile,
   filePath: string,
-  logger: Logger,
+  logger: InstanciatedLogger,
   finalOptions: FinalOptions
 ): string[] {
   const mixinPaths: string[] = [];
@@ -188,7 +188,7 @@ function extractMixinImportsFromParsed(
 function resolveMixinPath(
   importPath: string,
   currentFilePath: string,
-  logger: Logger,
+  logger: InstanciatedLogger,
   options: FinalOptions
 ): string | null {
   try {
@@ -222,7 +222,11 @@ function resolveMixinPath(
  * Extract polymorphic mixin references from pre-parsed model fields
  * Finds belongsTo fields with polymorphic: true whose type matches a mixin file basename
  */
-function extractPolymorphicMixinReferences(parsedFile: ParsedFile, mixinFiles: string[], logger: Logger): string[] {
+function extractPolymorphicMixinReferences(
+  parsedFile: ParsedFile,
+  mixinFiles: string[],
+  logger: InstanciatedLogger
+): string[] {
   const polymorphicMixins: string[] = [];
 
   for (const field of parsedFile.fields) {
@@ -253,7 +257,7 @@ function extractPolymorphicMixinReferences(parsedFile: ParsedFile, mixinFiles: s
 function extractTypeOnlyMixinReferences(
   parsedFile: ParsedFile,
   mixinFiles: string[],
-  logger: Logger,
+  logger: InstanciatedLogger,
   options: FinalOptions
 ): string[] {
   const typeOnlyMixins: string[] = [];

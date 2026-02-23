@@ -1,11 +1,13 @@
 import type { SgNode } from '@ast-grep/napi';
 import { Lang, parse } from '@ast-grep/napi';
 
+import { logger } from '../../../utils/logger.js';
 import type { TransformOptions } from '../config.js';
 import { isMixinImportPath, isSpecialMixinImport } from './import-utils.js';
-import { debugLog } from './logging.js';
 import { getLanguageFromPath, removeQuotes } from './path-utils.js';
 import { MIXIN_SUFFIX_REGEX } from './string.js';
+
+const log = logger.for('ast-helpers');
 
 /**
  * Find all export statements
@@ -13,9 +15,9 @@ import { MIXIN_SUFFIX_REGEX } from './string.js';
 function findExportStatements(root: SgNode, options?: TransformOptions) {
   const exportStatements = root.findAll({ rule: { kind: 'export_statement' } });
 
-  debugLog(options, `Found ${exportStatements.length} export statements`);
+  log.debug(`Found ${exportStatements.length} export statements`);
   for (const exportStatement of exportStatements) {
-    debugLog(options, `Export statement: ${exportStatement.text().substring(0, 100)}...`);
+    log.debug(`Export statement: ${exportStatement.text().substring(0, 100)}...`);
   }
 
   return exportStatements;
@@ -30,12 +32,12 @@ export function findDefaultExport(root: SgNode, options?: TransformOptions): SgN
   for (const exportStatement of exportStatements) {
     const exportText = exportStatement.text();
     if (exportText.startsWith('export default')) {
-      debugLog(options, 'Found default export');
+      log.debug('Found default export');
       return exportStatement;
     }
   }
 
-  debugLog(options, 'No default export found');
+  log.debug('No default export found');
 
   return null;
 }
@@ -45,9 +47,8 @@ export function findDefaultExport(root: SgNode, options?: TransformOptions): SgN
  */
 export function getExportedIdentifier(exportNode: SgNode, options?: TransformOptions): string | null {
   if (options?.debug) {
-    debugLog(options, 'Getting exported identifier from export node');
-    debugLog(
-      options,
+    log.debug('Getting exported identifier from export node');
+    log.debug(
       'Export children: ' +
         exportNode
           .children()
@@ -60,17 +61,17 @@ export function getExportedIdentifier(exportNode: SgNode, options?: TransformOpt
   const identifiers = exportNode.children().filter((child) => child.kind() === 'identifier');
 
   if (options?.debug) {
-    debugLog(options, 'Found identifiers: ' + identifiers.map((id) => id.text()).join(', '));
+    log.debug('Found identifiers: ' + identifiers.map((id) => id.text()).join(', '));
   } // Find the identifier that's not 'default' or 'export'
   for (const identifier of identifiers) {
     const text = identifier.text();
     if (text !== 'default' && text !== 'export') {
-      debugLog(options, `Found exported identifier: ${text}`);
+      log.debug(`Found exported identifier: ${text}`);
       return text;
     }
   }
 
-  debugLog(options, 'No exported identifier found');
+  log.debug('No exported identifier found');
   return null;
 }
 
@@ -84,12 +85,12 @@ export function findClassDeclaration(exportNode: SgNode, root: SgNode, options?:
 
   // If no class declaration found in export, check if export references a class by name
   if (!classDeclaration) {
-    debugLog(options, 'DEBUG: No class declaration found in export, checking for exported class name');
+    log.debug('DEBUG: No class declaration found in export, checking for exported class name');
 
     // Get the exported identifier name
     const exportedIdentifier = getExportedIdentifier(exportNode, options);
     if (exportedIdentifier) {
-      debugLog(options, `DEBUG: Found exported identifier: ${exportedIdentifier}`);
+      log.debug(`DEBUG: Found exported identifier: ${exportedIdentifier}`);
 
       // Look for a class declaration with this name in the root
       classDeclaration = root.find({
@@ -103,10 +104,10 @@ export function findClassDeclaration(exportNode: SgNode, root: SgNode, options?:
       });
 
       if (classDeclaration) {
-        debugLog(options, `DEBUG: Found class declaration for exported identifier: ${exportedIdentifier}`);
+        log.debug(`DEBUG: Found class declaration for exported identifier: ${exportedIdentifier}`);
       }
     } else {
-      debugLog(options, 'DEBUG: No exported identifier found');
+      log.debug('DEBUG: No exported identifier found');
     }
   }
 
@@ -231,7 +232,7 @@ export function withTransformWrapper<T>(
   transformName: string,
   transformFn: (root: SgNode, source: string, filePath: string, options: TransformOptions) => T
 ): T | string {
-  debugLog(options, `Starting ${transformName} transform for ${filePath} with debug enabled`);
+  log.debug(`Starting ${transformName} transform for ${filePath} with debug enabled`);
 
   try {
     const lang = getLanguageFromPath(filePath);
@@ -240,11 +241,7 @@ export function withTransformWrapper<T>(
 
     return transformFn(root, source, filePath, options);
   } catch (error) {
-    // Import errorLog inline to avoid circular dependency
-    if (options?.verbose) {
-      // eslint-disable-next-line no-console
-      console.error(`Error processing ${filePath}:`, error);
-    }
+    log.warn(`Error processing ${filePath}:`, error);
     return source;
   }
 }
@@ -253,7 +250,7 @@ export function withTransformWrapper<T>(
  * Look for interface definitions in the same file that might correspond to a mixin
  */
 export function findAssociatedInterface(root: SgNode, mixinName: string, options?: TransformOptions): SgNode | null {
-  debugLog(options, `Looking for interface associated with mixin: ${mixinName}`);
+  log.debug(`Looking for interface associated with mixin: ${mixinName}`);
 
   // Convert mixin name to potential interface names
   // e.g., baseModelMixin -> BaseModelMixin, BaseModel, BaseModelInterface
@@ -272,12 +269,12 @@ export function findAssociatedInterface(root: SgNode, mixinName: string, options
 
     const interfaceName = nameNode.text();
     if (potentialNames.includes(interfaceName)) {
-      debugLog(options, `Found associated interface: ${interfaceName}`);
+      log.debug(`Found associated interface: ${interfaceName}`);
       return interfaceNode;
     }
   }
 
-  debugLog(options, 'No associated interface found');
+  log.debug('No associated interface found');
   return null;
 }
 
@@ -291,7 +288,7 @@ export function getEmberDataImports(
 ): Map<string, string> {
   const emberDataImports = new Map<string, string>();
 
-  debugLog(options, 'Looking for EmberData imports from:', expectedSources);
+  log.debug('Looking for EmberData imports from:', expectedSources);
 
   // Find all import statements
   const importStatements = root.findAll({ rule: { kind: 'import_statement' } });
@@ -310,7 +307,7 @@ export function getEmberDataImports(
       continue;
     }
 
-    debugLog(options, `Found EmberData import from: ${cleanSourceText}`);
+    log.debug(`Found EmberData import from: ${cleanSourceText}`);
 
     // Get the import clause to find named imports
     const importClause = importNode.children().find((child) => child.kind() === 'import_clause');
@@ -332,7 +329,7 @@ export function getEmberDataImports(
         const originalName = nameNode.text();
         const localName = aliasNode ? aliasNode.text() : originalName;
 
-        debugLog(options, `Found EmberData decorator: ${originalName} as ${localName}`);
+        log.debug(`Found EmberData decorator: ${originalName} as ${localName}`);
 
         emberDataImports.set(localName, originalName);
       }
@@ -348,7 +345,7 @@ export function getEmberDataImports(
 export function getMixinImports(root: SgNode, options?: TransformOptions): Map<string, string> {
   const mixinImports = new Map<string, string>();
 
-  debugLog(options, 'Looking for mixin imports');
+  log.debug('Looking for mixin imports');
 
   // Find all import statements
   const importStatements = root.findAll({ rule: { kind: 'import_statement' } });
@@ -373,7 +370,7 @@ export function getMixinImports(root: SgNode, options?: TransformOptions): Map<s
       }
     }
 
-    debugLog(options, `Found potential mixin import from: ${importPath}`);
+    log.debug(`Found potential mixin import from: ${importPath}`);
 
     // Handle special mixin imports (e.g., workflowable from models)
     let actualImportPath = importPath;
@@ -398,7 +395,7 @@ export function getMixinImports(root: SgNode, options?: TransformOptions): Map<s
       // Skip 'from' keyword
       if (localName === 'from') continue;
 
-      debugLog(options, `Found mixin import: ${localName} from ${actualImportPath}`);
+      log.debug(`Found mixin import: ${localName} from ${actualImportPath}`);
       mixinImports.set(localName, actualImportPath);
       break; // Only take the first identifier for default imports
     }
@@ -417,7 +414,7 @@ export function getMixinImports(root: SgNode, options?: TransformOptions): Map<s
         const originalName = nameNode.text();
         const localName = aliasNode ? aliasNode.text() : originalName;
 
-        debugLog(options, `Found named mixin import: ${originalName} as ${localName} from ${actualImportPath}`);
+        log.debug(`Found named mixin import: ${originalName} as ${localName} from ${actualImportPath}`);
         mixinImports.set(localName, actualImportPath);
       }
     }

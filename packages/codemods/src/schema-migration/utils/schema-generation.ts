@@ -2,15 +2,17 @@ import type { SgNode } from '@ast-grep/napi';
 import { existsSync } from 'fs';
 import { join } from 'path';
 
+import { logger } from '../../../utils/logger.js';
 import type { TransformOptions } from '../config.js';
 import { parseObjectLiteralFromNode } from './ast-helpers.js';
 import type { ExtensionContext } from './extension-generation.js';
 import { getExtensionArtifactType } from './extension-generation.js';
 import { generateCommonWarpDriveImports, generateTraitImport, transformModelToResourceImport } from './import-utils.js';
-import { debugLog } from './logging.js';
 import { removeQuotes, toPascalCase } from './path-utils.js';
 import type { ExtractedType } from './type-utils.js';
 import { schemaFieldToTypeScriptType } from './type-utils.js';
+
+const log = logger.for('schema-generation');
 
 /**
  * Shared artifact interface for both transforms
@@ -444,7 +446,7 @@ export function collectTraitImports(
       const traitFilePath = join(options.traitsDir, `${trait}.schema.ts`);
       const traitFilePathJs = join(options.traitsDir, `${trait}.schema.js`);
       if (!existsSync(traitFilePath) && !existsSync(traitFilePathJs)) {
-        debugLog(options, `Skipping trait import for '${trait}' - file does not exist at ${traitFilePath}`);
+        log.debug(`Skipping trait import for '${trait}' - file does not exist at ${traitFilePath}`);
         continue;
       }
     }

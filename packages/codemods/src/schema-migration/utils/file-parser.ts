@@ -8,6 +8,7 @@
 
 import { parse, type SgNode } from '@ast-grep/napi';
 
+import { logger } from '../../../utils/logger.js';
 import type { TransformOptions } from '../config.js';
 import {
   findDefaultExport,
@@ -33,12 +34,13 @@ import {
   NODE_KIND_PROPERTY_IDENTIFIER,
 } from './code-processing.js';
 import { DEFAULT_EMBER_DATA_SOURCE, findEmberImportLocalName } from './import-utils.js';
-import { debugLog } from './logging.js';
 import { extractBaseName, extractCamelCaseName, extractPascalCaseName, getLanguageFromPath } from './path-utils.js';
 import { convertToSchemaField } from './schema-generation.js';
 import { mixinNameToKebab, removeQuoteChars } from './string.js';
 import type { ExtractedType } from './type-utils.js';
 import { extractTypeFromDeclaration, extractTypeFromDecorator, extractTypeFromMethod } from './type-utils.js';
+
+const log = logger.for('file-parser');
 
 // ============================================================================
 // Types
@@ -297,7 +299,7 @@ function findPropertyDefinitions(classBody: SgNode, options?: TransformOptions):
     try {
       const properties = classBody.findAll({ rule: { kind: nodeType } });
       if (properties.length > 0) {
-        debugLog(options, `Found ${properties.length} properties using ${nodeType}`);
+        log.debug(`Found ${properties.length} properties using ${nodeType}`);
         return properties;
       }
     } catch {
@@ -796,8 +798,7 @@ export function parseFile(filePath: string, code: string, options: TransformOpti
 
   const hasExtension = behaviors.length > 0;
 
-  debugLog(
-    options,
+  log.debug(
     `Parsed ${filePath}: type=${fileType}, fields=${fields.length}, behaviors=${behaviors.length}, traits=${traits.length}`
   );
 
