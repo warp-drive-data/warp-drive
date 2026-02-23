@@ -279,29 +279,7 @@ export function generateInterfaceCode(
     lines.push('');
   }
 
-  // Add interface declaration
-  let interfaceDeclaration = `export interface ${interfaceName}`;
-  if (extendsClause) {
-    interfaceDeclaration += ` extends ${extendsClause}`;
-  }
-  interfaceDeclaration += ' {';
-  lines.push(interfaceDeclaration);
-
-  // Add properties
-  properties.forEach((prop) => {
-    if (prop.comment) {
-      // Wrap comment in JSDoc format if not already formatted
-      const formattedComment = prop.comment.startsWith('/**') ? prop.comment : `/** ${prop.comment} */`;
-      lines.push(`	${formattedComment}`);
-    }
-
-    const readonly = prop.readonly ? 'readonly ' : '';
-    const optional = prop.optional ? '?' : '';
-
-    lines.push(`	${readonly}${prop.name}${optional}: ${prop.type};`);
-  });
-
-  lines.push('}');
+  lines.push(generateInterfaceOnly(interfaceName, properties, extendsClause, '\t'));
   lines.push('');
 
   return lines.join('\n');
@@ -591,7 +569,8 @@ function generateInterfaceOnly(
     optional?: boolean;
     comment?: string;
   }>,
-  extendsClause?: string
+  extendsClause?: string,
+  indent = '  '
 ): string {
   const lines: string[] = [];
 
@@ -607,13 +586,13 @@ function generateInterfaceOnly(
   properties.forEach((prop) => {
     if (prop.comment) {
       const formattedComment = prop.comment.startsWith('/**') ? prop.comment : `/** ${prop.comment} */`;
-      lines.push(`  ${formattedComment}`);
+      lines.push(`${indent}${formattedComment}`);
     }
 
     const readonly = prop.readonly ? 'readonly ' : '';
     const optional = prop.optional ? '?' : '';
 
-    lines.push(`  ${readonly}${prop.name}${optional}: ${prop.type};`);
+    lines.push(`${indent}${readonly}${prop.name}${optional}: ${prop.type};`);
   });
 
   lines.push('}');
