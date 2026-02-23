@@ -4,7 +4,7 @@ import { dirname, join, resolve } from 'path';
 
 import type { Filename } from '../codemod.js';
 import type { TransformOptions } from '../config.js';
-import type { SchemaField, TransformArtifact } from '../utils/ast-utils.js';
+import type { ExtractedType, SchemaField, TransformArtifact } from '../utils/ast-utils.js';
 import {
   buildLegacySchemaObject,
   buildTraitSchemaObject,
@@ -156,16 +156,6 @@ interface ModelAnalysisResult {
   mixinExtensions: string[];
   modelName: string;
   baseName: string;
-}
-
-/**
- * Type information extracted from AST
- */
-interface ExtractedType {
-  type: string;
-  readonly?: boolean;
-  optional?: boolean;
-  imports?: string[];
 }
 
 /**
