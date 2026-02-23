@@ -675,6 +675,17 @@ function extractMixinData(root: SgNode, filePath: string, options: TransformOpti
 // ============================================================================
 
 function detectFileType(root: SgNode, filePath: string, options: TransformOptions): ParsedFile['fileType'] {
+  // Check if the file itself is listed as an intermediate model or fragment path.
+  // import fallback can falsely match model files as mixin sources.
+  if (options.intermediateModelPaths && options.intermediateModelPaths.length > 0) {
+    for (const intermediatePath of options.intermediateModelPaths) {
+      const expectedFileName = intermediatePath.split('/').pop();
+      if (expectedFileName && filePath.includes(expectedFileName)) {
+        return 'model';
+      }
+    }
+  }
+
   // Check for mixin pattern first
   const mixinImportLocal = findEmberImportLocalName(root, [DEFAULT_MIXIN_SOURCE], options, filePath, process.cwd());
   if (mixinImportLocal) {

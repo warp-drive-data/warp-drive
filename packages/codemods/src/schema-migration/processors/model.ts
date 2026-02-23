@@ -11,13 +11,9 @@ import {
   buildTraitSchemaObject,
   collectRelationshipImports,
   collectTraitImports,
-  convertToSchemaField,
   DEFAULT_EMBER_DATA_SOURCE,
   extractBaseName,
   extractPascalCaseName,
-  extractTypeFromDeclaration,
-  extractTypeFromDecorator,
-  extractTypeFromMethod,
   findClassDeclaration,
   findDefaultExport,
   findEmberImportLocalName,
@@ -32,31 +28,25 @@ import {
   isModelFile,
   mapFieldsToTypeProperties,
   mixinNameToTraitName,
-  parseDecoratorArgumentsWithNodes,
   toPascalCase,
   withTransformWrapper,
 } from '../utils/ast-utils.js';
 import {
   FILE_EXTENSION_JS,
   FILE_EXTENSION_TS,
-  isJavaScriptFileByPath,
   NODE_KIND_ARGUMENTS,
   NODE_KIND_CALL_EXPRESSION,
-  NODE_KIND_CLASS_BODY,
   NODE_KIND_CLASS_DECLARATION,
   NODE_KIND_CLASS_HERITAGE,
-  NODE_KIND_DECORATOR,
-  NODE_KIND_FIELD_DEFINITION,
   NODE_KIND_IDENTIFIER,
   NODE_KIND_IMPORT_CLAUSE,
   NODE_KIND_IMPORT_STATEMENT,
   NODE_KIND_MEMBER_EXPRESSION,
-  NODE_KIND_METHOD_DEFINITION,
   NODE_KIND_PROPERTY_IDENTIFIER,
 } from '../utils/code-processing.js';
 import { appendExtensionSignatureType, createExtensionFromOriginalFile } from '../utils/extension-generation.js';
 import type { ParsedFile } from '../utils/file-parser.js';
-import { isClassMethodSyntax } from '../utils/file-parser.js';
+import { parseFile } from '../utils/file-parser.js';
 import { replaceWildcardPattern } from '../utils/path-utils.js';
 import {
   MODEL_NAME_SUFFIX_REGEX,
@@ -70,14 +60,6 @@ import {
   toKebabCase,
   TRAILING_MODEL_SUFFIX_REGEX,
 } from '../utils/string.js';
-
-/** Node types to try when searching for class field definitions */
-const FIELD_DEFINITION_NODE_TYPES = [
-  NODE_KIND_FIELD_DEFINITION,
-  'public_field_definition',
-  'class_field',
-  'property_signature',
-];
 
 /** Method names that should be skipped (typically callback methods) */
 const SKIP_METHOD_NAMES = ['after'];
@@ -326,48 +308,6 @@ function extractHeritageInfo(
 }
 
 /**
- * Shared function to analyze a model file and extract all necessary information
- */
-function analyzeModelFile(filePath: string, source: string, options: TransformOptions): ModelAnalysisResult {
-  const modelName = extractPascalCaseName(filePath);
-  const baseName = extractBaseName(filePath);
-
-  try {
-    const validation = validateModelAST(filePath, source, options);
-    if (!validation) {
-      return createInvalidResult(modelName, baseName);
-    }
-
-    const { root, modelImportLocal, defaultExportNode, isFragment, emberDataImports } = validation;
-
-    // Extract schema fields and extension properties from the class body
-    const { schemaFields, extensionProperties } = extractModelFields(root, emberDataImports, filePath, options);
-
-    // Extract heritage info (mixin traits and extensions)
-    const { mixinTraits, mixinExtensions } = extractHeritageInfo(root, filePath, options);
-
-    log.debug(
-      `DEBUG: Returning from analyzeModelFile with defaultExportNode: ${defaultExportNode ? 'defined' : 'undefined'}`
-    );
-    return {
-      isValid: true,
-      modelImportLocal: modelImportLocal ?? undefined,
-      isFragment,
-      defaultExportNode,
-      schemaFields,
-      extensionProperties,
-      mixinTraits,
-      mixinExtensions,
-      modelName,
-      baseName,
-    };
-  } catch (error) {
-    log.debug(`DEBUG: Error analyzing model file: ${String(error)}`);
-    return createInvalidResult(modelName, baseName);
-  }
-}
-
-/**
  * Transform to convert EmberData models to WarpDrive LegacyResourceSchema patterns
  */
 export default function transform(filePath: string, source: string, options: TransformOptions): string {
@@ -377,7 +317,8 @@ export default function transform(filePath: string, source: string, options: Tra
     options,
     'model-to-schema',
     (_root, sourceContent, filePathParam, optionsParam) => {
-      const analysis = analyzeModelFile(filePathParam, sourceContent, optionsParam);
+      const parsedFile = parseFile(filePathParam, sourceContent, optionsParam);
+      const analysis = analyzeModelFromParsed(parsedFile, optionsParam);
 
       if (!analysis.isValid) {
         log.debug('Model analysis failed, skipping transform');
@@ -796,7 +737,8 @@ function generateIntermediateModelTraitArtifacts(
   const traitPascalName = toPascalCase(traitName);
 
   // Analyze the intermediate model file to extract fields
-  const analysis = analyzeModelFile(filePath, source, options);
+  const parsedFile = parseFile(filePath, source, options);
+  const analysis = analyzeModelFromParsed(parsedFile, options);
 
   if (!analysis.isValid) {
     log.debug(`Intermediate model ${modelPath} analysis failed, skipping trait generation`);
@@ -1279,265 +1221,6 @@ function isModelClass(
   );
 
   return isDirectExtension || isBaseModelExtension || isChainedExtension;
-}
-
-/**
- * Check if a method should be skipped based on its name
- */
-function shouldSkipMethod(methodName: string): boolean {
-  return SKIP_METHOD_NAMES.includes(methodName);
-}
-
-/**
- * Find property definitions in the class body by trying different AST node types
- */
-function findPropertyDefinitions(classBody: SgNode, options?: TransformOptions): SgNode[] {
-  for (const nodeType of FIELD_DEFINITION_NODE_TYPES) {
-    try {
-      const propertyDefinitions = classBody.findAll({ rule: { kind: nodeType } });
-      if (propertyDefinitions.length > 0) {
-        log.debug(`DEBUG: Found ${propertyDefinitions.length} properties using node type: ${nodeType}`);
-        return propertyDefinitions;
-      }
-    } catch {
-      // Node type not supported in this AST, continue to next
-      log.debug(`DEBUG: Node type ${nodeType} not supported, trying next...`);
-    }
-  }
-  return [];
-}
-
-/**
- * Find method definitions in the class body, excluding callback methods
- */
-function findMethodDefinitions(classBody: SgNode): SgNode[] {
-  return classBody.children().filter((child) => {
-    if (child.kind() !== NODE_KIND_METHOD_DEFINITION) {
-      return false;
-    }
-
-    // Check if this is likely a callback method from a memberAction call
-    const nameNode = child.field('name');
-    const methodName = nameNode?.text() || '';
-
-    return !shouldSkipMethod(methodName);
-  });
-}
-
-/**
- * Extract fields that can become schema fields (attr, hasMany, belongsTo)
- * and other properties that need to become extensions
- */
-function extractModelFields(
-  root: SgNode,
-  emberDataImports: Map<string, string>,
-  filePath: string,
-  options?: TransformOptions
-): {
-  schemaFields: SchemaField[];
-  extensionProperties: Array<{
-    name: string;
-    originalKey: string;
-    value: string;
-    typeInfo?: ExtractedType;
-    isObjectMethod?: boolean;
-  }>;
-} {
-  const schemaFields: SchemaField[] = [];
-  const extensionProperties: Array<{
-    name: string;
-    originalKey: string;
-    value: string;
-    typeInfo?: ExtractedType;
-    isObjectMethod?: boolean;
-  }> = [];
-
-  // Check if this is a JavaScript file - skip type extraction for JS files
-  const isJavaScriptFile = isJavaScriptFileByPath(filePath);
-
-  // Find the class declaration
-  const classDeclaration = root.find({ rule: { kind: NODE_KIND_CLASS_DECLARATION } });
-  if (!classDeclaration) {
-    log.debug('DEBUG: No class declaration found in extractModelFields');
-    return { schemaFields, extensionProperties };
-  }
-  log.debug('DEBUG: Found class declaration in extractModelFields');
-
-  // Get the class body
-  const classBody = classDeclaration.find({ rule: { kind: NODE_KIND_CLASS_BODY } });
-  if (!classBody) {
-    log.debug('DEBUG: No class body found');
-    return { schemaFields, extensionProperties };
-  }
-  log.debug('DEBUG: Found class body, looking for properties...');
-
-  // Get all property definitions within the class body
-  let propertyDefinitions: SgNode[] = [];
-  let methodDefinitions: SgNode[] = [];
-
-  try {
-    // First, let's see what node types are actually available in TypeScript
-    if (options?.debug) {
-      const allChildren = classBody.children();
-      const nodeTypes = allChildren.map((child) => child.kind()).join(', ');
-      log.debug(`DEBUG: All class body node types: ${nodeTypes}`);
-    }
-
-    // Try different possible AST node types for class fields with error handling
-    propertyDefinitions = findPropertyDefinitions(classBody, options);
-
-    // Only get method definitions that are direct children of the class body
-    // This prevents extracting methods from nested object literals (like memberAction calls)
-    methodDefinitions = findMethodDefinitions(classBody);
-
-    log.debug(`DEBUG: Found ${propertyDefinitions.length} properties and ${methodDefinitions.length} methods`);
-    log.debug(`DEBUG: Class body text: ${classBody.text().substring(0, 200)}...`);
-    // List all child node types in the class body
-    const childTypes = classBody
-      .children()
-      .map((child) => child.kind())
-      .join(', ');
-    log.debug(`DEBUG: Class body child types: ${childTypes}`);
-  } catch (error) {
-    log.warn(`DEBUG: Error finding properties: ${String(error)}`);
-    return { schemaFields, extensionProperties };
-  }
-
-  // Process property definitions
-  for (const property of propertyDefinitions) {
-    // For field_definition nodes, the name is in a property_identifier child
-    // We want the LAST property_identifier, as the first ones might be from decorator arguments
-    const nameNodes = property.findAll({ rule: { kind: NODE_KIND_PROPERTY_IDENTIFIER } });
-    const nameNode = nameNodes[nameNodes.length - 1]; // Get the last one
-
-    if (!nameNode) {
-      continue;
-    }
-
-    const fieldName = nameNode.text();
-    const originalKey = fieldName;
-
-    // Extract TypeScript type information (skip for JavaScript files)
-    let typeInfo: ExtractedType | undefined;
-    if (!isJavaScriptFile) {
-      try {
-        typeInfo = extractTypeFromDeclaration(property, options) ?? undefined;
-      } catch (error) {
-        log.debug(`DEBUG: Error extracting type for ${fieldName}: ${String(error)}`);
-      }
-    }
-
-    // Check if this property has a decorator
-    const decorators = property.findAll({ rule: { kind: NODE_KIND_DECORATOR } });
-    let isSchemaField = false;
-
-    for (const decorator of decorators) {
-      // Extract just the decorator name (before any parentheses or generics)
-      const decoratorText = decorator.text().replace('@', '');
-      // Split by '(' first to get the part before arguments, then by '<' to remove generics
-      const decoratorName = decoratorText.split('(')[0].split('<')[0];
-
-      if (!decoratorName) continue;
-
-      // Check if this is an EmberData decorator
-      if (emberDataImports.has(decoratorName)) {
-        const originalDecoratorName = emberDataImports.get(decoratorName);
-        if (!originalDecoratorName) continue;
-
-        // Parse the decorator arguments if present
-        const decoratorArgs = parseDecoratorArgumentsWithNodes(decorator);
-
-        // Extract type from decorator if we don't have explicit type annotation
-        if (!typeInfo) {
-          try {
-            typeInfo = extractTypeFromDecorator(originalDecoratorName, decoratorArgs, options) ?? undefined;
-          } catch (error) {
-            log.debug(`DEBUG: Error extracting type from decorator for ${fieldName}: ${String(error)}`);
-          }
-        }
-
-        const schemaField = convertToSchemaField(fieldName, originalDecoratorName, decoratorArgs);
-        if (schemaField) {
-          schemaFields.push(schemaField);
-          isSchemaField = true;
-          break;
-        }
-      }
-    }
-
-    // If it's not a schema field, add it as an extension property
-    if (!isSchemaField) {
-      // For field declarations without initializers, we use the whole field definition as the value
-      const propertyText = property.text();
-
-      extensionProperties.push({
-        name: fieldName,
-        originalKey,
-        value: propertyText,
-        typeInfo,
-        isObjectMethod: isClassMethodSyntax(property),
-      });
-    }
-  }
-
-  // Process method definitions (always extension properties)
-  for (const method of methodDefinitions) {
-    const nameNode = method.field('name');
-    if (!nameNode) continue;
-
-    const methodName = nameNode.text();
-    log.debug(`DEBUG: Processing method: ${methodName}, parent: ${method.parent()?.kind()}`);
-    log.debug(`DEBUG: Method full text: ${method.text().substring(0, 200)}...`);
-
-    // Since we're only iterating over direct children of classBody,
-    // all methods here are guaranteed to be top-level class methods
-
-    // Find any decorators that come before this method
-    const decorators: string[] = [];
-    const siblings = method.parent()?.children() ?? [];
-    const methodIndex = siblings.indexOf(method);
-
-    // Look backwards from the method to find decorators
-    for (let i = methodIndex - 1; i >= 0; i--) {
-      const sibling = siblings[i];
-      if (!sibling) continue;
-
-      if (sibling.kind() === NODE_KIND_DECORATOR) {
-        decorators.unshift(sibling.text()); // Add to beginning to maintain order
-      } else if (sibling.text().trim() !== '') {
-        // Stop at non-empty, non-decorator content
-        break;
-      }
-    }
-
-    // Combine decorators with method text
-    const methodText = decorators.length > 0 ? decorators.join('\n') + '\n' + method.text() : method.text();
-
-    // Extract TypeScript type information from method (skip for JavaScript files)
-    let typeInfo: ExtractedType | undefined;
-    if (!isJavaScriptFile) {
-      try {
-        typeInfo = extractTypeFromMethod(method, options) ?? undefined;
-      } catch (error) {
-        log.debug(`DEBUG: Error extracting type for method ${methodName}: ${String(error)}`);
-      }
-    }
-
-    // Preserve the original method syntax wholesale (including decorators, get, async, etc.)
-    extensionProperties.push({
-      name: methodName,
-      originalKey: methodName,
-      value: methodText,
-      typeInfo,
-      isObjectMethod: isClassMethodSyntax(method),
-    });
-  }
-
-  if (options?.debug) {
-    log.debug(`Extracted ${schemaFields.length} schema fields, ${extensionProperties.length} extension properties`);
-  }
-
-  return { schemaFields, extensionProperties };
 }
 
 /**
