@@ -46,14 +46,13 @@ import {
   NODE_KIND_CLASS_DECLARATION,
   NODE_KIND_CLASS_HERITAGE,
   NODE_KIND_DECORATOR,
-  NODE_KIND_FIELD_DEFINITION,
   NODE_KIND_IDENTIFIER,
   NODE_KIND_IMPORT_CLAUSE,
   NODE_KIND_IMPORT_STATEMENT,
   NODE_KIND_MEMBER_EXPRESSION,
-  NODE_KIND_METHOD_DEFINITION,
   NODE_KIND_PROPERTY_IDENTIFIER,
 } from '../utils/code-processing.js';
+import { collectPrecedingDecorators, findMethodDefinitions, findPropertyDefinitions } from '../utils/ast-helpers.js';
 import { appendExtensionSignatureType, createExtensionFromOriginalFile } from '../utils/extension-generation.js';
 import type { ParsedFile } from '../utils/file-parser.js';
 import { isClassMethodSyntax } from '../utils/file-parser.js';
@@ -70,17 +69,6 @@ import {
   toKebabCase,
   TRAILING_MODEL_SUFFIX_REGEX,
 } from '../utils/string.js';
-
-/** Node types to try when searching for class field definitions */
-const FIELD_DEFINITION_NODE_TYPES = [
-  NODE_KIND_FIELD_DEFINITION,
-  'public_field_definition',
-  'class_field',
-  'property_signature',
-];
-
-/** Method names that should be skipped (typically callback methods) */
-const SKIP_METHOD_NAMES = ['after'];
 
 /** Standard WarpDrive model import source */
 const WARP_DRIVE_MODEL = '@warp-drive/model';
@@ -741,15 +729,13 @@ function analyzeModelFromParsed(parsedFile: ParsedFile, options: TransformOption
       options: f.options,
     }));
 
-    const extensionProperties = parsedFile.behaviors
-      .filter((b) => !SKIP_METHOD_NAMES.includes(b.name))
-      .map((b) => ({
-        name: b.name,
-        originalKey: b.originalKey,
-        value: b.value,
-        typeInfo: b.typeInfo,
-        isObjectMethod: b.isObjectMethod,
-      }));
+    const extensionProperties = parsedFile.behaviors.map((b) => ({
+      name: b.name,
+      originalKey: b.originalKey,
+      value: b.value,
+      typeInfo: b.typeInfo,
+      isObjectMethod: b.isObjectMethod,
+    }));
 
     // Extract heritage info (mixin traits and extensions)
     const { mixinTraits, mixinExtensions } = extractHeritageInfo(root, filePath, options);
@@ -1282,49 +1268,6 @@ function isModelClass(
 }
 
 /**
- * Check if a method should be skipped based on its name
- */
-function shouldSkipMethod(methodName: string): boolean {
-  return SKIP_METHOD_NAMES.includes(methodName);
-}
-
-/**
- * Find property definitions in the class body by trying different AST node types
- */
-function findPropertyDefinitions(classBody: SgNode, options?: TransformOptions): SgNode[] {
-  for (const nodeType of FIELD_DEFINITION_NODE_TYPES) {
-    try {
-      const propertyDefinitions = classBody.findAll({ rule: { kind: nodeType } });
-      if (propertyDefinitions.length > 0) {
-        log.debug(`DEBUG: Found ${propertyDefinitions.length} properties using node type: ${nodeType}`);
-        return propertyDefinitions;
-      }
-    } catch {
-      // Node type not supported in this AST, continue to next
-      log.debug(`DEBUG: Node type ${nodeType} not supported, trying next...`);
-    }
-  }
-  return [];
-}
-
-/**
- * Find method definitions in the class body, excluding callback methods
- */
-function findMethodDefinitions(classBody: SgNode): SgNode[] {
-  return classBody.children().filter((child) => {
-    if (child.kind() !== NODE_KIND_METHOD_DEFINITION) {
-      return false;
-    }
-
-    // Check if this is likely a callback method from a memberAction call
-    const nameNode = child.field('name');
-    const methodName = nameNode?.text() || '';
-
-    return !shouldSkipMethod(methodName);
-  });
-}
-
-/**
  * Extract fields that can become schema fields (attr, hasMany, belongsTo)
  * and other properties that need to become extensions
  */
@@ -1386,8 +1329,6 @@ function extractModelFields(
     // Try different possible AST node types for class fields with error handling
     propertyDefinitions = findPropertyDefinitions(classBody, options);
 
-    // Only get method definitions that are direct children of the class body
-    // This prevents extracting methods from nested object literals (like memberAction calls)
     methodDefinitions = findMethodDefinitions(classBody);
 
     log.debug(`DEBUG: Found ${propertyDefinitions.length} properties and ${methodDefinitions.length} methods`);
@@ -1493,22 +1434,7 @@ function extractModelFields(
     // all methods here are guaranteed to be top-level class methods
 
     // Find any decorators that come before this method
-    const decorators: string[] = [];
-    const siblings = method.parent()?.children() ?? [];
-    const methodIndex = siblings.indexOf(method);
-
-    // Look backwards from the method to find decorators
-    for (let i = methodIndex - 1; i >= 0; i--) {
-      const sibling = siblings[i];
-      if (!sibling) continue;
-
-      if (sibling.kind() === NODE_KIND_DECORATOR) {
-        decorators.unshift(sibling.text()); // Add to beginning to maintain order
-      } else if (sibling.text().trim() !== '') {
-        // Stop at non-empty, non-decorator content
-        break;
-      }
-    }
+    const decorators = collectPrecedingDecorators(method);
 
     // Combine decorators with method text
     const methodText = decorators.length > 0 ? decorators.join('\n') + '\n' + method.text() : method.text();

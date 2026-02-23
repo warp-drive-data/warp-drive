@@ -11,8 +11,11 @@ import { parse, type SgNode } from '@ast-grep/napi';
 import { logger } from '../../../utils/logger.js';
 import type { TransformOptions } from '../config.js';
 import {
+  collectPrecedingDecorators,
   findClassDeclaration,
   findDefaultExport,
+  findMethodDefinitions,
+  findPropertyDefinitions,
   getEmberDataImports,
   getMixinImports,
   parseDecoratorArgumentsWithNodes,
@@ -141,13 +144,6 @@ const DEFAULT_MIXIN_SOURCE = '@ember/object/mixin';
 const FRAGMENT_BASE_SOURCE = 'ember-data-model-fragments/fragment';
 const WARP_DRIVE_MODEL = '@warp-drive/model';
 
-const FIELD_DEFINITION_NODE_TYPES = [
-  NODE_KIND_FIELD_DEFINITION,
-  'public_field_definition',
-  'class_field',
-  'property_signature',
-];
-
 // ============================================================================
 // Import Classification
 // ============================================================================
@@ -267,25 +263,6 @@ export function isClassMethodSyntax(methodNode: SgNode): boolean {
   }
 
   return false;
-}
-
-function findPropertyDefinitions(classBody: SgNode, options?: TransformOptions): SgNode[] {
-  for (const nodeType of FIELD_DEFINITION_NODE_TYPES) {
-    try {
-      const properties = classBody.findAll({ rule: { kind: nodeType } });
-      if (properties.length > 0) {
-        log.debug(`Found ${properties.length} properties using ${nodeType}`);
-        return properties;
-      }
-    } catch {
-      // Continue to next node type
-    }
-  }
-  return [];
-}
-
-function findMethodDefinitions(classBody: SgNode): SgNode[] {
-  return classBody.children().filter((child) => child.kind() === NODE_KIND_METHOD_DEFINITION);
 }
 
 function determineBehaviorKind(node: SgNode): ParsedBehavior['kind'] {
@@ -473,19 +450,7 @@ function extractModelData(root: SgNode, filePath: string, options: TransformOpti
     const methodName = nameNode.text();
 
     // Collect decorators
-    const decorators: string[] = [];
-    const siblings = method.parent()?.children() ?? [];
-    const methodIndex = siblings.indexOf(method);
-
-    for (let i = methodIndex - 1; i >= 0; i--) {
-      const sibling = siblings[i];
-      if (!sibling) continue;
-      if (sibling.kind() === NODE_KIND_DECORATOR) {
-        decorators.unshift(sibling.text());
-      } else if (sibling.text().trim() !== '') {
-        break;
-      }
-    }
+    const decorators = collectPrecedingDecorators(method);
 
     const methodText = decorators.length > 0 ? decorators.join('\n') + '\n' + method.text() : method.text();
 

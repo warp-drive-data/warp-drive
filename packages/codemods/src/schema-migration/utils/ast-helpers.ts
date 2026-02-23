@@ -3,6 +3,12 @@ import { Lang, parse } from '@ast-grep/napi';
 
 import { logger } from '../../../utils/logger.js';
 import type { TransformOptions } from '../config.js';
+import {
+  NODE_KIND_CLASS_BODY,
+  NODE_KIND_DECORATOR,
+  NODE_KIND_FIELD_DEFINITION,
+  NODE_KIND_METHOD_DEFINITION,
+} from './code-processing.js';
 import { isMixinImportPath, isSpecialMixinImport } from './import-utils.js';
 import { getLanguageFromPath, removeQuotes } from './path-utils.js';
 import { MIXIN_SUFFIX_REGEX } from './string.js';
@@ -421,4 +427,43 @@ export function getMixinImports(root: SgNode, options?: TransformOptions): Map<s
   }
 
   return mixinImports;
+}
+
+const DIRECT_CLASS_MEMBER = { inside: { kind: NODE_KIND_CLASS_BODY, stopBy: 'neighbor' } } as const;
+
+export function findPropertyDefinitions(classBody: SgNode, options?: TransformOptions): SgNode[] {
+  for (const kind of [NODE_KIND_FIELD_DEFINITION, 'public_field_definition', 'class_field', 'property_signature']) {
+    try {
+      const properties = classBody.findAll({ rule: { kind, ...DIRECT_CLASS_MEMBER } });
+      if (properties.length > 0) {
+        debugLog(options, `Found ${properties.length} properties using ${kind}`);
+        return properties;
+      }
+    } catch {
+      // Kind not valid in this grammar
+    }
+  }
+  return [];
+}
+
+export function findMethodDefinitions(classBody: SgNode): SgNode[] {
+  return classBody.findAll({ rule: { kind: NODE_KIND_METHOD_DEFINITION, ...DIRECT_CLASS_MEMBER } });
+}
+
+export function collectPrecedingDecorators(node: SgNode): string[] {
+  const decorators: string[] = [];
+  const siblings = node.parent()?.children() ?? [];
+  const nodeIndex = siblings.indexOf(node);
+
+  for (let i = nodeIndex - 1; i >= 0; i--) {
+    const sibling = siblings[i];
+    if (!sibling) continue;
+    if (sibling.kind() === NODE_KIND_DECORATOR) {
+      decorators.unshift(sibling.text());
+    } else if (sibling.text().trim() !== '') {
+      break;
+    }
+  }
+
+  return decorators;
 }
