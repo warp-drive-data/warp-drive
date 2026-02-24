@@ -3,7 +3,7 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs';
 import { dirname, join, resolve } from 'path';
 
 import { logger } from '../../../utils/logger.js';
-import type { Filename } from '../codemod.js';
+import type { Filename, TransformerResult } from '../codemod.js';
 import type { TransformOptions } from '../config.js';
 import type { ExtractedType, SchemaField, TransformArtifact } from '../utils/ast-utils.js';
 import {
@@ -696,15 +696,15 @@ function generateRegularModelArtifacts(
   return artifacts;
 }
 
-export function toArtifacts(parsedFile: ParsedFile, options: TransformOptions): TransformArtifact[] {
+export function toArtifacts(parsedFile: ParsedFile, options: TransformOptions): TransformerResult {
   log.debug(`=== DEBUG: Processing ${parsedFile.path} ===`);
 
   const analysis = analyzeModelFromParsed(parsedFile, options);
   if (!analysis.isValid) {
     log.debug('Model analysis failed, skipping artifact generation');
-    return [];
+    return { artifacts: [], skipReason: 'invalid-model' };
   }
-  return generateRegularModelArtifacts(parsedFile.path, parsedFile.source, analysis, options);
+  return { artifacts: generateRegularModelArtifacts(parsedFile.path, parsedFile.source, analysis, options) };
 }
 
 /**

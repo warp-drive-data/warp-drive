@@ -2,6 +2,7 @@ import { existsSync, mkdirSync, writeFileSync } from 'fs';
 import { basename, dirname, join, resolve } from 'path';
 
 import { InstanciatedLogger, logger } from '../../../utils/logger.js';
+import type { SkippedFile, TransformerResult } from '../codemod.js';
 import { Codemod } from '../codemod.js';
 import type { FinalOptions, MigrateOptions, TransformOptions } from '../config.js';
 import { toArtifacts as mixinToArtifacts } from '../processors/mixin.js';
@@ -32,7 +33,7 @@ interface Artifact {
 
 interface ProcessingResult {
   processed: number;
-  skipped: string[];
+  skipped: SkippedFile[];
   errors: string[];
 }
 
@@ -277,7 +278,7 @@ function writeIntermediateArtifacts(artifacts: Artifact[], finalOptions: FinalOp
   }
 }
 
-type ArtifactTransformer = (parsedFile: ParsedFile, options: TransformOptions) => Artifact[];
+type ArtifactTransformer = (parsedFile: ParsedFile, options: TransformOptions) => TransformerResult;
 
 interface ProcessFilesOptions {
   parsedFiles: Map<string, ParsedFile>;
@@ -292,8 +293,8 @@ interface ProcessFilesOptions {
  */
 function processFiles({ parsedFiles, transformer, finalOptions, log }: ProcessFilesOptions): ProcessingResult {
   let processed = 0;
-  const skipped = [];
-  const errors = [];
+  const skipped: SkippedFile[] = [];
+  const errors: string[] = [];
 
   for (const [filePath, parsedFile] of parsedFiles) {
     try {
@@ -301,12 +302,12 @@ function processFiles({ parsedFiles, transformer, finalOptions, log }: ProcessFi
         log.debug(`🔄 Processing: ${filePath}`);
       }
 
-      const artifacts = transformer(parsedFile, finalOptions);
+      const result = transformer(parsedFile, finalOptions);
 
-      if (artifacts.length > 0) {
+      if (result.artifacts.length > 0) {
         processed++;
 
-        for (const artifact of artifacts) {
+        for (const artifact of result.artifacts) {
           const { outputPath } = getArtifactOutputPath(artifact, filePath, finalOptions);
 
           writeArtifact(artifact, outputPath, {
@@ -316,7 +317,7 @@ function processFiles({ parsedFiles, transformer, finalOptions, log }: ProcessFi
           });
         }
       } else {
-        skipped.push(filePath);
+        skipped.push({ file: filePath, reason: result.skipReason ?? 'empty-artifacts', phase: 'generation' });
       }
     } catch (error) {
       errors.push(filePath);
@@ -436,22 +437,38 @@ export async function runMigration(options: MigrateOptions): Promise<void> {
     log,
   });
 
-  // Aggregate results
+  // Aggregate all skipped files from every phase
+  const allSkipped: SkippedFile[] = [...codemod.input.skipped, ...modelResults.skipped, ...mixinResults.skipped];
+
   const processed = modelResults.processed + mixinResults.processed;
-  const skipped = modelResults.skipped.length + mixinResults.skipped.length;
   const errors = modelResults.errors.length + mixinResults.errors.length;
+
+  const dtsFiles = allSkipped.filter((s) => s.reason === 'dts-file');
+  const nonDtsSkipped = allSkipped.filter((s) => s.reason !== 'dts-file');
+
+  const phaseGroups = new Map<string, SkippedFile[]>();
+  for (const entry of nonDtsSkipped) {
+    let group = phaseGroups.get(entry.phase);
+    if (!group) {
+      group = [];
+      phaseGroups.set(entry.phase, group);
+    }
+    group.push(entry);
+  }
+
+  if (phaseGroups.size > 0) {
+    log.warn('\nWarning! the following files were not transformed:');
+    for (const [phase, files] of phaseGroups) {
+      log.warn(`\n(${phase})`);
+      for (const x of files) {
+        log.warn(x.file);
+      }
+    }
+  }
 
   log.info(`\n✅ Migration complete!`);
   log.info(`   📊 Processed: ${processed}`);
-  log.info(
-    `   ⏭️  Skipped: ${skipped} - Mixins: ${mixinResults.skipped.length}, Models: ${modelResults.skipped.length}`
-  );
-
-  if (options.verbose) {
-    log.warn(
-      `Skipped:\n   Mixins:\n ${mixinResults.skipped.join(', ')}\n   Models: ${modelResults.skipped.join(', ')}`
-    );
-  }
+  log.info(`   ⏭️ Skipped: ${allSkipped.length} (${dtsFiles.length} .d.ts files)`);
   if (errors > 0) {
     log.info(`   ❌ Errors: ${errors} files`);
   }

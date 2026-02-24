@@ -6,12 +6,35 @@ import { basename, extname, join, resolve } from 'path';
 import { InstanciatedLogger } from '../../utils/logger.js';
 import type { FinalOptions } from './config.js';
 import { analyzeModelMixinUsage } from './processors/mixin-analyzer.js';
+import type { TransformArtifact } from './utils/ast-utils.js';
 import type { ParsedFile } from './utils/file-parser.js';
 import { parseFile } from './utils/file-parser.js';
 import { FILE_EXTENSION_REGEX, TRAILING_SINGLE_WILDCARD_REGEX, TRAILING_WILDCARD_REGEX } from './utils/string.js';
 
 export type Filename = string;
 export type InputFile = { path: string; code: string };
+
+export type SkipReason =
+  | 'dts-file'
+  | 'file-not-found'
+  | 'already-processed'
+  | 'intermediate-model'
+  | 'parse-error'
+  | 'invalid-model'
+  | 'not-mixin-file-type'
+  | 'mixin-not-connected'
+  | 'empty-artifacts';
+
+export interface SkippedFile {
+  file: string;
+  reason: SkipReason;
+  phase: 'discovery' | 'parsing' | 'generation';
+}
+
+export interface TransformerResult {
+  artifacts: TransformArtifact[];
+  skipReason?: SkipReason;
+}
 
 /**
  * Check if a file path matches any intermediate model path
@@ -66,25 +89,26 @@ function expandGlobPattern(dir: string): string {
 
 async function findFiles(
   sources: string[],
-  predicate: (file: string) => boolean,
+  predicate: (file: string) => SkipReason | null,
   finalOptions: FinalOptions,
   logger: InstanciatedLogger
-): Promise<{ output: InputFile[]; skipped: string[]; errors: Error[] }> {
+): Promise<{ output: InputFile[]; skipped: SkippedFile[]; errors: Error[] }> {
   const output: InputFile[] = [];
   const errors: Error[] = [];
-  const skipped: string[] = [];
+  const skipped: SkippedFile[] = [];
 
   for (const source of sources) {
     try {
       const files = await glob(source);
 
       for (const file of files) {
-        if (predicate(file)) {
+        const skipReason = predicate(file);
+        if (skipReason === null) {
           const content = await readFile(file, 'utf-8');
 
           output.push({ path: file, code: content });
         } else {
-          skipped.push(file);
+          skipped.push({ file, reason: skipReason, phase: 'discovery' });
         }
       }
 
@@ -107,7 +131,7 @@ export class Input {
   mixins: Map<Filename, InputFile> = new Map();
   parsedModels: Map<Filename, ParsedFile> = new Map();
   parsedMixins: Map<Filename, ParsedFile> = new Map();
-  skipped: string[] = [];
+  skipped: SkippedFile[] = [];
   errors: Error[] = [];
 }
 
@@ -150,7 +174,6 @@ export class Codemod {
 
     let modelsParsed = 0;
     let mixinsParsed = 0;
-    let parseErrors = 0;
 
     for (const [filePath, inputFile] of this.input.models) {
       try {
@@ -159,7 +182,7 @@ export class Codemod {
         modelsParsed++;
       } catch (error) {
         this.logger.error(`❌ Error parsing model ${filePath}: ${String(error)}`);
-        parseErrors++;
+        this.input.skipped.push({ file: filePath, reason: 'parse-error', phase: 'parsing' });
       }
     }
 
@@ -170,10 +193,11 @@ export class Codemod {
         mixinsParsed++;
       } catch (error) {
         this.logger.error(`❌ Error parsing mixin ${filePath}: ${String(error)}`);
-        parseErrors++;
+        this.input.skipped.push({ file: filePath, reason: 'parse-error', phase: 'parsing' });
       }
     }
 
+    const parseErrors = this.input.skipped.filter((s) => s.reason === 'parse-error').length;
     this.logger.info(`✅ Parsed ${modelsParsed} models and ${mixinsParsed} mixins (${parseErrors} errors).`);
   }
 
@@ -208,11 +232,14 @@ export class Codemod {
     const models = await findFiles(
       fileSources,
       (file) => {
-        return (
-          existsSync(file) &&
-          (!this.finalOptions.skipProcessed || !isAlreadyProcessed(file)) &&
-          !isIntermediateModel(file, this.finalOptions.intermediateModelPaths, this.finalOptions.additionalModelSources)
-        );
+        if (file.endsWith('.d.ts')) return 'dts-file';
+        if (!existsSync(file)) return 'file-not-found';
+        if (this.finalOptions.skipProcessed && isAlreadyProcessed(file)) return 'already-processed';
+        if (
+          isIntermediateModel(file, this.finalOptions.intermediateModelPaths, this.finalOptions.additionalModelSources)
+        )
+          return 'intermediate-model';
+        return null;
       },
       this.finalOptions,
       this.logger
@@ -242,7 +269,10 @@ export class Codemod {
     const models = await findFiles(
       fileSources,
       (file) => {
-        return existsSync(file) && (!this.finalOptions.skipProcessed || !isAlreadyProcessed(file));
+        if (file.endsWith('.d.ts')) return 'dts-file';
+        if (!existsSync(file)) return 'file-not-found';
+        if (this.finalOptions.skipProcessed && isAlreadyProcessed(file)) return 'already-processed';
+        return null;
       },
       this.finalOptions,
       this.logger
