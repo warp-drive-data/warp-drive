@@ -46,6 +46,7 @@ function ensureResourceTypeFileExists(
       type: 'resource-type-stub',
       name: pascalCaseType,
       code: stubCode,
+      baseName: modelType,
       suggestedFileName: `${modelType}.schema.ts`,
     });
 
@@ -202,6 +203,7 @@ function generateMixinArtifacts(
     type: 'trait',
     name: traitSchemaName,
     code: mergedTraitSchemaCode,
+    baseName,
     suggestedFileName: `${baseName}.schema${fileExtension}`,
   });
 

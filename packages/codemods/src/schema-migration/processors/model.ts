@@ -4,7 +4,7 @@ import { dirname, join, resolve } from 'path';
 
 import { logger } from '../../../utils/logger.js';
 import type { Filename, TransformerResult } from '../codemod.js';
-import type { TransformOptions } from '../config.js';
+import { getConfiguredImport, type TransformOptions } from '../config.js';
 import type { ExtractedType, SchemaField, TransformArtifact } from '../utils/ast-utils.js';
 import {
   buildLegacySchemaObject,
@@ -17,7 +17,6 @@ import {
   findClassDeclaration,
   findDefaultExport,
   findEmberImportLocalName,
-  generateCommonWarpDriveImports,
   generateExportStatement,
   generateMergedSchemaCode,
   getEmberDataImports,
@@ -46,7 +45,7 @@ import {
 } from '../utils/code-processing.js';
 import { createExtensionFromOriginalFile } from '../utils/extension-generation.js';
 import type { ParsedFile } from '../utils/file-parser.js';
-import { parseFile } from '../utils/file-parser.js';
+import { parseFile, extractLeadingComment, isClassMethodSyntax } from '../utils/file-parser.js';
 import { replaceWildcardPattern } from '../utils/path-utils.js';
 import {
   MODEL_NAME_SUFFIX_REGEX,
@@ -60,6 +59,7 @@ import {
   toKebabCase,
   TRAILING_MODEL_SUFFIX_REGEX,
 } from '../utils/string.js';
+import { FieldTypeInfo } from '../utils/schema-generation.js';
 
 /** Method names that should be skipped (typically callback methods) */
 const SKIP_METHOD_NAMES = ['after'];
@@ -128,11 +128,12 @@ interface ModelAnalysisResult {
   isFragment?: boolean;
   defaultExportNode?: SgNode;
   schemaFields: SchemaField[];
+  comment?: string;
   extensionProperties: Array<{
     name: string;
     originalKey: string;
     value: string;
-    typeInfo?: ExtractedType;
+    typeInfo: ExtractedType | null;
     isObjectMethod?: boolean;
   }>;
   mixinTraits: string[];
@@ -168,6 +169,7 @@ function createInvalidResult(modelName: string, baseName: string): ModelAnalysis
     mixinExtensions: [],
     modelName,
     baseName,
+    comment: undefined,
   };
 }
 
@@ -560,7 +562,8 @@ function generateRegularModelArtifacts(
   analysis: ModelAnalysisResult,
   options: TransformOptions
 ): TransformArtifact[] {
-  const { schemaFields, extensionProperties, mixinTraits, mixinExtensions, modelName, baseName, isFragment } = analysis;
+  const { comment, schemaFields, extensionProperties, mixinTraits, mixinExtensions, modelName, baseName, isFragment } =
+    analysis;
   const artifacts: TransformArtifact[] = [];
 
   // Determine the file extension based on the original model file
@@ -569,21 +572,27 @@ function generateRegularModelArtifacts(
 
   // Collect imports needed for schema interface
   const schemaImports = new Set<string>();
+  const typeDeclarations = new Set<string>();
 
   // Collect schema field types - start with [Type] symbol
-  const schemaFieldTypes = [
+  const schemaFieldTypes: FieldTypeInfo[] = [
     {
       name: '[Type]',
-      type: `'${toKebabCase(baseName)}'`,
-      readonly: true,
+      transformInferredType: 'null',
+      typeInfo: {
+        readonly: true,
+        type: `'${toKebabCase(baseName)}'`,
+      },
     },
     ...mapFieldsToTypeProperties(schemaFields, options),
   ];
 
-  const commonImports = generateCommonWarpDriveImports(options);
-  schemaImports.add(commonImports.typeImport);
-  collectRelationshipImports(schemaFields, baseName, schemaImports, options);
-  collectTraitImports(mixinTraits, schemaImports, options);
+  const typeImport = getConfiguredImport(options, 'Type');
+  schemaImports.add(`import type { Type } from '${typeImport.source}';`);
+  const WithLegacyImport = getConfiguredImport(options, 'WithLegacy');
+  schemaImports.add(`import type { WithLegacy } from '${WithLegacyImport.source}';`);
+  collectRelationshipImports(filePath, schemaFields, baseName, schemaImports, typeDeclarations, options);
+  // collectTraitImports(mixinTraits, schemaImports, options);
 
   // Build the schema object
   const schemaName = `${modelName}Schema`;
@@ -593,7 +602,8 @@ function generateRegularModelArtifacts(
   const extensionName = extensionProperties.length > 0 ? `${modelName}Extension` : undefined;
   const mergedSchemaCode = generateMergedSchemaCode({
     baseName,
-    interfaceName: modelName,
+    interfaceFieldsName: `${modelName}Fields`,
+    interfaceName: `Legacy${modelName}`,
     schemaName,
     schemaObject,
     properties: schemaFieldTypes,
@@ -602,14 +612,48 @@ function generateRegularModelArtifacts(
     isTypeScript,
     options,
     extensionName,
+    comment,
   });
 
-  artifacts.push({
-    type: 'schema',
-    name: schemaName,
-    code: mergedSchemaCode,
-    suggestedFileName: `${baseName}.schema${originalExtension}`,
-  });
+  const hasType = mergedSchemaCode.interfaceDeclaration && mergedSchemaCode.interfaceDeclaration.trim() !== '';
+  const typeString = typeDeclarations.size > 0 ? Array.from(typeDeclarations).join('\n') + '\n' : false;
+  if (options.combineSchemasAndTypes) {
+    artifacts.push({
+      type: 'schema',
+      name: schemaName,
+      code: [
+        mergedSchemaCode.schemaImports,
+        mergedSchemaCode.typeImports,
+        typeString,
+        mergedSchemaCode.schemaDeclaration,
+        mergedSchemaCode.interfaceDeclaration,
+      ]
+        .filter(Boolean)
+        .join('\n'),
+      baseName,
+      suggestedFileName: `${baseName}.schema${options.disableTypescriptSchemas ? '.js' : '.ts'}`,
+    });
+  } else {
+    artifacts.push({
+      type: 'schema',
+      name: schemaName,
+      code: [mergedSchemaCode.schemaImports, mergedSchemaCode.schemaDeclaration].filter(Boolean).join('\n'),
+      baseName,
+      suggestedFileName: `${baseName}.schema${options.disableTypescriptSchemas ? '.js' : '.ts'}`,
+    });
+
+    if (hasType) {
+      artifacts.push({
+        type: 'type',
+        name: modelName,
+        code: [mergedSchemaCode.typeImports, typeString, mergedSchemaCode.interfaceDeclaration]
+          .filter(Boolean)
+          .join('\n'),
+        baseName,
+        suggestedFileName: `${baseName}.type${options.disableTypescriptSchemas ? '.js' : '.ts'}`,
+      });
+    }
+  }
 
   const modelInterfaceName = `${modelName}Trait`;
   const modelImportPath = options?.resourcesImport
@@ -667,12 +711,7 @@ function analyzeModelFromParsed(parsedFile: ParsedFile, options: TransformOption
     const { root, modelImportLocal, defaultExportNode, isFragment } = validation;
 
     // Use pre-parsed data for fields and behaviors
-    const schemaFields: SchemaField[] = parsedFile.fields.map((f) => ({
-      name: f.name,
-      kind: f.kind,
-      type: f.type,
-      options: f.options,
-    }));
+    const schemaFields: SchemaField[] = parsedFile.fields;
 
     const extensionProperties = parsedFile.behaviors
       .filter((b) => !SKIP_METHOD_NAMES.includes(b.name))
@@ -698,6 +737,7 @@ function analyzeModelFromParsed(parsedFile: ParsedFile, options: TransformOption
       mixinExtensions,
       modelName,
       baseName,
+      comment: parsedFile.comment,
     };
   } catch (error) {
     log.debug(`Error analyzing parsed model: ${String(error)}`);
@@ -814,6 +854,7 @@ function generateIntermediateModelTraitArtifacts(
   // Generate merged trait schema code (schema + types in one file)
   const mergedTraitSchemaCode = generateMergedSchemaCode({
     baseName: traitName,
+    interfaceFieldsName: `${traitPascalName}Fields`,
     interfaceName: traitSchemaName,
     schemaName: traitSchemaName,
     schemaObject: traitSchemaObject,
@@ -827,7 +868,8 @@ function generateIntermediateModelTraitArtifacts(
     type: 'trait',
     name: traitSchemaName,
     code: mergedTraitSchemaCode,
-    suggestedFileName: `${traitName}.schema${originalExtension}`,
+    baseName: traitName,
+    suggestedFileName: `${traitName}.schema${options.disableTypescriptSchemas ? '.js' : '.ts'}`,
   });
 
   // For traits with extension properties, create extension artifact

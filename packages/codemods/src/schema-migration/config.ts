@@ -1,9 +1,112 @@
 import type { connectedMixins, modelToMixinsMap } from './processors/mixin-analyzer';
 
+export interface PackageImport {
+  imported: string;
+  local?: string;
+  source: string;
+  isType?: boolean;
+}
+interface TransformPackageImports {
+  Model: PackageImport;
+  /**
+   * if not present, assumed to be a named import from
+   * the same source as model
+   */
+  attr?: PackageImport;
+  /**
+   * if not present, assumed to be a named import from
+   * the same source as model
+   */
+  belongsTo?: PackageImport;
+  /**
+   * if not present, assumed to be a named import from
+   * the same source as model
+   */
+  hasMany?: PackageImport;
+  /**
+   * if not present, assumed to be a named import from
+   * the same source as model
+   */
+  AsyncHasMany?: PackageImport;
+  /**
+   * if not present, assumed to be a named import from
+   * the same source as model
+   */
+  HasMany?: PackageImport;
+  Type: PackageImport;
+  WithLegacy: PackageImport;
+  LegacyResourceSchema: PackageImport;
+}
+
+export const LegacyPackageImports = {
+  Model: { imported: 'default', source: '@ember-data/model' },
+  Type: { imported: 'Type', source: '@warp-drive/core-types/symbols' },
+  WithLegacy: { imported: 'WithLegacy', source: '@ember-data/model/migration-support' },
+  LegacyResourceSchema: { imported: 'LegacyResourceSchema', source: '@warp-drive/core-types/schema/fields' },
+} satisfies TransformPackageImports;
+export const ModernPackageImports = {
+  Model: { imported: 'Model', source: '@warp-drive/legacy/model' },
+  Type: { imported: 'Type', source: '@warp-drive/core/types/symbols' },
+  WithLegacy: { imported: 'WithLegacy', source: '@warp-drive/legacy/model/migration-support' },
+  LegacyResourceSchema: { imported: 'LegacyResourceSchema', source: '@warp-drive/core/types/schema/fields' },
+} satisfies TransformPackageImports;
+export const MirrorPackageImports = {
+  Model: { imported: 'Model', source: '@warp-drive-mirror/legacy/model' },
+  Type: { imported: 'Type', source: '@warp-drive-mirror/core/types/symbols' },
+  WithLegacy: { imported: 'WithLegacy', source: '@warp-drive-mirror/legacy/model/migration-support' },
+  LegacyResourceSchema: { imported: 'LegacyResourceSchema', source: '@warp-drive-mirror/core/types/schema/fields' },
+} satisfies TransformPackageImports;
+
+export function getConfiguredImport(
+  config: TransformOptions,
+  importName: keyof TransformPackageImports
+): PackageImport {
+  const packageImports =
+    config.warpDriveImports === 'legacy'
+      ? LegacyPackageImports
+      : config.warpDriveImports === 'modern'
+        ? ModernPackageImports
+        : config.warpDriveImports === 'mirror'
+          ? MirrorPackageImports
+          : config.warpDriveImports;
+
+  if (importName in packageImports) {
+    return packageImports[importName as keyof typeof packageImports];
+  } else if (importName === 'attr' || importName === 'belongsTo' || importName === 'hasMany') {
+    // typically these imports are from the same source as model
+    return { imported: importName, source: packageImports.Model.source };
+  } else if (importName === 'AsyncHasMany' || importName === 'HasMany') {
+    // typically these imports are from the same source as model
+    return { imported: importName, source: packageImports.Model.source, isType: true };
+  } else {
+    throw new Error(`Unknown import name: ${importName}`);
+  }
+}
+
 export interface TransformOptions {
   verbose?: boolean;
   debug?: boolean;
   dryRun?: boolean;
+  /**
+   * Determines what WarpDrive library imports to expect.
+   *
+   * 'legacy' - expects imports from the classic "ember-data" packages e.g. '@ember-data/model'
+   * 'modern' - expects imports from the new "warp-drive" packages e.g. '@warp-drive/legacy/model'
+   * 'mirror' - expects imports from '@warp-drive-mirror' packages e.g. '@warp-drive-mirror/legacy/model'
+   * custom object - allows specifying custom import sources for the codemod. Useful if your app aliases
+   * or re-exports WarpDrive apis from a different location.
+   *
+   */
+  warpDriveImports: 'legacy' | 'modern' | 'mirror' | TransformPackageImports;
+  /**
+   * Whether generated imports for related resources should use extensions on
+   * import paths from other project files. Defaults to false.
+   */
+  projectImportsUseExtensions?: boolean;
+  /** Combine schemas and types into a single file. By default these will be in separate files */
+  combineSchemasAndTypes?: boolean;
+  /** By default, schemas will be output in TS files even when generated from untyped models. */
+  disableTypescriptSchemas?: boolean;
   /** Use @warp-drive-mirror instead of @warp-drive for imports */
   mirror?: boolean;
   /** Test mode - treats all mixins as connected to models (for testing) */
@@ -31,11 +134,17 @@ export interface TransformOptions {
   modelSourceDir?: string;
   /** Directory containing mixin files for resolving absolute mixin imports */
   mixinSourceDir?: string;
+  /** Project name for classic ember module prefixing */
+  projectName: string;
   /** Additional model source patterns and their corresponding directories */
   additionalModelSources?: Array<{ pattern: string; dir: string }>;
   /** Additional mixin source patterns and their corresponding directories */
   additionalMixinSources?: Array<{ pattern: string; dir: string }>;
-  /** Specify base import path for new resource type imports (required) */
+  /**
+   * Specify base import path for new resource type imports
+   *
+   * If not provided, relative imports will be generated.
+   */
   resourcesImport?: string;
   /** Directory to write generated resource schemas to */
   resourcesDir?: string;
