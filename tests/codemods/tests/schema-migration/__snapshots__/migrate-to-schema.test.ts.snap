@@ -6,9 +6,10 @@ exports[`migrate-to-schema batch operation > README example: model with mixin, b
   "resources/user.ext.ts": "
 import Model, { attr, belongsTo, hasMany } from '@ember-data/model';
 
-import type { UserTrait } from 'test-app/data/resources/user.schema';
+import type { User } from 'test-app/data/resources/user.schema';
+import type { TimestampableExtension } from 'test-app/data/traits/timestampable.ext';
 
-export interface UserExtension extends UserTrait {}
+export interface UserExtension extends User, TimestampableExtension {}
 
 export class UserExtension {
   get displayName() {
@@ -21,19 +22,16 @@ export class UserExtension {
     }
 }",
   "resources/user.schema.ts": "
+import { withDefaults } from '@warp-drive-mirror/legacy/model/migration-support';
+import type { WithLegacy } from '@warp-drive/legacy/model-migration-support';
 import type { Type } from '@ember-data/core-types/symbols';
 import type { Company } from 'test-app/data/resources/company.schema';
 import type { Project } from 'test-app/data/resources/project.schema';
 import type { AsyncHasMany } from '@ember-data/model';
 import type { TimestampableTrait } from 'test-app/data/traits/timestampable.schema';
 import type { UserExtension } from 'test-app/data/resources/user.ext';
-const UserSchema = {
+const UserSchema = withDefaults({
   'type': 'user',
-  'legacy': true,
-  'identity': {
-    'kind': '@id',
-    'name': 'id'
-  },
   'fields': [
     {
       'kind': 'attribute',
@@ -66,36 +64,70 @@ const UserSchema = {
     'timestampable'
   ],
   'objectExtensions': [
-    'TimestampableExtension'
+    'timestampable-extension'
   ]
-} as const;
+});
 
 export default UserSchema;
 
-export interface UserTrait {
-  readonly [Type]: 'user';
-  readonly name: string | null;
-  readonly email: string | null;
-  readonly company: Company | null;
-  readonly projects: AsyncHasMany<Project>;
+// @ts-expect-error TS disallows it. However in real world `Resource` "wins" when merged.
+interface UserResource extends TimestampableTrait {
+  name: string;
+  email: string;
+  company: Company | null;
+  projects: AsyncHasMany<Project>;
 }
 
-export interface User extends UserTrait, UserExtension, TimestampableTrait {}",
+export type User = WithLegacy<UserResource>;
+export type UserWithExtensions = UserExtension;",
   "traits/": "__dir__",
+  "traits/deleteable.ext.ts": "
+import Mixin from '@ember/object/mixin';
+import { attr } from '@ember-data/model';
+
+import type { DeleteableTrait } from 'test-app/data/traits/deleteable.schema';
+
+export interface DeleteableExtension extends DeleteableTrait {}
+
+export class DeleteableExtension {
+  timeSinceDeleted() {
+    return Date.now() - this.deletedAt;
+  }
+}",
+  "traits/deleteable.schema.ts": "
+const DeleteableSchema = {
+  'name': 'deleteable',
+  'mode': 'legacy',
+  'fields': [
+    {
+      'name': 'deletedAt',
+      'kind': 'attribute',
+      'type': 'date'
+    }
+  ]
+} as const;
+
+export default DeleteableSchema;
+
+export interface DeleteableTrait {
+  deletedAt: Date | null;
+}",
   "traits/timestampable.ext.ts": "
 import Mixin from '@ember/object/mixin';
 import { attr } from '@ember-data/model';
 
 import type { TimestampableTrait } from 'test-app/data/traits/timestampable.schema';
+import type { DeleteableExtension } from 'test-app/data/traits/deleteable.ext';
 
-export interface TimestampableExtension extends TimestampableTrait {}
+export interface TimestampableExtension extends TimestampableTrait, DeleteableExtension {}
 
-export const TimestampableExtension = {
+export class TimestampableExtension{
   timeSince() {
     return Date.now() - this.updatedAt;
   }
-};",
+}",
   "traits/timestampable.schema.ts": "
+import type { DeleteableTrait } from 'test-app/data/traits/deleteable.schema';
 const TimestampableSchema = {
   'name': 'timestampable',
   'mode': 'legacy',
@@ -110,14 +142,19 @@ const TimestampableSchema = {
       'kind': 'attribute',
       'type': 'date'
     }
+  ],
+  'traits': [
+    'deleteable'
+  ],
+  'objectExtensions': [
+    'deleteable-extension'
   ]
 } as const;
 
 export default TimestampableSchema;
 
-export interface TimestampableTrait {
+export interface TimestampableTrait extends DeleteableTrait {
   createdAt: Date | null;
-  updatedAt: Date | null;
 }",
 }
 `;
@@ -128,6 +165,8 @@ exports[`migrate-to-schema batch operation > README example: model with mixin, b
   "resources/user.ext.ts",
   "resources/user.schema.ts",
   "traits/",
+  "traits/deleteable.ext.ts",
+  "traits/deleteable.schema.ts",
   "traits/timestampable.ext.ts",
   "traits/timestampable.schema.ts",
 ]

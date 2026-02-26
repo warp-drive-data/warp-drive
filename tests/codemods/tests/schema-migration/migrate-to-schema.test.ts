@@ -926,13 +926,26 @@ export default class User extends Model.extend(Timestampable) {
       'app/mixins/timestampable.ts': `
 import Mixin from '@ember/object/mixin';
 import { attr } from '@ember-data/model';
+import Deleteable from './deleteable';
 
-export default Mixin.create({
+export default Mixin.create(Deleteable, {
   createdAt: attr('date'),
   updatedAt: attr('date'),
 
   timeSince() {
     return Date.now() - this.updatedAt;
+  },
+});
+`,
+      'app/mixins/deleteable.ts': `
+import Mixin from '@ember/object/mixin';
+import { attr } from '@ember-data/model';
+
+export default Mixin.create({
+  deletedAt: attr('date'),
+
+  timeSinceDeleted() {
+    return Date.now() - this.deletedAt;
   }
 });
 `,
