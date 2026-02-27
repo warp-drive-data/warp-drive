@@ -5,6 +5,7 @@ import { dirname, join, resolve } from 'path';
 import { logger } from '../../../utils/logger.js';
 import type { Filename, TransformerResult } from '../codemod.js';
 import { getConfiguredImport, type TransformOptions } from '../config.js';
+import { createResourceArtifactConfig } from '../utils/artifact.js';
 import type { ExtractedType, SchemaField, TransformArtifact } from '../utils/ast-utils.js';
 import {
   buildLegacySchemaObject,
@@ -12,8 +13,6 @@ import {
   collectRelationshipImports,
   collectTraitImports,
   DEFAULT_EMBER_DATA_SOURCE,
-  extractBaseName,
-  extractPascalCaseName,
   findClassDeclaration,
   findDefaultExport,
   findEmberImportLocalName,
@@ -45,8 +44,9 @@ import {
 } from '../utils/code-processing.js';
 import { createExtensionFromOriginalFile } from '../utils/extension-generation.js';
 import type { ParsedFile } from '../utils/file-parser.js';
-import { parseFile, extractLeadingComment, isClassMethodSyntax } from '../utils/file-parser.js';
+import { parseFile } from '../utils/file-parser.js';
 import { replaceWildcardPattern } from '../utils/path-utils.js';
+import type { FieldTypeInfo } from '../utils/schema-generation.js';
 import {
   MODEL_NAME_SUFFIX_REGEX,
   NAMED_TYPE_IMPORT_REGEX,
@@ -59,7 +59,6 @@ import {
   toKebabCase,
   TRAILING_MODEL_SUFFIX_REGEX,
 } from '../utils/string.js';
-import { FieldTypeInfo } from '../utils/schema-generation.js';
 
 /** Method names that should be skipped (typically callback methods) */
 const SKIP_METHOD_NAMES = ['after'];
@@ -79,50 +78,9 @@ const log = logger.for('model-processor');
 const mixinExtensionCache = new Map<string, { hasExtension: boolean; extensionName: string | null }>();
 
 /**
- * Get the base EmberData Model properties and methods that should be available on all model types.
- * These are inherited from the Model base class but need to be declared in trait interfaces
- * so TypeScript knows they exist when accessing them in extension code.
- */
-function getModelBaseProperties(): Array<{ name: string; type: string; readonly?: boolean }> {
-  return [
-    // State properties (readonly getters from Model)
-    { name: 'isNew', type: 'boolean', readonly: true },
-    { name: 'hasDirtyAttributes', type: 'boolean', readonly: true },
-    { name: 'isDeleted', type: 'boolean', readonly: true },
-    { name: 'isSaving', type: 'boolean', readonly: true },
-    { name: 'isValid', type: 'boolean', readonly: true },
-    { name: 'isError', type: 'boolean', readonly: true },
-    { name: 'isLoaded', type: 'boolean', readonly: true },
-    { name: 'isEmpty', type: 'boolean', readonly: true },
-
-    // Lifecycle methods
-    { name: 'save', type: '(options?: Record<string, unknown>) => Promise<this>' },
-    { name: 'reload', type: '(options?: Record<string, unknown>) => Promise<this>' },
-    { name: 'deleteRecord', type: '() => void' },
-    { name: 'unloadRecord', type: '() => void' },
-    { name: 'destroyRecord', type: '(options?: Record<string, unknown>) => Promise<void>' },
-    { name: 'rollbackAttributes', type: '() => void' },
-
-    // Relationship accessor methods
-    { name: 'belongsTo', type: '(propertyName: string) => BelongsToReference' },
-    { name: 'hasMany', type: '(propertyName: string) => HasManyReference' },
-
-    // Utility methods
-    { name: 'serialize', type: '(options?: Record<string, unknown>) => unknown' },
-
-    // Error property
-    { name: 'errors', type: 'Errors', readonly: true },
-
-    // Additional state
-    { name: 'adapterError', type: 'Error | null', readonly: true },
-    { name: 'isReloading', type: 'boolean', readonly: true },
-  ];
-}
-
-/**
  * Shared result type for model analysis
  */
-interface ModelAnalysisResult {
+export interface ModelAnalysisResult {
   isValid: boolean;
   modelImportLocal?: string;
   isFragment?: boolean;
@@ -569,6 +527,7 @@ function generateRegularModelArtifacts(
   // Determine the file extension based on the original model file
   const originalExtension = getFileExtension(filePath);
   const isTypeScript = originalExtension === '.ts';
+  const resourceConfig = createResourceArtifactConfig(options, analysis, isTypeScript);
 
   // Collect imports needed for schema interface
   const schemaImports = new Set<string>();
@@ -584,13 +543,21 @@ function generateRegularModelArtifacts(
         type: `'${toKebabCase(baseName)}'`,
       },
     },
+    {
+      name: 'id',
+      transformInferredType: 'string | null',
+      typeInfo: {
+        readonly: false,
+        type: 'string | null',
+      },
+    },
     ...mapFieldsToTypeProperties(schemaFields, options),
   ];
 
   const typeImport = getConfiguredImport(options, 'Type');
-  schemaImports.add(`import type { Type } from '${typeImport.source}';`);
+  schemaImports.add(`import type { Type } from '${typeImport.source}'`);
   const WithLegacyImport = getConfiguredImport(options, 'WithLegacy');
-  schemaImports.add(`import type { WithLegacy } from '${WithLegacyImport.source}';`);
+  schemaImports.add(`import type { WithLegacy } from '${WithLegacyImport.source}'`);
   collectRelationshipImports(filePath, schemaFields, baseName, schemaImports, typeDeclarations, options);
   // collectTraitImports(mixinTraits, schemaImports, options);
 
@@ -599,19 +566,13 @@ function generateRegularModelArtifacts(
   const schemaObject = buildLegacySchemaObject(baseName, schemaFields, mixinTraits, mixinExtensions, isFragment);
 
   // Generate merged schema code (schema + types in one file)
-  const extensionName = extensionProperties.length > 0 ? `${modelName}Extension` : undefined;
   const mergedSchemaCode = generateMergedSchemaCode({
-    baseName,
-    interfaceFieldsName: `${modelName}Fields`,
-    interfaceName: `Legacy${modelName}`,
-    schemaName,
+    config: resourceConfig,
     schemaObject,
     properties: schemaFieldTypes,
     traits: mixinTraits,
     imports: schemaImports,
-    isTypeScript,
     options,
-    extensionName,
     comment,
   });
 
@@ -631,7 +592,7 @@ function generateRegularModelArtifacts(
         .filter(Boolean)
         .join('\n'),
       baseName,
-      suggestedFileName: `${baseName}.schema${options.disableTypescriptSchemas ? '.js' : '.ts'}`,
+      suggestedFileName: `${baseName}.schema${resourceConfig.schemaIsTyped ? '.ts' : '.js'}`,
     });
   } else {
     artifacts.push({
@@ -639,7 +600,7 @@ function generateRegularModelArtifacts(
       name: schemaName,
       code: [mergedSchemaCode.schemaImports, mergedSchemaCode.schemaDeclaration].filter(Boolean).join('\n'),
       baseName,
-      suggestedFileName: `${baseName}.schema${options.disableTypescriptSchemas ? '.js' : '.ts'}`,
+      suggestedFileName: `${baseName}.schema${resourceConfig.schemaIsTyped ? '.ts' : '.js'}`,
     });
 
     if (hasType) {
@@ -650,7 +611,7 @@ function generateRegularModelArtifacts(
           .filter(Boolean)
           .join('\n'),
         baseName,
-        suggestedFileName: `${baseName}.type${options.disableTypescriptSchemas ? '.js' : '.ts'}`,
+        suggestedFileName: `${baseName}.type.ts`,
       });
     }
   }
@@ -795,8 +756,11 @@ function generateIntermediateModelTraitArtifacts(
     // Add id property at the beginning - all EmberData records have id
     traitFieldTypes.unshift({
       name: 'id',
-      type: 'string | null',
-      readonly: false, // id can be set on new records
+      transformInferredType: 'unknown',
+      typeInfo: {
+        type: 'string | null',
+        readonly: false, // id can be set on new records
+      },
     });
     log.debug(`DEBUG: Added id property to ${traitName} trait`);
   }
@@ -809,34 +773,22 @@ function generateIntermediateModelTraitArtifacts(
     const storeTypeName = options.storeType.name || 'Store';
     traitFieldTypes.push({
       name: 'store',
-      type: storeTypeName,
-      readonly: true, // store is injected and should not be modified
+      transformInferredType: 'unknown',
+      typeInfo: {
+        type: storeTypeName,
+        readonly: true, // store is injected and should not be modified
+      },
     });
     log.debug(`DEBUG: Added store property with type ${storeTypeName} to ${traitName} trait`);
   }
 
-  // Add Model base properties (isNew, save, belongsTo, etc.) to trait types
-  // These are inherited from EmberData Model but need to be declared for TypeScript
-  const modelBaseProperties = getModelBaseProperties();
-  for (const prop of modelBaseProperties) {
-    // Only add if not already present (avoid duplicates)
-    const exists = traitFieldTypes.some((f) => f.name === prop.name);
-    if (!exists) {
-      traitFieldTypes.push({
-        name: prop.name,
-        type: prop.type,
-        readonly: prop.readonly ?? false,
-      });
-    }
-  }
-  log.debug(`DEBUG: Added ${modelBaseProperties.length} Model base properties to ${traitName} trait`);
-
   // Collect imports for trait interface
   const traitImports = new Set<string>();
+  const declarations = new Set<string>();
 
   // Add imports for Model base property types (BelongsToReference, HasManyReference, Errors)
   traitImports.add(`type { BelongsToReference, HasManyReference, Errors } from '@warp-drive/legacy/model/-private'`);
-  collectRelationshipImports(schemaFields, traitName, traitImports, options);
+  collectRelationshipImports(filePath, schemaFields, traitName, traitImports, declarations, options);
   collectTraitImports(mixinTraits, traitImports, options, true);
 
   // Add Store type import if storeType is configured
@@ -862,12 +814,13 @@ function generateIntermediateModelTraitArtifacts(
     traits: mixinTraits,
     imports: traitImports,
     isTypeScript,
+    options,
   });
 
   artifacts.push({
     type: 'trait',
     name: traitSchemaName,
-    code: mergedTraitSchemaCode,
+    code: 'FIXME',
     baseName: traitName,
     suggestedFileName: `${traitName}.schema${options.disableTypescriptSchemas ? '.js' : '.ts'}`,
   });

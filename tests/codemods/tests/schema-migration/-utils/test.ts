@@ -86,7 +86,7 @@ async function applyTransform(
   const files = {} as Record<string, string>;
   for (const [fileName, content] of Object.entries(input)) {
     const output = transformFile(fileName, content, config);
-    for (const artifact of output) {
+    for (const artifact of output.artifacts) {
       const prefixedFileName = prefixFile(artifact, config);
       if (files[prefixedFileName]) {
         throw new Error(`Multiple artifacts generated for the same path: ${prefixedFileName}`);
@@ -103,6 +103,8 @@ async function applyTransform(
 function prefixFile(artifact: TransformArtifact, config: TransformOptions): string {
   return `app/data/${artifact.suggestedFileName}`;
 }
+
+export function skip(_name: string, _options: SuccessfulTransformationTest | ErrorTransformationTest) {}
 
 export function test(name: string, options: SuccessfulTransformationTest | ErrorTransformationTest) {
   vitest(name, async function () {

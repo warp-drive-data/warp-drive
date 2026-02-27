@@ -394,6 +394,7 @@ export function createExtensionFromOriginalFile(
     log.debug(`Extension code to add: ${extensionCode.substring(0, 200)}...`);
 
     return {
+      baseName,
       type: getExtensionArtifactType(extensionContext),
       name: extensionName,
       code: modifiedSource,

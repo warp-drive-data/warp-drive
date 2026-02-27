@@ -338,6 +338,7 @@ export async function runMigration(options: MigrateOptions): Promise<void> {
     outputDir: options.outputDir || './app/schemas',
     dryRun: options.dryRun || false,
     verbose: options.verbose || false,
+    warpDriveImports: options.warpDriveImports || 'legacy',
     modelSourceDir: options.modelSourceDir || './app/models',
     mixinSourceDir: options.mixinSourceDir || './app/mixins',
     ...options,

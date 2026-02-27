@@ -197,7 +197,7 @@ function resolveMixinPath(
 
     // Handle relative paths - must be within mixin source directory
     if (importPath.startsWith('.')) {
-      const resolved = resolveRelativeImport(importPath, currentFilePath, process.cwd());
+      const resolved = resolveRelativeImport(importPath, currentFilePath);
       if (isInMixinSourceDir(resolved, mixinSourceDir)) {
         return resolved;
       }

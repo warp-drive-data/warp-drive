@@ -95,8 +95,7 @@ export function getTypeScriptTypeForAttribute(
   }
 
   // Fallback to unknown for unsupported types
-  const tsType = hasDefaultValue || !allowNull ? 'unknown' : 'unknown | null';
-  return { tsType };
+  return { tsType: 'unknown' };
 }
 
 /**
@@ -448,6 +447,7 @@ function extractTypeFromDecoratorCore(
 
       return {
         type: tsType,
+        // @ts-expect-error
         imports: imports.length > 0 ? imports : undefined,
       };
     }
@@ -533,6 +533,7 @@ export function extractTypeFromMethod(methodNode: SgNode, options?: TransformOpt
         const imports = extractImportsFromType(typeText, emberDataImportSource);
         return {
           type: typeText,
+          // @ts-expect-error
           imports: imports.length > 0 ? imports : undefined,
         };
       }
@@ -599,6 +600,7 @@ export function extractTypesFromInterface(
       type: typeText,
       readonly,
       optional,
+      // @ts-expect-error
       imports: extractImportsFromType(typeText, emberDataImportSource),
     });
 

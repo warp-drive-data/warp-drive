@@ -107,6 +107,30 @@ export interface TransformOptions {
   combineSchemasAndTypes?: boolean;
   /** By default, schemas will be output in TS files even when generated from untyped models. */
   disableTypescriptSchemas?: boolean;
+  /**
+   * By default, the codemod will attempt to generate TypeScript types for models that don't
+   * have them by analyzing the model file and various transforms that are in use.
+   *
+   * We heavily discourage turning this off as field level documentation comments are
+   * associated to the type artifact, not the schema.
+   */
+  disableMissingTypeAutoGen?: boolean;
+  /**
+   * By default, the codemod will insert useful comments
+   * to the generated types for inline/editor documentation
+   * to use.
+   *
+   * These comments will be combined with any existing comment
+   * on the class/mixin declaration.
+   */
+  disableAddingTypeComments?: boolean;
+  /**
+   * By default, unless `disableAddingTypeComments` is set to true, the
+   * codemod will insert an additional `TIP` section in the generated
+   * type comments to help guide users on how to properly use types
+   * in WarpDrive. This disables that.
+   */
+  disableAddingTypeUsageTips?: boolean;
   /** Use @warp-drive-mirror instead of @warp-drive for imports */
   mirror?: boolean;
   /** Test mode - treats all mixins as connected to models (for testing) */

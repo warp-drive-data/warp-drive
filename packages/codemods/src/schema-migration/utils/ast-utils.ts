@@ -81,7 +81,6 @@ export type { TransformArtifact, PropertyInfo, SchemaField, MergedSchemaOptions 
 export {
   transformWarpDriveImport,
   generateWarpDriveTypeImport,
-  generateCommonWarpDriveImports,
   generateTraitImport,
   getModelImportSource,
   getResourcesImport,

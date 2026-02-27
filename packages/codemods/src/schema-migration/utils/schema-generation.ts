@@ -4,6 +4,7 @@ import { join } from 'path';
 
 import { logger } from '../../../utils/logger.js';
 import { getConfiguredImport, type TransformOptions } from '../config.js';
+import type { SchemaArtifact } from './artifact.js';
 import { parseObjectLiteralFromNode } from './ast-helpers.js';
 import type { ExtensionContext } from './extension-generation.js';
 import { getExtensionArtifactType } from './extension-generation.js';
@@ -38,7 +39,7 @@ export interface PropertyInfo {
   originalKey: string;
   value: string;
   /** Extracted TypeScript type information */
-  typeInfo?: ExtractedType;
+  typeInfo: ExtractedType | null;
   /** Whether this property is defined using object method syntax */
   isObjectMethod?: boolean;
 }
@@ -264,11 +265,11 @@ export function convertToSchemaField(
  * Generate TypeScript interface code
  */
 export function generateInterfaceCode(
+  options: TransformOptions,
   interfaceName: string,
   interfaceFieldsName: string,
   comment: string | undefined,
   properties: Array<FieldTypeInfo>,
-  extendsClause?: string,
   imports?: string[]
 ): string {
   const lines: string[] = [];
@@ -286,7 +287,7 @@ export function generateInterfaceCode(
     lines.push('');
   }
 
-  lines.push(generateInterfaceOnly(interfaceName, interfaceFieldsName, comment, properties, extendsClause, '\t'));
+  lines.push(generateInterfaceOnly(interfaceName, interfaceFieldsName, comment, properties, '\t'));
   lines.push('');
 
   return lines.join('\n');
@@ -565,18 +566,10 @@ export function buildTraitSchemaObject(
  * Options for generating merged schema with types
  */
 export interface MergedSchemaOptions {
-  /** The base name of the resource (kebab-case, e.g., 'user') */
-  baseName: string;
   /**
-   * The name of the interface for the schema fields (e.g., 'UserFields').
-   * This is separate from the exported interface name to allow for
-   * additional decoration via wrappers, for instance WithLegacy<UserFields>.
+   * The {@link SchemaArtifact} config for the resource being generated.
    */
-  interfaceFieldsName: string;
-  /** The interface name (PascalCase, e.g., 'LegacyUser') */
-  interfaceName: string;
-  /** The schema variable name (e.g., 'UserSchema') */
-  schemaName: string;
+  config: SchemaArtifact;
   /** The schema object to export */
   schemaObject: Record<string, unknown>;
   /** Properties for the interface */
@@ -585,12 +578,8 @@ export interface MergedSchemaOptions {
   traits?: string[];
   /** Import statements needed for types */
   imports?: Set<string>;
-  /** Whether this is a TypeScript file */
-  isTypeScript: boolean;
   /** Transform options */
   options: TransformOptions;
-  /** Extension name (e.g., 'UserExtension') -> when set with traits, triggers composite interface pattern */
-  extensionName?: string;
   /** Doc comment for the interface */
   comment?: string;
 }
@@ -625,49 +614,138 @@ function generateTypeScriptImports(imports: Set<string>, config: TransformOption
 /**
  * Generate the schema const declaration
  */
-function generateSchemaDeclaration(
-  schemaName: string,
-  schemaObject: Record<string, unknown>,
-  isTypeScript: boolean
-): string {
+function generateSchemaDeclaration(config: SchemaArtifact, schemaObject: Record<string, unknown>): string {
   let jsonString = JSON.stringify(schemaObject, null, 2);
 
   // Always use single quotes
   jsonString = jsonString.replace(/"([^"\\]*(\\.[^"\\]*)*)"/g, "'$1'");
 
-  if (isTypeScript) {
-    return `const ${schemaName} = ${jsonString} satisfies LegacyResourceSchema;`;
+  if (config.schemaIsTyped) {
+    return `const ${config.identifiers.schema} = ${jsonString} satisfies LegacyResourceSchema;`;
   } else {
-    return `const ${schemaName} = ${jsonString};`;
+    return `const ${config.identifiers.schema} = ${jsonString};`;
   }
 }
+
+function cleanComment(comment: string, includeBreak = true): string {
+  const lines = comment.split('\n').map((l) => l.trim());
+  if (lines[0].startsWith('/**')) {
+    lines[0] = lines[0].replace('/**', '').trim();
+  }
+  if (lines[lines.length - 1].endsWith('*/')) {
+    lines[lines.length - 1] = lines[lines.length - 1].replace('*/', '').trim();
+  }
+  if (lines.length > 2) {
+    for (let i = 1; i < lines.length - 1; i++) {
+      if (lines[i].startsWith('*')) {
+        lines[i] = lines[i].slice(1).trim();
+      }
+    }
+    if (lines[0] === '') {
+      lines.shift();
+    }
+    if (lines[lines.length - 1] === '') {
+      lines.pop();
+    }
+  }
+  if (includeBreak) {
+    lines.push('', '---', '');
+  }
+  return lines.map((l) => ` * ${l}`).join('\n');
+}
+
+const ResourceTipComment = ` * > [!TIP]
+ * > It is likely that you will want a more specific type tailored
+ * > to the context of where some data has been loaded, for instance
+ * > one that marks specific fields as readonly, or which only enables
+ * > some fields to be null during create, or which only includes
+ * > a subset of fields based on a specific API response.
+ * >
+ * > For those cases, you can create a more specific type that derives
+ * > from this type to ensure that your type definitions stay consistent
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}`;
 
 /**
  * Generate TypeScript interface code (without imports - they're handled separately)
  */
 function generateInterfaceOnly(
-  interfaceName: string,
-  interfaceFieldsName: string,
+  options: TransformOptions,
+  config: SchemaArtifact,
   comment: string | undefined,
   properties: Array<FieldTypeInfo>,
-  extendsClause?: string,
   indent = '  '
 ): string {
-  const lines: string[] = [];
-
-  // Add interface declaration
-  let interfaceDeclaration = `interface ${interfaceFieldsName}`;
-  if (extendsClause) {
-    interfaceDeclaration += ` extends ${extendsClause}`;
+  /**
+   * Each resource will export 2 types to support itself
+   * and 2 to support its extension (if needed).
+   */
+  /**
+   * The primary fields definition e.g.
+   *
+   * ```
+   * export interface UserResource extends TimestamppedTrait {
+   *   id: string | null;
+   *   name: string;
+   * }
+   * ```
+   */
+  let interfaceDeclaration = `export interface ${config.identifiers.fieldsInterface}`;
+  if (config.traits.length) {
+    interfaceDeclaration += 'extends ';
+    interfaceDeclaration += config.traits.map((t) => t.identifiers.fieldsInterface).join(', ');
   }
   interfaceDeclaration += ' {';
-  lines.push(interfaceDeclaration);
+
+  /**
+   * The fields + the legacy Model capabilities e.g.
+   *
+   * ```
+   * export interface User extends WithLegacy<UserResource> {}
+   * ```
+   */
+  const fullTypeDeclaration = `export interface ${config.identifiers.type} extends WithLegacy<${config.identifiers.fieldsInterface}> {}`;
+
+  /**
+   * Cleanup any existing documentation for this resource for re-use in the generated interfaces.
+   */
+  const docComment = comment ? `/**\n` + cleanComment(comment) : `/**`;
+  /**
+   * Add helpful usage tips if desired.
+   */
+  const tipComment = options.disableAddingTypeUsageTips ? ' *' : ' *\n' + ResourceTipComment + '\n *';
+  /**
+   * The documentation for "just the fields"
+   */
+  const fieldsInterfaceComment = `${docComment}
+ * This type represents the full set schema derived fields of
+ * the '${config.name}' ${config.type}, without any of the legacy mode features
+ * and without any extensions.
+${tipComment}
+ * See also {@link ${config.identifiers.type}} for fields + legacy mode features
+ */`;
+  /**
+   * The documentation for the "fields + legacy mode features" interface
+   *
+   * Extensions will be handled separately.
+   */
+  const fullInterfaceComment = `${docComment}
+ * This type represents the full set schema derived fields of
+ * the '${config.name}' ${config.type}, including all legacy mode features but
+ * without any extensions.
+ *
+ * See also {@link ${config.identifiers.fieldsInterface}} for fields + legacy mode features
+ */`;
+
+  const lines: string[] = [fieldsInterfaceComment, interfaceDeclaration];
 
   // Add properties
-  properties.forEach((prop) => {
+  for (const prop of properties) {
     if (prop.comment) {
-      const formattedComment = prop.comment.startsWith('/**') ? prop.comment : `/** ${prop.comment} */`;
-      lines.push(`${indent}${formattedComment}`);
+      const comment = cleanComment(prop.comment, false).split('\n');
+      comment.unshift('/**');
+      comment.push(' */');
+      const formattedComment = comment.join(`\n${indent}`);
+      lines.push('', `${indent}${formattedComment}`);
     }
 
     const readonly = prop.typeInfo?.readonly ? 'readonly ' : '';
@@ -677,13 +755,9 @@ function generateInterfaceOnly(
     const type = prop.typeInfo?.type || prop.transformInferredType || 'unknown';
 
     lines.push(`${indent}${readonly}${prop.name}${optional}: ${type};`);
-  });
-
-  lines.push('}', '');
-  if (comment) {
-    lines.push(comment.startsWith('/**') ? comment : `/** ${comment} */`);
   }
-  lines.push(`export interface ${interfaceName} extends WithLegacy<${interfaceFieldsName}> {}`, '');
+
+  lines.push('}', '', fullInterfaceComment, fullTypeDeclaration, '');
 
   return lines.join('\n');
 }
@@ -700,22 +774,7 @@ interface GeneratedSchemaParts {
  * This creates a single .schema.js or .schema.ts file with everything needed
  */
 export function generateMergedSchemaCode(opts: MergedSchemaOptions): GeneratedSchemaParts {
-  const {
-    baseName,
-    schemaName,
-    interfaceName,
-    interfaceFieldsName,
-    schemaObject,
-    properties,
-    comment,
-    traits = [],
-    imports = new Set(),
-    isTypeScript,
-    options,
-    extensionName,
-  } = opts;
-
-  const useComposite = isTypeScript && Boolean(extensionName) && traits.length > 0;
+  const { config, schemaObject, properties, comment, options, imports = new Set() } = opts;
 
   const parts: GeneratedSchemaParts = {
     typeImports: null,
@@ -725,28 +784,21 @@ export function generateMergedSchemaCode(opts: MergedSchemaOptions): GeneratedSc
   };
 
   if (!opts.options?.disableTypescriptSchemas) {
-    const importLocation = getConfiguredImport(opts.options!, 'LegacyResourceSchema');
-    parts.schemaImports = `import { ${importLocation.imported} } from '${importLocation.source}';\n`;
-  }
-
-  if (useComposite) {
-    const extensionImportPath = options?.resourcesImport
-      ? `${options.resourcesImport}/${baseName}.ext`
-      : `../resources/${baseName}.ext`;
-    imports.add(`type { ${extensionName} } from '${extensionImportPath}'`);
+    const importLocation = getConfiguredImport(opts.options, 'LegacyResourceSchema');
+    parts.schemaImports = `import type { ${importLocation.imported} } from '${importLocation.source}';\n`;
   }
 
   // Generate imports section (only for TypeScript)
-  if (isTypeScript) {
+  if (config.hasTypes) {
     const importsCode = generateTypeScriptImports(imports, opts.options);
     parts.typeImports = importsCode;
   }
 
   // Generate schema declaration
-  const schemaDecl = generateSchemaDeclaration(schemaName, schemaObject, !opts.options?.disableTypescriptSchemas);
-  parts.schemaDeclaration = `${schemaDecl}\n\nexport default ${schemaName};\n`;
+  const schemaDecl = generateSchemaDeclaration(config, schemaObject);
+  parts.schemaDeclaration = `${schemaDecl}\n\nexport default ${config.identifiers.schema};\n`;
 
-  if (isTypeScript) {
+  if (config.hasTypes) {
     // if (useComposite) {
     //   // Composite pattern: field interface is {Name}Trait, composite is {Name}
     //   const fieldInterfaceName = `${interfaceName}Trait`;
@@ -772,14 +824,7 @@ export function generateMergedSchemaCode(opts: MergedSchemaOptions): GeneratedSc
     //   sections.push(interfaceCode);
     // }
 
-    // Standard pattern: single interface with optional trait extends
-    let extendsClause: string | undefined;
-    if (traits.length > 0) {
-      const traitInterfaces = traits.map(traitNameToInterfaceName);
-      extendsClause = traitInterfaces.join(', ');
-    }
-
-    const interfaceCode = generateInterfaceOnly(interfaceName, interfaceFieldsName, comment, properties, extendsClause);
+    const interfaceCode = generateInterfaceOnly(options, config, comment, properties);
     parts.interfaceDeclaration = interfaceCode;
   }
 
