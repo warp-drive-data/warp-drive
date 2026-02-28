@@ -5,7 +5,6 @@ import { join } from 'path';
 import { logger } from '../../../utils/logger.js';
 import { getConfiguredImport, type TransformOptions } from '../config.js';
 import type { SchemaArtifact } from './artifact.js';
-import { parseObjectLiteralFromNode } from './ast-helpers.js';
 import type { ExtensionContext } from './extension-generation.js';
 import { getExtensionArtifactType } from './extension-generation.js';
 import { generateTraitImport, transformModelToResourceImport } from './import-utils.js';
@@ -143,19 +142,58 @@ export function buildLegacySchemaObject(
 }
 
 /**
- * Parse options object from an AST node for schema field conversion
- * Returns the parsed options object
+ * Sentinel prefix used to mark identifier references in schema field options.
+ * Values like `{ defaultValue: BIRTHAGE }` are stored as `'__ref__:BIRTHAGE'`
+ * so the code generator can emit them unquoted.
+ */
+export const SCHEMA_OPTION_REF_PREFIX = '__ref__:';
+
+/**
+ * Parse options object from an AST node for schema field conversion.
+ * Identifier values (e.g. `BIRTHAGE`) are preserved as code references
+ * using the `__ref__:` sentinel prefix so they can be emitted unquoted.
  */
 function parseSchemaFieldOptions(optionsNode: SgNode | undefined): Record<string, unknown> {
   if (!optionsNode || optionsNode.kind() !== 'object') {
     return {};
   }
 
-  try {
-    return parseObjectLiteralFromNode(optionsNode);
-  } catch {
-    return {};
+  const result: Record<string, unknown> = {};
+  const properties = optionsNode.children().filter((child) => child.kind() === 'pair');
+
+  for (const property of properties) {
+    const keyNode = property.field('key');
+    const valueNode = property.field('value');
+    if (!keyNode || !valueNode) continue;
+
+    let key = keyNode.text();
+    if ((key.startsWith('"') && key.endsWith('"')) || (key.startsWith("'") && key.endsWith("'"))) {
+      key = key.slice(1, -1);
+    }
+
+    let value: unknown;
+    const kind = valueNode.kind();
+    if (kind === 'string') {
+      value = valueNode.text().slice(1, -1);
+    } else if (kind === 'true') {
+      value = true;
+    } else if (kind === 'false') {
+      value = false;
+    } else if (kind === 'number') {
+      value = parseFloat(valueNode.text());
+    } else if (kind === 'null') {
+      value = null;
+    } else if (kind === 'identifier') {
+      // Preserve identifier references (e.g. BIRTHAGE) as code refs, not strings
+      value = SCHEMA_OPTION_REF_PREFIX + valueNode.text();
+    } else {
+      value = valueNode.text();
+    }
+
+    result[key] = value;
   }
+
+  return result;
 }
 
 /**
@@ -582,6 +620,12 @@ export interface MergedSchemaOptions {
   options: TransformOptions;
   /** Doc comment for the interface */
   comment?: string;
+  /**
+   * Optional export declarations (e.g. `export const BIRTHAGE = 0;`) to inject
+   * into the schema file before the schema const. These are constants referenced
+   * by identifier in schema field options.
+   */
+  constantDeclarations?: string;
 }
 
 /**
@@ -619,6 +663,9 @@ function generateSchemaDeclaration(config: SchemaArtifact, schemaObject: Record<
 
   // Always use single quotes
   jsonString = jsonString.replace(/"([^"\\]*(\\.[^"\\]*)*)"/g, "'$1'");
+
+  // Unescape identifier code references: '__ref__:IDENT' → IDENT (unquoted)
+  jsonString = jsonString.replace(new RegExp(`'${SCHEMA_OPTION_REF_PREFIX}([^']+)'`, 'g'), '$1');
 
   if (config.schemaIsTyped) {
     return `const ${config.identifiers.schema} = ${jsonString} satisfies LegacyResourceSchema;`;
@@ -794,9 +841,10 @@ export function generateMergedSchemaCode(opts: MergedSchemaOptions): GeneratedSc
     parts.typeImports = importsCode;
   }
 
-  // Generate schema declaration
+  // Generate schema declaration (optionally preceded by constant declarations)
   const schemaDecl = generateSchemaDeclaration(config, schemaObject);
-  parts.schemaDeclaration = `${schemaDecl}\n\nexport default ${config.identifiers.schema};\n`;
+  const constPrefix = opts.constantDeclarations ? `${opts.constantDeclarations}\n\n` : '';
+  parts.schemaDeclaration = `${constPrefix}${schemaDecl}\n\nexport default ${config.identifiers.schema};\n`;
 
   if (config.hasTypes) {
     // if (useComposite) {

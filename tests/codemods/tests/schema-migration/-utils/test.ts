@@ -160,8 +160,8 @@ export const F = {
   trait(name: string) {
     return `app/traits/${name}.ts`;
   },
-  extension(name: string) {
-    return `app/extensions/${name}.ts`;
+  extension(name: string, useJs = false) {
+    return `app/data/${name}.ext.${useJs ? 'js' : 'ts'}`;
   },
   traitExtension(name: string) {
     return `app/traits/${name}/index.ts`;
@@ -169,11 +169,11 @@ export const F = {
   resourceType(name: string) {
     return `app/data/${name}.type.ts`;
   },
+  extensionType(name: string) {
+    return `app/data/${name}.ext.type.ts`;
+  },
   traitType(name: string) {
     return `app/traits/${name}/index.ts`;
-  },
-  extensionType(name: string) {
-    return `app/extensions/${name}/index.ts`;
   },
   traitExtensionType(name: string) {
     return `app/traits/${name}/index.ts`;

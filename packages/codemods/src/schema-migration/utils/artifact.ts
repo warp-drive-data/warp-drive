@@ -108,6 +108,10 @@ interface BaseSchemaArtifact {
    */
   schemaIsTyped: boolean;
   /**
+   * Whether the extension should be typed (if an extension is required)
+   */
+  extensionIsTyped: boolean;
+  /**
    * Whether this artifact requires use of an extension
    */
   hasExtension: boolean;
@@ -204,6 +208,7 @@ export function createResourceArtifactConfig(
    */
   const hasTypes = modelWasTyped || !options.disableMissingTypeAutoGen;
   const schemaIsTyped = (hasTypes && options.combineSchemasAndTypes) || !options.disableTypescriptSchemas;
+  const extensionIsTyped = modelWasTyped;
 
   /**
    * an extension is required IF
@@ -217,6 +222,7 @@ export function createResourceArtifactConfig(
     name,
     hasTypes,
     schemaIsTyped,
+    extensionIsTyped,
     hasExtension,
     identifiers: {
       schema: `${classified}Schema`,

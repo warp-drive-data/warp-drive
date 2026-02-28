@@ -308,6 +308,20 @@ function extractTypesForField(
     if (nameNode) localTypeMap.set(nameNode.text(), alias);
   }
 
+  // Build map: valueName -> export statement text for locally declared const/let/var exports.
+  // Needed to collect value declarations referenced via `typeof X` in type positions.
+  const localValueMap = new Map<string, string>();
+  for (const exportStmt of root.findAll({ rule: { kind: 'export_statement' } })) {
+    const decl = exportStmt.find({
+      rule: { any: [{ kind: 'lexical_declaration' }, { kind: 'variable_declaration' }] },
+    });
+    if (!decl) continue;
+    for (const declarator of decl.findAll({ rule: { kind: 'variable_declarator' } })) {
+      const nameNode = declarator.field('name');
+      if (nameNode) localValueMap.set(nameNode.text(), exportStmt.text());
+    }
+  }
+
   const visited = new Set<string>();
   const addedImports = new Set<string>();
   const addedDeclarations = new Set<string>();
@@ -327,6 +341,19 @@ function extractTypesForField(
       } else if (localTypeMap.has(name)) {
         if (!addedDeclarations.has(name)) {
           const decl = localTypeMap.get(name)!;
+
+          // Collect value declarations referenced via `typeof X` in this alias first,
+          // so they appear before the type alias in the output (required for valid TS).
+          for (const typeQuery of decl.findAll({ rule: { kind: 'type_query' } })) {
+            for (const valueId of typeQuery.findAll({ rule: { kind: 'identifier' } })) {
+              const valueName = valueId.text();
+              if (!addedDeclarations.has(valueName) && localValueMap.has(valueName)) {
+                declarations.push(localValueMap.get(valueName)!);
+                addedDeclarations.add(valueName);
+              }
+            }
+          }
+
           const text = decl.text();
           const withExport = text.startsWith('export ') ? text : `export ${text}`;
           const withSemi = withExport.endsWith(';') ? withExport : `${withExport};`;

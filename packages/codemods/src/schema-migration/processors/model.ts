@@ -26,6 +26,7 @@ import {
   isModelFile,
   mapFieldsToTypeProperties,
   mixinNameToTraitName,
+  SCHEMA_OPTION_REF_PREFIX,
   toPascalCase,
   withTransformWrapper,
 } from '../utils/ast-utils.js';
@@ -42,7 +43,7 @@ import {
   NODE_KIND_MEMBER_EXPRESSION,
   NODE_KIND_PROPERTY_IDENTIFIER,
 } from '../utils/code-processing.js';
-import { createExtensionFromOriginalFile } from '../utils/extension-generation.js';
+import { createExtension } from '../utils/extension.js';
 import type { ParsedFile } from '../utils/file-parser.js';
 import { parseFile } from '../utils/file-parser.js';
 import { replaceWildcardPattern } from '../utils/path-utils.js';
@@ -59,6 +60,35 @@ import {
   toKebabCase,
   TRAILING_MODEL_SUFFIX_REGEX,
 } from '../utils/string.js';
+
+/**
+ * Find and return the source text of export declarations (e.g. `export const BIRTHAGE = 0;`)
+ * for each identifier in `identifierRefs`. These are included verbatim in the schema file
+ * so that schema field options can reference them by name.
+ */
+function collectConstantDecls(filePath: string, source: string, identifierRefs: Set<string>): string {
+  const lang = getLanguageFromPath(filePath);
+  const ast = parse(lang, source);
+  const root = ast.root();
+  const declarations: string[] = [];
+
+  for (const exportStmt of root.findAll({ rule: { kind: 'export_statement' } })) {
+    const decl = exportStmt.find({
+      rule: { any: [{ kind: 'lexical_declaration' }, { kind: 'variable_declaration' }] },
+    });
+    if (!decl) continue;
+
+    for (const declarator of decl.findAll({ rule: { kind: 'variable_declarator' } })) {
+      const nameNode = declarator.field('name');
+      if (nameNode && identifierRefs.has(nameNode.text())) {
+        declarations.push(exportStmt.text());
+        break;
+      }
+    }
+  }
+
+  return declarations.join('\n');
+}
 
 /** Method names that should be skipped (typically callback methods) */
 const SKIP_METHOD_NAMES = ['after'];
@@ -520,8 +550,7 @@ function generateRegularModelArtifacts(
   analysis: ModelAnalysisResult,
   options: TransformOptions
 ): TransformArtifact[] {
-  const { comment, schemaFields, extensionProperties, mixinTraits, mixinExtensions, modelName, baseName, isFragment } =
-    analysis;
+  const { comment, schemaFields, mixinTraits, mixinExtensions, modelName, baseName, isFragment } = analysis;
   const artifacts: TransformArtifact[] = [];
 
   // Determine the file extension based on the original model file
@@ -565,6 +594,20 @@ function generateRegularModelArtifacts(
   const schemaName = `${modelName}Schema`;
   const schemaObject = buildLegacySchemaObject(baseName, schemaFields, mixinTraits, mixinExtensions, isFragment);
 
+  // Collect identifier refs from schema field options (e.g. `defaultValue: BIRTHAGE`)
+  // and find their export declarations in the source to include in the schema file.
+  const identifierRefs = new Set<string>();
+  for (const field of schemaFields) {
+    if (field.options) {
+      for (const value of Object.values(field.options)) {
+        if (typeof value === 'string' && value.startsWith(SCHEMA_OPTION_REF_PREFIX)) {
+          identifierRefs.add(value.slice(SCHEMA_OPTION_REF_PREFIX.length));
+        }
+      }
+    }
+  }
+  const constantDeclarations = identifierRefs.size > 0 ? collectConstantDecls(filePath, source, identifierRefs) : undefined;
+
   // Generate merged schema code (schema + types in one file)
   const mergedSchemaCode = generateMergedSchemaCode({
     config: resourceConfig,
@@ -574,6 +617,7 @@ function generateRegularModelArtifacts(
     imports: schemaImports,
     options,
     comment,
+    constantDeclarations,
   });
 
   const hasType = mergedSchemaCode.interfaceDeclaration && mergedSchemaCode.interfaceDeclaration.trim() !== '';
@@ -616,23 +660,9 @@ function generateRegularModelArtifacts(
     }
   }
 
-  const modelInterfaceName = `${modelName}Trait`;
-  const modelImportPath = options?.resourcesImport
-    ? `${options.resourcesImport}/${baseName}.schema`
-    : `../resources/${baseName}.schema`;
-  const extensionArtifact = createExtensionFromOriginalFile(
-    filePath,
-    source,
-    baseName,
-    `${modelName}Extension`,
-    extensionProperties,
-    options,
-    modelInterfaceName,
-    modelImportPath,
-    'model',
-    undefined,
-    'resource'
-  );
+  const extensionArtifact = resourceConfig.hasExtension
+    ? createExtension(options, resourceConfig, filePath, source)
+    : null;
 
   log.debug(`Extension artifact created: ${!!extensionArtifact}`);
   if (extensionArtifact) {
@@ -738,7 +768,7 @@ function generateIntermediateModelTraitArtifacts(
     return [];
   }
 
-  const { schemaFields, extensionProperties, mixinTraits } = analysis;
+  const { schemaFields, mixinTraits } = analysis;
 
   // Determine the file extension based on the original model file
   const originalExtension = getFileExtension(filePath);
@@ -826,30 +856,7 @@ function generateIntermediateModelTraitArtifacts(
   });
 
   // For traits with extension properties, create extension artifact
-  if (extensionProperties.length > 0) {
-    // Create the extension artifact preserving original file content
-    // For traits, extensions should extend the trait interface
-    const traitInterfaceName = traitPascalName;
-    const traitImportPath = options?.traitsImport
-      ? `${options.traitsImport}/${traitName}.schema`
-      : `../traits/${traitName}.schema`;
-    const extensionArtifact = createExtensionFromOriginalFile(
-      filePath,
-      source,
-      traitName,
-      `${traitPascalName}Extension`,
-      extensionProperties,
-      options,
-      traitInterfaceName,
-      traitImportPath,
-      'model',
-      undefined,
-      'trait'
-    );
-    if (extensionArtifact) {
-      artifacts.push(extensionArtifact);
-    }
-  }
+  // TODO: implement trait extension generation via createExtension
 
   return artifacts;
 }
