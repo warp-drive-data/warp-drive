@@ -1,7 +1,7 @@
 import type { Lang } from '@ast-grep/napi';
 import { Lang as AstLang } from '@ast-grep/napi';
 import { existsSync } from 'fs';
-import { dirname, resolve } from 'path';
+import path, { dirname, resolve } from 'path';
 
 import type { TransformOptions } from '../config.js';
 import {
@@ -225,7 +225,7 @@ export function resolveWithExtensions(basePath: string, extensions: string[] = D
 /**
  * Resolve a relative import path to an absolute file path
  */
-export function resolveRelativeImport(importPath: string, fromFile: string, baseDir: string): string | null {
+export function resolveRelativeImport(importPath: string, fromFile: string): string | null {
   if (!importPath.startsWith('./') && !importPath.startsWith('../')) {
     return null;
   }
@@ -240,6 +240,36 @@ export function resolveRelativeImport(importPath: string, fromFile: string, base
 }
 
 /**
+ * Convert an import path to a classic import path
+ */
+export function normalizeClassicImport(
+  options: TransformOptions,
+  importPath: string,
+  currentFilePath: string
+): string | null {
+  if (!importPath) {
+    throw new Error('Import path is empty');
+  }
+  // Handle relative imports if file context is provided
+  if (importPath.startsWith('./') || importPath.startsWith('../')) {
+    const resolvedPath = path.join(dirname(currentFilePath), importPath);
+    // remove file extension for classic import
+    const withoutExtension = resolvedPath.replace(FILE_EXTENSION_REGEX, '');
+    return withoutExtension.replace('app', options.projectName);
+  }
+
+  if (importPath.startsWith('#')) {
+    throw new Error('import mapped files are not yet supported');
+  }
+
+  if (options.projectName && importPath.startsWith(options.projectName)) {
+    return importPath;
+  }
+
+  return importPath;
+}
+
+/**
  * Resolve an import path using configured sources
  * This handles both absolute imports (with patterns) and provides fallback logic
  */
@@ -251,7 +281,7 @@ export function resolveImportPath(
 ): string | null {
   // Handle relative imports if file context is provided
   if (currentFilePath && baseDir && (importPath.startsWith('./') || importPath.startsWith('../'))) {
-    const resolved = resolveRelativeImport(importPath, currentFilePath, baseDir);
+    const resolved = resolveRelativeImport(importPath, currentFilePath);
     if (resolved) {
       return resolved;
     }

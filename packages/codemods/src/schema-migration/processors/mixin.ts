@@ -46,6 +46,7 @@ function ensureResourceTypeFileExists(
       type: 'resource-type-stub',
       name: pascalCaseType,
       code: stubCode,
+      baseName: modelType,
       suggestedFileName: `${modelType}.schema.ts`,
     });
 
@@ -144,7 +145,7 @@ function generateMixinArtifacts(
 
   const traitInterfaceName = `${mixinName.charAt(0).toUpperCase() + mixinName.slice(1)}Trait`;
 
-  const traitFieldTypes = mapFieldsToTypeProperties(traitFields as SchemaField[], options, false);
+  const traitFieldTypes = mapFieldsToTypeProperties(traitFields as SchemaField[], options);
 
   const imports = new Set<string>();
   const modelTypes = new Set<string>();
@@ -190,18 +191,21 @@ function generateMixinArtifacts(
   const mergedTraitSchemaCode = generateMergedSchemaCode({
     baseName,
     interfaceName: traitInterfaceName,
+    interfaceFieldsName: 'FIXME',
     schemaName: traitSchemaName,
     schemaObject: traitSchemaObject,
     properties: traitFieldTypes,
     traits: extendedTraits,
     imports,
     isTypeScript,
+    options,
   });
 
   artifacts.push({
     type: 'trait',
     name: traitSchemaName,
-    code: mergedTraitSchemaCode,
+    code: 'FIXME',
+    baseName,
     suggestedFileName: `${baseName}.schema${fileExtension}`,
   });
 

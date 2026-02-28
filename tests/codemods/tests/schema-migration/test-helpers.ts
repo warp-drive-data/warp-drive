@@ -72,7 +72,10 @@ export function collectFileStructure(baseDir: string, dir: string = baseDir): st
  */
 export const DEFAULT_TEST_OPTIONS: TransformOptions = {
   modelImportSource: 'test-app/models',
-  resourcesImport: 'test-app/data/resources',
+  disableTypescriptSchemas: false,
+  warpDriveImports: 'legacy',
+  projectImportsUseExtensions: true,
+  projectName: 'test-app',
   verbose: false,
   debug: false,
   // For tests, assume all mixins are connected to models so they generate artifacts

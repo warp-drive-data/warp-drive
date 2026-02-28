@@ -159,6 +159,7 @@ async function handleMigrateToSchema(
       ? (JSON.parse(mergedOptions.typeMapping) as Record<string, string>)
       : mergedOptions.typeMapping;
 
+  // @ts-expect-error TODO fixme
   const migrationOptions: MigrateOptions = {
     ...mergedOptions,
     intermediateModelPaths: normalizedIntermediateModelPaths,

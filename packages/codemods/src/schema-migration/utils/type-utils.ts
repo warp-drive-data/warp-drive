@@ -1,12 +1,16 @@
 import type { SgNode } from '@ast-grep/napi';
 
 import { logger } from '../../../utils/logger.js';
-import type { TransformOptions } from '../config.js';
+import type { PackageImport, TransformOptions } from '../config.js';
 import { parseObjectLiteralFromNode } from './ast-helpers.js';
 import { DEFAULT_EMBER_DATA_SOURCE, DEFAULT_MIXIN_SOURCE } from './import-utils.js';
 import { removeQuotes, toPascalCase } from './path-utils.js';
 
 const log = logger.for('type-utils');
+// logger.prototype.constructor.options = {
+//   verbose: '2',
+//   logFile: true,
+// };
 
 // Re-export constants for backward compatibility
 export { DEFAULT_EMBER_DATA_SOURCE, DEFAULT_MIXIN_SOURCE };
@@ -33,7 +37,9 @@ export interface ExtractedType {
   /** Whether this property is optional */
   optional?: boolean;
   /** Import dependencies needed for this type */
-  imports?: string[];
+  imports?: PackageImport[];
+  /** Type declarations needed for this type */
+  declarations?: string[];
 }
 
 /**
@@ -89,8 +95,7 @@ export function getTypeScriptTypeForAttribute(
   }
 
   // Fallback to unknown for unsupported types
-  const tsType = hasDefaultValue || !allowNull ? 'unknown' : 'unknown | null';
-  return { tsType };
+  return { tsType: 'unknown' };
 }
 
 /**
@@ -189,10 +194,187 @@ function extractImportsFromType(typeText: string, emberDataImportSource: string)
 }
 
 /**
+ * Takes in the node representing the typescript type for a field and
+ * extracts any relevant import dependencies and type declarations needed to support that type.
+ *
+ * For example:
+ *
+ * ```ts
+ * import Model, { attr, hasMany, type AsyncHasMany } from '@ember-data/model';
+ * import type Company from './company';
+ * import type MainRoles from '../roles';
+ *
+ * export type ValidTitles = MainRoles | 'admin' | 'editor' | 'viewer';
+ *
+ * export default class User extends Model {
+ *   @attr declare title: ValidTitles;
+ *   @hasMany('company', { async: true }) declare companies: AsyncHasMany<Company>;
+ * }
+ * ```
+ *
+ * Will result in the following for the field 'companies'
+ * and the SgNode representing `AsyncHasMany<Company>`:
+ *
+ * ```
+ * {
+ *   imports: [
+ *     { imported: 'AsyncHasMany', source: '@ember-data/model', isType: true },
+ *     { imported: 'Company', source: './company', isType: true }
+ *   ],
+ *   declarations: []
+ * }
+ * ```
+ *
+ * And for the field 'title' and the SgNode representing `ValidTitles`:
+ *
+ * ```
+ * {
+ *   imports: [
+ *     { imported: 'MainRoles', source: '../roles', isType: true }
+ *   ],
+ *   declarations: [
+ *     "export type ValidTitles = MainRoles | 'admin' | 'editor' | 'viewer';"
+ *   ]
+ * }
+ * ```
+ */
+const PRIMITIVE_TYPES = new Set([
+  'string',
+  'number',
+  'boolean',
+  'Date',
+  'Promise',
+  'null',
+  'undefined',
+  'unknown',
+  'any',
+  'void',
+  'never',
+  'object',
+  'symbol',
+  'bigint',
+  'Array',
+]);
+
+function extractTypesForField(
+  options: TransformOptions,
+  typeNode: SgNode
+): {
+  imports: PackageImport[];
+  declarations: string[];
+} {
+  const imports: PackageImport[] = [];
+  const declarations: string[] = [];
+
+  // Walk up to the file root
+  const ancestors = typeNode.ancestors();
+  const root = ancestors.length > 0 ? ancestors[ancestors.length - 1] : typeNode;
+
+  // Build map: localName -> { imported, source } from all import statements
+  const importMap = new Map<string, { imported: string; source: string }>();
+  for (const stmt of root.findAll({ rule: { kind: 'import_statement' } })) {
+    const sourceNode = stmt.field('source');
+    if (!sourceNode) continue;
+    const source = removeQuotes(sourceNode.text());
+
+    for (const specifier of stmt.findAll({ rule: { kind: 'import_specifier' } })) {
+      // Strip inline 'type' modifier (e.g. "type AsyncHasMany" -> "AsyncHasMany")
+      let text = specifier.text().trim();
+      if (text.startsWith('type ')) {
+        text = text.slice(5).trim();
+      }
+      if (text.includes(' as ')) {
+        const [imp, loc] = text.split(' as ').map((s) => s.trim());
+        importMap.set(loc, { imported: imp, source });
+      } else {
+        importMap.set(text, { imported: text, source });
+      }
+    }
+
+    // Default imports
+    const importClause = stmt.children().find((c) => c.kind() === 'import_clause');
+    if (importClause) {
+      const firstChild = importClause.children()[0];
+      if (firstChild?.kind() === 'identifier') {
+        importMap.set(firstChild.text(), { imported: 'default', source });
+      }
+    }
+  }
+
+  // Build map: typeName -> SgNode for locally declared type aliases
+  const localTypeMap = new Map<string, SgNode>();
+  for (const alias of root.findAll({ rule: { kind: 'type_alias_declaration' } })) {
+    const nameNode = alias.field('name');
+    if (nameNode) localTypeMap.set(nameNode.text(), alias);
+  }
+
+  // Build map: valueName -> export statement text for locally declared const/let/var exports.
+  // Needed to collect value declarations referenced via `typeof X` in type positions.
+  const localValueMap = new Map<string, string>();
+  for (const exportStmt of root.findAll({ rule: { kind: 'export_statement' } })) {
+    const decl = exportStmt.find({
+      rule: { any: [{ kind: 'lexical_declaration' }, { kind: 'variable_declaration' }] },
+    });
+    if (!decl) continue;
+    for (const declarator of decl.findAll({ rule: { kind: 'variable_declarator' } })) {
+      const nameNode = declarator.field('name');
+      if (nameNode) localValueMap.set(nameNode.text(), exportStmt.text());
+    }
+  }
+
+  const visited = new Set<string>();
+  const addedImports = new Set<string>();
+  const addedDeclarations = new Set<string>();
+
+  function processNode(node: SgNode): void {
+    for (const id of node.findAll({ rule: { kind: 'type_identifier' } })) {
+      const name = id.text();
+      if (PRIMITIVE_TYPES.has(name) || visited.has(name)) continue;
+      visited.add(name);
+
+      if (importMap.has(name)) {
+        if (!addedImports.has(name)) {
+          const { imported, source } = importMap.get(name)!;
+          imports.push({ imported, local: name, source, isType: true });
+          addedImports.add(name);
+        }
+      } else if (localTypeMap.has(name)) {
+        if (!addedDeclarations.has(name)) {
+          const decl = localTypeMap.get(name)!;
+
+          // Collect value declarations referenced via `typeof X` in this alias first,
+          // so they appear before the type alias in the output (required for valid TS).
+          for (const typeQuery of decl.findAll({ rule: { kind: 'type_query' } })) {
+            for (const valueId of typeQuery.findAll({ rule: { kind: 'identifier' } })) {
+              const valueName = valueId.text();
+              if (!addedDeclarations.has(valueName) && localValueMap.has(valueName)) {
+                declarations.push(localValueMap.get(valueName)!);
+                addedDeclarations.add(valueName);
+              }
+            }
+          }
+
+          const text = decl.text();
+          const withExport = text.startsWith('export ') ? text : `export ${text}`;
+          const withSemi = withExport.endsWith(';') ? withExport : `${withExport};`;
+          declarations.push(withSemi);
+          addedDeclarations.add(name);
+          // Recurse to collect dependencies of this local type
+          processNode(decl);
+        }
+      }
+    }
+  }
+
+  processNode(typeNode);
+
+  return { imports, declarations };
+}
+
+/**
  * Extract TypeScript type annotation from a property declaration
  */
-export function extractTypeFromDeclaration(propertyNode: SgNode, options?: TransformOptions): ExtractedType | null {
-  const emberDataImportSource = options?.emberDataImportSource || DEFAULT_EMBER_DATA_SOURCE;
+export function extractTypeFromDeclaration(propertyNode: SgNode, options: TransformOptions): ExtractedType | null {
   try {
     // Look for type annotation in the property declaration
     const typeAnnotation = propertyNode.find({ rule: { kind: 'type_annotation' } });
@@ -218,13 +400,14 @@ export function extractTypeFromDeclaration(propertyNode: SgNode, options?: Trans
     const optional = propertyNode.text().includes('?:');
 
     // Extract import dependencies from the type
-    const imports = extractImportsFromType(typeText, emberDataImportSource);
+    const { imports, declarations } = extractTypesForField(options, typeNode);
 
     return {
       type: typeText,
       readonly,
       optional,
-      imports: imports.length > 0 ? imports : undefined,
+      imports,
+      declarations,
     };
   } catch (error) {
     log.debug(`Error extracting type: ${String(error)}`);
@@ -291,6 +474,7 @@ function extractTypeFromDecoratorCore(
 
       return {
         type: tsType,
+        // @ts-expect-error
         imports: imports.length > 0 ? imports : undefined,
       };
     }
@@ -309,17 +493,25 @@ function extractTypeFromDecoratorCore(
     case 'hasMany': {
       const relatedType = firstArg ? removeQuotes(firstArg) : 'unknown';
       const modelName = toPascalCase(relatedType);
-      const imports: string[] = [];
+      const imports: PackageImport[] = [];
 
       const emberDataSource = options?.emberDataImportSource || DEFAULT_EMBER_DATA_SOURCE;
       let tsType: string;
 
       if (parsedOptions.async) {
         tsType = `AsyncHasMany<${modelName}>`;
-        imports.push(`type { AsyncHasMany } from '${emberDataSource}'`);
+        imports.push({
+          imported: 'AsyncHasMany',
+          source: emberDataSource,
+          isType: true,
+        });
       } else {
         tsType = `HasMany<${modelName}>`;
-        imports.push(`type { HasMany } from '${emberDataSource}'`);
+        imports.push({
+          imported: 'HasMany',
+          source: emberDataSource,
+          isType: true,
+        });
       }
 
       return {
@@ -368,6 +560,7 @@ export function extractTypeFromMethod(methodNode: SgNode, options?: TransformOpt
         const imports = extractImportsFromType(typeText, emberDataImportSource);
         return {
           type: typeText,
+          // @ts-expect-error
           imports: imports.length > 0 ? imports : undefined,
         };
       }
@@ -434,6 +627,7 @@ export function extractTypesFromInterface(
       type: typeText,
       readonly,
       optional,
+      // @ts-expect-error
       imports: extractImportsFromType(typeText, emberDataImportSource),
     });
 
