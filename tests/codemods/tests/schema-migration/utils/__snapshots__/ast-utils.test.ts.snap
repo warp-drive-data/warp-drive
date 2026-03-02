@@ -1,81 +1,367 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AST utilities > createTypeArtifact > creates extension-type artifact with correct filename and type > extension-type artifact code 1`] = `
-"export interface UserExtension {
-	displayName: unknown;
+"/**
+ * This type represents the full set schema derived fields of
+ * the 'user' resource, without any of the legacy mode features
+ * and without any extensions.
+ *
+ * > [!TIP]
+ * > It is likely that you will want a more specific type tailored
+ * > to the context of where some data has been loaded, for instance
+ * > one that marks specific fields as readonly, or which only enables
+ * > some fields to be null during create, or which only includes
+ * > a subset of fields based on a specific API response.
+ * >
+ * > For those cases, you can create a more specific type that derives
+ * > from this type to ensure that your type definitions stay consistent
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ *
+ * See also {@link UserExtension} for fields + legacy mode features
+ */
+export interface UserExtension {
+	displayName?: unknown;
 }
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'user' resource, including all legacy mode features but
+ * without any extensions.
+ *
+ * See also {@link UserExtension} for fields + legacy mode features
+ */
+export interface UserExtension extends WithLegacy<UserExtension> {}
+
 "
 `;
 
 exports[`AST utilities > createTypeArtifact > creates resource-type artifact with correct filename and type > resource-type artifact code 1`] = `
-"export interface UserSchema {
-	readonly name: string;
+"/**
+ * This type represents the full set schema derived fields of
+ * the 'user' resource, without any of the legacy mode features
+ * and without any extensions.
+ *
+ * > [!TIP]
+ * > It is likely that you will want a more specific type tailored
+ * > to the context of where some data has been loaded, for instance
+ * > one that marks specific fields as readonly, or which only enables
+ * > some fields to be null during create, or which only includes
+ * > a subset of fields based on a specific API response.
+ * >
+ * > For those cases, you can create a more specific type that derives
+ * > from this type to ensure that your type definitions stay consistent
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ *
+ * See also {@link UserSchema} for fields + legacy mode features
+ */
+export interface UserSchema {
+	name?: unknown;
 }
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'user' resource, including all legacy mode features but
+ * without any extensions.
+ *
+ * See also {@link UserSchema} for fields + legacy mode features
+ */
+export interface UserSchema extends WithLegacy<UserSchema> {}
+
 "
 `;
 
 exports[`AST utilities > createTypeArtifact > creates trait-type artifact with correct filename and type > trait-type artifact code 1`] = `
-"export interface FileableTrait {
-	readonly name: string;
+"/**
+ * This type represents the full set schema derived fields of
+ * the 'fileable' resource, without any of the legacy mode features
+ * and without any extensions.
+ *
+ * > [!TIP]
+ * > It is likely that you will want a more specific type tailored
+ * > to the context of where some data has been loaded, for instance
+ * > one that marks specific fields as readonly, or which only enables
+ * > some fields to be null during create, or which only includes
+ * > a subset of fields based on a specific API response.
+ * >
+ * > For those cases, you can create a more specific type that derives
+ * > from this type to ensure that your type definitions stay consistent
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ *
+ * See also {@link FileableTrait} for fields + legacy mode features
+ */
+export interface FileableTrait {
+	name?: unknown;
 }
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'fileable' resource, including all legacy mode features but
+ * without any extensions.
+ *
+ * See also {@link FileableTrait} for fields + legacy mode features
+ */
+export interface FileableTrait extends WithLegacy<FileableTrait> {}
+
 "
 `;
 
 exports[`AST utilities > createTypeArtifact > includes extends clause and imports when provided > artifact with extends and imports 1`] = `
 "import type BaseInterface from "./base";;
 
-export interface UserInterface extends BaseInterface {
-	readonly name: string;
+/**
+ * This type represents the full set schema derived fields of
+ * the 'user' resource, without any of the legacy mode features
+ * and without any extensions.
+ *
+ * > [!TIP]
+ * > It is likely that you will want a more specific type tailored
+ * > to the context of where some data has been loaded, for instance
+ * > one that marks specific fields as readonly, or which only enables
+ * > some fields to be null during create, or which only includes
+ * > a subset of fields based on a specific API response.
+ * >
+ * > For those cases, you can create a more specific type that derives
+ * > from this type to ensure that your type definitions stay consistent
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ *
+ * See also {@link UserInterface} for fields + legacy mode features
+ */
+export interface UserInterfaceextends BaseInterface {
+	name?: unknown;
 }
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'user' resource, including all legacy mode features but
+ * without any extensions.
+ *
+ * See also {@link UserInterface} for fields + legacy mode features
+ */
+export interface UserInterface extends WithLegacy<UserInterface> {}
+
 "
 `;
 
 exports[`AST utilities > generateInterfaceCode > generates basic interface with properties > basic interface 1`] = `
-"export interface TestInterface {
-	readonly name: string;
-	readonly age?: number;
-	isActive: boolean;
+"/**
+ * This type represents the full set schema derived fields of
+ * the 'test' resource, without any of the legacy mode features
+ * and without any extensions.
+ *
+ * > [!TIP]
+ * > It is likely that you will want a more specific type tailored
+ * > to the context of where some data has been loaded, for instance
+ * > one that marks specific fields as readonly, or which only enables
+ * > some fields to be null during create, or which only includes
+ * > a subset of fields based on a specific API response.
+ * >
+ * > For those cases, you can create a more specific type that derives
+ * > from this type to ensure that your type definitions stay consistent
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ *
+ * See also {@link TestInterface} for fields + legacy mode features
+ */
+export interface TestInterface {
+	name?: unknown;
+	age?: unknown;
+	isActive?: unknown;
 }
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'test' resource, including all legacy mode features but
+ * without any extensions.
+ *
+ * See also {@link TestInterface} for fields + legacy mode features
+ */
+export interface TestInterface extends WithLegacy<TestInterface> {}
+
 "
 `;
 
 exports[`AST utilities > generateInterfaceCode > generates empty interface when no properties > empty interface 1`] = `
-"export interface EmptyInterface {
+"/**
+ * This type represents the full set schema derived fields of
+ * the 'empty' resource, without any of the legacy mode features
+ * and without any extensions.
+ *
+ * > [!TIP]
+ * > It is likely that you will want a more specific type tailored
+ * > to the context of where some data has been loaded, for instance
+ * > one that marks specific fields as readonly, or which only enables
+ * > some fields to be null during create, or which only includes
+ * > a subset of fields based on a specific API response.
+ * >
+ * > For those cases, you can create a more specific type that derives
+ * > from this type to ensure that your type definitions stay consistent
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ *
+ * See also {@link EmptyInterface} for fields + legacy mode features
+ */
+export interface EmptyInterface {
 }
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'empty' resource, including all legacy mode features but
+ * without any extensions.
+ *
+ * See also {@link EmptyInterface} for fields + legacy mode features
+ */
+export interface EmptyInterface extends WithLegacy<EmptyInterface> {}
+
 "
 `;
 
 exports[`AST utilities > generateInterfaceCode > generates interface with comments > interface with comments 1`] = `
-"export interface TestInterface {
-	/** The user name */
-	readonly name: string;
-	/** Optional email address */
-	readonly email?: string;
+"/**
+ * This type represents the full set schema derived fields of
+ * the 'test' resource, without any of the legacy mode features
+ * and without any extensions.
+ *
+ * > [!TIP]
+ * > It is likely that you will want a more specific type tailored
+ * > to the context of where some data has been loaded, for instance
+ * > one that marks specific fields as readonly, or which only enables
+ * > some fields to be null during create, or which only includes
+ * > a subset of fields based on a specific API response.
+ * >
+ * > For those cases, you can create a more specific type that derives
+ * > from this type to ensure that your type definitions stay consistent
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ *
+ * See also {@link TestInterface} for fields + legacy mode features
+ */
+export interface TestInterface {
+
+	/**
+	 * The user name
+	 */
+	name?: unknown;
+
+	/**
+	 * Optional email address
+	 */
+	email?: unknown;
 }
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'test' resource, including all legacy mode features but
+ * without any extensions.
+ *
+ * See also {@link TestInterface} for fields + legacy mode features
+ */
+export interface TestInterface extends WithLegacy<TestInterface> {}
+
 "
 `;
 
 exports[`AST utilities > generateInterfaceCode > generates interface with extends clause > interface with extends 1`] = `
-"export interface TestInterface extends BaseInterface {
-	readonly title: string;
+"/**
+ * This type represents the full set schema derived fields of
+ * the 'test' resource, without any of the legacy mode features
+ * and without any extensions.
+ *
+ * > [!TIP]
+ * > It is likely that you will want a more specific type tailored
+ * > to the context of where some data has been loaded, for instance
+ * > one that marks specific fields as readonly, or which only enables
+ * > some fields to be null during create, or which only includes
+ * > a subset of fields based on a specific API response.
+ * >
+ * > For those cases, you can create a more specific type that derives
+ * > from this type to ensure that your type definitions stay consistent
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ *
+ * See also {@link TestInterface} for fields + legacy mode features
+ */
+export interface TestInterfaceextends BaseInterface {
+	title?: unknown;
 }
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'test' resource, including all legacy mode features but
+ * without any extensions.
+ *
+ * See also {@link TestInterface} for fields + legacy mode features
+ */
+export interface TestInterface extends WithLegacy<TestInterface> {}
+
 "
 `;
 
 exports[`AST utilities > generateInterfaceCode > generates interface with imports > interface with imports 1`] = `
 "import type User from "app/models/user";;
 
+/**
+ * This type represents the full set schema derived fields of
+ * the 'test' resource, without any of the legacy mode features
+ * and without any extensions.
+ *
+ * > [!TIP]
+ * > It is likely that you will want a more specific type tailored
+ * > to the context of where some data has been loaded, for instance
+ * > one that marks specific fields as readonly, or which only enables
+ * > some fields to be null during create, or which only includes
+ * > a subset of fields based on a specific API response.
+ * >
+ * > For those cases, you can create a more specific type that derives
+ * > from this type to ensure that your type definitions stay consistent
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ *
+ * See also {@link TestInterface} for fields + legacy mode features
+ */
 export interface TestInterface {
-	readonly user: User;
+	user?: unknown;
 }
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'test' resource, including all legacy mode features but
+ * without any extensions.
+ *
+ * See also {@link TestInterface} for fields + legacy mode features
+ */
+export interface TestInterface extends WithLegacy<TestInterface> {}
+
 "
 `;
 
 exports[`AST utilities > type mapping integration > applies custom type mappings consistently across all functions > interface with custom type mappings 1`] = `
-"export interface TestInterface {
-	readonly id: string;
-	readonly amount: number;
-	readonly metadata?: Record<string, unknown>;
+"/**
+ * This type represents the full set schema derived fields of
+ * the 'test' resource, without any of the legacy mode features
+ * and without any extensions.
+ *
+ * > [!TIP]
+ * > It is likely that you will want a more specific type tailored
+ * > to the context of where some data has been loaded, for instance
+ * > one that marks specific fields as readonly, or which only enables
+ * > some fields to be null during create, or which only includes
+ * > a subset of fields based on a specific API response.
+ * >
+ * > For those cases, you can create a more specific type that derives
+ * > from this type to ensure that your type definitions stay consistent
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ *
+ * See also {@link TestInterface} for fields + legacy mode features
+ */
+export interface TestInterface {
+	id?: unknown;
+	amount?: unknown;
+	metadata?: unknown;
 }
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'test' resource, including all legacy mode features but
+ * without any extensions.
+ *
+ * See also {@link TestInterface} for fields + legacy mode features
+ */
+export interface TestInterface extends WithLegacy<TestInterface> {}
+
 "
 `;

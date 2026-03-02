@@ -1,7 +1,11 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`mixin-to-schema transform (artifacts) > TypeScript type artifacts > generates only trait artifact when mixin has only data fields > data-only trait type interface 1`] = `
-"const SimpleSchema = {
+"import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
+
+import type { User } from 'test-app/data/resources/user.schema';
+
+const SimpleTraitSchema = {
   'name': 'simple',
   'mode': 'legacy',
   'fields': [
@@ -19,9 +23,42 @@ exports[`mixin-to-schema transform (artifacts) > TypeScript type artifacts > gen
       }
     }
   ]
-};
+} satisfies LegacyResourceSchema;
 
-export default SimpleSchema;"
+export default SimpleTraitSchema;
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'simple' trait, without any of the legacy mode features
+ * and without any extensions.
+ *
+ * > [!TIP]
+ * > It is likely that you will want a more specific type tailored
+ * > to the context of where some data has been loaded, for instance
+ * > one that marks specific fields as readonly, or which only enables
+ * > some fields to be null during create, or which only includes
+ * > a subset of fields based on a specific API response.
+ * >
+ * > For those cases, you can create a more specific type that derives
+ * > from this type to ensure that your type definitions stay consistent
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ *
+ * See also {@link Simple} for fields + legacy mode features
+ */
+export interface SimpleTrait {
+  title?: string | null;
+  author?: Promise<User>;
+}
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'simple' trait, including all legacy mode features but
+ * without any extensions.
+ *
+ * See also {@link SimpleTrait} for fields + legacy mode features
+ */
+export interface Simple extends WithLegacy<SimpleTrait> {}
+"
 `;
 
 exports[`mixin-to-schema transform (artifacts) > TypeScript type artifacts > generates trait and extension artifacts when mixin has computed properties and methods > mixin extension code 1`] = `
@@ -29,7 +66,19 @@ exports[`mixin-to-schema transform (artifacts) > TypeScript type artifacts > gen
 import { attr } from '@ember-data/model';
 import { computed } from '@ember/object';
 
-export const NameableExtension = {
+export default Mixin.create({
+	name: attr('string'),
+
+	displayName: computed('name', function() {
+		return \`Name: \${this.name}\`;
+	}),
+
+	getName() {
+		return this.name || 'Unknown';
+	}
+});
+
+export const NameableTraitExtension = {
   displayName: computed('name', function() {
 		return \`Name: \${this.name}\`;
 	}),
@@ -40,7 +89,9 @@ export const NameableExtension = {
 `;
 
 exports[`mixin-to-schema transform (artifacts) > TypeScript type artifacts > generates trait and extension artifacts when mixin has computed properties and methods > mixin trait type interface 1`] = `
-"const NameableSchema = {
+"import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
+
+const NameableTraitSchema = {
   'name': 'nameable',
   'mode': 'legacy',
   'fields': [
@@ -50,13 +101,50 @@ exports[`mixin-to-schema transform (artifacts) > TypeScript type artifacts > gen
       'type': 'string'
     }
   ]
-};
+} satisfies LegacyResourceSchema;
 
-export default NameableSchema;"
+export default NameableTraitSchema;
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'nameable' trait, without any of the legacy mode features
+ * and without any extensions.
+ *
+ * > [!TIP]
+ * > It is likely that you will want a more specific type tailored
+ * > to the context of where some data has been loaded, for instance
+ * > one that marks specific fields as readonly, or which only enables
+ * > some fields to be null during create, or which only includes
+ * > a subset of fields based on a specific API response.
+ * >
+ * > For those cases, you can create a more specific type that derives
+ * > from this type to ensure that your type definitions stay consistent
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ *
+ * See also {@link Nameable} for fields + legacy mode features
+ */
+export interface NameableTrait {
+  name?: string | null;
+}
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'nameable' trait, including all legacy mode features but
+ * without any extensions.
+ *
+ * See also {@link NameableTrait} for fields + legacy mode features
+ */
+export interface Nameable extends WithLegacy<NameableTrait> {}
+"
 `;
 
 exports[`mixin-to-schema transform (artifacts) > TypeScript type artifacts > generates trait artifact with merged types for basic mixins > basic trait type interface 1`] = `
-"const FileableSchema = {
+"import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
+
+import type { HasMany } from '@ember-data/model';
+import type { File } from 'test-app/data/resources/file.schema';
+
+const FileableTraitSchema = {
   'name': 'fileable',
   'mode': 'legacy',
   'fields': [
@@ -83,13 +171,49 @@ exports[`mixin-to-schema transform (artifacts) > TypeScript type artifacts > gen
       }
     }
   ]
-};
+} satisfies LegacyResourceSchema;
 
-export default FileableSchema;"
+export default FileableTraitSchema;
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'fileable' trait, without any of the legacy mode features
+ * and without any extensions.
+ *
+ * > [!TIP]
+ * > It is likely that you will want a more specific type tailored
+ * > to the context of where some data has been loaded, for instance
+ * > one that marks specific fields as readonly, or which only enables
+ * > some fields to be null during create, or which only includes
+ * > a subset of fields based on a specific API response.
+ * >
+ * > For those cases, you can create a more specific type that derives
+ * > from this type to ensure that your type definitions stay consistent
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ *
+ * See also {@link Fileable} for fields + legacy mode features
+ */
+export interface FileableTrait {
+  files?: HasMany<File>;
+  name?: string | null;
+  isActive?: boolean | null;
+}
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'fileable' trait, including all legacy mode features but
+ * without any extensions.
+ *
+ * See also {@link FileableTrait} for fields + legacy mode features
+ */
+export interface Fileable extends WithLegacy<FileableTrait> {}
+"
 `;
 
 exports[`mixin-to-schema transform (artifacts) > TypeScript type artifacts > handles custom type mappings in mixin trait type interfaces > mixin custom type mappings interface 1`] = `
-"const TypedSchema = {
+"import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
+
+const TypedTraitSchema = {
   'name': 'typed',
   'mode': 'legacy',
   'fields': [
@@ -109,9 +233,43 @@ exports[`mixin-to-schema transform (artifacts) > TypeScript type artifacts > han
       'type': 'json'
     }
   ]
-};
+} satisfies LegacyResourceSchema;
 
-export default TypedSchema;"
+export default TypedTraitSchema;
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'typed' trait, without any of the legacy mode features
+ * and without any extensions.
+ *
+ * > [!TIP]
+ * > It is likely that you will want a more specific type tailored
+ * > to the context of where some data has been loaded, for instance
+ * > one that marks specific fields as readonly, or which only enables
+ * > some fields to be null during create, or which only includes
+ * > a subset of fields based on a specific API response.
+ * >
+ * > For those cases, you can create a more specific type that derives
+ * > from this type to ensure that your type definitions stay consistent
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ *
+ * See also {@link Typed} for fields + legacy mode features
+ */
+export interface TypedTrait {
+  id?: string | null;
+  amount?: number | null;
+  metadata?: Record<string, unknown> | null;
+}
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'typed' trait, including all legacy mode features but
+ * without any extensions.
+ *
+ * See also {@link TypedTrait} for fields + legacy mode features
+ */
+export interface Typed extends WithLegacy<TypedTrait> {}
+"
 `;
 
 exports[`mixin-to-schema transform (artifacts) > basic functionality > collects the real fileable mixin shape into trait and extension artifacts > artifact metadata 1`] = `
@@ -122,12 +280,12 @@ exports[`mixin-to-schema transform (artifacts) > basic functionality > collects 
     "type": "resource-type-stub",
   },
   {
-    "name": "FileableSchema",
+    "name": "FileableTraitSchema",
     "suggestedFileName": "fileable.schema.js",
     "type": "trait",
   },
   {
-    "name": "FileableExtension",
+    "name": "FileableTraitExtension",
     "suggestedFileName": "fileable.ext.js",
     "type": "trait-extension",
   },
@@ -144,7 +302,25 @@ import { attr, hasMany } from '@ember-data/model';
 
 import { sortBy } from 'soxhub-client/utils/sort-by';
 
-export const FileableExtension = {
+export default Mixin.create({
+	files: hasMany('file', { as: 'fileable', async: false, inverse: 'fileable' }),
+	sortedFiles: sortBy('files', 'createdAt:desc'),
+	hasFiles: arrayHasLength('files'),
+	numFiles: readOnly('files.length'),
+
+	showFilesRequiringReviewError: attr('boolean', { defaultValue: false }),
+	filesRequiringReview: computed('files.@each.status', function () {
+		return this.files.filter((file) => !file.isReviewed);
+	}),
+	hasFilesRequiringReview: arrayHasLength('filesRequiringReview'),
+	numFilesRequiringReview: readOnly('filesRequiringReview.length'),
+
+	hasDuplicateFileName(file) {
+		return Boolean(this.files.find((fileRecord) => fileRecord.name === file.name));
+	},
+});
+
+export const FileableTraitExtension = {
   sortedFiles: sortBy('files', 'createdAt:desc'),
   hasFiles: arrayHasLength('files'),
   numFiles: readOnly('files.length'),
@@ -160,7 +336,12 @@ export const FileableExtension = {
 `;
 
 exports[`mixin-to-schema transform (artifacts) > basic functionality > collects the real fileable mixin shape into trait and extension artifacts > trait code 1`] = `
-"const FileableSchema = {
+"import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
+
+import type { HasMany } from '@ember-data/model';
+import type { File } from 'test-app/data/resources/file.schema';
+
+const FileableTraitSchema = {
   'name': 'fileable',
   'mode': 'legacy',
   'fields': [
@@ -183,16 +364,54 @@ exports[`mixin-to-schema transform (artifacts) > basic functionality > collects 
       }
     }
   ]
-};
+} satisfies LegacyResourceSchema;
 
-export default FileableSchema;"
+export default FileableTraitSchema;
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'fileable' trait, without any of the legacy mode features
+ * and without any extensions.
+ *
+ * > [!TIP]
+ * > It is likely that you will want a more specific type tailored
+ * > to the context of where some data has been loaded, for instance
+ * > one that marks specific fields as readonly, or which only enables
+ * > some fields to be null during create, or which only includes
+ * > a subset of fields based on a specific API response.
+ * >
+ * > For those cases, you can create a more specific type that derives
+ * > from this type to ensure that your type definitions stay consistent
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ *
+ * See also {@link Fileable} for fields + legacy mode features
+ */
+export interface FileableTrait {
+  files?: HasMany<File>;
+  showFilesRequiringReviewError?: boolean | null;
+}
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'fileable' trait, including all legacy mode features but
+ * without any extensions.
+ *
+ * See also {@link FileableTrait} for fields + legacy mode features
+ */
+export interface Fileable extends WithLegacy<FileableTrait> {}
+"
 `;
 
 exports[`mixin-to-schema transform (artifacts) > basic functionality > converts mixin with no trait fields to extension artifact > code 1`] = `
 "import Mixin from '@ember/object/mixin';
 import { computed } from '@ember/object';
 
-export const NoTraitsExtension = {
+export default Mixin.create({
+	complexMethod() { return 'processed'; },
+	computedValue: computed(function() { return 'computed'; })
+});
+
+export const NoTraitsTraitExtension = {
   complexMethod() { return 'processed'; },
   computedValue: computed(function() { return 'computed'; })
 };"
@@ -201,12 +420,12 @@ export const NoTraitsExtension = {
 exports[`mixin-to-schema transform (artifacts) > basic functionality > converts mixin with no trait fields to extension artifact > metadata 1`] = `
 [
   {
-    "name": "NoTraitsSchema",
+    "name": "NoTraitsTraitSchema",
     "suggestedFileName": "no-traits.schema.js",
     "type": "trait",
   },
   {
-    "name": "NoTraitsExtension",
+    "name": "NoTraitsTraitExtension",
     "suggestedFileName": "no-traits.ext.js",
     "type": "trait-extension",
   },
@@ -218,7 +437,16 @@ exports[`mixin-to-schema transform (artifacts) > basic functionality > preserves
 import { computed } from '@ember/object';
 import { service } from '@ember/service';
 
-export const PlannableExtension = {
+export default Mixin.create({
+	library: service('library'),
+	projectPlans: computed('_modelName', 'intId', 'library.projectPlans.[]', function () {
+		return this.get('library.projectPlans')
+			?.filterBy('plannableType', classify(this._modelName))
+			.filterBy('plannableId', this.intId);
+	})
+});
+
+export const PlannableTraitExtension = {
   library: service('library'),
   projectPlans: computed('_modelName', 'intId', 'library.projectPlans.[]', function () {
 		return this.get('library.projectPlans')
@@ -231,12 +459,12 @@ export const PlannableExtension = {
 exports[`mixin-to-schema transform (artifacts) > basic functionality > preserves newlines and tabs in extension artifact properties without escaping > metadata 1`] = `
 [
   {
-    "name": "PlannableSchema",
+    "name": "PlannableTraitSchema",
     "suggestedFileName": "plannable.schema.js",
     "type": "trait",
   },
   {
-    "name": "PlannableExtension",
+    "name": "PlannableTraitExtension",
     "suggestedFileName": "plannable.ext.js",
     "type": "trait-extension",
   },
@@ -261,7 +489,7 @@ exports[`mixin-to-schema transform (artifacts) > basic functionality > produces 
     "type": "resource-type-stub",
   },
   {
-    "name": "FileableSchema",
+    "name": "FileableTraitSchema",
     "suggestedFileName": "fileable.schema.js",
     "type": "trait",
   },
@@ -269,7 +497,9 @@ exports[`mixin-to-schema transform (artifacts) > basic functionality > produces 
 `;
 
 exports[`mixin-to-schema transform (artifacts) > basic functionality > supports alias of Mixin import and still produces a trait artifact > code 1`] = `
-"const AliasedSchema = {
+"import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
+
+const AliasedTraitSchema = {
   'name': 'aliased',
   'mode': 'legacy',
   'fields': [
@@ -279,15 +509,47 @@ exports[`mixin-to-schema transform (artifacts) > basic functionality > supports 
       'type': 'string'
     }
   ]
-};
+} satisfies LegacyResourceSchema;
 
-export default AliasedSchema;"
+export default AliasedTraitSchema;
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'aliased' trait, without any of the legacy mode features
+ * and without any extensions.
+ *
+ * > [!TIP]
+ * > It is likely that you will want a more specific type tailored
+ * > to the context of where some data has been loaded, for instance
+ * > one that marks specific fields as readonly, or which only enables
+ * > some fields to be null during create, or which only includes
+ * > a subset of fields based on a specific API response.
+ * >
+ * > For those cases, you can create a more specific type that derives
+ * > from this type to ensure that your type definitions stay consistent
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ *
+ * See also {@link Aliased} for fields + legacy mode features
+ */
+export interface AliasedTrait {
+  name?: string | null;
+}
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'aliased' trait, including all legacy mode features but
+ * without any extensions.
+ *
+ * See also {@link AliasedTrait} for fields + legacy mode features
+ */
+export interface Aliased extends WithLegacy<AliasedTrait> {}
+"
 `;
 
 exports[`mixin-to-schema transform (artifacts) > basic functionality > supports alias of Mixin import and still produces a trait artifact > metadata 1`] = `
 [
   {
-    "name": "AliasedSchema",
+    "name": "AliasedTraitSchema",
     "suggestedFileName": "aliased.schema.js",
     "type": "trait",
   },
@@ -297,6 +559,7 @@ exports[`mixin-to-schema transform (artifacts) > basic functionality > supports 
 exports[`mixin-to-schema transform (artifacts) > import validation > allows alternate import source via options (trait artifact) 1`] = `
 [
   {
+    "baseName": "file",
     "code": "// Stub interface for File - generated automatically
 // This file will be replaced when the actual resource type is generated
 
@@ -309,7 +572,13 @@ export interface File {
     "type": "resource-type-stub",
   },
   {
-    "code": "const CustomSourceSchema = {
+    "baseName": "custom-source",
+    "code": "import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
+
+import type { HasMany } from '@my-custom/model';
+import type { File } from 'test-app/data/resources/file.schema';
+
+const CustomSourceTraitSchema = {
   'name': 'custom-source',
   'mode': 'legacy',
   'fields': [
@@ -324,22 +593,62 @@ export interface File {
       'type': 'file'
     }
   ]
-};
+} satisfies LegacyResourceSchema;
 
-export default CustomSourceSchema;",
-    "name": "CustomSourceSchema",
+export default CustomSourceTraitSchema;
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'custom-source' trait, without any of the legacy mode features
+ * and without any extensions.
+ *
+ * > [!TIP]
+ * > It is likely that you will want a more specific type tailored
+ * > to the context of where some data has been loaded, for instance
+ * > one that marks specific fields as readonly, or which only enables
+ * > some fields to be null during create, or which only includes
+ * > a subset of fields based on a specific API response.
+ * >
+ * > For those cases, you can create a more specific type that derives
+ * > from this type to ensure that your type definitions stay consistent
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ *
+ * See also {@link CustomSource} for fields + legacy mode features
+ */
+export interface CustomSourceTrait {
+  name?: string | null;
+  files?: HasMany<File>;
+}
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'custom-source' trait, including all legacy mode features but
+ * without any extensions.
+ *
+ * See also {@link CustomSourceTrait} for fields + legacy mode features
+ */
+export interface CustomSource extends WithLegacy<CustomSourceTrait> {}
+",
+    "name": "CustomSourceTraitSchema",
     "suggestedFileName": "custom-source.schema.js",
     "type": "trait",
   },
   {
+    "baseName": "custom-source",
     "code": "import Mixin from '@ember/object/mixin';
 import { attr, hasMany } from '@my-custom/model';
 import { computed } from '@ember/object';
 
-export const CustomSourceExtension = {
+export default Mixin.create({
+	name: attr('string'),
+	files: hasMany('file'),
+	customProp: computed('name', function() { return this.name; })
+});
+
+export const CustomSourceTraitExtension = {
   customProp: computed('name', function() { return this.name; })
 };",
-    "name": "CustomSourceExtension",
+    "name": "CustomSourceTraitExtension",
     "suggestedFileName": "custom-source.ext.js",
     "type": "trait-extension",
   },
@@ -349,6 +658,7 @@ export const CustomSourceExtension = {
 exports[`mixin-to-schema transform (artifacts) > import validation > correctly ignores renamed imports from unsupported sources (only hasMany recognized) 1`] = `
 [
   {
+    "baseName": "file",
     "code": "// Stub interface for File - generated automatically
 // This file will be replaced when the actual resource type is generated
 
@@ -361,7 +671,13 @@ export interface File {
     "type": "resource-type-stub",
   },
   {
-    "code": "const RenamedMixedSourcesSchema = {
+    "baseName": "renamed-mixed-sources",
+    "code": "import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
+
+import type { HasMany } from '@ember-data/model';
+import type { File } from 'test-app/data/resources/file.schema';
+
+const RenamedMixedSourcesTraitSchema = {
   'name': 'renamed-mixed-sources',
   'mode': 'legacy',
   'fields': [
@@ -371,22 +687,60 @@ export interface File {
       'type': 'file'
     }
   ]
-};
+} satisfies LegacyResourceSchema;
 
-export default RenamedMixedSourcesSchema;",
-    "name": "RenamedMixedSourcesSchema",
+export default RenamedMixedSourcesTraitSchema;
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'renamed-mixed-sources' trait, without any of the legacy mode features
+ * and without any extensions.
+ *
+ * > [!TIP]
+ * > It is likely that you will want a more specific type tailored
+ * > to the context of where some data has been loaded, for instance
+ * > one that marks specific fields as readonly, or which only enables
+ * > some fields to be null during create, or which only includes
+ * > a subset of fields based on a specific API response.
+ * >
+ * > For those cases, you can create a more specific type that derives
+ * > from this type to ensure that your type definitions stay consistent
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ *
+ * See also {@link RenamedMixedSources} for fields + legacy mode features
+ */
+export interface RenamedMixedSourcesTrait {
+  files?: HasMany<File>;
+}
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'renamed-mixed-sources' trait, including all legacy mode features but
+ * without any extensions.
+ *
+ * See also {@link RenamedMixedSourcesTrait} for fields + legacy mode features
+ */
+export interface RenamedMixedSources extends WithLegacy<RenamedMixedSourcesTrait> {}
+",
+    "name": "RenamedMixedSourcesTraitSchema",
     "suggestedFileName": "renamed-mixed-sources.schema.js",
     "type": "trait",
   },
   {
+    "baseName": "renamed-mixed-sources",
     "code": "import Mixin from '@ember/object/mixin';
 import { hasMany as many } from '@ember-data/model';
 import { attr as attribute } from '@unsupported/source';
 
-export const RenamedMixedSourcesExtension = {
+export default Mixin.create({
+	files: many('file'), // Should be recognized as hasMany from valid source
+	name: attribute('string') // Should be ignored, treated as regular function call
+});
+
+export const RenamedMixedSourcesTraitExtension = {
   name: attribute('string')
 };",
-    "name": "RenamedMixedSourcesExtension",
+    "name": "RenamedMixedSourcesTraitExtension",
     "suggestedFileName": "renamed-mixed-sources.ext.js",
     "type": "trait-extension",
   },
@@ -396,7 +750,10 @@ export const RenamedMixedSourcesExtension = {
 exports[`mixin-to-schema transform (artifacts) > import validation > handles CLI option name conversion from kebab-case to camelCase (trait artifact) 1`] = `
 [
   {
-    "code": "const CliOptionSchema = {
+    "baseName": "cli-option",
+    "code": "import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
+
+const CliOptionTraitSchema = {
   'name': 'cli-option',
   'mode': 'legacy',
   'fields': [
@@ -406,10 +763,42 @@ exports[`mixin-to-schema transform (artifacts) > import validation > handles CLI
       'type': 'string'
     }
   ]
-};
+} satisfies LegacyResourceSchema;
 
-export default CliOptionSchema;",
-    "name": "CliOptionSchema",
+export default CliOptionTraitSchema;
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'cli-option' trait, without any of the legacy mode features
+ * and without any extensions.
+ *
+ * > [!TIP]
+ * > It is likely that you will want a more specific type tailored
+ * > to the context of where some data has been loaded, for instance
+ * > one that marks specific fields as readonly, or which only enables
+ * > some fields to be null during create, or which only includes
+ * > a subset of fields based on a specific API response.
+ * >
+ * > For those cases, you can create a more specific type that derives
+ * > from this type to ensure that your type definitions stay consistent
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ *
+ * See also {@link CliOption} for fields + legacy mode features
+ */
+export interface CliOptionTrait {
+  name?: string | null;
+}
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'cli-option' trait, including all legacy mode features but
+ * without any extensions.
+ *
+ * See also {@link CliOptionTrait} for fields + legacy mode features
+ */
+export interface CliOption extends WithLegacy<CliOptionTrait> {}
+",
+    "name": "CliOptionTraitSchema",
     "suggestedFileName": "cli-option.schema.js",
     "type": "trait",
   },
@@ -419,6 +808,7 @@ export default CliOptionSchema;",
 exports[`mixin-to-schema transform (artifacts) > import validation > handles aliased imports correctly (trait artifact) 1`] = `
 [
   {
+    "baseName": "file",
     "code": "// Stub interface for File - generated automatically
 // This file will be replaced when the actual resource type is generated
 
@@ -431,6 +821,7 @@ export interface File {
     "type": "resource-type-stub",
   },
   {
+    "baseName": "user",
     "code": "// Stub interface for User - generated automatically
 // This file will be replaced when the actual resource type is generated
 
@@ -443,7 +834,14 @@ export interface User {
     "type": "resource-type-stub",
   },
   {
-    "code": "const AliasedImportsSchema = {
+    "baseName": "aliased-imports",
+    "code": "import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
+
+import type { HasMany } from '@ember-data/model';
+import type { File } from 'test-app/data/resources/file.schema';
+import type { User } from 'test-app/data/resources/user.schema';
+
+const AliasedImportsTraitSchema = {
   'name': 'aliased-imports',
   'mode': 'legacy',
   'fields': [
@@ -463,10 +861,44 @@ export interface User {
       'type': 'user'
     }
   ]
-};
+} satisfies LegacyResourceSchema;
 
-export default AliasedImportsSchema;",
-    "name": "AliasedImportsSchema",
+export default AliasedImportsTraitSchema;
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'aliased-imports' trait, without any of the legacy mode features
+ * and without any extensions.
+ *
+ * > [!TIP]
+ * > It is likely that you will want a more specific type tailored
+ * > to the context of where some data has been loaded, for instance
+ * > one that marks specific fields as readonly, or which only enables
+ * > some fields to be null during create, or which only includes
+ * > a subset of fields based on a specific API response.
+ * >
+ * > For those cases, you can create a more specific type that derives
+ * > from this type to ensure that your type definitions stay consistent
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ *
+ * See also {@link AliasedImports} for fields + legacy mode features
+ */
+export interface AliasedImportsTrait {
+  name?: string | null;
+  files?: HasMany<File>;
+  owner?: User | null;
+}
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'aliased-imports' trait, including all legacy mode features but
+ * without any extensions.
+ *
+ * See also {@link AliasedImportsTrait} for fields + legacy mode features
+ */
+export interface AliasedImports extends WithLegacy<AliasedImportsTrait> {}
+",
+    "name": "AliasedImportsTraitSchema",
     "suggestedFileName": "aliased-imports.schema.js",
     "type": "trait",
   },
@@ -476,7 +908,10 @@ export default AliasedImportsSchema;",
 exports[`mixin-to-schema transform (artifacts) > import validation > ignores decorators from unsupported import sources (only attr recognized) 1`] = `
 [
   {
-    "code": "const UnsupportedSourceSchema = {
+    "baseName": "unsupported-source",
+    "code": "import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
+
+const UnsupportedSourceTraitSchema = {
   'name': 'unsupported-source',
   'mode': 'legacy',
   'fields': [
@@ -486,24 +921,63 @@ exports[`mixin-to-schema transform (artifacts) > import validation > ignores dec
       'type': 'string'
     }
   ]
-};
+} satisfies LegacyResourceSchema;
 
-export default UnsupportedSourceSchema;",
-    "name": "UnsupportedSourceSchema",
+export default UnsupportedSourceTraitSchema;
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'unsupported-source' trait, without any of the legacy mode features
+ * and without any extensions.
+ *
+ * > [!TIP]
+ * > It is likely that you will want a more specific type tailored
+ * > to the context of where some data has been loaded, for instance
+ * > one that marks specific fields as readonly, or which only enables
+ * > some fields to be null during create, or which only includes
+ * > a subset of fields based on a specific API response.
+ * >
+ * > For those cases, you can create a more specific type that derives
+ * > from this type to ensure that your type definitions stay consistent
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ *
+ * See also {@link UnsupportedSource} for fields + legacy mode features
+ */
+export interface UnsupportedSourceTrait {
+  name?: string | null;
+}
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'unsupported-source' trait, including all legacy mode features but
+ * without any extensions.
+ *
+ * See also {@link UnsupportedSourceTrait} for fields + legacy mode features
+ */
+export interface UnsupportedSource extends WithLegacy<UnsupportedSourceTrait> {}
+",
+    "name": "UnsupportedSourceTraitSchema",
     "suggestedFileName": "unsupported-source.schema.js",
     "type": "trait",
   },
   {
+    "baseName": "unsupported-source",
     "code": "import Mixin from '@ember/object/mixin';
 import { attr } from '@ember-data/model';
 import { hasMany } from '@unsupported/source';
 import { computed } from '@ember/object';
 
-export const UnsupportedSourceExtension = {
+export default Mixin.create({
+	name: attr('string'),
+	files: hasMany('file'), // This should be ignored
+	customProp: computed('name', function() { return this.name; })
+});
+
+export const UnsupportedSourceTraitExtension = {
   files: hasMany('file'),
   customProp: computed('name', function() { return this.name; })
 };",
-    "name": "UnsupportedSourceExtension",
+    "name": "UnsupportedSourceTraitExtension",
     "suggestedFileName": "unsupported-source.ext.js",
     "type": "trait-extension",
   },
@@ -517,11 +991,11 @@ exports[`mixin-to-schema transform (artifacts) > import validation > only proces
     "type": "resource-type-stub",
   },
   {
-    "name": "DefaultSourceSchema",
+    "name": "DefaultSourceTraitSchema",
     "type": "trait",
   },
   {
-    "name": "DefaultSourceExtension",
+    "name": "DefaultSourceTraitExtension",
     "type": "trait-extension",
   },
 ]
@@ -536,7 +1010,12 @@ export interface File {
   // Stub: properties will be populated when the actual resource type is generated
 }
 ",
-  "const DefaultSourceSchema = {
+  "import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
+
+import type { HasMany } from '@ember-data/model';
+import type { File } from 'test-app/data/resources/file.schema';
+
+const DefaultSourceTraitSchema = {
   'name': 'default-source',
   'mode': 'legacy',
   'fields': [
@@ -551,14 +1030,53 @@ export interface File {
       'type': 'file'
     }
   ]
-};
+} satisfies LegacyResourceSchema;
 
-export default DefaultSourceSchema;",
+export default DefaultSourceTraitSchema;
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'default-source' trait, without any of the legacy mode features
+ * and without any extensions.
+ *
+ * > [!TIP]
+ * > It is likely that you will want a more specific type tailored
+ * > to the context of where some data has been loaded, for instance
+ * > one that marks specific fields as readonly, or which only enables
+ * > some fields to be null during create, or which only includes
+ * > a subset of fields based on a specific API response.
+ * >
+ * > For those cases, you can create a more specific type that derives
+ * > from this type to ensure that your type definitions stay consistent
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ *
+ * See also {@link DefaultSource} for fields + legacy mode features
+ */
+export interface DefaultSourceTrait {
+  name?: string | null;
+  files?: HasMany<File>;
+}
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'default-source' trait, including all legacy mode features but
+ * without any extensions.
+ *
+ * See also {@link DefaultSourceTrait} for fields + legacy mode features
+ */
+export interface DefaultSource extends WithLegacy<DefaultSourceTrait> {}
+",
   "import Mixin from '@ember/object/mixin';
 import { attr, hasMany } from '@ember-data/model';
 import { computed } from '@ember/object';
 
-export const DefaultSourceExtension = {
+export default Mixin.create({
+	name: attr('string'),
+	files: hasMany('file'),
+	customProp: computed('name', function() { return this.name; })
+});
+
+export const DefaultSourceTraitExtension = {
   customProp: computed('name', function() { return this.name; })
 };",
 ]
@@ -567,6 +1085,7 @@ export const DefaultSourceExtension = {
 exports[`mixin-to-schema transform (artifacts) > import validation > processes belongsTo decorator correctly (trait artifact) 1`] = `
 [
   {
+    "baseName": "user",
     "code": "// Stub interface for User - generated automatically
 // This file will be replaced when the actual resource type is generated
 
@@ -579,7 +1098,12 @@ export interface User {
     "type": "resource-type-stub",
   },
   {
-    "code": "const BelongsToSchema = {
+    "baseName": "belongs-to",
+    "code": "import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
+
+import type { User } from 'test-app/data/resources/user.schema';
+
+const BelongsToTraitSchema = {
   'name': 'belongs-to',
   'mode': 'legacy',
   'fields': [
@@ -592,10 +1116,42 @@ export interface User {
       }
     }
   ]
-};
+} satisfies LegacyResourceSchema;
 
-export default BelongsToSchema;",
-    "name": "BelongsToSchema",
+export default BelongsToTraitSchema;
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'belongs-to' trait, without any of the legacy mode features
+ * and without any extensions.
+ *
+ * > [!TIP]
+ * > It is likely that you will want a more specific type tailored
+ * > to the context of where some data has been loaded, for instance
+ * > one that marks specific fields as readonly, or which only enables
+ * > some fields to be null during create, or which only includes
+ * > a subset of fields based on a specific API response.
+ * >
+ * > For those cases, you can create a more specific type that derives
+ * > from this type to ensure that your type definitions stay consistent
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ *
+ * See also {@link BelongsTo} for fields + legacy mode features
+ */
+export interface BelongsToTrait {
+  owner?: Promise<User>;
+}
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'belongs-to' trait, including all legacy mode features but
+ * without any extensions.
+ *
+ * See also {@link BelongsToTrait} for fields + legacy mode features
+ */
+export interface BelongsTo extends WithLegacy<BelongsToTrait> {}
+",
+    "name": "BelongsToTraitSchema",
     "suggestedFileName": "belongs-to.schema.js",
     "type": "trait",
   },
@@ -605,27 +1161,67 @@ export default BelongsToSchema;",
 exports[`mixin-to-schema transform (artifacts) > import validation > produces an extension artifact when no valid EmberData imports are found 1`] = `
 [
   {
-    "code": "const NoValidImportsSchema = {
+    "baseName": "no-valid-imports",
+    "code": "import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
+
+const NoValidImportsTraitSchema = {
   'name': 'no-valid-imports',
   'mode': 'legacy',
   'fields': []
-};
+} satisfies LegacyResourceSchema;
 
-export default NoValidImportsSchema;",
-    "name": "NoValidImportsSchema",
+export default NoValidImportsTraitSchema;
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'no-valid-imports' trait, without any of the legacy mode features
+ * and without any extensions.
+ *
+ * > [!TIP]
+ * > It is likely that you will want a more specific type tailored
+ * > to the context of where some data has been loaded, for instance
+ * > one that marks specific fields as readonly, or which only enables
+ * > some fields to be null during create, or which only includes
+ * > a subset of fields based on a specific API response.
+ * >
+ * > For those cases, you can create a more specific type that derives
+ * > from this type to ensure that your type definitions stay consistent
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ *
+ * See also {@link NoValidImports} for fields + legacy mode features
+ */
+export interface NoValidImportsTrait {
+}
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'no-valid-imports' trait, including all legacy mode features but
+ * without any extensions.
+ *
+ * See also {@link NoValidImportsTrait} for fields + legacy mode features
+ */
+export interface NoValidImports extends WithLegacy<NoValidImportsTrait> {}
+",
+    "name": "NoValidImportsTraitSchema",
     "suggestedFileName": "no-valid-imports.schema.js",
     "type": "trait",
   },
   {
+    "baseName": "no-valid-imports",
     "code": "import Mixin from '@ember/object/mixin';
 import { computed } from '@ember/object';
 import { attr } from '@unsupported/source';
 
-export const NoValidImportsExtension = {
+export default Mixin.create({
+	name: attr('string'), // This will be ignored because @unsupported/source is not valid
+	customProp: computed('name', function() { return this.name; })
+});
+
+export const NoValidImportsTraitExtension = {
   name: attr('string'),
   customProp: computed('name', function() { return this.name; })
 };",
-    "name": "NoValidImportsExtension",
+    "name": "NoValidImportsTraitExtension",
     "suggestedFileName": "no-valid-imports.ext.js",
     "type": "trait-extension",
   },
@@ -635,6 +1231,7 @@ export const NoValidImportsExtension = {
 exports[`mixin-to-schema transform (artifacts) > import validation > supports @auditboard/warp-drive/v1/model as alternate import source when configured 1`] = `
 [
   {
+    "baseName": "file",
     "code": "// Stub interface for File - generated automatically
 // This file will be replaced when the actual resource type is generated
 
@@ -647,7 +1244,13 @@ export interface File {
     "type": "resource-type-stub",
   },
   {
-    "code": "const AuditboardSourceSchema = {
+    "baseName": "auditboard-source",
+    "code": "import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
+
+import type { HasMany } from '@auditboard/warp-drive/v1/model';
+import type { File } from 'test-app/data/resources/file.schema';
+
+const AuditboardSourceTraitSchema = {
   'name': 'auditboard-source',
   'mode': 'legacy',
   'fields': [
@@ -662,22 +1265,62 @@ export interface File {
       'type': 'file'
     }
   ]
-};
+} satisfies LegacyResourceSchema;
 
-export default AuditboardSourceSchema;",
-    "name": "AuditboardSourceSchema",
+export default AuditboardSourceTraitSchema;
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'auditboard-source' trait, without any of the legacy mode features
+ * and without any extensions.
+ *
+ * > [!TIP]
+ * > It is likely that you will want a more specific type tailored
+ * > to the context of where some data has been loaded, for instance
+ * > one that marks specific fields as readonly, or which only enables
+ * > some fields to be null during create, or which only includes
+ * > a subset of fields based on a specific API response.
+ * >
+ * > For those cases, you can create a more specific type that derives
+ * > from this type to ensure that your type definitions stay consistent
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ *
+ * See also {@link AuditboardSource} for fields + legacy mode features
+ */
+export interface AuditboardSourceTrait {
+  name?: string | null;
+  files?: HasMany<File>;
+}
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'auditboard-source' trait, including all legacy mode features but
+ * without any extensions.
+ *
+ * See also {@link AuditboardSourceTrait} for fields + legacy mode features
+ */
+export interface AuditboardSource extends WithLegacy<AuditboardSourceTrait> {}
+",
+    "name": "AuditboardSourceTraitSchema",
     "suggestedFileName": "auditboard-source.schema.js",
     "type": "trait",
   },
   {
+    "baseName": "auditboard-source",
     "code": "import Mixin from '@ember/object/mixin';
 import { attr, hasMany } from '@auditboard/warp-drive/v1/model';
 import { computed } from '@ember/object';
 
-export const AuditboardSourceExtension = {
+export default Mixin.create({
+	name: attr('string'),
+	files: hasMany('file'),
+	customProp: computed('name', function() { return this.name; })
+});
+
+export const AuditboardSourceTraitExtension = {
   customProp: computed('name', function() { return this.name; })
 };",
-    "name": "AuditboardSourceExtension",
+    "name": "AuditboardSourceTraitExtension",
     "suggestedFileName": "auditboard-source.ext.js",
     "type": "trait-extension",
   },
@@ -692,7 +1335,7 @@ exports[`mixin-to-schema transform (artifacts) > mixin inheritance > produces tr
     "type": "resource-type-stub",
   },
   {
-    "name": "FileableSchema",
+    "name": "FileableTraitSchema",
     "suggestedFileName": "fileable.schema.js",
     "type": "trait",
   },
@@ -700,7 +1343,14 @@ exports[`mixin-to-schema transform (artifacts) > mixin inheritance > produces tr
 `;
 
 exports[`mixin-to-schema transform (artifacts) > mixin inheritance > produces trait with extended traits when using createWithMixins > inheritance trait code 1`] = `
-"const FileableSchema = {
+"import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
+
+import type { HasMany } from '@ember-data/model';
+import type { File } from 'test-app/data/resources/file.schema';
+import type { BaseModelTrait } from 'test-app/data/traits/base-model.schema';
+import type { TimestampTrait } from 'test-app/data/traits/timestamp.schema';
+
+const FileableTraitSchema = {
   'name': 'fileable',
   'mode': 'legacy',
   'fields': [
@@ -722,13 +1372,50 @@ exports[`mixin-to-schema transform (artifacts) > mixin inheritance > produces tr
     'base-model',
     'timestamp'
   ]
-};
+} satisfies LegacyResourceSchema;
 
-export default FileableSchema;"
+export default FileableTraitSchema;
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'fileable' trait, without any of the legacy mode features
+ * and without any extensions.
+ *
+ * > [!TIP]
+ * > It is likely that you will want a more specific type tailored
+ * > to the context of where some data has been loaded, for instance
+ * > one that marks specific fields as readonly, or which only enables
+ * > some fields to be null during create, or which only includes
+ * > a subset of fields based on a specific API response.
+ * >
+ * > For those cases, you can create a more specific type that derives
+ * > from this type to ensure that your type definitions stay consistent
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ *
+ * See also {@link Fileable} for fields + legacy mode features
+ */
+export interface FileableTraitextends BaseModelTrait, TimestampTrait {
+  description?: string | null;
+  files?: HasMany<File>;
+}
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'fileable' trait, including all legacy mode features but
+ * without any extensions.
+ *
+ * See also {@link FileableTrait} for fields + legacy mode features
+ */
+export interface Fileable extends WithLegacy<FileableTrait> {}
+"
 `;
 
 exports[`mixin-to-schema transform (artifacts) > mixin inheritance > produces trait with single extended trait > single inheritance trait code 1`] = `
-"const DescribableSchema = {
+"import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
+
+import type { BaseModelTrait } from 'test-app/data/traits/base-model.schema';
+
+const DescribableTraitSchema = {
   'name': 'describable',
   'mode': 'legacy',
   'fields': [
@@ -741,13 +1428,47 @@ exports[`mixin-to-schema transform (artifacts) > mixin inheritance > produces tr
   'traits': [
     'base-model'
   ]
-};
+} satisfies LegacyResourceSchema;
 
-export default DescribableSchema;"
+export default DescribableTraitSchema;
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'describable' trait, without any of the legacy mode features
+ * and without any extensions.
+ *
+ * > [!TIP]
+ * > It is likely that you will want a more specific type tailored
+ * > to the context of where some data has been loaded, for instance
+ * > one that marks specific fields as readonly, or which only enables
+ * > some fields to be null during create, or which only includes
+ * > a subset of fields based on a specific API response.
+ * >
+ * > For those cases, you can create a more specific type that derives
+ * > from this type to ensure that your type definitions stay consistent
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ *
+ * See also {@link Describable} for fields + legacy mode features
+ */
+export interface DescribableTraitextends BaseModelTrait {
+  description?: string | null;
+}
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'describable' trait, including all legacy mode features but
+ * without any extensions.
+ *
+ * See also {@link DescribableTrait} for fields + legacy mode features
+ */
+export interface Describable extends WithLegacy<DescribableTrait> {}
+"
 `;
 
 exports[`mixin-to-schema transform (artifacts) > mixin inheritance > produces trait without traits property when no inheritance > no inheritance trait code 1`] = `
-"const DescribableSchema = {
+"import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
+
+const DescribableTraitSchema = {
   'name': 'describable',
   'mode': 'legacy',
   'fields': [
@@ -757,7 +1478,39 @@ exports[`mixin-to-schema transform (artifacts) > mixin inheritance > produces tr
       'type': 'string'
     }
   ]
-};
+} satisfies LegacyResourceSchema;
 
-export default DescribableSchema;"
+export default DescribableTraitSchema;
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'describable' trait, without any of the legacy mode features
+ * and without any extensions.
+ *
+ * > [!TIP]
+ * > It is likely that you will want a more specific type tailored
+ * > to the context of where some data has been loaded, for instance
+ * > one that marks specific fields as readonly, or which only enables
+ * > some fields to be null during create, or which only includes
+ * > a subset of fields based on a specific API response.
+ * >
+ * > For those cases, you can create a more specific type that derives
+ * > from this type to ensure that your type definitions stay consistent
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ *
+ * See also {@link Describable} for fields + legacy mode features
+ */
+export interface DescribableTrait {
+  description?: string | null;
+}
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'describable' trait, including all legacy mode features but
+ * without any extensions.
+ *
+ * See also {@link DescribableTrait} for fields + legacy mode features
+ */
+export interface Describable extends WithLegacy<DescribableTrait> {}
+"
 `;

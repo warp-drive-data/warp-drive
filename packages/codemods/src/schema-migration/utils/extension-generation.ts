@@ -72,6 +72,36 @@ function removeUnusedImports(source: string, lang: Lang): string {
   return edits.length > 0 ? root.commitEdits(edits) : source;
 }
 
+function removeUnusedTypeImports(source: string, lang: Lang): string {
+  const ast = parse(lang, source);
+  const root = ast.root();
+  const importNodes = root.findAll({ rule: { kind: 'import_statement' } });
+  if (importNodes.length === 0) return source;
+
+  let nonImportSource = source;
+  for (const imp of importNodes) {
+    nonImportSource = nonImportSource.replace(imp.text(), '');
+  }
+
+  type Edit = ReturnType<SgNode['replace']>;
+  const edits: Edit[] = [];
+
+  for (const imp of importNodes) {
+    const text = imp.text();
+    if (!text.startsWith('import type')) continue;
+
+    const localNames = getImportLocalNames(imp);
+    if (localNames.length === 0) continue;
+
+    const isUsed = localNames.some((name) => new RegExp(`\\b${name}\\b`).test(nonImportSource));
+    if (!isUsed) {
+      edits.push(imp.replace(''));
+    }
+  }
+
+  return edits.length > 0 ? root.commitEdits(edits) : source;
+}
+
 function addTypeImport(source: string, lang: Lang, typeName: string, importPath: string): string {
   const ast = parse(lang, source);
   const root = ast.root();
@@ -412,11 +442,13 @@ export function createExtensionFromOriginalFile(
     let extensionCode = generateExtensionCode(schemaConfig, extensionProperties, format, extInterfaceImportPath);
 
     // For resource models with typed extensions, add ts-ignore comment before the interface
+    // and remove blank line between interface and class
     if (sourceType === 'resource' && schemaConfig.extensionIsTyped && schemaConfig.identifiers.type) {
       extensionCode = extensionCode.replace(
         `export interface ${schemaConfig.identifiers.extension}`,
         `// @ts-ignore-error in reality fields are not merged, they are overridden\nexport interface ${schemaConfig.identifiers.extension}`
       );
+      extensionCode = extensionCode.replace(/\{}\n\n(export class)/, '{}\n$1');
     }
 
     let modifiedSource = updatedSource;
@@ -433,17 +465,27 @@ export function createExtensionFromOriginalFile(
       modifiedSource = removeUnnecessaryImports(modifiedSource, options);
     }
 
-    // Clean up extra whitespace and add the extension code
-    modifiedSource = modifiedSource.trim() + '\n\n' + extensionCode;
+    // For resource models, remove unused type imports before appending extension code
+    // This removes type imports only used by schema fields (e.g. relationship types)
+    // while preserving value imports that may have side effects or runtime usage
+    if (sourceType === 'resource') {
+      modifiedSource = removeUnusedTypeImports(modifiedSource, lang);
+    }
 
-    // For resource models, add type import at the top and remove unused imports
+    // Clean up extra whitespace and add the extension code
+    const trimmed = modifiedSource.trim();
+    const separator = trimmed.endsWith('*/') ? '\n' : '\n\n';
+    modifiedSource = trimmed + separator + extensionCode;
+
+    // For resource models, add type import at the top
     if (sourceType === 'resource') {
       if (schemaConfig.extensionIsTyped && schemaConfig.identifiers.type) {
         const typeSuffix = options?.combineSchemasAndTypes ? 'schema' : 'type';
         const typeImportPath = `./${schemaConfig.name}.${typeSuffix}${getFileExtension(filePath)}`;
         modifiedSource = addTypeImport(modifiedSource, lang, schemaConfig.identifiers.type, typeImportPath);
       }
-      modifiedSource = removeUnusedImports(modifiedSource, lang);
+      // Collapse blank lines between consecutive import statements
+      modifiedSource = modifiedSource.replace(/(import [^\n]+;)\n\n+(import )/g, '$1\n$2');
     }
 
     // Clean up any stray export keywords

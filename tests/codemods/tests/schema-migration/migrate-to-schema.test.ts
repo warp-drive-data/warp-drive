@@ -776,12 +776,11 @@ export default class TestModel extends BaseModel {
       {
         "resources/": "__dir__",
         "resources/typed.ext.ts": "
-      import BaseModel from 'test-app/models/base-model';
+      import type { Typed } from './typed.type.ts';
 
-      import type { TypedTrait } from 'test-app/data/resources/typed.schema';
 
-      export interface TypedExtension extends TypedTrait {}
-
+      // @ts-ignore-error in reality fields are not merged, they are overridden
+      export interface TypedExtension extends Typed {}
       export class TypedExtension {
         @attr('string') declare name: string | null
 
@@ -790,11 +789,12 @@ export default class TestModel extends BaseModel {
 
         @hasMany('tag', { async: true, inverse: null })
           declare tags: unknown
-      }",
+      }
+
+      export default TypedExtension;",
         "resources/typed.schema.ts": "
-      import type { Type } from '@ember-data/core-types/symbols';
-      import type { StaticBaseModelTraitTrait } from 'test-app/data/traits/static-base-model-trait.schema';
-      import type { TypedExtension } from 'test-app/data/resources/typed.ext';
+      import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+
       const TypedSchema = {
         'type': 'typed',
         'legacy': true,
@@ -809,15 +809,10 @@ export default class TestModel extends BaseModel {
         'objectExtensions': [
           'static-base-model-extension'
         ]
-      } as const;
+      } satisfies LegacyResourceSchema;
 
       export default TypedSchema;
-
-      export interface TypedTrait {
-        readonly [Type]: 'typed';
-      }
-
-      export interface Typed extends TypedTrait, TypedExtension, StaticBaseModelTraitTrait {}",
+      ",
         "traits/": "__dir__",
       }
     `);
@@ -855,11 +850,10 @@ export default class TestModel extends BaseModel {
         "resources/": "__dir__",
         "resources/typed.ext.ts": "
       import BaseModel from 'test-app/models/base-model.js';
+      import type { Typed } from './typed.type.ts';
 
-      import type { TypedTrait } from 'test-app/data/resources/typed.schema';
-
-      export interface TypedExtension extends TypedTrait {}
-
+      // @ts-ignore-error in reality fields are not merged, they are overridden
+      export interface TypedExtension extends Typed {}
       export class TypedExtension {
         @attr('string') declare name: string | null
 
@@ -868,11 +862,12 @@ export default class TestModel extends BaseModel {
 
         @hasMany('tag', { async: true, inverse: null })
           declare tags: unknown
-      }",
+      }
+
+      export default TypedExtension;",
         "resources/typed.schema.ts": "
-      import type { Type } from '@ember-data/core-types/symbols';
-      import type { StaticBaseModelTraitTrait } from 'test-app/data/traits/static-base-model-trait.schema';
-      import type { TypedExtension } from 'test-app/data/resources/typed.ext';
+      import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+
       const TypedSchema = {
         'type': 'typed',
         'legacy': true,
@@ -887,15 +882,10 @@ export default class TestModel extends BaseModel {
         'objectExtensions': [
           'static-base-model-extension'
         ]
-      } as const;
+      } satisfies LegacyResourceSchema;
 
       export default TypedSchema;
-
-      export interface TypedTrait {
-        readonly [Type]: 'typed';
-      }
-
-      export interface Typed extends TypedTrait, TypedExtension, StaticBaseModelTraitTrait {}",
+      ",
         "traits/": "__dir__",
       }
     `);
@@ -995,10 +985,8 @@ export default Mixin.create({
       {
         "resources/": "__dir__",
         "resources/typed.schema.ts": "
-      import type { Type } from '@ember-data/core-types/symbols';
-      import type { Framework } from 'test-app/data/resources/framework.schema';
-      import type { HasMany } from '@ember-data/model';
-      import type { StaticBaseModelTraitTrait } from 'test-app/data/traits/static-base-model-trait.schema';
+      import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+
       const TypedSchema = {
         'type': 'typed',
         'legacy': true,
@@ -1038,17 +1026,10 @@ export default Mixin.create({
         'objectExtensions': [
           'static-base-model-extension'
         ]
-      } as const;
+      } satisfies LegacyResourceSchema;
 
       export default TypedSchema;
-
-      export interface Typed extends StaticBaseModelTraitTrait {
-        readonly [Type]: 'typed';
-        readonly name: string | null;
-        readonly description: string | null;
-        readonly isForControlsAssessment: boolean | null;
-        readonly frameworks: HasMany<Framework>;
-      }",
+      ",
         "traits/": "__dir__",
       }
     `);

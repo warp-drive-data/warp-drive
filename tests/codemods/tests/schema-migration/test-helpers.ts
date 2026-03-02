@@ -72,10 +72,7 @@ export function collectFileStructure(baseDir: string, dir: string = baseDir): st
  */
 export const DEFAULT_TEST_OPTIONS: TransformOptions = {
   modelImportSource: 'test-app/models',
-  resourcesImport: 'test-app/data/resources',
-  traitsImport: 'test-app/data/traits',
   disableTypescriptSchemas: false,
-  combineSchemasAndTypes: true,
   warpDriveImports: 'legacy',
   projectImportsUseExtensions: true,
   projectName: 'test-app',

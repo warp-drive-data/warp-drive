@@ -500,22 +500,21 @@ function extractModelData(root: SgNode, filePath: string, options: TransformOpti
 
     const methodName = nameNode.text();
 
-    // Collect decorators
-    const decorators: string[] = [];
-    const siblings = method.parent()?.children() ?? [];
-    const methodIndex = siblings.indexOf(method);
-
-    for (let i = methodIndex - 1; i >= 0; i--) {
-      const sibling = siblings[i];
-      if (!sibling) continue;
-      if (sibling.kind() === NODE_KIND_DECORATOR) {
-        decorators.unshift(sibling.text());
-      } else if (sibling.text().trim() !== '') {
+    // Collect decorators and leading comments via prev() traversal
+    const preamble: string[] = [];
+    let current = method.prev();
+    while (current) {
+      if (current.kind() === NODE_KIND_DECORATOR || current.kind() === 'comment') {
+        preamble.unshift(current.text());
+        current = current.prev();
+      } else if (current.text().trim() === '') {
+        current = current.prev();
+      } else {
         break;
       }
     }
 
-    const methodText = decorators.length > 0 ? decorators.join('\n') + '\n' + method.text() : method.text();
+    const methodText = preamble.length > 0 ? preamble.join('\n') + '\n' + method.text() : method.text();
 
     let typeInfo: ExtractedType | null = null;
     if (!isJavaScript) {

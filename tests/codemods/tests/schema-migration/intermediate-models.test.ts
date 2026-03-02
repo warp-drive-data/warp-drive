@@ -123,8 +123,12 @@ export default class DataFieldModel extends Model {
     expect(result.artifacts).toMatchInlineSnapshot(`
       [
         {
-          "code": "import type { BelongsToReference, HasManyReference, Errors } from '@warp-drive/legacy/model/-private';
-      const DataFieldSchema = {
+          "baseName": "data-field",
+          "code": "import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
+
+      import type { BelongsToReference, HasManyReference, Errors } from '@warp-drive/legacy/model/-private';
+
+      const DataFieldTraitSchema = {
         'fields': [
           {
             'kind': 'attribute',
@@ -132,35 +136,43 @@ export default class DataFieldModel extends Model {
             'type': 'string'
           }
         ]
-      } as const;
+      } satisfies LegacyResourceSchema;
 
-      export default DataFieldSchema;
+      export default DataFieldTraitSchema;
 
+      /**
+       * This type represents the full set schema derived fields of
+       * the 'data-field' trait, without any of the legacy mode features
+       * and without any extensions.
+       *
+       * > [!TIP]
+       * > It is likely that you will want a more specific type tailored
+       * > to the context of where some data has been loaded, for instance
+       * > one that marks specific fields as readonly, or which only enables
+       * > some fields to be null during create, or which only includes
+       * > a subset of fields based on a specific API response.
+       * >
+       * > For those cases, you can create a more specific type that derives
+       * > from this type to ensure that your type definitions stay consistent
+       * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+       *
+       * See also {@link DataField} for fields + legacy mode features
+       */
       export interface DataFieldTrait {
         id: string | null;
-        readonly fieldName: string | null;
-        readonly isNew: boolean;
-        readonly hasDirtyAttributes: boolean;
-        readonly isDeleted: boolean;
-        readonly isSaving: boolean;
-        readonly isValid: boolean;
-        readonly isError: boolean;
-        readonly isLoaded: boolean;
-        readonly isEmpty: boolean;
-        save: (options?: Record<string, unknown>) => Promise<this>;
-        reload: (options?: Record<string, unknown>) => Promise<this>;
-        deleteRecord: () => void;
-        unloadRecord: () => void;
-        destroyRecord: (options?: Record<string, unknown>) => Promise<void>;
-        rollbackAttributes: () => void;
-        belongsTo: (propertyName: string) => BelongsToReference;
-        hasMany: (propertyName: string) => HasManyReference;
-        serialize: (options?: Record<string, unknown>) => unknown;
-        readonly errors: Errors;
-        readonly adapterError: Error | null;
-        readonly isReloading: boolean;
-      }",
-          "name": "DataFieldSchema",
+        fieldName: string | null;
+      }
+
+      /**
+       * This type represents the full set schema derived fields of
+       * the 'data-field' trait, including all legacy mode features but
+       * without any extensions.
+       *
+       * See also {@link DataFieldTrait} for fields + legacy mode features
+       */
+      export interface DataField extends WithLegacy<DataFieldTrait> {}
+      ",
+          "name": "DataFieldTraitSchema",
           "suggestedFileName": "data-field.schema.ts",
           "type": "trait",
         },
