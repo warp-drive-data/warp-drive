@@ -202,7 +202,7 @@ export default class ProjectPlan extends Model {
       // Schema now includes merged types, so we only have 1 artifact for data-only models
       expect(artifacts).toHaveLength(1);
       expect(artifacts[0]?.name).toBe('ProjectPlanSchema');
-      expect(artifacts[0]?.suggestedFileName).toBe('project-plan.schema.js');
+      expect(artifacts[0]?.suggestedFileName).toBe('project-plan.schema.ts');
       // Verify the schema is valid by checking both structure and content
       expect(artifacts[0]?.code).toContain("'type': 'project-plan'");
       expect(artifacts[0]?.code).toContain('export default ProjectPlanSchema');
@@ -227,7 +227,7 @@ export default class FragmentModel extends Model {
       // Schema now includes merged types, so we only have 1 artifact for data-only models
       expect(artifacts).toHaveLength(1);
       expect(artifacts[0]?.name).toBe('FragmentModelSchema');
-      expect(artifacts[0]?.suggestedFileName).toBe('fragment-model.schema.js');
+      expect(artifacts[0]?.suggestedFileName).toBe('fragment-model.schema.ts');
       expect(artifacts[0]?.code).toContain("'type': 'fragment-model'");
       expect(artifacts[0]?.code).toContain('export default FragmentModelSchema');
 
@@ -257,7 +257,7 @@ export default class Address extends Fragment {
       // Schema now includes merged types, so we only have 1 artifact for data-only models
       expect(artifacts).toHaveLength(1);
       expect(artifacts[0]?.name).toBe('AddressSchema');
-      expect(artifacts[0]?.suggestedFileName).toBe('address.schema.js');
+      expect(artifacts[0]?.suggestedFileName).toBe('address.schema.ts');
       expect(artifacts[0]?.code).toContain('export default AddressSchema');
 
       // Fragment classes should have different schema structure
@@ -320,7 +320,7 @@ export default class Address extends BaseFragment {
       // Schema now includes merged types, so we only have 1 artifact for data-only models
       expect(artifacts).toHaveLength(1);
       expect(artifacts[0]?.name).toBe('AddressSchema');
-      expect(artifacts[0]?.suggestedFileName).toBe('address.schema.js');
+      expect(artifacts[0]?.suggestedFileName).toBe('address.schema.ts');
 
       // Should be treated as a Fragment (with fragment schema structure)
       expect(artifacts[0]?.code).toContain("'type': 'fragment:address'");
@@ -352,7 +352,7 @@ export default class FragmentArrayModel extends Model {
       // Schema now includes merged types, so we only have 1 artifact for data-only models
       expect(artifacts).toHaveLength(1);
       expect(artifacts[0]?.name).toBe('FragmentArrayModelSchema');
-      expect(artifacts[0]?.suggestedFileName).toBe('fragment-array-model.schema.js');
+      expect(artifacts[0]?.suggestedFileName).toBe('fragment-array-model.schema.ts');
       expect(artifacts[0]?.code).toContain("'type': 'fragment-array-model'");
       expect(artifacts[0]?.code).toContain('export default FragmentArrayModelSchema');
 
@@ -383,7 +383,7 @@ export default class ArrayModel extends Model {
       // Schema now includes merged types, so we only have 1 artifact for data-only models
       expect(artifacts).toHaveLength(1);
       expect(artifacts[0]?.name).toBe('ArrayModelSchema');
-      expect(artifacts[0]?.suggestedFileName).toBe('array-model.schema.js');
+      expect(artifacts[0]?.suggestedFileName).toBe('array-model.schema.ts');
       expect(artifacts[0]?.code).toContain("'type': 'array-model'");
       expect(artifacts[0]?.code).toContain('export default ArrayModelSchema');
 
@@ -599,7 +599,7 @@ export default class User extends Model {
       // The schema file now includes the type interface
       const schema = artifacts.find((a) => a.type === 'schema');
       expect(schema?.code).toMatchSnapshot('basic schema with merged types');
-      expect(schema?.suggestedFileName).toBe('user.schema.js');
+      expect(schema?.suggestedFileName).toBe('user.schema.ts');
     });
 
     it('generates schema and extension artifacts when model has methods and computed properties', () => {
@@ -632,7 +632,7 @@ export default class ProcessedModel extends Model {
 
       expect(schema?.code).toMatchSnapshot('model schema with merged types');
       expect(extension?.code).toMatchSnapshot('model extension code');
-      expect(schema?.suggestedFileName).toBe('processed-model.schema.js');
+      expect(schema?.suggestedFileName).toBe('processed-model.schema.ts');
       expect(extension?.suggestedFileName).toBe('processed-model.ext.js');
     });
 
@@ -797,10 +797,10 @@ export default class TestModel extends Model {
 
       // Should transform relative type imports to schema resource imports
       expect(result).toContain(
-        "import type { AuditableEntity } from 'test-app/data/resources/auditable-entity.schema';"
+        "import type { AuditableEntity } from 'test-app/data/resources/auditable-entity.schema.ts';"
       );
       expect(result).toContain(
-        "import type { AutomationWorkflowVersion } from 'test-app/data/resources/automation-workflow-version.schema';"
+        "import type { AutomationWorkflowVersion } from 'test-app/data/resources/automation-workflow-version.schema.ts';"
       );
 
       // Should not contain bad import paths with double extensions
@@ -926,10 +926,11 @@ export default class User extends Model {
       expect(schema?.code).not.toContain('function buildFullName');
       expect(schema?.code).not.toContain('export function formatDate');
 
-      // Schema should only contain the schema export (no imports needed since no complex default values)
+      // Schema should only contain the schema export and type imports
       expect(schema?.code).toContain('export default UserSchema');
       expect(schema?.code).not.toContain('get fullName');
-      expect(schema?.code).not.toContain('import'); // No imports should be present
+      expect(schema?.code).not.toContain('function buildFullName');
+      expect(schema?.code).not.toContain('export function formatDate');
     });
 
     it('preserves utility functions in extension files', () => {

@@ -765,7 +765,7 @@ function generateIntermediateModelTraitArtifacts(
     isTypeScript
   );
 
-  generateMergedSchemaCode({
+  const mergedSchemaCode = generateMergedSchemaCode({
     config: traitConfig,
     schemaObject: traitSchemaObject,
     properties: traitFieldTypes,
@@ -774,10 +774,19 @@ function generateIntermediateModelTraitArtifacts(
     options,
   });
 
+  const traitCode = [
+    mergedSchemaCode.schemaImports,
+    mergedSchemaCode.typeImports,
+    mergedSchemaCode.schemaDeclaration,
+    mergedSchemaCode.interfaceDeclaration,
+  ]
+    .filter(Boolean)
+    .join('\n');
+
   artifacts.push({
     type: 'trait',
     name: traitConfig.identifiers.schema,
-    code: 'FIXME',
+    code: traitCode,
     baseName: traitName,
     suggestedFileName: `${traitName}.schema${options.disableTypescriptSchemas ? '.js' : '.ts'}`,
   });

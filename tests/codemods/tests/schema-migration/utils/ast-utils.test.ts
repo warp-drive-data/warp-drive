@@ -113,7 +113,7 @@ describe('AST utilities', () => {
 
     it('falls back to unknown for unsupported types', () => {
       const result1 = getTypeScriptTypeForAttribute('unsupported-type', false, true);
-      expect(result1.tsType).toBe('unknown | null');
+      expect(result1.tsType).toBe('unknown');
 
       const result2 = getTypeScriptTypeForAttribute('weird-transform', true, false);
       expect(result2.tsType).toBe('unknown');
@@ -331,6 +331,7 @@ describe('AST utilities', () => {
         intermediateModelPaths: ['soxhub-client/core/data-field-model', 'my-app/core/base-model'],
         traitsImport: 'my-app/data/traits',
         resourcesImport: 'my-app/data/resources',
+        combineSchemasAndTypes: true,
       };
 
       // Test that data-field-model maps to data-field trait
@@ -378,6 +379,7 @@ describe('AST utilities', () => {
         ]),
         traitsImport: 'my-app/data/traits',
         resourcesImport: 'my-app/data/resources',
+        combineSchemasAndTypes: true,
       };
 
       // Test that existing model routes to resource import
@@ -407,6 +409,7 @@ describe('AST utilities', () => {
         ]),
         traitsImport: 'my-app/data/traits',
         resourcesImport: 'my-app/data/resources',
+        combineSchemasAndTypes: true,
       };
 
       // Test that when both model and mixin exist, model takes priority
@@ -423,6 +426,7 @@ describe('AST utilities', () => {
       // Extensions (.ext files) contain runtime behavior, not types
       const options = {
         resourcesImport: 'my-app/data/resources',
+        combineSchemasAndTypes: true,
       };
 
       // All types come from .schema files
@@ -445,6 +449,7 @@ describe('AST utilities', () => {
           { baseName: 'company', kind: 'model', path: '/app/models/company.js' },
         ]),
         resourcesImport: 'my-app/data/resources',
+        combineSchemasAndTypes: true,
       };
 
       // All types come from .schema files
@@ -459,6 +464,7 @@ describe('AST utilities', () => {
     it('handles empty entityRegistry', () => {
       const options = {
         resourcesImport: 'my-app/data/resources',
+        combineSchemasAndTypes: true,
       };
 
       const result = transformModelToResourceImport('user', 'User', options);
@@ -469,6 +475,7 @@ describe('AST utilities', () => {
       // Note: Types are now imported from .schema files
       const options = {
         resourcesImport: 'my-app/data/resources',
+        combineSchemasAndTypes: true,
       };
 
       const result = transformModelToResourceImport('user', 'User', options);

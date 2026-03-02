@@ -201,7 +201,7 @@ function generateMixinArtifacts(
     isTypeScript
   );
 
-  generateMergedSchemaCode({
+  const mergedSchemaCode = generateMergedSchemaCode({
     config: traitConfig,
     schemaObject: traitSchemaObject,
     properties: traitFieldTypes,
@@ -210,10 +210,19 @@ function generateMixinArtifacts(
     options,
   });
 
+  const traitCode = [
+    mergedSchemaCode.schemaImports,
+    mergedSchemaCode.typeImports,
+    mergedSchemaCode.schemaDeclaration,
+    mergedSchemaCode.interfaceDeclaration,
+  ]
+    .filter(Boolean)
+    .join('\n');
+
   artifacts.push({
     type: 'trait',
     name: traitConfig.identifiers.schema,
-    code: 'FIXME',
+    code: traitCode,
     baseName,
     suggestedFileName: `${baseName}.schema${fileExtension}`,
   });

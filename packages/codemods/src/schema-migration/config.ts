@@ -61,7 +61,7 @@ export function getConfiguredImport(
   config: TransformOptions,
   importName: keyof TransformPackageImports
 ): PackageImport {
-  const warpDriveImports = config.warpDriveImports ?? 'legacy';
+  const warpDriveImports = config.warpDriveImports ?? 'modern';
   const packageImports =
     warpDriveImports === 'legacy'
       ? LegacyPackageImports

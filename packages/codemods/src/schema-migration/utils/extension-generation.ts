@@ -439,7 +439,8 @@ export function createExtensionFromOriginalFile(
     // For resource models, add type import at the top and remove unused imports
     if (sourceType === 'resource') {
       if (schemaConfig.extensionIsTyped && schemaConfig.identifiers.type) {
-        const typeImportPath = `./${schemaConfig.name}.type${getFileExtension(filePath)}`;
+        const typeSuffix = options?.combineSchemasAndTypes ? 'schema' : 'type';
+        const typeImportPath = `./${schemaConfig.name}.${typeSuffix}${getFileExtension(filePath)}`;
         modifiedSource = addTypeImport(modifiedSource, lang, schemaConfig.identifiers.type, typeImportPath);
       }
       modifiedSource = removeUnusedImports(modifiedSource, lang);

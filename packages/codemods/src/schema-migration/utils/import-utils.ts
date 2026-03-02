@@ -204,7 +204,7 @@ export function transformModelToResourceImport(
   const ext = options.projectImportsUseExtensions ? '.ts' : '';
   const typeFileName = options?.combineSchemasAndTypes ? `${relatedType}.schema${ext}` : `${relatedType}.type${ext}`;
 
-  return `import type { ${modelName} } from '${resourcesImport}/${typeFileName}'`;
+  return `type { ${modelName} } from '${resourcesImport}/${typeFileName}'`;
 }
 
 /**
