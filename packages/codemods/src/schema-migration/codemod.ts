@@ -6,11 +6,11 @@ import { basename, extname, join, resolve } from 'path';
 import type { InstanciatedLogger } from '../../utils/logger.js';
 import type { FinalOptions } from './config.js';
 import { analyzeModelMixinUsage } from './processors/mixin-analyzer.js';
+import type { SchemaArtifactRegistry } from './utils/artifact.js';
+import { buildEntityRegistry, linkEntities } from './utils/artifact.js';
 import type { TransformArtifact } from './utils/ast-utils.js';
 import type { ParsedFile } from './utils/file-parser.js';
 import { parseFile } from './utils/file-parser.js';
-import type { SchemaEntityRegistry } from './utils/schema-entity.js';
-import { buildEntityRegistry, linkEntities } from './utils/schema-entity.js';
 import { FILE_EXTENSION_REGEX, TRAILING_SINGLE_WILDCARD_REGEX, TRAILING_WILDCARD_REGEX } from './utils/string.js';
 
 export type Filename = string;
@@ -141,7 +141,7 @@ export class Codemod {
   logger: InstanciatedLogger;
   finalOptions: FinalOptions;
   input: Input = new Input();
-  entityRegistry: SchemaEntityRegistry = new Map();
+  entityRegistry: SchemaArtifactRegistry = new Map();
 
   mixinsImportedByModels: Set<string> = new Set();
   modelsWithExtensions: Set<string> = new Set();

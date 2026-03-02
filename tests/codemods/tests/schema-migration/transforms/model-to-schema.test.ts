@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
 
 import { toArtifacts } from '../../../../../packages/codemods/src/schema-migration/processors/model.js';
+import { SchemaArtifact } from '../../../../../packages/codemods/src/schema-migration/utils/artifact.js';
 import { parseFile } from '../../../../../packages/codemods/src/schema-migration/utils/file-parser.js';
-import { SchemaEntity } from '../../../../../packages/codemods/src/schema-migration/utils/schema-entity.js';
 import { createTestOptions } from '../test-helpers.js';
 
 const COMBINED_OPTIONS = createTestOptions({
@@ -11,8 +11,8 @@ const COMBINED_OPTIONS = createTestOptions({
   traitsImport: 'test-app/data/traits',
 });
 
-function entityFromSource(path: string, source: string, opts = COMBINED_OPTIONS): SchemaEntity {
-  return SchemaEntity.fromParsedFile(parseFile(path, source, opts));
+function entityFromSource(path: string, source: string, opts = COMBINED_OPTIONS): SchemaArtifact {
+  return SchemaArtifact.fromParsedFile(parseFile(path, source, opts));
 }
 
 describe('model-to-schema transform (artifacts)', () => {

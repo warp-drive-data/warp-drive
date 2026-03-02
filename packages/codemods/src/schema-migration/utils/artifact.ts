@@ -1,5 +1,7 @@
+import type { Filename } from '../codemod.js';
 import type { TransformOptions } from '../config';
 import type { ModelAnalysisResult } from '../processors/model';
+import type { ParsedFile } from './file-parser.js';
 import { toPascalCase } from './path-utils';
 
 interface ResourceArtifactIdentifiers {
@@ -90,7 +92,7 @@ interface TraitArtifactIdentifiers {
  * A configuration object containing information about a
  * resource to be generated.
  */
-interface BaseSchemaArtifact {
+interface BaseArtifactConfig {
   /**
    * The name of the resource or trait, typically derived from the model
    * or mixin name.
@@ -157,7 +159,7 @@ interface BaseSchemaArtifact {
   }>;
 }
 
-interface ResourceSchemaArtifact extends BaseSchemaArtifact {
+interface ResourceArtifactConfig extends BaseArtifactConfig {
   /**
    * The type of artifact being generated
    *
@@ -171,7 +173,7 @@ interface ResourceSchemaArtifact extends BaseSchemaArtifact {
    */
   identifiers: ResourceArtifactIdentifiers;
 }
-interface TraitSchemaArtifact extends BaseSchemaArtifact {
+interface TraitArtifactConfig extends BaseArtifactConfig {
   /**
    * The type of artifact being generated
    *
@@ -185,7 +187,7 @@ interface TraitSchemaArtifact extends BaseSchemaArtifact {
    */
   identifiers: TraitArtifactIdentifiers;
 }
-export type SchemaArtifact = ResourceSchemaArtifact | TraitSchemaArtifact;
+export type ArtifactConfig = ResourceArtifactConfig | TraitArtifactConfig;
 
 export function createTraitArtifactConfig(
   options: TransformOptions,
@@ -194,7 +196,7 @@ export function createTraitArtifactConfig(
   traits: string[],
   hasExtensionProperties: boolean,
   isTypeScript: boolean
-): SchemaArtifact {
+): ArtifactConfig {
   const hasTypes = isTypeScript || !options.disableMissingTypeAutoGen;
   const schemaIsTyped = (hasTypes && options.combineSchemasAndTypes) || !options.disableTypescriptSchemas;
   const extensionIsTyped = isTypeScript;
@@ -237,7 +239,7 @@ export function createResourceArtifactConfig(
   options: TransformOptions,
   analysis: ModelAnalysisResult,
   modelWasTyped: boolean
-): SchemaArtifact {
+): ArtifactConfig {
   const name = analysis.baseName;
   const classified = analysis.modelName;
 
@@ -282,4 +284,141 @@ export function createResourceArtifactConfig(
       };
     }),
   };
+}
+
+export type ArtifactKind = 'model' | 'mixin' | 'intermediate-model';
+
+export class SchemaArtifact {
+  readonly parsedFile: ParsedFile;
+  readonly kind: ArtifactKind;
+  private _traits: SchemaArtifact[] = [];
+
+  constructor(parsedFile: ParsedFile, kind: ArtifactKind) {
+    this.parsedFile = parsedFile;
+    this.kind = kind;
+  }
+
+  get pascalName(): string {
+    return this.parsedFile.pascalName;
+  }
+
+  get baseName(): string {
+    return this.parsedFile.baseName;
+  }
+
+  get camelName(): string {
+    return this.parsedFile.camelName;
+  }
+
+  get path(): string {
+    return this.parsedFile.path;
+  }
+
+  get schemaName(): string {
+    return deriveSchemaName(this.baseName);
+  }
+
+  get extensionName(): string {
+    return deriveExtensionName(this.baseName);
+  }
+
+  get interfaceName(): string {
+    return this.pascalName;
+  }
+
+  get traitInterfaceName(): string {
+    return deriveTraitInterfaceName(this.baseName);
+  }
+
+  get hasExtension(): boolean {
+    return this.parsedFile.hasExtension;
+  }
+
+  get extensionNameIfNeeded(): string | undefined {
+    return this.hasExtension ? this.extensionName : undefined;
+  }
+
+  get traits(): readonly SchemaArtifact[] {
+    return this._traits;
+  }
+
+  addTrait(entity: SchemaArtifact): void {
+    this._traits.push(entity);
+  }
+
+  get traitBaseNames(): string[] {
+    return this._traits.map((t) => t.baseName);
+  }
+
+  get traitExtensionNames(): string[] {
+    return this._traits.filter((t) => t.hasExtension).map((t) => t.extensionName);
+  }
+
+  static fromParsedFile(parsed: ParsedFile, kind?: ArtifactKind): SchemaArtifact {
+    const resolvedKind = kind ?? (parsed.fileType === 'mixin' ? 'mixin' : 'model');
+    return new SchemaArtifact(parsed, resolvedKind);
+  }
+}
+
+export function deriveTraitInterfaceName(name: string): string {
+  return `${toPascalCase(name)}Trait`;
+}
+
+export function deriveExtensionName(name: string): string {
+  return `${toPascalCase(name)}Extension`;
+}
+
+export function deriveSchemaName(name: string): string {
+  return `${toPascalCase(name)}Schema`;
+}
+
+export type SchemaArtifactRegistry = Map<string, SchemaArtifact>;
+
+export function buildEntityRegistry(
+  parsedModels: Map<Filename, ParsedFile>,
+  parsedMixins: Map<Filename, ParsedFile>
+): SchemaArtifactRegistry {
+  const registry: SchemaArtifactRegistry = new Map();
+
+  for (const [filePath, parsed] of parsedModels) {
+    registry.set(filePath, SchemaArtifact.fromParsedFile(parsed, 'model'));
+  }
+
+  for (const [filePath, parsed] of parsedMixins) {
+    registry.set(filePath, SchemaArtifact.fromParsedFile(parsed, 'mixin'));
+  }
+
+  return registry;
+}
+
+export function isConnectedToModel(registry: SchemaArtifactRegistry, mixinPath: string): boolean {
+  for (const entity of registry.values()) {
+    if (entity.kind === 'model' && entity.traits.some((t) => t.path === mixinPath)) return true;
+  }
+  return false;
+}
+
+export function findEntityByBaseName(
+  registry: SchemaArtifactRegistry,
+  baseName: string,
+  kind?: ArtifactKind
+): SchemaArtifact | undefined {
+  for (const entity of registry.values()) {
+    if (entity.baseName === baseName && (!kind || entity.kind === kind)) return entity;
+  }
+  return undefined;
+}
+
+export function linkEntities(registry: SchemaArtifactRegistry, modelToMixinsMap: Map<string, Set<string>>): void {
+  for (const [modelPath, mixinPaths] of modelToMixinsMap) {
+    const modelEntity = registry.get(modelPath);
+    if (!modelEntity) continue;
+
+    for (const mixinPath of mixinPaths) {
+      const mixinEntity = registry.get(mixinPath);
+      if (mixinEntity) {
+        modelEntity.addTrait(mixinEntity);
+      }
+    }
+  }
 }

@@ -7,7 +7,7 @@ import { Codemod } from '../codemod.js';
 import type { FinalOptions, MigrateOptions, TransformOptions } from '../config.js';
 import { toArtifacts as mixinToArtifacts } from '../processors/mixin.js';
 import { processIntermediateModelsToTraits, toArtifacts as modelToArtifacts } from '../processors/model.js';
-import type { SchemaEntity } from '../utils/schema-entity.js';
+import type { SchemaArtifact } from '../utils/artifact.js';
 
 const migrateLog = logger.for('migrate');
 
@@ -274,10 +274,10 @@ function writeIntermediateArtifacts(artifacts: Artifact[], finalOptions: FinalOp
   }
 }
 
-type ArtifactTransformer = (entity: SchemaEntity, options: TransformOptions) => TransformerResult;
+type ArtifactTransformer = (entity: SchemaArtifact, options: TransformOptions) => TransformerResult;
 
 interface ProcessFilesOptions {
-  parsedFiles: Map<string, SchemaEntity>;
+  parsedFiles: Map<string, SchemaArtifact>;
   transformer: ArtifactTransformer;
   finalOptions: FinalOptions;
   log: InstanciatedLogger;
@@ -413,8 +413,8 @@ export async function runMigration(options: MigrateOptions): Promise<void> {
   }
 
   // Build entity maps from the registry for processFiles
-  const modelEntities = new Map<string, SchemaEntity>();
-  const mixinEntities = new Map<string, SchemaEntity>();
+  const modelEntities = new Map<string, SchemaArtifact>();
+  const mixinEntities = new Map<string, SchemaArtifact>();
   for (const [filePath, entity] of codemod.entityRegistry) {
     if (entity.kind === 'model') {
       modelEntities.set(filePath, entity);

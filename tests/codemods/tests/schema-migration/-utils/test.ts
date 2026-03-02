@@ -4,15 +4,15 @@ import { expect, test as vitest } from 'vitest';
 import type { TransformOptions } from '@ember-data/codemods/schema-migration/config.js';
 import { toArtifacts as toTraitArtifacts } from '@ember-data/codemods/schema-migration/processors/mixin.js';
 import { toArtifacts as toResourceArtifacts } from '@ember-data/codemods/schema-migration/processors/model.js';
+import { SchemaArtifact } from '@ember-data/codemods/schema-migration/utils/artifact.js';
 import { parseFile } from '@ember-data/codemods/schema-migration/utils/file-parser.js';
-import { SchemaEntity } from '@ember-data/codemods/schema-migration/utils/schema-entity.js';
 import type { TransformArtifact } from '@ember-data/codemods/schema-migration/utils/schema-generation.js';
 
 import { createTestOptions } from '../test-helpers.ts';
 
 function transformFile(filePath: string, source: string, options: TransformOptions) {
   const parsed = parseFile(filePath, source, options);
-  const entity = SchemaEntity.fromParsedFile(parsed);
+  const entity = SchemaArtifact.fromParsedFile(parsed);
 
   switch (parsed.fileType) {
     case 'mixin':

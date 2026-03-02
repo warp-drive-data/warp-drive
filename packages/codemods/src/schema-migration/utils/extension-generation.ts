@@ -3,7 +3,7 @@ import { dirname, join, relative, resolve, sep } from 'path';
 
 import { logger } from '../../../utils/logger.js';
 import type { TransformOptions } from '../config.js';
-import type { SchemaArtifact } from './artifact.js';
+import type { ArtifactConfig } from './artifact.js';
 import { findDefaultExport } from './ast-helpers.js';
 import { getModelImportSources } from './import-utils.js';
 import { getFileExtension, getLanguageFromPath, indentCode, removeQuotes } from './path-utils.js';
@@ -152,7 +152,7 @@ export type ExtensionContext = 'resource' | 'trait';
 /**
  * Get the artifact type for an extension based on its context
  */
-export function getExtensionArtifactType(context: SchemaArtifact): string {
+export function getExtensionArtifactType(context: ArtifactConfig): string {
   return context.type === 'trait' ? 'trait-extension' : 'resource-extension';
 }
 
@@ -161,7 +161,7 @@ export function getExtensionArtifactType(context: SchemaArtifact): string {
  * Shared between model-to-schema and mixin-to-schema transforms
  */
 export function generateExtensionCode(
-  config: SchemaArtifact,
+  config: ArtifactConfig,
   extensionProperties: Array<{ name: string; originalKey: string; value: string; isObjectMethod?: boolean }>,
   format: 'object' | 'class' = 'object',
   interfaceImportPath?: string
@@ -395,7 +395,7 @@ function updateRelativeImportsForExtensions(
  * properties.
  */
 export function createExtensionFromOriginalFile(
-  schemaConfig: SchemaArtifact,
+  schemaConfig: ArtifactConfig,
   filePath: string,
   source: string,
   extensionProperties: Array<{ name: string; originalKey: string; value: string; isObjectMethod?: boolean }>,

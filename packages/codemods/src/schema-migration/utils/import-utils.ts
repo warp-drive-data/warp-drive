@@ -5,6 +5,7 @@ import { dirname, resolve } from 'path';
 
 import { logger } from '../../../utils/logger.js';
 import type { TransformOptions } from '../config.js';
+import { deriveExtensionName, deriveTraitInterfaceName, findEntityByBaseName, isConnectedToModel } from './artifact.js';
 import { findClassDeclaration, findDefaultExport } from './ast-helpers.js';
 import {
   extractBaseName,
@@ -15,12 +16,6 @@ import {
   resolveRelativeImport,
   toPascalCase,
 } from './path-utils.js';
-import {
-  deriveExtensionName,
-  deriveTraitInterfaceName,
-  findEntityByBaseName,
-  isConnectedToModel,
-} from './schema-entity.js';
 import {
   EXT_FILE_PATH_REGEX,
   FILE_EXTENSION_REGEX,

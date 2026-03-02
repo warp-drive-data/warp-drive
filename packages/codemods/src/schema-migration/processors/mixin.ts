@@ -4,7 +4,8 @@ import { join } from 'path';
 import { logger } from '../../../utils/logger.js';
 import type { TransformerResult } from '../codemod.js';
 import type { TransformOptions } from '../config.js';
-import { createTraitArtifactConfig } from '../utils/artifact.js';
+import type { SchemaArtifact } from '../utils/artifact.js';
+import { createTraitArtifactConfig, isConnectedToModel as isConnectedToModelInRegistry } from '../utils/artifact.js';
 import type { PropertyInfo, SchemaField, TransformArtifact } from '../utils/ast-utils.js';
 import {
   buildTraitSchemaObject,
@@ -16,8 +17,6 @@ import {
   toPascalCase,
 } from '../utils/ast-utils.js';
 import { createExtensionFromOriginalFile } from '../utils/extension-generation.js';
-import type { SchemaEntity } from '../utils/schema-entity.js';
-import { isConnectedToModel as isConnectedToModelInRegistry } from '../utils/schema-entity.js';
 import { pascalToKebab } from '../utils/string.js';
 
 const log = logger.for('mixin-processor');
@@ -79,7 +78,7 @@ export interface ${typeName} {
  * This does not modify the original source. The CLI can use this to write
  * files to the requested output directories.
  */
-export function toArtifacts(entity: SchemaEntity, options: TransformOptions): TransformerResult {
+export function toArtifacts(entity: SchemaArtifact, options: TransformOptions): TransformerResult {
   const parsedFile = entity.parsedFile;
   const { path: filePath, source, baseName, camelName: mixinName } = parsedFile;
 
@@ -135,7 +134,7 @@ export function toArtifacts(entity: SchemaEntity, options: TransformOptions): Tr
  * Shared artifact generation logic
  */
 function generateMixinArtifacts(
-  entity: SchemaEntity,
+  entity: SchemaArtifact,
   filePath: string,
   source: string,
   baseName: string,

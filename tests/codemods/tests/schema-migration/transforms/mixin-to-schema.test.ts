@@ -6,11 +6,11 @@ import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import type { FinalOptions } from '@ember-data/codemods/schema-migration/config.js';
 
 import { toArtifacts } from '../../../../../packages/codemods/src/schema-migration/processors/mixin.ts';
+import { SchemaArtifact } from '../../../../../packages/codemods/src/schema-migration/utils/artifact.js';
 import { parseFile } from '../../../../../packages/codemods/src/schema-migration/utils/file-parser.js';
-import { SchemaEntity } from '../../../../../packages/codemods/src/schema-migration/utils/schema-entity.js';
 
-function entityFromSource(path: string, source: string, opts: FinalOptions): SchemaEntity {
-  return SchemaEntity.fromParsedFile(parseFile(path, source, opts));
+function entityFromSource(path: string, source: string, opts: FinalOptions): SchemaArtifact {
+  return SchemaArtifact.fromParsedFile(parseFile(path, source, opts));
 }
 
 describe('mixin-to-schema transform (artifacts)', () => {

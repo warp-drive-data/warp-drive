@@ -5,6 +5,7 @@ import { dirname, join, resolve } from 'path';
 import { logger } from '../../../utils/logger.js';
 import type { TransformerResult } from '../codemod.js';
 import { getConfiguredImport, type TransformOptions } from '../config.js';
+import type { SchemaArtifact } from '../utils/artifact.js';
 import { createResourceArtifactConfig, createTraitArtifactConfig } from '../utils/artifact.js';
 import type { ExtractedType, SchemaField, TransformArtifact } from '../utils/ast-utils.js';
 import {
@@ -12,17 +13,17 @@ import {
   buildTraitSchemaObject,
   collectRelationshipImports,
   collectTraitImports,
-  FRAGMENT_BASE_SOURCE,
   findClassDeclaration,
   findDefaultExport,
   findEmberImportLocalName,
-  getModelImportSources,
+  FRAGMENT_BASE_SOURCE,
   generateMergedSchemaCode,
   getEmberDataImports,
   getExportedIdentifier,
   getFileExtension,
   getLanguageFromPath,
   getMixinImports,
+  getModelImportSources,
   isModelFile,
   mapFieldsToTypeProperties,
   mixinNameToTraitName,
@@ -46,7 +47,6 @@ import { createExtensionFromOriginalFile } from '../utils/extension-generation.j
 import type { ParsedFile } from '../utils/file-parser.js';
 import { parseFile } from '../utils/file-parser.js';
 import { removeQuotes, replaceWildcardPattern } from '../utils/path-utils.js';
-import type { SchemaEntity } from '../utils/schema-entity.js';
 import type { FieldTypeInfo } from '../utils/schema-generation.js';
 import {
   MODEL_NAME_SUFFIX_REGEX,
@@ -462,7 +462,7 @@ export function processIntermediateModelsToTraits(
  * Generate artifacts for regular models (both internal and external)
  */
 function generateRegularModelArtifacts(
-  entity: SchemaEntity,
+  entity: SchemaArtifact,
   analysis: ModelAnalysisResult,
   options: TransformOptions
 ): TransformArtifact[] {
@@ -599,7 +599,7 @@ function generateRegularModelArtifacts(
   return artifacts;
 }
 
-export function toArtifacts(entity: SchemaEntity, options: TransformOptions): TransformerResult {
+export function toArtifacts(entity: SchemaArtifact, options: TransformOptions): TransformerResult {
   log.debug(`=== DEBUG: Processing ${entity.path} ===`);
 
   const analysis = analyzeModelFromParsed(entity.parsedFile, options);

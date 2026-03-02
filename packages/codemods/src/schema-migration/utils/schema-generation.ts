@@ -4,7 +4,7 @@ import { join } from 'path';
 
 import { logger } from '../../../utils/logger.js';
 import { getConfiguredImport, type TransformOptions } from '../config.js';
-import type { SchemaArtifact } from './artifact.js';
+import type { ArtifactConfig } from './artifact.js';
 import type { ExtensionContext } from './extension-generation.js';
 import { generateTraitImport, transformModelToResourceImport } from './import-utils.js';
 import { normalizeClassicImport, removeQuotes, toPascalCase } from './path-utils.js';
@@ -303,7 +303,7 @@ export function convertToSchemaField(
  */
 export function generateInterfaceCode(
   options: TransformOptions,
-  config: SchemaArtifact,
+  config: ArtifactConfig,
   comment: string | undefined,
   properties: Array<FieldTypeInfo>,
   imports?: string[]
@@ -334,7 +334,7 @@ export function generateInterfaceCode(
  */
 export function createTypeArtifact(
   options: TransformOptions,
-  config: SchemaArtifact,
+  config: ArtifactConfig,
   comment: string | undefined,
   properties: Array<FieldTypeInfo>,
   artifactContext?: 'resource' | 'extension' | 'trait',
@@ -603,9 +603,9 @@ export function buildTraitSchemaObject(
  */
 export interface MergedSchemaOptions {
   /**
-   * The {@link SchemaArtifact} config for the resource being generated.
+   * The {@link ArtifactConfig} config for the resource being generated.
    */
-  config: SchemaArtifact;
+  config: ArtifactConfig;
   /** The schema object to export */
   schemaObject: Record<string, unknown>;
   /** Properties for the interface */
@@ -649,7 +649,7 @@ function generateTypeScriptImports(imports: Set<string>, config: TransformOption
 /**
  * Generate the schema const declaration
  */
-function generateSchemaDeclaration(config: SchemaArtifact, schemaObject: Record<string, unknown>): string {
+function generateSchemaDeclaration(config: ArtifactConfig, schemaObject: Record<string, unknown>): string {
   let jsonString = JSON.stringify(schemaObject, null, 2);
 
   // Always use single quotes
@@ -708,7 +708,7 @@ const ResourceTipComment = ` * > [!TIP]
  */
 function generateInterfaceOnly(
   options: TransformOptions,
-  config: SchemaArtifact,
+  config: ArtifactConfig,
   comment: string | undefined,
   properties: Array<FieldTypeInfo>,
   indent = '  '

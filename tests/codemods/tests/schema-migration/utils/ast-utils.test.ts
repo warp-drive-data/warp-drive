@@ -1,7 +1,12 @@
 import { describe, expect, it } from 'vitest';
 
 import type { TransformOptions } from '../../../../../packages/codemods/src/schema-migration/config.js';
-import type { SchemaArtifact } from '../../../../../packages/codemods/src/schema-migration/utils/artifact.js';
+import type {
+  ArtifactConfig,
+  ArtifactKind,
+  SchemaArtifactRegistry,
+} from '../../../../../packages/codemods/src/schema-migration/utils/artifact.js';
+import { SchemaArtifact } from '../../../../../packages/codemods/src/schema-migration/utils/artifact.js';
 import type { PropertyInfo } from '../../../../../packages/codemods/src/schema-migration/utils/ast-utils.js';
 import {
   createExtensionArtifactWithTypes,
@@ -11,13 +16,8 @@ import {
   transformModelToResourceImport,
 } from '../../../../../packages/codemods/src/schema-migration/utils/ast-utils.js';
 import type { ParsedFile } from '../../../../../packages/codemods/src/schema-migration/utils/file-parser.js';
-import type {
-  EntityKind,
-  SchemaEntityRegistry,
-} from '../../../../../packages/codemods/src/schema-migration/utils/schema-entity.js';
-import { SchemaEntity } from '../../../../../packages/codemods/src/schema-migration/utils/schema-entity.js';
 
-function createMockEntity(baseName: string, kind: EntityKind, path: string): SchemaEntity {
+function createMockEntity(baseName: string, kind: ArtifactKind, path: string): SchemaArtifact {
   const parsed = {
     baseName,
     pascalName: baseName.replace(/(^|-)(\w)/g, (_m: string, _sep: string, c: string) => c.toUpperCase()),
@@ -33,11 +33,13 @@ function createMockEntity(baseName: string, kind: EntityKind, path: string): Sch
     hasExtension: false,
     source: '',
   } as ParsedFile;
-  return SchemaEntity.fromParsedFile(parsed, kind);
+  return SchemaArtifact.fromParsedFile(parsed, kind);
 }
 
-function buildTestRegistry(entries: Array<{ baseName: string; kind: EntityKind; path: string }>): SchemaEntityRegistry {
-  const registry: SchemaEntityRegistry = new Map();
+function buildTestRegistry(
+  entries: Array<{ baseName: string; kind: ArtifactKind; path: string }>
+): SchemaArtifactRegistry {
+  const registry: SchemaArtifactRegistry = new Map();
   for (const entry of entries) {
     registry.set(entry.path, createMockEntity(entry.baseName, entry.kind, entry.path));
   }
@@ -54,7 +56,7 @@ function makeTestConfig(
   name: string,
   fieldsInterface: string,
   traits: Array<{ name: string; fieldsInterface: string | null; extension: string | null }> = []
-): SchemaArtifact {
+): ArtifactConfig {
   return {
     type: 'resource',
     name,
@@ -76,7 +78,7 @@ function makeTestConfig(
         extension: t.extension,
       },
     })),
-  } as SchemaArtifact;
+  } as ArtifactConfig;
 }
 
 describe('AST utilities', () => {

@@ -1,4 +1,4 @@
-import type { SchemaEntityRegistry } from './utils/schema-entity';
+import type { SchemaArtifactRegistry } from './utils/artifact';
 
 export interface PackageImport {
   imported: string;
@@ -197,8 +197,8 @@ export interface TransformOptions {
     extension?: string;
     trait?: string;
   }>;
-  /** Registry of SchemaEntity instances keyed by file path */
-  entityRegistry?: SchemaEntityRegistry;
+  /** Registry of SchemaArtifact instances keyed by file path */
+  entityRegistry?: SchemaArtifactRegistry;
 }
 
 export interface MigrateOptions extends Partial<TransformOptions> {
