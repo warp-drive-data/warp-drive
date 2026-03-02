@@ -3,13 +3,11 @@ import { existsSync } from 'fs';
 import { join } from 'path';
 
 import { logger } from '../../../utils/logger.js';
-import type { TransformOptions } from '../config.js';
-import { parseObjectLiteralFromNode } from './ast-helpers.js';
+import { getConfiguredImport, type TransformOptions } from '../config.js';
+import type { SchemaArtifact } from './artifact.js';
 import type { ExtensionContext } from './extension-generation.js';
-import { getExtensionArtifactType } from './extension-generation.js';
-import { generateCommonWarpDriveImports, generateTraitImport, transformModelToResourceImport } from './import-utils.js';
-import { removeQuotes, toPascalCase } from './path-utils.js';
-import { deriveTraitInterfaceName } from './schema-entity.js';
+import { generateTraitImport, transformModelToResourceImport } from './import-utils.js';
+import { normalizeClassicImport, removeQuotes, toPascalCase } from './path-utils.js';
 import type { ExtractedType } from './type-utils.js';
 import { schemaFieldToTypeScriptType } from './type-utils.js';
 
@@ -25,6 +23,8 @@ export interface TransformArtifact {
   name: string;
   /** Code to write to the artifact file */
   code: string;
+  /** The underlying entity name used to suggest file name and export name */
+  baseName: string;
   /** Suggested filename (without directory) */
   suggestedFileName: string;
 }
@@ -37,7 +37,7 @@ export interface PropertyInfo {
   originalKey: string;
   value: string;
   /** Extracted TypeScript type information */
-  typeInfo?: ExtractedType;
+  typeInfo: ExtractedType | null;
   /** Whether this property is defined using object method syntax */
   isObjectMethod?: boolean;
 }
@@ -52,6 +52,7 @@ export interface SchemaField {
   type?: string;
   options?: Record<string, unknown>;
   comment?: string;
+  typeInfo: ExtractedType | null;
 }
 
 /**
@@ -140,19 +141,58 @@ export function buildLegacySchemaObject(
 }
 
 /**
- * Parse options object from an AST node for schema field conversion
- * Returns the parsed options object
+ * Sentinel prefix used to mark identifier references in schema field options.
+ * Values like `{ defaultValue: BIRTHAGE }` are stored as `'__ref__:BIRTHAGE'`
+ * so the code generator can emit them unquoted.
+ */
+export const SCHEMA_OPTION_REF_PREFIX = '__ref__:';
+
+/**
+ * Parse options object from an AST node for schema field conversion.
+ * Identifier values (e.g. `BIRTHAGE`) are preserved as code references
+ * using the `__ref__:` sentinel prefix so they can be emitted unquoted.
  */
 function parseSchemaFieldOptions(optionsNode: SgNode | undefined): Record<string, unknown> {
   if (!optionsNode || optionsNode.kind() !== 'object') {
     return {};
   }
 
-  try {
-    return parseObjectLiteralFromNode(optionsNode);
-  } catch {
-    return {};
+  const result: Record<string, unknown> = {};
+  const properties = optionsNode.children().filter((child) => child.kind() === 'pair');
+
+  for (const property of properties) {
+    const keyNode = property.field('key');
+    const valueNode = property.field('value');
+    if (!keyNode || !valueNode) continue;
+
+    let key = keyNode.text();
+    if ((key.startsWith('"') && key.endsWith('"')) || (key.startsWith("'") && key.endsWith("'"))) {
+      key = key.slice(1, -1);
+    }
+
+    let value: unknown;
+    const kind = valueNode.kind();
+    if (kind === 'string') {
+      value = valueNode.text().slice(1, -1);
+    } else if (kind === 'true') {
+      value = true;
+    } else if (kind === 'false') {
+      value = false;
+    } else if (kind === 'number') {
+      value = parseFloat(valueNode.text());
+    } else if (kind === 'null') {
+      value = null;
+    } else if (kind === 'identifier') {
+      // Preserve identifier references (e.g. BIRTHAGE) as code refs, not strings
+      value = SCHEMA_OPTION_REF_PREFIX + valueNode.text();
+    } else {
+      value = valueNode.text();
+    }
+
+    result[key] = value;
   }
+
+  return result;
 }
 
 /**
@@ -173,6 +213,7 @@ function convertToSchemaFieldCore(
         kind: getFieldKindFromDecorator('attr') as 'attribute',
         type,
         options: Object.keys(options).length > 0 ? options : undefined,
+        typeInfo: null,
       };
     }
     case 'belongsTo': {
@@ -182,6 +223,7 @@ function convertToSchemaFieldCore(
         kind: getFieldKindFromDecorator('belongsTo') as 'belongsTo',
         type,
         options: Object.keys(options).length > 0 ? options : undefined,
+        typeInfo: null,
       };
     }
     case 'hasMany': {
@@ -191,6 +233,7 @@ function convertToSchemaFieldCore(
         kind: getFieldKindFromDecorator('hasMany') as 'hasMany',
         type,
         options: Object.keys(options).length > 0 ? options : undefined,
+        typeInfo: null,
       };
     }
     case 'fragment': {
@@ -203,6 +246,7 @@ function convertToSchemaFieldCore(
           objectExtensions: ['ember-object', 'fragment'],
           ...options,
         },
+        typeInfo: null,
       };
     }
     case 'fragmentArray': {
@@ -216,6 +260,7 @@ function convertToSchemaFieldCore(
           defaultValue: true,
           ...options,
         },
+        typeInfo: null,
       };
     }
     case 'array': {
@@ -228,6 +273,7 @@ function convertToSchemaFieldCore(
           arrayExtensions: ['ember-object', 'ember-array-like', 'fragment-array'],
           ...options,
         },
+        typeInfo: null,
       };
     }
     default:
@@ -256,15 +302,10 @@ export function convertToSchemaField(
  * Generate TypeScript interface code
  */
 export function generateInterfaceCode(
-  interfaceName: string,
-  properties: Array<{
-    name: string;
-    type: string;
-    readonly?: boolean;
-    optional?: boolean;
-    comment?: string;
-  }>,
-  extendsClause?: string,
+  options: TransformOptions,
+  config: SchemaArtifact,
+  comment: string | undefined,
+  properties: Array<FieldTypeInfo>,
   imports?: string[]
 ): string {
   const lines: string[] = [];
@@ -282,7 +323,7 @@ export function generateInterfaceCode(
     lines.push('');
   }
 
-  lines.push(generateInterfaceOnly(interfaceName, properties, extendsClause, '\t'));
+  lines.push(generateInterfaceOnly(options, config, comment, properties, '\t'));
   lines.push('');
 
   return lines.join('\n');
@@ -292,21 +333,17 @@ export function generateInterfaceCode(
  * Create type artifact for interfaces
  */
 export function createTypeArtifact(
-  baseName: string,
-  interfaceName: string,
-  properties: Array<{
-    name: string;
-    type: string;
-    readonly?: boolean;
-    optional?: boolean;
-    comment?: string;
-  }>,
+  options: TransformOptions,
+  config: SchemaArtifact,
+  comment: string | undefined,
+  properties: Array<FieldTypeInfo>,
   artifactContext?: 'resource' | 'extension' | 'trait',
-  extendsClause?: string,
   imports?: string[],
   fileExtension?: string
 ): TransformArtifact {
-  const code = generateInterfaceCode(interfaceName, properties, extendsClause, imports);
+  const code = generateInterfaceCode(options, config, comment, properties, imports);
+  const baseName = config.name;
+  const interfaceName = config.identifiers.fieldsInterface ?? config.identifiers.schema;
 
   // Determine the type based on context to help with directory routing
   const typeString = artifactContext ? `${artifactContext}-type` : 'type';
@@ -322,6 +359,7 @@ export function createTypeArtifact(
     type: typeString,
     name: interfaceName,
     code,
+    baseName,
     suggestedFileName: fileName,
   };
 }
@@ -369,9 +407,10 @@ export function createExtensionArtifactWithTypes(
   const extFileName = `${baseName}.ext${ext}`;
 
   const extensionArtifact: TransformArtifact = {
-    type: getExtensionArtifactType(context),
+    type: context === 'trait' ? 'trait-extension' : 'resource-extension',
     name: extensionName,
     code: extensionCode,
+    baseName,
     suggestedFileName: extFileName,
   };
 
@@ -379,34 +418,105 @@ export function createExtensionArtifactWithTypes(
   return { extensionArtifact, typeArtifact: null };
 }
 
+function modelImportFor(modelName: string, options: TransformOptions): string {
+  return `${options.projectName}/models/${modelName}`;
+}
+
 /**
  * Collect relationship imports (belongsTo/hasMany) for schema fields.
  * Shared between model and mixin artifact generation.
+ *
  */
 export function collectRelationshipImports(
+  currentFilePath: string,
   fields: SchemaField[],
   selfName: string,
   imports: Set<string>,
-  options?: TransformOptions
+  declarations: Set<string>,
+  options: TransformOptions
 ): void {
-  const commonImports = generateCommonWarpDriveImports(options);
+  const asyncHasManyImport = getConfiguredImport(options, 'AsyncHasMany');
+  const hasManyImport = getConfiguredImport(options, 'HasMany');
+  let hasAsyncHasMany = false;
+  let hasHasMany = false;
+  const newImports = new Map<string, Map<string, string>>();
+  const finalImports = new Set<string>();
 
   for (const field of fields) {
+    if (field.typeInfo?.declarations) {
+      field.typeInfo.declarations.forEach((decl) => declarations.add(decl));
+    }
     if (field.kind === 'belongsTo' || field.kind === 'hasMany') {
-      if (field.type && field.type !== selfName) {
-        const typeName = toPascalCase(field.type);
-        imports.add(transformModelToResourceImport(field.type, typeName, options));
-
-        if (field.kind === 'hasMany') {
-          const isAsync = field.options && field.options.async === true;
-          if (isAsync) {
-            imports.add(commonImports.asyncHasManyImport);
-          } else {
-            imports.add(commonImports.hasManyImport);
+      if (field.typeInfo?.imports) {
+        const relatedModelImport = modelImportFor(field.type!, options);
+        for (const imp of field.typeInfo.imports) {
+          // check if the source is perhaps a Model from before, and if so don't
+          // add it.
+          // to do this we check for local imports, app prefixed imports and relative imports
+          // that match the related model type.
+          if (!imp.source) {
+            throw new Error(`Import information is missing source for field ${field.name}`);
           }
+          const resolved = normalizeClassicImport(options, imp.source, currentFilePath);
+          if (resolved === relatedModelImport) {
+            continue;
+          }
+
+          if (!newImports.has(imp.source)) {
+            newImports.set(imp.source, new Map<string, string>());
+          }
+          const existingImport = newImports.get(imp.source)!;
+          existingImport.set(imp.imported, imp.local ?? imp.imported);
+        }
+      } else if (field.kind === 'hasMany') {
+        const isAsync = field.options && field.options.async === true;
+        if (isAsync) {
+          hasAsyncHasMany = true;
+        } else {
+          hasHasMany = true;
         }
       }
+
+      if (field.type !== selfName) {
+        const typeName = toPascalCase(field.type!);
+        finalImports.add(transformModelToResourceImport(field.type!, typeName, options));
+      }
+    } else if (field.typeInfo?.imports) {
+      for (const imp of field.typeInfo.imports) {
+        if (!newImports.has(imp.source)) {
+          newImports.set(imp.source, new Map<string, string>());
+        }
+        const existingImport = newImports.get(imp.source)!;
+        existingImport.set(imp.imported, imp.local ?? imp.imported);
+      }
     }
+  }
+
+  if (asyncHasManyImport.source !== hasManyImport.source) {
+    if (hasAsyncHasMany) {
+      imports.add(`import type { AsyncHasMany } from '${asyncHasManyImport.source}'`);
+    }
+    if (hasHasMany) {
+      imports.add(`import type { HasMany } from '${hasManyImport.source}'`);
+    }
+  } else if (hasAsyncHasMany && hasHasMany) {
+    imports.add(`import type { AsyncHasMany, HasMany } from '${asyncHasManyImport.source}'`);
+  } else if (hasAsyncHasMany) {
+    imports.add(`import type { AsyncHasMany } from '${asyncHasManyImport.source}'`);
+  } else if (hasHasMany) {
+    imports.add(`import type { HasMany } from '${hasManyImport.source}'`);
+  }
+
+  for (const [source, tokens] of newImports) {
+    const importsList = [...tokens.entries()].map(([imported, local]) =>
+      imported === local ? imported : `${imported} as ${local}`
+    );
+    const importStatement = `import type { ${importsList.join(', ')} } from '${source}'`;
+    imports.add(importStatement);
+  }
+
+  for (const importStatement of finalImports) {
+    imports.add(importStatement);
   }
 }
 
@@ -435,19 +545,22 @@ export function collectTraitImports(
   }
 }
 
+export interface FieldTypeInfo {
+  name: string;
+  transformInferredType: string;
+  comment?: string;
+  typeInfo: ExtractedType | null;
+}
+
 /**
  * Map SchemaField[] to type properties for interface generation.
  */
-export function mapFieldsToTypeProperties(
-  fields: SchemaField[],
-  options?: TransformOptions,
-  readonlyFields = true
-): Array<{ name: string; type: string; readonly: boolean; comment?: string }> {
+export function mapFieldsToTypeProperties(fields: SchemaField[], options?: TransformOptions): Array<FieldTypeInfo> {
   return fields.map((field) => ({
     name: field.name,
-    type: schemaFieldToTypeScriptType(field, options),
-    readonly: readonlyFields,
+    transformInferredType: schemaFieldToTypeScriptType(field, options),
     comment: field.comment,
+    typeInfo: field.typeInfo || null,
   }));
 }
 
@@ -489,38 +602,34 @@ export function buildTraitSchemaObject(
  * Options for generating merged schema with types
  */
 export interface MergedSchemaOptions {
-  /** The base name of the resource (kebab-case, e.g., 'user') */
-  baseName: string;
-  /** The interface name (PascalCase, e.g., 'User') */
-  interfaceName: string;
-  /** The schema variable name (e.g., 'UserSchema') */
-  schemaName: string;
+  /**
+   * The {@link SchemaArtifact} config for the resource being generated.
+   */
+  config: SchemaArtifact;
   /** The schema object to export */
   schemaObject: Record<string, unknown>;
   /** Properties for the interface */
-  properties: Array<{
-    name: string;
-    type: string;
-    readonly?: boolean;
-    optional?: boolean;
-    comment?: string;
-  }>;
+  properties: Array<FieldTypeInfo>;
   /** Traits that this interface extends */
   traits?: string[];
   /** Import statements needed for types */
   imports?: Set<string>;
-  /** Whether this is a TypeScript file */
-  isTypeScript: boolean;
   /** Transform options */
-  options?: TransformOptions;
-  /** Extension name (e.g., 'UserExtension') -> when set with traits, triggers composite interface pattern */
-  extensionName?: string;
+  options: TransformOptions;
+  /** Doc comment for the interface */
+  comment?: string;
+  /**
+   * Optional export declarations (e.g. `export const BIRTHAGE = 0;`) to inject
+   * into the schema file before the schema const. These are constants referenced
+   * by identifier in schema field options.
+   */
+  constantDeclarations?: string;
 }
 
 /**
  * Generate TypeScript import statements
  */
-function generateTypeScriptImports(imports: Set<string>): string {
+function generateTypeScriptImports(imports: Set<string>, config: TransformOptions): string {
   if (imports.size === 0) return '';
 
   const lines: string[] = [];
@@ -532,142 +641,231 @@ function generateTypeScriptImports(imports: Set<string>): string {
       lines.push(`import ${importStatement};`);
     }
   }
+
+  lines.push(''); // Add a blank line after imports
   return lines.join('\n');
 }
 
 /**
  * Generate the schema const declaration
  */
-function generateSchemaDeclaration(
-  schemaName: string,
-  schemaObject: Record<string, unknown>,
-  isTypeScript: boolean
-): string {
+function generateSchemaDeclaration(config: SchemaArtifact, schemaObject: Record<string, unknown>): string {
   let jsonString = JSON.stringify(schemaObject, null, 2);
 
   // Always use single quotes
   jsonString = jsonString.replace(/"([^"\\]*(\\.[^"\\]*)*)"/g, "'$1'");
 
-  if (isTypeScript) {
-    return `const ${schemaName} = ${jsonString} as const;`;
+  // Unescape identifier code references: '__ref__:IDENT' → IDENT (unquoted)
+  jsonString = jsonString.replace(new RegExp(`'${SCHEMA_OPTION_REF_PREFIX}([^']+)'`, 'g'), '$1');
+
+  if (config.schemaIsTyped) {
+    return `const ${config.identifiers.schema} = ${jsonString} satisfies LegacyResourceSchema;`;
   } else {
-    return `const ${schemaName} = ${jsonString};`;
+    return `const ${config.identifiers.schema} = ${jsonString};`;
   }
 }
+
+function cleanComment(comment: string, includeBreak = true): string {
+  const lines = comment.split('\n').map((l) => l.trim());
+  if (lines[0].startsWith('/**')) {
+    lines[0] = lines[0].replace('/**', '').trim();
+  }
+  if (lines[lines.length - 1].endsWith('*/')) {
+    lines[lines.length - 1] = lines[lines.length - 1].replace('*/', '').trim();
+  }
+  if (lines.length > 2) {
+    for (let i = 1; i < lines.length - 1; i++) {
+      if (lines[i].startsWith('*')) {
+        lines[i] = lines[i].slice(1).trim();
+      }
+    }
+    if (lines[0] === '') {
+      lines.shift();
+    }
+    if (lines[lines.length - 1] === '') {
+      lines.pop();
+    }
+  }
+  if (includeBreak) {
+    lines.push('', '---', '');
+  }
+  return lines.map((l) => ` * ${l}`).join('\n');
+}
+
+const ResourceTipComment = ` * > [!TIP]
+ * > It is likely that you will want a more specific type tailored
+ * > to the context of where some data has been loaded, for instance
+ * > one that marks specific fields as readonly, or which only enables
+ * > some fields to be null during create, or which only includes
+ * > a subset of fields based on a specific API response.
+ * >
+ * > For those cases, you can create a more specific type that derives
+ * > from this type to ensure that your type definitions stay consistent
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}`;
 
 /**
  * Generate TypeScript interface code (without imports - they're handled separately)
  */
 function generateInterfaceOnly(
-  interfaceName: string,
-  properties: Array<{
-    name: string;
-    type: string;
-    readonly?: boolean;
-    optional?: boolean;
-    comment?: string;
-  }>,
-  extendsClause?: string,
+  options: TransformOptions,
+  config: SchemaArtifact,
+  comment: string | undefined,
+  properties: Array<FieldTypeInfo>,
   indent = '  '
 ): string {
-  const lines: string[] = [];
-
-  // Add interface declaration
-  let interfaceDeclaration = `export interface ${interfaceName}`;
-  if (extendsClause) {
-    interfaceDeclaration += ` extends ${extendsClause}`;
+  /**
+   * Each resource will export 2 types to support itself
+   * and 2 to support its extension (if needed).
+   */
+  /**
+   * The primary fields definition e.g.
+   *
+   * ```
+   * export interface UserResource extends TimestamppedTrait {
+   *   id: string | null;
+   *   name: string;
+   * }
+   * ```
+   */
+  let interfaceDeclaration = `export interface ${config.identifiers.fieldsInterface}`;
+  if (config.traits.length) {
+    interfaceDeclaration += 'extends ';
+    interfaceDeclaration += config.traits.map((t) => t.identifiers.fieldsInterface).join(', ');
   }
   interfaceDeclaration += ' {';
-  lines.push(interfaceDeclaration);
+
+  /**
+   * The fields + the legacy Model capabilities e.g.
+   *
+   * ```
+   * export interface User extends WithLegacy<UserResource> {}
+   * ```
+   */
+  const fullTypeDeclaration = `export interface ${config.identifiers.type} extends WithLegacy<${config.identifiers.fieldsInterface}> {}`;
+
+  /**
+   * Cleanup any existing documentation for this resource for re-use in the generated interfaces.
+   */
+  const docComment = comment ? `/**\n` + cleanComment(comment) : `/**`;
+  /**
+   * Add helpful usage tips if desired.
+   */
+  const tipComment = options.disableAddingTypeUsageTips ? ' *' : ' *\n' + ResourceTipComment + '\n *';
+  /**
+   * The documentation for "just the fields"
+   */
+  const fieldsInterfaceComment = `${docComment}
+ * This type represents the full set schema derived fields of
+ * the '${config.name}' ${config.type}, without any of the legacy mode features
+ * and without any extensions.
+${tipComment}
+ * See also {@link ${config.identifiers.type}} for fields + legacy mode features
+ */`;
+  /**
+   * The documentation for the "fields + legacy mode features" interface
+   *
+   * Extensions will be handled separately.
+   */
+  const fullInterfaceComment = `${docComment}
+ * This type represents the full set schema derived fields of
+ * the '${config.name}' ${config.type}, including all legacy mode features but
+ * without any extensions.
+ *
+ * See also {@link ${config.identifiers.fieldsInterface}} for fields + legacy mode features
+ */`;
+
+  const lines: string[] = [fieldsInterfaceComment, interfaceDeclaration];
 
   // Add properties
-  properties.forEach((prop) => {
+  for (const prop of properties) {
     if (prop.comment) {
-      const formattedComment = prop.comment.startsWith('/**') ? prop.comment : `/** ${prop.comment} */`;
-      lines.push(`${indent}${formattedComment}`);
+      const commentLines = cleanComment(prop.comment, false).split('\n');
+      commentLines.unshift('/**');
+      commentLines.push(' */');
+      const formattedComment = commentLines.join(`\n${indent}`);
+      lines.push('', `${indent}${formattedComment}`);
     }
 
-    const readonly = prop.readonly ? 'readonly ' : '';
-    const optional = prop.optional ? '?' : '';
+    const readonly = prop.typeInfo?.readonly ? 'readonly ' : '';
+    // if we don't have typeInfo, the property is always optional
+    const optional = !prop.typeInfo || prop.typeInfo.optional ? '?' : '';
+    // use the type from the declared type, else use an inferred type
+    const type = prop.typeInfo?.type || prop.transformInferredType || 'unknown';
 
-    lines.push(`${indent}${readonly}${prop.name}${optional}: ${prop.type};`);
-  });
+    lines.push(`${indent}${readonly}${prop.name}${optional}: ${type};`);
+  }
 
-  lines.push('}');
+  lines.push('}', '', fullInterfaceComment, fullTypeDeclaration, '');
 
   return lines.join('\n');
+}
+
+interface GeneratedSchemaParts {
+  typeImports: string | null;
+  schemaImports: string | null;
+  schemaDeclaration: string | null;
+  interfaceDeclaration: string | null;
 }
 
 /**
  * Generate a merged schema file containing both the schema object and type interface
  * This creates a single .schema.js or .schema.ts file with everything needed
  */
-export function generateMergedSchemaCode(opts: MergedSchemaOptions): string {
-  const {
-    baseName,
-    schemaName,
-    interfaceName,
-    schemaObject,
-    properties,
-    traits = [],
-    imports = new Set(),
-    isTypeScript,
-    options,
-    extensionName,
-  } = opts;
+export function generateMergedSchemaCode(opts: MergedSchemaOptions): GeneratedSchemaParts {
+  const { config, schemaObject, properties, comment, options, imports = new Set() } = opts;
 
-  const useComposite = isTypeScript && Boolean(extensionName) && traits.length > 0;
+  const parts: GeneratedSchemaParts = {
+    typeImports: null,
+    schemaImports: null,
+    schemaDeclaration: null,
+    interfaceDeclaration: null,
+  };
 
-  const sections: string[] = [];
-
-  if (useComposite) {
-    const extensionImportPath = options?.resourcesImport
-      ? `${options.resourcesImport}/${baseName}.ext`
-      : `../resources/${baseName}.ext`;
-    imports.add(`type { ${extensionName} } from '${extensionImportPath}'`);
+  if (!opts.options?.disableTypescriptSchemas) {
+    const importLocation = getConfiguredImport(opts.options, 'LegacyResourceSchema');
+    parts.schemaImports = `import type { ${importLocation.imported} } from '${importLocation.source}';\n`;
   }
 
   // Generate imports section (only for TypeScript)
-  if (isTypeScript) {
-    const importsCode = generateTypeScriptImports(imports);
-    if (importsCode) {
-      sections.push(importsCode);
-    }
+  if (config.hasTypes) {
+    const importsCode = generateTypeScriptImports(imports, opts.options);
+    parts.typeImports = importsCode;
   }
 
-  // Generate schema declaration
-  const schemaDecl = generateSchemaDeclaration(schemaName, schemaObject, isTypeScript);
-  sections.push(schemaDecl);
+  // Generate schema declaration (optionally preceded by constant declarations)
+  const schemaDecl = generateSchemaDeclaration(config, schemaObject);
+  const constPrefix = opts.constantDeclarations ? `${opts.constantDeclarations}\n\n` : '';
+  parts.schemaDeclaration = `${constPrefix}${schemaDecl}\n\nexport default ${config.identifiers.schema};\n`;
 
-  // Generate default export
-  sections.push(`\nexport default ${schemaName};`);
+  if (config.hasTypes) {
+    // if (useComposite) {
+    //   // Composite pattern: field interface is {Name}Trait, composite is {Name}
+    //   const fieldInterfaceName = `${interfaceName}Trait`;
+    //   const fieldInterfaceCode = generateInterfaceOnly(fieldInterfaceName, properties);
+    //   sections.push('');
+    //   sections.push(fieldInterfaceCode);
 
-  if (isTypeScript) {
-    if (useComposite) {
-      // Composite pattern: field interface is {Name}Trait, composite is {Name}
-      const fieldInterfaceName = `${interfaceName}Trait`;
-      const fieldInterfaceCode = generateInterfaceOnly(fieldInterfaceName, properties);
-      sections.push('');
-      sections.push(fieldInterfaceCode);
+    //   // Composite interface merges field interface, extension, and trait interfaces
+    //   const traitInterfaces = traits.map(traitNameToInterfaceName);
+    //   const compositeExtends = [fieldInterfaceName, extensionName, ...traitInterfaces].join(', ');
+    //   sections.push('');
+    //   sections.push(`export interface ${interfaceName} extends ${compositeExtends} {}`);
+    // } else {
+    //   // Standard pattern: single interface with optional trait extends
+    //   let extendsClause: string | undefined;
+    //   if (traits.length > 0) {
+    //     const traitInterfaces = traits.map(traitNameToInterfaceName);
+    //     extendsClause = traitInterfaces.join(', ');
+    //   }
 
-      // Composite interface merges field interface, extension, and trait interfaces
-      const traitInterfaces = traits.map(deriveTraitInterfaceName);
-      const compositeExtends = [fieldInterfaceName, extensionName, ...traitInterfaces].join(', ');
-      sections.push('');
-      sections.push(`export interface ${interfaceName} extends ${compositeExtends} {}`);
-    } else {
-      // Standard pattern: single interface with optional trait extends
-      let extendsClause: string | undefined;
-      if (traits.length > 0) {
-        const traitInterfaces = traits.map(deriveTraitInterfaceName);
-        extendsClause = traitInterfaces.join(', ');
-      }
+    //   const interfaceCode = generateInterfaceOnly(interfaceName, properties, extendsClause);
+    //   sections.push('');
+    //   sections.push(interfaceCode);
+    // }
 
-      const interfaceCode = generateInterfaceOnly(interfaceName, properties, extendsClause);
-      sections.push('');
-      sections.push(interfaceCode);
-    }
+    const interfaceCode = generateInterfaceOnly(options, config, comment, properties);
+    parts.interfaceDeclaration = interfaceCode;
   }
 
-  return sections.join('\n');
+  return parts;
 }

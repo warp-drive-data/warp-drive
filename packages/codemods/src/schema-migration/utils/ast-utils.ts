@@ -74,6 +74,7 @@ export {
   collectTraitImports,
   mapFieldsToTypeProperties,
   buildTraitSchemaObject,
+  SCHEMA_OPTION_REF_PREFIX,
 } from './schema-generation.js';
 export type { TransformArtifact, PropertyInfo, SchemaField, MergedSchemaOptions } from './schema-generation.js';
 
@@ -81,7 +82,6 @@ export type { TransformArtifact, PropertyInfo, SchemaField, MergedSchemaOptions 
 export {
   transformWarpDriveImport,
   generateWarpDriveTypeImport,
-  generateCommonWarpDriveImports,
   generateTraitImport,
   getModelImportSource,
   getResourcesImport,

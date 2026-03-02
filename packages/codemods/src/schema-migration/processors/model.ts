@@ -4,7 +4,8 @@ import { dirname, join, resolve } from 'path';
 
 import { logger } from '../../../utils/logger.js';
 import type { TransformerResult } from '../codemod.js';
-import type { TransformOptions } from '../config.js';
+import { getConfiguredImport, type TransformOptions } from '../config.js';
+import { createResourceArtifactConfig, createTraitArtifactConfig } from '../utils/artifact.js';
 import type { ExtractedType, SchemaField, TransformArtifact } from '../utils/ast-utils.js';
 import {
   buildLegacySchemaObject,
@@ -15,7 +16,6 @@ import {
   findClassDeclaration,
   findDefaultExport,
   findEmberImportLocalName,
-  generateCommonWarpDriveImports,
   generateMergedSchemaCode,
   getEmberDataImports,
   getExportedIdentifier,
@@ -25,6 +25,7 @@ import {
   isModelFile,
   mapFieldsToTypeProperties,
   mixinNameToTraitName,
+  SCHEMA_OPTION_REF_PREFIX,
   toPascalCase,
 } from '../utils/ast-utils.js';
 import {
@@ -40,12 +41,13 @@ import {
   NODE_KIND_MEMBER_EXPRESSION,
   NODE_KIND_PROPERTY_IDENTIFIER,
 } from '../utils/code-processing.js';
+import { createExtension } from '../utils/extension.js';
 import { createExtensionFromOriginalFile } from '../utils/extension-generation.js';
 import type { ParsedFile } from '../utils/file-parser.js';
 import { parseFile } from '../utils/file-parser.js';
 import { replaceWildcardPattern } from '../utils/path-utils.js';
 import type { SchemaEntity } from '../utils/schema-entity.js';
-import { deriveExtensionName, deriveSchemaName, deriveTraitInterfaceName } from '../utils/schema-entity.js';
+import type { FieldTypeInfo } from '../utils/schema-generation.js';
 import {
   MODEL_NAME_SUFFIX_REGEX,
   normalizePath,
@@ -55,6 +57,35 @@ import {
   toKebabCase,
   TRAILING_MODEL_SUFFIX_REGEX,
 } from '../utils/string.js';
+
+/**
+ * Find and return the source text of export declarations (e.g. `export const BIRTHAGE = 0;`)
+ * for each identifier in `identifierRefs`. These are included verbatim in the schema file
+ * so that schema field options can reference them by name.
+ */
+function collectConstantDecls(filePath: string, source: string, identifierRefs: Set<string>): string {
+  const lang = getLanguageFromPath(filePath);
+  const ast = parse(lang, source);
+  const root = ast.root();
+  const declarations: string[] = [];
+
+  for (const exportStmt of root.findAll({ rule: { kind: 'export_statement' } })) {
+    const decl = exportStmt.find({
+      rule: { any: [{ kind: 'lexical_declaration' }, { kind: 'variable_declaration' }] },
+    });
+    if (!decl) continue;
+
+    for (const declarator of decl.findAll({ rule: { kind: 'variable_declarator' } })) {
+      const nameNode = declarator.field('name');
+      if (nameNode && identifierRefs.has(nameNode.text())) {
+        declarations.push(exportStmt.text());
+        break;
+      }
+    }
+  }
+
+  return declarations.join('\n');
+}
 
 /** Method names that should be skipped (typically callback methods) */
 const SKIP_METHOD_NAMES = ['after'];
@@ -71,60 +102,20 @@ const FRAGMENT_BASE_SOURCE = 'ember-data-model-fragments/fragment';
 const log = logger.for('model-processor');
 
 /**
- * Get the base EmberData Model properties and methods that should be available on all model types.
- * These are inherited from the Model base class but need to be declared in trait interfaces
- * so TypeScript knows they exist when accessing them in extension code.
- */
-function getModelBaseProperties(): Array<{ name: string; type: string; readonly?: boolean }> {
-  return [
-    // State properties (readonly getters from Model)
-    { name: 'isNew', type: 'boolean', readonly: true },
-    { name: 'hasDirtyAttributes', type: 'boolean', readonly: true },
-    { name: 'isDeleted', type: 'boolean', readonly: true },
-    { name: 'isSaving', type: 'boolean', readonly: true },
-    { name: 'isValid', type: 'boolean', readonly: true },
-    { name: 'isError', type: 'boolean', readonly: true },
-    { name: 'isLoaded', type: 'boolean', readonly: true },
-    { name: 'isEmpty', type: 'boolean', readonly: true },
-
-    // Lifecycle methods
-    { name: 'save', type: '(options?: Record<string, unknown>) => Promise<this>' },
-    { name: 'reload', type: '(options?: Record<string, unknown>) => Promise<this>' },
-    { name: 'deleteRecord', type: '() => void' },
-    { name: 'unloadRecord', type: '() => void' },
-    { name: 'destroyRecord', type: '(options?: Record<string, unknown>) => Promise<void>' },
-    { name: 'rollbackAttributes', type: '() => void' },
-
-    // Relationship accessor methods
-    { name: 'belongsTo', type: '(propertyName: string) => BelongsToReference' },
-    { name: 'hasMany', type: '(propertyName: string) => HasManyReference' },
-
-    // Utility methods
-    { name: 'serialize', type: '(options?: Record<string, unknown>) => unknown' },
-
-    // Error property
-    { name: 'errors', type: 'Errors', readonly: true },
-
-    // Additional state
-    { name: 'adapterError', type: 'Error | null', readonly: true },
-    { name: 'isReloading', type: 'boolean', readonly: true },
-  ];
-}
-
-/**
  * Shared result type for model analysis
  */
-interface ModelAnalysisResult {
+export interface ModelAnalysisResult {
   isValid: boolean;
   modelImportLocal?: string;
   isFragment?: boolean;
   defaultExportNode?: SgNode;
   schemaFields: SchemaField[];
+  comment?: string;
   extensionProperties: Array<{
     name: string;
     originalKey: string;
     value: string;
-    typeInfo?: ExtractedType;
+    typeInfo: ExtractedType | null;
     isObjectMethod?: boolean;
   }>;
   mixinTraits: string[];
@@ -160,6 +151,7 @@ function createInvalidResult(modelName: string, baseName: string): ModelAnalysis
     mixinExtensions: [],
     modelName,
     baseName,
+    comment: undefined,
   };
 }
 
@@ -499,74 +491,119 @@ function generateRegularModelArtifacts(
 ): TransformArtifact[] {
   const filePath = entity.path;
   const source = entity.parsedFile.source;
-  const { schemaFields, extensionProperties, mixinTraits, mixinExtensions, baseName, isFragment } = analysis;
+  const { comment, schemaFields, mixinTraits, mixinExtensions, modelName, baseName, isFragment } = analysis;
   const artifacts: TransformArtifact[] = [];
 
   // Determine the file extension based on the original model file
   const originalExtension = getFileExtension(filePath);
   const isTypeScript = originalExtension === '.ts';
+  const resourceConfig = createResourceArtifactConfig(options, analysis, isTypeScript);
 
   // Collect imports needed for schema interface
   const schemaImports = new Set<string>();
+  const typeDeclarations = new Set<string>();
 
   // Collect schema field types - start with [Type] symbol
-  const schemaFieldTypes = [
+  const schemaFieldTypes: FieldTypeInfo[] = [
     {
       name: '[Type]',
-      type: `'${toKebabCase(baseName)}'`,
-      readonly: true,
+      transformInferredType: 'null',
+      typeInfo: {
+        readonly: true,
+        type: `'${toKebabCase(baseName)}'`,
+      },
+    },
+    {
+      name: 'id',
+      transformInferredType: 'string | null',
+      typeInfo: {
+        readonly: false,
+        type: 'string | null',
+      },
     },
     ...mapFieldsToTypeProperties(schemaFields, options),
   ];
 
-  const commonImports = generateCommonWarpDriveImports(options);
-  schemaImports.add(commonImports.typeImport);
-  collectRelationshipImports(schemaFields, baseName, schemaImports, options);
-  collectTraitImports(mixinTraits, schemaImports, options);
+  const typeImport = getConfiguredImport(options, 'Type');
+  schemaImports.add(`import type { Type } from '${typeImport.source}'`);
+  const WithLegacyImport = getConfiguredImport(options, 'WithLegacy');
+  schemaImports.add(`import type { WithLegacy } from '${WithLegacyImport.source}'`);
+  collectRelationshipImports(filePath, schemaFields, baseName, schemaImports, typeDeclarations, options);
+  // collectTraitImports(mixinTraits, schemaImports, options);
 
   // Build the schema object
   const schemaName = entity.schemaName;
   const schemaObject = buildLegacySchemaObject(baseName, schemaFields, mixinTraits, mixinExtensions, isFragment);
 
+  // Collect identifier refs from schema field options (e.g. `defaultValue: BIRTHAGE`)
+  // and find their export declarations in the source to include in the schema file.
+  const identifierRefs = new Set<string>();
+  for (const field of schemaFields) {
+    if (field.options) {
+      for (const value of Object.values(field.options)) {
+        if (typeof value === 'string' && value.startsWith(SCHEMA_OPTION_REF_PREFIX)) {
+          identifierRefs.add(value.slice(SCHEMA_OPTION_REF_PREFIX.length));
+        }
+      }
+    }
+  }
+  const constantDeclarations = identifierRefs.size > 0 ? collectConstantDecls(filePath, source, identifierRefs) : undefined;
+
   // Generate merged schema code (schema + types in one file)
-  const extensionName = entity.extensionNameIfNeeded;
   const mergedSchemaCode = generateMergedSchemaCode({
-    baseName,
-    interfaceName: entity.interfaceName,
-    schemaName,
+    config: resourceConfig,
     schemaObject,
     properties: schemaFieldTypes,
     traits: mixinTraits,
     imports: schemaImports,
-    isTypeScript,
     options,
-    extensionName,
+    comment,
+    constantDeclarations,
   });
 
-  artifacts.push({
-    type: 'schema',
-    name: schemaName,
-    code: mergedSchemaCode,
-    suggestedFileName: `${baseName}.schema${originalExtension}`,
-  });
+  const hasType = mergedSchemaCode.interfaceDeclaration && mergedSchemaCode.interfaceDeclaration.trim() !== '';
+  const typeString = typeDeclarations.size > 0 ? Array.from(typeDeclarations).join('\n') + '\n' : false;
+  if (options.combineSchemasAndTypes) {
+    artifacts.push({
+      type: 'schema',
+      name: schemaName,
+      code: [
+        mergedSchemaCode.schemaImports,
+        mergedSchemaCode.typeImports,
+        typeString,
+        mergedSchemaCode.schemaDeclaration,
+        mergedSchemaCode.interfaceDeclaration,
+      ]
+        .filter(Boolean)
+        .join('\n'),
+      baseName,
+      suggestedFileName: `${baseName}.schema${resourceConfig.schemaIsTyped ? '.ts' : '.js'}`,
+    });
+  } else {
+    artifacts.push({
+      type: 'schema',
+      name: schemaName,
+      code: [mergedSchemaCode.schemaImports, mergedSchemaCode.schemaDeclaration].filter(Boolean).join('\n'),
+      baseName,
+      suggestedFileName: `${baseName}.schema${resourceConfig.schemaIsTyped ? '.ts' : '.js'}`,
+    });
 
-  const modelInterfaceName = entity.traitInterfaceName;
-  const modelImportPath = options?.resourcesImport
-    ? `${options.resourcesImport}/${baseName}.schema`
-    : `../resources/${baseName}.schema`;
-  const extensionArtifact = createExtensionFromOriginalFile(
-    filePath,
-    source,
-    baseName,
-    entity.extensionName,
-    extensionProperties,
-    options,
-    modelInterfaceName,
-    modelImportPath,
-    'model',
-    undefined,
-    'resource'
-  );
+    if (hasType) {
+      artifacts.push({
+        type: 'type',
+        name: modelName,
+        code: [mergedSchemaCode.typeImports, typeString, mergedSchemaCode.interfaceDeclaration]
+          .filter(Boolean)
+          .join('\n'),
+        baseName,
+        suggestedFileName: `${baseName}.type.ts`,
+      });
+    }
+  }
+
+  const extensionArtifact = resourceConfig.hasExtension
+    ? createExtension(options, resourceConfig, filePath, source)
+    : null;
 
   log.debug(`Extension artifact created: ${!!extensionArtifact}`);
   if (extensionArtifact) {
@@ -606,12 +643,7 @@ function analyzeModelFromParsed(parsedFile: ParsedFile, options: TransformOption
     const { root, modelImportLocal, defaultExportNode, isFragment } = validation;
 
     // Use pre-parsed data for fields and behaviors
-    const schemaFields: SchemaField[] = parsedFile.fields.map((f) => ({
-      name: f.name,
-      kind: f.kind,
-      type: f.type,
-      options: f.options,
-    }));
+    const schemaFields: SchemaField[] = parsedFile.fields;
 
     const extensionProperties = parsedFile.behaviors
       .filter((b) => !SKIP_METHOD_NAMES.includes(b.name))
@@ -637,6 +669,7 @@ function analyzeModelFromParsed(parsedFile: ParsedFile, options: TransformOption
       mixinExtensions,
       modelName,
       baseName,
+      comment: parsedFile.comment,
     };
   } catch (error) {
     log.debug(`Error analyzing parsed model: ${String(error)}`);
@@ -676,7 +709,7 @@ function generateIntermediateModelTraitArtifacts(
     return [];
   }
 
-  const { schemaFields, extensionProperties, mixinTraits } = analysis;
+  const { schemaFields, mixinTraits, extensionProperties } = analysis;
 
   // Determine the file extension based on the original model file
   const originalExtension = getFileExtension(filePath);
@@ -694,51 +727,39 @@ function generateIntermediateModelTraitArtifacts(
     // Add id property at the beginning - all EmberData records have id
     traitFieldTypes.unshift({
       name: 'id',
-      type: 'string | null',
-      readonly: false, // id can be set on new records
+      transformInferredType: 'unknown',
+      typeInfo: {
+        type: 'string | null',
+        readonly: false,
+      },
     });
     log.debug(`DEBUG: Added id property to ${traitName} trait`);
   }
 
   // Add `store` property if storeType is configured
-  // The Store type is application-specific, so it must be explicitly configured
   const hasStore = traitFieldTypes.some((f) => f.name === 'store');
 
   if (!hasStore && options?.storeType) {
     const storeTypeName = options.storeType.name || 'Store';
     traitFieldTypes.push({
       name: 'store',
-      type: storeTypeName,
-      readonly: true, // store is injected and should not be modified
+      transformInferredType: 'unknown',
+      typeInfo: {
+        type: storeTypeName,
+        readonly: true,
+      },
     });
     log.debug(`DEBUG: Added store property with type ${storeTypeName} to ${traitName} trait`);
   }
 
-  // Add Model base properties (isNew, save, belongsTo, etc.) to trait types
-  // These are inherited from EmberData Model but need to be declared for TypeScript
-  const modelBaseProperties = getModelBaseProperties();
-  for (const prop of modelBaseProperties) {
-    // Only add if not already present (avoid duplicates)
-    const exists = traitFieldTypes.some((f) => f.name === prop.name);
-    if (!exists) {
-      traitFieldTypes.push({
-        name: prop.name,
-        type: prop.type,
-        readonly: prop.readonly ?? false,
-      });
-    }
-  }
-  log.debug(`DEBUG: Added ${modelBaseProperties.length} Model base properties to ${traitName} trait`);
-
   // Collect imports for trait interface
   const traitImports = new Set<string>();
+  const declarations = new Set<string>();
 
-  // Add imports for Model base property types (BelongsToReference, HasManyReference, Errors)
   traitImports.add(`type { BelongsToReference, HasManyReference, Errors } from '@warp-drive/legacy/model/-private'`);
-  collectRelationshipImports(schemaFields, traitName, traitImports, options);
+  collectRelationshipImports(filePath, schemaFields, traitName, traitImports, declarations, options);
   collectTraitImports(mixinTraits, traitImports, options, true);
 
-  // Add Store type import if storeType is configured
   if (options?.storeType) {
     const storeTypeName = options.storeType.name || 'Store';
     const storeImport = `type { ${storeTypeName} } from '${options.storeType.import}'`;
@@ -747,48 +768,46 @@ function generateIntermediateModelTraitArtifacts(
   }
 
   // Build the trait schema object
-  const traitSchemaName = deriveSchemaName(traitName);
-  const traitInterfaceName = deriveTraitInterfaceName(traitName);
   const traitSchemaObject = buildTraitSchemaObject(schemaFields, mixinTraits, { legacyFieldOrder: true });
 
-  // Generate merged trait schema code (schema + types in one file)
-  const mergedTraitSchemaCode = generateMergedSchemaCode({
-    baseName: traitName,
-    interfaceName: traitInterfaceName,
-    schemaName: traitSchemaName,
+  const traitConfig = createTraitArtifactConfig(
+    options,
+    traitName,
+    traitPascalName,
+    mixinTraits,
+    extensionProperties.length > 0,
+    isTypeScript
+  );
+
+  generateMergedSchemaCode({
+    config: traitConfig,
     schemaObject: traitSchemaObject,
     properties: traitFieldTypes,
     traits: mixinTraits,
     imports: traitImports,
-    isTypeScript,
+    options,
   });
 
   artifacts.push({
     type: 'trait',
-    name: traitSchemaName,
-    code: mergedTraitSchemaCode,
-    suggestedFileName: `${traitName}.schema${originalExtension}`,
+    name: traitConfig.identifiers.schema,
+    code: 'FIXME',
+    baseName: traitName,
+    suggestedFileName: `${traitName}.schema${options.disableTypescriptSchemas ? '.js' : '.ts'}`,
   });
 
-  // For traits with extension properties, create extension artifact
   if (extensionProperties.length > 0) {
-    // Create the extension artifact preserving original file content
-    // For traits, extensions should extend the trait interface
     const traitImportPath = options?.traitsImport
       ? `${options.traitsImport}/${traitName}.schema`
       : `../traits/${traitName}.schema`;
     const extensionArtifact = createExtensionFromOriginalFile(
+      traitConfig,
       filePath,
       source,
-      traitName,
-      deriveExtensionName(traitName),
       extensionProperties,
       options,
-      traitInterfaceName,
       traitImportPath,
-      'model',
-      undefined,
-      'trait'
+      'model'
     );
     if (extensionArtifact) {
       artifacts.push(extensionArtifact);

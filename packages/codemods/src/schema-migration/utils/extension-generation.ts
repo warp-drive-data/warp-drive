@@ -4,11 +4,11 @@ import { dirname, join, relative, resolve, sep } from 'path';
 
 import { logger } from '../../../utils/logger.js';
 import type { TransformOptions } from '../config.js';
+import type { SchemaArtifact } from './artifact.js';
 import { getFileExtension, getLanguageFromPath, indentCode, removeQuotes } from './path-utils.js';
 import type { TransformArtifact } from './schema-generation.js';
 import {
   EXPORT_DEFAULT_LINE_END_REGEX,
-  EXPORT_KEYWORD_REGEX,
   EXPORT_LINE_END_REGEX,
   extractDirectory,
   removeFileExtension,
@@ -25,8 +25,8 @@ export type ExtensionContext = 'resource' | 'trait';
 /**
  * Get the artifact type for an extension based on its context
  */
-export function getExtensionArtifactType(context: ExtensionContext): string {
-  return context === 'trait' ? 'trait-extension' : 'resource-extension';
+export function getExtensionArtifactType(context: SchemaArtifact): string {
+  return context.type === 'trait' ? 'trait-extension' : 'resource-extension';
 }
 
 /**
@@ -34,11 +34,9 @@ export function getExtensionArtifactType(context: ExtensionContext): string {
  * Shared between model-to-schema and mixin-to-schema transforms
  */
 export function generateExtensionCode(
-  extensionName: string,
+  config: SchemaArtifact,
   extensionProperties: Array<{ name: string; originalKey: string; value: string; isObjectMethod?: boolean }>,
   format: 'object' | 'class' = 'object',
-  interfaceToExtend?: string,
-  isTypeScript = true,
   interfaceImportPath?: string
 ): string {
   if (format === 'class') {
@@ -51,24 +49,23 @@ export function generateExtensionCode(
       })
       .join('\n\n');
 
-    const classCode = `export class ${extensionName} {\n${methods}\n}`;
+    const classCode = `export class ${config.identifiers.extension} {\n${methods}\n}`;
+    const exportDefault = `export default ${config.identifiers.extension};`;
 
     // Add interface extension for TypeScript files or JSDoc for JavaScript files
-    if (interfaceToExtend) {
-      if (isTypeScript) {
-        // Add import if interfaceImportPath is provided
-        const importStatement = interfaceImportPath
-          ? `import type { ${interfaceToExtend} } from '${interfaceImportPath}';\n\n`
-          : '';
-        // Put interface before class for better visibility
-        return `${importStatement}export interface ${extensionName} extends ${interfaceToExtend} {}\n\n${classCode}`;
-      }
-      // For JavaScript files, don't add JSDoc import here since it's handled by the base class pattern
-      return classCode;
+    if (config.extensionIsTyped) {
+      // Add import if interfaceImportPath is provided
+      const importStatement = interfaceImportPath
+        ? `import type { ${config.identifiers.type} } from '${interfaceImportPath}';\n\n`
+        : '';
+      // Put interface before class for better visibility
+      return `${importStatement}export interface ${config.identifiers.extension} extends ${config.identifiers.type} {}\n\n${classCode}\n\n${exportDefault}`;
     }
 
-    return classCode;
+    // For JavaScript files, don't add JSDoc import here since it's handled by the base class pattern
+    return `${classCode}\n\n${exportDefault}`;
   }
+
   // Object format used by mixin-to-schema transform
   const properties = extensionProperties
     .map((prop) => {
@@ -83,40 +80,18 @@ export function generateExtensionCode(
     })
     .join(',\n');
 
-  const objectCode = `export const ${extensionName} = {\n${properties}\n};`;
+  const objectCode = `export const ${config.identifiers.extension} = {\n${properties}\n};`;
 
-  // Add interface extension for TypeScript files or JSDoc for JavaScript files
-  if (interfaceToExtend) {
-    if (isTypeScript) {
-      // Add import if interfaceImportPath is provided
-      const importStatement = interfaceImportPath
-        ? `import type { ${interfaceToExtend} } from '${interfaceImportPath}';\n\n`
-        : '';
-      // Put interface before object for better visibility
-      return `${importStatement}export interface ${extensionName} extends ${interfaceToExtend} {}\n\n${objectCode}`;
-    }
-    // For JavaScript files, don't add JSDoc import here since it's handled by the base class pattern
-    return objectCode;
+  if (config.extensionIsTyped && config.identifiers.type) {
+    const importStatement = interfaceImportPath
+      ? `import type { ${config.identifiers.type} } from '${interfaceImportPath}';\n\n`
+      : '';
+    return `${importStatement}export interface ${config.identifiers.extension} extends ${config.identifiers.type} {}\n\n${objectCode}`;
   }
 
   return objectCode;
 }
 
-/**
- * Determine if an export statement should remain exported in the extension file.
- * We keep interfaces and type aliases exported so they can be imported by other files.
- * Other declarations (classes, functions, consts) become internal to the extension.
- */
-function shouldKeepExported(exportNode: SgNode): boolean {
-  // Get the declaration being exported
-  const declaration = exportNode.field('declaration');
-  if (!declaration) return false;
-
-  const kind = declaration.kind();
-
-  // Keep interface and type alias declarations exported
-  return kind === 'interface_declaration' || kind === 'type_alias_declaration';
-}
 
 /**
  * Remove imports that are not needed in extension artifacts
@@ -285,21 +260,23 @@ function updateRelativeImportsForExtensions(
 }
 
 /**
- * Create extension artifact by modifying the original file using AST
- * This preserves all imports, comments, and structure while replacing the class/export
+ * "Extensions" are whatever remains of a Model or Mixin after we extract all
+ * of the schema-related information.
+ *
+ * For instance for a Model, this means dropping extension of the base class,
+ * and dropping any properties decorated with @attr @hasMany or @belongsTo,
+ * as well as any imports or local definitions that are only used by those
+ * properties.
  */
 export function createExtensionFromOriginalFile(
+  schemaConfig: SchemaArtifact,
   filePath: string,
   source: string,
-  baseName: string,
-  extensionName: string,
   extensionProperties: Array<{ name: string; originalKey: string; value: string; isObjectMethod?: boolean }>,
   options?: TransformOptions,
-  interfaceToExtend?: string,
   interfaceImportPath?: string,
   sourceType: 'mixin' | 'model' = 'model',
-  processImports?: (source: string, filePath: string, baseDir: string, options?: TransformOptions) => string,
-  extensionContext: ExtensionContext = 'resource'
+  processImports?: (source: string, filePath: string, baseDir: string, options?: TransformOptions) => string
 ): TransformArtifact | null {
   if (extensionProperties.length === 0) {
     return null;
@@ -312,10 +289,10 @@ export function createExtensionFromOriginalFile(
 
     log.debug(`Creating extension from ${filePath} with ${extensionProperties.length} properties`);
 
-    const extFileName = `${baseName}.ext${getFileExtension(filePath)}`;
+    const extFileName = `${schemaConfig.name}.ext${getFileExtension(filePath)}`;
 
     const targetDir =
-      extensionContext === 'trait'
+      schemaConfig.type === 'trait'
         ? options?.traitsDir || './app/data/traits'
         : options?.resourcesDir || './app/data/resources';
     const targetFilePath = join(resolve(targetDir), extFileName);
@@ -329,47 +306,38 @@ export function createExtensionFromOriginalFile(
 
     log.debug(`Extension generation for ${sourceType} using ${format} format`);
 
-    const extensionCode = generateExtensionCode(
-      extensionName,
-      extensionProperties,
-      format,
-      interfaceToExtend,
-      filePath.endsWith('.ts'),
-      interfaceImportPath
-    );
+    const extensionCode = generateExtensionCode(schemaConfig, extensionProperties, format, interfaceImportPath);
 
     // Use a simpler approach: remove the main class and append extension code
     let modifiedSource = updatedSource;
 
     // The main class will be handled in the export processing loop below
-
-    // Remove all export statements except the default export, but preserve their content
     const allExports = root.findAll({ rule: { kind: 'export_statement' } });
     log.debug(`Found ${allExports.length} export statements to process`);
-    for (const exportNode of allExports) {
-      const exportText = exportNode.text();
-      log.debug(`Processing export: ${exportText.substring(0, 100)}...`);
+    // for (const exportNode of allExports) {
+    //   const exportText = exportNode.text();
+    //   log.debug(`Processing export: ${exportText.substring(0, 100)}...`);
 
-      // Check if this is the default export (the main model class)
-      const isDefaultExport = exportText.includes('export default');
-      if (isDefaultExport) {
-        log.debug(`Removing default export (main model class)`);
-        modifiedSource = modifiedSource.replace(exportText, '');
-        continue;
-      }
+    //   // Check if this is the default export (the main model class)
+    //   const isDefaultExport = exportText.includes('export default');
+    //   if (isDefaultExport) {
+    //     log.debug(`Removing default export (main model class)`);
+    //     modifiedSource = modifiedSource.replace(exportText, '');
+    //     continue;
+    //   }
 
-      // Check if this is a type definition that should remain exported
-      if (shouldKeepExported(exportNode)) {
-        log.debug(`Keeping export for type definition: ${exportText.substring(0, 50)}...`);
-        continue;
-      }
+    //   // Check if this is a type definition that should remain exported
+    //   if (shouldKeepExported(exportNode)) {
+    //     log.debug(`Keeping export for type definition: ${exportText.substring(0, 50)}...`);
+    //     continue;
+    //   }
 
-      // For non-type exports, remove the export keyword but keep the content
-      // Simply replace "export " with empty string
-      const contentWithoutExport = exportText.replace(EXPORT_KEYWORD_REGEX, '');
-      log.debug(`Removing export keyword, keeping content: ${contentWithoutExport.substring(0, 50)}...`);
-      modifiedSource = modifiedSource.replace(exportText, contentWithoutExport);
-    }
+    //   // For non-type exports, remove the export keyword but keep the content
+    //   // Simply replace "export " with empty string
+    //   const contentWithoutExport = exportText.replace(EXPORT_KEYWORD_REGEX, '');
+    //   log.debug(`Removing export keyword, keeping content: ${contentWithoutExport.substring(0, 50)}...`);
+    //   modifiedSource = modifiedSource.replace(exportText, contentWithoutExport);
+    // }
 
     // Process imports to resolve relative imports to absolute imports
     const baseDir = process.cwd();
@@ -394,8 +362,9 @@ export function createExtensionFromOriginalFile(
     log.debug(`Extension code to add: ${extensionCode.substring(0, 200)}...`);
 
     return {
-      type: getExtensionArtifactType(extensionContext),
-      name: extensionName,
+      baseName: schemaConfig.name,
+      type: getExtensionArtifactType(schemaConfig),
+      name: schemaConfig.identifiers.extension!,
       code: modifiedSource,
       suggestedFileName: extFileName,
     };

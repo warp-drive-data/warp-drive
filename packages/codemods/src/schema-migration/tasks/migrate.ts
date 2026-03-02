@@ -1,7 +1,7 @@
 import { existsSync, mkdirSync, writeFileSync } from 'fs';
 import { basename, dirname, join, resolve } from 'path';
 
-import { InstanciatedLogger, logger } from '../../../utils/logger.js';
+import { type InstanciatedLogger, logger } from '../../../utils/logger.js';
 import type { SkippedFile, TransformerResult } from '../codemod.js';
 import { Codemod } from '../codemod.js';
 import type { FinalOptions, MigrateOptions, TransformOptions } from '../config.js';
@@ -334,8 +334,10 @@ export async function runMigration(options: MigrateOptions): Promise<void> {
     outputDir: options.outputDir || './app/schemas',
     dryRun: options.dryRun || false,
     verbose: options.verbose || false,
+    warpDriveImports: options.warpDriveImports || 'legacy',
     modelSourceDir: options.modelSourceDir || './app/models',
     mixinSourceDir: options.mixinSourceDir || './app/mixins',
+    projectName: options.projectName || '',
     ...options,
   };
 

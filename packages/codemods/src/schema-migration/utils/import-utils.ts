@@ -28,7 +28,6 @@ import {
   IMPORT_PATH_SINGLE_QUOTE_REGEX,
   IMPORT_TYPE_DEFAULT_REGEX,
   LEADING_HYPHEN_REGEX,
-  MODEL_SUFFIX_REGEX,
   QUOTE_CHARS_REGEX,
   SCHEMA_PATH_REGEX,
   UPPERCASE_LETTER_REGEX,
@@ -67,47 +66,6 @@ export function generateWarpDriveTypeImport(
 }
 
 /**
- * Derive the Type symbol import path from the emberDataImportSource
- * e.g., @auditboard/warp-drive/v1/model -> @auditboard/warp-drive/v1/core-types/symbols
- *       @ember-data/model -> @warp-drive/core/types/symbols
- */
-function getTypeSymbolImportPath(emberDataSource: string): string {
-  // If using a custom ember-data source with a package prefix, derive the symbols path
-  if (emberDataSource.includes('/model')) {
-    // Replace /model with /core-types/symbols for custom packages
-    // e.g., @auditboard/warp-drive/v1/model -> @auditboard/warp-drive/v1/core-types/symbols
-    return emberDataSource.replace(MODEL_SUFFIX_REGEX, '/core-types/symbols');
-  }
-  // Default to the standard warp-drive path
-  return '@warp-drive/core/types/symbols';
-}
-
-/**
- * Generate common WarpDrive type imports
- */
-export function generateCommonWarpDriveImports(options?: TransformOptions): {
-  typeImport: string;
-  asyncHasManyImport: string;
-  hasManyImport: string;
-  storeImport: string;
-} {
-  const emberDataSource = options?.emberDataImportSource || DEFAULT_EMBER_DATA_SOURCE;
-  const typeSymbolPath = getTypeSymbolImportPath(emberDataSource);
-  // Derive store import path from emberDataSource
-  // e.g., @auditboard/warp-drive/v1/model -> @auditboard/warp-drive/v1/store
-  //       @ember-data/model -> @warp-drive/core
-  const storeImportPath = emberDataSource.includes('/model')
-    ? emberDataSource.replace(MODEL_SUFFIX_REGEX, '/store')
-    : '@warp-drive/core';
-  return {
-    typeImport: generateWarpDriveTypeImport('Type', typeSymbolPath, options),
-    asyncHasManyImport: generateWarpDriveTypeImport('AsyncHasMany', emberDataSource, options),
-    hasManyImport: generateWarpDriveTypeImport('HasMany', emberDataSource, options),
-    storeImport: generateWarpDriveTypeImport('Store', storeImportPath, options),
-  };
-}
-
-/**
  * Generate a trait type import statement
  * e.g., generateTraitImport('shareable', options) returns:
  *   "type { ShareableTrait } from 'app/data/traits/shareable.schema'"
@@ -135,9 +93,9 @@ export function getModelImportSource(options?: TransformOptions): string {
 /**
  * Get the configured resources import source (required - no default provided)
  */
-export function getResourcesImport(options?: TransformOptions): string {
+export function getResourcesImport(options: TransformOptions): string {
   if (!options?.resourcesImport) {
-    throw new Error('resourcesImport is required but not provided in configuration');
+    return '.';
   }
   return options.resourcesImport;
 }
@@ -193,7 +151,7 @@ function shouldImportFromTraits(relatedType: string, options?: TransformOptions)
 export function transformModelToResourceImport(
   relatedType: string,
   modelName: string,
-  options?: TransformOptions
+  options: TransformOptions
 ): string {
   // Always check traits first for intermediate models (they're always traits)
   if (shouldImportFromTraits(relatedType, options)) {
@@ -231,8 +189,10 @@ export function transformModelToResourceImport(
 
   // Default to resource import (either we found a model, or we're assuming it's a resource)
   const resourcesImport = getResourcesImport(options);
+  const ext = options.projectImportsUseExtensions ? '.ts' : '';
+  const typeFileName = options?.combineSchemasAndTypes ? `${relatedType}.schema${ext}` : `${relatedType}.type${ext}`;
 
-  return `type { ${modelName} } from '${resourcesImport}/${relatedType}.schema'`;
+  return `import type { ${modelName} } from '${resourcesImport}/${typeFileName}'`;
 }
 
 /**
@@ -702,7 +662,7 @@ export function findEmberImportLocalName(
 
     // Check if this is a relative import that points to a model file
     if (fromFile && baseDir && (cleanSourceText.startsWith('./') || cleanSourceText.startsWith('../'))) {
-      const resolvedPath = resolveRelativeImport(cleanSourceText, fromFile, baseDir);
+      const resolvedPath = resolveRelativeImport(cleanSourceText, fromFile);
       if (resolvedPath) {
         try {
           const fileContent = readFileSync(resolvedPath, 'utf8');
@@ -764,7 +724,7 @@ function convertImportToAbsolute(
   baseDir: string,
   importNode: SgNode,
   isRelativeImport: boolean,
-  options?: TransformOptions
+  options: TransformOptions
 ): string | null {
   try {
     // Check if the resolved file is a model file
@@ -825,7 +785,7 @@ function convertImportToAbsolute(
 /**
  * Process imports in source code to resolve relative imports and convert them to appropriate types
  */
-export function processImports(source: string, filePath: string, baseDir: string, options?: TransformOptions): string {
+export function processImports(source: string, filePath: string, baseDir: string, options: TransformOptions): string {
   try {
     const lang = getLanguageFromPath(filePath);
     const ast = parse(lang, source);
@@ -857,7 +817,7 @@ export function processImports(source: string, filePath: string, baseDir: string
         // Handle relative imports
         log.debug(`Processing relative import: ${cleanSourceText}`);
         isRelativeImport = true;
-        resolvedPath = resolveRelativeImport(cleanSourceText, filePath, baseDir);
+        resolvedPath = resolveRelativeImport(cleanSourceText, filePath);
       } else if (isSpecialMixinImport(cleanSourceText, options)) {
         // Handle special cases where model imports are actually mixins (e.g., workflowable)
         log.debug(`Processing special mixin import: ${cleanSourceText}`);

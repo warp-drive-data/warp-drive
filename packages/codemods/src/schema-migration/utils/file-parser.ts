@@ -75,8 +75,12 @@ export interface ParsedField {
   type?: string;
   /** Options passed to the decorator */
   options?: Record<string, unknown>;
-  /** TypeScript type annotation if present */
-  tsType?: string;
+  /** TypeScript type information */
+  typeInfo: ExtractedType | null;
+  /**
+   * Leading comment text directly above the field declaration, if any. This is used to preserve comments on fields during transformation.
+   */
+  comment?: string;
 }
 
 /**
@@ -90,7 +94,7 @@ export interface ParsedBehavior {
   /** The full source text of the property/method */
   value: string;
   /** TypeScript type information */
-  typeInfo?: ExtractedType;
+  typeInfo: ExtractedType | null;
   /** Whether this uses object method syntax */
   isObjectMethod: boolean;
   /** Kind of behavior */
@@ -101,6 +105,9 @@ export interface ParsedBehavior {
  * Intermediate parsed file structure containing all extracted information
  * from a model or mixin file. This structure is created once after file
  * discovery and reused throughout the migration process.
+ *
+ * Note: this presumes that files do not contain multiple classes/mixins.
+ * TODO: We should consider erring if that case is detected.
  */
 export interface ParsedFile {
   /** File name without extension (e.g., 'user' from 'user.ts') */
@@ -131,6 +138,11 @@ export interface ParsedFile {
   baseName: string;
   /** Original source code - preserved for functions that still need raw access during transition */
   source: string;
+  /**
+   * Leading comment text directly above the class/mixin declaration, if any.
+   * This is used to preserve file-level comments during transformation.
+   */
+  comment?: string;
 }
 
 // ============================================================================
@@ -335,20 +347,26 @@ interface ExtractedModelData {
   behaviors: ParsedBehavior[];
   traits: string[];
   baseClass?: string;
+  comment?: string;
 }
 
 function extractModelData(root: SgNode, filePath: string, options: TransformOptions): ExtractedModelData {
   const fields: ParsedField[] = [];
   const behaviors: ParsedBehavior[] = [];
   const traits: string[] = [];
+  let comment: string | undefined = undefined;
   let baseClass: string | undefined;
 
   const isJavaScript = filePath.endsWith('.js');
 
   const classDeclaration = findClassDeclarationInRoot(root, options);
   if (!classDeclaration) {
-    return { fields, behaviors, traits, baseClass };
+    return { fields, behaviors, traits, baseClass, comment };
   }
+
+  // there must be a defaultExport if we found a class declaration
+  const defaultExport = findDefaultExport(root, options);
+  comment = extractLeadingComment(defaultExport!);
 
   // Extract base class and traits from heritage clause
   const heritageClause = classDeclaration.find({ rule: { kind: NODE_KIND_CLASS_HERITAGE } });
@@ -387,7 +405,7 @@ function extractModelData(root: SgNode, filePath: string, options: TransformOpti
   // Get class body
   const classBody = classDeclaration.find({ rule: { kind: NODE_KIND_CLASS_BODY } });
   if (!classBody) {
-    return { fields, behaviors, traits, baseClass };
+    return { fields, behaviors, traits, baseClass, comment };
   }
 
   // Find property and method definitions
@@ -404,10 +422,10 @@ function extractModelData(root: SgNode, filePath: string, options: TransformOpti
     const originalKey = fieldName;
 
     // Extract TypeScript type
-    let typeInfo: ExtractedType | undefined;
+    let typeInfo: ExtractedType | null = null;
     if (!isJavaScript) {
       try {
-        typeInfo = extractTypeFromDeclaration(property, options) ?? undefined;
+        typeInfo = extractTypeFromDeclaration(property, options) ?? null;
       } catch {
         // Ignore type extraction errors
       }
@@ -431,7 +449,7 @@ function extractModelData(root: SgNode, filePath: string, options: TransformOpti
 
         if (!typeInfo) {
           try {
-            typeInfo = extractTypeFromDecorator(originalDecoratorName, decoratorArgs, options) ?? undefined;
+            typeInfo = extractTypeFromDecorator(originalDecoratorName, decoratorArgs, options) ?? null;
           } catch {
             // Ignore type extraction errors
           }
@@ -439,13 +457,15 @@ function extractModelData(root: SgNode, filePath: string, options: TransformOpti
 
         const schemaField = convertToSchemaField(fieldName, originalDecoratorName, decoratorArgs);
         if (schemaField) {
-          fields.push({
+          const field = {
             name: schemaField.name,
             kind: schemaField.kind,
             type: schemaField.type,
             options: schemaField.options,
-            tsType: typeInfo?.type,
-          });
+            typeInfo,
+            comment: extractLeadingComment(property),
+          };
+          fields.push(field);
           isSchemaField = true;
           break;
         }
@@ -489,10 +509,10 @@ function extractModelData(root: SgNode, filePath: string, options: TransformOpti
 
     const methodText = decorators.length > 0 ? decorators.join('\n') + '\n' + method.text() : method.text();
 
-    let typeInfo: ExtractedType | undefined;
+    let typeInfo: ExtractedType | null = null;
     if (!isJavaScript) {
       try {
-        typeInfo = extractTypeFromMethod(method, options) ?? undefined;
+        typeInfo = extractTypeFromMethod(method, options) ?? null;
       } catch {
         // Ignore type extraction errors
       }
@@ -508,7 +528,7 @@ function extractModelData(root: SgNode, filePath: string, options: TransformOpti
     });
   }
 
-  return { fields, behaviors, traits, baseClass };
+  return { fields, behaviors, traits, baseClass, comment };
 }
 
 // ============================================================================
@@ -607,7 +627,7 @@ function extractMixinData(root: SgNode, filePath: string, options: TransformOpti
     let valueNode: SgNode | null = null;
     let fieldName = '';
     let originalKey = '';
-    let typeInfo: ExtractedType | undefined;
+    let typeInfo: ExtractedType | null = null;
 
     if (property.kind() === NODE_KIND_METHOD_DEFINITION) {
       keyNode = property.field('name');
@@ -617,7 +637,7 @@ function extractMixinData(root: SgNode, filePath: string, options: TransformOpti
 
       if (!isJavaScript) {
         try {
-          typeInfo = extractTypeFromMethod(property, options) ?? undefined;
+          typeInfo = extractTypeFromMethod(property, options) ?? null;
         } catch {
           // Ignore type extraction errors
         }
@@ -649,7 +669,8 @@ function extractMixinData(root: SgNode, filePath: string, options: TransformOpti
               kind: schemaField.kind,
               type: schemaField.type,
               options: schemaField.options,
-              tsType: typeInfo?.type,
+              typeInfo,
+              comment: extractLeadingComment(property),
             });
             continue;
           }
@@ -768,6 +789,7 @@ export function parseFile(filePath: string, code: string, options: TransformOpti
   let behaviors: ParsedBehavior[] = [];
   let traits: string[] = [];
   let baseClass: string | undefined;
+  let comment: string | undefined;
 
   if (fileType === 'model' || fileType === 'fragment') {
     const modelData = extractModelData(root, filePath, options);
@@ -775,11 +797,13 @@ export function parseFile(filePath: string, code: string, options: TransformOpti
     behaviors = modelData.behaviors;
     traits = modelData.traits;
     baseClass = modelData.baseClass;
+    comment = modelData.comment;
   } else if (fileType === 'mixin') {
     const mixinData = extractMixinData(root, filePath, options);
     fields = mixinData.fields;
     behaviors = mixinData.behaviors;
     traits = mixinData.traits;
+    comment = extractLeadingComment(root);
   }
 
   const hasExtension = behaviors.length > 0;
@@ -803,5 +827,18 @@ export function parseFile(filePath: string, code: string, options: TransformOpti
     camelName,
     baseName,
     source: code,
+    comment,
   };
+}
+
+/**
+ * Extract the leading JSDoc/block comment immediately preceding a class field node,
+ * if one exists as the previous sibling in the class body.
+ */
+export function extractLeadingComment(node: SgNode): string | undefined {
+  const prev = node.prev();
+  if (prev && prev.kind() === 'comment') {
+    return prev.text();
+  }
+  return undefined;
 }

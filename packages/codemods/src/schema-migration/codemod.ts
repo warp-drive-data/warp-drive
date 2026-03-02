@@ -3,7 +3,7 @@ import { readFile } from 'fs/promises';
 import { glob } from 'glob';
 import { basename, extname, join, resolve } from 'path';
 
-import { InstanciatedLogger } from '../../utils/logger.js';
+import type { InstanciatedLogger } from '../../utils/logger.js';
 import type { FinalOptions } from './config.js';
 import { analyzeModelMixinUsage } from './processors/mixin-analyzer.js';
 import type { TransformArtifact } from './utils/ast-utils.js';

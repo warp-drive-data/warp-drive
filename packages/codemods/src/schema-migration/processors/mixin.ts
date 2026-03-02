@@ -4,17 +4,18 @@ import { join } from 'path';
 import { logger } from '../../../utils/logger.js';
 import type { TransformerResult } from '../codemod.js';
 import type { TransformOptions } from '../config.js';
+import { createTraitArtifactConfig } from '../utils/artifact.js';
 import type { PropertyInfo, SchemaField, TransformArtifact } from '../utils/ast-utils.js';
 import {
   buildTraitSchemaObject,
   collectTraitImports,
-  createExtensionFromOriginalFile,
   DEFAULT_EMBER_DATA_SOURCE,
   generateMergedSchemaCode,
   getFileExtension,
   mapFieldsToTypeProperties,
   toPascalCase,
 } from '../utils/ast-utils.js';
+import { createExtensionFromOriginalFile } from '../utils/extension-generation.js';
 import type { SchemaEntity } from '../utils/schema-entity.js';
 import { isConnectedToModel as isConnectedToModelInRegistry } from '../utils/schema-entity.js';
 import { pascalToKebab } from '../utils/string.js';
@@ -47,6 +48,7 @@ function ensureResourceTypeFileExists(
       type: 'resource-type-stub',
       name: pascalCaseType,
       code: stubCode,
+      baseName: modelType,
       suggestedFileName: `${modelType}.schema.ts`,
     });
 
@@ -147,9 +149,7 @@ function generateMixinArtifacts(
   const fileExtension = getFileExtension(filePath);
   const isTypeScript = fileExtension === '.ts';
 
-  const traitInterfaceName = entity.traitInterfaceName;
-
-  const traitFieldTypes = mapFieldsToTypeProperties(traitFields as SchemaField[], options, false);
+  const traitFieldTypes = mapFieldsToTypeProperties(traitFields as SchemaField[], options);
 
   const imports = new Set<string>();
   const modelTypes = new Set<string>();
@@ -185,28 +185,36 @@ function generateMixinArtifacts(
 
   collectTraitImports(extendedTraits, imports, options);
 
-  const traitSchemaName = entity.schemaName;
   const traitInternalName = pascalToKebab(mixinName);
   const traitSchemaObject = buildTraitSchemaObject(traitFields as SchemaField[], extendedTraits, {
     name: traitInternalName,
     mode: 'legacy',
   });
 
-  const mergedTraitSchemaCode = generateMergedSchemaCode({
+  const classified = toPascalCase(baseName);
+  const traitConfig = createTraitArtifactConfig(
+    options,
     baseName,
-    interfaceName: traitInterfaceName,
-    schemaName: traitSchemaName,
+    classified,
+    extendedTraits,
+    extensionProperties.length > 0,
+    isTypeScript
+  );
+
+  generateMergedSchemaCode({
+    config: traitConfig,
     schemaObject: traitSchemaObject,
     properties: traitFieldTypes,
     traits: extendedTraits,
     imports,
-    isTypeScript,
+    options,
   });
 
   artifacts.push({
     type: 'trait',
-    name: traitSchemaName,
-    code: mergedTraitSchemaCode,
+    name: traitConfig.identifiers.schema,
+    code: 'FIXME',
+    baseName,
     suggestedFileName: `${baseName}.schema${fileExtension}`,
   });
 
@@ -215,17 +223,13 @@ function generateMixinArtifacts(
       ? `${options.traitsImport}/${baseName}.schema`
       : `../traits/${baseName}.schema`;
     const extensionArtifact = createExtensionFromOriginalFile(
+      traitConfig,
       filePath,
       source,
-      baseName,
-      entity.extensionName,
       extensionProperties,
       options,
-      traitInterfaceName,
       traitImportPath,
-      'mixin',
-      undefined,
-      'trait'
+      'mixin'
     );
 
     if (extensionArtifact) {
