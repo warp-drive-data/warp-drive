@@ -5,18 +5,20 @@ import type { TransformOptions } from '@ember-data/codemods/schema-migration/con
 import { toArtifacts as toTraitArtifacts } from '@ember-data/codemods/schema-migration/processors/mixin.js';
 import { toArtifacts as toResourceArtifacts } from '@ember-data/codemods/schema-migration/processors/model.js';
 import { parseFile } from '@ember-data/codemods/schema-migration/utils/file-parser.js';
+import { SchemaEntity } from '@ember-data/codemods/schema-migration/utils/schema-entity.js';
 import type { TransformArtifact } from '@ember-data/codemods/schema-migration/utils/schema-generation.js';
 
 import { createTestOptions } from '../test-helpers.ts';
 
 function transformFile(filePath: string, source: string, options: TransformOptions) {
   const parsed = parseFile(filePath, source, options);
+  const entity = SchemaEntity.fromParsedFile(parsed);
 
   switch (parsed.fileType) {
     case 'mixin':
-      return toTraitArtifacts(parsed, options);
+      return toTraitArtifacts(entity, options);
     case 'model':
-      return toResourceArtifacts(parsed, options);
+      return toResourceArtifacts(entity, options);
     default:
       throw new Error(`Unknown file type for path: ${filePath}`);
   }

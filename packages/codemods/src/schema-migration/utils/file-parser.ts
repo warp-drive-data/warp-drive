@@ -34,10 +34,22 @@ import {
   NODE_KIND_PAIR,
   NODE_KIND_PROPERTY_IDENTIFIER,
 } from './code-processing.js';
-import { DEFAULT_EMBER_DATA_SOURCE, findEmberImportLocalName } from './import-utils.js';
-import { extractBaseName, extractCamelCaseName, extractPascalCaseName, getLanguageFromPath } from './path-utils.js';
+import {
+  DEFAULT_EMBER_DATA_SOURCE,
+  DEFAULT_MIXIN_SOURCE,
+  FRAGMENT_BASE_SOURCE,
+  WARP_DRIVE_MODEL,
+  findEmberImportLocalName,
+} from './import-utils.js';
+import {
+  extractBaseName,
+  extractCamelCaseName,
+  extractPascalCaseName,
+  getLanguageFromPath,
+  removeQuotes,
+} from './path-utils.js';
 import { convertToSchemaField } from './schema-generation.js';
-import { mixinNameToKebab, removeQuoteChars } from './string.js';
+import { mixinNameToKebab } from './string.js';
 import type { ExtractedType } from './type-utils.js';
 import { extractTypeFromDeclaration, extractTypeFromDecorator, extractTypeFromMethod } from './type-utils.js';
 
@@ -149,10 +161,6 @@ export interface ParsedFile {
 // Constants
 // ============================================================================
 
-const DEFAULT_MIXIN_SOURCE = '@ember/object/mixin';
-const FRAGMENT_BASE_SOURCE = 'ember-data-model-fragments/fragment';
-const WARP_DRIVE_MODEL = '@warp-drive/model';
-
 const FIELD_DEFINITION_NODE_TYPES = [
   NODE_KIND_FIELD_DEFINITION,
   'public_field_definition',
@@ -211,7 +219,7 @@ function parseImports(root: SgNode, options: TransformOptions): ParsedFileImport
     const source = importNode.field('source');
     if (!source) continue;
 
-    const importPath = removeQuoteChars(source.text());
+    const importPath = removeQuotes(source.text());
     const localNames: string[] = [];
     let isDefault = false;
 
@@ -646,7 +654,7 @@ function extractMixinData(root: SgNode, filePath: string, options: TransformOpti
       keyNode = property.field('key');
       valueNode = property.field('value');
       originalKey = keyNode?.text() || '';
-      fieldName = removeQuoteChars(originalKey);
+      fieldName = removeQuotes(originalKey);
     }
 
     if (!keyNode || !valueNode || !fieldName) continue;
@@ -746,7 +754,7 @@ function detectFileType(root: SgNode, filePath: string, options: TransformOption
     for (const importNode of importStatements) {
       const source = importNode.field('source');
       if (!source) continue;
-      const sourceText = removeQuoteChars(source.text());
+      const sourceText = removeQuotes(source.text());
       if (options.intermediateFragmentPaths.includes(sourceText)) {
         return 'model';
       }

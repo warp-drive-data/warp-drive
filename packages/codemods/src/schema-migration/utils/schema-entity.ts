@@ -33,11 +33,11 @@ export class SchemaEntity {
 
   // Centralized derived names
   get schemaName(): string {
-    return `${this.pascalName}Schema`;
+    return deriveSchemaName(this.baseName);
   }
 
   get extensionName(): string {
-    return `${this.pascalName}Extension`;
+    return deriveExtensionName(this.baseName);
   }
 
   get interfaceName(): string {
@@ -45,7 +45,7 @@ export class SchemaEntity {
   }
 
   get traitInterfaceName(): string {
-    return `${this.pascalName}Trait`;
+    return deriveTraitInterfaceName(this.baseName);
   }
 
   get hasExtension(): boolean {

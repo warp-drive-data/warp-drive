@@ -93,6 +93,10 @@ export {
   isModelFile,
   findEmberImportLocalName,
   processImports,
+  getModelImportSources,
+  WARP_DRIVE_MODEL,
+  FRAGMENT_DECORATOR_SOURCE,
+  FRAGMENT_BASE_SOURCE,
 } from './import-utils.js';
 
 // Re-export from extension-generation

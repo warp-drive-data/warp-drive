@@ -1,6 +1,6 @@
 import type { SgNode } from '@ast-grep/napi';
 
-import { removeQuoteChars } from './string.js';
+import { removeQuotes } from './path-utils.js';
 
 /** AST node kind for identifier nodes */
 export const NODE_KIND_IDENTIFIER = 'identifier';
@@ -107,7 +107,7 @@ export function getImportSourcePath(importStatement: SgNode): string | null {
   if (!sourceNode) {
     return null;
   }
-  return removeQuoteChars(sourceNode.text());
+  return removeQuotes(sourceNode.text());
 }
 
 /**
@@ -195,7 +195,7 @@ export function findIdentifiersInArguments(argumentsNode: SgNode): SgNode[] {
 export function findStringArgument(argNodes: SgNode[]): string | null {
   for (const arg of argNodes) {
     if (arg.kind() === NODE_KIND_STRING) {
-      return removeQuoteChars(arg.text());
+      return removeQuotes(arg.text());
     }
   }
   return null;

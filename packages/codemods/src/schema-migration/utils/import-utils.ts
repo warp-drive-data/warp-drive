@@ -28,7 +28,6 @@ import {
   IMPORT_PATH_SINGLE_QUOTE_REGEX,
   IMPORT_TYPE_DEFAULT_REGEX,
   LEADING_HYPHEN_REGEX,
-  QUOTE_CHARS_REGEX,
   SCHEMA_PATH_REGEX,
   UPPERCASE_LETTER_REGEX,
 } from './string.js';
@@ -40,6 +39,19 @@ const log = logger.for('import-utils');
  */
 export const DEFAULT_EMBER_DATA_SOURCE = '@ember-data/model';
 export const DEFAULT_MIXIN_SOURCE = '@ember/object/mixin';
+export const WARP_DRIVE_MODEL = '@warp-drive/model';
+export const FRAGMENT_DECORATOR_SOURCE = 'ember-data-model-fragments/attributes';
+export const FRAGMENT_BASE_SOURCE = 'ember-data-model-fragments/fragment';
+
+export function getModelImportSources(options?: TransformOptions): string[] {
+  return [
+    options?.emberDataImportSource || DEFAULT_EMBER_DATA_SOURCE,
+    ...(options?.importSubstitutes?.map((s) => s.import) ?? []),
+    WARP_DRIVE_MODEL,
+    FRAGMENT_DECORATOR_SOURCE,
+    FRAGMENT_BASE_SOURCE,
+  ].filter(Boolean);
+}
 
 /**
  * Transform @warp-drive imports to use @warp-drive-mirror when mirror flag is set
@@ -539,7 +551,7 @@ export function isModelFile(filePath: string, source: string, options?: Transfor
       const importSource = importNode.field('source');
       if (!importSource) continue;
 
-      const sourceText = importSource.text().replace(QUOTE_CHARS_REGEX, '');
+      const sourceText = removeQuotes(importSource.text());
 
       // Check for direct matches with base model sources
       let isBaseModelImport = baseModelSources.includes(sourceText);

@@ -1,5 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
+import type { TransformOptions } from '../../../../../packages/codemods/src/schema-migration/config.js';
+import type { SchemaArtifact } from '../../../../../packages/codemods/src/schema-migration/utils/artifact.js';
 import type { PropertyInfo } from '../../../../../packages/codemods/src/schema-migration/utils/ast-utils.js';
 import {
   createExtensionArtifactWithTypes,
@@ -40,6 +42,41 @@ function buildTestRegistry(entries: Array<{ baseName: string; kind: EntityKind; 
     registry.set(entry.path, createMockEntity(entry.baseName, entry.kind, entry.path));
   }
   return registry;
+}
+
+const testOptions: TransformOptions = {
+  warpDriveImports: 'legacy',
+  projectImportsUseExtensions: true,
+  projectName: 'test-app',
+};
+
+function makeTestConfig(
+  name: string,
+  fieldsInterface: string,
+  traits: Array<{ name: string; fieldsInterface: string | null; extension: string | null }> = []
+): SchemaArtifact {
+  return {
+    type: 'resource',
+    name,
+    hasTypes: true,
+    schemaIsTyped: true,
+    extensionIsTyped: false,
+    hasExtension: false,
+    identifiers: {
+      schema: `${fieldsInterface}Schema`,
+      fieldsInterface,
+      type: fieldsInterface,
+      extension: null,
+      extensionAlias: null,
+    },
+    traits: traits.map((t) => ({
+      name: t.name,
+      identifiers: {
+        fieldsInterface: t.fieldsInterface,
+        extension: t.extension,
+      },
+    })),
+  } as SchemaArtifact;
 }
 
 describe('AST utilities', () => {
@@ -106,14 +143,17 @@ describe('AST utilities', () => {
         { name: 'isActive', type: 'boolean', readonly: false, optional: false },
       ];
 
-      const code = generateInterfaceCode('TestInterface', properties);
+      const code = generateInterfaceCode(testOptions, makeTestConfig('test', 'TestInterface'), undefined, properties);
       expect(code).toMatchSnapshot('basic interface');
     });
 
     it('generates interface with extends clause', () => {
       const properties = [{ name: 'title', type: 'string', readonly: true, optional: false }];
+      const config = makeTestConfig('test', 'TestInterface', [
+        { name: 'base', fieldsInterface: 'BaseInterface', extension: null },
+      ]);
 
-      const code = generateInterfaceCode('TestInterface', properties, 'BaseInterface');
+      const code = generateInterfaceCode(testOptions, config, undefined, properties);
       expect(code).toMatchSnapshot('interface with extends');
     });
 
@@ -121,7 +161,13 @@ describe('AST utilities', () => {
       const properties = [{ name: 'user', type: 'User', readonly: true, optional: false }];
 
       const imports = ['import type User from "app/models/user";'];
-      const code = generateInterfaceCode('TestInterface', properties, undefined, imports);
+      const code = generateInterfaceCode(
+        testOptions,
+        makeTestConfig('test', 'TestInterface'),
+        undefined,
+        properties,
+        imports
+      );
       expect(code).toMatchSnapshot('interface with imports');
     });
 
@@ -131,12 +177,12 @@ describe('AST utilities', () => {
         { name: 'email', type: 'string', readonly: true, optional: true, comment: 'Optional email address' },
       ];
 
-      const code = generateInterfaceCode('TestInterface', properties);
+      const code = generateInterfaceCode(testOptions, makeTestConfig('test', 'TestInterface'), undefined, properties);
       expect(code).toMatchSnapshot('interface with comments');
     });
 
     it('generates empty interface when no properties', () => {
-      const code = generateInterfaceCode('EmptyInterface', []);
+      const code = generateInterfaceCode(testOptions, makeTestConfig('empty', 'EmptyInterface'), undefined, []);
       expect(code).toMatchSnapshot('empty interface');
     });
   });
@@ -144,8 +190,9 @@ describe('AST utilities', () => {
   describe('createTypeArtifact', () => {
     it('creates resource-type artifact with correct filename and type', () => {
       const properties = [{ name: 'name', type: 'string', readonly: true, optional: false }];
+      const config = makeTestConfig('user', 'UserSchema');
 
-      const artifact = createTypeArtifact('user', 'UserSchema', properties, 'resource');
+      const artifact = createTypeArtifact(testOptions, config, undefined, properties, 'resource');
 
       expect(artifact.type).toBe('resource-type');
       expect(artifact.name).toBe('UserSchema');
@@ -156,8 +203,9 @@ describe('AST utilities', () => {
 
     it('creates extension-type artifact with correct filename and type', () => {
       const properties = [{ name: 'displayName', type: 'unknown', readonly: false, optional: false }];
+      const config = makeTestConfig('user', 'UserExtension');
 
-      const artifact = createTypeArtifact('user', 'UserExtension', properties, 'extension');
+      const artifact = createTypeArtifact(testOptions, config, undefined, properties, 'extension');
 
       expect(artifact.type).toBe('extension-type');
       expect(artifact.name).toBe('UserExtension');
@@ -168,8 +216,9 @@ describe('AST utilities', () => {
 
     it('creates trait-type artifact with correct filename and type', () => {
       const properties = [{ name: 'name', type: 'string', readonly: true, optional: false }];
+      const config = makeTestConfig('fileable', 'FileableTrait');
 
-      const artifact = createTypeArtifact('fileable', 'FileableTrait', properties, 'trait');
+      const artifact = createTypeArtifact(testOptions, config, undefined, properties, 'trait');
 
       expect(artifact.type).toBe('trait-type');
       expect(artifact.name).toBe('FileableTrait');
@@ -180,8 +229,9 @@ describe('AST utilities', () => {
 
     it('creates legacy type artifact when no context provided', () => {
       const properties = [{ name: 'name', type: 'string', readonly: true, optional: false }];
+      const config = makeTestConfig('test', 'TestInterface');
 
-      const artifact = createTypeArtifact('test', 'TestInterface', properties);
+      const artifact = createTypeArtifact(testOptions, config, undefined, properties);
 
       expect(artifact.type).toBe('type');
       // Types are now merged into .schema files
@@ -190,8 +240,11 @@ describe('AST utilities', () => {
 
     it('includes extends clause and imports when provided', () => {
       const properties = [{ name: 'name', type: 'string', readonly: true, optional: false }];
+      const config = makeTestConfig('user', 'UserInterface', [
+        { name: 'base', fieldsInterface: 'BaseInterface', extension: null },
+      ]);
 
-      const artifact = createTypeArtifact('user', 'UserInterface', properties, 'resource', 'BaseInterface', [
+      const artifact = createTypeArtifact(testOptions, config, undefined, properties, 'resource', [
         'import type BaseInterface from "./base";',
       ]);
 
@@ -266,7 +319,7 @@ describe('AST utilities', () => {
         { name: 'metadata', type: 'Record<string, unknown>', readonly: true, optional: true },
       ];
 
-      const code = generateInterfaceCode('TestInterface', properties);
+      const code = generateInterfaceCode(testOptions, makeTestConfig('test', 'TestInterface'), undefined, properties);
       expect(code).toMatchSnapshot('interface with custom type mappings');
       // Should map uuid to string, currency to number, json to Record<string, unknown>
     });

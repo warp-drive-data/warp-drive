@@ -34,9 +34,6 @@ export const LEADING_HYPHEN_REGEX = /^-/;
 /** Matches surrounding quotes (single or double) */
 export const SURROUNDING_QUOTES_REGEX = /^['"]|['"]$/g;
 
-/** Matches quote characters (single or double) */
-export const QUOTE_CHARS_REGEX = /['"]/g;
-
 /** Matches /model at end of string for import path transformation */
 export const MODEL_SUFFIX_REGEX = /\/model$/;
 
@@ -164,13 +161,6 @@ export function removeFileExtension(path: string): string {
  */
 export function normalizePath(path: string): string {
   return path.replace(BACKSLASH_REGEX, '/');
-}
-
-/**
- * Remove quotes from a string (single or double quotes)
- */
-export function removeQuoteChars(text: string): string {
-  return text.replace(QUOTE_CHARS_REGEX, '');
 }
 
 /**

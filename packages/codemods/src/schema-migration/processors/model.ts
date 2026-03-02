@@ -12,10 +12,11 @@ import {
   buildTraitSchemaObject,
   collectRelationshipImports,
   collectTraitImports,
-  DEFAULT_EMBER_DATA_SOURCE,
+  FRAGMENT_BASE_SOURCE,
   findClassDeclaration,
   findDefaultExport,
   findEmberImportLocalName,
+  getModelImportSources,
   generateMergedSchemaCode,
   getEmberDataImports,
   getExportedIdentifier,
@@ -41,11 +42,10 @@ import {
   NODE_KIND_MEMBER_EXPRESSION,
   NODE_KIND_PROPERTY_IDENTIFIER,
 } from '../utils/code-processing.js';
-import { createExtension } from '../utils/extension.js';
 import { createExtensionFromOriginalFile } from '../utils/extension-generation.js';
 import type { ParsedFile } from '../utils/file-parser.js';
 import { parseFile } from '../utils/file-parser.js';
-import { replaceWildcardPattern } from '../utils/path-utils.js';
+import { removeQuotes, replaceWildcardPattern } from '../utils/path-utils.js';
 import type { SchemaEntity } from '../utils/schema-entity.js';
 import type { FieldTypeInfo } from '../utils/schema-generation.js';
 import {
@@ -53,7 +53,6 @@ import {
   normalizePath,
   pascalToKebab,
   removeFileExtension,
-  removeQuoteChars,
   toKebabCase,
   TRAILING_MODEL_SUFFIX_REGEX,
 } from '../utils/string.js';
@@ -90,15 +89,6 @@ function collectConstantDecls(filePath: string, source: string, identifierRefs: 
 /** Method names that should be skipped (typically callback methods) */
 const SKIP_METHOD_NAMES = ['after'];
 
-/** Standard WarpDrive model import source */
-const WARP_DRIVE_MODEL = '@warp-drive/model';
-
-/** Fragment decorator import source */
-const FRAGMENT_DECORATOR_SOURCE = 'ember-data-model-fragments/attributes';
-
-/** Fragment base class import source */
-const FRAGMENT_BASE_SOURCE = 'ember-data-model-fragments/fragment';
-
 const log = logger.for('model-processor');
 
 /**
@@ -122,19 +112,6 @@ export interface ModelAnalysisResult {
   mixinExtensions: string[];
   modelName: string;
   baseName: string;
-}
-
-/**
- * Get the list of expected model import sources based on options
- */
-function getExpectedModelImportSources(options: TransformOptions): string[] {
-  return [
-    options?.emberDataImportSource || DEFAULT_EMBER_DATA_SOURCE,
-    ...(options?.importSubstitutes?.map((s) => s.import) ?? []),
-    WARP_DRIVE_MODEL,
-    FRAGMENT_DECORATOR_SOURCE,
-    FRAGMENT_BASE_SOURCE,
-  ].filter(Boolean);
 }
 
 /**
@@ -176,7 +153,7 @@ function validateModelAST(filePath: string, source: string, options: TransformOp
   const ast = parse(lang, source);
   const root = ast.root();
 
-  const expectedSources = getExpectedModelImportSources(options);
+  const expectedSources = getModelImportSources(options);
   const modelImportLocal = findEmberImportLocalName(root, expectedSources, options, filePath, process.cwd());
   log.debug(`DEBUG: Model import local: ${modelImportLocal}`);
 
@@ -547,7 +524,8 @@ function generateRegularModelArtifacts(
       }
     }
   }
-  const constantDeclarations = identifierRefs.size > 0 ? collectConstantDecls(filePath, source, identifierRefs) : undefined;
+  const constantDeclarations =
+    identifierRefs.size > 0 ? collectConstantDecls(filePath, source, identifierRefs) : undefined;
 
   // Generate merged schema code (schema + types in one file)
   const mergedSchemaCode = generateMergedSchemaCode({
@@ -602,7 +580,15 @@ function generateRegularModelArtifacts(
   }
 
   const extensionArtifact = resourceConfig.hasExtension
-    ? createExtension(options, resourceConfig, filePath, source)
+    ? createExtensionFromOriginalFile(
+        resourceConfig,
+        filePath,
+        source,
+        analysis.extensionProperties,
+        options,
+        undefined,
+        'resource'
+      )
     : null;
 
   log.debug(`Extension artifact created: ${!!extensionArtifact}`);
@@ -841,7 +827,7 @@ function getIntermediateModelLocalNames(
         const source = importNode.field('source');
         if (!source) continue;
 
-        const sourceText = removeQuoteChars(source.text());
+        const sourceText = removeQuotes(source.text());
 
         // Check if this is a relative import that could be our intermediate model
         if (sourceText.startsWith('./') || sourceText.startsWith('../')) {
@@ -922,7 +908,7 @@ function getIntermediateFragmentLocalNames(root: SgNode, options: TransformOptio
         const source = importNode.field('source');
         if (!source) continue;
 
-        const sourceText = removeQuoteChars(source.text());
+        const sourceText = removeQuotes(source.text());
 
         // Normalize both paths for comparison
         const normalizedFragmentPath = normalizePath(fragmentPath);

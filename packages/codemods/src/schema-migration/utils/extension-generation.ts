@@ -1,10 +1,11 @@
-import type { SgNode } from '@ast-grep/napi';
-import { parse } from '@ast-grep/napi';
+import { type Lang, type SgNode, parse } from '@ast-grep/napi';
 import { dirname, join, relative, resolve, sep } from 'path';
 
 import { logger } from '../../../utils/logger.js';
 import type { TransformOptions } from '../config.js';
 import type { SchemaArtifact } from './artifact.js';
+import { findDefaultExport } from './ast-helpers.js';
+import { getModelImportSources } from './import-utils.js';
 import { getFileExtension, getLanguageFromPath, indentCode, removeQuotes } from './path-utils.js';
 import type { TransformArtifact } from './schema-generation.js';
 import {
@@ -16,6 +17,102 @@ import {
 } from './string.js';
 
 const log = logger.for('extension-generation');
+
+function getImportLocalNames(importNode: SgNode): string[] {
+  const names: string[] = [];
+  const importClause = importNode.children().find((c) => c.kind() === 'import_clause');
+  if (!importClause) return names;
+
+  for (const child of importClause.children()) {
+    if (child.kind() === 'identifier') {
+      names.push(child.text());
+    } else if (child.kind() === 'namespace_import') {
+      const id = child.find({ rule: { kind: 'identifier' } });
+      if (id) names.push(id.text());
+    } else if (child.kind() === 'named_imports') {
+      for (const specifier of child.findAll({ rule: { kind: 'import_specifier' } })) {
+        const alias = specifier.field('alias');
+        const name = specifier.field('name');
+        if (alias) {
+          names.push(alias.text());
+        } else if (name) {
+          names.push(name.text());
+        }
+      }
+    }
+  }
+
+  return names;
+}
+
+function removeUnusedImports(source: string, lang: Lang): string {
+  const ast = parse(lang, source);
+  const root = ast.root();
+  const importNodes = root.findAll({ rule: { kind: 'import_statement' } });
+  if (importNodes.length === 0) return source;
+
+  let nonImportSource = source;
+  for (const imp of importNodes) {
+    nonImportSource = nonImportSource.replace(imp.text(), '');
+  }
+
+  type Edit = ReturnType<SgNode['replace']>;
+  const edits: Edit[] = [];
+
+  for (const imp of importNodes) {
+    const localNames = getImportLocalNames(imp);
+    if (localNames.length === 0) continue;
+
+    const isUsed = localNames.some((name) => new RegExp(`\\b${name}\\b`).test(nonImportSource));
+    if (!isUsed) {
+      edits.push(imp.replace(''));
+    }
+  }
+
+  return edits.length > 0 ? root.commitEdits(edits) : source;
+}
+
+function addTypeImport(source: string, lang: Lang, typeName: string, importPath: string): string {
+  const ast = parse(lang, source);
+  const root = ast.root();
+  const typeImportLine = `import type { ${typeName} } from '${importPath}';`;
+
+  const importNodes = root.findAll({ rule: { kind: 'import_statement' } });
+  if (importNodes.length > 0) {
+    const lastImport = importNodes[importNodes.length - 1];
+    type Edit = ReturnType<SgNode['replace']>;
+    const edits: Edit[] = [lastImport.replace(lastImport.text() + '\n' + typeImportLine)];
+    return root.commitEdits(edits);
+  }
+
+  return typeImportLine + '\n' + source;
+}
+
+function cleanupResourceModelSource(source: string, lang: Lang, options?: TransformOptions): string {
+  const ast = parse(lang, source);
+  const root = ast.root();
+
+  type Edit = ReturnType<SgNode['replace']>;
+  const edits: Edit[] = [];
+
+  const defaultExport = findDefaultExport(root, options);
+  if (defaultExport) {
+    edits.push(defaultExport.replace(''));
+  }
+
+  const modelSources = getModelImportSources(options);
+  const importStatements = root.findAll({ rule: { kind: 'import_statement' } });
+  for (const importNode of importStatements) {
+    const sourceField = importNode.field('source');
+    if (!sourceField) continue;
+    const importPath = removeQuotes(sourceField.text());
+    if (modelSources.includes(importPath)) {
+      edits.push(importNode.replace(''));
+    }
+  }
+
+  return edits.length > 0 ? root.commitEdits(edits) : source;
+}
 
 /**
  * Extension artifact context - determines where the extension file is placed
@@ -91,7 +188,6 @@ export function generateExtensionCode(
 
   return objectCode;
 }
-
 
 /**
  * Remove imports that are not needed in extension artifacts
@@ -275,7 +371,7 @@ export function createExtensionFromOriginalFile(
   extensionProperties: Array<{ name: string; originalKey: string; value: string; isObjectMethod?: boolean }>,
   options?: TransformOptions,
   interfaceImportPath?: string,
-  sourceType: 'mixin' | 'model' = 'model',
+  sourceType: 'mixin' | 'model' | 'resource' = 'model',
   processImports?: (source: string, filePath: string, baseDir: string, options?: TransformOptions) => string
 ): TransformArtifact | null {
   if (extensionProperties.length === 0) {
@@ -298,46 +394,32 @@ export function createExtensionFromOriginalFile(
     const targetFilePath = join(resolve(targetDir), extFileName);
 
     // Update relative imports for the new extension location
-    const updatedSource = updateRelativeImportsForExtensions(source, root, options, filePath, targetFilePath);
+    let updatedSource = updateRelativeImportsForExtensions(source, root, options, filePath, targetFilePath);
     log.debug(`Updated relative imports in source`);
+
+    // For resource models, remove the original class declaration and model imports
+    if (sourceType === 'resource') {
+      updatedSource = cleanupResourceModelSource(updatedSource, lang, options);
+    }
 
     // Determine format based on source type: mixins use object format, models use class format
     const format = sourceType === 'mixin' ? 'object' : 'class';
 
     log.debug(`Extension generation for ${sourceType} using ${format} format`);
 
-    const extensionCode = generateExtensionCode(schemaConfig, extensionProperties, format, interfaceImportPath);
+    // For resource models, don't include the type import in the generated code (it's added separately at the top)
+    const extInterfaceImportPath = sourceType === 'resource' ? undefined : interfaceImportPath;
+    let extensionCode = generateExtensionCode(schemaConfig, extensionProperties, format, extInterfaceImportPath);
 
-    // Use a simpler approach: remove the main class and append extension code
+    // For resource models with typed extensions, add ts-ignore comment before the interface
+    if (sourceType === 'resource' && schemaConfig.extensionIsTyped && schemaConfig.identifiers.type) {
+      extensionCode = extensionCode.replace(
+        `export interface ${schemaConfig.identifiers.extension}`,
+        `// @ts-ignore-error in reality fields are not merged, they are overridden\nexport interface ${schemaConfig.identifiers.extension}`
+      );
+    }
+
     let modifiedSource = updatedSource;
-
-    // The main class will be handled in the export processing loop below
-    const allExports = root.findAll({ rule: { kind: 'export_statement' } });
-    log.debug(`Found ${allExports.length} export statements to process`);
-    // for (const exportNode of allExports) {
-    //   const exportText = exportNode.text();
-    //   log.debug(`Processing export: ${exportText.substring(0, 100)}...`);
-
-    //   // Check if this is the default export (the main model class)
-    //   const isDefaultExport = exportText.includes('export default');
-    //   if (isDefaultExport) {
-    //     log.debug(`Removing default export (main model class)`);
-    //     modifiedSource = modifiedSource.replace(exportText, '');
-    //     continue;
-    //   }
-
-    //   // Check if this is a type definition that should remain exported
-    //   if (shouldKeepExported(exportNode)) {
-    //     log.debug(`Keeping export for type definition: ${exportText.substring(0, 50)}...`);
-    //     continue;
-    //   }
-
-    //   // For non-type exports, remove the export keyword but keep the content
-    //   // Simply replace "export " with empty string
-    //   const contentWithoutExport = exportText.replace(EXPORT_KEYWORD_REGEX, '');
-    //   log.debug(`Removing export keyword, keeping content: ${contentWithoutExport.substring(0, 50)}...`);
-    //   modifiedSource = modifiedSource.replace(exportText, contentWithoutExport);
-    // }
 
     // Process imports to resolve relative imports to absolute imports
     const baseDir = process.cwd();
@@ -346,7 +428,7 @@ export function createExtensionFromOriginalFile(
       modifiedSource = processImports(modifiedSource, filePath, baseDir, options);
     }
 
-    // Remove fragment imports only from model extensions (not mixin extensions)
+    // Remove fragment imports only from intermediate model extensions (not mixin or resource extensions)
     if (sourceType === 'model') {
       modifiedSource = removeUnnecessaryImports(modifiedSource, options);
     }
@@ -354,12 +436,20 @@ export function createExtensionFromOriginalFile(
     // Clean up extra whitespace and add the extension code
     modifiedSource = modifiedSource.trim() + '\n\n' + extensionCode;
 
+    // For resource models, add type import at the top and remove unused imports
+    if (sourceType === 'resource') {
+      if (schemaConfig.extensionIsTyped && schemaConfig.identifiers.type) {
+        const typeImportPath = `./${schemaConfig.name}.type${getFileExtension(filePath)}`;
+        modifiedSource = addTypeImport(modifiedSource, lang, schemaConfig.identifiers.type, typeImportPath);
+      }
+      modifiedSource = removeUnusedImports(modifiedSource, lang);
+    }
+
     // Clean up any stray export keywords
     modifiedSource = modifiedSource.replace(EXPORT_DEFAULT_LINE_END_REGEX, '');
     modifiedSource = modifiedSource.replace(EXPORT_LINE_END_REGEX, '');
 
     log.debug(`Generated extension code (first 200 chars): ${modifiedSource.substring(0, 200)}...`);
-    log.debug(`Extension code to add: ${extensionCode.substring(0, 200)}...`);
 
     return {
       baseName: schemaConfig.name,
