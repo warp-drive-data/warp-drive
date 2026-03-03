@@ -128,7 +128,7 @@ export default Mixin.create({});`;
         export interface Empty extends WithLegacy<EmptyTrait> {}
         ",
           "name": "EmptyTraitSchema",
-          "suggestedFileName": "empty.schema.js",
+          "suggestedFileName": "empty.schema.ts",
           "type": "trait",
         }
       `);
@@ -224,23 +224,16 @@ export default Mixin.create({
         export interface Fileable extends WithLegacy<FileableTrait> {}
         ",
           "name": "FileableTraitSchema",
-          "suggestedFileName": "fileable.schema.js",
+          "suggestedFileName": "fileable.schema.ts",
           "type": "trait",
         }
       `);
       expect(extension).toMatchInlineSnapshot(`
         {
           "baseName": "fileable",
-          "code": "import { attr, hasMany } from '@ember-data/model';
-        import Mixin from '@ember/object/mixin';
-        import { computed } from '@ember/object';
+          "code": "
 
-        export default Mixin.create({
-        	files: hasMany('file', { as: 'fileable', async: false }),
-        	name: attr('string'),
-        	isActive: attr('boolean', { defaultValue: false }),
-        	titleCaseName: computed('name', function () { return (this.name || '').toUpperCase(); })
-        });
+        import { computed } from '@ember/object';
 
         export const FileableTraitExtension = {
           titleCaseName: computed('name', function () { return (this.name || '').toUpperCase(); })
@@ -547,7 +540,7 @@ export default Mixin.create({
 
       const trait = artifacts.find((a) => a.type === 'trait');
       expect(trait?.code).toMatchSnapshot('basic trait type interface');
-      expect(trait?.suggestedFileName).toBe('fileable.schema.js');
+      expect(trait?.suggestedFileName).toBe('fileable.schema.ts');
     });
 
     it('generates trait and extension artifacts when mixin has computed properties and methods', () => {
@@ -578,7 +571,7 @@ export default Mixin.create({
 
       expect(trait?.code).toMatchSnapshot('mixin trait type interface');
       expect(extension?.code).toMatchSnapshot('mixin extension code');
-      expect(trait?.suggestedFileName).toBe('nameable.schema.js');
+      expect(trait?.suggestedFileName).toBe('nameable.schema.ts');
       expect(extension?.suggestedFileName).toBe('nameable.ext.js');
     });
 

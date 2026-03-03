@@ -183,7 +183,7 @@ describe('Basic model class transformation', function () {
       `,
     },
     output: {
-      [F.resource('user', true)]: js`
+      [F.resource('user', 'js')]: js`
         const UserSchema = {
           type: 'user',
           legacy: true,
@@ -335,7 +335,7 @@ describe('Basic model class transformation', function () {
       `,
       },
       output: {
-        [F.resource('user', true)]: js`
+        [F.resource('user', 'js')]: js`
         const UserSchema = {
           type: 'user',
           legacy: true,

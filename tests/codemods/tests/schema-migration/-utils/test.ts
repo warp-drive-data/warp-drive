@@ -4,11 +4,8 @@ import { expect, test as vitest } from 'vitest';
 import type { TransformOptions } from '@ember-data/codemods/schema-migration/config.js';
 import { toArtifacts as toTraitArtifacts } from '@ember-data/codemods/schema-migration/processors/mixin.js';
 import { toArtifacts as toResourceArtifacts } from '@ember-data/codemods/schema-migration/processors/model.js';
-import type {   SchemaArtifact,SchemaArtifactRegistry } from '@ember-data/codemods/schema-migration/utils/artifact.js';
-import {
-  buildEntityRegistry,
-  linkEntities
-} from '@ember-data/codemods/schema-migration/utils/artifact.js';
+import type { SchemaArtifact, SchemaArtifactRegistry } from '@ember-data/codemods/schema-migration/utils/artifact.js';
+import { buildEntityRegistry, linkEntities } from '@ember-data/codemods/schema-migration/utils/artifact.js';
 import type { ParsedFile } from '@ember-data/codemods/schema-migration/utils/file-parser.js';
 import { parseFile } from '@ember-data/codemods/schema-migration/utils/file-parser.js';
 import type { TransformArtifact } from '@ember-data/codemods/schema-migration/utils/schema-generation.js';
@@ -205,14 +202,14 @@ export const F = {
   tsmixin(name: string) {
     return `app/mixins/${name}.ts`;
   },
-  resource(name: string, useJs = false) {
-    return `app/data/${name}.schema.${useJs ? 'js' : 'ts'}`;
+  resource(name: string, ext: 'ts' | 'js' = 'ts') {
+    return `app/data/${name}.schema.${ext}`;
   },
   trait(name: string) {
     return `app/traits/${name}.ts`;
   },
-  extension(name: string, useJs = false) {
-    return `app/data/${name}.ext.${useJs ? 'js' : 'ts'}`;
+  extension(name: string, ext: 'ts' | 'js' = 'ts') {
+    return `app/data/${name}.ext.${ext}`;
   },
   traitExtension(name: string) {
     return `app/traits/${name}/index.ts`;

@@ -337,7 +337,7 @@ describe('combineSchemasAndTypes: true', function () {
          */
         export interface Company extends WithLegacy<CompanyResource> {}
       `,
-      [F.extension('company', true)]: ts`
+      [F.extension('company', 'js')]: ts`
         export class CompanyExtension {
           get userCount() {
             return this.users.length;

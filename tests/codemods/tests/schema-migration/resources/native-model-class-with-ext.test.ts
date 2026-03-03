@@ -179,7 +179,7 @@ describe('Basic model class transformation', function () {
          */
         export interface User extends WithLegacy<UserResource> {}
       `,
-      [F.extension('user', true)]: ts`
+      [F.extension('user', 'js')]: ts`
         import { cached, tracked } from '@glimmer/tracking';
         import { computed } from '@ember/object';
 
@@ -629,7 +629,7 @@ describe('Basic model class transformation', function () {
          */
         export interface User extends WithLegacy<UserResource> {}
       `,
-      [F.extension('user', true)]: ts`
+      [F.extension('user', 'js')]: ts`
         import { cached, tracked } from '@glimmer/tracking';
         import { computed } from '@ember/object';
 

@@ -17,6 +17,7 @@ import {
   toPascalCase,
 } from '../utils/ast-utils.js';
 import { createExtensionFromOriginalFile } from '../utils/extension-generation.js';
+import { getResourcesImport } from '../utils/import-utils.js';
 import { pascalToKebab } from '../utils/string.js';
 
 const log = logger.for('mixin-processor');
@@ -175,7 +176,7 @@ function generateMixinArtifacts(
         ensureResourceTypeFileExists(modelType, options, artifacts);
       }
 
-      imports.add(`type { ${pascalCaseType} } from '${options.resourcesImport}/${modelType}.schema'`);
+      imports.add(`type { ${pascalCaseType} } from '${getResourcesImport(options)}/${modelType}.schema'`);
     }
   }
 
@@ -220,7 +221,7 @@ function generateMixinArtifacts(
     name: traitConfig.identifiers.schema,
     code: traitCode,
     baseName,
-    suggestedFileName: `${baseName}.schema${fileExtension}`,
+    suggestedFileName: `${baseName}.schema${options.disableTypescriptSchemas ? '.js' : '.ts'}`,
   });
 
   if (extensionProperties.length > 0) {

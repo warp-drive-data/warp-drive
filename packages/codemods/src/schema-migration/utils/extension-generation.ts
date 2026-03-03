@@ -433,6 +433,16 @@ export function createExtensionFromOriginalFile(
       updatedSource = cleanupResourceModelSource(updatedSource, lang, options);
     }
 
+    // For mixins, remove the default export (Mixin.create block)
+    if (sourceType === 'mixin') {
+      const mixinAst = parse(lang, updatedSource);
+      const mixinRoot = mixinAst.root();
+      const defaultExport = findDefaultExport(mixinRoot, options);
+      if (defaultExport) {
+        updatedSource = mixinRoot.commitEdits([defaultExport.replace('')]);
+      }
+    }
+
     // Determine format based on source type: mixins use object format, models use class format
     const format = sourceType === 'mixin' ? 'object' : 'class';
 
@@ -477,6 +487,11 @@ export function createExtensionFromOriginalFile(
     const trimmed = modifiedSource.trim();
     const separator = trimmed.endsWith('*/') ? '\n' : '\n\n';
     modifiedSource = trimmed + separator + extensionCode;
+
+    // For mixins, remove imports that are no longer used after removing the default export
+    if (sourceType === 'mixin') {
+      modifiedSource = removeUnusedImports(modifiedSource, lang);
+    }
 
     // For resource models, add type import at the top
     if (sourceType === 'resource') {

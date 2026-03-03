@@ -113,18 +113,9 @@ export interface User extends WithLegacy<UserResource> {}
 ",
   "traits/": "__dir__",
   "traits/timestampable.ext.ts": "
-import Mixin from '@ember/object/mixin';
-import { attr } from '@ember-data/model';
-import Deleteable from 'test-app/models/deleteable';
 
-export default Mixin.create(Deleteable, {
-  createdAt: attr('date'),
-  updatedAt: attr('date'),
 
-  timeSince() {
-    return Date.now() - this.updatedAt;
-  },
-});
+
 
 import type { Timestampable } from 'test-app/data/traits/timestampable.schema';
 
@@ -522,18 +513,9 @@ export interface User extends WithLegacy<UserResource> {}
 ",
   "traits/": "__dir__",
   "traits/timestampable.ext.ts": "
-import Mixin from '@ember/object/mixin';
-import { attr } from '@ember-data/model';
-import Deleteable from 'test-app/models/deleteable';
 
-export default Mixin.create(Deleteable, {
-  createdAt: attr('date'),
-  updatedAt: attr('date'),
 
-  timeSince() {
-    return Date.now() - this.updatedAt;
-  },
-});
+
 
 import type { Timestampable } from 'test-app/data/traits/timestampable.schema';
 
@@ -1724,16 +1706,8 @@ export interface JsMixinTrait {
 export interface JsMixin extends WithLegacy<JsMixinTrait> {}
 ",
   "traits/ts-mixin.ext.ts": "
-import Mixin from '@ember/object/mixin';
-import { attr } from '@ember-data/model';
 
-export default Mixin.create({
-  isEnabled: attr('boolean'),
 
-  toggleEnabled() {
-    this.set('isEnabled', !this.isEnabled);
-  }
-});
 
 import type { TsMixin } from 'test-app/data/traits/ts-mixin.schema';
 
@@ -2140,13 +2114,8 @@ export interface User extends WithLegacy<UserResource> {}
 ",
   "traits/": "__dir__",
   "traits/workstreamable.ext.ts": "
-import Mixin from '@ember/object/mixin';
-import { attr } from '@ember-data/model';
 
-export default Mixin.create({
-  workstreamType: attr('string'),
-  imAnObjectExtensionNow() {},
-});
+
 
 import type { Workstreamable } from 'test-app/data/traits/workstreamable.schema';
 
