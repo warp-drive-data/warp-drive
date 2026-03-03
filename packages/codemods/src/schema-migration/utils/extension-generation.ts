@@ -2,6 +2,7 @@ import { type Lang, type SgNode, parse } from '@ast-grep/napi';
 import { dirname, join, relative, resolve, sep } from 'path';
 
 import { logger } from '../../../utils/logger.js';
+import { DEFAULT_RESOURCES_DIR, DEFAULT_TRAITS_DIR } from '../config.js';
 import type { TransformOptions } from '../config.js';
 import type { ArtifactConfig } from './artifact.js';
 import { findDefaultExport } from './ast-helpers.js';
@@ -419,8 +420,8 @@ export function createExtensionFromOriginalFile(
 
     const targetDir =
       schemaConfig.type === 'trait'
-        ? options?.traitsDir || './app/data/traits'
-        : options?.resourcesDir || './app/data/resources';
+        ? options?.traitsDir || DEFAULT_TRAITS_DIR
+        : options?.resourcesDir || DEFAULT_RESOURCES_DIR;
     const targetFilePath = join(resolve(targetDir), extFileName);
 
     // Update relative imports for the new extension location
@@ -480,7 +481,8 @@ export function createExtensionFromOriginalFile(
     // For resource models, add type import at the top
     if (sourceType === 'resource') {
       if (schemaConfig.extensionIsTyped && schemaConfig.identifiers.type) {
-        const typeSuffix = options?.combineSchemasAndTypes ? 'schema' : 'type';
+        const useTypeFile = !options?.combineSchemasAndTypes && schemaConfig.hasTypes;
+        const typeSuffix = useTypeFile ? 'type' : 'schema';
         const typeImportPath = `./${schemaConfig.name}.${typeSuffix}${getFileExtension(filePath)}`;
         modifiedSource = addTypeImport(modifiedSource, lang, schemaConfig.identifiers.type, typeImportPath);
       }

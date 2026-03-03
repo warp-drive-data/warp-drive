@@ -541,42 +541,34 @@ function generateRegularModelArtifacts(
 
   const hasType = mergedSchemaCode.interfaceDeclaration && mergedSchemaCode.interfaceDeclaration.trim() !== '';
   const typeString = typeDeclarations.size > 0 ? Array.from(typeDeclarations).join('\n') + '\n' : false;
-  if (options.combineSchemasAndTypes) {
+  const includeTypesInSchema = options.combineSchemasAndTypes || !hasType;
+
+  artifacts.push({
+    type: 'schema',
+    name: schemaName,
+    code: [
+      mergedSchemaCode.schemaImports,
+      includeTypesInSchema ? mergedSchemaCode.typeImports : null,
+      includeTypesInSchema ? typeString : null,
+      mergedSchemaCode.schemaDeclaration,
+      includeTypesInSchema ? mergedSchemaCode.interfaceDeclaration : null,
+    ]
+      .filter(Boolean)
+      .join('\n'),
+    baseName,
+    suggestedFileName: `${baseName}.schema${resourceConfig.schemaIsTyped ? '.ts' : '.js'}`,
+  });
+
+  if (!options.combineSchemasAndTypes && hasType) {
     artifacts.push({
-      type: 'schema',
-      name: schemaName,
-      code: [
-        mergedSchemaCode.schemaImports,
-        mergedSchemaCode.typeImports,
-        typeString,
-        mergedSchemaCode.schemaDeclaration,
-        mergedSchemaCode.interfaceDeclaration,
-      ]
+      type: 'type',
+      name: modelName,
+      code: [mergedSchemaCode.typeImports, typeString, mergedSchemaCode.interfaceDeclaration]
         .filter(Boolean)
         .join('\n'),
       baseName,
-      suggestedFileName: `${baseName}.schema${resourceConfig.schemaIsTyped ? '.ts' : '.js'}`,
+      suggestedFileName: `${baseName}.type.ts`,
     });
-  } else {
-    artifacts.push({
-      type: 'schema',
-      name: schemaName,
-      code: [mergedSchemaCode.schemaImports, mergedSchemaCode.schemaDeclaration].filter(Boolean).join('\n'),
-      baseName,
-      suggestedFileName: `${baseName}.schema${resourceConfig.schemaIsTyped ? '.ts' : '.js'}`,
-    });
-
-    if (hasType) {
-      artifacts.push({
-        type: 'type',
-        name: modelName,
-        code: [mergedSchemaCode.typeImports, typeString, mergedSchemaCode.interfaceDeclaration]
-          .filter(Boolean)
-          .join('\n'),
-        baseName,
-        suggestedFileName: `${baseName}.type.ts`,
-      });
-    }
   }
 
   const extensionArtifact = resourceConfig.hasExtension

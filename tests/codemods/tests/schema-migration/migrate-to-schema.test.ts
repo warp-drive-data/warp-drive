@@ -813,6 +813,42 @@ export default class TestModel extends BaseModel {
 
       export default TypedSchema;
       ",
+        "resources/typed.type.ts": "
+      import type { Type } from '@warp-drive/core-types/symbols';
+      import type { WithLegacy } from '@ember-data/model/migration-support';
+
+      /**
+       * This type represents the full set schema derived fields of
+       * the 'typed' resource, without any of the legacy mode features
+       * and without any extensions.
+       *
+       * > [!TIP]
+       * > It is likely that you will want a more specific type tailored
+       * > to the context of where some data has been loaded, for instance
+       * > one that marks specific fields as readonly, or which only enables
+       * > some fields to be null during create, or which only includes
+       * > a subset of fields based on a specific API response.
+       * >
+       * > For those cases, you can create a more specific type that derives
+       * > from this type to ensure that your type definitions stay consistent
+       * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+       *
+       * See also {@link Typed} for fields + legacy mode features
+       */
+      export interface TypedResourceextends StaticBaseModelTraitTrait {
+        readonly [Type]: 'typed';
+        id: string | null;
+      }
+
+      /**
+       * This type represents the full set schema derived fields of
+       * the 'typed' resource, including all legacy mode features but
+       * without any extensions.
+       *
+       * See also {@link TypedResource} for fields + legacy mode features
+       */
+      export interface Typed extends WithLegacy<TypedResource> {}
+      ",
         "traits/": "__dir__",
       }
     `);
@@ -885,6 +921,42 @@ export default class TestModel extends BaseModel {
       } satisfies LegacyResourceSchema;
 
       export default TypedSchema;
+      ",
+        "resources/typed.type.ts": "
+      import type { Type } from '@warp-drive/core-types/symbols';
+      import type { WithLegacy } from '@ember-data/model/migration-support';
+
+      /**
+       * This type represents the full set schema derived fields of
+       * the 'typed' resource, without any of the legacy mode features
+       * and without any extensions.
+       *
+       * > [!TIP]
+       * > It is likely that you will want a more specific type tailored
+       * > to the context of where some data has been loaded, for instance
+       * > one that marks specific fields as readonly, or which only enables
+       * > some fields to be null during create, or which only includes
+       * > a subset of fields based on a specific API response.
+       * >
+       * > For those cases, you can create a more specific type that derives
+       * > from this type to ensure that your type definitions stay consistent
+       * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+       *
+       * See also {@link Typed} for fields + legacy mode features
+       */
+      export interface TypedResourceextends StaticBaseModelTraitTrait {
+        readonly [Type]: 'typed';
+        id: string | null;
+      }
+
+      /**
+       * This type represents the full set schema derived fields of
+       * the 'typed' resource, including all legacy mode features but
+       * without any extensions.
+       *
+       * See also {@link TypedResource} for fields + legacy mode features
+       */
+      export interface Typed extends WithLegacy<TypedResource> {}
       ",
         "traits/": "__dir__",
       }
@@ -1029,6 +1101,47 @@ export default Mixin.create({
       } satisfies LegacyResourceSchema;
 
       export default TypedSchema;
+      ",
+        "resources/typed.type.ts": "
+      import type { Type } from '@warp-drive/core-types/symbols';
+      import type { WithLegacy } from '@ember-data/model/migration-support';
+      import type { Framework } from 'test-app/data/resources/framework.type';
+
+      /**
+       * This type represents the full set schema derived fields of
+       * the 'typed' resource, without any of the legacy mode features
+       * and without any extensions.
+       *
+       * > [!TIP]
+       * > It is likely that you will want a more specific type tailored
+       * > to the context of where some data has been loaded, for instance
+       * > one that marks specific fields as readonly, or which only enables
+       * > some fields to be null during create, or which only includes
+       * > a subset of fields based on a specific API response.
+       * >
+       * > For those cases, you can create a more specific type that derives
+       * > from this type to ensure that your type definitions stay consistent
+       * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+       *
+       * See also {@link Typed} for fields + legacy mode features
+       */
+      export interface TypedResourceextends StaticBaseModelTraitTrait {
+        readonly [Type]: 'typed';
+        id: string | null;
+        name: string;
+        description: string;
+        isForControlsAssessment: boolean;
+        frameworks: Framework[];
+      }
+
+      /**
+       * This type represents the full set schema derived fields of
+       * the 'typed' resource, including all legacy mode features but
+       * without any extensions.
+       *
+       * See also {@link TypedResource} for fields + legacy mode features
+       */
+      export interface Typed extends WithLegacy<TypedResource> {}
       ",
         "traits/": "__dir__",
       }

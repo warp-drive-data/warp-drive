@@ -1,5 +1,8 @@
 import type { SchemaArtifactRegistry } from './utils/artifact';
 
+export const DEFAULT_RESOURCES_DIR = './app/data/resources';
+export const DEFAULT_TRAITS_DIR = './app/data/traits';
+
 export interface PackageImport {
   imported: string;
   local?: string;
@@ -134,8 +137,6 @@ export interface TransformOptions {
   disableAddingTypeUsageTips?: boolean;
   /** Use @warp-drive-mirror instead of @warp-drive for imports */
   mirror?: boolean;
-  /** Test mode - treats all mixins as connected to models (for testing) */
-  testMode?: boolean;
   /** Specify alternate import sources for EmberData decorators (default: '@ember-data/model') */
   emberDataImportSource?: string;
   /** List of intermediate model class import paths that should be converted to traits (e.g., ['my-app/core/base-model', 'my-app/core/data-field-model']) */

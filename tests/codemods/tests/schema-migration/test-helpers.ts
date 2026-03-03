@@ -78,8 +78,6 @@ export const DEFAULT_TEST_OPTIONS: TransformOptions = {
   projectName: 'test-app',
   verbose: false,
   debug: false,
-  // For tests, assume all mixins are connected to models so they generate artifacts
-  testMode: true,
   // Configure mixin sources for test patterns
   additionalMixinSources: [
     { dir: 'app/mixins/', pattern: 'app/mixins/' },

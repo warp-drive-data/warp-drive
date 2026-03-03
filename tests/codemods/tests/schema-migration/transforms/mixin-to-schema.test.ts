@@ -7,10 +7,41 @@ import type { FinalOptions } from '@ember-data/codemods/schema-migration/config.
 
 import { toArtifacts } from '../../../../../packages/codemods/src/schema-migration/processors/mixin.ts';
 import { SchemaArtifact } from '../../../../../packages/codemods/src/schema-migration/utils/artifact.js';
+import type { SchemaArtifactRegistry } from '../../../../../packages/codemods/src/schema-migration/utils/artifact.js';
 import { parseFile } from '../../../../../packages/codemods/src/schema-migration/utils/file-parser.js';
 
+function createConnectedRegistry(mixinEntity: SchemaArtifact): SchemaArtifactRegistry {
+  const registry: SchemaArtifactRegistry = new Map();
+  registry.set(mixinEntity.path, mixinEntity);
+
+  const dummyModel = SchemaArtifact.fromParsedFile(
+    {
+      name: 'dummy-model',
+      path: 'app/models/dummy-model.ts',
+      extension: '.ts',
+      imports: [],
+      fields: [],
+      behaviors: [],
+      fileType: 'model',
+      traits: [],
+      hasExtension: false,
+      pascalName: 'DummyModel',
+      camelName: 'dummyModel',
+      baseName: 'dummy-model',
+      source: '',
+    },
+    'model'
+  );
+  dummyModel.addTrait(mixinEntity);
+  registry.set(dummyModel.path, dummyModel);
+
+  return registry;
+}
+
 function entityFromSource(path: string, source: string, opts: FinalOptions): SchemaArtifact {
-  return SchemaArtifact.fromParsedFile(parseFile(path, source, opts));
+  const entity = SchemaArtifact.fromParsedFile(parseFile(path, source, opts));
+  opts.entityRegistry = createConnectedRegistry(entity);
+  return entity;
 }
 
 describe('mixin-to-schema transform (artifacts)', () => {

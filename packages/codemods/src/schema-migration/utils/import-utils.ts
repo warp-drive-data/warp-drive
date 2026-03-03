@@ -197,7 +197,16 @@ export function transformModelToResourceImport(
   // Default to resource import (either we found a model, or we're assuming it's a resource)
   const resourcesImport = getResourcesImport(options);
   const ext = options.projectImportsUseExtensions ? '.ts' : '';
-  const typeFileName = options?.combineSchemasAndTypes ? `${relatedType}.schema${ext}` : `${relatedType}.type${ext}`;
+
+  // When types are separate, only import from .type if the target model will generate one
+  let useTypeFile = false;
+  if (!options.combineSchemasAndTypes) {
+    const modelEntity = registry ? findEntityByBaseName(registry, relatedType, 'model') : undefined;
+    const isTargetTyped = modelEntity ? modelEntity.parsedFile.extension === '.ts' : false;
+    useTypeFile = isTargetTyped || !options.disableMissingTypeAutoGen;
+  }
+
+  const typeFileName = useTypeFile ? `${relatedType}.type${ext}` : `${relatedType}.schema${ext}`;
 
   return `type { ${modelName} } from '${resourcesImport}/${typeFileName}'`;
 }

@@ -105,10 +105,9 @@ export function toArtifacts(entity: SchemaArtifact, options: TransformOptions): 
   const extendedTraits = [...parsedFile.traits];
 
   // Check if this mixin is connected to models (directly or transitively)
-  // In test environment without a registry, treat all mixins as connected
   const isConnected = options?.entityRegistry
     ? isConnectedToModelInRegistry(options.entityRegistry, filePath)
-    : process.env.NODE_ENV === 'test' || options?.testMode === true;
+    : false;
 
   if (!isConnected) {
     log.debug(`Skipping ${mixinName}: not connected to any models`);

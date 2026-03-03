@@ -4,6 +4,7 @@ import { basename, dirname, join, resolve } from 'path';
 import { type InstanciatedLogger, logger } from '../../../utils/logger.js';
 import type { SkippedFile, TransformerResult } from '../codemod.js';
 import { Codemod } from '../codemod.js';
+import { DEFAULT_RESOURCES_DIR, DEFAULT_TRAITS_DIR } from '../config.js';
 import type { FinalOptions, MigrateOptions, TransformOptions } from '../config.js';
 import { toArtifacts as mixinToArtifacts } from '../processors/mixin.js';
 import { processIntermediateModelsToTraits, toArtifacts as modelToArtifacts } from '../processors/model.js';
@@ -33,7 +34,7 @@ interface ProcessingResult {
   errors: string[];
 }
 
-type ArtifactType = 'schema' | 'trait' | 'resource-extension' | 'trait-extension';
+type ArtifactType = 'schema' | 'type' | 'trait' | 'resource-extension' | 'trait-extension';
 
 type DirectoryKey = 'resourcesDir' | 'traitsDir' | 'outputDir';
 
@@ -53,26 +54,31 @@ interface ArtifactConfig {
 const ARTIFACT_CONFIG: Record<ArtifactType, ArtifactConfig> = {
   schema: {
     directoryKey: 'resourcesDir',
-    defaultDir: './app/data/resources',
+    defaultDir: DEFAULT_RESOURCES_DIR,
     suffix: '.schema',
     preserveExtension: true,
   },
+  type: {
+    directoryKey: 'resourcesDir',
+    defaultDir: DEFAULT_RESOURCES_DIR,
+    useSuggestedFileName: true,
+  },
   trait: {
     directoryKey: 'traitsDir',
-    defaultDir: './app/data/traits',
+    defaultDir: DEFAULT_TRAITS_DIR,
     useRelativePath: true,
     suffix: '.schema',
     preserveExtension: true,
   },
   'resource-extension': {
     directoryKey: 'resourcesDir',
-    defaultDir: './app/data/resources',
+    defaultDir: DEFAULT_RESOURCES_DIR,
     suffix: '.ext',
     preserveExtension: true,
   },
   'trait-extension': {
     directoryKey: 'traitsDir',
-    defaultDir: './app/data/traits',
+    defaultDir: DEFAULT_TRAITS_DIR,
     useRelativePath: true,
     suffix: '.ext',
     preserveExtension: true,
@@ -80,8 +86,8 @@ const ARTIFACT_CONFIG: Record<ArtifactType, ArtifactConfig> = {
 };
 
 const DEFAULT_FALLBACK_CONFIG: ArtifactConfig = {
-  directoryKey: 'outputDir',
-  defaultDir: './app/schemas',
+  directoryKey: 'resourcesDir',
+  defaultDir: DEFAULT_RESOURCES_DIR,
   useSuggestedFileName: true,
 };
 
