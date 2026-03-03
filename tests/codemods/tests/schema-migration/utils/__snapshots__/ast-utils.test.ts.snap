@@ -126,7 +126,7 @@ exports[`AST utilities > createTypeArtifact > includes extends clause and import
  *
  * See also {@link UserInterface} for fields + legacy mode features
  */
-export interface UserInterfaceextends BaseInterface {
+export interface UserInterface extends BaseInterface {
 	name?: unknown;
 }
 
@@ -276,7 +276,7 @@ exports[`AST utilities > generateInterfaceCode > generates interface with extend
  *
  * See also {@link TestInterface} for fields + legacy mode features
  */
-export interface TestInterfaceextends BaseInterface {
+export interface TestInterface extends BaseInterface {
 	title?: unknown;
 }
 

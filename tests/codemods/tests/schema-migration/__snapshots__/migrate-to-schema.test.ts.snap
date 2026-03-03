@@ -93,7 +93,7 @@ import type { Project } from 'test-app/data/resources/project.type';
  *
  * See also {@link User} for fields + legacy mode features
  */
-export interface UserResourceextends TimestampableTrait {
+export interface UserResource extends TimestampableTrait {
   readonly [Type]: 'user';
   id: string | null;
   name: string;
@@ -180,7 +180,7 @@ export default TimestampableTraitSchema;
  *
  * See also {@link Timestampable} for fields + legacy mode features
  */
-export interface TimestampableTraitextends DeleteableTrait {
+export interface TimestampableTrait extends DeleteableTrait {
   createdAt?: Date | null;
   updatedAt?: Date | null;
 }
@@ -234,7 +234,7 @@ import type { WithLegacy } from '@ember-data/model/migration-support';
  *
  * See also {@link AdminModel} for fields + legacy mode features
  */
-export interface AdminModelResourceextends ConnectedTrait {
+export interface AdminModelResource extends ConnectedTrait {
   readonly [Type]: 'admin-model';
   id: string | null;
   adminName: string | null;
@@ -399,6 +399,213 @@ exports[`migrate-to-schema batch operation > colocates type files with their cor
 ]
 `;
 
+exports[`migrate-to-schema batch operation > combineSchemasAndTypes=true > generates combined artifacts with mixins, belongsTo, hasMany, and extensions > combined with mixins file structure 1`] = `
+[
+  "resources/",
+  "resources/user.ext.ts",
+  "resources/user.schema.ts",
+  "traits/",
+  "traits/timestampable.ext.ts",
+  "traits/timestampable.schema.ts",
+]
+`;
+
+exports[`migrate-to-schema batch operation > combineSchemasAndTypes=true > generates combined artifacts with mixins, belongsTo, hasMany, and extensions > combined with mixins files 1`] = `
+{
+  "resources/": "__dir__",
+  "resources/user.ext.ts": "
+import Timestampable from '../../mixins/timestampable';
+import type { User } from './user.schema.ts';
+
+// @ts-ignore-error in reality fields are not merged, they are overridden
+export interface UserExtension extends User {}
+export class UserExtension {
+  get displayName() {
+      return this.name || this.email;
+    }
+
+  async updateProfile(data) {
+      this.setProperties(data);
+      return this.save();
+    }
+}
+
+export default UserExtension;",
+  "resources/user.schema.ts": "
+import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+
+import type { Type } from '@warp-drive/core-types/symbols';
+import type { WithLegacy } from '@ember-data/model/migration-support';
+import type { Company } from 'test-app/data/resources/company.schema';
+import type { Project } from 'test-app/data/resources/project.schema';
+
+const UserSchema = {
+  'type': 'user',
+  'legacy': true,
+  'identity': {
+    'kind': '@id',
+    'name': 'id'
+  },
+  'fields': [
+    {
+      'kind': 'attribute',
+      'name': 'name',
+      'type': 'string'
+    },
+    {
+      'kind': 'attribute',
+      'name': 'email',
+      'type': 'string'
+    },
+    {
+      'kind': 'belongsTo',
+      'name': 'company',
+      'type': 'company',
+      'options': {
+        'async': false
+      }
+    },
+    {
+      'kind': 'hasMany',
+      'name': 'projects',
+      'type': 'project',
+      'options': {
+        'async': true
+      }
+    }
+  ],
+  'traits': [
+    'timestampable'
+  ],
+  'objectExtensions': [
+    'TimestampableExtension'
+  ]
+} satisfies LegacyResourceSchema;
+
+export default UserSchema;
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'user' resource, without any of the legacy mode features
+ * and without any extensions.
+ *
+ * > [!TIP]
+ * > It is likely that you will want a more specific type tailored
+ * > to the context of where some data has been loaded, for instance
+ * > one that marks specific fields as readonly, or which only enables
+ * > some fields to be null during create, or which only includes
+ * > a subset of fields based on a specific API response.
+ * >
+ * > For those cases, you can create a more specific type that derives
+ * > from this type to ensure that your type definitions stay consistent
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ *
+ * See also {@link User} for fields + legacy mode features
+ */
+export interface UserResource extends TimestampableTrait {
+  readonly [Type]: 'user';
+  id: string | null;
+  name: string;
+  email: string;
+  company: Company;
+  projects: Project[];
+}
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'user' resource, including all legacy mode features but
+ * without any extensions.
+ *
+ * See also {@link UserResource} for fields + legacy mode features
+ */
+export interface User extends WithLegacy<UserResource> {}
+",
+  "traits/": "__dir__",
+  "traits/timestampable.ext.ts": "
+import Mixin from '@ember/object/mixin';
+import { attr } from '@ember-data/model';
+import Deleteable from 'test-app/models/deleteable';
+
+export default Mixin.create(Deleteable, {
+  createdAt: attr('date'),
+  updatedAt: attr('date'),
+
+  timeSince() {
+    return Date.now() - this.updatedAt;
+  },
+});
+
+import type { Timestampable } from 'test-app/data/traits/timestampable.schema';
+
+export interface TimestampableTraitExtension extends Timestampable {}
+
+export const TimestampableTraitExtension = {
+  timeSince() {
+    return Date.now() - this.updatedAt;
+  }
+};",
+  "traits/timestampable.schema.ts": "
+import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+
+import type { DeleteableTrait } from 'test-app/data/traits/deleteable.schema';
+
+const TimestampableTraitSchema = {
+  'name': 'timestampable',
+  'mode': 'legacy',
+  'fields': [
+    {
+      'name': 'createdAt',
+      'kind': 'attribute',
+      'type': 'date'
+    },
+    {
+      'name': 'updatedAt',
+      'kind': 'attribute',
+      'type': 'date'
+    }
+  ],
+  'traits': [
+    'deleteable'
+  ]
+} satisfies LegacyResourceSchema;
+
+export default TimestampableTraitSchema;
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'timestampable' trait, without any of the legacy mode features
+ * and without any extensions.
+ *
+ * > [!TIP]
+ * > It is likely that you will want a more specific type tailored
+ * > to the context of where some data has been loaded, for instance
+ * > one that marks specific fields as readonly, or which only enables
+ * > some fields to be null during create, or which only includes
+ * > a subset of fields based on a specific API response.
+ * >
+ * > For those cases, you can create a more specific type that derives
+ * > from this type to ensure that your type definitions stay consistent
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ *
+ * See also {@link Timestampable} for fields + legacy mode features
+ */
+export interface TimestampableTrait extends DeleteableTrait {
+  createdAt?: Date | null;
+  updatedAt?: Date | null;
+}
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'timestampable' trait, including all legacy mode features but
+ * without any extensions.
+ *
+ * See also {@link TimestampableTrait} for fields + legacy mode features
+ */
+export interface Timestampable extends WithLegacy<TimestampableTrait> {}
+",
+}
+`;
+
 exports[`migrate-to-schema batch operation > creates output directories if they do not exist > generated file structure 1`] = `
 [
   "resources/",
@@ -470,7 +677,7 @@ import type { WithLegacy } from '@ember-data/model/migration-support';
  *
  * See also {@link AuditLog} for fields + legacy mode features
  */
-export interface AuditLogResourceextends AuditableTrait {
+export interface AuditLogResource extends AuditableTrait {
   readonly [Type]: 'audit-log';
   id: string | null;
   action: string | null;
@@ -697,7 +904,7 @@ import type { WorkstreamableTrait as Workstreamable } from 'test-app/data/traits
  *
  * See also {@link TestModel} for fields + legacy mode features
  */
-export interface TestModelResourceextends WorkstreamableTrait {
+export interface TestModelResource extends WorkstreamableTrait {
   readonly [Type]: 'test-model';
   id: string | null;
 
@@ -1199,7 +1406,7 @@ import type { WithLegacy } from '@ember-data/model/migration-support';
  *
  * See also {@link TestModel} for fields + legacy mode features
  */
-export interface TestModelResourceextends ExternalTrait, LocalTrait {
+export interface TestModelResource extends ExternalTrait, LocalTrait {
   readonly [Type]: 'test-model';
   id: string | null;
   name: string | null;
@@ -1388,7 +1595,7 @@ import type { WithLegacy } from '@ember-data/model/migration-support';
  *
  * See also {@link JsModelWithMixin} for fields + legacy mode features
  */
-export interface JsModelWithMixinResourceextends JsTrait {
+export interface JsModelWithMixinResource extends JsTrait {
   readonly [Type]: 'js-model-with-mixin';
   id: string | null;
   name: string | null;
@@ -1452,7 +1659,7 @@ import type { WithLegacy } from '@ember-data/model/migration-support';
  *
  * See also {@link TsModelWithMixin} for fields + legacy mode features
  */
-export interface TsModelWithMixinResourceextends TsTrait {
+export interface TsModelWithMixinResource extends TsTrait {
   readonly [Type]: 'ts-model-with-mixin';
   id: string | null;
   title: string | null;
@@ -1650,7 +1857,7 @@ import type { WorkstreamableTrait as Workstreamable } from 'test-app/data/traits
  *
  * See also {@link TestModel} for fields + legacy mode features
  */
-export interface TestModelResourceextends WorkstreamableTrait {
+export interface TestModelResource extends WorkstreamableTrait {
   readonly [Type]: 'test-model';
   id: string | null;
 
@@ -1849,7 +2056,7 @@ import type { WorkstreamableTrait as Workstreamable } from 'test-app/data/traits
  *
  * See also {@link TestModel} for fields + legacy mode features
  */
-export interface TestModelResourceextends WorkstreamableTrait {
+export interface TestModelResource extends WorkstreamableTrait {
   readonly [Type]: 'test-model';
   id: string | null;
 
@@ -2310,7 +2517,7 @@ export default DataFieldTraitSchema;
  *
  * See also {@link DataField} for fields + legacy mode features
  */
-export interface DataFieldTraitextends BaseModelTrait {
+export interface DataFieldTrait extends BaseModelTrait {
   id: string | null;
   name: string | null;
   sortOrder: number | null;

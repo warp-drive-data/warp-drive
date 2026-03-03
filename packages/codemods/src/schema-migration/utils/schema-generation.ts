@@ -729,7 +729,7 @@ function generateInterfaceOnly(
    */
   let interfaceDeclaration = `export interface ${config.identifiers.fieldsInterface}`;
   if (config.traits.length) {
-    interfaceDeclaration += 'extends ';
+    interfaceDeclaration += ' extends ';
     interfaceDeclaration += config.traits.map((t) => t.identifiers.fieldsInterface).join(', ');
   }
   interfaceDeclaration += ' {';

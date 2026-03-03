@@ -1394,7 +1394,7 @@ export default FileableTraitSchema;
  *
  * See also {@link Fileable} for fields + legacy mode features
  */
-export interface FileableTraitextends BaseModelTrait, TimestampTrait {
+export interface FileableTrait extends BaseModelTrait, TimestampTrait {
   description?: string | null;
   files?: HasMany<File>;
 }
@@ -1450,7 +1450,7 @@ export default DescribableTraitSchema;
  *
  * See also {@link Describable} for fields + legacy mode features
  */
-export interface DescribableTraitextends BaseModelTrait {
+export interface DescribableTrait extends BaseModelTrait {
   description?: string | null;
 }
 

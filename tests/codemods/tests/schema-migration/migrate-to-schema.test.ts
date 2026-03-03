@@ -835,7 +835,7 @@ export default class TestModel extends BaseModel {
        *
        * See also {@link Typed} for fields + legacy mode features
        */
-      export interface TypedResourceextends StaticBaseModelTraitTrait {
+      export interface TypedResource extends StaticBaseModelTraitTrait {
         readonly [Type]: 'typed';
         id: string | null;
       }
@@ -944,7 +944,7 @@ export default class TestModel extends BaseModel {
        *
        * See also {@link Typed} for fields + legacy mode features
        */
-      export interface TypedResourceextends StaticBaseModelTraitTrait {
+      export interface TypedResource extends StaticBaseModelTraitTrait {
         readonly [Type]: 'typed';
         id: string | null;
       }
@@ -1125,7 +1125,7 @@ export default Mixin.create({
        *
        * See also {@link Typed} for fields + legacy mode features
        */
-      export interface TypedResourceextends StaticBaseModelTraitTrait {
+      export interface TypedResource extends StaticBaseModelTraitTrait {
         readonly [Type]: 'typed';
         id: string | null;
         name: string;
@@ -1146,5 +1146,64 @@ export default Mixin.create({
         "traits/": "__dir__",
       }
     `);
+  });
+
+  describe('combineSchemasAndTypes=true', () => {
+    it('generates combined artifacts with mixins, belongsTo, hasMany, and extensions', async () => {
+      prepareFiles(tempDir, {
+        'app/models/user.ts': `
+import Model, { attr, belongsTo, hasMany } from '@ember-data/model';
+import Timestampable from '../mixins/timestampable';
+
+export default class User extends Model.extend(Timestampable) {
+  @attr('string') declare name: string;
+  @attr('string') declare email: string;
+  @belongsTo('company', { async: false }) declare company: Company;
+  @hasMany('project', { async: true }) declare projects: Project[];
+
+  get displayName() {
+    return this.name || this.email;
+  }
+
+  async updateProfile(data) {
+    this.setProperties(data);
+    return this.save();
+  }
+}
+`,
+        'app/mixins/timestampable.ts': `
+import Mixin from '@ember/object/mixin';
+import { attr } from '@ember-data/model';
+import Deleteable from './deleteable';
+
+export default Mixin.create(Deleteable, {
+  createdAt: attr('date'),
+  updatedAt: attr('date'),
+
+  timeSince() {
+    return Date.now() - this.updatedAt;
+  },
+});
+`,
+        'app/mixins/deleteable.ts': `
+import Mixin from '@ember/object/mixin';
+import { attr } from '@ember-data/model';
+
+export default Mixin.create({
+  deletedAt: attr('date'),
+
+  timeSinceDeleted() {
+    return Date.now() - this.deletedAt;
+  }
+});
+`,
+      });
+
+      await runMigration({ ...options, combineSchemasAndTypes: true });
+
+      const dataDir = join(tempDir, 'app/data');
+      expect(collectFileStructure(dataDir)).toMatchSnapshot('combined with mixins file structure');
+      expect(collectFilesSnapshot(dataDir)).toMatchSnapshot('combined with mixins files');
+    });
   });
 });

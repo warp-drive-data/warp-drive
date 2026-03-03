@@ -948,7 +948,7 @@ export default class TestModel extends Model.extend(WorkstreamableMixin) {
          *
          * See also {@link TestModel} for fields + legacy mode features
          */
-        export interface TestModelResourceextends WorkstreamableTrait {
+        export interface TestModelResource extends WorkstreamableTrait {
           readonly [Type]: 'test-model';
           id: string | null;
           workstreamable: Workstreamable | null;

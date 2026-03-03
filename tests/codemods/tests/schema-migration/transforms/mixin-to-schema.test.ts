@@ -6,8 +6,8 @@ import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import type { FinalOptions } from '@ember-data/codemods/schema-migration/config.js';
 
 import { toArtifacts } from '../../../../../packages/codemods/src/schema-migration/processors/mixin.ts';
-import { SchemaArtifact } from '../../../../../packages/codemods/src/schema-migration/utils/artifact.js';
 import type { SchemaArtifactRegistry } from '../../../../../packages/codemods/src/schema-migration/utils/artifact.js';
+import { SchemaArtifact } from '../../../../../packages/codemods/src/schema-migration/utils/artifact.js';
 import { parseFile } from '../../../../../packages/codemods/src/schema-migration/utils/file-parser.js';
 
 function createConnectedRegistry(mixinEntity: SchemaArtifact): SchemaArtifactRegistry {

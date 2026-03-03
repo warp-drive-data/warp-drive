@@ -4,24 +4,65 @@ import { expect, test as vitest } from 'vitest';
 import type { TransformOptions } from '@ember-data/codemods/schema-migration/config.js';
 import { toArtifacts as toTraitArtifacts } from '@ember-data/codemods/schema-migration/processors/mixin.js';
 import { toArtifacts as toResourceArtifacts } from '@ember-data/codemods/schema-migration/processors/model.js';
-import { SchemaArtifact } from '@ember-data/codemods/schema-migration/utils/artifact.js';
+import type {   SchemaArtifact,SchemaArtifactRegistry } from '@ember-data/codemods/schema-migration/utils/artifact.js';
+import {
+  buildEntityRegistry,
+  linkEntities
+} from '@ember-data/codemods/schema-migration/utils/artifact.js';
+import type { ParsedFile } from '@ember-data/codemods/schema-migration/utils/file-parser.js';
 import { parseFile } from '@ember-data/codemods/schema-migration/utils/file-parser.js';
 import type { TransformArtifact } from '@ember-data/codemods/schema-migration/utils/schema-generation.js';
 
 import { createTestOptions } from '../test-helpers.ts';
 
-function transformFile(filePath: string, source: string, options: TransformOptions) {
-  const parsed = parseFile(filePath, source, options);
-  const entity = SchemaArtifact.fromParsedFile(parsed);
-
-  switch (parsed.fileType) {
+function transformEntity(entity: SchemaArtifact, options: TransformOptions) {
+  switch (entity.parsedFile.fileType) {
     case 'mixin':
       return toTraitArtifacts(entity, options);
     case 'model':
       return toResourceArtifacts(entity, options);
     default:
-      throw new Error(`Unknown file type for path: ${filePath}`);
+      throw new Error(`Unknown file type for path: ${entity.path}`);
   }
+}
+
+function buildTestRegistry(parsedFiles: Map<string, ParsedFile>): {
+  registry: SchemaArtifactRegistry;
+  modelToMixinsMap: Map<string, Set<string>>;
+} {
+  const parsedModels = new Map<string, ParsedFile>();
+  const parsedMixins = new Map<string, ParsedFile>();
+
+  for (const [filePath, parsed] of parsedFiles) {
+    if (parsed.fileType === 'mixin') {
+      parsedMixins.set(filePath, parsed);
+    } else {
+      parsedModels.set(filePath, parsed);
+    }
+  }
+
+  const registry = buildEntityRegistry(parsedModels, parsedMixins);
+
+  const modelToMixinsMap = new Map<string, Set<string>>();
+  for (const [modelPath, parsed] of parsedModels) {
+    if (parsed.traits.length > 0) {
+      const mixinPaths = new Set<string>();
+      for (const traitBaseName of parsed.traits) {
+        for (const [mixinPath, mixinParsed] of parsedMixins) {
+          if (mixinParsed.baseName === traitBaseName) {
+            mixinPaths.add(mixinPath);
+          }
+        }
+      }
+      if (mixinPaths.size > 0) {
+        modelToMixinsMap.set(modelPath, mixinPaths);
+      }
+    }
+  }
+
+  linkEntities(registry, modelToMixinsMap);
+
+  return { registry, modelToMixinsMap };
 }
 
 interface BaseTransformationTest {
@@ -85,9 +126,17 @@ async function applyTransform(
   input: Record<string, string>,
   config: TransformOptions
 ): Promise<{ files: Record<string, string> }> {
-  const files = {} as Record<string, string>;
+  const parsedFiles = new Map<string, ParsedFile>();
   for (const [fileName, content] of Object.entries(input)) {
-    const output = transformFile(fileName, content, config);
+    parsedFiles.set(fileName, parseFile(fileName, content, config));
+  }
+
+  const { registry } = buildTestRegistry(parsedFiles);
+  config.entityRegistry = registry;
+
+  const files = {} as Record<string, string>;
+  for (const entity of registry.values()) {
+    const output = transformEntity(entity, config);
     for (const artifact of output.artifacts) {
       const prefixedFileName = prefixFile(artifact, config);
       if (files[prefixedFileName]) {
