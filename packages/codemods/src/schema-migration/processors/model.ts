@@ -669,7 +669,7 @@ function analyzeModelFromParsed(parsedFile: ParsedFile, options: TransformOption
  * Generate trait artifacts for intermediate models (like DataFieldModel)
  * These become traits that other models can include
  */
-function generateIntermediateModelTraitArtifacts(
+export function generateIntermediateModelTraitArtifacts(
   filePath: string,
   source: string,
   modelPath: string,
