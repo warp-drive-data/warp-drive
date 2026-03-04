@@ -210,22 +210,19 @@ export function createTraitArtifactConfig(
     extensionIsTyped,
     hasExtension,
     identifiers: {
-      schema: `${classified}TraitSchema`,
-      fieldsInterface: hasTypes ? `${classified}Trait` : null,
+      schema: deriveTraitSchemaName(name),
+      fieldsInterface: hasTypes ? deriveTraitInterfaceName(name) : null,
       type: hasTypes ? classified : null,
-      extension: hasExtension ? `${classified}TraitExtension` : null,
+      extension: hasExtension ? deriveTraitExtensionName(name) : null,
       extensionAlias: hasTypes && hasExtension ? `${classified}TraitWithExtensions` : null,
     },
-    traits: traits.map((trait) => {
-      const pascl = toPascalCase(trait);
-      return {
-        name: trait,
-        identifiers: {
-          fieldsInterface: hasTypes ? `${pascl}Trait` : null,
-          extension: hasTypes ? `${pascl}Extension` : null,
-        },
-      };
-    }),
+    traits: traits.map((trait) => ({
+      name: trait,
+      identifiers: {
+        fieldsInterface: hasTypes ? deriveTraitInterfaceName(trait) : null,
+        extension: hasTypes ? deriveTraitExtensionName(trait) : null,
+      },
+    })),
   };
 }
 
@@ -267,22 +264,19 @@ export function createResourceArtifactConfig(
     extensionIsTyped,
     hasExtension,
     identifiers: {
-      schema: `${classified}Schema`,
+      schema: deriveResourceSchemaName(name),
       fieldsInterface: hasTypes ? `${classified}Resource` : null,
       type: hasTypes ? classified : null,
-      extension: hasExtension ? `${classified}Extension` : null,
+      extension: hasExtension ? deriveResourceExtensionName(name) : null,
       extensionAlias: hasTypes && hasExtension ? `${classified}WithExtensions` : null,
     },
-    traits: analysis.mixinTraits.map((trait) => {
-      const pascl = toPascalCase(trait);
-      return {
-        name: trait,
-        identifiers: {
-          fieldsInterface: hasTypes ? `${pascl}Trait` : null,
-          extension: hasTypes ? `${pascl}Extension` : null,
-        },
-      };
-    }),
+    traits: analysis.mixinTraits.map((trait) => ({
+      name: trait,
+      identifiers: {
+        fieldsInterface: hasTypes ? deriveTraitInterfaceName(trait) : null,
+        extension: hasTypes ? deriveTraitExtensionName(trait) : null,
+      },
+    })),
   };
 }
 
@@ -314,12 +308,16 @@ export class SchemaArtifact {
     return this.parsedFile.path;
   }
 
+  get isTrait(): boolean {
+    return this.kind === 'mixin';
+  }
+
   get schemaName(): string {
-    return deriveSchemaName(this.baseName);
+    return this.isTrait ? deriveTraitSchemaName(this.baseName) : deriveResourceSchemaName(this.baseName);
   }
 
   get extensionName(): string {
-    return deriveExtensionName(this.baseName);
+    return this.isTrait ? deriveTraitExtensionName(this.baseName) : deriveResourceExtensionName(this.baseName);
   }
 
   get interfaceName(): string {
@@ -360,15 +358,23 @@ export class SchemaArtifact {
   }
 }
 
-export function deriveTraitInterfaceName(name: string): string {
+export function deriveTraitInterfaceName(name: string): `${string}Trait` {
   return `${toPascalCase(name)}Trait`;
 }
 
-export function deriveExtensionName(name: string): string {
+export function deriveTraitExtensionName(name: string): `${string}TraitExtension` {
+  return `${toPascalCase(name)}TraitExtension`;
+}
+
+export function deriveResourceExtensionName(name: string): `${string}Extension` {
   return `${toPascalCase(name)}Extension`;
 }
 
-export function deriveSchemaName(name: string): string {
+export function deriveTraitSchemaName(name: string): `${string}TraitSchema` {
+  return `${toPascalCase(name)}TraitSchema`;
+}
+
+export function deriveResourceSchemaName(name: string): `${string}Schema` {
   return `${toPascalCase(name)}Schema`;
 }
 

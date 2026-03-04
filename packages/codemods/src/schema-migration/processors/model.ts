@@ -110,6 +110,7 @@ export interface ModelAnalysisResult {
   }>;
   mixinTraits: string[];
   mixinExtensions: string[];
+  heritageLocalNames: string[];
   modelName: string;
   baseName: string;
 }
@@ -126,6 +127,7 @@ function createInvalidResult(modelName: string, baseName: string): ModelAnalysis
     extensionProperties: [],
     mixinTraits: [],
     mixinExtensions: [],
+    heritageLocalNames: [],
     modelName,
     baseName,
     comment: undefined,
@@ -468,7 +470,8 @@ function generateRegularModelArtifacts(
 ): TransformArtifact[] {
   const filePath = entity.path;
   const source = entity.parsedFile.source;
-  const { comment, schemaFields, mixinTraits, mixinExtensions, modelName, baseName, isFragment } = analysis;
+  const { comment, schemaFields, mixinTraits, mixinExtensions, heritageLocalNames, modelName, baseName, isFragment } =
+    analysis;
   const artifacts: TransformArtifact[] = [];
 
   // Determine the file extension based on the original model file
@@ -579,7 +582,9 @@ function generateRegularModelArtifacts(
         analysis.extensionProperties,
         options,
         undefined,
-        'resource'
+        'resource',
+        undefined,
+        heritageLocalNames
       )
     : null;
 
@@ -645,6 +650,7 @@ function analyzeModelFromParsed(parsedFile: ParsedFile, options: TransformOption
       extensionProperties,
       mixinTraits,
       mixinExtensions,
+      heritageLocalNames: parsedFile.heritageLocalNames,
       modelName,
       baseName,
       comment: parsedFile.comment,

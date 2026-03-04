@@ -5,7 +5,13 @@ import { dirname, resolve } from 'path';
 
 import { logger } from '../../../utils/logger.js';
 import type { TransformOptions } from '../config.js';
-import { deriveExtensionName, deriveTraitInterfaceName, findEntityByBaseName, isConnectedToModel } from './artifact.js';
+import {
+  deriveResourceExtensionName,
+  deriveTraitExtensionName,
+  deriveTraitInterfaceName,
+  findEntityByBaseName,
+  isConnectedToModel,
+} from './artifact.js';
 import { findClassDeclaration, findDefaultExport } from './ast-helpers.js';
 import {
   extractBaseName,
@@ -923,7 +929,12 @@ export function processImports(source: string, filePath: string, baseDir: string
             // Extract the model base name from the import path to get correct Extension class name
             const extensionPathMatch = convertedImport.match(EXT_FILE_PATH_REGEX);
             const modelBaseName = extensionPathMatch ? extensionPathMatch[1] : null;
-            const extensionClassName = modelBaseName ? deriveExtensionName(modelBaseName) : null;
+            const isTraitExtension = convertedImport.includes('/traits/');
+            const extensionClassName = modelBaseName
+              ? isTraitExtension
+                ? deriveTraitExtensionName(modelBaseName)
+                : deriveResourceExtensionName(modelBaseName)
+              : null;
 
             if (extensionClassName) {
               newImport = newImport.replace(IMPORT_TYPE_DEFAULT_REGEX, (_match: string, typeName: string) => {

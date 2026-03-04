@@ -9,7 +9,7 @@ import type { User } from './user.type.ts';
 
 // @ts-ignore-error in reality fields are not merged, they are overridden
 export interface UserExtension extends User {}
-export class UserExtension {
+export class UserExtension extends Timestampable {
   get displayName() {
       return this.name || this.email;
     }
@@ -63,7 +63,7 @@ const UserSchema = {
     'timestampable'
   ],
   'objectExtensions': [
-    'TimestampableExtension'
+    'TimestampableTraitExtension'
   ]
 } satisfies LegacyResourceSchema;
 
@@ -410,7 +410,7 @@ import type { User } from './user.schema.ts';
 
 // @ts-ignore-error in reality fields are not merged, they are overridden
 export interface UserExtension extends User {}
-export class UserExtension {
+export class UserExtension extends Timestampable {
   get displayName() {
       return this.name || this.email;
     }
@@ -469,7 +469,7 @@ const UserSchema = {
     'timestampable'
   ],
   'objectExtensions': [
-    'TimestampableExtension'
+    'TimestampableTraitExtension'
   ]
 } satisfies LegacyResourceSchema;
 
@@ -1524,7 +1524,7 @@ exports[`migrate-to-schema batch operation > handles mixed js and ts files corre
   "resources/js-model-with-mixin.ext.js": "
 import JsMixin from '../../mixins/js-mixin';
 
-export class JsModelWithMixinExtension {
+export class JsModelWithMixinExtension extends JsMixin {
   get displayName() {
       return this.name + ' (JS)';
     }
@@ -1613,7 +1613,7 @@ const TsModelWithMixinSchema = {
     'ts'
   ],
   'objectExtensions': [
-    'TsMixinExtension'
+    'TsMixinTraitExtension'
   ]
 } satisfies LegacyResourceSchema;
 
@@ -2000,7 +2000,7 @@ const TestModelSchema = {
     'workstreamable'
   ],
   'objectExtensions': [
-    'WorkstreamableExtension'
+    'WorkstreamableTraitExtension'
   ]
 } satisfies LegacyResourceSchema;
 

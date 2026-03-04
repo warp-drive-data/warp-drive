@@ -142,6 +142,8 @@ export interface ParsedFile {
   hasExtension: boolean;
   /** For models: the base class being extended */
   baseClass?: string;
+  /** Original local names of mixins from the heritage clause (e.g. ['BaseModelMixin', 'Permissable']) */
+  heritageLocalNames: string[];
   /** PascalCase name derived from file path */
   pascalName: string;
   /** camelCase name derived from file path */
@@ -354,6 +356,7 @@ interface ExtractedModelData {
   fields: ParsedField[];
   behaviors: ParsedBehavior[];
   traits: string[];
+  heritageLocalNames: string[];
   baseClass?: string;
   comment?: string;
 }
@@ -363,13 +366,14 @@ function extractModelData(root: SgNode, filePath: string, options: TransformOpti
   const behaviors: ParsedBehavior[] = [];
   const traits: string[] = [];
   let comment: string | undefined = undefined;
+  const heritageLocalNames: string[] = [];
   let baseClass: string | undefined;
 
   const isJavaScript = filePath.endsWith('.js');
 
   const classDeclaration = findClassDeclarationInRoot(root, options);
   if (!classDeclaration) {
-    return { fields, behaviors, traits, baseClass, comment };
+    return { fields, behaviors, traits, heritageLocalNames, baseClass, comment };
   }
 
   // there must be a defaultExport if we found a class declaration
@@ -391,6 +395,7 @@ function extractModelData(root: SgNode, filePath: string, options: TransformOpti
     // Extract mixin traits from .extend() arguments
     for (const [localName, importPath] of mixinImports) {
       if (heritageText.includes(localName)) {
+        heritageLocalNames.push(localName);
         const traitName =
           importPath
             .split('/')
@@ -413,7 +418,7 @@ function extractModelData(root: SgNode, filePath: string, options: TransformOpti
   // Get class body
   const classBody = classDeclaration.find({ rule: { kind: NODE_KIND_CLASS_BODY } });
   if (!classBody) {
-    return { fields, behaviors, traits, baseClass, comment };
+    return { fields, behaviors, traits, heritageLocalNames, baseClass, comment };
   }
 
   // Find property and method definitions
@@ -535,7 +540,7 @@ function extractModelData(root: SgNode, filePath: string, options: TransformOpti
     });
   }
 
-  return { fields, behaviors, traits, baseClass, comment };
+  return { fields, behaviors, traits, heritageLocalNames, baseClass, comment };
 }
 
 // ============================================================================
@@ -795,6 +800,7 @@ export function parseFile(filePath: string, code: string, options: TransformOpti
   let fields: ParsedField[] = [];
   let behaviors: ParsedBehavior[] = [];
   let traits: string[] = [];
+  let heritageLocalNames: string[] = [];
   let baseClass: string | undefined;
   let comment: string | undefined;
 
@@ -803,6 +809,7 @@ export function parseFile(filePath: string, code: string, options: TransformOpti
     fields = modelData.fields;
     behaviors = modelData.behaviors;
     traits = modelData.traits;
+    heritageLocalNames = modelData.heritageLocalNames;
     baseClass = modelData.baseClass;
     comment = modelData.comment;
   } else if (fileType === 'mixin') {
@@ -830,6 +837,7 @@ export function parseFile(filePath: string, code: string, options: TransformOpti
     traits,
     hasExtension,
     baseClass,
+    heritageLocalNames,
     pascalName,
     camelName,
     baseName,

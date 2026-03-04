@@ -53,7 +53,7 @@ describe('custom emberDataImportSource', function () {
             },
           ],
           traits: ['teamable'],
-          objectExtensions: ['TeamableExtension'],
+          objectExtensions: ['TeamableTraitExtension'],
         } satisfies LegacyResourceSchema;
 
         export default ProjectSchema;

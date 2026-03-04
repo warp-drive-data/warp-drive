@@ -165,7 +165,8 @@ export function generateExtensionCode(
   config: ArtifactConfig,
   extensionProperties: Array<{ name: string; originalKey: string; value: string; isObjectMethod?: boolean }>,
   format: 'object' | 'class' = 'object',
-  interfaceImportPath?: string
+  interfaceImportPath?: string,
+  extendsClause?: string
 ): string {
   if (format === 'class') {
     // Class format used by model-to-schema transform
@@ -177,7 +178,9 @@ export function generateExtensionCode(
       })
       .join('\n\n');
 
-    const classCode = `export class ${config.identifiers.extension} {\n${methods}\n}`;
+    const classCode = extendsClause
+      ? `export class ${config.identifiers.extension} extends ${extendsClause} {\n${methods}\n}`
+      : `export class ${config.identifiers.extension} {\n${methods}\n}`;
     const exportDefault = `export default ${config.identifiers.extension};`;
 
     // Add interface extension for TypeScript files or JSDoc for JavaScript files
@@ -403,7 +406,8 @@ export function createExtensionFromOriginalFile(
   options?: TransformOptions,
   interfaceImportPath?: string,
   sourceType: 'mixin' | 'model' | 'resource' = 'model',
-  processImports?: (source: string, filePath: string, baseDir: string, options?: TransformOptions) => string
+  processImports?: (source: string, filePath: string, baseDir: string, options?: TransformOptions) => string,
+  heritageLocalNames?: string[]
 ): TransformArtifact | null {
   if (extensionProperties.length === 0) {
     return null;
@@ -448,9 +452,16 @@ export function createExtensionFromOriginalFile(
 
     log.debug(`Extension generation for ${sourceType} using ${format} format`);
 
+    const extendsClause = heritageLocalNames?.length ? heritageLocalNames.join(', ') : undefined;
     // For resource models, don't include the type import in the generated code (it's added separately at the top)
     const extInterfaceImportPath = sourceType === 'resource' ? undefined : interfaceImportPath;
-    let extensionCode = generateExtensionCode(schemaConfig, extensionProperties, format, extInterfaceImportPath);
+    let extensionCode = generateExtensionCode(
+      schemaConfig,
+      extensionProperties,
+      format,
+      extInterfaceImportPath,
+      extendsClause
+    );
 
     // For resource models with typed extensions, add ts-ignore comment before the interface
     // and remove blank line between interface and class
