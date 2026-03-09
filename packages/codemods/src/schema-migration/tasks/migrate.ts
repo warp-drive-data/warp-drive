@@ -186,7 +186,13 @@ function buildOutputFileName(
   }
 
   if (config.preserveExtension) {
-    const extension = sourceFilePath.endsWith('.ts') ? '.ts' : '.js';
+    const extension = suggestedFileName?.endsWith('.ts')
+      ? '.ts'
+      : suggestedFileName?.endsWith('.js')
+        ? '.js'
+        : sourceFilePath.endsWith('.ts')
+          ? '.ts'
+          : '.js';
     return relativePath.replace(/\.(js|ts)$/, `${config.suffix}${extension}`);
   }
 
@@ -227,7 +233,7 @@ function getArtifactOutputPath(
   // Build the output filename
   const outputName = config.useSuggestedFileName
     ? buildOutputFileName('', filePath, config, artifact.suggestedFileName) || 'unknown'
-    : buildOutputFileName(relativePath, filePath, config);
+    : buildOutputFileName(relativePath, filePath, config, artifact.suggestedFileName);
 
   const outputPath = join(resolve(outputDir), outputName);
 

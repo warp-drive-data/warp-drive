@@ -1024,7 +1024,7 @@ exports[`migrate-to-schema batch operation > ensures resources and traits includ
 [
   "resources/",
   "resources/js-test-model.ext.js",
-  "resources/js-test-model.schema.js",
+  "resources/js-test-model.schema.ts",
   "resources/js-test-model.type.ts",
   "resources/ts-test-model.schema.ts",
   "resources/ts-test-model.type.ts",
@@ -1037,7 +1037,7 @@ exports[`migrate-to-schema batch operation > ensures resources and traits includ
 exports[`migrate-to-schema batch operation > ensures schema files match source extension and type files are always .ts > mixed extensions file structure 1`] = `
 [
   "resources/",
-  "resources/js-model.schema.js",
+  "resources/js-model.schema.ts",
   "resources/js-model.type.ts",
   "resources/ts-model.schema.ts",
   "resources/ts-model.type.ts",
@@ -1048,7 +1048,7 @@ exports[`migrate-to-schema batch operation > ensures schema files match source e
 exports[`migrate-to-schema batch operation > ensures type files are always .ts regardless of source file extension > type files extension structure 1`] = `
 [
   "resources/",
-  "resources/js-model.schema.js",
+  "resources/js-model.schema.ts",
   "resources/js-model.type.ts",
   "resources/ts-model.schema.ts",
   "resources/ts-model.type.ts",
@@ -1507,12 +1507,12 @@ exports[`migrate-to-schema batch operation > handles mixed js and ts files corre
 [
   "resources/",
   "resources/js-model-with-mixin.ext.js",
-  "resources/js-model-with-mixin.schema.js",
+  "resources/js-model-with-mixin.schema.ts",
   "resources/js-model-with-mixin.type.ts",
   "resources/ts-model-with-mixin.schema.ts",
   "resources/ts-model-with-mixin.type.ts",
   "traits/",
-  "traits/js-mixin.schema.js",
+  "traits/js-mixin.schema.ts",
   "traits/ts-mixin.ext.ts",
   "traits/ts-mixin.schema.ts",
 ]
@@ -1531,7 +1531,7 @@ export class JsModelWithMixinExtension extends JsMixin {
 }
 
 export default JsModelWithMixinExtension;",
-  "resources/js-model-with-mixin.schema.js": "
+  "resources/js-model-with-mixin.schema.ts": "
 import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
 
 const JsModelWithMixinSchema = {
@@ -1657,7 +1657,7 @@ export interface TsModelWithMixinResource extends TsTrait {
 export interface TsModelWithMixin extends WithLegacy<TsModelWithMixinResource> {}
 ",
   "traits/": "__dir__",
-  "traits/js-mixin.schema.js": "
+  "traits/js-mixin.schema.ts": "
 import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
 
 const JsMixinTraitSchema = {
@@ -2334,7 +2334,7 @@ export interface BaseModelWithMethods extends WithLegacy<BaseModelWithMethodsTra
 exports[`migrate-to-schema batch operation > processes intermediateModelPaths to generate traits from base model classes > intermediate models file structure 1`] = `
 [
   "resources/",
-  "resources/custom-select-option.schema.js",
+  "resources/custom-select-option.schema.ts",
   "resources/custom-select-option.type.ts",
   "traits/",
   "traits/base.schema.ts",
@@ -2344,7 +2344,7 @@ exports[`migrate-to-schema batch operation > processes intermediateModelPaths to
 
 exports[`migrate-to-schema batch operation > processes intermediateModelPaths to generate traits from base model classes > intermediate models resources 1`] = `
 {
-  "custom-select-option.schema.js": "
+  "custom-select-option.schema.ts": "
 import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
 
 const CustomSelectOptionSchema = {
