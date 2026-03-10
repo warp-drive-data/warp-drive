@@ -61,6 +61,7 @@ describe('custom emberDataImportSource', function () {
       [F.resourceType('project')]: ts`
         import type { Type } from '@warp-drive/core-types/symbols';
         import type { WithLegacy } from '@ember-data/model/migration-support';
+        import type { TeamableTrait } from '../traits/teamable.schema';
 
         /**
          * This type represents the full set schema derived fields of

@@ -247,7 +247,8 @@ function extractHeritageInfo(
         heritageClause,
         root,
         options.intermediateModelPaths,
-        options
+        options,
+        filePath
       );
       mixinTraits.push(...intermediateTraits);
     }
@@ -752,7 +753,11 @@ export function generateIntermediateModelTraitArtifacts(
   }
 
   // Build the trait schema object
-  const traitSchemaObject = buildTraitSchemaObject(schemaFields, mixinTraits, { legacyFieldOrder: true });
+  const traitSchemaObject = buildTraitSchemaObject(schemaFields, mixinTraits, {
+    name: traitName,
+    mode: 'legacy',
+    legacyFieldOrder: true,
+  });
 
   const traitConfig = createTraitArtifactConfig(
     options,
@@ -818,12 +823,13 @@ function getIntermediateModelLocalNames(
   intermediateModelPaths: string[],
   options?: TransformOptions,
   fromFile?: string
-): string[] {
-  const localNames: string[] = [];
+): Map<string, string> {
+  const localNameToPath = new Map<string, string>();
+  const substitutePaths = options?.importSubstitutes?.map((s) => s.import).filter(Boolean) ?? [];
 
-  for (const modelPath of intermediateModelPaths) {
-    // First try direct matching
-    let localName = findEmberImportLocalName(root, [modelPath], options, fromFile, process.cwd());
+  for (const modelPath of [...intermediateModelPaths, ...substitutePaths]) {
+    // First try direct matching (without fromFile to avoid loose relative-import fallback)
+    let localName = findEmberImportLocalName(root, [modelPath], options, undefined, process.cwd());
 
     // If no direct match, try to find imports that resolve to the expected intermediate model
     // This handles cases where the configured path doesn't match the actual import path
@@ -888,12 +894,12 @@ function getIntermediateModelLocalNames(
     }
 
     if (localName) {
-      localNames.push(localName);
+      localNameToPath.set(localName, modelPath);
       log.debug(`DEBUG: Found intermediate model local name: ${localName} for path: ${modelPath}`);
     }
   }
 
-  return localNames;
+  return localNameToPath;
 }
 
 /**
@@ -1148,10 +1154,10 @@ function isModelClass(
       options,
       filePath
     );
-    isChainedExtension = intermediateLocalNames.some((localName) => extendsText.includes(localName));
+    isChainedExtension = [...intermediateLocalNames.keys()].some((localName) => extendsText.includes(localName));
     if (isChainedExtension) {
       log.debug(
-        `DEBUG: Found chained extension through intermediate model: ${intermediateLocalNames.find((name) => extendsText.includes(name))}`
+        `DEBUG: Found chained extension through intermediate model: ${[...intermediateLocalNames.keys()].find((name) => extendsText.includes(name))}`
       );
     }
   }
@@ -1170,32 +1176,25 @@ function extractIntermediateModelTraits(
   heritageClause: SgNode,
   root: SgNode,
   intermediateModelPaths: string[],
-  options?: TransformOptions
+  options?: TransformOptions,
+  filePath?: string
 ): string[] {
   const intermediateTraits: string[] = [];
   const extendsText = heritageClause.text();
 
-  // Get local names for all intermediate models
-  const intermediateLocalNames = getIntermediateModelLocalNames(root, intermediateModelPaths, options);
+  // Get local names for all intermediate models (maps localName → modelPath)
+  const intermediateLocalNames = getIntermediateModelLocalNames(root, intermediateModelPaths, options, filePath);
 
-  for (const localName of intermediateLocalNames) {
+  for (const [localName, modelPath] of intermediateLocalNames) {
     if (extendsText.includes(localName)) {
-      // Convert the import path to a trait name
-      const modelPath = intermediateModelPaths.find((path) => {
-        const pathLocalName = findEmberImportLocalName(root, [path], options, undefined, process.cwd());
-        return pathLocalName === localName;
-      });
+      // Convert path like "my-app/core/data-field-model" to "data-field-model"
+      let traitName = modelPath.split('/').pop() || modelPath;
+      // Strip any file extension (.js, .ts)
+      traitName = removeFileExtension(traitName);
+      const dasherizedName = pascalToKebab(traitName).replace(TRAILING_MODEL_SUFFIX_REGEX, ''); // Remove trailing -model or model
 
-      if (modelPath) {
-        // Convert path like "my-app/core/data-field-model" to "data-field-model"
-        let traitName = modelPath.split('/').pop() || modelPath;
-        // Strip any file extension (.js, .ts)
-        traitName = removeFileExtension(traitName);
-        const dasherizedName = pascalToKebab(traitName).replace(TRAILING_MODEL_SUFFIX_REGEX, ''); // Remove trailing -model or model
-
-        intermediateTraits.push(dasherizedName);
-        log.debug(`DEBUG: Found intermediate model trait: ${dasherizedName} from ${modelPath}`);
-      }
+      intermediateTraits.push(dasherizedName);
+      log.debug(`DEBUG: Found intermediate model trait: ${dasherizedName} from ${modelPath}`);
       break; // Only process the first match since a class can only extend one parent
     }
   }

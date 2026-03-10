@@ -1206,4 +1206,125 @@ export default Mixin.create({
       expect(collectFilesSnapshot(dataDir)).toMatchSnapshot('combined with mixins files');
     });
   });
+
+  it('extracts intermediate model trait when base class uses additionalModelSources', async () => {
+    prepareFiles(tempDir, {
+      'app/core/-base-model.js': `
+import Model from '@custom/decorators/model';
+
+export default class BaseModel extends Model {}
+`,
+      'app/models/approval-request.ts': `
+import BaseModel from '@custom/core/-base-model';
+import { attr, belongsTo } from '@custom/decorators/model';
+import BaseModelMixin from '../mixins/base-model';
+
+export default class ApprovalRequest extends BaseModel.extend(BaseModelMixin) {
+  @attr('string') declare name: string;
+  @attr('number') declare status: number;
+  @belongsTo('user', { async: false, inverse: null }) declare createdBy: unknown;
+}
+`,
+      'app/mixins/base-model.js': `
+import Mixin from '@ember/object/mixin';
+
+export default Mixin.create({});
+`,
+    });
+
+    const testOptions: MigrateOptions = {
+      ...options,
+      emberDataImportSource: '@custom/decorators/model',
+      intermediateModelPaths: ['@custom/core/-base-model'],
+      additionalModelSources: [
+        {
+          pattern: '@custom/core/*',
+          dir: join(tempDir, 'app/core/*'),
+        },
+      ],
+    };
+
+    const originalCwd = process.cwd();
+    process.chdir(tempDir);
+
+    try {
+      await runMigration(testOptions);
+    } finally {
+      process.chdir(originalCwd);
+    }
+
+    const dataDir = join(tempDir, 'app/data');
+    expect(collectFileStructure(dataDir)).toMatchSnapshot(
+      'intermediate model from additionalModelSources file structure'
+    );
+    expect(collectFilesSnapshot(dataDir)).toMatchSnapshot('intermediate model from additionalModelSources files');
+  });
+
+  it('model derived from intermediate model inherits traits and fields', async () => {
+    prepareFiles(tempDir, {
+      'app/core/base-model.ts': `
+import Model from '@ember-data/model';
+
+export default class BaseModel extends Model {
+}
+`,
+      'app/core/data-field-model.ts': `
+import BaseModelMixin from '@external/mixins/base-model';
+import { attr } from '@ember-data/model';
+
+import BaseModel from './base-model';
+
+export default class DataFieldModel extends BaseModel.extend(BaseModelMixin) {
+  /**
+   * The display name of the item.
+   */
+  @attr('string') name: string | undefined;
+
+  /**
+   * The sort order position for this data field.
+   */
+  @attr('number') sortOrder: number | undefined;
+}
+`,
+      'external/mixins/base-model.js': `
+import Mixin from '@ember/object/mixin';
+
+export default Mixin.create({
+});
+`,
+      'app/models/ae-custom-multiselect8-option.ts': `
+import DataFieldModel from '../core/data-field-model';
+
+export default class AeCustomMultiselect8Option extends DataFieldModel {}
+`,
+    });
+
+    const testOptions: MigrateOptions = {
+      ...options,
+      intermediateModelPaths: ['test-app/core/base-model', 'test-app/core/data-field-model'],
+      additionalModelSources: [
+        {
+          pattern: 'test-app/core/*',
+          dir: join(tempDir, 'app/core/*'),
+        },
+      ],
+      additionalMixinSources: [
+        {
+          pattern: '@external/mixins/*',
+          dir: join(tempDir, 'external/mixins/*'),
+        },
+      ],
+    };
+
+    const originalCwd = process.cwd();
+    process.chdir(tempDir);
+
+    try {
+      await runMigration(testOptions);
+    } finally {
+      process.chdir(originalCwd);
+    }
+
+    expect(collectFilesSnapshot(join(tempDir, 'app/data'))).toMatchSnapshot('derived_file_contents');
+  });
 });

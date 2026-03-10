@@ -129,6 +129,8 @@ export default class DataFieldModel extends Model {
       import type { BelongsToReference, HasManyReference, Errors } from '@warp-drive/legacy/model/-private';
 
       const DataFieldTraitSchema = {
+        'name': 'data-field',
+        'mode': 'legacy',
         'fields': [
           {
             'kind': 'attribute',
