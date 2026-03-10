@@ -8,8 +8,8 @@ import Timestampable from '../../mixins/timestampable';
 import type { User } from './user.type.ts';
 
 // @ts-ignore-error in reality fields are not merged, they are overridden
-export interface UserExtension extends User {}
-export class UserExtension extends Timestampable {
+export interface UserExtension extends User, Timestampable {}
+export class UserExtension {
   get displayName() {
       return this.name || this.email;
     }
@@ -411,8 +411,8 @@ import Timestampable from '../../mixins/timestampable';
 import type { User } from './user.schema.ts';
 
 // @ts-ignore-error in reality fields are not merged, they are overridden
-export interface UserExtension extends User {}
-export class UserExtension extends Timestampable {
+export interface UserExtension extends User, Timestampable {}
+export class UserExtension {
   get displayName() {
       return this.name || this.email;
     }
@@ -2042,7 +2042,7 @@ exports[`migrate-to-schema batch operation > handles mixed js and ts files corre
   "resources/js-model-with-mixin.ext.js": "
 import JsMixin from '../../mixins/js-mixin';
 
-export class JsModelWithMixinExtension extends JsMixin {
+export class JsModelWithMixinExtension {
   get displayName() {
       return this.name + ' (JS)';
     }

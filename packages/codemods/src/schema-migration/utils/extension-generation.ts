@@ -178,9 +178,7 @@ export function generateExtensionCode(
       })
       .join('\n\n');
 
-    const classCode = extendsClause
-      ? `export class ${config.identifiers.extension} extends ${extendsClause} {\n${methods}\n}`
-      : `export class ${config.identifiers.extension} {\n${methods}\n}`;
+    const classCode = `export class ${config.identifiers.extension} {\n${methods}\n}`;
     const exportDefault = `export default ${config.identifiers.extension};`;
 
     // Add interface extension for TypeScript files or JSDoc for JavaScript files
@@ -189,8 +187,10 @@ export function generateExtensionCode(
       const importStatement = interfaceImportPath
         ? `import type { ${config.identifiers.type} } from '${interfaceImportPath}';\n\n`
         : '';
+      // Build the interface extends clause: include the type and any heritage names
+      const interfaceExtends = extendsClause ? `${config.identifiers.type}, ${extendsClause}` : config.identifiers.type;
       // Put interface before class for better visibility
-      return `${importStatement}export interface ${config.identifiers.extension} extends ${config.identifiers.type} {}\n\n${classCode}\n\n${exportDefault}`;
+      return `${importStatement}export interface ${config.identifiers.extension} extends ${interfaceExtends} {}\n\n${classCode}\n\n${exportDefault}`;
     }
 
     // For JavaScript files, don't add JSDoc import here since it's handled by the base class pattern
