@@ -286,10 +286,19 @@ export class SchemaArtifact {
   readonly parsedFile: ParsedFile;
   readonly kind: ArtifactKind;
   private _traits: SchemaArtifact[] = [];
+  private _isUsedAsTrait = false;
 
   constructor(parsedFile: ParsedFile, kind: ArtifactKind) {
     this.parsedFile = parsedFile;
     this.kind = kind;
+  }
+
+  get isUsedAsTrait(): boolean {
+    return this._isUsedAsTrait;
+  }
+
+  markAsUsedAsTrait(): void {
+    this._isUsedAsTrait = true;
   }
 
   get pascalName(): string {
@@ -424,6 +433,19 @@ export function linkEntities(registry: SchemaArtifactRegistry, modelToMixinsMap:
       const mixinEntity = registry.get(mixinPath);
       if (mixinEntity) {
         modelEntity.addTrait(mixinEntity);
+      }
+    }
+  }
+
+  // Mark model entities that are referenced as traits by other models.
+  // This happens when a model uses Model.extend(OtherModel) — the OtherModel
+  // should produce trait artifacts so the schema can reference it.
+  for (const entity of registry.values()) {
+    if (entity.kind !== 'model') continue;
+    for (const traitName of entity.parsedFile.traits) {
+      const traitEntity = findEntityByBaseName(registry, traitName, 'model');
+      if (traitEntity && traitEntity !== entity) {
+        traitEntity.markAsUsedAsTrait();
       }
     }
   }

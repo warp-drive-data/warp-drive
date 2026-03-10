@@ -387,7 +387,7 @@ function extractModelData(root: SgNode, filePath: string, options: TransformOpti
 
     // Find base class (first identifier before .extend())
     const heritageText = heritageClause.text();
-    const extendMatch = heritageText.match(/^(\w+)(?:\.extend)?/);
+    const extendMatch = heritageText.match(/^extends\s+(\w+)(?:\.extend)?/);
     if (extendMatch) {
       baseClass = extendMatch[1];
     }

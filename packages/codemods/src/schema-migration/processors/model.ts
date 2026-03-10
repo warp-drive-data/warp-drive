@@ -605,7 +605,128 @@ export function toArtifacts(entity: SchemaArtifact, options: TransformOptions): 
     log.debug('Model analysis failed, skipping artifact generation');
     return { artifacts: [], skipReason: 'invalid-model' };
   }
+
+  if (entity.isUsedAsTrait) {
+    log.debug(`Model ${entity.path} is used as a trait by another model, generating trait artifacts`);
+    return { artifacts: generateModelAsTraitArtifacts(entity, analysis, options) };
+  }
+
   return { artifacts: generateRegularModelArtifacts(entity, analysis, options) };
+}
+
+/**
+ * Generate trait artifacts for a model that extends an import substitute.
+ * These models are conceptually "derived base models" and should produce
+ * trait schemas rather than resource schemas.
+ */
+function generateModelAsTraitArtifacts(
+  entity: SchemaArtifact,
+  analysis: ModelAnalysisResult,
+  options: TransformOptions
+): TransformArtifact[] {
+  const { schemaFields, mixinTraits, extensionProperties, baseName } = analysis;
+  const filePath = entity.path;
+  const source = entity.parsedFile.source;
+  const artifacts: TransformArtifact[] = [];
+
+  const traitName = baseName;
+  const traitPascalName = toPascalCase(traitName);
+
+  const originalExtension = getFileExtension(filePath);
+  const isTypeScript = originalExtension === '.ts';
+
+  const traitFieldTypes = mapFieldsToTypeProperties(schemaFields, options);
+
+  const hasId = traitFieldTypes.some((f) => f.name === 'id');
+  if (!hasId) {
+    traitFieldTypes.unshift({
+      name: 'id',
+      transformInferredType: 'unknown',
+      typeInfo: { type: 'string | null', readonly: false },
+    });
+  }
+
+  if (!traitFieldTypes.some((f) => f.name === 'store') && options?.storeType) {
+    const storeTypeName = options.storeType.name || 'Store';
+    traitFieldTypes.push({
+      name: 'store',
+      transformInferredType: 'unknown',
+      typeInfo: { type: storeTypeName, readonly: true },
+    });
+  }
+
+  const traitImports = new Set<string>();
+  const declarations = new Set<string>();
+
+  traitImports.add(`type { BelongsToReference, HasManyReference, Errors } from '@warp-drive/legacy/model/-private'`);
+  collectRelationshipImports(filePath, schemaFields, traitName, traitImports, declarations, options);
+  collectTraitImports(mixinTraits, traitImports, options, true);
+
+  if (options?.storeType) {
+    const storeTypeName = options.storeType.name || 'Store';
+    traitImports.add(`type { ${storeTypeName} } from '${options.storeType.import}'`);
+  }
+
+  const traitSchemaObject = buildTraitSchemaObject(schemaFields, mixinTraits, {
+    name: traitName,
+    mode: 'legacy',
+    legacyFieldOrder: true,
+  });
+
+  const traitConfig = createTraitArtifactConfig(
+    options,
+    traitName,
+    traitPascalName,
+    mixinTraits,
+    extensionProperties.length > 0,
+    isTypeScript
+  );
+
+  const mergedSchemaCode = generateMergedSchemaCode({
+    config: traitConfig,
+    schemaObject: traitSchemaObject,
+    properties: traitFieldTypes,
+    traits: mixinTraits,
+    imports: traitImports,
+    options,
+  });
+
+  const traitCode = [
+    mergedSchemaCode.schemaImports,
+    mergedSchemaCode.typeImports,
+    mergedSchemaCode.schemaDeclaration,
+    mergedSchemaCode.interfaceDeclaration,
+  ]
+    .filter(Boolean)
+    .join('\n');
+
+  artifacts.push({
+    type: 'trait',
+    name: traitConfig.identifiers.schema,
+    code: traitCode,
+    baseName: traitName,
+    suggestedFileName: `${traitName}.schema${options.disableTypescriptSchemas ? '.js' : '.ts'}`,
+  });
+
+  if (extensionProperties.length > 0) {
+    const traitImportPath = options?.traitsImport
+      ? `${options.traitsImport}/${traitName}.schema`
+      : `../traits/${traitName}.schema`;
+    const extensionArtifact = createExtensionFromOriginalFile(
+      traitConfig,
+      filePath,
+      source,
+      extensionProperties,
+      options,
+      traitImportPath,
+      'model'
+    );
+    if (extensionArtifact) {
+      artifacts.push(extensionArtifact);
+    }
+  }
+
+  return artifacts;
 }
 
 /**
