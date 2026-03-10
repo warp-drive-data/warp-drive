@@ -3,7 +3,7 @@
 exports[`mixin-to-schema transform (artifacts) > TypeScript type artifacts > generates only trait artifact when mixin has only data fields > data-only trait type interface 1`] = `
 "import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
 
-import type { User } from 'test-app/data/resources/user.schema';
+import type { User } from 'test-app/data/resources/user.type';
 
 const SimpleTraitSchema = {
   'name': 'simple',
@@ -130,7 +130,7 @@ exports[`mixin-to-schema transform (artifacts) > TypeScript type artifacts > gen
 "import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
 
 import type { HasMany } from '@ember-data/model';
-import type { File } from 'test-app/data/resources/file.schema';
+import type { File } from 'test-app/data/resources/file.type';
 
 const FileableTraitSchema = {
   'name': 'fileable',
@@ -309,7 +309,7 @@ exports[`mixin-to-schema transform (artifacts) > basic functionality > collects 
 "import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
 
 import type { HasMany } from '@ember-data/model';
-import type { File } from 'test-app/data/resources/file.schema';
+import type { File } from 'test-app/data/resources/file.type';
 
 const FileableTraitSchema = {
   'name': 'fileable',
@@ -532,7 +532,7 @@ export interface File {
     "code": "import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
 
 import type { HasMany } from '@my-custom/model';
-import type { File } from 'test-app/data/resources/file.schema';
+import type { File } from 'test-app/data/resources/file.type';
 
 const CustomSourceTraitSchema = {
   'name': 'custom-source',
@@ -625,7 +625,7 @@ export interface File {
     "code": "import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
 
 import type { HasMany } from '@ember-data/model';
-import type { File } from 'test-app/data/resources/file.schema';
+import type { File } from 'test-app/data/resources/file.type';
 
 const RenamedMixedSourcesTraitSchema = {
   'name': 'renamed-mixed-sources',
@@ -783,8 +783,8 @@ export interface User {
     "code": "import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
 
 import type { HasMany } from '@ember-data/model';
-import type { File } from 'test-app/data/resources/file.schema';
-import type { User } from 'test-app/data/resources/user.schema';
+import type { File } from 'test-app/data/resources/file.type';
+import type { User } from 'test-app/data/resources/user.type';
 
 const AliasedImportsTraitSchema = {
   'name': 'aliased-imports',
@@ -952,7 +952,7 @@ export interface File {
   "import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
 
 import type { HasMany } from '@ember-data/model';
-import type { File } from 'test-app/data/resources/file.schema';
+import type { File } from 'test-app/data/resources/file.type';
 
 const DefaultSourceTraitSchema = {
   'name': 'default-source',
@@ -1034,7 +1034,7 @@ export interface User {
     "baseName": "belongs-to",
     "code": "import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
 
-import type { User } from 'test-app/data/resources/user.schema';
+import type { User } from 'test-app/data/resources/user.type';
 
 const BelongsToTraitSchema = {
   'name': 'belongs-to',
@@ -1176,7 +1176,7 @@ export interface File {
     "code": "import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
 
 import type { HasMany } from '@auditboard/warp-drive/v1/model';
-import type { File } from 'test-app/data/resources/file.schema';
+import type { File } from 'test-app/data/resources/file.type';
 
 const AuditboardSourceTraitSchema = {
   'name': 'auditboard-source',
@@ -1268,7 +1268,7 @@ exports[`mixin-to-schema transform (artifacts) > mixin inheritance > produces tr
 "import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
 
 import type { HasMany } from '@ember-data/model';
-import type { File } from 'test-app/data/resources/file.schema';
+import type { File } from 'test-app/data/resources/file.type';
 import type { BaseModelTrait } from 'test-app/data/traits/base-model.schema';
 import type { TimestampTrait } from 'test-app/data/traits/timestamp.schema';
 

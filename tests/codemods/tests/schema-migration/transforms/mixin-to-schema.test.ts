@@ -157,7 +157,7 @@ export default Mixin.create({
           "code": "import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
 
         import type { HasMany } from '@ember-data/model';
-        import type { File } from 'test-app/data/resources/file.schema';
+        import type { File } from 'test-app/data/resources/file.type';
 
         const FileableTraitSchema = {
           'name': 'fileable',
