@@ -750,16 +750,19 @@ function generateInterfaceOnly(
   /**
    * Add helpful usage tips if desired.
    */
-  const tipComment = options.disableAddingTypeUsageTips ? ' *' : ' *\n' + ResourceTipComment + '\n *';
+  const tipComment = options.disableAddingTypeUsageTips ? ' *' : ' *\n' + ResourceTipComment;
   /**
    * The documentation for "just the fields"
    */
+  const seeAlso =
+    config.type === 'resource'
+      ? `\n *\n * See also {@link ${config.identifiers.type}} for fields + legacy mode features`
+      : '';
   const fieldsInterfaceComment = `${docComment}
  * This type represents the full set schema derived fields of
  * the '${config.name}' ${config.type}, without any of the legacy mode features
  * and without any extensions.
-${tipComment}
- * See also {@link ${config.identifiers.type}} for fields + legacy mode features
+${tipComment}${seeAlso}
  */`;
   /**
    * The documentation for the "fields + legacy mode features" interface
@@ -795,7 +798,14 @@ ${tipComment}
     lines.push(`${indent}${readonly}${prop.name}${optional}: ${type};`);
   }
 
-  lines.push('}', '', fullInterfaceComment, fullTypeDeclaration, '');
+  lines.push('}');
+
+  // Only resources get the WithLegacy wrapper interface; traits don't use it
+  if (config.type === 'resource') {
+    lines.push('', fullInterfaceComment, fullTypeDeclaration, '');
+  } else {
+    lines.push('');
+  }
 
   return lines.join('\n');
 }

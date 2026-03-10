@@ -157,22 +157,11 @@ export default class DataFieldModel extends Model {
        * > For those cases, you can create a more specific type that derives
        * > from this type to ensure that your type definitions stay consistent
        * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
-       *
-       * See also {@link DataField} for fields + legacy mode features
        */
       export interface DataFieldTrait {
         id: string | null;
         fieldName: string | null;
       }
-
-      /**
-       * This type represents the full set schema derived fields of
-       * the 'data-field' trait, including all legacy mode features but
-       * without any extensions.
-       *
-       * See also {@link DataFieldTrait} for fields + legacy mode features
-       */
-      export interface DataField extends WithLegacy<DataFieldTrait> {}
       ",
           "name": "DataFieldTraitSchema",
           "suggestedFileName": "data-field.schema.ts",

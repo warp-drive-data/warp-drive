@@ -100,7 +100,7 @@ describe('custom emberDataImportSource', function () {
         import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
 
         import type { HasMany } from '@auditboard/warp-drive/v1/model';
-        import type { AllowedTeam } from './allowed-team.schema';
+        import type { AllowedTeam } from './allowed-team.type.ts';
 
         const TeamableTraitSchema = {
           name: 'teamable',
@@ -136,21 +136,10 @@ describe('custom emberDataImportSource', function () {
          * > For those cases, you can create a more specific type that derives
          * > from this type to ensure that your type definitions stay consistent
          * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
-         *
-         * See also {@link Teamable} for fields + legacy mode features
          */
         export interface TeamableTrait {
           allowedTeams?: HasMany<AllowedTeam>;
         }
-
-        /**
-         * This type represents the full set schema derived fields of
-         * the 'teamable' trait, including all legacy mode features but
-         * without any extensions.
-         *
-         * See also {@link TeamableTrait} for fields + legacy mode features
-         */
-        export interface Teamable extends WithLegacy<TeamableTrait> {}
       `,
       [F.extension('teamable', 'js')]: js`
         import { filterBy } from '@ember/object/computed';

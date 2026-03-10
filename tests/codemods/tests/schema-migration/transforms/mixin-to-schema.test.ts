@@ -112,20 +112,9 @@ export default Mixin.create({});`;
          * > For those cases, you can create a more specific type that derives
          * > from this type to ensure that your type definitions stay consistent
          * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
-         *
-         * See also {@link Empty} for fields + legacy mode features
          */
         export interface EmptyTrait {
         }
-
-        /**
-         * This type represents the full set schema derived fields of
-         * the 'empty' trait, including all legacy mode features but
-         * without any extensions.
-         *
-         * See also {@link EmptyTrait} for fields + legacy mode features
-         */
-        export interface Empty extends WithLegacy<EmptyTrait> {}
         ",
           "name": "EmptyTraitSchema",
           "suggestedFileName": "empty.schema.ts",
@@ -205,23 +194,12 @@ export default Mixin.create({
          * > For those cases, you can create a more specific type that derives
          * > from this type to ensure that your type definitions stay consistent
          * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
-         *
-         * See also {@link Fileable} for fields + legacy mode features
          */
         export interface FileableTrait {
           files?: HasMany<File>;
           name?: string | null;
           isActive?: boolean | null;
         }
-
-        /**
-         * This type represents the full set schema derived fields of
-         * the 'fileable' trait, including all legacy mode features but
-         * without any extensions.
-         *
-         * See also {@link FileableTrait} for fields + legacy mode features
-         */
-        export interface Fileable extends WithLegacy<FileableTrait> {}
         ",
           "name": "FileableTraitSchema",
           "suggestedFileName": "fileable.schema.ts",

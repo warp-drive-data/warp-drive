@@ -169,22 +169,11 @@ export default TimestampableTraitSchema;
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
  * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
- *
- * See also {@link Timestampable} for fields + legacy mode features
  */
 export interface TimestampableTrait extends DeleteableTrait {
   createdAt?: Date | null;
   updatedAt?: Date | null;
 }
-
-/**
- * This type represents the full set schema derived fields of
- * the 'timestampable' trait, including all legacy mode features but
- * without any extensions.
- *
- * See also {@link TimestampableTrait} for fields + legacy mode features
- */
-export interface Timestampable extends WithLegacy<TimestampableTrait> {}
 ",
 }
 `;
@@ -359,21 +348,10 @@ export default ConnectedTraitSchema;
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
  * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
- *
- * See also {@link Connected} for fields + legacy mode features
  */
 export interface ConnectedTrait {
   commonField?: string | null;
 }
-
-/**
- * This type represents the full set schema derived fields of
- * the 'connected' trait, including all legacy mode features but
- * without any extensions.
- *
- * See also {@link ConnectedTrait} for fields + legacy mode features
- */
-export interface Connected extends WithLegacy<ConnectedTrait> {}
 ",
 }
 `;
@@ -571,22 +549,11 @@ export default TimestampableTraitSchema;
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
  * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
- *
- * See also {@link Timestampable} for fields + legacy mode features
  */
 export interface TimestampableTrait extends DeleteableTrait {
   createdAt?: Date | null;
   updatedAt?: Date | null;
 }
-
-/**
- * This type represents the full set schema derived fields of
- * the 'timestampable' trait, including all legacy mode features but
- * without any extensions.
- *
- * See also {@link TimestampableTrait} for fields + legacy mode features
- */
-export interface Timestampable extends WithLegacy<TimestampableTrait> {}
 ",
 }
 `;
@@ -784,22 +751,11 @@ export default AuditableTraitSchema;
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
  * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
- *
- * See also {@link Auditable} for fields + legacy mode features
  */
 export interface AuditableTrait {
   auditStatus?: string | null;
   auditDate?: Date | null;
 }
-
-/**
- * This type represents the full set schema derived fields of
- * the 'auditable' trait, including all legacy mode features but
- * without any extensions.
- *
- * See also {@link AuditableTrait} for fields + legacy mode features
- */
-export interface Auditable extends WithLegacy<AuditableTrait> {}
 ",
 }
 `;
@@ -993,20 +949,9 @@ export default BaseModelTraitSchema;
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
  * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
- *
- * See also {@link BaseModel} for fields + legacy mode features
  */
 export interface BaseModelTrait {
 }
-
-/**
- * This type represents the full set schema derived fields of
- * the 'base-model' trait, including all legacy mode features but
- * without any extensions.
- *
- * See also {@link BaseModelTrait} for fields + legacy mode features
- */
-export interface BaseModel extends WithLegacy<BaseModelTrait> {}
 ",
   "traits/base.schema.ts": "
 import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
@@ -1047,23 +992,12 @@ export default BaseTraitSchema;
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
  * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
- *
- * See also {@link Base} for fields + legacy mode features
  */
 export interface BaseTrait {
   id: string | null;
   createdAt: Date | null;
   updatedAt: Date | null;
 }
-
-/**
- * This type represents the full set schema derived fields of
- * the 'base' trait, including all legacy mode features but
- * without any extensions.
- *
- * See also {@link BaseTrait} for fields + legacy mode features
- */
-export interface Base extends WithLegacy<BaseTrait> {}
 ",
   "traits/permissable.ext.js": "
 
@@ -1097,20 +1031,9 @@ export default PermissableTraitSchema;
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
  * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
- *
- * See also {@link Permissable} for fields + legacy mode features
  */
 export interface PermissableTrait {
 }
-
-/**
- * This type represents the full set schema derived fields of
- * the 'permissable' trait, including all legacy mode features but
- * without any extensions.
- *
- * See also {@link PermissableTrait} for fields + legacy mode features
- */
-export interface Permissable extends WithLegacy<PermissableTrait> {}
 ",
 }
 `;
@@ -1333,21 +1256,10 @@ export default WorkstreamableTraitSchema;
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
  * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
- *
- * See also {@link Workstreamable} for fields + legacy mode features
  */
 export interface WorkstreamableTrait {
   workstreamType?: string | null;
 }
-
-/**
- * This type represents the full set schema derived fields of
- * the 'workstreamable' trait, including all legacy mode features but
- * without any extensions.
- *
- * See also {@link WorkstreamableTrait} for fields + legacy mode features
- */
-export interface Workstreamable extends WithLegacy<WorkstreamableTrait> {}
 ",
 }
 `;
@@ -1510,20 +1422,9 @@ export default BaseModelTraitSchema;
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
  * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
- *
- * See also {@link BaseModel} for fields + legacy mode features
  */
 export interface BaseModelTrait {
 }
-
-/**
- * This type represents the full set schema derived fields of
- * the 'base-model' trait, including all legacy mode features but
- * without any extensions.
- *
- * See also {@link BaseModelTrait} for fields + legacy mode features
- */
-export interface BaseModel extends WithLegacy<BaseModelTrait> {}
 ",
   "traits/base.schema.ts": "
 import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
@@ -1553,21 +1454,10 @@ export default BaseTraitSchema;
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
  * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
- *
- * See also {@link Base} for fields + legacy mode features
  */
 export interface BaseTrait {
   id: string | null;
 }
-
-/**
- * This type represents the full set schema derived fields of
- * the 'base' trait, including all legacy mode features but
- * without any extensions.
- *
- * See also {@link BaseTrait} for fields + legacy mode features
- */
-export interface Base extends WithLegacy<BaseTrait> {}
 ",
 }
 `;
@@ -1954,21 +1844,10 @@ export default ExternalMixinTraitSchema;
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
  * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
- *
- * See also {@link ExternalMixin} for fields + legacy mode features
  */
 export interface ExternalMixinTrait {
   externalField?: string | null;
 }
-
-/**
- * This type represents the full set schema derived fields of
- * the 'external-mixin' trait, including all legacy mode features but
- * without any extensions.
- *
- * See also {@link ExternalMixinTrait} for fields + legacy mode features
- */
-export interface ExternalMixin extends WithLegacy<ExternalMixinTrait> {}
 ",
   "traits/local-mixin.schema.ts": "
 import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
@@ -2002,21 +1881,10 @@ export default LocalMixinTraitSchema;
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
  * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
- *
- * See also {@link LocalMixin} for fields + legacy mode features
  */
 export interface LocalMixinTrait {
   localField?: string | null;
 }
-
-/**
- * This type represents the full set schema derived fields of
- * the 'local-mixin' trait, including all legacy mode features but
- * without any extensions.
- *
- * See also {@link LocalMixinTrait} for fields + legacy mode features
- */
-export interface LocalMixin extends WithLegacy<LocalMixinTrait> {}
 ",
 }
 `;
@@ -2209,21 +2077,10 @@ export default JsMixinTraitSchema;
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
  * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
- *
- * See also {@link JsMixin} for fields + legacy mode features
  */
 export interface JsMixinTrait {
   createdAt?: Date | null;
 }
-
-/**
- * This type represents the full set schema derived fields of
- * the 'js-mixin' trait, including all legacy mode features but
- * without any extensions.
- *
- * See also {@link JsMixinTrait} for fields + legacy mode features
- */
-export interface JsMixin extends WithLegacy<JsMixinTrait> {}
 ",
   "traits/ts-mixin.ext.ts": "
 
@@ -2270,21 +2127,10 @@ export default TsMixinTraitSchema;
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
  * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
- *
- * See also {@link TsMixin} for fields + legacy mode features
  */
 export interface TsMixinTrait {
   isEnabled?: boolean | null;
 }
-
-/**
- * This type represents the full set schema derived fields of
- * the 'ts-mixin' trait, including all legacy mode features but
- * without any extensions.
- *
- * See also {@link TsMixinTrait} for fields + legacy mode features
- */
-export interface TsMixin extends WithLegacy<TsMixinTrait> {}
 ",
 }
 `;
@@ -2464,22 +2310,11 @@ export default BaseTraitSchema;
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
  * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
- *
- * See also {@link Base} for fields + legacy mode features
  */
 export interface BaseTrait {
   id: string | null;
   rawErrors: string | null;
 }
-
-/**
- * This type represents the full set schema derived fields of
- * the 'base' trait, including all legacy mode features but
- * without any extensions.
- *
- * See also {@link BaseTrait} for fields + legacy mode features
- */
-export interface Base extends WithLegacy<BaseTrait> {}
 ",
 }
 `;
@@ -2596,22 +2431,11 @@ export default BaseTraitSchema;
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
  * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
- *
- * See also {@link Base} for fields + legacy mode features
  */
 export interface BaseTrait {
   id: string | null;
   rawErrors: string | null;
 }
-
-/**
- * This type represents the full set schema derived fields of
- * the 'base' trait, including all legacy mode features but
- * without any extensions.
- *
- * See also {@link BaseTrait} for fields + legacy mode features
- */
-export interface Base extends WithLegacy<BaseTrait> {}
 ",
   "traits/permissable.schema.ts": "
 import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
@@ -2645,21 +2469,10 @@ export default PermissableTraitSchema;
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
  * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
- *
- * See also {@link Permissable} for fields + legacy mode features
  */
 export interface PermissableTrait {
   permissions?: unknown;
 }
-
-/**
- * This type represents the full set schema derived fields of
- * the 'permissable' trait, including all legacy mode features but
- * without any extensions.
- *
- * See also {@link PermissableTrait} for fields + legacy mode features
- */
-export interface Permissable extends WithLegacy<PermissableTrait> {}
 ",
 }
 `;
@@ -2775,22 +2588,11 @@ export default BaseTraitSchema;
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
  * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
- *
- * See also {@link Base} for fields + legacy mode features
  */
 export interface BaseTrait {
   id: string | null;
   rawErrors: string | null;
 }
-
-/**
- * This type represents the full set schema derived fields of
- * the 'base' trait, including all legacy mode features but
- * without any extensions.
- *
- * See also {@link BaseTrait} for fields + legacy mode features
- */
-export interface Base extends WithLegacy<BaseTrait> {}
 ",
 }
 `;
@@ -2983,21 +2785,10 @@ export default WorkstreamableTraitSchema;
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
  * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
- *
- * See also {@link Workstreamable} for fields + legacy mode features
  */
 export interface WorkstreamableTrait {
   workstreamType?: string | null;
 }
-
-/**
- * This type represents the full set schema derived fields of
- * the 'workstreamable' trait, including all legacy mode features but
- * without any extensions.
- *
- * See also {@link WorkstreamableTrait} for fields + legacy mode features
- */
-export interface Workstreamable extends WithLegacy<WorkstreamableTrait> {}
 ",
 }
 `;
@@ -3194,21 +2985,10 @@ export default WorkstreamableTraitSchema;
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
  * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
- *
- * See also {@link Workstreamable} for fields + legacy mode features
  */
 export interface WorkstreamableTrait {
   workstreamType?: string | null;
 }
-
-/**
- * This type represents the full set schema derived fields of
- * the 'workstreamable' trait, including all legacy mode features but
- * without any extensions.
- *
- * See also {@link WorkstreamableTrait} for fields + legacy mode features
- */
-export interface Workstreamable extends WithLegacy<WorkstreamableTrait> {}
 ",
 }
 `;
@@ -3300,21 +3080,10 @@ export default BaseTraitSchema;
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
  * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
- *
- * See also {@link Base} for fields + legacy mode features
  */
 export interface BaseTrait {
   id: string | null;
 }
-
-/**
- * This type represents the full set schema derived fields of
- * the 'base' trait, including all legacy mode features but
- * without any extensions.
- *
- * See also {@link BaseTrait} for fields + legacy mode features
- */
-export interface Base extends WithLegacy<BaseTrait> {}
 ",
   "traits/data-field.schema.ts": "
 import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
@@ -3360,8 +3129,6 @@ export default DataFieldTraitSchema;
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
  * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
- *
- * See also {@link DataField} for fields + legacy mode features
  */
 export interface DataFieldTrait extends BaseModelTrait, BaseTrait {
   id: string | null;
@@ -3376,15 +3143,6 @@ export interface DataFieldTrait extends BaseModelTrait, BaseTrait {
    */
   sortOrder: number | undefined;
 }
-
-/**
- * This type represents the full set schema derived fields of
- * the 'data-field' trait, including all legacy mode features but
- * without any extensions.
- *
- * See also {@link DataFieldTrait} for fields + legacy mode features
- */
-export interface DataField extends WithLegacy<DataFieldTrait> {}
 ",
 }
 `;
@@ -3530,22 +3288,11 @@ export default BaseModelWithMethodsTraitSchema;
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
  * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
- *
- * See also {@link BaseModelWithMethods} for fields + legacy mode features
  */
 export interface BaseModelWithMethodsTrait {
   id: string | null;
   baseField: string | null;
 }
-
-/**
- * This type represents the full set schema derived fields of
- * the 'base-model-with-methods' trait, including all legacy mode features but
- * without any extensions.
- *
- * See also {@link BaseModelWithMethodsTrait} for fields + legacy mode features
- */
-export interface BaseModelWithMethods extends WithLegacy<BaseModelWithMethodsTrait> {}
 ",
 }
 `;
@@ -3651,21 +3398,10 @@ export default BaseTraitSchema;
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
  * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
- *
- * See also {@link Base} for fields + legacy mode features
  */
 export interface BaseTrait {
   id: string | null;
 }
-
-/**
- * This type represents the full set schema derived fields of
- * the 'base' trait, including all legacy mode features but
- * without any extensions.
- *
- * See also {@link BaseTrait} for fields + legacy mode features
- */
-export interface Base extends WithLegacy<BaseTrait> {}
 ",
   "data-field.schema.ts": "
 import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
@@ -3711,23 +3447,12 @@ export default DataFieldTraitSchema;
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
  * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
- *
- * See also {@link DataField} for fields + legacy mode features
  */
 export interface DataFieldTrait extends BaseModelTrait, BaseTrait {
   id: string | null;
   name: string | null;
   sortOrder: number | null;
 }
-
-/**
- * This type represents the full set schema derived fields of
- * the 'data-field' trait, including all legacy mode features but
- * without any extensions.
- *
- * See also {@link DataFieldTrait} for fields + legacy mode features
- */
-export interface DataField extends WithLegacy<DataFieldTrait> {}
 ",
 }
 `;
