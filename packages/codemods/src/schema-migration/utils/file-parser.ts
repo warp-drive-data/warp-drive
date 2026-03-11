@@ -396,11 +396,7 @@ function extractModelData(root: SgNode, filePath: string, options: TransformOpti
     for (const [localName, importPath] of mixinImports) {
       if (heritageText.includes(localName)) {
         heritageLocalNames.push(localName);
-        const traitName =
-          importPath
-            .split('/')
-            .pop()
-            ?.replace(/\.(?:js|ts)$/, '') || localName;
+        const traitName = extractBaseName(importPath) || localName;
         traits.push(traitName);
       }
     }

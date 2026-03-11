@@ -1,7 +1,7 @@
 import { existsSync, mkdirSync } from 'fs';
 import { readFile } from 'fs/promises';
 import { glob } from 'glob';
-import { basename, extname, join, resolve } from 'path';
+import { join, resolve } from 'path';
 
 import type { InstanciatedLogger } from '../../utils/logger.js';
 import type { FinalOptions } from './config.js';
@@ -11,6 +11,7 @@ import { buildEntityRegistry, linkEntities } from './utils/artifact.js';
 import type { TransformArtifact } from './utils/ast-utils.js';
 import type { ParsedFile } from './utils/file-parser.js';
 import { parseFile } from './utils/file-parser.js';
+import { extractBaseName } from './utils/path-utils.js';
 import { FILE_EXTENSION_REGEX, TRAILING_SINGLE_WILDCARD_REGEX, TRAILING_WILDCARD_REGEX } from './utils/string.js';
 
 export type Filename = string;
@@ -48,11 +49,10 @@ function isIntermediateModel(
 ): boolean {
   if (!intermediateModelPaths) return false;
 
-  const fileBaseName = basename(filePath, extname(filePath));
+  const fileBaseName = extractBaseName(filePath);
 
   for (const intermediatePath of intermediateModelPaths) {
-    // Handle paths with extensions (e.g., "my-app/core/base-model.js")
-    const intermediateBaseName = basename(intermediatePath, extname(intermediatePath));
+    const intermediateBaseName = extractBaseName(intermediatePath);
 
     if (fileBaseName === intermediateBaseName) {
       // Check if file is from a matching additional source
@@ -141,7 +141,7 @@ export class Codemod {
   logger: InstanciatedLogger;
   finalOptions: FinalOptions;
   input: Input = new Input();
-  entityRegistry: SchemaArtifactRegistry = new Map();
+  entityRegistry: SchemaArtifactRegistry;
 
   mixinsImportedByModels: Set<string> = new Set();
   modelsWithExtensions: Set<string> = new Set();
@@ -149,6 +149,7 @@ export class Codemod {
   constructor(logger: InstanciatedLogger, finalOptions: FinalOptions) {
     this.logger = logger;
     this.finalOptions = finalOptions;
+    this.entityRegistry = new Map();
   }
 
   findMixinsUsedByModels() {
@@ -187,7 +188,7 @@ export class Codemod {
     const parseErrors = this.input.skipped.filter((s) => s.reason === 'parse-error').length;
     this.logger.info(`✅ Parsed ${modelsParsed} models and ${mixinsParsed} mixins (${parseErrors} errors).`);
 
-    this.entityRegistry = buildEntityRegistry(this.input.parsedModels, this.input.parsedMixins, this.logger);
+    buildEntityRegistry(this.input.parsedModels, this.input.parsedMixins, this.logger, this.entityRegistry);
   }
 
   createDestinationDirectories() {
@@ -201,6 +202,66 @@ export class Codemod {
     if (this.finalOptions.resourcesDir) {
       mkdirSync(resolve(this.finalOptions.resourcesDir), { recursive: true });
     }
+  }
+
+  resolveImportSubstitutes(): TransformArtifact[] {
+    const substitutes = this.finalOptions.importSubstitutes;
+    if (!substitutes) return [];
+
+    const allArtifacts: TransformArtifact[] = [];
+
+    for (const substitute of substitutes) {
+      if (!substitute.sourcePath) continue;
+
+      let filePath: string | null = null;
+      let source: string | null = null;
+
+      const candidates = [substitute.sourcePath, `${substitute.sourcePath}.ts`, `${substitute.sourcePath}.js`];
+      for (const candidate of candidates) {
+        if (existsSync(candidate)) {
+          try {
+            filePath = candidate;
+            source = readFileSync(candidate, 'utf-8');
+            break;
+          } catch {
+            // continue trying next candidate
+          }
+        }
+      }
+
+      if (!filePath || !source) {
+        this.logger.warn(
+          `Could not find source file for importSubstitute '${substitute.import}' at '${substitute.sourcePath}', falling back to static config`
+        );
+        continue;
+      }
+
+      this.resolvedSubstituteSourcePaths.add(filePath);
+
+      const result = generateIntermediateModelTraitArtifacts(filePath, source, substitute.import, this.finalOptions);
+
+      if (result.entity) {
+        this.entityRegistry.set(result.entity.path, result.entity);
+      }
+
+      if (result.artifacts.length > 0) {
+        const traitArtifact = result.artifacts.find((a) => a.type === 'trait');
+        if (traitArtifact && !substitute.trait) {
+          substitute.trait = traitArtifact.name;
+        }
+        const extensionArtifact = result.artifacts.find((a) => a.type === 'trait-extension');
+        if (extensionArtifact && !substitute.extension) {
+          substitute.extension = extensionArtifact.name;
+        }
+
+        allArtifacts.push(...result.artifacts);
+        this.logger.info(
+          `Generated ${result.artifacts.length} artifacts from importSubstitute source '${substitute.import}'`
+        );
+      }
+    }
+
+    return allArtifacts;
   }
 
   async findModels() {

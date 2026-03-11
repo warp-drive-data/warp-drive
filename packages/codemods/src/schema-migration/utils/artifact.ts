@@ -393,10 +393,9 @@ export type SchemaArtifactRegistry = Map<string, SchemaArtifact>;
 export function buildEntityRegistry(
   parsedModels: Map<Filename, ParsedFile>,
   parsedMixins: Map<Filename, ParsedFile>,
-  log?: InstanciatedLogger
+  log: InstanciatedLogger | undefined,
+  registry: SchemaArtifactRegistry
 ): SchemaArtifactRegistry {
-  const registry: SchemaArtifactRegistry = new Map();
-
   for (const [filePath, parsed] of parsedModels) {
     const entity = SchemaArtifact.fromParsedFile(parsed, 'model');
     const existing = findEntityByBaseName(registry, entity.baseName);

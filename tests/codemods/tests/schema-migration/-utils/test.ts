@@ -12,12 +12,12 @@ import type { TransformArtifact } from '@ember-data/codemods/schema-migration/ut
 
 import { createTestOptions } from '../test-helpers.ts';
 
-function transformEntity(entity: SchemaArtifact, options: TransformOptions) {
+function transformEntity(entity: SchemaArtifact, options: TransformOptions, registry: SchemaArtifactRegistry) {
   switch (entity.parsedFile.fileType) {
     case 'mixin':
-      return toTraitArtifacts(entity, options);
+      return toTraitArtifacts(entity, options, registry);
     case 'model':
-      return toResourceArtifacts(entity, options);
+      return toResourceArtifacts(entity, options, registry);
     default:
       throw new Error(`Unknown file type for path: ${entity.path}`);
   }
@@ -38,7 +38,7 @@ function buildTestRegistry(parsedFiles: Map<string, ParsedFile>): {
     }
   }
 
-  const registry = buildEntityRegistry(parsedModels, parsedMixins);
+  const registry = buildEntityRegistry(parsedModels, parsedMixins, undefined, new Map());
 
   const modelToMixinsMap = new Map<string, Set<string>>();
   for (const [modelPath, parsed] of parsedModels) {
@@ -129,11 +129,10 @@ async function applyTransform(
   }
 
   const { registry } = buildTestRegistry(parsedFiles);
-  config.entityRegistry = registry;
 
   const files = {} as Record<string, string>;
   for (const entity of registry.values()) {
-    const output = transformEntity(entity, config);
+    const output = transformEntity(entity, config, registry);
     for (const artifact of output.artifacts) {
       const prefixedFileName = prefixFile(artifact, config);
       if (files[prefixedFileName]) {

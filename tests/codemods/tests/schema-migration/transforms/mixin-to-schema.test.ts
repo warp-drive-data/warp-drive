@@ -38,10 +38,19 @@ function createConnectedRegistry(mixinEntity: SchemaArtifact): SchemaArtifactReg
   return registry;
 }
 
-function entityFromSource(path: string, source: string, opts: FinalOptions): SchemaArtifact {
+function entityFromSource(
+  path: string,
+  source: string,
+  opts: FinalOptions
+): { entity: SchemaArtifact; registry: SchemaArtifactRegistry } {
   const entity = SchemaArtifact.fromParsedFile(parseFile(path, source, opts));
-  opts.entityRegistry = createConnectedRegistry(entity);
-  return entity;
+  const registry = createConnectedRegistry(entity);
+  return { entity, registry };
+}
+
+function processSource(path: string, source: string, opts: FinalOptions) {
+  const { entity, registry } = entityFromSource(path, source, opts);
+  return toArtifacts(entity, opts, registry);
 }
 
 describe('mixin-to-schema transform (artifacts)', () => {
@@ -80,7 +89,7 @@ describe('mixin-to-schema transform (artifacts)', () => {
 
 export default Mixin.create({});`;
 
-      const { artifacts } = toArtifacts(entityFromSource('app/mixins/empty.js', input, options), options);
+      const { artifacts } = processSource('app/mixins/empty.js', input, options);
       expect(artifacts).toHaveLength(1);
 
       const trait = artifacts.find((a) => a.type === 'trait');
@@ -135,7 +144,7 @@ export default Mixin.create({
 	titleCaseName: computed('name', function () { return (this.name || '').toUpperCase(); })
 });`;
 
-      const { artifacts } = toArtifacts(entityFromSource('app/mixins/fileable.js', input, options), options);
+      const { artifacts } = processSource('app/mixins/fileable.js', input, options);
       expect(artifacts).toHaveLength(3); // trait, extension, and resource-type-stub for 'file'
 
       const trait = artifacts.find((a) => a.type === 'trait');
@@ -229,7 +238,7 @@ import { attr } from '@ember-data/model';
 
 export default MyMixin.create({ name: attr('string') });`;
 
-      const { artifacts } = toArtifacts(entityFromSource('app/mixins/aliased.js', input, options), options);
+      const { artifacts } = processSource('app/mixins/aliased.js', input, options);
       expect(
         artifacts.map((a) => ({ type: a.type, name: a.name, suggestedFileName: a.suggestedFileName }))
       ).toMatchSnapshot('metadata');
@@ -243,7 +252,7 @@ import { hasMany } from '@ember-data/model';
 const Fileable = Mixin.create({ files: hasMany('file', { async: false }) });
 export default Fileable;`;
 
-      const { artifacts } = toArtifacts(entityFromSource('app/mixins/fileable.js', input, options), options);
+      const { artifacts } = processSource('app/mixins/fileable.js', input, options);
       expect(
         artifacts.map((a) => ({ type: a.type, name: a.name, suggestedFileName: a.suggestedFileName }))
       ).toMatchSnapshot('metadata');
@@ -255,7 +264,7 @@ export default Fileable;`;
 
 export default SomethingElse.create({ name: attr('string') });`;
 
-      const { artifacts } = toArtifacts(entityFromSource('app/mixins/not-ember-mixin.js', input, options), options);
+      const { artifacts } = processSource('app/mixins/not-ember-mixin.js', input, options);
       expect(artifacts).toHaveLength(0);
     });
 
@@ -268,7 +277,7 @@ export default Mixin.create({
 	computedValue: computed(function() { return 'computed'; })
 });`;
 
-      const { artifacts } = toArtifacts(entityFromSource('app/mixins/no-traits.js', input, options), options);
+      const { artifacts } = processSource('app/mixins/no-traits.js', input, options);
       expect(
         artifacts.map((a) => ({ type: a.type, name: a.name, suggestedFileName: a.suggestedFileName }))
       ).toMatchSnapshot('metadata');
@@ -290,7 +299,7 @@ export default Mixin.create({
 	})
 });`;
 
-      const { artifacts } = toArtifacts(entityFromSource('app/mixins/plannable.js', input, options), options);
+      const { artifacts } = processSource('app/mixins/plannable.js', input, options);
       expect(
         artifacts.map((a) => ({ type: a.type, name: a.name, suggestedFileName: a.suggestedFileName }))
       ).toMatchSnapshot('metadata');
@@ -326,10 +335,7 @@ export default Mixin.create({
 	},
 });`;
 
-      const { artifacts } = toArtifacts(
-        entityFromSource('apps/client/app/mixins/fileable.js', input, options),
-        options
-      );
+      const { artifacts } = processSource('apps/client/app/mixins/fileable.js', input, options);
       expect(artifacts).toHaveLength(3); // Trait, extension, and resource-type-stub for 'file'
       expect(
         artifacts.map((a) => ({ type: a.type, suggestedFileName: a.suggestedFileName, name: a.name }))
@@ -355,7 +361,7 @@ export default Mixin.create({
 	customProp: computed('name', function() { return this.name; })
 });`;
 
-      const { artifacts } = toArtifacts(entityFromSource('app/mixins/default-source.js', input, options), options);
+      const { artifacts } = processSource('app/mixins/default-source.js', input, options);
       expect(artifacts.map((a) => ({ type: a.type, name: a.name }))).toMatchSnapshot('artifact types');
       expect(artifacts.map((a) => a.code)).toMatchSnapshot('generated code');
     });
@@ -375,7 +381,7 @@ export default Mixin.create({
         ...options,
         emberDataImportSource: '@my-custom/model',
       };
-      const { artifacts } = toArtifacts(entityFromSource('app/mixins/custom-source.js', input, opts), opts);
+      const { artifacts } = processSource('app/mixins/custom-source.js', input, opts);
       expect(artifacts).toMatchSnapshot();
     });
 
@@ -394,7 +400,7 @@ export default Mixin.create({
         ...options,
         emberDataImportSource: '@auditboard/warp-drive/v1/model',
       };
-      const { artifacts } = toArtifacts(entityFromSource('app/mixins/auditboard-source.js', input, opts), opts);
+      const { artifacts } = processSource('app/mixins/auditboard-source.js', input, opts);
       expect(artifacts).toMatchSnapshot();
     });
 
@@ -410,7 +416,7 @@ export default Mixin.create({
 	customProp: computed('name', function() { return this.name; })
 });`;
 
-      const { artifacts } = toArtifacts(entityFromSource('app/mixins/unsupported-source.js', input, options), options);
+      const { artifacts } = processSource('app/mixins/unsupported-source.js', input, options);
       expect(artifacts).toMatchSnapshot();
     });
 
@@ -424,7 +430,7 @@ export default Mixin.create({
 	owner: oneRelation('user')
 });`;
 
-      const { artifacts } = toArtifacts(entityFromSource('app/mixins/aliased-imports.js', input, options), options);
+      const { artifacts } = processSource('app/mixins/aliased-imports.js', input, options);
       expect(artifacts).toMatchSnapshot();
     });
 
@@ -438,10 +444,7 @@ export default Mixin.create({
 	name: attribute('string') // Should be ignored, treated as regular function call
 });`;
 
-      const { artifacts } = toArtifacts(
-        entityFromSource('app/mixins/renamed-mixed-sources.js', input, options),
-        options
-      );
+      const { artifacts } = processSource('app/mixins/renamed-mixed-sources.js', input, options);
       expect(artifacts).toMatchSnapshot();
     });
 
@@ -455,7 +458,7 @@ export default Mixin.create({
 	customProp: computed('name', function() { return this.name; })
 });`;
 
-      const { artifacts } = toArtifacts(entityFromSource('app/mixins/no-valid-imports.js', input, options), options);
+      const { artifacts } = processSource('app/mixins/no-valid-imports.js', input, options);
       expect(artifacts).toMatchSnapshot();
     });
 
@@ -467,7 +470,7 @@ export default Mixin.create({
 	owner: belongsTo('user', { async: true })
 });`;
 
-      const { artifacts } = toArtifacts(entityFromSource('app/mixins/belongs-to.js', input, options), options);
+      const { artifacts } = processSource('app/mixins/belongs-to.js', input, options);
       expect(artifacts).toMatchSnapshot();
     });
 
@@ -478,7 +481,7 @@ export default class MyClass {
 	name = 'test';
 }`;
 
-      const { artifacts } = toArtifacts(entityFromSource('app/mixins/not-a-mixin.js', input, options), options);
+      const { artifacts } = processSource('app/mixins/not-a-mixin.js', input, options);
       expect(artifacts).toHaveLength(0);
     });
 
@@ -494,7 +497,7 @@ export default Mixin.create({
         ...options,
         emberDataImportSource: '@my-custom/model',
       };
-      const { artifacts } = toArtifacts(entityFromSource('app/mixins/cli-option.js', input, opts), opts);
+      const { artifacts } = processSource('app/mixins/cli-option.js', input, opts);
       expect(artifacts).toMatchSnapshot();
     });
   });
@@ -510,7 +513,7 @@ export default Mixin.create({
 	isActive: attr('boolean', { defaultValue: false })
 });`;
 
-      const { artifacts } = toArtifacts(entityFromSource('app/mixins/fileable.js', input, options), options);
+      const { artifacts } = processSource('app/mixins/fileable.js', input, options);
 
       // Should have trait and resource-type-stub for 'file' (no extension if no computed/methods)
       expect(artifacts).toHaveLength(2);
@@ -538,7 +541,7 @@ export default Mixin.create({
 	}
 });`;
 
-      const { artifacts } = toArtifacts(entityFromSource('app/mixins/nameable.js', input, options), options);
+      const { artifacts } = processSource('app/mixins/nameable.js', input, options);
 
       // Should have trait and extension artifacts (types merged into trait)
       expect(artifacts).toHaveLength(2);
@@ -562,7 +565,7 @@ export default Mixin.create({
 	author: belongsTo('user', { async: true })
 });`;
 
-      const { artifacts } = toArtifacts(entityFromSource('app/mixins/simple.js', input, options), options);
+      const { artifacts } = processSource('app/mixins/simple.js', input, options);
 
       // Should have trait and resource-type-stub for 'user' (no extension for data-only mixins)
       expect(artifacts).toHaveLength(2);
@@ -589,7 +592,7 @@ export default Mixin.create({
       };
 
       const opts = { ...options, typeMapping: customTypeMappings };
-      const { artifacts } = toArtifacts(entityFromSource('app/mixins/typed.js', input, opts), opts);
+      const { artifacts } = processSource('app/mixins/typed.js', input, opts);
       const trait = artifacts.find((a) => a.type === 'trait');
 
       expect(trait?.code).toMatchSnapshot('mixin custom type mappings interface');
@@ -629,7 +632,7 @@ export default BaseModelMixin;
         ...options,
         appImportPrefix: 'test-app',
       };
-      const { artifacts } = toArtifacts(entityFromSource('/app/mixins/base-model.ts', mixinSource, opts), opts);
+      const { artifacts } = processSource('/app/mixins/base-model.ts', mixinSource, opts);
 
       // Should find both trait fields and extension properties
       expect(artifacts.length).toBeGreaterThan(0);
@@ -687,7 +690,7 @@ export default BaseModelMixin;
         ...options,
         appImportPrefix: 'test-app',
       };
-      const { artifacts } = toArtifacts(entityFromSource('/app/mixins/base-model.ts', mixinSource, opts), opts);
+      const { artifacts } = processSource('/app/mixins/base-model.ts', mixinSource, opts);
 
       expect(artifacts.length).toBeGreaterThan(0);
 
@@ -721,7 +724,7 @@ const NestedCastMixin = Mixin.create({
 export default NestedCastMixin;
 `.trim();
 
-      const { artifacts } = toArtifacts(entityFromSource('/app/mixins/nested-cast.ts', mixinSource, options), options);
+      const { artifacts } = processSource('/app/mixins/nested-cast.ts', mixinSource, options);
 
       expect(artifacts.length).toBeGreaterThan(0);
 
@@ -743,17 +746,11 @@ export default Mixin.create({
 
       // Test with mirror flag
       const mirrorOpts = { ...options, mirror: true };
-      const { artifacts: artifactsMirror } = toArtifacts(
-        entityFromSource('app/mixins/basic.js', input, mirrorOpts),
-        mirrorOpts
-      );
+      const { artifacts: artifactsMirror } = processSource('app/mixins/basic.js', input, mirrorOpts);
       const traitMirror = artifactsMirror.find((a) => a.type === 'trait');
 
       // Test without mirror flag
-      const { artifacts: artifactsRegular } = toArtifacts(
-        entityFromSource('app/mixins/basic.js', input, options),
-        options
-      );
+      const { artifacts: artifactsRegular } = processSource('app/mixins/basic.js', input, options);
       const traitRegular = artifactsRegular.find((a) => a.type === 'trait');
 
       // Mixins themselves don't generate @warp-drive imports, so they should be the same
@@ -777,7 +774,7 @@ export default Mixin.createWithMixins(BaseModelMixin, TimestampMixin, {
         ...options,
         appImportPrefix: 'test-app',
       };
-      const { artifacts } = toArtifacts(entityFromSource('app/mixins/fileable.js', input, opts), opts);
+      const { artifacts } = processSource('app/mixins/fileable.js', input, opts);
 
       // Should produce trait and resource-type-stub for 'file' (no extension since no methods/computed properties)
       expect(artifacts).toHaveLength(2);
@@ -817,7 +814,7 @@ export default Mixin.createWithMixins(BaseModelMixin, {
         ...options,
         appImportPrefix: 'test-app',
       };
-      const { artifacts } = toArtifacts(entityFromSource('app/mixins/describable.js', input, opts), opts);
+      const { artifacts } = processSource('app/mixins/describable.js', input, opts);
 
       const trait = artifacts.find((a) => a.type === 'trait');
 
@@ -838,7 +835,7 @@ export default Mixin.create({
 	description: attr('string')
 });`;
 
-      const { artifacts } = toArtifacts(entityFromSource('app/mixins/describable.js', input, options), options);
+      const { artifacts } = processSource('app/mixins/describable.js', input, options);
 
       const trait = artifacts.find((a) => a.type === 'trait');
 
@@ -870,7 +867,7 @@ export default Mixin.create({
         debug: false,
       };
 
-      const { artifacts } = toArtifacts(entityFromSource('app/mixins/fileable.js', input, options), options);
+      const { artifacts } = processSource('app/mixins/fileable.js', input, options);
 
       // Should have trait (with merged types) and resource-type-stub artifacts
       expect(artifacts).toHaveLength(3); // trait, file stub, user stub
@@ -912,7 +909,7 @@ export default Mixin.create({
         debug: false,
       };
 
-      const { artifacts } = toArtifacts(entityFromSource('app/mixins/commentable.js', input, options), options);
+      const { artifacts } = processSource('app/mixins/commentable.js', input, options);
 
       // Should have trait (with merged types) and multiple resource-type-stub artifacts
       expect(artifacts.length).toBeGreaterThanOrEqual(4); // trait + 3 stubs

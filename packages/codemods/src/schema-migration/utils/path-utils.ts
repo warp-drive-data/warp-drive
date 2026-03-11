@@ -34,6 +34,13 @@ export function extractBaseName(filePath: string): string {
 }
 
 /**
+ * Extract trailing path segments from a file path
+ */
+export function getPathSuffix(filePath: string, depth: number): string {
+  return filePath.split('/').slice(-depth).join('/');
+}
+
+/**
  * Extract camelCase name from file path (kebab-case to camelCase conversion)
  */
 export function extractCamelCaseName(filePath: string): string {

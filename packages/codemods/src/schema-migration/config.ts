@@ -1,5 +1,3 @@
-import type { SchemaArtifactRegistry } from './utils/artifact';
-
 export const DEFAULT_RESOURCES_DIR = './app/data/resources';
 export const DEFAULT_TRAITS_DIR = './app/data/traits';
 
@@ -198,8 +196,6 @@ export interface TransformOptions {
     extension?: string;
     trait?: string;
   }>;
-  /** Registry of SchemaArtifact instances keyed by file path */
-  entityRegistry?: SchemaArtifactRegistry;
 }
 
 export interface MigrateOptions extends Partial<TransformOptions> {

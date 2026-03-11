@@ -4,8 +4,10 @@ import { join } from 'path';
 
 import { logger } from '../../../utils/logger.js';
 import { getConfiguredImport, type TransformOptions } from '../config.js';
+import { deriveResourceExtensionName, deriveTraitExtensionName } from './artifact.js';
 import type { ArtifactConfig } from './artifact.js';
 import type { ExtensionContext } from './extension-generation.js';
+import type { SchemaArtifactRegistry } from './artifact.js';
 import { generateTraitImport, transformModelToResourceImport } from './import-utils.js';
 import { normalizeClassicImport, removeQuotes, toPascalCase } from './path-utils.js';
 import type { ExtractedType } from './type-utils.js';
@@ -385,7 +387,8 @@ export function createExtensionArtifactWithTypes(
     return { extensionArtifact: null, typeArtifact: null };
   }
 
-  const extensionName = entityName.endsWith('Extension') ? entityName : `${entityName}Extension`;
+  const extensionName =
+    context === 'trait' ? deriveTraitExtensionName(baseName) : deriveResourceExtensionName(baseName);
 
   // Use provided generator or create a simple fallback
   const generator =
@@ -433,7 +436,8 @@ export function collectRelationshipImports(
   selfName: string,
   imports: Set<string>,
   declarations: Set<string>,
-  options: TransformOptions
+  options: TransformOptions,
+  registry: SchemaArtifactRegistry
 ): void {
   const asyncHasManyImport = getConfiguredImport(options, 'AsyncHasMany');
   const hasManyImport = getConfiguredImport(options, 'HasMany');
@@ -479,7 +483,7 @@ export function collectRelationshipImports(
 
       if (field.type !== selfName) {
         const typeName = toPascalCase(field.type!);
-        finalImports.add(transformModelToResourceImport(field.type!, typeName, options));
+        finalImports.add(transformModelToResourceImport(field.type!, typeName, options, registry));
       }
     } else if (field.typeInfo?.imports) {
       for (const imp of field.typeInfo.imports) {

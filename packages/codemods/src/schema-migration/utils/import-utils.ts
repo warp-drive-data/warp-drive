@@ -5,6 +5,7 @@ import { dirname, resolve } from 'path';
 
 import { logger } from '../../../utils/logger.js';
 import type { TransformOptions } from '../config.js';
+import type { SchemaArtifactRegistry } from './artifact.js';
 import {
   deriveResourceExtensionName,
   deriveTraitExtensionName,
@@ -17,6 +18,7 @@ import {
   extractBaseName,
   getImportSourceConfig,
   getLanguageFromPath,
+  getPathSuffix,
   mixinNameToTraitName,
   removeQuotes,
   resolveRelativeImport,
@@ -28,9 +30,7 @@ import {
   IMPORT_DEFAULT_REGEX,
   IMPORT_PATH_SINGLE_QUOTE_REGEX,
   IMPORT_TYPE_DEFAULT_REGEX,
-  LEADING_HYPHEN_REGEX,
   SCHEMA_PATH_REGEX,
-  UPPERCASE_LETTER_REGEX,
 } from './string.js';
 
 const log = logger.for('import-utils');
@@ -117,33 +117,26 @@ export function getResourcesImport(options: TransformOptions): string {
  * Check if a type should be imported from traits instead of resources
  * This checks if the type corresponds to a connected mixin or intermediate model
  */
-function shouldImportFromTraits(relatedType: string, options?: TransformOptions): boolean {
+function shouldImportFromTraits(
+  relatedType: string,
+  options: TransformOptions,
+  registry: SchemaArtifactRegistry
+): boolean {
   // Check if a connected mixin corresponds to this related type via the entity registry
-  const registry = options?.entityRegistry;
-  if (registry) {
-    const mixinEntity = findEntityByBaseName(registry, relatedType, 'mixin');
-    if (mixinEntity && isConnectedToModel(registry, mixinEntity.path)) {
-      return true;
-    }
+  const mixinEntity = findEntityByBaseName(registry, relatedType, 'mixin');
+  if (mixinEntity && isConnectedToModel(registry, mixinEntity.path)) {
+    return true;
   }
 
-  // Check if any of the intermediate models correspond to this related type
-  const intermediateModelPaths = options?.intermediateModelPaths;
-  if (intermediateModelPaths) {
-    for (const modelPath of intermediateModelPaths) {
-      // Extract the trait name from the model path using the same logic as generateIntermediateModelTraitArtifacts
-      // e.g., "my-app/core/data-field-model" -> "data-field"
-      const traitBaseName =
-        modelPath
-          .split('/')
-          .pop()
-          ?.replace(/-?model$/i, '') || modelPath;
-      const traitName = traitBaseName
-        .replace(UPPERCASE_LETTER_REGEX, '-$1')
-        .toLowerCase()
-        .replace(LEADING_HYPHEN_REGEX, '');
+  // Check if any intermediate models correspond to this related type
+  const intermediateEntity = findEntityByBaseName(registry, relatedType, 'intermediate-model');
+  if (intermediateEntity) {
+    return true;
+  }
 
-      if (traitName === relatedType) {
+  if (options.importSubstitutes) {
+    for (const sub of options.importSubstitutes) {
+      if (sub.sourcePath && sub.trait === relatedType) {
         return true;
       }
     }
@@ -164,10 +157,11 @@ function shouldImportFromTraits(relatedType: string, options?: TransformOptions)
 export function transformModelToResourceImport(
   relatedType: string,
   modelName: string,
-  options: TransformOptions
+  options: TransformOptions,
+  registry: SchemaArtifactRegistry
 ): string {
   // Always check traits first for intermediate models (they're always traits)
-  if (shouldImportFromTraits(relatedType, options)) {
+  if (shouldImportFromTraits(relatedType, options, registry)) {
     const traitsImport = options?.traitsImport;
     // Trait interfaces are named with 'Trait' suffix but aliased back to non-suffix for backward compatibility
     const traitName = deriveTraitInterfaceName(relatedType);
@@ -180,11 +174,10 @@ export function transformModelToResourceImport(
   }
 
   // Check if we have a model for this related type using registry
-  const registry = options?.entityRegistry;
-  const hasModel = registry ? !!findEntityByBaseName(registry, relatedType, 'model') : false;
+  const hasModel = !!findEntityByBaseName(registry, relatedType, 'model');
 
   // If no model found, check if we have a mixin/trait to fall back to
-  if (!hasModel && registry) {
+  if (!hasModel) {
     const mixinEntity = findEntityByBaseName(registry, relatedType, 'mixin');
     if (mixinEntity) {
       // Fall back to trait import
@@ -207,7 +200,7 @@ export function transformModelToResourceImport(
   // When types are separate, only import from .type if the target model will generate one
   let useTypeFile = false;
   if (!options.combineSchemasAndTypes) {
-    const modelEntity = registry ? findEntityByBaseName(registry, relatedType, 'model') : undefined;
+    const modelEntity = findEntityByBaseName(registry, relatedType, 'model');
     const isTargetTyped = modelEntity ? modelEntity.parsedFile.extension === '.ts' : false;
     useTypeFile = isTargetTyped || !options.disableMissingTypeAutoGen;
   }
@@ -484,17 +477,19 @@ export function isModelFile(filePath: string, source: string, options?: Transfor
   try {
     // Special case: if this file itself is listed as an intermediate model or fragment, it's a model by definition
     if (options?.intermediateModelPaths) {
+      const filePathWithoutExt = filePath.replace(FILE_EXTENSION_REGEX, '');
       for (const intermediatePath of options.intermediateModelPaths) {
-        const expectedFileName = intermediatePath.split('/').pop(); // e.g., "-auditboard-model"
-        if (expectedFileName && filePath.includes(expectedFileName)) {
+        const pathSuffix = getPathSuffix(intermediatePath, 2); // e.g., "core/base-model"
+        if (filePathWithoutExt.endsWith(pathSuffix)) {
           return true;
         }
       }
     }
     if (options?.intermediateFragmentPaths) {
+      const filePathWithoutExt = filePath.replace(FILE_EXTENSION_REGEX, '');
       for (const intermediatePath of options.intermediateFragmentPaths) {
-        const expectedFileName = intermediatePath.split('/').pop(); // e.g., "base-fragment"
-        if (expectedFileName && filePath.includes(expectedFileName)) {
+        const pathSuffix = getPathSuffix(intermediatePath, 2); // e.g., "fragments/base-fragment"
+        if (filePathWithoutExt.endsWith(pathSuffix)) {
           return true;
         }
       }
@@ -746,7 +741,8 @@ function convertImportToAbsolute(
   baseDir: string,
   importNode: SgNode,
   isRelativeImport: boolean,
-  options: TransformOptions
+  options: TransformOptions,
+  registry: SchemaArtifactRegistry
 ): string | null {
   try {
     // Check if the resolved file is a model file
@@ -756,7 +752,7 @@ function convertImportToAbsolute(
         // Convert model import to resource schema import
         const modelName = extractBaseName(resolvedPath);
         const pascalCaseName = toPascalCase(modelName);
-        const resourceImport = transformModelToResourceImport(modelName, pascalCaseName, options);
+        const resourceImport = transformModelToResourceImport(modelName, pascalCaseName, options, registry);
 
         // Extract just the import path from the full import statement
         const importPathMatch = resourceImport.match(IMPORT_PATH_SINGLE_QUOTE_REGEX);
@@ -807,7 +803,13 @@ function convertImportToAbsolute(
 /**
  * Process imports in source code to resolve relative imports and convert them to appropriate types
  */
-export function processImports(source: string, filePath: string, baseDir: string, options: TransformOptions): string {
+export function processImports(
+  source: string,
+  filePath: string,
+  baseDir: string,
+  options: TransformOptions,
+  registry: SchemaArtifactRegistry
+): string {
   try {
     const lang = getLanguageFromPath(filePath);
     const ast = parse(lang, source);
@@ -862,7 +864,8 @@ export function processImports(source: string, filePath: string, baseDir: string
           baseDir,
           importNode,
           isRelativeImport,
-          options
+          options,
+          registry
         );
 
         if (convertedImport) {

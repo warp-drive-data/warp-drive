@@ -296,7 +296,11 @@ function writeIntermediateArtifacts(
   }
 }
 
-type ArtifactTransformer = (entity: SchemaArtifact, options: TransformOptions) => TransformerResult;
+type ArtifactTransformer = (
+  entity: SchemaArtifact,
+  options: TransformOptions,
+  registry: SchemaArtifactRegistry
+) => TransformerResult;
 
 const TRANSFORMERS: Record<string, ArtifactTransformer> = {
   model: modelToArtifacts,
@@ -326,7 +330,7 @@ function processFiles({ registry, finalOptions, log }: ProcessFilesOptions): Pro
         log.debug(`🔄 Processing: ${filePath}`);
       }
 
-      const result = transformer(entity, finalOptions);
+      const result = transformer(entity, finalOptions, registry);
 
       if (result.artifacts.length > 0) {
         processed++;
@@ -408,8 +412,6 @@ export async function runMigration(options: MigrateOptions): Promise<void> {
   log.warn(`📋 Skipped ${codemod.input.skipped.length} files total`);
   log.warn(`📋 Errors found while reading files: ${codemod.input.errors.length}`);
 
-  finalOptions.entityRegistry = codemod.entityRegistry;
-
   // Process intermediate models to generate trait artifacts first
   // This must be done before processing regular models that extend these intermediate models
   if (finalOptions.intermediateModelPaths && finalOptions.intermediateModelPaths.length > 0) {
@@ -421,7 +423,8 @@ export async function runMigration(options: MigrateOptions): Promise<void> {
           : [finalOptions.intermediateModelPaths],
         finalOptions.additionalModelSources,
         finalOptions.additionalMixinSources,
-        finalOptions
+        finalOptions,
+        codemod.entityRegistry
       );
 
       // Write intermediate model trait artifacts

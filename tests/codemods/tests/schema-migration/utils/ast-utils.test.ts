@@ -329,6 +329,10 @@ describe('AST utilities', () => {
 
   describe('transformModelToResourceImport', () => {
     it('generates trait imports for intermediate models', () => {
+      const registry = buildTestRegistry([
+        { baseName: 'data-field-model', kind: 'intermediate-model', path: '/path/to/data-field-model.ts' },
+        { baseName: 'base-model', kind: 'intermediate-model', path: '/path/to/base-model.ts' },
+      ]);
       const options = {
         intermediateModelPaths: ['soxhub-client/core/data-field-model', 'my-app/core/base-model'],
         traitsImport: 'my-app/data/traits',
@@ -336,16 +340,18 @@ describe('AST utilities', () => {
         combineSchemasAndTypes: true,
       };
 
-      // Test that data-field-model maps to data-field trait
-      const result1 = transformModelToResourceImport('data-field', 'User', options);
-      expect(result1).toBe("type { DataFieldTrait as DataField } from 'my-app/data/traits/data-field.schema'");
+      // Test that data-field-model maps to data-field-model trait (baseName matches file name)
+      const result1 = transformModelToResourceImport('data-field-model', 'User', options, registry);
+      expect(result1).toBe(
+        "type { DataFieldModelTrait as DataFieldModel } from 'my-app/data/traits/data-field-model.schema'"
+      );
 
-      // Test that base-model maps to base trait
-      const result2 = transformModelToResourceImport('base', 'User', options);
-      expect(result2).toBe("type { BaseTrait as Base } from 'my-app/data/traits/base.schema'");
+      // Test that base-model maps to base-model trait (baseName matches file name)
+      const result2 = transformModelToResourceImport('base-model', 'User', options, registry);
+      expect(result2).toBe("type { BaseModelTrait as BaseModel } from 'my-app/data/traits/base-model.schema'");
 
       // Test that regular models still go to resources (interface name comes from modelName param)
-      const result3 = transformModelToResourceImport('user', 'Document', options);
+      const result3 = transformModelToResourceImport('user', 'Document', options, registry);
       expect(result3).toBe("type { Document } from 'my-app/data/resources/user.schema'");
     });
 
@@ -360,66 +366,65 @@ describe('AST utilities', () => {
       modelEntity.addTrait(mixinEntity);
 
       const options = {
-        entityRegistry: registry,
         traitsImport: 'my-app/data/traits',
         resourcesImport: 'my-app/data/resources',
       };
 
-      const result = transformModelToResourceImport('workstreamable', 'User', options);
+      const result = transformModelToResourceImport('workstreamable', 'User', options, registry);
       expect(result).toBe(
         "type { WorkstreamableTrait as Workstreamable } from 'my-app/data/traits/workstreamable.schema'"
       );
     });
 
     it('prioritizes resources, falls back to traits when no model exists', () => {
+      const registry = buildTestRegistry([
+        { baseName: 'user', kind: 'model', path: '/app/models/user.js' },
+        { baseName: 'company', kind: 'model', path: '/app/models/company.js' },
+        { baseName: 'shareable', kind: 'mixin', path: '/app/mixins/shareable.js' },
+        { baseName: 'suggested', kind: 'mixin', path: '/app/mixins/suggested.js' },
+      ]);
       const options = {
-        entityRegistry: buildTestRegistry([
-          { baseName: 'user', kind: 'model', path: '/app/models/user.js' },
-          { baseName: 'company', kind: 'model', path: '/app/models/company.js' },
-          { baseName: 'shareable', kind: 'mixin', path: '/app/mixins/shareable.js' },
-          { baseName: 'suggested', kind: 'mixin', path: '/app/mixins/suggested.js' },
-        ]),
         traitsImport: 'my-app/data/traits',
         resourcesImport: 'my-app/data/resources',
         combineSchemasAndTypes: true,
       };
 
       // Test that existing model routes to resource import
-      const result1 = transformModelToResourceImport('user', 'User', options);
+      const result1 = transformModelToResourceImport('user', 'User', options, registry);
       expect(result1).toBe("type { User } from 'my-app/data/resources/user.schema'");
 
       // Test that mixin without model routes to trait import
-      const result2 = transformModelToResourceImport('shareable', 'Shareable', options);
+      const result2 = transformModelToResourceImport('shareable', 'Shareable', options, registry);
       expect(result2).toBe("type { ShareableTrait as Shareable } from 'my-app/data/traits/shareable.schema'");
 
       // Test that suggested mixin routes to trait import
-      const result3 = transformModelToResourceImport('suggested', 'Suggested', options);
+      const result3 = transformModelToResourceImport('suggested', 'Suggested', options, registry);
       expect(result3).toBe("type { SuggestedTrait as Suggested } from 'my-app/data/traits/suggested.schema'");
 
       // Test that non-existent type defaults to resource
-      const result4 = transformModelToResourceImport('nonexistent', 'Nonexistent', options);
+      const result4 = transformModelToResourceImport('nonexistent', 'Nonexistent', options, registry);
       expect(result4).toBe("type { Nonexistent } from 'my-app/data/resources/nonexistent.schema'");
     });
 
     it('handles models with same name as mixins by prioritizing model', () => {
+      const registry = buildTestRegistry([
+        { baseName: 'user', kind: 'model', path: '/app/models/user.js' },
+        { baseName: 'notification', kind: 'model', path: '/app/models/notification.js' },
+        { baseName: 'shareable', kind: 'mixin', path: '/app/mixins/shareable.js' },
+        { baseName: 'notification', kind: 'mixin', path: '/app/mixins/notification.js' }, // notification exists as both
+      ]);
       const options = {
-        entityRegistry: buildTestRegistry([
-          { baseName: 'user', kind: 'model', path: '/app/models/user.js' },
-          { baseName: 'notification', kind: 'model', path: '/app/models/notification.js' },
-          { baseName: 'shareable', kind: 'mixin', path: '/app/mixins/shareable.js' },
-          { baseName: 'notification', kind: 'mixin', path: '/app/mixins/notification.js' }, // notification exists as both
-        ]),
         traitsImport: 'my-app/data/traits',
         resourcesImport: 'my-app/data/resources',
         combineSchemasAndTypes: true,
       };
 
       // Test that when both model and mixin exist, model takes priority
-      const result1 = transformModelToResourceImport('notification', 'Notification', options);
+      const result1 = transformModelToResourceImport('notification', 'Notification', options, registry);
       expect(result1).toBe("type { Notification } from 'my-app/data/resources/notification.schema'");
 
       // Test that mixin-only still works
-      const result2 = transformModelToResourceImport('shareable', 'Shareable', options);
+      const result2 = transformModelToResourceImport('shareable', 'Shareable', options, registry);
       expect(result2).toBe("type { ShareableTrait as Shareable } from 'my-app/data/traits/shareable.schema'");
     });
 
@@ -432,34 +437,34 @@ describe('AST utilities', () => {
       };
 
       // All types come from .schema files
-      const result1 = transformModelToResourceImport('user', 'User', options);
+      const result1 = transformModelToResourceImport('user', 'User', options, new Map());
       expect(result1).toBe("type { User } from 'my-app/data/resources/user.schema'");
 
-      const result2 = transformModelToResourceImport('audit-survey', 'AuditSurvey', options);
+      const result2 = transformModelToResourceImport('audit-survey', 'AuditSurvey', options, new Map());
       expect(result2).toBe("type { AuditSurvey } from 'my-app/data/resources/audit-survey.schema'");
 
       // Test that model without extension also uses .schema
-      const result3 = transformModelToResourceImport('other-model', 'OtherModel', options);
+      const result3 = transformModelToResourceImport('other-model', 'OtherModel', options, new Map());
       expect(result3).toBe("type { OtherModel } from 'my-app/data/resources/other-model.schema'");
     });
 
     it('prefers extension imports over resource imports when both available', () => {
       // Note: Types are now imported from .schema files regardless of extensions
+      const registry = buildTestRegistry([
+        { baseName: 'user', kind: 'model', path: '/app/models/user.js' },
+        { baseName: 'company', kind: 'model', path: '/app/models/company.js' },
+      ]);
       const options = {
-        entityRegistry: buildTestRegistry([
-          { baseName: 'user', kind: 'model', path: '/app/models/user.js' },
-          { baseName: 'company', kind: 'model', path: '/app/models/company.js' },
-        ]),
         resourcesImport: 'my-app/data/resources',
         combineSchemasAndTypes: true,
       };
 
       // All types come from .schema files
-      const result1 = transformModelToResourceImport('user', 'User', options);
+      const result1 = transformModelToResourceImport('user', 'User', options, registry);
       expect(result1).toBe("type { User } from 'my-app/data/resources/user.schema'");
 
       // Company uses .schema as well
-      const result2 = transformModelToResourceImport('company', 'Company', options);
+      const result2 = transformModelToResourceImport('company', 'Company', options, registry);
       expect(result2).toBe("type { Company } from 'my-app/data/resources/company.schema'");
     });
 
@@ -469,7 +474,7 @@ describe('AST utilities', () => {
         combineSchemasAndTypes: true,
       };
 
-      const result = transformModelToResourceImport('user', 'User', options);
+      const result = transformModelToResourceImport('user', 'User', options, new Map());
       expect(result).toBe("type { User } from 'my-app/data/resources/user.schema'");
     });
 
@@ -480,22 +485,25 @@ describe('AST utilities', () => {
         combineSchemasAndTypes: true,
       };
 
-      const result = transformModelToResourceImport('user', 'User', options);
+      const result = transformModelToResourceImport('user', 'User', options, new Map());
       // All type imports come from .schema files
       expect(result).toBe("type { User } from 'my-app/data/resources/user.schema'");
     });
 
     it('prioritizes trait imports over extension imports for intermediate models', () => {
+      const registry = buildTestRegistry([
+        { baseName: 'base-model', kind: 'intermediate-model', path: '/path/to/base-model.ts' },
+      ]);
       const options = {
         intermediateModelPaths: ['my-app/core/base-model'],
-        modelsWithExtensions: new Set(['base']), // Even if base has extension, trait takes priority
+        modelsWithExtensions: new Set(['base-model']),
         traitsImport: 'my-app/data/traits',
         resourcesImport: 'my-app/data/resources',
       };
 
       // Intermediate models should always go to traits
-      const result = transformModelToResourceImport('base', 'Base', options);
-      expect(result).toBe("type { BaseTrait as Base } from 'my-app/data/traits/base.schema'");
+      const result = transformModelToResourceImport('base-model', 'BaseModel', options, registry);
+      expect(result).toBe("type { BaseModelTrait as BaseModel } from 'my-app/data/traits/base-model.schema'");
     });
   });
 });

@@ -1383,7 +1383,7 @@ export default Mixin.create({
       args.some((arg) => typeof arg === 'string' && arg.includes('Output file conflict'))
     );
     expect(conflictErrors.length).toBeGreaterThan(0);
-    expect(conflictErrors[0]![0]).toContain('base-model');
+    expect(conflictErrors[0][0]).toContain('base-model');
 
     errorSpy.mockRestore();
   });

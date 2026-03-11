@@ -4,6 +4,7 @@ import { join } from 'path';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
 import { processIntermediateModelsToTraits } from '../../../../packages/codemods/src/schema-migration/processors/model.js';
+import type { SchemaArtifactRegistry } from '../../../../packages/codemods/src/schema-migration/utils/artifact.js';
 import { prepareFiles } from './test-helpers.ts';
 
 describe('intermediate model processing', () => {
@@ -30,6 +31,7 @@ export default class BaseModel extends Model {
 `,
     });
 
+    const registry: SchemaArtifactRegistry = new Map();
     const result = processIntermediateModelsToTraits(
       ['test-app/core/base-model'],
       [
@@ -42,7 +44,8 @@ export default class BaseModel extends Model {
       {
         verbose: false,
         debug: false,
-      }
+      },
+      registry
     );
 
     expect(result.errors.length).toBe(0);
@@ -62,6 +65,7 @@ export default class SpecialModel extends Model {
 `,
     });
 
+    const registry: SchemaArtifactRegistry = new Map();
     const result = processIntermediateModelsToTraits(
       ['@mylib/core/special-model'],
       [
@@ -74,7 +78,8 @@ export default class SpecialModel extends Model {
       {
         verbose: false,
         debug: false,
-      }
+      },
+      registry
     );
 
     expect(result.errors.length).toBe(0);
@@ -82,10 +87,16 @@ export default class SpecialModel extends Model {
   });
 
   it('should report errors for missing intermediate models', () => {
-    const result = processIntermediateModelsToTraits(['non-existent/model'], undefined, undefined, {
-      verbose: false,
-      debug: false,
-    });
+    const result = processIntermediateModelsToTraits(
+      ['non-existent/model'],
+      undefined,
+      undefined,
+      {
+        verbose: false,
+        debug: false,
+      },
+      new Map()
+    );
 
     expect(result.errors.length).toBe(1);
     expect(result.errors[0]).toContain('Could not find or read intermediate model file for path: non-existent/model');
@@ -104,6 +115,7 @@ export default class DataFieldModel extends Model {
 `,
     });
 
+    const registry: SchemaArtifactRegistry = new Map();
     const result = processIntermediateModelsToTraits(
       ['test-app/core/data-field-model'],
       [
@@ -116,7 +128,8 @@ export default class DataFieldModel extends Model {
       {
         verbose: false,
         debug: false,
-      }
+      },
+      registry
     );
 
     expect(result.errors.length).toBe(0);
