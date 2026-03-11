@@ -1,3 +1,4 @@
+import type { InstanciatedLogger } from '../../../utils/logger.js';
 import type { Filename } from '../codemod.js';
 import type { TransformOptions } from '../config';
 import type { ModelAnalysisResult } from '../processors/model';
@@ -391,16 +392,31 @@ export type SchemaArtifactRegistry = Map<string, SchemaArtifact>;
 
 export function buildEntityRegistry(
   parsedModels: Map<Filename, ParsedFile>,
-  parsedMixins: Map<Filename, ParsedFile>
+  parsedMixins: Map<Filename, ParsedFile>,
+  log?: InstanciatedLogger
 ): SchemaArtifactRegistry {
   const registry: SchemaArtifactRegistry = new Map();
 
   for (const [filePath, parsed] of parsedModels) {
-    registry.set(filePath, SchemaArtifact.fromParsedFile(parsed, 'model'));
+    const entity = SchemaArtifact.fromParsedFile(parsed, 'model');
+    const existing = findEntityByBaseName(registry, entity.baseName);
+    if (existing) {
+      log?.error(
+        `Output file conflict: "${entity.baseName}" is produced by both "${existing.path}" and "${filePath}". The second write will overwrite the first.`
+      );
+    }
+    registry.set(filePath, entity);
   }
 
   for (const [filePath, parsed] of parsedMixins) {
-    registry.set(filePath, SchemaArtifact.fromParsedFile(parsed, 'mixin'));
+    const entity = SchemaArtifact.fromParsedFile(parsed, 'mixin');
+    const existing = findEntityByBaseName(registry, entity.baseName);
+    if (existing) {
+      log?.error(
+        `Output file conflict: "${entity.baseName}" is produced by both "${existing.path}" and "${filePath}". The second write will overwrite the first.`
+      );
+    }
+    registry.set(filePath, entity);
   }
 
   return registry;

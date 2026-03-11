@@ -5,8 +5,8 @@ import { dirname, join, resolve } from 'path';
 import { logger } from '../../../utils/logger.js';
 import type { TransformerResult } from '../codemod.js';
 import { getConfiguredImport, type TransformOptions } from '../config.js';
-import type { SchemaArtifact } from '../utils/artifact.js';
-import { createResourceArtifactConfig, createTraitArtifactConfig } from '../utils/artifact.js';
+import { SchemaArtifact, createResourceArtifactConfig, createTraitArtifactConfig } from '../utils/artifact.js';
+import type { DebugInfo, DependencyNode, FieldOrigin } from '../utils/debug-info.js';
 import type { ExtractedType, SchemaField, TransformArtifact } from '../utils/ast-utils.js';
 import {
   buildLegacySchemaObject,
@@ -49,12 +49,10 @@ import { parseFile } from '../utils/file-parser.js';
 import { removeQuotes, replaceWildcardPattern } from '../utils/path-utils.js';
 import type { FieldTypeInfo } from '../utils/schema-generation.js';
 import {
-  MODEL_NAME_SUFFIX_REGEX,
   normalizePath,
   pascalToKebab,
   removeFileExtension,
   toKebabCase,
-  TRAILING_MODEL_SUFFIX_REGEX,
 } from '../utils/string.js';
 
 /**
@@ -799,15 +797,11 @@ export function generateIntermediateModelTraitArtifacts(
 ): TransformArtifact[] {
   const artifacts: TransformArtifact[] = [];
 
-  // Extract the trait name from the model path
-  // e.g., "my-app/core/data-field-model" -> "data-field"
-  const traitBaseName = modelPath.split('/').pop()?.replace(MODEL_NAME_SUFFIX_REGEX, '') || modelPath;
-  const traitName = pascalToKebab(traitBaseName);
-
+  const parsedFile = parseFile(filePath, source, options);
+  const entity = SchemaArtifact.fromParsedFile(parsedFile, 'model');
+  const traitName = entity.baseName;
   const traitPascalName = toPascalCase(traitName);
 
-  // Analyze the intermediate model file to extract fields
-  const parsedFile = parseFile(filePath, source, options);
   const analysis = analyzeModelFromParsed(parsedFile, options);
 
   if (!analysis.isValid) {
@@ -1308,14 +1302,11 @@ function extractIntermediateModelTraits(
 
   for (const [localName, modelPath] of intermediateLocalNames) {
     if (extendsText.includes(localName)) {
-      // Convert path like "my-app/core/data-field-model" to "data-field-model"
       let traitName = modelPath.split('/').pop() || modelPath;
-      // Strip any file extension (.js, .ts)
       traitName = removeFileExtension(traitName);
-      const dasherizedName = pascalToKebab(traitName).replace(TRAILING_MODEL_SUFFIX_REGEX, ''); // Remove trailing -model or model
 
-      intermediateTraits.push(dasherizedName);
-      log.debug(`DEBUG: Found intermediate model trait: ${dasherizedName} from ${modelPath}`);
+      intermediateTraits.push(traitName);
+      log.debug(`DEBUG: Found intermediate model trait: ${traitName} from ${modelPath}`);
       break; // Only process the first match since a class can only extend one parent
     }
   }

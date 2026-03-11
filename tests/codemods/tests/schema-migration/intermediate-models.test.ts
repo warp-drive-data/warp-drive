@@ -123,13 +123,13 @@ export default class DataFieldModel extends Model {
     expect(result.artifacts).toMatchInlineSnapshot(`
       [
         {
-          "baseName": "data-field",
+          "baseName": "data-field-model",
           "code": "import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
 
       import type { BelongsToReference, HasManyReference, Errors } from '@warp-drive/legacy/model/-private';
 
-      const DataFieldTraitSchema = {
-        'name': 'data-field',
+      const DataFieldModelTraitSchema = {
+        'name': 'data-field-model',
         'mode': 'legacy',
         'fields': [
           {
@@ -140,11 +140,11 @@ export default class DataFieldModel extends Model {
         ]
       } satisfies LegacyResourceSchema;
 
-      export default DataFieldTraitSchema;
+      export default DataFieldModelTraitSchema;
 
       /**
        * This type represents the full set schema derived fields of
-       * the 'data-field' trait, without any of the legacy mode features
+       * the 'data-field-model' trait, without any of the legacy mode features
        * and without any extensions.
        *
        * > [!TIP]
@@ -158,13 +158,13 @@ export default class DataFieldModel extends Model {
        * > from this type to ensure that your type definitions stay consistent
        * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
        */
-      export interface DataFieldTrait {
+      export interface DataFieldModelTrait {
         id: string | null;
         fieldName: string | null;
       }
       ",
-          "name": "DataFieldTraitSchema",
-          "suggestedFileName": "data-field.schema.ts",
+          "name": "DataFieldModelTraitSchema",
+          "suggestedFileName": "data-field-model.schema.ts",
           "type": "trait",
         },
       ]

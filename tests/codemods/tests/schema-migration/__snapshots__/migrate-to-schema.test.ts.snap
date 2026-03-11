@@ -953,52 +953,6 @@ export default BaseModelTraitSchema;
 export interface BaseModelTrait {
 }
 ",
-  "traits/base.schema.ts": "
-import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
-
-import type { BelongsToReference, HasManyReference, Errors } from '@warp-drive/legacy/model/-private';
-
-const BaseTraitSchema = {
-  'name': 'base',
-  'mode': 'legacy',
-  'fields': [
-    {
-      'kind': 'attribute',
-      'name': 'createdAt',
-      'type': 'date'
-    },
-    {
-      'kind': 'attribute',
-      'name': 'updatedAt',
-      'type': 'date'
-    }
-  ]
-} satisfies LegacyResourceSchema;
-
-export default BaseTraitSchema;
-
-/**
- * This type represents the full set schema derived fields of
- * the 'base' trait, without any of the legacy mode features
- * and without any extensions.
- *
- * > [!TIP]
- * > It is likely that you will want a more specific type tailored
- * > to the context of where some data has been loaded, for instance
- * > one that marks specific fields as readonly, or which only enables
- * > some fields to be null during create, or which only includes
- * > a subset of fields based on a specific API response.
- * >
- * > For those cases, you can create a more specific type that derives
- * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
- */
-export interface BaseTrait {
-  id: string | null;
-  createdAt: Date | null;
-  updatedAt: Date | null;
-}
-",
   "traits/permissable.ext.js": "
 
 
@@ -1048,7 +1002,6 @@ exports[`migrate-to-schema batch operation > discovers files from importSubstitu
   "traits/",
   "traits/base-model.ext.js",
   "traits/base-model.schema.ts",
-  "traits/base.schema.ts",
   "traits/permissable.ext.js",
   "traits/permissable.schema.ts",
 ]
@@ -1306,8 +1259,9 @@ exports[`migrate-to-schema batch operation > extracts intermediate model trait w
   "resources/approval-request.schema.ts",
   "resources/approval-request.type.ts",
   "traits/",
+  "traits/-base-model.schema.ts",
+  "traits/base-model.ext.js",
   "traits/base-model.schema.ts",
-  "traits/base.schema.ts",
 ]
 `;
 
@@ -1347,7 +1301,10 @@ const ApprovalRequestSchema = {
   ],
   'traits': [
     'base-model',
-    'base'
+    '-base-model'
+  ],
+  'objectExtensions': [
+    'BaseModelTraitExtension'
   ]
 } satisfies LegacyResourceSchema;
 
@@ -1358,7 +1315,7 @@ import type { Type } from '@warp-drive/core-types/symbols';
 import type { WithLegacy } from '@ember-data/model/migration-support';
 import type { User } from 'test-app/data/resources/user.type';
 import type { BaseModelTrait } from 'test-app/data/traits/base-model.schema';
-import type { BaseTrait } from 'test-app/data/traits/base.schema';
+import type { BaseModelTrait } from 'test-app/data/traits/-base-model.schema';
 
 /**
  * This type represents the full set schema derived fields of
@@ -1378,7 +1335,7 @@ import type { BaseTrait } from 'test-app/data/traits/base.schema';
  *
  * See also {@link ApprovalRequest} for fields + legacy mode features
  */
-export interface ApprovalRequestResource extends BaseModelTrait, BaseTrait {
+export interface ApprovalRequestResource extends BaseModelTrait, BaseModelTrait {
   readonly [Type]: 'approval-request';
   id: string | null;
   name: string;
@@ -1396,6 +1353,45 @@ export interface ApprovalRequestResource extends BaseModelTrait, BaseTrait {
 export interface ApprovalRequest extends WithLegacy<ApprovalRequestResource> {}
 ",
   "traits/": "__dir__",
+  "traits/-base-model.schema.ts": "
+import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+
+import type { BelongsToReference, HasManyReference, Errors } from '@warp-drive/legacy/model/-private';
+
+const BaseModelTraitSchema = {
+  'name': '-base-model',
+  'mode': 'legacy',
+  'fields': []
+} satisfies LegacyResourceSchema;
+
+export default BaseModelTraitSchema;
+
+/**
+ * This type represents the full set schema derived fields of
+ * the '-base-model' trait, without any of the legacy mode features
+ * and without any extensions.
+ *
+ * > [!TIP]
+ * > It is likely that you will want a more specific type tailored
+ * > to the context of where some data has been loaded, for instance
+ * > one that marks specific fields as readonly, or which only enables
+ * > some fields to be null during create, or which only includes
+ * > a subset of fields based on a specific API response.
+ * >
+ * > For those cases, you can create a more specific type that derives
+ * > from this type to ensure that your type definitions stay consistent
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ */
+export interface BaseModelTrait {
+  id: string | null;
+}
+",
+  "traits/base-model.ext.js": "
+
+
+export const BaseModelTraitExtension = {
+  baseModelMixinMethod() {}
+};",
   "traits/base-model.schema.ts": "
 import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
 
@@ -1424,39 +1420,6 @@ export default BaseModelTraitSchema;
  * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
  */
 export interface BaseModelTrait {
-}
-",
-  "traits/base.schema.ts": "
-import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
-
-import type { BelongsToReference, HasManyReference, Errors } from '@warp-drive/legacy/model/-private';
-
-const BaseTraitSchema = {
-  'name': 'base',
-  'mode': 'legacy',
-  'fields': []
-} satisfies LegacyResourceSchema;
-
-export default BaseTraitSchema;
-
-/**
- * This type represents the full set schema derived fields of
- * the 'base' trait, without any of the legacy mode features
- * and without any extensions.
- *
- * > [!TIP]
- * > It is likely that you will want a more specific type tailored
- * > to the context of where some data has been loaded, for instance
- * > one that marks specific fields as readonly, or which only enables
- * > some fields to be null during create, or which only includes
- * > a subset of fields based on a specific API response.
- * >
- * > For those cases, you can create a more specific type that derives
- * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
- */
-export interface BaseTrait {
-  id: string | null;
 }
 ",
 }
@@ -2276,13 +2239,13 @@ export interface SimpleResource extends MyCustomTraitTrait {
 export interface Simple extends WithLegacy<SimpleResource> {}
 ",
   "traits/": "__dir__",
-  "traits/base.schema.ts": "
+  "traits/base-model.schema.ts": "
 import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
 
 import type { BelongsToReference, HasManyReference, Errors } from '@warp-drive/legacy/model/-private';
 
-const BaseTraitSchema = {
-  'name': 'base',
+const BaseModelTraitSchema = {
+  'name': 'base-model',
   'mode': 'legacy',
   'fields': [
     {
@@ -2293,11 +2256,11 @@ const BaseTraitSchema = {
   ]
 } satisfies LegacyResourceSchema;
 
-export default BaseTraitSchema;
+export default BaseModelTraitSchema;
 
 /**
  * This type represents the full set schema derived fields of
- * the 'base' trait, without any of the legacy mode features
+ * the 'base-model' trait, without any of the legacy mode features
  * and without any extensions.
  *
  * > [!TIP]
@@ -2311,7 +2274,7 @@ export default BaseTraitSchema;
  * > from this type to ensure that your type definitions stay consistent
  * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
  */
-export interface BaseTrait {
+export interface BaseModelTrait {
   id: string | null;
   rawErrors: string | null;
 }
@@ -2325,7 +2288,7 @@ exports[`migrate-to-schema batch operation > importSubstitutes sourcePath with e
   "resources/simple.schema.ts",
   "resources/simple.type.ts",
   "traits/",
-  "traits/base.schema.ts",
+  "traits/base-model.schema.ts",
 ]
 `;
 
@@ -2351,7 +2314,7 @@ const AllowedRoleSchema = {
   ],
   'traits': [
     'permissable',
-    'BaseTraitSchema'
+    'BaseModelTraitSchema'
   ]
 } satisfies LegacyResourceSchema;
 
@@ -2361,7 +2324,7 @@ export default AllowedRoleSchema;
 import type { Type } from '@warp-drive/core-types/symbols';
 import type { WithLegacy } from '@ember-data/model/migration-support';
 import type { PermissableTrait } from 'test-app/data/traits/permissable.schema';
-import type { BasetraitschemaTrait } from 'test-app/data/traits/BaseTraitSchema.schema';
+import type { BasemodeltraitschemaTrait } from 'test-app/data/traits/BaseModelTraitSchema.schema';
 
 /**
  * This type represents the full set schema derived fields of
@@ -2381,7 +2344,7 @@ import type { BasetraitschemaTrait } from 'test-app/data/traits/BaseTraitSchema.
  *
  * See also {@link AllowedRole} for fields + legacy mode features
  */
-export interface AllowedRoleResource extends PermissableTrait, BasetraitschemaTrait {
+export interface AllowedRoleResource extends PermissableTrait, BasemodeltraitschemaTrait {
   readonly [Type]: 'allowed-role';
   id: string | null;
   roleName: string;
@@ -2397,13 +2360,13 @@ export interface AllowedRoleResource extends PermissableTrait, BasetraitschemaTr
 export interface AllowedRole extends WithLegacy<AllowedRoleResource> {}
 ",
   "traits/": "__dir__",
-  "traits/base.schema.ts": "
+  "traits/base-model.schema.ts": "
 import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
 
 import type { BelongsToReference, HasManyReference, Errors } from '@warp-drive/legacy/model/-private';
 
-const BaseTraitSchema = {
-  'name': 'base',
+const BaseModelTraitSchema = {
+  'name': 'base-model',
   'mode': 'legacy',
   'fields': [
     {
@@ -2414,11 +2377,11 @@ const BaseTraitSchema = {
   ]
 } satisfies LegacyResourceSchema;
 
-export default BaseTraitSchema;
+export default BaseModelTraitSchema;
 
 /**
  * This type represents the full set schema derived fields of
- * the 'base' trait, without any of the legacy mode features
+ * the 'base-model' trait, without any of the legacy mode features
  * and without any extensions.
  *
  * > [!TIP]
@@ -2432,7 +2395,7 @@ export default BaseTraitSchema;
  * > from this type to ensure that your type definitions stay consistent
  * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
  */
-export interface BaseTrait {
+export interface BaseModelTrait {
   id: string | null;
   rawErrors: string | null;
 }
@@ -2483,7 +2446,7 @@ exports[`migrate-to-schema batch operation > importSubstitutes with sourcePath a
   "resources/allowed-role.schema.ts",
   "resources/allowed-role.type.ts",
   "traits/",
-  "traits/base.schema.ts",
+  "traits/base-model.schema.ts",
   "traits/permissable.schema.ts",
 ]
 `;
@@ -2509,7 +2472,7 @@ const BrandIdentitySchema = {
     }
   ],
   'traits': [
-    'BaseTraitSchema'
+    'BaseModelTraitSchema'
   ]
 } satisfies LegacyResourceSchema;
 
@@ -2518,7 +2481,7 @@ export default BrandIdentitySchema;
   "resources/brand-identity.type.ts": "
 import type { Type } from '@warp-drive/core-types/symbols';
 import type { WithLegacy } from '@ember-data/model/migration-support';
-import type { BasetraitschemaTrait } from 'test-app/data/traits/BaseTraitSchema.schema';
+import type { BasemodeltraitschemaTrait } from 'test-app/data/traits/BaseModelTraitSchema.schema';
 
 /**
  * This type represents the full set schema derived fields of
@@ -2538,7 +2501,7 @@ import type { BasetraitschemaTrait } from 'test-app/data/traits/BaseTraitSchema.
  *
  * See also {@link BrandIdentity} for fields + legacy mode features
  */
-export interface BrandIdentityResource extends BasetraitschemaTrait {
+export interface BrandIdentityResource extends BasemodeltraitschemaTrait {
   readonly [Type]: 'brand-identity';
   id: string | null;
   name: string;
@@ -2554,13 +2517,13 @@ export interface BrandIdentityResource extends BasetraitschemaTrait {
 export interface BrandIdentity extends WithLegacy<BrandIdentityResource> {}
 ",
   "traits/": "__dir__",
-  "traits/base.schema.ts": "
+  "traits/base-model.schema.ts": "
 import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
 
 import type { BelongsToReference, HasManyReference, Errors } from '@warp-drive/legacy/model/-private';
 
-const BaseTraitSchema = {
-  'name': 'base',
+const BaseModelTraitSchema = {
+  'name': 'base-model',
   'mode': 'legacy',
   'fields': [
     {
@@ -2571,11 +2534,11 @@ const BaseTraitSchema = {
   ]
 } satisfies LegacyResourceSchema;
 
-export default BaseTraitSchema;
+export default BaseModelTraitSchema;
 
 /**
  * This type represents the full set schema derived fields of
- * the 'base' trait, without any of the legacy mode features
+ * the 'base-model' trait, without any of the legacy mode features
  * and without any extensions.
  *
  * > [!TIP]
@@ -2589,7 +2552,7 @@ export default BaseTraitSchema;
  * > from this type to ensure that your type definitions stay consistent
  * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
  */
-export interface BaseTrait {
+export interface BaseModelTrait {
   id: string | null;
   rawErrors: string | null;
 }
@@ -2603,7 +2566,7 @@ exports[`migrate-to-schema batch operation > importSubstitutes with sourcePath a
   "resources/brand-identity.schema.ts",
   "resources/brand-identity.type.ts",
   "traits/",
-  "traits/base.schema.ts",
+  "traits/base-model.schema.ts",
 ]
 `;
 
@@ -3008,7 +2971,7 @@ const AeCustomMultiselect8OptionSchema = {
   },
   'fields': [],
   'traits': [
-    'data-field'
+    'data-field-model'
   ]
 } satisfies LegacyResourceSchema;
 
@@ -3017,7 +2980,7 @@ export default AeCustomMultiselect8OptionSchema;
   "resources/ae-custom-multiselect8-option.type.ts": "
 import type { Type } from '@warp-drive/core-types/symbols';
 import type { WithLegacy } from '@ember-data/model/migration-support';
-import type { DataFieldTrait } from 'test-app/data/traits/data-field.schema';
+import type { DataFieldModelTrait } from 'test-app/data/traits/data-field-model.schema';
 
 /**
  * This type represents the full set schema derived fields of
@@ -3037,7 +3000,7 @@ import type { DataFieldTrait } from 'test-app/data/traits/data-field.schema';
  *
  * See also {@link AeCustomMultiselect8Option} for fields + legacy mode features
  */
-export interface AeCustomMultiselect8OptionResource extends DataFieldTrait {
+export interface AeCustomMultiselect8OptionResource extends DataFieldModelTrait {
   readonly [Type]: 'ae-custom-multiselect8-option';
   id: string | null;
 }
@@ -3052,22 +3015,22 @@ export interface AeCustomMultiselect8OptionResource extends DataFieldTrait {
 export interface AeCustomMultiselect8Option extends WithLegacy<AeCustomMultiselect8OptionResource> {}
 ",
   "traits/": "__dir__",
-  "traits/base.schema.ts": "
+  "traits/base-model.schema.ts": "
 import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
 
 import type { BelongsToReference, HasManyReference, Errors } from '@warp-drive/legacy/model/-private';
 
-const BaseTraitSchema = {
-  'name': 'base',
+const BaseModelTraitSchema = {
+  'name': 'base-model',
   'mode': 'legacy',
   'fields': []
 } satisfies LegacyResourceSchema;
 
-export default BaseTraitSchema;
+export default BaseModelTraitSchema;
 
 /**
  * This type represents the full set schema derived fields of
- * the 'base' trait, without any of the legacy mode features
+ * the 'base-model' trait, without any of the legacy mode features
  * and without any extensions.
  *
  * > [!TIP]
@@ -3081,18 +3044,18 @@ export default BaseTraitSchema;
  * > from this type to ensure that your type definitions stay consistent
  * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
  */
-export interface BaseTrait {
+export interface BaseModelTrait {
   id: string | null;
 }
 ",
-  "traits/data-field.schema.ts": "
+  "traits/data-field-model.schema.ts": "
 import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
 
 import type { BelongsToReference, HasManyReference, Errors } from '@warp-drive/legacy/model/-private';
-import type { BaseTrait } from 'test-app/data/traits/base.schema';
+import type { BaseModelTrait } from 'test-app/data/traits/base-model.schema';
 
-const DataFieldTraitSchema = {
-  'name': 'data-field',
+const DataFieldModelTraitSchema = {
+  'name': 'data-field-model',
   'mode': 'legacy',
   'fields': [
     {
@@ -3107,16 +3070,15 @@ const DataFieldTraitSchema = {
     }
   ],
   'traits': [
-    'base-model',
-    'base'
+    'base-model'
   ]
 } satisfies LegacyResourceSchema;
 
-export default DataFieldTraitSchema;
+export default DataFieldModelTraitSchema;
 
 /**
  * This type represents the full set schema derived fields of
- * the 'data-field' trait, without any of the legacy mode features
+ * the 'data-field-model' trait, without any of the legacy mode features
  * and without any extensions.
  *
  * > [!TIP]
@@ -3130,7 +3092,7 @@ export default DataFieldTraitSchema;
  * > from this type to ensure that your type definitions stay consistent
  * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
  */
-export interface DataFieldTrait extends BaseModelTrait, BaseTrait {
+export interface DataFieldModelTrait extends BaseModelTrait {
   id: string | null;
 
   /**
@@ -3303,8 +3265,8 @@ exports[`migrate-to-schema batch operation > processes intermediateModelPaths to
   "resources/custom-select-option.schema.ts",
   "resources/custom-select-option.type.ts",
   "traits/",
-  "traits/base.schema.ts",
-  "traits/data-field.schema.ts",
+  "traits/base-model.schema.ts",
+  "traits/data-field-model.schema.ts",
 ]
 `;
 
@@ -3322,7 +3284,7 @@ const CustomSelectOptionSchema = {
   },
   'fields': [],
   'traits': [
-    'data-field'
+    'data-field-model'
   ]
 } satisfies LegacyResourceSchema;
 
@@ -3331,7 +3293,7 @@ export default CustomSelectOptionSchema;
   "custom-select-option.type.ts": "
 import type { Type } from '@warp-drive/core-types/symbols';
 import type { WithLegacy } from '@ember-data/model/migration-support';
-import type { DataFieldTrait } from 'test-app/data/traits/data-field.schema';
+import type { DataFieldModelTrait } from 'test-app/data/traits/data-field-model.schema';
 
 /**
  * This type represents the full set schema derived fields of
@@ -3351,7 +3313,7 @@ import type { DataFieldTrait } from 'test-app/data/traits/data-field.schema';
  *
  * See also {@link CustomSelectOption} for fields + legacy mode features
  */
-export interface CustomSelectOptionResource extends DataFieldTrait {
+export interface CustomSelectOptionResource extends DataFieldModelTrait {
   readonly [Type]: 'custom-select-option';
   id: string | null;
 }
@@ -3370,22 +3332,22 @@ export interface CustomSelectOption extends WithLegacy<CustomSelectOptionResourc
 
 exports[`migrate-to-schema batch operation > processes intermediateModelPaths to generate traits from base model classes > intermediate models traits 1`] = `
 {
-  "base.schema.ts": "
+  "base-model.schema.ts": "
 import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
 
 import type { BelongsToReference, HasManyReference, Errors } from '@warp-drive/legacy/model/-private';
 
-const BaseTraitSchema = {
-  'name': 'base',
+const BaseModelTraitSchema = {
+  'name': 'base-model',
   'mode': 'legacy',
   'fields': []
 } satisfies LegacyResourceSchema;
 
-export default BaseTraitSchema;
+export default BaseModelTraitSchema;
 
 /**
  * This type represents the full set schema derived fields of
- * the 'base' trait, without any of the legacy mode features
+ * the 'base-model' trait, without any of the legacy mode features
  * and without any extensions.
  *
  * > [!TIP]
@@ -3399,18 +3361,18 @@ export default BaseTraitSchema;
  * > from this type to ensure that your type definitions stay consistent
  * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
  */
-export interface BaseTrait {
+export interface BaseModelTrait {
   id: string | null;
 }
 ",
-  "data-field.schema.ts": "
+  "data-field-model.schema.ts": "
 import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
 
 import type { BelongsToReference, HasManyReference, Errors } from '@warp-drive/legacy/model/-private';
-import type { BaseTrait } from 'test-app/data/traits/base.schema';
+import type { BaseModelTrait } from 'test-app/data/traits/base-model.schema';
 
-const DataFieldTraitSchema = {
-  'name': 'data-field',
+const DataFieldModelTraitSchema = {
+  'name': 'data-field-model',
   'mode': 'legacy',
   'fields': [
     {
@@ -3425,16 +3387,15 @@ const DataFieldTraitSchema = {
     }
   ],
   'traits': [
-    'base-model',
-    'base'
+    'base-model'
   ]
 } satisfies LegacyResourceSchema;
 
-export default DataFieldTraitSchema;
+export default DataFieldModelTraitSchema;
 
 /**
  * This type represents the full set schema derived fields of
- * the 'data-field' trait, without any of the legacy mode features
+ * the 'data-field-model' trait, without any of the legacy mode features
  * and without any extensions.
  *
  * > [!TIP]
@@ -3448,7 +3409,7 @@ export default DataFieldTraitSchema;
  * > from this type to ensure that your type definitions stay consistent
  * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
  */
-export interface DataFieldTrait extends BaseModelTrait, BaseTrait {
+export interface DataFieldModelTrait extends BaseModelTrait {
   id: string | null;
   name: string | null;
   sortOrder: number | null;

@@ -187,7 +187,7 @@ export class Codemod {
     const parseErrors = this.input.skipped.filter((s) => s.reason === 'parse-error').length;
     this.logger.info(`✅ Parsed ${modelsParsed} models and ${mixinsParsed} mixins (${parseErrors} errors).`);
 
-    this.entityRegistry = buildEntityRegistry(this.input.parsedModels, this.input.parsedMixins);
+    this.entityRegistry = buildEntityRegistry(this.input.parsedModels, this.input.parsedMixins, this.logger);
   }
 
   createDestinationDirectories() {

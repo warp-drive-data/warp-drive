@@ -1,11 +1,12 @@
 import { mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'os';
 import { join } from 'path';
-import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import type { MigrateOptions } from '@ember-data/codemods/schema-migration/config.js';
 
 import { runMigration } from '../../../../packages/codemods/src/schema-migration/tasks/migrate.js';
+import { logger } from '../../../../packages/codemods/utils/logger.js';
 import { collectFilesSnapshot, collectFileStructure, prepareFiles } from './test-helpers.ts';
 
 describe('migrate-to-schema batch operation', () => {
@@ -1228,7 +1229,9 @@ export default class ApprovalRequest extends BaseModel.extend(BaseModelMixin) {
       'app/mixins/base-model.js': `
 import Mixin from '@ember/object/mixin';
 
-export default Mixin.create({});
+export default Mixin.create({
+  baseModelMixinMethod() {},
+});
 `,
     });
 
@@ -1326,5 +1329,62 @@ export default class AeCustomMultiselect8Option extends DataFieldModel {}
     }
 
     expect(collectFilesSnapshot(join(tempDir, 'app/data'))).toMatchSnapshot('derived_file_contents');
+  });
+
+  it('logs an error when intermediate model artifact conflicts with a mixin baseName', async () => {
+    prepareFiles(tempDir, {
+      'app/models/user.ts': `
+import BaseModel from '../core/base-model.js';
+import BaseMixin from '../mixins/base-model.js';
+import { attr } from '@ember-data/model';
+
+export default class User extends BaseModel.extend(BaseMixin) {
+  @attr('string') declare name: string;
+}
+`,
+      'app/core/base-model.js': `
+import Model, { attr } from '@ember-data/model';
+
+export default class BaseModel extends Model {
+  @attr('date') createdAt;
+}
+`,
+      'app/mixins/base-model.js': `
+import Mixin from '@ember/object/mixin';
+
+export default Mixin.create({
+  isBaseModel: true,
+});
+`,
+    });
+
+    const testOptions: MigrateOptions = {
+      ...options,
+      importSubstitutes: [
+        {
+          import: '../core/base-model',
+          sourcePath: join(tempDir, 'app/core/base-model.js'),
+        },
+      ],
+      additionalModelSources: [
+        {
+          pattern: 'test-app/core/*',
+          dir: join(tempDir, 'app/core/*'),
+        },
+      ],
+    };
+
+    const log = logger.for('migrate-to-schema');
+    const errorSpy = vi.spyOn(log, 'error');
+
+    await runMigration(testOptions);
+
+    const conflictErrors = errorSpy.mock.calls.filter((args) =>
+      args.some((arg) => typeof arg === 'string' && arg.includes('Output file conflict'))
+    );
+    expect(conflictErrors.length).toBeGreaterThan(0);
+    expect(conflictErrors[0]![0]).toContain('base-model');
+
+    errorSpy.mockRestore();
   });
 });
