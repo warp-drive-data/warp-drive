@@ -1,4 +1,4 @@
-import { existsSync, mkdirSync } from 'fs';
+import { existsSync, mkdirSync, readFileSync } from 'fs';
 import { readFile } from 'fs/promises';
 import { glob } from 'glob';
 import { join, resolve } from 'path';
@@ -145,6 +145,7 @@ export class Codemod {
 
   mixinsImportedByModels: Set<string> = new Set();
   modelsWithExtensions: Set<string> = new Set();
+  resolvedSubstituteSourcePaths: Set<string> = new Set();
 
   constructor(logger: InstanciatedLogger, finalOptions: FinalOptions) {
     this.logger = logger;

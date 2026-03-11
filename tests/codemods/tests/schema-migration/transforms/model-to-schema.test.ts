@@ -905,6 +905,7 @@ export default class TestModel extends Model.extend(WorkstreamableMixin) {
         import type { Type } from '@warp-drive/core-types/symbols';
         import type { WithLegacy } from '@ember-data/model/migration-support';
         import type { Workstreamable } from 'test-app/data/resources/workstreamable.schema.ts';
+        import type { WorkstreamableTrait } from 'test-app/data/traits/workstreamable.schema';
 
         const TestModelSchema = {
           'type': 'test-model',

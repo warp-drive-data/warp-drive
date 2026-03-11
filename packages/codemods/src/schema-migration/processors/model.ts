@@ -7,7 +7,6 @@ import type { TransformerResult } from '../codemod.js';
 import { getConfiguredImport, type TransformOptions } from '../config.js';
 import { SchemaArtifact, createResourceArtifactConfig, createTraitArtifactConfig } from '../utils/artifact.js';
 import type { SchemaArtifactRegistry } from '../utils/artifact.js';
-import type { DebugInfo, DependencyNode, FieldOrigin } from '../utils/debug-info.js';
 import type { ExtractedType, SchemaField, TransformArtifact } from '../utils/ast-utils.js';
 import {
   buildLegacySchemaObject,

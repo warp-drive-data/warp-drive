@@ -10,7 +10,6 @@ import { toArtifacts as mixinToArtifacts } from '../processors/mixin.js';
 import { processIntermediateModelsToTraits, toArtifacts as modelToArtifacts } from '../processors/model.js';
 import { findEntityByBaseName } from '../utils/artifact.js';
 import type { SchemaArtifact, SchemaArtifactRegistry } from '../utils/artifact.js';
-import type { DebugInfo } from '../utils/debug-info.js';
 import type { TransformArtifact } from '../utils/schema-generation.js';
 
 const migrateLog = logger.for('migrate');
@@ -443,6 +442,7 @@ export async function runMigration(options: MigrateOptions): Promise<void> {
     }
   }
 
+  const substituteArtifacts = codemod.resolveImportSubstitutes();
   if (substituteArtifacts.length > 0) {
     writeIntermediateArtifacts(substituteArtifacts, finalOptions, log, codemod.entityRegistry);
     log.info(`✅ Processed ${substituteArtifacts.length} importSubstitute artifacts`);

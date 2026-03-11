@@ -817,6 +817,7 @@ export default class TestModel extends BaseModel {
         "resources/typed.type.ts": "
       import type { Type } from '@warp-drive/core-types/symbols';
       import type { WithLegacy } from '@ember-data/model/migration-support';
+      import type { StaticBaseModelTraitTrait } from 'test-app/data/traits/static-base-model-trait.schema';
 
       /**
        * This type represents the full set schema derived fields of
@@ -926,6 +927,7 @@ export default class TestModel extends BaseModel {
         "resources/typed.type.ts": "
       import type { Type } from '@warp-drive/core-types/symbols';
       import type { WithLegacy } from '@ember-data/model/migration-support';
+      import type { StaticBaseModelTraitTrait } from 'test-app/data/traits/static-base-model-trait.schema';
 
       /**
        * This type represents the full set schema derived fields of
@@ -1107,6 +1109,7 @@ export default Mixin.create({
       import type { Type } from '@warp-drive/core-types/symbols';
       import type { WithLegacy } from '@ember-data/model/migration-support';
       import type { Framework } from 'test-app/data/resources/framework.type';
+      import type { StaticBaseModelTraitTrait } from 'test-app/data/traits/static-base-model-trait.schema';
 
       /**
        * This type represents the full set schema derived fields of
