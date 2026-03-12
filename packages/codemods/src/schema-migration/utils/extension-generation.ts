@@ -1,4 +1,4 @@
-import { type Lang, parse,type SgNode } from '@ast-grep/napi';
+import { type Lang, parse, type SgNode } from '@ast-grep/napi';
 import { dirname, join, relative, resolve, sep } from 'path';
 
 import { logger } from '../../../utils/logger.js';
