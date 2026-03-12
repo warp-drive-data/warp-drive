@@ -188,16 +188,14 @@ function cleanMarkdownForLLM(content: string): string {
         /^:::\s*(tip|info|warning|danger|details)\s*([^\n]*)\n([\s\S]*?)^:::\s*$/gm,
         (_match, type: string, rawTitle: string, body: string) => {
           const title = rawTitle.trim();
-          const label = title
-            ? `**[${type.toUpperCase()}: ${title}]**`
-            : `**[${type.toUpperCase()}]**`;
+          const label = title ? `**[${type.toUpperCase()}: ${title}]**` : `**[${type.toUpperCase()}]**`;
           const quotedBody = body
             .trim()
             .split('\n')
             .map((line) => `> ${line}`)
             .join('\n');
           return `${label}\n${quotedBody}`;
-        },
+        }
       )
       // ::: code-group — strip the marker, content is preserved verbatim
       .replace(/^::: code-group\s*$/gm, '')
@@ -232,14 +230,12 @@ function deriveTitle(relativePath: string): string {
 }
 
 function toTitleCase(str: string): string {
-  return str
-    .replace(/[-_]/g, ' ')
-    .replace(/\b\w/g, (c) => c.toUpperCase());
+  return str.replace(/[-_]/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
 async function collectLLMPages(srcDir: string): Promise<PageEntry[]> {
   const files = (globSync('**/*.md', { cwd: srcDir }) as string[]).filter(
-    (f) => !f.startsWith('node_modules') && !f.startsWith('.vitepress'),
+    (f) => !f.startsWith('node_modules') && !f.startsWith('.vitepress')
   );
 
   const pages: PageEntry[] = [];
@@ -341,12 +337,7 @@ function formatEntry(entry: PageEntry): string {
   return lines.join('\n');
 }
 
-function buildCategoryFile(
-  status: LLMStatus,
-  pages: PageEntry[],
-  preamble: string,
-  siteTitle: string,
-): string {
+function buildCategoryFile(status: LLMStatus, pages: PageEntry[], preamble: string, siteTitle: string): string {
   const matching = pages.filter((p) => p.llm.status === status);
   if (matching.length === 0) return '';
 
@@ -361,11 +352,7 @@ function buildCategoryFile(
   ].join('\n');
 }
 
-function buildCombinedFile(
-  pages: PageEntry[],
-  preamble: string,
-  siteTitle: string,
-): string {
+function buildCombinedFile(pages: PageEntry[], preamble: string, siteTitle: string): string {
   if (pages.length === 0) return '';
 
   /**
@@ -388,9 +375,10 @@ function buildCombinedFile(
   ];
 
   const byStatus = Object.fromEntries(
-    (['recommended', 'deprecated', 'discouraged'] as LLMStatus[]).map(
-      (s) => [s, pages.filter((p) => p.llm.status === s)],
-    ),
+    (['recommended', 'deprecated', 'discouraged'] as LLMStatus[]).map((s) => [
+      s,
+      pages.filter((p) => p.llm.status === s),
+    ])
   ) as Record<LLMStatus, PageEntry[]>;
 
   const lines: string[] = [
@@ -451,8 +439,7 @@ export function warpDriveLLMDocs(options: LLMDocsOptions = {}): Plugin {
 
       // VitePress attaches its own config object to the Vite config under
       // the `vitepress` key. Fall back to standard Vite values when not found.
-      const vp = (config as unknown as { vitepress?: { srcDir: string; outDir: string; title?: string } })
-        .vitepress;
+      const vp = (config as unknown as { vitepress?: { srcDir: string; outDir: string; title?: string } }).vitepress;
 
       srcDir = options.srcDir ?? vp?.srcDir ?? config.root;
       outDir = vp?.outDir ?? config.build.outDir;
@@ -497,7 +484,7 @@ export function warpDriveLLMDocs(options: LLMDocsOptions = {}): Plugin {
 
       // Summary log
       const statusCounts = (['recommended', 'deprecated', 'discouraged'] as LLMStatus[]).map(
-        (s) => `${s}: ${pages.filter((p) => p.llm.status === s).length}`,
+        (s) => `${s}: ${pages.filter((p) => p.llm.status === s).length}`
       );
       console.log(`  ${'\x1b[34m'}llm-docs${'\x1b[0m'} generated — ${statusCounts.join(', ')}`);
     },
