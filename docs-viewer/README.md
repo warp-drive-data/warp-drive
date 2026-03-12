@@ -2,9 +2,31 @@
 
 ## docs.warp-drive.io
 
-### Previewing
+### Development
 
-From this root directory, run `pnpm preview`
+For development with auto-rebuild and hot reload:
+
+```bash
+pnpm start
+```
+
+This will:
+
+- Watch for changes in all package `src/` directories and `guides/` directory
+- Automatically rebuild API docs when files change
+- Run VitePress dev server with hot module replacement
+
+### Static Preview
+
+To preview the built site without auto-rebuild:
+
+```bash
+# First build the site
+pnpm build
+
+# Then preview it locally
+pnpm preview
+```
 
 ### Deploying
 
@@ -39,4 +61,3 @@ This must be run manually after any changes to api documentation for them to be
 available to a running instance of the api docs application. If the app is not
 currently running, this command is unneeded as `preview-api-docs` will also do
 an initial build of the docs.
-

@@ -3,9 +3,13 @@ title: Writing Guides
 order: 2
 ---
 
-# Writing Effective Guides
+# Writing Guides
 
-## 1. Know Your Audience
+The Guide to writing our [Guides](../../index.md).
+
+## Writing Effective Guides
+
+### 1. Know Your Audience
 
 ***Warp*Drive**'s Documentation has to balance appealing to many different audiences. Here are some example audiences:
 
@@ -30,9 +34,12 @@ Some examples of ways to achieve this balance:
 - Migrations is a top level section to help those category 5 users find what they are looking for faster.
 - Explicitly named legacy pages (such as [Setup - Legacy (Ember)](/guides/configuration/ember) help those users without muddying instructions for everyone else. Note: this clarity also helps decision makers, as they will like to see that when the time for change comes there are resources to help them that are easy to find and well marked - but which they don't need to know about just yet.
 
-## 2. Iterate, A Lot
+### 2. Iterate, A Lot
 
 Making great documentation requires a lot of iteration. A great way to iterate is to write documentation that someone needs, ask them to use it - and use the feedback from where they
 stumble to improve the documentation for the next person. The more iteration that happens,
 the more the docs become a source of information that works well for everyone.
 
+## Guides Infra Overview
+
+Our [Guides](../../index.md) are compiled from markdown files in `guides/` using [VitePress](https://vitepress.dev/).

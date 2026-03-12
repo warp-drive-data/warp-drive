@@ -20,7 +20,7 @@ Misalignment tends to occur when API and Application developers don't work toget
 requirements, or when the format in use is "lossy" (unable to accurately convey the full scope of
 information being serialized).
 
-We encourage the use of [JSON:API](https://jsonapi.org/) as the wire and cache format because unlike
+We encourage the use of [{json:api}](https://jsonapi.org/) as the wire and cache format because unlike
 most other formats in use today it encodes information about your data in a near-lossless and easily-cacheable manner.
 
 For the presentation format, we encourage applications to limit the amount of manual transformation

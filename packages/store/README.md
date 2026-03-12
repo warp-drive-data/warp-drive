@@ -84,16 +84,16 @@ After installing you will want to configure your first `Store`. Read more below 
 
 ## 🔨 Creating A Store
 
-To use a `Store` we will need to do few things: add a [Cache](https://api.emberjs.com/ember-data/release/classes/%3CInterface%3E%20Cache) to store data **in-memory**, add a [Handler](https://github.com/warp-drive-data/warp-drive/tree/main/packages/request#handling-requests) to fetch data from a source, and implement `instantiateRecord` to tell the store how to display the data for individual resources. 
+To use a `Store` we will need to do few things: add a [Cache](https://api.emberjs.com/ember-data/release/classes/%3CInterface%3E%20Cache) to store data **in-memory**, add a [Handler](https://github.com/warp-drive-data/warp-drive/tree/main/packages/request#handling-requests) to fetch data from a source, and implement `instantiateRecord` to tell the store how to display the data for individual resources.
 
 > **Note**
 > If you are using the package `ember-data` then a `JSON:API` cache and `instantiateRecord` are configured for you by default.
 
 ### Configuring A Cache
 
-To start, let's install a [JSON:API](https://jsonapi.org/) cache. If your app uses `GraphQL` or `REST` other caches may better fit your data. You can author your own cache by creating one that conforms to the [spec](https://api.emberjs.com/ember-data/release/classes/%3CInterface%3E%20Cache).
+To start, let's install a [{json:api}](https://jsonapi.org/) cache. If your app uses `GraphQL` or `REST` other caches may better fit your data. You can author your own cache by creating one that conforms to the [spec](https://api.emberjs.com/ember-data/release/classes/%3CInterface%3E%20Cache).
 
-The package [@ember-data/json-api](https://github.com/warp-drive-data/warp-drive/tree/main/packages/json-api) provides a [JSON:API](https://jsonapi.org/) cache we can use. After installing it, we can configure the store to use this cache.
+The package [@ember-data/json-api](https://github.com/warp-drive-data/warp-drive/tree/main/packages/json-api) provides a [{json:api}](https://jsonapi.org/) cache we can use. After installing it, we can configure the store to use this cache.
 
 ```js
 import Store from '@ember-data/store';
@@ -182,7 +182,7 @@ class extends Store {
     const record = new TrackedObject(Object.assign({}, cache.peek(identifier)));
     record.type = identifier.type;
     record.id = identifier.id;
-    
+
     // update the TrackedObject whenever attributes change
     const token = notifications.subscribe(identifier, (_, change) => {
       if (change === 'attributes') {

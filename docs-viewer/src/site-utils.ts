@@ -435,7 +435,7 @@ export async function postProcessApiDocs() {
   }
 
   // generate the API documentation
-  const apiDocumentation = `${ApiDocumentation}\n\n## Main Packages\n\n${MainPackages.join('\n')}\n\n## Framework Packages\n\n${FrameworkPackages.join('\n')}\n\n## Legacy Packages\n\n${OldPackages.join('\n')}\n\n`;
+  const apiDocumentation = `${ApiDocumentation}\n\n## Universal Packages\n\n${MainPackages.join('\n')}\n\n## Framework Packages\n\n${FrameworkPackages.join('\n')}\n\n## Legacy Packages\n\n${OldPackages.join('\n')}\n\n`;
 
   // copy the rest of the files
   const files = globSync('**/*.md', { cwd: dir, nodir: true });
@@ -451,8 +451,9 @@ export async function postProcessApiDocs() {
 
     let newContent = content;
 
-    // if the file is in @warp-drive/legacy add the legacy badge
-    if (file.includes('@warp-drive/legacy')) {
+    // if the file is in a legacy package add the legacy badge
+    const isLegacyPackage = OLD_PACKAGES.some((pkg) => file.includes(pkg)) || file.includes('@warp-drive/legacy');
+    if (isLegacyPackage) {
       newContent = `<Badge type="danger" text="@legacy" /><br><br>` + content;
     }
 

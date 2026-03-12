@@ -6,7 +6,7 @@ html:not(.dark) .dark-only {
   display: none !important;
 }
 
-.VPSidebarItem .level-1 > .item > p.text {
+.VPSidebarItem.level-1 > .item > p.text {
   font-weight: 600;
   color: var(--vp-c-text-1);
 }
