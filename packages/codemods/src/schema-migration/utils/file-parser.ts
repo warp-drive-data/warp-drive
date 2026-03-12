@@ -37,9 +37,9 @@ import {
 import {
   DEFAULT_EMBER_DATA_SOURCE,
   DEFAULT_MIXIN_SOURCE,
+  findEmberImportLocalName,
   FRAGMENT_BASE_SOURCE,
   WARP_DRIVE_MODEL,
-  findEmberImportLocalName,
 } from './import-utils.js';
 import {
   extractBaseName,
