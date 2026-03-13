@@ -1,5 +1,5 @@
 {
-  "include": ["src/**/**/**/**/*", "../../@types/**/*"],
+  "include": ["src/**/*"],
   "compilerOptions": {
     "target": "ESNext",
     "module": "ESNext",
@@ -34,25 +34,12 @@
     "inlineSourceMap": true,
     "inlineSources": true,
     "baseUrl": ".",
+    "types": [],
     "allowImportingTsExtensions": true,
-    "paths": {
-      "@warp-drive/core": ["../core/declarations"],
-      "@warp-drive/core/*": ["../core/declarations/*"],
-      "@warp-drive/utilities": ["../utilities/declarations"],
-      "@warp-drive/utilities/*": ["../utilities/declarations/*"]
-    },
     "erasableSyntaxOnly": true,
     "isolatedDeclarations": true,
     "isolatedModules": true,
     "lib": ["ESNext", "DOM"],
     "moduleDetection": "force"
-  },
-  "references": [
-    {
-      "path": "../core"
-    },
-    {
-      "path": "../utilities"
-    }
-  ]
+  }
 }

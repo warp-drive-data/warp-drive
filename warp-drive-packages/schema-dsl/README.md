@@ -2,10 +2,16 @@
 
 TypeScript DSL for defining WarpDrive schemas using decorators.
 
+Schemas are compiled at build time via a Vite plugin — the decorator classes
+are only used for authoring and never ship to the browser.
+
 ## Usage
 
+Define your schemas:
+
 ```ts
-import { Resource, field, id, registerSchemas } from '@warp-drive/schema-dsl';
+// app/schemas/user.ts
+import { Resource, field, id } from '@warp-drive/schema-dsl';
 
 @Resource
 class User {
@@ -13,16 +19,32 @@ class User {
   @field declare lastName: string;
   @field declare email: string;
 }
+```
 
-@Resource
-class Post {
-  @id declare uuid: string;
-  @field declare title: string;
-  @field({ type: 'date-time' }) declare createdAt: Date;
-}
+Add the Vite plugin:
 
-// Register with your store
-registerSchemas(store.schema, [User, Post]);
+```ts
+// vite.config.ts
+import { schemaDSL } from '@warp-drive/schema-dsl/vite';
+
+export default defineConfig({
+  plugins: [
+    schemaDSL({
+      schemas: 'app/schemas/**/*.ts',
+    }),
+    // ...other plugins
+  ],
+});
+```
+
+Import and register the compiled schemas:
+
+```ts
+import schemas from 'virtual:warp-drive-schemas';
+import { registerDerivations } from '@warp-drive/core/reactive';
+
+registerDerivations(store.schema);
+store.schema.registerResources(schemas);
 ```
 
 See the [Schema DSL Guide](https://warp-drive.io/guide/schemas/dsl) for full documentation.

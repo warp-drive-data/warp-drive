@@ -21,6 +21,7 @@
   "files": [
     "dist",
     "declarations",
+    "src/vite-plugin.js",
     "README.md",
     "LICENSE.md",
     "logos"
@@ -30,21 +31,24 @@
       "types": "./declarations/index.d.ts",
       "default": "./dist/index.js"
     },
+    "./vite": {
+      "default": "./src/vite-plugin.js"
+    },
     "./*": {
       "types": "./declarations/*.d.ts",
       "default": "./dist/*.js"
     }
   },
   "dependencies": {
-    "@warp-drive/core": "workspace:*",
-    "@warp-drive/utilities": "workspace:*"
+    "@babel/parser": "^7.28.3",
+    "@babel/traverse": "^7.28.3",
+    "glob": "^11.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.28.3",
     "@babel/plugin-transform-typescript": "^7.28.0",
     "@babel/preset-typescript": "^7.27.1",
     "@warp-drive/internal-config": "workspace:*",
-    "decorator-transforms": "^2.3.0",
     "typescript": "^5.9.2",
     "vite": "^7.1.3"
   },

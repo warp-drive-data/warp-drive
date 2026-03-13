@@ -1,160 +1,117 @@
-import { useRecommendedStore } from '@warp-drive/core';
-import { registerDerivations } from '@warp-drive/core/reactive';
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
-import { Type } from '@warp-drive/core/types/symbols';
 import { module, setupTest, test } from '@warp-drive/diagnostic/ember';
-import { JSONAPICache } from '@warp-drive/json-api';
-import { field, id, registerSchemas, Resource } from '@warp-drive/schema-dsl';
 
-// Note: Tests use explicit type names like @Resource('user') because these tests
-// run at runtime in minified production builds where class names get shortened.
-// In real apps, the Vite plugin compiles schemas at build time before minification,
-// so @Resource without an argument works correctly.
+// @ts-expect-error virtual module provided by the schema-dsl vite plugin
+import schemas from 'virtual:warp-drive-schemas';
 
-const Store = useRecommendedStore({
-  cache: JSONAPICache,
-});
-
-interface UserRecord {
-  id: string | null;
-  $type: 'user';
-  firstName: string;
-  lastName: string;
-  readonly [Type]: 'user';
-}
-
-interface CustomUserRecord {
-  id: string | null;
-  $type: 'custom-user';
-  name: string;
-  readonly [Type]: 'custom-user';
-}
-
-interface UserWithUuid {
-  uuid: string | null;
-  $type: 'user';
-  name: string;
-  readonly [Type]: 'user';
-}
-
-interface UserWithEmail {
-  id: string | null;
-  $type: 'user';
-  firstName: string;
-  lastName: string;
-  email: string;
-  readonly [Type]: 'user';
-}
-
-interface SimpleUser {
-  id: string | null;
-  $type: 'user';
-  name: string;
-  readonly [Type]: 'user';
-}
-
-interface PostRecord {
-  id: string | null;
-  $type: 'post';
-  title: string;
-  readonly [Type]: 'post';
-}
-
-module('Schema DSL | @Resource decorator', function (hooks) {
+module('Schema DSL | @Resource compilation', function (hooks) {
   setupTest(hooks);
 
-  test('registers a basic resource schema', function (assert) {
-    @Resource('user')
-    class User {
-      @field declare firstName: string;
-      @field declare lastName: string;
-    }
+  test('@Resource derives type from class name and compiles fields', function (assert) {
+    //   @Resource
+    //   class User {
+    //     @field declare firstName: string;
+    //     @field declare lastName: string;
+    //     @field declare email: string;
+    //   }
 
-    const store = new Store();
-    registerDerivations(store.schema);
-    registerSchemas(store.schema, [User]);
+    const schema = schemas.find((s: { type: string }) => s.type === 'user');
 
-    const record = store.createRecord<UserRecord>('user', {
-      firstName: 'Rey',
-      lastName: 'Skybarker',
+    assert.deepEqual(schema, {
+      type: 'user',
+      identity: { kind: '@id', name: 'id' },
+      fields: [
+        { kind: 'derived', name: '$type', type: '@identity', options: { key: 'type' } },
+        { kind: 'field', name: 'firstName' },
+        { kind: 'field', name: 'lastName' },
+        { kind: 'field', name: 'email' },
+        { kind: 'derived', name: 'constructor', type: '@constructor' },
+      ],
     });
-
-    assert.equal(record.firstName, 'Rey', 'firstName is accessible');
-    assert.equal(record.lastName, 'Skybarker', 'lastName is accessible');
-    assert.equal(record.$type, 'user', '$type derived field works');
   });
 
-  test('respects explicit type name', function (assert) {
-    @Resource('custom-user')
-    class User {
-      @field declare name: string;
-    }
+  test('@Resource("person") overrides the type name', function (assert) {
+    //   @Resource('person')
+    //   class CustomUser {
+    //     @field declare name: string;
+    //   }
 
-    const store = new Store();
-    registerDerivations(store.schema);
-    registerSchemas(store.schema, [User]);
+    const schema = schemas.find((s: { type: string }) => s.type === 'person');
 
-    const record = store.createRecord<CustomUserRecord>('custom-user', { name: 'Rey' });
-    assert.equal(record.name, 'Rey', 'record created with custom type');
-  });
-
-  test('supports custom identity field with @id', function (assert) {
-    @Resource('user')
-    class User {
-      @id declare uuid: string;
-      @field declare name: string;
-    }
-
-    const store = new Store();
-    registerDerivations(store.schema);
-    registerSchemas(store.schema, [User]);
-
-    const record = store.createRecord<UserWithUuid>('user', { uuid: 'abc-123', name: 'Rey' });
-    assert.equal(record.uuid, 'abc-123', 'custom identity field works');
-  });
-
-  test('supports multiple fields', function (assert) {
-    @Resource('user')
-    class User {
-      @field declare firstName: string;
-      @field declare lastName: string;
-      @field declare email: string;
-    }
-
-    const store = new Store();
-    registerDerivations(store.schema);
-    registerSchemas(store.schema, [User]);
-
-    const record = store.createRecord<UserWithEmail>('user', {
-      firstName: 'Rey',
-      lastName: 'Skybarker',
-      email: 'rey@example.com',
+    assert.deepEqual(schema, {
+      type: 'person',
+      identity: { kind: '@id', name: 'id' },
+      fields: [
+        { kind: 'derived', name: '$type', type: '@identity', options: { key: 'type' } },
+        { kind: 'field', name: 'name' },
+        { kind: 'derived', name: 'constructor', type: '@constructor' },
+      ],
     });
-
-    assert.equal(record.firstName, 'Rey', 'firstName works');
-    assert.equal(record.lastName, 'Skybarker', 'lastName works');
-    assert.equal(record.email, 'rey@example.com', 'email works');
   });
 
-  test('registers multiple schemas', function (assert) {
-    @Resource('user')
-    class User {
-      @field declare name: string;
-    }
+  test('@id sets a custom identity field', function (assert) {
+    //   @Resource
+    //   class Post {
+    //     @id declare uuid: string;
+    //     @field declare title: string;
+    //     @field({ type: 'date-time' }) declare createdAt: Date;
+    //   }
 
-    @Resource('post')
-    class Post {
-      @field declare title: string;
-    }
+    const schema = schemas.find((s: { type: string }) => s.type === 'post');
 
-    const store = new Store();
-    registerDerivations(store.schema);
-    registerSchemas(store.schema, [User, Post]);
+    assert.deepEqual(schema, {
+      type: 'post',
+      identity: { kind: '@id', name: 'uuid' },
+      fields: [
+        { kind: 'derived', name: '$type', type: '@identity', options: { key: 'type' } },
+        { kind: 'field', name: 'title' },
+        { kind: 'field', name: 'createdAt', type: 'date-time' },
+        { kind: 'derived', name: 'constructor', type: '@constructor' },
+      ],
+    });
+  });
 
-    const user = store.createRecord<SimpleUser>('user', { name: 'Rey' });
-    const post = store.createRecord<PostRecord>('post', { title: 'Hello' });
+  test('@field({ sourceKey }) maps the API key to the field name', function (assert) {
+    //   @Resource
+    //   class Product {
+    //     @field({ sourceKey: 'product_name' }) declare name: string;
+    //     @field({ type: 'number', sourceKey: 'unit_price' }) declare price: number;
+    //   }
 
-    assert.equal(user.name, 'Rey', 'user created');
-    assert.equal(post.title, 'Hello', 'post created');
+    const schema = schemas.find((s: { type: string }) => s.type === 'product');
+
+    assert.deepEqual(schema, {
+      type: 'product',
+      identity: { kind: '@id', name: 'id' },
+      fields: [
+        { kind: 'derived', name: '$type', type: '@identity', options: { key: 'type' } },
+        { kind: 'field', name: 'name', sourceKey: 'product_name' },
+        { kind: 'field', name: 'price', type: 'number', sourceKey: 'unit_price' },
+        { kind: 'derived', name: 'constructor', type: '@constructor' },
+      ],
+    });
+  });
+
+  test('@Resource({ legacy: true }) omits derived fields and sets legacy flag', function (assert) {
+    //   @Resource({ legacy: true })
+    //   class Comment {
+    //     @field declare body: string;
+    //   }
+
+    const schema = schemas.find((s: { type: string }) => s.type === 'comment');
+
+    assert.deepEqual(schema, {
+      type: 'comment',
+      identity: { kind: '@id', name: 'id' },
+      fields: [{ kind: 'field', name: 'body' }],
+      legacy: true,
+    });
+  });
+
+  test('compiles all schema files in the glob', function (assert) {
+    assert.ok(Array.isArray(schemas), 'compiled output is an array');
+    assert.equal(schemas.length, 5, 'all five schema files were compiled');
+
+    const types = schemas.map((s: { type: string }) => s.type).sort();
+    assert.deepEqual(types, ['comment', 'person', 'post', 'product', 'user'], 'all expected types present');
   });
 });

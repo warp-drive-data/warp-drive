@@ -6,9 +6,11 @@ order: 1
 # Defining Resources
 
 Use `@Resource` to define a resource schema and `@field` to define its fields.
+Put each schema in its own file under a schemas directory.
 
 ```ts
-import { Resource, field, registerSchemas } from '@warp-drive/schema-dsl';
+// app/schemas/user.ts
+import { Resource, field } from '@warp-drive/schema-dsl';
 
 @Resource
 class User {
@@ -16,9 +18,35 @@ class User {
   @field declare lastName: string;
   @field declare email: string;
 }
+```
 
-// Register with your store
-registerSchemas(store.schema, [User]);
+At build time, the Vite plugin reads these files and produces the
+equivalent of calling `withDefaults` by hand — you just write the class.
+
+## Setup
+
+Add the plugin to your Vite config, pointing it at your schema files:
+
+```ts
+// vite.config.ts
+import { schemaDSL } from '@warp-drive/schema-dsl/vite';
+
+export default defineConfig({
+  plugins: [
+    schemaDSL({
+      schemas: 'app/schemas/**/*.ts',
+    }),
+  ],
+});
+```
+
+Then import and register the compiled output:
+
+```ts
+import schemas from 'virtual:warp-drive-schemas';
+
+registerDerivations(store.schema);
+store.schema.registerResources(schemas);
 ```
 
 ## Type Name
@@ -40,11 +68,9 @@ class User {
 ## Field Options
 
 ```ts
-// Apply a transformation
 @field({ type: 'date-time' })
 declare createdAt: Date;
 
-// Map to a different cache key
 @field({ sourceKey: 'email_address' })
 declare email: string;
 ```
@@ -54,6 +80,8 @@ declare email: string;
 Use `@id` when your identity field isn't `id`:
 
 ```ts
+import { Resource, field, id } from '@warp-drive/schema-dsl';
+
 @Resource
 class User {
   @id declare uuid: string;
