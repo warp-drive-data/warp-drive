@@ -62,7 +62,14 @@ export const NameableTraitExtension = {
   getName() {
 		return this.name || 'Unknown';
 	}
-};"
+};
+
+const Registration = {
+  kind: 'object',
+  name: 'nameable',
+  features: NameableTraitExtension,
+};
+export default Registration;"
 `;
 
 exports[`mixin-to-schema transform (artifacts) > TypeScript type artifacts > generates trait and extension artifacts when mixin has computed properties and methods > mixin trait type interface 1`] = `
@@ -258,7 +265,14 @@ export const FileableTraitExtension = {
   hasDuplicateFileName(file) {
 		return Boolean(this.files.find((fileRecord) => fileRecord.name === file.name));
 	}
-};"
+};
+
+const Registration = {
+  kind: 'object',
+  name: 'fileable',
+  features: FileableTraitExtension,
+};
+export default Registration;"
 `;
 
 exports[`mixin-to-schema transform (artifacts) > basic functionality > collects the real fileable mixin shape into trait and extension artifacts > trait code 1`] = `
@@ -324,7 +338,14 @@ import { computed } from '@ember/object';
 export const NoTraitsTraitExtension = {
   complexMethod() { return 'processed'; },
   computedValue: computed(function() { return 'computed'; })
-};"
+};
+
+const Registration = {
+  kind: 'object',
+  name: 'no-traits',
+  features: NoTraitsTraitExtension,
+};
+export default Registration;"
 `;
 
 exports[`mixin-to-schema transform (artifacts) > basic functionality > converts mixin with no trait fields to extension artifact > metadata 1`] = `
@@ -354,7 +375,14 @@ export const PlannableTraitExtension = {
 			?.filterBy('plannableType', classify(this._modelName))
 			.filterBy('plannableId', this.intId);
 	})
-};"
+};
+
+const Registration = {
+  kind: 'object',
+  name: 'plannable',
+  features: PlannableTraitExtension,
+};
+export default Registration;"
 `;
 
 exports[`mixin-to-schema transform (artifacts) > basic functionality > preserves newlines and tabs in extension artifact properties without escaping > metadata 1`] = `
@@ -520,7 +548,14 @@ import { computed } from '@ember/object';
 
 export const CustomSourceTraitExtension = {
   customProp: computed('name', function() { return this.name; })
-};",
+};
+
+const Registration = {
+  kind: 'object',
+  name: 'custom-source',
+  features: CustomSourceTraitExtension,
+};
+export default Registration;",
     "name": "CustomSourceTraitExtension",
     "suggestedFileName": "custom-source.ext.js",
     "type": "trait-extension",
@@ -596,7 +631,14 @@ import { attr as attribute } from '@unsupported/source';
 
 export const RenamedMixedSourcesTraitExtension = {
   name: attribute('string')
-};",
+};
+
+const Registration = {
+  kind: 'object',
+  name: 'renamed-mixed-sources',
+  features: RenamedMixedSourcesTraitExtension,
+};
+export default Registration;",
     "name": "RenamedMixedSourcesTraitExtension",
     "suggestedFileName": "renamed-mixed-sources.ext.js",
     "type": "trait-extension",
@@ -794,7 +836,14 @@ import { computed } from '@ember/object';
 export const UnsupportedSourceTraitExtension = {
   files: hasMany('file'),
   customProp: computed('name', function() { return this.name; })
-};",
+};
+
+const Registration = {
+  kind: 'object',
+  name: 'unsupported-source',
+  features: UnsupportedSourceTraitExtension,
+};
+export default Registration;",
     "name": "UnsupportedSourceTraitExtension",
     "suggestedFileName": "unsupported-source.ext.js",
     "type": "trait-extension",
@@ -879,7 +928,14 @@ import { computed } from '@ember/object';
 
 export const DefaultSourceTraitExtension = {
   customProp: computed('name', function() { return this.name; })
-};",
+};
+
+const Registration = {
+  kind: 'object',
+  name: 'default-source',
+  features: DefaultSourceTraitExtension,
+};
+export default Registration;",
 ]
 `;
 
@@ -994,7 +1050,14 @@ import { attr } from '@unsupported/source';
 export const NoValidImportsTraitExtension = {
   name: attr('string'),
   customProp: computed('name', function() { return this.name; })
-};",
+};
+
+const Registration = {
+  kind: 'object',
+  name: 'no-valid-imports',
+  features: NoValidImportsTraitExtension,
+};
+export default Registration;",
     "name": "NoValidImportsTraitExtension",
     "suggestedFileName": "no-valid-imports.ext.js",
     "type": "trait-extension",
@@ -1076,7 +1139,14 @@ import { computed } from '@ember/object';
 
 export const AuditboardSourceTraitExtension = {
   customProp: computed('name', function() { return this.name; })
-};",
+};
+
+const Registration = {
+  kind: 'object',
+  name: 'auditboard-source',
+  features: AuditboardSourceTraitExtension,
+};
+export default Registration;",
     "name": "AuditboardSourceTraitExtension",
     "suggestedFileName": "auditboard-source.ext.js",
     "type": "trait-extension",

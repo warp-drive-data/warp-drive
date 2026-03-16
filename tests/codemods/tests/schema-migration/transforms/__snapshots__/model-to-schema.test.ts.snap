@@ -13,7 +13,12 @@ export class ProcessedModelExtension {
   	}
 }
 
-export default ProcessedModelExtension;"
+const Registration = {
+  kind: 'object',
+  name: 'processed-model',
+  features: ProcessedModelExtension,
+};
+export default Registration;"
 `;
 
 exports[`model-to-schema transform (artifacts) > TypeScript type artifacts > generates schema and extension artifacts when model has methods and computed properties > model schema with merged types 1`] = `
@@ -670,7 +675,12 @@ export class TypedModelExtension {
   	}
 }
 
-export default TypedModelExtension;"
+const Registration = {
+  kind: 'object',
+  name: 'typed-model',
+  features: TypedModelExtension,
+};
+export default Registration;"
 `;
 
 exports[`model-to-schema transform (artifacts) > basic functionality > produces schema and extension artifacts for basic model > artifact metadata 1`] = `
@@ -701,7 +711,12 @@ export class UserExtension {
   	}
 }
 
-export default UserExtension;"
+const Registration = {
+  kind: 'object',
+  name: 'user',
+  features: UserExtension,
+};
+export default Registration;"
 `;
 
 exports[`model-to-schema transform (artifacts) > basic functionality > produces schema and extension artifacts for basic model > schema code 1`] = `

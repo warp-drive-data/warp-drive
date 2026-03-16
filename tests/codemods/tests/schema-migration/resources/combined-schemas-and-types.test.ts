@@ -173,7 +173,12 @@ describe('combineSchemasAndTypes: true', function () {
           }
         }
 
-        export default CompanyExtension;
+        const Registration = {
+          kind: 'object',
+          name: 'company',
+          features: CompanyExtension,
+        };
+        export default Registration;
       `,
     },
   });
@@ -344,7 +349,12 @@ describe('combineSchemasAndTypes: true', function () {
           }
         }
 
-        export default CompanyExtension;
+        const Registration = {
+          kind: 'object',
+          name: 'company',
+          features: CompanyExtension,
+        };
+        export default Registration;
       `,
     },
   });

@@ -20,7 +20,12 @@ export class UserExtension {
     }
 }
 
-export default UserExtension;",
+const Registration = {
+  kind: 'object',
+  name: 'user',
+  features: UserExtension,
+};
+export default Registration;",
   "resources/user.schema.ts": "
 import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
 
@@ -126,7 +131,14 @@ export const TimestampableTraitExtension = {
   timeSince() {
     return Date.now() - this.updatedAt;
   }
-};",
+};
+
+const Registration = {
+  kind: 'object',
+  name: 'timestampable',
+  features: TimestampableTraitExtension,
+};
+export default Registration;",
   "traits/timestampable.schema.ts": "
 import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
 
@@ -401,7 +413,12 @@ export class UserExtension {
     }
 }
 
-export default UserExtension;",
+const Registration = {
+  kind: 'object',
+  name: 'user',
+  features: UserExtension,
+};
+export default Registration;",
   "resources/user.schema.ts": "
 import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
 
@@ -506,7 +523,14 @@ export const TimestampableTraitExtension = {
   timeSince() {
     return Date.now() - this.updatedAt;
   }
-};",
+};
+
+const Registration = {
+  kind: 'object',
+  name: 'timestampable',
+  features: TimestampableTraitExtension,
+};
+export default Registration;",
   "traits/timestampable.schema.ts": "
 import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
 
@@ -1120,7 +1144,14 @@ export interface BaseModelTrait {
 
 export const BaseModelTraitExtension = {
   baseModelMixinMethod() {}
-};",
+};
+
+const Registration = {
+  kind: 'object',
+  name: 'base-model',
+  features: BaseModelTraitExtension,
+};
+export default Registration;",
   "traits/base-model.schema.ts": "
 import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
 
@@ -1181,7 +1212,12 @@ export class CompanyExtension {
     }
 }
 
-export default CompanyExtension;",
+const Registration = {
+  kind: 'object',
+  name: 'company',
+  features: CompanyExtension,
+};
+export default Registration;",
   "resources/company.schema.ts": "
 import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
 
@@ -1346,7 +1382,12 @@ export class UserExtension {
     }
 }
 
-export default UserExtension;",
+const Registration = {
+  kind: 'object',
+  name: 'user',
+  features: UserExtension,
+};
+export default Registration;",
   "resources/user.schema.ts": "
 import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
 
@@ -1608,7 +1649,12 @@ export class JsModelWithMixinExtension {
     }
 }
 
-export default JsModelWithMixinExtension;",
+const Registration = {
+  kind: 'object',
+  name: 'js-model-with-mixin',
+  features: JsModelWithMixinExtension,
+};
+export default Registration;",
   "resources/js-model-with-mixin.schema.ts": "
 import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
 
@@ -1786,7 +1832,14 @@ export const TsMixinTraitExtension = {
   toggleEnabled() {
     this.set('isEnabled', !this.isEnabled);
   }
-};",
+};
+
+const Registration = {
+  kind: 'object',
+  name: 'ts-mixin',
+  features: TsMixinTraitExtension,
+};
+export default Registration;",
   "traits/ts-mixin.schema.ts": "
 import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
 
@@ -2172,7 +2225,14 @@ export interface WorkstreamableTraitExtension extends Workstreamable {}
 
 export const WorkstreamableTraitExtension = {
   imAnObjectExtensionNow() {}
-};",
+};
+
+const Registration = {
+  kind: 'object',
+  name: 'workstreamable',
+  features: WorkstreamableTraitExtension,
+};
+export default Registration;",
   "traits/workstreamable.schema.ts": "
 import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
 
@@ -2474,7 +2534,12 @@ export class BaseModelWithMethodsTraitExtension {
     }
 }
 
-export default BaseModelWithMethodsTraitExtension;",
+const Registration = {
+  kind: 'object',
+  name: 'base-model-with-methods',
+  features: BaseModelWithMethodsTraitExtension,
+};
+export default Registration;",
   "traits/base-model-with-methods.schema.ts": "
 import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
 

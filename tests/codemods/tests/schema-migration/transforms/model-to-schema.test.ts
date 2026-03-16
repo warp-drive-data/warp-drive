@@ -1218,7 +1218,12 @@ export default class Translatable extends Model {
                     })
         }
 
-        export default TestModelExtension;",
+        const Registration = {
+          kind: 'object',
+          name: 'test-model',
+          features: TestModelExtension,
+        };
+        export default Registration;",
           "name": "TestModelExtension",
           "suggestedFileName": "test-model.ext.js",
           "type": "resource-extension",
@@ -1339,7 +1344,12 @@ export default class Amendment extends Model {
             }
         }
 
-        export default AmendmentExtension;"
+        const Registration = {
+          kind: 'object',
+          name: 'amendment',
+          features: AmendmentExtension,
+        };
+        export default Registration;"
       `);
     });
 
@@ -1421,7 +1431,12 @@ export default class Task extends Model {
             }
         }
 
-        export default TaskExtension;"
+        const Registration = {
+          kind: 'object',
+          name: 'task',
+          features: TaskExtension,
+        };
+        export default Registration;"
       `);
     });
   });

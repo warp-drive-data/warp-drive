@@ -224,7 +224,14 @@ export default Mixin.create({
 
         export const FileableTraitExtension = {
           titleCaseName: computed('name', function () { return (this.name || '').toUpperCase(); })
-        };",
+        };
+
+        const Registration = {
+          kind: 'object',
+          name: 'fileable',
+          features: FileableTraitExtension,
+        };
+        export default Registration;",
           "name": "FileableTraitExtension",
           "suggestedFileName": "fileable.ext.js",
           "type": "trait-extension",

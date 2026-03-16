@@ -215,7 +215,12 @@ describe('Basic model class transformation', function () {
           }
         }
 
-        export default UserExtension;
+        const Registration = {
+          kind: 'object',
+          name: 'user',
+          features: UserExtension,
+        };
+        export default Registration;
       `,
     },
   });
@@ -447,7 +452,12 @@ describe('Basic model class transformation', function () {
           }
         }
 
-        export default UserExtension;
+        const Registration = {
+          kind: 'object',
+          name: 'user',
+          features: UserExtension,
+        };
+        export default Registration;
       `,
     },
   });
@@ -665,7 +675,12 @@ describe('Basic model class transformation', function () {
           }
         }
 
-        export default UserExtension;
+        const Registration = {
+          kind: 'object',
+          name: 'user',
+          features: UserExtension,
+        };
+        export default Registration;
       `,
     },
   });
@@ -899,7 +914,12 @@ describe('Basic model class transformation', function () {
           }
         }
 
-        export default UserExtension;
+        const Registration = {
+          kind: 'object',
+          name: 'user',
+          features: UserExtension,
+        };
+        export default Registration;
       `,
     },
   });

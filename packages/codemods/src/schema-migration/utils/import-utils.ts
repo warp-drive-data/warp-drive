@@ -924,12 +924,10 @@ export function processImports(
             );
             // For JavaScript files, we should not use TypeScript import type syntax
             // The import should remain as a regular import, not converted to named import
-          } else if (convertedImport.includes('.ext') && filePath.endsWith('.ts')) {
-            // Extension files (.ext.ts) export named classes with 'Extension' suffix
-            // Convert "import type User from '.../user.ext'" to
-            // "import type { UserExtension as User } from '.../user.ext'"
-            log.debug(`Found extension import in TypeScript file, converting default to named: ${originalImport}`);
-            // Extract the model base name from the import path to get correct Extension class name
+          } else if (convertedImport.includes('.ext')) {
+            // Extension files export named classes with 'Extension' suffix
+            // The default export is now a Registration manifest, not the class itself
+            log.debug(`Found extension import, converting default to named: ${originalImport}`);
             const extensionPathMatch = convertedImport.match(EXT_FILE_PATH_REGEX);
             const modelBaseName = extensionPathMatch ? extensionPathMatch[1] : null;
             const isTraitExtension = convertedImport.includes('/traits/');
@@ -940,17 +938,17 @@ export function processImports(
               : null;
 
             if (extensionClassName) {
+              const isTS = filePath.endsWith('.ts');
+              // For TS files: "import type User from '.../user.ext'" -> "import type { UserExtension as User } from '.../user.ext'"
+              // For JS files: "import User from '.../user.ext'" -> "import { UserExtension as User } from '.../user.ext'"
               newImport = newImport.replace(IMPORT_TYPE_DEFAULT_REGEX, (_match: string, typeName: string) => {
-                // Use the extension class name from the path, alias to the original import name
                 return `import type { ${extensionClassName} as ${typeName} } from`;
               });
-              // Reset regex lastIndex for reuse
               IMPORT_TYPE_DEFAULT_REGEX.lastIndex = 0;
-              // Also handle imports without 'type' keyword
               newImport = newImport.replace(IMPORT_DEFAULT_REGEX, (_match: string, typeName: string) => {
-                return `import type { ${extensionClassName} as ${typeName} } from`;
+                const keyword = isTS ? 'import type' : 'import';
+                return `${keyword} { ${extensionClassName} as ${typeName} } from`;
               });
-              // Reset regex lastIndex for reuse
               IMPORT_DEFAULT_REGEX.lastIndex = 0;
               log.debug(`Converted extension import to named import: ${newImport}`);
             }

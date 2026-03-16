@@ -157,6 +157,10 @@ export function getExtensionArtifactType(context: ArtifactConfig): string {
   return context.type === 'trait' ? 'trait-extension' : 'resource-extension';
 }
 
+export function generateRegistrationBlock(name: string, featuresIdentifier: string): string {
+  return `const Registration = {\n  kind: 'object',\n  name: '${name}',\n  features: ${featuresIdentifier},\n};\nexport default Registration;`;
+}
+
 /**
  * Generate extension code in either object or class format
  * Shared between model-to-schema and mixin-to-schema transforms
@@ -179,7 +183,7 @@ export function generateExtensionCode(
       .join('\n\n');
 
     const classCode = `export class ${config.identifiers.extension} {\n${methods}\n}`;
-    const exportDefault = `export default ${config.identifiers.extension};`;
+    const registrationBlock = generateRegistrationBlock(config.name, config.identifiers.extension!);
 
     // Add interface extension for TypeScript files or JSDoc for JavaScript files
     if (config.extensionIsTyped) {
@@ -190,11 +194,11 @@ export function generateExtensionCode(
       // Build the interface extends clause: include the type and any heritage names
       const interfaceExtends = extendsClause ? `${config.identifiers.type}, ${extendsClause}` : config.identifiers.type;
       // Put interface before class for better visibility
-      return `${importStatement}export interface ${config.identifiers.extension} extends ${interfaceExtends} {}\n\n${classCode}\n\n${exportDefault}`;
+      return `${importStatement}export interface ${config.identifiers.extension} extends ${interfaceExtends} {}\n\n${classCode}\n\n${registrationBlock}`;
     }
 
     // For JavaScript files, don't add JSDoc import here since it's handled by the base class pattern
-    return `${classCode}\n\n${exportDefault}`;
+    return `${classCode}\n\n${registrationBlock}`;
   }
 
   // Object format used by mixin-to-schema transform
@@ -212,15 +216,16 @@ export function generateExtensionCode(
     .join(',\n');
 
   const objectCode = `export const ${config.identifiers.extension} = {\n${properties}\n};`;
+  const registrationBlock = generateRegistrationBlock(config.name, config.identifiers.extension!);
 
   if (config.extensionIsTyped && config.identifiers.type) {
     const importStatement = interfaceImportPath
       ? `import type { ${config.identifiers.type} } from '${interfaceImportPath}';\n\n`
       : '';
-    return `${importStatement}export interface ${config.identifiers.extension} extends ${config.identifiers.type} {}\n\n${objectCode}`;
+    return `${importStatement}export interface ${config.identifiers.extension} extends ${config.identifiers.type} {}\n\n${objectCode}\n\n${registrationBlock}`;
   }
 
-  return objectCode;
+  return `${objectCode}\n\n${registrationBlock}`;
 }
 
 /**

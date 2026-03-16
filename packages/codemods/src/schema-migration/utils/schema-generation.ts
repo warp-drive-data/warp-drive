@@ -6,7 +6,7 @@ import { logger } from '../../../utils/logger.js';
 import { getConfiguredImport, type TransformOptions } from '../config.js';
 import { deriveResourceExtensionName, deriveTraitExtensionName } from './artifact.js';
 import type { ArtifactConfig } from './artifact.js';
-import type { ExtensionContext } from './extension-generation.js';
+import { generateRegistrationBlock, type ExtensionContext } from './extension-generation.js';
 import type { SchemaArtifactRegistry } from './artifact.js';
 import { generateTraitImport, transformModelToResourceImport } from './import-utils.js';
 import { normalizeClassicImport, removeQuotes, toPascalCase } from './path-utils.js';
@@ -394,12 +394,13 @@ export function createExtensionArtifactWithTypes(
   const generator =
     generateExtensionCode ||
     ((name, props, format) => {
+      const registration = '\n\n' + generateRegistrationBlock(baseName, name);
       if (format === 'class') {
         const methods = props.map((p) => `  ${p.value}`).join('\n\n');
-        return `export class ${name} {\n${methods}\n}`;
+        return `export class ${name} {\n${methods}\n}` + registration;
       }
       const properties = props.map((p) => `  ${p.originalKey}: ${p.value}`).join(',\n');
-      return `export const ${name} = {\n${properties}\n};`;
+      return `export const ${name} = {\n${properties}\n};` + registration;
     });
 
   // Create the extension artifact (JavaScript code)

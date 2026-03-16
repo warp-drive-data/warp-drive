@@ -792,7 +792,12 @@ export default class TestModel extends BaseModel {
           declare tags: unknown
       }
 
-      export default TypedExtension;",
+      const Registration = {
+        kind: 'object',
+        name: 'typed',
+        features: TypedExtension,
+      };
+      export default Registration;",
         "resources/typed.schema.ts": "
       import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
 
@@ -902,7 +907,12 @@ export default class TestModel extends BaseModel {
           declare tags: unknown
       }
 
-      export default TypedExtension;",
+      const Registration = {
+        kind: 'object',
+        name: 'typed',
+        features: TypedExtension,
+      };
+      export default Registration;",
         "resources/typed.schema.ts": "
       import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
 
