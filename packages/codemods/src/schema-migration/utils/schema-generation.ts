@@ -778,7 +778,7 @@ ${tipComment}${seeAlso}
  * the '${config.name}' ${config.type}, including all legacy mode features but
  * without any extensions.
  *
- * See also {@link ${config.identifiers.fieldsInterface}} for fields + legacy mode features
+ * See also {@link ${config.identifiers.fieldsInterface}} for just the fields
  */`;
 
   const lines: string[] = [fieldsInterfaceComment, interfaceDeclaration];

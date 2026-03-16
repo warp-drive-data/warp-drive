@@ -847,7 +847,7 @@ export default class TestModel extends BaseModel {
        * the 'typed' resource, including all legacy mode features but
        * without any extensions.
        *
-       * See also {@link TypedResource} for fields + legacy mode features
+       * See also {@link TypedResource} for just the fields
        */
       export interface Typed extends WithLegacy<TypedResource> {}
       ",
@@ -957,7 +957,7 @@ export default class TestModel extends BaseModel {
        * the 'typed' resource, including all legacy mode features but
        * without any extensions.
        *
-       * See also {@link TypedResource} for fields + legacy mode features
+       * See also {@link TypedResource} for just the fields
        */
       export interface Typed extends WithLegacy<TypedResource> {}
       ",
@@ -1143,7 +1143,7 @@ export default Mixin.create({
        * the 'typed' resource, including all legacy mode features but
        * without any extensions.
        *
-       * See also {@link TypedResource} for fields + legacy mode features
+       * See also {@link TypedResource} for just the fields
        */
       export interface Typed extends WithLegacy<TypedResource> {}
       ",

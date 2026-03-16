@@ -28,7 +28,7 @@ export interface UserExtension {
  * the 'user' resource, including all legacy mode features but
  * without any extensions.
  *
- * See also {@link UserExtension} for fields + legacy mode features
+ * See also {@link UserExtension} for just the fields
  */
 export interface UserExtension extends WithLegacy<UserExtension> {}
 
@@ -63,7 +63,7 @@ export interface UserSchema {
  * the 'user' resource, including all legacy mode features but
  * without any extensions.
  *
- * See also {@link UserSchema} for fields + legacy mode features
+ * See also {@link UserSchema} for just the fields
  */
 export interface UserSchema extends WithLegacy<UserSchema> {}
 
@@ -98,7 +98,7 @@ export interface FileableTrait {
  * the 'fileable' resource, including all legacy mode features but
  * without any extensions.
  *
- * See also {@link FileableTrait} for fields + legacy mode features
+ * See also {@link FileableTrait} for just the fields
  */
 export interface FileableTrait extends WithLegacy<FileableTrait> {}
 
@@ -135,7 +135,7 @@ export interface UserInterface extends BaseInterface {
  * the 'user' resource, including all legacy mode features but
  * without any extensions.
  *
- * See also {@link UserInterface} for fields + legacy mode features
+ * See also {@link UserInterface} for just the fields
  */
 export interface UserInterface extends WithLegacy<UserInterface> {}
 
@@ -172,7 +172,7 @@ export interface TestInterface {
  * the 'test' resource, including all legacy mode features but
  * without any extensions.
  *
- * See also {@link TestInterface} for fields + legacy mode features
+ * See also {@link TestInterface} for just the fields
  */
 export interface TestInterface extends WithLegacy<TestInterface> {}
 
@@ -206,7 +206,7 @@ export interface EmptyInterface {
  * the 'empty' resource, including all legacy mode features but
  * without any extensions.
  *
- * See also {@link EmptyInterface} for fields + legacy mode features
+ * See also {@link EmptyInterface} for just the fields
  */
 export interface EmptyInterface extends WithLegacy<EmptyInterface> {}
 
@@ -250,7 +250,7 @@ export interface TestInterface {
  * the 'test' resource, including all legacy mode features but
  * without any extensions.
  *
- * See also {@link TestInterface} for fields + legacy mode features
+ * See also {@link TestInterface} for just the fields
  */
 export interface TestInterface extends WithLegacy<TestInterface> {}
 
@@ -285,7 +285,7 @@ export interface TestInterface extends BaseInterface {
  * the 'test' resource, including all legacy mode features but
  * without any extensions.
  *
- * See also {@link TestInterface} for fields + legacy mode features
+ * See also {@link TestInterface} for just the fields
  */
 export interface TestInterface extends WithLegacy<TestInterface> {}
 
@@ -322,7 +322,7 @@ export interface TestInterface {
  * the 'test' resource, including all legacy mode features but
  * without any extensions.
  *
- * See also {@link TestInterface} for fields + legacy mode features
+ * See also {@link TestInterface} for just the fields
  */
 export interface TestInterface extends WithLegacy<TestInterface> {}
 
@@ -359,7 +359,7 @@ export interface TestInterface {
  * the 'test' resource, including all legacy mode features but
  * without any extensions.
  *
- * See also {@link TestInterface} for fields + legacy mode features
+ * See also {@link TestInterface} for just the fields
  */
 export interface TestInterface extends WithLegacy<TestInterface> {}
 

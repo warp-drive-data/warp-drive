@@ -960,7 +960,7 @@ export default class TestModel extends Model.extend(WorkstreamableMixin) {
          * the 'test-model' resource, including all legacy mode features but
          * without any extensions.
          *
-         * See also {@link TestModelResource} for fields + legacy mode features
+         * See also {@link TestModelResource} for just the fields
          */
         export interface TestModel extends WithLegacy<TestModelResource> {}
         "
@@ -1279,7 +1279,7 @@ export default class Translatable extends Model {
          * the 'test-model' resource, including all legacy mode features but
          * without any extensions.
          *
-         * See also {@link TestModelResource} for fields + legacy mode features
+         * See also {@link TestModelResource} for just the fields
          */
         export interface TestModel extends WithLegacy<TestModelResource> {}
         ",

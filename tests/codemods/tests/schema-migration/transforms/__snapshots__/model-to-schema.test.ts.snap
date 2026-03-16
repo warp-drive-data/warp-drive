@@ -75,7 +75,7 @@ export interface ProcessedModelResource {
  * the 'processed-model' resource, including all legacy mode features but
  * without any extensions.
  *
- * See also {@link ProcessedModelResource} for fields + legacy mode features
+ * See also {@link ProcessedModelResource} for just the fields
  */
 export interface ProcessedModel extends WithLegacy<ProcessedModelResource> {}
 "
@@ -164,7 +164,7 @@ export interface UserResource {
  * the 'user' resource, including all legacy mode features but
  * without any extensions.
  *
- * See also {@link UserResource} for fields + legacy mode features
+ * See also {@link UserResource} for just the fields
  */
 export interface User extends WithLegacy<UserResource> {}
 "
@@ -235,7 +235,7 @@ export interface TypedModelResource {
  * the 'typed-model' resource, including all legacy mode features but
  * without any extensions.
  *
- * See also {@link TypedModelResource} for fields + legacy mode features
+ * See also {@link TypedModelResource} for just the fields
  */
 export interface TypedModel extends WithLegacy<TypedModelResource> {}
 "
@@ -335,7 +335,7 @@ export interface RelationshipModelResource {
  * the 'relationship-model' resource, including all legacy mode features but
  * without any extensions.
  *
- * See also {@link RelationshipModelResource} for fields + legacy mode features
+ * See also {@link RelationshipModelResource} for just the fields
  */
 export interface RelationshipModel extends WithLegacy<RelationshipModelResource> {}
 "
@@ -406,7 +406,7 @@ export interface UnknownTypesModelResource {
  * the 'unknown-types-model' resource, including all legacy mode features but
  * without any extensions.
  *
- * See also {@link UnknownTypesModelResource} for fields + legacy mode features
+ * See also {@link UnknownTypesModelResource} for just the fields
  */
 export interface UnknownTypesModel extends WithLegacy<UnknownTypesModelResource> {}
 "
@@ -477,7 +477,7 @@ export interface DocumentResource extends FileableTrait, TimestampableTrait {
  * the 'document' resource, including all legacy mode features but
  * without any extensions.
  *
- * See also {@link DocumentResource} for fields + legacy mode features
+ * See also {@link DocumentResource} for just the fields
  */
 export interface Document extends WithLegacy<DocumentResource> {}
 "
@@ -573,7 +573,7 @@ export interface ComplexModelResource {
  * the 'complex-model' resource, including all legacy mode features but
  * without any extensions.
  *
- * See also {@link ComplexModelResource} for fields + legacy mode features
+ * See also {@link ComplexModelResource} for just the fields
  */
 export interface ComplexModel extends WithLegacy<ComplexModelResource> {}
 "
@@ -644,7 +644,7 @@ export interface DocumentResource extends FileableTrait, TimestampableTrait {
  * the 'document' resource, including all legacy mode features but
  * without any extensions.
  *
- * See also {@link DocumentResource} for fields + legacy mode features
+ * See also {@link DocumentResource} for just the fields
  */
 export interface Document extends WithLegacy<DocumentResource> {}
 "
@@ -795,7 +795,7 @@ export interface UserResource {
  * the 'user' resource, including all legacy mode features but
  * without any extensions.
  *
- * See also {@link UserResource} for fields + legacy mode features
+ * See also {@link UserResource} for just the fields
  */
 export interface User extends WithLegacy<UserResource> {}
 "
@@ -865,7 +865,7 @@ export interface CustomModelResource {
  * the 'custom-model' resource, including all legacy mode features but
  * without any extensions.
  *
- * See also {@link CustomModelResource} for fields + legacy mode features
+ * See also {@link CustomModelResource} for just the fields
  */
 export interface CustomModel extends WithLegacy<CustomModelResource> {}
 "
@@ -936,7 +936,7 @@ export interface CustomTypesModelResource {
  * the 'custom-types-model' resource, including all legacy mode features but
  * without any extensions.
  *
- * See also {@link CustomTypesModelResource} for fields + legacy mode features
+ * See also {@link CustomTypesModelResource} for just the fields
  */
 export interface CustomTypesModel extends WithLegacy<CustomTypesModelResource> {}
 "
@@ -1001,7 +1001,7 @@ export interface UnmappedTypesModelResource {
  * the 'unmapped-types-model' resource, including all legacy mode features but
  * without any extensions.
  *
- * See also {@link UnmappedTypesModelResource} for fields + legacy mode features
+ * See also {@link UnmappedTypesModelResource} for just the fields
  */
 export interface UnmappedTypesModel extends WithLegacy<UnmappedTypesModelResource> {}
 "
@@ -1068,7 +1068,7 @@ export interface AliasedModelResource {
  * the 'aliased-model' resource, including all legacy mode features but
  * without any extensions.
  *
- * See also {@link AliasedModelResource} for fields + legacy mode features
+ * See also {@link AliasedModelResource} for just the fields
  */
 export interface AliasedModel extends WithLegacy<AliasedModelResource> {}
 "
@@ -1134,7 +1134,7 @@ export interface ComplexOptionsModelResource {
  * the 'complex-options-model' resource, including all legacy mode features but
  * without any extensions.
  *
- * See also {@link ComplexOptionsModelResource} for fields + legacy mode features
+ * See also {@link ComplexOptionsModelResource} for just the fields
  */
 export interface ComplexOptionsModel extends WithLegacy<ComplexOptionsModelResource> {}
 "
@@ -1224,7 +1224,7 @@ export interface RelationshipModelResource {
  * the 'relationship-model' resource, including all legacy mode features but
  * without any extensions.
  *
- * See also {@link RelationshipModelResource} for fields + legacy mode features
+ * See also {@link RelationshipModelResource} for just the fields
  */
 export interface RelationshipModel extends WithLegacy<RelationshipModelResource> {}
 "
@@ -1287,7 +1287,7 @@ export interface DocumentResource extends FileableTrait {
  * the 'document' resource, including all legacy mode features but
  * without any extensions.
  *
- * See also {@link DocumentResource} for fields + legacy mode features
+ * See also {@link DocumentResource} for just the fields
  */
 export interface Document extends WithLegacy<DocumentResource> {}
 "
@@ -1354,7 +1354,7 @@ export interface ComplexDocumentResource extends FileableTrait, TimestampableTra
  * the 'complex-document' resource, including all legacy mode features but
  * without any extensions.
  *
- * See also {@link ComplexDocumentResource} for fields + legacy mode features
+ * See also {@link ComplexDocumentResource} for just the fields
  */
 export interface ComplexDocument extends WithLegacy<ComplexDocumentResource> {}
 "

@@ -108,7 +108,7 @@ export interface UserResource extends TimestampableTrait {
  * the 'user' resource, including all legacy mode features but
  * without any extensions.
  *
- * See also {@link UserResource} for fields + legacy mode features
+ * See also {@link UserResource} for just the fields
  */
 export interface User extends WithLegacy<UserResource> {}
 ",
@@ -227,7 +227,7 @@ export interface AdminModelResource extends ConnectedTrait {
  * the 'admin-model' resource, including all legacy mode features but
  * without any extensions.
  *
- * See also {@link AdminModelResource} for fields + legacy mode features
+ * See also {@link AdminModelResource} for just the fields
  */
 export interface AdminModel extends WithLegacy<AdminModelResource> {}
 ",
@@ -310,7 +310,7 @@ export interface NestedModelResource {
  * the 'nested-model' resource, including all legacy mode features but
  * without any extensions.
  *
- * See also {@link NestedModelResource} for fields + legacy mode features
+ * See also {@link NestedModelResource} for just the fields
  */
 export interface NestedModel extends WithLegacy<NestedModelResource> {}
 ",
@@ -488,7 +488,7 @@ export interface UserResource extends TimestampableTrait {
  * the 'user' resource, including all legacy mode features but
  * without any extensions.
  *
- * See also {@link UserResource} for fields + legacy mode features
+ * See also {@link UserResource} for just the fields
  */
 export interface User extends WithLegacy<UserResource> {}
 ",
@@ -641,7 +641,7 @@ export interface AuditLogResource extends AuditableTrait {
  * the 'audit-log' resource, including all legacy mode features but
  * without any extensions.
  *
- * See also {@link AuditLogResource} for fields + legacy mode features
+ * See also {@link AuditLogResource} for just the fields
  */
 export interface AuditLog extends WithLegacy<AuditLogResource> {}
 ",
@@ -709,7 +709,7 @@ export interface AuditedRecordResource {
  * the 'audited-record' resource, including all legacy mode features but
  * without any extensions.
  *
- * See also {@link AuditedRecordResource} for fields + legacy mode features
+ * See also {@link AuditedRecordResource} for just the fields
  */
 export interface AuditedRecord extends WithLegacy<AuditedRecordResource> {}
 ",
@@ -867,7 +867,7 @@ export interface TestModelResource extends WorkstreamableTrait {
  * the 'test-model' resource, including all legacy mode features but
  * without any extensions.
  *
- * See also {@link TestModelResource} for fields + legacy mode features
+ * See also {@link TestModelResource} for just the fields
  */
 export interface TestModel extends WithLegacy<TestModelResource> {}
 ",
@@ -925,7 +925,7 @@ export interface UserResource {
  * the 'user' resource, including all legacy mode features but
  * without any extensions.
  *
- * See also {@link UserResource} for fields + legacy mode features
+ * See also {@link UserResource} for just the fields
  */
 export interface User extends WithLegacy<UserResource> {}
 ",
@@ -1077,7 +1077,7 @@ export interface ApprovalRequestResource extends BaseModelTrait, BaseModelTrait 
  * the 'approval-request' resource, including all legacy mode features but
  * without any extensions.
  *
- * See also {@link ApprovalRequestResource} for fields + legacy mode features
+ * See also {@link ApprovalRequestResource} for just the fields
  */
 export interface ApprovalRequest extends WithLegacy<ApprovalRequestResource> {}
 ",
@@ -1248,7 +1248,7 @@ export interface CompanyResource {
  * the 'company' resource, including all legacy mode features but
  * without any extensions.
  *
- * See also {@link CompanyResource} for fields + legacy mode features
+ * See also {@link CompanyResource} for just the fields
  */
 export interface Company extends WithLegacy<CompanyResource> {}
 ",
@@ -1312,7 +1312,7 @@ export interface UserResource {
  * the 'user' resource, including all legacy mode features but
  * without any extensions.
  *
- * See also {@link UserResource} for fields + legacy mode features
+ * See also {@link UserResource} for just the fields
  */
 export interface User extends WithLegacy<UserResource> {}
 ",
@@ -1417,7 +1417,7 @@ export interface UserResource {
  * the 'user' resource, including all legacy mode features but
  * without any extensions.
  *
- * See also {@link UserResource} for fields + legacy mode features
+ * See also {@link UserResource} for just the fields
  */
 export interface User extends WithLegacy<UserResource> {}
 ",
@@ -1499,7 +1499,7 @@ export interface TestModelResource extends ExternalTrait, LocalTrait {
  * the 'test-model' resource, including all legacy mode features but
  * without any extensions.
  *
- * See also {@link TestModelResource} for fields + legacy mode features
+ * See also {@link TestModelResource} for just the fields
  */
 export interface TestModel extends WithLegacy<TestModelResource> {}
 ",
@@ -1667,7 +1667,7 @@ export interface JsModelWithMixinResource extends JsTrait {
  * the 'js-model-with-mixin' resource, including all legacy mode features but
  * without any extensions.
  *
- * See also {@link JsModelWithMixinResource} for fields + legacy mode features
+ * See also {@link JsModelWithMixinResource} for just the fields
  */
 export interface JsModelWithMixin extends WithLegacy<JsModelWithMixinResource> {}
 ",
@@ -1732,7 +1732,7 @@ export interface TsModelWithMixinResource extends TsTrait {
  * the 'ts-model-with-mixin' resource, including all legacy mode features but
  * without any extensions.
  *
- * See also {@link TsModelWithMixinResource} for fields + legacy mode features
+ * See also {@link TsModelWithMixinResource} for just the fields
  */
 export interface TsModelWithMixin extends WithLegacy<TsModelWithMixinResource> {}
 ",
@@ -1910,7 +1910,7 @@ export interface TestModelResource extends WorkstreamableTrait {
  * the 'test-model' resource, including all legacy mode features but
  * without any extensions.
  *
- * See also {@link TestModelResource} for fields + legacy mode features
+ * See also {@link TestModelResource} for just the fields
  */
 export interface TestModel extends WithLegacy<TestModelResource> {}
 ",
@@ -1968,7 +1968,7 @@ export interface UserResource {
  * the 'user' resource, including all legacy mode features but
  * without any extensions.
  *
- * See also {@link UserResource} for fields + legacy mode features
+ * See also {@link UserResource} for just the fields
  */
 export interface User extends WithLegacy<UserResource> {}
 ",
@@ -2099,7 +2099,7 @@ export interface TestModelResource extends WorkstreamableTrait {
  * the 'test-model' resource, including all legacy mode features but
  * without any extensions.
  *
- * See also {@link TestModelResource} for fields + legacy mode features
+ * See also {@link TestModelResource} for just the fields
  */
 export interface TestModel extends WithLegacy<TestModelResource> {}
 ",
@@ -2157,7 +2157,7 @@ export interface UserResource {
  * the 'user' resource, including all legacy mode features but
  * without any extensions.
  *
- * See also {@link UserResource} for fields + legacy mode features
+ * See also {@link UserResource} for just the fields
  */
 export interface User extends WithLegacy<UserResource> {}
 ",
@@ -2268,7 +2268,7 @@ export interface AeCustomMultiselect8OptionResource extends DataFieldModelTrait 
  * the 'ae-custom-multiselect8-option' resource, including all legacy mode features but
  * without any extensions.
  *
- * See also {@link AeCustomMultiselect8OptionResource} for fields + legacy mode features
+ * See also {@link AeCustomMultiselect8OptionResource} for just the fields
  */
 export interface AeCustomMultiselect8Option extends WithLegacy<AeCustomMultiselect8OptionResource> {}
 ",
@@ -2438,7 +2438,7 @@ export interface RegularModelResource extends BaseModelWithMethodsTrait {
  * the 'regular-model' resource, including all legacy mode features but
  * without any extensions.
  *
- * See also {@link RegularModelResource} for fields + legacy mode features
+ * See also {@link RegularModelResource} for just the fields
  */
 export interface RegularModel extends WithLegacy<RegularModelResource> {}
 ",
@@ -2583,7 +2583,7 @@ export interface CustomSelectOptionResource extends DataFieldModelTrait {
  * the 'custom-select-option' resource, including all legacy mode features but
  * without any extensions.
  *
- * See also {@link CustomSelectOptionResource} for fields + legacy mode features
+ * See also {@link CustomSelectOptionResource} for just the fields
  */
 export interface CustomSelectOption extends WithLegacy<CustomSelectOptionResource> {}
 ",
@@ -2770,7 +2770,7 @@ export interface TypedResource {
  * the 'typed' resource, including all legacy mode features but
  * without any extensions.
  *
- * See also {@link TypedResource} for fields + legacy mode features
+ * See also {@link TypedResource} for just the fields
  */
 export interface Typed extends WithLegacy<TypedResource> {}
 ",
