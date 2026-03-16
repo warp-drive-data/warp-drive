@@ -129,7 +129,7 @@ describe('model used as base class via .extend()', function () {
          * the 'user' resource, including all legacy mode features but
          * without any extensions.
          *
-         * See also {@link UserResource} for fields + legacy mode features
+         * See also {@link UserResource} for just the fields
          */
         export interface User extends WithLegacy<UserResource> {}
       `,

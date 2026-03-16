@@ -152,7 +152,7 @@ function validateModelAST(filePath: string, source: string, options: TransformOp
   const modelImportLocal = findEmberImportLocalName(root, expectedSources, options, filePath, process.cwd());
   log.debug(`DEBUG: Model import local: ${modelImportLocal}`);
 
-  const fragmentImportLocal = findEmberImportLocalName(root, [FRAGMENT_BASE_SOURCE], options, filePath, process.cwd());
+  const fragmentImportLocal = findEmberImportLocalName(root, [FRAGMENT_BASE_SOURCE], options);
   log.debug(`DEBUG: Fragment import local: ${fragmentImportLocal}`);
 
   const defaultExportNode = findDefaultExport(root, options);

@@ -784,6 +784,137 @@ export interface AuditableTrait {
 }
 `;
 
+exports[`migrate-to-schema batch operation > does not misclassify model extending base model via relative import as fragment > generated file structure 1`] = `
+[
+  "resources/",
+  "resources/action-plan.ext.js",
+  "resources/action-plan.schema.ts",
+  "resources/action-plan.type.ts",
+  "traits/",
+  "traits/base-model.schema.ts",
+]
+`;
+
+exports[`migrate-to-schema batch operation > does not misclassify model extending base model via relative import as fragment > generated files 1`] = `
+{
+  "resources/": "__dir__",
+  "resources/action-plan.ext.js": "
+import BaseModel from 'test-app/models/base-model';
+
+export class ActionPlanExtension {
+  get displayName() {
+      return this.name;
+    }
+}
+
+const Registration = {
+  kind: 'object',
+  name: 'action-plan',
+  features: ActionPlanExtension,
+};
+export default Registration;",
+  "resources/action-plan.schema.ts": "
+import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+
+const ActionPlanSchema = {
+  'type': 'action-plan',
+  'legacy': true,
+  'identity': {
+    'kind': '@id',
+    'name': 'id'
+  },
+  'fields': [
+    {
+      'kind': 'attribute',
+      'name': 'name',
+      'type': 'string'
+    }
+  ]
+} satisfies LegacyResourceSchema;
+
+export default ActionPlanSchema;
+",
+  "resources/action-plan.type.ts": "
+import type { Type } from '@warp-drive/core-types/symbols';
+import type { WithLegacy } from '@ember-data/model/migration-support';
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'action-plan' resource, without any of the legacy mode features
+ * and without any extensions.
+ *
+ * > [!TIP]
+ * > It is likely that you will want a more specific type tailored
+ * > to the context of where some data has been loaded, for instance
+ * > one that marks specific fields as readonly, or which only enables
+ * > some fields to be null during create, or which only includes
+ * > a subset of fields based on a specific API response.
+ * >
+ * > For those cases, you can create a more specific type that derives
+ * > from this type to ensure that your type definitions stay consistent
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ *
+ * See also {@link ActionPlan} for fields + legacy mode features
+ */
+export interface ActionPlanResource {
+  readonly [Type]: 'action-plan';
+  id: string | null;
+  name: string | null;
+}
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'action-plan' resource, including all legacy mode features but
+ * without any extensions.
+ *
+ * See also {@link ActionPlanResource} for just the fields
+ */
+export interface ActionPlan extends WithLegacy<ActionPlanResource> {}
+",
+  "traits/": "__dir__",
+  "traits/base-model.schema.ts": "
+import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+
+import type { BelongsToReference, HasManyReference, Errors } from '@warp-drive/legacy/model/-private';
+
+const BaseModelTraitSchema = {
+  'name': 'base-model',
+  'mode': 'legacy',
+  'fields': [
+    {
+      'kind': 'attribute',
+      'name': 'description',
+      'type': 'string'
+    }
+  ]
+} satisfies LegacyResourceSchema;
+
+export default BaseModelTraitSchema;
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'base-model' trait, without any of the legacy mode features
+ * and without any extensions.
+ *
+ * > [!TIP]
+ * > It is likely that you will want a more specific type tailored
+ * > to the context of where some data has been loaded, for instance
+ * > one that marks specific fields as readonly, or which only enables
+ * > some fields to be null during create, or which only includes
+ * > a subset of fields based on a specific API response.
+ * >
+ * > For those cases, you can create a more specific type that derives
+ * > from this type to ensure that your type definitions stay consistent
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ */
+export interface BaseModelTrait {
+  id: string | null;
+  description: string | null;
+}
+",
+}
+`;
+
 exports[`migrate-to-schema batch operation > does not put type files in the default fallback directory > app directory structure 1`] = `
 [
   "data/",
@@ -2280,16 +2411,15 @@ exports[`migrate-to-schema batch operation > model derived from intermediate mod
 import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
 
 const AeCustomMultiselect8OptionSchema = {
-  'type': 'fragment:ae-custom-multiselect8-option',
+  'type': 'ae-custom-multiselect8-option',
   'legacy': true,
-  'identity': null,
+  'identity': {
+    'kind': '@id',
+    'name': 'id'
+  },
   'fields': [],
   'traits': [
     'data-field-model'
-  ],
-  'objectExtensions': [
-    'ember-object',
-    'fragment'
   ]
 } satisfies LegacyResourceSchema;
 
@@ -2427,6 +2557,190 @@ export interface DataFieldModelTrait extends BaseModelTrait {
 }
 `;
 
+exports[`migrate-to-schema batch operation > model with relative base-class import and mixins extracts fields and extensions > generated file structure 1`] = `
+[
+  "resources/",
+  "resources/action-plan.ext.js",
+  "resources/action-plan.schema.ts",
+  "resources/action-plan.type.ts",
+  "traits/",
+  "traits/base-model.schema.ts",
+  "traits/commentable.schema.ts",
+]
+`;
+
+exports[`migrate-to-schema batch operation > model with relative base-class import and mixins extracts fields and extensions > generated files 1`] = `
+{
+  "resources/": "__dir__",
+  "resources/action-plan.ext.js": "
+import BaseModel from 'test-app/models/base-model';
+import Commentable from '../../mixins/commentable';
+
+export class ActionPlanExtension {
+  get displayName() {
+      return this.name;
+    }
+}
+
+const Registration = {
+  kind: 'object',
+  name: 'action-plan',
+  features: ActionPlanExtension,
+};
+export default Registration;",
+  "resources/action-plan.schema.ts": "
+import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+
+const ActionPlanSchema = {
+  'type': 'action-plan',
+  'legacy': true,
+  'identity': {
+    'kind': '@id',
+    'name': 'id'
+  },
+  'fields': [
+    {
+      'kind': 'attribute',
+      'name': 'name',
+      'type': 'string'
+    },
+    {
+      'kind': 'attribute',
+      'name': 'status',
+      'type': 'string'
+    },
+    {
+      'kind': 'belongsTo',
+      'name': 'owner',
+      'type': 'user',
+      'options': {
+        'async': false,
+        'inverse': null
+      }
+    }
+  ],
+  'traits': [
+    'commentable'
+  ]
+} satisfies LegacyResourceSchema;
+
+export default ActionPlanSchema;
+",
+  "resources/action-plan.type.ts": "
+import type { Type } from '@warp-drive/core-types/symbols';
+import type { WithLegacy } from '@ember-data/model/migration-support';
+import type { User } from 'test-app/data/resources/user.type';
+import type { CommentableTrait } from 'test-app/data/traits/commentable.schema';
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'action-plan' resource, without any of the legacy mode features
+ * and without any extensions.
+ *
+ * > [!TIP]
+ * > It is likely that you will want a more specific type tailored
+ * > to the context of where some data has been loaded, for instance
+ * > one that marks specific fields as readonly, or which only enables
+ * > some fields to be null during create, or which only includes
+ * > a subset of fields based on a specific API response.
+ * >
+ * > For those cases, you can create a more specific type that derives
+ * > from this type to ensure that your type definitions stay consistent
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ *
+ * See also {@link ActionPlan} for fields + legacy mode features
+ */
+export interface ActionPlanResource extends CommentableTrait {
+  readonly [Type]: 'action-plan';
+  id: string | null;
+  name: string | null;
+  status: string | null;
+  owner: User | null;
+}
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'action-plan' resource, including all legacy mode features but
+ * without any extensions.
+ *
+ * See also {@link ActionPlanResource} for just the fields
+ */
+export interface ActionPlan extends WithLegacy<ActionPlanResource> {}
+",
+  "traits/": "__dir__",
+  "traits/base-model.schema.ts": "
+import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+
+import type { BelongsToReference, HasManyReference, Errors } from '@warp-drive/legacy/model/-private';
+
+const BaseModelTraitSchema = {
+  'name': 'base-model',
+  'mode': 'legacy',
+  'fields': []
+} satisfies LegacyResourceSchema;
+
+export default BaseModelTraitSchema;
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'base-model' trait, without any of the legacy mode features
+ * and without any extensions.
+ *
+ * > [!TIP]
+ * > It is likely that you will want a more specific type tailored
+ * > to the context of where some data has been loaded, for instance
+ * > one that marks specific fields as readonly, or which only enables
+ * > some fields to be null during create, or which only includes
+ * > a subset of fields based on a specific API response.
+ * >
+ * > For those cases, you can create a more specific type that derives
+ * > from this type to ensure that your type definitions stay consistent
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ */
+export interface BaseModelTrait {
+  id: string | null;
+}
+",
+  "traits/commentable.schema.ts": "
+import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+
+const CommentableTraitSchema = {
+  'name': 'commentable',
+  'mode': 'legacy',
+  'fields': [
+    {
+      'name': 'commentCount',
+      'kind': 'attribute',
+      'type': 'number'
+    }
+  ]
+} satisfies LegacyResourceSchema;
+
+export default CommentableTraitSchema;
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'commentable' trait, without any of the legacy mode features
+ * and without any extensions.
+ *
+ * > [!TIP]
+ * > It is likely that you will want a more specific type tailored
+ * > to the context of where some data has been loaded, for instance
+ * > one that marks specific fields as readonly, or which only enables
+ * > some fields to be null during create, or which only includes
+ * > a subset of fields based on a specific API response.
+ * >
+ * > For those cases, you can create a more specific type that derives
+ * > from this type to ensure that your type definitions stay consistent
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ */
+export interface CommentableTrait {
+  commentCount?: number | null;
+}
+",
+}
+`;
+
 exports[`migrate-to-schema batch operation > places intermediate model extensions in extensionsDir not fallback directory > intermediate model extensions app structure 1`] = `
 [
   "core/",
@@ -2450,16 +2764,15 @@ exports[`migrate-to-schema batch operation > places intermediate model extension
 import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
 
 const RegularModelSchema = {
-  'type': 'fragment:regular-model',
+  'type': 'regular-model',
   'legacy': true,
-  'identity': null,
+  'identity': {
+    'kind': '@id',
+    'name': 'id'
+  },
   'fields': [],
   'traits': [
     'base-model-with-methods'
-  ],
-  'objectExtensions': [
-    'ember-object',
-    'fragment'
   ]
 } satisfies LegacyResourceSchema;
 
@@ -2600,16 +2913,15 @@ exports[`migrate-to-schema batch operation > processes intermediateModelPaths to
 import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
 
 const CustomSelectOptionSchema = {
-  'type': 'fragment:custom-select-option',
+  'type': 'custom-select-option',
   'legacy': true,
-  'identity': null,
+  'identity': {
+    'kind': '@id',
+    'name': 'id'
+  },
   'fields': [],
   'traits': [
     'data-field-model'
-  ],
-  'objectExtensions': [
-    'ember-object',
-    'fragment'
   ]
 } satisfies LegacyResourceSchema;
 

@@ -89,7 +89,7 @@ describe('combineSchemasAndTypes: true', function () {
          * the 'user' resource, including all legacy mode features but
          * without any extensions.
          *
-         * See also {@link UserResource} for fields + legacy mode features
+         * See also {@link UserResource} for just the fields
          */
         export interface User extends WithLegacy<UserResource> {}
       `,
@@ -158,7 +158,7 @@ describe('combineSchemasAndTypes: true', function () {
          * the 'company' resource, including all legacy mode features but
          * without any extensions.
          *
-         * See also {@link CompanyResource} for fields + legacy mode features
+         * See also {@link CompanyResource} for just the fields
          */
         export interface Company extends WithLegacy<CompanyResource> {}
       `,
@@ -269,7 +269,7 @@ describe('combineSchemasAndTypes: true', function () {
          * the 'user' resource, including all legacy mode features but
          * without any extensions.
          *
-         * See also {@link UserResource} for fields + legacy mode features
+         * See also {@link UserResource} for just the fields
          */
         export interface User extends WithLegacy<UserResource> {}
       `,
@@ -338,7 +338,7 @@ describe('combineSchemasAndTypes: true', function () {
          * the 'company' resource, including all legacy mode features but
          * without any extensions.
          *
-         * See also {@link CompanyResource} for fields + legacy mode features
+         * See also {@link CompanyResource} for just the fields
          */
         export interface Company extends WithLegacy<CompanyResource> {}
       `,
@@ -444,7 +444,7 @@ describe('combineSchemasAndTypes: true', function () {
          * the 'post' resource, including all legacy mode features but
          * without any extensions.
          *
-         * See also {@link PostResource} for fields + legacy mode features
+         * See also {@link PostResource} for just the fields
          */
         export interface Post extends WithLegacy<PostResource> {}
       `,
@@ -501,7 +501,7 @@ describe('combineSchemasAndTypes: true', function () {
          * the 'user' resource, including all legacy mode features but
          * without any extensions.
          *
-         * See also {@link UserResource} for fields + legacy mode features
+         * See also {@link UserResource} for just the fields
          */
         export interface User extends WithLegacy<UserResource> {}
       `,
@@ -593,7 +593,7 @@ describe('combineSchemasAndTypes: true', function () {
          * the 'post' resource, including all legacy mode features but
          * without any extensions.
          *
-         * See also {@link PostResource} for fields + legacy mode features
+         * See also {@link PostResource} for just the fields
          */
         export interface Post extends WithLegacy<PostResource> {}
       `,
@@ -650,7 +650,7 @@ describe('combineSchemasAndTypes: true', function () {
          * the 'user' resource, including all legacy mode features but
          * without any extensions.
          *
-         * See also {@link UserResource} for fields + legacy mode features
+         * See also {@link UserResource} for just the fields
          */
         export interface User extends WithLegacy<UserResource> {}
       `,

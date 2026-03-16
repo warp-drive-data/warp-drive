@@ -407,7 +407,7 @@ export function isMixinFile(filePath: string, options?: TransformOptions): boole
     const mixinSources = ['@ember/object/mixin'];
 
     if (findEmberImportLocalName) {
-      const mixinImportLocal = findEmberImportLocalName(root, mixinSources, options, filePath, process.cwd());
+      const mixinImportLocal = findEmberImportLocalName(root, mixinSources, options);
       return !!mixinImportLocal;
     }
 

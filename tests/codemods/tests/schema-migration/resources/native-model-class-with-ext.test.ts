@@ -175,7 +175,7 @@ describe('Basic model class transformation', function () {
          * the 'user' resource, including all legacy mode features but
          * without any extensions.
          *
-         * See also {@link UserResource} for fields + legacy mode features
+         * See also {@link UserResource} for just the fields
          */
         export interface User extends WithLegacy<UserResource> {}
       `,
@@ -406,7 +406,7 @@ describe('Basic model class transformation', function () {
          * the 'user' resource, including all legacy mode features but
          * without any extensions.
          *
-         * See also {@link UserResource} for fields + legacy mode features
+         * See also {@link UserResource} for just the fields
          */
         export interface User extends WithLegacy<UserResource> {}
       `,
@@ -635,7 +635,7 @@ describe('Basic model class transformation', function () {
          * the 'user' resource, including all legacy mode features but
          * without any extensions.
          *
-         * See also {@link UserResource} for fields + legacy mode features
+         * See also {@link UserResource} for just the fields
          */
         export interface User extends WithLegacy<UserResource> {}
       `,
@@ -868,7 +868,7 @@ describe('Basic model class transformation', function () {
          * the 'user' resource, including all legacy mode features but
          * without any extensions.
          *
-         * See also {@link UserResource} for fields + legacy mode features
+         * See also {@link UserResource} for just the fields
          */
         export interface User extends WithLegacy<UserResource> {}
       `,

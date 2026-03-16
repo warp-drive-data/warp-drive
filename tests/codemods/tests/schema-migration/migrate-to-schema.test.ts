@@ -1344,6 +1344,75 @@ export default class AeCustomMultiselect8Option extends DataFieldModel {}
     expect(collectFilesSnapshot(join(tempDir, 'app/data'))).toMatchSnapshot('derived_file_contents');
   });
 
+  it('does not misclassify model extending base model via relative import as fragment', async () => {
+    prepareFiles(tempDir, {
+      'app/models/base-model.js': `
+import Model, { attr } from '@ember-data/model';
+
+export default class BaseModel extends Model {
+  @attr('string') description;
+}
+`,
+      'app/models/action-plan.js': `
+import { attr } from '@ember-data/model';
+import BaseModel from './base-model';
+
+export default class ActionPlan extends BaseModel {
+  @attr('string') name;
+
+  get displayName() {
+    return this.name;
+  }
+}
+`,
+    });
+
+    await runMigration(options);
+
+    const dataDir = join(tempDir, 'app/data');
+    expect(collectFileStructure(dataDir)).toMatchSnapshot('generated file structure');
+    expect(collectFilesSnapshot(dataDir)).toMatchSnapshot('generated files');
+  });
+
+  it('model with relative base-class import and mixins extracts fields and extensions', async () => {
+    prepareFiles(tempDir, {
+      'app/models/base-model.js': `
+import Model from '@ember-data/model';
+
+export default class BaseModel extends Model {}
+`,
+      'app/mixins/commentable.js': `
+import Mixin from '@ember/object/mixin';
+import { attr } from '@ember-data/model';
+
+export default Mixin.create({
+  commentCount: attr('number'),
+});
+`,
+      'app/models/action-plan.js': `
+import { attr, belongsTo } from '@ember-data/model';
+import BaseModel from './base-model';
+import Commentable from '../mixins/commentable';
+
+export default class ActionPlan extends BaseModel.extend(Commentable) {
+  @attr('string') name;
+  @attr('string') status;
+  @belongsTo('user', { async: false, inverse: null }) owner;
+
+  get displayName() {
+    return this.name;
+  }
+}
+`,
+    });
+
+    await runMigration(options);
+
+    const dataDir = join(tempDir, 'app/data');
+    expect(collectFileStructure(dataDir)).toMatchSnapshot('generated file structure');
+    expect(collectFilesSnapshot(dataDir)).toMatchSnapshot('generated files');
+  });
+
   it('logs an error when intermediate model artifact conflicts with a mixin baseName', async () => {
     prepareFiles(tempDir, {
       'app/models/user.ts': `

@@ -92,7 +92,7 @@ describe('custom emberDataImportSource', function () {
          * the 'project' resource, including all legacy mode features but
          * without any extensions.
          *
-         * See also {@link ProjectResource} for fields + legacy mode features
+         * See also {@link ProjectResource} for just the fields
          */
         export interface Project extends WithLegacy<ProjectResource> {}
       `,
@@ -150,6 +150,13 @@ describe('custom emberDataImportSource', function () {
           viewonlyTeams: filterBy('allowedTeams', 'permission', 'viewonly'),
           createonlyTeams: filterBy('allowedTeams', 'permission', 'createonly'),
         };
+
+        const Registration = {
+          kind: 'object',
+          name: 'teamable',
+          features: TeamableTraitExtension,
+        };
+        export default Registration;
       `,
     },
   });

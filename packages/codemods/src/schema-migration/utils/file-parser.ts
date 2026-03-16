@@ -376,9 +376,10 @@ function extractModelData(root: SgNode, filePath: string, options: TransformOpti
     return { fields, behaviors, traits, heritageLocalNames, baseClass, comment };
   }
 
-  // there must be a defaultExport if we found a class declaration
   const defaultExport = findDefaultExport(root, options);
-  comment = extractLeadingComment(defaultExport!);
+  if (defaultExport) {
+    comment = extractLeadingComment(defaultExport);
+  }
 
   // Extract base class and traits from heritage clause
   const heritageClause = classDeclaration.find({ rule: { kind: NODE_KIND_CLASS_HERITAGE } });
@@ -573,7 +574,7 @@ function extractMixinData(root: SgNode, filePath: string, options: TransformOpti
 
   const isJavaScript = filePath.endsWith('.js');
 
-  const mixinImportLocal = findEmberImportLocalName(root, [DEFAULT_MIXIN_SOURCE], options, filePath, process.cwd());
+  const mixinImportLocal = findEmberImportLocalName(root, [DEFAULT_MIXIN_SOURCE], options);
 
   if (!mixinImportLocal) {
     return { fields, behaviors, traits };
@@ -716,13 +717,13 @@ function detectFileType(root: SgNode, filePath: string, options: TransformOption
   }
 
   // Check for mixin pattern first
-  const mixinImportLocal = findEmberImportLocalName(root, [DEFAULT_MIXIN_SOURCE], options, filePath, process.cwd());
+  const mixinImportLocal = findEmberImportLocalName(root, [DEFAULT_MIXIN_SOURCE], options);
   if (mixinImportLocal) {
     return 'mixin';
   }
 
   // Check for fragment
-  const fragmentImportLocal = findEmberImportLocalName(root, [FRAGMENT_BASE_SOURCE], options, filePath, process.cwd());
+  const fragmentImportLocal = findEmberImportLocalName(root, [FRAGMENT_BASE_SOURCE], options);
   if (fragmentImportLocal) {
     const defaultExport = findDefaultExport(root, options);
     if (defaultExport) {

@@ -6,6 +6,7 @@ import { join, resolve } from 'path';
 import type { InstanciatedLogger } from '../../utils/logger.js';
 import type { FinalOptions } from './config.js';
 import { analyzeModelMixinUsage } from './processors/mixin-analyzer.js';
+import { generateIntermediateModelTraitArtifacts } from './processors/model.js';
 import type { SchemaArtifactRegistry } from './utils/artifact.js';
 import { buildEntityRegistry, linkEntities } from './utils/artifact.js';
 import type { TransformArtifact } from './utils/ast-utils.js';
