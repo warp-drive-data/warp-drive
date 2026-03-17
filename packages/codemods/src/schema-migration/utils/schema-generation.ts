@@ -444,8 +444,20 @@ export function collectRelationshipImports(
   const hasManyImport = getConfiguredImport(options, 'HasMany');
   let hasAsyncHasMany = false;
   let hasHasMany = false;
-  const newImports = new Map<string, Map<string, string>>();
+  const newImports = new Map<string, Map<string, { local: string; isType: boolean }>>();
   const finalImports = new Set<string>();
+
+  function addImport(imp: { imported: string; local?: string; source: string; isType?: boolean }): void {
+    if (!newImports.has(imp.source)) {
+      newImports.set(imp.source, new Map());
+    }
+    const existing = newImports.get(imp.source)!;
+    const entry = existing.get(imp.imported);
+    existing.set(imp.imported, {
+      local: imp.local ?? imp.imported,
+      isType: entry ? entry.isType && imp.isType !== false : imp.isType !== false,
+    });
+  }
 
   for (const field of fields) {
     if (field.typeInfo?.declarations) {
@@ -467,11 +479,7 @@ export function collectRelationshipImports(
             continue;
           }
 
-          if (!newImports.has(imp.source)) {
-            newImports.set(imp.source, new Map<string, string>());
-          }
-          const existingImport = newImports.get(imp.source)!;
-          existingImport.set(imp.imported, imp.local ?? imp.imported);
+          addImport(imp);
         }
       } else if (field.kind === 'hasMany') {
         const isAsync = field.options && field.options.async === true;
@@ -488,11 +496,7 @@ export function collectRelationshipImports(
       }
     } else if (field.typeInfo?.imports) {
       for (const imp of field.typeInfo.imports) {
-        if (!newImports.has(imp.source)) {
-          newImports.set(imp.source, new Map<string, string>());
-        }
-        const existingImport = newImports.get(imp.source)!;
-        existingImport.set(imp.imported, imp.local ?? imp.imported);
+        addImport(imp);
       }
     }
   }
@@ -513,11 +517,18 @@ export function collectRelationshipImports(
   }
 
   for (const [source, tokens] of newImports) {
-    const importsList = [...tokens.entries()].map(([imported, local]) =>
-      imported === local ? imported : `${imported} as ${local}`
-    );
-    const importStatement = `import type { ${importsList.join(', ')} } from '${source}'`;
-    imports.add(importStatement);
+    const typeTokens: string[] = [];
+    const valueTokens: string[] = [];
+    for (const [imported, { local, isType }] of tokens) {
+      const specifier = imported === local ? imported : `${imported} as ${local}`;
+      (isType ? typeTokens : valueTokens).push(specifier);
+    }
+    if (typeTokens.length > 0) {
+      imports.add(`import type { ${typeTokens.join(', ')} } from '${source}'`);
+    }
+    if (valueTokens.length > 0) {
+      imports.add(`import { ${valueTokens.join(', ')} } from '${source}'`);
+    }
   }
 
   for (const importStatement of finalImports) {

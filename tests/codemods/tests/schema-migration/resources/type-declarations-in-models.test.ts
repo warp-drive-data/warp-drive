@@ -341,4 +341,118 @@ describe('Type declarations in model files', function () {
       `,
     },
   });
+
+  test('[TS] Interface with typeof imported value preserves value import in type file', {
+    input: {
+      [F.tsmodel('timesheetable')]: ts`
+        import Model, { attr } from '@ember-data/model';
+        import { TimesheetableType } from '@test-app/consts/timesheet';
+        import type { RegionMeta } from './region-meta';
+
+        export interface TimesheetableMetaRegion {
+          type: typeof TimesheetableType.REGION;
+          region: RegionMeta;
+        }
+
+        export default class Timesheetable extends Model {
+          @attr() declare meta: TimesheetableMetaRegion;
+          @attr declare name: string;
+
+          formatMeta() {
+            return JSON.stringify(this.meta);
+          }
+        }
+      `,
+    },
+    output: {
+      [F.resource('timesheetable')]: ts`
+        import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+
+        const TimesheetableSchema = {
+          type: 'timesheetable',
+          legacy: true,
+          identity: {
+            kind: '@id',
+            name: 'id'
+          },
+          fields: [
+            {
+              kind: 'attribute',
+              name: 'meta'
+            },
+            {
+              kind: 'attribute',
+              name: 'name'
+            }
+          ]
+        } satisfies LegacyResourceSchema;
+
+        export default TimesheetableSchema;
+      `,
+      [F.resourceType('timesheetable')]: ts`
+        import type { Type } from '@warp-drive/core-types/symbols';
+        import type { WithLegacy } from '@ember-data/model/migration-support';
+        import { TimesheetableType } from '@test-app/consts/timesheet';
+        import type { RegionMeta } from './region-meta';
+
+        export interface TimesheetableMetaRegion {
+          type: typeof TimesheetableType.REGION;
+          region: RegionMeta;
+        }
+
+        /**
+         * This type represents the full set schema derived fields of
+         * the 'timesheetable' resource, without any of the legacy mode features
+         * and without any extensions.
+         *
+         * > [!TIP]
+         * > It is likely that you will want a more specific type tailored
+         * > to the context of where some data has been loaded, for instance
+         * > one that marks specific fields as readonly, or which only enables
+         * > some fields to be null during create, or which only includes
+         * > a subset of fields based on a specific API response.
+         * >
+         * > For those cases, you can create a more specific type that derives
+         * > from this type to ensure that your type definitions stay consistent
+         * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+         *
+         * See also {@link Timesheetable} for fields + legacy mode features
+         */
+        export interface TimesheetableResource {
+          readonly [Type]: 'timesheetable';
+          id: string | null;
+          meta: TimesheetableMetaRegion;
+          name: string;
+        }
+
+        /**
+         * This type represents the full set schema derived fields of
+         * the 'timesheetable' resource, including all legacy mode features but
+         * without any extensions.
+         *
+         * See also {@link TimesheetableResource} for just the fields
+         */
+        export interface Timesheetable extends WithLegacy<TimesheetableResource> {}
+      `,
+      [F.extension('timesheetable')]: ts`
+        import { TimesheetableType } from '@test-app/consts/timesheet';
+        import type { Timesheetable } from './timesheetable.type.ts';
+
+        // @ts-ignore-error in reality fields are not merged, they are overridden
+        export interface TimesheetableExtension extends Timesheetable {}
+        export class TimesheetableExtension {
+          formatMeta() {
+            return JSON.stringify(this.meta);
+          }
+        }
+
+        const Registration = {
+          kind: 'object',
+          name: 'timesheetable',
+          features: TimesheetableExtension,
+        };
+        export default Registration;
+      `,
+    },
+  });
 });

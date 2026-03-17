@@ -332,7 +332,19 @@ function extractTypesForField(
   const addedImports = new Set<string>();
   const addedDeclarations = new Set<string>();
 
+  const typeofIdentifierRule = { kind: 'identifier', inside: { kind: 'type_query', stopBy: 'end' } } as const;
+
   function processNode(node: SgNode): void {
+    // Collect value imports from typeof expressions (e.g. typeof TimesheetableType.REGION)
+    for (const valueId of node.findAll({ rule: typeofIdentifierRule })) {
+      const valueName = valueId.text();
+      if (!addedImports.has(valueName) && importMap.has(valueName)) {
+        const { imported, source } = importMap.get(valueName)!;
+        imports.push({ imported, local: valueName, source, isType: false });
+        addedImports.add(valueName);
+      }
+    }
+
     for (const id of node.findAll({ rule: { kind: 'type_identifier' } })) {
       const name = id.text();
       if (PRIMITIVE_TYPES.has(name) || visited.has(name)) continue;
@@ -348,15 +360,14 @@ function extractTypesForField(
         if (!addedDeclarations.has(name)) {
           const decl = localTypeMap.get(name)!;
 
-          // Collect value declarations referenced via `typeof X` in this alias first,
-          // so they appear before the type alias in the output (required for valid TS).
-          for (const typeQuery of decl.findAll({ rule: { kind: 'type_query' } })) {
-            for (const valueId of typeQuery.findAll({ rule: { kind: 'identifier' } })) {
-              const valueName = valueId.text();
-              if (!addedDeclarations.has(valueName) && localValueMap.has(valueName)) {
-                declarations.push(localValueMap.get(valueName)!);
-                addedDeclarations.add(valueName);
-              }
+          // Collect local value declarations referenced via typeof before the
+          // type declaration text (required for valid TS ordering).
+          // Imported typeof references are handled by the top-level scan via recursion.
+          for (const valueId of decl.findAll({ rule: typeofIdentifierRule })) {
+            const valueName = valueId.text();
+            if (!addedDeclarations.has(valueName) && localValueMap.has(valueName)) {
+              declarations.push(localValueMap.get(valueName)!);
+              addedDeclarations.add(valueName);
             }
           }
 
