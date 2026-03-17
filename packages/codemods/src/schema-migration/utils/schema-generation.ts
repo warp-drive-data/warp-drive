@@ -8,8 +8,8 @@ import { deriveResourceExtensionName, deriveTraitExtensionName } from './artifac
 import type { ArtifactConfig } from './artifact.js';
 import { generateRegistrationBlock, type ExtensionContext } from './extension-generation.js';
 import type { SchemaArtifactRegistry } from './artifact.js';
-import { generateTraitImport, transformModelToResourceImport } from './import-utils.js';
-import { normalizeClassicImport, removeQuotes, toPascalCase } from './path-utils.js';
+import { generateTraitImport, isModelImportPath, transformModelToResourceImport } from './import-utils.js';
+import { removeQuotes, toPascalCase } from './path-utils.js';
 import type { ExtractedType } from './type-utils.js';
 import { schemaFieldToTypeScriptType } from './type-utils.js';
 
@@ -422,10 +422,6 @@ export function createExtensionArtifactWithTypes(
   return { extensionArtifact, typeArtifact: null };
 }
 
-function modelImportFor(modelName: string, options: TransformOptions): string {
-  return `${options.projectName}/models/${modelName}`;
-}
-
 /**
  * Collect relationship imports (belongsTo/hasMany) for schema fields.
  * Shared between model and mixin artifact generation.
@@ -465,17 +461,11 @@ export function collectRelationshipImports(
     }
     if (field.kind === 'belongsTo' || field.kind === 'hasMany') {
       if (field.typeInfo?.imports) {
-        const relatedModelImport = modelImportFor(field.type!, options);
         for (const imp of field.typeInfo.imports) {
-          // check if the source is perhaps a Model from before, and if so don't
-          // add it.
-          // to do this we check for local imports, app prefixed imports and relative imports
-          // that match the related model type.
           if (!imp.source) {
             throw new Error(`Import information is missing source for field ${field.name}`);
           }
-          const resolved = normalizeClassicImport(options, imp.source, currentFilePath);
-          if (resolved === relatedModelImport) {
+          if (isModelImportPath(imp.source, options)) {
             continue;
           }
 
