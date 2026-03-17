@@ -40,6 +40,8 @@ export interface ExtractedType {
   imports?: PackageImport[];
   /** Type declarations needed for this type */
   declarations?: string[];
+  /** Names of type alias and interface declarations collected for the type file */
+  declarationNames?: string[];
 }
 
 /**
@@ -262,9 +264,11 @@ function extractTypesForField(
 ): {
   imports: PackageImport[];
   declarations: string[];
+  declarationNames: string[];
 } {
   const imports: PackageImport[] = [];
   const declarations: string[] = [];
+  const declarationNames: string[] = [];
 
   // Walk up to the file root
   const ancestors = typeNode.ancestors();
@@ -301,11 +305,13 @@ function extractTypesForField(
     }
   }
 
-  // Build map: typeName -> SgNode for locally declared type aliases
+  // Build map: typeName -> SgNode for locally declared type aliases and interfaces
   const localTypeMap = new Map<string, SgNode>();
-  for (const alias of root.findAll({ rule: { kind: 'type_alias_declaration' } })) {
-    const nameNode = alias.field('name');
-    if (nameNode) localTypeMap.set(nameNode.text(), alias);
+  for (const decl of root.findAll({
+    rule: { any: [{ kind: 'type_alias_declaration' }, { kind: 'interface_declaration' }] },
+  })) {
+    const nameNode = decl.field('name');
+    if (nameNode) localTypeMap.set(nameNode.text(), decl);
   }
 
   // Build map: valueName -> export statement text for locally declared const/let/var exports.
@@ -358,6 +364,7 @@ function extractTypesForField(
           const withExport = text.startsWith('export ') ? text : `export ${text}`;
           const withSemi = withExport.endsWith(';') ? withExport : `${withExport};`;
           declarations.push(withSemi);
+          declarationNames.push(name);
           addedDeclarations.add(name);
           // Recurse to collect dependencies of this local type
           processNode(decl);
@@ -368,7 +375,7 @@ function extractTypesForField(
 
   processNode(typeNode);
 
-  return { imports, declarations };
+  return { imports, declarations, declarationNames };
 }
 
 /**
@@ -400,7 +407,7 @@ export function extractTypeFromDeclaration(propertyNode: SgNode, options: Transf
     const optional = propertyNode.text().includes('?:');
 
     // Extract import dependencies from the type
-    const { imports, declarations } = extractTypesForField(options, typeNode);
+    const { imports, declarations, declarationNames } = extractTypesForField(options, typeNode);
 
     return {
       type: typeText,
@@ -408,6 +415,7 @@ export function extractTypeFromDeclaration(propertyNode: SgNode, options: Transf
       optional,
       imports,
       declarations,
+      declarationNames,
     };
   } catch (error) {
     log.debug(`Error extracting type: ${String(error)}`);

@@ -583,7 +583,8 @@ function generateRegularModelArtifacts(
         undefined,
         'resource',
         undefined,
-        heritageLocalNames
+        heritageLocalNames,
+        entity.parsedFile.typeDeclarationNames
       )
     : null;
 

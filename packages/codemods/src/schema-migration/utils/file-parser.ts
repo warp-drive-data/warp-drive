@@ -159,6 +159,10 @@ export interface ParsedFile {
    * This is used to preserve file-level comments during transformation.
    */
   comment?: string;
+  /** Names of type alias and interface declarations found in field type annotations.
+   * These declarations are collected for the type/schema file and should be
+   * removed from extensions to avoid duplication. */
+  readonly typeDeclarationNames: ReadonlySet<string>;
 }
 
 // ============================================================================
@@ -830,6 +834,15 @@ export function parseFile(filePath: string, code: string, options: TransformOpti
 
   const hasExtension = behaviors.length > 0;
 
+  const typeDeclarationNames = new Set<string>();
+  for (const field of fields) {
+    if (field.typeInfo?.declarationNames) {
+      for (const name of field.typeInfo.declarationNames) {
+        typeDeclarationNames.add(name);
+      }
+    }
+  }
+
   log.debug(
     `Parsed ${filePath}: type=${fileType}, fields=${fields.length}, behaviors=${behaviors.length}, traits=${traits.length}`
   );
@@ -854,6 +867,7 @@ export function parseFile(filePath: string, code: string, options: TransformOpti
     baseName,
     source: code,
     comment,
+    typeDeclarationNames,
   };
 }
 

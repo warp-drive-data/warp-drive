@@ -419,7 +419,6 @@ describe('Basic model class transformation', function () {
         export const ValidAges = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10] as const;
         export const GREETING: Greeting = 'hello';
 
-        export type Age = typeof ValidAges[number];
         type Greeting = 'hello' | 'hi' | 'hey';
 
         /**
@@ -881,7 +880,6 @@ describe('Basic model class transformation', function () {
         export const ValidAges = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10] as const;
         export const GREETING: Greeting = 'hello';
 
-        export type Age = typeof ValidAges[number];
         type Greeting = 'hello' | 'hi' | 'hey';
 
         /**

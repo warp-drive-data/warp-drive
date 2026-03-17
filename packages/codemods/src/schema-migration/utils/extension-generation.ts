@@ -119,7 +119,12 @@ function addTypeImport(source: string, lang: Lang, typeName: string, importPath:
   return typeImportLine + '\n' + source;
 }
 
-function cleanupResourceModelSource(source: string, lang: Lang, options?: TransformOptions): string {
+function cleanupResourceModelSource(
+  source: string,
+  lang: Lang,
+  options?: TransformOptions,
+  typeDeclarationNames?: ReadonlySet<string>
+): string {
   const ast = parse(lang, source);
   const root = ast.root();
 
@@ -139,6 +144,22 @@ function cleanupResourceModelSource(source: string, lang: Lang, options?: Transf
     const importPath = removeQuotes(sourceField.text());
     if (modelSources.includes(importPath)) {
       edits.push(importNode.replace(''));
+    }
+  }
+
+  if (typeDeclarationNames && typeDeclarationNames.size > 0) {
+    for (const node of root.findAll({
+      rule: { any: [{ kind: 'type_alias_declaration' }, { kind: 'interface_declaration' }] },
+    })) {
+      const nameNode = node.field('name');
+      if (nameNode && typeDeclarationNames.has(nameNode.text())) {
+        const parent = node.parent();
+        if (parent && parent.kind() === 'export_statement') {
+          edits.push(parent.replace(''));
+        } else {
+          edits.push(node.replace(''));
+        }
+      }
     }
   }
 
@@ -412,7 +433,8 @@ export function createExtensionFromOriginalFile(
   interfaceImportPath?: string,
   sourceType: 'mixin' | 'model' | 'resource' = 'model',
   processImports?: (source: string, filePath: string, baseDir: string, options?: TransformOptions) => string,
-  heritageLocalNames?: string[]
+  heritageLocalNames?: string[],
+  typeDeclarationNames?: ReadonlySet<string>
 ): TransformArtifact | null {
   if (extensionProperties.length === 0) {
     return null;
@@ -437,9 +459,10 @@ export function createExtensionFromOriginalFile(
     let updatedSource = updateRelativeImportsForExtensions(source, root, options, filePath, targetFilePath);
     log.debug(`Updated relative imports in source`);
 
-    // For resource models, remove the original class declaration and model imports
+    // For resource models, remove the original class declaration, model imports,
+    // and type/interface declarations that were collected for the type file
     if (sourceType === 'resource') {
-      updatedSource = cleanupResourceModelSource(updatedSource, lang, options);
+      updatedSource = cleanupResourceModelSource(updatedSource, lang, options, typeDeclarationNames);
     }
 
     // For mixins, remove the default export (Mixin.create block)
