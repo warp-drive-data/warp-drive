@@ -9,7 +9,7 @@ import type { ArtifactConfig } from './artifact.js';
 import { generateRegistrationBlock, type ExtensionContext } from './extension-generation.js';
 import type { SchemaArtifactRegistry } from './artifact.js';
 import { generateTraitImport, isModelImportPath, transformModelToResourceImport } from './import-utils.js';
-import { removeQuotes, toPascalCase } from './path-utils.js';
+import { normalizeClassicImport, removeQuotes, toPascalCase } from './path-utils.js';
 import type { ExtractedType } from './type-utils.js';
 import { schemaFieldToTypeScriptType } from './type-utils.js';
 
@@ -434,7 +434,8 @@ export function collectRelationshipImports(
   imports: Set<string>,
   declarations: Set<string>,
   options: TransformOptions,
-  registry: SchemaArtifactRegistry
+  registry: SchemaArtifactRegistry,
+  relationshipTypes: Set<string>
 ): void {
   const asyncHasManyImport = getConfiguredImport(options, 'AsyncHasMany');
   const hasManyImport = getConfiguredImport(options, 'HasMany');
@@ -455,6 +456,19 @@ export function collectRelationshipImports(
     });
   }
 
+  const defaultModelPrefix = `${options.projectName}/models/`;
+
+  function resolveModelName(imp: { source: string }): string | null {
+    const resolved = normalizeClassicImport(options, imp.source, currentFilePath);
+    const isModel =
+      isModelImportPath(imp.source, options) ||
+      (resolved && isModelImportPath(resolved, options)) ||
+      imp.source.startsWith(defaultModelPrefix) ||
+      (resolved && resolved.startsWith(defaultModelPrefix));
+    if (!isModel) return null;
+    return (resolved ?? imp.source).split('/').pop()!;
+  }
+
   for (const field of fields) {
     if (field.typeInfo?.declarations) {
       field.typeInfo.declarations.forEach((decl) => declarations.add(decl));
@@ -465,7 +479,8 @@ export function collectRelationshipImports(
           if (!imp.source) {
             throw new Error(`Import information is missing source for field ${field.name}`);
           }
-          if (isModelImportPath(imp.source, options)) {
+          const modelName = resolveModelName(imp);
+          if (modelName && (modelName === field.type || relationshipTypes.has(modelName))) {
             continue;
           }
 
@@ -486,6 +501,10 @@ export function collectRelationshipImports(
       }
     } else if (field.typeInfo?.imports) {
       for (const imp of field.typeInfo.imports) {
+        const modelName = imp.source ? resolveModelName(imp) : null;
+        if (modelName && relationshipTypes.has(modelName)) {
+          continue;
+        }
         addImport(imp);
       }
     }

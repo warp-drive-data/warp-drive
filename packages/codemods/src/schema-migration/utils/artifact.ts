@@ -362,6 +362,16 @@ export class SchemaArtifact {
     return this._traits.filter((t) => t.hasExtension).map((t) => t.extensionName);
   }
 
+  get relationshipTypes(): Set<string> {
+    const types = new Set<string>();
+    for (const field of this.parsedFile.fields) {
+      if ((field.kind === 'belongsTo' || field.kind === 'hasMany') && field.type) {
+        types.add(field.type);
+      }
+    }
+    return types;
+  }
+
   static fromParsedFile(parsed: ParsedFile, kind?: ArtifactKind): SchemaArtifact {
     const resolvedKind = kind ?? (parsed.fileType === 'mixin' ? 'mixin' : 'model');
     return new SchemaArtifact(parsed, resolvedKind);

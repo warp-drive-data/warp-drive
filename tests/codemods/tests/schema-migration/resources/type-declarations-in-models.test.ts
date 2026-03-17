@@ -2,6 +2,413 @@ import { describe } from 'vitest';
 
 import { F, test, ts } from '../-utils/test.ts';
 
+describe('Duplicate model imports in relationship type annotations', function () {
+  test('[TS] typed belongsTo with model import should not duplicate import in type file', {
+    input: {
+      [F.tsmodel('user')]: ts`
+        import Model, { attr, belongsTo } from '@ember-data/model';
+        import type Company from 'test-app/models/company';
+
+        export default class User extends Model {
+          @attr declare name: string;
+          @belongsTo('company', { async: false, inverse: null }) declare company: Company;
+        }
+      `,
+    },
+    output: {
+      [F.resource('user')]: ts`
+        import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+
+        const UserSchema = {
+          type: 'user',
+          legacy: true,
+          identity: {
+            kind: '@id',
+            name: 'id'
+          },
+          fields: [
+            {
+              kind: 'attribute',
+              name: 'name'
+            },
+            {
+              kind: 'belongsTo',
+              name: 'company',
+              type: 'company',
+              options: {
+                async: false,
+                inverse: null
+              }
+            }
+          ]
+        } satisfies LegacyResourceSchema;
+
+        export default UserSchema;
+      `,
+      [F.resourceType('user')]: ts`
+        import type { Type } from '@warp-drive/core-types/symbols';
+        import type { WithLegacy } from '@ember-data/model/migration-support';
+        import type { Company } from './company.type.ts';
+
+        /**
+         * This type represents the full set schema derived fields of
+         * the 'user' resource, without any of the legacy mode features
+         * and without any extensions.
+         *
+         * > [!TIP]
+         * > It is likely that you will want a more specific type tailored
+         * > to the context of where some data has been loaded, for instance
+         * > one that marks specific fields as readonly, or which only enables
+         * > some fields to be null during create, or which only includes
+         * > a subset of fields based on a specific API response.
+         * >
+         * > For those cases, you can create a more specific type that derives
+         * > from this type to ensure that your type definitions stay consistent
+         * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+         *
+         * See also {@link User} for fields + legacy mode features
+         */
+        export interface UserResource {
+          readonly [Type]: 'user';
+          id: string | null;
+          name: string;
+          company: Company;
+        }
+
+        /**
+         * This type represents the full set schema derived fields of
+         * the 'user' resource, including all legacy mode features but
+         * without any extensions.
+         *
+         * See also {@link UserResource} for just the fields
+         */
+        export interface User extends WithLegacy<UserResource> {}
+      `,
+    },
+  });
+
+  test('[TS] typed belongsTo with custom modelImportSource should not duplicate import in type file', {
+    config: {
+      emberDataImportSource: '@test-lib/warp-drive/v1/model',
+      modelImportSource: '@test-lib/warp-drive/v1/model',
+    },
+    input: {
+      [F.tsmodel('user')]: ts`
+        import Model, { attr, belongsTo } from '@test-lib/warp-drive/v1/model';
+        import type Company from 'test-app/models/company';
+
+        export default class User extends Model {
+          @attr declare name: string;
+          @belongsTo('company', { async: false, inverse: null }) declare company: Company;
+        }
+      `,
+    },
+    output: {
+      [F.resource('user')]: ts`
+        import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+
+        const UserSchema = {
+          type: 'user',
+          legacy: true,
+          identity: {
+            kind: '@id',
+            name: 'id'
+          },
+          fields: [
+            {
+              kind: 'attribute',
+              name: 'name'
+            },
+            {
+              kind: 'belongsTo',
+              name: 'company',
+              type: 'company',
+              options: {
+                async: false,
+                inverse: null
+              }
+            }
+          ]
+        } satisfies LegacyResourceSchema;
+
+        export default UserSchema;
+      `,
+      [F.resourceType('user')]: ts`
+        import type { Type } from '@warp-drive/core-types/symbols';
+        import type { WithLegacy } from '@ember-data/model/migration-support';
+        import type { Company } from './company.type.ts';
+
+        /**
+         * This type represents the full set schema derived fields of
+         * the 'user' resource, without any of the legacy mode features
+         * and without any extensions.
+         *
+         * > [!TIP]
+         * > It is likely that you will want a more specific type tailored
+         * > to the context of where some data has been loaded, for instance
+         * > one that marks specific fields as readonly, or which only enables
+         * > some fields to be null during create, or which only includes
+         * > a subset of fields based on a specific API response.
+         * >
+         * > For those cases, you can create a more specific type that derives
+         * > from this type to ensure that your type definitions stay consistent
+         * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+         *
+         * See also {@link User} for fields + legacy mode features
+         */
+        export interface UserResource {
+          readonly [Type]: 'user';
+          id: string | null;
+          name: string;
+          company: Company;
+        }
+
+        /**
+         * This type represents the full set schema derived fields of
+         * the 'user' resource, including all legacy mode features but
+         * without any extensions.
+         *
+         * See also {@link UserResource} for just the fields
+         */
+        export interface User extends WithLegacy<UserResource> {}
+      `,
+    },
+  });
+
+  test('[TS] model imports on attr type declaration are preserved when no relationship generates a resource import', {
+    input: {
+      [F.tsmodel('timesheet-project')]: ts`
+        import Model, { attr } from '@ember-data/model';
+
+        export default class TimesheetProject extends Model {
+          @attr declare title: string;
+        }
+      `,
+      [F.tsmodel('timesheetable')]: ts`
+        import Model, { attr } from '@ember-data/model';
+        import type TimesheetProject from 'test-app/models/timesheet-project';
+        import type Region from 'test-app/models/region';
+
+        export type TimesheetableModels = TimesheetProject | Region;
+
+        export default class Timesheetable extends Model {
+          @attr declare meta: TimesheetableModels;
+        }
+      `,
+    },
+    output: {
+      [F.resource('timesheet-project')]: ts`
+        import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+
+        const TimesheetProjectSchema = {
+          type: 'timesheet-project',
+          legacy: true,
+          identity: {
+            kind: '@id',
+            name: 'id'
+          },
+          fields: [
+            {
+              kind: 'attribute',
+              name: 'title'
+            }
+          ]
+        } satisfies LegacyResourceSchema;
+
+        export default TimesheetProjectSchema;
+      `,
+      [F.resourceType('timesheet-project')]: ts`
+        import type { Type } from '@warp-drive/core-types/symbols';
+        import type { WithLegacy } from '@ember-data/model/migration-support';
+
+        /**
+         * This type represents the full set schema derived fields of
+         * the 'timesheet-project' resource, without any of the legacy mode features
+         * and without any extensions.
+         *
+         * > [!TIP]
+         * > It is likely that you will want a more specific type tailored
+         * > to the context of where some data has been loaded, for instance
+         * > one that marks specific fields as readonly, or which only enables
+         * > some fields to be null during create, or which only includes
+         * > a subset of fields based on a specific API response.
+         * >
+         * > For those cases, you can create a more specific type that derives
+         * > from this type to ensure that your type definitions stay consistent
+         * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+         *
+         * See also {@link TimesheetProject} for fields + legacy mode features
+         */
+        export interface TimesheetProjectResource {
+          readonly [Type]: 'timesheet-project';
+          id: string | null;
+          title: string;
+        }
+
+        /**
+         * This type represents the full set schema derived fields of
+         * the 'timesheet-project' resource, including all legacy mode features but
+         * without any extensions.
+         *
+         * See also {@link TimesheetProjectResource} for just the fields
+         */
+        export interface TimesheetProject extends WithLegacy<TimesheetProjectResource> {}
+      `,
+      [F.resource('timesheetable')]: ts`
+        import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+
+        const TimesheetableSchema = {
+          type: 'timesheetable',
+          legacy: true,
+          identity: {
+            kind: '@id',
+            name: 'id'
+          },
+          fields: [
+            {
+              kind: 'attribute',
+              name: 'meta'
+            }
+          ]
+        } satisfies LegacyResourceSchema;
+
+        export default TimesheetableSchema;
+      `,
+      [F.resourceType('timesheetable')]: ts`
+        import type { Type } from '@warp-drive/core-types/symbols';
+        import type { WithLegacy } from '@ember-data/model/migration-support';
+        import type { default as TimesheetProject } from 'test-app/models/timesheet-project';
+        import type { default as Region } from 'test-app/models/region';
+
+        export type TimesheetableModels = TimesheetProject | Region;
+
+        /**
+         * This type represents the full set schema derived fields of
+         * the 'timesheetable' resource, without any of the legacy mode features
+         * and without any extensions.
+         *
+         * > [!TIP]
+         * > It is likely that you will want a more specific type tailored
+         * > to the context of where some data has been loaded, for instance
+         * > one that marks specific fields as readonly, or which only enables
+         * > some fields to be null during create, or which only includes
+         * > a subset of fields based on a specific API response.
+         * >
+         * > For those cases, you can create a more specific type that derives
+         * > from this type to ensure that your type definitions stay consistent
+         * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+         *
+         * See also {@link Timesheetable} for fields + legacy mode features
+         */
+        export interface TimesheetableResource {
+          readonly [Type]: 'timesheetable';
+          id: string | null;
+          meta: TimesheetableModels;
+        }
+
+        /**
+         * This type represents the full set schema derived fields of
+         * the 'timesheetable' resource, including all legacy mode features but
+         * without any extensions.
+         *
+         * See also {@link TimesheetableResource} for just the fields
+         */
+        export interface Timesheetable extends WithLegacy<TimesheetableResource> {}
+      `,
+    },
+  });
+
+  test('[TS] model import for unmigrated related type is preserved when field type declaration references it', {
+    input: {
+      [F.tsmodel('user')]: ts`
+        import Model, { attr, belongsTo } from '@ember-data/model';
+        import type Company from 'test-app/models/company';
+        import type Region from 'test-app/models/region';
+
+        export type CompanyTypes = Company | Region;
+
+        export default class User extends Model {
+          @attr declare name: string;
+          @belongsTo('company', { async: false, inverse: null }) declare company: CompanyTypes;
+        }
+      `,
+    },
+    output: {
+      [F.resource('user')]: ts`
+        import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+
+        const UserSchema = {
+          type: 'user',
+          legacy: true,
+          identity: {
+            kind: '@id',
+            name: 'id'
+          },
+          fields: [
+            {
+              kind: 'attribute',
+              name: 'name'
+            },
+            {
+              kind: 'belongsTo',
+              name: 'company',
+              type: 'company',
+              options: {
+                async: false,
+                inverse: null
+              }
+            }
+          ]
+        } satisfies LegacyResourceSchema;
+
+        export default UserSchema;
+      `,
+      [F.resourceType('user')]: ts`
+        import type { Type } from '@warp-drive/core-types/symbols';
+        import type { WithLegacy } from '@ember-data/model/migration-support';
+        import type { default as Region } from 'test-app/models/region';
+        import type { Company } from './company.type.ts';
+
+        export type CompanyTypes = Company | Region;
+
+        /**
+         * This type represents the full set schema derived fields of
+         * the 'user' resource, without any of the legacy mode features
+         * and without any extensions.
+         *
+         * > [!TIP]
+         * > It is likely that you will want a more specific type tailored
+         * > to the context of where some data has been loaded, for instance
+         * > one that marks specific fields as readonly, or which only enables
+         * > some fields to be null during create, or which only includes
+         * > a subset of fields based on a specific API response.
+         * >
+         * > For those cases, you can create a more specific type that derives
+         * > from this type to ensure that your type definitions stay consistent
+         * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+         *
+         * See also {@link User} for fields + legacy mode features
+         */
+        export interface UserResource {
+          readonly [Type]: 'user';
+          id: string | null;
+          name: string;
+          company: CompanyTypes;
+        }
+
+        /**
+         * This type represents the full set schema derived fields of
+         * the 'user' resource, including all legacy mode features but
+         * without any extensions.
+         *
+         * See also {@link UserResource} for just the fields
+         */
+        export interface User extends WithLegacy<UserResource> {}
+      `,
+    },
+  });
+});
+
 describe('Type declarations in model files', function () {
   test('[TS] Interface used as field type should appear in type file', {
     input: {

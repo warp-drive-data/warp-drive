@@ -507,7 +507,16 @@ function generateRegularModelArtifacts(
   schemaImports.add(`import type { Type } from '${typeImport.source}'`);
   const WithLegacyImport = getConfiguredImport(options, 'WithLegacy');
   schemaImports.add(`import type { WithLegacy } from '${WithLegacyImport.source}'`);
-  collectRelationshipImports(filePath, schemaFields, baseName, schemaImports, typeDeclarations, options, registry);
+  collectRelationshipImports(
+    filePath,
+    schemaFields,
+    baseName,
+    schemaImports,
+    typeDeclarations,
+    options,
+    registry,
+    entity.relationshipTypes
+  );
   collectTraitImports(mixinTraits, schemaImports, options);
 
   // Build the schema object
@@ -662,7 +671,16 @@ function generateModelAsTraitArtifacts(
   const declarations = new Set<string>();
 
   traitImports.add(`type { BelongsToReference, HasManyReference, Errors } from '@warp-drive/legacy/model/-private'`);
-  collectRelationshipImports(filePath, schemaFields, traitName, traitImports, declarations, options, registry);
+  collectRelationshipImports(
+    filePath,
+    schemaFields,
+    traitName,
+    traitImports,
+    declarations,
+    options,
+    registry,
+    entity.relationshipTypes
+  );
   collectTraitImports(mixinTraits, traitImports, options, true);
 
   if (options?.storeType) {
@@ -865,7 +883,16 @@ export function generateIntermediateModelTraitArtifacts(
   const declarations = new Set<string>();
 
   traitImports.add(`type { BelongsToReference, HasManyReference, Errors } from '@warp-drive/legacy/model/-private'`);
-  collectRelationshipImports(filePath, schemaFields, traitName, traitImports, declarations, options, registry);
+  collectRelationshipImports(
+    filePath,
+    schemaFields,
+    traitName,
+    traitImports,
+    declarations,
+    options,
+    registry,
+    entity.relationshipTypes
+  );
   collectTraitImports(mixinTraits, traitImports, options, true);
 
   if (options?.storeType) {
