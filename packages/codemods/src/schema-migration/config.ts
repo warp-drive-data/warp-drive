@@ -109,6 +109,8 @@ export interface TransformOptions {
   combineSchemasAndTypes?: boolean;
   /** By default, schemas will be output in TS files even when generated from untyped models. */
   disableTypescriptSchemas?: boolean;
+  /** Force all output files to be TypeScript (.ts) even when input files are JavaScript (.js). */
+  forceTypeScript?: boolean;
   /**
    * By default, the codemod will attempt to generate TypeScript types for models that don't
    * have them by analyzing the model file and various transforms that are in use.

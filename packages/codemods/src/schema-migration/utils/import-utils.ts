@@ -201,7 +201,7 @@ export function transformModelToResourceImport(
   let useTypeFile = false;
   if (!options.combineSchemasAndTypes) {
     const modelEntity = findEntityByBaseName(registry, relatedType, 'model');
-    const isTargetTyped = modelEntity ? modelEntity.parsedFile.extension === '.ts' : false;
+    const isTargetTyped = modelEntity ? modelEntity.parsedFile.isTypeScript : false;
     useTypeFile = isTargetTyped || !options.disableMissingTypeAutoGen;
   }
 

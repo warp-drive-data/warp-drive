@@ -5,6 +5,7 @@ export interface ConfigOptions {
   dryRun?: boolean;
   verbose?: boolean;
   debug?: boolean;
+  forceTypeScript?: boolean;
   mirror?: boolean;
   emberDataImportSource?: string;
   intermediateModelPaths?: string[] | string;

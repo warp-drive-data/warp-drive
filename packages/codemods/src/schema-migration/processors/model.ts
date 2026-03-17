@@ -20,7 +20,6 @@ import {
   generateMergedSchemaCode,
   getEmberDataImports,
   getExportedIdentifier,
-  getFileExtension,
   getLanguageFromPath,
   getMixinImports,
   getModelImportSources,
@@ -476,9 +475,7 @@ function generateRegularModelArtifacts(
     analysis;
   const artifacts: TransformArtifact[] = [];
 
-  // Determine the file extension based on the original model file
-  const originalExtension = getFileExtension(filePath);
-  const isTypeScript = originalExtension === '.ts';
+  const isTypeScript = entity.parsedFile.isTypeScript;
   const resourceConfig = createResourceArtifactConfig(options, analysis, isTypeScript);
 
   // Collect imports needed for schema interface
@@ -638,8 +635,7 @@ function generateModelAsTraitArtifacts(
   const traitName = baseName;
   const traitPascalName = toPascalCase(traitName);
 
-  const originalExtension = getFileExtension(filePath);
-  const isTypeScript = originalExtension === '.ts';
+  const isTypeScript = entity.parsedFile.isTypeScript;
 
   const traitFieldTypes = mapFieldsToTypeProperties(schemaFields, options);
 
@@ -824,9 +820,7 @@ export function generateIntermediateModelTraitArtifacts(
 
   const { schemaFields, mixinTraits, extensionProperties } = analysis;
 
-  // Determine the file extension based on the original model file
-  const originalExtension = getFileExtension(filePath);
-  const isTypeScript = originalExtension === '.ts';
+  const isTypeScript = entity.parsedFile.isTypeScript;
 
   // Generate trait type interface
   const traitFieldTypes = mapFieldsToTypeProperties(schemaFields, options);

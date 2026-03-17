@@ -12,7 +12,6 @@ import {
   collectTraitImports,
   DEFAULT_EMBER_DATA_SOURCE,
   generateMergedSchemaCode,
-  getFileExtension,
   mapFieldsToTypeProperties,
   toPascalCase,
 } from '../utils/ast-utils.js';
@@ -149,8 +148,7 @@ function generateMixinArtifacts(
   registry: SchemaArtifactRegistry
 ): TransformArtifact[] {
   const artifacts: TransformArtifact[] = [];
-  const fileExtension = getFileExtension(filePath);
-  const isTypeScript = fileExtension === '.ts';
+  const isTypeScript = entity.parsedFile.isTypeScript;
 
   const traitFieldTypes = mapFieldsToTypeProperties(traitFields as SchemaField[], options);
 

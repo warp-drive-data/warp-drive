@@ -128,6 +128,8 @@ export interface ParsedFile {
   path: string;
   /** Original file extension (.ts or .js) */
   extension: '.ts' | '.js';
+  /** Whether the file should be treated as TypeScript (extension is .ts or forceTypeScript is enabled) */
+  readonly isTypeScript: boolean;
   /** All imports in the file */
   imports: ParsedFileImport[];
   /** EmberData schema fields (@attr, @hasMany, @belongsTo, fragment, etc.) */
@@ -361,15 +363,18 @@ interface ExtractedModelData {
   comment?: string;
 }
 
-function extractModelData(root: SgNode, filePath: string, options: TransformOptions): ExtractedModelData {
+function extractModelData(
+  root: SgNode,
+  filePath: string,
+  options: TransformOptions,
+  isTypeScript: boolean
+): ExtractedModelData {
   const fields: ParsedField[] = [];
   const behaviors: ParsedBehavior[] = [];
   const traits: string[] = [];
   let comment: string | undefined = undefined;
   const heritageLocalNames: string[] = [];
   let baseClass: string | undefined;
-
-  const isJavaScript = filePath.endsWith('.js');
 
   const classDeclaration = findClassDeclarationInRoot(root, options);
   if (!classDeclaration) {
@@ -433,7 +438,7 @@ function extractModelData(root: SgNode, filePath: string, options: TransformOpti
 
     // Extract TypeScript type
     let typeInfo: ExtractedType | null = null;
-    if (!isJavaScript) {
+    if (isTypeScript) {
       try {
         typeInfo = extractTypeFromDeclaration(property, options) ?? null;
       } catch {
@@ -519,7 +524,7 @@ function extractModelData(root: SgNode, filePath: string, options: TransformOpti
     const methodText = preamble.length > 0 ? preamble.join('\n') + '\n' + method.text() : method.text();
 
     let typeInfo: ExtractedType | null = null;
-    if (!isJavaScript) {
+    if (isTypeScript) {
       try {
         typeInfo = extractTypeFromMethod(method, options) ?? null;
       } catch {
@@ -567,12 +572,15 @@ function findMixinCreateCalls(root: SgNode, mixinLocalName: string): SgNode[] {
   return calls;
 }
 
-function extractMixinData(root: SgNode, filePath: string, options: TransformOptions): ExtractedMixinData {
+function extractMixinData(
+  root: SgNode,
+  filePath: string,
+  options: TransformOptions,
+  isTypeScript: boolean
+): ExtractedMixinData {
   const fields: ParsedField[] = [];
   const behaviors: ParsedBehavior[] = [];
   const traits: string[] = [];
-
-  const isJavaScript = filePath.endsWith('.js');
 
   const mixinImportLocal = findEmberImportLocalName(root, [DEFAULT_MIXIN_SOURCE], options);
 
@@ -644,7 +652,7 @@ function extractMixinData(root: SgNode, filePath: string, options: TransformOpti
       fieldName = keyNode?.text() || '';
       originalKey = fieldName;
 
-      if (!isJavaScript) {
+      if (isTypeScript) {
         try {
           typeInfo = extractTypeFromMethod(property, options) ?? null;
         } catch {
@@ -791,6 +799,9 @@ export function parseFile(filePath: string, code: string, options: TransformOpti
   const camelName = extractCamelCaseName(filePath);
   const extension: '.ts' | '.js' = filePath.endsWith('.ts') ? '.ts' : '.js';
 
+  const forceTypeScript = !!options.forceTypeScript;
+  const isTypeScript = extension === '.ts' || forceTypeScript;
+
   const imports = parseImports(root, options);
   const fileType = detectFileType(root, filePath, options);
 
@@ -802,7 +813,7 @@ export function parseFile(filePath: string, code: string, options: TransformOpti
   let comment: string | undefined;
 
   if (fileType === 'model' || fileType === 'fragment') {
-    const modelData = extractModelData(root, filePath, options);
+    const modelData = extractModelData(root, filePath, options, isTypeScript);
     fields = modelData.fields;
     behaviors = modelData.behaviors;
     traits = modelData.traits;
@@ -810,7 +821,7 @@ export function parseFile(filePath: string, code: string, options: TransformOpti
     baseClass = modelData.baseClass;
     comment = modelData.comment;
   } else if (fileType === 'mixin') {
-    const mixinData = extractMixinData(root, filePath, options);
+    const mixinData = extractMixinData(root, filePath, options, isTypeScript);
     fields = mixinData.fields;
     behaviors = mixinData.behaviors;
     traits = mixinData.traits;
@@ -827,6 +838,9 @@ export function parseFile(filePath: string, code: string, options: TransformOpti
     name: baseName,
     path: filePath,
     extension,
+    get isTypeScript() {
+      return this.extension === '.ts' || forceTypeScript;
+    },
     imports,
     fields,
     behaviors,

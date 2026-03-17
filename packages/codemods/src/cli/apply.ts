@@ -51,6 +51,7 @@ function createMigrateToSchemaCommand(applyCommand: Command) {
   command
     .addOption(new Option('--config <path>', 'Path to configuration file'))
     .addOption(new Option('--skip-processed', 'Skip files that have already been processed'))
+    .addOption(new Option('--force-typescript', 'Force all output files to TypeScript (.ts)'))
     .addOption(new Option('--model-source-dir <path>', 'Directory containing model files').default('./app/models'))
     .addOption(new Option('--mixin-source-dir <path>', 'Directory containing mixin files').default('./app/mixins'))
     .addOption(new Option('--output-dir <path>', 'Output directory for generated schemas').default('./app/data'))
@@ -134,6 +135,7 @@ async function handleMigrateToSchema(
     ...(options.modelsOnly !== undefined && { modelsOnly: Boolean(options.modelsOnly) }),
     ...(options.mixinsOnly !== undefined && { mixinsOnly: Boolean(options.mixinsOnly) }),
     ...(options.skipProcessed !== undefined && { skipProcessed: Boolean(options.skipProcessed) }),
+    ...(options.forceTypescript !== undefined && { forceTypeScript: Boolean(options.forceTypescript) }),
     modelSourceDir: String(options.modelSourceDir || './app/models'),
     mixinSourceDir: String(options.mixinSourceDir || './app/mixins'),
     outputDir: String(options.outputDir || './app/schemas'),

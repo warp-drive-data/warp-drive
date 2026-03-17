@@ -425,7 +425,7 @@ export function createExtensionFromOriginalFile(
 
     log.debug(`Creating extension from ${filePath} with ${extensionProperties.length} properties`);
 
-    const extFileName = `${schemaConfig.name}.ext${getFileExtension(filePath)}`;
+    const extFileName = `${schemaConfig.name}.ext${schemaConfig.extensionIsTyped ? '.ts' : getFileExtension(filePath)}`;
 
     const targetDir =
       schemaConfig.type === 'trait'
@@ -514,7 +514,7 @@ export function createExtensionFromOriginalFile(
       if (schemaConfig.extensionIsTyped && schemaConfig.identifiers.type) {
         const useTypeFile = !options?.combineSchemasAndTypes && schemaConfig.hasTypes;
         const typeSuffix = useTypeFile ? 'type' : 'schema';
-        const typeImportPath = `./${schemaConfig.name}.${typeSuffix}${getFileExtension(filePath)}`;
+        const typeImportPath = `./${schemaConfig.name}.${typeSuffix}${schemaConfig.extensionIsTyped ? '.ts' : getFileExtension(filePath)}`;
         modifiedSource = addTypeImport(modifiedSource, lang, schemaConfig.identifiers.type, typeImportPath);
       }
       // Collapse blank lines between consecutive import statements
