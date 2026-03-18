@@ -84,11 +84,7 @@ export function generateWarpDriveTypeImport(
  * When `hasTypes` is `false` the trait never produced a `.type` file,
  * so the suffix is always `.schema` regardless of config.
  */
-export function resolveTraitImportPath(
-  baseName: string,
-  options?: TransformOptions,
-  hasTypes = true
-): string {
+export function resolveTraitImportPath(baseName: string, options?: TransformOptions, hasTypes = true): string {
   const suffix = !options?.combineSchemasAndTypes && hasTypes ? 'type' : 'schema';
   const base = options?.traitsImport ?? '../traits';
   return `${base}/${baseName}.${suffix}`;
@@ -174,8 +170,7 @@ export function transformModelToResourceImport(
   // Determine whether this type should be imported from a trait file
   const modelEntity = findEntityByBaseName(registry, relatedType, 'model');
   const mixinEntity = findEntityByBaseName(registry, relatedType, 'mixin');
-  const useTrait =
-    shouldImportFromTraits(relatedType, options, registry) || (!modelEntity && !!mixinEntity);
+  const useTrait = shouldImportFromTraits(relatedType, options, registry) || (!modelEntity && !!mixinEntity);
 
   if (useTrait) {
     if (!modelEntity && mixinEntity) {

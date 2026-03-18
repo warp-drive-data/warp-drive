@@ -958,4 +958,3 @@ export function buildTraitArtifacts(
 
   return artifacts;
 }
-

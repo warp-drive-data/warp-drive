@@ -259,8 +259,7 @@ export function generateExtensionCode(
 ): string {
   // Traits only export fieldsInterface (e.g. TimestampableTrait),
   // resources export the full type (e.g. User via WithLegacy<UserResource>)
-  const typeToExtend =
-    config.type === 'trait' ? config.identifiers.fieldsInterface : config.identifiers.type;
+  const typeToExtend = config.type === 'trait' ? config.identifiers.fieldsInterface : config.identifiers.type;
 
   if (format === 'class') {
     // Class format used by model-to-schema transform

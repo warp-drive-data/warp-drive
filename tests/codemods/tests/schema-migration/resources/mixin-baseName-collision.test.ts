@@ -94,11 +94,7 @@ export default Mixin.create({
     expect(artifactTypes).not.toContain('trait');
 
     // An error must be logged about the baseName collision
-    expect(log.error).toHaveBeenCalledWith(
-      expect.stringContaining('BaseName collision')
-    );
-    expect(log.error).toHaveBeenCalledWith(
-      expect.stringContaining('"file"')
-    );
+    expect(log.error).toHaveBeenCalledWith(expect.stringContaining('BaseName collision'));
+    expect(log.error).toHaveBeenCalledWith(expect.stringContaining('"file"'));
   });
 });

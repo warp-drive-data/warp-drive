@@ -10,6 +10,23 @@ import { MIXIN_SUFFIX_REGEX } from './string.js';
 const log = logger.for('ast-helpers');
 
 /**
+ * Find the export_specifier with `alias === 'default'` inside an export node's export_clause.
+ * Returns the specifier node, or null if not found.
+ */
+function findDefaultReexportSpecifier(node: SgNode): SgNode | null {
+  const exportClause = node.find({ rule: { kind: 'export_clause' } });
+  if (!exportClause) return null;
+
+  for (const specifier of exportClause.findAll({ rule: { kind: 'export_specifier' } })) {
+    const alias = specifier.field('alias');
+    if (alias && alias.text() === 'default') {
+      return specifier;
+    }
+  }
+  return null;
+}
+
+/**
  * Find all export statements
  */
 function findExportStatements(root: SgNode, options?: TransformOptions) {
@@ -37,16 +54,9 @@ export function findDefaultExport(root: SgNode, options?: TransformOptions): SgN
     }
 
     // Check for `export { X as default }` pattern
-    const exportClause = exportStatement.find({ rule: { kind: 'export_clause' } });
-    if (exportClause) {
-      const specifiers = exportClause.findAll({ rule: { kind: 'export_specifier' } });
-      for (const specifier of specifiers) {
-        const alias = specifier.field('alias');
-        if (alias && alias.text() === 'default') {
-          log.debug('Found re-export as default');
-          return exportStatement;
-        }
-      }
+    if (findDefaultReexportSpecifier(exportStatement)) {
+      log.debug('Found re-export as default');
+      return exportStatement;
     }
   }
 
@@ -71,18 +81,12 @@ export function getExportedIdentifier(exportNode: SgNode, options?: TransformOpt
   }
 
   // Check for `export { X as default }` pattern
-  const exportClause = exportNode.find({ rule: { kind: 'export_clause' } });
-  if (exportClause) {
-    const specifiers = exportClause.findAll({ rule: { kind: 'export_specifier' } });
-    for (const specifier of specifiers) {
-      const alias = specifier.field('alias');
-      if (alias && alias.text() === 'default') {
-        const name = specifier.field('name');
-        if (name) {
-          log.debug(`Found re-exported identifier: ${name.text()}`);
-          return name.text();
-        }
-      }
+  const reexportSpecifier = findDefaultReexportSpecifier(exportNode);
+  if (reexportSpecifier) {
+    const name = reexportSpecifier.field('name');
+    if (name) {
+      log.debug(`Found re-exported identifier: ${name.text()}`);
+      return name.text();
     }
   }
 
