@@ -564,10 +564,11 @@ export function collectTraitImports(
 ): void {
   for (const trait of traits) {
     if (checkExistence && options?.traitsDir) {
-      const traitFilePath = join(options.traitsDir, `${trait}.schema.ts`);
-      const traitFilePathJs = join(options.traitsDir, `${trait}.schema.js`);
-      if (!existsSync(traitFilePath) && !existsSync(traitFilePathJs)) {
-        log.debug(`Skipping trait import for '${trait}' - file does not exist at ${traitFilePath}`);
+      const traitSchemaTs = join(options.traitsDir, `${trait}.schema.ts`);
+      const traitSchemaJs = join(options.traitsDir, `${trait}.schema.js`);
+      const traitTypeTs = join(options.traitsDir, `${trait}.type.ts`);
+      if (!existsSync(traitSchemaTs) && !existsSync(traitSchemaJs) && !existsSync(traitTypeTs)) {
+        log.debug(`Skipping trait import for '${trait}' - file does not exist at ${traitSchemaTs}`);
         continue;
       }
     }
@@ -911,3 +912,50 @@ export function generateMergedSchemaCode(opts: MergedSchemaOptions): GeneratedSc
 
   return parts;
 }
+
+/**
+ * Build the trait schema artifact and (when types are separate) the
+ * trait-type artifact from pre-generated merged schema parts.
+ *
+ * This is the shared logic used by mixin.ts and the two
+ * model-as-trait code paths in model.ts.
+ */
+export function buildTraitArtifacts(
+  mergedSchemaCode: GeneratedSchemaParts,
+  config: ArtifactConfig,
+  baseName: string,
+  options: TransformOptions
+): TransformArtifact[] {
+  const hasType = mergedSchemaCode.interfaceDeclaration && mergedSchemaCode.interfaceDeclaration.trim() !== '';
+  const includeTypesInSchema = options.combineSchemasAndTypes || !hasType;
+
+  const artifacts: TransformArtifact[] = [
+    {
+      type: 'trait',
+      name: config.identifiers.schema,
+      code: [
+        mergedSchemaCode.schemaImports,
+        includeTypesInSchema ? mergedSchemaCode.typeImports : null,
+        mergedSchemaCode.schemaDeclaration,
+        includeTypesInSchema ? mergedSchemaCode.interfaceDeclaration : null,
+      ]
+        .filter(Boolean)
+        .join('\n'),
+      baseName,
+      suggestedFileName: `${baseName}.schema${config.schemaIsTyped ? '.ts' : '.js'}`,
+    },
+  ];
+
+  if (!options.combineSchemasAndTypes && hasType) {
+    artifacts.push({
+      type: 'trait-type',
+      name: config.identifiers.fieldsInterface!,
+      code: [mergedSchemaCode.typeImports, mergedSchemaCode.interfaceDeclaration].filter(Boolean).join('\n'),
+      baseName,
+      suggestedFileName: `${baseName}.type.ts`,
+    });
+  }
+
+  return artifacts;
+}
+

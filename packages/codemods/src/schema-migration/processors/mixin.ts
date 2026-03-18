@@ -8,6 +8,7 @@ import type { SchemaArtifact, SchemaArtifactRegistry } from '../utils/artifact.j
 import { createTraitArtifactConfig, isConnectedToModel as isConnectedToModelInRegistry } from '../utils/artifact.js';
 import type { PropertyInfo, SchemaField, TransformArtifact } from '../utils/ast-utils.js';
 import {
+  buildTraitArtifacts,
   buildTraitSchemaObject,
   collectTraitImports,
   DEFAULT_EMBER_DATA_SOURCE,
@@ -16,7 +17,7 @@ import {
   toPascalCase,
 } from '../utils/ast-utils.js';
 import { createExtensionFromOriginalFile } from '../utils/extension-generation.js';
-import { getResourcesImport, transformModelToResourceImport } from '../utils/import-utils.js';
+import { getResourcesImport, resolveTraitImportPath, transformModelToResourceImport } from '../utils/import-utils.js';
 import { pascalToKebab } from '../utils/string.js';
 
 const log = logger.for('mixin-processor');
@@ -211,27 +212,10 @@ function generateMixinArtifacts(
     options,
   });
 
-  const traitCode = [
-    mergedSchemaCode.schemaImports,
-    mergedSchemaCode.typeImports,
-    mergedSchemaCode.schemaDeclaration,
-    mergedSchemaCode.interfaceDeclaration,
-  ]
-    .filter(Boolean)
-    .join('\n');
-
-  artifacts.push({
-    type: 'trait',
-    name: traitConfig.identifiers.schema,
-    code: traitCode,
-    baseName,
-    suggestedFileName: `${baseName}.schema${options.disableTypescriptSchemas ? '.js' : '.ts'}`,
-  });
+  artifacts.push(...buildTraitArtifacts(mergedSchemaCode, traitConfig, baseName, options));
 
   if (extensionProperties.length > 0) {
-    const traitImportPath = options?.traitsImport
-      ? `${options.traitsImport}/${baseName}.schema`
-      : `../traits/${baseName}.schema`;
+    const traitImportPath = resolveTraitImportPath(baseName, options, traitConfig.hasTypes);
     const extensionArtifact = createExtensionFromOriginalFile(
       traitConfig,
       filePath,

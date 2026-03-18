@@ -70,6 +70,7 @@ export {
   createTypeArtifact,
   createExtensionArtifactWithTypes,
   generateMergedSchemaCode,
+  buildTraitArtifacts,
   collectRelationshipImports,
   collectTraitImports,
   mapFieldsToTypeProperties,

@@ -79,18 +79,29 @@ export function generateWarpDriveTypeImport(
 }
 
 /**
+ * Build the import path for a trait file, respecting `combineSchemasAndTypes`.
+ *
+ * When `hasTypes` is `false` the trait never produced a `.type` file,
+ * so the suffix is always `.schema` regardless of config.
+ */
+export function resolveTraitImportPath(
+  baseName: string,
+  options?: TransformOptions,
+  hasTypes = true
+): string {
+  const suffix = !options?.combineSchemasAndTypes && hasTypes ? 'type' : 'schema';
+  const base = options?.traitsImport ?? '../traits';
+  return `${base}/${baseName}.${suffix}`;
+}
+
+/**
  * Generate a trait type import statement
  * e.g., generateTraitImport('shareable', options) returns:
- *   "type { ShareableTrait } from 'app/data/traits/shareable.schema'"
- * or with default path:
- *   "type { ShareableTrait } from '../traits/shareable.schema'"
+ *   "type { ShareableTrait } from '../traits/shareable.type'"
  */
 export function generateTraitImport(traitName: string, options?: TransformOptions): string {
   const traitTypeName = deriveTraitInterfaceName(traitName);
-  if (options?.traitsImport) {
-    return `type { ${traitTypeName} } from '${options.traitsImport}/${traitName}.schema'`;
-  }
-  return `type { ${traitTypeName} } from '../traits/${traitName}.schema'`;
+  return `type { ${traitTypeName} } from '${resolveTraitImportPath(traitName, options)}'`;
 }
 
 /**
@@ -160,47 +171,28 @@ export function transformModelToResourceImport(
   options: TransformOptions,
   registry: SchemaArtifactRegistry
 ): string {
-  // Always check traits first for intermediate models (they're always traits)
-  if (shouldImportFromTraits(relatedType, options, registry)) {
-    const traitsImport = options?.traitsImport;
-    // Trait interfaces are named with 'Trait' suffix but aliased back to non-suffix for backward compatibility
-    const traitName = deriveTraitInterfaceName(relatedType);
-    const aliasName = toPascalCase(relatedType); // Use the original name as alias for backward compatibility
-    if (traitsImport) {
-      return `type { ${traitName} as ${aliasName} } from '${traitsImport}/${relatedType}.schema'`;
-    } else {
-      return `type { ${traitName} as ${aliasName} } from '../traits/${relatedType}.schema'`;
-    }
-  }
+  // Determine whether this type should be imported from a trait file
+  const modelEntity = findEntityByBaseName(registry, relatedType, 'model');
+  const mixinEntity = findEntityByBaseName(registry, relatedType, 'mixin');
+  const useTrait =
+    shouldImportFromTraits(relatedType, options, registry) || (!modelEntity && !!mixinEntity);
 
-  // Check if we have a model for this related type using registry
-  const hasModel = !!findEntityByBaseName(registry, relatedType, 'model');
-
-  // If no model found, check if we have a mixin/trait to fall back to
-  if (!hasModel) {
-    const mixinEntity = findEntityByBaseName(registry, relatedType, 'mixin');
-    if (mixinEntity) {
-      // Fall back to trait import
-      const traitsImport = options?.traitsImport;
-      const traitName = deriveTraitInterfaceName(relatedType);
-      const aliasName = toPascalCase(relatedType);
+  if (useTrait) {
+    if (!modelEntity && mixinEntity) {
       log.debug(`No model found for ${relatedType}, falling back to trait`);
-      if (traitsImport) {
-        return `type { ${traitName} as ${aliasName} } from '${traitsImport}/${relatedType}.schema'`;
-      } else {
-        return `type { ${traitName} as ${aliasName} } from '../traits/${relatedType}.schema'`;
-      }
     }
+    const traitName = deriveTraitInterfaceName(relatedType);
+    const aliasName = toPascalCase(relatedType);
+    const path = resolveTraitImportPath(relatedType, options);
+    return `type { ${traitName} as ${aliasName} } from '${path}'`;
   }
 
-  // Default to resource import (either we found a model, or we're assuming it's a resource)
+  // Default to resource import
   const resourcesImport = getResourcesImport(options);
   const ext = options.projectImportsUseExtensions ? '.ts' : '';
 
-  // When types are separate, only import from .type if the target model will generate one
   let useTypeFile = false;
   if (!options.combineSchemasAndTypes) {
-    const modelEntity = findEntityByBaseName(registry, relatedType, 'model');
     const isTargetTyped = modelEntity ? modelEntity.parsedFile.isTypeScript : false;
     useTypeFile = isTargetTyped || !options.disableMissingTypeAutoGen;
   }

@@ -372,7 +372,7 @@ describe('AST utilities', () => {
 
       const result = transformModelToResourceImport('workstreamable', 'User', options, registry);
       expect(result).toBe(
-        "type { WorkstreamableTrait as Workstreamable } from 'my-app/data/traits/workstreamable.schema'"
+        "type { WorkstreamableTrait as Workstreamable } from 'my-app/data/traits/workstreamable.type'"
       );
     });
 
@@ -503,7 +503,7 @@ describe('AST utilities', () => {
 
       // Intermediate models should always go to traits
       const result = transformModelToResourceImport('base-model', 'BaseModel', options, registry);
-      expect(result).toBe("type { BaseModelTrait as BaseModel } from 'my-app/data/traits/base-model.schema'");
+      expect(result).toBe("type { BaseModelTrait as BaseModel } from 'my-app/data/traits/base-model.type'");
     });
   });
 });

@@ -90,7 +90,7 @@ describe('mixin-to-schema transform (artifacts)', () => {
 export default Mixin.create({});`;
 
       const { artifacts } = processSource('app/mixins/empty.js', input, options);
-      expect(artifacts).toHaveLength(1);
+      expect(artifacts).toHaveLength(2);
 
       const trait = artifacts.find((a) => a.type === 'trait');
       expect(trait).toMatchInlineSnapshot(`
@@ -105,25 +105,6 @@ export default Mixin.create({});`;
         } satisfies LegacyResourceSchema;
 
         export default EmptyTraitSchema;
-
-        /**
-         * This type represents the full set schema derived fields of
-         * the 'empty' trait, without any of the legacy mode features
-         * and without any extensions.
-         *
-         * > [!TIP]
-         * > It is likely that you will want a more specific type tailored
-         * > to the context of where some data has been loaded, for instance
-         * > one that marks specific fields as readonly, or which only enables
-         * > some fields to be null during create, or which only includes
-         * > a subset of fields based on a specific API response.
-         * >
-         * > For those cases, you can create a more specific type that derives
-         * > from this type to ensure that your type definitions stay consistent
-         * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
-         */
-        export interface EmptyTrait {
-        }
         ",
           "name": "EmptyTraitSchema",
           "suggestedFileName": "empty.schema.ts",
@@ -145,7 +126,7 @@ export default Mixin.create({
 });`;
 
       const { artifacts } = processSource('app/mixins/fileable.js', input, options);
-      expect(artifacts).toHaveLength(3); // trait, extension, and resource-type-stub for 'file'
+      expect(artifacts).toHaveLength(4); // trait, trait-type, extension, and resource-type-stub for 'file'
 
       const trait = artifacts.find((a) => a.type === 'trait');
       const extension = artifacts.find((a) => a.type === 'trait-extension');
@@ -153,9 +134,6 @@ export default Mixin.create({
         {
           "baseName": "fileable",
           "code": "import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
-
-        import type { HasMany } from '@ember-data/model';
-        import type { File } from 'test-app/data/resources/file.type';
 
         const FileableTraitSchema = {
           'name': 'fileable',
@@ -187,28 +165,6 @@ export default Mixin.create({
         } satisfies LegacyResourceSchema;
 
         export default FileableTraitSchema;
-
-        /**
-         * This type represents the full set schema derived fields of
-         * the 'fileable' trait, without any of the legacy mode features
-         * and without any extensions.
-         *
-         * > [!TIP]
-         * > It is likely that you will want a more specific type tailored
-         * > to the context of where some data has been loaded, for instance
-         * > one that marks specific fields as readonly, or which only enables
-         * > some fields to be null during create, or which only includes
-         * > a subset of fields based on a specific API response.
-         * >
-         * > For those cases, you can create a more specific type that derives
-         * > from this type to ensure that your type definitions stay consistent
-         * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
-         */
-        export interface FileableTrait {
-          files?: HasMany<File>;
-          name?: string | null;
-          isActive?: boolean;
-        }
         ",
           "name": "FileableTraitSchema",
           "suggestedFileName": "fileable.schema.ts",
@@ -343,7 +299,7 @@ export default Mixin.create({
 });`;
 
       const { artifacts } = processSource('apps/client/app/mixins/fileable.js', input, options);
-      expect(artifacts).toHaveLength(3); // Trait, extension, and resource-type-stub for 'file'
+      expect(artifacts).toHaveLength(4); // Trait, trait-type, extension, and resource-type-stub for 'file'
       expect(
         artifacts.map((a) => ({ type: a.type, suggestedFileName: a.suggestedFileName, name: a.name }))
       ).toMatchSnapshot('artifact metadata');
@@ -522,9 +478,9 @@ export default Mixin.create({
 
       const { artifacts } = processSource('app/mixins/fileable.js', input, options);
 
-      // Should have trait and resource-type-stub for 'file' (no extension if no computed/methods)
-      expect(artifacts).toHaveLength(2);
-      expect(artifacts.map((a) => a.type).sort()).toEqual(['resource-type-stub', 'trait']);
+      // Should have trait, trait-type, and resource-type-stub for 'file' (no extension if no computed/methods)
+      expect(artifacts).toHaveLength(3);
+      expect(artifacts.map((a) => a.type).sort()).toEqual(['resource-type-stub', 'trait', 'trait-type']);
 
       const trait = artifacts.find((a) => a.type === 'trait');
       expect(trait?.code).toMatchSnapshot('basic trait type interface');
@@ -550,9 +506,9 @@ export default Mixin.create({
 
       const { artifacts } = processSource('app/mixins/nameable.js', input, options);
 
-      // Should have trait and extension artifacts (types merged into trait)
-      expect(artifacts).toHaveLength(2);
-      expect(artifacts.map((a) => a.type).sort()).toEqual(['trait', 'trait-extension']);
+      // Should have trait, trait-type, and extension artifacts
+      expect(artifacts).toHaveLength(3);
+      expect(artifacts.map((a) => a.type).sort()).toEqual(['trait', 'trait-extension', 'trait-type']);
 
       const extension = artifacts.find((a) => a.type === 'trait-extension');
       const trait = artifacts.find((a) => a.type === 'trait');
@@ -574,9 +530,9 @@ export default Mixin.create({
 
       const { artifacts } = processSource('app/mixins/simple.js', input, options);
 
-      // Should have trait and resource-type-stub for 'user' (no extension for data-only mixins)
-      expect(artifacts).toHaveLength(2);
-      expect(artifacts.map((a) => a.type).sort()).toEqual(['resource-type-stub', 'trait']);
+      // Should have trait, trait-type, and resource-type-stub for 'user' (no extension for data-only mixins)
+      expect(artifacts).toHaveLength(3);
+      expect(artifacts.map((a) => a.type).sort()).toEqual(['resource-type-stub', 'trait', 'trait-type']);
 
       const trait = artifacts.find((a) => a.type === 'trait');
       expect(trait?.code).toMatchSnapshot('data-only trait type interface');
@@ -783,8 +739,8 @@ export default Mixin.createWithMixins(BaseModelMixin, TimestampMixin, {
       };
       const { artifacts } = processSource('app/mixins/fileable.js', input, opts);
 
-      // Should produce trait and resource-type-stub for 'file' (no extension since no methods/computed properties)
-      expect(artifacts).toHaveLength(2);
+      // Should produce trait, trait-type, and resource-type-stub for 'file' (no extension since no methods/computed properties)
+      expect(artifacts).toHaveLength(3);
 
       const trait = artifacts.find((a) => a.type === 'trait');
 
@@ -876,8 +832,8 @@ export default Mixin.create({
 
       const { artifacts } = processSource('app/mixins/fileable.js', input, options);
 
-      // Should have trait (with merged types) and resource-type-stub artifacts
-      expect(artifacts).toHaveLength(3); // trait, file stub, user stub
+      // Should have trait, trait-type, and resource-type-stub artifacts
+      expect(artifacts).toHaveLength(4); // trait, trait-type, file stub, user stub
 
       // Find the resource type stub artifacts
       const stubArtifacts = artifacts.filter((a) => a.type === 'resource-type-stub');

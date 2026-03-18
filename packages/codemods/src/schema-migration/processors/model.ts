@@ -10,6 +10,7 @@ import { createResourceArtifactConfig, createTraitArtifactConfig, SchemaArtifact
 import type { ExtractedType, SchemaField, TransformArtifact } from '../utils/ast-utils.js';
 import {
   buildLegacySchemaObject,
+  buildTraitArtifacts,
   buildTraitSchemaObject,
   collectRelationshipImports,
   collectTraitImports,
@@ -42,6 +43,7 @@ import {
   NODE_KIND_PROPERTY_IDENTIFIER,
 } from '../utils/code-processing.js';
 import { createExtensionFromOriginalFile } from '../utils/extension-generation.js';
+import { resolveTraitImportPath } from '../utils/import-utils.js';
 import type { ParsedFile } from '../utils/file-parser.js';
 import { parseFile } from '../utils/file-parser.js';
 import { extractBaseName, removeQuotes, replaceWildcardPattern } from '../utils/path-utils.js';
@@ -711,27 +713,10 @@ function generateModelAsTraitArtifacts(
     options,
   });
 
-  const traitCode = [
-    mergedSchemaCode.schemaImports,
-    mergedSchemaCode.typeImports,
-    mergedSchemaCode.schemaDeclaration,
-    mergedSchemaCode.interfaceDeclaration,
-  ]
-    .filter(Boolean)
-    .join('\n');
-
-  artifacts.push({
-    type: 'trait',
-    name: traitConfig.identifiers.schema,
-    code: traitCode,
-    baseName: traitName,
-    suggestedFileName: `${traitName}.schema${options.disableTypescriptSchemas ? '.js' : '.ts'}`,
-  });
+  artifacts.push(...buildTraitArtifacts(mergedSchemaCode, traitConfig, traitName, options));
 
   if (extensionProperties.length > 0) {
-    const traitImportPath = options?.traitsImport
-      ? `${options.traitsImport}/${traitName}.schema`
-      : `../traits/${traitName}.schema`;
+    const traitImportPath = resolveTraitImportPath(traitName, options, traitConfig.hasTypes);
     const extensionArtifact = createExtensionFromOriginalFile(
       traitConfig,
       filePath,
@@ -926,27 +911,10 @@ export function generateIntermediateModelTraitArtifacts(
     options,
   });
 
-  const traitCode = [
-    mergedSchemaCode.schemaImports,
-    mergedSchemaCode.typeImports,
-    mergedSchemaCode.schemaDeclaration,
-    mergedSchemaCode.interfaceDeclaration,
-  ]
-    .filter(Boolean)
-    .join('\n');
-
-  artifacts.push({
-    type: 'trait',
-    name: traitConfig.identifiers.schema,
-    code: traitCode,
-    baseName: traitName,
-    suggestedFileName: `${traitName}.schema${options.disableTypescriptSchemas ? '.js' : '.ts'}`,
-  });
+  artifacts.push(...buildTraitArtifacts(mergedSchemaCode, traitConfig, traitName, options));
 
   if (extensionProperties.length > 0) {
-    const traitImportPath = options?.traitsImport
-      ? `${options.traitsImport}/${traitName}.schema`
-      : `../traits/${traitName}.schema`;
+    const traitImportPath = resolveTraitImportPath(traitName, options, traitConfig.hasTypes);
     const extensionArtifact = createExtensionFromOriginalFile(
       traitConfig,
       filePath,

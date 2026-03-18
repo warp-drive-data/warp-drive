@@ -61,7 +61,7 @@ describe('custom emberDataImportSource', function () {
       [F.resourceType('project')]: ts`
         import type { Type } from '@warp-drive/core-types/symbols';
         import type { WithLegacy } from '@ember-data/model/migration-support';
-        import type { TeamableTrait } from '../traits/teamable.schema';
+        import type { TeamableTrait } from '../traits/teamable.type';
 
         /**
          * This type represents the full set schema derived fields of
@@ -99,9 +99,6 @@ describe('custom emberDataImportSource', function () {
       [F.resource('teamable')]: ts`
         import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
 
-        import type { HasMany } from '@auditboard/warp-drive/v1/model';
-        import type { AllowedTeam } from './allowed-team.type.ts';
-
         const TeamableTraitSchema = {
           name: 'teamable',
           mode: 'legacy',
@@ -120,6 +117,10 @@ describe('custom emberDataImportSource', function () {
         } satisfies LegacyResourceSchema;
 
         export default TeamableTraitSchema;
+      `,
+      [F.resourceType('teamable')]: ts`
+        import type { HasMany } from '@auditboard/warp-drive/v1/model';
+        import type { AllowedTeam } from './allowed-team.type.ts';
 
         /**
          * This type represents the full set schema derived fields of

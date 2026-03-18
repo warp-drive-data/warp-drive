@@ -139,8 +139,6 @@ export default class DataFieldModel extends Model {
           "baseName": "data-field-model",
           "code": "import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
 
-      import type { BelongsToReference, HasManyReference, Errors } from '@warp-drive/legacy/model/-private';
-
       const DataFieldModelTraitSchema = {
         'name': 'data-field-model',
         'mode': 'legacy',
@@ -154,6 +152,14 @@ export default class DataFieldModel extends Model {
       } satisfies LegacyResourceSchema;
 
       export default DataFieldModelTraitSchema;
+      ",
+          "name": "DataFieldModelTraitSchema",
+          "suggestedFileName": "data-field-model.schema.ts",
+          "type": "trait",
+        },
+        {
+          "baseName": "data-field-model",
+          "code": "import type { BelongsToReference, HasManyReference, Errors } from '@warp-drive/legacy/model/-private';
 
       /**
        * This type represents the full set schema derived fields of
@@ -176,9 +182,9 @@ export default class DataFieldModel extends Model {
         fieldName: string | null;
       }
       ",
-          "name": "DataFieldModelTraitSchema",
-          "suggestedFileName": "data-field-model.schema.ts",
-          "type": "trait",
+          "name": "DataFieldModelTrait",
+          "suggestedFileName": "data-field-model.type.ts",
+          "type": "trait-type",
         },
       ]
     `);

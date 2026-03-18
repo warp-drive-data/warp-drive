@@ -34,9 +34,6 @@ describe('model used as base class via .extend()', function () {
       [F.resource('base-model')]: ts`
         import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
 
-        import type { BelongsToReference, HasManyReference, Errors } from '@warp-drive/legacy/model/-private';
-        import type { AnotherBaseModelTrait } from '../traits/another-base-model.schema';
-
         const BaseModelTraitSchema = {
           name: 'base-model',
           mode: 'legacy',
@@ -51,6 +48,10 @@ describe('model used as base class via .extend()', function () {
         } satisfies LegacyResourceSchema;
 
         export default BaseModelTraitSchema;
+      `,
+      [F.resourceType('base-model')]: ts`
+        import type { BelongsToReference, HasManyReference, Errors } from '@warp-drive/legacy/model/-private';
+        import type { AnotherBaseModelTrait } from '../traits/another-base-model.type';
 
         /**
          * This type represents the full set schema derived fields of
@@ -98,7 +99,7 @@ describe('model used as base class via .extend()', function () {
       [F.resourceType('user')]: ts`
         import type { Type } from '@warp-drive/core-types/symbols';
         import type { WithLegacy } from '@ember-data/model/migration-support';
-        import type { BaseModelTrait } from '../traits/base-model.schema';
+        import type { BaseModelTrait } from '../traits/base-model.type';
 
         /**
          * This type represents the full set schema derived fields of
