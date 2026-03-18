@@ -1,16 +1,13 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
-import type { TransformOptions } from '@ember-data/codemods/schema-migration/config.js';
-import { toArtifacts as toTraitArtifacts } from '@ember-data/codemods/schema-migration/processors/mixin.js';
 import { toArtifacts as toResourceArtifacts } from '@ember-data/codemods/schema-migration/processors/model.js';
-import type { SchemaArtifact, SchemaArtifactRegistry } from '@ember-data/codemods/schema-migration/utils/artifact.js';
 import { buildEntityRegistry, linkEntities } from '@ember-data/codemods/schema-migration/utils/artifact.js';
 import type { ParsedFile } from '@ember-data/codemods/schema-migration/utils/file-parser.js';
 import { parseFile } from '@ember-data/codemods/schema-migration/utils/file-parser.js';
 
 import { createTestOptions } from '../test-helpers.ts';
 
-function buildRegistry(parsedFiles: Map<string, ParsedFile>) {
+function buildRegistry(parsedFiles: Map<string, ParsedFile>, log?: { error: (...args: unknown[]) => void }) {
   const parsedModels = new Map<string, ParsedFile>();
   const parsedMixins = new Map<string, ParsedFile>();
 
@@ -22,7 +19,7 @@ function buildRegistry(parsedFiles: Map<string, ParsedFile>) {
     }
   }
 
-  const registry = buildEntityRegistry(parsedModels, parsedMixins, undefined, new Map());
+  const registry = buildEntityRegistry(parsedModels, parsedMixins, log as never, new Map());
 
   const modelToMixinsMap = new Map<string, Set<string>>();
   for (const [modelPath, parsed] of parsedModels) {
@@ -79,22 +76,29 @@ export default Mixin.create({
       parsedFiles.set(fileName, parseFile(fileName, content, options));
     }
 
-    const registry = buildRegistry(parsedFiles);
+    const log = { error: vi.fn() };
+    const registry = buildRegistry(parsedFiles, log);
 
     const fileEntity = registry.get('app/models/file.js')!;
     expect(fileEntity).toBeDefined();
     expect(fileEntity.baseName).toBe('file');
     expect(fileEntity.kind).toBe('model');
 
-    // The bug: FileModel gets incorrectly marked as isUsedAsTrait
-    // because the mixin at mixins/nested/file.js has baseName "file"
-    // which collides with the model's baseName.
+    // Must NOT be marked as a trait
     expect(fileEntity.isUsedAsTrait).toBe(false);
 
-    // FileModel should produce resource artifacts (schema + type), not trait artifacts
+    // FileModel should produce resource artifacts, not trait artifacts
     const result = toResourceArtifacts(fileEntity, options, registry);
     const artifactTypes = result.artifacts.map((a) => a.type).sort();
     expect(artifactTypes).toContain('schema');
     expect(artifactTypes).not.toContain('trait');
+
+    // An error must be logged about the baseName collision
+    expect(log.error).toHaveBeenCalledWith(
+      expect.stringContaining('BaseName collision')
+    );
+    expect(log.error).toHaveBeenCalledWith(
+      expect.stringContaining('"file"')
+    );
   });
 });

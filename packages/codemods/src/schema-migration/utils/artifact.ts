@@ -420,9 +420,14 @@ export function buildEntityRegistry(
   for (const [filePath, parsed] of parsedMixins) {
     const entity = SchemaArtifact.fromParsedFile(parsed, 'mixin');
     const existing = findEntityByBaseName(registry, entity.baseName);
-    if (existing) {
+    if (existing && existing.kind === 'mixin') {
       log?.error(
         `Output file conflict: "${entity.baseName}" is produced by both "${existing.path}" and "${filePath}". The second write will overwrite the first.`
+      );
+    }
+    if (existing && existing.kind === 'model') {
+      log?.error(
+        `BaseName collision: mixin "${filePath}" and model "${existing.path}" both resolve to baseName "${entity.baseName}". The mixin trait will shadow the model in import resolution. Consider renaming the mixin file to avoid this collision.`
       );
     }
     registry.set(filePath, entity);
