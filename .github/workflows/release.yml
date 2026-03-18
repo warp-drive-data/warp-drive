@@ -122,7 +122,7 @@ env:
 
 jobs:
   canary:
-    if: github.event.inputs.channel == 'canary'
+    if: github.event.inputs.channel == 'canary' || github.event_name == 'schedule'
     name: Publish Canary ${{ github.event.inputs.train }}
     runs-on: ubuntu-latest
     environment: deployment
@@ -166,7 +166,7 @@ jobs:
           git config --local user.email ${{ secrets.GH_DEPLOY_EMAIL }}
           git config --local user.name ${{ secrets.GH_DEPLOY_NAME }}
       - name: Publish with script
-        run: bun release exec canary --publish=${{ github.event.inputs.skipPublish != 'true' }} --train=${{ github.event.inputs.train }} --increment=${{ github.event.inputs.increment }} --dry-run=${{ github.event.inputs.dryRun }}
+        run: bun release exec canary --publish=${{ github.event.inputs.skipPublish != 'true' }} --train=${{ github.event.inputs.train }} --increment=${{ github.event.inputs.increment || 'patch' }} --dry-run=${{ github.event.inputs.dryRun }}
         env:
           FORCE_COLOR: 2
           CI: true
