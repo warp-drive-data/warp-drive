@@ -36,7 +36,7 @@ interface ProcessingResult {
   errors: string[];
 }
 
-type ArtifactType = 'schema' | 'type' | 'trait' | 'resource-extension' | 'trait-extension';
+type ArtifactType = 'schema' | 'type' | 'trait' | 'trait-type' | 'resource-extension' | 'trait-extension';
 
 type DirectoryKey = 'resourcesDir' | 'traitsDir' | 'outputDir';
 
@@ -71,6 +71,12 @@ const ARTIFACT_CONFIG: Record<ArtifactType, ArtifactConfig> = {
     useRelativePath: true,
     suffix: '.schema',
     preserveExtension: true,
+  },
+  'trait-type': {
+    directoryKey: 'traitsDir',
+    defaultDir: DEFAULT_TRAITS_DIR,
+    useRelativePath: true,
+    useSuggestedFileName: true,
   },
   'resource-extension': {
     directoryKey: 'resourcesDir',
