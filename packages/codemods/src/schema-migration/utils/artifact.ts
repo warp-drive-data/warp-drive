@@ -465,9 +465,12 @@ export function linkEntities(registry: SchemaArtifactRegistry, modelToMixinsMap:
   // Mark model entities that are referenced as traits by other models.
   // This happens when a model uses Model.extend(OtherModel) — the OtherModel
   // should produce trait artifacts so the schema can reference it.
+  // Skip when a mixin with the same baseName exists — in that case the trait
+  // name came from the mixin, not from a model-as-base-class.
   for (const entity of registry.values()) {
     if (entity.kind !== 'model') continue;
     for (const traitName of entity.parsedFile.traits) {
+      if (findEntityByBaseName(registry, traitName, 'mixin')) continue;
       const traitEntity = findEntityByBaseName(registry, traitName, 'model');
       if (traitEntity && traitEntity !== entity) {
         traitEntity.markAsUsedAsTrait();
