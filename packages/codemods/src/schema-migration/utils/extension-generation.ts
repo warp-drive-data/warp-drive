@@ -580,17 +580,16 @@ export function createExtensionFromOriginalFile(
       modifiedSource = removeUnnecessaryImports(modifiedSource, options);
     }
 
-    // For resource models, remove unused type imports before appending extension code
-    // This removes type imports only used by schema fields (e.g. relationship types)
-    // while preserving value imports that may have side effects or runtime usage
-    if (sourceType === 'resource') {
-      modifiedSource = removeUnusedTypeImports(modifiedSource, lang);
-    }
-
     // Clean up extra whitespace and add the extension code
     const trimmed = modifiedSource.trim();
     const separator = trimmed.endsWith('*/') ? '\n' : '\n\n';
     modifiedSource = trimmed + separator + extensionCode;
+
+    // Remove unused type imports AFTER appending extension code so that types
+    // referenced in the extension (e.g. IntlService, RouterService) are seen as used.
+    if (sourceType === 'resource') {
+      modifiedSource = removeUnusedTypeImports(modifiedSource, lang);
+    }
 
     // For mixins, remove imports that are no longer used after removing the default export
     if (sourceType === 'mixin') {
