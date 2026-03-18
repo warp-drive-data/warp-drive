@@ -123,9 +123,9 @@ export interface User extends WithLegacy<UserResource> {}
 
 
 
-import type { Timestampable } from 'test-app/data/traits/timestampable.type';
+import type { TimestampableTrait } from 'test-app/data/traits/timestampable.type';
 
-export interface TimestampableTraitExtension extends Timestampable {}
+export interface TimestampableTraitExtension extends TimestampableTrait {}
 
 export const TimestampableTraitExtension = {
   timeSince() {
@@ -519,9 +519,9 @@ export interface User extends WithLegacy<UserResource> {}
 
 
 
-import type { Timestampable } from 'test-app/data/traits/timestampable.schema';
+import type { TimestampableTrait } from 'test-app/data/traits/timestampable.schema';
 
-export interface TimestampableTraitExtension extends Timestampable {}
+export interface TimestampableTraitExtension extends TimestampableTrait {}
 
 export const TimestampableTraitExtension = {
   timeSince() {
@@ -1977,9 +1977,9 @@ export interface JsMixinTrait {
 
 
 
-import type { TsMixin } from 'test-app/data/traits/ts-mixin.type';
+import type { TsMixinTrait } from 'test-app/data/traits/ts-mixin.type';
 
-export interface TsMixinTraitExtension extends TsMixin {}
+export interface TsMixinTraitExtension extends TsMixinTrait {}
 
 export const TsMixinTraitExtension = {
   toggleEnabled() {
@@ -2374,9 +2374,9 @@ export interface User extends WithLegacy<UserResource> {}
 
 
 
-import type { Workstreamable } from 'test-app/data/traits/workstreamable.type';
+import type { WorkstreamableTrait } from 'test-app/data/traits/workstreamable.type';
 
-export interface WorkstreamableTraitExtension extends Workstreamable {}
+export interface WorkstreamableTraitExtension extends WorkstreamableTrait {}
 
 export const WorkstreamableTraitExtension = {
   imAnObjectExtensionNow() {}
@@ -2864,9 +2864,9 @@ export default class BaseModelWithMethods extends Model {
   }
 }
 
-import type { BaseModelWithMethods } from 'test-app/data/traits/base-model-with-methods.type';
+import type { BaseModelWithMethodsTrait } from 'test-app/data/traits/base-model-with-methods.type';
 
-export interface BaseModelWithMethodsTraitExtension extends BaseModelWithMethods {}
+export interface BaseModelWithMethodsTraitExtension extends BaseModelWithMethodsTrait {}
 
 export class BaseModelWithMethodsTraitExtension {
   // This should create an extension artifact

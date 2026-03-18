@@ -257,6 +257,11 @@ export function generateExtensionCode(
   interfaceImportPath?: string,
   extendsClause?: string
 ): string {
+  // Traits only export fieldsInterface (e.g. TimestampableTrait),
+  // resources export the full type (e.g. User via WithLegacy<UserResource>)
+  const typeToExtend =
+    config.type === 'trait' ? config.identifiers.fieldsInterface : config.identifiers.type;
+
   if (format === 'class') {
     // Class format used by model-to-schema transform
     const methods = extensionProperties
@@ -271,14 +276,11 @@ export function generateExtensionCode(
     const registrationBlock = generateRegistrationBlock(config.name, config.identifiers.extension!);
 
     // Add interface extension for TypeScript files or JSDoc for JavaScript files
-    if (config.extensionIsTyped) {
-      // Add import if interfaceImportPath is provided
+    if (config.extensionIsTyped && typeToExtend) {
       const importStatement = interfaceImportPath
-        ? `import type { ${config.identifiers.type} } from '${interfaceImportPath}';\n\n`
+        ? `import type { ${typeToExtend} } from '${interfaceImportPath}';\n\n`
         : '';
-      // Build the interface extends clause: include the type and any heritage names
-      const interfaceExtends = extendsClause ? `${config.identifiers.type}, ${extendsClause}` : config.identifiers.type;
-      // Put interface before class for better visibility
+      const interfaceExtends = extendsClause ? `${typeToExtend}, ${extendsClause}` : typeToExtend;
       return `${importStatement}export interface ${config.identifiers.extension} extends ${interfaceExtends} {}\n\n${classCode}\n\n${registrationBlock}`;
     }
 
@@ -303,11 +305,11 @@ export function generateExtensionCode(
   const objectCode = `export const ${config.identifiers.extension} = {\n${properties}\n};`;
   const registrationBlock = generateRegistrationBlock(config.name, config.identifiers.extension!);
 
-  if (config.extensionIsTyped && config.identifiers.type) {
+  if (config.extensionIsTyped && typeToExtend) {
     const importStatement = interfaceImportPath
-      ? `import type { ${config.identifiers.type} } from '${interfaceImportPath}';\n\n`
+      ? `import type { ${typeToExtend} } from '${interfaceImportPath}';\n\n`
       : '';
-    return `${importStatement}export interface ${config.identifiers.extension} extends ${config.identifiers.type} {}\n\n${objectCode}\n\n${registrationBlock}`;
+    return `${importStatement}export interface ${config.identifiers.extension} extends ${typeToExtend} {}\n\n${objectCode}\n\n${registrationBlock}`;
   }
 
   return `${objectCode}\n\n${registrationBlock}`;
