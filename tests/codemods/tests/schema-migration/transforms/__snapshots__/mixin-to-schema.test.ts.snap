@@ -167,7 +167,7 @@ export default FileableTraitSchema;
 export interface FileableTrait {
   files?: HasMany<File>;
   name?: string | null;
-  isActive?: boolean | null;
+  isActive?: boolean;
 }
 "
 `;
@@ -326,7 +326,7 @@ export default FileableTraitSchema;
  */
 export interface FileableTrait {
   files?: HasMany<File>;
-  showFilesRequiringReviewError?: boolean | null;
+  showFilesRequiringReviewError?: boolean;
 }
 "
 `;

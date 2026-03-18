@@ -207,7 +207,7 @@ export default Mixin.create({
         export interface FileableTrait {
           files?: HasMany<File>;
           name?: string | null;
-          isActive?: boolean | null;
+          isActive?: boolean;
         }
         ",
           "name": "FileableTraitSchema",

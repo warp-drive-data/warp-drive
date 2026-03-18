@@ -1,4 +1,4 @@
-import { resolve } from 'path';
+import { dirname, resolve } from 'path';
 
 import type { InstanciatedLogger } from '../../../utils/logger.js';
 import type { Codemod } from '../codemod.js';
@@ -219,6 +219,23 @@ function resolveMixinPath(
 }
 
 /**
+ * Count the number of shared leading path segments between two paths
+ */
+function commonPathPrefixLength(path1: string, path2: string): number {
+  const parts1 = path1.split('/');
+  const parts2 = path2.split('/');
+  let common = 0;
+  for (let i = 0; i < Math.min(parts1.length, parts2.length); i++) {
+    if (parts1[i] === parts2[i]) {
+      common++;
+    } else {
+      break;
+    }
+  }
+  return common;
+}
+
+/**
  * Extract polymorphic mixin references from pre-parsed model fields
  * Finds belongsTo fields with polymorphic: true whose type matches a mixin file basename
  */
@@ -234,16 +251,27 @@ function extractPolymorphicMixinReferences(
     if (!field.type) continue;
     if (field.options?.polymorphic !== true) continue;
 
-    // This is a polymorphic belongsTo - check if the type matches a mixin file
-    for (const mixinFile of mixinFiles) {
-      const mixinName = extractBaseName(mixinFile);
-      if (mixinName === field.type) {
-        if (!polymorphicMixins.includes(mixinFile)) {
-          polymorphicMixins.push(mixinFile);
-          logger.debug(`Found polymorphic reference to mixin '${field.type}' via parsed fields`);
-        }
-        break;
-      }
+    const matches = mixinFiles.filter((mixinFile) => extractBaseName(mixinFile) === field.type);
+    if (matches.length === 0) continue;
+
+    let bestMatch: string;
+    if (matches.length === 1) {
+      bestMatch = matches[0];
+    } else {
+      const modelDir = dirname(parsedFile.path);
+      bestMatch = matches.reduce((closest, current) => {
+        const closestCommon = commonPathPrefixLength(modelDir, dirname(closest));
+        const currentCommon = commonPathPrefixLength(modelDir, dirname(current));
+        return currentCommon > closestCommon ? current : closest;
+      });
+      logger.warn(
+        `Multiple mixin files match polymorphic type '${field.type}': ${matches.join(', ')}. Using '${bestMatch}' (closest to '${parsedFile.path}')`
+      );
+    }
+
+    if (!polymorphicMixins.includes(bestMatch)) {
+      polymorphicMixins.push(bestMatch);
+      logger.debug(`Found polymorphic reference to mixin '${field.type}' via parsed fields`);
     }
   }
 

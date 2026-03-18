@@ -159,7 +159,7 @@ export interface UserResource {
   readonly [Type]: 'user';
   id: string | null;
   name: string | null;
-  isActive: boolean | null;
+  isActive: boolean;
   company: Company | null;
   projects: AsyncHasMany<Project>;
 }
@@ -800,7 +800,7 @@ export interface UserResource {
   id: string | null;
   name: string | null;
   email: string | null;
-  isActive: boolean | null;
+  isActive: boolean;
   company: Company | null;
   projects: AsyncHasMany<Project>;
 }

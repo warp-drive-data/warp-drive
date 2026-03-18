@@ -227,7 +227,10 @@ function isImportPathOfType(importPath: string, sourceType: ImportSourceType, op
   log.debug(`Additional sources: ${JSON.stringify(config.additionalSources)}`);
 
   // Check against configured primary source
-  if (config.primarySource && importPath.startsWith(config.primarySource)) {
+  if (
+    config.primarySource &&
+    (importPath === config.primarySource || importPath.startsWith(config.primarySource + '/'))
+  ) {
     log.debug(`Matched configured ${sourceType} import source: ${config.primarySource}`);
     return true;
   }
@@ -235,7 +238,8 @@ function isImportPathOfType(importPath: string, sourceType: ImportSourceType, op
   // Check against additional sources from configuration
   if (config.additionalSources && Array.isArray(config.additionalSources)) {
     const matched = config.additionalSources.some((source) => {
-      const matches = importPath.startsWith(source.pattern);
+      const prefix = source.pattern.endsWith('/') ? source.pattern : source.pattern + '/';
+      const matches = importPath === source.pattern || importPath.startsWith(prefix);
       log.debug(`Checking pattern ${source.pattern}: ${matches}`);
       return matches;
     });
@@ -338,8 +342,11 @@ function resolveAbsoluteImport(
 
     log.debug(`${sourceType} sources: ${JSON.stringify(sources)}`);
 
-    // Find matching source
-    const matchedSource = sources.find((source) => importPath.startsWith(source.pattern));
+    // Find matching source (boundary-safe check)
+    const matchedSource = sources.find((source) => {
+      const prefix = source.pattern.endsWith('/') ? source.pattern : source.pattern + '/';
+      return importPath === source.pattern || importPath.startsWith(prefix);
+    });
     if (!matchedSource) {
       log.debug(`No matching ${sourceType} source found for import: ${importPath}`);
       return null;

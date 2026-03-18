@@ -1,4 +1,4 @@
-import { type Lang, parse, type SgNode } from '@ast-grep/napi';
+import { Lang as AstLang, type Lang, parse, type SgNode } from '@ast-grep/napi';
 import { dirname, join, relative, resolve, sep } from 'path';
 
 import { logger } from '../../../utils/logger.js';
@@ -28,34 +28,62 @@ function getImportLocalNames(importNode: SgNode): string[] {
     if (child.kind() === 'identifier') {
       names.push(child.text());
     } else if (child.kind() === 'namespace_import') {
-      const id = child.find({ rule: { kind: 'identifier' } });
+      const id = child.field('name');
       if (id) names.push(id.text());
     } else if (child.kind() === 'named_imports') {
       for (const specifier of child.findAll({ rule: { kind: 'import_specifier' } })) {
-        const alias = specifier.field('alias');
-        const name = specifier.field('name');
-        if (alias) {
-          names.push(alias.text());
-        } else if (name) {
-          names.push(name.text());
-        }
+        names.push((specifier.field('alias') ?? specifier.field('name'))?.text() ?? '');
       }
     }
   }
 
-  return names;
+  return names.filter(Boolean);
 }
 
-function removeUnusedImports(source: string, lang: Lang): string {
+/**
+ * Check whether any of the given names appear as identifiers in the non-import
+ * portion of the source. Checks both value identifiers and type identifiers
+ * (e.g., in `extends Foo` within interface declarations) to avoid false removals.
+ */
+function areAnyNamesUsed(names: string[], nonImportRoot: SgNode, lang: Lang): boolean {
+  const nameSet = new Set(names);
+
+  // In TypeScript, interface extends clauses produce `type_identifier` nodes
+  // rather than `identifier`, so we must check both kinds.
+  // JavaScript grammars don't have `type_identifier`.
+  const identifiers = nonImportRoot.findAll({ rule: { kind: 'identifier' } });
+  if (identifiers.some((id) => nameSet.has(id.text()))) return true;
+
+  if (lang === AstLang.TypeScript) {
+    const typeIdentifiers = nonImportRoot.findAll({ rule: { kind: 'type_identifier' } });
+    if (typeIdentifiers.some((id) => nameSet.has(id.text()))) return true;
+  }
+
+  return false;
+}
+
+/**
+ * Shared setup for unused import removal: parse the source, split into
+ * import nodes and a non-import AST root for usage checking.
+ */
+function prepareUnusedImportRemoval(source: string, lang: Lang) {
   const ast = parse(lang, source);
   const root = ast.root();
   const importNodes = root.findAll({ rule: { kind: 'import_statement' } });
-  if (importNodes.length === 0) return source;
 
+  // Build source without imports so identifier lookups only check usage sites
   let nonImportSource = source;
   for (const imp of importNodes) {
-    nonImportSource = nonImportSource.replace(imp.text(), '');
+    nonImportSource = nonImportSource.replaceAll(imp.text(), '');
   }
+  const nonImportRoot = parse(lang, nonImportSource).root();
+
+  return { root, importNodes, nonImportRoot };
+}
+
+function removeUnusedImports(source: string, lang: Lang): string {
+  const { root, importNodes, nonImportRoot } = prepareUnusedImportRemoval(source, lang);
+  if (importNodes.length === 0) return source;
 
   type Edit = ReturnType<SgNode['replace']>;
   const edits: Edit[] = [];
@@ -64,8 +92,7 @@ function removeUnusedImports(source: string, lang: Lang): string {
     const localNames = getImportLocalNames(imp);
     if (localNames.length === 0) continue;
 
-    const isUsed = localNames.some((name) => new RegExp(`\\b${name}\\b`).test(nonImportSource));
-    if (!isUsed) {
+    if (!areAnyNamesUsed(localNames, nonImportRoot, lang)) {
       edits.push(imp.replace(''));
     }
   }
@@ -74,29 +101,66 @@ function removeUnusedImports(source: string, lang: Lang): string {
 }
 
 function removeUnusedTypeImports(source: string, lang: Lang): string {
-  const ast = parse(lang, source);
-  const root = ast.root();
-  const importNodes = root.findAll({ rule: { kind: 'import_statement' } });
+  const { root, importNodes, nonImportRoot } = prepareUnusedImportRemoval(source, lang);
   if (importNodes.length === 0) return source;
-
-  let nonImportSource = source;
-  for (const imp of importNodes) {
-    nonImportSource = nonImportSource.replace(imp.text(), '');
-  }
 
   type Edit = ReturnType<SgNode['replace']>;
   const edits: Edit[] = [];
 
   for (const imp of importNodes) {
     const text = imp.text();
-    if (!text.startsWith('import type')) continue;
 
-    const localNames = getImportLocalNames(imp);
-    if (localNames.length === 0) continue;
+    // Handle `import type { X } from '...'` statements
+    if (text.startsWith('import type')) {
+      const localNames = getImportLocalNames(imp);
+      if (localNames.length === 0) continue;
 
-    const isUsed = localNames.some((name) => new RegExp(`\\b${name}\\b`).test(nonImportSource));
-    if (!isUsed) {
-      edits.push(imp.replace(''));
+      if (!areAnyNamesUsed(localNames, nonImportRoot, lang)) {
+        edits.push(imp.replace(''));
+      }
+      continue;
+    }
+
+    // Handle inline type specifiers: `import { type X, Y } from '...'`
+    const namedImports = imp.find({ rule: { kind: 'named_imports' } });
+    if (!namedImports) continue;
+
+    const specifiers = namedImports.findAll({ rule: { kind: 'import_specifier' } });
+    const keptSpecifiers: string[] = [];
+    let hasChanges = false;
+
+    for (const specifier of specifiers) {
+      const specText = specifier.text().trim();
+      if (!specText.startsWith('type ')) {
+        keptSpecifiers.push(specText);
+        continue;
+      }
+
+      const localName = (specifier.field('alias') ?? specifier.field('name'))?.text();
+
+      if (localName && !areAnyNamesUsed([localName], nonImportRoot, lang)) {
+        hasChanges = true;
+      } else {
+        keptSpecifiers.push(specText);
+      }
+    }
+
+    if (!hasChanges) continue;
+
+    if (keptSpecifiers.length === 0) {
+      const importClause = imp.children().find((c) => c.kind() === 'import_clause');
+      const defaultId = importClause?.children().find((c) => c.kind() === 'identifier');
+
+      if (defaultId) {
+        const sourceField = imp.field('source');
+        if (sourceField) {
+          edits.push(imp.replace(`import ${defaultId.text()} from ${sourceField.text()};`));
+        }
+      } else {
+        edits.push(imp.replace(''));
+      }
+    } else {
+      edits.push(namedImports.replace(`{ ${keptSpecifiers.join(', ')} }`));
     }
   }
 

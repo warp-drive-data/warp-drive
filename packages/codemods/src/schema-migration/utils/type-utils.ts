@@ -57,19 +57,17 @@ export function getTypeScriptTypeForAttribute(
 ): { tsType: string; imports?: string[] } {
   // Handle enum types specially
   if (attrType === 'enum' && fieldOptions?.allowedValues) {
-    const allowedValues = fieldOptions.allowedValues as string;
+    const rawValue = fieldOptions.allowedValues as string;
+    // Strip __ref__: prefix used by schema field options for identifier references
+    const allowedValues = rawValue.startsWith('__ref__:') ? rawValue.slice('__ref__:'.length) : rawValue;
 
-    // Check if this is a complex expression (contains function calls, operators, etc.)
-    // If so, fall back to a simple string type instead of trying to generate complex types
-    if (!/^[a-z][0-9]\.$/.test(allowedValues)) {
-      // For complex expressions, just use string type
+    // Check if this is a simple identifier (enum name like FrameworkUpdateStatus)
+    // If not, fall back to a simple string type instead of trying to generate complex types
+    if (!/^[A-Za-z_]\w*$/.test(allowedValues)) {
       const tsType = allowNull ? 'string | null' : 'string';
       return { tsType };
     }
 
-    // For simple enum types, we need to generate a union type
-    // The allowedValues should be the enum name (e.g., "FrameworkUpdateStatus")
-    // We'll generate a union type like: (typeof FrameworkUpdateStatus)[keyof typeof FrameworkUpdateStatus]
     const tsType = allowNull
       ? `(typeof ${allowedValues})[keyof typeof ${allowedValues}] | null`
       : `(typeof ${allowedValues})[keyof typeof ${allowedValues}]`;
@@ -86,13 +84,7 @@ export function getTypeScriptTypeForAttribute(
   // Check built-in type mappings
   const builtInMapping = BUILT_IN_TYPE_MAPPINGS[attrType];
   if (builtInMapping) {
-    let tsType: string;
-    if (attrType === 'boolean') {
-      // Special handling for boolean nullability
-      tsType = allowNull ? 'boolean | null' : 'boolean';
-    } else {
-      tsType = hasDefaultValue || !allowNull ? builtInMapping : `${builtInMapping} | null`;
-    }
+    const tsType = hasDefaultValue || !allowNull ? builtInMapping : `${builtInMapping} | null`;
     return { tsType };
   }
 
@@ -463,7 +455,7 @@ function parseDecoratorOptions(optionsNode: SgNode | undefined): ParsedDecorator
     const parsedOptions = parseObjectLiteralFromNode(optionsNode);
     return {
       hasDefaultValue: 'defaultValue' in parsedOptions,
-      allowNull: parsedOptions.allowNull !== 'false',
+      allowNull: parsedOptions.allowNull !== false && parsedOptions.allowNull !== 'false',
       async: parsedOptions.async === 'true' || parsedOptions.async === true,
     };
   } catch {
@@ -479,7 +471,8 @@ function extractTypeFromDecoratorCore(
   decoratorType: string,
   firstArg: string | undefined,
   parsedOptions: ParsedDecoratorOptions,
-  options?: TransformOptions
+  options?: TransformOptions,
+  fieldOptions?: Record<string, unknown>
 ): ExtractedType | null {
   switch (decoratorType) {
     case 'attr': {
@@ -488,7 +481,8 @@ function extractTypeFromDecoratorCore(
         attrType,
         parsedOptions.hasDefaultValue,
         parsedOptions.allowNull,
-        options
+        options,
+        fieldOptions
       );
 
       return {
@@ -556,8 +550,10 @@ export function extractTypeFromDecorator(
     const firstArg = args.text[0];
     const optionsNode = args.nodes[1];
     const parsedOptions = parseDecoratorOptions(optionsNode);
+    const fieldOptions =
+      optionsNode && optionsNode.kind() === 'object' ? parseObjectLiteralFromNode(optionsNode) : undefined;
 
-    return extractTypeFromDecoratorCore(decoratorType, firstArg, parsedOptions, options);
+    return extractTypeFromDecoratorCore(decoratorType, firstArg, parsedOptions, options, fieldOptions);
   } catch (error) {
     log.debug(`Error extracting type from decorator: ${String(error)}`);
     return null;

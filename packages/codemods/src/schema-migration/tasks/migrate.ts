@@ -8,8 +8,8 @@ import type { FinalOptions, MigrateOptions, TransformOptions } from '../config.j
 import { DEFAULT_RESOURCES_DIR, DEFAULT_TRAITS_DIR } from '../config.js';
 import { toArtifacts as mixinToArtifacts } from '../processors/mixin.js';
 import { processIntermediateModelsToTraits, toArtifacts as modelToArtifacts } from '../processors/model.js';
-import { findEntityByBaseName } from '../utils/artifact.js';
 import type { SchemaArtifact, SchemaArtifactRegistry } from '../utils/artifact.js';
+import { findEntityByBaseName } from '../utils/artifact.js';
 import type { TransformArtifact } from '../utils/schema-generation.js';
 
 const migrateLog = logger.for('migrate');

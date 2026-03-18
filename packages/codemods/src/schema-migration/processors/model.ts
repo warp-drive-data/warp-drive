@@ -5,8 +5,8 @@ import { dirname, join, resolve } from 'path';
 import { logger } from '../../../utils/logger.js';
 import type { TransformerResult } from '../codemod.js';
 import { getConfiguredImport, type TransformOptions } from '../config.js';
-import { SchemaArtifact, createResourceArtifactConfig, createTraitArtifactConfig } from '../utils/artifact.js';
 import type { SchemaArtifactRegistry } from '../utils/artifact.js';
+import { createResourceArtifactConfig, createTraitArtifactConfig, SchemaArtifact } from '../utils/artifact.js';
 import type { ExtractedType, SchemaField, TransformArtifact } from '../utils/ast-utils.js';
 import {
   buildLegacySchemaObject,
@@ -19,7 +19,6 @@ import {
   FRAGMENT_BASE_SOURCE,
   generateMergedSchemaCode,
   getEmberDataImports,
-  getExportedIdentifier,
   getLanguageFromPath,
   getMixinImports,
   getModelImportSources,
@@ -249,7 +248,7 @@ function extractHeritageInfo(
     if (options?.importSubstitutes) {
       for (const substitute of options.importSubstitutes) {
         const localName = findEmberImportLocalName(root, [substitute.import], options, undefined, process.cwd());
-        if (localName && heritageClause.text().includes(localName)) {
+        if (localName && extendsLocalName(heritageClause, localName)) {
           if (substitute.trait) {
             mixinTraits.push(substitute.trait);
           }
@@ -1188,41 +1187,17 @@ function isClassExtendingFragment(
   options?: TransformOptions,
   filePath?: string
 ): boolean {
-  // Look for a class declaration in the export
-  let classDeclaration = exportNode.find({ rule: { kind: NODE_KIND_CLASS_DECLARATION } });
-
-  // If no class declaration found in export, check if export references a class by name
-  if (!classDeclaration) {
-    const exportedIdentifier = getExportedIdentifier(exportNode, undefined);
-    if (exportedIdentifier) {
-      classDeclaration = root.find({
-        rule: {
-          kind: NODE_KIND_CLASS_DECLARATION,
-          has: {
-            kind: NODE_KIND_IDENTIFIER,
-            regex: exportedIdentifier,
-          },
-        },
-      });
-    }
-  }
-
+  const classDeclaration = findClassDeclaration(exportNode, root, options);
   if (!classDeclaration) {
     return false;
   }
 
-  // Check if the class has a heritage clause (extends)
   const heritageClause = classDeclaration.find({ rule: { kind: NODE_KIND_CLASS_HERITAGE } });
   if (!heritageClause) {
     return false;
   }
 
-  // Check if it extends the Fragment local name
-  const extendsText = heritageClause.text();
-  const extendsFragmentDirectly =
-    extendsText.includes(fragmentLocalName) || extendsText.includes(`${fragmentLocalName}.extend(`);
-
-  if (extendsFragmentDirectly) {
+  if (extendsLocalName(heritageClause, fragmentLocalName)) {
     return true;
   }
 
@@ -1230,7 +1205,7 @@ function isClassExtendingFragment(
   if (options?.intermediateFragmentPaths && filePath) {
     const intermediateLocalNames = getIntermediateFragmentLocalNames(root, options, filePath);
     for (const localName of intermediateLocalNames) {
-      if (extendsText.includes(localName) || extendsText.includes(`${localName}.extend(`)) {
+      if (extendsLocalName(heritageClause, localName)) {
         return true;
       }
     }
@@ -1240,10 +1215,11 @@ function isClassExtendingFragment(
 }
 
 /**
- * Check if the heritage clause extends a specific local name (either directly or via .extend())
+ * Check if the heritage clause extends a specific local name (either directly or via .extend()).
+ * Uses AST identifier matching to avoid false positives from substring matches.
  */
-function extendsLocalName(extendsText: string, localName: string): boolean {
-  return extendsText.includes(localName) || extendsText.includes(`${localName}.extend(`);
+function extendsLocalName(heritageNode: SgNode, localName: string): boolean {
+  return heritageNode.findAll({ rule: { kind: NODE_KIND_IDENTIFIER } }).some((id) => id.text() === localName);
 }
 
 /**
@@ -1284,15 +1260,14 @@ function isModelClass(
   }
 
   // Check if it extends our model local name or calls .extend() on it
-  const extendsText = heritageClause.text();
-  log.debug(`DEBUG: Heritage clause: ${extendsText}`);
+  log.debug(`DEBUG: Heritage clause: ${heritageClause.text()}`);
 
   // Check for direct Model extension
-  const isDirectExtension = modelLocalName ? extendsLocalName(extendsText, modelLocalName) : false;
+  const isDirectExtension = modelLocalName ? extendsLocalName(heritageClause, modelLocalName) : false;
 
   // Check for custom base model or Fragment extension
   const isBaseModelExtension = fragmentOrBaseModelLocalName
-    ? extendsLocalName(extendsText, fragmentOrBaseModelLocalName)
+    ? extendsLocalName(heritageClause, fragmentOrBaseModelLocalName)
     : false;
 
   // Check for chained extends through configured intermediate classes
@@ -1304,10 +1279,12 @@ function isModelClass(
       options,
       filePath
     );
-    isChainedExtension = [...intermediateLocalNames.keys()].some((localName) => extendsText.includes(localName));
+    isChainedExtension = [...intermediateLocalNames.keys()].some((localName) =>
+      extendsLocalName(heritageClause, localName)
+    );
     if (isChainedExtension) {
       log.debug(
-        `DEBUG: Found chained extension through intermediate model: ${[...intermediateLocalNames.keys()].find((name) => extendsText.includes(name))}`
+        `DEBUG: Found chained extension through intermediate model: ${[...intermediateLocalNames.keys()].find((name) => extendsLocalName(heritageClause, name))}`
       );
     }
   }
@@ -1330,13 +1307,12 @@ function extractIntermediateModelTraits(
   filePath?: string
 ): string[] {
   const intermediateTraits: string[] = [];
-  const extendsText = heritageClause.text();
 
   // Get local names for all intermediate models (maps localName → modelPath)
   const intermediateLocalNames = getIntermediateModelLocalNames(root, intermediateModelPaths, options, filePath);
 
   for (const [localName, modelPath] of intermediateLocalNames) {
-    if (extendsText.includes(localName)) {
+    if (extendsLocalName(heritageClause, localName)) {
       const traitName = extractBaseName(modelPath);
 
       intermediateTraits.push(traitName);

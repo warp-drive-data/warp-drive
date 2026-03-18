@@ -4,10 +4,9 @@ import { join } from 'path';
 
 import { logger } from '../../../utils/logger.js';
 import { getConfiguredImport, type TransformOptions } from '../config.js';
+import type { ArtifactConfig, SchemaArtifactRegistry } from './artifact.js';
 import { deriveResourceExtensionName, deriveTraitExtensionName } from './artifact.js';
-import type { ArtifactConfig } from './artifact.js';
-import { generateRegistrationBlock, type ExtensionContext } from './extension-generation.js';
-import type { SchemaArtifactRegistry } from './artifact.js';
+import { type ExtensionContext, generateRegistrationBlock } from './extension-generation.js';
 import { generateTraitImport, isModelImportPath, transformModelToResourceImport } from './import-utils.js';
 import { normalizeClassicImport, removeQuotes, toPascalCase } from './path-utils.js';
 import type { ExtractedType } from './type-utils.js';
@@ -154,6 +153,31 @@ export const SCHEMA_OPTION_REF_PREFIX = '__ref__:';
  * Identifier values (e.g. `BIRTHAGE`) are preserved as code references
  * using the `__ref__:` sentinel prefix so they can be emitted unquoted.
  */
+function parseSchemaFieldValue(valueNode: SgNode): unknown {
+  const kind = valueNode.kind();
+  if (kind === 'string') {
+    return valueNode.text().slice(1, -1);
+  } else if (kind === 'true') {
+    return true;
+  } else if (kind === 'false') {
+    return false;
+  } else if (kind === 'number') {
+    return parseFloat(valueNode.text());
+  } else if (kind === 'null') {
+    return null;
+  } else if (kind === 'identifier') {
+    return SCHEMA_OPTION_REF_PREFIX + valueNode.text();
+  } else if (kind === 'object') {
+    return parseSchemaFieldOptions(valueNode);
+  } else if (kind === 'array') {
+    return valueNode
+      .children()
+      .filter((child) => child.isNamed() && child.kind() !== ',')
+      .map((child) => parseSchemaFieldValue(child));
+  }
+  return valueNode.text();
+}
+
 function parseSchemaFieldOptions(optionsNode: SgNode | undefined): Record<string, unknown> {
   if (!optionsNode || optionsNode.kind() !== 'object') {
     return {};
@@ -172,24 +196,7 @@ function parseSchemaFieldOptions(optionsNode: SgNode | undefined): Record<string
       key = key.slice(1, -1);
     }
 
-    let value: unknown;
-    const kind = valueNode.kind();
-    if (kind === 'string') {
-      value = valueNode.text().slice(1, -1);
-    } else if (kind === 'true') {
-      value = true;
-    } else if (kind === 'false') {
-      value = false;
-    } else if (kind === 'number') {
-      value = parseFloat(valueNode.text());
-    } else if (kind === 'null') {
-      value = null;
-    } else if (kind === 'identifier') {
-      // Preserve identifier references (e.g. BIRTHAGE) as code refs, not strings
-      value = SCHEMA_OPTION_REF_PREFIX + valueNode.text();
-    } else {
-      value = valueNode.text();
-    }
+    const value = parseSchemaFieldValue(valueNode);
 
     result[key] = value;
   }
@@ -495,9 +502,9 @@ export function collectRelationshipImports(
         }
       }
 
-      if (field.type !== selfName) {
-        const typeName = toPascalCase(field.type!);
-        finalImports.add(transformModelToResourceImport(field.type!, typeName, options, registry));
+      if (field.type && field.type !== selfName) {
+        const typeName = toPascalCase(field.type);
+        finalImports.add(transformModelToResourceImport(field.type, typeName, options, registry));
       }
     } else if (field.typeInfo?.imports) {
       for (const imp of field.typeInfo.imports) {

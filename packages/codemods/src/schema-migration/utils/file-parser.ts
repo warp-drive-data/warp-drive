@@ -196,11 +196,17 @@ function classifyImport(importPath: string, options: TransformOptions): ParsedFi
     return 'mixin';
   }
 
-  if (options.mixinImportSource && importPath.startsWith(options.mixinImportSource)) {
+  if (
+    options.mixinImportSource &&
+    (importPath === options.mixinImportSource || importPath.startsWith(options.mixinImportSource + '/'))
+  ) {
     return 'mixin';
   }
 
-  if (options.modelImportSource && importPath.startsWith(options.modelImportSource)) {
+  if (
+    options.modelImportSource &&
+    (importPath === options.modelImportSource || importPath.startsWith(options.modelImportSource + '/'))
+  ) {
     return 'model';
   }
 
@@ -210,6 +216,24 @@ function classifyImport(importPath: string, options: TransformOptions): ParsedFi
 
   if (importPath.includes('/mixins/')) {
     return 'mixin';
+  }
+
+  if (options.additionalModelSources) {
+    for (const source of options.additionalModelSources) {
+      const prefix = source.pattern.endsWith('/') ? source.pattern : source.pattern + '/';
+      if (importPath === source.pattern || importPath.startsWith(prefix)) {
+        return 'model';
+      }
+    }
+  }
+
+  if (options.additionalMixinSources) {
+    for (const source of options.additionalMixinSources) {
+      const prefix = source.pattern.endsWith('/') ? source.pattern : source.pattern + '/';
+      if (importPath === source.pattern || importPath.startsWith(prefix)) {
+        return 'mixin';
+      }
+    }
   }
 
   if (importPath.startsWith('@') || !importPath.startsWith('.')) {
@@ -395,16 +419,16 @@ function extractModelData(
   if (heritageClause) {
     const mixinImports = getMixinImports(root, options);
 
-    // Find base class (first identifier before .extend())
-    const heritageText = heritageClause.text();
-    const extendMatch = heritageText.match(/^extends\s+(\w+)(?:\.extend)?/);
-    if (extendMatch) {
-      baseClass = extendMatch[1];
+    // Find base class (first identifier in the heritage clause)
+    const heritageIdentifiers = heritageClause.findAll({ rule: { kind: NODE_KIND_IDENTIFIER } });
+    if (heritageIdentifiers.length > 0) {
+      baseClass = heritageIdentifiers[0].text();
     }
 
-    // Extract mixin traits from .extend() arguments
+    // Extract mixin traits from .extend() arguments using AST identifier matching
+    const heritageIdentifierNames = new Set(heritageIdentifiers.map((id) => id.text()));
     for (const [localName, importPath] of mixinImports) {
-      if (heritageText.includes(localName)) {
+      if (heritageIdentifierNames.has(localName)) {
         heritageLocalNames.push(localName);
         const traitName = extractBaseName(importPath) || localName;
         traits.push(traitName);
@@ -876,9 +900,16 @@ export function parseFile(filePath: string, code: string, options: TransformOpti
  * if one exists as the previous sibling in the class body.
  */
 export function extractLeadingComment(node: SgNode): string | undefined {
-  const prev = node.prev();
-  if (prev && prev.kind() === 'comment') {
-    return prev.text();
+  let current = node.prev();
+  while (current) {
+    if (current.kind() === 'comment') {
+      return current.text();
+    }
+    if (current.text().trim() === '') {
+      current = current.prev();
+      continue;
+    }
+    break;
   }
   return undefined;
 }
