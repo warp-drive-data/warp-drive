@@ -622,7 +622,7 @@ export function createExtensionFromOriginalFile(
       suggestedFileName: extFileName,
     };
   } catch (error) {
-    log.warn(`Error creating extension from original file: ${String(error)}`);
+    log.error(`❌ Error creating extension for '${filePath}': ${String(error)}`);
     return null;
   }
 }

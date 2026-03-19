@@ -5,7 +5,15 @@ import { type InstanciatedLogger, logger } from '../../../utils/logger.js';
 import type { SkippedFile, TransformerResult } from '../codemod.js';
 import { Codemod } from '../codemod.js';
 import type { FinalOptions, MigrateOptions, TransformOptions } from '../config.js';
-import { DEFAULT_RESOURCES_DIR, DEFAULT_TRAITS_DIR } from '../config.js';
+import {
+  DEFAULT_INPUT_DIR,
+  DEFAULT_MIXIN_SOURCE_DIR,
+  DEFAULT_MODEL_SOURCE_DIR,
+  DEFAULT_OUTPUT_DIR,
+  DEFAULT_RESOURCES_DIR,
+  DEFAULT_TRAITS_DIR,
+  DEFAULT_WARP_DRIVE_IMPORTS,
+} from '../config.js';
 import { toArtifacts as mixinToArtifacts } from '../processors/mixin.js';
 import { processIntermediateModelsToTraits, toArtifacts as modelToArtifacts } from '../processors/model.js';
 import type { SchemaArtifact, SchemaArtifactRegistry } from '../utils/artifact.js';
@@ -121,9 +129,9 @@ function getRelativePathFromAdditionalSources(
 /**
  * Get the relative path for a mixin file, handling both local and external mixins
  */
-function getRelativePathForMixin(filePath: string, options: TransformOptions): string {
+function getRelativePathForMixin(filePath: string, options: FinalOptions): string {
   // First, try to get relative path from the main mixin source directory
-  const mixinSourceDir = resolve(options.mixinSourceDir || './app/mixins');
+  const mixinSourceDir = resolve(options.mixinSourceDir);
   if (filePath.startsWith(mixinSourceDir)) {
     return filePath.replace(mixinSourceDir, '').replace(/^\//, '');
   }
@@ -154,9 +162,9 @@ function getRelativePathForMixin(filePath: string, options: TransformOptions): s
 /**
  * Calculate relative path for model-based artifacts (schema, resource-type)
  */
-function getRelativePathForModel(filePath: string, options: TransformOptions): string {
+function getRelativePathForModel(filePath: string, options: FinalOptions): string {
   // Try standard model source directory first
-  let relativePath = filePath.replace(resolve(options.modelSourceDir || './app/models'), '');
+  let relativePath = filePath.replace(resolve(options.modelSourceDir), '');
 
   // If not in standard directory, check additionalModelSources
   if (relativePath === filePath) {
@@ -210,7 +218,7 @@ function buildOutputFileName(
 /**
  * Get the output directory for an artifact type
  */
-function getOutputDirectory(artifactType: string, options: TransformOptions): string {
+function getOutputDirectory(artifactType: string, options: FinalOptions): string {
   const config = ARTIFACT_CONFIG[artifactType as ArtifactType] ?? DEFAULT_FALLBACK_CONFIG;
   return options[config.directoryKey] ?? config.defaultDir;
 }
@@ -221,7 +229,7 @@ function getOutputDirectory(artifactType: string, options: TransformOptions): st
 function getArtifactOutputPath(
   artifact: Artifact,
   filePath: string,
-  options: TransformOptions
+  options: FinalOptions
 ): { outputDir: string; outputPath: string } {
   const config = ARTIFACT_CONFIG[artifact.type as ArtifactType] ?? DEFAULT_FALLBACK_CONFIG;
   const outputDir = getOutputDirectory(artifact.type, options);
@@ -367,21 +375,21 @@ function processFiles({ registry, finalOptions, log }: ProcessFilesOptions): Pro
 export async function runMigration(options: MigrateOptions): Promise<void> {
   const finalOptions: FinalOptions = {
     kind: 'finalized',
-    inputDir: options.inputDir || './app',
-    outputDir: options.outputDir || './app/schemas',
+    inputDir: options.inputDir || DEFAULT_INPUT_DIR,
+    outputDir: options.outputDir || DEFAULT_OUTPUT_DIR,
     dryRun: options.dryRun || false,
     verbose: options.verbose || false,
-    warpDriveImports: options.warpDriveImports || 'legacy',
-    modelSourceDir: options.modelSourceDir || './app/models',
-    mixinSourceDir: options.mixinSourceDir || './app/mixins',
+    warpDriveImports: options.warpDriveImports || DEFAULT_WARP_DRIVE_IMPORTS,
+    modelSourceDir: options.modelSourceDir || DEFAULT_MODEL_SOURCE_DIR,
+    mixinSourceDir: options.mixinSourceDir || DEFAULT_MIXIN_SOURCE_DIR,
     projectName: options.projectName || '',
     ...options,
   };
 
   const log = logger.for('migrate-to-schema');
   log.info(`🚀 Starting schema migration...`);
-  log.info(`📁 Input directory: ${resolve(finalOptions.inputDir || './app')}`);
-  log.info(`📁 Output directory: ${resolve(finalOptions.outputDir || './app/schemas')}`);
+  log.info(`📁 Input directory: ${resolve(finalOptions.inputDir)}`);
+  log.info(`📁 Output directory: ${resolve(finalOptions.outputDir)}`);
 
   const codemod = new Codemod(log, finalOptions);
 

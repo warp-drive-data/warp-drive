@@ -66,10 +66,6 @@ function isIntermediateModel(
         }
       }
 
-      // Also check if it's in app/core
-      if (filePath.includes('/app/core/')) {
-        return true;
-      }
     }
   }
 
@@ -267,7 +263,6 @@ export class Codemod {
   }
 
   async findModels() {
-    // TODO: || './app/models'
     if (!this.finalOptions.modelSourceDir) {
       throw new Error('`options.modelSourceDir` must be specified before looking for files');
     }

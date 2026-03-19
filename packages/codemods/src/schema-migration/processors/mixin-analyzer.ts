@@ -192,7 +192,7 @@ function resolveMixinPath(
   options: FinalOptions
 ): string | null {
   try {
-    const mixinSourceDir = resolve(options.mixinSourceDir || './app/mixins');
+    const mixinSourceDir = resolve(options.mixinSourceDir);
     const config = getImportSourceConfig('mixin', options);
 
     // Handle relative paths - must be within mixin source directory

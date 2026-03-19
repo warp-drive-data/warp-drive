@@ -1,5 +1,10 @@
 export const DEFAULT_RESOURCES_DIR = './app/data/resources';
 export const DEFAULT_TRAITS_DIR = './app/data/traits';
+export const DEFAULT_INPUT_DIR = './app';
+export const DEFAULT_OUTPUT_DIR = './app/schemas';
+export const DEFAULT_MODEL_SOURCE_DIR = './app/models';
+export const DEFAULT_MIXIN_SOURCE_DIR = './app/mixins';
+export const DEFAULT_WARP_DRIVE_IMPORTS = 'legacy' as const;
 
 export interface PackageImport {
   imported: string;
@@ -210,4 +215,12 @@ export interface MigrateOptions extends Partial<TransformOptions> {
   mixinSourceDir?: string;
 }
 
-export type FinalOptions = TransformOptions & MigrateOptions & { kind: 'finalized' };
+export type FinalOptions = TransformOptions &
+  MigrateOptions &
+  Required<
+    Pick<TransformOptions, 'modelSourceDir' | 'mixinSourceDir' | 'warpDriveImports' | 'projectName'>
+  > &
+  Required<Pick<MigrateOptions, 'inputDir'>> & {
+    kind: 'finalized';
+    outputDir: string;
+  };
