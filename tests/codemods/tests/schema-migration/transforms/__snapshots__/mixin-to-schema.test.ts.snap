@@ -1,7 +1,7 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`mixin-to-schema transform (artifacts) > TypeScript type artifacts > generates only trait artifact when mixin has only data fields > data-only trait type interface 1`] = `
-"import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
+"import type { LegacyTrait } from '@warp-drive/core/types/schema/fields';
 
 const SimpleTraitSchema = {
   'name': 'simple',
@@ -21,7 +21,7 @@ const SimpleTraitSchema = {
       }
     }
   ]
-} satisfies LegacyResourceSchema;
+} satisfies LegacyTrait;
 
 export default SimpleTraitSchema;
 "
@@ -50,7 +50,7 @@ export default Registration;"
 `;
 
 exports[`mixin-to-schema transform (artifacts) > TypeScript type artifacts > generates trait and extension artifacts when mixin has computed properties and methods > mixin trait type interface 1`] = `
-"import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
+"import type { LegacyTrait } from '@warp-drive/core/types/schema/fields';
 
 const NameableTraitSchema = {
   'name': 'nameable',
@@ -62,14 +62,14 @@ const NameableTraitSchema = {
       'type': 'string'
     }
   ]
-} satisfies LegacyResourceSchema;
+} satisfies LegacyTrait;
 
 export default NameableTraitSchema;
 "
 `;
 
 exports[`mixin-to-schema transform (artifacts) > TypeScript type artifacts > generates trait artifact with merged types for basic mixins > basic trait type interface 1`] = `
-"import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
+"import type { LegacyTrait } from '@warp-drive/core/types/schema/fields';
 
 const FileableTraitSchema = {
   'name': 'fileable',
@@ -98,14 +98,14 @@ const FileableTraitSchema = {
       }
     }
   ]
-} satisfies LegacyResourceSchema;
+} satisfies LegacyTrait;
 
 export default FileableTraitSchema;
 "
 `;
 
 exports[`mixin-to-schema transform (artifacts) > TypeScript type artifacts > handles custom type mappings in mixin trait type interfaces > mixin custom type mappings interface 1`] = `
-"import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
+"import type { LegacyTrait } from '@warp-drive/core/types/schema/fields';
 
 const TypedTraitSchema = {
   'name': 'typed',
@@ -127,7 +127,7 @@ const TypedTraitSchema = {
       'type': 'json'
     }
   ]
-} satisfies LegacyResourceSchema;
+} satisfies LegacyTrait;
 
 export default TypedTraitSchema;
 "
@@ -191,7 +191,7 @@ export default Registration;"
 `;
 
 exports[`mixin-to-schema transform (artifacts) > basic functionality > collects the real fileable mixin shape into trait and extension artifacts > trait code 1`] = `
-"import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
+"import type { LegacyTrait } from '@warp-drive/core/types/schema/fields';
 
 const FileableTraitSchema = {
   'name': 'fileable',
@@ -216,7 +216,7 @@ const FileableTraitSchema = {
       }
     }
   ]
-} satisfies LegacyResourceSchema;
+} satisfies LegacyTrait;
 
 export default FileableTraitSchema;
 "
@@ -332,7 +332,7 @@ exports[`mixin-to-schema transform (artifacts) > basic functionality > produces 
 `;
 
 exports[`mixin-to-schema transform (artifacts) > basic functionality > supports alias of Mixin import and still produces a trait artifact > code 1`] = `
-"import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
+"import type { LegacyTrait } from '@warp-drive/core/types/schema/fields';
 
 const AliasedTraitSchema = {
   'name': 'aliased',
@@ -344,7 +344,7 @@ const AliasedTraitSchema = {
       'type': 'string'
     }
   ]
-} satisfies LegacyResourceSchema;
+} satisfies LegacyTrait;
 
 export default AliasedTraitSchema;
 "
@@ -382,7 +382,7 @@ export interface File {
   },
   {
     "baseName": "custom-source",
-    "code": "import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
+    "code": "import type { LegacyTrait } from '@warp-drive/core/types/schema/fields';
 
 const CustomSourceTraitSchema = {
   'name': 'custom-source',
@@ -399,7 +399,7 @@ const CustomSourceTraitSchema = {
       'type': 'file'
     }
   ]
-} satisfies LegacyResourceSchema;
+} satisfies LegacyTrait;
 
 export default CustomSourceTraitSchema;
 ",
@@ -477,7 +477,7 @@ export interface File {
   },
   {
     "baseName": "renamed-mixed-sources",
-    "code": "import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
+    "code": "import type { LegacyTrait } from '@warp-drive/core/types/schema/fields';
 
 const RenamedMixedSourcesTraitSchema = {
   'name': 'renamed-mixed-sources',
@@ -489,7 +489,7 @@ const RenamedMixedSourcesTraitSchema = {
       'type': 'file'
     }
   ]
-} satisfies LegacyResourceSchema;
+} satisfies LegacyTrait;
 
 export default RenamedMixedSourcesTraitSchema;
 ",
@@ -553,7 +553,7 @@ exports[`mixin-to-schema transform (artifacts) > import validation > handles CLI
 [
   {
     "baseName": "cli-option",
-    "code": "import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
+    "code": "import type { LegacyTrait } from '@warp-drive/core/types/schema/fields';
 
 const CliOptionTraitSchema = {
   'name': 'cli-option',
@@ -565,7 +565,7 @@ const CliOptionTraitSchema = {
       'type': 'string'
     }
   ]
-} satisfies LegacyResourceSchema;
+} satisfies LegacyTrait;
 
 export default CliOptionTraitSchema;
 ",
@@ -632,7 +632,7 @@ export interface User {
   },
   {
     "baseName": "aliased-imports",
-    "code": "import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
+    "code": "import type { LegacyTrait } from '@warp-drive/core/types/schema/fields';
 
 const AliasedImportsTraitSchema = {
   'name': 'aliased-imports',
@@ -654,7 +654,7 @@ const AliasedImportsTraitSchema = {
       'type': 'user'
     }
   ]
-} satisfies LegacyResourceSchema;
+} satisfies LegacyTrait;
 
 export default AliasedImportsTraitSchema;
 ",
@@ -701,7 +701,7 @@ exports[`mixin-to-schema transform (artifacts) > import validation > ignores dec
 [
   {
     "baseName": "unsupported-source",
-    "code": "import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
+    "code": "import type { LegacyTrait } from '@warp-drive/core/types/schema/fields';
 
 const UnsupportedSourceTraitSchema = {
   'name': 'unsupported-source',
@@ -713,7 +713,7 @@ const UnsupportedSourceTraitSchema = {
       'type': 'string'
     }
   ]
-} satisfies LegacyResourceSchema;
+} satisfies LegacyTrait;
 
 export default UnsupportedSourceTraitSchema;
 ",
@@ -802,7 +802,7 @@ export interface File {
   // Stub: properties will be populated when the actual resource type is generated
 }
 ",
-  "import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
+  "import type { LegacyTrait } from '@warp-drive/core/types/schema/fields';
 
 const DefaultSourceTraitSchema = {
   'name': 'default-source',
@@ -819,7 +819,7 @@ const DefaultSourceTraitSchema = {
       'type': 'file'
     }
   ]
-} satisfies LegacyResourceSchema;
+} satisfies LegacyTrait;
 
 export default DefaultSourceTraitSchema;
 ",
@@ -881,7 +881,7 @@ export interface User {
   },
   {
     "baseName": "belongs-to",
-    "code": "import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
+    "code": "import type { LegacyTrait } from '@warp-drive/core/types/schema/fields';
 
 const BelongsToTraitSchema = {
   'name': 'belongs-to',
@@ -896,7 +896,7 @@ const BelongsToTraitSchema = {
       }
     }
   ]
-} satisfies LegacyResourceSchema;
+} satisfies LegacyTrait;
 
 export default BelongsToTraitSchema;
 ",
@@ -939,13 +939,13 @@ exports[`mixin-to-schema transform (artifacts) > import validation > produces an
 [
   {
     "baseName": "no-valid-imports",
-    "code": "import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
+    "code": "import type { LegacyTrait } from '@warp-drive/core/types/schema/fields';
 
 const NoValidImportsTraitSchema = {
   'name': 'no-valid-imports',
   'mode': 'legacy',
   'fields': []
-} satisfies LegacyResourceSchema;
+} satisfies LegacyTrait;
 
 export default NoValidImportsTraitSchema;
 ",
@@ -1019,7 +1019,7 @@ export interface File {
   },
   {
     "baseName": "auditboard-source",
-    "code": "import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
+    "code": "import type { LegacyTrait } from '@warp-drive/core/types/schema/fields';
 
 const AuditboardSourceTraitSchema = {
   'name': 'auditboard-source',
@@ -1036,7 +1036,7 @@ const AuditboardSourceTraitSchema = {
       'type': 'file'
     }
   ]
-} satisfies LegacyResourceSchema;
+} satisfies LegacyTrait;
 
 export default AuditboardSourceTraitSchema;
 ",
@@ -1118,7 +1118,7 @@ exports[`mixin-to-schema transform (artifacts) > mixin inheritance > produces tr
 `;
 
 exports[`mixin-to-schema transform (artifacts) > mixin inheritance > produces trait with extended traits when using createWithMixins > inheritance trait code 1`] = `
-"import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
+"import type { LegacyTrait } from '@warp-drive/core/types/schema/fields';
 
 const FileableTraitSchema = {
   'name': 'fileable',
@@ -1142,14 +1142,14 @@ const FileableTraitSchema = {
     'base-model',
     'timestamp'
   ]
-} satisfies LegacyResourceSchema;
+} satisfies LegacyTrait;
 
 export default FileableTraitSchema;
 "
 `;
 
 exports[`mixin-to-schema transform (artifacts) > mixin inheritance > produces trait with single extended trait > single inheritance trait code 1`] = `
-"import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
+"import type { LegacyTrait } from '@warp-drive/core/types/schema/fields';
 
 const DescribableTraitSchema = {
   'name': 'describable',
@@ -1164,14 +1164,14 @@ const DescribableTraitSchema = {
   'traits': [
     'base-model'
   ]
-} satisfies LegacyResourceSchema;
+} satisfies LegacyTrait;
 
 export default DescribableTraitSchema;
 "
 `;
 
 exports[`mixin-to-schema transform (artifacts) > mixin inheritance > produces trait without traits property when no inheritance > no inheritance trait code 1`] = `
-"import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
+"import type { LegacyTrait } from '@warp-drive/core/types/schema/fields';
 
 const DescribableTraitSchema = {
   'name': 'describable',
@@ -1183,7 +1183,7 @@ const DescribableTraitSchema = {
       'type': 'string'
     }
   ]
-} satisfies LegacyResourceSchema;
+} satisfies LegacyTrait;
 
 export default DescribableTraitSchema;
 "

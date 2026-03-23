@@ -27,7 +27,7 @@ const Registration = {
 };
 export default Registration;",
   "resources/user.schema.ts": "
-import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
 
 const UserSchema = {
   'type': 'user',
@@ -75,8 +75,8 @@ const UserSchema = {
 export default UserSchema;
 ",
   "resources/user.type.ts": "
-import type { Type } from '@warp-drive/core-types/symbols';
-import type { WithLegacy } from '@ember-data/model/migration-support';
+import type { Type } from '@warp-drive/core/types/symbols';
+import type { WithLegacy } from '@warp-drive/legacy/model/migration-support';
 import type { Company } from 'test-app/data/resources/company.type';
 import type { Project } from 'test-app/data/resources/project.type';
 import type { TimestampableTrait } from 'test-app/data/traits/timestampable.type';
@@ -140,7 +140,7 @@ const Registration = {
 };
 export default Registration;",
   "traits/timestampable.schema.ts": "
-import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+import type { LegacyTrait } from '@warp-drive/core/types/schema/fields';
 
 const TimestampableTraitSchema = {
   'name': 'timestampable',
@@ -160,7 +160,7 @@ const TimestampableTraitSchema = {
   'traits': [
     'deleteable'
   ]
-} satisfies LegacyResourceSchema;
+} satisfies LegacyTrait;
 
 export default TimestampableTraitSchema;
 ",
@@ -208,8 +208,8 @@ exports[`migrate-to-schema batch operation > colocates type files with their cor
 {
   "resources/": "__dir__",
   "resources/admin-model.type.ts": "
-import type { Type } from '@warp-drive/core-types/symbols';
-import type { WithLegacy } from '@ember-data/model/migration-support';
+import type { Type } from '@warp-drive/core/types/symbols';
+import type { WithLegacy } from '@warp-drive/legacy/model/migration-support';
 import type { ConnectedTrait } from 'test-app/data/traits/connected.type';
 
 /**
@@ -247,7 +247,7 @@ export interface AdminModel extends WithLegacy<AdminModelResource> {}
 ",
   "resources/admin/": "__dir__",
   "resources/admin/admin-model.schema.ts": "
-import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
 
 const AdminModelSchema = {
   'type': 'admin-model',
@@ -271,7 +271,7 @@ const AdminModelSchema = {
 export default AdminModelSchema;
 ",
   "resources/admin/nested-model.schema.ts": "
-import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
 
 const NestedModelSchema = {
   'type': 'nested-model',
@@ -292,8 +292,8 @@ const NestedModelSchema = {
 export default NestedModelSchema;
 ",
   "resources/nested-model.type.ts": "
-import type { Type } from '@warp-drive/core-types/symbols';
-import type { WithLegacy } from '@ember-data/model/migration-support';
+import type { Type } from '@warp-drive/core/types/symbols';
+import type { WithLegacy } from '@warp-drive/legacy/model/migration-support';
 
 /**
  * This type represents the full set schema derived fields of
@@ -331,7 +331,7 @@ export interface NestedModel extends WithLegacy<NestedModelResource> {}
   "traits/": "__dir__",
   "traits/admin/": "__dir__",
   "traits/admin/connected.schema.ts": "
-import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+import type { LegacyTrait } from '@warp-drive/core/types/schema/fields';
 
 const ConnectedTraitSchema = {
   'name': 'connected',
@@ -343,7 +343,7 @@ const ConnectedTraitSchema = {
       'type': 'string'
     }
   ]
-} satisfies LegacyResourceSchema;
+} satisfies LegacyTrait;
 
 export default ConnectedTraitSchema;
 ",
@@ -424,10 +424,10 @@ const Registration = {
 };
 export default Registration;",
   "resources/user.schema.ts": "
-import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
 
-import type { Type } from '@warp-drive/core-types/symbols';
-import type { WithLegacy } from '@ember-data/model/migration-support';
+import type { Type } from '@warp-drive/core/types/symbols';
+import type { WithLegacy } from '@warp-drive/legacy/model/migration-support';
 import type { Company } from 'test-app/data/resources/company.schema';
 import type { Project } from 'test-app/data/resources/project.schema';
 import type { TimestampableTrait } from 'test-app/data/traits/timestampable.schema';
@@ -536,7 +536,7 @@ const Registration = {
 };
 export default Registration;",
   "traits/timestampable.schema.ts": "
-import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+import type { LegacyTrait } from '@warp-drive/core/types/schema/fields';
 
 import type { DeleteableTrait } from 'test-app/data/traits/deleteable.schema';
 
@@ -558,7 +558,7 @@ const TimestampableTraitSchema = {
   'traits': [
     'deleteable'
   ]
-} satisfies LegacyResourceSchema;
+} satisfies LegacyTrait;
 
 export default TimestampableTraitSchema;
 
@@ -613,7 +613,7 @@ exports[`migrate-to-schema batch operation > detects mixins referenced via type-
 {
   "resources/": "__dir__",
   "resources/audit-log.schema.ts": "
-import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
 
 const AuditLogSchema = {
   'type': 'audit-log',
@@ -637,8 +637,8 @@ const AuditLogSchema = {
 export default AuditLogSchema;
 ",
   "resources/audit-log.type.ts": "
-import type { Type } from '@warp-drive/core-types/symbols';
-import type { WithLegacy } from '@ember-data/model/migration-support';
+import type { Type } from '@warp-drive/core/types/symbols';
+import type { WithLegacy } from '@warp-drive/legacy/model/migration-support';
 import type { AuditableTrait } from 'test-app/data/traits/auditable.type';
 
 /**
@@ -675,7 +675,7 @@ export interface AuditLogResource extends AuditableTrait {
 export interface AuditLog extends WithLegacy<AuditLogResource> {}
 ",
   "resources/audited-record.schema.ts": "
-import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
 
 const AuditedRecordSchema = {
   'type': 'audited-record',
@@ -704,8 +704,8 @@ const AuditedRecordSchema = {
 export default AuditedRecordSchema;
 ",
   "resources/audited-record.type.ts": "
-import type { Type } from '@warp-drive/core-types/symbols';
-import type { WithLegacy } from '@ember-data/model/migration-support';
+import type { Type } from '@warp-drive/core/types/symbols';
+import type { WithLegacy } from '@warp-drive/legacy/model/migration-support';
 import type { User } from 'test-app/data/resources/user.type';
 
 /**
@@ -744,7 +744,7 @@ export interface AuditedRecord extends WithLegacy<AuditedRecordResource> {}
 ",
   "traits/": "__dir__",
   "traits/auditable.schema.ts": "
-import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+import type { LegacyTrait } from '@warp-drive/core/types/schema/fields';
 
 const AuditableTraitSchema = {
   'name': 'auditable',
@@ -761,7 +761,7 @@ const AuditableTraitSchema = {
       'type': 'date'
     }
   ]
-} satisfies LegacyResourceSchema;
+} satisfies LegacyTrait;
 
 export default AuditableTraitSchema;
 ",
@@ -821,7 +821,7 @@ const Registration = {
 };
 export default Registration;",
   "resources/action-plan.schema.ts": "
-import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
 
 const ActionPlanSchema = {
   'type': 'action-plan',
@@ -842,8 +842,8 @@ const ActionPlanSchema = {
 export default ActionPlanSchema;
 ",
   "resources/action-plan.type.ts": "
-import type { Type } from '@warp-drive/core-types/symbols';
-import type { WithLegacy } from '@ember-data/model/migration-support';
+import type { Type } from '@warp-drive/core/types/symbols';
+import type { WithLegacy } from '@warp-drive/legacy/model/migration-support';
 
 /**
  * This type represents the full set schema derived fields of
@@ -880,7 +880,7 @@ export interface ActionPlan extends WithLegacy<ActionPlanResource> {}
 ",
   "traits/": "__dir__",
   "traits/base-model.schema.ts": "
-import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+import type { LegacyTrait } from '@warp-drive/core/types/schema/fields';
 
 const BaseModelTraitSchema = {
   'name': 'base-model',
@@ -892,7 +892,7 @@ const BaseModelTraitSchema = {
       'type': 'string'
     }
   ]
-} satisfies LegacyResourceSchema;
+} satisfies LegacyTrait;
 
 export default BaseModelTraitSchema;
 ",
@@ -952,7 +952,7 @@ exports[`migrate-to-schema batch operation > dynamically detects traits vs resou
 {
   "resources/": "__dir__",
   "resources/test-model.schema.ts": "
-import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
 
 const TestModelSchema = {
   'type': 'test-model',
@@ -987,8 +987,8 @@ const TestModelSchema = {
 export default TestModelSchema;
 ",
   "resources/test-model.type.ts": "
-import type { Type } from '@warp-drive/core-types/symbols';
-import type { WithLegacy } from '@ember-data/model/migration-support';
+import type { Type } from '@warp-drive/core/types/symbols';
+import type { WithLegacy } from '@warp-drive/legacy/model/migration-support';
 import type { User } from 'test-app/data/resources/user.type';
 import type { WorkstreamableTrait as Workstreamable } from 'test-app/data/traits/workstreamable.type';
 import type { WorkstreamableTrait } from 'test-app/data/traits/workstreamable.type';
@@ -1036,7 +1036,7 @@ export interface TestModelResource extends WorkstreamableTrait {
 export interface TestModel extends WithLegacy<TestModelResource> {}
 ",
   "resources/user.schema.ts": "
-import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
 
 const UserSchema = {
   'type': 'user',
@@ -1057,8 +1057,8 @@ const UserSchema = {
 export default UserSchema;
 ",
   "resources/user.type.ts": "
-import type { Type } from '@warp-drive/core-types/symbols';
-import type { WithLegacy } from '@ember-data/model/migration-support';
+import type { Type } from '@warp-drive/core/types/symbols';
+import type { WithLegacy } from '@warp-drive/legacy/model/migration-support';
 
 /**
  * This type represents the full set schema derived fields of
@@ -1095,7 +1095,7 @@ export interface User extends WithLegacy<UserResource> {}
 ",
   "traits/": "__dir__",
   "traits/workstreamable.schema.ts": "
-import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+import type { LegacyTrait } from '@warp-drive/core/types/schema/fields';
 
 const WorkstreamableTraitSchema = {
   'name': 'workstreamable',
@@ -1107,7 +1107,7 @@ const WorkstreamableTraitSchema = {
       'type': 'string'
     }
   ]
-} satisfies LegacyResourceSchema;
+} satisfies LegacyTrait;
 
 export default WorkstreamableTraitSchema;
 ",
@@ -1190,7 +1190,7 @@ exports[`migrate-to-schema batch operation > extracts intermediate model trait w
 {
   "resources/": "__dir__",
   "resources/approval-request.schema.ts": "
-import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
 
 const ApprovalRequestSchema = {
   'type': 'approval-request',
@@ -1212,8 +1212,8 @@ const ApprovalRequestSchema = {
 export default ApprovalRequestSchema;
 ",
   "resources/approval-request.type.ts": "
-import type { Type } from '@warp-drive/core-types/symbols';
-import type { WithLegacy } from '@ember-data/model/migration-support';
+import type { Type } from '@warp-drive/core/types/symbols';
+import type { WithLegacy } from '@warp-drive/legacy/model/migration-support';
 import type { BaseModelTrait } from 'test-app/data/traits/base-model.type';
 import type { BaseModelTrait } from 'test-app/data/traits/-base-model.type';
 
@@ -1251,13 +1251,13 @@ export interface ApprovalRequest extends WithLegacy<ApprovalRequestResource> {}
 ",
   "traits/": "__dir__",
   "traits/-base-model.schema.ts": "
-import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+import type { LegacyTrait } from '@warp-drive/core/types/schema/fields';
 
 const BaseModelTraitSchema = {
   'name': '-base-model',
   'mode': 'legacy',
   'fields': []
-} satisfies LegacyResourceSchema;
+} satisfies LegacyTrait;
 
 export default BaseModelTraitSchema;
 ",
@@ -1298,13 +1298,13 @@ const Registration = {
 };
 export default Registration;",
   "traits/base-model.schema.ts": "
-import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+import type { LegacyTrait } from '@warp-drive/core/types/schema/fields';
 
 const BaseModelTraitSchema = {
   'name': 'base-model',
   'mode': 'legacy',
   'fields': []
-} satisfies LegacyResourceSchema;
+} satisfies LegacyTrait;
 
 export default BaseModelTraitSchema;
 ",
@@ -1365,7 +1365,7 @@ const Registration = {
 };
 export default Registration;",
   "resources/company.schema.ts": "
-import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
 
 const CompanySchema = {
   'type': 'company',
@@ -1395,8 +1395,8 @@ const CompanySchema = {
 export default CompanySchema;
 ",
   "resources/company.type.ts": "
-import type { Type } from '@warp-drive/core-types/symbols';
-import type { WithLegacy } from '@ember-data/model/migration-support';
+import type { Type } from '@warp-drive/core/types/symbols';
+import type { WithLegacy } from '@warp-drive/legacy/model/migration-support';
 import type { HasMany } from '@ember-data/model';
 import type { User } from 'test-app/data/resources/user.type';
 
@@ -1435,7 +1435,7 @@ export interface CompanyResource {
 export interface Company extends WithLegacy<CompanyResource> {}
 ",
   "resources/user.schema.ts": "
-import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
 
 const UserSchema = {
   'type': 'user',
@@ -1461,8 +1461,8 @@ const UserSchema = {
 export default UserSchema;
 ",
   "resources/user.type.ts": "
-import type { Type } from '@warp-drive/core-types/symbols';
-import type { WithLegacy } from '@ember-data/model/migration-support';
+import type { Type } from '@warp-drive/core/types/symbols';
+import type { WithLegacy } from '@warp-drive/legacy/model/migration-support';
 
 /**
  * This type represents the full set schema derived fields of
@@ -1535,7 +1535,7 @@ const Registration = {
 };
 export default Registration;",
   "resources/user.schema.ts": "
-import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
 
 const UserSchema = {
   'type': 'user',
@@ -1569,8 +1569,8 @@ const UserSchema = {
 export default UserSchema;
 ",
   "resources/user.type.ts": "
-import type { Type } from '@warp-drive/core-types/symbols';
-import type { WithLegacy } from '@ember-data/model/migration-support';
+import type { Type } from '@warp-drive/core/types/symbols';
+import type { WithLegacy } from '@warp-drive/legacy/model/migration-support';
 import type { Company } from 'test-app/data/resources/company.type';
 
 /**
@@ -1629,7 +1629,7 @@ exports[`migrate-to-schema batch operation > handles external mixin imports from
 {
   "resources/": "__dir__",
   "resources/test-model.schema.ts": "
-import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
 
 const TestModelSchema = {
   'type': 'test-model',
@@ -1654,8 +1654,8 @@ const TestModelSchema = {
 export default TestModelSchema;
 ",
   "resources/test-model.type.ts": "
-import type { Type } from '@warp-drive/core-types/symbols';
-import type { WithLegacy } from '@ember-data/model/migration-support';
+import type { Type } from '@warp-drive/core/types/symbols';
+import type { WithLegacy } from '@warp-drive/legacy/model/migration-support';
 import type { ExternalTrait } from 'test-app/data/traits/external.type';
 import type { LocalTrait } from 'test-app/data/traits/local.type';
 
@@ -1694,7 +1694,7 @@ export interface TestModel extends WithLegacy<TestModelResource> {}
 ",
   "traits/": "__dir__",
   "traits/external-mixin.schema.ts": "
-import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+import type { LegacyTrait } from '@warp-drive/core/types/schema/fields';
 
 const ExternalMixinTraitSchema = {
   'name': 'external-mixin',
@@ -1706,7 +1706,7 @@ const ExternalMixinTraitSchema = {
       'type': 'string'
     }
   ]
-} satisfies LegacyResourceSchema;
+} satisfies LegacyTrait;
 
 export default ExternalMixinTraitSchema;
 ",
@@ -1732,7 +1732,7 @@ export interface ExternalMixinTrait {
 }
 ",
   "traits/local-mixin.schema.ts": "
-import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+import type { LegacyTrait } from '@warp-drive/core/types/schema/fields';
 
 const LocalMixinTraitSchema = {
   'name': 'local-mixin',
@@ -1744,7 +1744,7 @@ const LocalMixinTraitSchema = {
       'type': 'string'
     }
   ]
-} satisfies LegacyResourceSchema;
+} satisfies LegacyTrait;
 
 export default LocalMixinTraitSchema;
 ",
@@ -1808,7 +1808,7 @@ const Registration = {
 };
 export default Registration;",
   "resources/js-model-with-mixin.schema.ts": "
-import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
 
 const JsModelWithMixinSchema = {
   'type': 'js-model-with-mixin',
@@ -1832,8 +1832,8 @@ const JsModelWithMixinSchema = {
 export default JsModelWithMixinSchema;
 ",
   "resources/js-model-with-mixin.type.ts": "
-import type { Type } from '@warp-drive/core-types/symbols';
-import type { WithLegacy } from '@ember-data/model/migration-support';
+import type { Type } from '@warp-drive/core/types/symbols';
+import type { WithLegacy } from '@warp-drive/legacy/model/migration-support';
 import type { JsTrait } from 'test-app/data/traits/js.type';
 
 /**
@@ -1870,7 +1870,7 @@ export interface JsModelWithMixinResource extends JsTrait {
 export interface JsModelWithMixin extends WithLegacy<JsModelWithMixinResource> {}
 ",
   "resources/ts-model-with-mixin.schema.ts": "
-import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
 
 const TsModelWithMixinSchema = {
   'type': 'ts-model-with-mixin',
@@ -1897,8 +1897,8 @@ const TsModelWithMixinSchema = {
 export default TsModelWithMixinSchema;
 ",
   "resources/ts-model-with-mixin.type.ts": "
-import type { Type } from '@warp-drive/core-types/symbols';
-import type { WithLegacy } from '@ember-data/model/migration-support';
+import type { Type } from '@warp-drive/core/types/symbols';
+import type { WithLegacy } from '@warp-drive/legacy/model/migration-support';
 import type { TsTrait } from 'test-app/data/traits/ts.type';
 
 /**
@@ -1936,7 +1936,7 @@ export interface TsModelWithMixin extends WithLegacy<TsModelWithMixinResource> {
 ",
   "traits/": "__dir__",
   "traits/js-mixin.schema.ts": "
-import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+import type { LegacyTrait } from '@warp-drive/core/types/schema/fields';
 
 const JsMixinTraitSchema = {
   'name': 'js-mixin',
@@ -1948,7 +1948,7 @@ const JsMixinTraitSchema = {
       'type': 'date'
     }
   ]
-} satisfies LegacyResourceSchema;
+} satisfies LegacyTrait;
 
 export default JsMixinTraitSchema;
 ",
@@ -1994,7 +1994,7 @@ const Registration = {
 };
 export default Registration;",
   "traits/ts-mixin.schema.ts": "
-import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+import type { LegacyTrait } from '@warp-drive/core/types/schema/fields';
 
 const TsMixinTraitSchema = {
   'name': 'ts-mixin',
@@ -2006,7 +2006,7 @@ const TsMixinTraitSchema = {
       'type': 'boolean'
     }
   ]
-} satisfies LegacyResourceSchema;
+} satisfies LegacyTrait;
 
 export default TsMixinTraitSchema;
 ",
@@ -2038,7 +2038,7 @@ exports[`migrate-to-schema batch operation > mixin with attributes only is ONLY 
 {
   "resources/": "__dir__",
   "resources/test-model.schema.ts": "
-import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
 
 const TestModelSchema = {
   'type': 'test-model',
@@ -2073,8 +2073,8 @@ const TestModelSchema = {
 export default TestModelSchema;
 ",
   "resources/test-model.type.ts": "
-import type { Type } from '@warp-drive/core-types/symbols';
-import type { WithLegacy } from '@ember-data/model/migration-support';
+import type { Type } from '@warp-drive/core/types/symbols';
+import type { WithLegacy } from '@warp-drive/legacy/model/migration-support';
 import type { User } from 'test-app/data/resources/user.type';
 import type { WorkstreamableTrait as Workstreamable } from 'test-app/data/traits/workstreamable.type';
 import type { WorkstreamableTrait } from 'test-app/data/traits/workstreamable.type';
@@ -2122,7 +2122,7 @@ export interface TestModelResource extends WorkstreamableTrait {
 export interface TestModel extends WithLegacy<TestModelResource> {}
 ",
   "resources/user.schema.ts": "
-import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
 
 const UserSchema = {
   'type': 'user',
@@ -2143,8 +2143,8 @@ const UserSchema = {
 export default UserSchema;
 ",
   "resources/user.type.ts": "
-import type { Type } from '@warp-drive/core-types/symbols';
-import type { WithLegacy } from '@ember-data/model/migration-support';
+import type { Type } from '@warp-drive/core/types/symbols';
+import type { WithLegacy } from '@warp-drive/legacy/model/migration-support';
 
 /**
  * This type represents the full set schema derived fields of
@@ -2181,7 +2181,7 @@ export interface User extends WithLegacy<UserResource> {}
 ",
   "traits/": "__dir__",
   "traits/workstreamable.schema.ts": "
-import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+import type { LegacyTrait } from '@warp-drive/core/types/schema/fields';
 
 const WorkstreamableTraitSchema = {
   'name': 'workstreamable',
@@ -2193,7 +2193,7 @@ const WorkstreamableTraitSchema = {
       'type': 'string'
     }
   ]
-} satisfies LegacyResourceSchema;
+} satisfies LegacyTrait;
 
 export default WorkstreamableTraitSchema;
 ",
@@ -2225,7 +2225,7 @@ exports[`migrate-to-schema batch operation > mixin with both attributes and meth
 {
   "resources/": "__dir__",
   "resources/test-model.schema.ts": "
-import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
 
 const TestModelSchema = {
   'type': 'test-model',
@@ -2263,8 +2263,8 @@ const TestModelSchema = {
 export default TestModelSchema;
 ",
   "resources/test-model.type.ts": "
-import type { Type } from '@warp-drive/core-types/symbols';
-import type { WithLegacy } from '@ember-data/model/migration-support';
+import type { Type } from '@warp-drive/core/types/symbols';
+import type { WithLegacy } from '@warp-drive/legacy/model/migration-support';
 import type { User } from 'test-app/data/resources/user.type';
 import type { WorkstreamableTrait as Workstreamable } from 'test-app/data/traits/workstreamable.type';
 import type { WorkstreamableTrait } from 'test-app/data/traits/workstreamable.type';
@@ -2312,7 +2312,7 @@ export interface TestModelResource extends WorkstreamableTrait {
 export interface TestModel extends WithLegacy<TestModelResource> {}
 ",
   "resources/user.schema.ts": "
-import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
 
 const UserSchema = {
   'type': 'user',
@@ -2333,8 +2333,8 @@ const UserSchema = {
 export default UserSchema;
 ",
   "resources/user.type.ts": "
-import type { Type } from '@warp-drive/core-types/symbols';
-import type { WithLegacy } from '@ember-data/model/migration-support';
+import type { Type } from '@warp-drive/core/types/symbols';
+import type { WithLegacy } from '@warp-drive/legacy/model/migration-support';
 
 /**
  * This type represents the full set schema derived fields of
@@ -2389,7 +2389,7 @@ const Registration = {
 };
 export default Registration;",
   "traits/workstreamable.schema.ts": "
-import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+import type { LegacyTrait } from '@warp-drive/core/types/schema/fields';
 
 const WorkstreamableTraitSchema = {
   'name': 'workstreamable',
@@ -2401,7 +2401,7 @@ const WorkstreamableTraitSchema = {
       'type': 'string'
     }
   ]
-} satisfies LegacyResourceSchema;
+} satisfies LegacyTrait;
 
 export default WorkstreamableTraitSchema;
 ",
@@ -2433,7 +2433,7 @@ exports[`migrate-to-schema batch operation > model derived from intermediate mod
 {
   "resources/": "__dir__",
   "resources/ae-custom-multiselect8-option.schema.ts": "
-import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
 
 const AeCustomMultiselect8OptionSchema = {
   'type': 'ae-custom-multiselect8-option',
@@ -2451,8 +2451,8 @@ const AeCustomMultiselect8OptionSchema = {
 export default AeCustomMultiselect8OptionSchema;
 ",
   "resources/ae-custom-multiselect8-option.type.ts": "
-import type { Type } from '@warp-drive/core-types/symbols';
-import type { WithLegacy } from '@ember-data/model/migration-support';
+import type { Type } from '@warp-drive/core/types/symbols';
+import type { WithLegacy } from '@warp-drive/legacy/model/migration-support';
 import type { DataFieldModelTrait } from 'test-app/data/traits/data-field-model.type';
 
 /**
@@ -2489,13 +2489,13 @@ export interface AeCustomMultiselect8Option extends WithLegacy<AeCustomMultisele
 ",
   "traits/": "__dir__",
   "traits/base-model.schema.ts": "
-import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+import type { LegacyTrait } from '@warp-drive/core/types/schema/fields';
 
 const BaseModelTraitSchema = {
   'name': 'base-model',
   'mode': 'legacy',
   'fields': []
-} satisfies LegacyResourceSchema;
+} satisfies LegacyTrait;
 
 export default BaseModelTraitSchema;
 ",
@@ -2523,7 +2523,7 @@ export interface BaseModelTrait {
 }
 ",
   "traits/data-field-model.schema.ts": "
-import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+import type { LegacyTrait } from '@warp-drive/core/types/schema/fields';
 
 const DataFieldModelTraitSchema = {
   'name': 'data-field-model',
@@ -2543,7 +2543,7 @@ const DataFieldModelTraitSchema = {
   'traits': [
     'base-model'
   ]
-} satisfies LegacyResourceSchema;
+} satisfies LegacyTrait;
 
 export default DataFieldModelTraitSchema;
 ",
@@ -2618,7 +2618,7 @@ const Registration = {
 };
 export default Registration;",
   "resources/action-plan.schema.ts": "
-import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
 
 const ActionPlanSchema = {
   'type': 'action-plan',
@@ -2656,8 +2656,8 @@ const ActionPlanSchema = {
 export default ActionPlanSchema;
 ",
   "resources/action-plan.type.ts": "
-import type { Type } from '@warp-drive/core-types/symbols';
-import type { WithLegacy } from '@ember-data/model/migration-support';
+import type { Type } from '@warp-drive/core/types/symbols';
+import type { WithLegacy } from '@warp-drive/legacy/model/migration-support';
 import type { User } from 'test-app/data/resources/user.type';
 import type { CommentableTrait } from 'test-app/data/traits/commentable.type';
 
@@ -2698,13 +2698,13 @@ export interface ActionPlan extends WithLegacy<ActionPlanResource> {}
 ",
   "traits/": "__dir__",
   "traits/base-model.schema.ts": "
-import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+import type { LegacyTrait } from '@warp-drive/core/types/schema/fields';
 
 const BaseModelTraitSchema = {
   'name': 'base-model',
   'mode': 'legacy',
   'fields': []
-} satisfies LegacyResourceSchema;
+} satisfies LegacyTrait;
 
 export default BaseModelTraitSchema;
 ",
@@ -2732,7 +2732,7 @@ export interface BaseModelTrait {
 }
 ",
   "traits/commentable.schema.ts": "
-import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+import type { LegacyTrait } from '@warp-drive/core/types/schema/fields';
 
 const CommentableTraitSchema = {
   'name': 'commentable',
@@ -2744,7 +2744,7 @@ const CommentableTraitSchema = {
       'type': 'number'
     }
   ]
-} satisfies LegacyResourceSchema;
+} satisfies LegacyTrait;
 
 export default CommentableTraitSchema;
 ",
@@ -2793,7 +2793,7 @@ exports[`migrate-to-schema batch operation > places intermediate model extension
 {
   "resources/": "__dir__",
   "resources/regular-model.schema.ts": "
-import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
 
 const RegularModelSchema = {
   'type': 'regular-model',
@@ -2811,8 +2811,8 @@ const RegularModelSchema = {
 export default RegularModelSchema;
 ",
   "resources/regular-model.type.ts": "
-import type { Type } from '@warp-drive/core-types/symbols';
-import type { WithLegacy } from '@ember-data/model/migration-support';
+import type { Type } from '@warp-drive/core/types/symbols';
+import type { WithLegacy } from '@warp-drive/legacy/model/migration-support';
 import type { BaseModelWithMethodsTrait } from 'test-app/data/traits/base-model-with-methods.type';
 
 /**
@@ -2886,7 +2886,7 @@ const Registration = {
 };
 export default Registration;",
   "traits/base-model-with-methods.schema.ts": "
-import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+import type { LegacyTrait } from '@warp-drive/core/types/schema/fields';
 
 const BaseModelWithMethodsTraitSchema = {
   'name': 'base-model-with-methods',
@@ -2898,7 +2898,7 @@ const BaseModelWithMethodsTraitSchema = {
       'type': 'string'
     }
   ]
-} satisfies LegacyResourceSchema;
+} satisfies LegacyTrait;
 
 export default BaseModelWithMethodsTraitSchema;
 ",
@@ -2945,7 +2945,7 @@ exports[`migrate-to-schema batch operation > processes intermediateModelPaths to
 exports[`migrate-to-schema batch operation > processes intermediateModelPaths to generate traits from base model classes > intermediate models resources 1`] = `
 {
   "custom-select-option.schema.ts": "
-import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
 
 const CustomSelectOptionSchema = {
   'type': 'custom-select-option',
@@ -2963,8 +2963,8 @@ const CustomSelectOptionSchema = {
 export default CustomSelectOptionSchema;
 ",
   "custom-select-option.type.ts": "
-import type { Type } from '@warp-drive/core-types/symbols';
-import type { WithLegacy } from '@ember-data/model/migration-support';
+import type { Type } from '@warp-drive/core/types/symbols';
+import type { WithLegacy } from '@warp-drive/legacy/model/migration-support';
 import type { DataFieldModelTrait } from 'test-app/data/traits/data-field-model.type';
 
 /**
@@ -3005,13 +3005,13 @@ export interface CustomSelectOption extends WithLegacy<CustomSelectOptionResourc
 exports[`migrate-to-schema batch operation > processes intermediateModelPaths to generate traits from base model classes > intermediate models traits 1`] = `
 {
   "base-model.schema.ts": "
-import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+import type { LegacyTrait } from '@warp-drive/core/types/schema/fields';
 
 const BaseModelTraitSchema = {
   'name': 'base-model',
   'mode': 'legacy',
   'fields': []
-} satisfies LegacyResourceSchema;
+} satisfies LegacyTrait;
 
 export default BaseModelTraitSchema;
 ",
@@ -3039,7 +3039,7 @@ export interface BaseModelTrait {
 }
 ",
   "data-field-model.schema.ts": "
-import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+import type { LegacyTrait } from '@warp-drive/core/types/schema/fields';
 
 const DataFieldModelTraitSchema = {
   'name': 'data-field-model',
@@ -3059,7 +3059,7 @@ const DataFieldModelTraitSchema = {
   'traits': [
     'base-model'
   ]
-} satisfies LegacyResourceSchema;
+} satisfies LegacyTrait;
 
 export default DataFieldModelTraitSchema;
 ",
@@ -3109,7 +3109,7 @@ exports[`migrate-to-schema batch operation > typed model with multiline declarat
 {
   "resources/": "__dir__",
   "resources/typed.schema.ts": "
-import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
 
 const TypedSchema = {
   'type': 'typed',
@@ -3148,8 +3148,8 @@ const TypedSchema = {
 export default TypedSchema;
 ",
   "resources/typed.type.ts": "
-import type { Type } from '@warp-drive/core-types/symbols';
-import type { WithLegacy } from '@ember-data/model/migration-support';
+import type { Type } from '@warp-drive/core/types/symbols';
+import type { WithLegacy } from '@warp-drive/legacy/model/migration-support';
 import type { User } from 'test-app/data/resources/user.type';
 import type { Tag } from 'test-app/data/resources/tag.type';
 

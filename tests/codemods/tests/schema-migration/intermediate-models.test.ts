@@ -137,7 +137,7 @@ export default class DataFieldModel extends Model {
       [
         {
           "baseName": "data-field-model",
-          "code": "import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
+          "code": "import type { LegacyTrait } from '@warp-drive/core/types/schema/fields';
 
       const DataFieldModelTraitSchema = {
         'name': 'data-field-model',
@@ -149,7 +149,7 @@ export default class DataFieldModel extends Model {
             'type': 'string'
           }
         ]
-      } satisfies LegacyResourceSchema;
+      } satisfies LegacyTrait;
 
       export default DataFieldModelTraitSchema;
       ",

@@ -799,7 +799,7 @@ export default class TestModel extends BaseModel {
       };
       export default Registration;",
         "resources/typed.schema.ts": "
-      import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+      import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
 
       const TypedSchema = {
         'type': 'typed',
@@ -820,8 +820,8 @@ export default class TestModel extends BaseModel {
       export default TypedSchema;
       ",
         "resources/typed.type.ts": "
-      import type { Type } from '@warp-drive/core-types/symbols';
-      import type { WithLegacy } from '@ember-data/model/migration-support';
+      import type { Type } from '@warp-drive/core/types/symbols';
+      import type { WithLegacy } from '@warp-drive/legacy/model/migration-support';
       import type { StaticBaseModelTraitTrait } from 'test-app/data/traits/static-base-model-trait.type';
 
       /**
@@ -914,7 +914,7 @@ export default class TestModel extends BaseModel {
       };
       export default Registration;",
         "resources/typed.schema.ts": "
-      import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+      import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
 
       const TypedSchema = {
         'type': 'typed',
@@ -935,8 +935,8 @@ export default class TestModel extends BaseModel {
       export default TypedSchema;
       ",
         "resources/typed.type.ts": "
-      import type { Type } from '@warp-drive/core-types/symbols';
-      import type { WithLegacy } from '@ember-data/model/migration-support';
+      import type { Type } from '@warp-drive/core/types/symbols';
+      import type { WithLegacy } from '@warp-drive/legacy/model/migration-support';
       import type { StaticBaseModelTraitTrait } from 'test-app/data/traits/static-base-model-trait.type';
 
       /**
@@ -1070,7 +1070,7 @@ export default Mixin.create({
       {
         "resources/": "__dir__",
         "resources/typed.schema.ts": "
-      import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+      import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
 
       const TypedSchema = {
         'type': 'typed',
@@ -1116,8 +1116,8 @@ export default Mixin.create({
       export default TypedSchema;
       ",
         "resources/typed.type.ts": "
-      import type { Type } from '@warp-drive/core-types/symbols';
-      import type { WithLegacy } from '@ember-data/model/migration-support';
+      import type { Type } from '@warp-drive/core/types/symbols';
+      import type { WithLegacy } from '@warp-drive/legacy/model/migration-support';
       import type { Framework } from 'test-app/data/resources/framework.type';
       import type { StaticBaseModelTraitTrait } from 'test-app/data/traits/static-base-model-trait.type';
 

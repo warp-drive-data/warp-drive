@@ -4,7 +4,7 @@ export const DEFAULT_INPUT_DIR = './app';
 export const DEFAULT_OUTPUT_DIR = './app/schemas';
 export const DEFAULT_MODEL_SOURCE_DIR = './app/models';
 export const DEFAULT_MIXIN_SOURCE_DIR = './app/mixins';
-export const DEFAULT_WARP_DRIVE_IMPORTS = 'legacy' as const;
+export const DEFAULT_WARP_DRIVE_IMPORTS = 'modern' as const;
 
 export interface PackageImport {
   imported: string;
@@ -42,6 +42,7 @@ interface TransformPackageImports {
   Type: PackageImport;
   WithLegacy: PackageImport;
   LegacyResourceSchema: PackageImport;
+  LegacyTrait: PackageImport;
 }
 
 export const LegacyPackageImports = {
@@ -49,18 +50,21 @@ export const LegacyPackageImports = {
   Type: { imported: 'Type', source: '@warp-drive/core-types/symbols' },
   WithLegacy: { imported: 'WithLegacy', source: '@ember-data/model/migration-support' },
   LegacyResourceSchema: { imported: 'LegacyResourceSchema', source: '@warp-drive/core-types/schema/fields' },
+  LegacyTrait: { imported: 'LegacyTrait', source: '@warp-drive/core-types/schema/fields' },
 } satisfies TransformPackageImports;
 export const ModernPackageImports = {
   Model: { imported: 'Model', source: '@warp-drive/legacy/model' },
   Type: { imported: 'Type', source: '@warp-drive/core/types/symbols' },
   WithLegacy: { imported: 'WithLegacy', source: '@warp-drive/legacy/model/migration-support' },
   LegacyResourceSchema: { imported: 'LegacyResourceSchema', source: '@warp-drive/core/types/schema/fields' },
+  LegacyTrait: { imported: 'LegacyTrait', source: '@warp-drive/core/types/schema/fields' },
 } satisfies TransformPackageImports;
 export const MirrorPackageImports = {
   Model: { imported: 'Model', source: '@warp-drive-mirror/legacy/model' },
   Type: { imported: 'Type', source: '@warp-drive-mirror/core/types/symbols' },
   WithLegacy: { imported: 'WithLegacy', source: '@warp-drive-mirror/legacy/model/migration-support' },
   LegacyResourceSchema: { imported: 'LegacyResourceSchema', source: '@warp-drive-mirror/core/types/schema/fields' },
+  LegacyTrait: { imported: 'LegacyTrait', source: '@warp-drive-mirror/core/types/schema/fields' },
 } satisfies TransformPackageImports;
 
 export function getConfiguredImport(
@@ -217,9 +221,7 @@ export interface MigrateOptions extends Partial<TransformOptions> {
 
 export type FinalOptions = TransformOptions &
   MigrateOptions &
-  Required<
-    Pick<TransformOptions, 'modelSourceDir' | 'mixinSourceDir' | 'warpDriveImports' | 'projectName'>
-  > &
+  Required<Pick<TransformOptions, 'modelSourceDir' | 'mixinSourceDir' | 'warpDriveImports' | 'projectName'>> &
   Required<Pick<MigrateOptions, 'inputDir'>> & {
     kind: 'finalized';
     outputDir: string;

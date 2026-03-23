@@ -96,13 +96,13 @@ export default Mixin.create({});`;
       expect(trait).toMatchInlineSnapshot(`
         {
           "baseName": "empty",
-          "code": "import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
+          "code": "import type { LegacyTrait } from '@warp-drive/core/types/schema/fields';
 
         const EmptyTraitSchema = {
           'name': 'empty',
           'mode': 'legacy',
           'fields': []
-        } satisfies LegacyResourceSchema;
+        } satisfies LegacyTrait;
 
         export default EmptyTraitSchema;
         ",
@@ -133,7 +133,7 @@ export default Mixin.create({
       expect(trait).toMatchInlineSnapshot(`
         {
           "baseName": "fileable",
-          "code": "import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
+          "code": "import type { LegacyTrait } from '@warp-drive/core/types/schema/fields';
 
         const FileableTraitSchema = {
           'name': 'fileable',
@@ -162,7 +162,7 @@ export default Mixin.create({
               }
             }
           ]
-        } satisfies LegacyResourceSchema;
+        } satisfies LegacyTrait;
 
         export default FileableTraitSchema;
         ",

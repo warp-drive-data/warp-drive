@@ -7,6 +7,8 @@ export interface ConfigOptions {
   debug?: boolean;
   forceTypeScript?: boolean;
   mirror?: boolean;
+  projectName?: string;
+  warpDriveImports?: 'legacy' | 'modern' | 'mirror';
   emberDataImportSource?: string;
   intermediateModelPaths?: string[] | string;
   modelImportSource?: string;

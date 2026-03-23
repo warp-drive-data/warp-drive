@@ -692,7 +692,8 @@ function generateSchemaDeclaration(config: ArtifactConfig, schemaObject: Record<
   jsonString = jsonString.replace(new RegExp(`'${SCHEMA_OPTION_REF_PREFIX}([^']+)'`, 'g'), '$1');
 
   if (config.schemaIsTyped) {
-    return `const ${config.identifiers.schema} = ${jsonString} satisfies LegacyResourceSchema;`;
+    const satisfiesType = config.type === 'trait' ? 'LegacyTrait' : 'LegacyResourceSchema';
+    return `const ${config.identifiers.schema} = ${jsonString} satisfies ${satisfiesType};`;
   } else {
     return `const ${config.identifiers.schema} = ${jsonString};`;
   }
@@ -865,7 +866,8 @@ export function generateMergedSchemaCode(opts: MergedSchemaOptions): GeneratedSc
   };
 
   if (!opts.options?.disableTypescriptSchemas) {
-    const importLocation = getConfiguredImport(opts.options, 'LegacyResourceSchema');
+    const schemaTypeKey = config.type === 'trait' ? 'LegacyTrait' : 'LegacyResourceSchema';
+    const importLocation = getConfiguredImport(opts.options, schemaTypeKey);
     parts.schemaImports = `import type { ${importLocation.imported} } from '${importLocation.source}';\n`;
   }
 

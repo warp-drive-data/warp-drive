@@ -50,6 +50,13 @@ function createMigrateToSchemaCommand(applyCommand: Command) {
 
   command
     .addOption(new Option('--config <path>', 'Path to configuration file'))
+    .addOption(new Option('--project-name <name>', 'Project name for resolving classic ember module imports'))
+    .addOption(
+      new Option(
+        '--warp-drive-imports <preset>',
+        'WarpDrive import preset: "legacy" for @ember-data/*, "modern" for @warp-drive/*, "mirror" for @warp-drive-mirror/*'
+      ).choices(['legacy', 'modern', 'mirror'])
+    )
     .addOption(new Option('--skip-processed', 'Skip files that have already been processed'))
     .addOption(new Option('--force-typescript', 'Force all output files to TypeScript (.ts)'))
     .addOption(new Option('--model-source-dir <path>', 'Directory containing model files').default('./app/models'))
@@ -136,6 +143,10 @@ async function handleMigrateToSchema(
     ...(options.mixinsOnly !== undefined && { mixinsOnly: Boolean(options.mixinsOnly) }),
     ...(options.skipProcessed !== undefined && { skipProcessed: Boolean(options.skipProcessed) }),
     ...(options.forceTypescript !== undefined && { forceTypeScript: Boolean(options.forceTypescript) }),
+    ...(options.projectName !== undefined && { projectName: String(options.projectName) }),
+    ...(options.warpDriveImports !== undefined && {
+      warpDriveImports: options.warpDriveImports as 'legacy' | 'modern' | 'mirror',
+    }),
     modelSourceDir: String(options.modelSourceDir || './app/models'),
     mixinSourceDir: String(options.mixinSourceDir || './app/mixins'),
     outputDir: String(options.outputDir || './app/schemas'),
