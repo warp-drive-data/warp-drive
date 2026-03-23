@@ -17,7 +17,7 @@ import {
   toPascalCase,
 } from '../utils/ast-utils.js';
 import { createExtensionFromOriginalFile } from '../utils/extension-generation.js';
-import { getResourcesImport, resolveTraitImportPath, transformModelToResourceImport } from '../utils/import-utils.js';
+import { resolveTraitImportPath, transformModelToResourceImport } from '../utils/import-utils.js';
 import { pascalToKebab } from '../utils/string.js';
 
 const log = logger.for('mixin-processor');

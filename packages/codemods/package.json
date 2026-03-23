@@ -11,7 +11,7 @@
   "type": "module",
   "bin": "dist/index.js",
   "scripts": {
-    "build:cli": "bun build src/cli/index.ts --target node --outdir dist --sourcemap",
+    "build:cli": "bun build src/cli/index.ts --target node --outdir dist --sourcemap --external @ast-grep/napi",
     "build:pkg": "tsc",
     "prepack": "pnpm run build:cli",
     "lint": "eslint . --quiet --cache --cache-strategy=content"
