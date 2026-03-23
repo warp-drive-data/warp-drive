@@ -178,6 +178,8 @@ export default Mixin.create({
 
         import { computed } from '@ember/object';
 
+        // TODO: migrate this extension to a class so that TypeScript declaration merging works.
+        // Object extensions do not support interface merging.
         export const FileableTraitExtension = {
           titleCaseName: computed('name', function () { return (this.name || '').toUpperCase(); })
         };

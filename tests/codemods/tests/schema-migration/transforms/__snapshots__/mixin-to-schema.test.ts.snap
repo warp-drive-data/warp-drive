@@ -32,6 +32,8 @@ exports[`mixin-to-schema transform (artifacts) > TypeScript type artifacts > gen
 
 import { computed } from '@ember/object';
 
+// TODO: migrate this extension to a class so that TypeScript declaration merging works.
+// Object extensions do not support interface merging.
 export const NameableTraitExtension = {
   displayName: computed('name', function() {
 		return \`Name: \${this.name}\`;
@@ -168,6 +170,8 @@ import { arrayHasLength } from '@auditboard/client-core/core/computed-extensions
 
 import { sortBy } from 'soxhub-client/utils/sort-by';
 
+// TODO: migrate this extension to a class so that TypeScript declaration merging works.
+// Object extensions do not support interface merging.
 export const FileableTraitExtension = {
   sortedFiles: sortBy('files', 'createdAt:desc'),
   hasFiles: arrayHasLength('files'),
@@ -226,6 +230,8 @@ exports[`mixin-to-schema transform (artifacts) > basic functionality > converts 
 "
 import { computed } from '@ember/object';
 
+// TODO: migrate this extension to a class so that TypeScript declaration merging works.
+// Object extensions do not support interface merging.
 export const NoTraitsTraitExtension = {
   complexMethod() { return 'processed'; },
   computedValue: computed(function() { return 'computed'; })
@@ -264,6 +270,8 @@ exports[`mixin-to-schema transform (artifacts) > basic functionality > preserves
 import { computed } from '@ember/object';
 import { service } from '@ember/service';
 
+// TODO: migrate this extension to a class so that TypeScript declaration merging works.
+// Object extensions do not support interface merging.
 export const PlannableTraitExtension = {
   library: service('library'),
   projectPlans: computed('_modelName', 'intId', 'library.projectPlans.[]', function () {
@@ -443,6 +451,8 @@ export interface CustomSourceTrait {
 
 import { computed } from '@ember/object';
 
+// TODO: migrate this extension to a class so that TypeScript declaration merging works.
+// Object extensions do not support interface merging.
 export const CustomSourceTraitExtension = {
   customProp: computed('name', function() { return this.name; })
 };
@@ -532,6 +542,8 @@ export interface RenamedMixedSourcesTrait {
 
 import { attr as attribute } from '@unsupported/source';
 
+// TODO: migrate this extension to a class so that TypeScript declaration merging works.
+// Object extensions do not support interface merging.
 export const RenamedMixedSourcesTraitExtension = {
   name: attribute('string')
 };
@@ -754,6 +766,8 @@ export interface UnsupportedSourceTrait {
 import { hasMany } from '@unsupported/source';
 import { computed } from '@ember/object';
 
+// TODO: migrate this extension to a class so that TypeScript declaration merging works.
+// Object extensions do not support interface merging.
 export const UnsupportedSourceTraitExtension = {
   files: hasMany('file'),
   customProp: computed('name', function() { return this.name; })
@@ -851,6 +865,8 @@ export interface DefaultSourceTrait {
 
 import { computed } from '@ember/object';
 
+// TODO: migrate this extension to a class so that TypeScript declaration merging works.
+// Object extensions do not support interface merging.
 export const DefaultSourceTraitExtension = {
   customProp: computed('name', function() { return this.name; })
 };
@@ -984,6 +1000,8 @@ export interface NoValidImportsTrait {
 import { computed } from '@ember/object';
 import { attr } from '@unsupported/source';
 
+// TODO: migrate this extension to a class so that TypeScript declaration merging works.
+// Object extensions do not support interface merging.
 export const NoValidImportsTraitExtension = {
   name: attr('string'),
   customProp: computed('name', function() { return this.name; })
@@ -1080,6 +1098,8 @@ export interface AuditboardSourceTrait {
 
 import { computed } from '@ember/object';
 
+// TODO: migrate this extension to a class so that TypeScript declaration merging works.
+// Object extensions do not support interface merging.
 export const AuditboardSourceTraitExtension = {
   customProp: computed('name', function() { return this.name; })
 };

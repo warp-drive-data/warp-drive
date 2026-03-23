@@ -43,12 +43,12 @@ import {
   NODE_KIND_PROPERTY_IDENTIFIER,
 } from '../utils/code-processing.js';
 import { createExtensionFromOriginalFile } from '../utils/extension-generation.js';
-import { resolveTraitImportPath } from '../utils/import-utils.js';
 import type { ParsedFile } from '../utils/file-parser.js';
 import { parseFile } from '../utils/file-parser.js';
+import { resolveTraitImportPath } from '../utils/import-utils.js';
 import { extractBaseName, removeQuotes, replaceWildcardPattern } from '../utils/path-utils.js';
 import type { FieldTypeInfo } from '../utils/schema-generation.js';
-import { normalizePath, pascalToKebab, removeFileExtension, toKebabCase } from '../utils/string.js';
+import { normalizePath, removeFileExtension, toKebabCase } from '../utils/string.js';
 
 /**
  * Find and return the source text of export declarations (e.g. `export const BIRTHAGE = 0;`)

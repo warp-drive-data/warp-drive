@@ -85,7 +85,7 @@ describe('combineSchemasAndTypes: false (default) - trait type files', function 
         export interface User extends WithLegacy<UserResource> {}
       `,
       [F.resource('timestamped')]: ts`
-        import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+        import type { LegacyTrait } from '@warp-drive/core-types/schema/fields';
 
         const TimestampedTraitSchema = {
           name: 'timestamped',
@@ -102,7 +102,7 @@ describe('combineSchemasAndTypes: false (default) - trait type files', function 
               type: 'date',
             },
           ],
-        } satisfies LegacyResourceSchema;
+        } satisfies LegacyTrait;
 
         export default TimestampedTraitSchema;
       `,
@@ -213,7 +213,7 @@ describe('combineSchemasAndTypes: false (default) - trait type files', function 
         export interface User extends WithLegacy<UserResource> {}
       `,
       [F.resource('timestamped')]: ts`
-        import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+        import type { LegacyTrait } from '@warp-drive/core-types/schema/fields';
 
         const TimestampedTraitSchema = {
           name: 'timestamped',
@@ -230,7 +230,7 @@ describe('combineSchemasAndTypes: false (default) - trait type files', function 
               type: 'date',
             },
           ],
-        } satisfies LegacyResourceSchema;
+        } satisfies LegacyTrait;
 
         export default TimestampedTraitSchema;
       `,
@@ -347,7 +347,7 @@ describe('combineSchemasAndTypes: false (default) - trait type files', function 
         export interface Project extends WithLegacy<ProjectResource> {}
       `,
       [F.resource('teamable')]: ts`
-        import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+        import type { LegacyTrait } from '@warp-drive/core-types/schema/fields';
 
         const TeamableTraitSchema = {
           name: 'teamable',
@@ -364,7 +364,7 @@ describe('combineSchemasAndTypes: false (default) - trait type files', function 
               },
             },
           ],
-        } satisfies LegacyResourceSchema;
+        } satisfies LegacyTrait;
 
         export default TeamableTraitSchema;
       `,
@@ -395,6 +395,8 @@ describe('combineSchemasAndTypes: false (default) - trait type files', function 
       [F.extension('teamable', 'js')]: js`
         import { filterBy } from '@ember/object/computed';
 
+        // TODO: migrate this extension to a class so that TypeScript declaration merging works.
+        // Object extensions do not support interface merging.
         export const TeamableTraitExtension = {
           adminTeams: filterBy('allowedTeams', 'permission', 'admin'),
         };
@@ -568,7 +570,7 @@ describe('combineSchemasAndTypes: false (default) - trait type files', function 
         export interface Post extends WithLegacy<PostResource> {}
       `,
       [F.resource('timestamped')]: ts`
-        import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+        import type { LegacyTrait } from '@warp-drive/core-types/schema/fields';
 
         const TimestampedTraitSchema = {
           name: 'timestamped',
@@ -585,7 +587,7 @@ describe('combineSchemasAndTypes: false (default) - trait type files', function 
               type: 'date',
             },
           ],
-        } satisfies LegacyResourceSchema;
+        } satisfies LegacyTrait;
 
         export default TimestampedTraitSchema;
       `,
@@ -612,7 +614,7 @@ describe('combineSchemasAndTypes: false (default) - trait type files', function 
         }
       `,
       [F.resource('publishable')]: ts`
-        import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+        import type { LegacyTrait } from '@warp-drive/core-types/schema/fields';
 
         const PublishableTraitSchema = {
           name: 'publishable',
@@ -625,7 +627,7 @@ describe('combineSchemasAndTypes: false (default) - trait type files', function 
             },
           ],
           traits: ['timestamped'],
-        } satisfies LegacyResourceSchema;
+        } satisfies LegacyTrait;
 
         export default PublishableTraitSchema;
       `,

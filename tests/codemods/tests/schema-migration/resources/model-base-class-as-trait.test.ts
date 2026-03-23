@@ -32,7 +32,7 @@ describe('model used as base class via .extend()', function () {
     },
     output: {
       [F.resource('base-model')]: ts`
-        import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+        import type { LegacyTrait } from '@warp-drive/core-types/schema/fields';
 
         const BaseModelTraitSchema = {
           name: 'base-model',
@@ -45,7 +45,7 @@ describe('model used as base class via .extend()', function () {
             },
           ],
           traits: ['another-base-model'],
-        } satisfies LegacyResourceSchema;
+        } satisfies LegacyTrait;
 
         export default BaseModelTraitSchema;
       `,

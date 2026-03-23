@@ -303,15 +303,16 @@ export function generateExtensionCode(
 
   const objectCode = `export const ${config.identifiers.extension} = {\n${properties}\n};`;
   const registrationBlock = generateRegistrationBlock(config.name, config.identifiers.extension!);
+  const migrationNote = `// TODO: migrate this extension to a class so that TypeScript declaration merging works.\n// Object extensions do not support interface merging.\n`;
 
   if (config.extensionIsTyped && typeToExtend) {
     const importStatement = interfaceImportPath
       ? `import type { ${typeToExtend} } from '${interfaceImportPath}';\n\n`
       : '';
-    return `${importStatement}export interface ${config.identifiers.extension} extends ${typeToExtend} {}\n\n${objectCode}\n\n${registrationBlock}`;
+    return `${importStatement}export interface ${config.identifiers.extension} extends ${typeToExtend} {}\n\n${migrationNote}${objectCode}\n\n${registrationBlock}`;
   }
 
-  return `${objectCode}\n\n${registrationBlock}`;
+  return `${migrationNote}${objectCode}\n\n${registrationBlock}`;
 }
 
 /**

@@ -127,6 +127,8 @@ import type { TimestampableTrait } from 'test-app/data/traits/timestampable.type
 
 export interface TimestampableTraitExtension extends TimestampableTrait {}
 
+// TODO: migrate this extension to a class so that TypeScript declaration merging works.
+// Object extensions do not support interface merging.
 export const TimestampableTraitExtension = {
   timeSince() {
     return Date.now() - this.updatedAt;
@@ -523,6 +525,8 @@ import type { TimestampableTrait } from 'test-app/data/traits/timestampable.sche
 
 export interface TimestampableTraitExtension extends TimestampableTrait {}
 
+// TODO: migrate this extension to a class so that TypeScript declaration merging works.
+// Object extensions do not support interface merging.
 export const TimestampableTraitExtension = {
   timeSince() {
     return Date.now() - this.updatedAt;
@@ -1287,6 +1291,8 @@ export interface BaseModelTrait {
   "traits/base-model.ext.js": "
 
 
+// TODO: migrate this extension to a class so that TypeScript declaration merging works.
+// Object extensions do not support interface merging.
 export const BaseModelTraitExtension = {
   baseModelMixinMethod() {}
 };
@@ -1981,6 +1987,8 @@ import type { TsMixinTrait } from 'test-app/data/traits/ts-mixin.type';
 
 export interface TsMixinTraitExtension extends TsMixinTrait {}
 
+// TODO: migrate this extension to a class so that TypeScript declaration merging works.
+// Object extensions do not support interface merging.
 export const TsMixinTraitExtension = {
   toggleEnabled() {
     this.set('isEnabled', !this.isEnabled);
@@ -2378,6 +2386,8 @@ import type { WorkstreamableTrait } from 'test-app/data/traits/workstreamable.ty
 
 export interface WorkstreamableTraitExtension extends WorkstreamableTrait {}
 
+// TODO: migrate this extension to a class so that TypeScript declaration merging works.
+// Object extensions do not support interface merging.
 export const WorkstreamableTraitExtension = {
   imAnObjectExtensionNow() {}
 };

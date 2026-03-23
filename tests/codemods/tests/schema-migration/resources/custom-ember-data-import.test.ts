@@ -97,7 +97,7 @@ describe('custom emberDataImportSource', function () {
         export interface Project extends WithLegacy<ProjectResource> {}
       `,
       [F.resource('teamable')]: ts`
-        import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+        import type { LegacyTrait } from '@warp-drive/core-types/schema/fields';
 
         const TeamableTraitSchema = {
           name: 'teamable',
@@ -114,7 +114,7 @@ describe('custom emberDataImportSource', function () {
               },
             },
           ],
-        } satisfies LegacyResourceSchema;
+        } satisfies LegacyTrait;
 
         export default TeamableTraitSchema;
       `,
@@ -145,6 +145,8 @@ describe('custom emberDataImportSource', function () {
       [F.extension('teamable', 'js')]: js`
         import { filterBy } from '@ember/object/computed';
 
+        // TODO: migrate this extension to a class so that TypeScript declaration merging works.
+        // Object extensions do not support interface merging.
         export const TeamableTraitExtension = {
           adminTeams: filterBy('allowedTeams', 'permission', 'admin'),
           managerTeams: filterBy('allowedTeams', 'permission', 'manager'),
