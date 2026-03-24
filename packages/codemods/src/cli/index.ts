@@ -19,3 +19,4 @@ createListCommand(program);
 program.showHelpAfterError();
 
 await program.parseAsync(process.argv);
+await new Promise((resolve) => setTimeout(resolve, 5000));
