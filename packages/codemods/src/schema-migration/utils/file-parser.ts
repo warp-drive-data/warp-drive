@@ -130,6 +130,9 @@ export interface ParsedFile {
   extension: '.ts' | '.js';
   /** Whether the file should be treated as TypeScript (extension is .ts or forceTypeScript is enabled) */
   readonly isTypeScript: boolean;
+  /** Parsed AST — kept alive so downstream consumers can reuse it instead of re-parsing */
+  ast: ReturnType<typeof parse>;
+  root: SgNode;
   /** All imports in the file */
   imports: ParsedFileImport[];
   /** EmberData schema fields (@attr, @hasMany, @belongsTo, fragment, etc.) */
@@ -878,6 +881,8 @@ export function parseFile(filePath: string, code: string, options: TransformOpti
     get isTypeScript() {
       return this.extension === '.ts' || forceTypeScript;
     },
+    ast,
+    root,
     imports,
     fields,
     behaviors,

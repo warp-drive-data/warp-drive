@@ -1,4 +1,4 @@
-import { parse, type SgNode } from '@ast-grep/napi';
+import type { SgNode } from '@ast-grep/napi';
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs';
 import { dirname, join, resolve } from 'path';
 
@@ -20,7 +20,6 @@ import {
   FRAGMENT_BASE_SOURCE,
   generateMergedSchemaCode,
   getEmberDataImports,
-  getLanguageFromPath,
   getMixinImports,
   getModelImportSources,
   isModelFile,
@@ -55,10 +54,7 @@ import { normalizePath, removeFileExtension, toKebabCase } from '../utils/string
  * for each identifier in `identifierRefs`. These are included verbatim in the schema file
  * so that schema field options can reference them by name.
  */
-function collectConstantDecls(filePath: string, source: string, identifierRefs: Set<string>): string {
-  const lang = getLanguageFromPath(filePath);
-  const ast = parse(lang, source);
-  const root = ast.root();
+function collectConstantDecls(root: SgNode, identifierRefs: Set<string>): string {
   const declarations: string[] = [];
 
   for (const exportStmt of root.findAll({ rule: { kind: 'export_statement' } })) {
@@ -140,14 +136,10 @@ interface ModelASTValidation {
 }
 
 /**
- * Validate model AST: parse source, find imports, validate default export, check model class and fragment status.
+ * Validate model AST: find imports, validate default export, check model class and fragment status.
  * Returns null if the file is not a valid model.
  */
-function validateModelAST(filePath: string, source: string, options: TransformOptions): ModelASTValidation | null {
-  const lang = getLanguageFromPath(filePath);
-  const ast = parse(lang, source);
-  const root = ast.root();
-
+function validateModelAST(root: SgNode, filePath: string, options: TransformOptions): ModelASTValidation | null {
   const expectedSources = getModelImportSources(options);
   const modelImportLocal = findEmberImportLocalName(root, expectedSources, options, filePath, process.cwd());
   log.debug(`DEBUG: Model import local: ${modelImportLocal}`);
@@ -537,7 +529,7 @@ function generateRegularModelArtifacts(
     }
   }
   const constantDeclarations =
-    identifierRefs.size > 0 ? collectConstantDecls(filePath, source, identifierRefs) : undefined;
+    identifierRefs.size > 0 ? collectConstantDecls(entity.parsedFile.root, identifierRefs) : undefined;
 
   // Generate merged schema code (schema + types in one file)
   const mergedSchemaCode = generateMergedSchemaCode({
@@ -749,7 +741,7 @@ function analyzeModelFromParsed(
   const baseName = parsedFile.baseName;
 
   try {
-    const validation = validateModelAST(filePath, parsedFile.source, options);
+    const validation = validateModelAST(parsedFile.root, filePath, options);
     if (!validation) {
       return createInvalidResult(modelName, baseName);
     }

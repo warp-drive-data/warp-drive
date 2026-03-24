@@ -40,49 +40,29 @@ function getImportLocalNames(importNode: SgNode): string[] {
   return names.filter(Boolean);
 }
 
+const NOT_INSIDE_IMPORT = { not: { inside: { kind: 'import_statement', stopBy: 'end' } } } as const;
+
 /**
- * Check whether any of the given names appear as identifiers in the non-import
- * portion of the source. Checks both value identifiers and type identifiers
+ * Check whether any of the given names appear as identifiers outside of
+ * import statements. Checks both value identifiers and type identifiers
  * (e.g., in `extends Foo` within interface declarations) to avoid false removals.
  */
-function areAnyNamesUsed(names: string[], nonImportRoot: SgNode, lang: Lang): boolean {
+function areAnyNamesUsed(names: string[], root: SgNode, lang: Lang): boolean {
   const nameSet = new Set(names);
 
   // In TypeScript, interface extends clauses produce `type_identifier` nodes
   // rather than `identifier`, so we must check both kinds.
   // JavaScript grammars don't have `type_identifier`.
-  const identifiers = nonImportRoot.findAll({ rule: { kind: 'identifier' } });
-  if (identifiers.some((id) => nameSet.has(id.text()))) return true;
-
-  if (lang === AstLang.TypeScript) {
-    const typeIdentifiers = nonImportRoot.findAll({ rule: { kind: 'type_identifier' } });
-    if (typeIdentifiers.some((id) => nameSet.has(id.text()))) return true;
-  }
-
-  return false;
-}
-
-/**
- * Shared setup for unused import removal: parse the source, split into
- * import nodes and a non-import AST root for usage checking.
- */
-function prepareUnusedImportRemoval(source: string, lang: Lang) {
-  const ast = parse(lang, source);
-  const root = ast.root();
-  const importNodes = root.findAll({ rule: { kind: 'import_statement' } });
-
-  // Build source without imports so identifier lookups only check usage sites
-  let nonImportSource = source;
-  for (const imp of importNodes) {
-    nonImportSource = nonImportSource.replaceAll(imp.text(), '');
-  }
-  const nonImportRoot = parse(lang, nonImportSource).root();
-
-  return { root, importNodes, nonImportRoot };
+  const kinds: string[] = lang === AstLang.TypeScript ? ['identifier', 'type_identifier'] : ['identifier'];
+  return kinds.some((kind) =>
+    root.findAll({ rule: { kind, ...NOT_INSIDE_IMPORT } }).some((id) => nameSet.has(id.text()))
+  );
 }
 
 function removeUnusedImports(source: string, lang: Lang): string {
-  const { root, importNodes, nonImportRoot } = prepareUnusedImportRemoval(source, lang);
+  const ast = parse(lang, source);
+  const root = ast.root();
+  const importNodes = root.findAll({ rule: { kind: 'import_statement' } });
   if (importNodes.length === 0) return source;
 
   type Edit = ReturnType<SgNode['replace']>;
@@ -92,7 +72,7 @@ function removeUnusedImports(source: string, lang: Lang): string {
     const localNames = getImportLocalNames(imp);
     if (localNames.length === 0) continue;
 
-    if (!areAnyNamesUsed(localNames, nonImportRoot, lang)) {
+    if (!areAnyNamesUsed(localNames, root, lang)) {
       edits.push(imp.replace(''));
     }
   }
@@ -101,7 +81,9 @@ function removeUnusedImports(source: string, lang: Lang): string {
 }
 
 function removeUnusedTypeImports(source: string, lang: Lang): string {
-  const { root, importNodes, nonImportRoot } = prepareUnusedImportRemoval(source, lang);
+  const ast = parse(lang, source);
+  const root = ast.root();
+  const importNodes = root.findAll({ rule: { kind: 'import_statement' } });
   if (importNodes.length === 0) return source;
 
   type Edit = ReturnType<SgNode['replace']>;
@@ -115,7 +97,7 @@ function removeUnusedTypeImports(source: string, lang: Lang): string {
       const localNames = getImportLocalNames(imp);
       if (localNames.length === 0) continue;
 
-      if (!areAnyNamesUsed(localNames, nonImportRoot, lang)) {
+      if (!areAnyNamesUsed(localNames, root, lang)) {
         edits.push(imp.replace(''));
       }
       continue;
@@ -138,7 +120,7 @@ function removeUnusedTypeImports(source: string, lang: Lang): string {
 
       const localName = (specifier.field('alias') ?? specifier.field('name'))?.text();
 
-      if (localName && !areAnyNamesUsed([localName], nonImportRoot, lang)) {
+      if (localName && !areAnyNamesUsed([localName], root, lang)) {
         hasChanges = true;
       } else {
         keptSpecifiers.push(specText);
