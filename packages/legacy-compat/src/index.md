@@ -20,4 +20,4 @@ This package exists to help apps migrate incrementally from legacy EmberData pat
 
 **When to use this:** Only use this package during a migration from legacy EmberData to modern WarpDrive. It allows you to adopt modern patterns incrementally while keeping your existing code working.
 
-For guidance on incremental migration strategies, see the [Migration Guide](/guides/migrating) and [Two Store Migration Strategy](/guides/migrating/two-store-migration).
+For guidance on incremental migration strategies, see the [Migration Guide](/guides/migrating/) and [Two Store Migration Strategy](/guides/migrating/two-store-migration).
