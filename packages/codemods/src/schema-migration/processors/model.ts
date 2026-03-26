@@ -522,7 +522,11 @@ function generateRegularModelArtifacts(
 
   // Build the schema object
   const schemaName = entity.schemaName;
-  const schemaObject = buildLegacySchemaObject(baseName, schemaFields, mixinTraits, mixinExtensions, isFragment);
+  const useWithDefaults = !isFragment && getConfiguredImport(options, 'withDefaults') !== undefined;
+  const schemaObject = buildLegacySchemaObject(baseName, schemaFields, mixinTraits, mixinExtensions, {
+    isFragment,
+    useWithDefaults,
+  });
 
   // Collect identifier refs from schema field options (e.g. `defaultValue: BIRTHAGE`)
   // and find their export declarations in the source to include in the schema file.

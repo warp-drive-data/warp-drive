@@ -75,15 +75,10 @@ describe('model used as base class via .extend()', function () {
         }
       `,
       [F.resource('user')]: ts`
-        import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+        import { withDefaults } from '@ember-data/model/migration-support';
 
-        const UserSchema = {
+        const UserSchema = withDefaults({
           type: 'user',
-          legacy: true,
-          identity: {
-            kind: '@id',
-            name: 'id',
-          },
           fields: [
             {
               kind: 'attribute',
@@ -92,7 +87,7 @@ describe('model used as base class via .extend()', function () {
             },
           ],
           traits: ['base-model'],
-        } satisfies LegacyResourceSchema;
+        });
 
         export default UserSchema;
       `,

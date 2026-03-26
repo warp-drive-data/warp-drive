@@ -900,20 +900,15 @@ export default class TestModel extends Model.extend(WorkstreamableMixin) {
       }
 
       expect(schemaType.code).toMatchInlineSnapshot(`
-        "import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+        "import { withDefaults } from '@ember-data/model/migration-support';
 
         import type { Type } from '@warp-drive/core-types/symbols';
         import type { WithLegacy } from '@ember-data/model/migration-support';
         import type { Workstreamable } from 'test-app/data/resources/workstreamable.schema.ts';
         import type { WorkstreamableTrait } from 'test-app/data/traits/workstreamable.schema';
 
-        const TestModelSchema = {
+        const TestModelSchema = withDefaults({
           'type': 'test-model',
-          'legacy': true,
-          'identity': {
-            'kind': '@id',
-            'name': 'id'
-          },
           'fields': [
             {
               'kind': 'belongsTo',
@@ -927,7 +922,7 @@ export default class TestModel extends Model.extend(WorkstreamableMixin) {
           'traits': [
             'workstreamable'
           ]
-        } satisfies LegacyResourceSchema;
+        });
 
         export default TestModelSchema;
 
@@ -1232,18 +1227,13 @@ export default class Translatable extends Model {
       expect(schema).toMatchInlineSnapshot(`
         {
           "baseName": "test-model",
-          "code": "import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+          "code": "import { withDefaults } from '@ember-data/model/migration-support';
 
         import type { Type } from '@warp-drive/core-types/symbols';
         import type { WithLegacy } from '@ember-data/model/migration-support';
 
-        const TestModelSchema = {
+        const TestModelSchema = withDefaults({
           'type': 'test-model',
-          'legacy': true,
-          'identity': {
-            'kind': '@id',
-            'name': 'id'
-          },
           'fields': [
             {
               'kind': 'attribute',
@@ -1251,7 +1241,7 @@ export default class Translatable extends Model {
               'type': 'string'
             }
           ]
-        } satisfies LegacyResourceSchema;
+        });
 
         export default TestModelSchema;
 

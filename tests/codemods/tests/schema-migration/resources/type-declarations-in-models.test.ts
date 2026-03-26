@@ -17,15 +17,10 @@ describe('Duplicate model imports in relationship type annotations', function ()
     },
     output: {
       [F.resource('user')]: ts`
-        import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+        import { withDefaults } from '@ember-data/model/migration-support';
 
-        const UserSchema = {
+        const UserSchema = withDefaults({
           type: 'user',
-          legacy: true,
-          identity: {
-            kind: '@id',
-            name: 'id'
-          },
           fields: [
             {
               kind: 'attribute',
@@ -41,7 +36,7 @@ describe('Duplicate model imports in relationship type annotations', function ()
               }
             }
           ]
-        } satisfies LegacyResourceSchema;
+        });
 
         export default UserSchema;
       `,
@@ -105,15 +100,10 @@ describe('Duplicate model imports in relationship type annotations', function ()
     },
     output: {
       [F.resource('user')]: ts`
-        import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+        import { withDefaults } from '@ember-data/model/migration-support';
 
-        const UserSchema = {
+        const UserSchema = withDefaults({
           type: 'user',
-          legacy: true,
-          identity: {
-            kind: '@id',
-            name: 'id'
-          },
           fields: [
             {
               kind: 'attribute',
@@ -129,7 +119,7 @@ describe('Duplicate model imports in relationship type annotations', function ()
               }
             }
           ]
-        } satisfies LegacyResourceSchema;
+        });
 
         export default UserSchema;
       `,
@@ -198,22 +188,17 @@ describe('Duplicate model imports in relationship type annotations', function ()
     },
     output: {
       [F.resource('timesheet-project')]: ts`
-        import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+        import { withDefaults } from '@ember-data/model/migration-support';
 
-        const TimesheetProjectSchema = {
+        const TimesheetProjectSchema = withDefaults({
           type: 'timesheet-project',
-          legacy: true,
-          identity: {
-            kind: '@id',
-            name: 'id'
-          },
           fields: [
             {
               kind: 'attribute',
               name: 'title'
             }
           ]
-        } satisfies LegacyResourceSchema;
+        });
 
         export default TimesheetProjectSchema;
       `,
@@ -255,22 +240,17 @@ describe('Duplicate model imports in relationship type annotations', function ()
         export interface TimesheetProject extends WithLegacy<TimesheetProjectResource> {}
       `,
       [F.resource('timesheetable')]: ts`
-        import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+        import { withDefaults } from '@ember-data/model/migration-support';
 
-        const TimesheetableSchema = {
+        const TimesheetableSchema = withDefaults({
           type: 'timesheetable',
-          legacy: true,
-          identity: {
-            kind: '@id',
-            name: 'id'
-          },
           fields: [
             {
               kind: 'attribute',
               name: 'meta'
             }
           ]
-        } satisfies LegacyResourceSchema;
+        });
 
         export default TimesheetableSchema;
       `,
@@ -335,15 +315,10 @@ describe('Duplicate model imports in relationship type annotations', function ()
     },
     output: {
       [F.resource('user')]: ts`
-        import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+        import { withDefaults } from '@ember-data/model/migration-support';
 
-        const UserSchema = {
+        const UserSchema = withDefaults({
           type: 'user',
-          legacy: true,
-          identity: {
-            kind: '@id',
-            name: 'id'
-          },
           fields: [
             {
               kind: 'attribute',
@@ -359,7 +334,7 @@ describe('Duplicate model imports in relationship type annotations', function ()
               }
             }
           ]
-        } satisfies LegacyResourceSchema;
+        });
 
         export default UserSchema;
       `,
@@ -433,15 +408,10 @@ describe('Type declarations in model files', function () {
     },
     output: {
       [F.resource('user')]: ts`
-        import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+        import { withDefaults } from '@ember-data/model/migration-support';
 
-        const UserSchema = {
+        const UserSchema = withDefaults({
           type: 'user',
-          legacy: true,
-          identity: {
-            kind: '@id',
-            name: 'id'
-          },
           fields: [
             {
               kind: 'attribute',
@@ -461,7 +431,7 @@ describe('Type declarations in model files', function () {
               }
             }
           ]
-        } satisfies LegacyResourceSchema;
+        });
 
         export default UserSchema;
       `,
@@ -553,15 +523,10 @@ describe('Type declarations in model files', function () {
     },
     output: {
       [F.resource('timesheetable')]: ts`
-        import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+        import { withDefaults } from '@ember-data/model/migration-support';
 
-        const TimesheetableSchema = {
+        const TimesheetableSchema = withDefaults({
           type: 'timesheetable',
-          legacy: true,
-          identity: {
-            kind: '@id',
-            name: 'id'
-          },
           fields: [
             {
               kind: 'attribute',
@@ -572,7 +537,7 @@ describe('Type declarations in model files', function () {
               name: 'name'
             }
           ]
-        } satisfies LegacyResourceSchema;
+        });
 
         export default TimesheetableSchema;
       `,
@@ -662,15 +627,10 @@ describe('Type declarations in model files', function () {
     },
     output: {
       [F.resource('timesheetable')]: ts`
-        import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+        import { withDefaults } from '@ember-data/model/migration-support';
 
-        const TimesheetableSchema = {
+        const TimesheetableSchema = withDefaults({
           type: 'timesheetable',
-          legacy: true,
-          identity: {
-            kind: '@id',
-            name: 'id'
-          },
           fields: [
             {
               kind: 'attribute',
@@ -681,7 +641,7 @@ describe('Type declarations in model files', function () {
               name: 'name'
             }
           ]
-        } satisfies LegacyResourceSchema;
+        });
 
         export default TimesheetableSchema;
       `,
@@ -773,15 +733,10 @@ describe('Type declarations in model files', function () {
     },
     output: {
       [F.resource('timesheetable')]: ts`
-        import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+        import { withDefaults } from '@ember-data/model/migration-support';
 
-        const TimesheetableSchema = {
+        const TimesheetableSchema = withDefaults({
           type: 'timesheetable',
-          legacy: true,
-          identity: {
-            kind: '@id',
-            name: 'id'
-          },
           fields: [
             {
               kind: 'attribute',
@@ -792,7 +747,7 @@ describe('Type declarations in model files', function () {
               name: 'name'
             }
           ]
-        } satisfies LegacyResourceSchema;
+        });
 
         export default TimesheetableSchema;
       `,

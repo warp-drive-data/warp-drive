@@ -799,15 +799,10 @@ export default class TestModel extends BaseModel {
       };
       export default Registration;",
         "resources/typed.schema.ts": "
-      import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
+      import { withDefaults } from '@warp-drive/legacy/model/migration-support';
 
-      const TypedSchema = {
+      const TypedSchema = withDefaults({
         'type': 'typed',
-        'legacy': true,
-        'identity': {
-          'kind': '@id',
-          'name': 'id'
-        },
         'fields': [],
         'traits': [
           'static-base-model-trait'
@@ -815,7 +810,7 @@ export default class TestModel extends BaseModel {
         'objectExtensions': [
           'static-base-model-extension'
         ]
-      } satisfies LegacyResourceSchema;
+      });
 
       export default TypedSchema;
       ",
@@ -914,15 +909,10 @@ export default class TestModel extends BaseModel {
       };
       export default Registration;",
         "resources/typed.schema.ts": "
-      import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
+      import { withDefaults } from '@warp-drive/legacy/model/migration-support';
 
-      const TypedSchema = {
+      const TypedSchema = withDefaults({
         'type': 'typed',
-        'legacy': true,
-        'identity': {
-          'kind': '@id',
-          'name': 'id'
-        },
         'fields': [],
         'traits': [
           'static-base-model-trait'
@@ -930,7 +920,7 @@ export default class TestModel extends BaseModel {
         'objectExtensions': [
           'static-base-model-extension'
         ]
-      } satisfies LegacyResourceSchema;
+      });
 
       export default TypedSchema;
       ",
@@ -1070,15 +1060,10 @@ export default Mixin.create({
       {
         "resources/": "__dir__",
         "resources/typed.schema.ts": "
-      import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
+      import { withDefaults } from '@warp-drive/legacy/model/migration-support';
 
-      const TypedSchema = {
+      const TypedSchema = withDefaults({
         'type': 'typed',
-        'legacy': true,
-        'identity': {
-          'kind': '@id',
-          'name': 'id'
-        },
         'fields': [
           {
             'kind': 'attribute',
@@ -1111,7 +1096,7 @@ export default Mixin.create({
         'objectExtensions': [
           'static-base-model-extension'
         ]
-      } satisfies LegacyResourceSchema;
+      });
 
       export default TypedSchema;
       ",

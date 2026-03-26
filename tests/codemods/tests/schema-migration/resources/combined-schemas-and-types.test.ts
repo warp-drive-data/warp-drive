@@ -31,18 +31,13 @@ describe('combineSchemasAndTypes: true', function () {
     },
     output: {
       [F.resource('user')]: ts`
-        import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+        import { withDefaults } from '@ember-data/model/migration-support';
 
         import type { Type } from '@warp-drive/core-types/symbols';
         import type { WithLegacy } from '@ember-data/model/migration-support';
 
-        const UserSchema = {
+        const UserSchema = withDefaults({
           type: 'user',
-          legacy: true,
-          identity: {
-            kind: '@id',
-            name: 'id'
-          },
           fields: [
             {
               kind: 'attribute',
@@ -55,7 +50,7 @@ describe('combineSchemasAndTypes: true', function () {
               type: 'string'
             }
           ]
-        } satisfies LegacyResourceSchema;
+        });
 
         export default UserSchema;
 
@@ -94,20 +89,15 @@ describe('combineSchemasAndTypes: true', function () {
         export interface User extends WithLegacy<UserResource> {}
       `,
       [F.resource('company')]: ts`
-        import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+        import { withDefaults } from '@ember-data/model/migration-support';
 
         import type { Type } from '@warp-drive/core-types/symbols';
         import type { WithLegacy } from '@ember-data/model/migration-support';
         import type { HasMany } from '@ember-data/model';
         import type { User } from './user.schema.ts';
 
-        const CompanySchema = {
+        const CompanySchema = withDefaults({
           type: 'company',
-          legacy: true,
-          identity: {
-            kind: '@id',
-            name: 'id'
-          },
           fields: [
             {
               kind: 'attribute',
@@ -124,7 +114,7 @@ describe('combineSchemasAndTypes: true', function () {
               }
             }
           ]
-        } satisfies LegacyResourceSchema;
+        });
 
         export default CompanySchema;
 
@@ -211,18 +201,13 @@ describe('combineSchemasAndTypes: true', function () {
     },
     output: {
       [F.resource('user')]: ts`
-        import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+        import { withDefaults } from '@ember-data/model/migration-support';
 
         import type { Type } from '@warp-drive/core-types/symbols';
         import type { WithLegacy } from '@ember-data/model/migration-support';
 
-        const UserSchema = {
+        const UserSchema = withDefaults({
           type: 'user',
-          legacy: true,
-          identity: {
-            kind: '@id',
-            name: 'id'
-          },
           fields: [
             {
               kind: 'attribute',
@@ -235,7 +220,7 @@ describe('combineSchemasAndTypes: true', function () {
               type: 'string'
             }
           ]
-        } satisfies LegacyResourceSchema;
+        });
 
         export default UserSchema;
 
@@ -274,20 +259,15 @@ describe('combineSchemasAndTypes: true', function () {
         export interface User extends WithLegacy<UserResource> {}
       `,
       [F.resource('company')]: ts`
-        import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+        import { withDefaults } from '@ember-data/model/migration-support';
 
         import type { Type } from '@warp-drive/core-types/symbols';
         import type { WithLegacy } from '@ember-data/model/migration-support';
         import type { HasMany } from '@ember-data/model';
         import type { User } from './user.schema.ts';
 
-        const CompanySchema = {
+        const CompanySchema = withDefaults({
           type: 'company',
-          legacy: true,
-          identity: {
-            kind: '@id',
-            name: 'id'
-          },
           fields: [
             {
               kind: 'attribute',
@@ -304,7 +284,7 @@ describe('combineSchemasAndTypes: true', function () {
               }
             }
           ]
-        } satisfies LegacyResourceSchema;
+        });
 
         export default CompanySchema;
 
@@ -382,19 +362,14 @@ describe('combineSchemasAndTypes: true', function () {
     },
     output: {
       [F.resource('post')]: ts`
-        import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+        import { withDefaults } from '@ember-data/model/migration-support';
 
         import type { Type } from '@warp-drive/core-types/symbols';
         import type { WithLegacy } from '@ember-data/model/migration-support';
         import type { User } from './user.schema.ts';
 
-        const PostSchema = {
+        const PostSchema = withDefaults({
           type: 'post',
-          legacy: true,
-          identity: {
-            kind: '@id',
-            name: 'id'
-          },
           fields: [
             {
               kind: 'attribute',
@@ -410,7 +385,7 @@ describe('combineSchemasAndTypes: true', function () {
               }
             }
           ]
-        } satisfies LegacyResourceSchema;
+        });
 
         export default PostSchema;
 
@@ -449,18 +424,13 @@ describe('combineSchemasAndTypes: true', function () {
         export interface Post extends WithLegacy<PostResource> {}
       `,
       [F.resource('user')]: ts`
-        import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+        import { withDefaults } from '@ember-data/model/migration-support';
 
         import type { Type } from '@warp-drive/core-types/symbols';
         import type { WithLegacy } from '@ember-data/model/migration-support';
 
-        const UserSchema = {
+        const UserSchema = withDefaults({
           type: 'user',
-          legacy: true,
-          identity: {
-            kind: '@id',
-            name: 'id'
-          },
           fields: [
             {
               kind: 'attribute',
@@ -468,7 +438,7 @@ describe('combineSchemasAndTypes: true', function () {
               type: 'string'
             }
           ]
-        } satisfies LegacyResourceSchema;
+        });
 
         export default UserSchema;
 
@@ -531,19 +501,14 @@ describe('combineSchemasAndTypes: true', function () {
     },
     output: {
       [F.resource('post')]: ts`
-        import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+        import { withDefaults } from '@ember-data/model/migration-support';
 
         import type { Type } from '@warp-drive/core-types/symbols';
         import type { WithLegacy } from '@ember-data/model/migration-support';
         import type { User } from './user.schema.ts';
 
-        const PostSchema = {
+        const PostSchema = withDefaults({
           type: 'post',
-          legacy: true,
-          identity: {
-            kind: '@id',
-            name: 'id'
-          },
           fields: [
             {
               kind: 'attribute',
@@ -559,7 +524,7 @@ describe('combineSchemasAndTypes: true', function () {
               }
             }
           ]
-        } satisfies LegacyResourceSchema;
+        });
 
         export default PostSchema;
 
@@ -598,18 +563,13 @@ describe('combineSchemasAndTypes: true', function () {
         export interface Post extends WithLegacy<PostResource> {}
       `,
       [F.resource('user')]: ts`
-        import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+        import { withDefaults } from '@ember-data/model/migration-support';
 
         import type { Type } from '@warp-drive/core-types/symbols';
         import type { WithLegacy } from '@ember-data/model/migration-support';
 
-        const UserSchema = {
+        const UserSchema = withDefaults({
           type: 'user',
-          legacy: true,
-          identity: {
-            kind: '@id',
-            name: 'id'
-          },
           fields: [
             {
               kind: 'attribute',
@@ -617,7 +577,7 @@ describe('combineSchemasAndTypes: true', function () {
               type: 'string'
             }
           ]
-        } satisfies LegacyResourceSchema;
+        });
 
         export default UserSchema;
 

@@ -103,6 +103,11 @@ interface BaseArtifactConfig {
    */
   name: string;
   /**
+   * Whether this artifact represents a fragment (not a full model).
+   * Fragments skip `withDefaults` wrapping and explicitly set `legacy` and `identity` fields.
+   */
+  isFragment: boolean;
+  /**
    * Whether we should generate types for the artifact
    */
   hasTypes: boolean;
@@ -206,6 +211,7 @@ export function createTraitArtifactConfig(
   return {
     type: 'trait',
     name,
+    isFragment: false,
     hasTypes,
     schemaIsTyped,
     extensionIsTyped,
@@ -260,6 +266,7 @@ export function createResourceArtifactConfig(
   return {
     type: 'resource',
     name,
+    isFragment: analysis.isFragment ?? false,
     hasTypes,
     schemaIsTyped,
     extensionIsTyped,

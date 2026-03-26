@@ -120,14 +120,27 @@ export function buildLegacySchemaObject(
   schemaFields: SchemaField[],
   mixinTraits: string[],
   mixinExtensions: string[],
-  isFragment?: boolean
+  options: { isFragment?: boolean; useWithDefaults?: boolean }
 ): Record<string, unknown> {
-  const legacySchema: Record<string, unknown> = {
-    type: isFragment ? `fragment:${type}` : type,
-    legacy: true,
-    identity: isFragment ? null : { kind: '@id', name: 'id' },
-    fields: schemaFields.map(schemaFieldToLegacyFormat),
-  };
+  const { isFragment, useWithDefaults } = options;
+  const legacySchema: Record<string, unknown> = isFragment
+    ? {
+        type: `fragment:${type}`,
+        legacy: true,
+        identity: null,
+        fields: schemaFields.map(schemaFieldToLegacyFormat),
+      }
+    : useWithDefaults
+      ? {
+          type,
+          fields: schemaFields.map(schemaFieldToLegacyFormat),
+        }
+      : {
+          type,
+          legacy: true,
+          identity: { kind: '@id', name: 'id' },
+          fields: schemaFields.map(schemaFieldToLegacyFormat),
+        };
 
   if (mixinTraits.length > 0) {
     legacySchema.traits = [...mixinTraits];
@@ -682,7 +695,11 @@ function generateTypeScriptImports(imports: Set<string>, config: TransformOption
 /**
  * Generate the schema const declaration
  */
-function generateSchemaDeclaration(config: ArtifactConfig, schemaObject: Record<string, unknown>): string {
+function generateSchemaDeclaration(
+  config: ArtifactConfig,
+  schemaObject: Record<string, unknown>,
+  options: TransformOptions
+): string {
   let jsonString = JSON.stringify(schemaObject, null, 2);
 
   // Always use single quotes
@@ -691,11 +708,15 @@ function generateSchemaDeclaration(config: ArtifactConfig, schemaObject: Record<
   // Unescape identifier code references: '__ref__:IDENT' → IDENT (unquoted)
   jsonString = jsonString.replace(new RegExp(`'${SCHEMA_OPTION_REF_PREFIX}([^']+)'`, 'g'), '$1');
 
-  if (config.schemaIsTyped) {
+  const withDefaultsImport =
+    config.type === 'resource' && !config.isFragment ? getConfiguredImport(options, 'withDefaults') : undefined;
+  const value = withDefaultsImport ? `${withDefaultsImport.imported}(${jsonString})` : jsonString;
+
+  if (config.schemaIsTyped && !withDefaultsImport) {
     const satisfiesType = config.type === 'trait' ? 'LegacyTrait' : 'LegacyResourceSchema';
-    return `const ${config.identifiers.schema} = ${jsonString} satisfies ${satisfiesType};`;
+    return `const ${config.identifiers.schema} = ${value} satisfies ${satisfiesType};`;
   } else {
-    return `const ${config.identifiers.schema} = ${jsonString};`;
+    return `const ${config.identifiers.schema} = ${value};`;
   }
 }
 
@@ -865,10 +886,21 @@ export function generateMergedSchemaCode(opts: MergedSchemaOptions): GeneratedSc
     interfaceDeclaration: null,
   };
 
-  if (!opts.options?.disableTypescriptSchemas) {
+  const schemaImportParts: string[] = [];
+  const withDefaultsImport =
+    config.type === 'resource' && !config.isFragment ? getConfiguredImport(opts.options, 'withDefaults') : undefined;
+
+  if (!opts.options?.disableTypescriptSchemas && !withDefaultsImport) {
     const schemaTypeKey = config.type === 'trait' ? 'LegacyTrait' : 'LegacyResourceSchema';
     const importLocation = getConfiguredImport(opts.options, schemaTypeKey);
-    parts.schemaImports = `import type { ${importLocation.imported} } from '${importLocation.source}';\n`;
+    schemaImportParts.push(`import type { ${importLocation.imported} } from '${importLocation.source}';`);
+  }
+  if (withDefaultsImport) {
+    schemaImportParts.push(`import { ${withDefaultsImport.imported} } from '${withDefaultsImport.source}';`);
+  }
+
+  if (schemaImportParts.length > 0) {
+    parts.schemaImports = schemaImportParts.join('\n') + '\n';
   }
 
   // Generate imports section (only for TypeScript)
@@ -878,7 +910,7 @@ export function generateMergedSchemaCode(opts: MergedSchemaOptions): GeneratedSc
   }
 
   // Generate schema declaration (optionally preceded by constant declarations)
-  const schemaDecl = generateSchemaDeclaration(config, schemaObject);
+  const schemaDecl = generateSchemaDeclaration(config, schemaObject, opts.options);
   const constPrefix = opts.constantDeclarations ? `${opts.constantDeclarations}\n\n` : '';
   parts.schemaDeclaration = `${constPrefix}${schemaDecl}\n\nexport default ${config.identifiers.schema};\n`;
 

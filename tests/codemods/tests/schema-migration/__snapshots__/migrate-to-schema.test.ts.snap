@@ -27,15 +27,10 @@ const Registration = {
 };
 export default Registration;",
   "resources/user.schema.ts": "
-import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
+import { withDefaults } from '@warp-drive/legacy/model/migration-support';
 
-const UserSchema = {
+const UserSchema = withDefaults({
   'type': 'user',
-  'legacy': true,
-  'identity': {
-    'kind': '@id',
-    'name': 'id'
-  },
   'fields': [
     {
       'kind': 'attribute',
@@ -70,7 +65,7 @@ const UserSchema = {
   'objectExtensions': [
     'TimestampableTraitExtension'
   ]
-} satisfies LegacyResourceSchema;
+});
 
 export default UserSchema;
 ",
@@ -249,15 +244,10 @@ export interface AdminModel extends WithLegacy<AdminModelResource> {}
 ",
   "resources/admin/": "__dir__",
   "resources/admin/admin-model.schema.ts": "
-import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
+import { withDefaults } from '@warp-drive/legacy/model/migration-support';
 
-const AdminModelSchema = {
+const AdminModelSchema = withDefaults({
   'type': 'admin-model',
-  'legacy': true,
-  'identity': {
-    'kind': '@id',
-    'name': 'id'
-  },
   'fields': [
     {
       'kind': 'attribute',
@@ -268,20 +258,15 @@ const AdminModelSchema = {
   'traits': [
     'connected'
   ]
-} satisfies LegacyResourceSchema;
+});
 
 export default AdminModelSchema;
 ",
   "resources/admin/nested-model.schema.ts": "
-import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
+import { withDefaults } from '@warp-drive/legacy/model/migration-support';
 
-const NestedModelSchema = {
+const NestedModelSchema = withDefaults({
   'type': 'nested-model',
-  'legacy': true,
-  'identity': {
-    'kind': '@id',
-    'name': 'id'
-  },
   'fields': [
     {
       'kind': 'attribute',
@@ -289,7 +274,7 @@ const NestedModelSchema = {
       'type': 'string'
     }
   ]
-} satisfies LegacyResourceSchema;
+});
 
 export default NestedModelSchema;
 ",
@@ -426,7 +411,7 @@ const Registration = {
 };
 export default Registration;",
   "resources/user.schema.ts": "
-import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
+import { withDefaults } from '@warp-drive/legacy/model/migration-support';
 
 import type { Type } from '@warp-drive/core/types/symbols';
 import type { WithLegacy } from '@warp-drive/legacy/model/migration-support';
@@ -434,13 +419,8 @@ import type { Company } from 'test-app/data/resources/company.schema';
 import type { Project } from 'test-app/data/resources/project.schema';
 import type { TimestampableTrait } from 'test-app/data/traits/timestampable.schema';
 
-const UserSchema = {
+const UserSchema = withDefaults({
   'type': 'user',
-  'legacy': true,
-  'identity': {
-    'kind': '@id',
-    'name': 'id'
-  },
   'fields': [
     {
       'kind': 'attribute',
@@ -475,7 +455,7 @@ const UserSchema = {
   'objectExtensions': [
     'TimestampableTraitExtension'
   ]
-} satisfies LegacyResourceSchema;
+});
 
 export default UserSchema;
 
@@ -617,15 +597,10 @@ exports[`migrate-to-schema batch operation > detects mixins referenced via type-
 {
   "resources/": "__dir__",
   "resources/audit-log.schema.ts": "
-import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
+import { withDefaults } from '@warp-drive/legacy/model/migration-support';
 
-const AuditLogSchema = {
+const AuditLogSchema = withDefaults({
   'type': 'audit-log',
-  'legacy': true,
-  'identity': {
-    'kind': '@id',
-    'name': 'id'
-  },
   'fields': [
     {
       'kind': 'attribute',
@@ -636,7 +611,7 @@ const AuditLogSchema = {
   'traits': [
     'auditable'
   ]
-} satisfies LegacyResourceSchema;
+});
 
 export default AuditLogSchema;
 ",
@@ -679,15 +654,10 @@ export interface AuditLogResource extends AuditableTrait {
 export interface AuditLog extends WithLegacy<AuditLogResource> {}
 ",
   "resources/audited-record.schema.ts": "
-import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
+import { withDefaults } from '@warp-drive/legacy/model/migration-support';
 
-const AuditedRecordSchema = {
+const AuditedRecordSchema = withDefaults({
   'type': 'audited-record',
-  'legacy': true,
-  'identity': {
-    'kind': '@id',
-    'name': 'id'
-  },
   'fields': [
     {
       'kind': 'attribute',
@@ -703,7 +673,7 @@ const AuditedRecordSchema = {
       }
     }
   ]
-} satisfies LegacyResourceSchema;
+});
 
 export default AuditedRecordSchema;
 ",
@@ -825,15 +795,10 @@ const Registration = {
 };
 export default Registration;",
   "resources/action-plan.schema.ts": "
-import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
+import { withDefaults } from '@warp-drive/legacy/model/migration-support';
 
-const ActionPlanSchema = {
+const ActionPlanSchema = withDefaults({
   'type': 'action-plan',
-  'legacy': true,
-  'identity': {
-    'kind': '@id',
-    'name': 'id'
-  },
   'fields': [
     {
       'kind': 'attribute',
@@ -841,7 +806,7 @@ const ActionPlanSchema = {
       'type': 'string'
     }
   ]
-} satisfies LegacyResourceSchema;
+});
 
 export default ActionPlanSchema;
 ",
@@ -956,15 +921,10 @@ exports[`migrate-to-schema batch operation > dynamically detects traits vs resou
 {
   "resources/": "__dir__",
   "resources/test-model.schema.ts": "
-import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
+import { withDefaults } from '@warp-drive/legacy/model/migration-support';
 
-const TestModelSchema = {
+const TestModelSchema = withDefaults({
   'type': 'test-model',
-  'legacy': true,
-  'identity': {
-    'kind': '@id',
-    'name': 'id'
-  },
   'fields': [
     {
       'kind': 'belongsTo',
@@ -986,7 +946,7 @@ const TestModelSchema = {
   'traits': [
     'workstreamable'
   ]
-} satisfies LegacyResourceSchema;
+});
 
 export default TestModelSchema;
 ",
@@ -1040,15 +1000,10 @@ export interface TestModelResource extends WorkstreamableTrait {
 export interface TestModel extends WithLegacy<TestModelResource> {}
 ",
   "resources/user.schema.ts": "
-import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
+import { withDefaults } from '@warp-drive/legacy/model/migration-support';
 
-const UserSchema = {
+const UserSchema = withDefaults({
   'type': 'user',
-  'legacy': true,
-  'identity': {
-    'kind': '@id',
-    'name': 'id'
-  },
   'fields': [
     {
       'kind': 'attribute',
@@ -1056,7 +1011,7 @@ const UserSchema = {
       'type': 'string'
     }
   ]
-} satisfies LegacyResourceSchema;
+});
 
 export default UserSchema;
 ",
@@ -1194,15 +1149,10 @@ exports[`migrate-to-schema batch operation > extracts intermediate model trait w
 {
   "resources/": "__dir__",
   "resources/approval-request.schema.ts": "
-import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
+import { withDefaults } from '@warp-drive/legacy/model/migration-support';
 
-const ApprovalRequestSchema = {
+const ApprovalRequestSchema = withDefaults({
   'type': 'approval-request',
-  'legacy': true,
-  'identity': {
-    'kind': '@id',
-    'name': 'id'
-  },
   'fields': [],
   'traits': [
     'base-model',
@@ -1211,7 +1161,7 @@ const ApprovalRequestSchema = {
   'objectExtensions': [
     'BaseModelTraitExtension'
   ]
-} satisfies LegacyResourceSchema;
+});
 
 export default ApprovalRequestSchema;
 ",
@@ -1371,15 +1321,10 @@ const Registration = {
 };
 export default Registration;",
   "resources/company.schema.ts": "
-import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
+import { withDefaults } from '@warp-drive/legacy/model/migration-support';
 
-const CompanySchema = {
+const CompanySchema = withDefaults({
   'type': 'company',
-  'legacy': true,
-  'identity': {
-    'kind': '@id',
-    'name': 'id'
-  },
   'fields': [
     {
       'kind': 'attribute',
@@ -1396,7 +1341,7 @@ const CompanySchema = {
       }
     }
   ]
-} satisfies LegacyResourceSchema;
+});
 
 export default CompanySchema;
 ",
@@ -1441,15 +1386,10 @@ export interface CompanyResource {
 export interface Company extends WithLegacy<CompanyResource> {}
 ",
   "resources/user.schema.ts": "
-import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
+import { withDefaults } from '@warp-drive/legacy/model/migration-support';
 
-const UserSchema = {
+const UserSchema = withDefaults({
   'type': 'user',
-  'legacy': true,
-  'identity': {
-    'kind': '@id',
-    'name': 'id'
-  },
   'fields': [
     {
       'kind': 'attribute',
@@ -1462,7 +1402,7 @@ const UserSchema = {
       'type': 'string'
     }
   ]
-} satisfies LegacyResourceSchema;
+});
 
 export default UserSchema;
 ",
@@ -1541,15 +1481,10 @@ const Registration = {
 };
 export default Registration;",
   "resources/user.schema.ts": "
-import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
+import { withDefaults } from '@warp-drive/legacy/model/migration-support';
 
-const UserSchema = {
+const UserSchema = withDefaults({
   'type': 'user',
-  'legacy': true,
-  'identity': {
-    'kind': '@id',
-    'name': 'id'
-  },
   'fields': [
     {
       'kind': 'attribute',
@@ -1570,7 +1505,7 @@ const UserSchema = {
       }
     }
   ]
-} satisfies LegacyResourceSchema;
+});
 
 export default UserSchema;
 ",
@@ -1635,15 +1570,10 @@ exports[`migrate-to-schema batch operation > handles external mixin imports from
 {
   "resources/": "__dir__",
   "resources/test-model.schema.ts": "
-import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
+import { withDefaults } from '@warp-drive/legacy/model/migration-support';
 
-const TestModelSchema = {
+const TestModelSchema = withDefaults({
   'type': 'test-model',
-  'legacy': true,
-  'identity': {
-    'kind': '@id',
-    'name': 'id'
-  },
   'fields': [
     {
       'kind': 'attribute',
@@ -1655,7 +1585,7 @@ const TestModelSchema = {
     'external',
     'local'
   ]
-} satisfies LegacyResourceSchema;
+});
 
 export default TestModelSchema;
 ",
@@ -1814,15 +1744,10 @@ const Registration = {
 };
 export default Registration;",
   "resources/js-model-with-mixin.schema.ts": "
-import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
+import { withDefaults } from '@warp-drive/legacy/model/migration-support';
 
-const JsModelWithMixinSchema = {
+const JsModelWithMixinSchema = withDefaults({
   'type': 'js-model-with-mixin',
-  'legacy': true,
-  'identity': {
-    'kind': '@id',
-    'name': 'id'
-  },
   'fields': [
     {
       'kind': 'attribute',
@@ -1833,7 +1758,7 @@ const JsModelWithMixinSchema = {
   'traits': [
     'js'
   ]
-} satisfies LegacyResourceSchema;
+});
 
 export default JsModelWithMixinSchema;
 ",
@@ -1876,15 +1801,10 @@ export interface JsModelWithMixinResource extends JsTrait {
 export interface JsModelWithMixin extends WithLegacy<JsModelWithMixinResource> {}
 ",
   "resources/ts-model-with-mixin.schema.ts": "
-import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
+import { withDefaults } from '@warp-drive/legacy/model/migration-support';
 
-const TsModelWithMixinSchema = {
+const TsModelWithMixinSchema = withDefaults({
   'type': 'ts-model-with-mixin',
-  'legacy': true,
-  'identity': {
-    'kind': '@id',
-    'name': 'id'
-  },
   'fields': [
     {
       'kind': 'attribute',
@@ -1898,7 +1818,7 @@ const TsModelWithMixinSchema = {
   'objectExtensions': [
     'TsMixinTraitExtension'
   ]
-} satisfies LegacyResourceSchema;
+});
 
 export default TsModelWithMixinSchema;
 ",
@@ -2046,15 +1966,10 @@ exports[`migrate-to-schema batch operation > mixin with attributes only is ONLY 
 {
   "resources/": "__dir__",
   "resources/test-model.schema.ts": "
-import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
+import { withDefaults } from '@warp-drive/legacy/model/migration-support';
 
-const TestModelSchema = {
+const TestModelSchema = withDefaults({
   'type': 'test-model',
-  'legacy': true,
-  'identity': {
-    'kind': '@id',
-    'name': 'id'
-  },
   'fields': [
     {
       'kind': 'belongsTo',
@@ -2076,7 +1991,7 @@ const TestModelSchema = {
   'traits': [
     'workstreamable'
   ]
-} satisfies LegacyResourceSchema;
+});
 
 export default TestModelSchema;
 ",
@@ -2130,15 +2045,10 @@ export interface TestModelResource extends WorkstreamableTrait {
 export interface TestModel extends WithLegacy<TestModelResource> {}
 ",
   "resources/user.schema.ts": "
-import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
+import { withDefaults } from '@warp-drive/legacy/model/migration-support';
 
-const UserSchema = {
+const UserSchema = withDefaults({
   'type': 'user',
-  'legacy': true,
-  'identity': {
-    'kind': '@id',
-    'name': 'id'
-  },
   'fields': [
     {
       'kind': 'attribute',
@@ -2146,7 +2056,7 @@ const UserSchema = {
       'type': 'string'
     }
   ]
-} satisfies LegacyResourceSchema;
+});
 
 export default UserSchema;
 ",
@@ -2233,15 +2143,10 @@ exports[`migrate-to-schema batch operation > mixin with both attributes and meth
 {
   "resources/": "__dir__",
   "resources/test-model.schema.ts": "
-import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
+import { withDefaults } from '@warp-drive/legacy/model/migration-support';
 
-const TestModelSchema = {
+const TestModelSchema = withDefaults({
   'type': 'test-model',
-  'legacy': true,
-  'identity': {
-    'kind': '@id',
-    'name': 'id'
-  },
   'fields': [
     {
       'kind': 'belongsTo',
@@ -2266,7 +2171,7 @@ const TestModelSchema = {
   'objectExtensions': [
     'WorkstreamableTraitExtension'
   ]
-} satisfies LegacyResourceSchema;
+});
 
 export default TestModelSchema;
 ",
@@ -2320,15 +2225,10 @@ export interface TestModelResource extends WorkstreamableTrait {
 export interface TestModel extends WithLegacy<TestModelResource> {}
 ",
   "resources/user.schema.ts": "
-import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
+import { withDefaults } from '@warp-drive/legacy/model/migration-support';
 
-const UserSchema = {
+const UserSchema = withDefaults({
   'type': 'user',
-  'legacy': true,
-  'identity': {
-    'kind': '@id',
-    'name': 'id'
-  },
   'fields': [
     {
       'kind': 'attribute',
@@ -2336,7 +2236,7 @@ const UserSchema = {
       'type': 'string'
     }
   ]
-} satisfies LegacyResourceSchema;
+});
 
 export default UserSchema;
 ",
@@ -2443,20 +2343,15 @@ exports[`migrate-to-schema batch operation > model derived from intermediate mod
 {
   "resources/": "__dir__",
   "resources/ae-custom-multiselect8-option.schema.ts": "
-import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
+import { withDefaults } from '@warp-drive/legacy/model/migration-support';
 
-const AeCustomMultiselect8OptionSchema = {
+const AeCustomMultiselect8OptionSchema = withDefaults({
   'type': 'ae-custom-multiselect8-option',
-  'legacy': true,
-  'identity': {
-    'kind': '@id',
-    'name': 'id'
-  },
   'fields': [],
   'traits': [
     'data-field-model'
   ]
-} satisfies LegacyResourceSchema;
+});
 
 export default AeCustomMultiselect8OptionSchema;
 ",
@@ -2628,15 +2523,10 @@ const Registration = {
 };
 export default Registration;",
   "resources/action-plan.schema.ts": "
-import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
+import { withDefaults } from '@warp-drive/legacy/model/migration-support';
 
-const ActionPlanSchema = {
+const ActionPlanSchema = withDefaults({
   'type': 'action-plan',
-  'legacy': true,
-  'identity': {
-    'kind': '@id',
-    'name': 'id'
-  },
   'fields': [
     {
       'kind': 'attribute',
@@ -2661,7 +2551,7 @@ const ActionPlanSchema = {
   'traits': [
     'commentable'
   ]
-} satisfies LegacyResourceSchema;
+});
 
 export default ActionPlanSchema;
 ",
@@ -2803,20 +2693,15 @@ exports[`migrate-to-schema batch operation > places intermediate model extension
 {
   "resources/": "__dir__",
   "resources/regular-model.schema.ts": "
-import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
+import { withDefaults } from '@warp-drive/legacy/model/migration-support';
 
-const RegularModelSchema = {
+const RegularModelSchema = withDefaults({
   'type': 'regular-model',
-  'legacy': true,
-  'identity': {
-    'kind': '@id',
-    'name': 'id'
-  },
   'fields': [],
   'traits': [
     'base-model-with-methods'
   ]
-} satisfies LegacyResourceSchema;
+});
 
 export default RegularModelSchema;
 ",
@@ -2955,20 +2840,15 @@ exports[`migrate-to-schema batch operation > processes intermediateModelPaths to
 exports[`migrate-to-schema batch operation > processes intermediateModelPaths to generate traits from base model classes > intermediate models resources 1`] = `
 {
   "custom-select-option.schema.ts": "
-import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
+import { withDefaults } from '@warp-drive/legacy/model/migration-support';
 
-const CustomSelectOptionSchema = {
+const CustomSelectOptionSchema = withDefaults({
   'type': 'custom-select-option',
-  'legacy': true,
-  'identity': {
-    'kind': '@id',
-    'name': 'id'
-  },
   'fields': [],
   'traits': [
     'data-field-model'
   ]
-} satisfies LegacyResourceSchema;
+});
 
 export default CustomSelectOptionSchema;
 ",
@@ -3119,15 +2999,10 @@ exports[`migrate-to-schema batch operation > typed model with multiline declarat
 {
   "resources/": "__dir__",
   "resources/typed.schema.ts": "
-import type { LegacyResourceSchema } from '@warp-drive/core/types/schema/fields';
+import { withDefaults } from '@warp-drive/legacy/model/migration-support';
 
-const TypedSchema = {
+const TypedSchema = withDefaults({
   'type': 'typed',
-  'legacy': true,
-  'identity': {
-    'kind': '@id',
-    'name': 'id'
-  },
   'fields': [
     {
       'kind': 'attribute',
@@ -3153,7 +3028,7 @@ const TypedSchema = {
       }
     }
   ]
-} satisfies LegacyResourceSchema;
+});
 
 export default TypedSchema;
 ",

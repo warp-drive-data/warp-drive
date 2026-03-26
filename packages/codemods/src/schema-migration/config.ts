@@ -43,12 +43,14 @@ interface TransformPackageImports {
   WithLegacy: PackageImport;
   LegacyResourceSchema: PackageImport;
   LegacyTrait: PackageImport;
+  withDefaults?: PackageImport;
 }
 
 export const LegacyPackageImports = {
   Model: { imported: 'default', source: '@ember-data/model' },
   Type: { imported: 'Type', source: '@warp-drive/core-types/symbols' },
   WithLegacy: { imported: 'WithLegacy', source: '@ember-data/model/migration-support' },
+  withDefaults: { imported: 'withDefaults', source: '@ember-data/model/migration-support' },
   LegacyResourceSchema: { imported: 'LegacyResourceSchema', source: '@warp-drive/core-types/schema/fields' },
   LegacyTrait: { imported: 'LegacyTrait', source: '@warp-drive/core-types/schema/fields' },
 } satisfies TransformPackageImports;
@@ -56,6 +58,7 @@ export const ModernPackageImports = {
   Model: { imported: 'Model', source: '@warp-drive/legacy/model' },
   Type: { imported: 'Type', source: '@warp-drive/core/types/symbols' },
   WithLegacy: { imported: 'WithLegacy', source: '@warp-drive/legacy/model/migration-support' },
+  withDefaults: { imported: 'withDefaults', source: '@warp-drive/legacy/model/migration-support' },
   LegacyResourceSchema: { imported: 'LegacyResourceSchema', source: '@warp-drive/core/types/schema/fields' },
   LegacyTrait: { imported: 'LegacyTrait', source: '@warp-drive/core/types/schema/fields' },
 } satisfies TransformPackageImports;
@@ -63,14 +66,20 @@ export const MirrorPackageImports = {
   Model: { imported: 'Model', source: '@warp-drive-mirror/legacy/model' },
   Type: { imported: 'Type', source: '@warp-drive-mirror/core/types/symbols' },
   WithLegacy: { imported: 'WithLegacy', source: '@warp-drive-mirror/legacy/model/migration-support' },
+  withDefaults: { imported: 'withDefaults', source: '@warp-drive-mirror/legacy/model/migration-support' },
   LegacyResourceSchema: { imported: 'LegacyResourceSchema', source: '@warp-drive-mirror/core/types/schema/fields' },
   LegacyTrait: { imported: 'LegacyTrait', source: '@warp-drive-mirror/core/types/schema/fields' },
 } satisfies TransformPackageImports;
 
+type OptionalImportKey = 'withDefaults';
+type GuaranteedImportKey = Exclude<keyof TransformPackageImports, OptionalImportKey>;
+
+export function getConfiguredImport(config: TransformOptions, importName: GuaranteedImportKey): PackageImport;
+export function getConfiguredImport(config: TransformOptions, importName: OptionalImportKey): PackageImport | undefined;
 export function getConfiguredImport(
   config: TransformOptions,
   importName: keyof TransformPackageImports
-): PackageImport {
+): PackageImport | undefined {
   const warpDriveImports = config.warpDriveImports ?? 'modern';
   const packageImports =
     warpDriveImports === 'legacy'
@@ -90,7 +99,7 @@ export function getConfiguredImport(
     // typically these imports are from the same source as model
     return { imported: importName, source: packageImports.Model.source, isType: true };
   } else {
-    throw new Error(`Unknown import name: ${importName}`);
+    return undefined;
   }
 }
 

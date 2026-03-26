@@ -49,17 +49,12 @@ describe('forceTypeScript option', function () {
     },
     output: {
       [F.resource('user')]: ts`
-        import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+        import { withDefaults } from '@ember-data/model/migration-support';
 
         export const BIRTHAGE = 0;
 
-        const UserSchema = {
+        const UserSchema = withDefaults({
           type: 'user',
-          legacy: true,
-          identity: {
-            kind: '@id',
-            name: 'id'
-          },
           fields: [
             {
               kind: 'attribute',
@@ -97,7 +92,7 @@ describe('forceTypeScript option', function () {
               }
             }
           ]
-        } satisfies LegacyResourceSchema;
+        });
 
         export default UserSchema;
       `,
@@ -216,15 +211,10 @@ describe('forceTypeScript option', function () {
     },
     output: {
       [F.resource('user')]: ts`
-        import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+        import { withDefaults } from '@ember-data/model/migration-support';
 
-        const UserSchema = {
+        const UserSchema = withDefaults({
           type: 'user',
-          legacy: true,
-          identity: {
-            kind: '@id',
-            name: 'id'
-          },
           fields: [
             {
               kind: 'attribute',
@@ -245,7 +235,7 @@ describe('forceTypeScript option', function () {
               }
             }
           ]
-        } satisfies LegacyResourceSchema;
+        });
 
         export default UserSchema;
       `,

@@ -22,18 +22,13 @@ export default Registration;"
 `;
 
 exports[`model-to-schema transform (artifacts) > TypeScript type artifacts > generates schema and extension artifacts when model has methods and computed properties > model schema with merged types 1`] = `
-"import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+"import { withDefaults } from '@ember-data/model/migration-support';
 
 import type { Type } from '@warp-drive/core-types/symbols';
 import type { WithLegacy } from '@ember-data/model/migration-support';
 
-const ProcessedModelSchema = {
+const ProcessedModelSchema = withDefaults({
   'type': 'processed-model',
-  'legacy': true,
-  'identity': {
-    'kind': '@id',
-    'name': 'id'
-  },
   'fields': [
     {
       'kind': 'attribute',
@@ -46,7 +41,7 @@ const ProcessedModelSchema = {
       'type': 'string'
     }
   ]
-} satisfies LegacyResourceSchema;
+});
 
 export default ProcessedModelSchema;
 
@@ -87,7 +82,7 @@ export interface ProcessedModel extends WithLegacy<ProcessedModelResource> {}
 `;
 
 exports[`model-to-schema transform (artifacts) > TypeScript type artifacts > generates schema with merged types for basic models > basic schema with merged types 1`] = `
-"import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+"import { withDefaults } from '@ember-data/model/migration-support';
 
 import type { Type } from '@warp-drive/core-types/symbols';
 import type { WithLegacy } from '@ember-data/model/migration-support';
@@ -95,13 +90,8 @@ import type { AsyncHasMany } from '@ember-data/model';
 import type { Company } from 'test-app/data/resources/company.schema.ts';
 import type { Project } from 'test-app/data/resources/project.schema.ts';
 
-const UserSchema = {
+const UserSchema = withDefaults({
   'type': 'user',
-  'legacy': true,
-  'identity': {
-    'kind': '@id',
-    'name': 'id'
-  },
   'fields': [
     {
       'kind': 'attribute',
@@ -133,7 +123,7 @@ const UserSchema = {
       }
     }
   ]
-} satisfies LegacyResourceSchema;
+});
 
 export default UserSchema;
 
@@ -176,18 +166,13 @@ export interface User extends WithLegacy<UserResource> {}
 `;
 
 exports[`model-to-schema transform (artifacts) > TypeScript type artifacts > handles custom type mappings in merged schema files > custom type mappings in merged schema 1`] = `
-"import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+"import { withDefaults } from '@ember-data/model/migration-support';
 
 import type { Type } from '@warp-drive/core-types/symbols';
 import type { WithLegacy } from '@ember-data/model/migration-support';
 
-const TypedModelSchema = {
+const TypedModelSchema = withDefaults({
   'type': 'typed-model',
-  'legacy': true,
-  'identity': {
-    'kind': '@id',
-    'name': 'id'
-  },
   'fields': [
     {
       'kind': 'attribute',
@@ -205,7 +190,7 @@ const TypedModelSchema = {
       'type': 'json'
     }
   ]
-} satisfies LegacyResourceSchema;
+});
 
 export default TypedModelSchema;
 
@@ -247,7 +232,7 @@ export interface TypedModel extends WithLegacy<TypedModelResource> {}
 `;
 
 exports[`model-to-schema transform (artifacts) > TypeScript type artifacts > handles relationship types correctly in merged schema files > relationship types in merged schema 1`] = `
-"import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+"import { withDefaults } from '@ember-data/model/migration-support';
 
 import type { Type } from '@warp-drive/core-types/symbols';
 import type { WithLegacy } from '@ember-data/model/migration-support';
@@ -257,13 +242,8 @@ import type { Company } from 'test-app/data/resources/company.schema.ts';
 import type { File } from 'test-app/data/resources/file.schema.ts';
 import type { Tag } from 'test-app/data/resources/tag.schema.ts';
 
-const RelationshipModelSchema = {
+const RelationshipModelSchema = withDefaults({
   'type': 'relationship-model',
-  'legacy': true,
-  'identity': {
-    'kind': '@id',
-    'name': 'id'
-  },
   'fields': [
     {
       'kind': 'attribute',
@@ -303,7 +283,7 @@ const RelationshipModelSchema = {
       }
     }
   ]
-} satisfies LegacyResourceSchema;
+});
 
 export default RelationshipModelSchema;
 
@@ -347,18 +327,13 @@ export interface RelationshipModel extends WithLegacy<RelationshipModelResource>
 `;
 
 exports[`model-to-schema transform (artifacts) > TypeScript type artifacts > uses unknown type for unsupported transforms > unknown types in merged schema 1`] = `
-"import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+"import { withDefaults } from '@ember-data/model/migration-support';
 
 import type { Type } from '@warp-drive/core-types/symbols';
 import type { WithLegacy } from '@ember-data/model/migration-support';
 
-const UnknownTypesModelSchema = {
+const UnknownTypesModelSchema = withDefaults({
   'type': 'unknown-types-model',
-  'legacy': true,
-  'identity': {
-    'kind': '@id',
-    'name': 'id'
-  },
   'fields': [
     {
       'kind': 'attribute',
@@ -376,7 +351,7 @@ const UnknownTypesModelSchema = {
       'type': 'string'
     }
   ]
-} satisfies LegacyResourceSchema;
+});
 
 export default UnknownTypesModelSchema;
 
@@ -418,20 +393,15 @@ export interface UnknownTypesModel extends WithLegacy<UnknownTypesModelResource>
 `;
 
 exports[`model-to-schema transform (artifacts) > basic functionality > handles Typescript model with mixins > schema with mixins 1`] = `
-"import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+"import { withDefaults } from '@ember-data/model/migration-support';
 
 import type { Type } from '@warp-drive/core-types/symbols';
 import type { WithLegacy } from '@ember-data/model/migration-support';
 import type { FileableTrait } from 'test-app/data/traits/fileable.schema';
 import type { TimestampableTrait } from 'test-app/data/traits/timestampable.schema';
 
-const DocumentSchema = {
+const DocumentSchema = withDefaults({
   'type': 'document',
-  'legacy': true,
-  'identity': {
-    'kind': '@id',
-    'name': 'id'
-  },
   'fields': [
     {
       'kind': 'attribute',
@@ -448,7 +418,7 @@ const DocumentSchema = {
     'fileable',
     'timestampable'
   ]
-} satisfies LegacyResourceSchema;
+});
 
 export default DocumentSchema;
 
@@ -489,7 +459,7 @@ export interface Document extends WithLegacy<DocumentResource> {}
 `;
 
 exports[`model-to-schema transform (artifacts) > basic functionality > handles complex field options correctly > complex field options 1`] = `
-"import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+"import { withDefaults } from '@ember-data/model/migration-support';
 
 import type { Type } from '@warp-drive/core-types/symbols';
 import type { WithLegacy } from '@ember-data/model/migration-support';
@@ -497,13 +467,8 @@ import type { HasMany } from '@ember-data/model';
 import type { User } from 'test-app/data/resources/user.schema.ts';
 import type { File } from 'test-app/data/resources/file.schema.ts';
 
-const ComplexModelSchema = {
+const ComplexModelSchema = withDefaults({
   'type': 'complex-model',
-  'legacy': true,
-  'identity': {
-    'kind': '@id',
-    'name': 'id'
-  },
   'fields': [
     {
       'kind': 'attribute',
@@ -542,7 +507,7 @@ const ComplexModelSchema = {
       }
     }
   ]
-} satisfies LegacyResourceSchema;
+});
 
 export default ComplexModelSchema;
 
@@ -585,20 +550,15 @@ export interface ComplexModel extends WithLegacy<ComplexModelResource> {}
 `;
 
 exports[`model-to-schema transform (artifacts) > basic functionality > handles model with mixins > schema with mixins 1`] = `
-"import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+"import { withDefaults } from '@ember-data/model/migration-support';
 
 import type { Type } from '@warp-drive/core-types/symbols';
 import type { WithLegacy } from '@ember-data/model/migration-support';
 import type { FileableTrait } from 'test-app/data/traits/fileable.schema';
 import type { TimestampableTrait } from 'test-app/data/traits/timestampable.schema';
 
-const DocumentSchema = {
+const DocumentSchema = withDefaults({
   'type': 'document',
-  'legacy': true,
-  'identity': {
-    'kind': '@id',
-    'name': 'id'
-  },
   'fields': [
     {
       'kind': 'attribute',
@@ -615,7 +575,7 @@ const DocumentSchema = {
     'fileable',
     'timestampable'
   ]
-} satisfies LegacyResourceSchema;
+});
 
 export default DocumentSchema;
 
@@ -720,7 +680,7 @@ export default Registration;"
 `;
 
 exports[`model-to-schema transform (artifacts) > basic functionality > produces schema and extension artifacts for basic model > schema code 1`] = `
-"import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+"import { withDefaults } from '@ember-data/model/migration-support';
 
 import type { Type } from '@warp-drive/core-types/symbols';
 import type { WithLegacy } from '@ember-data/model/migration-support';
@@ -728,13 +688,8 @@ import type { AsyncHasMany } from '@ember-data/model';
 import type { Company } from 'test-app/data/resources/company.schema.ts';
 import type { Project } from 'test-app/data/resources/project.schema.ts';
 
-const UserSchema = {
+const UserSchema = withDefaults({
   'type': 'user',
-  'legacy': true,
-  'identity': {
-    'kind': '@id',
-    'name': 'id'
-  },
   'fields': [
     {
       'kind': 'attribute',
@@ -773,7 +728,7 @@ const UserSchema = {
       }
     }
   ]
-} satisfies LegacyResourceSchema;
+});
 
 export default UserSchema;
 
@@ -817,20 +772,15 @@ export interface User extends WithLegacy<UserResource> {}
 `;
 
 exports[`model-to-schema transform (artifacts) > basic functionality > supports alternate import sources > custom import source 1`] = `
-"import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+"import { withDefaults } from '@ember-data/model/migration-support';
 
 import type { Type } from '@warp-drive/core-types/symbols';
 import type { WithLegacy } from '@ember-data/model/migration-support';
 import type { HasMany } from '@auditboard/warp-drive/v1/model';
 import type { Item } from 'test-app/data/resources/item.schema.ts';
 
-const CustomModelSchema = {
+const CustomModelSchema = withDefaults({
   'type': 'custom-model',
-  'legacy': true,
-  'identity': {
-    'kind': '@id',
-    'name': 'id'
-  },
   'fields': [
     {
       'kind': 'attribute',
@@ -846,7 +796,7 @@ const CustomModelSchema = {
       }
     }
   ]
-} satisfies LegacyResourceSchema;
+});
 
 export default CustomModelSchema;
 
@@ -887,18 +837,13 @@ export interface CustomModel extends WithLegacy<CustomModelResource> {}
 `;
 
 exports[`model-to-schema transform (artifacts) > custom type mappings > applies custom type mappings to attribute types > custom type mappings in merged schema 1`] = `
-"import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+"import { withDefaults } from '@ember-data/model/migration-support';
 
 import type { Type } from '@warp-drive/core-types/symbols';
 import type { WithLegacy } from '@ember-data/model/migration-support';
 
-const CustomTypesModelSchema = {
+const CustomTypesModelSchema = withDefaults({
   'type': 'custom-types-model',
-  'legacy': true,
-  'identity': {
-    'kind': '@id',
-    'name': 'id'
-  },
   'fields': [
     {
       'kind': 'attribute',
@@ -916,7 +861,7 @@ const CustomTypesModelSchema = {
       'type': 'currency'
     }
   ]
-} satisfies LegacyResourceSchema;
+});
 
 export default CustomTypesModelSchema;
 
@@ -958,18 +903,13 @@ export interface CustomTypesModel extends WithLegacy<CustomTypesModelResource> {
 `;
 
 exports[`model-to-schema transform (artifacts) > custom type mappings > falls back to unknown for unmapped custom types > unknown fallback for unmapped types 1`] = `
-"import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+"import { withDefaults } from '@ember-data/model/migration-support';
 
 import type { Type } from '@warp-drive/core-types/symbols';
 import type { WithLegacy } from '@ember-data/model/migration-support';
 
-const UnmappedTypesModelSchema = {
+const UnmappedTypesModelSchema = withDefaults({
   'type': 'unmapped-types-model',
-  'legacy': true,
-  'identity': {
-    'kind': '@id',
-    'name': 'id'
-  },
   'fields': [
     {
       'kind': 'attribute',
@@ -982,7 +922,7 @@ const UnmappedTypesModelSchema = {
       'type': 'another-unknown'
     }
   ]
-} satisfies LegacyResourceSchema;
+});
 
 export default UnmappedTypesModelSchema;
 
@@ -1023,20 +963,15 @@ export interface UnmappedTypesModel extends WithLegacy<UnmappedTypesModelResourc
 `;
 
 exports[`model-to-schema transform (artifacts) > edge cases > handles aliased imports correctly > aliased imports 1`] = `
-"import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+"import { withDefaults } from '@ember-data/model/migration-support';
 
 import type { Type } from '@warp-drive/core-types/symbols';
 import type { WithLegacy } from '@ember-data/model/migration-support';
 import type { HasMany } from '@ember-data/model';
 import type { Item } from 'test-app/data/resources/item.schema.ts';
 
-const AliasedModelSchema = {
+const AliasedModelSchema = withDefaults({
   'type': 'aliased-model',
-  'legacy': true,
-  'identity': {
-    'kind': '@id',
-    'name': 'id'
-  },
   'fields': [
     {
       'kind': 'attribute',
@@ -1049,7 +984,7 @@ const AliasedModelSchema = {
       'type': 'item'
     }
   ]
-} satisfies LegacyResourceSchema;
+});
 
 export default AliasedModelSchema;
 
@@ -1090,19 +1025,14 @@ export interface AliasedModel extends WithLegacy<AliasedModelResource> {}
 `;
 
 exports[`model-to-schema transform (artifacts) > edge cases > preserves complex object literal options > complex options 1`] = `
-"import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+"import { withDefaults } from '@ember-data/model/migration-support';
 
 import type { Type } from '@warp-drive/core-types/symbols';
 import type { WithLegacy } from '@ember-data/model/migration-support';
 import type { User } from 'test-app/data/resources/user.schema.ts';
 
-const ComplexOptionsModelSchema = {
+const ComplexOptionsModelSchema = withDefaults({
   'type': 'complex-options-model',
-  'legacy': true,
-  'identity': {
-    'kind': '@id',
-    'name': 'id'
-  },
   'fields': [
     {
       'kind': 'belongsTo',
@@ -1116,7 +1046,7 @@ const ComplexOptionsModelSchema = {
       }
     }
   ]
-} satisfies LegacyResourceSchema;
+});
 
 export default ComplexOptionsModelSchema;
 
@@ -1156,7 +1086,7 @@ export interface ComplexOptionsModel extends WithLegacy<ComplexOptionsModelResou
 `;
 
 exports[`model-to-schema transform (artifacts) > mirror flag > uses configured emberDataImportSource for HasMany types in merged schema > custom EmberData source for HasMany types in merged schema 1`] = `
-"import type { LegacyResourceSchema } from '@warp-drive-mirror/core/types/schema/fields';
+"import { withDefaults } from '@warp-drive-mirror/legacy/model/migration-support';
 
 import type { Type } from '@warp-drive-mirror/core/types/symbols';
 import type { WithLegacy } from '@warp-drive-mirror/legacy/model/migration-support';
@@ -1165,13 +1095,8 @@ import type { Tag } from 'test-app/data/resources/tag.schema.ts';
 import type { Project } from 'test-app/data/resources/project.schema.ts';
 import type { User } from 'test-app/data/resources/user.schema.ts';
 
-const RelationshipModelSchema = {
+const RelationshipModelSchema = withDefaults({
   'type': 'relationship-model',
-  'legacy': true,
-  'identity': {
-    'kind': '@id',
-    'name': 'id'
-  },
   'fields': [
     {
       'kind': 'attribute',
@@ -1203,7 +1128,7 @@ const RelationshipModelSchema = {
       }
     }
   ]
-} satisfies LegacyResourceSchema;
+});
 
 export default RelationshipModelSchema;
 
@@ -1246,19 +1171,14 @@ export interface RelationshipModel extends WithLegacy<RelationshipModelResource>
 `;
 
 exports[`model-to-schema transform (artifacts) > mixin handling > extracts mixin names and converts them to trait references > single mixin schema 1`] = `
-"import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+"import { withDefaults } from '@ember-data/model/migration-support';
 
 import type { Type } from '@warp-drive/core-types/symbols';
 import type { WithLegacy } from '@ember-data/model/migration-support';
 import type { FileableTrait } from 'test-app/data/traits/fileable.schema';
 
-const DocumentSchema = {
+const DocumentSchema = withDefaults({
   'type': 'document',
-  'legacy': true,
-  'identity': {
-    'kind': '@id',
-    'name': 'id'
-  },
   'fields': [
     {
       'kind': 'attribute',
@@ -1269,7 +1189,7 @@ const DocumentSchema = {
   'traits': [
     'fileable'
   ]
-} satisfies LegacyResourceSchema;
+});
 
 export default DocumentSchema;
 
@@ -1309,7 +1229,7 @@ export interface Document extends WithLegacy<DocumentResource> {}
 `;
 
 exports[`model-to-schema transform (artifacts) > mixin handling > handles multiple mixins correctly > multiple mixins schema 1`] = `
-"import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+"import { withDefaults } from '@ember-data/model/migration-support';
 
 import type { Type } from '@warp-drive/core-types/symbols';
 import type { WithLegacy } from '@ember-data/model/migration-support';
@@ -1317,13 +1237,8 @@ import type { FileableTrait } from 'test-app/data/traits/fileable.schema';
 import type { TimestampableTrait } from 'test-app/data/traits/timestampable.schema';
 import type { AuditableTrait } from 'test-app/data/traits/auditable.schema';
 
-const ComplexDocumentSchema = {
+const ComplexDocumentSchema = withDefaults({
   'type': 'complex-document',
-  'legacy': true,
-  'identity': {
-    'kind': '@id',
-    'name': 'id'
-  },
   'fields': [
     {
       'kind': 'attribute',
@@ -1336,7 +1251,7 @@ const ComplexDocumentSchema = {
     'timestampable',
     'auditable'
   ]
-} satisfies LegacyResourceSchema;
+});
 
 export default ComplexDocumentSchema;
 

@@ -36,15 +36,10 @@ describe('custom emberDataImportSource', function () {
     },
     output: {
       [F.resource('project')]: ts`
-        import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+        import { withDefaults } from '@ember-data/model/migration-support';
 
-        const ProjectSchema = {
+        const ProjectSchema = withDefaults({
           type: 'project',
-          legacy: true,
-          identity: {
-            kind: '@id',
-            name: 'id',
-          },
           fields: [
             {
               kind: 'attribute',
@@ -54,7 +49,7 @@ describe('custom emberDataImportSource', function () {
           ],
           traits: ['teamable'],
           objectExtensions: ['TeamableTraitExtension'],
-        } satisfies LegacyResourceSchema;
+        });
 
         export default ProjectSchema;
       `,

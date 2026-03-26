@@ -25,15 +25,10 @@ describe('combineSchemasAndTypes: false (default) - trait type files', function 
     },
     output: {
       [F.resource('user')]: ts`
-        import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+        import { withDefaults } from '@ember-data/model/migration-support';
 
-        const UserSchema = {
+        const UserSchema = withDefaults({
           type: 'user',
-          legacy: true,
-          identity: {
-            kind: '@id',
-            name: 'id',
-          },
           fields: [
             {
               kind: 'attribute',
@@ -42,7 +37,7 @@ describe('combineSchemasAndTypes: false (default) - trait type files', function 
             },
           ],
           traits: ['timestamped'],
-        } satisfies LegacyResourceSchema;
+        });
 
         export default UserSchema;
       `,
@@ -153,15 +148,10 @@ describe('combineSchemasAndTypes: false (default) - trait type files', function 
     },
     output: {
       [F.resource('user')]: ts`
-        import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+        import { withDefaults } from '@ember-data/model/migration-support';
 
-        const UserSchema = {
+        const UserSchema = withDefaults({
           type: 'user',
-          legacy: true,
-          identity: {
-            kind: '@id',
-            name: 'id',
-          },
           fields: [
             {
               kind: 'attribute',
@@ -170,7 +160,7 @@ describe('combineSchemasAndTypes: false (default) - trait type files', function 
             },
           ],
           traits: ['timestamped'],
-        } satisfies LegacyResourceSchema;
+        });
 
         export default UserSchema;
       `,
@@ -286,15 +276,10 @@ describe('combineSchemasAndTypes: false (default) - trait type files', function 
     },
     output: {
       [F.resource('project')]: ts`
-        import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+        import { withDefaults } from '@ember-data/model/migration-support';
 
-        const ProjectSchema = {
+        const ProjectSchema = withDefaults({
           type: 'project',
-          legacy: true,
-          identity: {
-            kind: '@id',
-            name: 'id',
-          },
           fields: [
             {
               kind: 'attribute',
@@ -304,7 +289,7 @@ describe('combineSchemasAndTypes: false (default) - trait type files', function 
           ],
           traits: ['teamable'],
           objectExtensions: ['TeamableTraitExtension'],
-        } satisfies LegacyResourceSchema;
+        });
 
         export default ProjectSchema;
       `,
@@ -450,15 +435,10 @@ describe('combineSchemasAndTypes: false (default) - trait type files', function 
     },
     output: {
       [F.resource('user')]: ts`
-        import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+        import { withDefaults } from '@ember-data/model/migration-support';
 
-        const UserSchema = {
+        const UserSchema = withDefaults({
           type: 'user',
-          legacy: true,
-          identity: {
-            kind: '@id',
-            name: 'id',
-          },
           fields: [
             {
               kind: 'attribute',
@@ -467,7 +447,7 @@ describe('combineSchemasAndTypes: false (default) - trait type files', function 
             },
           ],
           traits: ['timestamped'],
-        } satisfies LegacyResourceSchema;
+        });
 
         export default UserSchema;
       `,
@@ -510,15 +490,10 @@ describe('combineSchemasAndTypes: false (default) - trait type files', function 
         export interface User extends WithLegacy<UserResource> {}
       `,
       [F.resource('post')]: ts`
-        import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+        import { withDefaults } from '@ember-data/model/migration-support';
 
-        const PostSchema = {
+        const PostSchema = withDefaults({
           type: 'post',
-          legacy: true,
-          identity: {
-            kind: '@id',
-            name: 'id',
-          },
           fields: [
             {
               kind: 'attribute',
@@ -527,7 +502,7 @@ describe('combineSchemasAndTypes: false (default) - trait type files', function 
             },
           ],
           traits: ['publishable'],
-        } satisfies LegacyResourceSchema;
+        });
 
         export default PostSchema;
       `,

@@ -26,7 +26,6 @@ This will print the available codemods:
 |---|---|
 | `migrate-to-schema` | Migrates EmberData models and mixins to WarpDrive schemas |
 | `legacy-compat-builders` | Updates legacy store methods to use `store.request` and builders |
-| `update-packages` | Updates `package.json` with packages required for WarpDrive migration |
 
 ### Running a Codemod
 

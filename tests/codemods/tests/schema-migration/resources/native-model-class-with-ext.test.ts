@@ -61,17 +61,12 @@ describe('Basic model class transformation', function () {
     },
     output: {
       [F.resource('user')]: ts`
-        import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+        import { withDefaults } from '@ember-data/model/migration-support';
 
         export const BIRTHAGE = 0;
 
-        const UserSchema = {
+        const UserSchema = withDefaults({
           type: 'user',
-          legacy: true,
-          identity: {
-            kind: '@id',
-            name: 'id'
-          },
           fields: [
             {
               kind: 'attribute',
@@ -111,7 +106,7 @@ describe('Basic model class transformation', function () {
               }
             }
           ]
-        } satisfies LegacyResourceSchema;
+        });
 
         export default UserSchema;
       `,
@@ -290,17 +285,12 @@ describe('Basic model class transformation', function () {
     },
     output: {
       [F.resource('user')]: ts`
-        import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+        import { withDefaults } from '@ember-data/model/migration-support';
 
         export const BIRTHAGE: number = 0;
 
-        const UserSchema = {
+        const UserSchema = withDefaults({
           type: 'user',
-          legacy: true,
-          identity: {
-            kind: '@id',
-            name: 'id'
-          },
           fields: [
             {
               kind: 'attribute',
@@ -340,7 +330,7 @@ describe('Basic model class transformation', function () {
               }
             }
           ]
-        } satisfies LegacyResourceSchema;
+        });
 
         export default UserSchema;
       `,
@@ -521,7 +511,7 @@ describe('Basic model class transformation', function () {
     },
     output: {
       [F.resource('user')]: ts`
-        import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+        import { withDefaults } from '@ember-data/model/migration-support';
 
         import type { Type } from '@warp-drive/core-types/symbols';
         import type { WithLegacy } from '@ember-data/model/migration-support';
@@ -531,13 +521,8 @@ describe('Basic model class transformation', function () {
 
         export const BIRTHAGE = 0;
 
-        const UserSchema = {
+        const UserSchema = withDefaults({
           type: 'user',
-          legacy: true,
-          identity: {
-            kind: '@id',
-            name: 'id'
-          },
           fields: [
             {
               kind: 'attribute',
@@ -577,7 +562,7 @@ describe('Basic model class transformation', function () {
               }
             }
           ]
-        } satisfies LegacyResourceSchema;
+        });
 
         export default UserSchema;
 
@@ -752,7 +737,7 @@ describe('Basic model class transformation', function () {
     },
     output: {
       [F.resource('user')]: ts`
-        import type { LegacyResourceSchema } from '@warp-drive/core-types/schema/fields';
+        import { withDefaults } from '@ember-data/model/migration-support';
 
         import type { Type } from '@warp-drive/core-types/symbols';
         import type { WithLegacy } from '@ember-data/model/migration-support';
@@ -764,13 +749,8 @@ describe('Basic model class transformation', function () {
 
         export const BIRTHAGE: number = 0;
 
-        const UserSchema = {
+        const UserSchema = withDefaults({
           type: 'user',
-          legacy: true,
-          identity: {
-            kind: '@id',
-            name: 'id'
-          },
           fields: [
             {
               kind: 'attribute',
@@ -810,7 +790,7 @@ describe('Basic model class transformation', function () {
               }
             }
           ]
-        } satisfies LegacyResourceSchema;
+        });
 
         export default UserSchema;
 
