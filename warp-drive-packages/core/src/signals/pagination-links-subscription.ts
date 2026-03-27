@@ -1,15 +1,10 @@
 import type { RequestManager, Store } from '../index';
 import type { StructuredErrorDocument } from '../types/request';
-import { DISPOSE } from './request-subscription.ts';
-import { getPaginationLinks, PaginationLinks, type PaginationLink } from './pagination-links.ts';
-import { PaginationState } from './pagination-state.ts';
 import { memoized } from './-private.ts';
-
-type ContentFeatures = {
-  loadNext?: () => Promise<void>;
-  loadPrev?: () => Promise<void>;
-  loadPage?: (url: string) => Promise<void>;
-};
+import type { PaginationLink, PaginationLinks } from './pagination-links.ts';
+import { getPaginationLinks } from './pagination-links.ts';
+import type { PaginationSubscription } from './pagination-subscription.ts';
+import { DISPOSE } from './request-subscription.ts';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export interface PaginationLinksSubscription<RT, E> {
@@ -21,7 +16,7 @@ export interface PaginationLinksSubscription<RT, E> {
 }
 
 export interface PaginationLinksSubscriptionArgs<RT, E> {
-  pages: PaginationState<RT, StructuredErrorDocument<E>>;
+  pages: PaginationSubscription<RT, E>;
 }
 
 /**
@@ -44,51 +39,6 @@ export class PaginationLinksSubscription<RT, E> {
     this._args = args;
     this.isDestroyed = false;
     this[DISPOSE] = _DISPOSE;
-  }
-
-  /**
-   * Loads the prev page based on links.
-   */
-  loadPrev = async (): Promise<void> => {
-    const { prev } = this.paginationLinks.paginationState;
-    if (prev) {
-      await this.loadPage(prev);
-    }
-  };
-
-  /**
-   * Loads the next page based on links.
-   */
-  loadNext = async (): Promise<void> => {
-    const { next } = this.paginationLinks.paginationState;
-    if (next) {
-      await this.loadPage(next);
-    }
-  };
-
-  /**
-   * Loads a specific page by its URL.
-   */
-  loadPage = async (url: string): Promise<void> => {
-    let { paginationState } = this.paginationLinks;
-    const page = paginationState.getPageState(url);
-    paginationState.activatePage(page);
-    if (!page.isLoaded) {
-      const request = this.store.request({ method: 'GET', url });
-      await page.load(request);
-    }
-  };
-
-  /**
-   * Content features to yield to the content slot of a component
-   */
-  @memoized
-  get contentFeatures(): ContentFeatures {
-    return {
-      loadPrev: this.loadPrev,
-      loadNext: this.loadNext,
-      loadPage: this.loadPage,
-    } as ContentFeatures;
   }
 
   @memoized

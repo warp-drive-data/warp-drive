@@ -20,5 +20,7 @@ export type {
   ContentFeatures,
   RecoveryFeatures,
   RequestArgs,
+  PaginateArgs,
+  PaginationContentFeatures,
   SignalStore,
 } from './-private';

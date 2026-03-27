@@ -1,37 +1,20 @@
-import Component from '@glimmer/component';
-import { cached } from '@glimmer/tracking';
 import { service } from '@ember/service';
+import Component from '@glimmer/component';
 
 import { importSync, macroCondition, moduleExists } from '@embroider/macros';
 
-import type { Document, Store } from '@warp-drive/core';
+import type { RequestManager,Store  } from '@warp-drive/core';
 import { assert } from '@warp-drive/core/build-config/macros';
-import type { Future } from '@warp-drive/core/request';
-import { createPaginationLinksSubscription } from '@warp-drive/core/reactive';
-import { DISPOSE } from '@warp-drive/core/signals/-leaked';
 import type {
-  PaginationState,
-  Page,
+  PaginationContentFeatures,
   PaginationLink,
+  PaginationLinksSubscription,
+  PaginationSubscription,
   PlaceholderPaginationLink,
   RealPaginationLink,
 } from '@warp-drive/core/reactive';
-import type { StructuredErrorDocument } from '@warp-drive/core/types/request';
-
-import { Request } from './request.gts';
-import { and, Throw } from './await.gts';
-
-function notNull(x: null): never;
-function notNull<T>(x: T): Exclude<T, null>;
-function notNull<T>(x: T | null) {
-  assert('Expected a non-null value, but got null', x !== null);
-  return x;
-}
-
-const not = (x: unknown) => !x;
-const IdleBlockMissingError = new Error(
-  'No idle block provided for <Request> component, and no query or request was provided.'
-);
+import { createPaginationLinksSubscription } from '@warp-drive/core/reactive';
+import { DISPOSE } from '@warp-drive/core/signals/-leaked';
 
 let consume = service;
 if (macroCondition(moduleExists('ember-provide-consume-context'))) {
@@ -39,15 +22,9 @@ if (macroCondition(moduleExists('ember-provide-consume-context'))) {
   consume = contextConsume;
 }
 
-type ContentFeatures = {
-  loadNext?: () => Promise<void>;
-  loadPrev?: () => Promise<void>;
-  loadPage?: (url: string) => Promise<void>;
-};
-
 interface EachLinkSignature<RT, E> {
   Args: {
-    pages: PaginationState<RT, E>;
+    pages: PaginationSubscription<RT, E>;
 
     /**
      * The store instance to use for making requests. If contexts are available,
@@ -57,16 +34,16 @@ interface EachLinkSignature<RT, E> {
      * different from the store provided via context.
      *
      */
-    store?: Store;
+    store?: Store | RequestManager;
   };
   Blocks: {
     /**
      * The block to render when the request succeeded.
      *
      */
-    link: [link: RealPaginationLink<RT, StructuredErrorDocument<E>>, features: ContentFeatures];
-    placeholder: [link: PlaceholderPaginationLink<RT, StructuredErrorDocument<E>>, features: ContentFeatures];
-    default: [link: PaginationLink<RT, StructuredErrorDocument<E>>, feature: ContentFeatures];
+    link: [link: RealPaginationLink];
+    placeholder: [link: PlaceholderPaginationLink];
+    default: [link: PaginationLink];
   };
 }
 
@@ -296,7 +273,7 @@ export class EachLink<RT, E> extends Component<EachLinkSignature<RT, E>> {
    */
   @consume('store') declare _store: Store;
 
-  get store(): Store {
+  get store(): Store | RequestManager {
     const store = this.args.store || this._store;
     assert(
       moduleExists('ember-provide-consume-context')
@@ -332,14 +309,14 @@ export class EachLink<RT, E> extends Component<EachLinkSignature<RT, E>> {
     {{#each this.state.links as |link|}}
       {{#if link.isReal}}
         {{#if (has-block "link")}}
-          {{yield link this.state.contentFeatures to="link"}}
+          {{yield link to="link"}}
         {{else}}
-          {{yield link this.state.contentFeatures}}
+          {{yield link}}
         {{/if}}
       {{else if (has-block "placeholder")}}
-        {{yield link this.state.contentFeatures to="placeholder"}}
+        {{yield link to="placeholder"}}
       {{else}}
-        {{yield link this.state.contentFeatures}}
+        {{yield link}}
       {{/if}}
     {{/each}}
   </template>

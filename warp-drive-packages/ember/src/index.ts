@@ -18,6 +18,7 @@ export {
   type RequestLoadingState,
   type RequestState,
   type PaginationState,
+  type PageState,
   type PaginationLinks,
   type PaginationLink,
   type RealPaginationLink,

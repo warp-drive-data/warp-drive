@@ -1,9 +1,12 @@
 import { assert } from '@warp-drive/core/build-config/macros';
-import { memoized } from './reactivity/signal';
-import { StructuredErrorDocument } from '../types/request.ts';
-import { type PaginationState } from './pagination-state.ts';
 
-const PaginationLinksCache = new WeakMap<PaginationState, PaginationLinks>();
+import type { StructuredErrorDocument } from '../types/request.ts';
+import type { PaginationSubscription } from './pagination-subscription.ts';
+import { memoized } from './reactivity/signal';
+
+type UnknownPaginationSubscription<RT = unknown, E = unknown> = PaginationSubscription<RT, E>;
+
+const PaginationLinksCache = new WeakMap<UnknownPaginationSubscription, PaginationLinks>();
 
 export class RealPaginationLink {
   readonly isReal = true as const;
@@ -71,25 +74,25 @@ function getPaginationLink(
 export type PaginationLink = RealPaginationLink | PlaceholderPaginationLink;
 
 export class PaginationLinks<RT = unknown, E = unknown> {
-  declare paginationState: PaginationState<RT, StructuredErrorDocument<E>>;
+  declare paginationSubscription: PaginationSubscription<RT, E>;
 
   private _links: PaginationLink[] = [];
 
-  constructor(paginationState: PaginationState<RT, StructuredErrorDocument<E>>) {
-    this.paginationState = paginationState;
+  constructor(paginationSubscription: PaginationSubscription<RT, E>) {
+    this.paginationSubscription = paginationSubscription;
   }
 
   /** All available links and placeholders */
   @memoized
   get links(): PaginationLink[] {
-    const state = this.paginationState;
+    const subscription = this.paginationSubscription;
 
-    const { activePage } = state;
+    const { activePage } = subscription;
     if (!activePage?.isSuccess) {
       return this._links;
     }
 
-    const { totalPages } = state;
+    const { totalPages } = subscription.paginationState;
     const { pageNumber, selfLink, firstLink, lastLink, prevLink, nextLink } = activePage;
 
     const links = [];
@@ -171,13 +174,13 @@ export class PaginationLinks<RT = unknown, E = unknown> {
 }
 
 export function getPaginationLinks<RT, E>(
-  state: PaginationState<RT, StructuredErrorDocument<E>>
+  subscription: PaginationSubscription<RT, E>
 ): Readonly<PaginationLinks<RT, StructuredErrorDocument<E>>> {
-  let links = PaginationLinksCache.get(state);
+  let links = PaginationLinksCache.get(subscription);
 
   if (!links) {
-    links = new PaginationLinks<RT, E>(state);
-    PaginationLinksCache.set(state, links);
+    links = new PaginationLinks<RT, E>(subscription);
+    PaginationLinksCache.set(subscription, links);
   }
 
   return links as Readonly<PaginationLinks<RT, StructuredErrorDocument<E>>>;
