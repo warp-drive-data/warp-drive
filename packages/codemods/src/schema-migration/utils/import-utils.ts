@@ -84,9 +84,9 @@ export function generateWarpDriveTypeImport(
  * When `hasTypes` is `false` the trait never produced a `.type` file,
  * so the suffix is always `.schema` regardless of config.
  */
-export function resolveTraitImportPath(baseName: string, options?: TransformOptions, hasTypes = true): string {
-  const suffix = !options?.combineSchemasAndTypes && hasTypes ? 'type' : 'schema';
-  const base = options?.traitsImport ?? '../traits';
+export function resolveTraitImportPath(baseName: string, options: TransformOptions, hasTypes = true): string {
+  const suffix = !options.combineSchemasAndTypes && hasTypes ? 'type' : 'schema';
+  const base = options.traitsImport ?? '../traits';
   return `${base}/${baseName}.${suffix}`;
 }
 
@@ -95,7 +95,7 @@ export function resolveTraitImportPath(baseName: string, options?: TransformOpti
  * e.g., generateTraitImport('shareable', options) returns:
  *   "type { ShareableTrait } from '../traits/shareable.type'"
  */
-export function generateTraitImport(traitName: string, options?: TransformOptions): string {
+export function generateTraitImport(traitName: string, options: TransformOptions): string {
   const traitTypeName = deriveTraitInterfaceName(traitName);
   return `type { ${traitTypeName} } from '${resolveTraitImportPath(traitName, options)}'`;
 }
@@ -188,8 +188,8 @@ export function transformModelToResourceImport(
 
   let useTypeFile = false;
   if (!options.combineSchemasAndTypes) {
-    const isTargetTyped = modelEntity ? modelEntity.parsedFile.isTypeScript : false;
-    useTypeFile = isTargetTyped || !options.disableMissingTypeAutoGen;
+    const isTargetTyped = modelEntity ? modelEntity.parsedFile.isTypeScript : true;
+    useTypeFile = isTargetTyped;
   }
 
   const typeFileName = useTypeFile ? `${relatedType}.type${ext}` : `${relatedType}.schema${ext}`;

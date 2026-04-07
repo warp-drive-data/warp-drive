@@ -36,6 +36,11 @@
       "description": "Force all output files to be TypeScript (.ts) even when input files are JavaScript (.js).",
       "default": false
     },
+    "combineSchemasAndTypes": {
+      "type": "boolean",
+      "description": "Combine schema and type interface into a single file. When true, each model produces one .schema file. Set to false to emit a separate .type.ts file.",
+      "default": true
+    },
     "mirror": {
       "type": "boolean",
       "description": "Use @warp-drive-mirror instead of @warp-drive for imports",

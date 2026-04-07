@@ -3,7 +3,7 @@ import { join } from 'path';
 
 import { logger } from '../../../utils/logger.js';
 import type { TransformerResult } from '../codemod.js';
-import type { TransformOptions } from '../config.js';
+import type { FinalOptions } from '../config.js';
 import type { SchemaArtifact, SchemaArtifactRegistry } from '../utils/artifact.js';
 import { createTraitArtifactConfig, isConnectedToModel as isConnectedToModelInRegistry } from '../utils/artifact.js';
 import type { PropertyInfo, SchemaField, TransformArtifact } from '../utils/ast-utils.js';
@@ -27,7 +27,7 @@ const log = logger.for('mixin-processor');
  */
 function ensureResourceTypeFileExists(
   modelType: string,
-  options: TransformOptions,
+  options: FinalOptions,
   artifacts: TransformArtifact[]
 ): boolean {
   const pascalCaseType = toPascalCase(modelType);
@@ -81,7 +81,7 @@ export interface ${typeName} {
  */
 export function toArtifacts(
   entity: SchemaArtifact,
-  options: TransformOptions,
+  options: FinalOptions,
   registry: SchemaArtifactRegistry = new Map()
 ): TransformerResult {
   const parsedFile = entity.parsedFile;
@@ -145,7 +145,7 @@ function generateMixinArtifacts(
   traitFields: Array<{ name: string; kind: string; type?: string; options?: Record<string, unknown> }>,
   extensionProperties: PropertyInfo[],
   extendedTraits: string[],
-  options: TransformOptions,
+  options: FinalOptions,
   registry: SchemaArtifactRegistry
 ): TransformArtifact[] {
   const artifacts: TransformArtifact[] = [];

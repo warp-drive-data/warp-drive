@@ -4,7 +4,7 @@ import { dirname, join, resolve } from 'path';
 
 import { logger } from '../../../utils/logger.js';
 import type { TransformerResult } from '../codemod.js';
-import { getConfiguredImport, type TransformOptions } from '../config.js';
+import { getConfiguredImport, type FinalOptions, type TransformOptions } from '../config.js';
 import type { SchemaArtifactRegistry } from '../utils/artifact.js';
 import { createResourceArtifactConfig, createTraitArtifactConfig, SchemaArtifact } from '../utils/artifact.js';
 import type { ExtractedType, SchemaField, TransformArtifact } from '../utils/ast-utils.js';
@@ -308,7 +308,7 @@ export function processIntermediateModelsToTraits(
   intermediateModelPaths: string[],
   additionalModelSources: Array<{ pattern: string; dir: string }> | undefined,
   additionalMixinSources: Array<{ pattern: string; dir: string }> | undefined,
-  options: TransformOptions,
+  options: FinalOptions,
   registry: SchemaArtifactRegistry
 ): { artifacts: TransformArtifact[]; errors: string[] } {
   const artifacts: TransformArtifact[] = [];
@@ -612,7 +612,7 @@ function generateRegularModelArtifacts(
 
 export function toArtifacts(
   entity: SchemaArtifact,
-  options: TransformOptions,
+  options: FinalOptions,
   registry: SchemaArtifactRegistry = new Map()
 ): TransformerResult {
   log.debug(`=== DEBUG: Processing ${entity.path} ===`);

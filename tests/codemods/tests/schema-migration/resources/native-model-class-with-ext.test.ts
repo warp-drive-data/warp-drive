@@ -174,9 +174,10 @@ describe('Basic model class transformation', function () {
          */
         export interface User extends WithLegacy<UserResource> {}
       `,
-      [F.extension('user', 'js')]: ts`
+      [F.extension('user')]: ts`
         import { cached, tracked } from '@glimmer/tracking';
         import { computed } from '@ember/object';
+        import type { User } from './user.type.ts';
 
         export const BIRTHAGE = 0;
         export const ValidAges = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -185,6 +186,8 @@ describe('Basic model class transformation', function () {
         /**
          * A user of the application.
          */
+        // @ts-ignore-error in reality fields are not merged, they are overridden
+        export interface UserExtension extends User {}
         export class UserExtension {
           @tracked randomProp = 'hello';
 
@@ -453,6 +456,7 @@ describe('Basic model class transformation', function () {
   test('[JS] We can transform basic native class models (combineSchemasAndTypes: true)', {
     config: {
       combineSchemasAndTypes: true,
+      forceTypeScript: true,
     },
     input: {
       [F.jsmodel('user')]: js`
@@ -623,9 +627,10 @@ describe('Basic model class transformation', function () {
          */
         export interface User extends WithLegacy<UserResource> {}
       `,
-      [F.extension('user', 'js')]: ts`
+      [F.extension('user')]: ts`
         import { cached, tracked } from '@glimmer/tracking';
         import { computed } from '@ember/object';
+        import type { User } from './user.schema.ts';
 
         export const BIRTHAGE = 0;
         export const ValidAges = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -634,6 +639,8 @@ describe('Basic model class transformation', function () {
         /**
          * A user of the application.
          */
+        // @ts-ignore-error in reality fields are not merged, they are overridden
+        export interface UserExtension extends User {}
         export class UserExtension {
           @tracked randomProp = 'hello';
 

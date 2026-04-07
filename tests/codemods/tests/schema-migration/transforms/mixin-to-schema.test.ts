@@ -74,6 +74,7 @@ describe('mixin-to-schema transform (artifacts)', () => {
       mixinImportSource: 'test-app/mixins',
       emberDataImportSource: '@ember-data/model',
       intermediateModelPaths: [],
+      forceTypeScript: true,
       dryRun: false,
       verbose: false,
     };
@@ -178,6 +179,10 @@ export default Mixin.create({
 
         import { computed } from '@ember/object';
 
+        import type { FileableTrait } from 'test-app/data/traits/fileable.type';
+
+        export interface FileableTraitExtension extends FileableTrait {}
+
         // TODO: migrate this extension to a class so that TypeScript declaration merging works.
         // Object extensions do not support interface merging.
         export const FileableTraitExtension = {
@@ -191,7 +196,7 @@ export default Mixin.create({
         };
         export default Registration;",
           "name": "FileableTraitExtension",
-          "suggestedFileName": "fileable.ext.js",
+          "suggestedFileName": "fileable.ext.ts",
           "type": "trait-extension",
         }
       `);
@@ -518,7 +523,7 @@ export default Mixin.create({
       expect(trait?.code).toMatchSnapshot('mixin trait type interface');
       expect(extension?.code).toMatchSnapshot('mixin extension code');
       expect(trait?.suggestedFileName).toBe('nameable.schema.ts');
-      expect(extension?.suggestedFileName).toBe('nameable.ext.js');
+      expect(extension?.suggestedFileName).toBe('nameable.ext.ts');
     });
 
     it('generates only trait artifact when mixin has only data fields', () => {
@@ -828,6 +833,7 @@ export default Mixin.create({
         modelImportSource: 'test-app/models',
         resourcesImport: 'test-app/data/resources',
         resourcesDir: './test-output/resources',
+        forceTypeScript: true,
         verbose: false,
         debug: false,
       };
@@ -870,6 +876,7 @@ export default Mixin.create({
         modelImportSource: 'test-app/models',
         resourcesImport: 'test-app/data/resources',
         resourcesDir: './test-output/resources',
+        forceTypeScript: true,
         verbose: false,
         debug: false,
       };

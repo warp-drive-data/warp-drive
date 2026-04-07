@@ -572,7 +572,7 @@ export function collectRelationshipImports(
 export function collectTraitImports(
   traits: string[],
   imports: Set<string>,
-  options?: TransformOptions,
+  options: TransformOptions,
   checkExistence = false
 ): void {
   for (const trait of traits) {
@@ -890,7 +890,7 @@ export function generateMergedSchemaCode(opts: MergedSchemaOptions): GeneratedSc
   const withDefaultsImport =
     config.type === 'resource' && !config.isFragment ? getConfiguredImport(opts.options, 'withDefaults') : undefined;
 
-  if (!opts.options?.disableTypescriptSchemas && !withDefaultsImport) {
+  if (config.schemaIsTyped && !withDefaultsImport) {
     const schemaTypeKey = config.type === 'trait' ? 'LegacyTrait' : 'LegacyResourceSchema';
     const importLocation = getConfiguredImport(opts.options, schemaTypeKey);
     schemaImportParts.push(`import type { ${importLocation.imported} } from '${importLocation.source}';`);

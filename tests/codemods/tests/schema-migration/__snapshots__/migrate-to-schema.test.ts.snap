@@ -767,7 +767,7 @@ export interface AuditableTrait {
 exports[`migrate-to-schema batch operation > does not misclassify model extending base model via relative import as fragment > generated file structure 1`] = `
 [
   "resources/",
-  "resources/action-plan.ext.js",
+  "resources/action-plan.ext.ts",
   "resources/action-plan.schema.ts",
   "resources/action-plan.type.ts",
   "traits/",
@@ -779,9 +779,12 @@ exports[`migrate-to-schema batch operation > does not misclassify model extendin
 exports[`migrate-to-schema batch operation > does not misclassify model extending base model via relative import as fragment > generated files 1`] = `
 {
   "resources/": "__dir__",
-  "resources/action-plan.ext.js": "
+  "resources/action-plan.ext.ts": "
 import BaseModel from 'test-app/models/base-model';
+import type { ActionPlan } from './action-plan.type.ts';
 
+// @ts-ignore-error in reality fields are not merged, they are overridden
+export interface ActionPlanExtension extends ActionPlan, BaseModel {}
 export class ActionPlanExtension {
   get displayName() {
       return this.name;
@@ -1097,7 +1100,7 @@ export interface WorkstreamableTrait {
 exports[`migrate-to-schema batch operation > ensures resources and traits include .schema with matching suffixes > schema naming file structure 1`] = `
 [
   "resources/",
-  "resources/js-test-model.ext.js",
+  "resources/js-test-model.ext.ts",
   "resources/js-test-model.schema.ts",
   "resources/js-test-model.type.ts",
   "resources/ts-test-model.schema.ts",
@@ -1139,7 +1142,7 @@ exports[`migrate-to-schema batch operation > extracts intermediate model trait w
   "traits/",
   "traits/-base-model.schema.ts",
   "traits/-base-model.type.ts",
-  "traits/base-model.ext.js",
+  "traits/base-model.ext.ts",
   "traits/base-model.schema.ts",
   "traits/base-model.type.ts",
 ]
@@ -1238,8 +1241,12 @@ export interface BaseModelTrait {
   id: string | null;
 }
 ",
-  "traits/base-model.ext.js": "
+  "traits/base-model.ext.ts": "
 
+
+import type { BaseModelTrait } from 'test-app/data/traits/base-model.type';
+
+export interface BaseModelTraitExtension extends BaseModelTrait {}
 
 // TODO: migrate this extension to a class so that TypeScript declaration merging works.
 // Object extensions do not support interface merging.
@@ -1711,7 +1718,7 @@ export interface LocalMixinTrait {
 exports[`migrate-to-schema batch operation > handles mixed js and ts files correctly with proper type file extensions > mixed js/ts file structure 1`] = `
 [
   "resources/",
-  "resources/js-model-with-mixin.ext.js",
+  "resources/js-model-with-mixin.ext.ts",
   "resources/js-model-with-mixin.schema.ts",
   "resources/js-model-with-mixin.type.ts",
   "resources/ts-model-with-mixin.schema.ts",
@@ -1728,9 +1735,12 @@ exports[`migrate-to-schema batch operation > handles mixed js and ts files corre
 exports[`migrate-to-schema batch operation > handles mixed js and ts files correctly with proper type file extensions > mixed js/ts files 1`] = `
 {
   "resources/": "__dir__",
-  "resources/js-model-with-mixin.ext.js": "
+  "resources/js-model-with-mixin.ext.ts": "
 import JsMixin from '../../mixins/js-mixin';
+import type { JsModelWithMixin } from './js-model-with-mixin.type.ts';
 
+// @ts-ignore-error in reality fields are not merged, they are overridden
+export interface JsModelWithMixinExtension extends JsModelWithMixin, JsMixin {}
 export class JsModelWithMixinExtension {
   get displayName() {
       return this.name + ' (JS)';
@@ -2492,7 +2502,7 @@ export interface DataFieldModelTrait extends BaseModelTrait {
 exports[`migrate-to-schema batch operation > model with relative base-class import and mixins extracts fields and extensions > generated file structure 1`] = `
 [
   "resources/",
-  "resources/action-plan.ext.js",
+  "resources/action-plan.ext.ts",
   "resources/action-plan.schema.ts",
   "resources/action-plan.type.ts",
   "traits/",
@@ -2506,10 +2516,13 @@ exports[`migrate-to-schema batch operation > model with relative base-class impo
 exports[`migrate-to-schema batch operation > model with relative base-class import and mixins extracts fields and extensions > generated files 1`] = `
 {
   "resources/": "__dir__",
-  "resources/action-plan.ext.js": "
+  "resources/action-plan.ext.ts": "
 import BaseModel from 'test-app/models/base-model';
 import Commentable from '../../mixins/commentable';
+import type { ActionPlan } from './action-plan.type.ts';
 
+// @ts-ignore-error in reality fields are not merged, they are overridden
+export interface ActionPlanExtension extends ActionPlan, BaseModel, Commentable {}
 export class ActionPlanExtension {
   get displayName() {
       return this.name;

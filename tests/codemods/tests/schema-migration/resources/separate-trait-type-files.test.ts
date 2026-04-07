@@ -377,8 +377,12 @@ describe('combineSchemasAndTypes: false (default) - trait type files', function 
           allowedTeams?: HasMany<AllowedTeam>;
         }
       `,
-      [F.extension('teamable', 'js')]: js`
+      [F.extension('teamable')]: ts`
         import { filterBy } from '@ember/object/computed';
+
+        import type { TeamableTrait } from '../traits/teamable.type';
+
+        export interface TeamableTraitExtension extends TeamableTrait {}
 
         // TODO: migrate this extension to a class so that TypeScript declaration merging works.
         // Object extensions do not support interface merging.

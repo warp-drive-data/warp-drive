@@ -29,6 +29,8 @@ describe('migrate-to-schema batch operation', () => {
       mixinImportSource: 'test-app/mixins',
       emberDataImportSource: '@ember-data/model',
       intermediateModelPaths: [],
+      combineSchemasAndTypes: false,
+      forceTypeScript: true,
       dryRun: false,
       verbose: false,
     };

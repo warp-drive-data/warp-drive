@@ -146,9 +146,9 @@ describe('Basic model class transformation', function () {
       `,
     },
   });
-  test('[JS] We can transform basic native class models (disableTypescriptSchemas: true)', {
+  test('[JS] JS models produce plain JS output by default', {
     config: {
-      disableTypescriptSchemas: true,
+      forceTypeScript: false,
     },
     input: {
       [F.jsmodel('user')]: js`
@@ -226,81 +226,14 @@ describe('Basic model class transformation', function () {
 
         export default UserSchema;
       `,
-      [F.resourceType('user')]: ts`
-        import type { Type } from '@warp-drive/core-types/symbols';
-        import type { WithLegacy } from '@ember-data/model/migration-support';
-        import type { AsyncHasMany } from '@ember-data/model';
-        import type { Company } from './company.type.ts';
-        import type { Post } from './post.type.ts';
-
-        /**
-         * A user of the application.
-         *
-         * ---
-         *
-         * This type represents the full set schema derived fields of
-         * the 'user' resource, without any of the legacy mode features
-         * and without any extensions.
-         *
-         * > [!TIP]
-         * > It is likely that you will want a more specific type tailored
-         * > to the context of where some data has been loaded, for instance
-         * > one that marks specific fields as readonly, or which only enables
-         * > some fields to be null during create, or which only includes
-         * > a subset of fields based on a specific API response.
-         * >
-         * > For those cases, you can create a more specific type that derives
-         * > from this type to ensure that your type definitions stay consistent
-         * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
-         *
-         * See also {@link User} for fields + legacy mode features
-         */
-        export interface UserResource {
-          readonly [Type]: 'user';
-          id: string | null;
-
-          /**
-           * The first name of the user.
-           */
-          firstName: unknown;
-          lastName: string | null;
-          age: number;
-
-          /**
-           * The company the user works for
-           */
-          company: Company | null;
-
-          /**
-           * The posts that the user has written.
-           */
-          posts: AsyncHasMany<Post>;
-        }
-
-        /**
-         * A user of the application.
-         *
-         * ---
-         *
-         * This type represents the full set schema derived fields of
-         * the 'user' resource, including all legacy mode features but
-         * without any extensions.
-         *
-         * See also {@link UserResource} for just the fields
-         */
-        export interface User extends WithLegacy<UserResource> {}
-      `,
     },
   });
-  test(
-    '[JS] We can transform basic native class models (disableTypescriptSchemas: true, disableMissingTypeAutoGen: true)',
-    {
-      config: {
-        disableTypescriptSchemas: true,
-        disableMissingTypeAutoGen: true,
-      },
-      input: {
-        [F.jsmodel('user')]: js`
+  test('[JS] JS models produce plain JS output without types by default', {
+    config: {
+      forceTypeScript: false,
+    },
+    input: {
+      [F.jsmodel('user')]: js`
         import Model, { attr, belongsTo, hasMany } from '@ember-data/model';
 
         /**
@@ -325,9 +258,9 @@ describe('Basic model class transformation', function () {
           @hasMany('post', { async: true, inverse: 'author', resetOnRemoteUpdate: true, polymorphic: true }) posts;
         }
       `,
-      },
-      output: {
-        [F.resource('user', 'js')]: js`
+    },
+    output: {
+      [F.resource('user', 'js')]: js`
         import { withDefaults } from '@ember-data/model/migration-support';
 
         const UserSchema = withDefaults({
@@ -375,9 +308,8 @@ describe('Basic model class transformation', function () {
 
         export default UserSchema;
       `,
-      },
-    }
-  );
+    },
+  });
   test('[TS] We can transform basic native class models', {
     input: {
       [F.tsmodel('user')]: ts`

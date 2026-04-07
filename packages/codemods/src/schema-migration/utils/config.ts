@@ -6,6 +6,7 @@ export interface ConfigOptions {
   verbose?: boolean;
   debug?: boolean;
   forceTypeScript?: boolean;
+  combineSchemasAndTypes?: boolean;
   mirror?: boolean;
   projectName?: string;
   warpDriveImports?: 'legacy' | 'modern' | 'mirror';
