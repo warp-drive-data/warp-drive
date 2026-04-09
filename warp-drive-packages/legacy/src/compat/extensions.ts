@@ -1,6 +1,13 @@
-import { type default as EmberObject, get, set } from '@ember/object';
+import {
+  type default as EmberObject,
+  get,
+  getProperties,
+  notifyPropertyChange,
+  set,
+  setProperties,
+} from '@ember/object';
+import { addObserver, removeObserver } from '@ember/object/observers';
 import { compare } from '@ember/utils';
-import Ember from 'ember';
 
 import { assert } from '@warp-drive/core/build-config/macros';
 import type { CAUTION_MEGA_DANGER_ZONE_Extension } from '@warp-drive/core/reactive';
@@ -21,7 +28,41 @@ const EmberObjectMethods = [
 ] as const;
 EmberObjectMethods.forEach((method) => {
   EmberObjectFeatures[method] = function delegatedMethod(...args: unknown[]): unknown {
-    return (Ember[method] as (...args: unknown[]) => unknown)(this, ...args);
+    switch (method) {
+      case 'addObserver':
+        return (addObserver as (...args: unknown[]) => unknown)(this, ...args);
+        break;
+      case 'cacheFor':
+        throw new Error('this has been removed and will not be replaced');
+        break;
+      case 'decrementProperty':
+        throw new Error('Ember.decrementProperty never existed');
+        break;
+      case 'get':
+        return (get as (...args: unknown[]) => unknown)(this, ...args);
+        break;
+      case 'getProperties':
+        return (getProperties as (...args: unknown[]) => unknown)(this, ...args);
+        break;
+      case 'incrementProperty':
+        throw new Error('Ember.incrementProperty never existed');
+        break;
+      case 'notifyPropertyChange':
+        return (notifyPropertyChange as (...args: unknown[]) => unknown)(this, ...args);
+        break;
+      case 'removeObserver':
+        return (removeObserver as (...args: unknown[]) => unknown)(this, ...args);
+        break;
+      case 'set':
+        return (set as (...args: unknown[]) => unknown)(this, ...args);
+        break;
+      case 'setProperties':
+        return (setProperties as (...args: unknown[]) => unknown)(this, ...args);
+        break;
+      case 'toggleProperty':
+        throw new Error('Ember.toggleProperty never existed');
+        break;
+    }
   };
 });
 export const EmberObjectArrayExtension: CAUTION_MEGA_DANGER_ZONE_Extension = {
