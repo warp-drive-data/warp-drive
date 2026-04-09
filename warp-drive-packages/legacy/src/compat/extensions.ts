@@ -36,7 +36,7 @@ EmberObjectMethods.forEach((method) => {
       case 'decrementProperty': {
         const key = args[0] as string;
         const decrement = (args[1] as number | undefined) ?? 1;
-        return set(this, key, ((get(this, key) as number) || 0) - decrement);
+        return set(this, key, (parseFloat(get(this, key) as string) || 0) - decrement);
       }
       case 'get':
         return (get as (...args: unknown[]) => unknown)(this, ...args);
