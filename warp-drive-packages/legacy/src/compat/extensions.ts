@@ -34,18 +34,26 @@ EmberObjectMethods.forEach((method) => {
       case 'cacheFor':
         throw new Error('cacheFor has been removed and will not be replaced');
       case 'decrementProperty': {
-        const key = args[0] as string;
-        const decrement = (args[1] as number | undefined) ?? 1;
-        return set(this, key, (parseFloat(get(this, key) as string) || 0) - decrement);
+        const keyName = args[0] as string;
+        const decrement = (args[1] as number) ?? 1;
+        assert(
+          'Must pass a numeric value to decrementProperty',
+          (typeof decrement === 'number' || !isNaN(parseFloat(decrement as unknown as string))) && isFinite(decrement)
+        );
+        return set(this, keyName, ((get(this, keyName) as number) || 0) - decrement);
       }
       case 'get':
         return (get as (...args: unknown[]) => unknown)(this, ...args);
       case 'getProperties':
         return (getProperties as (...args: unknown[]) => unknown)(this, ...args);
       case 'incrementProperty': {
-        const key = args[0] as string;
-        const increment = (args[1] as number | undefined) ?? 1;
-        return set(this, key, (parseFloat(get(this, key) as string) || 0) + increment);
+        const keyName = args[0] as string;
+        const increment = (args[1] as number) ?? 1;
+        assert(
+          'Must pass a numeric value to incrementProperty',
+          !isNaN(parseFloat(String(increment))) && isFinite(increment)
+        );
+        return set(this, keyName, (parseFloat(get(this, keyName) as string) || 0) + increment);
       }
       case 'notifyPropertyChange':
         return (notifyPropertyChange as (...args: unknown[]) => unknown)(this, ...args);
