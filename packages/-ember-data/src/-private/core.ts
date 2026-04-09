@@ -1,5 +1,4 @@
 import Namespace from '@ember/application/namespace';
-import Ember from 'ember';
 
 import VERSION from '../version';
 
@@ -14,9 +13,5 @@ export const DS: DS = (Namespace as unknown as { create(args: CreateArgs): DS })
   VERSION: VERSION,
   name: 'DS',
 });
-
-if (Ember.libraries) {
-  Ember.libraries.registerCoreLibrary('Ember Data', VERSION);
-}
 
 export default DS;
