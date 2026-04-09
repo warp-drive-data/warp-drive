@@ -1,4 +1,5 @@
 import '@warp-drive/ember/install';
+import './deprecation-workflow';
 
 import Application from '@ember/application';
 import compatModules from '@embroider/virtual/compat-modules';

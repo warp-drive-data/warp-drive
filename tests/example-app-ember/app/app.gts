@@ -1,4 +1,5 @@
 import '@warp-drive/ember/install';
+import './deprecation-workflow';
 
 import EmberRouter from '@ember/routing/router';
 

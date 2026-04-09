@@ -2,6 +2,7 @@
 // prior to app boot
 // import './services/store';
 import '@warp-drive/ember/install';
+import './deprecation-workflow';
 
 import Application from '@ember/application';
 

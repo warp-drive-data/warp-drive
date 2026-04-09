@@ -55,7 +55,8 @@
     "vite": "^7.1.3",
     "vite-bundle-analyzer": "^1.2.1",
     "vite-plugin-compression2": "^2.2.0",
-    "zlib": "1.0.5"
+    "zlib": "1.0.5",
+    "ember-cli-deprecation-workflow": "^4.0.1"
   },
   "sideEffects": [
     "@warp-drive/ember/install"

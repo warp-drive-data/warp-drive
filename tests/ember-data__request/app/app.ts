@@ -1,3 +1,5 @@
+import './deprecation-workflow';
+
 import Application from '@ember/application';
 
 import loadInitializers from 'ember-load-initializers';

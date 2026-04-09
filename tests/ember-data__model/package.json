@@ -60,7 +60,8 @@
     "ember-source": "~6.6.0",
     "loader.js": "^4.7.0",
     "typescript": "^5.9.2",
-    "webpack": "^5.101.3"
+    "webpack": "^5.101.3",
+    "ember-cli-deprecation-workflow": "^4.0.1"
   },
   "ember": {
     "edition": "octane"
