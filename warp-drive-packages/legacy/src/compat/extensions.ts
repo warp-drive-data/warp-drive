@@ -36,7 +36,7 @@ EmberObjectMethods.forEach((method) => {
       case 'decrementProperty': {
         const key = args[0] as string;
         const decrement = (args[1] as number | undefined) ?? 1;
-        return set(this, key, (get(this, key) as number) - decrement);
+        return set(this, key, ((get(this, key) as number) || 0) - decrement);
       }
       case 'get':
         return (get as (...args: unknown[]) => unknown)(this, ...args);
@@ -45,7 +45,7 @@ EmberObjectMethods.forEach((method) => {
       case 'incrementProperty': {
         const key = args[0] as string;
         const increment = (args[1] as number | undefined) ?? 1;
-        return set(this, key, (get(this, key) as number) + increment);
+        return set(this, key, (parseFloat(get(this, key) as string) || 0) + increment);
       }
       case 'notifyPropertyChange':
         return (notifyPropertyChange as (...args: unknown[]) => unknown)(this, ...args);
