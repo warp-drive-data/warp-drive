@@ -1,6 +1,13 @@
-import { type default as EmberObject, get, set } from '@ember/object';
+import {
+  type default as EmberObject,
+  get,
+  getProperties,
+  notifyPropertyChange,
+  set,
+  setProperties,
+} from '@ember/object';
+import { addObserver, removeObserver } from '@ember/object/observers';
 import { compare } from '@ember/utils';
-import Ember from 'ember';
 
 import { assert } from '@warp-drive/core/build-config/macros';
 import type { CAUTION_MEGA_DANGER_ZONE_Extension } from '@warp-drive/core/reactive';
@@ -21,7 +28,46 @@ const EmberObjectMethods = [
 ] as const;
 EmberObjectMethods.forEach((method) => {
   EmberObjectFeatures[method] = function delegatedMethod(...args: unknown[]): unknown {
-    return (Ember[method] as (...args: unknown[]) => unknown)(this, ...args);
+    switch (method) {
+      case 'addObserver':
+        return (addObserver as (...args: unknown[]) => unknown)(this, ...args);
+      case 'cacheFor':
+        throw new Error('cacheFor has been removed and will not be replaced');
+      case 'decrementProperty': {
+        const keyName = args[0] as string;
+        const decrement = (args[1] as number) ?? 1;
+        assert(
+          'Must pass a numeric value to decrementProperty',
+          (typeof decrement === 'number' || !isNaN(parseFloat(decrement as unknown as string))) && isFinite(decrement)
+        );
+        return set(this, keyName, ((get(this, keyName) as number) || 0) - decrement);
+      }
+      case 'get':
+        return (get as (...args: unknown[]) => unknown)(this, ...args);
+      case 'getProperties':
+        return (getProperties as (...args: unknown[]) => unknown)(this, ...args);
+      case 'incrementProperty': {
+        const keyName = args[0] as string;
+        const increment = (args[1] as number) ?? 1;
+        assert(
+          'Must pass a numeric value to incrementProperty',
+          !isNaN(parseFloat(String(increment))) && isFinite(increment)
+        );
+        return set(this, keyName, (parseFloat(get(this, keyName) as string) || 0) + increment);
+      }
+      case 'notifyPropertyChange':
+        return (notifyPropertyChange as (...args: unknown[]) => unknown)(this, ...args);
+      case 'removeObserver':
+        return (removeObserver as (...args: unknown[]) => unknown)(this, ...args);
+      case 'set':
+        return (set as (...args: unknown[]) => unknown)(this, ...args);
+      case 'setProperties':
+        return (setProperties as (...args: unknown[]) => unknown)(this, ...args);
+      case 'toggleProperty': {
+        const key = args[0] as string;
+        return set(this, key, !get(this, key));
+      }
+    }
   };
 });
 export const EmberObjectArrayExtension: CAUTION_MEGA_DANGER_ZONE_Extension = {
