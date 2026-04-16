@@ -30,7 +30,6 @@
     "test": "pnpm turbo test --concurrency=1",
     "test:production": "pnpm turbo test:production --concurrency=1",
     "test:blueprints": "pnpm run -r --workspace-concurrency=-1 --if-present test:blueprints",
-    "test:fastboot": "pnpm run -r --workspace-concurrency=-1 --if-present test:fastboot",
     "test:vite": "pnpm run -r ---workspace-concurrency=-1 --if-present test:vite"
   },
   "devDependencies": {
@@ -116,19 +115,6 @@
       "ember-page-title": {
         "peerDependencies": {
           "@glimmer/component": "*",
-          "ember-source": "*"
-        }
-      },
-      "ember-cli-fastboot": {
-        "peerDependencies": {
-          "ember-cli": "*",
-          "ember-source": "*"
-        }
-      },
-      "ember-cli-fastboot-testing": {
-        "peerDependencies": {
-          "ember-cli": "*",
-          "ember-cli-fastboot": "*",
           "ember-source": "*"
         }
       },
