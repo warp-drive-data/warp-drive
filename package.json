@@ -78,6 +78,7 @@
   },
   "packageManager": "pnpm@10.15.0",
   "changelog": {
+    "cacheDir": ".changelog-cache",
     "labels": {
       ":label: breaking": ":boom: Breaking Change",
       ":label: feat": ":rocket: Enhancement",
@@ -88,7 +89,14 @@
       ":label: doc": ":memo: Documentation",
       ":label: test": ":goal_net: Test",
       ":label: chore": ":house: Internal"
-    }
+    },
+    "ignoreCommitters": [
+      "[bot]",
+      "dependabot-bot",
+      "greenkeeperio-bot",
+      "renovate-bot",
+      "Copilot"
+    ]
   },
   "pnpm": {
     "packageExtensions": {
