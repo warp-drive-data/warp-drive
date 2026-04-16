@@ -49,7 +49,7 @@
     "@warp-drive/utilities": "workspace:*",
     "@ember-data/unpublished-test-infra": "workspace:*",
     "eslint-plugin-warp-drive": "workspace:*",
-    "babel-plugin-ember-template-compilation": "^2.2.5",
+    "babel-plugin-ember-template-compilation": "^4.0.0",
     "decorator-transforms": "^2.2.2",
     "ember-source": "^6.6.0",
     "ember-strict-application-resolver": "^0.1.0",
