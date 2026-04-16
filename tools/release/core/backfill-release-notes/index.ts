@@ -33,18 +33,31 @@ export async function backfillReleaseNotes(args: string[]) {
   // get packages present on our current branch
   const packages = await gatherPackages(strategy.config);
 
-  // generate the list of changes
-  const newChanges = await getChanges(strategy.config, packages, fromTag);
+  // generate the list of changes — lerna outputs versions newest→oldest, so reverse for insertion order
+  const allChanges = (await getChanges(strategy.config, packages, fromTag)).reverse();
+
+  // update all changelogs one version at a time, oldest→newest
+  // each version is inserted before the previous one, building up the history correctly
+  let changedFiles: Awaited<ReturnType<typeof updateChangelogs>> = [];
+  let previousTag = fromTag;
+  for (const versionedChanges of allChanges) {
+    const files = await updateChangelogs(
+      previousTag,
+      versionedChanges.tag,
+      versionedChanges.date,
+      versionedChanges,
+      config.full,
+      strategy.config,
+      packages
+    );
+    changedFiles = changedFiles.concat(files);
+    previousTag = versionedChanges.tag as GIT_TAG;
+  }
 
   const versions = new Map<string, string>();
   for (const [pkgName, pkg] of packages.entries()) {
     versions.set(pkgName, pkg.pkgData.version);
   }
-
-  // update all changelogs, including the primary changelog
-  // and the changelogs for each package in changelogRoots
-  // this will not commit the changes
-  const changedFiles = await updateChangelogs(fromTag, newChanges, config.full, strategy.config, packages, versions);
 
   await confirmCommitChangelogs(changedFiles, config.full, versions);
 }

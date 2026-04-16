@@ -13,6 +13,10 @@ export type LernaChangeset = {
   data: LernaOutput;
   byPackage: Record<string, Record<string, Map<string, Entry>>>;
 };
+export type VersionedLernaChangeset = LernaChangeset & {
+  tag: string;
+  date: string;
+};
 
 const IgnoredPackages = new Set(['private-build-infra']);
 
@@ -110,27 +114,51 @@ function extractLoggedEntry(
   });
 }
 
+const VERSION_HEADER_RE = /^## (.+) \((\d{4}-\d{2}-\d{2})\)$/;
+
+function freshOutput(): { data: LernaOutput; byPackage: Record<string, Record<string, Map<string, Entry>>> } {
+  return { data: { [Committers]: new Map() }, byPackage: {} };
+}
+
 function parseLernaOutput(
   markdown: string,
   strategy: RawStrategyConfig,
   packages: Map<string, Package>
-): LernaChangeset {
+): VersionedLernaChangeset[] {
   // uncomment this to see lerna's markdown output if needed to debug
   // console.log(markdown);
   const subPathMap = packagesBySubPath(strategy, packages);
-  const data: LernaOutput = {
-    [Committers]: new Map(),
-  };
-  const byPackage: Record<string, Record<string, Map<string, Entry>>> = {};
-  const lines = markdown.split('\n');
+  const results: VersionedLernaChangeset[] = [];
+
+  let currentTag = '';
+  let currentDate = '';
+  let { data, byPackage } = freshOutput();
 
   let isParsingCommitters = false;
   let isParsingSection = false;
   let currentSection = '';
   let currentEntry: Entry | null = null;
-  // console.log('lines', lines);
 
-  for (const line of lines) {
+  function flushVersion() {
+    if (currentTag) {
+      results.push({ tag: currentTag, date: currentDate, data, byPackage });
+    }
+  }
+
+  for (const line of lines(markdown)) {
+    const versionMatch = line.match(VERSION_HEADER_RE);
+    if (versionMatch) {
+      flushVersion();
+      currentTag = versionMatch[1];
+      currentDate = versionMatch[2];
+      ({ data, byPackage } = freshOutput());
+      isParsingSection = false;
+      isParsingCommitters = false;
+      currentSection = '';
+      currentEntry = null;
+      continue;
+    }
+
     if (isParsingSection) {
       if (line === '') {
         isParsingSection = false;
@@ -187,14 +215,19 @@ function parseLernaOutput(
     }
   }
 
-  // Object.entries(data).forEach(([key, value]) => {
-  //   console.log(key, value);
-  // });
-
-  return { data, byPackage };
+  flushVersion();
+  return results;
 }
 
-export async function getChanges(strategy: RawStrategyConfig, packages: Map<string, Package>, fromTag: string) {
+function* lines(markdown: string): Generator<string> {
+  yield* markdown.split('\n');
+}
+
+export async function getChanges(
+  strategy: RawStrategyConfig,
+  packages: Map<string, Package>,
+  fromTag: string
+): Promise<VersionedLernaChangeset[]> {
   const changelogMarkdown = await exec(['sh', '-c', `pnpm exec lerna-changelog --from=${fromTag}`]);
   return parseLernaOutput(changelogMarkdown, strategy, packages);
 }

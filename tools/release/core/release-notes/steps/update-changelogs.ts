@@ -16,12 +16,12 @@ function findInsertionPoint(lines: string[], version: string) {
 
 function buildText(
   newTag: string,
+  date: string,
   strategy: RawStrategyConfig,
   changes: Record<string, Map<string, Entry>>,
   committerStrings: Map<string, string>
 ): string[] {
-  // YYYY-MM-DD
-  const formattedDate = new Date().toISOString().split('T')[0];
+  const formattedDate = date;
   const committers = new Set<string>();
 
   const lines = [`## ${newTag} (${formattedDate})`, ''];
@@ -68,18 +68,17 @@ function buildText(
 
 export async function updateChangelogs(
   fromTag: string,
+  toTag: string,
+  date: string,
   newChanges: LernaChangeset,
   config: Map<string, string | number | boolean | null>,
   strategy: RawStrategyConfig,
-  packages: Map<string, Package>,
-  versions: Map<string, string>
+  packages: Map<string, Package>
 ): Promise<BunFile[]> {
   const file = Bun.file('./CHANGELOG.md');
   const mainChangelog = await file.text();
   const lines = mainChangelog.split('\n');
-  const toVersion = versions.get('root')!;
-  const toTag = `v${toVersion}`;
-  const newLines = buildText(toTag, strategy, newChanges.data, newChanges.data[Committers]);
+  const newLines = buildText(toTag, date, strategy, newChanges.data, newChanges.data[Committers]);
   const insertionPoint = findInsertionPoint(lines, fromTag);
   lines.splice(insertionPoint, 0, ...newLines);
   await Bun.write(file, lines.join('\n'));
@@ -97,11 +96,7 @@ export async function updateChangelogs(
     }
     const changelogFile = Bun.file(path.join(path.dirname(pkg.filePath), 'CHANGELOG.md'));
     const exists = await changelogFile.exists();
-    const toVersion = versions.get(pkgName)!;
-    const toTag = `v${toVersion}`;
-    const fromVersion = versions.get(pkgName)!;
-    const fromTag = `v${fromVersion}`;
-    const newLines = buildText(toTag, strategy, changes, newChanges.data[Committers]);
+    const newLines = buildText(toTag, date, strategy, changes, newChanges.data[Committers]);
     changedFiles.push(changelogFile);
 
     let changelogLines: string[] = [];
