@@ -1,5 +1,138 @@
 # @ember-data/store Changelog
 
+## v5.8.0 (2025-10-07)
+
+#### :house: Internal
+
+* [#10397](https://github.com/warp-drive-data/warp-drive/pull/10397) chore: begin converting core-tests to diagnostic and vite minimal ([@runspired](https://github.com/runspired))
+* [#10349](https://github.com/warp-drive-data/warp-drive/pull/10349) chore: update all emberjs/data links to warp-drive-data/warp-drive ([@runspired](https://github.com/runspired))
+
+#### Committers: (1)
+
+Chris Thoburn ([@runspired](https://github.com/runspired))
+
+## v5.7.0 (2025-08-26)
+
+#### :house: Internal
+
+* [#10130](https://github.com/warp-drive-data/warp-drive/pull/10130) chore: bump pnpm version ([@runspired](https://github.com/runspired))
+* [#10129](https://github.com/warp-drive-data/warp-drive/pull/10129) chore: bump typescript to 5.9 ([@runspired](https://github.com/runspired))
+* [#10124](https://github.com/warp-drive-data/warp-drive/pull/10124) chore: mark a few types as private ([@runspired](https://github.com/runspired))
+* [#10083](https://github.com/warp-drive-data/warp-drive/pull/10083) Fix deprecation handling for blueprint/tutorial ([@runspired](https://github.com/runspired))
+
+#### Committers: (1)
+
+Chris Thoburn ([@runspired](https://github.com/runspired))
+
+## v5.6.0 (2025-07-01)
+
+#### :memo: Documentation
+
+* [#9995](https://github.com/warp-drive-data/warp-drive/pull/9995) docs: add docs for Checkout, instantiateRecord, teardownRecorod ([@richgt](https://github.com/richgt))
+* [#9991](https://github.com/warp-drive-data/warp-drive/pull/9991) chore: improve output of typedoc ([@runspired](https://github.com/runspired))
+* [#9989](https://github.com/warp-drive-data/warp-drive/pull/9989) [BREAKING] docs: integrate API docs to the new docs site ([@runspired](https://github.com/runspired))
+* [#9983](https://github.com/warp-drive-data/warp-drive/pull/9983) feat: revamp guide, make builder typing easier ([@runspired](https://github.com/runspired))
+* [#9940](https://github.com/warp-drive-data/warp-drive/pull/9940) feat: improved manual ([@runspired](https://github.com/runspired))
+
+#### :rocket: Enhancement
+
+* [#10011](https://github.com/warp-drive-data/warp-drive/pull/10011) feat: @warp-drive/core/build-config ([@runspired](https://github.com/runspired))
+* [#9998](https://github.com/warp-drive-data/warp-drive/pull/9998) feat: extract @ember-data/store => @warp-drive/core ([@runspired](https://github.com/runspired))
+
+#### :bug: Bug Fix
+
+* [#9982](https://github.com/warp-drive-data/warp-drive/pull/9982) fix: simplify peer configuration to avoid bringing extra copies of glimmer/validator ([@runspired](https://github.com/runspired))
+
+#### :house: Internal
+
+* [#10042](https://github.com/warp-drive-data/warp-drive/pull/10042) chore: upgrade to vite7 ([@runspired](https://github.com/runspired))
+* [#10040](https://github.com/warp-drive-data/warp-drive/pull/10040) chore: isolated declarations ([@runspired](https://github.com/runspired))
+* [#10039](https://github.com/warp-drive-data/warp-drive/pull/10039) chore: bump pnpm ([@runspired](https://github.com/runspired))
+* [#9994](https://github.com/warp-drive-data/warp-drive/pull/9994) chore: [@warp-drive/core] migrate @warp-drive/core-types @ember-data/request ([@runspired](https://github.com/runspired))
+
+#### Committers: (2)
+
+Rich Glazerman ([@richgt](https://github.com/richgt))
+Chris Thoburn ([@runspired](https://github.com/runspired))
+
+## v5.5.0 (2025-05-08)
+
+#### :memo: Documentation
+
+* [#9975](https://github.com/warp-drive-data/warp-drive/pull/9975) types: fixup PolarisMode schema types to check better ([@runspired](https://github.com/runspired))
+
+#### :rocket: Enhancement
+
+* [#9968](https://github.com/warp-drive-data/warp-drive/pull/9968) feat: unlock universal 🌌 ([@runspired](https://github.com/runspired))
+* [#9965](https://github.com/warp-drive-data/warp-drive/pull/9965) feat: universal reactivity hooks ([@runspired](https://github.com/runspired))
+
+#### :bug: Bug Fix
+
+* [#9947](https://github.com/warp-drive-data/warp-drive/pull/9947) fix: dont notify during population if the array is a collection ([@runspired](https://github.com/runspired))
+
+#### :house: Internal
+
+* [#9965](https://github.com/warp-drive-data/warp-drive/pull/9965) feat: universal reactivity hooks ([@runspired](https://github.com/runspired))
+* [#9964](https://github.com/warp-drive-data/warp-drive/pull/9964) chore: refactor PromiseState and RequestState to prep for @warp-drive/core ([@runspired](https://github.com/runspired))
+
+#### Committers: (1)
+
+Chris Thoburn ([@runspired](https://github.com/runspired))
+
+## v5.4.0 (2025-04-11)
+
+#### :memo: Documentation
+
+* [#9911](https://github.com/warp-drive-data/warp-drive/pull/9911) Add a URL to the deprecate Store extends EmberObject ([@kategengler](https://github.com/kategengler))
+* [#9648](https://github.com/warp-drive-data/warp-drive/pull/9648) docs: cleanup usage pattern for RequestManager configuration on store ([@runspired](https://github.com/runspired))
+* [#9586](https://github.com/warp-drive-data/warp-drive/pull/9586) Fix `until` in deprecation warning `ember-data:schema-service-updates` (must be 6.0 instead of 5.0) ([@mkszepp](https://github.com/mkszepp))
+
+#### :rocket: Enhancement
+
+* [#9884](https://github.com/warp-drive-data/warp-drive/pull/9884) feat: cache patch operations for relationships and documents ([@runspired](https://github.com/runspired))
+* [#9896](https://github.com/warp-drive-data/warp-drive/pull/9896) feat: whoa debugging ([@runspired](https://github.com/runspired))
+* [#9883](https://github.com/warp-drive-data/warp-drive/pull/9883) feat: make documents react to cache updates ([@runspired](https://github.com/runspired))
+* [#9769](https://github.com/warp-drive-data/warp-drive/pull/9769) chore: remove restriction on new field kinds being used with legacy mode ([@runspired](https://github.com/runspired))
+* [#9766](https://github.com/warp-drive-data/warp-drive/pull/9766) feat: improve debuggability of SchemaRecord, RecordArray and Identifier ([@runspired](https://github.com/runspired))
+* [#9757](https://github.com/warp-drive-data/warp-drive/pull/9757) feat: schema type utils ([@runspired](https://github.com/runspired))
+* [#9676](https://github.com/warp-drive-data/warp-drive/pull/9676) Feat: hasMany linksMode ([@leoeuclids](https://github.com/leoeuclids))
+* [#9686](https://github.com/warp-drive-data/warp-drive/pull/9686) feat: immutable records should show only remote state, make builder types more useful ([@runspired](https://github.com/runspired))
+* [#9683](https://github.com/warp-drive-data/warp-drive/pull/9683) feat: runtime logging activation ([@runspired](https://github.com/runspired))
+* [#9585](https://github.com/warp-drive-data/warp-drive/pull/9585) chore: stub out linksMode work ([@runspired](https://github.com/runspired))
+* [#9541](https://github.com/warp-drive-data/warp-drive/pull/9541) feat: eslint-plugin-(ember-data|warp-drive) ([@runspired](https://github.com/runspired))
+* [#9503](https://github.com/warp-drive-data/warp-drive/pull/9503) feat: request deduping & <Request /> invalidate subscriptions ([@runspired](https://github.com/runspired))
+* [#8698](https://github.com/warp-drive-data/warp-drive/pull/8698) feat: DataWorker | robust cross-tab request deduplication and replay ([@runspired](https://github.com/runspired))
+
+#### :bug: Bug Fix
+
+* [#9592](https://github.com/warp-drive-data/warp-drive/pull/9592) fix: add ember-source as explicit peer-dep for use of @ember/debug ([@runspired](https://github.com/runspired))
+* [#9583](https://github.com/warp-drive-data/warp-drive/pull/9583) feat|doc|fix: cleanup includes story ([@runspired](https://github.com/runspired))
+
+#### :house: Internal
+
+* [#9780](https://github.com/warp-drive-data/warp-drive/pull/9780) chore: bump @glimmer/component ([@runspired](https://github.com/runspired))
+* [#9761](https://github.com/warp-drive-data/warp-drive/pull/9761) chore: reduce simple Map/Set ops ([@runspired](https://github.com/runspired))
+* [#9759](https://github.com/warp-drive-data/warp-drive/pull/9759) chore: Improve contributing experience ([@runspired](https://github.com/runspired))
+* [#9752](https://github.com/warp-drive-data/warp-drive/pull/9752) chore: tooling upgrades to support WarpDrive package unification ([@runspired](https://github.com/runspired))
+* [#9705](https://github.com/warp-drive-data/warp-drive/pull/9705) chore: make diagnostic shutdown safer, use bun for holodeck server ([@runspired](https://github.com/runspired))
+* [#9699](https://github.com/warp-drive-data/warp-drive/pull/9699) chore: update to pnpm 10 ([@runspired](https://github.com/runspired))
+* [#9697](https://github.com/warp-drive-data/warp-drive/pull/9697) chore: [BREAKING to prior alpha/betas] prepare SchemaRecord for stable, lockdown exports ([@runspired](https://github.com/runspired))
+* [#9677](https://github.com/warp-drive-data/warp-drive/pull/9677) chore: fixup deprecation-removed test variants ([@runspired](https://github.com/runspired))
+* [#9635](https://github.com/warp-drive-data/warp-drive/pull/9635) fix: resort imports to fix lint ([@runspired](https://github.com/runspired))
+* [#9629](https://github.com/warp-drive-data/warp-drive/pull/9629) fix: restore * versions and setup publish to not overwrite them ([@runspired](https://github.com/runspired))
+* [#9620](https://github.com/warp-drive-data/warp-drive/pull/9620) Starwars ([@NullVoxPopuli](https://github.com/NullVoxPopuli))
+* [#9596](https://github.com/warp-drive-data/warp-drive/pull/9596) chore: Remove unused `--report-unused-disable-directives` flag ([@gitKrystan](https://github.com/gitKrystan))
+* [#9509](https://github.com/warp-drive-data/warp-drive/pull/9509) chore: cleanup CacheHandler factoring ([@runspired](https://github.com/runspired))
+
+#### Committers: (6)
+
+Katie Gengler ([@kategengler](https://github.com/kategengler))
+Chris Thoburn ([@runspired](https://github.com/runspired))
+Markus Sanin ([@mkszepp](https://github.com/mkszepp))
+Leo Euclides ([@leoeuclids](https://github.com/leoeuclids))
+[@NullVoxPopuli](https://github.com/NullVoxPopuli)
+Krystan HuffMenne ([@gitKrystan](https://github.com/gitKrystan))
+
 ## v5.3.4 (2024-06-15)
 
 #### :evergreen_tree: New Deprecation

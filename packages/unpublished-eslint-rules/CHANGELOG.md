@@ -1,5 +1,25 @@
 # eslint-plugin-ember-data-internal Changelog
 
+## v5.8.0 (2025-10-07)
+
+#### :house: Internal
+
+* [#10349](https://github.com/warp-drive-data/warp-drive/pull/10349) chore: update all emberjs/data links to warp-drive-data/warp-drive ([@runspired](https://github.com/runspired))
+
+#### Committers: (1)
+
+Chris Thoburn ([@runspired](https://github.com/runspired))
+
+## v5.4.0 (2025-04-11)
+
+#### :house: Internal
+
+* [#9752](https://github.com/warp-drive-data/warp-drive/pull/9752) chore: tooling upgrades to support WarpDrive package unification ([@runspired](https://github.com/runspired))
+
+#### Committers: (1)
+
+Chris Thoburn ([@runspired](https://github.com/runspired))
+
 ## v5.3.4 (2024-06-15)
 
 #### :rocket: Enhancement
