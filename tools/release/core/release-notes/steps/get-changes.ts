@@ -191,6 +191,6 @@ function parseLernaOutput(
 }
 
 export async function getChanges(strategy: RawStrategyConfig, packages: Map<string, Package>, fromTag: string) {
-  const changelogMarkdown = await exec(['sh', '-c', `bunx lerna-changelog --from=${fromTag}`]);
+  const changelogMarkdown = await exec(['sh', '-c', `pnpm exec lerna-changelog --from=${fromTag}`]);
   return parseLernaOutput(changelogMarkdown, strategy, packages);
 }

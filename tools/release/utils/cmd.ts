@@ -184,11 +184,6 @@ export async function exec(cmd: string[] | string | CMD, dryRun: boolean = false
         // @ts-expect-error - adding properties to custom Error
         error.errText = errText;
 
-        console.log({
-          logText,
-          errText,
-        });
-
         throw error;
       }
 
