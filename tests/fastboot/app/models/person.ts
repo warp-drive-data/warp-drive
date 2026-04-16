@@ -3,7 +3,7 @@ import type { AsyncBelongsTo, AsyncHasMany } from '@warp-drive/legacy/model';
 import Model, { attr, belongsTo, hasMany } from '@warp-drive/legacy/model';
 
 export default class Person extends Model {
-  @attr()
+  @attr
   declare name: string;
 
   @hasMany('person', { async: false, inverse: 'parent' })

@@ -7,7 +7,7 @@ settings:
   injectWorkspacePackages: true
 
 overrides:
-  ember-auto-import: ^2.12.0
+  ember-auto-import: ^2.13.1
   broccoli-funnel: ^3.0.8
   broccoli-merge-trees: ^4.2.0
   '@glimmer/validator': ^0.95.0
@@ -1577,8 +1577,8 @@ importers:
         specifier: ^4.0.0
         version: 4.0.0
       ember-auto-import:
-        specifier: ^2.12.0
-        version: 2.12.0(@glint/template@1.6.1)
+        specifier: ^2.13.1
+        version: 2.13.1(@glint/template@1.6.1)
       ember-cached-decorator-polyfill:
         specifier: ^1.0.2
         version: 1.0.2(12dd2777fffb85db4dfb7b3956488e0c)
@@ -1742,8 +1742,8 @@ importers:
         specifier: workspace:*
         version: file:tools/internal-config
       ember-auto-import:
-        specifier: ^2.12.0
-        version: 2.12.0
+        specifier: ^2.13.1
+        version: 2.13.1
       ember-cli:
         specifier: ~6.12.0
         version: 6.12.0
@@ -1838,8 +1838,8 @@ importers:
         specifier: workspace:*
         version: file:warp-drive-packages/utilities(ac1631a7da983377f84b100525d730a6)
       ember-auto-import:
-        specifier: ^2.12.0
-        version: 2.12.0
+        specifier: ^2.13.1
+        version: 2.13.1
       ember-cli:
         specifier: ~6.12.0
         version: 6.12.0
@@ -1961,8 +1961,8 @@ importers:
         specifier: workspace:*
         version: file:tools/internal-config
       ember-auto-import:
-        specifier: ^2.12.0
-        version: 2.12.0
+        specifier: ^2.13.1
+        version: 2.13.1
       ember-cli:
         specifier: ~6.12.0
         version: 6.12.0
@@ -2063,8 +2063,8 @@ importers:
         specifier: ^1.2.20
         version: 1.2.20
       ember-auto-import:
-        specifier: ^2.12.0
-        version: 2.12.0
+        specifier: ^2.13.1
+        version: 2.13.1
       ember-cli:
         specifier: ~6.12.0
         version: 6.12.0
@@ -2417,8 +2417,8 @@ importers:
         specifier: workspace:*
         version: file:warp-drive-packages/utilities(ac1631a7da983377f84b100525d730a6)
       ember-auto-import:
-        specifier: ^2.12.0
-        version: 2.12.0
+        specifier: ^2.13.1
+        version: 2.13.1
       ember-cli:
         specifier: ~6.12.0
         version: 6.12.0
@@ -2822,8 +2822,8 @@ importers:
         specifier: workspace:*
         version: file:warp-drive-packages/utilities(ac1631a7da983377f84b100525d730a6)
       ember-auto-import:
-        specifier: ^2.12.0
-        version: 2.12.0
+        specifier: ^2.13.1
+        version: 2.13.1
       ember-cli:
         specifier: ~6.12.0
         version: 6.12.0
@@ -3044,8 +3044,8 @@ importers:
         specifier: ^2.3.0
         version: 2.3.0(@babel/core@7.28.3)
       ember-auto-import:
-        specifier: ^2.12.0
-        version: 2.12.0
+        specifier: ^2.13.1
+        version: 2.13.1
       ember-cli:
         specifier: ~6.12.0
         version: 6.12.0
@@ -3164,8 +3164,8 @@ importers:
         specifier: workspace:*
         version: file:tools/internal-config
       ember-auto-import:
-        specifier: ^2.12.0
-        version: 2.12.0
+        specifier: ^2.13.1
+        version: 2.13.1
       ember-cli:
         specifier: ~6.12.0
         version: 6.12.0
@@ -3338,8 +3338,8 @@ importers:
         specifier: ^2.3.0
         version: 2.3.0(@babel/core@7.28.3)
       ember-auto-import:
-        specifier: ^2.12.0
-        version: 2.12.0
+        specifier: ^2.13.1
+        version: 2.13.1
       ember-cli:
         specifier: ~6.12.0
         version: 6.12.0
@@ -9407,8 +9407,8 @@ packages:
   electron-to-chromium@1.5.203:
     resolution: {integrity: sha512-uz4i0vLhfm6dLZWbz/iH88KNDV+ivj5+2SA+utpgjKaj9Q0iDLuwk6Idhe9BTxciHudyx6IvTvijhkPvFGUQ0g==}
 
-  ember-auto-import@2.12.0:
-    resolution: {integrity: sha512-J9wVTddnpx1ZPf6CgtMs8byp5t9ZZITUX9v+H+PgSDSgbYbDrVlKr2RGDfJLrnaTpuWwZqh1b54/9jLaERr6QA==}
+  ember-auto-import@2.13.1:
+    resolution: {integrity: sha512-MjxJK2nfCJmmQI/rju2TrycmAa1AxmTarfvygbcrrgW0s4WeZHtbGXCO2z1lW9wfrShqeTo/o+3Mgk+9xcDTWg==}
     engines: {node: 12.* || 14.* || >= 16}
 
   ember-cache-primitive-polyfill@1.0.1:
@@ -17573,11 +17573,11 @@ snapshots:
       fs-extra: 9.1.0
       is-subdir: 1.2.0
       js-string-escape: 1.0.1
-      lodash: 4.17.21
+      lodash: 4.18.1
       minimatch: 3.1.2
       pkg-entry-points: 1.1.1
       resolve-package-path: 4.0.3
-      semver: 7.7.2
+      semver: 7.7.3
       typescript-memoize: 1.1.1
     transitivePeerDependencies:
       - supports-color
@@ -19665,11 +19665,17 @@ snapshots:
     dependencies:
       '@types/ember': 4.0.11
       '@types/ember__object': 4.0.12
+    transitivePeerDependencies:
+      - '@babel/core'
+      - supports-color
 
   '@types/ember__component@4.0.22':
     dependencies:
       '@types/ember': 4.0.11
       '@types/ember__object': 4.0.12
+    transitivePeerDependencies:
+      - '@babel/core'
+      - supports-color
 
   '@types/ember__controller@4.0.12':
     dependencies:
@@ -19705,6 +19711,9 @@ snapshots:
       '@types/ember__controller': 4.0.12
       '@types/ember__object': 4.0.12
       '@types/ember__service': 4.0.9
+    transitivePeerDependencies:
+      - '@babel/core'
+      - supports-color
 
   '@types/ember__runloop@4.0.10':
     dependencies:
@@ -19731,6 +19740,9 @@ snapshots:
   '@types/ember__utils@4.0.7':
     dependencies:
       '@types/ember': 4.0.11
+    transitivePeerDependencies:
+      - '@babel/core'
+      - supports-color
 
   '@types/eslint-scope@3.7.7':
     dependencies:
@@ -22952,7 +22964,7 @@ snapshots:
       postcss-modules-values: 4.0.0(postcss@8.5.6)
       postcss-value-parser: 4.2.0
       schema-utils: 3.3.0
-      semver: 7.7.2
+      semver: 7.7.3
       webpack: 5.101.3
 
   css-select@5.2.2:
@@ -23231,7 +23243,7 @@ snapshots:
 
   electron-to-chromium@1.5.203: {}
 
-  ember-auto-import@2.12.0:
+  ember-auto-import@2.13.1:
     dependencies:
       '@babel/core': 7.28.3
       '@babel/plugin-proposal-class-properties': 7.18.6(@babel/core@7.28.3)
@@ -23259,14 +23271,14 @@ snapshots:
       handlebars: 4.7.8
       is-subdir: 1.2.0
       js-string-escape: 1.0.1
-      lodash: 4.17.21
+      lodash: 4.18.1
       mini-css-extract-plugin: 2.9.2(webpack@5.101.3)
       minimatch: 3.1.2
       parse5: 6.0.1
       pkg-entry-points: 1.1.1
-      resolve: 1.22.10
+      resolve: 1.22.11
       resolve-package-path: 4.0.3
-      semver: 7.7.2
+      semver: 7.7.3
       style-loader: 2.0.0(webpack@5.101.3)
       typescript-memoize: 1.1.1
       walk-sync: 3.0.0
@@ -23279,7 +23291,7 @@ snapshots:
       - uglify-js
       - webpack-cli
 
-  ember-auto-import@2.12.0(@glint/template@1.6.1):
+  ember-auto-import@2.13.1(@glint/template@1.6.1):
     dependencies:
       '@babel/core': 7.28.3
       '@babel/plugin-proposal-class-properties': 7.18.6(@babel/core@7.28.3)
@@ -23307,14 +23319,14 @@ snapshots:
       handlebars: 4.7.8
       is-subdir: 1.2.0
       js-string-escape: 1.0.1
-      lodash: 4.17.21
+      lodash: 4.18.1
       mini-css-extract-plugin: 2.9.2(webpack@5.101.3)
       minimatch: 3.1.2
       parse5: 6.0.1
       pkg-entry-points: 1.1.1
-      resolve: 1.22.10
+      resolve: 1.22.11
       resolve-package-path: 4.0.3
-      semver: 7.7.2
+      semver: 7.7.3
       style-loader: 2.0.0(webpack@5.101.3)
       typescript-memoize: 1.1.1
       walk-sync: 3.0.0
@@ -23445,7 +23457,7 @@ snapshots:
     dependencies:
       '@ember/test-helpers': 5.2.0(patch_hash=a1670a4e3977c846a5c2454f317f5a17cbd284aef3a676b190c98141536afb04)(4199238e9ba0d77b5008bb14e686eb9c)
       body-parser: 2.2.2
-      ember-auto-import: 2.12.0
+      ember-auto-import: 2.13.1
       ember-cli: 6.12.0
       ember-cli-babel: 8.2.0(@babel/core@7.28.3)
       ember-cli-fastboot: 4.1.5(d234ba11fe61cc73e5d7daeef9e5f3c4)
@@ -23890,7 +23902,7 @@ snapshots:
       chalk: 5.6.0
       cli-table3: 0.6.5
       debug: 4.4.1
-      ember-auto-import: 2.12.0(@glint/template@1.6.1)
+      ember-auto-import: 2.13.1(@glint/template@1.6.1)
       ember-cli: 6.12.0
       ember-cli-babel: 8.2.0(@babel/core@7.28.3)
       ember-qunit: 8.0.2(6aee7e052c3dfe37fa36e0e8b9bbad98)
@@ -24077,7 +24089,7 @@ snapshots:
       broccoli-funnel: 3.0.8
       broccoli-merge-trees: 4.2.0
       chalk: 4.1.2
-      ember-auto-import: 2.12.0(@glint/template@1.6.1)
+      ember-auto-import: 2.13.1(@glint/template@1.6.1)
       ember-cli-babel: 8.2.0(@babel/core@7.28.3)
       ember-cli-get-component-path-option: 1.0.0
       ember-cli-is-package-missing: 1.0.0
