@@ -1,8 +1,8 @@
-import { HELP } from '../help/sections/manual';
-import { ABOUT } from '../help/sections/about';
-import { normalizeFlag, type CommandConfig, type FlagConfig } from './parse-args';
-import { CHANNEL, SEMVER_VERSION, VALID_TRAINS, npmDistTagForChannelAndVersion } from './channel';
-import { getGitState, getPublishedChannelInfo } from './git';
+import { HELP } from '../help/sections/manual.ts';
+import { ABOUT } from '../help/sections/about.ts';
+import { normalizeFlag, type CommandConfig, type FlagConfig } from './parse-args.ts';
+import { CHANNEL, SEMVER_VERSION, VALID_TRAINS, npmDistTagForChannelAndVersion } from './channel.ts';
+import { getGitState, getPublishedChannelInfo } from './git.ts';
 import chalk from 'chalk';
 import semver from 'semver';
 

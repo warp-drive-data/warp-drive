@@ -1,0 +1,347 @@
+import { existsSync, mkdirSync, readFileSync } from 'fs';
+import { readFile } from 'fs/promises';
+import { glob } from 'glob';
+import { join, resolve } from 'path';
+
+import type { InstanciatedLogger } from '../../utils/logger.js';
+import type { FinalOptions } from './config.js';
+import { analyzeModelMixinUsage } from './processors/mixin-analyzer.js';
+import { generateIntermediateModelTraitArtifacts } from './processors/model.js';
+import type { SchemaArtifactRegistry } from './utils/artifact.js';
+import { buildEntityRegistry, linkEntities } from './utils/artifact.js';
+import type { TransformArtifact } from './utils/ast-utils.js';
+import type { ParsedFile } from './utils/file-parser.js';
+import { parseFile } from './utils/file-parser.js';
+import { extractBaseName } from './utils/path-utils.js';
+import { FILE_EXTENSION_REGEX, TRAILING_SINGLE_WILDCARD_REGEX, TRAILING_WILDCARD_REGEX } from './utils/string.js';
+
+export type Filename = string;
+export type InputFile = { path: string; code: string };
+
+export type SkipReason =
+  | 'dts-file'
+  | 'file-not-found'
+  | 'already-processed'
+  | 'intermediate-model'
+  | 'parse-error'
+  | 'invalid-model'
+  | 'not-mixin-file-type'
+  | 'mixin-not-connected'
+  | 'empty-artifacts';
+
+export interface SkippedFile {
+  file: string;
+  reason: SkipReason;
+  phase: 'discovery' | 'parsing' | 'generation';
+}
+
+export interface TransformerResult {
+  artifacts: TransformArtifact[];
+  skipReason?: SkipReason;
+}
+
+/**
+ * Check if a file path matches any intermediate model path
+ */
+function isIntermediateModel(
+  filePath: string,
+  intermediateModelPaths?: string[],
+  additionalModelSources?: Array<{ pattern: string; dir: string }>
+): boolean {
+  if (!intermediateModelPaths) return false;
+
+  const fileBaseName = extractBaseName(filePath);
+
+  for (const intermediatePath of intermediateModelPaths) {
+    const intermediateBaseName = extractBaseName(intermediatePath);
+
+    if (fileBaseName === intermediateBaseName) {
+      // Check if file is from a matching additional source
+      if (additionalModelSources) {
+        for (const source of additionalModelSources) {
+          const sourceDirResolved = resolve(source.dir.replace(TRAILING_WILDCARD_REGEX, ''));
+          if (filePath.startsWith(sourceDirResolved)) {
+            return true;
+          }
+        }
+      }
+    }
+  }
+
+  return false;
+}
+
+function expandGlobPattern(dir: string): string {
+  // Convert dir pattern to glob pattern (e.g., "path/to/models/*" -> "path/to/models/**/*.{js,ts}")
+  let dirGlobPattern = dir;
+  if (dirGlobPattern.endsWith('*')) {
+    // Replace trailing * with **/*.{js,ts}
+    dirGlobPattern = dirGlobPattern.replace(TRAILING_SINGLE_WILDCARD_REGEX, '**/*.{js,ts}');
+  } else {
+    // Add **/*.{js,ts} if no glob pattern
+    dirGlobPattern = join(dirGlobPattern, '**/*.{js,ts}');
+  }
+
+  return resolve(dirGlobPattern);
+}
+
+async function findFiles(
+  sources: string[],
+  predicate: (file: string) => SkipReason | null,
+  finalOptions: FinalOptions,
+  logger: InstanciatedLogger
+): Promise<{ output: InputFile[]; skipped: SkippedFile[]; errors: Error[] }> {
+  const output: InputFile[] = [];
+  const errors: Error[] = [];
+  const skipped: SkippedFile[] = [];
+
+  for (const source of sources) {
+    try {
+      const files = await glob(source);
+
+      for (const file of files) {
+        const skipReason = predicate(file);
+        if (skipReason === null) {
+          const content = await readFile(file, 'utf-8');
+
+          output.push({ path: file, code: content });
+        } else {
+          skipped.push({ file, reason: skipReason, phase: 'discovery' });
+        }
+      }
+
+      if (finalOptions.verbose) {
+        logger.info(
+          `📋 Found ${output.length} files at '${source}' (Total: '${output.length}', Skipped: '${skipped.length}' Sources: '[${sources.join(',')}]')`
+        );
+      }
+    } catch (error: unknown) {
+      logger.error(`Failed to process file source ${source}: ${String(error)}`);
+      errors.push(error as Error);
+    }
+  }
+
+  return { output, skipped, errors };
+}
+
+export class Input {
+  models: Map<Filename, InputFile> = new Map();
+  mixins: Map<Filename, InputFile> = new Map();
+  parsedModels: Map<Filename, ParsedFile> = new Map();
+  parsedMixins: Map<Filename, ParsedFile> = new Map();
+  skipped: SkippedFile[] = [];
+  errors: Error[] = [];
+}
+
+export class Codemod {
+  logger: InstanciatedLogger;
+  finalOptions: FinalOptions;
+  input: Input = new Input();
+  entityRegistry: SchemaArtifactRegistry;
+
+  mixinsImportedByModels: Set<string> = new Set();
+  modelsWithExtensions: Set<string> = new Set();
+  resolvedSubstituteSourcePaths: Set<string> = new Set();
+
+  constructor(logger: InstanciatedLogger, finalOptions: FinalOptions) {
+    this.logger = logger;
+    this.finalOptions = finalOptions;
+    this.entityRegistry = new Map();
+  }
+
+  findMixinsUsedByModels() {
+    const result = analyzeModelMixinUsage(this, this.finalOptions);
+    linkEntities(this.entityRegistry, result.modelToMixinsMap);
+  }
+
+  parseAllFiles() {
+    this.logger.info(`🔄 Parsing all files into intermediate structure...`);
+
+    let modelsParsed = 0;
+    let mixinsParsed = 0;
+
+    for (const [filePath, inputFile] of this.input.models) {
+      try {
+        const parsed = parseFile(filePath, inputFile.code, this.finalOptions);
+        this.input.parsedModels.set(filePath, parsed);
+        modelsParsed++;
+      } catch (error) {
+        this.logger.error(`❌ Error parsing model ${filePath}: ${String(error)}`);
+        this.input.skipped.push({ file: filePath, reason: 'parse-error', phase: 'parsing' });
+      }
+    }
+
+    for (const [filePath, inputFile] of this.input.mixins) {
+      try {
+        const parsed = parseFile(filePath, inputFile.code, this.finalOptions);
+        this.input.parsedMixins.set(filePath, parsed);
+        mixinsParsed++;
+      } catch (error) {
+        this.logger.error(`❌ Error parsing mixin ${filePath}: ${String(error)}`);
+        this.input.skipped.push({ file: filePath, reason: 'parse-error', phase: 'parsing' });
+      }
+    }
+
+    const parseErrors = this.input.skipped.filter((s) => s.reason === 'parse-error').length;
+    this.logger.info(`✅ Parsed ${modelsParsed} models and ${mixinsParsed} mixins (${parseErrors} errors).`);
+
+    buildEntityRegistry(this.input.parsedModels, this.input.parsedMixins, this.logger, this.entityRegistry);
+  }
+
+  createDestinationDirectories() {
+    // Only create specific directories if they are configured
+    // The generic outputDir is only used for fallback artifacts and shouldn't be pre-created
+    if (this.finalOptions.traitsDir) {
+      mkdirSync(resolve(this.finalOptions.traitsDir), { recursive: true });
+    }
+    // extensions are now co-located with their schemas
+    // in resourcesDir (for resource-extension) and traitsDir (for trait-extension)
+    if (this.finalOptions.resourcesDir) {
+      mkdirSync(resolve(this.finalOptions.resourcesDir), { recursive: true });
+    }
+  }
+
+  resolveImportSubstitutes(): TransformArtifact[] {
+    const substitutes = this.finalOptions.importSubstitutes;
+    if (!substitutes) return [];
+
+    const allArtifacts: TransformArtifact[] = [];
+
+    for (const substitute of substitutes) {
+      if (!substitute.sourcePath) continue;
+
+      let filePath: string | null = null;
+      let source: string | null = null;
+
+      const candidates = [substitute.sourcePath, `${substitute.sourcePath}.ts`, `${substitute.sourcePath}.js`];
+      for (const candidate of candidates) {
+        if (existsSync(candidate)) {
+          try {
+            filePath = candidate;
+            source = readFileSync(candidate, 'utf-8');
+            break;
+          } catch {
+            // continue trying next candidate
+          }
+        }
+      }
+
+      if (!filePath || !source) {
+        this.logger.warn(
+          `Could not find source file for importSubstitute '${substitute.import}' at '${substitute.sourcePath}', falling back to static config`
+        );
+        continue;
+      }
+
+      this.resolvedSubstituteSourcePaths.add(filePath);
+
+      const result = generateIntermediateModelTraitArtifacts(filePath, source, substitute.import, this.finalOptions);
+
+      if (result.entity) {
+        this.entityRegistry.set(result.entity.path, result.entity);
+      }
+
+      if (result.artifacts.length > 0) {
+        const traitArtifact = result.artifacts.find((a) => a.type === 'trait');
+        if (traitArtifact && !substitute.trait) {
+          substitute.trait = traitArtifact.name;
+        }
+        const extensionArtifact = result.artifacts.find((a) => a.type === 'trait-extension');
+        if (extensionArtifact && !substitute.extension) {
+          substitute.extension = extensionArtifact.name;
+        }
+
+        allArtifacts.push(...result.artifacts);
+        this.logger.info(
+          `Generated ${result.artifacts.length} artifacts from importSubstitute source '${substitute.import}'`
+        );
+      }
+    }
+
+    return allArtifacts;
+  }
+
+  async findModels() {
+    if (!this.finalOptions.modelSourceDir) {
+      throw new Error('`options.modelSourceDir` must be specified before looking for files');
+    }
+
+    const filePattern = join(resolve(this.finalOptions.modelSourceDir), '**/*.{js,ts}');
+    const fileSources = [filePattern];
+
+    if (this.finalOptions.additionalModelSources) {
+      for (const source of this.finalOptions.additionalModelSources) {
+        fileSources.push(expandGlobPattern(source.dir));
+      }
+    }
+
+    const models = await findFiles(
+      fileSources,
+      (file) => {
+        if (file.endsWith('.d.ts')) return 'dts-file';
+        if (!existsSync(file)) return 'file-not-found';
+        if (this.finalOptions.skipProcessed && isAlreadyProcessed(file)) return 'already-processed';
+        if (
+          isIntermediateModel(file, this.finalOptions.intermediateModelPaths, this.finalOptions.additionalModelSources)
+        )
+          return 'intermediate-model';
+        return null;
+      },
+      this.finalOptions,
+      this.logger
+    );
+
+    for (const inputFile of models.output) {
+      this.input.models.set(inputFile.path, inputFile);
+    }
+    this.input.errors.push(...models.errors);
+    this.input.skipped.push(...models.skipped);
+  }
+
+  async findMixins() {
+    if (!this.finalOptions.mixinSourceDir) {
+      throw new Error('`options.mixinSourceDir` must be specified before looking for files');
+    }
+
+    const filePattern = join(resolve(this.finalOptions.mixinSourceDir), '**/*.{js,ts}');
+    const fileSources = [filePattern];
+
+    if (this.finalOptions.additionalMixinSources) {
+      for (const source of this.finalOptions.additionalMixinSources) {
+        fileSources.push(expandGlobPattern(source.dir));
+      }
+    }
+
+    const models = await findFiles(
+      fileSources,
+      (file) => {
+        if (file.endsWith('.d.ts')) return 'dts-file';
+        if (!existsSync(file)) return 'file-not-found';
+        if (this.finalOptions.skipProcessed && isAlreadyProcessed(file)) return 'already-processed';
+        return null;
+      },
+      this.finalOptions,
+      this.logger
+    );
+
+    for (const inputFile of models.output) {
+      this.input.mixins.set(inputFile.path, inputFile);
+    }
+
+    this.input.errors.push(...models.errors);
+    this.input.skipped.push(...models.skipped);
+  }
+}
+
+/**
+ * Check if a file has already been processed
+ */
+function isAlreadyProcessed(filePath: string): boolean {
+  // Simple heuristic: check if a corresponding schema file exists
+  const outputPath = filePath
+    .replace('/models/', '/schemas/')
+    .replace('/mixins/', '/traits/')
+    .replace(FILE_EXTENSION_REGEX, '.ts');
+
+  return existsSync(outputPath);
+}

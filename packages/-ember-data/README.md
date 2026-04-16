@@ -38,7 +38,20 @@ rich applications &mdash; letting you ship better experiences more quickly witho
 <br>
 <br>
 
-*Get Started* → [Guides](https://warp-drive.io/guides/)
+> [!WARNING]
+> **Legacy Package**
+>
+> The `ember-data` package is a **legacy umbrella package** that bundles older EmberData patterns including `@ember-data/model`, `@ember-data/adapter`, and `@ember-data/serializer`.
+>
+> **Why it's legacy:** This package represents an older architecture based on class inheritance, runtime schema parsing, and the Adapter/Serializer pattern. Modern WarpDrive uses:
+> - **`@warp-drive/core`** packages for framework-agnostic data management
+> - **`@warp-drive/ember`** packages for Ember-specific integrations
+> - **Schema objects** instead of Model classes
+> - **Request builders** and **Handlers** instead of Adapters/Serializers
+>
+> **When to use this package:** Only use `ember-data` if you're maintaining an existing Ember application that hasn't migrated to modern WarpDrive patterns. For new projects or modern WarpDrive apps, install packages from `@warp-drive/*` directly.
+>
+> **Migration path:** See the [Guides](https://warp-drive.io/guides/) for migration strategies.
 
 <br>
 

@@ -1,6 +1,6 @@
 {
   "name": "@warp-drive/internal-tooling",
-  "version": "5.9.0-alpha.1",
+  "version": "5.9.0-alpha.12",
   "description": "Internal Tooling for the WarpDrive Project Monorepo | Unpublished",
   "private": true,
   "type": "module",
@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "@types/bun": "^1.2.20",
-    "typescript": "^5.9.2",
+    "typescript": "^5.9.3",
     "chalk": "5.4.1",
     "debug": "4.4.1",
     "@types/debug": "4.1.12",
@@ -33,6 +33,6 @@
     "@pnpm/logger": "1001.0.0"
   },
   "volta": {
-    "extends": "../package.json"
+    "extends": "../../package.json"
   }
 }

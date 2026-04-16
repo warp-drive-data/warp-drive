@@ -1,4 +1,4 @@
-import { STRATEGY_TYPE, SEMVER_VERSION, CHANNEL } from '../../utils/channel';
+import { STRATEGY_TYPE, SEMVER_VERSION, CHANNEL } from '../../utils/channel.ts';
 
 import semver from 'semver';
 

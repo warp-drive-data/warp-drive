@@ -28,12 +28,14 @@
 
 # @ember-data/adapter
 
-This package provides REST and {json:api} Implementations of the legacy <a href="https://warp-drive.io/api/@warp-drive/legacy/compat/interfaces/MinimumAdapterInterface">Adapter Interface</a> when using the older packages.
+> [!WARNING]
+> **⚠️ This is a legacy package** not recommended for new applications and **Adapters are a LEGACY feature** that is no longer encouraged.
+>
+> Use [Handlers](https://warp-drive.io/api/@warp-drive/core/request/interfaces/Handler) with [@warp-drive/core](https://warp-drive.io/api/@warp-drive/core/) instead.
+
+This package provides REST and [{json:api}](https://jsonapi.org) Implementations of the legacy <a href="https://warp-drive.io/api/@warp-drive/legacy/compat/interfaces/MinimumAdapterInterface">Adapter Interface</a> when using the older packages.
 
 For more recent installations, see [@warp-drive/legacy](https://www.npmjs.com/package/@warp-drive/legacy).
-
-> **Caution** ⚠️ **Adapters are a LEGACY feature** that is no longer encouraged.
-> If starting a new app or thinking of implementing a new Adapter, consider writing a [Handler](https://warp-drive.io/api/@warp-drive/core/request/interfaces/Handler)
 
 **Tagged Releases**
 
@@ -42,4 +44,3 @@ For more recent installations, see [@warp-drive/legacy](https://www.npmjs.com/pa
 - ![NPM Stable Version](https://img.shields.io/npm/v/%40ember-data/adapter/latest?label=%40latest&color=90EE90)
 - ![NPM LTS Version](https://img.shields.io/npm/v/%40ember-data/adapter/lts?label=%40lts&color=0096FF)
 - ![NPM LTS 4.12 Version](https://img.shields.io/npm/v/%40ember-data/adapter/lts-4-12?label=%40lts-4-12&color=bbbbbb)
-

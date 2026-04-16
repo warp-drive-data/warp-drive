@@ -9,12 +9,20 @@ import { describe, it } from 'node:test';
 import { fileURLToPath } from 'node:url';
 import * as prettier from 'prettier';
 
-import { Codemods, Logs } from '@ember-data/codemods';
+import { legacyCompatBuilders, legacyCompatBuildersLog } from '@ember-data/codemods';
 
 const __filename = fileURLToPath(import.meta.url); // get the resolved path to the file
 const __dirname = path.dirname(__filename); // get the name of the directory
 
-type Codemod = Codemods[keyof Codemods];
+const Codemods = {
+  'legacy-compat-builders': legacyCompatBuilders,
+} as const;
+
+const Logs = {
+  'legacy-compat-builders': legacyCompatBuildersLog,
+} as const;
+
+type Codemod = (typeof Codemods)[keyof typeof Codemods];
 
 function findAllTestFixturesSync(dir: string, fileList: Array<{ filePath: string; ext: string }> = []) {
   const files = fs.readdirSync(dir, { withFileTypes: true });
@@ -170,12 +178,12 @@ async function runInlineTest(
   testOptions?: TestOptions
 ) {
   let output = input.source;
-  const options = { ...defaultOptions, ...(info.options ?? {}) };
+  const options: Parameters<Codemod>[2] = info.options ? { ...defaultOptions, ...info.options } : defaultOptions;
 
   const expectedErrorMessage = info.expectedError;
   let actualError: unknown;
   try {
-    output = applyTransform(module as Transform, options, input, testOptions);
+    output = applyTransform(module as Transform, options, input, testOptions || undefined);
   } catch (error: unknown) {
     actualError = error;
   }

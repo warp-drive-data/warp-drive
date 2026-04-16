@@ -1,7 +1,7 @@
 {
   "name": "@ember-data/graph",
-  "version": "5.9.0-alpha.1",
-  "description": "Provides a normalized graph for managing relationships between resources",
+  "version": "5.9.0-alpha.12",
+  "description": "(Internal) Normalized graph for managing relationships between WarpDrive resources",
   "keywords": [
     "ember-addon"
   ],
@@ -14,7 +14,7 @@
   "author": "Chris Thoburn <runspired@users.noreply.github.com>",
   "scripts": {
     "lint": "eslint . --quiet --cache --cache-strategy=content",
-    "build:pkg": "vite build;",
+    "build:pkg": "vite build",
     "prepack": "pnpm run build:pkg",
     "sync": "echo \"syncing\"",
     "start": "vite"
@@ -39,7 +39,7 @@
   },
   "peerDependencies": {},
   "dependencies": {
-    "@embroider/macros": "^1.18.1",
+    "@embroider/macros": "^1.19.6",
     "@warp-drive/core": "workspace:*"
   },
   "devDependencies": {
@@ -48,13 +48,12 @@
     "@babel/preset-env": "^7.28.3",
     "@babel/preset-typescript": "^7.27.1",
     "@warp-drive/internal-config": "workspace:*",
-    "typescript": "^5.9.2",
-    "vite": "^7.1.3"
+    "typescript": "^5.9.3",
+    "vite": "^7.3.1"
   },
   "volta": {
     "extends": "../../package.json"
   },
-  "packageManager": "pnpm@10.15.0",
   "ember-addon": {
     "main": "addon-main.cjs",
     "type": "addon",

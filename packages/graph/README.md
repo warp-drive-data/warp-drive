@@ -28,6 +28,11 @@
 
 # @ember-data/graph
 
+> [!WARNING]
+> **⚠️ This is an internal package** not intended for direct application use.
+>
+> It is a private implementation used as a peer-dependency by the JSON:API Cache.
+
 <p align="center">Provides a performance tuned normalized graph for intelligently managing relationships between resources based on identity</p>
 
 While this Graph is abstract, it currently is a private implementation required as a peer-dependency by the [JSON:API Cache Implementation](https://github.com/warp-drive-data/warp-drive/tree/main/packages/json-api).

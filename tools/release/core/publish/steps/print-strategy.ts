@@ -1,7 +1,7 @@
-import { TYPE_STRATEGY } from '../../../utils/channel';
-import { getCharLength, getPadding } from '../../../help/-utils';
+import { TYPE_STRATEGY } from '../../../utils/channel.ts';
+import { getCharLength, getPadding } from '../../../help/-utils.ts';
 import chalk from 'chalk';
-import { AppliedStrategy } from './generate-strategy';
+import { AppliedStrategy } from './generate-strategy.ts';
 
 export const COLORS_BY_STRATEGY: Record<TYPE_STRATEGY, 'red' | 'yellow' | 'green' | 'cyan'> = {
   private: 'red',
@@ -9,6 +9,13 @@ export const COLORS_BY_STRATEGY: Record<TYPE_STRATEGY, 'red' | 'yellow' | 'green
   beta: 'cyan',
   stable: 'green',
 };
+
+export function convertToLabel(name: string) {
+  if (name === 'N/A') {
+    return chalk.grey(name);
+  }
+  return '✅';
+}
 
 export function colorName(name: string) {
   if (name.startsWith('@warp-drive-types/')) {
@@ -25,9 +32,8 @@ export function colorName(name: string) {
     return chalk.cyanBright('@ember-data/') + chalk.yellow(name.substring(12));
   } else if (name === 'N/A') {
     return chalk.grey(name);
-  } else {
-    return chalk.cyan(name);
   }
+  return chalk.cyan(name);
 }
 
 function getPaddedString(str: string, targetWidth: number) {
@@ -77,8 +83,8 @@ export async function printStrategy(config: Map<string, string | number | boolea
     tableRows.push([
       applied.new ? chalk.magentaBright('New!') : '',
       colorName(name),
-      colorName(applied.mirrorPublishTo),
-      colorName(applied.typesPublishTo),
+      convertToLabel(applied.mirrorPublishTo),
+      convertToLabel(applied.typesPublishTo),
       chalk.grey(applied.fromVersion),
       chalk[COLORS_BY_STRATEGY[applied.stage]](applied.toVersion),
       chalk[COLORS_BY_STRATEGY[applied.stage]](applied.stage),

@@ -1,7 +1,7 @@
 {
   "name": "@ember-data/active-record",
-  "description": "ActiveRecord Format Support for EmberData",
-  "version": "5.9.0-alpha.1",
+  "description": "(Legacy) ActiveRecord Format Support for EmberData",
+  "version": "5.9.0-alpha.12",
   "private": false,
   "license": "MIT",
   "author": "Chris Thoburn <runspired@users.noreply.github.com>",
@@ -31,7 +31,7 @@
   },
   "scripts": {
     "lint": "eslint . --quiet --cache --cache-strategy=content",
-    "build:pkg": "vite build;",
+    "build:pkg": "vite build",
     "prepack": "pnpm run build:pkg",
     "sync": "echo \"syncing\"",
     "start": "vite"
@@ -42,7 +42,7 @@
     "version": 2
   },
   "dependencies": {
-    "@embroider/macros": "^1.18.1",
+    "@embroider/macros": "^1.19.6",
     "@warp-drive/core": "workspace:*",
     "@warp-drive/utilities": "workspace:*"
   },
@@ -52,8 +52,8 @@
     "@babel/plugin-transform-typescript": "^7.28.0",
     "@babel/preset-typescript": "^7.27.1",
     "@warp-drive/internal-config": "workspace:*",
-    "vite": "^7.1.3",
-    "typescript": "^5.9.2"
+    "vite": "^7.3.1",
+    "typescript": "^5.9.3"
   },
   "ember": {
     "edition": "octane"

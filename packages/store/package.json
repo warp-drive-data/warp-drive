@@ -1,7 +1,7 @@
 {
   "name": "@ember-data/store",
-  "version": "5.9.0-alpha.1",
-  "description": "The core of EmberData. Provides the Store service which coordinates the cache with the network and presentation layers.",
+  "version": "5.9.0-alpha.12",
+  "description": "(Legacy) EmberData Store service which coordinates the cache with the network and presentation layers.",
   "keywords": [
     "ember-addon"
   ],
@@ -32,13 +32,13 @@
   },
   "scripts": {
     "lint": "eslint . --quiet --cache --cache-strategy=content",
-    "build:pkg": "vite build;",
+    "build:pkg": "vite build",
     "prepack": "pnpm run build:pkg",
     "sync": "echo \"syncing\"",
     "start": "vite"
   },
   "dependencies": {
-    "@embroider/macros": "^1.18.1",
+    "@embroider/macros": "^1.19.6",
     "@warp-drive/core": "workspace:*"
   },
   "peerDependencies": {
@@ -61,14 +61,13 @@
     "@warp-drive/internal-config": "workspace:*",
     "@ember-data/tracking": "workspace:*",
     "@ember/test-waiters": "^4.1.1",
-    "ember-source": "~6.6.0",
-    "typescript": "^5.9.2",
-    "vite": "^7.1.3"
+    "ember-source": "~6.10.0",
+    "typescript": "^5.9.3",
+    "vite": "^7.3.1"
   },
   "volta": {
     "extends": "../../package.json"
   },
-  "packageManager": "pnpm@10.15.0",
   "ember-addon": {
     "main": "addon-main.cjs",
     "type": "addon",

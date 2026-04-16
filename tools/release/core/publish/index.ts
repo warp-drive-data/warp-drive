@@ -1,20 +1,21 @@
-import { publish_flags_config } from '../../utils/flags-config';
-import { parseRawFlags, printConfig } from '../../utils/parse-args';
-import { GIT_TAG, getAllPackagesForGitTag, getGitState } from '../../utils/git';
-import { printHelpDocs } from '../../help/docs';
-import { bumpAllPackages, restorePackagesForDryRun } from './steps/bump-versions';
-import { generatePackageTarballs, verifyTarballs } from './steps/generate-tarballs';
-import { generateMirrorTarballs } from './steps/generate-mirror-tarballs';
-import { printStrategy } from './steps/print-strategy';
-import { AppliedStrategy, applyStrategy } from './steps/generate-strategy';
-import { confirmStrategy } from './steps/confirm-strategy';
-import { publishPackages } from './steps/publish-packages';
-import { gatherPackages, loadStrategy } from '../../utils/package';
-import { CHANNEL, SEMVER_VERSION } from '../../utils/channel';
-import { confirmCommitChangelogs } from '../release-notes/steps/confirm-changelogs';
-import { updateChangelogs } from '../release-notes/steps/update-changelogs';
-import { getChanges } from '../release-notes/steps/get-changes';
-import { generateTypesTarballs } from './steps/generate-types-tarballs';
+import { publish_flags_config } from '../../utils/flags-config.ts';
+import { parseRawFlags, printConfig } from '../../utils/parse-args.ts';
+import { GIT_TAG, getAllPackagesForGitTag, getGitState } from '../../utils/git.ts';
+import { printHelpDocs } from '../../help/docs.ts';
+import { bumpAllPackages, restorePackagesForDryRun } from './steps/bump-versions.ts';
+import { generatePackageTarballs, verifyTarballs } from './steps/generate-tarballs.ts';
+import { generateMirrorTarballs } from './steps/generate-mirror-tarballs.ts';
+import { printStrategy } from './steps/print-strategy.ts';
+import { AppliedStrategy, applyStrategy } from './steps/generate-strategy.ts';
+import { confirmStrategy } from './steps/confirm-strategy.ts';
+import { publishPackages } from './steps/publish-packages.ts';
+import { gatherPackages, loadStrategy } from '../../utils/package.ts';
+import { CHANNEL, SEMVER_VERSION } from '../../utils/channel.ts';
+import { confirmCommitChangelogs } from '../release-notes/steps/confirm-changelogs.ts';
+import { updateChangelogs } from '../release-notes/steps/update-changelogs.ts';
+import { getChanges } from '../release-notes/steps/get-changes.ts';
+import { generateTypesTarballs } from './steps/generate-types-tarballs.ts';
+import { readFileSync } from 'node:fs';
 
 export async function executePublish(args: string[]) {
   // get user supplied config

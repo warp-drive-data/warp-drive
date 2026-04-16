@@ -28,6 +28,9 @@
 
 # @warp-drive/schema-record
 
+> [!WARNING]
+> **⚠️ This package** has been merged into [@warp-drive/core](https://warp-drive.io/api/@warp-drive/core/) and is not recommended for new applications.
+
 <h3 align="center">Your Data, Managed.</h3>
 <p align="center">🌲 Get back to Nature 🐿️ Or shipping 💚</p>
 
@@ -86,7 +89,7 @@ class AppStore extends Store {
 }
 ```
 
-Any Store API that returns a record instance will use the `instantiateRecord` 
+Any Store API that returns a record instance will use the `instantiateRecord`
 hook configured above to instantiate a SchemaRecord once this is in place.
 After that, its up to you what SchemaRecord can do.
 
@@ -139,7 +142,7 @@ store.schema.registerResources([
       },
       { kind: 'field', name: 'firstName' },
       { kind: 'field', name: 'lastName' },
-      { 
+      {
         kind: 'derived',
         name: 'name',
         type: 'concat',
@@ -253,7 +256,7 @@ store.schema.registerResources([
     fields: [
       { kind: 'field', name: 'firstName' },
       { kind: 'field', name: 'lastName' },
-      { 
+      {
         kind: 'derived',
         name: 'name',
         type: 'concat',

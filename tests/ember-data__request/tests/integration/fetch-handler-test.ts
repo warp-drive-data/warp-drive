@@ -3,7 +3,7 @@ import Fetch from '@ember-data/request/fetch';
 import { buildBaseURL } from '@ember-data/request-utils';
 import { module, test } from '@warp-drive/diagnostic';
 import { mock, MockServerHandler } from '@warp-drive/holodeck';
-import { GET } from '@warp-drive/holodeck/mock';
+import { GET, HEAD } from '@warp-drive/holodeck/mock';
 
 function isNetworkError(e: unknown): asserts e is Error & {
   status: number;
@@ -57,6 +57,46 @@ module('RequestManager | Fetch Handler', function (hooks) {
         },
         request: {
           url: buildBaseURL({ resourcePath: 'users/1' }),
+        },
+        response: {
+          headers: [
+            ['cache-control', 'no-store'],
+            ['content-type', 'application/vnd.api+json'],
+          ],
+          ok: true,
+          redirected: false,
+          status: 200,
+          statusText: '',
+          type: 'default',
+          url: '',
+        },
+      },
+      'The response is processed correctly'
+    );
+  });
+
+  test('Supports HEAD requests', async function (assert) {
+    const manager = new RequestManager();
+    manager.use([new MockServerHandler(this), Fetch]);
+
+    await HEAD(this, 'users/1', () => ({}));
+
+    const doc = await manager.request({ url: buildBaseURL({ resourcePath: 'users/1' }), method: 'HEAD' });
+    const serialized = JSON.parse(JSON.stringify(doc)) as unknown;
+    // @ts-expect-error
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    serialized.response.headers = (serialized.response.headers as [string, string][]).filter((v) => {
+      // don't test headers that change every time
+      return !['content-length', 'date', 'etag', 'last-modified'].includes(v[0]);
+    });
+
+    assert.deepEqual(
+      serialized,
+      {
+        content: null,
+        request: {
+          url: buildBaseURL({ resourcePath: 'users/1' }),
+          method: 'HEAD',
         },
         response: {
           headers: [

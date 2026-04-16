@@ -1,0 +1,1291 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`model-to-schema transform (artifacts) > TypeScript type artifacts > generates schema and extension artifacts when model has methods and computed properties > model extension code 1`] = `
+"
+
+export class ProcessedModelExtension {
+  get displayName() {
+  		return \`Processed: \${this.name}\`;
+  	}
+
+  processContent() {
+  		return (this.content || '').toUpperCase();
+  	}
+}
+
+const Registration = {
+  kind: 'object',
+  name: 'processed-model',
+  features: ProcessedModelExtension,
+};
+export default Registration;"
+`;
+
+exports[`model-to-schema transform (artifacts) > TypeScript type artifacts > generates schema and extension artifacts when model has methods and computed properties > model schema with merged types 1`] = `
+"import { withDefaults } from '@ember-data/model/migration-support';
+
+import type { Type } from '@warp-drive/core-types/symbols';
+import type { WithLegacy } from '@ember-data/model/migration-support';
+
+const ProcessedModelSchema = withDefaults({
+  'type': 'processed-model',
+  'fields': [
+    {
+      'kind': 'attribute',
+      'name': 'name',
+      'type': 'string'
+    },
+    {
+      'kind': 'attribute',
+      'name': 'content',
+      'type': 'string'
+    }
+  ]
+});
+
+export default ProcessedModelSchema;
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'processed-model' resource, without any of the legacy mode features
+ * and without any extensions.
+ *
+ * > [!TIP]
+ * > It is likely that you will want a more specific type tailored
+ * > to the context of where some data has been loaded, for instance
+ * > one that marks specific fields as readonly, or which only enables
+ * > some fields to be null during create, or which only includes
+ * > a subset of fields based on a specific API response.
+ * >
+ * > For those cases, you can create a more specific type that derives
+ * > from this type to ensure that your type definitions stay consistent
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ *
+ * See also {@link ProcessedModel} for fields + legacy mode features
+ */
+export interface ProcessedModelResource {
+  readonly [Type]: 'processed-model';
+  id: string | null;
+  name: string | null;
+  content: string | null;
+}
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'processed-model' resource, including all legacy mode features but
+ * without any extensions.
+ *
+ * See also {@link ProcessedModelResource} for just the fields
+ */
+export interface ProcessedModel extends WithLegacy<ProcessedModelResource> {}
+"
+`;
+
+exports[`model-to-schema transform (artifacts) > TypeScript type artifacts > generates schema with merged types for basic models > basic schema with merged types 1`] = `
+"import { withDefaults } from '@ember-data/model/migration-support';
+
+import type { Type } from '@warp-drive/core-types/symbols';
+import type { WithLegacy } from '@ember-data/model/migration-support';
+import type { AsyncHasMany } from '@ember-data/model';
+import type { Company } from 'test-app/data/resources/company.schema.ts';
+import type { Project } from 'test-app/data/resources/project.schema.ts';
+
+const UserSchema = withDefaults({
+  'type': 'user',
+  'fields': [
+    {
+      'kind': 'attribute',
+      'name': 'name',
+      'type': 'string'
+    },
+    {
+      'kind': 'attribute',
+      'name': 'isActive',
+      'type': 'boolean',
+      'options': {
+        'defaultValue': false
+      }
+    },
+    {
+      'kind': 'belongsTo',
+      'name': 'company',
+      'type': 'company',
+      'options': {
+        'async': false
+      }
+    },
+    {
+      'kind': 'hasMany',
+      'name': 'projects',
+      'type': 'project',
+      'options': {
+        'async': true
+      }
+    }
+  ]
+});
+
+export default UserSchema;
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'user' resource, without any of the legacy mode features
+ * and without any extensions.
+ *
+ * > [!TIP]
+ * > It is likely that you will want a more specific type tailored
+ * > to the context of where some data has been loaded, for instance
+ * > one that marks specific fields as readonly, or which only enables
+ * > some fields to be null during create, or which only includes
+ * > a subset of fields based on a specific API response.
+ * >
+ * > For those cases, you can create a more specific type that derives
+ * > from this type to ensure that your type definitions stay consistent
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ *
+ * See also {@link User} for fields + legacy mode features
+ */
+export interface UserResource {
+  readonly [Type]: 'user';
+  id: string | null;
+  name: string | null;
+  isActive: boolean;
+  company: Company | null;
+  projects: AsyncHasMany<Project>;
+}
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'user' resource, including all legacy mode features but
+ * without any extensions.
+ *
+ * See also {@link UserResource} for just the fields
+ */
+export interface User extends WithLegacy<UserResource> {}
+"
+`;
+
+exports[`model-to-schema transform (artifacts) > TypeScript type artifacts > handles custom type mappings in merged schema files > custom type mappings in merged schema 1`] = `
+"import { withDefaults } from '@ember-data/model/migration-support';
+
+import type { Type } from '@warp-drive/core-types/symbols';
+import type { WithLegacy } from '@ember-data/model/migration-support';
+
+const TypedModelSchema = withDefaults({
+  'type': 'typed-model',
+  'fields': [
+    {
+      'kind': 'attribute',
+      'name': 'id',
+      'type': 'uuid'
+    },
+    {
+      'kind': 'attribute',
+      'name': 'amount',
+      'type': 'currency'
+    },
+    {
+      'kind': 'attribute',
+      'name': 'metadata',
+      'type': 'json'
+    }
+  ]
+});
+
+export default TypedModelSchema;
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'typed-model' resource, without any of the legacy mode features
+ * and without any extensions.
+ *
+ * > [!TIP]
+ * > It is likely that you will want a more specific type tailored
+ * > to the context of where some data has been loaded, for instance
+ * > one that marks specific fields as readonly, or which only enables
+ * > some fields to be null during create, or which only includes
+ * > a subset of fields based on a specific API response.
+ * >
+ * > For those cases, you can create a more specific type that derives
+ * > from this type to ensure that your type definitions stay consistent
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ *
+ * See also {@link TypedModel} for fields + legacy mode features
+ */
+export interface TypedModelResource {
+  readonly [Type]: 'typed-model';
+  id: string | null;
+  id: string | null;
+  amount: number | null;
+  metadata: Record<string, unknown> | null;
+}
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'typed-model' resource, including all legacy mode features but
+ * without any extensions.
+ *
+ * See also {@link TypedModelResource} for just the fields
+ */
+export interface TypedModel extends WithLegacy<TypedModelResource> {}
+"
+`;
+
+exports[`model-to-schema transform (artifacts) > TypeScript type artifacts > handles relationship types correctly in merged schema files > relationship types in merged schema 1`] = `
+"import { withDefaults } from '@ember-data/model/migration-support';
+
+import type { Type } from '@warp-drive/core-types/symbols';
+import type { WithLegacy } from '@ember-data/model/migration-support';
+import type { HasMany, AsyncHasMany } from '@ember-data/model';
+import type { User } from 'test-app/data/resources/user.schema.ts';
+import type { Company } from 'test-app/data/resources/company.schema.ts';
+import type { File } from 'test-app/data/resources/file.schema.ts';
+import type { Tag } from 'test-app/data/resources/tag.schema.ts';
+
+const RelationshipModelSchema = withDefaults({
+  'type': 'relationship-model',
+  'fields': [
+    {
+      'kind': 'attribute',
+      'name': 'name',
+      'type': 'string'
+    },
+    {
+      'kind': 'belongsTo',
+      'name': 'owner',
+      'type': 'user',
+      'options': {
+        'async': false
+      }
+    },
+    {
+      'kind': 'belongsTo',
+      'name': 'company',
+      'type': 'company',
+      'options': {
+        'async': true
+      }
+    },
+    {
+      'kind': 'hasMany',
+      'name': 'attachments',
+      'type': 'file',
+      'options': {
+        'async': false
+      }
+    },
+    {
+      'kind': 'hasMany',
+      'name': 'tags',
+      'type': 'tag',
+      'options': {
+        'async': true
+      }
+    }
+  ]
+});
+
+export default RelationshipModelSchema;
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'relationship-model' resource, without any of the legacy mode features
+ * and without any extensions.
+ *
+ * > [!TIP]
+ * > It is likely that you will want a more specific type tailored
+ * > to the context of where some data has been loaded, for instance
+ * > one that marks specific fields as readonly, or which only enables
+ * > some fields to be null during create, or which only includes
+ * > a subset of fields based on a specific API response.
+ * >
+ * > For those cases, you can create a more specific type that derives
+ * > from this type to ensure that your type definitions stay consistent
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ *
+ * See also {@link RelationshipModel} for fields + legacy mode features
+ */
+export interface RelationshipModelResource {
+  readonly [Type]: 'relationship-model';
+  id: string | null;
+  name: string | null;
+  owner: User | null;
+  company: Promise<Company | null>;
+  attachments: HasMany<File>;
+  tags: AsyncHasMany<Tag>;
+}
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'relationship-model' resource, including all legacy mode features but
+ * without any extensions.
+ *
+ * See also {@link RelationshipModelResource} for just the fields
+ */
+export interface RelationshipModel extends WithLegacy<RelationshipModelResource> {}
+"
+`;
+
+exports[`model-to-schema transform (artifacts) > TypeScript type artifacts > uses unknown type for unsupported transforms > unknown types in merged schema 1`] = `
+"import { withDefaults } from '@ember-data/model/migration-support';
+
+import type { Type } from '@warp-drive/core-types/symbols';
+import type { WithLegacy } from '@ember-data/model/migration-support';
+
+const UnknownTypesModelSchema = withDefaults({
+  'type': 'unknown-types-model',
+  'fields': [
+    {
+      'kind': 'attribute',
+      'name': 'customField',
+      'type': 'custom-transform'
+    },
+    {
+      'kind': 'attribute',
+      'name': 'anotherField',
+      'type': 'another-unknown'
+    },
+    {
+      'kind': 'attribute',
+      'name': 'knownField',
+      'type': 'string'
+    }
+  ]
+});
+
+export default UnknownTypesModelSchema;
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'unknown-types-model' resource, without any of the legacy mode features
+ * and without any extensions.
+ *
+ * > [!TIP]
+ * > It is likely that you will want a more specific type tailored
+ * > to the context of where some data has been loaded, for instance
+ * > one that marks specific fields as readonly, or which only enables
+ * > some fields to be null during create, or which only includes
+ * > a subset of fields based on a specific API response.
+ * >
+ * > For those cases, you can create a more specific type that derives
+ * > from this type to ensure that your type definitions stay consistent
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ *
+ * See also {@link UnknownTypesModel} for fields + legacy mode features
+ */
+export interface UnknownTypesModelResource {
+  readonly [Type]: 'unknown-types-model';
+  id: string | null;
+  customField: unknown;
+  anotherField: unknown;
+  knownField: string | null;
+}
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'unknown-types-model' resource, including all legacy mode features but
+ * without any extensions.
+ *
+ * See also {@link UnknownTypesModelResource} for just the fields
+ */
+export interface UnknownTypesModel extends WithLegacy<UnknownTypesModelResource> {}
+"
+`;
+
+exports[`model-to-schema transform (artifacts) > basic functionality > handles Typescript model with mixins > schema with mixins 1`] = `
+"import { withDefaults } from '@ember-data/model/migration-support';
+
+import type { Type } from '@warp-drive/core-types/symbols';
+import type { WithLegacy } from '@ember-data/model/migration-support';
+import type { FileableTrait } from 'test-app/data/traits/fileable.schema';
+import type { TimestampableTrait } from 'test-app/data/traits/timestampable.schema';
+
+const DocumentSchema = withDefaults({
+  'type': 'document',
+  'fields': [
+    {
+      'kind': 'attribute',
+      'name': 'title',
+      'type': 'string'
+    },
+    {
+      'kind': 'attribute',
+      'name': 'content',
+      'type': 'string'
+    }
+  ],
+  'traits': [
+    'fileable',
+    'timestampable'
+  ]
+});
+
+export default DocumentSchema;
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'document' resource, without any of the legacy mode features
+ * and without any extensions.
+ *
+ * > [!TIP]
+ * > It is likely that you will want a more specific type tailored
+ * > to the context of where some data has been loaded, for instance
+ * > one that marks specific fields as readonly, or which only enables
+ * > some fields to be null during create, or which only includes
+ * > a subset of fields based on a specific API response.
+ * >
+ * > For those cases, you can create a more specific type that derives
+ * > from this type to ensure that your type definitions stay consistent
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ *
+ * See also {@link Document} for fields + legacy mode features
+ */
+export interface DocumentResource extends FileableTrait, TimestampableTrait {
+  readonly [Type]: 'document';
+  id: string | null;
+  title: string | null;
+  content: string | null;
+}
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'document' resource, including all legacy mode features but
+ * without any extensions.
+ *
+ * See also {@link DocumentResource} for just the fields
+ */
+export interface Document extends WithLegacy<DocumentResource> {}
+"
+`;
+
+exports[`model-to-schema transform (artifacts) > basic functionality > handles complex field options correctly > complex field options 1`] = `
+"import { withDefaults } from '@ember-data/model/migration-support';
+
+import type { Type } from '@warp-drive/core-types/symbols';
+import type { WithLegacy } from '@ember-data/model/migration-support';
+import type { HasMany } from '@ember-data/model';
+import type { User } from 'test-app/data/resources/user.schema.ts';
+import type { File } from 'test-app/data/resources/file.schema.ts';
+
+const ComplexModelSchema = withDefaults({
+  'type': 'complex-model',
+  'fields': [
+    {
+      'kind': 'attribute',
+      'name': 'name',
+      'type': 'string',
+      'options': {
+        'defaultValue': 'default'
+      }
+    },
+    {
+      'kind': 'attribute',
+      'name': 'birthDate',
+      'type': 'date',
+      'options': {
+        'allowNull': true
+      }
+    },
+    {
+      'kind': 'belongsTo',
+      'name': 'owner',
+      'type': 'user',
+      'options': {
+        'async': true,
+        'inverse': 'profile',
+        'polymorphic': true
+      }
+    },
+    {
+      'kind': 'hasMany',
+      'name': 'attachments',
+      'type': 'file',
+      'options': {
+        'async': false,
+        'inverse': null,
+        'as': 'fileable'
+      }
+    }
+  ]
+});
+
+export default ComplexModelSchema;
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'complex-model' resource, without any of the legacy mode features
+ * and without any extensions.
+ *
+ * > [!TIP]
+ * > It is likely that you will want a more specific type tailored
+ * > to the context of where some data has been loaded, for instance
+ * > one that marks specific fields as readonly, or which only enables
+ * > some fields to be null during create, or which only includes
+ * > a subset of fields based on a specific API response.
+ * >
+ * > For those cases, you can create a more specific type that derives
+ * > from this type to ensure that your type definitions stay consistent
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ *
+ * See also {@link ComplexModel} for fields + legacy mode features
+ */
+export interface ComplexModelResource {
+  readonly [Type]: 'complex-model';
+  id: string | null;
+  name: string;
+  birthDate: Date | null;
+  owner: Promise<User | null>;
+  attachments: HasMany<File>;
+}
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'complex-model' resource, including all legacy mode features but
+ * without any extensions.
+ *
+ * See also {@link ComplexModelResource} for just the fields
+ */
+export interface ComplexModel extends WithLegacy<ComplexModelResource> {}
+"
+`;
+
+exports[`model-to-schema transform (artifacts) > basic functionality > handles model with mixins > schema with mixins 1`] = `
+"import { withDefaults } from '@ember-data/model/migration-support';
+
+import type { Type } from '@warp-drive/core-types/symbols';
+import type { WithLegacy } from '@ember-data/model/migration-support';
+import type { FileableTrait } from 'test-app/data/traits/fileable.schema';
+import type { TimestampableTrait } from 'test-app/data/traits/timestampable.schema';
+
+const DocumentSchema = withDefaults({
+  'type': 'document',
+  'fields': [
+    {
+      'kind': 'attribute',
+      'name': 'title',
+      'type': 'string'
+    },
+    {
+      'kind': 'attribute',
+      'name': 'content',
+      'type': 'string'
+    }
+  ],
+  'traits': [
+    'fileable',
+    'timestampable'
+  ]
+});
+
+export default DocumentSchema;
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'document' resource, without any of the legacy mode features
+ * and without any extensions.
+ *
+ * > [!TIP]
+ * > It is likely that you will want a more specific type tailored
+ * > to the context of where some data has been loaded, for instance
+ * > one that marks specific fields as readonly, or which only enables
+ * > some fields to be null during create, or which only includes
+ * > a subset of fields based on a specific API response.
+ * >
+ * > For those cases, you can create a more specific type that derives
+ * > from this type to ensure that your type definitions stay consistent
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ *
+ * See also {@link Document} for fields + legacy mode features
+ */
+export interface DocumentResource extends FileableTrait, TimestampableTrait {
+  readonly [Type]: 'document';
+  id: string | null;
+  title: string | null;
+  content: string | null;
+}
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'document' resource, including all legacy mode features but
+ * without any extensions.
+ *
+ * See also {@link DocumentResource} for just the fields
+ */
+export interface Document extends WithLegacy<DocumentResource> {}
+"
+`;
+
+exports[`model-to-schema transform (artifacts) > basic functionality > preserves TypeScript syntax in extension properties > typescript extension 1`] = `
+"import { service } from '@ember/service';
+import type { TypedModel } from './typed-model.schema.ts';
+
+// @ts-ignore-error in reality fields are not merged, they are overridden
+export interface TypedModelExtension extends TypedModel {}
+export class TypedModelExtension {
+  @service declare router: RouterService
+
+  complexMethod(): Promise<void> {
+  		return new Promise(resolve => {
+  			setTimeout(() => resolve(), 1000);
+  		});
+  	}
+
+  get computedValue(): string {
+  		return \`Processed: \${this.name}\`;
+  	}
+}
+
+const Registration = {
+  kind: 'object',
+  name: 'typed-model',
+  features: TypedModelExtension,
+};
+export default Registration;"
+`;
+
+exports[`model-to-schema transform (artifacts) > basic functionality > produces schema and extension artifacts for basic model > artifact metadata 1`] = `
+[
+  {
+    "name": "UserSchema",
+    "suggestedFileName": "user.schema.ts",
+    "type": "schema",
+  },
+  {
+    "name": "UserExtension",
+    "suggestedFileName": "user.ext.js",
+    "type": "resource-extension",
+  },
+]
+`;
+
+exports[`model-to-schema transform (artifacts) > basic functionality > produces schema and extension artifacts for basic model > extension code 1`] = `
+"
+
+export class UserExtension {
+  get displayName() {
+  		return this.name || this.email;
+  	}
+
+  async save() {
+  		return super.save();
+  	}
+}
+
+const Registration = {
+  kind: 'object',
+  name: 'user',
+  features: UserExtension,
+};
+export default Registration;"
+`;
+
+exports[`model-to-schema transform (artifacts) > basic functionality > produces schema and extension artifacts for basic model > schema code 1`] = `
+"import { withDefaults } from '@ember-data/model/migration-support';
+
+import type { Type } from '@warp-drive/core-types/symbols';
+import type { WithLegacy } from '@ember-data/model/migration-support';
+import type { AsyncHasMany } from '@ember-data/model';
+import type { Company } from 'test-app/data/resources/company.schema.ts';
+import type { Project } from 'test-app/data/resources/project.schema.ts';
+
+const UserSchema = withDefaults({
+  'type': 'user',
+  'fields': [
+    {
+      'kind': 'attribute',
+      'name': 'name',
+      'type': 'string'
+    },
+    {
+      'kind': 'attribute',
+      'name': 'email',
+      'type': 'string'
+    },
+    {
+      'kind': 'attribute',
+      'name': 'isActive',
+      'type': 'boolean',
+      'options': {
+        'defaultValue': false
+      }
+    },
+    {
+      'kind': 'belongsTo',
+      'name': 'company',
+      'type': 'company',
+      'options': {
+        'async': false,
+        'inverse': null
+      }
+    },
+    {
+      'kind': 'hasMany',
+      'name': 'projects',
+      'type': 'project',
+      'options': {
+        'async': true,
+        'inverse': 'owner'
+      }
+    }
+  ]
+});
+
+export default UserSchema;
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'user' resource, without any of the legacy mode features
+ * and without any extensions.
+ *
+ * > [!TIP]
+ * > It is likely that you will want a more specific type tailored
+ * > to the context of where some data has been loaded, for instance
+ * > one that marks specific fields as readonly, or which only enables
+ * > some fields to be null during create, or which only includes
+ * > a subset of fields based on a specific API response.
+ * >
+ * > For those cases, you can create a more specific type that derives
+ * > from this type to ensure that your type definitions stay consistent
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ *
+ * See also {@link User} for fields + legacy mode features
+ */
+export interface UserResource {
+  readonly [Type]: 'user';
+  id: string | null;
+  name: string | null;
+  email: string | null;
+  isActive: boolean;
+  company: Company | null;
+  projects: AsyncHasMany<Project>;
+}
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'user' resource, including all legacy mode features but
+ * without any extensions.
+ *
+ * See also {@link UserResource} for just the fields
+ */
+export interface User extends WithLegacy<UserResource> {}
+"
+`;
+
+exports[`model-to-schema transform (artifacts) > basic functionality > supports alternate import sources > custom import source 1`] = `
+"import { withDefaults } from '@ember-data/model/migration-support';
+
+import type { Type } from '@warp-drive/core-types/symbols';
+import type { WithLegacy } from '@ember-data/model/migration-support';
+import type { HasMany } from '@auditboard/warp-drive/v1/model';
+import type { Item } from 'test-app/data/resources/item.schema.ts';
+
+const CustomModelSchema = withDefaults({
+  'type': 'custom-model',
+  'fields': [
+    {
+      'kind': 'attribute',
+      'name': 'name',
+      'type': 'string'
+    },
+    {
+      'kind': 'hasMany',
+      'name': 'items',
+      'type': 'item',
+      'options': {
+        'async': false
+      }
+    }
+  ]
+});
+
+export default CustomModelSchema;
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'custom-model' resource, without any of the legacy mode features
+ * and without any extensions.
+ *
+ * > [!TIP]
+ * > It is likely that you will want a more specific type tailored
+ * > to the context of where some data has been loaded, for instance
+ * > one that marks specific fields as readonly, or which only enables
+ * > some fields to be null during create, or which only includes
+ * > a subset of fields based on a specific API response.
+ * >
+ * > For those cases, you can create a more specific type that derives
+ * > from this type to ensure that your type definitions stay consistent
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ *
+ * See also {@link CustomModel} for fields + legacy mode features
+ */
+export interface CustomModelResource {
+  readonly [Type]: 'custom-model';
+  id: string | null;
+  name: string | null;
+  items: HasMany<Item>;
+}
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'custom-model' resource, including all legacy mode features but
+ * without any extensions.
+ *
+ * See also {@link CustomModelResource} for just the fields
+ */
+export interface CustomModel extends WithLegacy<CustomModelResource> {}
+"
+`;
+
+exports[`model-to-schema transform (artifacts) > custom type mappings > applies custom type mappings to attribute types > custom type mappings in merged schema 1`] = `
+"import { withDefaults } from '@ember-data/model/migration-support';
+
+import type { Type } from '@warp-drive/core-types/symbols';
+import type { WithLegacy } from '@ember-data/model/migration-support';
+
+const CustomTypesModelSchema = withDefaults({
+  'type': 'custom-types-model',
+  'fields': [
+    {
+      'kind': 'attribute',
+      'name': 'id',
+      'type': 'uuid'
+    },
+    {
+      'kind': 'attribute',
+      'name': 'createdAt',
+      'type': 'timestamp'
+    },
+    {
+      'kind': 'attribute',
+      'name': 'price',
+      'type': 'currency'
+    }
+  ]
+});
+
+export default CustomTypesModelSchema;
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'custom-types-model' resource, without any of the legacy mode features
+ * and without any extensions.
+ *
+ * > [!TIP]
+ * > It is likely that you will want a more specific type tailored
+ * > to the context of where some data has been loaded, for instance
+ * > one that marks specific fields as readonly, or which only enables
+ * > some fields to be null during create, or which only includes
+ * > a subset of fields based on a specific API response.
+ * >
+ * > For those cases, you can create a more specific type that derives
+ * > from this type to ensure that your type definitions stay consistent
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ *
+ * See also {@link CustomTypesModel} for fields + legacy mode features
+ */
+export interface CustomTypesModelResource {
+  readonly [Type]: 'custom-types-model';
+  id: string | null;
+  id: string | null;
+  createdAt: Date | null;
+  price: number | null;
+}
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'custom-types-model' resource, including all legacy mode features but
+ * without any extensions.
+ *
+ * See also {@link CustomTypesModelResource} for just the fields
+ */
+export interface CustomTypesModel extends WithLegacy<CustomTypesModelResource> {}
+"
+`;
+
+exports[`model-to-schema transform (artifacts) > custom type mappings > falls back to unknown for unmapped custom types > unknown fallback for unmapped types 1`] = `
+"import { withDefaults } from '@ember-data/model/migration-support';
+
+import type { Type } from '@warp-drive/core-types/symbols';
+import type { WithLegacy } from '@ember-data/model/migration-support';
+
+const UnmappedTypesModelSchema = withDefaults({
+  'type': 'unmapped-types-model',
+  'fields': [
+    {
+      'kind': 'attribute',
+      'name': 'field1',
+      'type': 'unknown-transform'
+    },
+    {
+      'kind': 'attribute',
+      'name': 'field2',
+      'type': 'another-unknown'
+    }
+  ]
+});
+
+export default UnmappedTypesModelSchema;
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'unmapped-types-model' resource, without any of the legacy mode features
+ * and without any extensions.
+ *
+ * > [!TIP]
+ * > It is likely that you will want a more specific type tailored
+ * > to the context of where some data has been loaded, for instance
+ * > one that marks specific fields as readonly, or which only enables
+ * > some fields to be null during create, or which only includes
+ * > a subset of fields based on a specific API response.
+ * >
+ * > For those cases, you can create a more specific type that derives
+ * > from this type to ensure that your type definitions stay consistent
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ *
+ * See also {@link UnmappedTypesModel} for fields + legacy mode features
+ */
+export interface UnmappedTypesModelResource {
+  readonly [Type]: 'unmapped-types-model';
+  id: string | null;
+  field1: unknown;
+  field2: unknown;
+}
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'unmapped-types-model' resource, including all legacy mode features but
+ * without any extensions.
+ *
+ * See also {@link UnmappedTypesModelResource} for just the fields
+ */
+export interface UnmappedTypesModel extends WithLegacy<UnmappedTypesModelResource> {}
+"
+`;
+
+exports[`model-to-schema transform (artifacts) > edge cases > handles aliased imports correctly > aliased imports 1`] = `
+"import { withDefaults } from '@ember-data/model/migration-support';
+
+import type { Type } from '@warp-drive/core-types/symbols';
+import type { WithLegacy } from '@ember-data/model/migration-support';
+import type { HasMany } from '@ember-data/model';
+import type { Item } from 'test-app/data/resources/item.schema.ts';
+
+const AliasedModelSchema = withDefaults({
+  'type': 'aliased-model',
+  'fields': [
+    {
+      'kind': 'attribute',
+      'name': 'name',
+      'type': 'string'
+    },
+    {
+      'kind': 'hasMany',
+      'name': 'items',
+      'type': 'item'
+    }
+  ]
+});
+
+export default AliasedModelSchema;
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'aliased-model' resource, without any of the legacy mode features
+ * and without any extensions.
+ *
+ * > [!TIP]
+ * > It is likely that you will want a more specific type tailored
+ * > to the context of where some data has been loaded, for instance
+ * > one that marks specific fields as readonly, or which only enables
+ * > some fields to be null during create, or which only includes
+ * > a subset of fields based on a specific API response.
+ * >
+ * > For those cases, you can create a more specific type that derives
+ * > from this type to ensure that your type definitions stay consistent
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ *
+ * See also {@link AliasedModel} for fields + legacy mode features
+ */
+export interface AliasedModelResource {
+  readonly [Type]: 'aliased-model';
+  id: string | null;
+  name: string | null;
+  items: HasMany<Item>;
+}
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'aliased-model' resource, including all legacy mode features but
+ * without any extensions.
+ *
+ * See also {@link AliasedModelResource} for just the fields
+ */
+export interface AliasedModel extends WithLegacy<AliasedModelResource> {}
+"
+`;
+
+exports[`model-to-schema transform (artifacts) > edge cases > preserves complex object literal options > complex options 1`] = `
+"import { withDefaults } from '@ember-data/model/migration-support';
+
+import type { Type } from '@warp-drive/core-types/symbols';
+import type { WithLegacy } from '@ember-data/model/migration-support';
+import type { User } from 'test-app/data/resources/user.schema.ts';
+
+const ComplexOptionsModelSchema = withDefaults({
+  'type': 'complex-options-model',
+  'fields': [
+    {
+      'kind': 'belongsTo',
+      'name': 'owner',
+      'type': 'user',
+      'options': {
+        'async': true,
+        'inverse': 'profile',
+        'polymorphic': false,
+        'resetOnRemoteUpdate': false
+      }
+    }
+  ]
+});
+
+export default ComplexOptionsModelSchema;
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'complex-options-model' resource, without any of the legacy mode features
+ * and without any extensions.
+ *
+ * > [!TIP]
+ * > It is likely that you will want a more specific type tailored
+ * > to the context of where some data has been loaded, for instance
+ * > one that marks specific fields as readonly, or which only enables
+ * > some fields to be null during create, or which only includes
+ * > a subset of fields based on a specific API response.
+ * >
+ * > For those cases, you can create a more specific type that derives
+ * > from this type to ensure that your type definitions stay consistent
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ *
+ * See also {@link ComplexOptionsModel} for fields + legacy mode features
+ */
+export interface ComplexOptionsModelResource {
+  readonly [Type]: 'complex-options-model';
+  id: string | null;
+  owner: Promise<User | null>;
+}
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'complex-options-model' resource, including all legacy mode features but
+ * without any extensions.
+ *
+ * See also {@link ComplexOptionsModelResource} for just the fields
+ */
+export interface ComplexOptionsModel extends WithLegacy<ComplexOptionsModelResource> {}
+"
+`;
+
+exports[`model-to-schema transform (artifacts) > mirror flag > uses configured emberDataImportSource for HasMany types in merged schema > custom EmberData source for HasMany types in merged schema 1`] = `
+"import { withDefaults } from '@warp-drive-mirror/legacy/model/migration-support';
+
+import type { Type } from '@warp-drive-mirror/core/types/symbols';
+import type { WithLegacy } from '@warp-drive-mirror/legacy/model/migration-support';
+import type { HasMany, AsyncHasMany } from '@auditboard/warp-drive/v1/model';
+import type { Tag } from 'test-app/data/resources/tag.schema.ts';
+import type { Project } from 'test-app/data/resources/project.schema.ts';
+import type { User } from 'test-app/data/resources/user.schema.ts';
+
+const RelationshipModelSchema = withDefaults({
+  'type': 'relationship-model',
+  'fields': [
+    {
+      'kind': 'attribute',
+      'name': 'name',
+      'type': 'string'
+    },
+    {
+      'kind': 'hasMany',
+      'name': 'tags',
+      'type': 'tag',
+      'options': {
+        'async': false
+      }
+    },
+    {
+      'kind': 'hasMany',
+      'name': 'projects',
+      'type': 'project',
+      'options': {
+        'async': true
+      }
+    },
+    {
+      'kind': 'belongsTo',
+      'name': 'owner',
+      'type': 'user',
+      'options': {
+        'async': false
+      }
+    }
+  ]
+});
+
+export default RelationshipModelSchema;
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'relationship-model' resource, without any of the legacy mode features
+ * and without any extensions.
+ *
+ * > [!TIP]
+ * > It is likely that you will want a more specific type tailored
+ * > to the context of where some data has been loaded, for instance
+ * > one that marks specific fields as readonly, or which only enables
+ * > some fields to be null during create, or which only includes
+ * > a subset of fields based on a specific API response.
+ * >
+ * > For those cases, you can create a more specific type that derives
+ * > from this type to ensure that your type definitions stay consistent
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ *
+ * See also {@link RelationshipModel} for fields + legacy mode features
+ */
+export interface RelationshipModelResource {
+  readonly [Type]: 'relationship-model';
+  id: string | null;
+  name: string | null;
+  tags: HasMany<Tag>;
+  projects: AsyncHasMany<Project>;
+  owner: User | null;
+}
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'relationship-model' resource, including all legacy mode features but
+ * without any extensions.
+ *
+ * See also {@link RelationshipModelResource} for just the fields
+ */
+export interface RelationshipModel extends WithLegacy<RelationshipModelResource> {}
+"
+`;
+
+exports[`model-to-schema transform (artifacts) > mixin handling > extracts mixin names and converts them to trait references > single mixin schema 1`] = `
+"import { withDefaults } from '@ember-data/model/migration-support';
+
+import type { Type } from '@warp-drive/core-types/symbols';
+import type { WithLegacy } from '@ember-data/model/migration-support';
+import type { FileableTrait } from 'test-app/data/traits/fileable.schema';
+
+const DocumentSchema = withDefaults({
+  'type': 'document',
+  'fields': [
+    {
+      'kind': 'attribute',
+      'name': 'title',
+      'type': 'string'
+    }
+  ],
+  'traits': [
+    'fileable'
+  ]
+});
+
+export default DocumentSchema;
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'document' resource, without any of the legacy mode features
+ * and without any extensions.
+ *
+ * > [!TIP]
+ * > It is likely that you will want a more specific type tailored
+ * > to the context of where some data has been loaded, for instance
+ * > one that marks specific fields as readonly, or which only enables
+ * > some fields to be null during create, or which only includes
+ * > a subset of fields based on a specific API response.
+ * >
+ * > For those cases, you can create a more specific type that derives
+ * > from this type to ensure that your type definitions stay consistent
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ *
+ * See also {@link Document} for fields + legacy mode features
+ */
+export interface DocumentResource extends FileableTrait {
+  readonly [Type]: 'document';
+  id: string | null;
+  title: string | null;
+}
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'document' resource, including all legacy mode features but
+ * without any extensions.
+ *
+ * See also {@link DocumentResource} for just the fields
+ */
+export interface Document extends WithLegacy<DocumentResource> {}
+"
+`;
+
+exports[`model-to-schema transform (artifacts) > mixin handling > handles multiple mixins correctly > multiple mixins schema 1`] = `
+"import { withDefaults } from '@ember-data/model/migration-support';
+
+import type { Type } from '@warp-drive/core-types/symbols';
+import type { WithLegacy } from '@ember-data/model/migration-support';
+import type { FileableTrait } from 'test-app/data/traits/fileable.schema';
+import type { TimestampableTrait } from 'test-app/data/traits/timestampable.schema';
+import type { AuditableTrait } from 'test-app/data/traits/auditable.schema';
+
+const ComplexDocumentSchema = withDefaults({
+  'type': 'complex-document',
+  'fields': [
+    {
+      'kind': 'attribute',
+      'name': 'title',
+      'type': 'string'
+    }
+  ],
+  'traits': [
+    'fileable',
+    'timestampable',
+    'auditable'
+  ]
+});
+
+export default ComplexDocumentSchema;
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'complex-document' resource, without any of the legacy mode features
+ * and without any extensions.
+ *
+ * > [!TIP]
+ * > It is likely that you will want a more specific type tailored
+ * > to the context of where some data has been loaded, for instance
+ * > one that marks specific fields as readonly, or which only enables
+ * > some fields to be null during create, or which only includes
+ * > a subset of fields based on a specific API response.
+ * >
+ * > For those cases, you can create a more specific type that derives
+ * > from this type to ensure that your type definitions stay consistent
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ *
+ * See also {@link ComplexDocument} for fields + legacy mode features
+ */
+export interface ComplexDocumentResource extends FileableTrait, TimestampableTrait, AuditableTrait {
+  readonly [Type]: 'complex-document';
+  id: string | null;
+  title: string | null;
+}
+
+/**
+ * This type represents the full set schema derived fields of
+ * the 'complex-document' resource, including all legacy mode features but
+ * without any extensions.
+ *
+ * See also {@link ComplexDocumentResource} for just the fields
+ */
+export interface ComplexDocument extends WithLegacy<ComplexDocumentResource> {}
+"
+`;

@@ -1,7 +1,7 @@
 {
   "name": "@warp-drive/svelte",
   "description": "Data bindings and utilities for Svelte",
-  "version": "5.9.0-alpha.1",
+  "version": "5.9.0-alpha.12",
   "private": true,
   "license": "MIT",
   "author": "Chris Thoburn <runspired@users.noreply.github.com>",
@@ -50,8 +50,8 @@
     "@warp-drive/internal-config": "workspace:*",
     "@warp-drive/core": "workspace:*",
     "svelte": "^5.38.3",
-    "typescript": "^5.9.2",
-    "vite": "^7.1.3"
+    "typescript": "^5.9.3",
+    "vite": "^7.3.1"
   },
   "volta": {
     "extends": "../../package.json"

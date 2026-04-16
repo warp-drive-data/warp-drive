@@ -6,8 +6,7 @@ import { importSync } from '@embroider/macros';
 
 import { DEPRECATE_COMPUTED_CHAINS } from '@warp-drive/core/build-config/deprecations';
 import { TESTING } from '@warp-drive/core/build-config/env';
-import { setupSignals } from '@warp-drive/core/configure';
-import type { SignalHooks } from '@warp-drive/core/store/-private';
+import { setupSignals, type SignalHooks } from '@warp-drive/core/configure';
 
 type Tag = ReturnType<typeof tagForProperty>;
 const emberDirtyTag = dirtyTag as unknown as (tag: Tag) => void;

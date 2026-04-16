@@ -1,0 +1,506 @@
+import { existsSync, mkdirSync, writeFileSync } from 'fs';
+import { basename, dirname, join, resolve } from 'path';
+
+import { type InstanciatedLogger, logger } from '../../../utils/logger.js';
+import type { SkippedFile, TransformerResult } from '../codemod.js';
+import { Codemod } from '../codemod.js';
+import type { FinalOptions, MigrateOptions, TransformOptions } from '../config.js';
+import {
+  DEFAULT_INPUT_DIR,
+  DEFAULT_MIXIN_SOURCE_DIR,
+  DEFAULT_MODEL_SOURCE_DIR,
+  DEFAULT_OUTPUT_DIR,
+  DEFAULT_RESOURCES_DIR,
+  DEFAULT_TRAITS_DIR,
+  DEFAULT_WARP_DRIVE_IMPORTS,
+} from '../config.js';
+import { toArtifacts as mixinToArtifacts } from '../processors/mixin.js';
+import { processIntermediateModelsToTraits, toArtifacts as modelToArtifacts } from '../processors/model.js';
+import type { SchemaArtifact, SchemaArtifactRegistry } from '../utils/artifact.js';
+import { findEntityByBaseName } from '../utils/artifact.js';
+import type { TransformArtifact } from '../utils/schema-generation.js';
+
+const migrateLog = logger.for('migrate');
+
+/**
+ * JSCodeshift transform function that throws an error
+ * migrate-to-schema is designed to run as a batch operation only
+ */
+export default function (): never {
+  throw new Error(
+    'migrate-to-schema should be run as a batch operation, not on individual files. Use the CLI command directly.'
+  );
+}
+
+interface Artifact {
+  type: string;
+  code: string;
+  suggestedFileName?: string;
+}
+
+interface ProcessingResult {
+  processed: number;
+  skipped: SkippedFile[];
+  errors: string[];
+}
+
+type ArtifactType = 'schema' | 'type' | 'trait' | 'trait-type' | 'resource-extension' | 'trait-extension';
+
+type DirectoryKey = 'resourcesDir' | 'traitsDir' | 'outputDir';
+
+interface ArtifactConfig {
+  directoryKey: DirectoryKey;
+  defaultDir: string;
+  /** Whether to use mixin-based relative path calculation */
+  useRelativePath?: boolean;
+  /** File suffix to append (e.g., '.schema', '.schema.types') */
+  suffix?: string;
+  /** Whether to preserve original extension */
+  preserveExtension?: boolean;
+  /** Whether to use suggested filename directly */
+  useSuggestedFileName?: boolean;
+}
+
+const ARTIFACT_CONFIG: Record<ArtifactType, ArtifactConfig> = {
+  schema: {
+    directoryKey: 'resourcesDir',
+    defaultDir: DEFAULT_RESOURCES_DIR,
+    suffix: '.schema',
+    preserveExtension: true,
+  },
+  type: {
+    directoryKey: 'resourcesDir',
+    defaultDir: DEFAULT_RESOURCES_DIR,
+    useSuggestedFileName: true,
+  },
+  trait: {
+    directoryKey: 'traitsDir',
+    defaultDir: DEFAULT_TRAITS_DIR,
+    useRelativePath: true,
+    suffix: '.schema',
+    preserveExtension: true,
+  },
+  'trait-type': {
+    directoryKey: 'traitsDir',
+    defaultDir: DEFAULT_TRAITS_DIR,
+    useRelativePath: true,
+    useSuggestedFileName: true,
+  },
+  'resource-extension': {
+    directoryKey: 'resourcesDir',
+    defaultDir: DEFAULT_RESOURCES_DIR,
+    suffix: '.ext',
+    preserveExtension: true,
+  },
+  'trait-extension': {
+    directoryKey: 'traitsDir',
+    defaultDir: DEFAULT_TRAITS_DIR,
+    useRelativePath: true,
+    suffix: '.ext',
+    preserveExtension: true,
+  },
+};
+
+const DEFAULT_FALLBACK_CONFIG: ArtifactConfig = {
+  directoryKey: 'resourcesDir',
+  defaultDir: DEFAULT_RESOURCES_DIR,
+  useSuggestedFileName: true,
+};
+
+/**
+ * Get relative path for a file from additionalModelSources
+ */
+function getRelativePathFromAdditionalSources(
+  filePath: string,
+  additionalSources?: Array<{ pattern: string; dir: string }>
+): string | null {
+  if (!additionalSources) return null;
+
+  for (const source of additionalSources) {
+    const sourceDirResolved = resolve(source.dir.replace(/\/?\*+$/, '')); // Remove trailing wildcards
+    if (filePath.startsWith(sourceDirResolved)) {
+      // File is from this additional source, extract just the basename
+      return `/${basename(filePath)}`;
+    }
+  }
+  return null;
+}
+
+/**
+ * Get the relative path for a mixin file, handling both local and external mixins
+ */
+function getRelativePathForMixin(filePath: string, options: FinalOptions): string {
+  // First, try to get relative path from the main mixin source directory
+  const mixinSourceDir = resolve(options.mixinSourceDir);
+  if (filePath.startsWith(mixinSourceDir)) {
+    return filePath.replace(mixinSourceDir, '').replace(/^\//, '');
+  }
+
+  // Check if this is an external mixin from additionalMixinSources
+  if (options.additionalMixinSources) {
+    for (const source of options.additionalMixinSources) {
+      // Get the base directory (remove trailing /* if present)
+      let baseDir = source.dir;
+      if (baseDir.endsWith('/*')) {
+        baseDir = baseDir.slice(0, -2);
+      } else if (baseDir.endsWith('*')) {
+        baseDir = baseDir.slice(0, -1);
+      }
+
+      const resolvedBaseDir = resolve(baseDir);
+      if (filePath.startsWith(resolvedBaseDir)) {
+        // For external mixins, use just the filename
+        return basename(filePath);
+      }
+    }
+  }
+
+  // Fallback: use just the filename
+  return basename(filePath);
+}
+
+/**
+ * Calculate relative path for model-based artifacts (schema, resource-type)
+ */
+function getRelativePathForModel(filePath: string, options: FinalOptions): string {
+  // Try standard model source directory first
+  let relativePath = filePath.replace(resolve(options.modelSourceDir), '');
+
+  // If not in standard directory, check additionalModelSources
+  if (relativePath === filePath) {
+    const additionalPath = getRelativePathFromAdditionalSources(filePath, options.additionalModelSources);
+    if (additionalPath) {
+      relativePath = additionalPath;
+    } else if (options.generateExternalResources) {
+      // Fallback: extract just the filename for external models
+      relativePath = `/${basename(filePath)}`;
+    }
+  }
+
+  return relativePath;
+}
+
+/**
+ * Build the output filename based on suffix and extension settings
+ */
+function buildOutputFileName(
+  relativePath: string,
+  sourceFilePath: string,
+  config: ArtifactConfig,
+  suggestedFileName?: string
+): string {
+  if (config.useSuggestedFileName && suggestedFileName) {
+    // For extension-type, apply suffix to suggested filename
+    if (config.suffix && !config.preserveExtension) {
+      return suggestedFileName.replace(/\.(js|ts)$/, `${config.suffix}.ts`);
+    }
+    return suggestedFileName;
+  }
+
+  if (!config.suffix) {
+    return relativePath;
+  }
+
+  if (config.preserveExtension) {
+    const extension = suggestedFileName?.endsWith('.ts')
+      ? '.ts'
+      : suggestedFileName?.endsWith('.js')
+        ? '.js'
+        : sourceFilePath.endsWith('.ts')
+          ? '.ts'
+          : '.js';
+    return relativePath.replace(/\.(js|ts)$/, `${config.suffix}${extension}`);
+  }
+
+  return relativePath.replace(/\.(js|ts)$/, `${config.suffix}.ts`);
+}
+
+/**
+ * Get the output directory for an artifact type
+ */
+function getOutputDirectory(artifactType: string, options: FinalOptions): string {
+  const config = ARTIFACT_CONFIG[artifactType as ArtifactType] ?? DEFAULT_FALLBACK_CONFIG;
+  return options[config.directoryKey] ?? config.defaultDir;
+}
+
+/**
+ * Get the output path for an artifact based on its type and source file
+ */
+function getArtifactOutputPath(
+  artifact: Artifact,
+  filePath: string,
+  options: FinalOptions
+): { outputDir: string; outputPath: string } {
+  const config = ARTIFACT_CONFIG[artifact.type as ArtifactType] ?? DEFAULT_FALLBACK_CONFIG;
+  const outputDir = getOutputDirectory(artifact.type, options);
+
+  // Debug logging for resource-type-stub
+  if (artifact.type === 'resource-type-stub') {
+    migrateLog.debug(`RESOURCE-TYPE-STUB: redirecting to resources dir`);
+  }
+
+  // Calculate relative path based on artifact type
+  const relativePath = config.useRelativePath
+    ? getRelativePathForMixin(filePath, options)
+    : config.useSuggestedFileName
+      ? ''
+      : getRelativePathForModel(filePath, options);
+
+  // Build the output filename
+  const outputName = config.useSuggestedFileName
+    ? buildOutputFileName('', filePath, config, artifact.suggestedFileName) || 'unknown'
+    : buildOutputFileName(relativePath, filePath, config, artifact.suggestedFileName);
+
+  const outputPath = join(resolve(outputDir), outputName);
+
+  return { outputDir, outputPath };
+}
+
+interface WriteArtifactOptions {
+  dryRun: boolean;
+  verbose: boolean;
+  log: InstanciatedLogger;
+}
+
+/**
+ * Write a single artifact to disk
+ */
+function writeArtifact(artifact: Artifact, outputPath: string, { dryRun, verbose, log }: WriteArtifactOptions): void {
+  if (!dryRun) {
+    const outputDirPath = dirname(outputPath);
+    if (!existsSync(outputDirPath)) {
+      mkdirSync(outputDirPath, { recursive: true });
+    }
+    writeFileSync(outputPath, artifact.code, 'utf-8');
+    if (verbose) {
+      log.info(`✅ Generated ${artifact.type}: ${outputPath}`);
+    }
+  } else if (verbose) {
+    log.info(`✅ Would generate ${artifact.type}: ${outputPath} (dry run)`);
+  }
+}
+
+/**
+ * Write intermediate model trait artifacts to disk
+ */
+function writeIntermediateArtifacts(
+  artifacts: TransformArtifact[],
+  finalOptions: FinalOptions,
+  log: InstanciatedLogger,
+  registry: SchemaArtifactRegistry
+): void {
+  for (const artifact of artifacts) {
+    const outputDir = getOutputDirectory(artifact.type, finalOptions);
+    const fileName = artifact.suggestedFileName;
+    const outputPath = join(resolve(outputDir), fileName);
+
+    const conflicting = findEntityByBaseName(registry, artifact.baseName);
+    if (conflicting) {
+      log.error(
+        `Output file conflict: "${artifact.baseName}" is produced by both intermediate model artifact and "${conflicting.path}". The second write will overwrite the first.`
+      );
+    }
+
+    writeArtifact(artifact, outputPath, {
+      dryRun: finalOptions.dryRun ?? false,
+      verbose: finalOptions.verbose ?? false,
+      log,
+    });
+  }
+}
+
+type ArtifactTransformer = (
+  entity: SchemaArtifact,
+  options: TransformOptions,
+  registry: SchemaArtifactRegistry
+) => TransformerResult;
+
+const TRANSFORMERS: Record<string, ArtifactTransformer> = {
+  model: modelToArtifacts,
+  mixin: mixinToArtifacts,
+};
+
+interface ProcessFilesOptions {
+  registry: SchemaArtifactRegistry;
+  finalOptions: FinalOptions;
+  log: InstanciatedLogger;
+}
+
+/**
+ * Process all entities in the registry, picking the right transformer per entity kind.
+ */
+function processFiles({ registry, finalOptions, log }: ProcessFilesOptions): ProcessingResult {
+  let processed = 0;
+  const skipped: SkippedFile[] = [];
+  const errors: string[] = [];
+
+  for (const [filePath, entity] of registry) {
+    const transformer = TRANSFORMERS[entity.kind];
+    if (!transformer) continue;
+
+    try {
+      if (finalOptions.verbose) {
+        log.debug(`🔄 Processing: ${filePath}`);
+      }
+
+      const result = transformer(entity, finalOptions, registry);
+
+      if (result.artifacts.length > 0) {
+        processed++;
+
+        for (const artifact of result.artifacts) {
+          const { outputPath } = getArtifactOutputPath(artifact, filePath, finalOptions);
+
+          writeArtifact(artifact, outputPath, {
+            dryRun: finalOptions.dryRun ?? false,
+            verbose: finalOptions.verbose ?? false,
+            log,
+          });
+        }
+      } else {
+        skipped.push({ file: filePath, reason: result.skipReason ?? 'empty-artifacts', phase: 'generation' });
+      }
+    } catch (error) {
+      errors.push(filePath);
+      log.error(`❌ Error processing ${filePath}: ${error instanceof Error ? error.message : String(error)}`);
+    }
+  }
+
+  return { processed, skipped, errors };
+}
+
+/**
+ * Run the migration for multiple files
+ */
+export async function runMigration(options: MigrateOptions): Promise<void> {
+  const finalOptions: FinalOptions = {
+    kind: 'finalized',
+    inputDir: options.inputDir || DEFAULT_INPUT_DIR,
+    outputDir: options.outputDir || DEFAULT_OUTPUT_DIR,
+    dryRun: options.dryRun || false,
+    verbose: options.verbose || false,
+    warpDriveImports: options.warpDriveImports || DEFAULT_WARP_DRIVE_IMPORTS,
+    modelSourceDir: options.modelSourceDir || DEFAULT_MODEL_SOURCE_DIR,
+    mixinSourceDir: options.mixinSourceDir || DEFAULT_MIXIN_SOURCE_DIR,
+    projectName: options.projectName || '',
+    ...options,
+  };
+
+  const log = logger.for('migrate-to-schema');
+  log.info(`🚀 Starting schema migration...`);
+  log.info(`📁 Input directory: ${resolve(finalOptions.inputDir)}`);
+  log.info(`📁 Output directory: ${resolve(finalOptions.outputDir)}`);
+
+  const codemod = new Codemod(log, finalOptions);
+
+  // Ensure output directories exist (specific directories are created as needed)
+  if (!finalOptions.dryRun) {
+    codemod.createDestinationDirectories();
+  }
+
+  if (!options.mixinsOnly) {
+    await codemod.findModels();
+  }
+
+  if (!options.modelsOnly) {
+    await codemod.findMixins();
+  }
+
+  codemod.parseAllFiles();
+
+  if (!options.mixinsOnly) {
+    codemod.findMixinsUsedByModels();
+  }
+
+  const filesToProcess: number = codemod.input.mixins.size + codemod.input.models.size;
+
+  if (filesToProcess === 0) {
+    log.info('✅ No files found to process.');
+    return;
+  }
+
+  log.info(`📋 Processing ${filesToProcess} files total`);
+  log.info(`📋 Found ${codemod.input.models.size} model and ${codemod.input.mixins.size} mixin files`);
+
+  log.warn(`📋 Skipped ${codemod.input.skipped.length} files total`);
+  log.warn(`📋 Errors found while reading files: ${codemod.input.errors.length}`);
+
+  // Process intermediate models to generate trait artifacts first
+  // This must be done before processing regular models that extend these intermediate models
+  if (finalOptions.intermediateModelPaths && finalOptions.intermediateModelPaths.length > 0) {
+    try {
+      log.info(`🔄 Processing ${finalOptions.intermediateModelPaths.length} intermediate models...`);
+      const intermediateResults = processIntermediateModelsToTraits(
+        Array.isArray(finalOptions.intermediateModelPaths)
+          ? finalOptions.intermediateModelPaths
+          : [finalOptions.intermediateModelPaths],
+        finalOptions.additionalModelSources,
+        finalOptions.additionalMixinSources,
+        finalOptions,
+        codemod.entityRegistry
+      );
+
+      // Write intermediate model trait artifacts
+      writeIntermediateArtifacts(intermediateResults.artifacts, finalOptions, log, codemod.entityRegistry);
+
+      if (intermediateResults.errors.length > 0) {
+        log.error(`⚠️ Errors processing intermediate models:`);
+        for (const error of intermediateResults.errors) {
+          log.error(`   ${String(error)}`);
+        }
+      }
+
+      log.info(`✅ Processed ${intermediateResults.artifacts.length} intermediate model artifacts`);
+    } catch (error) {
+      log.error(`❌ Error processing intermediate models: ${String(error)}`);
+    }
+  }
+
+  const substituteArtifacts = codemod.resolveImportSubstitutes();
+  if (substituteArtifacts.length > 0) {
+    writeIntermediateArtifacts(substituteArtifacts, finalOptions, log, codemod.entityRegistry);
+    log.info(`✅ Processed ${substituteArtifacts.length} importSubstitute artifacts`);
+  }
+
+  const results = processFiles({
+    registry: codemod.entityRegistry,
+    finalOptions,
+    log,
+  });
+
+  // Aggregate all skipped files from every phase
+  const allSkipped: SkippedFile[] = [...codemod.input.skipped, ...results.skipped];
+
+  const processed = results.processed;
+  const errors = results.errors.length;
+
+  const dtsFiles = allSkipped.filter((s) => s.reason === 'dts-file');
+  const nonDtsSkipped = allSkipped.filter((s) => s.reason !== 'dts-file');
+
+  const phaseGroups = new Map<string, SkippedFile[]>();
+  for (const entry of nonDtsSkipped) {
+    let group = phaseGroups.get(entry.phase);
+    if (!group) {
+      group = [];
+      phaseGroups.set(entry.phase, group);
+    }
+    group.push(entry);
+  }
+
+  if (phaseGroups.size > 0) {
+    log.warn('\nWarning! the following files were not transformed:');
+    for (const [phase, files] of phaseGroups) {
+      log.warn(`\n(${phase})`);
+      for (const x of files) {
+        log.warn(x.file);
+      }
+    }
+  }
+
+  log.info(`\n✅ Migration complete!`);
+  log.info(`   📊 Processed: ${processed}`);
+  log.info(`   ⏭️ Skipped: ${allSkipped.length} (${dtsFiles.length} .d.ts files)`);
+  if (errors > 0) {
+    log.info(`   ❌ Errors: ${errors} files`);
+  }
+}

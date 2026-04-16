@@ -26,6 +26,12 @@ Decommissioned Features from <em>Warp</em><strong>Drive</strong> that your App m
 
 <br>
 
+> [!WARNING]
+> This package provides support for older ***Warp*Drive** features that have been
+> deprecated and removed from [@warp-drive/core](https://canary.warp-drive.io/api/@warp-drive/core/).
+>
+> **Projects using these features should refactor away from them with urgency**
+
 ## Documentation
 
 *Get Started* → [Guides](https://docs.warp-drive.io)

@@ -1,4 +1,4 @@
-import type { SharedCodemodOptions } from '../utils/options.js';
+import type { SharedCodemodOptions } from '../cli/index.js';
 import type { LegacyStoreMethod } from './config.js';
 
 export interface Options extends SharedCodemodOptions {

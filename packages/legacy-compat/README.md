@@ -28,6 +28,13 @@
 
 # @ember-data/legacy-compat
 
+> [!CAUTION]
+> **⚠️ This is a legacy compatibility package** not recommended for new applications.
+>
+> Use [Handlers](https://warp-drive.io/api/@warp-drive/core/request/interfaces/Handler) with [@warp-drive/core](https://warp-drive.io/api/@warp-drive/core/) instead.
+
+This package provides **compatibility shims** to bridge legacy EmberData patterns (Models, Adapters, Serializers) with modern WarpDrive infrastructure (RequestManager, Handlers, Cache).
+
 **Tagged Releases**
 
 - ![NPM Canary Version](https://img.shields.io/npm/v/%40ember-data/legacy-compat/canary?label=%40canary&color=FFBF00)

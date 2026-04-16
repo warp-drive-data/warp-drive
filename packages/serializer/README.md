@@ -30,9 +30,13 @@
 
 <p align="center">Provides JSON, REST and JSON:API Implementations of the legacy <a href="https://api.emberjs.com/ember-data/release/classes/%3CInterface%3E%20Serializer">Serializer Interface</a></p>
 
-> **Caution** ⚠️ **This is LEGACY documentation** for a feature that is no longer encouraged to be used.
-> If starting a new app or thinking of implementing a new serializer, consider writing a [Handler](https://api.emberjs.com/ember-data/release/classes/%3CInterface%3E%20Handler)
-> instead to be used with the [RequestManager](https://github.com/warp-drive-data/warp-drive/tree/main/packages/request#readme)
+> [!WARNING]
+> **⚠️ This is a legacy package** not recommended for new applications.
+>
+> **This is LEGACY documentation** for a feature that is no longer encouraged to be used.
+
+> If starting a new app or thinking of implementing a new serializer, consider writing a [Handler](https://warp-drive.io/api/@warp-drive/core/request/interfaces/Handler)
+> instead to be used with the [RequestManager](https://warp-drive.io/api/@warp-drive/core/classes/RequestManager)
 
 ## Installation
 

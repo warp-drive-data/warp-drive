@@ -1,0 +1,236 @@
+import { existsSync } from 'fs';
+import { join } from 'path';
+
+import { logger } from '../../../utils/logger.js';
+import type { TransformerResult } from '../codemod.js';
+import type { TransformOptions } from '../config.js';
+import type { SchemaArtifact, SchemaArtifactRegistry } from '../utils/artifact.js';
+import { createTraitArtifactConfig, isConnectedToModel as isConnectedToModelInRegistry } from '../utils/artifact.js';
+import type { PropertyInfo, SchemaField, TransformArtifact } from '../utils/ast-utils.js';
+import {
+  buildTraitArtifacts,
+  buildTraitSchemaObject,
+  collectTraitImports,
+  DEFAULT_EMBER_DATA_SOURCE,
+  generateMergedSchemaCode,
+  mapFieldsToTypeProperties,
+  toPascalCase,
+} from '../utils/ast-utils.js';
+import { createExtensionFromOriginalFile } from '../utils/extension-generation.js';
+import { resolveTraitImportPath, transformModelToResourceImport } from '../utils/import-utils.js';
+import { pascalToKebab } from '../utils/string.js';
+
+const log = logger.for('mixin-processor');
+
+/**
+ * Check if a resource type file exists and create a stub if it doesn't
+ */
+function ensureResourceTypeFileExists(
+  modelType: string,
+  options: TransformOptions,
+  artifacts: TransformArtifact[]
+): boolean {
+  const pascalCaseType = toPascalCase(modelType);
+
+  // Use resourcesDir if available, otherwise fall back to current directory
+  const baseDir = options.resourcesDir || '.';
+  const resourceTypeFilePath = join(baseDir, `${modelType}.schema.ts`);
+
+  // Check if the file exists
+  if (!existsSync(resourceTypeFilePath)) {
+    log.debug(`Resource type file does not exist: ${resourceTypeFilePath}, creating stub`);
+
+    // Create a stub interface
+    const stubCode = generateStubResourceTypeInterface(pascalCaseType);
+
+    // Add the stub as an artifact
+    artifacts.push({
+      type: 'resource-type-stub',
+      name: pascalCaseType,
+      code: stubCode,
+      baseName: modelType,
+      suggestedFileName: `${modelType}.schema.ts`,
+    });
+
+    return true; // Stub was created
+  }
+
+  return false; // File exists, no stub needed
+}
+
+/**
+ * Generate a stub resource type interface
+ */
+function generateStubResourceTypeInterface(typeName: string): string {
+  return `// Stub interface for ${typeName} - generated automatically
+// This file will be replaced when the actual resource type is generated
+
+export interface ${typeName} {
+  // Stub: properties will be populated when the actual resource type is generated
+}
+`;
+}
+
+/**
+ * Produce zero, one, or two artifacts for a given mixin file:
+ * - Trait artifact when attr/hasMany/belongsTo fields are present
+ * - Extension artifact when non-trait properties (methods, computeds) are present
+ *
+ * This does not modify the original source. The CLI can use this to write
+ * files to the requested output directories.
+ */
+export function toArtifacts(
+  entity: SchemaArtifact,
+  options: TransformOptions,
+  registry: SchemaArtifactRegistry = new Map()
+): TransformerResult {
+  const parsedFile = entity.parsedFile;
+  const { path: filePath, source, baseName, camelName: mixinName } = parsedFile;
+
+  if (parsedFile.fileType !== 'mixin') {
+    log.debug('Not a mixin file, returning empty artifacts');
+    return { artifacts: [], skipReason: 'not-mixin-file-type' };
+  }
+
+  const traitFields = parsedFile.fields.map((f) => ({
+    name: f.name,
+    kind: f.kind,
+    type: f.type,
+    options: f.options,
+  }));
+
+  const extensionProperties: PropertyInfo[] = parsedFile.behaviors.map((b) => ({
+    name: b.name,
+    originalKey: b.originalKey,
+    value: b.value,
+    typeInfo: b.typeInfo,
+    isObjectMethod: b.isObjectMethod,
+  }));
+
+  const extendedTraits = [...parsedFile.traits];
+
+  // Check if this mixin is connected to models (directly or transitively)
+  const isConnected = isConnectedToModelInRegistry(registry, filePath);
+
+  if (!isConnected) {
+    log.debug(`Skipping ${mixinName}: not connected to any models`);
+    return { artifacts: [], skipReason: 'mixin-not-connected' };
+  }
+
+  return {
+    artifacts: generateMixinArtifacts(
+      entity,
+      filePath,
+      source,
+      baseName,
+      mixinName,
+      traitFields,
+      extensionProperties,
+      extendedTraits,
+      options,
+      registry
+    ),
+  };
+}
+
+/**
+ * Shared artifact generation logic
+ */
+function generateMixinArtifacts(
+  entity: SchemaArtifact,
+  filePath: string,
+  source: string,
+  baseName: string,
+  mixinName: string,
+  traitFields: Array<{ name: string; kind: string; type?: string; options?: Record<string, unknown> }>,
+  extensionProperties: PropertyInfo[],
+  extendedTraits: string[],
+  options: TransformOptions,
+  registry: SchemaArtifactRegistry
+): TransformArtifact[] {
+  const artifacts: TransformArtifact[] = [];
+  const isTypeScript = entity.parsedFile.isTypeScript;
+
+  const traitFieldTypes = mapFieldsToTypeProperties(traitFields as SchemaField[], options);
+
+  const imports = new Set<string>();
+  const modelTypes = new Set<string>();
+
+  for (const field of traitFields) {
+    if (field.kind === 'belongsTo' || field.kind === 'hasMany') {
+      if (field.type) {
+        modelTypes.add(field.type);
+      }
+
+      if (field.kind === 'hasMany') {
+        const emberDataSource = options?.emberDataImportSource || DEFAULT_EMBER_DATA_SOURCE;
+        if (field.options?.async) {
+          imports.add(`type { AsyncHasMany } from '${emberDataSource}'`);
+        } else {
+          imports.add(`type { HasMany } from '${emberDataSource}'`);
+        }
+      }
+    }
+  }
+
+  if (modelTypes.size > 0) {
+    for (const modelType of modelTypes) {
+      const pascalCaseType = toPascalCase(modelType);
+
+      if (options.resourcesDir) {
+        ensureResourceTypeFileExists(modelType, options, artifacts);
+      }
+
+      imports.add(transformModelToResourceImport(modelType, pascalCaseType, options, registry));
+    }
+  }
+
+  collectTraitImports(extendedTraits, imports, options);
+
+  const traitInternalName = pascalToKebab(mixinName);
+  const traitSchemaObject = buildTraitSchemaObject(traitFields as SchemaField[], extendedTraits, {
+    name: traitInternalName,
+    mode: 'legacy',
+  });
+
+  const classified = toPascalCase(baseName);
+  const traitConfig = createTraitArtifactConfig(
+    options,
+    baseName,
+    classified,
+    extendedTraits,
+    extensionProperties.length > 0,
+    isTypeScript
+  );
+
+  const mergedSchemaCode = generateMergedSchemaCode({
+    config: traitConfig,
+    schemaObject: traitSchemaObject,
+    properties: traitFieldTypes,
+    traits: extendedTraits,
+    imports,
+    options,
+  });
+
+  artifacts.push(...buildTraitArtifacts(mergedSchemaCode, traitConfig, baseName, options));
+
+  if (extensionProperties.length > 0) {
+    const traitImportPath = resolveTraitImportPath(baseName, options, traitConfig.hasTypes);
+    const extensionArtifact = createExtensionFromOriginalFile(
+      traitConfig,
+      filePath,
+      source,
+      extensionProperties,
+      options,
+      traitImportPath,
+      'mixin'
+    );
+
+    if (extensionArtifact) {
+      artifacts.push(extensionArtifact);
+    }
+  }
+
+  log.debug(`Generated ${artifacts.length} artifacts`);
+  return artifacts;
+}

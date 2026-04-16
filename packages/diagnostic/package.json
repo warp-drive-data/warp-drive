@@ -1,6 +1,6 @@
 {
   "name": "@warp-drive/diagnostic",
-  "version": "0.0.3-alpha.129",
+  "version": "0.0.3-alpha.140",
   "private": true,
   "description": "⚡️ A Lightweight Modern Test Runner",
   "keywords": [
@@ -68,7 +68,7 @@
   "scripts": {
     "lint": "eslint . --quiet --cache --cache-strategy=content",
     "build:tests": "rm -rf dist-test && cp -R test dist-test && mkdir -p dist-test/@warp-drive && cp -R dist dist-test/@warp-drive/diagnostic",
-    "build:pkg": "vite build;",
+    "build:pkg": "vite build",
     "prepack": "pnpm run build:pkg",
     "sync": "echo \"syncing\"",
     "start": "vite"
@@ -99,7 +99,7 @@
     "tmp": "^0.2.5",
     "@warp-drive/core": "workspace:*",
     "@warp-drive/react": "workspace:*",
-    "@embroider/macros": "^1.18.1",
+    "@embroider/macros": "^1.19.6",
     "dom-element-descriptors": "^0.5.1",
     "qunit-dom": "^3.5.0"
   },
@@ -115,16 +115,15 @@
     "@types/react-dom": "^19.1.8",
     "bun-types": "^1.2.20",
     "@ember/test-helpers": "5.2.0",
-    "ember-source": "~6.6.0",
+    "ember-source": "~6.10.0",
     "@glimmer/component": "^2.0.0",
     "ember-cli-test-loader": "^3.1.0",
-    "typescript": "^5.9.2",
-    "vite": "^7.1.3"
+    "typescript": "^5.9.3",
+    "vite": "^7.3.1"
   },
   "volta": {
     "extends": "../../package.json"
   },
-  "packageManager": "pnpm@10.15.0",
   "ember-addon": {
     "main": "addon-main.cjs",
     "type": "addon",

@@ -1,5 +1,5 @@
-import { exec } from '../../../utils/cmd';
-import { Package } from '../../../utils/package';
+import { exec } from '../../../utils/cmd.ts';
+import { Package } from '../../../utils/package.ts';
 
 function extractValuePath(value: string): string {
   if (!value.startsWith('./dist/')) {

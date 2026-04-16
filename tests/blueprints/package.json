@@ -1,6 +1,6 @@
 {
   "name": "blueprint-tests",
-  "version": "5.9.0-alpha.1",
+  "version": "5.9.0-alpha.12",
   "private": true,
   "description": "Provides tests for blueprints",
   "repository": {
@@ -33,15 +33,14 @@
     "@glimmer/component": "^2.0.0",
     "@warp-drive/core-types": "workspace:*",
     "@warp-drive/internal-config": "workspace:*",
-    "ember-cli": "~6.6.0",
+    "ember-cli": "~6.10.0",
     "ember-cli-blueprint-test-helpers": "^0.19.2",
-    "ember-source": "~6.6.0",
+    "ember-source": "~6.10.0",
     "mocha": "^11.1.0",
     "silent-error": "^1.1.1"
   },
   "volta": {
     "extends": "../../package.json"
   },
-  "packageManager": "pnpm@10.15.0",
   "dependencies": {}
 }
