@@ -17,6 +17,7 @@
         "title": ":house: Internal"
       },
       "mappings": {
+        "eslint-plugin-ember-data": "eslint-plugin-warp-drive",
         "mock-server": "@warp-drive/diagnostic",
         "Other": null
       }
