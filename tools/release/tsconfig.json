@@ -9,7 +9,6 @@
     "strict": true,
     "pretty": true,
     "exactOptionalPropertyTypes": false,
-    "downlevelIteration": true,
     "skipLibCheck": true,
     "disableSourceOfProjectReferenceRedirect": false,
     "allowSyntheticDefaultImports": true,

@@ -1,6 +1,5 @@
-import { Package, STRATEGY } from '../../../utils/package';
-import { AppliedStrategy } from '../../publish/steps/generate-strategy';
-import { Committers, Entry, LernaChangeset } from './get-changes';
+import { Package, RawStrategyConfig } from '../../../utils/package.ts';
+import { Committers, Entry, LernaChangeset } from './get-changes.ts';
 import path from 'path';
 import chalk from 'chalk';
 import { BunFile } from 'bun';
@@ -16,16 +15,16 @@ function findInsertionPoint(lines: string[], version: string) {
 
 function buildText(
   newTag: string,
-  strategy: STRATEGY,
+  date: string,
+  strategy: RawStrategyConfig,
   changes: Record<string, Map<string, Entry>>,
   committerStrings: Map<string, string>
 ): string[] {
-  // YYYY-MM-DD
-  const formattedDate = new Date().toISOString().split('T')[0];
+  const formattedDate = date;
   const committers = new Set<string>();
 
   const lines = [`## ${newTag} (${formattedDate})`, ''];
-  const order = strategy.config.changelog?.labelOrder || [];
+  const order = strategy.changelog?.labelOrder || [];
   const seen = new Set<string>();
 
   for (const section of order) {
@@ -68,18 +67,17 @@ function buildText(
 
 export async function updateChangelogs(
   fromTag: string,
+  toTag: string,
+  date: string,
   newChanges: LernaChangeset,
   config: Map<string, string | number | boolean | null>,
-  strategy: STRATEGY,
-  packages: Map<string, Package>,
-  applied: AppliedStrategy
+  strategy: RawStrategyConfig,
+  packages: Map<string, Package>
 ): Promise<BunFile[]> {
   const file = Bun.file('./CHANGELOG.md');
   const mainChangelog = await file.text();
   const lines = mainChangelog.split('\n');
-  const toVersion = applied.all.get('root')!.toVersion;
-  const toTag = `v${toVersion}`;
-  const newLines = buildText(toTag, strategy, newChanges.data, newChanges.data[Committers]);
+  const newLines = buildText(toTag, date, strategy, newChanges.data, newChanges.data[Committers]);
   const insertionPoint = findInsertionPoint(lines, fromTag);
   lines.splice(insertionPoint, 0, ...newLines);
   await Bun.write(file, lines.join('\n'));
@@ -97,11 +95,7 @@ export async function updateChangelogs(
     }
     const changelogFile = Bun.file(path.join(path.dirname(pkg.filePath), 'CHANGELOG.md'));
     const exists = await changelogFile.exists();
-    const toVersion = applied.all.get(pkgName)!.toVersion;
-    const toTag = `v${toVersion}`;
-    const fromVersion = applied.all.get(pkgName)!.fromVersion;
-    const fromTag = `v${fromVersion}`;
-    const newLines = buildText(toTag, strategy, changes, newChanges.data[Committers]);
+    const newLines = buildText(toTag, date, strategy, changes, newChanges.data[Committers]);
     changedFiles.push(changelogFile);
 
     let changelogLines: string[] = [];

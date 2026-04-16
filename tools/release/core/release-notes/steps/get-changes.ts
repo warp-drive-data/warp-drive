@@ -1,5 +1,6 @@
-import { exec } from '../../../utils/cmd';
-import { Package, STRATEGY } from '../../../utils/package';
+import chalk from 'chalk';
+import { exec } from '../../../utils/cmd.ts';
+import { Package, RawStrategyConfig } from '../../../utils/package.ts';
 import path from 'path';
 
 export const Committers = Symbol('Committers');
@@ -12,20 +13,25 @@ export type LernaChangeset = {
   data: LernaOutput;
   byPackage: Record<string, Record<string, Map<string, Entry>>>;
 };
+export type VersionedLernaChangeset = LernaChangeset & {
+  tag: string;
+  date: string;
+};
 
 const IgnoredPackages = new Set(['private-build-infra']);
 
 // e.g. match lines ending in "asljasdfjh ([@runspired](https://github.com/runspired))""
-const CommitterRegEx = /.*\s\(?\[@([a-zA-Z0-9-]+)\]\(https:\/\/github.com\/\1\)\)?$/;
+// No backreference: bot html_url uses /apps/<name> rather than /<login>, so \1 would never match bots.
+const CommitterRegEx = /.*\s\(?\[@([a-zA-Z0-9\-\[\]]+)\]\(https:\/\/github\.com\/[^)]+\)\)?$/;
 
-function keyForLabel(label: string, strategy: STRATEGY): string {
-  const labelKey = strategy.config.changelog?.collapseLabels?.labels.some((v) => v === label);
-  return labelKey ? strategy.config.changelog!.collapseLabels!.title : label;
+function keyForLabel(label: string, strategy: RawStrategyConfig): string {
+  const labelKey = strategy.changelog?.collapseLabels?.labels.some((v) => v === label);
+  return labelKey ? strategy.changelog!.collapseLabels!.title : label;
 }
 
-function packagesBySubPath(strategy: STRATEGY, packages: Map<string, Package>): Map<string, Package> {
+function packagesBySubPath(strategy: RawStrategyConfig, packages: Map<string, Package>): Map<string, Package> {
   const subPathMap = new Map<string, Package>();
-  const changelogRoots = strategy.config.changelogRoots || strategy.config.packageRoots;
+  const changelogRoots = strategy.changelogRoots || strategy.packageRoots;
   const changelogPaths = changelogRoots.map((v) => v.replace('/*', ''));
 
   for (const [, pkg] of packages) {
@@ -52,7 +58,7 @@ function packagesBySubPath(strategy: STRATEGY, packages: Map<string, Package>): 
     subPathMap.set(relative, pkg);
   }
 
-  const mappings = strategy.config.changelog?.mappings || {};
+  const mappings = strategy.changelog?.mappings || {};
   Object.keys(mappings).forEach((mapping) => {
     const mapped = mappings[mapping];
     if (mapped === null) {
@@ -69,7 +75,7 @@ function packagesBySubPath(strategy: STRATEGY, packages: Map<string, Package>): 
   return subPathMap;
 }
 
-function packageForSubPath(strategy: STRATEGY, subPath: string, packages: Map<string, Package>): string | null {
+function packageForSubPath(subPath: string, packages: Map<string, Package>): string | null {
   if (IgnoredPackages.has(subPath)) {
     return null;
   }
@@ -85,7 +91,6 @@ function extractLoggedEntry(
   data: LernaOutput,
   byPackage: Record<string, Record<string, Map<string, Entry>>>,
   subPathMap: Map<string, Package>,
-  strategy: STRATEGY,
   currentSection: string
 ): void {
   const PRMatches = currentEntry!.description.match(/^\[#(\d+)/);
@@ -93,12 +98,13 @@ function extractLoggedEntry(
 
   // e.g. ([@runspired](https://github.com/runspired))
   const committerMatches = currentEntry!.description.match(CommitterRegEx);
-  currentEntry!.committer = committerMatches![1];
+  currentEntry!.committer = committerMatches?.[1] ?? '';
 
   (data[currentSection] as Map<string, Entry>).set(PRNumber, currentEntry as Entry);
 
   currentEntry?.packages.forEach((subPath) => {
-    const pkg = packageForSubPath(strategy, subPath, subPathMap);
+    console.log(`\tsubPath: ${chalk.cyan(subPath)}`);
+    const pkg = packageForSubPath(subPath, subPathMap);
 
     if (pkg) {
       byPackage[pkg] = byPackage[pkg] || {};
@@ -108,23 +114,99 @@ function extractLoggedEntry(
   });
 }
 
-function parseLernaOutput(markdown: string, strategy: STRATEGY, packages: Map<string, Package>): LernaChangeset {
+const VERSION_HEADER_RE = /^## (.+) \((\d{4}-\d{2}-\d{2})\)$/;
+// Strips pre-release suffix: "v5.8.0-alpha.3" → "v5.8.0", "v5.8.0" → "v5.8.0", "Unreleased" → "Unreleased"
+const BASE_VERSION_RE = /^(v\d+\.\d+\.\d+)/;
+
+function baseVersion(tag: string): string {
+  const m = tag.match(BASE_VERSION_RE);
+  return m ? m[1] : tag;
+}
+
+function mergeInto(target: VersionedLernaChangeset, source: VersionedLernaChangeset): void {
+  for (const [k, v] of source.data[Committers]) {
+    target.data[Committers].set(k, v);
+  }
+  for (const [section, entries] of Object.entries(source.data)) {
+    target.data[section] = target.data[section] || new Map();
+    for (const [pr, entry] of entries as Map<string, Entry>) {
+      (target.data[section] as Map<string, Entry>).set(pr, entry);
+    }
+  }
+  for (const [pkg, sections] of Object.entries(source.byPackage)) {
+    target.byPackage[pkg] = target.byPackage[pkg] || {};
+    for (const [section, entries] of Object.entries(sections)) {
+      target.byPackage[pkg][section] = target.byPackage[pkg][section] || new Map();
+      for (const [pr, entry] of entries) {
+        target.byPackage[pkg][section].set(pr, entry);
+      }
+    }
+  }
+}
+
+function collapsePreReleases(changesets: VersionedLernaChangeset[]): VersionedLernaChangeset[] {
+  // changesets is newest→oldest; the first entry in each group is the most recent
+  // (stable release if it exists, otherwise latest pre-release)
+  const groups = new Map<string, VersionedLernaChangeset>();
+  const order: string[] = [];
+
+  for (const cs of changesets) {
+    const base = baseVersion(cs.tag);
+    if (!groups.has(base)) {
+      // Normalise the tag to the base version on first encounter
+      groups.set(base, { ...cs, tag: base });
+      order.push(base);
+    } else {
+      mergeInto(groups.get(base)!, cs);
+    }
+  }
+
+  return order.map((base) => groups.get(base)!);
+}
+
+function freshOutput(): { data: LernaOutput; byPackage: Record<string, Record<string, Map<string, Entry>>> } {
+  return { data: { [Committers]: new Map() }, byPackage: {} };
+}
+
+function parseLernaOutput(
+  markdown: string,
+  strategy: RawStrategyConfig,
+  packages: Map<string, Package>
+): VersionedLernaChangeset[] {
   // uncomment this to see lerna's markdown output if needed to debug
   // console.log(markdown);
   const subPathMap = packagesBySubPath(strategy, packages);
-  const data: LernaOutput = {
-    [Committers]: new Map(),
-  };
-  const byPackage: Record<string, Record<string, Map<string, Entry>>> = {};
-  const lines = markdown.split('\n');
+  const results: VersionedLernaChangeset[] = [];
+
+  let currentTag = '';
+  let currentDate = '';
+  let { data, byPackage } = freshOutput();
 
   let isParsingCommitters = false;
   let isParsingSection = false;
   let currentSection = '';
   let currentEntry: Entry | null = null;
-  // console.log('lines', lines);
 
-  for (const line of lines) {
+  function flushVersion() {
+    if (currentTag) {
+      results.push({ tag: currentTag, date: currentDate, data, byPackage });
+    }
+  }
+
+  for (const line of lines(markdown)) {
+    const versionMatch = line.match(VERSION_HEADER_RE);
+    if (versionMatch) {
+      flushVersion();
+      currentTag = versionMatch[1];
+      currentDate = versionMatch[2];
+      ({ data, byPackage } = freshOutput());
+      isParsingSection = false;
+      isParsingCommitters = false;
+      currentSection = '';
+      currentEntry = null;
+      continue;
+    }
+
     if (isParsingSection) {
       if (line === '') {
         isParsingSection = false;
@@ -136,7 +218,7 @@ function parseLernaOutput(markdown: string, strategy: STRATEGY, packages: Map<st
             description: line.substring(2),
             committer: '',
           };
-          extractLoggedEntry(currentEntry, data, byPackage, subPathMap, strategy, currentSection);
+          extractLoggedEntry(currentEntry, data, byPackage, subPathMap, currentSection);
         } else if (line.startsWith('* ')) {
           const packages = line
             .substring(2)
@@ -150,7 +232,7 @@ function parseLernaOutput(markdown: string, strategy: STRATEGY, packages: Map<st
         } else if (line.startsWith('  * ')) {
           currentEntry = structuredClone(currentEntry!);
           currentEntry!.description = line.substring(4);
-          extractLoggedEntry(currentEntry, data, byPackage, subPathMap, strategy, currentSection);
+          extractLoggedEntry(currentEntry, data, byPackage, subPathMap, currentSection);
         } else {
           isParsingSection = false;
           currentSection = '';
@@ -162,7 +244,8 @@ function parseLernaOutput(markdown: string, strategy: STRATEGY, packages: Map<st
         isParsingCommitters = false;
       } else {
         const committerMatches = line.match(CommitterRegEx);
-        const committer = committerMatches![1];
+        if (!committerMatches) continue;
+        const committer = committerMatches[1];
         data[Committers].set(committer, line.substring(2));
       }
     } else if (line.startsWith('#### ')) {
@@ -180,14 +263,19 @@ function parseLernaOutput(markdown: string, strategy: STRATEGY, packages: Map<st
     }
   }
 
-  // Object.entries(data).forEach(([key, value]) => {
-  //   console.log(key, value);
-  // });
-
-  return { data, byPackage };
+  flushVersion();
+  return collapsePreReleases(results);
 }
 
-export async function getChanges(strategy: STRATEGY, packages: Map<string, Package>, fromTag: string) {
-  const changelogMarkdown = await exec(['sh', '-c', `bunx lerna-changelog --from=${fromTag}`]);
+function* lines(markdown: string): Generator<string> {
+  yield* markdown.split('\n');
+}
+
+export async function getChanges(
+  strategy: RawStrategyConfig,
+  packages: Map<string, Package>,
+  fromTag: string
+): Promise<VersionedLernaChangeset[]> {
+  const changelogMarkdown = await exec(['sh', '-c', `pnpm exec lerna-changelog --from=${fromTag}`]);
   return parseLernaOutput(changelogMarkdown, strategy, packages);
 }
