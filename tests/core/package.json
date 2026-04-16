@@ -50,7 +50,7 @@
     "eslint-plugin-warp-drive": "workspace:*",
     "babel-plugin-ember-template-compilation": "^4.0.0",
     "decorator-transforms": "^2.2.2",
-    "ember-source": "^6.6.0",
+    "ember-source": "~6.12.0",
     "ember-strict-application-resolver": "^0.1.0",
     "rollup": "^4.46.2",
     "terser": "^5.39.0",

@@ -428,7 +428,7 @@ export function runTestGroup(splitNum: number, offset: number) {
         });
 
         getMutations().forEach((mutation2) => {
-          test(`followed by Mutation: ${mutation2.name}`, async function (assert) {
+          test(`followed by Mutation: ${mutation2.name}`, async function (this: TestContext, assert: Assert) {
             const store = this.owner.lookup('service:store') as Store;
             const user = startingState.cb(store);
             const rc = await reactiveContext.call(this, user, {
