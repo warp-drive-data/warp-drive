@@ -115,6 +115,54 @@ function extractLoggedEntry(
 }
 
 const VERSION_HEADER_RE = /^## (.+) \((\d{4}-\d{2}-\d{2})\)$/;
+// Strips pre-release suffix: "v5.8.0-alpha.3" → "v5.8.0", "v5.8.0" → "v5.8.0", "Unreleased" → "Unreleased"
+const BASE_VERSION_RE = /^(v\d+\.\d+\.\d+)/;
+
+function baseVersion(tag: string): string {
+  const m = tag.match(BASE_VERSION_RE);
+  return m ? m[1] : tag;
+}
+
+function mergeInto(target: VersionedLernaChangeset, source: VersionedLernaChangeset): void {
+  for (const [k, v] of source.data[Committers]) {
+    target.data[Committers].set(k, v);
+  }
+  for (const [section, entries] of Object.entries(source.data)) {
+    target.data[section] = target.data[section] || new Map();
+    for (const [pr, entry] of entries as Map<string, Entry>) {
+      (target.data[section] as Map<string, Entry>).set(pr, entry);
+    }
+  }
+  for (const [pkg, sections] of Object.entries(source.byPackage)) {
+    target.byPackage[pkg] = target.byPackage[pkg] || {};
+    for (const [section, entries] of Object.entries(sections)) {
+      target.byPackage[pkg][section] = target.byPackage[pkg][section] || new Map();
+      for (const [pr, entry] of entries) {
+        target.byPackage[pkg][section].set(pr, entry);
+      }
+    }
+  }
+}
+
+function collapsePreReleases(changesets: VersionedLernaChangeset[]): VersionedLernaChangeset[] {
+  // changesets is newest→oldest; the first entry in each group is the most recent
+  // (stable release if it exists, otherwise latest pre-release)
+  const groups = new Map<string, VersionedLernaChangeset>();
+  const order: string[] = [];
+
+  for (const cs of changesets) {
+    const base = baseVersion(cs.tag);
+    if (!groups.has(base)) {
+      // Normalise the tag to the base version on first encounter
+      groups.set(base, { ...cs, tag: base });
+      order.push(base);
+    } else {
+      mergeInto(groups.get(base)!, cs);
+    }
+  }
+
+  return order.map((base) => groups.get(base)!);
+}
 
 function freshOutput(): { data: LernaOutput; byPackage: Record<string, Record<string, Map<string, Entry>>> } {
   return { data: { [Committers]: new Map() }, byPackage: {} };
@@ -216,7 +264,7 @@ function parseLernaOutput(
   }
 
   flushVersion();
-  return results;
+  return collapsePreReleases(results);
 }
 
 function* lines(markdown: string): Generator<string> {
