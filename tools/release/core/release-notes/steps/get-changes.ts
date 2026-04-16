@@ -1,5 +1,5 @@
 import { exec } from '../../../utils/cmd.ts';
-import { Package, STRATEGY } from '../../../utils/package.ts';
+import { Package, RawStrategyConfig } from '../../../utils/package.ts';
 import path from 'path';
 
 export const Committers = Symbol('Committers');
@@ -18,14 +18,14 @@ const IgnoredPackages = new Set(['private-build-infra']);
 // e.g. match lines ending in "asljasdfjh ([@runspired](https://github.com/runspired))""
 const CommitterRegEx = /.*\s\(?\[@([a-zA-Z0-9-]+)\]\(https:\/\/github.com\/\1\)\)?$/;
 
-function keyForLabel(label: string, strategy: STRATEGY): string {
-  const labelKey = strategy.config.changelog?.collapseLabels?.labels.some((v) => v === label);
-  return labelKey ? strategy.config.changelog!.collapseLabels!.title : label;
+function keyForLabel(label: string, strategy: RawStrategyConfig): string {
+  const labelKey = strategy.changelog?.collapseLabels?.labels.some((v) => v === label);
+  return labelKey ? strategy.changelog!.collapseLabels!.title : label;
 }
 
-function packagesBySubPath(strategy: STRATEGY, packages: Map<string, Package>): Map<string, Package> {
+function packagesBySubPath(strategy: RawStrategyConfig, packages: Map<string, Package>): Map<string, Package> {
   const subPathMap = new Map<string, Package>();
-  const changelogRoots = strategy.config.changelogRoots || strategy.config.packageRoots;
+  const changelogRoots = strategy.changelogRoots || strategy.packageRoots;
   const changelogPaths = changelogRoots.map((v) => v.replace('/*', ''));
 
   for (const [, pkg] of packages) {
@@ -52,7 +52,7 @@ function packagesBySubPath(strategy: STRATEGY, packages: Map<string, Package>): 
     subPathMap.set(relative, pkg);
   }
 
-  const mappings = strategy.config.changelog?.mappings || {};
+  const mappings = strategy.changelog?.mappings || {};
   Object.keys(mappings).forEach((mapping) => {
     const mapped = mappings[mapping];
     if (mapped === null) {
@@ -69,7 +69,7 @@ function packagesBySubPath(strategy: STRATEGY, packages: Map<string, Package>): 
   return subPathMap;
 }
 
-function packageForSubPath(strategy: STRATEGY, subPath: string, packages: Map<string, Package>): string | null {
+function packageForSubPath(subPath: string, packages: Map<string, Package>): string | null {
   if (IgnoredPackages.has(subPath)) {
     return null;
   }
@@ -85,7 +85,6 @@ function extractLoggedEntry(
   data: LernaOutput,
   byPackage: Record<string, Record<string, Map<string, Entry>>>,
   subPathMap: Map<string, Package>,
-  strategy: STRATEGY,
   currentSection: string
 ): void {
   const PRMatches = currentEntry!.description.match(/^\[#(\d+)/);
@@ -98,7 +97,7 @@ function extractLoggedEntry(
   (data[currentSection] as Map<string, Entry>).set(PRNumber, currentEntry as Entry);
 
   currentEntry?.packages.forEach((subPath) => {
-    const pkg = packageForSubPath(strategy, subPath, subPathMap);
+    const pkg = packageForSubPath(subPath, subPathMap);
 
     if (pkg) {
       byPackage[pkg] = byPackage[pkg] || {};
@@ -108,7 +107,11 @@ function extractLoggedEntry(
   });
 }
 
-function parseLernaOutput(markdown: string, strategy: STRATEGY, packages: Map<string, Package>): LernaChangeset {
+function parseLernaOutput(
+  markdown: string,
+  strategy: RawStrategyConfig,
+  packages: Map<string, Package>
+): LernaChangeset {
   // uncomment this to see lerna's markdown output if needed to debug
   // console.log(markdown);
   const subPathMap = packagesBySubPath(strategy, packages);
@@ -136,7 +139,7 @@ function parseLernaOutput(markdown: string, strategy: STRATEGY, packages: Map<st
             description: line.substring(2),
             committer: '',
           };
-          extractLoggedEntry(currentEntry, data, byPackage, subPathMap, strategy, currentSection);
+          extractLoggedEntry(currentEntry, data, byPackage, subPathMap, currentSection);
         } else if (line.startsWith('* ')) {
           const packages = line
             .substring(2)
@@ -150,7 +153,7 @@ function parseLernaOutput(markdown: string, strategy: STRATEGY, packages: Map<st
         } else if (line.startsWith('  * ')) {
           currentEntry = structuredClone(currentEntry!);
           currentEntry!.description = line.substring(4);
-          extractLoggedEntry(currentEntry, data, byPackage, subPathMap, strategy, currentSection);
+          extractLoggedEntry(currentEntry, data, byPackage, subPathMap, currentSection);
         } else {
           isParsingSection = false;
           currentSection = '';
@@ -187,7 +190,7 @@ function parseLernaOutput(markdown: string, strategy: STRATEGY, packages: Map<st
   return { data, byPackage };
 }
 
-export async function getChanges(strategy: STRATEGY, packages: Map<string, Package>, fromTag: string) {
+export async function getChanges(strategy: RawStrategyConfig, packages: Map<string, Package>, fromTag: string) {
   const changelogMarkdown = await exec(['sh', '-c', `bunx lerna-changelog --from=${fromTag}`]);
   return parseLernaOutput(changelogMarkdown, strategy, packages);
 }

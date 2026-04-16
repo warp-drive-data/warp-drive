@@ -1,4 +1,4 @@
-import { Package, STRATEGY } from '../../../utils/package.ts';
+import { Package, RawStrategyConfig, STRATEGY } from '../../../utils/package.ts';
 import { AppliedStrategy } from '../../publish/steps/generate-strategy.ts';
 import { Committers, Entry, LernaChangeset } from './get-changes.ts';
 import path from 'path';
@@ -16,7 +16,7 @@ function findInsertionPoint(lines: string[], version: string) {
 
 function buildText(
   newTag: string,
-  strategy: STRATEGY,
+  strategy: RawStrategyConfig,
   changes: Record<string, Map<string, Entry>>,
   committerStrings: Map<string, string>
 ): string[] {
@@ -25,7 +25,7 @@ function buildText(
   const committers = new Set<string>();
 
   const lines = [`## ${newTag} (${formattedDate})`, ''];
-  const order = strategy.config.changelog?.labelOrder || [];
+  const order = strategy.changelog?.labelOrder || [];
   const seen = new Set<string>();
 
   for (const section of order) {
@@ -70,14 +70,14 @@ export async function updateChangelogs(
   fromTag: string,
   newChanges: LernaChangeset,
   config: Map<string, string | number | boolean | null>,
-  strategy: STRATEGY,
+  strategy: RawStrategyConfig,
   packages: Map<string, Package>,
-  applied: AppliedStrategy
+  versions: Map<string, string>
 ): Promise<BunFile[]> {
   const file = Bun.file('./CHANGELOG.md');
   const mainChangelog = await file.text();
   const lines = mainChangelog.split('\n');
-  const toVersion = applied.all.get('root')!.toVersion;
+  const toVersion = versions.get('root')!;
   const toTag = `v${toVersion}`;
   const newLines = buildText(toTag, strategy, newChanges.data, newChanges.data[Committers]);
   const insertionPoint = findInsertionPoint(lines, fromTag);
@@ -97,9 +97,9 @@ export async function updateChangelogs(
     }
     const changelogFile = Bun.file(path.join(path.dirname(pkg.filePath), 'CHANGELOG.md'));
     const exists = await changelogFile.exists();
-    const toVersion = applied.all.get(pkgName)!.toVersion;
+    const toVersion = versions.get(pkgName)!;
     const toTag = `v${toVersion}`;
-    const fromVersion = applied.all.get(pkgName)!.fromVersion;
+    const fromVersion = versions.get(pkgName)!;
     const fromTag = `v${fromVersion}`;
     const newLines = buildText(toTag, strategy, changes, newChanges.data[Committers]);
     changedFiles.push(changelogFile);

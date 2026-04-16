@@ -210,7 +210,7 @@ export async function getAllPackagesForGitTag(tag: GIT_TAG): Promise<Map<string,
     // if strategy does not exist we may be pre-strategy days
     // so we will just gather all packages from the packages directory
 
-    return gatherPackages({ packageRoots: ['packages/*'] }, tmpDir);
+    return gatherPackages({ packageRoots: ['packages/*', 'warp-drive-packages/*'] }, tmpDir);
   }
 }
 

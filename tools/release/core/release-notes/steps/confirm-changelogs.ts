@@ -7,7 +7,7 @@ import { AppliedStrategy } from '../../publish/steps/generate-strategy.ts';
 export async function confirmCommitChangelogs(
   _changedFiles: BunFile[],
   config: Map<string, string | number | boolean | null>,
-  strategy: AppliedStrategy
+  versions: Map<string, string>
 ) {
   const dryRun = config.get('dry_run') as boolean;
 
@@ -29,7 +29,7 @@ export async function confirmCommitChangelogs(
   }
 
   if (!dryRun) {
-    const newVersion = strategy.all.get('root')!.toVersion;
+    const newVersion = versions.get('root')!;
     await exec(['sh', '-c', `git add -A && git commit -m "chore: update changelogs for v${newVersion}"`]);
 
     if (config.get('upstream')) {

@@ -7,11 +7,11 @@ import { printStrategy } from '../publish/steps/print-strategy.ts';
 import { confirmStrategy } from '../publish/steps/confirm-strategy.ts';
 import { release_notes_flags_config } from '../../utils/flags-config.ts';
 import { SEMVER_VERSION } from '../../utils/channel.ts';
-import { updateChangelogs } from './steps/update-changelogs.ts';
-import { getChanges } from './steps/get-changes.ts';
-import { confirmCommitChangelogs } from './steps/confirm-changelogs.ts';
+import { updateChangelogs } from '../release-notes/steps/update-changelogs.ts';
+import { getChanges } from '../release-notes/steps/get-changes.ts';
+import { confirmCommitChangelogs } from '../release-notes/steps/confirm-changelogs.ts';
 
-export async function executeReleaseNoteGeneration(args: string[]) {
+export async function backfillReleaseNotes(args: string[]) {
   // get user supplied config
   const config = await parseRawFlags(args, release_notes_flags_config);
 
@@ -28,26 +28,17 @@ export async function executeReleaseNoteGeneration(args: string[]) {
   // get packages present in the git tag version
   const fromVersion = config.full.get('from') as SEMVER_VERSION;
   const fromTag = `v${fromVersion}` as GIT_TAG;
-  const baseVersionPackages = await getAllPackagesForGitTag(fromTag);
+  // const baseVersionPackages = await getAllPackagesForGitTag(fromTag);
 
   // get packages present on our current branch
   const packages = await gatherPackages(strategy.config);
-
-  // get applied strategy
-  const applied = await applyStrategy(config.full, strategy, baseVersionPackages, packages);
-
-  // print strategy to be applied
-  await printStrategy(config.full, applied);
-
-  // confirm we should continue
-  await confirmStrategy();
 
   // generate the list of changes
   const newChanges = await getChanges(strategy.config, packages, fromTag);
 
   const versions = new Map<string, string>();
-  for (const [pkgName, strategy] of applied.all.entries()) {
-    versions.set(pkgName, strategy.toVersion);
+  for (const [pkgName, pkg] of packages.entries()) {
+    versions.set(pkgName, pkg.pkgData.version);
   }
 
   // update all changelogs, including the primary changelog
