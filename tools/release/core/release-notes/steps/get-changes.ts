@@ -16,7 +16,8 @@ export type LernaChangeset = {
 const IgnoredPackages = new Set(['private-build-infra']);
 
 // e.g. match lines ending in "asljasdfjh ([@runspired](https://github.com/runspired))""
-const CommitterRegEx = /.*\s\(?\[@([a-zA-Z0-9-]+)\]\(https:\/\/github.com\/\1\)\)?$/;
+// No backreference: bot html_url uses /apps/<name> rather than /<login>, so \1 would never match bots.
+const CommitterRegEx = /.*\s\(?\[@([a-zA-Z0-9\-\[\]]+)\]\(https:\/\/github\.com\/[^)]+\)\)?$/;
 
 function keyForLabel(label: string, strategy: RawStrategyConfig): string {
   const labelKey = strategy.changelog?.collapseLabels?.labels.some((v) => v === label);
@@ -92,7 +93,7 @@ function extractLoggedEntry(
 
   // e.g. ([@runspired](https://github.com/runspired))
   const committerMatches = currentEntry!.description.match(CommitterRegEx);
-  currentEntry!.committer = committerMatches![1];
+  currentEntry!.committer = committerMatches?.[1] ?? '';
 
   (data[currentSection] as Map<string, Entry>).set(PRNumber, currentEntry as Entry);
 
@@ -165,7 +166,8 @@ function parseLernaOutput(
         isParsingCommitters = false;
       } else {
         const committerMatches = line.match(CommitterRegEx);
-        const committer = committerMatches![1];
+        if (!committerMatches) continue;
+        const committer = committerMatches[1];
         data[Committers].set(committer, line.substring(2));
       }
     } else if (line.startsWith('#### ')) {
