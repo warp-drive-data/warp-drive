@@ -106,7 +106,7 @@
     "@babel/preset-env": "^7.28.3",
     "@babel/preset-typescript": "^7.27.1",
     "@ember/test-waiters": "^4.1.1",
-    "@types/qunit": "2.19.10",
+    "@types/qunit": "2.19.13",
     "@ember/test-helpers": "5.2.0",
     "@warp-drive/internal-config": "workspace:*",
     "ember-source": "~6.12.0",

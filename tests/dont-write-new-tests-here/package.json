@@ -50,7 +50,7 @@
     "@glimmer/component": "^2.0.0",
     "@glint/ember-tsc": "^1.0.9",
     "@glint/template": "^1.7.3",
-    "@types/qunit": "2.19.10",
+    "@types/qunit": "2.19.13",
     "@warp-drive/build-config": "workspace:*",
     "@warp-drive/core-types": "workspace:*",
     "@warp-drive/holodeck": "workspace:*",
