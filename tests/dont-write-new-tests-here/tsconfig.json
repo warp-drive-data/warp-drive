@@ -9,13 +9,11 @@
     "strict": true,
     "pretty": true,
     "exactOptionalPropertyTypes": false,
-    "downlevelIteration": true,
     "skipLibCheck": true,
     "disableSourceOfProjectReferenceRedirect": false,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "allowJs": true,
-    "baseUrl": ".",
     "noImplicitOverride": false,
     // TODO: Reenable this
     "noImplicitAny": false,
