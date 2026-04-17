@@ -2,7 +2,6 @@ import { BunFile } from 'bun';
 import { confirm } from '../../publish/steps/confirm-strategy';
 import { exec } from '../../../utils/cmd';
 import chalk from 'chalk';
-import { AppliedStrategy } from '../../publish/steps/generate-strategy';
 
 export async function confirmCommitChangelogs(
   _changedFiles: BunFile[],
