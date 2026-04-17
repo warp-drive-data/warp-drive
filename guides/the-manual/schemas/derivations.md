@@ -56,7 +56,7 @@ Here is how a derivation flows from definition to use. All four pieces are neede
 
 ::: code-group
 
-```ts [store/derivations/concat.ts]
+```ts [derivations/concat.ts]
 import type { ReactiveResource } from '@warp-drive/core/reactive';
 import { Type } from '@warp-drive/core/types/symbols';
 
@@ -72,15 +72,20 @@ export function concat(
 concat[Type] = 'concat'; // [!code highlight]
 ```
 
-```ts [store/index.ts]
+```ts [store.ts]
 import { useRecommendedStore } from '@warp-drive/core';
 import { JSONAPICache } from '@warp-drive/json-api';
 import { concat } from './derivations/concat';
 
-const Store = useRecommendedStore({ cache: JSONAPICache });
-const store = new Store();
+const Store = useRecommendedStore({
+  cache: JSONAPICache,
+  derivations: [
+    concat // [!code highlight]
+  ]
+});
+type Store = InstanceType<typeof Store>;
 
-store.schema.registerDerivation(concat); // [!code highlight]
+export { Store }
 ```
 
 ```ts [schemas/user.ts]
