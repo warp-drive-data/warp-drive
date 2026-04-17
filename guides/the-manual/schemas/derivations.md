@@ -4,10 +4,84 @@ order: 7
 
 # Derivations
 
-Derivations are computed fields inside a ResourceSchema.  
-They allow you to define values that are derived from other fields or related resources, and they are automatically kept up to date when dependencies change.
+Derivations are computed, read-only fields on a resource. When a derived field is accessed, the runtime looks up a registered function by name and calls it with the ReactiveResource and any configured options. The result is memoized — subsequent reads return the cached value without recomputation until one of the reactive fields the derivation read has changed.
 
-## Creating a Derived Field
+The computed result is never stored in cache and is never serialized.
+
+::: info
+- **Lazy** — computed on access, not upfront
+- **Memoized** — cached until a reactive dependency changes
+- **Read-only** — derived fields cannot be set
+:::
+
+## When To Use A Derivation
+
+Derivations work best when the computation is:
+
+- **`Simple and synchronous`**
+
+Derivations must return a value immediately. Any calculation that requires async work — fetching data, awaiting promises, or triggering a request — is not a good fit.
+
+- **`Based on fields that are always loaded`**
+
+Because a derivation runs whenever the field is accessed, it must be safe to compute at any point. If the fields it depends on might not be present (e.g., they are optional includes from an API), the derivation could silently produce incorrect results.
+
+- **`Widely useful across the application`**
+
+Derivations are defined at the schema level and available everywhere a resource instance is used. Good candidates include formatting helpers (`fullName` from `firstName` and `lastName`), stable computed flags, and display-oriented calculations that every component consuming the record would otherwise repeat.
+
+Since derivations may return any kind of value including functions they can be used to define anything imaginable including additional methods.
+
+## When Not To Use A Derivation
+
+Derivations are the **wrong tool** when the computation depends on data that may not be loaded or that requires a specific network context to be correct.
+
+- **`Avoid relational data`**
+
+If the calculation requires accessing a `belongsTo`, `hasMany`, or any other relationship, the related records may not have been fetched. A derivation has no way to trigger a load and no way to signal that its result is incomplete — it will silently return a stale or incorrect value. This is especially true for async relationships and collection relationships (hasMany), where the data set itself is not guaranteed to be fully present.
+
+- **`Avoid conditionally-loaded fields`**
+
+APIs commonly return different field sets depending on the request (sparse fieldsets, optional includes, role-based responses). If a derivation reads a field that is only present in some responses, it will produce incorrect results whenever that field is absent — with no warning.
+
+### What To Do Instead
+
+**Use a `<Request />` boundary.** Calculations that require a particular "view" of the data — a specific set of relationships loaded, a specific set of fields included — belong inside a component or utility that makes an explicit request for that data. A `<Request />` component (or equivalent data-fetching boundary) guarantees what was loaded and makes it safe to derive values from that data within its scope. This keeps correctness coupled to the data contract of the request rather than silently relying on ambient cache state.
+
+In short: if you would need to say *"this derivation is only correct after calling X endpoint"*, it should not be a derivation — it should be a computed value defined inside the boundary that makes that request.
+
+## A Complete Example
+
+Here is how a derivation flows from definition to use. All four pieces are needed:
+
+::: code-group
+
+```ts [store/derivations/concat.ts]
+import type { ReactiveResource } from '@warp-drive/core/reactive';
+import { Type } from '@warp-drive/core/types/symbols';
+
+export function concat(
+  record: ReactiveResource & { [key: string]: unknown },
+  options: Record<string, unknown> | null,
+  _prop: string
+): string {
+  if (!options) throw new Error('options is required');
+  const opts = options as { fields: string[]; separator?: string };
+  return opts.fields.map((field) => record[field]).join(opts.separator ?? '');
+}
+concat[Type] = 'concat'; // [!code highlight]
+```
+
+```ts [store/index.ts]
+import { useRecommendedStore } from '@warp-drive/core';
+import { JSONAPICache } from '@warp-drive/json-api';
+import { concat } from './derivations/concat';
+
+const Store = useRecommendedStore({ cache: JSONAPICache });
+const store = new Store();
+
+store.schema.registerDerivation(concat); // [!code highlight]
+```
 
 ```ts [schemas/user.ts]
 import { withDefaults } from '@warp-drive/core/reactive';
@@ -19,73 +93,72 @@ export const UserSchema = withDefaults({
     { name: 'lastName', kind: 'field' },
     {
       name: 'fullName',
-      kind: 'derived',
-      type: 'concat',
-      options: { fields: ['firstName', 'lastName'], separator: ' ' }
-    }
-  ]
+      kind: 'derived', // [!code highlight]
+      type: 'concat',  // matches concat[Type] = 'concat' // [!code highlight]
+      options: { fields: ['firstName', 'lastName'], separator: ' ' }, // [!code highlight]
+    },
+  ],
 });
 ```
 
-Here, `fullName` automatically updates whenever `firstName` or `lastName` changes.
-With Derivations, you can keep logic about derived values in the schema itself, ensuring consistency and reactivity across your application.
+```ts [usage]
+const user = store.peekRecord('user', '1');
 
-### Dependency Updates in Action
+user.fullName; // → 'Rey Skybarker'  (computed lazily on first access)
+user.fullName; // → 'Rey Skybarker'  (memoized, no recomputation)
+
+user.firstName = 'Finn';
+user.fullName; // → 'Finn Skybarker' (recomputed because firstName changed)
+```
+
+:::
+
+The `type` field in the schema entry is how the runtime looks up the registered function. The `[Type]` symbol property on the function is what `registerDerivation` uses as the lookup key — they must match.
+
+## Read-Only by Design
+
+Derived fields cannot be assigned. Attempting to do so throws in development:
 
 ```ts
-const user = store.cache.peek('user', '1');
-console.log(user.fullName);
-user.firstName = 'Grace';
-console.log(user.fullName); //Reactive (auto-updated)
+user.fullName = 'Leia Organa'; // [!code error]
+// Error: Cannot set derived field 'fullName'
 ```
 
-## Built-in Derivations
+This is intentional — derivations represent computed state, not stored state. If you need a value that can be both read and written with a different shape, use a [transformation](./transformations.md) instead.
 
-WarpDrive ships with a few built-in derivations such as:
+## Reactivity and Memoization
 
-- [`concat`](https://canary.warp-drive.io/api/@warp-drive/utilities/derivations/namespaces/concat/#concat) for joining multiple fields
-- More derivations can be found in the [API docs](https://canary.warp-drive.io/api/@warp-drive/utilities/derivations/)
+Derivations are dependency-tracked: they only re-run when the specific fields they accessed have changed.
 
-## Custom Derivations
-
-You can create your own derivations by providing a compute function and register using [registerDerivations](https://canary.warp-drive.io/api/@warp-drive/core/reactive/functions/registerDerivations#function-registerderivations).
-
-```ts [schemas/derivations/can-edit.ts]
-export const CanEditDerivation = {
-  name: 'canEdit',
-  kind: 'derived',
-  type: 'boolean',
-  compute(user, cache) {
-    const permissions = cache.get(user, 'permissions');
-    return Array.isArray(permissions) && permissions.includes('edit');
-  }
-};
+```ts
+user.firstName = 'Finn'; // fullName recomputes on next access    // [!code ++]
+user.age = 30;           // fullName does NOT recompute            // [!code --]
 ```
 
-## Registering a Custom Derivation
+This tracking is automatic — you do not declare dependencies. The derivation runs inside a reactive context, and every reactive field accessed during that run is registered as a dependency. Change an unrelated field, and the derivation is untouched.
+
+A derivation that has never been accessed costs nothing. It is only run on first access, and only re-run when read *after* a dependency changes.
+
+## About Built-in Derivations
+
+`withDefaults` adds a few built-in derived fields to every schema it configures. The most notable is `@identity`, which surfaces the resource's identity — its `id`, `lid`, and `type` — as readable fields on the record.
+
+These are registered automatically when using the recommended store setup. If you are composing a custom store, call `registerDerivations` to wire them in:
 
 ```ts [store/index.ts]
-import { CanEditDerivation } from '../schemas/derivations/can-edit';
+import { registerDerivations, SchemaService } from '@warp-drive/core/reactive';
 
-store.schema.registerDerivations([CanEditDerivation]);
+const schema = new SchemaService();
+registerDerivations(schema); // [!code highlight]
 ```
 
-Once registered, the `canEdit` derived field can be added to any ResourceSchema.
+## Derivation vs Transformation
 
-## Using a Custom Derivation in a ResourceSchema
+| | Derivation | Transformation |
+|---|---|---|
+| **Input** | One or more fields on the record | A single field's raw cache value |
+| **Settable?** | No — read-only | Yes — two-way |
+| **Stored in cache?** | No | Yes (as raw value) |
+| **Use when** | Computing or combining values | Converting a field's type or shape |
 
-```ts [schemas/user.ts]
-import { withDefaults } from '@warp-drive/core/reactive';
-
-export const UserSchema = withDefaults({
-  type: 'user',
-  fields: [
-    { name: 'id', kind: '@id' },
-    { name: 'firstName', kind: 'field' },
-    { name: 'permissions', kind: 'field' },
-    { name: 'canEdit', kind: 'derived', type: 'canEdit' } // The type in the case of custom derivation should be the name used to register the derivation.
-  ]
-});
-```
-
-Now `user.canEdit` will reactively update whenever the `permissions` field changes.
+See [Transformations](./transformations.md) for single-field conversion.
