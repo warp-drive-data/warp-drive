@@ -90,6 +90,7 @@ export { Store }
 
 ```ts [schemas/user.ts]
 import { withDefaults } from '@warp-drive/core/reactive';
+import { Type } from '@warp-drive/core/types/symbols';
 
 export const UserSchema = withDefaults({
   type: 'user',
@@ -104,10 +105,19 @@ export const UserSchema = withDefaults({
     },
   ],
 });
+
+export interface User {
+  readonly id: string;
+  readonly $type: 'user';
+  firstName: string;
+  lastName: string;
+  readonly fullName: string; // [!code highlight]
+  readonly [Type]: 'user';
+}
 ```
 
 ```ts [usage]
-const user = store.peekRecord('user', '1');
+const user = store.peekRecord<User>('user', '1');
 
 user.fullName; // → 'Rey Skybarker'  (computed lazily on first access)
 user.fullName; // → 'Rey Skybarker'  (memoized, no recomputation)
