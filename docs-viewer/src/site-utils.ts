@@ -406,6 +406,27 @@ outline:
 `;
 const ApiDocumentation = `# API Docs\n\n`;
 
+const TYPE_DIRS = new Set(['classes', 'functions', 'interfaces', 'type-aliases', 'variables', 'enumerations']);
+
+function fileToImportPath(file: string): string {
+  // e.g. "@warp-drive/core/build-config/debugging.md" → "@warp-drive/core/build-config/debugging"
+  // e.g. "@warp-drive/core/classes/ConfiguredStore.md" → "@warp-drive/core"
+  // e.g. "@warp-drive/holodeck/mock/functions/GET.md"  → "@warp-drive/holodeck/mock"
+  const p = file.replace(/\.md$/, '').replace(/\/index$/, '');
+  const segments = p.split('/');
+
+  const [packageName, subPath] = segments[0].startsWith('@')
+    ? [`${segments[0]}/${segments[1]}`, segments.slice(2)]
+    : [segments[0], segments.slice(1)];
+
+  // Strip the TYPE_DIR segment and everything after it (classes/Foo → removed, leaving parent module)
+  const typeDirIdx = subPath.findIndex((s) => TYPE_DIRS.has(s));
+  const cleanSubPath = typeDirIdx >= 0 ? subPath.slice(0, typeDirIdx) : subPath;
+
+  if (cleanSubPath.length === 0) return packageName;
+  return `${packageName}/${cleanSubPath.join('/')}`;
+}
+
 export async function postProcessApiDocs() {
   const dir = path.join(__dirname, '../tmp/api');
   const outDir = path.join(__dirname, '../docs.warp-drive.io/api');
@@ -450,6 +471,13 @@ export async function postProcessApiDocs() {
     mkdirSync(path.dirname(outFile), { recursive: true });
 
     let newContent = content;
+
+    // Replace the entire breadcrumb line with the badge (no subpath links)
+    const importPath = fileToImportPath(file);
+    newContent = newContent.replace(/^[^\n]+\n\n/, `<ModuleBadge path="${importPath}" />\n\n`);
+
+    // Remove the first H1 heading and the blank line before it
+    newContent = newContent.replace(/\n\n# [^\n]+\n\n?/, '\n\n');
 
     // if the file is in @warp-drive/legacy add the legacy badge
     if (file.includes('@warp-drive/legacy')) {
