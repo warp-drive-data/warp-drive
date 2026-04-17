@@ -207,50 +207,13 @@ function parseLernaOutput(
       continue;
     }
 
-    if (isParsingSection) {
-      if (line === '') {
-        isParsingSection = false;
-        currentSection = '';
-      } else {
-        if (line.startsWith('* [#')) {
-          currentEntry = {
-            packages: ['Other'],
-            description: line.substring(2),
-            committer: '',
-          };
-          extractLoggedEntry(currentEntry, data, byPackage, subPathMap, currentSection);
-        } else if (line.startsWith('* ')) {
-          const packages = line
-            .substring(2)
-            .split(',')
-            .map((v) => v.trim().replaceAll('`', ''));
-          currentEntry = {
-            packages,
-            description: '',
-            committer: '',
-          };
-        } else if (line.startsWith('  * ')) {
-          currentEntry = structuredClone(currentEntry!);
-          currentEntry!.description = line.substring(4);
-          extractLoggedEntry(currentEntry, data, byPackage, subPathMap, currentSection);
-        } else {
-          isParsingSection = false;
-          currentSection = '';
-          currentEntry = null;
-        }
-      }
-    } else if (isParsingCommitters) {
-      if (line === '') {
-        isParsingCommitters = false;
-      } else {
-        const committerMatches = line.match(CommitterRegEx);
-        if (!committerMatches) continue;
-        const committer = committerMatches[1];
-        data[Committers].set(committer, line.substring(2));
-      }
-    } else if (line.startsWith('#### ')) {
-      isParsingCommitters = false;
+    if (line === '') {
       isParsingSection = false;
+      isParsingCommitters = false;
+      currentEntry = null;
+    } else if (line.startsWith('#### ')) {
+      isParsingSection = false;
+      isParsingCommitters = false;
       currentEntry = null;
       if (line.startsWith('#### Committers:')) {
         currentSection = 'Committers';
@@ -260,6 +223,34 @@ function parseLernaOutput(
         data[currentSection] = data[currentSection] || new Map();
         isParsingSection = true;
       }
+    } else if (isParsingSection) {
+      if (line.startsWith('* [#')) {
+        currentEntry = {
+          packages: ['Other'],
+          description: line.substring(2),
+          committer: '',
+        };
+        extractLoggedEntry(currentEntry, data, byPackage, subPathMap, currentSection);
+      } else if (line.startsWith('* ')) {
+        const packages = line
+          .substring(2)
+          .split(',')
+          .map((v) => v.trim().replaceAll('`', ''));
+        currentEntry = {
+          packages,
+          description: '',
+          committer: '',
+        };
+      } else if (line.startsWith('  * ')) {
+        currentEntry = structuredClone(currentEntry!);
+        currentEntry!.description = line.substring(4);
+        extractLoggedEntry(currentEntry, data, byPackage, subPathMap, currentSection);
+      }
+    } else if (isParsingCommitters) {
+      const committerMatches = line.match(CommitterRegEx);
+      if (!committerMatches) continue;
+      const committer = committerMatches[1];
+      data[Committers].set(committer, line.substring(2));
     }
   }
 
@@ -268,7 +259,7 @@ function parseLernaOutput(
 }
 
 function* lines(markdown: string): Generator<string> {
-  yield* markdown.split('\n');
+  yield* markdown.split(/\r?\n/);
 }
 
 export async function getChanges(
