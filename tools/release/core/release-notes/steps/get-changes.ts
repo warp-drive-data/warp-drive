@@ -277,5 +277,8 @@ export async function getChanges(
   fromTag: string
 ): Promise<VersionedLernaChangeset[]> {
   const changelogMarkdown = await exec(['sh', '-c', `pnpm exec lerna-changelog --from=${fromTag}`]);
-  return parseLernaOutput(changelogMarkdown, strategy, packages);
+  console.log('lerna-changelog output:\n' + changelogMarkdown);
+  const results = parseLernaOutput(changelogMarkdown, strategy, packages);
+  console.log(`parsed ${results.length} changeset(s)`);
+  return results;
 }

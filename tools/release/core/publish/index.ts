@@ -59,7 +59,13 @@ export async function executePublish(args: string[]) {
   const channel = config.full.get('channel') as CHANNEL;
   if (channel !== 'canary' && channel !== 'beta' && fromVersion) {
     // generate the list of changes (first entry is the unreleased block)
-    const [newChanges] = await getChanges(strategy.config, packages, fromTag);
+    const changesets = await getChanges(strategy.config, packages, fromTag);
+    const newChanges = changesets[0];
+    if (!newChanges) {
+      throw new Error(
+        `lerna-changelog produced no parseable output from ${fromTag}. Check the log above for the raw output.`
+      );
+    }
 
     const toTag = `v${versions.get('root')!}` as GIT_TAG;
     const date = new Date().toISOString().split('T')[0];
