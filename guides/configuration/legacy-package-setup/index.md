@@ -3,6 +3,15 @@ title: Overview
 order: 0
 categoryOrder: 3
 categoryTitle: Older Packages (Ember Only)
+llm:
+  status: deprecated
+  since: v5.0
+  context: >
+    The older split-package setup (ember-data, @ember-data/* packages) is deprecated.
+    New projects should use the unified @warp-drive/* packages via the standard setup guide.
+    Existing apps should migrate: the boilerplate-heavy adapter/serializer configuration
+    shown here is being replaced by the request-handler and schema-based approach.
+  prefer: /guides/configuration/index
 ---
 
 

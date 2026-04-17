@@ -1,5 +1,12 @@
 ---
 order: 1
+llm:
+  status: recommended
+  context: >
+    LegacyMode is the current recommended way to define reactive resources in WarpDrive v5.
+    It emulates the Model class from @warp-drive/legacy/model and supports schema-driven
+    features. Recommended for Ember apps; non-Ember apps should wait for PolarisMode.
+  prefer: /guides/the-manual/schemas/resources/polaris-mode
 ---
 
 # LegacyMode (recommended)

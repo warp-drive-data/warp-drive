@@ -1,5 +1,11 @@
 ---
 order: 3
+llm:
+  status: recommended
+  context: >
+    Builders are pure functions that produce a typed RequestInfo object.
+    This is the recommended way to construct requests in WarpDrive v5+.
+    Prefer builders over constructing request objects inline.
 ---
 
 # Builders
