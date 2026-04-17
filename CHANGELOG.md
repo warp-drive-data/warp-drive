@@ -1,5 +1,20 @@
 # WarpDrive Changelog
 
+## v5.8.2 (2026-04-17)
+
+#### :rocket: Enhancement
+
+* [#10516](https://github.com/warp-drive-data/warp-drive/pull/10516) fix: get release notes working again ([@runspired](https://github.com/runspired))
+
+#### :bug: Bug Fix
+
+* [#10511](https://github.com/warp-drive-data/warp-drive/pull/10511) remove all `import Ember from 'ember'` ([@NullVoxPopuli-ai-agent](https://github.com/NullVoxPopuli-ai-agent))
+
+#### Committers: (2)
+
+Chris Thoburn ([@runspired](https://github.com/runspired))
+@NullVoxPopuli's reduced-access machine account for AI usage ([@NullVoxPopuli-ai-agent](https://github.com/NullVoxPopuli-ai-agent))
+
 ## v5.8.1 (2026-01-12)
 
 #### :house: Internal

@@ -1,5 +1,15 @@
 # ember-data Changelog
 
+## v5.8.2 (2026-04-17)
+
+#### :bug: Bug Fix
+
+* [#10511](https://github.com/warp-drive-data/warp-drive/pull/10511) remove all `import Ember from 'ember'` ([@NullVoxPopuli-ai-agent](https://github.com/NullVoxPopuli-ai-agent))
+
+#### Committers: (1)
+
+@NullVoxPopuli's reduced-access machine account for AI usage ([@NullVoxPopuli-ai-agent](https://github.com/NullVoxPopuli-ai-agent))
+
 ## v5.8.0 (2025-10-07)
 
 #### :house: Internal
