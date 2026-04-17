@@ -1,5 +1,15 @@
 # WarpDrive Changelog
 
+## v5.8.1 (2026-01-12)
+
+#### :house: Internal
+
+* [#10443](https://github.com/warp-drive-data/warp-drive/pull/10443) Fix model blueprints ([@mansona](https://github.com/mansona))
+
+#### Committers: (1)
+
+Chris Manson ([@mansona](https://github.com/mansona))
+
 ## v5.8.0 (2025-10-07)
 
 #### :memo: Documentation
