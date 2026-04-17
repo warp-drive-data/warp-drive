@@ -481,7 +481,7 @@ export async function postProcessApiDocs() {
 
     // if the file is in @warp-drive/legacy add the legacy badge
     if (file.includes('@warp-drive/legacy')) {
-      newContent = `<Badge type="danger" text="@legacy" /><br><br>` + content;
+      newContent = newContent.replace(/^(<ModuleBadge [^\n]+\/>)/, `$1 <Badge type="danger" text="@legacy" />`);
     }
 
     // insert frontmatter

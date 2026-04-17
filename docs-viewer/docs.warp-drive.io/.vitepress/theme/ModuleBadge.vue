@@ -15,23 +15,38 @@ defineProps<{
 .module-badge {
   display: inline-flex;
   align-items: center;
-  border-radius: 4px;
+  border-radius: 12px;
   overflow: hidden;
   font-family: var(--vp-font-family-mono);
-  font-size: 13px;
-  line-height: 1;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 22px;
+  border: 1px solid transparent;
+  transform: translateY(-2px);
 }
 
+/* light mode */
 .module-badge-label {
-  background: #c89a1a;
-  color: #1a1200;
-  padding: 4px 8px;
+  background: #99f6e4;
+  color: #0f766e;
+  padding: 0 8px;
   font-weight: 600;
 }
 
 .module-badge-path {
-  background: #3a3a3a;
-  color: #e8e8e8;
-  padding: 4px 10px;
+  background: #d3e1f5;
+  color: #374559;
+  padding: 0 10px;
+}
+
+/* dark mode */
+.dark .module-badge-label {
+  background: #0f766e;
+  color: #ccfbf1;
+}
+
+.dark .module-badge-path {
+  background: #334155;
+  color: #cbd5e1;
 }
 </style>
