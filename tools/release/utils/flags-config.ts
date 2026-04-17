@@ -196,11 +196,7 @@ export const publish_flags_config: FlagConfig = {
       const channel = options.get('channel') as CHANNEL;
       if (channel === 'lts' || channel === 'release' || channel === 'beta') {
         const version = (await getPublishedChannelInfo())[channel === 'release' ? 'latest' : channel];
-        const currentVersion = (await getGitState(options)).rootVersion;
-        if (version !== currentVersion) {
-          return version;
-        }
-        return '';
+        return version || '';
       }
       return '';
     },

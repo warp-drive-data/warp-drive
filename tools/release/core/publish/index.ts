@@ -52,7 +52,7 @@ export async function executePublish(args: string[]) {
   await confirmStrategy();
 
   const channel = config.full.get('channel') as CHANNEL;
-  if (channel !== 'canary' && channel !== 'beta') {
+  if (channel !== 'canary' && channel !== 'beta' && fromVersion) {
     // generate the list of changes
     const newChanges = await getChanges(strategy, packages, fromTag);
 
