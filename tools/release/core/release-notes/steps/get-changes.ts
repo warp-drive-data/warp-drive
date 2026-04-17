@@ -193,12 +193,8 @@ function parseLernaOutput(
     }
   }
 
-  let _lineNum = 0;
   for (const line of lines(markdown)) {
-    _lineNum++;
-    if (_lineNum <= 5) console.log(`[parse line ${_lineNum}]`, JSON.stringify(line));
     const versionMatch = line.match(VERSION_HEADER_RE);
-    if (_lineNum <= 5) console.log(`[parse line ${_lineNum}] versionMatch:`, versionMatch?.[1]);
     if (versionMatch) {
       flushVersion();
       currentTag = versionMatch[1];
@@ -271,9 +267,9 @@ export async function getChanges(
   packages: Map<string, Package>,
   fromTag: string
 ): Promise<VersionedLernaChangeset[]> {
-  const changelogMarkdown = await exec(['sh', '-c', `pnpm exec lerna-changelog --from=${fromTag}`]);
-  console.log('lerna-changelog output:\n' + changelogMarkdown);
+  const raw = await exec(['sh', '-c', `pnpm exec lerna-changelog --from=${fromTag}`]);
+  // lerna-changelog emits ANSI color codes; strip them before parsing
+  const changelogMarkdown = raw.replace(/\u001b\[[0-9;]*[a-zA-Z]/g, '');
   const results = parseLernaOutput(changelogMarkdown, strategy, packages);
-  console.log(`parsed ${results.length} changeset(s)`);
   return results;
 }
