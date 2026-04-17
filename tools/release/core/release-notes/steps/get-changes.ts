@@ -114,7 +114,7 @@ function extractLoggedEntry(
   });
 }
 
-const VERSION_HEADER_RE = /^## (.+) \((\d{4}-\d{2}-\d{2})\)$/;
+const VERSION_HEADER_RE = /^## (.+?)(?:\s+\((\d{4}-\d{2}-\d{2})\))?$/;
 // Strips pre-release suffix: "v5.8.0-alpha.3" → "v5.8.0", "v5.8.0" → "v5.8.0", "Unreleased" → "Unreleased"
 const BASE_VERSION_RE = /^(v\d+\.\d+\.\d+)/;
 
@@ -198,7 +198,7 @@ function parseLernaOutput(
     if (versionMatch) {
       flushVersion();
       currentTag = versionMatch[1];
-      currentDate = versionMatch[2];
+      currentDate = versionMatch[2] ?? '';
       ({ data, byPackage } = freshOutput());
       isParsingSection = false;
       isParsingCommitters = false;
