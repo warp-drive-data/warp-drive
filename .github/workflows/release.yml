@@ -263,7 +263,7 @@ jobs:
           fetch-tags: true
           show-progress: false
           token: ${{ secrets.GH_DEPLOY_TOKEN }}
-          fetch-depth: 3
+          fetch-depth: 1000 # release notes will need more history
           ref: ${{ steps.desired-branch.outputs.DESIRED_BRANCH }}
       ## Ensure we have a full copy of the source branch
       - run: git fetch origin ${{ github.event.inputs.stable_source-branch }}
