@@ -1,6 +1,6 @@
 {
   "name": "ember-data__model",
-  "version": "5.8.1",
+  "version": "5.8.2",
   "private": true,
   "description": "Tests for @ember-data/model",
   "repository": {
