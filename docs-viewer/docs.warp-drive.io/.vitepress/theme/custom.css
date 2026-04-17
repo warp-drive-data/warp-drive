@@ -10,3 +10,11 @@ html:not(.dark) .dark-only {
   font-weight: 600;
   color: var(--vp-c-text-1);
 }
+
+body {
+  font-size: 13px;
+}
+
+.vp-doc p {
+  line-height: 20px;
+}
