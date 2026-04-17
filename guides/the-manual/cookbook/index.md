@@ -1,7 +1,7 @@
 ---
 title: Index
 order: 0
-categoryOrder: 5
+categoryOrder: 9
 ---
 
 # Cookbook

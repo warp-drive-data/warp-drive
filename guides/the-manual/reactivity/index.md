@@ -1,3 +1,10 @@
+---
+categoryOrder: 5
+categoryTitle: Reactivity
+title: Overview
+order: 0
+---
+
 # Reactive Data
 
 In addition to request and cache management, WarpDrive provides a reactive access
