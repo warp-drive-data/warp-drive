@@ -1,6 +1,5 @@
 ---
 title: Documenting APIs
-order: 1
 ---
 
 # Writing Documentation

@@ -1,7 +1,3 @@
----
-order: 2
----
-
 # Setting Up The Project
 
 ## Setup Volta

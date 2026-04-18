@@ -1,7 +1,3 @@
----
-order: 5
----
-
 # Complex Fields
 
 Complex Fields let you model nested or repeated structures inside a resource. They are useful when a resource contains structured data that is not itself a top-level resource.  

@@ -1,6 +1,4 @@
 ---
-categoryOrder: 8
-categoryTitle: Mutations
 title: Overview
 ---
 

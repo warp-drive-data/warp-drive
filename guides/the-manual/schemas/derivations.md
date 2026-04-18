@@ -1,7 +1,3 @@
----
-order: 7
----
-
 # Derivations
 
 Derivations are computed, read-only fields on a resource. When a derived field is accessed, the runtime looks up a registered function by name and calls it with the ReactiveResource and any configured options. The result is memoized — subsequent reads return the cached value without recomputation until one of the reactive fields the derivation read has changed.

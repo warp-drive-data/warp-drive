@@ -1,8 +1,5 @@
 ---
 title: Introduction
-categoryOrder: 2
-order: 0
-categoryTitle: The Manual
 ---
 
 # Introduction

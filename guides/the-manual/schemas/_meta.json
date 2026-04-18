@@ -1,0 +1,4 @@
+{
+  "title": "Schemas",
+  "items": ["resources", "object-schemas", "simple-fields", "relational-fields", "complex-fields", "traits", "derivations", "transformations", "extensions"]
+}

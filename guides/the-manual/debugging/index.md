@@ -1,8 +1,5 @@
 ---
-categoryOrder: 7
-categoryTitle: Debugging
 title: Overview
-order: 0
 ---
 
 # Debugging

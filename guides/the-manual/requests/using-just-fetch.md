@@ -1,6 +1,5 @@
 ---
 title: Using "Just Fetch"
-order: 9
 draft: true
 ---
 

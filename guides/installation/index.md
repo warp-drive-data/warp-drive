@@ -1,7 +1,5 @@
 ---
 title: Instructions
-categoryOrder: 0
-order: 0
 ---
 
 :::warning **🚧 Pardon Our Stardust!**

@@ -1,8 +1,5 @@
 ---
-categoryOrder: 3
-categoryTitle: Relational Data
 title: Overview
-order: 0
 ---
 
 # Relationships Guide

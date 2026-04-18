@@ -1,7 +1,3 @@
----
-order: 6
----
-
 # Traits
 
 Traits are reusable groups of fields that you can include in multiple ResourceSchemas.  

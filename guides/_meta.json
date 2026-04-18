@@ -1,0 +1,5 @@
+{
+  "title": "The Manual",
+  "collapsed": true,
+  "items": ["installation", "configuration", "the-manual", "linting", "migrating", "contributing"]
+}

@@ -1,8 +1,5 @@
 ---
 title: Overview
-order: 0
-categoryOrder: 6
-categoryTitle: TypeScript
 ---
 
 # 💚 TypeScript Guide

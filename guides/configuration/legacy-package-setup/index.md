@@ -1,8 +1,5 @@
 ---
 title: Overview
-order: 0
-categoryOrder: 3
-categoryTitle: Older Packages (Ember Only)
 ---
 
 

@@ -1,5 +1,4 @@
 ---
-categoryOrder: 7
 draft: true
 ---
 

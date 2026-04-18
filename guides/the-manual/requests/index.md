@@ -1,6 +1,5 @@
 ---
 title: Making Requests
-categoryOrder: 1
 outline:
   level: 2,3
 ---

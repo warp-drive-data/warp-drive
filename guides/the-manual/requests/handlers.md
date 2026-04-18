@@ -1,7 +1,3 @@
----
-order: 4
----
-
 # Handlers
 
 Handlers are middleware that enable enhancing, modifying, or responding to requests. They are best used for handling concerns shared by a large number of requests - whereas builders are better suited for customizing the details of a specific request.

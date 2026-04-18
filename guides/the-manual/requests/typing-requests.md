@@ -1,7 +1,3 @@
----
-order: 1
----
-
 # Typing Requests
 
 Use [withResponseType](/api/@warp-drive/core/request/functions/withResponseType) to supply the response type.

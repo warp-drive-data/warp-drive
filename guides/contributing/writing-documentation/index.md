@@ -1,7 +1,5 @@
 ---
 title: Overview
-categoryOrder: 5
-categoryTitle: Writing Documentation
 ---
 
 # Writing Documentation

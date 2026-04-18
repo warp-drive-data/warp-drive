@@ -19,94 +19,88 @@ function segmentToTitle(segment: string, prevSegment: string | null) {
   return result === 'Index' ? 'Introduction' : result;
 }
 
-interface WarpDriveFrontMatter {
-  categoryTitle?: string;
+interface DirMeta {
   title?: string;
-  categoryOrder?: number;
-  order?: number;
-  draft?: boolean;
   collapsed?: boolean;
+  draft?: boolean;
+  /** Ordered list of child slugs (filenames without .md, or directory names). Unlisted items sort alphabetically after listed ones. */
+  items?: string[];
 }
+
+interface WarpDriveFrontMatter {
+  title?: string;
+  draft?: boolean;
+}
+
 interface GuideGroup {
-  /**
-   * The Text To Display
-   */
   text: string;
-  /**
-   * The Path For This group
-   * "On Disc".
-   */
   path: string;
-  /**
-   * The URL Slug For This group
-   * if different from the path.
-   *
-   * This is currently unused but is set
-   * by the frontmatter of an `index.md` file
-   * in the directory.
-   */
   slug: string;
-  /**
-   * This will be the categoryIndex specified by
-   * the frontmatter of an `index.md` file in the directory.
-   *
-   * Else it will be set to the next open index available
-   * once "known" indeces have been assigned.
-   */
-  index: number | null;
-  /**
-   * Whether the directory should default to open or closed.
-   *
-   * This is set by the frontmatter of an `index.md` file in the directory.
-   * else by config above in this file, and defaults to `true`.
-   */
+  /** Items list from this directory's _meta.json, used to sort this group's children. */
+  orderedItems?: string[];
   collapsed: boolean | null;
-  /**
-   * The child items/groups of this group, if any.
-   */
   items: Record<string, GuideGroup>;
-  /**
-   *
-   */
   link?: string;
+}
+
+function normPath(p: string): string {
+  return p.split(path.sep).join('/');
 }
 
 export async function getGuidesStructure() {
   const GuidesDirectoryPath = path.join(__dirname, '../docs.warp-drive.io/guides');
+
+  // Load all _meta.json files up front; keys are forward-slash dir paths relative to GuidesDirectoryPath
+  const metaFiles = globSync('**/_meta.json', { cwd: GuidesDirectoryPath });
+  const dirMeta = new Map<string, DirMeta>();
+  for (const metaFile of metaFiles) {
+    const dirPath = path.dirname(metaFile);
+    const key = dirPath === '.' ? '' : normPath(dirPath);
+    dirMeta.set(key, JSON.parse(readFileSync(path.join(GuidesDirectoryPath, metaFile), 'utf-8')) as DirMeta);
+  }
+
   const glob = globSync('**/*.md', { cwd: GuidesDirectoryPath });
   const groups: Record<string, GuideGroup> = {};
 
   for (const filepath of glob) {
-    const slugPath = [];
+    const slugPath: string[] = [];
     const text = readFileSync(path.join(GuidesDirectoryPath, filepath), 'utf-8');
     const frontMatter = fm<WarpDriveFrontMatter>(text);
 
     if (frontMatter.attributes.draft) {
-      // skip hidden files
+      continue;
+    }
+
+    // Skip files whose immediate parent directory is marked draft in _meta.json
+    const fileDir = normPath(path.dirname(filepath));
+    if (fileDir !== '.' && dirMeta.get(fileDir)?.draft) {
       continue;
     }
 
     if (filepath === 'index.md') {
-      groups['the-manual'] = groups['the-manual'] || {
-        text: frontMatter.attributes.categoryTitle!,
-        path: filepath,
-        slug: filepath,
-        index: frontMatter.attributes.categoryOrder || 0,
-        collapsed: frontMatter.attributes.collapsed || true,
+      const rootMeta = dirMeta.get('') ?? {};
+      const theManualMeta = dirMeta.get('the-manual') ?? {};
+      groups['the-manual'] = groups['the-manual'] ?? {
+        text: rootMeta.title ?? 'The Manual',
+        path: 'the-manual',
+        slug: 'the-manual',
+        orderedItems: theManualMeta.items,
+        collapsed: rootMeta.collapsed ?? true,
         link: '/guides/index.md',
         items: {},
       };
       Object.assign(groups['the-manual'], {
-        text: frontMatter.attributes.categoryTitle!,
-        index: frontMatter.attributes.categoryOrder || 0,
-        collapsed: frontMatter.attributes.collapsed || true,
+        text: rootMeta.title ?? 'The Manual',
+        path: 'the-manual',
+        slug: 'the-manual',
+        orderedItems: theManualMeta.items,
+        collapsed: rootMeta.collapsed ?? true,
         link: '/guides/index.md',
       });
-      groups['the-manual'].items[filepath] = {
-        text: frontMatter.attributes.title!,
-        path: filepath,
-        slug: filepath,
-        index: frontMatter.attributes.order ?? 0,
+      groups['the-manual'].items['index.md'] = {
+        text: frontMatter.attributes.title ?? 'Introduction',
+        path: 'index.md',
+        slug: 'index.md',
         collapsed: false,
         items: {},
         link: '/guides/index.md',
@@ -119,7 +113,6 @@ export async function getGuidesStructure() {
     let isIndex = false;
 
     if (lastSegment === 'index.md') {
-      // we treat index files as the main entry to any guides directory
       lastSegment = segments.pop()!;
 
       if (!lastSegment) {
@@ -130,22 +123,27 @@ export async function getGuidesStructure() {
     }
 
     let group = groups;
-    let parent = null;
+    let parent: GuideGroup | null = null;
 
-    // build out nodes for each segment
-    // if there is not one yet.
     for (let i = 0; i < segments.length; i++) {
       const prevSegment = i > 0 ? segments[i - 1] : null;
       const segment = segments[i];
       slugPath.push(segment);
       const key = slugPath.join('.');
-      const collapsed = AlwaysOpenGroups.includes(key) ? null : DefaultOpenGroups.includes(key) ? false : true;
+      const segmentMeta = dirMeta.get(normPath(slugPath.join(path.sep))) ?? {};
+      const collapsed =
+        segmentMeta.collapsed !== undefined
+          ? segmentMeta.collapsed
+          : AlwaysOpenGroups.includes(key)
+            ? null
+            : DefaultOpenGroups.includes(key)
+              ? false
+              : true;
 
-      // setup a nested segment if we don't already have one
       if (!group[segment]) {
         group[segment] = {
-          text: segmentToTitle(segment, prevSegment),
-          index: null,
+          text: segmentMeta.title ?? segmentToTitle(segment, prevSegment),
+          orderedItems: segmentMeta.items,
           path: segment,
           slug: segment,
           collapsed,
@@ -161,71 +159,58 @@ export async function getGuidesStructure() {
     const key = slugPath.join('.');
     const realUrl = `/guides/${filepath}`;
 
-    // setup our leaf-most segment for this file
-    // if needed, it may exist from a child directory already
     if (!group[lastSegment]) {
+      const leafMeta = dirMeta.get(normPath(slugPath.join(path.sep))) ?? {};
       group[lastSegment] = {
-        text: segmentToTitle(lastSegment, parent ? parent.path : null),
-        index: null,
+        text: leafMeta.title ?? segmentToTitle(lastSegment, parent ? parent.path : null),
+        orderedItems: leafMeta.items,
         path: lastSegment,
         slug: lastSegment,
-        collapsed: AlwaysOpenGroups.includes(key) ? null : DefaultOpenGroups.includes(key) ? false : true,
+        collapsed:
+          leafMeta.collapsed !== undefined
+            ? leafMeta.collapsed
+            : AlwaysOpenGroups.includes(key)
+              ? null
+              : DefaultOpenGroups.includes(key)
+                ? false
+                : true,
         items: {},
-        // if we are an index file, this has the effect of setting the link on the parent node
-        // this seems to work even though there's an issue
-        // that says it doesn't: https://github.com/vuejs/vitepress/issues/2989
-        // however:
-        // when doing this, the "next page" feature breaks for
-        // these pages, so for now we just do non-clickable headers.
         link: realUrl,
       };
     } else {
-      // the segment was previously generated from a file in a child directory on the same path.
-      // we need to add in the link.
       group[lastSegment].link = realUrl;
     }
 
-    // update the leaf-most segment with any frontmatter info
     const leaf = group[lastSegment]!;
 
-    // if the leaf is the index, we need to update the category entry
-    // and then generate an item entry for it.
     if (isIndex) {
-      if ('collapsed' in frontMatter.attributes) {
-        leaf.collapsed = frontMatter.attributes.collapsed!;
-      }
-      if ('categoryOrder' in frontMatter.attributes) {
-        leaf.index = frontMatter.attributes.categoryOrder!;
-      }
-      if ('categoryTitle' in frontMatter.attributes) {
-        leaf.text = frontMatter.attributes.categoryTitle!;
-      }
+      const leafDirPath = normPath(slugPath.join(path.sep));
+      const leafMeta = dirMeta.get(leafDirPath) ?? {};
 
-      // generate the entry for the file itself unless we are a top-level index file
+      if (leafMeta.draft) continue;
+
+      // _meta.json is authoritative for category metadata; always apply it
+      if (leafMeta.title !== undefined) leaf.text = leafMeta.title;
+      if (leafMeta.collapsed !== undefined) leaf.collapsed = leafMeta.collapsed;
+      leaf.orderedItems = leafMeta.items;
+
       leaf.items['index.md'] = {
         path: 'index.md',
         slug: 'index.md',
         collapsed: false,
         text: frontMatter.attributes.title ?? 'Overview',
-        index: frontMatter.attributes.order ?? 0,
-        link: group[lastSegment]!.link,
+        link: group[lastSegment]!.link!,
         items: {},
       };
     } else {
-      // update the leaf's title and order
       if (frontMatter.attributes.title) {
         leaf.text = frontMatter.attributes.title;
-      }
-      if ('order' in frontMatter.attributes) {
-        leaf.index = frontMatter.attributes.order!;
       }
     }
   }
 
-  // deep iterate converting items objects to arrays
-  const result = deepConvert(groups);
-  // console.log(JSON.stringify(result, null, 2));
-  // console.log(JSON.stringify(rewritten, null, 2));
+  const rootMeta = dirMeta.get('') ?? {};
+  const result = deepConvert(groups, rootMeta.items);
   const structure = { paths: result };
 
   writeFileSync(
@@ -240,50 +225,51 @@ export async function getGuidesStructure() {
   return { paths: result };
 }
 
-function deepConvert(obj: Record<string, any>) {
+function deepConvert(obj: Record<string, any>, orderedItems?: string[]) {
   const groups = Array.from(Object.values(obj));
-  const sortedGroups = new Array(groups.length).fill(null);
 
   for (const group of groups) {
-    if (group.index !== null) {
-      if (group.index < 0 || group.index >= groups.length) {
-        throw new Error(`Invalid index ${group.index} for ${group.path}, must be between 0 and ${groups.length - 1}`);
-      }
-      if (sortedGroups[group.index] !== null) {
-        throw new Error(`Duplicate index ${group.index} for ${group.path}, matches ${sortedGroups[group.index]}`);
-      }
-      sortedGroups[group.index] = group;
-    }
-
-    delete group.path;
-    delete group.slug;
-
     if (group.items) {
       if (Object.keys(group.items).length === 0) {
         delete group.items;
         delete group.collapsed;
       } else {
-        group.items = deepConvert(group.items);
+        // Each group carries orderedItems from its own _meta.json for sorting its children
+        group.items = deepConvert(group.items, group.orderedItems);
 
-        if (!group.link && !group.items[0].items) {
-          group.link = group.items[0].link;
+        if (!group.link && !group.items[0]?.items) {
+          group.link = group.items[0]?.link;
         }
       }
     }
+    delete group.orderedItems;
   }
+
+  // index.md synthetic entries always first; otherwise sort by orderedItems list, then alphabetically
+  groups.sort((a, b) => {
+    if (a.slug === 'index.md') return -1;
+    if (b.slug === 'index.md') return 1;
+
+    if (orderedItems?.length) {
+      const aKey = (a.slug ?? '').replace(/\.md$/, '');
+      const bKey = (b.slug ?? '').replace(/\.md$/, '');
+      const aIdx = orderedItems.indexOf(aKey);
+      const bIdx = orderedItems.indexOf(bKey);
+      if (aIdx === -1 && bIdx === -1) return (a.text ?? '').localeCompare(b.text ?? '');
+      if (aIdx === -1) return 1;
+      if (bIdx === -1) return -1;
+      return aIdx - bIdx;
+    }
+
+    return (a.text ?? '').localeCompare(b.text ?? '');
+  });
 
   for (const group of groups) {
-    if (group.index === null) {
-      // find the first null index and insert
-      const firstNullIndex = sortedGroups.findIndex((g) => g === null);
-      if (firstNullIndex !== -1) {
-        sortedGroups[firstNullIndex] = group;
-        group.index = firstNullIndex;
-      }
-    }
+    delete group.path;
+    delete group.slug;
   }
 
-  return sortedGroups;
+  return groups;
 }
 
 type SidebarItem = { text: string; items?: SidebarItem[]; link?: string; collapsed?: boolean };

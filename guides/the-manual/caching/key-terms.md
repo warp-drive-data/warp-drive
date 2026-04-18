@@ -1,7 +1,3 @@
----
-order: 1
----
-
 # Key Terminology
 
 The hardest part about learning a new tool or technology is often building a correct

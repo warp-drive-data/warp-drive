@@ -1,6 +1,5 @@
 ---
 title: Reporting Issues
-order: 1
 ---
 
 ### Reporting Bugs

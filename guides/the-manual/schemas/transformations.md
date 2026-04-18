@@ -1,7 +1,3 @@
----
-order: 8
----
-
 # Transformations
 
 Transformations define how a single field's value is converted between its raw form in cache and the value your app reads or writes. When you read a transformed field, `hydrate` runs to produce the app value. When you write to it, `serialize` runs to produce the value stored in cache.

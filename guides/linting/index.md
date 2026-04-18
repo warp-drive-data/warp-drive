@@ -1,9 +1,3 @@
----
-order: 0
-catgoryOrder: 3
-categoryTitle: Linting
----
-
 # Linting
 
 Install the ESLint plugin `eslint-plugin-warp-drive`

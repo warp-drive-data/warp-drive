@@ -1,7 +1,3 @@
----
-order: 2
----
-
 # Using The Response
 
 [Requests](/api/@warp-drive/core/classes/Store#request) return a subclass of [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) we call a [Future](/api/@warp-drive/core/request/interfaces/Future).

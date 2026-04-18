@@ -1,9 +1,7 @@
 ---
-categoryTitle: Migrating
 title: V3/V4 to V5
 outline:
   level: 2,3
-categoryOrder: 4
 ---
 
 # Migrating 4.x to 5.x
