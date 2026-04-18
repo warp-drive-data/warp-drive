@@ -1,3 +1,14 @@
 {
-  "items": ["requests", "schemas", "relational-data", "caching", "reactivity", "typescript", "debugging", "mutations", "cookbook", "community-resources"]
+  "items": [
+    "requests",
+    "schemas",
+    "relational-data",
+    "caching",
+    "reactivity",
+    "typescript",
+    "debugging",
+    "mutations",
+    "cookbook",
+    "community-resources"
+  ]
 }

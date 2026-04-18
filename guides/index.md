@@ -126,7 +126,7 @@ export default <template>
 </template>
 ```
 
-We pair the JS API with a headless component API providing [reactive control flow](./the-manual/concepts/reactive-control-flow.md) to give apps the ability to declaratively derive states with safety.
+We pair the JS API with a headless component API providing [reactive control flow](./the-manual/reactivity/control-flow.md) to give apps the ability to declaratively derive states with safety.
 
 The component API is a thin framework-specific binding overtop of the framework-agnostic JS API. Don't see your
 framework yet? Let's add it!
