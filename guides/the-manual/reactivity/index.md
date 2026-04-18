@@ -2,28 +2,21 @@
 title: Overview
 ---
 
-# Reactive Data
+# Reactivity
 
-In addition to request and cache management, WarpDrive provides a reactive access
-layer for data in the cache.
+<img src="../../images/signals.png" style="height: 150px; float: right; margin: 1em; padding: 2em 0 2em 4em; border-left: .05em solid #999999;" title="" alt="">
 
-Data in the cache is conceptualized as belonging to one of three forms
+WarpDrive relies on [signals](https://github.com/tc39/proposal-signals#readme) to enable universal fine-grained reactivity, but where most projects define a specific signals implementation for consumers to use, WarpDrive allows you to bring your own or use your framework's.
 
-- **Documents** - the response to a request
-- **Resources** - a unique cacheable entity within the response to a request
-- **Fields** - the data for an individual property on a resource
+The concept is simple: instead of relying on specifics of signal implementations that may differ, we use signals purely as just that - a signal. The signal itself is never responsible for managing state, storage, or value comparisons.
 
-Each form of data can be accessed and managed reactively through one of two modes
+Lightweight hooks translate the basic create/consume/notify signal operations into implementation specifics for one (or more) signal libraries.
 
-- *(upcoming, default in v6)* [PolarisMode](../../schemas/resources/polaris-mode.md)
-- *(current, default in v5)* [LegacyMode](../../schemas/resources/legacy-mode.md)
+This enables us to be compatible with even the most lightweight and performant signals implementations. The simplicity of this approach keeps WarpDrive relatively future-proof should the spec significantly changeor even fail to become a first-class language feature.
 
-These modes are interoperable. The reactive object (record) for a resource in PolarisMode can relate to
-a record in LegacyMode and vice-versa. This interoperability is true whether the record in LegacyMode is
-a ReactiveResource or a Model.
+Signals are used to alert the reactive consumers to changes in the underlying cache. E.g. a signal is associated to a value, but does
+not serve as the cache for that value directly. We refer to this as
+a "gate", the pattern has also been called "side-signals".
 
-These reactive primitives use fine-grained signals-based reactivity. The specific implementation used is pluggable and can be integrated with any implementation or
-even multiple at once.
-
-For Ember, we use glimmer's implementation of `Signal` (`@tracked`) and `Computed` (`@cached`), though the integration does not have to be an implementation of signals
-at all! For instance, `react` could be integrated by utilizing [useSyncExternalStore](https://react.dev/reference/react/useSyncExternalStore) in place of signals and subscribing to all potential changes via the notification manager.
+We find this approach naturally solves many of the concerns and limitations given around various signals implementations, and fits WarpDrive's specific use cases exceedingly well. WarpDrive manages
+normalized caches of raw data - usually json - that are typically asynchronously retrieved from latent sources. By separating signal from storage, we can safely perform cache updates even when multiple asynchronous steps are involved to do so, while only notifying consumers when updates are complete.
