@@ -1,0 +1,67 @@
+{
+  "name": "@warp-drive/schema-dsl",
+  "private": true,
+  "version": "5.9.0-alpha.0",
+  "description": "TypeScript DSL for defining WarpDrive schemas",
+  "license": "MIT",
+  "author": "Chris Thoburn <runspired@users.noreply.github.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com:warp-drive-data/warp-drive.git",
+    "directory": "warp-drive-packages/schema-dsl"
+  },
+  "homepage": "https://github.com/warp-drive-data/warp-drive",
+  "bugs": "https://github.com/warp-drive-data/warp-drive/issues",
+  "scripts": {
+    "build:pkg": "vite build;",
+    "prepack": "pnpm run build:pkg",
+    "lint": "eslint . --quiet --cache --cache-strategy=content",
+    "sync": "echo \"syncing\"",
+    "start": "vite"
+  },
+  "files": [
+    "dist",
+    "declarations",
+    "src/vite-plugin.js",
+    "README.md",
+    "LICENSE.md",
+    "logos"
+  ],
+  "exports": {
+    ".": {
+      "types": "./declarations/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./virtual": {
+      "types": "./virtual.d.ts"
+    },
+    "./vite": {
+      "default": "./src/vite-plugin.js"
+    },
+    "./*": {
+      "types": "./declarations/*.d.ts",
+      "default": "./dist/*.js"
+    }
+  },
+  "peerDependencies": {
+    "@warp-drive/core": "workspace:*"
+  },
+  "dependencies": {
+    "@babel/parser": "^7.28.3",
+    "@babel/traverse": "^7.28.3",
+    "glob": "^11.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.28.3",
+    "@babel/plugin-transform-typescript": "^7.28.0",
+    "@babel/preset-typescript": "^7.27.1",
+    "@warp-drive/internal-config": "workspace:*",
+    "@warp-drive/core": "workspace:*",
+    "typescript": "^5.9.2",
+    "vite": "^7.1.3"
+  },
+  "volta": {
+    "extends": "../../package.json"
+  },
+  "packageManager": "pnpm@10.15.0"
+}

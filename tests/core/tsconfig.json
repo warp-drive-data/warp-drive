@@ -22,6 +22,7 @@
       "@glint/ember-tsc/types",
       "ember-source/types",
       "vite/client",
+      "@warp-drive/schema-dsl/virtual",
       "@ember-data/unpublished-test-infra/test-support/asserts/index"
     ],
     "paths": {
@@ -37,6 +38,8 @@
       "@warp-drive/json-api/*": ["../../warp-drive-packages/json-api/declarations/*"],
       "@warp-drive/utilities": ["../../warp-drive-packages/utilities/declarations"],
       "@warp-drive/utilities/*": ["../../warp-drive-packages/utilities/declarations/*"],
+      "@warp-drive/schema-dsl": ["../../warp-drive-packages/schema-dsl/declarations"],
+      "@warp-drive/schema-dsl/*": ["../../warp-drive-packages/schema-dsl/declarations/*"],
       "@ember-data/unpublished-test-infra": ["../../packages/unpublished-test-infra/unstable-preview-types"],
       "@ember-data/unpublished-test-infra/*": ["../../packages/unpublished-test-infra/unstable-preview-types/*"]
     },
@@ -69,6 +72,9 @@
     },
     {
       "path": "../../warp-drive-packages/utilities"
+    },
+    {
+      "path": "../../warp-drive-packages/schema-dsl"
     },
     {
       "path": "../../packages/unpublished-test-infra"

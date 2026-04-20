@@ -47,6 +47,7 @@
     "@warp-drive/holodeck": "workspace:*",
     "@warp-drive/internal-config": "workspace:*",
     "@warp-drive/json-api": "workspace:*",
+    "@warp-drive/schema-dsl": "workspace:*",
     "eslint-plugin-warp-drive": "workspace:*",
     "babel-plugin-ember-template-compilation": "^4.0.0",
     "decorator-transforms": "^2.2.2",
