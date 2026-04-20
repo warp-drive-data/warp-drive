@@ -6,6 +6,23 @@ html:not(.dark) .dark-only {
   display: none !important;
 }
 
+.vp-doc figure {
+  margin: 1.5rem 0;
+  text-align: center;
+}
+
+.vp-doc figure img {
+  display: inline-block;
+}
+
+.vp-doc figcaption {
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  color: var(--vp-c-text-2);
+  font-style: italic;
+  line-height: 1.4;
+}
+
 .VPSidebarItem .level-1 > .item > p.text {
   font-weight: 600;
   color: var(--vp-c-text-1);
