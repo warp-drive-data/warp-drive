@@ -9,7 +9,7 @@ graph LR;
 
 > **Note** In our charts we use dotted lines for singular relationships and thick solid lines for collection relationships.
 
-Or, maybe more accurately since this is a [*reflexive*](../../terminology.md#reflexive) relationship:
+Or, maybe more accurately since this is a [*reflexive*](../../misc/terminology.md#reflexive) relationship:
 
 ```mermaid
 graph LR;

@@ -13,8 +13,8 @@ Data in the cache is conceptualized as belonging to one of three forms
 
 Each form of data can be accessed and managed reactively through one of two modes
 
-- *(upcoming, default in v6)* [PolarisMode](../../schemas/resources/polaris-mode.md)
-- *(current, default in v5)* [LegacyMode](../../schemas/resources/legacy-mode.md)
+- *(upcoming, default in v6)* [PolarisMode](./../schemas/resources/polaris-mode.md)
+- *(current, default in v5)* [LegacyMode](./../schemas/resources/legacy-mode.md)
 
 These modes are interoperable. The reactive object (record) for a resource in PolarisMode can relate to
 a record in LegacyMode and vice-versa. This interoperability is true whether the record in LegacyMode is

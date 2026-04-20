@@ -6,7 +6,7 @@ title: Overview
 
 ## Feature Overview
 - [Inverses](./features/inverses.md)
-- [LinksMode](../links-mode.md)
+- [LinksMode](../misc/links-mode.md)
 - [Polymorphism](./features/polymorphism.md)
 
 <!--
@@ -42,4 +42,4 @@ title: Overview
 
 # Misc
 
-- [Terminology](../terminology.md#relationships)
+- [Terminology](../misc/terminology.md#relationships)

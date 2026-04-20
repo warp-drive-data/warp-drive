@@ -92,7 +92,7 @@ However, every specific automobile belongs to a more specialized type. For insta
 }
 ```
 
-In this case, we can refer to both type `pickup` and type `racecar` as satisfying type `automobile`. We refer to `pickup` and `racecar` as "concrete types" and to `automobile` as an `abstract type`. For more, read about [polymorphism in depth](./relational-data/features/polymorphism.md).
+In this case, we can refer to both type `pickup` and type `racecar` as satisfying type `automobile`. We refer to `pickup` and `racecar` as "concrete types" and to `automobile` as an `abstract type`. For more, read about [polymorphism in depth](./../relational-data/features/polymorphism.md).
 
 ### Field
 

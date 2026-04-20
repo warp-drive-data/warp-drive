@@ -183,7 +183,7 @@ heavy immutability tricks such as spread, slice, and map.
 
 ## Mutation Management {#mutations}
 
-[Mutation](./the-manual/concepts/mutations.md) is handled within controlled contexts. The data to edit is "checked out" for editing, giving access to a mutable version. Local edits are seamlessly preserved if the user navigates away and returns without saving, and the changes are buffered from appearing elsewhere in your app until they are also committed to the server.
+[Mutation](./the-manual/mutations) is handled within controlled contexts. The data to edit is "checked out" for editing, giving access to a mutable version. Local edits are seamlessly preserved if the user navigates away and returns without saving, and the changes are buffered from appearing elsewhere in your app until they are also committed to the server.
 
 ```ts
 import { checkout } from '@warp-drive/core/reactive';
