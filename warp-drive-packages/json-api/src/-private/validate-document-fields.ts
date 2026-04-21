@@ -94,38 +94,59 @@ function validateBelongsToLinksMode(
     );
   }
 
-  if (!relationshipDoc.links?.related) {
-    throw new Error(
-      `Cannot fetch ${resourceType}.${field.name} because the field is in linksMode but the related link is missing`
-    );
-  }
+  if (!field.options.async) {
+    const relationshipData = relationshipDoc.data;
+    if (Array.isArray(relationshipData)) {
+      throw new Error(
+        `Cannot fetch ${resourceType}.${field.name} because the relationship data for a belongsTo relationship is unexpectedly an array`
+      );
+    }
 
-  const relationshipData = relationshipDoc.data;
-  if (Array.isArray(relationshipData)) {
-    throw new Error(
-      `Cannot fetch ${resourceType}.${field.name} because the relationship data for a belongsTo relationship is unexpectedly an array`
-    );
-  }
-  // Explicitly allow `null`! Missing key or `undefined` are always invalid.
-  if (relationshipData === undefined) {
-    throw new Error(
-      `Cannot fetch ${resourceType}.${field.name} because the field is in linksMode but the relationship data is undefined`
-    );
-  }
-  if (relationshipData === null) {
-    return;
-  }
+    /**
+     * If we are sync, we must have a related link when we have no related data field
+     *
+     * We explicitly allow `null`! Missing key or `undefined` are always invalid.
+     */
+    if (relationshipData === undefined && !relationshipDoc.links?.related) {
+      throw new Error(
+        `Cannot fetch ${resourceType}.${field.name} because the field is in linksMode but the relationship data is undefined and no link is present`
+      );
+    }
 
-  if (!options.verifyIncluded) {
-    return;
-  }
-  const includedDoc = options.included?.find(
-    (doc) => doc.type === relationshipData.type && doc.id === relationshipData.id
-  );
-  if (!includedDoc) {
-    throw new Error(
-      `Cannot fetch ${resourceType}.${field.name} because the field is in linksMode but the related data is not included`
+    /**
+     * Nothing more to verify since we are empty
+     */
+    if (!relationshipData) {
+      return;
+    }
+
+    /**
+     * We are explicitly asked to not verify full-linkage
+     */
+    if (!options.verifyIncluded) {
+      return;
+    }
+
+    /**
+     * If we are sync and have relationship data, we must have full linkage to an included resource
+     */
+    const includedDoc = options.included?.find(
+      (doc) => doc.type === relationshipData.type && doc.id === relationshipData.id
     );
+    if (!includedDoc) {
+      throw new Error(
+        `Cannot fetch ${resourceType}.${field.name} because the field is in linksMode but the related data is not included`
+      );
+    }
+  } else {
+    /**
+     * If we are async, we must have a related link.
+     */
+    if (!relationshipDoc.links?.related) {
+      throw new Error(
+        `Cannot fetch ${resourceType}.${field.name} because the field is in linksMode but the related link is missing`
+      );
+    }
   }
 }
 

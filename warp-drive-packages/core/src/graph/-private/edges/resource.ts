@@ -40,13 +40,10 @@ export function legacyGetResourceRelationshipData(source: ResourceEdge, getRemot
   source.accessed = true;
   let data: ResourceKey | null | undefined;
   const payload: ResourceRelationship = {};
-  if (getRemoteState && source.remoteState) {
-    data = source.remoteState;
-  } else if (!getRemoteState && source.localState) {
-    data = source.localState;
-  }
-  if (((getRemoteState && source.remoteState === null) || source.localState === null) && source.state.hasReceivedData) {
-    data = null;
+  if (getRemoteState && (source.remoteState || source.state.hasReceivedData)) {
+    data = source.remoteState ?? null;
+  } else if (!getRemoteState && (source.localState || source.state.hasReceivedData)) {
+    data = source.localState ?? null;
   }
 
   if (source.links) {
