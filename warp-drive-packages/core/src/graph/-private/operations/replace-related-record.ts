@@ -72,10 +72,11 @@ export default function replaceRelatedRecord(graph: Graph, op: ReplaceRelatedRec
 
   // nothing for us to do
   if (op.value === existingState) {
-    // if we were empty before but now know we are empty this needs to be true
-    state.hasReceivedData = true;
     // if this is a remote update we still sync
     if (isRemote) {
+      // if we were empty before but now know we are empty this needs to be true
+      state.hasReceivedData = true;
+
       const { localState } = relationship;
       // don't sync if localState is a new record and our remoteState is null
       if (localState && checkIfNew(graph._realStore, localState) && !existingState) {
@@ -121,7 +122,14 @@ export default function replaceRelatedRecord(graph: Graph, op: ReplaceRelatedRec
 
   // update value to the new value
   relationship[prop] = op.value;
-  state.hasReceivedData = true;
+
+  /**
+   * Local mutations never give us additional information about
+   * whether the relationship has received data.
+   */
+  if (isRemote) {
+    state.hasReceivedData = true;
+  }
   state.isEmpty = op.value === null;
   state.isStale = false;
   state.hasFailedLoadAttempt = false;

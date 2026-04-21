@@ -70,29 +70,6 @@ export default function updateRelationshipOperation(
         true
       );
     }
-  } else if (definition.isAsync === false && !state.hasReceivedData) {
-    // hasRelationshipDataProperty = true;
-    // if (isCollection) {
-    //   graph.update(
-    //     {
-    //       op: 'replaceRelatedRecords',
-    //       record: identifier,
-    //       field: op.field,
-    //       value: [],
-    //     },
-    //     true
-    //   );
-    // } else {
-    //   graph.update(
-    //     {
-    //       op: 'replaceRelatedRecord',
-    //       record: identifier,
-    //       field: op.field,
-    //       value: null,
-    //     },
-    //     true
-    //   );
-    // }
   }
 
   if (payload.links) {

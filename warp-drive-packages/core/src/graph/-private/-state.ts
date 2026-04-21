@@ -1,3 +1,6 @@
+import { LOG_GRAPH } from '@warp-drive/build-config/debugging';
+import { DEBUG } from '@warp-drive/build-config/env';
+
 export interface RelationshipState {
   /*
       This flag indicates whether we should consider the content
@@ -103,6 +106,25 @@ export interface RelationshipState {
 }
 
 export function createState(): RelationshipState {
+  if (DEBUG) {
+    if (LOG_GRAPH) {
+      let hasReceivedData = false;
+      return {
+        get hasReceivedData() {
+          return hasReceivedData;
+        },
+        set hasReceivedData(value: boolean) {
+          hasReceivedData = value;
+        },
+        isEmpty: true,
+        isStale: false,
+        hasFailedLoadAttempt: false,
+        shouldForceReload: false,
+        hasDematerializedInverse: false,
+      };
+    }
+  }
+
   return {
     hasReceivedData: false,
     isEmpty: true,

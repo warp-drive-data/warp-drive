@@ -1,6 +1,5 @@
 import schemas from 'virtual:warp-drive-schemas';
 
-import { withDefaults } from '@warp-drive/core/reactive';
 import type { LegacyResourceSchema, PolarisResourceSchema } from '@warp-drive/core/types/schema/fields';
 import { module, setupTest, test } from '@warp-drive/diagnostic/ember';
 

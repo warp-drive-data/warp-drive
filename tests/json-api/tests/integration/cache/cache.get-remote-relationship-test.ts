@@ -1,5 +1,5 @@
 import { useRecommendedStore } from '@warp-drive/core';
-import { withDefaults } from '@warp-drive/core/reactive';
+import { checkout, withDefaults } from '@warp-drive/core/reactive';
 import { isPrivateStore } from '@warp-drive/core/store/-private';
 import type { ResourceKey } from '@warp-drive/core/types';
 import type { Type } from '@warp-drive/core/types/symbols';
@@ -130,6 +130,191 @@ module('<JSONAPICache>.getRemoteRelationship', function () {
         },
       ],
     });
+
+    const state = cache.getRemoteRelationship(user.$key, 'bestFriend');
+    assert.deepEqual(
+      state?.data,
+      { id: '2', type: 'user', lid: '@lid:user-2' } as ResourceKey,
+      'The cache value is present'
+    );
+    assert.deepEqual(
+      state,
+      {
+        data: { id: '2', type: 'user', lid: '@lid:user-2' } as ResourceKey,
+      },
+      'The cache value does not have extra properties'
+    );
+  });
+
+  test('returns the correct remote relationship data for a dirty belongsTo (originally null)', async function (assert) {
+    const store = isPrivateStore(new TestStore());
+    const cache = store.cache;
+    const user = store.push<User>({
+      data: {
+        id: '1',
+        type: 'user',
+        attributes: {
+          name: 'John Doe',
+        },
+        relationships: {
+          bestFriend: {
+            data: null,
+          },
+        },
+      },
+    });
+    const user2 = store.push<User>({
+      data: {
+        id: '2',
+        type: 'user',
+        attributes: {
+          name: 'Jane Doe',
+        },
+      },
+    });
+    const editable = await checkout<User>(user);
+    editable.bestFriend = user2;
+
+    const state = cache.getRemoteRelationship(user.$key, 'bestFriend');
+    assert.equal(state?.data, null, 'The cache value is defined as null');
+    assert.deepEqual(
+      state,
+      {
+        data: null,
+      },
+      'The cache value does not have extra properties'
+    );
+  });
+
+  test('returns the correct remote relationship data for a dirty never-set belongsTo (originally undefined)', async function (assert) {
+    const store = isPrivateStore(new TestStore());
+    const cache = store.cache;
+    const user = store.push<User>({
+      data: {
+        id: '1',
+        type: 'user',
+        attributes: {
+          name: 'John Doe',
+        },
+        relationships: {
+          bestFriend: { links: { related: '/users/1/relationships/bestFriend' } },
+        },
+      },
+    });
+    const user2 = store.push<User>({
+      data: {
+        id: '2',
+        type: 'user',
+        attributes: {
+          name: 'Jane Doe',
+        },
+      },
+    });
+    const editable = await checkout<User>(user);
+    editable.bestFriend = user2;
+
+    const key = user.$key;
+    const state = cache.getRemoteRelationship(key, 'bestFriend');
+    assert.false('data' in state, 'The cache value does not have a data property');
+    assert.deepEqual(
+      state,
+      {
+        links: {
+          related: '/users/1/relationships/bestFriend',
+        },
+      },
+      'The cache value does not have extra properties'
+    );
+  });
+
+  test('returns the correct remote relationship data for a dirty belongsTo (originally different value)', async function (assert) {
+    const store = isPrivateStore(new TestStore());
+    const cache = store.cache;
+    const user = store.push<User>({
+      data: {
+        id: '1',
+        type: 'user',
+        attributes: {
+          name: 'John Doe',
+        },
+        relationships: {
+          bestFriend: {
+            data: {
+              id: '2',
+              type: 'user',
+            },
+          },
+        },
+      },
+      included: [
+        {
+          id: '2',
+          type: 'user',
+          attributes: {
+            name: 'Jane Doe',
+          },
+        },
+      ],
+    });
+
+    const user3 = store.push<User>({
+      data: {
+        id: '3',
+        type: 'user',
+        attributes: {
+          name: 'Janet Doe',
+        },
+      },
+    });
+    const editable = await checkout<User>(user);
+    editable.bestFriend = user3;
+
+    const state = cache.getRemoteRelationship(user.$key, 'bestFriend');
+    assert.deepEqual(
+      state?.data,
+      { id: '2', type: 'user', lid: '@lid:user-2' } as ResourceKey,
+      'The cache value is present'
+    );
+    assert.deepEqual(
+      state,
+      {
+        data: { id: '2', type: 'user', lid: '@lid:user-2' } as ResourceKey,
+      },
+      'The cache value does not have extra properties'
+    );
+  });
+
+  test('returns the correct remote relationship data for a dirty belongsTo (originally had value, now null)', async function (assert) {
+    const store = isPrivateStore(new TestStore());
+    const cache = store.cache;
+    const user = store.push<User>({
+      data: {
+        id: '1',
+        type: 'user',
+        attributes: {
+          name: 'John Doe',
+        },
+        relationships: {
+          bestFriend: {
+            data: {
+              id: '2',
+              type: 'user',
+            },
+          },
+        },
+      },
+      included: [
+        {
+          id: '2',
+          type: 'user',
+          attributes: {
+            name: 'Jane Doe',
+          },
+        },
+      ],
+    });
+    const editable = await checkout<User>(user);
+    editable.bestFriend = null;
 
     const state = cache.getRemoteRelationship(user.$key, 'bestFriend');
     assert.deepEqual(
