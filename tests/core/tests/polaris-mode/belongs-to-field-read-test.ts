@@ -176,7 +176,7 @@ module('Reads | belongsTo in linksMode', function (hooks) {
     assert.equal(record.bestFriend?.name, 'Ray', 'bestFriend.name is accessible');
   });
 
-  test('we error in linksMode if the relationship does not include a link', async function (assert) {
+  test('(sync) we error in linksMode if the relationship does not include a link or data', async function (assert) {
     const store = new Store();
     const { schema } = store;
 
@@ -209,8 +209,7 @@ module('Reads | belongsTo in linksMode', function (hooks) {
             },
             relationships: {
               bestFriend: {
-                // oops we forgot links
-                data: { type: 'user', id: '2' },
+                // oops we forgot links and data
               },
             },
           },
@@ -234,7 +233,7 @@ module('Reads | belongsTo in linksMode', function (hooks) {
     );
   });
 
-  test('we error in linksMode if the relationship includes do not include a link', async function (assert) {
+  test('(sync) we error in linksMode if an included includes do not include a link or data', async function (assert) {
     const store = new Store();
     const { schema } = store;
 
@@ -281,8 +280,7 @@ module('Reads | belongsTo in linksMode', function (hooks) {
               },
               relationships: {
                 bestFriend: {
-                  // oops we forgot links
-                  data: { type: 'user', id: '1' },
+                  // oops we forgot links and data
                 },
               },
             },
@@ -336,65 +334,7 @@ module('Reads | belongsTo in linksMode', function (hooks) {
     );
   });
 
-  test('we error in linksMode if the relationship data is undefined', async function (assert) {
-    const store = new Store();
-    const { schema } = store;
-
-    schema.registerResource(
-      withDefaults({
-        type: 'user',
-        fields: [
-          {
-            name: 'name',
-            kind: 'field',
-          },
-          {
-            name: 'bestFriend',
-            type: 'user',
-            kind: 'belongsTo',
-            options: { inverse: 'bestFriend', async: false, linksMode: true },
-          },
-        ],
-      })
-    );
-
-    await assert.expectAssertion(
-      () =>
-        store.push<User>({
-          data: {
-            type: 'user',
-            id: '1',
-            attributes: {
-              name: 'Chris',
-            },
-            relationships: {
-              bestFriend: {
-                links: { related: '/user/1/bestFriend' },
-                // oops we forgot data
-              },
-            },
-          },
-          included: [
-            {
-              type: 'user',
-              id: '2',
-              attributes: {
-                name: 'Rey',
-              },
-              relationships: {
-                bestFriend: {
-                  links: { related: '/user/2/bestFriend' },
-                  data: { type: 'user', id: '1' },
-                },
-              },
-            },
-          ],
-        }),
-      'Cannot fetch user.bestFriend because the field is in linksMode but the relationship data is undefined'
-    );
-  });
-
-  test('we do not error in linksMode if the relationship data is null', function (assert) {
+  test('(sync) we do not error in linksMode if the relationship data is null', function (assert) {
     const store = new Store();
     const { schema } = store;
 
@@ -425,7 +365,6 @@ module('Reads | belongsTo in linksMode', function (hooks) {
         },
         relationships: {
           bestFriend: {
-            links: { related: '/user/1/bestFriend' },
             data: null,
           },
         },
