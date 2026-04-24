@@ -21,6 +21,15 @@ function extractStringValue(node) {
   return undefined;
 }
 
+function extractPrimitiveValue(node) {
+  if (!node) return undefined;
+  if (node.type === 'StringLiteral') return node.value;
+  if (node.type === 'BooleanLiteral') return node.value;
+  if (node.type === 'NumericLiteral') return node.value;
+  if (node.type === 'NullLiteral') return null;
+  return undefined;
+}
+
 function extractObjectOptions(node) {
   const opts = {};
   if (!node || node.type !== 'ObjectExpression') return opts;
@@ -30,9 +39,10 @@ function extractObjectOptions(node) {
     const key = prop.key.type === 'Identifier' ? prop.key.name : extractStringValue(prop.key);
     if (!key) continue;
 
-    if (prop.value.type === 'StringLiteral') opts[key] = prop.value.value;
-    else if (prop.value.type === 'BooleanLiteral') opts[key] = prop.value.value;
-    else if (prop.value.type === 'NumericLiteral') opts[key] = prop.value.value;
+    const val = extractPrimitiveValue(prop.value);
+    if (val !== undefined) {
+      opts[key] = val;
+    }
   }
 
   return opts;
@@ -45,6 +55,10 @@ function decoratorName(node) {
   if (expr.type === 'CallExpression' && expr.callee.type === 'Identifier') return expr.callee.name;
   return null;
 }
+
+// ---------------------------------------------------------------------------
+// Parse functions for class decorators
+// ---------------------------------------------------------------------------
 
 function parseResourceArgs(node) {
   if (node.type !== 'Decorator') return null;
@@ -68,6 +82,69 @@ function parseResourceArgs(node) {
 
   return null;
 }
+
+function parseObjectClassArgs(node) {
+  if (node.type !== 'Decorator') return null;
+  const expr = node.expression;
+
+  if (expr.type === 'Identifier') return {};
+
+  if (expr.type === 'CallExpression') {
+    const args = expr.arguments;
+    if (args.length === 0) return {};
+
+    if (args[0].type === 'StringLiteral') {
+      return { type: args[0].value };
+    }
+    if (args[0].type === 'ObjectExpression') {
+      return extractObjectOptions(args[0]);
+    }
+  }
+
+  return null;
+}
+
+function parseTraitClassArgs(node) {
+  if (node.type !== 'Decorator') return null;
+  const expr = node.expression;
+
+  if (expr.type === 'Identifier') return {};
+
+  if (expr.type === 'CallExpression') {
+    const args = expr.arguments;
+    if (args.length === 0) return {};
+
+    if (args[0].type === 'StringLiteral') {
+      const opts = args[1] ? extractObjectOptions(args[1]) : {};
+      return { name: args[0].value, mode: opts.mode };
+    }
+    if (args[0].type === 'ObjectExpression') {
+      const opts = extractObjectOptions(args[0]);
+      return { mode: opts.mode };
+    }
+  }
+
+  return null;
+}
+
+function parseTraitCompositionArgs(node, importMap) {
+  if (node.type !== 'Decorator') return null;
+  const expr = node.expression;
+
+  if (expr.type !== 'CallExpression') return null;
+
+  const traits = [];
+  for (const arg of expr.arguments) {
+    if (arg.type === 'Identifier') {
+      traits.push(dasherize(arg.name));
+    }
+  }
+  return traits.length > 0 ? traits : null;
+}
+
+// ---------------------------------------------------------------------------
+// Parse functions for property decorators
+// ---------------------------------------------------------------------------
 
 function parseFieldArgs(node) {
   if (node.type !== 'Decorator') return null;
@@ -93,13 +170,136 @@ function parseIdArgs(node) {
   return null;
 }
 
+function parseLocalArgs(node) {
+  if (node.type !== 'Decorator') return null;
+  const expr = node.expression;
+
+  if (expr.type === 'Identifier') return {};
+  if (expr.type === 'CallExpression' && expr.arguments.length > 0) {
+    const opts = extractObjectOptions(expr.arguments[0]);
+    return { defaultValue: opts.defaultValue };
+  }
+  return null;
+}
+
+function parseHashArgs(node) {
+  if (node.type !== 'Decorator') return null;
+  const expr = node.expression;
+
+  if (expr.type === 'CallExpression' && expr.arguments.length > 0) {
+    const opts = extractObjectOptions(expr.arguments[0]);
+    return { type: opts.type };
+  }
+  return null;
+}
+
+function parseObjectFieldArgs(node) {
+  if (node.type !== 'Decorator') return null;
+  const expr = node.expression;
+
+  if (expr.type === 'Identifier') return {};
+  if (expr.type === 'CallExpression' && expr.arguments.length > 0) {
+    const opts = extractObjectOptions(expr.arguments[0]);
+    return { sourceKey: opts.sourceKey, type: opts.type };
+  }
+  return null;
+}
+
+function parseArrayFieldArgs(node) {
+  if (node.type !== 'Decorator') return null;
+  const expr = node.expression;
+
+  if (expr.type === 'Identifier') return {};
+  if (expr.type === 'CallExpression' && expr.arguments.length > 0) {
+    const opts = extractObjectOptions(expr.arguments[0]);
+    return { sourceKey: opts.sourceKey, type: opts.type };
+  }
+  return null;
+}
+
+function parseDerivedArgs(node) {
+  if (node.type !== 'Decorator') return null;
+  const expr = node.expression;
+
+  if (expr.type === 'CallExpression' && expr.arguments.length > 0) {
+    const opts = extractObjectOptions(expr.arguments[0]);
+    return { type: opts.type };
+  }
+  return null;
+}
+
+function parseAliasArgs(node) {
+  if (node.type !== 'Decorator') return null;
+  const expr = node.expression;
+
+  if (expr.type === 'CallExpression' && expr.arguments.length > 0) {
+    const opts = extractObjectOptions(expr.arguments[0]);
+    return { kind: opts.kind, name: opts.name, type: opts.type, sourceKey: opts.sourceKey };
+  }
+  return null;
+}
+
+function parseAttributeArgs(node) {
+  if (node.type !== 'Decorator') return null;
+  const expr = node.expression;
+
+  if (expr.type === 'Identifier') return {};
+  if (expr.type === 'CallExpression' && expr.arguments.length > 0) {
+    const opts = extractObjectOptions(expr.arguments[0]);
+    return { sourceKey: opts.sourceKey, type: opts.type };
+  }
+  return null;
+}
+
+function parseBelongsToArgs(node) {
+  if (node.type !== 'Decorator') return null;
+  const expr = node.expression;
+
+  if (expr.type === 'CallExpression' && expr.arguments.length > 0) {
+    const opts = extractObjectOptions(expr.arguments[0]);
+    return {
+      type: opts.type,
+      inverse: opts.inverse !== undefined ? opts.inverse : null,
+      async: opts.async,
+      polymorphic: opts.polymorphic,
+      as: opts.as,
+      sourceKey: opts.sourceKey,
+    };
+  }
+  return null;
+}
+
+function parseHasManyArgs(node) {
+  if (node.type !== 'Decorator') return null;
+  const expr = node.expression;
+
+  if (expr.type === 'CallExpression' && expr.arguments.length > 0) {
+    const opts = extractObjectOptions(expr.arguments[0]);
+    return {
+      type: opts.type,
+      inverse: opts.inverse !== undefined ? opts.inverse : null,
+      async: opts.async,
+      polymorphic: opts.polymorphic,
+      as: opts.as,
+      sourceKey: opts.sourceKey,
+    };
+  }
+  return null;
+}
+
+// ---------------------------------------------------------------------------
+// Schema extraction
+// ---------------------------------------------------------------------------
+
 function extractSchemas(source) {
   const ast = parse(source, {
     sourceType: 'module',
     plugins: ['typescript', ['decorators', { decoratorsBeforeExport: true }]],
   });
 
-  const schemas = [];
+  const resources = [];
+  const objects = [];
+  const traits = [];
   const importMap = {};
 
   traverse(ast, {
@@ -117,24 +317,36 @@ function extractSchemas(source) {
       const node = path.node;
       if (!node.decorators || node.decorators.length === 0) return;
 
-      let resourceArgs = null;
+      // Determine which class decorator is applied
+      let classKind = null; // 'resource' | 'object' | 'trait'
+      let classArgs = null;
+      let composedTraits = null;
+
       for (const dec of node.decorators) {
         const name = decoratorName(dec);
         if (!name) continue;
         const original = importMap[name] ?? name;
-        if (original === 'Resource') {
-          resourceArgs = parseResourceArgs(dec);
-          break;
+
+        if (original === 'Resource' && !classArgs) {
+          classKind = 'resource';
+          classArgs = parseResourceArgs(dec);
+        } else if (original === 'ObjectSchema' && !classArgs) {
+          classKind = 'object';
+          classArgs = parseObjectClassArgs(dec);
+        } else if (original === 'Trait' && !classArgs) {
+          classKind = 'trait';
+          classArgs = parseTraitClassArgs(dec);
+        } else if (original === 'trait') {
+          composedTraits = parseTraitCompositionArgs(dec, importMap);
         }
       }
-      if (!resourceArgs) return;
+
+      if (!classArgs) return;
 
       const className = node.id?.name;
-      const type = resourceArgs.type ?? (className ? dasherize(className) : 'unknown');
-      const isLegacy = resourceArgs.legacy === true;
-
       const fields = [];
       let identity = null;
+      let hashField = null;
 
       for (const member of node.body.body) {
         if (member.type !== 'ClassProperty' || !member.decorators) continue;
@@ -164,15 +376,136 @@ function extractSchemas(source) {
             }
             break;
           }
+          if (original === 'local') {
+            const opts = parseLocalArgs(dec);
+            if (opts) {
+              const f = { kind: '@local', name: propName };
+              if (opts.defaultValue !== undefined) f.options = { defaultValue: opts.defaultValue };
+              fields.push(f);
+            }
+            break;
+          }
+          if (original === 'hash') {
+            const opts = parseHashArgs(dec);
+            if (opts) {
+              hashField = { kind: '@hash', name: propName, type: opts.type };
+            }
+            break;
+          }
+          if (original === 'object') {
+            const opts = parseObjectFieldArgs(dec);
+            if (opts) {
+              const f = { kind: 'object', name: propName };
+              if (opts.type) f.type = opts.type;
+              if (opts.sourceKey) f.sourceKey = opts.sourceKey;
+              fields.push(f);
+            }
+            break;
+          }
+          if (original === 'array') {
+            const opts = parseArrayFieldArgs(dec);
+            if (opts) {
+              const f = { kind: 'array', name: propName };
+              if (opts.type) f.type = opts.type;
+              if (opts.sourceKey) f.sourceKey = opts.sourceKey;
+              fields.push(f);
+            }
+            break;
+          }
+          if (original === 'derived') {
+            const opts = parseDerivedArgs(dec);
+            if (opts) {
+              const f = { kind: 'derived', name: propName, type: opts.type };
+              fields.push(f);
+            }
+            break;
+          }
+          if (original === 'alias') {
+            const opts = parseAliasArgs(dec);
+            if (opts) {
+              const aliasTarget = { kind: opts.kind, name: opts.name };
+              if (opts.type) aliasTarget.type = opts.type;
+              if (opts.sourceKey) aliasTarget.sourceKey = opts.sourceKey;
+              const f = { kind: 'alias', name: propName, type: null, options: aliasTarget };
+              fields.push(f);
+            }
+            break;
+          }
+          if (original === 'attribute') {
+            const opts = parseAttributeArgs(dec);
+            if (opts) {
+              const f = { kind: 'attribute', name: propName };
+              if (opts.type) f.type = opts.type;
+              if (opts.sourceKey) f.sourceKey = opts.sourceKey;
+              fields.push(f);
+            }
+            break;
+          }
+          if (original === 'belongsTo') {
+            const opts = parseBelongsToArgs(dec);
+            if (opts) {
+              const f = { kind: 'belongsTo', name: propName, type: opts.type, options: {} };
+              f.options.async = opts.async !== undefined ? opts.async : false;
+              f.options.inverse = opts.inverse !== undefined ? opts.inverse : null;
+              if (opts.polymorphic) f.options.polymorphic = opts.polymorphic;
+              if (opts.as) f.options.as = opts.as;
+              if (opts.sourceKey) f.sourceKey = opts.sourceKey;
+              fields.push(f);
+            }
+            break;
+          }
+          if (original === 'hasMany') {
+            const opts = parseHasManyArgs(dec);
+            if (opts) {
+              const f = { kind: 'hasMany', name: propName, type: opts.type, options: {} };
+              f.options.async = opts.async !== undefined ? opts.async : false;
+              f.options.inverse = opts.inverse !== undefined ? opts.inverse : null;
+              if (opts.polymorphic) f.options.polymorphic = opts.polymorphic;
+              if (opts.as) f.options.as = opts.as;
+              if (opts.sourceKey) f.sourceKey = opts.sourceKey;
+              fields.push(f);
+            }
+            break;
+          }
         }
       }
 
-      schemas.push({ type, isLegacy, identityField: resourceArgs.identityField, identity, fields });
+      if (classKind === 'resource') {
+        const type = classArgs.type ?? (className ? dasherize(className) : 'unknown');
+        resources.push({
+          type,
+          isLegacy: classArgs.legacy === true,
+          identityField: classArgs.identityField,
+          identity,
+          fields,
+          traits: composedTraits,
+        });
+      } else if (classKind === 'object') {
+        const type = classArgs.type ?? (className ? dasherize(className) : 'unknown');
+        objects.push({
+          type,
+          hashField,
+          fields,
+        });
+      } else if (classKind === 'trait') {
+        const name = classArgs.name ?? (className ? dasherize(className) : 'unknown');
+        const mode = classArgs.mode ?? 'polaris';
+        traits.push({
+          name,
+          mode,
+          fields,
+          traits: composedTraits,
+        });
+      }
     },
   });
 
-  return schemas;
+  return { resources, objects, traits };
 }
+
+// ---------------------------------------------------------------------------
+// Schema compilation
+// ---------------------------------------------------------------------------
 
 function toResourceSchema(info) {
   const identity = info.identity
@@ -197,9 +530,33 @@ function toResourceSchema(info) {
 
   const schema = { type: info.type, identity, fields };
   if (info.isLegacy) schema.legacy = true;
+  if (info.traits) schema.traits = info.traits;
 
   return schema;
 }
+
+function toObjectSchema(info) {
+  const schema = {
+    type: info.type,
+    identity: info.hashField ?? null,
+    fields: info.fields,
+  };
+  return schema;
+}
+
+function toTrait(info) {
+  const schema = {
+    name: info.name,
+    mode: info.mode,
+    fields: info.fields,
+  };
+  if (info.traits) schema.traits = info.traits;
+  return schema;
+}
+
+// ---------------------------------------------------------------------------
+// Vite plugin
+// ---------------------------------------------------------------------------
 
 /**
  * Vite plugin that compiles `@warp-drive/schema-dsl` decorated
@@ -227,16 +584,31 @@ export function schemaDSL(options) {
 
       const pattern = resolve(root, options.schemas);
       const files = globSync(pattern);
-      const result = [];
+      const allResources = [];
+      const allObjects = [];
+      const allTraits = [];
 
       for (const file of files) {
         const source = readFileSync(file, 'utf-8');
-        for (const info of extractSchemas(source)) {
-          result.push(toResourceSchema(info));
+        const { resources, objects, traits } = extractSchemas(source);
+
+        for (const info of resources) {
+          allResources.push(toResourceSchema(info));
+        }
+        for (const info of objects) {
+          allObjects.push(toObjectSchema(info));
+        }
+        for (const info of traits) {
+          allTraits.push(toTrait(info));
         }
       }
 
-      return `export default ${JSON.stringify(result, null, 2)};`;
+      const lines = [];
+      lines.push(`export const resources = ${JSON.stringify(allResources, null, 2)};`);
+      lines.push(`export const objects = ${JSON.stringify(allObjects, null, 2)};`);
+      lines.push(`export const traits = ${JSON.stringify(allTraits, null, 2)};`);
+      lines.push(`export default resources;`);
+      return lines.join('\n');
     },
   };
 }
