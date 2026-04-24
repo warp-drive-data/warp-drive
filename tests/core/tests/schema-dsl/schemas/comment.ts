@@ -1,4 +1,5 @@
 import { attribute, belongsTo, field, hasMany, Resource, trait } from '@warp-drive/schema-dsl';
+
 import { Timestamped } from './timestamped.ts';
 
 @Resource({ legacy: true })
