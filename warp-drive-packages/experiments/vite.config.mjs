@@ -8,6 +8,7 @@ export const entryPoints = [
   './src/worker-fetch.ts',
   './src/image-worker.ts',
   './src/image-fetch.ts',
+  './src/storage.ts',
 ];
 
 export default createConfig(

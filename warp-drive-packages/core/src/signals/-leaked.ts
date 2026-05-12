@@ -3,6 +3,7 @@ export {
   defineGate,
   defineSignal,
   entangleSignal,
+  makeInitializer,
   signal,
   waitFor,
   gate,
