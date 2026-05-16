@@ -1,6 +1,6 @@
 {
   "name": "ember-data",
-  "version": "5.9.0-alpha.15",
+  "version": "5.9.0-alpha.16",
   "description": "(Legacy) The lightweight reactive data library for Ember applications",
   "keywords": [
     "ember-addon"

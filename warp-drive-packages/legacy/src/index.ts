@@ -120,6 +120,14 @@ export interface LegacyModelAndNetworkAndRequestStoreSetupOptions<T extends Cach
 
 //export type ConfiguredStore<T = unknown> = typeof Store;
 
+/**
+ * The available options when setting up the legacy store,
+ * one of:
+ *
+ * - {@link LegacyModelStoreSetupOptions}
+ * - {@link LegacyModelAndNetworkStoreSetupOptions}
+ * - {@link LegacyModelAndNetworkAndRequestStoreSetupOptions}
+ */
 export type LegacyStoreSetupOptions<T extends Cache = Cache> =
   | LegacyModelStoreSetupOptions<T>
   | LegacyModelAndNetworkStoreSetupOptions<T>
@@ -132,6 +140,8 @@ export declare class ConfiguredStore<T extends { cache: Cache }> extends Store {
 
 /**
  * Use the legacy store with the given options.
+ *
+ * See {@link LegacyStoreSetupOptions} for details on the available options.
  */
 export function useLegacyStore<T extends Cache>(
   options: LegacyModelStoreSetupOptions<T>,

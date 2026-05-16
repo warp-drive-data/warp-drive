@@ -1,6 +1,6 @@
 {
   "name": "@ember-data/graph",
-  "version": "5.9.0-alpha.15",
+  "version": "5.9.0-alpha.16",
   "description": "(Internal) Normalized graph for managing relationships between WarpDrive resources",
   "keywords": [
     "ember-addon"
