@@ -15,7 +15,7 @@ import { recordIdentifierFor, setRecordIdentifier } from '../../store/-private.t
 import { removeRecordIdentifier } from '../../store/-private/caches/instance-cache.ts';
 import type { ResourceKey } from '../../types/identifier.ts';
 import { STRUCTURED } from '../../types/request.ts';
-import type { FieldSchema, GenericField, IdentityField } from '../../types/schema/fields.ts';
+import type { FieldSchema, GenericField, IdentityField, ResourceSchema } from '../../types/schema/fields.ts';
 import { RecordStore } from '../../types/symbols.ts';
 import type { ObjectContext, ResourceContext } from './default-mode.ts';
 import { DefaultMode } from './default-mode.ts';
@@ -119,8 +119,8 @@ export class ReactiveResource {
     const isEmbedded = context.path !== null;
     const schema = context.store.schema as unknown as SchemaService;
     const objectType = isEmbedded ? context.value : resourceKey.type;
-    const ResourceSchema = schema.resource(isEmbedded ? { type: objectType } : resourceKey);
-    const identityField = ResourceSchema.identity;
+    const resourceSchema = schema.resource(isEmbedded ? { type: objectType } : resourceKey);
+    const identityField = resourceSchema.identity;
     const BoundFns = new Map<string | symbol, ProxiedMethod>();
 
     // prettier-ignore
@@ -135,125 +135,142 @@ export class ReactiveResource {
     const fields = isEmbedded ? schema.fields({ type: objectType }) : schema.fields(resourceKey);
     const method = typeof schema.cacheFields === 'function' ? 'cacheFields' : 'fields';
     const cacheFields = isEmbedded ? schema[method]({ type: objectType }) : schema[method](resourceKey);
-
+    const reactivityMode = (schema.resource(resourceKey) as ResourceSchema).reactivityMode ?? 'field';
     const signals = withSignalStore(this);
-    this.___notifications = context.store.notifications.subscribe(
-      resourceKey,
-      (_: ResourceKey, type: NotificationType, key?: string | string[]) => {
-        switch (type) {
-          case 'identity': {
-            if (isEmbedded || !identityField) return; // base paths never apply to embedded records
+    if (reactivityMode !== 'immutable') {
+      this.___notifications = context.store.notifications.subscribe(
+        resourceKey,
+        (_: ResourceKey, type: NotificationType, key?: string | string[]) => {
+          switch (type) {
+            case 'identity': {
+              if (isEmbedded || !identityField) return; // base paths never apply to embedded records
 
-            if (identityField.name && identityField.kind === '@id') {
-              const signal = signals.get('@identity');
-              if (signal) {
-                notifyInternalSignal(signal);
-              }
-            }
-            break;
-          }
-          case 'attributes':
-            if (key) {
-              if (Array.isArray(key)) {
-                if (context.path === null) return; // deep paths will be handled by embedded records
-                // TODO we should have the notification manager
-                // ensure it is safe for each callback to mutate this array
-                if (isPathMatch(context.path, key)) {
-                  // handle the notification
-                  // TODO we should likely handle this notification here
-                  // also we should add a LOGGING flag
-                  // eslint-disable-next-line no-console
-                  console.warn(`Notification unhandled for ${key.join(',')} on ${resourceKey.type}`, proxy);
-                  return;
-                }
-
-                // TODO we should add a LOGGING flag
-                // console.log(`Deep notification skipped for ${key.join('.')} on ${identifier.type}`, proxy);
-                // deep notify the key path
-              } else {
-                if (isEmbedded) return; // base paths never apply to embedded records
-
-                // TODO determine what LOGGING flag to wrap this in if any
-                // console.log(`Notification for ${key} on ${identifier.type}`, proxy);
-                const signal = signals.get(key);
+              if (identityField.name && identityField.kind === '@id') {
+                const signal = signals.get('@identity');
                 if (signal) {
                   notifyInternalSignal(signal);
                 }
-                const field = cacheFields.get(key);
-                if (field?.kind === 'array' || field?.kind === 'schema-array') {
-                  const peeked = signal?.value as ManagedArray | undefined;
-                  if (peeked) {
-                    assert(
-                      `Expected the peekManagedArray for ${field.kind} to return a ManagedArray`,
-                      ARRAY_SIGNAL in peeked
-                    );
-                    const arrSignal = peeked[ARRAY_SIGNAL];
-                    notifyInternalSignal(arrSignal);
-                  }
-                }
-                if (field?.kind === 'object') {
-                  const peeked = peekManagedObject(proxy, field);
-                  if (peeked) {
-                    const objSignal = peeked[OBJECT_SIGNAL];
-                    notifyInternalSignal(objSignal);
-                  }
-                }
               }
+              break;
             }
-            break;
-          case 'relationships':
-            if (key) {
-              if (Array.isArray(key)) {
-                // FIXME
-              } else {
-                if (isEmbedded) return; // base paths never apply to embedded records
+            case 'attributes':
+              if (key) {
+                if (Array.isArray(key)) {
+                  if (context.path === null) return; // deep paths will be handled by embedded records
+                  // TODO we should have the notification manager
+                  // ensure it is safe for each callback to mutate this array
+                  if (isPathMatch(context.path, key)) {
+                    // handle the notification
+                    // TODO we should likely handle this notification here
+                    // also we should add a LOGGING flag
+                    // eslint-disable-next-line no-console
+                    console.warn(`Notification unhandled for ${key.join(',')} on ${resourceKey.type}`, proxy);
+                    return;
+                  }
 
-                const field = cacheFields.get(key);
-                assert(`Expected relationship ${key} to be the name of a field`, field);
-                if (field.kind === 'belongsTo') {
+                  // TODO we should add a LOGGING flag
+                  // console.log(`Deep notification skipped for ${key.join('.')} on ${identifier.type}`, proxy);
+                  // deep notify the key path
+                } else {
+                  if (isEmbedded) return; // base paths never apply to embedded records
+
                   // TODO determine what LOGGING flag to wrap this in if any
                   // console.log(`Notification for ${key} on ${identifier.type}`, proxy);
                   const signal = signals.get(key);
                   if (signal) {
                     notifyInternalSignal(signal);
                   }
-                  // FIXME
-                } else if (field.kind === 'resource') {
-                  // FIXME
-                } else if (field.kind === 'hasMany') {
-                  if (field.options.linksMode) {
-                    const signal = signals.get(key);
-                    if (signal) {
-                      const peeked = signal.value as LegacyManyArray | undefined;
-                      if (peeked) {
-                        notifyInternalSignal(peeked[Context].signal);
-                      }
-                    }
-                    return;
-                  }
-
-                  assert(`Can only use hasMany fields when the resource is in legacy mode`, context.legacy);
-
-                  if (schema._kind('@legacy', 'hasMany').notify(context.store, proxy, resourceKey, field)) {
-                    assert(`Expected options to exist on relationship meta`, field.options);
-                    assert(`Expected async to exist on relationship meta options`, 'async' in field.options);
-                    if (field.options.async) {
-                      const signal = signals.get(key);
-                      if (signal) {
-                        notifyInternalSignal(signal);
-                      }
+                  const field = cacheFields.get(key);
+                  if (field?.kind === 'array' || field?.kind === 'schema-array') {
+                    const peeked = signal?.value as ManagedArray | undefined;
+                    if (peeked) {
+                      assert(
+                        `Expected the peekManagedArray for ${field.kind} to return a ManagedArray`,
+                        ARRAY_SIGNAL in peeked
+                      );
+                      const arrSignal = peeked[ARRAY_SIGNAL];
+                      notifyInternalSignal(arrSignal);
                     }
                   }
-                } else if (field.kind === 'collection') {
-                  // FIXME
+                  if (field?.kind === 'object') {
+                    const peeked = peekManagedObject(proxy, field);
+                    if (peeked) {
+                      const objSignal = peeked[OBJECT_SIGNAL];
+                      notifyInternalSignal(objSignal);
+                    }
+                  }
                 }
               }
-            }
+              break;
+            case 'relationships':
+              if (key) {
+                if (Array.isArray(key)) {
+                  // FIXME
+                } else {
+                  if (isEmbedded) return; // base paths never apply to embedded records
 
-            break;
+                  const field = cacheFields.get(key);
+                  assert(`Expected relationship ${key} to be the name of a field`, field);
+                  if (field.kind === 'belongsTo') {
+                    // TODO determine what LOGGING flag to wrap this in if any
+                    // console.log(`Notification for ${key} on ${identifier.type}`, proxy);
+                    const signal = signals.get(key);
+                    if (signal) {
+                      notifyInternalSignal(signal);
+                    }
+                    // FIXME
+                  } else if (field.kind === 'resource') {
+                    // FIXME
+                  } else if (field.kind === 'hasMany') {
+                    if (field.options.linksMode) {
+                      const signal = signals.get(key);
+                      if (signal) {
+                        const peeked = signal.value as LegacyManyArray | undefined;
+                        if (peeked) {
+                          notifyInternalSignal(peeked[Context].signal);
+                        }
+                      }
+                      return;
+                    }
+
+                    assert(`Can only use hasMany fields when the resource is in legacy mode`, context.legacy);
+
+                    if (schema._kind('@legacy', 'hasMany').notify(context.store, proxy, resourceKey, field)) {
+                      assert(`Expected options to exist on relationship meta`, field.options);
+                      assert(`Expected async to exist on relationship meta options`, 'async' in field.options);
+                      if (field.options.async) {
+                        const signal = signals.get(key);
+                        if (signal) {
+                          notifyInternalSignal(signal);
+                        }
+                      }
+                    }
+                  } else if (field.kind === 'collection') {
+                    // FIXME
+                  }
+                }
+              }
+
+              break;
+          }
         }
-      }
-    );
+      );
+    } else if (DEBUG) {
+      // In dev, we error if we receive any updated state notifications
+      this.___notifications = context.store.notifications.subscribe(
+        resourceKey,
+        (_: ResourceKey, type: NotificationType, key?: string | string[]) => {
+          switch (type) {
+            case 'identity':
+            case 'attributes':
+            case 'relationships':
+              throw new Error(
+                `Received unexpected ${type} update for ResourceType "${resourceKey.type}" id "${resourceKey.id}". The ResourceSchema for this resource defines it to use the 'immutable' reactivityMode`
+              );
+          }
+        }
+      );
+    }
 
     const proxy = new Proxy(this, {
       ownKeys() {
@@ -497,10 +514,11 @@ export class ReactiveResource {
           case 'collection':
             return DefaultMode[field.kind as 'field'].get({
               store: context.store,
-              resourceKey: resourceKey,
+              reactivityMode,
               modeName: context.modeName,
               legacy: context.legacy,
               editable: context.editable,
+              resourceKey: resourceKey,
               path: propArray,
               field: field as GenericField,
               record: receiver as unknown as ReactiveResource,
@@ -595,10 +613,11 @@ export class ReactiveResource {
           case 'collection':
             return DefaultMode[field.kind as '@id'].set({
               store: context.store,
-              resourceKey: resourceKey,
+              reactivityMode,
               modeName: context.modeName,
               legacy: context.legacy,
               editable: context.editable,
+              resourceKey: resourceKey,
               path: propArray,
               field: field as IdentityField,
               record: receiver as unknown as ReactiveResource,

@@ -53,6 +53,7 @@ export interface ObjectContext extends BaseContext {
   value: string;
 }
 export interface KindContext<T extends FieldSchema | IdentityField | HashField> extends BaseContext {
+  reactivityMode: 'field' | 'category' | 'relationships' | 'resource' | 'immutable';
   path: string[];
   field: T;
   value: unknown;
@@ -98,6 +99,8 @@ export interface KindImpl<T extends FieldSchema | IdentityField | HashField> {
 type Mode = {
   [Field in FieldSchema | IdentityField | HashField as Field['kind']]: KindImpl<Field>;
 };
+
+function signalForMode() {}
 
 export const DefaultMode: Mode = {
   '@hash': {
