@@ -1,4 +1,4 @@
-import { macrosPlugin, setConfig } from '@warp-drive/core/build-config';
+import { warpdrive, setConfig } from '@warp-drive/core/build-config';
 import { buildMacros } from '@embroider/macros/babel';
 import { macros } from '@warp-drive/core/build-config/babel-macros';
 import { readFileSync } from 'node:fs';
@@ -17,7 +17,7 @@ const config = {
 };
 
 // @embroider/macros is still required to evaluate the macros used by
-// ember-source itself; WarpDrive's own macros are evaluated by macrosPlugin()
+// ember-source itself; WarpDrive's own macros are evaluated by warpdrive()
 const Macros = buildMacros({
   configure: (macrosConfig) => {
     setConfig(macrosConfig, config);
@@ -42,7 +42,7 @@ export default {
       },
     ],
     ...macros(),
-    macrosPlugin(config),
+    warpdrive(config),
     ...Macros.babelMacros,
   ],
 

@@ -327,13 +327,13 @@ module.exports = async function (defaults) {
 == Vite Minimal Config
 
 ```ts [babel.config.mjs]
-import { macrosPlugin } from '@warp-drive-mirror/core/build-config';
+import { warpdrive } from '@warp-drive-mirror/core/build-config';
 
 export default {
   plugins: [
     // the `warpdrive` babel plugin evaluates WarpDrive's build-time
     // macros, applying the configuration and stripping unreachable code
-    macrosPlugin({
+    warpdrive({
       // for universal apps this MUST be at least 5.6
       compatWith: '5.6',
     }),

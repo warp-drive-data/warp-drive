@@ -1,4 +1,4 @@
-import { macrosPlugin } from '@warp-drive/core/build-config';
+import { warpdrive } from '@warp-drive/core/build-config';
 import { macros } from '@warp-drive/core/build-config/babel-macros';
 
 export default {
@@ -26,7 +26,7 @@ export default {
       },
       'ember-data-specific-macros-stripping-test',
     ],
-    macrosPlugin({
+    warpdrive({
       compatWith: '5.7',
     }),
     [

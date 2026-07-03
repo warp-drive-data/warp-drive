@@ -21,5 +21,5 @@ import type * as LOGGING from '@warp-drive/core/build-config/debugging';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type * as DEPRECATIONS from '@warp-drive/core/build-config/deprecations';
 
-export { setConfig, babelPlugin, macrosPlugin } from '@warp-drive/build-config';
+export { setConfig, babelPlugin, warpdrive } from '@warp-drive/build-config';
 export type { WarpDriveConfig };

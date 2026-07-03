@@ -55,18 +55,25 @@ import type { PluginItem } from '@babel/core';
 const MACRO_SOURCES = ['@warp-drive/build-config/macros', '@warp-drive/core/build-config/macros'];
 
 /**
- * Create the Babel plugin entry that evaluates WarpDrive's build-time macros
+ * The `warpdrive` Babel plugin evaluates WarpDrive's build-time macros
  * (`macroCondition`, `getConfig`, `dependencySatisfies`, `moduleExists` and
  * `importSync` from `@warp-drive/core/build-config/macros`), stripping
  * unreachable branches from the build.
  *
- * Most projects should use {@link babelPlugin} which includes this plugin.
- * Use this export directly when you need to compose the plugin list yourself.
+ * ```ts [babel.config.mjs]
+ * import { warpdrive } from '@warp-drive/core/build-config';
+ *
+ * export default {
+ *   plugins: [
+ *     warpdrive({ compatWith: '5.6' }),
+ *   ],
+ * };
+ * ```
  *
  * @param options WarpDrive configuration options
  * @returns A single Babel plugin entry
  */
-export function macrosPlugin(options: WarpDriveConfig): PluginItem {
+export function warpdrive(options: WarpDriveConfig): PluginItem {
   const finalizedConfig = finalizeConfig(options);
   const TransformMacros = import.meta.resolve('./babel-plugin-transform-macros.cjs').slice(7);
 
@@ -115,7 +122,7 @@ export function babelPlugin(options: WarpDriveConfig): { gts: Function[]; js: Pl
         },
         'ember-data-specific-macros-stripping-test',
       ],
-      macrosPlugin(options),
+      warpdrive(options),
     ],
   };
 }
