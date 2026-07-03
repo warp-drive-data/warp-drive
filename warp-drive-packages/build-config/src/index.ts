@@ -77,7 +77,7 @@ export function macrosPlugin(options: WarpDriveConfig): PluginItem {
       config: finalizedConfig,
       appRoot: process.cwd(),
     },
-    '@warp-drive/core/build-config/macros-evaluation',
+    'warpdrive',
   ];
 }
 
@@ -415,7 +415,7 @@ export function setConfig(context: object, appRootOrConfig: string | WarpDriveCo
           config: finalizedConfig,
           appRoot: appRootOrConfig as string,
         },
-        '@warp-drive/core/build-config/macros-evaluation',
+        'warpdrive',
       ]);
     }
   }

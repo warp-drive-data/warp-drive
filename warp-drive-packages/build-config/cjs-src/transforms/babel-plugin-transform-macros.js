@@ -272,14 +272,14 @@ export default function (babel) {
   const { types: t } = babel;
 
   return {
-    name: '@warp-drive/build-config/macros-evaluation',
+    name: 'warpdrive',
     visitor: {
       Program: {
         enter(path, state) {
           state.importer = new ImportUtil(t, path);
           if (!state.opts.sources || !state.opts.config) {
             throw new Error(
-              `babel-plugin-transform-macros requires 'sources' and 'config' options. Use babelPlugin() from @warp-drive/core/build-config to configure it.`
+              `The warpdrive babel plugin requires 'sources' and 'config' options. Use babelPlugin() from @warp-drive/core/build-config to configure it.`
             );
           }
         },

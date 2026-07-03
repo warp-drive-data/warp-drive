@@ -16,7 +16,7 @@ All frameworks should follow this configuration first.
 
 ## Configure the Build Plugin
 
-***Warp*Drive** uses a [babel plugin](https://www.npmjs.com/package/@embroider/macros) to inject app-specific configuration allowing us to provide advanced dev-mode debugging features, deprecation management, and canary feature toggles.
+***Warp*Drive** uses its own babel plugin (`warpdrive`) to inject app-specific configuration allowing us to provide advanced dev-mode debugging features, deprecation management, and canary feature toggles.
 
 For Ember.js, this plugin comes built-in to the toolchain and all you need to do is provide it
 the desired configuration in `ember-cli-build`. For all other projects, the configuration

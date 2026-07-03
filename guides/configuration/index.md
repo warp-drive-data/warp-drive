@@ -17,7 +17,7 @@ a [Store](#quick-store-setup) to manage our data.
 
 ## Configure the Build Plugin
 
-***Warp*Drive** uses a [babel plugin](https://www.npmjs.com/package/@embroider/macros) to inject app-specific [configuration](/api/@warp-drive/core/build-config/interfaces/WarpDriveConfig) allowing us to provide advanced dev-mode debugging features, deprecation management, and canary feature toggles.
+***Warp*Drive** uses its own babel plugin (`warpdrive`) to inject app-specific [configuration](/api/@warp-drive/core/build-config/interfaces/WarpDriveConfig) allowing us to provide advanced dev-mode debugging features, deprecation management, and canary feature toggles.
 
 For most projects, the configuration is done inside of the project's babel configuration file.
 For ember apps that still have an `ember-cli-build` file, this plugin comes built-in to the
@@ -45,36 +45,16 @@ export default {
 == Advanced Config
 
 ```ts [babel.config.mjs]
-import { setConfig } from '@warp-drive/core/build-config';
-import { buildMacros } from '@embroider/macros/babel';
-
-const Macros = buildMacros({
-  configure: (config) => {
-    setConfig(config, {
-      // for universal apps this MUST be at least 5.6
-      compatWith: '5.6'
-    });
-  },
-});
+import { macrosPlugin } from '@warp-drive/core/build-config';
 
 export default {
   plugins: [
-    // babel-plugin-debug-macros is temporarily needed
-    // to convert deprecation/warn calls into console.warn
-    [
-      'babel-plugin-debug-macros',
-      {
-        flags: [],
-
-        debugTools: {
-          isDebug: process.env.NODE_ENV !== 'production',
-          source: '@ember/debug',
-          assertPredicateIndex: 1,
-        },
-      },
-      'ember-data-specific-macros-stripping-test',
-    ],
-    ...Macros.babelMacros,
+    // the `warpdrive` babel plugin evaluates WarpDrive's build-time
+    // macros, applying the configuration and stripping unreachable code
+    macrosPlugin({
+      // for universal apps this MUST be at least 5.6
+      compatWith: '5.6',
+    }),
   ],
 };
 ```
