@@ -145,6 +145,17 @@ function resolveLocal(rel: string): string {
   return require.resolve(rel);
 }
 
+// resolve a module through an intermediary package, starting from the app
+function resolveVia(appRoot: string, carrier: string, request: string): string | null {
+  try {
+    const appRequire = createRequire(path.join(appRoot, 'package.json'));
+    const carrierRequire = createRequire(appRequire.resolve(carrier));
+    return carrierRequire.resolve(request);
+  } catch {
+    return null;
+  }
+}
+
 /**
  * Lazily load `@embroider/macros` for interop with builds that configure
  * WarpDrive via an embroider MacrosConfig ({@link setConfig} with an app
@@ -439,20 +450,23 @@ export function setConfig(context: object, appRootOrConfig: string | WarpDriveCo
     // Best-effort: WarpDrive's macros are no longer evaluated by
     // @embroider/macros, so ensure our evaluation plugin is added to the
     // app's babel configuration.
-    const app = context as { options?: { babel?: { plugins?: unknown[] } } };
+    const appRoot = appRootOrConfig as string;
+    const app = context as {
+      options?: {
+        babel?: { plugins?: unknown[] };
+        autoImport?: { webpack?: { module?: { rules?: unknown[] } } };
+      };
+    };
     if (app.options) {
       const babelOptions = (app.options.babel = app.options.babel || {});
       const plugins = (babelOptions.plugins = babelOptions.plugins || []);
       const TransformMacros = resolveLocal('./babel-plugin-transform-macros.cjs');
-      const entry = [
-        TransformMacros,
-        {
-          sources: MACRO_SOURCES,
-          config: finalizedConfig,
-          appRoot: appRootOrConfig as string,
-        },
-        'warpdrive',
-      ];
+      const pluginOptions = {
+        sources: MACRO_SOURCES,
+        config: finalizedConfig,
+        appRoot,
+      };
+      const entry = [TransformMacros, pluginOptions, 'warpdrive'];
 
       // setConfig may run twice for classic apps: once via the addon-shim's
       // legacy-support hook during EmberApp construction and once via the
@@ -464,6 +478,86 @@ export function setConfig(context: object, appRootOrConfig: string | WarpDriveCo
       } else {
         plugins[existing] = entry;
       }
+
+      // In non-embroider builds the library's packages are bundled by
+      // ember-auto-import's webpack, which does not apply the app's babel
+      // plugins. Register a scoped babel-loader rule so WarpDrive's macros
+      // are evaluated there as well.
+      registerAutoImportWebpackRule(context, appRoot, entry);
     }
+  }
+}
+
+const WARP_DRIVE_PACKAGES = /node_modules[\\/](?:@warp-drive|@ember-data)[\\/]|node_modules[\\/]ember-data[\\/]/;
+
+/*
+ * ember-auto-import captures `app.options.autoImport` by value while the
+ * EmberApp instance is constructed — before `setConfig` is called. To get
+ * a webpack rule registered we therefore reach for the same Package
+ * instance ember-auto-import uses (its module-level cache is keyed by the
+ * project, so requiring the same module from the app's dependency graph
+ * gives us the live instance) and add the rule to its autoImport options.
+ *
+ * We also write the rule to `app.options.autoImport` for good measure —
+ * if ember-auto-import has not yet captured the options (e.g. this runs
+ * during an addon's included hook) that path is sufficient by itself.
+ */
+function registerAutoImportWebpackRule(app: object, appRoot: string, pluginEntry: unknown[]): void {
+  const babelLoader = resolveVia(appRoot, 'ember-auto-import', 'babel-loader');
+  if (!babelLoader) {
+    return;
+  }
+
+  const rule = {
+    test: (filename: string) => WARP_DRIVE_PACKAGES.test(filename),
+    use: {
+      loader: babelLoader,
+      options: {
+        babelrc: false,
+        configFile: false,
+        plugins: [pluginEntry],
+      },
+    },
+  };
+
+  type AutoImportOptions = { webpack?: { module?: { rules?: unknown[] } } };
+  const addRuleTo = (autoImportOptions: AutoImportOptions) => {
+    const webpack = (autoImportOptions.webpack = autoImportOptions.webpack || {});
+    const webpackModule = (webpack.module = webpack.module || {});
+    const rules = (webpackModule.rules = webpackModule.rules || []) as {
+      use?: { options?: { plugins?: unknown[][] } };
+    }[];
+    const existing = rules.findIndex(
+      (existingRule) => existingRule.use?.options?.plugins?.some((plugin) => plugin[2] === 'warpdrive') ?? false
+    );
+    if (existing === -1) {
+      rules.push(rule);
+    } else {
+      rules[existing] = rule;
+    }
+  };
+
+  const options = (app as { options?: { autoImport?: AutoImportOptions } }).options;
+  if (options) {
+    addRuleTo((options.autoImport = options.autoImport || {}));
+  }
+
+  try {
+    const project = (app as { project?: { root: string; addons: { name: string; parent: unknown }[] } }).project;
+    const eaiAddon = project?.addons.find((addon) => addon.name === 'ember-auto-import');
+    if (!project || !eaiAddon) {
+      return;
+    }
+    const appRequire = createRequire(path.join(project.root, 'package.json'));
+    const PackageModule = appRequire('ember-auto-import/js/package.js') as {
+      default: { lookupParentOf(child: unknown): { isAddon: boolean; autoImportOptions?: AutoImportOptions } };
+    };
+    const pack = PackageModule.default.lookupParentOf(eaiAddon);
+    if (pack && !pack.isAddon) {
+      addRuleTo((pack.autoImportOptions = pack.autoImportOptions || {}));
+    }
+  } catch {
+    // best-effort: if ember-auto-import internals are not reachable the
+    // app.options path above still covers builds where options are read late
   }
 }
