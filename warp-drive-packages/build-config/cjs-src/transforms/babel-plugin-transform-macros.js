@@ -285,12 +285,25 @@ export default function (babel) {
         },
         exit(path, state) {
           // importSync is handled after the main traversal so that calls
-          // within branches stripped by macroCondition never hoist imports
+          // within branches stripped by macroCondition never hoist imports.
+          // The namespace is wrapped in the same esModule-interop expression
+          // @embroider/macros uses (a synthetic `default` pointing at the
+          // namespace) since consumers rely on that shape.
           path.traverse({
             CallExpression: (p) => {
               if (macroNameFor(p.get('callee'), state) !== 'importSync') return;
               const [name] = expectStringArguments(p, 1);
-              p.replaceWith(state.importer.import(p, name, '*', 'wdImport'));
+              const ns = state.importer.import(p, name, '*', 'wdImport');
+              p.replaceWith(
+                t.conditionalExpression(
+                  t.memberExpression(t.cloneNode(ns), t.identifier('__esModule')),
+                  t.cloneNode(ns),
+                  t.objectExpression([
+                    t.objectProperty(t.identifier('default'), t.cloneNode(ns)),
+                    t.spreadElement(t.cloneNode(ns)),
+                  ])
+                )
+              );
             },
           });
 
