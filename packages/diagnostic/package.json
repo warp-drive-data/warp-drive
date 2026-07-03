@@ -2,7 +2,7 @@
   "name": "@warp-drive/diagnostic",
   "version": "0.0.3-alpha.144",
   "private": true,
-  "description": "\u26a1\ufe0f A Lightweight Modern Test Runner",
+  "description": "⚡️ A Lightweight Modern Test Runner",
   "keywords": [
     "test",
     "assert",

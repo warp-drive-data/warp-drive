@@ -1,6 +1,6 @@
 import { createConfig } from '@warp-drive/internal-config/vite/config.js';
 
-export const externals = ['babel-import-util', 'semver', 'fs', 'path', 'url', 'node:module'];
+export const externals = ['babel-import-util', 'semver', 'fs', 'path', 'url', 'node:module', 'node:path'];
 
 export const entryPoints = [
   './cjs-src/transforms/babel-plugin-transform-asserts.js',

@@ -39,6 +39,7 @@
  */
 
 import { createRequire } from 'node:module';
+import path from 'node:path';
 import { getEnv } from './-private/utils/get-env.ts';
 import { getDeprecations } from './-private/utils/deprecations.ts';
 import { getFeatures } from './-private/utils/features.ts';
@@ -75,7 +76,7 @@ const MACRO_SOURCES = ['@warp-drive/build-config/macros', '@warp-drive/core/buil
  */
 export function warpdrive(options: WarpDriveConfig): PluginItem {
   const finalizedConfig = finalizeConfig(options);
-  const TransformMacros = import.meta.resolve('./babel-plugin-transform-macros.cjs').slice(7);
+  const TransformMacros = resolveLocal('./babel-plugin-transform-macros.cjs');
 
   return [
     TransformMacros,
@@ -136,22 +137,48 @@ function resolve(module: string): string {
   return file;
 }
 
+// resolves a sibling dist file in a way that works from both the esm
+// and cjs builds of this module (`import.meta.resolve` is not available
+// in the cjs build)
+function resolveLocal(rel: string): string {
+  const require = createRequire(import.meta.url);
+  return require.resolve(rel);
+}
+
 /**
  * Lazily load `@embroider/macros` for interop with builds that configure
  * WarpDrive via an embroider MacrosConfig ({@link setConfig} with an app
  * instance). The library's own code no longer uses `@embroider/macros`,
  * so this is only needed when the classic configuration path is used.
+ *
+ * `@embroider/macros` is an optional peerDependency, so with strict
+ * package managers it may not be resolvable from this package. Apps that
+ * use the classic path always have it in their dependency graph though
+ * (via `@embroider/compat` or `ember-auto-import`), so we also attempt
+ * resolution from the app and through those packages.
  */
-function getEmbroiderMacrosConfig(): typeof MacrosConfig {
-  try {
-    const require = createRequire(import.meta.url);
-    const EmbroiderMacros = require('@embroider/macros/src/node.js') as { MacrosConfig: unknown };
-    return EmbroiderMacros.MacrosConfig as typeof MacrosConfig;
-  } catch {
-    throw new Error(
-      `Calling setConfig with an EmberApp instance requires '@embroider/macros' to be resolvable. Either install '@embroider/macros' or configure WarpDrive using babelPlugin() from '@warp-drive/core/build-config' in your babel config.`
-    );
+function getEmbroiderMacrosConfig(appRoot: string): typeof MacrosConfig {
+  const bases = [import.meta.url, path.join(appRoot, 'package.json')];
+  const carriers = [null, '@embroider/compat', 'ember-auto-import'];
+
+  for (const base of bases) {
+    for (const carrier of carriers) {
+      try {
+        let require = createRequire(base);
+        if (carrier) {
+          require = createRequire(require.resolve(carrier));
+        }
+        const EmbroiderMacros = require('@embroider/macros/src/node.js') as { MacrosConfig: unknown };
+        return EmbroiderMacros.MacrosConfig as typeof MacrosConfig;
+      } catch {
+        continue;
+      }
+    }
   }
+
+  throw new Error(
+    `Calling setConfig with an EmberApp instance requires '@embroider/macros' to be resolvable. Either install '@embroider/macros' or configure WarpDrive using babelPlugin() from '@warp-drive/core/build-config' in your babel config.`
+  );
 }
 
 /**
@@ -362,7 +389,9 @@ export function setConfig(context: object, appRoot: string, config: WarpDriveCon
 export function setConfig(context: object, appRootOrConfig: string | WarpDriveConfig, config?: WarpDriveConfig): void {
   const isEmberClassicUsage = arguments.length === 3;
   const macros = recastMacrosConfig(
-    isEmberClassicUsage ? getEmbroiderMacrosConfig().for(context, appRootOrConfig as string) : context
+    isEmberClassicUsage
+      ? getEmbroiderMacrosConfig(appRootOrConfig as string).for(context, appRootOrConfig as string)
+      : context
   );
 
   const userConfig = isEmberClassicUsage ? config! : (appRootOrConfig as WarpDriveConfig);
@@ -414,7 +443,7 @@ export function setConfig(context: object, appRootOrConfig: string | WarpDriveCo
     if (app.options) {
       const babelOptions = (app.options.babel = app.options.babel || {});
       const plugins = (babelOptions.plugins = babelOptions.plugins || []);
-      const TransformMacros = import.meta.resolve('./babel-plugin-transform-macros.cjs').slice(7);
+      const TransformMacros = resolveLocal('./babel-plugin-transform-macros.cjs');
       plugins.push([
         TransformMacros,
         {
