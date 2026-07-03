@@ -1,11 +1,7 @@
-import { getGlobalConfig, getOwnConfig } from '@embroider/macros';
+import { getConfig } from '@warp-drive/core/build-config/macros';
 
-type OWNCONFIG = {
-  VERSION: string;
-};
-
-const VERSION: string = getOwnConfig<OWNCONFIG>().VERSION;
-const COMPAT_VERSION: string = getGlobalConfig<{ WarpDrive: { compatWith: string } }>().WarpDrive.compatWith;
+const VERSION: string = getConfig<{ tests: { VERSION: string } }>().tests.VERSION;
+const COMPAT_VERSION: string = getConfig<{ compatWith: string }>().compatWith;
 
 export default VERSION;
 

@@ -94,7 +94,7 @@ And finally:
 */
 import { deprecate } from '@ember/debug';
 
-import { dependencySatisfies, importSync, macroCondition } from '@embroider/macros';
+import { dependencySatisfies, importSync, macroCondition } from '@warp-drive/core/build-config/macros';
 
 import Adapter, { BuildURLMixin } from '@ember-data/adapter';
 import AdapterError, {

@@ -23,6 +23,8 @@ export default function (babel) {
         const importPath = path.node.source.value;
 
         if (state.opts.sources.includes(importPath)) {
+          // the sibling macros module scoped to the same package as the flags import
+          const macrosSource = importPath.replace(/\/[^/]*$/, '/macros');
           const specifiers = path.get('specifiers');
           specifiers.forEach((specifier) => {
             let name = specifier.node.imported.name;
@@ -41,10 +43,7 @@ export default function (babel) {
               }
               let getConfig = t.memberExpression(
                 t.memberExpression(
-                  t.memberExpression(
-                    t.callExpression(state.importer.import(p, '@embroider/macros', 'getGlobalConfig'), []),
-                    t.identifier('WarpDrive')
-                  ),
+                  t.callExpression(state.importer.import(p, macrosSource, 'getConfig'), []),
                   t.identifier('features')
                 ),
                 t.identifier(name)
@@ -52,8 +51,8 @@ export default function (babel) {
               node.replaceWith(
                 // if (LOG_FOO)
                 // =>
-                // if (macroCondition(getGlobalConfig('WarpDrive').debug.LOG_FOO))
-                t.callExpression(state.importer.import(p, '@embroider/macros', 'macroCondition'), [
+                // if (macroCondition(getConfig().features.LOG_FOO))
+                t.callExpression(state.importer.import(p, macrosSource, 'macroCondition'), [
                   negateStatement ? t.unaryExpression('!', getConfig) : getConfig,
                 ])
               );

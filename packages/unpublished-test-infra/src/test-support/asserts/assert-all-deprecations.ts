@@ -1,11 +1,10 @@
 import { DEBUG } from '@warp-drive/core/build-config/env';
+import { getConfig } from '@warp-drive/core/build-config/macros';
 
 import type { ExpandedHooks } from '.';
 import { FoundDeprecation } from './assert-deprecation';
 
-import { getOwnConfig } from '@embroider/macros';
-
-const { ASSERT_ALL_DEPRECATIONS } = getOwnConfig<{ ASSERT_ALL_DEPRECATIONS?: boolean }>();
+const { ASSERT_ALL_DEPRECATIONS } = getConfig<{ tests: { ASSERT_ALL_DEPRECATIONS?: boolean } }>().tests;
 
 const ALL_ASSERTED_DEPRECATIONS: Record<string, number> = {};
 

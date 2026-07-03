@@ -110,6 +110,10 @@ module.exports = async function (defaults) {
       // LOG_REQUESTS: true,
       // LOG_REQUEST_STATUS: true,
     },
+    tests: {
+      VERSION: require('./package.json').version,
+      ASSERT_ALL_DEPRECATIONS: Boolean(process.env.ASSERT_ALL_DEPRECATIONS),
+    },
   });
 
   return app.toTree();

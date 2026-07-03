@@ -2,7 +2,7 @@
   "name": "@warp-drive/diagnostic",
   "version": "0.0.3-alpha.144",
   "private": true,
-  "description": "⚡️ A Lightweight Modern Test Runner",
+  "description": "\u26a1\ufe0f A Lightweight Modern Test Runner",
   "keywords": [
     "test",
     "assert",
@@ -99,7 +99,6 @@
     "tmp": "^0.2.5",
     "@warp-drive/core": "workspace:*",
     "@warp-drive/react": "workspace:*",
-    "@embroider/macros": "^1.19.6",
     "dom-element-descriptors": "^0.5.1",
     "qunit-dom": "^3.5.0"
   },

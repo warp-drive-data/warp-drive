@@ -1,6 +1,6 @@
 import { createConfig } from '@warp-drive/internal-config/vite/config.js';
 
-export const externals = ['@sqlite.org/sqlite-wasm', '@embroider/macros'];
+export const externals = ['@sqlite.org/sqlite-wasm'];
 
 export const entryPoints = [
   './src/document-storage.ts',

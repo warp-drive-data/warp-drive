@@ -1,15 +1,19 @@
-import { setConfig } from '@warp-drive/core/build-config';
+import { macrosPlugin, setConfig } from '@warp-drive/core/build-config';
 import { buildMacros } from '@embroider/macros/babel';
 import { macros } from '@warp-drive/core/build-config/babel-macros';
 
+const config = {
+  compatWith: process.env.EMBER_DATA_FULL_COMPAT === 'true' ? '99.0' : null,
+  deprecations: {
+    DEPRECATE_TRACKING_PACKAGE: false,
+  },
+};
+
+// @embroider/macros is still required to evaluate the macros used by
+// ember-source itself; WarpDrive's own macros are evaluated by macrosPlugin()
 const Macros = buildMacros({
-  configure: (config) => {
-    setConfig(config, {
-      compatWith: process.env.EMBER_DATA_FULL_COMPAT === 'true' ? '99.0' : null,
-      deprecations: {
-        DEPRECATE_TRACKING_PACKAGE: false,
-      },
-    });
+  configure: (macrosConfig) => {
+    setConfig(macrosConfig, config);
   },
 });
 
@@ -31,6 +35,7 @@ export default {
       },
     ],
     ...macros(),
+    macrosPlugin(config),
     ...Macros.babelMacros,
   ],
 

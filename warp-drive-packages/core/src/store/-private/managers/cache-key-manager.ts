@@ -1,10 +1,8 @@
 import { warn } from '@ember/debug';
 
-import { getGlobalConfig, macroCondition } from '@embroider/macros';
-
 import { LOG_IDENTIFIERS } from '@warp-drive/core/build-config/debugging';
 import { DEBUG } from '@warp-drive/core/build-config/env';
-import { assert } from '@warp-drive/core/build-config/macros';
+import { assert, getConfig, macroCondition } from '@warp-drive/core/build-config/macros';
 
 import { getOrSetGlobal, peekTransient, setTransient } from '../../../types/-private.ts';
 import {
@@ -75,7 +73,7 @@ export function isRequestKey(identifier: unknown): identifier is RequestKey {
 const isFastBoot = typeof FastBoot !== 'undefined';
 const _crypto: Crypto = isFastBoot ? (FastBoot.require('crypto') as Crypto) : globalThis.crypto;
 
-if (macroCondition(getGlobalConfig<{ WarpDrive: { polyfillUUID: boolean } }>().WarpDrive.polyfillUUID)) {
+if (macroCondition(getConfig<{ polyfillUUID: boolean }>().polyfillUUID)) {
   installPolyfill();
 }
 
