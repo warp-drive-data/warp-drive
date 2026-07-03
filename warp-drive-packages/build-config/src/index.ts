@@ -317,9 +317,18 @@ interface InternalWarpDriveConfig {
     DEBUG: boolean;
   };
   tests: {
-    VERSION: string | null;
+    VERSION: string;
     ASSERT_ALL_DEPRECATIONS: boolean;
   };
+}
+
+let _libraryVersion: string | null = null;
+function libraryVersion(): string {
+  if (_libraryVersion === null) {
+    const require = createRequire(import.meta.url);
+    _libraryVersion = (require('../package.json') as { version: string }).version;
+  }
+  return _libraryVersion;
 }
 
 function finalizeConfig(userConfig: WarpDriveConfig): InternalWarpDriveConfig {
@@ -343,7 +352,7 @@ function finalizeConfig(userConfig: WarpDriveConfig): InternalWarpDriveConfig {
     activeLogging: createLoggingConfig(env, debugOptions),
     env,
     tests: {
-      VERSION: userConfig.tests?.VERSION ?? null,
+      VERSION: userConfig.tests?.VERSION ?? libraryVersion(),
       ASSERT_ALL_DEPRECATIONS: userConfig.tests?.ASSERT_ALL_DEPRECATIONS ?? false,
     },
   };
@@ -503,19 +512,21 @@ const WARP_DRIVE_PACKAGES = /node_modules[\\/](?:@warp-drive|@ember-data)[\\/]|n
  * during an addon's included hook) that path is sufficient by itself.
  */
 function registerAutoImportWebpackRule(app: object, appRoot: string, pluginEntry: unknown[]): void {
-  const babelLoader = resolveVia(appRoot, 'ember-auto-import', 'babel-loader');
-  if (!babelLoader) {
+  // resolve @babel/core through ember-auto-import (always present in
+  // classic builds) so the loader does not need its own babel install
+  const babelCore = resolveVia(appRoot, 'ember-auto-import', '@babel/core');
+  if (!babelCore) {
     return;
   }
 
   const rule = {
     test: (filename: string) => WARP_DRIVE_PACKAGES.test(filename),
     use: {
-      loader: babelLoader,
+      loader: resolveLocal('./warpdrive-webpack-loader.cjs'),
       options: {
-        babelrc: false,
-        configFile: false,
-        plugins: [pluginEntry],
+        babelCore,
+        plugin: pluginEntry[0],
+        pluginOptions: pluginEntry[1],
       },
     },
   };
@@ -525,10 +536,10 @@ function registerAutoImportWebpackRule(app: object, appRoot: string, pluginEntry
     const webpack = (autoImportOptions.webpack = autoImportOptions.webpack || {});
     const webpackModule = (webpack.module = webpack.module || {});
     const rules = (webpackModule.rules = webpackModule.rules || []) as {
-      use?: { options?: { plugins?: unknown[][] } };
+      use?: { loader?: string };
     }[];
     const existing = rules.findIndex(
-      (existingRule) => existingRule.use?.options?.plugins?.some((plugin) => plugin[2] === 'warpdrive') ?? false
+      (existingRule) => existingRule.use?.loader?.includes('warpdrive-webpack-loader') ?? false
     );
     if (existing === -1) {
       rules.push(rule);
