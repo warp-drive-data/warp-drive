@@ -444,7 +444,7 @@ export function setConfig(context: object, appRootOrConfig: string | WarpDriveCo
       const babelOptions = (app.options.babel = app.options.babel || {});
       const plugins = (babelOptions.plugins = babelOptions.plugins || []);
       const TransformMacros = resolveLocal('./babel-plugin-transform-macros.cjs');
-      plugins.push([
+      const entry = [
         TransformMacros,
         {
           sources: MACRO_SOURCES,
@@ -452,7 +452,18 @@ export function setConfig(context: object, appRootOrConfig: string | WarpDriveCo
           appRoot: appRootOrConfig as string,
         },
         'warpdrive',
-      ]);
+      ];
+
+      // setConfig may run twice for classic apps: once via the addon-shim's
+      // legacy-support hook during EmberApp construction and once via the
+      // app's own setConfig call. The last call wins (the legacy-support
+      // hook runs first, so a user-provided config always replaces it).
+      const existing = plugins.findIndex((plugin) => Array.isArray(plugin) && plugin[2] === 'warpdrive');
+      if (existing === -1) {
+        plugins.push(entry);
+      } else {
+        plugins[existing] = entry;
+      }
     }
   }
 }

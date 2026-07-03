@@ -298,7 +298,7 @@ const EmptyClass: ConstructorFunction = class {
 };
 const _BaseClass = macroCondition(dependencySatisfies('ember-source', '*'))
   ? DEPRECATE_STORE_EXTENDS_EMBER_OBJECT
-    ? (importSync('@ember/object') as typeof EmptyClass)
+    ? importSync<typeof EmptyClass>('@ember/object')
     : EmptyClass
   : EmptyClass;
 
