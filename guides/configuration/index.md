@@ -19,9 +19,12 @@ a [Store](#quick-store-setup) to manage our data.
 
 ***Warp*Drive** uses its own babel plugin (`warpdrive`) to inject app-specific [configuration](/api/@warp-drive/core/build-config/interfaces/WarpDriveConfig) allowing us to provide advanced dev-mode debugging features, deprecation management, and canary feature toggles.
 
+Every project consuming ***Warp*Drive** must configure this plugin — without it the
+library's build-time macros are not evaluated and the app will error at boot.
+
 For most projects, the configuration is done inside of the project's babel configuration file.
-For ember apps that still have an `ember-cli-build` file, this plugin comes built-in to the
-toolchain and all you need to do is provide it the desired configuration in `ember-cli-build`.
+For ember apps that still have an `ember-cli-build` file, calling `setConfig` in
+`ember-cli-build` installs the plugin into the app's build for you.
 
 ::: tabs key:paradigm
 
