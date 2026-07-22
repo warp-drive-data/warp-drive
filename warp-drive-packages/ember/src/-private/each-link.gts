@@ -3,13 +3,12 @@ import Component from '@glimmer/component';
 
 import { importSync, macroCondition, moduleExists } from '@embroider/macros';
 
-import type { RequestManager,Store  } from '@warp-drive/core';
+import type { RequestManager, Store } from '@warp-drive/core';
 import { assert } from '@warp-drive/core/build-config/macros';
 import type {
-  PaginationContentFeatures,
   PaginationLink,
   PaginationLinksSubscription,
-  PaginationSubscription,
+  PaginationState,
   PlaceholderPaginationLink,
   RealPaginationLink,
 } from '@warp-drive/core/reactive';
@@ -24,7 +23,7 @@ if (macroCondition(moduleExists('ember-provide-consume-context'))) {
 
 interface EachLinkSignature<RT, E> {
   Args: {
-    pages: PaginationSubscription<RT, E>;
+    state: PaginationState<RT, E>;
 
     /**
      * The store instance to use for making requests. If contexts are available,

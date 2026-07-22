@@ -11,7 +11,7 @@ export {
   type AutorefreshBehaviorType,
 } from './request-subscription.ts';
 export { getRequestState, type RequestLoadingState, type RequestState } from './request-state.ts';
-export { getPaginationState, type PaginationState } from './pagination-state.ts';
+export { getPaginationState, clearPaginationCache, type PaginationState } from './pagination-state.ts';
 export { type PageState } from './page-state.ts';
 export {
   getPaginationLinks,

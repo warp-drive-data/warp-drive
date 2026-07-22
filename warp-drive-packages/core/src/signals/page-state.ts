@@ -12,6 +12,8 @@ import { memoized, signal } from './reactivity/signal';
 import type { RequestState } from './request-state.ts';
 import { getRequestState } from './request-state.ts';
 
+const { abs } = Math;
+
 export function getHref(link?: Link | null): string | null {
   if (!link) {
     return null;
@@ -42,24 +44,20 @@ export class PageState<RT = unknown, E = unknown> {
   @signal declare before: Readonly<PageState<RT, E>> | null;
   @signal declare after: Readonly<PageState<RT, E>> | null;
 
-  constructor(manager: PaginationState<RT, E>, futureOrLink: Future<RT> | string) {
+  constructor(manager: PaginationState<RT, E>, url: string) {
     this.manager = manager;
     this.pageNumber = 0;
-    if (typeof futureOrLink === 'string') {
-      this.selfLink = futureOrLink;
-    } else {
-      this.load(futureOrLink);
-    }
+    this.selfLink = url;
   }
 
   @memoized
-  get value(): ReactiveDocument<RT[]> | null {
-    return this.state?.value as ReactiveDocument<RT[]>;
+  get value(): ReactiveDocument<RT> | null {
+    return this.state?.value as ReactiveDocument<RT>;
   }
 
   @memoized
-  get data(): RT[] | null {
-    return this.value?.data as RT[];
+  get data(): RT | null {
+    return this.value?.data as RT;
   }
 
   @memoized
@@ -121,63 +119,154 @@ export class PageState<RT = unknown, E = unknown> {
     return url ? this.manager.getPageState(url) : null;
   }
 
-  load = async (request: Future<unknown>): Promise<ReactiveDocument<RT[]> | null> => {
+  @memoized
+  get isLinked(): boolean {
+    return Boolean(this.before || this.after);
+  }
+
+  async load(request: Future<RT>): Promise<ReactiveDocument<RT> | null> {
     try {
-      this.request = request as Future<RT>;
+      this.request = request;
       this.state = getRequestState<RT, E>(this.request);
       const value = await this.request;
-      const content = value.content as ReactiveDocument<RT[]>;
+      const content = value.content as ReactiveDocument<RT>;
 
       const self = getHref(content?.links?.self);
+      const first = getHref(content?.links?.first);
+      const last = getHref(content?.links?.last);
+      const next = getHref(content?.links?.next);
+      const prev = getHref(content?.links?.prev);
+
       assert('Expected the page to have a self link', self);
 
-      // Ensure the page is cached under its self link when it's loaded only with a future
-      if (!this.selfLink || !this.manager.getPageState(self)) {
-        this.selfLink = self;
-        this.manager.pagesCache.set(this.selfLink, this);
+      this.pageNumber = this.getPageNumber(content);
+
+      const firstPage = first ? this.manager.getPageState(first) : null;
+      const lastPage = last ? this.manager.getPageState(last) : null;
+      const prevPage = prev ? this.manager.getPageState(prev) : null;
+      const nextPage = next ? this.manager.getPageState(next) : null;
+
+      if (firstPage) {
+        this.firstLink = first;
+        firstPage.setPageNumber(1);
+        if (!firstPage.after) {
+          firstPage.updateLinkage({ after: this });
+        }
       }
 
-      const next = getHref(content?.links?.next);
-      if (next) {
+      if (lastPage) {
+        this.lastLink = last;
+        lastPage.setPageNumber(this.manager.totalPages);
+        if (!lastPage.before) {
+          lastPage.updateLinkage({ before: this });
+        }
+      }
+
+      if (nextPage) {
         this.nextLink = next;
-        const nextPage = this.manager.getPageState(next);
+        nextPage.setPageNumber(this.pageNumber + 1);
         nextPage.updateLinks({ prev: self });
       }
 
-      const prev = getHref(content?.links?.prev);
-      if (prev) {
-        const prevPage = this.manager.getPageState(prev);
+      if (prevPage) {
         this.prevLink = prev;
+        prevPage.setPageNumber(this.pageNumber - 1);
         prevPage.updateLinks({ next: self });
       }
 
-      const first = getHref(content?.links?.first);
-      if (first) {
-        this.firstLink = first;
+      if (this.isLinked) {
+        if (prevPage) prevPage.updateLinkage({ after: this });
+        if (nextPage) nextPage.updateLinkage({ before: this });
+      } else if (prevPage?.isLinked) {
+        this.updateLinkage({ before: prevPage });
+        if (nextPage) nextPage.updateLinkage({ before: this });
+      } else if (nextPage?.isLinked) {
+        this.updateLinkage({ after: nextPage });
+        if (prevPage) prevPage.updateLinkage({ after: this });
+      } else if ((prevPage || nextPage) && (firstPage || lastPage)) {
+        this.lookupLinkage(firstPage, lastPage);
+      } else if (prevPage || nextPage) {
+        this.updateLinkage({ before: prevPage, after: nextPage });
       }
-
-      const last = getHref(content?.links?.last);
-      if (last) {
-        this.lastLink = last;
-      }
-
-      this.pageNumber = this.getPageNumber(content);
-      this.manager.totalPages = this.getTotalPages(content);
 
       return content;
-    } catch {}
+    } catch {
+      // no-op
+    }
 
     return null;
-  };
+  }
 
-  getPageNumber = (document: ReactiveDocument<unknown>): number => {
+  updateLinkage({ before, after }: { before?: PageState<RT, E> | null; after?: PageState<RT, E> | null }): void {
+    assert('Expected at least one of before or after page states to link to this page', before || after);
+
+    const leftSide = before ?? after?.before;
+    const rightSide = after ?? before?.after;
+
+    if (leftSide && leftSide !== this) {
+      leftSide.setAfter(this);
+      this.setBefore(leftSide);
+    }
+
+    if (rightSide && rightSide !== this) {
+      rightSide.setBefore(this);
+      this.setAfter(rightSide);
+    }
+  }
+
+  lookupLinkage(firstPage: PageState<RT, E> | null, lastPage: PageState<RT, E> | null): void {
+    assert('Expected at least one of firstPage or lastPage to lookup linkage against', firstPage || lastPage);
+
+    if (firstPage && lastPage) {
+      const firstPageDelta = abs(this.pageNumber - firstPage.pageNumber);
+      const lastPageDelta = abs(this.pageNumber - lastPage.pageNumber);
+
+      if (firstPageDelta <= lastPageDelta) {
+        this.lookupLinkageForward(firstPage);
+      } else {
+        this.lookupLinkageBackwards(lastPage);
+      }
+    } else if (firstPage) {
+      this.lookupLinkageForward(firstPage);
+    } else if (lastPage) {
+      this.lookupLinkageBackwards(lastPage);
+    }
+  }
+
+  lookupLinkageForward(page: PageState<RT, E>): void {
+    while (page.after && page.after.pageNumber < this.pageNumber) {
+      page = page.after;
+    }
+
+    this.updateLinkage({ before: page });
+  }
+
+  lookupLinkageBackwards(page: PageState<RT, E>): void {
+    while (page.before && page.before.pageNumber > this.pageNumber) {
+      page = page.before;
+    }
+
+    this.updateLinkage({ after: page });
+  }
+
+  setBefore(page: Readonly<PageState<RT, E>> | null): void {
+    assert('Expected the before page to be a different page, got the same page', page !== this);
+    this.before = page;
+  }
+
+  setAfter(page: Readonly<PageState<RT, E>> | null): void {
+    assert('Expected the after page to be a different page, got the same page', page !== this);
+    this.after = page;
+  }
+
+  getPageNumber(document: ReactiveDocument<RT>): number {
     const currentPage = (document.meta?.page ?? document.meta?.currentPage ?? 0) as number;
     assert(
       'Could not determine the page number from the document meta. Make sure to include either a `currentPage` or `page` property.',
       currentPage > 0
     );
     return currentPage;
-  };
+  }
 
   updateLinks = ({ prev, next, first, last }: Links): void => {
     if (prev) {

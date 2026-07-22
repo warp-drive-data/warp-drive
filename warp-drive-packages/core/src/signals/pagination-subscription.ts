@@ -1,15 +1,13 @@
 import { assert } from '@warp-drive/core/build-config/macros';
 
-import type { RequestManager, Store } from '../index';
+import type { RequestManager, Store } from '../index.ts';
 import type { ReactiveDocument } from '../reactive.ts';
-import type { Future } from '../request';
-import type { StructuredErrorDocument } from '../types/request';
+import type { Future } from '../request.ts';
+import type { StructuredErrorDocument } from '../types/request.ts';
 import type { Link } from '../types/spec/json-api-raw.ts';
-import { memoized } from './-private.ts';
 import type { PageState } from './page-state.ts';
-import type { PaginationLink, PaginationLinks } from './pagination-links.ts';
-import { getPaginationLinks } from './pagination-links.ts';
 import { getPaginationState, type PaginationState } from './pagination-state.ts';
+import { defineSignal, memoized } from './reactivity/signal.ts';
 import type { RequestLoadingState } from './request-state.ts';
 import type { RequestSubscription, SubscriptionArgs } from './request-subscription.ts';
 import { createRequestSubscription, DISPOSE } from './request-subscription.ts';
@@ -41,9 +39,9 @@ export type PaginationContentFeatures<RT> = {
   latestRequest?: Future<RT>;
 
   // Pagination
-  loadNext?: () => Promise<ReactiveDocument<RT[]> | null>;
-  loadPrev?: () => Promise<ReactiveDocument<RT[]> | null>;
-  loadPage: (url: string) => Promise<ReactiveDocument<RT[]> | null>;
+  loadNext?: () => Promise<ReactiveDocument<RT> | null>;
+  loadPrev?: () => Promise<ReactiveDocument<RT> | null>;
+  loadPage: (url: string) => Promise<ReactiveDocument<RT> | null>;
 };
 
 export interface PaginationSubscriptionArgs<RT, E> extends SubscriptionArgs<RT, E> {
@@ -88,8 +86,8 @@ export class PaginationSubscription<RT, E> {
   /** @internal */
   declare store: Store | RequestManager;
 
-  declare paginationState: PaginationState<RT, StructuredErrorDocument<E>>;
-  declare activePage: Readonly<PageState<RT, StructuredErrorDocument<E>>>;
+  declare paginationState: PaginationState<RT, E>;
+  declare activePage: Readonly<PageState<RT, E>>;
 
   constructor(store: Store | RequestManager, args: PaginationSubscriptionArgs<RT, E>) {
     this._args = args;
@@ -97,7 +95,7 @@ export class PaginationSubscription<RT, E> {
     this.isDestroyed = false;
     this[DISPOSE] = _DISPOSE;
 
-    void this.setupPaginatioState();
+    void this.setupPaginationState();
   }
 
   @memoized
@@ -187,28 +185,22 @@ export class PaginationSubscription<RT, E> {
     return this.activePage.request;
   }
 
-  @memoized
-  get paginationLinks(): Readonly<PaginationLinks<RT, StructuredErrorDocument<E>>> {
-    return getPaginationLinks<RT, E>(this);
-  }
-
-  @memoized
-  get links(): ReadonlyArray<Readonly<PaginationLink>> {
-    return this.paginationLinks.links;
-  }
-
-  async setupPaginatioState(): Promise<void> {
+  async setupPaginationState(): Promise<void> {
     const document = await this.request;
-    const content = document.content as ReactiveDocument<RT[]>;
-    const cacheKey = getHref(content.links?.first) ?? getHref(content.links?.self) ?? '';
-    assert('Expected the initial document to have either a first or self link', cacheKey);
-    this.paginationState = getPaginationState<RT, E>(cacheKey, this.request, this._args.mode);
+    const content = document.content as ReactiveDocument<RT>;
+    const selfLink = getHref(content.links?.self);
+    const firstLink = getHref(content.links?.first);
+    assert('Expected the initial document to have a self link', selfLink);
+    const cacheKey = firstLink ?? selfLink ?? '';
+    this.paginationState = getPaginationState<RT, E>(cacheKey, this._args.mode);
+    this.paginationState.totalPages = this.paginationState.getTotalPages(content);
+    this.activePage = this.paginationState.start(selfLink, this.request);
   }
 
   /**
    * Loads the prev page based on links.
    */
-  loadPrev = async (): Promise<ReactiveDocument<RT[]> | null> => {
+  loadPrev = async (): Promise<ReactiveDocument<RT> | null> => {
     const { prevLink } = this.activePage;
     if (prevLink) {
       return this.loadPage(prevLink);
@@ -220,7 +212,7 @@ export class PaginationSubscription<RT, E> {
   /**
    * Loads the next page based on links.
    */
-  loadNext = async (): Promise<ReactiveDocument<RT[]> | null> => {
+  loadNext = async (): Promise<ReactiveDocument<RT> | null> => {
     const { nextLink } = this.activePage;
     if (nextLink) {
       return this.loadPage(nextLink);
@@ -232,17 +224,21 @@ export class PaginationSubscription<RT, E> {
   /**
    * Loads a specific page by its URL.
    */
-  loadPage = async (url: string): Promise<ReactiveDocument<RT[]> | null> => {
+  loadPage = async (url: string): Promise<ReactiveDocument<RT> | null> => {
     this.activePage = this.paginationState.getPageState(url);
-
     if (!this.activePage.isLoaded) {
       const request = this.store.request({ method: 'GET', url });
-      return this.paginationState.loadPage(this.activePage, request as Future<RT>);
+      const page = this.paginationState.loadPage(url, request as Future<RT>);
+      await page.request;
+      return page.value;
     }
 
     return this.activePage.value;
   };
 }
+
+defineSignal(PaginationSubscription.prototype, 'paginationState', null);
+defineSignal(PaginationSubscription.prototype, 'activePage', null);
 
 export function createPaginationSubscription<RT, E>(
   store: Store | RequestManager,

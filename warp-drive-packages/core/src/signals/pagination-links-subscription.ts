@@ -1,9 +1,8 @@
 import type { RequestManager, Store } from '../index';
-import type { StructuredErrorDocument } from '../types/request';
 import { memoized } from './-private.ts';
 import type { PaginationLink, PaginationLinks } from './pagination-links.ts';
 import { getPaginationLinks } from './pagination-links.ts';
-import type { PaginationSubscription } from './pagination-subscription.ts';
+import type { PaginationState } from './pagination-state.ts';
 import { DISPOSE } from './request-subscription.ts';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -16,7 +15,7 @@ export interface PaginationLinksSubscription<RT, E> {
 }
 
 export interface PaginationLinksSubscriptionArgs<RT, E> {
-  pages: PaginationSubscription<RT, E>;
+  state: PaginationState<RT, E>;
 }
 
 /**
@@ -42,8 +41,8 @@ export class PaginationLinksSubscription<RT, E> {
   }
 
   @memoized
-  get paginationLinks(): Readonly<PaginationLinks<RT, StructuredErrorDocument<E>>> {
-    return getPaginationLinks<RT, E>(this._args.pages);
+  get paginationLinks(): Readonly<PaginationLinks<RT, E>> {
+    return getPaginationLinks<RT, E>(this._args.state);
   }
 
   @memoized

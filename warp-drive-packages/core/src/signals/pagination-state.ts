@@ -5,46 +5,56 @@ import { assert } from '@warp-drive/build-config/macros';
 
 import type { ReactiveDocument } from '../reactive.ts';
 import type { Future } from '../request.ts';
-import type { StructuredErrorDocument } from '../types/request.ts';
 import { PageState } from './page-state.ts';
 import { memoized, signal } from './reactivity/signal';
 
 const PaginationCache = new Map<string, PaginationState>();
 
 export class PaginationState<RT = unknown, E = unknown> {
-  @signal declare initialPage: Readonly<PageState<RT, E>>;
+  @signal declare initialPage: Readonly<PageState<RT, E>> | null;
+  @signal declare firstPage: Readonly<PageState<RT, E>> | null;
   @signal declare totalPages: number;
   declare pagesCache: Map<string, PageState>;
 
-  constructor(request: Future<RT>) {
+  constructor() {
     this.pagesCache = new Map<string, PageState>();
-    this.initialPage = this.getPageState(request);
     this.totalPages = 0;
   }
 
-  getPageState(futureOrLink: Future<unknown> | string): Readonly<PageState<RT, E>> {
-    const url = typeof futureOrLink === 'string' ? futureOrLink : futureOrLink.toString();
-    let state = this.pagesCache.get(url);
+  start(url: string, request: Future<RT>): Readonly<PageState<RT, E>> {
+    this.initialPage = this.loadPage(url, request);
+    return this.initialPage;
+  }
 
+  getPageState(url: string): Readonly<PageState<RT, E>> {
+    let state = this.pagesCache.get(url);
     if (!state) {
-      state = new PageState<RT, E>(this, futureOrLink as Future<RT>);
+      state = new PageState<RT, E>(this, url);
       this.pagesCache.set(url, state);
     }
 
     return state as Readonly<PageState<RT, E>>;
   }
 
-  async loadPage(page: PageState<RT, E>, request: Future<RT> | null): Promise<ReactiveDocument<RT[]> | null> {
+  loadPage(url: string, request: Future<RT> | null): Readonly<PageState<RT, E>> {
+    const page = this.getPageState(url);
     if (!page.isLoaded && request) {
       assert('Expected a request to a load a page', request);
-      const document = await page.load(request);
-      if (document) {
-        this.totalPages = this.getTotalPages(document);
-      }
-      return document;
+      void page.load(request).then((document) => {
+        this.updateFirstPage(page);
+        if (document) {
+          this.totalPages = this.getTotalPages(document);
+        }
+      });
     }
+    return page;
+  }
 
-    return null;
+  updateFirstPage(page: Readonly<PageState<RT, E>>): void {
+    const maybeFirstPage = page.before ?? page;
+    if (!this.firstPage || this.firstPage?.pageNumber > maybeFirstPage.pageNumber) {
+      this.firstPage = maybeFirstPage;
+    }
   }
 
   getTotalPages(document: ReactiveDocument<unknown>): number {
@@ -58,18 +68,6 @@ export class PaginationState<RT = unknown, E = unknown> {
 }
 
 export class PagedState<RT = unknown, E = unknown> extends PaginationState<RT, E> {
-  @signal declare firstPage: Readonly<PageState<RT, E>>;
-  @signal declare lastPage: Readonly<PageState<RT, E>>;
-
-  constructor(request: Future<RT>) {
-    super(request);
-
-    assert('Expected the initial page to have a first link', this.initialPage.firstLink);
-    this.firstPage = this.getPageState(this.initialPage.firstLink);
-    assert('Expected the initial page to have a last link', this.initialPage.lastLink);
-    this.lastPage = this.getPageState(this.initialPage.lastLink);
-  }
-
   @memoized
   get pages(): Iterable<Readonly<PageState<RT, E>>> {
     // eslint-disable-next-line @typescript-eslint/no-this-alias
@@ -79,7 +77,7 @@ export class PagedState<RT = unknown, E = unknown> extends PaginationState<RT, E
         let page: Readonly<PageState<RT, E>> | null = self.firstPage;
         while (page) {
           yield page;
-          page = page.next;
+          page = page.after;
         }
       },
     };
@@ -94,19 +92,14 @@ export class PagedState<RT = unknown, E = unknown> extends PaginationState<RT, E
         let page: Readonly<PageState<RT, E>> | null = self.firstPage;
         while (page) {
           if (page.data) {
-            for (const item of page.data) {
+            for (const item of page.data as []) {
               yield item;
             }
           }
-          page = page.next;
+          page = page.after;
         }
       },
     };
-  }
-
-  async loadPage(page: Readonly<PageState<RT, E>>, request: Future<RT> | null): Promise<ReactiveDocument<RT[]> | null> {
-    const document = await super.loadPage(page, request);
-    return document;
   }
 }
 /*
@@ -176,17 +169,29 @@ export class InfiniteCollectionState<RT = unknown, E = unknown> extends Paginati
  * @param future
  * @return {PaginationState}
  */
+/**
+ * Clears the module-level pagination cache used by {@link getPaginationState}.
+ * Primarily intended for test isolation, since the cache is keyed by url and
+ * otherwise persists for the lifetime of the module.
+ *
+ * @public
+ * @static
+ * @for @warp-drive/ember
+ */
+export function clearPaginationCache(): void {
+  PaginationCache.clear();
+}
+
 export function getPaginationState<RT, E>(
   key: string,
-  future: Future<RT>,
   mode: 'paged' | 'infinite' = 'paged'
-): Readonly<PaginationState<RT, StructuredErrorDocument<E>>> {
+): Readonly<PaginationState<RT, E>> {
   let state = PaginationCache.get(key);
 
   if (!state) {
-    state = new PagedState<RT, E>(future);
+    state = new PagedState<RT, E>();
     PaginationCache.set(key, state);
   }
 
-  return state as Readonly<PaginationState<RT, StructuredErrorDocument<E>>>;
+  return state as PaginationState<RT, E>;
 }

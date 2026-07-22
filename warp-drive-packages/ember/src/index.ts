@@ -12,6 +12,7 @@ export {
   getRequestState,
   createRequestSubscription,
   getPaginationState,
+  clearPaginationCache,
   createPaginationSubscription,
   getPaginationLinks,
   createPaginationLinksSubscription,

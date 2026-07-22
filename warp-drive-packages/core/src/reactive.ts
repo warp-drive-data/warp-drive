@@ -321,6 +321,7 @@ export {
   getRequestState,
   createPaginationSubscription,
   getPaginationState,
+  clearPaginationCache,
   createPaginationLinksSubscription,
   getPaginationLinks,
   type RequestSubscription,
