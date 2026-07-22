@@ -1,10 +1,10 @@
 // import { assert } from '@warp-drive/core/build-config/macros';
 
-import type { PageState } from './page-state.ts';
-import type { PaginationState } from './pagination-state.ts';
+import type { PageCache } from './page-cache.ts';
+import type { PaginationCache } from './pagination-cache.ts';
 import { memoized } from './reactivity/signal';
 
-const PaginationLinksCache = new WeakMap<PaginationState, PaginationLinks>();
+const PaginationLinksCache = new WeakMap<PaginationCache, PaginationLinks>();
 
 export class RealPaginationLink {
   readonly isReal = true as const;
@@ -66,24 +66,24 @@ export class PlaceholderPaginationLink {
 export type PaginationLink = RealPaginationLink | PlaceholderPaginationLink;
 
 export class PaginationLinks<RT = unknown, E = unknown> {
-  declare paginationState: PaginationState<RT, E>;
+  declare paginationCache: PaginationCache<RT, E>;
 
   private _links: PaginationLink[] = [];
 
-  constructor(paginationState: PaginationState<RT, E>) {
-    this.paginationState = paginationState;
+  constructor(paginationCache: PaginationCache<RT, E>) {
+    this.paginationCache = paginationCache;
   }
 
   /** All available links and placeholders */
   @memoized
   get links(): PaginationLink[] {
-    const paginationState = this.paginationState;
-    const { firstPage, totalPages } = paginationState;
+    const paginationCache = this.paginationCache;
+    const { firstPage, totalPages } = paginationCache;
 
     const links = [];
     if (firstPage) {
-      let previousPage: Readonly<PageState<RT, E>> | null = null;
-      let currentPage: Readonly<PageState<RT, E>> | null = firstPage;
+      let previousPage: Readonly<PageCache<RT, E>> | null = null;
+      let currentPage: Readonly<PageCache<RT, E>> | null = firstPage;
       while (currentPage) {
         if (previousPage && currentPage.pageNumber - previousPage.pageNumber > 1) {
           links.push(new PlaceholderPaginationLink([previousPage.pageNumber + 1, currentPage.pageNumber - 1]));
@@ -102,7 +102,7 @@ export class PaginationLinks<RT = unknown, E = unknown> {
   }
 }
 
-export function getPaginationLinks<RT, E>(state: PaginationState<RT, E>): Readonly<PaginationLinks<RT, E>> {
+export function getPaginationLinks<RT, E>(state: PaginationCache<RT, E>): Readonly<PaginationLinks<RT, E>> {
   let links = PaginationLinksCache.get(state);
 
   if (!links) {

@@ -7,7 +7,7 @@ import type { ReactiveDocument } from '../reactive.ts';
 import type { Future } from '../request.ts';
 import type { StructuredErrorDocument } from '../types/request.ts';
 import type { Link } from '../types/spec/json-api-raw.ts';
-import type { PaginationState } from './pagination-state.ts';
+import type { PaginationCache } from './pagination-cache.ts';
 import { memoized, signal } from './reactivity/signal';
 import type { RequestState } from './request-state.ts';
 import { getRequestState } from './request-state.ts';
@@ -31,8 +31,8 @@ type Links = {
   last?: string | null;
 };
 
-export class PageState<RT = unknown, E = unknown> {
-  declare manager: PaginationState<RT, E>;
+export class PageCache<RT = unknown, E = unknown> {
+  declare manager: PaginationCache<RT, E>;
   @signal declare request: Future<RT> | null;
   @signal declare state: Readonly<RequestState<RT, StructuredErrorDocument<E>>> | null;
   @signal declare selfLink: string | null;
@@ -41,10 +41,10 @@ export class PageState<RT = unknown, E = unknown> {
   @signal declare firstLink: string | null;
   @signal declare lastLink: string | null;
   @signal declare pageNumber: number;
-  @signal declare before: Readonly<PageState<RT, E>> | null;
-  @signal declare after: Readonly<PageState<RT, E>> | null;
+  @signal declare before: Readonly<PageCache<RT, E>> | null;
+  @signal declare after: Readonly<PageCache<RT, E>> | null;
 
-  constructor(manager: PaginationState<RT, E>, url: string) {
+  constructor(manager: PaginationCache<RT, E>, url: string) {
     this.manager = manager;
     this.pageNumber = 0;
     this.selfLink = url;
@@ -96,27 +96,27 @@ export class PageState<RT = unknown, E = unknown> {
   }
 
   @memoized
-  get prev(): PageState<RT, E> | null {
+  get prev(): PageCache<RT, E> | null {
     const url = this.prevLink;
-    return url ? this.manager.getPageState(url) : null;
+    return url ? this.manager.getPageCache(url) : null;
   }
 
   @memoized
-  get next(): PageState<RT, E> | null {
+  get next(): PageCache<RT, E> | null {
     const url = this.nextLink;
-    return url ? this.manager.getPageState(url) : null;
+    return url ? this.manager.getPageCache(url) : null;
   }
 
   @memoized
-  get first(): PageState<RT, E> | null {
+  get first(): PageCache<RT, E> | null {
     const url = this.firstLink;
-    return url ? this.manager.getPageState(url) : null;
+    return url ? this.manager.getPageCache(url) : null;
   }
 
   @memoized
-  get last(): PageState<RT, E> | null {
+  get last(): PageCache<RT, E> | null {
     const url = this.lastLink;
-    return url ? this.manager.getPageState(url) : null;
+    return url ? this.manager.getPageCache(url) : null;
   }
 
   @memoized
@@ -141,10 +141,10 @@ export class PageState<RT = unknown, E = unknown> {
 
       this.pageNumber = this.getPageNumber(content);
 
-      const firstPage = first ? this.manager.getPageState(first) : null;
-      const lastPage = last ? this.manager.getPageState(last) : null;
-      const prevPage = prev ? this.manager.getPageState(prev) : null;
-      const nextPage = next ? this.manager.getPageState(next) : null;
+      const firstPage = first ? this.manager.getPageCache(first) : null;
+      const lastPage = last ? this.manager.getPageCache(last) : null;
+      const prevPage = prev ? this.manager.getPageCache(prev) : null;
+      const nextPage = next ? this.manager.getPageCache(next) : null;
 
       if (firstPage) {
         this.firstLink = first;
@@ -197,7 +197,7 @@ export class PageState<RT = unknown, E = unknown> {
     return null;
   }
 
-  updateLinkage({ before, after }: { before?: PageState<RT, E> | null; after?: PageState<RT, E> | null }): void {
+  updateLinkage({ before, after }: { before?: PageCache<RT, E> | null; after?: PageCache<RT, E> | null }): void {
     assert('Expected at least one of before or after page states to link to this page', before || after);
 
     const leftSide = before ?? after?.before;
@@ -214,7 +214,7 @@ export class PageState<RT = unknown, E = unknown> {
     }
   }
 
-  lookupLinkage(firstPage: PageState<RT, E> | null, lastPage: PageState<RT, E> | null): void {
+  lookupLinkage(firstPage: PageCache<RT, E> | null, lastPage: PageCache<RT, E> | null): void {
     assert('Expected at least one of firstPage or lastPage to lookup linkage against', firstPage || lastPage);
 
     if (firstPage && lastPage) {
@@ -233,7 +233,7 @@ export class PageState<RT = unknown, E = unknown> {
     }
   }
 
-  lookupLinkageForward(page: PageState<RT, E>): void {
+  lookupLinkageForward(page: PageCache<RT, E>): void {
     while (page.after && page.after.pageNumber < this.pageNumber) {
       page = page.after;
     }
@@ -241,7 +241,7 @@ export class PageState<RT = unknown, E = unknown> {
     this.updateLinkage({ before: page });
   }
 
-  lookupLinkageBackwards(page: PageState<RT, E>): void {
+  lookupLinkageBackwards(page: PageCache<RT, E>): void {
     while (page.before && page.before.pageNumber > this.pageNumber) {
       page = page.before;
     }
@@ -249,12 +249,12 @@ export class PageState<RT = unknown, E = unknown> {
     this.updateLinkage({ after: page });
   }
 
-  setBefore(page: Readonly<PageState<RT, E>> | null): void {
+  setBefore(page: Readonly<PageCache<RT, E>> | null): void {
     assert('Expected the before page to be a different page, got the same page', page !== this);
     this.before = page;
   }
 
-  setAfter(page: Readonly<PageState<RT, E>> | null): void {
+  setAfter(page: Readonly<PageCache<RT, E>> | null): void {
     assert('Expected the after page to be a different page, got the same page', page !== this);
     this.after = page;
   }

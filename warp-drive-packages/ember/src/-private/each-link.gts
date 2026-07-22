@@ -8,7 +8,7 @@ import { assert } from '@warp-drive/core/build-config/macros';
 import type {
   PaginationLink,
   PaginationLinksSubscription,
-  PaginationState,
+  PaginationCache,
   PlaceholderPaginationLink,
   RealPaginationLink,
 } from '@warp-drive/core/reactive';
@@ -23,7 +23,7 @@ if (macroCondition(moduleExists('ember-provide-consume-context'))) {
 
 interface EachLinkSignature<RT, E> {
   Args: {
-    state: PaginationState<RT, E>;
+    state: PaginationCache<RT, E>;
 
     /**
      * The store instance to use for making requests. If contexts are available,

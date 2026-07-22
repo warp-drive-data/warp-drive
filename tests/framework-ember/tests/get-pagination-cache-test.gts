@@ -3,12 +3,12 @@ import type { CacheHandler, Future, NextFn } from '@warp-drive/core/request';
 import type { RequestContext, StructuredDataDocument } from '@warp-drive/core/types/request';
 import type { RenderingTestContext } from '@warp-drive/diagnostic/ember';
 import { module, setupRenderingTest, test as _test } from '@warp-drive/diagnostic/ember';
-import { getPaginationState } from '@warp-drive/ember';
+import { getPaginationCache } from '@warp-drive/ember';
 import { MockServerHandler } from '@warp-drive/holodeck';
 import { GET } from '@warp-drive/holodeck/mock';
 import { buildBaseURL } from '@warp-drive/utilities';
 
-type PaginationState<T, RT, E> = ReturnType<typeof getPaginationState<RT, T, E>>;
+type PaginationCache<T, RT, E> = ReturnType<typeof getPaginationCache<RT, T, E>>;
 type UserResource = {
   data: {
     id: string;
@@ -188,7 +188,7 @@ async function mockPaginatedGETFailure(context: LocalTestContext): Promise<strin
   return url;
 }
 
-module<LocalTestContext>('Integration | get-pagination-state', function (hooks) {
+module<LocalTestContext>('Integration | get-pagination-cache', function (hooks) {
   setupRenderingTest(hooks);
 
   hooks.beforeEach(function () {
@@ -203,48 +203,48 @@ module<LocalTestContext>('Integration | get-pagination-state', function (hooks) 
     const url = await mockGETSuccess(this);
 
     const request = this.manager.request<PaginatedUserResource>({ url, method: 'GET' });
-    const paginationState = getPaginationState(request);
+    const paginationCache = getPaginationCache(request);
 
     // Initial state checks
-    assert.true(paginationState.isLoading, 'The pagination state is loading');
-    assert.false(paginationState.isSuccess, 'The pagination state is not successful');
-    assert.false(paginationState.isError, 'The pagination state is not an error');
-    assert.equal(Array.from(paginationState.data).length, 0, 'No data loaded yet');
+    assert.true(paginationCache.isLoading, 'The pagination state is loading');
+    assert.false(paginationCache.isSuccess, 'The pagination state is not successful');
+    assert.false(paginationCache.isError, 'The pagination state is not an error');
+    assert.equal(Array.from(paginationCache.data).length, 0, 'No data loaded yet');
 
     await request;
 
     // After completion state checks
-    assert.true(paginationState.isSuccess, 'The pagination state is successful');
-    assert.false(paginationState.isLoading, 'The pagination state is no longer loading');
-    assert.false(paginationState.isError, 'The pagination state is not an error');
-    assert.equal(Array.from(paginationState.data).length, 10, 'Data contains 10 items');
-    assert.equal(Array.from(paginationState.pages).length, 1, '1 page exist after load');
+    assert.true(paginationCache.isSuccess, 'The pagination state is successful');
+    assert.false(paginationCache.isLoading, 'The pagination state is no longer loading');
+    assert.false(paginationCache.isError, 'The pagination state is not an error');
+    assert.equal(Array.from(paginationCache.data).length, 10, 'Data contains 10 items');
+    assert.equal(Array.from(paginationCache.pages).length, 1, '1 page exist after load');
   });
 
   test('It returns a pagination state that manages pages correctly', async function (assert) {
     const url = await mockGETSuccess(this);
 
     const request = this.manager.request<PaginatedUserResource>({ url, method: 'GET' });
-    const paginationState: PaginationState = getPaginationState(request);
+    const paginationCache: PaginationCache = getPaginationCache(request);
 
     await request;
 
-    assert.equal(paginationState.initialPage, paginationState.activePage, 'Initial page is the active page');
-    assert.ok(paginationState.initialPage.isSuccess, 'Initial page is successful');
-    assert.notOk(paginationState.initialPage.isLoading, 'Initial page is not loading');
-    assert.notOk(paginationState.initialPage.isError, 'Initial page is not an error');
+    assert.equal(paginationCache.initialPage, paginationCache.activePage, 'Initial page is the active page');
+    assert.ok(paginationCache.initialPage.isSuccess, 'Initial page is successful');
+    assert.notOk(paginationCache.initialPage.isLoading, 'Initial page is not loading');
+    assert.notOk(paginationCache.initialPage.isError, 'Initial page is not an error');
   });
 
   test('It returns a pagination state that updates on failure', async function (assert) {
     const url = await mockPaginatedGETFailure(this);
     const request = this.manager.request<PaginatedUserResource>({ url, method: 'GET' });
-    const paginationState = getPaginationState(request);
+    const paginationCache = getPaginationCache(request);
 
-    assert.true(paginationState.isLoading, 'The pagination state is loading');
-    assert.false(paginationState.isSuccess, 'The pagination state is not successful');
-    assert.false(paginationState.isError, 'The pagination state is not an error');
-    assert.equal(Array.from(paginationState.pages).length, 1, 'Initial page exists');
-    assert.equal(Array.from(paginationState.data).length, 0, 'No data loaded yet');
+    assert.true(paginationCache.isLoading, 'The pagination state is loading');
+    assert.false(paginationCache.isSuccess, 'The pagination state is not successful');
+    assert.false(paginationCache.isError, 'The pagination state is not an error');
+    assert.equal(Array.from(paginationCache.pages).length, 1, 'Initial page exists');
+    assert.equal(Array.from(paginationCache.data).length, 0, 'No data loaded yet');
 
     try {
       await request;
@@ -252,12 +252,12 @@ module<LocalTestContext>('Integration | get-pagination-state', function (hooks) 
       // ignoring error
     }
 
-    assert.false(paginationState.isSuccess, 'The pagination state is not successful');
-    assert.false(paginationState.isLoading, 'The pagination state is no longer loading');
-    assert.true(paginationState.isError, 'The pagination state is an error');
-    assert.equal(Array.from(paginationState.pages).length, 1, 'Page still exists after error');
-    assert.equal(Array.from(paginationState.data).length, 0, 'No data after error');
-    assert.true(paginationState.initialPage.isError, 'Initial page is in error state');
+    assert.false(paginationCache.isSuccess, 'The pagination state is not successful');
+    assert.false(paginationCache.isLoading, 'The pagination state is no longer loading');
+    assert.true(paginationCache.isError, 'The pagination state is an error');
+    assert.equal(Array.from(paginationCache.pages).length, 1, 'Page still exists after error');
+    assert.equal(Array.from(paginationCache.data).length, 0, 'No data after error');
+    assert.true(paginationCache.initialPage.isError, 'Initial page is in error state');
   });
 
   test('It handles next page navigation correctly', async function (assert) {
@@ -283,44 +283,44 @@ module<LocalTestContext>('Integration | get-pagination-state', function (hooks) 
     }));
 
     const request = this.manager.request<PaginatedUserResource>({ url: url1, method: 'GET' });
-    const paginationState = getPaginationState(request);
+    const paginationCache = getPaginationCache(request);
 
     await request;
 
-    assert.equal(Array.from(paginationState.pages).length, 2, '2 pages loaded');
-    assert.equal(Array.from(paginationState.data).length, 3, '3 items loaded');
+    assert.equal(Array.from(paginationCache.pages).length, 2, '2 pages loaded');
+    assert.equal(Array.from(paginationCache.data).length, 3, '3 items loaded');
 
-    const activePage = paginationState.activePage;
+    const activePage = paginationCache.activePage;
     const nextLink = activePage.nextLink;
     assert.ok(nextLink, 'Next link exists');
 
-    const nextPageState = paginationState.getPageState(nextLink);
-    assert.ok(nextPageState, 'Next page state can be created');
+    const nextPageCache = paginationCache.getPageCache(nextLink);
+    assert.ok(nextPageCache, 'Next page state can be created');
 
     const nextRequest = this.manager.request<PaginatedUserResource>({ url: nextLink, method: 'GET' });
-    const nextPage = nextPageState.load(nextRequest);
+    const nextPage = nextPageCache.load(nextRequest);
 
-    paginationState.activatePage(nextPageState);
+    paginationCache.activatePage(nextPageCache);
 
     await nextPage;
 
     // After loading next page
-    assert.equal(Array.from(paginationState.pages).length, 2, '2 pages are loaded');
-    assert.equal(Array.from(paginationState.data).length, 6, '6 items loaded');
-    assert.true(paginationState.isSuccess, 'Still in success state');
-    assert.false(paginationState.isLoading, 'Not in loading state');
-    assert.false(paginationState.isError, 'Not in error state');
+    assert.equal(Array.from(paginationCache.pages).length, 2, '2 pages are loaded');
+    assert.equal(Array.from(paginationCache.data).length, 6, '6 items loaded');
+    assert.true(paginationCache.isSuccess, 'Still in success state');
+    assert.false(paginationCache.isLoading, 'Not in loading state');
+    assert.false(paginationCache.isError, 'Not in error state');
   });
 
   test('It handles pagination when no next page exists', async function (assert) {
     const url = await mockGETSuccess(this);
 
     const request = this.manager.request<PaginatedUserResource>({ url, method: 'GET' });
-    const paginationState = getPaginationState(request);
+    const paginationCache = getPaginationCache(request);
 
     await request;
 
-    const activePage = paginationState.activePage;
+    const activePage = paginationCache.activePage;
     assert.equal(activePage.nextLink, null, 'Has no next link when on last page');
     assert.equal(activePage.next, null, 'Has no next page state when on last page');
 
@@ -359,27 +359,27 @@ module<LocalTestContext>('Integration | get-pagination-state', function (hooks) 
     }));
 
     const request = this.manager.request<PaginatedUserResource>({ url, method: 'GET' });
-    const paginationState = getPaginationState(request);
+    const paginationCache = getPaginationCache(request);
 
     await request;
 
-    const activePage = paginationState.activePage;
+    const activePage = paginationCache.activePage;
     assert.ok(activePage.nextLink, 'Has next link when not on last page');
     assert.ok(activePage.prevLink, 'Has prev link when not on first page');
 
     const prevLink = activePage.prevLink;
-    const prevPageState = paginationState.getPageState(prevLink);
+    const prevPageCache = paginationCache.getPageCache(prevLink);
     const prevRequest = this.manager.request<PaginatedUserResource>({ url: prevLink, method: 'GET' });
-    const prevPage = prevPageState.load(prevRequest);
+    const prevPage = prevPageCache.load(prevRequest);
 
     const nextLink = activePage.nextLink;
-    const nextPageState = paginationState.getPageState(nextLink);
+    const nextPageCache = paginationCache.getPageCache(nextLink);
     const nextReq = this.manager.request<PaginatedUserResource>({ url: nextLink, method: 'GET' });
-    const nextPage = nextPageState.load(nextReq);
+    const nextPage = nextPageCache.load(nextReq);
 
-    assert.ok(paginationState.prevRequest, 'Has prev request when not on first page');
+    assert.ok(paginationCache.prevRequest, 'Has prev request when not on first page');
     assert.ok(prevPage, 'Prev page');
-    assert.ok(paginationState.nextRequest, 'Has next request when not on last page');
+    assert.ok(paginationCache.nextRequest, 'Has next request when not on last page');
     assert.ok(nextPage, 'Next page');
   });
 
@@ -387,11 +387,11 @@ module<LocalTestContext>('Integration | get-pagination-state', function (hooks) 
     const url = await mockGETSuccess(this);
 
     const request = this.manager.request<PaginatedUserResource>({ url, method: 'GET' });
-    const paginationState = getPaginationState(request);
+    const paginationCache = getPaginationCache(request);
 
-    assert.true(paginationState.isLoading, 'The pagination state is loading');
-    assert.false(paginationState.isSuccess, 'The pagination state is not successful');
-    assert.false(paginationState.isError, 'The pagination state is not an error');
+    assert.true(paginationCache.isLoading, 'The pagination state is loading');
+    assert.false(paginationCache.isSuccess, 'The pagination state is not successful');
+    assert.false(paginationCache.isError, 'The pagination state is not an error');
 
     request.abort();
 
@@ -402,10 +402,10 @@ module<LocalTestContext>('Integration | get-pagination-state', function (hooks) 
     }
 
     // After abort state checks
-    assert.false(paginationState.isSuccess, 'The pagination state is not successful');
-    assert.false(paginationState.isLoading, 'The pagination state is no longer loading');
-    assert.true(paginationState.isError, 'The pagination state is an error');
-    assert.equal(Array.from(paginationState.pages).length, 1, 'Page still exists after abort');
-    assert.equal(Array.from(paginationState.data).length, 0, 'No data after abort');
+    assert.false(paginationCache.isSuccess, 'The pagination state is not successful');
+    assert.false(paginationCache.isLoading, 'The pagination state is no longer loading');
+    assert.true(paginationCache.isError, 'The pagination state is an error');
+    assert.equal(Array.from(paginationCache.pages).length, 1, 'Page still exists after abort');
+    assert.equal(Array.from(paginationCache.data).length, 0, 'No data after abort');
   });
 });
