@@ -1,26 +1,12 @@
-import { assert } from '@warp-drive/core/build-config/macros';
-
 import type { RequestManager, Store } from '../index.ts';
 import type { ReactiveDocument } from '../reactive.ts';
 import type { Future } from '../request.ts';
 import type { StructuredErrorDocument } from '../types/request.ts';
-import type { Link } from '../types/spec/json-api-raw.ts';
-import type { PageCache } from './page-cache.ts';
-import { getPaginationCache, type PaginationCache } from './pagination-cache.ts';
-import { defineSignal, memoized } from './reactivity/signal.ts';
+import { getPaginationState, type PaginationState } from './pagination-state.ts';
+import { memoized } from './reactivity/signal.ts';
 import type { RequestLoadingState } from './request-state.ts';
 import type { RequestSubscription, SubscriptionArgs } from './request-subscription.ts';
 import { createRequestSubscription, DISPOSE } from './request-subscription.ts';
-
-export function getHref(link?: Link | null): string | null {
-  if (!link) {
-    return null;
-  }
-  if (typeof link === 'string') {
-    return link;
-  }
-  return link.href;
-}
 
 interface ErrorFeatures {
   isHidden: boolean;
@@ -72,7 +58,9 @@ export interface PaginationSubscription<RT, E> {
 }
 
 /**
- * A reactive class
+ * Lifecycle glue for the `<Paginate />` component. Owns the initial
+ * {@link RequestSubscription} (loading/error state, autorefresh, disposal) and
+ * the per-component {@link PaginationState} that it hands to the component.
  *
  * @hideconstructor
  */
@@ -86,8 +74,8 @@ export class PaginationSubscription<RT, E> {
   /** @internal */
   declare store: Store | RequestManager;
 
-  declare paginationCache: PaginationCache<RT, E>;
-  declare activePage: Readonly<PageCache<RT, E>>;
+  /** The per-component pagination state yielded to the component. */
+  declare paginationState: PaginationState<RT, E>;
 
   constructor(store: Store | RequestManager, args: PaginationSubscriptionArgs<RT, E>) {
     this._args = args;
@@ -95,7 +83,7 @@ export class PaginationSubscription<RT, E> {
     this.isDestroyed = false;
     this[DISPOSE] = _DISPOSE;
 
-    void this.setupPaginationCache();
+    this.paginationState = getPaginationState<RT, E>(store, this._requestSubscription.request, args.mode ?? 'paged');
   }
 
   @memoized
@@ -151,11 +139,12 @@ export class PaginationSubscription<RT, E> {
   @memoized
   get contentFeatures(): PaginationContentFeatures<RT> {
     const contentFeatures = this._requestSubscription.contentFeatures;
+    const { paginationState } = this;
     const feat: PaginationContentFeatures<RT> = {
       ...contentFeatures,
-      loadPrev: this.loadPrev,
-      loadNext: this.loadNext,
-      loadPage: this.loadPage,
+      loadPrev: paginationState.loadPrev,
+      loadNext: paginationState.loadNext,
+      loadPage: paginationState.loadPage,
     };
 
     if (feat.isRefreshing) {
@@ -179,66 +168,7 @@ export class PaginationSubscription<RT, E> {
   get request(): Future<RT> {
     return this._requestSubscription.request;
   }
-
-  @memoized
-  get activePageRequest(): Future<RT> | null {
-    return this.activePage.request;
-  }
-
-  async setupPaginationCache(): Promise<void> {
-    const document = await this.request;
-    const content = document.content as ReactiveDocument<RT>;
-    const selfLink = getHref(content.links?.self);
-    const firstLink = getHref(content.links?.first);
-    assert('Expected the initial document to have a self link', selfLink);
-    const cacheKey = firstLink ?? selfLink ?? '';
-    this.paginationCache = getPaginationCache<RT, E>(cacheKey, this._args.mode);
-    this.paginationCache.totalPages = this.paginationCache.getTotalPages(content);
-    this.activePage = this.paginationCache.start(selfLink, this.request);
-  }
-
-  /**
-   * Loads the prev page based on links.
-   */
-  loadPrev = async (): Promise<ReactiveDocument<RT> | null> => {
-    const { prevLink } = this.activePage;
-    if (prevLink) {
-      return this.loadPage(prevLink);
-    }
-
-    return null;
-  };
-
-  /**
-   * Loads the next page based on links.
-   */
-  loadNext = async (): Promise<ReactiveDocument<RT> | null> => {
-    const { nextLink } = this.activePage;
-    if (nextLink) {
-      return this.loadPage(nextLink);
-    }
-
-    return null;
-  };
-
-  /**
-   * Loads a specific page by its URL.
-   */
-  loadPage = async (url: string): Promise<ReactiveDocument<RT> | null> => {
-    this.activePage = this.paginationCache.getPageCache(url);
-    if (!this.activePage.isLoaded) {
-      const request = this.store.request({ method: 'GET', url });
-      const page = this.paginationCache.loadPage(url, request as Future<RT>);
-      await page.request;
-      return page.value;
-    }
-
-    return this.activePage.value;
-  };
 }
-
-defineSignal(PaginationSubscription.prototype, 'paginationCache', null);
-defineSignal(PaginationSubscription.prototype, 'activePage', null);
 
 export function createPaginationSubscription<RT, E>(
   store: Store | RequestManager,

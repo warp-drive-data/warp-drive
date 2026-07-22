@@ -7,7 +7,7 @@ import type { ComponentLike } from '@glint/template';
 
 import type { RequestManager, Store } from '@warp-drive/core';
 import { assert } from '@warp-drive/core/build-config/macros';
-import type { PaginationSubscription, RequestLoadingState } from '@warp-drive/core/reactive';
+import type { PaginationState, PaginationSubscription, RequestLoadingState } from '@warp-drive/core/reactive';
 import { createPaginationSubscription } from '@warp-drive/core/reactive';
 import type { PaginateArgs, PaginationContentFeatures, RecoveryFeatures } from '@warp-drive/core/signals/-leaked';
 import { DISPOSE, memoized } from '@warp-drive/core/signals/-leaked';
@@ -42,7 +42,7 @@ const DefaultChrome: TOC<{
 export interface EmberPaginateArgs<RT, E> extends PaginateArgs<RT, E> {
   chrome?: ComponentLike<{
     Blocks: { default: [] };
-    Args: { state: PaginationSubscription<unknown, unknown> | null; features: PaginationContentFeatures<RT> };
+    Args: { state: PaginationState | null; features: PaginationContentFeatures<RT> };
   }>;
 }
 
@@ -81,8 +81,8 @@ interface PaginateSignature<RT, E> {
      * The block to render when the request succeeded.
      *
      */
-    content: [state: PaginationSubscription<RT, E>, features: PaginationContentFeatures<RT>];
-    always: [state: PaginationSubscription<RT, E>, features: PaginationContentFeatures<RT>];
+    content: [state: PaginationState<RT, E>, features: PaginationContentFeatures<RT>];
+    always: [state: PaginationState<RT, E>, features: PaginationContentFeatures<RT>];
   };
 }
 
@@ -352,7 +352,7 @@ export class Paginate<RT, E> extends Component<PaginateSignature<RT, E>> {
   @memoized
   get Chrome(): ComponentLike<{
     Blocks: { default: [] };
-    Args: { state: PaginationSubscription<unknown, unknown> | null; features: PaginationContentFeatures<RT> };
+    Args: { state: PaginationState | null; features: PaginationContentFeatures<RT> };
   }> {
     return this.args.chrome || DefaultChrome;
   }
@@ -365,7 +365,10 @@ export class Paginate<RT, E> extends Component<PaginateSignature<RT, E>> {
   }
 
   <template>
-    <this.Chrome @state={{if this.state.isIdle null this.state}} @features={{this.state.contentFeatures}}>
+    <this.Chrome
+      @state={{if this.state.isIdle null this.state.paginationState}}
+      @features={{this.state.contentFeatures}}
+    >
       {{#if (and this.state.isIdle (has-block "idle"))}}
         {{yield to="idle"}}
 
@@ -382,13 +385,13 @@ export class Paginate<RT, E> extends Component<PaginateSignature<RT, E>> {
         {{yield (notNull this.state.reason) this.state.errorFeatures to="error"}}
 
       {{else if this.state.isSuccess}}
-        {{yield this.state this.state.contentFeatures to="content"}}
+        {{yield this.state.paginationState this.state.contentFeatures to="content"}}
 
       {{else if (not this.state.isCancelled)}}
         <Throw @error={{(notNull this.state.reason)}} />
       {{/if}}
 
-      {{yield this.state this.state.contentFeatures to="always"}}
+      {{yield this.state.paginationState this.state.contentFeatures to="always"}}
     </this.Chrome>
   </template>
 }

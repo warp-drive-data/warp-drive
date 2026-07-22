@@ -1,20 +1,20 @@
-// import { assert } from '@warp-drive/core/build-config/macros';
-
 import type { PageCache } from './page-cache.ts';
-import type { PaginationCache } from './pagination-cache.ts';
+import type { PaginationState } from './pagination-state.ts';
 import { memoized } from './reactivity/signal';
 
-const PaginationLinksCache = new WeakMap<PaginationCache, PaginationLinks>();
+const PaginationLinksCache = new WeakMap<PaginationState, PaginationLinks>();
 
 export class RealPaginationLink {
   readonly isReal = true as const;
 
   readonly url: string;
   readonly index: number;
+  readonly isCurrent: boolean;
 
-  constructor(url: string, index: number) {
+  constructor(url: string, index: number, isCurrent = false) {
     this.url = url;
     this.index = index;
+    this.isCurrent = isCurrent;
   }
 
   get text(): string {
@@ -45,42 +45,28 @@ export class PlaceholderPaginationLink {
   }
 }
 
-// function getPaginationLink(
-//   existingLink: RealPaginationLink | PlaceholderPaginationLink | null,
-//   index: number,
-//   currentPage: number,
-//   url: string | null
-// ): PaginationLink {
-//   const isCurrent = index === currentPage;
-//   const distanceFromActiveIndex = Math.abs(index - currentPage);
-//   if (existingLink?.isReal) {
-//     assert('Found existing real link with a different URL', !url || !existingLink.url || url === existingLink.url);
-//     return new RealPaginationLink(url ?? existingLink.url, index, isCurrent, distanceFromActiveIndex);
-//   } else if (url) {
-//     return new RealPaginationLink(url, index, isCurrent, distanceFromActiveIndex);
-//   } else {
-//     return new PlaceholderPaginationLink([index, index], distanceFromActiveIndex);
-//   }
-// }
-
 export type PaginationLink = RealPaginationLink | PlaceholderPaginationLink;
 
 export class PaginationLinks<RT = unknown, E = unknown> {
-  declare paginationCache: PaginationCache<RT, E>;
+  declare paginationState: PaginationState<RT, E>;
 
-  private _links: PaginationLink[] = [];
-
-  constructor(paginationCache: PaginationCache<RT, E>) {
-    this.paginationCache = paginationCache;
+  constructor(paginationState: PaginationState<RT, E>) {
+    this.paginationState = paginationState;
   }
 
-  /** All available links and placeholders */
+  /** All available links and placeholders, derived from the shared page graph. */
   @memoized
   get links(): PaginationLink[] {
-    const paginationCache = this.paginationCache;
-    const { firstPage, totalPages } = paginationCache;
+    const links: PaginationLink[] = [];
 
-    const links = [];
+    const cache = this.paginationState.paginationCache;
+    if (!cache) {
+      return links;
+    }
+
+    const { firstPage, totalPages } = cache;
+    const activeIndex = this.paginationState.activePage?.pageNumber ?? 0;
+
     if (firstPage) {
       let previousPage: Readonly<PageCache<RT, E>> | null = null;
       let currentPage: Readonly<PageCache<RT, E>> | null = firstPage;
@@ -88,7 +74,13 @@ export class PaginationLinks<RT = unknown, E = unknown> {
         if (previousPage && currentPage.pageNumber - previousPage.pageNumber > 1) {
           links.push(new PlaceholderPaginationLink([previousPage.pageNumber + 1, currentPage.pageNumber - 1]));
         }
-        links.push(new RealPaginationLink(currentPage.selfLink ?? '', currentPage.pageNumber));
+        links.push(
+          new RealPaginationLink(
+            currentPage.selfLink ?? '',
+            currentPage.pageNumber,
+            currentPage.pageNumber === activeIndex
+          )
+        );
         previousPage = currentPage;
         currentPage = currentPage.after;
       }
@@ -102,7 +94,7 @@ export class PaginationLinks<RT = unknown, E = unknown> {
   }
 }
 
-export function getPaginationLinks<RT, E>(state: PaginationCache<RT, E>): Readonly<PaginationLinks<RT, E>> {
+export function getPaginationLinks<RT, E>(state: PaginationState<RT, E>): Readonly<PaginationLinks<RT, E>> {
   let links = PaginationLinksCache.get(state);
 
   if (!links) {

@@ -12,6 +12,13 @@ export {
 } from './request-subscription.ts';
 export { getRequestState, type RequestLoadingState, type RequestState } from './request-state.ts';
 export { getPaginationCache, clearPaginationCache, type PaginationCache } from './pagination-cache.ts';
+export {
+  getPaginationState,
+  type PaginationState,
+  type PagedState,
+  type InfiniteState,
+  type PaginationMode,
+} from './pagination-state.ts';
 export { type PageCache } from './page-cache.ts';
 export {
   getPaginationLinks,

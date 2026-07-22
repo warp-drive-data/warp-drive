@@ -2,7 +2,7 @@ import type { RequestManager, Store } from '../index';
 import { memoized } from './-private.ts';
 import type { PaginationLink, PaginationLinks } from './pagination-links.ts';
 import { getPaginationLinks } from './pagination-links.ts';
-import type { PaginationCache } from './pagination-cache.ts';
+import type { PaginationState } from './pagination-state.ts';
 import { DISPOSE } from './request-subscription.ts';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -15,7 +15,7 @@ export interface PaginationLinksSubscription<RT, E> {
 }
 
 export interface PaginationLinksSubscriptionArgs<RT, E> {
-  state: PaginationCache<RT, E>;
+  state: PaginationState<RT, E>;
 }
 
 /**
