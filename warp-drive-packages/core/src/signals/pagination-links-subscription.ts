@@ -1,6 +1,6 @@
 import type { RequestManager, Store } from '../index';
 import { memoized } from './-private.ts';
-import type { PaginationLink, PaginationLinks } from './pagination-links.ts';
+import type { PaginationLink, PaginationLinks, RelationalPaginationLink } from './pagination-links.ts';
 import { getPaginationLinks } from './pagination-links.ts';
 import type { PaginationState } from './pagination-state.ts';
 import { DISPOSE } from './request-subscription.ts';
@@ -48,6 +48,16 @@ export class PaginationLinksSubscription<RT, E> {
   @memoized
   get links(): ReadonlyArray<Readonly<PaginationLink>> {
     return this.paginationLinks.links;
+  }
+
+  @memoized
+  get prev(): Readonly<RelationalPaginationLink> | null {
+    return this.paginationLinks.prev;
+  }
+
+  @memoized
+  get next(): Readonly<RelationalPaginationLink> | null {
+    return this.paginationLinks.next;
   }
 }
 

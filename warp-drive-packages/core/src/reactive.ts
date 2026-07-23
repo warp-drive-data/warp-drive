@@ -341,6 +341,7 @@ export {
   type PaginationLink,
   type RealPaginationLink,
   type PlaceholderPaginationLink,
+  type RelationalPaginationLink,
 } from './signals/-private';
 
 export {

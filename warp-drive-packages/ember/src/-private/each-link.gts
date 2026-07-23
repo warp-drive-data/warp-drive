@@ -11,6 +11,7 @@ import type {
   PaginationState,
   PlaceholderPaginationLink,
   RealPaginationLink,
+  RelationalPaginationLink,
 } from '@warp-drive/core/reactive';
 import { createPaginationLinksSubscription } from '@warp-drive/core/reactive';
 import { DISPOSE } from '@warp-drive/core/signals/-leaked';
@@ -37,11 +38,29 @@ interface EachLinkSignature<RT, E> {
   };
   Blocks: {
     /**
-     * The block to render when the request succeeded.
-     *
+     * A numbered page link. Rendered once per known page in numbered pagination;
+     * never rendered for cursor-based pagination.
      */
     link: [link: RealPaginationLink];
+
+    /**
+     * A gap between known pages in numbered pagination.
+     */
     placeholder: [link: PlaceholderPaginationLink];
+
+    /**
+     * The relational link to the previous page, relative to the active page.
+     * Rendered when a previous page exists. For cursor-based pagination these
+     * `prev`/`next` blocks are the only navigation available.
+     */
+    prev: [link: RelationalPaginationLink];
+
+    /**
+     * The relational link to the next page, relative to the active page.
+     * Rendered when a next page exists.
+     */
+    next: [link: RelationalPaginationLink];
+
     default: [link: PaginationLink];
   };
 }
@@ -305,6 +324,12 @@ export class EachLink<RT, E> extends Component<EachLinkSignature<RT, E>> {
   }
 
   <template>
+    {{#if this.state.prev}}
+      {{#if (has-block "prev")}}
+        {{yield this.state.prev to="prev"}}
+      {{/if}}
+    {{/if}}
+
     {{#each this.state.links as |link|}}
       {{#if link.isReal}}
         {{#if (has-block "link")}}
@@ -318,5 +343,11 @@ export class EachLink<RT, E> extends Component<EachLinkSignature<RT, E>> {
         {{yield link}}
       {{/if}}
     {{/each}}
+
+    {{#if this.state.next}}
+      {{#if (has-block "next")}}
+        {{yield this.state.next to="next"}}
+      {{/if}}
+    {{/if}}
   </template>
 }

@@ -257,6 +257,12 @@ module<LocalTestContext>('Integration | <Paginate />', function (hooks) {
               <:placeholder as |link|>
                 <button>.</button>
               </:placeholder>
+              <:prev as |link|>
+                <button {{on "click" (fn features.loadPage link.url)}} data-test-prev>{{link.text}}</button>
+              </:prev>
+              <:next as |link|>
+                <button {{on "click" (fn features.loadPage link.url)}} data-test-next>{{link.text}}</button>
+              </:next>
             </EachLink>
           </:content>
           <:error as |error|>{{error.message}}<br />Count: {{countFor error}}</:error>
@@ -287,6 +293,8 @@ module<LocalTestContext>('Integration | <Paginate />', function (hooks) {
       ['1', '2', '3', '.', '6'],
       'Link names'
     );
+    assert.equal(this.element.querySelectorAll('[data-test-prev]').length, 1, 'Prev link available on page 2');
+    assert.equal(this.element.querySelectorAll('[data-test-next]').length, 1, 'Next link available on page 2');
     assert.equal(counter, 2);
     assert.equal(this.element.querySelector('[data-test-user-name]')?.textContent.trim(), 'Leo EuclidesCount: 2');
     assert.equal(this.element.querySelectorAll('[data-test-user-name]').length, 1, '1 user rendered');
@@ -303,6 +311,8 @@ module<LocalTestContext>('Integration | <Paginate />', function (hooks) {
       ['1', '2', '3', '.', '6'],
       'Link names'
     );
+    assert.equal(this.element.querySelectorAll('[data-test-prev]').length, 0, 'No prev link on the first page');
+    assert.equal(this.element.querySelectorAll('[data-test-next]').length, 1, 'Next link available on the first page');
     assert.equal(counter, 4);
     assert.equal(this.element.querySelector('[data-test-user-name]')?.textContent.trim(), 'Chris ThoburnCount: 4');
     assert.equal(this.element.querySelectorAll('[data-test-user-name]').length, 1, '1 user rendered');
@@ -319,6 +329,8 @@ module<LocalTestContext>('Integration | <Paginate />', function (hooks) {
       ['1', '2', '3', '.', '5', '6'],
       'Link names'
     );
+    assert.equal(this.element.querySelectorAll('[data-test-prev]').length, 1, 'Prev link available on the last page');
+    assert.equal(this.element.querySelectorAll('[data-test-next]').length, 0, 'No next link on the last page');
     assert.equal(counter, 6);
     assert.equal(this.element.querySelector('[data-test-user-name]')?.textContent.trim(), 'Mia SinekCount: 6');
     assert.equal(this.element.querySelectorAll('[data-test-user-name]').length, 1, '1 user rendered');
@@ -370,6 +382,25 @@ module<LocalTestContext>('Integration | <Paginate />', function (hooks) {
     assert.equal(counter, 12);
     assert.equal(this.element.querySelector('[data-test-user-name]')?.textContent.trim(), 'Mehul ChaudhariCount: 12');
     assert.equal(this.element.querySelectorAll('[data-test-user-name]').length, 1, '1 user rendered');
+
+    // The relational next/prev buttons navigate too (currently on page 3).
+    await click('[data-test-next]');
+    activePage = paginationState.activePage;
+    assert.deepEqual(activePage?.pageNumber, 4, 'Next button advances to page 4');
+    assert.deepEqual(activePage?.data, [users[3]], 'Page data after next');
+    assert.true(
+      Boolean(this.element.querySelector('[data-test-user-name]')?.textContent?.includes('Benedikt Deicke')),
+      'Page 4 rendered after next'
+    );
+
+    await click('[data-test-prev]');
+    activePage = paginationState.activePage;
+    assert.deepEqual(activePage?.pageNumber, 3, 'Prev button returns to page 3');
+    assert.deepEqual(activePage?.data, [users[2]], 'Page data after prev');
+    assert.true(
+      Boolean(this.element.querySelector('[data-test-user-name]')?.textContent?.includes('Mehul Chaudhari')),
+      'Page 3 rendered after prev'
+    );
   });
 
   test('it handles paged pagination with incomplete data', async function (assert) {
@@ -1039,5 +1070,137 @@ module<LocalTestContext>('Integration | <Paginate />', function (hooks) {
     assert.deepEqual(activePage?.data, [users[0]], 'Page data after navigation');
     assert.deepEqual(paginationState.totalPages, 3, 'Total pages still derived from pageHints');
     assert.equal(this.element.querySelector('[data-test-user-name]')?.textContent.trim(), 'Chris Thoburn');
+  });
+
+  test('it supports cursor-based pagination in paged mode (no page numbers or total)', async function (assert) {
+    const urls = [
+      buildBaseURL({ resourcePath: 'users/cursor-start' }),
+      buildBaseURL({ resourcePath: 'users/cursor-YWJjZA' }),
+      buildBaseURL({ resourcePath: 'users/cursor-ZGVmZw' }),
+    ];
+
+    await GET(this, 'users/cursor-start', () => ({
+      data: [users[0]],
+      links: {
+        self: urls[0],
+        next: urls[1],
+      },
+      meta: {
+        hasNextPage: true,
+        hasPreviousPage: false,
+      },
+    }));
+
+    await GET(this, 'users/cursor-YWJjZA', () => ({
+      data: [users[1]],
+      links: {
+        prev: urls[0],
+        self: urls[1],
+        next: urls[2],
+      },
+      meta: {
+        hasNextPage: true,
+        hasPreviousPage: true,
+      },
+    }));
+
+    await GET(this, 'users/cursor-ZGVmZw', () => ({
+      data: [users[2]],
+      links: {
+        prev: urls[1],
+        self: urls[2],
+      },
+      meta: {
+        hasNextPage: false,
+        hasPreviousPage: true,
+      },
+    }));
+
+    const request = this.manager.request<CollectionResourceDataDocument<UserResource>>({ url: urls[0], method: 'GET' });
+    const paginationState = getPaginationState(this.manager, request, 'paged');
+
+    const manager = this.manager;
+
+    await this.render(
+      <template>
+        <Paginate @request={{request}} @store={{manager}} @mode="paged">
+          <:loading>
+            <span data-test-pending>Pending</span>
+          </:loading>
+          <:content as |pages features|>
+            <Request @request={{pages.activePageRequest}} @store={{manager}}>
+              <:idle><span data-test-idle>No page is active</span></:idle>
+              <:content as |content|>
+                {{#each content.data as |user|}}
+                  <span data-test-user-name>{{user.attributes.name}}</span>
+                {{/each}}
+              </:content>
+              <:loading><span data-test-loading-page>Pending</span></:loading>
+            </Request>
+
+            <EachLink @state={{pages}} @store={{manager}}>
+              <:link as |link|>
+                <button data-test-load-page={{link.index}}>{{link.text}}</button>
+              </:link>
+              <:prev as |link|>
+                <button data-test-prev {{on "click" (fn features.loadPage link.url)}}>{{link.text}}</button>
+              </:prev>
+              <:next as |link|>
+                <button data-test-next {{on "click" (fn features.loadPage link.url)}}>{{link.text}}</button>
+              </:next>
+            </EachLink>
+          </:content>
+          <:error as |error|>{{error.message}}</:error>
+        </Paginate>
+      </template>
+    );
+
+    await request;
+    await rerender();
+
+    assert.deepEqual(paginationState.activePage?.data, [users[0]], 'Active page is the first cursor page');
+    assert.equal(paginationState.totalPages, 0, 'No total is known for a cursor collection');
+    assert.equal(this.element.querySelector('[data-test-user-name]')?.textContent.trim(), 'Chris Thoburn');
+    assert.equal(this.element.querySelectorAll('[data-test-user-name]').length, 1, '1 user rendered');
+
+    assert.equal(paginationState.links.length, 0, 'No numbered links for a cursor collection');
+    assert.equal(this.element.querySelectorAll('[data-test-load-page]').length, 0, 'No numbered link buttons');
+    assert.equal(this.element.querySelectorAll('[data-test-prev]').length, 0, 'No prev link on the first page');
+    assert.equal(this.element.querySelectorAll('[data-test-next]').length, 1, 'Next link available');
+
+    await click('[data-test-next]');
+    await rerender();
+
+    assert.deepEqual(paginationState.activePage?.data, [users[1]], 'Active page advanced via next cursor');
+    assert.equal(this.element.querySelector('[data-test-user-name]')?.textContent.trim(), 'Leo Euclides');
+    assert.equal(this.element.querySelectorAll('[data-test-prev]').length, 1, 'Prev link available on a middle page');
+    assert.equal(this.element.querySelectorAll('[data-test-next]').length, 1, 'Next link available on a middle page');
+
+    await click('[data-test-next]');
+    await rerender();
+
+    assert.deepEqual(paginationState.activePage?.data, [users[2]], 'Active page advanced to the final cursor page');
+    assert.equal(this.element.querySelector('[data-test-user-name]')?.textContent.trim(), 'Mehul Chaudhari');
+    assert.equal(this.element.querySelectorAll('[data-test-next]').length, 0, 'No next link on the final page');
+    assert.equal(this.element.querySelectorAll('[data-test-prev]').length, 1, 'Prev link available on the final page');
+
+    const atEnd = await paginationState.loadNext();
+    assert.equal(atEnd, null, 'loadNext resolves null at the end of the cursor collection');
+
+    await click('[data-test-prev]');
+    await rerender();
+
+    assert.deepEqual(paginationState.activePage?.data, [users[1]], 'Active page moved back via prev cursor');
+    assert.equal(this.element.querySelector('[data-test-user-name]')?.textContent.trim(), 'Leo Euclides');
+
+    await click('[data-test-prev]');
+    await rerender();
+
+    assert.deepEqual(paginationState.activePage?.data, [users[0]], 'Active page moved back to the first cursor page');
+    assert.equal(this.element.querySelector('[data-test-user-name]')?.textContent.trim(), 'Chris Thoburn');
+    assert.equal(this.element.querySelectorAll('[data-test-prev]').length, 0, 'No prev link back on the first page');
+
+    const atStart = await paginationState.loadPrev();
+    assert.equal(atStart, null, 'loadPrev resolves null at the start of the cursor collection');
   });
 });

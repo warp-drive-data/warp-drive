@@ -28,6 +28,7 @@ export {
   type PaginationLink,
   type RealPaginationLink,
   type PlaceholderPaginationLink,
+  type RelationalPaginationLink,
 } from '@warp-drive/core/reactive';
 
 export { getPromiseState, type PromiseState } from '@warp-drive/core/reactive';

@@ -45,6 +45,29 @@ export class PlaceholderPaginationLink {
   }
 }
 
+/**
+ * A relational (`prev`/`next`) navigation link, relative to the active page. Unlike
+ * {@link RealPaginationLink} these carry no ordinal index — they are the only links
+ * available for cursor-based pagination, where pages are chained purely by opaque
+ * `prev`/`next` links with no page number or total. They are also available in
+ * numbered pagination as a convenience.
+ */
+export class RelationalPaginationLink {
+  readonly isReal = true as const;
+
+  readonly rel: 'prev' | 'next';
+  readonly url: string;
+
+  constructor(rel: 'prev' | 'next', url: string) {
+    this.rel = rel;
+    this.url = url;
+  }
+
+  get text(): string {
+    return this.rel;
+  }
+}
+
 export type PaginationLink = RealPaginationLink | PlaceholderPaginationLink;
 
 export class PaginationLinks<RT = unknown, E = unknown> {
@@ -54,13 +77,39 @@ export class PaginationLinks<RT = unknown, E = unknown> {
     this.paginationState = paginationState;
   }
 
-  /** All available links and placeholders, derived from the shared page graph. */
+  /**
+   * The relational `prev` link for the active page, or `null` at the start of the
+   * collection. Available in both numbered and cursor pagination.
+   */
+  @memoized
+  get prev(): RelationalPaginationLink | null {
+    const url = this.paginationState.activePage?.prevLink;
+    return url ? new RelationalPaginationLink('prev', url) : null;
+  }
+
+  /**
+   * The relational `next` link for the active page, or `null` at the end of the
+   * collection. Available in both numbered and cursor pagination.
+   */
+  @memoized
+  get next(): RelationalPaginationLink | null {
+    const url = this.paginationState.activePage?.nextLink;
+    return url ? new RelationalPaginationLink('next', url) : null;
+  }
+
+  /**
+   * The numbered links and placeholders, derived from the shared page graph.
+   *
+   * Only produced for numbered pagination (where the server exposes page numbers).
+   * Cursor-based collections have no page numbers, so this is empty — use
+   * {@link prev}/{@link next} for cursor navigation.
+   */
   @memoized
   get links(): PaginationLink[] {
     const links: PaginationLink[] = [];
 
     const cache = this.paginationState.paginationCache;
-    if (!cache) {
+    if (!cache || !cache.isNumbered) {
       return links;
     }
 

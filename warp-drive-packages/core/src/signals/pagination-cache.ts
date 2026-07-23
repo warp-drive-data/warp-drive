@@ -51,6 +51,13 @@ export const defaultPageHints: PageHints = (document) => {
 export class PaginationCache<RT = unknown, E = unknown> {
   @signal declare firstPage: Readonly<PageCache<RT, E>> | null;
   @signal declare totalPages: number;
+  /**
+   * Whether this collection has server-known page numbers. Stays `false` for
+   * cursor-based collections (opaque `prev`/`next`, no index/total), which drives
+   * whether numbered links are produced. Set once a {@link PageHints} yields a real
+   * `currentPage`/`totalPages`.
+   */
+  @signal declare isNumbered: boolean;
   declare pagesCache: Map<string, PageCache>;
   pageHints: PageHints = defaultPageHints;
 
@@ -58,6 +65,7 @@ export class PaginationCache<RT = unknown, E = unknown> {
     this.pagesCache = new Map<string, PageCache>();
     this.firstPage = null;
     this.totalPages = 0;
+    this.isNumbered = false;
   }
 
   /**
@@ -81,18 +89,19 @@ export class PaginationCache<RT = unknown, E = unknown> {
   }
 
   /**
-   * Runs the active {@link PageHints} against a document and validates its output.
+   * Runs the active {@link PageHints} against a document.
+   *
+   * Both values are *hints*, not requirements. A value of `0` means "unknown" —
+   * the response did not expose it and no `pageHints` function derived it. When a
+   * value is present (`> 0`) it is relied upon (numbered links, total, sparse
+   * placement of jumped-to pages); when absent the page graph falls back to pure
+   * `prev`/`next` adjacency (as in cursor/infinite streams).
    */
   readPageHints(document: ReactiveDocument<unknown>): { currentPage: number; totalPages: number } {
     const { currentPage, totalPages } = this.pageHints(document);
-    assert(
-      'Could not determine the page number from the document. Include a `currentPage` or `page` in meta, or provide a `pageHints` function.',
-      currentPage > 0
-    );
-    assert(
-      'Could not determine the total pages from the document. Include a `totalPages` in meta, or provide a `pageHints` function.',
-      totalPages > 0
-    );
+    if (currentPage > 0 || totalPages > 0) {
+      this.isNumbered = true;
+    }
     return { currentPage, totalPages };
   }
 

@@ -32,6 +32,7 @@ export {
   type PaginationLink,
   type RealPaginationLink,
   type PlaceholderPaginationLink,
+  type RelationalPaginationLink,
 } from './pagination-links.ts';
 export { createPaginationSubscription, type PaginationSubscription, type PaginateArgs, type PaginationContentFeatures } from './pagination-subscription.ts';
 export { createPaginationLinksSubscription, type PaginationLinksSubscription } from './pagination-links-subscription.ts';

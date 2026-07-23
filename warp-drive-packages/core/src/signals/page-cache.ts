@@ -142,7 +142,13 @@ export class PageCache<RT = unknown, E = unknown> {
 
       assert('Expected the page to have a self link', self);
 
-      this.pageNumber = this.getPageNumber(content);
+      // The page number is a hint. When the response exposes it, rely on it. When
+      // absent (`0`, e.g. cursor pagination), keep whatever relative number a
+      // neighbor already assigned via `setPageNumber` rather than clobbering it.
+      const pageNumber = this.getPageNumber(content);
+      if (pageNumber) {
+        this.pageNumber = pageNumber;
+      }
 
       const firstPage = first ? this.manager.getPageCache(first) : null;
       const lastPage = last ? this.manager.getPageCache(last) : null;
