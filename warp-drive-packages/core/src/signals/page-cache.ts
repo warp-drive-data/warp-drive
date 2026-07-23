@@ -14,6 +14,9 @@ import { getRequestState } from './request-state.ts';
 
 const { abs } = Math;
 
+export type ContentData<RT> = RT extends { data: infer D } ? D : RT;
+export type ContentItem<RT> = ContentData<RT> extends readonly (infer I)[] ? I : ContentData<RT>;
+
 export function getHref(link?: Link | null): string | null {
   if (!link) {
     return null;
@@ -51,13 +54,13 @@ export class PageCache<RT = unknown, E = unknown> {
   }
 
   @memoized
-  get value(): ReactiveDocument<RT> | null {
-    return this.state?.value as ReactiveDocument<RT>;
+  get value(): RT | null {
+    return (this.state?.value ?? null) as RT | null;
   }
 
   @memoized
-  get data(): RT | null {
-    return this.value?.data as RT;
+  get data(): ContentData<RT> | null {
+    return ((this.value as { data?: unknown } | null)?.data ?? null) as ContentData<RT> | null;
   }
 
   @memoized
@@ -124,12 +127,12 @@ export class PageCache<RT = unknown, E = unknown> {
     return Boolean(this.before || this.after);
   }
 
-  async load(request: Future<RT>): Promise<ReactiveDocument<RT> | null> {
+  async load(request: Future<RT>): Promise<ReactiveDocument<unknown> | null> {
     try {
       this.request = request;
       this.state = getRequestState<RT, E>(this.request);
       const value = await this.request;
-      const content = value.content as ReactiveDocument<RT>;
+      const content = value.content as ReactiveDocument<unknown>;
 
       const self = getHref(content?.links?.self);
       const first = getHref(content?.links?.first);
@@ -259,7 +262,7 @@ export class PageCache<RT = unknown, E = unknown> {
     this.after = page;
   }
 
-  getPageNumber(document: ReactiveDocument<RT>): number {
+  getPageNumber(document: ReactiveDocument<unknown>): number {
     const currentPage = (document.meta?.page ?? document.meta?.currentPage ?? 0) as number;
     assert(
       'Could not determine the page number from the document meta. Make sure to include either a `currentPage` or `page` property.',

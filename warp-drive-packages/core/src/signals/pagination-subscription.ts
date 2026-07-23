@@ -1,5 +1,4 @@
 import type { RequestManager, Store } from '../index.ts';
-import type { ReactiveDocument } from '../reactive.ts';
 import type { Future } from '../request.ts';
 import type { StructuredErrorDocument } from '../types/request.ts';
 import { getPaginationState, type PaginationState } from './pagination-state.ts';
@@ -25,9 +24,9 @@ export type PaginationContentFeatures<RT> = {
   latestRequest?: Future<RT>;
 
   // Pagination
-  loadNext?: () => Promise<ReactiveDocument<RT> | null>;
-  loadPrev?: () => Promise<ReactiveDocument<RT> | null>;
-  loadPage: (url: string) => Promise<ReactiveDocument<RT> | null>;
+  loadNext?: () => Promise<RT | null>;
+  loadPrev?: () => Promise<RT | null>;
+  loadPage: (url: string) => Promise<RT | null>;
 };
 
 export interface PaginationSubscriptionArgs<RT, E> extends SubscriptionArgs<RT, E> {

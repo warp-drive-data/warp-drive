@@ -6,7 +6,7 @@ import { assert } from '@warp-drive/build-config/macros';
 import type { RequestManager, Store } from '../index.ts';
 import type { ReactiveDocument } from '../reactive.ts';
 import type { Future } from '../request.ts';
-import type { PageCache } from './page-cache.ts';
+import type { ContentItem, PageCache } from './page-cache.ts';
 import { getHref } from './page-cache.ts';
 import { getPaginationCache, type PaginationCache } from './pagination-cache.ts';
 import { getPaginationLinks, type PaginationLink, type PaginationLinks } from './pagination-links.ts';
@@ -56,7 +56,7 @@ export class PaginationState<RT = unknown, E = unknown> {
   }
 
   @memoized
-  get data(): Iterable<RT> {
+  get data(): Iterable<ContentItem<RT>> {
     return this.paginationCache?.data ?? [];
   }
 
@@ -72,7 +72,7 @@ export class PaginationState<RT = unknown, E = unknown> {
 
   async setup(): Promise<void> {
     const document = await this.request;
-    const content = document.content as ReactiveDocument<RT>;
+    const content = document.content as ReactiveDocument<unknown>;
     const selfLink = getHref(content.links?.self);
     const firstLink = getHref(content.links?.first);
     assert('Expected the initial document to have a self link', selfLink);
@@ -87,7 +87,7 @@ export class PaginationState<RT = unknown, E = unknown> {
   /**
    * Loads the prev page based on the active page's links.
    */
-  loadPrev = async (): Promise<ReactiveDocument<RT> | null> => {
+  loadPrev = async (): Promise<RT | null> => {
     const prevLink = this.activePage?.prevLink;
     if (prevLink) {
       return this.loadPage(prevLink);
@@ -99,7 +99,7 @@ export class PaginationState<RT = unknown, E = unknown> {
   /**
    * Loads the next page based on the active page's links.
    */
-  loadNext = async (): Promise<ReactiveDocument<RT> | null> => {
+  loadNext = async (): Promise<RT | null> => {
     const nextLink = this.activePage?.nextLink;
     if (nextLink) {
       return this.loadPage(nextLink);
@@ -111,7 +111,7 @@ export class PaginationState<RT = unknown, E = unknown> {
   /**
    * Loads a specific page by its URL and makes it the active page.
    */
-  loadPage = async (url: string): Promise<ReactiveDocument<RT> | null> => {
+  loadPage = async (url: string): Promise<RT | null> => {
     const cache = this.paginationCache;
     assert('Expected the pagination cache to be set up before loading a page', cache);
 

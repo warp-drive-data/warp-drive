@@ -5,6 +5,7 @@ import { assert } from '@warp-drive/build-config/macros';
 
 import type { ReactiveDocument } from '../reactive.ts';
 import type { Future } from '../request.ts';
+import type { ContentItem } from './page-cache.ts';
 import { PageCache } from './page-cache.ts';
 import { memoized, signal } from './reactivity/signal';
 
@@ -85,7 +86,7 @@ export class PaginationCache<RT = unknown, E = unknown> {
   }
 
   @memoized
-  get data(): Iterable<RT> {
+  get data(): Iterable<ContentItem<RT>> {
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const self = this;
     return {
@@ -93,7 +94,7 @@ export class PaginationCache<RT = unknown, E = unknown> {
         let page: Readonly<PageCache<RT, E>> | null = self.firstPage;
         while (page) {
           if (page.data) {
-            for (const item of page.data as []) {
+            for (const item of page.data as ContentItem<RT>[]) {
               yield item;
             }
           }

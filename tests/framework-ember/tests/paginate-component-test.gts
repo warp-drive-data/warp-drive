@@ -5,6 +5,7 @@ import { click, rerender } from '@ember/test-helpers';
 import { Fetch, RequestManager } from '@warp-drive/core';
 import type { CacheHandler, Future, NextFn } from '@warp-drive/core/request';
 import type { RequestContext, StructuredDataDocument } from '@warp-drive/core/types/request';
+import type { CollectionResourceDataDocument } from '@warp-drive/core/types/spec/document';
 import type { RenderingTestContext } from '@warp-drive/diagnostic/ember';
 import { module, setupRenderingTest, test as _test } from '@warp-drive/diagnostic/ember';
 import { clearPaginationCache, EachLink, getPaginationState, Paginate, Request } from '@warp-drive/ember';
@@ -217,7 +218,7 @@ module<LocalTestContext>('Integration | <Paginate />', function (hooks) {
       },
     }));
 
-    const request = this.manager.request<UserResource[]>({ url: urls[1], method: 'GET' });
+    const request = this.manager.request<CollectionResourceDataDocument<UserResource>>({ url: urls[1], method: 'GET' });
     const paginationState = getPaginationState(this.manager, request);
 
     let counter = 0;
@@ -237,7 +238,7 @@ module<LocalTestContext>('Integration | <Paginate />', function (hooks) {
             <Request @request={{pages.activePageRequest}} @store={{manager}}>
               <:idle><span data-test-idle>No page is active</span></:idle>
               <:content as |content|>
-                {{#each content as |user|}}
+                {{#each content.data as |user|}}
                   <span data-test-user-name>{{user.attributes.name}}<br />Count: {{countFor user}}</span>
                 {{/each}}
               </:content>
@@ -458,7 +459,7 @@ module<LocalTestContext>('Integration | <Paginate />', function (hooks) {
       },
     }));
 
-    const request = this.manager.request<UserResource[]>({ url: urls[1], method: 'GET' });
+    const request = this.manager.request<CollectionResourceDataDocument<UserResource>>({ url: urls[1], method: 'GET' });
     const paginationState = getPaginationState(this.manager, request);
 
     let counter = 0;
@@ -478,7 +479,7 @@ module<LocalTestContext>('Integration | <Paginate />', function (hooks) {
             <Request @request={{pages.activePageRequest}} @store={{manager}}>
               <:idle><span data-test-idle>No page is active</span></:idle>
               <:content as |content|>
-                {{#each content as |user|}}
+                {{#each content.data as |user|}}
                   <span data-test-user-name>{{user.attributes.name}}<br />Count: {{countFor user}}</span>
                 {{/each}}
               </:content>
@@ -711,8 +712,14 @@ module<LocalTestContext>('Integration | <Paginate />', function (hooks) {
       },
     }));
 
-    const requestA = this.manager.request<UserResource[]>({ url: urls[1], method: 'GET' });
-    const requestB = this.manager.request<UserResource[]>({ url: urls[4], method: 'GET' });
+    const requestA = this.manager.request<CollectionResourceDataDocument<UserResource>>({
+      url: urls[1],
+      method: 'GET',
+    });
+    const requestB = this.manager.request<CollectionResourceDataDocument<UserResource>>({
+      url: urls[4],
+      method: 'GET',
+    });
     // Each request gets its own PaginationState (individual active page /
     // rendering state) while both share the underlying pagination cache.
     const paginationStateA = getPaginationState(this.manager, requestA);
@@ -737,7 +744,7 @@ module<LocalTestContext>('Integration | <Paginate />', function (hooks) {
                 <:idle><span data-test-idle>No page is active</span></:idle>
                 <:content as |content|>
                   <div data-test-pagination="a">
-                    {{#each content as |user|}}
+                    {{#each content.data as |user|}}
                       <span data-test-user-name>{{user.attributes.name}}<br />Count: {{countFor user}}</span>
                     {{/each}}
                   </div>
@@ -772,7 +779,7 @@ module<LocalTestContext>('Integration | <Paginate />', function (hooks) {
                 <:idle><span data-test-idle>No page is active</span></:idle>
                 <:content as |content|>
                   <div data-test-pagination="b">
-                    {{#each content as |user|}}
+                    {{#each content.data as |user|}}
                       <span data-test-user-name>{{user.attributes.name}}<br />Count: {{countFor user}}</span>
                     {{/each}}
                   </div>
