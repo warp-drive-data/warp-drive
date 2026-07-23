@@ -51,8 +51,8 @@ export class PaginationState<RT = unknown, E = unknown> {
   declare frontierStart: Readonly<PageCache<RT, E>> | null;
   declare frontierEnd: Readonly<PageCache<RT, E>> | null;
 
-  constructor(store: Store | RequestManager, request: Future<RT>, pageHints?: PageHints) {
-    this.store = store;
+  constructor(request: Future<RT>, pageHints?: PageHints) {
+    this.store = request.requester;
     this.request = request;
     this.pageHints = pageHints;
 
@@ -263,15 +263,11 @@ const PaginationStateCache = new WeakMap<Future<unknown>, PaginationState>();
  * @static
  * @for @warp-drive/ember
  */
-export function getPaginationState<RT, E>(
-  store: Store | RequestManager,
-  request: Future<RT>,
-  pageHints?: PageHints
-): PaginationState<RT, E> {
+export function getPaginationState<RT, E>(request: Future<RT>, pageHints?: PageHints): PaginationState<RT, E> {
   let state = PaginationStateCache.get(request);
 
   if (!state) {
-    state = new PaginationState<RT, E>(store, request, pageHints);
+    state = new PaginationState<RT, E>(request, pageHints);
     PaginationStateCache.set(request, state);
   }
 

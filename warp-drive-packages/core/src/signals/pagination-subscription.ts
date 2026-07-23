@@ -88,7 +88,7 @@ export class PaginationSubscription<RT, E> {
     this.isDestroyed = false;
     this[DISPOSE] = _DISPOSE;
 
-    this.paginationState = getPaginationState<RT, E>(store, this._requestSubscription.request, args.pageHints);
+    this.paginationState = getPaginationState<RT, E>(this._requestSubscription.request, args.pageHints);
   }
 
   @memoized

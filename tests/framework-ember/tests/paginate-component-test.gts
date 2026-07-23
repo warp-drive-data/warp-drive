@@ -220,7 +220,7 @@ module<LocalTestContext>('Integration | <Paginate />', function (hooks) {
     }));
 
     const request = this.manager.request<CollectionResourceDataDocument<UserResource>>({ url: urls[1], method: 'GET' });
-    const paginationState = getPaginationState(this.manager, request);
+    const paginationState = getPaginationState(request);
 
     let counter = 0;
     function countFor(_result: unknown) {
@@ -492,7 +492,7 @@ module<LocalTestContext>('Integration | <Paginate />', function (hooks) {
     }));
 
     const request = this.manager.request<CollectionResourceDataDocument<UserResource>>({ url: urls[1], method: 'GET' });
-    const paginationState = getPaginationState(this.manager, request);
+    const paginationState = getPaginationState(request);
 
     let counter = 0;
     function countFor(_result: unknown) {
@@ -754,8 +754,8 @@ module<LocalTestContext>('Integration | <Paginate />', function (hooks) {
     });
     // Each request gets its own PaginationState (individual active page /
     // rendering state) while both share the underlying pagination cache.
-    const paginationStateA = getPaginationState(this.manager, requestA);
-    const paginationStateB = getPaginationState(this.manager, requestB);
+    const paginationStateA = getPaginationState(requestA);
+    const paginationStateB = getPaginationState(requestB);
 
     let counter = 0;
     function countFor(_result: unknown) {
@@ -1010,7 +1010,7 @@ module<LocalTestContext>('Integration | <Paginate />', function (hooks) {
     };
 
     const request = this.manager.request<CollectionResourceDataDocument<UserResource>>({ url: urls[1], method: 'GET' });
-    const paginationState = getPaginationState(this.manager, request, pageHints);
+    const paginationState = getPaginationState(request, pageHints);
 
     const manager = this.manager;
 
@@ -1117,7 +1117,7 @@ module<LocalTestContext>('Integration | <Paginate />', function (hooks) {
     }));
 
     const request = this.manager.request<CollectionResourceDataDocument<UserResource>>({ url: urls[0], method: 'GET' });
-    const paginationState = getPaginationState(this.manager, request);
+    const paginationState = getPaginationState(request);
 
     const manager = this.manager;
 
@@ -1243,7 +1243,7 @@ module<LocalTestContext>('Integration | <Paginate />', function (hooks) {
     }));
 
     const request = this.manager.request<CollectionResourceDataDocument<UserResource>>({ url: urls[0], method: 'GET' });
-    const paginationState = getPaginationState(this.manager, request);
+    const paginationState = getPaginationState(request);
 
     const manager = this.manager;
 
@@ -1376,7 +1376,7 @@ module<LocalTestContext>('Integration | <Paginate />', function (hooks) {
     }));
 
     const request = this.manager.request<CollectionResourceDataDocument<UserResource>>({ url: urls[1], method: 'GET' });
-    const paginationState = getPaginationState(this.manager, request);
+    const paginationState = getPaginationState(request);
 
     const manager = this.manager;
 
