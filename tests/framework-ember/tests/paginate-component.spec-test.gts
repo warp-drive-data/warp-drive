@@ -1,0 +1,318 @@
+import { fn } from '@ember/helper';
+import { on } from '@ember/modifier';
+
+import { useEmber } from '@warp-drive/diagnostic/ember';
+import { EachLink, Paginate, Request } from '@warp-drive/ember';
+import { PaginateSpec } from '@warp-drive-internal/specs/paginate-component.spec';
+
+PaginateSpec.use(useEmber(), function (b) {
+  b
+    /* this comment just to make prettier behave */
+
+    .test('it handles paged pagination with complete data', function (props) {
+      const { request, store, countFor } = props;
+
+      return <template>
+        <Paginate @request={{request}} @store={{store}}>
+          <:loading>
+            <span data-test-pending>Pending<br />Count: {{countFor request}}</span>
+          </:loading>
+          <:content as |pages features|>
+            <Request @request={{pages.activePageRequest}} @store={{store}}>
+              <:idle><span data-test-idle>No page is active</span></:idle>
+              <:content as |content|>
+                {{#each content.data as |user|}}
+                  <span data-test-user-name>{{user.attributes.name}}<br />Count: {{countFor user}}</span>
+                {{/each}}
+              </:content>
+              <:loading><span data-test-loading-page>Pending<br />Count: {{countFor request}}</span></:loading>
+            </Request>
+
+            <EachLink @state={{pages}} @store={{store}}>
+              <:link as |link|>
+                <button
+                  {{on "click" (fn features.loadPage link.url)}}
+                  data-test-load-page={{link.index}}
+                  data-test-url={{link.url}}
+                >{{link.text}}</button>
+              </:link>
+              <:placeholder as |link|>
+                <button>.</button>
+              </:placeholder>
+              <:prev as |link|>
+                <button {{on "click" (fn features.loadPage link.url)}} data-test-prev>{{link.text}}</button>
+              </:prev>
+              <:next as |link|>
+                <button {{on "click" (fn features.loadPage link.url)}} data-test-next>{{link.text}}</button>
+              </:next>
+            </EachLink>
+          </:content>
+          <:error as |error|>{{error.message}}<br />Count: {{countFor error}}</:error>
+        </Paginate>
+      </template>;
+    })
+
+    .test('it handles paged pagination with incomplete data', function (props) {
+      const { request, store, countFor } = props;
+
+      return <template>
+        <Paginate @request={{request}} @store={{store}}>
+          <:loading>
+            <span data-test-pending>Pending<br />Count: {{countFor request}}</span>
+          </:loading>
+          <:content as |pages features|>
+            <Request @request={{pages.activePageRequest}} @store={{store}}>
+              <:idle><span data-test-idle>No page is active</span></:idle>
+              <:content as |content|>
+                {{#each content.data as |user|}}
+                  <span data-test-user-name>{{user.attributes.name}}<br />Count: {{countFor user}}</span>
+                {{/each}}
+              </:content>
+              <:loading><span data-test-loading-page>Pending<br />Count: {{countFor request}}</span></:loading>
+            </Request>
+
+            <EachLink @state={{pages}} @store={{store}}>
+              <:link as |link|>
+                <button
+                  {{on "click" (fn features.loadPage link.url)}}
+                  data-test-load-page={{link.index}}
+                  data-test-url={{link.url}}
+                >{{link.text}}</button>
+              </:link>
+              <:placeholder as |link|>
+                <button>.</button>
+              </:placeholder>
+            </EachLink>
+          </:content>
+          <:error as |error|>{{error.message}}<br />Count: {{countFor error}}</:error>
+        </Paginate>
+      </template>;
+    })
+
+    .test(
+      'multiple paginate components have individual rendering states while sharing cached pages',
+      function (props) {
+        const { requestA, requestB, store, countFor } = props;
+
+        return <template>
+          <div data-test-paginate="a">
+            <Paginate @request={{requestA}} @store={{store}}>
+              <:loading>
+                <span data-test-pending>Pending<br />Count: {{countFor requestA}}</span>
+              </:loading>
+              <:content as |pages features|>
+                <Request @request={{pages.activePageRequest}} @store={{store}}>
+                  <:idle><span data-test-idle>No page is active</span></:idle>
+                  <:content as |content|>
+                    <div data-test-pagination="a">
+                      {{#each content.data as |user|}}
+                        <span data-test-user-name>{{user.attributes.name}}<br />Count: {{countFor user}}</span>
+                      {{/each}}
+                    </div>
+                  </:content>
+                  <:loading><span data-test-loading-page>Pending<br />Count: {{countFor requestA}}</span></:loading>
+                </Request>
+
+                <EachLink @state={{pages}} @store={{store}}>
+                  <:link as |link|>
+                    <button
+                      {{on "click" (fn features.loadPage link.url)}}
+                      data-test-load-page={{link.index}}
+                      data-test-url={{link.url}}
+                    >{{link.text}}</button>
+                  </:link>
+                  <:placeholder as |link|>
+                    <button>.</button>
+                  </:placeholder>
+                </EachLink>
+              </:content>
+              <:error as |error|>{{error.message}}<br />Count: {{countFor error}}</:error>
+            </Paginate>
+          </div>
+
+          <div data-test-paginate="b">
+            <Paginate @request={{requestB}} @store={{store}}>
+              <:loading>
+                <span data-test-pending>Pending<br />Count: {{countFor requestB}}</span>
+              </:loading>
+              <:content as |pages features|>
+                <Request @request={{pages.activePageRequest}} @store={{store}}>
+                  <:idle><span data-test-idle>No page is active</span></:idle>
+                  <:content as |content|>
+                    <div data-test-pagination="b">
+                      {{#each content.data as |user|}}
+                        <span data-test-user-name>{{user.attributes.name}}<br />Count: {{countFor user}}</span>
+                      {{/each}}
+                    </div>
+                  </:content>
+                  <:loading><span data-test-loading-page>Pending<br />Count: {{countFor requestB}}</span></:loading>
+                </Request>
+
+                <EachLink @state={{pages}} @store={{store}}>
+                  <:link as |link|>
+                    <button
+                      {{on "click" (fn features.loadPage link.url)}}
+                      data-test-load-page={{link.index}}
+                      data-test-url={{link.url}}
+                    >{{link.text}}</button>
+                  </:link>
+                  <:placeholder as |link|>
+                    <button>.</button>
+                  </:placeholder>
+                </EachLink>
+              </:content>
+              <:error as |error|>{{error.message}}<br />Count: {{countFor error}}</:error>
+            </Paginate>
+          </div>
+        </template>;
+      }
+    )
+
+    .test('it derives pageNumber and totalPages from a custom pageHints fn', function (props) {
+      const { request, store, pageHints } = props;
+
+      return <template>
+        <Paginate @request={{request}} @store={{store}} @pageHints={{pageHints}}>
+          <:loading>
+            <span data-test-pending>Pending</span>
+          </:loading>
+          <:content as |pages features|>
+            <Request @request={{pages.activePageRequest}} @store={{store}}>
+              <:idle><span data-test-idle>No page is active</span></:idle>
+              <:content as |content|>
+                {{#each content.data as |user|}}
+                  <span data-test-user-name>{{user.attributes.name}}</span>
+                {{/each}}
+              </:content>
+              <:loading><span data-test-loading-page>Pending</span></:loading>
+            </Request>
+
+            <EachLink @state={{pages}} @store={{store}}>
+              <:link as |link|>
+                <button
+                  {{on "click" (fn features.loadPage link.url)}}
+                  data-test-load-page={{link.index}}
+                >{{link.text}}</button>
+              </:link>
+              <:placeholder as |link|>
+                <button>.</button>
+              </:placeholder>
+            </EachLink>
+          </:content>
+          <:error as |error|>{{error.message}}</:error>
+        </Paginate>
+      </template>;
+    })
+
+    .test('it supports cursor-based pagination in paged mode (no page numbers or total)', function (props) {
+      const { request, store } = props;
+
+      return <template>
+        <Paginate @request={{request}} @store={{store}}>
+          <:loading>
+            <span data-test-pending>Pending</span>
+          </:loading>
+          <:content as |pages features|>
+            <Request @request={{pages.activePageRequest}} @store={{store}}>
+              <:idle><span data-test-idle>No page is active</span></:idle>
+              <:content as |content|>
+                {{#each content.data as |user|}}
+                  <span data-test-user-name>{{user.attributes.name}}</span>
+                {{/each}}
+              </:content>
+              <:loading><span data-test-loading-page>Pending</span></:loading>
+            </Request>
+
+            <EachLink @state={{pages}} @store={{store}}>
+              <:link as |link|>
+                <button data-test-load-page={{link.index}}>{{link.text}}</button>
+              </:link>
+              <:prev as |link|>
+                <button data-test-prev {{on "click" (fn features.loadPage link.url)}}>{{link.text}}</button>
+              </:prev>
+              <:next as |link|>
+                <button data-test-next {{on "click" (fn features.loadPage link.url)}}>{{link.text}}</button>
+              </:next>
+            </EachLink>
+          </:content>
+          <:error as |error|>{{error.message}}</:error>
+        </Paginate>
+      </template>;
+    })
+
+    .test('it supports infinite pagination that accumulates loaded pages into a single set', function (props) {
+      const { request, store } = props;
+
+      return <template>
+        <Paginate @request={{request}} @store={{store}}>
+          <:loading>
+            <span data-test-pending>Pending</span>
+          </:loading>
+          <:content as |pages features|>
+            {{#if pages.hasPrevious}}
+              <Request @request={{pages.previousRequest}} @store={{store}}>
+                <:idle>
+                  <button data-test-load-prev {{on "click" features.loadPrev}}>Load previous</button>
+                </:idle>
+                <:loading><span data-test-loading-prev>Loading previous</span></:loading>
+              </Request>
+            {{/if}}
+
+            {{#each pages.data as |user|}}
+              <span data-test-user-name>{{user.attributes.name}}</span>
+            {{/each}}
+
+            {{#if pages.hasNext}}
+              <Request @request={{pages.nextRequest}} @store={{store}}>
+                <:idle>
+                  <button data-test-load-next {{on "click" features.loadNext}}>Load next</button>
+                </:idle>
+                <:loading><span data-test-loading-next>Loading next</span></:loading>
+              </Request>
+            {{/if}}
+          </:content>
+          <:error as |error|>{{error.message}}</:error>
+        </Paginate>
+      </template>;
+    })
+
+    .test('infinite pagination extends backwards from a deep-linked entry page', function (props) {
+      const { request, store } = props;
+
+      return <template>
+        <Paginate @request={{request}} @store={{store}}>
+          <:loading>
+            <span data-test-pending>Pending</span>
+          </:loading>
+          <:content as |pages features|>
+            {{#if pages.hasPrevious}}
+              <Request @request={{pages.previousRequest}} @store={{store}}>
+                <:idle>
+                  <button data-test-load-prev {{on "click" features.loadPrev}}>Load previous</button>
+                </:idle>
+                <:loading><span data-test-loading-prev>Loading previous</span></:loading>
+              </Request>
+            {{/if}}
+
+            {{#each pages.data as |user|}}
+              <span data-test-user-name>{{user.attributes.name}}</span>
+            {{/each}}
+
+            {{#if pages.hasNext}}
+              <Request @request={{pages.nextRequest}} @store={{store}}>
+                <:idle>
+                  <button data-test-load-next {{on "click" features.loadNext}}>Load next</button>
+                </:idle>
+                <:loading><span data-test-loading-next>Loading next</span></:loading>
+              </Request>
+            {{/if}}
+          </:content>
+          <:error as |error|>{{error.message}}</:error>
+        </Paginate>
+      </template>;
+    })
+
+    // @ts-expect-error need to figure out how to do this for "compiled" versions of this type
+    // If there's a typeerror here, we are missing a test.
+    .never(null);
+});
