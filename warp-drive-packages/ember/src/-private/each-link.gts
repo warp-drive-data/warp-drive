@@ -41,27 +41,27 @@ interface EachLinkSignature<RT, E> {
      * A numbered page link. Rendered once per known page in numbered pagination;
      * never rendered for cursor-based pagination.
      */
-    link: [link: RealPaginationLink];
+    link: [link: Readonly<RealPaginationLink>];
 
     /**
      * A gap between known pages in numbered pagination.
      */
-    placeholder: [link: PlaceholderPaginationLink];
+    placeholder: [link: Readonly<PlaceholderPaginationLink>];
 
     /**
      * The relational link to the previous page, relative to the active page.
      * Rendered when a previous page exists. For cursor-based pagination these
      * `prev`/`next` blocks are the only navigation available.
      */
-    prev: [link: RelationalPaginationLink];
+    prev: [link: Readonly<RelationalPaginationLink>];
 
     /**
      * The relational link to the next page, relative to the active page.
      * Rendered when a next page exists.
      */
-    next: [link: RelationalPaginationLink];
+    next: [link: Readonly<RelationalPaginationLink>];
 
-    default: [link: PaginationLink];
+    default: [link: Readonly<PaginationLink>];
   };
 }
 

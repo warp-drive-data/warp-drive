@@ -10,16 +10,28 @@ export class RealPaginationLink {
   readonly url: string;
   readonly index: number;
   readonly isCurrent: boolean;
+  /** @internal */
+  declare private _loadPage: (url: string) => Promise<unknown>;
 
-  constructor(url: string, index: number, isCurrent = false) {
+  constructor(url: string, index: number, isCurrent: boolean, loadPage: (url: string) => Promise<unknown>) {
     this.url = url;
     this.index = index;
     this.isCurrent = isCurrent;
+    this._loadPage = loadPage;
   }
 
   get text(): string {
     return `${this.index}`;
   }
+
+  /**
+   * Loads this link's page and makes it the active page on the associated
+   * {@link PaginationState}. Stable reference, so it can be used directly
+   * as a click handler.
+   */
+  setActive = (): Promise<unknown> => {
+    return this._loadPage(this.url);
+  };
 }
 
 export class PlaceholderPaginationLink {
@@ -57,15 +69,27 @@ export class RelationalPaginationLink {
 
   readonly rel: 'prev' | 'next';
   readonly url: string;
+  /** @internal */
+  declare private _loadPage: (url: string) => Promise<unknown>;
 
-  constructor(rel: 'prev' | 'next', url: string) {
+  constructor(rel: 'prev' | 'next', url: string, loadPage: (url: string) => Promise<unknown>) {
     this.rel = rel;
     this.url = url;
+    this._loadPage = loadPage;
   }
 
   get text(): string {
     return this.rel;
   }
+
+  /**
+   * Loads this link's page and makes it the active page on the associated
+   * {@link PaginationState}. Stable reference, so it can be used directly
+   * as a click handler.
+   */
+  setActive = (): Promise<unknown> => {
+    return this._loadPage(this.url);
+  };
 }
 
 export type PaginationLink = RealPaginationLink | PlaceholderPaginationLink;
@@ -84,7 +108,7 @@ export class PaginationLinks<RT = unknown, E = unknown> {
   @memoized
   get prev(): RelationalPaginationLink | null {
     const url = this.paginationState.activePage?.prevLink;
-    return url ? new RelationalPaginationLink('prev', url) : null;
+    return url ? new RelationalPaginationLink('prev', url, this.paginationState.loadPage) : null;
   }
 
   /**
@@ -94,7 +118,7 @@ export class PaginationLinks<RT = unknown, E = unknown> {
   @memoized
   get next(): RelationalPaginationLink | null {
     const url = this.paginationState.activePage?.nextLink;
-    return url ? new RelationalPaginationLink('next', url) : null;
+    return url ? new RelationalPaginationLink('next', url, this.paginationState.loadPage) : null;
   }
 
   /**
@@ -127,7 +151,8 @@ export class PaginationLinks<RT = unknown, E = unknown> {
           new RealPaginationLink(
             currentPage.selfLink ?? '',
             currentPage.pageNumber,
-            currentPage.pageNumber === activeIndex
+            currentPage.pageNumber === activeIndex,
+            this.paginationState.loadPage
           )
         );
         previousPage = currentPage;

@@ -40,10 +40,10 @@ PaginateSpec.use(useEmber(), function (b) {
                 <button>.</button>
               </:placeholder>
               <:prev as |link|>
-                <button {{on "click" (fn features.loadPage link.url)}} data-test-prev>{{link.text}}</button>
+                <button {{on "click" link.setActive}} data-test-prev>{{link.text}}</button>
               </:prev>
               <:next as |link|>
-                <button {{on "click" (fn features.loadPage link.url)}} data-test-next>{{link.text}}</button>
+                <button {{on "click" link.setActive}} data-test-next>{{link.text}}</button>
               </:next>
             </EachLink>
           </:content>
@@ -190,7 +190,7 @@ PaginateSpec.use(useEmber(), function (b) {
             <EachLink @state={{pages}} @store={{store}}>
               <:link as |link|>
                 <button
-                  {{on "click" (fn features.loadPage link.url)}}
+                  {{on "click" link.setActive}}
                   data-test-load-page={{link.index}}
                 >{{link.text}}</button>
               </:link>
