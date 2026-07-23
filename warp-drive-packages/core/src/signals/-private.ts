@@ -18,13 +18,7 @@ export {
   type PaginationCache,
   type PageHints,
 } from './pagination-cache.ts';
-export {
-  getPaginationState,
-  type PaginationState,
-  type PagedState,
-  type InfiniteState,
-  type PaginationMode,
-} from './pagination-state.ts';
+export { getPaginationState, type PaginationState } from './pagination-state.ts';
 export { type PageCache } from './page-cache.ts';
 export {
   getPaginationLinks,

@@ -12,19 +12,26 @@ import { getPaginationCache, type PageHints, type PaginationCache } from './pagi
 import { getPaginationLinks, type PaginationLink, type PaginationLinks } from './pagination-links.ts';
 import { defineSignal, memoized } from './reactivity/signal.ts';
 
-export type PaginationMode = 'infinite' | 'paged';
-
 /**
  * The per-component, local pagination state. It houses the state that is unique
  * to a single component instance — the active page and navigation — while
  * referencing a shared {@link PaginationCache} for the page graph and data.
  *
  * This is the object yielded by the `<Paginate />` component.
+ *
+ * It exposes two navigation surfaces over the same shared page graph, and the
+ * consumer picks one by which properties it renders — there is no mode flag:
+ *
+ * - **Paged** (single-page view): render {@link activePageRequest}, navigate with
+ *   {@link loadPage} (what the numbered/relational links call). Reads
+ *   {@link activePage}.
+ * - **Infinite** (accumulated view): render {@link data}, wrap
+ *   {@link nextRequest}/{@link previousRequest} in `<Request>` for loading state,
+ *   and grow the view with {@link loadNext}/{@link loadPrev}.
  */
 export class PaginationState<RT = unknown, E = unknown> {
   /** @internal */
   declare store: Store | RequestManager;
-  declare mode: PaginationMode;
   /** @internal */
   declare request: Future<RT>;
   /** @internal */
@@ -34,15 +41,19 @@ export class PaginationState<RT = unknown, E = unknown> {
   declare activePage: Readonly<PageCache<RT, E>> | null;
   declare initialPage: Readonly<PageCache<RT, E>> | null;
 
-  constructor(
-    store: Store | RequestManager,
-    request: Future<RT>,
-    mode: PaginationMode = 'paged',
-    pageHints?: PageHints
-  ) {
+  /**
+   * The first and last loaded pages of the contiguous run this component is
+   * viewing. Drives the infinite surface — {@link data} walks from
+   * `frontierStart` to `frontierEnd`, and {@link loadPrev}/{@link loadNext} extend
+   * them backward/forward. Both seed to {@link initialPage}; a purely paged
+   * consumer never extends them, so they stay put and are effectively unused.
+   */
+  declare frontierStart: Readonly<PageCache<RT, E>> | null;
+  declare frontierEnd: Readonly<PageCache<RT, E>> | null;
+
+  constructor(store: Store | RequestManager, request: Future<RT>, pageHints?: PageHints) {
     this.store = store;
     this.request = request;
-    this.mode = mode;
     this.pageHints = pageHints;
 
     void this.setup();
@@ -63,9 +74,78 @@ export class PaginationState<RT = unknown, E = unknown> {
     return this.paginationCache?.pages ?? [];
   }
 
+  /**
+   * The accumulated items across the loaded run, from {@link frontierStart} to
+   * {@link frontierEnd} inclusive — the single set an infinite collection renders.
+   * Grows as {@link loadNext}/{@link loadPrev} extend the frontier. Scoped to this
+   * component's frontier (not the shared cache), so components paging the same
+   * collection to different extents each see only what they have scrolled through.
+   */
   @memoized
   get data(): Iterable<ContentItem<RT>> {
-    return this.paginationCache?.data ?? [];
+    const start = this.frontierStart;
+    const end = this.frontierEnd;
+    return {
+      *[Symbol.iterator]() {
+        let page: Readonly<PageCache<RT, E>> | null = start;
+        while (page) {
+          if (page.data) {
+            for (const item of page.data as ContentItem<RT>[]) {
+              yield item;
+            }
+          }
+          if (page === end) {
+            break;
+          }
+          page = page.after;
+        }
+      },
+    };
+  }
+
+  /**
+   * Whether a page exists after the forward frontier — i.e. there is more to load
+   * going forward. Use to hide the trailing load-more sentinel at end-of-list.
+   */
+  @memoized
+  get hasNext(): boolean {
+    return Boolean(this.frontierEnd?.nextLink);
+  }
+
+  /**
+   * Whether a page exists before the backward frontier.
+   */
+  @memoized
+  get hasPrevious(): boolean {
+    return Boolean(this.frontierStart?.prevLink);
+  }
+
+  /**
+   * The request for the page just after the forward frontier, for the infinite
+   * surface. `null` until {@link loadNext} fires it (so a `<Request>` wrapping it
+   * renders its idle block), the in-flight `Future` while that page loads, then
+   * `null` again once the frontier advances onto it. Also `null` at end-of-list.
+   */
+  @memoized
+  get nextRequest(): Future<RT> | null {
+    const url = this.frontierEnd?.nextLink;
+    if (!url) {
+      return null;
+    }
+    return this.paginationCache?.getPageCache(url).request ?? null;
+  }
+
+  /**
+   * The request for the page just before the backward frontier. Mirror of
+   * {@link nextRequest} for {@link loadPrev}.
+   */
+  @memoized
+  get previousRequest(): Future<RT> | null {
+    const url = this.frontierStart?.prevLink;
+    if (!url) {
+      return null;
+    }
+    return this.paginationCache?.getPageCache(url).request ?? null;
   }
 
   @memoized
@@ -91,30 +171,56 @@ export class PaginationState<RT = unknown, E = unknown> {
     this.paginationCache = cache;
     cache.totalPages = cache.getTotalPages(content);
     this.activePage = this.initialPage = cache.loadPage(selfLink, this.request);
+    this.frontierStart = this.frontierEnd = this.initialPage;
   }
 
   /**
-   * Loads the prev page based on the active page's links.
+   * Extends the backward frontier by one page, prepending it to {@link data}.
+   * The frontier advances only once the page has loaded, so
+   * {@link previousRequest} tracks the in-flight page meanwhile. Returns the
+   * loaded value, or `null` when there is no previous page.
    */
   loadPrev = async (): Promise<RT | null> => {
-    const prevLink = this.activePage?.prevLink;
-    if (prevLink) {
-      return this.loadPage(prevLink);
-    }
-
-    return null;
+    return this._extend('prev');
   };
 
   /**
-   * Loads the next page based on the active page's links.
+   * Extends the forward frontier by one page, appending it to {@link data}.
+   * Mirror of {@link loadPrev}.
    */
   loadNext = async (): Promise<RT | null> => {
-    const nextLink = this.activePage?.nextLink;
-    if (nextLink) {
-      return this.loadPage(nextLink);
+    return this._extend('next');
+  };
+
+  /** @internal */
+  _extend = async (dir: 'prev' | 'next'): Promise<RT | null> => {
+    const cache = this.paginationCache;
+    assert('Expected the pagination cache to be set up before loading a page', cache);
+
+    const frontier = dir === 'next' ? this.frontierEnd : this.frontierStart;
+    const url = dir === 'next' ? frontier?.nextLink : frontier?.prevLink;
+    if (!url) {
+      return null;
     }
 
-    return null;
+    const page = cache.getPageCache(url);
+    if (!page.isRequested) {
+      const request = this.store.request({ method: 'GET', url });
+      cache.loadPage(url, request as Future<RT>);
+    }
+
+    await page.request;
+
+    // Advance the frontier only after the load resolves. While loading, the
+    // frontier still points at the previous page, so `nextRequest`/`prevRequest`
+    // resolves to this in-flight page and a wrapping `<Request>` shows loading.
+    if (dir === 'next') {
+      this.frontierEnd = page;
+    } else {
+      this.frontierStart = page;
+    }
+
+    return page.value;
   };
 
   /**
@@ -141,10 +247,8 @@ export class PaginationState<RT = unknown, E = unknown> {
 defineSignal(PaginationState.prototype, 'paginationCache', null);
 defineSignal(PaginationState.prototype, 'activePage', null);
 defineSignal(PaginationState.prototype, 'initialPage', null);
-
-export class PagedState<RT = unknown, E = unknown> extends PaginationState<RT, E> {}
-
-export class InfiniteState<RT = unknown, E = unknown> extends PaginationState<RT, E> {}
+defineSignal(PaginationState.prototype, 'frontierStart', null);
+defineSignal(PaginationState.prototype, 'frontierEnd', null);
 
 const PaginationStateCache = new WeakMap<Future<unknown>, PaginationState>();
 
@@ -162,16 +266,12 @@ const PaginationStateCache = new WeakMap<Future<unknown>, PaginationState>();
 export function getPaginationState<RT, E>(
   store: Store | RequestManager,
   request: Future<RT>,
-  mode: PaginationMode = 'paged',
   pageHints?: PageHints
 ): PaginationState<RT, E> {
   let state = PaginationStateCache.get(request);
 
   if (!state) {
-    state =
-      mode === 'infinite'
-        ? new InfiniteState<RT, E>(store, request, mode, pageHints)
-        : new PagedState<RT, E>(store, request, mode, pageHints);
+    state = new PaginationState<RT, E>(store, request, pageHints);
     PaginationStateCache.set(request, state);
   }
 

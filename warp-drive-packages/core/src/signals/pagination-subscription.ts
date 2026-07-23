@@ -25,14 +25,12 @@ export type PaginationContentFeatures<RT> = {
   latestRequest?: Future<RT>;
 
   // Pagination
-  loadNext?: () => Promise<RT | null>;
-  loadPrev?: () => Promise<RT | null>;
+  loadNext: () => Promise<RT | null>;
+  loadPrev: () => Promise<RT | null>;
   loadPage: (url: string) => Promise<RT | null>;
 };
 
 export interface PaginationSubscriptionArgs<RT, E> extends SubscriptionArgs<RT, E> {
-  mode?: 'infinite' | 'paged';
-
   /**
    * A function to extract the `currentPage` and `totalPages` from a loaded document
    * when they are not available in the default `meta` locations. Must be the same
@@ -90,12 +88,7 @@ export class PaginationSubscription<RT, E> {
     this.isDestroyed = false;
     this[DISPOSE] = _DISPOSE;
 
-    this.paginationState = getPaginationState<RT, E>(
-      store,
-      this._requestSubscription.request,
-      args.mode ?? 'paged',
-      args.pageHints
-    );
+    this.paginationState = getPaginationState<RT, E>(store, this._requestSubscription.request, args.pageHints);
   }
 
   @memoized

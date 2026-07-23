@@ -333,7 +333,6 @@ export {
   type PaginationCache,
   type PageHints,
   type PaginationState,
-  type PaginationMode,
   type PageCache,
   type PaginationContentFeatures,
   type PaginationLinksSubscription,

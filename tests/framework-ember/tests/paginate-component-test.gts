@@ -231,7 +231,7 @@ module<LocalTestContext>('Integration | <Paginate />', function (hooks) {
 
     await this.render(
       <template>
-        <Paginate @request={{request}} @store={{manager}} @mode="paged">
+        <Paginate @request={{request}} @store={{manager}}>
           <:loading>
             <span data-test-pending>Pending<br />Count: {{countFor request}}</span>
           </:loading>
@@ -503,7 +503,7 @@ module<LocalTestContext>('Integration | <Paginate />', function (hooks) {
 
     await this.render(
       <template>
-        <Paginate @request={{request}} @store={{manager}} @mode="paged">
+        <Paginate @request={{request}} @store={{manager}}>
           <:loading>
             <span data-test-pending>Pending<br />Count: {{countFor request}}</span>
           </:loading>
@@ -767,7 +767,7 @@ module<LocalTestContext>('Integration | <Paginate />', function (hooks) {
     await this.render(
       <template>
         <div data-test-paginate="a">
-          <Paginate @request={{requestA}} @store={{manager}} @mode="paged">
+          <Paginate @request={{requestA}} @store={{manager}}>
             <:loading>
               <span data-test-pending>Pending<br />Count: {{countFor requestA}}</span>
             </:loading>
@@ -802,7 +802,7 @@ module<LocalTestContext>('Integration | <Paginate />', function (hooks) {
         </div>
 
         <div data-test-paginate="b">
-          <Paginate @request={{requestB}} @store={{manager}} @mode="paged">
+          <Paginate @request={{requestB}} @store={{manager}}>
             <:loading>
               <span data-test-pending>Pending<br />Count: {{countFor requestB}}</span>
             </:loading>
@@ -1010,13 +1010,13 @@ module<LocalTestContext>('Integration | <Paginate />', function (hooks) {
     };
 
     const request = this.manager.request<CollectionResourceDataDocument<UserResource>>({ url: urls[1], method: 'GET' });
-    const paginationState = getPaginationState(this.manager, request, 'paged', pageHints);
+    const paginationState = getPaginationState(this.manager, request, pageHints);
 
     const manager = this.manager;
 
     await this.render(
       <template>
-        <Paginate @request={{request}} @store={{manager}} @mode="paged" @pageHints={{pageHints}}>
+        <Paginate @request={{request}} @store={{manager}} @pageHints={{pageHints}}>
           <:loading>
             <span data-test-pending>Pending</span>
           </:loading>
@@ -1117,13 +1117,13 @@ module<LocalTestContext>('Integration | <Paginate />', function (hooks) {
     }));
 
     const request = this.manager.request<CollectionResourceDataDocument<UserResource>>({ url: urls[0], method: 'GET' });
-    const paginationState = getPaginationState(this.manager, request, 'paged');
+    const paginationState = getPaginationState(this.manager, request);
 
     const manager = this.manager;
 
     await this.render(
       <template>
-        <Paginate @request={{request}} @store={{manager}} @mode="paged">
+        <Paginate @request={{request}} @store={{manager}}>
           <:loading>
             <span data-test-pending>Pending</span>
           </:loading>
@@ -1184,9 +1184,6 @@ module<LocalTestContext>('Integration | <Paginate />', function (hooks) {
     assert.equal(this.element.querySelectorAll('[data-test-next]').length, 0, 'No next link on the final page');
     assert.equal(this.element.querySelectorAll('[data-test-prev]').length, 1, 'Prev link available on the final page');
 
-    const atEnd = await paginationState.loadNext();
-    assert.equal(atEnd, null, 'loadNext resolves null at the end of the cursor collection');
-
     await click('[data-test-prev]');
     await rerender();
 
@@ -1199,8 +1196,254 @@ module<LocalTestContext>('Integration | <Paginate />', function (hooks) {
     assert.deepEqual(paginationState.activePage?.data, [users[0]], 'Active page moved back to the first cursor page');
     assert.equal(this.element.querySelector('[data-test-user-name]')?.textContent.trim(), 'Chris Thoburn');
     assert.equal(this.element.querySelectorAll('[data-test-prev]').length, 0, 'No prev link back on the first page');
+  });
 
-    const atStart = await paginationState.loadPrev();
-    assert.equal(atStart, null, 'loadPrev resolves null at the start of the cursor collection');
+  test('it supports infinite pagination that accumulates loaded pages into a single set', async function (assert) {
+    const urls = [
+      buildBaseURL({ resourcePath: 'users/1' }),
+      buildBaseURL({ resourcePath: 'users/2' }),
+      buildBaseURL({ resourcePath: 'users/3' }),
+    ];
+
+    await GET(this, 'users/1', () => ({
+      data: [users[0]],
+      links: {
+        self: urls[0],
+        next: urls[1],
+      },
+      meta: {
+        hasNextPage: true,
+        hasPreviousPage: false,
+      },
+    }));
+
+    await GET(this, 'users/2', () => ({
+      data: [users[1]],
+      links: {
+        prev: urls[0],
+        self: urls[1],
+        next: urls[2],
+      },
+      meta: {
+        hasNextPage: true,
+        hasPreviousPage: true,
+      },
+    }));
+
+    await GET(this, 'users/3', () => ({
+      data: [users[2]],
+      links: {
+        prev: urls[1],
+        self: urls[2],
+      },
+      meta: {
+        hasNextPage: false,
+        hasPreviousPage: true,
+      },
+    }));
+
+    const request = this.manager.request<CollectionResourceDataDocument<UserResource>>({ url: urls[0], method: 'GET' });
+    const paginationState = getPaginationState(this.manager, request);
+
+    const manager = this.manager;
+
+    await this.render(
+      <template>
+        <Paginate @request={{request}} @store={{manager}}>
+          <:loading>
+            <span data-test-pending>Pending</span>
+          </:loading>
+          <:content as |pages features|>
+            {{#if pages.hasPrevious}}
+              <Request @request={{pages.previousRequest}} @store={{manager}}>
+                <:idle>
+                  <button data-test-load-prev {{on "click" features.loadPrev}}>Load previous</button>
+                </:idle>
+                <:loading><span data-test-loading-prev>Loading previous</span></:loading>
+              </Request>
+            {{/if}}
+
+            {{#each pages.data as |user|}}
+              <span data-test-user-name>{{user.attributes.name}}</span>
+            {{/each}}
+
+            {{#if pages.hasNext}}
+              <Request @request={{pages.nextRequest}} @store={{manager}}>
+                <:idle>
+                  <button data-test-load-next {{on "click" features.loadNext}}>Load next</button>
+                </:idle>
+                <:loading><span data-test-loading-next>Loading next</span></:loading>
+              </Request>
+            {{/if}}
+          </:content>
+          <:error as |error|>{{error.message}}</:error>
+        </Paginate>
+      </template>
+    );
+
+    await request;
+    await rerender();
+
+    assert.deepEqual(
+      Array.from(paginationState.data).map((user) => user.attributes.name),
+      ['Chris Thoburn'],
+      'Initial data holds only the first page'
+    );
+    assert.equal(this.element.querySelectorAll('[data-test-user-name]').length, 1, '1 user rendered');
+    assert.equal(paginationState.totalPages, 0, 'No total is known for a cursor collection');
+    assert.equal(paginationState.links.length, 0, 'No numbered links for a cursor collection');
+
+    assert.true(paginationState.hasNext, 'hasNext is true at the start');
+    assert.false(paginationState.hasPrevious, 'hasPrevious is false at the start');
+    assert.equal(this.element.querySelectorAll('[data-test-load-next]').length, 1, 'Next sentinel rendered (idle)');
+    assert.equal(
+      this.element.querySelectorAll('[data-test-load-prev]').length,
+      0,
+      'Prev sentinel hidden at the start (hasPrevious guards it)'
+    );
+
+    await click('[data-test-load-next]');
+    await rerender();
+
+    assert.deepEqual(
+      Array.from(paginationState.data).map((user) => user.attributes.name),
+      ['Chris Thoburn', 'Leo Euclides'],
+      'Next page appended to the accumulated set'
+    );
+    assert.equal(this.element.querySelectorAll('[data-test-user-name]').length, 2, '2 users rendered');
+    assert.true(paginationState.hasNext, 'hasNext still true in the middle');
+    assert.false(
+      paginationState.hasPrevious,
+      'hasPrevious stays false: loadNext extends the forward frontier only, not the backward one'
+    );
+
+    await click('[data-test-load-next]');
+    await rerender();
+
+    assert.deepEqual(
+      Array.from(paginationState.data).map((user) => user.attributes.name),
+      ['Chris Thoburn', 'Leo Euclides', 'Mehul Chaudhari'],
+      'Final page appended to the accumulated set'
+    );
+    assert.equal(this.element.querySelectorAll('[data-test-user-name]').length, 3, '3 users rendered');
+    assert.false(paginationState.hasNext, 'hasNext is false at end-of-list');
+    assert.equal(this.element.querySelectorAll('[data-test-load-next]').length, 0, 'Next sentinel hidden at end');
+    assert.equal(paginationState.nextRequest, null, 'nextRequest is null at end-of-list');
+  });
+
+  test('infinite pagination extends backwards from a deep-linked entry page', async function (assert) {
+    const urls = [
+      buildBaseURL({ resourcePath: 'users/1' }),
+      buildBaseURL({ resourcePath: 'users/2' }),
+      buildBaseURL({ resourcePath: 'users/3' }),
+    ];
+
+    await GET(this, 'users/1', () => ({
+      data: [users[0]],
+      links: {
+        self: urls[0],
+        next: urls[1],
+      },
+      meta: {
+        hasNextPage: true,
+        hasPreviousPage: false,
+      },
+    }));
+
+    await GET(this, 'users/2', () => ({
+      data: [users[1]],
+      links: {
+        prev: urls[0],
+        self: urls[1],
+        next: urls[2],
+      },
+      meta: {
+        hasNextPage: true,
+        hasPreviousPage: true,
+      },
+    }));
+
+    await GET(this, 'users/3', () => ({
+      data: [users[2]],
+      links: {
+        prev: urls[1],
+        self: urls[2],
+      },
+      meta: {
+        hasNextPage: false,
+        hasPreviousPage: true,
+      },
+    }));
+
+    const request = this.manager.request<CollectionResourceDataDocument<UserResource>>({ url: urls[1], method: 'GET' });
+    const paginationState = getPaginationState(this.manager, request);
+
+    const manager = this.manager;
+
+    await this.render(
+      <template>
+        <Paginate @request={{request}} @store={{manager}}>
+          <:loading>
+            <span data-test-pending>Pending</span>
+          </:loading>
+          <:content as |pages features|>
+            {{#if pages.hasPrevious}}
+              <Request @request={{pages.previousRequest}} @store={{manager}}>
+                <:idle>
+                  <button data-test-load-prev {{on "click" features.loadPrev}}>Load previous</button>
+                </:idle>
+                <:loading><span data-test-loading-prev>Loading previous</span></:loading>
+              </Request>
+            {{/if}}
+
+            {{#each pages.data as |user|}}
+              <span data-test-user-name>{{user.attributes.name}}</span>
+            {{/each}}
+
+            {{#if pages.hasNext}}
+              <Request @request={{pages.nextRequest}} @store={{manager}}>
+                <:idle>
+                  <button data-test-load-next {{on "click" features.loadNext}}>Load next</button>
+                </:idle>
+                <:loading><span data-test-loading-next>Loading next</span></:loading>
+              </Request>
+            {{/if}}
+          </:content>
+          <:error as |error|>{{error.message}}</:error>
+        </Paginate>
+      </template>
+    );
+
+    await request;
+    await rerender();
+
+    assert.deepEqual(
+      Array.from(paginationState.data).map((user) => user.attributes.name),
+      ['Leo Euclides'],
+      'Initial data holds only the entry page'
+    );
+    assert.true(paginationState.hasNext, 'hasNext true from the middle');
+    assert.true(paginationState.hasPrevious, 'hasPrevious true from the middle');
+
+    await click('[data-test-load-prev]');
+    await rerender();
+
+    assert.deepEqual(
+      Array.from(paginationState.data).map((user) => user.attributes.name),
+      ['Chris Thoburn', 'Leo Euclides'],
+      'Previous page prepended to the accumulated set'
+    );
+    assert.false(paginationState.hasPrevious, 'hasPrevious false after reaching the first page');
+    assert.equal(this.element.querySelectorAll('[data-test-load-prev]').length, 0, 'Prev sentinel hidden at the start');
+
+    await click('[data-test-load-next]');
+    await rerender();
+
+    assert.deepEqual(
+      Array.from(paginationState.data).map((user) => user.attributes.name),
+      ['Chris Thoburn', 'Leo Euclides', 'Mehul Chaudhari'],
+      'Forward frontier extended independently of the backward frontier'
+    );
+    assert.false(paginationState.hasNext, 'hasNext false at end-of-list');
   });
 });
