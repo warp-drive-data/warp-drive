@@ -154,6 +154,13 @@ export interface PaginateSpecSignature extends Record<string, SpecTest<LocalTest
       request: CollectionRequest;
     }
   >;
+  'it renders the default block as a fallback with pagination state and features': SpecTest<
+    LocalTestContext,
+    {
+      store: RequestManager;
+      request: CollectionRequest;
+    }
+  >;
 }
 
 export const PaginateSpec: SuiteBuilder<LocalTestContext, PaginateSpecSignature> = spec<LocalTestContext>(
@@ -1262,5 +1269,74 @@ export const PaginateSpec: SuiteBuilder<LocalTestContext, PaginateSpecSignature>
       'Forward frontier extended independently of the backward frontier'
     );
     assert.false(paginationState.hasNext, 'hasNext false at end-of-list');
+  })
+
+  .for('it renders the default block as a fallback with pagination state and features')
+  .use<{ store: RequestManager; request: CollectionRequest }>(async function (assert) {
+    const urls = [buildBaseURL({ resourcePath: 'users/1' }), buildBaseURL({ resourcePath: 'users/2' })];
+
+    await GET(this, 'users/1', () => ({
+      data: [users[0]],
+      links: {
+        self: urls[0],
+        next: urls[1],
+      },
+      meta: {
+        hasNextPage: true,
+        hasPreviousPage: false,
+      },
+    }));
+
+    await GET(this, 'users/2', () => ({
+      data: [users[1]],
+      links: {
+        prev: urls[0],
+        self: urls[1],
+      },
+      meta: {
+        hasNextPage: false,
+        hasPreviousPage: true,
+      },
+    }));
+
+    const request = this.manager.request<CollectionResourceDataDocument<UserResource>>({
+      url: urls[0],
+      method: 'GET',
+    });
+    const paginationState = getPaginationState(request);
+
+    await this.render({
+      store: this.manager,
+      request,
+    });
+
+    // The default block renders regardless of the state of the initiating
+    // request — state management is expected to occur elsewhere.
+    assert.equal(this.element.querySelectorAll('[data-test-user-name]').length, 0, 'No users while loading');
+    assert.equal(
+      this.element.querySelectorAll('[data-test-load-next]').length,
+      1,
+      'Features are yielded while loading'
+    );
+
+    await request;
+    await this.h.rerender();
+
+    assert.deepEqual(
+      Array.from(paginationState.data).map((user) => user.attributes.name),
+      ['Chris Thoburn'],
+      'Initial data holds the first page'
+    );
+    assert.equal(this.element.querySelectorAll('[data-test-user-name]').length, 1, '1 user rendered');
+
+    await this.h.click('[data-test-load-next]');
+    await this.h.rerender();
+
+    assert.deepEqual(
+      Array.from(paginationState.data).map((user) => user.attributes.name),
+      ['Chris Thoburn', 'Leo Euclides'],
+      'Next page appended via the yielded features'
+    );
+    assert.equal(this.element.querySelectorAll('[data-test-user-name]').length, 2, '2 users rendered');
   })
   .build();

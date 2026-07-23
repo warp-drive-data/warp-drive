@@ -83,6 +83,18 @@ interface PaginateSignature<RT, E> {
      */
     content: [state: PaginationState<RT, E>, features: PaginationContentFeatures<RT>];
     always: [state: PaginationState<RT, E>, features: PaginationContentFeatures<RT>];
+
+    /**
+     * The fallback block, rendered when no other named blocks are provided.
+     * Receives the same params as the `content` block.
+     *
+     * When this block is provided, none of the other named blocks will ever
+     * be utilized — providing it signals that request state management will
+     * occur elsewhere, so the block renders regardless of the state of the
+     * initiating request.
+     *
+     */
+    default: [state: PaginationState<RT, E>, features: PaginationContentFeatures<RT>];
   };
 }
 
@@ -369,7 +381,10 @@ export class Paginate<RT, E> extends Component<PaginateSignature<RT, E>> {
       @state={{if this.state.isIdle null this.state.paginationState}}
       @features={{this.state.contentFeatures}}
     >
-      {{#if (and this.state.isIdle (has-block "idle"))}}
+      {{#if (has-block "default")}}
+        {{yield this.state.paginationState this.state.contentFeatures}}
+
+      {{else if (and this.state.isIdle (has-block "idle"))}}
         {{yield to="idle"}}
 
       {{else if this.state.isIdle}}
