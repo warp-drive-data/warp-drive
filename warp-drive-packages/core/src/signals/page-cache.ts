@@ -263,12 +263,7 @@ export class PageCache<RT = unknown, E = unknown> {
   }
 
   getPageNumber(document: ReactiveDocument<unknown>): number {
-    const currentPage = (document.meta?.page ?? document.meta?.currentPage ?? 0) as number;
-    assert(
-      'Could not determine the page number from the document meta. Make sure to include either a `currentPage` or `page` property.',
-      currentPage > 0
-    );
-    return currentPage;
+    return this.manager.readPageHints(document).currentPage;
   }
 
   updateLinks = ({ prev, next, first, last }: Links): void => {

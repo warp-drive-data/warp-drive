@@ -8,7 +8,7 @@ import type { ReactiveDocument } from '../reactive.ts';
 import type { Future } from '../request.ts';
 import type { ContentItem, PageCache } from './page-cache.ts';
 import { getHref } from './page-cache.ts';
-import { getPaginationCache, type PaginationCache } from './pagination-cache.ts';
+import { getPaginationCache, type PageHints, type PaginationCache } from './pagination-cache.ts';
 import { getPaginationLinks, type PaginationLink, type PaginationLinks } from './pagination-links.ts';
 import { defineSignal, memoized } from './reactivity/signal.ts';
 
@@ -27,15 +27,23 @@ export class PaginationState<RT = unknown, E = unknown> {
   declare mode: PaginationMode;
   /** @internal */
   declare request: Future<RT>;
+  /** @internal */
+  declare pageHints: PageHints | undefined;
 
   declare paginationCache: PaginationCache<RT, E> | null;
   declare activePage: Readonly<PageCache<RT, E>> | null;
   declare initialPage: Readonly<PageCache<RT, E>> | null;
 
-  constructor(store: Store | RequestManager, request: Future<RT>, mode: PaginationMode = 'paged') {
+  constructor(
+    store: Store | RequestManager,
+    request: Future<RT>,
+    mode: PaginationMode = 'paged',
+    pageHints?: PageHints
+  ) {
     this.store = store;
     this.request = request;
     this.mode = mode;
+    this.pageHints = pageHints;
 
     void this.setup();
   }
@@ -79,6 +87,7 @@ export class PaginationState<RT = unknown, E = unknown> {
 
     const cacheKey = firstLink ?? selfLink ?? '';
     const cache = getPaginationCache<RT, E>(cacheKey);
+    cache.installPageHints(this.pageHints);
     this.paginationCache = cache;
     cache.totalPages = cache.getTotalPages(content);
     this.activePage = this.initialPage = cache.loadPage(selfLink, this.request);
@@ -153,15 +162,16 @@ const PaginationStateCache = new WeakMap<Future<unknown>, PaginationState>();
 export function getPaginationState<RT, E>(
   store: Store | RequestManager,
   request: Future<RT>,
-  mode: PaginationMode = 'paged'
+  mode: PaginationMode = 'paged',
+  pageHints?: PageHints
 ): PaginationState<RT, E> {
   let state = PaginationStateCache.get(request);
 
   if (!state) {
     state =
       mode === 'infinite'
-        ? new InfiniteState<RT, E>(store, request, mode)
-        : new PagedState<RT, E>(store, request, mode);
+        ? new InfiniteState<RT, E>(store, request, mode, pageHints)
+        : new PagedState<RT, E>(store, request, mode, pageHints);
     PaginationStateCache.set(request, state);
   }
 

@@ -1,6 +1,7 @@
 import type { RequestManager, Store } from '../index.ts';
 import type { Future } from '../request.ts';
 import type { StructuredErrorDocument } from '../types/request.ts';
+import type { PageHints } from './pagination-cache.ts';
 import { getPaginationState, type PaginationState } from './pagination-state.ts';
 import { memoized } from './reactivity/signal.ts';
 import type { RequestLoadingState } from './request-state.ts';
@@ -31,6 +32,13 @@ export type PaginationContentFeatures<RT> = {
 
 export interface PaginationSubscriptionArgs<RT, E> extends SubscriptionArgs<RT, E> {
   mode?: 'infinite' | 'paged';
+
+  /**
+   * A function to extract the `currentPage` and `totalPages` from a loaded document
+   * when they are not available in the default `meta` locations. Must be the same
+   * reference across all `<Paginate />` components sharing a collection.
+   */
+  pageHints?: PageHints;
 }
 
 export interface PaginateArgs<RT, E> extends PaginationSubscriptionArgs<RT, E> {
@@ -82,7 +90,12 @@ export class PaginationSubscription<RT, E> {
     this.isDestroyed = false;
     this[DISPOSE] = _DISPOSE;
 
-    this.paginationState = getPaginationState<RT, E>(store, this._requestSubscription.request, args.mode ?? 'paged');
+    this.paginationState = getPaginationState<RT, E>(
+      store,
+      this._requestSubscription.request,
+      args.mode ?? 'paged',
+      args.pageHints
+    );
   }
 
   @memoized

@@ -12,6 +12,35 @@ import { memoized, signal } from './reactivity/signal';
 const PaginationCacheMap = new Map<string, PaginationCache>();
 
 /**
+ * A hint function for extracting the `currentPage` and `totalPages` from a loaded
+ * document. Provided by the consumer via `<Paginate @pageHints={{...}} />` when the
+ * response does not expose these values through the default `meta` locations.
+ *
+ * Since these values are attached to the shared {@link PaginationCache}, the hint is
+ * a property of the *collection*, not the component. Every `<Paginate />` sharing a
+ * collection must provide the same function reference — define it once at module
+ * scope and import it everywhere.
+ *
+ * @public
+ */
+export interface PageHints {
+  (document: ReactiveDocument<unknown>): { currentPage: number; totalPages: number };
+}
+
+/**
+ * The default {@link PageHints}. Reads `currentPage`/`page` and `totalPages` from the
+ * document `meta`, matching the behavior used before `pageHints` was configurable.
+ * Used whenever the consumer does not provide a `pageHints` function.
+ *
+ * @public
+ */
+export const defaultPageHints: PageHints = (document) => {
+  const currentPage = (document.meta?.page ?? document.meta?.currentPage ?? 0) as number;
+  const totalPages = (document.meta?.totalPages ?? 0) as number;
+  return { currentPage, totalPages };
+};
+
+/**
  * The global, shared cache for a paginated collection. Keyed by the collection's
  * `first` (or `self`) link, so that multiple components paging the same collection
  * share loaded pages, the page graph, and `totalPages`.
@@ -23,11 +52,48 @@ export class PaginationCache<RT = unknown, E = unknown> {
   @signal declare firstPage: Readonly<PageCache<RT, E>> | null;
   @signal declare totalPages: number;
   declare pagesCache: Map<string, PageCache>;
+  pageHints: PageHints = defaultPageHints;
 
   constructor() {
     this.pagesCache = new Map<string, PageCache>();
     this.firstPage = null;
     this.totalPages = 0;
+  }
+
+  /**
+   * Installs the consumer-provided {@link PageHints} onto the shared cache. The first
+   * explicit hint wins; passing `undefined` (no hint) is a no-op that preserves the
+   * default. In dev, asserts that components sharing a collection do not provide
+   * diverging hint functions.
+   */
+  installPageHints(pageHints: PageHints | undefined): void {
+    if (!pageHints) {
+      return;
+    }
+    if (this.pageHints === defaultPageHints) {
+      this.pageHints = pageHints;
+      return;
+    }
+    assert(
+      'Received diverging `pageHints` functions for the same paginated collection. Provide the same function reference to every <Paginate /> sharing a collection (define it once at module scope).',
+      this.pageHints === pageHints
+    );
+  }
+
+  /**
+   * Runs the active {@link PageHints} against a document and validates its output.
+   */
+  readPageHints(document: ReactiveDocument<unknown>): { currentPage: number; totalPages: number } {
+    const { currentPage, totalPages } = this.pageHints(document);
+    assert(
+      'Could not determine the page number from the document. Include a `currentPage` or `page` in meta, or provide a `pageHints` function.',
+      currentPage > 0
+    );
+    assert(
+      'Could not determine the total pages from the document. Include a `totalPages` in meta, or provide a `pageHints` function.',
+      totalPages > 0
+    );
+    return { currentPage, totalPages };
   }
 
   getPageCache(url: string): Readonly<PageCache<RT, E>> {
@@ -62,12 +128,7 @@ export class PaginationCache<RT = unknown, E = unknown> {
   }
 
   getTotalPages(document: ReactiveDocument<unknown>): number {
-    const totalPages = (document.meta?.totalPages ?? 0) as number;
-    assert(
-      'Could not determine the total pages from the document meta. Make sure to include a `totalPages` property.',
-      totalPages > 0
-    );
-    return totalPages;
+    return this.readPageHints(document).totalPages;
   }
 
   @memoized

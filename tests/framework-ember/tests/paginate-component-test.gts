@@ -8,6 +8,7 @@ import type { RequestContext, StructuredDataDocument } from '@warp-drive/core/ty
 import type { CollectionResourceDataDocument } from '@warp-drive/core/types/spec/document';
 import type { RenderingTestContext } from '@warp-drive/diagnostic/ember';
 import { module, setupRenderingTest, test as _test } from '@warp-drive/diagnostic/ember';
+import type { PageHints } from '@warp-drive/ember';
 import { clearPaginationCache, EachLink, getPaginationState, Paginate, Request } from '@warp-drive/ember';
 import { MockServerHandler } from '@warp-drive/holodeck';
 import { GET } from '@warp-drive/holodeck/mock';
@@ -921,5 +922,122 @@ module<LocalTestContext>('Integration | <Paginate />', function (hooks) {
       this.element.querySelector('[data-test-pagination="b"] [data-test-user-name]')?.textContent.trim(),
       'Mehul ChaudhariCount: 12'
     );
+  });
+
+  test('it derives pageNumber and totalPages from a custom pageHints fn', async function (assert) {
+    const urls = [
+      buildBaseURL({ resourcePath: 'users/1' }),
+      buildBaseURL({ resourcePath: 'users/2' }),
+      buildBaseURL({ resourcePath: 'users/3' }),
+    ];
+
+    await GET(this, 'users/2', () => ({
+      data: [users[1]],
+      links: {
+        first: urls[0],
+        prev: urls[0],
+        self: urls[1],
+        next: urls[2],
+        last: urls[2],
+      },
+      meta: {
+        pageInfo: { index: 2, count: 3 },
+      },
+    }));
+
+    await GET(this, 'users/1', () => ({
+      data: [users[0]],
+      links: {
+        first: urls[0],
+        prev: null,
+        self: urls[0],
+        next: urls[1],
+        last: urls[2],
+      },
+      meta: {
+        pageInfo: { index: 1, count: 3 },
+      },
+    }));
+
+    await GET(this, 'users/3', () => ({
+      data: [users[2]],
+      links: {
+        first: urls[0],
+        prev: urls[1],
+        self: urls[2],
+        next: urls[3],
+        last: urls[2],
+      },
+      meta: {
+        pageInfo: { index: 3, count: 3 },
+      },
+    }));
+
+    const pageHints: PageHints = (result) => {
+      const meta = result.meta as { pageInfo?: { index: number; count: number } } | undefined;
+      return { currentPage: meta?.pageInfo?.index ?? 0, totalPages: meta?.pageInfo?.count ?? 0 };
+    };
+
+    const request = this.manager.request<CollectionResourceDataDocument<UserResource>>({ url: urls[1], method: 'GET' });
+    const paginationState = getPaginationState(this.manager, request, 'paged', pageHints);
+
+    const manager = this.manager;
+
+    await this.render(
+      <template>
+        <Paginate @request={{request}} @store={{manager}} @mode="paged" @pageHints={{pageHints}}>
+          <:loading>
+            <span data-test-pending>Pending</span>
+          </:loading>
+          <:content as |pages features|>
+            <Request @request={{pages.activePageRequest}} @store={{manager}}>
+              <:idle><span data-test-idle>No page is active</span></:idle>
+              <:content as |content|>
+                {{#each content.data as |user|}}
+                  <span data-test-user-name>{{user.attributes.name}}</span>
+                {{/each}}
+              </:content>
+              <:loading><span data-test-loading-page>Pending</span></:loading>
+            </Request>
+
+            <EachLink @state={{pages}} @store={{manager}}>
+              <:link as |link|>
+                <button
+                  {{on "click" (fn features.loadPage link.url)}}
+                  data-test-load-page={{link.index}}
+                >{{link.text}}</button>
+              </:link>
+              <:placeholder as |link|>
+                <button>.</button>
+              </:placeholder>
+            </EachLink>
+          </:content>
+          <:error as |error|>{{error.message}}</:error>
+        </Paginate>
+      </template>
+    );
+
+    await request;
+    await rerender();
+
+    let activePage = paginationState.activePage;
+
+    assert.deepEqual(activePage?.pageNumber, 2, 'Active page number derived from pageHints');
+    assert.deepEqual(paginationState.totalPages, 3, 'Total pages derived from pageHints');
+    assert.deepEqual(activePage?.data, [users[1]], 'Page data');
+    assert.deepEqual(paginationState.links.length, 3, '3 links');
+    assert.deepEqual(
+      paginationState.links.map((link) => (link.isReal ? `${link.index}` : '.')),
+      ['1', '2', '3'],
+      'Link names'
+    );
+    assert.equal(this.element.querySelector('[data-test-user-name]')?.textContent.trim(), 'Leo Euclides');
+
+    await click('[data-test-load-page="1"]');
+    activePage = paginationState.activePage;
+    assert.deepEqual(activePage?.pageNumber, 1, 'Clicked page number derived from pageHints');
+    assert.deepEqual(activePage?.data, [users[0]], 'Page data after navigation');
+    assert.deepEqual(paginationState.totalPages, 3, 'Total pages still derived from pageHints');
+    assert.equal(this.element.querySelector('[data-test-user-name]')?.textContent.trim(), 'Chris Thoburn');
   });
 });
