@@ -600,7 +600,65 @@ If a matching request is refreshed or reloaded by any other component, the `Requ
 
 ### PaginationState
 
+PaginationState provides a reactive wrapper for a paginated collection, keyed to the
+request that loaded its first page. It is the `pages` object yielded by the
+`<Paginate />` component, and is equally usable directly in JavaScript.
+
+The pages themselves are kept in a cache shared by every PaginationState for the same
+collection, so multiple components paginating the same collection share loaded pages
+while keeping their own local navigation state (active page, loaded range).
+
+It exposes two navigation surfaces over the same collection, and the consumer picks
+one by which properties it renders:
+
+- **Paged** (single page at a time): render `activePage`/`activePageRequest`, navigate
+  with `loadPage` or the numbered `links`.
+- **Infinite** (accumulated set): render `data`, grow it with `loadNext`/`loadPrev`,
+  and derive loading states from `nextRequest`/`previousRequest`.
+
+```ts
+interface PaginationState<RT = unknown, E = unknown> {
+  // paged surface
+  activePage: PageCache<RT, E> | null;
+  activePageRequest: Future<RT> | null;
+  links: PaginationLink[];
+  totalPages: number;
+  loadPage: (url: string) => Promise<RT | null>;
+
+  // infinite surface
+  data: Iterable<ContentItem<RT>>;
+  hasNext: boolean;
+  hasPrevious: boolean;
+  nextRequest: Future<RT> | null;
+  previousRequest: Future<RT> | null;
+  loadNext: () => Promise<RT | null>;
+  loadPrev: () => Promise<RT | null>;
+}
+```
+
 ### getPaginationState
+
+`getPaginationState` returns the PaginationState for a request. Repeated calls with the
+same request return the same instance — keyed by request identity, just like
+`getRequestState` — so JavaScript and templates observing the same request share state.
+
+```ts
+import { getPaginationState } from '@warp-drive/ember';
+
+const request = store.request({ url: '/users', method: 'GET' });
+const pages = getPaginationState(request);
+
+await request;
+await pages.loadNext();
+
+for (const user of pages.data) {
+  // first two pages
+}
+```
+
+An optional second argument accepts a `PageHints` function for APIs that do not expose
+`currentPage`/`totalPages` in the default `meta` locations (see the Total Pages Hints
+example below).
 
 #### <Paginate />
 
@@ -615,38 +673,30 @@ declarative control flow with built-in state management utilities.
 > for paginated queries that generates pagination links for you. This is useful to do
 > *even if you do not use `<Paginate />`* as quite a few WarpDrive/EmberData features work best
 > with links.
+
 `<Paginate />`'s API mimics `<Request />`, but expands the possibilities to afford an extremely
 flexible toolbox for managing the state of any paginated flow we want to build.
 
-All of the same top-level states (`idle` `loading` `content` `pending` `error` `cancelled`) are
+All of the same top-level states (`idle` `loading` `content` `error` `cancelled`) are
 available to us for use. `idle`, `loading`, `error` and `cancelled` apply only to the state of
 the initiating request passed into the component.
 
 The `content` block is entered when the initial request resolves, and yields a `pages` object
 that exposes information about all pages.
 
-Three new blocks are added:
-- `<:prev as |request|>`, which is active while a request for a previous link is being performed
-- `<:next as |request|>`, which is active while a request for a next link is being performed
-- `<:default>`, which allows use of `Paginate` without any other blocks.
+One new block is added:
+- `<:default>`, which allows use of `Paginate` without any other blocks. It receives the same
+  params as the `content` block, and renders regardless of the state of the initiating request.
 
 > [!TIP]
 > If the `<:default>` block is provided, no other named blocks will ever be utilized. E.g. the use of
 > default represents a separate mode for the component in which we have signaled that request state
 > management will occur elsewhere
-While the `<Paginate/>` component is *layout-less*, named blocks do have to render *somewhere* 😉
 
-When multiple blocks are capable of being rendered at the same time that insertion order may matter.
-
-We guarantee that blocks render into the DOM in the following order with zero wrapping elements.
-So content placed in one block will be sibling to content placed in another block if both are rendered.
-
-- prev
-- content
-- next
-
-No other blocks are capable of being rendered simultaneously. It is possible for all three of these
-blocks to be shown concurrently if both `prev` and `next` requests are triggered.
+Requests for the previous and next pages are exposed as `pages.previousRequest` and
+`pages.nextRequest`. Because these are plain requests, we can wrap them in `<Request />`
+(or any other tool) and place them wherever our layout calls for — the component does not
+bake any ordering into the DOM.
 
 Below, we show a number of example usages.
 
@@ -664,8 +714,8 @@ import { Paginate } from '@warp-drive/ember';
   <Paginate @request={{@request}} as |pages|>
     <VerticalCollection
       @items={{pages.data}}
-      @lastReached={{pages.next}}
-      @firstReached={{pages.prev}}
+      @lastReached={{pages.loadNext}}
+      @firstReached={{pages.loadPrev}}
       as |item|
     >
       {{item.title}}
@@ -677,38 +727,38 @@ import { Paginate } from '@warp-drive/ember';
 **With a loading state for the initial request**
 
 ```diff
-  <Paginate @request={{@request}} as |pages|>
+  <Paginate @request={{@request}}>
 +   <:loading><Spinner /></:loading>
 +
 +   <:content as |pages|>
       <VerticalCollection
         @items={{pages.data}}
-        @lastReached={{pages.next}}
-        @firstReached={{pages.prev}}
+        @lastReached={{pages.loadNext}}
+        @firstReached={{pages.loadPrev}}
         as |item|
       >
         {{item.title}}
       </VerticalCollection>
-+   <:content>
++   </:content>
   </Paginate>
 ```
 
 **With an error state for errors on the initial request**
 
 ```diff
-  <Paginate @request={{@request}} as |pages|>
+  <Paginate @request={{@request}}>
     <:loading><Spinner /></:loading>
 
     <:content as |pages|>
       <VerticalCollection
         @items={{pages.data}}
-        @lastReached={{pages.next}}
-        @firstReached={{pages.prev}}
+        @lastReached={{pages.loadNext}}
+        @firstReached={{pages.loadPrev}}
         as |item|
       >
         {{item.title}}
       </VerticalCollection>
-    <:content>
+    </:content>
 +
 +   <:error as |error state|>
 +     <ErrorForm @error={{error}} />
@@ -719,24 +769,36 @@ import { Paginate } from '@warp-drive/ember';
 
 **Displaying a spinner when a subsequent request is loading**
 
+`pages.previousRequest` and `pages.nextRequest` are `null` until a load is triggered, then
+expose the in-flight request until it resolves. Wrapping them in `<Request />` gives us a
+loading state for each direction, placed wherever our layout calls for.
+
 ```diff
-  <Paginate @request={{@request}} as |pages|>
+  <Paginate @request={{@request}}>
     <:loading><Spinner /></:loading>
 
-+   <:prev><Spinner /></:prev>
+    <:content as |pages|>
++     {{#if pages.hasPrevious}}
++       <Request @request={{pages.previousRequest}}>
++         <:loading><Spinner /></:loading>
++       </Request>
++     {{/if}}
 
-    <:content as |pages state|>
       <VerticalCollection
         @items={{pages.data}}
-        @lastReached={{pages.next}}
-        @firstReached={{pages.prev}}
+        @lastReached={{pages.loadNext}}
+        @firstReached={{pages.loadPrev}}
         as |item|
       >
         {{item.title}}
       </VerticalCollection>
-    <:content>
 
-+   <:next><Spinner /></:next>
++     {{#if pages.hasNext}}
++       <Request @request={{pages.nextRequest}}>
++         <:loading><Spinner /></:loading>
++       </Request>
++     {{/if}}
+    </:content>
 
     <:error as |error state|>
       <ErrorForm @error={{error}} />
@@ -747,41 +809,38 @@ import { Paginate } from '@warp-drive/ember';
 
 **Displaying errors from a subsequent request**
 
-When an error occurs on `next` or `prev` requests,
-the associated block remains active until the request
-succeeds. This enables us to handle the full control
-flow for the subsequent request by passing it into `<Request />`!
+When an error occurs on a `next` or `prev` request, `pages.nextRequest`/`pages.previousRequest`
+continue to reference that request until a load succeeds. This enables us to handle the full
+control flow for the subsequent request by passing it into `<Request />`!
 
 ```gjs
-import { Paginate } from '@warp-drive/ember';
+import { Paginate, Request } from '@warp-drive/ember';
 
 <template>
-  <Paginate @request={{@request}} as |pages|>
+  <Paginate @request={{@request}}>
     <:loading><Spinner /></:loading>
 
-+   <:prev as |request|>
-+     <Request @request={{request}}>
-+       <:loading><Spinner /></:loading>
-+
-+       <:error as |error state|>
-+         <ErrorForm @error={{error}} />
-+         <button {{on "click" state.retry}}>Retry</button>
-+       </:error>
-+     </Request>
-+   </:prev>
+    <:content as |pages|>
+      {{#if pages.hasPrevious}}
+        <Request @request={{pages.previousRequest}}>
+          <:loading><Spinner /></:loading>
 
-    <:content as |pages state|>
+          <:error as |error state|>
+            <ErrorForm @error={{error}} />
+            <button {{on "click" state.retry}}>Retry</button>
+          </:error>
+        </Request>
+      {{/if}}
+
       <VerticalCollection
         @items={{pages.data}}
-        @lastReached={{pages.next}}
-        @firstReached={{pages.prev}}
+        @lastReached={{pages.loadNext}}
+        @firstReached={{pages.loadPrev}}
         as |item|
       >
         {{item.title}}
       </VerticalCollection>
-    <:content>
-
-    <:next><Spinner /></:loading>
+    </:content>
 
     <:error as |error state|>
       <ErrorForm @error={{error}} />
@@ -791,36 +850,36 @@ import { Paginate } from '@warp-drive/ember';
 </template>
 ```
 
-**Advanced handling of Subsequent**
+**Load-more buttons for subsequent requests**
 
-In some cases, utilizing the `prev` and `next` blocks might limit the desired UX.
-When this happens, we can use the `prevRequest` and `nextRequest` properties
-to compose more advanced handling behaviors.
+The `<:idle>` state of a wrapping `<Request />` pairs naturally with `pages.loadPrev` and
+`pages.loadNext` to build load-more sentinels: idle until the user triggers a load, a spinner
+while the page loads, and gone once the frontier advances onto the loaded page.
 
 ```diff
- <Paginate @request={{@request}} as |pages|>
+  <Paginate @request={{@request}}>
     <:loading><Spinner /></:loading>
 
-    <:content as |pages state|>
-+     <Request @request={{state.prevRequest}}>
+    <:content as |pages|>
++     <Request @request={{pages.previousRequest}}>
 +       <:loading><Spinner /></:loading>
-+       <:idle><button {{on "click" pages.prev}}>Load More</button></:idle>
++       <:idle><button {{on "click" pages.loadPrev}}>Load More</button></:idle>
 +     </Request>
 
       <VerticalCollection
         @items={{pages.data}}
-        @lastReached={{pages.next}}
-        @firstReached={{pages.prev}}
+        @lastReached={{pages.loadNext}}
+        @firstReached={{pages.loadPrev}}
         as |item|
       >
         {{item.title}}
       </VerticalCollection>
 
-+     <Request @request={{state.nextRequest}}>
++     <Request @request={{pages.nextRequest}}>
 +       <:loading><Spinner /></:loading>
-+       <:idle><button {{on "click" pages.next}}>Load More</button></:idle>
++       <:idle><button {{on "click" pages.loadNext}}>Load More</button></:idle>
 +     </Request>
-    <:content>
+    </:content>
 
     <:error as |error state|>
       <ErrorForm @error={{error}} />
@@ -846,21 +905,21 @@ import { Paginate } from '@warp-drive/ember';
 <template>
   <Paginate @request={{@request}}>
     <:loading><Spinner /></:loading>
-    <:content as |pages state|>
+    <:content as |pages|>
       <MyPageDisplay @page={{pages.activePage}} />
-    <:content>
+    </:content>
     <:error as |error state|>
       <ErrorForm @error={{error}} />
       <button {{on "click" state.retry}}>Retry</button>
     </:error>
   </Paginate>
-<template>
+</template>
 ```
 
 **Render Pagination Links**
 
-`pages.links` exposes a `PaginationLinks` container with helpful utilities for creating
-navigation links. A companion component makes rendering links quick to setup.
+`pages.links` exposes the known page links and placeholders for the collection.
+A companion component makes rendering links quick to setup.
 
 The `<EachLink/>` component renders each available link or placeholder. Placeholders
 occur when it is known that a link *could* exist but we have not yet received the link.
@@ -874,23 +933,23 @@ The `text` property on the link will be a single `'.'` in these cases.
    <Paginate @request={{@request}}>
      <:loading><Spinner /></:loading>
 
-     <:content as |pages state|>
+     <:content as |pages|>
        <MyPageDisplay @page={{pages.activePage}} />
 +
-+      <EachLink @pages={{pages}}>
++      <EachLink @state={{pages}}>
 +        <:placeholder as |link|>{{link.text}}</:placeholder>
 +        <:link as |link|>
 +          <button {{on "click" link.setActive}}>{{link.index}}</button>
 +        </:link>
 +      </EachLink>
-     <:content>
+     </:content>
 
      <:error as |error state|>
        <ErrorForm @error={{error}} />
        <button {{on "click" state.retry}}>Retry</button>
      </:error>
    </Paginate>
- <template>
+ </template>
 ```
 
 **Total Pages Hints**
@@ -930,10 +989,10 @@ In addition to per-page control-flow, this gives us the ability to provide a sta
 and navigation experience that wraps these loading and error states.
 
 ```gjs
-import { Paginate, EachLink } from '@warp-drive/ember';
+import { Paginate, EachLink, Request } from '@warp-drive/ember';
 
 <template>
-  <Paginate @request={{@request}} as |pages state|>
+  <Paginate @request={{@request}} as |pages|>
     <Request @request={{pages.activePageRequest}}>
       <:loading><Spinner /></:loading>
       <:content as |page|>
@@ -944,14 +1003,14 @@ import { Paginate, EachLink } from '@warp-drive/ember';
         <button {{on "click" state.retry}}>Retry</button>
       </:error>
     </Request>
-    <EachLink @pages={{pages}}>
+    <EachLink @state={{pages}}>
       <:placeholder as |link|>{{link.text}}</:placeholder>
       <:link as |link|>
         <button {{on "click" link.setActive}}>{{link.index}}</button>
       </:link>
     </EachLink>
   </Paginate>
-<template>
+</template>
 ```
 
 ## Using .hbs
