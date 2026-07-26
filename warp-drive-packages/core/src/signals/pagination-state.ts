@@ -37,8 +37,17 @@ export class PaginationState<RT = unknown, E = unknown> {
   /** @internal */
   declare pageHints: PageHints | undefined;
 
+  /** The shared page graph and data this component reads from. */
   declare paginationCache: PaginationCache<RT, E> | null;
+
+  /**
+   * The page the paged surface is currently showing. Starts at
+   * {@link initialPage} and moves whenever {@link loadPage} runs (for example a
+   * numbered link is clicked).
+   */
   declare activePage: Readonly<PageCache<RT, E>> | null;
+
+  /** The page this component first loaded, used to seed the active page and frontier. */
   declare initialPage: Readonly<PageCache<RT, E>> | null;
 
   /**
@@ -59,16 +68,30 @@ export class PaginationState<RT = unknown, E = unknown> {
     void this.setup();
   }
 
+  /**
+   * The request for the {@link activePage}, for the paged surface to render. This
+   * is what a single-page view wraps in a `<Request>` to show the active page's
+   * loading, error, and content states.
+   */
   @memoized
   get activePageRequest(): Future<RT> | null {
     return this.activePage?.request ?? null;
   }
 
+  /**
+   * The total number of pages in the collection, or `0` when it is unknown (for
+   * example a cursor-based collection that reports no total).
+   */
   @memoized
   get totalPages(): number {
     return this.paginationCache?.totalPages ?? 0;
   }
 
+  /**
+   * Every page loaded into the shared cache, in order. This is the whole graph
+   * across all components sharing the collection, not just this component's
+   * frontier; for the accumulated items of an infinite view use {@link data}.
+   */
   @memoized
   get pages(): Iterable<Readonly<PageCache<RT, E>>> {
     return this.paginationCache?.pages ?? [];
@@ -148,11 +171,19 @@ export class PaginationState<RT = unknown, E = unknown> {
     return this.paginationCache?.getPageCache(url).request ?? null;
   }
 
+  /**
+   * The {@link PaginationLinks} derived from this state, i.e. the navigation
+   * links for the paged surface. See {@link getPaginationLinks}.
+   */
   @memoized
   get paginationLinks(): Readonly<PaginationLinks<RT, E>> {
     return getPaginationLinks<RT, E>(this);
   }
 
+  /**
+   * Shortcut for the numbered {@link PaginationLinks.links} of this state's
+   * links, with placeholders for gaps of not-yet-loaded pages.
+   */
   @memoized
   get links(): ReadonlyArray<Readonly<PaginationLink>> {
     return this.paginationLinks.links;
@@ -224,7 +255,12 @@ export class PaginationState<RT = unknown, E = unknown> {
   };
 
   /**
-   * Loads a specific page by its URL and makes it the active page.
+   * Loads a specific page by its URL and makes it the {@link activePage},
+   * requesting it first if it is not already loaded. This is the paged surface's
+   * navigation entry point, called by the numbered and relational links.
+   *
+   * It is a stable reference, so it can be passed directly as a click handler.
+   * Returns the page's value, or `null` if it has none.
    */
   loadPage = async (url: string): Promise<RT | null> => {
     const cache = this.paginationCache;

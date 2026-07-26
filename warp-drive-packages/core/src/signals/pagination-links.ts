@@ -4,6 +4,12 @@ import { memoized } from './reactivity/signal';
 
 const PaginationLinksCache = new WeakMap<PaginationState, PaginationLinks>();
 
+/**
+ * A single numbered link, e.g. page `3`. Loads its page and makes it active when
+ * {@link setActive} runs. Carries its {@link index} and its
+ * {@link distanceFromActiveIndex} so a UI can style links by how far they sit
+ * from the current page.
+ */
 export class RealPaginationLink {
   readonly isReal = true as const;
 
@@ -36,6 +42,12 @@ export class RealPaginationLink {
   };
 }
 
+/**
+ * A stand-in for a run of pages that have not been loaded yet, rendered as an
+ * ellipsis between numbered links. It covers an {@link indexRange} rather than a
+ * single page and has no page to navigate to. Adjacent gaps merge via
+ * {@link _mergeRange} as more pages load.
+ */
 export class PlaceholderPaginationLink {
   readonly isReal = false as const;
 
@@ -107,6 +119,32 @@ export class RelationalPaginationLink {
 
 export type PaginationLink = RealPaginationLink | PlaceholderPaginationLink;
 
+/**
+ * The reactive set of navigation links derived from a {@link PaginationState}.
+ * Where `PaginationState` tracks which pages are loaded and which one is active,
+ * `PaginationLinks` turns that page graph into the links a UI renders to move
+ * between pages.
+ *
+ * It provides two kinds of link:
+ *
+ * - {@link links}: the numbered links, with {@link PlaceholderPaginationLink}
+ *   placeholders standing in for gaps of not-yet-loaded pages. Only numbered
+ *   collections (where the server exposes page numbers) produce these.
+ * - {@link prev} and {@link next}: the relational links for the active page.
+ *   Available in both numbered and cursor-based pagination, and the only links a
+ *   cursor-based collection has.
+ *
+ * Every link updates as pages load and as the active page changes, since they
+ * read straight from the state's shared page graph. To get the links for a
+ * state, use {@link getPaginationLinks}.
+ *
+ * See also:
+ * - {@link RealPaginationLink}
+ * - {@link PlaceholderPaginationLink}
+ * - {@link RelationalPaginationLink}
+ *
+ * @hideconstructor
+ */
 export class PaginationLinks<RT = unknown, E = unknown> {
   declare paginationState: PaginationState<RT, E>;
 
@@ -183,6 +221,26 @@ export class PaginationLinks<RT = unknown, E = unknown> {
   }
 }
 
+/**
+ * Get the {@link PaginationLinks} for a given {@link PaginationState}. Returns
+ * the same instance for the same state, so repeated calls (for example a
+ * `<Paginate />` component and a separate links component reading the same state)
+ * share one set of links. Keyed by state identity, the same way
+ * {@link getPaginationState} is keyed by request and {@link getRequestState} by
+ * future.
+ *
+ * ```ts
+ * const links = getPaginationLinks(paginationState);
+ *
+ * for (const link of links.links) {
+ *   if (link.isReal) {
+ *     // render a numbered link, using link.setActive as the click handler
+ *   } else {
+ *     // render an ellipsis for the gap link.indexRange covers
+ *   }
+ * }
+ * ```
+ */
 export function getPaginationLinks<RT, E>(state: PaginationState<RT, E>): Readonly<PaginationLinks<RT, E>> {
   let links = PaginationLinksCache.get(state);
 

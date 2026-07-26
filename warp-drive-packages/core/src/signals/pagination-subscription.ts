@@ -91,36 +91,60 @@ export class PaginationSubscription<RT, E> {
     this.paginationState = getPaginationState<RT, E>(this._requestSubscription.request, args.pageHints);
   }
 
+  /**
+   * Whether there is no request or query to monitor, so the component has
+   * nothing to load.
+   */
   @memoized
   get isIdle(): boolean {
     return this._requestSubscription.isIdle;
   }
 
+  /**
+   * Whether the initial request is still loading. Only the first page load
+   * blocks here; extending the collection with `loadNext`/`loadPrev` does not.
+   */
   @memoized
   get isLoading(): boolean {
     return this._requestSubscription.reqState.isLoading;
   }
 
+  /**
+   * The {@link RequestLoadingState} for the initial request, for building UIs
+   * that respond to download progress.
+   */
   @memoized
   get loadingState(): RequestLoadingState {
     return this._requestSubscription.reqState.loadingState;
   }
 
+  /**
+   * Whether the initial request resolved successfully.
+   */
   @memoized
   get isSuccess(): boolean {
     return this._requestSubscription.reqState.isSuccess;
   }
 
+  /**
+   * Whether the initial request was cancelled (aborted).
+   */
   @memoized
   get isCancelled(): boolean {
     return this._requestSubscription.reqState.isCancelled;
   }
 
+  /**
+   * Whether the initial request rejected with an error.
+   */
   @memoized
   get isError(): boolean {
     return this._requestSubscription.reqState.isError;
   }
 
+  /**
+   * The error the initial request rejected with, or `null` if it did not reject.
+   */
   @memoized
   get reason(): StructuredErrorDocument<E> | null {
     return this._requestSubscription.reqState.reason;
@@ -169,6 +193,10 @@ export class PaginationSubscription<RT, E> {
     return createRequestSubscription<RT, E>(this.store, this._args);
   }
 
+  /**
+   * The initial request `Future` this subscription is monitoring, i.e. the first
+   * page load. This is the future the {@link paginationState} is built from.
+   */
   @memoized
   get request(): Future<RT> {
     return this._requestSubscription.request;
