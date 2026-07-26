@@ -15,7 +15,7 @@ export interface PaginationLinksSubscription<RT, E> {
 }
 
 export interface PaginationLinksSubscriptionArgs<RT, E> {
-  state: PaginationState<RT, E>;
+  pages: PaginationState<RT, E>;
 }
 
 /**
@@ -42,7 +42,7 @@ export class PaginationLinksSubscription<RT, E> {
 
   @memoized
   get paginationLinks(): Readonly<PaginationLinks<RT, E>> {
-    return getPaginationLinks<RT, E>(this._args.state);
+    return getPaginationLinks<RT, E>(this._args.pages);
   }
 
   @memoized

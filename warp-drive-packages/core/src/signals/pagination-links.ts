@@ -10,13 +10,15 @@ export class RealPaginationLink {
   readonly url: string;
   readonly index: number;
   readonly isCurrent: boolean;
+  readonly distanceFromActiveIndex: number;
   /** @internal */
   declare private _loadPage: (url: string) => Promise<unknown>;
 
-  constructor(url: string, index: number, isCurrent: boolean, loadPage: (url: string) => Promise<unknown>) {
+  constructor(url: string, index: number, activeIndex: number, loadPage: (url: string) => Promise<unknown>) {
     this.url = url;
     this.index = index;
-    this.isCurrent = isCurrent;
+    this.isCurrent = index === activeIndex;
+    this.distanceFromActiveIndex = Math.abs(index - activeIndex);
     this._loadPage = loadPage;
   }
 
@@ -38,15 +40,26 @@ export class PlaceholderPaginationLink {
   readonly isReal = false as const;
 
   indexRange: [start: number, end: number];
+  readonly activeIndex: number;
 
   text = '.';
 
-  constructor(index: [start: number, end: number]) {
+  constructor(index: [start: number, end: number], activeIndex: number) {
     this.indexRange = index;
+    this.activeIndex = activeIndex;
   }
 
   get rangeSize(): number {
     return this.indexRange[1] - this.indexRange[0] + 1;
+  }
+
+  /**
+   * The distance between the active page and the nearest edge of this
+   * placeholder's index range.
+   */
+  get distanceFromActiveIndex(): number {
+    const [start, end] = this.indexRange;
+    return Math.min(Math.abs(start - this.activeIndex), Math.abs(end - this.activeIndex));
   }
 
   _mergeRange(newRange: [start: number, end: number]): void {
@@ -145,13 +158,15 @@ export class PaginationLinks<RT = unknown, E = unknown> {
       let currentPage: Readonly<PageCache<RT, E>> | null = firstPage;
       while (currentPage) {
         if (previousPage && currentPage.pageNumber - previousPage.pageNumber > 1) {
-          links.push(new PlaceholderPaginationLink([previousPage.pageNumber + 1, currentPage.pageNumber - 1]));
+          links.push(
+            new PlaceholderPaginationLink([previousPage.pageNumber + 1, currentPage.pageNumber - 1], activeIndex)
+          );
         }
         links.push(
           new RealPaginationLink(
             currentPage.selfLink ?? '',
             currentPage.pageNumber,
-            currentPage.pageNumber === activeIndex,
+            activeIndex,
             this.paginationState.loadPage
           )
         );
@@ -160,7 +175,7 @@ export class PaginationLinks<RT = unknown, E = unknown> {
       }
 
       if (previousPage && previousPage.pageNumber < totalPages) {
-        links.push(new PlaceholderPaginationLink([previousPage.pageNumber + 1, totalPages]));
+        links.push(new PlaceholderPaginationLink([previousPage.pageNumber + 1, totalPages], activeIndex));
       }
     }
 

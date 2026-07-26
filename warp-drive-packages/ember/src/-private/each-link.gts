@@ -24,7 +24,7 @@ if (macroCondition(moduleExists('ember-provide-consume-context'))) {
 
 interface EachLinkSignature<RT, E> {
   Args: {
-    state: PaginationState<RT, E>;
+    pages: PaginationState<RT, E>;
 
     /**
      * The store instance to use for making requests. If contexts are available,

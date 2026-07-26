@@ -28,7 +28,7 @@ PaginateSpec.use(useEmber(), function (b) {
               <:loading><span data-test-loading-page>Pending<br />Count: {{countFor request}}</span></:loading>
             </Request>
 
-            <EachLink @state={{pages}} @store={{store}}>
+            <EachLink @pages={{pages}} @store={{store}}>
               <:link as |link|>
                 <button
                   {{on "click" (fn features.loadPage link.url)}}
@@ -71,7 +71,7 @@ PaginateSpec.use(useEmber(), function (b) {
               <:loading><span data-test-loading-page>Pending<br />Count: {{countFor request}}</span></:loading>
             </Request>
 
-            <EachLink @state={{pages}} @store={{store}}>
+            <EachLink @pages={{pages}} @store={{store}}>
               <:link as |link|>
                 <button
                   {{on "click" (fn features.loadPage link.url)}}
@@ -111,7 +111,7 @@ PaginateSpec.use(useEmber(), function (b) {
                 <:loading><span data-test-loading-page>Pending<br />Count: {{countFor requestA}}</span></:loading>
               </Request>
 
-              <EachLink @state={{pages}} @store={{store}}>
+              <EachLink @pages={{pages}} @store={{store}}>
                 <:link as |link|>
                   <button
                     {{on "click" (fn features.loadPage link.url)}}
@@ -146,7 +146,7 @@ PaginateSpec.use(useEmber(), function (b) {
                 <:loading><span data-test-loading-page>Pending<br />Count: {{countFor requestB}}</span></:loading>
               </Request>
 
-              <EachLink @state={{pages}} @store={{store}}>
+              <EachLink @pages={{pages}} @store={{store}}>
                 <:link as |link|>
                   <button
                     {{on "click" (fn features.loadPage link.url)}}
@@ -184,7 +184,40 @@ PaginateSpec.use(useEmber(), function (b) {
               <:loading><span data-test-loading-page>Pending</span></:loading>
             </Request>
 
-            <EachLink @state={{pages}} @store={{store}}>
+            <EachLink @pages={{pages}} @store={{store}}>
+              <:link as |link|>
+                <button {{on "click" link.setActive}} data-test-load-page={{link.index}}>{{link.text}}</button>
+              </:link>
+              <:placeholder as |link|>
+                <button>.</button>
+              </:placeholder>
+            </EachLink>
+          </:content>
+          <:error as |error|>{{error.message}}</:error>
+        </Paginate>
+      </template>;
+    })
+
+    .test('it renders the full link set when entering on a middle page', function (props) {
+      const { request, store } = props;
+
+      return <template>
+        <Paginate @request={{request}} @store={{store}}>
+          <:loading>
+            <span data-test-pending>Pending</span>
+          </:loading>
+          <:content as |pages features|>
+            <Request @request={{pages.activePageRequest}} @store={{store}}>
+              <:idle><span data-test-idle>No page is active</span></:idle>
+              <:content as |content|>
+                {{#each content.data as |user|}}
+                  <span data-test-user-name>{{user.attributes.name}}</span>
+                {{/each}}
+              </:content>
+              <:loading><span data-test-loading-page>Pending</span></:loading>
+            </Request>
+
+            <EachLink @pages={{pages}} @store={{store}}>
               <:link as |link|>
                 <button {{on "click" link.setActive}} data-test-load-page={{link.index}}>{{link.text}}</button>
               </:link>
@@ -217,7 +250,7 @@ PaginateSpec.use(useEmber(), function (b) {
               <:loading><span data-test-loading-page>Pending</span></:loading>
             </Request>
 
-            <EachLink @state={{pages}} @store={{store}}>
+            <EachLink @pages={{pages}} @store={{store}}>
               <:link as |link|>
                 <button data-test-load-page={{link.index}}>{{link.text}}</button>
               </:link>

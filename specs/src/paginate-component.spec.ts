@@ -133,6 +133,13 @@ export interface PaginateSpecSignature extends Record<string, SpecTest<LocalTest
       pageHints: PageHints;
     }
   >;
+  'it renders the full link set when entering on a middle page': SpecTest<
+    LocalTestContext,
+    {
+      store: RequestManager;
+      request: CollectionRequest;
+    }
+  >;
   'it supports cursor-based pagination in paged mode (no page numbers or total)': SpecTest<
     LocalTestContext,
     {
@@ -984,6 +991,58 @@ export const PaginateSpec: SuiteBuilder<LocalTestContext, PaginateSpecSignature>
     assert.deepEqual(activePage?.data, [users[0]], 'Page data after navigation');
     assert.deepEqual(paginationState.totalPages, 3, 'Total pages still derived from pageHints');
     assert.equal(this.element.querySelector('[data-test-user-name]')?.textContent.trim(), 'Chris Thoburn');
+  })
+
+  .for('it renders the full link set when entering on a middle page')
+  .use<{ store: RequestManager; request: CollectionRequest }>(async function (assert) {
+    const urls = [
+      buildBaseURL({ resourcePath: 'users/1' }),
+      buildBaseURL({ resourcePath: 'users/4' }),
+      buildBaseURL({ resourcePath: 'users/5' }),
+      buildBaseURL({ resourcePath: 'users/6' }),
+      buildBaseURL({ resourcePath: 'users/10' }),
+    ];
+
+    await GET(this, 'users/5', () => ({
+      data: [users[4]],
+      links: {
+        first: urls[0],
+        prev: urls[1],
+        self: urls[2],
+        next: urls[3],
+        last: urls[4],
+      },
+      meta: {
+        currentPage: 5,
+        totalPages: 10,
+      },
+    }));
+
+    const request = this.manager.request<CollectionResourceDataDocument<UserResource>>({ url: urls[2], method: 'GET' });
+    const paginationState = getPaginationState(request);
+
+    await this.render({
+      store: this.manager,
+      request,
+    });
+
+    await request;
+    await this.h.rerender();
+
+    assert.deepEqual(paginationState.activePage?.pageNumber, 5, 'Entry page is the active page');
+    assert.deepEqual(paginationState.totalPages, 10, 'Total pages');
+    assert.deepEqual(
+      paginationState.links.map((link) => (link.isReal ? `${link.index}` : '.')),
+      ['1', '.', '4', '5', '6', '.', '10'],
+      'Full link set renders around the deep-linked entry page'
+    );
+    assert.deepEqual(
+      paginationState.links.map((link) => link.distanceFromActiveIndex),
+      [4, 2, 1, 0, 1, 2, 5],
+      'Each link knows its distance from the active index'
+    );
+    assert.equal(this.element.querySelectorAll('[data-test-load-page]').length, 5, '5 numbered link buttons');
+    assert.equal(this.element.querySelector('[data-test-user-name]')?.textContent.trim(), 'Jane Portman');
   })
 
   .for('it supports cursor-based pagination in paged mode (no page numbers or total)')

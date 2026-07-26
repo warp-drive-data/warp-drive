@@ -130,7 +130,10 @@ export class PaginationCache<RT = unknown, E = unknown> {
   }
 
   updateFirstPage(page: Readonly<PageCache<RT, E>>): void {
-    const maybeFirstPage = page.before ?? page;
+    let maybeFirstPage = page;
+    while (maybeFirstPage.before) {
+      maybeFirstPage = maybeFirstPage.before;
+    }
     if (!this.firstPage || this.firstPage.pageNumber > maybeFirstPage.pageNumber) {
       this.firstPage = maybeFirstPage;
     }
