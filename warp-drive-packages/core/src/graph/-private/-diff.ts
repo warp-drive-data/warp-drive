@@ -404,8 +404,12 @@ export function diffCollection(
 }
 
 export function computeLocalState(storage: CollectionEdge): ResourceKey[] {
-  if (!storage.isDirty) {
-    assert(`Expected localState to be present`, Array.isArray(storage.localState));
+  // When the edge is clean and we already have a materialized localState we can
+  // return it directly. A clean edge can still have a `null` localState though:
+  // dematerializing an inverse member (e.g. when a route reloads its model)
+  // nulls out localState without dirtying the edge. In that case we fall through
+  // and recompute from remoteState rather than asserting.
+  if (!storage.isDirty && storage.localState) {
     return storage.localState;
   }
 
