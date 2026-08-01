@@ -1,5 +1,6 @@
 import { warn } from '@ember/debug';
 
+import { JSON_API_CACHE_VALIDATION_ERRORS } from '@warp-drive/core/build-config/canary-features';
 import { LOG_GRAPH } from '@warp-drive/core/build-config/debugging';
 import { assert } from '@warp-drive/core/build-config/macros';
 
@@ -44,13 +45,18 @@ export function assertValidRelationshipPayload(
   const { isAsync, kind } = definition;
 
   if (payload.links) {
-    warn(
-      `You pushed a record of type '${type}' with a relationship '${field}' configured as 'async: false'. You've included a link but no primary data, this may be an error in your payload. WarpDrive will treat this relationship as known-to-be-empty.`,
-      isAsync || payload.data === null || !!payload.data || state.hasReceivedData,
-      {
-        id: 'ds.store.push-link-for-sync-relationship',
-      }
-    );
+    // once JSON_API_CACHE_VALIDATION_ERRORS is active, this warning is instead
+    // the responsibility of the new document validator (see validateResourceRelationships
+    // in warp-drive-packages/json-api/src/-private/validator/1.1/7.2_resource-objects.ts)
+    if (!JSON_API_CACHE_VALIDATION_ERRORS) {
+      warn(
+        `You pushed a record of type '${type}' with a relationship '${field}' configured as 'async: false'. You've included a link but no primary data, this may be an error in your payload. WarpDrive will treat this relationship as known-to-be-empty.`,
+        isAsync || payload.data === null || !!payload.data || state.hasReceivedData,
+        {
+          id: 'ds.store.push-link-for-sync-relationship',
+        }
+      );
+    }
   } else if (payload.data) {
     if (kind === 'belongsTo') {
       assert(

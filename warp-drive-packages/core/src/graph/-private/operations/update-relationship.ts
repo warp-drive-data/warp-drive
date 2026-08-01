@@ -1,5 +1,3 @@
-import { warn } from '@ember/debug';
-
 import { assert } from '@warp-drive/core/build-config/macros';
 
 import type { Store } from '../../../index.ts';
@@ -26,7 +24,7 @@ export default function updateRelationshipOperation(
 ): void {
   const relationship = graph.get(op.record, op.field);
   assert(`Cannot update an implicit relationship`, isHasMany(relationship) || isBelongsTo(relationship));
-  const { definition, state, identifier } = relationship;
+  const { definition, identifier } = relationship;
   const { isCollection } = definition;
 
   const payload = op.value;
@@ -81,13 +79,10 @@ export default function updateRelationshipOperation(
       const currentLinkHref = currentLink ? currentLink.href : null;
 
       if (relatedLink && relatedLink.href && relatedLink.href !== currentLinkHref) {
-        warn(
-          `You pushed a record of type '${identifier.type}' with a relationship '${definition.key}' configured as 'async: false'. You've included a link but no primary data, this may be an error in your payload. WarpDrive will treat this relationship as known-to-be-empty.`,
-          definition.isAsync || state.hasReceivedData,
-          {
-            id: 'ds.store.push-link-for-sync-relationship',
-          }
-        );
+        // Note: the equivalent warning for this case is issued eagerly (and with a more
+        // complete condition, since it also accounts for `payload.data` being present) by
+        // `assertValidRelationshipPayload` in `-utils.ts`, which always runs immediately
+        // before this operation in DEBUG builds. Warning here too would double-warn.
         assert(
           `You have pushed a record of type '${identifier.type}' with '${definition.key}' as a link, but the value of that link is not a string.`,
           typeof relatedLink.href === 'string' || relatedLink.href === null
