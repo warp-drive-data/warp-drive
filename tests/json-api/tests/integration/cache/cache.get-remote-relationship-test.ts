@@ -134,13 +134,13 @@ module('<JSONAPICache>.getRemoteRelationship', function () {
     const state = cache.getRemoteRelationship(user.$key, 'bestFriend');
     assert.deepEqual(
       state?.data,
-      { id: '2', type: 'user', lid: '@lid:user-2' } as ResourceKey,
+      store.cacheKeyManager.getOrCreateRecordIdentifier({ id: '2', type: 'user' }),
       'The cache value is present'
     );
     assert.deepEqual(
       state,
       {
-        data: { id: '2', type: 'user', lid: '@lid:user-2' } as ResourceKey,
+        data: store.cacheKeyManager.getOrCreateRecordIdentifier({ id: '2', type: 'user' }),
       },
       'The cache value does not have extra properties'
     );
@@ -272,13 +272,13 @@ module('<JSONAPICache>.getRemoteRelationship', function () {
     const state = cache.getRemoteRelationship(user.$key, 'bestFriend');
     assert.deepEqual(
       state?.data,
-      { id: '2', type: 'user', lid: '@lid:user-2' } as ResourceKey,
+      store.cacheKeyManager.getOrCreateRecordIdentifier({ id: '2', type: 'user' }),
       'The cache value is present'
     );
     assert.deepEqual(
       state,
       {
-        data: { id: '2', type: 'user', lid: '@lid:user-2' } as ResourceKey,
+        data: store.cacheKeyManager.getOrCreateRecordIdentifier({ id: '2', type: 'user' }),
       },
       'The cache value does not have extra properties'
     );
@@ -319,13 +319,13 @@ module('<JSONAPICache>.getRemoteRelationship', function () {
     const state = cache.getRemoteRelationship(user.$key, 'bestFriend');
     assert.deepEqual(
       state?.data,
-      { id: '2', type: 'user', lid: '@lid:user-2' } as ResourceKey,
+      store.cacheKeyManager.getOrCreateRecordIdentifier({ id: '2', type: 'user' }),
       'The cache value is present'
     );
     assert.deepEqual(
       state,
       {
-        data: { id: '2', type: 'user', lid: '@lid:user-2' } as ResourceKey,
+        data: store.cacheKeyManager.getOrCreateRecordIdentifier({ id: '2', type: 'user' }),
       },
       'The cache value does not have extra properties'
     );
