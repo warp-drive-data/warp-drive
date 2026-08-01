@@ -2,7 +2,7 @@ import type { LOG_CONFIG } from '@warp-drive/build-config/-private/utils/logging
 
 import { getOrSetUniversal } from './-private.ts';
 
-const RuntimeConfig: { debug: Partial<LOG_CONFIG> } = getOrSetUniversal('WarpDriveRuntimeConfig', {
+const RuntimeConfig: { debug: Partial<LOG_CONFIG>; mirage?: boolean } = getOrSetUniversal('WarpDriveRuntimeConfig', {
   debug: {},
 });
 
@@ -35,5 +35,21 @@ export function getRuntimeConfig(): typeof RuntimeConfig {
  */
 export function setLogging(config: Partial<LOG_CONFIG>): void {
   Object.assign(RuntimeConfig.debug, config);
+  storage?.setItem('WarpDriveRuntimeConfig', JSON.stringify(RuntimeConfig));
+}
+
+/**
+ * Explicitly declares whether requests may be served by Mirage (or another
+ * Pretender-based fetch mock) instead of a native `fetch` implementation.
+ *
+ * The `Fetch` request handler otherwise infers this only from the presence
+ * of `window.server.pretender`, which some Mirage setups don't expose. Use
+ * this to opt in explicitly rather than relying on that detection.
+ *
+ * globalThis.setWarpDriveIsMaybeMirage(true);
+ *
+ */
+export function setIsMaybeMirage(value: boolean): void {
+  RuntimeConfig.mirage = value;
   storage?.setItem('WarpDriveRuntimeConfig', JSON.stringify(RuntimeConfig));
 }

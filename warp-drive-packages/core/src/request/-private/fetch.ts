@@ -1,6 +1,7 @@
 import { DEBUG } from '@warp-drive/core/build-config/env';
 import { assert } from '@warp-drive/core/build-config/macros';
 
+import { getRuntimeConfig } from '../../types/runtime.ts';
 import { cloneResponseProperties, type Context } from './context';
 import type { FetchError } from './utils';
 
@@ -33,13 +34,21 @@ function cloneResponse(response: Response, overrides: Partial<Response>) {
   return new Response(response.body, Object.assign(props, overrides));
 }
 
+// Detects Mirage (or another Pretender-based fetch mock) so we can avoid
+// assuming streaming/response-cloning capabilities it may not support.
+//
+// We deliberately do NOT infer this from whether `window.fetch` has been
+// patched: many legitimate tools (Sentry, other APM/monitoring agents,
+// browser extensions, polyfills) patch `fetch` too, and produce ordinary
+// `Response` objects that behave like native ones. Treating "fetch is
+// patched" as "this is Mirage" produces false positives for those apps.
+// See https://github.com/warp-drive-data/warp-drive/issues/10535
 let IS_MAYBE_MIRAGE = () => false;
 if (DEBUG) {
   IS_MAYBE_MIRAGE = () =>
     Boolean(
-      typeof window !== 'undefined' &&
-      ((window as { server?: { pretender: unknown } }).server?.pretender ||
-        window.fetch.toString().replace(/\s+/g, '') !== 'function fetch() { [native code] }'.replace(/\s+/g, ''))
+      getRuntimeConfig().mirage ||
+        (typeof window !== 'undefined' && (window as { server?: { pretender: unknown } }).server?.pretender)
     );
 }
 
@@ -139,9 +148,12 @@ const Fetch = {
     const isMutationOp = Boolean(op && MUTATION_OPS.has(op));
 
     if (!isError && !isMutationOp && response.status !== 204 && !response.headers.has('date')) {
-      if (IS_MAYBE_MIRAGE()) {
+      // Prefer mutating in place; only some responses (e.g. those with an
+      // immutable `Headers` guard, such as opaque or opaque-redirect
+      // responses) will reject this, in which case we fall back to cloning.
+      try {
         response.headers.set('date', new Date().toUTCString());
-      } else {
+      } catch {
         const headers = new Headers(response.headers);
         headers.set('date', new Date().toUTCString());
         response = cloneResponse(response, {
