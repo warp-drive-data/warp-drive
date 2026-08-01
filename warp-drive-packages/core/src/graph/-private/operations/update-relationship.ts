@@ -119,6 +119,7 @@ export default function updateRelationshipOperation(
     // we don't need to notify here as the update op we pushed in above will notify once
     // membership is in the correct state.
     relationship.state.hasReceivedData = true;
+    relationship.state.hasReceivedRemoteData = true;
     relationship.state.isStale = false;
     relationship.state.hasDematerializedInverse = false;
     relationship.state.isEmpty = relationshipIsEmpty;

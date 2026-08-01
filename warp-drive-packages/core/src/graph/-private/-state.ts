@@ -30,6 +30,17 @@ export interface RelationshipState {
      */
   hasReceivedData: boolean;
   /*
+      Like `hasReceivedData`, but only ever set by *remote* updates
+      (pushes from the cache/server), never by local mutations.
+
+      This is what `getRemoteRelationship` uses to distinguish "we have
+      never been told anything about this relationship's remote state"
+      (stays `undefined`) from "we were explicitly told the remote state
+      is empty" (`null` / `[]`) regardless of any local edits that may
+      have occurred since.
+     */
+  hasReceivedRemoteData: boolean;
+  /*
       Flag that indicates whether an empty relationship is explicitly empty
         (signaled by push giving us an empty array or null relationship)
         e.g. an API response has told us that this relationship is empty.
@@ -116,6 +127,7 @@ export function createState(): RelationshipState {
         set hasReceivedData(value: boolean) {
           hasReceivedData = value;
         },
+        hasReceivedRemoteData: false,
         isEmpty: true,
         isStale: false,
         hasFailedLoadAttempt: false,
@@ -127,6 +139,7 @@ export function createState(): RelationshipState {
 
   return {
     hasReceivedData: false,
+    hasReceivedRemoteData: false,
     isEmpty: true,
     isStale: false,
     hasFailedLoadAttempt: false,

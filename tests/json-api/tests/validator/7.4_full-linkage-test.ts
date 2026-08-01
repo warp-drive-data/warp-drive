@@ -22,7 +22,7 @@ module('Validator | 7.4 Full Linkage', function () {
               kind: 'hasMany',
               name: 'friends',
               type: 'user',
-              options: { inverse: null, async: false, linksMode: true },
+              options: { inverse: null, async: false },
             },
           ],
         }),

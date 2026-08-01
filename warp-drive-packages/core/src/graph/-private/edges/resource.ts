@@ -40,7 +40,7 @@ export function legacyGetResourceRelationshipData(source: ResourceEdge, getRemot
   source.accessed = true;
   let data: ResourceKey | null | undefined;
   const payload: ResourceRelationship = {};
-  if (getRemoteState && (source.remoteState || source.state.hasReceivedData)) {
+  if (getRemoteState && (source.remoteState || source.state.hasReceivedRemoteData)) {
     data = source.remoteState ?? null;
   } else if (!getRemoteState && (source.localState || source.state.hasReceivedData)) {
     data = source.localState ?? null;
