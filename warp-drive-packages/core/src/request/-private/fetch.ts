@@ -1,6 +1,7 @@
 import { DEBUG } from '@warp-drive/core/build-config/env';
 import { assert } from '@warp-drive/core/build-config/macros';
 
+import { getRuntimeConfig } from '../../types/runtime.ts';
 import { cloneResponseProperties, type Context } from './context';
 import type { FetchError } from './utils';
 
@@ -33,14 +34,35 @@ function cloneResponse(response: Response, overrides: Partial<Response>) {
   return new Response(response.body, Object.assign(props, overrides));
 }
 
+function withDateHeader(response: Response): Response {
+  const headers = new Headers(response.headers);
+  headers.set('date', new Date().toUTCString());
+  return cloneResponse(response, { headers });
+}
+
+// Detects Mirage (or another Pretender-based fetch mock), whose `Response`
+// may (unlike a spec-compliant `fetch()`, whose Response headers are always
+// immutable) allow header mutation and may not support streaming reads.
+//
+// This is inherently a heuristic - many legitimate tools (APM/monitoring
+// agents, browser extensions, polyfills) also patch `window.fetch`, and can
+// produce false positives. `setWarpDriveIsMaybeMirage(value)` lets an app
+// declare the answer explicitly (`true` or `false`), overriding the
+// heuristic in either direction; leave it unset to keep the default
+// detection. See https://github.com/warp-drive-data/warp-drive/issues/10535
 let IS_MAYBE_MIRAGE = () => false;
 if (DEBUG) {
-  IS_MAYBE_MIRAGE = () =>
-    Boolean(
+  IS_MAYBE_MIRAGE = () => {
+    const override = getRuntimeConfig().mirage;
+    if (override !== undefined) {
+      return override;
+    }
+    return Boolean(
       typeof window !== 'undefined' &&
       ((window as { server?: { pretender: unknown } }).server?.pretender ||
         window.fetch.toString().replace(/\s+/g, '') !== 'function fetch() { [native code] }'.replace(/\s+/g, ''))
     );
+  };
 }
 
 const MUTATION_OPS = new Set(['updateRecord', 'createRecord', 'deleteRecord']);
@@ -140,13 +162,15 @@ const Fetch = {
 
     if (!isError && !isMutationOp && response.status !== 204 && !response.headers.has('date')) {
       if (IS_MAYBE_MIRAGE()) {
-        response.headers.set('date', new Date().toUTCString());
+        try {
+          response.headers.set('date', new Date().toUTCString());
+        } catch {
+          // IS_MAYBE_MIRAGE() was a false positive, or the mock's headers
+          // are (correctly) immutable - fall back to cloning.
+          response = withDateHeader(response);
+        }
       } else {
-        const headers = new Headers(response.headers);
-        headers.set('date', new Date().toUTCString());
-        response = cloneResponse(response, {
-          headers,
-        });
+        response = withDateHeader(response);
       }
     }
 
