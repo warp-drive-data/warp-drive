@@ -16,7 +16,7 @@ import { CacheHandler, type CachePolicy, Store } from './store/-private.ts';
 import { recordIdentifierFor } from './store/-private.ts';
 import type { CacheCapabilitiesManager, ResourceKey } from './types.ts';
 import type { Cache } from './types/cache.ts';
-import { getRuntimeConfig, setLogging } from './types/runtime.ts';
+import { getRuntimeConfig, setIsMaybeMirage, setLogging } from './types/runtime.ts';
 import type { Derivation, HashFn, Transformation } from './types/schema/concepts.ts';
 import type { ObjectSchema, PolarisResourceSchema, Trait } from './types/schema/fields.ts';
 
@@ -31,6 +31,13 @@ if (TESTING) {
   // @ts-expect-error adding to globalThis
   globalThis.getWarpDriveRuntimeConfig = getRuntimeConfig;
 }
+
+// Mirage (or another Pretender-based fetch mock) may be used outside of a
+// `TESTING` build (e.g. `ember serve` in dev mode), so this override is
+// exposed unconditionally rather than gated to the `TESTING` env.
+// @ts-expect-error adding to globalThis
+globalThis.setWarpDriveIsMaybeMirage = setIsMaybeMirage;
+
 export { Store, CacheHandler, type CachePolicy };
 
 export { type StoreRequestContext, type StoreRequestInput, storeFor } from './store/-private.ts';
