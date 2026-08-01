@@ -44,8 +44,8 @@ Browsers offer two excellent primitives for storing device and session specific 
 
 This library provides a reactive wrapper for these APIs as a building block for more advanced features.
 
-- [reactive localStorage](/api/reactive/storage/functions/getLocalStorage)
-- [reactive sessionStorage](/api/reactive/storage/functions/getSessionStorage)
+- [reactive localStorage](/api/@warp-drive/experiments/storage/functions/getLocalStorage)
+- [reactive sessionStorage](/api/@warp-drive/experiments/storage/functions/getSessionStorage)
 
 Storage Resources build over these APIs, making it trivial to ensure that a user's application or session state is always persisted when needed, and synchronized into the url properly when it should be shareable.
 
@@ -341,8 +341,8 @@ The result is a cleaner value for sharing in the URL while our local value remai
 
 There are pre-built param config generators for boolean and numerical values.
 
-- [BooleanParam](/api/reactive/query-params/functions/BooleanParam)
-- [NumberParam](/api/reactive/query-params/functions/NumberParam)
+- `BooleanParam`
+- `NumberParam`
 
 ::: code-group
 
