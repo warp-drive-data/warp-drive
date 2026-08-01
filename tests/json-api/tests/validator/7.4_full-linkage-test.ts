@@ -13,20 +13,6 @@ module('Validator | 7.4 Full Linkage', function () {
     const capture = captureLoggedReport();
     const Store = useRecommendedStore({
       cache: JSONAPICache,
-      schemas: [
-        withDefaults({
-          type: 'user',
-          fields: [
-            { kind: 'field', name: 'name' },
-            {
-              kind: 'hasMany',
-              name: 'friends',
-              type: 'user',
-              options: { inverse: null, async: false, linksMode: true },
-            },
-          ],
-        }),
-      ],
       handlers: [
         {
           request<T>() {
@@ -61,6 +47,24 @@ module('Validator | 7.4 Full Linkage', function () {
       ],
     });
     const store = new Store();
+    // this test exercises the generic JSON:API full-linkage validator, which requires
+    // a non-linksMode relationship since linksMode has its own, stricter hard-error validation
+    store.schema.registerResources([
+      {
+        type: 'user',
+        legacy: true,
+        identity: { kind: '@id', name: 'id' },
+        fields: [
+          { kind: 'field', name: 'name' },
+          {
+            kind: 'hasMany',
+            name: 'friends',
+            type: 'user',
+            options: { inverse: null, async: false },
+          },
+        ],
+      },
+    ]);
 
     await store.request({ url: '/users/1' });
     capture.restore();

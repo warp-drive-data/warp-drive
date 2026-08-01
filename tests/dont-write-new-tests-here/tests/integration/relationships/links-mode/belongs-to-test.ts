@@ -200,7 +200,7 @@ module('integration/relationship/belongs-to BelongsTo Relationships (linksMode)'
 
     await assert.expectAssertion(
       () => record.belongsTo('bestFriend').reload(),
-      'Cannot fetch user.bestFriend because the field is in linksMode but the related link is missing'
+      'Cannot fetch user.bestFriend because the field is in linksMode but the related data is not included'
     );
 
     assert.verifySteps(
@@ -225,8 +225,8 @@ module('integration/relationship/belongs-to BelongsTo Relationships (linksMode)'
             },
             relationships: {
               bestFriend: {
-                links: { related: '/user/1/bestFriend' },
-                // oops no data
+                // oops no links and no data: the reload has no way to
+                // resolve or later fetch this relationship
               },
             },
           },
@@ -298,7 +298,7 @@ module('integration/relationship/belongs-to BelongsTo Relationships (linksMode)'
 
     await assert.expectAssertion(
       () => record.belongsTo('bestFriend').reload(),
-      'Cannot fetch user.bestFriend because the field is in linksMode but the relationship data is undefined'
+      'Cannot fetch user.bestFriend because the field is in linksMode but the relationship data is undefined and no link is present'
     );
 
     assert.verifySteps(
