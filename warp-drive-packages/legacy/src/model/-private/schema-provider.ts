@@ -21,7 +21,7 @@ import type {
   ResourceSchema,
 } from '@warp-drive/core/types/schema/fields';
 
-import type { FactoryCache, Model, ModelFactory, ModelStore } from './model.ts';
+import type { FactoryCache, ModelFactory, ModelStore } from './model.ts';
 import _modelForMixin from './model-for-mixin.ts';
 import { normalizeModelName } from './util.ts';
 
@@ -103,7 +103,13 @@ export class ModelSchemaProvider implements SchemaService {
   }
   /** @internal */
   private _loadModelSchema(type: string): InternalSchema {
-    const modelClass = this.store.modelFor(type) as typeof Model;
+    const factory = getModelFactory(this.store, type);
+
+    if (!factory) {
+      throw new Error(`No model was found for '${type}'`);
+    }
+
+    const modelClass = factory.class;
     const attributeMap = modelClass.attributes;
 
     const attributes = Object.create(null) as AttributesSchema;
