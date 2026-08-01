@@ -1,10 +1,13 @@
 import { assert } from '@warp-drive/build-config/macros';
 
+import { cacheKeyFor } from '../../..';
 import { entangleSignal } from '../../../signals/-private';
+import type { ResourceKey } from '../../../types';
 import type { LegacyBelongsToField } from '../../../types/schema/fields';
 import type { SingleResourceRelationship } from '../../../types/spec/json-api-raw';
 import type { KindContext } from '../default-mode';
 import { getFieldCacheKeyStrict } from '../fields/get-field-key';
+import type { ReactiveResource } from '../record';
 import type { SchemaService } from '../schema';
 
 export function getBelongsToField(context: KindContext<LegacyBelongsToField>): unknown {
@@ -25,12 +28,40 @@ export function getBelongsToField(context: KindContext<LegacyBelongsToField>): u
 }
 
 export function setBelongsToField(context: KindContext<LegacyBelongsToField>): boolean {
-  const { store } = context;
-  const { schema } = store;
+  const { field, resourceKey, store } = context;
+  const { schema, cache } = store;
+
+  /**
+   * We currently only allow editing sync belongsTo relationships
+   * in PolarisMode
+   */
+  const isValidPolarisConfig = field.options.linksMode && !field.options.async;
+  if (!context.legacy && isValidPolarisConfig) {
+    const name = context.path.at(-1)!;
+    cache.mutate(
+      {
+        op: 'replaceRelatedRecord',
+        record: resourceKey,
+        field: name,
+        value: getResourceKey(context.value as ReactiveResource | null),
+      },
+      // @ts-expect-error
+      true
+    );
+    return true;
+  }
 
   assert(`Can only mutate belongsTo fields when the resource is in legacy mode`, context.legacy);
   (schema as SchemaService)
     ._kind('@legacy', 'belongsTo')
     .set(store, context.record, context.resourceKey, context.field, context.value);
   return true;
+}
+
+export function getResourceKey(record: ReactiveResource | null): ResourceKey | null {
+  if (!record) {
+    return null;
+  }
+
+  return cacheKeyFor(record);
 }

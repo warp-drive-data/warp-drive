@@ -54,6 +54,12 @@ const TypeField = {
   kind: 'derived',
   options: { key: 'type' },
 } satisfies DerivedField;
+const IdentifierField = {
+  type: '@identity',
+  name: '$key',
+  kind: 'derived',
+  options: { key: '^' },
+} satisfies DerivedField;
 const DefaultIdentityField = { name: 'id', kind: '@id' } satisfies IdentityField;
 
 function _constructor(record: ReactiveResource) {
@@ -396,6 +402,7 @@ export function withDefaults(schema: WithPartial<PolarisResourceSchema, 'identit
   // we add TypeField to the beginning so that it will
   // appear right next to the identity field
   schema.fields.unshift(TypeField);
+  schema.fields.unshift(IdentifierField);
   schema.fields.push(ConstructorField);
   return schema as PolarisResourceSchema;
 }

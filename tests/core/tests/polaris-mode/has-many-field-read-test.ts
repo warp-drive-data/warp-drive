@@ -856,6 +856,387 @@ module('Reads | hasMany in linksMode', function (hooks) {
     assert.equal(friends, record.friends, 'the friends relationship is stable after reload');
   });
 
+  test('(sync) we error in linksMode if the relationship does not include a link or data', async function (assert) {
+    const store = new Store();
+    const { schema } = store;
+
+    schema.registerResource(
+      withDefaults({
+        type: 'user',
+        fields: [
+          {
+            name: 'name',
+            kind: 'field',
+          },
+          {
+            name: 'friends',
+            type: 'user',
+            kind: 'hasMany',
+            options: { inverse: 'friends', async: false, linksMode: true },
+          },
+        ],
+      })
+    );
+
+    await assert.expectAssertion(
+      () =>
+        store.push<User>({
+          data: {
+            type: 'user',
+            id: '1',
+            attributes: {
+              name: 'Leo',
+            },
+            relationships: {
+              friends: {
+                // oops we forgot links and data
+              },
+            },
+          },
+          included: [
+            {
+              type: 'user',
+              id: '2',
+              attributes: {
+                name: 'Benedikt',
+              },
+              relationships: {
+                friends: {
+                  links: { related: '/user/2/friends' },
+                  data: [{ type: 'user', id: '1' }],
+                },
+              },
+            },
+          ],
+        }),
+      'Cannot fetch user.friends because the field is in linksMode but the relationship data is undefined and no link is present'
+    );
+  });
+
+  test('(sync) we error in linksMode if an included resource relationship does not include a link or data', async function (assert) {
+    const store = new Store();
+    const { schema } = store;
+
+    schema.registerResource(
+      withDefaults({
+        type: 'user',
+        fields: [
+          {
+            name: 'name',
+            kind: 'field',
+          },
+          {
+            name: 'friends',
+            type: 'user',
+            kind: 'hasMany',
+            options: { inverse: 'friends', async: false, linksMode: true },
+          },
+        ],
+      })
+    );
+
+    await assert.expectAssertion(
+      () =>
+        store.push<User>({
+          data: {
+            type: 'user',
+            id: '1',
+            attributes: {
+              name: 'Leo',
+            },
+            relationships: {
+              friends: {
+                links: { related: '/user/1/friends' },
+                data: [{ type: 'user', id: '2' }],
+              },
+            },
+          },
+          included: [
+            {
+              type: 'user',
+              id: '2',
+              attributes: {
+                name: 'Benedikt',
+              },
+              relationships: {
+                friends: {
+                  // oops we forgot links and data
+                },
+              },
+            },
+          ],
+        }),
+      'Cannot fetch user.friends because the field is in linksMode but the relationship data is undefined and no link is present'
+    );
+  });
+
+  test('(sync) we do not error in linksMode if the related resources are not included when we have a link', function (assert) {
+    const store = new Store();
+    const { schema } = store;
+
+    schema.registerResource(
+      withDefaults({
+        type: 'user',
+        fields: [
+          {
+            name: 'name',
+            kind: 'field',
+          },
+          {
+            name: 'friends',
+            type: 'user',
+            kind: 'hasMany',
+            options: { inverse: 'friends', async: false, linksMode: true },
+          },
+        ],
+      })
+    );
+
+    const record = store.push<User>({
+      data: {
+        type: 'user',
+        id: '1',
+        attributes: {
+          name: 'Leo',
+        },
+        relationships: {
+          friends: {
+            links: { related: '/user/1/friends' },
+            data: [{ type: 'user', id: '2' }],
+          },
+        },
+      },
+      included: [],
+    });
+
+    assert.equal(record.id, '1', 'id is accessible');
+    assert.equal(record.name, 'Leo', 'name is accessible');
+  });
+
+  test('(sync) we error in linksMode if the related resources are not included (no link)', async function (assert) {
+    const store = new Store();
+    const { schema } = store;
+
+    schema.registerResource(
+      withDefaults({
+        type: 'user',
+        fields: [
+          {
+            name: 'name',
+            kind: 'field',
+          },
+          {
+            name: 'friends',
+            type: 'user',
+            kind: 'hasMany',
+            options: { inverse: 'friends', async: false, linksMode: true },
+          },
+        ],
+      })
+    );
+
+    await assert.expectAssertion(
+      () =>
+        store.push<User>({
+          data: {
+            type: 'user',
+            id: '1',
+            attributes: {
+              name: 'Leo',
+            },
+            relationships: {
+              friends: {
+                data: [{ type: 'user', id: '2' }],
+              },
+            },
+          },
+          included: [],
+        }),
+      'Cannot fetch user.friends because the field is in linksMode but the related data is not included'
+    );
+  });
+
+  test('(sync) we do not error in linksMode if the related resources are included (no link)', function (assert) {
+    const store = new Store();
+    const { schema } = store;
+
+    schema.registerResource(
+      withDefaults({
+        type: 'user',
+        fields: [
+          {
+            name: 'name',
+            kind: 'field',
+          },
+          {
+            name: 'friends',
+            type: 'user',
+            kind: 'hasMany',
+            options: { inverse: 'friends', async: false, linksMode: true },
+          },
+        ],
+      })
+    );
+
+    const record = store.push<User>({
+      data: {
+        type: 'user',
+        id: '1',
+        attributes: {
+          name: 'Leo',
+        },
+        relationships: {
+          friends: {
+            data: [{ type: 'user', id: '2' }],
+          },
+        },
+      },
+      included: [
+        {
+          type: 'user',
+          id: '2',
+          attributes: {
+            name: 'Benedikt',
+          },
+        },
+      ],
+    });
+
+    assert.equal(record.id, '1', 'id is accessible');
+    assert.equal(record.name, 'Leo', 'name is accessible');
+    assert.equal(record.friends?.[0]?.id, '2', 'friends[0].id is accessible');
+    assert.equal(record.friends?.[0]?.name, 'Benedikt', 'friends[0].name is accessible');
+  });
+
+  test('(sync) we do not error in linksMode if the relationship data is an empty array', function (assert) {
+    const store = new Store();
+    const { schema } = store;
+
+    schema.registerResource(
+      withDefaults({
+        type: 'user',
+        fields: [
+          {
+            name: 'name',
+            kind: 'field',
+          },
+          {
+            name: 'friends',
+            type: 'user',
+            kind: 'hasMany',
+            options: { inverse: 'friends', async: false, linksMode: true },
+          },
+        ],
+      })
+    );
+
+    const record = store.push<User>({
+      data: {
+        type: 'user',
+        id: '1',
+        attributes: {
+          name: 'Leo',
+        },
+        relationships: {
+          friends: {
+            links: { related: '/user/1/friends' },
+            data: [],
+          },
+        },
+      },
+      included: [],
+    });
+
+    const record2 = store.push<User>({
+      data: {
+        type: 'user',
+        id: '2',
+        attributes: {
+          name: 'Jane',
+        },
+        relationships: {
+          friends: {
+            data: [],
+          },
+        },
+      },
+      included: [],
+    });
+
+    assert.equal(record.id, '1', 'id is accessible');
+    assert.equal(record.$type, 'user', '$type is accessible');
+    assert.equal(record.name, 'Leo', 'name is accessible');
+    assert.equal(record.friends?.length, 0, 'friends is empty');
+
+    assert.equal(record2.id, '2', 'id is accessible');
+    assert.equal(record2.$type, 'user', '$type is accessible');
+    assert.equal(record2.name, 'Jane', 'name is accessible');
+    assert.equal(record2.friends?.length, 0, 'friends is empty');
+  });
+
+  test('(sync) we error in linksMode if data is missing or undefined and no link is present', async function (assert) {
+    const store = new Store();
+    const { schema } = store;
+
+    schema.registerResource(
+      withDefaults({
+        type: 'user',
+        fields: [
+          {
+            name: 'name',
+            kind: 'field',
+          },
+          {
+            name: 'friends',
+            type: 'user',
+            kind: 'hasMany',
+            options: { inverse: 'friends', async: false, linksMode: true },
+          },
+        ],
+      })
+    );
+
+    await assert.expectAssertion(
+      () =>
+        store.push<User>({
+          data: {
+            type: 'user',
+            id: '1',
+            attributes: {
+              name: 'Leo',
+            },
+            relationships: {
+              friends: {
+                data: undefined,
+              },
+            },
+          },
+          included: [],
+        }),
+      'Cannot fetch user.friends because the field is in linksMode but the relationship data is undefined and no link is present'
+    );
+
+    await assert.expectAssertion(
+      () =>
+        store.push<User>({
+          data: {
+            type: 'user',
+            id: '1',
+            attributes: {
+              name: 'Leo',
+            },
+            relationships: {
+              friends: {
+                meta: {},
+              },
+            },
+          },
+          included: [],
+        }),
+      'Cannot fetch user.friends because the field is in linksMode but the relationship data is undefined and no link is present'
+    );
+  });
+
   skip('we error for async hasMany access in linksMode because we are not implemented yet', function (assert) {
     const store = new Store();
     const { schema } = store;

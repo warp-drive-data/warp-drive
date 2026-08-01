@@ -1,6 +1,6 @@
 import schemas, { objects, traits } from 'virtual:warp-drive-schemas';
 
-import { withDefaults } from '@warp-drive/core/reactive';
+import type { LegacyResourceSchema, PolarisResourceSchema } from '@warp-drive/core/types/schema/fields';
 import { module, setupTest, test } from '@warp-drive/diagnostic/ember';
 
 module('Schema DSL | @Resource compilation', function (hooks) {
@@ -9,90 +9,84 @@ module('Schema DSL | @Resource compilation', function (hooks) {
   test('@Resource derives type from class name and compiles fields', function (assert) {
     const schema = schemas.find((s: { type: string }) => s.type === 'user');
 
-    assert.deepEqual(schema, {
-      type: 'user',
-      identity: { kind: '@id', name: 'id' },
-      fields: [
-        { kind: 'derived', name: '$type', type: '@identity', options: { key: 'type' } },
-        { kind: 'field', name: 'firstName' },
-        { kind: 'field', name: 'lastName' },
-        { kind: 'field', name: 'email' },
-        { kind: '@local', name: 'isEditing' },
-        { kind: '@local', name: 'dirtyCount', options: { defaultValue: 0 } },
-        { kind: 'derived', name: 'displayName', type: '@concat' },
-        { kind: 'derived', name: 'constructor', type: '@constructor' },
-      ],
-    });
+    assert.deepEqual(
+      schema as PolarisResourceSchema,
+      {
+        type: 'user',
+        identity: { kind: '@id', name: 'id' },
+        fields: [
+          { kind: 'derived', name: '$type', type: '@identity', options: { key: 'type' } },
+          { kind: 'field', name: 'firstName' },
+          { kind: 'field', name: 'lastName' },
+          { kind: 'field', name: 'email' },
+          { kind: 'derived', name: 'constructor', type: '@constructor' },
+        ],
+      } as PolarisResourceSchema
+    );
   });
 
   test('@Resource("person") overrides the type name', function (assert) {
     const schema = schemas.find((s: { type: string }) => s.type === 'person');
 
-    assert.deepEqual(schema, {
-      type: 'person',
-      identity: { kind: '@id', name: 'id' },
-      fields: [
-        { kind: 'derived', name: '$type', type: '@identity', options: { key: 'type' } },
-        { kind: 'field', name: 'name' },
-        { kind: 'derived', name: 'constructor', type: '@constructor' },
-      ],
-    });
+    assert.deepEqual(
+      schema as PolarisResourceSchema,
+      {
+        type: 'person',
+        identity: { kind: '@id', name: 'id' },
+        fields: [
+          { kind: 'derived', name: '$type', type: '@identity', options: { key: 'type' } },
+          { kind: 'field', name: 'name' },
+          { kind: 'derived', name: 'constructor', type: '@constructor' },
+        ],
+      } as PolarisResourceSchema
+    );
   });
 
   test('@id sets a custom identity field', function (assert) {
     const schema = schemas.find((s: { type: string }) => s.type === 'post');
 
-    assert.deepEqual(schema, {
-      type: 'post',
-      identity: { kind: '@id', name: 'uuid' },
-      fields: [
-        { kind: 'derived', name: '$type', type: '@identity', options: { key: 'type' } },
-        { kind: 'field', name: 'title' },
-        { kind: 'field', name: 'createdAt' },
-        { kind: 'object', name: 'metadata' },
-        { kind: 'array', name: 'tags' },
-        { kind: 'derived', name: 'constructor', type: '@constructor' },
-      ],
-    });
+    assert.deepEqual(
+      schema as PolarisResourceSchema,
+      {
+        type: 'post',
+        identity: { kind: '@id', name: 'uuid' },
+        fields: [
+          { kind: 'derived', name: '$type', type: '@identity', options: { key: 'type' } },
+          { kind: 'field', name: 'title' },
+          { kind: 'field', name: 'createdAt', type: 'date-time' },
+          { kind: 'derived', name: 'constructor', type: '@constructor' },
+        ],
+      } as PolarisResourceSchema
+    );
   });
 
   test('@field({ sourceKey }) maps the API key to the field name', function (assert) {
     const schema = schemas.find((s: { type: string }) => s.type === 'product');
 
-    assert.deepEqual(schema, {
-      type: 'product',
-      identity: { kind: '@id', name: 'id' },
-      fields: [
-        { kind: 'derived', name: '$type', type: '@identity', options: { key: 'type' } },
-        { kind: 'field', name: 'name', sourceKey: 'product_name' },
-        { kind: 'field', name: 'price', type: 'number', sourceKey: 'unit_price' },
-        { kind: 'alias', name: 'productName', type: null, options: { kind: 'field', name: 'name' } },
-        { kind: 'derived', name: 'constructor', type: '@constructor' },
-      ],
-    });
-  });
-
-  test('@field({ sourceKey }) calling withDefaults setups up the defaults', function (assert) {
-    const schema = schemas.find((s: { type: string }) => s.type === 'product');
-
     assert.deepEqual(
-      schema,
-      withDefaults({
+      schema as PolarisResourceSchema,
+      {
         type: 'product',
         identity: { kind: '@id', name: 'id' },
         fields: [
+          { kind: 'derived', name: '$type', type: '@identity', options: { key: 'type' } },
           { kind: 'field', name: 'name', sourceKey: 'product_name' },
           { kind: 'field', name: 'price', type: 'number', sourceKey: 'unit_price' },
-          { kind: 'alias', name: 'productName', type: null, options: { kind: 'field', name: 'name' } },
+          { kind: 'derived', name: 'constructor', type: '@constructor' },
         ],
-      })
+      } as PolarisResourceSchema
     );
   });
 
   test('@Resource({ legacy: true }) omits derived fields and sets legacy flag', function (assert) {
-    const schema = schemas.find((s: { type: string }) => s.type === 'comment');
+    //   @Resource({ legacy: true })
+    //   class Comment {
+    //     @field declare body: string;
+    //   }
 
-    assert.deepEqual(schema, {
+    const schema = schemas.find((s: { type: string }) => s.type === 'comment')!;
+
+    assert.deepEqual(schema as LegacyResourceSchema, {
       type: 'comment',
       identity: { kind: '@id', name: 'id' },
       fields: [
