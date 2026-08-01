@@ -42,9 +42,12 @@ export function setLogging(config: Partial<LOG_CONFIG>): void {
  * Explicitly declares whether requests may be served by Mirage (or another
  * Pretender-based fetch mock) instead of a native `fetch` implementation.
  *
- * The `Fetch` request handler otherwise infers this only from the presence
- * of `window.server.pretender`, which some Mirage setups don't expose. Use
- * this to opt in explicitly rather than relying on that detection.
+ * The `Fetch` request handler otherwise infers this via a heuristic (the
+ * presence of `window.server.pretender`, or `window.fetch` appearing to be
+ * patched), which can be wrong in either direction: some Mirage setups don't
+ * expose `window.server`, while some unrelated tools (APM agents, browser
+ * extensions) also patch `fetch`. Call this to override that heuristic:
+ * `true` to force Mirage-compatible behavior on, `false` to force it off.
  *
  * globalThis.setWarpDriveIsMaybeMirage(true);
  *

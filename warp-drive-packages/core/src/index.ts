@@ -30,10 +30,14 @@ if (TESTING) {
 
   // @ts-expect-error adding to globalThis
   globalThis.getWarpDriveRuntimeConfig = getRuntimeConfig;
-
-  // @ts-expect-error adding to globalThis
-  globalThis.setWarpDriveIsMaybeMirage = setIsMaybeMirage;
 }
+
+// Mirage (or another Pretender-based fetch mock) may be used outside of a
+// `TESTING` build (e.g. `ember serve` in dev mode), so this override is
+// exposed unconditionally rather than gated to the `TESTING` env.
+// @ts-expect-error adding to globalThis
+globalThis.setWarpDriveIsMaybeMirage = setIsMaybeMirage;
+
 export { Store, CacheHandler, type CachePolicy };
 
 export { type StoreRequestContext, type StoreRequestInput, storeFor } from './store/-private.ts';
