@@ -59,8 +59,8 @@ if (DEBUG) {
     }
     return Boolean(
       typeof window !== 'undefined' &&
-        ((window as { server?: { pretender: unknown } }).server?.pretender ||
-          window.fetch.toString().replace(/\s+/g, '') !== 'function fetch() { [native code] }'.replace(/\s+/g, ''))
+      ((window as { server?: { pretender: unknown } }).server?.pretender ||
+        window.fetch.toString().replace(/\s+/g, '') !== 'function fetch() { [native code] }'.replace(/\s+/g, ''))
     );
   };
 }
