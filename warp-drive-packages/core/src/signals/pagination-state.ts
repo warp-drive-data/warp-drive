@@ -9,7 +9,6 @@ import type { Future } from '../request.ts';
 import type { ContentItem, PageCache } from './page-cache.ts';
 import { getHref } from './page-cache.ts';
 import { getPaginationCache, type PageHints, type PaginationCache } from './pagination-cache.ts';
-import { getPaginationLinks, type PaginationLink, type PaginationLinks } from './pagination-links.ts';
 import { defineSignal, memoized } from './reactivity/signal.ts';
 
 /**
@@ -169,24 +168,6 @@ export class PaginationState<RT = unknown, E = unknown> {
       return null;
     }
     return this.paginationCache?.getPageCache(url).request ?? null;
-  }
-
-  /**
-   * The {@link PaginationLinks} derived from this state, i.e. the navigation
-   * links for the paged surface. See {@link getPaginationLinks}.
-   */
-  @memoized
-  get paginationLinks(): Readonly<PaginationLinks<RT, E>> {
-    return getPaginationLinks<RT, E>(this);
-  }
-
-  /**
-   * Shortcut for the numbered {@link PaginationLinks.links} of this state's
-   * links, with placeholders for gaps of not-yet-loaded pages.
-   */
-  @memoized
-  get links(): ReadonlyArray<Readonly<PaginationLink>> {
-    return this.paginationLinks.links;
   }
 
   async setup(): Promise<void> {
