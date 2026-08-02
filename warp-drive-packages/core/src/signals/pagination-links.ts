@@ -9,6 +9,18 @@ const PaginationLinksCache = new WeakMap<PagedPaginationState, PaginationLinks>(
  * {@link setActive} runs. Carries its {@link index} and its
  * {@link distanceFromActiveIndex} so a UI can style links by how far they sit
  * from the current page.
+ *
+ * ```gts
+ * <EachLink @pages={{pages}}>
+ *   <:link as |link|>
+ *     <button class={{if link.isCurrent "active"}} {{on "click" link.setActive}}>
+ *       {{link.text}}
+ *     </button>
+ *   </:link>
+ * </EachLink>
+ * ```
+ *
+ * @hideconstructor
  */
 export class RealPaginationLink {
   readonly isReal = true as const;
@@ -34,8 +46,12 @@ export class RealPaginationLink {
 
   /**
    * Loads this link's page and makes it the active page on the associated
-   * {@link PaginationState}. Stable reference, so it can be used directly
-   * as a click handler.
+   * {@link PaginationState}. It is a stable reference, so it is safe to pass
+   * around as an "action" or "event" handler:
+   *
+   * ```gts
+   * <button {{on "click" link.setActive}}>{{link.text}}</button>
+   * ```
    */
   setActive = (): Promise<unknown> => {
     return this._loadPage(this.url);
@@ -45,14 +61,28 @@ export class RealPaginationLink {
 /**
  * A stand-in for a run of pages that have not been loaded yet, rendered as an
  * ellipsis between numbered links. It covers an {@link indexRange} rather than a
- * single page and has no page to navigate to. Adjacent gaps merge via
- * {@link _mergeRange} as more pages load.
+ * single page and has no page to navigate to.
+ *
+ * ```gts
+ * <EachLink @pages={{pages}}>
+ *   <:placeholder as |link|>
+ *     <span title="{{link.rangeSize}} more pages">{{link.text}}</span>
+ *   </:placeholder>
+ * </EachLink>
+ * ```
+ *
+ * @hideconstructor
  */
 export class PlaceholderPaginationLink {
   readonly isReal = false as const;
 
+  /**
+   * The inclusive `[start, end]` page-number range of not-yet-loaded pages this
+   * placeholder stands in for.
+   */
   indexRange: [start: number, end: number];
-  readonly activeIndex: number;
+  /** @internal */
+  private readonly activeIndex: number;
 
   text = '.';
 
@@ -61,6 +91,7 @@ export class PlaceholderPaginationLink {
     this.activeIndex = activeIndex;
   }
 
+  /** The number of pages this placeholder covers. */
   get rangeSize(): number {
     return this.indexRange[1] - this.indexRange[0] + 1;
   }
@@ -74,7 +105,8 @@ export class PlaceholderPaginationLink {
     return Math.min(Math.abs(start - this.activeIndex), Math.abs(end - this.activeIndex));
   }
 
-  _mergeRange(newRange: [start: number, end: number]): void {
+  /** @internal */
+  private _mergeRange(newRange: [start: number, end: number]): void {
     const [oldStart, oldEnd] = this.indexRange;
     const [newStart, newEnd] = newRange;
     const mergedRange: [start: number, end: number] = [Math.min(oldStart, newStart), Math.max(oldEnd, newEnd)];
@@ -88,6 +120,15 @@ export class PlaceholderPaginationLink {
  * available for cursor-based pagination, where pages are chained purely by opaque
  * `prev`/`next` links with no page number or total. They are also available in
  * numbered pagination as a convenience.
+ *
+ * ```gts
+ * <EachLink @pages={{pages}}>
+ *   <:prev as |link|><button {{on "click" link.setActive}}>Previous</button></:prev>
+ *   <:next as |link|><button {{on "click" link.setActive}}>Next</button></:next>
+ * </EachLink>
+ * ```
+ *
+ * @hideconstructor
  */
 export class RelationalPaginationLink {
   readonly isReal = true as const;
@@ -109,14 +150,33 @@ export class RelationalPaginationLink {
 
   /**
    * Loads this link's page and makes it the active page on the associated
-   * {@link PaginationState}. Stable reference, so it can be used directly
-   * as a click handler.
+   * {@link PaginationState}. It is a stable reference, so it is safe to pass
+   * around as an "action" or "event" handler:
+   *
+   * ```gts
+   * <button {{on "click" link.setActive}}>{{link.text}}</button>
+   * ```
    */
   setActive = (): Promise<unknown> => {
     return this._loadPage(this.url);
   };
 }
 
+/**
+ * A member of {@link PaginationLinks.links}: either a numbered
+ * {@link RealPaginationLink} or a {@link PlaceholderPaginationLink} standing in
+ * for a gap. Discriminate with {@link RealPaginationLink.isReal | isReal}:
+ *
+ * ```ts
+ * for (const link of links.links) {
+ *   if (link.isReal) {
+ *     // numbered link: link.index, link.setActive
+ *   } else {
+ *     // gap: link.indexRange
+ *   }
+ * }
+ * ```
+ */
 export type PaginationLink = RealPaginationLink | PlaceholderPaginationLink;
 
 /**
@@ -146,7 +206,8 @@ export type PaginationLink = RealPaginationLink | PlaceholderPaginationLink;
  * @hideconstructor
  */
 export class PaginationLinks<RT = unknown, E = unknown> {
-  declare paginationState: PagedPaginationState<RT, E>;
+  /** @internal */
+  declare private paginationState: PagedPaginationState<RT, E>;
 
   constructor(paginationState: PagedPaginationState<RT, E>) {
     this.paginationState = paginationState;

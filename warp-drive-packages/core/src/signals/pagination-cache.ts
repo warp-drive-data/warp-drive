@@ -46,20 +46,34 @@ export const defaultPageHints: PageHints = (document) => {
  * share loaded pages, the page graph, and `totalPages`.
  *
  * This holds only shared, request-agnostic data. Per-component state (the active
- * page, navigation) lives on {@link PaginationState}.
+ * page, navigation) lives on {@link PaginationState}, which is the API consumers
+ * interact with — the cache itself is plumbing shared between the pagination
+ * classes.
+ *
+ * @hideconstructor
  */
 export class PaginationCache<RT = unknown, E = unknown> {
+  /** @internal */
   @signal declare firstPage: Readonly<PageCache<RT, E>> | null;
+
+  /**
+   * The total number of pages in the collection, or `0` when unknown. Consumers
+   * should read this via {@link PaginationState.totalPages}.
+   */
   @signal declare totalPages: number;
   /**
    * Whether this collection has server-known page numbers. Stays `false` for
    * cursor-based collections (opaque `prev`/`next`, no index/total), which drives
    * whether numbered links are produced. Set once a {@link PageHints} yields a real
    * `currentPage`/`totalPages`.
+   *
+   * @internal
    */
   @signal declare isNumbered: boolean;
-  declare pagesCache: Map<string, PageCache>;
-  pageHints: PageHints = defaultPageHints;
+  /** @internal */
+  declare private pagesCache: Map<string, PageCache>;
+  /** @internal */
+  private pageHints: PageHints = defaultPageHints;
 
   constructor() {
     this.pagesCache = new Map<string, PageCache>();
@@ -73,6 +87,8 @@ export class PaginationCache<RT = unknown, E = unknown> {
    * explicit hint wins; passing `undefined` (no hint) is a no-op that preserves the
    * default. In dev, asserts that components sharing a collection do not provide
    * diverging hint functions.
+   *
+   * @internal
    */
   installPageHints(pageHints: PageHints | undefined): void {
     if (!pageHints) {
@@ -96,6 +112,8 @@ export class PaginationCache<RT = unknown, E = unknown> {
    * value is present (`> 0`) it is relied upon (numbered links, total, sparse
    * placement of jumped-to pages); when absent the page graph falls back to pure
    * `prev`/`next` adjacency (as in cursor/infinite streams).
+   *
+   * @internal
    */
   readPageHints(document: ReactiveDocument<unknown>): { currentPage: number; totalPages: number } {
     const { currentPage, totalPages } = this.pageHints(document);
@@ -105,6 +123,7 @@ export class PaginationCache<RT = unknown, E = unknown> {
     return { currentPage, totalPages };
   }
 
+  /** @internal */
   getPageCache(url: string): Readonly<PageCache<RT, E>> {
     let page = this.pagesCache.get(url);
     if (!page) {
@@ -115,6 +134,7 @@ export class PaginationCache<RT = unknown, E = unknown> {
     return page as Readonly<PageCache<RT, E>>;
   }
 
+  /** @internal */
   loadPage(url: string, request: Future<RT> | null): Readonly<PageCache<RT, E>> {
     const page = this.getPageCache(url);
     if (!page.isLoaded && request) {
@@ -129,7 +149,8 @@ export class PaginationCache<RT = unknown, E = unknown> {
     return page;
   }
 
-  updateFirstPage(page: Readonly<PageCache<RT, E>>): void {
+  /** @internal */
+  private updateFirstPage(page: Readonly<PageCache<RT, E>>): void {
     let maybeFirstPage = page;
     while (maybeFirstPage.before) {
       maybeFirstPage = maybeFirstPage.before;
@@ -139,10 +160,17 @@ export class PaginationCache<RT = unknown, E = unknown> {
     }
   }
 
+  /** @internal */
   getTotalPages(document: ReactiveDocument<unknown>): number {
     return this.readPageHints(document).totalPages;
   }
 
+  /**
+   * Every page loaded into the shared cache, in order. Consumers should read
+   * this via {@link PaginationState.pages}.
+   *
+   * @internal
+   */
   @memoized
   get pages(): Iterable<Readonly<PageCache<RT, E>>> {
     // eslint-disable-next-line @typescript-eslint/no-this-alias
@@ -158,6 +186,7 @@ export class PaginationCache<RT = unknown, E = unknown> {
     };
   }
 
+  /** @internal */
   @memoized
   get data(): Iterable<ContentItem<RT>> {
     // eslint-disable-next-line @typescript-eslint/no-this-alias

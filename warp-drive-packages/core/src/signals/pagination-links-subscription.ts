@@ -55,6 +55,8 @@ export class PaginationLinksSubscription<RT, E> {
   /**
    * The {@link PaginationLinks} derived from the {@link PagedPaginationState} passed
    * as an arg. This is the object the other getters read from.
+   *
+   * @internal
    */
   @memoized
   get paginationLinks(): Readonly<PaginationLinks<RT, E>> {
@@ -90,6 +92,12 @@ export class PaginationLinksSubscription<RT, E> {
   }
 }
 
+/**
+ * Creates the {@link PaginationLinksSubscription} a links component (such as
+ * `<EachLink />`) uses to derive its links from a {@link PagedPaginationState}.
+ *
+ * @public
+ */
 export function createPaginationLinksSubscription<RT, E>(
   store: Store | RequestManager,
   args: PaginationLinksSubscriptionArgs<RT, E>

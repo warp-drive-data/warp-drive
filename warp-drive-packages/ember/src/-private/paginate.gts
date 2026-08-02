@@ -338,6 +338,7 @@ export class Paginate<RT, E, M extends PaginateMode = 'paged'> extends Component
    */
   @consume('store') declare _store: Store;
 
+  /** @internal */
   get store(): Store | RequestManager {
     const store = this.args.store || this._store;
     assert(
@@ -349,7 +350,9 @@ export class Paginate<RT, E, M extends PaginateMode = 'paged'> extends Component
     return store;
   }
 
+  /** @internal */
   _state: PaginationSubscription<RT, E> | null = null;
+  /** @internal */
   get state(): PaginationSubscription<RT, E> {
     let { _state } = this;
     const { store } = this;
@@ -373,7 +376,7 @@ export class Paginate<RT, E, M extends PaginateMode = 'paged'> extends Component
   /**
    * The chrome component to use for rendering the request.
    *
-   * @private
+   * @internal
    */
   @memoized
   get Chrome(): ComponentLike<{

@@ -29,7 +29,11 @@ export interface SharedPaginationState<RT = unknown, E = unknown> {
   readonly pages: Iterable<Readonly<PageCache<RT, E>>>;
   /** See {@link PaginationState.totalPages}. */
   readonly totalPages: number;
-  /** The shared page graph and data this component reads from. */
+  /**
+   * The shared page graph and data this component reads from.
+   *
+   * @internal
+   */
   readonly paginationCache: PaginationCache<RT, E> | null;
 }
 
@@ -97,29 +101,42 @@ export type PaginationStateFor<RT = unknown, E = unknown, M extends PaginateMode
  *
  * Both surfaces read the same shared page graph; the mode only selects which
  * API is exposed.
+ *
+ * Instances are created via {@link getPaginationState} (or by the `<Paginate />`
+ * component on your behalf), never constructed directly.
+ *
+ * @hideconstructor
  */
 export class PaginationState<RT = unknown, E = unknown>
   implements PagedPaginationState<RT, E>, InfinitePaginationState<RT, E>
 {
   /** @internal */
-  declare store: Store | RequestManager;
+  declare private store: Store | RequestManager;
   /** @internal */
-  declare request: Future<RT>;
+  declare private request: Future<RT>;
   /** @internal */
-  declare pageHints: PageHints | undefined;
+  declare private pageHints: PageHints | undefined;
 
-  /** The shared page graph and data this component reads from. */
+  /**
+   * The shared page graph and data this component reads from.
+   *
+   * @internal
+   */
   declare paginationCache: PaginationCache<RT, E> | null;
 
   /**
-   * The page the paged surface is currently showing. Starts at
-   * {@link initialPage} and moves whenever {@link loadPage} runs (for example a
-   * numbered link is clicked).
+   * The page the paged surface is currently showing. Starts at the page this
+   * component first loaded and moves whenever {@link loadPage} runs (for
+   * example a numbered link is clicked).
    */
   declare activePage: Readonly<PageCache<RT, E>> | null;
 
-  /** The page this component first loaded, used to seed the active page and frontier. */
-  declare initialPage: Readonly<PageCache<RT, E>> | null;
+  /**
+   * The page this component first loaded, used to seed the active page and frontier.
+   *
+   * @internal
+   */
+  declare private initialPage: Readonly<PageCache<RT, E>> | null;
 
   /**
    * The first and last loaded pages of the contiguous run this component is
@@ -127,9 +144,12 @@ export class PaginationState<RT = unknown, E = unknown>
    * `frontierStart` to `frontierEnd`, and {@link loadPrev}/{@link loadNext} extend
    * them backward/forward. Both seed to {@link initialPage}; a purely paged
    * consumer never extends them, so they stay put and are effectively unused.
+   *
+   * @internal
    */
-  declare frontierStart: Readonly<PageCache<RT, E>> | null;
-  declare frontierEnd: Readonly<PageCache<RT, E>> | null;
+  declare private frontierStart: Readonly<PageCache<RT, E>> | null;
+  /** @internal */
+  declare private frontierEnd: Readonly<PageCache<RT, E>> | null;
 
   constructor(request: Future<RT>, pageHints?: PageHints) {
     this.store = request.requester;
@@ -142,7 +162,19 @@ export class PaginationState<RT = unknown, E = unknown>
   /**
    * The request for the {@link activePage}, for the paged surface to render. This
    * is what a single-page view wraps in a `<Request>` to show the active page's
-   * loading, error, and content states.
+   * loading, error, and content states:
+   *
+   * ```gts
+   * <Paginate @request={{this.request}}>
+   *   <:content as |pages|>
+   *     <Request @request={{pages.activePageRequest}}>
+   *       <:content as |result|>
+   *         {{#each result.data as |item|}}...{{/each}}
+   *       </:content>
+   *     </Request>
+   *   </:content>
+   * </Paginate>
+   * ```
    */
   @memoized
   get activePageRequest(): Future<RT> | null {
@@ -152,6 +184,10 @@ export class PaginationState<RT = unknown, E = unknown>
   /**
    * The total number of pages in the collection, or `0` when it is unknown (for
    * example a cursor-based collection that reports no total).
+   *
+   * ```gts
+   * <p>Page {{pages.activePage.pageNumber}} of {{pages.totalPages}}</p>
+   * ```
    */
   @memoized
   get totalPages(): number {
@@ -169,11 +205,22 @@ export class PaginationState<RT = unknown, E = unknown>
   }
 
   /**
-   * The accumulated items across the loaded run, from {@link frontierStart} to
-   * {@link frontierEnd} inclusive — the single set an infinite collection renders.
+   * The accumulated items across the loaded run, from the backward frontier to
+   * the forward frontier inclusive — the single set an infinite collection renders.
    * Grows as {@link loadNext}/{@link loadPrev} extend the frontier. Scoped to this
    * component's frontier (not the shared cache), so components paging the same
    * collection to different extents each see only what they have scrolled through.
+   *
+   * ```gts
+   * <Paginate @request={{this.request}} @mode="infinite">
+   *   <:content as |pages features|>
+   *     {{#each pages.data as |item|}}...{{/each}}
+   *     {{#if pages.hasNext}}
+   *       <button {{on "click" features.loadNext}}>Load more</button>
+   *     {{/if}}
+   *   </:content>
+   * </Paginate>
+   * ```
    */
   @memoized
   get data(): Iterable<ContentItem<RT>> {
@@ -199,7 +246,13 @@ export class PaginationState<RT = unknown, E = unknown>
 
   /**
    * Whether a page exists after the forward frontier — i.e. there is more to load
-   * going forward. Use to hide the trailing load-more sentinel at end-of-list.
+   * going forward. Use to hide the trailing load-more sentinel at end-of-list:
+   *
+   * ```gts
+   * {{#if pages.hasNext}}
+   *   <button {{on "click" features.loadNext}}>Load more</button>
+   * {{/if}}
+   * ```
    */
   @memoized
   get hasNext(): boolean {
@@ -219,6 +272,15 @@ export class PaginationState<RT = unknown, E = unknown>
    * surface. `null` until {@link loadNext} fires it (so a `<Request>` wrapping it
    * renders its idle block), the in-flight `Future` while that page loads, then
    * `null` again once the frontier advances onto it. Also `null` at end-of-list.
+   *
+   * ```gts
+   * {{#if pages.hasNext}}
+   *   <Request @request={{pages.nextRequest}}>
+   *     <:idle><button {{on "click" features.loadNext}}>Load more</button></:idle>
+   *     <:loading><Spinner /></:loading>
+   *   </Request>
+   * {{/if}}
+   * ```
    */
   @memoized
   get nextRequest(): Future<RT> | null {
@@ -242,7 +304,8 @@ export class PaginationState<RT = unknown, E = unknown>
     return this.paginationCache?.getPageCache(url).request ?? null;
   }
 
-  async setup(): Promise<void> {
+  /** @internal */
+  private async setup(): Promise<void> {
     const document = await this.request;
     const content = document.content as ReactiveDocument<unknown>;
     const selfLink = getHref(content.links?.self);
@@ -263,6 +326,13 @@ export class PaginationState<RT = unknown, E = unknown>
    * The frontier advances only once the page has loaded, so
    * {@link previousRequest} tracks the in-flight page meanwhile. Returns the
    * loaded value, or `null` when there is no previous page.
+   *
+   * In templates it is also available as the `loadPrev` content feature
+   * ({@link InfinitePaginationContentFeatures.loadPrev}) yielded by
+   * `<Paginate />`; the two are the same function.
+   *
+   * It is a stable reference, so it is safe to pass around as an "action" or
+   * "event" handler.
    */
   loadPrev = async (): Promise<RT | null> => {
     return this._extend('prev');
@@ -271,13 +341,21 @@ export class PaginationState<RT = unknown, E = unknown>
   /**
    * Extends the forward frontier by one page, appending it to {@link data}.
    * Mirror of {@link loadPrev}.
+   *
+   * In templates it is also available as the `loadNext` content feature
+   * ({@link InfinitePaginationContentFeatures.loadNext}) yielded by
+   * `<Paginate />`; the two are the same function.
+   *
+   * ```gts
+   * <button {{on "click" pages.loadNext}}>Load more</button>
+   * ```
    */
   loadNext = async (): Promise<RT | null> => {
     return this._extend('next');
   };
 
   /** @internal */
-  _extend = async (dir: 'prev' | 'next'): Promise<RT | null> => {
+  private _extend = async (dir: 'prev' | 'next'): Promise<RT | null> => {
     const cache = this.paginationCache;
     assert('Expected the pagination cache to be set up before loading a page', cache);
 
@@ -312,8 +390,20 @@ export class PaginationState<RT = unknown, E = unknown>
    * requesting it first if it is not already loaded. This is the paged surface's
    * navigation entry point, called by the numbered and relational links.
    *
-   * It is a stable reference, so it can be passed directly as a click handler.
-   * Returns the page's value, or `null` if it has none.
+   * In templates it is also available as the `loadPage` content feature
+   * ({@link PagedPaginationContentFeatures.loadPage}) yielded by `<Paginate />`;
+   * the two are the same function.
+   *
+   * It is a stable reference, so it is safe to pass around as an "action" or
+   * "event" handler. Returns the page's value, or `null` if it has none.
+   *
+   * ```gts
+   * <EachLink @pages={{pages}}>
+   *   <:link as |link|>
+   *     <button {{on "click" (fn features.loadPage link.url)}}>{{link.text}}</button>
+   *   </:link>
+   * </EachLink>
+   * ```
    */
   loadPage = async (url: string): Promise<RT | null> => {
     const cache = this.paginationCache;
@@ -347,6 +437,15 @@ const PaginationStateCache = new WeakMap<Future<unknown>, PaginationState>();
  * alongside the `<Paginate />` component using the same request) share the same
  * local pagination state. Keyed by request identity, just like
  * {@link getRequestState}.
+ *
+ * ```ts
+ * const future = store.request(query);
+ * const pages = getPaginationState(future);
+ *
+ * await future;
+ * pages.totalPages; // now known, if the response exposed it
+ * await pages.loadNext();
+ * ```
  *
  * @public
  * @static

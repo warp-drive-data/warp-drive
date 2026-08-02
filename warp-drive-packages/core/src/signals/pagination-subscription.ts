@@ -236,6 +236,8 @@ export class PaginationSubscription<RT, E> {
   /**
    * The initial request `Future` this subscription is monitoring, i.e. the first
    * page load. This is the future the {@link paginationState} is built from.
+   *
+   * @internal
    */
   @memoized
   get request(): Future<RT> {
@@ -243,6 +245,13 @@ export class PaginationSubscription<RT, E> {
   }
 }
 
+/**
+ * Creates the {@link PaginationSubscription} a `<Paginate />` component uses to
+ * manage its request lifecycle and pagination state. Pass the result back into
+ * the component via `@subscription` to manage the lifecycle externally.
+ *
+ * @public
+ */
 export function createPaginationSubscription<RT, E>(
   store: Store | RequestManager,
   args: PaginationSubscriptionArgs<RT, E>

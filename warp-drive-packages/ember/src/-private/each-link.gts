@@ -291,6 +291,7 @@ export class EachLink<RT, E> extends Component<EachLinkSignature<RT, E>> {
    */
   @consume('store') declare _store: Store;
 
+  /** @internal */
   get store(): Store | RequestManager {
     const store = this.args.store || this._store;
     assert(
@@ -302,7 +303,9 @@ export class EachLink<RT, E> extends Component<EachLinkSignature<RT, E>> {
     return store;
   }
 
+  /** @internal */
   _state: PaginationLinksSubscription<RT, E> | null = null;
+  /** @internal */
   get state(): PaginationLinksSubscription<RT, E> {
     let { _state } = this;
     const { store } = this;
