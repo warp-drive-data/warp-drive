@@ -608,29 +608,37 @@ The pages themselves are kept in a cache shared by every PaginationState for the
 collection, so multiple components paginating the same collection share loaded pages
 while keeping their own local navigation state (active page, loaded range).
 
-It exposes two navigation surfaces over the same collection, and the consumer picks
-one by which properties it renders:
+It exposes two navigation surfaces over the same collection. When using the
+`<Paginate />` component, the `@mode` arg picks one (`'paged'` is the default) and
+the component yields only that surface, so mixing the two APIs is a type error.
 
-- **Paged** (single page at a time): render `activePage`/`activePageRequest`, navigate
-  with `loadPage` or the numbered `links`.
-- **Infinite** (accumulated set): render `data`, grow it with `loadNext`/`loadPrev`,
-  and derive loading states from `nextRequest`/`previousRequest`.
+- **Paged** (`@mode="paged"`, single page at a time): render
+  `activePage`/`activePageRequest`, navigate with `loadPage` or the links rendered
+  by `<EachLink />`.
 
 ```ts
-interface PaginationState<RT = unknown, E = unknown> {
-  // paged surface
+interface PagedPaginationState<RT = unknown, E = unknown> {
   activePage: PageCache<RT, E> | null;
   activePageRequest: Future<RT> | null;
-  links: PaginationLink[];
   totalPages: number;
   loadPage: (url: string) => Promise<RT | null>;
+}
+```
 
-  // infinite surface
+- **Infinite** (`@mode="infinite"`, accumulated set): render `data`, grow it with
+  `loadNext`/`loadPrev`, and derive loading states from `nextRequest`/`previousRequest`.
+  `pages` is the same run as `data` but yields the `PageCache` objects, for UIs that
+  need per-page boundaries or request states.
+
+```ts
+interface InfinitePaginationState<RT = unknown, E = unknown> {
   data: Iterable<ContentItem<RT>>;
+  pages: Iterable<PageCache<RT, E>>;
   hasNext: boolean;
   hasPrevious: boolean;
   nextRequest: Future<RT> | null;
   previousRequest: Future<RT> | null;
+  totalPages: number;
   loadNext: () => Promise<RT | null>;
   loadPrev: () => Promise<RT | null>;
 }
@@ -641,6 +649,9 @@ interface PaginationState<RT = unknown, E = unknown> {
 `getPaginationState` returns the PaginationState for a request. Repeated calls with the
 same request return the same instance — keyed by request identity, just like
 `getRequestState` — so JavaScript and templates observing the same request share state.
+
+The returned state carries both surfaces — the mode narrowing is a type-level feature
+of the `<Paginate />` component, so programmatic consumers may use whichever fits.
 
 ```ts
 import { getPaginationState } from '@warp-drive/ember';
@@ -681,8 +692,9 @@ All of the same top-level states (`idle` `loading` `content` `error` `cancelled`
 available to us for use. `idle`, `loading`, `error` and `cancelled` apply only to the state of
 the initiating request passed into the component.
 
-The `content` block is entered when the initial request resolves, and yields a `pages` object
-that exposes information about all pages.
+The `content` block is entered when the initial request resolves, and yields a `pages`
+object exposing the pagination state, along with a `features` object for controlling
+the initiating request.
 
 One new block is added:
 - `<:default>`, which allows use of `Paginate` without any other blocks. It receives the same
@@ -693,10 +705,45 @@ One new block is added:
 > default represents a separate mode for the component in which we have signaled that request state
 > management will occur elsewhere
 
-Requests for the previous and next pages are exposed as `pages.previousRequest` and
-`pages.nextRequest`. Because these are plain requests, we can wrap them in `<Request />`
-(or any other tool) and place them wherever our layout calls for — the component does not
-bake any ordering into the DOM.
+**Choosing a mode**
+
+The `@mode` arg selects which navigation surface the component yields: `'paged'`
+(the default) or `'infinite'`. The mode is type-only — it narrows the `pages` and
+`features` params yielded to the `content`, `always` and `default` blocks so the two
+surfaces cannot be mixed, and it is never read at runtime.
+
+```gjs
+<Paginate @request={{@request}} @mode="infinite">
+  <:content as |pages|>
+    {{! pages is InfinitePaginationState — pages.activePageRequest is a type error }}
+  </:content>
+</Paginate>
+```
+
+**Content features**
+
+Alongside `pages`, the `content`, `always` and `default` blocks yield a `features`
+object with the state and controls of the initiating request — `refresh`, `reload`,
+`isRefreshing`, `abort` (while refreshing), `latestRequest`, `isOnline`, `isHidden` —
+plus the mode's navigation entry point: `loadPage` in paged mode, `loadNext` and
+`loadPrev` in infinite mode (the same functions exposed on the state).
+
+```gjs
+<Paginate @request={{@request}} @mode="infinite">
+  <:content as |pages features|>
+    {{#each pages.data as |item|}}{{item.title}}{{/each}}
+    {{#if pages.hasNext}}
+      <button {{on "click" features.loadNext}}>Load more</button>
+    {{/if}}
+    <button {{on "click" features.refresh}}>Refresh</button>
+  </:content>
+</Paginate>
+```
+
+In infinite mode, requests for the previous and next pages are exposed as
+`pages.previousRequest` and `pages.nextRequest`. Because these are plain requests, we
+can wrap them in `<Request />` (or any other tool) and place them wherever our layout
+calls for — the component does not bake any ordering into the DOM.
 
 Below, we show a number of example usages.
 
@@ -711,7 +758,7 @@ to provide bidirectional infinite scroll.
 import { Paginate } from '@warp-drive/ember';
 
 <template>
-  <Paginate @request={{@request}} as |pages|>
+  <Paginate @request={{@request}} @mode="infinite" as |pages|>
     <VerticalCollection
       @items={{pages.data}}
       @lastReached={{pages.loadNext}}
@@ -727,7 +774,7 @@ import { Paginate } from '@warp-drive/ember';
 **With a loading state for the initial request**
 
 ```diff
-  <Paginate @request={{@request}}>
+  <Paginate @request={{@request}} @mode="infinite">
 +   <:loading><Spinner /></:loading>
 +
 +   <:content as |pages|>
@@ -746,7 +793,7 @@ import { Paginate } from '@warp-drive/ember';
 **With an error state for errors on the initial request**
 
 ```diff
-  <Paginate @request={{@request}}>
+  <Paginate @request={{@request}} @mode="infinite">
     <:loading><Spinner /></:loading>
 
     <:content as |pages|>
@@ -774,7 +821,7 @@ expose the in-flight request until it resolves. Wrapping them in `<Request />` g
 loading state for each direction, placed wherever our layout calls for.
 
 ```diff
-  <Paginate @request={{@request}}>
+  <Paginate @request={{@request}} @mode="infinite">
     <:loading><Spinner /></:loading>
 
     <:content as |pages|>
@@ -817,7 +864,7 @@ control flow for the subsequent request by passing it into `<Request />`!
 import { Paginate, Request } from '@warp-drive/ember';
 
 <template>
-  <Paginate @request={{@request}}>
+  <Paginate @request={{@request}} @mode="infinite">
     <:loading><Spinner /></:loading>
 
     <:content as |pages|>
@@ -857,7 +904,7 @@ The `<:idle>` state of a wrapping `<Request />` pairs naturally with `pages.load
 while the page loads, and gone once the frontier advances onto the loaded page.
 
 ```diff
-  <Paginate @request={{@request}}>
+  <Paginate @request={{@request}} @mode="infinite">
     <:loading><Spinner /></:loading>
 
     <:content as |pages|>
@@ -918,12 +965,19 @@ import { Paginate } from '@warp-drive/ember';
 
 **Render Pagination Links**
 
-`pages.links` exposes the known page links and placeholders for the collection.
-A companion component makes rendering links quick to setup.
+The `<EachLink />` companion component renders the navigation links derived from a
+paged state's shared page graph, one block per link kind:
 
-The `<EachLink/>` component renders each available link or placeholder. Placeholders
-occur when it is known that a link *could* exist but we have not yet received the link.
-The `text` property on the link will be a single `'.'` in these cases.
+- `<:link>` — a numbered page link, rendered once per known page in numbered
+  pagination. Each link exposes `index`, `text`, `isCurrent`,
+  `distanceFromActiveIndex` and a stable `setActive` action that loads the page
+  and makes it active.
+- `<:placeholder>` — a gap of pages that *could* exist but whose links we have not
+  yet received. Its `text` is a single `'.'`, and it exposes the `indexRange` it
+  covers along with `rangeSize` and `distanceFromActiveIndex`.
+- `<:prev>` / `<:next>` — the relational links relative to the active page, with the
+  same `setActive` action. Cursor-based collections expose no page numbers and thus
+  produce no numbered links — these blocks are their only navigation.
 
 ```diff
 - import { Paginate } from '@warp-drive/ember';
@@ -936,11 +990,13 @@ The `text` property on the link will be a single `'.'` in these cases.
      <:content as |pages|>
        <MyPageDisplay @page={{pages.activePage}} />
 +
-+      <EachLink @state={{pages}}>
++      <EachLink @pages={{pages}}>
++        <:prev as |link|><button {{on "click" link.setActive}}>Previous</button></:prev>
 +        <:placeholder as |link|>{{link.text}}</:placeholder>
 +        <:link as |link|>
-+          <button {{on "click" link.setActive}}>{{link.index}}</button>
++          <button class={{if link.isCurrent "active"}} {{on "click" link.setActive}}>{{link.index}}</button>
 +        </:link>
++        <:next as |link|><button {{on "click" link.setActive}}>Next</button></:next>
 +      </EachLink>
      </:content>
 
@@ -952,21 +1008,38 @@ The `text` property on the link will be a single `'.'` in these cases.
  </template>
 ```
 
+In JavaScript, the same reactive links are available via `getPaginationLinks`, keyed
+by state identity so repeated calls share one instance:
+
+```ts
+import { getPaginationLinks } from '@warp-drive/ember';
+
+const links = getPaginationLinks(pages);
+links.links; // numbered links and placeholders
+links.prev; // relational prev link, or null
+links.next; // relational next link, or null
+```
+
 **Total Pages Hints**
 
-The PaginationLinks container utilizes two hints for helping to manage the links collection: `currentPage` and `totalPages`.
-We can provide these hints by passing in a `PageHints` function to the component. Whenever a request loads, the hint function
-will be run.
+Pagination utilizes two hints for managing the page graph and links: `currentPage` and `totalPages`.
+When the response does not expose these values through the default `meta` locations
+(`meta.page`/`meta.currentPage` and `meta.totalPages`), we can provide them by passing a
+`PageHints` function to the component. Whenever a request loads, the hint function will be run.
 
 ```ts
 interface PageHints {
-  (result: ResourceCollectionDocument): { currentPage: number; totalPages: number; }
+  (document: ReactiveDocument<unknown>): { currentPage: number; totalPages: number; }
 }
 ```
 
 ```hbs
 <Paginate @request={{@request}} @pageHints={{@pageHintsFn}}>
 ```
+
+Because the hints attach to the collection's shared cache, every `<Paginate />` sharing
+a collection must receive the *same function reference* (asserted in dev) — define it
+once at module scope and import it everywhere.
 
 > [!Tip]
 > The `<Paginate />` component is agnostic to page size. If we would like to hint
@@ -1003,7 +1076,7 @@ import { Paginate, EachLink, Request } from '@warp-drive/ember';
         <button {{on "click" state.retry}}>Retry</button>
       </:error>
     </Request>
-    <EachLink @state={{pages}}>
+    <EachLink @pages={{pages}}>
       <:placeholder as |link|>{{link.text}}</:placeholder>
       <:link as |link|>
         <button {{on "click" link.setActive}}>{{link.index}}</button>
@@ -1012,6 +1085,16 @@ import { Paginate, EachLink, Request } from '@warp-drive/ember';
   </Paginate>
 </template>
 ```
+
+**Autorefresh and external subscription management**
+
+`<Paginate />` accepts the same `@autorefresh`, `@autorefreshThreshold` and
+`@autorefreshBehavior` args as `<Request />`, applied to the initiating request
+(see the Autorefresh section above).
+
+To manage the component's lifecycle externally, create the subscription yourself with
+`createPaginationSubscription` and pass it in via `@subscription` — the component then
+uses it instead of creating (and disposing) its own.
 
 ## Using .hbs
 
