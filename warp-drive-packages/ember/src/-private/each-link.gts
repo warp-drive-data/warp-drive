@@ -6,9 +6,9 @@ import { importSync, macroCondition, moduleExists } from '@embroider/macros';
 import type { RequestManager, Store } from '@warp-drive/core';
 import { assert } from '@warp-drive/core/build-config/macros';
 import type {
+  PagedPaginationState,
   PaginationLink,
   PaginationLinksSubscription,
-  PaginationState,
   PlaceholderPaginationLink,
   RealPaginationLink,
   RelationalPaginationLink,
@@ -24,7 +24,7 @@ if (macroCondition(moduleExists('ember-provide-consume-context'))) {
 
 interface EachLinkSignature<RT, E> {
   Args: {
-    pages: PaginationState<RT, E>;
+    pages: PagedPaginationState<RT, E>;
 
     /**
      * The store instance to use for making requests. If contexts are available,

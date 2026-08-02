@@ -18,7 +18,15 @@ export {
   type PaginationCache,
   type PageHints,
 } from './pagination-cache.ts';
-export { getPaginationState, type PaginationState } from './pagination-state.ts';
+export {
+  getPaginationState,
+  type PaginationState,
+  type PaginateMode,
+  type SharedPaginationState,
+  type PagedPaginationState,
+  type InfinitePaginationState,
+  type PaginationStateFor,
+} from './pagination-state.ts';
 export { type PageCache } from './page-cache.ts';
 export {
   getPaginationLinks,
@@ -28,7 +36,16 @@ export {
   type PlaceholderPaginationLink,
   type RelationalPaginationLink,
 } from './pagination-links.ts';
-export { createPaginationSubscription, type PaginationSubscription, type PaginateArgs, type PaginationContentFeatures } from './pagination-subscription.ts';
+export {
+  createPaginationSubscription,
+  type PaginationSubscription,
+  type PaginateArgs,
+  type PaginationContentFeatures,
+  type SharedPaginationContentFeatures,
+  type PagedPaginationContentFeatures,
+  type InfinitePaginationContentFeatures,
+  type PaginationContentFeaturesFor,
+} from './pagination-subscription.ts';
 export { createPaginationLinksSubscription, type PaginationLinksSubscription } from './pagination-links-subscription.ts';
 export {
   getPromiseState,

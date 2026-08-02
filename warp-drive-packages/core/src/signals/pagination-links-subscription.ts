@@ -2,7 +2,7 @@ import type { RequestManager, Store } from '../index';
 import { memoized } from './-private.ts';
 import type { PaginationLink, PaginationLinks, RelationalPaginationLink } from './pagination-links.ts';
 import { getPaginationLinks } from './pagination-links.ts';
-import type { PaginationState } from './pagination-state.ts';
+import type { PagedPaginationState } from './pagination-state.ts';
 import { DISPOSE } from './request-subscription.ts';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -15,12 +15,12 @@ export interface PaginationLinksSubscription<RT, E> {
 }
 
 export interface PaginationLinksSubscriptionArgs<RT, E> {
-  pages: PaginationState<RT, E>;
+  pages: PagedPaginationState<RT, E>;
 }
 
 /**
  * Lifecycle glue for a pagination links component (for example the `<EachLink />`
- * yielded by `<Paginate />`). Given the {@link PaginationState} a `<Paginate />`
+ * yielded by `<Paginate />`). Given the {@link PagedPaginationState} a `<Paginate />`
  * component is driving, it exposes that state's {@link PaginationLinks} so the
  * component can render navigation controls.
  *
@@ -39,7 +39,10 @@ export class PaginationLinksSubscription<RT, E> {
   declare private _subscribedTo: object | null;
   /** @internal */
   declare private _args: PaginationLinksSubscriptionArgs<RT, E>;
-  /** @internal */
+  /**
+   * The Store this subscription subscribes to or the RequestManager
+   * which issues its requests.
+   */
   declare store: Store | RequestManager;
 
   constructor(store: Store | RequestManager, args: PaginationLinksSubscriptionArgs<RT, E>) {
@@ -50,7 +53,7 @@ export class PaginationLinksSubscription<RT, E> {
   }
 
   /**
-   * The {@link PaginationLinks} derived from the {@link PaginationState} passed
+   * The {@link PaginationLinks} derived from the {@link PagedPaginationState} passed
    * as an arg. This is the object the other getters read from.
    */
   @memoized

@@ -271,7 +271,7 @@ PaginateSpec.use(useEmber(), function (b) {
       const { request, store } = props;
 
       return <template>
-        <Paginate @request={{request}} @store={{store}}>
+        <Paginate @request={{request}} @store={{store}} @mode="infinite">
           <:loading>
             <span data-test-pending>Pending</span>
           </:loading>
@@ -307,7 +307,7 @@ PaginateSpec.use(useEmber(), function (b) {
       const { request, store } = props;
 
       return <template>
-        <Paginate @request={{request}} @store={{store}}>
+        <Paginate @request={{request}} @store={{store}} @mode="infinite">
           <:loading>
             <span data-test-pending>Pending</span>
           </:loading>
@@ -343,7 +343,7 @@ PaginateSpec.use(useEmber(), function (b) {
       const { request, store } = props;
 
       return <template>
-        <Paginate @request={{request}} @store={{store}} as |pages features|>
+        <Paginate @request={{request}} @store={{store}} @mode="infinite" as |pages features|>
           {{#each pages.data as |user|}}
             <span data-test-user-name>{{user.attributes.name}}</span>
           {{/each}}

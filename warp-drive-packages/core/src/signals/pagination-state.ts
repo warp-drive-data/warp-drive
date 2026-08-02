@@ -12,23 +12,95 @@ import { getPaginationCache, type PageHints, type PaginationCache } from './pagi
 import { defineSignal, memoized } from './reactivity/signal.ts';
 
 /**
+ * The two navigation surfaces a `<Paginate />` component can drive. Selecting
+ * one (via the component's `@mode` arg) narrows the yielded state so the two
+ * APIs cannot be mixed:
+ *
+ * - `'paged'` — single-page view, see {@link PagedPaginationState}.
+ * - `'infinite'` — accumulated view, see {@link InfinitePaginationState}.
+ */
+export type PaginateMode = 'paged' | 'infinite';
+
+/**
+ * The part of a {@link PaginationState} available to both navigation surfaces.
+ */
+export interface SharedPaginationState<RT = unknown, E = unknown> {
+  /** See {@link PaginationState.pages}. */
+  readonly pages: Iterable<Readonly<PageCache<RT, E>>>;
+  /** See {@link PaginationState.totalPages}. */
+  readonly totalPages: number;
+  /** The shared page graph and data this component reads from. */
+  readonly paginationCache: PaginationCache<RT, E> | null;
+}
+
+/**
+ * The paged (single-page view) surface of a {@link PaginationState}: render
+ * {@link PaginationState.activePageRequest | activePageRequest}, navigate with
+ * {@link PaginationState.loadPage | loadPage}. This is what the `<Paginate />`
+ * component yields in `'paged'` mode (the default).
+ */
+export interface PagedPaginationState<RT = unknown, E = unknown> extends SharedPaginationState<RT, E> {
+  /** See {@link PaginationState.activePage}. */
+  readonly activePage: Readonly<PageCache<RT, E>> | null;
+  /** See {@link PaginationState.activePageRequest}. */
+  readonly activePageRequest: Future<RT> | null;
+  /** See {@link PaginationState.loadPage}. */
+  loadPage: (url: string) => Promise<RT | null>;
+}
+
+/**
+ * The infinite (accumulated view) surface of a {@link PaginationState}: render
+ * {@link PaginationState.data | data}, grow it with
+ * {@link PaginationState.loadNext | loadNext}/{@link PaginationState.loadPrev | loadPrev}.
+ * This is what the `<Paginate />` component yields in `'infinite'` mode.
+ */
+export interface InfinitePaginationState<RT = unknown, E = unknown> extends SharedPaginationState<RT, E> {
+  /** See {@link PaginationState.data}. */
+  readonly data: Iterable<ContentItem<RT>>;
+  /** See {@link PaginationState.hasNext}. */
+  readonly hasNext: boolean;
+  /** See {@link PaginationState.hasPrevious}. */
+  readonly hasPrevious: boolean;
+  /** See {@link PaginationState.nextRequest}. */
+  readonly nextRequest: Future<RT> | null;
+  /** See {@link PaginationState.previousRequest}. */
+  readonly previousRequest: Future<RT> | null;
+  /** See {@link PaginationState.loadNext}. */
+  loadNext: () => Promise<RT | null>;
+  /** See {@link PaginationState.loadPrev}. */
+  loadPrev: () => Promise<RT | null>;
+}
+
+/**
+ * Resolves a {@link PaginateMode} to the surface it exposes, so a component
+ * generic over the mode can yield only that surface.
+ */
+export type PaginationStateFor<RT = unknown, E = unknown, M extends PaginateMode = 'paged'> = M extends 'infinite'
+  ? InfinitePaginationState<RT, E>
+  : PagedPaginationState<RT, E>;
+
+/**
  * The per-component, local pagination state. It houses the state that is unique
  * to a single component instance — the active page and navigation — while
  * referencing a shared {@link PaginationCache} for the page graph and data.
  *
- * This is the object yielded by the `<Paginate />` component.
+ * This is the object yielded by the `<Paginate />` component, narrowed by the
+ * component's `@mode` arg to one of its two navigation surfaces so the two
+ * APIs cannot be mixed:
  *
- * It exposes two navigation surfaces over the same shared page graph, and the
- * consumer picks one by which properties it renders — there is no mode flag:
+ * - **Paged** (`@mode="paged"`, the default): {@link PagedPaginationState} —
+ *   render {@link activePageRequest}, navigate with {@link loadPage} (what the
+ *   numbered/relational links call). Reads {@link activePage}.
+ * - **Infinite** (`@mode="infinite"`): {@link InfinitePaginationState} — render
+ *   {@link data}, wrap {@link nextRequest}/{@link previousRequest} in `<Request>`
+ *   for loading state, and grow the view with {@link loadNext}/{@link loadPrev}.
  *
- * - **Paged** (single-page view): render {@link activePageRequest}, navigate with
- *   {@link loadPage} (what the numbered/relational links call). Reads
- *   {@link activePage}.
- * - **Infinite** (accumulated view): render {@link data}, wrap
- *   {@link nextRequest}/{@link previousRequest} in `<Request>` for loading state,
- *   and grow the view with {@link loadNext}/{@link loadPrev}.
+ * Both surfaces read the same shared page graph; the mode only selects which
+ * API is exposed.
  */
-export class PaginationState<RT = unknown, E = unknown> {
+export class PaginationState<RT = unknown, E = unknown>
+  implements PagedPaginationState<RT, E>, InfinitePaginationState<RT, E>
+{
   /** @internal */
   declare store: Store | RequestManager;
   /** @internal */

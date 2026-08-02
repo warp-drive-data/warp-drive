@@ -2,7 +2,7 @@ import type { RequestManager, Store } from '../index.ts';
 import type { Future } from '../request.ts';
 import type { StructuredErrorDocument } from '../types/request.ts';
 import type { PageHints } from './pagination-cache.ts';
-import { getPaginationState, type PaginationState } from './pagination-state.ts';
+import { getPaginationState, type PaginateMode, type PaginationState } from './pagination-state.ts';
 import { memoized } from './reactivity/signal.ts';
 import type { RequestLoadingState } from './request-state.ts';
 import type { RequestSubscription, SubscriptionArgs } from './request-subscription.ts';
@@ -14,8 +14,11 @@ interface ErrorFeatures {
   retry: () => Promise<void>;
 }
 
-export type PaginationContentFeatures<RT> = {
-  // Initial Request
+/**
+ * The content features available in both pagination modes: the state and
+ * controls of the initial request.
+ */
+export interface SharedPaginationContentFeatures<RT> {
   isOnline: boolean;
   isHidden: boolean;
   isRefreshing: boolean;
@@ -23,12 +26,39 @@ export type PaginationContentFeatures<RT> = {
   reload: () => Promise<void>;
   abort?: () => void;
   latestRequest?: Future<RT>;
+}
 
-  // Pagination
+/**
+ * The content features yielded in `'paged'` mode: navigation happens by
+ * loading a specific page.
+ */
+export interface PagedPaginationContentFeatures<RT> extends SharedPaginationContentFeatures<RT> {
+  loadPage: (url: string) => Promise<RT | null>;
+}
+
+/**
+ * The content features yielded in `'infinite'` mode: navigation happens by
+ * extending the loaded run at either end.
+ */
+export interface InfinitePaginationContentFeatures<RT> extends SharedPaginationContentFeatures<RT> {
   loadNext: () => Promise<RT | null>;
   loadPrev: () => Promise<RT | null>;
-  loadPage: (url: string) => Promise<RT | null>;
-};
+}
+
+/**
+ * The full set of content features a {@link PaginationSubscription} builds —
+ * both modes' surfaces. The `<Paginate />` component narrows this to one mode
+ * via {@link PaginationContentFeaturesFor} before yielding.
+ */
+export type PaginationContentFeatures<RT> = PagedPaginationContentFeatures<RT> & InfinitePaginationContentFeatures<RT>;
+
+/**
+ * Resolves a {@link PaginateMode} to the content features it exposes. Mirror of
+ * {@link PaginationStateFor}.
+ */
+export type PaginationContentFeaturesFor<RT = unknown, M extends PaginateMode = 'paged'> = M extends 'infinite'
+  ? InfinitePaginationContentFeatures<RT>
+  : PagedPaginationContentFeatures<RT>;
 
 export interface PaginationSubscriptionArgs<RT, E> extends SubscriptionArgs<RT, E> {
   /**
@@ -40,6 +70,13 @@ export interface PaginationSubscriptionArgs<RT, E> extends SubscriptionArgs<RT, 
 }
 
 export interface PaginateArgs<RT, E> extends PaginationSubscriptionArgs<RT, E> {
+  /**
+   * Which navigation surface the component yields: `'paged'` (the default) or
+   * `'infinite'`. Type-only — it narrows the yielded state and features so the
+   * two surfaces cannot be mixed, and is never read at runtime.
+   */
+  mode?: PaginateMode;
+
   subscription?: PaginationSubscription<RT, E>;
 
   /**
@@ -76,7 +113,10 @@ export class PaginationSubscription<RT, E> {
   declare private _subscribedTo: object | null;
   /** @internal */
   declare private _args: PaginationSubscriptionArgs<RT, E>;
-  /** @internal */
+  /**
+   * The Store this subscription subscribes to or the RequestManager
+   * which issues this request.
+   */
   declare store: Store | RequestManager;
 
   /** The per-component pagination state yielded to the component. */

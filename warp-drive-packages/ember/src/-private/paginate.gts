@@ -7,9 +7,15 @@ import type { ComponentLike } from '@glint/template';
 
 import type { RequestManager, Store } from '@warp-drive/core';
 import { assert } from '@warp-drive/core/build-config/macros';
-import type { PaginationState, PaginationSubscription, RequestLoadingState } from '@warp-drive/core/reactive';
+import type { PaginationSubscription, RequestLoadingState } from '@warp-drive/core/reactive';
 import { createPaginationSubscription } from '@warp-drive/core/reactive';
-import type { PaginateArgs, PaginationContentFeatures, RecoveryFeatures } from '@warp-drive/core/signals/-leaked';
+import type {
+  PaginateArgs,
+  PaginateMode,
+  PaginationContentFeaturesFor,
+  PaginationStateFor,
+  RecoveryFeatures,
+} from '@warp-drive/core/signals/-leaked';
 import { DISPOSE, memoized } from '@warp-drive/core/signals/-leaked';
 import type { StructuredErrorDocument } from '@warp-drive/core/types/request';
 
@@ -39,15 +45,23 @@ const DefaultChrome: TOC<{
   };
 }> = <template>{{yield}}</template>;
 
-export interface EmberPaginateArgs<RT, E> extends PaginateArgs<RT, E> {
+export interface EmberPaginateArgs<RT, E, M extends PaginateMode = 'paged'> extends PaginateArgs<RT, E> {
+  /**
+   * Which navigation surface the component yields: `'paged'` (the default) or
+   * `'infinite'`. Type-only — it narrows the state and features yielded to the
+   * `content`, `always`, and `default` blocks so the two surfaces cannot be
+   * mixed, and is never read at runtime.
+   */
+  mode?: M;
+
   chrome?: ComponentLike<{
     Blocks: { default: [] };
-    Args: { state: PaginationState | null; features: PaginationContentFeatures<RT> };
+    Args: { state: PaginationStateFor<RT, E, M> | null; features: PaginationContentFeaturesFor<RT, M> };
   }>;
 }
 
-interface PaginateSignature<RT, E> {
-  Args: EmberPaginateArgs<RT, E>;
+interface PaginateSignature<RT, E, M extends PaginateMode = 'paged'> {
+  Args: EmberPaginateArgs<RT, E, M>;
   Blocks: {
     /**
      * The block to render when the component is idle and waiting to be given a request.
@@ -81,8 +95,8 @@ interface PaginateSignature<RT, E> {
      * The block to render when the request succeeded.
      *
      */
-    content: [state: PaginationState<RT, E>, features: PaginationContentFeatures<RT>];
-    always: [state: PaginationState<RT, E>, features: PaginationContentFeatures<RT>];
+    content: [state: PaginationStateFor<RT, E, M>, features: PaginationContentFeaturesFor<RT, M>];
+    always: [state: PaginationStateFor<RT, E, M>, features: PaginationContentFeaturesFor<RT, M>];
 
     /**
      * The fallback block, rendered when no other named blocks are provided.
@@ -94,7 +108,7 @@ interface PaginateSignature<RT, E> {
      * initiating request.
      *
      */
-    default: [state: PaginationState<RT, E>, features: PaginationContentFeatures<RT>];
+    default: [state: PaginationStateFor<RT, E, M>, features: PaginationContentFeaturesFor<RT, M>];
   };
 }
 
@@ -315,7 +329,7 @@ interface PaginateSignature<RT, E> {
  * @class <Request />
  * @public
  */
-export class Paginate<RT, E> extends Component<PaginateSignature<RT, E>> {
+export class Paginate<RT, E, M extends PaginateMode = 'paged'> extends Component<PaginateSignature<RT, E, M>> {
   /**
    * The store instance to use for making requests. If contexts are available, this
    * will be the `store` on the context, else it will be the store service.
@@ -364,9 +378,32 @@ export class Paginate<RT, E> extends Component<PaginateSignature<RT, E>> {
   @memoized
   get Chrome(): ComponentLike<{
     Blocks: { default: [] };
-    Args: { state: PaginationState | null; features: PaginationContentFeatures<RT> };
+    Args: { state: PaginationStateFor<RT, E, M> | null; features: PaginationContentFeaturesFor<RT, M> };
   }> {
     return this.args.chrome || DefaultChrome;
+  }
+
+  /**
+   * The pagination state narrowed to the mode's surface for yielding. The cast
+   * is sound: the full state structurally satisfies both surfaces; `M` is just
+   * unresolved inside the class body.
+   *
+   * @internal
+   */
+  @memoized
+  get paginationState(): PaginationStateFor<RT, E, M> {
+    return this.state.paginationState as unknown as PaginationStateFor<RT, E, M>;
+  }
+
+  /**
+   * The content features narrowed to the mode's surface for yielding. See
+   * {@link paginationState}.
+   *
+   * @internal
+   */
+  @memoized
+  get contentFeatures(): PaginationContentFeaturesFor<RT, M> {
+    return this.state.contentFeatures as PaginationContentFeaturesFor<RT, M>;
   }
 
   willDestroy(): void {
@@ -378,11 +415,11 @@ export class Paginate<RT, E> extends Component<PaginateSignature<RT, E>> {
 
   <template>
     <this.Chrome
-      @state={{if this.state.isIdle null this.state.paginationState}}
-      @features={{this.state.contentFeatures}}
+      @state={{if this.state.isIdle null this.paginationState}}
+      @features={{this.contentFeatures}}
     >
       {{#if (has-block "default")}}
-        {{yield this.state.paginationState this.state.contentFeatures}}
+        {{yield this.paginationState this.contentFeatures}}
 
       {{else if (and this.state.isIdle (has-block "idle"))}}
         {{yield to="idle"}}
@@ -400,13 +437,13 @@ export class Paginate<RT, E> extends Component<PaginateSignature<RT, E>> {
         {{yield (notNull this.state.reason) this.state.errorFeatures to="error"}}
 
       {{else if this.state.isSuccess}}
-        {{yield this.state.paginationState this.state.contentFeatures to="content"}}
+        {{yield this.paginationState this.contentFeatures to="content"}}
 
       {{else if (not this.state.isCancelled)}}
         <Throw @error={{(notNull this.state.reason)}} />
       {{/if}}
 
-      {{yield this.state.paginationState this.state.contentFeatures to="always"}}
+      {{yield this.paginationState this.contentFeatures to="always"}}
     </this.Chrome>
   </template>
 }

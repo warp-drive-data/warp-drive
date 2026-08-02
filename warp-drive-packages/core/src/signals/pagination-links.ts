@@ -1,8 +1,8 @@
 import type { PageCache } from './page-cache.ts';
-import type { PaginationState } from './pagination-state.ts';
+import type { PagedPaginationState } from './pagination-state.ts';
 import { memoized } from './reactivity/signal';
 
-const PaginationLinksCache = new WeakMap<PaginationState, PaginationLinks>();
+const PaginationLinksCache = new WeakMap<PagedPaginationState, PaginationLinks>();
 
 /**
  * A single numbered link, e.g. page `3`. Loads its page and makes it active when
@@ -146,9 +146,9 @@ export type PaginationLink = RealPaginationLink | PlaceholderPaginationLink;
  * @hideconstructor
  */
 export class PaginationLinks<RT = unknown, E = unknown> {
-  declare paginationState: PaginationState<RT, E>;
+  declare paginationState: PagedPaginationState<RT, E>;
 
-  constructor(paginationState: PaginationState<RT, E>) {
+  constructor(paginationState: PagedPaginationState<RT, E>) {
     this.paginationState = paginationState;
   }
 
@@ -241,7 +241,7 @@ export class PaginationLinks<RT = unknown, E = unknown> {
  * }
  * ```
  */
-export function getPaginationLinks<RT, E>(state: PaginationState<RT, E>): Readonly<PaginationLinks<RT, E>> {
+export function getPaginationLinks<RT, E>(state: PagedPaginationState<RT, E>): Readonly<PaginationLinks<RT, E>> {
   let links = PaginationLinksCache.get(state);
 
   if (!links) {
