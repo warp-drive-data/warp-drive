@@ -166,10 +166,18 @@ export class PaginationCache<RT = unknown, E = unknown> {
   }
 
   /**
-   * Every page loaded into the shared cache, in order. Consumers should read
-   * this via {@link PaginationState.pages}.
+   * Every page known to the shared graph, in order — loaded pages and pages
+   * known only from links — across all components sharing the collection.
    *
-   * @internal
+   * This is the whole-collection view. For the run a single component is
+   * viewing, use {@link PaginationState.pages}.
+   *
+   * ```ts
+   * const cache = getPaginationCache(firstLink);
+   * for (const page of cache.pages) {
+   *   // page.isLoaded, page.pageNumber, page.data, ...
+   * }
+   * ```
    */
   @memoized
   get pages(): Iterable<Readonly<PageCache<RT, E>>> {
@@ -186,21 +194,24 @@ export class PaginationCache<RT = unknown, E = unknown> {
     };
   }
 
-  /** @internal */
+  /**
+   * The items of every loaded page in the shared graph, flattened into one
+   * contiguous iterable in page order. Pages that are known but not loaded
+   * contribute nothing.
+   *
+   * This is the whole-collection view. For the run a single component is
+   * viewing, use {@link PaginationState.data}.
+   */
   @memoized
   get data(): Iterable<ContentItem<RT>> {
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const self = this;
     return {
       *[Symbol.iterator]() {
-        let page: Readonly<PageCache<RT, E>> | null = self.firstPage;
-        while (page) {
+        for (const page of self.pages) {
           if (page.data) {
-            for (const item of page.data as ContentItem<RT>[]) {
-              yield item;
-            }
+            yield* page.data as ContentItem<RT>[];
           }
-          page = page.after;
         }
       },
     };

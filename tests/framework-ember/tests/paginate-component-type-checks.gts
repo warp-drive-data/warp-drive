@@ -29,9 +29,11 @@ export const OmittedModeIsPaged = <template>
     <:content as |pages features|>
       {{expectPaged pages}}
       {{expectPagedFeatures features}}
-      {{use pages.pages pages.totalPages pages.activePage pages.activePageRequest pages.loadPage}}
+      {{use pages.totalPages pages.activePage pages.activePageRequest pages.loadPage}}
       {{use features.refresh features.reload features.isOnline features.loadPage}}
       <EachLink @pages={{pages}} />
+      {{! @glint-expect-error `pages` is infinite-only — paged mode navigates via links }}
+      {{use pages.pages}}
       {{! @glint-expect-error `data` is infinite-only }}
       {{use pages.data}}
       {{! @glint-expect-error `loadNext` is infinite-only }}

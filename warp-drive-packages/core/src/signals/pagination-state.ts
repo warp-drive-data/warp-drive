@@ -25,8 +25,6 @@ export type PaginateMode = 'paged' | 'infinite';
  * The part of a {@link PaginationState} available to both navigation surfaces.
  */
 export interface SharedPaginationState<RT = unknown, E = unknown> {
-  /** See {@link PaginationState.pages}. */
-  readonly pages: Iterable<Readonly<PageCache<RT, E>>>;
   /** See {@link PaginationState.totalPages}. */
   readonly totalPages: number;
   /**
@@ -61,6 +59,8 @@ export interface PagedPaginationState<RT = unknown, E = unknown> extends SharedP
 export interface InfinitePaginationState<RT = unknown, E = unknown> extends SharedPaginationState<RT, E> {
   /** See {@link PaginationState.data}. */
   readonly data: Iterable<ContentItem<RT>>;
+  /** See {@link PaginationState.pages}. */
+  readonly pages: Iterable<Readonly<PageCache<RT, E>>>;
   /** See {@link PaginationState.hasNext}. */
   readonly hasNext: boolean;
   /** See {@link PaginationState.hasPrevious}. */
@@ -195,13 +195,35 @@ export class PaginationState<RT = unknown, E = unknown>
   }
 
   /**
-   * Every page loaded into the shared cache, in order. This is the whole graph
-   * across all components sharing the collection, not just this component's
-   * frontier; for the accumulated items of an infinite view use {@link data}.
+   * The pages of the run this component is viewing, from the backward frontier
+   * to the forward frontier inclusive, in order. Part of the infinite surface:
+   * it is the same run as {@link data}, yielding the {@link PageCache} objects
+   * instead of their flattened items — use it when the UI needs per-page
+   * boundaries or request states.
+   *
+   * Grows as {@link loadNext}/{@link loadPrev} extend the frontier. Scoped to
+   * this component's frontier (not the shared cache), so components paging the
+   * same collection to different extents each see only what they have scrolled
+   * through. For every page known to the whole collection, see
+   * {@link PaginationCache.pages}.
    */
   @memoized
   get pages(): Iterable<Readonly<PageCache<RT, E>>> {
-    return this.paginationCache?.pages ?? [];
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
+    const self = this;
+    return {
+      *[Symbol.iterator]() {
+        const end = self.frontierEnd;
+        let page: Readonly<PageCache<RT, E>> | null = self.frontierStart;
+        while (page) {
+          yield page;
+          if (page === end) {
+            break;
+          }
+          page = page.after;
+        }
+      },
+    };
   }
 
   /**
@@ -210,6 +232,10 @@ export class PaginationState<RT = unknown, E = unknown>
    * Grows as {@link loadNext}/{@link loadPrev} extend the frontier. Scoped to this
    * component's frontier (not the shared cache), so components paging the same
    * collection to different extents each see only what they have scrolled through.
+   *
+   * The flattened items of {@link pages}, as one contiguous iterable. For the
+   * items of every loaded page in the whole collection, see
+   * {@link PaginationCache.data}.
    *
    * ```gts
    * <Paginate @request={{this.request}} @mode="infinite">
@@ -224,21 +250,14 @@ export class PaginationState<RT = unknown, E = unknown>
    */
   @memoized
   get data(): Iterable<ContentItem<RT>> {
-    const start = this.frontierStart;
-    const end = this.frontierEnd;
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
+    const self = this;
     return {
       *[Symbol.iterator]() {
-        let page: Readonly<PageCache<RT, E>> | null = start;
-        while (page) {
+        for (const page of self.pages) {
           if (page.data) {
-            for (const item of page.data as ContentItem<RT>[]) {
-              yield item;
-            }
+            yield* page.data as ContentItem<RT>[];
           }
-          if (page === end) {
-            break;
-          }
-          page = page.after;
         }
       },
     };

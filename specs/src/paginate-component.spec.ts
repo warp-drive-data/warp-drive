@@ -1,5 +1,11 @@
 import { Fetch, RequestManager } from '@warp-drive/core';
-import { clearPaginationCache, getPaginationLinks, getPaginationState, type PageHints } from '@warp-drive/core/reactive';
+import {
+  clearPaginationCache,
+  getPaginationCache,
+  getPaginationLinks,
+  getPaginationState,
+  type PageHints,
+} from '@warp-drive/core/reactive';
 import type { CacheHandler, Future, NextFn } from '@warp-drive/core/request';
 import type { RequestContext, StructuredDataDocument } from '@warp-drive/core/types/request';
 import type { CollectionResourceDataDocument } from '@warp-drive/core/types/spec/document';
@@ -291,6 +297,7 @@ export const PaginateSpec: SuiteBuilder<LocalTestContext, PaginateSpecSignature>
         method: 'GET',
       });
       const paginationState = getPaginationState(request);
+      const paginationCache = getPaginationCache<CollectionResourceDataDocument<UserResource>, unknown>(urls[0]);
       const paginationLinks = getPaginationLinks(paginationState);
 
       let counter = 0;
@@ -308,8 +315,8 @@ export const PaginateSpec: SuiteBuilder<LocalTestContext, PaginateSpecSignature>
 
       assert.equal(counter, 1);
       assert.equal(this.element.querySelector('[data-test-pending]')?.textContent.trim(), 'PendingCount: 1');
-      assert.equal(Array.from(paginationState.pages).length, 0, 'No pages initially');
       assert.equal(Array.from(paginationState.data).length, 0, 'No data initially');
+      assert.equal(Array.from(paginationCache.pages).length, 0, 'No pages in the graph initially');
       assert.deepEqual(paginationLinks.links.length, 0, '0 links initially');
 
       await request;
@@ -317,8 +324,8 @@ export const PaginateSpec: SuiteBuilder<LocalTestContext, PaginateSpecSignature>
 
       activePage = paginationState.activePage;
 
-      assert.equal(Array.from(paginationState.pages).length, 4, '4 pages');
       assert.deepEqual(activePage?.data, [users[1]], 'Page data');
+      assert.equal(Array.from(paginationCache.pages).length, 4, '4 pages known to the graph after the initial load');
       assert.deepEqual(activePage?.pageNumber, 2, 'Page number');
       assert.deepEqual(paginationState.totalPages, 6, 'Total pages');
       assert.deepEqual(paginationLinks.links.length, 5, '5 links');
@@ -334,7 +341,6 @@ export const PaginateSpec: SuiteBuilder<LocalTestContext, PaginateSpecSignature>
       assert.equal(this.element.querySelectorAll('[data-test-user-name]').length, 1, '1 user rendered');
 
       await this.h.click('[data-test-load-page="1"]');
-      assert.equal(Array.from(paginationState.pages).length, 4, '4 pages');
       activePage = paginationState.activePage;
       assert.deepEqual(activePage?.data, [users[0]], 'Page data');
       assert.deepEqual(activePage?.pageNumber, 1, 'Page number');
@@ -356,7 +362,6 @@ export const PaginateSpec: SuiteBuilder<LocalTestContext, PaginateSpecSignature>
       assert.equal(this.element.querySelectorAll('[data-test-user-name]').length, 1, '1 user rendered');
 
       await this.h.click('[data-test-load-page="6"]');
-      assert.equal(Array.from(paginationState.pages).length, 5, '5 pages');
       activePage = paginationState.activePage;
       assert.deepEqual(activePage?.data, [users[5]], 'Page data');
       assert.deepEqual(activePage?.pageNumber, 6, 'Page number');
@@ -374,7 +379,6 @@ export const PaginateSpec: SuiteBuilder<LocalTestContext, PaginateSpecSignature>
       assert.equal(this.element.querySelectorAll('[data-test-user-name]').length, 1, '1 user rendered');
 
       await this.h.click('[data-test-load-page="5"]');
-      assert.equal(Array.from(paginationState.pages).length, 6, '6 pages');
       activePage = paginationState.activePage;
       assert.deepEqual(activePage?.data, [users[4]], 'Page data');
       assert.deepEqual(activePage?.pageNumber, 5, 'Page number');
@@ -390,7 +394,6 @@ export const PaginateSpec: SuiteBuilder<LocalTestContext, PaginateSpecSignature>
       assert.equal(this.element.querySelectorAll('[data-test-user-name]').length, 1, '1 user rendered');
 
       await this.h.click('[data-test-load-page="4"]');
-      assert.equal(Array.from(paginationState.pages).length, 6, '6 pages');
       activePage = paginationState.activePage;
       assert.deepEqual(activePage?.data, [users[3]], 'Page data');
       assert.deepEqual(activePage?.pageNumber, 4, 'Page number');
@@ -406,9 +409,14 @@ export const PaginateSpec: SuiteBuilder<LocalTestContext, PaginateSpecSignature>
       assert.equal(this.element.querySelectorAll('[data-test-user-name]').length, 1, '1 user rendered');
 
       await this.h.click('[data-test-load-page="3"]');
-      assert.equal(Array.from(paginationState.pages).length, 6, '6 pages');
       activePage = paginationState.activePage;
       assert.deepEqual(activePage?.data, [users[2]], 'Page data');
+      assert.equal(Array.from(paginationCache.pages).length, 6, 'Whole graph holds all 6 pages after visiting them');
+      assert.deepEqual(
+        Array.from(paginationCache.data).map((user) => user.attributes.name),
+        ['Chris Thoburn', 'Leo Euclides', 'Mehul Chaudhari', 'Benedikt Deicke', 'Jane Portman', 'Mia Sinek'],
+        'Whole-graph data holds every loaded page in page order'
+      );
       assert.deepEqual(activePage?.pageNumber, 3, 'Page number');
       assert.deepEqual(paginationState.totalPages, 6, 'Total pages');
       assert.deepEqual(paginationLinks.links.length, 6, '6 links');
@@ -537,6 +545,7 @@ export const PaginateSpec: SuiteBuilder<LocalTestContext, PaginateSpecSignature>
         method: 'GET',
       });
       const paginationState = getPaginationState(request);
+      const paginationCache = getPaginationCache(urls[0]);
       const paginationLinks = getPaginationLinks(paginationState);
 
       let counter = 0;
@@ -554,8 +563,8 @@ export const PaginateSpec: SuiteBuilder<LocalTestContext, PaginateSpecSignature>
 
       assert.equal(counter, 1);
       assert.equal(this.element.querySelector('[data-test-pending]')?.textContent.trim(), 'PendingCount: 1');
-      assert.equal(Array.from(paginationState.pages).length, 0, 'No pages initially');
       assert.equal(Array.from(paginationState.data).length, 0, 'No data initially');
+      assert.equal(Array.from(paginationCache.pages).length, 0, 'No pages in the graph initially');
       assert.deepEqual(paginationLinks.links.length, 0, '0 links initially');
 
       await request;
@@ -563,8 +572,8 @@ export const PaginateSpec: SuiteBuilder<LocalTestContext, PaginateSpecSignature>
 
       activePage = paginationState.activePage;
 
-      assert.equal(Array.from(paginationState.pages).length, 3, '3 pages');
       assert.deepEqual(activePage?.data, [users[1]], 'Page data');
+      assert.equal(Array.from(paginationCache.pages).length, 3, '3 pages known to the graph after the initial load');
       assert.deepEqual(activePage?.pageNumber, 2, 'Page number');
       assert.deepEqual(paginationState.totalPages, 6, 'Total pages');
       assert.deepEqual(paginationLinks.links.length, 4, '4 links');
@@ -578,7 +587,6 @@ export const PaginateSpec: SuiteBuilder<LocalTestContext, PaginateSpecSignature>
       assert.equal(this.element.querySelectorAll('[data-test-user-name]').length, 1, '1 user rendered');
 
       await this.h.click('[data-test-load-page="1"]');
-      assert.equal(Array.from(paginationState.pages).length, 3, '3 pages');
       activePage = paginationState.activePage;
       assert.deepEqual(activePage?.data, [users[0]], 'Page data');
       assert.deepEqual(activePage?.pageNumber, 1, 'Page number');
@@ -594,7 +602,6 @@ export const PaginateSpec: SuiteBuilder<LocalTestContext, PaginateSpecSignature>
       assert.equal(this.element.querySelectorAll('[data-test-user-name]').length, 1, '1 user rendered');
 
       await this.h.click('[data-test-load-page="3"]');
-      assert.equal(Array.from(paginationState.pages).length, 4, '4 pages');
       activePage = paginationState.activePage;
       assert.deepEqual(activePage?.data, [users[2]], 'Page data');
       assert.deepEqual(activePage?.pageNumber, 3, 'Page number');
@@ -610,7 +617,6 @@ export const PaginateSpec: SuiteBuilder<LocalTestContext, PaginateSpecSignature>
       assert.equal(this.element.querySelectorAll('[data-test-user-name]').length, 1, '1 user rendered');
 
       await this.h.click('[data-test-load-page="4"]');
-      assert.equal(Array.from(paginationState.pages).length, 5, '5 pages');
       activePage = paginationState.activePage;
       assert.deepEqual(activePage?.data, [users[3]], 'Page data');
       assert.deepEqual(activePage?.pageNumber, 4, 'Page number');
@@ -626,7 +632,6 @@ export const PaginateSpec: SuiteBuilder<LocalTestContext, PaginateSpecSignature>
       assert.equal(this.element.querySelectorAll('[data-test-user-name]').length, 1, '1 user rendered');
 
       await this.h.click('[data-test-load-page="5"]');
-      assert.equal(Array.from(paginationState.pages).length, 6, '6 pages');
       activePage = paginationState.activePage;
       assert.deepEqual(activePage?.data, [users[4]], 'Page data');
       assert.deepEqual(activePage?.pageNumber, 5, 'Page number');
@@ -642,9 +647,9 @@ export const PaginateSpec: SuiteBuilder<LocalTestContext, PaginateSpecSignature>
       assert.equal(this.element.querySelectorAll('[data-test-user-name]').length, 1, '1 user rendered');
 
       await this.h.click('[data-test-load-page="6"]');
-      assert.equal(Array.from(paginationState.pages).length, 6, '6 pages');
       activePage = paginationState.activePage;
       assert.deepEqual(activePage?.data, [users[5]], 'Page data');
+      assert.equal(Array.from(paginationCache.pages).length, 6, 'Whole graph holds all 6 pages after visiting them');
       assert.deepEqual(activePage?.pageNumber, 6, 'Page number');
       assert.deepEqual(paginationState.totalPages, 6, 'Total pages');
       assert.deepEqual(paginationLinks.links.length, 6, '6 links');
@@ -777,6 +782,7 @@ export const PaginateSpec: SuiteBuilder<LocalTestContext, PaginateSpecSignature>
     // rendering state) while both share the underlying pagination cache.
     const paginationStateA = getPaginationState(requestA);
     const paginationStateB = getPaginationState(requestB);
+    const paginationCache = getPaginationCache(urls[0]);
     const paginationLinksA = getPaginationLinks(paginationStateA);
 
     let counter = 0;
@@ -796,8 +802,8 @@ export const PaginateSpec: SuiteBuilder<LocalTestContext, PaginateSpecSignature>
 
     assert.equal(counter, 2);
     assert.equal(this.element.querySelector('[data-test-pending]')?.textContent.trim(), 'PendingCount: 1');
-    assert.equal(Array.from(paginationStateA.pages).length, 0, 'No pages initially');
     assert.equal(Array.from(paginationStateA.data).length, 0, 'No data initially');
+    assert.equal(Array.from(paginationCache.pages).length, 0, 'No pages in the graph initially');
     assert.deepEqual(paginationLinksA.links.length, 0, '0 links initially');
 
     await requestA;
@@ -807,10 +813,10 @@ export const PaginateSpec: SuiteBuilder<LocalTestContext, PaginateSpecSignature>
     activePageA = paginationStateA.activePage;
     activePageB = paginationStateB.activePage;
 
-    assert.equal(Array.from(paginationStateA.pages).length, 6, '6 pages');
     assert.deepEqual(activePageA?.data, [users[1]], 'Page data');
     assert.deepEqual(activePageA?.pageNumber, 2, 'Page number');
     assert.deepEqual(activePageB?.data, [users[4]], 'Page data');
+    assert.equal(Array.from(paginationCache.pages).length, 6, 'Whole graph holds all 6 pages after both initial loads');
     assert.deepEqual(activePageB?.pageNumber, 5, 'Page number');
     assert.deepEqual(paginationStateA.totalPages, 6, 'Total pages');
     assert.deepEqual(paginationLinksA.links.length, 6, '6 links');
@@ -843,7 +849,6 @@ export const PaginateSpec: SuiteBuilder<LocalTestContext, PaginateSpecSignature>
     activePageA = paginationStateA.activePage;
     assert.deepEqual(activePageA?.data, [users[0]], 'Page data');
     assert.deepEqual(activePageA?.pageNumber, 1, 'Page number');
-    assert.equal(Array.from(paginationStateA.pages).length, 6, '6 pages');
     assert.deepEqual(paginationLinksA.links.length, 6, '6 links');
     assert.equal(counter, 6);
     assert.equal(
@@ -860,7 +865,6 @@ export const PaginateSpec: SuiteBuilder<LocalTestContext, PaginateSpecSignature>
     activePageB = paginationStateB.activePage;
     assert.deepEqual(activePageB?.data, [users[5]], 'Page data');
     assert.deepEqual(activePageB?.pageNumber, 6, 'Page number');
-    assert.equal(Array.from(paginationStateA.pages).length, 6, '6 pages');
     assert.deepEqual(paginationLinksA.links.length, 6, '6 links');
     assert.equal(counter, 8);
     assert.equal(
@@ -876,8 +880,8 @@ export const PaginateSpec: SuiteBuilder<LocalTestContext, PaginateSpecSignature>
     await this.h.click('[data-test-paginate="a"] [data-test-load-page="4"]');
     activePageA = paginationStateA.activePage;
     assert.deepEqual(activePageA?.data, [users[3]], 'Page data');
+    assert.equal(Array.from(paginationCache.pages).length, 6, 'Whole graph still holds all 6 pages');
     assert.deepEqual(activePageA?.pageNumber, 4, 'Page number');
-    assert.equal(Array.from(paginationStateA.pages).length, 6, '6 pages');
     assert.deepEqual(paginationLinksA.links.length, 6, '6 links');
     assert.equal(counter, 10);
     assert.equal(
@@ -894,7 +898,6 @@ export const PaginateSpec: SuiteBuilder<LocalTestContext, PaginateSpecSignature>
     activePageB = paginationStateB.activePage;
     assert.deepEqual(activePageB?.data, [users[2]], 'Page data');
     assert.deepEqual(activePageB?.pageNumber, 3, 'Page number');
-    assert.equal(Array.from(paginationStateA.pages).length, 6, '6 pages');
     assert.deepEqual(paginationLinksA.links.length, 6, '6 links');
     assert.equal(counter, 12);
     assert.equal(
@@ -1195,6 +1198,7 @@ export const PaginateSpec: SuiteBuilder<LocalTestContext, PaginateSpecSignature>
     const request = this.manager.request<CollectionResourceDataDocument<UserResource>>({ url: urls[0], method: 'GET' });
     const paginationState = getPaginationState(request);
     const paginationLinks = getPaginationLinks(paginationState);
+    const paginationCache = getPaginationCache(urls[0]);
 
     await this.render({
       store: this.manager,
@@ -1209,6 +1213,7 @@ export const PaginateSpec: SuiteBuilder<LocalTestContext, PaginateSpecSignature>
       ['Chris Thoburn'],
       'Initial data holds only the first page'
     );
+    assert.equal(Array.from(paginationState.pages).length, 1, '1 page in the frontier run');
     assert.equal(this.element.querySelectorAll('[data-test-user-name]').length, 1, '1 user rendered');
     assert.equal(paginationState.totalPages, 0, 'No total is known for a cursor collection');
     assert.equal(paginationLinks.links.length, 0, 'No numbered links for a cursor collection');
@@ -1230,6 +1235,7 @@ export const PaginateSpec: SuiteBuilder<LocalTestContext, PaginateSpecSignature>
       ['Chris Thoburn', 'Leo Euclides'],
       'Next page appended to the accumulated set'
     );
+    assert.equal(Array.from(paginationState.pages).length, 2, '2 pages in the frontier run');
     assert.equal(this.element.querySelectorAll('[data-test-user-name]').length, 2, '2 users rendered');
     assert.true(paginationState.hasNext, 'hasNext still true in the middle');
     assert.false(
@@ -1245,6 +1251,8 @@ export const PaginateSpec: SuiteBuilder<LocalTestContext, PaginateSpecSignature>
       ['Chris Thoburn', 'Leo Euclides', 'Mehul Chaudhari'],
       'Final page appended to the accumulated set'
     );
+    assert.equal(Array.from(paginationState.pages).length, 3, '3 pages in the frontier run');
+    assert.equal(Array.from(paginationCache.pages).length, 3, 'Whole graph holds all 3 pages');
     assert.equal(this.element.querySelectorAll('[data-test-user-name]').length, 3, '3 users rendered');
     assert.false(paginationState.hasNext, 'hasNext is false at end-of-list');
     assert.equal(this.element.querySelectorAll('[data-test-load-next]').length, 0, 'Next sentinel hidden at end');
@@ -1298,6 +1306,7 @@ export const PaginateSpec: SuiteBuilder<LocalTestContext, PaginateSpecSignature>
 
     const request = this.manager.request<CollectionResourceDataDocument<UserResource>>({ url: urls[1], method: 'GET' });
     const paginationState = getPaginationState(request);
+    const paginationCache = getPaginationCache(urls[1]);
 
     await this.render({
       store: this.manager,
@@ -1312,6 +1321,7 @@ export const PaginateSpec: SuiteBuilder<LocalTestContext, PaginateSpecSignature>
       ['Leo Euclides'],
       'Initial data holds only the entry page'
     );
+    assert.equal(Array.from(paginationState.pages).length, 1, '1 page in the frontier run');
     assert.true(paginationState.hasNext, 'hasNext true from the middle');
     assert.true(paginationState.hasPrevious, 'hasPrevious true from the middle');
 
@@ -1322,6 +1332,12 @@ export const PaginateSpec: SuiteBuilder<LocalTestContext, PaginateSpecSignature>
       Array.from(paginationState.data).map((user) => user.attributes.name),
       ['Chris Thoburn', 'Leo Euclides'],
       'Previous page prepended to the accumulated set'
+    );
+    assert.equal(Array.from(paginationState.pages).length, 2, '2 pages in the frontier run after prepending');
+    assert.equal(
+      Array.from(paginationCache.pages).length,
+      3,
+      'Whole graph spans all 3 known pages: firstPage moved backward to the prepended page'
     );
     assert.false(paginationState.hasPrevious, 'hasPrevious false after reaching the first page');
     assert.equal(this.element.querySelectorAll('[data-test-load-prev]').length, 0, 'Prev sentinel hidden at the start');
@@ -1334,6 +1350,8 @@ export const PaginateSpec: SuiteBuilder<LocalTestContext, PaginateSpecSignature>
       ['Chris Thoburn', 'Leo Euclides', 'Mehul Chaudhari'],
       'Forward frontier extended independently of the backward frontier'
     );
+    assert.equal(Array.from(paginationState.pages).length, 3, '3 pages in the frontier run after appending');
+    assert.equal(Array.from(paginationCache.pages).length, 3, 'Whole graph still spans all 3 pages');
     assert.false(paginationState.hasNext, 'hasNext false at end-of-list');
   })
 
