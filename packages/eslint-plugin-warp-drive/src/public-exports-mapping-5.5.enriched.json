@@ -173,9 +173,9 @@
     "export": "default",
     "typeOnly": false,
     "replacement": {
-      "module": "@warp-drive/legacy/model",
-      "export": "default",
-      "sourceFile": "warp-drive-packages/legacy/src/model.ts",
+      "module": "@warp-drive/legacy/adapter/error",
+      "export": "AdapterError",
+      "sourceFile": "warp-drive-packages/legacy/src/adapter/error.ts",
       "typeOnly": false
     }
   },
@@ -281,9 +281,9 @@
     "export": "default",
     "typeOnly": false,
     "replacement": {
-      "module": "@warp-drive/legacy/model",
-      "export": "default",
-      "sourceFile": "warp-drive-packages/legacy/src/model.ts",
+      "module": "@warp-drive/legacy/adapter/json-api",
+      "export": "JSONAPIAdapter",
+      "sourceFile": "warp-drive-packages/legacy/src/adapter/json-api.ts",
       "typeOnly": false
     }
   },
@@ -293,9 +293,9 @@
     "export": "default",
     "typeOnly": false,
     "replacement": {
-      "module": "@warp-drive/legacy/model",
-      "export": "default",
-      "sourceFile": "warp-drive-packages/legacy/src/model.ts",
+      "module": "@warp-drive/legacy/adapter/rest",
+      "export": "RESTAdapter",
+      "sourceFile": "warp-drive-packages/legacy/src/adapter/rest.ts",
       "typeOnly": false
     }
   },
@@ -365,10 +365,7 @@
     "export": "default",
     "typeOnly": false,
     "replacement": {
-      "module": "@warp-drive/legacy/model",
-      "export": "default",
-      "sourceFile": "warp-drive-packages/legacy/src/model.ts",
-      "typeOnly": false
+      "notFound": true
     }
   },
   {
@@ -377,10 +374,7 @@
     "export": "default",
     "typeOnly": false,
     "replacement": {
-      "module": "@warp-drive/legacy/model",
-      "export": "default",
-      "sourceFile": "warp-drive-packages/legacy/src/model.ts",
-      "typeOnly": false
+      "notFound": true
     }
   },
   {
@@ -389,10 +383,7 @@
     "export": "default",
     "typeOnly": false,
     "replacement": {
-      "module": "@warp-drive/legacy/model",
-      "export": "default",
-      "sourceFile": "warp-drive-packages/legacy/src/model.ts",
-      "typeOnly": false
+      "notFound": true
     }
   },
   {
@@ -449,9 +440,9 @@
     "export": "default",
     "typeOnly": false,
     "replacement": {
-      "module": "@warp-drive/legacy/model",
-      "export": "default",
-      "sourceFile": "warp-drive-packages/legacy/src/model.ts",
+      "module": "@warp-drive/json-api",
+      "export": "JSONAPICache",
+      "sourceFile": "warp-drive-packages/json-api/src/index.ts",
       "typeOnly": false
     }
   },
@@ -1835,9 +1826,9 @@
     "export": "default",
     "typeOnly": false,
     "replacement": {
-      "module": "@warp-drive/legacy/model",
-      "export": "default",
-      "sourceFile": "warp-drive-packages/legacy/src/model.ts",
+      "module": "@warp-drive/legacy/serializer/json",
+      "export": "JSONSerializer",
+      "sourceFile": "warp-drive-packages/legacy/src/serializer/json.ts",
       "typeOnly": false
     }
   },
@@ -1847,9 +1838,9 @@
     "export": "default",
     "typeOnly": false,
     "replacement": {
-      "module": "@warp-drive/legacy/model",
-      "export": "default",
-      "sourceFile": "warp-drive-packages/legacy/src/model.ts",
+      "module": "@warp-drive/legacy/serializer/json-api",
+      "export": "JSONAPISerializer",
+      "sourceFile": "warp-drive-packages/legacy/src/serializer/json-api.ts",
       "typeOnly": false
     }
   },
@@ -1859,9 +1850,9 @@
     "export": "default",
     "typeOnly": false,
     "replacement": {
-      "module": "@warp-drive/legacy/model",
-      "export": "default",
-      "sourceFile": "warp-drive-packages/legacy/src/model.ts",
+      "module": "@warp-drive/legacy/serializer/rest",
+      "export": "RESTSerializer",
+      "sourceFile": "warp-drive-packages/legacy/src/serializer/rest.ts",
       "typeOnly": false
     }
   },
@@ -5480,10 +5471,7 @@
     "export": "default",
     "typeOnly": false,
     "replacement": {
-      "module": "@warp-drive/legacy/model",
-      "export": "default",
-      "sourceFile": "warp-drive-packages/legacy/src/model.ts",
-      "typeOnly": false
+      "notFound": true
     }
   },
   {
@@ -5492,10 +5480,7 @@
     "export": "default",
     "typeOnly": false,
     "replacement": {
-      "module": "@warp-drive/legacy/model",
-      "export": "default",
-      "sourceFile": "warp-drive-packages/legacy/src/model.ts",
-      "typeOnly": false
+      "notFound": true
     }
   },
   {
@@ -5762,9 +5747,9 @@
     "export": "default",
     "typeOnly": false,
     "replacement": {
-      "module": "@warp-drive/legacy/model",
-      "export": "default",
-      "sourceFile": "warp-drive-packages/legacy/src/model.ts",
+      "module": "@warp-drive/legacy/adapter/json-api",
+      "export": "JSONAPIAdapter",
+      "sourceFile": "warp-drive-packages/legacy/src/adapter/json-api.ts",
       "typeOnly": false
     }
   },
@@ -5774,9 +5759,9 @@
     "export": "default",
     "typeOnly": false,
     "replacement": {
-      "module": "@warp-drive/legacy/model",
-      "export": "default",
-      "sourceFile": "warp-drive-packages/legacy/src/model.ts",
+      "module": "@warp-drive/legacy/adapter/rest",
+      "export": "RESTAdapter",
+      "sourceFile": "warp-drive-packages/legacy/src/adapter/rest.ts",
       "typeOnly": false
     }
   },
@@ -5787,7 +5772,7 @@
     "typeOnly": false,
     "replacement": {
       "module": "@warp-drive/legacy/model",
-      "export": "default",
+      "export": "attr",
       "sourceFile": "warp-drive-packages/legacy/src/model.ts",
       "typeOnly": false
     }
@@ -5846,9 +5831,9 @@
     "export": "default",
     "typeOnly": false,
     "replacement": {
-      "module": "@warp-drive/legacy/model",
-      "export": "default",
-      "sourceFile": "warp-drive-packages/legacy/src/model.ts",
+      "module": "@warp-drive/legacy/serializer/rest",
+      "export": "EmbeddedRecordsMixin",
+      "sourceFile": "warp-drive-packages/legacy/src/serializer/rest.ts",
       "typeOnly": false
     }
   },
@@ -5858,9 +5843,9 @@
     "export": "default",
     "typeOnly": false,
     "replacement": {
-      "module": "@warp-drive/legacy/model",
-      "export": "default",
-      "sourceFile": "warp-drive-packages/legacy/src/model.ts",
+      "module": "@warp-drive/legacy/serializer/json",
+      "export": "JSONSerializer",
+      "sourceFile": "warp-drive-packages/legacy/src/serializer/json.ts",
       "typeOnly": false
     }
   },
@@ -5870,9 +5855,9 @@
     "export": "default",
     "typeOnly": false,
     "replacement": {
-      "module": "@warp-drive/legacy/model",
-      "export": "default",
-      "sourceFile": "warp-drive-packages/legacy/src/model.ts",
+      "module": "@warp-drive/legacy/serializer/json-api",
+      "export": "JSONAPISerializer",
+      "sourceFile": "warp-drive-packages/legacy/src/serializer/json-api.ts",
       "typeOnly": false
     }
   },
@@ -5882,9 +5867,9 @@
     "export": "default",
     "typeOnly": false,
     "replacement": {
-      "module": "@warp-drive/legacy/model",
-      "export": "default",
-      "sourceFile": "warp-drive-packages/legacy/src/model.ts",
+      "module": "@warp-drive/legacy/serializer/rest",
+      "export": "RESTSerializer",
+      "sourceFile": "warp-drive-packages/legacy/src/serializer/rest.ts",
       "typeOnly": false
     }
   },
@@ -5894,10 +5879,7 @@
     "export": "default",
     "typeOnly": false,
     "replacement": {
-      "module": "@warp-drive/legacy/model",
-      "export": "default",
-      "sourceFile": "warp-drive-packages/legacy/src/model.ts",
-      "typeOnly": false
+      "notFound": true
     }
   },
   {
@@ -5930,10 +5912,7 @@
     "export": "default",
     "typeOnly": false,
     "replacement": {
-      "module": "@warp-drive/legacy/model",
-      "export": "default",
-      "sourceFile": "warp-drive-packages/legacy/src/model.ts",
-      "typeOnly": false
+      "notFound": true
     }
   }
 ]

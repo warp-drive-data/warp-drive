@@ -61,5 +61,23 @@ eslintTester.run('no-legacy-imports', rule, {
       output: `import Model, { hasMany } from '@warp-drive/legacy/model';\nimport { Unknown } from '@ember-data/model';`,
       errors: [{ messageId: msg }],
     },
+    // Default import whose replacement is a named export must be rewritten to a
+    // named import, not just have its module string swapped (regression for #10525)
+    {
+      code: `import JSONAPIAdapter from '@ember-data/adapter/json-api';`,
+      output: `import { JSONAPIAdapter } from '@warp-drive/legacy/adapter/json-api';`,
+      errors: [{ messageId: msg }],
+    },
+    {
+      code: `import JSONAPISerializer from '@ember-data/serializer/json-api';`,
+      output: `import { JSONAPISerializer } from '@warp-drive/legacy/serializer/json-api';`,
+      errors: [{ messageId: msg }],
+    },
+    // Default import renamed locally must keep its local alias when converted to named
+    {
+      code: `import Adapter from '@ember-data/adapter/rest';`,
+      output: `import { RESTAdapter as Adapter } from '@warp-drive/legacy/adapter/rest';`,
+      errors: [{ messageId: msg }],
+    },
   ],
 });
