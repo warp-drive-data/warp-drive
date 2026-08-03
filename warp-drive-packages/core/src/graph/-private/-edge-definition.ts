@@ -186,6 +186,16 @@ const BOOL_LATER = null as unknown as boolean;
 const STR_LATER = '';
 const IMPLICIT_KEY_RAND = Date.now();
 
+/**
+ * Tracks `UpgradedMeta` objects that are artificial placeholders standing in
+ * for the inverse of a polymorphic relationship whose abstract type could not
+ * be (or has not yet been) resolved to a concrete implementing type. Once a
+ * concrete implementing type is discovered, we use this to know that the
+ * placeholder's guessed `kind`/`isCollection`/etc. must be replaced rather
+ * than trusted.
+ */
+const PolymorphicPlaceholders = new WeakSet<UpgradedMeta>();
+
 function implicitKeyFor(type: string, key: string): string {
   return `implicit-${type}:${key}${IMPLICIT_KEY_RAND}`;
 }
@@ -436,17 +446,29 @@ export function upgradeDefinition(
 
   // CASE: Inverse is explicitly null
   if (definition.inverseKey === null) {
-    // TODO probably dont need this assertion if polymorphic
-    assert(`Expected the inverse model to exist`, getStore(storeWrapper).modelFor(inverseType));
+    // an abstract type used only as the target of a polymorphic relationship
+    // need not itself be a registered resource/model, so we don't require
+    // it to exist in that case
+    assert(
+      `Expected the inverse model to exist`,
+      definition.isPolymorphic || getStore(storeWrapper).modelFor(inverseType)
+    );
     inverseDefinition = null;
   } else {
     inverseKey = /*#__NOINLINE__*/ inverseForRelationship(getStore(storeWrapper), key, propertyName);
 
     // CASE: If we are polymorphic, and we declared an inverse that is non-null
-    // we must assume that the lack of inverseKey means that there is no
-    // concrete type as the baseType, so we must construct and artificial
-    // placeholder
-    if (!inverseKey && definition.isPolymorphic && definition.inverseKey) {
+    // we must assume that the lack of inverseKey, or the lack of a registered
+    // resource for the abstract type, means that there is no concrete type
+    // as the baseType (yet), so we must construct an artificial placeholder.
+    // The abstract type used for a polymorphic relationship need not itself
+    // be a registered resource/model - it exists only to be implemented by
+    // concrete type(s) via `as`.
+    if (
+      definition.isPolymorphic &&
+      definition.inverseKey &&
+      (!inverseKey || !storeWrapper.schema.hasResource({ type: inverseType }))
+    ) {
       inverseDefinition = {
         kind: 'belongsTo', // this must be updated when we find the first belongsTo or hasMany definition that matches
         key: definition.inverseKey,
@@ -457,6 +479,7 @@ export function upgradeDefinition(
         isCollection: false, // this must be updated when we find the first belongsTo or hasMany definition that matches
         isPolymorphic: false,
       } as UpgradedMeta; // the rest of the fields are populated by syncMeta
+      PolymorphicPlaceholders.add(inverseDefinition);
 
       // CASE: Inverse resolves to null
     } else if (!inverseKey) {
@@ -550,6 +573,22 @@ export function upgradeDefinition(
     // make this lookup easier in the future by caching the key
     modelNames.push(type);
     expandingSet<EdgeDefinition | null>(cache, type, propertyName, cached);
+
+    // CASE: one side of this cached definition is still an artificial
+    // placeholder (built because the abstract type of a polymorphic
+    // relationship was not a registered resource at the time). Now that
+    // we've resolved a concrete implementing type for it, repair the
+    // placeholder (and the already-resolved, possibly already-handed-out,
+    // other side's understanding of its inverse) with the real definition.
+    if (cached.lhs_definition && PolymorphicPlaceholders.has(cached.lhs_definition)) {
+      cached.lhs_definition = definition;
+      if (cached.rhs_definition) {
+        syncMeta(cached.rhs_definition, definition);
+      }
+    } else if (cached.rhs_definition && PolymorphicPlaceholders.has(cached.rhs_definition)) {
+      cached.rhs_definition = definition;
+      syncMeta(cached.lhs_definition, definition);
+    }
 
     return cached;
   }

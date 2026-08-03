@@ -32,6 +32,22 @@ export function expandingSet<T>(cache: Record<string, Record<string, T>>, key1: 
   mainCache[key2] = value;
 }
 
+/**
+ * When associating a concrete record with a polymorphic relationship whose
+ * abstract type is not itself a registered resource, the abstract type's
+ * inverse definition may only be an artificial placeholder (its `kind`,
+ * `isAsync` and `isCollection` are guesses, since we can't know them without
+ * a concrete implementing type to inspect). Resolving the concrete side's
+ * own definition here allows the graph to repair that placeholder with
+ * accurate information before it is relied upon (e.g. by polymorphic type
+ * validation).
+ */
+export function resolvePolymorphicInverse(graph: Graph, definition: UpgradedMeta, addedIdentifier: ResourceKey): void {
+  if (definition.isPolymorphic) {
+    graph.getDefinition(addedIdentifier, definition.inverseKey);
+  }
+}
+
 export function assertValidRelationshipPayload(
   graph: Graph,
   op: UpdateRelationshipOperation | UpdateResourceRelationshipOperation
