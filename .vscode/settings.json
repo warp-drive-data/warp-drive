@@ -50,12 +50,5 @@
   "bun.debugTerminal.enabled": true,
   "eslint.debug": true,
   "eslint.runtime": "node",
-  "typescript.tsdk": "node_modules/typescript/lib",
-  "workbench.colorCustomizations": {
-    "titleBar.activeBackground": "#27ae60",
-    "titleBar.activeForeground": "#ffffff",
-    "titleBar.inactiveBackground": "#27ae60",
-    "titleBar.inactiveForeground": "#ffffff99"
-  },
-  "window.title": "⎇ runspired/fix-lint-imports   ${rootName}${separator}${appName}"
+  "typescript.tsdk": "node_modules/typescript/lib"
 }
