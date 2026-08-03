@@ -114,7 +114,9 @@ function createHelpers(context) {
       return { kind: 'default', text: localName };
     }
     const text =
-      descriptor.targetExportName === localName ? descriptor.targetExportName : `${descriptor.targetExportName} as ${localName}`;
+      descriptor.targetExportName === localName
+        ? descriptor.targetExportName
+        : `${descriptor.targetExportName} as ${localName}`;
     return { kind: 'named', text };
   }
 
