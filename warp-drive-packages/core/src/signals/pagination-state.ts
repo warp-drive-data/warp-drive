@@ -325,7 +325,15 @@ export class PaginationState<RT = unknown, E = unknown>
 
   /** @internal */
   private async setup(): Promise<void> {
-    const document = await this.request;
+    let document;
+    try {
+      document = await this.request;
+    } catch {
+      // a failed (or aborted) initial request leaves the pagination state
+      // empty. Rendering the failure is the request subscription's job, and
+      // recovery (retry) produces a new request and with it a new state.
+      return;
+    }
     const content = document.content as ReactiveDocument<unknown>;
     const selfLink = getHref(content.links?.self);
     const firstLink = getHref(content.links?.first);
@@ -344,7 +352,12 @@ export class PaginationState<RT = unknown, E = unknown>
    * Extends the backward frontier by one page, prepending it to {@link data}.
    * The frontier advances only once the page has loaded, so
    * {@link previousRequest} tracks the in-flight page meanwhile. Returns the
-   * loaded value, or `null` when there is no previous page.
+   * loaded value, or `null` when there is no previous page or the load fails.
+   *
+   * On failure the frontier stays put and {@link previousRequest} keeps
+   * resolving to the failed page, so a wrapping `<Request>` renders its error
+   * block. Calling again retries: the failed page is re-requested with a
+   * forced reload.
    *
    * In templates it is also available as the `loadPrev` content feature
    * ({@link InfinitePaginationContentFeatures.loadPrev}) yielded by
@@ -385,12 +398,23 @@ export class PaginationState<RT = unknown, E = unknown>
     }
 
     const page = cache.getPageCache(url);
-    if (!page.isRequested) {
-      const request = this.store.request({ method: 'GET', url });
+    if (!page.isRequested || page.isError) {
+      // re-requesting a page that previously failed is the retry path: force
+      // a reload so a cached error response is not replayed.
+      const request = this.store.request(
+        page.isError ? { method: 'GET', url, cacheOptions: { reload: true } } : { method: 'GET', url }
+      );
       cache.loadPage(url, request as Future<RT>);
     }
 
-    await page.request;
+    try {
+      await page.request;
+    } catch {
+      // the failure is surfaced reactively: the frontier stays put, so
+      // `nextRequest`/`previousRequest` resolves to the failed page and a
+      // wrapping `<Request>` renders its error block. Calling again retries.
+      return null;
+    }
 
     // Advance the frontier only after the load resolves. While loading, the
     // frontier still points at the previous page, so `nextRequest`/`prevRequest`
@@ -414,7 +438,13 @@ export class PaginationState<RT = unknown, E = unknown>
    * the two are the same function.
    *
    * It is a stable reference, so it is safe to pass around as an "action" or
-   * "event" handler. Returns the page's value, or `null` if it has none.
+   * "event" handler. Returns the page's value, or `null` if it has none or
+   * the load fails.
+   *
+   * On failure the page stays active and {@link activePageRequest} resolves to
+   * it, so a wrapping `<Request>` renders its error block. Calling again (for
+   * example clicking the page's link a second time) retries: the failed page
+   * is re-requested with a forced reload.
    *
    * ```gts
    * <EachLink @pages={{pages}}>
@@ -431,11 +461,21 @@ export class PaginationState<RT = unknown, E = unknown>
     const page = cache.getPageCache(url);
     this.activePage = page;
 
-    if (!page.isLoaded) {
-      const request = this.store.request({ method: 'GET', url });
+    if (!page.isLoaded || page.isError) {
+      // re-requesting a page that previously failed is the retry path: force
+      // a reload so a cached error response is not replayed.
+      const request = this.store.request(
+        page.isError ? { method: 'GET', url, cacheOptions: { reload: true } } : { method: 'GET', url }
+      );
       cache.loadPage(url, request as Future<RT>);
-      await page.request;
-      return page.value;
+      try {
+        await page.request;
+      } catch {
+        // the failure is surfaced reactively: the page stays active, so
+        // `activePageRequest` resolves to it and a wrapping `<Request>`
+        // renders its error block. Calling again retries.
+        return null;
+      }
     }
 
     return page.value;

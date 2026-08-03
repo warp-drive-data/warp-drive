@@ -353,6 +353,276 @@ PaginateSpec.use(useEmber(), function (b) {
       </template>;
     })
 
+    .test('it transitions to error state correctly', function (props) {
+      const { request, store, countFor } = props;
+
+      return <template>
+        <Paginate @request={{request}} @store={{store}}>
+          <:loading>
+            <span data-test-pending>Pending<br />Count: {{countFor request}}</span>
+          </:loading>
+          <:content as |pages features|>
+            <Request @request={{pages.activePageRequest}} @store={{store}}>
+              <:content as |content|>
+                {{#each content.data as |user|}}
+                  <span data-test-user-name>{{user.attributes.name}}<br />Count: {{countFor user}}</span>
+                {{/each}}
+              </:content>
+              <:loading><span data-test-loading-page>Pending</span></:loading>
+            </Request>
+          </:content>
+          <:error as |error|>
+            <span data-test-error>{{error.message}}<br />Count: {{countFor error}}</span>
+          </:error>
+        </Paginate>
+      </template>;
+    })
+
+    .test('we can retry from error state', function (props) {
+      const { request, store, countFor, retry } = props;
+
+      return <template>
+        <Paginate @request={{request}} @store={{store}}>
+          <:loading>
+            <span data-test-pending>Pending<br />Count: {{countFor request}}</span>
+          </:loading>
+          <:content as |pages features|>
+            <Request @request={{pages.activePageRequest}} @store={{store}}>
+              <:content as |content|>
+                {{#each content.data as |user|}}
+                  <span data-test-user-name>{{user.attributes.name}}<br />Count: {{countFor user}}</span>
+                {{/each}}
+              </:content>
+              <:loading><span data-test-loading-page>Pending</span></:loading>
+            </Request>
+
+            <span data-test-total-pages>{{pages.totalPages}}</span>
+
+            <EachLink @pages={{pages}} @store={{store}}>
+              <:link as |link|>
+                <button {{on "click" link.setActive}} data-test-load-page={{link.index}}>{{link.text}}</button>
+              </:link>
+              <:placeholder as |link|>
+                <button>.</button>
+              </:placeholder>
+            </EachLink>
+          </:content>
+          <:error as |error errorFeatures|>
+            <span data-test-error>{{error.message}}<br />Count: {{countFor error}}</span>
+            <button test-id="retry-button" {{on "click" (fn retry errorFeatures)}}>Retry</button>
+          </:error>
+        </Paginate>
+      </template>;
+    })
+
+    .test('it rethrows if error block is not present', function (props) {
+      const { request, store, countFor } = props;
+
+      return <template>
+        <Paginate @request={{request}} @store={{store}}>
+          <:loading>
+            <span data-test-pending>Pending<br />Count: {{countFor request}}</span>
+          </:loading>
+          <:content as |pages features|>
+            <Request @request={{pages.activePageRequest}} @store={{store}}>
+              <:content as |content|>
+                {{#each content.data as |user|}}
+                  <span data-test-user-name>{{user.attributes.name}}<br />Count: {{countFor user}}</span>
+                {{/each}}
+              </:content>
+              <:loading><span data-test-loading-page>Pending</span></:loading>
+            </Request>
+          </:content>
+        </Paginate>
+      </template>;
+    })
+
+    .test('it transitions to cancelled state correctly', function (props) {
+      const { request, store, countFor } = props;
+
+      return <template>
+        <Paginate @request={{request}} @store={{store}}>
+          <:loading>
+            <span data-test-pending>Pending<br />Count: {{countFor request}}</span>
+          </:loading>
+          <:content as |pages features|>
+            <Request @request={{pages.activePageRequest}} @store={{store}}>
+              <:content as |content|>
+                {{#each content.data as |user|}}
+                  <span data-test-user-name>{{user.attributes.name}}<br />Count: {{countFor user}}</span>
+                {{/each}}
+              </:content>
+              <:loading><span data-test-loading-page>Pending</span></:loading>
+            </Request>
+          </:content>
+          <:cancelled as |error|>
+            <span data-test-cancelled>Cancelled {{error.message}}<br />Count: {{countFor error}}</span>
+          </:cancelled>
+          <:error as |error|>
+            <span data-test-error>{{error.message}}<br />Count: {{countFor error}}</span>
+          </:error>
+        </Paginate>
+      </template>;
+    })
+
+    .test('we can retry from cancelled state', function (props) {
+      const { request, store, countFor, retry } = props;
+
+      return <template>
+        <Paginate @request={{request}} @store={{store}}>
+          <:loading>
+            <span data-test-pending>Pending<br />Count: {{countFor request}}</span>
+          </:loading>
+          <:content as |pages features|>
+            <Request @request={{pages.activePageRequest}} @store={{store}}>
+              <:content as |content|>
+                {{#each content.data as |user|}}
+                  <span data-test-user-name>{{user.attributes.name}}<br />Count: {{countFor user}}</span>
+                {{/each}}
+              </:content>
+              <:loading><span data-test-loading-page>Pending</span></:loading>
+            </Request>
+
+            <span data-test-total-pages>{{pages.totalPages}}</span>
+
+            <EachLink @pages={{pages}} @store={{store}}>
+              <:link as |link|>
+                <button {{on "click" link.setActive}} data-test-load-page={{link.index}}>{{link.text}}</button>
+              </:link>
+              <:placeholder as |link|>
+                <button>.</button>
+              </:placeholder>
+            </EachLink>
+          </:content>
+          <:cancelled as |error errorFeatures|>
+            <span data-test-cancelled>Cancelled {{error.message}}<br />Count: {{countFor error}}</span>
+            <button test-id="retry-button" {{on "click" (fn retry errorFeatures)}}>Retry</button>
+          </:cancelled>
+          <:error as |error|>
+            <span data-test-error>{{error.message}}<br />Count: {{countFor error}}</span>
+          </:error>
+        </Paginate>
+      </template>;
+    })
+
+    .test('it transitions to error state if cancelled block is not present', function (props) {
+      const { request, store, countFor } = props;
+
+      return <template>
+        <Paginate @request={{request}} @store={{store}}>
+          <:loading>
+            <span data-test-pending>Pending<br />Count: {{countFor request}}</span>
+          </:loading>
+          <:content as |pages features|>
+            <Request @request={{pages.activePageRequest}} @store={{store}}>
+              <:content as |content|>
+                {{#each content.data as |user|}}
+                  <span data-test-user-name>{{user.attributes.name}}<br />Count: {{countFor user}}</span>
+                {{/each}}
+              </:content>
+              <:loading><span data-test-loading-page>Pending</span></:loading>
+            </Request>
+          </:content>
+          <:error as |error|>
+            <span data-test-error>{{error.message}}<br />Count: {{countFor error}}</span>
+          </:error>
+        </Paginate>
+      </template>;
+    })
+
+    .test('it does not rethrow for cancelled', function (props) {
+      const { request, store, countFor } = props;
+
+      return <template>
+        <Paginate @request={{request}} @store={{store}}>
+          <:loading>
+            <span data-test-pending>Pending<br />Count: {{countFor request}}</span>
+          </:loading>
+          <:content as |pages features|>
+            <Request @request={{pages.activePageRequest}} @store={{store}}>
+              <:content as |content|>
+                {{#each content.data as |user|}}
+                  <span data-test-user-name>{{user.attributes.name}}<br />Count: {{countFor user}}</span>
+                {{/each}}
+              </:content>
+              <:loading><span data-test-loading-page>Pending</span></:loading>
+            </Request>
+          </:content>
+        </Paginate>
+      </template>;
+    })
+
+    .test('a failed page load renders the active page error and can be retried', function (props) {
+      const { request, store } = props;
+
+      return <template>
+        <Paginate @request={{request}} @store={{store}}>
+          <:loading>
+            <span data-test-pending>Pending</span>
+          </:loading>
+          <:content as |pages features|>
+            <Request @request={{pages.activePageRequest}} @store={{store}}>
+              <:idle><span data-test-idle>No page is active</span></:idle>
+              <:content as |content|>
+                {{#each content.data as |user|}}
+                  <span data-test-user-name>{{user.attributes.name}}</span>
+                {{/each}}
+              </:content>
+              <:loading><span data-test-loading-page>Pending</span></:loading>
+              <:error as |error|>
+                <span data-test-page-error>{{error.message}}</span>
+              </:error>
+            </Request>
+
+            <EachLink @pages={{pages}} @store={{store}}>
+              <:link as |link|>
+                <button {{on "click" link.setActive}} data-test-load-page={{link.index}}>{{link.text}}</button>
+              </:link>
+              <:placeholder as |link|>
+                <button>.</button>
+              </:placeholder>
+            </EachLink>
+          </:content>
+          <:error as |error|>
+            <span data-test-error>{{error.message}}</span>
+          </:error>
+        </Paginate>
+      </template>;
+    })
+
+    .test('a failed loadNext renders the error and can be retried', function (props) {
+      const { request, store } = props;
+
+      return <template>
+        <Paginate @request={{request}} @store={{store}} @mode="infinite">
+          <:loading>
+            <span data-test-pending>Pending</span>
+          </:loading>
+          <:content as |pages features|>
+            {{#each pages.data as |user|}}
+              <span data-test-user-name>{{user.attributes.name}}</span>
+            {{/each}}
+
+            {{#if pages.hasNext}}
+              <Request @request={{pages.nextRequest}} @store={{store}}>
+                <:idle>
+                  <button data-test-load-next {{on "click" features.loadNext}}>Load next</button>
+                </:idle>
+                <:loading><span data-test-loading-next>Loading next</span></:loading>
+                <:error as |error|>
+                  <span data-test-next-error>{{error.message}}</span>
+                  <button data-test-load-next {{on "click" features.loadNext}}>Retry</button>
+                </:error>
+              </Request>
+            {{/if}}
+          </:content>
+          <:error as |error|>
+            <span data-test-error>{{error.message}}</span>
+          </:error>
+        </Paginate>
+      </template>;
+    })
+
     // @ts-expect-error need to figure out how to do this for "compiled" versions of this type
     // If there's a typeerror here, we are missing a test.
     .never(null);

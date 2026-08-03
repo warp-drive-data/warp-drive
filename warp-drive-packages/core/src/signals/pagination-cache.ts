@@ -137,7 +137,7 @@ export class PaginationCache<RT = unknown, E = unknown> {
   /** @internal */
   loadPage(url: string, request: Future<RT> | null): Readonly<PageCache<RT, E>> {
     const page = this.getPageCache(url);
-    if (!page.isLoaded && request) {
+    if ((!page.isLoaded || page.isError) && request) {
       assert('Expected a request to a load a page', request);
       void page.load(request).then((document) => {
         this.updateFirstPage(page);

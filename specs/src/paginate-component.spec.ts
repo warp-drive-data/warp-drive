@@ -1,4 +1,5 @@
 import { Fetch, RequestManager } from '@warp-drive/core';
+import { PRODUCTION } from '@warp-drive/core/build-config/env';
 import {
   clearPaginationCache,
   getPaginationCache,
@@ -9,8 +10,9 @@ import {
 import type { CacheHandler, Future, NextFn } from '@warp-drive/core/request';
 import type { RequestContext, StructuredDataDocument } from '@warp-drive/core/types/request';
 import type { CollectionResourceDataDocument } from '@warp-drive/core/types/spec/document';
+import { setupOnError } from '@warp-drive/diagnostic';
 import { spec, type SpecTest, type SuiteBuilder } from '@warp-drive/diagnostic/spec';
-import { MockServerHandler } from '@warp-drive/holodeck';
+import { mock, MockServerHandler } from '@warp-drive/holodeck';
 import { GET } from '@warp-drive/holodeck/mock';
 import { buildBaseURL } from '@warp-drive/utilities';
 
@@ -105,6 +107,69 @@ const users = [
   },
 ];
 
+function twoPageURLs(): [string, string] {
+  return [buildBaseURL({ resourcePath: 'users/1' }), buildBaseURL({ resourcePath: 'users/2' })];
+}
+
+async function mockFirstPageSuccess(context: LocalTestContext): Promise<void> {
+  const urls = twoPageURLs();
+  await GET(context, 'users/1', () => ({
+    data: [users[0]],
+    links: {
+      first: urls[0],
+      prev: null,
+      self: urls[0],
+      next: urls[1],
+      last: urls[1],
+    },
+    meta: {
+      currentPage: 1,
+      totalPages: 2,
+    },
+  }));
+}
+
+async function mockSecondPageSuccess(context: LocalTestContext): Promise<void> {
+  const urls = twoPageURLs();
+  await GET(context, 'users/2', () => ({
+    data: [users[1]],
+    links: {
+      first: urls[0],
+      prev: urls[0],
+      self: urls[1],
+      next: null,
+      last: urls[1],
+    },
+    meta: {
+      currentPage: 2,
+      totalPages: 2,
+    },
+  }));
+}
+
+async function mockPageFailure(context: LocalTestContext, path: 'users/1' | 'users/2'): Promise<string> {
+  const url = buildBaseURL({ resourcePath: path });
+  await mock(context, () => ({
+    url: path,
+    status: 404,
+    headers: {},
+    method: 'GET',
+    statusText: 'Not Found',
+    body: null,
+    response: {
+      errors: [
+        {
+          status: '404',
+          title: 'Not Found',
+          detail: 'The resource does not exist.',
+        },
+      ],
+    },
+  }));
+
+  return url;
+}
+
 export interface PaginateSpecSignature extends Record<string, SpecTest<LocalTestContext, object>> {
   'it handles paged pagination with complete data': SpecTest<
     LocalTestContext,
@@ -168,6 +233,78 @@ export interface PaginateSpecSignature extends Record<string, SpecTest<LocalTest
     }
   >;
   'it renders the default block as a fallback with pagination state and features': SpecTest<
+    LocalTestContext,
+    {
+      store: RequestManager;
+      request: CollectionRequest;
+    }
+  >;
+  'it transitions to error state correctly': SpecTest<
+    LocalTestContext,
+    {
+      store: RequestManager;
+      request: CollectionRequest;
+      countFor: (result: unknown) => number;
+    }
+  >;
+  'we can retry from error state': SpecTest<
+    LocalTestContext,
+    {
+      store: RequestManager;
+      request: CollectionRequest;
+      countFor: (result: unknown) => number;
+      retry: (features: { retry: () => Promise<void> }) => void;
+    }
+  >;
+  'it rethrows if error block is not present': SpecTest<
+    LocalTestContext,
+    {
+      store: RequestManager;
+      request: CollectionRequest;
+      countFor: (result: unknown) => number;
+    }
+  >;
+  'it transitions to cancelled state correctly': SpecTest<
+    LocalTestContext,
+    {
+      store: RequestManager;
+      request: CollectionRequest;
+      countFor: (result: unknown) => number;
+    }
+  >;
+  'we can retry from cancelled state': SpecTest<
+    LocalTestContext,
+    {
+      store: RequestManager;
+      request: CollectionRequest;
+      countFor: (result: unknown) => number;
+      retry: (features: { retry: () => Promise<void> }) => void;
+    }
+  >;
+  'it transitions to error state if cancelled block is not present': SpecTest<
+    LocalTestContext,
+    {
+      store: RequestManager;
+      request: CollectionRequest;
+      countFor: (result: unknown) => number;
+    }
+  >;
+  'it does not rethrow for cancelled': SpecTest<
+    LocalTestContext,
+    {
+      store: RequestManager;
+      request: CollectionRequest;
+      countFor: (result: unknown) => number;
+    }
+  >;
+  'a failed page load renders the active page error and can be retried': SpecTest<
+    LocalTestContext,
+    {
+      store: RequestManager;
+      request: CollectionRequest;
+    }
+  >;
+  'a failed loadNext renders the error and can be retried': SpecTest<
     LocalTestContext,
     {
       store: RequestManager;
@@ -544,8 +681,10 @@ export const PaginateSpec: SuiteBuilder<LocalTestContext, PaginateSpecSignature>
         url: urls[1],
         method: 'GET',
       });
+      // the initial document exposes no `first` link, so the shared cache is
+      // keyed by the entry page's `self` link
+      const paginationCache = getPaginationCache(urls[1]);
       const paginationState = getPaginationState(request);
-      const paginationCache = getPaginationCache(urls[0]);
       const paginationLinks = getPaginationLinks(paginationState);
 
       let counter = 0;
@@ -1422,5 +1561,472 @@ export const PaginateSpec: SuiteBuilder<LocalTestContext, PaginateSpecSignature>
       'Next page appended via the yielded features'
     );
     assert.equal(this.element.querySelectorAll('[data-test-user-name]').length, 2, '2 users rendered');
+  })
+
+  .for('it transitions to error state correctly')
+  .use<{ store: RequestManager; request: CollectionRequest; countFor: (result: unknown) => number }>(
+    async function (assert) {
+      const url = await mockPageFailure(this, 'users/1');
+      const request = this.manager.request<CollectionResourceDataDocument<UserResource>>({ url, method: 'GET' });
+      const paginationState = getPaginationState(request);
+
+      let counter = 0;
+      function countFor(_result: unknown) {
+        return ++counter;
+      }
+
+      await this.render({
+        store: this.manager,
+        request,
+        countFor,
+      });
+
+      assert.equal(counter, 1, 'counter is 1');
+      assert.equal(this.element.querySelector('[data-test-pending]')?.textContent.trim(), 'PendingCount: 1');
+
+      try {
+        await request;
+      } catch {
+        // ignore the error
+      }
+      await this.h.rerender();
+
+      assert.equal(counter, 2, 'counter is 2');
+      assert.equal(
+        this.element.querySelector('[data-test-error]')?.textContent.trim(),
+        `[404 Not Found] GET (cors) - ${url}Count: 2`,
+        'the error block renders the reason'
+      );
+      assert.equal(this.element.querySelectorAll('[data-test-user-name]').length, 0, 'the content block never renders');
+      assert.equal(Array.from(paginationState.pages).length, 0, 'no pages after the initial request fails');
+      assert.equal(paginationState.totalPages, 0, 'totalPages stays unknown');
+    }
+  )
+
+  .for('we can retry from error state')
+  .use<{
+    store: RequestManager;
+    request: CollectionRequest;
+    countFor: (result: unknown) => number;
+    retry: (features: { retry: () => Promise<void> }) => void;
+  }>(async function (assert) {
+    const url = await mockPageFailure(this, 'users/1');
+    await mockFirstPageSuccess(this);
+    await mockSecondPageSuccess(this);
+    const request = this.manager.request<CollectionResourceDataDocument<UserResource>>({ url, method: 'GET' });
+
+    let retryPromise: Promise<unknown> | null = null;
+    let counter = 0;
+    function countFor(_result: unknown) {
+      return ++counter;
+    }
+    function retry(features: { retry: () => Promise<void> }) {
+      assert.step('retry');
+      retryPromise = features.retry();
+      return retryPromise;
+    }
+
+    await this.render({
+      store: this.manager,
+      request,
+      countFor,
+      retry,
+    });
+
+    assert.equal(counter, 1, 'counter is 1');
+    assert.equal(this.element.querySelector('[data-test-pending]')?.textContent.trim(), 'PendingCount: 1');
+
+    try {
+      await request;
+    } catch {
+      // ignore the error
+    }
+    await this.h.rerender();
+
+    assert.equal(counter, 2, 'counter is 2');
+    assert.equal(
+      this.element.querySelector('[data-test-error]')?.textContent.trim(),
+      `[404 Not Found] GET (cors) - ${url}Count: 2`,
+      'the error block renders the reason'
+    );
+
+    await this.h.click('[test-id="retry-button"]');
+    await retryPromise!;
+    // the first rerender picks up the retried request and begins the new
+    // pagination state's async setup; the second renders its result
+    await this.h.rerender();
+    await this.h.rerender();
+
+    assert.verifySteps(['retry'], 'we called retry');
+    assert.equal(counter, 4, 'counter is 4');
+    assert.equal(
+      this.element.querySelector('[data-test-user-name]')?.textContent.trim(),
+      'Chris ThoburnCount: 4',
+      'the first page renders after retry'
+    );
+    assert.equal(
+      this.element.querySelector('[data-test-total-pages]')?.textContent.trim(),
+      '2',
+      'totalPages recovers after retry'
+    );
+    assert.equal(this.element.querySelectorAll('[data-test-load-page]').length, 2, 'both page links render');
+
+    // pagination is fully functional after the retry: navigate to page 2
+    await this.h.click('[data-test-load-page="2"]');
+
+    assert.equal(
+      this.element.querySelector('[data-test-user-name]')?.textContent.trim(),
+      'Leo EuclidesCount: 5',
+      'navigation works after retry'
+    );
+  })
+
+  .for('it rethrows if error block is not present')
+  .use<{ store: RequestManager; request: CollectionRequest; countFor: (result: unknown) => number }>(
+    async function (assert) {
+      const url = await mockPageFailure(this, 'users/1');
+      const request = this.manager.request<CollectionResourceDataDocument<UserResource>>({ url, method: 'GET' });
+
+      let counter = 0;
+      function countFor(_result: unknown) {
+        return ++counter;
+      }
+
+      await this.render({
+        store: this.manager,
+        request,
+        countFor,
+      });
+
+      assert.equal(counter, 1, 'counter is 1');
+      assert.equal(this.element.querySelector('[data-test-pending]')?.textContent.trim(), 'PendingCount: 1');
+
+      const cleanup = setupOnError((error) => {
+        assert.step('render-error');
+        const message = error instanceof Error ? error.message : error;
+        const matches =
+          typeof message === 'string' &&
+          // ember
+          ((PRODUCTION
+            ? message.startsWith('[404 Not Found] GET (cors) - ')
+            : message.startsWith('\n\nError occurred:\n\n- While rendering:')) ||
+            // react
+            message.startsWith('[404 Not Found] GET (cors) - '));
+        assert.true(matches, 'error message is correct');
+        if (!matches) {
+          throw new Error(`Unmatched Error Encountered`, { cause: message });
+        }
+      });
+      try {
+        await request;
+      } catch {
+        // ignore the error
+      }
+      if (PRODUCTION) {
+        // for whatever reason the rethrow isn't immediate in production
+        // and is hard to capture
+        await new Promise((resolve) => setTimeout(resolve, 100));
+      }
+      await this.h.rerender();
+      cleanup();
+
+      assert.verifySteps(['render-error']);
+      assert.equal(counter, 1, 'counter is still 1');
+      assert.equal(this.element.textContent?.trim(), '', 'nothing is rendered');
+    }
+  )
+
+  .for('it transitions to cancelled state correctly')
+  .use<{ store: RequestManager; request: CollectionRequest; countFor: (result: unknown) => number }>(
+    async function (assert) {
+      const url = await mockPageFailure(this, 'users/1');
+      const request = this.manager.request<CollectionResourceDataDocument<UserResource>>({ url, method: 'GET' });
+
+      let counter = 0;
+      function countFor(_result: unknown) {
+        return ++counter;
+      }
+
+      await this.render({
+        store: this.manager,
+        request,
+        countFor,
+      });
+
+      assert.equal(counter, 1, 'counter is 1');
+      assert.equal(this.element.querySelector('[data-test-pending]')?.textContent.trim(), 'PendingCount: 1');
+
+      request.abort();
+
+      try {
+        await request;
+      } catch {
+        // ignore the error
+      }
+      await this.h.rerender();
+
+      assert.equal(counter, 2, 'counter is 2');
+      assert.equal(
+        this.element.querySelector('[data-test-cancelled]')?.textContent.trim(),
+        'Cancelled The user aborted a request.Count: 2',
+        'the cancelled block renders, not the error block'
+      );
+      assert.equal(this.element.querySelectorAll('[data-test-error]').length, 0, 'the error block does not render');
+    }
+  )
+
+  .for('we can retry from cancelled state')
+  .use<{
+    store: RequestManager;
+    request: CollectionRequest;
+    countFor: (result: unknown) => number;
+    retry: (features: { retry: () => Promise<void> }) => void;
+  }>(async function (assert) {
+    const url = await mockPageFailure(this, 'users/1');
+    await mockFirstPageSuccess(this);
+    const request = this.manager.request<CollectionResourceDataDocument<UserResource>>({ url, method: 'GET' });
+
+    let retryPromise: Promise<unknown> | null = null;
+    let counter = 0;
+    function countFor(_result: unknown) {
+      return ++counter;
+    }
+    function retry(features: { retry: () => Promise<void> }) {
+      assert.step('retry');
+      retryPromise = features.retry();
+      return retryPromise;
+    }
+
+    await this.render({
+      store: this.manager,
+      request,
+      countFor,
+      retry,
+    });
+
+    assert.equal(counter, 1, 'counter is 1');
+    assert.equal(this.element.querySelector('[data-test-pending]')?.textContent.trim(), 'PendingCount: 1');
+
+    request.abort();
+
+    try {
+      await request;
+    } catch {
+      // ignore the error
+    }
+    await this.h.rerender();
+
+    assert.equal(counter, 2, 'counter is 2');
+    assert.equal(
+      this.element.querySelector('[data-test-cancelled]')?.textContent.trim(),
+      'Cancelled The user aborted a request.Count: 2',
+      'the cancelled block renders'
+    );
+
+    await this.h.click('[test-id="retry-button"]');
+    await retryPromise!;
+    // the first rerender picks up the retried request and begins the new
+    // pagination state's async setup; the second renders its result
+    await this.h.rerender();
+    await this.h.rerender();
+
+    assert.verifySteps(['retry'], 'we called retry');
+    assert.equal(counter, 4, 'counter is 4');
+    assert.equal(
+      this.element.querySelector('[data-test-user-name]')?.textContent.trim(),
+      'Chris ThoburnCount: 4',
+      'the first page renders after retry'
+    );
+    assert.equal(
+      this.element.querySelector('[data-test-total-pages]')?.textContent.trim(),
+      '2',
+      'totalPages recovers after retry'
+    );
+    assert.equal(this.element.querySelectorAll('[data-test-load-page]').length, 2, 'both page links render');
+  })
+
+  .for('it transitions to error state if cancelled block is not present')
+  .use<{ store: RequestManager; request: CollectionRequest; countFor: (result: unknown) => number }>(
+    async function (assert) {
+      const url = await mockPageFailure(this, 'users/1');
+      const request = this.manager.request<CollectionResourceDataDocument<UserResource>>({ url, method: 'GET' });
+
+      let counter = 0;
+      function countFor(_result: unknown) {
+        return ++counter;
+      }
+
+      await this.render({
+        store: this.manager,
+        request,
+        countFor,
+      });
+
+      assert.equal(counter, 1, 'counter is 1');
+      assert.equal(this.element.querySelector('[data-test-pending]')?.textContent.trim(), 'PendingCount: 1');
+
+      request.abort();
+
+      try {
+        await request;
+      } catch {
+        // ignore the error
+      }
+      await this.h.rerender();
+
+      assert.equal(counter, 2, 'counter is 2');
+      assert.equal(
+        this.element.querySelector('[data-test-error]')?.textContent.trim(),
+        'The user aborted a request.Count: 2',
+        'the abort reason falls through to the error block'
+      );
+    }
+  )
+
+  .for('it does not rethrow for cancelled')
+  .use<{ store: RequestManager; request: CollectionRequest; countFor: (result: unknown) => number }>(
+    async function (assert) {
+      const url = await mockPageFailure(this, 'users/1');
+      const request = this.manager.request<CollectionResourceDataDocument<UserResource>>({ url, method: 'GET' });
+
+      let counter = 0;
+      function countFor(_result: unknown) {
+        return ++counter;
+      }
+
+      await this.render({
+        store: this.manager,
+        request,
+        countFor,
+      });
+
+      assert.equal(counter, 1, 'counter is 1');
+      assert.equal(this.element.querySelector('[data-test-pending]')?.textContent.trim(), 'PendingCount: 1');
+
+      const cleanup = setupOnError(() => {
+        assert.step('render-error');
+      });
+
+      request.abort();
+      try {
+        await request;
+      } catch {
+        // ignore the error
+      }
+      await this.h.rerender();
+      cleanup();
+
+      assert.equal(counter, 1, 'counter is still 1');
+      assert.equal(this.element.textContent?.trim(), '', 'nothing is rendered');
+      assert.verifySteps([], 'no error should be thrown');
+    }
+  )
+
+  .for('a failed page load renders the active page error and can be retried')
+  .use<{ store: RequestManager; request: CollectionRequest }>(async function (assert) {
+    const urls = twoPageURLs();
+    await mockFirstPageSuccess(this);
+    await mockPageFailure(this, 'users/2');
+    const request = this.manager.request<CollectionResourceDataDocument<UserResource>>({
+      url: urls[0],
+      method: 'GET',
+    });
+    const paginationState = getPaginationState(request);
+
+    await this.render({
+      store: this.manager,
+      request,
+    });
+
+    await request;
+    await this.h.rerender();
+
+    assert.equal(
+      this.element.querySelector('[data-test-user-name]')?.textContent.trim(),
+      'Chris Thoburn',
+      'the first page renders'
+    );
+    assert.equal(this.element.querySelectorAll('[data-test-load-page]').length, 2, 'both page links render');
+
+    await this.h.click('[data-test-load-page="2"]');
+
+    assert.equal(
+      this.element.querySelector('[data-test-page-error]')?.textContent.trim(),
+      `[404 Not Found] GET (cors) - ${urls[1]}`,
+      'the active page renders its error'
+    );
+    assert.equal(this.element.querySelectorAll('[data-test-user-name]').length, 0, 'no page content renders');
+    assert.true(Boolean(paginationState.activePage?.isError), 'the active page is in error state');
+    assert.equal(paginationState.totalPages, 2, 'totalPages is unaffected by the failed page');
+    assert.equal(this.element.querySelectorAll('[data-test-load-page]').length, 2, 'the links are unaffected');
+
+    // clicking the link again is the retry: it must issue a fresh request
+    // (bypassing the cached error response) instead of replaying the failure
+    await mockSecondPageSuccess(this);
+    await this.h.click('[data-test-load-page="2"]');
+
+    assert.equal(
+      this.element.querySelector('[data-test-user-name]')?.textContent.trim(),
+      'Leo Euclides',
+      'the page renders after the retried load succeeds'
+    );
+    assert.equal(this.element.querySelectorAll('[data-test-page-error]').length, 0, 'the error is gone');
+    assert.true(Boolean(paginationState.activePage?.isSuccess), 'the active page recovered');
+  })
+
+  .for('a failed loadNext renders the error and can be retried')
+  .use<{ store: RequestManager; request: CollectionRequest }>(async function (assert) {
+    const urls = twoPageURLs();
+    await mockFirstPageSuccess(this);
+    await mockPageFailure(this, 'users/2');
+    const request = this.manager.request<CollectionResourceDataDocument<UserResource>>({
+      url: urls[0],
+      method: 'GET',
+    });
+    const paginationState = getPaginationState(request);
+
+    await this.render({
+      store: this.manager,
+      request,
+    });
+
+    await request;
+    await this.h.rerender();
+
+    assert.deepEqual(
+      Array.from(paginationState.data).map((user) => user.attributes.name),
+      ['Chris Thoburn'],
+      'the first page loads'
+    );
+    assert.equal(this.element.querySelectorAll('[data-test-load-next]').length, 1, 'the load-next sentinel renders');
+
+    await this.h.click('[data-test-load-next]');
+
+    assert.equal(
+      this.element.querySelector('[data-test-next-error]')?.textContent.trim(),
+      `[404 Not Found] GET (cors) - ${urls[1]}`,
+      'the failed next page renders its error'
+    );
+    assert.deepEqual(
+      Array.from(paginationState.data).map((user) => user.attributes.name),
+      ['Chris Thoburn'],
+      'the accumulated data is unaffected by the failure'
+    );
+    assert.equal(Array.from(paginationState.pages).length, 1, 'the frontier does not advance onto the failed page');
+    assert.true(paginationState.hasNext, 'hasNext remains true');
+
+    // clicking load-next again is the retry: it must issue a fresh request
+    // (bypassing the cached error response) instead of replaying the failure
+    await mockSecondPageSuccess(this);
+    await this.h.click('[data-test-load-next]');
+
+    assert.deepEqual(
+      Array.from(paginationState.data).map((user) => user.attributes.name),
+      ['Chris Thoburn', 'Leo Euclides'],
+      'the retried page is appended to the accumulated data'
+    );
+    assert.equal(Array.from(paginationState.pages).length, 2, 'the frontier advances after the retried load succeeds');
+    assert.equal(this.element.querySelectorAll('[data-test-next-error]').length, 0, 'the error is gone');
+    assert.false(paginationState.hasNext, 'hasNext is false at end-of-list');
   })
   .build();

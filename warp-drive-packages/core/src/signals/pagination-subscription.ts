@@ -119,16 +119,37 @@ export class PaginationSubscription<RT, E> {
    */
   declare store: Store | RequestManager;
 
-  /** The per-component pagination state yielded to the component. */
-  declare paginationState: PaginationState<RT, E>;
+  /**
+   * The wrapped {@link RequestSubscription} monitoring the initial request.
+   * Created eagerly: constructing one consumes reactive state (its own
+   * signals), so building it lazily inside a tracked getter would cause the
+   * getter to invalidate — and the subscription to be recreated, losing its
+   * reloaded request — whenever `retry`/`reload` runs.
+   *
+   * @internal
+   */
+  declare private _requestSubscription: RequestSubscription<RT, E>;
 
   constructor(store: Store | RequestManager, args: PaginationSubscriptionArgs<RT, E>) {
     this._args = args;
     this.store = store;
     this.isDestroyed = false;
     this[DISPOSE] = _DISPOSE;
+    this._requestSubscription = createRequestSubscription<RT, E>(store, args);
+  }
 
-    this.paginationState = getPaginationState<RT, E>(this._requestSubscription.request, args.pageHints);
+  /**
+   * The per-component pagination state yielded to the component.
+   *
+   * Derived from the request subscription's current request: when a `retry`
+   * or `reload` reissues the initial request, a new {@link PaginationState}
+   * keyed to the new request takes over (a reload is a fresh start). A
+   * background `refresh` does not swap the request, so the pagination state
+   * is stable across refreshes.
+   */
+  @memoized
+  get paginationState(): PaginationState<RT, E> {
+    return getPaginationState<RT, E>(this._requestSubscription.request, this._args.pageHints);
   }
 
   /**
@@ -143,10 +164,16 @@ export class PaginationSubscription<RT, E> {
   /**
    * Whether the initial request is still loading. Only the first page load
    * blocks here; extending the collection with `loadNext`/`loadPrev` does not.
+   *
+   * Remains `true` for the moment between the request resolving and the
+   * {@link paginationState} finishing its setup from the response, so that
+   * {@link isSuccess} consumers never see a success state with an empty
+   * pagination surface (relevant after a `retry`/`reload` swaps the request).
    */
   @memoized
   get isLoading(): boolean {
-    return this._requestSubscription.reqState.isLoading;
+    const { reqState } = this._requestSubscription;
+    return reqState.isLoading || (reqState.isSuccess && this.paginationState.paginationCache === null);
   }
 
   /**
@@ -159,11 +186,12 @@ export class PaginationSubscription<RT, E> {
   }
 
   /**
-   * Whether the initial request resolved successfully.
+   * Whether the initial request resolved successfully and the
+   * {@link paginationState} has been set up from the response.
    */
   @memoized
   get isSuccess(): boolean {
-    return this._requestSubscription.reqState.isSuccess;
+    return this._requestSubscription.reqState.isSuccess && this.paginationState.paginationCache !== null;
   }
 
   /**
@@ -223,14 +251,6 @@ export class PaginationSubscription<RT, E> {
     }
 
     return feat;
-  }
-
-  /**
-   * @internal
-   */
-  @memoized
-  get _requestSubscription(): RequestSubscription<RT, E> {
-    return createRequestSubscription<RT, E>(this.store, this._args);
   }
 
   /**
