@@ -50,5 +50,12 @@
   "bun.debugTerminal.enabled": true,
   "eslint.debug": true,
   "eslint.runtime": "node",
-  "typescript.tsdk": "node_modules/typescript/lib"
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "workbench.colorCustomizations": {
+    "titleBar.activeBackground": "#f1c40f",
+    "titleBar.activeForeground": "#1a1a1a",
+    "titleBar.inactiveBackground": "#f1c40f",
+    "titleBar.inactiveForeground": "#1a1a1a99"
+  },
+  "window.title": "⎇ runspired/fix-deployment   ${rootName}${separator}${appName}"
 }

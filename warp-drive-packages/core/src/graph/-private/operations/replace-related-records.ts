@@ -8,7 +8,7 @@ import { assert } from '@warp-drive/core/build-config/macros';
 import type { ResourceKey } from '../../../types.ts';
 import type { ReplaceRelatedRecordsOperation } from '../../../types/graph.ts';
 import { _add, _removeLocal, _removeRemote, diffCollection } from '../-diff.ts';
-import { checkIfNew, isBelongsTo, isHasMany, notifyChange, resolvePolymorphicInverse } from '../-utils.ts';
+import { checkIfNew, isBelongsTo, isHasMany, notifyChange } from '../-utils.ts';
 import { assertPolymorphicType } from '../debug/assert-polymorphic-type.ts';
 import type { CollectionEdge } from '../edges/collection.ts';
 import type { Graph } from '../graph.ts';
@@ -108,7 +108,6 @@ function replaceRelatedRecordsLocal(graph: Graph, op: ReplaceRelatedRecordsOpera
     const removalsHas = removals?.has(resourceKey);
     if (removalsHas || !additions?.has(resourceKey)) {
       if (type !== resourceKey.type) {
-        resolvePolymorphicInverse(graph, relationship.definition, resourceKey);
         if (DEBUG) {
           assertPolymorphicType(relationship.identifier, relationship.definition, resourceKey, graph.store);
         }
@@ -212,7 +211,6 @@ function replaceRelatedRecordsRemote(graph: Graph, op: ReplaceRelatedRecordsOper
     relationship,
     (resourceKey) => {
       if (type !== resourceKey.type) {
-        resolvePolymorphicInverse(graph, relationship.definition, resourceKey);
         if (DEBUG) {
           assertPolymorphicType(relationship.identifier, relationship.definition, resourceKey, graph.store);
         }
@@ -360,7 +358,6 @@ export function addToInverse(
   const { type } = relationship.definition;
 
   if (type !== value.type) {
-    resolvePolymorphicInverse(graph, relationship.definition, value);
     if (DEBUG) {
       assertPolymorphicType(relationship.identifier, relationship.definition, value, graph.store);
     }

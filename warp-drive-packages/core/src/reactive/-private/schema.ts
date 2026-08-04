@@ -27,6 +27,8 @@ import {
   type LegacyHasManyField,
   type LegacyRelationshipField,
   type LegacyResourceSchema,
+  type LinksModeBelongsToField,
+  type LinksModeHasManyField,
   type ObjectField,
   type ObjectSchema,
   type PolarisResourceSchema,
@@ -473,6 +475,16 @@ export function registerDerivations(schema: SchemaServiceInterface): void {
   schema.registerDerivation(_constructor);
 }
 
+/**
+ * A relationship field capable of declaring `options.as`, marking it as a
+ * concrete implementation of an abstract polymorphic type.
+ */
+type AbstractTypeImplementerField =
+  | LegacyBelongsToField
+  | LegacyHasManyField
+  | LinksModeBelongsToField
+  | LinksModeHasManyField;
+
 interface InternalSchema {
   original: ResourceSchema | ObjectSchema;
   finalized: boolean;
@@ -660,6 +672,7 @@ export class SchemaService implements SchemaServiceInterface {
     const fields = new Map<string, FieldSchema>();
     const relationships: Record<string, LegacyRelationshipField> = {};
     const attributes: Record<string, LegacyAttributeField> = {};
+    const abstractImplementations: AbstractTypeImplementerField[] = [];
 
     for (const field of schema.fields) {
       assert(
@@ -672,6 +685,9 @@ export class SchemaService implements SchemaServiceInterface {
         attributes[field.name] = field;
       } else if (field.kind === 'belongsTo' || field.kind === 'hasMany') {
         relationships[field.name] = field;
+        if (field.options?.as) {
+          abstractImplementations.push(field);
+        }
       }
     }
 
@@ -693,6 +709,59 @@ export class SchemaService implements SchemaServiceInterface {
     }
 
     this._schemas.set(schema.type, internalSchema);
+
+    // A relationship field's `as` option marks it as a valid concrete
+    // implementer of an abstract polymorphic type (e.g. `as: 'commentable'`).
+    // That abstract type is intentionally never given its own schema by the
+    // user - it exists only to be implemented by concrete types like this
+    // one. Ensure it has a schema anyway (synthesized from this field), so
+    // that it behaves like any other registered resource (`hasResource`,
+    // `fields`, etc.) instead of requiring special-casing wherever abstract
+    // relationship types are resolved.
+    for (const field of abstractImplementations) {
+      this._registerAbstractTypeImplementation(field);
+    }
+  }
+
+  /** @internal */
+  private _registerAbstractTypeImplementation(field: AbstractTypeImplementerField): void {
+    const abstractType = field.options.as!;
+    let abstractSchema = this._schemas.get(abstractType);
+
+    if (!abstractSchema) {
+      abstractSchema = {
+        original: {
+          legacy: true,
+          identity: { kind: '@id', name: 'id' },
+          type: abstractType,
+          fields: [],
+        },
+        finalized: true,
+        fields: new Map(),
+        cacheFields: new Map(),
+        relationships: {},
+        attributes: {},
+        traits: new Set(),
+      };
+      this._schemas.set(abstractType, abstractSchema);
+    }
+
+    // all concrete implementations of an abstract type are required to
+    // share the same shape for the field that implements it, so the first
+    // one registered is as good a canonical source as any.
+    if (abstractSchema.fields.has(field.name)) {
+      return;
+    }
+
+    const options = { ...field.options };
+    delete options.as;
+    const abstractField = { ...field, options } as FieldSchema;
+
+    abstractSchema.fields.set(field.name, abstractField);
+    if (abstractField.kind === 'belongsTo' || abstractField.kind === 'hasMany') {
+      abstractSchema.relationships[field.name] = abstractField;
+    }
+    abstractSchema.cacheFields = getCacheFields(abstractSchema);
   }
 
   /**

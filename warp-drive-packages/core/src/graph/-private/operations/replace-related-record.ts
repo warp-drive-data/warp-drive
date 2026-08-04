@@ -6,7 +6,7 @@ import { assert } from '@warp-drive/core/build-config/macros';
 
 import type { ResourceKey } from '../../../types.ts';
 import type { ReplaceRelatedRecordOperation } from '../../../types/graph.ts';
-import { checkIfNew, isBelongsTo, notifyChange, resolvePolymorphicInverse } from '../-utils.ts';
+import { checkIfNew, isBelongsTo, notifyChange } from '../-utils.ts';
 import { assertPolymorphicType } from '../debug/assert-polymorphic-type.ts';
 import type { Graph } from '../graph.ts';
 import { addToInverse, notifyInverseOfPotentialMaterialization, removeFromInverse } from './replace-related-records.ts';
@@ -150,7 +150,6 @@ export default function replaceRelatedRecord(graph: Graph, op: ReplaceRelatedRec
       // but the record does turn out to be polymorphic
       // this should still assert if the user is relying on legacy inheritance/mixins to
       // provide polymorphic behavior and has not yet added the polymorphic flags
-      resolvePolymorphicInverse(graph, definition, op.value);
       if (DEBUG) {
         assertPolymorphicType(relationship.identifier, definition, op.value, graph.store);
       }
