@@ -71,8 +71,8 @@ module('WarpDrive | useRecommendedStore | handlers callback', function (hooks) {
       cache: JSONAPICache,
       handlers: [
         {
-          request() {
-            return Promise.resolve({ data: null });
+          request(context, next) {
+            return next(context.request);
           },
         },
       ],
