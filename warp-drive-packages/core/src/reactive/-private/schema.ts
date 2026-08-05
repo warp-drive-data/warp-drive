@@ -563,12 +563,21 @@ function assertConsistentAbstractFieldShape(
   existing: { field: FieldSchema; source: string },
   incoming: { field: FieldSchema; source: string }
 ): void {
-  const existingShape = comparableAbstractFieldShape(existing.field);
-  const incomingShape = comparableAbstractFieldShape(incoming.field);
-  assert(
-    `Expected the relationship '${fieldName}' on the abstract polymorphic type '${abstractType}' to be declared identically everywhere it is implemented (including 'options.as', which every contributor - the abstract type's own schema included - must declare equal to '${abstractType}'), but '${existing.source}' declares it as:\n\n${JSON.stringify(existingShape, null, 2)}\n\nwhile '${incoming.source}' declares it as:\n\n${JSON.stringify(incomingShape, null, 2)}\n\nAll concrete implementers of an abstract type - and the abstract type's own schema, if it has one - must declare an identical shape for any relationship field they share.`,
-    JSON.stringify(existingShape) === JSON.stringify(incomingShape)
-  );
+  // This function exists solely to support the `assert()` call below - there
+  // is no other work here with an effect in production. Since `assert()`'s
+  // own babel-macro stripping only removes the call expression itself, not
+  // the (comparatively expensive, involving `JSON.stringify`) computation of
+  // its arguments, guard the whole body so none of it survives in production
+  // builds, matching how `assertPolymorphicType`/`assertInheritedSchema` and
+  // their call sites are gated in `assert-polymorphic-type.ts`.
+  if (DEBUG) {
+    const existingShape = comparableAbstractFieldShape(existing.field);
+    const incomingShape = comparableAbstractFieldShape(incoming.field);
+    assert(
+      `Expected the relationship '${fieldName}' on the abstract polymorphic type '${abstractType}' to be declared identically everywhere it is implemented (including 'options.as', which every contributor - the abstract type's own schema included - must declare equal to '${abstractType}'), but '${existing.source}' declares it as:\n\n${JSON.stringify(existingShape, null, 2)}\n\nwhile '${incoming.source}' declares it as:\n\n${JSON.stringify(incomingShape, null, 2)}\n\nAll concrete implementers of an abstract type - and the abstract type's own schema, if it has one - must declare an identical shape for any relationship field they share.`,
+      JSON.stringify(existingShape) === JSON.stringify(incomingShape)
+    );
+  }
 }
 
 interface InternalSchema {
@@ -803,7 +812,7 @@ export class SchemaService implements SchemaServiceInterface {
         if (!ownField) {
           fields.set(name, contribution.field);
           relationships[name] = contribution.field;
-        } else {
+        } else if (DEBUG) {
           assertConsistentAbstractFieldShape(schema.type, name, contribution, { field: ownField, source: schema.type });
         }
       }
@@ -872,7 +881,9 @@ export class SchemaService implements SchemaServiceInterface {
     // intentional override, so we catch it rather than silently ignoring it.
     const existingImplementer = implementerFields.get(field.name);
     if (existingImplementer) {
-      assertConsistentAbstractFieldShape(abstractType, field.name, existingImplementer, contribution);
+      if (DEBUG) {
+        assertConsistentAbstractFieldShape(abstractType, field.name, existingImplementer, contribution);
+      }
       return;
     }
     implementerFields.set(field.name, contribution);
@@ -898,12 +909,14 @@ export class SchemaService implements SchemaServiceInterface {
 
     const existingAbstractField = abstractSchema.fields.get(field.name);
     if (existingAbstractField) {
-      assertConsistentAbstractFieldShape(
-        abstractType,
-        field.name,
-        { field: existingAbstractField, source: abstractType },
-        contribution
-      );
+      if (DEBUG) {
+        assertConsistentAbstractFieldShape(
+          abstractType,
+          field.name,
+          { field: existingAbstractField, source: abstractType },
+          contribution
+        );
+      }
       return;
     }
 
