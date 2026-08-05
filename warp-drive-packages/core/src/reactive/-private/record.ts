@@ -269,6 +269,9 @@ export class ReactiveResource {
         if (prop === Destroy || prop === Checkout) {
           return true;
         }
+        if (prop === identityField?.name) {
+          return true;
+        }
         return fields.has(prop as string);
       },
 

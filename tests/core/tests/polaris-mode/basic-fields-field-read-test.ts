@@ -76,6 +76,44 @@ module('Reads | basic fields', function (hooks) {
     }
   });
 
+  test('`in` checks reflect schema membership without erroring', function (assert) {
+    const store = new Store();
+    const { schema } = store;
+
+    schema.registerResource(
+      withDefaults({
+        type: 'user',
+        fields: [
+          {
+            name: 'name',
+            kind: 'field',
+          },
+        ],
+      })
+    );
+
+    const record = store.createRecord<User>('user', { name: 'Rey Skybarker' });
+
+    assert.true('id' in record, 'the identity field is reported as present');
+    assert.true('name' in record, 'a schema field is reported as present');
+    assert.false('lastName' in record, 'an unknown field is reported as absent, not thrown');
+
+    if (DEBUG) {
+      try {
+        // @ts-expect-error intentionally accessing unknown field
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+        record.lastName;
+        assert.ok(false, 'should error when accessing unknown field');
+      } catch (e) {
+        assert.equal(
+          (e as Error).message,
+          'No field named lastName on user',
+          'accessing (not just checking `in`) an unknown field still errors'
+        );
+      }
+    }
+  });
+
   test('we can use simple fields with a `type`', function (assert) {
     const store = new Store();
     const { schema } = store;
