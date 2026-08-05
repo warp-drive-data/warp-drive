@@ -45,11 +45,7 @@ module('Unit | Model | sourceKey', function (hooks) {
     const rey = store.peekRecord<User>('user', '1')!;
 
     assert.equal(rey.name, 'Rey Skybarker', 'name is accessible');
-    assert.equal(
-      rey.createdAt,
-      '2026-02-15T20:27:03.665Z',
-      'createdAt is populated from the "created-at" key'
-    );
+    assert.equal(rey.createdAt, '2026-02-15T20:27:03.665Z', 'createdAt is populated from the "created-at" key');
   });
 
   test('setting an attribute with a sourceKey round-trips through the source key', function (assert) {
