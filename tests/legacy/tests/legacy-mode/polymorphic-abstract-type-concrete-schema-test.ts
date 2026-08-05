@@ -112,235 +112,238 @@ function registerConflictingTask(schema: SchemaService) {
   );
 }
 
-module(
-  'Legacy | Reads | polymorphic relationship whose abstract type also has a concrete schema',
-  function (hooks) {
-    setupTest(hooks);
+module('Legacy | Reads | polymorphic relationship whose abstract type also has a concrete schema', function (hooks) {
+  setupTest(hooks);
 
-    hooks.beforeEach(function () {
-      this.owner.register('adapter:application', JSONAPIAdapter);
+  hooks.beforeEach(function () {
+    this.owner.register('adapter:application', JSONAPIAdapter);
+  });
+
+  function createStore(context: { owner: unknown }) {
+    const store = new Store();
+    setOwner(store, context.owner as never);
+    (context.owner as { register: (n: string, s: unknown, o?: object) => void }).register('service:store', store, {
+      instantiate: false,
     });
+    return store;
+  }
 
-    function createStore(context: { owner: unknown }) {
-      const store = new Store();
-      setOwner(store, context.owner as never);
-      (context.owner as { register: (n: string, s: unknown, o?: object) => void }).register('service:store', store, {
-        instantiate: false,
-      });
+  module('when the concrete schema is registered before its abstract implementers', function () {
+    function setupStore(context: { owner: unknown }) {
+      const store = createStore(context);
+      const { schema } = store;
+
+      // `abstract-record` turns out to also be a real, directly-resolvable
+      // resource with its own data - registered before `project` ever
+      // declares itself an implementer via `as: 'abstract-record'`.
+      registerConcreteAbstractRecord(schema);
+      registerProject(schema);
+      registerEvent(schema);
+
       return store;
     }
 
-    module('when the concrete schema is registered before its abstract implementers', function () {
-      function setupStore(context: { owner: unknown }) {
-        const store = createStore(context);
-        const { schema } = store;
+    test('the synthesized relationship and the concrete schema fields coexist', function (assert) {
+      const store = setupStore(this);
+      const fieldNames = [...store.schema.fields({ type: 'abstract-record' }).keys()];
 
-        // `abstract-record` turns out to also be a real, directly-resolvable
-        // resource with its own data - registered before `project` ever
-        // declares itself an implementer via `as: 'abstract-record'`.
-        registerConcreteAbstractRecord(schema);
-        registerProject(schema);
-        registerEvent(schema);
-
-        return store;
-      }
-
-      test('the synthesized relationship and the concrete schema fields coexist', function (assert) {
-        const store = setupStore(this);
-        const fieldNames = [...store.schema.fields({ type: 'abstract-record' }).keys()];
-
-        assert.ok(fieldNames.includes('name'), `'name' (declared on the concrete schema) is present: ${fieldNames.join(', ')}`);
-        assert.ok(
-          fieldNames.includes('events'),
-          `'events' (contributed by project's 'as: abstract-record') is present: ${fieldNames.join(', ')}`
-        );
-      });
-
-      test('resolving the concrete hasMany side first works', function (assert) {
-        const store = setupStore(this);
-
-        const project = store.push<ProjectResource>({
-          data: { type: 'project', id: '1' },
-        });
-        const event = store.push<EventResource>({
-          data: {
-            type: 'event',
-            id: '3',
-            relationships: {
-              record: { data: { type: 'project', id: '1' } },
-            },
-          },
-        });
-
-        assert.equal(event.record?.id, '1', 'event.record resolves to the project');
-        assert.equal(project.events.length, 1, 'project.events contains the event');
-        assert.equal(project.events[0]?.id, '3', 'project.events contains the right event');
-      });
-
-      test('resolving the polymorphic belongsTo side first works', function (assert) {
-        const store = setupStore(this);
-
-        const event = store.push<EventResource>({
-          data: {
-            type: 'event',
-            id: '3',
-            relationships: {
-              record: { data: { type: 'project', id: '1' } },
-            },
-          },
-          included: [{ type: 'project', id: '1' }],
-        });
-
-        assert.equal(event.record?.id, '1', 'event.record resolves to the project');
-
-        const projectIdentifier = recordIdentifierFor(event.record);
-        const project = store.peekRecord<ProjectResource>(projectIdentifier);
-        assert.ok(project, 'pre-cond, project is in the cache');
-        assert.equal(project!.events.length, 1, 'project.events contains the event');
-        assert.equal(project!.events[0]?.id, '3', 'project.events contains the right event');
-      });
-
-      test('abstract-record remains directly usable as its own concrete resource', function (assert) {
-        const store = setupStore(this);
-
-        const record = store.push<AbstractRecordResource>({
-          data: { type: 'abstract-record', id: '9', attributes: { name: 'Direct Record' } },
-        });
-
-        assert.equal(record.name, 'Direct Record', 'the concrete attribute is readable');
-      });
+      assert.ok(
+        fieldNames.includes('name'),
+        `'name' (declared on the concrete schema) is present: ${fieldNames.join(', ')}`
+      );
+      assert.ok(
+        fieldNames.includes('events'),
+        `'events' (contributed by project's 'as: abstract-record') is present: ${fieldNames.join(', ')}`
+      );
     });
 
-    module('when the concrete schema is registered after its abstract implementers', function () {
-      function setupStore(context: { owner: unknown }) {
-        const store = createStore(context);
-        const { schema } = store;
+    test('resolving the concrete hasMany side first works', function (assert) {
+      const store = setupStore(this);
 
-        // `project` declares itself an implementer of the (at this point
-        // still-unregistered) abstract type `abstract-record` first, which
-        // synthesizes a placeholder schema for it.
-        registerProject(schema);
-        registerEvent(schema);
-
-        // Only afterwards does `abstract-record` turn out to also be a real,
-        // directly-resolvable resource with its own data.
-        registerConcreteAbstractRecord(schema);
-
-        return store;
-      }
-
-      test('the synthesized relationship and the concrete schema fields coexist', function (assert) {
-        const store = setupStore(this);
-        const fieldNames = [...store.schema.fields({ type: 'abstract-record' }).keys()];
-
-        assert.ok(fieldNames.includes('name'), `'name' (declared on the concrete schema) is present: ${fieldNames.join(', ')}`);
-        assert.ok(
-          fieldNames.includes('events'),
-          `'events' (contributed by project's 'as: abstract-record') survives the later concrete registration: ${fieldNames.join(', ')}`
-        );
+      const project = store.push<ProjectResource>({
+        data: { type: 'project', id: '1' },
       });
-
-      test('resolving the concrete hasMany side first works', function (assert) {
-        const store = setupStore(this);
-
-        const project = store.push<ProjectResource>({
-          data: { type: 'project', id: '1' },
-        });
-        const event = store.push<EventResource>({
-          data: {
-            type: 'event',
-            id: '3',
-            relationships: {
-              record: { data: { type: 'project', id: '1' } },
-            },
+      const event = store.push<EventResource>({
+        data: {
+          type: 'event',
+          id: '3',
+          relationships: {
+            record: { data: { type: 'project', id: '1' } },
           },
-        });
-
-        assert.equal(event.record?.id, '1', 'event.record resolves to the project');
-        assert.equal(project.events.length, 1, 'project.events contains the event');
-        assert.equal(project.events[0]?.id, '3', 'project.events contains the right event');
+        },
       });
 
-      test('resolving the polymorphic belongsTo side first works', function (assert) {
-        const store = setupStore(this);
-
-        const event = store.push<EventResource>({
-          data: {
-            type: 'event',
-            id: '3',
-            relationships: {
-              record: { data: { type: 'project', id: '1' } },
-            },
-          },
-          included: [{ type: 'project', id: '1' }],
-        });
-
-        assert.equal(event.record?.id, '1', 'event.record resolves to the project');
-
-        const projectIdentifier = recordIdentifierFor(event.record);
-        const project = store.peekRecord<ProjectResource>(projectIdentifier);
-        assert.ok(project, 'pre-cond, project is in the cache');
-        assert.equal(project!.events.length, 1, 'project.events contains the event');
-        assert.equal(project!.events[0]?.id, '3', 'project.events contains the right event');
-      });
-
-      test('abstract-record remains directly usable as its own concrete resource', function (assert) {
-        const store = setupStore(this);
-
-        const record = store.push<AbstractRecordResource>({
-          data: { type: 'abstract-record', id: '9', attributes: { name: 'Direct Record' } },
-        });
-
-        assert.equal(record.name, 'Direct Record', 'the concrete attribute is readable');
-      });
+      assert.equal(event.record?.id, '1', 'event.record resolves to the project');
+      assert.equal(project.events.length, 1, 'project.events contains the event');
+      assert.equal(project.events[0]?.id, '3', 'project.events contains the right event');
     });
 
-    module('when a later declaration disagrees on the relationship kind', function () {
-      test('abstract discovered first as hasMany, then a concrete schema declares it belongsTo', function (assert) {
-        const store = createStore(this);
-        const { schema } = store;
+    test('resolving the polymorphic belongsTo side first works', function (assert) {
+      const store = setupStore(this);
 
-        // `project` implements `abstract-record` assuming `events` is a
-        // `hasMany`, synthesizing that shape onto `abstract-record`.
-        registerProject(schema);
-
-        // `abstract-record` turns out to be a real resource, but its author
-        // (unaware of `project`'s assumption) declared `events` as a
-        // `belongsTo` instead. This is a genuine contradiction, not an
-        // override - resolving it silently in either direction would leave
-        // one side of the relationship broken.
-        assert.throws(
-          () => registerConflictingConcreteAbstractRecord(schema),
-          /to have a consistent shape/,
-          'registering a conflicting concrete schema throws rather than silently discarding the synthesized shape'
-        );
+      const event = store.push<EventResource>({
+        data: {
+          type: 'event',
+          id: '3',
+          relationships: {
+            record: { data: { type: 'project', id: '1' } },
+          },
+        },
+        included: [{ type: 'project', id: '1' }],
       });
 
-      test('concrete schema declares belongsTo first, then an implementer assumes hasMany', function (assert) {
-        const store = createStore(this);
-        const { schema } = store;
+      assert.equal(event.record?.id, '1', 'event.record resolves to the project');
 
-        registerConflictingConcreteAbstractRecord(schema);
-
-        assert.throws(
-          () => registerProject(schema),
-          /to have a consistent shape/,
-          'registering an implementer whose assumed shape conflicts with the existing concrete schema throws'
-        );
-      });
-
-      test('two implementers disagree on the relationship kind, with no concrete schema involved', function (assert) {
-        const store = createStore(this);
-        const { schema } = store;
-
-        registerProject(schema);
-
-        assert.throws(
-          () => registerConflictingTask(schema),
-          /to have a consistent shape/,
-          'a second implementer with a conflicting shape throws rather than being silently ignored'
-        );
-      });
+      const projectIdentifier = recordIdentifierFor(event.record);
+      const project = store.peekRecord<ProjectResource>(projectIdentifier);
+      assert.ok(project, 'pre-cond, project is in the cache');
+      assert.equal(project!.events.length, 1, 'project.events contains the event');
+      assert.equal(project!.events[0]?.id, '3', 'project.events contains the right event');
     });
-  }
-);
+
+    test('abstract-record remains directly usable as its own concrete resource', function (assert) {
+      const store = setupStore(this);
+
+      const record = store.push<AbstractRecordResource>({
+        data: { type: 'abstract-record', id: '9', attributes: { name: 'Direct Record' } },
+      });
+
+      assert.equal(record.name, 'Direct Record', 'the concrete attribute is readable');
+    });
+  });
+
+  module('when the concrete schema is registered after its abstract implementers', function () {
+    function setupStore(context: { owner: unknown }) {
+      const store = createStore(context);
+      const { schema } = store;
+
+      // `project` declares itself an implementer of the (at this point
+      // still-unregistered) abstract type `abstract-record` first, which
+      // synthesizes a placeholder schema for it.
+      registerProject(schema);
+      registerEvent(schema);
+
+      // Only afterwards does `abstract-record` turn out to also be a real,
+      // directly-resolvable resource with its own data.
+      registerConcreteAbstractRecord(schema);
+
+      return store;
+    }
+
+    test('the synthesized relationship and the concrete schema fields coexist', function (assert) {
+      const store = setupStore(this);
+      const fieldNames = [...store.schema.fields({ type: 'abstract-record' }).keys()];
+
+      assert.ok(
+        fieldNames.includes('name'),
+        `'name' (declared on the concrete schema) is present: ${fieldNames.join(', ')}`
+      );
+      assert.ok(
+        fieldNames.includes('events'),
+        `'events' (contributed by project's 'as: abstract-record') survives the later concrete registration: ${fieldNames.join(', ')}`
+      );
+    });
+
+    test('resolving the concrete hasMany side first works', function (assert) {
+      const store = setupStore(this);
+
+      const project = store.push<ProjectResource>({
+        data: { type: 'project', id: '1' },
+      });
+      const event = store.push<EventResource>({
+        data: {
+          type: 'event',
+          id: '3',
+          relationships: {
+            record: { data: { type: 'project', id: '1' } },
+          },
+        },
+      });
+
+      assert.equal(event.record?.id, '1', 'event.record resolves to the project');
+      assert.equal(project.events.length, 1, 'project.events contains the event');
+      assert.equal(project.events[0]?.id, '3', 'project.events contains the right event');
+    });
+
+    test('resolving the polymorphic belongsTo side first works', function (assert) {
+      const store = setupStore(this);
+
+      const event = store.push<EventResource>({
+        data: {
+          type: 'event',
+          id: '3',
+          relationships: {
+            record: { data: { type: 'project', id: '1' } },
+          },
+        },
+        included: [{ type: 'project', id: '1' }],
+      });
+
+      assert.equal(event.record?.id, '1', 'event.record resolves to the project');
+
+      const projectIdentifier = recordIdentifierFor(event.record);
+      const project = store.peekRecord<ProjectResource>(projectIdentifier);
+      assert.ok(project, 'pre-cond, project is in the cache');
+      assert.equal(project!.events.length, 1, 'project.events contains the event');
+      assert.equal(project!.events[0]?.id, '3', 'project.events contains the right event');
+    });
+
+    test('abstract-record remains directly usable as its own concrete resource', function (assert) {
+      const store = setupStore(this);
+
+      const record = store.push<AbstractRecordResource>({
+        data: { type: 'abstract-record', id: '9', attributes: { name: 'Direct Record' } },
+      });
+
+      assert.equal(record.name, 'Direct Record', 'the concrete attribute is readable');
+    });
+  });
+
+  module('when a later declaration disagrees on the relationship kind', function () {
+    test('abstract discovered first as hasMany, then a concrete schema declares it belongsTo', function (assert) {
+      const store = createStore(this);
+      const { schema } = store;
+
+      // `project` implements `abstract-record` assuming `events` is a
+      // `hasMany`, synthesizing that shape onto `abstract-record`.
+      registerProject(schema);
+
+      // `abstract-record` turns out to be a real resource, but its author
+      // (unaware of `project`'s assumption) declared `events` as a
+      // `belongsTo` instead. This is a genuine contradiction, not an
+      // override - resolving it silently in either direction would leave
+      // one side of the relationship broken.
+      assert.throws(
+        () => registerConflictingConcreteAbstractRecord(schema),
+        /to have a consistent shape/,
+        'registering a conflicting concrete schema throws rather than silently discarding the synthesized shape'
+      );
+    });
+
+    test('concrete schema declares belongsTo first, then an implementer assumes hasMany', function (assert) {
+      const store = createStore(this);
+      const { schema } = store;
+
+      registerConflictingConcreteAbstractRecord(schema);
+
+      assert.throws(
+        () => registerProject(schema),
+        /to have a consistent shape/,
+        'registering an implementer whose assumed shape conflicts with the existing concrete schema throws'
+      );
+    });
+
+    test('two implementers disagree on the relationship kind, with no concrete schema involved', function (assert) {
+      const store = createStore(this);
+      const { schema } = store;
+
+      registerProject(schema);
+
+      assert.throws(
+        () => registerConflictingTask(schema),
+        /to have a consistent shape/,
+        'a second implementer with a conflicting shape throws rather than being silently ignored'
+      );
+    });
+  });
+});

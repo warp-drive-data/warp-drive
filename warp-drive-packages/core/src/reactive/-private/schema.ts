@@ -839,7 +839,12 @@ export class SchemaService implements SchemaServiceInterface {
 
     const existingAbstractField = abstractSchema.fields.get(field.name);
     if (existingAbstractField) {
-      assertConsistentAbstractFieldShape(abstractType, field.name, { field: existingAbstractField, source: abstractType }, contribution);
+      assertConsistentAbstractFieldShape(
+        abstractType,
+        field.name,
+        { field: existingAbstractField, source: abstractType },
+        contribution
+      );
       return;
     }
 
