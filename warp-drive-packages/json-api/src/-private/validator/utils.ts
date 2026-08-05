@@ -452,6 +452,27 @@ export function getRemoteField(fields: Map<string, FieldSchema>, key: string): F
   return field;
 }
 
+/**
+ * Detects the common mistake of providing a field's `name` in a payload
+ * when the field's schema defines a `sourceKey` that should be used instead.
+ *
+ * @internal
+ */
+export function getSourceKeyMismatch(
+  fields: Map<string, FieldSchema>,
+  key: string
+): { field: FieldSchema; sourceKey: string } | undefined {
+  const field = getRemoteField(fields, key);
+  if (!field) {
+    return undefined;
+  }
+  const sourceKey = 'sourceKey' in field ? field.sourceKey : undefined;
+  if (sourceKey && sourceKey !== key) {
+    return { field, sourceKey };
+  }
+  return undefined;
+}
+
 function addResourceToMap(
   map: Map<string, Map<string, ResourceInfo[]>>,
   resource: ResourceObject,

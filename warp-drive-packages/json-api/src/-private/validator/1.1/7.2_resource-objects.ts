@@ -2,6 +2,7 @@ import type { ResourceDocument } from '@warp-drive/core/types/spec/document';
 
 import {
   getRemoteField,
+  getSourceKeyMismatch,
   inspectType,
   isSimpleObject,
   logPotentialMatches,
@@ -261,7 +262,14 @@ function validateResourceAttributes(
         `Expected the ${actualField.kind} field "${key}" to not have its own data in the ResourceObject's attributes. Likely this field should either not be returned in this payload or the field definition should be updated in the schema.`
       );
     } else if (!field) {
-      if (key.includes(':')) {
+      const sourceKeyMismatch = getSourceKeyMismatch(fields, key);
+      if (sourceKeyMismatch) {
+        const method = reporter.strict.unknownAttribute ? 'error' : 'warn';
+        reporter[method](
+          [...path, key],
+          `Expected the "${sourceKeyMismatch.field.kind}" field "${key}" to be provided using its sourceKey "${sourceKeyMismatch.sourceKey}" instead of its field name "${key}". Update the payload to use "${sourceKeyMismatch.sourceKey}" as the key, or remove the sourceKey from the field's definition in the ResourceSchema for "${type}" if the field name should be used instead.`
+        );
+      } else if (key.includes(':')) {
         const extensionName = key.split(':')[0];
         if (reporter.hasExtension(extensionName)) {
           const extension = reporter.getExtension(extensionName)!;
@@ -304,17 +312,26 @@ function validateResourceRelationships(
   resource: Record<string, unknown>,
   path: PathLike
 ) {
-  const schema = reporter.schema.fields({ type });
+  const fields = reporter.schema.fields({ type });
+  const cacheFields = reporter.schema.cacheFields?.({ type }) ?? fields;
+
   for (const [key] of Object.entries(resource)) {
-    const field = getRemoteField(schema, key);
-    const actualField = schema.get(key);
+    const field = getRemoteField(cacheFields, key);
+    const actualField = cacheFields.get(key);
     if (!field && actualField) {
       reporter.warn(
         [...path, key],
         `Expected the ${actualField.kind} field "${key}" to not have its own data in the ResourceObject's relationships. Likely this field should either not be returned in this payload or the field definition should be updated in the schema.`
       );
     } else if (!field) {
-      if (key.includes(':')) {
+      const sourceKeyMismatch = getSourceKeyMismatch(fields, key);
+      if (sourceKeyMismatch) {
+        const method = reporter.strict.unknownRelationship ? 'error' : 'warn';
+        reporter[method](
+          [...path, key],
+          `Expected the "${sourceKeyMismatch.field.kind}" field "${key}" to be provided using its sourceKey "${sourceKeyMismatch.sourceKey}" instead of its field name "${key}". Update the payload to use "${sourceKeyMismatch.sourceKey}" as the key, or remove the sourceKey from the field's definition in the ResourceSchema for "${type}" if the field name should be used instead.`
+        );
+      } else if (key.includes(':')) {
         const extensionName = key.split(':')[0];
         if (reporter.hasExtension(extensionName)) {
           const extension = reporter.getExtension(extensionName)!;
