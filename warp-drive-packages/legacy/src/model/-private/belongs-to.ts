@@ -22,6 +22,28 @@ export type RelationshipOptions<T, Async extends boolean> = {
   as?: string;
   linksMode?: true;
   resetOnRemoteUpdate?: boolean;
+
+  /**
+   * The name of the field as returned by the API and inserted into the
+   * cache if it differs from the name of the decorated property.
+   *
+   * For instance, if the API returns:
+   *
+   * ```ts
+   * {
+   *   relationships: {
+   *     'best-friend': { data: { type: 'user', id: '1' } }
+   *   }
+   * }
+   * ```
+   *
+   * But the app desires to use `record.bestFriend`, then the property
+   * should be named `bestFriend` and `sourceKey` should be set to
+   * `'best-friend'`.
+   *
+   * This option is only needed when the value differs from the property name.
+   */
+  sourceKey?: string;
 };
 
 export type NoNull<T> = Exclude<T, null>;
@@ -52,6 +74,7 @@ function _belongsTo<T, Async extends boolean>(
     options: options,
     kind: 'belongsTo',
     name: '<Unknown BelongsTo>',
+    sourceKey: options.sourceKey,
   };
 
   return computed({

@@ -55,6 +55,7 @@ function _hasMany<T, Async extends boolean>(
     options,
     kind: 'hasMany',
     name: '<Unknown BelongsTo>',
+    sourceKey: options.sourceKey,
   };
 
   return computed({
