@@ -46,6 +46,28 @@ export type AttrOptions<DV = PrimitiveValue | object | unknown[]> = {
    *
    */
   defaultValue?: DV extends PrimitiveValue ? DV : () => DV;
+
+  /**
+   * The name of the field as returned by the API and inserted into the
+   * cache if it differs from the name of the decorated property.
+   *
+   * For instance, if the API returns:
+   *
+   * ```ts
+   * {
+   *   attributes: {
+   *     'first-name': 'Chris'
+   *   }
+   * }
+   * ```
+   *
+   * But the app desires to use `record.firstName; // 'Chris'`, then the
+   * property should be named `firstName` and `sourceKey` should be set
+   * to `'first-name'`.
+   *
+   * This option is only needed when the value differs from the property name.
+   */
+  sourceKey?: string;
 };
 
 function _attr(type?: string | AttrOptions, options?: AttrOptions) {
@@ -61,6 +83,7 @@ function _attr(type?: string | AttrOptions, options?: AttrOptions) {
     kind: 'attribute',
     isAttribute: true,
     options: options,
+    sourceKey: options.sourceKey,
     key: null,
   };
 
@@ -77,7 +100,7 @@ function _attr(type?: string | AttrOptions, options?: AttrOptions) {
         return;
       }
       const cache = this[RecordStore].cache;
-      return cache.getAttr(recordIdentifierFor(this), key);
+      return cache.getAttr(recordIdentifierFor(this), meta.sourceKey ?? key);
     },
     set(this: Model, key: string, value: Value) {
       if (DEBUG) {
@@ -93,10 +116,11 @@ function _attr(type?: string | AttrOptions, options?: AttrOptions) {
         !this.currentState.isDeleted
       );
       const cache = this[RecordStore].cache;
+      const cacheKey = meta.sourceKey ?? key;
 
-      const currentValue = cache.getAttr(identifier, key);
+      const currentValue = cache.getAttr(identifier, cacheKey);
       if (currentValue !== value) {
-        cache.setAttr(identifier, key, value);
+        cache.setAttr(identifier, cacheKey, value);
 
         if (!this.isValid) {
           const { errors } = this;
