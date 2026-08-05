@@ -485,6 +485,40 @@ type AbstractTypeImplementerField =
   | LinksModeBelongsToField
   | LinksModeHasManyField;
 
+/**
+ * A relationship field contributed to an abstract type's schema, along with
+ * the name of the type that contributed it (either a concrete implementer,
+ * via `options.as`, or the abstract type's own schema), for use in assertion
+ * messages when two contributions disagree on shape.
+ */
+interface AbstractFieldContribution {
+  field: AbstractTypeImplementerField;
+  source: string;
+}
+
+/**
+ * Asserts that two contributions to the same field name on an abstract
+ * polymorphic type - whether from two different concrete implementers, or
+ * from an implementer and the abstract type's own schema - agree on `kind`
+ * (e.g. both `hasMany`, not one `hasMany` and the other `belongsTo`) and
+ * target `type`. A mismatch here means the schemas disagree about whether
+ * the relationship is to-many or to-one (or about what it points to), which
+ * cannot be resolved by picking one arbitrarily.
+ */
+function assertConsistentAbstractFieldShape(
+  abstractType: string,
+  fieldName: string,
+  existing: { field: FieldSchema; source: string },
+  incoming: { field: FieldSchema; source: string }
+): void {
+  const existingType = 'type' in existing.field ? existing.field.type : undefined;
+  const incomingType = 'type' in incoming.field ? incoming.field.type : undefined;
+  assert(
+    `Expected the relationship '${fieldName}' on the abstract polymorphic type '${abstractType}' to have a consistent shape everywhere it is declared, but '${existing.source}' declares it as a '${existing.field.kind}' of '${existingType}' while '${incoming.source}' declares it as a '${incoming.field.kind}' of '${incomingType}'. All concrete implementers of an abstract type - and the abstract type's own schema, if it has one - must agree on the 'kind' and target 'type' of any relationship field they share.`,
+    existing.field.kind === incoming.field.kind && existingType === incomingType
+  );
+}
+
 interface InternalSchema {
   original: ResourceSchema | ObjectSchema;
   finalized: boolean;
@@ -572,15 +606,16 @@ export class SchemaService implements SchemaServiceInterface {
   declare _modes: Map<string, KindFns>;
   /**
    * Tracks, per abstract type, the relationship fields that concrete
-   * implementers have contributed via `options.as`. This is independent of
-   * whatever schema (synthesized or user-registered) currently occupies
-   * `_schemas` for that type, so that these fields survive regardless of
-   * the order in which the abstract type's implementers and its own
-   * (optional) concrete schema are registered.
+   * implementers have contributed via `options.as`, along with the type
+   * that contributed each one (for assertion messages). This is
+   * independent of whatever schema (synthesized or user-registered)
+   * currently occupies `_schemas` for that type, so that these fields
+   * survive regardless of the order in which the abstract type's
+   * implementers and its own (optional) concrete schema are registered.
    *
    * @internal
    */
-  declare _abstractImplementerFields: Map<string, Map<string, AbstractTypeImplementerField>>;
+  declare _abstractImplementerFields: Map<string, Map<string, AbstractFieldContribution>>;
   /** @internal */
   declare _extensions: {
     object: Map<string, ProcessedExtension>;
@@ -711,10 +746,13 @@ export class SchemaService implements SchemaServiceInterface {
     // erases the relationships its implementers depend on.
     const implementerFields = this._abstractImplementerFields.get(schema.type);
     if (implementerFields) {
-      for (const [name, field] of implementerFields) {
-        if (!fields.has(name)) {
-          fields.set(name, field);
-          relationships[name] = field;
+      for (const [name, contribution] of implementerFields) {
+        const ownField = fields.get(name);
+        if (!ownField) {
+          fields.set(name, contribution.field);
+          relationships[name] = contribution.field;
+        } else {
+          assertConsistentAbstractFieldShape(schema.type, name, contribution, { field: ownField, source: schema.type });
         }
       }
     }
@@ -749,12 +787,12 @@ export class SchemaService implements SchemaServiceInterface {
     // instead of requiring special-casing wherever abstract relationship
     // types are resolved.
     for (const field of abstractImplementations) {
-      this._registerAbstractTypeImplementation(field);
+      this._registerAbstractTypeImplementation(field, schema.type);
     }
   }
 
   /** @internal */
-  private _registerAbstractTypeImplementation(field: AbstractTypeImplementerField): void {
+  private _registerAbstractTypeImplementation(field: AbstractTypeImplementerField, implementer: string): void {
     const abstractType = field.options.as!;
 
     let implementerFields = this._abstractImplementerFields.get(abstractType);
@@ -763,17 +801,22 @@ export class SchemaService implements SchemaServiceInterface {
       this._abstractImplementerFields.set(abstractType, implementerFields);
     }
 
-    // all concrete implementations of an abstract type are required to
-    // share the same shape for the field that implements it, so the first
-    // one registered is as good a canonical source as any.
-    if (implementerFields.has(field.name)) {
-      return;
-    }
-
     const options = { ...field.options };
     delete options.as;
     const abstractField = { ...field, options } as AbstractTypeImplementerField;
-    implementerFields.set(field.name, abstractField);
+    const contribution: AbstractFieldContribution = { field: abstractField, source: implementer };
+
+    // all concrete implementations of an abstract type are required to
+    // share the same shape for the field that implements it, so the first
+    // one registered is as good a canonical source as any - but a later,
+    // differently-shaped one is almost certainly a mistake rather than an
+    // intentional override, so we catch it rather than silently ignoring it.
+    const existingImplementer = implementerFields.get(field.name);
+    if (existingImplementer) {
+      assertConsistentAbstractFieldShape(abstractType, field.name, existingImplementer, contribution);
+      return;
+    }
+    implementerFields.set(field.name, contribution);
 
     let abstractSchema = this._schemas.get(abstractType);
     if (!abstractSchema) {
@@ -794,7 +837,9 @@ export class SchemaService implements SchemaServiceInterface {
       this._schemas.set(abstractType, abstractSchema);
     }
 
-    if (abstractSchema.fields.has(field.name)) {
+    const existingAbstractField = abstractSchema.fields.get(field.name);
+    if (existingAbstractField) {
+      assertConsistentAbstractFieldShape(abstractType, field.name, { field: existingAbstractField, source: abstractType }, contribution);
       return;
     }
 

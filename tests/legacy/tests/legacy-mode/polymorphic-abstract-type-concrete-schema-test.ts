@@ -76,6 +76,42 @@ function registerConcreteAbstractRecord(schema: SchemaService) {
   );
 }
 
+// Declares `events` as a `belongsTo`, conflicting with the `hasMany` shape
+// that `project` (via `as: 'abstract-record'`) expects `abstract-record` to have.
+function registerConflictingConcreteAbstractRecord(schema: SchemaService) {
+  schema.registerResource(
+    withLegacy({
+      type: 'abstract-record',
+      fields: [
+        {
+          name: 'events',
+          kind: 'belongsTo',
+          type: 'event',
+          options: { async: false, inverse: null },
+        },
+      ],
+    })
+  );
+}
+
+// A second implementer of `abstract-record`, whose `events` field conflicts
+// in `kind` with the one `project` contributes.
+function registerConflictingTask(schema: SchemaService) {
+  schema.registerResource(
+    withLegacy({
+      type: 'task',
+      fields: [
+        {
+          name: 'events',
+          kind: 'belongsTo',
+          type: 'event',
+          options: { async: false, inverse: null, as: 'abstract-record' },
+        },
+      ],
+    })
+  );
+}
+
 module(
   'Legacy | Reads | polymorphic relationship whose abstract type also has a concrete schema',
   function (hooks) {
@@ -256,6 +292,54 @@ module(
         });
 
         assert.equal(record.name, 'Direct Record', 'the concrete attribute is readable');
+      });
+    });
+
+    module('when a later declaration disagrees on the relationship kind', function () {
+      test('abstract discovered first as hasMany, then a concrete schema declares it belongsTo', function (assert) {
+        const store = createStore(this);
+        const { schema } = store;
+
+        // `project` implements `abstract-record` assuming `events` is a
+        // `hasMany`, synthesizing that shape onto `abstract-record`.
+        registerProject(schema);
+
+        // `abstract-record` turns out to be a real resource, but its author
+        // (unaware of `project`'s assumption) declared `events` as a
+        // `belongsTo` instead. This is a genuine contradiction, not an
+        // override - resolving it silently in either direction would leave
+        // one side of the relationship broken.
+        assert.throws(
+          () => registerConflictingConcreteAbstractRecord(schema),
+          /to have a consistent shape/,
+          'registering a conflicting concrete schema throws rather than silently discarding the synthesized shape'
+        );
+      });
+
+      test('concrete schema declares belongsTo first, then an implementer assumes hasMany', function (assert) {
+        const store = createStore(this);
+        const { schema } = store;
+
+        registerConflictingConcreteAbstractRecord(schema);
+
+        assert.throws(
+          () => registerProject(schema),
+          /to have a consistent shape/,
+          'registering an implementer whose assumed shape conflicts with the existing concrete schema throws'
+        );
+      });
+
+      test('two implementers disagree on the relationship kind, with no concrete schema involved', function (assert) {
+        const store = createStore(this);
+        const { schema } = store;
+
+        registerProject(schema);
+
+        assert.throws(
+          () => registerConflictingTask(schema),
+          /to have a consistent shape/,
+          'a second implementer with a conflicting shape throws rather than being silently ignored'
+        );
       });
     });
   }
