@@ -35,10 +35,32 @@ export interface ModeInfo {
 }
 
 export interface BaseContext {
+  /**
+   * The {@link Store} instance that owns
+   * the reactive context we are within.
+   */
   store: Store;
+  /**
+   * The {@link ResourceKey} of the resource that
+   * the reactive context we are within is for.
+   */
   resourceKey: ResourceKey;
+  /**
+   * The name of the {@link ModeName | mode} that the
+   * reactive context we are within is operating in.
+   */
   modeName: ModeName;
+  /**
+   * Whether we are in legacy {@link ModeName | mode}
+   * or not.
+   */
   legacy: boolean;
+  /**
+   * Whether the ReactiveResource instance we are operating
+   * in is currently editable or not. This should be true if the
+   * record is currently checked out for editing or is in legacy mode
+   * and false if the record is currently in a read-only state.
+   */
   editable: boolean;
 }
 
@@ -52,11 +74,45 @@ export interface ObjectContext extends BaseContext {
   field: SchemaObjectField | SchemaArrayField;
   value: string;
 }
+
+/**
+ * A ReactiveResource context object passed to
+ * the get/set functions of a field kind implementation.
+ *
+ * This provides all the necessary information for
+ * the field kind to perform its operations.
+ *
+ * @internal
+ */
 export interface KindContext<T extends FieldSchema | IdentityField | HashField> extends BaseContext {
+  /**
+   * The "cache" path to the field within the resource.
+   *
+   * This is the path that should be used to access the
+   * field's value in the cache.
+   *
+   * It differs from the "ui path" in that it will be
+   * both unaliased and account for source keys.
+   */
   path: string[];
+  /**
+   * The raw schema field definition
+   */
   field: T;
+  /**
+   * The value being set in a set operation. This will be null in a get operation.
+   */
   value: unknown;
+  /**
+   * The object (a ReactiveResource) that the field is being directly accessed on.
+   * This is not necessarily the same as the instance that {@link BaseContext.resourceKey | resourceKey}
+   * points to, as the field being accessed may be on an embedded schema-object
+   * or similar.
+   */
   record: ReactiveResource;
+  /**
+   * The signals object for the record, used to entangle signals for reactivity.
+   */
   signals: SignalStore;
 }
 

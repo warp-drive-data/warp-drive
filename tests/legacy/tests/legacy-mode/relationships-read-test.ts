@@ -525,7 +525,7 @@ module('Legacy | Reads | relationships', function (hooks) {
 
       await assert.throws(
         () => record.belongsTo('bestFriend').reload(),
-        'Cannot fetch user.bestFriend because the field is in linksMode but the related link is missing'
+        'Cannot fetch user.bestFriend because the field is in linksMode but the related data is not included'
       );
 
       assert.verifySteps(['op=findBelongsTo, url=/user/1/bestFriend'], 'op and url are correct');

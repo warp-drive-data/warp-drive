@@ -196,11 +196,7 @@ export const publish_flags_config: FlagConfig = {
       const channel = options.get('channel') as CHANNEL;
       if (channel === 'lts' || channel === 'release' || channel === 'beta') {
         const version = (await getPublishedChannelInfo())[channel === 'release' ? 'latest' : channel];
-        const currentVersion = (await getGitState(options)).rootVersion;
-        if (version !== currentVersion) {
-          return version;
-        }
-        return '';
+        return version || '';
       }
       return '';
     },
@@ -294,6 +290,50 @@ export const release_notes_flags_config: FlagConfig = merge(
         const versionInfo = semver.parse(value);
         if (versionInfo?.prerelease?.length) {
           throw new Error(`Version passed to promote cannot be prerelease version`);
+        }
+      },
+    },
+  }
+);
+
+export const backfill_flags_config: FlagConfig = merge(
+  pick(publish_flags_config, ['help', 'dry_run', 'dangerously_force']),
+  {
+    commit: {
+      name: 'Commit',
+      flag: 'commit',
+      flag_aliases: ['c'],
+      flag_mispellings: ['cm', 'comit'],
+      description: 'Whether to commit the changes to the changelogs',
+      type: Boolean,
+      examples: [],
+      default_value: false,
+    },
+    from: {
+      name: 'From Version',
+      flag: 'from',
+      flag_aliases: ['v'],
+      flag_mispellings: ['ver', 'release', 'rel'],
+      description:
+        'The version from which to backfill release notes. Release notes will be backfilled "from" this version, not including it.',
+      type: String,
+      examples: [],
+      default_value: async (options: Map<string, string | number | boolean | null>) => {
+        return (await getPublishedChannelInfo()).latest;
+      },
+      validate: async (value: unknown) => {
+        if (typeof value !== 'string') {
+          throw new Error(`Expected a string but got ${value}`);
+        }
+        if (value.startsWith('v')) {
+          throw new Error(`Version passed to backfill should not start with 'v'`);
+        }
+        if (semver.valid(value) === null) {
+          throw new Error(`Version passed to backfill is not a valid semver version`);
+        }
+        const versionInfo = semver.parse(value);
+        if (versionInfo?.prerelease?.length) {
+          throw new Error(`Version passed to backfill cannot be prerelease version`);
         }
       },
     },
@@ -412,6 +452,23 @@ export const command_config: CommandConfig = {
     description: `Generate release notes for the next release.`,
     options: release_notes_flags_config,
     example: '$ bun release cl',
+  },
+  backfill_release_notes: {
+    name: 'Backfill Release Notes',
+    cmd: 'backfill-release-notes',
+    alt: [
+      'backfill',
+      'backfill_cl',
+      'backfill_changes',
+      'backfill_history',
+      'backfill_notes',
+      'backfill_releasenotes',
+      'backfill_changelog',
+      'backfill_log',
+    ],
+    description: `Backfill release notes for a prior release.`,
+    options: backfill_flags_config,
+    example: '$ bun release backfill --from=5.2.0',
   },
   latest_for: {
     name: 'Latest For',

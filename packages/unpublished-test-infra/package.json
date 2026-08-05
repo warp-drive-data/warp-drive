@@ -1,6 +1,6 @@
 {
   "name": "@ember-data/unpublished-test-infra",
-  "version": "5.9.0-alpha.12",
+  "version": "5.9.0-alpha.18",
   "private": true,
   "description": "The default blueprint for ember-data private packages.",
   "keywords": [
@@ -73,10 +73,10 @@
     "@ember/test-helpers": "5.2.0",
     "@glimmer/component": "^2.0.0",
     "@types/semver": "^7.7.0",
-    "@types/qunit": "2.19.10",
+    "@types/qunit": "2.19.13",
     "@warp-drive/diagnostic": "workspace:*",
     "@warp-drive/internal-config": "workspace:*",
-    "ember-source": "~6.10.0",
+    "ember-source": "~6.12.0",
     "typescript": "^5.9.3",
     "vite": "^7.3.1",
     "qunit": "^2.20.1",

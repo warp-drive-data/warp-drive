@@ -1,3 +1,7 @@
+---
+draft: true
+---
+
 # LinksMode
 
 ---
@@ -17,7 +21,7 @@ you are using Model (including via [LegacyMode](../schemas/resources/legacy-mode
 
 ## How Does It Work?
 
-### Related Link Becomes Required
+### Related Link Becomes Required (Unless Fully Linked)
 
 Relationships in WarpDrive are stored using the same top-level structure as resource documents, a structure
 adopted from the [JSON:API](https://jsonapi.org) specification.
@@ -43,14 +47,22 @@ interface CollectionRelationship extends Relationship {
 }
 ```
 
-When `linksMode` is activated for a relationship, it is required that a related link is present.
+For a `belongsTo` or `hasMany` in `linksMode` (today this means `async: false`, the only combination currently supported), every push to the cache must satisfy one of the following:
+
+- the relationship has a `links.related` link, **or**
+- the relationship is "fully linked": for `belongsTo`, `data` is `null`, or `data` points to a resource that is present in the document's `included` array; for `hasMany`, `data` is `[]`, or every resource identifier in `data` is present in `included`
+
+In other words, a related link lets you omit the related resource(s) from `included`; without a link, the relationship must either be empty (`data: null` for `belongsTo`, `data: []` for `hasMany`) or the related resource(s) must be sideloaded.
+
+A relationship whose `data` key is missing entirely, or explicitly `undefined`, is never valid on its own — WarpDrive cannot distinguish "no data was returned" from "the relationship is genuinely empty" without either a `links.related` link or an explicit empty value (`null` / `[]`).
 
 ```ts
 interface LinksModeRelationship {
   meta?: Record<string, Value>;
 
-  // no longer optional
-  links: {
+  // required unless `data` is empty (`null` / `[]`), or every resource in
+  // `data` is included in the document
+  links?: {
     related: string | { href: string };
 
     // other links as desired

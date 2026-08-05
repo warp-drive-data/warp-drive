@@ -1,7 +1,3 @@
----
-order: 2
----
-
 # PolarisMode (preview)
 
 :::tip 💡 **PolarisMode is not yet recommended**

@@ -1426,9 +1426,16 @@ export interface LegacyBelongsToField {
      * adapters and serializers.
      *
      * When true, none of the legacy support will be utilized. Sync relationships
-     * will be expected to already have all their data. When reloading a sync relationship
-     * you would be expected to have a `related link` available from a prior relationship
-     * payload e.g.
+     * (`async: false`, currently the only supported combination) must satisfy
+     * one of the following whenever pushed to the cache:
+     *
+     * - a `links.related` link is present, **or**
+     * - the relationship is fully linked: `data` is `null`, or `data` points
+     *   to a resource present in the document's `included` array
+     *
+     * A related link lets you omit the related resource from `included`; a
+     * `data` key that is missing entirely, or explicitly `undefined`, is never
+     * valid unless a `links.related` link is present.
      *
      * ```ts
      * {
@@ -1589,9 +1596,16 @@ export interface LinksModeBelongsToField {
      * MUST be true for PolarisMode + LinksMode
      *
      * When true, none of the legacy support will be utilized. Sync relationships
-     * will be expected to already have all their data. When reloading a sync relationship
-     * you would be expected to have a `related link` available from a prior relationship
-     * payload e.g.
+     * (`async: false`, currently the only supported combination) must satisfy
+     * one of the following whenever pushed to the cache:
+     *
+     * - a `links.related` link is present, **or**
+     * - the relationship is fully linked: `data` is `null`, or `data` points
+     *   to a resource present in the document's `included` array
+     *
+     * A related link lets you omit the related resource from `included`; a
+     * `data` key that is missing entirely, or explicitly `undefined`, is never
+     * valid unless a `links.related` link is present.
      *
      * ```ts
      * {
@@ -1771,9 +1785,16 @@ export interface LegacyHasManyField {
      * from @warp-drive/legacy/model and the LegacyNetworkMiddleware for adapters and serializers.
      *
      * When true, none of the legacy support will be utilized. Sync relationships
-     * will be expected to already have all their data. When reloading a sync relationship
-     * you would be expected to have a `related link` available from a prior relationship
-     * payload e.g.
+     * (`async: false`, currently the only supported combination) must satisfy
+     * one of the following whenever pushed to the cache:
+     *
+     * - a `links.related` link is present, **or**
+     * - the relationship is fully linked: `data` is `[]`, or every resource
+     *   identifier in `data` is present in the document's `included` array
+     *
+     * A related link lets you omit the related resources from `included`; a
+     * `data` key that is missing entirely, or explicitly `undefined`, is never
+     * valid unless a `links.related` link is present.
      *
      * ```ts
      * {
@@ -1959,9 +1980,16 @@ export interface LinksModeHasManyField {
      * MUST be true for PolarisMode + LinksMode
      *
      * When true, none of the legacy support will be utilized. Sync relationships
-     * will be expected to already have all their data. When reloading a sync relationship
-     * you would be expected to have a `related link` available from a prior relationship
-     * payload e.g.
+     * (`async: false`, currently the only supported combination) must satisfy
+     * one of the following whenever pushed to the cache:
+     *
+     * - a `links.related` link is present, **or**
+     * - the relationship is fully linked: `data` is `[]`, or every resource
+     *   identifier in `data` is present in the document's `included` array
+     *
+     * A related link lets you omit the related resources from `included`; a
+     * `data` key that is missing entirely, or explicitly `undefined`, is never
+     * valid unless a `links.related` link is present.
      *
      * ```ts
      * {

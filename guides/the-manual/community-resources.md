@@ -1,7 +1,3 @@
----
-order: 4
----
-
 # Community Resources
 
 Wrote a blog post? Gave a talk? Published a book? Went on a podcast? Something else fellow explorers might need? We love it all!

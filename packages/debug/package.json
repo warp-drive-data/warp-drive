@@ -1,6 +1,6 @@
 {
   "name": "@ember-data/debug",
-  "version": "5.9.0-alpha.12",
+  "version": "5.9.0-alpha.18",
   "description": "Provides support for the ember-inspector for apps built with Ember and EmberData",
   "keywords": [
     "ember-addon"
@@ -52,7 +52,7 @@
     "@babel/preset-env": "^7.28.3",
     "@babel/preset-typescript": "^7.27.1",
     "@warp-drive/internal-config": "workspace:*",
-    "ember-source": "~6.10.0",
+    "ember-source": "~6.12.0",
     "decorator-transforms": "^2.3.0",
     "typescript": "^5.9.3",
     "vite": "^7.3.1"

@@ -1,2 +1,0 @@
-# fastboot-test-app
-

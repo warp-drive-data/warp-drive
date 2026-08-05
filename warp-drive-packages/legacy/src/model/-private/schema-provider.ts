@@ -10,9 +10,11 @@ import type { ObjectValue } from '@warp-drive/core/types/json/raw';
 import type { Derivation, HashFn, Transformation } from '@warp-drive/core/types/schema/concepts';
 import type {
   ArrayField,
+  CacheableFieldSchema,
   DerivedField,
   GenericField,
   HashField,
+  IdentityField,
   LegacyAttributeField,
   LegacyField,
   LegacyRelationshipField,
@@ -21,7 +23,7 @@ import type {
   ResourceSchema,
 } from '@warp-drive/core/types/schema/fields';
 
-import type { FactoryCache, Model, ModelFactory, ModelStore } from './model.ts';
+import type { FactoryCache, ModelFactory, ModelStore } from './model.ts';
 import _modelForMixin from './model-for-mixin.ts';
 import { normalizeModelName } from './util.ts';
 
@@ -31,6 +33,7 @@ type RelationshipsSchema = ReturnType<Exclude<SchemaService['relationshipsDefini
 type InternalSchema = {
   schema: ResourceSchema;
   fields: Map<string, LegacyAttributeField | LegacyRelationshipField>;
+  cacheFields: Map<string, Exclude<CacheableFieldSchema, IdentityField>>;
   attributes: Record<string, LegacyAttributeField>;
   relationships: Record<string, LegacyRelationshipField>;
 };
@@ -103,7 +106,13 @@ export class ModelSchemaProvider implements SchemaService {
   }
   /** @internal */
   private _loadModelSchema(type: string): InternalSchema {
-    const modelClass = this.store.modelFor(type) as typeof Model;
+    const factory = getModelFactory(this.store, type);
+
+    if (!factory) {
+      throw new Error(`No model was found for '${type}'`);
+    }
+
+    const modelClass = factory.class;
     const attributeMap = modelClass.attributes;
 
     const attributes = Object.create(null) as AttributesSchema;
@@ -126,11 +135,22 @@ export class ModelSchemaProvider implements SchemaService {
       fields: Array.from(fields.values()),
     };
 
+    const cacheFields = new Map<string, Exclude<CacheableFieldSchema, IdentityField>>();
+    for (const field of fields.values()) {
+      const cacheKey = field.sourceKey ?? field.name;
+      assert(
+        `The sourceKey '${field.sourceKey}' for the field '${field.name}' on '${type}' is invalid because it matches the name of an existing field`,
+        !field.sourceKey || field.sourceKey === field.name || !fields.has(field.sourceKey)
+      );
+      cacheFields.set(cacheKey, field);
+    }
+
     const internalSchema: InternalSchema = {
       schema,
       attributes,
       relationships,
       fields,
+      cacheFields,
     };
 
     this._schemas.set(type, internalSchema);
@@ -146,6 +166,16 @@ export class ModelSchemaProvider implements SchemaService {
     }
 
     return this._schemas.get(type)!.fields;
+  }
+
+  cacheFields(resource: ResourceKey | { type: string }): Map<string, Exclude<CacheableFieldSchema, IdentityField>> {
+    const type = normalizeModelName(resource.type);
+
+    if (!this._schemas.has(type)) {
+      this._loadModelSchema(type);
+    }
+
+    return this._schemas.get(type)!.cacheFields;
   }
 
   hasResource(resource: { type: string }): boolean {

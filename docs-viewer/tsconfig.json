@@ -9,7 +9,6 @@
     "allowJs": false,
     "checkJs": false,
     "types": ["@types/bun"],
-    "baseUrl": ".",
 
     // Bundler mode
     "moduleResolution": "bundler",

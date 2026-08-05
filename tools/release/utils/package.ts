@@ -94,19 +94,58 @@ export type APPLIED_STRATEGY = {
   new: boolean;
 };
 
-export interface STRATEGY {
-  config: {
-    packageRoots: string[];
-    changelogRoots?: string[];
-    changelog?: {
-      collapseLabels?: {
-        labels: string[];
-        title: string;
-      };
-      labelOrder?: string[];
-      mappings: Record<string, string | null>;
-    };
+export interface ChangelogStrategy {
+  /**
+   * Merges multiple PR label sections into a single section in the generated changelog.
+   *
+   * When lerna-changelog produces output, it groups PRs under headings derived from their
+   * labels. `collapseLabels.labels` lists the headings to fold together, and `title` is
+   * the single heading that replaces all of them.
+   *
+   * Example: collapsing ":shower: Deprecation Removal", ":goal_net: Test", and
+   * ":house: Internal" under the title ":house: Internal" so they appear as one section.
+   *
+   * Implemented in `keyForLabel()` in `steps/get-changes.ts`.
+   */
+  collapseLabels?: {
+    labels: string[];
+    title: string;
   };
+  /**
+   * Controls the order in which label sections appear in the final changelog markdown.
+   *
+   * `buildText()` in `steps/update-changelogs.ts` emits sections in this order first,
+   * then appends any remaining sections (not listed here) afterward. Labels absent from
+   * this array are not suppressed — they just appear at the end in an unspecified order.
+   *
+   * Typical convention: Breaking Changes → Deprecations → Docs → Enhancements →
+   * Bug Fixes → Performance → Internal, putting the most impactful changes first.
+   */
+  labelOrder?: string[];
+  /**
+   * Routes changelog entries from a source path or label to a specific package changelog.
+   *
+   * Keys are the sub-path names or label names that lerna-changelog uses as sources.
+   * Values are either a package name (entries go to that package's CHANGELOG) or `null`
+   * (entries go to the root changelog).
+   *
+   * Example: `{ "mock-server": "@warp-drive/diagnostic", "Other": null }`
+   * — entries from the `mock-server` folder are attributed to `@warp-drive/diagnostic`,
+   * and entries labeled "Other" land in the root changelog.
+   *
+   * Consumed by `packagesBySubPath()` in `steps/get-changes.ts`.
+   */
+  mappings: Record<string, string | null>;
+}
+
+export interface RawStrategyConfig {
+  packageRoots: string[];
+  changelogRoots?: string[];
+  changelog?: ChangelogStrategy;
+}
+
+export interface STRATEGY {
+  config: RawStrategyConfig;
   defaults: {
     stage: STRATEGY_TYPE;
     types: TYPE_STRATEGY;

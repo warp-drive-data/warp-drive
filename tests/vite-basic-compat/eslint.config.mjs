@@ -13,7 +13,7 @@ import qunit from 'eslint-plugin-qunit';
 import n from 'eslint-plugin-n';
 
 import emberParser from 'ember-eslint-parser';
-import babelParser from '@babel/eslint-parser';
+import babelParser from '@babel/eslint-parser/experimental-worker';
 
 const parserOptions = {
   esm: {

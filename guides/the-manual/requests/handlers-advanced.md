@@ -1,6 +1,5 @@
 ---
 title: Advanced Handlers
-order: 6
 draft: true
 ---
 

@@ -1,6 +1,5 @@
 ---
 title: Using Codemods
-order: 2
 outline:
   level: 2,3
 ---

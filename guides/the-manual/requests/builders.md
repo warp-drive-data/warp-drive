@@ -1,7 +1,3 @@
----
-order: 3
----
-
 # Builders
 
 Builders are simple functions that produce a json [request object](/api/@warp-drive/core/types/request/interfaces/RequestInfo). Builders help you to write organized, reusable requests.

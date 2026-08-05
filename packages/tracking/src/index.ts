@@ -62,6 +62,7 @@
  */
 import { tagForProperty } from '@ember/-internals/metal';
 import { _backburner } from '@ember/runloop';
+import type { UpdatableTag } from '@glimmer/validator';
 import { consumeTag, createCache, dirtyTag, getValue, track, updateTag } from '@glimmer/validator';
 
 import { importSync } from '@embroider/macros';
@@ -111,7 +112,7 @@ export function buildSignalConfig(options: {
           return;
         }
       }
-      consumeTag(signal);
+      consumeTag(signal as Tag);
     },
     notifySignal(signal: Tag | [Tag, Tag, Tag]): void {
       if (DEPRECATE_COMPUTED_CHAINS) {
@@ -123,7 +124,7 @@ export function buildSignalConfig(options: {
         }
       }
 
-      emberDirtyTag(signal);
+      emberDirtyTag(signal as Tag);
     },
     createMemo: <F>(object: object, key: string | symbol, fn: () => F): (() => F) => {
       if (DEPRECATE_COMPUTED_CHAINS) {
@@ -135,13 +136,13 @@ export function buildSignalConfig(options: {
         };
         return () => {
           const tag = track(wrappedFn);
-          updateTag(propertyTag, tag);
+          updateTag(propertyTag as UpdatableTag, tag);
           consumeTag(tag);
           return ret!;
         };
       } else {
         const memo = createCache(fn);
-        return () => getValue(memo);
+        return () => getValue(memo) as F;
       }
     },
     willSyncFlushWatchers: (): boolean => {

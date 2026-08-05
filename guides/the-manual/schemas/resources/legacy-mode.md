@@ -1,7 +1,3 @@
----
-order: 1
----
-
 # LegacyMode (recommended)
 
 :::tip 💡 **Using LegacyMode is Our Current Recommendation for Most Apps**

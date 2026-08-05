@@ -1,9 +1,7 @@
 ---
-categoryTitle: Migrating
 title: V3/V4 to V5
 outline:
   level: 2,3
-categoryOrder: 4
 ---
 
 # Migrating 4.x to 5.x
@@ -249,8 +247,8 @@ const user = store.push<User>({ // [!code ++]
 **Additional Resources**
 
 - [Typing Requests](/guides/the-manual/requests/typing-requests)
-- [Typing Models](/guides/the-manual/misc/typescript/typing-models)
-- [Why Brands](/guides/the-manual/misc/typescript/why-brands)
+- [Typing Models](/guides/the-manual/typescript/typing-models)
+- [Why Brands](/guides/the-manual/typescript/why-brands)
 
 ### Step 6 - fix other type issues that arise
 

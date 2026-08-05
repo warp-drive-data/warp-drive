@@ -1,7 +1,7 @@
 {
   "name": "@ember-data/request-utils",
   "description": "(Legacy) Request Building Utilities for use with EmberData",
-  "version": "5.9.0-alpha.12",
+  "version": "5.9.0-alpha.18",
   "private": false,
   "license": "MIT",
   "author": "Chris Thoburn <runspired@users.noreply.github.com>",
@@ -67,7 +67,7 @@
     "@babel/preset-env": "^7.28.3",
     "@babel/preset-typescript": "^7.27.1",
     "@warp-drive/internal-config": "workspace:*",
-    "ember-source": "~6.10.0",
+    "ember-source": "~6.12.0",
     "ember-inflector": "6.0.0",
     "typescript": "^5.9.3",
     "vite": "^7.3.1"

@@ -1,3 +1,6 @@
+import { LOG_GRAPH } from '@warp-drive/build-config/debugging';
+import { DEBUG } from '@warp-drive/build-config/env';
+
 export interface RelationshipState {
   /*
       This flag indicates whether we should consider the content
@@ -26,6 +29,17 @@ export interface RelationshipState {
             the other side.
      */
   hasReceivedData: boolean;
+  /*
+      Like `hasReceivedData`, but only ever set by *remote* updates
+      (pushes from the cache/server), never by local mutations.
+
+      This is what `getRemoteRelationship` uses to distinguish "we have
+      never been told anything about this relationship's remote state"
+      (stays `undefined`) from "we were explicitly told the remote state
+      is empty" (`null` / `[]`) regardless of any local edits that may
+      have occurred since.
+     */
+  hasReceivedRemoteData: boolean;
   /*
       Flag that indicates whether an empty relationship is explicitly empty
         (signaled by push giving us an empty array or null relationship)
@@ -103,8 +117,29 @@ export interface RelationshipState {
 }
 
 export function createState(): RelationshipState {
+  if (DEBUG) {
+    if (LOG_GRAPH) {
+      let hasReceivedData = false;
+      return {
+        get hasReceivedData() {
+          return hasReceivedData;
+        },
+        set hasReceivedData(value: boolean) {
+          hasReceivedData = value;
+        },
+        hasReceivedRemoteData: false,
+        isEmpty: true,
+        isStale: false,
+        hasFailedLoadAttempt: false,
+        shouldForceReload: false,
+        hasDematerializedInverse: false,
+      };
+    }
+  }
+
   return {
     hasReceivedData: false,
+    hasReceivedRemoteData: false,
     isEmpty: true,
     isStale: false,
     hasFailedLoadAttempt: false,

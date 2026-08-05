@@ -1,7 +1,3 @@
----
-order: 3
----
-
 # SimpleFields
 
 SimpleFields represent primitive values on a ResourceSchema or ObjectSchema. They are the most common type of field and map directly to the values your API sends and receives.

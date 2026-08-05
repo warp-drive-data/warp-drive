@@ -1,6 +1,6 @@
 {
   "name": "framework-ember",
-  "version": "5.9.0-alpha.12",
+  "version": "5.9.0-alpha.18",
   "description": "Provides spec test implementation for @warp-drive/ember",
   "private": true,
   "keywords": [],
@@ -38,8 +38,8 @@
     "@glint/template": "^1.7.3",
     "@glint/tsserver-plugin": "^2.0.3",
     "@rollup/plugin-babel": "^6.0.4",
-    "babel-plugin-ember-template-compilation": "^2.4.1",
-    "ember-source": "^6.6.0",
+    "babel-plugin-ember-template-compilation": "^4.0.0",
+    "ember-source": "~6.12.0",
     "ember-strict-application-resolver": "^0.1.0",
     "rollup": "^4.48.0",
     "terser": "^5.43.1",

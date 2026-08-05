@@ -1,6 +1,6 @@
 {
   "name": "root",
-  "version": "5.9.0-alpha.12",
+  "version": "5.9.0-alpha.18",
   "private": true,
   "license": "MIT",
   "repository": {
@@ -30,7 +30,6 @@
     "test": "pnpm turbo test --concurrency=1",
     "test:production": "pnpm turbo test:production --concurrency=1",
     "test:blueprints": "pnpm run -r --workspace-concurrency=-1 --if-present test:blueprints",
-    "test:fastboot": "pnpm run -r --workspace-concurrency=-1 --if-present test:fastboot",
     "test:vite": "pnpm run -r ---workspace-concurrency=-1 --if-present test:vite"
   },
   "devDependencies": {
@@ -48,7 +47,7 @@
     "comment-json": "^4.2.5",
     "common-tags": "^1.8.2",
     "debug": "^4.4.1",
-    "ember-source": "~6.10.0",
+    "ember-source": "~6.12.0",
     "execa": "^9.6.0",
     "git-repo-version": "^1.0.2",
     "globby": "^14.1.0",
@@ -79,6 +78,7 @@
   },
   "packageManager": "pnpm@10.15.0",
   "changelog": {
+    "cacheDir": ".changelog-cache",
     "labels": {
       ":label: breaking": ":boom: Breaking Change",
       ":label: feat": ":rocket: Enhancement",
@@ -89,7 +89,14 @@
       ":label: doc": ":memo: Documentation",
       ":label: test": ":goal_net: Test",
       ":label: chore": ":house: Internal"
-    }
+    },
+    "ignoreCommitters": [
+      "[bot]",
+      "dependabot-bot",
+      "greenkeeperio-bot",
+      "renovate-bot",
+      "Copilot"
+    ]
   },
   "pnpm": {
     "packageExtensions": {
@@ -116,19 +123,6 @@
       "ember-page-title": {
         "peerDependencies": {
           "@glimmer/component": "*",
-          "ember-source": "*"
-        }
-      },
-      "ember-cli-fastboot": {
-        "peerDependencies": {
-          "ember-cli": "*",
-          "ember-source": "*"
-        }
-      },
-      "ember-cli-fastboot-testing": {
-        "peerDependencies": {
-          "ember-cli": "*",
-          "ember-cli-fastboot": "*",
           "ember-source": "*"
         }
       },
@@ -159,7 +153,7 @@
       }
     },
     "overrides": {
-      "ember-auto-import": "^2.12.0",
+      "ember-auto-import": "^2.13.1",
       "broccoli-funnel": "^3.0.8",
       "broccoli-merge-trees": "^4.2.0",
       "@glimmer/validator": "^0.95.0",
@@ -167,7 +161,7 @@
       "@glint/template": "1.6.1",
       "@glint/tsserver-plugin": "2.0.3",
       "ember-cli-babel": "^8.2.0",
-      "ember-cli-htmlbars": "^6.3.0",
+      "ember-cli-htmlbars": "^7.0.1",
       "ember-cli-typescript": "^5.3.0",
       "webpack": "5.101.3",
       "qunit": "2.19.4",

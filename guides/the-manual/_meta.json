@@ -1,0 +1,15 @@
+{
+  "items": [
+    "requests",
+    "schemas",
+    "relational-data",
+    "caching",
+    "reactivity",
+    "typescript",
+    "debugging",
+    "mutations",
+    "experiments",
+    "cookbook",
+    "community-resources"
+  ]
+}

@@ -1,7 +1,5 @@
 ---
 title: Overview
-order: 0
-categoryOrder: 3
 ---
 
 :::warning **🚧 Pardon Our Stardust!**

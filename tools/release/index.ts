@@ -9,11 +9,13 @@ import { executeReleaseNoteGeneration } from './core/release-notes/index.ts';
 import { write } from './utils/write.ts';
 import { promoteToLTS } from './core/promote/index.ts';
 import { latestFor } from './core/latest-for/index.ts';
+import { backfillReleaseNotes } from './core/backfill-release-notes/index.ts';
 
 const COMMANDS = {
   help: printHelpDocs,
   about: printAbout,
   release_notes: executeReleaseNoteGeneration,
+  backfill_release_notes: backfillReleaseNotes,
   publish: executePublish,
   latest_for: latestFor,
   promote: promoteToLTS,

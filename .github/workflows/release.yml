@@ -261,15 +261,19 @@ jobs:
         run: |
           if [[ $TRAIN != "" ]]; then
             echo "DESIRED_BRANCH=${{github.event.inputs.train}}-release" >> "$GITHUB_OUTPUT"
+            echo "MAIN_BRANCH=${{github.event.inputs.train}}-main" >> "$GITHUB_OUTPUT"
+            echo "BETA_BRANCH=${{github.event.inputs.train}}-beta" >> "$GITHUB_OUTPUT"
           else
             echo "DESIRED_BRANCH=release" >> "$GITHUB_OUTPUT"
+            echo "MAIN_BRANCH=main" >> "$GITHUB_OUTPUT"
+            echo "BETA_BRANCH=beta" >> "$GITHUB_OUTPUT"
           fi
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
         with:
           fetch-tags: true
           show-progress: false
           token: ${{ secrets.GH_DEPLOY_TOKEN }}
-          fetch-depth: 3
+          fetch-depth: 1000 # release notes will need more history
           ref: ${{ steps.desired-branch.outputs.DESIRED_BRANCH }}
       ## Ensure we have a full copy of the source branch
       - run: git fetch origin ${{ github.event.inputs.stable_source-branch }}
@@ -305,6 +309,60 @@ jobs:
           FORCE_COLOR: 2
           CI: true
           GITHUB_AUTH: ${{ secrets.GITHUB_TOKEN }}
+      - name: Get changelog commit SHA
+        id: changelog-commit
+        if: github.event.inputs.dryRun != 'true'
+        run: |
+          SHA=$(git log --format='%H' -n 1 --grep="chore: update changelogs")
+          echo "sha=${SHA}" >> $GITHUB_OUTPUT
+      - name: Cherry-pick changelog to main
+        if: github.event.inputs.dryRun != 'true' && steps.changelog-commit.outputs.sha != ''
+        env:
+          GH_TOKEN: ${{ secrets.GH_DEPLOY_TOKEN }}
+          SHA: ${{ steps.changelog-commit.outputs.sha }}
+          TARGET: ${{ steps.desired-branch.outputs.MAIN_BRANCH }}
+        run: |
+          git checkout -- .
+          git fetch origin $TARGET --depth=1
+          git checkout -B $TARGET origin/$TARGET
+          if git cherry-pick $SHA; then
+            git push origin $TARGET
+          else
+            git cherry-pick --abort
+            PR_BRANCH="changelog/cherry-pick-to-${TARGET}-$(git rev-parse --short $SHA)"
+            git checkout -b $PR_BRANCH
+            git cherry-pick -X theirs $SHA
+            git push origin $PR_BRANCH
+            gh pr create \
+              --title "chore: cherry-pick changelog to ${TARGET}" \
+              --body "Changelog commit ${SHA} could not be cleanly cherry-picked to \`${TARGET}\`. Resolved with \`-X theirs\` — please verify no entries from \`${TARGET}\` were lost." \
+              --base $TARGET \
+              --head $PR_BRANCH
+          fi
+      - name: Cherry-pick changelog to beta
+        if: github.event.inputs.dryRun != 'true' && steps.changelog-commit.outputs.sha != ''
+        env:
+          GH_TOKEN: ${{ secrets.GH_DEPLOY_TOKEN }}
+          SHA: ${{ steps.changelog-commit.outputs.sha }}
+          TARGET: ${{ steps.desired-branch.outputs.BETA_BRANCH }}
+        run: |
+          git checkout -- .
+          git fetch origin $TARGET --depth=1
+          git checkout -B $TARGET origin/$TARGET
+          if git cherry-pick $SHA; then
+            git push origin $TARGET
+          else
+            git cherry-pick --abort
+            PR_BRANCH="changelog/cherry-pick-to-${TARGET}-$(git rev-parse --short $SHA)"
+            git checkout -b $PR_BRANCH
+            git cherry-pick -X theirs $SHA
+            git push origin $PR_BRANCH
+            gh pr create \
+              --title "chore: cherry-pick changelog to ${TARGET}" \
+              --body "Changelog commit ${SHA} could not be cleanly cherry-picked to \`${TARGET}\`. Resolved with \`-X theirs\` — please verify no entries from \`${TARGET}\` were lost." \
+              --base $TARGET \
+              --head $PR_BRANCH
+          fi
 
   lts:
     if: github.event.inputs.channel == 'lts' || github.event.inputs.channel == 'lts-prev'

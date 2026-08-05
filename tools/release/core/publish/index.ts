@@ -52,17 +52,39 @@ export async function executePublish(args: string[]) {
 
   await confirmStrategy();
 
+  const versions = new Map<string, string>();
+  for (const [pkgName, pkg] of applied.all.entries()) {
+    versions.set(pkgName, pkg.toVersion);
+  }
+
   const channel = config.full.get('channel') as CHANNEL;
-  if (channel !== 'canary' && channel !== 'beta') {
-    // generate the list of changes
-    const newChanges = await getChanges(strategy, packages, fromTag);
+  if (channel !== 'canary' && channel !== 'beta' && fromVersion) {
+    // generate the list of changes (first entry is the unreleased block)
+    const changesets = await getChanges(strategy.config, packages, fromTag);
+    const newChanges = changesets[0];
+    if (!newChanges) {
+      throw new Error(
+        `lerna-changelog produced no parseable output from ${fromTag}. Check the log above for the raw output.`
+      );
+    }
+
+    const toTag = `v${versions.get('root')!}` as GIT_TAG;
+    const date = new Date().toISOString().split('T')[0];
 
     // update all changelogs, including the primary changelog
     // and the changelogs for each package in changelogRoots
     // this will not commit the changes
-    const changedFiles = await updateChangelogs(fromTag, newChanges, config.full, strategy, packages, applied);
+    const changedFiles = await updateChangelogs(
+      fromTag,
+      toTag,
+      date,
+      newChanges,
+      config.full,
+      strategy.config,
+      packages
+    );
 
-    await confirmCommitChangelogs(changedFiles, config.full, applied);
+    await confirmCommitChangelogs(changedFiles, config.full, versions);
   }
 
   // Bump package.json versions & commit/tag

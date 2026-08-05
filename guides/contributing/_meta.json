@@ -1,0 +1,15 @@
+{
+  "title": "Contributing",
+  "items": [
+    "become-a-contributor",
+    "issues",
+    "setting-up-the-project",
+    "project-architecture",
+    "key-concepts",
+    "writing-documentation",
+    "submitting-prs",
+    "rfc-process",
+    "RELEASE",
+    "ROADMAP"
+  ]
+}

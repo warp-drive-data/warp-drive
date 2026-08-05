@@ -51,4 +51,5 @@ export {
   consumeInternalSignal,
   getOrCreateInternalSignal,
   createInternalSignal,
+  makeInitializer,
 } from './reactivity/internal.ts';

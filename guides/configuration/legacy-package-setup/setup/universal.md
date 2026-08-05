@@ -1,5 +1,4 @@
 ---
-order: 0
 outline:
   level: 2,3
 ---

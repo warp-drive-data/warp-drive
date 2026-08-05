@@ -1,6 +1,5 @@
 ---
 title: Submitting PRs
-order: 6
 ---
 
 # Submitting Work

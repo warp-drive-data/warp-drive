@@ -2,7 +2,6 @@ import { createConfig } from '@warp-drive/internal-config/vite/config.js';
 
 export const externals = [
   '@ember/application/namespace',
-  'ember',
   '@ember/debug',
   '@ember/array/proxy',
   '@ember/object/promise-proxy-mixin',

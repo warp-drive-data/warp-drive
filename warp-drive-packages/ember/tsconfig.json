@@ -40,7 +40,6 @@
     "declarationMap": true,
     "inlineSourceMap": true,
     "inlineSources": true,
-    "baseUrl": ".",
     "types": ["@glint/ember-tsc/types", "ember-source/types"],
     "allowImportingTsExtensions": true,
     "paths": {

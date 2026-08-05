@@ -44,7 +44,7 @@ const DIAGNOSTIC_TEST_APP = {
   'test:start': 'bun ./diagnostic.js --serve --no-launch',
 };
 
-const SPECIAL_CASED_TEST_APPS = new Set(['fastboot-test-app', 'embroider-basic-compat']);
+const SPECIAL_CASED_TEST_APPS = new Set(['embroider-basic-compat']);
 const TOOLING_PACKAGES = new Set(['@ember-data/codemods', 'eslint-plugin-warp-drive']);
 
 const PUBLIC_PACKAGES_EXCEPT_TOOLING = {

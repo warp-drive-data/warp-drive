@@ -1,6 +1,5 @@
 ---
 title: Writing Guides
-order: 2
 ---
 
 # Writing Effective Guides

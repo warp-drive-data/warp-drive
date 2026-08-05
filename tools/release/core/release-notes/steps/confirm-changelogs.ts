@@ -2,12 +2,11 @@ import { BunFile } from 'bun';
 import { confirm } from '../../publish/steps/confirm-strategy.ts';
 import { exec } from '../../../utils/cmd.ts';
 import chalk from 'chalk';
-import { AppliedStrategy } from '../../publish/steps/generate-strategy.ts';
 
 export async function confirmCommitChangelogs(
   _changedFiles: BunFile[],
   config: Map<string, string | number | boolean | null>,
-  strategy: AppliedStrategy
+  versions: Map<string, string>
 ) {
   const dryRun = config.get('dry_run') as boolean;
 
@@ -29,7 +28,7 @@ export async function confirmCommitChangelogs(
   }
 
   if (!dryRun) {
-    const newVersion = strategy.all.get('root')!.toVersion;
+    const newVersion = versions.get('root')!;
     await exec(['sh', '-c', `git add -A && git commit -m "chore: update changelogs for v${newVersion}"`]);
 
     if (config.get('upstream')) {

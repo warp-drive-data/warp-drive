@@ -1,6 +1,6 @@
 {
   "name": "core-tests",
-  "version": "5.9.0-alpha.12",
+  "version": "5.9.0-alpha.18",
   "description": "Provides tests for @warp-drive/core",
   "private": true,
   "repository": {
@@ -47,10 +47,11 @@
     "@warp-drive/holodeck": "workspace:*",
     "@warp-drive/internal-config": "workspace:*",
     "@warp-drive/json-api": "workspace:*",
+    "@warp-drive/schema-dsl": "workspace:*",
     "eslint-plugin-warp-drive": "workspace:*",
-    "babel-plugin-ember-template-compilation": "^2.2.5",
+    "babel-plugin-ember-template-compilation": "^4.0.0",
     "decorator-transforms": "^2.2.2",
-    "ember-source": "^6.6.0",
+    "ember-source": "~6.12.0",
     "ember-strict-application-resolver": "^0.1.0",
     "rollup": "^4.46.2",
     "terser": "^5.39.0",
