@@ -76,7 +76,7 @@ module('Reads | basic fields', function (hooks) {
     }
   });
 
-  test("`in` checks reflect schema membership without erroring", function (assert) {
+  test('`in` checks reflect schema membership without erroring', function (assert) {
     const store = new Store();
     const { schema } = store;
 
