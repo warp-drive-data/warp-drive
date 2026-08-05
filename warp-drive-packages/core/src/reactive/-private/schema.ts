@@ -570,6 +570,17 @@ export class SchemaService implements SchemaServiceInterface {
   declare _traits: Map<string, InternalTrait>;
   /** @internal */
   declare _modes: Map<string, KindFns>;
+  /**
+   * Tracks, per abstract type, the relationship fields that concrete
+   * implementers have contributed via `options.as`. This is independent of
+   * whatever schema (synthesized or user-registered) currently occupies
+   * `_schemas` for that type, so that these fields survive regardless of
+   * the order in which the abstract type's implementers and its own
+   * (optional) concrete schema are registered.
+   *
+   * @internal
+   */
+  declare _abstractImplementerFields: Map<string, Map<string, AbstractTypeImplementerField>>;
   /** @internal */
   declare _extensions: {
     object: Map<string, ProcessedExtension>;
@@ -588,6 +599,7 @@ export class SchemaService implements SchemaServiceInterface {
     this._derivations = new Map();
     this._traits = new Map();
     this._modes = new Map();
+    this._abstractImplementerFields = new Map();
     this._extensions = {
       object: new Map(),
       array: new Map(),
@@ -691,6 +703,22 @@ export class SchemaService implements SchemaServiceInterface {
       }
     }
 
+    // This type may already be known as an abstract polymorphic type,
+    // implemented by other concrete types via `options.as`, from before it
+    // ever had a schema of its own (see `_registerAbstractTypeImplementation`).
+    // Carry those previously-contributed fields forward so that registering
+    // a "real" schema for the type - whenever that happens to occur - never
+    // erases the relationships its implementers depend on.
+    const implementerFields = this._abstractImplementerFields.get(schema.type);
+    if (implementerFields) {
+      for (const [name, field] of implementerFields) {
+        if (!fields.has(name)) {
+          fields.set(name, field);
+          relationships[name] = field;
+        }
+      }
+    }
+
     const cacheFields = null as unknown as Map<string, Exclude<CacheableFieldSchema, IdentityField>>;
     const traits = new Set<string>(isResourceSchema(schema) ? schema.traits : []);
     const finalized = traits.size === 0;
@@ -712,12 +740,14 @@ export class SchemaService implements SchemaServiceInterface {
 
     // A relationship field's `as` option marks it as a valid concrete
     // implementer of an abstract polymorphic type (e.g. `as: 'commentable'`).
-    // That abstract type is intentionally never given its own schema by the
-    // user - it exists only to be implemented by concrete types like this
-    // one. Ensure it has a schema anyway (synthesized from this field), so
-    // that it behaves like any other registered resource (`hasResource`,
-    // `fields`, etc.) instead of requiring special-casing wherever abstract
-    // relationship types are resolved.
+    // That abstract type may never be given its own schema by the user - it
+    // may exist only to be implemented by concrete types like this one - or
+    // it may already have (or later receive) a schema of its own, e.g. if it
+    // turns out to also be a real, directly-resolvable resource. Either way,
+    // ensure it has a schema with this field present, so that it behaves
+    // like any other registered resource (`hasResource`, `fields`, etc.)
+    // instead of requiring special-casing wherever abstract relationship
+    // types are resolved.
     for (const field of abstractImplementations) {
       this._registerAbstractTypeImplementation(field);
     }
@@ -726,8 +756,26 @@ export class SchemaService implements SchemaServiceInterface {
   /** @internal */
   private _registerAbstractTypeImplementation(field: AbstractTypeImplementerField): void {
     const abstractType = field.options.as!;
-    let abstractSchema = this._schemas.get(abstractType);
 
+    let implementerFields = this._abstractImplementerFields.get(abstractType);
+    if (!implementerFields) {
+      implementerFields = new Map();
+      this._abstractImplementerFields.set(abstractType, implementerFields);
+    }
+
+    // all concrete implementations of an abstract type are required to
+    // share the same shape for the field that implements it, so the first
+    // one registered is as good a canonical source as any.
+    if (implementerFields.has(field.name)) {
+      return;
+    }
+
+    const options = { ...field.options };
+    delete options.as;
+    const abstractField = { ...field, options } as AbstractTypeImplementerField;
+    implementerFields.set(field.name, abstractField);
+
+    let abstractSchema = this._schemas.get(abstractType);
     if (!abstractSchema) {
       abstractSchema = {
         original: {
@@ -746,22 +794,19 @@ export class SchemaService implements SchemaServiceInterface {
       this._schemas.set(abstractType, abstractSchema);
     }
 
-    // all concrete implementations of an abstract type are required to
-    // share the same shape for the field that implements it, so the first
-    // one registered is as good a canonical source as any.
     if (abstractSchema.fields.has(field.name)) {
       return;
     }
 
-    const options = { ...field.options };
-    delete options.as;
-    const abstractField = { ...field, options } as FieldSchema;
-
     abstractSchema.fields.set(field.name, abstractField);
-    if (abstractField.kind === 'belongsTo' || abstractField.kind === 'hasMany') {
-      abstractSchema.relationships[field.name] = abstractField;
+    abstractSchema.relationships[field.name] = abstractField;
+
+    // If the schema is mid-finalization (traits pending), finalizeResource
+    // will recompute cacheFields from the current `fields` map anyway; avoid
+    // doing so prematurely from a partially-resolved set of fields.
+    if (abstractSchema.finalized) {
+      abstractSchema.cacheFields = getCacheFields(abstractSchema);
     }
-    abstractSchema.cacheFields = getCacheFields(abstractSchema);
   }
 
   /**
