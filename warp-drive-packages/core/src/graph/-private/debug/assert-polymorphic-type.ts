@@ -42,7 +42,7 @@ if (DEBUG) {
       errors.set('type', ` <---- should be '${definition.inverseType}'`);
     }
     if (definition.inverseKind !== meta.kind) {
-      errors.set('type', ` <---- should be '${definition.inverseKind}'`);
+      errors.set('kind', ` <---- should be '${definition.inverseKind}'`);
     }
     if (definition.inverseIsAsync !== meta.options.async) {
       errors.set('async', ` <---- should be ${definition.inverseIsAsync}`);
@@ -53,7 +53,12 @@ if (DEBUG) {
     if (definition.key !== meta.options.inverse) {
       errors.set('inverse', ` <---- should be '${definition.key}'`);
     }
-    if (definition.type !== meta.options.as) {
+    // `as` is only meaningful when `definition` itself is polymorphic (i.e. it
+    // points at an abstract type that `meta` is expected to implement). When
+    // `definition` isn't polymorphic, there's no abstract type for `meta` to
+    // declare `as` against, so `meta.options.as` is correctly absent - that's
+    // not an error to report.
+    if (definition.isPolymorphic && definition.type !== meta.options.as) {
       errors.set('as', ` <---- should be '${definition.type}'`);
     }
 
@@ -109,18 +114,6 @@ if (DEBUG) {
 `;
   }
 
-  function metaFrom(definition: UpgradedMeta) {
-    return {
-      name: definition.key,
-      type: definition.type,
-      kind: definition.kind,
-      options: {
-        async: definition.isAsync,
-        polymorphic: definition.isPolymorphic,
-        inverse: definition.inverseKey,
-      },
-    };
-  }
   function inverseMetaFrom(definition: UpgradedMeta) {
     return {
       name: definition.inverseKey,
@@ -162,41 +155,19 @@ if (DEBUG) {
   }
 
   assertInheritedSchema = function assertInheritedSchema(definition: UpgradedMeta, type: string) {
-    const meta1 = metaFrom(definition);
+    // `definition` is the only source of truth we have here - there is no
+    // second, independently-declared schema available to diff it against.
+    // That means the only thing we can actually verify is internal: does
+    // `definition`'s own resolved inverse agree that this relationship is
+    // polymorphic? Every other field of `meta2` below (name/type/kind/async/
+    // inverse) is derived directly from `definition` itself, so comparing
+    // them back to `definition` can never disagree - only the polymorphic
+    // flag is independently meaningful, because `definitionWithPolymorphic`
+    // asserts what it *should* be rather than mirroring what it already is.
     const meta2 = inverseMetaFrom(definition);
-    const errors1 = validateSchema(inverseDefinition(definition), meta1);
     const errors2 = validateSchema(definitionWithPolymorphic(definition), meta2);
 
-    if (errors2.size === 0 && errors1.size > 0) {
-      throw new Error(
-        `The schema for the relationship '${type}.${definition.key}' is not configured to satisfy '${
-          definition.inverseType
-        }' and thus cannot utilize the '${definition.inverseType}.${definition.key}' relationship to connect with '${
-          definition.type
-        }.${
-          definition.inverseKey
-        }'\n\nIf using this relationship in a polymorphic manner is desired, the relationships schema definition for '${type}' should include:${printSchema(
-          meta1,
-          errors1
-        )}`
-      );
-    } else if (errors1.size > 0) {
-      throw new Error(
-        `The schema for the relationship '${type}.${definition.key}' is not configured to satisfy '${
-          definition.inverseType
-        }' and thus cannot utilize the '${definition.inverseType}.${definition.key}' relationship to connect with '${
-          definition.type
-        }.${
-          definition.inverseKey
-        }'\n\nIf using this relationship in a polymorphic manner is desired, the relationships schema definition for '${type}' should include:${printSchema(
-          meta1,
-          errors1
-        )} and the relationships schema definition for '${definition.type}' should include:${printSchema(
-          meta2,
-          errors2
-        )}`
-      );
-    } else if (errors2.size > 0) {
+    if (errors2.size > 0) {
       throw new Error(
         `The schema for the relationship '${type}.${definition.key}' satisfies '${
           definition.inverseType

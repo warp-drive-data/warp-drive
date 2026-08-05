@@ -27,6 +27,8 @@ import {
   type LegacyHasManyField,
   type LegacyRelationshipField,
   type LegacyResourceSchema,
+  type LinksModeBelongsToField,
+  type LinksModeHasManyField,
   type ObjectField,
   type ObjectSchema,
   type PolarisResourceSchema,
@@ -473,6 +475,111 @@ export function registerDerivations(schema: SchemaServiceInterface): void {
   schema.registerDerivation(_constructor);
 }
 
+/**
+ * A relationship field capable of declaring `options.as`, marking it as a
+ * concrete implementation of an abstract polymorphic type.
+ */
+type AbstractTypeImplementerField =
+  | LegacyBelongsToField
+  | LegacyHasManyField
+  | LinksModeBelongsToField
+  | LinksModeHasManyField;
+
+/**
+ * A relationship field contributed to an abstract type's schema, along with
+ * the name of the type that contributed it (either a concrete implementer,
+ * via `options.as`, or the abstract type's own schema), for use in assertion
+ * messages when two contributions disagree on shape.
+ */
+interface AbstractFieldContribution {
+  field: AbstractTypeImplementerField;
+  source: string;
+}
+
+/**
+ * Reduces a field to a plain object with a fixed key order, covering every
+ * option any relationship-implementer field can declare, so two fields can
+ * be compared for exact equality via `JSON.stringify` regardless of the key
+ * order the schema author happened to write them in.
+ *
+ * `options.as` is included and is *not* special-cased: every contributor to
+ * a given field name on an abstract type - including the abstract type's
+ * own schema, if it has one - is expected to declare `as` equal to that
+ * abstract type's own name. This is redundant/self-referential for the
+ * abstract type's own schema, but required for consistency: relationship
+ * resolution elsewhere (e.g. `inverse` name-matching) does not itself
+ * validate `as`, so a field with a missing or incorrect `as` can otherwise
+ * be silently pulled into a relationship it never declared it implements.
+ */
+function comparableAbstractFieldShape(field: FieldSchema): unknown {
+  const { kind, name, type, sourceKey, options } = field as {
+    kind: string;
+    name: string;
+    type?: string;
+    sourceKey?: string;
+    options?: {
+      as?: string;
+      async?: boolean;
+      inverse?: string | null;
+      polymorphic?: boolean;
+      linksMode?: boolean;
+      resetOnRemoteUpdate?: boolean;
+      arrayExtensions?: string[];
+    };
+  };
+  return {
+    kind,
+    name,
+    type,
+    sourceKey,
+    options: {
+      as: options?.as,
+      async: options?.async,
+      inverse: options?.inverse,
+      polymorphic: options?.polymorphic,
+      linksMode: options?.linksMode,
+      resetOnRemoteUpdate: options?.resetOnRemoteUpdate,
+      arrayExtensions: options?.arrayExtensions,
+    },
+  };
+}
+
+/**
+ * Asserts that two contributions to the same field name on an abstract
+ * polymorphic type - whether from two different concrete implementers, or
+ * from an implementer and the abstract type's own schema - declare an
+ * identical shape: `kind`, `type`, and every option, including `as` (which
+ * every contributor, the abstract type's own schema included, must declare
+ * equal to `abstractType`). A mismatch here (e.g. one implementer's field
+ * being a `hasMany` while another's is a `belongsTo`, the two disagreeing on
+ * `inverse`/`async`/`polymorphic`, or one omitting or misdeclaring `as`)
+ * cannot be resolved by picking one side arbitrarily, since that would
+ * silently leave whichever side lost the mismatch pointing at a relationship
+ * whose true shape differs from what its own schema declared.
+ */
+function assertConsistentAbstractFieldShape(
+  abstractType: string,
+  fieldName: string,
+  existing: { field: FieldSchema; source: string },
+  incoming: { field: FieldSchema; source: string }
+): void {
+  // This function exists solely to support the `assert()` call below - there
+  // is no other work here with an effect in production. Since `assert()`'s
+  // own babel-macro stripping only removes the call expression itself, not
+  // the (comparatively expensive, involving `JSON.stringify`) computation of
+  // its arguments, guard the whole body so none of it survives in production
+  // builds, matching how `assertPolymorphicType`/`assertInheritedSchema` and
+  // their call sites are gated in `assert-polymorphic-type.ts`.
+  if (DEBUG) {
+    const existingShape = comparableAbstractFieldShape(existing.field);
+    const incomingShape = comparableAbstractFieldShape(incoming.field);
+    assert(
+      `Expected the relationship '${fieldName}' on the abstract polymorphic type '${abstractType}' to be declared identically everywhere it is implemented (including 'options.as', which every contributor - the abstract type's own schema included - must declare equal to '${abstractType}'), but '${existing.source}' declares it as:\n\n${JSON.stringify(existingShape, null, 2)}\n\nwhile '${incoming.source}' declares it as:\n\n${JSON.stringify(incomingShape, null, 2)}\n\nAll concrete implementers of an abstract type - and the abstract type's own schema, if it has one - must declare an identical shape for any relationship field they share.`,
+      JSON.stringify(existingShape) === JSON.stringify(incomingShape)
+    );
+  }
+}
+
 interface InternalSchema {
   original: ResourceSchema | ObjectSchema;
   finalized: boolean;
@@ -558,6 +665,18 @@ export class SchemaService implements SchemaServiceInterface {
   declare _traits: Map<string, InternalTrait>;
   /** @internal */
   declare _modes: Map<string, KindFns>;
+  /**
+   * Tracks, per abstract type, the relationship fields that concrete
+   * implementers have contributed via `options.as`, along with the type
+   * that contributed each one (for assertion messages). This is
+   * independent of whatever schema (synthesized or user-registered)
+   * currently occupies `_schemas` for that type, so that these fields
+   * survive regardless of the order in which the abstract type's
+   * implementers and its own (optional) concrete schema are registered.
+   *
+   * @internal
+   */
+  declare _abstractImplementerFields: Map<string, Map<string, AbstractFieldContribution>>;
   /** @internal */
   declare _extensions: {
     object: Map<string, ProcessedExtension>;
@@ -576,6 +695,7 @@ export class SchemaService implements SchemaServiceInterface {
     this._derivations = new Map();
     this._traits = new Map();
     this._modes = new Map();
+    this._abstractImplementerFields = new Map();
     this._extensions = {
       object: new Map(),
       array: new Map(),
@@ -660,6 +780,7 @@ export class SchemaService implements SchemaServiceInterface {
     const fields = new Map<string, FieldSchema>();
     const relationships: Record<string, LegacyRelationshipField> = {};
     const attributes: Record<string, LegacyAttributeField> = {};
+    const abstractImplementations: AbstractTypeImplementerField[] = [];
 
     for (const field of schema.fields) {
       assert(
@@ -672,6 +793,28 @@ export class SchemaService implements SchemaServiceInterface {
         attributes[field.name] = field;
       } else if (field.kind === 'belongsTo' || field.kind === 'hasMany') {
         relationships[field.name] = field;
+        if (field.options?.as) {
+          abstractImplementations.push(field);
+        }
+      }
+    }
+
+    // This type may already be known as an abstract polymorphic type,
+    // implemented by other concrete types via `options.as`, from before it
+    // ever had a schema of its own (see `_registerAbstractTypeImplementation`).
+    // Carry those previously-contributed fields forward so that registering
+    // a "real" schema for the type - whenever that happens to occur - never
+    // erases the relationships its implementers depend on.
+    const implementerFields = this._abstractImplementerFields.get(schema.type);
+    if (implementerFields) {
+      for (const [name, contribution] of implementerFields) {
+        const ownField = fields.get(name);
+        if (!ownField) {
+          fields.set(name, contribution.field);
+          relationships[name] = contribution.field;
+        } else if (DEBUG) {
+          assertConsistentAbstractFieldShape(schema.type, name, contribution, { field: ownField, source: schema.type });
+        }
       }
     }
 
@@ -693,6 +836,99 @@ export class SchemaService implements SchemaServiceInterface {
     }
 
     this._schemas.set(schema.type, internalSchema);
+
+    // A relationship field's `as` option marks it as a valid concrete
+    // implementer of an abstract polymorphic type (e.g. `as: 'commentable'`).
+    // That abstract type may never be given its own schema by the user - it
+    // may exist only to be implemented by concrete types like this one - or
+    // it may already have (or later receive) a schema of its own, e.g. if it
+    // turns out to also be a real, directly-resolvable resource. Either way,
+    // ensure it has a schema with this field present, so that it behaves
+    // like any other registered resource (`hasResource`, `fields`, etc.)
+    // instead of requiring special-casing wherever abstract relationship
+    // types are resolved.
+    for (const field of abstractImplementations) {
+      this._registerAbstractTypeImplementation(field, schema.type);
+    }
+  }
+
+  /** @internal */
+  private _registerAbstractTypeImplementation(field: AbstractTypeImplementerField, implementer: string): void {
+    const abstractType = field.options.as!;
+
+    let implementerFields = this._abstractImplementerFields.get(abstractType);
+    if (!implementerFields) {
+      implementerFields = new Map();
+      this._abstractImplementerFields.set(abstractType, implementerFields);
+    }
+
+    // Unlike the original approach this replaced, `as` is *not* stripped here:
+    // the field as synthesized onto the abstract type's own schema keeps
+    // `options.as === abstractType`, redundant/self-referential as that is.
+    // This keeps every contributor - implementers and the abstract type's
+    // own schema alike - declaring the same thing, which is what
+    // `assertConsistentAbstractFieldShape` checks, and it is also what lets
+    // `assertPolymorphicType` (which reads a field's declared `as` off
+    // whatever `schema.fields()` serves for its type) correctly permit the
+    // abstract type itself to be pushed directly into this relationship.
+    const abstractField = { ...field } as AbstractTypeImplementerField;
+    const contribution: AbstractFieldContribution = { field: abstractField, source: implementer };
+
+    // all concrete implementations of an abstract type are required to
+    // share the same shape for the field that implements it, so the first
+    // one registered is as good a canonical source as any - but a later,
+    // differently-shaped one is almost certainly a mistake rather than an
+    // intentional override, so we catch it rather than silently ignoring it.
+    const existingImplementer = implementerFields.get(field.name);
+    if (existingImplementer) {
+      if (DEBUG) {
+        assertConsistentAbstractFieldShape(abstractType, field.name, existingImplementer, contribution);
+      }
+      return;
+    }
+    implementerFields.set(field.name, contribution);
+
+    let abstractSchema = this._schemas.get(abstractType);
+    if (!abstractSchema) {
+      abstractSchema = {
+        original: {
+          legacy: true,
+          identity: { kind: '@id', name: 'id' },
+          type: abstractType,
+          fields: [],
+        },
+        finalized: true,
+        fields: new Map(),
+        cacheFields: new Map(),
+        relationships: {},
+        attributes: {},
+        traits: new Set(),
+      };
+      this._schemas.set(abstractType, abstractSchema);
+    }
+
+    const existingAbstractField = abstractSchema.fields.get(field.name);
+    if (existingAbstractField) {
+      if (DEBUG) {
+        assertConsistentAbstractFieldShape(
+          abstractType,
+          field.name,
+          { field: existingAbstractField, source: abstractType },
+          contribution
+        );
+      }
+      return;
+    }
+
+    abstractSchema.fields.set(field.name, abstractField);
+    abstractSchema.relationships[field.name] = abstractField;
+
+    // If the schema is mid-finalization (traits pending), finalizeResource
+    // will recompute cacheFields from the current `fields` map anyway; avoid
+    // doing so prematurely from a partially-resolved set of fields.
+    if (abstractSchema.finalized) {
+      abstractSchema.cacheFields = getCacheFields(abstractSchema);
+    }
   }
 
   /**

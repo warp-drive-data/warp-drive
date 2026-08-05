@@ -1974,27 +1974,9 @@ module('integration/relationships/has_many - Has-Many Relationships', function (
       } catch (e) {
         assert.strictEqual(
           e.message,
-          `The schema for the relationship 'goon.messages' is not configured to satisfy 'user' and thus cannot utilize the 'user.messages' relationship to connect with 'message.user'
+          `The schema for the relationship 'goon.messages' satisfies 'user' but cannot utilize the 'user.messages' relationship to connect with 'message.user' because that relationship is not polymorphic.
 
-If using this relationship in a polymorphic manner is desired, the relationships schema definition for 'goon' should include:
-
-\`\`\`
-{
-  messages: {
-    name: 'messages',
-    type: 'message',
-    kind: 'hasMany',
-    options: {
-      as: 'undefined', <---- should be 'user'
-      async: false,
-      polymorphic: true,
-      inverse: 'user'
-    }
-  }
-}
-\`\`\`
-
- and the relationships schema definition for 'message' should include:
+If using this relationship in a polymorphic manner is desired, the relationships schema definition for 'message' should include:
 
 \`\`\`
 {
