@@ -65,10 +65,9 @@ import { _backburner } from '@ember/runloop';
 import type { UpdatableTag } from '@glimmer/validator';
 import { consumeTag, createCache, dirtyTag, getValue, track, updateTag } from '@glimmer/validator';
 
-import { importSync } from '@embroider/macros';
-
 import { DEPRECATE_COMPUTED_CHAINS } from '@warp-drive/core/build-config/deprecations';
 import { TESTING } from '@warp-drive/core/build-config/env';
+import { importSync } from '@warp-drive/core/build-config/macros';
 
 type Tag = ReturnType<typeof tagForProperty>;
 const emberDirtyTag = dirtyTag as unknown as (tag: Tag) => void;
@@ -151,7 +150,7 @@ export function buildSignalConfig(options: {
     },
     waitFor: async <K>(promise: Promise<K>): Promise<K> => {
       if (TESTING) {
-        const { waitForPromise } = importSync('@ember/test-waiters') as typeof import('@ember/test-waiters');
+        const { waitForPromise } = importSync<typeof import('@ember/test-waiters')>('@ember/test-waiters');
         return waitForPromise(promise);
       }
       return promise;

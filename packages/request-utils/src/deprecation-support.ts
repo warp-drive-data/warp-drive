@@ -1,15 +1,14 @@
 import { deprecate } from '@ember/debug';
 
-import { dependencySatisfies, importSync, macroCondition } from '@embroider/macros';
-
 import { DEPRECATE_EMBER_INFLECTOR } from '@warp-drive/core/build-config/deprecations';
+import { dependencySatisfies, importSync, macroCondition } from '@warp-drive/core/build-config/macros';
 import { InflectionRuleDefaults } from '@warp-drive/utilities/-private';
 
 import { irregular, plural, singular, uncountable } from './string.ts';
 
 if (DEPRECATE_EMBER_INFLECTOR) {
   if (macroCondition(dependencySatisfies('ember-inflector', '*'))) {
-    const Inflector = (importSync('ember-inflector') as { default: typeof import('ember-inflector').default }).default;
+    const Inflector = importSync<{ default: typeof import('ember-inflector').default }>('ember-inflector').default;
     const { inflector } = Inflector;
 
     // eslint-disable-next-line @typescript-eslint/unbound-method

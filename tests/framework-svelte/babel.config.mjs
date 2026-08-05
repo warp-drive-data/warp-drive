@@ -1,14 +1,5 @@
-import { setConfig } from '@warp-drive/core/build-config';
-import { buildMacros } from '@embroider/macros/babel';
+import { warpdrive } from '@warp-drive/core/build-config';
 import { macros } from '@warp-drive/core/build-config/babel-macros';
-
-const Macros = buildMacros({
-  configure: (config) => {
-    setConfig(config, {
-      compatWith: '5.7',
-    });
-  },
-});
 
 export default {
   plugins: [
@@ -29,7 +20,9 @@ export default {
       },
       'ember-data-specific-macros-stripping-test',
     ],
-    ...Macros.babelMacros,
+    warpdrive({
+      compatWith: '5.7',
+    }),
     [
       '@babel/plugin-transform-typescript',
       { allExtensions: true, isTSX: true, onlyRemoveTypeImports: true, allowDeclareFields: true },

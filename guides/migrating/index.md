@@ -327,21 +327,16 @@ module.exports = async function (defaults) {
 == Vite Minimal Config
 
 ```ts [babel.config.mjs]
-import { setConfig } from '@warp-drive-mirror/core/build-config';
-import { buildMacros } from '@embroider/macros/babel';
-
-const Macros = buildMacros({
-  configure: (config) => {
-    setConfig(config, {
-      // for universal apps this MUST be at least 5.6
-      compatWith: '5.6'
-    });
-  },
-});
+import { warpdrive } from '@warp-drive-mirror/core/build-config';
 
 export default {
   plugins: [
-    ...Macros.babelMacros,
+    // the `warpdrive` babel plugin evaluates WarpDrive's build-time
+    // macros, applying the configuration and stripping unreachable code
+    warpdrive({
+      // for universal apps this MUST be at least 5.6
+      compatWith: '5.6',
+    }),
   ],
 };
 ```

@@ -49,7 +49,6 @@
   },
   "peerDependencies": {},
   "dependencies": {
-    "@embroider/macros": "^1.19.6",
     "ember-cli-test-info": "^1.0.0",
     "ember-cli-string-utils": "^1.1.0",
     "ember-cli-path-utils": "^1.0.0",

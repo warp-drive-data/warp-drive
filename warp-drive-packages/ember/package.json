@@ -44,7 +44,6 @@
     "ember-provide-consume-context": "^0.8.0"
   },
   "dependencies": {
-    "@embroider/macros": "^1.19.6",
     "@warp-drive/core": "workspace:*"
   },
   "peerDependenciesMeta": {

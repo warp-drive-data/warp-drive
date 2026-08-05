@@ -19,7 +19,6 @@
     "extends": "../../package.json"
   },
   "dependencies": {
-    "@embroider/macros": "^1.19.6",
     "@warp-drive/core": "workspace:*",
     "@warp-drive/utilities": "workspace:*"
   },

@@ -1,7 +1,18 @@
-import { babelPlugin } from '@warp-drive/core/build-config';
+import { babelPlugin, setConfig } from '@warp-drive/core/build-config';
+import { buildMacros } from '@embroider/macros/babel';
 
-const macros = babelPlugin({
+const config = {
   compatWith: '5.6',
+};
+
+const macros = babelPlugin(config);
+
+// @embroider/macros is still required to evaluate the macros used by
+// ember-source itself; WarpDrive's own macros are evaluated by babelPlugin()
+const EmberMacros = buildMacros({
+  configure: (macrosConfig) => {
+    setConfig(macrosConfig, config);
+  },
 });
 
 export default {
@@ -17,7 +28,7 @@ export default {
     [
       'babel-plugin-ember-template-compilation',
       {
-        transforms: [...macros.gts],
+        transforms: [...EmberMacros.templateMacros, ...macros.gts],
       },
     ],
     [
@@ -37,6 +48,7 @@ export default {
       },
     ],
     ...macros.js,
+    ...EmberMacros.babelMacros,
   ],
 
   generatorOpts: {

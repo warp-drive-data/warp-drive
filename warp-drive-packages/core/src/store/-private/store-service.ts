@@ -1,8 +1,6 @@
 // this import location is deprecated but breaks in 4.8 and older
 import { deprecate } from '@ember/debug';
 
-import { dependencySatisfies, importSync, macroCondition } from '@embroider/macros';
-
 import {
   __INTERNAL_LOG_NATIVE_MAP_SET_COUNTS,
   LOG_METRIC_COUNTS,
@@ -13,7 +11,7 @@ import {
   ENABLE_LEGACY_SCHEMA_SERVICE,
 } from '@warp-drive/core/build-config/deprecations';
 import { DEBUG, TESTING } from '@warp-drive/core/build-config/env';
-import { assert } from '@warp-drive/core/build-config/macros';
+import { assert, dependencySatisfies, importSync, macroCondition } from '@warp-drive/core/build-config/macros';
 
 import type { Graph } from '../../graph/-private.ts';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -300,7 +298,7 @@ const EmptyClass: ConstructorFunction = class {
 };
 const _BaseClass = macroCondition(dependencySatisfies('ember-source', '*'))
   ? DEPRECATE_STORE_EXTENDS_EMBER_OBJECT
-    ? (importSync('@ember/object') as typeof EmptyClass)
+    ? importSync<typeof EmptyClass>('@ember/object')
     : EmptyClass
   : EmptyClass;
 

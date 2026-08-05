@@ -1,6 +1,7 @@
 /**
- * Babel plugins that convert constants and expressions into [macroConditions](https://www.npmjs.com/package/@embroider/macros#the-macros)
- * so that they can be stripped from the code during the build process.
+ * Babel plugins that convert constants and expressions into WarpDrive's own
+ * build-time macros (see `@warp-drive/build-config/macros`) so that they can
+ * be stripped from the code during the build process.
  *
  * This allows us to have great DX around common configuration patterns
  * while still being able to ship a small and fast library.

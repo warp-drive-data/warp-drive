@@ -324,7 +324,6 @@ pnpm add -E \
   @ember-data/legacy-compat \
   @ember-data/model \
   @ember-data/serializer \
-  @embroider/macros \
   @ember-data/tracking \
   @warp-drive/ember;
 ```
@@ -343,7 +342,6 @@ npm add -E \
   @ember-data/legacy-compat \
   @ember-data/model \
   @ember-data/serializer \
-  @embroider/macros \
   @ember-data/tracking \
   @warp-drive/ember;
 ```
@@ -362,7 +360,6 @@ yarn add -E \
   @ember-data/legacy-compat \
   @ember-data/model \
   @ember-data/serializer \
-  @embroider/macros \
   @ember-data/tracking \
   @warp-drive/ember;
 ```
@@ -381,7 +378,6 @@ bun add --exact \
   @ember-data/legacy-compat \
   @ember-data/model \
   @ember-data/serializer \
-  @embroider/macros \
   @ember-data/tracking \
   @warp-drive/ember;
 ```

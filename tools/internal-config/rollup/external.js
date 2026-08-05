@@ -82,6 +82,12 @@ export function external(manual = []) {
       return true;
     }
 
+    // self-referencing imports (e.g. the build-time macros module emitted
+    // by @warp-drive/build-config/babel-macros) resolve via package.json exports
+    if (id === pkg.name || id.startsWith(pkg.name + '/')) {
+      return true;
+    }
+
     if (id.startsWith('@embroider/macros') && pkg.devDependencies?.['@embroider/macros']) {
       return true;
     }

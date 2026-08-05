@@ -2,11 +2,10 @@ import type { TOC } from '@ember/component/template-only';
 import { service } from '@ember/service';
 import Component from '@glimmer/component';
 
-import { importSync, macroCondition, moduleExists } from '@embroider/macros';
 import type { ComponentLike } from '@glint/template';
 
 import type { RequestManager, Store } from '@warp-drive/core';
-import { assert } from '@warp-drive/core/build-config/macros';
+import { assert, importSync, macroCondition, moduleExists } from '@warp-drive/core/build-config/macros';
 import type { RequestLoadingState, RequestState, RequestSubscription } from '@warp-drive/core/reactive';
 import { createRequestSubscription } from '@warp-drive/core/reactive';
 import type { ContentFeatures, RecoveryFeatures, RequestArgs } from '@warp-drive/core/signals/-leaked';

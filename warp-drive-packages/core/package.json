@@ -43,7 +43,6 @@
     }
   },
   "dependencies": {
-    "@embroider/macros": "^1.19.6",
     "@warp-drive/build-config": "workspace:*"
   },
   "devDependencies": {

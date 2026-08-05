@@ -58,9 +58,7 @@
       "optional": true
     }
   },
-  "dependencies": {
-    "@embroider/macros": "^1.19.6"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@babel/core": "^7.28.3",
     "@babel/plugin-transform-typescript": "^7.28.0",

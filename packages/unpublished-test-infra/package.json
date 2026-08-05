@@ -59,7 +59,6 @@
     }
   },
   "dependencies": {
-    "@embroider/macros": "^1.19.6",
     "@warp-drive/utilities": "workspace:*",
     "@warp-drive/core": "workspace:*",
     "chalk": "^4.1.2",

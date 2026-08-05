@@ -94,8 +94,6 @@ And finally:
 */
 import { deprecate } from '@ember/debug';
 
-import { dependencySatisfies, importSync, macroCondition } from '@embroider/macros';
-
 import Adapter, { BuildURLMixin } from '@ember-data/adapter';
 import AdapterError, {
   AbortError,
@@ -120,6 +118,7 @@ import Transform, {
   NumberTransform,
   StringTransform,
 } from '@ember-data/serializer/transform';
+import { dependencySatisfies, importSync, macroCondition } from '@warp-drive/core/build-config/macros';
 
 import {
   DS,
@@ -211,7 +210,7 @@ DS.ServerError = ServerError;
 DS.Serializer = Serializer;
 
 if (macroCondition(dependencySatisfies('@ember-data/debug', '*'))) {
-  DS.DebugAdapter = importSync('@ember-data/debug') as typeof import('@ember-data/debug').default;
+  DS.DebugAdapter = importSync<typeof import('@ember-data/debug').default>('@ember-data/debug');
 }
 
 DS.RecordArrayManager = RecordArrayManager;

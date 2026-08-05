@@ -155,11 +155,10 @@
  */
 import { deprecate } from '@ember/debug';
 
-import { dependencySatisfies, importSync, macroCondition } from '@embroider/macros';
-
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { type RequestManager, Store } from '@warp-drive/core';
 import { DEPRECATE_TRACKING_PACKAGE } from '@warp-drive/core/build-config/deprecations';
+import { dependencySatisfies, importSync, macroCondition } from '@warp-drive/core/build-config/macros';
 import { setupSignals } from '@warp-drive/core/configure';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { Handler } from '@warp-drive/core/request';

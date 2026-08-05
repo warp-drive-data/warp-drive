@@ -44,7 +44,6 @@
   },
   "dependencies": {
     "babel-plugin-debug-macros": "^2.0.0",
-    "@embroider/macros": "^1.19.6",
     "@embroider/addon-shim": "^1.10.0",
     "babel-import-util": "^2.1.1",
     "semver": "^7.7.2"
@@ -58,9 +57,18 @@
     "@babel/preset-typescript": "^7.27.1",
     "@babel/core": "^7.28.3",
     "typescript": "^5.9.3",
-    "vite": "^7.3.1"
+    "vite": "^7.3.1",
+    "@embroider/macros": "^1.19.6"
   },
   "volta": {
     "extends": "../../package.json"
+  },
+  "peerDependencies": {
+    "@embroider/macros": "^1.19.6"
+  },
+  "peerDependenciesMeta": {
+    "@embroider/macros": {
+      "optional": true
+    }
   }
 }

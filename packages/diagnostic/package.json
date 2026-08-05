@@ -99,7 +99,6 @@
     "tmp": "^0.2.5",
     "@warp-drive/core": "workspace:*",
     "@warp-drive/react": "workspace:*",
-    "@embroider/macros": "^1.19.6",
     "dom-element-descriptors": "^0.5.1",
     "qunit-dom": "^3.5.0"
   },

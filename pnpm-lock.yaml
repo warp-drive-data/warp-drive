@@ -260,9 +260,6 @@ importers:
       '@ember/edition-utils':
         specifier: ^1.2.0
         version: 1.2.0
-      '@embroider/macros':
-        specifier: ^1.19.6
-        version: 1.19.6(@babel/core@7.28.3)
       '@warp-drive/core':
         specifier: workspace:*
         version: file:warp-drive-packages/core(@babel/core@7.28.3)
@@ -274,13 +271,13 @@ importers:
         version: file:warp-drive-packages/ember(1adf99e055abba96ff2ddb1d049f661d)
       '@warp-drive/json-api':
         specifier: workspace:*
-        version: file:warp-drive-packages/json-api(ac1631a7da983377f84b100525d730a6)
+        version: file:warp-drive-packages/json-api(399050e4d25cd9de09f58182ad617dd4)
       '@warp-drive/legacy':
         specifier: workspace:*
-        version: file:warp-drive-packages/legacy(da2d8626017c763d07445c649af78d55)
+        version: file:warp-drive-packages/legacy(51dad5c9a663ff46ed0737168a052837)
       '@warp-drive/utilities':
         specifier: workspace:*
-        version: file:warp-drive-packages/utilities(ac1631a7da983377f84b100525d730a6)
+        version: file:warp-drive-packages/utilities(399050e4d25cd9de09f58182ad617dd4)
     devDependencies:
       '@babel/core':
         specifier: ^7.28.3
@@ -324,9 +321,6 @@ importers:
 
   packages/-warp-drive:
     dependencies:
-      '@embroider/macros':
-        specifier: ^1.19.6
-        version: 1.19.6(@babel/core@7.28.3)
       '@manypkg/get-packages':
         specifier: ^3.1.0
         version: 3.1.0
@@ -373,15 +367,12 @@ importers:
 
   packages/active-record:
     dependencies:
-      '@embroider/macros':
-        specifier: ^1.19.6
-        version: 1.19.6(@babel/core@7.28.3)
       '@warp-drive/core':
         specifier: workspace:*
         version: file:warp-drive-packages/core(@babel/core@7.28.3)
       '@warp-drive/utilities':
         specifier: workspace:*
-        version: file:warp-drive-packages/utilities(ac1631a7da983377f84b100525d730a6)
+        version: file:warp-drive-packages/utilities(399050e4d25cd9de09f58182ad617dd4)
     devDependencies:
       '@babel/core':
         specifier: ^7.28.3
@@ -407,18 +398,15 @@ importers:
       '@ember/edition-utils':
         specifier: 1.2.0
         version: 1.2.0
-      '@embroider/macros':
-        specifier: ^1.19.6
-        version: 1.19.6(@babel/core@7.28.3)
       '@warp-drive/core':
         specifier: workspace:*
         version: file:warp-drive-packages/core(@babel/core@7.28.3)
       '@warp-drive/legacy':
         specifier: workspace:*
-        version: file:warp-drive-packages/legacy(da2d8626017c763d07445c649af78d55)
+        version: file:warp-drive-packages/legacy(51dad5c9a663ff46ed0737168a052837)
       '@warp-drive/utilities':
         specifier: workspace:*
-        version: file:warp-drive-packages/utilities(ac1631a7da983377f84b100525d730a6)
+        version: file:warp-drive-packages/utilities(399050e4d25cd9de09f58182ad617dd4)
       ember-cli-path-utils:
         specifier: ^1.0.0
         version: 1.0.0
@@ -505,9 +493,6 @@ importers:
 
   packages/core-types:
     dependencies:
-      '@embroider/macros':
-        specifier: ^1.19.6
-        version: 1.19.6(@babel/core@7.28.3)
       '@warp-drive/core':
         specifier: workspace:*
         version: file:warp-drive-packages/core(@babel/core@7.28.3)
@@ -536,15 +521,12 @@ importers:
       '@ember/edition-utils':
         specifier: ^1.2.0
         version: 1.2.0
-      '@embroider/macros':
-        specifier: ^1.19.6
-        version: 1.19.6(@babel/core@7.28.3)
       '@warp-drive/core':
         specifier: workspace:*
         version: file:warp-drive-packages/core(@babel/core@7.28.3)
       '@warp-drive/utilities':
         specifier: workspace:*
-        version: file:warp-drive-packages/utilities(ac1631a7da983377f84b100525d730a6)
+        version: file:warp-drive-packages/utilities(399050e4d25cd9de09f58182ad617dd4)
     devDependencies:
       '@babel/core':
         specifier: ^7.28.3
@@ -576,9 +558,6 @@ importers:
 
   packages/diagnostic:
     dependencies:
-      '@embroider/macros':
-        specifier: ^1.19.6
-        version: 1.19.6(@babel/core@7.28.3)
       '@warp-drive/core':
         specifier: workspace:*
         version: file:warp-drive-packages/core(@babel/core@7.28.3)
@@ -657,7 +636,7 @@ importers:
         version: file:warp-drive-packages/core(@babel/core@7.28.3)
       '@warp-drive/utilities':
         specifier: workspace:*
-        version: file:warp-drive-packages/utilities(ac1631a7da983377f84b100525d730a6)
+        version: file:warp-drive-packages/utilities(399050e4d25cd9de09f58182ad617dd4)
       requireindex:
         specifier: ^1.2.0
         version: 1.2.0
@@ -680,9 +659,6 @@ importers:
 
   packages/graph:
     dependencies:
-      '@embroider/macros':
-        specifier: ^1.19.6
-        version: 1.19.6(@babel/core@7.28.3)
       '@warp-drive/core':
         specifier: workspace:*
         version: file:warp-drive-packages/core(@babel/core@7.28.3)
@@ -744,28 +720,25 @@ importers:
         version: file:tools/internal-config
       '@warp-drive/legacy':
         specifier: workspace:*
-        version: file:warp-drive-packages/legacy(da2d8626017c763d07445c649af78d55)
+        version: file:warp-drive-packages/legacy(51dad5c9a663ff46ed0737168a052837)
       '@warp-drive/utilities':
         specifier: workspace:*
-        version: file:warp-drive-packages/utilities(ac1631a7da983377f84b100525d730a6)
+        version: file:warp-drive-packages/utilities(399050e4d25cd9de09f58182ad617dd4)
       vite:
         specifier: ^7.3.1
         version: 7.3.1
 
   packages/json-api:
     dependencies:
-      '@embroider/macros':
-        specifier: ^1.19.6
-        version: 1.19.6(@babel/core@7.28.3)
       '@warp-drive/core':
         specifier: workspace:*
         version: file:warp-drive-packages/core(@babel/core@7.28.3)
       '@warp-drive/json-api':
         specifier: workspace:*
-        version: file:warp-drive-packages/json-api(ac1631a7da983377f84b100525d730a6)
+        version: file:warp-drive-packages/json-api(399050e4d25cd9de09f58182ad617dd4)
       '@warp-drive/utilities':
         specifier: workspace:*
-        version: file:warp-drive-packages/utilities(ac1631a7da983377f84b100525d730a6)
+        version: file:warp-drive-packages/utilities(399050e4d25cd9de09f58182ad617dd4)
     devDependencies:
       '@babel/core':
         specifier: ^7.28.3
@@ -791,18 +764,15 @@ importers:
 
   packages/legacy-compat:
     dependencies:
-      '@embroider/macros':
-        specifier: ^1.19.6
-        version: 1.19.6(@babel/core@7.28.3)
       '@warp-drive/core':
         specifier: workspace:*
         version: file:warp-drive-packages/core(@babel/core@7.28.3)
       '@warp-drive/legacy':
         specifier: workspace:*
-        version: file:warp-drive-packages/legacy(da2d8626017c763d07445c649af78d55)
+        version: file:warp-drive-packages/legacy(51dad5c9a663ff46ed0737168a052837)
       '@warp-drive/utilities':
         specifier: workspace:*
-        version: file:warp-drive-packages/utilities(ac1631a7da983377f84b100525d730a6)
+        version: file:warp-drive-packages/utilities(399050e4d25cd9de09f58182ad617dd4)
     devDependencies:
       '@babel/core':
         specifier: ^7.28.3
@@ -831,18 +801,15 @@ importers:
       '@ember/edition-utils':
         specifier: ^1.2.0
         version: 1.2.0
-      '@embroider/macros':
-        specifier: ^1.19.6
-        version: 1.19.6(@babel/core@7.28.3)
       '@warp-drive/core':
         specifier: workspace:*
         version: file:warp-drive-packages/core(@babel/core@7.28.3)
       '@warp-drive/legacy':
         specifier: workspace:*
-        version: file:warp-drive-packages/legacy(da2d8626017c763d07445c649af78d55)
+        version: file:warp-drive-packages/legacy(51dad5c9a663ff46ed0737168a052837)
       '@warp-drive/utilities':
         specifier: workspace:*
-        version: file:warp-drive-packages/utilities(ac1631a7da983377f84b100525d730a6)
+        version: file:warp-drive-packages/utilities(399050e4d25cd9de09f58182ad617dd4)
       ember-cli-string-utils:
         specifier: ^1.1.0
         version: 1.1.0
@@ -880,9 +847,6 @@ importers:
 
   packages/request:
     dependencies:
-      '@embroider/macros':
-        specifier: ^1.19.6
-        version: 1.19.6(@babel/core@7.28.3)
       '@warp-drive/core':
         specifier: workspace:*
         version: file:warp-drive-packages/core(@babel/core@7.28.3)
@@ -908,15 +872,12 @@ importers:
 
   packages/request-utils:
     dependencies:
-      '@embroider/macros':
-        specifier: ^1.19.6
-        version: 1.19.6(@babel/core@7.28.3)
       '@warp-drive/core':
         specifier: workspace:*
         version: file:warp-drive-packages/core(@babel/core@7.28.3)
       '@warp-drive/utilities':
         specifier: workspace:*
-        version: file:warp-drive-packages/utilities(ac1631a7da983377f84b100525d730a6)
+        version: file:warp-drive-packages/utilities(399050e4d25cd9de09f58182ad617dd4)
     devDependencies:
       '@babel/core':
         specifier: ^7.28.3
@@ -948,15 +909,12 @@ importers:
 
   packages/rest:
     dependencies:
-      '@embroider/macros':
-        specifier: ^1.19.6
-        version: 1.19.6(@babel/core@7.28.3)
       '@warp-drive/core':
         specifier: workspace:*
         version: file:warp-drive-packages/core(@babel/core@7.28.3)
       '@warp-drive/utilities':
         specifier: workspace:*
-        version: file:warp-drive-packages/utilities(ac1631a7da983377f84b100525d730a6)
+        version: file:warp-drive-packages/utilities(399050e4d25cd9de09f58182ad617dd4)
     devDependencies:
       '@babel/core':
         specifier: ^7.28.3
@@ -985,9 +943,6 @@ importers:
 
   packages/schema-record:
     dependencies:
-      '@embroider/macros':
-        specifier: ^1.19.6
-        version: 1.19.6(@babel/core@7.28.3)
       '@warp-drive/core':
         specifier: workspace:*
         version: file:warp-drive-packages/core(@babel/core@7.28.3)
@@ -1016,18 +971,15 @@ importers:
       '@ember/edition-utils':
         specifier: 1.2.0
         version: 1.2.0
-      '@embroider/macros':
-        specifier: ^1.19.6
-        version: 1.19.6(@babel/core@7.28.3)
       '@warp-drive/core':
         specifier: workspace:*
         version: file:warp-drive-packages/core(@babel/core@7.28.3)
       '@warp-drive/legacy':
         specifier: workspace:*
-        version: file:warp-drive-packages/legacy(da2d8626017c763d07445c649af78d55)
+        version: file:warp-drive-packages/legacy(51dad5c9a663ff46ed0737168a052837)
       '@warp-drive/utilities':
         specifier: workspace:*
-        version: file:warp-drive-packages/utilities(ac1631a7da983377f84b100525d730a6)
+        version: file:warp-drive-packages/utilities(399050e4d25cd9de09f58182ad617dd4)
       ember-cli-path-utils:
         specifier: ^1.0.0
         version: 1.0.0
@@ -1062,9 +1014,6 @@ importers:
 
   packages/store:
     dependencies:
-      '@embroider/macros':
-        specifier: ^1.19.6
-        version: 1.19.6(@babel/core@7.28.3)
       '@warp-drive/core':
         specifier: workspace:*
         version: file:warp-drive-packages/core(@babel/core@7.28.3)
@@ -1102,9 +1051,6 @@ importers:
 
   packages/tracking:
     dependencies:
-      '@embroider/macros':
-        specifier: ^1.19.6
-        version: 1.19.6(@babel/core@7.28.3)
       '@warp-drive/core':
         specifier: workspace:*
         version: file:warp-drive-packages/core(@babel/core@7.28.3)
@@ -1141,15 +1087,12 @@ importers:
 
   packages/unpublished-test-infra:
     dependencies:
-      '@embroider/macros':
-        specifier: ^1.19.6
-        version: 1.19.6(@babel/core@7.28.3)
       '@warp-drive/core':
         specifier: workspace:*
         version: file:warp-drive-packages/core(@babel/core@7.28.3)
       '@warp-drive/utilities':
         specifier: workspace:*
-        version: file:warp-drive-packages/utilities(ac1631a7da983377f84b100525d730a6)
+        version: file:warp-drive-packages/utilities(399050e4d25cd9de09f58182ad617dd4)
       chalk:
         specifier: ^4.1.2
         version: 4.1.2
@@ -1220,22 +1163,22 @@ importers:
         version: 7.27.1(@babel/core@7.28.3)
       '@warp-drive/core':
         specifier: workspace:*
-        version: file:warp-drive-packages/core(@babel/core@7.28.3)
+        version: file:warp-drive-packages/core(3b95a843f33ac420bfebb47325336ac3)
       '@warp-drive/diagnostic':
         specifier: workspace:*
-        version: file:packages/diagnostic(@babel/core@7.28.3)
+        version: file:packages/diagnostic(3b95a843f33ac420bfebb47325336ac3)
       '@warp-drive/holodeck':
         specifier: workspace:*
-        version: file:packages/holodeck(b1f423bbeafed7b156933fd746f2db26)
+        version: file:packages/holodeck(6e9880f196b1c731e01a4d222aa70f8d)
       '@warp-drive/internal-config':
         specifier: workspace:*
         version: file:tools/internal-config
       '@warp-drive/json-api':
         specifier: workspace:*
-        version: file:warp-drive-packages/json-api(ac1631a7da983377f84b100525d730a6)
+        version: file:warp-drive-packages/json-api(3d4571d73ed0c60dcf60e178160368f2)
       '@warp-drive/utilities':
         specifier: workspace:*
-        version: file:warp-drive-packages/utilities(ac1631a7da983377f84b100525d730a6)
+        version: file:warp-drive-packages/utilities(3d4571d73ed0c60dcf60e178160368f2)
       decorator-transforms:
         specifier: ^2.3.0
         version: 2.3.0(@babel/core@7.28.3)
@@ -1371,7 +1314,7 @@ importers:
         version: 7.28.3
       '@ember-data/unpublished-test-infra':
         specifier: workspace:*
-        version: file:packages/unpublished-test-infra(70f18ac7fb426a44ca1eb8bc74329986)
+        version: file:packages/unpublished-test-infra(ab40d9c957a361072cad92f9f6466823)
       '@ember/test-helpers':
         specifier: 5.2.0
         version: 5.2.0(patch_hash=a1670a4e3977c846a5c2454f317f5a17cbd284aef3a676b190c98141536afb04)(bfadaa4521900084b7797d85fa721327)
@@ -1404,31 +1347,31 @@ importers:
         version: 6.0.4(@babel/core@7.28.3)(rollup@4.48.1)
       '@warp-drive-internal/specs':
         specifier: workspace:*
-        version: file:specs(dc17fd0d7b9f09689d4058a46b107446)
+        version: file:specs(0a50eadc10eb4f355803440213284be0)
       '@warp-drive/core':
         specifier: workspace:*
-        version: file:warp-drive-packages/core(f9dfbf4fac3dbc0e0370b14ce6056988)
+        version: file:warp-drive-packages/core(6f3f6541944336feaaaf2fb760f5f2c6)
       '@warp-drive/diagnostic':
         specifier: workspace:*
-        version: file:packages/diagnostic(1ec6686dfdedecb61e4679cc890ffd6c)
+        version: file:packages/diagnostic(9ac9c1315b860a247b69db70d26da93c)
       '@warp-drive/ember':
         specifier: workspace:*
-        version: file:warp-drive-packages/ember(33af9699401529a0cfeefafc63c5c204)
+        version: file:warp-drive-packages/ember(f51b1c0fe8122b6c0fc6f95d190caff6)
       '@warp-drive/holodeck':
         specifier: workspace:*
-        version: file:packages/holodeck(a3373bf92dbe06200e11dc38e69a2ad3)
+        version: file:packages/holodeck(a7e392f12cf37901592a41a0b059179d)
       '@warp-drive/internal-config':
         specifier: workspace:*
         version: file:tools/internal-config(@glint/template@1.6.1)(terser@5.43.1)
       '@warp-drive/json-api':
         specifier: workspace:*
-        version: file:warp-drive-packages/json-api(14783ff7abfecaf4a15600481cda861e)
+        version: file:warp-drive-packages/json-api(a0e10a490d8c6aa294f5957fffbb8103)
       '@warp-drive/schema-dsl':
         specifier: workspace:*
-        version: file:warp-drive-packages/schema-dsl(27d22df54f83bd8eb0d3aa6fdaf4bcdd)
+        version: file:warp-drive-packages/schema-dsl(a0e10a490d8c6aa294f5957fffbb8103)
       '@warp-drive/utilities':
         specifier: workspace:*
-        version: file:warp-drive-packages/utilities(14783ff7abfecaf4a15600481cda861e)
+        version: file:warp-drive-packages/utilities(a0e10a490d8c6aa294f5957fffbb8103)
       babel-plugin-ember-template-compilation:
         specifier: ^4.0.0
         version: 4.0.0
@@ -1443,7 +1386,7 @@ importers:
         version: 0.1.0(@babel/core@7.28.3)
       eslint-plugin-warp-drive:
         specifier: workspace:*
-        version: file:packages/eslint-plugin-warp-drive(f9dfbf4fac3dbc0e0370b14ce6056988)
+        version: file:packages/eslint-plugin-warp-drive(6f3f6541944336feaaaf2fb760f5f2c6)
       rollup:
         specifier: ^4.46.2
         version: 4.48.1
@@ -1470,37 +1413,37 @@ importers:
         version: 7.28.3
       '@ember-data/adapter':
         specifier: workspace:*
-        version: file:packages/adapter(f9dfbf4fac3dbc0e0370b14ce6056988)
+        version: file:packages/adapter(6f3f6541944336feaaaf2fb760f5f2c6)
       '@ember-data/debug':
         specifier: workspace:*
-        version: file:packages/debug(f9dfbf4fac3dbc0e0370b14ce6056988)
+        version: file:packages/debug(6f3f6541944336feaaaf2fb760f5f2c6)
       '@ember-data/graph':
         specifier: workspace:*
-        version: file:packages/graph(f9dfbf4fac3dbc0e0370b14ce6056988)
+        version: file:packages/graph(6f3f6541944336feaaaf2fb760f5f2c6)
       '@ember-data/json-api':
         specifier: workspace:*
-        version: file:packages/json-api(f9dfbf4fac3dbc0e0370b14ce6056988)
+        version: file:packages/json-api(6f3f6541944336feaaaf2fb760f5f2c6)
       '@ember-data/legacy-compat':
         specifier: workspace:*
-        version: file:packages/legacy-compat(f9dfbf4fac3dbc0e0370b14ce6056988)
+        version: file:packages/legacy-compat(6f3f6541944336feaaaf2fb760f5f2c6)
       '@ember-data/model':
         specifier: workspace:*
-        version: file:packages/model(f9dfbf4fac3dbc0e0370b14ce6056988)
+        version: file:packages/model(6f3f6541944336feaaaf2fb760f5f2c6)
       '@ember-data/request':
         specifier: workspace:*
-        version: file:packages/request(f9dfbf4fac3dbc0e0370b14ce6056988)
+        version: file:packages/request(6f3f6541944336feaaaf2fb760f5f2c6)
       '@ember-data/request-utils':
         specifier: workspace:*
-        version: file:packages/request-utils(2614f833b55f24250877f0261f5ce108)
+        version: file:packages/request-utils(c249583999bb14622ffcff3251edd94e)
       '@ember-data/serializer':
         specifier: workspace:*
-        version: file:packages/serializer(f9dfbf4fac3dbc0e0370b14ce6056988)
+        version: file:packages/serializer(6f3f6541944336feaaaf2fb760f5f2c6)
       '@ember-data/store':
         specifier: workspace:*
-        version: file:packages/store(33af9699401529a0cfeefafc63c5c204)
+        version: file:packages/store(f51b1c0fe8122b6c0fc6f95d190caff6)
       '@ember-data/unpublished-test-infra':
         specifier: workspace:*
-        version: file:packages/unpublished-test-infra(d133cfd222b08807991c53b894341aa1)
+        version: file:packages/unpublished-test-infra(8de0bbc7d2708270b1d757dd0c82a968)
       '@ember/edition-utils':
         specifier: ^1.2.0
         version: 1.2.0
@@ -1533,34 +1476,34 @@ importers:
         version: 2.19.13
       '@warp-drive/build-config':
         specifier: workspace:*
-        version: file:warp-drive-packages/build-config(f9dfbf4fac3dbc0e0370b14ce6056988)
+        version: file:warp-drive-packages/build-config(6f3f6541944336feaaaf2fb760f5f2c6)
       '@warp-drive/core':
         specifier: workspace:*
-        version: file:warp-drive-packages/core(f9dfbf4fac3dbc0e0370b14ce6056988)
+        version: file:warp-drive-packages/core(6f3f6541944336feaaaf2fb760f5f2c6)
       '@warp-drive/core-types':
         specifier: workspace:*
-        version: file:packages/core-types(f9dfbf4fac3dbc0e0370b14ce6056988)
+        version: file:packages/core-types(6f3f6541944336feaaaf2fb760f5f2c6)
       '@warp-drive/ember':
         specifier: workspace:*
-        version: file:warp-drive-packages/ember(33af9699401529a0cfeefafc63c5c204)
+        version: file:warp-drive-packages/ember(f51b1c0fe8122b6c0fc6f95d190caff6)
       '@warp-drive/holodeck':
         specifier: workspace:*
-        version: file:packages/holodeck(e5d1c12af2328a4934377cfd47ee3a1f)
+        version: file:packages/holodeck(1a2dd403ca61fb4f720117ddce9dbf2a)
       '@warp-drive/internal-config':
         specifier: workspace:*
         version: file:tools/internal-config(@glint/template@1.6.1)
       '@warp-drive/json-api':
         specifier: workspace:*
-        version: file:warp-drive-packages/json-api(14783ff7abfecaf4a15600481cda861e)
+        version: file:warp-drive-packages/json-api(a0e10a490d8c6aa294f5957fffbb8103)
       '@warp-drive/legacy':
         specifier: workspace:*
-        version: file:warp-drive-packages/legacy(90048d994a10f75fd696c34ea85a9613)
+        version: file:warp-drive-packages/legacy(a7e392f12cf37901592a41a0b059179d)
       '@warp-drive/schema-record':
         specifier: workspace:*
-        version: file:packages/schema-record(f9dfbf4fac3dbc0e0370b14ce6056988)
+        version: file:packages/schema-record(6f3f6541944336feaaaf2fb760f5f2c6)
       '@warp-drive/utilities':
         specifier: workspace:*
-        version: file:warp-drive-packages/utilities(14783ff7abfecaf4a15600481cda861e)
+        version: file:warp-drive-packages/utilities(a0e10a490d8c6aa294f5957fffbb8103)
       broccoli-concat:
         specifier: ^4.2.5
         version: 4.2.5
@@ -1608,7 +1551,7 @@ importers:
         version: 3.1.0(@babel/core@7.28.3)
       ember-data:
         specifier: workspace:*
-        version: file:packages/-ember-data(f237fefb73c083433e2cc49183934352)
+        version: file:packages/-ember-data(e8dab14d0da5c0c4c32fa18f60ef2295)
       ember-decorators-polyfill:
         specifier: ^1.1.5
         version: 1.1.5(@babel/core@7.28.3)
@@ -1797,7 +1740,7 @@ importers:
         version: 7.28.3
       '@ember-data/unpublished-test-infra':
         specifier: workspace:*
-        version: file:packages/unpublished-test-infra(6973837de3488c5faaacd5ffabd6ca05)
+        version: file:packages/unpublished-test-infra(083231992847c7ab43e90a422bb755b3)
       '@ember/edition-utils':
         specifier: ^1.2.0
         version: 1.2.0
@@ -1821,25 +1764,25 @@ importers:
         version: 2.0.0
       '@warp-drive/core':
         specifier: workspace:*
-        version: file:warp-drive-packages/core(@babel/core@7.28.3)
+        version: file:warp-drive-packages/core(3b95a843f33ac420bfebb47325336ac3)
       '@warp-drive/diagnostic':
         specifier: workspace:*
-        version: file:packages/diagnostic(962ef39f5a731d2a1b4ce88c467c2693)
+        version: file:packages/diagnostic(7508bfb9f2a7a90817f3fe6261e8a70a)
       '@warp-drive/ember':
         specifier: workspace:*
-        version: file:warp-drive-packages/ember(1adf99e055abba96ff2ddb1d049f661d)
+        version: file:warp-drive-packages/ember(7c2c1e463faa5a91266614a64e699a43)
       '@warp-drive/internal-config':
         specifier: workspace:*
         version: file:tools/internal-config
       '@warp-drive/json-api':
         specifier: workspace:*
-        version: file:warp-drive-packages/json-api(ac1631a7da983377f84b100525d730a6)
+        version: file:warp-drive-packages/json-api(3d4571d73ed0c60dcf60e178160368f2)
       '@warp-drive/legacy':
         specifier: workspace:*
-        version: file:warp-drive-packages/legacy(da2d8626017c763d07445c649af78d55)
+        version: file:warp-drive-packages/legacy(6e9880f196b1c731e01a4d222aa70f8d)
       '@warp-drive/utilities':
         specifier: workspace:*
-        version: file:warp-drive-packages/utilities(ac1631a7da983377f84b100525d730a6)
+        version: file:warp-drive-packages/utilities(3d4571d73ed0c60dcf60e178160368f2)
       ember-auto-import:
         specifier: ^2.13.1
         version: 2.13.1
@@ -1905,28 +1848,28 @@ importers:
         version: 7.28.3
       '@ember-data/adapter':
         specifier: workspace:*
-        version: file:packages/adapter(@babel/core@7.28.3)
+        version: file:packages/adapter(3b95a843f33ac420bfebb47325336ac3)
       '@ember-data/graph':
         specifier: workspace:*
-        version: file:packages/graph(@babel/core@7.28.3)
+        version: file:packages/graph(3b95a843f33ac420bfebb47325336ac3)
       '@ember-data/json-api':
         specifier: workspace:*
-        version: file:packages/json-api(@babel/core@7.28.3)
+        version: file:packages/json-api(3b95a843f33ac420bfebb47325336ac3)
       '@ember-data/legacy-compat':
         specifier: workspace:*
-        version: file:packages/legacy-compat(@babel/core@7.28.3)
+        version: file:packages/legacy-compat(3b95a843f33ac420bfebb47325336ac3)
       '@ember-data/request':
         specifier: workspace:*
-        version: file:packages/request(@babel/core@7.28.3)
+        version: file:packages/request(3b95a843f33ac420bfebb47325336ac3)
       '@ember-data/request-utils':
         specifier: workspace:*
-        version: file:packages/request-utils(@babel/core@7.28.3)
+        version: file:packages/request-utils(3b95a843f33ac420bfebb47325336ac3)
       '@ember-data/serializer':
         specifier: workspace:*
-        version: file:packages/serializer(@babel/core@7.28.3)
+        version: file:packages/serializer(3b95a843f33ac420bfebb47325336ac3)
       '@ember-data/store':
         specifier: workspace:*
-        version: file:packages/store(1adf99e055abba96ff2ddb1d049f661d)
+        version: file:packages/store(7c2c1e463faa5a91266614a64e699a43)
       '@ember/optional-features':
         specifier: ^2.2.0
         version: 2.2.0
@@ -1947,19 +1890,19 @@ importers:
         version: 2.0.0
       '@warp-drive/build-config':
         specifier: workspace:*
-        version: file:warp-drive-packages/build-config(@babel/core@7.28.3)
+        version: file:warp-drive-packages/build-config(3b95a843f33ac420bfebb47325336ac3)
       '@warp-drive/core':
         specifier: workspace:*
-        version: file:warp-drive-packages/core(@babel/core@7.28.3)
+        version: file:warp-drive-packages/core(3b95a843f33ac420bfebb47325336ac3)
       '@warp-drive/core-types':
         specifier: workspace:*
-        version: file:packages/core-types(@babel/core@7.28.3)
+        version: file:packages/core-types(3b95a843f33ac420bfebb47325336ac3)
       '@warp-drive/diagnostic':
         specifier: workspace:*
-        version: file:packages/diagnostic(962ef39f5a731d2a1b4ce88c467c2693)
+        version: file:packages/diagnostic(7508bfb9f2a7a90817f3fe6261e8a70a)
       '@warp-drive/ember':
         specifier: workspace:*
-        version: file:warp-drive-packages/ember(1adf99e055abba96ff2ddb1d049f661d)
+        version: file:warp-drive-packages/ember(7c2c1e463faa5a91266614a64e699a43)
       '@warp-drive/internal-config':
         specifier: workspace:*
         version: file:tools/internal-config
@@ -2016,10 +1959,10 @@ importers:
         version: 7.28.3
       '@ember-data/request':
         specifier: workspace:*
-        version: file:packages/request(@babel/core@7.28.3)
+        version: file:packages/request(3b95a843f33ac420bfebb47325336ac3)
       '@ember-data/request-utils':
         specifier: workspace:*
-        version: file:packages/request-utils(@babel/core@7.28.3)
+        version: file:packages/request-utils(3b95a843f33ac420bfebb47325336ac3)
       '@ember/edition-utils':
         specifier: ^1.2.0
         version: 1.2.0
@@ -2043,22 +1986,22 @@ importers:
         version: 2.0.0
       '@warp-drive/build-config':
         specifier: workspace:*
-        version: file:warp-drive-packages/build-config(@babel/core@7.28.3)
+        version: file:warp-drive-packages/build-config(3b95a843f33ac420bfebb47325336ac3)
       '@warp-drive/core':
         specifier: workspace:*
-        version: file:warp-drive-packages/core(@babel/core@7.28.3)
+        version: file:warp-drive-packages/core(3b95a843f33ac420bfebb47325336ac3)
       '@warp-drive/core-types':
         specifier: workspace:*
-        version: file:packages/core-types(@babel/core@7.28.3)
+        version: file:packages/core-types(3b95a843f33ac420bfebb47325336ac3)
       '@warp-drive/diagnostic':
         specifier: workspace:*
-        version: file:packages/diagnostic(962ef39f5a731d2a1b4ce88c467c2693)
+        version: file:packages/diagnostic(7508bfb9f2a7a90817f3fe6261e8a70a)
       '@warp-drive/ember':
         specifier: workspace:*
-        version: file:warp-drive-packages/ember(1adf99e055abba96ff2ddb1d049f661d)
+        version: file:warp-drive-packages/ember(7c2c1e463faa5a91266614a64e699a43)
       '@warp-drive/holodeck':
         specifier: workspace:*
-        version: file:packages/holodeck(399050e4d25cd9de09f58182ad617dd4)
+        version: file:packages/holodeck(3d4571d73ed0c60dcf60e178160368f2)
       '@warp-drive/internal-config':
         specifier: workspace:*
         version: file:tools/internal-config
@@ -2187,22 +2130,22 @@ importers:
         version: 1.9.10
       '@warp-drive/core':
         specifier: workspace:*
-        version: file:warp-drive-packages/core(f9dfbf4fac3dbc0e0370b14ce6056988)
+        version: file:warp-drive-packages/core(82e84e66605f0358a61561e8086c9dbf)
       '@warp-drive/ember':
         specifier: workspace:*
-        version: file:warp-drive-packages/ember(33af9699401529a0cfeefafc63c5c204)
+        version: file:warp-drive-packages/ember(d55f0290a465f8ba7c9d2757edf52770)
       '@warp-drive/internal-config':
         specifier: workspace:*
         version: file:tools/internal-config(@glint/template@1.6.1)
       '@warp-drive/json-api':
         specifier: workspace:*
-        version: file:warp-drive-packages/json-api(14783ff7abfecaf4a15600481cda861e)
+        version: file:warp-drive-packages/json-api(bfa4679d03a875ade7a242ebd4d26c8f)
       '@warp-drive/legacy':
         specifier: workspace:*
-        version: file:warp-drive-packages/legacy(90048d994a10f75fd696c34ea85a9613)
+        version: file:warp-drive-packages/legacy(d224cad98ac8400c1e39dee1ab846f5d)
       '@warp-drive/utilities':
         specifier: workspace:*
-        version: file:warp-drive-packages/utilities(14783ff7abfecaf4a15600481cda861e)
+        version: file:warp-drive-packages/utilities(bfa4679d03a875ade7a242ebd4d26c8f)
       babel-plugin-ember-template-compilation:
         specifier: ^4.0.0
         version: 4.0.0
@@ -2268,31 +2211,31 @@ importers:
         version: 7.28.3
       '@ember-data/debug':
         specifier: workspace:*
-        version: file:packages/debug(f9dfbf4fac3dbc0e0370b14ce6056988)
+        version: file:packages/debug(6f3f6541944336feaaaf2fb760f5f2c6)
       '@ember-data/graph':
         specifier: workspace:*
-        version: file:packages/graph(f9dfbf4fac3dbc0e0370b14ce6056988)
+        version: file:packages/graph(6f3f6541944336feaaaf2fb760f5f2c6)
       '@ember-data/json-api':
         specifier: workspace:*
-        version: file:packages/json-api(f9dfbf4fac3dbc0e0370b14ce6056988)
+        version: file:packages/json-api(6f3f6541944336feaaaf2fb760f5f2c6)
       '@ember-data/legacy-compat':
         specifier: workspace:*
-        version: file:packages/legacy-compat(f9dfbf4fac3dbc0e0370b14ce6056988)
+        version: file:packages/legacy-compat(6f3f6541944336feaaaf2fb760f5f2c6)
       '@ember-data/model':
         specifier: workspace:*
-        version: file:packages/model(f9dfbf4fac3dbc0e0370b14ce6056988)
+        version: file:packages/model(6f3f6541944336feaaaf2fb760f5f2c6)
       '@ember-data/request':
         specifier: workspace:*
-        version: file:packages/request(f9dfbf4fac3dbc0e0370b14ce6056988)
+        version: file:packages/request(6f3f6541944336feaaaf2fb760f5f2c6)
       '@ember-data/request-utils':
         specifier: workspace:*
-        version: file:packages/request-utils(f9dfbf4fac3dbc0e0370b14ce6056988)
+        version: file:packages/request-utils(6f3f6541944336feaaaf2fb760f5f2c6)
       '@ember-data/store':
         specifier: workspace:*
-        version: file:packages/store(33af9699401529a0cfeefafc63c5c204)
+        version: file:packages/store(f51b1c0fe8122b6c0fc6f95d190caff6)
       '@ember-data/unpublished-test-infra':
         specifier: workspace:*
-        version: file:packages/unpublished-test-infra(70f18ac7fb426a44ca1eb8bc74329986)
+        version: file:packages/unpublished-test-infra(ab40d9c957a361072cad92f9f6466823)
       '@ember/test-helpers':
         specifier: 5.2.0
         version: 5.2.0(patch_hash=a1670a4e3977c846a5c2454f317f5a17cbd284aef3a676b190c98141536afb04)(bfadaa4521900084b7797d85fa721327)
@@ -2325,31 +2268,31 @@ importers:
         version: 6.0.4(@babel/core@7.28.3)(rollup@4.48.1)
       '@warp-drive/build-config':
         specifier: workspace:*
-        version: file:warp-drive-packages/build-config(f9dfbf4fac3dbc0e0370b14ce6056988)
+        version: file:warp-drive-packages/build-config(6f3f6541944336feaaaf2fb760f5f2c6)
       '@warp-drive/core':
         specifier: workspace:*
-        version: file:warp-drive-packages/core(f9dfbf4fac3dbc0e0370b14ce6056988)
+        version: file:warp-drive-packages/core(6f3f6541944336feaaaf2fb760f5f2c6)
       '@warp-drive/core-types':
         specifier: workspace:*
-        version: file:packages/core-types(f9dfbf4fac3dbc0e0370b14ce6056988)
+        version: file:packages/core-types(6f3f6541944336feaaaf2fb760f5f2c6)
       '@warp-drive/diagnostic':
         specifier: workspace:*
-        version: file:packages/diagnostic(1ec6686dfdedecb61e4679cc890ffd6c)
+        version: file:packages/diagnostic(9ac9c1315b860a247b69db70d26da93c)
       '@warp-drive/ember':
         specifier: workspace:*
-        version: file:warp-drive-packages/ember(33af9699401529a0cfeefafc63c5c204)
+        version: file:warp-drive-packages/ember(f51b1c0fe8122b6c0fc6f95d190caff6)
       '@warp-drive/experiments':
         specifier: workspace:*
-        version: file:warp-drive-packages/experiments(14783ff7abfecaf4a15600481cda861e)
+        version: file:warp-drive-packages/experiments(a0e10a490d8c6aa294f5957fffbb8103)
       '@warp-drive/holodeck':
         specifier: workspace:*
-        version: file:packages/holodeck(27d22df54f83bd8eb0d3aa6fdaf4bcdd)
+        version: file:packages/holodeck(a0e10a490d8c6aa294f5957fffbb8103)
       '@warp-drive/internal-config':
         specifier: workspace:*
         version: file:tools/internal-config(@glint/template@1.6.1)(terser@5.43.1)
       '@warp-drive/schema-record':
         specifier: workspace:*
-        version: file:packages/schema-record(f9dfbf4fac3dbc0e0370b14ce6056988)
+        version: file:packages/schema-record(6f3f6541944336feaaaf2fb760f5f2c6)
       babel-plugin-ember-template-compilation:
         specifier: ^4.0.0
         version: 4.0.0
@@ -2418,31 +2361,31 @@ importers:
         version: 6.0.4(@babel/core@7.28.3)(rollup@4.48.1)
       '@warp-drive-internal/specs':
         specifier: workspace:*
-        version: file:specs(37c116e2399dfec65ac0692246a2c3ac)
+        version: file:specs(47e75909bf37e1eb54a2c8cb796afc9e)
       '@warp-drive/core':
         specifier: workspace:*
-        version: file:warp-drive-packages/core(f9dfbf4fac3dbc0e0370b14ce6056988)
+        version: file:warp-drive-packages/core(6f3f6541944336feaaaf2fb760f5f2c6)
       '@warp-drive/diagnostic':
         specifier: workspace:*
-        version: file:packages/diagnostic(1ec6686dfdedecb61e4679cc890ffd6c)
+        version: file:packages/diagnostic(9ac9c1315b860a247b69db70d26da93c)
       '@warp-drive/ember':
         specifier: workspace:*
-        version: file:warp-drive-packages/ember(33af9699401529a0cfeefafc63c5c204)
+        version: file:warp-drive-packages/ember(f51b1c0fe8122b6c0fc6f95d190caff6)
       '@warp-drive/holodeck':
         specifier: workspace:*
-        version: file:packages/holodeck(e5d1c12af2328a4934377cfd47ee3a1f)
+        version: file:packages/holodeck(1a2dd403ca61fb4f720117ddce9dbf2a)
       '@warp-drive/internal-config':
         specifier: workspace:*
         version: file:tools/internal-config(@glint/template@1.6.1)(terser@5.43.1)
       '@warp-drive/json-api':
         specifier: workspace:*
-        version: file:warp-drive-packages/json-api(14783ff7abfecaf4a15600481cda861e)
+        version: file:warp-drive-packages/json-api(a0e10a490d8c6aa294f5957fffbb8103)
       '@warp-drive/legacy':
         specifier: workspace:*
-        version: file:warp-drive-packages/legacy(90048d994a10f75fd696c34ea85a9613)
+        version: file:warp-drive-packages/legacy(a7e392f12cf37901592a41a0b059179d)
       '@warp-drive/utilities':
         specifier: workspace:*
-        version: file:warp-drive-packages/utilities(14783ff7abfecaf4a15600481cda861e)
+        version: file:warp-drive-packages/utilities(a0e10a490d8c6aa294f5957fffbb8103)
       babel-plugin-ember-template-compilation:
         specifier: ^4.0.0
         version: 4.0.0
@@ -2496,28 +2439,28 @@ importers:
         version: 19.1.8(@types/react@19.1.11)
       '@warp-drive-internal/specs':
         specifier: workspace:*
-        version: file:specs(ba3d7771395f683c0ceafac10532a702)
+        version: file:specs(af11b85f3b63259f0a7b3d95defd72b5)
       '@warp-drive/core':
         specifier: workspace:*
-        version: file:warp-drive-packages/core(@babel/core@7.28.3)
+        version: file:warp-drive-packages/core(3b95a843f33ac420bfebb47325336ac3)
       '@warp-drive/diagnostic':
         specifier: workspace:*
-        version: file:packages/diagnostic(ab3931b8efe123d48e6f09ce51952ac3)
+        version: file:packages/diagnostic(d6f4430bcebe45dc8d32ab93d6e95ab7)
       '@warp-drive/holodeck':
         specifier: workspace:*
-        version: file:packages/holodeck(b1f423bbeafed7b156933fd746f2db26)
+        version: file:packages/holodeck(6e9880f196b1c731e01a4d222aa70f8d)
       '@warp-drive/internal-config':
         specifier: workspace:*
         version: file:tools/internal-config
       '@warp-drive/json-api':
         specifier: workspace:*
-        version: file:warp-drive-packages/json-api(ac1631a7da983377f84b100525d730a6)
+        version: file:warp-drive-packages/json-api(3d4571d73ed0c60dcf60e178160368f2)
       '@warp-drive/react':
         specifier: workspace:*
-        version: file:warp-drive-packages/react(@babel/core@7.28.3)
+        version: file:warp-drive-packages/react(3b95a843f33ac420bfebb47325336ac3)
       '@warp-drive/utilities':
         specifier: workspace:*
-        version: file:warp-drive-packages/utilities(ac1631a7da983377f84b100525d730a6)
+        version: file:warp-drive-packages/utilities(3d4571d73ed0c60dcf60e178160368f2)
       babel-plugin-debug-macros:
         specifier: ^2.0.0
         version: 2.0.0(@babel/core@7.28.3)
@@ -2556,28 +2499,28 @@ importers:
         version: 6.0.4(@babel/core@7.28.3)
       '@warp-drive-internal/specs':
         specifier: workspace:*
-        version: file:specs(1cfa7b714775262599f5963090fd9a6e)
+        version: file:specs(b2adb48b23f9cbbfa760e5e820fa5665)
       '@warp-drive/core':
         specifier: workspace:*
-        version: file:warp-drive-packages/core(@babel/core@7.28.3)
+        version: file:warp-drive-packages/core(3b95a843f33ac420bfebb47325336ac3)
       '@warp-drive/diagnostic':
         specifier: workspace:*
-        version: file:packages/diagnostic(@babel/core@7.28.3)
+        version: file:packages/diagnostic(3b95a843f33ac420bfebb47325336ac3)
       '@warp-drive/holodeck':
         specifier: workspace:*
-        version: file:packages/holodeck(b1f423bbeafed7b156933fd746f2db26)
+        version: file:packages/holodeck(6e9880f196b1c731e01a4d222aa70f8d)
       '@warp-drive/internal-config':
         specifier: workspace:*
         version: file:tools/internal-config
       '@warp-drive/json-api':
         specifier: workspace:*
-        version: file:warp-drive-packages/json-api(ac1631a7da983377f84b100525d730a6)
+        version: file:warp-drive-packages/json-api(3d4571d73ed0c60dcf60e178160368f2)
       '@warp-drive/svelte':
         specifier: workspace:*
-        version: file:warp-drive-packages/svelte(@babel/core@7.28.3)(svelte@5.38.5)
+        version: file:warp-drive-packages/svelte(ac44d02540acca2c652a07e8f8efa7e1)
       '@warp-drive/utilities':
         specifier: workspace:*
-        version: file:warp-drive-packages/utilities(ac1631a7da983377f84b100525d730a6)
+        version: file:warp-drive-packages/utilities(3d4571d73ed0c60dcf60e178160368f2)
       babel-plugin-debug-macros:
         specifier: ^2.0.0
         version: 2.0.0(@babel/core@7.28.3)
@@ -2619,28 +2562,28 @@ importers:
         version: 1.5.0(@babel/core@7.28.3)
       '@warp-drive-internal/specs':
         specifier: workspace:*
-        version: file:specs(1cfa7b714775262599f5963090fd9a6e)
+        version: file:specs(b2adb48b23f9cbbfa760e5e820fa5665)
       '@warp-drive/core':
         specifier: workspace:*
-        version: file:warp-drive-packages/core(@babel/core@7.28.3)
+        version: file:warp-drive-packages/core(3b95a843f33ac420bfebb47325336ac3)
       '@warp-drive/diagnostic':
         specifier: workspace:*
-        version: file:packages/diagnostic(@babel/core@7.28.3)
+        version: file:packages/diagnostic(3b95a843f33ac420bfebb47325336ac3)
       '@warp-drive/holodeck':
         specifier: workspace:*
-        version: file:packages/holodeck(b1f423bbeafed7b156933fd746f2db26)
+        version: file:packages/holodeck(6e9880f196b1c731e01a4d222aa70f8d)
       '@warp-drive/internal-config':
         specifier: workspace:*
         version: file:tools/internal-config
       '@warp-drive/json-api':
         specifier: workspace:*
-        version: file:warp-drive-packages/json-api(ac1631a7da983377f84b100525d730a6)
+        version: file:warp-drive-packages/json-api(3d4571d73ed0c60dcf60e178160368f2)
       '@warp-drive/utilities':
         specifier: workspace:*
-        version: file:warp-drive-packages/utilities(ac1631a7da983377f84b100525d730a6)
+        version: file:warp-drive-packages/utilities(3d4571d73ed0c60dcf60e178160368f2)
       '@warp-drive/vue':
         specifier: workspace:*
-        version: file:warp-drive-packages/vue(5ce6b18e5373662b9e61b52ef3ded5eb)
+        version: file:warp-drive-packages/vue(24fdb4f3bc8397a3fcf7fc487cd7748a)
       babel-plugin-debug-macros:
         specifier: ^2.0.0
         version: 2.0.0(@babel/core@7.28.3)
@@ -2670,7 +2613,7 @@ importers:
         version: 7.28.3
       '@ember-data/unpublished-test-infra':
         specifier: workspace:*
-        version: file:packages/unpublished-test-infra(6973837de3488c5faaacd5ffabd6ca05)
+        version: file:packages/unpublished-test-infra(083231992847c7ab43e90a422bb755b3)
       '@ember/edition-utils':
         specifier: ^1.2.0
         version: 1.2.0
@@ -2694,31 +2637,31 @@ importers:
         version: 2.0.0
       '@warp-drive/build-config':
         specifier: workspace:*
-        version: file:warp-drive-packages/build-config(@babel/core@7.28.3)
+        version: file:warp-drive-packages/build-config(3b95a843f33ac420bfebb47325336ac3)
       '@warp-drive/core':
         specifier: workspace:*
-        version: file:warp-drive-packages/core(@babel/core@7.28.3)
+        version: file:warp-drive-packages/core(3b95a843f33ac420bfebb47325336ac3)
       '@warp-drive/diagnostic':
         specifier: workspace:*
-        version: file:packages/diagnostic(962ef39f5a731d2a1b4ce88c467c2693)
+        version: file:packages/diagnostic(7508bfb9f2a7a90817f3fe6261e8a70a)
       '@warp-drive/ember':
         specifier: workspace:*
-        version: file:warp-drive-packages/ember(1adf99e055abba96ff2ddb1d049f661d)
+        version: file:warp-drive-packages/ember(7c2c1e463faa5a91266614a64e699a43)
       '@warp-drive/holodeck':
         specifier: workspace:*
-        version: file:packages/holodeck(19e1072f23293e4c2aeee5c79542e276)
+        version: file:packages/holodeck(24de54948594a8950ac956653b953550)
       '@warp-drive/internal-config':
         specifier: workspace:*
         version: file:tools/internal-config
       '@warp-drive/json-api':
         specifier: workspace:*
-        version: file:warp-drive-packages/json-api(ac1631a7da983377f84b100525d730a6)
+        version: file:warp-drive-packages/json-api(3d4571d73ed0c60dcf60e178160368f2)
       '@warp-drive/legacy':
         specifier: workspace:*
-        version: file:warp-drive-packages/legacy(da2d8626017c763d07445c649af78d55)
+        version: file:warp-drive-packages/legacy(6e9880f196b1c731e01a4d222aa70f8d)
       '@warp-drive/utilities':
         specifier: workspace:*
-        version: file:warp-drive-packages/utilities(ac1631a7da983377f84b100525d730a6)
+        version: file:warp-drive-packages/utilities(3d4571d73ed0c60dcf60e178160368f2)
       ember-auto-import:
         specifier: ^2.13.1
         version: 2.13.1
@@ -2787,7 +2730,7 @@ importers:
         version: 7.28.3
       '@ember-data/unpublished-test-infra':
         specifier: workspace:*
-        version: file:packages/unpublished-test-infra(70f18ac7fb426a44ca1eb8bc74329986)
+        version: file:packages/unpublished-test-infra(ab40d9c957a361072cad92f9f6466823)
       '@ember/test-helpers':
         specifier: 5.2.0
         version: 5.2.0(patch_hash=a1670a4e3977c846a5c2454f317f5a17cbd284aef3a676b190c98141536afb04)(bfadaa4521900084b7797d85fa721327)
@@ -2820,31 +2763,31 @@ importers:
         version: 6.0.4(@babel/core@7.28.3)(rollup@4.48.1)
       '@warp-drive-internal/specs':
         specifier: workspace:*
-        version: file:specs(37c116e2399dfec65ac0692246a2c3ac)
+        version: file:specs(47e75909bf37e1eb54a2c8cb796afc9e)
       '@warp-drive/core':
         specifier: workspace:*
-        version: file:warp-drive-packages/core(f9dfbf4fac3dbc0e0370b14ce6056988)
+        version: file:warp-drive-packages/core(6f3f6541944336feaaaf2fb760f5f2c6)
       '@warp-drive/diagnostic':
         specifier: workspace:*
-        version: file:packages/diagnostic(1ec6686dfdedecb61e4679cc890ffd6c)
+        version: file:packages/diagnostic(9ac9c1315b860a247b69db70d26da93c)
       '@warp-drive/ember':
         specifier: workspace:*
-        version: file:warp-drive-packages/ember(33af9699401529a0cfeefafc63c5c204)
+        version: file:warp-drive-packages/ember(f51b1c0fe8122b6c0fc6f95d190caff6)
       '@warp-drive/holodeck':
         specifier: workspace:*
-        version: file:packages/holodeck(e5d1c12af2328a4934377cfd47ee3a1f)
+        version: file:packages/holodeck(1a2dd403ca61fb4f720117ddce9dbf2a)
       '@warp-drive/internal-config':
         specifier: workspace:*
         version: file:tools/internal-config(@glint/template@1.6.1)(terser@5.43.1)
       '@warp-drive/json-api':
         specifier: workspace:*
-        version: file:warp-drive-packages/json-api(14783ff7abfecaf4a15600481cda861e)
+        version: file:warp-drive-packages/json-api(a0e10a490d8c6aa294f5957fffbb8103)
       '@warp-drive/legacy':
         specifier: workspace:*
-        version: file:warp-drive-packages/legacy(90048d994a10f75fd696c34ea85a9613)
+        version: file:warp-drive-packages/legacy(a7e392f12cf37901592a41a0b059179d)
       '@warp-drive/utilities':
         specifier: workspace:*
-        version: file:warp-drive-packages/utilities(14783ff7abfecaf4a15600481cda861e)
+        version: file:warp-drive-packages/utilities(a0e10a490d8c6aa294f5957fffbb8103)
       babel-plugin-ember-template-compilation:
         specifier: ^4.0.0
         version: 4.0.0
@@ -2859,7 +2802,7 @@ importers:
         version: 0.1.0(@babel/core@7.28.3)
       eslint-plugin-warp-drive:
         specifier: workspace:*
-        version: file:packages/eslint-plugin-warp-drive(f9dfbf4fac3dbc0e0370b14ce6056988)
+        version: file:packages/eslint-plugin-warp-drive(6f3f6541944336feaaaf2fb760f5f2c6)
       rollup:
         specifier: ^4.46.2
         version: 4.48.1
@@ -2925,13 +2868,13 @@ importers:
         version: file:tools/internal-config(terser@5.43.1)
       '@warp-drive/json-api':
         specifier: workspace:*
-        version: file:warp-drive-packages/json-api(ac1631a7da983377f84b100525d730a6)
+        version: file:warp-drive-packages/json-api(399050e4d25cd9de09f58182ad617dd4)
       '@warp-drive/legacy':
         specifier: workspace:*
-        version: file:warp-drive-packages/legacy(da2d8626017c763d07445c649af78d55)
+        version: file:warp-drive-packages/legacy(51dad5c9a663ff46ed0737168a052837)
       '@warp-drive/utilities':
         specifier: workspace:*
-        version: file:warp-drive-packages/utilities(ac1631a7da983377f84b100525d730a6)
+        version: file:warp-drive-packages/utilities(399050e4d25cd9de09f58182ad617dd4)
       babel-plugin-ember-template-compilation:
         specifier: ^4.0.0
         version: 4.0.0
@@ -3471,9 +3414,6 @@ importers:
       '@embroider/addon-shim':
         specifier: ^1.10.0
         version: 1.10.0
-      '@embroider/macros':
-        specifier: ^1.19.6
-        version: 1.19.6(@babel/core@7.28.3)
       babel-import-util:
         specifier: ^2.1.1
         version: 2.1.1
@@ -3493,6 +3433,9 @@ importers:
       '@babel/preset-typescript':
         specifier: ^7.27.1
         version: 7.27.1(@babel/core@7.28.3)
+      '@embroider/macros':
+        specifier: ^1.19.6
+        version: 1.19.6(@babel/core@7.28.3)
       '@types/babel__core':
         specifier: ^7.20.5
         version: 7.20.5
@@ -3514,9 +3457,6 @@ importers:
 
   warp-drive-packages/core:
     dependencies:
-      '@embroider/macros':
-        specifier: ^1.19.6
-        version: 1.19.6(@babel/core@7.28.3)
       '@warp-drive/build-config':
         specifier: workspace:*
         version: file:warp-drive-packages/build-config(@babel/core@7.28.3)
@@ -3551,12 +3491,9 @@ importers:
 
   warp-drive-packages/ember:
     dependencies:
-      '@embroider/macros':
-        specifier: ^1.19.6
-        version: 1.19.6(f9dfbf4fac3dbc0e0370b14ce6056988)
       '@warp-drive/core':
         specifier: workspace:*
-        version: file:warp-drive-packages/core(f9dfbf4fac3dbc0e0370b14ce6056988)
+        version: file:warp-drive-packages/core(@babel/core@7.28.3)
     devDependencies:
       '@babel/core':
         specifier: ^7.28.3
@@ -3623,10 +3560,6 @@ importers:
         version: 7.3.1
 
   warp-drive-packages/experiments:
-    dependencies:
-      '@embroider/macros':
-        specifier: ^1.19.6
-        version: 1.19.6(@babel/core@7.28.3)
     devDependencies:
       '@babel/core':
         specifier: ^7.28.3
@@ -3658,9 +3591,6 @@ importers:
 
   warp-drive-packages/json-api:
     dependencies:
-      '@embroider/macros':
-        specifier: ^1.19.6
-        version: 1.19.6(@babel/core@7.28.3)
       fuse.js:
         specifier: 7.1.0
         version: 7.1.0
@@ -3700,10 +3630,6 @@ importers:
         version: 7.3.1
 
   warp-drive-packages/legacy:
-    dependencies:
-      '@embroider/macros':
-        specifier: ^1.19.6
-        version: 1.19.6(@babel/core@7.28.3)
     devDependencies:
       '@babel/core':
         specifier: ^7.28.3
@@ -3725,7 +3651,7 @@ importers:
         version: file:tools/internal-config
       '@warp-drive/utilities':
         specifier: workspace:*
-        version: file:warp-drive-packages/utilities(ac1631a7da983377f84b100525d730a6)
+        version: file:warp-drive-packages/utilities(399050e4d25cd9de09f58182ad617dd4)
       decorator-transforms:
         specifier: ^2.3.0
         version: 2.3.0(@babel/core@7.28.3)
@@ -3744,9 +3670,6 @@ importers:
 
   warp-drive-packages/react:
     dependencies:
-      '@embroider/macros':
-        specifier: ^1.19.6
-        version: 1.19.6(@babel/core@7.28.3)
       '@warp-drive/core':
         specifier: workspace:*
         version: file:warp-drive-packages/core(@babel/core@7.28.3)
@@ -3864,9 +3787,6 @@ importers:
 
   warp-drive-packages/tc39-proposal-signals:
     dependencies:
-      '@embroider/macros':
-        specifier: ^1.19.6
-        version: 1.19.6(@babel/core@7.28.3)
       '@warp-drive/core':
         specifier: workspace:*
         version: file:warp-drive-packages/core(@babel/core@7.28.3)
@@ -3903,10 +3823,6 @@ importers:
         version: 7.3.1
 
   warp-drive-packages/utilities:
-    dependencies:
-      '@embroider/macros':
-        specifier: ^1.19.6
-        version: 1.19.6(@babel/core@7.28.3)
     devDependencies:
       '@babel/core':
         specifier: ^7.28.3
@@ -3938,9 +3854,6 @@ importers:
 
   warp-drive-packages/vue:
     dependencies:
-      '@embroider/macros':
-        specifier: ^1.19.6
-        version: 1.19.6(@babel/core@7.28.3)
       '@warp-drive/core':
         specifier: workspace:*
         version: file:warp-drive-packages/core(@babel/core@7.28.3)
@@ -7332,6 +7245,11 @@ packages:
 
   '@warp-drive/build-config@file:warp-drive-packages/build-config':
     resolution: {directory: warp-drive-packages/build-config, type: directory}
+    peerDependencies:
+      '@embroider/macros': ^1.19.6
+    peerDependenciesMeta:
+      '@embroider/macros':
+        optional: true
 
   '@warp-drive/core-types@file:packages/core-types':
     resolution: {directory: packages/core-types, type: directory}
@@ -16242,42 +16160,53 @@ snapshots:
 
   '@ember-data/active-record@file:packages/active-record(@babel/core@7.28.3)':
     dependencies:
-      '@embroider/macros': 1.19.6(@babel/core@7.28.3)
       '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.28.3)
-      '@warp-drive/utilities': file:warp-drive-packages/utilities(ac1631a7da983377f84b100525d730a6)
+      '@warp-drive/utilities': file:warp-drive-packages/utilities(399050e4d25cd9de09f58182ad617dd4)
     transitivePeerDependencies:
       - '@babel/core'
-      - '@glint/template'
+      - '@embroider/macros'
+      - supports-color
+
+  '@ember-data/adapter@file:packages/adapter(3b95a843f33ac420bfebb47325336ac3)':
+    dependencies:
+      '@ember/edition-utils': 1.2.0
+      '@warp-drive/core': file:warp-drive-packages/core(3b95a843f33ac420bfebb47325336ac3)
+      '@warp-drive/legacy': file:warp-drive-packages/legacy(6e9880f196b1c731e01a4d222aa70f8d)
+      '@warp-drive/utilities': file:warp-drive-packages/utilities(3d4571d73ed0c60dcf60e178160368f2)
+      ember-cli-path-utils: 1.0.0
+      ember-cli-string-utils: 1.1.0
+      ember-cli-test-info: 1.0.0
+    transitivePeerDependencies:
+      - '@babel/core'
+      - '@embroider/macros'
+      - supports-color
+
+  '@ember-data/adapter@file:packages/adapter(6f3f6541944336feaaaf2fb760f5f2c6)':
+    dependencies:
+      '@ember/edition-utils': 1.2.0
+      '@warp-drive/core': file:warp-drive-packages/core(6f3f6541944336feaaaf2fb760f5f2c6)
+      '@warp-drive/legacy': file:warp-drive-packages/legacy(a7e392f12cf37901592a41a0b059179d)
+      '@warp-drive/utilities': file:warp-drive-packages/utilities(a0e10a490d8c6aa294f5957fffbb8103)
+      ember-cli-path-utils: 1.0.0
+      ember-cli-string-utils: 1.1.0
+      ember-cli-test-info: 1.0.0
+    transitivePeerDependencies:
+      - '@babel/core'
+      - '@embroider/macros'
       - supports-color
 
   '@ember-data/adapter@file:packages/adapter(@babel/core@7.28.3)':
     dependencies:
       '@ember/edition-utils': 1.2.0
-      '@embroider/macros': 1.19.6(@babel/core@7.28.3)
       '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.28.3)
-      '@warp-drive/legacy': file:warp-drive-packages/legacy(da2d8626017c763d07445c649af78d55)
-      '@warp-drive/utilities': file:warp-drive-packages/utilities(ac1631a7da983377f84b100525d730a6)
+      '@warp-drive/legacy': file:warp-drive-packages/legacy(51dad5c9a663ff46ed0737168a052837)
+      '@warp-drive/utilities': file:warp-drive-packages/utilities(399050e4d25cd9de09f58182ad617dd4)
       ember-cli-path-utils: 1.0.0
       ember-cli-string-utils: 1.1.0
       ember-cli-test-info: 1.0.0
     transitivePeerDependencies:
       - '@babel/core'
-      - '@glint/template'
-      - supports-color
-
-  '@ember-data/adapter@file:packages/adapter(f9dfbf4fac3dbc0e0370b14ce6056988)':
-    dependencies:
-      '@ember/edition-utils': 1.2.0
-      '@embroider/macros': 1.19.6(f9dfbf4fac3dbc0e0370b14ce6056988)
-      '@warp-drive/core': file:warp-drive-packages/core(f9dfbf4fac3dbc0e0370b14ce6056988)
-      '@warp-drive/legacy': file:warp-drive-packages/legacy(90048d994a10f75fd696c34ea85a9613)
-      '@warp-drive/utilities': file:warp-drive-packages/utilities(14783ff7abfecaf4a15600481cda861e)
-      ember-cli-path-utils: 1.0.0
-      ember-cli-string-utils: 1.1.0
-      ember-cli-test-info: 1.0.0
-    transitivePeerDependencies:
-      - '@babel/core'
-      - '@glint/template'
+      - '@embroider/macros'
       - supports-color
 
   '@ember-data/codemods@file:packages/codemods':
@@ -16297,354 +16226,379 @@ snapshots:
       - '@babel/preset-env'
       - supports-color
 
+  '@ember-data/debug@file:packages/debug(6f3f6541944336feaaaf2fb760f5f2c6)':
+    dependencies:
+      '@ember/edition-utils': 1.2.0
+      '@warp-drive/core': file:warp-drive-packages/core(6f3f6541944336feaaaf2fb760f5f2c6)
+      '@warp-drive/utilities': file:warp-drive-packages/utilities(a0e10a490d8c6aa294f5957fffbb8103)
+    transitivePeerDependencies:
+      - '@babel/core'
+      - '@embroider/macros'
+      - supports-color
+
   '@ember-data/debug@file:packages/debug(@babel/core@7.28.3)':
     dependencies:
       '@ember/edition-utils': 1.2.0
-      '@embroider/macros': 1.19.6(@babel/core@7.28.3)
       '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.28.3)
-      '@warp-drive/utilities': file:warp-drive-packages/utilities(ac1631a7da983377f84b100525d730a6)
+      '@warp-drive/utilities': file:warp-drive-packages/utilities(399050e4d25cd9de09f58182ad617dd4)
     transitivePeerDependencies:
       - '@babel/core'
-      - '@glint/template'
+      - '@embroider/macros'
       - supports-color
 
-  '@ember-data/debug@file:packages/debug(f9dfbf4fac3dbc0e0370b14ce6056988)':
+  '@ember-data/graph@file:packages/graph(3b95a843f33ac420bfebb47325336ac3)':
     dependencies:
-      '@ember/edition-utils': 1.2.0
-      '@embroider/macros': 1.19.6(f9dfbf4fac3dbc0e0370b14ce6056988)
-      '@warp-drive/core': file:warp-drive-packages/core(f9dfbf4fac3dbc0e0370b14ce6056988)
-      '@warp-drive/utilities': file:warp-drive-packages/utilities(14783ff7abfecaf4a15600481cda861e)
+      '@warp-drive/core': file:warp-drive-packages/core(3b95a843f33ac420bfebb47325336ac3)
     transitivePeerDependencies:
       - '@babel/core'
-      - '@glint/template'
+      - '@embroider/macros'
+      - supports-color
+
+  '@ember-data/graph@file:packages/graph(6f3f6541944336feaaaf2fb760f5f2c6)':
+    dependencies:
+      '@warp-drive/core': file:warp-drive-packages/core(6f3f6541944336feaaaf2fb760f5f2c6)
+    transitivePeerDependencies:
+      - '@babel/core'
+      - '@embroider/macros'
       - supports-color
 
   '@ember-data/graph@file:packages/graph(@babel/core@7.28.3)':
     dependencies:
-      '@embroider/macros': 1.19.6(@babel/core@7.28.3)
       '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.28.3)
     transitivePeerDependencies:
       - '@babel/core'
-      - '@glint/template'
+      - '@embroider/macros'
       - supports-color
 
-  '@ember-data/graph@file:packages/graph(f9dfbf4fac3dbc0e0370b14ce6056988)':
+  '@ember-data/json-api@file:packages/json-api(3b95a843f33ac420bfebb47325336ac3)':
     dependencies:
-      '@embroider/macros': 1.19.6(f9dfbf4fac3dbc0e0370b14ce6056988)
-      '@warp-drive/core': file:warp-drive-packages/core(f9dfbf4fac3dbc0e0370b14ce6056988)
+      '@warp-drive/core': file:warp-drive-packages/core(3b95a843f33ac420bfebb47325336ac3)
+      '@warp-drive/json-api': file:warp-drive-packages/json-api(3d4571d73ed0c60dcf60e178160368f2)
+      '@warp-drive/utilities': file:warp-drive-packages/utilities(3d4571d73ed0c60dcf60e178160368f2)
     transitivePeerDependencies:
       - '@babel/core'
-      - '@glint/template'
+      - '@embroider/macros'
+      - supports-color
+
+  '@ember-data/json-api@file:packages/json-api(6f3f6541944336feaaaf2fb760f5f2c6)':
+    dependencies:
+      '@warp-drive/core': file:warp-drive-packages/core(6f3f6541944336feaaaf2fb760f5f2c6)
+      '@warp-drive/json-api': file:warp-drive-packages/json-api(a0e10a490d8c6aa294f5957fffbb8103)
+      '@warp-drive/utilities': file:warp-drive-packages/utilities(a0e10a490d8c6aa294f5957fffbb8103)
+    transitivePeerDependencies:
+      - '@babel/core'
+      - '@embroider/macros'
       - supports-color
 
   '@ember-data/json-api@file:packages/json-api(@babel/core@7.28.3)':
     dependencies:
-      '@embroider/macros': 1.19.6(@babel/core@7.28.3)
       '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.28.3)
-      '@warp-drive/json-api': file:warp-drive-packages/json-api(ac1631a7da983377f84b100525d730a6)
-      '@warp-drive/utilities': file:warp-drive-packages/utilities(ac1631a7da983377f84b100525d730a6)
+      '@warp-drive/json-api': file:warp-drive-packages/json-api(399050e4d25cd9de09f58182ad617dd4)
+      '@warp-drive/utilities': file:warp-drive-packages/utilities(399050e4d25cd9de09f58182ad617dd4)
     transitivePeerDependencies:
       - '@babel/core'
-      - '@glint/template'
+      - '@embroider/macros'
       - supports-color
 
-  '@ember-data/json-api@file:packages/json-api(f9dfbf4fac3dbc0e0370b14ce6056988)':
+  '@ember-data/legacy-compat@file:packages/legacy-compat(3b95a843f33ac420bfebb47325336ac3)':
     dependencies:
-      '@embroider/macros': 1.19.6(f9dfbf4fac3dbc0e0370b14ce6056988)
-      '@warp-drive/core': file:warp-drive-packages/core(f9dfbf4fac3dbc0e0370b14ce6056988)
-      '@warp-drive/json-api': file:warp-drive-packages/json-api(14783ff7abfecaf4a15600481cda861e)
-      '@warp-drive/utilities': file:warp-drive-packages/utilities(14783ff7abfecaf4a15600481cda861e)
+      '@warp-drive/core': file:warp-drive-packages/core(3b95a843f33ac420bfebb47325336ac3)
+      '@warp-drive/legacy': file:warp-drive-packages/legacy(6e9880f196b1c731e01a4d222aa70f8d)
+      '@warp-drive/utilities': file:warp-drive-packages/utilities(3d4571d73ed0c60dcf60e178160368f2)
     transitivePeerDependencies:
       - '@babel/core'
-      - '@glint/template'
+      - '@embroider/macros'
+      - supports-color
+
+  '@ember-data/legacy-compat@file:packages/legacy-compat(6f3f6541944336feaaaf2fb760f5f2c6)':
+    dependencies:
+      '@warp-drive/core': file:warp-drive-packages/core(6f3f6541944336feaaaf2fb760f5f2c6)
+      '@warp-drive/legacy': file:warp-drive-packages/legacy(a7e392f12cf37901592a41a0b059179d)
+      '@warp-drive/utilities': file:warp-drive-packages/utilities(a0e10a490d8c6aa294f5957fffbb8103)
+    transitivePeerDependencies:
+      - '@babel/core'
+      - '@embroider/macros'
       - supports-color
 
   '@ember-data/legacy-compat@file:packages/legacy-compat(@babel/core@7.28.3)':
     dependencies:
-      '@embroider/macros': 1.19.6(@babel/core@7.28.3)
       '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.28.3)
-      '@warp-drive/legacy': file:warp-drive-packages/legacy(da2d8626017c763d07445c649af78d55)
-      '@warp-drive/utilities': file:warp-drive-packages/utilities(ac1631a7da983377f84b100525d730a6)
+      '@warp-drive/legacy': file:warp-drive-packages/legacy(51dad5c9a663ff46ed0737168a052837)
+      '@warp-drive/utilities': file:warp-drive-packages/utilities(399050e4d25cd9de09f58182ad617dd4)
     transitivePeerDependencies:
       - '@babel/core'
-      - '@glint/template'
+      - '@embroider/macros'
       - supports-color
 
-  '@ember-data/legacy-compat@file:packages/legacy-compat(f9dfbf4fac3dbc0e0370b14ce6056988)':
+  '@ember-data/model@file:packages/model(6f3f6541944336feaaaf2fb760f5f2c6)':
     dependencies:
-      '@embroider/macros': 1.19.6(f9dfbf4fac3dbc0e0370b14ce6056988)
-      '@warp-drive/core': file:warp-drive-packages/core(f9dfbf4fac3dbc0e0370b14ce6056988)
-      '@warp-drive/legacy': file:warp-drive-packages/legacy(90048d994a10f75fd696c34ea85a9613)
-      '@warp-drive/utilities': file:warp-drive-packages/utilities(14783ff7abfecaf4a15600481cda861e)
+      '@ember/edition-utils': 1.2.0
+      '@warp-drive/core': file:warp-drive-packages/core(6f3f6541944336feaaaf2fb760f5f2c6)
+      '@warp-drive/legacy': file:warp-drive-packages/legacy(a7e392f12cf37901592a41a0b059179d)
+      '@warp-drive/utilities': file:warp-drive-packages/utilities(a0e10a490d8c6aa294f5957fffbb8103)
+      ember-cli-string-utils: 1.1.0
+      ember-cli-test-info: 1.0.0
+      inflection: 3.0.2
     transitivePeerDependencies:
       - '@babel/core'
-      - '@glint/template'
+      - '@embroider/macros'
       - supports-color
 
   '@ember-data/model@file:packages/model(@babel/core@7.28.3)':
     dependencies:
       '@ember/edition-utils': 1.2.0
-      '@embroider/macros': 1.19.6(@babel/core@7.28.3)
       '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.28.3)
-      '@warp-drive/legacy': file:warp-drive-packages/legacy(da2d8626017c763d07445c649af78d55)
-      '@warp-drive/utilities': file:warp-drive-packages/utilities(ac1631a7da983377f84b100525d730a6)
+      '@warp-drive/legacy': file:warp-drive-packages/legacy(51dad5c9a663ff46ed0737168a052837)
+      '@warp-drive/utilities': file:warp-drive-packages/utilities(399050e4d25cd9de09f58182ad617dd4)
       ember-cli-string-utils: 1.1.0
       ember-cli-test-info: 1.0.0
       inflection: 3.0.2
     transitivePeerDependencies:
       - '@babel/core'
-      - '@glint/template'
+      - '@embroider/macros'
       - supports-color
 
-  '@ember-data/model@file:packages/model(f9dfbf4fac3dbc0e0370b14ce6056988)':
+  '@ember-data/request-utils@file:packages/request-utils(3b95a843f33ac420bfebb47325336ac3)':
     dependencies:
-      '@ember/edition-utils': 1.2.0
-      '@embroider/macros': 1.19.6(f9dfbf4fac3dbc0e0370b14ce6056988)
-      '@warp-drive/core': file:warp-drive-packages/core(f9dfbf4fac3dbc0e0370b14ce6056988)
-      '@warp-drive/legacy': file:warp-drive-packages/legacy(90048d994a10f75fd696c34ea85a9613)
-      '@warp-drive/utilities': file:warp-drive-packages/utilities(14783ff7abfecaf4a15600481cda861e)
-      ember-cli-string-utils: 1.1.0
-      ember-cli-test-info: 1.0.0
-      inflection: 3.0.2
+      '@warp-drive/core': file:warp-drive-packages/core(3b95a843f33ac420bfebb47325336ac3)
+      '@warp-drive/utilities': file:warp-drive-packages/utilities(3d4571d73ed0c60dcf60e178160368f2)
     transitivePeerDependencies:
       - '@babel/core'
-      - '@glint/template'
+      - '@embroider/macros'
       - supports-color
 
-  '@ember-data/request-utils@file:packages/request-utils(2614f833b55f24250877f0261f5ce108)':
+  '@ember-data/request-utils@file:packages/request-utils(6f3f6541944336feaaaf2fb760f5f2c6)':
     dependencies:
-      '@embroider/macros': 1.19.6(f9dfbf4fac3dbc0e0370b14ce6056988)
-      '@warp-drive/core': file:warp-drive-packages/core(f9dfbf4fac3dbc0e0370b14ce6056988)
-      '@warp-drive/utilities': file:warp-drive-packages/utilities(14783ff7abfecaf4a15600481cda861e)
-    optionalDependencies:
-      ember-inflector: 6.0.0(@babel/core@7.28.3)
+      '@warp-drive/core': file:warp-drive-packages/core(6f3f6541944336feaaaf2fb760f5f2c6)
+      '@warp-drive/utilities': file:warp-drive-packages/utilities(a0e10a490d8c6aa294f5957fffbb8103)
     transitivePeerDependencies:
       - '@babel/core'
-      - '@glint/template'
+      - '@embroider/macros'
       - supports-color
 
   '@ember-data/request-utils@file:packages/request-utils(@babel/core@7.28.3)':
     dependencies:
-      '@embroider/macros': 1.19.6(@babel/core@7.28.3)
       '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.28.3)
-      '@warp-drive/utilities': file:warp-drive-packages/utilities(ac1631a7da983377f84b100525d730a6)
+      '@warp-drive/utilities': file:warp-drive-packages/utilities(399050e4d25cd9de09f58182ad617dd4)
     transitivePeerDependencies:
       - '@babel/core'
-      - '@glint/template'
+      - '@embroider/macros'
       - supports-color
 
-  '@ember-data/request-utils@file:packages/request-utils(c9a293889c353246379e328a55edb6c0)':
+  '@ember-data/request-utils@file:packages/request-utils(c249583999bb14622ffcff3251edd94e)':
     dependencies:
-      '@embroider/macros': 1.19.6(@babel/core@7.28.3)
-      '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.28.3)
-      '@warp-drive/utilities': file:warp-drive-packages/utilities(ac1631a7da983377f84b100525d730a6)
+      '@warp-drive/core': file:warp-drive-packages/core(6f3f6541944336feaaaf2fb760f5f2c6)
+      '@warp-drive/utilities': file:warp-drive-packages/utilities(a0e10a490d8c6aa294f5957fffbb8103)
     optionalDependencies:
       ember-inflector: 6.0.0(@babel/core@7.28.3)
     transitivePeerDependencies:
       - '@babel/core'
-      - '@glint/template'
+      - '@embroider/macros'
       - supports-color
 
-  '@ember-data/request-utils@file:packages/request-utils(f9dfbf4fac3dbc0e0370b14ce6056988)':
+  '@ember-data/request-utils@file:packages/request-utils(c9a293889c353246379e328a55edb6c0)':
     dependencies:
-      '@embroider/macros': 1.19.6(f9dfbf4fac3dbc0e0370b14ce6056988)
-      '@warp-drive/core': file:warp-drive-packages/core(f9dfbf4fac3dbc0e0370b14ce6056988)
-      '@warp-drive/utilities': file:warp-drive-packages/utilities(14783ff7abfecaf4a15600481cda861e)
+      '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.28.3)
+      '@warp-drive/utilities': file:warp-drive-packages/utilities(399050e4d25cd9de09f58182ad617dd4)
+    optionalDependencies:
+      ember-inflector: 6.0.0(@babel/core@7.28.3)
     transitivePeerDependencies:
       - '@babel/core'
-      - '@glint/template'
+      - '@embroider/macros'
+      - supports-color
+
+  '@ember-data/request@file:packages/request(3b95a843f33ac420bfebb47325336ac3)':
+    dependencies:
+      '@warp-drive/core': file:warp-drive-packages/core(3b95a843f33ac420bfebb47325336ac3)
+    transitivePeerDependencies:
+      - '@babel/core'
+      - '@embroider/macros'
+      - supports-color
+
+  '@ember-data/request@file:packages/request(6f3f6541944336feaaaf2fb760f5f2c6)':
+    dependencies:
+      '@warp-drive/core': file:warp-drive-packages/core(6f3f6541944336feaaaf2fb760f5f2c6)
+    transitivePeerDependencies:
+      - '@babel/core'
+      - '@embroider/macros'
       - supports-color
 
   '@ember-data/request@file:packages/request(@babel/core@7.28.3)':
     dependencies:
-      '@embroider/macros': 1.19.6(@babel/core@7.28.3)
       '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.28.3)
     transitivePeerDependencies:
       - '@babel/core'
-      - '@glint/template'
-      - supports-color
-
-  '@ember-data/request@file:packages/request(f9dfbf4fac3dbc0e0370b14ce6056988)':
-    dependencies:
-      '@embroider/macros': 1.19.6(f9dfbf4fac3dbc0e0370b14ce6056988)
-      '@warp-drive/core': file:warp-drive-packages/core(f9dfbf4fac3dbc0e0370b14ce6056988)
-    transitivePeerDependencies:
-      - '@babel/core'
-      - '@glint/template'
+      - '@embroider/macros'
       - supports-color
 
   '@ember-data/rest@file:packages/rest(@babel/core@7.28.3)':
     dependencies:
-      '@embroider/macros': 1.19.6(@babel/core@7.28.3)
       '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.28.3)
-      '@warp-drive/utilities': file:warp-drive-packages/utilities(ac1631a7da983377f84b100525d730a6)
+      '@warp-drive/utilities': file:warp-drive-packages/utilities(399050e4d25cd9de09f58182ad617dd4)
     transitivePeerDependencies:
       - '@babel/core'
-      - '@glint/template'
+      - '@embroider/macros'
       - supports-color
 
   '@ember-data/rfc395-data@0.0.4': {}
 
+  '@ember-data/serializer@file:packages/serializer(3b95a843f33ac420bfebb47325336ac3)':
+    dependencies:
+      '@ember/edition-utils': 1.2.0
+      '@warp-drive/core': file:warp-drive-packages/core(3b95a843f33ac420bfebb47325336ac3)
+      '@warp-drive/legacy': file:warp-drive-packages/legacy(6e9880f196b1c731e01a4d222aa70f8d)
+      '@warp-drive/utilities': file:warp-drive-packages/utilities(3d4571d73ed0c60dcf60e178160368f2)
+      ember-cli-path-utils: 1.0.0
+      ember-cli-string-utils: 1.1.0
+      ember-cli-test-info: 1.0.0
+    transitivePeerDependencies:
+      - '@babel/core'
+      - '@embroider/macros'
+      - supports-color
+
+  '@ember-data/serializer@file:packages/serializer(6f3f6541944336feaaaf2fb760f5f2c6)':
+    dependencies:
+      '@ember/edition-utils': 1.2.0
+      '@warp-drive/core': file:warp-drive-packages/core(6f3f6541944336feaaaf2fb760f5f2c6)
+      '@warp-drive/legacy': file:warp-drive-packages/legacy(a7e392f12cf37901592a41a0b059179d)
+      '@warp-drive/utilities': file:warp-drive-packages/utilities(a0e10a490d8c6aa294f5957fffbb8103)
+      ember-cli-path-utils: 1.0.0
+      ember-cli-string-utils: 1.1.0
+      ember-cli-test-info: 1.0.0
+    transitivePeerDependencies:
+      - '@babel/core'
+      - '@embroider/macros'
+      - supports-color
+
   '@ember-data/serializer@file:packages/serializer(@babel/core@7.28.3)':
     dependencies:
       '@ember/edition-utils': 1.2.0
-      '@embroider/macros': 1.19.6(@babel/core@7.28.3)
       '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.28.3)
-      '@warp-drive/legacy': file:warp-drive-packages/legacy(da2d8626017c763d07445c649af78d55)
-      '@warp-drive/utilities': file:warp-drive-packages/utilities(ac1631a7da983377f84b100525d730a6)
+      '@warp-drive/legacy': file:warp-drive-packages/legacy(51dad5c9a663ff46ed0737168a052837)
+      '@warp-drive/utilities': file:warp-drive-packages/utilities(399050e4d25cd9de09f58182ad617dd4)
       ember-cli-path-utils: 1.0.0
       ember-cli-string-utils: 1.1.0
       ember-cli-test-info: 1.0.0
     transitivePeerDependencies:
       - '@babel/core'
-      - '@glint/template'
-      - supports-color
-
-  '@ember-data/serializer@file:packages/serializer(f9dfbf4fac3dbc0e0370b14ce6056988)':
-    dependencies:
-      '@ember/edition-utils': 1.2.0
-      '@embroider/macros': 1.19.6(f9dfbf4fac3dbc0e0370b14ce6056988)
-      '@warp-drive/core': file:warp-drive-packages/core(f9dfbf4fac3dbc0e0370b14ce6056988)
-      '@warp-drive/legacy': file:warp-drive-packages/legacy(90048d994a10f75fd696c34ea85a9613)
-      '@warp-drive/utilities': file:warp-drive-packages/utilities(14783ff7abfecaf4a15600481cda861e)
-      ember-cli-path-utils: 1.0.0
-      ember-cli-string-utils: 1.1.0
-      ember-cli-test-info: 1.0.0
-    transitivePeerDependencies:
-      - '@babel/core'
-      - '@glint/template'
+      - '@embroider/macros'
       - supports-color
 
   '@ember-data/store@file:packages/store(1adf99e055abba96ff2ddb1d049f661d)':
     dependencies:
-      '@embroider/macros': 1.19.6(@babel/core@7.28.3)
       '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.28.3)
     optionalDependencies:
       '@ember/test-waiters': 4.1.1(@babel/core@7.28.3)
     transitivePeerDependencies:
       - '@babel/core'
-      - '@glint/template'
+      - '@embroider/macros'
       - supports-color
 
-  '@ember-data/store@file:packages/store(33af9699401529a0cfeefafc63c5c204)':
+  '@ember-data/store@file:packages/store(28f97526d018874585dc041dffa489f5)':
     dependencies:
-      '@embroider/macros': 1.19.6(f9dfbf4fac3dbc0e0370b14ce6056988)
-      '@warp-drive/core': file:warp-drive-packages/core(f9dfbf4fac3dbc0e0370b14ce6056988)
+      '@warp-drive/core': file:warp-drive-packages/core(6f3f6541944336feaaaf2fb760f5f2c6)
     optionalDependencies:
+      '@ember-data/tracking': file:packages/tracking(f51b1c0fe8122b6c0fc6f95d190caff6)
       '@ember/test-waiters': 4.1.1(f9dfbf4fac3dbc0e0370b14ce6056988)
     transitivePeerDependencies:
       - '@babel/core'
-      - '@glint/template'
+      - '@embroider/macros'
       - supports-color
 
   '@ember-data/store@file:packages/store(35b639f82868bcd89251fc2a53f548c1)':
     dependencies:
-      '@embroider/macros': 1.19.6(@babel/core@7.28.3)
       '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.28.3)
     optionalDependencies:
       '@ember-data/tracking': file:packages/tracking(1adf99e055abba96ff2ddb1d049f661d)
       '@ember/test-waiters': 4.1.1(@babel/core@7.28.3)
     transitivePeerDependencies:
       - '@babel/core'
-      - '@glint/template'
+      - '@embroider/macros'
       - supports-color
 
-  '@ember-data/store@file:packages/store(78ac98f3c6a6ede4d9ac1f46e1f882aa)':
+  '@ember-data/store@file:packages/store(7c2c1e463faa5a91266614a64e699a43)':
     dependencies:
-      '@embroider/macros': 1.19.6(f9dfbf4fac3dbc0e0370b14ce6056988)
-      '@warp-drive/core': file:warp-drive-packages/core(f9dfbf4fac3dbc0e0370b14ce6056988)
+      '@warp-drive/core': file:warp-drive-packages/core(3b95a843f33ac420bfebb47325336ac3)
     optionalDependencies:
-      '@ember-data/tracking': file:packages/tracking(33af9699401529a0cfeefafc63c5c204)
+      '@ember/test-waiters': 4.1.1(@babel/core@7.28.3)
+    transitivePeerDependencies:
+      - '@babel/core'
+      - '@embroider/macros'
+      - supports-color
+
+  '@ember-data/store@file:packages/store(f51b1c0fe8122b6c0fc6f95d190caff6)':
+    dependencies:
+      '@warp-drive/core': file:warp-drive-packages/core(6f3f6541944336feaaaf2fb760f5f2c6)
+    optionalDependencies:
       '@ember/test-waiters': 4.1.1(f9dfbf4fac3dbc0e0370b14ce6056988)
     transitivePeerDependencies:
       - '@babel/core'
-      - '@glint/template'
+      - '@embroider/macros'
       - supports-color
 
   '@ember-data/tracking@file:packages/tracking(1adf99e055abba96ff2ddb1d049f661d)':
     dependencies:
       '@ember/test-waiters': 4.1.1(@babel/core@7.28.3)
-      '@embroider/macros': 1.19.6(@babel/core@7.28.3)
       '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.28.3)
     transitivePeerDependencies:
       - '@babel/core'
-      - '@glint/template'
+      - '@embroider/macros'
       - supports-color
 
-  '@ember-data/tracking@file:packages/tracking(33af9699401529a0cfeefafc63c5c204)':
+  '@ember-data/tracking@file:packages/tracking(f51b1c0fe8122b6c0fc6f95d190caff6)':
     dependencies:
       '@ember/test-waiters': 4.1.1(f9dfbf4fac3dbc0e0370b14ce6056988)
-      '@embroider/macros': 1.19.6(f9dfbf4fac3dbc0e0370b14ce6056988)
-      '@warp-drive/core': file:warp-drive-packages/core(f9dfbf4fac3dbc0e0370b14ce6056988)
+      '@warp-drive/core': file:warp-drive-packages/core(6f3f6541944336feaaaf2fb760f5f2c6)
     transitivePeerDependencies:
       - '@babel/core'
-      - '@glint/template'
+      - '@embroider/macros'
+      - supports-color
+
+  '@ember-data/unpublished-test-infra@file:packages/unpublished-test-infra(083231992847c7ab43e90a422bb755b3)':
+    dependencies:
+      '@ember/test-helpers': 5.2.0(patch_hash=a1670a4e3977c846a5c2454f317f5a17cbd284aef3a676b190c98141536afb04)(7c1eb33138e746229cea5e7e565a34fb)
+      '@warp-drive/core': file:warp-drive-packages/core(3b95a843f33ac420bfebb47325336ac3)
+      '@warp-drive/utilities': file:warp-drive-packages/utilities(3d4571d73ed0c60dcf60e178160368f2)
+      chalk: 4.1.2
+      semver: 7.7.2
+    optionalDependencies:
+      '@warp-drive/diagnostic': file:packages/diagnostic(7508bfb9f2a7a90817f3fe6261e8a70a)
+    transitivePeerDependencies:
+      - '@babel/core'
+      - '@embroider/macros'
       - supports-color
 
   '@ember-data/unpublished-test-infra@file:packages/unpublished-test-infra(5f1ef0443180a498b44d6b68706ed1df)':
     dependencies:
       '@ember/test-helpers': 5.2.0(patch_hash=a1670a4e3977c846a5c2454f317f5a17cbd284aef3a676b190c98141536afb04)(7c1eb33138e746229cea5e7e565a34fb)
-      '@embroider/macros': 1.19.6(@babel/core@7.28.3)
       '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.28.3)
-      '@warp-drive/utilities': file:warp-drive-packages/utilities(ac1631a7da983377f84b100525d730a6)
+      '@warp-drive/utilities': file:warp-drive-packages/utilities(399050e4d25cd9de09f58182ad617dd4)
       chalk: 4.1.2
       semver: 7.7.2
     transitivePeerDependencies:
       - '@babel/core'
-      - '@glint/template'
+      - '@embroider/macros'
       - supports-color
 
   '@ember-data/unpublished-test-infra@file:packages/unpublished-test-infra(6973837de3488c5faaacd5ffabd6ca05)':
     dependencies:
       '@ember/test-helpers': 5.2.0(patch_hash=a1670a4e3977c846a5c2454f317f5a17cbd284aef3a676b190c98141536afb04)(7c1eb33138e746229cea5e7e565a34fb)
-      '@embroider/macros': 1.19.6(@babel/core@7.28.3)
       '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.28.3)
-      '@warp-drive/utilities': file:warp-drive-packages/utilities(ac1631a7da983377f84b100525d730a6)
+      '@warp-drive/utilities': file:warp-drive-packages/utilities(399050e4d25cd9de09f58182ad617dd4)
       chalk: 4.1.2
       semver: 7.7.2
     optionalDependencies:
       '@warp-drive/diagnostic': file:packages/diagnostic(962ef39f5a731d2a1b4ce88c467c2693)
     transitivePeerDependencies:
       - '@babel/core'
-      - '@glint/template'
+      - '@embroider/macros'
       - supports-color
 
-  '@ember-data/unpublished-test-infra@file:packages/unpublished-test-infra(70f18ac7fb426a44ca1eb8bc74329986)':
+  '@ember-data/unpublished-test-infra@file:packages/unpublished-test-infra(8de0bbc7d2708270b1d757dd0c82a968)':
     dependencies:
       '@ember/test-helpers': 5.2.0(patch_hash=a1670a4e3977c846a5c2454f317f5a17cbd284aef3a676b190c98141536afb04)(bfadaa4521900084b7797d85fa721327)
-      '@embroider/macros': 1.19.6(f9dfbf4fac3dbc0e0370b14ce6056988)
-      '@warp-drive/core': file:warp-drive-packages/core(f9dfbf4fac3dbc0e0370b14ce6056988)
-      '@warp-drive/utilities': file:warp-drive-packages/utilities(14783ff7abfecaf4a15600481cda861e)
-      chalk: 4.1.2
-      semver: 7.7.2
-    optionalDependencies:
-      '@warp-drive/diagnostic': file:packages/diagnostic(1ec6686dfdedecb61e4679cc890ffd6c)
-    transitivePeerDependencies:
-      - '@babel/core'
-      - '@glint/template'
-      - supports-color
-
-  '@ember-data/unpublished-test-infra@file:packages/unpublished-test-infra(9ef2583a3505a68898a2a019ffb6e1bd)':
-    dependencies:
-      '@ember/test-helpers': 5.2.0(patch_hash=a1670a4e3977c846a5c2454f317f5a17cbd284aef3a676b190c98141536afb04)(7c1eb33138e746229cea5e7e565a34fb)
-      '@embroider/macros': 1.19.6(@babel/core@7.28.3)
-      '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.28.3)
-      '@warp-drive/utilities': file:warp-drive-packages/utilities(ac1631a7da983377f84b100525d730a6)
-      chalk: 4.1.2
-      semver: 7.7.2
-    optionalDependencies:
-      qunit: 2.19.4(patch_hash=44177f0047189d474ebdeba20fc8ddc3c8c2a5777d65cbb5f0fac0979bf66301)
-    transitivePeerDependencies:
-      - '@babel/core'
-      - '@glint/template'
-      - supports-color
-
-  '@ember-data/unpublished-test-infra@file:packages/unpublished-test-infra(d133cfd222b08807991c53b894341aa1)':
-    dependencies:
-      '@ember/test-helpers': 5.2.0(patch_hash=a1670a4e3977c846a5c2454f317f5a17cbd284aef3a676b190c98141536afb04)(bfadaa4521900084b7797d85fa721327)
-      '@embroider/macros': 1.19.6(f9dfbf4fac3dbc0e0370b14ce6056988)
-      '@warp-drive/core': file:warp-drive-packages/core(f9dfbf4fac3dbc0e0370b14ce6056988)
-      '@warp-drive/utilities': file:warp-drive-packages/utilities(14783ff7abfecaf4a15600481cda861e)
+      '@warp-drive/core': file:warp-drive-packages/core(6f3f6541944336feaaaf2fb760f5f2c6)
+      '@warp-drive/utilities': file:warp-drive-packages/utilities(a0e10a490d8c6aa294f5957fffbb8103)
       chalk: 4.1.2
       semver: 7.7.2
     optionalDependencies:
@@ -16652,7 +16606,35 @@ snapshots:
       testem: 3.11.0(patch_hash=cf147865cff81f2d0f3ed51d274f9fdee7b4ad675a902248aa317c07272fbea5)
     transitivePeerDependencies:
       - '@babel/core'
-      - '@glint/template'
+      - '@embroider/macros'
+      - supports-color
+
+  '@ember-data/unpublished-test-infra@file:packages/unpublished-test-infra(9ef2583a3505a68898a2a019ffb6e1bd)':
+    dependencies:
+      '@ember/test-helpers': 5.2.0(patch_hash=a1670a4e3977c846a5c2454f317f5a17cbd284aef3a676b190c98141536afb04)(7c1eb33138e746229cea5e7e565a34fb)
+      '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.28.3)
+      '@warp-drive/utilities': file:warp-drive-packages/utilities(399050e4d25cd9de09f58182ad617dd4)
+      chalk: 4.1.2
+      semver: 7.7.2
+    optionalDependencies:
+      qunit: 2.19.4(patch_hash=44177f0047189d474ebdeba20fc8ddc3c8c2a5777d65cbb5f0fac0979bf66301)
+    transitivePeerDependencies:
+      - '@babel/core'
+      - '@embroider/macros'
+      - supports-color
+
+  '@ember-data/unpublished-test-infra@file:packages/unpublished-test-infra(ab40d9c957a361072cad92f9f6466823)':
+    dependencies:
+      '@ember/test-helpers': 5.2.0(patch_hash=a1670a4e3977c846a5c2454f317f5a17cbd284aef3a676b190c98141536afb04)(bfadaa4521900084b7797d85fa721327)
+      '@warp-drive/core': file:warp-drive-packages/core(6f3f6541944336feaaaf2fb760f5f2c6)
+      '@warp-drive/utilities': file:warp-drive-packages/utilities(a0e10a490d8c6aa294f5957fffbb8103)
+      chalk: 4.1.2
+      semver: 7.7.2
+    optionalDependencies:
+      '@warp-drive/diagnostic': file:packages/diagnostic(9ac9c1315b860a247b69db70d26da93c)
+    transitivePeerDependencies:
+      - '@babel/core'
+      - '@embroider/macros'
       - supports-color
 
   '@ember-tooling/blueprint-blueprint@0.2.1': {}
@@ -17049,20 +17031,6 @@ snapshots:
       semver: 7.7.2
     optionalDependencies:
       '@glint/template': 1.6.1
-    transitivePeerDependencies:
-      - '@babel/core'
-      - supports-color
-
-  '@embroider/macros@1.19.6':
-    dependencies:
-      '@embroider/shared-internals': 3.0.2
-      assert-never: 1.4.0
-      babel-import-util: 3.0.1
-      ember-cli-babel: 8.2.0
-      find-up: 5.0.0
-      lodash: 4.17.21
-      resolve: 1.22.10
-      semver: 7.7.2
     transitivePeerDependencies:
       - '@babel/core'
       - supports-color
@@ -19074,6 +19042,9 @@ snapshots:
       '@types/ember__controller': 4.0.12
       '@types/ember__object': 4.0.12
       '@types/ember__service': 4.0.9
+    transitivePeerDependencies:
+      - '@babel/core'
+      - supports-color
 
   '@types/ember__runloop@4.0.10':
     dependencies:
@@ -19100,6 +19071,9 @@ snapshots:
   '@types/ember__utils@4.0.7':
     dependencies:
       '@types/ember': 4.0.11
+    transitivePeerDependencies:
+      - '@babel/core'
+      - supports-color
 
   '@types/eslint-scope@3.7.7':
     dependencies:
@@ -19610,53 +19584,53 @@ snapshots:
     transitivePeerDependencies:
       - typescript
 
-  '@warp-drive-internal/specs@file:specs(1cfa7b714775262599f5963090fd9a6e)':
-    dependencies:
-      '@embroider/macros': 1.19.6(@babel/core@7.28.3)
-      '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.28.3)
-      '@warp-drive/diagnostic': file:packages/diagnostic(@babel/core@7.28.3)
-      '@warp-drive/holodeck': file:packages/holodeck(b1f423bbeafed7b156933fd746f2db26)
-      '@warp-drive/json-api': file:warp-drive-packages/json-api(ac1631a7da983377f84b100525d730a6)
-      '@warp-drive/utilities': file:warp-drive-packages/utilities(ac1631a7da983377f84b100525d730a6)
-    transitivePeerDependencies:
-      - '@babel/core'
-      - '@glint/template'
-      - supports-color
-
-  '@warp-drive-internal/specs@file:specs(37c116e2399dfec65ac0692246a2c3ac)':
+  '@warp-drive-internal/specs@file:specs(0a50eadc10eb4f355803440213284be0)':
     dependencies:
       '@embroider/macros': 1.19.6(f9dfbf4fac3dbc0e0370b14ce6056988)
-      '@warp-drive/core': file:warp-drive-packages/core(f9dfbf4fac3dbc0e0370b14ce6056988)
-      '@warp-drive/diagnostic': file:packages/diagnostic(1ec6686dfdedecb61e4679cc890ffd6c)
-      '@warp-drive/holodeck': file:packages/holodeck(e5d1c12af2328a4934377cfd47ee3a1f)
-      '@warp-drive/json-api': file:warp-drive-packages/json-api(14783ff7abfecaf4a15600481cda861e)
-      '@warp-drive/utilities': file:warp-drive-packages/utilities(14783ff7abfecaf4a15600481cda861e)
+      '@warp-drive/core': file:warp-drive-packages/core(6f3f6541944336feaaaf2fb760f5f2c6)
+      '@warp-drive/diagnostic': file:packages/diagnostic(9ac9c1315b860a247b69db70d26da93c)
+      '@warp-drive/holodeck': file:packages/holodeck(a7e392f12cf37901592a41a0b059179d)
+      '@warp-drive/json-api': file:warp-drive-packages/json-api(a0e10a490d8c6aa294f5957fffbb8103)
+      '@warp-drive/utilities': file:warp-drive-packages/utilities(a0e10a490d8c6aa294f5957fffbb8103)
     transitivePeerDependencies:
       - '@babel/core'
       - '@glint/template'
       - supports-color
 
-  '@warp-drive-internal/specs@file:specs(ba3d7771395f683c0ceafac10532a702)':
-    dependencies:
-      '@embroider/macros': 1.19.6(@babel/core@7.28.3)
-      '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.28.3)
-      '@warp-drive/diagnostic': file:packages/diagnostic(ab3931b8efe123d48e6f09ce51952ac3)
-      '@warp-drive/holodeck': file:packages/holodeck(b1f423bbeafed7b156933fd746f2db26)
-      '@warp-drive/json-api': file:warp-drive-packages/json-api(ac1631a7da983377f84b100525d730a6)
-      '@warp-drive/utilities': file:warp-drive-packages/utilities(ac1631a7da983377f84b100525d730a6)
-    transitivePeerDependencies:
-      - '@babel/core'
-      - '@glint/template'
-      - supports-color
-
-  '@warp-drive-internal/specs@file:specs(dc17fd0d7b9f09689d4058a46b107446)':
+  '@warp-drive-internal/specs@file:specs(47e75909bf37e1eb54a2c8cb796afc9e)':
     dependencies:
       '@embroider/macros': 1.19.6(f9dfbf4fac3dbc0e0370b14ce6056988)
-      '@warp-drive/core': file:warp-drive-packages/core(f9dfbf4fac3dbc0e0370b14ce6056988)
-      '@warp-drive/diagnostic': file:packages/diagnostic(1ec6686dfdedecb61e4679cc890ffd6c)
-      '@warp-drive/holodeck': file:packages/holodeck(a3373bf92dbe06200e11dc38e69a2ad3)
-      '@warp-drive/json-api': file:warp-drive-packages/json-api(14783ff7abfecaf4a15600481cda861e)
-      '@warp-drive/utilities': file:warp-drive-packages/utilities(14783ff7abfecaf4a15600481cda861e)
+      '@warp-drive/core': file:warp-drive-packages/core(6f3f6541944336feaaaf2fb760f5f2c6)
+      '@warp-drive/diagnostic': file:packages/diagnostic(9ac9c1315b860a247b69db70d26da93c)
+      '@warp-drive/holodeck': file:packages/holodeck(1a2dd403ca61fb4f720117ddce9dbf2a)
+      '@warp-drive/json-api': file:warp-drive-packages/json-api(a0e10a490d8c6aa294f5957fffbb8103)
+      '@warp-drive/utilities': file:warp-drive-packages/utilities(a0e10a490d8c6aa294f5957fffbb8103)
+    transitivePeerDependencies:
+      - '@babel/core'
+      - '@glint/template'
+      - supports-color
+
+  '@warp-drive-internal/specs@file:specs(af11b85f3b63259f0a7b3d95defd72b5)':
+    dependencies:
+      '@embroider/macros': 1.19.6(@babel/core@7.28.3)
+      '@warp-drive/core': file:warp-drive-packages/core(3b95a843f33ac420bfebb47325336ac3)
+      '@warp-drive/diagnostic': file:packages/diagnostic(d6f4430bcebe45dc8d32ab93d6e95ab7)
+      '@warp-drive/holodeck': file:packages/holodeck(6e9880f196b1c731e01a4d222aa70f8d)
+      '@warp-drive/json-api': file:warp-drive-packages/json-api(3d4571d73ed0c60dcf60e178160368f2)
+      '@warp-drive/utilities': file:warp-drive-packages/utilities(3d4571d73ed0c60dcf60e178160368f2)
+    transitivePeerDependencies:
+      - '@babel/core'
+      - '@glint/template'
+      - supports-color
+
+  '@warp-drive-internal/specs@file:specs(b2adb48b23f9cbbfa760e5e820fa5665)':
+    dependencies:
+      '@embroider/macros': 1.19.6(@babel/core@7.28.3)
+      '@warp-drive/core': file:warp-drive-packages/core(3b95a843f33ac420bfebb47325336ac3)
+      '@warp-drive/diagnostic': file:packages/diagnostic(3b95a843f33ac420bfebb47325336ac3)
+      '@warp-drive/holodeck': file:packages/holodeck(6e9880f196b1c731e01a4d222aa70f8d)
+      '@warp-drive/json-api': file:warp-drive-packages/json-api(3d4571d73ed0c60dcf60e178160368f2)
+      '@warp-drive/utilities': file:warp-drive-packages/utilities(3d4571d73ed0c60dcf60e178160368f2)
     transitivePeerDependencies:
       - '@babel/core'
       - '@glint/template'
@@ -19665,104 +19639,139 @@ snapshots:
   '@warp-drive/build-config@file:warp-drive-packages/build-config':
     dependencies:
       '@embroider/addon-shim': 1.10.0
-      '@embroider/macros': 1.19.6
       babel-import-util: 2.1.1
       babel-plugin-debug-macros: 2.0.0
       semver: 7.7.2
     transitivePeerDependencies:
       - '@babel/core'
-      - '@glint/template'
+      - supports-color
+
+  '@warp-drive/build-config@file:warp-drive-packages/build-config(3b95a843f33ac420bfebb47325336ac3)':
+    dependencies:
+      '@embroider/addon-shim': 1.10.0
+      babel-import-util: 2.1.1
+      babel-plugin-debug-macros: 2.0.0(@babel/core@7.28.3)
+      semver: 7.7.2
+    optionalDependencies:
+      '@embroider/macros': 1.19.6(@babel/core@7.28.3)
+    transitivePeerDependencies:
+      - '@babel/core'
+      - supports-color
+
+  '@warp-drive/build-config@file:warp-drive-packages/build-config(6f3f6541944336feaaaf2fb760f5f2c6)':
+    dependencies:
+      '@embroider/addon-shim': 1.10.0
+      babel-import-util: 2.1.1
+      babel-plugin-debug-macros: 2.0.0(@babel/core@7.28.3)
+      semver: 7.7.2
+    optionalDependencies:
+      '@embroider/macros': 1.19.6(f9dfbf4fac3dbc0e0370b14ce6056988)
+    transitivePeerDependencies:
+      - '@babel/core'
+      - supports-color
+
+  '@warp-drive/build-config@file:warp-drive-packages/build-config(82e84e66605f0358a61561e8086c9dbf)':
+    dependencies:
+      '@embroider/addon-shim': 1.10.0
+      babel-import-util: 2.1.1
+      babel-plugin-debug-macros: 2.0.0(@babel/core@7.28.3)
+      semver: 7.7.2
+    optionalDependencies:
+      '@embroider/macros': 1.18.1(f9dfbf4fac3dbc0e0370b14ce6056988)
+    transitivePeerDependencies:
+      - '@babel/core'
       - supports-color
 
   '@warp-drive/build-config@file:warp-drive-packages/build-config(@babel/core@7.28.3)':
     dependencies:
       '@embroider/addon-shim': 1.10.0
-      '@embroider/macros': 1.19.6(@babel/core@7.28.3)
       babel-import-util: 2.1.1
       babel-plugin-debug-macros: 2.0.0(@babel/core@7.28.3)
       semver: 7.7.2
     transitivePeerDependencies:
       - '@babel/core'
-      - '@glint/template'
       - supports-color
 
-  '@warp-drive/build-config@file:warp-drive-packages/build-config(f9dfbf4fac3dbc0e0370b14ce6056988)':
+  '@warp-drive/core-types@file:packages/core-types(3b95a843f33ac420bfebb47325336ac3)':
     dependencies:
-      '@embroider/addon-shim': 1.10.0
-      '@embroider/macros': 1.19.6(f9dfbf4fac3dbc0e0370b14ce6056988)
-      babel-import-util: 2.1.1
-      babel-plugin-debug-macros: 2.0.0(@babel/core@7.28.3)
-      semver: 7.7.2
+      '@warp-drive/core': file:warp-drive-packages/core(3b95a843f33ac420bfebb47325336ac3)
     transitivePeerDependencies:
       - '@babel/core'
-      - '@glint/template'
+      - '@embroider/macros'
+      - supports-color
+
+  '@warp-drive/core-types@file:packages/core-types(6f3f6541944336feaaaf2fb760f5f2c6)':
+    dependencies:
+      '@warp-drive/core': file:warp-drive-packages/core(6f3f6541944336feaaaf2fb760f5f2c6)
+    transitivePeerDependencies:
+      - '@babel/core'
+      - '@embroider/macros'
       - supports-color
 
   '@warp-drive/core-types@file:packages/core-types(@babel/core@7.28.3)':
     dependencies:
-      '@embroider/macros': 1.19.6(@babel/core@7.28.3)
       '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.28.3)
     transitivePeerDependencies:
       - '@babel/core'
-      - '@glint/template'
-      - supports-color
-
-  '@warp-drive/core-types@file:packages/core-types(f9dfbf4fac3dbc0e0370b14ce6056988)':
-    dependencies:
-      '@embroider/macros': 1.19.6(f9dfbf4fac3dbc0e0370b14ce6056988)
-      '@warp-drive/core': file:warp-drive-packages/core(f9dfbf4fac3dbc0e0370b14ce6056988)
-    transitivePeerDependencies:
-      - '@babel/core'
-      - '@glint/template'
+      - '@embroider/macros'
       - supports-color
 
   '@warp-drive/core@file:warp-drive-packages/core':
     dependencies:
-      '@embroider/macros': 1.19.6
       '@warp-drive/build-config': file:warp-drive-packages/build-config
     transitivePeerDependencies:
       - '@babel/core'
-      - '@glint/template'
+      - '@embroider/macros'
+      - supports-color
+
+  '@warp-drive/core@file:warp-drive-packages/core(3b95a843f33ac420bfebb47325336ac3)':
+    dependencies:
+      '@warp-drive/build-config': file:warp-drive-packages/build-config(3b95a843f33ac420bfebb47325336ac3)
+    transitivePeerDependencies:
+      - '@babel/core'
+      - '@embroider/macros'
+      - supports-color
+
+  '@warp-drive/core@file:warp-drive-packages/core(6f3f6541944336feaaaf2fb760f5f2c6)':
+    dependencies:
+      '@warp-drive/build-config': file:warp-drive-packages/build-config(6f3f6541944336feaaaf2fb760f5f2c6)
+    transitivePeerDependencies:
+      - '@babel/core'
+      - '@embroider/macros'
+      - supports-color
+
+  '@warp-drive/core@file:warp-drive-packages/core(82e84e66605f0358a61561e8086c9dbf)':
+    dependencies:
+      '@warp-drive/build-config': file:warp-drive-packages/build-config(82e84e66605f0358a61561e8086c9dbf)
+    transitivePeerDependencies:
+      - '@babel/core'
+      - '@embroider/macros'
       - supports-color
 
   '@warp-drive/core@file:warp-drive-packages/core(@babel/core@7.28.3)':
     dependencies:
-      '@embroider/macros': 1.19.6(@babel/core@7.28.3)
       '@warp-drive/build-config': file:warp-drive-packages/build-config(@babel/core@7.28.3)
     transitivePeerDependencies:
       - '@babel/core'
-      - '@glint/template'
+      - '@embroider/macros'
       - supports-color
 
-  '@warp-drive/core@file:warp-drive-packages/core(f9dfbf4fac3dbc0e0370b14ce6056988)':
+  '@warp-drive/diagnostic@file:packages/diagnostic(3b95a843f33ac420bfebb47325336ac3)':
     dependencies:
-      '@embroider/macros': 1.19.6(f9dfbf4fac3dbc0e0370b14ce6056988)
-      '@warp-drive/build-config': file:warp-drive-packages/build-config(f9dfbf4fac3dbc0e0370b14ce6056988)
-    transitivePeerDependencies:
-      - '@babel/core'
-      - '@glint/template'
-      - supports-color
-
-  '@warp-drive/diagnostic@file:packages/diagnostic(1ec6686dfdedecb61e4679cc890ffd6c)':
-    dependencies:
-      '@embroider/macros': 1.19.6(f9dfbf4fac3dbc0e0370b14ce6056988)
-      '@warp-drive/core': file:warp-drive-packages/core(f9dfbf4fac3dbc0e0370b14ce6056988)
-      '@warp-drive/react': file:warp-drive-packages/react(f9dfbf4fac3dbc0e0370b14ce6056988)
+      '@warp-drive/core': file:warp-drive-packages/core(3b95a843f33ac420bfebb47325336ac3)
+      '@warp-drive/react': file:warp-drive-packages/react(3b95a843f33ac420bfebb47325336ac3)
       chalk: 5.6.0
       debug: 4.4.1
       dom-element-descriptors: 0.5.1
       qunit-dom: 3.5.0
       tmp: 0.2.5
-    optionalDependencies:
-      '@ember/test-helpers': 5.2.0(patch_hash=a1670a4e3977c846a5c2454f317f5a17cbd284aef3a676b190c98141536afb04)(bfadaa4521900084b7797d85fa721327)
     transitivePeerDependencies:
       - '@babel/core'
-      - '@glint/template'
+      - '@embroider/macros'
       - supports-color
 
   '@warp-drive/diagnostic@file:packages/diagnostic(5f1ef0443180a498b44d6b68706ed1df)':
     dependencies:
-      '@embroider/macros': 1.19.6(@babel/core@7.28.3)
       '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.28.3)
       '@warp-drive/react': file:warp-drive-packages/react(@babel/core@7.28.3)
       chalk: 5.6.0
@@ -19774,12 +19783,28 @@ snapshots:
       '@ember/test-helpers': 5.2.0(patch_hash=a1670a4e3977c846a5c2454f317f5a17cbd284aef3a676b190c98141536afb04)(7c1eb33138e746229cea5e7e565a34fb)
     transitivePeerDependencies:
       - '@babel/core'
-      - '@glint/template'
+      - '@embroider/macros'
+      - supports-color
+
+  '@warp-drive/diagnostic@file:packages/diagnostic(7508bfb9f2a7a90817f3fe6261e8a70a)':
+    dependencies:
+      '@warp-drive/core': file:warp-drive-packages/core(3b95a843f33ac420bfebb47325336ac3)
+      '@warp-drive/react': file:warp-drive-packages/react(3b95a843f33ac420bfebb47325336ac3)
+      chalk: 5.6.0
+      debug: 4.4.1
+      dom-element-descriptors: 0.5.1
+      qunit-dom: 3.5.0
+      tmp: 0.2.5
+    optionalDependencies:
+      '@ember/test-helpers': 5.2.0(patch_hash=a1670a4e3977c846a5c2454f317f5a17cbd284aef3a676b190c98141536afb04)(7c1eb33138e746229cea5e7e565a34fb)
+      ember-cli-test-loader: 3.1.0(@babel/core@7.28.3)
+    transitivePeerDependencies:
+      - '@babel/core'
+      - '@embroider/macros'
       - supports-color
 
   '@warp-drive/diagnostic@file:packages/diagnostic(962ef39f5a731d2a1b4ce88c467c2693)':
     dependencies:
-      '@embroider/macros': 1.19.6(@babel/core@7.28.3)
       '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.28.3)
       '@warp-drive/react': file:warp-drive-packages/react(@babel/core@7.28.3)
       chalk: 5.6.0
@@ -19792,29 +19817,29 @@ snapshots:
       ember-cli-test-loader: 3.1.0(@babel/core@7.28.3)
     transitivePeerDependencies:
       - '@babel/core'
-      - '@glint/template'
+      - '@embroider/macros'
       - supports-color
 
-  '@warp-drive/diagnostic@file:packages/diagnostic(@babel/core@7.28.3)':
+  '@warp-drive/diagnostic@file:packages/diagnostic(9ac9c1315b860a247b69db70d26da93c)':
     dependencies:
-      '@embroider/macros': 1.19.6(@babel/core@7.28.3)
-      '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.28.3)
-      '@warp-drive/react': file:warp-drive-packages/react(@babel/core@7.28.3)
+      '@warp-drive/core': file:warp-drive-packages/core(6f3f6541944336feaaaf2fb760f5f2c6)
+      '@warp-drive/react': file:warp-drive-packages/react(6f3f6541944336feaaaf2fb760f5f2c6)
       chalk: 5.6.0
       debug: 4.4.1
       dom-element-descriptors: 0.5.1
       qunit-dom: 3.5.0
       tmp: 0.2.5
+    optionalDependencies:
+      '@ember/test-helpers': 5.2.0(patch_hash=a1670a4e3977c846a5c2454f317f5a17cbd284aef3a676b190c98141536afb04)(bfadaa4521900084b7797d85fa721327)
     transitivePeerDependencies:
       - '@babel/core'
-      - '@glint/template'
+      - '@embroider/macros'
       - supports-color
 
-  '@warp-drive/diagnostic@file:packages/diagnostic(ab3931b8efe123d48e6f09ce51952ac3)':
+  '@warp-drive/diagnostic@file:packages/diagnostic(d6f4430bcebe45dc8d32ab93d6e95ab7)':
     dependencies:
-      '@embroider/macros': 1.19.6(@babel/core@7.28.3)
-      '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.28.3)
-      '@warp-drive/react': file:warp-drive-packages/react(@babel/core@7.28.3)
+      '@warp-drive/core': file:warp-drive-packages/core(3b95a843f33ac420bfebb47325336ac3)
+      '@warp-drive/react': file:warp-drive-packages/react(3b95a843f33ac420bfebb47325336ac3)
       chalk: 5.6.0
       debug: 4.4.1
       dom-element-descriptors: 0.5.1
@@ -19825,89 +19850,100 @@ snapshots:
       react-dom: 19.1.1(react@19.1.1)
     transitivePeerDependencies:
       - '@babel/core'
-      - '@glint/template'
+      - '@embroider/macros'
       - supports-color
 
   '@warp-drive/ember@file:warp-drive-packages/ember(1adf99e055abba96ff2ddb1d049f661d)':
     dependencies:
       '@ember/test-waiters': 4.1.1(@babel/core@7.28.3)
-      '@embroider/macros': 1.19.6(@babel/core@7.28.3)
       '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.28.3)
     transitivePeerDependencies:
       - '@babel/core'
-      - '@glint/template'
+      - '@embroider/macros'
       - supports-color
 
-  '@warp-drive/ember@file:warp-drive-packages/ember(33af9699401529a0cfeefafc63c5c204)':
+  '@warp-drive/ember@file:warp-drive-packages/ember(7c2c1e463faa5a91266614a64e699a43)':
+    dependencies:
+      '@ember/test-waiters': 4.1.1(@babel/core@7.28.3)
+      '@warp-drive/core': file:warp-drive-packages/core(3b95a843f33ac420bfebb47325336ac3)
+    transitivePeerDependencies:
+      - '@babel/core'
+      - '@embroider/macros'
+      - supports-color
+
+  '@warp-drive/ember@file:warp-drive-packages/ember(d55f0290a465f8ba7c9d2757edf52770)':
     dependencies:
       '@ember/test-waiters': 4.1.1(f9dfbf4fac3dbc0e0370b14ce6056988)
-      '@embroider/macros': 1.19.6(f9dfbf4fac3dbc0e0370b14ce6056988)
-      '@warp-drive/core': file:warp-drive-packages/core(f9dfbf4fac3dbc0e0370b14ce6056988)
+      '@warp-drive/core': file:warp-drive-packages/core(82e84e66605f0358a61561e8086c9dbf)
     transitivePeerDependencies:
       - '@babel/core'
-      - '@glint/template'
+      - '@embroider/macros'
       - supports-color
 
-  '@warp-drive/experiments@file:warp-drive-packages/experiments(14783ff7abfecaf4a15600481cda861e)':
+  '@warp-drive/ember@file:warp-drive-packages/ember(f51b1c0fe8122b6c0fc6f95d190caff6)':
     dependencies:
-      '@embroider/macros': 1.19.6(f9dfbf4fac3dbc0e0370b14ce6056988)
-      '@warp-drive/core': file:warp-drive-packages/core(f9dfbf4fac3dbc0e0370b14ce6056988)
+      '@ember/test-waiters': 4.1.1(f9dfbf4fac3dbc0e0370b14ce6056988)
+      '@warp-drive/core': file:warp-drive-packages/core(6f3f6541944336feaaaf2fb760f5f2c6)
     transitivePeerDependencies:
       - '@babel/core'
-      - '@glint/template'
+      - '@embroider/macros'
       - supports-color
 
-  '@warp-drive/holodeck@file:packages/holodeck(19e1072f23293e4c2aeee5c79542e276)':
+  '@warp-drive/experiments@file:warp-drive-packages/experiments(a0e10a490d8c6aa294f5957fffbb8103)':
+    dependencies:
+      '@warp-drive/core': file:warp-drive-packages/core(6f3f6541944336feaaaf2fb760f5f2c6)
+
+  '@warp-drive/holodeck@file:packages/holodeck(1a2dd403ca61fb4f720117ddce9dbf2a)':
     dependencies:
       '@hono/node-server': 1.19.0(hono@4.9.4)
-      '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.28.3)
+      '@warp-drive/core': file:warp-drive-packages/core(6f3f6541944336feaaaf2fb760f5f2c6)
       chalk: 5.6.0
       hono: 4.9.4
     optionalDependencies:
-      '@warp-drive/legacy': file:warp-drive-packages/legacy(da2d8626017c763d07445c649af78d55)
-      '@warp-drive/utilities': file:warp-drive-packages/utilities(ac1631a7da983377f84b100525d730a6)
+      '@warp-drive/legacy': file:warp-drive-packages/legacy(a7e392f12cf37901592a41a0b059179d)
+      '@warp-drive/utilities': file:warp-drive-packages/utilities(a0e10a490d8c6aa294f5957fffbb8103)
 
-  '@warp-drive/holodeck@file:packages/holodeck(27d22df54f83bd8eb0d3aa6fdaf4bcdd)':
+  '@warp-drive/holodeck@file:packages/holodeck(24de54948594a8950ac956653b953550)':
     dependencies:
       '@hono/node-server': 1.19.0(hono@4.9.4)
-      '@warp-drive/core': file:warp-drive-packages/core(f9dfbf4fac3dbc0e0370b14ce6056988)
-      chalk: 5.6.0
-      hono: 4.9.4
-
-  '@warp-drive/holodeck@file:packages/holodeck(399050e4d25cd9de09f58182ad617dd4)':
-    dependencies:
-      '@hono/node-server': 1.19.0(hono@4.9.4)
-      '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.28.3)
-      chalk: 5.6.0
-      hono: 4.9.4
-
-  '@warp-drive/holodeck@file:packages/holodeck(a3373bf92dbe06200e11dc38e69a2ad3)':
-    dependencies:
-      '@hono/node-server': 1.19.0(hono@4.9.4)
-      '@warp-drive/core': file:warp-drive-packages/core(f9dfbf4fac3dbc0e0370b14ce6056988)
+      '@warp-drive/core': file:warp-drive-packages/core(3b95a843f33ac420bfebb47325336ac3)
       chalk: 5.6.0
       hono: 4.9.4
     optionalDependencies:
-      '@warp-drive/utilities': file:warp-drive-packages/utilities(14783ff7abfecaf4a15600481cda861e)
+      '@warp-drive/legacy': file:warp-drive-packages/legacy(6e9880f196b1c731e01a4d222aa70f8d)
+      '@warp-drive/utilities': file:warp-drive-packages/utilities(3d4571d73ed0c60dcf60e178160368f2)
 
-  '@warp-drive/holodeck@file:packages/holodeck(b1f423bbeafed7b156933fd746f2db26)':
+  '@warp-drive/holodeck@file:packages/holodeck(3d4571d73ed0c60dcf60e178160368f2)':
     dependencies:
       '@hono/node-server': 1.19.0(hono@4.9.4)
-      '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.28.3)
+      '@warp-drive/core': file:warp-drive-packages/core(3b95a843f33ac420bfebb47325336ac3)
+      chalk: 5.6.0
+      hono: 4.9.4
+
+  '@warp-drive/holodeck@file:packages/holodeck(6e9880f196b1c731e01a4d222aa70f8d)':
+    dependencies:
+      '@hono/node-server': 1.19.0(hono@4.9.4)
+      '@warp-drive/core': file:warp-drive-packages/core(3b95a843f33ac420bfebb47325336ac3)
       chalk: 5.6.0
       hono: 4.9.4
     optionalDependencies:
-      '@warp-drive/utilities': file:warp-drive-packages/utilities(ac1631a7da983377f84b100525d730a6)
+      '@warp-drive/utilities': file:warp-drive-packages/utilities(3d4571d73ed0c60dcf60e178160368f2)
 
-  '@warp-drive/holodeck@file:packages/holodeck(e5d1c12af2328a4934377cfd47ee3a1f)':
+  '@warp-drive/holodeck@file:packages/holodeck(a0e10a490d8c6aa294f5957fffbb8103)':
     dependencies:
       '@hono/node-server': 1.19.0(hono@4.9.4)
-      '@warp-drive/core': file:warp-drive-packages/core(f9dfbf4fac3dbc0e0370b14ce6056988)
+      '@warp-drive/core': file:warp-drive-packages/core(6f3f6541944336feaaaf2fb760f5f2c6)
+      chalk: 5.6.0
+      hono: 4.9.4
+
+  '@warp-drive/holodeck@file:packages/holodeck(a7e392f12cf37901592a41a0b059179d)':
+    dependencies:
+      '@hono/node-server': 1.19.0(hono@4.9.4)
+      '@warp-drive/core': file:warp-drive-packages/core(6f3f6541944336feaaaf2fb760f5f2c6)
       chalk: 5.6.0
       hono: 4.9.4
     optionalDependencies:
-      '@warp-drive/legacy': file:warp-drive-packages/legacy(90048d994a10f75fd696c34ea85a9613)
-      '@warp-drive/utilities': file:warp-drive-packages/utilities(14783ff7abfecaf4a15600481cda861e)
+      '@warp-drive/utilities': file:warp-drive-packages/utilities(a0e10a490d8c6aa294f5957fffbb8103)
 
   '@warp-drive/internal-config@file:tools/internal-config':
     dependencies:
@@ -20387,145 +20423,159 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@warp-drive/json-api@file:warp-drive-packages/json-api(14783ff7abfecaf4a15600481cda861e)':
+  '@warp-drive/json-api@file:warp-drive-packages/json-api(399050e4d25cd9de09f58182ad617dd4)':
     dependencies:
-      '@embroider/macros': 1.19.6(f9dfbf4fac3dbc0e0370b14ce6056988)
-      '@warp-drive/core': file:warp-drive-packages/core(f9dfbf4fac3dbc0e0370b14ce6056988)
-      fuse.js: 7.1.0
-      json-to-ast: 2.1.0
-    transitivePeerDependencies:
-      - '@babel/core'
-      - '@glint/template'
-      - supports-color
-
-  '@warp-drive/json-api@file:warp-drive-packages/json-api(ac1631a7da983377f84b100525d730a6)':
-    dependencies:
-      '@embroider/macros': 1.19.6(@babel/core@7.28.3)
       '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.28.3)
       fuse.js: 7.1.0
       json-to-ast: 2.1.0
-    transitivePeerDependencies:
-      - '@babel/core'
-      - '@glint/template'
-      - supports-color
 
-  '@warp-drive/legacy@file:warp-drive-packages/legacy(90048d994a10f75fd696c34ea85a9613)':
+  '@warp-drive/json-api@file:warp-drive-packages/json-api(3d4571d73ed0c60dcf60e178160368f2)':
     dependencies:
-      '@embroider/macros': 1.19.6(f9dfbf4fac3dbc0e0370b14ce6056988)
-      '@warp-drive/core': file:warp-drive-packages/core(f9dfbf4fac3dbc0e0370b14ce6056988)
-      '@warp-drive/utilities': file:warp-drive-packages/utilities(14783ff7abfecaf4a15600481cda861e)
-    transitivePeerDependencies:
-      - '@babel/core'
-      - '@glint/template'
-      - supports-color
+      '@warp-drive/core': file:warp-drive-packages/core(3b95a843f33ac420bfebb47325336ac3)
+      fuse.js: 7.1.0
+      json-to-ast: 2.1.0
 
-  '@warp-drive/legacy@file:warp-drive-packages/legacy(da2d8626017c763d07445c649af78d55)':
+  '@warp-drive/json-api@file:warp-drive-packages/json-api(a0e10a490d8c6aa294f5957fffbb8103)':
     dependencies:
-      '@embroider/macros': 1.19.6(@babel/core@7.28.3)
+      '@warp-drive/core': file:warp-drive-packages/core(6f3f6541944336feaaaf2fb760f5f2c6)
+      fuse.js: 7.1.0
+      json-to-ast: 2.1.0
+
+  '@warp-drive/json-api@file:warp-drive-packages/json-api(bfa4679d03a875ade7a242ebd4d26c8f)':
+    dependencies:
+      '@warp-drive/core': file:warp-drive-packages/core(82e84e66605f0358a61561e8086c9dbf)
+      fuse.js: 7.1.0
+      json-to-ast: 2.1.0
+
+  '@warp-drive/legacy@file:warp-drive-packages/legacy(51dad5c9a663ff46ed0737168a052837)':
+    dependencies:
       '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.28.3)
-      '@warp-drive/utilities': file:warp-drive-packages/utilities(ac1631a7da983377f84b100525d730a6)
+      '@warp-drive/utilities': file:warp-drive-packages/utilities(399050e4d25cd9de09f58182ad617dd4)
+
+  '@warp-drive/legacy@file:warp-drive-packages/legacy(6e9880f196b1c731e01a4d222aa70f8d)':
+    dependencies:
+      '@warp-drive/core': file:warp-drive-packages/core(3b95a843f33ac420bfebb47325336ac3)
+      '@warp-drive/utilities': file:warp-drive-packages/utilities(3d4571d73ed0c60dcf60e178160368f2)
+
+  '@warp-drive/legacy@file:warp-drive-packages/legacy(a7e392f12cf37901592a41a0b059179d)':
+    dependencies:
+      '@warp-drive/core': file:warp-drive-packages/core(6f3f6541944336feaaaf2fb760f5f2c6)
+      '@warp-drive/utilities': file:warp-drive-packages/utilities(a0e10a490d8c6aa294f5957fffbb8103)
+
+  '@warp-drive/legacy@file:warp-drive-packages/legacy(d224cad98ac8400c1e39dee1ab846f5d)':
+    dependencies:
+      '@warp-drive/core': file:warp-drive-packages/core(82e84e66605f0358a61561e8086c9dbf)
+      '@warp-drive/utilities': file:warp-drive-packages/utilities(bfa4679d03a875ade7a242ebd4d26c8f)
+
+  '@warp-drive/react@file:warp-drive-packages/react(3b95a843f33ac420bfebb47325336ac3)':
+    dependencies:
+      '@warp-drive/core': file:warp-drive-packages/core(3b95a843f33ac420bfebb47325336ac3)
+      '@warp-drive/tc39-proposal-signals': file:warp-drive-packages/tc39-proposal-signals(3b95a843f33ac420bfebb47325336ac3)
+      react: 19.1.1
+      signal-polyfill: 0.2.2
     transitivePeerDependencies:
       - '@babel/core'
-      - '@glint/template'
+      - '@embroider/macros'
+      - supports-color
+
+  '@warp-drive/react@file:warp-drive-packages/react(6f3f6541944336feaaaf2fb760f5f2c6)':
+    dependencies:
+      '@warp-drive/core': file:warp-drive-packages/core(6f3f6541944336feaaaf2fb760f5f2c6)
+      '@warp-drive/tc39-proposal-signals': file:warp-drive-packages/tc39-proposal-signals(6f3f6541944336feaaaf2fb760f5f2c6)
+      react: 19.1.1
+      signal-polyfill: 0.2.2
+    transitivePeerDependencies:
+      - '@babel/core'
+      - '@embroider/macros'
       - supports-color
 
   '@warp-drive/react@file:warp-drive-packages/react(@babel/core@7.28.3)':
     dependencies:
-      '@embroider/macros': 1.19.6(@babel/core@7.28.3)
       '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.28.3)
       '@warp-drive/tc39-proposal-signals': file:warp-drive-packages/tc39-proposal-signals(@babel/core@7.28.3)
       react: 19.1.1
       signal-polyfill: 0.2.2
     transitivePeerDependencies:
       - '@babel/core'
-      - '@glint/template'
+      - '@embroider/macros'
       - supports-color
 
-  '@warp-drive/react@file:warp-drive-packages/react(f9dfbf4fac3dbc0e0370b14ce6056988)':
-    dependencies:
-      '@embroider/macros': 1.19.6(f9dfbf4fac3dbc0e0370b14ce6056988)
-      '@warp-drive/core': file:warp-drive-packages/core(f9dfbf4fac3dbc0e0370b14ce6056988)
-      '@warp-drive/tc39-proposal-signals': file:warp-drive-packages/tc39-proposal-signals(f9dfbf4fac3dbc0e0370b14ce6056988)
-      react: 19.1.1
-      signal-polyfill: 0.2.2
-    transitivePeerDependencies:
-      - '@babel/core'
-      - '@glint/template'
-      - supports-color
-
-  '@warp-drive/schema-dsl@file:warp-drive-packages/schema-dsl(27d22df54f83bd8eb0d3aa6fdaf4bcdd)':
+  '@warp-drive/schema-dsl@file:warp-drive-packages/schema-dsl(a0e10a490d8c6aa294f5957fffbb8103)':
     dependencies:
       '@babel/parser': 7.28.4
       '@babel/traverse': 7.28.4
-      '@warp-drive/core': file:warp-drive-packages/core(f9dfbf4fac3dbc0e0370b14ce6056988)
+      '@warp-drive/core': file:warp-drive-packages/core(6f3f6541944336feaaaf2fb760f5f2c6)
       glob: 11.0.3
     transitivePeerDependencies:
       - supports-color
 
-  '@warp-drive/schema-record@file:packages/schema-record(f9dfbf4fac3dbc0e0370b14ce6056988)':
+  '@warp-drive/schema-record@file:packages/schema-record(6f3f6541944336feaaaf2fb760f5f2c6)':
     dependencies:
-      '@embroider/macros': 1.19.6(f9dfbf4fac3dbc0e0370b14ce6056988)
-      '@warp-drive/core': file:warp-drive-packages/core(f9dfbf4fac3dbc0e0370b14ce6056988)
+      '@warp-drive/core': file:warp-drive-packages/core(6f3f6541944336feaaaf2fb760f5f2c6)
     transitivePeerDependencies:
       - '@babel/core'
-      - '@glint/template'
+      - '@embroider/macros'
       - supports-color
 
-  '@warp-drive/svelte@file:warp-drive-packages/svelte(@babel/core@7.28.3)(svelte@5.38.5)':
+  '@warp-drive/svelte@file:warp-drive-packages/svelte(ac44d02540acca2c652a07e8f8efa7e1)':
     dependencies:
-      '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.28.3)
+      '@warp-drive/core': file:warp-drive-packages/core(3b95a843f33ac420bfebb47325336ac3)
       svelte: 5.38.5
     transitivePeerDependencies:
       - '@babel/core'
-      - '@glint/template'
+      - '@embroider/macros'
+      - supports-color
+
+  '@warp-drive/tc39-proposal-signals@file:warp-drive-packages/tc39-proposal-signals(3b95a843f33ac420bfebb47325336ac3)':
+    dependencies:
+      '@warp-drive/core': file:warp-drive-packages/core(3b95a843f33ac420bfebb47325336ac3)
+      signal-polyfill: 0.2.2
+    transitivePeerDependencies:
+      - '@babel/core'
+      - '@embroider/macros'
+      - supports-color
+
+  '@warp-drive/tc39-proposal-signals@file:warp-drive-packages/tc39-proposal-signals(6f3f6541944336feaaaf2fb760f5f2c6)':
+    dependencies:
+      '@warp-drive/core': file:warp-drive-packages/core(6f3f6541944336feaaaf2fb760f5f2c6)
+      signal-polyfill: 0.2.2
+    transitivePeerDependencies:
+      - '@babel/core'
+      - '@embroider/macros'
       - supports-color
 
   '@warp-drive/tc39-proposal-signals@file:warp-drive-packages/tc39-proposal-signals(@babel/core@7.28.3)':
     dependencies:
-      '@embroider/macros': 1.19.6(@babel/core@7.28.3)
       '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.28.3)
       signal-polyfill: 0.2.2
     transitivePeerDependencies:
       - '@babel/core'
-      - '@glint/template'
+      - '@embroider/macros'
       - supports-color
 
-  '@warp-drive/tc39-proposal-signals@file:warp-drive-packages/tc39-proposal-signals(f9dfbf4fac3dbc0e0370b14ce6056988)':
+  '@warp-drive/utilities@file:warp-drive-packages/utilities(399050e4d25cd9de09f58182ad617dd4)':
     dependencies:
-      '@embroider/macros': 1.19.6(f9dfbf4fac3dbc0e0370b14ce6056988)
-      '@warp-drive/core': file:warp-drive-packages/core(f9dfbf4fac3dbc0e0370b14ce6056988)
-      signal-polyfill: 0.2.2
-    transitivePeerDependencies:
-      - '@babel/core'
-      - '@glint/template'
-      - supports-color
-
-  '@warp-drive/utilities@file:warp-drive-packages/utilities(14783ff7abfecaf4a15600481cda861e)':
-    dependencies:
-      '@embroider/macros': 1.19.6(f9dfbf4fac3dbc0e0370b14ce6056988)
-      '@warp-drive/core': file:warp-drive-packages/core(f9dfbf4fac3dbc0e0370b14ce6056988)
-    transitivePeerDependencies:
-      - '@babel/core'
-      - '@glint/template'
-      - supports-color
-
-  '@warp-drive/utilities@file:warp-drive-packages/utilities(ac1631a7da983377f84b100525d730a6)':
-    dependencies:
-      '@embroider/macros': 1.19.6(@babel/core@7.28.3)
       '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.28.3)
-    transitivePeerDependencies:
-      - '@babel/core'
-      - '@glint/template'
-      - supports-color
 
-  '@warp-drive/vue@file:warp-drive-packages/vue(5ce6b18e5373662b9e61b52ef3ded5eb)':
+  '@warp-drive/utilities@file:warp-drive-packages/utilities(3d4571d73ed0c60dcf60e178160368f2)':
     dependencies:
-      '@embroider/macros': 1.19.6(@babel/core@7.28.3)
-      '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.28.3)
+      '@warp-drive/core': file:warp-drive-packages/core(3b95a843f33ac420bfebb47325336ac3)
+
+  '@warp-drive/utilities@file:warp-drive-packages/utilities(a0e10a490d8c6aa294f5957fffbb8103)':
+    dependencies:
+      '@warp-drive/core': file:warp-drive-packages/core(6f3f6541944336feaaaf2fb760f5f2c6)
+
+  '@warp-drive/utilities@file:warp-drive-packages/utilities(bfa4679d03a875ade7a242ebd4d26c8f)':
+    dependencies:
+      '@warp-drive/core': file:warp-drive-packages/core(82e84e66605f0358a61561e8086c9dbf)
+
+  '@warp-drive/vue@file:warp-drive-packages/vue(24fdb4f3bc8397a3fcf7fc487cd7748a)':
+    dependencies:
+      '@warp-drive/core': file:warp-drive-packages/core(3b95a843f33ac420bfebb47325336ac3)
       vue: 3.5.19(typescript@5.9.2)
     transitivePeerDependencies:
       - '@babel/core'
-      - '@glint/template'
+      - '@embroider/macros'
       - supports-color
 
   '@webassemblyjs/ast@1.14.1':
@@ -23012,34 +23062,33 @@ snapshots:
       - '@babel/core'
       - supports-color
 
-  ember-data@file:packages/-ember-data(f237fefb73c083433e2cc49183934352):
+  ember-data@file:packages/-ember-data(e8dab14d0da5c0c4c32fa18f60ef2295):
     dependencies:
-      '@ember-data/adapter': file:packages/adapter(f9dfbf4fac3dbc0e0370b14ce6056988)
-      '@ember-data/debug': file:packages/debug(f9dfbf4fac3dbc0e0370b14ce6056988)
-      '@ember-data/graph': file:packages/graph(f9dfbf4fac3dbc0e0370b14ce6056988)
-      '@ember-data/json-api': file:packages/json-api(f9dfbf4fac3dbc0e0370b14ce6056988)
-      '@ember-data/legacy-compat': file:packages/legacy-compat(f9dfbf4fac3dbc0e0370b14ce6056988)
-      '@ember-data/model': file:packages/model(f9dfbf4fac3dbc0e0370b14ce6056988)
-      '@ember-data/request': file:packages/request(f9dfbf4fac3dbc0e0370b14ce6056988)
-      '@ember-data/request-utils': file:packages/request-utils(2614f833b55f24250877f0261f5ce108)
-      '@ember-data/serializer': file:packages/serializer(f9dfbf4fac3dbc0e0370b14ce6056988)
-      '@ember-data/store': file:packages/store(78ac98f3c6a6ede4d9ac1f46e1f882aa)
-      '@ember-data/tracking': file:packages/tracking(33af9699401529a0cfeefafc63c5c204)
+      '@ember-data/adapter': file:packages/adapter(6f3f6541944336feaaaf2fb760f5f2c6)
+      '@ember-data/debug': file:packages/debug(6f3f6541944336feaaaf2fb760f5f2c6)
+      '@ember-data/graph': file:packages/graph(6f3f6541944336feaaaf2fb760f5f2c6)
+      '@ember-data/json-api': file:packages/json-api(6f3f6541944336feaaaf2fb760f5f2c6)
+      '@ember-data/legacy-compat': file:packages/legacy-compat(6f3f6541944336feaaaf2fb760f5f2c6)
+      '@ember-data/model': file:packages/model(6f3f6541944336feaaaf2fb760f5f2c6)
+      '@ember-data/request': file:packages/request(6f3f6541944336feaaaf2fb760f5f2c6)
+      '@ember-data/request-utils': file:packages/request-utils(c249583999bb14622ffcff3251edd94e)
+      '@ember-data/serializer': file:packages/serializer(6f3f6541944336feaaaf2fb760f5f2c6)
+      '@ember-data/store': file:packages/store(28f97526d018874585dc041dffa489f5)
+      '@ember-data/tracking': file:packages/tracking(f51b1c0fe8122b6c0fc6f95d190caff6)
       '@ember/edition-utils': 1.2.0
       '@ember/test-waiters': 4.1.1(f9dfbf4fac3dbc0e0370b14ce6056988)
-      '@embroider/macros': 1.19.6(f9dfbf4fac3dbc0e0370b14ce6056988)
-      '@warp-drive/core': file:warp-drive-packages/core(f9dfbf4fac3dbc0e0370b14ce6056988)
-      '@warp-drive/core-types': file:packages/core-types(f9dfbf4fac3dbc0e0370b14ce6056988)
-      '@warp-drive/ember': file:warp-drive-packages/ember(33af9699401529a0cfeefafc63c5c204)
-      '@warp-drive/json-api': file:warp-drive-packages/json-api(14783ff7abfecaf4a15600481cda861e)
-      '@warp-drive/legacy': file:warp-drive-packages/legacy(90048d994a10f75fd696c34ea85a9613)
-      '@warp-drive/utilities': file:warp-drive-packages/utilities(14783ff7abfecaf4a15600481cda861e)
+      '@warp-drive/core': file:warp-drive-packages/core(6f3f6541944336feaaaf2fb760f5f2c6)
+      '@warp-drive/core-types': file:packages/core-types(6f3f6541944336feaaaf2fb760f5f2c6)
+      '@warp-drive/ember': file:warp-drive-packages/ember(f51b1c0fe8122b6c0fc6f95d190caff6)
+      '@warp-drive/json-api': file:warp-drive-packages/json-api(a0e10a490d8c6aa294f5957fffbb8103)
+      '@warp-drive/legacy': file:warp-drive-packages/legacy(a7e392f12cf37901592a41a0b059179d)
+      '@warp-drive/utilities': file:warp-drive-packages/utilities(a0e10a490d8c6aa294f5957fffbb8103)
     optionalDependencies:
       '@ember/test-helpers': 5.2.0(patch_hash=a1670a4e3977c846a5c2454f317f5a17cbd284aef3a676b190c98141536afb04)(bfadaa4521900084b7797d85fa721327)
       qunit: 2.19.4(patch_hash=44177f0047189d474ebdeba20fc8ddc3c8c2a5777d65cbb5f0fac0979bf66301)
     transitivePeerDependencies:
       - '@babel/core'
-      - '@glint/template'
+      - '@embroider/macros'
       - ember-inflector
       - ember-provide-consume-context
       - supports-color
@@ -23059,19 +23108,18 @@ snapshots:
       '@ember-data/tracking': file:packages/tracking(1adf99e055abba96ff2ddb1d049f661d)
       '@ember/edition-utils': 1.2.0
       '@ember/test-waiters': 4.1.1(@babel/core@7.28.3)
-      '@embroider/macros': 1.19.6(@babel/core@7.28.3)
       '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.28.3)
       '@warp-drive/core-types': file:packages/core-types(@babel/core@7.28.3)
       '@warp-drive/ember': file:warp-drive-packages/ember(1adf99e055abba96ff2ddb1d049f661d)
-      '@warp-drive/json-api': file:warp-drive-packages/json-api(ac1631a7da983377f84b100525d730a6)
-      '@warp-drive/legacy': file:warp-drive-packages/legacy(da2d8626017c763d07445c649af78d55)
-      '@warp-drive/utilities': file:warp-drive-packages/utilities(ac1631a7da983377f84b100525d730a6)
+      '@warp-drive/json-api': file:warp-drive-packages/json-api(399050e4d25cd9de09f58182ad617dd4)
+      '@warp-drive/legacy': file:warp-drive-packages/legacy(51dad5c9a663ff46ed0737168a052837)
+      '@warp-drive/utilities': file:warp-drive-packages/utilities(399050e4d25cd9de09f58182ad617dd4)
     optionalDependencies:
       '@ember/test-helpers': 5.2.0(patch_hash=a1670a4e3977c846a5c2454f317f5a17cbd284aef3a676b190c98141536afb04)(7c1eb33138e746229cea5e7e565a34fb)
       qunit: 2.19.4(patch_hash=44177f0047189d474ebdeba20fc8ddc3c8c2a5777d65cbb5f0fac0979bf66301)
     transitivePeerDependencies:
       - '@babel/core'
-      - '@glint/template'
+      - '@embroider/macros'
       - ember-inflector
       - ember-provide-consume-context
       - supports-color
@@ -23806,14 +23854,14 @@ snapshots:
     dependencies:
       eslint: 9.34.0
 
-  eslint-plugin-warp-drive@file:packages/eslint-plugin-warp-drive(f9dfbf4fac3dbc0e0370b14ce6056988):
+  eslint-plugin-warp-drive@file:packages/eslint-plugin-warp-drive(6f3f6541944336feaaaf2fb760f5f2c6):
     dependencies:
-      '@warp-drive/core': file:warp-drive-packages/core(f9dfbf4fac3dbc0e0370b14ce6056988)
-      '@warp-drive/utilities': file:warp-drive-packages/utilities(14783ff7abfecaf4a15600481cda861e)
+      '@warp-drive/core': file:warp-drive-packages/core(6f3f6541944336feaaaf2fb760f5f2c6)
+      '@warp-drive/utilities': file:warp-drive-packages/utilities(a0e10a490d8c6aa294f5957fffbb8103)
       requireindex: 1.2.0
     transitivePeerDependencies:
       - '@babel/core'
-      - '@glint/template'
+      - '@embroider/macros'
       - supports-color
 
   eslint-scope@5.1.1:

@@ -2,6 +2,10 @@ import { ImportUtil } from 'babel-import-util';
 
 const Utils = new Set(['assert']);
 
+// the build-time macros evaluated by ./babel-plugin-transform-macros.js
+// these pass through this transform untouched
+const RuntimeMacros = new Set(['macroCondition', 'getConfig', 'dependencySatisfies', 'moduleExists', 'importSync']);
+
 /*
 // Before
 import { assert } from '@warp-drive/build-config/macros';
@@ -9,27 +13,24 @@ import { assert } from '@warp-drive/build-config/macros';
 assert('foo', true);
 
 // After
-(macroCondition(isDevelopingApp()) ? function assert(test) { if (!test) { throw new Error('foo'); } }(true) : {});
+(macroCondition(getConfig().env.DEBUG) ? function assert(test) { if (!test) { throw new Error('foo'); } }(true) : {});
 */
 
-// => _macros.getGlobalConfig().WarpDrive.env.DEBUG
-function buildMacroConstDEBUG(types, binding, state) {
+// => _macros.getConfig().env.DEBUG
+function buildMacroConstDEBUG(types, binding, state, macrosSource) {
   return types.memberExpression(
     types.memberExpression(
-      types.memberExpression(
-        types.callExpression(state.importer.import(binding, '@embroider/macros', 'getGlobalConfig'), []),
-        types.identifier('WarpDrive')
-      ),
+      types.callExpression(state.importer.import(binding, macrosSource, 'getConfig'), []),
       types.identifier('env')
     ),
     types.identifier('DEBUG')
   );
 }
 
-// => _macros.macroCondition(_macros.getGlobalConfig().WarpDrive.env.DEBUG)
-function buildMacroConditionDEBUG(types, binding, state) {
-  return types.callExpression(state.importer.import(binding, '@embroider/macros', 'macroCondition'), [
-    buildMacroConstDEBUG(types, binding, state),
+// => _macros.macroCondition(_macros.getConfig().env.DEBUG)
+function buildMacroConditionDEBUG(types, binding, state, macrosSource) {
+  return types.callExpression(state.importer.import(binding, macrosSource, 'macroCondition'), [
+    buildMacroConstDEBUG(types, binding, state, macrosSource),
   ]);
 }
 
@@ -54,10 +55,10 @@ function buildAssert(types, originalCallExpression) {
 }
 
 // => ( <debug-macro> ? <assert-exp> : {});
-function buildAssertTernary(types, binding, state, originalCallExpression) {
+function buildAssertTernary(types, binding, state, originalCallExpression, macrosSource) {
   return types.expressionStatement(
     types.conditionalExpression(
-      buildMacroConditionDEBUG(types, binding, state),
+      buildMacroConditionDEBUG(types, binding, state, macrosSource),
       buildAssert(types, originalCallExpression),
       types.objectExpression([])
     )
@@ -78,6 +79,10 @@ export default function (babel) {
 
           specifiers.forEach((specifier) => {
             const name = specifier.node.imported.name;
+            if (RuntimeMacros.has(name)) {
+              // evaluated later by babel-plugin-transform-macros
+              return;
+            }
             if (!Utils.has(name)) {
               throw new Error(`Unexpected import '${name}' imported from '${importPath}'`);
             }
@@ -92,7 +97,7 @@ export default function (babel) {
                 throw new Error('Expected a call expression');
               }
 
-              const assertTernary = buildAssertTernary(t, binding, state, originalCallExpression);
+              const assertTernary = buildAssertTernary(t, binding, state, originalCallExpression, importPath);
               p.parentPath.replaceWith(assertTernary);
             });
             specifier.scope.removeOwnBinding(localBindingName);

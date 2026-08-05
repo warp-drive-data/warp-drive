@@ -47,7 +47,6 @@
     "vue": "^3.5.19"
   },
   "dependencies": {
-    "@embroider/macros": "^1.19.6",
     "@warp-drive/core": "workspace:*"
   },
   "peerDependenciesMeta": {},

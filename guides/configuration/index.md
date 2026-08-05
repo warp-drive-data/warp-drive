@@ -17,11 +17,14 @@ a [Store](#quick-store-setup) to manage our data.
 
 ## Configure the Build Plugin
 
-***Warp*Drive** uses a [babel plugin](https://www.npmjs.com/package/@embroider/macros) to inject app-specific [configuration](/api/@warp-drive/core/build-config/interfaces/WarpDriveConfig) allowing us to provide advanced dev-mode debugging features, deprecation management, and canary feature toggles.
+***Warp*Drive** uses its own babel plugin (`warpdrive`) to inject app-specific [configuration](/api/@warp-drive/core/build-config/interfaces/WarpDriveConfig) allowing us to provide advanced dev-mode debugging features, deprecation management, and canary feature toggles.
+
+Every project consuming ***Warp*Drive** must configure this plugin — without it the
+library's build-time macros are not evaluated and the app will error at boot.
 
 For most projects, the configuration is done inside of the project's babel configuration file.
-For ember apps that still have an `ember-cli-build` file, this plugin comes built-in to the
-toolchain and all you need to do is provide it the desired configuration in `ember-cli-build`.
+For ember apps that still have an `ember-cli-build` file, calling `setConfig` in
+`ember-cli-build` installs the plugin into the app's build for you.
 
 ::: tabs key:paradigm
 
@@ -45,36 +48,16 @@ export default {
 == Advanced Config
 
 ```ts [babel.config.mjs]
-import { setConfig } from '@warp-drive/core/build-config';
-import { buildMacros } from '@embroider/macros/babel';
-
-const Macros = buildMacros({
-  configure: (config) => {
-    setConfig(config, {
-      // for universal apps this MUST be at least 5.6
-      compatWith: '5.6'
-    });
-  },
-});
+import { warpdrive } from '@warp-drive/core/build-config';
 
 export default {
   plugins: [
-    // babel-plugin-debug-macros is temporarily needed
-    // to convert deprecation/warn calls into console.warn
-    [
-      'babel-plugin-debug-macros',
-      {
-        flags: [],
-
-        debugTools: {
-          isDebug: process.env.NODE_ENV !== 'production',
-          source: '@ember/debug',
-          assertPredicateIndex: 1,
-        },
-      },
-      'ember-data-specific-macros-stripping-test',
-    ],
-    ...Macros.babelMacros,
+    // the `warpdrive` babel plugin evaluates WarpDrive's build-time
+    // macros, applying the configuration and stripping unreachable code
+    warpdrive({
+      // for universal apps this MUST be at least 5.6
+      compatWith: '5.6',
+    }),
   ],
 };
 ```

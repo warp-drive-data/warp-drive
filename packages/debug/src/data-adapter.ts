@@ -4,11 +4,9 @@ import DataAdapter from '@ember/debug/data-adapter';
 import { addObserver, removeObserver } from '@ember/object/observers';
 import * as s from '@ember/service';
 
-import { getGlobalConfig, macroCondition } from '@embroider/macros';
-
 import type { Store } from '@warp-drive/core';
 import { recordIdentifierFor } from '@warp-drive/core';
-import { assert } from '@warp-drive/core/build-config/macros';
+import { assert, getConfig, macroCondition } from '@warp-drive/core/build-config/macros';
 import { assertPrivateStore } from '@warp-drive/core/store/-private';
 import type { ModelSchema } from '@warp-drive/core/types';
 import { capitalize, underscore } from '@warp-drive/utilities/string';
@@ -400,7 +398,7 @@ class InspectorDataAdapter extends DataAdapter<Model> {
 }
 
 const Exported: typeof InspectorDataAdapter | null = macroCondition(
-  getGlobalConfig<{ WarpDrive: { includeDataAdapter: boolean } }>().WarpDrive.includeDataAdapter
+  getConfig<{ includeDataAdapter: boolean }>().includeDataAdapter
 )
   ? InspectorDataAdapter
   : null;
