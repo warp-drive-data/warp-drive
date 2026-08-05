@@ -497,13 +497,65 @@ interface AbstractFieldContribution {
 }
 
 /**
+ * Reduces a field to a plain object with a fixed key order, covering every
+ * option any relationship-implementer field can declare, so two fields can
+ * be compared for exact equality via `JSON.stringify` regardless of the key
+ * order the schema author happened to write them in.
+ *
+ * `options.as` is included and is *not* special-cased: every contributor to
+ * a given field name on an abstract type - including the abstract type's
+ * own schema, if it has one - is expected to declare `as` equal to that
+ * abstract type's own name. This is redundant/self-referential for the
+ * abstract type's own schema, but required for consistency: relationship
+ * resolution elsewhere (e.g. `inverse` name-matching) does not itself
+ * validate `as`, so a field with a missing or incorrect `as` can otherwise
+ * be silently pulled into a relationship it never declared it implements.
+ */
+function comparableAbstractFieldShape(field: FieldSchema): unknown {
+  const { kind, name, type, sourceKey, options } = field as {
+    kind: string;
+    name: string;
+    type?: string;
+    sourceKey?: string;
+    options?: {
+      as?: string;
+      async?: boolean;
+      inverse?: string | null;
+      polymorphic?: boolean;
+      linksMode?: boolean;
+      resetOnRemoteUpdate?: boolean;
+      arrayExtensions?: string[];
+    };
+  };
+  return {
+    kind,
+    name,
+    type,
+    sourceKey,
+    options: {
+      as: options?.as,
+      async: options?.async,
+      inverse: options?.inverse,
+      polymorphic: options?.polymorphic,
+      linksMode: options?.linksMode,
+      resetOnRemoteUpdate: options?.resetOnRemoteUpdate,
+      arrayExtensions: options?.arrayExtensions,
+    },
+  };
+}
+
+/**
  * Asserts that two contributions to the same field name on an abstract
  * polymorphic type - whether from two different concrete implementers, or
- * from an implementer and the abstract type's own schema - agree on `kind`
- * (e.g. both `hasMany`, not one `hasMany` and the other `belongsTo`) and
- * target `type`. A mismatch here means the schemas disagree about whether
- * the relationship is to-many or to-one (or about what it points to), which
- * cannot be resolved by picking one arbitrarily.
+ * from an implementer and the abstract type's own schema - declare an
+ * identical shape: `kind`, `type`, and every option, including `as` (which
+ * every contributor, the abstract type's own schema included, must declare
+ * equal to `abstractType`). A mismatch here (e.g. one implementer's field
+ * being a `hasMany` while another's is a `belongsTo`, the two disagreeing on
+ * `inverse`/`async`/`polymorphic`, or one omitting or misdeclaring `as`)
+ * cannot be resolved by picking one side arbitrarily, since that would
+ * silently leave whichever side lost the mismatch pointing at a relationship
+ * whose true shape differs from what its own schema declared.
  */
 function assertConsistentAbstractFieldShape(
   abstractType: string,
@@ -511,11 +563,11 @@ function assertConsistentAbstractFieldShape(
   existing: { field: FieldSchema; source: string },
   incoming: { field: FieldSchema; source: string }
 ): void {
-  const existingType = 'type' in existing.field ? existing.field.type : undefined;
-  const incomingType = 'type' in incoming.field ? incoming.field.type : undefined;
+  const existingShape = comparableAbstractFieldShape(existing.field);
+  const incomingShape = comparableAbstractFieldShape(incoming.field);
   assert(
-    `Expected the relationship '${fieldName}' on the abstract polymorphic type '${abstractType}' to have a consistent shape everywhere it is declared, but '${existing.source}' declares it as a '${existing.field.kind}' of '${existingType}' while '${incoming.source}' declares it as a '${incoming.field.kind}' of '${incomingType}'. All concrete implementers of an abstract type - and the abstract type's own schema, if it has one - must agree on the 'kind' and target 'type' of any relationship field they share.`,
-    existing.field.kind === incoming.field.kind && existingType === incomingType
+    `Expected the relationship '${fieldName}' on the abstract polymorphic type '${abstractType}' to be declared identically everywhere it is implemented (including 'options.as', which every contributor - the abstract type's own schema included - must declare equal to '${abstractType}'), but '${existing.source}' declares it as:\n\n${JSON.stringify(existingShape, null, 2)}\n\nwhile '${incoming.source}' declares it as:\n\n${JSON.stringify(incomingShape, null, 2)}\n\nAll concrete implementers of an abstract type - and the abstract type's own schema, if it has one - must declare an identical shape for any relationship field they share.`,
+    JSON.stringify(existingShape) === JSON.stringify(incomingShape)
   );
 }
 
@@ -801,9 +853,16 @@ export class SchemaService implements SchemaServiceInterface {
       this._abstractImplementerFields.set(abstractType, implementerFields);
     }
 
-    const options = { ...field.options };
-    delete options.as;
-    const abstractField = { ...field, options } as AbstractTypeImplementerField;
+    // Unlike the original approach this replaced, `as` is *not* stripped here:
+    // the field as synthesized onto the abstract type's own schema keeps
+    // `options.as === abstractType`, redundant/self-referential as that is.
+    // This keeps every contributor - implementers and the abstract type's
+    // own schema alike - declaring the same thing, which is what
+    // `assertConsistentAbstractFieldShape` checks, and it is also what lets
+    // `assertPolymorphicType` (which reads a field's declared `as` off
+    // whatever `schema.fields()` serves for its type) correctly permit the
+    // abstract type itself to be pushed directly into this relationship.
+    const abstractField = { ...field } as AbstractTypeImplementerField;
     const contribution: AbstractFieldContribution = { field: abstractField, source: implementer };
 
     // all concrete implementations of an abstract type are required to

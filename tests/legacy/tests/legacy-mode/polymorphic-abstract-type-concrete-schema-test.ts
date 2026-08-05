@@ -94,6 +94,26 @@ function registerConflictingConcreteAbstractRecord(schema: SchemaService) {
   );
 }
 
+// Declares `events` matching `project`'s contributed shape in every regard
+// (`kind`, `type`, `inverse`, `async`) except that it omits the redundant
+// self-referential `as: 'abstract-record'` that every contributor - the
+// abstract type's own schema included - is expected to declare.
+function registerConcreteAbstractRecordMissingAs(schema: SchemaService) {
+  schema.registerResource(
+    withLegacy({
+      type: 'abstract-record',
+      fields: [
+        {
+          name: 'events',
+          kind: 'hasMany',
+          type: 'event',
+          options: { async: false, inverse: 'record' },
+        },
+      ],
+    })
+  );
+}
+
 // A second implementer of `abstract-record`, whose `events` field conflicts
 // in `kind` with the one `project` contributes.
 function registerConflictingTask(schema: SchemaService) {
@@ -315,7 +335,7 @@ module('Legacy | Reads | polymorphic relationship whose abstract type also has a
       // one side of the relationship broken.
       assert.throws(
         () => registerConflictingConcreteAbstractRecord(schema),
-        /to have a consistent shape/,
+        /to be declared identically/,
         'registering a conflicting concrete schema throws rather than silently discarding the synthesized shape'
       );
     });
@@ -328,7 +348,7 @@ module('Legacy | Reads | polymorphic relationship whose abstract type also has a
 
       assert.throws(
         () => registerProject(schema),
-        /to have a consistent shape/,
+        /to be declared identically/,
         'registering an implementer whose assumed shape conflicts with the existing concrete schema throws'
       );
     });
@@ -341,9 +361,71 @@ module('Legacy | Reads | polymorphic relationship whose abstract type also has a
 
       assert.throws(
         () => registerConflictingTask(schema),
-        /to have a consistent shape/,
+        /to be declared identically/,
         'a second implementer with a conflicting shape throws rather than being silently ignored'
       );
+    });
+  });
+
+  module('when a later declaration disagrees on `as`', function () {
+    test("the abstract type's own schema omitting the redundant `as` throws, even though every other option matches", function (assert) {
+      const store = createStore(this);
+      const { schema } = store;
+
+      // `project` implements `abstract-record` via `events`, synthesizing
+      // that shape - including `options.as: 'abstract-record'` - onto
+      // `abstract-record`.
+      registerProject(schema);
+
+      // `abstract-record` turns out to be a real resource whose own
+      // `events` field matches `project`'s contribution in `kind`, `type`,
+      // `inverse`, and `async` - but its author didn't think to (redundantly)
+      // declare `as: 'abstract-record'` on it. Relationship resolution
+      // elsewhere matches purely by name/inverse and would never notice this
+      // on its own - so this must be caught here, at registration time,
+      // rather than only if and when a record actually exercises the field.
+      assert.throws(
+        () => registerConcreteAbstractRecordMissingAs(schema),
+        /to be declared identically/,
+        'a concrete schema missing the redundant `as` throws rather than being silently accepted'
+      );
+    });
+  });
+
+  module('the abstract type satisfying its own polymorphic relationship', function () {
+    function setupStore(context: { owner: unknown }) {
+      const store = createStore(context);
+      const { schema } = store;
+
+      // `abstract-record` is both a real, directly-resolvable resource
+      // (with its own `name` attribute) *and* the abstract type that
+      // `project` implements via `as`. Because the field synthesized onto
+      // `abstract-record`'s own schema keeps `options.as: 'abstract-record'`
+      // (redundant/self-referential), `abstract-record` itself - not just
+      // `project` - is a valid concrete value for `event.record`.
+      registerConcreteAbstractRecord(schema);
+      registerProject(schema);
+      registerEvent(schema);
+
+      return store;
+    }
+
+    test('pushing the abstract type itself into the polymorphic relationship works', function (assert) {
+      const store = setupStore(this);
+
+      const event = store.push<EventResource>({
+        data: {
+          type: 'event',
+          id: '3',
+          relationships: {
+            record: { data: { type: 'abstract-record', id: '9' } },
+          },
+        },
+        included: [{ type: 'abstract-record', id: '9', attributes: { name: 'Direct Record' } }],
+      });
+
+      assert.equal(event.record?.id, '9', 'event.record resolves to the abstract-record directly');
+      assert.equal(event.record?.name, 'Direct Record', 'the concrete attribute on the abstract-record is readable');
     });
   });
 });

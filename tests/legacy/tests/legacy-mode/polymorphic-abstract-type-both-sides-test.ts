@@ -114,7 +114,7 @@ module(
       const eventField = recordFields.get('events') as {
         kind?: string;
         type?: string;
-        options?: { polymorphic?: boolean };
+        options?: { polymorphic?: boolean; as?: string };
       };
       assert.equal(eventField?.kind, 'hasMany', 'abstract-record.events is a hasMany');
       assert.equal(eventField?.type, 'abstract-event', 'abstract-record.events points at the abstract-event union');
@@ -122,16 +122,26 @@ module(
         !!eventField?.options?.polymorphic,
         'abstract-record.events is itself polymorphic, since it points at an abstract union'
       );
+      assert.equal(
+        eventField?.options?.as,
+        'abstract-record',
+        'the synthesized field declares `as` pointing at its own abstract type, redundant as that is'
+      );
 
       const eventFields = schema.fields({ type: 'abstract-event' });
       const recordField = eventFields.get('record') as {
         kind?: string;
         type?: string;
-        options?: { polymorphic?: boolean };
+        options?: { polymorphic?: boolean; as?: string };
       };
       assert.equal(recordField?.kind, 'belongsTo', 'abstract-event.record is a belongsTo');
       assert.equal(recordField?.type, 'abstract-record', 'abstract-event.record points at the abstract-record union');
       assert.true(!!recordField?.options?.polymorphic, 'abstract-event.record is polymorphic');
+      assert.equal(
+        recordField?.options?.as,
+        'abstract-event',
+        'the synthesized field declares `as` pointing at its own abstract type, redundant as that is'
+      );
     });
 
     test('resolving the concrete hasMany side first works, for either concrete implementer of the "many" side', function (assert) {
