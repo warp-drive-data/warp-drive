@@ -179,9 +179,7 @@ export function useLegacyStore<T extends Cache>(
             const handlersOption = options.handlers as Handler[] | ((store: Store) => Handler[]) | undefined;
             const handlers = typeof handlersOption === 'function' ? handlersOption(this) : (handlersOption ?? []);
             requestManager = new RequestManager()
-              .use(
-                [options.linksMode ? null : LegacyNetworkHandler, ...handlers, Fetch].filter(Boolean) as Handler[]
-              )
+              .use([options.linksMode ? null : LegacyNetworkHandler, ...handlers, Fetch].filter(Boolean) as Handler[])
               .useCache(CacheHandler);
           }
           return requestManager;
