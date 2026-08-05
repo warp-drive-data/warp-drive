@@ -8,7 +8,7 @@ class User extends Model {
   @attr
   name;
 
-  @attr('date', { sourceKey: 'created-at' })
+  @attr({ sourceKey: 'created-at' })
   createdAt;
 
   @belongsTo('user', { async: false, inverse: null, sourceKey: 'best-friend' })
@@ -46,7 +46,7 @@ module('Unit | Model | sourceKey', function (hooks) {
 
     assert.equal(rey.name, 'Rey Skybarker', 'name is accessible');
     assert.equal(
-      (rey.createdAt as unknown as Date).toISOString(),
+      rey.createdAt,
       '2026-02-15T20:27:03.665Z',
       'createdAt is populated from the "created-at" key'
     );
@@ -56,10 +56,9 @@ module('Unit | Model | sourceKey', function (hooks) {
     const store = this.owner.lookup('service:store') as Store;
 
     const rey = store.createRecord<User>('user', { name: 'Rey Skybarker' });
-    const date = new Date('2026-02-15T20:27:03.665Z');
-    rey.createdAt = date as unknown as string;
+    rey.createdAt = '2026-02-15T20:27:03.665Z';
 
-    assert.equal(rey.createdAt, date, 'createdAt reflects the just-set value');
+    assert.equal(rey.createdAt, '2026-02-15T20:27:03.665Z', 'createdAt reflects the just-set value');
   });
 
   test('a belongsTo with a sourceKey reads from the source key in the payload', function (assert) {
