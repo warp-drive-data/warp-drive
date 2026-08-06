@@ -138,14 +138,20 @@ module('Validator | Report Compaction', function () {
     );
     assert.true(found, `the header reports all ${TOTAL_ERRORS} occurrences even though most are not shown`);
 
-    const notShownMatch = allText.match(/\.\.\. and (\d+) more distinct issues? \((\d+) occurrences?\) not shown \.\.\./);
+    const notShownMatch = allText.match(
+      /\.\.\. and (\d+) more distinct issues? \((\d+) occurrences?\) not shown \.\.\./
+    );
     assert.true(!!notShownMatch, 'a trailing note reports the distinct issues that were omitted');
 
     if (notShownMatch) {
       const [, hiddenGroups, hiddenOccurrences] = notShownMatch;
       // every duplicate-resource message here is unique, so each hidden
       // group corresponds to exactly one hidden occurrence
-      assert.equal(hiddenGroups, String(TOTAL_ERRORS - 50), 'the correct number of distinct issues is reported as hidden');
+      assert.equal(
+        hiddenGroups,
+        String(TOTAL_ERRORS - 50),
+        'the correct number of distinct issues is reported as hidden'
+      );
       assert.equal(hiddenOccurrences, hiddenGroups, 'each hidden distinct issue here has exactly one occurrence');
     }
   });

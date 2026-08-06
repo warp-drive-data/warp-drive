@@ -506,7 +506,9 @@ export class Reporter {
             const end = loc.end.column - 1;
             const symbol = error.type === 'error' ? '❌' : error.type === 'warning' ? '⚠️' : 'ℹ️';
             const extra = recurrenceNoteFor.get(error);
-            const message = extra ? `${error.message} (recurs ${extra} more time${extra === 1 ? '' : 's'})` : error.message;
+            const message = extra
+              ? `${error.message} (recurs ${extra} more time${extra === 1 ? '' : 's'})`
+              : error.message;
             nextLine(
               colorize
                 ? `${''.padStart(LINE_SIZE, ' ') + symbol}\t${' '.repeat(start)}%c^${'~'.repeat(end - start)} %c//%c ${message}%c`
