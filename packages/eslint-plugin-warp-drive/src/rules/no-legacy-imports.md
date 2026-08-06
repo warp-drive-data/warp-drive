@@ -38,6 +38,21 @@ import { findRecord } from '@warp-drive/utilities/rest';
 - Namespace imports, export-all (`export * from`), re-exports with `from`, CommonJS `require`,
   and dynamic imports are out of scope for v1 (no report).
 
+## Unmapped exports
+
+The embedded mapping is a point-in-time snapshot; it doesn't automatically pick up exports
+added afterward. Rather than silently leaving such an import untouched:
+
+- If every export we've ever tracked for a legacy module funnels into the same replacement
+  module, an untracked token from that module is routed there too (same export name, no
+  guessing at a rename).
+- If a legacy module is known but its tracked exports funnel into more than one replacement
+  module (e.g. some tokens move to `@warp-drive/core`, others to `@warp-drive/ember`), an
+  untracked token from it can't be routed safely. It is reported without an autofix so it
+  gets manual attention instead of being silently skipped.
+- Imports from modules this rule has no bookkeeping for at all (e.g. third-party packages)
+  are still ignored entirely, as before.
+
 ## Notes
 
 - Deduplication of existing imports from a replacement module is not performed in v1.
