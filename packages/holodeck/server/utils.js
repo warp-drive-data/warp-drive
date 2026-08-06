@@ -59,7 +59,8 @@ export function getNiceUrl(url) {
   const urlObj = new URL(url);
   urlObj.searchParams.delete('__xTestId');
   urlObj.searchParams.delete('__xTestRequestNumber');
-  return (urlObj.pathname + urlObj.searchParams.toString()).slice(1);
+  const params = urlObj.searchParams.toString();
+  return (urlObj.pathname + (params ? `?${params}` : '')).slice(1);
 }
 
 /*
