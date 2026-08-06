@@ -132,7 +132,7 @@ function asDoc<T>(doc: unknown): T {
 
 module('Integration | <JSONAPICache>.patch', function () {
   todo('We can remove a document from the cache', function (assert) {
-    assert.ok(true, 'Implement this once we have a way to teardown reactive documents');
+    assert.ok(false, 'Implement this once we have a way to teardown reactive documents');
   });
 
   test('We can add a resource to the cache', function (assert) {
