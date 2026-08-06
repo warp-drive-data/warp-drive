@@ -114,8 +114,36 @@ export class Reporter {
   capabilities: CacheCapabilitiesManager;
   contextDocument: StructuredDocument<ResourceDocument>;
   errors: ErrorReport[] = [];
-  ast: ReturnType<typeof jsonToAst>;
-  jsonStr: string;
+
+  /**
+   * The maximum number of source lines the reporter will annotate and emit
+   * in a single `console.log` call when producing a report. Documents with
+   * more lines than this are chunked across multiple calls so that no
+   * single call ever has to spread an unbounded number of colorization
+   * args (which can exceed engine call-argument/stack limits for very
+   * large payloads).
+   */
+  maxLines = 500;
+
+  declare _ast: ReturnType<typeof jsonToAst> | undefined;
+  declare _jsonStr: string | undefined;
+
+  // lazy: only parse the document into a string/AST if we actually need to
+  // locate an error, warning, or info within it. Clean documents (the vast
+  // majority) never pay this cost.
+  get jsonStr(): string {
+    if (this._jsonStr === undefined) {
+      this._jsonStr = JSON.stringify(this.contextDocument.content, null, 2);
+    }
+    return this._jsonStr;
+  }
+
+  get ast(): ReturnType<typeof jsonToAst> {
+    if (!this._ast) {
+      this._ast = jsonToAst(this.jsonStr, { loc: true });
+    }
+    return this._ast;
+  }
 
   // TODO @runspired make this configurable to consuming apps before
   // activating by default
@@ -171,9 +199,6 @@ export class Reporter {
   constructor(capabilities: CacheCapabilitiesManager, doc: StructuredDocument<ResourceDocument>) {
     this.capabilities = capabilities;
     this.contextDocument = doc;
-
-    this.jsonStr = JSON.stringify(doc.content, null, 2);
-    this.ast = jsonToAst(this.jsonStr, { loc: true });
   }
 
   declare _typeFilter: Fuse<string> | undefined;
@@ -295,14 +320,14 @@ export class Reporter {
   }
 
   report(colorize = true): void {
-    const lines = this.jsonStr.split('\n');
-
     // sort the errors by line, then by column, then by type
     const { errors } = this;
 
     if (!errors.length) {
       return;
     }
+
+    const lines = this.jsonStr.split('\n');
 
     errors.sort((a, b) => {
       return a.loc.end.line < b.loc.end.line
@@ -322,9 +347,10 @@ export class Reporter {
       errorMap.get(line)!.push(error);
     }
 
-    // splice the errors into the lines
-    const errorLines: string[] = [];
-    const colors: string[] = [];
+    // splice the errors into the lines, chunking so that no single
+    // `console.log` call has to spread more than `this.maxLines` worth of
+    // source lines (plus their error annotations) as colorization args.
+    const chunks: { text: string[]; colors: string[] }[] = [{ text: [], colors: [] }];
     const counts = {
       error: 0,
       warning: 0,
@@ -333,13 +359,17 @@ export class Reporter {
 
     const LINE_SIZE = String(lines.length).length;
     for (let i = 0; i < lines.length; i++) {
+      if (i > 0 && i % this.maxLines === 0) {
+        chunks.push({ text: [], colors: [] });
+      }
+      const chunk = chunks[chunks.length - 1];
       const line = lines[i];
-      errorLines.push(
+      chunk.text.push(
         colorize
           ? `${String(i + 1).padEnd(LINE_SIZE, ' ')}  \t%c${line}%c`
           : `${String(i + 1).padEnd(LINE_SIZE, ' ')}  \t${line}`
       );
-      colors.push(
+      chunk.colors.push(
         `color: grey; background-color: transparent;`, // first color sets color
         `color: inherit; background-color: transparent;` // second color resets the color profile
       );
@@ -354,8 +384,8 @@ export class Reporter {
           const errorLine = colorize
             ? `${''.padStart(LINE_SIZE, ' ') + symbol}\t${' '.repeat(start)}%c^${'~'.repeat(end - start)} %c//%c ${message}%c`
             : `${''.padStart(LINE_SIZE, ' ') + symbol}\t${' '.repeat(start)}^${'~'.repeat(end - start)} // ${message}`;
-          errorLines.push(errorLine);
-          colors.push(
+          chunk.text.push(errorLine);
+          chunk.colors.push(
             error.type === 'error' ? 'color: red;' : error.type === 'warning' ? 'color: orange;' : 'color: blue;',
             'color: grey;',
             error.type === 'error' ? 'color: red;' : error.type === 'warning' ? 'color: orange;' : 'color: blue;',
@@ -366,10 +396,13 @@ export class Reporter {
     }
 
     const contextStr = `${counts.error} errors and ${counts.warning} warnings found in the {json:api} document returned by ${this.contextDocument.request?.method ?? 'GET'} ${this.contextDocument.request?.url}`;
-    const errorString = contextStr + `\n\n` + errorLines.join('\n');
 
-    // eslint-disable-next-line no-console, @typescript-eslint/no-unused-expressions
-    colorize ? console.log(errorString, ...colors) : console.log(errorString);
+    chunks.forEach((chunk, index) => {
+      const prefix = index === 0 ? `${contextStr}\n\n` : '';
+      const chunkString = prefix + chunk.text.join('\n');
+      // eslint-disable-next-line no-console, @typescript-eslint/no-unused-expressions
+      colorize ? console.log(chunkString, ...chunk.colors) : console.log(chunkString);
+    });
 
     if (JSON_API_CACHE_VALIDATION_ERRORS) {
       if (counts.error > 0) {
