@@ -302,16 +302,21 @@ class CustomDotReporter extends DotReporter {
     }
 
     this.total++;
+    let failed = false;
     if (data.skipped) {
       this.skipped++;
     } else if (data.passed && !data.todo) {
       this.pass++;
     } else if (!data.passed && data.todo) {
       this.todo++;
+    } else {
+      // either a normal test failed, or a todo test unexpectedly passed
+      // (which is itself a failure: the todo should be promoted to a real test)
+      failed = true;
     }
 
     this.allData.push(data);
-    if (data.failed && !data.skipped && !data.todo) {
+    if (failed) {
       this.lineFailures.push(data);
       this.failedTests.push(data);
     }

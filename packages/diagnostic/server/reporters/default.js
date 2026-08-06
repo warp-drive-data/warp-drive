@@ -153,6 +153,7 @@ export default class CustomDotReporter {
 
     this.results.push(report);
     this.total++;
+    let failed = false;
     if (data.skipped) {
       this.skip++;
     } else if (data.passed && !data.todo) {
@@ -160,10 +161,13 @@ export default class CustomDotReporter {
     } else if (!data.passed && data.todo) {
       this.todo++;
     } else {
+      // either a normal test failed, or a todo test unexpectedly passed
+      // (which is itself a failure: the todo should be promoted to a real test)
       this.fail++;
+      failed = true;
     }
 
-    if (data.failed && !data.skipped && !data.todo) {
+    if (failed) {
       this.lineFailures.push(report);
       this.failedTests.push(report);
       this.failedTestIds.add(data.testId);
