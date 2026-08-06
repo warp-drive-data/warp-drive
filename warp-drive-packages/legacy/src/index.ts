@@ -163,13 +163,32 @@ export function useLegacyStore<T extends Cache>(
   // we extend the store to ensure we don't leak our prototype overrides to other stores below.
   class BaseKlass extends StoreKlass {}
   class LegacyConfiguredStore extends BaseKlass {
-    requestManager = new RequestManager()
-      .use(
-        [options.linksMode ? null : LegacyNetworkHandler, ...(options.handlers ?? []), Fetch].filter(
-          Boolean
-        ) as Handler[]
-      )
-      .useCache(CacheHandler);
+    constructor(createArgs?: unknown) {
+      super(createArgs);
+      // installed via defineProperty (rather than a class field/accessor) so that
+      // this lazy override of the inherited `requestManager` field does not
+      // conflict with the documented pattern of assigning it directly on
+      // consumer-authored Store subclasses. The setter preserves the ability
+      // to replace `requestManager` outright after construction.
+      let requestManager: RequestManager | undefined;
+      Object.defineProperty(this, 'requestManager', {
+        configurable: true,
+        enumerable: true,
+        get: (): RequestManager => {
+          if (!requestManager) {
+            const handlersOption = options.handlers as Handler[] | ((store: Store) => Handler[]) | undefined;
+            const handlers = typeof handlersOption === 'function' ? handlersOption(this) : (handlersOption ?? []);
+            requestManager = new RequestManager()
+              .use([options.linksMode ? null : LegacyNetworkHandler, ...handlers, Fetch].filter(Boolean) as Handler[])
+              .useCache(CacheHandler);
+          }
+          return requestManager;
+        },
+        set: (value: RequestManager): void => {
+          requestManager = value;
+        },
+      });
+    }
 
     lifetimes =
       options.policy ??

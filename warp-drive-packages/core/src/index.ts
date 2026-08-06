@@ -81,8 +81,17 @@ export interface StoreSetupOptions<T extends Cache = Cache> {
    * The request handlers to use. {@link Fetch} will automatically
    * be added to the end of the handler chain and {@link CacheHandler}
    * will automatically be added as the cache handler.
+   *
+   * May also be given as a function that receives the {@link Store} instance
+   * and returns the handlers to use. This is useful when a handler needs
+   * access to the store (e.g. to look up its owner for injections) or when
+   * the set of handlers should be decided lazily (e.g. based on a feature
+   * flag service that may not be ready until after the store is constructed).
+   *
+   * The function is invoked lazily, the first time the store's `requestManager`
+   * is accessed, and only once per store instance.
    */
-  handlers?: Handler[];
+  handlers?: Handler[] | ((store: Store) => Handler[]);
   /**
    * Schemas describing the structure of your resource data.
    *
@@ -139,7 +148,29 @@ export function useRecommendedStore<T extends Cache>(
   StoreKlass: typeof Store = Store
 ): typeof ConfiguredStore<{ cache: T }> {
   return class AppStore extends StoreKlass {
-    requestManager = new RequestManager().use([...(options.handlers ?? []), Fetch]).useCache(CacheHandler);
+    constructor(createArgs?: unknown) {
+      super(createArgs);
+      // installed via defineProperty (rather than a class field/accessor) so that
+      // this lazy override of the inherited `requestManager` field does not
+      // conflict with the documented pattern of assigning it directly on
+      // consumer-authored Store subclasses. The setter preserves the ability
+      // to replace `requestManager` outright after construction.
+      let requestManager: RequestManager | undefined;
+      Object.defineProperty(this, 'requestManager', {
+        configurable: true,
+        enumerable: true,
+        get: (): RequestManager => {
+          if (!requestManager) {
+            const handlers = typeof options.handlers === 'function' ? options.handlers(this) : (options.handlers ?? []);
+            requestManager = new RequestManager().use([...handlers, Fetch]).useCache(CacheHandler);
+          }
+          return requestManager;
+        },
+        set: (value: RequestManager): void => {
+          requestManager = value;
+        },
+      });
+    }
 
     lifetimes =
       options.policy ??
