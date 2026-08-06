@@ -64,7 +64,6 @@ export default class Store extends BaseStore {
   }
 
   adapterFor(this: Store, modelName: string): MinimumAdapterInterface;
-  adapterFor(this: Store, modelName: string, _allowMissing: true): MinimumAdapterInterface | undefined;
   adapterFor(this: Store, modelName: string, _allowMissing?: true): MinimumAdapterInterface | undefined {
     if (!ENABLE_LEGACY_REQUEST_METHODS) {
       assert(
