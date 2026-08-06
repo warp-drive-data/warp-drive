@@ -75,6 +75,40 @@ module('RequestManager | Fetch Handler', function (hooks) {
     );
   });
 
+  test('Supports GET requests with search params', async function (assert) {
+    const manager = new RequestManager();
+    manager.use([new MockServerHandler(this), Fetch]);
+
+    await GET(this, 'users?name=Chris', () => ({
+      data: [
+        {
+          id: '1',
+          type: 'user',
+          attributes: {
+            name: 'Chris Thoburn',
+          },
+        },
+      ],
+    }));
+
+    const doc = await manager.request({ url: buildBaseURL({ resourcePath: 'users' }) + '?name=Chris' });
+    assert.deepEqual(
+      doc.content,
+      {
+        data: [
+          {
+            id: '1',
+            type: 'user',
+            attributes: {
+              name: 'Chris Thoburn',
+            },
+          },
+        ],
+      },
+      'The response is processed correctly'
+    );
+  });
+
   test('Supports HEAD requests', async function (assert) {
     const manager = new RequestManager();
     manager.use([new MockServerHandler(this), Fetch]);
