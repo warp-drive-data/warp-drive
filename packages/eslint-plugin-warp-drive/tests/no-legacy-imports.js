@@ -19,6 +19,7 @@ const eslintTester = new RuleTester({
 });
 
 const msg = 'warp-drive.no-legacy-imports';
+const unmappedMsg = 'warp-drive.no-legacy-imports.unmapped-export';
 
 // Note: These tests depend on the monorepo having a mapping entry for the given module/export.
 // We select cases present in public-exports-mapping-5.5.enriched.json.
@@ -55,10 +56,12 @@ eslintTester.run('no-legacy-imports', rule, {
       output: `import Model from '@warp-drive/legacy/model';`,
       errors: [{ messageId: msg }],
     },
-    // Mixed specifiers split: some known, some unknown (stay at original)
+    // A token with no per-export mapping entry ("Unknown") is still routed to
+    // '@warp-drive/legacy/model' via the module-level fallback (regression for #10394),
+    // since every other known export of '@ember-data/model' funnels there too.
     {
       code: `import Model, { hasMany, Unknown } from '@ember-data/model';`,
-      output: `import Model, { hasMany } from '@warp-drive/legacy/model';\nimport { Unknown } from '@ember-data/model';`,
+      output: `import Model, { hasMany, Unknown } from '@warp-drive/legacy/model';`,
       errors: [{ messageId: msg }],
     },
     // Default import whose replacement is a named export must be rewritten to a
@@ -84,6 +87,29 @@ eslintTester.run('no-legacy-imports', rule, {
       code: `import Store from '@ember-data/store';`,
       output: `import { Store } from '@warp-drive/core';`,
       errors: [{ messageId: msg }],
+    },
+    // Type-only exports (interfaces/type aliases) are now tracked too, not just value
+    // exports (regression for #10394 — "we added exports, mostly types").
+    {
+      code: `import { CachePolicy } from '@ember-data/store';`,
+      output: `import { CachePolicy } from '@warp-drive/core';`,
+      errors: [{ messageId: msg }],
+    },
+    // A token never individually recorded in the mapping is routed via the module-level
+    // fallback, since every known export of '@ember-data/store' funnels into
+    // '@warp-drive/core' (regression for #10394).
+    {
+      code: `import { TotallyMadeUpExportName } from '@ember-data/store';`,
+      output: `import { TotallyMadeUpExportName } from '@warp-drive/core';`,
+      errors: [{ messageId: msg }],
+    },
+    // '@ember-data/request' legitimately splits across two replacement modules
+    // (RequestManager -> '@warp-drive/core', others -> '@warp-drive/ember'), so an
+    // unrecognized token from it has no safe fallback and is flagged instead of guessed
+    // (regression for #10394 — "we don't error ... we should").
+    {
+      code: `import { TotallyMadeUpExportName } from '@ember-data/request';`,
+      errors: [{ messageId: unmappedMsg }],
     },
   ],
 });
@@ -119,6 +145,14 @@ tsTester.run('no-legacy-imports (type-only imports)', rule, {
     {
       code: `import { type CacheHandler, recordIdentifierFor } from '@ember-data/store';`,
       output: `import { type CacheHandler, recordIdentifierFor } from '@warp-drive/core';`,
+      errors: [{ messageId: msg }],
+    },
+    // A type-only-declared export (an interface, tracked with typeOnly: true in the
+    // mapping data) is now rewritten too, combined with `import type` preservation
+    // (regression for #10394).
+    {
+      code: `import type { CachePolicy } from '@ember-data/store';`,
+      output: `import type { CachePolicy } from '@warp-drive/core';`,
       errors: [{ messageId: msg }],
     },
   ],
