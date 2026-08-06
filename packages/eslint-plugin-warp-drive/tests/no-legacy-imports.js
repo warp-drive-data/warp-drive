@@ -79,5 +79,47 @@ eslintTester.run('no-legacy-imports', rule, {
       output: `import { RESTAdapter as Adapter } from '@warp-drive/legacy/adapter/rest';`,
       errors: [{ messageId: msg }],
     },
+    // Default import whose replacement is a named export (regression for #10399)
+    {
+      code: `import Store from '@ember-data/store';`,
+      output: `import { Store } from '@warp-drive/core';`,
+      errors: [{ messageId: msg }],
+    },
+  ],
+});
+
+// `import type` is TypeScript-only syntax; @babel/eslint-parser above doesn't parse it,
+// so these cases need @typescript-eslint/parser (regression for #10399).
+const tsTester = new RuleTester({
+  languageOptions: {
+    parser: require('@typescript-eslint/parser'),
+    ecmaVersion: 'latest',
+    sourceType: 'module',
+  },
+});
+
+tsTester.run('no-legacy-imports (type-only imports)', rule, {
+  valid: [],
+  invalid: [
+    // A type-only default import converted to a named export must stay type-only,
+    // and must become a named import rather than keeping the default form.
+    {
+      code: `import type Store from '@ember-data/store';`,
+      output: `import type { Store } from '@warp-drive/core';`,
+      errors: [{ messageId: msg }],
+    },
+    // A lone inline `type` specifier is hoisted to a declaration-level `import type`.
+    {
+      code: `import { type CacheHandler } from '@ember-data/store';`,
+      output: `import type { CacheHandler } from '@warp-drive/core';`,
+      errors: [{ messageId: msg }],
+    },
+    // When only some named specifiers are type-only, the inline `type` modifier
+    // is preserved per-specifier rather than hoisted to the declaration.
+    {
+      code: `import { type CacheHandler, recordIdentifierFor } from '@ember-data/store';`,
+      output: `import { type CacheHandler, recordIdentifierFor } from '@warp-drive/core';`,
+      errors: [{ messageId: msg }],
+    },
   ],
 });

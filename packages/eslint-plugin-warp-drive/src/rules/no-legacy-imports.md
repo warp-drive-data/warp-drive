@@ -32,9 +32,11 @@ import { findRecord } from '@warp-drive/utilities/rest';
 ## Scope (v1)
 
 - Static imports only.
-- Default and named specifiers are supported.
+- Default and named specifiers are supported, including TypeScript `import type` declarations
+  and inline `type` specifiers (e.g. `import { type Foo } from '...'`); their type-only-ness
+  is preserved across the rewrite.
 - Namespace imports, export-all (`export * from`), re-exports with `from`, CommonJS `require`,
-  dynamic imports, and type-only handling are out of scope for v1 (no report).
+  and dynamic imports are out of scope for v1 (no report).
 
 ## Notes
 
