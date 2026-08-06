@@ -440,6 +440,17 @@ export class Reporter {
       }
     }
 
+    // extend the first/last range to the document boundary when the
+    // leading/trailing stretch is too small for a skip marker to be worth it
+    const firstRange = ranges[0];
+    if (firstRange && firstRange[0] - 1 <= MERGE_GAP + 1) {
+      firstRange[0] = 1;
+    }
+    const lastRangeOverall = ranges[ranges.length - 1];
+    if (lastRangeOverall && lines.length - lastRangeOverall[1] <= MERGE_GAP + 1) {
+      lastRangeOverall[1] = lines.length;
+    }
+
     // render into chunks so that no single `console.log` call has to spread
     // more than `this.maxLines` worth of rendered lines as colorization
     // args.
@@ -455,19 +466,27 @@ export class Reporter {
       renderedCount++;
     };
 
+    const pushSkipMarker = (gap: number) => {
+      nextLine(
+        colorize
+          ? `%c... ${gap} line${gap === 1 ? '' : 's'} skipped (no errors) ...%c`
+          : `... ${gap} line${gap === 1 ? '' : 's'} skipped (no errors) ...`,
+        ['color: grey; font-style: italic;', 'color: inherit; background-color: transparent;']
+      );
+    };
+
     const LINE_SIZE = String(lines.length).length;
     for (let r = 0; r < ranges.length; r++) {
       const [rangeStart, rangeEnd] = ranges[r];
 
-      if (r > 0) {
+      if (r === 0) {
+        if (rangeStart > 1) {
+          pushSkipMarker(rangeStart - 1);
+        }
+      } else {
         const gap = rangeStart - ranges[r - 1][1] - 1;
         if (gap > 0) {
-          nextLine(
-            colorize
-              ? `%c... ${gap} line${gap === 1 ? '' : 's'} skipped (no errors) ...%c`
-              : `... ${gap} line${gap === 1 ? '' : 's'} skipped (no errors) ...`,
-            ['color: grey; font-style: italic;', 'color: inherit; background-color: transparent;']
-          );
+          pushSkipMarker(gap);
         }
       }
 
@@ -502,6 +521,11 @@ export class Reporter {
           }
         }
       }
+    }
+
+    const lastRenderedRange = ranges[ranges.length - 1];
+    if (lastRenderedRange && lastRenderedRange[1] < lines.length) {
+      pushSkipMarker(lines.length - lastRenderedRange[1]);
     }
 
     if (hiddenGroupCount > 0) {
