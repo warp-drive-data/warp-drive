@@ -114,8 +114,63 @@ export class Reporter {
   capabilities: CacheCapabilitiesManager;
   contextDocument: StructuredDocument<ResourceDocument>;
   errors: ErrorReport[] = [];
-  ast: ReturnType<typeof jsonToAst>;
-  jsonStr: string;
+
+  /**
+   * The maximum number of source lines the reporter will annotate and emit
+   * in a single `console.log` call when producing a report. Documents with
+   * more lines than this are chunked across multiple calls so that no
+   * single call ever has to spread an unbounded number of colorization
+   * args (which can exceed engine call-argument/stack limits for very
+   * large payloads).
+   */
+  maxLines = 500;
+
+  /**
+   * The number of source lines to show before/after each reported line when
+   * annotating the document. Stretches of source between annotated lines
+   * that are larger than this get collapsed into a single
+   * `... N lines skipped ...` marker rather than printed in full.
+   */
+  contextLines = 2;
+
+  /**
+   * The number of occurrences of an identical error message to annotate
+   * inline before collapsing the rest. When a message recurs beyond this
+   * count, the last shown occurrence's annotation is suffixed with
+   * `(recurs N more times)` and the remaining occurrences are omitted from
+   * the printed document entirely (though they still count toward the
+   * totals in the summary line).
+   */
+  maxOccurrencesPerGroup = 1;
+
+  /**
+   * The number of distinct error messages to annotate inline before
+   * refusing to show any more. Once this many distinct messages have been
+   * shown, further distinct messages are omitted entirely and rolled up
+   * into a single trailing `... and N more distinct issues ... not shown`
+   * line so nothing is dropped silently.
+   */
+  maxDistinctIssues = 50;
+
+  declare _ast: ReturnType<typeof jsonToAst> | undefined;
+  declare _jsonStr: string | undefined;
+
+  // lazy: only parse the document into a string/AST if we actually need to
+  // locate an error, warning, or info within it. Clean documents (the vast
+  // majority) never pay this cost.
+  get jsonStr(): string {
+    if (this._jsonStr === undefined) {
+      this._jsonStr = JSON.stringify(this.contextDocument.content, null, 2);
+    }
+    return this._jsonStr;
+  }
+
+  get ast(): ReturnType<typeof jsonToAst> {
+    if (!this._ast) {
+      this._ast = jsonToAst(this.jsonStr, { loc: true });
+    }
+    return this._ast;
+  }
 
   // TODO @runspired make this configurable to consuming apps before
   // activating by default
@@ -171,9 +226,6 @@ export class Reporter {
   constructor(capabilities: CacheCapabilitiesManager, doc: StructuredDocument<ResourceDocument>) {
     this.capabilities = capabilities;
     this.contextDocument = doc;
-
-    this.jsonStr = JSON.stringify(doc.content, null, 2);
-    this.ast = jsonToAst(this.jsonStr, { loc: true });
   }
 
   declare _typeFilter: Fuse<string> | undefined;
@@ -295,14 +347,14 @@ export class Reporter {
   }
 
   report(colorize = true): void {
-    const lines = this.jsonStr.split('\n');
-
     // sort the errors by line, then by column, then by type
     const { errors } = this;
 
     if (!errors.length) {
       return;
     }
+
+    const lines = this.jsonStr.split('\n');
 
     errors.sort((a, b) => {
       return a.loc.end.line < b.loc.end.line
@@ -312,64 +364,187 @@ export class Reporter {
           : compareType(a.type, b.type);
     });
 
-    // store the errors in a map by line
-    const errorMap = new Map<number, ErrorReport[]>();
-    for (const error of errors) {
-      const line = error.loc.end.line;
-      if (!errorMap.has(line)) {
-        errorMap.set(line, []);
-      }
-      errorMap.get(line)!.push(error);
-    }
-
-    // splice the errors into the lines
-    const errorLines: string[] = [];
-    const colors: string[] = [];
+    // counts reflect every error/warning/info regardless of whether it ends
+    // up annotated inline below, so the header total is always accurate.
     const counts = {
       error: 0,
       warning: 0,
       info: 0,
     };
+    for (const error of errors) {
+      counts[error.type]++;
+    }
+    const contextStr = `${counts.error} errors and ${counts.warning} warnings found in the {json:api} document returned by ${this.contextDocument.request?.method ?? 'GET'} ${this.contextDocument.request?.url}`;
+
+    // group identical messages together so repeats can be collapsed down to
+    // a representative sample instead of printed in full.
+    const groups = new Map<string, ErrorReport[]>();
+    for (const error of errors) {
+      let group = groups.get(error.message);
+      if (!group) {
+        group = [];
+        groups.set(error.message, group);
+      }
+      group.push(error);
+    }
+
+    const activeErrors = new Set<ErrorReport>();
+    const recurrenceNoteFor = new Map<ErrorReport, number>();
+    let shownGroupCount = 0;
+    let hiddenGroupCount = 0;
+    let hiddenOccurrenceCount = 0;
+
+    for (const group of groups.values()) {
+      if (shownGroupCount < this.maxDistinctIssues) {
+        shownGroupCount++;
+        const showCount = Math.min(this.maxOccurrencesPerGroup, group.length);
+        for (let i = 0; i < showCount; i++) {
+          activeErrors.add(group[i]);
+        }
+        const extra = group.length - showCount;
+        if (extra > 0) {
+          recurrenceNoteFor.set(group[showCount - 1], extra);
+        }
+      } else {
+        hiddenGroupCount++;
+        hiddenOccurrenceCount += group.length;
+      }
+    }
+
+    // store the active (to-be-annotated) errors in a map by line
+    const errorMap = new Map<number, ErrorReport[]>();
+    for (const error of activeErrors) {
+      const line = error.loc.end.line;
+      let errorsForLine = errorMap.get(line);
+      if (!errorsForLine) {
+        errorsForLine = [];
+        errorMap.set(line, errorsForLine);
+      }
+      errorsForLine.push(error);
+    }
+
+    // determine which stretches of source to display: a window of
+    // `contextLines` around every active error line, merging windows that
+    // are close enough together that a skip marker wouldn't save anything.
+    const MERGE_GAP = 3;
+    const activeLines = Array.from(errorMap.keys()).sort((a, b) => a - b);
+    const ranges: [number, number][] = [];
+    for (const line of activeLines) {
+      const start = Math.max(1, line - this.contextLines);
+      const end = Math.min(lines.length, line + this.contextLines);
+      const lastRange = ranges[ranges.length - 1];
+      if (lastRange && start <= lastRange[1] + MERGE_GAP + 1) {
+        lastRange[1] = Math.max(lastRange[1], end);
+      } else {
+        ranges.push([start, end]);
+      }
+    }
+
+    // extend the first/last range to the document boundary when the
+    // leading/trailing stretch is too small for a skip marker to be worth it
+    const firstRange = ranges[0];
+    if (firstRange && firstRange[0] - 1 <= MERGE_GAP + 1) {
+      firstRange[0] = 1;
+    }
+    const lastRangeOverall = ranges[ranges.length - 1];
+    if (lastRangeOverall && lines.length - lastRangeOverall[1] <= MERGE_GAP + 1) {
+      lastRangeOverall[1] = lines.length;
+    }
+
+    // render into chunks so that no single `console.log` call has to spread
+    // more than `this.maxLines` worth of rendered lines as colorization
+    // args.
+    const chunks: { text: string[]; colors: string[] }[] = [{ text: [], colors: [] }];
+    let renderedCount = 0;
+    const nextLine = (text: string, lineColors: string[]) => {
+      if (renderedCount > 0 && renderedCount % this.maxLines === 0) {
+        chunks.push({ text: [], colors: [] });
+      }
+      const chunk = chunks[chunks.length - 1];
+      chunk.text.push(text);
+      chunk.colors.push(...lineColors);
+      renderedCount++;
+    };
+
+    const pushSkipMarker = (gap: number) => {
+      nextLine(
+        colorize
+          ? `%c... ${gap} line${gap === 1 ? '' : 's'} skipped (no errors) ...%c`
+          : `... ${gap} line${gap === 1 ? '' : 's'} skipped (no errors) ...`,
+        ['color: grey; font-style: italic;', 'color: inherit; background-color: transparent;']
+      );
+    };
 
     const LINE_SIZE = String(lines.length).length;
-    for (let i = 0; i < lines.length; i++) {
-      const line = lines[i];
-      errorLines.push(
-        colorize
-          ? `${String(i + 1).padEnd(LINE_SIZE, ' ')}  \t%c${line}%c`
-          : `${String(i + 1).padEnd(LINE_SIZE, ' ')}  \t${line}`
-      );
-      colors.push(
-        `color: grey; background-color: transparent;`, // first color sets color
-        `color: inherit; background-color: transparent;` // second color resets the color profile
-      );
-      if (errorMap.has(i + 1)) {
-        const errorsForLine = errorMap.get(i + 1)!;
-        for (const error of errorsForLine) {
-          counts[error.type]++;
-          const { loc, message } = error;
-          const start = loc.end.line === loc.start.line ? loc.start.column - 1 : loc.end.column - 1;
-          const end = loc.end.column - 1;
-          const symbol = error.type === 'error' ? '❌' : error.type === 'warning' ? '⚠️' : 'ℹ️';
-          const errorLine = colorize
-            ? `${''.padStart(LINE_SIZE, ' ') + symbol}\t${' '.repeat(start)}%c^${'~'.repeat(end - start)} %c//%c ${message}%c`
-            : `${''.padStart(LINE_SIZE, ' ') + symbol}\t${' '.repeat(start)}^${'~'.repeat(end - start)} // ${message}`;
-          errorLines.push(errorLine);
-          colors.push(
-            error.type === 'error' ? 'color: red;' : error.type === 'warning' ? 'color: orange;' : 'color: blue;',
-            'color: grey;',
-            error.type === 'error' ? 'color: red;' : error.type === 'warning' ? 'color: orange;' : 'color: blue;',
-            'color: inherit; background-color: transparent;' // reset color
-          );
+    for (let r = 0; r < ranges.length; r++) {
+      const [rangeStart, rangeEnd] = ranges[r];
+
+      if (r === 0) {
+        if (rangeStart > 1) {
+          pushSkipMarker(rangeStart - 1);
+        }
+      } else {
+        const gap = rangeStart - ranges[r - 1][1] - 1;
+        if (gap > 0) {
+          pushSkipMarker(gap);
+        }
+      }
+
+      for (let i = rangeStart; i <= rangeEnd; i++) {
+        const line = lines[i - 1];
+        nextLine(
+          colorize
+            ? `${String(i).padEnd(LINE_SIZE, ' ')}  \t%c${line}%c`
+            : `${String(i).padEnd(LINE_SIZE, ' ')}  \t${line}`,
+          [`color: grey; background-color: transparent;`, `color: inherit; background-color: transparent;`]
+        );
+
+        if (errorMap.has(i)) {
+          for (const error of errorMap.get(i)!) {
+            const { loc } = error;
+            const start = loc.end.line === loc.start.line ? loc.start.column - 1 : loc.end.column - 1;
+            const end = loc.end.column - 1;
+            const symbol = error.type === 'error' ? '❌' : error.type === 'warning' ? '⚠️' : 'ℹ️';
+            const extra = recurrenceNoteFor.get(error);
+            const message = extra
+              ? `${error.message} (recurs ${extra} more time${extra === 1 ? '' : 's'})`
+              : error.message;
+            nextLine(
+              colorize
+                ? `${''.padStart(LINE_SIZE, ' ') + symbol}\t${' '.repeat(start)}%c^${'~'.repeat(end - start)} %c//%c ${message}%c`
+                : `${''.padStart(LINE_SIZE, ' ') + symbol}\t${' '.repeat(start)}^${'~'.repeat(end - start)} // ${message}`,
+              [
+                error.type === 'error' ? 'color: red;' : error.type === 'warning' ? 'color: orange;' : 'color: blue;',
+                'color: grey;',
+                error.type === 'error' ? 'color: red;' : error.type === 'warning' ? 'color: orange;' : 'color: blue;',
+                'color: inherit; background-color: transparent;',
+              ]
+            );
+          }
         }
       }
     }
 
-    const contextStr = `${counts.error} errors and ${counts.warning} warnings found in the {json:api} document returned by ${this.contextDocument.request?.method ?? 'GET'} ${this.contextDocument.request?.url}`;
-    const errorString = contextStr + `\n\n` + errorLines.join('\n');
+    const lastRenderedRange = ranges[ranges.length - 1];
+    if (lastRenderedRange && lastRenderedRange[1] < lines.length) {
+      pushSkipMarker(lines.length - lastRenderedRange[1]);
+    }
 
-    // eslint-disable-next-line no-console, @typescript-eslint/no-unused-expressions
-    colorize ? console.log(errorString, ...colors) : console.log(errorString);
+    if (hiddenGroupCount > 0) {
+      nextLine(
+        colorize
+          ? `%c... and ${hiddenGroupCount} more distinct issue${hiddenGroupCount === 1 ? '' : 's'} (${hiddenOccurrenceCount} occurrence${hiddenOccurrenceCount === 1 ? '' : 's'}) not shown ...%c`
+          : `... and ${hiddenGroupCount} more distinct issues (${hiddenOccurrenceCount} occurrences) not shown ...`,
+        ['color: grey; font-style: italic;', 'color: inherit; background-color: transparent;']
+      );
+    }
+
+    chunks.forEach((chunk, index) => {
+      const prefix = index === 0 ? `${contextStr}\n\n` : '';
+      const chunkString = prefix + chunk.text.join('\n');
+      // eslint-disable-next-line no-console, @typescript-eslint/no-unused-expressions
+      colorize ? console.log(chunkString, ...chunk.colors) : console.log(chunkString);
+    });
 
     if (JSON_API_CACHE_VALIDATION_ERRORS) {
       if (counts.error > 0) {
