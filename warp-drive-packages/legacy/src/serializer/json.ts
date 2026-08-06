@@ -21,7 +21,7 @@ import { dasherize, singularize } from '@warp-drive/utilities/string';
 
 import type { Snapshot } from '../compat/-private.ts';
 import { Serializer } from '../serializer.ts';
-import { coerceId } from './-private/utils.ts';
+import { coerceId, determineRelationshipType } from './-private/utils.ts';
 import type { Transform } from './transform.ts';
 
 const SOURCE_POINTER_REGEXP = /^\/?data\/(attributes|relationships)\/(.*)/;
@@ -962,9 +962,7 @@ const JSONSerializer: any = Serializer.extend({
     relationship: LegacyBelongsToField | LegacyHasManyField
   ): boolean {
     // @ts-expect-error store is dynamically injected
-    const schema = this.store.modelFor(snapshot.modelName);
-    // @ts-expect-error store is dynamically injected
-    const relationshipType = schema.determineRelationshipType(relationship, this.store);
+    const relationshipType = determineRelationshipType(this.store, snapshot.modelName, relationship);
     if (this._mustSerialize(key)) {
       return true;
     }

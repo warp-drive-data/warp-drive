@@ -8,6 +8,8 @@ import Mixin from '@ember/object/mixin';
 
 import { camelize } from '@warp-drive/utilities/string';
 
+import { inverseForRelationship } from './utils.ts';
+
 /**
   ## Using Embedded Records
 
@@ -477,8 +479,7 @@ export const EmbeddedRecordsMixin: Mixin = Mixin.create({
   */
   removeEmbeddedForeignKey(snapshot, embeddedSnapshot, relationship, json) {
     if (relationship.kind === 'belongsTo') {
-      const schema = this.store.modelFor(snapshot.modelName);
-      const parentRecord = schema.inverseFor(relationship.name, this.store);
+      const parentRecord = inverseForRelationship(this.store, snapshot.modelName, relationship.name);
       if (parentRecord) {
         const name = parentRecord.name;
         const embeddedSerializer = this.store.serializerFor(embeddedSnapshot.modelName);
