@@ -299,7 +299,6 @@ export function useLegacyStore<T extends Cache>(
     }
 
     adapterFor(this: Store, modelName: string): MinimumAdapterInterface;
-    adapterFor(this: Store, modelName: string, _allowMissing: true): MinimumAdapterInterface | undefined;
     adapterFor(this: Store, modelName: string, _allowMissing?: true): MinimumAdapterInterface | undefined {
       assert(
         `useLegacyStore was setup in linksMode. linksMode assumes that all requests have been migrated away from adapters and serializers.`,

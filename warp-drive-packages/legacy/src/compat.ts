@@ -35,7 +35,6 @@ export interface LegacyStoreCompat extends Store {
   _fetchManager: FetchManager;
 
   adapterFor(this: Store, modelName: string): MinimumAdapterInterface;
-  adapterFor(this: Store, modelName: string, _allowMissing: true): MinimumAdapterInterface | undefined;
 
   serializerFor<K extends string>(modelName: K, _allowMissing?: boolean): MinimumSerializerInterface | null;
 
@@ -73,7 +72,6 @@ export type CompatStore = LegacyStoreCompat;
   @param modelName
 */
 export function adapterFor(this: Store, modelName: string): MinimumAdapterInterface;
-export function adapterFor(this: Store, modelName: string, _allowMissing: true): MinimumAdapterInterface | undefined;
 export function adapterFor(this: Store, modelName: string, _allowMissing?: true): MinimumAdapterInterface | undefined {
   assert(
     `Attempted to call store.adapterFor(), but the store instance has already been destroyed.`,
