@@ -72,25 +72,28 @@ function createHelpers(context) {
   }
 
   /**
-   * @typedef {{ spec: any, originalExportName: string | null, targetExportName: string | null }} SpecifierDescriptor
+   * @typedef {{ spec: any, originalExportName: string | null, targetExportName: string | null, isType: boolean }} SpecifierDescriptor
    */
 
   /** @returns {Record<string, SpecifierDescriptor[]>} */
-  function groupImportSpecifiersByTarget(moduleName, specifiers) {
+  function groupImportSpecifiersByTarget(moduleName, specifiers, declarationIsTypeOnly) {
     const groups = Object.create(null);
     for (const spec of specifiers) {
       const expName = getImportExportNameFromImportSpecifier(spec);
+      // A specifier is type-only if the whole declaration is `import type ...`
+      // or if it carries its own inline `type` modifier (e.g. `{ type Foo }`).
+      const isType = declarationIsTypeOnly || spec.importKind === 'type';
       if (!expName) {
         // namespace or unknown – keep under original module, verbatim
         groups[moduleName] ||= [];
-        groups[moduleName].push({ spec, originalExportName: null, targetExportName: null });
+        groups[moduleName].push({ spec, originalExportName: null, targetExportName: null, isType });
         continue;
       }
       const target = MAPPING.get(`${moduleName}::${expName}`);
       const targetModule = target ? target.module : moduleName; // unknowns remain under original module
       const targetExportName = target ? target.export : expName; // unknowns keep their own export name
       groups[targetModule] ||= [];
-      groups[targetModule].push({ spec, originalExportName: expName, targetExportName });
+      groups[targetModule].push({ spec, originalExportName: expName, targetExportName, isType });
     }
     return groups;
   }
@@ -107,24 +110,30 @@ function createHelpers(context) {
   function buildSpecifierText(descriptor) {
     if (descriptor.targetExportName == null) {
       // namespace or unrecognized specifier – keep it exactly as written
-      return { kind: 'verbatim', text: sourceCode.getText(descriptor.spec) };
+      return { kind: 'verbatim', text: sourceCode.getText(descriptor.spec), isType: descriptor.isType };
     }
     const localName = descriptor.spec.local.name;
     if (descriptor.targetExportName === 'default') {
-      return { kind: 'default', text: localName };
+      return { kind: 'default', text: localName, isType: descriptor.isType };
     }
     const text =
       descriptor.targetExportName === localName
         ? descriptor.targetExportName
         : `${descriptor.targetExportName} as ${localName}`;
-    return { kind: 'named', text };
+    return { kind: 'named', text, isType: descriptor.isType };
   }
 
   function buildImportTextForGroup(groupModule, descriptors, quote) {
     const rendered = descriptors.map(buildSpecifierText);
+    // If every specifier landing in this group is type-only, hoist the `type`
+    // modifier onto the declaration itself instead of repeating it per-specifier.
+    const wholeImportIsType = rendered.length > 0 && rendered.every((r) => r.isType);
+
     const defaults = rendered.filter((r) => r.kind === 'default').map((r) => r.text);
     const verbatim = rendered.filter((r) => r.kind === 'verbatim').map((r) => r.text);
-    const named = rendered.filter((r) => r.kind === 'named').map((r) => r.text);
+    const named = rendered
+      .filter((r) => r.kind === 'named')
+      .map((r) => (r.isType && !wholeImportIsType ? `type ${r.text}` : r.text));
 
     const segments = [];
     if (defaults.length) segments.push(defaults.join(', '));
@@ -135,7 +144,8 @@ function createHelpers(context) {
       return '';
     }
 
-    return ['import ', segments.join(', '), ' from ', quote, groupModule, quote, ';'].join('');
+    const importKeyword = wholeImportIsType ? 'import type ' : 'import ';
+    return [importKeyword, segments.join(', '), ' from ', quote, groupModule, quote, ';'].join('');
   }
 
   return {
@@ -169,8 +179,9 @@ module.exports = {
     function handleImportDeclaration(node) {
       if (!node.source || !node.source.value || !node.specifiers || node.specifiers.length === 0) return;
       const fromModule = String(node.source.value);
+      const declarationIsTypeOnly = node.importKind === 'type';
 
-      const groups = helpers.groupImportSpecifiersByTarget(fromModule, node.specifiers);
+      const groups = helpers.groupImportSpecifiersByTarget(fromModule, node.specifiers, declarationIsTypeOnly);
       const hasMapped = helpers.hasAnyMappedTarget(groups, fromModule);
       if (!hasMapped) return;
 
