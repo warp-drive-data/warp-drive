@@ -31,10 +31,7 @@ export function coerceId(id: Coercable): string | null {
   @private
 */
 export function inverseForRelationship(store: Store, type: string, name: string): LegacyRelationshipField | null {
-  const relationship = store.schema.fields({ type }).get(name) as
-    | LegacyBelongsToField
-    | LegacyHasManyField
-    | undefined;
+  const relationship = store.schema.fields({ type }).get(name) as LegacyBelongsToField | LegacyHasManyField | undefined;
   assert(`No relationship named '${name}' on '${type}' exists.`, relationship);
 
   const { options } = relationship;
