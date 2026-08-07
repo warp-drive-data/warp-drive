@@ -399,10 +399,7 @@ The native [Request](https://developer.mozilla.org/en-US/docs/Web/API/Request) i
 Request handlers can be used to connect to any data source via any mechanism. Besides fetch, this might be localStorage, [XMLHttpRequest](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest), [WebSockets](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket), [ServerEvents](https://developer.mozilla.org/en-US/docs/Web/API/EventSource), [MessageChannel](https://developer.mozilla.org/en-US/docs/Web/API/MessageChannel), or something else entirely!
 
 ```ts [services/store.ts]
-import Store from '@ember-data/store';
-
-import RequestManager from '@ember-data/request';
-import Fetch from '@ember-data/request/fetch';
+import { Store, RequestManager, Fetch } from '@warp-drive/core';
 import { // [!code focus:4] [!code ++]
   SessionSettingsHandler, // [!code ++]
   FileSystemHandler // [!code ++]
