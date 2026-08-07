@@ -81,7 +81,7 @@ shell to handle communication with your application.
 The store should have nearly the same configuration as the store used by your app,
 with a few exceptions:
 
-- Instead of using the `CacheHandler` from `@ember-data/store` we use the one provided by
+- Instead of using the `CacheHandler` from `@warp-drive/core` we use the one provided by
   `@warp-drive/experiments/data-worker`
 - Since this store will never directly instantiate records, you should omit the configuration
   of the `instantiateRecord` and `teardownRecord` hooks.
@@ -89,22 +89,20 @@ with a few exceptions:
 Below is an example worker using a `JSONAPI` cache and the basic `Fetch` handler.
 
 ```ts
-import Store from '@ember-data/store';
-import RequestManager from '@ember-data/request';
-import Fetch from '@ember-data/request/fetch';
-import JSONAPICache from '@ember-data/json-api';
+import { Store, RequestManager, Fetch } from '@warp-drive/core';
+import { DefaultCachePolicy } from '@warp-drive/core/store';
+import type { CacheCapabilitiesManager } from '@warp-drive/core/types';
+import { SchemaService } from '@warp-drive/core/reactive';
+import { JSONAPICache } from '@warp-drive/json-api';
 
 import { DataWorker, CacheHandler } from '@warp-drive/experiments/data-worker';
-import type { CacheCapabilitiesManager } from '@ember-data/store/types';
-import { CachePolicy } from '@ember-data/request-utils';
-import { SchemaService } from '@warp-drive/schema-record';
 
 class WorkerStore extends Store {
   requestManager = new RequestManager()
     .use([Fetch])
     .useCache(CacheHandler);
 
-  lifetimes = new CachePolicy({
+  lifetimes = new DefaultCachePolicy({
     apiCacheHardExpires: 600_000,
     apiCacheSoftExpires: 300_000,
   });
