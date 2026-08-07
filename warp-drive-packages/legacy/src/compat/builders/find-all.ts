@@ -30,7 +30,6 @@ type FindAllBuilderOptions = FindAllOptions;
   @deprecated
   @public
   @param type the name of the resource
-  @param query a query to be used by the adapter
   @param options optional, may include `adapterOptions` hash which will be passed to adapter.findAll
   @return request config
 */

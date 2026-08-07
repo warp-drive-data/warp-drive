@@ -139,9 +139,9 @@ export function query(
  * ```
  *
  * @public
- * @param identifier
- * @param query
- * @param options
+ * @param type - the name of the resource type to query
+ * @param query - the query params to send with the request
+ * @param options - options to modify the request behavior
  */
 export function postQuery<T>(
   type: TypeFromInstance<T>,
