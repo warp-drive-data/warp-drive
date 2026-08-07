@@ -55,6 +55,7 @@
     "@warp-drive/json-api": "workspace:*",
     "@warp-drive/utilities": "workspace:*",
     "decorator-transforms": "catalog:",
+    "graphql": "^16.12.0",
     "tsdown": "catalog:",
     "typescript": "catalog:"
   },

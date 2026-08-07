@@ -52,6 +52,7 @@
     "ember-content-mapper": "catalog:",
     "ember-source": "catalog:",
     "ember-strict-application-resolver": "catalog:",
+    "graphql": "^16.12.0",
     "terser": "catalog:",
     "typescript": "catalog:",
     "typescript-7": "catalog:",

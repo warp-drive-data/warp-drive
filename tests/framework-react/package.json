@@ -43,6 +43,7 @@
     "@warp-drive/utilities": "workspace:*",
     "babel-plugin-debug-macros": "catalog:",
     "decorator-transforms": "catalog:",
+    "graphql": "^16.12.0",
     "react": "catalog:",
     "react-dom": "catalog:",
     "typescript-7": "catalog:",
