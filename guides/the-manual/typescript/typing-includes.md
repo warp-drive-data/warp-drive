@@ -54,7 +54,7 @@ Includes<
 ### Basic Usage
 
 ```ts
-import type { Includes } from '@warp-drive/core-types/record';
+import type { Includes } from '@warp-drive/core/types/record';
 
 function builderThatAcceptsIncludes<T extends TypedRecordInstance>(req: {
   includes: Includes<T>[]
@@ -86,7 +86,7 @@ the validator at the callsite, its not automatic.
 ### Using the Runtime Function
 
 ```ts
-import { createIncludeValidator } from '@warp-drive/core-types/record';
+import { createIncludeValidator } from '@warp-drive/core/types/record';
 
 const userIncludesValidator = createIncludeValidator<User>;
 
@@ -107,7 +107,7 @@ recommend doing so if writing a wrapper utility similar to `createIncludeValidat
 otherwise it results in needing to type out the string twice.
 
 ```ts
-import type { StringSatisfiesIncludes, Includes } from '@warp-drive/core-types/record';
+import type { StringSatisfiesIncludes, Includes } from '@warp-drive/core/types/record';
 
 function builderThatAcceptsIncludes<T extends TypedRecordInstance>(req: {
   includes: string
