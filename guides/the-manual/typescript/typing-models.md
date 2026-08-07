@@ -5,8 +5,8 @@
 Example: add the `Type` brand to the `user` model.
 
 ```ts
-import Model, { attr } from '@ember-data/model';
-import { Type } from '@warp-drive/core-types/symbols';
+import Model, { attr } from '@warp-drive/legacy/model';
+import { Type } from '@warp-drive/core/types/symbols';
 
 export default class User extends Model {
   @attr declare name: string;
@@ -19,8 +19,8 @@ The benefit of the above is that the value of Type is readable at runtime and th
 However, you can also choose to do this via types only:
 
 ```ts
-import Model, { attr } from '@ember-data/model';
-import type { Type } from '@warp-drive/core-types/symbols';
+import Model, { attr } from '@warp-drive/legacy/model';
+import type { Type } from '@warp-drive/core/types/symbols';
 
 export default class User extends Model {
   @attr declare name: string;
@@ -38,7 +38,7 @@ Transforms with a `Type` brand will have their type and options validated. Once 
 Example: Typing a Transform
 
 ```ts
-import type { Type } from '@warp-drive/core-types/symbols';
+import type { Type } from '@warp-drive/core/types/symbols';
 
 export default class BigIntTransform {
   deserialize(serialized: string): BigInt | null {
@@ -59,9 +59,9 @@ export default class BigIntTransform {
 Example: Using Transforms
 
 ```ts
-import Model, { attr } from '@ember-data/model';
-import type { StringTransform } from '@ember-data/serializer/transforms';
-import type { Type } from '@warp-drive/core-types/symbols';
+import Model, { attr } from '@warp-drive/legacy/model';
+import type { StringTransform } from '@warp-drive/legacy/serializer/transform';
+import type { Type } from '@warp-drive/core/types/symbols';
 
 export default class User extends Model {
   @attr<StringTransform>('string') declare name: string;
@@ -77,9 +77,9 @@ export default class User extends Model {
 Once we move to stage-3 decorators, explicitly setting the generic would not be required as it could be infered from the field's type.
 
 ```ts
-import Model, { belongsTo } from '@ember-data/model';
+import Model, { belongsTo } from '@warp-drive/legacy/model';
 import type Address from './address';
-import { Type } from '@warp-drive/core-types/symbols';
+import { Type } from '@warp-drive/core/types/symbols';
 
 export default class User extends Model {
   @belongsTo<Address>('address', { async: false, inverse: null })
@@ -96,9 +96,9 @@ export default class User extends Model {
 Once we move to stage-3 decorators, explicitly setting the generic would not be required as it could be infered from the field's type.
 
 ```ts
-import Model, { belongsTo, AsyncBelongsTo } from '@ember-data/model';
+import Model, { belongsTo, AsyncBelongsTo } from '@warp-drive/legacy/model';
 import type Address from './address';
-import { Type } from '@warp-drive/core-types/symbols';
+import { Type } from '@warp-drive/core/types/symbols';
 
 export default class User extends Model {
   @belongsTo<Address>('address', { async: true, inverse: null })
@@ -117,9 +117,9 @@ If you don't need access to meta or links on relationships, you can type the rel
 Once we move to stage-3 decorators, explicitly setting the generic would not be required as it could be infered from the field's type.
 
 ```ts
-import Model, { hasMany } from '@ember-data/model';
+import Model, { hasMany } from '@warp-drive/legacy/model';
 import type Post from './post';
-import { Type } from '@warp-drive/core-types/symbols';
+import { Type } from '@warp-drive/core/types/symbols';
 
 export default class User extends Model {
   @hasMany<Post>('post', { async: false, inverse: 'author' })
@@ -136,9 +136,9 @@ export default class User extends Model {
 Once we move to stage-3 decorators, explicitly setting the generic would not be required as it could be infered from the field's type.
 
 ```ts
-import Model, { hasMany, HasMany } from '@ember-data/model';
+import Model, { hasMany, HasMany } from '@warp-drive/legacy/model';
 import type Post from './post';
-import { Type } from '@warp-drive/core-types/symbols';
+import { Type } from '@warp-drive/core/types/symbols';
 
 export default class User extends Model {
   @hasMany<Post>('post', { async: false, inverse: 'author' })
@@ -158,9 +158,9 @@ will always be awaited before iteration.
 Once we move to stage-3 decorators, explicitly setting the generic would not be required as it could be infered from the field's type.
 
 ```ts
-import Model, { hasMany, AsyncHasMany } from '@ember-data/model';
+import Model, { hasMany, AsyncHasMany } from '@warp-drive/legacy/model';
 import type Post from './post';
-import { Type } from '@warp-drive/core-types/symbols';
+import { Type } from '@warp-drive/core/types/symbols';
 
 export default class User extends Model {
   @hasMany<Post>('post', { async: true, inverse: 'author' })
@@ -179,9 +179,9 @@ export default class User extends Model {
 Once we move to stage-3 decorators, explicitly setting the generic would not be required as it could be infered from the field's type.
 
 ```ts
-import Model, { hasMany, AsyncHasMany } from '@ember-data/model';
+import Model, { hasMany, AsyncHasMany } from '@warp-drive/legacy/model';
 import type Post from './post';
-import { Type } from '@warp-drive/core-types/symbols';
+import { Type } from '@warp-drive/core/types/symbols';
 
 export default class User extends Model {
   @hasMany<Post>('post', { async: true, inverse: 'author' })
