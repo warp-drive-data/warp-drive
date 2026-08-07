@@ -14,7 +14,7 @@ you might implement some common strategies.
 > **Note**
 > This example uses [Ember](https://emberjs.com/) for convenience.
 >
-> `@ember-data/request` works with raw javascript or any framework of your choosing.
+> `@warp-drive/core` works with raw javascript or any framework of your choosing.
 
 Many public APIs require authentication. A common pattern nowadays is the use of an `Authorization` header with a bearer token.
 
@@ -29,7 +29,8 @@ Authorization: Bearer <token>
 In WarpDrive we can create our own custom handler to add authentication header to all requests
 
 ```ts
-import type { Handler, NextFn, RequestContext } from '@ember-data/request';
+import type { Handler, NextFn } from '@warp-drive/core/request';
+import type { RequestContext } from '@warp-drive/core/types/request';
 
 const ourSecureToken = '<token>'
 export const AuthHandler: Handler = {
@@ -48,8 +49,7 @@ export const AuthHandler: Handler = {
 This handler would need to be added to the request manager configuration:
 
 ```ts
-import RequestManager from '@ember-data/request';
-import Fetch from '@ember-data/request/fetch';
+import { RequestManager, Fetch } from '@warp-drive/core';
 import { AuthHandler } from './auth-handler.ts'; // [!code focus]
 
 const manager = new RequestManager() // [!code focus]
@@ -68,7 +68,8 @@ Lets imagine we are using [Ember Simple Auth](https://github.com/simplabs/ember-
 
 ```ts
 import { service } from '@ember/service';
-import type { NextFn, RequestContext } from '@ember-data/request';
+import type { NextFn } from '@warp-drive/core/request';
+import type { RequestContext } from '@warp-drive/core/types/request';
 
 export class AuthHandler {
   @service session;
@@ -93,8 +94,7 @@ To use this handler we need to register it in our request manager service, but a
 **app/services/request-manager.js**
 
 ```ts
-import RequestManager from '@ember-data/request';
-import Fetch from '@ember-data/request/fetch';
+import { RequestManager, Fetch } from '@warp-drive/core';
 import { getOwner, setOwner } from '@ember/owner';
 import { AuthHandler } from './auth-handler.ts';
 
@@ -126,7 +126,7 @@ More information at [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
 > **Note**
 > This example uses [Ember](https://emberjs.com/) for convenience.
 >
-> `@ember-data/request` works with raw javascript or any framework of your choosing.
+> `@warp-drive/core` works with raw javascript or any framework of your choosing.
 
 Some APIs require CSRF token to be sent with every request. This token is usually stored in a cookie and needs to be extracted from it.
 
@@ -139,7 +139,8 @@ X-CSRF-Token: <token>
 Usually this token is stored in a cookie, so we need to extract it from there. Also this token is usually sent only with `POST`, `PUT`, `PATCH` and `DELETE` requests. Let's create a handler that will do just that.
 
 ```ts
-import type { Handler, NextFn, RequestContext } from '@ember-data/request';
+import type { Handler, NextFn } from '@warp-drive/core/request';
+import type { RequestContext } from '@warp-drive/core/types/request';
 
 const MUTATION_OPS = new Set(['createRecord', 'updateRecord', 'deleteRecord']);
 export const AuthHandler: Handler = {
@@ -161,8 +162,7 @@ export const AuthHandler: Handler = {
 This handler would need to be added to request manager configuration:
 
 ```ts
-import RequestManager from '@ember-data/request';
-import Fetch from '@ember-data/request/fetch';
+import { RequestManager, Fetch } from '@warp-drive/core';
 import { AuthHandler } from './auth-handler.ts'; // [!code focus]
 
 const manager = new RequestManager() // [!code focus]

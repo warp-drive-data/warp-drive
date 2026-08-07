@@ -6,7 +6,7 @@
 > This example uses [Ember](https://emberjs.com/)
 > for convenience.
 >
-> `@ember-data/request` works with raw javascript
+> `@warp-drive/core` works with raw javascript
 > or any framework of your choosing.
 
 Say you want to show a list of companies and their CEO. Your API returns a list of companies with the related employee records with a payload similar to the one shown below.
@@ -62,8 +62,7 @@ Lets see how we'd approach this request.
 *app/fetch.ts*
 
 ```ts
-import RequestManager from '@ember-data/request';
-import Fetch from '@ember-data/request/fetch';
+import { RequestManager, Fetch } from '@warp-drive/core';
 
 const fetch = new RequestManager().use([Fetch]);
 
@@ -97,13 +96,13 @@ Apps may have multiple request managers, but typically just one will do even for
 ## Step 2: Configure some request defaults
 
 Since we're interacting with a JSON:API API we can use the request utilities provided by
- [@ember-data/json-api/request](https://github.com/warp-drive-data/warp-drive/tree/main/packages/json-api#readme)
+ [@warp-drive/utilities/json-api](https://github.com/warp-drive-data/warp-drive/tree/main/warp-drive-packages/utilities#readme)
 to help us construct requests.
 
 Let's configure the utils to interface with this API and use the [Cursor Pagination Profile](https://jsonapi.org/profiles/ethanresnick/cursor-pagination/):
 
 ```ts
-import { setBuildURLConfig } from '@ember-data/json-api/request';
+import { setBuildURLConfig } from '@warp-drive/utilities/json-api';
 
 setBuildURLConfig({
   host: 'https://cloud.example.com',
@@ -123,13 +122,13 @@ GET /api/companies?fields[company]=name&fields[employee]=name,profileImage&inclu
 Accept: application/vnd.api+json; profile="https://jsonapi.org/profiles/ethanresnick/cursor-pagination"
 ```
 
-The `query` builder from `@ember-data/json-api/request` will do most of the heavy lifting for us,
+The `query` builder from `@warp-drive/utilities/json-api` will do most of the heavy lifting for us,
 constructing the url, and making sure headers are attached appropriately.
 
 *app/page.ts*
 
 ```ts
-import { query } from '@ember-data/json-api/request';
+import { query } from '@warp-drive/utilities/json-api';
 import fetch from './fetch';
 
 // ... execute a request
@@ -174,7 +173,7 @@ Requests issued against the store differ in three ways from raw requests.
 3. The result's `content` will be a `StructuredDocument` whose data property is a list of records instead of raw data.
 
 ```ts
-import { query } from '@ember-data/json-api/request';
+import { query } from '@warp-drive/utilities/json-api';
 
 // ... execute a request
 const { content: collection } = await store.request(query('company', {
@@ -239,7 +238,7 @@ const nextPage = await collection.next();
 Errors are handled via try/catch
 
 ```ts
-import { query } from '@ember-data/json-api/request';
+import { query } from '@warp-drive/utilities/json-api';
 import fetch from './fetch';
 
 // ... execute a request
