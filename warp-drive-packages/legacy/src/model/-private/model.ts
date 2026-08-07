@@ -363,9 +363,9 @@ interface Model {
     for a given relationship will always return the same HasManyReference.
 
     @public
-    @param {String} prop the name of the relationship
+    @param prop - the name of the relationship
     @since 2.5.0
-    @return {BelongsToReference} reference for this relationship
+    @return reference for this relationship
   */
   belongsTo<T extends Model, K extends keyof T & string>(
     this: T,
@@ -417,9 +417,9 @@ interface Model {
     for a given relationship will always return the same HasManyReference.
 
     @public
-    @param {String} prop the name of the relationship
+    @param prop - the name of the relationship
     @since 2.5.0
-    @return {HasManyReference} reference for this relationship
+    @return reference for this relationship
   */
   hasMany<T extends MinimalLegacyRecord, K extends MaybeHasManyFields<T>>(this: T, prop: K): HasManyReference<T, K>;
 

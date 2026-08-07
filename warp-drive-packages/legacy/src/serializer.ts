@@ -263,9 +263,9 @@ export class Serializer extends EmberObject {
     ```
 
     @public
-    @param {Model} _typeClass
-    @param {Object} hash
-    @return {Object}
+    @param _typeClass - the model class the hash is being normalized for
+    @param hash - the raw payload hash to normalize
+    @return the normalized resource document
   */
   normalize(_typeClass: ModelSchema, hash: Record<string, unknown>): SingleResourceDocument | EmptyResourceDocument {
     return hash as unknown as SingleResourceDocument;
