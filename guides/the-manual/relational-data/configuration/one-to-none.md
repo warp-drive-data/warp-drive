@@ -21,32 +21,32 @@ the ability to efficiently disassociate the record from relationships when it is
 
 Here's how we can define such a relationship via various mechanisms.
 
-- [Using @ember-data/model](#using-ember-datamodel)
+- [Using @warp-drive/legacy/model](#using-warp-drivelegacymodel)
 - [Using json schemas](#using-json-schemas)
 - [🚧 Using @warp-drive/schema-record](#using-warp-driveschema-record-🚧-coming-soon)
   - [Legacy Compat Mode](#legacycompat-mode)
 
 ---
 
-## Using `@ember-data/model`
+## Using `@warp-drive/legacy/model`
 
-> **Note** Models are currently the primary way that users of EmberData define "schema".
+> **Note** Models are currently the primary way that users of WarpDrive define "schema".
 >
 > Models are not the only way to define schema today, but they
 > are the most immediately available ergonomic way to do so.
 
-When using Models, EmberData parses schema from them at runtime,
+When using Models, WarpDrive parses schema from them at runtime,
 converting static information defined on the class into the json
 schema format needed by the rest of the system.
 
 This is handled by the implementation of the [SchemaService](/api/@warp-drive/core/types/schema/schema-service/interfaces/SchemaService) provided
-by the `@ember-data/model` package. The service converts the class
+by the `@warp-drive/legacy/model` package. The service converts the class
 definitions into the json definitions described in the next section.
 
 ⛰️ *Trail*
 
 ```ts
-import Model, { attr } from '@ember-data/model';
+import Model, { attr } from '@warp-drive/legacy/model';
 
 export default class Trail extends Model {
   @attr name;
@@ -56,7 +56,7 @@ export default class Trail extends Model {
 🌲 *TrailRunner*
 
 ```ts
-import Model, { belongsTo } from '@ember-data/model';
+import Model, { belongsTo } from '@warp-drive/legacy/model';
 
 export default class TrailRunner extends Model {
   @belongsTo('trail', { inverse: null, async: false })
@@ -137,7 +137,7 @@ export class TrailRunner {
 
 ### LegacyCompat Mode
 
-Support for migrating from `@ember-data/model` on a more granular basis is provided by decorators that preserve the semantics of the quirks of that class. This allows you to begin eliminating models
+Support for migrating from `@warp-drive/legacy/model` on a more granular basis is provided by decorators that preserve the semantics of the quirks of that class. This allows you to begin eliminating models
 and adopting other features of schemas sooner.
 
 ⛰️ *Trail*

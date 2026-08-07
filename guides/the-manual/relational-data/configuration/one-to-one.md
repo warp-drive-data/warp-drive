@@ -58,14 +58,14 @@ graph LR;
 
 Head over to [one-to-none](./one-to-none.md) if this is the setup that is best for you. Else, here's how we can define such a relationship via various mechanisms.
 
-- [Using @ember-data/model](#using-ember-datamodel)
+- [Using @warp-drive/legacy/model](#using-warp-drivelegacymodel)
 - [Using json schemas](#using-json-schemas)
 - [🚧 Using @warp-drive/schema-record](#using-warp-driveschema-record-🚧-coming-soon)
   - [Legacy Compat Mode](#legacycompat-mode)
 
 ---
 
-## Using `@ember-data/model`
+## Using `@warp-drive/legacy/model`
 
 > **Note** Models are currently the primary way that users of WarpDrive define "schema".
 >
@@ -77,13 +77,13 @@ converting static information defined on the class into the json
 schema format needed by the rest of the system.
 
 This is handled by the implementation of the [SchemaService](/api/@warp-drive/core/types/schema/schema-service/interfaces/SchemaService) provided
-by the `@ember-data/model` package. The service converts the class
+by the `@warp-drive/legacy/model` package. The service converts the class
 definitions into the json definitions described in the next section.
 
 📸 *InstagramAccount*
 
 ```ts
-import Model, { belongsTo } from '@ember-data/model';
+import Model, { belongsTo } from '@warp-drive/legacy/model';
 
 export default class InstagramAccount extends Model {
   @belongsTo('trail-runner', { inverse: 'instagram', async: false })
@@ -94,7 +94,7 @@ export default class InstagramAccount extends Model {
 🌲 *TrailRunner*
 
 ```ts
-import Model, { belongsTo } from '@ember-data/model';
+import Model, { belongsTo } from '@warp-drive/legacy/model';
 
 export default class TrailRunner extends Model {
   @belongsTo('instagram-account', { inverse: 'runner', async: false })
@@ -203,7 +203,7 @@ export class TrailRunner {
 
 ### LegacyCompat Mode
 
-Support for migrating from `@ember-data/model` on a more granular basis is provided by decorators that preserve the semantics of the quirks of that class. This allows you to begin eliminating models
+Support for migrating from `@warp-drive/legacy/model` on a more granular basis is provided by decorators that preserve the semantics of the quirks of that class. This allows you to begin eliminating models
 and adopting other features of schemas sooner.
 
 📸 *InstagramAccount*
