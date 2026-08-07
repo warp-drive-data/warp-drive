@@ -363,7 +363,7 @@ interface Model {
     for a given relationship will always return the same HasManyReference.
 
     @public
-    @param {String} name of the relationship
+    @param {String} prop the name of the relationship
     @since 2.5.0
     @return {BelongsToReference} reference for this relationship
   */
@@ -417,7 +417,7 @@ interface Model {
     for a given relationship will always return the same HasManyReference.
 
     @public
-    @param {String} name of the relationship
+    @param {String} prop the name of the relationship
     @since 2.5.0
     @return {HasManyReference} reference for this relationship
   */

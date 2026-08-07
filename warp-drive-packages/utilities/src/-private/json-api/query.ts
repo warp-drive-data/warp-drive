@@ -139,7 +139,7 @@ export function query(
  * ```
  *
  * @public
- * @param identifier
+ * @param type
  * @param query
  * @param options
  */

@@ -263,7 +263,7 @@ export class Serializer extends EmberObject {
     ```
 
     @public
-    @param {Model} typeClass
+    @param {Model} _typeClass
     @param {Object} hash
     @return {Object}
   */
