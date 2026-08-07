@@ -33,9 +33,9 @@ export type JsonApiResourcePatch =
  * Serializes the current state of a resource or array of resources for use with POST or PUT requests.
  *
  * @public
- * @param {Cache} cache}
- * @param {ResourceKey} identifier
- * @return {Object} An object with a `data` property containing the serialized resource patch
+ * @param cache - the cache to serialize the resource(s) from
+ * @param identifiers - the resource(s) to serialize
+ * @return an object with a `data` property containing the serialized resource(s)
  */
 export function serializeResources(cache: Cache, identifiers: ResourceKey): { data: ResourceObject };
 export function serializeResources(cache: Cache, identifiers: ResourceKey[]): { data: ResourceObject[] };
@@ -134,9 +134,9 @@ function _serializeResource(cache: Cache, identifier: ResourceKey): ResourceObje
  * ```
  *
  * @public
- * @param {Cache} cache}
- * @param {ResourceKey} identifier
- * @return {Object} An object with a `data` property containing the serialized resource patch
+ * @param cache - the cache to serialize the resource's changes from
+ * @param identifier - the resource whose changes should be serialized
+ * @return an object with a `data` property containing the serialized resource patch
  */
 export function serializePatch(
   cache: Cache,
