@@ -134,7 +134,7 @@ Read on below for examples and nuances specific to Model vs ReactiveResource
 ### For a Relationship on a Model
 
 ```ts
-import Model, { belongsTo, hasMany } from '@ember-data/model';
+import Model, { belongsTo, hasMany } from '@warp-drive/legacy/model';
 
 export default class User extends Model {
   @belongsTo('address', {
@@ -153,7 +153,7 @@ This works for both `async` and `non-async` relationships and only changes the f
 ### For a ReactiveResource in LegacyMode
 
 ```ts
-import type { ResourceSchema } from '@warp-drive/core-types/schema/fields';
+import type { ResourceSchema } from '@warp-drive/core/types/schema/fields';
 
 const UserSchema = {
   type: 'user',
@@ -181,7 +181,7 @@ relationship defined on a Model.
 ### For a ReactiveResource in PolarisMode
 
 ```ts
-import type { ResourceSchema } from '@warp-drive/core-types/schema/fields';
+import type { ResourceSchema } from '@warp-drive/core/types/schema/fields';
 
 const UserSchema = {
   type: 'user',
