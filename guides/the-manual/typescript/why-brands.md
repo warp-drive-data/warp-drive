@@ -9,8 +9,8 @@ Instead, WarpDrive uses Symbol keys to brand objects with additional type inform
 For example:
 
 ```ts
-import Model, { attr } from '@ember-data/model';
-import { Type } from '@warp-drive/core-types/symbols';
+import Model, { attr } from '@warp-drive/legacy/model';
+import { Type } from '@warp-drive/core/types/symbols';
 
 export default class User extends Model {
   @attr declare name: string;
