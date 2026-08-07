@@ -101,7 +101,8 @@ A more efficient handler might read from the response stream, building up the
 response content before passing along the chunk downstream.
 
 ```ts
-import type { Handler, RequestContext } from '@ember-data/request';
+import type { Handler } from '@warp-drive/core/request';
+import type { RequestContext } from '@warp-drive/core/types/request';
 
 const FetchHandler: Handler = {
   async request<T>(context: RequestContext) {
@@ -130,7 +131,8 @@ Each handler in the chain can catch errors from upstream and choose to
 either handle the error, re-throw the error, or throw a new error.
 
 ```ts
-import type { Handler, NextFn, RequestContext } from '@ember-data/request';
+import type { Handler, NextFn } from '@warp-drive/core/request';
+import type { RequestContext } from '@warp-drive/core/types/request';
 
 const MAX_RETRIES = 5;
 const AuthHandler: Handler = {

@@ -10,10 +10,7 @@ Throughout this guide we've shown usage of the `RequestManager` in context of a 
 ::: code-group
 
 ```ts [Setup]
-import Store, { CacheHandler} from '@ember-data/store';
-
-import RequestManager from '@ember-data/request';
-import Fetch from '@ember-data/request/fetch';
+import { Store, CacheHandler, RequestManager, Fetch } from '@warp-drive/core';
 
 export default class AppStore extends Store {
 
@@ -52,8 +49,7 @@ A `RequestManager` provides a request/response flow in which configured handlers
 The RequestManager on its own does not know how to fulfill requests. For this we must register at least one handler. A basic `Fetch` handler is provided that will take the request options provided and execute `fetch`.
 
 ```ts
-import RequestManager from '@ember-data/request';
-import Fetch from '@ember-data/request/fetch';
+import { RequestManager, Fetch } from '@warp-drive/core';
 import { apiUrl } from './config';
 
 // ... create manager and add our Fetch handler
@@ -356,14 +352,12 @@ In the case of the `Future` being returned, `Stream` proxying is automatic and i
 
 ---
 
-#### Using with `@ember-data/store`
+#### Using with `@warp-drive/core`
 
 To have a request service unique to a Store:
 
 ```ts
-import Store, { CacheHandler } from '@ember-data/store';
-import RequestManager from '@ember-data/request';
-import Fetch from '@ember-data/request/fetch';
+import { Store, CacheHandler, RequestManager, Fetch } from '@warp-drive/core';
 
 class extends Store {
   requestManager = new RequestManager()
@@ -380,9 +374,7 @@ Some applications will desire to have a single `RequestManager` instance, which 
 
 *services/request.ts*
 ```ts
-import { CacheHandler } from '@ember-data/store';
-import RequestManager from '@ember-data/request';
-import Fetch from '@ember-data/request/fetch';
+import { CacheHandler, RequestManager, Fetch } from '@warp-drive/core';
 import Auth from 'ember-simple-auth/ember-data-handler';
 
 export default {
