@@ -1313,7 +1313,7 @@ importers:
         version: file:warp-drive-packages/experiments(4ded94bf05a058c4d301833388abca58)
       '@warp-drive/holodeck':
         specifier: workspace:*
-        version: file:packages/holodeck(a510bc545ed25bc6a53fefeb5da03d5b)
+        version: file:packages/holodeck(054a26c90b1acd653dd8326f653ba31a)
       '@warp-drive/internal-config':
         specifier: workspace:*
         version: file:tools/internal-config
@@ -1322,10 +1322,13 @@ importers:
         version: file:warp-drive-packages/json-api(4ded94bf05a058c4d301833388abca58)
       '@warp-drive/utilities':
         specifier: workspace:*
-        version: file:warp-drive-packages/utilities(4ded94bf05a058c4d301833388abca58)
+        version: file:warp-drive-packages/utilities(d59150c2e950b805009fbcd4ceb07e4d)
       decorator-transforms:
         specifier: ^2.4.0
         version: 2.4.0(@babel/core@7.29.7)
+      graphql:
+        specifier: ^16.12.0
+        version: 16.14.2
       tsdown:
         specifier: ^0.23.0
         version: 0.23.0(typescript@6.0.3)
@@ -2281,7 +2284,7 @@ importers:
         version: 1.9.0
       '@warp-drive-internal/specs':
         specifier: workspace:*
-        version: file:specs(dd92e2dcb462159c99dfbd63955fa281)
+        version: file:specs(65d818b0dde656b2e3a9c93495b410e1)
       '@warp-drive/core':
         specifier: workspace:*
         version: file:warp-drive-packages/core(e0ff4349d3585fabae29421d7a4b80a6)
@@ -2296,7 +2299,7 @@ importers:
         version: file:warp-drive-packages/experiments(edee9e53a6af44fd6387ab28cd9cc109)
       '@warp-drive/holodeck':
         specifier: workspace:*
-        version: file:packages/holodeck(c225825406496ecace1e537ba0f768d1)
+        version: file:packages/holodeck(345ae677fc6c331abdba761d5b5bd15d)
       '@warp-drive/internal-config':
         specifier: workspace:*
         version: file:tools/internal-config(2014ef119f002c77f20d4feb6c653781)
@@ -2305,10 +2308,10 @@ importers:
         version: file:warp-drive-packages/json-api(edee9e53a6af44fd6387ab28cd9cc109)
       '@warp-drive/legacy':
         specifier: workspace:*
-        version: file:warp-drive-packages/legacy(3f8bc03ddae2558c38d0ba7a4612f4c1)
+        version: file:warp-drive-packages/legacy(f27285a549bdc282b6332e6a0ae4f0c3)
       '@warp-drive/utilities':
         specifier: workspace:*
-        version: file:warp-drive-packages/utilities(edee9e53a6af44fd6387ab28cd9cc109)
+        version: file:warp-drive-packages/utilities(989f2e4c0a3d9910cfdde67e87100796)
       babel-plugin-ember-template-compilation:
         specifier: ^4.0.0
         version: 4.0.0
@@ -2324,6 +2327,9 @@ importers:
       ember-strict-application-resolver:
         specifier: ^0.1.1
         version: 0.1.1(@babel/core@7.29.7)
+      graphql:
+        specifier: ^16.12.0
+        version: 16.14.2
       terser:
         specifier: ^5.51.2
         version: 5.51.2
@@ -2362,7 +2368,7 @@ importers:
         version: 19.2.7(@types/react@19.2.18)
       '@warp-drive-internal/specs':
         specifier: workspace:*
-        version: file:specs(68d6cc8ec332d7efeb52ea97b5bbec0b)
+        version: file:specs(3a9171ab3be1830f3501f8fa33639e21)
       '@warp-drive/core':
         specifier: workspace:*
         version: file:warp-drive-packages/core(@babel/core@7.29.7)
@@ -2371,7 +2377,7 @@ importers:
         version: file:packages/diagnostic(a1d731b3ac87b6eb45f39e08a20591fd)
       '@warp-drive/holodeck':
         specifier: workspace:*
-        version: file:packages/holodeck(a510bc545ed25bc6a53fefeb5da03d5b)
+        version: file:packages/holodeck(054a26c90b1acd653dd8326f653ba31a)
       '@warp-drive/internal-config':
         specifier: workspace:*
         version: file:tools/internal-config(@babel/runtime@7.29.7)(vite@8.2.2)
@@ -2383,13 +2389,16 @@ importers:
         version: file:warp-drive-packages/react(@babel/core@7.29.7)
       '@warp-drive/utilities':
         specifier: workspace:*
-        version: file:warp-drive-packages/utilities(4ded94bf05a058c4d301833388abca58)
+        version: file:warp-drive-packages/utilities(d59150c2e950b805009fbcd4ceb07e4d)
       babel-plugin-debug-macros:
         specifier: ^2.0.0
         version: 2.0.0(@babel/core@7.29.7)
       decorator-transforms:
         specifier: ^2.4.0
         version: 2.4.0(@babel/core@7.29.7)
+      graphql:
+        specifier: ^16.12.0
+        version: 16.14.2
       react:
         specifier: ^19.2.8
         version: 19.2.8
@@ -14852,6 +14861,18 @@ snapshots:
     dependencies:
       vue: 3.5.42(typescript@6.0.3)
 
+  '@warp-drive-internal/specs@file:specs(3a9171ab3be1830f3501f8fa33639e21)':
+    dependencies:
+      '@embroider/macros': 1.20.7
+      '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.29.7)
+      '@warp-drive/diagnostic': file:packages/diagnostic(a1d731b3ac87b6eb45f39e08a20591fd)
+      '@warp-drive/holodeck': file:packages/holodeck(054a26c90b1acd653dd8326f653ba31a)
+      '@warp-drive/json-api': file:warp-drive-packages/json-api(4ded94bf05a058c4d301833388abca58)
+      '@warp-drive/utilities': file:warp-drive-packages/utilities(d59150c2e950b805009fbcd4ceb07e4d)
+    transitivePeerDependencies:
+      - '@glint/template'
+      - supports-color
+
   '@warp-drive-internal/specs@file:specs(57c2a615a99eff1b5c43b9c5e23c4058)':
     dependencies:
       '@embroider/macros': 1.20.7
@@ -14864,14 +14885,15 @@ snapshots:
       - '@glint/template'
       - supports-color
 
-  '@warp-drive-internal/specs@file:specs(68d6cc8ec332d7efeb52ea97b5bbec0b)':
+  '@warp-drive-internal/specs@file:specs(65d818b0dde656b2e3a9c93495b410e1)':
     dependencies:
-      '@embroider/macros': 1.20.7
-      '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.29.7)
-      '@warp-drive/diagnostic': file:packages/diagnostic(a1d731b3ac87b6eb45f39e08a20591fd)
-      '@warp-drive/holodeck': file:packages/holodeck(a510bc545ed25bc6a53fefeb5da03d5b)
-      '@warp-drive/json-api': file:warp-drive-packages/json-api(4ded94bf05a058c4d301833388abca58)
-      '@warp-drive/utilities': file:warp-drive-packages/utilities(4ded94bf05a058c4d301833388abca58)
+      '@embroider/macros': 1.20.7(@glint/template@1.9.0)
+      '@warp-drive/core': file:warp-drive-packages/core(e0ff4349d3585fabae29421d7a4b80a6)
+      '@warp-drive/diagnostic': file:packages/diagnostic(53b7108dd10d63f6e90ed13ef4be4016)
+      '@warp-drive/experiments': file:warp-drive-packages/experiments(edee9e53a6af44fd6387ab28cd9cc109)
+      '@warp-drive/holodeck': file:packages/holodeck(345ae677fc6c331abdba761d5b5bd15d)
+      '@warp-drive/json-api': file:warp-drive-packages/json-api(edee9e53a6af44fd6387ab28cd9cc109)
+      '@warp-drive/utilities': file:warp-drive-packages/utilities(989f2e4c0a3d9910cfdde67e87100796)
     transitivePeerDependencies:
       - '@glint/template'
       - supports-color
@@ -14881,19 +14903,6 @@ snapshots:
       '@embroider/macros': 1.20.7(@glint/template@1.9.0)
       '@warp-drive/core': file:warp-drive-packages/core(e0ff4349d3585fabae29421d7a4b80a6)
       '@warp-drive/diagnostic': file:packages/diagnostic(53b7108dd10d63f6e90ed13ef4be4016)
-      '@warp-drive/holodeck': file:packages/holodeck(c225825406496ecace1e537ba0f768d1)
-      '@warp-drive/json-api': file:warp-drive-packages/json-api(edee9e53a6af44fd6387ab28cd9cc109)
-      '@warp-drive/utilities': file:warp-drive-packages/utilities(edee9e53a6af44fd6387ab28cd9cc109)
-    transitivePeerDependencies:
-      - '@glint/template'
-      - supports-color
-
-  '@warp-drive-internal/specs@file:specs(dd92e2dcb462159c99dfbd63955fa281)':
-    dependencies:
-      '@embroider/macros': 1.20.7(@glint/template@1.9.0)
-      '@warp-drive/core': file:warp-drive-packages/core(e0ff4349d3585fabae29421d7a4b80a6)
-      '@warp-drive/diagnostic': file:packages/diagnostic(53b7108dd10d63f6e90ed13ef4be4016)
-      '@warp-drive/experiments': file:warp-drive-packages/experiments(edee9e53a6af44fd6387ab28cd9cc109)
       '@warp-drive/holodeck': file:packages/holodeck(c225825406496ecace1e537ba0f768d1)
       '@warp-drive/json-api': file:warp-drive-packages/json-api(edee9e53a6af44fd6387ab28cd9cc109)
       '@warp-drive/utilities': file:warp-drive-packages/utilities(edee9e53a6af44fd6387ab28cd9cc109)
@@ -15089,6 +15098,14 @@ snapshots:
       - '@glint/template'
       - supports-color
 
+  '@warp-drive/holodeck@file:packages/holodeck(054a26c90b1acd653dd8326f653ba31a)':
+    dependencies:
+      '@hono/node-server': 1.19.17(hono@4.13.7)
+      '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.29.7)
+      hono: 4.13.7
+    optionalDependencies:
+      '@warp-drive/utilities': file:warp-drive-packages/utilities(d59150c2e950b805009fbcd4ceb07e4d)
+
   '@warp-drive/holodeck@file:packages/holodeck(2eeb0baf24a3535528995f8bc8048cb9)':
     dependencies:
       '@hono/node-server': 1.19.17(hono@4.13.7)
@@ -15097,6 +15114,15 @@ snapshots:
     optionalDependencies:
       '@warp-drive/legacy': file:warp-drive-packages/legacy(a510bc545ed25bc6a53fefeb5da03d5b)
       '@warp-drive/utilities': file:warp-drive-packages/utilities(4ded94bf05a058c4d301833388abca58)
+
+  '@warp-drive/holodeck@file:packages/holodeck(345ae677fc6c331abdba761d5b5bd15d)':
+    dependencies:
+      '@hono/node-server': 1.19.17(hono@4.13.7)
+      '@warp-drive/core': file:warp-drive-packages/core(e0ff4349d3585fabae29421d7a4b80a6)
+      hono: 4.13.7
+    optionalDependencies:
+      '@warp-drive/legacy': file:warp-drive-packages/legacy(f27285a549bdc282b6332e6a0ae4f0c3)
+      '@warp-drive/utilities': file:warp-drive-packages/utilities(989f2e4c0a3d9910cfdde67e87100796)
 
   '@warp-drive/holodeck@file:packages/holodeck(4ded94bf05a058c4d301833388abca58)':
     dependencies:
@@ -15942,6 +15968,15 @@ snapshots:
       - '@glint/template'
       - supports-color
 
+  '@warp-drive/legacy@file:warp-drive-packages/legacy(f27285a549bdc282b6332e6a0ae4f0c3)':
+    dependencies:
+      '@embroider/macros': 1.20.7(@glint/template@1.9.0)
+      '@warp-drive/core': file:warp-drive-packages/core(e0ff4349d3585fabae29421d7a4b80a6)
+      '@warp-drive/utilities': file:warp-drive-packages/utilities(989f2e4c0a3d9910cfdde67e87100796)
+    transitivePeerDependencies:
+      - '@glint/template'
+      - supports-color
+
   '@warp-drive/react@file:warp-drive-packages/react(@babel/core@7.29.7)':
     dependencies:
       '@embroider/macros': 1.20.7
@@ -16016,6 +16051,16 @@ snapshots:
     dependencies:
       '@embroider/macros': 1.20.7
       '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.29.7)
+    transitivePeerDependencies:
+      - '@glint/template'
+      - supports-color
+
+  '@warp-drive/utilities@file:warp-drive-packages/utilities(989f2e4c0a3d9910cfdde67e87100796)':
+    dependencies:
+      '@embroider/macros': 1.20.7(@glint/template@1.9.0)
+      '@warp-drive/core': file:warp-drive-packages/core(e0ff4349d3585fabae29421d7a4b80a6)
+    optionalDependencies:
+      graphql: 16.14.2
     transitivePeerDependencies:
       - '@glint/template'
       - supports-color
