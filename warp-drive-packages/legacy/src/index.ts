@@ -281,11 +281,6 @@ export function useLegacyStore<T extends Cache>(
     modelFor(type: string): ModelSchema;
     modelFor(type: string): ModelSchema {
       assertType(this.schema, type);
-      // TODO I'm not sure this is right
-      assert(
-        `modelFor should only be used to lookup legacy models when in linksMode: false`,
-        !options.linksMode || !this.schema.isDelegated({ type })
-      );
 
       const klass =
         // prefer real models if present
