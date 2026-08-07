@@ -90,7 +90,7 @@ ever encountered.
 So for instance, to implement our pets relationship using open polymorphism using `Model`:
 
 ```ts
-import Model, { hasMany } from '@ember-data/model';
+import Model, { hasMany } from '@warp-drive/legacy/model';
 
 export default class Human extends Model {
   @hasMany('abstract-pet', { async: false, inverse: null, polymorphic: true })
@@ -135,7 +135,7 @@ So for instance, to implement our pets relationship using closed polymorphism us
 
 
 ```ts
-import Model, { hasMany } from '@ember-data/model';
+import Model, { hasMany } from '@warp-drive/legacy/model';
 
 export default class Human extends Model {
   @hasMany('abstract-pet', { async: false, inverse: 'owner', polymorphic: true })
@@ -146,7 +146,7 @@ export default class Human extends Model {
 And on *every* model that can be a pet, this same relationship as shown below for cat:
 
 ```ts
-import Model, { belongsTo } from '@ember-data/model';
+import Model, { belongsTo } from '@warp-drive/legacy/model';
 
 export default class Cat extends Model {
   @belongsTo('human', { async: false, inverse: 'pets', as: 'abstract-pet' })
