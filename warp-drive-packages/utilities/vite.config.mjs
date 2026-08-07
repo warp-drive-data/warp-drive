@@ -11,6 +11,7 @@ export const entryPoints = [
   './src/active-record.ts',
   './src/rest.ts',
   './src/derivations.ts',
+  './src/graphql.ts',
 ];
 
 export default createConfig(
