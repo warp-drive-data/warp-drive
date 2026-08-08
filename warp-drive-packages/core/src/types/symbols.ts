@@ -1,5 +1,13 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import type { Store } from '../store/-private/store-service.ts';
 import { getOrSetGlobal } from './-private.ts';
 
+/**
+ * Symbol used internally to stash a reference to the owning
+ * {@link Store} on a record instance.
+ *
+ * @type {Symbol}
+ */
 export const RecordStore: '___(unique) Symbol(Store)' = getOrSetGlobal('Store', Symbol('Store'));
 
 /**
