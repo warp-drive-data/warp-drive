@@ -169,7 +169,7 @@ export type PostQueryRequestOptions<RT = unknown> = {
    */
   op: 'query';
   /**
-   * @internal used only to carry the response type for type inference purposes
+   * @private used only to carry the response type for type inference purposes
    */
   [RequestSignature]?: RT;
 };
@@ -213,7 +213,7 @@ export type DeleteRequestOptions<RT = unknown, T = unknown> = {
    */
   records: [ResourceIdentifierObject<TypeFromInstanceOrString<T>>];
   /**
-   * @internal used only to carry the response type for type inference purposes
+   * @private used only to carry the response type for type inference purposes
    */
   [RequestSignature]?: RT;
 };
@@ -540,7 +540,7 @@ export interface RequestInfo<RT = unknown> extends NativeRequestInit {
   options?: Record<string, unknown>;
 
   /**
-   * @internal used only to carry the response type for type inference purposes
+   * @private used only to carry the response type for type inference purposes
    */
   [RequestSignature]?: RT;
 
