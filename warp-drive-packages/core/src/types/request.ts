@@ -33,11 +33,11 @@ export const EnableHydration: '___(unique) Symbol(EnableHydration)' = getOrSetUn
   Symbol.for('wd:enable-hydration')
 );
 /**
- * @internal
+ * @private
  */
 export const IS_FUTURE: '___(unique) Symbol(IS_FUTURE)' = getOrSetGlobal('IS_FUTURE', Symbol('IS_FUTURE'));
 /**
- * @internal
+ * @private
  */
 export const STRUCTURED: '___(unique) Symbol(DOC)' = getOrSetGlobal('DOC', Symbol('DOC'));
 
@@ -167,7 +167,7 @@ export type PostQueryRequestOptions<RT = unknown> = {
    */
   op: 'query';
   /**
-   * @internal used only to carry the response type for type inference purposes
+   * @private used only to carry the response type for type inference purposes
    */
   [RequestSignature]?: RT;
 };
@@ -211,7 +211,7 @@ export type DeleteRequestOptions<RT = unknown, T = unknown> = {
    */
   records: [ResourceIdentifierObject<TypeFromInstanceOrString<T>>];
   /**
-   * @internal used only to carry the response type for type inference purposes
+   * @private used only to carry the response type for type inference purposes
    */
   [RequestSignature]?: RT;
 };
