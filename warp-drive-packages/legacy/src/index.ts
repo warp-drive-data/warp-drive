@@ -142,6 +142,70 @@ export declare class ConfiguredStore<T extends { cache: Cache }> extends Store {
  * Use the legacy store with the given options.
  *
  * See {@link LegacyStoreSetupOptions} for details on the available options.
+ *
+ * ```ts
+ * import { useLegacyStore } from '@warp-drive/legacy';
+ * import { JSONAPICache } from '@warp-drive/json-api';
+ *
+ * export default useLegacyStore({
+ *   linksMode: false,
+ *   legacyRequests: true,
+ *   cache: JSONAPICache,
+ *   schemas: [],
+ * });
+ * ```
+ *
+ * ### Adding Stateful Handlers
+ *
+ * A request {@link Handler} is sometimes more than a plain object or class
+ * with a `request` method — it may need access to a stateful dependency such
+ * as an Ember service (an auth token, a feature-flags service, an i18n
+ * helper, etc.).
+ *
+ * A plain class handler that only relies on Ember's `@service` decorator will
+ * not work here on its own: the handler is never instantiated *through*
+ * Ember's container (it's just `new`'d up), so it has no owner and its
+ * `@service` injections would fail to resolve.
+ *
+ * Instead, give `handlers` a function. It receives the {@link Store} instance
+ * being configured, which by the time the function runs already has an owner
+ * assigned. Use `getOwner`/`setOwner` from `@ember/owner` to transfer that
+ * owner onto your handler instance before returning it, exactly as you would
+ * when constructing any other DI-aware object outside of the container:
+ *
+ * ```ts
+ * import { getOwner, setOwner } from '@ember/owner';
+ * import { service } from '@ember/service';
+ * import { useLegacyStore } from '@warp-drive/legacy';
+ * import type { NextFn } from '@warp-drive/core/request';
+ * import type { RequestContext } from '@warp-drive/core/types/request';
+ * import { JSONAPICache } from '@warp-drive/json-api';
+ *
+ * class AuthHandler {
+ *   @service session;
+ *
+ *   request<T>(context: RequestContext, next: NextFn<T>) {
+ *     const headers = new Headers(context.request.headers);
+ *     headers.append('Authorization', `Bearer ${this.session.accessToken}`);
+ *     return next(Object.assign({}, context.request, { headers }));
+ *   }
+ * }
+ *
+ * export default useLegacyStore({
+ *   linksMode: false,
+ *   legacyRequests: true,
+ *   cache: JSONAPICache,
+ *   handlers: (store) => {
+ *     const authHandler = new AuthHandler();
+ *     setOwner(authHandler, getOwner(store)!);
+ *     return [authHandler];
+ *   },
+ * });
+ * ```
+ *
+ * The `handlers` function is invoked lazily and only once per store instance,
+ * the first time `store.requestManager` is accessed, so it is safe to do
+ * owner-dependent setup like this inside of it.
  */
 export function useLegacyStore<T extends Cache>(
   options: LegacyModelStoreSetupOptions<T>,
