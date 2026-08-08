@@ -169,18 +169,33 @@ export class RequestLoadingState {
     );
   }
 
+  /**
+   * Resolves once the stream has finished being consumed, or rejects
+   * if the request errors. `null` until first accessed.
+   */
   promise: Promise<void> | null = null;
 
+  /**
+   * Whether the stream has not yet started being consumed.
+   */
   get isPending(): boolean {
     this._trigger();
     return this._isPending;
   }
 
+  /**
+   * The total size of the response in bytes, if known ahead of time
+   * (via a `Content-Length` header or similar).
+   */
   get sizeHint(): number {
     this._trigger();
     return this._sizeHint;
   }
 
+  /**
+   * A readable stream of the response content. Accessing this property
+   * begins consumption of the underlying request stream.
+   */
   get stream(): ReadableStream | null {
     this._trigger();
     if (!this._stream) {
@@ -192,67 +207,113 @@ export class RequestLoadingState {
     return this._stream.readable;
   }
 
+  /**
+   * Whether the stream has started being consumed but has not yet completed.
+   */
   get isStarted(): boolean {
     this._trigger();
     return this._isStarted;
   }
 
+  /**
+   * The number of bytes loaded so far.
+   */
   get bytesLoaded(): number {
     this._trigger();
     return this._bytesLoaded;
   }
 
+  /**
+   * The `performance.now()` timestamp at which the stream started being consumed.
+   */
   get startTime(): number {
     this._trigger();
     return this._startTime;
   }
 
+  /**
+   * The `performance.now()` timestamp at which the stream finished being consumed.
+   */
   get endTime(): number {
     this._trigger();
     return this._endTime;
   }
 
+  /**
+   * The `performance.now()` timestamp at which the last chunk of data was received.
+   */
   get lastPacketTime(): number {
     this._trigger();
     return this._lastPacketTime;
   }
 
+  /**
+   * Whether the stream has finished being consumed.
+   */
   get isComplete(): boolean {
     this._trigger();
     return this._isComplete;
   }
 
+  /**
+   * Whether the request was aborted before the stream finished being consumed.
+   */
   get isCancelled(): boolean {
     this._trigger();
     return this._isCancelled;
   }
 
+  /**
+   * Whether an error occurred while consuming the stream.
+   */
   get isErrored(): boolean {
     this._trigger();
     return this._isErrored;
   }
 
+  /**
+   * The error that occurred while consuming the stream, if any.
+   */
   get error(): Error | null {
     this._trigger();
     return this._error;
   }
 
+  /**
+   * The number of milliseconds elapsed since the stream started being
+   * consumed, using the last packet time (or end time, once complete)
+   * as the endpoint.
+   */
   get elapsedTime(): number {
     return (this.endTime || this.lastPacketTime) - this.startTime;
   }
 
+  /**
+   * The ratio (0 to 1) of {@link RequestLoadingState.bytesLoaded | bytesLoaded}
+   * to {@link RequestLoadingState.sizeHint | sizeHint}, or `0` if no size hint is available.
+   */
   get completedRatio(): number {
     return this.sizeHint ? this.bytesLoaded / this.sizeHint : 0;
   }
 
+  /**
+   * The inverse of {@link RequestLoadingState.completedRatio | completedRatio}.
+   */
   get remainingRatio(): number {
     return 1 - this.completedRatio;
   }
 
+  /**
+   * The total number of milliseconds elapsed between
+   * {@link RequestLoadingState.startTime | startTime} and {@link RequestLoadingState.endTime | endTime}.
+   */
   get duration(): number {
     return this.endTime - this.startTime;
   }
 
+  /**
+   * The average download speed in bytes per second.
+   */
   get speed(): number {
     // bytes per second
     return this.bytesLoaded / (this.elapsedTime / 1000);
@@ -262,6 +323,9 @@ export class RequestLoadingState {
     this._future = future;
   }
 
+  /**
+   * Aborts the underlying request.
+   */
   abort = (): void => {
     this._future.abort();
   };
