@@ -47,6 +47,10 @@ export interface DocumentOperationCallback {
   (cacheKey: RequestKey, notificationType: DocumentCacheOperation): void;
 }
 
+function keyToString(key: string | string[] | null | undefined): string {
+  return Array.isArray(key) ? key.join(', ') : key || '';
+}
+
 function count(label: string) {
   // @ts-expect-error
   // eslint-disable-next-line
@@ -192,31 +196,40 @@ export class NotificationManager {
   /**
    * Custom Caches and Application Code should not call this method directly.
    *
+   * When notifying `'attributes'` or `'relationships'` for many keys on the
+   * same `cacheKey` at once (for instance, when a bulk update to a single
+   * record touches many fields) `key` may be supplied as a `string[]`
+   * instead of being called once per key. This delivers the exact same
+   * sequence of individual notifications to subscribers (each subscriber
+   * callback is still invoked once per key, in order) while paying the
+   * per-call overhead (validity checks, subscriber lookups, buffer/flush
+   * scheduling) only once for the whole batch instead of once per key.
+   *
    * @private
    */
-  notify(cacheKey: ResourceKey, value: 'attributes' | 'relationships', key?: string | null): boolean;
+  notify(cacheKey: ResourceKey, value: 'attributes' | 'relationships', key?: string | string[] | null): boolean;
   notify(cacheKey: ResourceKey, value: 'errors' | 'meta' | 'identity' | 'state', key?: null): boolean;
   notify(cacheKey: ResourceKey, value: CacheOperation, key?: null): boolean;
   notify(cacheKey: RequestKey, value: DocumentCacheOperation, key?: null): boolean;
   notify(
     cacheKey: ResourceKey | RequestKey,
     value: NotificationType | CacheOperation | DocumentCacheOperation,
-    key?: string | null
+    key?: string | string[] | null
   ): boolean {
     if (this.isDestroyed) {
       return false;
     }
     assert(
-      `Notify does not accept a key argument for the namespace '${value}'. Received key '${key || ''}'.`,
+      `Notify does not accept a key argument for the namespace '${value}'. Received key '${keyToString(key)}'.`,
       !key || value === 'attributes' || value === 'relationships'
     );
     if (!isResourceKey(cacheKey) && !isRequestKey(cacheKey)) {
       if (LOG_NOTIFICATIONS) {
         // eslint-disable-next-line no-console
         console.log(
-          `Notifying: Expected to receive a stable Identifier to notify '${value}' '${key || ''}' with, but ${String(
-            cacheKey
-          )} is not in the cache`,
+          `Notifying: Expected to receive a stable Identifier to notify '${value}' '${keyToString(
+            key
+          )}' with, but ${String(cacheKey)} is not in the cache`,
           cacheKey
         );
       }
@@ -230,11 +243,21 @@ export class NotificationManager {
         buffer = [];
         this._buffered.set(cacheKey, buffer);
       }
-      buffer.push([value, key || null]);
 
-      if (LOG_METRIC_COUNTS) {
-        count(`notify ${'type' in cacheKey ? cacheKey.type : '<document>'} ${value} ${key}`);
+      if (Array.isArray(key)) {
+        for (let i = 0; i < key.length; i++) {
+          buffer.push([value, key[i]]);
+          if (LOG_METRIC_COUNTS) {
+            count(`notify ${'type' in cacheKey ? cacheKey.type : '<document>'} ${value} ${key[i]}`);
+          }
+        }
+      } else {
+        buffer.push([value, key || null]);
+        if (LOG_METRIC_COUNTS) {
+          count(`notify ${'type' in cacheKey ? cacheKey.type : '<document>'} ${value} ${key}`);
+        }
       }
+
       if (!this._scheduleNotify()) {
         if (LOG_NOTIFICATIONS) {
           log(
@@ -243,7 +266,7 @@ export class NotificationManager {
             `${'type' in cacheKey ? cacheKey.type : 'document'}`,
             cacheKey.lid,
             `${value}`,
-            key || ''
+            keyToString(key)
           );
         }
       }
@@ -255,11 +278,11 @@ export class NotificationManager {
           `${'type' in cacheKey ? cacheKey.type : 'document'}`,
           cacheKey.lid,
           `${value}`,
-          key || ''
+          keyToString(key)
         );
       }
       if (LOG_METRIC_COUNTS) {
-        count(`DISCARDED notify ${'type' in cacheKey ? cacheKey.type : '<document>'} ${value} ${key}`);
+        count(`DISCARDED notify ${'type' in cacheKey ? cacheKey.type : '<document>'} ${value} ${keyToString(key)}`);
       }
     }
 

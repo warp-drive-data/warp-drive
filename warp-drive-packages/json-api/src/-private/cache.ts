@@ -1827,9 +1827,14 @@ function notifyAttributes(storeWrapper: CacheCapabilitiesManager, identifier: Re
     return;
   }
 
-  for (const key of keys) {
-    storeWrapper.notifyChange(identifier, 'attributes', key);
-  }
+  // deliver as a single batch instead of one `notifyChange` call per key: this
+  // still results in one notification per key being delivered to subscribers
+  // (in insertion order), but pays the per-call overhead (subscriber lookups,
+  // buffer scheduling, etc) only once for the whole record instead of once
+  // per changed attribute. This matters because this path runs once per
+  // resource during a push/upsert, so with N records each having M changed
+  // attributes the naive per-key approach costs O(N*M) in overhead alone.
+  storeWrapper.notifyChange(identifier, 'attributes', Array.from(keys));
 }
 
 /*

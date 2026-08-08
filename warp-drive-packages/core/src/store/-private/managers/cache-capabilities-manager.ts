@@ -83,16 +83,18 @@ export class CacheCapabilitiesManager implements StoreWrapper {
 
   notifyChange(identifier: ResourceKey, namespace: 'added' | 'removed', key: null): void;
   notifyChange(identifier: RequestKey, namespace: 'added' | 'updated' | 'removed', key: null): void;
+  notifyChange(identifier: ResourceKey, namespace: 'attributes', key: string | string[] | null): void;
   notifyChange(identifier: ResourceKey, namespace: NotificationType, key: string | null): void;
   notifyChange(
     identifier: ResourceKey | RequestKey,
     namespace: NotificationType | 'added' | 'removed' | 'updated',
-    key: string | null
+    key: string | string[] | null
   ): void {
     assert(`Expected a stable identifier`, isResourceKey(identifier) || isRequestKey(identifier));
 
     // TODO do we still get value from this?
     if (namespace === 'relationships' && key) {
+      assert(`Expected a single relationship key`, !Array.isArray(key));
       this._scheduleNotification(identifier as ResourceKey, key);
       return;
     }

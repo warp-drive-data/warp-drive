@@ -99,6 +99,15 @@ export type CacheCapabilitiesManager = {
    */
   notifyChange(identifier: RequestKey, namespace: 'added' | 'updated' | 'removed', key: null): void;
   /**
+   * Notify subscribers that one or more attributes on a resource have
+   * changed. `key` may be a single attribute name, or an array of names
+   * when many attributes changed at once.
+   *
+   * @since 5.9.0
+   * @public
+   */
+  notifyChange(identifier: ResourceKey, namespace: 'attributes', key: string | string[] | null): void;
+  /**
    * Notify subscribers of a change to a resource for any other
    * {@link NotificationType}. `attributes` and `relationships` do not
    * require a key, but if one is specified it is assumed to be the name
@@ -116,6 +125,6 @@ export type CacheCapabilitiesManager = {
   notifyChange(
     identifier: ResourceKey | RequestKey,
     namespace: NotificationType | 'added' | 'removed' | 'updated',
-    key: string | null
+    key: string | string[] | null
   ): void;
 };
