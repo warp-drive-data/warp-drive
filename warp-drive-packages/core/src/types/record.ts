@@ -172,8 +172,15 @@ export type Includes<T extends TypedRecordInstance, MAX_DEPTH extends _DEPTHCOUN
   true
 >;
 
+/**
+ * A type-erased placeholder for a record instance, used where the
+ * specific record type is not known or not relevant.
+ */
 export type OpaqueRecordInstance = unknown;
 
+/**
+ * @internal
+ */
 export type _StringSatisfiesIncludes<T extends string, SET extends string, FT extends string> = T extends SET
   ? FT
   : T extends `${infer U},${infer V}`
@@ -182,8 +189,39 @@ export type _StringSatisfiesIncludes<T extends string, SET extends string, FT ex
       : never
     : never;
 
+/**
+ * Validates that the comma-separated-string `T` (e.g. `'company,company.ceo,friends'`)
+ * only contains paths present in the union `SET` (typically {@link Includes}).
+ *
+ * TypeScript cannot autocomplete against this type; prefer {@link createIncludeValidator}
+ * for a better development experience unless you are writing a similar wrapper utility.
+ *
+ * @example
+ * ```ts
+ * import type { StringSatisfiesIncludes, Includes } from '@warp-drive/core/types/record';
+ *
+ * const includes: StringSatisfiesIncludes<
+ *   'company,company.ceo,friends',
+ *   Includes<User>
+ * > = 'company,company.ceo,friends';
+ * ```
+ */
 export type StringSatisfiesIncludes<T extends string, SET extends string> = _StringSatisfiesIncludes<T, SET, T>;
 
+/**
+ * Creates a runtime validator function for comma-separated `include` strings,
+ * ensuring at compile time that only valid paths for `T` (per {@link Includes})
+ * are supplied.
+ *
+ * @example
+ * ```ts
+ * import { createIncludeValidator } from '@warp-drive/core/types/record';
+ *
+ * const userIncludesValidator = createIncludeValidator<User>;
+ *
+ * userIncludesValidator('company,company.ceo,friends');
+ * ```
+ */
 export function createIncludeValidator<T extends TypedRecordInstance>() {
   return function validateIncludes<U extends string>(includes: StringSatisfiesIncludes<U, Includes<T>>): U {
     return includes;
