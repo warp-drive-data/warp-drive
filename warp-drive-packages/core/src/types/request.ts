@@ -268,34 +268,105 @@ type ImmutableRequest<T> = Readonly<T> & {
   readonly records: [ResourceKey];
 };
 
+/**
+ * The request shape produced by the `updateRecord` request builders, for
+ * use with {@link Store.request}.
+ */
 export type UpdateRequestOptions<RT = unknown, T = unknown> = {
+  /**
+   * the url to request
+   */
   url: string;
+  /**
+   * the HTTP method to use
+   */
   method: 'PATCH' | 'PUT';
+  /**
+   * the headers to send with the request
+   */
   headers: Headers;
+  /**
+   * the name of the request operation
+   */
   op: 'updateRecord';
+  /**
+   * the body to send with the request
+   */
   body?: string | BodyInit | FormData;
+  /**
+   * data for handlers to convert into the request body
+   */
   data: {
+    /**
+     * the resource being updated
+     */
     record: ResourceKey<TypeFromInstanceOrString<T>>;
   };
+  /**
+   * the resource being updated
+   */
   records: [ResourceIdentifierObject<TypeFromInstanceOrString<T>>];
+  /**
+   * @private used only to carry the response type for type inference purposes
+   */
   [RequestSignature]?: RT;
 };
 
+/**
+ * The request shape produced by the `createRecord` request builders, for
+ * use with {@link Store.request}.
+ */
 export type CreateRequestOptions<RT = unknown, T = unknown> = {
+  /**
+   * the url to request
+   */
   url: string;
+  /**
+   * the HTTP method to use
+   */
   method: 'POST';
+  /**
+   * the headers to send with the request
+   */
   headers: Headers;
+  /**
+   * the name of the request operation
+   */
   op: 'createRecord';
+  /**
+   * the body to send with the request
+   */
   body?: string | BodyInit | FormData;
+  /**
+   * data for handlers to convert into the request body
+   */
   data: {
+    /**
+     * the resource being created
+     */
     record: ResourceKey<TypeFromInstanceOrString<T>>;
   };
+  /**
+   * the resource being created
+   */
   records: [ResourceIdentifierObject<TypeFromInstanceOrString<T>>];
+  /**
+   * @private used only to carry the response type for type inference purposes
+   */
   [RequestSignature]?: RT;
 };
 
+/**
+ * The immutable, handler-facing form of {@link DeleteRequestOptions}.
+ */
 export type ImmutableDeleteRequestOptions = ImmutableRequest<DeleteRequestOptions>;
+/**
+ * The immutable, handler-facing form of {@link UpdateRequestOptions}.
+ */
 export type ImmutableUpdateRequestOptions = ImmutableRequest<UpdateRequestOptions>;
+/**
+ * The immutable, handler-facing form of {@link CreateRequestOptions}.
+ */
 export type ImmutableCreateRequestOptions = ImmutableRequest<CreateRequestOptions>;
 
 /**
