@@ -97,13 +97,32 @@ function _AdapterError(this: AdapterRequestError, errors: ApiError[], message = 
   ];
 }
 
+/**
+ * The shape of the errors thrown/returned by {@link AdapterError} and its subclasses.
+ */
 export interface AdapterRequestError<T extends string = string> extends Error {
+  /**
+   * A property signifying that an Error uses the {@link AdapterRequestError} interface.
+   */
   isAdapterError: true;
+  /**
+   * A short code identifying the kind of error, e.g. `'NotFoundError'`.
+   */
   code: T;
+  /**
+   * The {json:api} formatted errors associated with the request.
+   */
   errors: ApiError[];
 }
+/**
+ * The static interface shared by {@link AdapterError} and its subclasses,
+ * allowing further subclassing via {@link AdapterRequestErrorConstructor.extend | extend}.
+ */
 export interface AdapterRequestErrorConstructor<Instance extends AdapterRequestError = AdapterRequestError> {
   new (errors?: unknown[], message?: string): Instance;
+  /**
+   * Creates a new {@link AdapterRequestErrorConstructor} that inherits from this one.
+   */
   extend(options: { message: string }): AdapterRequestErrorConstructor;
 }
 
