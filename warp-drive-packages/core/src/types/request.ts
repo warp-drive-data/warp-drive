@@ -33,11 +33,11 @@ export const EnableHydration: '___(unique) Symbol(EnableHydration)' = getOrSetUn
   Symbol.for('wd:enable-hydration')
 );
 /**
- * @internal
+ * @private
  */
 export const IS_FUTURE: '___(unique) Symbol(IS_FUTURE)' = getOrSetGlobal('IS_FUTURE', Symbol('IS_FUTURE'));
 /**
- * @internal
+ * @private
  */
 export const STRUCTURED: '___(unique) Symbol(DOC)' = getOrSetGlobal('DOC', Symbol('DOC'));
 
