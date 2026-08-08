@@ -119,6 +119,12 @@ export interface Cache {
    * @return the known resource data, if any
    */
   peek<T = unknown>(cacheKey: ResourceKey<TypeFromInstanceOrString<T>>): T | null;
+  /**
+   * Peek the Cache for the {@link ResourceDocument | document} associated with a request.
+   *
+   * @public
+   * @return the known document data, if any
+   */
   peek(cacheKey: RequestKey): ResourceDocument | null;
 
   /**
@@ -154,6 +160,14 @@ export interface Cache {
    * @return the known data, if any
    */
   peekRemoteState<T = unknown>(cacheKey: ResourceKey<TypeFromInstanceOrString<T>>): T | null;
+  /**
+   * Peek remote {@link ResourceDocument | document} data for a request from the Cache.
+   *
+   * This will give the data provided from the server without any local changes.
+   *
+   * @public
+   * @return the known document data, if any
+   */
   peekRemoteState(cacheKey: RequestKey): ResourceDocument | null;
 
   /**
@@ -296,10 +310,28 @@ export interface Cache {
     cacheKey: ResourceKey,
     result: StructuredDataDocument<SingleResourceDataDocument> | null
   ): SingleResourceDataDocument;
+  /**
+   * [LIFECYCLE] Signals to the cache that a set of resources
+   * was successfully updated as part of a save transaction that
+   * resulted in a single resource being returned.
+   *
+   * @public
+   * @param cacheKey - the primary ResourceKeys that were operated on
+   * @param result - a document in the cache format containing any updated data
+   */
   didCommit(
     cacheKey: ResourceKey[],
     result: StructuredDataDocument<SingleResourceDataDocument> | null
   ): SingleResourceDataDocument;
+  /**
+   * [LIFECYCLE] Signals to the cache that a set of resources
+   * was successfully updated as part of a save transaction that
+   * resulted in a collection of resources being returned.
+   *
+   * @public
+   * @param cacheKey - the primary ResourceKeys that were operated on
+   * @param result - a document in the cache format containing any updated data
+   */
   didCommit(
     cacheKey: ResourceKey[],
     result: StructuredDataDocument<CollectionResourceDataDocument> | null
