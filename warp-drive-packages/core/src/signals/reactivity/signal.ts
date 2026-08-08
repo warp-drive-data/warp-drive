@@ -228,6 +228,20 @@ export function gate<T extends object, K extends keyof T & string>(
   return desc;
 }
 
+/**
+ * Defines a reactive "gated" property on `obj` using `desc` as its
+ * getter/setter descriptor.
+ *
+ * Unlike a signal defined with {@link defineSignal}, a gated property's
+ * consumers are not notified when the property is set, since its update
+ * is expected to be controlled externally (for instance, by a signal it
+ * derives its value from) unless the descriptor opts into being locally
+ * managed.
+ *
+ * Akin to `Object.defineProperty`.
+ *
+ * @private
+ */
 export function defineGate<T extends object>(obj: T, key: string, desc: PropertyDescriptor): void {
   const options = Object.assign({ enumerable: true, configurable: false }, gate(obj, key as keyof T & string, desc));
   Object.defineProperty(obj, key, options);

@@ -19,6 +19,11 @@ const INITIALIZER_PROTO = { isInitializer: true } as const;
 interface Initializer {
   value: () => unknown;
 }
+/**
+ * Wraps `fn` so that a signal can recognize it as a lazy initializer
+ * for its value rather than the value itself, deferring the call to
+ * `fn` until the signal is first accessed.
+ */
 export function makeInitializer(fn: () => unknown): Initializer {
   // we use a prototype to ensure that the initializer is not enumerable
   // and does not interfere with the signal's value.
@@ -258,6 +263,10 @@ export function consumeInternalMemo<T>(fn: () => T): T {
   return fn();
 }
 
+/**
+ * Looks up the {@link WarpDriveSignal} stored for `key` in `signals`,
+ * if one has already been created, without creating or consuming it.
+ */
 export function peekInternalSignal(
   signals: SignalStore | undefined,
   key: string | symbol
@@ -270,6 +279,10 @@ export function consumeInternalSignal(signal: WarpDriveSignal): void {
   consumeSignal(signal.signal);
 }
 
+/**
+ * Marks `signal` as stale and notifies its underlying framework/TC39
+ * signal, scheduling any of its consumers for re-render/re-computation.
+ */
 export function notifyInternalSignal(signal: WarpDriveSignal | undefined): void {
   if (signal) {
     signal.isStale = true;
