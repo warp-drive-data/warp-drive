@@ -9,9 +9,17 @@ import type { Links, Meta, PaginationLinks } from './json-api-raw.ts';
  * document returned by a request intended to be inserted into the cache.
  */
 export interface ResourceMetaDocument {
-  // the url or cache-key associated with the structured document
+  /**
+   * the url or cache-key associated with the structured document
+   */
   lid?: string;
+  /**
+   * meta information about the document
+   */
   meta: Meta;
+  /**
+   * links related to the document
+   */
   links?: Links | PaginationLinks;
 }
 
@@ -22,11 +30,25 @@ export interface ResourceMetaDocument {
  * For the Reactive value returned by a request using the store, use {@link ReactiveDataDocument} instead.
  */
 export interface SingleResourceDataDocument<T = PersistedResourceKey, R = PersistedResourceKey> {
-  // the url or cache-key associated with the structured document
+  /**
+   * the url or cache-key associated with the structured document
+   */
   lid?: string;
+  /**
+   * links related to the document
+   */
   links?: Links | PaginationLinks;
+  /**
+   * meta information about the document
+   */
   meta?: Meta;
+  /**
+   * the resource the document represents, or `null` if it has none
+   */
   data: T | null;
+  /**
+   * any additional resources included via sideloading
+   */
   included?: R[];
 }
 
@@ -37,17 +59,35 @@ export interface SingleResourceDataDocument<T = PersistedResourceKey, R = Persis
  * For the Reactive value returned by a request using the store, use {@link ReactiveDataDocument} instead.
  */
 export interface CollectionResourceDataDocument<T = PersistedResourceKey> {
-  // the url or cache-key associated with the structured document
+  /**
+   * the url or cache-key associated with the structured document
+   */
   lid?: string;
+  /**
+   * links related to the document, including pagination links
+   */
   links?: Links | PaginationLinks;
+  /**
+   * meta information about the document
+   */
   meta?: Meta;
+  /**
+   * the resources the document represents
+   */
   data: T[];
+  /**
+   * any additional resources included via sideloading
+   */
   included?: T[];
 }
 
 /**
  * A type useful for representing the raw {json:api} documents that
  * the cache may use.
+ *
+ * See also:
+ * - {@link SingleResourceDataDocument}
+ * - {@link CollectionResourceDataDocument}
  *
  * For the Reactive value returned by a request using the store, use {@link ReactiveDataDocument} instead.
  */
@@ -62,16 +102,33 @@ export type ResourceDataDocument<T = PersistedResourceKey> =
  * For the Reactive value returned by a request using the store, use {@link ReactiveErrorDocument} instead.
  */
 export interface ResourceErrorDocument {
-  // the url or cache-key associated with the structured document
+  /**
+   * the url or cache-key associated with the structured document
+   */
   lid?: string;
+  /**
+   * links related to the document
+   */
   links?: Links | PaginationLinks;
+  /**
+   * meta information about the document
+   */
   meta?: Meta;
+  /**
+   * the errors the document represents
+   */
   errors: ApiError[];
 }
 
 /**
  * A type useful for representing the raw {json:api} documents that
  * the cache may use.
+ *
+ * See also:
+ * - {@link ResourceMetaDocument}
+ * - {@link SingleResourceDataDocument}
+ * - {@link CollectionResourceDataDocument}
+ * - {@link ResourceErrorDocument}
  *
  * For the Reactive value returned by a request using the store, use {@link ReactiveDocument} instead.
  */
