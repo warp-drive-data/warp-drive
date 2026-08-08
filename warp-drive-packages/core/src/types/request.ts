@@ -112,22 +112,69 @@ export interface CacheOptions {
    */
   [SkipCache]?: boolean;
 }
+/**
+ * The request shape produced by the `findRecord` request builders, for
+ * use with {@link Store.request}.
+ */
 export type FindRecordRequestOptions<RT = unknown, T = unknown> = {
+  /**
+   * the url to request
+   */
   url: string;
+  /**
+   * the HTTP method to use
+   */
   method: 'GET';
+  /**
+   * the headers to send with the request
+   */
   headers: Headers;
+  /**
+   * see {@link CacheOptions}
+   */
   cacheOptions?: CacheOptions;
+  /**
+   * the name of the request operation
+   */
   op: 'findRecord';
+  /**
+   * the resource being requested
+   */
   records: [ResourceIdentifierObject<TypeFromInstanceOrString<T>>];
+  /**
+   * @internal used only to carry the response type for type inference purposes
+   */
   [RequestSignature]?: RT;
 };
 
+/**
+ * The request shape produced by the `query` request builders, for
+ * use with {@link Store.request}.
+ */
 export type QueryRequestOptions<RT = unknown> = {
+  /**
+   * the url to request
+   */
   url: string;
+  /**
+   * the HTTP method to use
+   */
   method: 'GET';
+  /**
+   * the headers to send with the request
+   */
   headers: Headers;
+  /**
+   * see {@link CacheOptions}
+   */
   cacheOptions?: CacheOptions;
+  /**
+   * the name of the request operation
+   */
   op: 'query';
+  /**
+   * @internal used only to carry the response type for type inference purposes
+   */
   [RequestSignature]?: RT;
 };
 
