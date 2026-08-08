@@ -108,26 +108,88 @@ export type QueryRequestOptions<RT = unknown> = {
   [RequestSignature]?: RT;
 };
 
+/**
+ * The request shape produced by the `postQuery` request builders, for
+ * use with {@link Store.request}.
+ */
 export type PostQueryRequestOptions<RT = unknown> = {
+  /**
+   * the url to request
+   */
   url: string;
+  /**
+   * the HTTP method to use
+   */
   method: 'POST' | 'QUERY';
+  /**
+   * the headers to send with the request
+   */
   headers: Headers;
+  /**
+   * the body to send with the request
+   */
   body?: string | BodyInit | FormData;
-  cacheOptions: CacheOptions & { key: string };
+  /**
+   * see {@link CacheOptions}. A `key` is required since `POST`/`QUERY`
+   * requests otherwise have no cache-safe way to derive one from the url.
+   */
+  cacheOptions: CacheOptions & {
+    /**
+     * a key that uniquely identifies this request
+     */
+    key: string;
+  };
+  /**
+   * the name of the request operation
+   */
   op: 'query';
+  /**
+   * @internal used only to carry the response type for type inference purposes
+   */
   [RequestSignature]?: RT;
 };
 
+/**
+ * The request shape produced by the `deleteRecord` request builders, for
+ * use with {@link Store.request}.
+ */
 export type DeleteRequestOptions<RT = unknown, T = unknown> = {
+  /**
+   * the url to request
+   */
   url: string;
+  /**
+   * the HTTP method to use
+   */
   method: 'DELETE';
+  /**
+   * the headers to send with the request
+   */
   headers: Headers;
+  /**
+   * the name of the request operation
+   */
   op: 'deleteRecord';
+  /**
+   * the body to send with the request
+   */
   body?: string | BodyInit | FormData;
+  /**
+   * data for handlers to convert into the request body
+   */
   data: {
+    /**
+     * the resource being deleted
+     */
     record: ResourceKey<TypeFromInstanceOrString<T>>;
   };
+  /**
+   * the resource being deleted
+   */
   records: [ResourceIdentifierObject<TypeFromInstanceOrString<T>>];
+  /**
+   * @internal used only to carry the response type for type inference purposes
+   */
   [RequestSignature]?: RT;
 };
 
