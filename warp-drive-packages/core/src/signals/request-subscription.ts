@@ -11,13 +11,27 @@ import { getRequestState } from './request-state.ts';
 
 // default to 30 seconds unavailable before we refresh
 const DEFAULT_DEADLINE = 30_000;
+/**
+ * A symbol used to dispose of a {@link RequestSubscription} when the
+ * component or context using it is torn down.
+ */
 export const DISPOSE = (Symbol.dispose || Symbol.for('dispose')) as unknown as '(symbol) dispose';
 
 function isNeverString(val: never): string {
   return val;
 }
 
+/**
+ * The individual autorefresh strategies a {@link RequestSubscription}
+ * may combine, see {@link AutorefreshBehaviorCombos}.
+ */
 export type AutorefreshBehaviorType = 'online' | 'interval' | 'invalid';
+
+/**
+ * The value accepted by {@link SubscriptionArgs.autorefresh}: either a
+ * boolean, a single {@link AutorefreshBehaviorType}, or a comma-separated
+ * combination of up to three of them.
+ */
 export type AutorefreshBehaviorCombos =
   | boolean
   | AutorefreshBehaviorType
@@ -28,8 +42,17 @@ export type AutorefreshBehaviorCombos =
  * Utilities to assist in recovering from the error.
  */
 export interface RecoveryFeatures {
+  /**
+   * Whether the browser reports that the network is online.
+   */
   isOnline: boolean;
+  /**
+   * Whether the browser reports that the tab is hidden.
+   */
   isHidden: boolean;
+  /**
+   * Retries the request, reloading it from the server.
+   */
   retry: () => Promise<void>;
 }
 
@@ -40,16 +63,43 @@ export type ErrorFeatures = RecoveryFeatures;
  * Utilities for keeping the request fresh
  */
 export interface ContentFeatures<RT> {
+  /**
+   * Whether the browser reports that the network is online.
+   */
   isOnline: boolean;
+  /**
+   * Whether the browser reports that the tab is hidden.
+   */
   isHidden: boolean;
+  /**
+   * Whether the subscription is currently refreshing the request.
+   */
   isRefreshing: boolean;
+  /**
+   * Refreshes the request, updating it in the background.
+   */
   refresh: () => Promise<void>;
+  /**
+   * Retries the request, reloading it from the server.
+   */
   reload: () => Promise<void>;
+  /**
+   * Aborts the in-flight refresh/reload request, if any.
+   */
   abort?: () => void;
+  /**
+   * The most recent refresh/reload request that was made, if any.
+   */
   latestRequest?: Future<RT>;
 }
 
+/**
+ * The args accepted by the `<Request />` component.
+ */
 export interface RequestArgs<RT, E> extends SubscriptionArgs<RT, E> {
+  /**
+   * The {@link RequestSubscription} instance backing the component, if any.
+   */
   subscription?: RequestSubscription<RT, E>;
 
   /**
@@ -63,6 +113,9 @@ export interface RequestArgs<RT, E> extends SubscriptionArgs<RT, E> {
   store?: Store | RequestManager;
 }
 
+/**
+ * The args accepted by a {@link RequestSubscription}.
+ */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export interface SubscriptionArgs<RT, E> {
   /**
@@ -290,6 +343,10 @@ export class RequestSubscription<RT, E> {
     }
   }
 
+  /**
+   * Whether neither a `request` nor a `query` arg was provided, and so
+   * this subscription has nothing to fetch or monitor.
+   */
   @memoized
   get isIdle(): boolean {
     const { request, query } = this._args;
@@ -297,6 +354,10 @@ export class RequestSubscription<RT, E> {
     return Boolean(!request && !query);
   }
 
+  /**
+   * The set of {@link AutorefreshBehaviorType}s this subscription is
+   * configured to autorefresh for, derived from {@link SubscriptionArgs.autorefresh}.
+   */
   @memoized
   get autorefreshTypes(): Set<AutorefreshBehaviorType> {
     const { autorefresh } = this._args;
@@ -697,6 +758,10 @@ export class RequestSubscription<RT, E> {
     return (this.store as Store).request(query);
   }
 
+  /**
+   * The {@link Future} this subscription is currently monitoring, and
+   * (re-)subscribes to notifications for as a side effect of access.
+   */
   @memoized
   get request(): Future<RT> {
     if (DEBUG) {
@@ -716,10 +781,16 @@ export class RequestSubscription<RT, E> {
     }
   }
 
+  /**
+   * The {@link RequestState} for {@link RequestSubscription.request | request}.
+   */
   get reqState(): RequestState<RT, StructuredErrorDocument<E>> {
     return getRequestState<RT, E>(this.request);
   }
 
+  /**
+   * The resolved content of the request, once it has succeeded.
+   */
   get result() {
     return this.reqState.result as RT;
   }
@@ -735,6 +806,10 @@ function isStore(store: Store | RequestManager): store is Store {
   return 'requestManager' in store;
 }
 
+/**
+ * Creates a {@link RequestSubscription}, the reactive class powering the
+ * `<Request />` component's autorefresh, retry, and refresh behaviors.
+ */
 export function createRequestSubscription<RT, E>(
   store: Store | RequestManager,
   args: SubscriptionArgs<RT, E>
