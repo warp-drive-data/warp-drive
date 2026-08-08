@@ -17,16 +17,35 @@ import type {
 import type { ResourceIdentifierObject } from './spec/json-api-raw.ts';
 import type { RequestSignature } from './symbols.ts';
 
+/**
+ * A {@link RequestInfo.cacheOptions | cacheOptions} flag which, when set,
+ * signals that a request should never be handled by the cache-manager and
+ * thus will never resolve from cache nor update the cache.
+ */
 export const SkipCache: '___(unique) Symbol(SkipCache)' = getOrSetUniversal('SkipCache', Symbol.for('wd:skip-cache'));
+/**
+ * A {@link RequestInfo} flag which, when set, signals to the store's
+ * `instantiateRecord` hook that the resolved content should be hydrated
+ * into reactive records rather than returned as raw data.
+ */
 export const EnableHydration: '___(unique) Symbol(EnableHydration)' = getOrSetUniversal(
   'EnableHydration',
   Symbol.for('wd:enable-hydration')
 );
+/**
+ * @internal
+ */
 export const IS_FUTURE: '___(unique) Symbol(IS_FUTURE)' = getOrSetGlobal('IS_FUTURE', Symbol('IS_FUTURE'));
+/**
+ * @internal
+ */
 export const STRUCTURED: '___(unique) Symbol(DOC)' = getOrSetGlobal('DOC', Symbol('DOC'));
 
 export type { FetchError };
 
+/**
+ * The HTTP methods WarpDrive's request layer supports.
+ */
 export type HTTPMethod =
   | 'QUERY'
   | 'GET'
@@ -250,7 +269,13 @@ export interface StructuredDataDocument<T> {
    * @see {@link ImmutableRequestInfo}
    */
   request: ImmutableRequestInfo;
+  /**
+   * the response set by the handler chain, if any
+   */
   response: Response | ResponseInfo | null;
+  /**
+   * the processed content of the response
+   */
   content: T;
 }
 
@@ -272,8 +297,17 @@ export interface StructuredErrorDocument<T = unknown> extends Error {
    * @see {@link ImmutableRequestInfo}
    */
   request: ImmutableRequestInfo;
+  /**
+   * the response set by the handler chain, if any
+   */
   response: Response | ResponseInfo | null;
+  /**
+   * the error that caused the request to fail
+   */
   error: string | object;
+  /**
+   * the processed content of the response, if any was received before the failure
+   */
   content?: T;
 }
 
@@ -361,8 +395,18 @@ interface NativeRequestInit {
   duplex?: 'half';
 }
 
+/**
+ * A read-only {@link Headers} instance, as passed to {@link Handler | Handlers}
+ * via {@link ImmutableRequestInfo.headers}.
+ */
 export interface ImmutableHeaders extends Headers {
+  /**
+   * Returns a mutable clone of these headers, if supported by the implementation.
+   */
   clone?(): Headers;
+  /**
+   * Returns the headers as an array of `[key, value]` pairs.
+   */
   toJSON(): [string, string][];
 }
 
