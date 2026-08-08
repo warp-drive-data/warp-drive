@@ -3,6 +3,8 @@ import Mixin from '@ember/object/mixin';
 import { camelize, pluralize } from '@warp-drive/utilities/string';
 
 import type { Snapshot, SnapshotRecordArray } from '../../compat/-private.ts';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import type { RESTAdapter } from '../rest.ts';
 
 /*
  The structure of this file is such because typing Mixins is hard. Here we've structured it in
@@ -89,17 +91,85 @@ export interface BuildURLMixin {
   ): string;
   buildURL(this: MixtBuildURLMixin, modelName: string, id: string, snapshot: Snapshot): string;
   _buildURL(this: MixtBuildURLMixin, modelName: string | null | undefined, id?: string | null): string;
+  /**
+   * Builds a URL for a `store.findRecord(type, id)` call.
+   *
+   * @public
+   */
   urlForFindRecord(this: MixtBuildURLMixin, id: string, modelName: string, snapshot: Snapshot): string;
+  /**
+   * Builds a URL for a `store.findAll(type)` call.
+   *
+   * @public
+   */
   urlForFindAll(this: MixtBuildURLMixin, modelName: string, snapshots: SnapshotRecordArray): string;
+  /**
+   * Builds a URL for a `store.queryRecord(type, query)` call.
+   *
+   * @public
+   */
   urlForQueryRecord(this: MixtBuildURLMixin, query: Record<string, unknown>, modelName: string): string;
+  /**
+   * Builds a URL for a `store.query(type, query)` call.
+   *
+   * @public
+   */
   urlForQuery(this: MixtBuildURLMixin, query: Record<string, unknown>, modelName: string): string;
+  /**
+   * Builds a URL for coalescing multiple `store.findRecord(type, id)`
+   * records into 1 request when the adapter's `coalesceFindRequests`
+   * property is `true`.
+   *
+   * @public
+   */
   urlForFindMany(this: MixtBuildURLMixin, ids: string[], modelName: string, snapshots: Snapshot[]): string;
+  /**
+   * Builds a URL for fetching an async `hasMany` relationship when a
+   * URL is not provided by the server.
+   *
+   * @public
+   */
   urlForFindHasMany(this: MixtBuildURLMixin, id: string, modelName: string, snapshot: Snapshot): string;
+  /**
+   * Builds a URL for fetching an async `belongsTo` relationship when a
+   * URL is not provided by the server.
+   *
+   * @public
+   */
   urlForFindBelongsTo(this: MixtBuildURLMixin, id: string, modelName: string, snapshot: Snapshot): string;
+  /**
+   * Builds a URL for a `record.save()` call when the record was created
+   * locally using `store.createRecord()`.
+   *
+   * @public
+   */
   urlForCreateRecord(this: MixtBuildURLMixin, modelName: string, snapshot: Snapshot): string;
+  /**
+   * Builds a URL for a `record.save()` call when the record has been
+   * updated locally.
+   *
+   * @public
+   */
   urlForUpdateRecord(this: MixtBuildURLMixin, id: string, modelName: string, snapshot: Snapshot): string;
+  /**
+   * Builds a URL for a `record.save()` call when the record has been
+   * deleted locally.
+   *
+   * @public
+   */
   urlForDeleteRecord(this: MixtBuildURLMixin, id: string, modelName: string, snapshot: Snapshot): string;
+  /**
+   * @private
+   */
   urlPrefix(this: MixtBuildURLMixin, path?: string | null, parentURL?: string): string;
+  /**
+   * Determines the pathname for a given type.
+   *
+   * By default, it pluralizes the type's name (for example, 'post'
+   * becomes 'posts' and 'person' becomes 'people').
+   *
+   * @public
+   */
   pathForType(this: MixtBuildURLMixin, modelName: string): string;
 }
 
@@ -111,32 +181,6 @@ export interface MixtBuildURLMixin extends BuildURLMixin {
   namespace: string | null;
 }
 
-/**
-  ## Using BuildURLMixin
-
-  To use URL building, include the mixin when extending an adapter, and call `buildURL` where needed.
-  The default behaviour is designed for RESTAdapter.
-
-  ### Example
-
-  ```javascript
-  import Adapter, { BuildURLMixin } from '@ember-data/adapter';
-
-  export default class ApplicationAdapter extends Adapter.extend(BuildURLMixin) {
-    findRecord(store, type, id, snapshot) {
-      var url = this.buildURL(type.modelName, id, snapshot, 'findRecord');
-      return this.ajax(url, 'GET');
-    }
-  }
-  ```
-
-  ### Attributes
-
-  The `host` and `namespace` attributes will be used if defined, and are optional.
-
-  @class BuildURLMixin
-  @public
-*/
 /**
     Builds a URL for a given type and optional ID.
 
