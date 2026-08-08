@@ -223,6 +223,11 @@ export function willSyncFlushWatchers(): boolean {
   return signalHooks.willSyncFlushWatchers();
 }
 
+/**
+ * Wraps `promise` using the configured {@link SignalHooks.waitFor}, if any,
+ * for things like test-waiters. Returns `promise` unchanged if no
+ * `waitFor` hook is configured.
+ */
 export function waitFor<K>(promise: Promise<K>): Promise<K> {
   const signalHooks: SignalHooks | null = peekTransient('signalHooks');
 
