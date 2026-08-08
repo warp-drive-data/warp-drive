@@ -1,18 +1,56 @@
 import type { ResourceKey } from '../identifier.ts';
 
+/**
+ * Adds the specified {@link ResourceKey | ResourceKeys} to a relationship's
+ * local (uncommitted) state.
+ */
 export interface AddToResourceRelationshipMutation {
+  /**
+   * The name of the mutation
+   */
   op: 'add';
+  /**
+   * The cache key for the resource whose relationship is being updated
+   */
   record: ResourceKey;
+  /**
+   * The name of the relationship to add to
+   */
   field: string;
+  /**
+   * The resource(s) to add to the relationship
+   */
   value: ResourceKey | ResourceKey[];
+  /**
+   * The index at which to insert the resource(s), if applicable
+   */
   index?: number;
 }
 
+/**
+ * Removes the specified {@link ResourceKey | ResourceKeys} from a relationship's
+ * local (uncommitted) state.
+ */
 export interface RemoveFromResourceRelationshipMutation {
+  /**
+   * The name of the mutation
+   */
   op: 'remove';
+  /**
+   * The cache key for the resource whose relationship is being updated
+   */
   record: ResourceKey;
+  /**
+   * The name of the relationship to remove from
+   */
   field: string;
+  /**
+   * The resource(s) to remove from the relationship
+   */
   value: ResourceKey | ResourceKey[];
+  /**
+   * The index to remove the resource(s) from, if applicable
+   */
   index?: number;
 }
 
