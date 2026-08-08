@@ -16,30 +16,68 @@ export interface RemoveFromResourceRelationshipMutation {
   index?: number;
 }
 
+/**
+ * Replaces the local (uncommitted) state of a `to-one` relationship
+ * with a new value.
+ */
 export interface ReplaceRelatedRecordMutation {
+  /**
+   * The name of the mutation
+   */
   op: 'replaceRelatedRecord';
+  /**
+   * The cache key for the resource whose relationship is being updated
+   */
   record: ResourceKey;
+  /**
+   * The name of the relationship to replace
+   */
   field: string;
-  // never null if field is a collection
+  /**
+   * The new value for the relationship. Never `null` if the field is
+   * actually a collection relationship.
+   */
   value: ResourceKey | null;
-  // if field is a collection,
-  //  the value we are swapping with
+  /**
+   * If the field is a collection relationship, the value being swapped out
+   */
   prior?: ResourceKey;
+  /**
+   * If the field is a collection relationship, the index at which the swap occurred
+   */
   index?: number;
 }
 
+/**
+ * Replaces the local (uncommitted) state of a `to-many` relationship
+ * with a new set of values.
+ */
 export interface ReplaceRelatedRecordsMutation {
+  /**
+   * The name of the mutation
+   */
   op: 'replaceRelatedRecords';
+  /**
+   * The cache key for the resource whose relationship is being updated
+   */
   record: ResourceKey;
+  /**
+   * The name of the relationship to replace
+   */
   field: string;
-  // the records to add. If no prior/index
-  //  specified all existing should be removed
+  /**
+   * The resources to add. If neither {@link ReplaceRelatedRecordsMutation.prior | prior}
+   * nor {@link ReplaceRelatedRecordsMutation.index | index} is specified, all
+   * existing members should be removed.
+   */
   value: ResourceKey[];
-  // if this is a "splice" the
-  //  records we expect to be removed
+  /**
+   * If this is a "splice", the resources expected to be removed
+   */
   prior?: ResourceKey[];
-  // if this is a "splice" the
-  //   index to start from
+  /**
+   * If this is a "splice", the index to start from
+   */
   index?: number;
 }
 
