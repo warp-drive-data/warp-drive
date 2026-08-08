@@ -10,6 +10,9 @@
  *
  * Operations are applied via {@link Cache.patch}.
  *
+ * See also {@link Mutation}, which applies analogous updates to the
+ * Cache's "local" (or dirty) state.
+ *
  * @module
  */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -97,7 +100,13 @@ export interface AddResourceOperation extends Op {
  */
 export interface UpdateResourceOperation extends Op {
   op: 'update';
+  /**
+   * The cache key for the resource
+   */
   record: PersistedResourceKey;
+  /**
+   * The new state to merge into the resource
+   */
   value: ExistingResourceObject;
 }
 /**
@@ -105,8 +114,17 @@ export interface UpdateResourceOperation extends Op {
  */
 export interface UpdateResourceFieldOperation extends Op {
   op: 'update';
+  /**
+   * The cache key for the resource
+   */
   record: PersistedResourceKey;
+  /**
+   * The name of the field to update
+   */
   field: string;
+  /**
+   * The new value for the field
+   */
   value: Value;
 }
 /**
@@ -114,8 +132,17 @@ export interface UpdateResourceFieldOperation extends Op {
  */
 export interface UpdateResourceRelationshipOperation extends Op {
   op: 'update';
+  /**
+   * The cache key for the resource
+   */
   record: PersistedResourceKey;
+  /**
+   * The name of the relationship to update
+   */
   field: string;
+  /**
+   * The new state for the relationship
+   */
   value: Relationship<PersistedResourceKey>;
 }
 
@@ -126,9 +153,21 @@ export interface UpdateResourceRelationshipOperation extends Op {
  */
 export interface AddToDocumentOperation extends Op {
   op: 'add';
+  /**
+   * The cache key for the request document
+   */
   record: RequestKey;
+  /**
+   * Which member of the document to add to
+   */
   field: 'data' | 'included';
+  /**
+   * The resource(s) to add
+   */
   value: PersistedResourceKey | PersistedResourceKey[];
+  /**
+   * The index at which to insert the resource(s), if applicable
+   */
   index?: number;
 }
 /**
@@ -136,9 +175,21 @@ export interface AddToDocumentOperation extends Op {
  */
 export interface AddToResourceRelationshipOperation extends Op {
   op: 'add';
+  /**
+   * The cache key for the resource whose relationship is being updated
+   */
   record: PersistedResourceKey;
+  /**
+   * The name of the relationship to add to
+   */
   field: string;
+  /**
+   * The resource(s) to add to the relationship
+   */
   value: PersistedResourceKey | PersistedResourceKey[];
+  /**
+   * The index at which to insert the resource(s), if applicable
+   */
   index?: number;
 }
 /**
@@ -146,9 +197,21 @@ export interface AddToResourceRelationshipOperation extends Op {
  */
 export interface RemoveFromResourceRelationshipOperation extends Op {
   op: 'remove';
+  /**
+   * The cache key for the resource whose relationship is being updated
+   */
   record: PersistedResourceKey;
+  /**
+   * The name of the relationship to remove from
+   */
   field: string;
+  /**
+   * The resource(s) to remove from the relationship
+   */
   value: PersistedResourceKey | PersistedResourceKey[];
+  /**
+   * The index to remove the resource(s) from, if applicable
+   */
   index?: number;
 }
 /**
@@ -158,9 +221,21 @@ export interface RemoveFromResourceRelationshipOperation extends Op {
  */
 export interface RemoveFromDocumentOperation extends Op {
   op: 'remove';
+  /**
+   * The cache key for the request document
+   */
   record: RequestKey;
+  /**
+   * Which member of the document to remove from
+   */
   field: 'data' | 'included';
+  /**
+   * The resource(s) to remove
+   */
   value: PersistedResourceKey | PersistedResourceKey[];
+  /**
+   * The index to remove the resource(s) from, if applicable
+   */
   index?: number;
 }
 
