@@ -2,15 +2,15 @@ import { DEBUG } from '@warp-drive/core/build-config/env';
 
 // provided for additional debuggability
 /**
- * @internal
+ * @private
  */
 export const DEBUG_CLIENT_ORIGINATED: unique symbol = Symbol('record-originated-on-client');
 /**
- * @internal
+ * @private
  */
 export const DEBUG_KEY_TYPE: unique symbol = Symbol('key-type');
 /**
- * @internal
+ * @private
  */
 export const DEBUG_STALE_CACHE_OWNER: unique symbol = Symbol('warpDriveStaleCache');
 
@@ -20,7 +20,7 @@ function ProdSymbol<T extends string>(str: T, debugStr: string): T {
 
 // also present in production
 /**
- * @internal
+ * @private
  */
 export const CACHE_OWNER: '__$co' = ProdSymbol('__$co', 'CACHE_OWNER');
 
