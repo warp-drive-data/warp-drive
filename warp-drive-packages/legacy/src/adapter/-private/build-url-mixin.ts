@@ -168,7 +168,7 @@ export interface BuildURLMixin {
    */
   buildURL(this: MixtBuildURLMixin, modelName: string, id: string, snapshot: Snapshot): string;
   /**
-   * @internal
+   * @private
    */
   _buildURL(this: MixtBuildURLMixin, modelName: string | null | undefined, id?: string | null): string;
   urlForFindRecord(this: MixtBuildURLMixin, id: string, modelName: string, snapshot: Snapshot): string;
