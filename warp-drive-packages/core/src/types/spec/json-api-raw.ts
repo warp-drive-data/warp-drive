@@ -117,19 +117,68 @@ export type ResourceRelationshipsObject<T = ExistingResourceIdentifierObject | N
  * Contains the data for an existing resource in JSON:API format
  */
 export interface ExistingResourceObject<T extends string = string> extends ExistingResourceIdentifierObject<T> {
+  /**
+   * meta information about the resource
+   */
   meta?: Meta;
+  /**
+   * the resource's attributes
+   */
   attributes?: ObjectValue;
+  /**
+   * the resource's relationships to other resources
+   */
   relationships?: ResourceRelationshipsObject<ExistingResourceIdentifierObject>;
+  /**
+   * links related to the resource
+   */
   links?: Links;
 }
 
+/**
+ * Represents a new resource that has not yet been persisted, as it would
+ * appear in a {json:api} document (for instance, the body of a `POST` request).
+ *
+ * @example
+ * ```json
+ * {
+ *   "data": {
+ *     "type": "user",
+ *     "lid": "@lid:user-1",
+ *     "attributes": { "name": "Chris" }
+ *   }
+ * }
+ * ```
+ */
 export type NewResourceObject<T extends string = string> = NewResourceIdentifierObject<T> & {
+  /**
+   * meta information about the resource
+   */
   meta?: Meta;
+  /**
+   * the resource's attributes
+   */
   attributes?: ObjectValue;
+  /**
+   * the resource's relationships to other resources
+   */
   relationships?: ResourceRelationshipsObject;
+  /**
+   * links related to the resource
+   */
   links?: Links;
 };
 
+/**
+ * Represents a single {json:api} resource object, whether already
+ * persisted or newly created on the client.
+ *
+ * See also:
+ * - {@link ExistingResourceObject}
+ * - {@link NewResourceObject}
+ *
+ * [{json:api} Spec](https://jsonapi.org/format/#document-resource-objects)
+ */
 export type ResourceObject<T extends string = string> = ExistingResourceObject<T> | NewResourceObject<T>;
 
 type Document = {
@@ -141,15 +190,54 @@ type Document = {
   errors?: ArrayValue;
 };
 
+/**
+ * Represents a {json:api} document containing no resource, for
+ * instance the response to a `DELETE` request or a `to-one`
+ * relationship pointing at nothing.
+ *
+ * @example
+ * ```json
+ * { "data": null }
+ * ```
+ */
 export type EmptyResourceDocument = Document & {
+  /**
+   * always `null` for an empty resource document
+   */
   data: null;
 };
 
+/**
+ * Represents a {json:api} document containing a single resource.
+ *
+ * @example
+ * ```json
+ * {
+ *   "data": { "type": "user", "id": "1", "attributes": { "name": "Chris" } }
+ * }
+ * ```
+ */
 export type SingleResourceDocument<T extends string = string> = Document & {
+  /**
+   * the resource the document represents
+   */
   data: ExistingResourceObject<T>;
 };
 
+/**
+ * Represents a {json:api} document containing a collection of resources.
+ *
+ * @example
+ * ```json
+ * {
+ *   "data": [{ "type": "user", "id": "1", "attributes": { "name": "Chris" } }]
+ * }
+ * ```
+ */
 export type CollectionResourceDocument<T extends string = string> = Document & {
+  /**
+   * the resources the document represents
+   */
   data: ExistingResourceObject<T>[];
 };
 
@@ -158,6 +246,11 @@ export type CollectionResourceDocument<T extends string = string> = Document & {
  *
  * These documents should follow the JSON:API spec but do not
  * have the same level of guarantees as their `spec` counterparts.
+ *
+ * See also:
+ * - {@link EmptyResourceDocument}
+ * - {@link SingleResourceDocument}
+ * - {@link CollectionResourceDocument}
  *
  * @private
  */
