@@ -5,6 +5,8 @@ import type { Fetch } from '../request/-private/fetch.ts';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { RequestManager } from '../request/-private/manager.ts';
 import type { FetchError } from '../request/-private/utils.ts';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import type { RequestLoadingState } from '../signals/request-state.ts';
 import type { Store } from '../store/-private.ts';
 import { getOrSetGlobal, getOrSetUniversal } from './-private.ts';
 import type { ResourceKey } from './identifier.ts';
@@ -498,8 +500,15 @@ export interface RequestInfo<RT = unknown> extends NativeRequestInit {
    * @see {@link CacheOptions}
    */
   cacheOptions?: CacheOptions;
+  /**
+   * The {@link Store} the request was made against, if made via
+   * {@link Store.request} rather than directly against a {@link RequestManager}.
+   */
   store?: Store;
 
+  /**
+   * The name of the request operation, if any (e.g. `'findRecord'`, `'query'`).
+   */
   op?: string;
 
   /**
@@ -510,6 +519,9 @@ export interface RequestInfo<RT = unknown> extends NativeRequestInit {
    */
   records?: ResourceKey[];
 
+  /**
+   * If true, this request will not be tracked by test waiters.
+   */
   disableTestWaiter?: boolean;
   /**
    * data that a handler should convert into
@@ -527,8 +539,14 @@ export interface RequestInfo<RT = unknown> extends NativeRequestInit {
    */
   options?: Record<string, unknown>;
 
+  /**
+   * @internal used only to carry the response type for type inference purposes
+   */
   [RequestSignature]?: RT;
 
+  /**
+   * see {@link EnableHydration}
+   */
   [EnableHydration]?: boolean;
 }
 
@@ -537,9 +555,21 @@ export interface RequestInfo<RT = unknown> extends NativeRequestInit {
  *
  */
 export type ImmutableRequestInfo<RT = unknown> = Readonly<Omit<RequestInfo<RT>, 'controller'>> & {
+  /**
+   * see {@link CacheOptions}
+   */
   readonly cacheOptions?: Readonly<CacheOptions>;
+  /**
+   * see {@link ImmutableHeaders}
+   */
   readonly headers?: ImmutableHeaders;
+  /**
+   * see {@link RequestInfo.data}
+   */
   readonly data?: Readonly<Record<string, unknown>>;
+  /**
+   * see {@link RequestInfo.options}
+   */
   readonly options?: Readonly<Record<string, unknown>>;
 
   /** Whether the request body has been read.
@@ -547,23 +577,63 @@ export type ImmutableRequestInfo<RT = unknown> = Readonly<Omit<RequestInfo<RT>, 
   readonly bodyUsed?: boolean;
 };
 
+/**
+ * An immutable, JSON-serializable subset of the native {@link Response}
+ * interface.
+ */
 export interface ResponseInfo {
+  /**
+   * see {@link ImmutableHeaders}
+   */
   readonly headers: ImmutableHeaders; // to do, maybe not this?
+  /**
+   * whether the response's status code was in the 200-299 range
+   */
   readonly ok: boolean;
+  /**
+   * whether the response is the result of a redirect
+   */
   readonly redirected: boolean;
+  /**
+   * the response's HTTP status code
+   */
   readonly status: number;
+  /**
+   * the status message associated with the response's status code
+   */
   readonly statusText: string;
+  /**
+   * the type of the response, see [MDN Reference](https://developer.mozilla.org/docs/Web/API/Response/type)
+   */
   readonly type: ResponseType;
+  /**
+   * the url of the response
+   */
   readonly url: string;
 }
 
+/**
+ * The object a {@link Handler} uses to fulfill a request: it provides a
+ * readonly view of the {@link RequestContext.request | request} and methods
+ * for supplying the {@link Future}'s stream and final response.
+ */
 export interface RequestContext {
   /**
    * @see {@link ImmutableRequestInfo}
    */
   request: ImmutableRequestInfo;
+  /**
+   * a unique id for this request
+   */
   id: number;
 
+  /**
+   * Supplies the stream of the response's content, if available, enabling
+   * consumers to monitor download progress via {@link RequestLoadingState}.
+   */
   setStream(stream: ReadableStream | Promise<ReadableStream | null>): void;
+  /**
+   * Supplies the response for the request.
+   */
   setResponse(response: Response | ResponseInfo | null): void;
 }
