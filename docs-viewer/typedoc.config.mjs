@@ -67,6 +67,7 @@ const config = {
       '@required',
       '@optional',
       '@recommended',
+      '@discouraged',
       '@legacy',
       '@polaris',
     ],

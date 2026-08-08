@@ -308,6 +308,270 @@ function add(a: number, b: number): number {}
 
 <br>
 
+## Content Standards
+
+<br>
+
+### Every Public API Should Have a Usage Example
+
+Even a minimal example dramatically shortens the time it takes for a
+consumer to understand how to use an API. Every doc comment for a
+`@public` export should include at least one.
+
+```ts
+/**
+ * Adds two numbers
+ *
+ * @example
+ * ```ts
+ * add(1, 2); // 3
+ * ```
+ *
+ * @param a - the first number to add
+ * @param b - the second number to add
+ * @return the sum of the two numbers
+ * @public
+ */
+function add(a: number, b: number): number {}
+```
+
+### Link the First Mention of Other Public APIs
+
+The first time a doc comment mentions another documented, public token,
+that mention should be a `{@link}` to it. This turns our docs into a
+web that's easy to navigate instead of a pile of disconnected pages.
+
+```ts
+/**
+ * Updates the {@link User.name | User's name} with the provided
+ * value.
+ *
+ * @public
+ */
+function updateUserName(user: User, name: string): void {}
+```
+
+### Link Every Member of a Union or Object-as-Enum
+
+Union types and object-as-enum types should link each of their
+members so that readers can jump directly to whichever member is
+relevant to them.
+
+```ts
+/**
+ * See also:
+ * - {@link PendingRequest}
+ * - {@link ResolvedRequest}
+ * - {@link RejectedRequest}
+ * - {@link CancelledRequest}
+ */
+export type RequestState<
+  RT = unknown,
+  E extends Error = Error,
+> = PendingRequest | ResolvedRequest<RT> | RejectedRequest<RT, E> | CancelledRequest<RT, E>;
+```
+
+### Cross-Link Within a Class, Interface, or Object
+
+Cross-linking between the members of the same class, interface, or
+object is highly encouraged. This makes it fast and easy to navigate
+around the documentation for that class/object/interface.
+
+```ts
+/**
+ * Additional properties exposed on errors thrown by the
+ * {@link Fetch | Fetch Handler}.
+ *
+ * In the case of an Abort or system/browser level issue,
+ * this extends {@link DOMException}.
+ *
+ * Else it extends from {@link AggregateError} if the
+ * response includes an array of errors, falling back
+ * to {@link Error} as its base.
+ */
+export interface FetchError extends DOMException {
+  /**
+   * Alias for {@link FetchError.status | status}.
+   *
+   * @privateRemarks
+   * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Response/status)
+   */
+  code: number;
+
+  /**
+   * The name associated to the {@link FetchError.status | status code}.
+   *
+   * Typically this will be of the formula `StatusTextError` for instance
+   * a 404 status with status text of `Not Found` would have the name
+   * `NotFoundError`.
+   */
+  name: string;
+
+  /**
+   * The http status code associated to the returned error.
+   *
+   * Browser/System level network errors will often have an error code of `0` or `5`.
+   * Aborted requests will have an error code of `20`.
+   *
+   * @privateRemarks
+   * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Response/status)
+   */
+  status: number;
+
+  /**
+   * The Status Text associated to the {@link FetchError.status | status code}
+   * for the error.
+   *
+   * @privateRemarks
+   * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Response/statusText)
+   */
+  statusText: string;
+
+  /**
+   * A property signifying that an Error uses the {@link FetchError}
+   * interface.
+   */
+  isRequestError: true;
+}
+```
+
+### Linking Symbols You Haven't Imported
+
+`{@link}` can only resolve to symbols that TypeDoc can see referenced
+in the file. To link a symbol you otherwise have no need to import,
+import it as a type and suppress the resulting lint error:
+
+```ts
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import type { Thing } from './thing.ts';
+import { functionThatReturnsThing } from './thing.ts';
+
+/**
+ * Does stuff and returns a {@link Thing}
+ */
+function doStuff() {
+  return functionThatReturnsThing();
+}
+```
+
+> [!NOTE]
+> We would like to improve the `@typescript-eslint/no-unused-vars` lint
+> rule (or its config) so that type-only imports which exist solely for
+> documentation linking purposes don't trigger this error. If you'd like
+> to help investigate this, reach out!
+
+### Linking a Module
+
+Link an entire module (for instance, to point readers at a set of
+related flags or utilities) by importing it as a type namespace:
+
+```ts
+import type * as FEATURES from './features.ts';
+
+/**
+ * see {@link FEATURES | features} for the available flags.
+ *
+ * @public
+ */
+```
+
+### Linking to MDN
+
+[typedoc-plugin-mdn-links](https://www.npmjs.com/package/typedoc-plugin-mdn-links)
+automatically links the appropriate MDN page for web-platform types
+(`Response`, `AbortController`, etc.) in published documentation, so
+you don't need to (and shouldn't) manually link these in the main body
+of a doc comment.
+
+It can still be useful to include the MDN reference manually via
+`@privateRemarks` for ease of navigation while reading the source:
+
+```ts
+/**
+ * Cancel this request by firing the {@link AbortController}'s signal.
+ *
+ * @privateRemarks
+ * [MDN Reference](https://developer.mozilla.org/docs/Web/API/AbortController/abort)
+ *
+ * @param reason - optional reason for aborting the request
+ * @public
+ */
+```
+
+The correct link to use can usually be found by jumping to the
+TypeScript typedef for the token, which itself is documented with the
+canonical MDN reference. For instance, this is (an excerpt of)
+TypeScript's own type for `AbortController`:
+
+```ts
+/**
+ * A controller object that allows you to abort one or more DOM requests as and when desired.
+ *
+ * [MDN Reference](https://developer.mozilla.org/docs/Web/API/AbortController)
+ */
+interface AbortController {
+  /**
+   * Returns the AbortSignal object associated with this object.
+   *
+   * [MDN Reference](https://developer.mozilla.org/docs/Web/API/AbortController/signal)
+   */
+  readonly signal: AbortSignal;
+
+  /**
+   * Invoking this method will set this object's AbortSignal's aborted flag and signal to any observers that the associated activity is to be aborted.
+   *
+   * [MDN Reference](https://developer.mozilla.org/docs/Web/API/AbortController/abort)
+   */
+  abort(reason?: any): void;
+}
+```
+
+<br>
+
+### The `@deprecated` Tag
+
+`@deprecated` is a standard TSDoc tag. The description below is an
+add-on to, not a replacement for, its standard meaning: it signals
+that consumers should stop using the tagged function, component, or
+object because it is actively being removed.
+
+- Whenever possible, link the `@recommended` replacement.
+- If the deprecation is tracked by [the deprecations guide](/api/@warp-drive/build-config/deprecations)
+  (i.e. it has a deprecation id like `ember-data:deprecate-store-extends-ember-object`
+  and a corresponding `DEPRECATE_*` flag), link both the guide and the
+  specific deprecation id using `@id`.
+
+```ts
+/**
+ * @deprecated use {@link ResourceKey} instead
+ */
+export type StableRecordIdentifier<T extends string = string> = ResourceKey<T>;
+```
+
+### The `@discouraged` Tag
+
+`@discouraged` signals that a function, object, or class is an older,
+but not-yet-deprecated, way of doing something. Unlike `@deprecated`,
+something tagged `@discouraged` may still have valid use cases; it's
+optional to describe those cases in the tag.
+
+If a `@recommended` alternative exists, cross-link to it.
+
+### The `@recommended` Tag
+
+`@recommended` is a companion tag to `@deprecated` and `@discouraged`.
+It marks a function, object, or class as the preferred way of doing
+something. It's not mandatory to link back to the `@discouraged` or
+`@deprecated` alternative(s), but doing so is encouraged. Since
+`@recommended` implies the existence of a `@discouraged` and/or
+`@deprecated` counterpart, it shouldn't be used on its own.
+
+<br>
+
+---
+
+<br>
+
 ## Documentation Hygiene
 
 <br>
