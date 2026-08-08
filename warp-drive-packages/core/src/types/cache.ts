@@ -204,31 +204,9 @@ export interface Cache {
    * Generate the list of changes applied to all
    * record in the store.
    *
-   * Each individual resource or document that has
-   * been mutated should be described as an individual
-   * `Change` entry in the returned array.
-   *
-   * A `Change` is described by an object containing up to
-   * three properties: (1) the `CacheKey` of the entity that
-   * changed; (2) the `op` code of that change being one of
-   * `upsert` or `remove`, and if the op is `upsert` a `patch`
-   * containing the data to merge into the cache for the given
-   * entity.
-   *
-   * This `patch` is opaque to the Store but should be understood
-   * by the Cache and may expect to be utilized by an Adapter
-   * when generating data during a `save` operation.
-   *
-   * It is generally recommended that the `patch` contain only
-   * the updated state, ignoring fields that are unchanged
-   *
-   * ```ts
-   * interface Change {
-   *  key: ResourceKey | RequestKey;
-   *  op: 'upsert' | 'remove';
-   *  patch?: unknown;
-   * }
-   * ```
+   * Each individual resource or document that has been mutated
+   * should be described as an individual {@link Change} entry
+   * in the returned array.
    *
    * @public
    */
