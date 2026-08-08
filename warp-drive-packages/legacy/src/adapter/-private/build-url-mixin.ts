@@ -14,7 +14,28 @@ import type { Snapshot, SnapshotRecordArray } from '../../compat/-private.ts';
 // `interface BuildURLMixin { buildURL: typeof buildURL }`
 // then an extending class overwriting one of the methods will break because typescript
 // thinks it is a switch from an instance prop (that is a method) to an instance method.
+/**
+ * The methods provided by the `BuildURLMixin` mixin (see the exported
+ * `BuildURLMixin` {@link Mixin} below).
+ *
+ * See also {@link MixtBuildURLMixin}, the interface used to type `this`
+ * within these methods.
+ */
 export interface BuildURLMixin {
+  /**
+   * Builds a URL for a given type and optional ID.
+   *
+   * By default, it pluralizes the type's name (for example, 'post'
+   * becomes 'posts' and 'person' becomes 'people'). To override the
+   * pluralization see {@link BuildURLMixin.pathForType | pathForType}.
+   *
+   * If an ID is specified, it adds the ID to the path generated
+   * for the type, separated by a `/`.
+   *
+   * This overload builds the URL for a `store.findRecord(type, id)` call.
+   *
+   * @public
+   */
   buildURL(
     this: MixtBuildURLMixin,
     modelName: string,
@@ -22,6 +43,11 @@ export interface BuildURLMixin {
     snapshot: Snapshot,
     requestType: 'findRecord'
   ): string;
+  /**
+   * Builds the URL for a `store.findAll(type)` call.
+   *
+   * @public
+   */
   buildURL(
     this: MixtBuildURLMixin,
     modelName: string,
@@ -29,6 +55,11 @@ export interface BuildURLMixin {
     snapshot: SnapshotRecordArray,
     requestType: 'findAll'
   ): string;
+  /**
+   * Builds the URL for a `store.query(type, query)` call.
+   *
+   * @public
+   */
   buildURL(
     this: MixtBuildURLMixin,
     modelName: string,
@@ -37,6 +68,11 @@ export interface BuildURLMixin {
     requestType: 'query',
     query: Record<string, unknown>
   ): string;
+  /**
+   * Builds the URL for a `store.queryRecord(type, query)` call.
+   *
+   * @public
+   */
   buildURL(
     this: MixtBuildURLMixin,
     modelName: string,
@@ -45,6 +81,14 @@ export interface BuildURLMixin {
     requestType: 'queryRecord',
     query: Record<string, unknown>
   ): string;
+  /**
+   * Builds the URL for coalescing multiple `store.findRecord(type, id)`
+   * records into 1 request when the adapter's `coalesceFindRequests`
+   * property is `true`. The `id` and `snapshot` parameters will be
+   * arrays of ids and snapshots.
+   *
+   * @public
+   */
   buildURL(
     this: MixtBuildURLMixin,
     modelName: string,
@@ -52,6 +96,12 @@ export interface BuildURLMixin {
     snapshot: Snapshot[],
     requestType: 'findMany'
   ): string;
+  /**
+   * Builds the URL for fetching an async `hasMany` relationship when a
+   * URL is not provided by the server.
+   *
+   * @public
+   */
   buildURL(
     this: MixtBuildURLMixin,
     modelName: string,
@@ -59,6 +109,12 @@ export interface BuildURLMixin {
     snapshot: Snapshot,
     requestType: 'findHasMany'
   ): string;
+  /**
+   * Builds the URL for fetching an async `belongsTo` relationship when a
+   * URL is not provided by the server.
+   *
+   * @public
+   */
   buildURL(
     this: MixtBuildURLMixin,
     modelName: string,
@@ -66,6 +122,12 @@ export interface BuildURLMixin {
     snapshot: Snapshot,
     requestType: 'findBelongsTo'
   ): string;
+  /**
+   * Builds the URL for a `record.save()` call when the record was
+   * created locally using `store.createRecord()`.
+   *
+   * @public
+   */
   buildURL(
     this: MixtBuildURLMixin,
     modelName: string,
@@ -73,6 +135,12 @@ export interface BuildURLMixin {
     snapshot: Snapshot,
     requestType: 'createRecord'
   ): string;
+  /**
+   * Builds the URL for a `record.save()` call when the record has been
+   * updated locally.
+   *
+   * @public
+   */
   buildURL(
     this: MixtBuildURLMixin,
     modelName: string,
@@ -80,6 +148,12 @@ export interface BuildURLMixin {
     snapshot: Snapshot,
     requestType: 'updateRecord'
   ): string;
+  /**
+   * Builds the URL for a `record.save()` call when the record has been
+   * deleted locally.
+   *
+   * @public
+   */
   buildURL(
     this: MixtBuildURLMixin,
     modelName: string,
@@ -87,7 +161,15 @@ export interface BuildURLMixin {
     snapshot: Snapshot,
     requestType: 'deleteRecord'
   ): string;
+  /**
+   * Builds a URL for a given type and ID without a specific request type.
+   *
+   * @public
+   */
   buildURL(this: MixtBuildURLMixin, modelName: string, id: string, snapshot: Snapshot): string;
+  /**
+   * @internal
+   */
   _buildURL(this: MixtBuildURLMixin, modelName: string | null | undefined, id?: string | null): string;
   urlForFindRecord(this: MixtBuildURLMixin, id: string, modelName: string, snapshot: Snapshot): string;
   urlForFindAll(this: MixtBuildURLMixin, modelName: string, snapshots: SnapshotRecordArray): string;
