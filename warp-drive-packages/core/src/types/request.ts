@@ -9,7 +9,11 @@ import type { Store } from '../store/-private.ts';
 import { getOrSetGlobal, getOrSetUniversal } from './-private.ts';
 import type { ResourceKey } from './identifier.ts';
 import type { QueryParamsSerializationOptions } from './params.ts';
-import type { TypeFromInstanceOrString } from './record.ts';
+import type {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  Includes,
+  TypeFromInstanceOrString,
+} from './record.ts';
 import type { ResourceIdentifierObject } from './spec/json-api-raw.ts';
 import type { RequestSignature } from './symbols.ts';
 
@@ -166,22 +170,68 @@ export type ImmutableDeleteRequestOptions = ImmutableRequest<DeleteRequestOption
 export type ImmutableUpdateRequestOptions = ImmutableRequest<UpdateRequestOptions>;
 export type ImmutableCreateRequestOptions = ImmutableRequest<CreateRequestOptions>;
 
+/**
+ * A minimal reference to a resource sufficient to build a URL for it,
+ * as accepted by the request builders.
+ */
 export type RemotelyAccessibleIdentifier<T extends string = string> = {
+  /**
+   * the resource's persisted id
+   */
   id: string;
+  /**
+   * the resource's type
+   */
   type: T;
+  /**
+   * the local identifier WarpDrive has assigned to the resource, if known
+   */
   lid?: string;
 };
 
+/**
+ * Options accepted by the request builders for constraining how a
+ * request's url is constructed and how the request interacts with the cache.
+ */
 export interface ConstrainedRequestOptions {
+  /**
+   * If true, the request will be made even if a cached response is present
+   * and not expired.
+   */
   reload?: boolean;
+  /**
+   * If true, and a cached response is present and not expired, the request
+   * will be made in the background and the cached response will be returned.
+   */
   backgroundReload?: boolean;
+  /**
+   * The host to use when constructing the request's url, overriding any
+   * host configured via `setBuildURLConfig`.
+   */
   host?: string;
+  /**
+   * The namespace to use when constructing the request's url, overriding
+   * any namespace configured via `setBuildURLConfig`.
+   */
   namespace?: string;
+  /**
+   * The resource path to use when constructing the request's url,
+   * overriding the default of pluralizing the resource's type.
+   */
   resourcePath?: string;
+  /**
+   * Options for how to serialize the request's query params, see {@link QueryParamsSerializationOptions}.
+   */
   urlParamsSettings?: QueryParamsSerializationOptions;
 }
 
+/**
+ * Options accepted by the `findRecord` request builders.
+ */
 export interface FindRecordOptions extends ConstrainedRequestOptions {
+  /**
+   * the relationship paths to sideload, see {@link Includes}
+   */
   include?: string | string[];
 }
 
