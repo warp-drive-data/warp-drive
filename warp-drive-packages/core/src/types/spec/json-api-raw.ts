@@ -92,22 +92,77 @@ export type ResourceIdentifierObject<T extends string = string> =
   | NewResourceIdentifierObject<T>;
 
 // TODO disallow NewResource, make narrowable
+/**
+ * Represents a `to-one` {json:api} relationship.
+ *
+ * [{json:api} Spec](https://jsonapi.org/format/#document-resource-object-relationships)
+ *
+ * @example
+ * ```json
+ * {
+ *   "data": { "type": "user", "id": "1" }
+ * }
+ * ```
+ */
 export interface SingleResourceRelationship<T = ExistingResourceIdentifierObject | NewResourceIdentifierObject> {
+  /**
+   * the related resource, or `null` if the relationship has no related resource
+   */
   data?: T | null;
+  /**
+   * meta information about the relationship
+   */
   meta?: Meta;
+  /**
+   * links related to the relationship
+   */
   links?: Links;
 }
 
+/**
+ * Represents a `to-many` {json:api} relationship.
+ *
+ * [{json:api} Spec](https://jsonapi.org/format/#document-resource-object-relationships)
+ *
+ * @example
+ * ```json
+ * {
+ *   "data": [{ "type": "comment", "id": "1" }, { "type": "comment", "id": "2" }]
+ * }
+ * ```
+ */
 export interface CollectionResourceRelationship<T = ExistingResourceIdentifierObject | NewResourceIdentifierObject> {
+  /**
+   * the related resources
+   */
   data?: T[];
+  /**
+   * meta information about the relationship
+   */
   meta?: Meta;
+  /**
+   * links related to the relationship, including pagination links
+   */
   links?: PaginationLinks;
 }
 
+/**
+ * Represents a single {json:api} relationship, whether `to-one` or `to-many`.
+ *
+ * See also:
+ * - {@link SingleResourceRelationship}
+ * - {@link CollectionResourceRelationship}
+ */
 export type InnerRelationshipDocument<T = ExistingResourceIdentifierObject | NewResourceIdentifierObject> =
   | SingleResourceRelationship<T>
   | CollectionResourceRelationship<T>;
 
+/**
+ * The `relationships` member of a {json:api} resource object, keyed
+ * by relationship name.
+ *
+ * [{json:api} Spec](https://jsonapi.org/format/#document-resource-object-relationships)
+ */
 export type ResourceRelationshipsObject<T = ExistingResourceIdentifierObject | NewResourceIdentifierObject> = Record<
   string,
   InnerRelationshipDocument<T>
