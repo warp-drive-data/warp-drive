@@ -2,7 +2,17 @@ import type { LOG_CONFIG } from '@warp-drive/build-config/-private/utils/logging
 
 import { getOrSetUniversal } from './-private.ts';
 
-const RuntimeConfig: { debug: Partial<LOG_CONFIG>; mirage?: boolean } = getOrSetUniversal('WarpDriveRuntimeConfig', {
+const RuntimeConfig: {
+  /**
+   * the currently active logging configuration, see {@link LOG_CONFIG}
+   */
+  debug: Partial<LOG_CONFIG>;
+  /**
+   * whether requests should be treated as being served by Mirage,
+   * see {@link setIsMaybeMirage}
+   */
+  mirage?: boolean;
+} = getOrSetUniversal('WarpDriveRuntimeConfig', {
   debug: {},
 });
 
@@ -22,6 +32,14 @@ if (settings) {
   Object.assign(RuntimeConfig, JSON.parse(settings));
 }
 
+/**
+ * Returns the current WarpDrive runtime configuration.
+ *
+ * @example
+ * ```ts
+ * const { debug, mirage } = getRuntimeConfig();
+ * ```
+ */
 export function getRuntimeConfig(): typeof RuntimeConfig {
   return RuntimeConfig;
 }

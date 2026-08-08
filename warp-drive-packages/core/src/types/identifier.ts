@@ -1,8 +1,17 @@
 import { DEBUG } from '@warp-drive/core/build-config/env';
 
 // provided for additional debuggability
+/**
+ * @internal
+ */
 export const DEBUG_CLIENT_ORIGINATED: unique symbol = Symbol('record-originated-on-client');
+/**
+ * @internal
+ */
 export const DEBUG_KEY_TYPE: unique symbol = Symbol('key-type');
+/**
+ * @internal
+ */
 export const DEBUG_STALE_CACHE_OWNER: unique symbol = Symbol('warpDriveStaleCache');
 
 function ProdSymbol<T extends string>(str: T, debugStr: string): T {
@@ -10,8 +19,16 @@ function ProdSymbol<T extends string>(str: T, debugStr: string): T {
 }
 
 // also present in production
+/**
+ * @internal
+ */
 export const CACHE_OWNER: '__$co' = ProdSymbol('__$co', 'CACHE_OWNER');
 
+/**
+ * Identifies which "bucket" of the cache a key belongs to: resources
+ * (`'record'`, see {@link ResourceKey}) or request documents
+ * (`'document'`, see {@link RequestKey}).
+ */
 export type CacheKeyType = 'record' | 'document';
 
 /**
@@ -24,7 +41,13 @@ export type CacheKeyType = 'record' | 'document';
  * @public
  */
 export interface RequestKey {
+  /**
+   * A string representing a unique identity.
+   */
   lid: string;
+  /**
+   * Discriminates a {@link RequestKey} from a {@link ResourceKey}.
+   */
   type: '@document';
   /** @internal */
   [CACHE_OWNER]: number | undefined;
