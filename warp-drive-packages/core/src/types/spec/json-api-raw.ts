@@ -1,16 +1,82 @@
 import type { ArrayValue, ObjectValue } from '../json/raw.ts';
 
+/**
+ * Represents the `meta` member of a {json:api} document, resource,
+ * relationship, or link: an object containing non-standard
+ * meta-information.
+ *
+ * [{json:api} Spec](https://jsonapi.org/format/#document-meta)
+ */
 export type Meta = ObjectValue;
-export type LinkObject = { href: string; meta?: Meta };
+
+/**
+ * The object form of a {@link Link}, allowing a link to carry
+ * additional {@link Meta | meta} information alongside its `href`.
+ *
+ * [{json:api} Spec](https://jsonapi.org/format/#document-links)
+ */
+export type LinkObject = {
+  /**
+   * the URI-reference for the link
+   */
+  href: string;
+  /**
+   * meta information about the link
+   */
+  meta?: Meta;
+};
+
+/**
+ * A link is either a plain URI-reference string or a {@link LinkObject}
+ * carrying additional meta information.
+ *
+ * [{json:api} Spec](https://jsonapi.org/format/#document-links)
+ *
+ * @example
+ * ```ts
+ * const simple: Link = '/articles/1/comments';
+ * const withMeta: Link = { href: '/articles/1/comments', meta: { count: 10 } };
+ * ```
+ */
 export type Link = string | LinkObject;
+
+/**
+ * The `links` member of a {json:api} resource or document.
+ *
+ * [{json:api} Spec](https://jsonapi.org/format/#document-links)
+ */
 export interface Links {
+  /**
+   * a link for retrieving the related resource(s)
+   */
   related?: Link | null;
+  /**
+   * a link for retrieving the resource or document itself
+   */
   self?: Link | null;
 }
+
+/**
+ * The `links` member of a {json:api} document that supports pagination.
+ *
+ * [{json:api} Spec](https://jsonapi.org/format/#fetching-pagination)
+ */
 export interface PaginationLinks extends Links {
+  /**
+   * a link to the first page of data
+   */
   first?: Link | null;
+  /**
+   * a link to the last page of data
+   */
   last?: Link | null;
+  /**
+   * a link to the previous page of data
+   */
   prev?: Link | null;
+  /**
+   * a link to the next page of data
+   */
   next?: Link | null;
 }
 
@@ -26,7 +92,14 @@ export interface PaginationLinks extends Links {
  * @private
  */
 export interface ExistingResourceIdentifierObject<T extends string = string> {
+  /**
+   * the resource's persisted id
+   */
   id: string;
+
+  /**
+   * the resource's type
+   */
   type: T;
 
   /**
@@ -73,6 +146,10 @@ export interface NewResourceIdentifierObject<T extends string = string> {
    *
    */
   id: string | null;
+
+  /**
+   * the resource's type
+   */
   type: T;
 
   /**
@@ -82,10 +159,30 @@ export interface NewResourceIdentifierObject<T extends string = string> {
   lid: string;
 }
 
+/**
+ * A minimal reference to a resource by its {@link ResourceIdentifier.lid | lid} alone.
+ *
+ * This is not part of the {json:api} spec, but is accepted by WarpDrive's
+ * cache as a lightweight alternative to {@link ExistingResourceIdentifierObject}
+ * once a resource's identity is already known to the cache.
+ */
 export interface ResourceIdentifier {
+  /**
+   * the local identifier WarpDrive has assigned to the resource
+   */
   lid: string;
 }
 
+/**
+ * A reference to a resource, in any of the forms WarpDrive's cache accepts.
+ *
+ * See also:
+ * - {@link ResourceIdentifier}
+ * - {@link ExistingResourceIdentifierObject}
+ * - {@link NewResourceIdentifierObject}
+ *
+ * [{json:api} Spec](https://jsonapi.org/format/#document-resource-identifier-objects)
+ */
 export type ResourceIdentifierObject<T extends string = string> =
   | ResourceIdentifier
   | ExistingResourceIdentifierObject<T>
