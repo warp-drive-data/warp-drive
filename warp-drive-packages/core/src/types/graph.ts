@@ -10,26 +10,75 @@ import type {
 import type { ResourceKey } from './identifier.ts';
 import type { CollectionResourceRelationship, SingleResourceRelationship } from './spec/json-api-raw.ts';
 
+/**
+ * All Graph operations are objects with at least one property,
+ * `op`, which contains a string with the name of the operation
+ * to perform.
+ */
 export interface Operation {
+  /**
+   * The name of the {@link Operation | operation}
+   */
   op: string;
 }
 
+/**
+ * Replaces the state of a relationship on the Graph with a new state.
+ */
 export interface UpdateRelationshipOperation {
+  /**
+   * The name of the operation
+   */
   op: 'updateRelationship';
+  /**
+   * The cache key for the resource whose relationship is being updated
+   */
   record: ResourceKey;
+  /**
+   * The name of the relationship to update
+   */
   field: string;
+  /**
+   * The new state for the relationship
+   */
   value: SingleResourceRelationship | CollectionResourceRelationship;
 }
 
+/**
+ * Signals to the Graph that a resource has been deleted, so that
+ * it can be removed from any relationships that reference it.
+ */
 export interface DeleteRecordOperation {
+  /**
+   * The name of the operation
+   */
   op: 'deleteRecord';
+  /**
+   * The cache key for the resource that was deleted
+   */
   record: ResourceKey;
+  /**
+   * Whether the resource was a client-created resource that had not yet been persisted
+   */
   isNew: boolean;
 }
 
+/**
+ * A placeholder operation for a relationship whose kind (`to-one` vs
+ * `to-many`) is not yet known to the Graph.
+ */
 export interface UnknownOperation {
+  /**
+   * The name of the operation
+   */
   op: 'never';
+  /**
+   * The cache key for the resource whose relationship is affected
+   */
   record: ResourceKey;
+  /**
+   * The name of the relationship
+   */
   field: string;
 }
 
