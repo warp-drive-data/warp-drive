@@ -17,18 +17,61 @@ import type { ApiError } from './spec/error.ts';
  */
 export type ChangedAttributesHash = Record<string, [Value | undefined, Value]>;
 
+/**
+ * Describes the local (uncommitted) changes to a single relationship,
+ * as returned by {@link Cache.changedRelationships}.
+ *
+ * @example
+ * ```ts
+ * const diff: RelationshipDiff = {
+ *   kind: 'collection',
+ *   remoteState: [],
+ *   additions: new Set([resourceKey]),
+ *   removals: new Set(),
+ *   localState: [resourceKey],
+ *   reordered: false,
+ * };
+ * ```
+ */
 export type RelationshipDiff =
   | {
+      /**
+       * indicates this diff describes a `to-many` relationship
+       */
       kind: 'collection';
+      /**
+       * the relationship's members as last known from the API
+       */
       remoteState: ResourceKey[];
+      /**
+       * members present in {@link localState} but not in {@link remoteState}
+       */
       additions: Set<ResourceKey>;
+      /**
+       * members present in {@link remoteState} but not in {@link localState}
+       */
       removals: Set<ResourceKey>;
+      /**
+       * the relationship's members including any local (uncommitted) changes
+       */
       localState: ResourceKey[];
+      /**
+       * whether the order of members in {@link localState} differs from {@link remoteState}
+       */
       reordered: boolean;
     }
   | {
+      /**
+       * indicates this diff describes a `to-one` relationship
+       */
       kind: 'resource';
+      /**
+       * the relationship's member as last known from the API
+       */
       remoteState: ResourceKey | null;
+      /**
+       * the relationship's member including any local (uncommitted) change
+       */
       localState: ResourceKey | null;
     };
 
@@ -382,24 +425,7 @@ export interface Cache {
   /**
    * Query the cache for the changes to relationships of a resource.
    *
-   * Returns a map of relationship names to RelationshipDiff objects.
-   *
-   * ```ts
-   * type RelationshipDiff =
-  | {
-      kind: 'collection';
-      remoteState: ResourceKey[];
-      additions: Set<ResourceKey>;
-      removals: Set<ResourceKey>;
-      localState: ResourceKey[];
-      reordered: boolean;
-    }
-  | {
-      kind: 'resource';
-      remoteState: ResourceKey | null;
-      localState: ResourceKey | null;
-    };
-    ```
+   * Returns a map of relationship names to {@link RelationshipDiff} objects.
    *
    * @public
    */
