@@ -200,6 +200,13 @@ function extend<Final extends AdapterRequestError>(
 */
 // TODO @deprecate extractError documentation
 export type InvalidError = AdapterRequestError<'InvalidError'>;
+/**
+ * Signals that the external API was unable to process a request because
+ * the content was not semantically correct or meaningful per the API,
+ * usually indicating a record failed server-side validation.
+ *
+ * @public
+ */
 export const InvalidError: AdapterRequestErrorConstructor<InvalidError> = getOrSetGlobal(
   'InvalidError',
   extend<InvalidError>(AdapterError, 'The adapter rejected the commit because it was invalid')
@@ -235,6 +242,12 @@ InvalidError.prototype.code = 'InvalidError';
   @public
 */
 export type TimeoutError = AdapterRequestError<'TimeoutError'>;
+/**
+ * Signals that a request to the external API has timed out: no response
+ * was received within an allowed time period.
+ *
+ * @public
+ */
 export const TimeoutError: AdapterRequestErrorConstructor<TimeoutError> = getOrSetGlobal(
   'TimeoutError',
   extend(AdapterError, 'The adapter operation timed out')
@@ -251,6 +264,12 @@ TimeoutError.prototype.code = 'TimeoutError';
   @public
 */
 export type AbortError = AdapterRequestError<'AbortError'>;
+/**
+ * Signals that a request to the external API was aborted, for instance
+ * because the user navigated away before a response was received.
+ *
+ * @public
+ */
 export const AbortError: AdapterRequestErrorConstructor<AbortError> = getOrSetGlobal(
   'AbortError',
   extend(AdapterError, 'The adapter operation was aborted')
@@ -287,6 +306,13 @@ AbortError.prototype.code = 'AbortError';
   @public
 */
 export type UnauthorizedError = AdapterRequestError<'UnauthorizedError'>;
+/**
+ * Equates to an HTTP `401 Unauthorized` response: the request was
+ * rejected because authorization is required and has failed or has not
+ * yet been provided.
+ *
+ * @public
+ */
 export const UnauthorizedError: AdapterRequestErrorConstructor<UnauthorizedError> = getOrSetGlobal(
   'UnauthorizedError',
   extend(AdapterError, 'The adapter operation is unauthorized')
@@ -304,6 +330,13 @@ UnauthorizedError.prototype.code = 'UnauthorizedError';
   @public
 */
 export type ForbiddenError = AdapterRequestError<'ForbiddenError'>;
+/**
+ * Equates to an HTTP `403 Forbidden` response: the request was valid but
+ * the server is refusing to respond to it. If authorization was provided
+ * and is valid, the authenticated user lacks the necessary permissions.
+ *
+ * @public
+ */
 export const ForbiddenError: AdapterRequestErrorConstructor<ForbiddenError> = getOrSetGlobal(
   'ForbiddenError',
   extend(AdapterError, 'The adapter operation is forbidden')
@@ -343,6 +376,12 @@ ForbiddenError.prototype.code = 'ForbiddenError';
   @public
 */
 export type NotFoundError = AdapterRequestError<'NotFoundError'>;
+/**
+ * Equates to an HTTP `404 Not Found` response: the request was rejected
+ * because the resource could not be found on the API.
+ *
+ * @public
+ */
 export const NotFoundError: AdapterRequestErrorConstructor<NotFoundError> = getOrSetGlobal(
   'NotFoundError',
   extend(AdapterError, 'The adapter could not find the resource')
@@ -360,6 +399,13 @@ NotFoundError.prototype.code = 'NotFoundError';
   @public
 */
 export type ConflictError = AdapterRequestError<'ConflictError'>;
+/**
+ * Equates to an HTTP `409 Conflict` response: the request could not be
+ * processed because of a conflict, for instance creating a record with
+ * a client-generated ID that is already known to the external API.
+ *
+ * @public
+ */
 export const ConflictError: AdapterRequestErrorConstructor<ConflictError> = getOrSetGlobal(
   'ConflictError',
   extend(AdapterError, 'The adapter operation failed due to a conflict')
@@ -375,6 +421,12 @@ ConflictError.prototype.code = 'ConflictError';
   @public
 */
 export type ServerError = AdapterRequestError<'ServerError'>;
+/**
+ * Equates to an HTTP `500 Internal Server Error` response: the request
+ * failed because of an error in the external API.
+ *
+ * @public
+ */
 export const ServerError: AdapterRequestErrorConstructor<ServerError> = getOrSetGlobal(
   'ServerError',
   extend(AdapterError, 'The adapter operation failed due to a server error')
