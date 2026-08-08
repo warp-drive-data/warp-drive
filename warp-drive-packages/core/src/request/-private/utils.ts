@@ -138,7 +138,19 @@ export interface FetchError extends DOMException {
 }
 
 export function enhanceReason(reason?: string): DOMException {
-  return new DOMException(reason || 'The user aborted a request.', 'AbortError');
+  const message = reason || 'The user aborted a request.';
+
+  // Some non-DOM environments (e.g. React Native, some Node/worker
+  // environments) may not provide `DOMException` as a global. Fall back to
+  // a plain `Error` with a matching `name` so abort handling keeps working
+  // instead of throwing while constructing the reason.
+  if (typeof DOMException === 'undefined') {
+    const error = new Error(message);
+    error.name = 'AbortError';
+    return error as unknown as DOMException;
+  }
+
+  return new DOMException(message, 'AbortError');
 }
 
 export function handleOutcome<T>(

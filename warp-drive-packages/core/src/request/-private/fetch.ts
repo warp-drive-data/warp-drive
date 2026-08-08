@@ -141,14 +141,19 @@ const Fetch = {
       );
       response = await _fetch(context.request.url, context.request);
     } catch (e) {
-      if (e instanceof DOMException && e.name === 'AbortError') {
+      // Some non-DOM environments (e.g. React Native, some Node/worker
+      // environments) may not provide `DOMException` as a global, so guard
+      // the reference to avoid throwing while merely trying to classify
+      // the error.
+      const isDOMException = typeof DOMException !== 'undefined' && e instanceof DOMException;
+      if (isDOMException && e.name === 'AbortError') {
         (e as FetchError).statusText = 'Aborted';
         (e as FetchError).status = 20;
         (e as FetchError).isRequestError = true;
       } else {
         (e as FetchError).statusText = 'Unknown Network Error';
         (e as FetchError).status = 0;
-        if (!(e instanceof DOMException)) {
+        if (!isDOMException) {
           (e as FetchError).code = 0;
         }
         (e as FetchError).isRequestError = true;

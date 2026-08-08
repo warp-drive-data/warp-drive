@@ -533,40 +533,53 @@ export class RequestSubscription<RT, E> {
 
   /**
    * Install the event listeners for network and visibility changes.
-   * This is only done in browser environments with a global `window`.
+   *
+   * This is only done in environments that provide a fully-featured global
+   * `window` and/or `document`. Some non-DOM environments (e.g. React Native,
+   * SSR/Node, workers) may provide a `window` global without the APIs we
+   * rely on here (or no `window`/`document` at all), in which case we skip
+   * attaching the corresponding listeners rather than throwing.
    *
    * @internal
    */
   private _installListeners() {
-    if (typeof window === 'undefined') {
-      return;
+    const hasWindow = typeof window !== 'undefined';
+    const hasDocument = typeof document !== 'undefined';
+    const hasWindowEvents = hasWindow && typeof window.addEventListener === 'function';
+    const hasDocumentEvents = hasDocument && typeof document.addEventListener === 'function';
+
+    this.isOnline = hasWindow && typeof window.navigator?.onLine === 'boolean' ? window.navigator.onLine : true;
+    this._unavailableStart = this.isOnline ? null : Date.now();
+    this.isHidden =
+      hasDocument && typeof document.visibilityState === 'string' && document.visibilityState === 'hidden';
+
+    if (hasWindowEvents) {
+      this._onlineChanged = (event: Event) => {
+        this.isOnline = event.type === 'online';
+        if (event.type === 'offline' && this._unavailableStart === null) {
+          this._unavailableStart = Date.now();
+        }
+        this._maybeUpdate();
+      };
+
+      window.addEventListener('online', this._onlineChanged, { passive: true, capture: true });
+      window.addEventListener('offline', this._onlineChanged, { passive: true, capture: true });
     }
 
-    this.isOnline = window.navigator.onLine;
-    this._unavailableStart = this.isOnline ? null : Date.now();
-    this.isHidden = document.visibilityState === 'hidden';
+    if (hasDocumentEvents) {
+      this._backgroundChanged = () => {
+        const isHidden = document.visibilityState === 'hidden';
+        this.isHidden = isHidden;
 
-    this._onlineChanged = (event: Event) => {
-      this.isOnline = event.type === 'online';
-      if (event.type === 'offline' && this._unavailableStart === null) {
-        this._unavailableStart = Date.now();
-      }
-      this._maybeUpdate();
-    };
-    this._backgroundChanged = () => {
-      const isHidden = document.visibilityState === 'hidden';
-      this.isHidden = isHidden;
+        if (isHidden && this._unavailableStart === null) {
+          this._unavailableStart = Date.now();
+        }
 
-      if (isHidden && this._unavailableStart === null) {
-        this._unavailableStart = Date.now();
-      }
+        this._maybeUpdate();
+      };
 
-      this._maybeUpdate();
-    };
-
-    window.addEventListener('online', this._onlineChanged, { passive: true, capture: true });
-    window.addEventListener('offline', this._onlineChanged, { passive: true, capture: true });
-    document.addEventListener('visibilitychange', this._backgroundChanged, { passive: true, capture: true });
+      document.addEventListener('visibilitychange', this._backgroundChanged, { passive: true, capture: true });
+    }
   }
 
   /**
@@ -833,17 +846,24 @@ function _DISPOSE<RT, E>(this: RequestSubscription<RT, E>) {
   const self = upgradeSubscription(this);
   self.isDestroyed = true;
   self._removeSubscriptions();
-
-  if (typeof window === 'undefined') {
-    return;
-  }
-
   self._clearInterval();
 
-  window.removeEventListener('online', self._onlineChanged, { passive: true, capture: true } as unknown as boolean);
-  window.removeEventListener('offline', self._onlineChanged, { passive: true, capture: true } as unknown as boolean);
-  document.removeEventListener('visibilitychange', self._backgroundChanged, {
-    passive: true,
-    capture: true,
-  } as unknown as boolean);
+  if (self._onlineChanged && typeof window !== 'undefined' && typeof window.removeEventListener === 'function') {
+    window.removeEventListener('online', self._onlineChanged, { passive: true, capture: true } as unknown as boolean);
+    window.removeEventListener('offline', self._onlineChanged, {
+      passive: true,
+      capture: true,
+    } as unknown as boolean);
+  }
+
+  if (
+    self._backgroundChanged &&
+    typeof document !== 'undefined' &&
+    typeof document.removeEventListener === 'function'
+  ) {
+    document.removeEventListener('visibilitychange', self._backgroundChanged, {
+      passive: true,
+      capture: true,
+    } as unknown as boolean);
+  }
 }
