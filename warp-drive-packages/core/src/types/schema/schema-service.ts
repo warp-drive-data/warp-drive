@@ -18,7 +18,22 @@ import type {
   Trait,
 } from './fields.ts';
 
+/**
+ * A dictionary of {@link LegacyAttributeField} definitions keyed by
+ * attribute name, as returned by the deprecated
+ * {@link SchemaService.attributesDefinitionFor | attributesDefinitionFor} hook.
+ *
+ * @public
+ */
 export type AttributesSchema = Record<string, LegacyAttributeField>;
+
+/**
+ * A dictionary of {@link LegacyRelationshipField} definitions keyed by
+ * relationship name, as returned by the deprecated
+ * {@link SchemaService.relationshipsDefinitionFor | relationshipsDefinitionFor} hook.
+ *
+ * @public
+ */
 export type RelationshipsSchema = Record<string, LegacyRelationshipField>;
 
 interface ObjectWithStringTypeProperty {
