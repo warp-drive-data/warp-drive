@@ -7,6 +7,17 @@ import { ReactiveResource } from './record.ts';
 import type { SchemaService } from './schema.ts';
 import { Destroy } from './symbols.ts';
 
+/**
+ * The store's default `instantiateRecord` hook implementation, which
+ * produces a {@link ReactiveResource} for `identifier` using the resource
+ * schema registered for its type.
+ *
+ * `createArgs` are only applied (via `Object.assign`) when the resource's
+ * schema is `legacy`, matching the historical behavior of assigning initial
+ * properties when creating a new legacy record.
+ *
+ * @public
+ */
 export function instantiateRecord(
   store: Store,
   identifier: ResourceKey,
@@ -39,6 +50,13 @@ function assertReactiveResource(record: unknown): asserts record is ReactiveReso
   assert('Expected a ReactiveResource', record && typeof record === 'object' && Destroy in record);
 }
 
+/**
+ * The store's default `teardownRecord` hook implementation, which asserts
+ * that `record` is a {@link ReactiveResource} and invokes its `Destroy`
+ * behavior.
+ *
+ * @public
+ */
 export function teardownRecord(record: unknown): void {
   assertReactiveResource(record);
   record[Destroy]();

@@ -107,6 +107,12 @@ export interface ReactiveDocumentBase<T> {
   toJSON(): object;
 }
 
+/**
+ * The variant of {@link ReactiveDocument} returned for a request whose
+ * response contained no primary data, e.g. an error response.
+ *
+ * @public
+ */
 export interface ReactiveErrorDocument<T> extends ReactiveDocumentBase<T> {
   /**
    * The primary data for this document, if any.
@@ -129,6 +135,12 @@ export interface ReactiveErrorDocument<T> extends ReactiveDocumentBase<T> {
   readonly errors: object[];
 }
 
+/**
+ * The variant of {@link ReactiveDocument} returned for a request whose
+ * response contained primary data.
+ *
+ * @public
+ */
 export interface ReactiveDataDocument<T> extends ReactiveDocumentBase<T> {
   /**
    * The primary data for this document, if any.
