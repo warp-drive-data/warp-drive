@@ -137,18 +137,52 @@ export type KeyOrString<T> = keyof T & string extends never ? string : keyof T &
  *
  */
 export interface ModelSchema<T = unknown> {
+  /**
+   * The resource type (model name) that this schema describes.
+   */
   modelName: T extends TypedRecordInstance ? TypeFromInstance<T> : string;
+
+  /**
+   * A map of every field defined on this resource type to its kind
+   * (`'attribute'`, `'belongsTo'`, or `'hasMany'`).
+   */
   fields: Map<KeyOrString<T>, 'attribute' | 'belongsTo' | 'hasMany'>;
+
+  /**
+   * A map of every attribute field defined on this resource type, keyed by
+   * attribute name.
+   */
   attributes: Map<KeyOrString<T>, LegacyAttributeField>;
+
+  /**
+   * A map of every relationship (`belongsTo`/`hasMany`) field defined on this
+   * resource type, keyed by relationship name.
+   */
   relationshipsByName: Map<KeyOrString<T>, LegacyRelationshipField>;
+
+  /**
+   * Invokes `callback` once for each attribute field defined on this resource
+   * type, passing the attribute's key and schema.
+   */
   eachAttribute<K extends KeyOrString<T>>(
     callback: (this: ModelSchema<T>, key: K, attribute: LegacyAttributeField) => void,
     binding?: T
   ): void;
+
+  /**
+   * Invokes `callback` once for each relationship field defined on this
+   * resource type, passing the relationship's key and schema.
+   */
   eachRelationship<K extends KeyOrString<T>>(
     callback: (this: ModelSchema<T>, key: K, relationship: LegacyRelationshipField) => void,
     binding?: T
   ): void;
+
+  /**
+   * Invokes `callback` once for each attribute field defined on this resource
+   * type that has a transform (a `type`), passing the attribute's key and the
+   * name of the transform to apply.
+   */
   eachTransformedAttribute<K extends KeyOrString<T>>(
     callback: (this: ModelSchema<T>, key: K, type: string | null) => void,
     binding?: T

@@ -107,6 +107,18 @@ interface ReactiveResourceArrayContext extends ReactiveResourceArrayCreateOption
   boundFns: Map<KeyType, ProxiedMethod>;
 }
 
+/**
+ * A reactive Array of records, backed by a {@link ResourceKey} array in the
+ * cache. Returned by {@link Store.request} for collection responses and used
+ * as the base for relationship and legacy record-array types such as
+ * {@link LegacyLiveArray}, {@link LegacyQueryArray} and {@link LegacyManyArray}.
+ *
+ * Behaves like a native Array: `Array.isArray(arr)` and `arr instanceof Array`
+ * both report `true`. The array stays in sync with the cache, updating
+ * reactively as the underlying {@link ResourceKey}s change.
+ *
+ * @public
+ */
 export interface ReactiveResourceArray<T = unknown> extends Omit<Array<T>, '[]'> {
   /** @internal */
   isDestroying: boolean;
@@ -120,11 +132,24 @@ export interface ReactiveResourceArray<T = unknown> extends Omit<Array<T>, '[]'>
   [Context]: ReactiveResourceArrayContext;
 }
 
+/**
+ * A variant of {@link ReactiveResourceArray} that exposes its otherwise
+ * internal-only members (including the `Context` symbol used to reach the
+ * array's private bookkeeping). Used to upgrade a {@link ReactiveResourceArray}
+ * for intimate access by `@warp-drive/legacy`.
+ *
+ * @private
+ */
 export interface PrivateReactiveResourceArray<T = unknown> extends Omit<Array<T>, '[]'> {
+  /** @private */
   isDestroying: boolean;
+  /** @private */
   isDestroyed: boolean;
+  /** @private */
   destroy: (this: ReactiveResourceArray, clear: boolean) => void;
+  /** @private */
   [IS_COLLECTION]: boolean;
+  /** @private */
   [Context]: ReactiveResourceArrayContext;
 }
 
