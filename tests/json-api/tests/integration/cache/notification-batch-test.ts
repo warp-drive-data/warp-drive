@@ -86,35 +86,35 @@ function asStructuredDocument<T>(doc: {
 type Call = [type: NotificationType, key: string | undefined];
 
 module('Integration | NotificationManager batch notifications', function () {
-  test('notify(identifier, "attributes", keys[]) delivers the same sequence of notifications as calling notify once per key', function (assert) {
+  test('notify(identifier, "attributes", keys: Set<string>) delivers the same sequence of notifications as calling notify once per key', function (assert) {
     const store = new TestStore();
 
-    const identifierA = store.cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '1' });
-    const identifierB = store.cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '2' });
+    const identifierBatch = store.cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '1' });
+    const identifierIndividual = store.cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '2' });
 
     const batchCalls: Call[] = [];
     const individualCalls: Call[] = [];
 
-    const tokenA = store.notifications.subscribe(
-      identifierA,
+    const tokenBatch = store.notifications.subscribe(
+      identifierBatch,
       (_key: ResourceKey, type: NotificationType, key?: string) => {
         batchCalls.push([type, key]);
       }
     );
-    const tokenB = store.notifications.subscribe(
-      identifierB,
+    const tokenIndividual = store.notifications.subscribe(
+      identifierIndividual,
       (_key: ResourceKey, type: NotificationType, key?: string) => {
         individualCalls.push([type, key]);
       }
     );
 
-    // the new batch calling convention: a single notify() call carrying multiple keys
-    store.notifications.notify(identifierA, 'attributes', ['name', 'username', 'age']);
+    // the new batch calling convention: a single notify() call carrying a Set of keys
+    store.notifications.notify(identifierBatch, 'attributes', new Set(['name', 'username', 'age']));
 
     // the pre-existing calling convention: one notify() call per key
-    store.notifications.notify(identifierB, 'attributes', 'name');
-    store.notifications.notify(identifierB, 'attributes', 'username');
-    store.notifications.notify(identifierB, 'attributes', 'age');
+    store.notifications.notify(identifierIndividual, 'attributes', 'name');
+    store.notifications.notify(identifierIndividual, 'attributes', 'username');
+    store.notifications.notify(identifierIndividual, 'attributes', 'age');
 
     assert.deepEqual(
       batchCalls,
@@ -123,7 +123,7 @@ module('Integration | NotificationManager batch notifications', function () {
         ['attributes', 'username'],
         ['attributes', 'age'],
       ],
-      'the batch call delivered one notification per key, in order'
+      'the batch call delivered one notification per key, in Set-insertion order'
     );
     assert.deepEqual(
       batchCalls,
@@ -131,46 +131,8 @@ module('Integration | NotificationManager batch notifications', function () {
       'the batch call produced the exact same subscriber notifications as the equivalent individual calls'
     );
 
-    store.notifications.unsubscribe(tokenA);
-    store.notifications.unsubscribe(tokenB);
-  });
-
-  test('notify(identifier, "attributes", keys: Set<string>) is also accepted, and delivers the same notifications as the array form', function (assert) {
-    const store = new TestStore();
-
-    const identifierArray = store.cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '1' });
-    const identifierSet = store.cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '2' });
-
-    const arrayCalls: Call[] = [];
-    const setCalls: Call[] = [];
-
-    const tokenArray = store.notifications.subscribe(
-      identifierArray,
-      (_key: ResourceKey, type: NotificationType, key?: string) => {
-        arrayCalls.push([type, key]);
-      }
-    );
-    const tokenSet = store.notifications.subscribe(
-      identifierSet,
-      (_key: ResourceKey, type: NotificationType, key?: string) => {
-        setCalls.push([type, key]);
-      }
-    );
-
-    // both an array and a Set of keys are accepted, and iterated in their own
-    // natural (insertion) order without ever being converted into the other
-    // shape internally.
-    store.notifications.notify(identifierArray, 'attributes', ['name', 'username', 'age']);
-    store.notifications.notify(identifierSet, 'attributes', new Set(['name', 'username', 'age']));
-
-    assert.deepEqual(
-      setCalls,
-      arrayCalls,
-      'passing a Set<string> of keys delivers the exact same sequence of notifications as passing the equivalent string[]'
-    );
-
-    store.notifications.unsubscribe(tokenArray);
-    store.notifications.unsubscribe(tokenSet);
+    store.notifications.unsubscribe(tokenBatch);
+    store.notifications.unsubscribe(tokenIndividual);
   });
 
   test('cache upsert with multiple changed attributes notifies once per changed attribute', function (assert) {

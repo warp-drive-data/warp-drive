@@ -34,14 +34,12 @@ export type NotificationType = 'attributes' | 'relationships' | 'identity' | 'er
  * The shape accepted by {@link NotificationManager.notify} and
  * {@link CacheCapabilitiesManager.notifyChange} for delivering many keys for
  * the `'attributes'` or `'relationships'` namespaces in a single call
- * instead of once per key. Either a plain array or a `Set` may be passed -
- * whichever shape the caller already has on hand - and it is iterated as-is,
- * without ever being converted into the other shape.
+ * instead of once per key.
  *
  * @since 5.9.0
  * @public
  */
-export type NotifyKeys = string[] | Set<string>;
+export type NotifyKeys = Set<string>;
 
 export interface NotificationCallback {
   (cacheKey: ResourceKey, notificationType: 'attributes' | 'relationships', key?: string): void;
@@ -60,12 +58,8 @@ export interface DocumentOperationCallback {
   (cacheKey: RequestKey, notificationType: DocumentCacheOperation): void;
 }
 
-function isKeyBatch(key: unknown): key is NotifyKeys {
-  return Array.isArray(key) || key instanceof Set;
-}
-
 function keyToString(key: string | NotifyKeys | null | undefined): string {
-  return isKeyBatch(key) ? Array.from(key).join(', ') : key || '';
+  return key instanceof Set ? Array.from(key).join(', ') : key || '';
 }
 
 function count(label: string) {
@@ -215,17 +209,14 @@ export class NotificationManager {
    *
    * When notifying `'attributes'` or `'relationships'` for many keys on the
    * same `cacheKey` at once (for instance, when a bulk update to a single
-   * record touches many fields) `key` may be supplied as a `string[]` or a
-   * `Set<string>` instead of being called once per key. Either shape is
-   * accepted and iterated as-is (no conversion between the two is ever
-   * performed internally) so callers should pass whichever they already
-   * have on hand: a `Set` if they are already deduping/collecting keys that
-   * way (as the relationship-notification flush path does), or a plain
-   * array otherwise. This delivers the exact same sequence of individual
-   * notifications to subscribers (each subscriber callback is still invoked
-   * once per key, in order) while paying the per-call overhead (validity
-   * checks, subscriber lookups, buffer/flush scheduling) only once for the
-   * whole batch instead of once per key.
+   * record touches many fields) `key` may be supplied as a `Set<string>`
+   * instead of being called once per key. The `Set` is iterated as-is (it is
+   * never converted to or from an array internally). This delivers the
+   * exact same sequence of individual notifications to subscribers (each
+   * subscriber callback is still invoked once per key, in order) while
+   * paying the per-call overhead (validity checks, subscriber lookups,
+   * buffer/flush scheduling) only once for the whole batch instead of once
+   * per key.
    *
    * @private
    */
@@ -266,9 +257,8 @@ export class NotificationManager {
         this._buffered.set(cacheKey, buffer);
       }
 
-      if (isKeyBatch(key)) {
-        // iterate whichever shape we were handed (Array or Set) directly:
-        // neither is ever converted into the other.
+      if (key instanceof Set) {
+        // iterate the Set directly: it is never converted into an array.
         for (const k of key) {
           buffer.push([value, k]);
           if (LOG_METRIC_COUNTS) {

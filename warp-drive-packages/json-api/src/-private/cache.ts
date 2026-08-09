@@ -1383,11 +1383,10 @@ export class JSONAPICache implements Cache {
     this._capabilities.notifyChange(identifier, 'state', null);
 
     if (dirtyKeys && dirtyKeys.length) {
-      // `dirtyKeys` is already a plain array (from `Object.keys`); hand it
-      // straight to `notifyAttributes` rather than wrapping it in a `Set`
-      // just to satisfy a parameter type - `notifyChange`/`notify` accept
-      // arrays natively, so no conversion is needed in either direction.
-      notifyAttributes(this._capabilities, identifier, dirtyKeys);
+      // `dirtyKeys` is a plain array here (from `Object.keys`), but
+      // `notifyAttributes`/`notifyChange`/`notify` batch as a `Set<string>`,
+      // so wrap it before handing it off.
+      notifyAttributes(this._capabilities, identifier, new Set(dirtyKeys));
     }
 
     return dirtyKeys || [];
@@ -1839,10 +1838,10 @@ function notifyAttributes(storeWrapper: CacheCapabilitiesManager, identifier: Re
   // resource during a push/upsert, so with N records each having M changed
   // attributes the naive per-key approach costs O(N*M) in overhead alone.
   //
-  // `keys` is handed off exactly as received (a `Set<string>` from
-  // `calculateChangedKeys`, or a plain `string[]` from `rollbackAttrs`) -
-  // `notifyChange`/`notify` accept either shape natively, so no `Array.from`
-  // or `new Set(...)` conversion happens on this path.
+  // `keys` is handed off exactly as received. For the `calculateChangedKeys`
+  // callers it is already the `Set<string>` they built, so no conversion
+  // happens on this path; only `rollbackAttrs`'s naturally-array `dirtyKeys`
+  // needs to be wrapped in a `Set` before reaching here.
   storeWrapper.notifyChange(identifier, 'attributes', keys);
 }
 

@@ -101,16 +101,14 @@ export type CacheCapabilitiesManager = {
   /**
    * Notify subscribers that one or more attributes on a resource have
    * changed. `key` may be a single attribute name, or - since 5.9.0 - a
-   * `string[]` or `Set<string>` of attribute names. This is useful when many
-   * attributes on the same resource have changed at once (for instance after
-   * applying a bulk update): passing the full collection of changed keys in
-   * a single call is equivalent to calling `notifyChange` once per key
-   * (subscribers still receive one notification per key, in the same order),
-   * but avoids repeating the per-call bookkeeping (subscriber lookups,
-   * buffer scheduling, etc) for every key. Pass whichever shape you already
-   * have on hand - a `Set` if you're already deduping/collecting keys that
-   * way, or a plain array otherwise - the collection is iterated as-is and
-   * never converted from one shape to the other.
+   * `Set<string>` of attribute names. This is useful when many attributes on
+   * the same resource have changed at once (for instance after applying a
+   * bulk update): passing the full `Set` of changed keys in a single call is
+   * equivalent to calling `notifyChange` once per key (subscribers still
+   * receive one notification per key, in the same order), but avoids
+   * repeating the per-call bookkeeping (subscriber lookups, buffer
+   * scheduling, etc) for every key. The `Set` is iterated as-is and never
+   * converted to or from an array.
    *
    * @since 5.9.0
    * @public
