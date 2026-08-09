@@ -9,6 +9,13 @@ export function isFuture<T>(maybe: unknown): maybe is Future<T> {
   return Boolean(maybe && maybe instanceof Promise && (maybe as Future<T>)[IS_FUTURE] === true);
 }
 
+/**
+ * Create a {@link Deferred}: a promise along with the `resolve`/`reject`
+ * callbacks that settle it, so the promise can be handed out before the
+ * work that will settle it has started.
+ *
+ * @public
+ */
 export function createDeferred<T>(): Deferred<T> {
   let resolve!: (v: T) => void;
   let reject!: (v: unknown) => void;

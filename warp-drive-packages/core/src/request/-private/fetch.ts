@@ -131,6 +131,13 @@ const ERROR_STATUS_CODE_FOR = new Map([
  * @public
  */
 const Fetch = {
+  /**
+   * Issues the request via native `fetch`, setting the response and
+   * (when requested) streaming the decoded body via {@link Context.setStream}
+   * as it downloads, then resolves with the parsed JSON body.
+   *
+   * @public
+   */
   async request<T>(context: Context): Promise<T> {
     let response: Response;
 
