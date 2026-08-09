@@ -12,6 +12,13 @@ import { setupSignals, type SignalHooks } from '@warp-drive/core/configure';
 type Tag = ReturnType<typeof tagForProperty>;
 const emberDirtyTag = dirtyTag as unknown as (tag: Tag) => void;
 
+/**
+ * Builds the {@link SignalHooks} implementation backed by Ember's
+ * `@glimmer/validator` tags, used to wire WarpDrive's reactivity
+ * primitives into Ember's autotracking system.
+ *
+ * @public
+ */
 export function buildSignalConfig(options: {
   wellknown: {
     Array: symbol | string;

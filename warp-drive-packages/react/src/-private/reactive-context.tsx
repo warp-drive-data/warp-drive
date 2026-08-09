@@ -141,7 +141,12 @@ export function useWatcher(): { watcher: Signal.subtle.Watcher } | null {
 /**
  * @category Contexts
  */
-export const WatcherContext: Context<{ watcher: Signal.subtle.Watcher } | null> = createContext<{
+export const WatcherContext: Context<{
+  /**
+   * The `Signal.subtle.Watcher` used to observe signal changes for the nearest {@link ReactiveContext}.
+   */
+  watcher: Signal.subtle.Watcher;
+} | null> = createContext<{
   watcher: Signal.subtle.Watcher;
 } | null>(null);
 

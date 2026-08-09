@@ -40,6 +40,13 @@ function tryConsumeContext(signal: Signal.State<unknown> | Signal.Computed<unkno
 }
 
 let pending: Promise<unknown>[];
+/**
+ * Resolves once all pending requests started via WarpDrive's React signal
+ * integration have settled. Only tracks requests while `TESTING` is enabled;
+ * a no-op otherwise.
+ *
+ * @public
+ */
 export async function settled(): Promise<void> {
   if (TESTING) {
     // in testing mode we provide a test waiter integration
@@ -55,6 +62,13 @@ export async function settled(): Promise<void> {
   }
 }
 
+/**
+ * Builds the {@link SignalHooks} implementation backed by the
+ * [Signal Polyfill](https://github.com/proposal-signals/signal-polyfill),
+ * used to wire WarpDrive's reactivity primitives into React.
+ *
+ * @public
+ */
 export function buildSignalConfig(options: HooksOptions): SignalHooks {
   return {
     createSignal: (obj: object, key: string | symbol) =>
