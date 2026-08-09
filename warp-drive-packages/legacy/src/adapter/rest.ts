@@ -43,25 +43,69 @@ import {
 
 type Payload = Error | Record<string, unknown> | unknown[] | string | undefined;
 
+/**
+ * The query params built by {@link RESTAdapter.buildQuery | buildQuery} for a
+ * `findAll`/`findRecord` request.
+ */
 export type QueryState = {
+  /**
+   * the relationship paths to sideload
+   */
   include?: unknown;
+  /**
+   * a value used to request only records updated since the given value
+   */
   since?: unknown;
 };
 
+/**
+ * The options passed to the native `fetch` API by {@link RESTAdapter._fetchRequest | _fetchRequest}.
+ */
 export interface FetchRequestInit extends RequestInit {
+  /**
+   * the url to request
+   */
   url: string;
+  /**
+   * the HTTP method to use
+   */
   method: HTTPMethod;
+  /**
+   * the HTTP method to use, duplicated for jQuery/fetch option compatibility
+   */
   type: HTTPMethod;
 }
 
+/**
+ * The options passed to jQuery's `$.ajax` by {@link RESTAdapter._ajaxRequest | _ajaxRequest}.
+ */
 export interface JQueryRequestInit extends JQueryAjaxSettings {
+  /**
+   * the url to request
+   */
   url: string;
+  /**
+   * the HTTP method to use
+   */
   method: HTTPMethod;
+  /**
+   * the HTTP method to use, duplicated for jQuery/fetch option compatibility
+   */
   type: HTTPMethod;
 }
 
+/**
+ * A minimal description of an in-flight request, used for building
+ * error messages when a request fails.
+ */
 export type RequestData = {
+  /**
+   * the url that was requested
+   */
   url: string;
+  /**
+   * the HTTP method that was used
+   */
   method: HTTPMethod;
   [key: string]: unknown;
 };
@@ -301,9 +345,21 @@ const AdapterWithBuildURLMixin: Readonly<typeof Adapter> & (new (owner?: Owner) 
   @public
 */
 class RESTAdapter extends AdapterWithBuildURLMixin {
+  /**
+   * @private
+   */
   declare _fastboot: FastBoot;
+  /**
+   * @private
+   */
   declare _coalesceFindRequests: boolean;
+  /**
+   * See "Host customization" above.
+   */
   declare host: string | null;
+  /**
+   * See "Namespace customization" above.
+   */
   declare namespace: string | null;
 
   /**
@@ -314,8 +370,16 @@ class RESTAdapter extends AdapterWithBuildURLMixin {
   */
   useFetch = true;
 
+  /**
+   * The `Content-Type` header used when serializing request bodies
+   * that don't otherwise specify one.
+   */
   _defaultContentType = 'application/json; charset=utf-8';
 
+  /**
+   * The FastBoot service instance, if running in a FastBoot environment.
+   * Lazily looked up on first access.
+   */
   @computed()
   get fastboot() {
     // Avoid computed property override deprecation in fastboot as suggested by:
@@ -327,6 +391,9 @@ class RESTAdapter extends AdapterWithBuildURLMixin {
     return (this._fastboot = getOwner(this)!.lookup('service:fastboot') as FastBoot);
   }
 
+  /**
+   * Sets the FastBoot service instance to use.
+   */
   set fastboot(value: FastBoot) {
     this._fastboot = value;
   }
@@ -804,7 +871,13 @@ class RESTAdapter extends AdapterWithBuildURLMixin {
     return expandedURL.join('/');
   }
 
-  // http://stackoverflow.com/questions/417142/what-is-the-maximum-length-of-a-url-in-different-browsers
+  /**
+   * The maximum URL length to allow when coalescing `findRecord` requests
+   * into a single `findMany` request via {@link RESTAdapter.groupRecordsForFindMany | groupRecordsForFindMany}.
+   * Requests that would exceed this length are split into multiple groups.
+   *
+   * See http://stackoverflow.com/questions/417142/what-is-the-maximum-length-of-a-url-in-different-browsers
+   */
   maxURLLength = 2048;
 
   /**
