@@ -82,9 +82,23 @@ import { createReactiveResourceArray, destroy, type ReactiveResourceArray } from
  * @legacy we recommend againt using QueryArrays. Use {@link Store.request} instead
  */
 export interface LegacyQueryArray<T = unknown> extends LegacyLiveArray<T> {
+  /**
+   * The query originally passed to `store.query()` that produced this
+   * QueryArray. Used by `update()` to re-run the query.
+   */
   query: ImmutableRequestInfo | Record<string, unknown> | null;
   destroy(): void;
+
+  /**
+   * The JSON:API `links` included in the response that produced this
+   * QueryArray, if any.
+   */
   links: PaginationLinks | Links | null;
+
+  /**
+   * The JSON:API `meta` included in the response that produced this
+   * QueryArray, if any.
+   */
   meta: Meta | null;
 }
 
