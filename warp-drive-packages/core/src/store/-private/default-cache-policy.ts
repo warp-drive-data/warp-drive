@@ -63,19 +63,33 @@ type Store = {
  * - [MDN Cache-Control Reference](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Cache-Control)
  */
 export interface CacheControlValue {
+  /** Indicates the response will never change; parsed but not currently used by this cache policy's expiration logic. */
   immutable?: boolean;
+  /** Seconds since the response's `Date` that it is considered fresh; combined with the `Age` header to determine expiration. */
   'max-age'?: number;
+  /** Indicates a stale response must be revalidated before use; parsed but not currently used by this cache policy's expiration logic. */
   'must-revalidate'?: boolean;
+  /** Indicates the client must understand the response's status code semantics before caching; parsed but not currently used by this cache policy's expiration logic. */
   'must-understand'?: boolean;
+  /** Indicates the response must be revalidated before being reused from cache; parsed but not currently used by this cache policy's expiration logic. */
   'no-cache'?: boolean;
+  /** Indicates the response must not be stored in any cache; parsed but not currently used by this cache policy's expiration logic. */
   'no-store'?: boolean;
+  /** Indicates the response must not be transformed by intermediaries; parsed but not currently used by this cache policy's expiration logic. */
   'no-transform'?: boolean;
+  /** Indicates only an already-cached response should be used; parsed but not currently used by this cache policy's expiration logic. */
   'only-if-cached'?: boolean;
+  /** Indicates the response is intended for a single user and should not be stored by shared caches; parsed but not currently used by this cache policy's expiration logic. */
   private?: boolean;
+  /** Like `must-revalidate` but only for shared caches; parsed but not currently used by this cache policy's expiration logic. */
   'proxy-revalidate'?: boolean;
+  /** Indicates the response may be stored by any cache; parsed but not currently used by this cache policy's expiration logic. */
   public?: boolean;
+  /** Seconds since the response's `Date` that it is considered fresh for shared caches; used as a fallback for `max-age` when determining expiration. */
   's-maxage'?: number;
+  /** Seconds a stale response may be reused if an error occurs while revalidating; parsed but not currently used by this cache policy's expiration logic. */
   'stale-if-error'?: number;
+  /** Seconds a stale response may be reused while a revalidation happens in the background; parsed but not currently used by this cache policy's expiration logic. */
   'stale-while-revalidate'?: number;
 }
 
