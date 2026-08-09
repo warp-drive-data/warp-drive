@@ -84,16 +84,35 @@ export type CacheCapabilitiesManager = {
   /**
    * Notify subscribers of the NotificationManager that cache state has changed.
    *
-   * `attributes` and `relationships` do not require a key, but if one is specified it
-   * is assumed to be the name of the attribute or relationship that has been updated.
-   *
-   * No other namespaces currently expect the `key` argument.
+   * This overload notifies that a resource has been added to or removed from
+   * the cache. `key` is always `null` for these namespaces.
    *
    * @public
    */
   notifyChange(identifier: ResourceKey, namespace: 'added' | 'removed', key: null): void;
+  /**
+   * Notify subscribers that a request (as identified by a {@link RequestKey})
+   * has been added, updated, or removed from the cache. `key` is always
+   * `null` for these namespaces.
+   *
+   * @public
+   */
   notifyChange(identifier: RequestKey, namespace: 'added' | 'updated' | 'removed', key: null): void;
+  /**
+   * Notify subscribers of a change to a resource for any other
+   * {@link NotificationType}. `attributes` and `relationships` do not
+   * require a key, but if one is specified it is assumed to be the name
+   * of the attribute or relationship that has been updated.
+   *
+   * @public
+   */
   notifyChange(identifier: ResourceKey, namespace: NotificationType, key: string | null): void;
+  /**
+   * Implementation signature for {@link CacheCapabilitiesManager.notifyChange}
+   * covering all supported combinations of identifier, namespace, and key.
+   *
+   * @public
+   */
   notifyChange(
     identifier: ResourceKey | RequestKey,
     namespace: NotificationType | 'added' | 'removed' | 'updated',
