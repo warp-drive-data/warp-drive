@@ -255,8 +255,14 @@ const service = s.service ?? s.inject;
   @public
 */
 export class Adapter extends EmberObject implements MinimumAdapterInterface {
+  /**
+   * The Store service instance that owns this Adapter.
+   */
   @service declare store: Store;
 
+  /**
+   * @private
+   */
   declare _coalesceFindRequests: boolean;
 
   /**
