@@ -1191,11 +1191,7 @@ export interface Store {
   @param query a query to be used by the adapter
   @param options optional, may include `adapterOptions` hash which will be passed to adapter.query
   */
-  query<T>(
-    type: TypeFromInstance<T>,
-    query: LegacyResourceQuery,
-    options?: QueryOptions
-  ): Promise<LegacyQueryArray<T>>;
+  query<T>(type: TypeFromInstance<T>, query: LegacyResourceQuery, options?: QueryOptions): Promise<LegacyQueryArray<T>>;
   /** @deprecated */
   query(type: string, query: LegacyResourceQuery, options?: QueryOptions): Promise<LegacyQueryArray>;
 
@@ -1382,7 +1378,6 @@ export interface Store {
    */
   saveRecord<T>(record: T, options?: Record<string, unknown>): Promise<T>;
 }
-
 
 /**
  * ```ts

@@ -26,7 +26,10 @@ export function FixMacroConditionsPlugin() {
       if (!code.includes('macroCondition(')) {
         return null;
       }
-      const fixed = code.replace(MACRO_CONDITION_AND, (_match, condition, _ws1, ws2) => `if (macroCondition(${condition}))${ws2}`);
+      const fixed = code.replace(
+        MACRO_CONDITION_AND,
+        (_match, condition, _ws1, ws2) => `if (macroCondition(${condition}))${ws2}`
+      );
       return fixed === code ? null : { code: fixed, map: null };
     },
   };

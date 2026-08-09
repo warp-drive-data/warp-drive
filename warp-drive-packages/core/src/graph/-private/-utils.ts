@@ -265,23 +265,24 @@ export function assertRelationshipData(
     )}'\n\nPlease check your serializer and make sure it is serializing the relationship payload into a JSON API format.`,
     data === null || !!coerceId(data.id)
   );
-  if (data?.type === meta.type) {
-    assert(
-      `Missing Schema: Encountered a relationship identifier { type: '${data.type}', id: '${String(
-        data.id
-      )}' } for the '${resourceKey.type}.${meta.key}' ${meta.kind} relationship on <${resourceKey.type}:${String(
-        resourceKey.id
-      )}>, but no schema exists for that type.`,
-      store.schema.hasResource(data)
-    );
-  } else {
-    assert(
-      `Missing Schema: Encountered a relationship identifier with type '${data.type}' for the ${
-        meta.kind
-      } relationship '${meta.key}' on <${resourceKey.type}:${String(
-        resourceKey.id
-      )}>, Expected an identifier with type '${meta.type}'. No schema was found for '${data.type}'.`,
-      data === null || !data.type || store.schema.hasResource(data)
-    );
-  }
+  // NOTE: these two cases are intentionally collapsed into a single `assert()` call rather than an
+  // `if/else` each containing their own `assert()`. The macro expansion of `assert()` produces a bare
+  // `if (macroCondition(...))` (no `else`), and rolldown's build strips the braces from single-statement
+  // if/else branches -- if each branch here held its own `assert()`, the outer `else` would end up
+  // dangling onto the inner `if` from the *other* branch's expanded macro instead of this one.
+  const isTypeMatch = data?.type === meta.type;
+  assert(
+    isTypeMatch
+      ? `Missing Schema: Encountered a relationship identifier { type: '${data.type}', id: '${String(
+          data.id
+        )}' } for the '${resourceKey.type}.${meta.key}' ${meta.kind} relationship on <${resourceKey.type}:${String(
+          resourceKey.id
+        )}>, but no schema exists for that type.`
+      : `Missing Schema: Encountered a relationship identifier with type '${data.type}' for the ${
+          meta.kind
+        } relationship '${meta.key}' on <${resourceKey.type}:${String(
+          resourceKey.id
+        )}>, Expected an identifier with type '${meta.type}'. No schema was found for '${data.type}'.`,
+    isTypeMatch ? store.schema.hasResource(data) : data === null || !data.type || store.schema.hasResource(data)
+  );
 }
