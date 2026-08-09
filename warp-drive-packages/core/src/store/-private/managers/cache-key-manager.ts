@@ -42,6 +42,10 @@ type NarrowIdentifierIfPossible<T> = T extends ExistingResourceIdentifierObject
   ? PersistedResourceKey<TypeFromIdentifier<T>>
   : ResourceKey;
 
+/**
+ * Type-guard that returns `true` if the given value is a stable {@link ResourceKey}
+ * (as opposed to a {@link RequestKey} or arbitrary, not-yet-stabilized resource data).
+ */
 export function isResourceKey(identifier: unknown): identifier is ResourceKey {
   if (DEBUG) {
     return (
@@ -57,6 +61,10 @@ export function isResourceKey(identifier: unknown): identifier is ResourceKey {
   }
 }
 
+/**
+ * Type-guard that returns `true` if the given value is a stable {@link RequestKey}
+ * (as opposed to a {@link ResourceKey} or arbitrary, not-yet-stabilized data).
+ */
 export function isRequestKey(identifier: unknown): identifier is RequestKey {
   if (DEBUG) {
     return (

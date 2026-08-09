@@ -57,6 +57,15 @@ export function recordIdentifierFor<T>(record: T): ResourceKey<TypeFromInstanceO
   return RecordCache.get(record)! as ResourceKey<TypeFromInstanceOrString<T>>;
 }
 
+/**
+ * Assigns the given {@link ResourceKey} as the identifier for a record instance,
+ * enabling later lookup via {@link recordIdentifierFor}.
+ *
+ * In debug builds, asserts that the record has not already been assigned a
+ * different identifier.
+ *
+ * @private
+ */
 export function setRecordIdentifier(record: OpaqueRecordInstance, identifier: ResourceKey): void {
   if (DEBUG) {
     if (RecordCache.has(record) && RecordCache.get(record) !== identifier) {
@@ -83,6 +92,12 @@ export function removeRecordIdentifier(record: OpaqueRecordInstance): void {
   RecordCache.delete(record);
 }
 
+/**
+ * Module-level lookup of the {@link Store} that owns a given record instance
+ * (or {@link ResourceKey}), used by {@link storeFor}.
+ *
+ * @private
+ */
 export const StoreMap: Map<unknown, Store> = getOrSetGlobal('StoreMap', new Map<OpaqueRecordInstance, Store>());
 
 /**
@@ -104,12 +119,24 @@ export type Caches = {
   document: Map<RequestKey, ReactiveDocument<OpaqueRecordInstance | OpaqueRecordInstance[] | null | undefined>>;
 };
 
+/**
+ * The internal cache of materialized record and document instances for a {@link Store}.
+ *
+ * Maps {@link ResourceKey}s to their materialized record instances and
+ * {@link RequestKey}s to their {@link ReactiveDocument} instances, instantiating
+ * them on demand and coordinating their teardown against the underlying {@link Cache}.
+ */
 export class InstanceCache {
+  /** The {@link Store} instance this cache belongs to. */
   declare store: Store;
+  /** The underlying {@link Cache} instance backing this store, lazily assigned by the {@link Store}. */
   declare cache: Cache;
+  /** The {@link CacheCapabilitiesManager} given to the {@link Cache} to allow it to interact with the store. */
   declare _storeWrapper: CacheCapabilitiesManager;
 
+  /** Reserved for a future {@link CacheManager} reference; currently unassigned and unused. */
   declare __cacheManager: CacheManager;
+  /** The materialized record and document instances for this store, keyed by {@link ResourceKey} and {@link RequestKey} respectively. */
   declare __instances: Caches;
 
   constructor(store: Store) {
@@ -182,10 +209,12 @@ export class InstanceCache {
       }
     );
   }
+  /** Returns the materialized record instance for the given {@link ResourceKey} if one exists, without creating one. */
   peek(identifier: ResourceKey): Cache | OpaqueRecordInstance | undefined {
     return this.__instances.record.get(identifier);
   }
 
+  /** Returns the {@link ReactiveDocument} for the given {@link RequestKey}, creating and caching an empty one if none exists yet. */
   getDocument<T>(identifier: RequestKey): ReactiveDocument<T> {
     let doc = this.__instances.document.get(identifier);
     if (!doc) {
@@ -195,6 +224,7 @@ export class InstanceCache {
     return doc as ReactiveDocument<T>;
   }
 
+  /** Returns the materialized record instance for the given {@link ResourceKey}, instantiating one via the {@link Store} if it does not already exist. */
   getRecord(identifier: ResourceKey): OpaqueRecordInstance {
     let record = this.__instances.record.get(identifier);
 
@@ -205,6 +235,14 @@ export class InstanceCache {
     return record;
   }
 
+  /**
+   * Determines whether the record for the given {@link ResourceKey} is considered loaded.
+   *
+   * New records are always considered loaded unless they have been deleted. Existing
+   * records are considered loaded so long as they are not empty (e.g. after being
+   * unloaded), or, when `filterDeleted` is `true`, so long as their deletion has not
+   * been committed.
+   */
   recordIsLoaded(identifier: ResourceKey, filterDeleted = false): boolean {
     const cache = this.cache;
     if (!cache) {
@@ -227,6 +265,13 @@ export class InstanceCache {
     return filterDeleted && cache.isDeletionCommitted(identifier) ? false : !isEmpty;
   }
 
+  /**
+   * Fully removes a {@link ResourceKey} from the store: forgets it from the graph and
+   * the store's cache key manager, clears its pending request state, and removes it
+   * from {@link StoreMap}.
+   *
+   * Expects that any materialized record for the identifier has already been destroyed.
+   */
   disconnect(identifier: ResourceKey): void {
     const record = this.__instances.record.get(identifier);
     assert(
@@ -244,6 +289,13 @@ export class InstanceCache {
     }
   }
 
+  /**
+   * Unloads the record for the given {@link ResourceKey}: tears down its materialized
+   * instance (if any) and removes its data from the underlying {@link Cache}, disconnecting
+   * the identifier entirely if there is no cache to own it.
+   *
+   * Asserts that no mutation request is currently in flight for the record.
+   */
   unloadRecord(identifier: ResourceKey): void {
     if (DEBUG) {
       const requests = this.store.getRequestStateService().getPendingRequestsForRecord(identifier);
@@ -266,6 +318,7 @@ export class InstanceCache {
     });
   }
 
+  /** Unloads all records, or, when `type` is provided, only those records of that resource type. */
   clear(type?: string): void {
     const cache = this.store.cacheKeyManager._cache;
     if (type === undefined) {
@@ -288,6 +341,11 @@ export class InstanceCache {
     }
   }
 
+  /**
+   * Updates the `id` for a {@link ResourceKey} that did not previously have one, e.g. after
+   * a newly created record has been saved to the server, and notifies subscribers of the
+   * identity change.
+   */
   // TODO this should move into something coordinating operations
   setRecordId(identifier: ResourceKey, id: string): void {
     const { type, lid } = identifier;
@@ -389,6 +447,14 @@ function _createRecord(
   return record;
 }
 
+/**
+ * Resets the module-level record-to-identifier and record/identifier-to-store lookup
+ * caches used by {@link recordIdentifierFor} and {@link storeFor}.
+ *
+ * Leaked for test and legacy use only; not intended for application use.
+ *
+ * @private
+ */
 export function _clearCaches(): void {
   RecordCache.clear();
   StoreMap.clear();

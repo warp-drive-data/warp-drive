@@ -139,4 +139,9 @@ if (ENABLE_LEGACY_SCHEMA_SERVICE) {
   };
 }
 
+/**
+ * Upgrade the type for {@link CacheCapabilitiesManager} to {@link PrivateCacheCapabilitiesManager}.
+ *
+ * @private
+ */
 export function assertPrivateCapabilities(manager: unknown): asserts manager is PrivateCacheCapabilitiesManager {}
