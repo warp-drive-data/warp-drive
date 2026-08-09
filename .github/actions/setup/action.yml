@@ -160,10 +160,14 @@ runs:
       if: ${{ inputs.restore-lint-caches == 'true' }}
       uses: actions/cache@v4
       with:
+        # Type-check (tsconfig.tsbuildinfo) and lint (.eslintcache) artifacts are
+        # produced per-package by turbo rather than at the repo root, so these
+        # paths must be globbed to cover every workspace package. Prettier still
+        # runs once from the repo root, so `.prettier-cache` stays un-globbed.
         path: |
-          .eslintcache
           .prettier-cache
-          tsconfig.tsbuildinfo
+          **/.eslintcache
+          **/tsconfig.tsbuildinfo
         key: lint-${{ github.head_ref }}-${{ inputs.ref }}
         restore-keys: |
           lint-${{ github.head_ref }}
