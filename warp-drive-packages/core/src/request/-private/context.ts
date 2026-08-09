@@ -155,10 +155,31 @@ export class ContextOwner {
   }
 }
 
+/**
+ * The context object given to each {@link Handler} (or {@link CacheHandler})
+ * as it processes a request. It exposes the (immutable, enhanced) request
+ * along with the methods a handler uses to build up the {@link Future} and
+ * {@link StructuredDataDocument} that will ultimately be returned by the
+ * {@link RequestManager}.
+ *
+ * @public
+ */
 export class Context {
   /** @internal */
   declare private ___owner: ContextOwner;
+  /**
+   * A readonly, immutable version of the request being handled, including
+   * any defaults or enhancements applied by the {@link RequestManager}.
+   *
+   * @public
+   */
   declare request: ImmutableRequestInfo;
+  /**
+   * The id of this request as assigned by the {@link RequestManager}. Not
+   * unique across manager instances.
+   *
+   * @public
+   */
   declare id: number;
   /** @internal */
   declare private _isCacheHandler: boolean;
@@ -172,13 +193,33 @@ export class Context {
     this._isCacheHandler = isCacheHandler;
     this._finalized = false;
   }
+  /**
+   * Set the response stream for this request. May be called at most once,
+   * and may be called at any point up until the handler's `request` method
+   * resolves.
+   *
+   * @public
+   */
   setStream(stream: ReadableStream | Promise<ReadableStream | null>): void {
     this.___owner.setStream(stream);
   }
+  /**
+   * Set the {@link ResponseInfo} (or raw `Response`) associated with this
+   * request. Used to populate the response information available on the
+   * resulting {@link StructuredDataDocument}.
+   *
+   * @public
+   */
   setResponse(response: ResponseInfo | Response | null): void {
     this.___owner.setResponse(response);
   }
 
+  /**
+   * Associate a {@link RequestKey} with this request. May only be called
+   * synchronously from a {@link CacheHandler}.
+   *
+   * @public
+   */
   setIdentifier(identifier: RequestKey): void {
     assert(
       `setIdentifier may only be used synchronously from a CacheHandler`,
@@ -187,6 +228,13 @@ export class Context {
     this.___owner.god.identifier = identifier;
   }
 
+  /**
+   * Whether the application (or a downstream handler) has requested access
+   * to the response stream via {@link Future.getStream}. Handlers can use
+   * this to avoid the cost of streaming when nothing will consume it.
+   *
+   * @public
+   */
   get hasRequestedStream(): boolean {
     return this.___owner.hasRequestedStream;
   }

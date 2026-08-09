@@ -23,13 +23,34 @@ export interface GodContext {
   requester: RequestManager | Store;
 }
 
+/**
+ * A promise paired with the `resolve`/`reject` callbacks that settle it,
+ * allowing the promise to be created before the work that will settle it
+ * has begun. See {@link createDeferred}.
+ *
+ * @public
+ */
 export type Deferred<T> = {
+  /** Resolve {@link Deferred.promise | promise} with the given value. */
   resolve(v: T): void;
+  /** Reject {@link Deferred.promise | promise} with the given reason. */
   reject(v: unknown): void;
+  /** The promise controlled by {@link Deferred.resolve | resolve} and {@link Deferred.reject | reject}. */
   promise: Promise<T>;
 };
 
-export type ManagedRequestPriority = { blocking: boolean };
+/**
+ * Describes whether a managed (deduped) request should be treated as
+ * blocking the caller's promise (e.g. a `fetch`) or as a non-blocking
+ * background reload that other requests may dedupe against without
+ * waiting on it.
+ *
+ * @public
+ */
+export type ManagedRequestPriority = {
+  /** Whether the request should gate the promise it is associated with. */
+  blocking: boolean;
+};
 
 export type DeferredStream = {
   resolve(v: ReadableStream | null): void;
@@ -107,6 +128,13 @@ export type DeferredFuture<T> = {
   promise: Future<T>;
 };
 
+/**
+ * The `next` function passed to a {@link Handler} (or {@link CacheHandler}),
+ * used to forward a request to the next handler in the chain. Resolves to a
+ * {@link Future} carrying the downstream response.
+ *
+ * @public
+ */
 export type NextFn<P = unknown> = (req: RequestInfo) => Future<P>;
 
 /**
