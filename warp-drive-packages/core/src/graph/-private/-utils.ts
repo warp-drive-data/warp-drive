@@ -17,21 +17,29 @@ import type { ImplicitEdge } from './edges/implicit.ts';
 import type { ResourceEdge } from './edges/resource.ts';
 import type { Graph, GraphEdge } from './graph.ts';
 
+/** Retrieves the private {@link Store} instance from a capabilities manager (or any object exposing `_store`). */
 export function getStore(wrapper: CacheCapabilitiesManager | { _store: Store }): Store {
   assert(`expected a private _store property`, '_store' in wrapper);
   return wrapper._store;
 }
 
+/** Reads a value from a two-level keyed cache, without creating the first-level entry if it is missing. */
 export function expandingGet<T>(cache: Record<string, Record<string, T>>, key1: string, key2: string): T | undefined {
   const mainCache = (cache[key1] = cache[key1] || Object.create(null));
   return mainCache[key2];
 }
 
+/** Writes a value into a two-level keyed cache, lazily creating the first-level entry if it does not yet exist. */
 export function expandingSet<T>(cache: Record<string, Record<string, T>>, key1: string, key2: string, value: T): void {
   const mainCache = (cache[key1] = cache[key1] || Object.create(null));
   mainCache[key2] = value;
 }
 
+/**
+ * Asserts (dev-only) that a relationship update operation's payload is well-formed for the
+ * relationship's kind (`belongsTo` vs `hasMany`), warning or asserting on common payload mistakes
+ * such as a missing `data` alongside `links`, or `data` of the wrong shape.
+ */
 export function assertValidRelationshipPayload(
   graph: Graph,
   op: UpdateRelationshipOperation | UpdateResourceRelationshipOperation
@@ -108,6 +116,7 @@ function inspect(value: unknown) {
   return 'object';
 }
 
+/** Returns whether the given resource is new, i.e. it has no `id` or is flagged as new by the cache. */
 export function checkIfNew(store: Store, resourceKey: ResourceKey): boolean {
   if (!resourceKey.id) {
     return true;
@@ -115,18 +124,22 @@ export function checkIfNew(store: Store, resourceKey: ResourceKey): boolean {
   return store.cache.isNew(resourceKey);
 }
 
+/** A type-guard returning whether the given edge is a `belongsTo` {@link ResourceEdge}. */
 export function isBelongsTo(relationship: GraphEdge): relationship is ResourceEdge {
   return relationship.definition.kind === 'belongsTo';
 }
 
+/** A type-guard returning whether the given edge is an {@link ImplicitEdge}. */
 export function isImplicit(relationship: GraphEdge): relationship is ImplicitEdge {
   return relationship.definition.isImplicit;
 }
 
+/** A type-guard returning whether the given edge is a `hasMany` {@link CollectionEdge}. */
 export function isHasMany(relationship: GraphEdge): relationship is CollectionEdge {
   return relationship.definition.kind === 'hasMany';
 }
 
+/** Invokes `cb` for every resource identifier currently related through `rel`, covering both local and remote membership regardless of the edge's kind. */
 export function forAllRelatedIdentifiers(rel: GraphEdge, cb: (resourceKey: ResourceKey) => void): void {
   if (isBelongsTo(rel)) {
     if (rel.remoteState) {
@@ -154,12 +167,12 @@ export function forAllRelatedIdentifiers(rel: GraphEdge, cb: (resourceKey: Resou
   }
 }
 
-/*
-  Removes the given identifier from BOTH remote AND local state.
-
-  This method is useful when either a deletion or a rollback on a new record
-  needs to entirely purge itself from an inverse relationship.
-  */
+/**
+ * Removes the given identifier from BOTH remote AND local state.
+ *
+ * This method is useful when either a deletion or a rollback on a new record
+ * needs to entirely purge itself from an inverse relationship.
+ */
 export function removeIdentifierCompletelyFromRelationship(
   graph: Graph,
   relationship: GraphEdge,
@@ -208,6 +221,7 @@ export function removeIdentifierCompletelyFromRelationship(
   }
 }
 
+/** Notifies the store that a relationship has changed, provided the relationship has been accessed and is not currently being removed. */
 export function notifyChange(graph: Graph, relationship: CollectionEdge | ResourceEdge): void {
   if (!relationship.accessed) {
     return;
@@ -231,6 +245,11 @@ export function notifyChange(graph: Graph, relationship: CollectionEdge | Resour
   graph.store.notifyChange(resourceKey, 'relationships', key);
 }
 
+/**
+ * Asserts (dev-only) that a pushed relationship data payload conforms to the JSON:API resource
+ * identifier shape (correct `type`/`id`, correct array-ness for the relationship's kind) and
+ * references a resource type known to the schema.
+ */
 export function assertRelationshipData(
   store: Store,
   resourceKey: ResourceKey,
