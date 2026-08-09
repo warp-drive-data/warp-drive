@@ -546,6 +546,17 @@ export function upgradeDefinition(
     );
 
     const _isLHS = cached.lhs_baseModelName === baseType;
+    const claimedRelationshipName = _isLHS ? cached.lhs_relationshipName : cached.rhs_relationshipName;
+
+    // CASE: We already resolved an edge that terminates at this same inverse field, but it
+    // was claimed by a different relationship than the one we're currently resolving. This
+    // means two distinct fields both declared the same explicit `inverse`, which a single
+    // foreign key cannot satisfy for both.
+    assert(
+      `Both '${baseType}.${claimedRelationshipName}' and '${baseType}.${propertyName}' declare 'inverse: ${JSON.stringify(inverseKey)}', but '${inverseType}.${inverseKey}' can only be the inverse of one relationship. Update these relationships so that only one declares 'inverse: ${JSON.stringify(inverseKey)}' (the others should use a different inverse or 'inverse: null'), or introduce an intermediate/join model if multiple relationships legitimately need to reference '${inverseType}.${inverseKey}'.`,
+      claimedRelationshipName === propertyName
+    );
+
     const modelNames = _isLHS ? cached.lhs_modelNames : cached.rhs_modelNames;
     // make this lookup easier in the future by caching the key
     modelNames.push(type);
