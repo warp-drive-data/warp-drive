@@ -6,6 +6,8 @@ import type { LegacyQueryArray } from '@warp-drive/core/store/-private';
 import type { ModelSchema } from '@warp-drive/core/types';
 import type { LegacyRelationshipField as RelationshipSchema } from '@warp-drive/core/types/schema/fields';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import type { MinimumSerializerInterface } from './minimum-serializer-interface.ts';
 import type { Snapshot } from './snapshot.ts';
 import type { SnapshotRecordArray } from './snapshot-record-array.ts';
 
@@ -15,6 +17,10 @@ type Group = Snapshot[];
 // however those deserialization cases are handled
 // far easier in the adapter itself and are unlikely
 // to be passed to the serializer today.
+/**
+ * The raw payload shape returned by a legacy adapter's request methods,
+ * prior to being normalized by a {@link MinimumSerializerInterface}.
+ */
 export type AdapterPayload = Record<string, unknown> | unknown[];
 
 /**

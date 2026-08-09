@@ -47,6 +47,13 @@ const PotentialLegacyOperations = new Set([
   'deleteRecord',
 ]);
 
+/**
+ * A {@link Handler} that fulfills legacy `findRecord`/`findAll`/`query`/
+ * `queryRecord`/`findBelongsTo`/`findHasMany`/`createRecord`/`updateRecord`/
+ * `deleteRecord` requests using the store's configured {@link MinimumAdapterInterface | adapter}
+ * and {@link MinimumSerializerInterface | serializer}, passing any other
+ * request through to the next handler unchanged.
+ */
 export const LegacyNetworkHandler: Handler = {
   request<T>(context: StoreRequestContext, next: NextFn<T>): Future<T> | Promise<StructuredDataDocument<T>> {
     // if we are not a legacy request, move on
