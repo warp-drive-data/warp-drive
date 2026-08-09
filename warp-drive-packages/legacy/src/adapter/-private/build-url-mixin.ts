@@ -799,4 +799,10 @@ const mixinProps: BuildURLMixin = {
   pathForType,
 };
 
+/**
+ * The `Mixin` implementation of {@link BuildURLMixin}, ready to be applied
+ * to an `EmberObject` subclass such as an `Adapter`.
+ *
+ * @public
+ */
 export const BuildURLMixin: Mixin = Mixin.create(mixinProps);
