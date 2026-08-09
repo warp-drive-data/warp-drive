@@ -131,4 +131,11 @@ interface ProxyConstructor {
   new <TSource extends object, TTarget extends object>(target: TSource, handler: ProxyHandler<TSource>): TTarget;
 }
 
+/**
+ * The global `Proxy` constructor, retyped with the corrected
+ * {@link ProxyConstructor} signature above so that `target` and `receiver`
+ * may differ.
+ *
+ * @private
+ */
 export const NativeProxy: ProxyConstructor = Proxy as unknown as ProxyConstructor;

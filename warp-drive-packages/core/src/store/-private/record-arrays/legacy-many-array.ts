@@ -62,7 +62,21 @@ import { createReactiveResourceArray, destroy, type ReactiveResourceArray } from
   @public
 */
 export interface LegacyManyArray<T = unknown> extends ReactiveResourceArray<T> {
+  /**
+    The meta data for the has-many relationship, as returned in the
+    relationship's payload from the server.
+
+    @public
+  */
   meta: Meta | null;
+
+  /**
+    The links for the has-many relationship, as returned in the
+    relationship's payload from the server. Used to refetch the
+    relationship when reloading.
+
+    @public
+  */
   links: Links | PaginationLinks | null;
 
   /** @internal */

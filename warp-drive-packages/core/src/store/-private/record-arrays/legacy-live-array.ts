@@ -72,11 +72,18 @@ import { createReactiveResourceArray } from './resource-array.ts';
  * @legacy we recommend againt using LiveArrays. Use {@link Store.request} instead
  */
 export interface LegacyLiveArray<T = unknown> extends LegacyArray<T> {
+  /**
+   * Whether this LiveArray has loaded. LiveArrays are always considered
+   * loaded once created.
+   */
   isLoaded: boolean;
 
   /** @internal */
   DEPRECATED_CLASS_NAME: string;
 
+  /**
+   * The resource type (`ResourceType`) whose records this LiveArray contains.
+   */
   modelName: TypeFromInstanceOrString<T>;
 }
 
