@@ -61,6 +61,12 @@ interface _LegacyStoreSetupOptions<T extends Cache> extends Omit<StoreSetupOptio
   modelFragments?: boolean;
 }
 
+/**
+ * Setup options for a legacy store configured to use `Model` with `linksMode`
+ * enabled, meaning no legacy adapter/serializer request infrastructure is required.
+ *
+ * @public
+ */
 export interface LegacyModelStoreSetupOptions<T extends Cache> extends _LegacyStoreSetupOptions<T> {
   /**
    * If true, it is presumed that no requests require use of the LegacyNetworkHandler
@@ -82,6 +88,13 @@ export interface LegacyModelStoreSetupOptions<T extends Cache> extends _LegacySt
   legacyRequests?: false;
 }
 
+/**
+ * Setup options for a legacy store configured to use `Model` along with the
+ * legacy adapter/serializer network layer, but without the deprecated
+ * `store.findRecord`/`findAll`/`query`/etc. request methods.
+ *
+ * @public
+ */
 export interface LegacyModelAndNetworkStoreSetupOptions<T extends Cache> extends _LegacyStoreSetupOptions<T> {
   /**
    * If true, it is presumed that no requests require use of the LegacyNetworkHandler
@@ -101,6 +114,13 @@ export interface LegacyModelAndNetworkStoreSetupOptions<T extends Cache> extends
   legacyRequests?: false;
 }
 
+/**
+ * Setup options for a legacy store configured to use `Model` along with the
+ * legacy adapter/serializer network layer and the deprecated
+ * `store.findRecord`/`findAll`/`query`/etc. request methods.
+ *
+ * @public
+ */
 export interface LegacyModelAndNetworkAndRequestStoreSetupOptions<T extends Cache> extends _LegacyStoreSetupOptions<T> {
   /**
    * If true, it is presumed that no requests require use of the LegacyNetworkHandler
@@ -135,7 +155,14 @@ export type LegacyStoreSetupOptions<T extends Cache = Cache> =
   | LegacyModelAndNetworkStoreSetupOptions<T>
   | LegacyModelAndNetworkAndRequestStoreSetupOptions<T>;
 
-export declare class ConfiguredStore<T extends { cache: Cache }> extends Store {
+export declare class ConfiguredStore<
+  T extends {
+    /**
+     * The {@link Cache} implementation this store was configured with.
+     */
+    cache: Cache;
+  },
+> extends Store {
   // get cache(): T extends OptionsWithCache<infer R> ? R : never;
   createCache(capabilities: CacheCapabilitiesManager): T['cache'];
 }
