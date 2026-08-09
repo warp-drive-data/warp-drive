@@ -134,7 +134,7 @@ export interface ReactiveResourceArray<T = unknown> extends Omit<Array<T>, '[]'>
 
 /**
  * A variant of {@link ReactiveResourceArray} that exposes its otherwise
- * `@internal` members (including the `Context` symbol used to reach the
+ * internal-only members (including the `Context` symbol used to reach the
  * array's private bookkeeping). Used to upgrade a {@link ReactiveResourceArray}
  * for intimate access by `@warp-drive/legacy`.
  *
