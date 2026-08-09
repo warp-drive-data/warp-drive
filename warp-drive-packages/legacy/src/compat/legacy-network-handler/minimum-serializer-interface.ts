@@ -9,7 +9,16 @@ import type { JsonApiDocument, SingleResourceDocument } from '@warp-drive/core/t
 import type { AdapterPayload } from './minimum-adapter-interface.ts';
 import type { Snapshot } from './snapshot.ts';
 
-export type SerializerOptions = { includeId?: boolean };
+/**
+ * Options accepted by {@link MinimumSerializerInterface.serialize | serialize}
+ * and related legacy serializer methods.
+ */
+export type SerializerOptions = {
+  /**
+   * whether the resource's id should be included in the serialized output
+   */
+  includeId?: boolean;
+};
 export type RequestType =
   | 'findRecord'
   | 'queryRecord'

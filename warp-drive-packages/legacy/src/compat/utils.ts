@@ -163,7 +163,18 @@ export function formattedId(id: string | number | null): string | null {
   return id === null ? null : String(id);
 }
 
+/**
+ * Like {@link formattedId}, but asserts that `id` is not `null` rather
+ * than allowing and passing through `null`.
+ *
+ * @public
+ */
 export function expectId(id: string | number): string;
+/**
+ * Throws, since `id` is `null`.
+ *
+ * @public
+ */
 export function expectId(id: null): never;
 export function expectId(id: string | number | null): string {
   AssertFn('expectId: id must not be null', id !== null);
