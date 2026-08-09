@@ -184,7 +184,16 @@ const TypedArray = Object.getPrototypeOf(Uint8Array) as typeof Uint8Array;
  * @since 5.5.0
  */
 export class AutoCompress implements Handler {
-  declare options: Required<CompressionOptions> & { constraints: Required<Constraints> };
+  /**
+   * The resolved options this handler was configured with, with all
+   * defaults (including `constraints` defaults) applied.
+   */
+  declare options: Required<CompressionOptions> & {
+    /**
+     * The resolved size constraints used to decide whether to compress a given request body.
+     */
+    constraints: Required<Constraints>;
+  };
 
   constructor(options: CompressionOptions = {}) {
     const opts = {
