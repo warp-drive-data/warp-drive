@@ -72,12 +72,6 @@
       "typesPublish": false,
       "mirrorPublish": false
     },
-    "ember-template-lint-plugin-warp-drive": {
-      "stage": "alpha",
-      "types": "private",
-      "typesPublish": false,
-      "mirrorPublish": false
-    },
     "@warp-drive/schema": {
       "stage": "alpha",
       "types": "private",

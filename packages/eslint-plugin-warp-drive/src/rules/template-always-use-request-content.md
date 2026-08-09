@@ -1,44 +1,15 @@
-# ember-template-lint-plugin-warp-drive
+| Rule | 🏷️ | ✨ |
+| ---- | -- | -- |
+| `template-always-use-request-content` | 🐞 | |
 
-[`ember-template-lint`](https://github.com/ember-template-lint/ember-template-lint) rules for
-helping to ensure best practices and hygiene when using ***Warp*Drive** (EmberData) templates.
+> [!TIP]
+> This rule requires a template-aware parser. See [Template Rules](../../README.md#template-rules) for setup.
 
-## Installation
-
-```cli
-pnpm add --save-dev ember-template-lint-plugin-warp-drive
-```
-
-## Usage
-
-Register the plugin and enable the rules you want in your `.template-lintrc.js`:
-
-```js
-// .template-lintrc.js
-import warpDrivePlugin from 'ember-template-lint-plugin-warp-drive';
-
-export default {
-  plugins: [warpDrivePlugin],
-  rules: {
-    'always-use-request-content': true,
-  },
-};
-```
-
-## Rules
-
-| Rule | Description |
-| ---- | ----------- |
-| [always-use-request-content](#always-use-request-content) | Ensures the result of a `<Request>` is actually consumed |
-
-### `always-use-request-content`
-
-[`<Request>`](https://github.com/emberjs/warp-drive/tree/main/warp-drive-packages/ember#request-)
-is a component for declaratively resolving a request's `idle` / `loading` / `cancelled` / `error`
-/ `content` states in a template. Using it without ever consuming the resolved result is usually a
-sign of an anti-pattern in which the result is instead being read indirectly, e.g. by re-fetching
-the same resource from the store elsewhere. This defeats the purpose of using `<Request>` to
-establish a resolution boundary in the first place.
+`<Request>` is a component for declaratively resolving a request's `idle` / `loading` / `cancelled`
+/ `error` / `content` states in a template. Using it without ever consuming the resolved result is
+usually a sign of an anti-pattern in which the result is instead being read indirectly, e.g. by
+re-fetching the same resource from the store elsewhere. This defeats the purpose of using
+`<Request>` to establish a resolution boundary in the first place.
 
 This rule flags three situations for any `<Request>` element:
 
@@ -54,9 +25,7 @@ The `:content` block's second yielded "state" param (used for things like `state
 on whether the rule reports a violation. The result may also be captured under any name you like;
 the rule doesn't care about the specific identifier, only whether it's referenced.
 
-#### Examples
-
-👎 **Bad**
+### Incorrect Code
 
 ```gjs
 import { Request } from '@warp-drive/ember';
@@ -95,7 +64,7 @@ import { Request } from '@warp-drive/ember';
 </template>
 ```
 
-👍 **Good**
+### Correct Code
 
 ```gjs
 import { Request } from '@warp-drive/ember';
