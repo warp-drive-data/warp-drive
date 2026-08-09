@@ -4,6 +4,9 @@ import type { TransformName } from '@warp-drive/core/types/symbols';
 import type { attr } from '../../../model';
 
 export interface BooleanTransform {
+  /**
+   * see {@link TransformName}
+   */
   [TransformName]: 'boolean';
 }
 
@@ -42,6 +45,10 @@ export interface BooleanTransform {
   @public
  */
 export class BooleanTransform {
+  /**
+   * Converts a serialized (raw payload) value into a `boolean` (or `null`
+   * when `allowNull` is set and the value is nullish).
+   */
   deserialize(serialized: boolean | null | number | string, options?: { allowNull?: boolean }): boolean | null {
     if ((serialized === null || serialized === undefined) && options?.allowNull === true) {
       return null;
@@ -58,6 +65,9 @@ export class BooleanTransform {
     }
   }
 
+  /**
+   * Converts a `boolean` attribute value into its serialized (raw payload) form.
+   */
   serialize(deserialized: boolean | null, options?: { allowNull?: boolean }): boolean | null {
     if ((deserialized === null || deserialized === undefined) && options?.allowNull === true) {
       return null;
@@ -66,6 +76,9 @@ export class BooleanTransform {
     return Boolean(deserialized);
   }
 
+  /**
+   * Creates a new instance of this transform.
+   */
   static create(): BooleanTransform {
     return new this();
   }

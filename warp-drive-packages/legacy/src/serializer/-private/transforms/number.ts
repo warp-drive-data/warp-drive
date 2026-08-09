@@ -8,6 +8,9 @@ function isNumber(value: number) {
 }
 
 export interface NumberTransform {
+  /**
+   * see {@link TransformName}
+   */
   [TransformName]: 'number';
 }
 
@@ -20,7 +23,7 @@ export interface NumberTransform {
   Usage
 
   ```js [app/models/score.js]
-  import Model, { attr, belongsTo } from '@ember-data/model';
+  import Model, { attr, belongsTo } from '@warp-drive/legacy/model';
 
   export default class ScoreModel extends Model {
     @attr('number') value;
@@ -32,6 +35,10 @@ export interface NumberTransform {
   @public
  */
 export class NumberTransform {
+  /**
+   * Converts a serialized (raw payload) value into a `number`, or `null`
+   * if the value is empty, nullish, or not a valid number.
+   */
   deserialize(serialized: string | number | null | undefined, _options?: Record<string, unknown>): number | null {
     if (serialized === '' || serialized === null || serialized === undefined) {
       return null;
@@ -42,6 +49,9 @@ export class NumberTransform {
     }
   }
 
+  /**
+   * Converts a `number` attribute value into its serialized (raw payload) form.
+   */
   serialize(deserialized: string | number | null | undefined, _options?: Record<string, unknown>): number | null {
     if (deserialized === '' || deserialized === null || deserialized === undefined) {
       return null;
@@ -52,6 +62,9 @@ export class NumberTransform {
     }
   }
 
+  /**
+   * Creates a new instance of this transform.
+   */
   static create(): NumberTransform {
     return new this();
   }

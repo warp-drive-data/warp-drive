@@ -4,6 +4,9 @@ import type { TransformName } from '@warp-drive/core/types/symbols';
 import type { attr } from '../../../model';
 
 export interface DateTransform {
+  /**
+   * see {@link TransformName}
+   */
   [TransformName]: 'date';
 }
 /**
@@ -14,7 +17,7 @@ export interface DateTransform {
  standard.
 
  ```js [app/models/score.js]
- import Model, { attr, belongsTo } from '@ember-data/model';
+ import Model, { attr, belongsTo } from '@warp-drive/legacy/model';
 
  export default class ScoreModel extends Model {
     @attr('number') value;
@@ -27,6 +30,10 @@ export interface DateTransform {
  */
 
 export class DateTransform {
+  /**
+   * Converts a serialized (raw payload) `ISO 8601` string, epoch number,
+   * or nullish value into a `Date` (or `null`/`undefined`).
+   */
   deserialize(serialized: string | number | null, _options?: Record<string, unknown>): Date | null {
     if (typeof serialized === 'string') {
       let offset = serialized.indexOf('+');
@@ -47,6 +54,10 @@ export class DateTransform {
     }
   }
 
+  /**
+   * Converts a `Date` attribute value into an `ISO 8601` string, or `null`
+   * if the value is not a valid `Date`.
+   */
   serialize(date: Date, _options?: Record<string, unknown>): string | null {
     // @ts-expect-error isNaN accepts date as it is coercible
     if (date instanceof Date && !isNaN(date)) {
@@ -56,6 +67,9 @@ export class DateTransform {
     }
   }
 
+  /**
+   * Creates a new instance of this transform.
+   */
   static create(): DateTransform {
     return new this();
   }
