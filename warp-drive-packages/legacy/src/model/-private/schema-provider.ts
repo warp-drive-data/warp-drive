@@ -264,6 +264,13 @@ if (ENABLE_LEGACY_SCHEMA_SERVICE) {
   };
 }
 
+/**
+ * The `createSchemaService` implementation for use with `Model`. Pass
+ * the result of this to your store's `createSchemaService` method when
+ * configuring the store to use `Model` for schema information.
+ *
+ * @public
+ */
 export function buildSchema(store: Store): SchemaService {
   return new ModelSchemaProvider(store as ModelStore);
 }

@@ -24,6 +24,13 @@ import type {
 } from './store/-private.ts';
 import { getShimClass, preloadData, RecordReference, resourceIsFullyDeleted } from './store/-private.ts';
 
+/**
+ * Restores the deprecated `findRecord`/`findAll`/`query`/`queryRecord`/
+ * `findBelongsTo`/`findHasMany`/`createRecord`/`deleteRecord`/`saveRecord`
+ * legacy-network-layer implementations of these methods onto the given
+ * `Store` subclass, for apps that have not yet migrated to the
+ * `RequestManager`-based equivalents.
+ */
 export function restoreDeprecatedStoreBehaviors(StoreKlass: typeof Store): void {
   StoreKlass.prototype.findRecord = function (
     resource: string | ResourceIdentifierObject,
