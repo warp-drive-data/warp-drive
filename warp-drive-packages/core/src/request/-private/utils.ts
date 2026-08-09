@@ -156,11 +156,16 @@ export interface FetchError extends DOMException {
 export function enhanceReason(reason?: string): DOMException {
   const error = new DOMError(reason || 'The user aborted a request.', 'AbortError');
   // `DOMError` may be the `Error` constructor as a fallback, whose
-  // constructor doesn't accept a `name`, so set it explicitly. This is a
-  // no-op when `DOMError` is the real `DOMException`, which already sets
-  // `name` from its constructor. `DOMException.name` is typed as
-  // read-only, so cast to assign it.
-  (error as unknown as { name: string }).name = 'AbortError';
+  // constructor doesn't accept a `name`, so set it explicitly in that case.
+  // We can't unconditionally assign `error.name` here: when `DOMError` is
+  // the real `DOMException`, `name` is already `'AbortError'` (set by its
+  // constructor) *and* `DOMException.prototype.name` is a getter-only
+  // accessor with no setter, so reassigning it throws a `TypeError` in
+  // strict-mode JS (which is how our ES modules run) - even when assigning
+  // the very same value it already holds.
+  if (error.name !== 'AbortError') {
+    (error as unknown as { name: string }).name = 'AbortError';
+  }
   return error;
 }
 
