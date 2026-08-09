@@ -34,15 +34,39 @@ export interface LegacyStoreCompat extends Store {
    */
   _fetchManager: FetchManager;
 
+  /**
+   * Returns the adapter instance for the given model type, instantiating
+   * it (and caching the instance) if necessary. See {@link adapterFor}.
+   */
   adapterFor(this: Store, modelName: string): MinimumAdapterInterface;
+  /**
+   * Same as the single-argument overload, but returns `undefined` instead
+   * of throwing/asserting when `_allowMissing` is `true` and no adapter
+   * is found.
+   */
   adapterFor(this: Store, modelName: string, _allowMissing: true): MinimumAdapterInterface | undefined;
 
+  /**
+   * Returns the serializer instance for the given model type, instantiating
+   * it (and caching the instance) if necessary. See {@link serializerFor}.
+   */
   serializerFor<K extends string>(modelName: K, _allowMissing?: boolean): MinimumSerializerInterface | null;
 
+  /**
+   * Normalizes a payload for the given model type using its serializer.
+   * See {@link normalize}.
+   */
   normalize(modelName: string, payload: ObjectValue): ObjectValue;
 
+  /**
+   * Pushes a payload into the store using the appropriate serializer to
+   * normalize it first. See {@link pushPayload}.
+   */
   pushPayload(modelName: string, payload: ObjectValue): void;
 
+  /**
+   * Serializes a record using its serializer. See {@link serializeRecord}.
+   */
   serializeRecord(record: unknown, options?: SerializerOptions): unknown;
 
   /**
@@ -296,6 +320,10 @@ export function pushPayload(this: Store, modelName: string, inputPayload: Object
   serializer.pushPayload(this, payload);
 }
 
+/**
+ * Serializes a record using the store's legacy network layer, as with
+ * {@link LegacyStoreCompat.serializeRecord | store.serializeRecord}.
+ */
 // TODO @runspired @deprecate records should implement their own serialization if desired
 export function serializeRecord(this: Store, record: unknown, options?: SerializerOptions): unknown {
   upgradeStore(this);
@@ -307,6 +335,10 @@ export function serializeRecord(this: Store, record: unknown, options?: Serializ
   return this._fetchManager.createSnapshot(recordIdentifierFor(record)).serialize(options);
 }
 
+/**
+ * Destroys any adapters/serializers the legacy network layer has created
+ * for this store, invoked when the store itself is destroyed.
+ */
 export function cleanup(this: Store): void {
   upgradeStore(this);
   // enqueue destruction of any adapters/serializers we have created
