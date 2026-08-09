@@ -7,11 +7,24 @@ import type { Value } from '@warp-drive/core/types/json/raw';
 
 import type Model from '../../model.ts';
 
+/**
+ * The features added to an object resource by {@link FragmentExtension}, providing
+ * a subset of the legacy `ModelFragments` fragment API for migrated resources.
+ */
 export class Fragment {
   // We might want to check the parent values once we move this code to warp-drive.
+  /**
+   * Whether this fragment is in the process of being destroyed.
+   */
   @tracked isDestroying = false;
+  /**
+   * Whether this fragment has been destroyed.
+   */
   @tracked isDestroyed = false;
 
+  /**
+   * Whether this fragment (or the attribute it is rooted at) has uncommitted changes.
+   */
   @cached
   get hasDirtyAttributes(): boolean {
     const { path, resourceKey, store } = (this as unknown as PrivateReactiveResource)[Context];
@@ -25,15 +38,24 @@ export class Fragment {
     return false;
   }
 
+  /**
+   * Always `true`. Used to distinguish fragments from other resources.
+   */
   get isFragment() {
     return true;
   }
 
+  /**
+   * The resource type of this fragment, if known.
+   */
   get $type(): string | null | undefined {
     const { field } = (this as unknown as PrivateReactiveResource)[Context];
     return field?.type;
   }
 
+  /**
+   * Reverts this fragment's attribute back to its last known remote value.
+   */
   rollbackAttributes(this: PrivateReactiveResource): void {
     const { path, resourceKey, store } = this[Context];
 
@@ -44,9 +66,22 @@ export class Fragment {
   }
 }
 
+/**
+ * A schema extension that adds the {@link Fragment} API to migrated
+ * `ModelFragments` object resources.
+ */
 export const FragmentExtension: {
+  /**
+   * This extension applies to `'object'` schemas.
+   */
   kind: 'object';
+  /**
+   * The registered name of this extension.
+   */
   name: 'fragment';
+  /**
+   * The features ({@link Fragment}) added by this extension.
+   */
   features: typeof Fragment;
 } = {
   kind: 'object' as const,
