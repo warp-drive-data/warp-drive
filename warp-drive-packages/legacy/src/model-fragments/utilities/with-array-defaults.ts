@@ -11,18 +11,48 @@ export function withArrayDefaults<ArrayName extends string, PrimitiveType extend
   primitiveType?: PrimitiveType
 ): PrimitiveType extends undefined
   ? {
+      /**
+       * This field is an `'array'` schema field.
+       */
       kind: 'array';
+      /**
+       * The name of the array field.
+       */
       name: ArrayName;
+      /**
+       * The array's item type, `'array'` since no `primitiveType` was given.
+       */
       type: 'array';
+      /**
+       * The schema options for this array field.
+       */
       options: {
+        /**
+         * The registered array-schema extensions to apply to this array.
+         */
         arrayExtensions: string[];
       };
     }
   : {
+      /**
+       * This field is an `'array'` schema field.
+       */
       kind: 'array';
+      /**
+       * The name of the array field.
+       */
       name: ArrayName;
+      /**
+       * The array's item type, derived from `primitiveType`.
+       */
       type: `array:${PrimitiveType}`;
+      /**
+       * The schema options for this array field.
+       */
       options: {
+        /**
+         * The registered array-schema extensions to apply to this array.
+         */
         arrayExtensions: string[];
       };
     };
