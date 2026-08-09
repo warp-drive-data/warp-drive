@@ -27,8 +27,8 @@
     "check:test-types": "turbo --log-order=stream check:types --filter=./{tests,tools}/* --continue --concurrency=10",
     "check:types:pkg": "pnpm exec ember-tsc --build",
     "check:types": "bun run check:test-types",
-    "test": "pnpm turbo test --concurrency=1",
-    "test:production": "pnpm turbo test:production --concurrency=1",
+    "test": "pnpm turbo test --concurrency=1 --log-order=stream",
+    "test:production": "pnpm turbo test:production --concurrency=1 --log-order=stream",
     "test:blueprints": "pnpm run -r --workspace-concurrency=-1 --if-present test:blueprints",
     "test:vite": "pnpm run -r ---workspace-concurrency=-1 --if-present test:vite"
   },

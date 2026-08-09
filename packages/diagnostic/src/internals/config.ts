@@ -18,6 +18,12 @@ const urlParams = url.searchParams;
 const tests = new Set(urlParams.getAll('t'));
 const modules = new Set(urlParams.getAll('m'));
 
+// a genuinely hung test (e.g. an await on a Promise that never settles) should
+// fail loudly rather than freeze the whole browser tab for the rest of the
+// suite. Only defaulted in CI: local/interactive runs may want to sit at a
+// breakpoint indefinitely.
+const DEFAULT_CI_TEST_TIMEOUT_MS = 30_000;
+
 export type ParamConfigScaffold =
   | {
       id: string;
@@ -276,7 +282,7 @@ export function configure(options: Partial<ConfigOptions>): void {
     }
   });
 
-  Config.testTimeoutMs = options.testTimeoutMs ?? 0;
+  Config.testTimeoutMs = options.testTimeoutMs ?? (IS_CI ? DEFAULT_CI_TEST_TIMEOUT_MS : 0);
 
   // copy over any remaining params
   Object.assign(Config.params, options.params);
