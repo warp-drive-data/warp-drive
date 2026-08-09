@@ -28,6 +28,16 @@ export default function (babel) {
             const enableRuntimeActivation = Boolean(state.opts.runtimeKey);
             const strippableKey = enableRuntimeActivation ? state.opts.runtimeKey : state.opts.configKey;
 
+            // A binding that's re-exported (`export { LOG_FOO }`) can't have its
+            // export-specifier reference replaced with a `macroCondition(...)`
+            // call expression -- an export specifier's `local` must stay an
+            // Identifier. Leave the whole binding untouched in that case: the
+            // re-export just defers macro-expansion to wherever it's finally
+            // consumed as a value.
+            if (binding.referencePaths.some((p) => p.parentPath.isExportSpecifier())) {
+              return;
+            }
+
             binding.referencePaths.forEach((p) => {
               let negateStatement = false;
               let node = p;

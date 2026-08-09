@@ -39,6 +39,7 @@
         "babel.*",
         "vite.config-cjs.*", // build-config package
         "vite.config.*",
+        "tsdown.config.*",
         "../../config/**"
       ],
       "outputs": [
