@@ -98,7 +98,11 @@ export default async function launchDefault(overrides = {}) {
 
     suiteTimeout: overrides.suiteTimeout ?? SUITE_TIMEOUT,
     browserDisconnectTimeout: overrides.browserDisconnectTimeout ?? 15,
-    browserStartTimeout: overrides.browserStartTimeout ?? 15,
+    // CI runners frequently have several browsers/builds contending for CPU
+    // at once, and Chrome's own startup emits a bunch of harmless DBus
+    // connection-attempt noise before it's ready; 15s was observed killing
+    // browsers that were still legitimately starting up.
+    browserStartTimeout: overrides.browserStartTimeout ?? 45,
     socketHeartbeatTimeout: overrides.socketHeartbeatTimeout ?? 15,
 
     setup: overrides.setup ?? (() => {}),
