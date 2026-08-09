@@ -31,7 +31,10 @@ export type { Context } from './request/-private/context.ts';
  * ```
  *
  */
-export function withResponseType<T>(obj: RequestInfo): RequestInfo<T> & { [RequestSignature]: T } {
+export function withResponseType<T>(obj: RequestInfo): RequestInfo<T> & {
+  /** The branded response type. Present only at the type level; carries no runtime value. */
+  [RequestSignature]: T;
+} {
   return obj as RequestInfo<T> & {
     [RequestSignature]: T;
   };
@@ -55,9 +58,10 @@ export function withResponseType<T>(obj: RequestInfo): RequestInfo<T> & { [Reque
  *
  * @public
  */
-export function withReactiveResponse<T>(
-  obj: RequestInfo
-): RequestInfo<ReactiveDataDocument<T>> & { [RequestSignature]: ReactiveDataDocument<T> } {
+export function withReactiveResponse<T>(obj: RequestInfo): RequestInfo<ReactiveDataDocument<T>> & {
+  /** The branded response type. Present only at the type level; carries no runtime value. */
+  [RequestSignature]: ReactiveDataDocument<T>;
+} {
   return obj as RequestInfo<ReactiveDataDocument<T>> & {
     [RequestSignature]: ReactiveDataDocument<T>;
   };
