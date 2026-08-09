@@ -4,6 +4,9 @@ import type { TransformName } from '@warp-drive/core/types/symbols';
 import type { attr } from '../../../model';
 
 export interface StringTransform {
+  /**
+   * see {@link TransformName}
+   */
   [TransformName]: 'string';
 }
 /**
@@ -15,7 +18,7 @@ export interface StringTransform {
   Usage
 
   ```js [app/models/user.js]
-  import Model, { attr, belongsTo } from '@ember-data/model';
+  import Model, { attr, belongsTo } from '@warp-drive/legacy/model';
 
   export default class UserModel extends Model {
     @attr('boolean') isAdmin;
@@ -27,13 +30,23 @@ export interface StringTransform {
   @public
  */
 export class StringTransform {
+  /**
+   * Converts a serialized (raw payload) value into a `string`, or `null`
+   * if the value is falsy (and not an empty string).
+   */
   deserialize(serialized: unknown, _options?: Record<string, unknown>): string | null {
     return !serialized && serialized !== '' ? null : String(serialized);
   }
+  /**
+   * Converts a `string` attribute value into its serialized (raw payload) form.
+   */
   serialize(deserialized: unknown, _options?: Record<string, unknown>): string | null {
     return !deserialized && deserialized !== '' ? null : String(deserialized);
   }
 
+  /**
+   * Creates a new instance of this transform.
+   */
   static create(): StringTransform {
     return new this();
   }
