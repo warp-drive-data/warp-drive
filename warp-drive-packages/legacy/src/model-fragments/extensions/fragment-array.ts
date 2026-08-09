@@ -8,11 +8,24 @@ import type Model from '../../model.ts';
 import type { WithFragmentArray } from '../index.ts';
 import type { Fragment } from './fragment.ts';
 
+/**
+ * The features added to an array resource by {@link FragmentArrayExtension}, providing
+ * a subset of the legacy `ModelFragments` fragment-array API for migrated resources.
+ */
 export class FragmentArray<T extends Fragment> {
   // We might want to check the parent values once we move this code to warp-drive.
+  /**
+   * Whether this fragment array is in the process of being destroyed.
+   */
   @tracked isDestroying = false;
+  /**
+   * Whether this fragment array has been destroyed.
+   */
   @tracked isDestroyed = false;
 
+  /**
+   * Whether this fragment array (or any of its members) has uncommitted changes.
+   */
   @cached
   get hasDirtyAttributes(): boolean {
     const array = this as unknown as ManagedArray;
@@ -32,6 +45,9 @@ export class FragmentArray<T extends Fragment> {
     return false;
   }
 
+  /**
+   * Adds an existing fragment to this array, if one was given.
+   */
   addFragment(fragment?: T): Fragment[] | undefined {
     if (!fragment) {
       return;
@@ -40,6 +56,9 @@ export class FragmentArray<T extends Fragment> {
     return (this as unknown as WithFragmentArray<T>).addObject(fragment);
   }
 
+  /**
+   * Appends a new fragment to the end of this array, if one was given.
+   */
   createFragment(fragment?: T): Fragment | undefined {
     if (!fragment) {
       return;
@@ -48,6 +67,9 @@ export class FragmentArray<T extends Fragment> {
     return (this as unknown as WithFragmentArray<T>).pushObject(fragment);
   }
 
+  /**
+   * Removes the given fragment from this array, if present.
+   */
   removeFragment(fragment?: T): void {
     if (!fragment) {
       return;
@@ -60,6 +82,9 @@ export class FragmentArray<T extends Fragment> {
     }
   }
 
+  /**
+   * Reverts each member fragment's attribute back to its last known remote value.
+   */
   rollbackAttributes(): void {
     for (const fragment of this as unknown as WithFragmentArray<T>) {
       // @ts-expect-error TODO: fix these types
@@ -68,9 +93,22 @@ export class FragmentArray<T extends Fragment> {
   }
 }
 
+/**
+ * A schema extension that adds the {@link FragmentArray} API to migrated
+ * `ModelFragments` array resources.
+ */
 export const FragmentArrayExtension: {
+  /**
+   * This extension applies to `'array'` schemas.
+   */
   kind: 'array';
+  /**
+   * The registered name of this extension.
+   */
   name: 'fragment-array';
+  /**
+   * The features ({@link FragmentArray}) added by this extension.
+   */
   features: typeof FragmentArray;
 } = {
   kind: 'array' as const,
