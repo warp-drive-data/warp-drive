@@ -1,8 +1,8 @@
-import type { NotificationType } from '@warp-drive/core';
+import type { CacheOperation, DocumentCacheOperation, NotificationType, NotifyKeys } from '@warp-drive/core';
 import { Store } from '@warp-drive/core';
 import { instantiateRecord, registerDerivations, teardownRecord, withDefaults } from '@warp-drive/core/reactive';
 import type { CacheCapabilitiesManager } from '@warp-drive/core/types';
-import type { ResourceKey } from '@warp-drive/core/types/identifier';
+import type { RequestKey, ResourceKey } from '@warp-drive/core/types/identifier';
 import type { StructuredDataDocument } from '@warp-drive/core/types/request';
 import { module, test } from '@warp-drive/diagnostic';
 import { JSONAPICache as Cache } from '@warp-drive/json-api';
@@ -163,12 +163,19 @@ module('Integration | NotificationManager batch notifications', function () {
     // to an array first.
     let batchKeyWasSet = false;
     const originalNotify = store.notifications.notify.bind(store.notifications);
-    store.notifications.notify = ((...args: Parameters<typeof originalNotify>) => {
-      const [cacheKey, type, key] = args;
+    // `Parameters<typeof originalNotify>` would resolve to the *last* overload
+    // of the overloaded `notify` signature (a well-known TS quirk), narrowing
+    // `type`/`key` to types too specific to compare against `'attributes'`/`Set`.
+    // Type the spy broadly instead and cast only at the delegating call below.
+    store.notifications.notify = ((
+      cacheKey: ResourceKey | RequestKey,
+      type: NotificationType | CacheOperation | DocumentCacheOperation,
+      key?: string | NotifyKeys | null
+    ) => {
       if (cacheKey === identifier && type === 'attributes' && key instanceof Set) {
         batchKeyWasSet = true;
       }
-      return originalNotify(...args);
+      return (originalNotify as (cacheKey: unknown, type: unknown, key: unknown) => boolean)(cacheKey, type, key);
     }) as typeof store.notifications.notify;
 
     // a single push that changes multiple attributes on the same record at once,
@@ -242,15 +249,18 @@ module('Integration | NotificationManager batch notifications', function () {
     let notifyCallCount = 0;
     let batchKeyWasSet = false;
     const originalNotify = store.notifications.notify.bind(store.notifications);
-    store.notifications.notify = ((...args: Parameters<typeof originalNotify>) => {
-      const [cacheKey, type, key] = args;
+    store.notifications.notify = ((
+      cacheKey: ResourceKey | RequestKey,
+      type: NotificationType | CacheOperation | DocumentCacheOperation,
+      key?: string | NotifyKeys | null
+    ) => {
       if (cacheKey === identifier && type === 'relationships') {
         notifyCallCount++;
         if (key instanceof Set) {
           batchKeyWasSet = true;
         }
       }
-      return originalNotify(...args);
+      return (originalNotify as (cacheKey: unknown, type: unknown, key: unknown) => boolean)(cacheKey, type, key);
     }) as typeof store.notifications.notify;
 
     // a single upsert that changes two different relationships on the same
