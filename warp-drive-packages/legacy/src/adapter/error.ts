@@ -7,70 +7,7 @@ import { assert } from '@warp-drive/core/build-config/macros';
 import type { Handler } from '@warp-drive/core/request';
 import { getOrSetGlobal } from '@warp-drive/core/types/-private';
 import type { ApiError } from '@warp-drive/core/types/spec/error';
-/**
-  ## Overview
 
-  :::danger
-    ⚠️ **This is LEGACY documentation** for a feature that is no longer encouraged to be used.
-    If starting a new app or thinking of implementing a new adapter, consider writing a
-    {@link Handler} instead to be used with the {@link RequestManager}
-  :::
-
-  An `AdapterError` is used by an adapter to signal that an error occurred
-  during a request to an external API. It indicates a generic error, and
-  subclasses are used to indicate specific error states.
-
-  To create a custom error to signal a specific error state in communicating
-  with an external API, extend the `AdapterError`. For example, if the
-  external API exclusively used HTTP `503 Service Unavailable` to indicate
-  it was closed for maintenance:
-
-  ```js [app/adapters/maintenance-error.js]
-  import AdapterError from '@warp-drive/legacy/adapter/error';
-
-  export default AdapterError.extend({ message: "Down for maintenance." });
-  ```
-
-  This error would then be returned by an adapter's `handleResponse` method:
-
-  ```js [app/adapters/application.js]
-  import JSONAPIAdapter from '@warp-drive/legacy/adapter/json-api';
-  import MaintenanceError from './maintenance-error';
-
-  export default class ApplicationAdapter extends JSONAPIAdapter {
-    handleResponse(status) {
-      if (503 === status) {
-        return new MaintenanceError();
-      }
-
-      return super.handleResponse(...arguments);
-    }
-  }
-  ```
-
-  And can then be detected in an application and used to send the user to an
-  `under-maintenance` route:
-
-  ```js [app/routes/application.js]
-  import MaintenanceError from '../adapters/maintenance-error';
-
-  export default class ApplicationRoute extends Route {
-    actions: {
-      error(error, transition) {
-        if (error instanceof MaintenanceError) {
-          this.transitionTo('under-maintenance');
-          return;
-        }
-
-        // ...other error handling logic
-      }
-    }
-  }
-  ```
-
-  @class AdapterError
-  @public
-*/
 function _AdapterError(this: AdapterRequestError, errors: ApiError[], message = 'Adapter operation failed') {
   this.isAdapterError = true;
   const error = Error.call(this, message);
@@ -131,7 +68,71 @@ _AdapterError.prototype = Object.create(Error.prototype);
 _AdapterError.prototype.code = 'AdapterError';
 _AdapterError.extend = extendFn(_AdapterError as unknown as AdapterRequestErrorConstructor);
 
+/**
+ * The {@link AdapterRequestError} shape thrown by the {@link AdapterError} constructor.
+ */
 export type AdapterError = AdapterRequestError<'AdapterError'>;
+/**
+ * :::danger
+ * ⚠️ **This is LEGACY documentation** for a feature that is no longer encouraged to be used.
+ * If starting a new app or thinking of implementing a new adapter, consider writing a
+ * {@link Handler} instead to be used with the {@link RequestManager}
+ * :::
+ *
+ * An `AdapterError` is used by an adapter to signal that an error occurred
+ * during a request to an external API. It indicates a generic error, and
+ * subclasses are used to indicate specific error states.
+ *
+ * To create a custom error to signal a specific error state in communicating
+ * with an external API, extend the `AdapterError`. For example, if the
+ * external API exclusively used HTTP `503 Service Unavailable` to indicate
+ * it was closed for maintenance:
+ *
+ * ```js [app/adapters/maintenance-error.js]
+ * import AdapterError from '@warp-drive/legacy/adapter/error';
+ *
+ * export default AdapterError.extend({ message: "Down for maintenance." });
+ * ```
+ *
+ * This error would then be returned by an adapter's `handleResponse` method:
+ *
+ * ```js [app/adapters/application.js]
+ * import JSONAPIAdapter from '@warp-drive/legacy/adapter/json-api';
+ * import MaintenanceError from './maintenance-error';
+ *
+ * export default class ApplicationAdapter extends JSONAPIAdapter {
+ *   handleResponse(status) {
+ *     if (503 === status) {
+ *       return new MaintenanceError();
+ *     }
+ *
+ *     return super.handleResponse(...arguments);
+ *   }
+ * }
+ * ```
+ *
+ * And can then be detected in an application and used to send the user to an
+ * `under-maintenance` route:
+ *
+ * ```js [app/routes/application.js]
+ * import MaintenanceError from '../adapters/maintenance-error';
+ *
+ * export default class ApplicationRoute extends Route {
+ *   actions: {
+ *     error(error, transition) {
+ *       if (error instanceof MaintenanceError) {
+ *         this.transitionTo('under-maintenance');
+ *         return;
+ *       }
+ *
+ *       // ...other error handling logic
+ *     }
+ *   }
+ * }
+ * ```
+ *
+ * @public
+ */
 export const AdapterError: AdapterRequestErrorConstructor<AdapterError> = getOrSetGlobal(
   'AdapterError',
   _AdapterError as unknown as AdapterRequestErrorConstructor<AdapterError>
