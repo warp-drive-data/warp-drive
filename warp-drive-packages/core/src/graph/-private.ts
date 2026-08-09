@@ -30,11 +30,14 @@ function getWrapper(store: CacheCapabilitiesManager | Store): CacheCapabilitiesM
   return isStore(store) ? store._instanceCache._storeWrapper : store;
 }
 
+/** Returns the {@link Graph} associated with the given store or capabilities manager, if one has been created. */
 export function peekGraph(store: CacheCapabilitiesManager | Store): Graph | undefined {
   return Graphs.get(getWrapper(store));
 }
+/** The type of the {@link peekGraph} function. */
 export type peekGraph = typeof peekGraph;
 
+/** Returns the {@link Graph} for the given store, creating (and caching) one first if it does not yet exist. */
 export function graphFor(store: CacheCapabilitiesManager | Store): Graph {
   const wrapper = getWrapper(store);
   let graph = Graphs.get(wrapper);

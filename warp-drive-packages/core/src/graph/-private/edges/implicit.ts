@@ -1,7 +1,16 @@
 import type { ResourceKey } from '../../../types/identifier.ts';
 import type { UpgradedMeta } from '../-edge-definition.ts';
 
-export type ImplicitMeta = UpgradedMeta & { kind: 'implicit'; isImplicit: true };
+/**
+ * The relationship definition (schema metadata) backing an {@link ImplicitEdge}, tagging
+ * the {@link UpgradedMeta} as belonging to an implicit inverse relationship.
+ */
+export type ImplicitMeta = UpgradedMeta & {
+  /** Always `'implicit'` for the definition of an {@link ImplicitEdge}. */
+  kind: 'implicit';
+  /** Always `true`, allowing this definition to be discriminated from `hasMany`/`belongsTo` definitions. */
+  isImplicit: true;
+};
 
 /**
    Implicit relationships are relationships which have not been declared but the inverse side exists on
@@ -34,12 +43,17 @@ export type ImplicitMeta = UpgradedMeta & { kind: 'implicit'; isImplicit: true }
    to be do things like remove the comment from the post if the comment were to be deleted.
 */
 export interface ImplicitEdge {
+  /** The definition (schema metadata) for this implicit inverse relationship. */
   definition: ImplicitMeta;
+  /** The resource this implicit relationship belongs to. */
   identifier: ResourceKey;
+  /** Members added locally that have not yet been confirmed by a remote update. */
   localMembers: Set<ResourceKey>;
+  /** Members known to be part of the relationship from remote (server-provided) state. */
   remoteMembers: Set<ResourceKey>;
 }
 
+/** Creates a new {@link ImplicitEdge} for the given definition and identifier. */
 export function createImplicitEdge(definition: ImplicitMeta, identifier: ResourceKey): ImplicitEdge {
   return {
     definition,
