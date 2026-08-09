@@ -18,15 +18,20 @@
     },
     "./recommended": {
       "default": "./src/recommended.js"
+    },
+    "./recommended-templates": {
+      "default": "./src/recommended-templates.js"
     }
   },
   "dependencies": {
     "requireindex": "^1.2.0",
+    "ember-eslint-parser": "^0.14.4",
     "@warp-drive/core": "workspace:*",
     "@warp-drive/utilities": "workspace:*"
   },
   "devDependencies": {
     "@warp-drive/internal-config": "workspace:*",
+    "@babel/eslint-parser": "^7.28.6",
     "@babel/plugin-proposal-decorators": "7.28.0",
     "@babel/core": "^7.28.3",
     "eslint": "^9.34.0",
