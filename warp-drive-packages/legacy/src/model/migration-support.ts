@@ -79,9 +79,20 @@ import type HasManyReference from './-private/references/has-many.ts';
 import { buildSchema } from './-private/schema-provider.ts';
 import type { _MaybeBelongsToFields, MaybeHasManyFields } from './-private/type-utils.ts';
 
+/**
+ * Adds the `Model`-style `belongsTo`/`hasMany` reference methods to a
+ * {@link TypedRecordInstance}, for use when migrating a resource from
+ * `Model` to a schema-based record while preserving these APIs.
+ */
 export type WithLegacyDerivations<T extends TypedRecordInstance> = T &
   MinimalLegacyRecord & {
+    /**
+     * see {@link belongsTo}
+     */
     belongsTo: typeof belongsTo;
+    /**
+     * see {@link hasMany}
+     */
     hasMany: typeof hasMany;
   };
 
@@ -544,10 +555,25 @@ export function registerDerivations(schema: SchemaService): void {
  * @public
  */
 export interface DelegatingSchemaService {
+  /**
+   * Delegates to whichever of the primary/fallback schema services has a
+   * schema for the resource, preferring the primary. See {@link DelegatingSchemaService.isDelegated | isDelegated}.
+   */
   attributesDefinitionFor?(resource: ResourceKey | { type: string }): AttributesSchema;
+  /**
+   * Delegates to whichever of the primary/fallback schema services has a
+   * schema for the resource, preferring the primary. See {@link DelegatingSchemaService.isDelegated | isDelegated}.
+   */
   relationshipsDefinitionFor?(resource: ResourceKey | { type: string }): RelationshipsSchema;
+  /**
+   * Whether either the primary or fallback schema service has a schema
+   * for the given type.
+   */
   doesTypeExist?(type: string): boolean;
 }
+/**
+ * See the {@link DelegatingSchemaService | class documentation above} for usage.
+ */
 export class DelegatingSchemaService implements SchemaService {
   /** @internal */
   _preferred!: SchemaService;
@@ -559,6 +585,10 @@ export class DelegatingSchemaService implements SchemaService {
     this._secondary = buildSchema(store);
   }
 
+  /**
+   * Whether the given resource's schema is being served by the fallback
+   * (legacy Model-derived) schema service rather than the primary one.
+   */
   isDelegated(resource: ResourceKey | { type: string }): boolean {
     return !this._preferred.hasResource(resource) && this._secondary.hasResource(resource);
   }
@@ -688,6 +718,9 @@ export class DelegatingSchemaService implements SchemaService {
   }
 }
 
+/**
+ * @internal
+ */
 export interface PrivateDelegatingSchemaService extends DelegatingSchemaService {
   _preferred: SchemaService;
   _secondary: SchemaService;
