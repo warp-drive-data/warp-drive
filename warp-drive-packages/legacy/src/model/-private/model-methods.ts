@@ -74,7 +74,9 @@ export function hasMany<T extends MinimalLegacyRecord, K extends MaybeHasManyFie
 
 export function reload<T extends MinimalLegacyRecord>(this: T, options: Record<string, unknown> = {}): Promise<T> {
   if (!ENABLE_LEGACY_REQUEST_METHODS) {
-    assert(`You cannot use reload() on a record when ENABLE_LEGACY_REQUEST_METHODS is false.`, false);
+    const message = `You cannot use reload() on a record when ENABLE_LEGACY_REQUEST_METHODS is false.`;
+    assert(message, false);
+    return Promise.reject(new Error(message));
   } else {
     deprecate(`record.reload is deprecated, please use store.request to initiate a request instead.`, false, {
       id: 'warp-drive:deprecate-legacy-request-methods',
@@ -133,7 +135,9 @@ export function deleteRecord<T extends MinimalLegacyRecord>(this: T): void {
 
 export function save<T extends MinimalLegacyRecord>(this: T, options?: Record<string, unknown>): Promise<T> {
   if (!ENABLE_LEGACY_REQUEST_METHODS) {
-    assert(`You cannot use save() on a record when ENABLE_LEGACY_REQUEST_METHODS is false.`, false);
+    const message = `You cannot use save() on a record when ENABLE_LEGACY_REQUEST_METHODS is false.`;
+    assert(message, false);
+    return Promise.reject(new Error(message));
   } else {
     deprecate(`record.save is deprecated, please use store.request to initiate a request instead.`, false, {
       id: 'warp-drive:deprecate-legacy-request-methods',
@@ -165,7 +169,9 @@ export function _save<T extends MinimalLegacyRecord>(this: T, options?: Record<s
 
 export function destroyRecord<T extends MinimalLegacyRecord>(this: T, options?: Record<string, unknown>): Promise<T> {
   if (!ENABLE_LEGACY_REQUEST_METHODS) {
-    assert(`You cannot use destroyRecord() on a record when ENABLE_LEGACY_REQUEST_METHODS is false.`, false);
+    const message = `You cannot use destroyRecord() on a record when ENABLE_LEGACY_REQUEST_METHODS is false.`;
+    assert(message, false);
+    return Promise.reject(new Error(message));
   } else {
     deprecate(`record.destroyRecord is deprecated, please use store.request to initiate a request instead.`, false, {
       id: 'warp-drive:deprecate-legacy-request-methods',
