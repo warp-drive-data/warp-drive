@@ -89,14 +89,23 @@ interface AwaitSignature<T, E = Error | string | object> {
  * @public
  */
 export class Await<T, E> extends Component<AwaitSignature<T, E>> {
+  /**
+   * The reactive {@link PromiseState} for the awaited promise.
+   */
   get state(): Readonly<PromiseState<T, E>> {
     return getPromiseState<T, E>(this.args.promise);
   }
 
+  /**
+   * The rejection reason, once {@link Await.state | state} has errored.
+   */
   get error() {
     return this.state.error as E;
   }
 
+  /**
+   * The resolved value, once {@link Await.state | state} has succeeded.
+   */
   get result() {
     return this.state.result as T;
   }

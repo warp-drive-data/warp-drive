@@ -102,6 +102,12 @@ interface RequestStates<RT, E> {
   content: React.FC<{ result: RT; features: ContentFeatures<RT> }>;
 }
 
+/**
+ * Throws the given error. Used internally to rethrow request errors that
+ * are not otherwise handled by a provided error/cancelled block.
+ *
+ * @private
+ */
 export function Throw({ error }: { error: Error }): never {
   throw error;
 }

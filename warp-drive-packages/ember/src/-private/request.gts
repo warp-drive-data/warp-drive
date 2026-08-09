@@ -330,6 +330,10 @@ export class Request<RT, E> extends Component<RequestSignature<RT, E>> {
    */
   @consume('store') declare _store: Store;
 
+  /**
+   * The store or request manager used to make the request, resolved from
+   * either the `@store` arg or the consumed context/service.
+   */
   get store(): Store | RequestManager {
     const store = this.args.store || this._store;
     assert(
@@ -341,7 +345,14 @@ export class Request<RT, E> extends Component<RequestSignature<RT, E>> {
     return store;
   }
 
+  /**
+   * @private
+   */
   _state: RequestSubscription<RT, E> | null = null;
+  /**
+   * The active {@link RequestSubscription} for this component's request,
+   * created lazily and recreated if the store changes or a `@subscription` is provided.
+   */
   get state(): RequestSubscription<RT, E> {
     let { _state } = this;
     const { store } = this;
