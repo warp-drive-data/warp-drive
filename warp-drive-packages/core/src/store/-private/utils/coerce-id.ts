@@ -11,6 +11,16 @@ import { assert } from '@warp-drive/core/build-config/macros';
 // corresponding record, we will not know if it is a string or a number.
 type Coercable = string | number | boolean | null | undefined | symbol;
 
+/**
+ * Normalizes a resource `id` entering the store to a string (or `null`).
+ *
+ * When `DEPRECATE_NON_STRICT_ID` is enabled, any non-string, non-nullish id
+ * is stringified and a deprecation is issued; `''`/`null`/`undefined` all
+ * normalize to `null`. Otherwise, `id` must already be `null` or a
+ * non-empty string, which is asserted.
+ *
+ * @private
+ */
 export function coerceId(id: unknown): string | null {
   if (DEPRECATE_NON_STRICT_ID) {
     let normalized: string | null;
@@ -47,6 +57,15 @@ export function coerceId(id: unknown): string | null {
   return id;
 }
 
+/**
+ * Coerces `id` to a non-empty string, asserting if it is not already a
+ * non-empty string or a valid (non-`NaN`) number.
+ *
+ * Unlike {@link coerceId}, this never returns `null` and does not honor
+ * `DEPRECATE_NON_STRICT_ID`.
+ *
+ * @private
+ */
 export function ensureStringId(id: Coercable): string {
   let normalized: string | null = null;
   if (typeof id === 'string') {
