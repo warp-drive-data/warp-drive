@@ -20,6 +20,22 @@ export const IS_CACHE_HANDLER: '___(unique) Symbol(IS_CACHE_HANDLER)' = getOrSet
   'IS_CACHE_HANDLER',
   Symbol('IS_CACHE_HANDLER')
 );
+
+/**
+ * A ponyfill for the global {@link DOMException} constructor.
+ *
+ * Some non-DOM environments (e.g. React Native, some Node/worker
+ * environments) don't provide `DOMException` as a global, which would
+ * otherwise throw a `ReferenceError` the first time any code referenced it
+ * (for instance when classifying an abort/network error). `DOMError` falls
+ * back to the global {@link Error} constructor in that case so callers can
+ * uniformly use `new DOMError(...)` / `error instanceof DOMError` without
+ * guarding for the global's presence themselves.
+ *
+ * @internal
+ */
+export const DOMError: typeof DOMException =
+  typeof DOMException !== 'undefined' ? DOMException : (Error as unknown as typeof DOMException);
 export function curryFuture<T>(owner: ContextOwner, inbound: Future<T>, outbound: DeferredFuture<T>): Future<T> {
   owner.setStream(inbound.getStream());
 
@@ -138,19 +154,14 @@ export interface FetchError extends DOMException {
 }
 
 export function enhanceReason(reason?: string): DOMException {
-  const message = reason || 'The user aborted a request.';
-
-  // Some non-DOM environments (e.g. React Native, some Node/worker
-  // environments) may not provide `DOMException` as a global. Fall back to
-  // a plain `Error` with a matching `name` so abort handling keeps working
-  // instead of throwing while constructing the reason.
-  if (typeof DOMException === 'undefined') {
-    const error = new Error(message);
-    error.name = 'AbortError';
-    return error as unknown as DOMException;
-  }
-
-  return new DOMException(message, 'AbortError');
+  const error = new DOMError(reason || 'The user aborted a request.', 'AbortError');
+  // `DOMError` may be the `Error` constructor as a fallback, whose
+  // constructor doesn't accept a `name`, so set it explicitly. This is a
+  // no-op when `DOMError` is the real `DOMException`, which already sets
+  // `name` from its constructor. `DOMException.name` is typed as
+  // read-only, so cast to assign it.
+  (error as unknown as { name: string }).name = 'AbortError';
+  return error;
 }
 
 export function handleOutcome<T>(

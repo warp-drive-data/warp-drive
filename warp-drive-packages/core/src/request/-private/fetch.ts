@@ -3,7 +3,7 @@ import { assert } from '@warp-drive/core/build-config/macros';
 
 import { getRuntimeConfig } from '../../types/runtime.ts';
 import { cloneResponseProperties, type Context } from './context';
-import type { FetchError } from './utils';
+import { DOMError, type FetchError } from './utils';
 
 export type { FetchError };
 
@@ -141,11 +141,7 @@ const Fetch = {
       );
       response = await _fetch(context.request.url, context.request);
     } catch (e) {
-      // Some non-DOM environments (e.g. React Native, some Node/worker
-      // environments) may not provide `DOMException` as a global, so guard
-      // the reference to avoid throwing while merely trying to classify
-      // the error.
-      const isDOMException = typeof DOMException !== 'undefined' && e instanceof DOMException;
+      const isDOMException = e instanceof DOMError;
       if (isDOMException && e.name === 'AbortError') {
         (e as FetchError).statusText = 'Aborted';
         (e as FetchError).status = 20;

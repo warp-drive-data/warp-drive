@@ -3,6 +3,7 @@ import { assert } from '@warp-drive/build-config/macros';
 import type { Awaitable, Future } from '../request.ts';
 import { getPromiseResult, setPromiseResult } from '../request.ts';
 import type { RequestManager } from '../request/-private/manager.ts';
+import { DOMError } from '../request/-private/utils.ts';
 import type { Store } from '../store/-private/store-service.ts';
 import type {
   ImmutableRequestInfo,
@@ -17,16 +18,8 @@ import { defineNonEnumerableSignal, defineSignal } from './reactivity/signal.ts'
 
 const RequestCache = new WeakMap<Future<unknown>, RequestState>();
 
-// Some non-DOM environments (e.g. React Native, some Node/worker
-// environments) may not provide `DOMException` as a global. Guard against
-// that so simply checking whether an error is an abort error doesn't throw.
-const HAS_DOM_EXCEPTION = typeof DOMException !== 'undefined';
-
 function isAbortError(error: unknown): boolean {
-  if (HAS_DOM_EXCEPTION && error instanceof DOMException) {
-    return error.name === 'AbortError';
-  }
-  return error instanceof Error && error.name === 'AbortError';
+  return error instanceof DOMError && error.name === 'AbortError';
 }
 
 interface PrivateLoadingState {
