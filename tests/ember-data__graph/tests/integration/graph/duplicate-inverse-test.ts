@@ -146,6 +146,9 @@ module('Integration | Graph | Duplicate Inverse Configuration', function (hooks)
 
     // resolving `hat` should succeed: it is the legitimate other side of the same edge,
     // not a distinct field competing for the same inverse
-    assert.ok(graph.get(identifier, 'hat'), 'resolving the legitimate other side of a self-referential edge does not throw');
+    assert.ok(
+      graph.get(identifier, 'hat'),
+      'resolving the legitimate other side of a self-referential edge does not throw'
+    );
   });
 });
