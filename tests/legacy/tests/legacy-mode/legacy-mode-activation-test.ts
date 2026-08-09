@@ -2,6 +2,7 @@
 import { setOwner } from '@ember/owner';
 
 import { CacheHandler, RequestManager } from '@warp-drive/core';
+import { ENABLE_LEGACY_REQUEST_METHODS } from '@warp-drive/core/build-config/deprecations';
 import { DEBUG } from '@warp-drive/core/build-config/env';
 import { withDefaults } from '@warp-drive/core/reactive';
 import { Context } from '@warp-drive/core/reactive/-private';
@@ -494,63 +495,65 @@ module('Legacy Mode', function (hooks) {
     );
   });
 
-  test('we can reload', async function (assert) {
-    this.owner.register(
-      'adapter:user',
-      class UserAdapter {
-        findRecord(_store: typeof Store, _schema: unknown, snapshot: Snapshot) {
-          assert.step('findRecord');
-          return {
-            data: {
-              type: 'user',
-              id: '1',
-              attributes: { name: 'Rey Skybarker' },
+  if (ENABLE_LEGACY_REQUEST_METHODS) {
+    test('we can reload', async function (assert) {
+      this.owner.register(
+        'adapter:user',
+        class UserAdapter {
+          findRecord(_store: typeof Store, _schema: unknown, snapshot: Snapshot) {
+            assert.step('findRecord');
+            return {
+              data: {
+                type: 'user',
+                id: '1',
+                attributes: { name: 'Rey Skybarker' },
+              },
+            };
+          }
+          static create() {
+            return new this();
+          }
+        }
+      );
+
+      const store = new Store();
+      setOwner(store, this.owner);
+      store.adapterFor = adapterFor;
+      store.serializerFor = serializerFor;
+      store.requestManager = new RequestManager();
+      store.requestManager.useCache(CacheHandler);
+      store.requestManager.use([LegacyNetworkHandler]);
+      const { schema } = store;
+
+      schema.registerResource(
+        withLegacyFields({
+          type: 'user',
+          fields: [
+            {
+              name: 'name',
+              type: null,
+              kind: 'attribute',
             },
-          };
-        }
-        static create() {
-          return new this();
-        }
-      }
-    );
+          ],
+        })
+      );
 
-    const store = new Store();
-    setOwner(store, this.owner);
-    store.adapterFor = adapterFor;
-    store.serializerFor = serializerFor;
-    store.requestManager = new RequestManager();
-    store.requestManager.useCache(CacheHandler);
-    store.requestManager.use([LegacyNetworkHandler]);
-    const { schema } = store;
+      const record = store.push<User>({
+        data: {
+          type: 'user',
+          id: '1',
+          attributes: { name: 'Rey Pupatine' },
+        },
+      });
 
-    schema.registerResource(
-      withLegacyFields({
-        type: 'user',
-        fields: [
-          {
-            name: 'name',
-            type: null,
-            kind: 'attribute',
-          },
-        ],
-      })
-    );
+      assert.equal(record.name, 'Rey Pupatine', 'name is initialized');
 
-    const record = store.push<User>({
-      data: {
-        type: 'user',
-        id: '1',
-        attributes: { name: 'Rey Pupatine' },
-      },
+      await record.reload();
+
+      assert.equal(record.name, 'Rey Skybarker', 'name is updated');
+      assert.verifySteps(['findRecord']);
     });
-
-    assert.equal(record.name, 'Rey Pupatine', 'name is initialized');
-
-    await record.reload();
-
-    assert.equal(record.name, 'Rey Skybarker', 'name is updated');
-    assert.verifySteps(['findRecord']);
-  });
+  }
 
   test('we can rollbackAttributes', function (assert) {
     const store = new Store();
@@ -595,129 +598,131 @@ module('Legacy Mode', function (hooks) {
     assert.equal(record.name, 'Rey Pupatine', 'name is updated');
   });
 
-  test('we can save', async function (assert) {
-    this.owner.register(
-      'adapter:user',
-      class UserAdapter {
-        updateRecord(_store: unknown, _schema: unknown, snapshot: Snapshot) {
-          assert.step('updateRecord');
-          return {
-            data: {
-              type: snapshot.modelName,
-              id: snapshot.id,
-              attributes: snapshot.attributes(),
+  if (ENABLE_LEGACY_REQUEST_METHODS) {
+    test('we can save', async function (assert) {
+      this.owner.register(
+        'adapter:user',
+        class UserAdapter {
+          updateRecord(_store: unknown, _schema: unknown, snapshot: Snapshot) {
+            assert.step('updateRecord');
+            return {
+              data: {
+                type: snapshot.modelName,
+                id: snapshot.id,
+                attributes: snapshot.attributes(),
+              },
+            };
+          }
+          static create() {
+            return new this();
+          }
+        }
+      );
+
+      const store = new Store();
+      setOwner(store, this.owner);
+      store.adapterFor = adapterFor;
+      store.serializerFor = serializerFor;
+      store.requestManager = new RequestManager();
+      store.requestManager.useCache(CacheHandler);
+      store.requestManager.use([LegacyNetworkHandler]);
+      const { schema } = store;
+
+      schema.registerResource(
+        withLegacyFields({
+          type: 'user',
+          fields: [
+            {
+              name: 'name',
+              type: null,
+              kind: 'attribute',
             },
-          };
-        }
-        static create() {
-          return new this();
-        }
-      }
-    );
+          ],
+        })
+      );
 
-    const store = new Store();
-    setOwner(store, this.owner);
-    store.adapterFor = adapterFor;
-    store.serializerFor = serializerFor;
-    store.requestManager = new RequestManager();
-    store.requestManager.useCache(CacheHandler);
-    store.requestManager.use([LegacyNetworkHandler]);
-    const { schema } = store;
+      const record = store.push<User>({
+        data: {
+          type: 'user',
+          id: '1',
+          attributes: { name: 'Rey Pupatine' },
+        },
+      });
 
-    schema.registerResource(
-      withLegacyFields({
-        type: 'user',
-        fields: [
-          {
-            name: 'name',
-            type: null,
-            kind: 'attribute',
-          },
-        ],
-      })
-    );
+      record.name = 'Rey Skybarker';
+      assert.true(record.hasDirtyAttributes, 'hasDirtyAttributes is correct');
+      assert.equal(record.dirtyType, 'updated', 'dirtyType is correct');
+      assert.deepEqual(
+        record.changedAttributes(),
+        { name: ['Rey Pupatine', 'Rey Skybarker'] },
+        'changedAttributes is correct'
+      );
 
-    const record = store.push<User>({
-      data: {
-        type: 'user',
-        id: '1',
-        attributes: { name: 'Rey Pupatine' },
-      },
+      await record.save();
+
+      assert.false(record.hasDirtyAttributes, 'hasDirtyAttributes is correct');
+      assert.equal(record.dirtyType, '', 'dirtyType is correct');
+      assert.deepEqual(record.changedAttributes(), {}, 'changedAttributes is correct');
+      assert.equal(record.name, 'Rey Skybarker', 'name is updated');
+      assert.verifySteps(['updateRecord']);
     });
 
-    record.name = 'Rey Skybarker';
-    assert.true(record.hasDirtyAttributes, 'hasDirtyAttributes is correct');
-    assert.equal(record.dirtyType, 'updated', 'dirtyType is correct');
-    assert.deepEqual(
-      record.changedAttributes(),
-      { name: ['Rey Pupatine', 'Rey Skybarker'] },
-      'changedAttributes is correct'
-    );
-
-    await record.save();
-
-    assert.false(record.hasDirtyAttributes, 'hasDirtyAttributes is correct');
-    assert.equal(record.dirtyType, '', 'dirtyType is correct');
-    assert.deepEqual(record.changedAttributes(), {}, 'changedAttributes is correct');
-    assert.equal(record.name, 'Rey Skybarker', 'name is updated');
-    assert.verifySteps(['updateRecord']);
-  });
-
-  test('we can destroyRecord', async function (assert) {
-    this.owner.register(
-      'adapter:user',
-      class UserAdapter {
-        deleteRecord(_store: unknown, _schema: unknown, snapshot: Snapshot) {
-          assert.step('deleteRecord');
-          return {
-            data: null,
-          };
+    test('we can destroyRecord', async function (assert) {
+      this.owner.register(
+        'adapter:user',
+        class UserAdapter {
+          deleteRecord(_store: unknown, _schema: unknown, snapshot: Snapshot) {
+            assert.step('deleteRecord');
+            return {
+              data: null,
+            };
+          }
+          static create() {
+            return new this();
+          }
         }
-        static create() {
-          return new this();
-        }
-      }
-    );
+      );
 
-    const store = new Store();
-    setOwner(store, this.owner);
-    store.adapterFor = adapterFor;
-    store.serializerFor = serializerFor;
-    store.requestManager = new RequestManager();
-    store.requestManager.useCache(CacheHandler);
-    store.requestManager.use([LegacyNetworkHandler]);
-    const { schema } = store;
+      const store = new Store();
+      setOwner(store, this.owner);
+      store.adapterFor = adapterFor;
+      store.serializerFor = serializerFor;
+      store.requestManager = new RequestManager();
+      store.requestManager.useCache(CacheHandler);
+      store.requestManager.use([LegacyNetworkHandler]);
+      const { schema } = store;
 
-    schema.registerResource(
-      withLegacyFields({
-        type: 'user',
-        fields: [
-          {
-            name: 'name',
-            type: null,
-            kind: 'attribute',
-          },
-        ],
-      })
-    );
+      schema.registerResource(
+        withLegacyFields({
+          type: 'user',
+          fields: [
+            {
+              name: 'name',
+              type: null,
+              kind: 'attribute',
+            },
+          ],
+        })
+      );
 
-    const record = store.push<User>({
-      data: {
-        type: 'user',
-        id: '1',
-        attributes: { name: 'Rey Pupatine' },
-      },
+      const record = store.push<User>({
+        data: {
+          type: 'user',
+          id: '1',
+          attributes: { name: 'Rey Pupatine' },
+        },
+      });
+
+      const promise = record.destroyRecord();
+
+      assert.true(record.isDeleted, 'state flag is updated');
+
+      await promise;
+
+      assert.true(record.isDestroyed, 'state flag is updated');
+      assert.true(record.isDestroying, 'state flag is updated');
+      assert.equal(store.peekRecord('user', '1'), null, 'record is unloaded');
+      assert.verifySteps(['deleteRecord']);
     });
-
-    const promise = record.destroyRecord();
-
-    assert.true(record.isDeleted, 'state flag is updated');
-
-    await promise;
-
-    assert.true(record.isDestroyed, 'state flag is updated');
-    assert.true(record.isDestroying, 'state flag is updated');
-    assert.equal(store.peekRecord('user', '1'), null, 'record is unloaded');
-    assert.verifySteps(['deleteRecord']);
-  });
+  }
 });
