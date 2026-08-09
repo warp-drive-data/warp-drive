@@ -1,5 +1,6 @@
 import type { NotificationType } from '@warp-drive/core';
 import { Store } from '@warp-drive/core';
+import { instantiateRecord, registerDerivations, teardownRecord, withDefaults } from '@warp-drive/core/reactive';
 import type { CacheCapabilitiesManager } from '@warp-drive/core/types';
 import type { ResourceKey } from '@warp-drive/core/types/identifier';
 import type { StructuredDataDocument } from '@warp-drive/core/types/request';
@@ -7,6 +8,13 @@ import { module, test } from '@warp-drive/diagnostic';
 import { JSONAPICache as Cache } from '@warp-drive/json-api';
 
 import { TestSchema } from '../../utils/schema';
+
+interface User {
+  id: string;
+  name: string;
+  bestFriend: User | null;
+  friends: User[];
+}
 
 class TestStore extends Store {
   createSchemaService() {
@@ -25,6 +33,46 @@ class TestStore extends Store {
 
   override createCache(wrapper: CacheCapabilitiesManager) {
     return new Cache(wrapper);
+  }
+}
+
+class RelationshipTestStore extends Store {
+  createSchemaService() {
+    const schema = new TestSchema();
+    schema.registerResource(
+      withDefaults({
+        type: 'user',
+        fields: [
+          { name: 'name', kind: 'field' },
+          {
+            name: 'bestFriend',
+            kind: 'belongsTo',
+            type: 'user',
+            options: { inverse: 'bestFriend', async: false, linksMode: true },
+          },
+          {
+            name: 'friends',
+            kind: 'hasMany',
+            type: 'user',
+            options: { inverse: 'friends', async: false, linksMode: true },
+          },
+        ],
+      })
+    );
+    registerDerivations(schema);
+    return schema;
+  }
+
+  override createCache(wrapper: CacheCapabilitiesManager) {
+    return new Cache(wrapper);
+  }
+
+  override instantiateRecord(identifier: ResourceKey, createArgs: Record<string, unknown>) {
+    return instantiateRecord(this, identifier, createArgs);
+  }
+
+  override teardownRecord(record: User): void {
+    return teardownRecord(record);
   }
 }
 
@@ -122,6 +170,89 @@ module('Integration | NotificationManager batch notifications', function () {
       seenKeys.sort(),
       ['age', 'name'].sort(),
       'we were notified exactly once for each attribute that actually changed'
+    );
+
+    store.notifications.unsubscribe(token);
+  });
+
+  test('relationship changes on the same identifier are flushed to `notify` as a single batch', function (assert) {
+    const store = new RelationshipTestStore();
+
+    const doc = store.cache.put(
+      asStructuredDocument({
+        content: {
+          data: [
+            { type: 'user', id: '1', attributes: { name: 'Chris' } },
+            { type: 'user', id: '2', attributes: { name: 'Igor' } },
+            { type: 'user', id: '3', attributes: { name: 'Rob' } },
+            { type: 'user', id: '4', attributes: { name: 'Rey' } },
+          ],
+        },
+      })
+    );
+    const identifiers = doc.data as ResourceKey[];
+    const identifier = identifiers[0];
+
+    // relationships only notify once they have been "accessed" at least once
+    // (there is no point notifying about a change nothing has read yet), so
+    // materialize the record and read both relationships first.
+    const record = store.peekRecord<User>(identifier);
+    assert.equal(record?.bestFriend, null, 'bestFriend starts out empty');
+    assert.equal(record?.friends?.length, 0, 'friends starts out empty');
+
+    const seenKeys: string[] = [];
+    const token = store.notifications.subscribe(
+      identifier,
+      (_key: ResourceKey, type: NotificationType, key?: string) => {
+        if (type === 'relationships' && key) {
+          seenKeys.push(key);
+        }
+      }
+    );
+
+    // spy on the underlying NotificationManager#notify to count how many times
+    // it is actually invoked for this identifier's 'relationships' namespace.
+    // Before this change, `CacheCapabilitiesManager#_flushNotifications` called
+    // `notify` once per pending relationship key; now it should call it once
+    // per identifier, carrying every pending key for that identifier at once.
+    let notifyCallCount = 0;
+    const originalNotify = store.notifications.notify.bind(store.notifications);
+    store.notifications.notify = ((...args: Parameters<typeof originalNotify>) => {
+      const [cacheKey, type] = args;
+      if (cacheKey === identifier && type === 'relationships') {
+        notifyCallCount++;
+      }
+      return originalNotify(...args);
+    }) as typeof store.notifications.notify;
+
+    // a single upsert that changes two different relationships on the same
+    // record at once, simulating the N*M hot-path (here N=1 record, M=2
+    // changed relationships) called out in https://github.com/emberjs/data/issues/9667
+    store.cache.upsert(
+      identifier,
+      {
+        type: 'user',
+        id: '1',
+        attributes: { name: 'Chris' },
+        relationships: {
+          bestFriend: { data: { type: 'user', id: '2' } },
+          friends: { data: [{ type: 'user', id: '3' }, { type: 'user', id: '4' }] },
+        },
+      },
+      true
+    );
+
+    store.notifications.notify = originalNotify;
+
+    assert.deepEqual(
+      seenKeys.sort(),
+      ['bestFriend', 'friends'].sort(),
+      'we were notified exactly once for each relationship that actually changed'
+    );
+    assert.equal(
+      notifyCallCount,
+      1,
+      'both relationship keys were flushed to notify() in a single batched call, not once per key'
     );
 
     store.notifications.unsubscribe(token);

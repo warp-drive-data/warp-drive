@@ -74,10 +74,17 @@ export class CacheCapabilitiesManager implements StoreWrapper {
     this._pendingNotifies = new Map();
     this._willNotify = false;
 
+    // deliver all relationship keys pending for a given identifier as a single
+    // batch instead of one `notify` call per key: subscribers still receive one
+    // notification per key (in Set-insertion order), but the per-call overhead
+    // (subscriber lookups, buffer scheduling, etc) that `notify` would otherwise
+    // repeat for every key is paid only once per identifier. This mirrors the
+    // same N*M concern `attributes` notifications have (see `notifyAttributes`
+    // in the json-api Cache): a single push/mutation pass can dirty many
+    // relationships across many records at once, and each of those records
+    // funnels through this same per-identifier `pending` Set.
     pending.forEach((set, identifier) => {
-      set.forEach((key) => {
-        this._store.notifications.notify(identifier, 'relationships', key);
-      });
+      this._store.notifications.notify(identifier, 'relationships', Array.from(set));
     });
   }
 
