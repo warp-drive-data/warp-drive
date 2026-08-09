@@ -11,8 +11,20 @@ import type { QueryParamsSerializationOptions, QueryParamsSource, Serializable }
 // host and namespace which are provided by the final consuming
 // class to the prototype which can result in overwrite errors
 
+/**
+ * The global configuration used by {@link buildBaseURL} when a call does
+ * not provide its own `host`/`namespace`. Set via {@link setBuildURLConfig}.
+ *
+ * @public
+ */
 export interface BuildURLConfig {
+  /**
+   * The scheme, domain and port (if any) to prefix built URLs with, e.g. `'https://api.example.com'`.
+   */
   host: string | null;
+  /**
+   * The path segment to insert between `host` and the resource path, e.g. `'api/v1'`.
+   */
   namespace: string | null;
 }
 
@@ -80,77 +92,337 @@ export function setBuildURLConfig(config: BuildURLConfig): void {
   );
 }
 
+/**
+ * {@link buildBaseURL} options for a `findRecord` request.
+ *
+ * @public
+ */
 export interface FindRecordUrlOptions {
+  /**
+   * The request operation this URL is for.
+   */
   op: 'findRecord';
-  identifier: { type: string; id: string };
+  /**
+   * The type and id of the record to find.
+   */
+  identifier: {
+    /**
+     * The resource type.
+     */
+    type: string;
+    /**
+     * The resource id.
+     */
+    id: string;
+  };
+  /**
+   * The path segment for the resource, defaults to `identifier.type` if not provided.
+   */
   resourcePath?: string;
+  /**
+   * Overrides the globally configured host for this call only.
+   */
   host?: string;
+  /**
+   * Overrides the globally configured namespace for this call only.
+   */
   namespace?: string;
 }
 
+/**
+ * {@link buildBaseURL} options for a `query` request.
+ *
+ * @public
+ */
 export interface QueryUrlOptions {
+  /**
+   * The request operation this URL is for.
+   */
   op: 'query';
-  identifier: { type: string };
+  /**
+   * The type of the records to query.
+   */
+  identifier: {
+    /**
+     * The resource type.
+     */
+    type: string;
+  };
+  /**
+   * The path segment for the resource, defaults to `identifier.type` if not provided.
+   */
   resourcePath?: string;
+  /**
+   * Overrides the globally configured host for this call only.
+   */
   host?: string;
+  /**
+   * Overrides the globally configured namespace for this call only.
+   */
   namespace?: string;
 }
 
+/**
+ * {@link buildBaseURL} options for a `findMany` request.
+ *
+ * @public
+ */
 export interface FindManyUrlOptions {
+  /**
+   * The request operation this URL is for.
+   */
   op: 'findMany';
-  identifiers: { type: string; id: string }[];
+  /**
+   * The type and id of each record to find.
+   */
+  identifiers: {
+    /**
+     * The resource type.
+     */
+    type: string;
+    /**
+     * The resource id.
+     */
+    id: string;
+  }[];
+  /**
+   * The path segment for the resource, defaults to the first identifier's `type` if not provided.
+   */
   resourcePath?: string;
+  /**
+   * Overrides the globally configured host for this call only.
+   */
   host?: string;
+  /**
+   * Overrides the globally configured namespace for this call only.
+   */
   namespace?: string;
 }
+/**
+ * {@link buildBaseURL} options for a `findRelatedCollection` request.
+ *
+ * @public
+ */
 export interface FindRelatedCollectionUrlOptions {
+  /**
+   * The request operation this URL is for.
+   */
   op: 'findRelatedCollection';
-  identifier: { type: string; id: string };
+  /**
+   * The type and id of the record whose relationship is being fetched.
+   */
+  identifier: {
+    /**
+     * The resource type.
+     */
+    type: string;
+    /**
+     * The resource id.
+     */
+    id: string;
+  };
+  /**
+   * The relationship field name, appended to the resource path.
+   */
   fieldPath: string;
+  /**
+   * The path segment for the resource, defaults to `identifier.type` if not provided.
+   */
   resourcePath?: string;
+  /**
+   * Overrides the globally configured host for this call only.
+   */
   host?: string;
+  /**
+   * Overrides the globally configured namespace for this call only.
+   */
   namespace?: string;
 }
 
+/**
+ * {@link buildBaseURL} options for a `findRelatedRecord` request.
+ *
+ * @public
+ */
 export interface FindRelatedResourceUrlOptions {
+  /**
+   * The request operation this URL is for.
+   */
   op: 'findRelatedRecord';
-  identifier: { type: string; id: string };
+  /**
+   * The type and id of the record whose relationship is being fetched.
+   */
+  identifier: {
+    /**
+     * The resource type.
+     */
+    type: string;
+    /**
+     * The resource id.
+     */
+    id: string;
+  };
+  /**
+   * The relationship field name, appended to the resource path.
+   */
   fieldPath: string;
+  /**
+   * The path segment for the resource, defaults to `identifier.type` if not provided.
+   */
   resourcePath?: string;
+  /**
+   * Overrides the globally configured host for this call only.
+   */
   host?: string;
+  /**
+   * Overrides the globally configured namespace for this call only.
+   */
   namespace?: string;
 }
 
+/**
+ * {@link buildBaseURL} options for a `createRecord` request.
+ *
+ * @public
+ */
 export interface CreateRecordUrlOptions {
+  /**
+   * The request operation this URL is for.
+   */
   op: 'createRecord';
-  identifier: { type: string };
+  /**
+   * The type of the record being created.
+   */
+  identifier: {
+    /**
+     * The resource type.
+     */
+    type: string;
+  };
+  /**
+   * The path segment for the resource, defaults to `identifier.type` if not provided.
+   */
   resourcePath?: string;
+  /**
+   * Overrides the globally configured host for this call only.
+   */
   host?: string;
+  /**
+   * Overrides the globally configured namespace for this call only.
+   */
   namespace?: string;
 }
 
+/**
+ * {@link buildBaseURL} options for an `updateRecord` request.
+ *
+ * @public
+ */
 export interface UpdateRecordUrlOptions {
+  /**
+   * The request operation this URL is for.
+   */
   op: 'updateRecord';
-  identifier: { type: string; id: string };
+  /**
+   * The type and id of the record being updated.
+   */
+  identifier: {
+    /**
+     * The resource type.
+     */
+    type: string;
+    /**
+     * The resource id.
+     */
+    id: string;
+  };
+  /**
+   * The path segment for the resource, defaults to `identifier.type` if not provided.
+   */
   resourcePath?: string;
+  /**
+   * Overrides the globally configured host for this call only.
+   */
   host?: string;
+  /**
+   * Overrides the globally configured namespace for this call only.
+   */
   namespace?: string;
 }
 
+/**
+ * {@link buildBaseURL} options for a `deleteRecord` request.
+ *
+ * @public
+ */
 export interface DeleteRecordUrlOptions {
+  /**
+   * The request operation this URL is for.
+   */
   op: 'deleteRecord';
-  identifier: { type: string; id: string };
+  /**
+   * The type and id of the record being deleted.
+   */
+  identifier: {
+    /**
+     * The resource type.
+     */
+    type: string;
+    /**
+     * The resource id.
+     */
+    id: string;
+  };
+  /**
+   * The path segment for the resource, defaults to `identifier.type` if not provided.
+   */
   resourcePath?: string;
+  /**
+   * Overrides the globally configured host for this call only.
+   */
   host?: string;
+  /**
+   * Overrides the globally configured namespace for this call only.
+   */
   namespace?: string;
 }
 
+/**
+ * {@link buildBaseURL} options for building a URL directly from a `resourcePath`
+ * without an associated request operation.
+ *
+ * @public
+ */
 export interface GenericUrlOptions {
+  /**
+   * The path segment for the resource.
+   */
   resourcePath: string;
+  /**
+   * Overrides the globally configured host for this call only.
+   */
   host?: string;
+  /**
+   * Overrides the globally configured namespace for this call only.
+   */
   namespace?: string;
 }
 
+/**
+ * The union of all `op`-specific option shapes accepted by {@link buildBaseURL}, one of:
+ *
+ * - {@link FindRecordUrlOptions}
+ * - {@link QueryUrlOptions}
+ * - {@link FindManyUrlOptions}
+ * - {@link FindRelatedCollectionUrlOptions}
+ * - {@link FindRelatedResourceUrlOptions}
+ * - {@link CreateRecordUrlOptions}
+ * - {@link UpdateRecordUrlOptions}
+ * - {@link DeleteRecordUrlOptions}
+ * - {@link GenericUrlOptions}
+ *
+ * @public
+ */
 export type UrlOptions =
   | FindRecordUrlOptions
   | QueryUrlOptions
