@@ -39,6 +39,14 @@ import replaceRelatedRecord from './operations/replace-related-record.ts';
 import replaceRelatedRecords from './operations/replace-related-records.ts';
 import updateRelationshipOperation from './operations/update-relationship.ts';
 
+/**
+ * A single edge (relationship field) tracked by the {@link Graph} for a resource. Which kind of edge
+ * a field is depends on its relationship definition:
+ *
+ * - {@link ResourceEdge}: the "one" side of a `belongsTo`/resource relationship
+ * - {@link CollectionEdge}: the "many" side of a `hasMany`/collection relationship
+ * - {@link ImplicitEdge}: a synthesized inverse used when a relationship has no field defined for its inverse
+ */
 export type GraphEdge = ImplicitEdge | CollectionEdge | ResourceEdge;
 
 export const Graphs: Map<CacheCapabilitiesManager, Graph> = getOrSetGlobal(
@@ -52,11 +60,12 @@ type PendingOps = {
   deletions: DeleteRecordOperation[];
 };
 
-/*
- * Graph acts as the cache for relationship data. It allows for
- * us to ask about and update relationships for a given Identifier
- * without requiring other objects for that Identifier to be
- * instantiated (such as `RecordData` or a `Record`)
+/**
+ * Graph is WarpDrive's internal, private cache of all resource relationships.
+ *
+ * It acts as the cache for relationship data, allowing us to ask about and update
+ * relationships for a given Identifier without requiring other objects for that
+ * Identifier to be instantiated (such as `RecordData` or a `Record`).
  *
  * This also allows for us to make more substantive changes to relationships
  * with increasingly minor alterations to other portions of the internals
@@ -72,19 +81,81 @@ type PendingOps = {
  * to in the graph from that key.
  */
 export class Graph {
+  /**
+   * Cache of resolved {@link EdgeDefinition}s (the paired LHS/RHS relationship definitions
+   * for a `type` + `key`), keyed by resource `type` and then field name. Populated lazily by
+   * `upgradeDefinition` and consulted by {@link Graph.getDefinition}.
+   */
   declare _definitionCache: EdgeCache;
+  /**
+   * Cache of the resolved {@link UpgradedMeta} for a given resource `type` and field name, as
+   * returned by {@link Graph.getDefinition}. Derived from `_definitionCache` the first time a
+   * field's definition is looked up.
+   */
   declare _metaCache: Record<string, Record<string, UpgradedMeta>>;
+  /**
+   * Tracks pairs of resource types that have been discovered to be polymorphically related, so
+   * that the graph can recognize this connection without needing to walk prototype/schema
+   * inheritance chains. Populated by {@link Graph.registerPolymorphicType}.
+   */
   declare _potentialPolymorphicTypes: Record<string, Record<string, boolean>>;
+  /**
+   * The nodes of the graph. Each {@link ResourceKey} maps to a dictionary of its relationship
+   * fields (edges), keyed by field name.
+   */
   declare identifiers: Map<ResourceKey, Record<string, GraphEdge>>;
+  /**
+   * The `CacheCapabilitiesManager` (store wrapper) this graph was created for. Used to schedule
+   * work and to notify of relationship changes.
+   */
   declare store: CacheCapabilitiesManager;
+  /**
+   * The real underlying `Store` instance backing {@link Graph.store}, used for capabilities
+   * (such as checking whether a resource is a new/unsaved client-side record) that are not
+   * exposed on `CacheCapabilitiesManager`.
+   */
   declare _realStore: Store;
+  /**
+   * `true` once {@link Graph.destroy} has been called. After this point the graph should no
+   * longer be used.
+   */
   declare isDestroyed: boolean;
+  /**
+   * `true` when a flush of the remote-update queue has been scheduled but has not yet run.
+   * Set by {@link Graph.push} and cleared by {@link Graph._flushRemoteQueue}.
+   */
   declare _willSyncRemote: boolean;
+  /**
+   * `true` when a flush of the local-update notification queue has been scheduled but has not
+   * yet run. Set by {@link Graph._scheduleLocalSync} and cleared by
+   * {@link Graph._flushLocalQueue}.
+   */
   declare _willSyncLocal: boolean;
+  /**
+   * When `true`, the next scheduled local sync will be dropped without notifying subscribers of
+   * the relationships that changed. Consumed and reset by {@link Graph._flushLocalQueue}.
+   */
   declare silenceNotifications: boolean;
+  /**
+   * Remote relationship operations and record deletions that have been pushed via
+   * {@link Graph.push} but not yet flushed into the graph by {@link Graph._flushRemoteQueue}.
+   */
   declare _pushedUpdates: PendingOps;
+  /**
+   * The set of {@link CollectionEdge}s that have local changes pending notification, scheduled
+   * via {@link Graph._scheduleLocalSync} and drained by {@link Graph._flushLocalQueue}.
+   */
   declare _updatedRelationships: Set<CollectionEdge>;
+  /**
+   * The identifier of the current remote-update transaction, or `null` when no transaction is
+   * in progress. Set by {@link Graph._flushRemoteQueue} and stamped onto edges via
+   * {@link Graph._addToTransaction}.
+   */
   declare _transaction: number | null;
+  /**
+   * The {@link ResourceKey} currently being removed via {@link Graph.remove}, or `null`. Used to
+   * guard against re-entrant removal of the same resource.
+   */
   declare _removing: ResourceKey | null;
 
   constructor(store: CacheCapabilitiesManager) {
@@ -108,6 +179,10 @@ export class Graph {
     this.silenceNotifications = false;
   }
 
+  /**
+   * Returns `true` if an edge has already been created in the graph for the given resource and
+   * field name, without creating one if it does not yet exist.
+   */
   has(resourceKey: ResourceKey, propertyName: string): boolean {
     const relationships = this.identifiers.get(resourceKey);
     if (!relationships) {
@@ -116,6 +191,10 @@ export class Graph {
     return relationships[propertyName] !== undefined;
   }
 
+  /**
+   * Returns the resolved {@link UpgradedMeta} (relationship definition) for the given resource
+   * `type` and field name, computing and caching it via `upgradeDefinition` on first access.
+   */
   getDefinition(resourceKey: ResourceKey, propertyName: string): UpgradedMeta {
     let defs = this._metaCache[resourceKey.type];
     let meta: UpgradedMeta | null | undefined = defs?.[propertyName];
@@ -136,6 +215,11 @@ export class Graph {
     return meta;
   }
 
+  /**
+   * Returns the {@link GraphEdge} for the given resource and field name, creating it (as a
+   * {@link ResourceEdge}, {@link CollectionEdge}, or {@link ImplicitEdge} depending on the
+   * field's kind) if it does not already exist.
+   */
   get(resourceKey: ResourceKey, propertyName: string): GraphEdge {
     assert(`expected propertyName`, propertyName);
     let relationships = this.identifiers.get(resourceKey);
@@ -161,6 +245,10 @@ export class Graph {
     return relationship;
   }
 
+  /**
+   * Returns the local (current, potentially dirty) JSON:API relationship data for a `belongsTo`
+   * or `hasMany` field. Asserts if the field is an implicit relationship.
+   */
   getData(resourceKey: ResourceKey, propertyName: string): ResourceRelationship | CollectionRelationship {
     const relationship = this.get(resourceKey, propertyName);
 
@@ -173,6 +261,10 @@ export class Graph {
     return legacyGetCollectionRelationshipData(relationship, false);
   }
 
+  /**
+   * Returns the remote (last known server-confirmed) JSON:API relationship data for a
+   * `belongsTo` or `hasMany` field. Asserts if the field is an implicit relationship.
+   */
   getRemoteData(resourceKey: ResourceKey, propertyName: string): ResourceRelationship | CollectionRelationship {
     const relationship = this.get(resourceKey, propertyName);
 
@@ -185,7 +277,7 @@ export class Graph {
     return legacyGetCollectionRelationshipData(relationship, true);
   }
 
-  /*
+  /**
    * Allows for the graph to dynamically discover polymorphic connections
    * without needing to walk prototype chains.
    *
@@ -211,6 +303,11 @@ export class Graph {
     t2[type1] = true;
   }
 
+  /**
+   * Determines whether a resource is safe to fully release from memory. A resource is not
+   * releasable if it has a relationship whose inverse is async and the resource itself is not a
+   * new (unsaved, client-only) record, since the inverse may still need to reference it.
+   */
   isReleasable(resourceKey: ResourceKey): boolean {
     const relationships = this.identifiers.get(resourceKey);
     if (!relationships) {
@@ -244,6 +341,11 @@ export class Graph {
     return true;
   }
 
+  /**
+   * Cleans up all relationships for a resource that is being dematerialized, notifying inverses
+   * so they can update their own state. This retains the graph's node structure (so it can be
+   * rematerialized later) except for implicit edges, which are discarded outright.
+   */
   unload(resourceKey: ResourceKey, silenceNotifications?: boolean): void {
     if (LOG_GRAPH) {
       // eslint-disable-next-line no-console
@@ -268,6 +370,11 @@ export class Graph {
     }
   }
 
+  /**
+   * Returns `true` if the given field on a resource has uncommitted local changes: for a
+   * `belongsTo` this means local and remote state differ; for a `hasMany` this means there are
+   * pending additions, removals, or a reordering relative to remote state.
+   */
   _isDirty(resourceKey: ResourceKey, field: string): boolean {
     const relationships = this.identifiers.get(resourceKey);
     if (!relationships) {
@@ -287,6 +394,10 @@ export class Graph {
     return false;
   }
 
+  /**
+   * Builds a map, keyed by field name, of every relationship on a resource that has uncommitted
+   * local changes, describing each change as a {@link RelationshipDiff}.
+   */
   getChanged(resourceKey: ResourceKey): Map<string, RelationshipDiff> {
     const relationships = this.identifiers.get(resourceKey);
     const changed = new Map<string, RelationshipDiff>();
@@ -331,6 +442,9 @@ export class Graph {
     return changed;
   }
 
+  /**
+   * Returns `true` if any relationship field on the resource has uncommitted local changes.
+   */
   hasChanged(resourceKey: ResourceKey): boolean {
     const relationships = this.identifiers.get(resourceKey);
     if (!relationships) {
@@ -345,6 +459,10 @@ export class Graph {
     return false;
   }
 
+  /**
+   * Reverts all locally dirty relationships on a resource back to their remote state, returning
+   * the list of field names that were rolled back.
+   */
   rollback(resourceKey: ResourceKey): string[] {
     const relationships = this.identifiers.get(resourceKey);
     const changed: string[] = [];
@@ -368,6 +486,10 @@ export class Graph {
     return changed;
   }
 
+  /**
+   * Fully removes a resource and all of its relationships from the graph, unloading its edges
+   * first so inverses are properly notified/cleaned up.
+   */
   remove(resourceKey: ResourceKey): void {
     if (LOG_GRAPH) {
       // eslint-disable-next-line no-console
@@ -380,8 +502,10 @@ export class Graph {
     this._removing = null;
   }
 
-  /*
-   * Remote state changes
+  /**
+   * Queues a remote relationship operation (or record deletion) to be applied to the graph.
+   * Pushed operations are batched and flushed asynchronously (see {@link Graph._flushRemoteQueue})
+   * rather than applied immediately.
    */
   push(op: RemoteRelationshipOperation): void {
     if (LOG_GRAPH) {
@@ -406,11 +530,22 @@ export class Graph {
     }
   }
 
-  /*
-   * Local state changes
+  /**
+   * Applies a remote relationship operation or identifier merge directly to the graph. Pass
+   * `isRemote: true` to indicate the operation represents confirmed server state rather than a
+   * local (client-side) change.
    */
   update(op: RemoteRelationshipOperation | MergeOperation, isRemote: true): void;
+  /**
+   * Applies a local (client-side) relationship operation directly to the graph, such as adding,
+   * removing, or replacing related records before it has been confirmed by the server.
+   */
   update(op: LocalRelationshipOperation, isRemote?: false): void;
+  /**
+   * Implementation for both the remote and local {@link Graph.update} overloads: dispatches the
+   * given operation (`mergeIdentifiers`, `updateRelationship`, `deleteRecord`, `add`, `remove`,
+   * `replaceRelatedRecord`, or `replaceRelatedRecords`) to the appropriate handler.
+   */
   update(
     op: MergeOperation | LocalRelationshipOperation | RemoteRelationshipOperation | UnknownOperation,
     isRemote = false
@@ -479,6 +614,11 @@ export class Graph {
     }
   }
 
+  /**
+   * Marks a {@link CollectionEdge} as having local changes that need to be notified, and
+   * schedules a flush of the local sync queue (see {@link Graph._flushLocalQueue}) if one is not
+   * already pending.
+   */
   _scheduleLocalSync(relationship: CollectionEdge): void {
     this._updatedRelationships.add(relationship);
     if (!this._willSyncLocal) {
@@ -487,6 +627,11 @@ export class Graph {
     }
   }
 
+  /**
+   * Flushes all remote operations queued via {@link Graph.push}, applying them within a single
+   * transaction (see {@link Graph._transaction} and {@link Graph._addToTransaction}) so that
+   * dependent edges updated during the flush can be distinguished from those that were not.
+   */
   _flushRemoteQueue(): void {
     if (!this._willSyncRemote) {
       return;
@@ -525,6 +670,11 @@ export class Graph {
     }
   }
 
+  /**
+   * Stamps the current remote-update transaction id onto an edge, marking it as having been
+   * touched during the in-progress {@link Graph._flushRemoteQueue} run. Must only be called while
+   * a transaction is active.
+   */
   _addToTransaction(relationship: CollectionEdge | ResourceEdge): void {
     assert(`expected a transaction`, this._transaction !== null);
     if (LOG_GRAPH) {
@@ -534,6 +684,11 @@ export class Graph {
     relationship.transactionRef = this._transaction;
   }
 
+  /**
+   * Flushes the queue of relationships scheduled via {@link Graph._scheduleLocalSync}, notifying
+   * subscribers of each changed relationship — unless {@link Graph.silenceNotifications} is set,
+   * in which case the queue is discarded without notifying.
+   */
   _flushLocalQueue(): void {
     if (!this._willSyncLocal) {
       return;
@@ -551,6 +706,12 @@ export class Graph {
     updated.forEach((rel) => notifyChange(this, rel));
   }
 
+  /**
+   * Tears down the graph: clears all tracked identifiers/edges, removes it from the global
+   * {@link Graphs} registry, and marks it as destroyed. In debug builds this also asserts that no
+   * other live, non-destroying graphs remain registered, to help catch memory leaks from
+   * improperly torn down store instances.
+   */
   destroy(): void {
     Graphs.delete(this.store);
 
