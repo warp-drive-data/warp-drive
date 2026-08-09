@@ -17,6 +17,7 @@ export function buildHandler(config, state) {
   return {
     perMessageDeflate: true,
     async message(ws, message) {
+      state.lastMessageAt = Date.now();
       const msg = JSON.parse(message);
       msg.launcher = state.browsers.get(msg.browserId)?.launcher ?? '<unknown>';
 

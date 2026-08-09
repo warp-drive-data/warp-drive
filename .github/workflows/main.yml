@@ -49,8 +49,29 @@ jobs:
           TURBO_FORCE: ${{ secrets.ACTIONS_RUNNER_DEBUG == 'true' }}
 
   special-build-tests:
-    timeout-minutes: 20
+    if: |
+      github.event_name == 'pull_request' && (
+        github.base_ref == 'main' || github.base_ref == 'beta'
+      )
+    timeout-minutes: 12
     runs-on: ubuntu-latest
+    name: ${{ matrix.name }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: Enable All In-progress Features
+            command: pnpm test
+            feature-override: ENABLE_ALL_OPTIONAL
+            full-compat: ''
+          - name: Disable All In-progress Features
+            command: pnpm test
+            feature-override: DISABLE_ALL
+            full-compat: ''
+          - name: Remove All Deprecations
+            command: pnpm test:production
+            feature-override: ''
+            full-compat: 'true'
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
       - uses: ./.github/actions/setup
@@ -59,30 +80,14 @@ jobs:
           install: true
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           with-cert: true
-      - if: |
-          github.event_name == 'pull_request' && (
-            github.base_ref == 'main' || github.base_ref == 'beta'
-          )
-        name: Enable All In progress features
+      - name: ${{ matrix.name }}
+        # -k sends SIGKILL 30s after SIGTERM in case a hung child (e.g. a
+        # wedged headless Chrome) doesn't respond to SIGTERM alone, so a stuck
+        # run fails fast and loud instead of silently eating the job timeout.
+        run: timeout -k 30s 9m ${{ matrix.command }}
         env:
-          WARP_DRIVE_FEATURE_OVERRIDE: ENABLE_ALL_OPTIONAL
-        run: pnpm test
-      - if: |
-          github.event_name == 'pull_request' && (
-            github.base_ref == 'main' || github.base_ref == 'beta'
-          )
-        name: Disabled All In progress features
-        env:
-          WARP_DRIVE_FEATURE_OVERRIDE: DISABLE_ALL
-        run: pnpm test
-      - if: |
-          github.event_name == 'pull_request' && (
-            github.base_ref == 'main' || github.base_ref == 'beta'
-          )
-        name: Remove All Deprecations
-        env:
-          EMBER_DATA_FULL_COMPAT: true
-        run: pnpm test:production
+          WARP_DRIVE_FEATURE_OVERRIDE: ${{ matrix.feature-override }}
+          EMBER_DATA_FULL_COMPAT: ${{ matrix.full-compat }}
 
   browser-tests:
     timeout-minutes: 22

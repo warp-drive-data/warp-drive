@@ -8,6 +8,7 @@ import { buildHandler } from './bun/socket-handler.js';
 import { debug, error, print } from './utils/debug.js';
 import { getPort } from './utils/port.js';
 import { addCloseHandler } from './bun/watch.js';
+import { startWatchdog } from './bun/watchdog.js';
 
 async function getCertInfo() {
   let CERT_PATH = process.env.HOLODECK_SSL_CERT_PATH;
@@ -92,6 +93,7 @@ export async function launch(config) {
       completed: 0,
       expected: config.parallel ?? 1,
       closeHandlers: [],
+      lastMessageAt: null,
     };
     async function runCloseHandler(handler) {
       try {
@@ -109,6 +111,23 @@ export async function launch(config) {
       await Promise.allSettled(promises);
       debug(`All close handlers completed`);
     };
+
+    // Ensure a SIGINT/SIGTERM/SIGQUIT actually terminates the process. The
+    // per-handler listeners registered via addCloseHandler (see bun/watch.js)
+    // run their individual cleanup callbacks but never call process.exit(),
+    // so without this an external `timeout`/SIGTERM can leave the process
+    // (and any still-open handles) running indefinitely.
+    let terminating = false;
+    async function handleTerminationSignal(signal) {
+      if (terminating) return;
+      terminating = true;
+      error(`Received ${signal}, cleaning up and exiting`);
+      await state.safeCleanup();
+      process.exit(1);
+    }
+    process.on('SIGINT', () => void handleTerminationSignal('SIGINT'));
+    process.on('SIGTERM', () => void handleTerminationSignal('SIGTERM'));
+    process.on('SIGQUIT', () => void handleTerminationSignal('SIGQUIT'));
 
     if (protocol === 'https') {
       if (!config.key && !config.cert) {
@@ -187,6 +206,12 @@ export async function launch(config) {
 
       if (!config.noLaunch) {
         await launchBrowsers(config, state);
+
+        // `config.serve` is the long-running dev-server/watch mode, where a
+        // browser sitting idle between edits is expected, not a hang.
+        if (!config.serve) {
+          startWatchdog(config, state);
+        }
       }
     } catch (e) {
       error(`Error: ${e?.message ?? e}`);
