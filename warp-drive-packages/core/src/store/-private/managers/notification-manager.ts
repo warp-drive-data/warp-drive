@@ -9,7 +9,13 @@ import { isRequestKey, isResourceKey } from './cache-key-manager.ts';
 
 export type UnsubscribeToken = object;
 
+/**
+ * The kinds of change notifications the {@link NotificationManager} can emit for a resource.
+ */
 export type CacheOperation = 'added' | 'removed' | 'updated' | 'state';
+/**
+ * The kinds of change notifications the {@link NotificationManager} can emit for a request document.
+ */
 export type DocumentCacheOperation = 'invalidated' | 'added' | 'removed' | 'updated' | 'state';
 
 function isCacheOperationValue(value: NotificationType | DocumentCacheOperation): value is DocumentCacheOperation {
@@ -18,6 +24,10 @@ function isCacheOperationValue(value: NotificationType | DocumentCacheOperation)
   );
 }
 
+/**
+ * The full set of notification kinds the {@link NotificationManager} can emit for a resource,
+ * including both {@link CacheOperation}s and finer-grained field-level change notifications.
+ */
 export type NotificationType = 'attributes' | 'relationships' | 'identity' | 'errors' | 'meta' | CacheOperation;
 
 export interface NotificationCallback {

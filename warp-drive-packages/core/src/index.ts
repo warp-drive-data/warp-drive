@@ -68,9 +68,15 @@ export {
  */
 export interface StoreSetupOptions<T extends Cache = Cache> {
   /**
-   * The Cache implementation to use
+   * A constructor for the {@link Cache} implementation to use, receiving the
+   * store's {@link CacheCapabilitiesManager} when instantiated.
    */
-  cache: new (capabilities: CacheCapabilitiesManager) => T;
+  cache: {
+    /**
+     * Constructs a new {@link Cache} instance for the store.
+     */
+    new (capabilities: CacheCapabilitiesManager): T;
+  };
   /**
    * The Cache policy to use.
    *
@@ -130,7 +136,15 @@ export interface StoreSetupOptions<T extends Cache = Cache> {
   CAUTION_MEGA_DANGER_ZONE_extensions?: CAUTION_MEGA_DANGER_ZONE_Extension[];
 }
 
-export declare class ConfiguredStore<T extends { cache: Cache }> extends Store {
+export declare class ConfiguredStore<
+  T extends {
+    /**
+     * The {@link Cache} instance type this configured store's `createCache`
+     * method produces.
+     */
+    cache: Cache;
+  },
+> extends Store {
   // get cache(): T extends OptionsWithCache<infer R> ? R : never;
   createCache(capabilities: CacheCapabilitiesManager): T['cache'];
 }

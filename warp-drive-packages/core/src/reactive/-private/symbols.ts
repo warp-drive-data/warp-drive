@@ -37,6 +37,17 @@ export const Destroy: '___(unique) Symbol(Destroy)' = getOrSetGlobal(
   'Destroy',
   Symbol.dispose || Symbol.for('Dispose')
 );
+/**
+ * Symbol for the method used to request a mutable copy of an otherwise
+ * immutable {@link ReactiveResource}.
+ *
+ * @deprecated use the {@link checkout} utility function instead.
+ */
 export const Checkout: '___(unique) Symbol(Checkout)' = getOrSetGlobal('Checkout', Symbol('Checkout'));
 export const Commit: '___(unique) Symbol(Commit)' = getOrSetGlobal('Commit', Symbol('Commit'));
+
+/**
+ * Symbol used to stash the internal field/resource context (schema, store,
+ * mutability, etc.) on a {@link ReactiveResource} or reactive field instance.
+ */
 export const Context: '___(unique) Symbol(Context)' = getOrSetGlobal('Context', Symbol('Context'));
