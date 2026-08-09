@@ -621,6 +621,32 @@ export interface RequestInfo<RT = unknown> extends NativeRequestInit {
   /**
    * The {@link Store} the request was made against, if made via
    * {@link Store.request} rather than directly against a {@link RequestManager}.
+   *
+   * A {@link Handler} can read this off of {@link RequestContext.request | context.request}
+   * to reach store state (the cache, other services attached to a custom
+   * store subclass, etc.) without needing any Ember DI/`setOwner` wiring at
+   * handler-construction time. This works for a handler of any shape (a
+   * function, plain object, or class) because the store is attached to each
+   * request individually rather than to the handler itself.
+   *
+   * The trade-off is that this is only populated for requests issued via
+   * {@link Store.request | store.request(...)}; a request issued directly
+   * against a {@link RequestManager} will not have it set unless the caller
+   * supplies it explicitly. Handlers that rely on it should treat it as
+   * optional.
+   *
+   * @example
+   * ```ts
+   * const LoggingHandler = {
+   *   request<T>(context: RequestContext, next: NextFn<T>) {
+   *     const store = context.request.store;
+   *     if (store) {
+   *       console.log(`[${store.constructor.name}] ${context.request.url ?? ''}`);
+   *     }
+   *     return next(context.request);
+   *   },
+   * };
+   * ```
    */
   store?: Store;
 
