@@ -88,6 +88,12 @@ export class LRUCache<T, V> {
 
 const STRING_DASHERIZE_REGEXP = /[ _]/g;
 const STRING_DECAMELIZE_REGEXP = /([a-z\d])([A-Z])/g;
+/**
+ * The {@link LRUCache} backing {@link dasherize}, keyed by the original
+ * (un-dasherized) string.
+ *
+ * @private
+ */
 export const STRING_DASHERIZE_CACHE: LRUCache<string, string> = new LRUCache<string, string>((key: string) =>
   key.replace(STRING_DECAMELIZE_REGEXP, '$1_$2').toLowerCase().replace(STRING_DASHERIZE_REGEXP, '-')
 );
