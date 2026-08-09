@@ -56,6 +56,22 @@ Lint rules for helping to ensure best practices and hygiene when using ***Warp*D
 | [no-invalid-resource-ids](./docs/no-invalid-resource-ids.md) | Ensures resource ids are strings when used in common APIs | 🏆 | ✅🛠️ |
 | [no-legacy-imports](./docs/no-legacy-imports.md) | Ensures imports use paths specified by the Package Unification RFC | 🏆 | ✅🛠️ |
 
+## Template Rules
+
+Template rules operate on the Glimmer template AST rather than the JS/TS AST. They require
+[`ember-eslint-parser`](https://github.com/NullVoxPopuli/ember-eslint-parser) (a dependency of this
+package) to be configured as the parser for the files being linted, since that's what exposes
+template nodes to ESLint as `Glimmer`-prefixed selectors (e.g. `GlimmerElementNode`) for `.gjs`/`.gts`
+files, or `ember-eslint-parser/hbs` for classic `.hbs` files. This mirrors the approach
+[`eslint-plugin-ember`](https://github.com/ember-cli/eslint-plugin-ember) uses for its own
+`template-*` rules, and the direction laid out in the
+[First-Class Component Templates RFC](https://rfcs.emberjs.com/id/0779-first-class-component-templates/#linting-and-formatting)
+for integrating template linting into ESLint.
+
+| Rule | Description | 🏷️ | ✨ |
+| ---- | ----------- | -- | -- |
+| [template-always-use-request-content](./docs/template-always-use-request-content.md) | Ensures the result of a `<Request>` is actually consumed | 🐞 | |
+
 ## Usage
 
 Recommended Rules are available as a flat config for easy consumption:
@@ -68,3 +84,21 @@ module.exports = [
   ...WarpDriveRecommended,
 ];
 ```
+
+Template rules are available as a separate flat config, since they additionally wire up
+`ember-eslint-parser` for `.gjs`/`.gts` files:
+
+```ts
+// eslint.config.js (flat config)
+const WarpDriveRecommended = require('eslint-plugin-warp-drive/recommended');
+const WarpDriveTemplateRecommended = require('eslint-plugin-warp-drive/recommended-templates');
+
+module.exports = [
+  ...WarpDriveRecommended,
+  ...WarpDriveTemplateRecommended,
+];
+```
+
+To lint classic `.hbs` files instead of (or in addition to) `.gjs`/`.gts`, add your own override
+using [`ember-eslint-parser/hbs`](https://github.com/NullVoxPopuli/ember-eslint-parser#hbs-handlebars-support)
+as the parser for `**/*.hbs`.
