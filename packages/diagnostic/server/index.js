@@ -123,6 +123,7 @@ export async function launch(config) {
       terminating = true;
       error(`Received ${signal}, cleaning up and exiting`);
       await state.safeCleanup();
+      // eslint-disable-next-line n/no-process-exit
       process.exit(1);
     }
     process.on('SIGINT', () => void handleTerminationSignal('SIGINT'));

@@ -37,6 +37,7 @@ export function startWatchdog(config, state) {
       error(reason);
 
       void state.safeCleanup().finally(() => {
+        // eslint-disable-next-line n/no-process-exit
         process.exit(1);
       });
     }
