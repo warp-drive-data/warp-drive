@@ -142,7 +142,6 @@ const service = s.service ?? s.inject;
 */
 
 export class Serializer extends EmberObject {
-  @service declare store: Store;
   /**
     The `store` property is the application's `store` that contains
     all records. It can be used to look up serializers for other model
@@ -160,10 +159,9 @@ export class Serializer extends EmberObject {
     });
     ```
 
-    @property store
-    @type {Store}
     @public
   */
+  @service declare store: Store;
 
   /**
     The `normalizeResponse` method is used to normalize a payload from the

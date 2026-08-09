@@ -11,6 +11,13 @@ import { normalizeModelName } from './util.ts';
 
 function recast(context: Store): asserts context is ModelStore {}
 
+/**
+ * The `instantiateRecord` hook implementation for use with `Model`. Pass
+ * this to your store's `instantiateRecord` method when configuring the
+ * store to use `Model` for schema/record instantiation.
+ *
+ * @public
+ */
 export function instantiateRecord(
   this: Store,
   identifier: ResourceKey,
@@ -39,15 +46,34 @@ export function instantiateRecord(
   return factory.class.create(createOptions);
 }
 
+/**
+ * The `teardownRecord` hook implementation for use with `Model`. Pass this
+ * to your store's `teardownRecord` method when configuring the store to
+ * use `Model` for schema/record instantiation.
+ *
+ * @public
+ */
 export function teardownRecord(record: Model): void {
   assert(
-    `expected to receive an instance of Model from @ember-data/model. If using a custom model make sure you implement teardownRecord`,
+    `expected to receive an instance of Model from @warp-drive/legacy/model. If using a custom model make sure you implement teardownRecord`,
     'destroy' in record
   );
   record.destroy();
 }
 
+/**
+ * The `modelFor` implementation for use with `Model`, exposed on the store
+ * as `store.modelFor(type)` when the store is configured to use `Model`.
+ * Returns the `Model` subclass registered for the given type, if any.
+ *
+ * @public
+ */
 export function modelFor<T>(type: TypeFromInstance<T>): typeof Model | void;
+/**
+ * Overload accepting a raw type string instead of a typed record instance.
+ *
+ * @public
+ */
 export function modelFor(type: string): typeof Model | void;
 export function modelFor<T>(this: Store, modelName: TypeFromInstanceOrString<T>): typeof Model | void {
   assertPrivateStore(this);
