@@ -14,12 +14,16 @@ export interface HasManyProxyCreateArgs<T = unknown> {
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export interface PromiseManyArray<T> {
+  /**
+   * A property signifying that this object implements the classic Ember
+   * `PromiseProxyMixin`-like API. See {@link LegacyPromiseProxy}.
+   */
   [LegacyPromiseProxy]: true;
 }
 
 /**
   This class is returned as the result of accessing an async hasMany relationship
-  on an instance of a Model extending from `@ember-data/model`.
+  on an instance of a Model extending from `@warp-drive/legacy/model`.
 
   A PromiseManyArray is an iterable proxy that allows templates to consume related
   ManyArrays and update once their contents are no longer pending.
@@ -33,8 +37,19 @@ export interface PromiseManyArray<T> {
   @public
 */
 export class PromiseManyArray<T = unknown> {
+  /**
+   * The promise for the relationship's content, or `null` once
+   * {@link PromiseManyArray.destroy | destroy} has been called.
+   */
   declare promise: Promise<ManyArray<T>> | null;
+  /**
+   * Whether {@link PromiseManyArray.destroy | destroy} has been called.
+   */
   declare isDestroyed: boolean;
+  /**
+   * The resolved `ManyArray` for the relationship, if the promise has
+   * resolved, else `null`.
+   */
   declare content: ManyArray<T> | null;
 
   constructor(promise: Promise<ManyArray<T>>, content?: ManyArray<T>) {
@@ -58,6 +73,9 @@ export class PromiseManyArray<T = unknown> {
     return this.content ? this.content.length : 0;
   }
 
+  /**
+   * @private
+   */
   // this will error if someone tries to call
   // A(identifierArray) since it is not configurable
   // which is preferrable to the `meta` override we used
@@ -154,6 +172,12 @@ export class PromiseManyArray<T = unknown> {
 
   //---- Methods on EmberObject that we should keep
 
+  /**
+   * Tears down this proxy, releasing its {@link PromiseManyArray.content | content} and
+   * {@link PromiseManyArray.promise | promise} and marking it as {@link PromiseManyArray.isDestroyed | destroyed}.
+   *
+   * @public
+   */
   destroy(): void {
     this.isDestroyed = true;
     this.content = null;
