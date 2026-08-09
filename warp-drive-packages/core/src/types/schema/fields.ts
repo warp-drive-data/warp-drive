@@ -450,7 +450,13 @@ export interface LocalField {
    *
    * @public
    */
-  options?: { defaultValue?: PrimitiveValue };
+  options?: {
+    /**
+     * The default value to use for the field when no value
+     * has yet been set.
+     */
+    defaultValue?: PrimitiveValue;
+  };
 }
 
 /**
@@ -2181,6 +2187,11 @@ export type ObjectFieldSchema =
  * @public
  */
 export interface PolarisResourceSchema {
+  /**
+   * A flag indicating that this is not a legacy resource schema.
+   *
+   * @public
+   */
   legacy?: false;
 
   /**
@@ -2391,25 +2402,89 @@ export interface ObjectSchema {
   objectExtensions?: string[];
 }
 
+/**
+ * A union of {@link ResourceSchema} and {@link ObjectSchema} representing
+ * any schema that can be registered with or returned by the SchemaService.
+ *
+ * @public
+ */
 export type Schema = ResourceSchema | ObjectSchema;
 
 /**
- * A trait for use on a PolarisMode record
+ * A trait for use on a PolarisMode record.
+ *
+ * Traits are reusable collections of fields that can be composed onto a
+ * resource schema, often to describe a polymorphic capability shared by
+ * multiple resource types.
  */
 export interface PolarisTrait {
+  /**
+   * The name of the trait.
+   *
+   * This is the string referenced by a resource schema's `traits` array,
+   * or by another trait's `traits` array, in order to make use of this
+   * trait.
+   */
   name: string;
+
+  /**
+   * The mode this trait is valid for use with.
+   *
+   * A PolarisTrait may only be applied to PolarisMode resource schemas.
+   */
   mode: 'polaris';
+
+  /**
+   * The fields that this trait contributes to any resource schema
+   * that implements it.
+   */
   fields: PolarisModeFieldSchema[];
+
+  /**
+   * A list of other traits that this trait itself implements.
+   *
+   * As with a resource schema's `traits`, each entry should be a string
+   * matching the `name` of another trait.
+   */
   traits?: string[];
 }
 
 /**
- * A trait for use on a LegacyMode record
+ * A trait for use on a LegacyMode record.
+ *
+ * Traits are reusable collections of fields that can be composed onto a
+ * resource schema, often to describe a polymorphic capability shared by
+ * multiple resource types.
  */
 export interface LegacyTrait {
+  /**
+   * The name of the trait.
+   *
+   * This is the string referenced by a resource schema's `traits` array,
+   * or by another trait's `traits` array, in order to make use of this
+   * trait.
+   */
   name: string;
+
+  /**
+   * The mode this trait is valid for use with.
+   *
+   * A LegacyTrait may only be applied to LegacyMode resource schemas.
+   */
   mode: 'legacy';
+
+  /**
+   * The fields that this trait contributes to any resource schema
+   * that implements it.
+   */
   fields: LegacyModeFieldSchema[];
+
+  /**
+   * A list of other traits that this trait itself implements.
+   *
+   * As with a resource schema's `traits`, each entry should be a string
+   * matching the `name` of another trait.
+   */
   traits?: string[];
 }
 
@@ -2468,12 +2543,41 @@ export function isLegacyResourceSchema(schema: ResourceSchema | ObjectSchema): s
   return isResourceSchema(schema) && schema.legacy === true;
 }
 
+/**
+ * A union of all field schemas considered "legacy", i.e. those historically
+ * associated with `@warp-drive/legacy/model`'s Attribute, BelongsTo and
+ * HasMany fields, including their LinksMode variants.
+ *
+ * Available field schemas are:
+ *
+ * - {@link LegacyAttributeField}
+ * - {@link LegacyBelongsToField}
+ * - {@link LegacyHasManyField}
+ * - {@link LinksModeBelongsToField}
+ * - {@link LinksModeHasManyField}
+ *
+ * @public
+ */
 export type LegacyField =
   | LegacyAttributeField
   | LegacyBelongsToField
   | LegacyHasManyField
   | LinksModeBelongsToField
   | LinksModeHasManyField;
+
+/**
+ * A union of all legacy relationship field schemas, i.e. {@link LegacyField}
+ * excluding {@link LegacyAttributeField}.
+ *
+ * Available field schemas are:
+ *
+ * - {@link LegacyBelongsToField}
+ * - {@link LegacyHasManyField}
+ * - {@link LinksModeBelongsToField}
+ * - {@link LinksModeHasManyField}
+ *
+ * @public
+ */
 export type LegacyRelationshipField =
   | LegacyBelongsToField
   | LegacyHasManyField
