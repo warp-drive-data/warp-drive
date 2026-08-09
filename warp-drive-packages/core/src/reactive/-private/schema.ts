@@ -182,37 +182,63 @@ export interface CAUTION_MEGA_DANGER_ZONE_Extension {
   features: Record<string | symbol, unknown> | Function;
 }
 
+/**
+ * Describes one feature added to a resource by a schema extension, as
+ * classified by {@link processExtension} from the property descriptor it
+ * was declared with (a method, a plain value, or a getter/setter pair).
+ */
 export type ExtensionDef =
   | {
+      /** A callable feature, installed as a method. */
       kind: 'method';
+      /** The function to invoke when the feature is called. */
       // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
       fn: Function;
     }
   | {
+      /** A plain, non-writable data feature. */
       kind: 'readonly-value';
+      /** The value to expose for the feature. */
       value: unknown;
     }
   | {
+      /** A plain, writable data feature. */
       kind: 'mutable-value';
+      /** The value to expose for the feature. */
       value: unknown;
     }
   | {
+      /** An accessor feature with only a getter. */
       kind: 'readonly-field';
+      /** Computes the feature's value. */
       get: () => unknown;
     }
   | {
+      /** An accessor feature with both a getter and a setter. */
       kind: 'mutable-field';
+      /** Computes the feature's value. */
       get: () => unknown;
+      /** Assigns the feature's value. */
       set: (value: unknown) => void;
     }
   | {
+      /** An accessor feature with only a setter. */
       kind: 'writeonly-field';
+      /** Assigns the feature's value. */
       set: (value: unknown) => void;
     };
 
+/**
+ * The result of {@link processExtension} normalizing a
+ * {@link CAUTION_MEGA_DANGER_ZONE_Extension} into a lookup of its features
+ * by name.
+ */
 export interface ProcessedExtension {
+  /** Whether this extension applies to objects/resources or to arrays. */
   kind: 'object' | 'array';
+  /** The name the extension was registered under. */
   name: string;
+  /** Each feature the extension exposes, keyed by its property name. */
   features: Map<string | symbol, ExtensionDef>;
 }
 
@@ -273,10 +299,19 @@ function processExtension(extension: CAUTION_MEGA_DANGER_ZONE_Extension): Proces
     features,
   };
 }
+/**
+ * A field (or schema) capable of declaring `objectExtensions` and/or
+ * `arrayExtensions` to mix registered {@link CAUTION_MEGA_DANGER_ZONE_Extension}
+ * features onto it.
+ */
 export interface ExtensibleField {
+  /** The kind of field, only some of which support extensions. */
   kind: 'schema-object' | 'schema-array' | 'array' | 'object' | 'hasMany';
+  /** Configures which registered extensions to mix onto this field. */
   options?: {
+    /** Names of registered object extensions to mix onto this field. */
     objectExtensions?: string[];
+    /** Names of registered array extensions to mix onto this field. */
     arrayExtensions?: string[];
   };
 }
@@ -590,10 +625,19 @@ interface InternalSchema {
   relationships: Record<string, LegacyRelationshipField>;
 }
 
+/**
+ * Defines how to convert a `GenericField`, `ObjectField`, or `ArrayField`
+ * between the raw value `T` stored in the cache and the presentation value
+ * `PT` exposed on the record.
+ */
 export type Transformation<T extends Value = Value, PT = unknown> = {
+  /** Converts the presentation value into the raw value to store in the cache. */
   serialize(value: PT, options: Record<string, unknown> | null, record: ReactiveResource): T;
+  /** Converts the raw cache value into its presentation value. */
   hydrate(value: T | undefined, options: Record<string, unknown> | null, record: ReactiveResource): PT;
+  /** Computes the value to use when the cache has no value for the field. */
   defaultValue?(options: Record<string, unknown> | null, identifier: ResourceKey): T;
+  /** The name under which this transformation is registered and looked up. */
   [Type]: string;
 };
 
