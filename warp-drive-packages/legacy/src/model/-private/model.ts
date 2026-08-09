@@ -781,6 +781,9 @@ class Model extends EmberObject implements MinimalLegacyRecord {
   get isError(): boolean {
     return this.currentState.isError;
   }
+  /**
+   * `isError` is read-only and cannot be set directly.
+   */
   set isError(v) {
     if (DEBUG) {
       throw new Error(`isError is not directly settable`);
@@ -833,6 +836,10 @@ class Model extends EmberObject implements MinimalLegacyRecord {
     }
     return recordIdentifierFor(this).id;
   }
+  /**
+   * Assigns the resource's primary key. Typically only used internally
+   * when a client-created record is assigned an id upon being saved.
+   */
   set id(id) {
     const normalizedId = coerceId(id);
     const identifier = recordIdentifierFor(this);
@@ -871,6 +878,9 @@ class Model extends EmberObject implements MinimalLegacyRecord {
     }
     return this.___recordState;
   }
+  /**
+   * `currentState` is read-only and cannot be set directly.
+   */
   set currentState(_v) {
     throw new Error('cannot set currentState');
   }
@@ -949,6 +959,9 @@ class Model extends EmberObject implements MinimalLegacyRecord {
   get adapterError(): unknown {
     return this.currentState.adapterError;
   }
+  /**
+   * `adapterError` is read-only and cannot be set directly.
+   */
   set adapterError(v) {
     throw new Error(`adapterError is not directly settable`);
   }
@@ -1035,14 +1048,28 @@ class Model extends EmberObject implements MinimalLegacyRecord {
     (this.constructor as typeof Model).eachRelationship<T, this>(callback, binding);
   }
 
+  /**
+   * Returns the relationship schema for the given relationship name, if any.
+   */
   relationshipFor(name: string): LegacyRelationshipField | undefined {
     return (this.constructor as typeof Model).relationshipsByName.get(name);
   }
 
+  /**
+   * Returns the inverse relationship schema for the given relationship
+   * name, if one exists. See {@link Model.inverseFor | the static inverseFor}.
+   */
   inverseFor(name: string): LegacyRelationshipField | null {
     return (this.constructor as typeof Model).inverseFor(name, storeFor(this, false)!);
   }
 
+  /**
+   * Iterates over the attributes defined on this record's class, calling
+   * `callback` for each one. See {@link Model.eachAttribute | the static eachAttribute}.
+   *
+   * @param callback the callback to invoke
+   * @param binding the value to which the callback's `this` should be bound
+   */
   eachAttribute<T>(
     callback: (
       this: NoInfer<T> | undefined,
@@ -1136,6 +1163,10 @@ class Model extends EmberObject implements MinimalLegacyRecord {
     return relationship && store.modelFor(relationship.type);
   }
 
+  /**
+   * A cache of resolved inverse relationships by name, populated lazily by
+   * {@link Model.inverseFor | inverseFor}.
+   */
   @computeOnce
   static get inverseMap(): Record<string, LegacyRelationshipField | null> {
     assert(
@@ -1191,6 +1222,9 @@ class Model extends EmberObject implements MinimalLegacyRecord {
     }
   }
 
+  /**
+   * @private
+   */
   //Calculate the inverse, ignoring the cache
   static _findInverseFor(name: string, store: Store): LegacyRelationshipField | null {
     assert(
@@ -1327,7 +1361,13 @@ class Model extends EmberObject implements MinimalLegacyRecord {
    */
   @computeOnce
   static get relationshipNames(): {
+    /**
+     * the names of the model's `hasMany` relationships
+     */
     hasMany: string[];
+    /**
+     * the names of the model's `belongsTo` relationships
+     */
     belongsTo: string[];
   } {
     assert(
@@ -1456,6 +1496,11 @@ class Model extends EmberObject implements MinimalLegacyRecord {
     return map;
   }
 
+  /**
+   * A hash of the model's relationship schemas keyed by relationship name.
+   * See also {@link Model.relationshipsByName | relationshipsByName}, which
+   * provides the same information as a `Map`.
+   */
   @computeOnce
   static get relationshipsObject(): Record<string, LegacyRelationshipField> {
     assert(
@@ -1904,6 +1949,12 @@ defineGate(Model.prototype, 'isReloading', {
   isLocal: true,
 });
 
+/**
+ * Restores the pre-`RequestManager` implementations of `save`,
+ * `destroyRecord`, and `reload` onto the given `Model` subclass, for
+ * apps that have not yet migrated off of the deprecated
+ * `ENABLE_LEGACY_REQUEST_METHODS` behaviors.
+ */
 export function restoreDeprecatedModelRequestBehaviors(ModelKlass: typeof Model): void {
   // @ts-expect-error TS doesn't know how to do `this` function overloads
   ModelKlass.prototype.save = _save;
