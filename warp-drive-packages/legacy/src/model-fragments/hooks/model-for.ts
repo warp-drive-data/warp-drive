@@ -130,4 +130,11 @@ export function fragmentsModelFor<T extends TypedRecordInstance>(
   return getShimClass(this, modelName);
 }
 
+/**
+ * The `modelFor` fallback used to construct a `ShimModelClass` schema for a
+ * type when ModelFragments support is enabled and no real `Model` subclass
+ * is registered for that type.
+ *
+ * @public
+ */
 export const modelFor: typeof fragmentsModelFor = fragmentsModelFor;

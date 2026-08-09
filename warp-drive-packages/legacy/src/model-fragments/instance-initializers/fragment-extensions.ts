@@ -6,6 +6,12 @@ import type { SchemaService } from '@warp-drive/core/types';
 import FragmentExtension from '../extensions/fragment.ts';
 import FragmentArrayExtension from '../extensions/fragment-array.ts';
 
+/**
+ * Registers the {@link FragmentExtension}/{@link FragmentArrayExtension} schema
+ * extensions on the given `SchemaService`, enabling ModelFragments migration support.
+ *
+ * @public
+ */
 export function registerFragmentExtensions(schema: SchemaService): void {
   schema.CAUTION_MEGA_DANGER_ZONE_registerExtension?.(FragmentExtension);
   schema.CAUTION_MEGA_DANGER_ZONE_registerExtension?.(FragmentArrayExtension);
