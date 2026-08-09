@@ -3,7 +3,7 @@ import { assert } from '@warp-drive/core/build-config/macros';
 
 import { getRuntimeConfig } from '../../types/runtime.ts';
 import { cloneResponseProperties, type Context } from './context';
-import type { FetchError } from './utils';
+import { DOMError, type FetchError } from './utils';
 
 export type { FetchError };
 
@@ -141,14 +141,15 @@ const Fetch = {
       );
       response = await _fetch(context.request.url, context.request);
     } catch (e) {
-      if (e instanceof DOMException && e.name === 'AbortError') {
+      const isDOMException = e instanceof DOMError;
+      if (isDOMException && e.name === 'AbortError') {
         (e as FetchError).statusText = 'Aborted';
         (e as FetchError).status = 20;
         (e as FetchError).isRequestError = true;
       } else {
         (e as FetchError).statusText = 'Unknown Network Error';
         (e as FetchError).status = 0;
-        if (!(e instanceof DOMException)) {
+        if (!isDOMException) {
           (e as FetchError).code = 0;
         }
         (e as FetchError).isRequestError = true;
