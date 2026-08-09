@@ -69,7 +69,11 @@ jobs:
             feature-override: DISABLE_ALL
             full-compat: ''
           - name: Remove All Deprecations
-            command: pnpm test:production
+            # @warp-drive/legacy-tests is excluded: it specifically tests the
+            # legacy Model/Store compat surface that EMBER_DATA_FULL_COMPAT
+            # assumes has already been removed, so a full-compat build has
+            # nothing meaningful to test there (see PR discussion).
+            command: pnpm turbo test:production --concurrency=1 --log-order=stream --filter='!@warp-drive/legacy-tests'
             feature-override: ''
             full-compat: 'true'
     steps:
