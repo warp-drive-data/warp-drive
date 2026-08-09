@@ -264,7 +264,12 @@ module('Integration | NotificationManager batch notifications', function () {
         attributes: { name: 'Chris' },
         relationships: {
           bestFriend: { data: { type: 'user', id: '2' } },
-          friends: { data: [{ type: 'user', id: '3' }, { type: 'user', id: '4' }] },
+          friends: {
+            data: [
+              { type: 'user', id: '3' },
+              { type: 'user', id: '4' },
+            ],
+          },
         },
       },
       true
