@@ -154,6 +154,10 @@ import { RESTAdapter } from './rest.ts';
   @constructor
 */
 class JSONAPIAdapter extends RESTAdapter {
+  /**
+   * The `Content-Type` header used when serializing request bodies
+   * that don't otherwise specify one.
+   */
   _defaultContentType = 'application/vnd.api+json';
 
   /**
@@ -248,6 +252,13 @@ class JSONAPIAdapter extends RESTAdapter {
     return this.ajax(url, 'GET', { data: { filter: { id: ids.join(',') } } });
   }
 
+  /**
+   * Determines the pathname for a given type.
+   *
+   * Unlike the base `BuildURLMixin` implementation, dasherizes (rather
+   * than camelizes) the type name before pluralizing it, per the
+   * {json:api} convention for member names.
+   */
   pathForType(modelName: string): string {
     const dasherized = dasherize(modelName);
     return pluralize(dasherized);
