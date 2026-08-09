@@ -10,31 +10,63 @@ const Touching: '___(unique) Symbol(Touching)' = getOrSetGlobal('Touching', Symb
 export const RequestPromise: '___(unique) Symbol(RequestPromise)' = getOrSetGlobal('RequestPromise', Symbol('promise'));
 const EMPTY_ARR: RequestCacheRequestState[] = DEBUG ? (Object.freeze([]) as unknown as RequestCacheRequestState[]) : [];
 
+/**
+ * The base shape for a query or mutation operation tracked by the
+ * {@link RequestStateService} for a given resource.
+ */
 export interface Operation {
+  /** the name of the operation being performed, e.g. `'findRecord'` or `'saveRecord'`. */
   op: string;
+  /** the options supplied for the operation, if any. */
   options: FindRecordOptions | undefined;
+  /** the resource identifier the operation is being performed for. */
   recordIdentifier: ResourceKey;
 }
 
+/**
+ * A {@link Operation} tracked by the {@link RequestStateService} representing
+ * a `findRecord` query for a resource.
+ */
 export interface FindRecordQuery extends Operation {
+  /** identifies this operation as a `findRecord` query. */
   op: 'findRecord';
 }
 
+/**
+ * A {@link Operation} tracked by the {@link RequestStateService} representing
+ * a `saveRecord` mutation for a resource.
+ */
 export interface SaveRecordMutation extends Operation {
+  /** identifies this operation as a `saveRecord` mutation. */
   op: 'saveRecord';
 }
 
+/**
+ * Describes the request associated with a {@link RequestCacheRequestState},
+ * as tracked by the {@link RequestStateService}.
+ */
 export interface Request {
+  /** the operation(s) being performed by this request. */
   data: Operation[];
+  /** options supplied for the request, if any. */
   options?: Record<string, unknown>;
 }
 
 export type RequestStates = 'pending' | 'fulfilled' | 'rejected';
 
+/**
+ * The tracked state of a request as reported by the {@link RequestStateService},
+ * e.g. via {@link RequestStateService.subscribeForRecord} or
+ * {@link RequestStateService.getPendingRequestsForRecord}.
+ */
 export interface RequestCacheRequestState {
+  /** the current lifecycle state of the request. */
   state: RequestStates;
+  /** whether the request is a `query` (find) or a `mutation` (save). */
   type: 'query' | 'mutation';
+  /** the {@link Request} describing the operation(s) this state is for. */
   request: Request;
+  /** the response for the request, present once it has settled. */
   response?: Response;
 }
 
