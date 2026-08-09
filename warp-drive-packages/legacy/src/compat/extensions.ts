@@ -70,11 +70,23 @@ EmberObjectMethods.forEach((method) => {
     }
   };
 });
+/**
+ * A schema extension that adds the classic `EmberObject` API (`get`, `set`,
+ * `getProperties`, `setProperties`, `incrementProperty`, `decrementProperty`,
+ * `toggleProperty`, `notifyPropertyChange`, `addObserver`, `removeObserver`)
+ * to reactive array resources.
+ */
 export const EmberObjectArrayExtension: CAUTION_MEGA_DANGER_ZONE_Extension = {
   kind: 'array',
   name: 'ember-object' as const,
   features: EmberObjectFeatures,
 };
+/**
+ * A schema extension that adds the classic `EmberObject` API (`get`, `set`,
+ * `getProperties`, `setProperties`, `incrementProperty`, `decrementProperty`,
+ * `toggleProperty`, `notifyPropertyChange`, `addObserver`, `removeObserver`)
+ * to reactive object resources.
+ */
 export const EmberObjectExtension: CAUTION_MEGA_DANGER_ZONE_Extension = {
   kind: 'object',
   name: 'ember-object' as const,
@@ -344,24 +356,52 @@ const EmberArrayLikeFeatures = {
   },
 };
 
+/**
+ * A schema extension that adds Ember's classic `MutableArray`/`Enumerable`
+ * style methods (`pushObject`, `removeObject`, `mapBy`, `filterBy`,
+ * `sortBy`, `firstObject`, `lastObject`, etc.) to reactive array resources.
+ */
 export const EmberArrayLikeExtension: CAUTION_MEGA_DANGER_ZONE_Extension = {
   kind: 'array',
   name: 'ember-array-like' as const,
   features: EmberArrayLikeFeatures,
 };
 
+/**
+ * Extracts the element type of an array type, or `never` if `T` is not an array.
+ */
 export type ArrayType<T> = T extends ReadonlyArray<infer U> ? U : never;
+/**
+ * Adds the classic `EmberObject` API (as registered by {@link EmberObjectExtension}/
+ * {@link EmberObjectArrayExtension}) to the type of a reactive resource.
+ */
 export type WithEmberObject<T> = T & Pick<T & EmberObject, ArrayType<typeof EmberObjectMethods>>;
 
+/**
+ * Adds Ember's classic array-like API (as registered by {@link EmberArrayLikeExtension})
+ * to the type of a reactive array resource.
+ */
 export type WithArrayLike<T> =
   T extends Array<infer U>
     ? U &
         Omit<typeof EmberArrayLikeFeatures, 'firstObject' | 'lastObject'> & {
+          /**
+           * the first member of the array, or `undefined` if the array is empty
+           */
           firstObject: T | undefined;
+          /**
+           * the last member of the array, or `undefined` if the array is empty
+           */
           lastObject: T | undefined;
         }
     : T[] &
         Omit<typeof EmberArrayLikeFeatures, 'firstObject' | 'lastObject'> & {
+          /**
+           * the first member of the array, or `undefined` if the array is empty
+           */
           firstObject: T | undefined;
+          /**
+           * the last member of the array, or `undefined` if the array is empty
+           */
           lastObject: T | undefined;
         };
