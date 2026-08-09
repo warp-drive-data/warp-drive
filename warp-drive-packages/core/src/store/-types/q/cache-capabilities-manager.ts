@@ -1,7 +1,7 @@
 import type { RequestKey, ResourceKey } from '../../../types/identifier.ts';
 import type { SchemaService } from '../../../types/schema/schema-service.ts';
 import type { CacheKeyManager } from '../../-private/managers/cache-key-manager.ts';
-import type { NotificationType } from '../../-private/managers/notification-manager.ts';
+import type { NotificationType, NotifyKeys } from '../../-private/managers/notification-manager.ts';
 
 /**
  * CacheCapabilitiesManager provides encapsulated API access to the minimal
@@ -100,13 +100,22 @@ export type CacheCapabilitiesManager = {
   notifyChange(identifier: RequestKey, namespace: 'added' | 'updated' | 'removed', key: null): void;
   /**
    * Notify subscribers that one or more attributes on a resource have
-   * changed. `key` may be a single attribute name, or an array of names
-   * when many attributes changed at once.
+   * changed. `key` may be a single attribute name, or - since 5.9.0 - a
+   * `string[]` or `Set<string>` of attribute names. This is useful when many
+   * attributes on the same resource have changed at once (for instance after
+   * applying a bulk update): passing the full collection of changed keys in
+   * a single call is equivalent to calling `notifyChange` once per key
+   * (subscribers still receive one notification per key, in the same order),
+   * but avoids repeating the per-call bookkeeping (subscriber lookups,
+   * buffer scheduling, etc) for every key. Pass whichever shape you already
+   * have on hand - a `Set` if you're already deduping/collecting keys that
+   * way, or a plain array otherwise - the collection is iterated as-is and
+   * never converted from one shape to the other.
    *
    * @since 5.9.0
    * @public
    */
-  notifyChange(identifier: ResourceKey, namespace: 'attributes', key: string | string[] | null): void;
+  notifyChange(identifier: ResourceKey, namespace: 'attributes', key: string | NotifyKeys | null): void;
   /**
    * Notify subscribers of a change to a resource for any other
    * {@link NotificationType}. `attributes` and `relationships` do not
@@ -125,6 +134,6 @@ export type CacheCapabilitiesManager = {
   notifyChange(
     identifier: ResourceKey | RequestKey,
     namespace: NotificationType | 'added' | 'removed' | 'updated',
-    key: string | string[] | null
+    key: string | NotifyKeys | null
   ): void;
 };

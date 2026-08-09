@@ -53,6 +53,7 @@ export type {
   DocumentCacheOperation,
   CacheOperation,
   NotificationType,
+  NotifyKeys,
 } from './store/-private/managers/notification-manager.ts';
 
 export {

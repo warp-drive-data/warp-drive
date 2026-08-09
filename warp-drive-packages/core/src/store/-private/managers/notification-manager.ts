@@ -30,6 +30,19 @@ function isCacheOperationValue(value: NotificationType | DocumentCacheOperation)
  */
 export type NotificationType = 'attributes' | 'relationships' | 'identity' | 'errors' | 'meta' | CacheOperation;
 
+/**
+ * The shape accepted by {@link NotificationManager.notify} and
+ * {@link CacheCapabilitiesManager.notifyChange} for delivering many keys for
+ * the `'attributes'` or `'relationships'` namespaces in a single call
+ * instead of once per key. Either a plain array or a `Set` may be passed -
+ * whichever shape the caller already has on hand - and it is iterated as-is,
+ * without ever being converted into the other shape.
+ *
+ * @since 5.9.0
+ * @public
+ */
+export type NotifyKeys = string[] | Set<string>;
+
 export interface NotificationCallback {
   (cacheKey: ResourceKey, notificationType: 'attributes' | 'relationships', key?: string): void;
   (cacheKey: ResourceKey, notificationType: 'errors' | 'meta' | 'identity' | 'state'): void;
@@ -47,8 +60,12 @@ export interface DocumentOperationCallback {
   (cacheKey: RequestKey, notificationType: DocumentCacheOperation): void;
 }
 
-function keyToString(key: string | string[] | null | undefined): string {
-  return Array.isArray(key) ? key.join(', ') : key || '';
+function isKeyBatch(key: unknown): key is NotifyKeys {
+  return Array.isArray(key) || key instanceof Set;
+}
+
+function keyToString(key: string | NotifyKeys | null | undefined): string {
+  return isKeyBatch(key) ? Array.from(key).join(', ') : key || '';
 }
 
 function count(label: string) {
@@ -198,23 +215,28 @@ export class NotificationManager {
    *
    * When notifying `'attributes'` or `'relationships'` for many keys on the
    * same `cacheKey` at once (for instance, when a bulk update to a single
-   * record touches many fields) `key` may be supplied as a `string[]`
-   * instead of being called once per key. This delivers the exact same
-   * sequence of individual notifications to subscribers (each subscriber
-   * callback is still invoked once per key, in order) while paying the
-   * per-call overhead (validity checks, subscriber lookups, buffer/flush
-   * scheduling) only once for the whole batch instead of once per key.
+   * record touches many fields) `key` may be supplied as a `string[]` or a
+   * `Set<string>` instead of being called once per key. Either shape is
+   * accepted and iterated as-is (no conversion between the two is ever
+   * performed internally) so callers should pass whichever they already
+   * have on hand: a `Set` if they are already deduping/collecting keys that
+   * way (as the relationship-notification flush path does), or a plain
+   * array otherwise. This delivers the exact same sequence of individual
+   * notifications to subscribers (each subscriber callback is still invoked
+   * once per key, in order) while paying the per-call overhead (validity
+   * checks, subscriber lookups, buffer/flush scheduling) only once for the
+   * whole batch instead of once per key.
    *
    * @private
    */
-  notify(cacheKey: ResourceKey, value: 'attributes' | 'relationships', key?: string | string[] | null): boolean;
+  notify(cacheKey: ResourceKey, value: 'attributes' | 'relationships', key?: string | NotifyKeys | null): boolean;
   notify(cacheKey: ResourceKey, value: 'errors' | 'meta' | 'identity' | 'state', key?: null): boolean;
   notify(cacheKey: ResourceKey, value: CacheOperation, key?: null): boolean;
   notify(cacheKey: RequestKey, value: DocumentCacheOperation, key?: null): boolean;
   notify(
     cacheKey: ResourceKey | RequestKey,
     value: NotificationType | CacheOperation | DocumentCacheOperation,
-    key?: string | string[] | null
+    key?: string | NotifyKeys | null
   ): boolean {
     if (this.isDestroyed) {
       return false;
@@ -244,11 +266,13 @@ export class NotificationManager {
         this._buffered.set(cacheKey, buffer);
       }
 
-      if (Array.isArray(key)) {
-        for (let i = 0; i < key.length; i++) {
-          buffer.push([value, key[i]]);
+      if (isKeyBatch(key)) {
+        // iterate whichever shape we were handed (Array or Set) directly:
+        // neither is ever converted into the other.
+        for (const k of key) {
+          buffer.push([value, k]);
           if (LOG_METRIC_COUNTS) {
-            count(`notify ${'type' in cacheKey ? cacheKey.type : '<document>'} ${value} ${key[i]}`);
+            count(`notify ${'type' in cacheKey ? cacheKey.type : '<document>'} ${value} ${k}`);
           }
         }
       } else {

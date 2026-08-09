@@ -135,6 +135,44 @@ module('Integration | NotificationManager batch notifications', function () {
     store.notifications.unsubscribe(tokenB);
   });
 
+  test('notify(identifier, "attributes", keys: Set<string>) is also accepted, and delivers the same notifications as the array form', function (assert) {
+    const store = new TestStore();
+
+    const identifierArray = store.cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '1' });
+    const identifierSet = store.cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '2' });
+
+    const arrayCalls: Call[] = [];
+    const setCalls: Call[] = [];
+
+    const tokenArray = store.notifications.subscribe(
+      identifierArray,
+      (_key: ResourceKey, type: NotificationType, key?: string) => {
+        arrayCalls.push([type, key]);
+      }
+    );
+    const tokenSet = store.notifications.subscribe(
+      identifierSet,
+      (_key: ResourceKey, type: NotificationType, key?: string) => {
+        setCalls.push([type, key]);
+      }
+    );
+
+    // both an array and a Set of keys are accepted, and iterated in their own
+    // natural (insertion) order without ever being converted into the other
+    // shape internally.
+    store.notifications.notify(identifierArray, 'attributes', ['name', 'username', 'age']);
+    store.notifications.notify(identifierSet, 'attributes', new Set(['name', 'username', 'age']));
+
+    assert.deepEqual(
+      setCalls,
+      arrayCalls,
+      'passing a Set<string> of keys delivers the exact same sequence of notifications as passing the equivalent string[]'
+    );
+
+    store.notifications.unsubscribe(tokenArray);
+    store.notifications.unsubscribe(tokenSet);
+  });
+
   test('cache upsert with multiple changed attributes notifies once per changed attribute', function (assert) {
     const store = new TestStore();
 
@@ -157,6 +195,20 @@ module('Integration | NotificationManager batch notifications', function () {
       }
     );
 
+    // spy on the underlying `notify` to confirm the batch of changed keys
+    // computed internally by the cache (a `Set<string>` from
+    // `calculateChangedKeys`) is handed to `notify` as-is, never converted
+    // to an array first.
+    let batchKeyWasSet = false;
+    const originalNotify = store.notifications.notify.bind(store.notifications);
+    store.notifications.notify = ((...args: Parameters<typeof originalNotify>) => {
+      const [cacheKey, type, key] = args;
+      if (cacheKey === identifier && type === 'attributes' && key instanceof Set) {
+        batchKeyWasSet = true;
+      }
+      return originalNotify(...args);
+    }) as typeof store.notifications.notify;
+
     // a single push that changes multiple attributes on the same record at once,
     // simulating the N*M hot-path (here N=1 record, M=2 changed attributes) called
     // out in https://github.com/emberjs/data/issues/9667
@@ -166,10 +218,16 @@ module('Integration | NotificationManager batch notifications', function () {
       true
     );
 
+    store.notifications.notify = originalNotify;
+
     assert.deepEqual(
       seenKeys.sort(),
       ['age', 'name'].sort(),
       'we were notified exactly once for each attribute that actually changed'
+    );
+    assert.true(
+      batchKeyWasSet,
+      'the changed-keys Set computed by the cache was passed to notify() as a Set, without being converted to an array first'
     );
 
     store.notifications.unsubscribe(token);
@@ -215,12 +273,20 @@ module('Integration | NotificationManager batch notifications', function () {
     // Before this change, `CacheCapabilitiesManager#_flushNotifications` called
     // `notify` once per pending relationship key; now it should call it once
     // per identifier, carrying every pending key for that identifier at once.
+    // Also confirm the pending keys `Set<string>` collected by
+    // `CacheCapabilitiesManager#_pendingNotifies` is passed to `notify` as a
+    // `Set`, not converted to an array first (the relationships flush path
+    // already had a `Set` on hand, so there is no reason to convert it).
     let notifyCallCount = 0;
+    let batchKeyWasSet = false;
     const originalNotify = store.notifications.notify.bind(store.notifications);
     store.notifications.notify = ((...args: Parameters<typeof originalNotify>) => {
-      const [cacheKey, type] = args;
+      const [cacheKey, type, key] = args;
       if (cacheKey === identifier && type === 'relationships') {
         notifyCallCount++;
+        if (key instanceof Set) {
+          batchKeyWasSet = true;
+        }
       }
       return originalNotify(...args);
     }) as typeof store.notifications.notify;
@@ -253,6 +319,10 @@ module('Integration | NotificationManager batch notifications', function () {
       notifyCallCount,
       1,
       'both relationship keys were flushed to notify() in a single batched call, not once per key'
+    );
+    assert.true(
+      batchKeyWasSet,
+      'the pending-keys Set collected for this identifier was passed to notify() as a Set, without being converted to an array first'
     );
 
     store.notifications.unsubscribe(token);

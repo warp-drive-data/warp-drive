@@ -1,4 +1,4 @@
-import type { Store } from '@warp-drive/core';
+import type { NotifyKeys, Store } from '@warp-drive/core';
 import { LOG_CACHE } from '@warp-drive/core/build-config/debugging';
 import { DEPRECATE_RELATIONSHIP_REMOTE_UPDATE_CLEARING_LOCAL_STATE } from '@warp-drive/core/build-config/deprecations';
 import { DEBUG } from '@warp-drive/core/build-config/env';
@@ -1383,7 +1383,11 @@ export class JSONAPICache implements Cache {
     this._capabilities.notifyChange(identifier, 'state', null);
 
     if (dirtyKeys && dirtyKeys.length) {
-      notifyAttributes(this._capabilities, identifier, new Set(dirtyKeys));
+      // `dirtyKeys` is already a plain array (from `Object.keys`); hand it
+      // straight to `notifyAttributes` rather than wrapping it in a `Set`
+      // just to satisfy a parameter type - `notifyChange`/`notify` accept
+      // arrays natively, so no conversion is needed in either direction.
+      notifyAttributes(this._capabilities, identifier, dirtyKeys);
     }
 
     return dirtyKeys || [];
@@ -1821,7 +1825,7 @@ function getDefaultValue(
   }
 }
 
-function notifyAttributes(storeWrapper: CacheCapabilitiesManager, identifier: ResourceKey, keys?: Set<string>) {
+function notifyAttributes(storeWrapper: CacheCapabilitiesManager, identifier: ResourceKey, keys?: NotifyKeys) {
   if (!keys) {
     storeWrapper.notifyChange(identifier, 'attributes', null);
     return;
@@ -1834,7 +1838,12 @@ function notifyAttributes(storeWrapper: CacheCapabilitiesManager, identifier: Re
   // per changed attribute. This matters because this path runs once per
   // resource during a push/upsert, so with N records each having M changed
   // attributes the naive per-key approach costs O(N*M) in overhead alone.
-  storeWrapper.notifyChange(identifier, 'attributes', Array.from(keys));
+  //
+  // `keys` is handed off exactly as received (a `Set<string>` from
+  // `calculateChangedKeys`, or a plain `string[]` from `rollbackAttrs`) -
+  // `notifyChange`/`notify` accept either shape natively, so no `Array.from`
+  // or `new Set(...)` conversion happens on this path.
+  storeWrapper.notifyChange(identifier, 'attributes', keys);
 }
 
 /*
