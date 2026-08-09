@@ -38,8 +38,10 @@ export const entryPoints = [
   // store
   './src/store.ts',
   './src/store/-private.ts',
+  './src/store/-private/network/request-cache.ts',
   './src/configure.ts',
   './src/signals/-leaked.ts',
+  './src/signals/-private.ts',
 
   // graph
   './src/graph/-private.ts',
@@ -47,6 +49,8 @@ export const entryPoints = [
   // schema-record
   './src/reactive.ts',
   './src/reactive/-private.ts',
+  './src/reactive/-private/schema.ts',
+  './src/reactive/-private/fields/managed-array.ts',
 
   // build-config
   './src/build-config.ts',

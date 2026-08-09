@@ -19,6 +19,14 @@ export default function (babel) {
         if (state.opts.sources.includes(importPath)) {
           const specifiers = path.get('specifiers');
           specifiers.forEach((specifier) => {
+            // Rolldown emits a defensive `import * as X from '...'` fallback
+            // alongside a literal `export * from '...'` re-export (to cover
+            // cases where the target's exports aren't statically known). A
+            // namespace (or default) specifier isn't one of our named flags,
+            // so there's nothing to transform -- skip it.
+            if (!specifier.isImportSpecifier()) {
+              return;
+            }
             let name = specifier.node.imported.name;
             if (!(name in state.opts.flags)) {
               throw new Error(`Unexpected flag ${name} imported from ${importPath}`);

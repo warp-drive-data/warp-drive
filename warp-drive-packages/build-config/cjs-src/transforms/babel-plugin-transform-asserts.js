@@ -84,6 +84,14 @@ export default function (babel) {
           const specifiers = path.get('specifiers');
 
           specifiers.forEach((specifier) => {
+            // Rolldown emits a defensive `import * as X from '...'` fallback
+            // alongside a literal `export * from '...'` re-export (to cover
+            // cases where the target's exports aren't statically known). A
+            // namespace (or default) specifier isn't one of our named imports,
+            // so there's nothing to transform -- skip it.
+            if (!specifier.isImportSpecifier()) {
+              return;
+            }
             const name = specifier.node.imported.name;
             if (!Utils.has(name)) {
               throw new Error(`Unexpected import '${name}' imported from '${importPath}'`);
