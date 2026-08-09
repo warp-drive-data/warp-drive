@@ -40,10 +40,17 @@ export type LooseStoreRequestInfo<RT = unknown> = Omit<
   headers?: Headers;
 };
 
+/**
+ * The request shape accepted by {@link Store.request}, either a fully-formed
+ * {@link ImmutableRequestInfo} or the looser {@link LooseStoreRequestInfo}.
+ */
 export type StoreRequestInput<RT = unknown> = ImmutableRequestInfo<RT> | LooseStoreRequestInfo<RT>;
 
 export interface StoreRequestContext extends RequestContext {
-  request: ImmutableRequestInfo & { store: Store };
+  request: ImmutableRequestInfo & {
+    /** the store instance the request was issued through, used to enable store-aware cache handling. */
+    store: Store;
+  };
 }
 
 /**
