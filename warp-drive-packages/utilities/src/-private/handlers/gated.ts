@@ -13,7 +13,13 @@ type CheckFn = (context: RequestContext) => boolean;
  * @public
  */
 export class Gate implements Handler {
+  /**
+   * The wrapped handler to invoke when {@link Gate.checkFn | checkFn} returns `true`.
+   */
   declare handler: Handler;
+  /**
+   * The predicate used to decide whether {@link Gate.handler | handler} should run for a given request.
+   */
   declare checkFn: CheckFn;
 
   constructor(handler: Handler, checkFn: CheckFn) {

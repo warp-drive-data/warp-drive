@@ -37,8 +37,24 @@ export type JsonApiResourcePatch =
  * @param identifiers - the resource(s) to serialize
  * @return an object with a `data` property containing the serialized resource(s)
  */
-export function serializeResources(cache: Cache, identifiers: ResourceKey): { data: ResourceObject };
-export function serializeResources(cache: Cache, identifiers: ResourceKey[]): { data: ResourceObject[] };
+export function serializeResources(
+  cache: Cache,
+  identifiers: ResourceKey
+): {
+  /**
+   * The serialized resource.
+   */
+  data: ResourceObject;
+};
+export function serializeResources(
+  cache: Cache,
+  identifiers: ResourceKey[]
+): {
+  /**
+   * The serialized resources.
+   */
+  data: ResourceObject[];
+};
 export function serializeResources(
   cache: Cache,
   identifiers: ResourceKey | ResourceKey[]
@@ -142,7 +158,12 @@ export function serializePatch(
   cache: Cache,
   identifier: ResourceKey
   // options: { include?: string[] } = {}
-): { data: JsonApiResourcePatch } {
+): {
+  /**
+   * The serialized resource patch.
+   */
+  data: JsonApiResourcePatch;
+} {
   const { id, lid, type } = identifier;
   assert(
     `A record with id ${String(id)} and type ${type} for lid ${lid} was not found not in the supplied Cache.`,
