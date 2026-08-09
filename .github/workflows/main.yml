@@ -88,6 +88,9 @@ jobs:
         env:
           WARP_DRIVE_FEATURE_OVERRIDE: ${{ matrix.feature-override }}
           EMBER_DATA_FULL_COMPAT: ${{ matrix.full-compat }}
+          # TEMPORARY: identifying the specific test that hangs @warp-drive/legacy-tests
+          # under test:production+full-compat; remove once found.
+          DISPLAY_TEST_NAMES: true
 
   browser-tests:
     timeout-minutes: 22
