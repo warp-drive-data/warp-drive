@@ -72,7 +72,19 @@ function colorForBucket(isLight: boolean, scope: SCOPE, bucket: string) {
   return badge(isLight, TEXT_COLORS[scope][3], BG_COLORS[scope][3], NOTIFY_BORDER[scope][3]);
 }
 
+/**
+ * Opens a collapsed console group for a `cache` scoped debug message, using
+ * `type`/`lid`/`bucket`/`key` to build the colorized group label.
+ *
+ * @private
+ */
 export function logGroup(scope: 'cache', prefix: string, type: string, lid: string, bucket: string, key: string): void;
+/**
+ * Opens a collapsed console group for a `reactive-ui` scoped debug message.
+ * The trailing `key` segment is unused for this scope and must be an empty string.
+ *
+ * @private
+ */
 export function logGroup(
   scope: 'reactive-ui',
   prefix: string,
@@ -81,7 +93,19 @@ export function logGroup(
   bucket: string,
   key: ''
 ): void;
+/**
+ * Opens a collapsed console group for a `notify` scoped debug message, using
+ * `type`/`lid`/`bucket`/`key` to build the colorized group label.
+ *
+ * @private
+ */
 export function logGroup(scope: 'notify', prefix: string, type: string, lid: string, bucket: string, key: string): void;
+/**
+ * Implementation for {@link logGroup}. Builds the colorized label for the
+ * given scope via `_log` and opens it as a collapsed `console.groupCollapsed`.
+ *
+ * @private
+ */
 export function logGroup(
   scope: SCOPE,
   prefix: string,
@@ -94,10 +118,40 @@ export function logGroup(
   console.groupCollapsed(..._log(scope, prefix, subScop1, subScop2, subScop3, subScop4));
 }
 
+/**
+ * Logs a colorized, scoped debug message to the console for the `request`
+ * scope, using `type`/`lid`/`bucket`/`key` to describe the request being logged.
+ *
+ * @private
+ */
 export function log(scope: 'request', prefix: string, type: string, lid: string, bucket: string, key: string): void;
+/**
+ * Logs a colorized, scoped debug message to the console for the `cache`
+ * scope, using `type`/`lid`/`bucket`/`key` to describe the cache operation being logged.
+ *
+ * @private
+ */
 export function log(scope: 'cache', prefix: string, type: string, lid: string, bucket: string, key: string): void;
+/**
+ * Logs a colorized, scoped debug message to the console for the `reactive-ui`
+ * scope. The trailing `key` segment is unused for this scope and must be an empty string.
+ *
+ * @private
+ */
 export function log(scope: 'reactive-ui', prefix: string, type: string, lid: string, bucket: string, key: ''): void;
+/**
+ * Logs a colorized, scoped debug message to the console for the `notify`
+ * scope, using `type`/`lid`/`bucket`/`key` to describe the notification being logged.
+ *
+ * @private
+ */
 export function log(scope: 'notify', prefix: string, type: string, lid: string, bucket: string, key: string): void;
+/**
+ * Implementation for {@link log}. Builds the colorized message for the given
+ * scope via `_log` and writes it to the console with `console.log`.
+ *
+ * @private
+ */
 export function log(
   scope: SCOPE,
   prefix: string,

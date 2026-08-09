@@ -5,19 +5,57 @@ import { isResourceKey } from '../managers/cache-key-manager.ts';
 import { coerceId } from './coerce-id.ts';
 import { isNonEmptyString } from './is-non-empty-string.ts';
 
+/**
+ * Given an existing resource identifier object (or a {@link ResourceKey}),
+ * returns it unchanged aside from coercing its `id`, if present, to a string.
+ *
+ * @private
+ */
 export function constructResource(type: ResourceIdentifierObject): ResourceIdentifierObject;
+/**
+ * Builds a resource identifier from a `type`, `id`, and `lid`, all of which
+ * are known to be present, producing an {@link ExistingResourceIdentifierObject}.
+ *
+ * @private
+ */
 export function constructResource(type: string, id: string, lid: string): ExistingResourceIdentifierObject;
+/**
+ * Builds a resource identifier from a `lid` alone, for the case where `type`
+ * and `id` are not (yet) known.
+ *
+ * @private
+ */
 export function constructResource(
   type: string | undefined,
   id: null | undefined,
   lid: string
 ): ExistingResourceIdentifierObject;
+/**
+ * Builds a resource identifier from a `type` and `id`, with an optional `lid`,
+ * producing an {@link ExistingResourceIdentifierObject}.
+ *
+ * @private
+ */
 export function constructResource(type: string, id: string, lid?: string | null): ExistingResourceIdentifierObject;
+/**
+ * Builds a resource identifier from a `type` and an optional `id`/`lid`. If no
+ * usable `id` is provided, falls back to constructing a `lid`-only identifier.
+ *
+ * @private
+ */
 export function constructResource(
   type: string,
   id?: string | number | null,
   lid?: string | null
 ): ResourceIdentifierObject;
+/**
+ * Implementation for {@link constructResource}. Normalizes the supplied
+ * `type`/`id`/`lid` (or existing resource identifier object) into a valid
+ * {@link ResourceIdentifierObject}, coercing the id and asserting that enough
+ * information was provided to identify the resource.
+ *
+ * @private
+ */
 export function constructResource(
   type: string | ResourceIdentifierObject | undefined,
   id?: string | number | null,
