@@ -3,7 +3,7 @@
 | `template-always-use-request-content` | 🐞 | |
 
 > [!TIP]
-> This rule requires a template-aware parser. See [Template Rules](../../README.md#template-rules) for setup.
+> This rule requires a template-aware parser. See [Template Rules](/guides/linting/#template-rules) for setup.
 
 `<Request>` is a component for declaratively resolving a request's `idle` / `loading` / `cancelled`
 / `error` / `content` states in a template. Using it without ever consuming the resolved result is
