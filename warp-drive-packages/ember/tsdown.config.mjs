@@ -1,5 +1,4 @@
-import { gjs } from '@warp-drive/internal-config/rollup/gjs.js';
-import { createConfig } from '@warp-drive/internal-config/vite/config.js';
+import { createConfig } from '@warp-drive/internal-config/tsdown/config.js';
 
 export const externals = [
   '@ember/template-compilation',
@@ -22,8 +21,6 @@ export default createConfig(
   {
     entryPoints,
     externals,
-    plugins: [gjs()],
-    useGlint: true,
     compileTypes: process.env.IS_UNPKG_BUILD !== 'true',
   },
   import.meta.resolve
