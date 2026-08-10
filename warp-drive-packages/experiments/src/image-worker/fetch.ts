@@ -4,6 +4,8 @@ import type { Deferred } from '@warp-drive/core/request';
 import { createDeferred } from '@warp-drive/core/request';
 
 import type { MainThreadEvent, RequestEventData } from './types';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import type { ImageWorker } from './worker';
 
 export interface FastBoot {
   require(moduleName: string): unknown;
@@ -14,6 +16,19 @@ export interface FastBoot {
 // @ts-expect-error untyped global
 const isServerEnv = typeof FastBoot !== 'undefined';
 
+/**
+ * Main-thread client for an {@link ImageWorker}. Sends image `load`
+ * requests to a `Worker` or `SharedWorker` running an `ImageWorker`.
+ *
+ * In FastBoot/SSR, or when constructed with a `null` worker, `ImageFetch`
+ * skips worker communication entirely: {@link ImageFetch.load} resolves
+ * immediately with the given url.
+ *
+ * A plain `Worker` is only accepted when running in a `TESTING` build;
+ * production usage requires a `SharedWorker`.
+ *
+ * @public
+ */
 export class ImageFetch {
   declare worker: Worker | SharedWorker;
   declare threadId: string;
@@ -21,6 +36,11 @@ export class ImageFetch {
   declare channel: MessageChannel;
   declare cache: Map<string, string>;
 
+  /**
+   * @param worker - the `Worker` or `SharedWorker` running an
+   * {@link ImageWorker}, or `null` to disable worker communication (e.g.
+   * in FastBoot/SSR).
+   */
   constructor(worker: Worker | SharedWorker | null) {
     this.threadId = isServerEnv ? '' : crypto.randomUUID();
     this.pending = new Map();
@@ -73,6 +93,18 @@ export class ImageFetch {
     this.worker instanceof SharedWorker ? this.worker.port.postMessage(event) : this.channel.port1.postMessage(event);
   }
 
+  /**
+   * Requests that the given image url be loaded by the connected
+   * {@link ImageWorker}, resolving with the same `url` once the worker
+   * confirms the image has been fetched (or immediately, in SSR/FastBoot
+   * or when this instance was constructed with a `null` worker).
+   *
+   * Calling `load` again for a url that is already in-flight on this
+   * instance replaces the pending request rather than joining it — only
+   * the most recently issued call for a given url will resolve.
+   *
+   * @public
+   */
   load(url: string): Promise<string> {
     if (isServerEnv) {
       return Promise.resolve(url);
