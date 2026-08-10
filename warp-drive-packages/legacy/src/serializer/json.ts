@@ -1014,8 +1014,15 @@ const JSONSerializer: any = Serializer.extend({
     `includeId`. If this option is `true`, `serialize` will,
     by default include the ID in the JSON object it builds.
 
-    The adapter passes in `includeId: true` when serializing
-    a record for `createRecord`, but not for `updateRecord`.
+    Whether `includeId` is `true` or `false` depends on the
+    adapter and the operation being performed, since it is the
+    adapter that invokes `serialize` and decides which options
+    to pass. For instance, `RESTAdapter` passes `includeId: true`
+    when serializing a record for `createRecord`, but not for
+    `updateRecord`, while `JSONAPIAdapter` passes `includeId: true`
+    for both `createRecord` and `updateRecord`. Refer to the
+    documentation for the adapter and serializer pairing you are
+    using for specifics.
 
     ## Customization
 

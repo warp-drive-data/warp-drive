@@ -542,7 +542,7 @@ const RESTSerializer: any = (JSONSerializer as typeof EmberObject).extend({
     `includeId`. If this option is `true`, `serialize` will,
     by default include the ID in the JSON object it builds.
 
-    The adapter passes in `includeId: true` when serializing
+    The RESTAdapter passes in `includeId: true` when serializing
     a record for `createRecord`, but not for `updateRecord`.
 
     ## Customization
