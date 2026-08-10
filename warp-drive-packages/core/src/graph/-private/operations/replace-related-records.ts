@@ -344,17 +344,27 @@ function replaceRelatedRecordsRemote(graph: Graph, op: ReplaceRelatedRecordsOper
     }
   }
 
-  // Gate on `diff.remoteOrderChanged` (a pure remote-vs-remote membership/order
-  // comparison) rather than the `isDirty` false->true transition. The isDirty
-  // transition is what local/editable consumers re-arm themselves via
-  // `computeLocalState` on every read, but a reader that never touches
-  // `computeLocalState` (e.g. a `linksMode` array reading only remote state)
-  // never resets it, so `isDirty` can latch `true` forever after the first
-  // remote change and this would silently stop firing on every change after.
-  // `remoteOrderChanged` has no such latch: it directly answers "did remote
-  // membership or order actually change," so it's correct to gate on
-  // unconditionally, for every reader, every time.
-  if (diff.remoteOrderChanged) {
+  // Gate on the original `isDirty` false->true transition *or* on
+  // `diff.remoteOrderChanged`, not `remoteOrderChanged` alone.
+  //
+  // The `isDirty` transition is required for the deprecated
+  // `resetOnRemoteUpdate`/`DEPRECATE_RELATIONSHIP_REMOTE_UPDATE_CLEARING_LOCAL_STATE`
+  // path above: it can mark `isDirty` (by way of `diff.changed`) even when
+  // remote membership/order has not itself changed at all -- e.g. a local
+  // reorder followed by the *same* remote data being pushed again needs to
+  // still flush and reconcile local back to remote order, but
+  // `diff.remoteOrderChanged` alone would be `false` for that push since
+  // remote-vs-remote is unchanged.
+  //
+  // `diff.remoteOrderChanged` is needed in addition, not as a replacement,
+  // because the `isDirty` transition only fires the first time the
+  // relationship becomes dirty: a local/editable consumer re-arms it back to
+  // clean via `computeLocalState` on every read, but a reader that never
+  // touches `computeLocalState` (e.g. a `linksMode` array reading only
+  // remote state) never does, so `isDirty` can latch `true` forever after
+  // the first remote change and every subsequent genuine remote reorder
+  // would otherwise silently stop notifying it.
+  if ((relationship.isDirty && !wasDirty) || diff.remoteOrderChanged) {
     flushCanonical(graph, relationship);
   }
 }
