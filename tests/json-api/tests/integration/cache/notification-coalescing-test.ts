@@ -91,6 +91,43 @@ module('Integration | NotificationManager buffer coalescing', function () {
     store.notifications.unsubscribe(token);
   });
 
+  test('two notify() calls with the same single string key for `relationships` (not a Set/batch) before one flush deliver exactly one notification', function (assert) {
+    // `relationships` historically only ever reached `notify()` pre-batched
+    // as a single `Set` (built by `CacheCapabilitiesManager`'s own
+    // accumulation), so the buffer's merge logic never had to dedupe two
+    // *separate* single-string-key calls to the `relationships` namespace
+    // specifically. This proves that path directly, in isolation from
+    // `CacheCapabilitiesManager`/the store/cache stack entirely: the merge
+    // logic for `'relationships'` is the exact same code path as
+    // `'attributes'` (see `mergeIntoBuffer` in notification-manager.ts), so
+    // this is the `relationships`-specific counterpart to the identical test
+    // above for `attributes`.
+    const store = new TestStore();
+    const identifier = store.cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '1' });
+
+    const calls: Call[] = [];
+    const token = store.notifications.subscribe(
+      identifier,
+      (_key: ResourceKey, type: NotificationType, key?: string | null) => {
+        calls.push([type, key]);
+      }
+    );
+
+    const restore = deferFlushes(store);
+    store.notifications.notify(identifier, 'relationships', 'key');
+    store.notifications.notify(identifier, 'relationships', 'key');
+    restore();
+    flush(store);
+
+    assert.deepEqual(
+      calls,
+      [['relationships', 'key']],
+      'the redundant second notify() call for the same relationships key was coalesced into the first, delivering exactly one notification'
+    );
+
+    store.notifications.unsubscribe(token);
+  });
+
   test('a keyless call after keyed calls upgrades the namespace to a wildcard delivery', function (assert) {
     const store = new TestStore();
     const identifier = store.cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '1' });
