@@ -1,3 +1,5 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import type { ImageFetch } from './fetch';
 import type { RequestEventData, ThreadInitEventData, WorkerThreadEvent } from './types';
 
 const WorkerScope = (globalThis as unknown as { SharedWorkerGlobalScope: FunctionConstructor }).SharedWorkerGlobalScope;
@@ -8,6 +10,25 @@ async function loadImage(url: string): Promise<string> {
   return URL.createObjectURL(fileBlob);
 }
 
+/**
+ * Runs inside a `Worker` or `SharedWorker` to fetch images on behalf of
+ * one or more {@link ImageFetch} instances running on the main thread(s)
+ * that connect to it.
+ *
+ * Each connecting thread registers itself by sending a `connect` message
+ * along with a {@link MessagePort}. When a thread sends a `load` request
+ * for a url, the worker fetches the image via `fetch`, converts the
+ * response into a `Blob`, and creates an object url for it via
+ * `URL.createObjectURL`. The fetch for a given url is deduped and cached
+ * in-memory for the lifetime of the worker, so repeat `load` requests for
+ * the same url — whether from the same or a different connected thread —
+ * do not trigger another network request.
+ *
+ * Only intended for use inside a Worker context: constructing an
+ * `ImageWorker` on the main thread is a no-op.
+ *
+ * @public
+ */
 export class ImageWorker {
   declare private threads: Map<string, MessagePort>;
   declare private pendingImages: Map<string, Promise<string>>;
@@ -15,6 +36,9 @@ export class ImageWorker {
   declare private isSharedWorker: boolean;
   declare private cache: Map<string, string>;
 
+  /**
+   * @param options.persisted - reserved for a future on-disk cache; currently unused.
+   */
   constructor(options?: { persisted: boolean }) {
     // disable if running on main thread
     if (typeof window !== 'undefined') {
@@ -40,7 +64,10 @@ export class ImageWorker {
       return pending;
     }
 
-    const promise = loadImage(url);
+    const promise = loadImage(url).then((loadedObjectUrl) => {
+      this.cache.set(url, loadedObjectUrl);
+      return loadedObjectUrl;
+    });
     this.pendingImages.set(url, promise);
     return promise.finally(() => {
       this.pendingImages.delete(url);
