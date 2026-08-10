@@ -130,6 +130,11 @@ export class ManagedObject {
 
       set(target: object, prop: KeyType, value: unknown, receiver: object) {
         assert(`Cannot set read-only property '${String(prop)}' on ManagedObject`, context.editable);
+        // `assert` is stripped in production, so without this the write below would silently
+        // succeed against the underlying writable `target` instead of being rejected.
+        if (!context.editable) {
+          return false;
+        }
 
         // since objects function as dictionaries, we can't defer to schema/data before extensions
         // unless the prop is in the existing data.
