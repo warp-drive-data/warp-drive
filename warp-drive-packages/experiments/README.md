@@ -27,5 +27,5 @@
 
 - [DataWorker](./src/data-worker/README.md)
 - [DocumentStorage](./src/document-storage/README.md)
-- [ImageWorker](./src/image-worker/README.md)
+- [ImageWorker](./src/image-worker.md)
 - ReactiveStorage
