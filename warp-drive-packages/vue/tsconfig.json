@@ -43,6 +43,8 @@
       "@warp-drive/core/*": ["../core/src/*"]
     },
     "erasableSyntaxOnly": true,
+    "isolatedDeclarations": true,
+    "isolatedModules": true,
     "lib": ["ESNext", "DOM"],
     "moduleDetection": "force"
   },
