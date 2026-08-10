@@ -1,5 +1,18 @@
+import fs from 'fs';
+import path from 'path';
+
 import { exec } from '../../../utils/cmd.ts';
 import { Package } from '../../../utils/package.ts';
+
+/**
+ * Packages migrated to tsdown (e.g. `@warp-drive/core`) have no `vite.config.mjs`
+ * and no `vite` dependency, so `pnpm exec vite build` fails for them. tsdown's
+ * `--out-dir` flag is a drop-in replacement for vite's `--outDir`.
+ */
+function buildCommandFor(pkg: Package, outDir: string): string {
+  const usesTsdown = fs.existsSync(path.join(pkg.projectPath, 'tsdown.config.mjs'));
+  return usesTsdown ? `pnpm exec tsdown --out-dir ${outDir}` : `pnpm exec vite build --outDir ${outDir}`;
+}
 
 function extractValuePath(value: string): string {
   if (!value.startsWith('./dist/')) {
@@ -100,7 +113,7 @@ export async function amendFilesForUnpkg(pkg: Package) {
   try {
     await exec({
       cwd: pkg.projectPath,
-      cmd: `pnpm exec vite build --outDir dist/unpkg/prod`,
+      cmd: buildCommandFor(pkg, 'dist/unpkg/prod'),
       env: {
         ...process.env,
         NODE_ENV: 'production',
@@ -117,7 +130,7 @@ export async function amendFilesForUnpkg(pkg: Package) {
   try {
     await exec({
       cwd: pkg.projectPath,
-      cmd: `pnpm exec vite build --outDir dist/unpkg/prod-deprecated`,
+      cmd: buildCommandFor(pkg, 'dist/unpkg/prod-deprecated'),
       env: {
         ...process.env,
         NODE_ENV: 'production',
@@ -134,7 +147,7 @@ export async function amendFilesForUnpkg(pkg: Package) {
   try {
     await exec({
       cwd: pkg.projectPath,
-      cmd: `pnpm exec vite build --outDir dist/unpkg/dev`,
+      cmd: buildCommandFor(pkg, 'dist/unpkg/dev'),
       env: {
         ...process.env,
         NODE_ENV: 'development',
@@ -151,7 +164,7 @@ export async function amendFilesForUnpkg(pkg: Package) {
   try {
     await exec({
       cwd: pkg.projectPath,
-      cmd: `pnpm exec vite build --outDir dist/unpkg/dev-deprecated`,
+      cmd: buildCommandFor(pkg, 'dist/unpkg/dev-deprecated'),
       env: {
         ...process.env,
         NODE_ENV: 'development',

@@ -10,7 +10,8 @@
     ".pnpm-workspace.yaml",
     "patches/*",
     ".github/*",
-    "./tools/release/**"
+    "./tools/release/**",
+    "./tools/internal-config/**"
   ],
 
   "envMode": "loose",
@@ -39,6 +40,7 @@
         "babel.*",
         "vite.config-cjs.*", // build-config package
         "vite.config.*",
+        "tsdown.config.*",
         "../../config/**"
       ],
       "outputs": [

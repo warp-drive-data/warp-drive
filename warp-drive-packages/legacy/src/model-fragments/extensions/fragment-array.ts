@@ -1,8 +1,7 @@
 import { cached, tracked } from '@glimmer/tracking';
 
 import type { CAUTION_MEGA_DANGER_ZONE_Extension } from '@warp-drive/core/reactive';
-import { Context } from '@warp-drive/core/reactive/-private';
-import type { ManagedArray } from '@warp-drive/core/reactive/-private/fields/managed-array';
+import { Context, type ManagedArray } from '@warp-drive/core/reactive/-private';
 
 import type Model from '../../model.ts';
 import type { WithFragmentArray } from '../index.ts';
@@ -29,15 +28,11 @@ export class FragmentArray<T extends Fragment> {
   @cached
   get hasDirtyAttributes(): boolean {
     const array = this as unknown as ManagedArray;
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const context = array[Context];
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const { path, resourceKey, store } = context;
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
     const record = store.peekRecord(resourceKey) as Model;
 
     if (record.hasDirtyAttributes && path) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
       const root = path.at(0) as string;
       return root in record.changedAttributes();
     }

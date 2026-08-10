@@ -1,12 +1,12 @@
 import { assert } from '@warp-drive/core/build-config/macros';
-import type { SignalStore } from '@warp-drive/core/signals/-private';
+import type { SignalStore } from '@warp-drive/core/signals/-leaked';
 import {
   defineSignal,
   entangleSignal,
   getOrCreateInternalSignal,
   notifyInternalSignal,
   withSignalStore,
-} from '@warp-drive/core/signals/-private';
+} from '@warp-drive/core/signals/-leaked';
 
 /**
  * A reactive wrapper around the browser's Map API that provides

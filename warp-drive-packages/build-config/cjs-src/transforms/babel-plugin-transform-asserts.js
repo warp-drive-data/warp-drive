@@ -77,6 +77,14 @@ export default function (babel) {
           const specifiers = path.get('specifiers');
 
           specifiers.forEach((specifier) => {
+            // Rolldown emits a defensive `import * as X from '...'` fallback
+            // alongside a literal `export * from '...'` re-export (to cover
+            // cases where the target's exports aren't statically known). A
+            // namespace (or default) specifier isn't one of our named imports,
+            // so there's nothing to transform -- skip it.
+            if (!specifier.isImportSpecifier()) {
+              return;
+            }
             const name = specifier.node.imported.name;
             if (!Utils.has(name)) {
               throw new Error(`Unexpected import '${name}' imported from '${importPath}'`);
@@ -84,6 +92,15 @@ export default function (babel) {
 
             const localBindingName = specifier.node.local.name;
             const binding = specifier.scope.getBinding(localBindingName);
+
+            // A binding that's re-exported (`export { assert }`) is a pass-through,
+            // not a call site -- there's nothing to expand at its export-specifier
+            // reference (and it isn't a CallExpression, so the check below would
+            // throw). Leave it untouched; the re-export defers this to wherever
+            // it's finally called.
+            if (binding.referencePaths.some((p) => p.parentPath.isExportSpecifier())) {
+              return;
+            }
 
             binding.referencePaths.forEach((p) => {
               const originalCallExpression = p.parentPath.node;

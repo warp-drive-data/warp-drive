@@ -33,11 +33,10 @@
       "default": "./dist/*.js"
     }
   },
-  "peerDependencies": {},
   "dependencies": {
-    "signal-polyfill": "0.2.2",
+    "@embroider/macros": "^1.20.6",
     "@warp-drive/core": "workspace:*",
-    "@embroider/macros": "^1.19.6"
+    "signal-polyfill": "0.2.2"
   },
   "peerDependenciesMeta": {},
   "devDependencies": {
@@ -46,8 +45,8 @@
     "@babel/preset-env": "^7.28.3",
     "@babel/preset-typescript": "^7.27.1",
     "@babel/runtime": "^7.28.3",
-    "@warp-drive/internal-config": "workspace:*",
     "@warp-drive/core": "workspace:*",
+    "@warp-drive/internal-config": "workspace:*",
     "rollup": "^4.48.0",
     "typescript": "^5.9.3",
     "vite": "^7.3.1"
