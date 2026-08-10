@@ -19,11 +19,11 @@
     "warpdrive"
   ],
   "scripts": {
-    "build:pkg": "vite build",
+    "build:pkg": "tsdown",
     "prepack": "pnpm run build:pkg",
     "sync": "echo \"syncing\"",
     "lint": "eslint . --quiet --cache --cache-strategy=content",
-    "start": "vite"
+    "start": "tsdown --watch"
   },
   "files": [
     "declarations",
@@ -58,13 +58,13 @@
     "@babel/preset-typescript": "^7.27.1",
     "@babel/runtime": "^7.28.3",
     "@embroider/addon-dev": "^8.1.0",
-    "@vitejs/plugin-vue": "^6.0.1",
     "@warp-drive/core": "workspace:*",
     "@warp-drive/internal-config": "workspace:*",
     "decorator-transforms": "^2.3.0",
     "rollup": "^4.48.0",
+    "tsdown": "^0.22.14",
     "typescript": "^5.9.3",
-    "vite": "^7.3.1",
+    "unplugin-vue": "^7.2.0",
     "vue": "^3.5.19",
     "vue-tsc": "^3.0.6"
   },
