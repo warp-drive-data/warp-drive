@@ -536,7 +536,7 @@ that consumers should stop using the tagged function, component, or
 object because it is actively being removed.
 
 - Whenever possible, link the `@recommended` replacement.
-- If the deprecation is tracked by [the deprecations guide](/api/@warp-drive/build-config/deprecations)
+- If the deprecation is tracked by [the deprecations guide](/api/@warp-drive/build-config/deprecations/)
   (i.e. it has a deprecation id like `ember-data:deprecate-store-extends-ember-object`
   and a corresponding `DEPRECATE_*` flag), link both the guide and the
   specific deprecation id using `@id`.
