@@ -200,6 +200,47 @@ module('integration/serializers/json-api-serializer - JSONAPISerializer', functi
     assert.strictEqual(user.firstName, 'Yehuda', 'firstName is correct');
   });
 
+  testInDebug('Warns but does not fail when pushing an array payload containing an unknown type', function (assert) {
+    const store = this.owner.lookup('service:store');
+
+    var documentHash = {
+      data: [
+        {
+          type: 'users',
+          id: '1',
+          attributes: {
+            'first-name': 'Yehuda',
+            'last-name': 'Katz',
+          },
+        },
+        {
+          type: 'unknown-types',
+          id: '2',
+          attributes: {
+            name: 'WyKittens',
+          },
+        },
+        {
+          type: 'users',
+          id: '3',
+          attributes: {
+            'first-name': 'Tom',
+            'last-name': 'Dale',
+          },
+        },
+      ],
+    };
+
+    assert.expectWarning(function () {
+      store.pushPayload(documentHash);
+    }, /Encountered a resource object with type "unknown-types", but no model was found for model name "unknown-type"/);
+
+    const users = store.peekAll('user');
+    assert.strictEqual(users.length, 2, 'only the known-type records were pushed');
+    assert.strictEqual(users.at(0).firstName, 'Yehuda', 'firstName is correct');
+    assert.strictEqual(users.at(1).firstName, 'Tom', 'firstName is correct');
+  });
+
   testInDebug('Errors when pushing payload with unknown type included in relationship', function (assert) {
     const store = this.owner.lookup('service:store');
 
