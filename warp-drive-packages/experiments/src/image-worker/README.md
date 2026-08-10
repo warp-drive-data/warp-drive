@@ -72,6 +72,26 @@ import { ImageWorker } from '@warp-drive/experiments/image-worker';
 new ImageWorker();
 ```
 
+> [!TIP]
+> Your worker file is loaded via `new URL(...)`, not a static import, so bundlers
+> that statically analyze/prune app files need to be told to leave it alone.
+> With Embroider, add its containing directory to `staticAppPaths`; with Vite,
+> exclude it from dependency optimization:
+>
+> ```js
+> // ember-cli-build.js
+> return maybeEmbroider(app, {
+>   staticAppPaths: ['workers'],
+> });
+> ```
+>
+> ```js
+> // vite.config.mjs
+> optimizeDeps: {
+>   exclude: ['!workers*', '!*workers'],
+> },
+> ```
+
 ### Step 2. Use It From Your Application
 
 ```ts
@@ -86,6 +106,65 @@ await images.load('https://example.com/cat.png');
 > [!TIP]
 > SharedWorker and Worker are both supported; however, SharedWorker is preferred.
 > Worker is only usable in test environments.
+
+#### Usage as an Ember Service
+
+Registering `ImageFetch` as a service makes it easy to inject anywhere you
+need to load or preload an image, and to pair with
+[`getPromiseState`](https://docs.warp-drive.io/guides/the-manual/reactivity/derivation)
+from `@warp-drive/ember` to render its result reactively.
+
+```ts
+// app/services/images.ts
+import { ImageFetch } from '@warp-drive/experiments/image-fetch';
+
+export default {
+  create() {
+    return new ImageFetch(
+      new SharedWorker(new URL('../workers/image-worker.ts', import.meta.url), {
+        name: 'ImageWorker',
+        type: 'module',
+      }),
+    );
+  },
+};
+```
+
+```gts
+import Component from '@glimmer/component';
+import { service } from '@ember/service';
+import { cached } from '@glimmer/tracking';
+import { on } from '@ember/modifier';
+import { getPromiseState } from '@warp-drive/ember';
+import type { ImageFetch } from '@warp-drive/experiments/image-fetch';
+
+export default class Thumbnail extends Component<{ Args: { url: string; hiresUrl: string } }> {
+  @service declare images: ImageFetch;
+
+  // warm the worker's cache for the hires image before the user clicks into it
+  preload = () => this.images.load(this.args.hiresUrl);
+
+  @cached
+  get thumbnailUrl() {
+    const state = getPromiseState(this.images.load(this.args.url));
+    return state.isPending || state.isError ? null : state.result;
+  }
+
+  <template>
+    {{#if this.thumbnailUrl}}
+      <img src={{this.thumbnailUrl}} {{on 'pointerenter' this.preload}} alt='' />
+    {{else}}
+      <div class='thumbnail-loading'></div>
+    {{/if}}
+  </template>
+}
+```
+
+> [!NOTE]
+> Because of the limitation noted above, `thumbnailUrl` above resolves to the
+> original image url rather than a blob url — the `<img>` still benefits from
+> the worker's fetch deduplication and the browser's HTTP cache, just not from
+> an in-memory blob url.
 
 #### Usage in SSR
 
@@ -109,3 +188,10 @@ const worker = macroCondition(isTesting())
 
 const images = new ImageFetch(worker);
 ```
+
+## Example App
+
+[ember-polaris-pokedex](https://github.com/IgnaceMaes/ember-polaris-pokedex/pull/2)
+wires up `ImageWorker`/`ImageFetch` (alongside `DataWorker`) in a real Ember app,
+including the service + `getPromiseState` pattern shown above and the
+Embroider/Vite bundler config needed to ship the worker files.
