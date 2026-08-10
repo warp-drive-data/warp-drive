@@ -1,7 +1,7 @@
 import type { RequestKey, ResourceKey } from '../../../types/identifier.ts';
 import type { SchemaService } from '../../../types/schema/schema-service.ts';
 import type { CacheKeyManager } from '../../-private/managers/cache-key-manager.ts';
-import type { NotificationType } from '../../-private/managers/notification-manager.ts';
+import type { NotificationType, NotifyKeys } from '../../-private/managers/notification-manager.ts';
 
 /**
  * CacheCapabilitiesManager provides encapsulated API access to the minimal
@@ -99,6 +99,22 @@ export type CacheCapabilitiesManager = {
    */
   notifyChange(identifier: RequestKey, namespace: 'added' | 'updated' | 'removed', key: null): void;
   /**
+   * Notify subscribers that one or more attributes on a resource have
+   * changed. `key` may be a single attribute name, or - since 5.9.0 - a
+   * `Set<string>` of attribute names. This is useful when many attributes on
+   * the same resource have changed at once (for instance after applying a
+   * bulk update): passing the full `Set` of changed keys in a single call is
+   * equivalent to calling `notifyChange` once per key (subscribers still
+   * receive one notification per key, in the same order), but avoids
+   * repeating the per-call bookkeeping (subscriber lookups, buffer
+   * scheduling, etc) for every key. The `Set` is iterated as-is and never
+   * converted to or from an array.
+   *
+   * @since 5.9.0
+   * @public
+   */
+  notifyChange(identifier: ResourceKey, namespace: 'attributes', key: string | NotifyKeys | null): void;
+  /**
    * Notify subscribers of a change to a resource for any other
    * {@link NotificationType}. `attributes` and `relationships` do not
    * require a key, but if one is specified it is assumed to be the name
@@ -116,6 +132,6 @@ export type CacheCapabilitiesManager = {
   notifyChange(
     identifier: ResourceKey | RequestKey,
     namespace: NotificationType | 'added' | 'removed' | 'updated',
-    key: string | null
+    key: string | NotifyKeys | null
   ): void;
 };

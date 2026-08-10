@@ -7,7 +7,7 @@ import type { CacheCapabilitiesManager as StoreWrapper } from '../../-types/q/ca
 import type { PrivateStore, Store } from '../store-service.ts';
 import type { CacheKeyManager } from './cache-key-manager.ts';
 import { isRequestKey, isResourceKey } from './cache-key-manager.ts';
-import type { NotificationType } from './notification-manager.ts';
+import type { NotificationType, NotifyKeys } from './notification-manager.ts';
 
 export interface CacheCapabilitiesManager {
   /** @deprecated - use {@link CacheCapabilitiesManager.schema} */
@@ -74,25 +74,38 @@ export class CacheCapabilitiesManager implements StoreWrapper {
     this._pendingNotifies = new Map();
     this._willNotify = false;
 
+    // deliver all relationship keys pending for a given identifier as a single
+    // batch instead of one `notify` call per key: subscribers still receive one
+    // notification per key (in Set-insertion order), but the per-call overhead
+    // (subscriber lookups, buffer scheduling, etc) that `notify` would otherwise
+    // repeat for every key is paid only once per identifier. This mirrors the
+    // same N*M concern `attributes` notifications have (see `notifyAttributes`
+    // in the json-api Cache): a single push/mutation pass can dirty many
+    // relationships across many records at once, and each of those records
+    // funnels through this same per-identifier `pending` Set.
+    //
+    // `set` here is already the `Set<string>` we've been collecting pending
+    // keys into above, and `notify` accepts a `Set` directly, so it is handed
+    // off as-is: no `Array.from` (or any other) conversion is performed.
     pending.forEach((set, identifier) => {
-      set.forEach((key) => {
-        this._store.notifications.notify(identifier, 'relationships', key);
-      });
+      this._store.notifications.notify(identifier, 'relationships', set);
     });
   }
 
   notifyChange(identifier: ResourceKey, namespace: 'added' | 'removed', key: null): void;
   notifyChange(identifier: RequestKey, namespace: 'added' | 'updated' | 'removed', key: null): void;
+  notifyChange(identifier: ResourceKey, namespace: 'attributes', key: string | NotifyKeys | null): void;
   notifyChange(identifier: ResourceKey, namespace: NotificationType, key: string | null): void;
   notifyChange(
     identifier: ResourceKey | RequestKey,
     namespace: NotificationType | 'added' | 'removed' | 'updated',
-    key: string | null
+    key: string | NotifyKeys | null
   ): void {
     assert(`Expected a stable identifier`, isResourceKey(identifier) || isRequestKey(identifier));
 
     // TODO do we still get value from this?
     if (namespace === 'relationships' && key) {
+      assert(`Expected a single relationship key`, typeof key === 'string');
       this._scheduleNotification(identifier as ResourceKey, key);
       return;
     }
