@@ -8,12 +8,12 @@ import { waitFor } from '@warp-drive/core/signals/-leaked';
 import type {
   FindRecordQuery,
   InstanceCache,
+  PrivateRequestStateService,
   PrivateStore,
   Request,
   SaveRecordMutation,
 } from '@warp-drive/core/store/-private';
 import { assertPrivateStore, coerceId } from '@warp-drive/core/store/-private';
-import type { PrivateRequestStateService } from '@warp-drive/core/store/-private/network/request-cache.js';
 import type { FindRecordOptions, ModelSchema } from '@warp-drive/core/types';
 import { getOrSetGlobal } from '@warp-drive/core/types/-private';
 import type { PersistedResourceKey, ResourceKey } from '@warp-drive/core/types/identifier';

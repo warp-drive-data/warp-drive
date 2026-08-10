@@ -1,8 +1,7 @@
 import { cached, tracked } from '@glimmer/tracking';
 
 import type { CAUTION_MEGA_DANGER_ZONE_Extension } from '@warp-drive/core/reactive';
-import { Context } from '@warp-drive/core/reactive/-private';
-import type { ManagedArray } from '@warp-drive/core/reactive/-private/fields/managed-array';
+import { Context, type ManagedArray } from '@warp-drive/core/reactive/-private';
 
 import type Model from '../../model.ts';
 import type { WithFragmentArray } from '../index.ts';
