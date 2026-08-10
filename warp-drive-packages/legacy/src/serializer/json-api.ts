@@ -145,11 +145,16 @@ const JSONAPISerializer: any = (JSONSerializer as typeof EmberObject).extend({
   */
   _normalizeDocumentHelper(documentHash) {
     if (Array.isArray(documentHash.data)) {
-      const ret = new Array(documentHash.data.length);
+      const ret = [];
 
       for (let i = 0; i < documentHash.data.length; i++) {
         const data = documentHash.data[i];
-        ret[i] = this._normalizeResourceHelper(data);
+        const normalized = this._normalizeResourceHelper(data);
+        if (normalized !== null) {
+          // @ts-expect-error untyped
+          // can be null when unknown type is encountered
+          ret.push(normalized);
+        }
       }
 
       documentHash.data = ret;
