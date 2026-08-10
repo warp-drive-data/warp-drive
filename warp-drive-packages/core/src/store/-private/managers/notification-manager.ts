@@ -44,26 +44,30 @@ export type NotifyKeys = Set<string>;
 /**
  * A change to a resource's `attributes` or `relationships` can be relevant to
  * a "local" view of the resource (its mutable/editable state), a "remote" view
- * (its last-known-persisted state), or both. An unscoped subscription (no
- * channel given) hears everything, and an unscoped `notify` reaches every
- * subscriber regardless of what channel (if any) they subscribed with -- this
- * is what makes the default, channel-unaware behavior of `subscribe`/`notify`
- * identical to how they worked before channels existed.
+ * (its last-known-persisted state), or both.
  *
- * A channel is something a caller opts *into* on one side or the other to
- * narrow, not something either side must declare to keep working:
  * - Subscribing with a channel means "only tell me about changes on this
  *   channel" -- used by a reader that only ever displays one side (e.g.
  *   PolarisMode's default immutable record only ever shows remote state, so
  *   it subscribes `'remote'` to skip being woken for purely-local edits it
- *   can't see anyway).
+ *   can't see anyway). A subscription that omits `channel` defaults to
+ *   `'local'`, matching how every subscriber behaved before channels
+ *   existed: no subscriber has ever actually needed to hear *every* channel,
+ *   so `subscribe` has only two effective states (`'local'` or `'remote'`),
+ *   not three.
  * - Notifying with a channel means "this specific change only affects this
  *   channel" -- used by a producer that knows a given mutation has no bearing
  *   on the other channel (e.g. a purely local edit has no remote implication,
- *   so it notifies `'local'` so remote-only readers aren't woken for nothing).
+ *   so it notifies `'local'` so remote-only readers aren't woken for
+ *   nothing). Unlike `subscribe`, `notify` keeps its unscoped default: a
+ *   `notify` call that omits `channel` still reaches every subscriber
+ *   regardless of what channel they subscribed with, identical to how
+ *   `notify` behaved before channels existed.
  *
- * A subscriber is only skipped when *both* sides have stated an explicit,
- * disagreeing channel. Channel only applies to the `'attributes'` and
+ * Since a subscription's channel is always one of `'local'`/`'remote'`
+ * (never itself unscoped), a subscriber is skipped only when the
+ * notification was given an explicit channel that disagrees with the
+ * subscriber's. Channel only applies to the `'attributes'` and
  * `'relationships'` notification types. All other types (`'errors'`,
  * `'identity'`, `'state'`, and the various `CacheOperation`/
  * `DocumentCacheOperation` values) are never filtered by channel since they
@@ -203,19 +207,13 @@ function mergeIntoBuffer(
 /**
  * Given the set of channels a touch (or coalesced group of touches) was
  * recorded with, determines whether a subscriber scoped to `subscriberChannel`
- * should be delivered to. Per {@link NotificationChannel}'s contract, a
- * subscriber is skipped only when both sides have stated an explicit,
- * disagreeing channel - so delivery happens whenever the subscriber itself is
- * unscoped, at least one touch was itself unscoped, or at least one touch
- * matches the subscriber's channel exactly.
+ * should be delivered to. A subscriber's channel is always concrete (see
+ * {@link NotificationChannel} - `subscribe` defaults it to `'local'` rather
+ * than leaving it unscoped), so delivery happens whenever at least one touch
+ * was itself unscoped (`notify` was not given a channel), or at least one
+ * touch matches the subscriber's channel exactly.
  */
-function shouldDeliverToChannel(
-  channels: ChannelSet | undefined,
-  subscriberChannel: NotificationChannel | undefined
-): boolean {
-  if (!channels || subscriberChannel === undefined) {
-    return true;
-  }
+function shouldDeliverToChannel(channels: ChannelSet, subscriberChannel: NotificationChannel): boolean {
   return channels.has(undefined) || channels.has(subscriberChannel);
 }
 
@@ -326,7 +324,7 @@ export class NotificationManager {
    * subscription to only `'attributes'`/`'relationships'` notifications made on
    * that same channel (notifications for other notification types are never
    * filtered by channel and always reach the subscriber). When omitted, this
-   * subscription hears every notification regardless of channel -- see
+   * subscription defaults to the `'local'` channel -- see
    * {@link NotificationChannel}.
    *
    * @public
@@ -351,8 +349,9 @@ export class NotificationManager {
     // we use the callback as the cancellation token
     //@ts-expect-error
     callback.for = cacheKey;
-    //@ts-expect-error stashed only for ResourceKey subscriptions; see shouldDeliverToChannel
-    callback.channel = channel;
+    //@ts-expect-error stashed only for ResourceKey subscriptions; see shouldDeliverToChannel.
+    // Defaults to 'local' rather than leaving it unscoped -- see NotificationChannel.
+    callback.channel = channel ?? 'local';
 
     if (!callbacks) {
       callbacks = [];
@@ -601,8 +600,9 @@ function _flushNotification(
   }
   callbacks.forEach((cb) => {
     if (channels) {
-      // @ts-expect-error channel is stashed on the callback only for ResourceKey subscriptions
-      const subscriberChannel = cb.channel as NotificationChannel | undefined;
+      // @ts-expect-error channel is stashed on the callback only for ResourceKey subscriptions;
+      // always concrete since `subscribe` defaults it to 'local'.
+      const subscriberChannel = cb.channel as NotificationChannel;
       if (!shouldDeliverToChannel(channels, subscriberChannel)) {
         return;
       }

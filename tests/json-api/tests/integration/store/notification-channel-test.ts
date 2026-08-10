@@ -48,7 +48,7 @@ function flush(store: Store): void {
 }
 
 module('Integration | NotificationManager channels', function () {
-  test('an unscoped subscriber hears every channel, including unscoped notifies', function (assert) {
+  test('a subscriber that omits channel defaults to "local", not unscoped', function (assert) {
     const store = new TestStore();
     void store.cache; // trigger lazy createCache so _capabilities is populated
     const identifier = store.cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '1' });
@@ -57,14 +57,16 @@ module('Integration | NotificationManager channels', function () {
       calls++;
     });
 
+    // an unscoped notify() call always reaches every subscriber, regardless
+    // of what channel (if any) they subscribed with.
     store._capabilities.notifyChange(identifier, 'attributes', 'name');
     assert.equal(calls, 1, 'received the unscoped notify');
 
     store._capabilities.notifyChange(identifier, 'attributes', 'name', 'local');
-    assert.equal(calls, 2, 'received the local-channel notify');
+    assert.equal(calls, 2, 'received the local-channel notify (matches the implicit "local" default)');
 
     store._capabilities.notifyChange(identifier, 'attributes', 'name', 'remote');
-    assert.equal(calls, 3, 'received the remote-channel notify');
+    assert.equal(calls, 2, 'did NOT receive the remote-channel notify (defaults to "local", which disagrees)');
   });
 
   test('a subscriber scoped to "local" hears unscoped and local notifies, but not remote', function (assert) {
@@ -175,7 +177,7 @@ module('Integration | NotificationManager channels', function () {
 
     let localCalls = 0;
     let remoteCalls = 0;
-    let unscopedCalls = 0;
+    let defaultChannelCalls = 0;
     store.notifications.subscribe(
       identifier,
       () => {
@@ -190,8 +192,11 @@ module('Integration | NotificationManager channels', function () {
       },
       'remote'
     );
+    // omits channel, so it defaults to 'local' -- included here to confirm it
+    // behaves identically to the explicit 'local' subscriber above, even in
+    // this mixed-channel-dedup scenario.
     store.notifications.subscribe(identifier, () => {
-      unscopedCalls++;
+      defaultChannelCalls++;
     });
 
     const restore = deferFlushes(store);
@@ -211,7 +216,11 @@ module('Integration | NotificationManager channels', function () {
       1,
       'the "remote"-scoped subscriber was notified exactly once (the unscoped touch reaches everyone)'
     );
-    assert.equal(unscopedCalls, 1, 'the unscoped subscriber was notified exactly once');
+    assert.equal(
+      defaultChannelCalls,
+      1,
+      'the default-channel ("local") subscriber was notified exactly once, same as the explicit "local" subscriber'
+    );
   });
 
   test('a key touched once on "local" and once on "remote" within one flush still delivers exactly once to each of a "local"-scoped and a "remote"-scoped subscriber', function (assert) {
