@@ -205,4 +205,31 @@ module('integration/adapter/handle-response', function (hooks) {
 
     assert.strictEqual(handleResponseCalled, 1, 'handle response is called');
   });
+
+  test('handleResponse does not throw when the payload is null on a 422 response', async function (assert) {
+    let handleResponseCalled = 0;
+
+    this.server.get('/people', function () {
+      return [422, { 'Content-Type': 'application/json' }, 'null'];
+    });
+
+    class TestAdapter extends JSONAPIAdapter {
+      handleResponse(status, headers, payload, requestData) {
+        handleResponseCalled++;
+
+        return super.handleResponse(status, headers, payload, requestData);
+      }
+    }
+
+    this.owner.register('adapter:application', TestAdapter);
+
+    try {
+      await this.store.findAll('person');
+      assert.ok(false, 'promise should reject');
+    } catch (e) {
+      assert.true(e.isAdapterError, 'promise rejected with an AdapterError, not a TypeError');
+    }
+
+    assert.strictEqual(handleResponseCalled, 1, 'handle response is called');
+  });
 });
