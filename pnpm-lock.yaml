@@ -3705,12 +3705,12 @@ importers:
       expect-type:
         specifier: ^1.2.2
         version: 1.2.2
+      tsdown:
+        specifier: ^0.22.14
+        version: 0.22.14(typescript@5.9.2)
       typescript:
         specifier: 5.9.2
         version: 5.9.2
-      vite:
-        specifier: ^7.3.1
-        version: 7.3.1
 
   warp-drive-packages/legacy:
     dependencies:
@@ -19083,7 +19083,7 @@ snapshots:
     dependencies:
       jju: 1.4.0
       js-yaml: 4.1.0
-      tinyglobby: 0.2.15
+      tinyglobby: 0.2.17
 
   '@mdit/plugin-footnote@0.22.2':
     dependencies:
