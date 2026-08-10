@@ -959,7 +959,9 @@ class RESTAdapter extends AdapterWithBuildURLMixin {
     } else if (this.isInvalid(status, headers, payload)) {
       const errorPayload = payload ?? {};
       // @ts-expect-error needs cast to ApiError
-      return new InvalidError(typeof errorPayload === 'object' && 'errors' in errorPayload ? errorPayload.errors : undefined);
+      return new InvalidError(
+        typeof errorPayload === 'object' && 'errors' in errorPayload ? errorPayload.errors : undefined
+      );
     }
 
     const errors = this.normalizeErrorResponse(status, headers, payload);
