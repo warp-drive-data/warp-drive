@@ -37,6 +37,48 @@ function selfReferenceEntries(entryMap) {
   };
 }
 
+/**
+ * `@nullvoxpopuli/ember-rolldown`'s `ember()` plugin only routes a file through babel
+ * (where our own assert()/DEBUG/deprecation/etc macro-stripping plugins run) when it
+ * imports from a known-babel-requiring package, or when its source text happens to
+ * match a decorator-looking pattern (`@\w+`, e.g. `@tracked`). Neither heuristic knows
+ * about `@warp-drive/build-config`, so a file that uses `assert()`/`DEBUG`/etc but has
+ * no decorators -- and no incidental `@word` text outside a same-line comment, since the
+ * decorator heuristic's comment-exclusion doesn't span multiple lines -- silently skips
+ * babel entirely, leaving those calls unstripped in every build (dev and prod alike).
+ * Explicitly listing our own macro import sources here makes stripping unconditional
+ * instead of dependent on that guesswork.
+ */
+const WARP_DRIVE_MACRO_IMPORTS = [
+  '@warp-drive/build-config/macros',
+  '@warp-drive/core/build-config/macros',
+  '@warp-drive/build-config/env',
+  '@warp-drive/core/build-config/env',
+  '@warp-drive/build-config/debugging',
+  '@warp-drive/core/build-config/debugging',
+  '@warp-drive/build-config/deprecations',
+  '@warp-drive/core/build-config/deprecations',
+  '@warp-drive/build-config/canary-features',
+  '@warp-drive/core/build-config/canary-features',
+];
+
+function withMacroImportsAlwaysBabeled(emberOptions) {
+  const userImports = emberOptions?.babel?.filter?.include?.imports ?? [];
+  return {
+    ...emberOptions,
+    babel: {
+      ...emberOptions?.babel,
+      filter: {
+        ...emberOptions?.babel?.filter,
+        include: {
+          ...emberOptions?.babel?.filter?.include,
+          imports: [...WARP_DRIVE_MACRO_IMPORTS, ...userImports],
+        },
+      },
+    },
+  };
+}
+
 export function createConfig(options, resolve) {
   options.srcDir = options.srcDir ?? './src';
   options.compileTypes = options.compileTypes ?? true;
@@ -61,7 +103,7 @@ export function createConfig(options, resolve) {
     },
     plugins: [
       selfReferenceEntries(entryMap),
-      ...ember(options.ember),
+      ...ember(withMacroImportsAlwaysBabeled(options.ember)),
       FixMacroConditionsPlugin(),
       options.compileTypes ? MoveTypesToDestination(options, resolve) : null,
       ...(options.plugins || []),
