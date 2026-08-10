@@ -76,22 +76,12 @@ module('unit/model - Custom Class Model', function (hooks: NestedHooks) {
         this.notifications.subscribe(identifier, (passedId, key) => {
           notificationCount++;
           assert.strictEqual(passedId, identifier, 'passed the identifier to the callback');
-          // `NotificationManager`'s buffer dispatches namespaces in the order
-          // each was first touched during this `_join`, deduping repeated
-          // touches to the same namespace (e.g. the two 'relationships'
-          // calls below) into a single delivery rather than dropping or
-          // reordering it relative to when it first fired. Since
-          // 'relationships' is touched first here, it is delivered first,
-          // followed by 'state' and then 'errors' in their own first-touch
-          // order - this now matches plain call order for every namespace
-          // uniformly (see notification-coalescing-test.ts for the
-          // dedicated coverage of this buffering behavior).
           if (notificationCount === 1) {
-            assert.strictEqual(key, 'relationships', 'passed the key');
-          } else if (notificationCount === 2) {
             assert.strictEqual(key, 'state', 'passed the key');
-          } else if (notificationCount === 3) {
+          } else if (notificationCount === 2) {
             assert.strictEqual(key, 'errors', 'passed the key');
+          } else if (notificationCount === 3) {
+            assert.strictEqual(key, 'relationships', 'passed the key');
           }
         });
         return { hi: 'igor' };
