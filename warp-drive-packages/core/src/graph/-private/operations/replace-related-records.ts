@@ -7,7 +7,7 @@ import { assert } from '@warp-drive/core/build-config/macros';
 
 import type { ResourceKey } from '../../../types.ts';
 import type { ReplaceRelatedRecordsOperation } from '../../../types/graph.ts';
-import { _add, _removeLocal, _removeRemote, diffCollection } from '../-diff.ts';
+import { _add, _removeLocal, _removeRemote, computeLocalState, diffCollection } from '../-diff.ts';
 import { checkIfNew, isBelongsTo, isHasMany, notifyChange } from '../-utils.ts';
 import { assertPolymorphicType } from '../debug/assert-polymorphic-type.ts';
 import type { CollectionEdge } from '../edges/collection.ts';
@@ -191,6 +191,7 @@ function replaceRelatedRecordsRemote(graph: Graph, op: ReplaceRelatedRecordsOper
     graph._addToTransaction(relationship);
   }
 
+  const hadLocalMutation = graph._isDirty(op.record, op.field);
   const wasDirty = relationship.isDirty;
   // if this is our first time receiving data
   // we need to mark the relationship as dirty
@@ -340,6 +341,14 @@ function replaceRelatedRecordsRemote(graph: Graph, op: ReplaceRelatedRecordsOper
         );
       }
     }
+  }
+
+  if (relationship.definition.isLinksMode && relationship.accessed && diff.changed && !hadLocalMutation) {
+    // linksMode reads remote state directly, so keep the graph's local snapshot
+    // current when there are no local mutations to preserve.
+    computeLocalState(relationship);
+    flushCanonical(graph, relationship);
+    return;
   }
 
   if (relationship.isDirty && !wasDirty) {
