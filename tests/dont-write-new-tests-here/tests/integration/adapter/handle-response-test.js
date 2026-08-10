@@ -210,7 +210,7 @@ module('integration/adapter/handle-response', function (hooks) {
     let handleResponseCalled = 0;
 
     this.server.get('/people', function () {
-      return ['422', { 'Content-Type': 'application/json' }, 'null'];
+      return [422, { 'Content-Type': 'application/json' }, 'null'];
     });
 
     class TestAdapter extends JSONAPIAdapter {
