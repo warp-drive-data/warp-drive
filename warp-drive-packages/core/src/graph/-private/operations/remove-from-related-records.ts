@@ -50,7 +50,9 @@ export default function removeFromRelatedRecords(
     removeRelatedRecord(graph, record, relationship, value, op.index ?? null, isRemote);
   }
 
-  notifyChange(graph, relationship);
+  // a purely local mutation (isRemote=false) has no remote implication, so
+  // remote-only readers don't need to be woken for it.
+  notifyChange(graph, relationship, isRemote ? undefined : 'local');
 }
 
 function removeRelatedRecord(

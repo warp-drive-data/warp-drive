@@ -110,7 +110,9 @@ export default function replaceRelatedRecord(graph: Graph, op: ReplaceRelatedRec
             }
           );
 
-          notifyChange(graph, relationship);
+          // remote didn't change here (op.value === existingState); this is purely
+          // clearing a stale local override, so remote-only readers don't need it.
+          notifyChange(graph, relationship, 'local');
         }
       }
     }
@@ -160,6 +162,11 @@ export default function replaceRelatedRecord(graph: Graph, op: ReplaceRelatedRec
   }
 
   if (isRemote) {
+    // Reaching here means `op.value !== existingState` (the prior remoteState),
+    // so the remote value has definitely changed -- notify unconditionally,
+    // regardless of how (or whether) local state below ends up reconciling.
+    notifyChange(graph, relationship);
+
     const { localState, remoteState } = relationship;
     if (localState && checkIfNew(graph._realStore, localState) && !remoteState) {
       return;
@@ -169,7 +176,6 @@ export default function replaceRelatedRecord(graph: Graph, op: ReplaceRelatedRec
     // and we can safely sync the new remoteState to local
     if (localState !== remoteState && localState === existingState) {
       relationship.localState = remoteState;
-      notifyChange(graph, relationship);
       // But when localState does not match the new remoteState and
       // and localState !== existingState then we know we have a local mutation
       // that has not been persisted yet.
@@ -198,11 +204,10 @@ export default function replaceRelatedRecord(graph: Graph, op: ReplaceRelatedRec
             url: 'https://deprecations.emberjs.com/v5.x#ember-data-deprecate-relationship-remote-update-clearing-local-state',
           }
         );
-
-        notifyChange(graph, relationship);
       }
     }
   } else {
-    notifyChange(graph, relationship);
+    // purely local mutation; remote-only readers have nothing to see here.
+    notifyChange(graph, relationship, 'local');
   }
 }

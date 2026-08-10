@@ -171,7 +171,9 @@ function replaceRelatedRecordsLocal(graph: Graph, op: ReplaceRelatedRecordsOpera
   // we only notify if the localState changed and were not already dirty before
   // because if we were already dirty then we have already notified
   if (becameDirty && !wasDirty) {
-    notifyChange(graph, relationship);
+    // this is a purely local mutation -- nothing about remote state changed,
+    // so a remote-only reader has nothing to see here and shouldn't be woken.
+    notifyChange(graph, relationship, 'local');
   }
 }
 
@@ -342,7 +344,17 @@ function replaceRelatedRecordsRemote(graph: Graph, op: ReplaceRelatedRecordsOper
     }
   }
 
-  if (relationship.isDirty && !wasDirty) {
+  // Gate on `diff.remoteOrderChanged` (a pure remote-vs-remote membership/order
+  // comparison) rather than the `isDirty` false->true transition. The isDirty
+  // transition is what local/editable consumers re-arm themselves via
+  // `computeLocalState` on every read, but a reader that never touches
+  // `computeLocalState` (e.g. a `linksMode` array reading only remote state)
+  // never resets it, so `isDirty` can latch `true` forever after the first
+  // remote change and this would silently stop firing on every change after.
+  // `remoteOrderChanged` has no such latch: it directly answers "did remote
+  // membership or order actually change," so it's correct to gate on
+  // unconditionally, for every reader, every time.
+  if (diff.remoteOrderChanged) {
     flushCanonical(graph, relationship);
   }
 }
@@ -374,6 +386,10 @@ export function addToInverse(
         removeFromInverse(graph, relationship.remoteState, relationship.definition.inverseKey, resourceKey, isRemote);
       }
       relationship.remoteState = value;
+      // remote state definitely changed here (we just assigned it), independent of
+      // whether local also needs reconciling below -- notify unconditionally so a
+      // remote-only reader isn't at the mercy of the localState check further down.
+      notifyChange(graph, relationship);
     }
 
     if (relationship.localState !== value) {
@@ -382,7 +398,10 @@ export function addToInverse(
       }
       relationship.localState = value;
 
-      notifyChange(graph, relationship);
+      if (!isRemote) {
+        // purely local mutation; already notified (unscoped) above for the remote case.
+        notifyChange(graph, relationship, 'local');
+      }
     }
   } else if (isHasMany(relationship)) {
     if (isRemote) {
@@ -412,7 +431,7 @@ export function addToInverse(
       }
 
       if (_add(graph, resourceKey, relationship, value, null, isRemote)) {
-        notifyChange(graph, relationship);
+        notifyChange(graph, relationship, 'local');
       }
     }
   } else {
@@ -456,11 +475,15 @@ export function removeFromInverse(
     if (isRemote) {
       graph._addToTransaction(relationship);
       relationship.remoteState = null;
+      // remote state definitely changed here; see the equivalent comment in addToInverse.
+      notifyChange(graph, relationship);
     }
     if (relationship.localState === value) {
       relationship.localState = null;
 
-      notifyChange(graph, relationship);
+      if (!isRemote) {
+        notifyChange(graph, relationship, 'local');
+      }
     }
   } else if (isHasMany(relationship)) {
     if (isRemote) {
@@ -470,7 +493,7 @@ export function removeFromInverse(
       }
     } else {
       if (_removeLocal(relationship, value)) {
-        notifyChange(graph, relationship);
+        notifyChange(graph, relationship, 'local');
       }
     }
   } else {

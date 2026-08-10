@@ -1,5 +1,9 @@
 import type { CacheKeyManager } from '../../-private/managers/cache-key-manager.ts';
-import type { NotificationType, NotifyKeys } from '../../-private/managers/notification-manager.ts';
+import type {
+  NotificationChannel,
+  NotificationType,
+  NotifyKeys,
+} from '../../-private/managers/notification-manager.ts';
 import type { RequestKey, ResourceKey } from '../../../types/identifier.ts';
 import type { SchemaService } from '../../../types/schema/schema-service.ts';
 
@@ -110,19 +114,39 @@ export type CacheCapabilitiesManager = {
    * scheduling, etc) for every key. The `Set` is iterated as-is and never
    * converted to or from an array.
    *
+   * `channel` may additionally be provided to tag this notification as only
+   * relevant to that {@link NotificationChannel}. Defaults to reaching every
+   * subscriber (regardless of what channel, if any, they subscribed with)
+   * when omitted.
+   *
    * @since 5.9.0
    * @public
    */
-  notifyChange(identifier: ResourceKey, namespace: 'attributes', key: string | NotifyKeys | null): void;
+  notifyChange(
+    identifier: ResourceKey,
+    namespace: 'attributes',
+    key: string | NotifyKeys | null,
+    channel?: NotificationChannel
+  ): void;
   /**
    * Notify subscribers of a change to a resource for any other
    * {@link NotificationType}. `attributes` and `relationships` do not
    * require a key, but if one is specified it is assumed to be the name
    * of the attribute or relationship that has been updated.
    *
+   * `channel` may be provided for the `'attributes'`/`'relationships'` namespaces to scope
+   * this notification to only subscribers listening on that same channel (see
+   * {@link NotificationChannel}). When omitted, the notification reaches every subscriber
+   * regardless of what channel (if any) they subscribed with.
+   *
    * @public
    */
-  notifyChange(identifier: ResourceKey, namespace: NotificationType, key: string | null): void;
+  notifyChange(
+    identifier: ResourceKey,
+    namespace: NotificationType,
+    key: string | null,
+    channel?: NotificationChannel
+  ): void;
   /**
    * Implementation signature for {@link CacheCapabilitiesManager.notifyChange}
    * covering all supported combinations of identifier, namespace, and key.
@@ -132,6 +156,7 @@ export type CacheCapabilitiesManager = {
   notifyChange(
     identifier: ResourceKey | RequestKey,
     namespace: NotificationType | 'added' | 'removed' | 'updated',
-    key: string | NotifyKeys | null
+    key: string | NotifyKeys | null,
+    channel?: NotificationChannel
   ): void;
 };

@@ -41,6 +41,47 @@ export type NotificationType = 'attributes' | 'relationships' | 'identity' | 'er
  */
 export type NotifyKeys = Set<string>;
 
+/**
+ * A change to a resource's `attributes` or `relationships` can be relevant to
+ * a "local" view of the resource (its mutable/editable state), a "remote" view
+ * (its last-known-persisted state), or both. An unscoped subscription (no
+ * channel given) hears everything, and an unscoped `notify` reaches every
+ * subscriber regardless of what channel (if any) they subscribed with -- this
+ * is what makes the default, channel-unaware behavior of `subscribe`/`notify`
+ * identical to how they worked before channels existed.
+ *
+ * A channel is something a caller opts *into* on one side or the other to
+ * narrow, not something either side must declare to keep working:
+ * - Subscribing with a channel means "only tell me about changes on this
+ *   channel" -- used by a reader that only ever displays one side (e.g.
+ *   PolarisMode's default immutable record only ever shows remote state, so
+ *   it subscribes `'remote'` to skip being woken for purely-local edits it
+ *   can't see anyway).
+ * - Notifying with a channel means "this specific change only affects this
+ *   channel" -- used by a producer that knows a given mutation has no bearing
+ *   on the other channel (e.g. a purely local edit has no remote implication,
+ *   so it notifies `'local'` so remote-only readers aren't woken for nothing).
+ *
+ * A subscriber is only skipped when *both* sides have stated an explicit,
+ * disagreeing channel. Channel only applies to the `'attributes'` and
+ * `'relationships'` notification types. All other types (`'errors'`,
+ * `'identity'`, `'state'`, and the various `CacheOperation`/
+ * `DocumentCacheOperation` values) are never filtered by channel since they
+ * have no local/remote duality.
+ *
+ * @public
+ */
+export type NotificationChannel = 'local' | 'remote';
+
+/**
+ * The set of channels (if any) a given `'attributes'`/`'relationships'` touch
+ * was tagged with while buffered. `undefined` is included in this set when at
+ * least one of the coalesced touches was itself unscoped (no channel given),
+ * since an unscoped touch always reaches every subscriber regardless of what
+ * channel(s) it was also touched with.
+ */
+type ChannelSet = Set<NotificationChannel | undefined>;
+
 export interface NotificationCallback {
   (cacheKey: ResourceKey, notificationType: 'attributes' | 'relationships', key?: string): void;
   (cacheKey: ResourceKey, notificationType: 'errors' | 'meta' | 'identity' | 'state'): void;
@@ -68,33 +109,49 @@ function keyToString(key: string | NotifyKeys | null | undefined): string {
  * a single flush window.
  *
  * The buffer is a `Map` from namespace (`'attributes'`, `'relationships'`,
- * `'state'`, etc.) to either a `Set<string>` of pending keys or `null`. Using
- * a `Map` means the *first* time a namespace is touched during this flush
- * window fixes its position in iteration order; every subsequent touch to
- * that same namespace (regardless of how much later, or how many other
- * namespaces fired in between) updates its value in place without moving it.
- * This preserves the relative order in which *different* namespaces first
- * fired, while intentionally not tracking the arrival order of repeated
- * touches to the *same* namespace - those are provably safe to coalesce
- * because subscribers never receive anything about a notification beyond
- * `(cacheKey, type, key?)`.
+ * `'state'`, etc.) to a "bucket". Using a `Map` means the *first* time a
+ * namespace is touched during this flush window fixes its position in
+ * iteration order; every subsequent touch to that same namespace (regardless
+ * of how much later, or how many other namespaces fired in between) updates
+ * its value in place without moving it. This preserves the relative order in
+ * which *different* namespaces first fired, while intentionally not tracking
+ * the arrival order of repeated touches to the *same* namespace - those are
+ * provably safe to coalesce because subscribers never receive anything about
+ * a notification beyond `(cacheKey, type, key?)`.
  *
- * For `'attributes'`/`'relationships'`, `null` is a wildcard meaning "an
- * unspecified set of keys changed" - a strict superset of any specific key
- * list, per the existing contract of {@link CacheCapabilitiesManager.notifyChange}.
- * A keyless call always upgrades the bucket to `null`, discarding any
- * specific keys already collected; a keyed call is a no-op once the bucket
- * is already `null`.
+ * For every namespace other than `'attributes'`/`'relationships'`, subscriber
+ * callbacks never receive a key at all (and channel never applies to them -
+ * see {@link NotificationChannel}), so the bucket is simply `null`, used
+ * purely as a "this namespace fired at least once" presence marker; multiple
+ * firings within one flush all collapse to the same single marker.
  *
- * For every other namespace, subscriber callbacks never receive a key at
- * all, so `null` is used purely as a "this namespace fired at least once"
- * presence marker; multiple firings within one flush all collapse to the
- * same single marker.
+ * For `'attributes'`/`'relationships'`, a key (or channel) *does* matter, so
+ * the bucket is one of:
+ * - a `Map<string, ChannelSet>`: the normal case, mapping each specific key
+ *   touched to the set of channels it was touched with (`undefined` in that
+ *   set means at least one of those touches was itself unscoped).
+ * - a `ChannelSet` directly: a wildcard meaning "an unspecified set of keys
+ *   changed" - a strict superset of any specific key list, per the existing
+ *   contract of {@link CacheCapabilitiesManager.notifyChange} - tagged with
+ *   the set of channels any of the coalesced keyless (or post-wildcard
+ *   keyed) touches carried.
+ *
+ * A keyless call always upgrades the bucket to the wildcard form. When
+ * upgrading away from a `Map`, every channel ever recorded against any of
+ * its specific keys is folded into the new wildcard `ChannelSet` - the
+ * wildcard must remain a superset not just key-wise but channel-wise too, or
+ * a channel-scoped subscriber that would have heard about one of those
+ * specific keys could silently stop hearing about it once the bucket flips
+ * to wildcard. Once a bucket is a wildcard it can never downgrade back to a
+ * `Map`; a keyed touch that arrives after that point still folds its channel
+ * into the wildcard's `ChannelSet` (the specific key itself is discarded,
+ * since the wildcard already covers it).
  */
 function mergeIntoBuffer(
-  buffer: Map<NotificationType | DocumentCacheOperation, Set<string> | null>,
+  buffer: Map<NotificationType | DocumentCacheOperation, Map<string, ChannelSet> | ChannelSet | null>,
   value: NotificationType | CacheOperation | DocumentCacheOperation,
-  key: string | NotifyKeys | null | undefined
+  key: string | NotifyKeys | null | undefined,
+  channel: NotificationChannel | undefined
 ): void {
   if (value !== 'attributes' && value !== 'relationships') {
     // presence-only namespaces: multiple firings within one flush are
@@ -103,32 +160,63 @@ function mergeIntoBuffer(
     return;
   }
 
-  const existing = buffer.get(value);
+  const existing = buffer.get(value) as Map<string, ChannelSet> | ChannelSet | undefined;
 
   if (key === null || key === undefined) {
-    // a keyless call is a wildcard: it always wins, discarding any
-    // specific keys already accumulated for this namespace.
-    buffer.set(value, null);
-    return;
-  }
-
-  if (existing === null) {
-    // already a wildcard: specific keys can never downgrade it back to a Set.
-    return;
-  }
-
-  const set = existing ?? new Set<string>();
-  if (!existing) {
-    buffer.set(value, set);
-  }
-
-  if (key instanceof Set) {
-    for (const k of key) {
-      set.add(k);
+    // a keyless call is a wildcard: fold this touch's channel (and, if
+    // upgrading from a keyed Map, every channel ever recorded against any of
+    // its specific keys) into the wildcard ChannelSet.
+    const channels: ChannelSet = existing instanceof Set ? existing : new Set();
+    if (existing instanceof Map) {
+      for (const channelsForKey of existing.values()) {
+        for (const ch of channelsForKey) channels.add(ch);
+      }
     }
-  } else {
-    set.add(key);
+    channels.add(channel);
+    buffer.set(value, channels);
+    return;
   }
+
+  if (existing instanceof Set) {
+    // already a wildcard: specific keys can never downgrade it back to a
+    // Map, but this touch's channel still needs to be folded in.
+    existing.add(channel);
+    return;
+  }
+
+  const map = existing ?? new Map<string, ChannelSet>();
+  if (!existing) {
+    buffer.set(value, map);
+  }
+
+  const keys = key instanceof Set ? key : [key];
+  for (const k of keys) {
+    let channels = map.get(k);
+    if (!channels) {
+      channels = new Set();
+      map.set(k, channels);
+    }
+    channels.add(channel);
+  }
+}
+
+/**
+ * Given the set of channels a touch (or coalesced group of touches) was
+ * recorded with, determines whether a subscriber scoped to `subscriberChannel`
+ * should be delivered to. Per {@link NotificationChannel}'s contract, a
+ * subscriber is skipped only when both sides have stated an explicit,
+ * disagreeing channel - so delivery happens whenever the subscriber itself is
+ * unscoped, at least one touch was itself unscoped, or at least one touch
+ * matches the subscriber's channel exactly.
+ */
+function shouldDeliverToChannel(
+  channels: ChannelSet | undefined,
+  subscriberChannel: NotificationChannel | undefined
+): boolean {
+  if (!channels || subscriberChannel === undefined) {
+    return true;
+  }
+  return channels.has(undefined) || channels.has(subscriberChannel);
 }
 
 function count(label: string) {
@@ -192,7 +280,7 @@ export class NotificationManager {
   /** @internal */
   declare private _buffered: Map<
     RequestKey | ResourceKey,
-    Map<NotificationType | DocumentCacheOperation, Set<string> | null>
+    Map<NotificationType | DocumentCacheOperation, Map<string, ChannelSet> | ChannelSet | null>
   >;
   /** @internal */
   declare private _cache: Map<
@@ -234,15 +322,23 @@ export class NotificationManager {
    * }
    * ```
    *
+   * A `channel` may be provided when subscribing to a `ResourceKey` to scope this
+   * subscription to only `'attributes'`/`'relationships'` notifications made on
+   * that same channel (notifications for other notification types are never
+   * filtered by channel and always reach the subscriber). When omitted, this
+   * subscription hears every notification regardless of channel -- see
+   * {@link NotificationChannel}.
+   *
    * @public
    * @return an opaque token to be used with unsubscribe
    */
-  subscribe(cacheKey: ResourceKey, callback: NotificationCallback): UnsubscribeToken;
+  subscribe(cacheKey: ResourceKey, callback: NotificationCallback, channel?: NotificationChannel): UnsubscribeToken;
   subscribe(cacheKey: 'resource', callback: ResourceOperationCallback): UnsubscribeToken;
   subscribe(cacheKey: 'document' | RequestKey, callback: DocumentOperationCallback): UnsubscribeToken;
   subscribe(
     cacheKey: RequestKey | ResourceKey | 'resource' | 'document',
-    callback: NotificationCallback | ResourceOperationCallback | DocumentOperationCallback
+    callback: NotificationCallback | ResourceOperationCallback | DocumentOperationCallback,
+    channel?: NotificationChannel
   ): UnsubscribeToken {
     assert(`Expected not to be destroyed`, !this.isDestroyed);
     assert(
@@ -255,6 +351,8 @@ export class NotificationManager {
     // we use the callback as the cancellation token
     //@ts-expect-error
     callback.for = cacheKey;
+    //@ts-expect-error stashed only for ResourceKey subscriptions; see shouldDeliverToChannel
+    callback.channel = channel;
 
     if (!callbacks) {
       callbacks = [];
@@ -290,16 +388,26 @@ export class NotificationManager {
    * buffer/flush scheduling) only once for the whole batch instead of once
    * per key.
    *
+   * A `channel` may be supplied for the `'attributes'`/`'relationships'`
+   * namespaces to tag this notification as only relevant to that channel --
+   * see {@link NotificationChannel}.
+   *
    * @private
    */
-  notify(cacheKey: ResourceKey, value: 'attributes' | 'relationships', key?: string | NotifyKeys | null): boolean;
+  notify(
+    cacheKey: ResourceKey,
+    value: 'attributes' | 'relationships',
+    key?: string | NotifyKeys | null,
+    channel?: NotificationChannel
+  ): boolean;
   notify(cacheKey: ResourceKey, value: 'errors' | 'meta' | 'identity' | 'state', key?: null): boolean;
   notify(cacheKey: ResourceKey, value: CacheOperation, key?: null): boolean;
   notify(cacheKey: RequestKey, value: DocumentCacheOperation, key?: null): boolean;
   notify(
     cacheKey: ResourceKey | RequestKey,
     value: NotificationType | CacheOperation | DocumentCacheOperation,
-    key?: string | NotifyKeys | null
+    key?: string | NotifyKeys | null,
+    channel?: NotificationChannel
   ): boolean {
     if (this.isDestroyed) {
       return false;
@@ -307,6 +415,10 @@ export class NotificationManager {
     assert(
       `Notify does not accept a key argument for the namespace '${value}'. Received key '${keyToString(key)}'.`,
       !key || value === 'attributes' || value === 'relationships'
+    );
+    assert(
+      `Notify does not accept a channel argument for the namespace '${value}'. Received channel '${channel || ''}'.`,
+      !channel || value === 'attributes' || value === 'relationships'
     );
     if (!isResourceKey(cacheKey) && !isRequestKey(cacheKey)) {
       if (LOG_NOTIFICATIONS) {
@@ -329,7 +441,7 @@ export class NotificationManager {
         this._buffered.set(cacheKey, buffer);
       }
 
-      mergeIntoBuffer(buffer, value, key);
+      mergeIntoBuffer(buffer, value, key, channel);
 
       if (LOG_METRIC_COUNTS) {
         count(`notify ${'type' in cacheKey ? cacheKey.type : '<document>'} ${value} ${keyToString(key)}`);
@@ -398,14 +510,19 @@ export class NotificationManager {
       for (const [cacheKey, states] of buffered) {
         // `states` iterates in the order each namespace first fired during
         // this flush window (see `mergeIntoBuffer`).
-        for (const [value, keyOrKeys] of states) {
-          if (keyOrKeys === null) {
+        for (const [value, bucket] of states) {
+          if (bucket === null) {
             // @ts-expect-error overload doesn't narrow within body
             _flushNotification(this._cache, cacheKey, value, null);
+          } else if (bucket instanceof Set) {
+            // wildcard: one notification, key `null`, filtered by the union
+            // of channels any of the coalesced keyless touches carried.
+            // @ts-expect-error overload doesn't narrow within body
+            _flushNotification(this._cache, cacheKey, value, null, bucket);
           } else {
-            for (const key of keyOrKeys) {
+            for (const [key, channels] of bucket) {
               // @ts-expect-error overload doesn't narrow within body
-              _flushNotification(this._cache, cacheKey, value, key);
+              _flushNotification(this._cache, cacheKey, value, key, channels);
             }
           }
         }
@@ -439,7 +556,8 @@ function _flushNotification(
   cache: NotificationManager['_cache'],
   cacheKey: ResourceKey,
   value: 'attributes' | 'relationships',
-  key: string | null
+  key: string | null,
+  channels?: ChannelSet
 ): boolean;
 function _flushNotification(
   cache: NotificationManager['_cache'],
@@ -457,7 +575,8 @@ function _flushNotification(
   cache: NotificationManager['_cache'],
   cacheKey: ResourceKey | RequestKey,
   value: NotificationType | CacheOperation,
-  key: string | null
+  key: string | null,
+  channels?: ChannelSet
 ): boolean {
   if (LOG_NOTIFICATIONS) {
     log('notify', '', `${'type' in cacheKey ? cacheKey.type : 'document'}`, cacheKey.lid, `${value}`, key || '');
@@ -481,6 +600,13 @@ function _flushNotification(
     return false;
   }
   callbacks.forEach((cb) => {
+    if (channels) {
+      // @ts-expect-error channel is stashed on the callback only for ResourceKey subscriptions
+      const subscriberChannel = cb.channel as NotificationChannel | undefined;
+      if (!shouldDeliverToChannel(channels, subscriberChannel)) {
+        return;
+      }
+    }
     // @ts-expect-error overload doesn't narrow within body
     cb(cacheKey, value, key);
   });

@@ -533,7 +533,8 @@ class Model extends EmberObject implements MinimalLegacyRecord {
       identity,
       (identifier: ResourceKey, type: NotificationType, field?: string): void => {
         notifyChanges(identifier, type, field, this, store);
-      }
+      },
+      'local'
     );
   }
 

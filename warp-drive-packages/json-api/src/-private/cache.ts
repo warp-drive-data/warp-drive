@@ -1,4 +1,4 @@
-import type { NotifyKeys, Store } from '@warp-drive/core';
+import type { NotificationChannel, NotifyKeys, Store } from '@warp-drive/core';
 import { LOG_CACHE } from '@warp-drive/core/build-config/debugging';
 import { DEPRECATE_RELATIONSHIP_REMOTE_UPDATE_CLEARING_LOCAL_STATE } from '@warp-drive/core/build-config/deprecations';
 import { DEBUG } from '@warp-drive/core/build-config/env';
@@ -1219,7 +1219,8 @@ export class JSONAPICache implements Cache {
         delete cached.defaultAttrs[currentAttr];
       }
 
-      this._capabilities.notifyChange(identifier, 'attributes', currentAttr);
+      // a local edit has no remote implication; remote-only readers can't see it anyway.
+      this._capabilities.notifyChange(identifier, 'attributes', currentAttr, 'local');
       return;
     }
 
@@ -1293,7 +1294,8 @@ export class JSONAPICache implements Cache {
       }
     }
 
-    this._capabilities.notifyChange(identifier, 'attributes', basePath);
+    // a local edit has no remote implication; remote-only readers can't see it anyway.
+    this._capabilities.notifyChange(identifier, 'attributes', basePath, 'local');
   }
 
   /**
@@ -1824,9 +1826,14 @@ function getDefaultValue(
   }
 }
 
-function notifyAttributes(storeWrapper: CacheCapabilitiesManager, identifier: ResourceKey, keys?: NotifyKeys) {
+function notifyAttributes(
+  storeWrapper: CacheCapabilitiesManager,
+  identifier: ResourceKey,
+  keys?: NotifyKeys,
+  channel?: NotificationChannel
+) {
   if (!keys) {
-    storeWrapper.notifyChange(identifier, 'attributes', null);
+    storeWrapper.notifyChange(identifier, 'attributes', null, channel);
     return;
   }
 
@@ -1842,7 +1849,7 @@ function notifyAttributes(storeWrapper: CacheCapabilitiesManager, identifier: Re
   // callers it is already the `Set<string>` they built, so no conversion
   // happens on this path; only `rollbackAttrs`'s naturally-array `dirtyKeys`
   // needs to be wrapped in a `Set` before reaching here.
-  storeWrapper.notifyChange(identifier, 'attributes', keys);
+  storeWrapper.notifyChange(identifier, 'attributes', keys, channel);
 }
 
 /*

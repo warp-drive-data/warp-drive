@@ -119,7 +119,8 @@ export default class HasManyReference<
         if (bucket === 'relationships' && notifiedKey === key) {
           this._ref++;
         }
-      }
+      },
+      'local'
     );
     this.___relatedTokenMap = new Map();
     // TODO inverse
@@ -170,7 +171,8 @@ export default class HasManyReference<
               if (bucket === 'identity' || (bucket === 'attributes' && notifiedKey === 'id')) {
                 this._ref++;
               }
-            }
+            },
+            'local'
           );
         }
         this.___relatedTokenMap.set(identifier, token);

@@ -57,7 +57,9 @@ export default function addToRelatedRecords(
     addRelatedRecord(graph, relationship, record, value, index ?? null, isRemote);
   }
 
-  notifyChange(graph, relationship);
+  // a purely local mutation (isRemote=false) has no remote implication, so
+  // remote-only readers don't need to be woken for it.
+  notifyChange(graph, relationship, isRemote ? undefined : 'local');
 }
 
 function addRelatedRecord(

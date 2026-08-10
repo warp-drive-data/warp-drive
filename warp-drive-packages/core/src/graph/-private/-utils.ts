@@ -5,6 +5,7 @@ import { LOG_GRAPH } from '@warp-drive/core/build-config/debugging';
 import { assert } from '@warp-drive/core/build-config/macros';
 
 import type { Store } from '../../store/-private.ts';
+import type { NotificationChannel } from '../../store/-private/managers/notification-manager.ts';
 import type { CacheCapabilitiesManager } from '../../types.ts';
 import type { UpdateResourceRelationshipOperation } from '../../types/cache/operations.ts';
 import type { UpdateRelationshipOperation } from '../../types/graph.ts';
@@ -222,7 +223,11 @@ export function removeIdentifierCompletelyFromRelationship(
 }
 
 /** Notifies the store that a relationship has changed, provided the relationship has been accessed and is not currently being removed. */
-export function notifyChange(graph: Graph, relationship: CollectionEdge | ResourceEdge): void {
+export function notifyChange(
+  graph: Graph,
+  relationship: CollectionEdge | ResourceEdge,
+  channel?: NotificationChannel
+): void {
   if (!relationship.accessed) {
     return;
   }
@@ -242,7 +247,7 @@ export function notifyChange(graph: Graph, relationship: CollectionEdge | Resour
     console.log(`Graph: notifying relationship change for ${String(resourceKey)} ${key}`);
   }
 
-  graph.store.notifyChange(resourceKey, 'relationships', key);
+  graph.store.notifyChange(resourceKey, 'relationships', key, channel);
 }
 
 /**

@@ -225,7 +225,8 @@ export class RecordReference {
         if (bucket === 'identity' || (bucket === 'attributes' && notifiedKey === 'id')) {
           this._ref++;
         }
-      }
+      },
+      'local'
     );
   }
 
