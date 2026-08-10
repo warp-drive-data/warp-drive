@@ -1,4 +1,4 @@
-import { createConfig } from '@warp-drive/internal-config/vite/config.js';
+import { createConfig } from '@warp-drive/internal-config/tsdown/config.js';
 
 export const externals = ['fs', 'path', 'semver', 'url'];
 
@@ -12,14 +12,11 @@ export const entryPoints = [
   './src/canary-features.ts',
 ];
 
-const config = createConfig(
+export default createConfig(
   {
     entryPoints,
     flatten: true,
     externals,
-    fixModule: false,
   },
   import.meta.resolve
 );
-
-export default config;

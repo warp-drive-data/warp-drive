@@ -14,11 +14,11 @@
   "license": "MIT",
   "author": "Chris Thoburn <runspired@users.noreply.github.com>",
   "scripts": {
-    "build:pkg": "vite build; vite build -c ./vite.config-cjs.mjs;",
+    "build:pkg": "tsdown; tsdown -c ./tsdown.config-cjs.mjs;",
     "prepack": "pnpm run build:pkg",
     "sync": "echo \"syncing\"",
     "_temporarily_deactivated_lint": "eslint . --quiet --cache --cache-strategy=content",
-    "start": "vite"
+    "start": "tsdown --watch"
   },
   "type": "module",
   "files": [
@@ -57,8 +57,8 @@
     "@types/node": "^20.19.11",
     "@types/semver": "^7.7.1",
     "@warp-drive/internal-config": "workspace:*",
-    "typescript": "^5.9.3",
-    "vite": "^7.3.1"
+    "tsdown": "^0.22.14",
+    "typescript": "^5.9.3"
   },
   "volta": {
     "extends": "../../package.json"

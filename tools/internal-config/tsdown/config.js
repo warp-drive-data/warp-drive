@@ -96,7 +96,7 @@ export function createConfig(options, resolve) {
     minify: false,
     report: false,
     dts: options.compileTypes ? { sourcemap: true } : false,
-    outExtensions: () => ({ js: '.js', dts: '.d.ts' }),
+    outExtensions: ({ format }) => ({ js: format === 'cjs' ? '.cjs' : '.js', dts: '.d.ts' }),
     deps: {
       neverBundle: external(options.externals),
     },
