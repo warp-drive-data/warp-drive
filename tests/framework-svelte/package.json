@@ -26,23 +26,23 @@
   },
   "devDependencies": {
     "@babel/core": "^7.28.3",
-    "@babel/runtime": "^7.28.3",
     "@babel/plugin-transform-typescript": "^7.28.0",
+    "@babel/runtime": "^7.28.3",
+    "@embroider/macros": "^1.20.6",
     "@rollup/plugin-babel": "^6.0.4",
-    "babel-plugin-debug-macros": "^2.0.0",
-    "@embroider/macros": "^1.19.6",
-    "@warp-drive/svelte": "workspace:*",
-    "@warp-drive/core": "workspace:*",
     "@warp-drive-internal/specs": "workspace:*",
-    "@warp-drive/utilities": "workspace:*",
-    "@warp-drive/json-api": "workspace:*",
+    "@warp-drive/core": "workspace:*",
     "@warp-drive/diagnostic": "workspace:*",
     "@warp-drive/holodeck": "workspace:*",
     "@warp-drive/internal-config": "workspace:*",
+    "@warp-drive/json-api": "workspace:*",
+    "@warp-drive/svelte": "workspace:*",
+    "@warp-drive/utilities": "workspace:*",
+    "babel-plugin-debug-macros": "^2.0.0",
     "decorator-transforms": "^2.3.0",
     "svelte": "^5.38.3",
-    "vite": "^7.3.1",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vite": "^7.3.1"
   },
   "volta": {
     "extends": "../../package.json"

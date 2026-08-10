@@ -25,12 +25,31 @@ export default function (babel) {
         if (state.opts.sources.includes(importPath)) {
           const specifiers = path.get('specifiers');
           specifiers.forEach((specifier) => {
+            // Rolldown emits a defensive `import * as X from '...'` fallback
+            // alongside a literal `export * from '...'` re-export (to cover
+            // cases where the target's exports aren't statically known). A
+            // namespace (or default) specifier isn't one of our named flags,
+            // so there's nothing to transform -- skip it.
+            if (!specifier.isImportSpecifier()) {
+              return;
+            }
             let name = specifier.node.imported.name;
             if (!(name in state.opts.flags)) {
               throw new Error(`Unexpected flag ${name} imported from ${importPath}`);
             }
             let localBindingName = specifier.node.local.name;
             let binding = specifier.scope.getBinding(localBindingName);
+
+            // A binding that's re-exported (`export { LOG_FOO }`) can't have its
+            // export-specifier reference replaced with a `macroCondition(...)`
+            // call expression -- an export specifier's `local` must stay an
+            // Identifier. Leave the whole binding untouched in that case: the
+            // re-export just defers macro-expansion to wherever it's finally
+            // consumed as a value.
+            if (binding.referencePaths.some((p) => p.parentPath.isExportSpecifier())) {
+              return;
+            }
+
             binding.referencePaths.forEach((p) => {
               let negateStatement = false;
               let node = p;

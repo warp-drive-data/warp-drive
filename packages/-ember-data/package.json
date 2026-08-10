@@ -77,13 +77,13 @@
     "@ember-data/request-utils": "workspace:*",
     "@ember-data/serializer": "workspace:*",
     "@ember-data/store": "workspace:*",
-    "@ember/edition-utils": "^1.2.0",
-    "@embroider/macros": "^1.19.6",
-    "@warp-drive/core-types": "workspace:*",
     "@ember-data/tracking": "workspace:*",
+    "@ember/edition-utils": "^1.2.0",
+    "@embroider/macros": "^1.20.6",
+    "@warp-drive/core": "workspace:*",
+    "@warp-drive/core-types": "workspace:*",
     "@warp-drive/ember": "workspace:*",
     "@warp-drive/json-api": "workspace:*",
-    "@warp-drive/core": "workspace:*",
     "@warp-drive/legacy": "workspace:*",
     "@warp-drive/utilities": "workspace:*"
   },
@@ -105,15 +105,15 @@
     "@babel/plugin-transform-typescript": "^7.28.0",
     "@babel/preset-env": "^7.28.3",
     "@babel/preset-typescript": "^7.27.1",
+    "@ember/test-helpers": "5.2.0",
     "@ember/test-waiters": "^4.1.1",
     "@types/qunit": "2.19.13",
-    "@ember/test-helpers": "5.2.0",
     "@warp-drive/internal-config": "workspace:*",
     "ember-source": "~6.12.0",
     "eslint": "^9.34.0",
-    "vite": "^7.3.1",
+    "qunit": "^2.18.0",
     "typescript": "^5.9.3",
-    "qunit": "^2.18.0"
+    "vite": "^7.3.1"
   },
   "ember": {
     "edition": "octane"

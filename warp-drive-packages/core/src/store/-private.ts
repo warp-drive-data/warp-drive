@@ -18,6 +18,7 @@ export type {
   SaveRecordMutation,
   RequestCacheRequestState,
   RequestStateService,
+  PrivateRequestStateService,
 } from './-private/network/request-cache.ts';
 
 export type { CreateRecordProperties } from './-private/store-service.ts';

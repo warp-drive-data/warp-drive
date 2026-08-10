@@ -50,8 +50,12 @@ export function entryPoints(globs, resolve, options) {
   return fileMap;
 }
 
-function fixViteHijack(filePath) {
-  return filePath.replace('/node_modules/.vite-temp/', '/');
+export function fixViteHijack(filePath) {
+  // Vite's config loader rewrites resolved paths through a temp dir; tsdown's
+  // config loader (which re-imports the config bypassing Node's module cache
+  // to support --watch) instead taints `import.meta.resolve()` output with a
+  // `?no-cache=<uuid>` query suffix. Strip both.
+  return filePath.replace('/node_modules/.vite-temp/', '/').replace(/\?.*$/, '');
 }
 
 export function external(manual = []) {
@@ -62,8 +66,26 @@ export function external(manual = []) {
 
   // console.log({ externals: result });
   return function (id) {
+    // An explicit (manual) external, or a declared dependency/peerDependency,
+    // always wins -- even if it also happens to be a self-referencing
+    // subpath of this very package (e.g. `@ember-data/debug` deliberately
+    // lists `@ember-data/debug/data-adapter` as external so it stays a bare
+    // specifier for the consuming app to resolve, rather than being routed
+    // to an internal entry). Check this before the self-reference bypass below.
     if (all.has(id)) {
       return true;
+    }
+
+    // A package importing its own name (e.g. `@warp-drive/core` source
+    // importing `@warp-drive/core/build-config/env`) is a self-reference, not
+    // an external dependency. Under Vite/Rollup this branch is never reached
+    // for such ids since Vite's own resolver resolves package self-references
+    // to the local entry before Rollup's `external` option is ever consulted.
+    // Rolldown/tsdown checks `external`/`deps.neverBundle` first, so without
+    // this it would hit the guardrail below; returning `false` here lets
+    // resolution proceed so a self-reference-aware resolver plugin can resolve it.
+    if (id === pkg.name || id.startsWith(pkg.name + '/')) {
+      return false;
     }
 
     for (const dep of deps) {

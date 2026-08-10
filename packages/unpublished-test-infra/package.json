@@ -42,10 +42,10 @@
     "sync": "echo \"syncing\""
   },
   "peerDependencies": {
-    "qunit": "^2.20.1",
-    "testem": "^3.12.0",
+    "@ember/test-helpers": "3.3.0 || ^4.0.4 || ^5.1.0",
     "@warp-drive/diagnostic": "workspace:*",
-    "@ember/test-helpers": "3.3.0 || ^4.0.4 || ^5.1.0"
+    "qunit": "^2.20.1",
+    "testem": "^3.12.0"
   },
   "peerDependenciesMeta": {
     "qunit": {
@@ -59,9 +59,9 @@
     }
   },
   "dependencies": {
-    "@embroider/macros": "^1.19.6",
-    "@warp-drive/utilities": "workspace:*",
+    "@embroider/macros": "^1.20.6",
     "@warp-drive/core": "workspace:*",
+    "@warp-drive/utilities": "workspace:*",
     "chalk": "^4.1.2",
     "semver": "^7.7.2"
   },
@@ -72,15 +72,15 @@
     "@babel/preset-typescript": "^7.27.1",
     "@ember/test-helpers": "5.2.0",
     "@glimmer/component": "^2.0.0",
-    "@types/semver": "^7.7.0",
     "@types/qunit": "2.19.13",
+    "@types/semver": "^7.7.0",
     "@warp-drive/diagnostic": "workspace:*",
     "@warp-drive/internal-config": "workspace:*",
     "ember-source": "~6.12.0",
-    "typescript": "^5.9.3",
-    "vite": "^7.3.1",
     "qunit": "^2.20.1",
-    "testem": "^3.12.0"
+    "testem": "^3.12.0",
+    "typescript": "^5.9.3",
+    "vite": "^7.3.1"
   },
   "ember": {
     "edition": "octane"
