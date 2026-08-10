@@ -15,18 +15,10 @@ export interface CacheCapabilitiesManager {
 }
 export class CacheCapabilitiesManager implements StoreWrapper {
   /** @internal */
-  declare private _willNotify: boolean;
-
-  /** @internal */
-  declare private _pendingNotifies: Map<ResourceKey, Set<string>>;
-
-  /** @internal */
   declare _store: Store;
 
   constructor(_store: Store) {
     this._store = _store;
-    this._willNotify = false;
-    this._pendingNotifies = new Map();
   }
 
   get cacheKeyManager(): CacheKeyManager {
@@ -36,60 +28,6 @@ export class CacheCapabilitiesManager implements StoreWrapper {
   /** @deprecated use {@link CacheCapabilitiesManager.cacheKeyManager} */
   get identifierCache(): CacheKeyManager {
     return this.cacheKeyManager;
-  }
-
-  /** @internal */
-  private _scheduleNotification(identifier: ResourceKey, key: string): void {
-    let pending = this._pendingNotifies.get(identifier);
-
-    if (!pending) {
-      pending = new Set();
-      this._pendingNotifies.set(identifier, pending);
-    }
-    pending.add(key);
-
-    if (this._willNotify === true) {
-      return;
-    }
-
-    this._willNotify = true;
-    // it's possible a cache adhoc notifies us,
-    // in which case we sync flush
-    if (this._store._cbs) {
-      this._store._schedule('notify', () => this._flushNotifications());
-    } else {
-      // TODO @runspired determine if relationship mutations should schedule
-      // into join/run vs immediate flush
-      this._flushNotifications();
-    }
-  }
-
-  /** @internal */
-  private _flushNotifications(): void {
-    if (this._willNotify === false) {
-      return;
-    }
-
-    const pending = this._pendingNotifies;
-    this._pendingNotifies = new Map();
-    this._willNotify = false;
-
-    // deliver all relationship keys pending for a given identifier as a single
-    // batch instead of one `notify` call per key: subscribers still receive one
-    // notification per key (in Set-insertion order), but the per-call overhead
-    // (subscriber lookups, buffer scheduling, etc) that `notify` would otherwise
-    // repeat for every key is paid only once per identifier. This mirrors the
-    // same N*M concern `attributes` notifications have (see `notifyAttributes`
-    // in the json-api Cache): a single push/mutation pass can dirty many
-    // relationships across many records at once, and each of those records
-    // funnels through this same per-identifier `pending` Set.
-    //
-    // `set` here is already the `Set<string>` we've been collecting pending
-    // keys into above, and `notify` accepts a `Set` directly, so it is handed
-    // off as-is: no `Array.from` (or any other) conversion is performed.
-    pending.forEach((set, identifier) => {
-      this._store.notifications.notify(identifier, 'relationships', set);
-    });
   }
 
   notifyChange(identifier: ResourceKey, namespace: 'added' | 'removed', key: null): void;
@@ -103,13 +41,12 @@ export class CacheCapabilitiesManager implements StoreWrapper {
   ): void {
     assert(`Expected a stable identifier`, isResourceKey(identifier) || isRequestKey(identifier));
 
-    // TODO do we still get value from this?
-    if (namespace === 'relationships' && key) {
-      assert(`Expected a single relationship key`, typeof key === 'string');
-      this._scheduleNotification(identifier as ResourceKey, key);
-      return;
-    }
-
+    // `NotificationManager#notify` buffers and coalesces repeated calls for the
+    // same (identifier, namespace, key) within a single flush window itself
+    // (see its `mergeIntoBuffer`), so every namespace - including
+    // `'relationships'` - can call through to it directly, once per key, and
+    // rely on that buffer to dedupe/batch delivery. There is no need for a
+    // separate accumulation step at this layer.
     // @ts-expect-error
     this._store.notifications.notify(identifier, namespace, key);
   }
@@ -130,7 +67,6 @@ export class CacheCapabilitiesManager implements StoreWrapper {
   disconnectRecord(identifier: ResourceKey): void {
     assert(`Expected a stable identifier`, isResourceKey(identifier));
     this._store._instanceCache.disconnect(identifier);
-    this._pendingNotifies.delete(identifier);
   }
 }
 

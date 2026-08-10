@@ -202,7 +202,7 @@ module('Integration | NotificationManager batch notifications', function () {
     store.notifications.unsubscribe(token);
   });
 
-  test('relationship changes on the same identifier are flushed to `notify` as a single batch', function (assert) {
+  test('relationship changes on the same identifier are each notified exactly once, relying on `NotificationManager`s own buffer to coalesce them', function (assert) {
     const store = new RelationshipTestStore();
 
     const doc = store.cache.put(
@@ -239,15 +239,16 @@ module('Integration | NotificationManager batch notifications', function () {
 
     // spy on the underlying NotificationManager#notify to count how many times
     // it is actually invoked for this identifier's 'relationships' namespace.
-    // Before this change, `CacheCapabilitiesManager#_flushNotifications` called
-    // `notify` once per pending relationship key; now it should call it once
-    // per identifier, carrying every pending key for that identifier at once.
-    // Also confirm the pending keys `Set<string>` collected by
-    // `CacheCapabilitiesManager#_pendingNotifies` is passed to `notify` as a
-    // `Set`, not converted to an array first (the relationships flush path
-    // already had a `Set` on hand, so there is no reason to convert it).
+    // `CacheCapabilitiesManager` no longer accumulates relationship keys into
+    // its own pending Set before calling `notify` - it forwards every key
+    // directly, exactly like every other namespace (including `attributes`)
+    // already did. That means `notify` is called once per changed
+    // relationship key here (two calls, each with a plain string key), and it
+    // is entirely `NotificationManager`'s own buffer (see
+    // `notification-coalescing-test.ts`) that is responsible for coalescing
+    // same-flush-window calls before dispatching to subscribers.
     let notifyCallCount = 0;
-    let batchKeyWasSet = false;
+    let anyKeyWasSet = false;
     const originalNotify = store.notifications.notify.bind(store.notifications);
     store.notifications.notify = ((
       cacheKey: ResourceKey | RequestKey,
@@ -257,7 +258,7 @@ module('Integration | NotificationManager batch notifications', function () {
       if (cacheKey === identifier && type === 'relationships') {
         notifyCallCount++;
         if (key instanceof Set) {
-          batchKeyWasSet = true;
+          anyKeyWasSet = true;
         }
       }
       return (originalNotify as (cacheKey: unknown, type: unknown, key: unknown) => boolean)(cacheKey, type, key);
@@ -290,16 +291,16 @@ module('Integration | NotificationManager batch notifications', function () {
     assert.deepEqual(
       seenKeys.sort(),
       ['bestFriend', 'friends'].sort(),
-      'we were notified exactly once for each relationship that actually changed'
+      'subscriber-level delivery is unaffected: we were notified exactly once for each relationship that actually changed'
     );
     assert.equal(
       notifyCallCount,
-      1,
-      'both relationship keys were flushed to notify() in a single batched call, not once per key'
+      2,
+      'each relationship key reaches notify() as its own call now that CacheCapabilitiesManager no longer batches them into a single Set'
     );
-    assert.true(
-      batchKeyWasSet,
-      'the pending-keys Set collected for this identifier was passed to notify() as a Set, without being converted to an array first'
+    assert.false(
+      anyKeyWasSet,
+      'CacheCapabilitiesManager forwards each relationship key as a plain string, the same as every other namespace'
     );
 
     store.notifications.unsubscribe(token);
