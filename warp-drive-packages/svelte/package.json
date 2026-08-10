@@ -14,7 +14,7 @@
   "bugs": "https://github.com/warp-drive-data/warp-drive/issues",
   "keywords": [],
   "scripts": {
-    "build:pkg": "vite build && npm run prepack",
+    "build:pkg": "svelte-package",
     "prepack": "svelte-package",
     "sync": "echo \"syncing\"",
     "lint": "eslint . --quiet --cache --cache-strategy=content",
