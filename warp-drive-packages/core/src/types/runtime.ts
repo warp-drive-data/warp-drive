@@ -1,6 +1,12 @@
-import type { LOG_CONFIG } from '@warp-drive/build-config/-private/utils/logging';
+import type * as LOG_FLAGS from '@warp-drive/build-config/debugging';
 
 import { getOrSetUniversal } from './-private.ts';
+
+/**
+ * the shape of the runtime-configurable logging flags, keyed off of
+ * `@warp-drive/build-config/debugging`'s exported flags
+ */
+type LOG_CONFIG = { [Key in keyof typeof LOG_FLAGS]: boolean };
 
 const RuntimeConfig: {
   /**
