@@ -344,27 +344,32 @@ function replaceRelatedRecordsRemote(graph: Graph, op: ReplaceRelatedRecordsOper
     }
   }
 
-  // Gate on the original `isDirty` false->true transition *or* on
-  // `diff.remoteOrderChanged`, not `remoteOrderChanged` alone.
-  //
-  // The `isDirty` transition is required for the deprecated
+  // Gate directly on `diff.changed` rather than the `isDirty` false->true
+  // transition (`relationship.isDirty && !wasDirty`) that used to guard this.
+  // `diff.changed` is exactly "did this remote update, once reconciled
+  // against whatever local currently shows, produce an observably different
+  // local materialization" - which is precisely what should trigger a
+  // flush/notify, and it already accounts for the deprecated
   // `resetOnRemoteUpdate`/`DEPRECATE_RELATIONSHIP_REMOTE_UPDATE_CLEARING_LOCAL_STATE`
-  // path above: it can mark `isDirty` (by way of `diff.changed`) even when
-  // remote membership/order has not itself changed at all -- e.g. a local
-  // reorder followed by the *same* remote data being pushed again needs to
-  // still flush and reconcile local back to remote order, but
-  // `diff.remoteOrderChanged` alone would be `false` for that push since
-  // remote-vs-remote is unchanged.
+  // reconciliation rules (see `_compare` in -diff.ts).
   //
-  // `diff.remoteOrderChanged` is needed in addition, not as a replacement,
-  // because the `isDirty` transition only fires the first time the
-  // relationship becomes dirty: a local/editable consumer re-arms it back to
-  // clean via `computeLocalState` on every read, but a reader that never
-  // touches `computeLocalState` (e.g. a `linksMode` array reading only
-  // remote state) never does, so `isDirty` can latch `true` forever after
-  // the first remote change and every subsequent genuine remote reorder
-  // would otherwise silently stop notifying it.
-  if ((relationship.isDirty && !wasDirty) || diff.remoteOrderChanged) {
+  // The old `isDirty`-transition gate is not equivalent: `isDirty` is only
+  // reset back to `false` by `computeLocalState`, so a reader that never
+  // calls it (e.g. a `linksMode` array, which reads relationship data
+  // straight from the graph) can leave `isDirty` latched `true` forever
+  // after the very first remote change - silently suppressing every
+  // subsequent genuine change for that relationship, since `!wasDirty` would
+  // always be `false` from then on. This was caught by
+  // `tests/json-api`'s "update hasMany with repeated patch" (a `linksMode`
+  // hasMany that must reconcile correctly across more than one remote
+  // update). Gating on `diff.changed` directly fixes that without the
+  // over-eager regression an earlier attempt at this fix caused: gating (or
+  // additionally gating) on `diff.remoteOrderChanged` instead flagged a
+  // remote push that merely catches up to what local already independently
+  // reflects (no observable difference for any consumer) as needing a
+  // flush, regressing tests/ember-data__graph's diff-preservation suite
+  // ("... does not produce a notification for a committed removal/addition").
+  if (diff.changed) {
     flushCanonical(graph, relationship);
   }
 }
