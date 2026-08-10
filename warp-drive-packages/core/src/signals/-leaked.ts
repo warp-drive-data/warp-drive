@@ -3,6 +3,7 @@ export {
   defineGate,
   defineSignal,
   entangleSignal,
+  getOrCreateInternalSignal,
   makeInitializer,
   signal,
   waitFor,
@@ -19,4 +20,5 @@ export type {
   ContentFeatures,
   RecoveryFeatures,
   RequestArgs,
+  SignalStore,
 } from './-private';

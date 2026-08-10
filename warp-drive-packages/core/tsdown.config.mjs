@@ -40,7 +40,6 @@ export const entryPoints = [
   './src/store/-private.ts',
   './src/configure.ts',
   './src/signals/-leaked.ts',
-  './src/signals/-private.ts',
 
   // graph
   './src/graph/-private.ts',
