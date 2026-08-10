@@ -64,7 +64,10 @@ export class ImageWorker {
       return pending;
     }
 
-    const promise = loadImage(url);
+    const promise = loadImage(url).then((loadedObjectUrl) => {
+      this.cache.set(url, loadedObjectUrl);
+      return loadedObjectUrl;
+    });
     this.pendingImages.set(url, promise);
     return promise.finally(() => {
       this.pendingImages.delete(url);

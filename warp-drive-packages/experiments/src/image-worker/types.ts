@@ -6,15 +6,15 @@ import type { ImageWorker } from './worker';
 /**
  * Sent by the {@link ImageWorker} once an image has finished loading.
  *
- * @remarks
- * The worker also attaches an `objectUrl` for the fetched image's blob to
- * this message, but {@link ImageFetch} does not currently read it — the
- * `url` field is used to resolve the pending `load` request instead.
+ * `objectUrl` is the url created via `URL.createObjectURL` for the fetched
+ * image's blob; {@link ImageFetch} resolves the pending `load` request with
+ * it.
  */
 export type SuccessResponseEventData = {
   type: 'success-response';
   thread: string;
   url: string;
+  objectUrl: string;
 };
 /**
  * Reserved for future use — the {@link ImageWorker} does not currently

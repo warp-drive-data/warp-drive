@@ -16,8 +16,9 @@
 <h3 align="center">ImageWorker</h3>
 
 - Fetches images from a `Worker`/`SharedWorker` instead of the main thread
-- Dedupes concurrent fetches for the same url within the worker
+- Caches and dedupes fetches for the same url within the worker
 - Shares fetched-image state cross-tab when using a `SharedWorker`
+- Resolves to a reusable object url for the fetched image's blob
 
 ## Install
 
@@ -30,24 +31,22 @@ Or use your favorite javascript package manager.
 ## About
 
 `ImageWorker` offloads image fetching to a dedicated `Worker` or `SharedWorker`.
-The worker downloads each requested url via `fetch` (letting the browser's
-normal HTTP cache do its job) and dedupes concurrent requests for the same url,
-so multiple tabs/windows sharing a `SharedWorker` never fetch the same image
-twice at once.
+The worker downloads each requested url via `fetch`, converts the response
+into a `Blob`, and creates an object url for it via `URL.createObjectURL`.
+That object url is cached in-memory by source url for the lifetime of the
+worker, so multiple tabs/windows sharing a `SharedWorker` — or repeat requests
+from the same tab — never fetch or decode the same image twice.
 
 `ImageFetch` is the main-thread client used to talk to an `ImageWorker`.
 Construct it with your `Worker`/`SharedWorker` instance and call `load(url)`
-to ask the worker to fetch that url.
+to get back an object url you can assign directly to an `<img src>`.
+`ImageFetch` also caches the resolved object url locally, so repeat calls for
+a url already loaded by this instance resolve without messaging the worker.
 
 ## Known Limitations
 
 This is an early experiment; the following gaps exist today:
 
-- `ImageFetch.load(url)` resolves with the original `url`, not an object url.
-  The worker does convert the fetched image into a `Blob` and create an object
-  url for it internally, but that object url is not currently surfaced back to
-  the caller — `load` is only useful today as a way to pre-warm a url through
-  the worker's fetch/dedupe logic, not to obtain a blob url for the image.
 - Calling `load` again for the same url while a prior call for that same url
   is still in-flight on the same `ImageFetch` instance replaces the pending
   request rather than joining it; only the most recently issued call resolves,
@@ -100,7 +99,11 @@ import { ImageFetch } from '@warp-drive/experiments/image-fetch';
 const worker = new SharedWorker(new URL('./workers/image-worker.ts', import.meta.url));
 const images = new ImageFetch(worker);
 
-await images.load('https://example.com/cat.png');
+const objectUrl = await images.load('https://example.com/cat.png');
+
+const img = document.createElement('img');
+img.src = objectUrl;
+document.body.appendChild(img);
 ```
 
 > [!TIP]
@@ -159,12 +162,6 @@ export default class Thumbnail extends Component<{ Args: { url: string; hiresUrl
   </template>
 }
 ```
-
-> [!NOTE]
-> Because of the limitation noted above, `thumbnailUrl` above resolves to the
-> original image url rather than a blob url — the `<img>` still benefits from
-> the worker's fetch deduplication and the browser's HTTP cache, just not from
-> an in-memory blob url.
 
 #### Usage in SSR
 

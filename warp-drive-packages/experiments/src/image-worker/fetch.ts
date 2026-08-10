@@ -59,7 +59,9 @@ export class ImageFetch {
         }
 
         if (type === 'success-response') {
-          deferred.resolve(url);
+          const { objectUrl } = event.data;
+          this.cache.set(url, objectUrl);
+          deferred.resolve(objectUrl);
           return;
         }
 
@@ -95,13 +97,19 @@ export class ImageFetch {
 
   /**
    * Requests that the given image url be loaded by the connected
-   * {@link ImageWorker}, resolving with the same `url` once the worker
-   * confirms the image has been fetched (or immediately, in SSR/FastBoot
-   * or when this instance was constructed with a `null` worker).
+   * {@link ImageWorker}, resolving with an object url for the fetched
+   * image's blob once the worker responds (or immediately with the
+   * original `url`, in SSR/FastBoot or when this instance was constructed
+   * with a `null` worker).
    *
-   * Calling `load` again for a url that is already in-flight on this
-   * instance replaces the pending request rather than joining it — only
-   * the most recently issued call for a given url will resolve.
+   * The resolved object url is cached in-memory by source url on this
+   * instance, so subsequent calls for the same url resolve immediately
+   * without another round-trip to the worker.
+   *
+   * Calling `load` again for a url that is already in-flight (not yet
+   * cached) on this instance replaces the pending request rather than
+   * joining it — only the most recently issued call for a given url will
+   * resolve.
    *
    * @public
    */
