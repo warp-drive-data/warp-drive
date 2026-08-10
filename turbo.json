@@ -10,7 +10,8 @@
     ".pnpm-workspace.yaml",
     "patches/*",
     ".github/*",
-    "./tools/release/**"
+    "./tools/release/**",
+    "./tools/internal-config/**"
   ],
 
   "envMode": "loose",
