@@ -1,4 +1,4 @@
-import { createConfig } from '@warp-drive/internal-config/vite/config.js';
+import { createConfig } from '@warp-drive/internal-config/tsdown/config.js';
 
 export const externals = ['babel-import-util', 'fs', 'path', 'url'];
 
@@ -19,7 +19,6 @@ export default createConfig(
     externals,
     target: ['esnext', 'firefox121', 'node22'],
     emptyOutDir: false,
-    fixModule: false,
     compileTypes: false,
   },
   import.meta.resolve
