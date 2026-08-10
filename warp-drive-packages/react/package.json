@@ -18,11 +18,11 @@
     "warp-drive"
   ],
   "scripts": {
-    "build:pkg": "vite build",
+    "build:pkg": "tsdown",
     "prepack": "pnpm run build:pkg",
     "sync": "echo \"syncing\"",
     "lint": "eslint . --quiet --cache --cache-strategy=content",
-    "start": "vite"
+    "start": "tsdown --watch"
   },
   "files": [
     "declarations",
@@ -64,8 +64,8 @@
     "decorator-transforms": "^2.3.0",
     "react": "^19.1.1",
     "rollup": "^4.48.0",
-    "typescript": "^5.9.3",
-    "vite": "^7.3.1"
+    "tsdown": "^0.22.14",
+    "typescript": "^5.9.3"
   },
   "volta": {
     "extends": "../../package.json"
