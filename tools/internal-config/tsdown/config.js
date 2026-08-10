@@ -5,7 +5,6 @@ import { ember } from '@nullvoxpopuli/ember-rolldown';
 import { defineConfig } from 'tsdown';
 
 import { entryPoints, external } from '../rollup/external.js';
-import { FixMacroConditionsPlugin } from './fix-macro-conditions.js';
 import { MoveTypesToDestination } from './move-types.js';
 
 /**
@@ -104,7 +103,6 @@ export function createConfig(options, resolve) {
     plugins: [
       selfReferenceEntries(entryMap),
       ...ember(withMacroImportsAlwaysBabeled(options.ember)),
-      FixMacroConditionsPlugin(),
       options.compileTypes ? MoveTypesToDestination(options, resolve) : null,
       ...(options.plugins || []),
     ].filter(Boolean),

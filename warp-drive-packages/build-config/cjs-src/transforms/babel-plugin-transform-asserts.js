@@ -9,7 +9,7 @@ import { assert } from '@warp-drive/build-config/macros';
 assert('foo', true);
 
 // After
-if (macroCondition(isDevelopingApp())) function assert(test) { if (!test) { throw new Error('foo'); } }(true);
+(macroCondition(isDevelopingApp()) ? function assert(test) { if (!test) { throw new Error('foo'); } }(true) : {});
 */
 
 // => _macros.getGlobalConfig().WarpDrive.env.DEBUG
@@ -53,21 +53,14 @@ function buildAssert(types, originalCallExpression) {
   );
 }
 
-// => if (<debug-macro>) <assert-exp>;
-//
-// A ternary with an empty-object "else" branch (`<debug-macro> ? <assert-exp> : {}`)
-// is semantically equivalent, and was used previously, but bundlers that
-// perform tree-shaking/DCE-driven syntax simplification (e.g. rolldown) may
-// rewrite that shape into `<debug-macro> && <assert-exp>` when the result is
-// discarded. `@embroider/macros`'s babel plugin only recognizes
-// `macroCondition(...)` as the direct predicate of an `if` statement or a
-// ternary, not a logical `&&`, so such a rewrite breaks macro-expansion in a
-// later (consuming) build pass. An `if` statement with no `else` isn't a
-// candidate for that rewrite, so it survives such passes unchanged.
-function buildAssertIf(types, binding, state, originalCallExpression) {
-  return types.ifStatement(
-    buildMacroConditionDEBUG(types, binding, state),
-    types.expressionStatement(buildAssert(types, originalCallExpression))
+// => ( <debug-macro> ? <assert-exp> : {});
+function buildAssertTernary(types, binding, state, originalCallExpression) {
+  return types.expressionStatement(
+    types.conditionalExpression(
+      buildMacroConditionDEBUG(types, binding, state),
+      buildAssert(types, originalCallExpression),
+      types.objectExpression([])
+    )
   );
 }
 
@@ -116,8 +109,8 @@ export default function (babel) {
                 throw new Error('Expected a call expression');
               }
 
-              const assertIf = buildAssertIf(t, binding, state, originalCallExpression);
-              p.parentPath.replaceWith(assertIf);
+              const assertTernary = buildAssertTernary(t, binding, state, originalCallExpression);
+              p.parentPath.replaceWith(assertTernary);
             });
             specifier.scope.removeOwnBinding(localBindingName);
             specifier.remove();
