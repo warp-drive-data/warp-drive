@@ -62,6 +62,75 @@ function keyToString(key: string | NotifyKeys | null | undefined): string {
   return key instanceof Set ? Array.from(key).join(', ') : key || '';
 }
 
+/**
+ * Merges an incoming `notify()` call for a single identifier into that
+ * identifier's pending-notifications buffer, coalescing redundant work within
+ * a single flush window.
+ *
+ * The buffer is a `Map` from namespace (`'attributes'`, `'relationships'`,
+ * `'state'`, etc.) to either a `Set<string>` of pending keys or `null`. Using
+ * a `Map` means the *first* time a namespace is touched during this flush
+ * window fixes its position in iteration order; every subsequent touch to
+ * that same namespace (regardless of how much later, or how many other
+ * namespaces fired in between) updates its value in place without moving it.
+ * This preserves the relative order in which *different* namespaces first
+ * fired, while intentionally not tracking the arrival order of repeated
+ * touches to the *same* namespace - those are provably safe to coalesce
+ * because subscribers never receive anything about a notification beyond
+ * `(cacheKey, type, key?)`.
+ *
+ * For `'attributes'`/`'relationships'`, `null` is a wildcard meaning "an
+ * unspecified set of keys changed" - a strict superset of any specific key
+ * list, per the existing contract of {@link CacheCapabilitiesManager.notifyChange}.
+ * A keyless call always upgrades the bucket to `null`, discarding any
+ * specific keys already collected; a keyed call is a no-op once the bucket
+ * is already `null`.
+ *
+ * For every other namespace, subscriber callbacks never receive a key at
+ * all, so `null` is used purely as a "this namespace fired at least once"
+ * presence marker; multiple firings within one flush all collapse to the
+ * same single marker.
+ */
+function mergeIntoBuffer(
+  buffer: Map<NotificationType | DocumentCacheOperation, Set<string> | null>,
+  value: NotificationType | CacheOperation | DocumentCacheOperation,
+  key: string | NotifyKeys | null | undefined
+): void {
+  if (value !== 'attributes' && value !== 'relationships') {
+    // presence-only namespaces: multiple firings within one flush are
+    // lossless to coalesce into a single marker.
+    buffer.set(value, null);
+    return;
+  }
+
+  const existing = buffer.get(value);
+
+  if (key === null || key === undefined) {
+    // a keyless call is a wildcard: it always wins, discarding any
+    // specific keys already accumulated for this namespace.
+    buffer.set(value, null);
+    return;
+  }
+
+  if (existing === null) {
+    // already a wildcard: specific keys can never downgrade it back to a Set.
+    return;
+  }
+
+  const set = existing ?? new Set<string>();
+  if (!existing) {
+    buffer.set(value, set);
+  }
+
+  if (key instanceof Set) {
+    for (const k of key) {
+      set.add(k);
+    }
+  } else {
+    set.add(key);
+  }
+}
+
 function count(label: string) {
   // @ts-expect-error
   // eslint-disable-next-line
@@ -121,7 +190,10 @@ export class NotificationManager {
   /** @internal */
   declare private isDestroyed: boolean;
   /** @internal */
-  declare private _buffered: Map<RequestKey | ResourceKey, [string, string | null][]>;
+  declare private _buffered: Map<
+    RequestKey | ResourceKey,
+    Map<NotificationType | DocumentCacheOperation, Set<string> | null>
+  >;
   /** @internal */
   declare private _cache: Map<
     RequestKey | ResourceKey | 'resource' | 'document',
@@ -253,23 +325,14 @@ export class NotificationManager {
     if (_hasSubscribers) {
       let buffer = this._buffered.get(cacheKey);
       if (!buffer) {
-        buffer = [];
+        buffer = new Map();
         this._buffered.set(cacheKey, buffer);
       }
 
-      if (key instanceof Set) {
-        // iterate the Set directly: it is never converted into an array.
-        for (const k of key) {
-          buffer.push([value, k]);
-          if (LOG_METRIC_COUNTS) {
-            count(`notify ${'type' in cacheKey ? cacheKey.type : '<document>'} ${value} ${k}`);
-          }
-        }
-      } else {
-        buffer.push([value, key || null]);
-        if (LOG_METRIC_COUNTS) {
-          count(`notify ${'type' in cacheKey ? cacheKey.type : '<document>'} ${value} ${key}`);
-        }
+      mergeIntoBuffer(buffer, value, key);
+
+      if (LOG_METRIC_COUNTS) {
+        count(`notify ${'type' in cacheKey ? cacheKey.type : '<document>'} ${value} ${keyToString(key)}`);
       }
 
       if (!this._scheduleNotify()) {
@@ -333,9 +396,18 @@ export class NotificationManager {
     if (buffered.size) {
       this._buffered = new Map();
       for (const [cacheKey, states] of buffered) {
-        for (let i = 0; i < states.length; i++) {
-          // @ts-expect-error
-          _flushNotification(this._cache, cacheKey, states[i][0], states[i][1]);
+        // `states` iterates in the order each namespace first fired during
+        // this flush window (see `mergeIntoBuffer`).
+        for (const [value, keyOrKeys] of states) {
+          if (keyOrKeys === null) {
+            // @ts-expect-error overload doesn't narrow within body
+            _flushNotification(this._cache, cacheKey, value, null);
+          } else {
+            for (const key of keyOrKeys) {
+              // @ts-expect-error overload doesn't narrow within body
+              _flushNotification(this._cache, cacheKey, value, key);
+            }
+          }
         }
       }
     }
