@@ -1,4 +1,4 @@
-import { entryPoints } from './vite.config.mjs';
+import { entryPoints } from './tsdown.config.mjs';
 
 /** @type {Partial<import("typedoc").TypeDocOptions>} */
 const config = {

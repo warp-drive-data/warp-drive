@@ -1,4 +1,4 @@
-import { createConfig } from '@warp-drive/internal-config/vite/config.js';
+import { createConfig } from '@warp-drive/internal-config/tsdown/config.js';
 
 // FIXME audit this list
 export const externals = [
@@ -9,6 +9,7 @@ export const externals = [
   '@ember/object/mixin', // BuildURLMixin
   '@ember/object/observers',
   '@ember/application', // getOwner
+  '@ember/application/instance', // instance-initializer signature
   '@ember/object/computed',
   '@ember/object/internals',
   '@ember/object/promise-proxy-mixin',
