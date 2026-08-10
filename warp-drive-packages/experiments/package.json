@@ -59,16 +59,16 @@
     }
   },
   "dependencies": {
-    "@embroider/macros": "^1.19.6"
+    "@embroider/macros": "^1.20.6"
   },
   "devDependencies": {
     "@babel/core": "^7.28.3",
     "@babel/plugin-transform-typescript": "^7.28.0",
     "@babel/preset-env": "^7.28.3",
     "@babel/preset-typescript": "^7.27.1",
-    "@warp-drive/internal-config": "workspace:*",
-    "@warp-drive/core": "workspace:*",
     "@sqlite.org/sqlite-wasm": "3.46.0-build2",
+    "@warp-drive/core": "workspace:*",
+    "@warp-drive/internal-config": "workspace:*",
     "typescript": "^5.9.3",
     "vite": "^7.3.1"
   },

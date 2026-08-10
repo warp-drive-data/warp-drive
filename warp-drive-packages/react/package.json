@@ -42,27 +42,26 @@
       "default": "./dist/*.js"
     }
   },
-  "peerDependencies": {},
   "dependencies": {
-    "@embroider/macros": "^1.19.6",
+    "@embroider/macros": "^1.20.6",
     "@warp-drive/core": "workspace:*",
     "@warp-drive/tc39-proposal-signals": "workspace:*",
-    "signal-polyfill": "^0.2.2",
-    "react": "^19.1.1"
+    "react": "^19.1.1",
+    "signal-polyfill": "^0.2.2"
   },
   "peerDependenciesMeta": {},
   "devDependencies": {
     "@babel/core": "^7.28.3",
     "@babel/plugin-transform-typescript": "^7.28.0",
     "@babel/preset-env": "^7.28.3",
-    "@babel/preset-typescript": "^7.27.1",
     "@babel/preset-react": "^7.27.1",
+    "@babel/preset-typescript": "^7.27.1",
     "@babel/runtime": "^7.28.3",
-    "decorator-transforms": "^2.3.0",
     "@embroider/addon-dev": "^8.1.0",
-    "@warp-drive/internal-config": "workspace:*",
-    "@warp-drive/core": "workspace:*",
     "@types/react": "^19.1.11",
+    "@warp-drive/core": "workspace:*",
+    "@warp-drive/internal-config": "workspace:*",
+    "decorator-transforms": "^2.3.0",
     "react": "^19.1.1",
     "rollup": "^4.48.0",
     "typescript": "^5.9.3",
