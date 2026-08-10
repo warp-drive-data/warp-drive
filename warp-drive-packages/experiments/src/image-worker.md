@@ -1,20 +1,3 @@
-<p align="center">
-  <img
-    class="project-logo"
-    src="../../logos/warp-drive-logo-dark.svg#gh-light-mode-only"
-    alt="WarpDrive"
-    width="200px"
-    title="WarpDrive" />
-  <img
-    class="project-logo"
-    src="../../logos/warp-drive-logo-gold.svg#gh-dark-mode-only"
-    alt="WarpDrive"
-    width="200px"
-    title="WarpDrive" />
-</p>
-
-<h3 align="center">ImageWorker</h3>
-
 - Fetches images from a `Worker`/`SharedWorker` instead of the main thread
 - Caches and dedupes fetches for the same url within the worker
 - Shares fetched-image state cross-tab when using a `SharedWorker`
@@ -25,8 +8,6 @@
 ```sh
 pnpm add @warp-drive/experiments
 ```
-
-Or use your favorite javascript package manager.
 
 ## About
 
