@@ -1,6 +1,7 @@
 import { DEBUG } from '@warp-drive/core/build-config/env';
 
 import { getOrSetGlobal } from '../../types/-private';
+import { CACHE_OWNER } from '../../types/identifier';
 import type { ImmutableHeaders, RequestInfo } from '../../types/request';
 import { Context, upgradeHeaders } from './context';
 
@@ -129,6 +130,7 @@ export function deepFreeze<T = unknown>(value: T): T {
         case 'Collection':
         case 'Store':
         case 'AbortSignal':
+        case 'identifier':
           return value;
         case 'date':
         case 'map':
@@ -183,6 +185,13 @@ function niceTypeOf(v: unknown) {
   }
   if (v instanceof Headers) {
     return 'headers';
+  }
+  // ResourceKey/RequestKey identifiers are owned by the store's identity cache and must
+  // remain mutable (e.g. `.id` is assigned once the server confirms it); deep-freezing a
+  // request's `record`/`data` reference to one would freeze the store's live identifier,
+  // not a copy of it.
+  if (typeof v === 'object' && CACHE_OWNER in v) {
+    return 'identifier';
   }
   if (typeof v === 'object' && v.constructor && v.constructor.name !== 'Object') {
     return v.constructor.name;
