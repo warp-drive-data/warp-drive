@@ -1,4 +1,4 @@
-import type { Store } from '@warp-drive/core';
+import type { NotifyKeys, Store } from '@warp-drive/core';
 import { LOG_CACHE } from '@warp-drive/core/build-config/debugging';
 import { DEPRECATE_RELATIONSHIP_REMOTE_UPDATE_CLEARING_LOCAL_STATE } from '@warp-drive/core/build-config/deprecations';
 import { DEBUG } from '@warp-drive/core/build-config/env';
@@ -1383,6 +1383,9 @@ export class JSONAPICache implements Cache {
     this._capabilities.notifyChange(identifier, 'state', null);
 
     if (dirtyKeys && dirtyKeys.length) {
+      // `dirtyKeys` is a plain array here (from `Object.keys`), but
+      // `notifyAttributes`/`notifyChange`/`notify` batch as a `Set<string>`,
+      // so wrap it before handing it off.
       notifyAttributes(this._capabilities, identifier, new Set(dirtyKeys));
     }
 
@@ -1821,15 +1824,25 @@ function getDefaultValue(
   }
 }
 
-function notifyAttributes(storeWrapper: CacheCapabilitiesManager, identifier: ResourceKey, keys?: Set<string>) {
+function notifyAttributes(storeWrapper: CacheCapabilitiesManager, identifier: ResourceKey, keys?: NotifyKeys) {
   if (!keys) {
     storeWrapper.notifyChange(identifier, 'attributes', null);
     return;
   }
 
-  for (const key of keys) {
-    storeWrapper.notifyChange(identifier, 'attributes', key);
-  }
+  // deliver as a single batch instead of one `notifyChange` call per key: this
+  // still results in one notification per key being delivered to subscribers
+  // (in insertion order), but pays the per-call overhead (subscriber lookups,
+  // buffer scheduling, etc) only once for the whole record instead of once
+  // per changed attribute. This matters because this path runs once per
+  // resource during a push/upsert, so with N records each having M changed
+  // attributes the naive per-key approach costs O(N*M) in overhead alone.
+  //
+  // `keys` is handed off exactly as received. For the `calculateChangedKeys`
+  // callers it is already the `Set<string>` they built, so no conversion
+  // happens on this path; only `rollbackAttrs`'s naturally-array `dirtyKeys`
+  // needs to be wrapped in a `Set` before reaching here.
+  storeWrapper.notifyChange(identifier, 'attributes', keys);
 }
 
 /*
