@@ -50,6 +50,8 @@ import { createLoggingConfig } from './-private/utils/logging.ts';
 import type { PluginItem } from '@babel/core';
 import { buildMacros } from '@embroider/macros/src/babel.js';
 
+export type { LOG_CONFIG } from './-private/utils/logging.ts';
+
 /**
  * Create the Babel plugin for WarpDrive
  *

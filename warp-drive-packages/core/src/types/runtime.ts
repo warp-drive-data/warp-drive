@@ -1,4 +1,4 @@
-import type { LOG_CONFIG } from '@warp-drive/build-config/logging';
+import type { LOG_CONFIG } from '@warp-drive/build-config';
 
 import { getOrSetUniversal } from './-private.ts';
 
