@@ -81,8 +81,6 @@ export interface ObjectContext extends BaseContext {
  *
  * This provides all the necessary information for
  * the field kind to perform its operations.
- *
- * @internal
  */
 export interface KindContext<T extends FieldSchema | IdentityField | HashField> extends BaseContext {
   /**

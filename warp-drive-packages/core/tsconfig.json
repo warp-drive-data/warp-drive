@@ -38,6 +38,7 @@
     "erasableSyntaxOnly": true,
     "isolatedDeclarations": true,
     "isolatedModules": true,
+    "stripInternal": true,
     "types": ["ember-source/types"],
     "paths": {
       "@warp-drive/build-config": ["../build-config/declarations"],
