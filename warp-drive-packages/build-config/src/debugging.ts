@@ -4,8 +4,6 @@
  *
  * Visit {@link @warp-drive/core!build-config/debugging | @warp-drive/core debugging} for documentation of the debugging features.
  *
- * See {@link @warp-drive/build-config!LOG_CONFIG} for the shape of the runtime logging configuration these flags feed into.
- *
  * @module
  */
 /**
