@@ -181,10 +181,7 @@ export function restoreDeprecatedStoreBehaviors(StoreKlass: typeof Store): void 
   // their private fields as separate brands); casting only the return value
   // (instead of the whole function) keeps `this` contextually typed from the
   // assignment target below.
-  StoreKlass.prototype.getReference = function (
-    resource: string | ResourceIdentifierObject,
-    id: string | number
-  ) {
+  StoreKlass.prototype.getReference = function (resource: string | ResourceIdentifierObject, id: string | number) {
     assert(
       `Attempted to call store.getReference(), but the store instance has already been destroyed.`,
       !(this.isDestroying || this.isDestroyed)
