@@ -180,12 +180,11 @@ export function resourceIsFullyDeleted(instanceCache: InstanceCache, identifier:
 export class RecordReference {
   /** @internal */
   declare private store: Store;
-  /** @internal */
   // unsubscribe token given to us by the notification manager
+  /** @internal */
   private ___token!: object;
   /** @internal */
   private ___identifier: ResourceKey;
-
   /** @internal */
   declare private _ref: number;
 
@@ -226,7 +225,7 @@ export class RecordReference {
      ```
 
     @public
-     @return The id of the record.
+    @return The id of the record.
   */
   id(): string | null {
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
@@ -249,7 +248,7 @@ export class RecordReference {
      ```
 
     @public
-     @return The identifier of the record.
+    @return The identifier of the record.
   */
   identifier(): ResourceKey {
     return this.___identifier;
@@ -280,7 +279,7 @@ export class RecordReference {
     normalized hash of data and the object represented by the reference
     will update.
 
-    If you pass a promise to `push`, Ember Data will not ask the adapter
+    If you pass a promise to `push`, WarpDrive will not ask the adapter
     for the data if another attempt to fetch it is made in the
     interim. When the promise resolves, the underlying object is updated
     with the new data, and the promise returned by *this function* is resolved
@@ -333,7 +332,7 @@ export class RecordReference {
      ```
 
     @public
-     @return {Model} the record for this RecordReference
+    @return the record for this RecordReference
   */
   value(): OpaqueRecordInstance | null {
     return this.store.peekRecord(this.___identifier);

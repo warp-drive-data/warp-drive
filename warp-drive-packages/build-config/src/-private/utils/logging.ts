@@ -1,7 +1,7 @@
 import * as LOGGING from '../../debugging.ts';
 
 type LOG_CONFIG_KEY = keyof typeof LOGGING;
-export type LOG_CONFIG = { [key in LOG_CONFIG_KEY]: boolean };
+type LOG_CONFIG = { [key in LOG_CONFIG_KEY]: boolean };
 
 export function createLoggingConfig(
   env: { DEBUG: boolean; TESTING: boolean; PRODUCTION: boolean },
