@@ -1,10 +1,19 @@
-import type { LOG_CONFIG } from '@warp-drive/build-config/-private/utils/logging';
+import type * as LOGGING from '@warp-drive/build-config/debugging';
 
 import { getOrSetUniversal } from './-private.ts';
 
+/**
+ * the shape of the runtime-configurable debug logging flags, see
+ * {@link @warp-drive/core!build-config/debugging | the debugging flags}
+ */
+
+type LOG_CONFIG_KEY = keyof typeof LOGGING;
+type LOG_CONFIG = { [key in LOG_CONFIG_KEY]: boolean };
+
 const RuntimeConfig: {
   /**
-   * the currently active logging configuration, see {@link LOG_CONFIG}
+   * the currently active logging configuration, see
+   * {@link @warp-drive/core!build-config/debugging | the debugging flags}
    */
   debug: Partial<LOG_CONFIG>;
   /**
