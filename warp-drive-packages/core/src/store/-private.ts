@@ -1,5 +1,4 @@
 export { Store } from './deprecated/store.ts';
-export { RecordReference } from './deprecated/-private.ts';
 
 export { storeFor } from './-private/store-service.ts';
 

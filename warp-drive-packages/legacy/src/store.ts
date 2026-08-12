@@ -6,7 +6,6 @@ import {
   constructResource,
   ensureStringId,
   recordIdentifierFor,
-  RecordReference,
   storeFor,
 } from '@warp-drive/core/store/-private';
 import type { ResourceKey } from '@warp-drive/core/types/identifier';
@@ -23,7 +22,7 @@ import type {
   ModelSchema,
   QueryOptions,
 } from './store/-private.ts';
-import { getShimClass, preloadData, resourceIsFullyDeleted } from './store/-private.ts';
+import { getShimClass, preloadData, RecordReference, resourceIsFullyDeleted } from './store/-private.ts';
 
 /**
  * Restores the deprecated `findRecord`/`findAll`/`query`/`queryRecord`/
@@ -173,10 +172,16 @@ export function restoreDeprecatedStoreBehaviors(StoreKlass: typeof Store): void 
     return promise.then((document) => document.content);
   };
 
-  StoreKlass.prototype.getReference = function (
-    resource: string | ResourceIdentifierObject,
-    id: string | number
-  ): RecordReference {
+  // do not put a ts-expect-error here, because typedoc will fail to
+  // build due to this error only occurring when references are in use in the editor.
+  // The return statement below casts to `PrivateStore['getReference']`'s return
+  // type rather than annotating this function `: RecordReference` directly,
+  // since this package's `RecordReference` and core's `deprecated/-private.ts`
+  // copy are structurally identical but nominally distinct classes (TS treats
+  // their private fields as separate brands); casting only the return value
+  // (instead of the whole function) keeps `this` contextually typed from the
+  // assignment target below.
+  StoreKlass.prototype.getReference = function (resource: string | ResourceIdentifierObject, id: string | number) {
     assert(
       `Attempted to call store.getReference(), but the store instance has already been destroyed.`,
       !(this.isDestroying || this.isDestroyed)
@@ -206,7 +211,7 @@ export function restoreDeprecatedStoreBehaviors(StoreKlass: typeof Store): void 
       reference = new RecordReference(this, identifier);
       cache.set(identifier, reference);
     }
-    return reference;
+    return reference as unknown as ReturnType<PrivateStore['getReference']>;
   };
 
   StoreKlass.prototype.modelFor = function <T>(
