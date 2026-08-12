@@ -441,3 +441,5 @@ This architecture allows us to quickly integrate any kind of pre- or post- proce
 - [Gate](/api/@warp-drive/utilities/handlers/classes/Gate) - quickly activate/deactivate a handler per-request or more broadly
 
 As well as a suite of useful [utilities](/api/@warp-drive/utilities/handlers/) for handlers.
+
+See [Streaming Requests](./streaming.md) for how to consume a streamed response reactively as it arrives.
