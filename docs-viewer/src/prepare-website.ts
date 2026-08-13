@@ -6,6 +6,7 @@
 import { join } from 'path';
 import { existsSync, rmSync } from 'fs';
 import { spawnSync } from 'child_process';
+import { finalizeSyncedContent } from './site-utils';
 
 function sync(sourcePath: string, destPath: string) {
   if (existsSync(destPath)) {
@@ -25,10 +26,10 @@ function sync(sourcePath: string, destPath: string) {
 
 export async function main() {
   sync(join(__dirname, '../../guides'), join(__dirname, '../docs.warp-drive.io/guides'));
-  sync(
-    join(__dirname, '../../warp-drive-packages/agent-knowledge/skills'),
-    join(__dirname, '../docs.warp-drive.io/skills')
-  );
+
+  const skillsDestPath = join(__dirname, '../docs.warp-drive.io/skills');
+  sync(join(__dirname, '../../warp-drive-packages/agent-knowledge/skills'), skillsDestPath);
+  finalizeSyncedContent(skillsDestPath);
 }
 
 main();

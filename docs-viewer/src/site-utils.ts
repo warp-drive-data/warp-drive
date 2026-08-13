@@ -1,5 +1,5 @@
 import path from 'path';
-import { globSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { existsSync, globSync, mkdirSync, readFileSync, renameSync, rmSync, writeFileSync } from 'node:fs';
 import fm from 'front-matter';
 
 const DefaultOpenGroups: string[] = [];
@@ -39,6 +39,13 @@ interface DirMeta {
    * one sidecar file per markdown file.
    */
   files?: Record<string, WarpDriveFrontMatter>;
+  /**
+   * Filename (without `.md`) of a file in this directory that should be published as this
+   * directory's `index.md` on the website, in place of the real `index.md` — used when the
+   * real `index.md` is agent-facing content (see `files.index.draft`) and a separate
+   * human-facing overview page should be what's actually visible at that route.
+   */
+  webIndex?: string;
 }
 
 /**
@@ -57,6 +64,58 @@ function readFrontMatter(
     return filesMeta[baseName];
   }
   return fm<WarpDriveFrontMatter>(text).attributes;
+}
+
+/** Loads every `_meta.json` under a content directory, keyed by forward-slash dir path (root is `''`). */
+function loadDirMeta(contentDirPath: string): Map<string, DirMeta> {
+  const metaFiles = globSync('**/_meta.json', { cwd: contentDirPath });
+  const dirMeta = new Map<string, DirMeta>();
+  for (const metaFile of metaFiles) {
+    const dirPath = path.dirname(metaFile);
+    const key = dirPath === '.' ? '' : normPath(dirPath);
+    dirMeta.set(key, JSON.parse(readFileSync(path.join(contentDirPath, metaFile), 'utf-8')) as DirMeta);
+  }
+  return dirMeta;
+}
+
+/**
+ * Finalizes a synced content directory for website publishing: removes any file or directory
+ * flagged `draft` (via `_meta.json`, or real YAML frontmatter) so it's never built into the
+ * site, then applies each directory's `webIndex` (if set) by moving that file over `index.md`.
+ * Content consumed directly from the npm package (e.g. by an agent) is untouched — this only
+ * mutates the copy synced into `docs.warp-drive.io/`.
+ */
+export function finalizeSyncedContent(contentDirPath: string) {
+  const dirMeta = loadDirMeta(contentDirPath);
+
+  for (const [dir, meta] of dirMeta) {
+    if (dir && meta.draft) {
+      rmSync(path.join(contentDirPath, dir), { recursive: true, force: true });
+    }
+  }
+
+  for (const filepath of globSync('**/*.md', { cwd: contentDirPath })) {
+    const fullPath = path.join(contentDirPath, filepath);
+    if (!existsSync(fullPath)) continue;
+
+    const rawDir = normPath(path.dirname(filepath));
+    const dir = rawDir === '.' ? '' : rawDir;
+    const baseName = path.basename(filepath, '.md');
+    const isDraft = readFrontMatter(dirMeta, dir, baseName, readFileSync(fullPath, 'utf-8')).draft;
+    if (isDraft) {
+      rmSync(fullPath, { force: true });
+    }
+  }
+
+  for (const [dir, meta] of dirMeta) {
+    if (!meta.webIndex) continue;
+    const dirFullPath = path.join(contentDirPath, dir);
+    const sourceFile = path.join(dirFullPath, `${meta.webIndex}.md`);
+    if (existsSync(sourceFile)) {
+      rmSync(path.join(dirFullPath, 'index.md'), { force: true });
+      renameSync(sourceFile, path.join(dirFullPath, 'index.md'));
+    }
+  }
 }
 
 interface GuideGroup {
@@ -90,14 +149,7 @@ export async function getContentStructure(options: ContentStructureOptions) {
   const { dirName, rootIndexGroup } = options;
   const ContentDirectoryPath = path.join(__dirname, `../docs.warp-drive.io/${dirName}`);
 
-  // Load all _meta.json files up front; keys are forward-slash dir paths relative to ContentDirectoryPath
-  const metaFiles = globSync('**/_meta.json', { cwd: ContentDirectoryPath });
-  const dirMeta = new Map<string, DirMeta>();
-  for (const metaFile of metaFiles) {
-    const dirPath = path.dirname(metaFile);
-    const key = dirPath === '.' ? '' : normPath(dirPath);
-    dirMeta.set(key, JSON.parse(readFileSync(path.join(ContentDirectoryPath, metaFile), 'utf-8')) as DirMeta);
-  }
+  const dirMeta = loadDirMeta(ContentDirectoryPath);
 
   const glob = globSync('**/*.md', { cwd: ContentDirectoryPath });
   const groups: Record<string, GuideGroup> = {};

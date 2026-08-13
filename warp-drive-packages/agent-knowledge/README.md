@@ -20,6 +20,22 @@
 
 WarpDrive knowledge for AI coding agents, packaged as plain markdown.
 
+## For Agents
+
+Find the single row below that matches your task and read **only** that file. Do not read
+other skill files, do not list or read whole directories — this table is enough to route you.
+
+| If you need to... | Read exactly |
+| --- | --- |
+| Define a resource's shape — fields, relationships, identity — for the `Store` | `skills/schemas/define-a-resource-schema.md` |
+| Fetch or query remote data through the `Store` so it's cached and reactive | `skills/requests/fetch-and-cache-data.md` |
+
+This table is kept in sync with [`skills/index.md`](./skills/index.md), which is the same
+routing table published inside the package itself for tooling that lands directly in `skills/`
+without reading this README first.
+
+## Structure
+
 This package has no code and no dependencies — it is a directory of markdown files, organized
 by topic, meant to be read directly (by an MCP server, a build script, a human) rather than
 imported. Every file under [`skills`](./skills) is plain markdown with **no YAML frontmatter**
@@ -35,6 +51,12 @@ Structure and per-file metadata instead live in a single `_meta.json` per direct
   Unlisted items sort alphabetically after listed ones.
 - `files` — per-file metadata, keyed by filename without `.md` (e.g. `"title"`/`"draft"` for
   that file).
+- `webIndex` — (root directory only, currently) the filename (without `.md`) to publish as
+  `index.md` on the docs website in place of the real one. `skills/index.md` is the agent
+  routing table above and is marked `draft` so it's excluded from the website entirely;
+  [`skills/overview.md`](./skills/overview.md) is the human-facing landing page and is what
+  `webIndex: "overview"` publishes at [warp-drive.io/skills](https://warp-drive.io/skills)
+  instead. Only the docs site's synced copy is affected — the npm package always ships both files.
 
 ```json
 {
@@ -64,7 +86,7 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const pkgPath = require.resolve('@warp-drive/agent-knowledge/package.json');
-const skill = readFileSync(pkgPath.replace('package.json', 'schemas/define-a-resource-schema.md'), 'utf-8');
+const skill = readFileSync(pkgPath.replace('package.json', 'skills/schemas/define-a-resource-schema.md'), 'utf-8');
 ```
 
 Or point an MCP filesystem/docs server, a Claude Code skill, or any other agent tooling at the

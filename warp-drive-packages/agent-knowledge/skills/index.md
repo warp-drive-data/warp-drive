@@ -1,13 +1,16 @@
-# WarpDrive Agent Skills
+# WarpDrive Skills — Agent Index
 
-This section packages WarpDrive knowledge for AI coding agents — Claude, Copilot, Cursor, and
-similar tools — as small, focused, task-oriented skills.
+You are an AI agent looking for WarpDrive knowledge. Find the single row below that matches
+your task and read **only** that file. Do not read other skill files, do not list or read whole
+directories, and do not read this package's `overview.md` — none of that is necessary to
+complete a task.
 
-Each skill is a single markdown file describing one thing to accomplish with WarpDrive: defining
-a schema, making a request, handling a mutation, and so on. Skills are grouped into directories
-by topic, the same way the [Guides](/guides/index.md) are, and published as the
-[`@warp-drive/agent-knowledge`](https://www.npmjs.com/package/@warp-drive/agent-knowledge) npm package
-so they can be installed into any project and consumed by an MCP server, a Claude Code skill, or
-adapted into tool-specific instruction files (Cursor rules, Copilot instructions, etc.).
+| If you need to... | Read exactly |
+| --- | --- |
+| Define a resource's shape — fields, relationships, identity — for the `Store` | `schemas/define-a-resource-schema.md` |
+| Fetch or query remote data through the `Store` so it's cached and reactive | `requests/fetch-and-cache-data.md` |
 
-Browse the categories in the sidebar to get started.
+Each skill file is self-contained for its task and links out to any other skill file it
+genuinely depends on — follow a link only if you hit the specific case it describes.
+
+If nothing above matches, the skill you need doesn't exist yet in this package.

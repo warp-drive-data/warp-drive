@@ -1,4 +1,8 @@
 {
   "title": "Skills",
-  "items": ["schemas", "requests"]
+  "items": ["schemas", "requests"],
+  "webIndex": "overview",
+  "files": {
+    "index": { "draft": true }
+  }
 }
