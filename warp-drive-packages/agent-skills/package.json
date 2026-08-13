@@ -13,13 +13,13 @@
   "bugs": "https://github.com/warp-drive-data/warp-drive/issues",
   "type": "module",
   "files": [
-    "src",
+    "skills",
     "README.md",
     "LICENSE.md",
     "logos"
   ],
   "exports": {
-    "./*": "./src/*",
+    "./*": "./skills/*",
     "./package.json": "./package.json"
   },
   "scripts": {

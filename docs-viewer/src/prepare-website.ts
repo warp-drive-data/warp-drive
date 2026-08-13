@@ -1,7 +1,7 @@
 /*
   Copies content directories into docs.warp-drive.io so the site can render them:
   - the repo-root guides/ folder -> docs.warp-drive.io/guides
-  - the @warp-drive/agent-skills package's src/ -> docs.warp-drive.io/skills
+  - the @warp-drive/agent-skills package's skills/ -> docs.warp-drive.io/skills
 */
 import { join } from 'path';
 import { existsSync, rmSync } from 'fs';
@@ -26,7 +26,7 @@ function sync(sourcePath: string, destPath: string) {
 export async function main() {
   sync(join(__dirname, '../../guides'), join(__dirname, '../docs.warp-drive.io/guides'));
   sync(
-    join(__dirname, '../../warp-drive-packages/agent-skills/src'),
+    join(__dirname, '../../warp-drive-packages/agent-skills/skills'),
     join(__dirname, '../docs.warp-drive.io/skills')
   );
 }
