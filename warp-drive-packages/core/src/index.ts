@@ -9,7 +9,6 @@ import type { CAUTION_MEGA_DANGER_ZONE_Extension } from './reactive.ts';
 import { instantiateRecord, registerDerivations, SchemaService, teardownRecord } from './reactive.ts';
 import type { ReactiveDocument } from './reactive/-private/document.ts';
 import type { Handler } from './request.ts';
-import type { FetchConfig, Parser } from './request/-private/fetch.ts';
 import { Fetch } from './request/-private/fetch.ts';
 import { RequestManager } from './request/-private/manager.ts';
 import { DefaultCachePolicy } from './store.ts';
@@ -26,7 +25,6 @@ import type { ObjectSchema, PolarisResourceSchema, Trait } from './types/schema/
 export { recordIdentifierFor, recordIdentifierFor as cacheKeyFor };
 
 export { Fetch, RequestManager };
-export type { FetchConfig, Parser };
 
 if (TESTING) {
   // @ts-expect-error adding to globalThis

@@ -114,59 +114,19 @@ const ERROR_STATUS_CODE_FOR = new Map([
   [511, 'Network Authentication Required'],
 ]);
 
-type ContentType = 'json' | 'ndjson' | 'text' | 'xml' | 'html' | 'xml2json' | (string & {});
-
-/**
- * Describes how {@link Fetch} should turn a response's raw text into the
- * value a request resolves with.
- *
- * @public
- */
-export interface Parser {
+type ContentType = 'json' | 'text' | 'xml' | 'html' | 'xml2json' | (string & {});
+interface Parser {
   /**
-   * Whether this parser supports being called incrementally as the
-   * response downloads (via {@link ImmutableRequestInfo.options | options.onChunk}),
-   * in addition to the single final call every parser receives.
-   *
-   * When `true`, {@link Fetch} splits the response text on
-   * {@link Parser.frameDelimiter | frameDelimiter} as it arrives and calls
-   * `parse(frame, false)` once per frame, forwarding any non-`undefined`
-   * result to `options.onChunk`.
+   * Eventaully we want to support streaming,
+   * at which point this will be allowed to be true
+   * to indicate that the parser can handle streaming
    */
-  stream: boolean;
-  /**
-   * The delimiter {@link Fetch} splits incoming text on when
-   * {@link Parser.stream | stream} is `true`. Defaults to `'\n'`.
-   */
-  frameDelimiter?: string;
-  /**
-   * Parses a piece of response text.
-   *
-   * Called exactly once with `isFull: true` and the complete response text,
-   * regardless of {@link Parser.stream | stream}. When `stream` is `true`
-   * and an `onChunk` handler is present, also called with `isFull: false`
-   * once per frame as the response downloads; returning `undefined` from
-   * one of these calls skips dispatching that frame to `onChunk`.
-   */
+  stream: false;
   parse: (chunk: string, isFull: boolean) => unknown;
 }
 
-/**
- * Configuration for a {@link Fetch} instance.
- *
- * @public
- */
-export interface FetchConfig {
-  /**
-   * Selects which {@link ContentType} to parse a response as, when neither
-   * {@link ImmutableRequestInfo.options | options.parser} nor `options.parserType`
-   * is set on the request.
-   */
+interface FetchConfig {
   parserType(request: Context['request'], response: Response): ContentType;
-  /**
-   * The {@link Parser}s available to select via
-   * {@link FetchConfig.parserType | parserType} or `options.parserType`.
-   */
   parsers: {
     [key in ContentType]?: Parser;
   };
@@ -201,25 +161,8 @@ const DEFAULT_XML_PARSER = {
   },
 } satisfies Parser;
 
-// a single frame is one already-isolated NDJSON line; the full-text call
-// receives every line still joined by '\n', so it re-splits before parsing
-const DEFAULT_NDJSON_PARSER = {
-  stream: true,
-  parse: (chunk: string, isFull: boolean) => {
-    if (!isFull) {
-      return JSON.parse(chunk) as unknown;
-    }
-    return chunk
-      .split('\n')
-      .map((line) => line.trim())
-      .filter(Boolean)
-      .map((line) => JSON.parse(line) as unknown);
-  },
-} satisfies Parser;
-
 const DEFAULT_PARSERS = {
   json: DEFAULT_JSON_PARSER,
-  ndjson: DEFAULT_NDJSON_PARSER,
   html: DEFAULT_HTML_PARSER,
   xml: DEFAULT_XML_PARSER,
   text: DEFAULT_TEXT_PARSER,
@@ -227,7 +170,6 @@ const DEFAULT_PARSERS = {
 
 const PARSER = 'parser';
 const PARSER_TYPE = 'parserType';
-const CHUNK_HANDLER = 'onChunk';
 
 /**
  * ```ts
@@ -248,7 +190,12 @@ const CHUNK_HANDLER = 'onChunk';
  */
 class Fetch {
   /**
-   * The {@link FetchConfig} this instance was constructed with.
+   * Issues the request via native `fetch`, setting the response and
+   * (when requested) streaming the decoded body via {@link Context.setStream}
+   * as it downloads, then resolves with the parsed body using the
+   * best-matched {@link Parser}.
+   *
+   * @public
    */
   declare config: FetchConfig;
 
@@ -256,19 +203,6 @@ class Fetch {
     this.config = config;
   }
 
-  /**
-   * Issues the request via native `fetch`, setting the response and
-   * (when requested) streaming the decoded body via {@link Context.setStream}
-   * as it downloads, then resolves with the parsed body using the
-   * best-matched {@link Parser}.
-   *
-   * When the selected parser supports it (`stream: true`) and
-   * {@link ImmutableRequestInfo.options | options.onChunk} is set, also
-   * calls `onChunk` once per frame as the response downloads - see
-   * {@link Parser.stream}.
-   *
-   * @public
-   */
   request<T>(context: Context): Promise<T> {
     return makeFetchRequest<T>(context, this.config);
   }
@@ -350,13 +284,6 @@ async function makeFetchRequest<T>(context: Context, options: FetchConfig | null
   }
 
   const parser = getParser(context.request, response, options) ?? attemptBestParser(context.request, response);
-  const onChunk = context.request.options?.[CHUNK_HANDLER] as
-    | ((chunk: unknown, context: Context) => void)
-    | undefined;
-  assert(
-    `The parser selected for this request does not support streaming (\`stream: true\`), so \`onChunk\` will never be called.`,
-    !onChunk || parser.stream
-  );
   const isError = !response.ok || response.status >= 400;
   const op = context.request.op;
   const isMutationOp = Boolean(op && MUTATION_OPS.has(op));
@@ -382,25 +309,9 @@ async function makeFetchRequest<T>(context: Context, options: FetchConfig | null
   }
 
   let text = '';
-  let framePos = 0;
-  const frameDelimiter = onChunk && parser.stream ? (parser.frameDelimiter ?? '\n') : null;
-  function dispatchChunks(): void {
-    if (!frameDelimiter) return;
-    let index: number;
-    while ((index = text.indexOf(frameDelimiter, framePos)) !== -1) {
-      const frame = text.slice(framePos, index);
-      framePos = index + frameDelimiter.length;
-      const parsed = parser.parse(frame, false);
-      if (parsed !== undefined) {
-        onChunk!(parsed, context);
-      }
-    }
-  }
-
   // if we are in a mirage context, we cannot support streaming
   if (IS_MAYBE_MIRAGE()) {
     text = await response.text();
-    dispatchChunks();
   } else {
     const reader = response.body!.getReader();
     const decoder = new TextDecoder();
@@ -434,7 +345,6 @@ async function makeFetchRequest<T>(context: Context, options: FetchConfig | null
         break;
       }
       text += decoder.decode(value, { stream: true });
-      dispatchChunks();
 
       // if we are streaming, we want to pass the stream along
       if (isStreaming) {
@@ -499,7 +409,10 @@ async function makeFetchRequest<T>(context: Context, options: FetchConfig | null
     error.content = errorPayload;
     throw error;
   } else {
-    return parser.parse(text, true) as T;
+    if (!parser.stream) {
+      return parser.parse(text, true) as T;
+    }
+    return text as T;
   }
 }
 
