@@ -1,5 +1,9 @@
 import type { ReactiveDataDocument } from './reactive.ts';
-import type { RequestInfo } from './types/request.ts';
+import type { Context } from './request/-private/context.ts';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import type { Fetch, Parser } from './request/-private/fetch.ts';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import type { ImmutableRequestInfo, RequestInfo } from './types/request.ts';
 import type { RequestSignature } from './types/symbols.ts';
 
 export { createDeferred } from './request/-private/future.ts';
@@ -71,3 +75,33 @@ export function withReactiveResponse<T>(obj: RequestInfo): RequestInfo<ReactiveD
  * @deprecated use {@link withResponseType} instead
  */
 export const withBrand: typeof withResponseType = withResponseType;
+
+/**
+ * Types the `chunk` parameter of a {@link ImmutableRequestInfo.options | options.onChunk}
+ * handler, for use with a streaming-capable {@link Parser} (see {@link Fetch}).
+ * Present only at the type level; at runtime this returns `handler` unchanged.
+ *
+ * @example
+ * ```ts
+ * import { withChunkHandler } from '@warp-drive/core/request';
+ * import type { Message } from '#/data/types';
+ *
+ * store.request({
+ *   url: '/api/assistant/stream',
+ *   options: {
+ *     parserType: 'ndjson',
+ *     onChunk: withChunkHandler<Message>((message, context) => {
+ *       // message is typed as Message
+ *     }),
+ *   },
+ * });
+ * ```
+ *
+ * @since 5.9.0
+ * @public
+ */
+export function withChunkHandler<T>(
+  handler: (chunk: T, context: Context) => void
+): (chunk: unknown, context: Context) => void {
+  return handler as (chunk: unknown, context: Context) => void;
+}
