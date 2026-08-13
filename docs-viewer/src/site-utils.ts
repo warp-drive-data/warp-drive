@@ -321,7 +321,10 @@ export async function getContentStructure(options: ContentStructureOptions) {
 }
 
 export async function getGuidesStructure() {
-  return getContentStructure({ dirName: 'guides', rootIndexGroup: { slug: 'the-manual', fallbackTitle: 'The Manual' } });
+  return getContentStructure({
+    dirName: 'guides',
+    rootIndexGroup: { slug: 'the-manual', fallbackTitle: 'The Manual' },
+  });
 }
 
 export async function getSkillsStructure() {
