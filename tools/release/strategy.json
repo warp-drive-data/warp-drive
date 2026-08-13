@@ -147,10 +147,10 @@
       "unpkgPublish": true
     },
     "@warp-drive/agent-knowledge-base": {
-      "stage": "alpha",
+      "stage": "stable",
       "types": "private",
       "typesPublish": false,
-      "mirrorPublish": true,
+      "mirrorPublish": false,
       "unpkgPublish": false
     }
   }
