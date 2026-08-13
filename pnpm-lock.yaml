@@ -3479,7 +3479,7 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
 
-  warp-drive-packages/agent-knowledge-base: {}
+  warp-drive-packages/agent-knowledge: {}
 
   warp-drive-packages/build-config:
     dependencies:
