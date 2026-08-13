@@ -144,3 +144,22 @@ Because the handler pushes to the store directly instead of relying on `RequestM
 :::tip 💡 TIP
 This bypasses the request pipeline's built-in stream currying (`context.setStream`/`future.getStream`, see [Using The Response](./using-the-response.md)), which is designed for a single raw byte stream rather than many independent, already-decoded application chunks. Driving the fetch and the store updates yourself, as above, is the current recommended pattern for reactive content streaming.
 :::
+
+## Experimental: Configuring Instead of Writing a Handler
+
+If writing a custom `Handler` is more ceremony than you want, [`StreamingFetch`](https://github.com/warp-drive-data/warp-drive/blob/main/warp-drive-packages/experiments/src/streaming-fetch.md) - part of [`@warp-drive/experiments`](https://github.com/warp-drive-data/warp-drive/blob/main/warp-drive-packages/experiments/README.md) - lets you opt into per-frame callbacks via request configuration instead:
+
+```ts
+import { withChunkHandler } from '@warp-drive/experiments/streaming-fetch';
+
+store.request({
+  url: '/api/assistant/stream',
+  options: {
+    onChunk: withChunkHandler<Message>((message, context) => {
+      // apply `message` to the cache however makes sense for your data
+    }),
+  },
+});
+```
+
+`@warp-drive/experiments` packages are, as the name says, experimental: they may change shape or be removed as the pattern is proven out. See its README for the full API and known limitations before relying on it.
