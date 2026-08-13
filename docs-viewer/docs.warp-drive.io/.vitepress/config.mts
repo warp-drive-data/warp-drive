@@ -1,6 +1,6 @@
 import { withPwa } from '@vite-pwa/vitepress';
 import { defineConfig, type Plugin } from 'vitepress';
-import { getGuidesStructure, postProcessApiDocs } from '../../src/site-utils.ts';
+import { getGuidesStructure, getSkillsStructure, postProcessApiDocs } from '../../src/site-utils.ts';
 import { tabsMarkdownPlugin } from 'vitepress-plugin-tabs';
 import { footnote } from '@mdit/plugin-footnote';
 
@@ -11,6 +11,17 @@ import { ViteImageOptimizer } from 'vite-plugin-image-optimizer';
 import { groupIconMdPlugin, groupIconVitePlugin } from 'vitepress-plugin-group-icons';
 
 const GuidesStructure = await getGuidesStructure();
+const SkillsStructure = await getSkillsStructure();
+
+// insert the Skills section right below "The Manual" in the guides sidebar
+const sidebarItems = [...GuidesStructure.paths];
+const theManualIndex = sidebarItems.findIndex((item) => item.text === 'The Manual');
+sidebarItems.splice(theManualIndex + 1, 0, {
+  text: 'Skills',
+  link: '/skills/index.md',
+  collapsed: true,
+  items: SkillsStructure.paths,
+});
 const plugin = groupIconVitePlugin({
   customIcon: {
     ember: 'vscode-icons:file-type-ember',
@@ -170,11 +181,12 @@ export default withPwa(
       nav: [
         { text: 'Guides', link: '/guides' },
         { text: 'API Docs', link: '/api' },
+        { text: 'Skills', link: '/skills' },
         { text: 'Contributing', link: '/guides/contributing/become-a-contributor' },
       ],
 
       sidebar: [
-        ...GuidesStructure.paths,
+        ...sidebarItems,
         {
           text: 'API Docs',
           collapsed: true,

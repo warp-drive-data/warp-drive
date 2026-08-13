@@ -3479,6 +3479,8 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
 
+  warp-drive-packages/agent-skills: {}
+
   warp-drive-packages/build-config:
     dependencies:
       '@embroider/addon-shim':

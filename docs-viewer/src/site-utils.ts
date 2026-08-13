@@ -1,5 +1,5 @@
 import path from 'path';
-import { globSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { existsSync, globSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import fm from 'front-matter';
 
 const DefaultOpenGroups: string[] = [];
@@ -32,6 +32,21 @@ interface WarpDriveFrontMatter {
   draft?: boolean;
 }
 
+/**
+ * Resolves a markdown file's frontmatter. If a sibling `<name>.json` file exists next to the
+ * markdown file, it is used instead of YAML frontmatter parsed from the file itself — this lets
+ * content (e.g. agent skills) keep its own markdown body free of YAML frontmatter that might
+ * collide with tool-specific frontmatter conventions (Claude Skills, Cursor rules, etc.), while
+ * still supplying the same title/draft/ordering metadata the site compiler reads.
+ */
+function readFrontMatter(fullPath: string, text: string): WarpDriveFrontMatter {
+  const sidecarPath = fullPath.replace(/\.md$/, '.json');
+  if (existsSync(sidecarPath)) {
+    return JSON.parse(readFileSync(sidecarPath, 'utf-8')) as WarpDriveFrontMatter;
+  }
+  return fm<WarpDriveFrontMatter>(text).attributes;
+}
+
 interface GuideGroup {
   text: string;
   path: string;
@@ -47,27 +62,41 @@ function normPath(p: string): string {
   return p.split(path.sep).join('/');
 }
 
-export async function getGuidesStructure() {
-  const GuidesDirectoryPath = path.join(__dirname, '../docs.warp-drive.io/guides');
+interface ContentStructureOptions {
+  /** name of the directory under docs.warp-drive.io/ holding the synced content, e.g. 'guides' or 'skills' */
+  dirName: string;
+  /**
+   * Guides wraps its root `index.md` in a synthetic top-level group (historically named
+   * "the-manual") whose child ordering comes from a `_meta.json` at `rootIndexGroup.slug`.
+   * Omit for content (e.g. skills) whose root `index.md` is just a landing page and should not
+   * appear in the generated sidebar tree.
+   */
+  rootIndexGroup?: { slug: string; fallbackTitle: string };
+}
 
-  // Load all _meta.json files up front; keys are forward-slash dir paths relative to GuidesDirectoryPath
-  const metaFiles = globSync('**/_meta.json', { cwd: GuidesDirectoryPath });
+export async function getContentStructure(options: ContentStructureOptions) {
+  const { dirName, rootIndexGroup } = options;
+  const ContentDirectoryPath = path.join(__dirname, `../docs.warp-drive.io/${dirName}`);
+
+  // Load all _meta.json files up front; keys are forward-slash dir paths relative to ContentDirectoryPath
+  const metaFiles = globSync('**/_meta.json', { cwd: ContentDirectoryPath });
   const dirMeta = new Map<string, DirMeta>();
   for (const metaFile of metaFiles) {
     const dirPath = path.dirname(metaFile);
     const key = dirPath === '.' ? '' : normPath(dirPath);
-    dirMeta.set(key, JSON.parse(readFileSync(path.join(GuidesDirectoryPath, metaFile), 'utf-8')) as DirMeta);
+    dirMeta.set(key, JSON.parse(readFileSync(path.join(ContentDirectoryPath, metaFile), 'utf-8')) as DirMeta);
   }
 
-  const glob = globSync('**/*.md', { cwd: GuidesDirectoryPath });
+  const glob = globSync('**/*.md', { cwd: ContentDirectoryPath });
   const groups: Record<string, GuideGroup> = {};
 
   for (const filepath of glob) {
     const slugPath: string[] = [];
-    const text = readFileSync(path.join(GuidesDirectoryPath, filepath), 'utf-8');
-    const frontMatter = fm<WarpDriveFrontMatter>(text);
+    const fullPath = path.join(ContentDirectoryPath, filepath);
+    const text = readFileSync(fullPath, 'utf-8');
+    const frontMatter = readFrontMatter(fullPath, text);
 
-    if (frontMatter.attributes.draft) {
+    if (frontMatter.draft) {
       continue;
     }
 
@@ -78,32 +107,35 @@ export async function getGuidesStructure() {
     }
 
     if (filepath === 'index.md') {
+      if (!rootIndexGroup) continue;
+
+      const { slug, fallbackTitle } = rootIndexGroup;
       const rootMeta = dirMeta.get('') ?? {};
-      const theManualMeta = dirMeta.get('the-manual') ?? {};
-      groups['the-manual'] = groups['the-manual'] ?? {
-        text: rootMeta.title ?? 'The Manual',
-        path: 'the-manual',
-        slug: 'the-manual',
-        orderedItems: theManualMeta.items,
+      const groupMeta = dirMeta.get(slug) ?? {};
+      groups[slug] = groups[slug] ?? {
+        text: rootMeta.title ?? fallbackTitle,
+        path: slug,
+        slug,
+        orderedItems: groupMeta.items,
         collapsed: rootMeta.collapsed ?? true,
-        link: '/guides/index.md',
+        link: `/${dirName}/index.md`,
         items: {},
       };
-      Object.assign(groups['the-manual'], {
-        text: rootMeta.title ?? 'The Manual',
-        path: 'the-manual',
-        slug: 'the-manual',
-        orderedItems: theManualMeta.items,
+      Object.assign(groups[slug], {
+        text: rootMeta.title ?? fallbackTitle,
+        path: slug,
+        slug,
+        orderedItems: groupMeta.items,
         collapsed: rootMeta.collapsed ?? true,
-        link: '/guides/index.md',
+        link: `/${dirName}/index.md`,
       });
-      groups['the-manual'].items['index.md'] = {
-        text: frontMatter.attributes.title ?? 'Introduction',
+      groups[slug].items['index.md'] = {
+        text: frontMatter.title ?? 'Introduction',
         path: 'index.md',
         slug: 'index.md',
         collapsed: false,
         items: {},
-        link: '/guides/index.md',
+        link: `/${dirName}/index.md`,
       };
       continue;
     }
@@ -157,7 +189,7 @@ export async function getGuidesStructure() {
 
     slugPath.push(lastSegment);
     const key = slugPath.join('.');
-    const realUrl = `/guides/${filepath}`;
+    const realUrl = `/${dirName}/${filepath}`;
 
     if (!group[lastSegment]) {
       const leafMeta = dirMeta.get(normPath(slugPath.join(path.sep))) ?? {};
@@ -198,13 +230,13 @@ export async function getGuidesStructure() {
         path: 'index.md',
         slug: 'index.md',
         collapsed: false,
-        text: frontMatter.attributes.title ?? 'Overview',
+        text: frontMatter.title ?? 'Overview',
         link: group[lastSegment]!.link!,
         items: {},
       };
     } else {
-      if (frontMatter.attributes.title) {
-        leaf.text = frontMatter.attributes.title;
+      if (frontMatter.title) {
+        leaf.text = frontMatter.title;
       }
     }
   }
@@ -213,16 +245,21 @@ export async function getGuidesStructure() {
   const result = deepConvert(groups, rootMeta.items);
   const structure = { paths: result };
 
-  writeFileSync(
-    path.join(__dirname, '../docs.warp-drive.io/guides/nav.json'),
-    JSON.stringify(structure, null, 2),
-    'utf-8'
-  );
-  await import(path.join(__dirname, '../docs.warp-drive.io/guides/nav.json'), {
+  const navJsonPath = path.join(ContentDirectoryPath, 'nav.json');
+  writeFileSync(navJsonPath, JSON.stringify(structure, null, 2), 'utf-8');
+  await import(navJsonPath, {
     with: { type: 'json' },
   });
 
   return { paths: result };
+}
+
+export async function getGuidesStructure() {
+  return getContentStructure({ dirName: 'guides', rootIndexGroup: { slug: 'the-manual', fallbackTitle: 'The Manual' } });
+}
+
+export async function getSkillsStructure() {
+  return getContentStructure({ dirName: 'skills' });
 }
 
 function deepConvert(obj: Record<string, any>, orderedItems?: string[]) {
