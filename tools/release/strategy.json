@@ -146,7 +146,7 @@
       "mirrorPublish": true,
       "unpkgPublish": true
     },
-    "@warp-drive/agent-skills": {
+    "@warp-drive/agent-knowledge-base": {
       "stage": "alpha",
       "types": "private",
       "typesPublish": false,

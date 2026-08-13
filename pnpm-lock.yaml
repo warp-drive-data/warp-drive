@@ -3479,7 +3479,7 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
 
-  warp-drive-packages/agent-skills: {}
+  warp-drive-packages/agent-knowledge-base: {}
 
   warp-drive-packages/build-config:
     dependencies:
@@ -20384,17 +20384,11 @@ snapshots:
     dependencies:
       '@types/ember__object': 4.0.12
       '@types/ember__owner': 4.0.9
-    transitivePeerDependencies:
-      - '@babel/core'
-      - supports-color
 
   '@types/ember__engine@4.0.11':
     dependencies:
       '@types/ember__object': 4.0.12
       '@types/ember__owner': 4.0.9
-    transitivePeerDependencies:
-      - '@babel/core'
-      - supports-color
 
   '@types/ember__error@4.0.6': {}
 
@@ -20416,6 +20410,9 @@ snapshots:
       '@types/ember__controller': 4.0.12
       '@types/ember__object': 4.0.12
       '@types/ember__service': 4.0.9
+    transitivePeerDependencies:
+      - '@babel/core'
+      - supports-color
 
   '@types/ember__runloop@4.0.10':
     dependencies:

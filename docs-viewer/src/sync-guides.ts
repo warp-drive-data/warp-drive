@@ -7,7 +7,7 @@ import { postProcessApiDocs } from './site-utils';
 import { $ } from 'bun';
 
 const guidesPath = join(__dirname, '../../guides');
-const skillsPath = join(__dirname, '../../warp-drive-packages/agent-skills/skills');
+const skillsPath = join(__dirname, '../../warp-drive-packages/agent-knowledge-base/skills');
 const apiDocsPath = join(__dirname, '../tmp/api');
 const oldPackages = join(__dirname, '../../packages');
 const newPackages = join(__dirname, '../../warp-drive-packages');
