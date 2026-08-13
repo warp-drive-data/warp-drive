@@ -1,4 +1,7 @@
 {
   "title": "Schemas",
-  "items": ["define-a-resource-schema"]
+  "items": ["define-a-resource-schema"],
+  "files": {
+    "define-a-resource-schema": { "title": "Define a Resource Schema" }
+  }
 }

@@ -22,17 +22,29 @@ WarpDrive knowledge for AI coding agents, packaged as plain markdown.
 
 This package has no code and no dependencies — it is a directory of markdown files, organized
 by topic, meant to be read directly (by an MCP server, a build script, a human) rather than
-imported. Every file under [`skills`](./skills) is markdown, with two exceptions used purely for
-structure:
+imported. Every file under [`skills`](./skills) is plain markdown with **no YAML frontmatter**
+of its own, so that downstream tooling adapting this content into tool-specific formats (Claude
+Skills, Cursor rules, Copilot instructions, etc.) is free to add whatever frontmatter shape that
+tool expects without colliding with WarpDrive's own doc-site metadata.
 
-- `_meta.json` — one per directory, giving that directory's title, child ordering, and
-  collapse/draft state. Directories without one are ordered alphabetically with an
-  auto-generated title.
-- `<name>.json` — an optional sibling of `<name>.md` carrying that file's `title`/`draft`
-  metadata. Skill markdown files intentionally have **no YAML frontmatter** of their own, so
-  that downstream tooling adapting this content into tool-specific formats (Claude Skills,
-  Cursor rules, Copilot instructions, etc.) is free to add whatever frontmatter shape that tool
-  expects without colliding with WarpDrive's own doc-site metadata.
+Structure and per-file metadata instead live in a single `_meta.json` per directory:
+
+- `title` / `collapsed` / `draft` — metadata for the directory itself. Directories without a
+  `_meta.json` are ordered alphabetically with an auto-generated title.
+- `items` — ordered list of child slugs (filenames without `.md`, or subdirectory names).
+  Unlisted items sort alphabetically after listed ones.
+- `files` — per-file metadata, keyed by filename without `.md` (e.g. `"title"`/`"draft"` for
+  that file).
+
+```json
+{
+  "title": "Schemas",
+  "items": ["define-a-resource-schema"],
+  "files": {
+    "define-a-resource-schema": { "title": "Define a Resource Schema" }
+  }
+}
+```
 
 This same `skills` directory is synced into [the WarpDrive docs site](https://warp-drive.io/skills)
 under the "Skills" section, using the same markdown-plus-JSON compilation tooling as the

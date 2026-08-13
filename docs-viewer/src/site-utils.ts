@@ -1,5 +1,5 @@
 import path from 'path';
-import { existsSync, globSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { globSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import fm from 'front-matter';
 
 const DefaultOpenGroups: string[] = [];
@@ -19,30 +19,42 @@ function segmentToTitle(segment: string, prevSegment: string | null) {
   return result === 'Index' ? 'Introduction' : result;
 }
 
+interface WarpDriveFrontMatter {
+  title?: string;
+  draft?: boolean;
+}
+
 interface DirMeta {
   title?: string;
   collapsed?: boolean;
   draft?: boolean;
   /** Ordered list of child slugs (filenames without .md, or directory names). Unlisted items sort alphabetically after listed ones. */
   items?: string[];
-}
-
-interface WarpDriveFrontMatter {
-  title?: string;
-  draft?: boolean;
+  /**
+   * Per-file frontmatter for markdown files in this directory, keyed by filename without `.md`
+   * (e.g. "index", "fetch-and-cache-data"). Lets content (e.g. agent skills) keep its markdown
+   * bodies free of YAML frontmatter that might collide with tool-specific frontmatter
+   * conventions (Claude Skills, Cursor rules, etc.), while still supplying the same
+   * title/draft metadata the site compiler reads — structured once per directory instead of
+   * one sidecar file per markdown file.
+   */
+  files?: Record<string, WarpDriveFrontMatter>;
 }
 
 /**
- * Resolves a markdown file's frontmatter. If a sibling `<name>.json` file exists next to the
- * markdown file, it is used instead of YAML frontmatter parsed from the file itself — this lets
- * content (e.g. agent skills) keep its own markdown body free of YAML frontmatter that might
- * collide with tool-specific frontmatter conventions (Claude Skills, Cursor rules, etc.), while
- * still supplying the same title/draft/ordering metadata the site compiler reads.
+ * Resolves a markdown file's frontmatter. If the file's directory `_meta.json` declares a
+ * `files` entry for it, that entry is used instead of YAML frontmatter parsed from the file
+ * itself.
  */
-function readFrontMatter(fullPath: string, text: string): WarpDriveFrontMatter {
-  const sidecarPath = fullPath.replace(/\.md$/, '.json');
-  if (existsSync(sidecarPath)) {
-    return JSON.parse(readFileSync(sidecarPath, 'utf-8')) as WarpDriveFrontMatter;
+function readFrontMatter(
+  dirMeta: Map<string, DirMeta>,
+  fileDir: string,
+  baseName: string,
+  text: string
+): WarpDriveFrontMatter {
+  const filesMeta = dirMeta.get(fileDir)?.files;
+  if (filesMeta && baseName in filesMeta) {
+    return filesMeta[baseName];
   }
   return fm<WarpDriveFrontMatter>(text).attributes;
 }
@@ -94,15 +106,17 @@ export async function getContentStructure(options: ContentStructureOptions) {
     const slugPath: string[] = [];
     const fullPath = path.join(ContentDirectoryPath, filepath);
     const text = readFileSync(fullPath, 'utf-8');
-    const frontMatter = readFrontMatter(fullPath, text);
+    const rawFileDir = normPath(path.dirname(filepath));
+    const fileDir = rawFileDir === '.' ? '' : rawFileDir;
+    const baseName = path.basename(filepath, '.md');
+    const frontMatter = readFrontMatter(dirMeta, fileDir, baseName, text);
 
     if (frontMatter.draft) {
       continue;
     }
 
     // Skip files whose immediate parent directory is marked draft in _meta.json
-    const fileDir = normPath(path.dirname(filepath));
-    if (fileDir !== '.' && dirMeta.get(fileDir)?.draft) {
+    if (fileDir !== '' && dirMeta.get(fileDir)?.draft) {
       continue;
     }
 

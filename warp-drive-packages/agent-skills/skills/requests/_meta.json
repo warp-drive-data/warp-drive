@@ -1,4 +1,7 @@
 {
   "title": "Requests",
-  "items": ["fetch-and-cache-data"]
+  "items": ["fetch-and-cache-data"],
+  "files": {
+    "fetch-and-cache-data": { "title": "Fetch and Cache Data" }
+  }
 }
