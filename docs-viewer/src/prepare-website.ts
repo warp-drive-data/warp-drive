@@ -1,30 +1,35 @@
 /*
-  Symlinks the guides folder to docs.warp-drive.io/guides
+  Copies content directories into docs.warp-drive.io so the site can render them:
+  - the repo-root guides/ folder -> docs.warp-drive.io/guides
+  - the @warp-drive/agent-knowledge package's skills/ -> docs.warp-drive.io/skills
 */
 import { join } from 'path';
 import { existsSync, rmSync } from 'fs';
 import { spawnSync } from 'child_process';
+import { finalizeSyncedContent } from './site-utils';
 
-export async function main() {
-  const guidesPath = join(__dirname, '../../guides');
-  const copiedPath = join(__dirname, '../docs.warp-drive.io/guides');
-
-  // use Bun to create the symlink if it doesn't exist
-
-  if (existsSync(copiedPath)) {
-    // remove the symlink if it exists
-    rmSync(copiedPath, { recursive: true, force: true });
+function sync(sourcePath: string, destPath: string) {
+  if (existsSync(destPath)) {
+    rmSync(destPath, { recursive: true, force: true });
   }
 
   try {
-    spawnSync('cp', ['-r', guidesPath, copiedPath], {
+    spawnSync('cp', ['-r', sourcePath, destPath], {
       stdio: 'inherit',
       cwd: __dirname,
     });
-    console.log(`Copied: ${guidesPath} -> ${copiedPath}`);
+    console.log(`Copied: ${sourcePath} -> ${destPath}`);
   } catch (error) {
     console.error('Error copying directory:', error);
   }
+}
+
+export async function main() {
+  sync(join(__dirname, '../../guides'), join(__dirname, '../docs.warp-drive.io/guides'));
+
+  const skillsDestPath = join(__dirname, '../docs.warp-drive.io/skills');
+  sync(join(__dirname, '../../warp-drive-packages/agent-knowledge/skills'), skillsDestPath);
+  finalizeSyncedContent(skillsDestPath);
 }
 
 main();
