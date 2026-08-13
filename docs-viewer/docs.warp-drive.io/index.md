@@ -18,6 +18,9 @@ hero:
       text: API Docs
       link: /api
     - theme: alt
+      text: Skills
+      link: /skills
+    - theme: alt
       text: LLM Docs
       link: /llm-docs
     # - theme: alt

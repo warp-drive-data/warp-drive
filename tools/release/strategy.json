@@ -145,6 +145,13 @@
       "typesPublish": false,
       "mirrorPublish": true,
       "unpkgPublish": true
+    },
+    "@warp-drive/agent-knowledge": {
+      "stage": "stable",
+      "types": "private",
+      "typesPublish": false,
+      "mirrorPublish": false,
+      "unpkgPublish": false
     }
   }
 }
