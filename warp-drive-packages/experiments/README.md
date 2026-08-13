@@ -27,6 +27,6 @@
 
 - [DataWorker](./src/data-worker/README.md)
 - [DocumentStorage](./src/document-storage/README.md)
+- [Fetch](./src/fetch.md)
 - [ImageWorker](./src/image-worker.md)
-- [StreamingFetch](./src/streaming-fetch.md)
 - ReactiveStorage

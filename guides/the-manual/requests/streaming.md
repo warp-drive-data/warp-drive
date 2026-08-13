@@ -2,164 +2,47 @@
 
 "Streaming" a request can mean two different things, and it's worth being precise about which one you need.
 
-- **Progress** - you want to know how much of a response has downloaded so far, e.g. to drive a progress bar. This is handled by [`future.getStream()`](/api/@warp-drive/core/request/interfaces/Future#getstream), covered in [Using The Response](./using-the-response.md), and is a stream of raw bytes.
+- **Progress** - you want to know how much of a response has downloaded so far, e.g. to drive a progress bar. This is handled by [`future.getStream()`](/api/@warp-drive/core/request/interfaces/Future#getstream), covered in [Using The Response](./using-the-response.md), and is a stream of raw bytes. This is a stable, core capability.
 - **Content** - the response is a sequence of independent, application-meaningful chunks (chat tokens, log lines, incrementally-arriving search results) that you want to react to *as they arrive* rather than waiting for the entire response to finish.
 
-This guide covers the second case: decoding a chunked response and reflecting each chunk into the store's cache as it arrives, so that anything subscribed to that resource re-renders progressively instead of waiting on the full response.
+This guide covers the second case, which today lives entirely in [`@warp-drive/experiments`](https://github.com/warp-drive-data/warp-drive/blob/main/warp-drive-packages/experiments/README.md) - not `@warp-drive/core`'s `Fetch` - while the pattern is proven out. `@warp-drive/experiments` packages are, as the name says, experimental: they may change shape or be removed.
 
-## Decoding a Streamed Response
+## `@warp-drive/experiments/fetch`
 
-Most streaming APIs (chat completions, log tails, progress feeds) send their chunks as newline-delimited JSON (["NDJSON"](https://github.com/ndjson/ndjson-spec)) - one JSON value per line. [`streamJsonLines`](/api/@warp-drive/utilities/streaming/functions/streamJsonLines) decodes a response body into an `AsyncGenerator` of parsed values, yielding each as soon as its line arrives.
+[`Fetch`](https://github.com/warp-drive-data/warp-drive/blob/main/warp-drive-packages/experiments/src/fetch.md) is a standalone, drop-in alternative to core's `Fetch` handler - swap one import for the other and everything works the same:
 
-```ts [decode-example.ts]
-import { streamJsonLines } from '@warp-drive/utilities/streaming';
+```ts [services/store.ts]
+import { Store, RequestManager } from '@warp-drive/core';
+import { Fetch } from '@warp-drive/experiments/fetch'; // [!code focus]
 
-const response = await fetch('/api/assistant/stream');
-
-for await (const event of streamJsonLines(response.body)) {
-  // handle each decoded line as it arrives
+export default class AppStore extends Store {
+  requestManager = new RequestManager()
+    .use([Fetch]);
 }
 ```
 
-Blank lines are skipped automatically, and a line that fails to parse is skipped rather than aborting the whole stream. Pass `onParseError` if you want to observe unparsable lines instead of silently dropping them.
+On top of that, it adds two capabilities:
+
+- **Configurable parsing** - per-handler or per-request control over how the response text is parsed (`json`, `html`, `xml`, `text`, `ndjson`, or your own format), instead of always assuming JSON.
+- **`options.onChunk`** - for a streaming-capable parser (`ndjson` by default), called once per frame as the response downloads.
 
 ```ts
-streamJsonLines(response.body, {
-  onParseError: (frame, error) => console.warn('could not parse frame', frame, error),
-});
-```
-
-If your wire format isn't NDJSON, [`streamFrames`](/api/@warp-drive/utilities/streaming/functions/streamFrames) is the lower-level primitive `streamJsonLines` is built on: it splits a byte stream into text frames on any delimiter you provide, decoding incrementally so a delimiter split across two network chunks (or a multi-byte character split across two chunks) is still handled correctly.
-
-```ts
-import { streamFrames } from '@warp-drive/utilities/streaming';
-
-// split on the ASCII Record Separator instead of a newline
-for await (const frame of streamFrames(response.body, '\x1e')) {
-  // ...
-}
-```
-
-## Reactively Updating the Store
-
-Decoding the response is half the problem - the other half is turning each decoded chunk into a cache update, so that anything reading that resource sees it grow in place. [`streamIntoResource`](/api/@warp-drive/utilities/streaming/functions/streamIntoResource) does this: it iterates an async source of decoded chunks, folds each into a resource via a `reduce` function you provide, and pushes the result into the store after every chunk.
-
-```ts [stream-into-resource-example.ts]
-import { streamJsonLines, streamIntoResource } from '@warp-drive/utilities/streaming';
-
-await streamIntoResource({
-  store,
-  resource: {
-    type: 'conversation',
-    id: conversationId,
-    attributes: { messages: [], isStreaming: true },
-  },
-  source: streamJsonLines(response.body),
-  reduce: (resource, message) => ({
-    ...resource,
-    attributes: {
-      ...resource.attributes,
-      messages: [...resource.attributes.messages, message],
-    },
-  }),
-  onSettled: (resource) => ({
-    ...resource,
-    attributes: { ...resource.attributes, isStreaming: false },
-  }),
-});
-```
-
-`onSettled` runs once the source is exhausted - including if it throws - so you can clear a loading flag with one final push regardless of how the stream ended.
-
-## A Complete Example
-
-Putting this together, here's a [Handler](./handlers.md) for a chat-style endpoint that streams its response as NDJSON. It resolves immediately with a placeholder resource so the UI can render right away, then streams updates into that same resource in the background as chunks arrive.
-
-:::tabs
-
-== Handler
-
-```ts [handlers/assistant-handler.ts]
-import { streamJsonLines, streamIntoResource } from '@warp-drive/utilities/streaming';
-
-export class AssistantHandler {
-  async request({ request }) { // [!code focus:24]
-    const response = await fetch(request.url, request);
-    const conversationId = request.headers?.get('X-Conversation-Id') ?? request.url;
-
-    const existing = request.store.cache.peekRemoteState({ type: 'conversation', id: conversationId });
-    const resource = existing ?? {
-      type: 'conversation',
-      id: conversationId,
-      attributes: { messages: [], isStreaming: false },
-    };
-    resource.attributes.isStreaming = true;
-    request.store.push({ data: resource });
-
-    // don't await: the caller gets the placeholder immediately, updates
-    // continue to arrive in the background as the stream is read
-    void streamIntoResource({
-      store: request.store,
-      resource,
-      source: streamJsonLines(response.body),
-      reduce: (resource, message) => ({
-        ...resource,
-        attributes: { ...resource.attributes, messages: [...resource.attributes.messages, message] },
-      }),
-      onSettled: (resource) => ({ ...resource, attributes: { ...resource.attributes, isStreaming: false } }),
-    });
-
-    return { data: resource };
-  }
-}
-```
-
-== Usage
-
-```ts [Ember]
-import Component from '@glimmer/component';
-import { Request } from '@warp-drive/ember';
-import { sendMessage } from '#/data/builders';
-
-export default class Conversation extends Component<{ Args: { conversationId: string } }> {
-  <template>
-    <Request @query={{sendMessage @conversationId}}>
-      <:content as |result|>
-        {{#each result.data.messages as |message|}}
-          <p>{{message.chunk}}</p>
-        {{/each}}
-        {{#if result.data.isStreaming}}
-          <p class="typing-indicator">...</p>
-        {{/if}}
-      </:content>
-    </Request>
-  </template>
-}
-```
-
-:::
-
-Because the handler pushes to the store directly instead of relying on `RequestManager`'s normal one-shot resolution, every `store.push` above is a separate, immediate notification - components subscribed to the `conversation` resource re-render after each chunk, not just once at the end.
-
-:::tip 💡 TIP
-This bypasses the request pipeline's built-in stream currying (`context.setStream`/`future.getStream`, see [Using The Response](./using-the-response.md)), which is designed for a single raw byte stream rather than many independent, already-decoded application chunks. Driving the fetch and the store updates yourself, as above, is the current recommended pattern for reactive content streaming.
-:::
-
-## Experimental: Configuring Instead of Writing a Handler
-
-If writing a custom `Handler` is more ceremony than you want, [`StreamingFetch`](https://github.com/warp-drive-data/warp-drive/blob/main/warp-drive-packages/experiments/src/streaming-fetch.md) - part of [`@warp-drive/experiments`](https://github.com/warp-drive-data/warp-drive/blob/main/warp-drive-packages/experiments/README.md) - lets you opt into per-frame callbacks via request configuration instead:
-
-```ts
-import { withChunkHandler } from '@warp-drive/experiments/streaming-fetch';
+import { withChunkHandler } from '@warp-drive/experiments/fetch';
+import type { Message } from '#/data/types';
 
 store.request({
   url: '/api/assistant/stream',
   options: {
+    parserType: 'ndjson',
     onChunk: withChunkHandler<Message>((message, context) => {
-      // apply `message` to the cache however makes sense for your data
+      const { store } = context.request;
+      // apply `message` to the cache however makes sense for your data,
+      // e.g. via `store.cache.patch(...)`
     }),
   },
 });
 ```
 
-`@warp-drive/experiments` packages are, as the name says, experimental: they may change shape or be removed as the pattern is proven out. See its README for the full API and known limitations before relying on it.
+The request still resolves once with a final value - by default (NDJSON), an array of every parsed line - so anything just `await`ing the request works unchanged; `onChunk` is purely an addition for reacting as chunks arrive.
+
+For a wire format other than NDJSON, or a chunk shape that isn't already {json:api}, or writing your own `Handler` that drives its own `fetch()` call entirely (e.g. to resolve immediately with a placeholder and stream updates into it in the background), see the [full documentation](https://github.com/warp-drive-data/warp-drive/blob/main/warp-drive-packages/experiments/src/fetch.md), which also covers the standalone decoding utilities (`streamFrames`, `streamJsonLines`, `streamIntoResource`) `Fetch` is built on.

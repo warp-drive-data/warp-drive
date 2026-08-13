@@ -32,9 +32,9 @@
       "types": "./declarations/image-fetch.d.ts",
       "default": "./dist/image-fetch.js"
     },
-    "./streaming-fetch": {
-      "types": "./declarations/streaming-fetch.d.ts",
-      "default": "./dist/streaming-fetch.js"
+    "./fetch": {
+      "types": "./declarations/fetch.d.ts",
+      "default": "./dist/fetch.js"
     }
   },
   "files": [
@@ -55,8 +55,7 @@
   },
   "peerDependencies": {
     "@sqlite.org/sqlite-wasm": "3.46.0-build2",
-    "@warp-drive/core": "workspace:*",
-    "@warp-drive/utilities": "workspace:*"
+    "@warp-drive/core": "workspace:*"
   },
   "peerDependenciesMeta": {
     "@sqlite.org/sqlite-wasm": {
@@ -73,7 +72,6 @@
     "@babel/preset-typescript": "^7.27.1",
     "@sqlite.org/sqlite-wasm": "3.46.0-build2",
     "@warp-drive/core": "workspace:*",
-    "@warp-drive/utilities": "workspace:*",
     "@warp-drive/internal-config": "workspace:*",
     "tsdown": "^0.22.14",
     "typescript": "^5.9.3"

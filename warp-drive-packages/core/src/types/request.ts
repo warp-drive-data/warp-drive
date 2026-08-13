@@ -765,11 +765,11 @@ export interface RequestContext {
   /**
    * @see {@link ImmutableRequestInfo}
    */
-  readonly request: ImmutableRequestInfo;
+  request: ImmutableRequestInfo;
   /**
    * a unique id for this request
    */
-  readonly id: number;
+  id: number;
 
   /**
    * Supplies the stream of the response's content, if available, enabling
@@ -780,6 +780,4 @@ export interface RequestContext {
    * Supplies the response for the request.
    */
   setResponse(response: Response | ResponseInfo | null): void;
-
-  readonly hasRequestedStream: boolean;
 }

@@ -2,13 +2,104 @@ import type { Store } from '@warp-drive/core';
 import type { ExistingResourceObject } from '@warp-drive/core/types/spec/json-api-raw';
 
 /**
+ * Reads a byte stream and yields it as a sequence of text frames split on
+ * `delimiter` (default `'\n'`), decoding incrementally so that a delimiter
+ * split across two underlying chunks is still detected correctly.
+ *
+ * If the stream ends with trailing content after the last delimiter, that
+ * content is yielded as a final frame.
+ *
+ * If the consumer stops iterating early (e.g. via `break`), the underlying
+ * stream is canceled.
+ *
+ * @public
+ */
+export async function* streamFrames(
+  body: ReadableStream<Uint8Array>,
+  delimiter = '\n'
+): AsyncGenerator<string, void, void> {
+  const reader = body.getReader();
+  const decoder = new TextDecoder();
+  let buffer = '';
+
+  try {
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true });
+
+      let index: number;
+      while ((index = buffer.indexOf(delimiter)) !== -1) {
+        yield buffer.slice(0, index);
+        buffer = buffer.slice(index + delimiter.length);
+      }
+    }
+
+    buffer += decoder.decode();
+    if (buffer.length) {
+      yield buffer;
+    }
+  } finally {
+    void reader.cancel().catch(() => {});
+  }
+}
+
+/**
+ * Options for {@link streamJsonLines}.
+ *
+ * @public
+ */
+export interface StreamJsonLinesOptions {
+  /**
+   * Called when a frame fails to parse as JSON. If omitted, unparsable
+   * frames are silently skipped.
+   */
+  onParseError?: (frame: string, error: unknown) => void;
+}
+
+/**
+ * Decodes a newline-delimited JSON (NDJSON) byte stream into a sequence of
+ * parsed values, yielding each as soon as its line arrives. Blank lines are
+ * skipped; lines that fail to parse are skipped (or reported via
+ * {@link StreamJsonLinesOptions.onParseError | onParseError}) rather than
+ * aborting the stream.
+ *
+ * Built on {@link streamFrames}.
+ *
+ * @example
+ * ```ts
+ * import { streamJsonLines } from '@warp-drive/experiments/fetch';
+ *
+ * for await (const event of streamJsonLines(response.body)) {
+ *   // handle each decoded line as it arrives
+ * }
+ * ```
+ *
+ * @public
+ */
+export async function* streamJsonLines<T = unknown>(
+  body: ReadableStream<Uint8Array>,
+  options?: StreamJsonLinesOptions
+): AsyncGenerator<T, void, void> {
+  for await (const frame of streamFrames(body, '\n')) {
+    const trimmed = frame.trim();
+    if (!trimmed) continue;
+    try {
+      yield JSON.parse(trimmed) as T;
+    } catch (e) {
+      options?.onParseError?.(trimmed, e);
+    }
+  }
+}
+
+/**
  * Options for {@link streamIntoResource}.
  *
  * @public
  */
 export interface StreamIntoResourceOptions<TResource extends ExistingResourceObject, TChunk> {
   /**
-   * The {@link Store} to push updates into.
+   * The store to push updates into.
    */
   store: Store;
   /**
@@ -49,7 +140,7 @@ export interface StreamIntoResourceOptions<TResource extends ExistingResourceObj
  *
  * @example
  * ```ts
- * import { streamJsonLines, streamIntoResource } from '@warp-drive/utilities/streaming';
+ * import { streamJsonLines, streamIntoResource } from '@warp-drive/experiments/fetch';
  *
  * const resource = await streamIntoResource({
  *   store,
@@ -63,9 +154,6 @@ export interface StreamIntoResourceOptions<TResource extends ExistingResourceObj
  * });
  * ```
  *
- * @param options - see {@link StreamIntoResourceOptions}
- * @return the final, fully-reduced resource
- * @since 5.9.0
  * @public
  */
 export async function streamIntoResource<TResource extends ExistingResourceObject, TChunk>(
