@@ -2347,16 +2347,19 @@ importers:
         version: file:warp-drive-packages/ember(33af9699401529a0cfeefafc63c5c204)
       '@warp-drive/experiments':
         specifier: workspace:*
-        version: file:warp-drive-packages/experiments(14783ff7abfecaf4a15600481cda861e)
+        version: file:warp-drive-packages/experiments(90048d994a10f75fd696c34ea85a9613)
       '@warp-drive/holodeck':
         specifier: workspace:*
-        version: file:packages/holodeck(27d22df54f83bd8eb0d3aa6fdaf4bcdd)
+        version: file:packages/holodeck(a3373bf92dbe06200e11dc38e69a2ad3)
       '@warp-drive/internal-config':
         specifier: workspace:*
         version: file:tools/internal-config(@glint/template@1.6.1)(terser@5.43.1)
       '@warp-drive/schema-record':
         specifier: workspace:*
         version: file:packages/schema-record(f9dfbf4fac3dbc0e0370b14ce6056988)
+      '@warp-drive/utilities':
+        specifier: workspace:*
+        version: file:warp-drive-packages/utilities(14783ff7abfecaf4a15600481cda861e)
       babel-plugin-ember-template-compilation:
         specifier: ^4.0.0
         version: 4.0.0
@@ -3664,6 +3667,9 @@ importers:
       '@warp-drive/internal-config':
         specifier: workspace:*
         version: file:tools/internal-config
+      '@warp-drive/utilities':
+        specifier: workspace:*
+        version: file:warp-drive-packages/utilities(ac1631a7da983377f84b100525d730a6)
       tsdown:
         specifier: ^0.22.14
         version: 0.22.14(typescript@5.9.2)
@@ -7777,6 +7783,7 @@ packages:
     peerDependencies:
       '@sqlite.org/sqlite-wasm': 3.46.0-build2
       '@warp-drive/core': workspace:*
+      '@warp-drive/utilities': workspace:*
     peerDependenciesMeta:
       '@sqlite.org/sqlite-wasm':
         optional: true
@@ -21204,10 +21211,11 @@ snapshots:
       - '@glint/template'
       - supports-color
 
-  '@warp-drive/experiments@file:warp-drive-packages/experiments(14783ff7abfecaf4a15600481cda861e)':
+  '@warp-drive/experiments@file:warp-drive-packages/experiments(90048d994a10f75fd696c34ea85a9613)':
     dependencies:
       '@embroider/macros': 1.20.6(f9dfbf4fac3dbc0e0370b14ce6056988)
       '@warp-drive/core': file:warp-drive-packages/core(f9dfbf4fac3dbc0e0370b14ce6056988)
+      '@warp-drive/utilities': file:warp-drive-packages/utilities(14783ff7abfecaf4a15600481cda861e)
     transitivePeerDependencies:
       - '@babel/core'
       - '@glint/template'
@@ -21222,13 +21230,6 @@ snapshots:
     optionalDependencies:
       '@warp-drive/legacy': file:warp-drive-packages/legacy(da2d8626017c763d07445c649af78d55)
       '@warp-drive/utilities': file:warp-drive-packages/utilities(ac1631a7da983377f84b100525d730a6)
-
-  '@warp-drive/holodeck@file:packages/holodeck(27d22df54f83bd8eb0d3aa6fdaf4bcdd)':
-    dependencies:
-      '@hono/node-server': 1.19.0(hono@4.9.4)
-      '@warp-drive/core': file:warp-drive-packages/core(f9dfbf4fac3dbc0e0370b14ce6056988)
-      chalk: 5.6.0
-      hono: 4.9.4
 
   '@warp-drive/holodeck@file:packages/holodeck(399050e4d25cd9de09f58182ad617dd4)':
     dependencies:
