@@ -8,6 +8,7 @@ import {
   type PageHints,
 } from '@warp-drive/core/reactive';
 import type { CacheHandler, Future, NextFn } from '@warp-drive/core/request';
+import { signal } from '@warp-drive/core/signals/-leaked';
 import type { RequestContext, StructuredDataDocument } from '@warp-drive/core/types/request';
 import type { CollectionResourceDataDocument } from '@warp-drive/core/types/spec/document';
 import { setupOnError } from '@warp-drive/diagnostic';
@@ -305,6 +306,27 @@ export interface PaginateSpecSignature extends Record<string, SpecTest<LocalTest
     }
   >;
   'a failed loadNext renders the error and can be retried': SpecTest<
+    LocalTestContext,
+    {
+      store: RequestManager;
+      request: CollectionRequest;
+    }
+  >;
+  'a changed @request that resolves to a page of the same collection is adopted as the active page': SpecTest<
+    LocalTestContext,
+    {
+      store: RequestManager;
+      source: { request: CollectionRequest };
+    }
+  >;
+  'a changed @request that resolves to a different collection resets the pagination': SpecTest<
+    LocalTestContext,
+    {
+      store: RequestManager;
+      source: { request: CollectionRequest };
+    }
+  >;
+  'adoptPage adopts same-collection requests and rejects foreign ones': SpecTest<
     LocalTestContext,
     {
       store: RequestManager;
@@ -2028,5 +2050,261 @@ export const PaginateSpec: SuiteBuilder<LocalTestContext, PaginateSpecSignature>
     assert.equal(Array.from(paginationState.pages).length, 2, 'the frontier advances after the retried load succeeds');
     assert.equal(this.element.querySelectorAll('[data-test-next-error]').length, 0, 'the error is gone');
     assert.false(paginationState.hasNext, 'hasNext is false at end-of-list');
+  })
+
+  .for('a changed @request that resolves to a page of the same collection is adopted as the active page')
+  .use<{ store: RequestManager; source: { request: CollectionRequest } }>(async function (assert) {
+    const urls = [
+      buildBaseURL({ resourcePath: 'users/1' }),
+      buildBaseURL({ resourcePath: 'users/2' }),
+      buildBaseURL({ resourcePath: 'users/3' }),
+    ];
+
+    await GET(this, 'users/2', () => ({
+      data: [users[1]],
+      links: {
+        first: urls[0],
+        prev: urls[0],
+        self: urls[1],
+        next: urls[2],
+        last: urls[2],
+      },
+      meta: {
+        currentPage: 2,
+        totalPages: 3,
+      },
+    }));
+
+    await GET(this, 'users/3', () => ({
+      data: [users[2]],
+      links: {
+        first: urls[0],
+        prev: urls[1],
+        self: urls[2],
+        next: null,
+        last: urls[2],
+      },
+      meta: {
+        currentPage: 3,
+        totalPages: 3,
+      },
+    }));
+
+    const initialRequest = this.manager.request<CollectionResourceDataDocument<UserResource>>({
+      url: urls[1],
+      method: 'GET',
+    });
+
+    class RequestSource {
+      @signal request: CollectionRequest = initialRequest;
+    }
+    const source = new RequestSource();
+    const paginationState = getPaginationState(initialRequest);
+
+    await this.render({ store: this.manager, source });
+    await initialRequest;
+    await this.h.rerender();
+
+    assert.dom('[data-test-user-name]').hasText('Leo Euclides', 'the entry page renders');
+    assert.equal(paginationState.activePage?.pageNumber, 2, 'the entry page is the active page');
+    assert.dom('[data-test-navigating]').doesNotExist('not navigating initially');
+
+    // a route-driven navigation (e.g. browser back button): the arg swaps to a
+    // new request that is a page of the same collection
+    const nextRequest = this.manager.request<CollectionResourceDataDocument<UserResource>>({
+      url: urls[2],
+      method: 'GET',
+    });
+    source.request = nextRequest;
+    await this.h.rerender();
+
+    assert.dom('[data-test-pending]').doesNotExist('no blocking loading state while the navigation resolves');
+    assert.dom('[data-test-user-name]').hasText('Leo Euclides', 'the existing content stays rendered');
+    assert.dom('[data-test-navigating]').exists('isNavigating is true while the navigation resolves');
+
+    await nextRequest;
+    await this.h.rerender();
+    await this.h.rerender();
+
+    assert.equal(getPaginationState(initialRequest), paginationState, 'the PaginationState reference is unchanged');
+    assert.equal(paginationState.activePage?.pageNumber, 3, 'the navigated page was adopted as the active page');
+    assert.dom('[data-test-user-name]').hasText('Mehul Chaudhari', 'the adopted page renders');
+    assert.dom('[data-test-navigating]').doesNotExist('navigation has settled');
+    assert.equal(paginationState.totalPages, 3, 'the collection total is intact');
+    assert.deepEqual(
+      Array.from(paginationState.data).map((user) => user.attributes.name),
+      ['Leo Euclides', 'Mehul Chaudhari'],
+      'the adjacent adopted page extended the frontier'
+    );
+  })
+
+  .for('a changed @request that resolves to a different collection resets the pagination')
+  .use<{ store: RequestManager; source: { request: CollectionRequest } }>(async function (assert) {
+    const userUrls = [buildBaseURL({ resourcePath: 'users/1' }), buildBaseURL({ resourcePath: 'users/2' })];
+    const adminUrl = buildBaseURL({ resourcePath: 'admins/1' });
+
+    await GET(this, 'users/1', () => ({
+      data: [users[0]],
+      links: {
+        first: userUrls[0],
+        prev: null,
+        self: userUrls[0],
+        next: userUrls[1],
+        last: userUrls[1],
+      },
+      meta: {
+        currentPage: 1,
+        totalPages: 2,
+      },
+    }));
+
+    await GET(this, 'admins/1', () => ({
+      data: [users[4]],
+      links: {
+        first: adminUrl,
+        prev: null,
+        self: adminUrl,
+        next: null,
+        last: adminUrl,
+      },
+      meta: {
+        currentPage: 1,
+        totalPages: 1,
+      },
+    }));
+
+    const initialRequest = this.manager.request<CollectionResourceDataDocument<UserResource>>({
+      url: userUrls[0],
+      method: 'GET',
+    });
+
+    class RequestSource {
+      @signal request: CollectionRequest = initialRequest;
+    }
+    const source = new RequestSource();
+    const paginationState = getPaginationState(initialRequest);
+
+    await this.render({ store: this.manager, source });
+    await initialRequest;
+    await this.h.rerender();
+
+    assert.dom('[data-test-user-name]').hasText('Chris Thoburn', 'the initial collection renders');
+    assert.equal(paginationState.totalPages, 2, 'the initial collection total');
+
+    // the arg swaps to a request belonging to a different collection
+    const adminRequest = this.manager.request<CollectionResourceDataDocument<UserResource>>({
+      url: adminUrl,
+      method: 'GET',
+    });
+    source.request = adminRequest;
+    await this.h.rerender();
+
+    assert.dom('[data-test-user-name]').hasText('Chris Thoburn', 'the existing content stays while the request resolves');
+    assert.dom('[data-test-navigating]').exists('isNavigating is true while the request resolves');
+
+    await adminRequest;
+    await this.h.rerender();
+    await this.h.rerender();
+
+    const newState = getPaginationState(adminRequest);
+    assert.notEqual(newState, paginationState, 'a fresh PaginationState took over');
+    assert.dom('[data-test-user-name]').hasText('Jane Portman', 'the new collection renders');
+    assert.equal(newState.totalPages, 1, 'the new collection total');
+    assert.equal(newState.activePage?.pageNumber, 1, 'the new collection entry page is active');
+    assert.equal(paginationState.activePage?.pageNumber, 1, 'the old state is left untouched');
+  })
+
+  .for('adoptPage adopts same-collection requests and rejects foreign ones')
+  .use<{ store: RequestManager; request: CollectionRequest }>(async function (assert) {
+    const userUrls = [buildBaseURL({ resourcePath: 'users/1' }), buildBaseURL({ resourcePath: 'users/2' })];
+    const adminUrl = buildBaseURL({ resourcePath: 'admins/1' });
+
+    await GET(this, 'users/1', () => ({
+      data: [users[0]],
+      links: {
+        first: userUrls[0],
+        prev: null,
+        self: userUrls[0],
+        next: userUrls[1],
+        last: userUrls[1],
+      },
+      meta: {
+        currentPage: 1,
+        totalPages: 2,
+      },
+    }));
+
+    await GET(this, 'users/2', () => ({
+      data: [users[1]],
+      links: {
+        first: userUrls[0],
+        prev: userUrls[0],
+        self: userUrls[1],
+        next: null,
+        last: userUrls[1],
+      },
+      meta: {
+        currentPage: 2,
+        totalPages: 2,
+      },
+    }));
+
+    await GET(this, 'admins/1', () => ({
+      data: [users[4]],
+      links: {
+        first: adminUrl,
+        prev: null,
+        self: adminUrl,
+        next: null,
+        last: adminUrl,
+      },
+      meta: {
+        currentPage: 1,
+        totalPages: 1,
+      },
+    }));
+
+    const request = this.manager.request<CollectionResourceDataDocument<UserResource>>({
+      url: userUrls[0],
+      method: 'GET',
+    });
+    const paginationState = getPaginationState(request);
+
+    await this.render({ store: this.manager, request });
+    await request;
+    await this.h.rerender();
+
+    assert.dom('[data-test-user-name]').hasText('Chris Thoburn', 'the entry page renders');
+    assert.equal(paginationState.activePage?.pageNumber, 1, 'the entry page is the active page');
+
+    // programmatic adoption of a same-collection request
+    const pageTwoRequest = this.manager.request<CollectionResourceDataDocument<UserResource>>({
+      url: userUrls[1],
+      method: 'GET',
+    });
+    const adopted = await paginationState.adoptPage(pageTwoRequest);
+
+    assert.deepEqual(adopted?.data, [users[1]], 'adoptPage resolves to the adopted page document');
+    assert.equal(paginationState.activePage?.pageNumber, 2, 'the adopted page is the active page');
+    assert.deepEqual(
+      Array.from(paginationState.data).map((user) => user.attributes.name),
+      ['Chris Thoburn', 'Leo Euclides'],
+      'the adjacent adopted page extended the frontier'
+    );
+
+    await this.h.rerender();
+    assert.dom('[data-test-user-name]').hasText('Leo Euclides', 'a component sharing the state renders the adopted page');
+
+    // a request from a different collection is rejected
+    const foreignRequest = this.manager.request<CollectionResourceDataDocument<UserResource>>({
+      url: adminUrl,
+      method: 'GET',
+    });
+    const rejected = await paginationState.adoptPage(foreignRequest);
+
+    assert.equal(rejected, null, 'adoptPage resolves to null for a foreign-collection request');
+    assert.equal(paginationState.activePage?.pageNumber, 2, 'the active page is untouched');
+    assert.equal(paginationState.totalPages, 2, 'the collection total is untouched');
+    assert.equal(Array.from(paginationState.pages).length, 2, 'the frontier is untouched');
   })
   .build();

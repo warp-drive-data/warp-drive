@@ -623,6 +623,90 @@ PaginateSpec.use(useEmber(), function (b) {
       </template>;
     })
 
+    .test(
+      'a changed @request that resolves to a page of the same collection is adopted as the active page',
+      function (props) {
+        const { source, store } = props;
+
+        return <template>
+          <Paginate @request={{source.request}} @store={{store}}>
+            <:loading>
+              <span data-test-pending>Pending</span>
+            </:loading>
+            <:content as |pages features|>
+              {{#if features.isNavigating}}
+                <span data-test-navigating>Navigating</span>
+              {{/if}}
+              <Request @request={{pages.activePageRequest}} @store={{store}}>
+                <:content as |content|>
+                  {{#each content.data as |user|}}
+                    <span data-test-user-name>{{user.attributes.name}}</span>
+                  {{/each}}
+                </:content>
+                <:loading><span data-test-loading-page>Loading page</span></:loading>
+              </Request>
+            </:content>
+            <:error as |error|>
+              <span data-test-error>{{error.message}}</span>
+            </:error>
+          </Paginate>
+        </template>;
+      }
+    )
+
+    .test('a changed @request that resolves to a different collection resets the pagination', function (props) {
+      const { source, store } = props;
+
+      return <template>
+        <Paginate @request={{source.request}} @store={{store}}>
+          <:loading>
+            <span data-test-pending>Pending</span>
+          </:loading>
+          <:content as |pages features|>
+            {{#if features.isNavigating}}
+              <span data-test-navigating>Navigating</span>
+            {{/if}}
+            <Request @request={{pages.activePageRequest}} @store={{store}}>
+              <:content as |content|>
+                {{#each content.data as |user|}}
+                  <span data-test-user-name>{{user.attributes.name}}</span>
+                {{/each}}
+              </:content>
+              <:loading><span data-test-loading-page>Loading page</span></:loading>
+            </Request>
+          </:content>
+          <:error as |error|>
+            <span data-test-error>{{error.message}}</span>
+          </:error>
+        </Paginate>
+      </template>;
+    })
+
+    .test('adoptPage adopts same-collection requests and rejects foreign ones', function (props) {
+      const { request, store } = props;
+
+      return <template>
+        <Paginate @request={{request}} @store={{store}}>
+          <:loading>
+            <span data-test-pending>Pending</span>
+          </:loading>
+          <:content as |pages|>
+            <Request @request={{pages.activePageRequest}} @store={{store}}>
+              <:content as |content|>
+                {{#each content.data as |user|}}
+                  <span data-test-user-name>{{user.attributes.name}}</span>
+                {{/each}}
+              </:content>
+              <:loading><span data-test-loading-page>Loading page</span></:loading>
+            </Request>
+          </:content>
+          <:error as |error|>
+            <span data-test-error>{{error.message}}</span>
+          </:error>
+        </Paginate>
+      </template>;
+    })
+
     // @ts-expect-error need to figure out how to do this for "compiled" versions of this type
     // If there's a typeerror here, we are missing a test.
     .never(null);

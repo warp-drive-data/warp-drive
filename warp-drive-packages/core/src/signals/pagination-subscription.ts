@@ -3,7 +3,7 @@ import type { Future } from '../request.ts';
 import type { StructuredErrorDocument } from '../types/request.ts';
 import type { PageHints } from './pagination-cache.ts';
 import { getPaginationState, type PaginateMode, type PaginationState } from './pagination-state.ts';
-import { memoized } from './reactivity/signal.ts';
+import { defineSignal, memoized } from './reactivity/signal.ts';
 import type { RequestLoadingState } from './request-state.ts';
 import type { RequestSubscription, SubscriptionArgs } from './request-subscription.ts';
 import { createRequestSubscription, DISPOSE } from './request-subscription.ts';
@@ -22,6 +22,14 @@ export interface SharedPaginationContentFeatures<RT> {
   isOnline: boolean;
   isHidden: boolean;
   isRefreshing: boolean;
+  /**
+   * Whether a changed `@request` arg is currently resolving against the
+   * loaded collection — e.g. a route-driven navigation (browser back button).
+   * The existing content stays rendered while this is `true`; once the
+   * request resolves it either becomes the active page (same collection) or
+   * the component resets to the new collection.
+   */
+  isNavigating: boolean;
   refresh: () => Promise<void>;
   reload: () => Promise<void>;
   abort?: () => void;
@@ -130,10 +138,41 @@ export class PaginationSubscription<RT, E> {
    */
   declare private _requestSubscription: RequestSubscription<RT, E>;
 
+  /**
+   * The first request this subscription saw — the one that keys the
+   * {@link PaginationState} until a navigation resolves to a different
+   * collection. Plain (untracked) because it is written during the first
+   * computation of {@link paginationState}.
+   *
+   * @internal
+   */
+  declare private _seedRequest: Future<RT> | null;
+
+  /**
+   * The request a resolved navigation swapped the {@link PaginationState} to,
+   * when the navigation turned out to target a different collection. A signal:
+   * writing it (always outside of render, from {@link _resolveNavigation})
+   * invalidates {@link paginationState} so the fresh state takes over.
+   *
+   * @internal
+   */
+  declare private _navRequest: Future<RT> | null;
+
+  /**
+   * The changed request currently being resolved by {@link _resolveNavigation},
+   * both to avoid kicking the same navigation twice and as the latest-wins
+   * guard when several changes race. Untracked bookkeeping.
+   *
+   * @internal
+   */
+  declare private _navTarget: Future<RT> | null;
+
   constructor(store: Store | RequestManager, args: PaginationSubscriptionArgs<RT, E>) {
     this._args = args;
     this.store = store;
     this.isDestroyed = false;
+    this._seedRequest = null;
+    this._navTarget = null;
     this[DISPOSE] = _DISPOSE;
     this._requestSubscription = createRequestSubscription<RT, E>(store, args);
   }
@@ -141,15 +180,72 @@ export class PaginationSubscription<RT, E> {
   /**
    * The per-component pagination state yielded to the component.
    *
-   * Derived from the request subscription's current request: when a `retry`
-   * or `reload` reissues the initial request, a new {@link PaginationState}
-   * keyed to the new request takes over (a reload is a fresh start). A
-   * background `refresh` does not swap the request, so the pagination state
-   * is stable across refreshes.
+   * Keyed to the request that started the collection, not the current
+   * `@request` arg: when the arg changes, the existing state keeps rendering
+   * while {@link _resolveNavigation} resolves the new request in the
+   * background. A request that resolves to a page of the same collection is
+   * adopted into this state as the new active page (route-driven navigation,
+   * e.g. the browser back button); one that resolves to a different
+   * collection swaps in a fresh state (a true reset).
+   *
+   * A background `refresh` does not swap the request, so the pagination
+   * state is stable across refreshes.
    */
   @memoized
   get paginationState(): PaginationState<RT, E> {
-    return getPaginationState<RT, E>(this._requestSubscription.request, this._args.pageHints);
+    const request = this._requestSubscription.request;
+    const active = this._navRequest ?? this._seedRequest;
+
+    if (!active) {
+      // first access: this request starts the collection
+      this._seedRequest = request;
+      return getPaginationState<RT, E>(request, this._args.pageHints);
+    }
+
+    if (request !== active && request !== this._navTarget) {
+      this._navTarget = request;
+      void this._resolveNavigation(request);
+    }
+
+    return getPaginationState<RT, E>(active, this._args.pageHints);
+  }
+
+  /**
+   * Resolves a changed `@request` arg against the current collection via
+   * {@link PaginationState.adoptPage}: a request that resolves to a page of
+   * the same collection is adopted into the existing state; one that resolves
+   * to a different collection (or arrives before a collection is loaded) swaps
+   * the state for a fresh one keyed to this request.
+   *
+   * A rejected request changes nothing here — the request subscription
+   * already surfaces the failure (error/cancelled states), and the existing
+   * pagination state is kept for recovery. The request is awaited before
+   * `adoptPage` so that rejection and the latest-wins guard are handled
+   * before anything is adopted.
+   *
+   * @internal
+   */
+  private async _resolveNavigation(request: Future<RT>): Promise<void> {
+    try {
+      await request;
+    } catch {
+      return;
+    }
+
+    // latest wins: a newer navigation or disposal superseded this one
+    if (this.isDestroyed || this._navTarget !== request) {
+      return;
+    }
+
+    const adopted = await this.paginationState.adoptPage(request);
+    if (adopted === null) {
+      // the request resolved fine (awaited above), so `null` means its page
+      // is not part of the current collection: reset to a fresh state
+      this._navRequest = request;
+    }
+    // `_navTarget` intentionally stays set: it marks this request as
+    // processed so the getter does not re-kick it, and a newer navigation
+    // may already have claimed the field while `adoptPage` was awaited.
   }
 
   /**
@@ -162,18 +258,33 @@ export class PaginationSubscription<RT, E> {
   }
 
   /**
-   * Whether the initial request is still loading. Only the first page load
-   * blocks here; extending the collection with `loadNext`/`loadPrev` does not.
+   * Whether the collection is still blocking-loading: no {@link PaginationState}
+   * has finished setting up yet. Only the very first page load (or the reset
+   * to a different collection) blocks here — extending the collection with
+   * `loadNext`/`loadPrev` does not, and neither does a changed `@request` arg
+   * while a collection is already on screen (that is {@link isNavigating}).
    *
    * Remains `true` for the moment between the request resolving and the
    * {@link paginationState} finishing its setup from the response, so that
    * {@link isSuccess} consumers never see a success state with an empty
-   * pagination surface (relevant after a `retry`/`reload` swaps the request).
+   * pagination surface.
    */
   @memoized
   get isLoading(): boolean {
     const { reqState } = this._requestSubscription;
-    return reqState.isLoading || (reqState.isSuccess && this.paginationState.paginationCache === null);
+    return this.paginationState.paginationCache === null && (reqState.isLoading || reqState.isSuccess);
+  }
+
+  /**
+   * Whether a changed `@request` arg is resolving while a collection is
+   * already on screen — route-driven navigation, e.g. the browser back
+   * button. The content stays rendered (see {@link isSuccess}); consumers can
+   * use this to show a lightweight navigation indicator, the same way a
+   * `loadPage` call surfaces through the active page's request state.
+   */
+  @memoized
+  get isNavigating(): boolean {
+    return this.paginationState.paginationCache !== null && this._requestSubscription.reqState.isLoading;
   }
 
   /**
@@ -186,12 +297,15 @@ export class PaginationSubscription<RT, E> {
   }
 
   /**
-   * Whether the initial request resolved successfully and the
-   * {@link paginationState} has been set up from the response.
+   * Whether the component has a set-up {@link paginationState} to render and
+   * the current request did not fail. Stays `true` while a changed `@request`
+   * arg resolves ({@link isNavigating}), so the existing content keeps
+   * rendering instead of falling back to a blocking loading state.
    */
   @memoized
   get isSuccess(): boolean {
-    return this._requestSubscription.reqState.isSuccess && this.paginationState.paginationCache !== null;
+    const { reqState } = this._requestSubscription;
+    return this.paginationState.paginationCache !== null && !reqState.isError && !reqState.isCancelled;
   }
 
   /**
@@ -239,6 +353,7 @@ export class PaginationSubscription<RT, E> {
     const { paginationState } = this;
     const feat: PaginationContentFeatures<RT> = {
       ...contentFeatures,
+      isNavigating: this.isNavigating,
       loadPrev: paginationState.loadPrev,
       loadNext: paginationState.loadNext,
       loadPage: paginationState.loadPage,
@@ -264,6 +379,8 @@ export class PaginationSubscription<RT, E> {
     return this._requestSubscription.request;
   }
 }
+
+defineSignal(PaginationSubscription.prototype, '_navRequest', null);
 
 /**
  * Creates the {@link PaginationSubscription} a `<Paginate />` component uses to

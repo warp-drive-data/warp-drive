@@ -1096,6 +1096,53 @@ To manage the component's lifecycle externally, create the subscription yourself
 `createPaginationSubscription` and pass it in via `@subscription` — the component then
 uses it instead of creating (and disposing) its own.
 
+**Route-driven navigation: a changed `@request`**
+
+When the `@request` arg changes, `<Paginate />` does not throw away its state. The
+existing content stays rendered while the new request resolves; the component then
+inspects the response's collection identity (its `first` — or `self` — link):
+
+- **Same collection** — the request is a page of the collection already on screen
+  (for example a route reload caused by the browser back button changing a `?page=`
+  query param). The page is adopted as the new `activePage` of the *same*
+  `PaginationState` — links, totals and (in infinite mode) the accumulated run are
+  preserved. An adjacent page extends the infinite run; a disjoint page jumps to it.
+- **Different collection** — the pagination resets, exactly like today: fresh state,
+  fresh links, and the `loading` block for the initial setup.
+
+While the changed request resolves, the content features expose `isNavigating`, so a
+lightweight indicator can be shown without tearing down the page:
+
+```gjs
+<Paginate @request={{@request}}>
+  <:content as |pages features|>
+    {{#if features.isNavigating}}<SmallSpinner />{{/if}}
+    <Request @request={{pages.activePageRequest}}>
+      ...
+    </Request>
+  </:content>
+</Paginate>
+```
+
+This makes it natural to drive `<Paginate />` from the URL: let links transition the
+route (updating query params), let the route's model hook issue the request, and pass
+it to `@request` — back/forward buttons then work for free.
+
+The same mechanism is available programmatically when managing a `PaginationState`
+directly: `pages.adoptPage(request)` awaits the request, verifies it belongs to the
+state's collection, and makes its page the active page — resolving to the page's
+document, or to `null` (leaving the state untouched) when the request fails or
+belongs to a different collection.
+
+```ts
+const pages = getPaginationState(initialRequest);
+// later, e.g. reacting to a ?page= query param:
+const adopted = await pages.adoptPage(store.request(query));
+if (adopted === null) {
+  // not part of this collection — start a fresh pagination
+}
+```
+
 ## Using .hbs
 
 The components and utils this library exports are intended for use with `

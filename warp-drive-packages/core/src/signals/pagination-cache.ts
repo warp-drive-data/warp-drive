@@ -53,6 +53,16 @@ export const defaultPageHints: PageHints = (document) => {
  * @hideconstructor
  */
 export class PaginationCache<RT = unknown, E = unknown> {
+  /**
+   * The cache key this collection is stored under in the module-level cache —
+   * its `first` (or `self`) link. This is the collection's identity: two
+   * requests whose documents resolve to the same key are pages of the same
+   * collection.
+   *
+   * @internal
+   */
+  declare readonly key: string;
+
   /** @internal */
   @signal declare firstPage: Readonly<PageCache<RT, E>> | null;
 
@@ -75,7 +85,8 @@ export class PaginationCache<RT = unknown, E = unknown> {
   /** @internal */
   private pageHints: PageHints = defaultPageHints;
 
-  constructor() {
+  constructor(key: string) {
+    this.key = key;
     this.pagesCache = new Map<string, PageCache>();
     this.firstPage = null;
     this.totalPages = 0;
@@ -231,7 +242,7 @@ export function getPaginationCache<RT, E>(key: string): PaginationCache<RT, E> {
   let cache = PaginationCacheMap.get(key);
 
   if (!cache) {
-    cache = new PaginationCache<RT, E>();
+    cache = new PaginationCache<RT, E>(key);
     PaginationCacheMap.set(key, cache);
   }
 

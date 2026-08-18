@@ -27,6 +27,8 @@ export type PaginateMode = 'paged' | 'infinite';
 export interface SharedPaginationState<RT = unknown, E = unknown> {
   /** See {@link PaginationState.totalPages}. */
   readonly totalPages: number;
+  /** See {@link PaginationState.adoptPage}. */
+  adoptPage(request: Future<RT>): Promise<RT | null>;
   /**
    * The shared page graph and data this component reads from.
    *
@@ -349,6 +351,103 @@ export class PaginationState<RT = unknown, E = unknown>
   }
 
   /**
+   * Adopts a membership-proven page into this state, making it the
+   * {@link activePage}. The dumb primitive under {@link adoptPage}, which is
+   * where the membership verification lives.
+   *
+   * It only activates the page and keeps the infinite surface's frontier
+   * coherent — a page already inside the run leaves the frontier untouched,
+   * an adjacent page extends it, and a disjoint page resets the run to the
+   * adopted page (jump semantics).
+   *
+   * @internal
+   */
+  private _adoptPage(url: string, request: Future<RT>): Readonly<PageCache<RT, E>> {
+    const cache = this.paginationCache;
+    assert('Expected the pagination cache to be set up before adopting a page', cache);
+
+    const page = cache.loadPage(url, request);
+    this.activePage = page;
+
+    for (const existing of this.pages) {
+      if (existing === page) {
+        return page;
+      }
+    }
+
+    if (this.frontierEnd?.nextLink === url) {
+      this.frontierEnd = page;
+    } else if (this.frontierStart?.prevLink === url) {
+      this.frontierStart = page;
+    } else {
+      this.frontierStart = this.frontierEnd = page;
+    }
+
+    return page;
+  }
+
+  /**
+   * Adopts an externally-issued request into this pagination, making its page
+   * the {@link activePage} — the programmatic entry point for route-driven
+   * navigation when managing a `PaginationState` directly (the `<Paginate />`
+   * component uses the same mechanism for a changed `@request` arg).
+   *
+   * Awaits the request and verifies that its document is a page of this
+   * state's collection (same `first` — or `self` — link). On a match the page
+   * is adopted: it becomes the active page, and the infinite surface's run is
+   * kept coherent (a page already inside the run leaves it untouched, an
+   * adjacent page extends it, a disjoint page resets the run to the adopted
+   * page). Returns the page's document.
+   *
+   * Returns `null` — leaving the state untouched — when the request rejects,
+   * when it resolves to a page of a *different* collection, or when this
+   * state has not finished setting up its own collection yet.
+   *
+   * ```ts
+   * const pages = getPaginationState(initialRequest);
+   * // later, e.g. in a route model hook reacting to a ?page= param:
+   * const adopted = await pages.adoptPage(store.request(query));
+   * if (adopted === null) {
+   *   // not part of this collection — start a fresh pagination
+   * }
+   * ```
+   *
+   * It is a stable reference, so it is safe to pass around as an "action" or
+   * "event" handler.
+   */
+  adoptPage = async (request: Future<RT>): Promise<RT | null> => {
+    let content;
+    try {
+      content = (await request).content as ReactiveDocument<unknown>;
+    } catch {
+      return null;
+    }
+
+    const cache = this.paginationCache;
+    if (!cache) {
+      return null;
+    }
+
+    const selfLink = getHref(content.links?.self);
+    const firstLink = getHref(content.links?.first);
+    assert('Expected the adopted document to have a self link', selfLink);
+    if (!selfLink || (firstLink ?? selfLink) !== cache.key) {
+      return null;
+    }
+
+    const page = this._adoptPage(selfLink, request);
+    try {
+      // wait for the page's request state to settle its value; adopting an
+      // already-settled future still needs this microtask
+      await page.request;
+    } catch {
+      return null;
+    }
+
+    return page.value;
+  };
+
+  /**
    * Extends the backward frontier by one page, prepending it to {@link data}.
    * The frontier advances only once the page has loaded, so
    * {@link previousRequest} tracks the in-flight page meanwhile. Returns the
@@ -514,7 +613,8 @@ export function getPaginationState<RT, E>(request: Future<RT>, pageHints?: PageH
   let state = PaginationStateCache.get(request);
 
   if (!state) {
-    state = new PaginationState<RT, E>(request, pageHints);
+    // the cache is heterogeneous over RT/E (mirrored by the cast on return)
+    state = new PaginationState<RT, E>(request, pageHints) as unknown as PaginationState;
     PaginationStateCache.set(request, state);
   }
 
