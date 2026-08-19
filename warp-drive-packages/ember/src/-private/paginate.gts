@@ -359,7 +359,7 @@ export class Paginate<RT, E, M extends PaginateMode = 'paged'> extends Component
     const { subscription } = this.args;
     if (_state && (_state.store !== store || subscription)) {
       _state[DISPOSE]();
-      _state = null;
+      this._state = _state = null;
     }
 
     if (subscription) {
@@ -417,10 +417,7 @@ export class Paginate<RT, E, M extends PaginateMode = 'paged'> extends Component
   }
 
   <template>
-    <this.Chrome
-      @state={{if this.state.isIdle null this.paginationState}}
-      @features={{this.contentFeatures}}
-    >
+    <this.Chrome @state={{if this.state.isIdle null this.paginationState}} @features={{this.contentFeatures}}>
       {{#if (has-block "default")}}
         {{yield this.paginationState this.contentFeatures}}
 

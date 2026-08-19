@@ -311,7 +311,7 @@ export class EachLink<RT, E> extends Component<EachLinkSignature<RT, E>> {
     const { store } = this;
     if (_state && _state.store !== store) {
       _state[DISPOSE]();
-      _state = null;
+      this._state = _state = null;
     }
 
     if (!_state) {
@@ -322,8 +322,10 @@ export class EachLink<RT, E> extends Component<EachLinkSignature<RT, E>> {
   }
 
   willDestroy(): void {
-    this._state![DISPOSE]();
-    this._state = null;
+    if (this._state) {
+      this._state[DISPOSE]();
+      this._state = null;
+    }
   }
 
   <template>
