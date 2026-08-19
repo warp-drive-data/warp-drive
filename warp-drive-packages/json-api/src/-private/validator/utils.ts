@@ -100,6 +100,12 @@ export class Reporter {
   ast: ReturnType<typeof jsonToAst>;
   jsonStr: string;
 
+  // `colors` gains two entries for every line of the document (plus four per
+  // finding), and spreading tens of thousands of arguments into a single
+  // console.log call exceeds the engine's argument limit. We emit the report in
+  // chunks of this many rendered lines to stay well clear of it.
+  maxLines = 500;
+
   // TODO @runspired make this configurable to consuming apps before
   // activating by default
   strict = {
@@ -263,26 +269,37 @@ export class Reporter {
       errorMap.get(line)!.push(error);
     }
 
-    // splice the errors into the lines
-    const errorLines: string[] = [];
-    const colors: string[] = [];
+    // splice the errors into the lines, accumulating text and its colors together
+    // so that each chunk we log carries exactly the colors its own %c markers need
+    const chunks: { text: string[]; colors: string[] }[] = [{ text: [], colors: [] }];
+    let renderedCount = 0;
     const counts = {
       error: 0,
       warning: 0,
       info: 0,
     };
 
+    const nextLine = (text: string, lineColors: string[]) => {
+      if (renderedCount > 0 && renderedCount % this.maxLines === 0) {
+        chunks.push({ text: [], colors: [] });
+      }
+      const chunk = chunks[chunks.length - 1];
+      chunk.text.push(text);
+      chunk.colors.push(...lineColors);
+      renderedCount++;
+    };
+
     const LINE_SIZE = String(lines.length).length;
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i];
-      errorLines.push(
+      nextLine(
         colorize
           ? `${String(i + 1).padEnd(LINE_SIZE, ' ')}  \t%c${line}%c`
-          : `${String(i + 1).padEnd(LINE_SIZE, ' ')}  \t${line}`
-      );
-      colors.push(
-        `color: grey; background-color: transparent;`, // first color sets color
-        `color: inherit; background-color: transparent;` // second color resets the color profile
+          : `${String(i + 1).padEnd(LINE_SIZE, ' ')}  \t${line}`,
+        [
+          `color: grey; background-color: transparent;`, // first color sets color
+          `color: inherit; background-color: transparent;`, // second color resets the color profile
+        ]
       );
       if (errorMap.has(i + 1)) {
         const errorsForLine = errorMap.get(i + 1)!;
@@ -292,25 +309,30 @@ export class Reporter {
           const start = loc.end.line === loc.start.line ? loc.start.column - 1 : loc.end.column - 1;
           const end = loc.end.column - 1;
           const symbol = error.type === 'error' ? '❌' : error.type === 'warning' ? '⚠️' : 'ℹ️';
-          const errorLine = colorize
-            ? `${''.padStart(LINE_SIZE, ' ') + symbol}\t${' '.repeat(start)}%c^${'~'.repeat(end - start)} %c//%c ${message}%c`
-            : `${''.padStart(LINE_SIZE, ' ') + symbol}\t${' '.repeat(start)}^${'~'.repeat(end - start)} // ${message}`;
-          errorLines.push(errorLine);
-          colors.push(
-            error.type === 'error' ? 'color: red;' : error.type === 'warning' ? 'color: orange;' : 'color: blue;',
-            'color: grey;',
-            error.type === 'error' ? 'color: red;' : error.type === 'warning' ? 'color: orange;' : 'color: blue;',
-            'color: inherit; background-color: transparent;' // reset color
+          nextLine(
+            colorize
+              ? `${''.padStart(LINE_SIZE, ' ') + symbol}\t${' '.repeat(start)}%c^${'~'.repeat(end - start)} %c//%c ${message}%c`
+              : `${''.padStart(LINE_SIZE, ' ') + symbol}\t${' '.repeat(start)}^${'~'.repeat(end - start)} // ${message}`,
+            [
+              error.type === 'error' ? 'color: red;' : error.type === 'warning' ? 'color: orange;' : 'color: blue;',
+              'color: grey;',
+              error.type === 'error' ? 'color: red;' : error.type === 'warning' ? 'color: orange;' : 'color: blue;',
+              'color: inherit; background-color: transparent;', // reset color
+            ]
           );
         }
       }
     }
 
     const contextStr = `${counts.error} errors and ${counts.warning} warnings found in the {json:api} document returned by ${this.contextDocument.request?.method} ${this.contextDocument.request?.url}`;
-    const errorString = contextStr + `\n\n` + errorLines.join('\n');
 
-    // eslint-disable-next-line no-console, @typescript-eslint/no-unused-expressions
-    colorize ? console.log(errorString, ...colors) : console.log(errorString);
+    for (let i = 0; i < chunks.length; i++) {
+      const chunk = chunks[i];
+      const chunkString = (i === 0 ? contextStr + `\n\n` : '') + chunk.text.join('\n');
+
+      // eslint-disable-next-line no-console, @typescript-eslint/no-unused-expressions
+      colorize ? console.log(chunkString, ...chunk.colors) : console.log(chunkString);
+    }
 
     if (JSON_API_CACHE_VALIDATION_ERRORS) {
       if (counts.error > 0) {
