@@ -1,5 +1,5 @@
-import { keepAssets } from '@warp-drive/internal-config/vite/keep-assets';
-import { createConfig } from '@warp-drive/internal-config/vite/config';
+import { keepAssets } from '@warp-drive/internal-config/tsdown/keep-assets.js';
+import { createConfig } from '@warp-drive/internal-config/tsdown/config.js';
 
 export const externals = [
   '@ember/runloop',
@@ -25,6 +25,7 @@ export default createConfig(
   {
     entryPoints,
     externals,
+    jsx: true,
     plugins: [keepAssets({ from: 'src', include: ['./styles/**/*.css'], dist: 'dist' })],
   },
   import.meta.resolve
