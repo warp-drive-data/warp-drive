@@ -946,12 +946,12 @@ importers:
       ember-source:
         specifier: ~6.12.0
         version: 6.12.0
+      tsdown:
+        specifier: ^0.22.14
+        version: 0.22.14(typescript@5.9.2)
       typescript:
         specifier: 5.9.2
         version: 5.9.2
-      vite:
-        specifier: ^7.3.1
-        version: 7.3.1
 
   packages/rest:
     dependencies:
@@ -20416,17 +20416,11 @@ snapshots:
     dependencies:
       '@types/ember__object': 4.0.12
       '@types/ember__owner': 4.0.9
-    transitivePeerDependencies:
-      - '@babel/core'
-      - supports-color
 
   '@types/ember__engine@4.0.11':
     dependencies:
       '@types/ember__object': 4.0.12
       '@types/ember__owner': 4.0.9
-    transitivePeerDependencies:
-      - '@babel/core'
-      - supports-color
 
   '@types/ember__error@4.0.6': {}
 
