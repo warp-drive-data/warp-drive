@@ -21,21 +21,7 @@
     "incremental": true,
     "declaration": true,
     "paths": {
-      "ember-data__graph/*": ["./app/*"],
-      "@ember-data/unpublished-test-infra": ["../../packages/unpublished-test-infra/unstable-preview-types"],
-      "@ember-data/unpublished-test-infra/*": ["../../packages/unpublished-test-infra/unstable-preview-types/*"],
-      "@warp-drive/diagnostic": ["../../packages/diagnostic/unstable-preview-types"],
-      "@warp-drive/diagnostic/*": ["../../packages/diagnostic/unstable-preview-types/*"],
-      "@warp-drive/ember": ["../../warp-drive-packages/ember/declarations"],
-      "@warp-drive/ember/*": ["../../warp-drive-packages/ember/declarations/*"],
-      "@warp-drive/core": ["../../warp-drive-packages/core/declarations"],
-      "@warp-drive/core/*": ["../../warp-drive-packages/core/declarations/*"],
-      "@warp-drive/legacy": ["../../warp-drive-packages/legacy/declarations"],
-      "@warp-drive/legacy/*": ["../../warp-drive-packages/legacy/declarations/*"],
-      "@warp-drive/json-api": ["../../warp-drive-packages/json-api/declarations"],
-      "@warp-drive/json-api/*": ["../../warp-drive-packages/json-api/declarations/*"],
-      "@warp-drive/utilities": ["../../warp-drive-packages/utilities/declarations"],
-      "@warp-drive/utilities/*": ["../../warp-drive-packages/utilities/declarations/*"]
+      "ember-data__graph/*": ["./app/*"]
     },
     "types": ["ember-source/types", "@ember-data/unpublished-test-infra/test-support/asserts/index"],
     "allowImportingTsExtensions": true,

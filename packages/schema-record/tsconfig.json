@@ -29,10 +29,6 @@
     "inlineSourceMap": true,
     "inlineSources": true,
     "types": [],
-    "paths": {
-      "@warp-drive/core": ["../../warp-drive-packages/core/declarations"],
-      "@warp-drive/core/*": ["../../warp-drive-packages/core/declarations/*"]
-    },
     "allowImportingTsExtensions": true,
     "erasableSyntaxOnly": true,
     "isolatedDeclarations": true,

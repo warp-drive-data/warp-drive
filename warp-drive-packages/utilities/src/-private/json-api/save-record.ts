@@ -1,6 +1,6 @@
 import { recordIdentifierFor } from '@warp-drive/core';
 import { assert } from '@warp-drive/core/build-config/macros';
-import type { ReactiveDataDocument } from '@warp-drive/core/reactive.js';
+import type { ReactiveDataDocument } from '@warp-drive/core/reactive';
 import type { PersistedResourceKey, ResourceKey } from '@warp-drive/core/types/identifier';
 import type { TypedRecordInstance } from '@warp-drive/core/types/record';
 import type {
