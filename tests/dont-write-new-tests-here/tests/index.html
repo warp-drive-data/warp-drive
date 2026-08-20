@@ -84,8 +84,21 @@
     <script type="module">import "ember-testing";</script>
 
     <script type="module">
-      import './test-helper';
-      import.meta.glob("./**/*.{js,ts,gjs,gts}", { eager: true });
+      import { start } from './test-helper';
+
+      // ember-exam's vite support needs an explicit map of
+      // { modulePath: () => import(modulePath) } so its load-balanced test
+      // loader can lazily `import()` only the modules assigned to this
+      // worker, instead of relying on the classic AMD `requirejs.entries`
+      // registry (which nothing under vite populates). Do NOT pass
+      // `{ eager: true }` here - that would import (and thus execute/
+      // register) every test module up front on every worker, defeating
+      // `--load-balance`/`--parallel`.
+      const availableModules = {
+        ...import.meta.glob('./**/*-test.{js,ts,gjs,gts}'),
+      };
+
+      start({ availableModules });
     </script>
 
     {{content-for "body-footer"}}

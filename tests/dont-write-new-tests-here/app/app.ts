@@ -4,8 +4,8 @@ import '@warp-drive/ember/install';
 // import { Registry } from '@ember/-internals/container';
 import Application from '@ember/application';
 
-// eslint-disable-next-line import/no-unresolved
 import compatModules from '@embroider/virtual/compat-modules';
+
 import loadInitializers from 'ember-load-initializers';
 
 import config from './config/environment';
