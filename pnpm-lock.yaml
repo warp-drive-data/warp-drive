@@ -3352,6 +3352,9 @@ importers:
       '@nullvoxpopuli/ember-rolldown':
         specifier: ^2.7.0
         version: 2.7.0(32deefa55e09a77ad97a1a20a35e2740)
+      '@rolldown/pluginutils':
+        specifier: ^1.0.1
+        version: 1.0.1
       '@rollup/plugin-babel':
         specifier: ^6.0.4
         version: 6.0.4(@babel/core@7.28.3)(rollup@4.48.1)
@@ -3808,12 +3811,12 @@ importers:
       rollup:
         specifier: ^4.48.0
         version: 4.48.1
+      tsdown:
+        specifier: ^0.22.14
+        version: 0.22.14(typescript@5.9.2)
       typescript:
         specifier: 5.9.2
         version: 5.9.2
-      vite:
-        specifier: ^7.3.1
-        version: 7.3.1
 
   warp-drive-packages/schema-dsl:
     dependencies:
@@ -21273,6 +21276,7 @@ snapshots:
       '@embroider/addon-dev': 8.1.0(rollup@4.48.1)
       '@eslint/js': 9.34.0
       '@nullvoxpopuli/ember-rolldown': 2.7.0(32deefa55e09a77ad97a1a20a35e2740)
+      '@rolldown/pluginutils': 1.0.1
       '@rollup/plugin-babel': 6.0.4(@babel/core@7.28.3)(rollup@4.48.1)
       '@types/debug': 4.1.12
       '@typescript-eslint/eslint-plugin': 8.41.0(ad3e4b2f3df4fca831ef47c5e1339106)
@@ -21336,6 +21340,7 @@ snapshots:
       '@embroider/addon-dev': 8.1.0(rollup@4.48.1)
       '@eslint/js': 9.34.0
       '@nullvoxpopuli/ember-rolldown': 2.7.0(5ea8c13813352e102e7b60b4a20ecf96)
+      '@rolldown/pluginutils': 1.0.1
       '@rollup/plugin-babel': 6.0.4(8467c3c9fe5290d7e333f65ec1b8a929)
       '@types/debug': 4.1.12
       '@typescript-eslint/eslint-plugin': 8.41.0(ad3e4b2f3df4fca831ef47c5e1339106)
@@ -21399,6 +21404,7 @@ snapshots:
       '@embroider/addon-dev': 8.1.0(@glint/template@1.6.1)(rollup@4.48.1)
       '@eslint/js': 9.34.0
       '@nullvoxpopuli/ember-rolldown': 2.7.0(5159dbb6ccbb10b65fdffb41dc84bb6f)
+      '@rolldown/pluginutils': 1.0.1
       '@rollup/plugin-babel': 6.0.4(@babel/core@7.28.3)(rollup@4.48.1)
       '@types/debug': 4.1.12
       '@typescript-eslint/eslint-plugin': 8.41.0(ad3e4b2f3df4fca831ef47c5e1339106)
@@ -21462,6 +21468,7 @@ snapshots:
       '@embroider/addon-dev': 8.1.0(@glint/template@1.6.1)(rollup@4.48.1)
       '@eslint/js': 9.34.0
       '@nullvoxpopuli/ember-rolldown': 2.7.0(5159dbb6ccbb10b65fdffb41dc84bb6f)
+      '@rolldown/pluginutils': 1.0.1
       '@rollup/plugin-babel': 6.0.4(@babel/core@7.28.3)(rollup@4.48.1)
       '@types/debug': 4.1.12
       '@typescript-eslint/eslint-plugin': 8.41.0(ad3e4b2f3df4fca831ef47c5e1339106)
@@ -21525,6 +21532,7 @@ snapshots:
       '@embroider/addon-dev': 8.1.0(rollup@4.48.1)
       '@eslint/js': 9.34.0
       '@nullvoxpopuli/ember-rolldown': 2.7.0(32deefa55e09a77ad97a1a20a35e2740)
+      '@rolldown/pluginutils': 1.0.1
       '@rollup/plugin-babel': 6.0.4(@babel/core@7.28.3)(rollup@4.48.1)
       '@types/debug': 4.1.12
       '@typescript-eslint/eslint-plugin': 8.41.0(ad3e4b2f3df4fca831ef47c5e1339106)
@@ -21588,6 +21596,7 @@ snapshots:
       '@embroider/addon-dev': 8.1.0(rollup@4.48.1)
       '@eslint/js': 9.34.0
       '@nullvoxpopuli/ember-rolldown': 2.7.0(32deefa55e09a77ad97a1a20a35e2740)
+      '@rolldown/pluginutils': 1.0.1
       '@rollup/plugin-babel': 6.0.4(@babel/core@7.28.3)(rollup@4.48.1)
       '@types/debug': 4.1.12
       '@typescript-eslint/eslint-plugin': 8.41.0(ad3e4b2f3df4fca831ef47c5e1339106)
@@ -21651,6 +21660,7 @@ snapshots:
       '@embroider/addon-dev': 8.1.0(rollup@4.48.1)
       '@eslint/js': 9.34.0
       '@nullvoxpopuli/ember-rolldown': 2.7.0(32deefa55e09a77ad97a1a20a35e2740)
+      '@rolldown/pluginutils': 1.0.1
       '@rollup/plugin-babel': 6.0.4(@babel/core@7.28.3)(rollup@4.48.1)
       '@types/debug': 4.1.12
       '@typescript-eslint/eslint-plugin': 8.41.0(ad3e4b2f3df4fca831ef47c5e1339106)
@@ -21714,6 +21724,7 @@ snapshots:
       '@embroider/addon-dev': 8.1.0(rollup@4.48.1)
       '@eslint/js': 9.34.0
       '@nullvoxpopuli/ember-rolldown': 2.7.0(5aaf6904f4b62bc3ebd1ed7a2b8749af)
+      '@rolldown/pluginutils': 1.0.1
       '@rollup/plugin-babel': 6.0.4(@babel/core@7.28.3)(rollup@4.48.1)
       '@types/debug': 4.1.12
       '@typescript-eslint/eslint-plugin': 8.41.0(ad3e4b2f3df4fca831ef47c5e1339106)
@@ -21777,6 +21788,7 @@ snapshots:
       '@embroider/addon-dev': 8.1.0(rollup@4.48.1)
       '@eslint/js': 9.34.0
       '@nullvoxpopuli/ember-rolldown': 2.7.0(21b3de1a5cac6d42a0c904ef4f131b45)
+      '@rolldown/pluginutils': 1.0.1
       '@rollup/plugin-babel': 6.0.4(@babel/core@7.28.3)(rollup@4.48.1)
       '@types/debug': 4.1.12
       '@typescript-eslint/eslint-plugin': 8.41.0(ad3e4b2f3df4fca831ef47c5e1339106)
@@ -30466,7 +30478,7 @@ snapshots:
 
   ts-declaration-location@1.0.7(typescript@5.9.2):
     dependencies:
-      picomatch: 4.0.3
+      picomatch: 4.0.5
       typescript: 5.9.2
 
   tsconfig-paths@3.15.0:
