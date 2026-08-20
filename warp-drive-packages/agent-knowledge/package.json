@@ -1,6 +1,6 @@
 {
   "name": "@warp-drive/agent-knowledge",
-  "version": "0.1.0-alpha.2",
+  "version": "0.1.0-beta.0",
   "description": "WarpDrive knowledge packaged as plain markdown for AI coding agents (Claude Skills, MCP servers, Copilot/Cursor instruction files, etc.)",
   "license": "MIT",
   "author": "Chris Thoburn <runspired@users.noreply.github.com>",
