@@ -29,10 +29,6 @@
     "inlineSourceMap": true,
     "inlineSources": true,
     "rootDir": "src",
-    "paths": {
-      "@warp-drive/core": ["../../warp-drive-packages/core/declarations"],
-      "@warp-drive/core/*": ["../../warp-drive-packages/core/declarations/*"]
-    },
     "checkJs": false
   },
   "references": [

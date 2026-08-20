@@ -39,10 +39,6 @@
     "baseUrl": ".",
     "types": [],
     "allowImportingTsExtensions": true,
-    "paths": {
-      "@warp-drive/core": ["../core/declarations"],
-      "@warp-drive/core/*": ["../core/declarations/*"]
-    },
     "erasableSyntaxOnly": true,
     "isolatedDeclarations": true,
     "isolatedModules": true,

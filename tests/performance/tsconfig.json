@@ -21,18 +21,6 @@
     "incremental": true,
     "declaration": true,
     "types": ["ember-source/types"],
-    "paths": {
-      "@warp-drive/ember": ["../../warp-drive-packages/ember/declarations"],
-      "@warp-drive/ember/*": ["../../warp-drive-packages/ember/declarations/*"],
-      "@warp-drive/core": ["../../warp-drive-packages/core/declarations"],
-      "@warp-drive/core/*": ["../../warp-drive-packages/core/declarations/*"],
-      "@warp-drive/json-api": ["../../warp-drive-packages/json-api/declarations"],
-      "@warp-drive/json-api/*": ["../../warp-drive-packages/json-api/declarations/*"],
-      "@warp-drive/utilities": ["../../warp-drive-packages/utilities/declarations"],
-      "@warp-drive/utilities/*": ["../../warp-drive-packages/utilities/declarations/*"],
-      "@warp-drive/legacy": ["../../warp-drive-packages/legacy/declarations"],
-      "@warp-drive/legacy/*": ["../../warp-drive-packages/legacy/declarations/*"]
-    },
     "allowImportingTsExtensions": true,
     "composite": true,
     "declarationDir": "unstable-preview-types",

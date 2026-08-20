@@ -38,10 +38,6 @@
     "inlineSources": true,
     "baseUrl": ".",
     "allowImportingTsExtensions": true,
-    "paths": {
-      "@warp-drive/core": ["../core/src"],
-      "@warp-drive/core/*": ["../core/src/*"]
-    },
     "erasableSyntaxOnly": true,
     "isolatedDeclarations": true,
     "isolatedModules": true,
