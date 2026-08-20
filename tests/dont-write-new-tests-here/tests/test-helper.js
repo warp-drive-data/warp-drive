@@ -16,8 +16,8 @@ import { setConfig, setTestId } from '@warp-drive/holodeck';
 import { Model, restoreDeprecatedModelRequestBehaviors } from '@warp-drive/legacy/model';
 import { restoreDeprecatedStoreBehaviors } from '@warp-drive/legacy/store';
 
-import Application from '../app';
-import config from '../config/environment';
+import Application from '../app/app';
+import config from '../app/config/environment';
 
 restoreDeprecatedStoreBehaviors(Store);
 restoreDeprecatedModelRequestBehaviors(Model);

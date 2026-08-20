@@ -1,6 +1,7 @@
 'use strict';
 
 const EmberApp = require('ember-cli/lib/broccoli/ember-app');
+const { compatBuild } = require('@embroider/compat');
 
 function isEnabled(flag) {
   return flag === true || flag === 'true' || flag === '1';
@@ -45,6 +46,7 @@ module.exports = async function (defaults) {
   logSystem();
   const { setConfig } = await import('@warp-drive/build-config');
   const { macros } = await import('@warp-drive/build-config/babel-macros');
+  const { buildOnce } = await import('@embroider/vite');
 
   const isTest = process.env.EMBER_CLI_TEST_COMMAND;
   const isProd = process.env.EMBER_ENV === 'production';
@@ -112,5 +114,31 @@ module.exports = async function (defaults) {
     },
   });
 
-  return app.toTree();
+  return compatBuild(app, buildOnce, {
+    // several tests dynamically `owner.register('component:some-name', ...)`
+    // and then invoke that name from a `hbs` template (see e.g.
+    // tests/acceptance/relationships/has-many-test.js). These components
+    // have no on-disk module for embroider's static resolver to find. By
+    // default embroider optimistically assumes any unrecognized PascalCase
+    // tag is a local app component and emits a static import for it, which
+    // then fails at bundle time since no such file exists. Marking them
+    // `safeToIgnore` here tells the resolver to leave the invocation alone
+    // so it falls back to the classic runtime resolver instead, without
+    // having to disable static resolution for the whole app (which would
+    // also break normal `service:`/`transform:`/etc runtime container
+    // lookups elsewhere in the suite).
+    allowUnsafeDynamicComponents: true,
+    packageRules: [
+      {
+        package: 'main-test-app',
+        components: {
+          '<PersonOverview />': { safeToIgnore: true },
+          '<ChildrenList />': { safeToIgnore: true },
+          '<WidgetCreator />': { safeToIgnore: true },
+          '<WidgetList />': { safeToIgnore: true },
+          '<PeopleList />': { safeToIgnore: true },
+        },
+      },
+    ],
+  });
 };

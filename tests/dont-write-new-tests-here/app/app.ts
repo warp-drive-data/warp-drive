@@ -4,6 +4,8 @@ import '@warp-drive/ember/install';
 // import { Registry } from '@ember/-internals/container';
 import Application from '@ember/application';
 
+// eslint-disable-next-line import/no-unresolved
+import compatModules from '@embroider/virtual/compat-modules';
 import loadInitializers from 'ember-load-initializers';
 
 import config from './config/environment';
@@ -43,10 +45,10 @@ const EventConfig = {
 class App extends Application {
   modulePrefix = config.modulePrefix;
   podModulePrefix = config.podModulePrefix;
-  override Resolver = Resolver;
+  override Resolver = Resolver.withModules(compatModules);
   override customEvents = EventConfig;
 }
 
-loadInitializers(App, config.modulePrefix);
+loadInitializers(App, config.modulePrefix, compatModules);
 
 export default App;
