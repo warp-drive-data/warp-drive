@@ -24,11 +24,11 @@
   "license": "MIT",
   "author": "Chris Thoburn <runspired@users.noreply.github.com>",
   "scripts": {
-    "build:pkg": "vite build",
+    "build:pkg": "tsdown",
     "prepack": "pnpm run build:pkg",
     "sync": "echo \"syncing\"",
     "_temporarily_deactivated_lint": "eslint . --quiet --cache --cache-strategy=content",
-    "start": "vite"
+    "start": "tsdown --watch"
   },
   "bin": {
     "warp-drive": "./dist/warp-drive.js",
@@ -60,8 +60,8 @@
     "@types/debug": "^4.1.12",
     "@types/node": "^24.3.0",
     "@warp-drive/internal-config": "workspace:*",
-    "typescript": "^5.9.3",
-    "vite": "^7.3.1"
+    "tsdown": "^0.22.14",
+    "typescript": "^5.9.3"
   },
   "volta": {
     "extends": "../../package.json"
