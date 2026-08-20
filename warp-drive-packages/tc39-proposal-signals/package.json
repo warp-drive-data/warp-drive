@@ -47,7 +47,6 @@
     "@babel/runtime": "^7.28.3",
     "@warp-drive/core": "workspace:*",
     "@warp-drive/internal-config": "workspace:*",
-    "rollup": "^4.48.0",
     "tsdown": "^0.22.14",
     "typescript": "^5.9.3"
   },
