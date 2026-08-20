@@ -1,4 +1,4 @@
-import { createConfig } from '@warp-drive/internal-config/vite/config.js';
+import { createConfig } from '@warp-drive/internal-config/tsdown/config.js';
 
 export const externals = [];
 export const entryPoints = ['src/index.ts', 'src/-private.ts', 'src/hooks.ts', 'src/migration-support.ts'];
