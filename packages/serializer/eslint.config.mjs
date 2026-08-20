@@ -4,7 +4,7 @@ import * as node from '@warp-drive/internal-config/eslint/node.js';
 import * as typescript from '@warp-drive/internal-config/eslint/typescript.js';
 import * as js from '@warp-drive/internal-config/eslint/browser.js';
 
-import { externals } from './vite.config.mjs';
+import { externals } from './tsdown.config.mjs';
 
 /** @type {import('eslint').Linter.FlatConfig[]} */
 export default [
