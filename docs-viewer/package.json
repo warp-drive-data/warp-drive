@@ -29,7 +29,7 @@
     "front-matter": "^4.0.2",
     "sharp": "^0.34.4",
     "svgo": "^4.0.0",
-    "typedoc": "^0.28.10",
+    "typedoc": "^0.28.20",
     "typedoc-plugin-markdown": "^4.8.1",
     "typedoc-plugin-no-inherit": "^1.6.1",
     "typedoc-plugin-mdn-links": "^5.0.9",
