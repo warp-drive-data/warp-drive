@@ -909,9 +909,9 @@ importers:
       '@warp-drive/internal-config':
         specifier: workspace:*
         version: file:tools/internal-config
-      vite:
-        specifier: ^7.3.1
-        version: 7.3.1
+      tsdown:
+        specifier: ^0.22.14
+        version: 0.22.14
 
   packages/request-utils:
     dependencies:
