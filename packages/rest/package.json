@@ -39,10 +39,10 @@
   },
   "scripts": {
     "lint": "eslint . --quiet --cache --cache-strategy=content",
-    "build:pkg": "vite build",
+    "build:pkg": "tsdown",
     "prepack": "pnpm run build:pkg",
     "sync": "echo \"syncing\"",
-    "start": "vite"
+    "start": "tsdown --watch"
   },
   "ember-addon": {
     "main": "addon-main.cjs",
@@ -55,7 +55,7 @@
     "@babel/preset-env": "^7.28.3",
     "@babel/preset-typescript": "^7.27.1",
     "@warp-drive/internal-config": "workspace:*",
-    "vite": "^7.3.1"
+    "tsdown": "^0.22.14"
   },
   "ember": {
     "edition": "octane"
