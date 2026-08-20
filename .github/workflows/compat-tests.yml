@@ -27,6 +27,8 @@ jobs:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Run Tests
         run: pnpm test:vite
+        env:
+          CI: true
   ###
   # This Test No Longer Works Because pnpm install --no-lockfile
   # returns exit code 1 whenever there is a lockfile present and
