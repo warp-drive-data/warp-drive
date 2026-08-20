@@ -47,7 +47,6 @@ import {
 } from '@warp-drive/core/store';
 
 export * from '@warp-drive/utilities';
-export type * from '@warp-drive/utilities';
 
 export { DefaultCachePolicy as CachePolicy, type PolicyConfig, type CacheControlValue, parseCacheControl };
 
