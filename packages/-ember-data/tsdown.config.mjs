@@ -1,4 +1,4 @@
-import { createConfig } from '@warp-drive/internal-config/vite/config.js';
+import { createConfig } from '@warp-drive/internal-config/tsdown/config.js';
 
 export const externals = [
   '@ember/application/namespace',

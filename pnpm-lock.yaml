@@ -316,12 +316,12 @@ importers:
       qunit:
         specifier: 2.19.4
         version: 2.19.4(patch_hash=44177f0047189d474ebdeba20fc8ddc3c8c2a5777d65cbb5f0fac0979bf66301)
+      tsdown:
+        specifier: ^0.22.14
+        version: 0.22.14(typescript@5.9.2)
       typescript:
         specifier: 5.9.2
         version: 5.9.2
-      vite:
-        specifier: ^7.3.1
-        version: 7.3.1
 
   packages/-warp-drive:
     dependencies:
