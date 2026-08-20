@@ -442,12 +442,12 @@ importers:
       '@warp-drive/internal-config':
         specifier: workspace:*
         version: file:tools/internal-config
+      tsdown:
+        specifier: ^0.22.14
+        version: 0.22.14(typescript@5.9.2)
       typescript:
         specifier: 5.9.2
         version: 5.9.2
-      vite:
-        specifier: ^7.3.1
-        version: 7.3.1
 
   packages/codemods:
     dependencies:
@@ -20401,9 +20401,6 @@ snapshots:
     dependencies:
       '@types/ember': 4.0.11
       '@types/ember__object': 4.0.12
-    transitivePeerDependencies:
-      - '@babel/core'
-      - supports-color
 
   '@types/ember__controller@4.0.12':
     dependencies:
@@ -20439,16 +20436,10 @@ snapshots:
       '@types/ember__controller': 4.0.12
       '@types/ember__object': 4.0.12
       '@types/ember__service': 4.0.9
-    transitivePeerDependencies:
-      - '@babel/core'
-      - supports-color
 
   '@types/ember__runloop@4.0.10':
     dependencies:
       '@types/ember': 4.0.11
-    transitivePeerDependencies:
-      - '@babel/core'
-      - supports-color
 
   '@types/ember__service@4.0.9':
     dependencies:
