@@ -620,6 +620,7 @@ export const RequestSpec: SuiteBuilder<LocalTestContext, RequestSpecSignature> =
     assert.dom().hasText('Chris ThoburnCount: 3');
 
     // ensure background request has completed
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     await store._getAllPending();
     await this.h.rerender();
 
@@ -1156,6 +1157,7 @@ export const RequestSpec: SuiteBuilder<LocalTestContext, RequestSpecSignature> =
     await new Promise((resolve) => setTimeout(resolve, DEBUG ? 1 : 100));
 
     if (PRODUCTION) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
       await store._getAllPending();
       await this.h.rerender();
     } else {
@@ -1318,6 +1320,7 @@ export const RequestSpec: SuiteBuilder<LocalTestContext, RequestSpecSignature> =
     assert.equal(record!.name, 'Chris Thoburn');
     assert.verifySteps(['set-request', 'Chris Thoburn']);
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     await store._getAllPending();
     await this.h.rerender();
 
@@ -1395,6 +1398,7 @@ export const RequestSpec: SuiteBuilder<LocalTestContext, RequestSpecSignature> =
     assert.equal(record!.name, 'Chris Thoburn');
     assert.verifySteps(['set-request', 'loading']);
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     await store._getAllPending();
     await this.h.rerender();
 

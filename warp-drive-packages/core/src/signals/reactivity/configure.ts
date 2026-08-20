@@ -7,7 +7,7 @@ import { getOrSetGlobal, peekTransient, setTransient } from '../../types/-privat
 export const ARRAY_SIGNAL: '___(unique) Symbol(#[])' = getOrSetGlobal('#[]', Symbol('#[]'));
 export const OBJECT_SIGNAL: '___(unique) Symbol(#{})' = getOrSetGlobal('#{}', Symbol('#{}'));
 
-/**
+/*
  * Requirements:
  *
  * Signal:
@@ -33,9 +33,6 @@ export const OBJECT_SIGNAL: '___(unique) Symbol(#{})' = getOrSetGlobal('#{}', Sy
  *
  * - signalStore: storage bucket for signals associated to an object
  *        - withSignalStore: a way of pre-creating a signal store on an object
- *
- *
- * @internal
  */
 
 /**
