@@ -1,6 +1,5 @@
-import type { RequestManager, Store } from '../index';
 import { memoized } from './-private.ts';
-import type { PaginationLink, PaginationLinks, RelationalPaginationLink } from './pagination-links.ts';
+import type { PaginationLinks } from './pagination-links.ts';
 import { getPaginationLinks } from './pagination-links.ts';
 import type { PagedPaginationState } from './pagination-state.ts';
 import { DISPOSE } from './request-subscription.ts';
@@ -19,16 +18,18 @@ export interface PaginationLinksSubscriptionArgs<RT, E> {
 }
 
 /**
- * Lifecycle glue for a pagination links component (for example the `<EachLink />`
- * yielded by `<Paginate />`). Given the {@link PagedPaginationState} a `<Paginate />`
- * component is driving, it exposes that state's {@link PaginationLinks} so the
- * component can render navigation controls.
+ * The framework-agnostic core of a pagination links component (for example the
+ * `<EachLink />` component of `@warp-drive/ember`): it owns the component
+ * lifecycle, while the links themselves live on the {@link PaginationLinks}
+ * it exposes.
  *
- * It surfaces the two kinds of link the underlying `PaginationLinks` provides:
- * the numbered {@link links} (with placeholders for gaps) and the relational
- * {@link prev}/{@link next} links. All of them read from the same shared page
- * graph as the `<Paginate />` component, so they stay in sync as pages load and
- * the active page changes.
+ * Given the {@link PagedPaginationState} a `<Paginate />` component is driving,
+ * {@link paginationLinks} derives that state's `PaginationLinks` — the numbered
+ * links (with placeholders for gaps) and the relational
+ * `first`/`prev`/`next`/`last` links a component yields for the consumer to
+ * render. All of them read from the same shared page graph as the
+ * `<Paginate />` component, so they stay in sync as pages load and the active
+ * page changes.
  *
  * @hideconstructor
  */
@@ -36,59 +37,28 @@ export class PaginationLinksSubscription<RT, E> {
   /** @internal */
   declare private isDestroyed: boolean;
   /** @internal */
-  declare private _subscribedTo: object | null;
-  /** @internal */
   declare private _args: PaginationLinksSubscriptionArgs<RT, E>;
-  /**
-   * The Store this subscription subscribes to or the RequestManager
-   * which issues its requests.
-   */
-  declare store: Store | RequestManager;
 
-  constructor(store: Store | RequestManager, args: PaginationLinksSubscriptionArgs<RT, E>) {
-    this.store = store;
+  constructor(args: PaginationLinksSubscriptionArgs<RT, E>) {
     this._args = args;
     this.isDestroyed = false;
     this[DISPOSE] = _DISPOSE;
   }
 
   /**
-   * The {@link PaginationLinks} derived from the {@link PagedPaginationState} passed
-   * as an arg. This is the object the other getters read from.
+   * The {@link PaginationLinks} derived from the {@link PagedPaginationState}
+   * passed as an arg — the surface a links component yields to its consumer:
+   * the numbered {@link PaginationLinks.links | links} (empty for cursor-based
+   * collections) and the relational {@link PaginationLinks.first | first}/
+   * {@link PaginationLinks.prev | prev}/{@link PaginationLinks.next | next}/
+   * {@link PaginationLinks.last | last} links.
    *
-   * @internal
+   * Recomputes when the `pages` arg changes, so a component whose pagination
+   * resets to a different collection derives fresh links automatically.
    */
   @memoized
   get paginationLinks(): Readonly<PaginationLinks<RT, E>> {
     return getPaginationLinks<RT, E>(this._args.pages);
-  }
-
-  /**
-   * The numbered links and placeholders for the collection. Empty for
-   * cursor-based collections, which have no page numbers to render; use
-   * {@link prev}/{@link next} for those. See {@link PaginationLinks.links}.
-   */
-  @memoized
-  get links(): ReadonlyArray<Readonly<PaginationLink>> {
-    return this.paginationLinks.links;
-  }
-
-  /**
-   * The relational `prev` link for the active page, or `null` at the start of
-   * the collection. Available in both numbered and cursor-based pagination.
-   */
-  @memoized
-  get prev(): Readonly<RelationalPaginationLink> | null {
-    return this.paginationLinks.prev;
-  }
-
-  /**
-   * The relational `next` link for the active page, or `null` at the end of the
-   * collection. Available in both numbered and cursor-based pagination.
-   */
-  @memoized
-  get next(): Readonly<RelationalPaginationLink> | null {
-    return this.paginationLinks.next;
   }
 }
 
@@ -99,10 +69,9 @@ export class PaginationLinksSubscription<RT, E> {
  * @public
  */
 export function createPaginationLinksSubscription<RT, E>(
-  store: Store | RequestManager,
   args: PaginationLinksSubscriptionArgs<RT, E>
 ): PaginationLinksSubscription<RT, E> {
-  return new PaginationLinksSubscription(store, args);
+  return new PaginationLinksSubscription(args);
 }
 
 interface PrivatePaginationLinksSubscription {

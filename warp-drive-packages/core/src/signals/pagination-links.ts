@@ -11,12 +11,14 @@ const PaginationLinksCache = new WeakMap<PagedPaginationState, PaginationLinks>(
  * from the current page.
  *
  * ```gts
- * <EachLink @pages={{pages}}>
- *   <:link as |link|>
- *     <button class={{if link.isCurrent "active"}} {{on "click" link.setActive}}>
- *       {{link.text}}
- *     </button>
- *   </:link>
+ * <EachLink @pages={{pages}} as |state|>
+ *   {{#each state.links as |link|}}
+ *     {{#if link.isReal}}
+ *       <button class={{if link.isCurrent "active"}} {{on "click" link.setActive}}>
+ *         {{link.text}}
+ *       </button>
+ *     {{/if}}
+ *   {{/each}}
  * </EachLink>
  * ```
  *
@@ -64,10 +66,12 @@ export class RealPaginationLink {
  * single page and has no page to navigate to.
  *
  * ```gts
- * <EachLink @pages={{pages}}>
- *   <:placeholder as |link|>
- *     <span title="{{link.rangeSize}} more pages">{{link.text}}</span>
- *   </:placeholder>
+ * <EachLink @pages={{pages}} as |state|>
+ *   {{#each state.links as |link|}}
+ *     {{#unless link.isReal}}
+ *       <span title="{{link.rangeSize}} more pages">{{link.text}}</span>
+ *     {{/unless}}
+ *   {{/each}}
  * </EachLink>
  * ```
  *
@@ -115,16 +119,16 @@ export class PlaceholderPaginationLink {
 }
 
 /**
- * A relational (`prev`/`next`) navigation link, relative to the active page. Unlike
- * {@link RealPaginationLink} these carry no ordinal index — they are the only links
- * available for cursor-based pagination, where pages are chained purely by opaque
- * `prev`/`next` links with no page number or total. They are also available in
- * numbered pagination as a convenience.
+ * A relational (`first`/`prev`/`next`/`last`) navigation link, relative to the
+ * active page. Unlike {@link RealPaginationLink} these carry no ordinal index —
+ * they are the only links available for cursor-based pagination, where pages are
+ * chained purely by opaque relational links with no page number or total. They
+ * are also available in numbered pagination as a convenience.
  *
  * ```gts
- * <EachLink @pages={{pages}}>
- *   <:prev as |link|><button {{on "click" link.setActive}}>Previous</button></:prev>
- *   <:next as |link|><button {{on "click" link.setActive}}>Next</button></:next>
+ * <EachLink @pages={{pages}} as |state|>
+ *   {{#if state.prev}}<button {{on "click" state.prev.setActive}}>Previous</button>{{/if}}
+ *   {{#if state.next}}<button {{on "click" state.next.setActive}}>Next</button>{{/if}}
  * </EachLink>
  * ```
  *
@@ -133,14 +137,26 @@ export class PlaceholderPaginationLink {
 export class RelationalPaginationLink {
   readonly isReal = true as const;
 
-  readonly rel: 'prev' | 'next';
+  readonly rel: 'first' | 'prev' | 'next' | 'last';
   readonly url: string;
+  /**
+   * Whether this link points at the page that is already active — for example
+   * the `first` link while the first page is being viewed. Useful for
+   * disabling the control.
+   */
+  readonly isCurrent: boolean;
   /** @internal */
   declare private _loadPage: (url: string) => Promise<unknown>;
 
-  constructor(rel: 'prev' | 'next', url: string, loadPage: (url: string) => Promise<unknown>) {
+  constructor(
+    rel: 'first' | 'prev' | 'next' | 'last',
+    url: string,
+    isCurrent: boolean,
+    loadPage: (url: string) => Promise<unknown>
+  ) {
     this.rel = rel;
     this.url = url;
+    this.isCurrent = isCurrent;
     this._loadPage = loadPage;
   }
 
@@ -193,6 +209,10 @@ export type PaginationLink = RealPaginationLink | PlaceholderPaginationLink;
  * - {@link prev} and {@link next}: the relational links for the active page.
  *   Available in both numbered and cursor-based pagination, and the only links a
  *   cursor-based collection has.
+ * - {@link first} and {@link last}: the relational links to the collection's
+ *   edges, when the response exposes them. Usually present on every page —
+ *   including the edge page itself, where the link's
+ *   {@link RelationalPaginationLink.isCurrent | isCurrent} is `true`.
  *
  * Every link updates as pages load and as the active page changes, since they
  * read straight from the state's shared page graph. To get the links for a
@@ -214,13 +234,32 @@ export class PaginationLinks<RT = unknown, E = unknown> {
   }
 
   /**
+   * The relational `first` link of the collection, or `null` when the active
+   * page's response did not expose one. Unlike {@link prev}/{@link next} it is
+   * usually present on every page — including the first page itself, where the
+   * link's {@link RelationalPaginationLink.isCurrent | isCurrent} is `true`
+   * (useful for disabling the control).
+   */
+  @memoized
+  get first(): RelationalPaginationLink | null {
+    const activePage = this.paginationState.activePage;
+    const url = activePage?.firstLink;
+    return url
+      ? new RelationalPaginationLink('first', url, url === activePage?.selfLink, this.paginationState.loadPage)
+      : null;
+  }
+
+  /**
    * The relational `prev` link for the active page, or `null` at the start of the
    * collection. Available in both numbered and cursor pagination.
    */
   @memoized
   get prev(): RelationalPaginationLink | null {
-    const url = this.paginationState.activePage?.prevLink;
-    return url ? new RelationalPaginationLink('prev', url, this.paginationState.loadPage) : null;
+    const activePage = this.paginationState.activePage;
+    const url = activePage?.prevLink;
+    return url
+      ? new RelationalPaginationLink('prev', url, url === activePage?.selfLink, this.paginationState.loadPage)
+      : null;
   }
 
   /**
@@ -229,8 +268,25 @@ export class PaginationLinks<RT = unknown, E = unknown> {
    */
   @memoized
   get next(): RelationalPaginationLink | null {
-    const url = this.paginationState.activePage?.nextLink;
-    return url ? new RelationalPaginationLink('next', url, this.paginationState.loadPage) : null;
+    const activePage = this.paginationState.activePage;
+    const url = activePage?.nextLink;
+    return url
+      ? new RelationalPaginationLink('next', url, url === activePage?.selfLink, this.paginationState.loadPage)
+      : null;
+  }
+
+  /**
+   * The relational `last` link of the collection, or `null` when the active
+   * page's response did not expose one. Mirror of {@link first} for the end of
+   * the collection.
+   */
+  @memoized
+  get last(): RelationalPaginationLink | null {
+    const activePage = this.paginationState.activePage;
+    const url = activePage?.lastLink;
+    return url
+      ? new RelationalPaginationLink('last', url, url === activePage?.selfLink, this.paginationState.loadPage)
+      : null;
   }
 
   /**

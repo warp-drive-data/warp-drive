@@ -613,7 +613,7 @@ It exposes two navigation surfaces over the same collection. When using the
 the component yields only that surface, so mixing the two APIs is a type error.
 
 - **Paged** (`@mode="paged"`, single page at a time): render
-  `activePage`/`activePageRequest`, navigate with `loadPage` or the links rendered
+  `activePage`/`activePageRequest`, navigate with `loadPage` or the links yielded
   by `<EachLink />`.
 
 ```ts
@@ -965,19 +965,25 @@ import { Paginate } from '@warp-drive/ember';
 
 **Render Pagination Links**
 
-The `<EachLink />` companion component renders the navigation links derived from a
-paged state's shared page graph, one block per link kind:
+The `<EachLink />` companion component yields the navigation links derived from a
+paged state's shared page graph. It renders no markup of its own: it yields a single
+links state, and the consumer decides which links to render, with what markup, and
+in what order. The yielded state exposes:
 
-- `<:link>` — a numbered page link, rendered once per known page in numbered
-  pagination. Each link exposes `index`, `text`, `isCurrent`,
-  `distanceFromActiveIndex` and a stable `setActive` action that loads the page
-  and makes it active.
-- `<:placeholder>` — a gap of pages that *could* exist but whose links we have not
-  yet received. Its `text` is a single `'.'`, and it exposes the `indexRange` it
-  covers along with `rangeSize` and `distanceFromActiveIndex`.
-- `<:prev>` / `<:next>` — the relational links relative to the active page, with the
-  same `setActive` action. Cursor-based collections expose no page numbers and thus
-  produce no numbered links — these blocks are their only navigation.
+- `links` — the numbered page links, with placeholders standing in for gaps of
+  not-yet-loaded pages. Discriminate the two with `isReal`. A numbered link
+  exposes `index`, `text`, `isCurrent`, `distanceFromActiveIndex` and a stable
+  `setActive` action that loads the page and makes it active; a placeholder's
+  `text` is a single `'.'`, and it exposes the `indexRange` it covers along with
+  `rangeSize` and `distanceFromActiveIndex`. Empty for cursor-based collections,
+  which expose no page numbers.
+- `prev` / `next` — the relational links relative to the active page (or `null`
+  at the collection's edges), with the same `setActive` action. For cursor-based
+  collections these are the only navigation.
+- `first` / `last` — the relational links to the collection's edges, when the
+  response exposes them. Usually present on every page — including the edge page
+  itself, where the link's `isCurrent` is `true` (useful for disabling the
+  control).
 
 ```diff
 - import { Paginate } from '@warp-drive/ember';
@@ -990,13 +996,20 @@ paged state's shared page graph, one block per link kind:
      <:content as |pages|>
        <MyPageDisplay @page={{pages.activePage}} />
 +
-+      <EachLink @pages={{pages}}>
-+        <:prev as |link|><button {{on "click" link.setActive}}>Previous</button></:prev>
-+        <:placeholder as |link|>{{link.text}}</:placeholder>
-+        <:link as |link|>
-+          <button class={{if link.isCurrent "active"}} {{on "click" link.setActive}}>{{link.index}}</button>
-+        </:link>
-+        <:next as |link|><button {{on "click" link.setActive}}>Next</button></:next>
++      <EachLink @pages={{pages}} as |state|>
++        {{#if state.prev}}
++          <button {{on "click" state.prev.setActive}}>Previous</button>
++        {{/if}}
++        {{#each state.links as |link|}}
++          {{#if link.isReal}}
++            <button class={{if link.isCurrent "active"}} {{on "click" link.setActive}}>{{link.index}}</button>
++          {{else}}
++            {{link.text}}
++          {{/if}}
++        {{/each}}
++        {{#if state.next}}
++          <button {{on "click" state.next.setActive}}>Next</button>
++        {{/if}}
 +      </EachLink>
      </:content>
 
@@ -1016,8 +1029,10 @@ import { getPaginationLinks } from '@warp-drive/ember';
 
 const links = getPaginationLinks(pages);
 links.links; // numbered links and placeholders
+links.first; // relational first link, or null
 links.prev; // relational prev link, or null
 links.next; // relational next link, or null
+links.last; // relational last link, or null
 ```
 
 **Total Pages Hints**
@@ -1076,11 +1091,14 @@ import { Paginate, EachLink, Request } from '@warp-drive/ember';
         <button {{on "click" state.retry}}>Retry</button>
       </:error>
     </Request>
-    <EachLink @pages={{pages}}>
-      <:placeholder as |link|>{{link.text}}</:placeholder>
-      <:link as |link|>
-        <button {{on "click" link.setActive}}>{{link.index}}</button>
-      </:link>
+    <EachLink @pages={{pages}} as |state|>
+      {{#each state.links as |link|}}
+        {{#if link.isReal}}
+          <button {{on "click" link.setActive}}>{{link.index}}</button>
+        {{else}}
+          {{link.text}}
+        {{/if}}
+      {{/each}}
     </EachLink>
   </Paginate>
 </template>

@@ -28,23 +28,38 @@ PaginateSpec.use(useEmber(), function (b) {
               <:loading><span data-test-loading-page>Pending<br />Count: {{countFor request}}</span></:loading>
             </Request>
 
-            <EachLink @pages={{pages}} @store={{store}}>
-              <:link as |link|>
+            <EachLink @pages={{pages}} as |state|>
+              {{#if state.first}}
                 <button
-                  {{on "click" (fn features.loadPage link.url)}}
-                  data-test-load-page={{link.index}}
-                  data-test-url={{link.url}}
-                >{{link.text}}</button>
-              </:link>
-              <:placeholder as |link|>
-                <button>.</button>
-              </:placeholder>
-              <:prev as |link|>
-                <button {{on "click" link.setActive}} data-test-prev>{{link.text}}</button>
-              </:prev>
-              <:next as |link|>
-                <button {{on "click" link.setActive}} data-test-next>{{link.text}}</button>
-              </:next>
+                  {{on "click" state.first.setActive}}
+                  disabled={{state.first.isCurrent}}
+                  data-test-first
+                >{{state.first.text}}</button>
+              {{/if}}
+              {{#if state.prev}}
+                <button {{on "click" state.prev.setActive}} data-test-prev>{{state.prev.text}}</button>
+              {{/if}}
+              {{#each state.links as |link|}}
+                {{#if link.isReal}}
+                  <button
+                    {{on "click" (fn features.loadPage link.url)}}
+                    data-test-load-page={{link.index}}
+                    data-test-url={{link.url}}
+                  >{{link.text}}</button>
+                {{else}}
+                  <button>.</button>
+                {{/if}}
+              {{/each}}
+              {{#if state.next}}
+                <button {{on "click" state.next.setActive}} data-test-next>{{state.next.text}}</button>
+              {{/if}}
+              {{#if state.last}}
+                <button
+                  {{on "click" state.last.setActive}}
+                  disabled={{state.last.isCurrent}}
+                  data-test-last
+                >{{state.last.text}}</button>
+              {{/if}}
             </EachLink>
           </:content>
           <:error as |error|>{{error.message}}<br />Count: {{countFor error}}</:error>
@@ -71,17 +86,18 @@ PaginateSpec.use(useEmber(), function (b) {
               <:loading><span data-test-loading-page>Pending<br />Count: {{countFor request}}</span></:loading>
             </Request>
 
-            <EachLink @pages={{pages}} @store={{store}}>
-              <:link as |link|>
-                <button
-                  {{on "click" (fn features.loadPage link.url)}}
-                  data-test-load-page={{link.index}}
-                  data-test-url={{link.url}}
-                >{{link.text}}</button>
-              </:link>
-              <:placeholder as |link|>
-                <button>.</button>
-              </:placeholder>
+            <EachLink @pages={{pages}} as |state|>
+              {{#each state.links as |link|}}
+                {{#if link.isReal}}
+                  <button
+                    {{on "click" (fn features.loadPage link.url)}}
+                    data-test-load-page={{link.index}}
+                    data-test-url={{link.url}}
+                  >{{link.text}}</button>
+                {{else}}
+                  <button>.</button>
+                {{/if}}
+              {{/each}}
             </EachLink>
           </:content>
           <:error as |error|>{{error.message}}<br />Count: {{countFor error}}</:error>
@@ -111,17 +127,18 @@ PaginateSpec.use(useEmber(), function (b) {
                 <:loading><span data-test-loading-page>Pending<br />Count: {{countFor requestA}}</span></:loading>
               </Request>
 
-              <EachLink @pages={{pages}} @store={{store}}>
-                <:link as |link|>
-                  <button
-                    {{on "click" (fn features.loadPage link.url)}}
-                    data-test-load-page={{link.index}}
-                    data-test-url={{link.url}}
-                  >{{link.text}}</button>
-                </:link>
-                <:placeholder as |link|>
-                  <button>.</button>
-                </:placeholder>
+              <EachLink @pages={{pages}} as |state|>
+                {{#each state.links as |link|}}
+                  {{#if link.isReal}}
+                    <button
+                      {{on "click" (fn features.loadPage link.url)}}
+                      data-test-load-page={{link.index}}
+                      data-test-url={{link.url}}
+                    >{{link.text}}</button>
+                  {{else}}
+                    <button>.</button>
+                  {{/if}}
+                {{/each}}
               </EachLink>
             </:content>
             <:error as |error|>{{error.message}}<br />Count: {{countFor error}}</:error>
@@ -146,17 +163,18 @@ PaginateSpec.use(useEmber(), function (b) {
                 <:loading><span data-test-loading-page>Pending<br />Count: {{countFor requestB}}</span></:loading>
               </Request>
 
-              <EachLink @pages={{pages}} @store={{store}}>
-                <:link as |link|>
-                  <button
-                    {{on "click" (fn features.loadPage link.url)}}
-                    data-test-load-page={{link.index}}
-                    data-test-url={{link.url}}
-                  >{{link.text}}</button>
-                </:link>
-                <:placeholder as |link|>
-                  <button>.</button>
-                </:placeholder>
+              <EachLink @pages={{pages}} as |state|>
+                {{#each state.links as |link|}}
+                  {{#if link.isReal}}
+                    <button
+                      {{on "click" (fn features.loadPage link.url)}}
+                      data-test-load-page={{link.index}}
+                      data-test-url={{link.url}}
+                    >{{link.text}}</button>
+                  {{else}}
+                    <button>.</button>
+                  {{/if}}
+                {{/each}}
               </EachLink>
             </:content>
             <:error as |error|>{{error.message}}<br />Count: {{countFor error}}</:error>
@@ -184,13 +202,14 @@ PaginateSpec.use(useEmber(), function (b) {
               <:loading><span data-test-loading-page>Pending</span></:loading>
             </Request>
 
-            <EachLink @pages={{pages}} @store={{store}}>
-              <:link as |link|>
-                <button {{on "click" link.setActive}} data-test-load-page={{link.index}}>{{link.text}}</button>
-              </:link>
-              <:placeholder as |link|>
-                <button>.</button>
-              </:placeholder>
+            <EachLink @pages={{pages}} as |state|>
+              {{#each state.links as |link|}}
+                {{#if link.isReal}}
+                  <button {{on "click" link.setActive}} data-test-load-page={{link.index}}>{{link.text}}</button>
+                {{else}}
+                  <button>.</button>
+                {{/if}}
+              {{/each}}
             </EachLink>
           </:content>
           <:error as |error|>{{error.message}}</:error>
@@ -217,13 +236,14 @@ PaginateSpec.use(useEmber(), function (b) {
               <:loading><span data-test-loading-page>Pending</span></:loading>
             </Request>
 
-            <EachLink @pages={{pages}} @store={{store}}>
-              <:link as |link|>
-                <button {{on "click" link.setActive}} data-test-load-page={{link.index}}>{{link.text}}</button>
-              </:link>
-              <:placeholder as |link|>
-                <button>.</button>
-              </:placeholder>
+            <EachLink @pages={{pages}} as |state|>
+              {{#each state.links as |link|}}
+                {{#if link.isReal}}
+                  <button {{on "click" link.setActive}} data-test-load-page={{link.index}}>{{link.text}}</button>
+                {{else}}
+                  <button>.</button>
+                {{/if}}
+              {{/each}}
             </EachLink>
           </:content>
           <:error as |error|>{{error.message}}</:error>
@@ -250,16 +270,18 @@ PaginateSpec.use(useEmber(), function (b) {
               <:loading><span data-test-loading-page>Pending</span></:loading>
             </Request>
 
-            <EachLink @pages={{pages}} @store={{store}}>
-              <:link as |link|>
-                <button data-test-load-page={{link.index}}>{{link.text}}</button>
-              </:link>
-              <:prev as |link|>
-                <button data-test-prev {{on "click" (fn features.loadPage link.url)}}>{{link.text}}</button>
-              </:prev>
-              <:next as |link|>
-                <button data-test-next {{on "click" (fn features.loadPage link.url)}}>{{link.text}}</button>
-              </:next>
+            <EachLink @pages={{pages}} as |state|>
+              {{#if state.prev}}
+                <button data-test-prev {{on "click" (fn features.loadPage state.prev.url)}}>{{state.prev.text}}</button>
+              {{/if}}
+              {{#each state.links as |link|}}
+                {{#if link.isReal}}
+                  <button data-test-load-page={{link.index}}>{{link.text}}</button>
+                {{/if}}
+              {{/each}}
+              {{#if state.next}}
+                <button data-test-next {{on "click" (fn features.loadPage state.next.url)}}>{{state.next.text}}</button>
+              {{/if}}
             </EachLink>
           </:content>
           <:error as |error|>{{error.message}}</:error>
@@ -398,13 +420,14 @@ PaginateSpec.use(useEmber(), function (b) {
 
             <span data-test-total-pages>{{pages.totalPages}}</span>
 
-            <EachLink @pages={{pages}} @store={{store}}>
-              <:link as |link|>
-                <button {{on "click" link.setActive}} data-test-load-page={{link.index}}>{{link.text}}</button>
-              </:link>
-              <:placeholder as |link|>
-                <button>.</button>
-              </:placeholder>
+            <EachLink @pages={{pages}} as |state|>
+              {{#each state.links as |link|}}
+                {{#if link.isReal}}
+                  <button {{on "click" link.setActive}} data-test-load-page={{link.index}}>{{link.text}}</button>
+                {{else}}
+                  <button>.</button>
+                {{/if}}
+              {{/each}}
             </EachLink>
           </:content>
           <:error as |error errorFeatures|>
@@ -485,13 +508,14 @@ PaginateSpec.use(useEmber(), function (b) {
 
             <span data-test-total-pages>{{pages.totalPages}}</span>
 
-            <EachLink @pages={{pages}} @store={{store}}>
-              <:link as |link|>
-                <button {{on "click" link.setActive}} data-test-load-page={{link.index}}>{{link.text}}</button>
-              </:link>
-              <:placeholder as |link|>
-                <button>.</button>
-              </:placeholder>
+            <EachLink @pages={{pages}} as |state|>
+              {{#each state.links as |link|}}
+                {{#if link.isReal}}
+                  <button {{on "click" link.setActive}} data-test-load-page={{link.index}}>{{link.text}}</button>
+                {{else}}
+                  <button>.</button>
+                {{/if}}
+              {{/each}}
             </EachLink>
           </:content>
           <:cancelled as |error errorFeatures|>
@@ -574,13 +598,14 @@ PaginateSpec.use(useEmber(), function (b) {
               </:error>
             </Request>
 
-            <EachLink @pages={{pages}} @store={{store}}>
-              <:link as |link|>
-                <button {{on "click" link.setActive}} data-test-load-page={{link.index}}>{{link.text}}</button>
-              </:link>
-              <:placeholder as |link|>
-                <button>.</button>
-              </:placeholder>
+            <EachLink @pages={{pages}} as |state|>
+              {{#each state.links as |link|}}
+                {{#if link.isReal}}
+                  <button {{on "click" link.setActive}} data-test-load-page={{link.index}}>{{link.text}}</button>
+                {{else}}
+                  <button>.</button>
+                {{/if}}
+              {{/each}}
             </EachLink>
           </:content>
           <:error as |error|>

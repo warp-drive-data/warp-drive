@@ -495,6 +495,16 @@ export const PaginateSpec: SuiteBuilder<LocalTestContext, PaginateSpecSignature>
       );
       assert.equal(this.element.querySelectorAll('[data-test-prev]').length, 1, 'Prev link available on page 2');
       assert.equal(this.element.querySelectorAll('[data-test-next]').length, 1, 'Next link available on page 2');
+      assert.equal(paginationLinks.first?.url, urls[0], 'First link targets page 1');
+      assert.false(paginationLinks.first?.isCurrent, 'First link is not current on page 2');
+      assert.equal(paginationLinks.last?.url, urls[5], 'Last link targets page 6');
+      assert.false(paginationLinks.last?.isCurrent, 'Last link is not current on page 2');
+      assert.equal(this.element.querySelectorAll('[data-test-first]').length, 1, 'First link rendered on page 2');
+      assert.equal(this.element.querySelectorAll('[data-test-last]').length, 1, 'Last link rendered on page 2');
+      assert.false(
+        this.element.querySelector('[data-test-first]')?.hasAttribute('disabled'),
+        'First link enabled on page 2'
+      );
       assert.equal(counter, 2);
       assert.equal(this.element.querySelector('[data-test-user-name]')?.textContent.trim(), 'Leo EuclidesCount: 2');
       assert.equal(this.element.querySelectorAll('[data-test-user-name]').length, 1, '1 user rendered');
@@ -516,6 +526,16 @@ export const PaginateSpec: SuiteBuilder<LocalTestContext, PaginateSpecSignature>
         1,
         'Next link available on the first page'
       );
+      assert.true(paginationLinks.first?.isCurrent, 'First link is current on the first page');
+      assert.false(paginationLinks.last?.isCurrent, 'Last link is not current on the first page');
+      assert.true(
+        this.element.querySelector('[data-test-first]')?.hasAttribute('disabled'),
+        'First link disabled on the first page'
+      );
+      assert.false(
+        this.element.querySelector('[data-test-last]')?.hasAttribute('disabled'),
+        'Last link enabled on the first page'
+      );
       assert.equal(counter, 4);
       assert.equal(this.element.querySelector('[data-test-user-name]')?.textContent.trim(), 'Chris ThoburnCount: 4');
       assert.equal(this.element.querySelectorAll('[data-test-user-name]').length, 1, '1 user rendered');
@@ -533,6 +553,12 @@ export const PaginateSpec: SuiteBuilder<LocalTestContext, PaginateSpecSignature>
       );
       assert.equal(this.element.querySelectorAll('[data-test-prev]').length, 1, 'Prev link available on the last page');
       assert.equal(this.element.querySelectorAll('[data-test-next]').length, 0, 'No next link on the last page');
+      assert.true(paginationLinks.last?.isCurrent, 'Last link is current on the last page');
+      assert.false(paginationLinks.first?.isCurrent, 'First link is not current on the last page');
+      assert.true(
+        this.element.querySelector('[data-test-last]')?.hasAttribute('disabled'),
+        'Last link disabled on the last page'
+      );
       assert.equal(counter, 6);
       assert.equal(this.element.querySelector('[data-test-user-name]')?.textContent.trim(), 'Mia SinekCount: 6');
       assert.equal(this.element.querySelectorAll('[data-test-user-name]').length, 1, '1 user rendered');

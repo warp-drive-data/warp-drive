@@ -1,321 +1,100 @@
-import { service } from '@ember/service';
 import Component from '@glimmer/component';
 
-import { importSync, macroCondition, moduleExists } from '@embroider/macros';
-
-import type { RequestManager, Store } from '@warp-drive/core';
-import { assert } from '@warp-drive/core/build-config/macros';
-import type {
-  PagedPaginationState,
-  PaginationLink,
-  PaginationLinksSubscription,
-  PlaceholderPaginationLink,
-  RealPaginationLink,
-  RelationalPaginationLink,
-} from '@warp-drive/core/reactive';
+import type { PagedPaginationState, PaginationLinks, PaginationLinksSubscription } from '@warp-drive/core/reactive';
 import { createPaginationLinksSubscription } from '@warp-drive/core/reactive';
 import { DISPOSE } from '@warp-drive/core/signals/-leaked';
 
-let consume = service;
-if (macroCondition(moduleExists('ember-provide-consume-context'))) {
-  const { consume: contextConsume } = importSync('ember-provide-consume-context') as { consume: typeof service };
-  consume = contextConsume;
-}
-
 interface EachLinkSignature<RT, E> {
   Args: {
-    pages: PagedPaginationState<RT, E>;
-
     /**
-     * The store instance to use for making requests. If contexts are available,
-     * the component will default to using the `store` on the context.
-     *
-     * This is required if the store is not available via context or should be
-     * different from the store provided via context.
-     *
+     * The paged pagination state (yielded by `<Paginate />`) to derive the
+     * navigation links from.
      */
-    store?: Store | RequestManager;
+    pages: PagedPaginationState<RT, E>;
   };
   Blocks: {
     /**
-     * A numbered page link. Rendered once per known page in numbered pagination;
-     * never rendered for cursor-based pagination.
+     * Receives the {@link PaginationLinks} for the pagination state: the
+     * numbered `links` (with placeholders for gaps) and the relational
+     * `prev`/`next` links. The consumer renders them — in whatever markup
+     * and order it wants.
      */
-    link: [link: Readonly<RealPaginationLink>];
-
-    /**
-     * A gap between known pages in numbered pagination.
-     */
-    placeholder: [link: Readonly<PlaceholderPaginationLink>];
-
-    /**
-     * The relational link to the previous page, relative to the active page.
-     * Rendered when a previous page exists. For cursor-based pagination these
-     * `prev`/`next` blocks are the only navigation available.
-     */
-    prev: [link: Readonly<RelationalPaginationLink>];
-
-    /**
-     * The relational link to the next page, relative to the active page.
-     * Rendered when a next page exists.
-     */
-    next: [link: Readonly<RelationalPaginationLink>];
-
-    default: [link: Readonly<PaginationLink>];
+    default: [state: Readonly<PaginationLinks<RT, E>>];
   };
 }
 
 /**
- * The `<Request />` component is a powerful tool for managing data fetching and
- * state in your Ember application. It provides a declarative approach to reactive
- * control-flow for managing requests and state in your application.
+ * The `<EachLink />` component yields the navigation links for a paginated
+ * collection, derived from the {@link PagedPaginationState} a `<Paginate />`
+ * component yields to its `content` block.
  *
- * The `<Request />` component is ideal for handling "boundaries", outside which some
- * state is still allowed to be unresolved and within which it MUST be resolved.
+ * It renders no markup of its own: it yields a single {@link PaginationLinks}
+ * object, and the consumer decides which links to render, with what markup,
+ * and in what order.
  *
- * ## Request States
+ * The yielded state provides:
  *
- * `<Request />` has five states, only one of which will be active and rendered at a time.
+ * - `links` — the numbered links, with {@link PlaceholderPaginationLink}
+ *   placeholders standing in for gaps of not-yet-loaded pages. Discriminate
+ *   with `isReal`. Empty for cursor-based collections, which have no page
+ *   numbers to render.
+ * - `prev` / `next` — the relational links for the active page, or `null` at
+ *   the collection's edges. Available in both numbered and cursor-based
+ *   pagination, and the only navigation a cursor-based collection has.
+ * - `first` / `last` — the relational links to the collection's edges, when
+ *   the response exposes them. Usually present on every page — including the
+ *   edge page itself, where the link's `isCurrent` is `true` (useful for
+ *   disabling the control).
  *
- * - `idle`: The component is waiting to be given a request to monitor
- * - `loading`: The request is in progress
- * - `error`: The request failed
- * - `content`: The request succeeded
- * - `cancelled`: The request was cancelled
- *
- * Additionally, the `content` state has a `refresh` method that can be used to
- * refresh the request in the background, which is available as a sub-state of
- * the `content` state.
- *
- * As with the `<Await />` component, if no error block is provided and the request
- * rejects, the error will be thrown. Cancellation errors are swallowed instead of
- * rethrown if no error block or cancellation block is present.
+ * Every link exposes `setActive` to load its page and make it the active page
+ * of the pagination state, keeping every component reading that state in sync.
  *
  * ```gts
- * import { Request } from '@warp-drive/ember';
+ * import { Paginate, EachLink } from '@warp-drive/ember';
  *
  * <template>
- *   <Request @request={{@request}}>
- *     <:loading as |state|>
- *       <Spinner @percentDone={{state.completedRatio}} />
- *       <button {{on "click" state.abort}}>Cancel</button>
- *     </:loading>
+ *   <Paginate @request={{@request}}>
+ *     <:content as |pages|>
+ *       ...
+ *       <EachLink @pages={{pages}} as |state|>
+ *         {{#if state.prev}}
+ *           <button {{on "click" state.prev.setActive}}>Previous</button>
+ *         {{/if}}
  *
- *     <:error as |error state|>
- *       <ErrorForm @error={{error}} />
- *       <button {{on "click" state.retry}}>Retry</button>
- *     </:error>
+ *         {{#each state.links as |link|}}
+ *           {{#if link.isReal}}
+ *             <button
+ *               class={{if link.isCurrent "active"}}
+ *               {{on "click" link.setActive}}
+ *             >{{link.text}}</button>
+ *           {{else}}
+ *             <span title="{{link.rangeSize}} more pages">…</span>
+ *           {{/if}}
+ *         {{/each}}
  *
- *     <:content as |data state|>
- *       <h1>{{data.title}}</h1>
- *       {{#if state.isBackgroundReloading}}
- *         <SmallSpinner />
- *         <button {{on "click" state.abort}}>Cancel</button>
- *       {{else}}
- *         <button {{on "click" state.refresh}}>Refresh</button>
- *       {{/if}}
+ *         {{#if state.next}}
+ *           <button {{on "click" state.next.setActive}}>Next</button>
+ *         {{/if}}
+ *       </EachLink>
  *     </:content>
- *
- *     <:cancelled as |error state|>
- *       <h2>The Request was cancelled</h2>
- *       <button {{on "click" state.retry}}>Retry</button>
- *     </:cancelled>
- *
- *     <:idle>
- *       <button {{on "click" @kickOffRequest}}>Load Preview?</button>
- *     </:idle>
- *
- *   </Request>
+ *   </Paginate>
  * </template>
  * ```
  *
- * ## Streaming Data
+ * Since the links all read from the shared page graph, they update as pages
+ * load and as the active page changes.
  *
- * The loading state exposes the download `ReadableStream` instance for consumption
- *
- * ```gjs
- * import { Request } from '@warp-drive/ember';
- *
- * <template>
- *   <Request @request={{@request}}>
- *     <:loading as |state|>
- *       <Video @stream={{state.stream}} />
- *     </:loading>
- *
- *     <:error as |error|>
- *       <ErrorForm @error={{error}} />
- *     </:error>
- *   </Request>
- * </template>
- * ```
- *
- * ## Retry
- *
- * Cancelled and error'd requests may be retried by calling the `retry` method.
- *
- * Retry will restart the state progression, using the loading, error, cancelled,
- * and content blocks as appropriate.
- *
- * ## Reloading
- *
- * The `reload` method will force the request to be fully re-executed, bypassing
- * cache and restarting the state progression through the loading, error, and
- * content blocks as appropriate.
- *
- * Background reload (refresh) is a special substate of the content state that
- * allows you to refresh the request in the background. This is useful for when
- * you want to update the data in the background without blocking the UI.
- *
- * Reload and refresh are available as methods on the `content` state.
- *
- * ```gjs
- * import { Request } from '@warp-drive/ember';
- *
- * <template>
- *   <Request @request={{@request}}>
- *     <:content as |data state|>
- *       <h1>{{data.title}}</h1>
- *       {{#if state.isBackgroundReloading}}
- *         <SmallSpinner />
- *         <button {{on "click" state.abort}}>Cancel</button>
- *       {{/if}}
- *
- *       <button {{on "click" state.refresh}}>Refresh</button>
- *       <button {{on "click" state.reload}}>Reload</button>
- *     </:content>
- *  </Request>
- * </template>
- * ```
- *
- * ## Advanced Reloading
- *
- * We can nest our usage of `<Request />` to handle more advanced
- * reloading scenarios.
- *
- * ```gjs
- * import { Request } from '@warp-drive/ember';
- *
- * <template>
- *   <Request @request={{@request}}>
- *     <:cancelled>
- *       <h2>The Request Cancelled</h2>
- *     </:cancelled>
- *
- *     <:error as |error|>
- *       <ErrorForm @error={{error}} />
- *     </:error>
- *
- *     <:content as |result state|>
- *       <Request @request={{state.latestRequest}}>
- *         <!-- Handle Background Request -->
- *       </Request>
- *
- *       <h1>{{result.title}}</h1>
- *
- *       <button {{on "click" state.refresh}}>Refresh</button>
- *     </:content>
- *   </Request>
- * </template>
- * ```
- *
- * ## Autorefresh
- *
- * `<Request />` supports automatic refresh and reload under certain conditions.
- *
- * - `online`: This occurs when a browser window or tab comes back to the foreground
- *   after being backgrounded or when the network reports as being online after
- *   having been offline.
- * - `interval`: This occurs when a specified amount of time has passed.
- * - `invalid`: This occurs when the store emits a notification that the request
- *   has become invalid.
- *
- * You can specify when autorefresh should occur by setting the `autorefresh` arg
- * to `true` or a comma-separated list of the above values.
- *
- * A value of `true` is equivalent to `'online,invalid'`.
- *
- * By default, an autorefresh will only occur if the browser was backgrounded or
- * offline for more than 30s before coming back available. This amount of time can
- * be tweaked by setting the number of milliseconds via `@autorefreshThreshold`.
- *
- * This arg also controls the interval at which the request will be refreshed
- * if the `interval` autorefresh type is enabled.
- *
- * Finally, the behavior of the request initiated by autorefresh can be adjusted
- * by setting the `autorefreshBehavior` arg to `'refresh'`, `'reload'`, or `'policy'`.
- *
- * - `'refresh'`: Refresh the request in the background
- * - `'reload'`: Force a reload of the request
- * - `'policy'` (**default**): Let the store's configured CachePolicy decide whether to
- *    reload, refresh, or do nothing.
- *
- * More advanced refresh and reload behaviors can be created by passing the reload and
- * refresh actions into another component. For instance, refresh could be set up on a
- * timer or on a websocket subscription.
- *
- *
- * ```gjs
- * import { Request } from '@warp-drive/ember';
- *
- * <template>
- *   <Request @request={{@request}}>
- *     <:content as |result state|>
- *       <h1>{{result.title}}</h1>
- *
- *       <Interval @period={{30_000}} @fn={{state.refresh}} />
- *       <Subscribe @channel={{@someValue}} @fn={{state.refresh}} />
- *     </:content>
- *   </Request>
- * </template>
- * ```
- *
- * If a matching request is refreshed or reloaded by any other component,
- * the `Request` component will react accordingly.
- *
- * ## Deduping
- *
- * The store dedupes requests by identity. If a request is made for the same identity
- * from multiple `<Request />` components, even if the request is not referentially the
- * same, only one actual request will be made.
- *
- *
- * @class <Request />
+ * @class <EachLink />
  * @public
  */
 export class EachLink<RT, E> extends Component<EachLinkSignature<RT, E>> {
-  /**
-   * The store instance to use for making requests. If contexts are available, this
-   * will be the `store` on the context, else it will be the store service.
-   *
-   * @internal
-   */
-  @consume('store') declare _store: Store;
-
-  /** @internal */
-  get store(): Store | RequestManager {
-    const store = this.args.store || this._store;
-    assert(
-      moduleExists('ember-provide-consume-context')
-        ? `No store was provided to the <Request> component. Either provide a store via the @store arg or via the context API provided by ember-provide-consume-context.`
-        : `No store was provided to the <Request> component. Either provide a store via the @store arg or by registering a store service.`,
-      store
-    );
-    return store;
-  }
-
   /** @internal */
   _state: PaginationLinksSubscription<RT, E> | null = null;
   /** @internal */
   get state(): PaginationLinksSubscription<RT, E> {
     let { _state } = this;
-    const { store } = this;
-    if (_state && _state.store !== store) {
-      _state[DISPOSE]();
-      this._state = _state = null;
-    }
-
     if (!_state) {
-      this._state = _state = createPaginationLinksSubscription(store, this.args);
+      this._state = _state = createPaginationLinksSubscription(this.args);
     }
 
     return _state;
@@ -328,31 +107,5 @@ export class EachLink<RT, E> extends Component<EachLinkSignature<RT, E>> {
     }
   }
 
-  <template>
-    {{#if this.state.prev}}
-      {{#if (has-block "prev")}}
-        {{yield this.state.prev to="prev"}}
-      {{/if}}
-    {{/if}}
-
-    {{#each this.state.links as |link|}}
-      {{#if link.isReal}}
-        {{#if (has-block "link")}}
-          {{yield link to="link"}}
-        {{else}}
-          {{yield link}}
-        {{/if}}
-      {{else if (has-block "placeholder")}}
-        {{yield link to="placeholder"}}
-      {{else}}
-        {{yield link}}
-      {{/if}}
-    {{/each}}
-
-    {{#if this.state.next}}
-      {{#if (has-block "next")}}
-        {{yield this.state.next to="next"}}
-      {{/if}}
-    {{/if}}
-  </template>
+  <template>{{yield this.state.paginationLinks}}</template>
 }
