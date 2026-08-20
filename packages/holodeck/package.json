@@ -40,11 +40,11 @@
   },
   "scripts": {
     "check:pkg-types": "tsc --noEmit",
-    "build:pkg": "vite build",
+    "build:pkg": "tsdown",
     "prepack": "pnpm run build:pkg",
     "sync": "echo \"syncing\"",
     "_temporarily_deactivated_lint": "eslint . --quiet --cache --cache-strategy=content",
-    "start": "vite"
+    "start": "tsdown --watch"
   },
   "peerDependencies": {
     "@warp-drive/utilities": "workspace:*",
@@ -69,7 +69,7 @@
     "@warp-drive/legacy": "workspace:*",
     "@warp-drive/core": "workspace:*",
     "@warp-drive/internal-config": "workspace:*",
-    "vite": "^7.3.1"
+    "tsdown": "^0.22.14"
   },
   "exports": {
     ".": {
