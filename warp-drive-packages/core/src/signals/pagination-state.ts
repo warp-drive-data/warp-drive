@@ -153,10 +153,21 @@ export class PaginationState<RT = unknown, E = unknown>
   /** @internal */
   declare private frontierEnd: Readonly<PageCache<RT, E>> | null;
 
+  /**
+   * The request of the latest {@link adoptPage} call — only that call may
+   * commit. Later calls (or a {@link loadPage} navigation) claim the slot,
+   * superseding in-flight adoptions so the newest navigation always wins.
+   * Untracked bookkeeping.
+   *
+   * @internal
+   */
+  declare private _adoptTarget: Future<RT> | null;
+
   constructor(request: Future<RT>, pageHints?: PageHints) {
     this.store = request.requester;
     this.request = request;
     this.pageHints = pageHints;
+    this._adoptTarget = null;
 
     void this.setup();
   }
@@ -351,9 +362,9 @@ export class PaginationState<RT = unknown, E = unknown>
   }
 
   /**
-   * Adopts a membership-proven page into this state, making it the
-   * {@link activePage}. The dumb primitive under {@link adoptPage}, which is
-   * where the membership verification lives.
+   * Commits a resolved, membership-proven page into this state, making it the
+   * {@link activePage}. The synchronous commit step under {@link adoptPage},
+   * which is where the resolution and membership verification live.
    *
    * It only activates the page and keeps the infinite surface's frontier
    * coherent — a page already inside the run leaves the frontier untouched,
@@ -362,16 +373,12 @@ export class PaginationState<RT = unknown, E = unknown>
    *
    * @internal
    */
-  private _adoptPage(url: string, request: Future<RT>): Readonly<PageCache<RT, E>> {
-    const cache = this.paginationCache;
-    assert('Expected the pagination cache to be set up before adopting a page', cache);
-
-    const page = cache.loadPage(url, request);
+  private _activate(page: Readonly<PageCache<RT, E>>, url: string): void {
     this.activePage = page;
 
     for (const existing of this.pages) {
       if (existing === page) {
-        return page;
+        return;
       }
     }
 
@@ -382,8 +389,6 @@ export class PaginationState<RT = unknown, E = unknown>
     } else {
       this.frontierStart = this.frontierEnd = page;
     }
-
-    return page;
   }
 
   /**
@@ -393,15 +398,27 @@ export class PaginationState<RT = unknown, E = unknown>
    * component uses the same mechanism for a changed `@request` arg).
    *
    * Awaits the request and verifies that its document is a page of this
-   * state's collection (same `first` — or `self` — link). On a match the page
-   * is adopted: it becomes the active page, and the infinite surface's run is
-   * kept coherent (a page already inside the run leaves it untouched, an
-   * adjacent page extends it, a disjoint page resets the run to the adopted
-   * page). Returns the page's document.
+   * state's collection (same `first` — or `self` — link). On a match, the
+   * page is loaded (a page already in the shared cache is reused) and — once
+   * its request settles — committed: it becomes the active page, and the
+   * infinite surface's run is kept coherent (a page already inside the run
+   * leaves it untouched, an adjacent page extends it, a disjoint page resets
+   * the run to the adopted page). The commit happens only after the page has
+   * loaded, so the previous page stays active — and rendered — while the
+   * adoption resolves. Returns the page's document.
    *
-   * Returns `null` — leaving the state untouched — when the request rejects,
-   * when it resolves to a page of a *different* collection, or when this
-   * state has not finished setting up its own collection yet.
+   * Concurrent calls race safely: the latest call wins. An earlier in-flight
+   * adoption is superseded and commits nothing, and a {@link loadPage}
+   * navigation also supersedes a pending adoption (the user's click is the
+   * newer intent).
+   *
+   * Returns `null` — leaving the state untouched — whenever the adoption does
+   * not commit:
+   *
+   * - the request (or its page's load) rejected
+   * - the document is a page of a *different* collection
+   * - this state has not finished setting up its own collection yet
+   * - the call was superseded by a newer navigation
    *
    * ```ts
    * const pages = getPaginationState(initialRequest);
@@ -416,10 +433,16 @@ export class PaginationState<RT = unknown, E = unknown>
    * "event" handler.
    */
   adoptPage = async (request: Future<RT>): Promise<RT | null> => {
+    this._adoptTarget = request;
+
     let content;
     try {
       content = (await request).content as ReactiveDocument<unknown>;
     } catch {
+      return null;
+    }
+    if (this._adoptTarget !== request) {
+      // a newer navigation claimed the slot while the request resolved
       return null;
     }
 
@@ -435,7 +458,7 @@ export class PaginationState<RT = unknown, E = unknown>
       return null;
     }
 
-    const page = this._adoptPage(selfLink, request);
+    const page = cache.loadPage(selfLink, request);
     try {
       // wait for the page's request state to settle its value; adopting an
       // already-settled future still needs this microtask
@@ -443,7 +466,12 @@ export class PaginationState<RT = unknown, E = unknown>
     } catch {
       return null;
     }
+    if (this._adoptTarget !== request) {
+      // a newer navigation claimed the slot while the page loaded
+      return null;
+    }
 
+    this._activate(page, selfLink);
     return page.value;
   };
 
@@ -556,6 +584,9 @@ export class PaginationState<RT = unknown, E = unknown>
   loadPage = async (url: string): Promise<RT | null> => {
     const cache = this.paginationCache;
     assert('Expected the pagination cache to be set up before loading a page', cache);
+
+    // an explicit navigation supersedes any in-flight adoption
+    this._adoptTarget = null;
 
     const page = cache.getPageCache(url);
     this.activePage = page;

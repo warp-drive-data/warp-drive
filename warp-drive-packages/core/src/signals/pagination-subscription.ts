@@ -238,9 +238,16 @@ export class PaginationSubscription<RT, E> {
     }
 
     const adopted = await this.paginationState.adoptPage(request);
+    if (this.isDestroyed || this._navTarget !== request) {
+      // a newer navigation claimed the slot while `adoptPage` resolved — its
+      // own resolution decides the outcome. Without this check a superseded
+      // `null` would be mistaken for a foreign collection and wrongly reset.
+      return;
+    }
     if (adopted === null) {
-      // the request resolved fine (awaited above), so `null` means its page
-      // is not part of the current collection: reset to a fresh state
+      // this call is still the latest navigation, so `null` means the page is
+      // not part of the current collection (or the collection has not set up
+      // yet): reset to a fresh state
       this._navRequest = request;
     }
     // `_navTarget` intentionally stays set: it marks this request as

@@ -333,6 +333,13 @@ export interface PaginateSpecSignature extends Record<string, SpecTest<LocalTest
       request: CollectionRequest;
     }
   >;
+  'concurrent adoptPage calls resolve to the latest call': SpecTest<
+    LocalTestContext,
+    {
+      store: RequestManager;
+      request: CollectionRequest;
+    }
+  >;
 }
 
 export const PaginateSpec: SuiteBuilder<LocalTestContext, PaginateSpecSignature> = spec<LocalTestContext>(
@@ -2332,5 +2339,101 @@ export const PaginateSpec: SuiteBuilder<LocalTestContext, PaginateSpecSignature>
     assert.equal(paginationState.activePage?.pageNumber, 2, 'the active page is untouched');
     assert.equal(paginationState.totalPages, 2, 'the collection total is untouched');
     assert.equal(Array.from(paginationState.pages).length, 2, 'the frontier is untouched');
+  })
+
+  .for('concurrent adoptPage calls resolve to the latest call')
+  .use<{ store: RequestManager; request: CollectionRequest }>(async function (assert) {
+    const urls = [
+      buildBaseURL({ resourcePath: 'users/1' }),
+      buildBaseURL({ resourcePath: 'users/2' }),
+      buildBaseURL({ resourcePath: 'users/3' }),
+    ];
+    const page = (index: number) => ({
+      data: [users[index]],
+      links: {
+        first: urls[0],
+        prev: index === 0 ? null : urls[index - 1],
+        self: urls[index],
+        next: index === 2 ? null : urls[index + 1],
+        last: urls[2],
+      },
+      meta: {
+        currentPage: index + 1,
+        totalPages: 3,
+      },
+    });
+
+    await GET(this, 'users/1', () => page(0));
+    await GET(this, 'users/2', () => page(1));
+    await GET(this, 'users/3', () => page(2));
+
+    const request = this.manager.request<CollectionResourceDataDocument<UserResource>>({
+      url: urls[0],
+      method: 'GET',
+    });
+    const paginationState = getPaginationState(request);
+
+    await this.render({ store: this.manager, request });
+    await request;
+    await this.h.rerender();
+
+    assert.equal(paginationState.activePage?.pageNumber, 1, 'the entry page is active');
+
+    // move the active page off the run's page so the race outcomes are distinct
+    await paginationState.loadPage(urls[1]);
+    await this.h.rerender();
+    assert.equal(paginationState.activePage?.pageNumber, 2, 'page 2 is active before the race');
+
+    // two racing adoptions: A (page 3, not yet loaded) is immediately
+    // superseded by B (page 1, already loaded) — the latest call wins no
+    // matter which request settles first
+    const requestA = this.manager.request<CollectionResourceDataDocument<UserResource>>({
+      url: urls[2],
+      method: 'GET',
+    });
+    const requestB = this.manager.request<CollectionResourceDataDocument<UserResource>>({
+      url: urls[0],
+      method: 'GET',
+    });
+    const promiseA = paginationState.adoptPage(requestA);
+    const promiseB = paginationState.adoptPage(requestB);
+    const [a, b] = await Promise.all([promiseA, promiseB]);
+
+    assert.equal(a, null, 'the superseded adoption resolves to null');
+    assert.deepEqual(b?.data, [users[0]], 'the latest adoption resolves to its page document');
+    assert.equal(paginationState.activePage?.pageNumber, 1, 'the latest adoption won the race');
+
+    await this.h.rerender();
+    assert.dom('[data-test-user-name]').hasText('Chris Thoburn', 'the winning page renders');
+
+    // an explicit loadPage navigation supersedes an in-flight adoption
+    const requestC = this.manager.request<CollectionResourceDataDocument<UserResource>>({
+      url: urls[2],
+      method: 'GET',
+    });
+    const promiseC = paginationState.adoptPage(requestC);
+    const loading = paginationState.loadPage(urls[1]);
+    const [c] = await Promise.all([promiseC, loading]);
+
+    assert.equal(c, null, 'the adoption superseded by loadPage resolves to null');
+    assert.equal(paginationState.activePage?.pageNumber, 2, 'the explicit navigation won');
+
+    // with the races settled, a clean adoption commits
+    const requestD = this.manager.request<CollectionResourceDataDocument<UserResource>>({
+      url: urls[2],
+      method: 'GET',
+    });
+    const d = await paginationState.adoptPage(requestD);
+
+    assert.deepEqual(d?.data, [users[2]], 'a clean adoption resolves to its page document');
+    assert.equal(paginationState.activePage?.pageNumber, 3, 'the adopted page is active');
+    assert.equal(
+      Array.from(paginationState.pages).length,
+      1,
+      'the disjoint adopted page reset the run (jump semantics)'
+    );
+
+    await this.h.rerender();
+    assert.dom('[data-test-user-name]').hasText('Mehul Chaudhari', 'the adopted page renders');
   })
   .build();
