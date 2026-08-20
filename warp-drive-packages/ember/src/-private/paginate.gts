@@ -30,7 +30,7 @@ function notNull<T>(x: T | null) {
 
 const not = (x: unknown) => !x;
 const IdleBlockMissingError = new Error(
-  'No idle block provided for <Request> component, and no query or request was provided.'
+  'No idle block provided for <Paginate> component, and no query or request was provided.'
 );
 
 let consume = service;
@@ -113,220 +113,134 @@ interface PaginateSignature<RT, E, M extends PaginateMode = 'paged'> {
 }
 
 /**
- * The `<Request />` component is a powerful tool for managing data fetching and
- * state in your Ember application. It provides a declarative approach to reactive
- * control-flow for managing requests and state in your application.
+ * The `<Paginate />` component provides declarative, reactive control-flow for
+ * rendering a paginated collection: it monitors the request that loads the
+ * collection's entry page and yields a pagination state for navigating and
+ * rendering the collection's pages.
  *
- * The `<Request />` component is ideal for handling "boundaries", outside which some
- * state is still allowed to be unresolved and within which it MUST be resolved.
+ * ## Blocks
  *
- * ## Request States
+ * Five states, only one of which renders at a time:
  *
- * `<Request />` has five states, only one of which will be active and rendered at a time.
+ * - `idle`: no request to monitor yet. If the component is idle and no idle
+ *   block is provided, an error is thrown.
+ * - `loading`: the collection is blocking-loading — only the very first page
+ *   load (or the reset to a different collection) enters this state. Receives
+ *   the request's `RequestLoadingState` for progress UIs. Navigating with
+ *   `loadPage`/`loadNext`/`loadPrev` does not re-enter it; those surface
+ *   through the individual page requests instead.
+ * - `cancelled`: the initial request was aborted. Falls through to the `error`
+ *   block when no cancelled block is provided; if neither block exists the
+ *   cancellation is swallowed.
+ * - `error`: the initial request rejected. If no error block is provided, the
+ *   error is rethrown — provide one if the failure should not crash the app.
+ *   Both `cancelled` and `error` receive the error and recovery features
+ *   (`retry`, `isOnline`, `isHidden`).
+ * - `content`: the collection is ready. Receives the pagination state
+ *   (`pages`) and the content features.
  *
- * - `idle`: The component is waiting to be given a request to monitor
- * - `loading`: The request is in progress
- * - `error`: The request failed
- * - `content`: The request succeeded
- * - `cancelled`: The request was cancelled
+ * Two additional blocks sit outside the state machine: `always` renders in
+ * every state, and providing a `default` block replaces all named blocks —
+ * it renders regardless of the request's state, for consumers managing
+ * control-flow themselves. Both receive the same params as `content`.
  *
- * Additionally, the `content` state has a `refresh` method that can be used to
- * refresh the request in the background, which is available as a sub-state of
- * the `content` state.
+ * ## Modes
  *
- * As with the `<Await />` component, if no error block is provided and the request
- * rejects, the error will be thrown. Cancellation errors are swallowed instead of
- * rethrown if no error block or cancellation block is present.
+ * The `@mode` arg (`'paged'`, the default, or `'infinite'`) narrows the state
+ * and features yielded to `content`/`always`/`default` to one of the two
+ * navigation surfaces so the APIs cannot be mixed. It is type-only and never
+ * read at runtime.
+ *
+ * **Paged** — render the active page via its request, navigate with `loadPage`
+ * or the links yielded by `<EachLink />`:
  *
  * ```gts
- * import { Request } from '@warp-drive/ember';
+ * import { EachLink, Paginate, Request } from '@warp-drive/ember';
  *
  * <template>
- *   <Request @request={{@request}}>
- *     <:loading as |state|>
- *       <Spinner @percentDone={{state.completedRatio}} />
- *       <button {{on "click" state.abort}}>Cancel</button>
- *     </:loading>
+ *   <Paginate @request={{@request}}>
+ *     <:loading><Spinner /></:loading>
+ *
+ *     <:content as |pages|>
+ *       <Request @request={{pages.activePageRequest}}>
+ *         <:loading><Spinner /></:loading>
+ *         <:error as |error|><ErrorForm @error={{error}} /></:error>
+ *         <:content as |result|>
+ *           {{#each result.data as |item|}}...{{/each}}
+ *         </:content>
+ *       </Request>
+ *
+ *       <EachLink @pages={{pages}} as |state|>
+ *         {{#each state.links as |link|}}
+ *           {{#if link.isReal}}
+ *             <button
+ *               class={{if link.isCurrent "active"}}
+ *               {{on "click" link.setActive}}
+ *             >{{link.text}}</button>
+ *           {{else}}
+ *             <span>…</span>
+ *           {{/if}}
+ *         {{/each}}
+ *       </EachLink>
+ *     </:content>
  *
  *     <:error as |error state|>
  *       <ErrorForm @error={{error}} />
  *       <button {{on "click" state.retry}}>Retry</button>
  *     </:error>
+ *   </Paginate>
+ * </template>
+ * ```
  *
- *     <:content as |data state|>
- *       <h1>{{data.title}}</h1>
- *       {{#if state.isBackgroundReloading}}
- *         <SmallSpinner />
- *         <button {{on "click" state.abort}}>Cancel</button>
- *       {{else}}
- *         <button {{on "click" state.refresh}}>Refresh</button>
+ * **Infinite** — render the accumulated `data`, grow it with
+ * `loadNext`/`loadPrev`:
+ *
+ * ```gts
+ * <template>
+ *   <Paginate @request={{@request}} @mode="infinite">
+ *     <:loading><Spinner /></:loading>
+ *
+ *     <:content as |pages features|>
+ *       {{#each pages.data as |item|}}...{{/each}}
+ *       {{#if pages.hasNext}}
+ *         <button {{on "click" features.loadNext}}>Load more</button>
  *       {{/if}}
  *     </:content>
- *
- *     <:cancelled as |error state|>
- *       <h2>The Request was cancelled</h2>
- *       <button {{on "click" state.retry}}>Retry</button>
- *     </:cancelled>
- *
- *     <:idle>
- *       <button {{on "click" @kickOffRequest}}>Load Preview?</button>
- *     </:idle>
- *
- *   </Request>
+ *   </Paginate>
  * </template>
  * ```
  *
- * ## Streaming Data
+ * ## Shared collection state
  *
- * The loading state exposes the download `ReadableStream` instance for consumption
+ * Loaded pages live in a cache shared by every component paginating the same
+ * collection (identified by its `first` — or `self` — link), while each
+ * `<Paginate />` keeps its own local navigation state (active page, loaded
+ * run). The `@pageHints` arg supplies `currentPage`/`totalPages` when the
+ * response does not expose them in the default `meta` locations; because the
+ * hints attach to the shared cache, every component sharing a collection must
+ * pass the same function reference.
  *
- * ```gjs
- * import { Request } from '@warp-drive/ember';
+ * ## Route-driven navigation
  *
- * <template>
- *   <Request @request={{@request}}>
- *     <:loading as |state|>
- *       <Video @stream={{state.stream}} />
- *     </:loading>
+ * A changed `@request` arg does not tear the component down. The existing
+ * content stays rendered — with `features.isNavigating` set to `true` — while
+ * the new request resolves: a request that resolves to a page of the same
+ * collection is adopted as the new active page (for example the browser back
+ * button changing a `?page=` query param the route turns into a request); one
+ * that resolves to a different collection resets the pagination like a fresh
+ * start.
  *
- *     <:error as |error|>
- *       <ErrorForm @error={{error}} />
- *     </:error>
- *   </Request>
- * </template>
- * ```
+ * ## Request lifecycle
  *
- * ## Retry
+ * The content features expose the same `refresh`/`reload` controls as
+ * `<Request />`, applied to the collection's initiating request, and the
+ * component accepts the same `@autorefresh`, `@autorefreshThreshold` and
+ * `@autorefreshBehavior` args (see the `<Request />` component's
+ * documentation). To manage the lifecycle externally, create the subscription
+ * with `createPaginationSubscription` and pass it via `@subscription` — the
+ * component then uses it instead of creating and disposing its own.
  *
- * Cancelled and error'd requests may be retried by calling the `retry` method.
- *
- * Retry will restart the state progression, using the loading, error, cancelled,
- * and content blocks as appropriate.
- *
- * ## Reloading
- *
- * The `reload` method will force the request to be fully re-executed, bypassing
- * cache and restarting the state progression through the loading, error, and
- * content blocks as appropriate.
- *
- * Background reload (refresh) is a special substate of the content state that
- * allows you to refresh the request in the background. This is useful for when
- * you want to update the data in the background without blocking the UI.
- *
- * Reload and refresh are available as methods on the `content` state.
- *
- * ```gjs
- * import { Request } from '@warp-drive/ember';
- *
- * <template>
- *   <Request @request={{@request}}>
- *     <:content as |data state|>
- *       <h1>{{data.title}}</h1>
- *       {{#if state.isBackgroundReloading}}
- *         <SmallSpinner />
- *         <button {{on "click" state.abort}}>Cancel</button>
- *       {{/if}}
- *
- *       <button {{on "click" state.refresh}}>Refresh</button>
- *       <button {{on "click" state.reload}}>Reload</button>
- *     </:content>
- *  </Request>
- * </template>
- * ```
- *
- * ## Advanced Reloading
- *
- * We can nest our usage of `<Request />` to handle more advanced
- * reloading scenarios.
- *
- * ```gjs
- * import { Request } from '@warp-drive/ember';
- *
- * <template>
- *   <Request @request={{@request}}>
- *     <:cancelled>
- *       <h2>The Request Cancelled</h2>
- *     </:cancelled>
- *
- *     <:error as |error|>
- *       <ErrorForm @error={{error}} />
- *     </:error>
- *
- *     <:content as |result state|>
- *       <Request @request={{state.latestRequest}}>
- *         <!-- Handle Background Request -->
- *       </Request>
- *
- *       <h1>{{result.title}}</h1>
- *
- *       <button {{on "click" state.refresh}}>Refresh</button>
- *     </:content>
- *   </Request>
- * </template>
- * ```
- *
- * ## Autorefresh
- *
- * `<Request />` supports automatic refresh and reload under certain conditions.
- *
- * - `online`: This occurs when a browser window or tab comes back to the foreground
- *   after being backgrounded or when the network reports as being online after
- *   having been offline.
- * - `interval`: This occurs when a specified amount of time has passed.
- * - `invalid`: This occurs when the store emits a notification that the request
- *   has become invalid.
- *
- * You can specify when autorefresh should occur by setting the `autorefresh` arg
- * to `true` or a comma-separated list of the above values.
- *
- * A value of `true` is equivalent to `'online,invalid'`.
- *
- * By default, an autorefresh will only occur if the browser was backgrounded or
- * offline for more than 30s before coming back available. This amount of time can
- * be tweaked by setting the number of milliseconds via `@autorefreshThreshold`.
- *
- * This arg also controls the interval at which the request will be refreshed
- * if the `interval` autorefresh type is enabled.
- *
- * Finally, the behavior of the request initiated by autorefresh can be adjusted
- * by setting the `autorefreshBehavior` arg to `'refresh'`, `'reload'`, or `'policy'`.
- *
- * - `'refresh'`: Refresh the request in the background
- * - `'reload'`: Force a reload of the request
- * - `'policy'` (**default**): Let the store's configured CachePolicy decide whether to
- *    reload, refresh, or do nothing.
- *
- * More advanced refresh and reload behaviors can be created by passing the reload and
- * refresh actions into another component. For instance, refresh could be set up on a
- * timer or on a websocket subscription.
- *
- *
- * ```gjs
- * import { Request } from '@warp-drive/ember';
- *
- * <template>
- *   <Request @request={{@request}}>
- *     <:content as |result state|>
- *       <h1>{{result.title}}</h1>
- *
- *       <Interval @period={{30_000}} @fn={{state.refresh}} />
- *       <Subscribe @channel={{@someValue}} @fn={{state.refresh}} />
- *     </:content>
- *   </Request>
- * </template>
- * ```
- *
- * If a matching request is refreshed or reloaded by any other component,
- * the `Request` component will react accordingly.
- *
- * ## Deduping
- *
- * The store dedupes requests by identity. If a request is made for the same identity
- * from multiple `<Request />` components, even if the request is not referentially the
- * same, only one actual request will be made.
- *
- *
- * @class <Request />
+ * @class <Paginate />
  * @public
  */
 export class Paginate<RT, E, M extends PaginateMode = 'paged'> extends Component<PaginateSignature<RT, E, M>> {
@@ -343,8 +257,8 @@ export class Paginate<RT, E, M extends PaginateMode = 'paged'> extends Component
     const store = this.args.store || this._store;
     assert(
       moduleExists('ember-provide-consume-context')
-        ? `No store was provided to the <Request> component. Either provide a store via the @store arg or via the context API provided by ember-provide-consume-context.`
-        : `No store was provided to the <Request> component. Either provide a store via the @store arg or by registering a store service.`,
+        ? `No store was provided to the <Paginate> component. Either provide a store via the @store arg or via the context API provided by ember-provide-consume-context.`
+        : `No store was provided to the <Paginate> component. Either provide a store via the @store arg or by registering a store service.`,
       store
     );
     return store;
