@@ -70,13 +70,13 @@
     "node": ">= 25.5.0",
     "yarn": "use pnpm",
     "npm": "use pnpm",
-    "pnpm": "10.15.0"
+    "pnpm": "10.34.5"
   },
   "volta": {
     "node": "25.5.0",
-    "pnpm": "10.15.0"
+    "pnpm": "10.34.5"
   },
-  "packageManager": "pnpm@10.15.0",
+  "packageManager": "pnpm@10.34.5",
   "changelog": {
     "cacheDir": ".changelog-cache",
     "labels": {
