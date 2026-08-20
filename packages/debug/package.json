@@ -15,10 +15,10 @@
   "directories": {},
   "scripts": {
     "lint": "eslint . --quiet --cache --cache-strategy=content",
-    "build:pkg": "vite build",
+    "build:pkg": "tsdown",
     "prepack": "pnpm run build:pkg",
     "sync": "echo \"syncing\"",
-    "start": "vite"
+    "start": "tsdown --watch"
   },
   "files": [
     "unstable-preview-types",
@@ -53,8 +53,8 @@
     "@warp-drive/internal-config": "workspace:*",
     "decorator-transforms": "^2.3.0",
     "ember-source": "~6.12.0",
-    "typescript": "^5.9.3",
-    "vite": "^7.3.1"
+    "tsdown": "^0.22.14",
+    "typescript": "^5.9.3"
   },
   "ember-addon": {
     "main": "addon-main.cjs",
