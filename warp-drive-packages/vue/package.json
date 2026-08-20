@@ -44,7 +44,7 @@
     }
   },
   "peerDependencies": {
-    "vue": "^3.5.19"
+    "vue": "^3.5.41"
   },
   "dependencies": {
     "@embroider/macros": "^1.20.6",
@@ -65,7 +65,7 @@
     "tsdown": "^0.22.14",
     "typescript": "^5.9.3",
     "unplugin-vue": "^7.2.0",
-    "vue": "^3.5.19",
+    "vue": "^3.5.41",
     "vue-tsc": "^3.0.6"
   },
   "volta": {
