@@ -35,7 +35,7 @@
   },
   "devDependencies": {
     "@ember-data/codemods": "workspace:*",
-    "@types/bun": "^1.2.20",
+    "@types/bun": "^1.3.14",
     "@types/ember-data__model": "^4.0.5",
     "@types/jscodeshift": "^17.3.0",
     "@warp-drive/internal-config": "workspace:*",

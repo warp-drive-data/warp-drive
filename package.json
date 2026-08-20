@@ -40,7 +40,7 @@
     "@warp-drive/internal-docs-viewer": "workspace:*",
     "@warp-drive/internal-tooling": "workspace:*",
     "badge-maker": "5.0.2",
-    "bun-types": "^1.2.20",
+    "bun-types": "^1.3.14",
     "chalk": "^4.1.2",
     "co": "^4.6.0",
     "command-line-args": "^6.0.1",
