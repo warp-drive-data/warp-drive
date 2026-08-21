@@ -55,6 +55,18 @@ trustPolicy: no-downgrade
 ##
 trustPolicyIgnoreAfter: 1051200
 
+## hosted-git-info@6.1.3 (2024-11-21) is a transitive dependency of the
+## frozen ember-cli@4.12.3 fixture used by the ember-lts-3.28 ember-try
+## scenario. It isn't old enough yet to clear trustPolicyIgnoreAfter above
+## (needs ~2026-11-21), but it never had provenance to begin with -- the
+## "downgrade" is pnpm comparing it against a *later major* (7.x/8.x) that
+## added provenance, not an actual regression within the 6.x line. See
+## https://github.com/pnpm/pnpm/issues/10202. ember-cli@4.12.3 is a fixed,
+## never-changing version, so this pin is safe to carry indefinitely.
+##
+trustPolicyExclude:
+  - hosted-git-info@6.1.3
+
 packages:
   - "packages/*"
   - "tools/*"
