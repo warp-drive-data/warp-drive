@@ -37,7 +37,11 @@ export async function bumpAllPackages(
   const nextVersion = strategy.get('root')?.toVersion;
   let commitCommand = `git commit -am "Release v${nextVersion}"`;
 
-  if (willPublish) commitCommand = `pnpm install --no-frozen-lockfile && ` + commitCommand;
+  // TURBO_FORCE=true is intentional here (and only here): package builds are
+  // otherwise allowed to use turbo's cache, but a real publish must never
+  // ship a package built from a stale/cached artifact, so we force a fresh
+  // `build:pkg` for every package as part of the release install.
+  if (willPublish) commitCommand = `TURBO_FORCE=true pnpm install --no-frozen-lockfile && ` + commitCommand;
   else commitCommand = `pnpm install && ` + commitCommand;
   commitCommand += ` && git tag v${nextVersion}`;
 

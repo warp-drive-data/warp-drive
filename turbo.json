@@ -81,14 +81,21 @@
     /////////////////////////////////////////////////
 
     "lint": {
-      "inputs": ["eslint.*", "tsconfig.json", "tsconfig.tsbuildinfo"],
+      // $TURBO_DEFAULT$ is required here or these `inputs` REPLACE (rather
+      // than add to) turbo's default file-hashing, which is every git-tracked
+      // file in the package. Without it, this task's hash was blind to any
+      // actual source-file edits (only eslint config / tsconfig / tsbuildinfo
+      // could bust the cache), so a cached "lint passed" could be served for
+      // code that was never actually linted.
+      "inputs": ["$TURBO_DEFAULT$", "tsconfig.tsbuildinfo"],
       "dependsOn": ["^build:pkg"],
       // https://turbo.build/repo/docs/reference/configuration#outputLogs
       "outputLogs": "new-only"
     },
 
     "check:types": {
-      "inputs": ["tsconfig.json", "tsconfig.tsbuildinfo"],
+      // See the $TURBO_DEFAULT$ note on `lint` above — same bug applied here.
+      "inputs": ["$TURBO_DEFAULT$", "tsconfig.tsbuildinfo"],
       "dependsOn": ["^build:pkg"],
       // https://turbo.build/repo/docs/reference/configuration#outputLogs
       "outputLogs": "new-only"
@@ -100,6 +107,8 @@
         "src/**",
         "tests/**",
         "app/**",
+        "config/**",
+        "public/**",
         "ember-cli-build.js",
         "addon-main.*",
         "tsconfig.json",
@@ -137,6 +146,8 @@
         "src/**",
         "tests/**",
         "app/**",
+        "config/**",
+        "public/**",
         "ember-cli-build.js",
         "addon-main.*",
         "tsconfig.json",
