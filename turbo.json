@@ -15,8 +15,15 @@
     ".pnpm-workspace.yaml",
     "patches/*",
     ".github/**",
-    "./tools/release/**",
     "./tools/internal-config/**"
+    // NOTE: tools/release/** is intentionally NOT a global dependency.
+    // No package's build/test code imports anything from it, so it had no
+    // business invalidating every task's cache in the entire monorepo --
+    // it just meant any PR touching release tooling forced a full,
+    // unrelated rebuild for everyone. Release correctness against stale
+    // caches is instead guaranteed at the source: the release publish
+    // flow's own install step now sets TURBO_FORCE=true explicitly
+    // (see tools/release/core/publish/steps/bump-versions.ts).
   ],
 
   "envMode": "loose",
