@@ -3,7 +3,7 @@ import type Owner from '@ember/owner';
 import * as s from '@ember/service';
 import type { TestContext } from '@ember/test-helpers';
 
-import Resolver from 'ember-resolver';
+import { StrictResolver } from 'ember-strict-application-resolver/strict-resolver';
 
 import RequestManager from '@ember-data/request';
 import { module, test } from '@warp-drive/diagnostic';
@@ -13,7 +13,7 @@ const Service = s.default;
 const service = s.service ?? s.inject;
 
 module('RequestManager | Ember Service Setup', function (hooks) {
-  setupTest(hooks, { resolver: new Resolver() });
+  setupTest(hooks, { resolver: new StrictResolver({}) });
 
   test('We can register RequestManager as a service', function (this: TestContext, assert) {
     this.owner.register('service:request', RequestManager);

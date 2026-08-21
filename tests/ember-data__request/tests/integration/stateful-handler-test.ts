@@ -2,7 +2,7 @@ import { setOwner } from '@ember/application';
 import { service } from '@ember/service';
 import type { TestContext } from '@ember/test-helpers';
 
-import Resolver from 'ember-resolver';
+import { StrictResolver } from 'ember-strict-application-resolver/strict-resolver';
 
 import type { NextFn } from '@ember-data/request';
 import RequestManager from '@ember-data/request';
@@ -11,7 +11,7 @@ import { module, test } from '@warp-drive/diagnostic';
 import { setupTest } from '@warp-drive/diagnostic/ember';
 
 module('RequestManager | Stateful Handlers', function (hooks) {
-  setupTest(hooks, { resolver: new Resolver() });
+  setupTest(hooks, { resolver: new StrictResolver({}) });
 
   test('We can register a handler with `.use(<Handler[]>)`', async function (this: TestContext, assert) {
     const manager = new RequestManager();
