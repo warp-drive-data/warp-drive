@@ -48,6 +48,8 @@
         "addon-test-support/**",
         // V2-Addon convention
         "dist/**",
+        // secondary CJS build for packages exposing `.cjs` subpath exports
+        "cjs-dist/**",
         "unstable-preview-types/**",
         "declarations/**",
         "tsconfig.tsbuildinfo"

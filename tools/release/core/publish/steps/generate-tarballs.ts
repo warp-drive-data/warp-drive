@@ -526,7 +526,9 @@ async function makeTypesStable(pkg: Package) {
     );
   }
 
-  const hasInlineTypes = value.includes('./dist/index.d.ts');
+  // co-located types live under dist/ now, either as a literal "." entry
+  // (./dist/index.d.ts) or a wildcard subpath entry (./dist/*.d.ts)
+  const hasInlineTypes = value.includes('./dist/index.d.ts') || value.includes('./dist/*.d.ts');
 
   // enforce that the correct types directory is present
   const present = new Set(pkg.pkgData.files);
