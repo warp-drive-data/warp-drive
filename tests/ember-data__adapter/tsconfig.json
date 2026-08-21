@@ -1,5 +1,5 @@
 {
-  "include": ["app/**/*", "config/**/*", "tests/**/*"],
+  "include": ["tests/**/*", "services/**/*", "start.ts"],
   "compilerOptions": {
     "lib": ["DOM", "ESNext"],
     "module": "esnext",
@@ -20,7 +20,7 @@
     "experimentalDecorators": true,
     "incremental": true,
     "declaration": true,
-    "types": ["ember-source/types"],
+    "types": ["ember-source/types", "vite/client"],
     "allowImportingTsExtensions": true,
     "composite": true,
     "declarationDir": "unstable-preview-types",
@@ -74,6 +74,12 @@
     },
     {
       "path": "../../warp-drive-packages/ember"
+    },
+    {
+      "path": "../../warp-drive-packages/legacy"
+    },
+    {
+      "path": "../../warp-drive-packages/utilities"
     }
   ]
 }
