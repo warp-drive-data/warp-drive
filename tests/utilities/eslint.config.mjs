@@ -12,7 +12,7 @@ export default [
   // browser (js/ts) ================
   typescript.browser({
     dirname: import.meta.dirname,
-    srcDirs: ['app', 'tests'],
+    srcDirs: ['services', 'models', 'tests'],
     allowedImports: ['@ember/application'],
   }),
 
