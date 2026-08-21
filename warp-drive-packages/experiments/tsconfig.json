@@ -23,7 +23,6 @@
     "rootDir": "src",
     "declaration": true,
     "declarationMap": true,
-    "declarationDir": "declarations",
     "inlineSourceMap": true,
     "inlineSources": true,
     "types": [],

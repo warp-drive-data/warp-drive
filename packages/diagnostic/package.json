@@ -25,7 +25,6 @@
   "license": "MIT",
   "author": "Chris Thoburn <runspired@users.noreply.github.com>",
   "files": [
-    "unstable-preview-types",
     "addon-main.cjs",
     "dist/",
     "server/",
@@ -39,11 +38,11 @@
       "bun": "./server/index.js",
       "deno": "./server/index.js",
       "browser": {
-        "types": "./unstable-preview-types/index.d.ts",
+        "types": "./dist/index.d.ts",
         "default": "./dist/index.js"
       },
       "import": {
-        "types": "./unstable-preview-types/index.d.ts",
+        "types": "./dist/index.d.ts",
         "default": "./dist/index.js"
       },
       "default": "./server/index.js"
@@ -57,11 +56,11 @@
       "deno": "./server/*.js"
     },
     "./ember": {
-      "types": "./unstable-preview-types/ember.d.ts",
+      "types": "./dist/ember.d.ts",
       "default": "./dist/ember.js"
     },
     "./*": {
-      "types": "./unstable-preview-types/*.d.ts",
+      "types": "./dist/*.d.ts",
       "default": "./dist/*.js"
     }
   },

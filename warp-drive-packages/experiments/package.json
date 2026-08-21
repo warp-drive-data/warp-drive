@@ -13,30 +13,29 @@
   "bugs": "https://github.com/warp-drive-data/warp-drive/issues",
   "exports": {
     "./document-storage": {
-      "types": "./declarations/document-storage.d.ts",
+      "types": "./dist/document-storage.d.ts",
       "default": "./dist/document-storage.js"
     },
     "./data-worker": {
-      "types": "./declarations/data-worker.d.ts",
+      "types": "./dist/data-worker.d.ts",
       "default": "./dist/data-worker.js"
     },
     "./worker-fetch": {
-      "types": "./declarations/worker-fetch.d.ts",
+      "types": "./dist/worker-fetch.d.ts",
       "default": "./dist/worker-fetch.js"
     },
     "./image-worker": {
-      "types": "./declarations/image-worker.d.ts",
+      "types": "./dist/image-worker.d.ts",
       "default": "./dist/image-worker.js"
     },
     "./image-fetch": {
-      "types": "./declarations/image-fetch.d.ts",
+      "types": "./dist/image-fetch.d.ts",
       "default": "./dist/image-fetch.js"
     }
   },
   "files": [
     "addon-main.cjs",
     "dist",
-    "declarations",
     "CHANGELOG.md",
     "README.md",
     "LICENSE.md",

@@ -50,8 +50,6 @@
         "dist/**",
         // secondary CJS build for packages exposing `.cjs` subpath exports
         "cjs-dist/**",
-        "unstable-preview-types/**",
-        "declarations/**",
         "tsconfig.tsbuildinfo"
       ],
       "dependsOn": ["^build:pkg"],
@@ -124,9 +122,7 @@
         "addon-test-support/**",
         // V2-Addon convention
         "dist/**",
-        "dist-test/**",
-        "declarations/**",
-        "unstable-preview-types/**"
+        "dist-test/**"
       ],
       "dependsOn": ["^build:pkg"],
       "env": [
@@ -163,9 +159,7 @@
         "addon-test-support/**",
         // V2-Addon convention
         "dist/**",
-        "dist-test/**",
-        "declarations/**",
-        "unstable-preview-types/**"
+        "dist-test/**"
       ],
       "dependsOn": ["^build:pkg"],
       "env": [

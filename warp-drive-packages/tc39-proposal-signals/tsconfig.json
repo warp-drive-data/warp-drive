@@ -6,7 +6,6 @@
     "moduleResolution": "bundler",
     "skipLibCheck": true,
     "disableSourceOfProjectReferenceRedirect": false,
-    "declarationDir": "declarations",
     "emitDeclarationOnly": true,
     "checkJs": false,
     "alwaysStrict": true,

@@ -8,7 +8,6 @@ import { babel } from '@rollup/plugin-babel';
 import { defineConfig } from 'tsdown';
 
 import { entryPoints, explicitExternals, external } from '../rollup/external.js';
-import { MoveTypesToDestination } from './move-types.js';
 
 /**
  * Vite/Rollup's own resolver implements Node's "self-referencing a package
@@ -194,7 +193,6 @@ export function createConfig(options, resolve) {
       forceBundleOverEmberExternals(options),
       ...ember(withMacroImportsAlwaysBabeled(options.ember)),
       options.jsx ? jsxBabel() : null,
-      options.compileTypes ? MoveTypesToDestination(options, resolve) : null,
       ...(options.plugins || []),
     ].filter(Boolean),
   });

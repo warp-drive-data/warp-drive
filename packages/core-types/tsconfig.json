@@ -38,7 +38,6 @@
     // maps in your `ember-cli-babel` config and/or `babel.config.js`.
     "declaration": true,
     "declarationMap": true,
-    "declarationDir": "unstable-preview-types",
     "inlineSourceMap": true,
     "inlineSources": true,
     "baseUrl": ".",

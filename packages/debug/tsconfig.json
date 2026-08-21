@@ -25,7 +25,6 @@
     "experimentalDecorators": true,
     "declaration": true,
     "declarationMap": true,
-    "declarationDir": "unstable-preview-types",
     "inlineSourceMap": true,
     "inlineSources": true,
     "types": ["ember-source/types"],
