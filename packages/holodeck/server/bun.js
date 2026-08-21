@@ -8,6 +8,7 @@ import fs from 'node:fs';
 import path from 'path';
 import { Worker, threadId, parentPort } from 'node:worker_threads';
 import {
+  bindWithRetry,
   compress,
   createCloseHandler,
   DEFAULT_PORT,
@@ -307,15 +308,17 @@ async function _createServer(options) {
     hostname: options.hostname ?? 'localhost',
   };
 
-  const server = Bun.serve({
-    fetch: app.fetch,
-    tls: {
-      key: KEY,
-      cert: CERT,
-    },
-    port: location.port,
-    hostname: location.hostname,
-  });
+  const server = await bindWithRetry(() =>
+    Bun.serve({
+      fetch: app.fetch,
+      tls: {
+        key: KEY,
+        cert: CERT,
+      },
+      port: location.port,
+      hostname: location.hostname,
+    })
+  );
 
   console.log(
     `\tServing Holodeck HTTP Mocks from ${chalk.yellow('https://') + chalk.magenta(location.hostname + ':') + chalk.yellow(location.port)}\n`
