@@ -39,7 +39,8 @@
   "scripts": {
     "build:pkg": "tsdown",
     "prepack": "pnpm run build:pkg",
-    "sync": "echo \"syncing\""
+    "sync": "echo \"syncing\"",
+    "check:types": "tsc --noEmit"
   },
   "peerDependencies": {
     "@ember/test-helpers": "3.3.0 || ^4.0.4 || ^5.1.0",

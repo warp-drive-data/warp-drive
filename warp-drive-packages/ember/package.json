@@ -19,7 +19,8 @@
     "prepack": "pnpm run build:pkg",
     "sync": "echo \"syncing\"",
     "_temporarily_deactivated_lint": "eslint . --quiet --cache --cache-strategy=content",
-    "start": "tsdown --watch"
+    "start": "tsdown --watch",
+    "check:types": "ember-tsc --noEmit"
   },
   "files": [
     "declarations",

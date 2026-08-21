@@ -16,6 +16,7 @@
     "build:pkg": "tsdown",
     "prepack": "pnpm run build:pkg",
     "lint": "eslint . --quiet --cache --cache-strategy=content",
+    "check:types": "tsc --noEmit",
     "sync": "echo \"syncing\"",
     "start": "tsdown --watch"
   },

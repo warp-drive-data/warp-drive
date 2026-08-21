@@ -11,6 +11,7 @@ export { setupGlobalHooks, configure } from './internals/config';
 export { PublicTestInfo } from './internals/run';
 
 export { module, test, todo, skip } from './-define';
+export type { Hooks as EmberHooks } from './-types';
 
 function shouldSkipModule<TC extends TestContext>(module: ModuleInfo<TC>): boolean {
   // if we have no filters, we should run everything
