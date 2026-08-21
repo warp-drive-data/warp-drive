@@ -1811,18 +1811,15 @@ importers:
       '@babel/core':
         specifier: ^7.28.3
         version: 7.28.3
+      '@babel/plugin-transform-typescript':
+        specifier: ^7.28.0
+        version: 7.29.7(@babel/core@7.28.3)
       '@babel/runtime':
         specifier: ^7.28.3
         version: 7.28.3
       '@ember-data/unpublished-test-infra':
         specifier: workspace:*
-        version: file:packages/unpublished-test-infra(6973837de3488c5faaacd5ffabd6ca05)
-      '@ember/edition-utils':
-        specifier: ^1.2.0
-        version: 1.2.0
-      '@ember/optional-features':
-        specifier: ^2.2.0
-        version: 2.2.0
+        version: file:packages/unpublished-test-infra(7f194dca85d1c9dc03c40ddeca57ee65)
       '@ember/test-helpers':
         specifier: 5.2.0
         version: 5.2.0(patch_hash=a1670a4e3977c846a5c2454f317f5a17cbd284aef3a676b190c98141536afb04)(7c1eb33138e746229cea5e7e565a34fb)
@@ -1832,18 +1829,27 @@ importers:
       '@embroider/addon-shim':
         specifier: ^1.10.0
         version: 1.10.0
+      '@embroider/core':
+        specifier: ^4.4.2
+        version: 4.4.2
       '@embroider/macros':
         specifier: ^1.20.6
         version: 1.20.6(@babel/core@7.28.3)
+      '@embroider/vite':
+        specifier: ^1.5.0
+        version: 1.5.0(5b7ff81b9dec3da9b574ea6a44e3bce8)
       '@glimmer/component':
         specifier: ^2.0.0
         version: 2.0.0
+      '@rollup/plugin-babel':
+        specifier: ^6.0.4
+        version: 6.0.4(@babel/core@7.28.3)(rollup@4.48.1)
       '@warp-drive/core':
         specifier: workspace:*
         version: file:warp-drive-packages/core(@babel/core@7.28.3)
       '@warp-drive/diagnostic':
         specifier: workspace:*
-        version: file:packages/diagnostic(962ef39f5a731d2a1b4ce88c467c2693)
+        version: file:packages/diagnostic(5f1ef0443180a498b44d6b68706ed1df)
       '@warp-drive/ember':
         specifier: workspace:*
         version: file:warp-drive-packages/ember(1adf99e055abba96ff2ddb1d049f661d)
@@ -1859,60 +1865,30 @@ importers:
       '@warp-drive/utilities':
         specifier: workspace:*
         version: file:warp-drive-packages/utilities(ac1631a7da983377f84b100525d730a6)
-      ember-auto-import:
-        specifier: ^2.13.1
-        version: 2.13.1
-      ember-cli:
-        specifier: ~6.12.0
-        version: 6.12.0
-      ember-cli-babel:
-        specifier: ^8.2.0
-        version: 8.2.0(@babel/core@7.28.3)
-      ember-cli-dependency-checker:
-        specifier: ^3.3.3
-        version: 3.3.3(ember-cli@6.12.0)
-      ember-cli-htmlbars:
-        specifier: ^7.0.1
-        version: 7.0.1(7c1eb33138e746229cea5e7e565a34fb)
-      ember-cli-inject-live-reload:
-        specifier: ^2.1.0
-        version: 2.1.0
-      ember-cli-test-loader:
-        specifier: ^3.1.0
-        version: 3.1.0(@babel/core@7.28.3)
-      ember-disable-prototype-extensions:
-        specifier: ^1.1.3
-        version: 1.1.3
-      ember-load-initializers:
-        specifier: ^3.0.1
-        version: 3.0.1(d85bdc81123a97464a513818471b425c)
-      ember-maybe-import-regenerator:
-        specifier: ^1.0.0
-        version: 1.0.0(@babel/core@7.28.3)
-      ember-resolver:
-        specifier: ^13.1.1
-        version: 13.1.1(@babel/core@7.28.3)
+      babel-plugin-ember-template-compilation:
+        specifier: ^4.0.0
+        version: 4.0.0
+      decorator-transforms:
+        specifier: ^2.3.0
+        version: 2.4.0(@babel/core@7.28.3)
       ember-source:
         specifier: ~6.12.0
         version: 6.12.0(@glimmer/component@2.0.0)
-      ember-source-channel-url:
-        specifier: ^3.0.0
-        version: 3.0.0
-      ember-try:
-        specifier: ^4.0.0
-        version: 4.0.0
-      loader.js:
-        specifier: ^4.7.0
-        version: 4.7.0
-      silent-error:
-        specifier: ^1.1.1
-        version: 1.1.1
+      ember-strict-application-resolver:
+        specifier: ^0.1.0
+        version: 0.1.0(@babel/core@7.28.3)
+      rollup:
+        specifier: ^4.48.0
+        version: 4.48.1
+      terser:
+        specifier: ^5.39.0
+        version: 5.43.1
       typescript:
         specifier: 5.9.2
         version: 5.9.2
-      webpack:
-        specifier: 5.101.3
-        version: 5.101.3
+      vite:
+        specifier: ^7.3.1
+        version: 7.3.1(terser@5.43.1)
 
   tests/ember-data__model:
     devDependencies:
@@ -4310,6 +4286,11 @@ packages:
 
   '@babel/parser@7.28.4':
     resolution: {integrity: sha512-yZbBqeM6TkpP9du/I2pUZnJsRMGGvOuIrhjzC1AwHwW+6he4mni6Bp/m8ijn0iOuZuPI2BfkCoSRunpyjnrQKg==}
+    engines: {node: '>=6.0.0'}
+    hasBin: true
+
+  '@babel/parser@7.28.6':
+    resolution: {integrity: sha512-TeR9zWR18BvbfPmGbLampPMW+uW1NZnJlRuuHso8i87QZNq2JRF9i6RgxRqtEq+wQGsS19NNTWr2duhnE49mfQ==}
     engines: {node: '>=6.0.0'}
     hasBin: true
 
@@ -15362,9 +15343,9 @@ snapshots:
   '@babel/helper-create-class-features-plugin@7.27.1':
     dependencies:
       '@babel/helper-annotate-as-pure': 7.29.7
-      '@babel/helper-member-expression-to-functions': 7.29.7
-      '@babel/helper-optimise-call-expression': 7.29.7
-      '@babel/helper-replace-supers': 7.29.7
+      '@babel/helper-member-expression-to-functions': 7.27.1
+      '@babel/helper-optimise-call-expression': 7.27.1
+      '@babel/helper-replace-supers': 7.27.1
       '@babel/helper-skip-transparent-expression-wrappers': 7.29.7
       '@babel/traverse': 7.29.8
       semver: 6.3.1
@@ -15375,9 +15356,9 @@ snapshots:
     dependencies:
       '@babel/core': 7.28.3
       '@babel/helper-annotate-as-pure': 7.29.7
-      '@babel/helper-member-expression-to-functions': 7.29.7
-      '@babel/helper-optimise-call-expression': 7.29.7
-      '@babel/helper-replace-supers': 7.29.7(@babel/core@7.28.3)
+      '@babel/helper-member-expression-to-functions': 7.27.1
+      '@babel/helper-optimise-call-expression': 7.27.1
+      '@babel/helper-replace-supers': 7.27.1(@babel/core@7.28.3)
       '@babel/helper-skip-transparent-expression-wrappers': 7.29.7
       '@babel/traverse': 7.29.8
       semver: 6.3.1
@@ -15388,9 +15369,9 @@ snapshots:
     dependencies:
       '@babel/core': 7.29.7
       '@babel/helper-annotate-as-pure': 7.29.7
-      '@babel/helper-member-expression-to-functions': 7.29.7
-      '@babel/helper-optimise-call-expression': 7.29.7
-      '@babel/helper-replace-supers': 7.29.7(@babel/core@7.29.7)
+      '@babel/helper-member-expression-to-functions': 7.27.1
+      '@babel/helper-optimise-call-expression': 7.27.1
+      '@babel/helper-replace-supers': 7.27.1(@babel/core@7.29.7)
       '@babel/helper-skip-transparent-expression-wrappers': 7.29.7
       '@babel/traverse': 7.29.8
       semver: 6.3.1
@@ -15733,6 +15714,10 @@ snapshots:
   '@babel/parser@7.28.4':
     dependencies:
       '@babel/types': 7.28.4
+
+  '@babel/parser@7.28.6':
+    dependencies:
+      '@babel/types': 7.29.8
 
   '@babel/parser@7.29.8':
     dependencies:
@@ -16845,7 +16830,7 @@ snapshots:
       '@babel/helper-module-imports': 7.29.7
       '@babel/helper-plugin-utils': 7.29.7
       '@babel/plugin-syntax-jsx': 7.27.1(@babel/core@7.28.3)
-      '@babel/types': 7.29.8
+      '@babel/types': 7.28.4
     transitivePeerDependencies:
       - supports-color
 
@@ -18163,10 +18148,10 @@ snapshots:
 
   '@embroider/addon-shim@1.10.2':
     dependencies:
-      '@embroider/shared-internals': 3.1.1
+      '@embroider/shared-internals': 3.0.2
       broccoli-funnel: 3.0.8
       common-ancestor-path: 1.0.1
-      semver: 7.8.5
+      semver: 7.7.3
     transitivePeerDependencies:
       - supports-color
 
@@ -22838,7 +22823,7 @@ snapshots:
   broccoli-plugin@1.3.1:
     dependencies:
       promise-map-series: 0.2.3
-      quick-temp: 0.1.9
+      quick-temp: 0.1.8
       rimraf: 2.7.1
       symlink-or-copy: 1.3.1
 
@@ -24184,7 +24169,7 @@ snapshots:
   ember-cli-version-checker@5.1.2:
     dependencies:
       resolve-package-path: 3.1.0
-      semver: 7.8.5
+      semver: 7.7.3
       silent-error: 1.1.1
     transitivePeerDependencies:
       - supports-color
@@ -24607,8 +24592,8 @@ snapshots:
 
   ember-router-generator@2.0.0:
     dependencies:
-      '@babel/parser': 7.29.8
-      '@babel/traverse': 7.29.8
+      '@babel/parser': 7.28.6
+      '@babel/traverse': 7.28.6
       recast: 0.18.10
     transitivePeerDependencies:
       - supports-color
