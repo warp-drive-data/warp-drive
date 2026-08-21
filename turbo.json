@@ -58,6 +58,19 @@
         "tsconfig.tsbuildinfo"
       ],
       "dependsOn": ["^build:pkg"],
+      // Remote caching for this task has proven unreliable in CI: a job
+      // restoring another job's cached build:pkg output has repeatedly
+      // gotten an incomplete copy (missing files like dist/addon-shim.cjs
+      // or dist/build-config/babel-macros.js) while turbo reports a normal
+      // cache hit -- observed across multiple freshly-computed hashes, so
+      // it isn't a single stale/poisoned entry. 15 consecutive local
+      // `tsdown` builds of @warp-drive/core all produced complete output,
+      // ruling out build nondeterminism -- the corruption is specific to
+      // restoring the cache in a *different* job than the one that wrote
+      // it. Disabling caching entirely for build:pkg trades a small amount
+      // of redundant (but fast, ~15s for all 35 packages) rebuild work per
+      // job for not depending on that cross-job restore path at all.
+      "cache": false,
       // https://turbo.build/repo/docs/reference/configuration#outputLogs
       "outputLogs": "new-only",
       // NODE_ENV, EMBER_DATA_FULL_COMPAT, and BABEL_DISABLE_CACHE are only read by
