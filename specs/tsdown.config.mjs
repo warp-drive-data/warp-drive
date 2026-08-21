@@ -1,15 +1,13 @@
-import { createConfig } from '@warp-drive/internal-config/vite/config.js';
+import { createConfig } from '@warp-drive/internal-config/tsdown/config.js';
 
 export const externals = [];
 
 export const entryPoints = ['./src/*.spec.ts'];
 
-const viteConfig = createConfig(
+export default createConfig(
   {
     entryPoints,
     externals,
   },
   import.meta.resolve
 );
-
-export default viteConfig;

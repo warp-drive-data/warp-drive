@@ -72,7 +72,6 @@
     "ember-provide-consume-context": "^0.8.0",
     "ember-source": "~6.12.0",
     "ember-template-imports": "^4.3.0",
-    "rollup": "^4.48.0",
     "tsdown": "^0.22.14",
     "typescript": "^5.9.3"
   },
