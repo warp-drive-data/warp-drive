@@ -50,5 +50,12 @@
   "bun.debugTerminal.enabled": true,
   "eslint.debug": true,
   "eslint.runtime": "node",
-  "typescript.tsdk": "node_modules/typescript/lib"
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "workbench.colorCustomizations": {
+    "titleBar.activeBackground": "#8e44ad",
+    "titleBar.activeForeground": "#ffffff",
+    "titleBar.inactiveBackground": "#8e44ad",
+    "titleBar.inactiveForeground": "#ffffff99"
+  },
+  "window.title": "⎇ undo-sync   ${rootName}${separator}${appName}"
 }
