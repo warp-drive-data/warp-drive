@@ -18,12 +18,12 @@
     "warp-drive"
   ],
   "scripts": {
-    "build:pkg": "NODE_ENV=production tsdown",
+    "build:pkg": "NODE_ENV=production node node_modules/tsdown/dist/run.mjs",
     "prepack": "pnpm run build:pkg",
     "sync": "echo \"syncing\"",
     "lint": "eslint . --quiet --cache --cache-strategy=content",
     "check:types": "tsc --noEmit",
-    "start": "tsdown --watch"
+    "start": "node node_modules/tsdown/dist/run.mjs --watch"
   },
   "files": [
     "addon-main.cjs",

@@ -14,11 +14,11 @@
   "license": "MIT",
   "author": "Chris Thoburn <runspired@users.noreply.github.com>",
   "scripts": {
-    "build:pkg": "tsdown; tsdown -c ./tsdown.config-cjs.mjs;",
+    "build:pkg": "node node_modules/tsdown/dist/run.mjs; node node_modules/tsdown/dist/run.mjs -c ./tsdown.config-cjs.mjs;",
     "prepack": "pnpm run build:pkg",
     "sync": "echo \"syncing\"",
     "_temporarily_deactivated_lint": "eslint . --quiet --cache --cache-strategy=content",
-    "start": "tsdown --watch",
+    "start": "node node_modules/tsdown/dist/run.mjs --watch",
     "check:types": "tsc --noEmit"
   },
   "type": "module",

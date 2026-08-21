@@ -36,7 +36,7 @@
     "test": "tests"
   },
   "scripts": {
-    "build:pkg": "tsdown",
+    "build:pkg": "node node_modules/tsdown/dist/run.mjs",
     "prepack": "pnpm run build:pkg",
     "sync": "echo \"syncing\"",
     "check:types": "tsc --noEmit"
