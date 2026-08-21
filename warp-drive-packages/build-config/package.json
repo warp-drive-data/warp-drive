@@ -14,7 +14,7 @@
   "license": "MIT",
   "author": "Chris Thoburn <runspired@users.noreply.github.com>",
   "scripts": {
-    "build:pkg": "node node_modules/tsdown/dist/run.mjs && node node_modules/tsdown/dist/run.mjs -c ./tsdown.config-cjs.mjs",
+    "build:pkg": "node node_modules/tsdown/dist/run.mjs && node node_modules/tsdown/dist/run.mjs -c ./tsdown.config-cjs.mjs && test -s dist/addon-shim.cjs && test -s dist/cjs-set-config.cjs && test -s dist/babel-plugin-transform-asserts.cjs && test -s dist/babel-plugin-transform-deprecations.cjs && test -s dist/babel-plugin-transform-features.cjs && test -s dist/babel-plugin-transform-logging.cjs",
     "prepack": "pnpm run build:pkg",
     "sync": "echo \"syncing\"",
     "_temporarily_deactivated_lint": "eslint . --quiet --cache --cache-strategy=content",
