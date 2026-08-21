@@ -11,7 +11,7 @@ export default [
   // browser (js/ts) ================
   js.browser({
     dirname: import.meta.dirname,
-    srcDirs: ['app'],
+    srcDirs: ['models', 'mixins', 'routes', 'services'],
     allowedImports: ['@ember/application', '@ember/object', '@ember/routing/route', '@ember/service'],
   }),
 

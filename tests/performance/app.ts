@@ -1,11 +1,13 @@
+import '@warp-drive/ember/install';
+
 import EmberRouter from '@ember/routing/router';
 
-import config from './config/environment';
+import Application from 'ember-strict-application-resolver';
 
-const Router = EmberRouter.extend({
-  location: config.locationType,
-  rootURL: config.rootURL,
-});
+class Router extends EmberRouter {
+  location = 'history';
+  rootURL = '/';
+}
 
 Router.map(function () {
   this.route('basic-record-materialization');
@@ -24,4 +26,15 @@ Router.map(function () {
   this.route('update-with-same-state-m2m');
 });
 
-export default Router;
+class App extends Application {
+  modules = {
+    './router': { default: Router },
+    ...import.meta.glob('./models/*.js', { eager: true }),
+    ...import.meta.glob('./mixins/*.js', { eager: true }),
+    ...import.meta.glob('./routes/*.js', { eager: true }),
+    ...import.meta.glob('./services/*.ts', { eager: true }),
+    ...import.meta.glob('./templates/*.hbs', { eager: true }),
+  };
+}
+
+export default App;
