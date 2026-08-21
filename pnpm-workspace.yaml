@@ -39,6 +39,22 @@ blockExoticSubdeps: true
 ##
 trustPolicy: no-downgrade
 
+## Trust-downgrade checks are only meaningful for *recently* published
+## versions, where a drop in provenance is a real signal of a hijacked
+## account. For a version published long enough ago that the community
+## would have already flagged an actual incident, a missing/weaker trust
+## signal is far more likely to be inconsistent publish tooling (common
+## for native-binary packages that ship per-platform builds, e.g.
+## @oxc-parser's platform binaries) than an active compromise.
+##
+## 1051200 minutes = 2 years -- long enough that "published a while ago"
+## reliably means "aged past the danger window", rather than tying this to
+## the much shorter minimumReleaseAge above, which is about delaying
+## brand-new releases rather than judging whether a trust regression is
+## still a meaningful signal.
+##
+trustPolicyIgnoreAfter: 1051200
+
 packages:
   - "packages/*"
   - "tools/*"
