@@ -18,6 +18,17 @@ env:
   TURBO_TOKEN: this-is-not-a-secret
   TURBO_TEAM: myself
 
+# felixmosh/turborepo-gh-artifacts (our remote-cache proxy) looks up existing
+# artifacts via the Actions API before uploading a new one. Without an explicit
+# `actions: read` grant, that lookup silently fails, so it can't find artifacts
+# it just wrote moments earlier in the same or an upstream job -- it re-uploads
+# duplicates under the same hash and callers restoring that hash can get an
+# incomplete/wrong copy, which is indistinguishable from a "poisoned" cache
+# entry. See https://github.com/felixmosh/turborepo-gh-artifacts/issues/5.
+permissions:
+  contents: read
+  actions: read
+
 concurrency:
   group: ci-main-${{ github.head_ref || github.ref_name }}
   cancel-in-progress: true
