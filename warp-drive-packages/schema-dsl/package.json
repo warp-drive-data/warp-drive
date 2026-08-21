@@ -13,12 +13,12 @@
   "homepage": "https://github.com/warp-drive-data/warp-drive",
   "bugs": "https://github.com/warp-drive-data/warp-drive/issues",
   "scripts": {
-    "build:pkg": "tsdown",
+    "build:pkg": "node node_modules/tsdown/dist/run.mjs",
     "prepack": "pnpm run build:pkg",
     "lint": "eslint . --quiet --cache --cache-strategy=content",
     "check:types": "tsc --noEmit",
     "sync": "echo \"syncing\"",
-    "start": "tsdown --watch"
+    "start": "node node_modules/tsdown/dist/run.mjs --watch"
   },
   "files": [
     "dist",

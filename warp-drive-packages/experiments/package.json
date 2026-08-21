@@ -44,10 +44,10 @@
   "scripts": {
     "lint": "eslint . --quiet --cache --cache-strategy=content",
     "check:types": "tsc --noEmit",
-    "build:pkg": "tsdown",
+    "build:pkg": "node node_modules/tsdown/dist/run.mjs",
     "prepack": "pnpm run build:pkg",
     "sync": "echo \"syncing\"",
-    "start": "tsdown --watch"
+    "start": "node node_modules/tsdown/dist/run.mjs --watch"
   },
   "peerDependencies": {
     "@sqlite.org/sqlite-wasm": "3.46.0-build2",
