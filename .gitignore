@@ -7,10 +7,12 @@ concat-stats-for
 dist
 dist-*
 cjs-dist
-tmp
+# transient release-packaging output synthesized from dist/ for alpha/beta
+# types-strategy packages (see tools/release/core/publish/steps/generate-tarballs.ts)
 unstable-preview-types
+preview-types
+tmp
 packages/*/addon
-declarations
 .svelte-kit/
 docs-viewer/docs.warp-drive.io/.vitepress/cache
 

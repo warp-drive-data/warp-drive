@@ -6,7 +6,6 @@
     "target": "esnext",
     "moduleResolution": "bundler",
     "moduleDetection": "force",
-    "declarationDir": "unstable-preview-types",
     "strict": true,
     "pretty": true,
     "exactOptionalPropertyTypes": false,
@@ -28,8 +27,6 @@
     "inlineSources": true,
     "types": ["ember-source/types"],
     "paths": {
-      "@warp-drive/core": ["../../warp-drive-packages/core/declarations"],
-      "@warp-drive/core/*": ["../../warp-drive-packages/core/declarations/*"],
       "@glimmer/validator": ["../../@types/@glimmer/validator.d.ts"]
     },
     "allowImportingTsExtensions": true,

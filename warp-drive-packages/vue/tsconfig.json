@@ -6,9 +6,7 @@
     "moduleResolution": "bundler",
     "skipLibCheck": true,
     "disableSourceOfProjectReferenceRedirect": false,
-    "declarationDir": "declarations",
     "emitDeclarationOnly": true,
-    "allowJs": true,
     "checkJs": false,
     "alwaysStrict": true,
     "strict": true,
@@ -25,7 +23,6 @@
     "noEmitOnError": false,
     "strictNullChecks": true,
     "noErrorTruncation": true,
-    "preserveConstEnums": false,
     "experimentalDecorators": true,
     // Enable faster builds
     // but causes us to not rebuild properly
@@ -38,10 +35,6 @@
     "inlineSources": true,
     "baseUrl": ".",
     "allowImportingTsExtensions": true,
-    "paths": {
-      "@warp-drive/core": ["../core/src"],
-      "@warp-drive/core/*": ["../core/src/*"]
-    },
     "erasableSyntaxOnly": true,
     "isolatedDeclarations": true,
     "isolatedModules": true,

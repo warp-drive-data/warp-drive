@@ -9,7 +9,7 @@
   },
   "scripts": {
     "takeoff": "FORCE_COLOR=2 pnpm install --prefer-offline --reporter=append-only",
-    "prepare": "export TURBO_FORCE=true; turbo run build:pkg --log-order=stream --concurrency=23;",
+    "prepare": "turbo run build:pkg --log-order=stream --concurrency=23;",
     "release": "./tools/release/index.ts",
     "build": "turbo run build:pkg --log-order=stream --concurrency=10;",
     "sync": "pnpm --filter './packages/*' run --parallel --if-present sync",
@@ -24,9 +24,7 @@
     "lint:prettier": "prettier --check --cache --cache-location=.prettier-cache --log-level=warn .",
     "lint:prettier:fix": "prettier --write --cache --cache-location=.prettier-cache --log-level=warn .",
     "preinstall": "npx only-allow pnpm",
-    "check:test-types": "turbo --log-order=stream check:types --filter=./{tests,tools}/* --continue --concurrency=10",
-    "check:types:pkg": "pnpm exec ember-tsc --build",
-    "check:types": "bun run check:test-types",
+    "check:types": "turbo --log-order=stream check:types --continue --concurrency=10",
     "test": "pnpm turbo test --concurrency=1 --log-order=stream",
     "test:production": "pnpm turbo test:production --concurrency=1 --log-order=stream",
     "test:blueprints": "pnpm run -r --workspace-concurrency=-1 --if-present test:blueprints",
@@ -40,7 +38,7 @@
     "@warp-drive/internal-docs-viewer": "workspace:*",
     "@warp-drive/internal-tooling": "workspace:*",
     "badge-maker": "5.0.2",
-    "bun-types": "^1.2.20",
+    "bun-types": "^1.4.0",
     "chalk": "^4.1.2",
     "co": "^4.6.0",
     "command-line-args": "^6.0.1",
@@ -57,7 +55,7 @@
     "rimraf": "^6.0.1",
     "semver": "^7.7.2",
     "silent-error": "^1.1.1",
-    "typedoc": "^0.28.10",
+    "typedoc": "^0.28.20",
     "typescript": "^5.9.3",
     "url": "^0.11.4",
     "yuidocjs": "^0.10.2",
@@ -70,13 +68,13 @@
     "node": ">= 25.5.0",
     "yarn": "use pnpm",
     "npm": "use pnpm",
-    "pnpm": "10.15.0"
+    "pnpm": "10.34.5"
   },
   "volta": {
     "node": "25.5.0",
-    "pnpm": "10.15.0"
+    "pnpm": "10.34.5"
   },
-  "packageManager": "pnpm@10.15.0",
+  "packageManager": "pnpm@10.34.5",
   "changelog": {
     "cacheDir": ".changelog-cache",
     "labels": {

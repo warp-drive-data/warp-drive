@@ -24,18 +24,11 @@
     "incremental": true,
     "declaration": true,
     "declarationMap": true,
-    "declarationDir": "unstable-preview-types",
     "inlineSourceMap": true,
     "inlineSources": true,
     "types": ["ember-source/types"],
     "paths": {
-      "ember-data-qunit-asserts": ["../../@types/ember-data-qunit-asserts"],
-      "@warp-drive/diagnostic": ["../diagnostic/unstable-preview-types"],
-      "@warp-drive/diagnostic/*": ["../diagnostic/unstable-preview-types/*"],
-      "@warp-drive/core": ["../../warp-drive-packages/core/declarations"],
-      "@warp-drive/core/*": ["../../warp-drive-packages/core/declarations/*"],
-      "@warp-drive/utilities": ["../../warp-drive-packages/utilities/declarations"],
-      "@warp-drive/utilities/*": ["../../warp-drive-packages/utilities/declarations/*"]
+      "ember-data-qunit-asserts": ["../../@types/ember-data-qunit-asserts"]
     },
     "allowImportingTsExtensions": true,
     "erasableSyntaxOnly": true,

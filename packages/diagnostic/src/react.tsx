@@ -57,12 +57,6 @@ export interface SetupContextOptions {
   strictMode?: boolean;
 }
 
-declare module "./-types" {
-  interface Diagnostic {
-    dom: Assert["dom"];
-  }
-}
-
 // we do not use act because React incorrectly thinks updates can only come from internal
 // to itself when using it. TL;DR react never expects to be embedded or for external
 // reactive updates to occur.

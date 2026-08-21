@@ -6,7 +6,6 @@
     "moduleResolution": "bundler",
     "skipLibCheck": true,
     "disableSourceOfProjectReferenceRedirect": false,
-    "declarationDir": "declarations",
     "emitDeclarationOnly": true,
     "allowJs": false,
     "checkJs": false,
@@ -39,12 +38,6 @@
     "baseUrl": ".",
     "types": [],
     "allowImportingTsExtensions": true,
-    "paths": {
-      "@warp-drive/core": ["../core/declarations"],
-      "@warp-drive/core/*": ["../core/declarations/*"],
-      "@warp-drive/tc39-proposal-signals": ["../tc39-proposal-signals/declarations"],
-      "@warp-drive/tc39-proposal-signals/*": ["../tc39-proposal-signals/declarations/*"]
-    },
     "erasableSyntaxOnly": true,
     "isolatedDeclarations": true,
     "isolatedModules": true,

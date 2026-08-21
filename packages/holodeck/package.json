@@ -32,19 +32,18 @@
     "README.md",
     "LICENSE.md",
     "server",
-    "declarations",
     "logos"
   ],
   "bin": {
     "ensure-cert": "./server/ensure-cert.js"
   },
   "scripts": {
-    "check:pkg-types": "tsc --noEmit",
-    "build:pkg": "vite build",
+    "check:types": "tsc --noEmit",
+    "build:pkg": "tsdown",
     "prepack": "pnpm run build:pkg",
     "sync": "echo \"syncing\"",
     "_temporarily_deactivated_lint": "eslint . --quiet --cache --cache-strategy=content",
-    "start": "vite"
+    "start": "tsdown --watch"
   },
   "peerDependencies": {
     "@warp-drive/utilities": "workspace:*",
@@ -69,7 +68,7 @@
     "@warp-drive/legacy": "workspace:*",
     "@warp-drive/core": "workspace:*",
     "@warp-drive/internal-config": "workspace:*",
-    "vite": "^7.3.1"
+    "tsdown": "^0.22.14"
   },
   "exports": {
     ".": {
@@ -77,17 +76,17 @@
       "bun": "./server/index.js",
       "deno": "./server/index.js",
       "browser": {
-        "types": "./declarations/index.d.ts",
+        "types": "./dist/index.d.ts",
         "default": "./dist/index.js"
       },
       "import": {
-        "types": "./declarations/index.d.ts",
+        "types": "./dist/index.d.ts",
         "default": "./dist/index.js"
       },
       "default": "./server/index.js"
     },
     "./mock": {
-      "types": "./declarations/mock.d.ts",
+      "types": "./dist/mock.d.ts",
       "default": "./dist/mock.js"
     }
   }

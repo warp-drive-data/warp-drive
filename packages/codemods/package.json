@@ -14,14 +14,15 @@
     "build:cli": "bun build src/cli/index.ts --target node --outdir dist --sourcemap --external @ast-grep/napi",
     "build:pkg": "tsc",
     "prepack": "pnpm run build:cli",
-    "lint": "eslint . --quiet --cache --cache-strategy=content"
+    "lint": "eslint . --quiet --cache --cache-strategy=content",
+    "check:types": "tsc --noEmit"
   },
   "exports": {
     ".": {
       "default": "./src/index.ts"
     },
     "./schema-migration/*": {
-      "types": "./unstable-preview-types/src/schema-migration/*",
+      "types": "./dist/src/schema-migration/*",
       "default": "./src/schema-migration/*"
     }
   },
@@ -31,8 +32,7 @@
     "utils",
     "codemods",
     "logos",
-    "LICENSE.md",
-    "unstable-preview-types"
+    "LICENSE.md"
   ],
   "author": "",
   "license": "MIT",
@@ -50,7 +50,7 @@
     "winston": "^3.17.0"
   },
   "devDependencies": {
-    "@types/bun": "^1.2.20",
+    "@types/bun": "^1.4.0",
     "@types/inquirer": "^9.0.0",
     "@types/jscodeshift": "^17.3.0",
     "@types/node": "22.15.3",

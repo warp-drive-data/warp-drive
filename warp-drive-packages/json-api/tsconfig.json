@@ -34,17 +34,12 @@
     "baseUrl": ".",
     "declaration": true,
     "declarationMap": true,
-    "declarationDir": "declarations",
     "inlineSourceMap": true,
     "inlineSources": true,
     "erasableSyntaxOnly": true,
     "isolatedDeclarations": true,
     "isolatedModules": true,
     "types": ["ember-source/types"],
-    "paths": {
-      "@warp-drive/core": ["../core/declarations"],
-      "@warp-drive/core/*": ["../core/declarations/*"]
-    },
     "checkJs": false,
     "allowJs": false
   },

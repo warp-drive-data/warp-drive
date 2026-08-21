@@ -16,10 +16,10 @@
   },
   "scripts": {
     "lint": "eslint . --quiet --cache --cache-strategy=content",
-    "build:pkg": "vite build",
+    "build:pkg": "tsdown",
     "prepack": "pnpm run build:pkg",
     "sync": "echo \"syncing\"",
-    "start": "vite"
+    "start": "tsdown --watch"
   },
   "ember-addon": {
     "main": "addon-main.cjs",
@@ -41,16 +41,15 @@
     "dist",
     "app",
     "blueprints",
-    "unstable-preview-types",
     "logos"
   ],
   "exports": {
     ".": {
-      "types": "./unstable-preview-types/index.d.ts",
+      "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
     },
     "./test-support": {
-      "types": "./unstable-preview-types/test-support/index.d.ts",
+      "types": "./dist/test-support/index.d.ts",
       "default": "./dist/test-support/index.js"
     },
     "./app/*": {
@@ -60,7 +59,7 @@
       "default": "./blueprints/*.js"
     },
     "./*": {
-      "types": "./unstable-preview-types/*.d.ts",
+      "types": "./dist/*.d.ts",
       "default": "./dist/*.js"
     }
   },
@@ -112,8 +111,8 @@
     "ember-source": "~6.12.0",
     "eslint": "^9.34.0",
     "qunit": "^2.18.0",
-    "typescript": "^5.9.3",
-    "vite": "^7.3.1"
+    "tsdown": "^0.22.14",
+    "typescript": "^5.9.3"
   },
   "ember": {
     "edition": "octane"

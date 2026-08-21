@@ -27,7 +27,6 @@
     "@ember/test-waiters": "^3.1.0 || ^4.0.0"
   },
   "files": [
-    "unstable-preview-types",
     "addon-main.cjs",
     "dist",
     "README.md",
@@ -36,16 +35,17 @@
   ],
   "exports": {
     ".": {
-      "types": "./unstable-preview-types/index.d.ts",
+      "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
     }
   },
   "scripts": {
     "lint": "eslint . --quiet --cache --cache-strategy=content",
-    "build:pkg": "vite build",
+    "check:types": "tsc --noEmit",
+    "build:pkg": "tsdown",
     "prepack": "pnpm run build:pkg",
     "sync": "echo \"syncing\"",
-    "start": "vite"
+    "start": "tsdown --watch"
   },
   "ember-addon": {
     "main": "addon-main.cjs",
@@ -65,8 +65,8 @@
     "@ember/test-waiters": "^4.1.1",
     "@warp-drive/internal-config": "workspace:*",
     "ember-source": "~6.12.0",
-    "typescript": "^5.9.3",
-    "vite": "^7.3.1"
+    "tsdown": "^0.22.14",
+    "typescript": "^5.9.3"
   },
   "ember": {
     "edition": "octane"

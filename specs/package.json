@@ -12,24 +12,23 @@
   "license": "MIT",
   "author": "",
   "scripts": {
-    "build:pkg": "vite build",
+    "build:pkg": "tsdown",
     "prepack": "pnpm run build:pkg",
     "lint": "eslint . --quiet --cache --cache-strategy=content",
     "sync": "echo \"syncing\"",
-    "start": "vite"
+    "start": "tsdown --watch"
   },
   "files": [
     "dist",
-    "declarations",
     "addon-main.cjs"
   ],
   "exports": {
     ".": {
-      "types": "./declarations/index.d.ts",
+      "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
     },
     "./*": {
-      "types": "./declarations/*.d.ts",
+      "types": "./dist/*.d.ts",
       "default": "./dist/*.js"
     }
   },
@@ -54,8 +53,8 @@
     "@warp-drive/json-api": "workspace:*",
     "@warp-drive/utilities": "workspace:*",
     "decorator-transforms": "^2.3.0",
-    "typescript": "^5.9.3",
-    "vite": "^7.3.1"
+    "tsdown": "^0.22.14",
+    "typescript": "^5.9.3"
   },
   "volta": {
     "extends": "../package.json"

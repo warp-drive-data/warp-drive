@@ -400,6 +400,42 @@ async function convertFileToModule(fileData: string, relativePath: string, pkgNa
   return updatedFileData;
 }
 
+/**
+ * alpha/beta types strategies publish a directory of ambient-module-wrapped
+ * `.d.ts` files (see `convertTypesToModules`) as an explicit opt-in subpath,
+ * kept separate from the package's normal `exports.types` (which
+ * `scrubTypesFromExports` removes for these strategies). Declarations now
+ * emit directly into `dist/` alongside the JS, co-located with no separate
+ * build-time output directory, so that directory has to be synthesized here
+ * at pack time instead of relying on one already existing on disk.
+ *
+ * @internal
+ */
+async function synthesizeTypesDirectoryFromDist(pkg: Package, subdir: 'unstable-preview-types' | 'preview-types') {
+  const pkgDir = path.join(PROJECT_ROOT, path.dirname(pkg.filePath));
+  const distDir = path.join(pkgDir, 'dist');
+  const targetDir = path.join(pkgDir, subdir);
+
+  // clear out anything stale from a previous run
+  fs.rmSync(targetDir, { recursive: true, force: true });
+
+  const glob = new Glob('**/*.d.ts');
+  let count = 0;
+  for await (const filePath of glob.scan(distDir)) {
+    const src = path.join(distDir, filePath);
+    const dest = path.join(targetDir, filePath);
+    fs.mkdirSync(path.dirname(dest), { recursive: true });
+    fs.copyFileSync(src, dest);
+    count++;
+  }
+
+  if (count === 0) {
+    throw new Error(
+      `No .d.ts files found in dist/ for ${pkg.pkgData.name} while synthesizing ${subdir} for its types strategy.`
+    );
+  }
+}
+
 async function convertTypesToModules(pkg: Package, subdir: 'unstable-preview-types' | 'preview-types' | 'types') {
   const typesDir = path.join(path.dirname(pkg.filePath), subdir);
   const glob = new Glob('**/*.d.ts');
@@ -463,13 +499,13 @@ function exposeTypes(pkg: Package, subdir: 'unstable-preview-types' | 'preview-t
 async function makeTypesAlpha(pkg: Package) {
   scrubTypesFromExports(pkg);
   exposeTypes(pkg, 'unstable-preview-types');
+  await synthesizeTypesDirectoryFromDist(pkg, 'unstable-preview-types');
 
-  // enforce that the correct types directory is present
+  // the directory is synthesized above rather than developer-declared, so
+  // just ensure it's listed for packing rather than requiring it upfront
   const present = new Set(pkg.pkgData.files);
   if (!present.has('unstable-preview-types')) {
-    throw new Error(
-      `Missing unstable-preview-types directory from published files for ${pkg.pkgData.name}. This package is using an alpha types strategy, and should thus publish an unstable-preview-types directory.`
-    );
+    pkg.pkgData.files!.push('unstable-preview-types');
   }
   if (present.has('preview-types')) {
     throw new Error(
@@ -490,13 +526,13 @@ async function makeTypesAlpha(pkg: Package) {
 async function makeTypesBeta(pkg: Package) {
   scrubTypesFromExports(pkg);
   exposeTypes(pkg, 'preview-types');
+  await synthesizeTypesDirectoryFromDist(pkg, 'preview-types');
 
-  // enforce that the correct types directory is present
+  // the directory is synthesized above rather than developer-declared, so
+  // just ensure it's listed for packing rather than requiring it upfront
   const present = new Set(pkg.pkgData.files);
   if (!present.has('preview-types')) {
-    throw new Error(
-      `Missing preview-types directory from published files for ${pkg.pkgData.name}. This package is using a beta types strategy, and should thus publish a preview-types directory.`
-    );
+    pkg.pkgData.files!.push('preview-types');
   }
   if (present.has('unstable-preview-types')) {
     throw new Error(
@@ -526,7 +562,9 @@ async function makeTypesStable(pkg: Package) {
     );
   }
 
-  const hasInlineTypes = value.includes('./dist/index.d.ts');
+  // co-located types live under dist/ now -- any "types" condition pointing
+  // into dist/ (literal ".", named subpath, or wildcard subpath) counts
+  const hasInlineTypes = /"types":"\.\/dist\//.test(value);
 
   // enforce that the correct types directory is present
   const present = new Set(pkg.pkgData.files);

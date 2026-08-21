@@ -1,3 +1,5 @@
+import type { Assert } from 'qunit-dom';
+
 import type { SuiteReport } from './-types/report';
 
 export type CompatTestReport = {
@@ -79,6 +81,15 @@ export type GlobalConfig<TC extends TestContext = TestContext> = {
 };
 
 export interface Diagnostic {
+  /**
+   * DOM assertion helpers from `qunit-dom`. Declared here (rather than via
+   * per-entry-point `declare module` augmentation, as `ember.ts`/`react.tsx`/
+   * `spec.ts` each used to do identically) because rolldown-plugin-dts's
+   * entry-based declaration bundling doesn't reliably preserve relative-path
+   * `declare module` augmentations once the augmented module is shared across
+   * 2+ curated entry points.
+   */
+  dom: Assert['dom'];
   equal<T>(actual: T, expected: T, message?: string): void;
   notEqual<T>(actual: T, expected: T, message?: string): void;
   deepEqual<T>(actual: T, expected: T, message?: string): void;

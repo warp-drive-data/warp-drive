@@ -90,6 +90,7 @@ jobs:
         # run fails fast and loud instead of silently eating the job timeout.
         run: timeout -k 30s 9m ${{ matrix.command }}
         env:
+          CI: true
           WARP_DRIVE_FEATURE_OVERRIDE: ${{ matrix.feature-override }}
           EMBER_DATA_FULL_COMPAT: ${{ matrix.full-compat }}
 

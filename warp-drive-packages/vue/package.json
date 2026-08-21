@@ -23,10 +23,10 @@
     "prepack": "pnpm run build:pkg",
     "sync": "echo \"syncing\"",
     "lint": "eslint . --quiet --cache --cache-strategy=content",
+    "check:types": "tsc --noEmit",
     "start": "tsdown --watch"
   },
   "files": [
-    "declarations",
     "addon-main.cjs",
     "dist",
     "README.md",
@@ -35,16 +35,16 @@
   ],
   "exports": {
     ".": {
-      "types": "./declarations/index.d.ts",
+      "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
     },
     "./*": {
-      "types": "./declarations/*.d.ts",
+      "types": "./dist/*.d.ts",
       "default": "./dist/*.js"
     }
   },
   "peerDependencies": {
-    "vue": "^3.5.19"
+    "vue": "^3.5.41"
   },
   "dependencies": {
     "@embroider/macros": "^1.20.6",
@@ -57,15 +57,13 @@
     "@babel/preset-env": "^7.28.3",
     "@babel/preset-typescript": "^7.27.1",
     "@babel/runtime": "^7.28.3",
-    "@embroider/addon-dev": "^8.1.0",
     "@warp-drive/core": "workspace:*",
     "@warp-drive/internal-config": "workspace:*",
     "decorator-transforms": "^2.3.0",
-    "rollup": "^4.48.0",
     "tsdown": "^0.22.14",
     "typescript": "^5.9.3",
     "unplugin-vue": "^7.2.0",
-    "vue": "^3.5.19",
+    "vue": "^3.5.41",
     "vue-tsc": "^3.0.6"
   },
   "volta": {

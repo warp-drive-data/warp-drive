@@ -88,18 +88,26 @@ runs:
       with:
         repo-token: ${{ inputs.repo-token }}
 
-    - name: Set Up Homebrew
-      if: ${{ inputs.with-cert == 'true' }}
-      id: set-up-homebrew
-      uses: Homebrew/actions/setup-homebrew@master
-
     - name: 'Setup SSL Cert Infra'
       if: ${{ inputs.with-cert == 'true' }}
       shell: bash
+      # We only need the mkcert binary itself, so we install it directly from
+      # its GitHub release instead of via Homebrew. The runner image ships
+      # Homebrew preinstalled, but the setup-homebrew action still ran a full
+      # `brew update` (git-fetching Homebrew/brew + refreshing the formula
+      # index) before `brew install mkcert` could run, costing ~20s per job
+      # for a stable, rarely-updated formula. Pinning the version + verifying
+      # its checksum keeps this at least as trustworthy as the Homebrew path.
       run: |
         sudo apt-get -y update
-        sudo apt install libnss3-tools
-        brew install mkcert
+        sudo apt-get -y install libnss3-tools
+
+        MKCERT_VERSION=v1.4.4
+        MKCERT_SHA256=6d31c65b03972c6dc4a14ab429f2928300518b26503f58723e532d1b0a3bbb52
+        curl -fsSL -o /tmp/mkcert "https://github.com/FiloSottile/mkcert/releases/download/${MKCERT_VERSION}/mkcert-${MKCERT_VERSION}-linux-amd64"
+        echo "${MKCERT_SHA256}  /tmp/mkcert" | sha256sum -c -
+        chmod +x /tmp/mkcert
+        sudo mv /tmp/mkcert /usr/local/bin/mkcert
 
     - name: 'Setup DBus for Chrome'
       shell: bash

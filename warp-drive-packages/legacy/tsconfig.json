@@ -32,16 +32,9 @@
     "rootDir": "src",
     "declaration": true,
     "declarationMap": true,
-    "declarationDir": "declarations",
     "inlineSourceMap": true,
     "inlineSources": true,
     "types": ["ember-source/types", "@types/jquery"],
-    "paths": {
-      "@warp-drive/core": ["../core/declarations"],
-      "@warp-drive/core/*": ["../core/declarations/*"],
-      "@warp-drive/utilities": ["../utilities/declarations"],
-      "@warp-drive/utilities/*": ["../utilities/declarations/*"]
-    },
     "checkJs": false,
     "erasableSyntaxOnly": true,
     "isolatedDeclarations": true,

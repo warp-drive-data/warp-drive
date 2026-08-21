@@ -18,12 +18,12 @@
     "prepack": "pnpm run build:pkg",
     "sync": "echo \"syncing\"",
     "_temporarily_deactivated_lint": "eslint . --quiet --cache --cache-strategy=content",
-    "start": "tsdown --watch"
+    "start": "tsdown --watch",
+    "check:types": "tsc --noEmit"
   },
   "type": "module",
   "files": [
     "dist",
-    "declarations",
     "CHANGELOG.md",
     "README.md",
     "LICENSE.md",
@@ -31,14 +31,14 @@
   ],
   "exports": {
     ".": {
-      "types": "./declarations/index.d.ts",
+      "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
     },
     "./*.cjs": {
       "default": "./dist/*.cjs"
     },
     "./*": {
-      "types": "./declarations/*.d.ts",
+      "types": "./dist/*.d.ts",
       "default": "./dist/*.js"
     }
   },

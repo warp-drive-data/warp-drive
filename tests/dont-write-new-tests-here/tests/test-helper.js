@@ -7,7 +7,7 @@ import { getPendingWaiterState } from '@ember/test-waiters';
 import * as QUnit from 'qunit';
 import { setup } from 'qunit-dom';
 
-import start from 'ember-exam/test-support/start';
+import { start as startEmberExam } from 'ember-exam/addon-test-support';
 
 import { setBuildURLConfig } from '@ember-data/request-utils';
 import configureAsserts from '@ember-data/unpublished-test-infra/test-support/asserts/index';
@@ -16,8 +16,8 @@ import { setConfig, setTestId } from '@warp-drive/holodeck';
 import { Model, restoreDeprecatedModelRequestBehaviors } from '@warp-drive/legacy/model';
 import { restoreDeprecatedStoreBehaviors } from '@warp-drive/legacy/store';
 
-import Application from '../app';
-import config from '../config/environment';
+import Application from '../app/app';
+import config from '../app/config/environment';
 
 restoreDeprecatedStoreBehaviors(Store);
 restoreDeprecatedModelRequestBehaviors(Model);
@@ -192,4 +192,16 @@ QUnit.hooks.afterEach(function (assert) {
 
 setup(QUnit.assert);
 setApplication(Application.create(config.APP));
-start({ setupEmberOnerrorValidation: false, setupTestIsolationValidation: true });
+
+// under vite, ember-exam's test loader needs an explicit map of
+// { modulePath: () => import(modulePath) } (built from `import.meta.glob`
+// in tests/index.html and passed in here as `availableModules`) instead of
+// relying on the classic AMD `requirejs.entries` registry to discover and
+// lazily load test modules for `--load-balance`/`--parallel` support.
+export async function start(options) {
+  await startEmberExam({
+    setupEmberOnerrorValidation: false,
+    setupTestIsolationValidation: true,
+    ...options,
+  });
+}

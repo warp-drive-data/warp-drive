@@ -14,26 +14,26 @@
   "author": "Chris Thoburn <runspired@users.noreply.github.com>",
   "scripts": {
     "lint": "eslint . --quiet --cache --cache-strategy=content",
-    "build:pkg": "vite build",
+    "check:types": "tsc --noEmit",
+    "build:pkg": "tsdown",
     "prepack": "pnpm run build:pkg",
     "sync": "echo \"syncing\"",
-    "start": "vite"
+    "start": "tsdown --watch"
   },
   "files": [
     "dist",
     "addon-main.cjs",
-    "unstable-preview-types",
     "README.md",
     "LICENSE.md",
     "logos"
   ],
   "exports": {
     ".": {
-      "types": "./unstable-preview-types/index.d.ts",
+      "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
     },
     "./*": {
-      "types": "./unstable-preview-types/*.d.ts",
+      "types": "./dist/*.d.ts",
       "default": "./dist/*.js"
     }
   },
@@ -46,8 +46,8 @@
     "@babel/plugin-transform-typescript": "^7.28.0",
     "@babel/preset-typescript": "^7.27.1",
     "@warp-drive/internal-config": "workspace:*",
-    "typescript": "^5.9.3",
-    "vite": "^7.3.1"
+    "tsdown": "^0.22.14",
+    "typescript": "^5.9.3"
   },
   "volta": {
     "extends": "../../package.json"

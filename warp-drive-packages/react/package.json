@@ -18,14 +18,14 @@
     "warp-drive"
   ],
   "scripts": {
-    "build:pkg": "vite build",
+    "build:pkg": "NODE_ENV=production tsdown",
     "prepack": "pnpm run build:pkg",
     "sync": "echo \"syncing\"",
     "lint": "eslint . --quiet --cache --cache-strategy=content",
-    "start": "vite"
+    "check:types": "tsc --noEmit",
+    "start": "tsdown --watch"
   },
   "files": [
-    "declarations",
     "addon-main.cjs",
     "dist",
     "README.md",
@@ -34,11 +34,11 @@
   ],
   "exports": {
     ".": {
-      "types": "./declarations/index.d.ts",
+      "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
     },
     "./*": {
-      "types": "./declarations/*.d.ts",
+      "types": "./dist/*.d.ts",
       "default": "./dist/*.js"
     }
   },
@@ -46,7 +46,7 @@
     "@embroider/macros": "^1.20.6",
     "@warp-drive/core": "workspace:*",
     "@warp-drive/tc39-proposal-signals": "workspace:*",
-    "react": "^19.1.1",
+    "react": "^19.2.8",
     "signal-polyfill": "^0.2.2"
   },
   "peerDependenciesMeta": {},
@@ -57,15 +57,13 @@
     "@babel/preset-react": "^7.27.1",
     "@babel/preset-typescript": "^7.27.1",
     "@babel/runtime": "^7.28.3",
-    "@embroider/addon-dev": "^8.1.0",
-    "@types/react": "^19.1.11",
+    "@types/react": "^19.2.18",
     "@warp-drive/core": "workspace:*",
     "@warp-drive/internal-config": "workspace:*",
     "decorator-transforms": "^2.3.0",
-    "react": "^19.1.1",
-    "rollup": "^4.48.0",
-    "typescript": "^5.9.3",
-    "vite": "^7.3.1"
+    "react": "^19.2.8",
+    "tsdown": "^0.22.14",
+    "typescript": "^5.9.3"
   },
   "volta": {
     "extends": "../../package.json"

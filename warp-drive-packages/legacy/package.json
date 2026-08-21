@@ -13,15 +13,15 @@
     "directory": "warp-drive-packages/legacy"
   },
   "scripts": {
-    "build:pkg": "vite build",
+    "build:pkg": "tsdown",
     "prepack": "pnpm run build:pkg",
     "lint": "eslint . --quiet --cache --cache-strategy=content",
+    "check:types": "tsc --noEmit",
     "sync": "echo \"syncing\"",
-    "start": "vite"
+    "start": "tsdown --watch"
   },
   "files": [
     "dist",
-    "declarations",
     "addon-main.cjs",
     "CHANGELOG.md",
     "README.md",
@@ -30,11 +30,11 @@
   ],
   "exports": {
     ".": {
-      "types": "./declarations/index.d.ts",
+      "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
     },
     "./*": {
-      "types": "./declarations/*.d.ts",
+      "types": "./dist/*.d.ts",
       "default": "./dist/*.js"
     }
   },
@@ -56,8 +56,8 @@
     "decorator-transforms": "^2.3.0",
     "ember-source": "~6.12.0",
     "expect-type": "^1.2.2",
-    "typescript": "^5.9.3",
-    "vite": "^7.3.1"
+    "tsdown": "^0.22.14",
+    "typescript": "^5.9.3"
   },
   "volta": {
     "extends": "../../package.json"

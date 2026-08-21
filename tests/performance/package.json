@@ -41,7 +41,7 @@
     "@glimmer/component": "^2.0.0",
     "@rollup/plugin-babel": "^6.0.4",
     "babel-plugin-ember-template-compilation": "^4.0.0",
-    "bun-types": "^1.2.20",
+    "bun-types": "^1.4.0",
     "decorator-transforms": "^2.3.0",
     "ember-auto-import": "^2.13.1",
     "ember-cli": "~6.12.0",

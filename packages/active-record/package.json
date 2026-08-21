@@ -20,21 +20,21 @@
     "dist",
     "README.md",
     "LICENSE.md",
-    "unstable-preview-types",
     "logos"
   ],
   "exports": {
     "./*": {
-      "types": "./unstable-preview-types/*.d.ts",
+      "types": "./dist/*.d.ts",
       "default": "./dist/*.js"
     }
   },
   "scripts": {
     "lint": "eslint . --quiet --cache --cache-strategy=content",
-    "build:pkg": "vite build",
+    "check:types": "tsc --noEmit",
+    "build:pkg": "tsdown",
     "prepack": "pnpm run build:pkg",
     "sync": "echo \"syncing\"",
-    "start": "vite"
+    "start": "tsdown --watch"
   },
   "ember-addon": {
     "main": "addon-main.cjs",
@@ -52,7 +52,7 @@
     "@babel/preset-typescript": "^7.27.1",
     "@warp-drive/internal-config": "workspace:*",
     "typescript": "^5.9.3",
-    "vite": "^7.3.1"
+    "tsdown": "^0.22.14"
   },
   "ember": {
     "edition": "octane"

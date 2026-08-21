@@ -3,10 +3,11 @@ import { createRequire, isBuiltin } from 'module';
 import path from 'path';
 
 import { ember } from '@nullvoxpopuli/ember-rolldown';
+import { id, include } from '@rolldown/pluginutils';
+import { babel } from '@rollup/plugin-babel';
 import { defineConfig } from 'tsdown';
 
 import { entryPoints, explicitExternals, external } from '../rollup/external.js';
-import { MoveTypesToDestination } from './move-types.js';
 
 /**
  * Vite/Rollup's own resolver implements Node's "self-referencing a package
@@ -122,6 +123,33 @@ function withMacroImportsAlwaysBabeled(emberOptions) {
   };
 }
 
+/**
+ * `@nullvoxpopuli/ember-build-tooling-utils`'s `maybeBabel()` (which powers
+ * `ember()`'s babel routing) matches against a hardcoded extension allowlist
+ * that mirrors Embroider's canonical Ember source extensions -- `.gjs`/`.gts`/
+ * `.js`/`.ts`/etc -- and does not include `.jsx`/`.tsx`. Its file-extension
+ * check is an AND-gate alongside the imports/decorator heuristics, so a
+ * `.tsx` file is *never* routed through babel by `ember()`, regardless of
+ * what it imports: `assert()`/macro calls in `.tsx` files silently survive
+ * unstripped into every build (dev and prod alike) otherwise. This runs a
+ * second, independent babel pass scoped to just `.jsx`/`.tsx`, reusing
+ * whatever babel config the package already has (auto-discovered, same as
+ * `ember()`'s own babel step) so JSX/macro/decorator handling stays
+ * consistent with `.ts`/`.gts` files in the same package.
+ */
+function jsxBabel() {
+  const plugin = babel({
+    babelHelpers: 'bundled',
+    extensions: ['.jsx', '.tsx'],
+  });
+  // `@rollup/plugin-babel`'s own `extensions`-based file matching isn't
+  // honored by rolldown's transform pipeline (only rolldown-native `filter`
+  // objects are) -- same reason `maybeBabel()` above sets this explicitly
+  // rather than trusting the plugin's own `extensions` option.
+  plugin.transform.filter = [include(id(/\.[jt]sx$/))];
+  return { ...plugin, enforce: 'pre', name: 'warp-drive:jsx-babel' };
+}
+
 export function createConfig(options, resolve) {
   options.srcDir = options.srcDir ?? './src';
   options.compileTypes = options.compileTypes ?? true;
@@ -164,7 +192,7 @@ export function createConfig(options, resolve) {
       selfReferenceEntries(entryMap),
       forceBundleOverEmberExternals(options),
       ...ember(withMacroImportsAlwaysBabeled(options.ember)),
-      options.compileTypes ? MoveTypesToDestination(options, resolve) : null,
+      options.jsx ? jsxBabel() : null,
       ...(options.plugins || []),
     ].filter(Boolean),
   });

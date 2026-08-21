@@ -25,7 +25,6 @@
   "license": "MIT",
   "author": "Chris Thoburn <runspired@users.noreply.github.com>",
   "files": [
-    "unstable-preview-types",
     "addon-main.cjs",
     "dist/",
     "server/",
@@ -39,11 +38,11 @@
       "bun": "./server/index.js",
       "deno": "./server/index.js",
       "browser": {
-        "types": "./unstable-preview-types/index.d.ts",
+        "types": "./dist/index.d.ts",
         "default": "./dist/index.js"
       },
       "import": {
-        "types": "./unstable-preview-types/index.d.ts",
+        "types": "./dist/index.d.ts",
         "default": "./dist/index.js"
       },
       "default": "./server/index.js"
@@ -57,27 +56,27 @@
       "deno": "./server/*.js"
     },
     "./ember": {
-      "types": "./unstable-preview-types/ember.d.ts",
+      "types": "./dist/ember.d.ts",
       "default": "./dist/ember.js"
     },
     "./*": {
-      "types": "./unstable-preview-types/*.d.ts",
+      "types": "./dist/*.d.ts",
       "default": "./dist/*.js"
     }
   },
   "scripts": {
     "lint": "eslint . --quiet --cache --cache-strategy=content",
     "build:tests": "rm -rf dist-test && cp -R test dist-test && mkdir -p dist-test/@warp-drive && cp -R dist dist-test/@warp-drive/diagnostic",
-    "build:pkg": "vite build",
+    "build:pkg": "NODE_ENV=production tsdown",
     "prepack": "pnpm run build:pkg",
     "sync": "echo \"syncing\"",
-    "start": "vite"
+    "start": "tsdown --watch"
   },
   "peerDependencies": {
     "@ember/test-helpers": "5.2.0",
     "ember-cli-test-loader": ">= 3.1.0",
-    "react": "^19.1.1",
-    "react-dom": "^19.1.1"
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
   },
   "peerDependenciesMeta": {
     "@ember/test-helpers": {
@@ -112,14 +111,14 @@
     "@babel/runtime": "^7.28.3",
     "@ember/test-helpers": "5.2.0",
     "@glimmer/component": "^2.0.0",
-    "@types/react": "^19.1.11",
-    "@types/react-dom": "^19.1.8",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
     "@warp-drive/internal-config": "workspace:*",
-    "bun-types": "^1.2.20",
+    "bun-types": "^1.4.0",
     "ember-cli-test-loader": "^3.1.0",
     "ember-source": "~6.12.0",
-    "typescript": "^5.9.3",
-    "vite": "^7.3.1"
+    "tsdown": "^0.22.14",
+    "typescript": "^5.9.3"
   },
   "volta": {
     "extends": "../../package.json"

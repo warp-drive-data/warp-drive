@@ -6,7 +6,6 @@
     "moduleResolution": "bundler",
     "skipLibCheck": true,
     "disableSourceOfProjectReferenceRedirect": false,
-    "declarationDir": "unstable-preview-types",
     "emitDeclarationOnly": true,
     "allowJs": false,
     "checkJs": false,
@@ -34,10 +33,6 @@
     "inlineSourceMap": true,
     "inlineSources": true,
     "baseUrl": ".",
-    "paths": {
-      "@warp-drive/core": ["../../warp-drive-packages/core/declarations"],
-      "@warp-drive/core/*": ["../../warp-drive-packages/core/declarations/*"]
-    },
     "allowImportingTsExtensions": true,
     "erasableSyntaxOnly": true,
     "isolatedDeclarations": true,

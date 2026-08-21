@@ -1,4 +1,72 @@
 # enableGlobalVirtualStore: true
+
+## Supply-chain hardening
+##
+## Newly published versions are not installable until they have existed
+## for at least this many minutes. This gives the ecosystem time to detect
+## and unpublish/deprecate compromised releases (e.g. from a hijacked
+## maintainer account or leaked publish token) before we can pull them in,
+## including as transitive dependencies.
+##
+## 10080 minutes = 7 days.
+##
+minimumReleaseAge: 10080
+
+## Our own packages are published by our own release automation and are
+## never installed from a public attacker's account, so there's no reason
+## to delay picking up our own just-published releases (e.g. when the
+## release tooling itself depends on a package it just published, or when
+## verifying a release in CI immediately after publish).
+##
+minimumReleaseAgeExclude:
+  - "@warp-drive/*"
+  - "@ember-data/*"
+  # Renovate security update: svgo@4.0.1
+  - svgo@4.0.1
+
+## Prevents transitive (sub-)dependencies from being resolved via git,
+## git+ssh, or raw tarball URLs. Only our own direct dependencies may use
+## those protocols (none currently do); anything pulled in transitively
+## must come from the registry, where it is subject to the release-age
+## delay above and standard registry integrity checks.
+##
+blockExoticSubdeps: true
+
+## Refuses to install a package version whose trust signals (e.g. npm
+## provenance) have regressed compared to a version we've previously seen
+## for it. A sudden drop in trust is a strong signal that a maintainer
+## account or publish token has been compromised.
+##
+trustPolicy: no-downgrade
+
+## Trust-downgrade checks are only meaningful for *recently* published
+## versions, where a drop in provenance is a real signal of a hijacked
+## account. For a version published long enough ago that the community
+## would have already flagged an actual incident, a missing/weaker trust
+## signal is far more likely to be inconsistent publish tooling (common
+## for native-binary packages that ship per-platform builds, e.g.
+## @oxc-parser's platform binaries) than an active compromise.
+##
+## 1051200 minutes = 2 years -- long enough that "published a while ago"
+## reliably means "aged past the danger window", rather than tying this to
+## the much shorter minimumReleaseAge above, which is about delaying
+## brand-new releases rather than judging whether a trust regression is
+## still a meaningful signal.
+##
+trustPolicyIgnoreAfter: 1051200
+
+## hosted-git-info@6.1.3 (2024-11-21) is a transitive dependency of the
+## frozen ember-cli@4.12.3 fixture used by the ember-lts-3.28 ember-try
+## scenario. It isn't old enough yet to clear trustPolicyIgnoreAfter above
+## (needs ~2026-11-21), but it never had provenance to begin with -- the
+## "downgrade" is pnpm comparing it against a *later major* (7.x/8.x) that
+## added provenance, not an actual regression within the 6.x line. See
+## https://github.com/pnpm/pnpm/issues/10202. ember-cli@4.12.3 is a fixed,
+## never-changing version, so this pin is safe to carry indefinitely.
+##
+trustPolicyExclude:
+  - hosted-git-info@6.1.3
+
 packages:
   - "packages/*"
   - "tools/*"
