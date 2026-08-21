@@ -23,7 +23,28 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  # Every other job below independently runs `pnpm install`, which triggers
+  # `turbo run build:pkg` for every library package via the root "prepare"
+  # script. With no ordering between them, lint/browser-tests/special-build-tests
+  # used to all start at once and race to compute+write the *same*
+  # build:pkg cache entries to the shared remote cache concurrently -- a
+  # likely source of the remote cache serving corrupted/incomplete
+  # artifacts (e.g. a missing dist/addon-shim.cjs) despite the originating
+  # builds themselves succeeding. This job does nothing but populate that
+  # cache once, up front, so every other job's own `pnpm install` is
+  # guaranteed a clean, already-fully-written cache hit instead of a race.
+  install:
+    timeout-minutes: 8
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+      - uses: ./.github/actions/setup
+        with:
+          install: true
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
   lint:
+    needs: [install]
     timeout-minutes: 8
     runs-on: ubuntu-latest
     steps:
@@ -49,6 +70,7 @@ jobs:
           TURBO_FORCE: ${{ secrets.ACTIONS_RUNNER_DEBUG == 'true' }}
 
   special-build-tests:
+    needs: [install]
     if: |
       github.event_name == 'pull_request' && (
         github.base_ref == 'main' || github.base_ref == 'beta'
@@ -95,6 +117,7 @@ jobs:
           EMBER_DATA_FULL_COMPAT: ${{ matrix.full-compat }}
 
   browser-tests:
+    needs: [install]
     timeout-minutes: 22
     strategy:
       fail-fast: false
