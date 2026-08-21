@@ -27,7 +27,6 @@
     "@ember/test-waiters": "^3.1.0 || ^4.0.0"
   },
   "files": [
-    "unstable-preview-types",
     "addon-main.cjs",
     "dist",
     "README.md",
@@ -36,7 +35,7 @@
   ],
   "exports": {
     ".": {
-      "types": "./unstable-preview-types/index.d.ts",
+      "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
     }
   },

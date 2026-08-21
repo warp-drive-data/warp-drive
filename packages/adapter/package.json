@@ -27,7 +27,6 @@
     "version": 2
   },
   "files": [
-    "unstable-preview-types",
     "blueprints",
     "addon-main.cjs",
     "dist",
@@ -37,14 +36,14 @@
   ],
   "exports": {
     ".": {
-      "types": "./unstable-preview-types/index.d.ts",
+      "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
     },
     "./blueprints/*": {
       "default": "./blueprints/*.js"
     },
     "./*": {
-      "types": "./unstable-preview-types/*.d.ts",
+      "types": "./dist/*.d.ts",
       "default": "./dist/*.js"
     }
   },

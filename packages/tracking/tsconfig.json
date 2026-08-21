@@ -6,7 +6,6 @@
     "target": "esnext",
     "moduleResolution": "bundler",
     "moduleDetection": "force",
-    "declarationDir": "unstable-preview-types",
     "strict": true,
     "pretty": true,
     "exactOptionalPropertyTypes": false,

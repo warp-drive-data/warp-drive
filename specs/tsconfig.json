@@ -35,7 +35,6 @@
     "baseUrl": ".",
     "declaration": true,
     "declarationMap": true,
-    "declarationDir": "declarations",
     "types": [],
     // "baseUrl": ".",
     "paths": {

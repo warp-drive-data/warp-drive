@@ -37,7 +37,6 @@
     "wd": "./dist/warp-drive.js"
   },
   "files": [
-    "unstable-preview-types",
     "dist",
     "CHANGELOG.md",
     "README.md",

@@ -27,7 +27,6 @@
     "start": "tsdown --watch"
   },
   "files": [
-    "declarations",
     "addon-main.cjs",
     "dist",
     "README.md",
@@ -36,11 +35,11 @@
   ],
   "exports": {
     ".": {
-      "types": "./declarations/index.d.ts",
+      "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
     },
     "./*": {
-      "types": "./declarations/*.d.ts",
+      "types": "./dist/*.d.ts",
       "default": "./dist/*.js"
     }
   },

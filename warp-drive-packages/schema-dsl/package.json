@@ -22,7 +22,6 @@
   },
   "files": [
     "dist",
-    "declarations",
     "src/vite-plugin.js",
     "README.md",
     "LICENSE.md",
@@ -30,7 +29,7 @@
   ],
   "exports": {
     ".": {
-      "types": "./declarations/index.d.ts",
+      "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
     },
     "./virtual": {
@@ -40,7 +39,7 @@
       "default": "./src/vite-plugin.js"
     },
     "./*": {
-      "types": "./declarations/*.d.ts",
+      "types": "./dist/*.d.ts",
       "default": "./dist/*.js"
     }
   },

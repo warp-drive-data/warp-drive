@@ -41,16 +41,15 @@
     "dist",
     "app",
     "blueprints",
-    "unstable-preview-types",
     "logos"
   ],
   "exports": {
     ".": {
-      "types": "./unstable-preview-types/index.d.ts",
+      "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
     },
     "./test-support": {
-      "types": "./unstable-preview-types/test-support/index.d.ts",
+      "types": "./dist/test-support/index.d.ts",
       "default": "./dist/test-support/index.js"
     },
     "./app/*": {
@@ -60,7 +59,7 @@
       "default": "./blueprints/*.js"
     },
     "./*": {
-      "types": "./unstable-preview-types/*.d.ts",
+      "types": "./dist/*.d.ts",
       "default": "./dist/*.js"
     }
   },

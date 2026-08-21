@@ -1,8 +1,9 @@
 /**
- * Syncs the references and paths in the tsconfig.json files
- * of each package in the monorepo and ensures that the
- * tsconfig.json settings and package.json type exports are correct
- * for using composite+references in a monorepo.
+ * Syncs the references in the tsconfig.json files of each package in the
+ * monorepo and ensures that composite+references settings are correct for
+ * a monorepo. `references` exists purely for editor go-to-definition and
+ * dependency-graph documentation; module resolution for cross-package
+ * imports relies entirely on each package's `package.json#exports`.
  */
 import debug from 'debug';
 import path from 'path';
@@ -79,30 +80,6 @@ function hasReference(srcPkg: ProjectPackageWithTsConfig, relPkg: ProjectPackage
   return srcPkg.tsconfig.references.some((ref) => ref.path === referencePath);
 }
 
-function hasPaths(srcPkg: ProjectPackageWithTsConfig, relPkg: ProjectPackageWithTsConfig) {
-  if (!srcPkg.tsconfig.compilerOptions?.paths) {
-    return false;
-  }
-  const dep = relPkg.pkg.name;
-  const hasPrimary = !!srcPkg.tsconfig.compilerOptions.paths[dep];
-  const hasWildcard = !!srcPkg.tsconfig.compilerOptions.paths[`${dep}/*`];
-
-  return hasPrimary && hasWildcard;
-}
-
-function addPaths(srcPkg: ProjectPackageWithTsConfig, relPkg: ProjectPackageWithTsConfig) {
-  const typesDir = relPkg.tsconfig.compilerOptions?.declarationDir;
-
-  if (!typesDir) {
-    throw new Error(`Missing compilerOptions.declarationDir in ${relPkg.tsconfigPath}`);
-  }
-
-  const relativePath = getRelativePath(srcPkg, relPkg);
-
-  srcPkg.tsconfig.compilerOptions!.paths![relPkg.pkg.name] = [`${relativePath}/${typesDir}`];
-  srcPkg.tsconfig.compilerOptions!.paths![`${relPkg.pkg.name}/*`] = [`${relativePath}/${typesDir}/*`];
-}
-
 function validateDesiredTsConfigSettings(project: ProjectPackageWithTsConfig) {
   // ensure that the tsconfig.json has the correct settings for our monorepo
   const { tsconfig } = project;
@@ -124,7 +101,6 @@ function validateDesiredTsConfigSettings(project: ProjectPackageWithTsConfig) {
     baseUrl: '.',
     composite: true,
     declaration: true,
-    declarationDir: 'unstable-preview-types',
     declarationMap: true,
     emitDeclarationOnly: true,
     erasableSyntaxOnly: true,
@@ -236,23 +212,6 @@ export async function main() {
         log(`\t\t🔧 Added compilerOptions hash to tsconfig.json`);
       }
 
-      if (!tsconfig.compilerOptions.paths) {
-        tsconfig.compilerOptions.paths = {};
-        tsconfigEdited = true;
-        log(`\t\t🔧 Added paths hash to tsconfig.json`);
-      }
-
-      if (!project.isTest) {
-        if (!project.pkg.files?.includes(tsconfig.compilerOptions!.declarationDir!)) {
-          project.pkg.files ??= [];
-          project.pkg.files.push(tsconfig.compilerOptions!.declarationDir!);
-          pkgEdited = true;
-          log(
-            `\t\t🔧 Added types output directory "${tsconfig.compilerOptions.declarationDir}" to files in package.json`
-          );
-        }
-      }
-
       for (const name of referenced) {
         const relProject = projects.get(name);
         if (!relProject) {
@@ -274,12 +233,6 @@ export async function main() {
           tsconfig.references!.push({ path: referencePath });
           tsconfigEdited = true;
           log(`\t\t🔧 Added reference to ${referencePath} in tsconfig.json`);
-        }
-
-        if (!hasPaths(project, relProject)) {
-          addPaths(project, relProject);
-          tsconfigEdited = true;
-          log(`\t\t🔧 Added paths for ${relProject.pkg.name} in tsconfig.json`);
         }
       }
     }

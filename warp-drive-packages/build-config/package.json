@@ -24,7 +24,6 @@
   "type": "module",
   "files": [
     "dist",
-    "declarations",
     "CHANGELOG.md",
     "README.md",
     "LICENSE.md",
@@ -32,14 +31,14 @@
   ],
   "exports": {
     ".": {
-      "types": "./declarations/index.d.ts",
+      "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
     },
     "./*.cjs": {
       "default": "./dist/*.cjs"
     },
     "./*": {
-      "types": "./declarations/*.d.ts",
+      "types": "./dist/*.d.ts",
       "default": "./dist/*.js"
     }
   },

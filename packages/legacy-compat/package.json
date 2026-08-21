@@ -18,7 +18,6 @@
     "extends": "../../package.json"
   },
   "files": [
-    "unstable-preview-types",
     "addon-main.cjs",
     "dist",
     "README.md",
@@ -27,11 +26,11 @@
   ],
   "exports": {
     ".": {
-      "types": "./unstable-preview-types/index.d.ts",
+      "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
     },
     "./*": {
-      "types": "./unstable-preview-types/*.d.ts",
+      "types": "./dist/*.d.ts",
       "default": "./dist/*.js"
     }
   },

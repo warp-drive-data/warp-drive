@@ -22,7 +22,7 @@
       "default": "./src/index.ts"
     },
     "./schema-migration/*": {
-      "types": "./unstable-preview-types/src/schema-migration/*",
+      "types": "./dist/src/schema-migration/*",
       "default": "./src/schema-migration/*"
     }
   },
@@ -32,8 +32,7 @@
     "utils",
     "codemods",
     "logos",
-    "LICENSE.md",
-    "unstable-preview-types"
+    "LICENSE.md"
   ],
   "author": "",
   "license": "MIT",

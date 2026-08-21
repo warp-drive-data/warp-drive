@@ -30,7 +30,6 @@
     "allowImportingTsExtensions": true,
     "baseUrl": ".",
     "composite": true,
-    "declarationDir": "unstable-preview-types",
     "emitDeclarationOnly": true,
     "erasableSyntaxOnly": true,
     "experimentalDecorators": true,
