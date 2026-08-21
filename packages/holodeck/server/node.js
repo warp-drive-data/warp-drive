@@ -9,6 +9,7 @@ import fs from 'node:fs';
 import path from 'path';
 import { Worker, threadId, parentPort } from 'node:worker_threads';
 import {
+  bindWithRetry,
   compress,
   createCloseHandler,
   DEFAULT_PORT,
@@ -308,23 +309,25 @@ async function _createServer(options) {
     hostname: options.hostname ?? 'localhost',
   };
 
-  const server = serve({
-    overrideGlobalObjects: true,
-    fetch: app.fetch,
-    serverOptions: {
-      key: KEY,
-      cert: CERT,
-      // rejectUnauthorized: false,
-      // enableTrace: true,
-      // Allow HTTP/1.1 fallback for ALPN negotiation
-      // allowHTTP1: true,
-      // ALPNProtocols: ['h2', 'http/1.1', 'http/1.0'],
-      // origins: ['*'],
-    },
-    createServer: createSecureServer,
-    port: location.port,
-    hostname: location.hostname,
-  });
+  const server = await bindWithRetry(() =>
+    serve({
+      overrideGlobalObjects: true,
+      fetch: app.fetch,
+      serverOptions: {
+        key: KEY,
+        cert: CERT,
+        // rejectUnauthorized: false,
+        // enableTrace: true,
+        // Allow HTTP/1.1 fallback for ALPN negotiation
+        // allowHTTP1: true,
+        // ALPNProtocols: ['h2', 'http/1.1', 'http/1.0'],
+        // origins: ['*'],
+      },
+      createServer: createSecureServer,
+      port: location.port,
+      hostname: location.hostname,
+    })
+  );
 
   console.log(
     `\tServing Holodeck HTTP Mocks from ${chalk.yellow('https://') + chalk.magenta(location.hostname + ':') + chalk.yellow(location.port)}\n`

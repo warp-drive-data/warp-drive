@@ -74,7 +74,14 @@ export async function launch(config) {
     const { checkPort } = await import('./bun/port.js');
     const hostname = config.hostname ?? 'localhost';
     const protocol = config.protocol ?? 'https';
-    const port = await getPort(config, checkPort);
+    let { port, release } = await getPort(config, checkPort);
+    // Belt-and-suspenders: if the process dies without running through
+    // state.safeCleanup (uncaught exception, hard kill, etc.), still release
+    // the port lock synchronously on exit so it doesn't leak as "stale" for
+    // longer than necessary (port-lock.js also self-heals via PID liveness
+    // checks, but there's no reason to wait on that when we can clean up
+    // eagerly).
+    process.on('exit', () => release());
 
     const serveOptions = {
       port,
@@ -130,6 +137,8 @@ export async function launch(config) {
     process.on('SIGTERM', () => void handleTerminationSignal('SIGTERM'));
     process.on('SIGQUIT', () => void handleTerminationSignal('SIGQUIT'));
 
+    addCloseHandler(state, () => release());
+
     if (protocol === 'https') {
       if (!config.key && !config.cert) {
         const info = await getCertInfo();
@@ -151,15 +160,36 @@ export async function launch(config) {
     }
 
     try {
-      state.server = Bun.serve({
-        ...serveOptions,
-        development: false,
-        exclusive: true,
-        fetch(req, server) {
-          return handleBunFetch(config, state, req, server);
-        },
-        websocket: buildHandler(config, state),
-      });
+      // The lock in port-lock.js prevents two of our own processes from
+      // racing for the same pair, but it can't account for a port held by
+      // something outside that convention (a leftover process from a prior
+      // run that hasn't exited yet, an unrelated local service, etc). Retry
+      // against a fresh, freshly-locked port pair a few times before giving
+      // up, rather than crashing on the first collision.
+      const MAX_BIND_ATTEMPTS = 5;
+      for (let attempt = 1; ; attempt++) {
+        try {
+          state.server = Bun.serve({
+            ...serveOptions,
+            development: false,
+            exclusive: true,
+            fetch(req, server) {
+              return handleBunFetch(config, state, req, server);
+            },
+            websocket: buildHandler(config, state),
+          });
+          break;
+        } catch (e) {
+          if (e?.code !== 'EADDRINUSE' || attempt >= MAX_BIND_ATTEMPTS) {
+            throw e;
+          }
+          debug(`Port ${port} became unavailable before bind, picking a new port pair (attempt ${attempt})`);
+          release();
+          ({ port, release } = await getPort({ ...config, port: 0, defaultPort: port + 2 }, checkPort));
+          state.port = port;
+          serveOptions.port = port;
+        }
+      }
 
       addCloseHandler(state, () => {
         state.browsers?.forEach((browser) => {
