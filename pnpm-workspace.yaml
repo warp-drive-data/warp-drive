@@ -47,10 +47,13 @@ trustPolicy: no-downgrade
 ## for native-binary packages that ship per-platform builds, e.g.
 ## @oxc-parser's platform binaries) than an active compromise.
 ##
-## Matches minimumReleaseAge (10080 minutes = 7 days) so we're not
-## flagging anything we'd already consider "aged past the danger window".
+## 1051200 minutes = 2 years -- long enough that "published a while ago"
+## reliably means "aged past the danger window", rather than tying this to
+## the much shorter minimumReleaseAge above, which is about delaying
+## brand-new releases rather than judging whether a trust regression is
+## still a meaningful signal.
 ##
-trustPolicyIgnoreAfter: 10080
+trustPolicyIgnoreAfter: 1051200
 
 packages:
   - "packages/*"
