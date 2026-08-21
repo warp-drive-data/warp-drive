@@ -3,13 +3,18 @@
   //
   // https://turbo.build/repo/docs/core-concepts/caching/file-inputs#specifying-additional-inputs
   "globalDependencies": [
+    // turbo.json itself is not implicitly hashed by turborepo: without this,
+    // changes to a task's `outputs` (e.g. adding a previously-missing output
+    // glob) don't invalidate existing remote-cache entries, so already-cached
+    // "complete" artifacts keep being restored missing the newly-tracked files.
+    "turbo.json",
     "tsconfig.json",
     "pnpm-lock.yaml",
     ".npmrc",
     ".pnpmfile.cjs",
     ".pnpm-workspace.yaml",
     "patches/*",
-    ".github/*",
+    ".github/**",
     "./tools/release/**",
     "./tools/internal-config/**"
   ],
