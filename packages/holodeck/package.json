@@ -39,7 +39,7 @@
     "ensure-cert": "./server/ensure-cert.js"
   },
   "scripts": {
-    "check:pkg-types": "tsc --noEmit",
+    "check:types": "tsc --noEmit",
     "build:pkg": "tsdown",
     "prepack": "pnpm run build:pkg",
     "sync": "echo \"syncing\"",
