@@ -20,17 +20,17 @@
     "dist",
     "README.md",
     "LICENSE.md",
-    "unstable-preview-types",
     "logos"
   ],
   "exports": {
     "./*": {
-      "types": "./unstable-preview-types/*.d.ts",
+      "types": "./dist/*.d.ts",
       "default": "./dist/*.js"
     }
   },
   "scripts": {
     "lint": "eslint . --quiet --cache --cache-strategy=content",
+    "check:types": "tsc --noEmit",
     "build:pkg": "tsdown",
     "prepack": "pnpm run build:pkg",
     "sync": "echo \"syncing\"",

@@ -362,6 +362,9 @@ importers:
       '@types/node':
         specifier: ^24.3.0
         version: 24.3.0
+      '@types/semver':
+        specifier: ^7.7.1
+        version: 7.7.1
       '@warp-drive/internal-config':
         specifier: workspace:*
         version: file:tools/internal-config
@@ -2359,13 +2362,19 @@ importers:
         version: file:warp-drive-packages/experiments(14783ff7abfecaf4a15600481cda861e)
       '@warp-drive/holodeck':
         specifier: workspace:*
-        version: file:packages/holodeck(27d22df54f83bd8eb0d3aa6fdaf4bcdd)
+        version: file:packages/holodeck(a3373bf92dbe06200e11dc38e69a2ad3)
       '@warp-drive/internal-config':
         specifier: workspace:*
         version: file:tools/internal-config(@glint/template@1.6.1)
+      '@warp-drive/json-api':
+        specifier: workspace:*
+        version: file:warp-drive-packages/json-api(14783ff7abfecaf4a15600481cda861e)
       '@warp-drive/schema-record':
         specifier: workspace:*
         version: file:packages/schema-record(f9dfbf4fac3dbc0e0370b14ce6056988)
+      '@warp-drive/utilities':
+        specifier: workspace:*
+        version: file:warp-drive-packages/utilities(14783ff7abfecaf4a15600481cda861e)
       babel-plugin-ember-template-compilation:
         specifier: ^4.0.0
         version: 4.0.0
@@ -20686,9 +20695,6 @@ snapshots:
     dependencies:
       '@types/ember': 4.0.11
       '@types/ember__object': 4.0.12
-    transitivePeerDependencies:
-      - '@babel/core'
-      - supports-color
 
   '@types/ember__controller@4.0.12':
     dependencies:
@@ -20724,16 +20730,10 @@ snapshots:
       '@types/ember__controller': 4.0.12
       '@types/ember__object': 4.0.12
       '@types/ember__service': 4.0.9
-    transitivePeerDependencies:
-      - '@babel/core'
-      - supports-color
 
   '@types/ember__runloop@4.0.10':
     dependencies:
       '@types/ember': 4.0.11
-    transitivePeerDependencies:
-      - '@babel/core'
-      - supports-color
 
   '@types/ember__service@4.0.9':
     dependencies:
@@ -20991,7 +20991,7 @@ snapshots:
       fast-glob: 3.3.3
       is-glob: 4.0.3
       minimatch: 9.0.5
-      semver: 7.7.3
+      semver: 7.8.5
       ts-api-utils: 2.1.0(typescript@5.9.2)
       typescript: 5.9.2
     transitivePeerDependencies:
@@ -21557,13 +21557,6 @@ snapshots:
     optionalDependencies:
       '@warp-drive/legacy': file:warp-drive-packages/legacy(da2d8626017c763d07445c649af78d55)
       '@warp-drive/utilities': file:warp-drive-packages/utilities(ac1631a7da983377f84b100525d730a6)
-
-  '@warp-drive/holodeck@file:packages/holodeck(27d22df54f83bd8eb0d3aa6fdaf4bcdd)':
-    dependencies:
-      '@hono/node-server': 1.19.0(hono@4.9.4)
-      '@warp-drive/core': file:warp-drive-packages/core(f9dfbf4fac3dbc0e0370b14ce6056988)
-      chalk: 5.6.0
-      hono: 4.9.4
 
   '@warp-drive/holodeck@file:packages/holodeck(399050e4d25cd9de09f58182ad617dd4)':
     dependencies:
@@ -28989,9 +28982,9 @@ snapshots:
 
   remove-types@1.0.0:
     dependencies:
-      '@babel/core': 7.28.3
-      '@babel/plugin-syntax-decorators': 7.27.1(@babel/core@7.28.3)
-      '@babel/plugin-transform-typescript': 7.28.0(@babel/core@7.28.3)
+      '@babel/core': 7.29.7
+      '@babel/plugin-syntax-decorators': 7.27.1(@babel/core@7.29.7)
+      '@babel/plugin-transform-typescript': 7.28.0(@babel/core@7.29.7)
       prettier: 2.8.8
     transitivePeerDependencies:
       - supports-color

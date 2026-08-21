@@ -23,14 +23,9 @@
     "rootDir": "src",
     "declaration": true,
     "declarationMap": true,
-    "declarationDir": "declarations",
     "inlineSourceMap": true,
     "inlineSources": true,
     "types": [],
-    "paths": {
-      "@warp-drive/core": ["../core/declarations"],
-      "@warp-drive/core/*": ["../core/declarations/*"]
-    },
     "allowImportingTsExtensions": true,
     "erasableSyntaxOnly": true,
     "isolatedDeclarations": true,

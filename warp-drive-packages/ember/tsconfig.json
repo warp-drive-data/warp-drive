@@ -11,7 +11,6 @@
     "moduleResolution": "bundler",
     "skipLibCheck": true,
     "disableSourceOfProjectReferenceRedirect": false,
-    "declarationDir": "declarations",
     "emitDeclarationOnly": true,
     "allowJs": false,
     "checkJs": false,
@@ -43,8 +42,6 @@
     "types": ["@glint/ember-tsc/types", "ember-source/types"],
     "allowImportingTsExtensions": true,
     "paths": {
-      "@warp-drive/core": ["../core/declarations"],
-      "@warp-drive/core/*": ["../core/declarations/*"],
       "@glimmer/validator": ["../../@types/@glimmer/validator.d.ts"]
     },
     "erasableSyntaxOnly": true,

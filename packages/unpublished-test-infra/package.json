@@ -14,21 +14,20 @@
   "license": "MIT",
   "author": "",
   "files": [
-    "unstable-preview-types",
     "addon-main.cjs",
     "testem",
     "dist"
   ],
   "exports": {
     ".": {
-      "types": "./unstable-preview-types/index.d.ts",
+      "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
     },
     "./testem/*": {
       "default": "./testem/*.js"
     },
     "./*": {
-      "types": "./unstable-preview-types/*.d.ts",
+      "types": "./dist/*.d.ts",
       "default": "./dist/*.js"
     }
   },
@@ -39,7 +38,8 @@
   "scripts": {
     "build:pkg": "tsdown",
     "prepack": "pnpm run build:pkg",
-    "sync": "echo \"syncing\""
+    "sync": "echo \"syncing\"",
+    "check:types": "tsc --noEmit"
   },
   "peerDependencies": {
     "@ember/test-helpers": "3.3.0 || ^4.0.4 || ^5.1.0",

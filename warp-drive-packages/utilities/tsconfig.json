@@ -34,13 +34,8 @@
     "baseUrl": ".",
     "declaration": true,
     "declarationMap": true,
-    "declarationDir": "declarations",
     "inlineSourceMap": true,
     "inlineSources": true,
-    "paths": {
-      "@warp-drive/core": ["../core/declarations"],
-      "@warp-drive/core/*": ["../core/declarations/*"]
-    },
     "checkJs": false,
     "allowJs": false,
     "erasableSyntaxOnly": true,

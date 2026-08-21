@@ -16,12 +16,12 @@
     "build:pkg": "tsdown",
     "prepack": "pnpm run build:pkg",
     "lint": "eslint . --quiet --cache --cache-strategy=content",
+    "check:types": "tsc --noEmit",
     "sync": "echo \"syncing\"",
     "start": "tsdown --watch"
   },
   "files": [
     "dist",
-    "declarations",
     "addon-main.cjs",
     "CHANGELOG.md",
     "README.md",
@@ -30,11 +30,11 @@
   ],
   "exports": {
     ".": {
-      "types": "./declarations/index.d.ts",
+      "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
     },
     "./*": {
-      "types": "./declarations/*.d.ts",
+      "types": "./dist/*.d.ts",
       "default": "./dist/*.js"
     }
   },

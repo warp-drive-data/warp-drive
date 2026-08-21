@@ -16,13 +16,13 @@
   ],
   "scripts": {
     "lint": "eslint . --quiet --cache --cache-strategy=content",
+    "check:types": "tsc --noEmit",
     "build:pkg": "tsdown",
     "prepack": "pnpm run build:pkg",
     "sync": "echo \"syncing\"",
     "start": "tsdown --watch"
   },
   "files": [
-    "unstable-preview-types",
     "addon-main.cjs",
     "dist",
     "README.md",
@@ -31,11 +31,11 @@
   ],
   "exports": {
     ".": {
-      "types": "./unstable-preview-types/index.d.ts",
+      "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
     },
     "./*": {
-      "types": "./unstable-preview-types/*.d.ts",
+      "types": "./dist/*.d.ts",
       "default": "./dist/*.js"
     }
   },

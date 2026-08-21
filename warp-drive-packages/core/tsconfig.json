@@ -32,7 +32,6 @@
     "rootDir": "src",
     "declaration": true,
     "declarationMap": true,
-    "declarationDir": "declarations",
     "inlineSourceMap": true,
     "inlineSources": true,
     "erasableSyntaxOnly": true,
@@ -40,10 +39,6 @@
     "isolatedModules": true,
     "stripInternal": true,
     "types": ["ember-source/types"],
-    "paths": {
-      "@warp-drive/build-config": ["../build-config/declarations"],
-      "@warp-drive/build-config/*": ["../build-config/declarations/*"]
-    },
     "checkJs": false
     // "allowJs": false
   },

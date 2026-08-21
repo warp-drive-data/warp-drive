@@ -25,18 +25,9 @@
     "baseUrl": ".",
     "declaration": true,
     "declarationMap": true,
-    "declarationDir": "unstable-preview-types",
     "inlineSourceMap": true,
     "inlineSources": true,
     "types": ["ember-source/types"],
-    "paths": {
-      "@warp-drive/core": ["../../warp-drive-packages/core/declarations"],
-      "@warp-drive/core/*": ["../../warp-drive-packages/core/declarations/*"],
-      "@warp-drive/json-api": ["../../warp-drive-packages/json-api/declarations"],
-      "@warp-drive/json-api/*": ["../../warp-drive-packages/json-api/declarations/*"],
-      "@warp-drive/utilities": ["../../warp-drive-packages/utilities/declarations"],
-      "@warp-drive/utilities/*": ["../../warp-drive-packages/utilities/declarations/*"]
-    },
     "allowImportingTsExtensions": true,
     "erasableSyntaxOnly": true,
     "isolatedDeclarations": true,

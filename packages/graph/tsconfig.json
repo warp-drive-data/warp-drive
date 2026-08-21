@@ -26,13 +26,8 @@
     "baseUrl": ".",
     "declaration": true,
     "declarationMap": true,
-    "declarationDir": "unstable-preview-types",
     "inlineSourceMap": true,
     "inlineSources": true,
-    "paths": {
-      "@warp-drive/core": ["../../warp-drive-packages/core/declarations"],
-      "@warp-drive/core/*": ["../../warp-drive-packages/core/declarations/*"]
-    },
     "allowImportingTsExtensions": true,
     "erasableSyntaxOnly": true,
     "isolatedDeclarations": true,

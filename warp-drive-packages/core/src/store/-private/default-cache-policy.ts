@@ -1,12 +1,13 @@
 import { deprecate } from '@ember/debug';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import type { CacheHandler, Fetch } from '@warp-drive/core';
 import { LOG_CACHE_POLICY } from '@warp-drive/core/build-config/debugging';
 import { TESTING } from '@warp-drive/core/build-config/env';
 import { assert } from '@warp-drive/core/build-config/macros';
-import type { Cache } from '@warp-drive/core/types/cache';
-import type { RequestKey, ResourceKey } from '@warp-drive/core/types/identifier';
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import type { Fetch } from '../../request/-private/fetch';
+import type { Cache } from '../../types/cache';
+import type { RequestKey, ResourceKey } from '../../types/identifier';
 import type {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   CacheOptions,
@@ -15,11 +16,11 @@ import type {
   RequestInfo,
   ResponseInfo,
   StructuredDocument,
-} from '@warp-drive/core/types/request';
-import type { ResourceDocument } from '@warp-drive/core/types/spec/document';
-
+} from '../../types/request';
+import type { ResourceDocument } from '../../types/spec/document';
 import { LRUCache } from '../../utils/string';
-import type { CachePolicy } from '../-private';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import type { CacheHandler, CachePolicy } from '../-private';
 
 type UnsubscribeToken = object;
 type CacheOperation = 'added' | 'removed' | 'updated' | 'state';

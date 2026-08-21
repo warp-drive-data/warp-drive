@@ -31,18 +31,9 @@
     // maps in your `ember-cli-babel` config and/or `babel.config.js`.
     "declaration": true,
     "declarationMap": true,
-    "declarationDir": "declarations",
     "inlineSourceMap": true,
     "inlineSources": true,
     "baseUrl": ".",
-    "paths": {
-      "@warp-drive/core": ["../../warp-drive-packages/core/declarations"],
-      "@warp-drive/core/*": ["../../warp-drive-packages/core/declarations/*"],
-      "@warp-drive/legacy": ["../../warp-drive-packages/legacy/declarations"],
-      "@warp-drive/legacy/*": ["../../warp-drive-packages/legacy/declarations/*"],
-      "@warp-drive/utilities": ["../../warp-drive-packages/utilities/declarations"],
-      "@warp-drive/utilities/*": ["../../warp-drive-packages/utilities/declarations/*"]
-    },
     "allowImportingTsExtensions": true,
     "erasableSyntaxOnly": true,
     "isolatedDeclarations": true,
