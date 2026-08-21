@@ -15,18 +15,11 @@ import Adapter from '@ember-data/adapter/-private/build-url-mixin';
 expectTypeOf<typeof StoreX>().not.toBeAny();
 
 import Store from '@ember-data/store';
-// @ts-expect-error this exists in the real package, but not DT Types
 import RequestManager from '@ember-data/request';
 import { BuildURLMixin } from '@ember-data/adapter';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-expect-error
 import jsonapi from '@ember-data/json-api';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-expect-error
 import { adapterFor } from '@ember-data/legacy-compat';
 import Model from '@ember-data/model';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-expect-error
 import { setBuildURLConfig } from '@ember-data/request-utils';
 import Serializer from '@ember-data/serializer';
 
@@ -37,12 +30,12 @@ expectTypeOf<typeof Store>().not.toBeAny();
 expectTypeOf<typeof Model>().not.toBeAny();
 expectTypeOf<typeof Model>().toHaveProperty('reopen');
 expectTypeOf<typeof Serializer>().not.toBeAny();
-// @ts-expect-error no DT Types
 expectTypeOf<typeof RequestManager>().not.toBeAny();
+// @ts-expect-error @ember/object/mixin's DT types declare `Mixin<T, Base>` with
+// no default for `T`, but this package's own `BuildURLMixin: Mixin` annotation
+// is written against ember-source/types' non-generic `Mixin` -- the two ambient
+// declarations have incompatible arity and can't both be satisfied at once.
 expectTypeOf<typeof BuildURLMixin>().not.toBeAny();
-// @ts-expect-error no DT Types
 expectTypeOf<typeof jsonapi>().not.toBeAny();
-// @ts-expect-error no DT Types
 expectTypeOf<typeof setBuildURLConfig>().not.toBeAny();
-// @ts-expect-error no DT Types
 expectTypeOf<typeof adapterFor>().not.toBeAny();
