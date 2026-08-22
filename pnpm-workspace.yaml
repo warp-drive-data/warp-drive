@@ -66,6 +66,15 @@ trustPolicyIgnoreAfter: 1051200
 ##
 trustPolicyExclude:
   - hosted-git-info@6.1.3
+  ## @embroider/config-meta-loader@1.0.1-unstable.f9c81e9 (2025-03-14) is
+  ## pinned exactly across several tests/* fixtures. It isn't old enough yet
+  ## to clear trustPolicyIgnoreAfter above (needs ~2027-03-14), but the
+  ## "downgrade" is pnpm comparing it against a *later, unrelated* 1.0.0
+  ## release (2025-04-03) that added provenance -- not a regression within
+  ## this "-unstable" prerelease line, which never had provenance to begin
+  ## with. Same pnpm/pnpm#10202 false positive as hosted-git-info@6.1.3
+  ## above.
+  - "@embroider/config-meta-loader@1.0.1-unstable.f9c81e9"
 
 packages:
   - "packages/*"
