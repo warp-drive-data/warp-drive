@@ -1,5 +1,5 @@
 {
-  "include": ["app/**/*", "config/**/*", "tests/**/*", "../../@types/ember-data-qunit-asserts"],
+  "include": ["tests/**/*", "services/**/*", "models/**/*", "start.ts", "../../@types/ember-data-qunit-asserts"],
   "compilerOptions": {
     "lib": ["DOM", "ESNext"],
     "module": "esnext",
@@ -20,7 +20,7 @@
     "experimentalDecorators": true,
     "incremental": true,
     "declaration": true,
-    "types": ["ember-source/types"],
+    "types": ["ember-source/types", "vite/client"],
     "allowImportingTsExtensions": true,
     "composite": true,
     "declarationDir": "unstable-preview-types",

@@ -2920,6 +2920,9 @@ importers:
       '@babel/core':
         specifier: ^7.28.3
         version: 7.28.3
+      '@babel/plugin-transform-typescript':
+        specifier: ^7.28.0
+        version: 7.29.7(@babel/core@7.28.3)
       '@babel/runtime':
         specifier: ^7.28.3
         version: 7.28.3
@@ -2955,16 +2958,7 @@ importers:
         version: file:packages/store(1adf99e055abba96ff2ddb1d049f661d)
       '@ember-data/unpublished-test-infra':
         specifier: workspace:*
-        version: file:packages/unpublished-test-infra(6973837de3488c5faaacd5ffabd6ca05)
-      '@ember/edition-utils':
-        specifier: ^1.2.0
-        version: 1.2.0
-      '@ember/optional-features':
-        specifier: ^2.2.0
-        version: 2.2.0
-      '@ember/string':
-        specifier: ^4.0.1
-        version: 4.0.1
+        version: file:packages/unpublished-test-infra(7f194dca85d1c9dc03c40ddeca57ee65)
       '@ember/test-helpers':
         specifier: 5.2.0
         version: 5.2.0(patch_hash=a1670a4e3977c846a5c2454f317f5a17cbd284aef3a676b190c98141536afb04)(7c1eb33138e746229cea5e7e565a34fb)
@@ -2974,9 +2968,21 @@ importers:
       '@embroider/addon-shim':
         specifier: ^1.10.0
         version: 1.10.0
+      '@embroider/core':
+        specifier: ^4.4.2
+        version: 4.4.2
+      '@embroider/macros':
+        specifier: ^1.20.6
+        version: 1.20.6(@babel/core@7.28.3)
+      '@embroider/vite':
+        specifier: ^1.5.0
+        version: 1.5.0(5b7ff81b9dec3da9b574ea6a44e3bce8)
       '@glimmer/component':
         specifier: ^2.0.0
         version: 2.0.0
+      '@rollup/plugin-babel':
+        specifier: ^6.0.4
+        version: 6.0.4(@babel/core@7.28.3)(rollup@4.48.1)
       '@warp-drive/build-config':
         specifier: workspace:*
         version: file:warp-drive-packages/build-config(@babel/core@7.28.3)
@@ -2988,67 +2994,40 @@ importers:
         version: file:packages/core-types(@babel/core@7.28.3)
       '@warp-drive/diagnostic':
         specifier: workspace:*
-        version: file:packages/diagnostic(962ef39f5a731d2a1b4ce88c467c2693)
+        version: file:packages/diagnostic(5f1ef0443180a498b44d6b68706ed1df)
       '@warp-drive/ember':
         specifier: workspace:*
         version: file:warp-drive-packages/ember(1adf99e055abba96ff2ddb1d049f661d)
       '@warp-drive/internal-config':
         specifier: workspace:*
         version: file:tools/internal-config
-      ember-auto-import:
-        specifier: ^2.13.1
-        version: 2.13.1
-      ember-cli:
-        specifier: ~6.12.0
-        version: 6.12.0
-      ember-cli-babel:
-        specifier: ^8.2.0
-        version: 8.2.0(@babel/core@7.28.3)
-      ember-cli-dependency-checker:
-        specifier: ^3.3.3
-        version: 3.3.3(ember-cli@6.12.0)
-      ember-cli-htmlbars:
-        specifier: ^7.0.1
-        version: 7.0.1(7c1eb33138e746229cea5e7e565a34fb)
-      ember-cli-inject-live-reload:
-        specifier: ^2.1.0
-        version: 2.1.0
-      ember-cli-test-loader:
-        specifier: ^3.1.0
-        version: 3.1.0(@babel/core@7.28.3)
-      ember-disable-prototype-extensions:
-        specifier: ^1.1.3
-        version: 1.1.3
+      babel-plugin-ember-template-compilation:
+        specifier: ^4.0.0
+        version: 4.0.0
+      decorator-transforms:
+        specifier: ^2.3.0
+        version: 2.4.0(@babel/core@7.28.3)
       ember-inflector:
         specifier: ^6.0.0
         version: 6.0.0(@babel/core@7.28.3)
-      ember-load-initializers:
-        specifier: ^3.0.1
-        version: 3.0.1(d85bdc81123a97464a513818471b425c)
-      ember-maybe-import-regenerator:
-        specifier: ^1.0.0
-        version: 1.0.0(@babel/core@7.28.3)
-      ember-resolver:
-        specifier: ^13.1.1
-        version: 13.1.1(@babel/core@7.28.3)
       ember-source:
         specifier: ~6.12.0
         version: 6.12.0(@glimmer/component@2.0.0)
-      ember-source-channel-url:
-        specifier: ^3.0.0
-        version: 3.0.0
-      loader.js:
-        specifier: ^4.7.0
-        version: 4.7.0
-      silent-error:
-        specifier: ^1.1.1
-        version: 1.1.1
+      ember-strict-application-resolver:
+        specifier: ^0.1.0
+        version: 0.1.0(@babel/core@7.28.3)
+      rollup:
+        specifier: ^4.48.0
+        version: 4.48.1
+      terser:
+        specifier: ^5.39.0
+        version: 5.43.1
       typescript:
         specifier: 5.9.2
         version: 5.9.2
-      webpack:
-        specifier: 5.101.3
-        version: 5.101.3
+      vite:
+        specifier: ^7.3.1
+        version: 7.3.1(terser@5.43.1)
 
   tests/vite-basic-compat:
     devDependencies:
@@ -17910,21 +17889,6 @@ snapshots:
       - '@glint/template'
       - supports-color
 
-  '@ember-data/unpublished-test-infra@file:packages/unpublished-test-infra(6973837de3488c5faaacd5ffabd6ca05)':
-    dependencies:
-      '@ember/test-helpers': 5.2.0(patch_hash=a1670a4e3977c846a5c2454f317f5a17cbd284aef3a676b190c98141536afb04)(7c1eb33138e746229cea5e7e565a34fb)
-      '@embroider/macros': 1.20.6(@babel/core@7.28.3)
-      '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.28.3)
-      '@warp-drive/utilities': file:warp-drive-packages/utilities(ac1631a7da983377f84b100525d730a6)
-      chalk: 4.1.2
-      semver: 7.7.2
-    optionalDependencies:
-      '@warp-drive/diagnostic': file:packages/diagnostic(962ef39f5a731d2a1b4ce88c467c2693)
-    transitivePeerDependencies:
-      - '@babel/core'
-      - '@glint/template'
-      - supports-color
-
   '@ember-data/unpublished-test-infra@file:packages/unpublished-test-infra(70f18ac7fb426a44ca1eb8bc74329986)':
     dependencies:
       '@ember/test-helpers': 5.2.0(patch_hash=a1670a4e3977c846a5c2454f317f5a17cbd284aef3a676b190c98141536afb04)(bfadaa4521900084b7797d85fa721327)
@@ -21219,24 +21183,6 @@ snapshots:
       tmp: 0.2.5
     optionalDependencies:
       '@ember/test-helpers': 5.2.0(patch_hash=a1670a4e3977c846a5c2454f317f5a17cbd284aef3a676b190c98141536afb04)(7c1eb33138e746229cea5e7e565a34fb)
-    transitivePeerDependencies:
-      - '@babel/core'
-      - '@glint/template'
-      - supports-color
-
-  '@warp-drive/diagnostic@file:packages/diagnostic(962ef39f5a731d2a1b4ce88c467c2693)':
-    dependencies:
-      '@embroider/macros': 1.20.6(@babel/core@7.28.3)
-      '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.28.3)
-      '@warp-drive/react': file:warp-drive-packages/react(@babel/core@7.28.3)
-      chalk: 5.6.0
-      debug: 4.4.1
-      dom-element-descriptors: 0.5.1
-      qunit-dom: 3.5.0
-      tmp: 0.2.5
-    optionalDependencies:
-      '@ember/test-helpers': 5.2.0(patch_hash=a1670a4e3977c846a5c2454f317f5a17cbd284aef3a676b190c98141536afb04)(7c1eb33138e746229cea5e7e565a34fb)
-      ember-cli-test-loader: 3.1.0(@babel/core@7.28.3)
     transitivePeerDependencies:
       - '@babel/core'
       - '@glint/template'

@@ -7,7 +7,7 @@ import { recordIdentifierFor } from '@ember-data/store';
 import { module, test } from '@warp-drive/diagnostic';
 import { setupTest } from '@warp-drive/diagnostic/ember';
 
-import type UserSetting from '../../app/models/user-setting';
+import type UserSetting from '../../models/user-setting';
 import { headersToObject } from '../helpers/utils';
 
 const JSON_API_HEADERS = { accept: 'application/vnd.api+json' };
