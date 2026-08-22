@@ -1,5 +1,6 @@
 #!/bin/bash
-# Picks how many concurrent `build:pkg` jobs turbo should run.
+# Picks how many concurrent jobs turbo should run for a CPU-bound task
+# (build:pkg, lint, check:types).
 #
 # CI sets $JOBS explicitly (see the "Configure Parallel Builds" step in
 # .github/actions/setup/action.yml, which defaults to matching the runner's
