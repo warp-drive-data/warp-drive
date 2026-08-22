@@ -9,9 +9,9 @@
   },
   "scripts": {
     "takeoff": "FORCE_COLOR=2 pnpm install --prefer-offline --reporter=append-only",
-    "prepare": "turbo run build:pkg --log-order=stream --concurrency=4;",
+    "prepare": "turbo run build:pkg --log-order=stream --concurrency=$(./bin/calculate-build-jobs);",
     "release": "./tools/release/index.ts",
-    "build": "turbo run build:pkg --log-order=stream --concurrency=4;",
+    "build": "turbo run build:pkg --log-order=stream --concurrency=$(./bin/calculate-build-jobs);",
     "sync": "pnpm --filter './packages/*' run --parallel --if-present sync",
     "start": "turbo run start --filter=./packages/* --concurrency=23",
     "start:specs": "turbo run start --filter=./specs",
