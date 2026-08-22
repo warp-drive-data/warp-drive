@@ -1,5 +1,5 @@
 {
-  "include": ["app/**/*", "config/**/*", "tests/**/*"],
+  "include": ["tests/**/*", "start.ts"],
   "compilerOptions": {
     "lib": ["DOM", "ESNext"],
     "module": "esnext",
@@ -22,7 +22,7 @@
     "noImplicitOverride": false,
     "incremental": true,
     "declaration": true,
-    "types": ["ember-source/types"],
+    "types": ["ember-source/types", "vite/client"],
     "allowImportingTsExtensions": true,
     "composite": true,
     "declarationDir": "unstable-preview-types",
