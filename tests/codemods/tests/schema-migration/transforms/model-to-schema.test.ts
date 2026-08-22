@@ -648,7 +648,7 @@ export default class ProcessedModel extends Model {
       expect(schema?.code).toMatchSnapshot('model schema with merged types');
       expect(extension?.code).toMatchSnapshot('model extension code');
       expect(schema?.suggestedFileName).toBe('processed-model.schema.ts');
-      expect(extension?.suggestedFileName).toBe('processed-model.ext.js');
+      expect(extension?.suggestedFileName).toBe('processed-model.ext.ts');
     });
 
     it('handles custom type mappings in merged schema files', () => {
@@ -1193,7 +1193,10 @@ export default class Translatable extends Model {
         {
           "baseName": "test-model",
           "code": "import { memberAction } from 'test-app/decorators/api-actions';
+        import type { TestModel } from './test-model.schema.ts';
 
+        // @ts-ignore-error in reality fields are not merged, they are overridden
+        export interface TestModelExtension extends TestModel {}
         export class TestModelExtension {
           startProcess = memberAction({
                       path: 'start_process',
@@ -1220,7 +1223,7 @@ export default class Translatable extends Model {
         };
         export default Registration;",
           "name": "TestModelExtension",
-          "suggestedFileName": "test-model.ext.js",
+          "suggestedFileName": "test-model.ext.ts",
           "type": "resource-extension",
         }
       `);

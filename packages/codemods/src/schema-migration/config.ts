@@ -98,6 +98,12 @@ export function getConfiguredImport(
   } else if (importName === 'AsyncHasMany' || importName === 'HasMany') {
     // typically these imports are from the same source as model
     return { imported: importName, source: packageImports.Model.source, isType: true };
+  } else if (importName === 'LegacyTrait') {
+    const schemaImport = packageImports['LegacyResourceSchema' as keyof typeof packageImports];
+    if (schemaImport) {
+      return { imported: 'LegacyTrait', source: schemaImport.source, isType: true };
+    }
+    return { imported: 'LegacyTrait', source: ModernPackageImports.LegacyTrait.source, isType: true };
   } else {
     return undefined;
   }
@@ -123,20 +129,27 @@ export interface TransformOptions {
    * import paths from other project files. Defaults to false.
    */
   projectImportsUseExtensions?: boolean;
-  /** Combine schemas and types into a single file. By default these will be in separate files */
-  combineSchemasAndTypes?: boolean;
-  /** By default, schemas will be output in TS files even when generated from untyped models. */
-  disableTypescriptSchemas?: boolean;
-  /** Force all output files to be TypeScript (.ts) even when input files are JavaScript (.js). */
-  forceTypeScript?: boolean;
   /**
-   * By default, the codemod will attempt to generate TypeScript types for models that don't
-   * have them by analyzing the model file and various transforms that are in use.
+   * Combine schemas and types into a single file. Defaults to true.
    *
-   * We heavily discourage turning this off as field level documentation comments are
-   * associated to the type artifact, not the schema.
+   * When true, each model/mixin produces a single `.schema` file containing
+   * both the schema object and the TypeScript type interface.
+   *
+   * Set to false to emit a separate `.type.ts` file alongside the `.schema` file.
    */
-  disableMissingTypeAutoGen?: boolean;
+  combineSchemasAndTypes: boolean;
+  /**
+   * Force all output files to be TypeScript (.ts) even when input files are JavaScript (.js).
+   * Defaults to false.
+   *
+   * When false, output file extensions match the source file:
+   * - `.js` source files produce `.schema.js` and `.ext.js` (no type interfaces)
+   * - `.ts` source files produce `.schema.ts` and `.ext.ts` (with type interfaces)
+   *
+   * When true, all output is `.ts` regardless of source language, and type
+   * interfaces are generated even for JavaScript source files.
+   */
+  forceTypeScript?: boolean;
   /**
    * By default, the codemod will insert useful comments
    * to the generated types for inline/editor documentation
@@ -230,7 +243,17 @@ export interface MigrateOptions extends Partial<TransformOptions> {
 
 export type FinalOptions = TransformOptions &
   MigrateOptions &
-  Required<Pick<TransformOptions, 'modelSourceDir' | 'mixinSourceDir' | 'warpDriveImports' | 'projectName'>> &
+  Required<
+    Pick<
+      TransformOptions,
+      | 'modelSourceDir'
+      | 'mixinSourceDir'
+      | 'warpDriveImports'
+      | 'projectName'
+      | 'forceTypeScript'
+      | 'combineSchemasAndTypes'
+    >
+  > &
   Required<Pick<MigrateOptions, 'inputDir'>> & {
     kind: 'finalized';
     outputDir: string;

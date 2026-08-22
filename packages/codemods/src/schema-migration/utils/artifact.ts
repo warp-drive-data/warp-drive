@@ -203,31 +203,28 @@ export function createTraitArtifactConfig(
   hasExtensionProperties: boolean,
   isTypeScript: boolean
 ): ArtifactConfig {
-  const hasTypes = isTypeScript || !options.disableMissingTypeAutoGen;
-  const schemaIsTyped = (hasTypes && options.combineSchemasAndTypes) || !options.disableTypescriptSchemas;
-  const extensionIsTyped = isTypeScript;
   const hasExtension = hasExtensionProperties;
 
   return {
     type: 'trait',
     name,
     isFragment: false,
-    hasTypes,
-    schemaIsTyped,
-    extensionIsTyped,
+    hasTypes: isTypeScript,
+    schemaIsTyped: isTypeScript,
+    extensionIsTyped: isTypeScript,
     hasExtension,
     identifiers: {
       schema: deriveTraitSchemaName(name),
-      fieldsInterface: hasTypes ? deriveTraitInterfaceName(name) : null,
-      type: hasTypes ? classified : null,
+      fieldsInterface: isTypeScript ? deriveTraitInterfaceName(name) : null,
+      type: isTypeScript ? classified : null,
       extension: hasExtension ? deriveTraitExtensionName(name) : null,
-      extensionAlias: hasTypes && hasExtension ? `${classified}TraitWithExtensions` : null,
+      extensionAlias: isTypeScript && hasExtension ? `${classified}TraitWithExtensions` : null,
     },
     traits: traits.map((trait) => ({
       name: trait,
       identifiers: {
-        fieldsInterface: hasTypes ? deriveTraitInterfaceName(trait) : null,
-        extension: hasTypes ? deriveTraitExtensionName(trait) : null,
+        fieldsInterface: isTypeScript ? deriveTraitInterfaceName(trait) : null,
+        extension: isTypeScript ? deriveTraitExtensionName(trait) : null,
       },
     })),
   };
@@ -246,20 +243,6 @@ export function createResourceArtifactConfig(
 ): ArtifactConfig {
   const name = analysis.baseName;
   const classified = analysis.modelName;
-
-  /**
-   * types are required IF the model was typed OR
-   * the options don't disable automatic type generation
-   * for untyped models
-   */
-  const hasTypes = modelWasTyped || !options.disableMissingTypeAutoGen;
-  const schemaIsTyped = (hasTypes && options.combineSchemasAndTypes) || !options.disableTypescriptSchemas;
-  const extensionIsTyped = modelWasTyped;
-
-  /**
-   * an extension is required IF
-   * we have a trait OR we have our own extension
-   */
   const hasExtension =
     analysis.mixinTraits.length > 0 || analysis.mixinExtensions.length > 0 || analysis.extensionProperties.length > 0;
 
@@ -267,22 +250,22 @@ export function createResourceArtifactConfig(
     type: 'resource',
     name,
     isFragment: analysis.isFragment ?? false,
-    hasTypes,
-    schemaIsTyped,
-    extensionIsTyped,
+    hasTypes: modelWasTyped,
+    schemaIsTyped: modelWasTyped,
+    extensionIsTyped: modelWasTyped,
     hasExtension,
     identifiers: {
       schema: deriveResourceSchemaName(name),
-      fieldsInterface: hasTypes ? `${classified}Resource` : null,
-      type: hasTypes ? classified : null,
+      fieldsInterface: modelWasTyped ? `${classified}Resource` : null,
+      type: modelWasTyped ? classified : null,
       extension: hasExtension ? deriveResourceExtensionName(name) : null,
-      extensionAlias: hasTypes && hasExtension ? `${classified}WithExtensions` : null,
+      extensionAlias: modelWasTyped && hasExtension ? `${classified}WithExtensions` : null,
     },
     traits: analysis.mixinTraits.map((trait) => ({
       name: trait,
       identifiers: {
-        fieldsInterface: hasTypes ? deriveTraitInterfaceName(trait) : null,
-        extension: hasTypes ? deriveTraitExtensionName(trait) : null,
+        fieldsInterface: modelWasTyped ? deriveTraitInterfaceName(trait) : null,
+        extension: modelWasTyped ? deriveTraitExtensionName(trait) : null,
       },
     })),
   };

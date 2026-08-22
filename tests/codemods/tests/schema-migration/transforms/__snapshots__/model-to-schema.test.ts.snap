@@ -1,8 +1,11 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`model-to-schema transform (artifacts) > TypeScript type artifacts > generates schema and extension artifacts when model has methods and computed properties > model extension code 1`] = `
-"
+"import type { ProcessedModel } from './processed-model.schema.ts';
 
+
+// @ts-ignore-error in reality fields are not merged, they are overridden
+export interface ProcessedModelExtension extends ProcessedModel {}
 export class ProcessedModelExtension {
   get displayName() {
   		return \`Processed: \${this.name}\`;
@@ -652,15 +655,18 @@ exports[`model-to-schema transform (artifacts) > basic functionality > produces 
   },
   {
     "name": "UserExtension",
-    "suggestedFileName": "user.ext.js",
+    "suggestedFileName": "user.ext.ts",
     "type": "resource-extension",
   },
 ]
 `;
 
 exports[`model-to-schema transform (artifacts) > basic functionality > produces schema and extension artifacts for basic model > extension code 1`] = `
-"
+"import type { User } from './user.schema.ts';
 
+
+// @ts-ignore-error in reality fields are not merged, they are overridden
+export interface UserExtension extends User {}
 export class UserExtension {
   get displayName() {
   		return this.name || this.email;

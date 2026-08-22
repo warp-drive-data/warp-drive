@@ -32,6 +32,10 @@ exports[`mixin-to-schema transform (artifacts) > TypeScript type artifacts > gen
 
 import { computed } from '@ember/object';
 
+import type { NameableTrait } from 'test-app/data/traits/nameable.type';
+
+export interface NameableTraitExtension extends NameableTrait {}
+
 // TODO: migrate this extension to a class so that TypeScript declaration merging works.
 // Object extensions do not support interface merging.
 export const NameableTraitExtension = {
@@ -154,7 +158,7 @@ exports[`mixin-to-schema transform (artifacts) > basic functionality > collects 
   },
   {
     "name": "FileableTraitExtension",
-    "suggestedFileName": "fileable.ext.js",
+    "suggestedFileName": "fileable.ext.ts",
     "type": "trait-extension",
   },
 ]
@@ -169,6 +173,10 @@ import { arrayHasLength } from '@auditboard/client-core/core/computed-extensions
 
 
 import { sortBy } from 'soxhub-client/utils/sort-by';
+
+import type { FileableTrait } from 'test-app/data/traits/fileable.type';
+
+export interface FileableTraitExtension extends FileableTrait {}
 
 // TODO: migrate this extension to a class so that TypeScript declaration merging works.
 // Object extensions do not support interface merging.
@@ -230,6 +238,10 @@ exports[`mixin-to-schema transform (artifacts) > basic functionality > converts 
 "
 import { computed } from '@ember/object';
 
+import type { NoTraitsTrait } from 'test-app/data/traits/no-traits.type';
+
+export interface NoTraitsTraitExtension extends NoTraitsTrait {}
+
 // TODO: migrate this extension to a class so that TypeScript declaration merging works.
 // Object extensions do not support interface merging.
 export const NoTraitsTraitExtension = {
@@ -259,7 +271,7 @@ exports[`mixin-to-schema transform (artifacts) > basic functionality > converts 
   },
   {
     "name": "NoTraitsTraitExtension",
-    "suggestedFileName": "no-traits.ext.js",
+    "suggestedFileName": "no-traits.ext.ts",
     "type": "trait-extension",
   },
 ]
@@ -269,6 +281,10 @@ exports[`mixin-to-schema transform (artifacts) > basic functionality > preserves
 "
 import { computed } from '@ember/object';
 import { service } from '@ember/service';
+
+import type { PlannableTrait } from 'test-app/data/traits/plannable.type';
+
+export interface PlannableTraitExtension extends PlannableTrait {}
 
 // TODO: migrate this extension to a class so that TypeScript declaration merging works.
 // Object extensions do not support interface merging.
@@ -303,7 +319,7 @@ exports[`mixin-to-schema transform (artifacts) > basic functionality > preserves
   },
   {
     "name": "PlannableTraitExtension",
-    "suggestedFileName": "plannable.ext.js",
+    "suggestedFileName": "plannable.ext.ts",
     "type": "trait-extension",
   },
 ]
@@ -451,6 +467,10 @@ export interface CustomSourceTrait {
 
 import { computed } from '@ember/object';
 
+import type { CustomSourceTrait } from 'test-app/data/traits/custom-source.type';
+
+export interface CustomSourceTraitExtension extends CustomSourceTrait {}
+
 // TODO: migrate this extension to a class so that TypeScript declaration merging works.
 // Object extensions do not support interface merging.
 export const CustomSourceTraitExtension = {
@@ -464,7 +484,7 @@ const Registration = {
 };
 export default Registration;",
     "name": "CustomSourceTraitExtension",
-    "suggestedFileName": "custom-source.ext.js",
+    "suggestedFileName": "custom-source.ext.ts",
     "type": "trait-extension",
   },
 ]
@@ -542,6 +562,10 @@ export interface RenamedMixedSourcesTrait {
 
 import { attr as attribute } from '@unsupported/source';
 
+import type { RenamedMixedSourcesTrait } from 'test-app/data/traits/renamed-mixed-sources.type';
+
+export interface RenamedMixedSourcesTraitExtension extends RenamedMixedSourcesTrait {}
+
 // TODO: migrate this extension to a class so that TypeScript declaration merging works.
 // Object extensions do not support interface merging.
 export const RenamedMixedSourcesTraitExtension = {
@@ -555,7 +579,7 @@ const Registration = {
 };
 export default Registration;",
     "name": "RenamedMixedSourcesTraitExtension",
-    "suggestedFileName": "renamed-mixed-sources.ext.js",
+    "suggestedFileName": "renamed-mixed-sources.ext.ts",
     "type": "trait-extension",
   },
 ]
@@ -766,6 +790,10 @@ export interface UnsupportedSourceTrait {
 import { hasMany } from '@unsupported/source';
 import { computed } from '@ember/object';
 
+import type { UnsupportedSourceTrait } from 'test-app/data/traits/unsupported-source.type';
+
+export interface UnsupportedSourceTraitExtension extends UnsupportedSourceTrait {}
+
 // TODO: migrate this extension to a class so that TypeScript declaration merging works.
 // Object extensions do not support interface merging.
 export const UnsupportedSourceTraitExtension = {
@@ -780,7 +808,7 @@ const Registration = {
 };
 export default Registration;",
     "name": "UnsupportedSourceTraitExtension",
-    "suggestedFileName": "unsupported-source.ext.js",
+    "suggestedFileName": "unsupported-source.ext.ts",
     "type": "trait-extension",
   },
 ]
@@ -864,6 +892,10 @@ export interface DefaultSourceTrait {
   "
 
 import { computed } from '@ember/object';
+
+import type { DefaultSourceTrait } from 'test-app/data/traits/default-source.type';
+
+export interface DefaultSourceTraitExtension extends DefaultSourceTrait {}
 
 // TODO: migrate this extension to a class so that TypeScript declaration merging works.
 // Object extensions do not support interface merging.
@@ -1000,6 +1032,10 @@ export interface NoValidImportsTrait {
 import { computed } from '@ember/object';
 import { attr } from '@unsupported/source';
 
+import type { NoValidImportsTrait } from 'test-app/data/traits/no-valid-imports.type';
+
+export interface NoValidImportsTraitExtension extends NoValidImportsTrait {}
+
 // TODO: migrate this extension to a class so that TypeScript declaration merging works.
 // Object extensions do not support interface merging.
 export const NoValidImportsTraitExtension = {
@@ -1014,7 +1050,7 @@ const Registration = {
 };
 export default Registration;",
     "name": "NoValidImportsTraitExtension",
-    "suggestedFileName": "no-valid-imports.ext.js",
+    "suggestedFileName": "no-valid-imports.ext.ts",
     "type": "trait-extension",
   },
 ]
@@ -1098,6 +1134,10 @@ export interface AuditboardSourceTrait {
 
 import { computed } from '@ember/object';
 
+import type { AuditboardSourceTrait } from 'test-app/data/traits/auditboard-source.type';
+
+export interface AuditboardSourceTraitExtension extends AuditboardSourceTrait {}
+
 // TODO: migrate this extension to a class so that TypeScript declaration merging works.
 // Object extensions do not support interface merging.
 export const AuditboardSourceTraitExtension = {
@@ -1111,7 +1151,7 @@ const Registration = {
 };
 export default Registration;",
     "name": "AuditboardSourceTraitExtension",
-    "suggestedFileName": "auditboard-source.ext.js",
+    "suggestedFileName": "auditboard-source.ext.ts",
     "type": "trait-extension",
   },
 ]

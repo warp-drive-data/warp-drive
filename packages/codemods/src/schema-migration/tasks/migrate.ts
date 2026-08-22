@@ -4,7 +4,7 @@ import { basename, dirname, join, resolve } from 'path';
 import { type InstanciatedLogger, logger } from '../../../utils/logger.js';
 import type { SkippedFile, TransformerResult } from '../codemod.js';
 import { Codemod } from '../codemod.js';
-import type { FinalOptions, MigrateOptions, TransformOptions } from '../config.js';
+import type { FinalOptions, MigrateOptions } from '../config.js';
 import {
   DEFAULT_INPUT_DIR,
   DEFAULT_MIXIN_SOURCE_DIR,
@@ -311,7 +311,7 @@ function writeIntermediateArtifacts(
 
 type ArtifactTransformer = (
   entity: SchemaArtifact,
-  options: TransformOptions,
+  options: FinalOptions,
   registry: SchemaArtifactRegistry
 ) => TransformerResult;
 
@@ -384,6 +384,8 @@ export async function runMigration(options: MigrateOptions): Promise<void> {
     mixinSourceDir: options.mixinSourceDir || DEFAULT_MIXIN_SOURCE_DIR,
     projectName: options.projectName || '',
     ...options,
+    combineSchemasAndTypes: options.combineSchemasAndTypes ?? true,
+    forceTypeScript: options.forceTypeScript ?? false,
   };
 
   const log = logger.for('migrate-to-schema');

@@ -59,6 +59,7 @@ function createMigrateToSchemaCommand(applyCommand: Command) {
     )
     .addOption(new Option('--skip-processed', 'Skip files that have already been processed'))
     .addOption(new Option('--force-typescript', 'Force all output files to TypeScript (.ts)'))
+    .addOption(new Option('--separate-types', 'Generate .type.ts files'))
     .addOption(new Option('--model-source-dir <path>', 'Directory containing model files').default('./app/models'))
     .addOption(new Option('--mixin-source-dir <path>', 'Directory containing mixin files').default('./app/mixins'))
     .addOption(new Option('--output-dir <path>', 'Output directory for generated schemas').default('./app/data'))
@@ -134,7 +135,6 @@ async function handleMigrateToSchema(
   }
 
   const cliOptions: ConfigOptions = {
-    ...(options as ConfigOptions),
     inputDir,
     ...(options.dry !== undefined && { dryRun: Boolean(options.dry) }),
     ...(options.verbose !== undefined && { verbose: options.verbose === '1' || options.verbose === '2' }),
@@ -143,6 +143,7 @@ async function handleMigrateToSchema(
     ...(options.mixinsOnly !== undefined && { mixinsOnly: Boolean(options.mixinsOnly) }),
     ...(options.skipProcessed !== undefined && { skipProcessed: Boolean(options.skipProcessed) }),
     ...(options.forceTypescript !== undefined && { forceTypeScript: Boolean(options.forceTypescript) }),
+    ...(options.separateTypes !== undefined && { combineSchemasAndTypes: !options.separateTypes }),
     ...(options.projectName !== undefined && { projectName: String(options.projectName) }),
     ...(options.warpDriveImports !== undefined && {
       warpDriveImports: options.warpDriveImports as 'legacy' | 'modern' | 'mirror',

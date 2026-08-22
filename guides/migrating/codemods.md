@@ -49,6 +49,12 @@ This codemod transforms EmberData models and mixins into WarpDrive's schema form
 
 The codemod is **non-destructive** - original model files are not removed. New files are generated in the `app/data/` by default.
 
+> [!WARNING]
+> On large projects the codemod's AST parsing may exceed the default stack size, causing a segfault. If you hit this, raise the limit before running:
+> ```bash
+> ulimit -s unlimited
+> ```
+
 ### Basic Usage
 
 ```bash
@@ -69,6 +75,7 @@ npx @ember-data/codemods apply migrate-to-schema --project-name my-app --warp-dr
 | `--config <path>` | Path to a JSON configuration file |
 | `--skip-processed` | Skip files that have already been processed |
 | `--force-typescript` | Force all output files to TypeScript (`.ts`) |
+| `--separate-types` | Emit a separate `.type.ts` file alongside each `.schema` file. By default, type interfaces are combined into the `.schema` file |
 | `--model-source-dir <path>` | Directory containing model files (default: `./app/models`) |
 | `--mixin-source-dir <path>` | Directory containing mixin files (default: `./app/mixins`) |
 | `--output-dir <path>` | Output directory for generated schemas (default: `./app/data`) |
@@ -150,6 +157,8 @@ Key configuration options:
 
 - **`projectName`** - The Ember app name, used for resolving classic module imports like `example-app/models/user`.
 - **`emberDataImportSource`** / **`warpDriveImports`** - Tell the codemod where your app imports EmberData and WarpDrive APIs from, when they differ from the defaults (`@ember-data/model`, `@warp-drive/core`, etc.).
+- **`forceTypeScript`** - When `true`, all output is `.ts` with type interfaces, even when source files are JavaScript. When `false` (default), `.js` sources produce plain `.js` output without type annotations.
+- **`combineSchemasAndTypes`** - When `false`, emit a separate `.type.ts` file alongside each `.schema` file. By default (`true`), type interfaces are merged into the `.schema` file.
 - **`typeMapping`** - Maps custom EmberData transform names (e.g., `@attr('uuid')`) to TypeScript types for the generated type files.
 - **`intermediateModelPaths`** - Import paths of base classes between `Model` and your concrete models. The codemod will analyze these and convert them to traits.
 - **`importSubstitutes`** - For base classes whose source can't be analyzed, tells the codemod what trait/extension names to reference.

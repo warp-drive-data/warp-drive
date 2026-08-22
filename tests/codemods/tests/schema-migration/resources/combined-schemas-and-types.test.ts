@@ -176,6 +176,7 @@ describe('combineSchemasAndTypes: true', function () {
   test('[JS] multiple models with relationships produce combined schema+type files', {
     config: {
       combineSchemasAndTypes: true,
+      forceTypeScript: true,
     },
     input: {
       [F.jsmodel('user')]: js`
@@ -322,7 +323,11 @@ describe('combineSchemasAndTypes: true', function () {
          */
         export interface Company extends WithLegacy<CompanyResource> {}
       `,
-      [F.extension('company', 'js')]: ts`
+      [F.extension('company')]: ts`
+        import type { Company } from './company.schema.ts';
+
+        // @ts-ignore-error in reality fields are not merged, they are overridden
+        export interface CompanyExtension extends Company {}
         export class CompanyExtension {
           get userCount() {
             return this.users.length;
@@ -481,6 +486,7 @@ describe('combineSchemasAndTypes: true', function () {
   test('[JS] model with belongsTo uses combined .schema imports', {
     config: {
       combineSchemasAndTypes: true,
+      forceTypeScript: true,
     },
     input: {
       [F.jsmodel('post')]: js`
