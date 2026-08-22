@@ -166,7 +166,9 @@
       "qunit": "2.19.4",
       "ember-compatibility-helpers": "^1.2.7",
       "testem": "~3.11.0",
-      "typescript": "5.9.2"
+      "typescript": "5.9.2",
+      "@types/bun": "1.3.14",
+      "bun-types": "1.3.14"
     },
     "peerDependencyRules": {
       "ignoreMissing": [

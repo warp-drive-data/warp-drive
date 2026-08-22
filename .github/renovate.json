@@ -36,7 +36,7 @@
     }
   ],
   "npm": {
-    "minimumReleaseAge": "3 days"
+    "minimumReleaseAge": "7 days"
   },
   "rangeStrategy": "bump",
   "prHourlyLimit": 10,
