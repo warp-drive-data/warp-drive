@@ -1,5 +1,5 @@
 {
-  "include": ["./declarations/**/*", "./src/**/*.md"],
+  "include": ["./dist/**/*", "./src/**/*.md"],
   "compilerOptions": {
     "target": "ESNext",
     "module": "ESNext",
@@ -28,7 +28,7 @@
     "experimentalDecorators": true,
     "composite": false,
     "incremental": false,
-    "rootDir": "declarations",
+    "rootDir": "dist",
     "declaration": true,
     "declarationMap": true,
     "inlineSourceMap": true,
@@ -37,8 +37,6 @@
     "types": ["@glint/ember-tsc/types", "ember-source/types"],
     "allowImportingTsExtensions": true,
     "paths": {
-      "@warp-drive/core": ["../core/declarations"],
-      "@warp-drive/core/*": ["../core/declarations/*"],
       "@glimmer/validator": ["../../@types/@glimmer/validator.d.ts"]
     },
     "erasableSyntaxOnly": true,
