@@ -23,6 +23,8 @@ minimumReleaseAgeExclude:
   - "@ember-data/*"
   # Renovate security update: svgo@4.0.1
   - svgo@4.0.1
+  # Renovate security update: @hono/node-server@1.19.13
+  - "@hono/node-server@1.19.13"
 
 ## Prevents transitive (sub-)dependencies from being resolved via git,
 ## git+ssh, or raw tarball URLs. Only our own direct dependencies may use
