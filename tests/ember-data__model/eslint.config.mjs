@@ -12,7 +12,7 @@ export default [
 
   // browser (js) ================
   js.browser({
-    srcDirs: ['app', 'tests'],
+    srcDirs: ['tests'],
     allowedImports: ['@ember/application'],
   }),
 
@@ -20,7 +20,7 @@ export default [
   typescript.browser({
     dirname: import.meta.dirname,
     files: ['**/*.ts', '**/*.gts'],
-    srcDirs: ['app', 'tests'],
+    srcDirs: ['tests'],
     allowedImports: ['@ember/application'],
   }),
 
