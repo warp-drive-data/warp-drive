@@ -11,12 +11,31 @@ env:
   TURBO_TOKEN: this-is-not-a-secret
   TURBO_TEAM: myself
 
+# See the matching note in .github/workflows/main.yml: without this, the
+# felixmosh/turborepo-gh-artifacts proxy can't look up artifacts it (or a
+# sibling job) already wrote, and re-uploads duplicates instead.
+permissions:
+  contents: read
+  actions: read
+
 concurrency:
   group: docs-${{ github.head_ref || github.ref_name }}
   cancel-in-progress: true
 
 jobs:
+  # See the matching "install" job in .github/workflows/main.yml.
+  install:
+    timeout-minutes: 8
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+      - uses: ./.github/actions/setup
+        with:
+          install: true
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
   test:
+    needs: [install]
     timeout-minutes: 5
     runs-on: ubuntu-latest
     steps:
