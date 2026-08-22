@@ -2821,33 +2821,27 @@ importers:
       '@babel/runtime':
         specifier: ^7.28.3
         version: 7.28.3
-      '@ember/optional-features':
-        specifier: ^2.2.0
-        version: 2.2.0
       '@ember/test-helpers':
         specifier: 5.2.0
         version: 5.2.0(patch_hash=a1670a4e3977c846a5c2454f317f5a17cbd284aef3a676b190c98141536afb04)(7c1eb33138e746229cea5e7e565a34fb)
       '@ember/test-waiters':
         specifier: ^4.1.1
         version: 4.1.1(@babel/core@7.28.3)
-      '@embroider/compat':
-        specifier: 4.1.12
-        version: 4.1.12(@embroider/core@4.4.2)
-      '@embroider/config-meta-loader':
-        specifier: 1.0.0
-        version: 1.0.0
       '@embroider/core':
         specifier: ^4.4.2
         version: 4.4.2
+      '@embroider/macros':
+        specifier: ^1.20.6
+        version: 1.20.6(@babel/core@7.28.3)
       '@embroider/vite':
         specifier: ^1.5.0
-        version: 1.5.0(17eac3da1dc4f7da353f16fb919342d9)
+        version: 1.5.0(5b7ff81b9dec3da9b574ea6a44e3bce8)
       '@glimmer/component':
         specifier: ^2.0.0
         version: 2.0.0
       '@rollup/plugin-babel':
         specifier: ^6.0.4
-        version: 6.0.4(@babel/core@7.28.3)
+        version: 6.0.4(@babel/core@7.28.3)(rollup@4.48.1)
       '@warp-drive/core':
         specifier: workspace:*
         version: file:warp-drive-packages/core(@babel/core@7.28.3)
@@ -2875,30 +2869,15 @@ importers:
       decorator-transforms:
         specifier: ^2.3.0
         version: 2.3.0(@babel/core@7.28.3)
-      ember-auto-import:
-        specifier: ^2.13.1
-        version: 2.13.1
-      ember-cli:
-        specifier: ~6.12.0
-        version: 6.12.0
-      ember-cli-babel:
-        specifier: ^8.2.0
-        version: 8.2.0(@babel/core@7.28.3)
-      ember-cli-htmlbars:
-        specifier: ^7.0.1
-        version: 7.0.1(7c1eb33138e746229cea5e7e565a34fb)
-      ember-load-initializers:
-        specifier: ^3.0.1
-        version: 3.0.1(d85bdc81123a97464a513818471b425c)
-      ember-resolver:
-        specifier: ^13.1.1
-        version: 13.1.1(@babel/core@7.28.3)
       ember-source:
         specifier: ~6.12.0
         version: 6.12.0(@glimmer/component@2.0.0)
-      loader.js:
-        specifier: ^4.7.0
-        version: 4.7.0
+      ember-strict-application-resolver:
+        specifier: ^0.1.0
+        version: 0.1.0(@babel/core@7.28.3)
+      rollup:
+        specifier: ^4.48.0
+        version: 4.48.1
       terser:
         specifier: ^5.43.1
         version: 5.43.1
@@ -2910,7 +2889,7 @@ importers:
         version: 1.2.1
       vite-plugin-compression2:
         specifier: ^2.2.0
-        version: 2.2.0
+        version: 2.2.0(rollup@4.48.1)
       zlib:
         specifier: 1.0.5
         version: 1.0.5
@@ -5042,10 +5021,6 @@ packages:
     engines: {node: 12.* || 14.* || >= 16}
     peerDependencies:
       '@embroider/core': ^4.4.2
-
-  '@embroider/config-meta-loader@1.0.0':
-    resolution: {integrity: sha512-qznkdjgEGPe6NM94hZNXvOm/WhrJwBh8FtSQZ+nGjh9TOjY42tOiTEevFuM0onNXUn6bpdGzmjwKo2xY2jxQxQ==}
-    engines: {node: 12.* || 14.* || >= 16}
 
   '@embroider/config-meta-loader@1.0.1-unstable.f9c81e9':
     resolution: {integrity: sha512-KZuhgIskQwegD9my9QXFm/FBTih4qdALdJI37G7KSgaZZHmzGEp/2yxUWRyGlu2D+5I1LjtzXYI3S0RZMSva4A==}
@@ -18114,10 +18089,10 @@ snapshots:
 
   '@embroider/addon-shim@1.10.2':
     dependencies:
-      '@embroider/shared-internals': 3.0.2
+      '@embroider/shared-internals': 3.1.1
       broccoli-funnel: 3.0.8
       common-ancestor-path: 1.0.1
-      semver: 7.7.3
+      semver: 7.8.5
     transitivePeerDependencies:
       - supports-color
 
@@ -18226,8 +18201,6 @@ snapshots:
       - canvas
       - supports-color
       - utf-8-validate
-
-  '@embroider/config-meta-loader@1.0.0': {}
 
   '@embroider/config-meta-loader@1.0.1-unstable.f9c81e9': {}
 
@@ -18452,34 +18425,6 @@ snapshots:
       typescript-memoize: 1.1.1
     transitivePeerDependencies:
       - supports-color
-
-  '@embroider/vite@1.5.0(17eac3da1dc4f7da353f16fb919342d9)':
-    dependencies:
-      '@babel/core': 7.29.7
-      '@embroider/core': 4.4.2
-      '@embroider/macros': 1.20.6(@babel/core@7.29.7)
-      '@embroider/reverse-exports': 0.2.0
-      '@rollup/pluginutils': 5.1.4
-      assert-never: 1.4.0
-      browserslist: 4.25.2
-      browserslist-to-esbuild: 2.1.1(browserslist@4.25.2)
-      chalk: 5.6.2
-      content-tag: 4.2.0
-      debug: 4.4.1
-      fast-glob: 3.3.3
-      fs-extra: 10.1.0
-      jsdom: 25.0.1
-      send: 0.18.0
-      source-map-url: 0.4.1
-      terser: 5.43.1
-      vite: 7.3.1(terser@5.43.1)
-    transitivePeerDependencies:
-      - '@glint/template'
-      - bufferutil
-      - canvas
-      - rollup
-      - supports-color
-      - utf-8-validate
 
   '@embroider/vite@1.5.0(21dcdae5c469ac5b0a3a896c983cfcd3)':
     dependencies:
@@ -30513,9 +30458,9 @@ snapshots:
       - supports-color
       - terser
 
-  vite-plugin-compression2@2.2.0:
+  vite-plugin-compression2@2.2.0(rollup@4.48.1):
     dependencies:
-      '@rollup/pluginutils': 5.1.4
+      '@rollup/pluginutils': 5.1.4(rollup@4.48.1)
       tar-mini: 0.2.0
     transitivePeerDependencies:
       - rollup
