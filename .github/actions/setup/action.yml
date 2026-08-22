@@ -82,6 +82,41 @@ runs:
         echo "restore-lint-caches = ${{ inputs.restore-lint-caches }}"
         echo "restore-broccoli-cache = ${{ inputs.restore-broccoli-cache }}"
 
+    # felixmosh/turborepo-gh-artifacts' local proxy server (below) serves a
+    # GET for artifact <id> straight from ${RUNNER_TEMP}/turbo-cache/<id>.gz
+    # on disk with zero network calls when that file already exists --  it
+    # only falls back to querying the GitHub Artifacts API when it's missing
+    # locally (see felixmosh/turborepo-gh-artifacts's turboServer.ts). That
+    # API-based fallback path is the one that's proven unreliable across
+    # separate jobs/workflow runs (see the note on `permissions` in
+    # .github/workflows/main.yml). Pre-seeding this directory from a shared
+    # actions/cache entry means most GETs hit the instant, reliable local
+    # path instead, for jobs both within this workflow run and in later ones.
+    #
+    # This must be placed *before* the felixmosh step: composite/JS action
+    # "post" cleanup steps run in the *reverse* order their main steps were
+    # registered, and felixmosh's own post step is what moves this run's
+    # newly-built artifacts from turbo-cache/new-artifacts/ into the flat
+    # turbo-cache/<id>.gz layout the GET handler reads from (see
+    # felixmosh/turborepo-gh-artifacts's uploadArtifacts.ts). Registering our
+    # restore first means our save (its own post step) runs *after*
+    # felixmosh's, capturing that final, fully-populated state rather than
+    # a snapshot from before this run's artifacts were moved into place.
+    #
+    # The key is unique per run (so a save always has something new to
+    # write -- actions/cache entries are immutable once created, an
+    # already-existing key is silently skipped) with a prefix-matched
+    # restore-key so every run still starts from the most recently saved
+    # state regardless of which prior run wrote it.
+    - name: 'Restore Turbo Remote-Cache Proxy Disk Cache'
+      if: ${{ inputs.repo-token }}
+      uses: actions/cache@v4
+      with:
+        path: ${{ runner.temp }}/turbo-cache
+        key: turbo-remote-cache-${{ github.run_id }}
+        restore-keys: |
+          turbo-remote-cache-
+
     - name: 'Setup local TurboRepo server'
       if: ${{ inputs.repo-token }}
       uses: felixmosh/turborepo-gh-artifacts@118f869397261f74bc39cb8565f2d02c0ed4209f # 4.1.1
