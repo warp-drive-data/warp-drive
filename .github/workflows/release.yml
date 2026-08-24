@@ -170,7 +170,7 @@ jobs:
         env:
           FORCE_COLOR: 2
           CI: true
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: tarballs
           path: tmp/tarballs/**/*.tgz
@@ -236,7 +236,7 @@ jobs:
         env:
           FORCE_COLOR: 2
           CI: true
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: tarballs
           path: tmp/tarballs/**/*.tgz
@@ -400,7 +400,7 @@ jobs:
           FORCE_COLOR: 2
           CI: true
           GITHUB_AUTH: ${{ secrets.GH_DEPLOY_TOKEN }}
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: tarballs
           path: tmp/tarballs/**/*.tgz
