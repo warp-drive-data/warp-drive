@@ -15,7 +15,7 @@ export default {
   presets: [
     [
       '@babel/preset-react',
-      { useBuiltIns: true, runtime: 'automatic', development: process.env.NODE_ENV !== 'production' },
+      { runtime: 'automatic', development: process.env.NODE_ENV !== 'production' },
     ],
   ],
   plugins: [
