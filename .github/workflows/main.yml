@@ -18,12 +18,44 @@ env:
   TURBO_TOKEN: this-is-not-a-secret
   TURBO_TEAM: myself
 
+# felixmosh/turborepo-gh-artifacts (our remote-cache proxy) looks up existing
+# artifacts via the Actions API before uploading a new one. Without an explicit
+# `actions: read` grant, that lookup silently fails, so it can't find artifacts
+# it just wrote moments earlier in the same or an upstream job -- it re-uploads
+# duplicates under the same hash and callers restoring that hash can get an
+# incomplete/wrong copy, which is indistinguishable from a "poisoned" cache
+# entry. See https://github.com/felixmosh/turborepo-gh-artifacts/issues/5.
+permissions:
+  contents: read
+  actions: read
+
 concurrency:
   group: ci-main-${{ github.head_ref || github.ref_name }}
   cancel-in-progress: true
 
 jobs:
+  # Every other job below independently runs `pnpm install`, which triggers
+  # `turbo run build:pkg` for every library package via the root "prepare"
+  # script. With no ordering between them, lint/browser-tests/special-build-tests
+  # used to all start at once and race to compute+write the *same*
+  # build:pkg cache entries to the shared remote cache concurrently -- a
+  # likely source of the remote cache serving corrupted/incomplete
+  # artifacts (e.g. a missing dist/addon-shim.cjs) despite the originating
+  # builds themselves succeeding. This job does nothing but populate that
+  # cache once, up front, so every other job's own `pnpm install` is
+  # guaranteed a clean, already-fully-written cache hit instead of a race.
+  install:
+    timeout-minutes: 8
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+      - uses: ./.github/actions/setup
+        with:
+          install: true
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
   lint:
+    needs: [install]
     timeout-minutes: 8
     runs-on: ubuntu-latest
     steps:
@@ -49,6 +81,7 @@ jobs:
           TURBO_FORCE: ${{ secrets.ACTIONS_RUNNER_DEBUG == 'true' }}
 
   special-build-tests:
+    needs: [install]
     if: |
       github.event_name == 'pull_request' && (
         github.base_ref == 'main' || github.base_ref == 'beta'
@@ -95,6 +128,7 @@ jobs:
           EMBER_DATA_FULL_COMPAT: ${{ matrix.full-compat }}
 
   browser-tests:
+    needs: [install]
     timeout-minutes: 22
     strategy:
       fail-fast: false
@@ -106,7 +140,6 @@ jobs:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
       - uses: ./.github/actions/setup
         with:
-          github-token: ${{ secrets.GH_PACKAGES_ACCESS_TOKEN }}
           restore-broccoli-cache: true
           jobs: 4
           parallel-build: true

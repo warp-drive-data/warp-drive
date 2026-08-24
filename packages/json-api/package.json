@@ -1,6 +1,6 @@
 {
   "name": "@ember-data/json-api",
-  "version": "5.9.0-alpha.21",
+  "version": "5.9.0-alpha.22",
   "description": "(Legacy) JSON:API document and resource cache implementation for EmberData",
   "keywords": [
     "ember-addon"
@@ -15,10 +15,10 @@
   "scripts": {
     "lint": "eslint . --quiet --cache --cache-strategy=content",
     "check:types": "tsc --noEmit",
-    "build:pkg": "tsdown",
+    "build:pkg": "node node_modules/tsdown/dist/run.mjs",
     "prepack": "pnpm run build:pkg",
     "sync": "echo \"syncing\"",
-    "start": "tsdown --watch"
+    "start": "node node_modules/tsdown/dist/run.mjs --watch"
   },
   "ember-addon": {
     "main": "addon-main.cjs",

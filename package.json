@@ -1,6 +1,6 @@
 {
   "name": "root",
-  "version": "5.9.0-alpha.21",
+  "version": "5.9.0-alpha.22",
   "private": true,
   "license": "MIT",
   "repository": {
@@ -9,22 +9,22 @@
   },
   "scripts": {
     "takeoff": "FORCE_COLOR=2 pnpm install --prefer-offline --reporter=append-only",
-    "prepare": "turbo run build:pkg --log-order=stream --concurrency=23;",
+    "prepare": "turbo run build:pkg --log-order=stream --concurrency=$(./bin/calculate-jobs);",
     "release": "./tools/release/index.ts",
-    "build": "turbo run build:pkg --log-order=stream --concurrency=10;",
+    "build": "turbo run build:pkg --log-order=stream --concurrency=$(./bin/calculate-jobs);",
     "sync": "pnpm --filter './packages/*' run --parallel --if-present sync",
     "start": "turbo run start --filter=./packages/* --concurrency=23",
     "start:specs": "turbo run start --filter=./specs",
     "sync:specs": "pnpm --filter './specs' run sync",
     "preview": "cd docs-viewer && pnpm start",
-    "lint:tests": "turbo --log-order=stream lint --filter=./tests/* --continue --concurrency=10",
-    "lint:pkg": "turbo --log-order=stream lint --filter=./packages/* --continue --concurrency=10",
-    "lint": "turbo --log-order=stream lint --continue --concurrency=10",
-    "lint:fix": "turbo --log-order=stream lint --continue --concurrency=10 -- --fix",
+    "lint:tests": "turbo --log-order=stream lint --filter=./tests/* --continue --concurrency=$(./bin/calculate-jobs)",
+    "lint:pkg": "turbo --log-order=stream lint --filter=./packages/* --continue --concurrency=$(./bin/calculate-jobs)",
+    "lint": "turbo --log-order=stream lint --continue --concurrency=$(./bin/calculate-jobs)",
+    "lint:fix": "turbo --log-order=stream lint --continue --concurrency=$(./bin/calculate-jobs) -- --fix",
     "lint:prettier": "prettier --check --cache --cache-location=.prettier-cache --log-level=warn .",
     "lint:prettier:fix": "prettier --write --cache --cache-location=.prettier-cache --log-level=warn .",
     "preinstall": "npx only-allow pnpm",
-    "check:types": "turbo --log-order=stream check:types --continue --concurrency=10",
+    "check:types": "turbo --log-order=stream check:types --continue --concurrency=$(./bin/calculate-jobs)",
     "test": "pnpm turbo test --concurrency=1 --log-order=stream",
     "test:production": "pnpm turbo test:production --concurrency=1 --log-order=stream",
     "test:blueprints": "pnpm run -r --workspace-concurrency=-1 --if-present test:blueprints",
@@ -166,7 +166,9 @@
       "qunit": "2.19.4",
       "ember-compatibility-helpers": "^1.2.7",
       "testem": "~3.11.0",
-      "typescript": "5.9.2"
+      "typescript": "5.9.2",
+      "@types/bun": "1.3.14",
+      "bun-types": "1.3.14"
     },
     "peerDependencyRules": {
       "ignoreMissing": [

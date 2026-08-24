@@ -1,6 +1,7 @@
 import { buildBaseURL, setBuildURLConfig } from '@ember-data/request-utils';
-import { test as debug } from '@ember-data/unpublished-test-infra/test-support/test-in-debug';
 import { module, test } from '@warp-drive/diagnostic';
+
+import { test as debug } from '../-utils/test-in-debug';
 
 module('buildBaseURL', function (hooks) {
   hooks.afterEach(function () {
@@ -263,7 +264,7 @@ module('buildBaseURL', function (hooks) {
     await assert.expectAssertion(() => {
       // @ts-expect-error testing invalid input
       buildBaseURL({ op: 'not-an-op', identifier: { type: 'user', id: '1' } });
-    }, /buildBaseURL: You tried to build a not-an-op request to user but op must be one of/);
+    }, /buildBaseURL: You tried to build a url for a not-an-op request to user but resourcePath must be set or op must be one of/);
   });
 
   debug('throws when no identifier is provided', async function (assert) {

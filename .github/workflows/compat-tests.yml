@@ -11,12 +11,34 @@ env:
   TURBO_TOKEN: this-is-not-a-secret
   TURBO_TEAM: myself
 
+# See the matching note in .github/workflows/main.yml: without this, the
+# felixmosh/turborepo-gh-artifacts proxy can't look up artifacts it (or a
+# sibling job) already wrote, and re-uploads duplicates instead.
+permissions:
+  contents: read
+  actions: read
+
 concurrency:
   group: compat-${{ github.head_ref || github.ref_name }}
   cancel-in-progress: true
 
 jobs:
+  # See the matching "install" job in .github/workflows/main.yml -- every
+  # job below independently runs `pnpm install`, so this warms the shared
+  # build:pkg cache once up front instead of letting them all race to
+  # compute+write it concurrently.
+  install:
+    timeout-minutes: 8
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+      - uses: ./.github/actions/setup
+        with:
+          install: true
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
   vite:
+    needs: [install]
     timeout-minutes: 7
     runs-on: ubuntu-latest
     steps:
@@ -74,10 +96,9 @@ jobs:
 
   smoke-tests:
     name: Smoke ${{ matrix.scenario.name }} w/ ${{ matrix.packageManager }}
+    needs: [install]
     timeout-minutes: 10
     runs-on: ubuntu-latest
-    # TODO:
-    # needs: [vite]
 
     strategy:
       matrix:

@@ -12,4 +12,5 @@ await launch({
   async cleanup() {
     await holodeck.endProgram();
   },
+  entry: './dist-test/index.html',
 });

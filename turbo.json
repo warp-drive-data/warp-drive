@@ -3,13 +3,18 @@
   //
   // https://turbo.build/repo/docs/core-concepts/caching/file-inputs#specifying-additional-inputs
   "globalDependencies": [
+    // turbo.json itself is not implicitly hashed by turborepo: without this,
+    // changes to a task's `outputs` (e.g. adding a previously-missing output
+    // glob) don't invalidate existing remote-cache entries, so already-cached
+    // "complete" artifacts keep being restored missing the newly-tracked files.
+    "turbo.json",
     "tsconfig.json",
     "pnpm-lock.yaml",
     ".npmrc",
     ".pnpmfile.cjs",
     ".pnpm-workspace.yaml",
     "patches/*",
-    ".github/*",
+    ".github/**",
     "./tools/release/**",
     "./tools/internal-config/**"
   ],
@@ -28,7 +33,13 @@
     // run build in all library packages
     // these do not require any associated packages
     // to have been built to build other than
-    // the build-config package
+    // the build-config package (and, transitively,
+    // @warp-drive/core, which itself needs build-config
+    // built first). Isolated declarations mean every
+    // other package builds independently of its
+    // workspace dependencies, so most packages default
+    // to depending only on @warp-drive/core#build:pkg;
+    // the exceptions are overridden by name below.
     "build:pkg": {
       "inputs": [
         // + V2-Addon convention
@@ -52,10 +63,105 @@
         "cjs-dist/**",
         "tsconfig.tsbuildinfo"
       ],
-      "dependsOn": ["^build:pkg"],
+      "dependsOn": ["@warp-drive/core#build:pkg"],
+      // Remote caching for this task has repeatedly served incomplete
+      // artifacts across CI jobs despite reporting a normal cache hit --
+      // reproducible enough that it isn't a stale/poisoned entry, and not
+      // fixed by correcting task ordering or output globs. build:pkg is
+      // fast, so disabling its cache entirely trades a little redundant
+      // rebuild work per job for not depending on that unreliable
+      // cross-job restore path at all. Every per-package override below
+      // repeats this for the same reason.
+      "cache": false,
       // https://turbo.build/repo/docs/reference/configuration#outputLogs
       "outputLogs": "new-only",
-      "env": ["NODE_ENV", "EMBER_DATA_FULL_COMPAT", "IS_UNPKG_BUILD", "BABEL_DISABLE_CACHE"]
+      // NODE_ENV, EMBER_DATA_FULL_COMPAT, and BABEL_DISABLE_CACHE are only read by
+      // the turbo-bypassing unpkg release script (tools/release/core/publish/steps/
+      // amend-for-unpkg.ts), which invokes tsdown directly rather than via `pnpm run
+      // build:pkg`, so they never affect a normal turbo-orchestrated build:pkg run.
+      // Hashing them here only busts the cache for env values (e.g. the ambient
+      // NODE_ENV set by the consuming test app) that don't change this task's output.
+      // IS_UNPKG_BUILD is kept because tsdown.config.mjs reads it unconditionally
+      // (`compileTypes: process.env.IS_UNPKG_BUILD !== 'true'`) and it genuinely
+      // changes build:pkg's output even outside the unpkg release path.
+      "env": ["IS_UNPKG_BUILD"]
+    },
+
+    // Turbo does not merge package-specific task overrides with the
+    // general "build:pkg" definition above -- each override below is a
+    // full standalone definition, so inputs/outputs/outputLogs/env are
+    // repeated verbatim from "build:pkg" and only dependsOn differs.
+
+    // @warp-drive/core is the one package that isn't a leaf: its own
+    // babel.config.mjs executes @warp-drive/build-config's macros at
+    // build time, so build-config must be built first.
+    "@warp-drive/core#build:pkg": {
+      "inputs": [
+        "src/**",
+        "addon-main.*",
+        "tsconfig.json",
+        "package.json",
+        "babel.*",
+        "vite.config.*",
+        "tsdown.config.*",
+        "../../config/**"
+      ],
+      "outputs": ["addon-test-support/**", "dist/**", "cjs-dist/**", "tsconfig.tsbuildinfo"],
+      "dependsOn": ["@warp-drive/build-config#build:pkg"],
+      "cache": false,
+      "outputLogs": "new-only",
+      "env": ["IS_UNPKG_BUILD"]
+    },
+
+    // Packages with no build-time dependency on @warp-drive/core's
+    // build-config macros -- these are true leaves and build fully
+    // in parallel with everything else.
+    "@warp-drive/build-config#build:pkg": {
+      "inputs": [
+        "src/**",
+        "cjs-src/**",
+        "addon-main.*",
+        "tsconfig.json",
+        "package.json",
+        "babel.*",
+        "vite.config-cjs.*",
+        "tsdown.config.*",
+        "../../config/**"
+      ],
+      "outputs": ["addon-test-support/**", "dist/**", "cjs-dist/**", "tsconfig.tsbuildinfo"],
+      "dependsOn": [],
+      "cache": false,
+      "outputLogs": "new-only",
+      "env": ["IS_UNPKG_BUILD"]
+    },
+    "@warp-drive/schema-dsl#build:pkg": {
+      "inputs": ["src/**", "addon-main.*", "tsconfig.json", "package.json", "babel.*", "tsdown.config.*"],
+      "outputs": ["addon-test-support/**", "dist/**", "cjs-dist/**", "tsconfig.tsbuildinfo"],
+      "dependsOn": [],
+      "cache": false,
+      "outputLogs": "new-only",
+      "env": ["IS_UNPKG_BUILD"]
+    },
+    "@ember-data/codemods#build:pkg": {
+      "inputs": ["src/**", "tsconfig.json", "package.json"],
+      "outputs": ["dist/**", "tsconfig.tsbuildinfo"],
+      "dependsOn": [],
+      "cache": false,
+      "outputLogs": "new-only",
+      "env": ["IS_UNPKG_BUILD"]
+    },
+    "@warp-drive/svelte#build:pkg": {
+      "inputs": ["src/**", "addon-main.*", "tsconfig.json", "package.json"],
+      "outputs": ["addon-test-support/**", "dist/**", "tsconfig.tsbuildinfo"],
+      "dependsOn": [],
+      "cache": false,
+      "outputLogs": "new-only",
+      "env": ["IS_UNPKG_BUILD"]
+    },
+    "@warp-drive/internal-tooling#build:pkg": {
+      "dependsOn": [],
+      "cache": false,
+      "outputLogs": "new-only"
     },
 
     /////////////////////////////////////////////////
@@ -88,15 +194,26 @@
       // could bust the cache), so a cached "lint passed" could be served for
       // code that was never actually linted.
       "inputs": ["$TURBO_DEFAULT$", "tsconfig.tsbuildinfo"],
-      "dependsOn": ["^build:pkg"],
+      // `^build:pkg` only waits for *upstream* workspace deps' builds. Several
+      // packages (e.g. @warp-drive/core) self-import from their own published
+      // subpath exports (e.g. '@warp-drive/core/build-config/debugging') to
+      // exercise the same macro-transform path consumers use, which resolves
+      // through node_modules to this package's *own* dist output. Without the
+      // unprefixed "build:pkg" here too, lint could start type-checking those
+      // self-imports before this package's own build:pkg finished -- normally
+      // masked because a cache hit restores near-instantly, but a real
+      // multi-second build (cache miss, or cache disabled) exposed it as
+      // `@typescript-eslint/no-unsafe-call` errors on values TS couldn't
+      // resolve a type for yet.
+      "dependsOn": ["^build:pkg", "build:pkg"],
       // https://turbo.build/repo/docs/reference/configuration#outputLogs
       "outputLogs": "new-only"
     },
 
     "check:types": {
-      // See the $TURBO_DEFAULT$ note on `lint` above — same bug applied here.
+      // See the $TURBO_DEFAULT$ and self-import notes on `lint` above — same bugs applied here.
       "inputs": ["$TURBO_DEFAULT$", "tsconfig.tsbuildinfo"],
-      "dependsOn": ["^build:pkg"],
+      "dependsOn": ["^build:pkg", "build:pkg"],
       // https://turbo.build/repo/docs/reference/configuration#outputLogs
       "outputLogs": "new-only"
     },

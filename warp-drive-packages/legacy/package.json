@@ -1,6 +1,6 @@
 {
   "name": "@warp-drive/legacy",
-  "version": "5.9.0-alpha.21",
+  "version": "5.9.0-alpha.22",
   "description": "Decommissioned Packages for WarpDrive | Things your app might still want to maintain use of for a little longer.",
   "keywords": [
     "ember-addon"
@@ -13,12 +13,12 @@
     "directory": "warp-drive-packages/legacy"
   },
   "scripts": {
-    "build:pkg": "tsdown",
+    "build:pkg": "node node_modules/tsdown/dist/run.mjs",
     "prepack": "pnpm run build:pkg",
     "lint": "eslint . --quiet --cache --cache-strategy=content",
     "check:types": "tsc --noEmit",
     "sync": "echo \"syncing\"",
-    "start": "tsdown --watch"
+    "start": "node node_modules/tsdown/dist/run.mjs --watch"
   },
   "files": [
     "dist",

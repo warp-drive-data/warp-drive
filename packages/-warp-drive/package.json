@@ -1,6 +1,6 @@
 {
   "name": "warp-drive",
-  "version": "0.2.0-alpha.64",
+  "version": "0.2.0-alpha.65",
   "description": "WarpDrive is the data framework for ambitious web applications",
   "keywords": [
     "typescript",
@@ -24,11 +24,11 @@
   "license": "MIT",
   "author": "Chris Thoburn <runspired@users.noreply.github.com>",
   "scripts": {
-    "build:pkg": "tsdown",
+    "build:pkg": "node node_modules/tsdown/dist/run.mjs",
     "prepack": "pnpm run build:pkg",
     "sync": "echo \"syncing\"",
     "_temporarily_deactivated_lint": "eslint . --quiet --cache --cache-strategy=content",
-    "start": "tsdown --watch",
+    "start": "node node_modules/tsdown/dist/run.mjs --watch",
     "check:types": "tsc --noEmit"
   },
   "bin": {

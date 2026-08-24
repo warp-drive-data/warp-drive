@@ -1,6 +1,6 @@
 {
   "name": "@ember-data/unpublished-test-infra",
-  "version": "5.9.0-alpha.21",
+  "version": "5.9.0-alpha.22",
   "private": true,
   "description": "The default blueprint for ember-data private packages.",
   "keywords": [
@@ -36,7 +36,7 @@
     "test": "tests"
   },
   "scripts": {
-    "build:pkg": "tsdown",
+    "build:pkg": "node node_modules/tsdown/dist/run.mjs",
     "prepack": "pnpm run build:pkg",
     "sync": "echo \"syncing\"",
     "check:types": "tsc --noEmit"

@@ -1,7 +1,7 @@
 {
   "name": "@warp-drive/vue",
   "description": "Data bindings and utilities for vuejs applications using WarpDrive",
-  "version": "5.9.0-alpha.21",
+  "version": "5.9.0-alpha.22",
   "license": "MIT",
   "author": "Chris Thoburn <runspired@users.noreply.github.com>",
   "type": "module",
@@ -19,12 +19,12 @@
     "warpdrive"
   ],
   "scripts": {
-    "build:pkg": "tsdown",
+    "build:pkg": "node node_modules/tsdown/dist/run.mjs",
     "prepack": "pnpm run build:pkg",
     "sync": "echo \"syncing\"",
     "lint": "eslint . --quiet --cache --cache-strategy=content",
     "check:types": "tsc --noEmit",
-    "start": "tsdown --watch"
+    "start": "node node_modules/tsdown/dist/run.mjs --watch"
   },
   "files": [
     "addon-main.cjs",

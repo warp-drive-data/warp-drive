@@ -1,6 +1,6 @@
 {
   "name": "ember-data",
-  "version": "5.9.0-alpha.21",
+  "version": "5.9.0-alpha.22",
   "description": "(Legacy) The lightweight reactive data library for Ember applications",
   "keywords": [
     "ember-addon"
@@ -16,10 +16,10 @@
   },
   "scripts": {
     "lint": "eslint . --quiet --cache --cache-strategy=content",
-    "build:pkg": "tsdown",
+    "build:pkg": "node node_modules/tsdown/dist/run.mjs",
     "prepack": "pnpm run build:pkg",
     "sync": "echo \"syncing\"",
-    "start": "tsdown --watch"
+    "start": "node node_modules/tsdown/dist/run.mjs --watch"
   },
   "ember-addon": {
     "main": "addon-main.cjs",

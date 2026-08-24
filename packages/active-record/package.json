@@ -1,7 +1,7 @@
 {
   "name": "@ember-data/active-record",
   "description": "(Legacy) ActiveRecord Format Support for EmberData",
-  "version": "5.9.0-alpha.21",
+  "version": "5.9.0-alpha.22",
   "private": false,
   "license": "MIT",
   "author": "Chris Thoburn <runspired@users.noreply.github.com>",
@@ -31,10 +31,10 @@
   "scripts": {
     "lint": "eslint . --quiet --cache --cache-strategy=content",
     "check:types": "tsc --noEmit",
-    "build:pkg": "tsdown",
+    "build:pkg": "node node_modules/tsdown/dist/run.mjs",
     "prepack": "pnpm run build:pkg",
     "sync": "echo \"syncing\"",
-    "start": "tsdown --watch"
+    "start": "node node_modules/tsdown/dist/run.mjs --watch"
   },
   "ember-addon": {
     "main": "addon-main.cjs",

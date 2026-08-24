@@ -1,5 +1,5 @@
 {
-  "include": ["app/**/*", "config/**/*", "tests/**/*"],
+  "include": ["tests/**/*", "services/**/*", "start.ts"],
   "compilerOptions": {
     "lib": ["DOM", "ESNext"],
     "module": "esnext",
@@ -20,10 +20,7 @@
     "noImplicitOverride": false,
     "incremental": true,
     "declaration": true,
-    "paths": {
-      "ember-data__graph/*": ["./app/*"]
-    },
-    "types": ["ember-source/types", "@ember-data/unpublished-test-infra/test-support/asserts/index"],
+    "types": ["ember-source/types", "vite/client", "@ember-data/unpublished-test-infra/test-support/asserts/index"],
     "allowImportingTsExtensions": true,
     "composite": true,
     "declarationDir": "unstable-preview-types",

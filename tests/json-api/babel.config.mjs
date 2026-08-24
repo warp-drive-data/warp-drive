@@ -1,0 +1,40 @@
+import { setConfig } from '@warp-drive/core/build-config';
+import { buildMacros } from '@embroider/macros/babel';
+import { macros } from '@warp-drive/core/build-config/babel-macros';
+
+const Macros = buildMacros({
+  configure: (config) => {
+    setConfig(config, {
+      compatWith: process.env.EMBER_DATA_FULL_COMPAT === 'true' ? '99.0' : null,
+      deprecations: {
+        DEPRECATE_STORE_EXTENDS_EMBER_OBJECT: false,
+      },
+    });
+  },
+});
+
+export default {
+  plugins: [
+    ['module:decorator-transforms', { runtime: { import: 'decorator-transforms/runtime' } }],
+    [
+      '@babel/plugin-transform-typescript',
+      {
+        allExtensions: true,
+        allowDeclareFields: true,
+        onlyRemoveTypeImports: true,
+      },
+    ],
+    [
+      'babel-plugin-ember-template-compilation',
+      {
+        transforms: [...Macros.templateMacros],
+      },
+    ],
+    ...macros(),
+    ...Macros.babelMacros,
+  ],
+
+  generatorOpts: {
+    compact: false,
+  },
+};

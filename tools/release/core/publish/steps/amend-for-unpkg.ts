@@ -11,7 +11,9 @@ import { Package } from '../../../utils/package.ts';
  */
 function buildCommandFor(pkg: Package, outDir: string): string {
   const usesTsdown = fs.existsSync(path.join(pkg.projectPath, 'tsdown.config.mjs'));
-  return usesTsdown ? `pnpm exec tsdown --out-dir ${outDir}` : `pnpm exec vite build --outDir ${outDir}`;
+  return usesTsdown
+    ? `node node_modules/tsdown/dist/run.mjs --out-dir ${outDir}`
+    : `pnpm exec vite build --outDir ${outDir}`;
 }
 
 function extractValuePath(value: string): string {

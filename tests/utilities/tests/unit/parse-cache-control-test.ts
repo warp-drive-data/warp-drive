@@ -1,6 +1,7 @@
 import { parseCacheControl } from '@ember-data/request-utils';
-import { test as debug } from '@ember-data/unpublished-test-infra/test-support/test-in-debug';
 import { module, test } from '@warp-drive/diagnostic';
+
+import { test as debug } from '../-utils/test-in-debug';
 
 module('parseCacheControl', function (hooks) {
   test('should parse a single Cache-Control directive', function (assert) {

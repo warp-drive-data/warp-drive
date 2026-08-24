@@ -1,11 +1,11 @@
 import EmberObject from '@ember/object';
 
-import Store from 'ember-data__adapter/services/store';
-
 import Model, { attr, belongsTo, hasMany } from '@ember-data/model';
-import testInDebug from '@ember-data/unpublished-test-infra/test-support/test-in-debug';
 import { module, test } from '@warp-drive/diagnostic';
 import { setupTest } from '@warp-drive/diagnostic/ember';
+
+import Store from '../../services/store';
+import testInDebug from '../-utils/test-in-debug';
 
 class MinimalSerializer extends EmberObject {
   normalizeResponse(_, __, data) {
