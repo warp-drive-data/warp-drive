@@ -31,7 +31,16 @@
       "groupName": "qunit"
     },
     {
-      "matchPackageNames": ["/typedoc/", "/vitepress/"],
+      "matchPackageNames": [
+        "/typedoc/",
+        "/vitepress/",
+        "vite-plugin-pwa",
+        "@mdit/plugin-footnote",
+        "vite-plugin-image-optimizer",
+        "svgo",
+        "sharp",
+        "front-matter"
+      ],
       "groupName": "docs"
     },
     {
