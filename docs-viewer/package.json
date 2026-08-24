@@ -27,7 +27,7 @@
     "@types/debug": "4.1.12",
     "@vite-pwa/vitepress": "^1.0.0",
     "front-matter": "^4.0.2",
-    "sharp": "^0.34.4",
+    "sharp": "^0.35.3",
     "svgo": "^4.0.0",
     "typedoc": "^0.28.20",
     "typedoc-plugin-markdown": "^4.8.1",
