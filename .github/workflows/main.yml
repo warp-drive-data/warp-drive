@@ -134,8 +134,9 @@ jobs:
       fail-fast: false
       matrix:
         launcher: [Chrome] # Firefox currently has an issue on ubuntu we cannot replicate on macos 03/29/2023
+        stage: [development, production]
     runs-on: ubuntu-latest
-    name: Test ${{matrix.launcher}}
+    name: Test ${{matrix.launcher}} (${{ matrix.stage }})
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - uses: ./.github/actions/setup
@@ -152,21 +153,10 @@ jobs:
         uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: failed-test-log.txt
-          key: failed-test-log_${{ github.sha }}
+          key: failed-test-log_${{ github.sha }}_${{ matrix.stage }}
 
-      - name: Development
-        run: timeout $BROWSER_TIMEOUT pnpm run test
-        env:
-          TESTEM_CI_LAUNCHER: ${{ matrix.launcher }}
-          CI: true
-          DEBUG: ${{ secrets.ACTIONS_RUNNER_DEBUG == 'true' && 'engine,socket.io*' }}
-          # DISPLAY_TEST_NAMES: true # uncomment this line to see the test names in the logs
-          FORCE_COLOR: 2
-          BROWSER_TIMEOUT: 600 # 10 minutes
-
-      - name: Production
-        id: run-tests-production
-        run: timeout $BROWSER_TIMEOUT pnpm test:production
+      - name: ${{ matrix.stage }}
+        run: timeout $BROWSER_TIMEOUT pnpm run ${{ matrix.stage == 'production' && 'test:production' || 'test' }}
         env:
           TESTEM_CI_LAUNCHER: ${{ matrix.launcher }}
           CI: true
@@ -176,10 +166,10 @@ jobs:
           BROWSER_TIMEOUT: 600 # 10 minutes
 
       - name: Upload testem logs
-        if: ${{ always() && steps.run-tests-production.conclusion != 'skipped' }}
+        if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: client-testem-logs
+          name: client-testem-logs-${{ matrix.stage }}
           path: './tests/dont-write-new-tests-here/testem.log'
           retention-days: 1
 
@@ -188,13 +178,13 @@ jobs:
         uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: failed-test-log.txt
-          key: failed-test-log_${{ github.sha }}
+          key: failed-test-log_${{ github.sha }}_${{ matrix.stage }}
 
       - name: Archive Tests Execution File
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         if: (success() || failure()) && steps.retry-test-failures.outputs.cache-hit != 'true'
         with:
-          name: tests-execution-file-partition
+          name: tests-execution-file-partition-${{ matrix.stage }}
           path: 'tests/dont-write-new-tests-here/test-execution-*.json'
           retention-days: 1
 
