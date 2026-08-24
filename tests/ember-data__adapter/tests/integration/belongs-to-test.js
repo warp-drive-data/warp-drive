@@ -74,7 +74,7 @@ class Post extends Model {
   @attr
   text;
 
-  @hasMany('comments', { async: true, inverse: 'post' })
+  @hasMany('comment', { async: true, inverse: 'post' })
   comments;
 }
 
