@@ -97,6 +97,17 @@ trustPolicyExclude:
   ## regardless; kept explicit for documentation and in case the window is
   ## widened again later.
   - undici-types@6.21.0
+  ## @trickfilm400/rollup-plugin-off-main-thread@3.0.0-pre1 (2025-12-02) is a
+  ## hard dependency of workbox-build@7.4.1 (pulled in transitively via
+  ## vite-plugin-pwa). The maintainer published 2.5.0 with npm provenance,
+  ## then 3.0.0-pre1 without it ~31 minutes later the same day -- likely a
+  ## manual publish outside their provenance-enabled release pipeline for the
+  ## stable line, not a compromise. npm's prerelease caret-range matching
+  ## means workbox-build's `^3.0.0-pre1` dependency can only ever resolve to
+  ## this exact version, so there is no newer trusted version to fall back
+  ## to. Scoped to this exact version only; revisit if workbox-build ever
+  ## bumps its declared range.
+  - "@trickfilm400/rollup-plugin-off-main-thread@3.0.0-pre1"
 
 packages:
   - "packages/*"
