@@ -34,7 +34,7 @@
     "typedoc-plugin-no-inherit": "^1.6.1",
     "typedoc-plugin-mdn-links": "^5.0.9",
     "typedoc-vitepress-theme": "^1.1.2",
-    "vitepress-plugin-llms": "^1.7.3",
+    "vitepress-plugin-llms": "^1.13.5",
     "vitepress-plugin-group-icons": "^1.6.3",
     "vitepress-plugin-tabs": "^0.7.1",
     "vite-plugin-image-optimizer": "^2.0.2",
