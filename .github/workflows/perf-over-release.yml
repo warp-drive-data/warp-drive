@@ -40,12 +40,12 @@ jobs:
           echo $originSha > tmp/sha-for-commit.txt
           git show --format=short --no-patch $originSha
       - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v5.0.0
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
         with:
           registry-url: 'https://registry.npmjs.org'
           node-version: 25.5
           cache: 'pnpm'
-      - uses: oven-sh/setup-bun@v2
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
         with:
           bun-version: latest
       - name: Get Browser Flags
@@ -135,7 +135,7 @@ jobs:
         #   DEBUG: '*,-babel*,-vite*,-rollup*,-ember*,-broccoli*,-pnpm*,-embroider*,-tree-sync*,-fs-tree-diff*'
       # - name: Upload Assets
       #   if: failure() || success()
-      #   uses: actions/upload-artifact@v4
+      #   uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
       #   with:
       #     name: built-files
       #     path: 'tests/performance/dist-*'
