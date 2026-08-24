@@ -53,11 +53,11 @@
     }
   },
   "devDependencies": {
-    "@babel/core": "^7.28.3",
-    "@babel/plugin-transform-typescript": "^7.28.0",
-    "@babel/preset-env": "^7.28.3",
-    "@babel/preset-typescript": "^7.27.1",
-    "@babel/runtime": "^7.28.3",
+    "@babel/core": "^8.0.1",
+    "@babel/plugin-transform-typescript": "^8.0.1",
+    "@babel/preset-env": "^8.0.2",
+    "@babel/preset-typescript": "^8.0.1",
+    "@babel/runtime": "^8.0.0",
     "@ember/test-helpers": "5.2.0",
     "@ember/test-waiters": "^4.1.1",
     "@embroider/addon-dev": "^8.1.0",

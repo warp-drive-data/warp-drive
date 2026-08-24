@@ -33,10 +33,10 @@
     "test:examples": "vite build --mode development && testem ci"
   },
   "devDependencies": {
-    "@babel/core": "^7.28.3",
-    "@babel/plugin-transform-runtime": "^7.27.1",
-    "@babel/plugin-transform-typescript": "^7.27.1",
-    "@babel/runtime": "^7.28.3",
+    "@babel/core": "^8.0.1",
+    "@babel/plugin-transform-runtime": "^8.0.1",
+    "@babel/plugin-transform-typescript": "^8.0.1",
+    "@babel/runtime": "^8.0.0",
     "@ember/edition-utils": "^1.2.0",
     "@ember/optional-features": "^2.2.0",
     "@ember/test-helpers": "5.2.0",
