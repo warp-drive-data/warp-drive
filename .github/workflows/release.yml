@@ -144,7 +144,7 @@ jobs:
           else
             echo "DESIRED_BRANCH=main" >> "$GITHUB_OUTPUT"
           fi
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           fetch-depth: 1
           fetch-tags: true
@@ -170,7 +170,7 @@ jobs:
         env:
           FORCE_COLOR: 2
           CI: true
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: tarballs
           path: tmp/tarballs/**/*.tgz
@@ -198,7 +198,7 @@ jobs:
           else
             echo "DESIRED_BRANCH=beta" >> "$GITHUB_OUTPUT"
           fi
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           fetch-tags: true
           show-progress: false
@@ -236,7 +236,7 @@ jobs:
         env:
           FORCE_COLOR: 2
           CI: true
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: tarballs
           path: tmp/tarballs/**/*.tgz
@@ -268,7 +268,7 @@ jobs:
             echo "MAIN_BRANCH=main" >> "$GITHUB_OUTPUT"
             echo "BETA_BRANCH=beta" >> "$GITHUB_OUTPUT"
           fi
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           fetch-tags: true
           show-progress: false
@@ -377,7 +377,7 @@ jobs:
         run: |
           echo "Releases may only be performed from the main branch."
           exit 1
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           fetch-tags: true
           show-progress: false
@@ -400,7 +400,7 @@ jobs:
           FORCE_COLOR: 2
           CI: true
           GITHUB_AUTH: ${{ secrets.GH_DEPLOY_TOKEN }}
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: tarballs
           path: tmp/tarballs/**/*.tgz
@@ -418,7 +418,7 @@ jobs:
         run: |
           echo "Releases may only be performed from the main branch."
           exit 1
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           fetch-depth: 1
           fetch-tags: true
