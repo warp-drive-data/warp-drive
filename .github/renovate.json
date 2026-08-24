@@ -31,6 +31,10 @@
       "groupName": "qunit"
     },
     {
+      "matchPackageNames": ["/typedoc/", "/vitepress/"],
+      "groupName": "docs"
+    },
+    {
       "matchManagers": ["github-actions"],
       "groupName": "github-actions"
     }
