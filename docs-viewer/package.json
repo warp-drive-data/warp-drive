@@ -25,7 +25,7 @@
     "@mdit/plugin-footnote": "^0.22.2",
     "@pnpm/find-workspace-dir": "1000.1.2",
     "@types/debug": "4.1.12",
-    "@vite-pwa/vitepress": "^1.0.0",
+    "@vite-pwa/vitepress": "^1.1.0",
     "front-matter": "^4.0.2",
     "sharp": "^0.34.4",
     "svgo": "^4.0.0",
