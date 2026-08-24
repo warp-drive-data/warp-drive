@@ -25,7 +25,7 @@ jobs:
     name: 'Performance Check Against Release'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           fetch-depth: 3
       - run: git fetch origin release --depth=1
@@ -39,8 +39,8 @@ jobs:
           originSha=$(git rev-parse HEAD^2)
           echo $originSha > tmp/sha-for-commit.txt
           git show --format=short --no-patch $originSha
-      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v5.0.0
-      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+      - uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6.0.10
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           registry-url: 'https://registry.npmjs.org'
           node-version: 25.5
