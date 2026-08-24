@@ -144,7 +144,7 @@ jobs:
           else
             echo "DESIRED_BRANCH=main" >> "$GITHUB_OUTPUT"
           fi
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           fetch-depth: 1
           fetch-tags: true
@@ -198,7 +198,7 @@ jobs:
           else
             echo "DESIRED_BRANCH=beta" >> "$GITHUB_OUTPUT"
           fi
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           fetch-tags: true
           show-progress: false
@@ -268,7 +268,7 @@ jobs:
             echo "MAIN_BRANCH=main" >> "$GITHUB_OUTPUT"
             echo "BETA_BRANCH=beta" >> "$GITHUB_OUTPUT"
           fi
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           fetch-tags: true
           show-progress: false
@@ -377,7 +377,7 @@ jobs:
         run: |
           echo "Releases may only be performed from the main branch."
           exit 1
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           fetch-tags: true
           show-progress: false
@@ -418,7 +418,7 @@ jobs:
         run: |
           echo "Releases may only be performed from the main branch."
           exit 1
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           fetch-depth: 1
           fetch-tags: true
