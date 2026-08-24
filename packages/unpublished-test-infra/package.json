@@ -66,10 +66,10 @@
     "semver": "^7.7.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.28.3",
-    "@babel/plugin-transform-typescript": "^7.28.0",
-    "@babel/preset-env": "^7.28.3",
-    "@babel/preset-typescript": "^7.27.1",
+    "@babel/core": "^8.0.1",
+    "@babel/plugin-transform-typescript": "^8.0.1",
+    "@babel/preset-env": "^8.0.2",
+    "@babel/preset-typescript": "^8.0.1",
     "@ember/test-helpers": "5.2.0",
     "@glimmer/component": "^2.0.0",
     "@types/qunit": "2.19.13",

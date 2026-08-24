@@ -4,9 +4,9 @@
   "version": "5.9.0-alpha.22",
   "type": "module",
   "dependencies": {
-    "@babel/cli": "^7.28.3",
-    "@babel/core": "^7.28.3",
-    "@babel/eslint-parser": "7.28.0",
+    "@babel/cli": "^8.0.4",
+    "@babel/core": "^8.0.1",
+    "@babel/eslint-parser": "8.0.1",
     "@nullvoxpopuli/ember-rolldown": "^2.7.0",
     "@rolldown/pluginutils": "^1.0.1",
     "@rollup/plugin-babel": "^6.0.4",
