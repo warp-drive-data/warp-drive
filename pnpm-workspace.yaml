@@ -27,6 +27,8 @@ minimumReleaseAgeExclude:
   - "@hono/node-server@1.19.13"
   # Renovate security update: tmp@0.2.6
   - tmp@0.2.6
+  # Renovate security update: turbo@2.9.14
+  - turbo@2.9.14
 
 ## Prevents transitive (sub-)dependencies from being resolved via git,
 ## git+ssh, or raw tarball URLs. Only our own direct dependencies may use
