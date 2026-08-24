@@ -29,6 +29,8 @@ minimumReleaseAgeExclude:
   - tmp@0.2.6
   # Renovate security update: turbo@2.9.14
   - turbo@2.9.14
+  # Renovate security update: vite@7.3.2
+  - vite@7.3.2
 
 ## Prevents transitive (sub-)dependencies from being resolved via git,
 ## git+ssh, or raw tarball URLs. Only our own direct dependencies may use
