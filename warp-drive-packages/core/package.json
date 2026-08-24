@@ -47,9 +47,9 @@
     "@warp-drive/build-config": "workspace:*"
   },
   "devDependencies": {
-    "@babel/core": "^7.28.3",
-    "@babel/plugin-transform-typescript": "^7.28.0",
-    "@babel/preset-typescript": "^7.27.1",
+    "@babel/core": "^7.29.7",
+    "@babel/plugin-transform-typescript": "^7.29.7",
+    "@babel/preset-typescript": "^7.29.7",
     "@warp-drive/internal-config": "workspace:*",
     "decorator-transforms": "^2.3.0",
     "ember-source": "~6.12.0",

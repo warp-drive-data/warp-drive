@@ -25,10 +25,10 @@
     "test:start": "bun ./diagnostic.js --serve --no-launch"
   },
   "devDependencies": {
-    "@babel/core": "^7.28.3",
-    "@babel/plugin-transform-typescript": "^7.28.0",
-    "@babel/preset-react": "^7.27.1",
-    "@babel/runtime": "^7.28.3",
+    "@babel/core": "^7.29.7",
+    "@babel/plugin-transform-typescript": "^7.29.7",
+    "@babel/preset-react": "^7.29.7",
+    "@babel/runtime": "^7.29.7",
     "@embroider/macros": "^1.20.6",
     "@rollup/plugin-babel": "^6.0.4",
     "@types/react": "^19.2.18",
