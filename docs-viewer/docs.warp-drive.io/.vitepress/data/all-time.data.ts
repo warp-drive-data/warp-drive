@@ -1,5 +1,5 @@
-import { Contributor, getFromCache, default as loadAll, saveToCache } from './contributors.data';
-import { CoreTeamMember, default as loadCore } from './core.data';
+import { Contributor, getFromCache, default as loadAll, saveToCache } from './contributors.data.ts';
+import { CoreTeamMember, default as loadCore } from './core.data.ts';
 
 // https://api.github.com/users/
 
