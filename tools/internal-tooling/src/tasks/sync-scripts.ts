@@ -3,7 +3,7 @@
  * we expect for each package type.
  */
 import debug from 'debug';
-import chalk from 'chalk';
+import { styleText } from 'node:util';
 import { runPrettier, walkPackages, type ProjectPackage } from './-utils';
 
 const log = debug('wd:sync-scripts');
@@ -125,7 +125,7 @@ function isViteApp(project: ProjectPackage) {
 
 export async function main() {
   log(
-    `\n\t${chalk.gray('=').repeat(60)}\n\t\t${chalk.magentaBright('@warp-drive/')}${chalk.greenBright('internal-tooling')} Sync Scripts\n\t${chalk.gray('=').repeat(60)}\n\n\t\t${chalk.gray(`Syncing default scripts for each package type`)}\n\n`
+    `\n\t${styleText('gray', '=').repeat(60)}\n\t\t${styleText('magentaBright', '@warp-drive/')}${styleText('greenBright', 'internal-tooling')} Sync Scripts\n\t${styleText('gray', '=').repeat(60)}\n\n\t\t${styleText('gray', `Syncing default scripts for each package type`)}\n\n`
   );
 
   let anyFileEdited = false;

@@ -1,4 +1,4 @@
-import chalk from 'chalk';
+import { styleText } from 'node:util';
 import path from 'path';
 
 import { INDEX_PATHS } from '../utils/const.js';
@@ -18,7 +18,7 @@ export function handleBunFetch(config, state, req, server) {
 
   const bId = url.searchParams.get('b') ?? null;
   const wId = url.searchParams.get('w') ?? null;
-  info(`[${chalk.cyan(req.method)}] ${url.pathname}`);
+  info(`[${styleText('cyan', req.method)}] ${url.pathname}`);
 
   if (config.parallel > 1 && url.pathname === '/parallel-launcher') {
     debug(`Serving parallel launcher`);

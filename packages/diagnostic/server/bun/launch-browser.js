@@ -1,4 +1,4 @@
-import chalk from 'chalk';
+import { styleText } from 'node:util';
 
 import { info, print } from '../utils/debug.js';
 
@@ -46,6 +46,6 @@ export async function launchBrowsers(config, state) {
       proc: browser,
     });
     info(`${launcher} spawned with pid ${browser.pid}`);
-    print(chalk.magenta(`⚛️  Launched ${launcher}`));
+    print(styleText('magenta', `⚛️  Launched ${launcher}`));
   }
 }

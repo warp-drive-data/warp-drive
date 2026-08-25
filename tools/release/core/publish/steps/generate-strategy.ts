@@ -1,4 +1,4 @@
-import chalk from 'chalk';
+import { styleText } from 'node:util';
 import { CHANNEL, npmDistTagForChannelAndVersion, VALID_TRAINS } from '../../../utils/channel.ts';
 
 import { APPLIED_STRATEGY, Package, STRATEGY } from '../../../utils/package.ts';
@@ -84,9 +84,11 @@ export async function applyStrategy(
   const isDownversion = isReversion && semver.gt(currentVersion, newBaseVersion);
   if (isDownversion) {
     console.log(
-      `\n\n\t==========================================\n\t⚠️\t${chalk.yellow(
+      `\n\n\t==========================================\n\t⚠️\t${styleText(
+        'yellow',
         'Down-Versioning Detected:'
-      )}\n\t\tConverting primary version from ${chalk.greenBright(currentVersion)} to ${chalk.greenBright(
+      )}\n\t\tConverting primary version from ${styleText('greenBright', currentVersion)} to ${styleText(
+        'greenBright',
         newBaseVersion
       )} before applying strategy for ${increment} bump.\n\n\t\tAlpha and Beta packages will be marked as private.\n\t==========================================\n`
     );

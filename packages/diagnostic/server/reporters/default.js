@@ -1,4 +1,4 @@
-import chalk from 'chalk';
+import { styleText } from 'node:util';
 import fs from 'fs';
 import path from 'path';
 import { exit } from 'process';
@@ -98,11 +98,13 @@ export default class CustomDotReporter {
     const elapsed = this.realStartTime - this.dateTimeZero;
 
     this.write(
-      `\n\n${HEADER_STR}\n  Test Run Initiated\n\tSuite Start: ${chalk.cyan(
+      `\n\n${HEADER_STR}\n  Test Run Initiated\n\tSuite Start: ${styleText(
+        'cyan',
         new Date(this.realStartTime).toLocaleString('en-US')
-      )} (elapsed ${chalk.cyan(elapsed.toLocaleString('en-US'))} ms)\n\tReporter Start: ${chalk.cyan(
+      )} (elapsed ${styleText('cyan', elapsed.toLocaleString('en-US'))} ms)\n\tReporter Start: ${styleText(
+        'cyan',
         new Date().toLocaleString('en-US')
-      )} (elapsed ${chalk.cyan(runDelta.toLocaleString('en-US'))} ms)\n${HEADER_STR}\n\n`
+      )} (elapsed ${styleText('cyan', runDelta.toLocaleString('en-US'))} ms)\n${HEADER_STR}\n\n`
     );
   }
 
@@ -118,12 +120,13 @@ export default class CustomDotReporter {
     this.ensureTimeoutCheck();
     report.launcherDescription = `${report.launcher}:${report.browserId}:${report.windowId}`;
 
-    report.name = `${report.launcherDescription} #${report.testNo} ${chalk.magenta(
+    report.name = `${report.launcherDescription} #${report.testNo} ${styleText(
+      'magenta',
       '@ ' + (Math.round(report._testStarted / 10) / 100).toLocaleString('en-US') + 's'
     )} ${report.data.name}`;
 
     if (process.env.DISPLAY_TEST_NAMES) {
-      this.write(`\t\t⏱️ ${chalk.magenta(' Started')}: ${report.name}\n`);
+      this.write(`\t\t⏱️ ${styleText('magenta', ' Started')}: ${report.name}\n`);
     }
   }
 
@@ -184,14 +187,16 @@ export default class CustomDotReporter {
   onRunFinish(runReport) {
     if (this.failedTests.length) {
       this.write(
-        chalk.red(
+        styleText(
+          'red',
           `\n\n\t${this.failedTests.length} Tests Failed. Complete stack traces for failures will print at the end.`
         )
       );
     }
     if (this.globalFailures.length) {
       this.write(
-        chalk.red(
+        styleText(
+          'red',
           `\n\n\t${this.globalFailures.length} Global Failures were detected.. Complete stack traces for failures will print at the end.`
         )
       );
@@ -215,11 +220,14 @@ export default class CustomDotReporter {
     const realEndDate = new Date(realEndTime);
 
     this.write(
-      `\n\n${HEADER_STR}\n  Test Run Complete\n\tSuite End: ${chalk.cyan(
+      `\n\n${HEADER_STR}\n  Test Run Complete\n\tSuite End: ${styleText(
+        'cyan',
         realEndDate.toLocaleString('en-US')
-      )} (elapsed ${chalk.cyan(suiteElapsed.toLocaleString('en-US'))} ms)\n\tReporter End: ${chalk.cyan(
+      )} (elapsed ${styleText('cyan', suiteElapsed.toLocaleString('en-US'))} ms)\n\tReporter End: ${styleText(
+        'cyan',
         endDate.toLocaleString('en-US')
-      )} (elapsed ${chalk.cyan(runElapsed.toLocaleString('en-US'))} ms)\n\tRun Duration ${chalk.cyan(
+      )} (elapsed ${styleText('cyan', runElapsed.toLocaleString('en-US'))} ms)\n\tRun Duration ${styleText(
+        'cyan',
         fullElapsed.toLocaleString('en-US')
       )} ms\n${HEADER_STR}\n\n`
     );
@@ -266,10 +274,10 @@ export default class CustomDotReporter {
 
   displayDotLegend() {
     this.write('\n\tLegend\n\t=========');
-    this.write(chalk.green('\n\tPass:\t.'));
-    this.write(chalk.cyan('\n\tTodo:\tT'));
-    this.write(chalk.yellow('\n\tSkip:\t*'));
-    this.write(chalk.bold(chalk.red('\n\tFail:\tF')));
+    this.write(styleText('green', '\n\tPass:\t.'));
+    this.write(styleText('cyan', '\n\tTodo:\tT'));
+    this.write(styleText('yellow', '\n\tSkip:\t*'));
+    this.write(styleText('bold', styleText('red', '\n\tFail:\tF')));
     this.write('\n\n\t');
   }
 
@@ -294,7 +302,7 @@ export default class CustomDotReporter {
       }
 
       if (this.totalLines % 5 === 0) {
-        this.write(`\n${chalk.magenta((this.totalLines * this.maxLineChars).toLocaleString('en-US'))}⎡\t`);
+        this.write(`\n${styleText('magenta', (this.totalLines * this.maxLineChars).toLocaleString('en-US'))}⎡\t`);
       } else {
         this.write('\n\t');
       }
@@ -302,30 +310,31 @@ export default class CustomDotReporter {
 
     const result = report.data;
     if (result.passed && !result.todo) {
-      this.write(chalk.grey('.'));
+      this.write(styleText('grey', '.'));
     } else if (!result.passed && result.todo) {
-      this.write(chalk.cyan('T'));
+      this.write(styleText('cyan', 'T'));
     } else if (result.skipped) {
-      this.write(chalk.yellow('*'));
+      this.write(styleText('yellow', '*'));
     } else {
-      this.write(chalk.bold(chalk.red('F')));
+      this.write(styleText('bold', styleText('red', 'F')));
     }
     this.currentLineChars += 1;
   }
 
   displayFullResult(report, verbose) {
     const result = report.data;
-    const name = `${chalk.grey(result.runDuration.toLocaleString('en-US') + 'ms')} ${chalk.white(
+    const name = `${styleText('grey', result.runDuration.toLocaleString('en-US') + 'ms')} ${styleText(
+      'white',
       '#' + report.testNo
-    )} ${result.name} ${chalk.grey(report.launcherDescription)}`;
+    )} ${result.name} ${styleText('grey', report.launcherDescription)}`;
     if (result.passed && !result.todo) {
-      this.write(`\t✅ ${chalk.green('Passed')}: ${name}\n`);
+      this.write(`\t✅ ${styleText('green', 'Passed')}: ${name}\n`);
     } else if (!result.passed && result.todo) {
-      this.write(chalk.cyan(`\t🛠️ TODO: ${name}\n`));
+      this.write(styleText('cyan', `\t🛠️ TODO: ${name}\n`));
     } else if (result.skipped) {
-      this.write(chalk.yellow(`\t⚠️ Skipped: ${name}\n`));
+      this.write(styleText('yellow', `\t⚠️ Skipped: ${name}\n`));
     } else {
-      this.write(chalk.red(`\t💥 Failed: ${name}\n`));
+      this.write(styleText('red', `\t💥 Failed: ${name}\n`));
       this.write(`\t\topen test locally: ${this.serverConfig.url}?testId=${result.testId}\n`);
 
       // TODO - print individual failures in verbose mode
@@ -337,10 +346,10 @@ export default class CustomDotReporter {
       'Result',
       '=========',
       'Total ' + this.total,
-      chalk.green('# pass  ' + this.pass),
-      chalk.yellow('# skip  ' + this.skip),
-      chalk.cyan('# todo  ' + this.todo),
-      chalk.red('# fail  ' + this.fail),
+      styleText('green', '# pass  ' + this.pass),
+      styleText('yellow', '# skip  ' + this.skip),
+      styleText('cyan', '# todo  ' + this.todo),
+      styleText('red', '# fail  ' + this.fail),
     ];
 
     if (this.pass + this.skipped + this.todo === this.total) {
@@ -377,8 +386,10 @@ export default class CustomDotReporter {
         const duration = this.now() - report._testStarted;
         if (duration > DEFAULT_TEST_TIMEOUT) {
           this.write(
-            chalk.grey(
-              `\n\n⚠️  ${chalk.yellow('Pending:')} ${chalk.white(report.name)} has been running for ${chalk.yellow(
+            styleText(
+              'grey',
+              `\n\n⚠️  ${styleText('yellow', 'Pending:')} ${styleText('white', report.name)} has been running for ${styleText(
+                'yellow',
                 duration.toLocaleString('en-US') + 'ms'
               )}, this is likely a bug.\n`
             )
@@ -409,17 +420,18 @@ export default class CustomDotReporter {
 
       running.forEach((report) => {
         if (!hasFoundPending) {
-          this.write(chalk.red(`\n\nStill Pending Tests:\n\n`));
+          this.write(styleText('red', `\n\nStill Pending Tests:\n\n`));
           hasFoundPending = true;
         }
 
         const duration = this.now() - report._testStarted;
 
         this.write(
-          chalk.yellow(
-            `\t⛔️ Stuck (${chalk.red(duration.toLocaleString('en-US') + ' ms')}): (${
+          styleText(
+            'yellow',
+            `\t⛔️ Stuck (${styleText('red', duration.toLocaleString('en-US') + ' ms')}): (${
               report.data.testId
-            }) ${chalk.white(report.name)} ${chalk.grey(report.launcherDescription)}\n`
+            }) ${styleText('white', report.name)} ${styleText('grey', report.launcherDescription)}\n`
           )
         );
       });
@@ -435,7 +447,8 @@ export default class CustomDotReporter {
     });
 
     this.write(
-      `\n\n\t${chalk.yellow(
+      `\n\n\t${styleText(
+        'yellow',
         `${results.length < SLOW_TEST_COUNT ? results.length : SLOW_TEST_COUNT} Longest Running Tests`
       )}\n${HEADER_STR}\n`
     );
@@ -445,16 +458,17 @@ export default class CustomDotReporter {
       if (i < testsToPrint) {
         // this test is a known offender
         if (runDuration > DEFAULT_TIMEOUT + TIMEOUT_BUFFER) {
-          this.write(`\n\t${i + 1}.\t[S] ${chalk.yellow(runDuration.toLocaleString('en-US') + 'ms')}\t${name}`);
+          this.write(`\n\t${i + 1}.\t[S] ${styleText('yellow', runDuration.toLocaleString('en-US') + 'ms')}\t${name}`);
           testsToPrint++;
         } else {
-          this.write(`\n\t${i + 1}.\t${chalk.yellow(runDuration.toLocaleString('en-US') + 'ms')}\t${name}`);
+          this.write(`\n\t${i + 1}.\t${styleText('yellow', runDuration.toLocaleString('en-US') + 'ms')}\t${name}`);
         }
       }
       totalDuration += runDuration;
     }
     this.write(
-      chalk.yellow(
+      styleText(
+        'yellow',
         `\n\n\tAvg Duration of all ${results.length} tests: ${Math.round(totalDuration / results.length)}ms\n\n`
       )
     );
@@ -462,14 +476,18 @@ export default class CustomDotReporter {
 
   reportFailedTests() {
     if (this.failedTests.length) {
-      this.write(chalk.red(`\n\n\tPrinting ${this.failedTests.length} Failed Tests\n\n\t====================\n\n`));
+      this.write(
+        styleText('red', `\n\n\tPrinting ${this.failedTests.length} Failed Tests\n\n\t====================\n\n`)
+      );
     }
     this.failedTests.forEach((failure) => {
       const result = failure.data;
-      this.write(chalk.red(`\n\t💥 Failed: ${result.runDuration.toLocaleString('en-US')}ms ${result.name}\n`));
+      this.write(styleText('red', `\n\t💥 Failed: ${result.runDuration.toLocaleString('en-US')}ms ${result.name}\n`));
 
       result.items.forEach((diagnostic) => {
-        this.write(`\t\t${diagnostic.passed ? chalk.green('✅ Pass') : chalk.red('💥 Fail')} ${diagnostic.message}\n`);
+        this.write(
+          `\t\t${diagnostic.passed ? styleText('green', '✅ Pass') : styleText('red', '💥 Fail')} ${diagnostic.message}\n`
+        );
 
         if (!diagnostic.passed && 'expected' in diagnostic && 'actual' in diagnostic) {
           this.write(
@@ -486,7 +504,7 @@ export default class CustomDotReporter {
     });
 
     if (this.globalFailures.length) {
-      this.write(chalk.red(`\n\n${this.globalFailures.length} Global Failures\n\n`));
+      this.write(styleText('red', `\n\n${this.globalFailures.length} Global Failures\n\n`));
     }
 
     this.globalFailures.forEach((failure) => {
@@ -495,7 +513,7 @@ export default class CustomDotReporter {
         result.name && result.message
           ? `[${result.name}] ${result.message}`
           : result.name || result.message || 'Unknown Error';
-      this.write(chalk.red(`\n\t💥 Failed: ${label}\n`));
+      this.write(styleText('red', `\n\t💥 Failed: ${label}\n`));
 
       if (result.stack) {
         this.write(`\n${indent(result.stack)}\n`);
@@ -515,15 +533,18 @@ export default class CustomDotReporter {
         fs.writeFileSync(cacheFile, failedTestIds.join(','), { encoding: 'utf-8' });
 
         this.write(
-          chalk.yellow(
-            `\n\nSaved ${chalk.white(failedTestIds.length)} Failed Tests for Retry with IDS ${chalk.white(
+          styleText(
+            'yellow',
+            `\n\nSaved ${styleText('white', String(failedTestIds.length))} Failed Tests for Retry with IDS ${styleText(
+              'white',
               failedTestIds.join(',')
-            )} in ${chalk.grey(cacheFile)}`
+            )} in ${styleText('grey', cacheFile)}`
           )
         );
 
         this.write(
-          `\n\nTo run failed tests locally, ${chalk.cyan('visit')} ${chalk.white(
+          `\n\nTo run failed tests locally, ${styleText('cyan', 'visit')} ${styleText(
+            'white',
             `${this.serverConfig.url}?${failedTestIds.map((id) => `testId=${id}`).join('&')}`
           )}`
         );
@@ -533,12 +554,15 @@ export default class CustomDotReporter {
     } else {
       if (failedTestIds.length) {
         this.write(
-          `\n\nTo run failed tests locally, ${chalk.cyan('visit')} ${chalk.white(
+          `\n\nTo run failed tests locally, ${styleText('cyan', 'visit')} ${styleText(
+            'white',
             `${this.serverConfig.url}?${failedTestIds.map((id) => `testId=${id}`).join('&')}`
           )}`
         );
       }
-      this.write(chalk.red(`\n\n⚠️ Unable to save failed tests for retry, not all failures had test IDs, cleaning up`));
+      this.write(
+        styleText('red', `\n\n⚠️ Unable to save failed tests for retry, not all failures had test IDs, cleaning up`)
+      );
       remove(cacheFile);
     }
   }

@@ -1,4 +1,4 @@
-import chalk from 'chalk';
+import { styleText } from 'node:util';
 import path from 'path';
 import * as readline from 'readline/promises';
 
@@ -37,7 +37,8 @@ class CLICondenser {
 
     const rd = new readline.Readline(process.stdout);
     process.stdout.write(
-      `\n🚀 ${chalk.yellow(cmd)} in ${chalk.greenBright(path.relative(process.cwd(), this.cwd))}\n${chalk.magentaBright(
+      `\n🚀 ${styleText('yellow', cmd)} in ${styleText('greenBright', path.relative(process.cwd(), this.cwd))}\n${styleText(
+        'magentaBright',
         `⎾`
       )}\n`
     );
@@ -65,7 +66,7 @@ class CLICondenser {
       const lastLines = lineOutput.slice(-maxLines);
       const lastLineOutput = lastLines
         .map((line) => {
-          return chalk.magentaBright('⏐ ') + line.substring(0, maxWidth - 2);
+          return styleText('magentaBright', '⏐ ') + line.substring(0, maxWidth - 2);
         })
         .join(`\n`);
 
@@ -87,7 +88,7 @@ class CLICondenser {
       }
 
       currentLines = lastLines.length + 1;
-      process.stdout.write(lastLineOutput + '\n' + chalk.magentaBright('⎿'));
+      process.stdout.write(lastLineOutput + '\n' + styleText('magentaBright', '⎿'));
       if (isCI) {
         process.stdout.write('\n');
       }
@@ -112,7 +113,7 @@ class CLICondenser {
       await rd.commit();
     }
     process.stdout.write(
-      `\t☑️\t${chalk.grey(cmd)} in ${chalk.greenBright(path.relative(process.cwd(), this.cwd) || '<root>')}\n`
+      `\t☑️\t${styleText('grey', cmd)} in ${styleText('greenBright', path.relative(process.cwd(), this.cwd) || '<root>')}\n`
     );
 
     return output;
@@ -136,10 +137,13 @@ export async function exec(cmd: string[] | string | CMD, dryRun: boolean = false
   }
 
   if (dryRun) {
-    console.log(`\t` + chalk.grey(`Would Run: ${Array.isArray(mainCommand) ? mainCommand.join(' ') : mainCommand}`));
+    console.log(
+      `\t` + styleText('grey', `Would Run: ${Array.isArray(mainCommand) ? mainCommand.join(' ') : mainCommand}`)
+    );
   } else if (!isCmdWithConfig || (!cmd.condense && !cmd.silent)) {
     console.log(
-      `\t` + chalk.grey(`Running: ${args.join(' ')} in ${chalk.green(path.relative(process.cwd(), cwd))}\t...`)
+      `\t` +
+        styleText('grey', `Running: ${args.join(' ')} in ${styleText('green', path.relative(process.cwd(), cwd))}\t...`)
     );
   }
 

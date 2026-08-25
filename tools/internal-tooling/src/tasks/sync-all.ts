@@ -1,5 +1,5 @@
 import debug from 'debug';
-import chalk from 'chalk';
+import { styleText } from 'node:util';
 
 const log = debug('wd:sync-all');
 
@@ -13,11 +13,11 @@ function isError(error: unknown): error is Error {
 }
 
 async function runTask(name: string, task: () => Promise<void>) {
-  log(chalk.greenBright(`♻️ Sync ${name}`));
+  log(styleText('greenBright', `♻️ Sync ${name}`));
   try {
     await task();
   } catch (error) {
-    log(chalk.red(`Error Syncing ${name}: ${chalk.yellow(isError(error) ? error.message : error)}`));
+    log(styleText('red', `Error Syncing ${name}: ${styleText('yellow', isError(error) ? error.message : error)}`));
   }
 }
 

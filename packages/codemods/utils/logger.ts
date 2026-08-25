@@ -1,6 +1,6 @@
 import assert from 'assert';
-import chalk from 'chalk';
 import type { Options, SourceLocation } from 'jscodeshift';
+import { styleText } from 'node:util';
 import stripAnsi from 'strip-ansi';
 import type { Logform, Logger as WinstonLogger } from 'winston';
 import { createLogger as createWinstonLogger, format as winstonFormat, transports as winstonTransports } from 'winston';
@@ -81,7 +81,7 @@ function createFormatter(options: {
 }
 
 const formatForConsole = createFormatter({
-  formatTimestamp: (timestamp) => chalk.gray(timestamp),
+  formatTimestamp: (timestamp) => styleText('gray', timestamp),
 });
 
 const formatForFile = createFormatter({

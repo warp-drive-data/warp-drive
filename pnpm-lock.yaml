@@ -91,9 +91,6 @@ importers:
       bun-types:
         specifier: 1.3.14
         version: 1.3.14
-      chalk:
-        specifier: ^4.1.2
-        version: 4.1.2
       comment-json:
         specifier: ^4.2.5
         version: 4.2.5
@@ -157,9 +154,6 @@ importers:
       '@vite-pwa/vitepress':
         specifier: ^1.1.0
         version: 1.1.0(vite-plugin-pwa@1.3.0(vite@7.3.1))
-      chalk:
-        specifier: 5.6.0
-        version: 5.6.0
       debug:
         specifier: 4.4.1
         version: 4.4.1
@@ -326,9 +320,6 @@ importers:
       '@warp-drive/core':
         specifier: workspace:*
         version: file:warp-drive-packages/core(@babel/core@7.29.7)
-      chalk:
-        specifier: ^5.3.0
-        version: 5.4.1
       comment-json:
         specifier: ^4.2.5
         version: 4.2.5
@@ -449,9 +440,6 @@ importers:
       '@ast-grep/napi':
         specifier: ^0.28.0
         version: 0.28.1
-      chalk:
-        specifier: ^5.3.0
-        version: 5.4.1
       commander:
         specifier: ^14.0.0
         version: 14.0.0
@@ -581,9 +569,6 @@ importers:
       '@warp-drive/react':
         specifier: workspace:*
         version: file:warp-drive-packages/react(@babel/core@7.29.7)
-      chalk:
-        specifier: ^5.3.0
-        version: 5.4.1
       debug:
         specifier: ^4.4.1
         version: 4.4.1
@@ -716,9 +701,6 @@ importers:
       '@hono/node-server':
         specifier: ^1.19.0
         version: 1.19.0(hono@4.9.4)
-      chalk:
-        specifier: ^5.5.0
-        version: 5.5.0
       hono:
         specifier: ^4.9.4
         version: 4.9.4
@@ -1152,9 +1134,6 @@ importers:
       '@warp-drive/utilities':
         specifier: workspace:*
         version: file:warp-drive-packages/utilities(da83bc0b1ea108dc5be8f251a76f6440)
-      chalk:
-        specifier: ^4.1.2
-        version: 4.1.2
       semver:
         specifier: ^7.7.2
         version: 7.7.2
@@ -3308,9 +3287,6 @@ importers:
       '@types/debug':
         specifier: 4.1.12
         version: 4.1.12
-      chalk:
-        specifier: 5.4.1
-        version: 5.4.1
       comment-json:
         specifier: ^4.2.5
         version: 4.2.5
@@ -3332,9 +3308,6 @@ importers:
       bun-types:
         specifier: 1.3.14
         version: 1.3.14
-      chalk:
-        specifier: ^4.1.2
-        version: 4.1.2
       lerna-changelog:
         specifier: ^2.2.0
         version: 2.2.0
@@ -8379,14 +8352,6 @@ packages:
   chalk@4.1.2:
     resolution: {integrity: sha512-oKnbhFyRIXpUuez8iBMmyEa4nbj4IOQyuhc/wy9kY7/WVPcwIO9VA668Pu8RkO7+0G76SLROeyw9CpQ061i4mA==}
     engines: {node: '>=10'}
-
-  chalk@5.4.1:
-    resolution: {integrity: sha512-zgVZuo2WcZgfUEmsn6eO3kINexW8RAE4maiQ8QNs8CtpPCSyMiYsULR3HQYkm3w8FIA3SberyMJMSldGsW+U3w==}
-    engines: {node: ^12.17.0 || ^14.13 || >=16.0.0}
-
-  chalk@5.5.0:
-    resolution: {integrity: sha512-1tm8DTaJhPBG3bIkVeZt1iZM9GfSX2lzOeDVZH9R9ffRHpmHvxZ/QhgQH/aDTkswQVt+YHdXAdS/In/30OjCbg==}
-    engines: {node: ^12.17.0 || ^14.13 || >=16.0.0}
 
   chalk@5.6.0:
     resolution: {integrity: sha512-46QrSQFyVSEyYAgQ22hQ+zDa60YHA4fBstHmtSApj1Y5vKtG27fWowW03jCk5KcbXEWPZUIR894aARCA/G1kfQ==}
@@ -16526,7 +16491,6 @@ snapshots:
   '@ember-data/codemods@file:packages/codemods':
     dependencies:
       '@ast-grep/napi': 0.28.1
-      chalk: 5.6.0
       commander: 14.0.0
       glob: 11.0.3
       ignore: 7.0.5
@@ -16830,7 +16794,6 @@ snapshots:
       '@embroider/macros': 1.20.6(acb8c44acf8e4c4c164bebbda8d94c61)
       '@warp-drive/core': file:warp-drive-packages/core(acb8c44acf8e4c4c164bebbda8d94c61)
       '@warp-drive/utilities': file:warp-drive-packages/utilities(abb52ff76347fd147779332cc0ea53fb)
-      chalk: 4.1.2
       semver: 7.7.2
     optionalDependencies:
       qunit: 2.19.4(patch_hash=44177f0047189d474ebdeba20fc8ddc3c8c2a5777d65cbb5f0fac0979bf66301)
@@ -16846,7 +16809,6 @@ snapshots:
       '@embroider/macros': 1.20.6(@babel/core@7.29.7)
       '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.29.7)
       '@warp-drive/utilities': file:warp-drive-packages/utilities(da83bc0b1ea108dc5be8f251a76f6440)
-      chalk: 4.1.2
       semver: 7.7.2
     optionalDependencies:
       '@warp-drive/diagnostic': file:packages/diagnostic(93e1d85ad87e42a09ed041ab4421c50a)
@@ -16861,7 +16823,6 @@ snapshots:
       '@embroider/macros': 1.20.6(acb8c44acf8e4c4c164bebbda8d94c61)
       '@warp-drive/core': file:warp-drive-packages/core(acb8c44acf8e4c4c164bebbda8d94c61)
       '@warp-drive/utilities': file:warp-drive-packages/utilities(abb52ff76347fd147779332cc0ea53fb)
-      chalk: 4.1.2
       semver: 7.7.2
     optionalDependencies:
       '@warp-drive/diagnostic': file:packages/diagnostic(4949900031250454287e9da140f4a666)
@@ -16876,7 +16837,6 @@ snapshots:
       '@embroider/macros': 1.20.6(@babel/core@7.29.7)
       '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.29.7)
       '@warp-drive/utilities': file:warp-drive-packages/utilities(da83bc0b1ea108dc5be8f251a76f6440)
-      chalk: 4.1.2
       semver: 7.7.2
     transitivePeerDependencies:
       - '@babel/core'
@@ -16889,7 +16849,6 @@ snapshots:
       '@embroider/macros': 1.20.6(@babel/core@7.29.7)
       '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.29.7)
       '@warp-drive/utilities': file:warp-drive-packages/utilities(da83bc0b1ea108dc5be8f251a76f6440)
-      chalk: 4.1.2
       semver: 7.7.2
     optionalDependencies:
       qunit: 2.19.4(patch_hash=44177f0047189d474ebdeba20fc8ddc3c8c2a5777d65cbb5f0fac0979bf66301)
@@ -20060,7 +20019,6 @@ snapshots:
       '@embroider/macros': 1.20.6(acb8c44acf8e4c4c164bebbda8d94c61)
       '@warp-drive/core': file:warp-drive-packages/core(acb8c44acf8e4c4c164bebbda8d94c61)
       '@warp-drive/react': file:warp-drive-packages/react(acb8c44acf8e4c4c164bebbda8d94c61)
-      chalk: 5.6.0
       debug: 4.4.1
       dom-element-descriptors: 0.5.1
       qunit-dom: 3.5.0
@@ -20077,7 +20035,6 @@ snapshots:
       '@embroider/macros': 1.20.6(@babel/core@7.29.7)
       '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.29.7)
       '@warp-drive/react': file:warp-drive-packages/react(@babel/core@7.29.7)
-      chalk: 5.6.0
       debug: 4.4.1
       dom-element-descriptors: 0.5.1
       qunit-dom: 3.5.0
@@ -20094,7 +20051,6 @@ snapshots:
       '@embroider/macros': 1.20.6(@babel/core@7.29.7)
       '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.29.7)
       '@warp-drive/react': file:warp-drive-packages/react(@babel/core@7.29.7)
-      chalk: 5.6.0
       debug: 4.4.1
       dom-element-descriptors: 0.5.1
       qunit-dom: 3.5.0
@@ -20109,7 +20065,6 @@ snapshots:
       '@embroider/macros': 1.20.6(@babel/core@7.29.7)
       '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.29.7)
       '@warp-drive/react': file:warp-drive-packages/react(@babel/core@7.29.7)
-      chalk: 5.6.0
       debug: 4.4.1
       dom-element-descriptors: 0.5.1
       qunit-dom: 3.5.0
@@ -20155,7 +20110,6 @@ snapshots:
     dependencies:
       '@hono/node-server': 1.19.0(hono@4.9.4)
       '@warp-drive/core': file:warp-drive-packages/core(acb8c44acf8e4c4c164bebbda8d94c61)
-      chalk: 5.6.0
       hono: 4.9.4
     optionalDependencies:
       '@warp-drive/utilities': file:warp-drive-packages/utilities(abb52ff76347fd147779332cc0ea53fb)
@@ -20164,14 +20118,12 @@ snapshots:
     dependencies:
       '@hono/node-server': 1.19.0(hono@4.9.4)
       '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.29.7)
-      chalk: 5.6.0
       hono: 4.9.4
 
   '@warp-drive/holodeck@file:packages/holodeck(9e42da9e01238c6255d70a6aa7ac3829)':
     dependencies:
       '@hono/node-server': 1.19.0(hono@4.9.4)
       '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.29.7)
-      chalk: 5.6.0
       hono: 4.9.4
     optionalDependencies:
       '@warp-drive/legacy': file:warp-drive-packages/legacy(eb285543f9d9812c91771fcfa7474918)
@@ -20181,7 +20133,6 @@ snapshots:
     dependencies:
       '@hono/node-server': 1.19.0(hono@4.9.4)
       '@warp-drive/core': file:warp-drive-packages/core(acb8c44acf8e4c4c164bebbda8d94c61)
-      chalk: 5.6.0
       hono: 4.9.4
     optionalDependencies:
       '@warp-drive/legacy': file:warp-drive-packages/legacy(f9a93a90dec8dfeb7ffc504b2d92dadd)
@@ -20191,7 +20142,6 @@ snapshots:
     dependencies:
       '@hono/node-server': 1.19.0(hono@4.9.4)
       '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.29.7)
-      chalk: 5.6.0
       hono: 4.9.4
     optionalDependencies:
       '@warp-drive/utilities': file:warp-drive-packages/utilities(da83bc0b1ea108dc5be8f251a76f6440)
@@ -20973,7 +20923,6 @@ snapshots:
       '@types/bun': 1.3.14
       '@types/debug': 4.1.12
       '@vite-pwa/vitepress': 1.1.0(vite-plugin-pwa@1.3.0(vite@7.3.1))
-      chalk: 5.6.0
       debug: 4.4.1
       front-matter: 4.0.2
       sharp: 0.35.3
@@ -21036,7 +20985,6 @@ snapshots:
       '@pnpm/logger': 1001.0.0
       '@types/bun': 1.3.14
       '@types/debug': 4.1.12
-      chalk: 5.4.1
       comment-json: 4.2.5
       debug: 4.4.1
       typescript: 5.9.2
@@ -22413,10 +22361,6 @@ snapshots:
     dependencies:
       ansi-styles: 4.3.0
       supports-color: 7.2.0
-
-  chalk@5.4.1: {}
-
-  chalk@5.5.0: {}
 
   chalk@5.6.0: {}
 

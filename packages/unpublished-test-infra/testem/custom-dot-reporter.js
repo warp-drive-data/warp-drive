@@ -4,7 +4,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 
 const DotReporter = require('testem/lib/reporters/dot_reporter');
-const chalk = require('chalk');
+const { styleText } = require('node:util');
 
 const SLOW_TEST_COUNT = 50;
 const JSON_INDENT = 2;
@@ -82,9 +82,11 @@ class CustomDotReporter extends DotReporter {
       return getBrowserId(a) > getBrowserId(b) ? -1 : 1;
     });
     if (values.length) {
-      this.out.write(chalk.red(`\n\nStill Pending Tests:\n\n`));
+      this.out.write(styleText('red', `\n\nStill Pending Tests:\n\n`));
       values.forEach((v) => {
-        this.out.write(chalk.yellow(`\t⛔️ Stuck: ${getBrowserId(v)} #${v.id} - ${chalk.white(v.name)}\n`));
+        this.out.write(
+          styleText('yellow', `\t⛔️ Stuck: ${getBrowserId(v)} #${v.id} - ${styleText('white', v.name)}\n`)
+        );
       });
     }
   }
@@ -98,7 +100,8 @@ class CustomDotReporter extends DotReporter {
     });
 
     this.out.write(
-      `\n\n======================================\n\t${chalk.yellow(
+      `\n\n======================================\n\t${styleText(
+        'yellow',
         `${data.length < SLOW_TEST_COUNT ? data.length : SLOW_TEST_COUNT} Longest Running Tests`
       )}\n======================================\n`
     );
@@ -108,16 +111,21 @@ class CustomDotReporter extends DotReporter {
       if (i < testsToPrint) {
         // this test is a known offender
         if (runDuration > DEFAULT_TIMEOUT + TIMEOUT_BUFFER) {
-          this.out.write(`\n\t${i + 1}.\t[S] ${chalk.yellow(runDuration.toLocaleString('en-US') + 'ms')}\t${name}`);
+          this.out.write(
+            `\n\t${i + 1}.\t[S] ${styleText('yellow', runDuration.toLocaleString('en-US') + 'ms')}\t${name}`
+          );
           testsToPrint++;
         } else {
-          this.out.write(`\n\t${i + 1}.\t${chalk.yellow(runDuration.toLocaleString('en-US') + 'ms')}\t${name}`);
+          this.out.write(`\n\t${i + 1}.\t${styleText('yellow', runDuration.toLocaleString('en-US') + 'ms')}\t${name}`);
         }
       }
       totalDuration += runDuration;
     }
     this.out.write(
-      chalk.yellow(`\n\n\tAvg Duration of all ${data.length} tests: ${Math.round(totalDuration / data.length)}ms\n\n`)
+      styleText(
+        'yellow',
+        `\n\n\tAvg Duration of all ${data.length} tests: ${Math.round(totalDuration / data.length)}ms\n\n`
+      )
     );
   }
 
@@ -138,10 +146,12 @@ class CustomDotReporter extends DotReporter {
       if (failedTestIds.length) {
         fs.writeFileSync(cacheFile, failedTestIds.join(','), { encoding: 'utf-8' });
         this.out.write(
-          chalk.yellow(
-            `\n\nSaved ${chalk.white(failedTestIds.length)} Failed Tests for Retry with IDS ${chalk.white(
+          styleText(
+            'yellow',
+            `\n\nSaved ${styleText('white', String(failedTestIds.length))} Failed Tests for Retry with IDS ${styleText(
+              'white',
               failedTestIds.join(',')
-            )} in ${chalk.grey(cacheFile)}`
+            )} in ${styleText('grey', cacheFile)}`
           )
         );
         this.out.write(
@@ -154,7 +164,7 @@ class CustomDotReporter extends DotReporter {
       }
     } else {
       this.out.write(
-        chalk.red(`\n\n⚠️ Unable to save failed tests for retry, not all failures had test IDs, cleaning up`)
+        styleText('red', `\n\n⚠️ Unable to save failed tests for retry, not all failures had test IDs, cleaning up`)
       );
       remove(cacheFile);
     }
@@ -180,7 +190,8 @@ class CustomDotReporter extends DotReporter {
 
     if (this.failedTests.length) {
       this.out.write(
-        chalk.red(
+        styleText(
+          'red',
           `\n\n${this.failedTests.length} Tests Failed. Complete stack traces for failures will print at the end.`
         )
       );
@@ -206,30 +217,37 @@ class CustomDotReporter extends DotReporter {
     }
     if (result.passed && !result.todo) {
       this.out.write(
-        `\t✅ ${chalk.green('Passed')}: ${chalk.white(`#${result.__testNo}`)} ${chalk.grey(
+        `\t✅ ${styleText('green', 'Passed')}: ${styleText('white', `#${result.__testNo}`)} ${styleText(
+          'grey',
           result.runDuration.toLocaleString('en-US') + 'ms'
         )} ${result.name}\n`
       );
     } else if (!result.passed && result.todo) {
       this.out.write(
-        chalk.cyan(
-          `\t🛠️ TODO: ${chalk.white(`#${result.__testNo}`)} ${chalk.grey(
+        styleText(
+          'cyan',
+          `\t🛠️ TODO: ${styleText('white', `#${result.__testNo}`)} ${styleText(
+            'grey',
             result.runDuration.toLocaleString('en-US') + 'ms'
           )} ${result.name}\n`
         )
       );
     } else if (result.skipped) {
       this.out.write(
-        chalk.yellow(
-          `\t⚠️ Skipped: ${chalk.white(`#${result.__testNo}`)} ${chalk.grey(
+        styleText(
+          'yellow',
+          `\t⚠️ Skipped: ${styleText('white', `#${result.__testNo}`)} ${styleText(
+            'grey',
             result.runDuration.toLocaleString('en-US') + 'ms'
           )} ${result.name}\n`
         )
       );
     } else {
       this.out.write(
-        chalk.red(
-          `\t💥 Failed: ${chalk.white(`#${result.__testNo}`)} ${chalk.grey(
+        styleText(
+          'red',
+          `\t💥 Failed: ${styleText('white', `#${result.__testNo}`)} ${styleText(
+            'grey',
             result.runDuration.toLocaleString('en-US') + 'ms'
           )} ${result.name}\n`
         )
@@ -258,19 +276,19 @@ class CustomDotReporter extends DotReporter {
       }
 
       if (this.totalLines % 5 === 0) {
-        this.out.write(`\n${chalk.magenta((this.totalLines * this.maxLineChars).toLocaleString('en-US'))}⎡\t`);
+        this.out.write(`\n${styleText('magenta', (this.totalLines * this.maxLineChars).toLocaleString('en-US'))}⎡\t`);
       } else {
         this.out.write('\n\t');
       }
     }
     if (result.passed && !result.todo) {
-      this.out.write(chalk.grey('.'));
+      this.out.write(styleText('grey', '.'));
     } else if (!result.passed && result.todo) {
-      this.out.write(chalk.cyan('T'));
+      this.out.write(styleText('cyan', 'T'));
     } else if (result.skipped) {
-      this.out.write(chalk.yellow('*'));
+      this.out.write(styleText('yellow', '*'));
     } else {
-      this.out.write(chalk.bold(chalk.red('F')));
+      this.out.write(styleText('bold', styleText('red', 'F')));
     }
     this.currentLineChars += 1;
   }
@@ -324,10 +342,10 @@ class CustomDotReporter extends DotReporter {
 
   displayDotLegend() {
     this.out.write('\n\tLegend\n\t=========');
-    this.out.write(chalk.green('\n\tPass:\t.'));
-    this.out.write(chalk.cyan('\n\tTodo:\tT'));
-    this.out.write(chalk.yellow('\n\tSkip:\t*'));
-    this.out.write(chalk.bold(chalk.red('\n\tFail:\tF')));
+    this.out.write(styleText('green', '\n\tPass:\t.'));
+    this.out.write(styleText('cyan', '\n\tTodo:\tT'));
+    this.out.write(styleText('yellow', '\n\tSkip:\t*'));
+    this.out.write(styleText('bold', styleText('red', '\n\tFail:\tF')));
     this.out.write('\n\n\t');
   }
 
@@ -356,8 +374,10 @@ class CustomDotReporter extends DotReporter {
         const duration = Date.now() - data._testStarted;
         if (duration > DEFAULT_TEST_TIMEOUT) {
           this.out.write(
-            chalk.grey(
-              `\n\n⚠️  ${chalk.yellow('Pending:')} ${chalk.white(data.name)} has been running for ${chalk.yellow(
+            styleText(
+              'grey',
+              `\n\n⚠️  ${styleText('yellow', 'Pending:')} ${styleText('white', data.name)} has been running for ${styleText(
+                'yellow',
                 duration.toLocaleString('en-US') + 'ms'
               )}, this is likely a bug.\n`
             )
@@ -378,7 +398,7 @@ class CustomDotReporter extends DotReporter {
   }
 
   summaryDisplay() {
-    const lines = [chalk.yellow(`[duration - ${this.duration()} ms]`), summaryDisplay(this)];
+    const lines = [styleText('yellow', `[duration - ${this.duration()} ms]`), summaryDisplay(this)];
     return lines.join('\n');
   }
 }
@@ -424,7 +444,7 @@ function addTestMetaToName(partitions, partitionsMap, result) {
 
 function printFailure(out, result) {
   console.log(JSON.stringify(result, null, 2));
-  out.write(chalk.red(`\n\t💥 Failed: ${result.runDuration.toLocaleString('en-US')}ms ${result.name}\n`));
+  out.write(styleText('red', `\n\t💥 Failed: ${result.runDuration.toLocaleString('en-US')}ms ${result.name}\n`));
   const error = result.error;
 
   if (!error) {
@@ -459,10 +479,10 @@ function remove(filePath) {
 function summaryDisplay(reporter) {
   const lines = [
     'Total ' + reporter.total,
-    chalk.green('# pass  ' + reporter.pass),
-    chalk.yellow('# skip  ' + reporter.skipped),
-    chalk.cyan('# todo  ' + reporter.todo),
-    chalk.red('# fail  ' + (reporter.total - reporter.pass - reporter.skipped - reporter.todo)),
+    styleText('green', '# pass  ' + reporter.pass),
+    styleText('yellow', '# skip  ' + reporter.skipped),
+    styleText('cyan', '# todo  ' + reporter.todo),
+    styleText('red', '# fail  ' + (reporter.total - reporter.pass - reporter.skipped - reporter.todo)),
   ];
 
   if (this.pass + this.skipped + this.todo === this.total) {

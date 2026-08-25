@@ -1,4 +1,4 @@
-import chalk from 'chalk';
+import { styleText } from 'node:util';
 import fs from 'fs';
 import path from 'path';
 
@@ -156,7 +156,7 @@ export function color(str: string): string {
       throw new Error(`Unknown color ${possibleColor}`);
     }
 
-    return chalk[c](text);
+    return styleText(c, text);
   });
 
   return colorized;
@@ -181,12 +181,12 @@ export function rebalanceLines(str: string, max_length = 75): string {
       continue;
     }
     if (line.trim() === '---') {
-      lines[i] = chalk.grey(getPadding(max_length, '-'));
+      lines[i] = styleText('grey', getPadding(max_length, '-'));
       inContext = false;
       continue;
     }
     if (line.trim() === '===') {
-      lines[i] = chalk.grey(getPadding(max_length, '='));
+      lines[i] = styleText('grey', getPadding(max_length, '='));
       inContext = false;
       continue;
     }

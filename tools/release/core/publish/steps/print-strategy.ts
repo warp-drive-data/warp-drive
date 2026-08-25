@@ -1,6 +1,6 @@
 import { TYPE_STRATEGY } from '../../../utils/channel.ts';
 import { getCharLength, getPadding } from '../../../help/-utils.ts';
-import chalk from 'chalk';
+import { styleText } from 'node:util';
 import { AppliedStrategy } from './generate-strategy.ts';
 
 export const COLORS_BY_STRATEGY: Record<TYPE_STRATEGY, 'red' | 'yellow' | 'green' | 'cyan'> = {
@@ -12,28 +12,28 @@ export const COLORS_BY_STRATEGY: Record<TYPE_STRATEGY, 'red' | 'yellow' | 'green
 
 export function convertToLabel(name: string) {
   if (name === 'N/A') {
-    return chalk.grey(name);
+    return styleText('grey', name);
   }
   return '✅';
 }
 
 export function colorName(name: string) {
   if (name.startsWith('@warp-drive-types/')) {
-    return chalk.greenBright('@warp-drive-types/') + chalk.magentaBright(name.substring(18));
+    return styleText('greenBright', '@warp-drive-types/') + styleText('magentaBright', name.substring(18));
   } else if (name.startsWith('@warp-drive-mirror/')) {
-    return chalk.greenBright('@warp-drive-mirror/') + chalk.magentaBright(name.substring(19));
+    return styleText('greenBright', '@warp-drive-mirror/') + styleText('magentaBright', name.substring(19));
   } else if (name.startsWith('@warp-drive/')) {
-    return chalk.greenBright('@warp-drive/') + chalk.magentaBright(name.substring(12));
+    return styleText('greenBright', '@warp-drive/') + styleText('magentaBright', name.substring(12));
   } else if (name.startsWith('@ember-data-types/')) {
-    return chalk.cyanBright('@ember-data-types/') + chalk.yellow(name.substring(18));
+    return styleText('cyanBright', '@ember-data-types/') + styleText('yellow', name.substring(18));
   } else if (name.startsWith('@ember-data-mirror/')) {
-    return chalk.cyanBright('@ember-data-mirror/') + chalk.yellow(name.substring(19));
+    return styleText('cyanBright', '@ember-data-mirror/') + styleText('yellow', name.substring(19));
   } else if (name.startsWith('@ember-data/')) {
-    return chalk.cyanBright('@ember-data/') + chalk.yellow(name.substring(12));
+    return styleText('cyanBright', '@ember-data/') + styleText('yellow', name.substring(12));
   } else if (name === 'N/A') {
-    return chalk.grey(name);
+    return styleText('grey', name);
   }
-  return chalk.cyan(name);
+  return styleText('cyan', name);
 }
 
 function getPaddedString(str: string, targetWidth: number) {
@@ -58,7 +58,8 @@ function printTable(title: string, rows: string[][]) {
   const paddedRows = rows.map((row) => row.map((cell, i) => getPaddedString(cell, widths[i])));
   const rowLines = paddedRows.map((row) => `| ${row.join(' | ')} |`);
   rowLines.splice(1, 0, line);
-  const finalRows = `\n\t${chalk.white(chalk.bold(title))}\n\t${line}\n\t` + rowLines.join('\n\t') + `\n\t${line}\n\n`;
+  const finalRows =
+    `\n\t${styleText('white', styleText('bold', title))}\n\t${line}\n\t` + rowLines.join('\n\t') + `\n\t${line}\n\n`;
 
   console.log(finalRows);
 }
@@ -81,17 +82,17 @@ export async function printStrategy(config: Map<string, string | number | boolea
   ];
   applied.public_pks.forEach((applied, name) => {
     tableRows.push([
-      applied.new ? chalk.magentaBright('New!') : '',
+      applied.new ? styleText('magentaBright', 'New!') : '',
       colorName(name),
       convertToLabel(applied.mirrorPublishTo),
       convertToLabel(applied.typesPublishTo),
-      chalk.grey(applied.fromVersion),
-      chalk[COLORS_BY_STRATEGY[applied.stage]](applied.toVersion),
-      chalk[COLORS_BY_STRATEGY[applied.stage]](applied.stage),
-      chalk[COLORS_BY_STRATEGY[applied.types]](applied.types),
-      chalk.magentaBright(applied.distTag),
-      chalk.cyanBright('public'),
-      chalk.grey(applied.pkgDir),
+      styleText('grey', applied.fromVersion),
+      styleText(COLORS_BY_STRATEGY[applied.stage], applied.toVersion),
+      styleText(COLORS_BY_STRATEGY[applied.stage], applied.stage),
+      styleText(COLORS_BY_STRATEGY[applied.types], applied.types),
+      styleText('magentaBright', applied.distTag),
+      styleText('cyanBright', 'public'),
+      styleText('grey', applied.pkgDir),
     ]);
   });
   const groups = new Map<string, string[][]>();
@@ -102,17 +103,17 @@ export async function printStrategy(config: Map<string, string | number | boolea
       groups.set(applied.pkgDir, group);
     }
     group.push([
-      applied.new ? chalk.magentaBright('New!') : '',
+      applied.new ? styleText('magentaBright', 'New!') : '',
       colorName(name),
       colorName(applied.mirrorPublishTo),
       colorName(applied.typesPublishTo),
-      chalk.grey(applied.fromVersion),
-      chalk[COLORS_BY_STRATEGY[applied.stage]](applied.toVersion),
-      chalk[COLORS_BY_STRATEGY[applied.stage]](applied.stage),
-      chalk[COLORS_BY_STRATEGY[applied.types]](applied.types),
-      chalk.grey('N/A'),
-      chalk.yellow('private'),
-      chalk.grey(applied.pkgDir),
+      styleText('grey', applied.fromVersion),
+      styleText(COLORS_BY_STRATEGY[applied.stage], applied.toVersion),
+      styleText(COLORS_BY_STRATEGY[applied.stage], applied.stage),
+      styleText(COLORS_BY_STRATEGY[applied.types], applied.types),
+      styleText('grey', 'N/A'),
+      styleText('yellow', 'private'),
+      styleText('grey', applied.pkgDir),
     ]);
   });
   groups.forEach((group) => {
@@ -121,8 +122,10 @@ export async function printStrategy(config: Map<string, string | number | boolea
   });
 
   printTable(
-    chalk.grey(
-      `${chalk.white('Release Strategy')} for ${chalk.cyan(config.get('increment'))} bump in ${chalk.cyan(
+    styleText(
+      'grey',
+      `${styleText('white', 'Release Strategy')} for ${styleText('cyan', config.get('increment'))} bump in ${styleText(
+        'cyan',
         config.get('channel')
       )} channel`
     ),

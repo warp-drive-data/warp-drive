@@ -1,5 +1,5 @@
 import { BunFile } from 'bun';
-import chalk from 'chalk';
+import { styleText } from 'node:util';
 
 const EOL = '\n';
 export class JSONFile<T extends object = Record<string, unknown>> {
@@ -20,7 +20,7 @@ export class JSONFile<T extends object = Record<string, unknown>> {
       const exists = await fileHandle.exists();
 
       if (!exists) {
-        throw new Error(`The file ${chalk.white(this.filePath)} does not exist!`);
+        throw new Error(`The file ${styleText('white', this.filePath)} does not exist!`);
       }
 
       this.handle = fileHandle;

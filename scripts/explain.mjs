@@ -1,4 +1,4 @@
-import chalk from 'chalk';
+import { styleText } from 'node:util';
 
 /** @type {import('bun-types')} */
 
@@ -9,7 +9,12 @@ async function main() {
   const args = Bun.argv.slice(2);
   const pkgName = args[0];
 
-  console.log(chalk.grey(chalk.bold(`Explaining ${chalk.yellow(pkgName)} in ${chalk.yellow(process.cwd())}`)));
+  console.log(
+    styleText(
+      'grey',
+      styleText('bold', `Explaining ${styleText('yellow', pkgName)} in ${styleText('yellow', process.cwd())}`)
+    )
+  );
 
   const output = Bun.spawnSync(['pnpm', 'why', pkgName], {
     cwd: process.cwd(),

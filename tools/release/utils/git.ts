@@ -1,4 +1,4 @@
-import chalk from 'chalk';
+import { styleText } from 'node:util';
 import {
   branchForChannelAndVersion,
   CHANNEL,
@@ -66,13 +66,13 @@ export async function getGitState(options: Map<string, boolean | string | number
   if (!status.match(/^nothing to commit/m)) {
     clean = false;
     if (dangerously_force || isHelp) {
-      const base = chalk.white('\t⚠️  Local Git branch has uncommitted changes!');
+      const base = styleText('white', '\t⚠️  Local Git branch has uncommitted changes!');
       console.log(
         dangerously_force
           ? base +
-              chalk.yellow('\n\t\tPassed option: ') +
-              chalk.white('--dangerously-force') +
-              chalk.grey(' :: ignoring unclean git working tree')
+              styleText('yellow', '\n\t\tPassed option: ') +
+              styleText('white', '--dangerously-force') +
+              styleText('grey', ' :: ignoring unclean git working tree')
           : base
       );
       if (!isHelp) {
@@ -81,12 +81,12 @@ export async function getGitState(options: Map<string, boolean | string | number
       }
     } else {
       console.log(
-        chalk.red('💥 Git working tree is not clean. 💥 \n\t') +
-          chalk.grey('Use ') +
-          chalk.white('--dangerously-force') +
-          chalk.grey(' to ignore this warning and publish anyway\n') +
-          chalk.yellow('⚠️  Publishing from an unclean working state may result in a broken release ⚠️\n\n') +
-          chalk.grey(`Status:\n${status}`)
+        styleText('red', '💥 Git working tree is not clean. 💥 \n\t') +
+          styleText('grey', 'Use ') +
+          styleText('white', '--dangerously-force') +
+          styleText('grey', ' to ignore this warning and publish anyway\n') +
+          styleText('yellow', '⚠️  Publishing from an unclean working state may result in a broken release ⚠️\n\n') +
+          styleText('grey', `Status:\n${status}`)
       );
       process.exit(1);
     }
@@ -94,23 +94,23 @@ export async function getGitState(options: Map<string, boolean | string | number
     if (!status.match(/^Your branch is up to date with/m)) {
       current = false;
       if (dangerously_force || isHelp) {
-        const base = chalk.white('\t⚠️  Local Git branch is not in sync with origin branch');
+        const base = styleText('white', '\t⚠️  Local Git branch is not in sync with origin branch');
         console.log(
           dangerously_force
             ? base +
-                chalk.yellow('\n\t\tPassed option: ') +
-                chalk.white('--dangerously-force') +
-                chalk.grey(' :: ignoring unsynced git branch')
+                styleText('yellow', '\n\t\tPassed option: ') +
+                styleText('white', '--dangerously-force') +
+                styleText('grey', ' :: ignoring unsynced git branch')
             : base
         );
       } else {
         console.log(
-          chalk.red('💥 Local Git branch is not in sync with origin branch. 💥 \n\t') +
-            chalk.grey('Use ') +
-            chalk.white('--dangerously-force') +
-            chalk.grey(' to ignore this warning and publish anyway\n') +
-            chalk.yellow('⚠️  Publishing from an unsynced working state may result in a broken release ⚠️') +
-            chalk.grey(`Status:\n${status}`)
+          styleText('red', '💥 Local Git branch is not in sync with origin branch. 💥 \n\t') +
+            styleText('grey', 'Use ') +
+            styleText('white', '--dangerously-force') +
+            styleText('grey', ' to ignore this warning and publish anyway\n') +
+            styleText('yellow', '⚠️  Publishing from an unsynced working state may result in a broken release ⚠️') +
+            styleText('grey', `Status:\n${status}`)
         );
         process.exit(1);
       }
@@ -127,26 +127,28 @@ export async function getGitState(options: Map<string, boolean | string | number
 
   if (foundBranch !== expectedBranch) {
     if (dangerously_force || isHelp) {
-      const base = chalk.white(
+      const base = styleText(
+        'white',
         `\t⚠️  Expected to publish the release-channel '${channel}' from the git branch '${expectedBranch}', but found '${foundBranch}'`
       );
       console.log(
         dangerously_force
           ? base +
-              chalk.yellow('\n\t\tPassed option: ') +
-              chalk.white('--dangerously-force') +
-              chalk.grey(' :: ignoring unexpected branch')
+              styleText('yellow', '\n\t\tPassed option: ') +
+              styleText('white', '--dangerously-force') +
+              styleText('grey', ' :: ignoring unexpected branch')
           : base
       );
     } else {
       console.log(
-        chalk.red(
+        styleText(
+          'red',
           `💥 Expected to publish the release-channel '${channel}' from the git branch '${expectedBranch}', but found '${foundBranch}' 💥 \n\t`
         ) +
-          chalk.grey('Use ') +
-          chalk.white('--dangerously-force') +
-          chalk.grey(' to ignore this warning and publish anyway\n') +
-          chalk.yellow('⚠️  Publishing from an incorrect branch may result in a broken release ⚠️')
+          styleText('grey', 'Use ') +
+          styleText('white', '--dangerously-force') +
+          styleText('grey', ' to ignore this warning and publish anyway\n') +
+          styleText('yellow', '⚠️  Publishing from an incorrect branch may result in a broken release ⚠️')
       );
       process.exit(1);
     }
@@ -196,10 +198,10 @@ export async function getAllPackagesForGitTag(tag: GIT_TAG): Promise<Map<string,
     await exec({ cmd: ['sh', '-c', `git archive ${tag} --prefix ${relativeTmpDir} | tar -x`] });
   } catch (e) {
     if (await isUnrecoverableExtractionError(e as unknown as Error)) {
-      console.log(chalk.red(`🔴 Failed to extract git tag ${tag} to ${relativeTmpDir}`));
+      console.log(styleText('red', `🔴 Failed to extract git tag ${tag} to ${relativeTmpDir}`));
       throw e;
     } else {
-      console.log(chalk.yellow(`\t⚠️  Recovered from errors during extraction of ${tag} to ${relativeTmpDir}`));
+      console.log(styleText('yellow', `\t⚠️  Recovered from errors during extraction of ${tag} to ${relativeTmpDir}`));
     }
   }
   const tmpDir = path.join(process.cwd(), relativeTmpDir);
@@ -226,5 +228,5 @@ export async function pushLTSTagToRemoteBranch(tag: GIT_TAG, force?: boolean): P
   let cmd = `git push origin refs/tags/${tag}:refs/heads/${branch}`;
   if (force) cmd += ' -f';
   await exec({ cmd });
-  console.log(chalk.green(`✅ Pushed ${tag} to ${branch} (${oldSha.slice(0, 10)} => ${sha.slice(0, 10)})`));
+  console.log(styleText('green', `✅ Pushed ${tag} to ${branch} (${oldSha.slice(0, 10)} => ${sha.slice(0, 10)})`));
 }

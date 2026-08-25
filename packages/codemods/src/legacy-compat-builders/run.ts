@@ -1,6 +1,6 @@
-import chalk from 'chalk';
 import ignore from 'ignore';
 import jscodeshift from 'jscodeshift';
+import { styleText } from 'node:util';
 import path from 'path';
 
 import type { LegacyStoreMethod } from './config.js';
@@ -99,17 +99,20 @@ export async function runTransform(runOptions: RunOptions) {
   }
 
   if (result.errors > 0) {
-    log.info(chalk.red(`${result.errors} error(s). See logs above.`));
+    log.info(styleText('red', `${result.errors} error(s). See logs above.`));
   } else if (result.matches > 0) {
     log.success('Zero errors! 🎉');
   }
   if (result.skipped > 0) {
-    log.info(chalk.yellow(`${result.skipped} skipped file(s).`, chalk.gray('Transform did not run. See logs above.')));
+    log.info(
+      styleText('yellow', `${result.skipped} skipped file(s).`),
+      styleText('gray', 'Transform did not run. See logs above.')
+    );
   }
   if (result.unmodified > 0) {
-    log.info(`${result.unmodified} unmodified file(s).`, chalk.gray('Transform ran but no changes were made.'));
+    log.info(`${result.unmodified} unmodified file(s).`, styleText('gray', 'Transform ran but no changes were made.'));
   }
   if (result.ok > 0) {
-    log.info(chalk.green(`${result.ok} transformed file(s).`));
+    log.info(styleText('green', `${result.ok} transformed file(s).`));
   }
 }
