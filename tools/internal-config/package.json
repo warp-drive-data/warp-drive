@@ -9,7 +9,7 @@
     "@babel/eslint-parser": "7.29.7",
     "@nullvoxpopuli/ember-rolldown": "^2.7.0",
     "@rolldown/plugin-babel": "^0.2.3",
-    "@rolldown/pluginutils": "^1.0.1",
+    "@rollup/plugin-babel": "^6.0.4",
     "@typescript-eslint/eslint-plugin": "^8.40.0",
     "@typescript-eslint/parser": "^8.40.0",
     "@types/debug": "4.1.13",
