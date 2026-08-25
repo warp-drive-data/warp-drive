@@ -1,6 +1,6 @@
 import { defineConfig } from 'vite';
 import { extensions, ember } from '@embroider/vite';
-import { babel } from '@rollup/plugin-babel';
+import { maybeBabel } from '@warp-drive/internal-config/vite/babel.js';
 
 export default defineConfig({
   build: {
@@ -15,9 +15,6 @@ export default defineConfig({
   },
   plugins: [
     ember(),
-    babel({
-      babelHelpers: 'inline',
-      extensions,
-    }),
+    maybeBabel({ extensions }),
   ],
 });

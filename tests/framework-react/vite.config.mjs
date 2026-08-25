@@ -1,4 +1,4 @@
-import { babel } from '@rollup/plugin-babel';
+import { maybeBabel } from '@warp-drive/internal-config/vite/babel.js';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
@@ -9,7 +9,7 @@ export default defineConfig({
   logLevel: 'error',
   reportCompressedSize: false,
   plugins: [
-    babel({
+    maybeBabel({
       configFile: './babel.config.mjs',
       babelHelpers: 'bundled',
       extensions: ['.js', '.ts', '.jsx', '.tsx'],

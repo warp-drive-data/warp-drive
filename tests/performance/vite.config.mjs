@@ -1,6 +1,6 @@
 import { defineConfig } from 'vite';
 import { extensions, ember, hbs } from '@embroider/vite';
-import { babel } from '@rollup/plugin-babel';
+import { maybeBabel } from '@warp-drive/internal-config/vite/babel.js';
 import { compression } from 'vite-plugin-compression2';
 // import { analyzer } from 'vite-bundle-analyzer';
 
@@ -11,10 +11,7 @@ export default defineConfig({
     hbs(),
     ember(),
     // extra plugins here
-    babel({
-      babelHelpers: 'runtime',
-      extensions,
-    }),
+    maybeBabel({ extensions, babelHelpers: 'runtime' }),
     // analyzer(),
     compression({
       algorithm: 'brotliCompress',
