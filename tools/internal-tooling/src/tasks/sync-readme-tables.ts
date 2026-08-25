@@ -7,7 +7,7 @@
  * - Updates the "Compatibility" table with the latest compatibility information.
  *
  */
-import chalk from 'chalk';
+import { styleText } from 'node:util';
 import { getMonorepoRoot, walkPackages } from './-utils';
 import debug from 'debug';
 import path from 'path';
@@ -141,7 +141,7 @@ async function updateVersionsTable(file: BunFile) {
 
 export async function main() {
   log(
-    `\n\t${chalk.gray('=').repeat(60)}\n\t\t${chalk.magentaBright('@warp-drive/')}${chalk.greenBright('internal-tooling')} Sync Logos\n\t${chalk.gray('=').repeat(60)}\n\n\t\t${chalk.gray(`Syncing logo files from monorepo root to each public package`)}\n\n`
+    `\n\t${styleText('gray', '=').repeat(60)}\n\t\t${styleText('magentaBright', '@warp-drive/')}${styleText('greenBright', 'internal-tooling')} Sync Logos\n\t${styleText('gray', '=').repeat(60)}\n\n\t\t${styleText('gray', `Syncing logo files from monorepo root to each public package`)}\n\n`
   );
   const monorepoRoot = await getMonorepoRoot();
   const READMEPath = path.join(monorepoRoot, 'README.md');

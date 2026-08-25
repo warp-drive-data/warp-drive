@@ -1,7 +1,7 @@
 import { Package, RawStrategyConfig } from '../../../utils/package.ts';
 import { Committers, Entry, LernaChangeset } from './get-changes.ts';
 import path from 'path';
-import chalk from 'chalk';
+import { styleText } from 'node:util';
 import { BunFile } from 'bun';
 
 function findInsertionPoint(lines: string[], version: string) {
@@ -117,8 +117,8 @@ export async function updateChangelogs(
     await Bun.write(changelogFile, changelogLines.join('\n'));
     console.log(
       exists
-        ? `\t✅ Updated ${chalk.cyan(pkg.pkgData.name)} Changelog`
-        : `\t✅ Created ${chalk.cyan(pkg.pkgData.name)} Changelog`
+        ? `\t✅ Updated ${styleText('cyan', pkg.pkgData.name)} Changelog`
+        : `\t✅ Created ${styleText('cyan', pkg.pkgData.name)} Changelog`
     );
   }
 

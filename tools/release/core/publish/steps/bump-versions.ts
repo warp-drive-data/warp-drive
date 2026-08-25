@@ -1,4 +1,4 @@
-import chalk from 'chalk';
+import { styleText } from 'node:util';
 import { exec } from '../../../utils/cmd.ts';
 import { APPLIED_STRATEGY, Package } from '../../../utils/package.ts';
 
@@ -55,7 +55,7 @@ export async function bumpAllPackages(
     : ['zsh', '-c', `${cleanCommand}${commitCommand}`];
 
   await exec(finalCommand);
-  console.log(`✅ ` + chalk.cyan(`Successfully Versioned ${nextVersion}`));
+  console.log(`✅ ` + styleText('cyan', `Successfully Versioned ${nextVersion}`));
 
   await updateWorkspaceVersionsForPublish(config, packages, strategy);
 }
@@ -80,15 +80,18 @@ export async function updateWorkspaceVersionsForPublish(
     if (changed) {
       await pkg.file.write();
     } else {
-      console.log(chalk.grey(`\tNo workspace:* dependencies to update for ${chalk.cyan(pkg.pkgData.name)}`));
+      console.log(
+        styleText('grey', `\tNo workspace:* dependencies to update for ${styleText('cyan', pkg.pkgData.name)}`)
+      );
     }
   }
 
   const nextVersion = strategy.get('root')?.toVersion;
   console.log(
     `✅ ` +
-      chalk.cyan(
-        `Successfully Updated "workspace:*" versions for tarball publish of ${nextVersion}\n\t${chalk.yellow('[NOTE]: THIS WILL NOT BE COMMITTED')}`
+      styleText(
+        'cyan',
+        `Successfully Updated "workspace:*" versions for tarball publish of ${nextVersion}\n\t${styleText('yellow', '[NOTE]: THIS WILL NOT BE COMMITTED')}`
       )
   );
 }
@@ -131,5 +134,5 @@ export async function restorePackagesForDryRun(
   //   await pkg.file.write();
   // }
 
-  console.log(`\t♻️ ` + chalk.grey(`Successfully Restored Versions for DryRun`));
+  console.log(`\t♻️ ` + styleText('grey', `Successfully Restored Versions for DryRun`));
 }

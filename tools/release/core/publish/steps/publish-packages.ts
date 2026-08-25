@@ -1,4 +1,4 @@
-import chalk from 'chalk';
+import { styleText } from 'node:util';
 import { APPLIED_STRATEGY, Package } from '../../../utils/package.ts';
 import { question } from './confirm-strategy.ts';
 import { exec } from '../../../utils/cmd.ts';
@@ -17,20 +17,21 @@ export async function publishPackages(
   if (!CI) {
     if (!NODE_AUTH_TOKEN) {
       console.log(
-        chalk.red(
+        styleText(
+          'red',
           '🚫 NODE_AUTH_TOKEN not found in ENV. NODE_AUTH_TOKEN is required in ENV to publish from CI. Exiting...'
         )
       );
       process.exit(1);
     }
     const result = await question(
-      `\n${chalk.cyan('NODE_AUTH_TOKEN')} found in ENV.\nPublish ${config.get('increment')} release in ${config.get(
+      `\n${styleText('cyan', 'NODE_AUTH_TOKEN')} found in ENV.\nPublish ${config.get('increment')} release in ${config.get(
         'channel'
-      )} channel to the ${config.get('tag')} tag on the npm registry? ${chalk.yellow('[y/n]')}:`
+      )} channel to the ${config.get('tag')} tag on the npm registry? ${styleText('yellow', '[y/n]')}:`
     );
     const input = result.trim().toLowerCase();
     if (input !== 'y' && input !== 'yes') {
-      console.log(chalk.red('🚫 Publishing not confirmed. Exiting...'));
+      console.log(styleText('red', '🚫 Publishing not confirmed. Exiting...'));
       process.exit(1);
     }
     token = await getOTPToken(config);
@@ -49,7 +50,9 @@ export async function publishPackages(
       token
     );
     if (error) {
-      console.log(chalk.red(`\t🚫 Error publishing ${chalk.cyan(pkg.pkgData.name)} to npm: ${error.message}`));
+      console.log(
+        styleText('red', `\t🚫 Error publishing ${styleText('cyan', pkg.pkgData.name)} to npm: ${error.message}`)
+      );
       errors.push(error);
       continue;
     }
@@ -67,7 +70,7 @@ export async function publishPackages(
     //   );
     //   if (error) {
     //     console.log(
-    //       chalk.red(`\t🚫 Error updating dist-tag for ${chalk.cyan(pkg.pkgData.name)} to latest: ${error.message}`)
+    //       styleText('red', `\t🚫 Error updating dist-tag for ${styleText('cyan', pkg.pkgData.name)} to latest: ${error.message}`)
     //     );
     //     errors.push(error);
     //   }
@@ -83,7 +86,10 @@ export async function publishPackages(
       );
       if (error) {
         console.log(
-          chalk.red(`\t🚫 Error publishing ${chalk.cyan(pkg.pkgData.name)} <Mirror Package> to npm: ${error.message}`)
+          styleText(
+            'red',
+            `\t🚫 Error publishing ${styleText('cyan', pkg.pkgData.name)} <Mirror Package> to npm: ${error.message}`
+          )
         );
         errors.push(error);
         continue;
@@ -102,8 +108,8 @@ export async function publishPackages(
       //   );
       //   if (error) {
       //     console.log(
-      //       chalk.red(
-      //         `\t🚫 Error updating dist-tag for ${chalk.cyan(pkg.pkgData.name)} <Mirror Package> to latest: ${error.message}`
+      //       styleText('red',
+      //         `\t🚫 Error updating dist-tag for ${styleText('cyan', pkg.pkgData.name)} <Mirror Package> to latest: ${error.message}`
       //       )
       //     );
       //     errors.push(error);
@@ -120,7 +126,10 @@ export async function publishPackages(
       );
       if (error) {
         console.log(
-          chalk.red(`\t🚫 Error publishing ${chalk.cyan(pkg.pkgData.name)} <Types Package> to npm: ${error.message}`)
+          styleText(
+            'red',
+            `\t🚫 Error publishing ${styleText('cyan', pkg.pkgData.name)} <Types Package> to npm: ${error.message}`
+          )
         );
         errors.push(error);
         continue;
@@ -139,7 +148,7 @@ export async function publishPackages(
       //   );
       //   if (error) {
       //     console.log(
-      //       chalk.red(`\t🚫 Error updating dist-tag for ${chalk.cyan(pkg.pkgData.name)} to latest: ${error.message}`)
+      //       styleText('red', `\t🚫 Error updating dist-tag for ${styleText('cyan', pkg.pkgData.name)} to latest: ${error.message}`)
       //     );
       //     errors.push(error);
       //   }
@@ -147,11 +156,11 @@ export async function publishPackages(
     }
   }
 
-  console.log(`✅ ` + chalk.cyan(`published ${chalk.greenBright(publishCount)} 📦 packages to npm`));
+  console.log(`✅ ` + styleText('cyan', `published ${styleText('greenBright', publishCount)} 📦 packages to npm`));
   if (errors.length > 0) {
-    console.log(chalk.red(`🚫 ${errors.length} errors occurred while publishing packages to npm`));
+    console.log(styleText('red', `🚫 ${errors.length} errors occurred while publishing packages to npm`));
     for (const error of errors) {
-      console.log(chalk.red(error.message));
+      console.log(styleText('red', error.message));
     }
     throw new Error(`${errors.length} errors occurred while publishing packages to npm.`);
   }
@@ -160,7 +169,8 @@ export async function publishPackages(
 export async function getOTPToken(config: Map<string, string | number | boolean | null>, reprompt?: boolean) {
   const prompt = reprompt
     ? `The provided OTP token has expired. Please enter a new OTP token: `
-    : `\nℹ️ ${chalk.cyan(
+    : `\nℹ️ ${styleText(
+        'cyan',
         'NODE_AUTH_TOKEN'
       )} not found in ENV.\n\nConfiguring NODE_AUTH_TOKEN is the preferred mechanism by which to publish. Alternatively you may continue using an OTP token.\n\nPublishing ${config.get(
         'increment'

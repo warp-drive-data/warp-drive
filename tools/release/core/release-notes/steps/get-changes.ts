@@ -1,4 +1,4 @@
-import chalk from 'chalk';
+import { styleText } from 'node:util';
 import { exec } from '../../../utils/cmd.ts';
 import { Package, RawStrategyConfig } from '../../../utils/package.ts';
 import path from 'path';
@@ -103,7 +103,7 @@ function extractLoggedEntry(
   (data[currentSection] as Map<string, Entry>).set(PRNumber, currentEntry as Entry);
 
   currentEntry?.packages.forEach((subPath) => {
-    console.log(`\tsubPath: ${chalk.cyan(subPath)}`);
+    console.log(`\tsubPath: ${styleText('cyan', subPath)}`);
     const pkg = packageForSubPath(subPath, subPathMap);
 
     if (pkg) {

@@ -1,7 +1,7 @@
 import { BunFile } from 'bun';
 import { confirm } from '../../publish/steps/confirm-strategy.ts';
 import { exec } from '../../../utils/cmd.ts';
-import chalk from 'chalk';
+import { styleText } from 'node:util';
 
 export async function confirmCommitChangelogs(
   _changedFiles: BunFile[],
@@ -11,7 +11,7 @@ export async function confirmCommitChangelogs(
   const dryRun = config.get('dry_run') as boolean;
 
   if (config.get('commit') === false) {
-    console.log(chalk.grey(`\t➠ Skipped commit of changelogs.`));
+    console.log(styleText('grey', `\t➠ Skipped commit of changelogs.`));
     return;
   }
 
@@ -33,9 +33,9 @@ export async function confirmCommitChangelogs(
 
     if (config.get('upstream')) {
       await exec(['sh', '-c', `git push`]);
-      console.log(chalk.grey(`\t✅ pushed changelog commit to upstream.`));
+      console.log(styleText('grey', `\t✅ pushed changelog commit to upstream.`));
     } else {
-      console.log(chalk.grey(`\t➠ Skipped push of changelogs.`));
+      console.log(styleText('grey', `\t➠ Skipped push of changelogs.`));
     }
   }
 }

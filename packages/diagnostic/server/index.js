@@ -1,4 +1,4 @@
-import chalk from 'chalk';
+import { styleText } from 'node:util';
 import { homedir } from 'os';
 import path from 'path';
 
@@ -209,7 +209,10 @@ export async function launch(config) {
 
       if (config.setup) {
         print(
-          chalk.magenta(`Preparing Server on ${chalk.white(protocol + '://' + hostname + ':')}${chalk.magenta(port)}`)
+          styleText(
+            'magenta',
+            `Preparing Server on ${styleText('white', protocol + '://' + hostname + ':')}${styleText('magenta', String(port))}`
+          )
         );
 
         debug(`Running configured setup hook`);
@@ -230,8 +233,9 @@ export async function launch(config) {
       }
 
       print(
-        chalk.magenta(
-          `🚀 Serving Diagnostic Tests on ${chalk.white(protocol + '://' + hostname + ':')}${chalk.yellow(port)}\n`
+        styleText(
+          'magenta',
+          `🚀 Serving Diagnostic Tests on ${styleText('white', protocol + '://' + hostname + ':')}${styleText('yellow', String(port))}\n`
         )
       );
 

@@ -1,4 +1,4 @@
-import chalk from 'chalk';
+import { styleText } from 'node:util';
 import fs from 'fs';
 import path from 'path';
 
@@ -44,16 +44,19 @@ export default async function launchDefault(overrides = {}) {
 
   if (RETRY_TESTS) {
     console.log(
-      chalk.grey(
-        `⚠️ Retrying ${chalk.bold(chalk.yellow(FAILURES.length))} failed tests: ${chalk.bold(
-          chalk.white(FAILURES.join(','))
+      styleText(
+        'grey',
+        `⚠️ Retrying ${styleText('bold', styleText('yellow', String(FAILURES.length)))} failed tests: ${styleText(
+          'bold',
+          styleText('white', FAILURES.join(','))
         )}`
       )
     );
   } else if (FAILURES.length) {
     console.log(
-      `⚠️ Found ${chalk.bold(chalk.yellow(FAILURES.length))} previously failed tests: ${chalk.bold(
-        chalk.white(FAILURES.join(','))
+      `⚠️ Found ${styleText('bold', styleText('yellow', String(FAILURES.length)))} previously failed tests: ${styleText(
+        'bold',
+        styleText('white', FAILURES.join(','))
       )}. Use RETRY_TESTS=1 or --retry/-r to retry them.`
     );
   }
@@ -68,7 +71,7 @@ export default async function launchDefault(overrides = {}) {
   ].filter(Boolean);
 
   console.log(
-    `\n\nLaunching with ${chalk.bold(chalk.cyan(CI_BROWSER))} (worker count ${chalk.bold(chalk.yellow(parallel))})\n\n`
+    `\n\nLaunching with ${styleText('bold', styleText('cyan', CI_BROWSER))} (worker count ${styleText('bold', styleText('yellow', String(parallel)))})\n\n`
   );
 
   await launch({

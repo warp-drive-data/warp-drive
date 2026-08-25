@@ -3,7 +3,7 @@ import { ABOUT } from '../help/sections/about.ts';
 import { normalizeFlag, type CommandConfig, type FlagConfig } from './parse-args.ts';
 import { CHANNEL, SEMVER_VERSION, VALID_TRAINS, npmDistTagForChannelAndVersion } from './channel.ts';
 import { getGitState, getPublishedChannelInfo } from './git.ts';
-import chalk from 'chalk';
+import { styleText } from 'node:util';
 import semver from 'semver';
 
 /**
@@ -136,10 +136,12 @@ export const publish_flags_config: FlagConfig = {
           );
         } else {
           console.log(
-            chalk.red(
+            styleText(
+              'red',
               `\t🚨 Expected npm dist-tag ${expectedTag} for channel ${channel} on branch ${
                 gitInfo.branch
-              } with version ${gitInfo.rootVersion} but got ${value}\n\t\t${chalk.yellow(
+              } with version ${gitInfo.rootVersion} but got ${value}\n\t\t${styleText(
+                'yellow',
                 '⚠️ Continuing Due to use of --dangerously-force'
               )}`
             )

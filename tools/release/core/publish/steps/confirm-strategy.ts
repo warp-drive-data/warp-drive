@@ -1,10 +1,10 @@
-import chalk from 'chalk';
+import { styleText } from 'node:util';
 import * as readline from 'readline/promises';
 
 export async function confirmStrategy() {
   return confirm({
-    prompt: chalk.white(`\nDo you want to continue with this strategy?`),
-    cancelled: chalk.red('🚫 Strategy not confirmed. Exiting...'),
+    prompt: styleText('white', `\nDo you want to continue with this strategy?`),
+    cancelled: styleText('red', '🚫 Strategy not confirmed. Exiting...'),
   });
 }
 
@@ -24,7 +24,7 @@ export async function confirm(config: { prompt: string; cancelled: string }): Pr
   if (process.env.CI) {
     return;
   }
-  const confirm = await question(`${config.prompt} ${chalk.yellow(`[y/n]`)}: `);
+  const confirm = await question(`${config.prompt} ${styleText('yellow', `[y/n]`)}: `);
   const input = confirm.trim().toLowerCase();
   if (input !== 'y' && input !== 'yes') {
     console.log(config.cancelled);

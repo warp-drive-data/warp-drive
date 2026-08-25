@@ -1,4 +1,4 @@
-import chalk from 'chalk';
+import { styleText } from 'node:util';
 import { Hono } from 'hono';
 import { createSecureServer } from 'node:http2';
 import { logger } from 'hono/logger';
@@ -321,7 +321,7 @@ async function _createServer(options) {
   );
 
   console.log(
-    `\tServing Holodeck HTTP Mocks from ${chalk.yellow('https://') + chalk.magenta(location.hostname + ':') + chalk.yellow(location.port)}\n`
+    `\tServing Holodeck HTTP Mocks from ${styleText('yellow', 'https://') + styleText('magenta', location.hostname + ':') + styleText('yellow', String(location.port))}\n`
   );
 
   if (typeof threadId === 'number' && threadId !== 0) {
@@ -360,25 +360,29 @@ export async function launchProgram(config = {}) {
   }
   const options = { name, projectRoot, ...config };
   console.log(
-    chalk.grey(
-      `\n\t@${chalk.greenBright('warp-drive')}/${chalk.magentaBright(
+    styleText(
+      'grey',
+      `\n\t@${styleText('greenBright', 'warp-drive')}/${styleText(
+        'magentaBright',
         'holodeck'
       )} 🌅\n\t=================================\n`
     ) +
-      chalk.grey(
-        `\n\tHolodeck Access Granted\n\t\tprogram: ${chalk.magenta(name)}\n\t\tsettings: ${chalk.green(
+      styleText(
+        'grey',
+        `\n\tHolodeck Access Granted\n\t\tprogram: ${styleText('magenta', name)}\n\t\tsettings: ${styleText(
+          'green',
           JSON.stringify(config).split('\n').join(' ')
-        )}\n\t\tdirectory: ${chalk.cyan(projectRoot)}\n\t\tengine: ${chalk.cyan('bun')}@${chalk.yellow(Bun.version)}\n`
+        )}\n\t\tdirectory: ${styleText('cyan', projectRoot)}\n\t\tengine: ${styleText('cyan', 'bun')}@${styleText('yellow', Bun.version)}\n`
       )
   );
-  console.log(chalk.grey(`\n\tStarting Holodeck Subroutines`));
+  console.log(styleText('grey', `\n\tStarting Holodeck Subroutines`));
 
   const project = await createServer(options);
 
   async function shutdown() {
-    console.log(chalk.grey(`\n\tEnding Holodeck Subroutines`));
+    console.log(styleText('grey', `\n\tEnding Holodeck Subroutines`));
     project.close();
-    console.log(chalk.grey(`\n\tHolodeck program ended`));
+    console.log(styleText('grey', `\n\tHolodeck program ended`));
   }
 
   const endProgram = createCloseHandler(shutdown);

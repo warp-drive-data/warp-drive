@@ -1,6 +1,6 @@
 import { findWorkspaceDir } from '@pnpm/find-workspace-dir';
 import path from 'path';
-import chalk from 'chalk';
+import { styleText } from 'node:util';
 import fs from 'fs';
 
 const workspaceRoot = (await findWorkspaceDir(process.cwd())) as string;
@@ -15,7 +15,7 @@ const projectRoot = path.join(docsViewerRoot, './projects');
 export { workspaceRoot, docsViewerRoot, projectRoot };
 
 export function log(message: string) {
-  console.log(chalk.grey(`[docs-viewer]\t${message}`));
+  console.log(styleText('grey', `[docs-viewer]\t${message}`));
 }
 
 export async function getCurrentVersion(tool: string) {

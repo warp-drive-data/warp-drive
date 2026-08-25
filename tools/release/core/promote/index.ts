@@ -4,7 +4,7 @@ import { GIT_TAG, getAllPackagesForGitTag, getGitState, pushLTSTagToRemoteBranch
 import { printHelpDocs } from '../../help/docs.ts';
 import { Package } from '../../utils/package.ts';
 import { SEMVER_VERSION } from '../../utils/channel.ts';
-import chalk from 'chalk';
+import { styleText } from 'node:util';
 import { colorName } from '../publish/steps/print-strategy.ts';
 import { exec } from '../../utils/cmd.ts';
 import { question } from '../publish/steps/confirm-strategy.ts';
@@ -28,7 +28,7 @@ export async function promoteToLTS(args: string[]) {
     try {
       await pushLTSTagToRemoteBranch(gitTag, true);
     } catch (e) {
-      console.error(chalk.red(`NPM Tag Updated, but failed to update the remote lts branch for ${gitTag}`));
+      console.error(styleText('red', `NPM Tag Updated, but failed to update the remote lts branch for ${gitTag}`));
       console.error(e);
     }
   }
@@ -57,7 +57,8 @@ export async function updateTags(
   if (!CI) {
     if (!NODE_AUTH_TOKEN) {
       console.log(
-        chalk.red(
+        styleText(
+          'red',
           '🚫 NODE_AUTH_TOKEN not found in ENV. NODE_AUTH_TOKEN is required in ENV to publish from CI. Exiting...'
         )
       );
@@ -65,13 +66,13 @@ export async function updateTags(
     }
 
     const result = await question(
-      `\n${chalk.cyan('NODE_AUTH_TOKEN')} found in ENV.\nPublish ${config.get('increment')} release in ${config.get(
+      `\n${styleText('cyan', 'NODE_AUTH_TOKEN')} found in ENV.\nPublish ${config.get('increment')} release in ${config.get(
         'channel'
-      )} channel to the ${config.get('tag')} tag on the npm registry? ${chalk.yellow('[y/n]')}:`
+      )} channel to the ${config.get('tag')} tag on the npm registry? ${styleText('yellow', '[y/n]')}:`
     );
     const input = result.trim().toLowerCase();
     if (input !== 'y' && input !== 'yes') {
-      console.log(chalk.red('🚫 Publishing not confirmed. Exiting...'));
+      console.log(styleText('red', '🚫 Publishing not confirmed. Exiting...'));
       process.exit(1);
     }
 
@@ -82,18 +83,28 @@ export async function updateTags(
   let error: Error | null = null;
   for (const [pkgName, version] of packages) {
     [token, error] = await updateDistTag(pkgName, version, distTag, dryRun, token);
-    console.log(chalk.green(`\t✅ ${colorName(pkgName)} ${chalk.green(version)} => ${chalk.magenta(distTag)}`));
+    console.log(
+      styleText(
+        'green',
+        `\t✅ ${colorName(pkgName)} ${styleText('green', version)} => ${styleText('magenta', distTag)}`
+      )
+    );
   }
 
   console.log(
-    `✅ ` + chalk.cyan(`Moved ${chalk.greenBright(packages.size)} 📦 packages to ${chalk.magenta(distTag)} channel`)
+    `✅ ` +
+      styleText(
+        'cyan',
+        `Moved ${styleText('greenBright', packages.size)} 📦 packages to ${styleText('magenta', distTag)} channel`
+      )
   );
 }
 
 async function getOTPToken(distTag: string, reprompt?: boolean) {
   const prompt = reprompt
     ? `The provided OTP token has expired. Please enter a new OTP token: `
-    : `\nℹ️ ${chalk.cyan(
+    : `\nℹ️ ${styleText(
+        'cyan',
         'NODE_AUTH_TOKEN'
       )} not found in ENV.\n\nConfiguring NODE_AUTH_TOKEN is the preferred mechanism by which to publish. Alternatively you may continue using an OTP token.\n\nUpdating ${distTag} tag on the npm registry.\n\nEnter your OTP token: `;
 

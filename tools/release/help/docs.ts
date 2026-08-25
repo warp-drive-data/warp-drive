@@ -1,42 +1,42 @@
-import chalk from 'chalk';
+import { styleText } from 'node:util';
 import { command_config } from '../utils/flags-config.ts';
 import { Command, Flag } from '../utils/parse-args.ts';
 import { color, getNumTabs, getPadding, indent } from './-utils.ts';
 
 function getDefaultValueDescriptor(value: unknown) {
   if (typeof value === 'string') {
-    return chalk.green(`"${value}"`);
+    return styleText('green', `"${value}"`);
   } else if (typeof value === 'number') {
-    return chalk.green(`${value}`);
+    return styleText('green', `${value}`);
   } else if (typeof value === 'boolean') {
-    return chalk.green(`${value}`);
+    return styleText('green', `${value}`);
   } else if (value === null) {
-    return chalk.green('null');
+    return styleText('green', 'null');
   } else if (typeof value === 'function') {
     if (value.name) {
-      return chalk.cyan(`Function<${value.name}>`);
+      return styleText('cyan', `Function<${value.name}>`);
     } else {
-      return chalk.cyan(`Function`);
+      return styleText('cyan', `Function`);
     }
   } else {
-    return chalk.grey('N/A');
+    return styleText('grey', 'N/A');
   }
 }
 
 function buildOptionDoc(flag: Flag, index: number): string {
   const { flag_aliases, flag_mispellings, description, examples } = flag;
   const flag_shape =
-    chalk.magentaBright(flag.positional ? `<${flag.flag}>` : `--${flag.flag}`) +
-    (flag.required ? chalk.yellow(chalk.italic(` required`)) : '');
-  const flag_aliases_str = chalk.grey(flag_aliases?.join(', ') || 'N/A');
-  const flag_mispellings_str = chalk.grey(flag_mispellings?.join(', ') || 'N/A');
+    styleText('magentaBright', flag.positional ? `<${flag.flag}>` : `--${flag.flag}`) +
+    (flag.required ? styleText('yellow', styleText('italic', ` required`)) : '');
+  const flag_aliases_str = styleText('grey', flag_aliases?.join(', ') || 'N/A');
+  const flag_mispellings_str = styleText('grey', flag_mispellings?.join(', ') || 'N/A');
 
-  return `${flag_shape} ${chalk.greenBright(flag.name)}
+  return `${flag_shape} ${styleText('greenBright', flag.name)}
   ${indent(description, 1)}
-  ${chalk.yellow('default')}: ${getDefaultValueDescriptor(flag.default_value)}
-  ${chalk.yellow('aliases')}: ${flag_aliases_str}
-  ${chalk.yellow('alt')}: ${flag_mispellings_str}
-  ${chalk.grey('Examples')}:
+  ${styleText('yellow', 'default')}: ${getDefaultValueDescriptor(flag.default_value)}
+  ${styleText('yellow', 'aliases')}: ${flag_aliases_str}
+  ${styleText('yellow', 'alt')}: ${flag_mispellings_str}
+  ${styleText('grey', 'Examples')}:
   ${examples
     .map((example) => {
       if (typeof example === 'string') {
@@ -59,7 +59,7 @@ function buildCommandDoc(command: Command, index: number): string {
   }
 
   const lines = [
-    `cy<<${chalk.bold(cmd)}>>\n${indent(description, 1)}`,
+    `cy<<${styleText('bold', cmd)}>>\n${indent(description, 1)}`,
     alt ? `\tye<<alt>>: gr<<${alt.join(', ')}>>` : '',
     overview ? `\t${overview}` : '',
     xmpl ? `\n\tgr<<${Array.isArray(example) ? 'Examples' : 'Example'}>>:` : '',
@@ -69,7 +69,7 @@ function buildCommandDoc(command: Command, index: number): string {
   const opts = options ? Object.values(options) : [];
   if (opts.length > 0) {
     lines.push(
-      `\t${chalk.bold(chalk.yellowBright('Options'))}`,
+      `\t${styleText('bold', styleText('yellowBright', 'Options'))}`,
       indent(`${Object.values(opts).map(buildOptionDoc).join('\n\n')}`, 1)
     );
   }
@@ -82,12 +82,12 @@ export async function printHelpDocs(_args: string[]) {
 
   console.log(
     indent(
-      `${chalk.bold('Usage')}
-$ ./publish/index.ts ${chalk.magentaBright('<channel>')} [options]
+      `${styleText('bold', 'Usage')}
+$ ./publish/index.ts ${styleText('magentaBright', '<channel>')} [options]
 
 
 
-${chalk.bold('Commands')}
+${styleText('bold', 'Commands')}
   ${commands.map(buildCommandDoc).join('\n  ')}
 
 `

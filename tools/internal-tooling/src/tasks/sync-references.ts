@@ -7,7 +7,7 @@
  */
 import debug from 'debug';
 import path from 'path';
-import chalk from 'chalk';
+import { styleText } from 'node:util';
 import {
   runPrettier,
   walkPackages,
@@ -179,7 +179,7 @@ function validateDesiredTsConfigSettings(project: ProjectPackageWithTsConfig) {
 
 export async function main() {
   log(
-    `\n\t${chalk.gray('=').repeat(60)}\n\t\t${chalk.magentaBright('@warp-drive/')}${chalk.greenBright('internal-tooling')} Sync TypeScript References\n\t${chalk.gray('=').repeat(60)}\n\n\t\t${chalk.gray(`Syncing Project References`)}\n\n`
+    `\n\t${styleText('gray', '=').repeat(60)}\n\t\t${styleText('magentaBright', '@warp-drive/')}${styleText('greenBright', 'internal-tooling')} Sync TypeScript References\n\t${styleText('gray', '=').repeat(60)}\n\n\t\t${styleText('gray', `Syncing Project References`)}\n\n`
   );
   let anyFileEdited = false;
 

@@ -5,7 +5,7 @@
 import path from 'path';
 import fs from 'fs';
 import debug from 'debug';
-import chalk from 'chalk';
+import { styleText } from 'node:util';
 import { getMonorepoRoot, walkPackages, type ProjectPackage } from './-utils';
 
 const log = debug('wd:sync-license');
@@ -38,7 +38,7 @@ async function updatePackageJson(project: ProjectPackage) {
 
 export async function main() {
   log(
-    `\n\t${chalk.gray('=').repeat(60)}\n\t\t${chalk.magentaBright('@warp-drive/')}${chalk.greenBright('internal-tooling')} Sync LICENSE.md\n\t${chalk.gray('=').repeat(60)}\n\n\t\t${chalk.gray(`Syncing LICENSE.md from monorepo root to each public package`)}\n\n`
+    `\n\t${styleText('gray', '=').repeat(60)}\n\t\t${styleText('magentaBright', '@warp-drive/')}${styleText('greenBright', 'internal-tooling')} Sync LICENSE.md\n\t${styleText('gray', '=').repeat(60)}\n\n\t\t${styleText('gray', `Syncing LICENSE.md from monorepo root to each public package`)}\n\n`
   );
   const monorepoRoot = await getMonorepoRoot();
 

@@ -1,4 +1,4 @@
-import chalk from 'chalk';
+import { styleText } from 'node:util';
 
 import { debug, info } from '../utils/debug.js';
 import { sinceStart } from '../utils/time.js';
@@ -21,7 +21,9 @@ export function buildHandler(config, state) {
       const msg = JSON.parse(message);
       msg.launcher = state.browsers.get(msg.browserId)?.launcher ?? '<unknown>';
 
-      info(`${chalk.green('➡')} [${chalk.cyan(msg.browserId)}/${chalk.cyan(msg.windowId)}] ${chalk.green(msg.name)}`);
+      info(
+        `${styleText('green', '➡')} [${styleText('cyan', String(msg.browserId))}/${styleText('cyan', String(msg.windowId))}] ${styleText('green', msg.name)}`
+      );
 
       switch (msg.name) {
         case 'suite-start':
@@ -46,13 +48,14 @@ export function buildHandler(config, state) {
           }
           state.completed++;
           debug(
-            `${chalk.green('✅ [Complete]')} ${chalk.cyan(msg.browserId)}/${chalk.cyan(msg.windowId)} ${chalk.yellow(
+            `${styleText('green', '✅ [Complete]')} ${styleText('cyan', String(msg.browserId))}/${styleText('cyan', String(msg.windowId))} ${styleText(
+              'yellow',
               '@' + sinceStart()
             )}`
           );
           if (state.completed === state.expected) {
             const exitCode = config.reporter.onRunFinish(msg);
-            debug(`${chalk.green('✅ [All Complete]')} ${chalk.yellow('@' + sinceStart())}`);
+            debug(`${styleText('green', '✅ [All Complete]')} ${styleText('yellow', '@' + sinceStart())}`);
 
             if (!config.serve) {
               await state.safeCleanup();

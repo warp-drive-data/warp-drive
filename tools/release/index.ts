@@ -1,5 +1,5 @@
 #!/usr/bin/env bun
-import chalk from 'chalk';
+import { styleText } from 'node:util';
 import { printHelpDocs } from './help/docs.ts';
 import { normalizeFlag } from './utils/parse-args.ts';
 import { getCommands } from './utils/flags-config.ts';
@@ -54,11 +54,13 @@ async function main() {
   // we silence output for the latest_for command
   if (cmdString !== 'latest_for') {
     write(
-      chalk.grey(
-        `\n\t${chalk.bold(
-          chalk.greenBright('Warp') + chalk.magentaBright('Drive')
+      styleText(
+        'grey',
+        `\n\t${styleText(
+          'bold',
+          styleText('greenBright', 'Warp') + styleText('magentaBright', 'Drive')
         )} | Automated Release\n\t==============================`
-      ) + chalk.grey(`\n\tengine: ${chalk.cyan('bun@' + Bun.version)}\n`)
+      ) + styleText('grey', `\n\tengine: ${styleText('cyan', 'bun@' + Bun.version)}\n`)
     );
   }
 

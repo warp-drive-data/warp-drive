@@ -1,4 +1,4 @@
-import chalk from 'chalk';
+import { styleText } from 'node:util';
 import { exec } from '../../../utils/cmd.ts';
 import { APPLIED_STRATEGY, Package } from '../../../utils/package.ts';
 import path from 'path';
@@ -37,30 +37,45 @@ export async function verifyTarballs(
     const mirrorTarballExists = mirrorTarballPath ? fs.existsSync(mirrorTarballPath) : false;
 
     if (tarballExists) {
-      results.push(chalk.grey(`\t✅ Tarball exists for package ${chalk.green(pkg.pkgData.name)}`));
+      results.push(styleText('grey', `\t✅ Tarball exists for package ${styleText('green', pkg.pkgData.name)}`));
     } else {
-      results.push(chalk.grey(`\t❌ Tarball ${tarballPath} does not exist for package ${chalk.red(pkg.pkgData.name)}`));
+      results.push(
+        styleText(
+          'grey',
+          `\t❌ Tarball ${tarballPath} does not exist for package ${styleText('red', pkg.pkgData.name)}`
+        )
+      );
       hasErrors = true;
     }
 
     if (!typesTarballPath) {
-      results.push(chalk.grey(`\t✖️ Types tarball path is missing for package ${chalk.yellow(pkg.pkgData.name)}`));
+      results.push(
+        styleText('grey', `\t✖️ Types tarball path is missing for package ${styleText('yellow', pkg.pkgData.name)}`)
+      );
     } else if (typesTarballExists) {
-      results.push(chalk.grey(`\t✅ Types tarball exists for package ${chalk.green(pkg.pkgData.name)}`));
+      results.push(styleText('grey', `\t✅ Types tarball exists for package ${styleText('green', pkg.pkgData.name)}`));
     } else {
       results.push(
-        chalk.grey(`\t❌ Types tarball ${typesTarballPath} does not exist for package ${chalk.red(pkg.pkgData.name)}`)
+        styleText(
+          'grey',
+          `\t❌ Types tarball ${typesTarballPath} does not exist for package ${styleText('red', pkg.pkgData.name)}`
+        )
       );
       hasErrors = true;
     }
 
     if (!mirrorTarballPath) {
-      results.push(chalk.grey(`\t✖️ Mirror tarball path is missing for package ${chalk.yellow(pkg.pkgData.name)}`));
+      results.push(
+        styleText('grey', `\t✖️ Mirror tarball path is missing for package ${styleText('yellow', pkg.pkgData.name)}`)
+      );
     } else if (mirrorTarballExists) {
-      results.push(chalk.grey(`\t✅ Mirror tarball exists for package ${chalk.green(pkg.pkgData.name)}`));
+      results.push(styleText('grey', `\t✅ Mirror tarball exists for package ${styleText('green', pkg.pkgData.name)}`));
     } else {
       results.push(
-        chalk.grey(`\t❌ Mirror tarball ${mirrorTarballPath} does not exist for package ${chalk.red(pkg.pkgData.name)}`)
+        styleText(
+          'grey',
+          `\t❌ Mirror tarball ${mirrorTarballPath} does not exist for package ${styleText('red', pkg.pkgData.name)}`
+        )
       );
       hasErrors = true;
     }
@@ -147,7 +162,9 @@ export async function generatePackageTarballs(
         await printDirtyFiles(`After Prepack: ${pkg.pkgData.name}`, pkg.pkgData.name);
       }
     } catch (e) {
-      console.log(`🔴 ${chalk.redBright('failed to execute prepack script for')} ${chalk.yellow(pkg.pkgData.name)}`);
+      console.log(
+        `🔴 ${styleText('redBright', 'failed to execute prepack script for')} ${styleText('yellow', pkg.pkgData.name)}`
+      );
       throw e;
     }
   }
@@ -162,7 +179,9 @@ export async function generatePackageTarballs(
       await amendFilesForTypesStrategy(pkg, pkgStrategy);
       await printDirtyFiles(`After Types Strategy Amend: ${pkg.pkgData.name}`, pkg.pkgData.name);
     } catch (e) {
-      console.log(`🔴 ${chalk.redBright('failed to amend files to pack for')} ${chalk.yellow(pkg.pkgData.name)}`);
+      console.log(
+        `🔴 ${styleText('redBright', 'failed to amend files to pack for')} ${styleText('yellow', pkg.pkgData.name)}`
+      );
       throw e;
     }
 
@@ -172,7 +191,7 @@ export async function generatePackageTarballs(
         await printDirtyFiles(`After Unpkg Amend: ${pkg.pkgData.name}`, pkg.pkgData.name);
       } catch (e) {
         console.log(
-          `🔴 ${chalk.redBright('failed to modify package for unpkgPublish for')} ${chalk.yellow(pkg.pkgData.name)}`
+          `🔴 ${styleText('redBright', 'failed to modify package for unpkgPublish for')} ${styleText('yellow', pkg.pkgData.name)}`
         );
         throw e;
       }
@@ -191,7 +210,9 @@ export async function generatePackageTarballs(
       });
       console.log(result);
     } catch (e) {
-      console.log(`🔴 ${chalk.redBright('failed to generate tarball for')} ${chalk.yellow(pkg.pkgData.name)}`);
+      console.log(
+        `🔴 ${styleText('redBright', 'failed to generate tarball for')} ${styleText('yellow', pkg.pkgData.name)}`
+      );
       throw e;
     } finally {
       // restore state from before amending for types strategy
@@ -201,8 +222,9 @@ export async function generatePackageTarballs(
 
   console.log(
     `✅ ` +
-      chalk.cyan(
-        `created ${chalk.greenBright(strategy.size)} 📦 tarballs in ${path.relative(PROJECT_ROOT, tarballDir)}`
+      styleText(
+        'cyan',
+        `created ${styleText('greenBright', String(strategy.size))} 📦 tarballs in ${path.relative(PROJECT_ROOT, tarballDir)}`
       )
   );
 }
@@ -618,8 +640,9 @@ async function restoreTypesStrategyChanges(pkg: Package, _strategy: APPLIED_STRA
   }
   process.stdout.write(
     `\t\t♻️ ` +
-      chalk.grey(
-        `Successfully Restored Assets Modified for Types Strategy During Publish in ${chalk.cyan(pkg.pkgData.name)}\n`
+      styleText(
+        'grey',
+        `Successfully Restored Assets Modified for Types Strategy During Publish in ${styleText('cyan', pkg.pkgData.name)}\n`
       )
   );
 }

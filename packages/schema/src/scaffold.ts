@@ -1,9 +1,9 @@
-import chalk from 'chalk';
+import { styleText } from 'node:util';
 import path from 'path';
 import os from 'os';
 
 function write($text: string) {
-  console.log(chalk.gray($text));
+  console.log(styleText('gray', $text));
 }
 
 const Scaffolds = ['resource', 'trait', 'field', 'derivation', 'transform'];
@@ -29,7 +29,7 @@ async function loadOrCreateConfig(): Promise<Record<string, unknown> & { DID_GEN
   };
 
   write(
-    `\n\t🔨 Generating new ${chalk.yellow('schema.json')} configuration file in ${chalk.cyan(getRelativePathToRoot(process.cwd()))}`
+    `\n\t🔨 Generating new ${styleText('yellow', 'schema.json')} configuration file in ${styleText('cyan', getRelativePathToRoot(process.cwd()))}`
   );
 
   await Bun.write(filePointer, JSON.stringify(config, null, 2));
@@ -121,17 +121,19 @@ async function main() {
   const [resource, name] = args;
 
   write(
-    `\n\t $ ${chalk.bold(chalk.greenBright('@warp-drive/') + chalk.magentaBright('schema'))} ${chalk.bold('scaffold')} ${resource ?? chalk.red('<mising type>')} ${name ?? chalk.red('<missing name>')}`
+    `\n\t $ ${styleText('bold', styleText('greenBright', '@warp-drive/') + styleText('magentaBright', 'schema'))} ${styleText('bold', 'scaffold')} ${resource ?? styleText('red', '<mising type>')} ${name ?? styleText('red', '<missing name>')}`
   );
 
   if (!Scaffolds.includes(resource)) {
-    write(`\n\t${chalk.bold('💥 Error')} ${chalk.white(resource)} is not a valid scaffold.`);
-    write(`\n\t${chalk.bold('Available Scaffolds')}\n\t\t◆ ${Scaffolds.join(',\n\t\t◆ ')}\n`);
+    write(`\n\t${styleText('bold', '💥 Error')} ${styleText('white', resource)} is not a valid scaffold.`);
+    write(`\n\t${styleText('bold', 'Available Scaffolds')}\n\t\t◆ ${Scaffolds.join(',\n\t\t◆ ')}\n`);
     return;
   }
 
   if (!name) {
-    write(`\n\t${chalk.bold('💥 Error')} Please supply a name for the ${chalk.white(resource)} to scaffold!\n`);
+    write(
+      `\n\t${styleText('bold', '💥 Error')} Please supply a name for the ${styleText('white', resource)} to scaffold!\n`
+    );
     return;
   }
 
@@ -143,7 +145,9 @@ async function main() {
   const fileExists = await file.exists();
 
   if (fileExists) {
-    write(`\n\t${chalk.bold('💥 Error')} ${chalk.white(relativeWritePath)} already exists! Skipping Scaffold.\n`);
+    write(
+      `\n\t${styleText('bold', '💥 Error')} ${styleText('white', relativeWritePath)} already exists! Skipping Scaffold.\n`
+    );
     return;
   }
 
@@ -156,7 +160,7 @@ async function main() {
   }
 
   write(
-    `\n\t🔨 Scaffolding new ${chalk.bold(chalk.cyan(name))} ${chalk.bold(chalk.white(resource))} in ${relativeWritePath}...`
+    `\n\t🔨 Scaffolding new ${styleText('bold', styleText('cyan', name))} ${styleText('bold', styleText('white', resource))} in ${relativeWritePath}...`
   );
   console.log(args);
 }
