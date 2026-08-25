@@ -12,24 +12,6 @@ module.exports = function () {
       packageManager: 'pnpm',
       scenarios: [
         {
-          name: 'ember-lts-4.4',
-          npm: {
-            devDependencies: {
-              'ember-source': '~4.4.5',
-              '@glimmer/component': '^1.1.2',
-            },
-          },
-        },
-        {
-          name: 'ember-lts-4.8',
-          npm: {
-            devDependencies: {
-              'ember-source': '~4.8.0',
-              '@glimmer/component': '^1.1.2',
-            },
-          },
-        },
-        {
           name: 'ember-lts-4.12',
           npm: {
             devDependencies: {
@@ -38,26 +20,18 @@ module.exports = function () {
           },
         },
         {
-          name: 'ember-lts-5.4',
-          npm: {
-            devDependencies: {
-              'ember-source': '~5.4.0',
-            },
-          },
-        },
-        {
-          name: 'ember-lts-5.8',
-          npm: {
-            devDependencies: {
-              'ember-source': '~5.8.0',
-            },
-          },
-        },
-        {
           name: 'ember-lts-5.12',
           npm: {
             devDependencies: {
               'ember-source': '~5.12.0',
+            },
+          },
+        },
+        {
+          name: 'ember-lts-6.12',
+          npm: {
+            devDependencies: {
+              'ember-source': '~6.12.0',
             },
           },
         },

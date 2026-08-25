@@ -193,7 +193,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        scenario: [ember-lts-5.12, ember-lts-5.8, ember-lts-5.4, ember-lts-4.12, ember-lts-4.8, ember-lts-4.4, ember-lts-3.28]
+        scenario: [ember-lts-6.12, ember-lts-5.12, ember-lts-4.12, ember-lts-3.28]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
