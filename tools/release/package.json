@@ -1,6 +1,6 @@
 {
   "name": "@warp-drive/internal-release",
-  "version": "5.9.0-alpha.22",
+  "version": "5.9.0-alpha.23",
   "private": true,
   "type": "module",
   "dependencies": {
