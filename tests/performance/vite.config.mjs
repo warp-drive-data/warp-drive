@@ -4,7 +4,7 @@ import { babel } from '@rollup/plugin-babel';
 import { compression } from 'vite-plugin-compression2';
 // import { analyzer } from 'vite-bundle-analyzer';
 
-import zlib from 'zlib';
+import zlib from 'node:zlib';
 
 export default defineConfig({
   plugins: [

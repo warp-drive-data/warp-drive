@@ -98,8 +98,7 @@
     "@warp-drive/react": "workspace:*",
     "debug": "^4.4.1",
     "dom-element-descriptors": "^0.5.1",
-    "qunit-dom": "^3.5.0",
-    "tmp": "^0.2.5"
+    "qunit-dom": "^3.5.0"
   },
   "devDependencies": {
     "@babel/core": "^7.29.7",

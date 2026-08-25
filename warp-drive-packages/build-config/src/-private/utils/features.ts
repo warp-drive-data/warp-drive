@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { fileURLToPath } from 'url';
+import { fileURLToPath } from 'node:url';
 
 import * as CURRENT_FEATURES from '../../canary-features.ts';
 type FEATURE = keyof typeof CURRENT_FEATURES;

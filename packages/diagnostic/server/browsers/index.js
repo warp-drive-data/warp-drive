@@ -1,6 +1,6 @@
+import fs from 'node:fs';
 import os from 'os';
 import path from 'path';
-import tmp from 'tmp';
 
 import { debug } from '../utils/debug.js';
 import { isWin, platformName } from '../utils/platform.js';
@@ -140,21 +140,24 @@ export async function getBrowser(browser) {
 
 const TMP_DIRS = new Map();
 
+process.on('exit', () => {
+  for (const dir of TMP_DIRS.values()) {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
 export function getTmpDir(browser) {
   if (TMP_DIRS.has(browser)) {
-    return TMP_DIRS.get(browser).name;
+    return TMP_DIRS.get(browser);
   }
 
   const userDataDir = os.tmpdir();
   const tmpPath = path.join(userDataDir, 'testem-' + browser.replace(' ', '_'));
 
-  const tmpDir = tmp.dirSync({
-    template: `${tmpPath}-XXXXXX`,
-    unsafeCleanup: true,
-  });
+  const tmpDir = fs.mkdtempSync(`${tmpPath}-`);
 
   TMP_DIRS.set(browser, tmpDir);
-  return tmpDir.name;
+  return tmpDir;
 }
 
 export function recommendedArgs(browser, options = {}) {
