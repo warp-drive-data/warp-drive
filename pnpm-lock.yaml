@@ -605,7 +605,7 @@ importers:
         version: 3.5.0
       tmp:
         specifier: ^0.2.5
-        version: 0.2.5
+        version: 0.2.6
     devDependencies:
       '@babel/core':
         specifier: ^7.29.7
@@ -14044,8 +14044,12 @@ packages:
     resolution: {integrity: sha512-nZD7m9iCPC5g0pYmcaxogYKggSfLsdxl8of3Q/oIbqCqLLIO9IAF0GWjX1z9NZRHPiXv8Wex4yDCaZsgEw0Y8w==}
     engines: {node: '>=14.14'}
 
-  tmp@0.2.5:
-    resolution: {integrity: sha512-voyz6MApa1rQGUxT3E+BK7/ROe8itEx7vD8/HEvt4xwXucvQ5G5oeEiHkmHZJuBO21RpOf+YYm9MOivj709jow==}
+  tmp@0.2.6:
+    resolution: {integrity: sha512-5sJPdPjfI5Kx+qbrDesxkglRBxW//g7hCsqspEjwkewGvBMGIKMOTKzLt1hFVJzyadba3lDUN20O9qhvbQUSTA==}
+    engines: {node: '>=14.14'}
+
+  tmp@0.2.7:
+    resolution: {integrity: sha512-e0votIpp4Uo2AJYSzVHV6xCcawuiez3DzqDAbrTc3YxBkplN6e+dM13ZeIcZnDg/QpSuU2zfZ3rzwY8ukEnaXw==}
     engines: {node: '>=14.14'}
 
   tmpl@1.0.5:
@@ -19882,9 +19886,6 @@ snapshots:
     dependencies:
       '@types/ember': 4.0.11
       '@types/ember__object': 4.0.12
-    transitivePeerDependencies:
-      - '@babel/core'
-      - supports-color
 
   '@types/ember__controller@4.0.12':
     dependencies:
@@ -19920,16 +19921,10 @@ snapshots:
       '@types/ember__controller': 4.0.12
       '@types/ember__object': 4.0.12
       '@types/ember__service': 4.0.9
-    transitivePeerDependencies:
-      - '@babel/core'
-      - supports-color
 
   '@types/ember__runloop@4.0.10':
     dependencies:
       '@types/ember': 4.0.11
-    transitivePeerDependencies:
-      - '@babel/core'
-      - supports-color
 
   '@types/ember__service@4.0.9':
     dependencies:
@@ -19949,9 +19944,6 @@ snapshots:
   '@types/ember__utils@4.0.7':
     dependencies:
       '@types/ember': 4.0.11
-    transitivePeerDependencies:
-      - '@babel/core'
-      - supports-color
 
   '@types/eslint-scope@3.7.7':
     dependencies:
@@ -20642,7 +20634,7 @@ snapshots:
       debug: 4.4.1
       dom-element-descriptors: 0.5.1
       qunit-dom: 3.5.0
-      tmp: 0.2.5
+      tmp: 0.2.7
     optionalDependencies:
       '@ember/test-helpers': 5.2.0(patch_hash=a1670a4e3977c846a5c2454f317f5a17cbd284aef3a676b190c98141536afb04)(993f53f6d041f81322d142b0c2ef5131)
     transitivePeerDependencies:
@@ -20659,7 +20651,7 @@ snapshots:
       debug: 4.4.1
       dom-element-descriptors: 0.5.1
       qunit-dom: 3.5.0
-      tmp: 0.2.5
+      tmp: 0.2.7
     optionalDependencies:
       '@ember/test-helpers': 5.2.0(patch_hash=a1670a4e3977c846a5c2454f317f5a17cbd284aef3a676b190c98141536afb04)(030cd7dd2b3d1da08afa379351eb7195)
     transitivePeerDependencies:
@@ -20676,7 +20668,7 @@ snapshots:
       debug: 4.4.1
       dom-element-descriptors: 0.5.1
       qunit-dom: 3.5.0
-      tmp: 0.2.5
+      tmp: 0.2.7
     transitivePeerDependencies:
       - '@babel/core'
       - '@glint/template'
@@ -20691,7 +20683,7 @@ snapshots:
       debug: 4.4.1
       dom-element-descriptors: 0.5.1
       qunit-dom: 3.5.0
-      tmp: 0.2.5
+      tmp: 0.2.7
     optionalDependencies:
       react: 19.2.8
       react-dom: 19.2.8(react@19.2.8)
@@ -22893,7 +22885,7 @@ snapshots:
       resolve-path: 1.4.0
       rimraf: 6.1.2
       sane: 5.0.1
-      tmp: 0.2.5
+      tmp: 0.2.7
       tree-sync: 2.1.0
       underscore.string: 3.3.6
       watch-detector: 1.0.2
@@ -29943,7 +29935,9 @@ snapshots:
 
   tmp@0.2.3: {}
 
-  tmp@0.2.5: {}
+  tmp@0.2.6: {}
+
+  tmp@0.2.7: {}
 
   tmpl@1.0.5: {}
 
