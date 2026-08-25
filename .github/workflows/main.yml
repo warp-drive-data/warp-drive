@@ -209,7 +209,8 @@ jobs:
           CI: true
         run: |
           cd tests/dont-write-new-tests-here;
-          pnpm exec ember try:one  ${{ matrix.scenario }} --skip-cleanup;
+          pnpm dlx @embroider/try apply ${{ matrix.scenario }};
+          pnpm install --no-frozen-lockfile --ignore-scripts --prefer-offline;
           pnpm build:tests;
           pnpm run test;
 
@@ -240,6 +241,7 @@ jobs:
           CI: true
         run: |
           cd tests/dont-write-new-tests-here;
-          pnpm exec ember try:one ${{ matrix.release }} --skip-cleanup;
+          pnpm dlx @embroider/try apply ${{ matrix.release }};
+          pnpm install --no-frozen-lockfile --ignore-scripts --prefer-offline;
           pnpm build:tests;
           pnpm run test;
