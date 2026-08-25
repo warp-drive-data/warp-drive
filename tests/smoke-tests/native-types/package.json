@@ -89,7 +89,7 @@
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.40.0",
     "vite": "^7.3.6",
-    "webpack": "^5.101.3"
+    "webpack": "^5.104.1"
   },
   "ember": {
     "edition": "octane"
