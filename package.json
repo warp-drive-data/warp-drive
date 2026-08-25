@@ -47,13 +47,11 @@
     "globby": "^14.1.0",
     "lerna-changelog": "^2.2.0",
     "prettier": "^3.8.1",
-    "prettier-plugin-ember-template-tag": "^2.1.3",
+    "prettier-plugin-ember-template-tag": "^2.1.6",
     "semver": "^7.7.2",
     "silent-error": "^1.1.1",
     "typedoc": "^0.28.20",
-    "typescript": "^5.9.3",
-    "url": "^0.11.4",
-    "zlib": "1.0.5"
+    "typescript": "^5.9.3"
   },
   "dependencies": {
     "turbo": "^2.7.6"

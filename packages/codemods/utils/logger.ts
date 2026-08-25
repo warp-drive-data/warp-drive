@@ -1,7 +1,6 @@
 import assert from 'assert';
 import type { Options, SourceLocation } from 'jscodeshift';
-import { styleText } from 'node:util';
-import stripAnsi from 'strip-ansi';
+import { stripVTControlCharacters as stripAnsi,styleText } from 'node:util';
 import type { Logform, Logger as WinstonLogger } from 'winston';
 import { createLogger as createWinstonLogger, format as winstonFormat, transports as winstonTransports } from 'winston';
 
