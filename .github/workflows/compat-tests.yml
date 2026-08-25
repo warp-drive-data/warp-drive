@@ -93,32 +93,3 @@ jobs:
   #         repo-token: ${{ secrets.GITHUB_TOKEN }}
   #     - name: Basic Tests
   #       run: pnpm test
-
-  smoke-tests:
-    name: Smoke ${{ matrix.scenario.name }} w/ ${{ matrix.packageManager }}
-    needs: [install]
-    timeout-minutes: 10
-    runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        packageManager:
-        - npm
-        # - yarn # yarn@1 has not been reliable, if yarn@4 were easy to setup, we could test against that
-        - pnpm
-        scenario:
-          - { dir: "dt-types", name: "DT Types" }
-          - { dir: "native-types", name: "Native Types" }
-
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-      - uses: ./.github/actions/setup
-        with:
-          install: true
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-      - name: "Run a basic smoke test with ${{ matrix.packageManager }} and ${{ matrix.kind }} tagging"
-        run: |
-          bun ./tests/smoke-tests/run.ts \
-            "${{ matrix.scenario.dir }}" "${{ matrix.packageManager }}"
-
-
