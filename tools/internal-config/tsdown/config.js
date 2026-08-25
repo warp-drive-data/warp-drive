@@ -3,8 +3,7 @@ import { createRequire, isBuiltin } from 'module';
 import path from 'path';
 
 import { ember } from '@nullvoxpopuli/ember-rolldown';
-import { id, include } from '@rolldown/pluginutils';
-import { babel } from '@rollup/plugin-babel';
+import babelPlugin from '@rolldown/plugin-babel';
 import { defineConfig } from 'tsdown';
 
 import { entryPoints, explicitExternals, external } from '../rollup/external.js';
@@ -133,20 +132,27 @@ function withMacroImportsAlwaysBabeled(emberOptions) {
  * what it imports: `assert()`/macro calls in `.tsx` files silently survive
  * unstripped into every build (dev and prod alike) otherwise. This runs a
  * second, independent babel pass scoped to just `.jsx`/`.tsx`, reusing
- * whatever babel config the package already has (auto-discovered, same as
- * `ember()`'s own babel step) so JSX/macro/decorator handling stays
+ * whatever babel config the package already has (explicitly passed in as
+ * `babelConfig` -- see below) so JSX/macro/decorator handling stays
  * consistent with `.ts`/`.gts` files in the same package.
+ *
+ * This uses `@rolldown/plugin-babel` (rolldown's own native babel plugin)
+ * rather than `@rollup/plugin-babel`. The latter has no official Babel 8
+ * support (its `peerDependencies` still pin `@babel/core@^7`, and an attempt
+ * to add v8 support was abandoned upstream: rollup/plugins#1889,
+ * rollup/plugins#2014) and, in practice, deadlocks rolldown's native worker
+ * pool once Babel 8's async plugin/preset resolution runs through it --
+ * every `rolldown-worker` thread parks in `pthread_cond_wait` waiting on a
+ * completion signal that never arrives. `@rolldown/plugin-babel` doesn't
+ * auto-discover `babel.config.mjs` the way `@rollup/plugin-babel` did, so
+ * the caller passes its already-loaded babel config in explicitly instead.
  */
-function jsxBabel() {
-  const plugin = babel({
-    babelHelpers: 'bundled',
-    extensions: ['.jsx', '.tsx'],
+async function jsxBabel(babelConfig) {
+  const plugin = await babelPlugin({
+    presets: babelConfig.presets,
+    plugins: babelConfig.plugins,
+    include: /\.[jt]sx$/,
   });
-  // `@rollup/plugin-babel`'s own `extensions`-based file matching isn't
-  // honored by rolldown's transform pipeline (only rolldown-native `filter`
-  // objects are) -- same reason `maybeBabel()` above sets this explicitly
-  // rather than trusting the plugin's own `extensions` option.
-  plugin.transform.filter = [include(id(/\.[jt]sx$/))];
   return { ...plugin, enforce: 'pre', name: 'warp-drive:jsx-babel' };
 }
 
@@ -192,7 +198,7 @@ export function createConfig(options, resolve) {
       selfReferenceEntries(entryMap),
       forceBundleOverEmberExternals(options),
       ...ember(withMacroImportsAlwaysBabeled(options.ember)),
-      options.jsx ? jsxBabel() : null,
+      options.jsx ? jsxBabel(options.babelConfig) : null,
       ...(options.plugins || []),
     ].filter(Boolean),
   });

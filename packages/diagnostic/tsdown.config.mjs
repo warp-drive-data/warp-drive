@@ -1,6 +1,8 @@
 import { keepAssets } from '@warp-drive/internal-config/tsdown/keep-assets.js';
 import { createConfig } from '@warp-drive/internal-config/tsdown/config.js';
 
+import babelConfig from './babel.config.mjs';
+
 export const externals = [
   '@ember/runloop',
   '@ember/test-helpers',
@@ -26,6 +28,7 @@ export default createConfig(
     entryPoints,
     externals,
     jsx: true,
+    babelConfig,
     plugins: [keepAssets({ from: 'src', include: ['./styles/**/*.css'], dist: 'dist' })],
   },
   import.meta.resolve
