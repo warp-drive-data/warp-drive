@@ -74,7 +74,6 @@
     "ember-cached-decorator-polyfill": "^1.0.2",
     "ember-cli": "~6.12.0",
     "ember-cli-babel": "^8.2.0",
-    "ember-cli-dependency-checker": "^3.3.3",
     "ember-cli-htmlbars": "^7.0.1",
     "ember-cli-inject-live-reload": "^2.1.0",
     "ember-cli-terser": "~4.0.2",
