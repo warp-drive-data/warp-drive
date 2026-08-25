@@ -47,14 +47,14 @@
     "@warp-drive/core": "workspace:*"
   },
   "dependencies": {
-    "@babel/parser": "^7.28.3",
-    "@babel/traverse": "^7.28.3",
+    "@babel/parser": "^7.29.8",
+    "@babel/traverse": "^7.29.8",
     "glob": "^11.0.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.28.3",
-    "@babel/plugin-transform-typescript": "^7.28.0",
-    "@babel/preset-typescript": "^7.27.1",
+    "@babel/core": "^7.29.7",
+    "@babel/plugin-transform-typescript": "^7.29.7",
+    "@babel/preset-typescript": "^7.29.7",
     "@warp-drive/internal-config": "workspace:*",
     "@warp-drive/core": "workspace:*",
     "tsdown": "^0.22.14",

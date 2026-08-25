@@ -25,9 +25,9 @@
     "test:start": "bun ./diagnostic.js --serve --no-launch"
   },
   "dependencies": {
-    "@babel/core": "^7.28.3",
-    "@babel/plugin-transform-typescript": "^7.28.0",
-    "@babel/runtime": "^7.28.3",
+    "@babel/core": "^7.29.7",
+    "@babel/plugin-transform-typescript": "^7.29.7",
+    "@babel/runtime": "^7.29.7",
     "@ember-data/debug": "workspace:*",
     "@ember-data/graph": "workspace:*",
     "@ember-data/json-api": "workspace:*",

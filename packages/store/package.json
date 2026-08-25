@@ -54,10 +54,10 @@
     }
   },
   "devDependencies": {
-    "@babel/core": "^7.28.3",
-    "@babel/plugin-transform-typescript": "^7.28.0",
-    "@babel/preset-env": "^7.28.3",
-    "@babel/preset-typescript": "^7.27.1",
+    "@babel/core": "^7.29.7",
+    "@babel/plugin-transform-typescript": "^7.29.7",
+    "@babel/preset-env": "^7.29.7",
+    "@babel/preset-typescript": "^7.29.7",
     "@ember-data/tracking": "workspace:*",
     "@ember/test-waiters": "^4.1.1",
     "@warp-drive/internal-config": "workspace:*",

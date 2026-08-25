@@ -31,7 +31,7 @@
     "test:vite": "pnpm run -r ---workspace-concurrency=-1 --if-present test:vite"
   },
   "devDependencies": {
-    "@babel/core": "^7.28.3",
+    "@babel/core": "^7.29.7",
     "@glimmer/component": "^2.0.0",
     "@glint/ember-tsc": "^1.0.9",
     "@glint/template": "^1.7.3",
