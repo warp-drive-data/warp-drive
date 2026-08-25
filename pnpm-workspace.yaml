@@ -31,6 +31,8 @@ minimumReleaseAgeExclude:
   - turbo@2.9.14
   # Renovate security update: vite@7.3.2
   - vite@7.3.2
+  # Renovate security update: @sveltejs/kit@2.57.1
+  - "@sveltejs/kit@2.57.1"
 
 ## Prevents transitive (sub-)dependencies from being resolved via git,
 ## git+ssh, or raw tarball URLs. Only our own direct dependencies may use
