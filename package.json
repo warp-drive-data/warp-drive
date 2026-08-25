@@ -27,8 +27,7 @@
     "check:types": "turbo --log-order=stream check:types --continue --concurrency=$(./bin/calculate-jobs)",
     "test": "pnpm turbo test --concurrency=1 --log-order=stream",
     "test:production": "pnpm turbo test:production --concurrency=1 --log-order=stream",
-    "test:blueprints": "pnpm run -r --workspace-concurrency=-1 --if-present test:blueprints",
-    "test:vite": "pnpm run -r ---workspace-concurrency=-1 --if-present test:vite"
+    "test:blueprints": "pnpm run -r --workspace-concurrency=-1 --if-present test:blueprints"
   },
   "devDependencies": {
     "@babel/core": "^7.29.7",
