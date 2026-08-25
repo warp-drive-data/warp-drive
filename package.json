@@ -58,7 +58,6 @@
     "typedoc": "^0.28.20",
     "typescript": "^5.9.3",
     "url": "^0.11.4",
-    "yuidocjs": "^0.10.2",
     "zlib": "1.0.5"
   },
   "dependencies": {
