@@ -1,6 +1,5 @@
 import assert from 'node:assert';
 import { mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
-import { rimraf } from 'rimraf';
 import { copyFile, rm, readFile } from 'node:fs/promises';
 import { join, basename } from 'node:path';
 import { $ } from 'execa';
@@ -96,7 +95,7 @@ export async function deletePriorBuildArtifacts() {
 
   await Promise.all(
     outputs.map((output) => {
-      return rimraf(output);
+      return rm(output, { recursive: true, force: true });
     })
   );
 }
