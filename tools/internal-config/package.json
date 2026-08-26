@@ -17,7 +17,7 @@
     "comment-json": "^4.6.2",
     "debug": "^4.4.3",
     "globals": "^16.5.0",
-    "ember-eslint-parser": "^0.14.5",
+    "ember-eslint-parser": "^0.14.6",
     "eslint": "^9.34.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-import-x": "^4.17.1",
