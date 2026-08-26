@@ -35,6 +35,8 @@ minimumReleaseAgeExclude:
   - "@sveltejs/kit@2.57.1"
   # Renovate security update: hono@4.12.25
   - hono@4.12.25
+  # Renovate security update: glob@11.1.0
+  - glob@11.1.0
 
 ## Prevents transitive (sub-)dependencies from being resolved via git,
 ## git+ssh, or raw tarball URLs. Only our own direct dependencies may use
