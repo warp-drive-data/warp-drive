@@ -462,7 +462,6 @@ module('My Module', function(hooks) {
 
 ```diff
 +    "@ember/test-helpers": "^3.3.0 || ^4.0.4 || ^5.1.0",
-+    "ember-cli-test-loader": ">= 3.1.0",
 +    "@embroider/addon-shim": ">= 1.8.6"
 ```
 
