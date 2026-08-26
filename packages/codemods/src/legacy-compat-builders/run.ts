@@ -3,9 +3,9 @@ import jscodeshift from 'jscodeshift';
 import { styleText } from 'node:util';
 import path from 'path';
 
-import type { LegacyStoreMethod } from './config.js';
-import transform from './index.js';
-import { log } from './log.js';
+import type { LegacyStoreMethod } from './config.ts';
+import transform from './index.ts';
+import { log } from './log.ts';
 
 export interface RunOptions {
   patterns: string[];

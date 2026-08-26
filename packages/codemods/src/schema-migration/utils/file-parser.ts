@@ -8,15 +8,15 @@
 
 import { parse, type SgNode } from '@ast-grep/napi';
 
-import { logger } from '../../../utils/logger.js';
-import type { TransformOptions } from '../config.js';
+import { logger } from '../../../utils/logger.ts';
+import type { TransformOptions } from '../config.ts';
 import {
   findClassDeclaration,
   findDefaultExport,
   getEmberDataImports,
   getMixinImports,
   parseDecoratorArgumentsWithNodes,
-} from './ast-helpers.js';
+} from './ast-helpers.ts';
 import {
   NODE_KIND_ARROW_FUNCTION,
   NODE_KIND_CALL_EXPRESSION,
@@ -33,25 +33,25 @@ import {
   NODE_KIND_METHOD_DEFINITION,
   NODE_KIND_PAIR,
   NODE_KIND_PROPERTY_IDENTIFIER,
-} from './code-processing.js';
+} from './code-processing.ts';
 import {
   DEFAULT_EMBER_DATA_SOURCE,
   DEFAULT_MIXIN_SOURCE,
   findEmberImportLocalName,
   FRAGMENT_BASE_SOURCE,
   WARP_DRIVE_MODEL,
-} from './import-utils.js';
+} from './import-utils.ts';
 import {
   extractBaseName,
   extractCamelCaseName,
   extractPascalCaseName,
   getLanguageFromPath,
   removeQuotes,
-} from './path-utils.js';
-import { convertToSchemaField } from './schema-generation.js';
-import { mixinNameToKebab } from './string.js';
-import type { ExtractedType } from './type-utils.js';
-import { extractTypeFromDeclaration, extractTypeFromDecorator, extractTypeFromMethod } from './type-utils.js';
+} from './path-utils.ts';
+import { convertToSchemaField } from './schema-generation.ts';
+import { mixinNameToKebab } from './string.ts';
+import type { ExtractedType } from './type-utils.ts';
+import { extractTypeFromDeclaration, extractTypeFromDecorator, extractTypeFromMethod } from './type-utils.ts';
 
 const log = logger.for('file-parser');
 

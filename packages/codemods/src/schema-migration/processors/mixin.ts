@@ -1,12 +1,12 @@
 import { existsSync } from 'fs';
 import { join } from 'path';
 
-import { logger } from '../../../utils/logger.js';
-import type { TransformerResult } from '../codemod.js';
-import type { TransformOptions } from '../config.js';
-import type { SchemaArtifact, SchemaArtifactRegistry } from '../utils/artifact.js';
-import { createTraitArtifactConfig, isConnectedToModel as isConnectedToModelInRegistry } from '../utils/artifact.js';
-import type { PropertyInfo, SchemaField, TransformArtifact } from '../utils/ast-utils.js';
+import { logger } from '../../../utils/logger.ts';
+import type { TransformerResult } from '../codemod.ts';
+import type { TransformOptions } from '../config.ts';
+import type { SchemaArtifact, SchemaArtifactRegistry } from '../utils/artifact.ts';
+import { createTraitArtifactConfig, isConnectedToModel as isConnectedToModelInRegistry } from '../utils/artifact.ts';
+import type { PropertyInfo, SchemaField, TransformArtifact } from '../utils/ast-utils.ts';
 import {
   buildTraitArtifacts,
   buildTraitSchemaObject,
@@ -15,10 +15,10 @@ import {
   generateMergedSchemaCode,
   mapFieldsToTypeProperties,
   toPascalCase,
-} from '../utils/ast-utils.js';
-import { createExtensionFromOriginalFile } from '../utils/extension-generation.js';
-import { resolveTraitImportPath, transformModelToResourceImport } from '../utils/import-utils.js';
-import { pascalToKebab } from '../utils/string.js';
+} from '../utils/ast-utils.ts';
+import { createExtensionFromOriginalFile } from '../utils/extension-generation.ts';
+import { resolveTraitImportPath, transformModelToResourceImport } from '../utils/import-utils.ts';
+import { pascalToKebab } from '../utils/string.ts';
 
 const log = logger.for('mixin-processor');
 

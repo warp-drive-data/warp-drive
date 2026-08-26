@@ -2,12 +2,12 @@ import { parse, type SgNode } from '@ast-grep/napi';
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs';
 import { dirname, join, resolve } from 'path';
 
-import { logger } from '../../../utils/logger.js';
-import type { TransformerResult } from '../codemod.js';
-import { getConfiguredImport, type TransformOptions } from '../config.js';
-import type { SchemaArtifactRegistry } from '../utils/artifact.js';
-import { createResourceArtifactConfig, createTraitArtifactConfig, SchemaArtifact } from '../utils/artifact.js';
-import type { ExtractedType, SchemaField, TransformArtifact } from '../utils/ast-utils.js';
+import { logger } from '../../../utils/logger.ts';
+import type { TransformerResult } from '../codemod.ts';
+import { getConfiguredImport, type TransformOptions } from '../config.ts';
+import type { SchemaArtifactRegistry } from '../utils/artifact.ts';
+import { createResourceArtifactConfig, createTraitArtifactConfig, SchemaArtifact } from '../utils/artifact.ts';
+import type { ExtractedType, SchemaField, TransformArtifact } from '../utils/ast-utils.ts';
 import {
   buildLegacySchemaObject,
   buildTraitArtifacts,
@@ -28,7 +28,7 @@ import {
   mixinNameToTraitName,
   SCHEMA_OPTION_REF_PREFIX,
   toPascalCase,
-} from '../utils/ast-utils.js';
+} from '../utils/ast-utils.ts';
 import {
   FILE_EXTENSION_JS,
   FILE_EXTENSION_TS,
@@ -41,14 +41,14 @@ import {
   NODE_KIND_IMPORT_STATEMENT,
   NODE_KIND_MEMBER_EXPRESSION,
   NODE_KIND_PROPERTY_IDENTIFIER,
-} from '../utils/code-processing.js';
-import { createExtensionFromOriginalFile } from '../utils/extension-generation.js';
-import type { ParsedFile } from '../utils/file-parser.js';
-import { parseFile } from '../utils/file-parser.js';
-import { resolveTraitImportPath } from '../utils/import-utils.js';
-import { extractBaseName, removeQuotes, replaceWildcardPattern } from '../utils/path-utils.js';
-import type { FieldTypeInfo } from '../utils/schema-generation.js';
-import { normalizePath, removeFileExtension, toKebabCase } from '../utils/string.js';
+} from '../utils/code-processing.ts';
+import { createExtensionFromOriginalFile } from '../utils/extension-generation.ts';
+import type { ParsedFile } from '../utils/file-parser.ts';
+import { parseFile } from '../utils/file-parser.ts';
+import { resolveTraitImportPath } from '../utils/import-utils.ts';
+import { extractBaseName, removeQuotes, replaceWildcardPattern } from '../utils/path-utils.ts';
+import type { FieldTypeInfo } from '../utils/schema-generation.ts';
+import { normalizePath, removeFileExtension, toKebabCase } from '../utils/string.ts';
 
 /**
  * Find and return the source text of export declarations (e.g. `export const BIRTHAGE = 0;`)

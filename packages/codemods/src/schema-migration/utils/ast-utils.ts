@@ -28,8 +28,8 @@ export {
   resolveImportPath,
   isImportFromSource,
   getImportSourceConfig,
-} from './path-utils.js';
-export type { ImportSourceConfig } from './path-utils.js';
+} from './path-utils.ts';
+export type { ImportSourceConfig } from './path-utils.ts';
 
 export {
   DEFAULT_EMBER_DATA_SOURCE,
@@ -41,8 +41,8 @@ export {
   extractTypeFromDecorator,
   extractTypeFromMethod,
   extractTypesFromInterface,
-} from './type-utils.js';
-export type { ExtractedType, SchemaFieldForType } from './type-utils.js';
+} from './type-utils.ts';
+export type { ExtractedType, SchemaFieldForType } from './type-utils.ts';
 
 // Re-export from ast-helpers
 export {
@@ -57,7 +57,7 @@ export {
   findAssociatedInterface,
   getEmberDataImports,
   getMixinImports,
-} from './ast-helpers.js';
+} from './ast-helpers.ts';
 
 // Re-export from schema-generation
 export {
@@ -76,8 +76,8 @@ export {
   mapFieldsToTypeProperties,
   buildTraitSchemaObject,
   SCHEMA_OPTION_REF_PREFIX,
-} from './schema-generation.js';
-export type { TransformArtifact, PropertyInfo, SchemaField, MergedSchemaOptions } from './schema-generation.js';
+} from './schema-generation.ts';
+export type { TransformArtifact, PropertyInfo, SchemaField, MergedSchemaOptions } from './schema-generation.ts';
 
 // Re-export from import-utils
 export {
@@ -98,7 +98,7 @@ export {
   WARP_DRIVE_MODEL,
   FRAGMENT_DECORATOR_SOURCE,
   FRAGMENT_BASE_SOURCE,
-} from './import-utils.js';
+} from './import-utils.ts';
 
 // Re-export from extension-generation
-export { generateExtensionCode, createExtensionFromOriginalFile } from './extension-generation.js';
+export { generateExtensionCode, createExtensionFromOriginalFile } from './extension-generation.ts';

@@ -2,17 +2,17 @@ import { existsSync, mkdirSync, readFileSync } from 'fs';
 import { glob, readFile } from 'fs/promises';
 import { join, resolve } from 'path';
 
-import type { InstanciatedLogger } from '../../utils/logger.js';
-import type { FinalOptions } from './config.js';
-import { analyzeModelMixinUsage } from './processors/mixin-analyzer.js';
-import { generateIntermediateModelTraitArtifacts } from './processors/model.js';
-import type { SchemaArtifactRegistry } from './utils/artifact.js';
-import { buildEntityRegistry, linkEntities } from './utils/artifact.js';
-import type { TransformArtifact } from './utils/ast-utils.js';
-import type { ParsedFile } from './utils/file-parser.js';
-import { parseFile } from './utils/file-parser.js';
-import { extractBaseName } from './utils/path-utils.js';
-import { FILE_EXTENSION_REGEX, TRAILING_SINGLE_WILDCARD_REGEX, TRAILING_WILDCARD_REGEX } from './utils/string.js';
+import type { InstanciatedLogger } from '../../utils/logger.ts';
+import type { FinalOptions } from './config.ts';
+import { analyzeModelMixinUsage } from './processors/mixin-analyzer.ts';
+import { generateIntermediateModelTraitArtifacts } from './processors/model.ts';
+import type { SchemaArtifactRegistry } from './utils/artifact.ts';
+import { buildEntityRegistry, linkEntities } from './utils/artifact.ts';
+import type { TransformArtifact } from './utils/ast-utils.ts';
+import type { ParsedFile } from './utils/file-parser.ts';
+import { parseFile } from './utils/file-parser.ts';
+import { extractBaseName } from './utils/path-utils.ts';
+import { FILE_EXTENSION_REGEX, TRAILING_SINGLE_WILDCARD_REGEX, TRAILING_WILDCARD_REGEX } from './utils/string.ts';
 
 export type Filename = string;
 export type InputFile = { path: string; code: string };

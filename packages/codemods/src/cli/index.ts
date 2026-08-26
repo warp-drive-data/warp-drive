@@ -1,8 +1,8 @@
 import { program } from 'commander';
 
 import { version } from '../../package.json' with { type: 'json' };
-import { createApplyCommand } from './apply.js';
-import { createListCommand } from './list.js';
+import { createApplyCommand } from './apply.ts';
+import { createListCommand } from './list.ts';
 
 export interface SharedCodemodOptions {
   dry?: boolean;

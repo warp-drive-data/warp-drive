@@ -1,4 +1,4 @@
-import type { ParsedImportInfo } from '../utils/imports.js';
+import type { ParsedImportInfo } from '../utils/imports.ts';
 
 export class TransformResult {
   attemptedTransform = false;

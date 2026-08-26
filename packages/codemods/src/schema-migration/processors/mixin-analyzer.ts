@@ -1,11 +1,11 @@
 import { dirname, resolve } from 'path';
 
-import type { InstanciatedLogger } from '../../../utils/logger.js';
-import type { Codemod } from '../codemod.js';
-import type { FinalOptions } from '../config.js';
-import { extractBaseName } from '../utils/ast-utils.js';
-import type { ParsedFile } from '../utils/file-parser.js';
-import { getImportSourceConfig, resolveImportPath, resolveRelativeImport } from '../utils/path-utils.js';
+import type { InstanciatedLogger } from '../../../utils/logger.ts';
+import type { Codemod } from '../codemod.ts';
+import type { FinalOptions } from '../config.ts';
+import { extractBaseName } from '../utils/ast-utils.ts';
+import type { ParsedFile } from '../utils/file-parser.ts';
+import { getImportSourceConfig, resolveImportPath, resolveRelativeImport } from '../utils/path-utils.ts';
 
 /**
  * Check if a resolved path is within the mixin source directory

@@ -1,10 +1,10 @@
 import type { SgNode } from '@ast-grep/napi';
 
-import { logger } from '../../../utils/logger.js';
-import type { PackageImport, TransformOptions } from '../config.js';
-import { parseObjectLiteralFromNode } from './ast-helpers.js';
-import { DEFAULT_EMBER_DATA_SOURCE, DEFAULT_MIXIN_SOURCE } from './import-utils.js';
-import { removeQuotes, toPascalCase } from './path-utils.js';
+import { logger } from '../../../utils/logger.ts';
+import type { PackageImport, TransformOptions } from '../config.ts';
+import { parseObjectLiteralFromNode } from './ast-helpers.ts';
+import { DEFAULT_EMBER_DATA_SOURCE, DEFAULT_MIXIN_SOURCE } from './import-utils.ts';
+import { removeQuotes, toPascalCase } from './path-utils.ts';
 
 const log = logger.for('type-utils');
 // logger.prototype.constructor.options = {
