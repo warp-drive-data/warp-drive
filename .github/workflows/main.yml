@@ -37,17 +37,11 @@ jobs:
   # Every other job below independently runs `pnpm install`, which triggers
   # `turbo run build:pkg` for every library package via the root "prepare"
   # script. With no ordering between them, lint/browser-tests/special-build-tests
-  # used to all start at once and race to compute+write the *same*
-  # build:pkg cache entries to the shared remote cache concurrently. This was
-  # long suspected as the source of build:pkg output going missing on a
-  # reported cache hit (e.g. a missing dist/addon-shim.cjs) -- it wasn't
-  # (that turned out to be pnpm's injected workspace dependencies never
-  # getting re-synced after a root-level build:pkg run, see the "Sync
-  # Injected Workspace Dependencies" step in .github/actions/setup/action.yml),
-  # but the concurrent-write race against the remote cache is still real on
-  # its own terms. This job does nothing but populate that cache once, up
-  # front, so every other job's own `pnpm install` gets a clean,
-  # already-fully-written cache hit instead of racing to write it themselves.
+  # would all start at once and race to compute+write the same build:pkg
+  # cache entries to the shared remote cache concurrently. This job does
+  # nothing but populate that cache once, up front, so every other job's own
+  # `pnpm install` gets a clean cache hit instead of racing to write it
+  # themselves.
   install:
     timeout-minutes: 8
     runs-on: ubuntu-latest
