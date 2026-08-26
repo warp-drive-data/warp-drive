@@ -277,14 +277,19 @@
       ]
     },
 
+    // outputs are the artifacts main.yml's browser-tests job uploads after
+    // this task runs (ember-exam/testem, only produced by main-test-app; a
+    // no-op glob match for every other package's test task). Declaring them
+    // means a cache hit restores the same files a real run would have
+    // produced, instead of leaving them stale/missing for those upload steps.
     "test": {
       "inputs": ["../../packages/diagnostic/server/**", "../../packages/holodeck/**", ".mock-cache/**"],
-      "outputs": [],
+      "outputs": ["testem.log", "test-execution-*.json"],
       "dependsOn": ["build:tests"]
     },
     "test:production": {
       "inputs": ["../../packages/diagnostic/server/**", "../../packages/holodeck/**", ".mock-cache/**"],
-      "outputs": [],
+      "outputs": ["testem.log", "test-execution-*.json"],
       "dependsOn": ["build:production"]
     }
   }

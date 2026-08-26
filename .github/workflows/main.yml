@@ -73,6 +73,7 @@ jobs:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           ACTIONS_RUNNER_DEBUG: ${{ secrets.ACTIONS_RUNNER_DEBUG == 'true' }}
           DISABLE_TURBO_CACHE: ${{ secrets.ACTIONS_RUNNER_DEBUG == 'true' }}
+          cache-key-suffix: lint
       - name: Prettier
         run: pnpm lint:prettier
         env:
@@ -123,6 +124,7 @@ jobs:
           install: true
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           with-cert: true
+          cache-key-suffix: special-build-tests-${{ matrix.name }}
       - name: ${{ matrix.name }}
         # -k sends SIGKILL 30s after SIGTERM in case a hung child (e.g. a
         # wedged headless Chrome) doesn't respond to SIGTERM alone, so a stuck
@@ -153,6 +155,7 @@ jobs:
           with-cert: true
           install: true
           repo-token: ${{ secrets.GITHUB_TOKEN }}
+          cache-key-suffix: browser-tests-${{ matrix.stage }}
 
       - name: Check for Test Failure Retry
         id: retry-test-failures
@@ -209,6 +212,7 @@ jobs:
           with-cert: true
           install: true
           repo-token: ${{ secrets.GITHUB_TOKEN }}
+          cache-key-suffix: lts-${{ matrix.scenario }}
       - name: Basic tests with ${{ matrix.scenario }}
         timeout-minutes: 12
         env:
@@ -249,6 +253,7 @@ jobs:
           with-cert: true
           install: true
           repo-token: ${{ secrets.GITHUB_TOKEN }}
+          cache-key-suffix: releases-${{ matrix.release }}
       - name: Basic tests with ${{ matrix.release }}
         env:
           CI: true
