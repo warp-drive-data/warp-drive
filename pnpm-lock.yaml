@@ -1294,7 +1294,7 @@ importers:
         version: 1.20.6(40bc2c5d5662a5666eb0d917619838cd)
       '@embroider/vite':
         specifier: ^1.7.9
-        version: 1.7.9(84bd59a492cacd1a0e53d0b805253576)
+        version: 1.7.9(d76eac855dabb3f1c4be79937dc8f0ec)
       '@glimmer/component':
         specifier: ^2.1.1
         version: 2.1.1
@@ -1324,7 +1324,7 @@ importers:
         version: file:packages/holodeck(26310aaa3e223322510bb82c0db267c5)
       '@warp-drive/internal-config':
         specifier: workspace:*
-        version: file:tools/internal-config(d60c705728925f735d6c176933fd2dfd)
+        version: file:tools/internal-config(2ace520979813bc28a1da2ed416b8a6f)
       '@warp-drive/json-api':
         specifier: workspace:*
         version: file:warp-drive-packages/json-api(308f337ee79a3c601a0134b4ff5387a8)
@@ -1350,14 +1350,14 @@ importers:
         specifier: workspace:*
         version: file:packages/eslint-plugin-warp-drive(eb246e80e8bbac6d1f01f509def34a2d)
       terser:
-        specifier: ^5.39.0
-        version: 5.43.1
+        specifier: ^5.50.0
+        version: 5.50.0
       typescript:
         specifier: 5.9.3
         version: 5.9.3
       vite:
         specifier: 'catalog:'
-        version: 8.2.1(terser@5.43.1)
+        version: 8.2.1(terser@5.50.0)
 
   tests/dont-write-new-tests-here:
     devDependencies:
@@ -1600,7 +1600,7 @@ importers:
         version: 1.20.6(@babel/core@7.29.7)
       '@embroider/vite':
         specifier: ^1.7.9
-        version: 1.7.9(a020a6f24f635c9fd9089c28a3772ed3)
+        version: 1.7.9(b67b0bcab1bc56936fb1c8ecc3985dd6)
       '@glimmer/component':
         specifier: ^2.1.1
         version: 2.1.1
@@ -1621,7 +1621,7 @@ importers:
         version: file:warp-drive-packages/ember(55de178235eb5990a078df764e61b44e)
       '@warp-drive/internal-config':
         specifier: workspace:*
-        version: file:tools/internal-config(af2d5b01d30224935f10b83915ac0a0e)
+        version: file:tools/internal-config(811209bf6762a9674e8f151cca7c5169)
       '@warp-drive/legacy':
         specifier: workspace:*
         version: file:warp-drive-packages/legacy(eb285543f9d9812c91771fcfa7474918)
@@ -1641,14 +1641,14 @@ importers:
         specifier: ^0.1.1
         version: 0.1.1(@babel/core@7.29.7)
       terser:
-        specifier: ^5.39.0
-        version: 5.43.1
+        specifier: ^5.50.0
+        version: 5.50.0
       typescript:
         specifier: 5.9.3
         version: 5.9.3
       vite:
         specifier: 'catalog:'
-        version: 8.2.1(terser@5.43.1)
+        version: 8.2.1(terser@5.50.0)
 
   tests/ember-data__graph:
     devDependencies:
@@ -1681,7 +1681,7 @@ importers:
         version: 1.20.6(@babel/core@7.29.7)
       '@embroider/vite':
         specifier: ^1.7.9
-        version: 1.7.9(a020a6f24f635c9fd9089c28a3772ed3)
+        version: 1.7.9(b67b0bcab1bc56936fb1c8ecc3985dd6)
       '@glimmer/component':
         specifier: ^2.1.1
         version: 2.1.1
@@ -1696,7 +1696,7 @@ importers:
         version: file:warp-drive-packages/ember(55de178235eb5990a078df764e61b44e)
       '@warp-drive/internal-config':
         specifier: workspace:*
-        version: file:tools/internal-config(af2d5b01d30224935f10b83915ac0a0e)
+        version: file:tools/internal-config(811209bf6762a9674e8f151cca7c5169)
       '@warp-drive/json-api':
         specifier: workspace:*
         version: file:warp-drive-packages/json-api(da83bc0b1ea108dc5be8f251a76f6440)
@@ -1719,14 +1719,14 @@ importers:
         specifier: ^0.1.1
         version: 0.1.1(@babel/core@7.29.7)
       terser:
-        specifier: ^5.39.0
-        version: 5.43.1
+        specifier: ^5.50.0
+        version: 5.50.0
       typescript:
         specifier: 5.9.3
         version: 5.9.3
       vite:
         specifier: 'catalog:'
-        version: 8.2.1(terser@5.43.1)
+        version: 8.2.1(terser@5.50.0)
 
   tests/ember-data__model:
     devDependencies:
@@ -1780,7 +1780,7 @@ importers:
         version: 1.20.6(@babel/core@7.29.7)
       '@embroider/vite':
         specifier: ^1.7.9
-        version: 1.7.9(a020a6f24f635c9fd9089c28a3772ed3)
+        version: 1.7.9(b67b0bcab1bc56936fb1c8ecc3985dd6)
       '@glimmer/component':
         specifier: ^2.1.1
         version: 2.1.1
@@ -1801,7 +1801,7 @@ importers:
         version: file:warp-drive-packages/ember(55de178235eb5990a078df764e61b44e)
       '@warp-drive/internal-config':
         specifier: workspace:*
-        version: file:tools/internal-config(af2d5b01d30224935f10b83915ac0a0e)
+        version: file:tools/internal-config(811209bf6762a9674e8f151cca7c5169)
       babel-plugin-ember-template-compilation:
         specifier: ^4.0.0
         version: 4.0.0
@@ -1815,14 +1815,14 @@ importers:
         specifier: ^0.1.1
         version: 0.1.1(@babel/core@7.29.7)
       terser:
-        specifier: ^5.39.0
-        version: 5.43.1
+        specifier: ^5.50.0
+        version: 5.50.0
       typescript:
         specifier: 5.9.3
         version: 5.9.3
       vite:
         specifier: 'catalog:'
-        version: 8.2.1(terser@5.43.1)
+        version: 8.2.1(terser@5.50.0)
 
   tests/ember-data__request:
     devDependencies:
@@ -1858,7 +1858,7 @@ importers:
         version: 1.20.6(@babel/core@7.29.7)
       '@embroider/vite':
         specifier: ^1.7.9
-        version: 1.7.9(a020a6f24f635c9fd9089c28a3772ed3)
+        version: 1.7.9(b67b0bcab1bc56936fb1c8ecc3985dd6)
       '@glimmer/component':
         specifier: ^2.1.1
         version: 2.1.1
@@ -1882,7 +1882,7 @@ importers:
         version: file:packages/holodeck(4ded94bf05a058c4d301833388abca58)
       '@warp-drive/internal-config':
         specifier: workspace:*
-        version: file:tools/internal-config(af2d5b01d30224935f10b83915ac0a0e)
+        version: file:tools/internal-config(811209bf6762a9674e8f151cca7c5169)
       babel-plugin-ember-template-compilation:
         specifier: ^4.0.0
         version: 4.0.0
@@ -1896,14 +1896,14 @@ importers:
         specifier: ^0.1.1
         version: 0.1.1(@babel/core@7.29.7)
       terser:
-        specifier: ^5.39.0
-        version: 5.43.1
+        specifier: ^5.50.0
+        version: 5.50.0
       typescript:
         specifier: 5.9.3
         version: 5.9.3
       vite:
         specifier: 'catalog:'
-        version: 8.2.1(terser@5.43.1)
+        version: 8.2.1(terser@5.50.0)
 
   tests/example-app-ember:
     devDependencies:
@@ -2071,7 +2071,7 @@ importers:
         version: 1.20.6(40bc2c5d5662a5666eb0d917619838cd)
       '@embroider/vite':
         specifier: ^1.7.9
-        version: 1.7.9(84bd59a492cacd1a0e53d0b805253576)
+        version: 1.7.9(d76eac855dabb3f1c4be79937dc8f0ec)
       '@glimmer/component':
         specifier: ^2.1.1
         version: 2.1.1
@@ -2107,7 +2107,7 @@ importers:
         version: file:packages/holodeck(26310aaa3e223322510bb82c0db267c5)
       '@warp-drive/internal-config':
         specifier: workspace:*
-        version: file:tools/internal-config(d60c705728925f735d6c176933fd2dfd)
+        version: file:tools/internal-config(2ace520979813bc28a1da2ed416b8a6f)
       '@warp-drive/json-api':
         specifier: workspace:*
         version: file:warp-drive-packages/json-api(308f337ee79a3c601a0134b4ff5387a8)
@@ -2130,14 +2130,14 @@ importers:
         specifier: ^0.1.1
         version: 0.1.1(@babel/core@7.29.7)
       terser:
-        specifier: ^5.43.1
-        version: 5.43.1
+        specifier: ^5.50.0
+        version: 5.50.0
       typescript:
         specifier: 5.9.3
         version: 5.9.3
       vite:
         specifier: 'catalog:'
-        version: 8.2.1(terser@5.43.1)
+        version: 8.2.1(terser@5.50.0)
 
   tests/framework-ember:
     devDependencies:
@@ -2164,7 +2164,7 @@ importers:
         version: 1.20.6(40bc2c5d5662a5666eb0d917619838cd)
       '@embroider/vite':
         specifier: ^1.7.9
-        version: 1.7.9(84bd59a492cacd1a0e53d0b805253576)
+        version: 1.7.9(d76eac855dabb3f1c4be79937dc8f0ec)
       '@glimmer/component':
         specifier: ^2.1.1
         version: 2.1.1
@@ -2194,7 +2194,7 @@ importers:
         version: file:packages/holodeck(fcbb7027ca4650034b89b08d92ded0f2)
       '@warp-drive/internal-config':
         specifier: workspace:*
-        version: file:tools/internal-config(d60c705728925f735d6c176933fd2dfd)
+        version: file:tools/internal-config(2ace520979813bc28a1da2ed416b8a6f)
       '@warp-drive/json-api':
         specifier: workspace:*
         version: file:warp-drive-packages/json-api(308f337ee79a3c601a0134b4ff5387a8)
@@ -2217,14 +2217,14 @@ importers:
         specifier: ^0.1.1
         version: 0.1.1(@babel/core@7.29.7)
       terser:
-        specifier: ^5.43.1
-        version: 5.43.1
+        specifier: ^5.50.0
+        version: 5.50.0
       typescript:
         specifier: 5.9.3
         version: 5.9.3
       vite:
         specifier: 'catalog:'
-        version: 8.2.1(terser@5.43.1)
+        version: 8.2.1(terser@5.50.0)
 
   tests/framework-react:
     devDependencies:
@@ -2440,7 +2440,7 @@ importers:
         version: 1.20.6(@babel/core@7.29.7)
       '@embroider/vite':
         specifier: ^1.7.9
-        version: 1.7.9(a020a6f24f635c9fd9089c28a3772ed3)
+        version: 1.7.9(b67b0bcab1bc56936fb1c8ecc3985dd6)
       '@glimmer/component':
         specifier: ^2.1.1
         version: 2.1.1
@@ -2461,7 +2461,7 @@ importers:
         version: file:packages/holodeck(9e42da9e01238c6255d70a6aa7ac3829)
       '@warp-drive/internal-config':
         specifier: workspace:*
-        version: file:tools/internal-config(af2d5b01d30224935f10b83915ac0a0e)
+        version: file:tools/internal-config(811209bf6762a9674e8f151cca7c5169)
       '@warp-drive/json-api':
         specifier: workspace:*
         version: file:warp-drive-packages/json-api(da83bc0b1ea108dc5be8f251a76f6440)
@@ -2484,14 +2484,14 @@ importers:
         specifier: ^0.1.1
         version: 0.1.1(@babel/core@7.29.7)
       terser:
-        specifier: ^5.39.0
-        version: 5.43.1
+        specifier: ^5.50.0
+        version: 5.50.0
       typescript:
         specifier: 5.9.3
         version: 5.9.3
       vite:
         specifier: 'catalog:'
-        version: 8.2.1(terser@5.43.1)
+        version: 8.2.1(terser@5.50.0)
 
   tests/legacy:
     devDependencies:
@@ -2521,7 +2521,7 @@ importers:
         version: 1.20.6(40bc2c5d5662a5666eb0d917619838cd)
       '@embroider/vite':
         specifier: ^1.7.9
-        version: 1.7.9(84bd59a492cacd1a0e53d0b805253576)
+        version: 1.7.9(d76eac855dabb3f1c4be79937dc8f0ec)
       '@glimmer/component':
         specifier: ^2.1.1
         version: 2.1.1
@@ -2551,7 +2551,7 @@ importers:
         version: file:packages/holodeck(fcbb7027ca4650034b89b08d92ded0f2)
       '@warp-drive/internal-config':
         specifier: workspace:*
-        version: file:tools/internal-config(d60c705728925f735d6c176933fd2dfd)
+        version: file:tools/internal-config(2ace520979813bc28a1da2ed416b8a6f)
       '@warp-drive/json-api':
         specifier: workspace:*
         version: file:warp-drive-packages/json-api(308f337ee79a3c601a0134b4ff5387a8)
@@ -2577,14 +2577,14 @@ importers:
         specifier: workspace:*
         version: file:packages/eslint-plugin-warp-drive(eb246e80e8bbac6d1f01f509def34a2d)
       terser:
-        specifier: ^5.39.0
-        version: 5.43.1
+        specifier: ^5.50.0
+        version: 5.50.0
       typescript:
         specifier: 5.9.3
         version: 5.9.3
       vite:
         specifier: 'catalog:'
-        version: 8.2.1(terser@5.43.1)
+        version: 8.2.1(terser@5.50.0)
 
   tests/performance:
     devDependencies:
@@ -2614,7 +2614,7 @@ importers:
         version: 1.20.6(@babel/core@7.29.7)
       '@embroider/vite':
         specifier: ^1.7.9
-        version: 1.7.9(a020a6f24f635c9fd9089c28a3772ed3)
+        version: 1.7.9(b67b0bcab1bc56936fb1c8ecc3985dd6)
       '@glimmer/component':
         specifier: ^2.1.1
         version: 2.1.1
@@ -2626,7 +2626,7 @@ importers:
         version: file:warp-drive-packages/ember(55de178235eb5990a078df764e61b44e)
       '@warp-drive/internal-config':
         specifier: workspace:*
-        version: file:tools/internal-config(491f76817f53d3ed53ecbf1c91c4fea8)
+        version: file:tools/internal-config(81335d813583fd6ff6735a432deb9a38)
       '@warp-drive/json-api':
         specifier: workspace:*
         version: file:warp-drive-packages/json-api(da83bc0b1ea108dc5be8f251a76f6440)
@@ -2652,11 +2652,11 @@ importers:
         specifier: ^0.1.1
         version: 0.1.1(@babel/core@7.29.7)
       terser:
-        specifier: ^5.43.1
-        version: 5.43.1
+        specifier: ^5.50.0
+        version: 5.50.0
       vite:
         specifier: 'catalog:'
-        version: 8.2.1(terser@5.43.1)
+        version: 8.2.1(terser@5.50.0)
       vite-bundle-analyzer:
         specifier: ^1.3.9
         version: 1.3.9
@@ -2725,7 +2725,7 @@ importers:
         version: 1.20.6(@babel/core@7.29.7)
       '@embroider/vite':
         specifier: ^1.7.9
-        version: 1.7.9(a020a6f24f635c9fd9089c28a3772ed3)
+        version: 1.7.9(b67b0bcab1bc56936fb1c8ecc3985dd6)
       '@glimmer/component':
         specifier: ^2.1.1
         version: 2.1.1
@@ -2746,7 +2746,7 @@ importers:
         version: file:warp-drive-packages/ember(55de178235eb5990a078df764e61b44e)
       '@warp-drive/internal-config':
         specifier: workspace:*
-        version: file:tools/internal-config(af2d5b01d30224935f10b83915ac0a0e)
+        version: file:tools/internal-config(811209bf6762a9674e8f151cca7c5169)
       babel-plugin-ember-template-compilation:
         specifier: ^4.0.0
         version: 4.0.0
@@ -2763,14 +2763,14 @@ importers:
         specifier: ^0.1.1
         version: 0.1.1(@babel/core@7.29.7)
       terser:
-        specifier: ^5.39.0
-        version: 5.43.1
+        specifier: ^5.50.0
+        version: 5.50.0
       typescript:
         specifier: 5.9.3
         version: 5.9.3
       vite:
         specifier: 'catalog:'
-        version: 8.2.1(terser@5.43.1)
+        version: 8.2.1(terser@5.50.0)
 
   tests/warp-drive__schema: {}
 
@@ -6341,6 +6341,7 @@ packages:
   '@xmldom/xmldom@0.9.11':
     resolution: {integrity: sha512-tW8bcK3hsG0/uqSnNz6TK4BkcuZSezoU7DlnYssILmZDktPnSHHuDJJFM0AJv+13gz2r0iGdrj6qqKeUnxXEDg==}
     engines: {node: '>=14.6'}
+    deprecated: this version has critical issues, please update to the latest version
 
   '@yuku-codegen/binding-android-arm64@0.8.4':
     resolution: {integrity: sha512-rsYkGl2kOkDRsh1mxriYnk1qBS78vjlBJ3+T2XwtwKwqOliy2n+2Ae0EDxJ/uX1DZLm3KkBZarGO5isEnmHchA==}
@@ -6494,11 +6495,6 @@ packages:
     resolution: {integrity: sha512-rq9s+JNhf0IChjtDXxllJ7g41oZk5SlXtp0LHwyA5cejwn7vKmKp4pPri6YEePv2PU65sAsegbXtIinmDFDXgQ==}
     peerDependencies:
       acorn: ^6.0.0 || ^7.0.0 || ^8.0.0
-
-  acorn@8.15.0:
-    resolution: {integrity: sha512-NZyJarBfL7nWwIq+FDL6Zp/yHEhePMNnnJ0y3qfieCrmNvYct8uvtiV41UvlSe6apAfk0fY1FbWx+NwfmpvtTg==}
-    engines: {node: '>=0.4.0'}
-    hasBin: true
 
   acorn@8.18.0:
     resolution: {integrity: sha512-lGq+9yr1/GuAWaVYIHRjvvySG5/4VfKIvC8EWxStPdcDh/Ka7FG3twP6v4d5BkravUilhIAsG4Qj83t02LWUPQ==}
@@ -7595,9 +7591,6 @@ packages:
 
   ember-cli-get-component-path-option@1.0.0:
     resolution: {integrity: sha512-k47TDwcJ2zPideBCZE8sCiShSxQSpebY2BHcX2DdipMmBox5gsfyVrbKJWIHeSTTKyEUgmBIvQkqTOozEziCZA==}
-
-  ember-cli-is-package-missing@1.0.0:
-    resolution: {integrity: sha512-9hEoZj6Au5onlSDdcoBqYEPT8ehlYntZPxH8pBKV0GO7LNel88otSAQsCfXvbi2eKE+MaSeLG/gNaCI5UdWm9g==}
 
   ember-cli-normalize-entity-name@1.0.0:
     resolution: {integrity: sha512-rF4P1rW2P1gVX1ynZYPmuIf7TnAFDiJmIUFI1Xz16VYykUAyiOCme0Y22LeZq8rTzwBMiwBwoE3RO4GYWehXZA==}
@@ -10562,8 +10555,8 @@ packages:
     resolution: {integrity: sha512-G13vtMYPT/J8A4X2SjdtBTphZlrp1gKv6hZiOjw14RCWg6GbHuQBGtjlx75xLbYV/wEc0D7G5K4rxKP/cXk8Bw==}
     engines: {node: '>=10'}
 
-  terser@5.43.1:
-    resolution: {integrity: sha512-+6erLbBm0+LROX2sPXlUYx/ux5PyE9K/a92Wrt6oA+WDAoFTdpHE5tCYCI5PNzq2y8df4rA+QgHLJuR4jNymsg==}
+  terser@5.50.0:
+    resolution: {integrity: sha512-CN9BVxWhgS/hRxtUMjtC2uRWSTcSfQFHMDWma6sKKfIivCD91sM+FOPfvwoaRMqCSrUpe1nv3jDamd9eEQ4y+w==}
     engines: {node: '>=10'}
     hasBin: true
 
@@ -13569,33 +13562,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@embroider/vite@1.7.9(84bd59a492cacd1a0e53d0b805253576)':
-    dependencies:
-      '@babel/core': 7.29.7
-      '@embroider/core': 4.6.3(@glint/template@1.8.0)
-      '@embroider/macros': 1.20.6(40bc2c5d5662a5666eb0d917619838cd)
-      '@embroider/reverse-exports': 0.2.0
-      assert-never: 1.4.0
-      browserslist: 4.28.8
-      browserslist-to-esbuild: 2.1.1(browserslist@4.28.8)
-      chalk: 5.6.2
-      content-tag: 4.2.0
-      debug: 4.4.3
-      fast-glob: 3.3.3
-      fs-extra: 10.1.0
-      jsdom: 25.0.1
-      send: 1.2.1
-      source-map-url: 0.4.1
-      terser: 5.43.1
-      vite: 8.2.1(terser@5.43.1)
-    transitivePeerDependencies:
-      - '@glint/template'
-      - bufferutil
-      - canvas
-      - supports-color
-      - utf-8-validate
-
-  '@embroider/vite@1.7.9(a020a6f24f635c9fd9089c28a3772ed3)':
+  '@embroider/vite@1.7.9(b67b0bcab1bc56936fb1c8ecc3985dd6)':
     dependencies:
       '@babel/core': 7.29.7
       '@embroider/core': 4.6.3
@@ -13612,8 +13579,34 @@ snapshots:
       jsdom: 25.0.1
       send: 1.2.1
       source-map-url: 0.4.1
-      terser: 5.43.1
-      vite: 8.2.1(terser@5.43.1)
+      terser: 5.50.0
+      vite: 8.2.1(terser@5.50.0)
+    transitivePeerDependencies:
+      - '@glint/template'
+      - bufferutil
+      - canvas
+      - supports-color
+      - utf-8-validate
+
+  '@embroider/vite@1.7.9(d76eac855dabb3f1c4be79937dc8f0ec)':
+    dependencies:
+      '@babel/core': 7.29.7
+      '@embroider/core': 4.6.3(@glint/template@1.8.0)
+      '@embroider/macros': 1.20.6(40bc2c5d5662a5666eb0d917619838cd)
+      '@embroider/reverse-exports': 0.2.0
+      assert-never: 1.4.0
+      browserslist: 4.28.8
+      browserslist-to-esbuild: 2.1.1(browserslist@4.28.8)
+      chalk: 5.6.2
+      content-tag: 4.2.0
+      debug: 4.4.3
+      fast-glob: 3.3.3
+      fs-extra: 10.1.0
+      jsdom: 25.0.1
+      send: 1.2.1
+      source-map-url: 0.4.1
+      terser: 5.50.0
+      vite: 8.2.1(terser@5.50.0)
     transitivePeerDependencies:
       - '@glint/template'
       - bufferutil
@@ -13638,7 +13631,7 @@ snapshots:
       jsdom: 25.0.1
       send: 1.2.1
       source-map-url: 0.4.1
-      terser: 5.43.1
+      terser: 5.50.0
       vite: 8.2.1
     transitivePeerDependencies:
       - '@glint/template'
@@ -14732,14 +14725,14 @@ snapshots:
       '@babel/runtime': 7.29.7
       vite: 8.2.1
 
-  '@rolldown/plugin-babel@0.2.3(7a0838288acad9d17bd91d28a4df4bc4)':
+  '@rolldown/plugin-babel@0.2.3(8f8046503e306ae9fa9db9ca615f7a4a)':
     dependencies:
       '@babel/core': 7.29.7
       picomatch: 4.0.5
     optionalDependencies:
       '@babel/plugin-transform-runtime': 7.29.7(@babel/core@7.29.7)
       '@babel/runtime': 7.29.7
-      vite: 8.2.1(terser@5.43.1)
+      vite: 8.2.1(terser@5.50.0)
 
   '@rolldown/plugin-babel@0.2.3(@babel/core@7.29.7)':
     dependencies:
@@ -14753,14 +14746,6 @@ snapshots:
     optionalDependencies:
       vite: 8.2.1
 
-  '@rolldown/plugin-babel@0.2.3(e67aa5d3e8c925af4c7fa907efe2a5b3)':
-    dependencies:
-      '@babel/core': 7.29.7
-      picomatch: 4.0.5
-    optionalDependencies:
-      '@babel/runtime': 7.29.7
-      vite: 8.2.1(terser@5.43.1)
-
   '@rolldown/plugin-babel@0.2.3(fb5671dca28089711b004ff9d42e9161)':
     dependencies:
       '@babel/core': 7.29.7
@@ -14768,6 +14753,14 @@ snapshots:
     optionalDependencies:
       '@babel/runtime': 7.29.7
       vite: 8.2.1
+
+  '@rolldown/plugin-babel@0.2.3(fd9871dab955e5f20c3ebce3bcb10969)':
+    dependencies:
+      '@babel/core': 7.29.7
+      picomatch: 4.0.5
+    optionalDependencies:
+      '@babel/runtime': 7.29.7
+      vite: 8.2.1(terser@5.50.0)
 
   '@rolldown/pluginutils@1.0.1': {}
 
@@ -14836,7 +14829,7 @@ snapshots:
     dependencies:
       serialize-javascript: 7.1.0
       smob: 1.5.0
-      terser: 5.43.1
+      terser: 5.50.0
     optionalDependencies:
       rollup: 4.62.4
 
@@ -15945,14 +15938,14 @@ snapshots:
       - vite
       - vue-tsc
 
-  '@warp-drive/internal-config@file:tools/internal-config(491f76817f53d3ed53ecbf1c91c4fea8)':
+  '@warp-drive/internal-config@file:tools/internal-config(2ace520979813bc28a1da2ed416b8a6f)':
     dependencies:
       '@babel/cli': 7.29.7(@babel/core@7.29.7)
       '@babel/core': 7.29.7
       '@babel/eslint-parser': 7.29.7(@babel/core@7.29.7)(eslint@9.34.0)
       '@eslint/js': 9.34.0
-      '@nullvoxpopuli/ember-rolldown': 2.7.0(35190290210cd7126c88e642f3389863)
-      '@rolldown/plugin-babel': 0.2.3(7a0838288acad9d17bd91d28a4df4bc4)
+      '@nullvoxpopuli/ember-rolldown': 2.7.0(c8f39f27e8182233f20a22a606bbb702)
+      '@rolldown/plugin-babel': 0.2.3(fd9871dab955e5f20c3ebce3bcb10969)
       '@rollup/plugin-babel': 6.1.0(@babel/core@7.29.7)(rollup@4.62.4)
       '@types/debug': 4.1.13
       '@typescript-eslint/eslint-plugin': 8.41.0(ff068f05036278b96bb632ac0d7d2e3b)
@@ -16007,6 +16000,114 @@ snapshots:
       '@eslint/js': 9.34.0
       '@nullvoxpopuli/ember-rolldown': 2.7.0(c8f39f27e8182233f20a22a606bbb702)
       '@rolldown/plugin-babel': 0.2.3(334004921246d0ebcfcce2a809d85392)
+      '@rollup/plugin-babel': 6.1.0(@babel/core@7.29.7)(rollup@4.62.4)
+      '@types/debug': 4.1.13
+      '@typescript-eslint/eslint-plugin': 8.41.0(ff068f05036278b96bb632ac0d7d2e3b)
+      '@typescript-eslint/parser': 8.41.0(eslint@9.34.0)(typescript@5.9.3)
+      comment-json: 4.6.2
+      debug: 4.4.3
+      ember-eslint-parser: 0.14.5(70be1ffd0039cc420d8577c8284ed44f)
+      eslint: 9.34.0
+      eslint-config-prettier: 10.1.8(eslint@9.34.0)
+      eslint-plugin-import-x: 4.17.1(eslint@9.34.0)
+      eslint-plugin-mocha: 10.5.0(eslint@9.34.0)
+      eslint-plugin-n: 17.21.3(eslint@9.34.0)(typescript@5.9.3)
+      eslint-plugin-qunit: 8.2.6(eslint@9.34.0)
+      eslint-plugin-simple-import-sort: 12.1.1(eslint@9.34.0)
+      globals: 16.5.0
+      rollup: 4.62.4
+      tsdown: 0.22.14(typescript@5.9.3)
+      typescript: 5.9.3
+      typescript-eslint: 8.41.0(eslint@9.34.0)(typescript@5.9.3)
+    transitivePeerDependencies:
+      - '@arethetypeswrong/core'
+      - '@babel/plugin-transform-runtime'
+      - '@babel/runtime'
+      - '@glint/template'
+      - '@tsdown/css'
+      - '@tsdown/exe'
+      - '@types/babel__core'
+      - '@typescript-eslint/utils'
+      - '@typescript/native-preview'
+      - '@vitejs/devtools'
+      - '@volar/typescript'
+      - bufferutil
+      - canvas
+      - eslint-import-resolver-node
+      - jiti
+      - oxc-resolver
+      - publint
+      - rolldown
+      - supports-color
+      - tsx
+      - unplugin-unused
+      - unrun
+      - utf-8-validate
+      - vite
+      - vue-tsc
+
+  '@warp-drive/internal-config@file:tools/internal-config(811209bf6762a9674e8f151cca7c5169)':
+    dependencies:
+      '@babel/cli': 7.29.7(@babel/core@7.29.7)
+      '@babel/core': 7.29.7
+      '@babel/eslint-parser': 7.29.7(@babel/core@7.29.7)(eslint@9.34.0)
+      '@eslint/js': 9.34.0
+      '@nullvoxpopuli/ember-rolldown': 2.7.0(35190290210cd7126c88e642f3389863)
+      '@rolldown/plugin-babel': 0.2.3(fd9871dab955e5f20c3ebce3bcb10969)
+      '@rollup/plugin-babel': 6.1.0(@babel/core@7.29.7)(rollup@4.62.4)
+      '@types/debug': 4.1.13
+      '@typescript-eslint/eslint-plugin': 8.41.0(ff068f05036278b96bb632ac0d7d2e3b)
+      '@typescript-eslint/parser': 8.41.0(eslint@9.34.0)(typescript@5.9.3)
+      comment-json: 4.6.2
+      debug: 4.4.3
+      ember-eslint-parser: 0.14.5(70be1ffd0039cc420d8577c8284ed44f)
+      eslint: 9.34.0
+      eslint-config-prettier: 10.1.8(eslint@9.34.0)
+      eslint-plugin-import-x: 4.17.1(eslint@9.34.0)
+      eslint-plugin-mocha: 10.5.0(eslint@9.34.0)
+      eslint-plugin-n: 17.21.3(eslint@9.34.0)(typescript@5.9.3)
+      eslint-plugin-qunit: 8.2.6(eslint@9.34.0)
+      eslint-plugin-simple-import-sort: 12.1.1(eslint@9.34.0)
+      globals: 16.5.0
+      rollup: 4.62.4
+      tsdown: 0.22.14(typescript@5.9.3)
+      typescript: 5.9.3
+      typescript-eslint: 8.41.0(eslint@9.34.0)(typescript@5.9.3)
+    transitivePeerDependencies:
+      - '@arethetypeswrong/core'
+      - '@babel/plugin-transform-runtime'
+      - '@babel/runtime'
+      - '@glint/template'
+      - '@tsdown/css'
+      - '@tsdown/exe'
+      - '@types/babel__core'
+      - '@typescript-eslint/utils'
+      - '@typescript/native-preview'
+      - '@vitejs/devtools'
+      - '@volar/typescript'
+      - bufferutil
+      - canvas
+      - eslint-import-resolver-node
+      - jiti
+      - oxc-resolver
+      - publint
+      - rolldown
+      - supports-color
+      - tsx
+      - unplugin-unused
+      - unrun
+      - utf-8-validate
+      - vite
+      - vue-tsc
+
+  '@warp-drive/internal-config@file:tools/internal-config(81335d813583fd6ff6735a432deb9a38)':
+    dependencies:
+      '@babel/cli': 7.29.7(@babel/core@7.29.7)
+      '@babel/core': 7.29.7
+      '@babel/eslint-parser': 7.29.7(@babel/core@7.29.7)(eslint@9.34.0)
+      '@eslint/js': 9.34.0
+      '@nullvoxpopuli/ember-rolldown': 2.7.0(35190290210cd7126c88e642f3389863)
+      '@rolldown/plugin-babel': 0.2.3(8f8046503e306ae9fa9db9ca615f7a4a)
       '@rollup/plugin-babel': 6.1.0(@babel/core@7.29.7)(rollup@4.62.4)
       '@types/debug': 4.1.13
       '@typescript-eslint/eslint-plugin': 8.41.0(ff068f05036278b96bb632ac0d7d2e3b)
@@ -16215,60 +16316,6 @@ snapshots:
       - vite
       - vue-tsc
 
-  '@warp-drive/internal-config@file:tools/internal-config(af2d5b01d30224935f10b83915ac0a0e)':
-    dependencies:
-      '@babel/cli': 7.29.7(@babel/core@7.29.7)
-      '@babel/core': 7.29.7
-      '@babel/eslint-parser': 7.29.7(@babel/core@7.29.7)(eslint@9.34.0)
-      '@eslint/js': 9.34.0
-      '@nullvoxpopuli/ember-rolldown': 2.7.0(35190290210cd7126c88e642f3389863)
-      '@rolldown/plugin-babel': 0.2.3(e67aa5d3e8c925af4c7fa907efe2a5b3)
-      '@rollup/plugin-babel': 6.1.0(@babel/core@7.29.7)(rollup@4.62.4)
-      '@types/debug': 4.1.13
-      '@typescript-eslint/eslint-plugin': 8.41.0(ff068f05036278b96bb632ac0d7d2e3b)
-      '@typescript-eslint/parser': 8.41.0(eslint@9.34.0)(typescript@5.9.3)
-      comment-json: 4.6.2
-      debug: 4.4.3
-      ember-eslint-parser: 0.14.5(70be1ffd0039cc420d8577c8284ed44f)
-      eslint: 9.34.0
-      eslint-config-prettier: 10.1.8(eslint@9.34.0)
-      eslint-plugin-import-x: 4.17.1(eslint@9.34.0)
-      eslint-plugin-mocha: 10.5.0(eslint@9.34.0)
-      eslint-plugin-n: 17.21.3(eslint@9.34.0)(typescript@5.9.3)
-      eslint-plugin-qunit: 8.2.6(eslint@9.34.0)
-      eslint-plugin-simple-import-sort: 12.1.1(eslint@9.34.0)
-      globals: 16.5.0
-      rollup: 4.62.4
-      tsdown: 0.22.14(typescript@5.9.3)
-      typescript: 5.9.3
-      typescript-eslint: 8.41.0(eslint@9.34.0)(typescript@5.9.3)
-    transitivePeerDependencies:
-      - '@arethetypeswrong/core'
-      - '@babel/plugin-transform-runtime'
-      - '@babel/runtime'
-      - '@glint/template'
-      - '@tsdown/css'
-      - '@tsdown/exe'
-      - '@types/babel__core'
-      - '@typescript-eslint/utils'
-      - '@typescript/native-preview'
-      - '@vitejs/devtools'
-      - '@volar/typescript'
-      - bufferutil
-      - canvas
-      - eslint-import-resolver-node
-      - jiti
-      - oxc-resolver
-      - publint
-      - rolldown
-      - supports-color
-      - tsx
-      - unplugin-unused
-      - unrun
-      - utf-8-validate
-      - vite
-      - vue-tsc
-
   '@warp-drive/internal-config@file:tools/internal-config(cb4314c638767b8f713f44d189f2fc92)':
     dependencies:
       '@babel/cli': 7.29.7(@babel/core@7.29.7)
@@ -16294,60 +16341,6 @@ snapshots:
       globals: 16.5.0
       rollup: 4.62.4
       tsdown: 0.22.14(5d0206a3438b9e0ec371eb579551ff9e)
-      typescript: 5.9.3
-      typescript-eslint: 8.41.0(eslint@9.34.0)(typescript@5.9.3)
-    transitivePeerDependencies:
-      - '@arethetypeswrong/core'
-      - '@babel/plugin-transform-runtime'
-      - '@babel/runtime'
-      - '@glint/template'
-      - '@tsdown/css'
-      - '@tsdown/exe'
-      - '@types/babel__core'
-      - '@typescript-eslint/utils'
-      - '@typescript/native-preview'
-      - '@vitejs/devtools'
-      - '@volar/typescript'
-      - bufferutil
-      - canvas
-      - eslint-import-resolver-node
-      - jiti
-      - oxc-resolver
-      - publint
-      - rolldown
-      - supports-color
-      - tsx
-      - unplugin-unused
-      - unrun
-      - utf-8-validate
-      - vite
-      - vue-tsc
-
-  '@warp-drive/internal-config@file:tools/internal-config(d60c705728925f735d6c176933fd2dfd)':
-    dependencies:
-      '@babel/cli': 7.29.7(@babel/core@7.29.7)
-      '@babel/core': 7.29.7
-      '@babel/eslint-parser': 7.29.7(@babel/core@7.29.7)(eslint@9.34.0)
-      '@eslint/js': 9.34.0
-      '@nullvoxpopuli/ember-rolldown': 2.7.0(c8f39f27e8182233f20a22a606bbb702)
-      '@rolldown/plugin-babel': 0.2.3(e67aa5d3e8c925af4c7fa907efe2a5b3)
-      '@rollup/plugin-babel': 6.1.0(@babel/core@7.29.7)(rollup@4.62.4)
-      '@types/debug': 4.1.13
-      '@typescript-eslint/eslint-plugin': 8.41.0(ff068f05036278b96bb632ac0d7d2e3b)
-      '@typescript-eslint/parser': 8.41.0(eslint@9.34.0)(typescript@5.9.3)
-      comment-json: 4.6.2
-      debug: 4.4.3
-      ember-eslint-parser: 0.14.5(70be1ffd0039cc420d8577c8284ed44f)
-      eslint: 9.34.0
-      eslint-config-prettier: 10.1.8(eslint@9.34.0)
-      eslint-plugin-import-x: 4.17.1(eslint@9.34.0)
-      eslint-plugin-mocha: 10.5.0(eslint@9.34.0)
-      eslint-plugin-n: 17.21.3(eslint@9.34.0)(typescript@5.9.3)
-      eslint-plugin-qunit: 8.2.6(eslint@9.34.0)
-      eslint-plugin-simple-import-sort: 12.1.1(eslint@9.34.0)
-      globals: 16.5.0
-      rollup: 4.62.4
-      tsdown: 0.22.14(typescript@5.9.3)
       typescript: 5.9.3
       typescript-eslint: 8.41.0(eslint@9.34.0)(typescript@5.9.3)
     transitivePeerDependencies:
@@ -16899,11 +16892,9 @@ snapshots:
       mime-types: 3.0.1
       negotiator: 1.0.0
 
-  acorn-jsx@5.3.2(acorn@8.15.0):
+  acorn-jsx@5.3.2(acorn@8.18.0):
     dependencies:
-      acorn: 8.15.0
-
-  acorn@8.15.0: {}
+      acorn: 8.18.0
 
   acorn@8.18.0: {}
 
@@ -18109,8 +18100,6 @@ snapshots:
 
   ember-cli-get-component-path-option@1.0.0: {}
 
-  ember-cli-is-package-missing@1.0.0: {}
-
   ember-cli-normalize-entity-name@1.0.0:
     dependencies:
       silent-error: 1.1.1
@@ -18698,8 +18687,8 @@ snapshots:
 
   espree@10.4.0:
     dependencies:
-      acorn: 8.15.0
-      acorn-jsx: 5.3.2(acorn@8.15.0)
+      acorn: 8.18.0
+      acorn-jsx: 5.3.2(acorn@8.18.0)
       eslint-visitor-keys: 4.2.1
 
   esprima@4.0.1: {}
@@ -21675,10 +21664,10 @@ snapshots:
       type-fest: 0.16.0
       unique-string: 2.0.0
 
-  terser@5.43.1:
+  terser@5.50.0:
     dependencies:
       '@jridgewell/source-map': 0.3.6
-      acorn: 8.15.0
+      acorn: 8.18.0
       commander: 2.20.3
       source-map-support: 0.5.21
 
@@ -22366,7 +22355,7 @@ snapshots:
     optionalDependencies:
       fsevents: 2.3.3
 
-  vite@8.2.1(terser@5.43.1):
+  vite@8.2.1(terser@5.50.0):
     dependencies:
       lightningcss: 1.33.0
       picomatch: 4.0.5
@@ -22375,7 +22364,7 @@ snapshots:
       tinyglobby: 0.2.17
     optionalDependencies:
       fsevents: 2.3.3
-      terser: 5.43.1
+      terser: 5.50.0
 
   vitefu@1.1.3(vite@8.2.1):
     optionalDependencies:
