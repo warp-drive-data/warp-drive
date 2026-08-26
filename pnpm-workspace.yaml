@@ -37,6 +37,8 @@ minimumReleaseAgeExclude:
   - hono@4.12.25
   # Renovate security update: morgan@1.11.0
   - morgan@1.11.0
+  # Renovate security update: vitest@3.2.6
+  - vitest@3.2.6
 
 ## Prevents transitive (sub-)dependencies from being resolved via git,
 ## git+ssh, or raw tarball URLs. Only our own direct dependencies may use
