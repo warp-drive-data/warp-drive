@@ -30,7 +30,6 @@
     "@babel/plugin-transform-typescript": "^7.29.7",
     "@babel/runtime": "^7.29.7",
     "@embroider/macros": "^1.20.6",
-    "@rollup/plugin-babel": "^6.1.0",
     "@warp-drive-internal/specs": "workspace:*",
     "@warp-drive/core": "workspace:*",
     "@warp-drive/diagnostic": "workspace:*",
@@ -43,7 +42,7 @@
     "decorator-transforms": "^2.4.0",
     "svelte": "^5.56.9",
     "typescript": "^5.9.3",
-    "vite": "^7.3.1"
+    "vite": "^8.2.1"
   },
   "volta": {
     "extends": "../../package.json"

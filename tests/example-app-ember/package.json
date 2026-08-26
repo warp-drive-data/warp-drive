@@ -42,15 +42,14 @@
     "@ember/optional-features": "^2.3.0",
     "@ember/test-helpers": "5.2.0",
     "@ember/test-waiters": "^4.1.2",
-    "@embroider/core": "^4.4.2",
+    "@embroider/core": "^4.6.3",
     "@embroider/macros": "^1.20.6",
-    "@embroider/vite": "^1.5.0",
+    "@embroider/vite": "^1.7.9",
     "@glimmer/component": "^2.1.1",
     "@glint/ember-tsc": "^1.10.0",
     "@glint/template": "^1.8.0",
     "@glint/tsserver-plugin": "^2.7.0",
     "@html-next/vertical-collection": "^5.0.5",
-    "@rollup/plugin-babel": "^6.1.0",
     "@types/morgan": "^1.9.10",
     "@warp-drive/core": "workspace:*",
     "@warp-drive/ember": "workspace:*",
@@ -71,7 +70,7 @@
     "qunit-dom": "^3.6.0",
     "testem": "^3.20.1",
     "typescript": "^5.9.3",
-    "vite": "^7.3.1"
+    "vite": "^8.2.1"
   },
   "ember": {
     "edition": "octane"

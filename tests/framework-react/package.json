@@ -31,7 +31,6 @@
     "@babel/preset-react": "^7.29.7",
     "@babel/runtime": "^7.29.7",
     "@embroider/macros": "^1.20.6",
-    "@rollup/plugin-babel": "^6.1.0",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.4",
     "@warp-drive-internal/specs": "workspace:*",
@@ -47,7 +46,7 @@
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "typescript": "^5.9.3",
-    "vite": "^7.3.1"
+    "vite": "^8.2.1"
   },
   "volta": {
     "extends": "../../package.json"
