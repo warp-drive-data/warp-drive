@@ -1,5 +1,5 @@
 import SimpleImportSortPlugin from 'eslint-plugin-simple-import-sort';
-import ImportPlugin from 'eslint-plugin-import';
+import ImportPlugin from 'eslint-plugin-import-x';
 
 // See https://github.com/lydell/eslint-plugin-simple-import-sort#custom-grouping
 const ImportSortGroups = [
