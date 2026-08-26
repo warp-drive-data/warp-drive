@@ -37,7 +37,7 @@
     "@glint/ember-tsc": "^1.0.9",
     "@glint/template": "^1.7.3",
     "@glint/tsserver-plugin": "^2.0.3",
-    "@rollup/plugin-babel": "^6.0.4",
+    "@rollup/plugin-babel": "^6.1.0",
     "@warp-drive-internal/specs": "workspace:*",
     "@warp-drive/core": "workspace:*",
     "@warp-drive/diagnostic": "workspace:*",

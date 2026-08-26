@@ -1369,8 +1369,8 @@ importers:
         specifier: 2.0.3
         version: 2.0.3
       '@rollup/plugin-babel':
-        specifier: ^6.0.4
-        version: 6.0.4(@babel/core@7.29.7)(rollup@4.62.4)
+        specifier: ^6.1.0
+        version: 6.1.0(@babel/core@7.29.7)(rollup@4.62.4)
       '@warp-drive-internal/specs':
         specifier: workspace:*
         version: file:specs(afc14080d36289e127bff205211fb83c)
@@ -1513,8 +1513,8 @@ importers:
         specifier: 1.6.1
         version: 1.6.1
       '@rollup/plugin-babel':
-        specifier: ^6.0.4
-        version: 6.0.4(@babel/core@7.29.7)
+        specifier: ^6.1.0
+        version: 6.1.0(@babel/core@7.29.7)
       '@tsconfig/ember':
         specifier: ^3.0.11
         version: 3.0.11
@@ -1708,8 +1708,8 @@ importers:
         specifier: ^2.0.0
         version: 2.0.0
       '@rollup/plugin-babel':
-        specifier: ^6.0.4
-        version: 6.0.4(@babel/core@7.29.7)(rollup@4.62.4)
+        specifier: ^6.1.0
+        version: 6.1.0(@babel/core@7.29.7)(rollup@4.62.4)
       '@warp-drive/build-config':
         specifier: workspace:*
         version: file:warp-drive-packages/build-config(@babel/core@7.29.7)
@@ -1795,8 +1795,8 @@ importers:
         specifier: ^2.0.0
         version: 2.0.0
       '@rollup/plugin-babel':
-        specifier: ^6.0.4
-        version: 6.0.4(@babel/core@7.29.7)(rollup@4.62.4)
+        specifier: ^6.1.0
+        version: 6.1.0(@babel/core@7.29.7)(rollup@4.62.4)
       '@warp-drive/core':
         specifier: workspace:*
         version: file:warp-drive-packages/core(@babel/core@7.29.7)
@@ -1900,8 +1900,8 @@ importers:
         specifier: ^2.0.0
         version: 2.0.0
       '@rollup/plugin-babel':
-        specifier: ^6.0.4
-        version: 6.0.4(@babel/core@7.29.7)(rollup@4.62.4)
+        specifier: ^6.1.0
+        version: 6.1.0(@babel/core@7.29.7)(rollup@4.62.4)
       '@warp-drive/build-config':
         specifier: workspace:*
         version: file:warp-drive-packages/build-config(@babel/core@7.29.7)
@@ -1984,8 +1984,8 @@ importers:
         specifier: ^2.0.0
         version: 2.0.0
       '@rollup/plugin-babel':
-        specifier: ^6.0.4
-        version: 6.0.4(@babel/core@7.29.7)(rollup@4.62.4)
+        specifier: ^6.1.0
+        version: 6.1.0(@babel/core@7.29.7)(rollup@4.62.4)
       '@warp-drive/build-config':
         specifier: workspace:*
         version: file:warp-drive-packages/build-config(@babel/core@7.29.7)
@@ -2083,8 +2083,8 @@ importers:
         specifier: ^5.0.0
         version: 5.0.2(@babel/core@7.29.7)
       '@rollup/plugin-babel':
-        specifier: ^6.0.4
-        version: 6.0.4(@babel/core@7.29.7)
+        specifier: ^6.1.0
+        version: 6.1.0(@babel/core@7.29.7)
       '@types/morgan':
         specifier: ^1.9.10
         version: 1.9.10
@@ -2215,8 +2215,8 @@ importers:
         specifier: 2.0.3
         version: 2.0.3
       '@rollup/plugin-babel':
-        specifier: ^6.0.4
-        version: 6.0.4(@babel/core@7.29.7)(rollup@4.62.4)
+        specifier: ^6.1.0
+        version: 6.1.0(@babel/core@7.29.7)(rollup@4.62.4)
       '@warp-drive/build-config':
         specifier: workspace:*
         version: file:warp-drive-packages/build-config(acb8c44acf8e4c4c164bebbda8d94c61)
@@ -2314,8 +2314,8 @@ importers:
         specifier: 2.0.3
         version: 2.0.3
       '@rollup/plugin-babel':
-        specifier: ^6.0.4
-        version: 6.0.4(@babel/core@7.29.7)(rollup@4.62.4)
+        specifier: ^6.1.0
+        version: 6.1.0(@babel/core@7.29.7)(rollup@4.62.4)
       '@warp-drive-internal/specs':
         specifier: workspace:*
         version: file:specs(ccf6b20aa692b5661bd86dff4bc04865)
@@ -2386,8 +2386,8 @@ importers:
         specifier: ^1.20.6
         version: 1.20.6(@babel/core@7.29.7)
       '@rollup/plugin-babel':
-        specifier: ^6.0.4
-        version: 6.0.4(@babel/core@7.29.7)
+        specifier: ^6.1.0
+        version: 6.1.0(@babel/core@7.29.7)
       '@types/react':
         specifier: ^19.2.18
         version: 19.2.18
@@ -2452,8 +2452,8 @@ importers:
         specifier: ^1.20.6
         version: 1.20.6(@babel/core@7.29.7)
       '@rollup/plugin-babel':
-        specifier: ^6.0.4
-        version: 6.0.4(@babel/core@7.29.7)
+        specifier: ^6.1.0
+        version: 6.1.0(@babel/core@7.29.7)
       '@warp-drive-internal/specs':
         specifier: workspace:*
         version: file:specs(bd118ae088fcc20826fce3e71f2b20cb)
@@ -2509,8 +2509,8 @@ importers:
         specifier: ^1.20.6
         version: 1.20.6(@babel/core@7.29.7)
       '@rollup/plugin-babel':
-        specifier: ^6.0.4
-        version: 6.0.4(@babel/core@7.29.7)
+        specifier: ^6.1.0
+        version: 6.1.0(@babel/core@7.29.7)
       '@vitejs/plugin-vue':
         specifier: ^6.0.1
         version: 6.0.1(vite@7.3.1)(vue@3.5.41(typescript@5.9.2))
@@ -2596,8 +2596,8 @@ importers:
         specifier: ^2.0.0
         version: 2.0.0
       '@rollup/plugin-babel':
-        specifier: ^6.0.4
-        version: 6.0.4(@babel/core@7.29.7)(rollup@4.62.4)
+        specifier: ^6.1.0
+        version: 6.1.0(@babel/core@7.29.7)(rollup@4.62.4)
       '@warp-drive/build-config':
         specifier: workspace:*
         version: file:warp-drive-packages/build-config(@babel/core@7.29.7)
@@ -2692,8 +2692,8 @@ importers:
         specifier: 2.0.3
         version: 2.0.3
       '@rollup/plugin-babel':
-        specifier: ^6.0.4
-        version: 6.0.4(@babel/core@7.29.7)(rollup@4.62.4)
+        specifier: ^6.1.0
+        version: 6.1.0(@babel/core@7.29.7)(rollup@4.62.4)
       '@warp-drive-internal/specs':
         specifier: workspace:*
         version: file:specs(ccf6b20aa692b5661bd86dff4bc04865)
@@ -2782,8 +2782,8 @@ importers:
         specifier: ^2.0.0
         version: 2.0.0
       '@rollup/plugin-babel':
-        specifier: ^6.0.4
-        version: 6.0.4(@babel/core@7.29.7)(rollup@4.62.4)
+        specifier: ^6.1.0
+        version: 6.1.0(@babel/core@7.29.7)(rollup@4.62.4)
       '@warp-drive/core':
         specifier: workspace:*
         version: file:warp-drive-packages/core(@babel/core@7.29.7)
@@ -2902,8 +2902,8 @@ importers:
         specifier: ^2.0.0
         version: 2.0.0
       '@rollup/plugin-babel':
-        specifier: ^6.0.4
-        version: 6.0.4(@babel/core@7.29.7)(rollup@4.62.4)
+        specifier: ^6.1.0
+        version: 6.1.0(@babel/core@7.29.7)(rollup@4.62.4)
       '@warp-drive/build-config':
         specifier: workspace:*
         version: file:warp-drive-packages/build-config(@babel/core@7.29.7)
@@ -6127,19 +6127,6 @@ packages:
 
   '@rolldown/pluginutils@1.0.1':
     resolution: {integrity: sha512-2j9bGt5Jh8hj+vPtgzPtl72j0yRxHAyumoo6TNfAjsLB04UtpSvPbPcDcBMxz7n+9CYB0c1GxQFxYRg2jimqGw==}
-
-  '@rollup/plugin-babel@6.0.4':
-    resolution: {integrity: sha512-YF7Y52kFdFT/xVSuVdjkV5ZdX/3YtmX0QulG+x0taQOtJdHYzVU61aSSkAgVJ7NOv6qPkIYiJSgSWWN/DM5sGw==}
-    engines: {node: '>=14.0.0'}
-    peerDependencies:
-      '@babel/core': ^7.0.0
-      '@types/babel__core': ^7.1.9
-      rollup: ^4.62.4
-    peerDependenciesMeta:
-      '@types/babel__core':
-        optional: true
-      rollup:
-        optional: true
 
   '@rollup/plugin-babel@6.1.0':
     resolution: {integrity: sha512-dFZNuFD2YRcoomP4oYf+DvQNSUA9ih+A3vUqopQx5EdtPGo3WBnQcI/S8pwpz91UsGfL0HsMSOlaMld8HrbubA==}
@@ -18042,21 +18029,11 @@ snapshots:
 
   '@rolldown/pluginutils@1.0.1': {}
 
-  '@rollup/plugin-babel@6.0.4(@babel/core@7.29.7)':
+  '@rollup/plugin-babel@6.1.0(@babel/core@7.29.7)':
     dependencies:
       '@babel/core': 7.29.7
       '@babel/helper-module-imports': 7.29.7
       '@rollup/pluginutils': 5.1.4
-    transitivePeerDependencies:
-      - supports-color
-
-  '@rollup/plugin-babel@6.0.4(@babel/core@7.29.7)(rollup@4.62.4)':
-    dependencies:
-      '@babel/core': 7.29.7
-      '@babel/helper-module-imports': 7.29.7
-      '@rollup/pluginutils': 5.1.4(rollup@4.62.4)
-    optionalDependencies:
-      rollup: 4.62.4
     transitivePeerDependencies:
       - supports-color
 
@@ -18474,14 +18451,14 @@ snapshots:
     dependencies:
       '@types/ember': 4.0.11
       '@types/ember__object': 4.0.12
+    transitivePeerDependencies:
+      - '@babel/core'
+      - supports-color
 
   '@types/ember__component@4.0.22':
     dependencies:
       '@types/ember': 4.0.11
       '@types/ember__object': 4.0.12
-    transitivePeerDependencies:
-      - '@babel/core'
-      - supports-color
 
   '@types/ember__controller@4.0.12':
     dependencies:
@@ -18521,9 +18498,6 @@ snapshots:
   '@types/ember__runloop@4.0.10':
     dependencies:
       '@types/ember': 4.0.11
-    transitivePeerDependencies:
-      - '@babel/core'
-      - supports-color
 
   '@types/ember__service@4.0.9':
     dependencies:
@@ -18543,9 +18517,6 @@ snapshots:
   '@types/ember__utils@4.0.7':
     dependencies:
       '@types/ember': 4.0.11
-    transitivePeerDependencies:
-      - '@babel/core'
-      - supports-color
 
   '@types/esrecurse@4.3.1': {}
 

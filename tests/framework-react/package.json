@@ -30,7 +30,7 @@
     "@babel/preset-react": "^7.29.7",
     "@babel/runtime": "^7.29.7",
     "@embroider/macros": "^1.20.6",
-    "@rollup/plugin-babel": "^6.0.4",
+    "@rollup/plugin-babel": "^6.1.0",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.4",
     "@warp-drive-internal/specs": "workspace:*",
