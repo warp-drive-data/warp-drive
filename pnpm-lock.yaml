@@ -2122,7 +2122,7 @@ importers:
         specifier: ^5.1.0
         version: 5.1.0
       morgan:
-        specifier: ^1.10.1
+        specifier: ^1.11.0
         version: 1.11.0
       qunit:
         specifier: 2.26.0
@@ -18238,6 +18238,9 @@ snapshots:
     dependencies:
       '@types/ember': 4.0.11
       '@types/ember__object': 4.0.12
+    transitivePeerDependencies:
+      - '@babel/core'
+      - supports-color
 
   '@types/ember__component@4.0.22':
     dependencies:
@@ -18301,9 +18304,6 @@ snapshots:
   '@types/ember__utils@4.0.7':
     dependencies:
       '@types/ember': 4.0.11
-    transitivePeerDependencies:
-      - '@babel/core'
-      - supports-color
 
   '@types/esrecurse@4.3.1': {}
 
