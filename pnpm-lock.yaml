@@ -640,8 +640,8 @@ importers:
         specifier: workspace:*
         version: file:warp-drive-packages/utilities(4ded94bf05a058c4d301833388abca58)
       ember-eslint-parser:
-        specifier: ^0.14.5
-        version: 0.14.5(855c0f8a9624c67993aff9e8e4964158)
+        specifier: ^0.14.6
+        version: 0.14.6(855c0f8a9624c67993aff9e8e4964158)
       requireindex:
         specifier: ^1.2.0
         version: 1.2.0
@@ -2806,8 +2806,8 @@ importers:
         specifier: ^4.4.3
         version: 4.4.3
       ember-eslint-parser:
-        specifier: ^0.14.5
-        version: 0.14.5(70be1ffd0039cc420d8577c8284ed44f)
+        specifier: ^0.14.6
+        version: 0.14.6(70be1ffd0039cc420d8577c8284ed44f)
       eslint:
         specifier: ^9.34.0
         version: 9.34.0
@@ -7475,8 +7475,8 @@ packages:
       qunit:
         optional: true
 
-  ember-eslint-parser@0.14.5:
-    resolution: {integrity: sha512-oPUFfEfA6OSFutEudrlfGl4AXdTtvsgkM+ZHldZjbFG8hVBardE3xL1gKQB+iGDaebAN8izlR8ZiKpdgk3udZA==}
+  ember-eslint-parser@0.14.6:
+    resolution: {integrity: sha512-Z4fA1E/3uGZeBLPcz5aCiic3OoZ9YVxQBkImgGXdtgHLLuF/51drGor/FCwT9cCs1XZqY8HWRy4aarl+MZCfwQ==}
     engines: {node: '>=16.0.0'}
     peerDependencies:
       '@babel/eslint-parser': ^7.28.6 || ^8.0.0
@@ -14900,7 +14900,7 @@ snapshots:
       '@typescript-eslint/parser': 8.41.0(eslint@9.34.0)(typescript@5.9.3)
       comment-json: 4.6.2
       debug: 4.4.3
-      ember-eslint-parser: 0.14.5(70be1ffd0039cc420d8577c8284ed44f)
+      ember-eslint-parser: 0.14.6(70be1ffd0039cc420d8577c8284ed44f)
       eslint: 9.34.0
       eslint-config-prettier: 10.1.8(eslint@9.34.0)
       eslint-plugin-import-x: 4.17.1(eslint@9.34.0)
@@ -14953,7 +14953,7 @@ snapshots:
       '@typescript-eslint/parser': 8.41.0(eslint@9.34.0)(typescript@5.9.3)
       comment-json: 4.6.2
       debug: 4.4.3
-      ember-eslint-parser: 0.14.5(70be1ffd0039cc420d8577c8284ed44f)
+      ember-eslint-parser: 0.14.6(70be1ffd0039cc420d8577c8284ed44f)
       eslint: 9.34.0
       eslint-config-prettier: 10.1.8(eslint@9.34.0)
       eslint-plugin-import-x: 4.17.1(eslint@9.34.0)
@@ -15006,7 +15006,7 @@ snapshots:
       '@typescript-eslint/parser': 8.41.0(eslint@9.34.0)(typescript@5.9.3)
       comment-json: 4.6.2
       debug: 4.4.3
-      ember-eslint-parser: 0.14.5(70be1ffd0039cc420d8577c8284ed44f)
+      ember-eslint-parser: 0.14.6(70be1ffd0039cc420d8577c8284ed44f)
       eslint: 9.34.0
       eslint-config-prettier: 10.1.8(eslint@9.34.0)
       eslint-plugin-import-x: 4.17.1(eslint@9.34.0)
@@ -15059,7 +15059,7 @@ snapshots:
       '@typescript-eslint/parser': 8.41.0(eslint@9.34.0)(typescript@5.9.3)
       comment-json: 4.6.2
       debug: 4.4.3
-      ember-eslint-parser: 0.14.5(70be1ffd0039cc420d8577c8284ed44f)
+      ember-eslint-parser: 0.14.6(70be1ffd0039cc420d8577c8284ed44f)
       eslint: 9.34.0
       eslint-config-prettier: 10.1.8(eslint@9.34.0)
       eslint-plugin-import-x: 4.17.1(eslint@9.34.0)
@@ -15112,7 +15112,7 @@ snapshots:
       '@typescript-eslint/parser': 8.41.0(eslint@9.34.0)(typescript@5.9.3)
       comment-json: 4.6.2
       debug: 4.4.3
-      ember-eslint-parser: 0.14.5(70be1ffd0039cc420d8577c8284ed44f)
+      ember-eslint-parser: 0.14.6(70be1ffd0039cc420d8577c8284ed44f)
       eslint: 9.34.0
       eslint-config-prettier: 10.1.8(eslint@9.34.0)
       eslint-plugin-import-x: 4.17.1(eslint@9.34.0)
@@ -15165,7 +15165,7 @@ snapshots:
       '@typescript-eslint/parser': 8.41.0(eslint@9.34.0)(typescript@5.9.3)
       comment-json: 4.6.2
       debug: 4.4.3
-      ember-eslint-parser: 0.14.5(70be1ffd0039cc420d8577c8284ed44f)
+      ember-eslint-parser: 0.14.6(70be1ffd0039cc420d8577c8284ed44f)
       eslint: 9.34.0
       eslint-config-prettier: 10.1.8(eslint@9.34.0)
       eslint-plugin-import-x: 4.17.1(eslint@9.34.0)
@@ -15218,7 +15218,7 @@ snapshots:
       '@typescript-eslint/parser': 8.41.0(eslint@9.34.0)(typescript@5.9.3)
       comment-json: 4.6.2
       debug: 4.4.3
-      ember-eslint-parser: 0.14.5(70be1ffd0039cc420d8577c8284ed44f)
+      ember-eslint-parser: 0.14.6(70be1ffd0039cc420d8577c8284ed44f)
       eslint: 9.34.0
       eslint-config-prettier: 10.1.8(eslint@9.34.0)
       eslint-plugin-import-x: 4.17.1(eslint@9.34.0)
@@ -15271,7 +15271,7 @@ snapshots:
       '@typescript-eslint/parser': 8.41.0(eslint@9.34.0)(typescript@5.9.3)
       comment-json: 4.6.2
       debug: 4.4.3
-      ember-eslint-parser: 0.14.5(70be1ffd0039cc420d8577c8284ed44f)
+      ember-eslint-parser: 0.14.6(70be1ffd0039cc420d8577c8284ed44f)
       eslint: 9.34.0
       eslint-config-prettier: 10.1.8(eslint@9.34.0)
       eslint-plugin-import-x: 4.17.1(eslint@9.34.0)
@@ -15324,7 +15324,7 @@ snapshots:
       '@typescript-eslint/parser': 8.41.0(eslint@9.34.0)(typescript@5.9.3)
       comment-json: 4.6.2
       debug: 4.4.3
-      ember-eslint-parser: 0.14.5(70be1ffd0039cc420d8577c8284ed44f)
+      ember-eslint-parser: 0.14.6(70be1ffd0039cc420d8577c8284ed44f)
       eslint: 9.34.0
       eslint-config-prettier: 10.1.8(eslint@9.34.0)
       eslint-plugin-import-x: 4.17.1(eslint@9.34.0)
@@ -15377,7 +15377,7 @@ snapshots:
       '@typescript-eslint/parser': 8.41.0(eslint@9.34.0)(typescript@5.9.3)
       comment-json: 4.6.2
       debug: 4.4.3
-      ember-eslint-parser: 0.14.5(70be1ffd0039cc420d8577c8284ed44f)
+      ember-eslint-parser: 0.14.6(70be1ffd0039cc420d8577c8284ed44f)
       eslint: 9.34.0
       eslint-config-prettier: 10.1.8(eslint@9.34.0)
       eslint-plugin-import-x: 4.17.1(eslint@9.34.0)
@@ -15430,7 +15430,7 @@ snapshots:
       '@typescript-eslint/parser': 8.41.0(eslint@9.34.0)(typescript@5.9.3)
       comment-json: 4.6.2
       debug: 4.4.3
-      ember-eslint-parser: 0.14.5(70be1ffd0039cc420d8577c8284ed44f)
+      ember-eslint-parser: 0.14.6(70be1ffd0039cc420d8577c8284ed44f)
       eslint: 9.34.0
       eslint-config-prettier: 10.1.8(eslint@9.34.0)
       eslint-plugin-import-x: 4.17.1(eslint@9.34.0)
@@ -15483,7 +15483,7 @@ snapshots:
       '@typescript-eslint/parser': 8.41.0(eslint@9.34.0)(typescript@5.9.3)
       comment-json: 4.6.2
       debug: 4.4.3
-      ember-eslint-parser: 0.14.5(70be1ffd0039cc420d8577c8284ed44f)
+      ember-eslint-parser: 0.14.6(70be1ffd0039cc420d8577c8284ed44f)
       eslint: 9.34.0
       eslint-config-prettier: 10.1.8(eslint@9.34.0)
       eslint-plugin-import-x: 4.17.1(eslint@9.34.0)
@@ -16847,7 +16847,7 @@ snapshots:
       - ember-provide-consume-context
       - supports-color
 
-  ember-eslint-parser@0.14.5(70be1ffd0039cc420d8577c8284ed44f):
+  ember-eslint-parser@0.14.6(70be1ffd0039cc420d8577c8284ed44f):
     dependencies:
       '@glimmer/syntax': 0.95.0
       '@typescript-eslint/tsconfig-utils': 8.66.0(typescript@5.9.3)
@@ -16863,7 +16863,7 @@ snapshots:
     transitivePeerDependencies:
       - typescript
 
-  ember-eslint-parser@0.14.5(855c0f8a9624c67993aff9e8e4964158):
+  ember-eslint-parser@0.14.6(855c0f8a9624c67993aff9e8e4964158):
     dependencies:
       '@glimmer/syntax': 0.95.0
       '@typescript-eslint/tsconfig-utils': 8.66.0
@@ -16878,7 +16878,7 @@ snapshots:
     transitivePeerDependencies:
       - typescript
 
-  ember-eslint-parser@0.14.5(typescript@5.9.3):
+  ember-eslint-parser@0.14.6(typescript@5.9.3):
     dependencies:
       '@glimmer/syntax': 0.95.0
       '@typescript-eslint/tsconfig-utils': 8.66.0(typescript@5.9.3)
@@ -17166,7 +17166,7 @@ snapshots:
     dependencies:
       '@warp-drive/core': file:warp-drive-packages/core(40bc2c5d5662a5666eb0d917619838cd)
       '@warp-drive/utilities': file:warp-drive-packages/utilities(1c531ff0d42b5d585fbdc4d6d901c6a4)
-      ember-eslint-parser: 0.14.5(typescript@5.9.3)
+      ember-eslint-parser: 0.14.6(typescript@5.9.3)
       requireindex: 1.2.0
     transitivePeerDependencies:
       - '@babel/core'
