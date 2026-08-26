@@ -114,8 +114,8 @@ importers:
         specifier: ^3.8.1
         version: 3.8.1
       prettier-plugin-ember-template-tag:
-        specifier: ^2.1.7
-        version: 2.1.7(prettier@3.8.1)
+        specifier: ^2.1.8
+        version: 2.1.8(prettier@3.8.1)
       semver:
         specifier: ^7.7.2
         version: 7.7.2
@@ -11048,8 +11048,8 @@ packages:
   pretender@3.4.7:
     resolution: {integrity: sha512-jkPAvt1BfRi0RKamweJdEcnjkeu7Es8yix3bJ+KgBC5VpG/Ln4JE3hYN6vJym4qprm8Xo5adhWpm3HCoft1dOw==}
 
-  prettier-plugin-ember-template-tag@2.1.7:
-    resolution: {integrity: sha512-NQS/a03LCefDbOJ1o0NeN+4VdfZRJt6NBp6/5yLMXTQ2TNT4fkcbhfXkvcgl7lN9nmssm6GweX51G/CAEvtazg==}
+  prettier-plugin-ember-template-tag@2.1.8:
+    resolution: {integrity: sha512-ioLdBFoZ11kuiuFF9/bGwHgzjiU3vQVOF1rQhcuEqGc1jmKBH+G3i3BL2yHGum2Z2IQOE/7MPstYo5iAU0Uhlw==}
     engines: {node: 18.* || >= 20}
     peerDependencies:
       prettier: ^3.8.1
@@ -17216,9 +17216,6 @@ snapshots:
     dependencies:
       '@types/ember': 4.0.11
       '@types/ember__object': 4.0.12
-    transitivePeerDependencies:
-      - '@babel/core'
-      - supports-color
 
   '@types/ember__controller@4.0.12':
     dependencies:
@@ -17258,9 +17255,6 @@ snapshots:
   '@types/ember__runloop@4.0.10':
     dependencies:
       '@types/ember': 4.0.11
-    transitivePeerDependencies:
-      - '@babel/core'
-      - supports-color
 
   '@types/ember__service@4.0.9':
     dependencies:
@@ -23986,7 +23980,7 @@ snapshots:
       fake-xml-http-request: 2.1.2
       route-recognizer: 0.3.4
 
-  prettier-plugin-ember-template-tag@2.1.7(prettier@3.8.1):
+  prettier-plugin-ember-template-tag@2.1.8(prettier@3.8.1):
     dependencies:
       '@babel/traverse': 7.29.8
       content-tag: 4.2.0
