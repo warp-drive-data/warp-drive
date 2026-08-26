@@ -21,7 +21,7 @@
     "extends": "../../package.json"
   },
   "dependencies": {
-    "hono": "^4.9.4",
+    "hono": "^4.13.3",
     "@hono/node-server": "^1.19.0"
   },
   "type": "module",
