@@ -48,7 +48,7 @@
     "@embroider/macros": "^1.20.6",
     "@manypkg/get-packages": "^3.1.0",
     "@warp-drive/core": "workspace:*",
-    "comment-json": "^4.2.5",
+    "comment-json": "^4.6.2",
     "debug": "^4.4.3",
     "semver": "^7.7.2"
   },
