@@ -1,8 +1,7 @@
 import { parse } from '@babel/parser';
 import _traverse from '@babel/traverse';
-import { readFileSync } from 'fs';
+import { globSync, readFileSync } from 'fs';
 import { resolve } from 'path';
-import { globbySync } from 'globby';
 
 const traverse = typeof _traverse === 'function' ? _traverse : _traverse.default;
 
@@ -226,7 +225,7 @@ export function schemaDSL(options) {
       if (id !== RESOLVED_VIRTUAL_MODULE_ID) return;
 
       const pattern = resolve(root, options.schemas);
-      const files = globbySync(pattern);
+      const files = globSync(pattern);
       const result = [];
 
       for (const file of files) {

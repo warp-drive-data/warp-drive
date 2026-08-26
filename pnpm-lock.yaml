@@ -437,9 +437,6 @@ importers:
       commander:
         specifier: ^14.0.0
         version: 14.0.0
-      globby:
-        specifier: ^14.1.0
-        version: 14.1.0
       ignore:
         specifier: ^7.0.5
         version: 7.0.5
@@ -3017,9 +3014,6 @@ importers:
       globals:
         specifier: ^16.3.0
         version: 16.3.0
-      globby:
-        specifier: ^14.1.0
-        version: 14.1.0
       rollup:
         specifier: ^4.62.4
         version: 4.62.4
@@ -3422,9 +3416,6 @@ importers:
       '@babel/traverse':
         specifier: ^7.29.8
         version: 7.29.8
-      globby:
-        specifier: ^14.1.0
-        version: 14.1.0
     devDependencies:
       '@babel/core':
         specifier: ^7.29.7
@@ -15818,7 +15809,6 @@ snapshots:
     dependencies:
       '@ast-grep/napi': 0.45.1
       commander: 14.0.0
-      globby: 14.1.0
       ignore: 7.0.5
       inquirer: 10.2.2
       jscodeshift: 17.3.0
@@ -19399,7 +19389,6 @@ snapshots:
       eslint-plugin-qunit: 8.1.2(eslint@9.34.0)
       eslint-plugin-simple-import-sort: 12.1.1(eslint@9.34.0)
       globals: 16.3.0
-      globby: 14.1.0
       rollup: 4.62.4
       tsdown: 0.22.14(typescript@5.9.2)
       typescript: 5.9.2
@@ -19454,7 +19443,6 @@ snapshots:
       eslint-plugin-qunit: 8.1.2(eslint@9.34.0)
       eslint-plugin-simple-import-sort: 12.1.1(eslint@9.34.0)
       globals: 16.3.0
-      globby: 14.1.0
       rollup: 4.62.4
       tsdown: 0.22.14(typescript@5.9.2)
       typescript: 5.9.2
@@ -19509,7 +19497,6 @@ snapshots:
       eslint-plugin-qunit: 8.1.2(eslint@9.34.0)
       eslint-plugin-simple-import-sort: 12.1.1(eslint@9.34.0)
       globals: 16.3.0
-      globby: 14.1.0
       rollup: 4.62.4
       tsdown: 0.22.14(typescript@5.9.2)
       typescript: 5.9.2
@@ -19564,7 +19551,6 @@ snapshots:
       eslint-plugin-qunit: 8.1.2(eslint@9.34.0)
       eslint-plugin-simple-import-sort: 12.1.1(eslint@9.34.0)
       globals: 16.3.0
-      globby: 14.1.0
       rollup: 4.62.4
       tsdown: 0.22.14(2d08bf30f09f74acf5c22716525a3b86)
       typescript: 5.9.2
@@ -19619,7 +19605,6 @@ snapshots:
       eslint-plugin-qunit: 8.1.2(eslint@9.34.0)
       eslint-plugin-simple-import-sort: 12.1.1(eslint@9.34.0)
       globals: 16.3.0
-      globby: 14.1.0
       rollup: 4.62.4
       tsdown: 0.22.14(2d08bf30f09f74acf5c22716525a3b86)
       typescript: 5.9.2
@@ -19674,7 +19659,6 @@ snapshots:
       eslint-plugin-qunit: 8.1.2(eslint@9.34.0)
       eslint-plugin-simple-import-sort: 12.1.1(eslint@9.34.0)
       globals: 16.3.0
-      globby: 14.1.0
       rollup: 4.62.4
       tsdown: 0.22.14(typescript@5.9.2)
       typescript: 5.9.2
@@ -19729,7 +19713,6 @@ snapshots:
       eslint-plugin-qunit: 8.1.2(eslint@9.34.0)
       eslint-plugin-simple-import-sort: 12.1.1(eslint@9.34.0)
       globals: 16.3.0
-      globby: 14.1.0
       rollup: 4.62.4
       tsdown: 0.22.14(typescript@5.9.2)
       typescript: 5.9.2
@@ -19784,7 +19767,6 @@ snapshots:
       eslint-plugin-qunit: 8.1.2(eslint@9.34.0)
       eslint-plugin-simple-import-sort: 12.1.1(eslint@9.34.0)
       globals: 16.3.0
-      globby: 14.1.0
       rollup: 4.62.4
       tsdown: 0.22.14(typescript@5.9.2)
       typescript: 5.9.2
@@ -19839,7 +19821,6 @@ snapshots:
       eslint-plugin-qunit: 8.1.2(eslint@9.34.0)
       eslint-plugin-simple-import-sort: 12.1.1(eslint@9.34.0)
       globals: 16.3.0
-      globby: 14.1.0
       rollup: 4.62.4
       tsdown: 0.22.14(typescript@5.9.2)
       typescript: 5.9.2
@@ -19894,7 +19875,6 @@ snapshots:
       eslint-plugin-qunit: 8.1.2(eslint@9.34.0)
       eslint-plugin-simple-import-sort: 12.1.1(eslint@9.34.0)
       globals: 16.3.0
-      globby: 14.1.0
       rollup: 4.62.4
       tsdown: 0.22.14(typescript@5.9.2)
       typescript: 5.9.2
@@ -19949,7 +19929,6 @@ snapshots:
       eslint-plugin-qunit: 8.1.2(eslint@9.34.0)
       eslint-plugin-simple-import-sort: 12.1.1(eslint@9.34.0)
       globals: 16.3.0
-      globby: 14.1.0
       rollup: 4.62.4
       tsdown: 0.22.14(typescript@5.9.2)
       typescript: 5.9.2
@@ -20004,7 +19983,6 @@ snapshots:
       eslint-plugin-qunit: 8.1.2(eslint@9.34.0)
       eslint-plugin-simple-import-sort: 12.1.1(eslint@9.34.0)
       globals: 16.3.0
-      globby: 14.1.0
       rollup: 4.62.4
       tsdown: 0.22.14(tsx@4.20.5)(typescript@5.9.2)
       typescript: 5.9.2
@@ -20059,7 +20037,6 @@ snapshots:
       eslint-plugin-qunit: 8.1.2(eslint@9.34.0)
       eslint-plugin-simple-import-sort: 12.1.1(eslint@9.34.0)
       globals: 16.3.0
-      globby: 14.1.0
       rollup: 4.62.4
       tsdown: 0.22.14(typescript@5.9.2)
       typescript: 5.9.2
@@ -20233,7 +20210,6 @@ snapshots:
       '@babel/parser': 7.29.8
       '@babel/traverse': 7.29.8
       '@warp-drive/core': file:warp-drive-packages/core(acb8c44acf8e4c4c164bebbda8d94c61)
-      globby: 14.1.0
     transitivePeerDependencies:
       - supports-color
 
