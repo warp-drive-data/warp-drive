@@ -117,6 +117,39 @@ runs:
         restore-keys: |
           turbo-remote-cache-
 
+    # Main, DX (blueprint-tests.yml), and Compat (compat-tests.yml) all trigger
+    # on the same `pull_request` event, so a single push starts several
+    # independent workflow *runs* -- each with its own `github.run_id` -- that
+    # each run their own `install` job and redundantly rebuild the same
+    # `build:pkg` outputs from scratch. Worse, since they're mutually unaware
+    # of each other, more than one can decide "cache miss" and upload an
+    # artifact under the *same* content-derived hash name around the same
+    # time; GitHub's artifact store has no cross-run dedup, so this produces
+    # two distinct, coexisting artifacts sharing one name -- which is what was
+    # actually causing build:pkg's remote-cache corruption, not (only) list-API
+    # lag. `build:pkg`'s hash is purely a function of file contents, so it is
+    # identical across all three workflows for the same commit -- confirmed
+    # directly (hash `97e7b03c5739bcf2` computed identically by both the Main
+    # and DX runs of the same push).
+    #
+    # Turborepo always checks its own local on-disk cache (`.turbo/cache`)
+    # before ever consulting the remote (felixmosh) cache, so persisting that
+    # directory here -- keyed by commit, not by run -- lets every workflow's
+    # `install` job satisfy `build:pkg` from a plain, well-tested actions/cache
+    # restore, without any of the three ever needing to ask the flaky
+    # remote-cache proxy at all. Whichever job computes it first wins the
+    # exact key (a hit skips the redundant work and the no-op re-save); the
+    # prefix-matched restore-key still gives partial reuse for unchanged
+    # packages across commits.
+    - name: 'Restore Turbo Local Build Cache'
+      if: ${{ inputs.install == 'true' }}
+      uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+      with:
+        path: .turbo/cache
+        key: turbo-local-cache-${{ github.sha }}
+        restore-keys: |
+          turbo-local-cache-
+
     # Vendored, patched copy of felixmosh/turborepo-gh-artifacts@v4.1.1 -- its
     # artifact-existence check does a single unretried call to GitHub's
     # list-artifacts endpoint, which can lag a few seconds behind a
