@@ -12,7 +12,7 @@
     "prepare": "turbo run build:pkg --log-order=stream --concurrency=$(./bin/calculate-jobs);",
     "release": "./tools/release/index.ts",
     "build": "turbo run build:pkg --log-order=stream --concurrency=$(./bin/calculate-jobs);",
-    "sync": "pnpm --filter './packages/*' run --parallel --if-present sync",
+    "sync": "pnpm --filter './packages/*' --filter './warp-drive-packages/*' --filter './tests/*' --filter './specs' run --parallel --if-present sync",
     "start": "turbo run start --filter=./packages/* --concurrency=23",
     "start:specs": "turbo run start --filter=./specs",
     "sync:specs": "pnpm --filter './specs' run sync",

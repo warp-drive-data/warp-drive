@@ -25,6 +25,7 @@
     "test": "tests"
   },
   "scripts": {
+    "sync": "echo \"syncing\"",
     "build": "vite build",
     "start": "vite",
     "start:server": "node serve.js",

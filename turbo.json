@@ -64,15 +64,6 @@
         "tsconfig.tsbuildinfo"
       ],
       "dependsOn": ["@warp-drive/core#build:pkg"],
-      // Remote caching for this task has repeatedly served incomplete
-      // artifacts across CI jobs despite reporting a normal cache hit --
-      // reproducible enough that it isn't a stale/poisoned entry, and not
-      // fixed by correcting task ordering or output globs. build:pkg is
-      // fast, so disabling its cache entirely trades a little redundant
-      // rebuild work per job for not depending on that unreliable
-      // cross-job restore path at all. Every per-package override below
-      // repeats this for the same reason.
-      "cache": false,
       // https://turbo.build/repo/docs/reference/configuration#outputLogs
       "outputLogs": "new-only",
       // NODE_ENV, EMBER_DATA_FULL_COMPAT, and BABEL_DISABLE_CACHE are only read by
@@ -108,7 +99,6 @@
       ],
       "outputs": ["addon-test-support/**", "dist/**", "cjs-dist/**", "tsconfig.tsbuildinfo"],
       "dependsOn": ["@warp-drive/build-config#build:pkg"],
-      "cache": false,
       "outputLogs": "new-only",
       "env": ["IS_UNPKG_BUILD"]
     },
@@ -130,7 +120,6 @@
       ],
       "outputs": ["addon-test-support/**", "dist/**", "cjs-dist/**", "tsconfig.tsbuildinfo"],
       "dependsOn": [],
-      "cache": false,
       "outputLogs": "new-only",
       "env": ["IS_UNPKG_BUILD"]
     },
@@ -138,7 +127,6 @@
       "inputs": ["src/**", "addon-main.*", "tsconfig.json", "package.json", "babel.*", "tsdown.config.*"],
       "outputs": ["addon-test-support/**", "dist/**", "cjs-dist/**", "tsconfig.tsbuildinfo"],
       "dependsOn": [],
-      "cache": false,
       "outputLogs": "new-only",
       "env": ["IS_UNPKG_BUILD"]
     },
@@ -146,7 +134,6 @@
       "inputs": ["src/**", "tsconfig.json", "package.json"],
       "outputs": ["dist/**", "tsconfig.tsbuildinfo"],
       "dependsOn": [],
-      "cache": false,
       "outputLogs": "new-only",
       "env": ["IS_UNPKG_BUILD"]
     },
@@ -154,13 +141,11 @@
       "inputs": ["src/**", "addon-main.*", "tsconfig.json", "package.json"],
       "outputs": ["addon-test-support/**", "dist/**", "tsconfig.tsbuildinfo"],
       "dependsOn": [],
-      "cache": false,
       "outputLogs": "new-only",
       "env": ["IS_UNPKG_BUILD"]
     },
     "@warp-drive/internal-tooling#build:pkg": {
       "dependsOn": [],
-      "cache": false,
       "outputLogs": "new-only"
     },
 

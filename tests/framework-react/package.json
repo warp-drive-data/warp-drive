@@ -15,6 +15,7 @@
     "test": "tests"
   },
   "scripts": {
+    "sync": "echo \"syncing\"",
     "build:tests": "export IS_TESTING=true; export NODE_ENV=development; vite build -m development --outDir dist-test",
     "build:production": "export IS_TESTING=true; export NODE_ENV=production; vite build --outDir dist-test",
     "lint": "eslint . --quiet --cache --cache-strategy=content",

@@ -11,6 +11,7 @@
   "type": "module",
   "bin": "dist/index.js",
   "scripts": {
+    "sync": "echo \"syncing\"",
     "build:cli": "bun build src/cli/index.ts --target node --outdir dist --sourcemap --external @ast-grep/napi",
     "build:pkg": "tsc",
     "prepack": "pnpm run build:cli",

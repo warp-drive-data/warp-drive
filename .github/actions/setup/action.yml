@@ -117,6 +117,25 @@ runs:
         restore-keys: |
           turbo-remote-cache-
 
+    # `build:pkg`'s hash is purely a function of file contents, so it's
+    # identical for a given commit regardless of which workflow or job
+    # computes it. Turborepo always checks its local on-disk cache
+    # (`.turbo/cache`) before the remote
+    # (felixmosh) cache, so sharing that directory here -- keyed by commit,
+    # not by run -- lets whichever workflow builds it first save the others
+    # the redundant rebuild (and the matching remote-cache upload traffic).
+    # Whichever job computes it first wins the exact key (a hit skips both the
+    # rebuild and the no-op re-save); the prefix-matched restore-key gives
+    # partial reuse for unchanged packages across commits.
+    - name: 'Restore Turbo Local Build Cache'
+      if: ${{ inputs.install == 'true' }}
+      uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+      with:
+        path: .turbo/cache
+        key: turbo-local-cache-${{ github.sha }}
+        restore-keys: |
+          turbo-local-cache-
+
     - name: 'Setup local TurboRepo server'
       if: ${{ inputs.repo-token }}
       uses: felixmosh/turborepo-gh-artifacts@118f869397261f74bc39cb8565f2d02c0ed4209f # 4.1.1
@@ -170,6 +189,18 @@ runs:
       run: pnpm install --prefer-offline --ignore-scripts $ADTL_ARGS
       env:
         ADTL_ARGS: ${{ inputs.adtl-install-args }}
+
+    # pnpm's sync-injected-deps-after-scripts=[build:pkg] hook (see .npmrc)
+    # only fires for per-package script runs, not for build:pkg run at the
+    # monorepo root (as `pnpm install`'s `prepare` script does above), so
+    # injected copies of workspace packages (e.g. @warp-drive/core's dist/ as
+    # seen by its consumers) are never refreshed without this. `sync` fans out
+    # to a --if-present "sync" script in every workspace member with injected
+    # deps, re-triggering pnpm's hook per package.
+    - name: 'Sync Injected Workspace Dependencies'
+      if: ${{ inputs.install == 'true' && inputs.skip-addon-build == 'false' }}
+      shell: bash
+      run: pnpm run sync
 
     - name: 'Generate SSL Cert'
       if: ${{ inputs.with-cert == 'true' }}
