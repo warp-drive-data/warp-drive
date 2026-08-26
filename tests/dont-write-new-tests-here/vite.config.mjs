@@ -1,17 +1,18 @@
 import { defineConfig } from 'vite';
-import { extensions, classicEmberSupport, ember } from '@embroider/vite';
+import { extensions, ember, hbs } from '@embroider/vite';
 import { babel } from '@rollup/plugin-babel';
 
 export default defineConfig({
   build: {
     outDir: 'dist-test',
+    sourcemap: false,
     // @embroider/vite's `ember()` plugin defaults `build.minify` to `'terser'`
     // for production builds. main-test-app is never published/shipped, so skip
     // minification entirely rather than paying for it.
     minify: false,
   },
   plugins: [
-    classicEmberSupport(),
+    hbs(),
     ember(),
     // extra plugins here
     babel({

@@ -1,19 +1,8 @@
 import '@warp-drive/ember/install';
 
-// disable the normalization cache as we no longer normalize, the cache has become a bottle neck.
-// import { Registry } from '@ember/-internals/container';
-import Application from '@ember/application';
+import Application from 'ember-strict-application-resolver';
 
-import compatModules from '@embroider/virtual/compat-modules';
-
-import loadInitializers from 'ember-load-initializers';
-
-import config from './config/environment';
-import Resolver from './resolver';
-
-// (Registry as { prototype: { normalize(v: string): string } }).prototype.normalize = function (i) {
-//   return i;
-// };
+import Router from './router';
 
 const EventConfig = {
   touchstart: null,
@@ -43,12 +32,17 @@ const EventConfig = {
 };
 
 class App extends Application {
-  modulePrefix = config.modulePrefix;
-  podModulePrefix = config.podModulePrefix;
-  override Resolver = Resolver.withModules(compatModules);
   override customEvents = EventConfig;
-}
 
-loadInitializers(App, config.modulePrefix, compatModules);
+  modules = {
+    './router': Router,
+    ...import.meta.glob('./adapters/*', { eager: true }),
+    ...import.meta.glob('./models/*', { eager: true }),
+    ...import.meta.glob('./routes/*', { eager: true }),
+    ...import.meta.glob('./services/*', { eager: true }),
+    ...import.meta.glob('./templates/*', { eager: true }),
+    ...import.meta.glob('./transforms/*', { eager: true }),
+  };
+}
 
 export default App;
