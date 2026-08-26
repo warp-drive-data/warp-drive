@@ -60,7 +60,7 @@
     "@babel/runtime": "^7.29.7",
     "@ember/test-helpers": "5.2.0",
     "@ember/test-waiters": "^4.1.2",
-    "@embroider/addon-dev": "^8.1.0",
+    "@embroider/addon-dev": "^8.3.1",
     "@glimmer/component": "^2.1.1",
     "@glint/ember-tsc": "^1.10.0",
     "@glint/template": "^1.8.0",
