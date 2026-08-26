@@ -43,7 +43,7 @@
   },
   "dependencies": {
     "@embroider/macros": "^1.20.6",
-    "fuse.js": "7.1.0",
+    "fuse.js": "7.5.0",
     "json-to-ast": "2.1.0"
   },
   "devDependencies": {
