@@ -59,7 +59,7 @@ RequestSpec.use(useEmber(), function (b) {
           <:loading>Pending<br />Count: {{countFor request}}</:loading>
           <:error as |error state|>{{error.message}}<br />Count:
             {{~countFor error~}}
-            <button {{on "click" (fn retry state)}} test-id="retry-button">Retry</button>
+            <button {{on "click" (fn retry state)}} data-test-id="retry-button">Retry</button>
           </:error>
           <:content as |result|>{{result.data.attributes.name}}<br />Count: {{countFor result}}</:content>
         </Request>
@@ -74,7 +74,7 @@ RequestSpec.use(useEmber(), function (b) {
           <:loading as |state|>Pending<br />Count: {{countFor state}}</:loading>
           <:error as |error state|>{{error.message}}<br />Count:
             {{~countFor error~}}
-            <button {{on "click" (fn retry state)}} test-id="retry-button">Retry</button>
+            <button {{on "click" (fn retry state)}} data-test-id="retry-button">Retry</button>
           </:error>
           <:content as |result state|>{{result.data.name}}<br />Count:
             {{countFor (arr result.data.name state.isRefreshing state.latestRequest)}}</:content>
@@ -90,7 +90,7 @@ RequestSpec.use(useEmber(), function (b) {
           <:loading as |state|>Pending<br />Count: {{countFor state}}</:loading>
           <:error as |error state|>{{error.message}}<br />Count:
             {{~countFor error~}}
-            <button {{on "click" (fn retry state)}} test-id="retry-button">Retry</button>
+            <button {{on "click" (fn retry state)}} data-test-id="retry-button">Retry</button>
           </:error>
           <:content as |result state|>{{result.data.name}}<br />Count:
             {{countFor (arr result.data.name state.isRefreshing state.latestRequest)}}</:content>
@@ -106,7 +106,7 @@ RequestSpec.use(useEmber(), function (b) {
           <:loading as |state|>Pending<br />Count: {{countFor state}}</:loading>
           <:error as |error state|>{{error.message}}<br />Count:
             {{~countFor error~}}
-            <button {{on "click" (fn retry state)}} test-id="retry-button">Retry</button>
+            <button {{on "click" (fn retry state)}} data-test-id="retry-button">Retry</button>
           </:error>
           <:content as |result state|>{{result.data.name}}<br />Count:
             {{countFor (arr result.data.name state.isRefreshing state.latestRequest)}}</:content>
@@ -147,7 +147,7 @@ RequestSpec.use(useEmber(), function (b) {
           <:cancelled as |error state|>Cancelled:
             {{~error.message~}}<br />Count:
             {{~countFor error~}}
-            <button {{on "click" (fn retry state)}} test-id="retry-button">Retry</button>
+            <button {{on "click" (fn retry state)}} data-test-id="retry-button">Retry</button>
           </:cancelled>
           <:error as |error|>{{error.message}}<br />Count: {{countFor error}}</:error>
           <:content as |result|>{{result.data.attributes.name}}<br />Count: {{countFor result}}</:content>

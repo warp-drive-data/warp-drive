@@ -166,7 +166,7 @@ RequestSpec.use(useReact(), function (b) {
                 <br />
                 Count:
                 <CountFor countFor={countFor} data={error} />
-                <button onClick={() => retry(features)} test-id="retry-button">
+                <button onClick={() => retry(features)} data-test-id="retry-button">
                   Retry
                 </button>
               </>
@@ -204,7 +204,7 @@ RequestSpec.use(useReact(), function (b) {
                 <br />
                 Count:
                 <CountFor countFor={countFor} data={error} />
-                <button onClick={() => retry(features)} test-id="retry-button">
+                <button onClick={() => retry(features)} data-test-id="retry-button">
                   Retry
                 </button>
               </>
@@ -243,7 +243,7 @@ RequestSpec.use(useReact(), function (b) {
                 <br />
                 Count:
                 <CountFor countFor={countFor} data={error.message} />
-                <button onClick={() => retry(features)} test-id="retry-button">
+                <button onClick={() => retry(features)} data-test-id="retry-button">
                   Retry
                 </button>
               </>
@@ -283,7 +283,7 @@ RequestSpec.use(useReact(), function (b) {
                   <br />
                   Count:
                   <CountFor countFor={countFor} data={error.message} />
-                  <button onClick={() => retry(features)} test-id="retry-button">
+                  <button onClick={() => retry(features)} data-test-id="retry-button">
                     Retry
                   </button>
                 </>
@@ -399,7 +399,7 @@ RequestSpec.use(useReact(), function (b) {
                 <br />
                 Count:
                 <CountFor countFor={countFor} data={error} />
-                <button onClick={() => retry(features)} test-id="retry-button">
+                <button onClick={() => retry(features)} data-test-id="retry-button">
                   Retry
                 </button>
               </>
