@@ -548,7 +548,7 @@ export const RequestSpec: SuiteBuilder<LocalTestContext, RequestSpecSignature> =
     assert.equal(counter, 2, 'counter is 2');
     assert.dom().hasText(`[404 Not Found] GET (cors) - ${url}Count:2Retry`);
 
-    await this.h.click('[test-id="retry-button"]');
+    await this.h.click('[data-test-id="retry-button"]');
 
     if (PRODUCTION) {
       // we don't have test waiters in production
@@ -942,7 +942,7 @@ export const RequestSpec: SuiteBuilder<LocalTestContext, RequestSpecSignature> =
     assert.equal(counter, 2, 'counter is 2');
     assert.dom().hasText('Cancelled:The user aborted a request.Count:2Retry');
 
-    await this.h.click('[test-id="retry-button"]');
+    await this.h.click('[data-test-id="retry-button"]');
 
     await retryPromise!;
     await this.h.rerender();
