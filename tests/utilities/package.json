@@ -58,7 +58,7 @@
     "ember-inflector": "^6.0.0",
     "ember-source": "catalog:",
     "ember-strict-application-resolver": "^0.1.1",
-    "terser": "^5.39.0",
+    "terser": "^5.50.0",
     "typescript": "^5.9.3",
     "vite": "catalog:"
   },
