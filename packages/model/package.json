@@ -63,7 +63,7 @@
     "@babel/preset-env": "^7.29.7",
     "@babel/preset-typescript": "^7.29.7",
     "@warp-drive/internal-config": "workspace:*",
-    "expect-type": "^1.2.2",
+    "expect-type": "^1.4.0",
     "tsdown": "^0.22.14",
     "typescript": "^5.9.3"
   },

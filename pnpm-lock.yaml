@@ -749,8 +749,8 @@ importers:
         specifier: workspace:*
         version: file:tools/internal-config
       expect-type:
-        specifier: ^1.2.2
-        version: 1.2.2
+        specifier: ^1.4.0
+        version: 1.4.0
       tsdown:
         specifier: ^0.22.14
         version: 0.22.14
@@ -835,8 +835,8 @@ importers:
         specifier: workspace:*
         version: file:tools/internal-config
       expect-type:
-        specifier: ^1.2.2
-        version: 1.2.2
+        specifier: ^1.4.0
+        version: 1.4.0
       tsdown:
         specifier: ^0.22.14
         version: 0.22.14(typescript@5.9.3)
@@ -3154,8 +3154,8 @@ importers:
         specifier: ~6.12.0
         version: 6.12.0
       expect-type:
-        specifier: ^1.2.2
-        version: 1.2.2
+        specifier: ^1.4.0
+        version: 1.4.0
       tsdown:
         specifier: ^0.22.14
         version: 0.22.14(typescript@5.9.3)
@@ -3301,8 +3301,8 @@ importers:
         specifier: ^2.4.0
         version: 2.4.0(@babel/core@7.29.7)
       expect-type:
-        specifier: ^1.2.2
-        version: 1.2.2
+        specifier: ^1.4.0
+        version: 1.4.0
       tsdown:
         specifier: ^0.22.14
         version: 0.22.14(typescript@5.9.3)
@@ -3344,8 +3344,8 @@ importers:
         specifier: ~6.12.0
         version: 6.12.0
       expect-type:
-        specifier: ^1.2.2
-        version: 1.2.2
+        specifier: ^1.4.0
+        version: 1.4.0
       tsdown:
         specifier: ^0.22.14
         version: 0.22.14(typescript@5.9.3)
@@ -3526,8 +3526,8 @@ importers:
         specifier: ^2.4.0
         version: 2.4.0(@babel/core@7.29.7)
       expect-type:
-        specifier: ^1.2.2
-        version: 1.2.2
+        specifier: ^1.4.0
+        version: 1.4.0
       tsdown:
         specifier: ^0.22.14
         version: 0.22.14(typescript@5.9.3)
@@ -9276,8 +9276,8 @@ packages:
     resolution: {integrity: sha512-A5EmesHW6rfnZ9ysHQjPdJRni0SRar0tjtG5MNtm9n5TUvsYU8oozprtRD4AqHxcZWWlVuAmQo2nWKfN9oyjTw==}
     engines: {node: '>=0.10.0'}
 
-  expect-type@1.2.2:
-    resolution: {integrity: sha512-JhFGDVJ7tmDJItKhYgJCGLOWjuK9vPxiXoUFLwLDc99NlmklilbiQJwoctZtt13+xMw91MCk/REan6MWHqDjyA==}
+  expect-type@1.4.0:
+    resolution: {integrity: sha512-KfYbmpRm0VbLjEvVa9yGwCi9GI34xvi7A/HXYWQO65CSD2u3MczUJSuwXKFIxlGsgBQizV9q5J9NHj4VG0n+pA==}
     engines: {node: '>=12.0.0'}
 
   express@4.21.2:
@@ -23002,7 +23002,7 @@ snapshots:
     dependencies:
       homedir-polyfill: 1.0.3
 
-  expect-type@1.2.2: {}
+  expect-type@1.4.0: {}
 
   express@4.21.2:
     dependencies:
@@ -28079,7 +28079,7 @@ snapshots:
       '@vitest/utils': 3.2.7
       chai: 5.3.3
       debug: 4.4.3
-      expect-type: 1.2.2
+      expect-type: 1.4.0
       magic-string: 0.30.21
       pathe: 2.0.3
       picomatch: 4.0.5
