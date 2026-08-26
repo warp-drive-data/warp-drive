@@ -117,8 +117,8 @@ importers:
         specifier: ^2.1.8
         version: 2.1.8(prettier@3.8.1)
       semver:
-        specifier: ^7.7.2
-        version: 7.7.2
+        specifier: ^7.8.5
+        version: 7.8.5
       silent-error:
         specifier: ^1.1.1
         version: 1.1.1
@@ -319,8 +319,8 @@ importers:
         specifier: ^4.4.3
         version: 4.4.3
       semver:
-        specifier: ^7.7.2
-        version: 7.7.2
+        specifier: ^7.8.5
+        version: 7.8.5
     devDependencies:
       '@babel/core':
         specifier: ^7.29.7
@@ -338,8 +338,8 @@ importers:
         specifier: ^24.3.0
         version: 24.3.0
       '@types/semver':
-        specifier: ^7.7.1
-        version: 7.7.1
+        specifier: ^7.8.0
+        version: 7.8.0
       '@warp-drive/internal-config':
         specifier: workspace:*
         version: file:tools/internal-config
@@ -1118,8 +1118,8 @@ importers:
         specifier: workspace:*
         version: file:warp-drive-packages/utilities(da83bc0b1ea108dc5be8f251a76f6440)
       semver:
-        specifier: ^7.7.2
-        version: 7.7.2
+        specifier: ^7.8.5
+        version: 7.8.5
     devDependencies:
       '@babel/core':
         specifier: ^7.29.7
@@ -1143,8 +1143,8 @@ importers:
         specifier: 2.19.14
         version: 2.19.14
       '@types/semver':
-        specifier: ^7.7.0
-        version: 7.7.0
+        specifier: ^7.8.0
+        version: 7.8.0
       '@warp-drive/diagnostic':
         specifier: workspace:*
         version: file:packages/diagnostic(f6b262eaee8283d40c902f65293e183f)
@@ -2947,8 +2947,8 @@ importers:
         specifier: 1.3.14
         version: 1.3.14
       '@types/semver':
-        specifier: ^7.7.1
-        version: 7.7.1
+        specifier: ^7.8.0
+        version: 7.8.0
       bun-types:
         specifier: 1.3.14
         version: 1.3.14
@@ -2956,8 +2956,8 @@ importers:
         specifier: ^2.2.0
         version: 2.2.0
       semver:
-        specifier: ^7.7.2
-        version: 7.7.2
+        specifier: ^7.8.5
+        version: 7.8.5
       typescript:
         specifier: 5.9.3
         version: 5.9.3
@@ -2979,8 +2979,8 @@ importers:
         specifier: ^2.0.0
         version: 2.0.0(@babel/core@7.29.7)
       semver:
-        specifier: ^7.7.2
-        version: 7.7.2
+        specifier: ^7.8.5
+        version: 7.8.5
     devDependencies:
       '@babel/core':
         specifier: ^7.29.7
@@ -2998,8 +2998,8 @@ importers:
         specifier: ^20.19.43
         version: 20.19.43
       '@types/semver':
-        specifier: ^7.7.1
-        version: 7.7.1
+        specifier: ^7.8.0
+        version: 7.8.0
       '@warp-drive/internal-config':
         specifier: workspace:*
         version: file:tools/internal-config(@types/babel__core@7.20.5)
@@ -6154,11 +6154,8 @@ packages:
   '@types/rsvp@4.0.9':
     resolution: {integrity: sha512-F6vaN5mbxw2MBCu/AD9fSKwrhnto2pE77dyUsi415qz9IP9ni9ZOWXHxnXfsM4NW9UjW+it189jvvqnhv37Z7Q==}
 
-  '@types/semver@7.7.0':
-    resolution: {integrity: sha512-k107IF4+Xr7UHjwDc7Cfd6PRQfbdkiRabXGRjo07b4WyPahFBZCZ1sE+BNxYIJPPg73UkfOsVOLwqVc/6ETrIA==}
-
-  '@types/semver@7.7.1':
-    resolution: {integrity: sha512-FmgJfu+MOcQ370SD0ev7EI8TlCAfKYU+B4m5T3yXc1CiRN94g/SZPtsCkk506aUDtlMnFZvasDwHHUcZUEaYuA==}
+  '@types/semver@7.8.0':
+    resolution: {integrity: sha512-1mAINjtQCXXeLkJ9ehXkwOcBpqtLxiVtKhpUf83DdRNdQKV0iXZpaHYqRr7nj+wvxuJzoAmAwXI+sCNMv1CzLQ==}
 
   '@types/sizzle@2.3.9':
     resolution: {integrity: sha512-xzLEyKB50yqCUPUJkIsrVvoWNfFUbIZI+RspLWt8u+tIW/BetMBZtgV2LY/2o+tYH8dRvQ+eoPf3NdhQCcLE2w==}
@@ -14806,7 +14803,7 @@ snapshots:
       '@embroider/macros': 1.20.6(40bc2c5d5662a5666eb0d917619838cd)
       '@warp-drive/core': file:warp-drive-packages/core(40bc2c5d5662a5666eb0d917619838cd)
       '@warp-drive/utilities': file:warp-drive-packages/utilities(308f337ee79a3c601a0134b4ff5387a8)
-      semver: 7.7.2
+      semver: 7.8.5
     optionalDependencies:
       qunit: 2.26.0
       testem: 3.20.1(@babel/core@7.29.7)
@@ -14821,7 +14818,7 @@ snapshots:
       '@embroider/macros': 1.20.6(40bc2c5d5662a5666eb0d917619838cd)
       '@warp-drive/core': file:warp-drive-packages/core(40bc2c5d5662a5666eb0d917619838cd)
       '@warp-drive/utilities': file:warp-drive-packages/utilities(308f337ee79a3c601a0134b4ff5387a8)
-      semver: 7.7.2
+      semver: 7.8.5
     optionalDependencies:
       '@warp-drive/diagnostic': file:packages/diagnostic(5600f034a0ccc48d850b2335db56f886)
     transitivePeerDependencies:
@@ -14835,7 +14832,7 @@ snapshots:
       '@embroider/macros': 1.20.6(@babel/core@7.29.7)
       '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.29.7)
       '@warp-drive/utilities': file:warp-drive-packages/utilities(da83bc0b1ea108dc5be8f251a76f6440)
-      semver: 7.7.2
+      semver: 7.8.5
     optionalDependencies:
       '@warp-drive/diagnostic': file:packages/diagnostic(f6b262eaee8283d40c902f65293e183f)
     transitivePeerDependencies:
@@ -14849,7 +14846,7 @@ snapshots:
       '@embroider/macros': 1.20.6(@babel/core@7.29.7)
       '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.29.7)
       '@warp-drive/utilities': file:warp-drive-packages/utilities(da83bc0b1ea108dc5be8f251a76f6440)
-      semver: 7.7.2
+      semver: 7.8.5
     transitivePeerDependencies:
       - '@babel/core'
       - '@glint/template'
@@ -14986,7 +14983,7 @@ snapshots:
       '@embroider/shared-internals': 3.0.0
       broccoli-funnel: 3.0.8
       common-ancestor-path: 1.0.1
-      semver: 7.7.2
+      semver: 7.8.5
     transitivePeerDependencies:
       - supports-color
 
@@ -17069,9 +17066,7 @@ snapshots:
 
   '@types/rsvp@4.0.9': {}
 
-  '@types/semver@7.7.0': {}
-
-  '@types/semver@7.7.1': {}
+  '@types/semver@7.8.0': {}
 
   '@types/sizzle@2.3.9': {}
 
@@ -17588,7 +17583,7 @@ snapshots:
       '@embroider/macros': 1.20.6
       babel-import-util: 2.1.1
       babel-plugin-debug-macros: 2.0.0
-      semver: 7.7.2
+      semver: 7.8.5
     transitivePeerDependencies:
       - '@babel/core'
       - '@glint/template'
@@ -17600,7 +17595,7 @@ snapshots:
       '@embroider/macros': 1.20.6(40bc2c5d5662a5666eb0d917619838cd)
       babel-import-util: 2.1.1
       babel-plugin-debug-macros: 2.0.0(@babel/core@7.29.7)
-      semver: 7.7.2
+      semver: 7.8.5
     transitivePeerDependencies:
       - '@babel/core'
       - '@glint/template'
@@ -17612,7 +17607,7 @@ snapshots:
       '@embroider/macros': 1.20.6(@babel/core@7.29.7)
       babel-import-util: 2.1.1
       babel-plugin-debug-macros: 2.0.0(@babel/core@7.29.7)
-      semver: 7.7.2
+      semver: 7.8.5
     transitivePeerDependencies:
       - '@babel/core'
       - '@glint/template'
@@ -20512,7 +20507,7 @@ snapshots:
       resolve-package-path: 4.0.3
       safe-stable-stringify: 2.5.0
       sane: 5.0.1
-      semver: 7.7.3
+      semver: 7.8.5
       silent-error: 1.1.1
       sort-package-json: 3.6.1
       symlink-or-copy: 1.3.1
@@ -21111,7 +21106,7 @@ snapshots:
       globals: 15.15.0
       globrex: 0.1.2
       ignore: 5.3.2
-      semver: 7.7.2
+      semver: 7.8.5
       ts-declaration-location: 1.0.7(typescript@5.9.3)
     transitivePeerDependencies:
       - typescript

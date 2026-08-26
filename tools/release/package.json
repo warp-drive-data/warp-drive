@@ -4,8 +4,8 @@
   "private": true,
   "type": "module",
   "dependencies": {
-    "semver": "^7.7.2",
-    "@types/semver": "^7.7.1",
+    "semver": "^7.8.5",
+    "@types/semver": "^7.8.0",
     "@types/bun": "^1.4.0",
     "lerna-changelog": "^2.2.0",
     "typescript": "^5.9.3",
