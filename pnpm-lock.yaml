@@ -2819,8 +2819,8 @@ importers:
         specifier: ^10.5.0
         version: 10.5.0(eslint@9.34.0)
       eslint-plugin-n:
-        specifier: ^17.21.3
-        version: 17.21.3(eslint@9.34.0)(typescript@5.9.3)
+        specifier: ^17.24.0
+        version: 17.24.0(eslint@9.34.0)(typescript@5.9.3)
       eslint-plugin-qunit:
         specifier: ^8.2.6
         version: 8.2.6(eslint@9.34.0)
@@ -7771,8 +7771,8 @@ packages:
     peerDependencies:
       eslint: '>=7.0.0'
 
-  eslint-plugin-n@17.21.3:
-    resolution: {integrity: sha512-MtxYjDZhMQgsWRm/4xYLL0i2EhusWT7itDxlJ80l1NND2AL2Vi5Mvneqv/ikG9+zpran0VsVRXTEHrpLmUZRNw==}
+  eslint-plugin-n@17.24.0:
+    resolution: {integrity: sha512-/gC7/KAYmfNnPNOb3eu8vw+TdVnV0zhdQwexsw6FLXbhzroVj20vRn2qL8lDWDGnAQ2J8DhdfvXxX9EoxvERvw==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
       eslint: '>=8.23.0'
@@ -8152,9 +8152,6 @@ packages:
   get-stream@9.0.1:
     resolution: {integrity: sha512-kVCxPF3vQM/N0B1PmoqVUqgHP+EeVjmZSQn+1oCRPxd2P21P2F19lIgbR3HBosbB1PUhOAoctJnfEn2GbN2eZA==}
     engines: {node: '>=18'}
-
-  get-tsconfig@4.10.0:
-    resolution: {integrity: sha512-kGzZ3LWWQcGIAmg6iWvXn0ei6WDtV26wzHRMwDSzmAbcXrTEXxHy6IehI6/4eT6VRKyMP1eF1VqwrVUmE/LR7A==}
 
   get-tsconfig@4.14.3:
     resolution: {integrity: sha512-++QEw4DIY7WGoukz+/+A/8dGYPT9l9yIadnmSgZ8Rjr3YVSVDipQSO9CdnJo9ePqFqUUqh+wk9uIaoiAwsiPkA==}
@@ -15051,7 +15048,7 @@ snapshots:
       eslint-config-prettier: 10.1.8(eslint@9.34.0)
       eslint-plugin-import-x: 4.17.1(eslint@9.34.0)
       eslint-plugin-mocha: 10.5.0(eslint@9.34.0)
-      eslint-plugin-n: 17.21.3(eslint@9.34.0)(typescript@5.9.3)
+      eslint-plugin-n: 17.24.0(eslint@9.34.0)(typescript@5.9.3)
       eslint-plugin-qunit: 8.2.6(eslint@9.34.0)
       eslint-plugin-simple-import-sort: 12.1.1(eslint@9.34.0)
       globals: 16.5.0
@@ -15105,7 +15102,7 @@ snapshots:
       eslint-config-prettier: 10.1.8(eslint@9.34.0)
       eslint-plugin-import-x: 4.17.1(eslint@9.34.0)
       eslint-plugin-mocha: 10.5.0(eslint@9.34.0)
-      eslint-plugin-n: 17.21.3(eslint@9.34.0)(typescript@5.9.3)
+      eslint-plugin-n: 17.24.0(eslint@9.34.0)(typescript@5.9.3)
       eslint-plugin-qunit: 8.2.6(eslint@9.34.0)
       eslint-plugin-simple-import-sort: 12.1.1(eslint@9.34.0)
       globals: 16.5.0
@@ -15159,7 +15156,7 @@ snapshots:
       eslint-config-prettier: 10.1.8(eslint@9.34.0)
       eslint-plugin-import-x: 4.17.1(eslint@9.34.0)
       eslint-plugin-mocha: 10.5.0(eslint@9.34.0)
-      eslint-plugin-n: 17.21.3(eslint@9.34.0)(typescript@5.9.3)
+      eslint-plugin-n: 17.24.0(eslint@9.34.0)(typescript@5.9.3)
       eslint-plugin-qunit: 8.2.6(eslint@9.34.0)
       eslint-plugin-simple-import-sort: 12.1.1(eslint@9.34.0)
       globals: 16.5.0
@@ -15213,7 +15210,7 @@ snapshots:
       eslint-config-prettier: 10.1.8(eslint@9.34.0)
       eslint-plugin-import-x: 4.17.1(eslint@9.34.0)
       eslint-plugin-mocha: 10.5.0(eslint@9.34.0)
-      eslint-plugin-n: 17.21.3(eslint@9.34.0)(typescript@5.9.3)
+      eslint-plugin-n: 17.24.0(eslint@9.34.0)(typescript@5.9.3)
       eslint-plugin-qunit: 8.2.6(eslint@9.34.0)
       eslint-plugin-simple-import-sort: 12.1.1(eslint@9.34.0)
       globals: 16.5.0
@@ -15267,7 +15264,7 @@ snapshots:
       eslint-config-prettier: 10.1.8(eslint@9.34.0)
       eslint-plugin-import-x: 4.17.1(eslint@9.34.0)
       eslint-plugin-mocha: 10.5.0(eslint@9.34.0)
-      eslint-plugin-n: 17.21.3(eslint@9.34.0)(typescript@5.9.3)
+      eslint-plugin-n: 17.24.0(eslint@9.34.0)(typescript@5.9.3)
       eslint-plugin-qunit: 8.2.6(eslint@9.34.0)
       eslint-plugin-simple-import-sort: 12.1.1(eslint@9.34.0)
       globals: 16.5.0
@@ -15321,7 +15318,7 @@ snapshots:
       eslint-config-prettier: 10.1.8(eslint@9.34.0)
       eslint-plugin-import-x: 4.17.1(eslint@9.34.0)
       eslint-plugin-mocha: 10.5.0(eslint@9.34.0)
-      eslint-plugin-n: 17.21.3(eslint@9.34.0)(typescript@5.9.3)
+      eslint-plugin-n: 17.24.0(eslint@9.34.0)(typescript@5.9.3)
       eslint-plugin-qunit: 8.2.6(eslint@9.34.0)
       eslint-plugin-simple-import-sort: 12.1.1(eslint@9.34.0)
       globals: 16.5.0
@@ -15375,7 +15372,7 @@ snapshots:
       eslint-config-prettier: 10.1.8(eslint@9.34.0)
       eslint-plugin-import-x: 4.17.1(eslint@9.34.0)
       eslint-plugin-mocha: 10.5.0(eslint@9.34.0)
-      eslint-plugin-n: 17.21.3(eslint@9.34.0)(typescript@5.9.3)
+      eslint-plugin-n: 17.24.0(eslint@9.34.0)(typescript@5.9.3)
       eslint-plugin-qunit: 8.2.6(eslint@9.34.0)
       eslint-plugin-simple-import-sort: 12.1.1(eslint@9.34.0)
       globals: 16.5.0
@@ -15429,7 +15426,7 @@ snapshots:
       eslint-config-prettier: 10.1.8(eslint@9.34.0)
       eslint-plugin-import-x: 4.17.1(eslint@9.34.0)
       eslint-plugin-mocha: 10.5.0(eslint@9.34.0)
-      eslint-plugin-n: 17.21.3(eslint@9.34.0)(typescript@5.9.3)
+      eslint-plugin-n: 17.24.0(eslint@9.34.0)(typescript@5.9.3)
       eslint-plugin-qunit: 8.2.6(eslint@9.34.0)
       eslint-plugin-simple-import-sort: 12.1.1(eslint@9.34.0)
       globals: 16.5.0
@@ -15483,7 +15480,7 @@ snapshots:
       eslint-config-prettier: 10.1.8(eslint@9.34.0)
       eslint-plugin-import-x: 4.17.1(eslint@9.34.0)
       eslint-plugin-mocha: 10.5.0(eslint@9.34.0)
-      eslint-plugin-n: 17.21.3(eslint@9.34.0)(typescript@5.9.3)
+      eslint-plugin-n: 17.24.0(eslint@9.34.0)(typescript@5.9.3)
       eslint-plugin-qunit: 8.2.6(eslint@9.34.0)
       eslint-plugin-simple-import-sort: 12.1.1(eslint@9.34.0)
       globals: 16.5.0
@@ -15537,7 +15534,7 @@ snapshots:
       eslint-config-prettier: 10.1.8(eslint@9.34.0)
       eslint-plugin-import-x: 4.17.1(eslint@9.34.0)
       eslint-plugin-mocha: 10.5.0(eslint@9.34.0)
-      eslint-plugin-n: 17.21.3(eslint@9.34.0)(typescript@5.9.3)
+      eslint-plugin-n: 17.24.0(eslint@9.34.0)(typescript@5.9.3)
       eslint-plugin-qunit: 8.2.6(eslint@9.34.0)
       eslint-plugin-simple-import-sort: 12.1.1(eslint@9.34.0)
       globals: 16.5.0
@@ -15591,7 +15588,7 @@ snapshots:
       eslint-config-prettier: 10.1.8(eslint@9.34.0)
       eslint-plugin-import-x: 4.17.1(eslint@9.34.0)
       eslint-plugin-mocha: 10.5.0(eslint@9.34.0)
-      eslint-plugin-n: 17.21.3(eslint@9.34.0)(typescript@5.9.3)
+      eslint-plugin-n: 17.24.0(eslint@9.34.0)(typescript@5.9.3)
       eslint-plugin-qunit: 8.2.6(eslint@9.34.0)
       eslint-plugin-simple-import-sort: 12.1.1(eslint@9.34.0)
       globals: 16.5.0
@@ -15645,7 +15642,7 @@ snapshots:
       eslint-config-prettier: 10.1.8(eslint@9.34.0)
       eslint-plugin-import-x: 4.17.1(eslint@9.34.0)
       eslint-plugin-mocha: 10.5.0(eslint@9.34.0)
-      eslint-plugin-n: 17.21.3(eslint@9.34.0)(typescript@5.9.3)
+      eslint-plugin-n: 17.24.0(eslint@9.34.0)(typescript@5.9.3)
       eslint-plugin-qunit: 8.2.6(eslint@9.34.0)
       eslint-plugin-simple-import-sort: 12.1.1(eslint@9.34.0)
       globals: 16.5.0
@@ -17449,13 +17446,13 @@ snapshots:
       globals: 13.24.0
       rambda: 7.5.0
 
-  eslint-plugin-n@17.21.3(eslint@9.34.0)(typescript@5.9.3):
+  eslint-plugin-n@17.24.0(eslint@9.34.0)(typescript@5.9.3):
     dependencies:
       '@eslint-community/eslint-utils': 4.7.0(eslint@9.34.0)
       enhanced-resolve: 5.18.1
       eslint: 9.34.0
       eslint-plugin-es-x: 7.8.0(eslint@9.34.0)
-      get-tsconfig: 4.10.0
+      get-tsconfig: 4.14.3
       globals: 15.15.0
       globrex: 0.1.2
       ignore: 5.3.2
@@ -17943,10 +17940,6 @@ snapshots:
     dependencies:
       '@sec-ant/readable-stream': 0.4.1
       is-stream: 4.0.1
-
-  get-tsconfig@4.10.0:
-    dependencies:
-      resolve-pkg-maps: 1.0.0
 
   get-tsconfig@4.14.3:
     dependencies:
