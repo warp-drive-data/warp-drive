@@ -210,6 +210,28 @@ runs:
       env:
         ADTL_ARGS: ${{ inputs.adtl-install-args }}
 
+    # TEMPORARY diagnostic for the build:pkg missing-babel-macros investigation.
+    # Prints what's actually on disk right after install/build:pkg, both at the
+    # real path and through a downstream package's node_modules symlink, so we
+    # can see directly whether the file is missing at the source or only
+    # unreachable through the symlink. Remove once root-caused.
+    - name: 'DEBUG: inspect @warp-drive/core build-config output'
+      if: ${{ inputs.install == 'true' }}
+      shell: bash
+      run: |
+        echo "--- real dir: warp-drive-packages/core/dist/build-config ---"
+        ls -la warp-drive-packages/core/dist/build-config/ 2>&1 || echo "MISSING DIR"
+        echo
+        echo "--- packages/graph/node_modules/@warp-drive/core symlink ---"
+        ls -la packages/graph/node_modules/@warp-drive/ 2>&1 || echo "MISSING @warp-drive dir"
+        readlink -f packages/graph/node_modules/@warp-drive/core 2>&1 || echo "not a symlink or missing"
+        echo
+        echo "--- same file, via the symlink ---"
+        ls -la packages/graph/node_modules/@warp-drive/core/dist/build-config/ 2>&1 || echo "MISSING via symlink"
+        echo
+        echo "--- mtimes: real file vs directory vs package.json ---"
+        stat -c '%Y %n' warp-drive-packages/core/dist/build-config/babel-macros.js warp-drive-packages/core/dist/build-config warp-drive-packages/core/package.json 2>&1 || true
+
     - name: 'Generate SSL Cert'
       if: ${{ inputs.with-cert == 'true' }}
       shell: bash
