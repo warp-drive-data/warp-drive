@@ -3456,7 +3456,7 @@ importers:
     devDependencies:
       '@sveltejs/kit':
         specifier: ^2.36.2
-        version: 2.57.1(ba2930e202ee8b91927a72a618cfe43a)
+        version: 2.69.1(ba2930e202ee8b91927a72a618cfe43a)
       '@sveltejs/package':
         specifier: ^2.5.0
         version: 2.5.0(svelte@5.38.5)(typescript@5.9.2)
@@ -6428,8 +6428,8 @@ packages:
     peerDependencies:
       acorn: ^8.9.0
 
-  '@sveltejs/kit@2.57.1':
-    resolution: {integrity: sha512-VRdSbB96cI1EnRh09CqmnQqP/YJvET5buj8S6k7CxaJqBJD4bw4fRKDjcarAj/eX9k2eHifQfDH8NtOh+ZxxPw==}
+  '@sveltejs/kit@2.69.1':
+    resolution: {integrity: sha512-+nz8Fx/cElzb2ZPHC+6Ll3y3NEVIe4Na75PeplLlyTmd1dBXAjz2KR14y1ZgNjb2ThfAYzulu+PFy1UE3RCUzA==}
     engines: {node: '>=18.13'}
     hasBin: true
     peerDependencies:
@@ -18320,7 +18320,7 @@ snapshots:
     dependencies:
       acorn: 8.15.0
 
-  '@sveltejs/kit@2.57.1(ba2930e202ee8b91927a72a618cfe43a)':
+  '@sveltejs/kit@2.69.1(ba2930e202ee8b91927a72a618cfe43a)':
     dependencies:
       '@standard-schema/spec': 1.1.0
       '@sveltejs/acorn-typescript': 1.0.13(acorn@8.18.0)
