@@ -63,7 +63,7 @@
     "ember-page-title": "^9.0.3",
     "ember-qunit": "^9.1.0",
     "ember-source": "~6.12.0",
-    "ember-strict-application-resolver": "^0.1.0",
+    "ember-strict-application-resolver": "^0.1.1",
     "express": "^5.1.0",
     "morgan": "^1.11.0",
     "qunit": "^2.26.0",

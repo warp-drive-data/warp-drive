@@ -1402,8 +1402,8 @@ importers:
         specifier: ~6.12.0
         version: 6.12.0(@glimmer/component@2.0.0)
       ember-strict-application-resolver:
-        specifier: ^0.1.0
-        version: 0.1.0(@babel/core@7.29.7)
+        specifier: ^0.1.1
+        version: 0.1.1(@babel/core@7.29.7)
       eslint-plugin-warp-drive:
         specifier: workspace:*
         version: file:packages/eslint-plugin-warp-drive(cfb0283a22853ab85a0c88f9bff158f5)
@@ -1738,8 +1738,8 @@ importers:
         specifier: ~6.12.0
         version: 6.12.0(@glimmer/component@2.0.0)
       ember-strict-application-resolver:
-        specifier: ^0.1.0
-        version: 0.1.0(@babel/core@7.29.7)
+        specifier: ^0.1.1
+        version: 0.1.1(@babel/core@7.29.7)
       rollup:
         specifier: ^4.62.4
         version: 4.62.4
@@ -1822,8 +1822,8 @@ importers:
         specifier: ~6.12.0
         version: 6.12.0(@glimmer/component@2.0.0)
       ember-strict-application-resolver:
-        specifier: ^0.1.0
-        version: 0.1.0(@babel/core@7.29.7)
+        specifier: ^0.1.1
+        version: 0.1.1(@babel/core@7.29.7)
       rollup:
         specifier: ^4.62.4
         version: 4.62.4
@@ -1924,8 +1924,8 @@ importers:
         specifier: ~6.12.0
         version: 6.12.0(@glimmer/component@2.0.0)
       ember-strict-application-resolver:
-        specifier: ^0.1.0
-        version: 0.1.0(@babel/core@7.29.7)
+        specifier: ^0.1.1
+        version: 0.1.1(@babel/core@7.29.7)
       rollup:
         specifier: ^4.62.4
         version: 4.62.4
@@ -2011,8 +2011,8 @@ importers:
         specifier: ~6.12.0
         version: 6.12.0(@glimmer/component@2.0.0)
       ember-strict-application-resolver:
-        specifier: ^0.1.0
-        version: 0.1.0(@babel/core@7.29.7)
+        specifier: ^0.1.1
+        version: 0.1.1(@babel/core@7.29.7)
       rollup:
         specifier: ^4.62.4
         version: 4.62.4
@@ -2116,8 +2116,8 @@ importers:
         specifier: ~6.12.0
         version: 6.12.0(@glimmer/component@2.0.0)
       ember-strict-application-resolver:
-        specifier: ^0.1.0
-        version: 0.1.0(@babel/core@7.29.7)
+        specifier: ^0.1.1
+        version: 0.1.1(@babel/core@7.29.7)
       express:
         specifier: ^5.1.0
         version: 5.1.0
@@ -2254,8 +2254,8 @@ importers:
         specifier: ~6.12.0
         version: 6.12.0(@glimmer/component@2.0.0)
       ember-strict-application-resolver:
-        specifier: ^0.1.0
-        version: 0.1.0(@babel/core@7.29.7)
+        specifier: ^0.1.1
+        version: 0.1.1(@babel/core@7.29.7)
       rollup:
         specifier: ^4.62.4
         version: 4.62.4
@@ -2347,8 +2347,8 @@ importers:
         specifier: ~6.12.0
         version: 6.12.0(@glimmer/component@2.0.0)
       ember-strict-application-resolver:
-        specifier: ^0.1.0
-        version: 0.1.0(@babel/core@7.29.7)
+        specifier: ^0.1.1
+        version: 0.1.1(@babel/core@7.29.7)
       rollup:
         specifier: ^4.62.4
         version: 4.62.4
@@ -2629,8 +2629,8 @@ importers:
         specifier: ~6.12.0
         version: 6.12.0(@glimmer/component@2.0.0)
       ember-strict-application-resolver:
-        specifier: ^0.1.0
-        version: 0.1.0(@babel/core@7.29.7)
+        specifier: ^0.1.1
+        version: 0.1.1(@babel/core@7.29.7)
       rollup:
         specifier: ^4.62.4
         version: 4.62.4
@@ -2725,8 +2725,8 @@ importers:
         specifier: ~6.12.0
         version: 6.12.0(@glimmer/component@2.0.0)
       ember-strict-application-resolver:
-        specifier: ^0.1.0
-        version: 0.1.0(@babel/core@7.29.7)
+        specifier: ^0.1.1
+        version: 0.1.1(@babel/core@7.29.7)
       eslint-plugin-warp-drive:
         specifier: workspace:*
         version: file:packages/eslint-plugin-warp-drive(cfb0283a22853ab85a0c88f9bff158f5)
@@ -2809,8 +2809,8 @@ importers:
         specifier: ~6.12.0
         version: 6.12.0(@glimmer/component@2.0.0)
       ember-strict-application-resolver:
-        specifier: ^0.1.0
-        version: 0.1.0(@babel/core@7.29.7)
+        specifier: ^0.1.1
+        version: 0.1.1(@babel/core@7.29.7)
       rollup:
         specifier: ^4.62.4
         version: 4.62.4
@@ -2929,8 +2929,8 @@ importers:
         specifier: ~6.12.0
         version: 6.12.0(@glimmer/component@2.0.0)
       ember-strict-application-resolver:
-        specifier: ^0.1.0
-        version: 0.1.0(@babel/core@7.29.7)
+        specifier: ^0.1.1
+        version: 0.1.1(@babel/core@7.29.7)
       rollup:
         specifier: ^4.62.4
         version: 4.62.4
@@ -8926,8 +8926,8 @@ packages:
     peerDependencies:
       '@glimmer/component': '>= 1.1.2'
 
-  ember-strict-application-resolver@0.1.0:
-    resolution: {integrity: sha512-dmVJPLDoltiB5PN4xhUmg9JrUMPJxdeIlwqUtRBvIHpOLrbi069m7AvXGEh0b+Pq7g1HkLwt/lMm6ouHVry7hQ==}
+  ember-strict-application-resolver@0.1.1:
+    resolution: {integrity: sha512-/49JZ2Yk2ggicAGIoFNWcz05llhe2i+/2dpH5Pv1KlwZOBKkqMMJpTKEB4IMg+FjKBiE0r2yxuZzo9Oly9vc1A==}
 
   ember-strict-resolver@1.3.0:
     resolution: {integrity: sha512-GeI1LLLt470sjaq/huKGQTDJPDOH0FlrX8FFVcSZPXO2U9FQH7Kc8BaXb4GpViJbfLLC4d7tIUZI4NBnuXSmKg==}
@@ -22509,7 +22509,7 @@ snapshots:
       - rsvp
       - supports-color
 
-  ember-strict-application-resolver@0.1.0(@babel/core@7.29.7):
+  ember-strict-application-resolver@0.1.1(@babel/core@7.29.7):
     dependencies:
       '@embroider/addon-shim': 1.10.2
       decorator-transforms: 2.4.0(@babel/core@7.29.7)
