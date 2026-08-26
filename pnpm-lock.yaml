@@ -2493,7 +2493,7 @@ importers:
         version: file:packages/holodeck(faea43ed3bc42f373ef867b67f0f1952)
       '@warp-drive/internal-config':
         specifier: workspace:*
-        version: file:tools/internal-config(3b8692214ba0d0eacea8d77dd59597b2)
+        version: file:tools/internal-config(06288ac58157c4b9a4823022d352954a)
       '@warp-drive/json-api':
         specifier: workspace:*
         version: file:warp-drive-packages/json-api(da83bc0b1ea108dc5be8f251a76f6440)
@@ -2519,8 +2519,8 @@ importers:
         specifier: ^3.5.41
         version: 3.5.41(typescript@5.9.3)
       vue-tsc:
-        specifier: ^3.0.6
-        version: 3.0.6(typescript@5.9.3)
+        specifier: ^3.3.10
+        version: 3.3.10(typescript@5.9.3)
 
   tests/json-api:
     devDependencies:
@@ -3526,13 +3526,13 @@ importers:
         version: 7.29.7
       '@warp-drive/internal-config':
         specifier: workspace:*
-        version: file:tools/internal-config(791c13cb6f0990b63e7b1e0762efd477)
+        version: file:tools/internal-config(cb4314c638767b8f713f44d189f2fc92)
       decorator-transforms:
         specifier: ^2.4.0
         version: 2.4.0(@babel/core@7.29.7)
       tsdown:
         specifier: ^0.22.14
-        version: 0.22.14(cda787c1cf03d36aaaa874796d3dbc34)
+        version: 0.22.14(5d0206a3438b9e0ec371eb579551ff9e)
       typescript:
         specifier: 5.9.3
         version: 5.9.3
@@ -3543,8 +3543,8 @@ importers:
         specifier: ^3.5.41
         version: 3.5.41(typescript@5.9.3)
       vue-tsc:
-        specifier: ^3.0.6
-        version: 3.0.6(typescript@5.9.3)
+        specifier: ^3.3.10
+        version: 3.3.10(typescript@5.9.3)
 
 packages:
 
@@ -6420,9 +6420,6 @@ packages:
     peerDependencies:
       typescript: 5.9.3
 
-  '@volar/language-core@2.4.23':
-    resolution: {integrity: sha512-hEEd5ET/oSmBC6pi1j6NaNYRWoAiDhINbT8rmwtINugR39loROSlufGdYMF9TaKGfz+ViGs1Idi3mAhnuPcoGQ==}
-
   '@volar/language-core@2.4.28':
     resolution: {integrity: sha512-w4qhIJ8ZSitgLAkVay6AbcnC7gP3glYM3fYwKV3srj8m494E3xtrCv6E+bWviiK/8hs6e6t1ij1s2Endql7vzQ==}
 
@@ -6432,17 +6429,11 @@ packages:
   '@volar/language-service@2.4.28':
     resolution: {integrity: sha512-Rh/wYCZJrI5vCwMk9xyw/Z+MsWxlJY1rmMZPsxUoJKfzIRjS/NF1NmnuEcrMbEVGja00aVpCsInJfixQTMdvLw==}
 
-  '@volar/source-map@2.4.23':
-    resolution: {integrity: sha512-Z1Uc8IB57Lm6k7q6KIDu/p+JWtf3xsXJqAX/5r18hYOTpJyBn0KXUR8oTJ4WFYOcDzWC9n3IflGgHowx6U6z9Q==}
-
   '@volar/source-map@2.4.28':
     resolution: {integrity: sha512-yX2BDBqJkRXfKw8my8VarTyjv48QwxdJtvRgUpNE5erCsgEUdI2DsLbpa+rOQVAJYshY99szEcRDmyHbF10ggQ==}
 
   '@volar/test-utils@2.4.28':
     resolution: {integrity: sha512-N7RNiHHDPtqK5B21x4W462XMQj7Z75ynN3isLP+3Rb44hbJjhxxDxzs+QqWB0sjM57EtTJga+SDd9WWy3OjMzA==}
-
-  '@volar/typescript@2.4.23':
-    resolution: {integrity: sha512-lAB5zJghWxVPqfcStmAP1ZqQacMpe90UrP5RJ3arDyrhy4aCUQqmxPPLB2PWDKugvylmO41ljK7vZ+t6INMTag==}
 
   '@volar/typescript@2.4.28':
     resolution: {integrity: sha512-Ja6yvWrbis2QtN4ClAKreeUZPVYMARDYZl9LMEv1iQ1QdepB6wn0jTRxA9MftYmYa4DQ4k/DaSZpFPUfxl8giw==}
@@ -6490,9 +6481,6 @@ packages:
   '@vue/compiler-ssr@3.5.41':
     resolution: {integrity: sha512-U3v5OejKEGqOI0Wy0+Sz7hGuIFZHA4LSXzrNM3IMIeDyJEBBfTpX26n3SDgToRpP2bLc9FfI2j/kSgcJ8Emq5A==}
 
-  '@vue/compiler-vue2@2.7.16':
-    resolution: {integrity: sha512-qYC3Psj9S/mfu9uVi5WvNZIzq+xnXMhOwbTFKKDD7b1lhpnn71jXSFdTQ+WsIEk0ONCd7VV2IMm7ONl6tbQ86A==}
-
   '@vue/devtools-api@8.2.1':
     resolution: {integrity: sha512-6u4vXBlIBAC1wMplIZgpyPn7uh/s4Bf6F5bMzvLv+EdJ0aHs/+4B7Ygv864EStQSjRbsRzTko/kUG1A1IejQ3A==}
 
@@ -6502,13 +6490,8 @@ packages:
   '@vue/devtools-shared@8.2.1':
     resolution: {integrity: sha512-Fkac7lUdGReh6pVOi3AYPRGe82LQqRmAfThW7RRligOAP0ZA/Z1z9XLHDM9dv34pV2HRc79DK8uKPeG2fLnA/g==}
 
-  '@vue/language-core@3.0.6':
-    resolution: {integrity: sha512-e2RRzYWm+qGm8apUHW1wA5RQxzNhkqbbKdbKhiDUcmMrNAZGyM8aTiL3UrTqkaFI5s7wJRGGrp4u3jgusuBp2A==}
-    peerDependencies:
-      typescript: 5.9.3
-    peerDependenciesMeta:
-      typescript:
-        optional: true
+  '@vue/language-core@3.3.10':
+    resolution: {integrity: sha512-CR7ByBbgPHqhxrioKPOcZBqttaozzLNwtkCzXQ+uF8gLPHnUe03srPnGpdtHD3zp+bq5iyVkZ1WNx7W564RPwg==}
 
   '@vue/reactivity@3.5.41':
     resolution: {integrity: sha512-rznsqKM0np0x18EjzF8x88MpEhdNsffbvFbckLL5+oUKz1BxAImEmO7J1ArRYSyo6aQaVoBDp7jEkT91OOxydA==}
@@ -6909,8 +6892,8 @@ packages:
   ajv@8.17.1:
     resolution: {integrity: sha512-B/gBuNg5SiMTrPkC+A2+cW0RszwxYmn6VYxB/inlBStS5nx6xHIt/ehKRhIMhqusl7a8LjQoZnjCs5vhwxOQ1g==}
 
-  alien-signals@2.0.6:
-    resolution: {integrity: sha512-P3TxJSe31bUHBiblg59oU1PpaWPtmxF9GhJ/cB7OkgJ0qN/ifFSKUI25/v8ZhsT+lIG6ac8DpTOplXxORX6F3Q==}
+  alien-signals@3.2.1:
+    resolution: {integrity: sha512-I8FjmltrfnDFoZedi5CG8DghVYNhzb/Ijluz7tCSJH0xpd0484Kowhbb1XDYOxfJpU1p5wnM2X54dA+IfGyD1g==}
 
   amd-name-resolver@1.3.1:
     resolution: {integrity: sha512-26qTEWqZQ+cxSYygZ4Cf8tsjDBLceJahhtewxtKZA3SRa4PluuqYCuheemDQD+7Mf5B7sr+zhTDWAHDh02a1Dw==}
@@ -8065,9 +8048,6 @@ packages:
   data-view-byte-offset@1.0.1:
     resolution: {integrity: sha512-BS8PfmtDGnrgYdOonGZQdLZslWIeCGFP9tpan0hi1Co2Zr2NKADsvGYA8XxuG/4UWgJ6Cjtv+YJnB6MM69QGlQ==}
     engines: {node: '>= 0.4'}
-
-  de-indent@1.0.2:
-    resolution: {integrity: sha512-e/1zu3xH5MQryN2zdVaF0OrdNLUbvWxzMbi+iNA6Bky7l1RoP8a2fIbRocyHclXt/arDrrR6lL3TqFD9pMQTsg==}
 
   debug@2.6.9:
     resolution: {integrity: sha512-bC7ElrdJaJnPbAP+1EotYvqZsb3ecl5wi6Bfi6BJTUcNowp6cvspg0jXznRTKDjm/E7AdgFBVeAPVMNcKGsHMA==}
@@ -12737,8 +12717,8 @@ packages:
   vscode-uri@3.1.0:
     resolution: {integrity: sha512-/BpdSx+yCQGnCvecbyXdxHDkuk55/G3xwnC0GqY4gmQ3j+A+g8kzzgB4Nk/SINjqn6+waqw3EgbVF2QKExkRxQ==}
 
-  vue-tsc@3.0.6:
-    resolution: {integrity: sha512-Tbs8Whd43R2e2nxez4WXPvvdjGbW24rOSgRhLOHXzWiT4pcP4G7KeWh0YCn18rF4bVwv7tggLLZ6MJnO6jXPBg==}
+  vue-tsc@3.3.10:
+    resolution: {integrity: sha512-YaDVxcW+CGtaOt3pZahMG5jYPx0hsUTxyEoPOTSMebcGUXP9lIBabQ14vfKMORb2CqqK5CxsNo/d1d+4IQwiKg==}
     hasBin: true
     peerDependencies:
       typescript: 5.9.3
@@ -16233,6 +16213,27 @@ snapshots:
       - rollup
       - supports-color
 
+  '@nullvoxpopuli/ember-rolldown@2.7.0(2aacdd840e8bbec18962f7e662bce1d9)':
+    dependencies:
+      '@babel/core': 7.29.7
+      '@babel/plugin-transform-typescript': 7.29.7(@babel/core@7.29.7)
+      '@embroider/core': 4.4.2
+      '@nullvoxpopuli/ember-build-tooling-utils': 1.1.0(rollup@4.62.4)
+      babel-plugin-ember-template-compilation: 4.0.0
+      content-tag: 4.2.0
+      decorator-transforms: 2.4.0(@babel/core@7.29.7)
+    optionalDependencies:
+      tsdown: 0.22.14(5d0206a3438b9e0ec371eb579551ff9e)
+      typescript: 5.9.3
+    transitivePeerDependencies:
+      - '@glint/template'
+      - '@types/babel__core'
+      - bufferutil
+      - canvas
+      - rollup
+      - supports-color
+      - utf-8-validate
+
   '@nullvoxpopuli/ember-rolldown@2.7.0(35190290210cd7126c88e642f3389863)':
     dependencies:
       '@babel/core': 7.29.7
@@ -16244,27 +16245,6 @@ snapshots:
       decorator-transforms: 2.4.0(@babel/core@7.29.7)
     optionalDependencies:
       tsdown: 0.22.14(typescript@5.9.3)
-      typescript: 5.9.3
-    transitivePeerDependencies:
-      - '@glint/template'
-      - '@types/babel__core'
-      - bufferutil
-      - canvas
-      - rollup
-      - supports-color
-      - utf-8-validate
-
-  '@nullvoxpopuli/ember-rolldown@2.7.0(c6f52638ec6b072d0f608d119b8b6df2)':
-    dependencies:
-      '@babel/core': 7.29.7
-      '@babel/plugin-transform-typescript': 7.29.7(@babel/core@7.29.7)
-      '@embroider/core': 4.4.2
-      '@nullvoxpopuli/ember-build-tooling-utils': 1.1.0(rollup@4.62.4)
-      babel-plugin-ember-template-compilation: 4.0.0
-      content-tag: 4.2.0
-      decorator-transforms: 2.4.0(@babel/core@7.29.7)
-    optionalDependencies:
-      tsdown: 0.22.14(cda787c1cf03d36aaaa874796d3dbc34)
       typescript: 5.9.3
     transitivePeerDependencies:
       - '@glint/template'
@@ -17501,10 +17481,6 @@ snapshots:
       vscode-languageserver-textdocument: 1.0.12
       vscode-uri: 3.1.0
 
-  '@volar/language-core@2.4.23':
-    dependencies:
-      '@volar/source-map': 2.4.23
-
   '@volar/language-core@2.4.28':
     dependencies:
       '@volar/source-map': 2.4.28
@@ -17528,8 +17504,6 @@ snapshots:
       vscode-languageserver-textdocument: 1.0.12
       vscode-uri: 3.1.0
 
-  '@volar/source-map@2.4.23': {}
-
   '@volar/source-map@2.4.28': {}
 
   '@volar/test-utils@2.4.28':
@@ -17537,12 +17511,6 @@ snapshots:
       '@volar/language-core': 2.4.28
       '@volar/language-server': 2.4.28
       vscode-languageserver-textdocument: 1.0.12
-      vscode-uri: 3.1.0
-
-  '@volar/typescript@2.4.23':
-    dependencies:
-      '@volar/language-core': 2.4.23
-      path-browserify: 1.0.1
       vscode-uri: 3.1.0
 
   '@volar/typescript@2.4.28':
@@ -17642,11 +17610,6 @@ snapshots:
       '@vue/compiler-dom': 3.5.41
       '@vue/shared': 3.5.41
 
-  '@vue/compiler-vue2@2.7.16':
-    dependencies:
-      de-indent: 1.0.2
-      he: 1.2.0
-
   '@vue/devtools-api@8.2.1':
     dependencies:
       '@vue/devtools-kit': 8.2.1
@@ -17660,18 +17623,15 @@ snapshots:
 
   '@vue/devtools-shared@8.2.1': {}
 
-  '@vue/language-core@3.0.6(typescript@5.9.3)':
+  '@vue/language-core@3.3.10':
     dependencies:
-      '@volar/language-core': 2.4.23
-      '@vue/compiler-dom': 3.5.19
-      '@vue/compiler-vue2': 2.7.16
+      '@volar/language-core': 2.4.28
+      '@vue/compiler-dom': 3.5.41
       '@vue/shared': 3.5.41
-      alien-signals: 2.0.6
+      alien-signals: 3.2.1
       muggle-string: 0.4.1
       path-browserify: 1.0.1
       picomatch: 4.0.5
-    optionalDependencies:
-      typescript: 5.9.3
 
   '@vue/reactivity@3.5.41':
     dependencies:
@@ -18037,13 +17997,13 @@ snapshots:
       - vite
       - vue-tsc
 
-  '@warp-drive/internal-config@file:tools/internal-config(3b8692214ba0d0eacea8d77dd59597b2)':
+  '@warp-drive/internal-config@file:tools/internal-config(06288ac58157c4b9a4823022d352954a)':
     dependencies:
       '@babel/cli': 7.29.7(@babel/core@7.29.7)
       '@babel/core': 7.29.7
       '@babel/eslint-parser': 7.29.7(@babel/core@7.29.7)(eslint@9.34.0)
       '@eslint/js': 9.34.0
-      '@nullvoxpopuli/ember-rolldown': 2.7.0(c6f52638ec6b072d0f608d119b8b6df2)
+      '@nullvoxpopuli/ember-rolldown': 2.7.0(2aacdd840e8bbec18962f7e662bce1d9)
       '@rolldown/plugin-babel': 0.2.3(359fdc389a44e19a5aec38d478957a40)
       '@rolldown/pluginutils': 1.0.1
       '@types/debug': 4.1.13
@@ -18061,7 +18021,7 @@ snapshots:
       eslint-plugin-simple-import-sort: 12.1.1(eslint@9.34.0)
       globals: 16.3.0
       rollup: 4.62.4
-      tsdown: 0.22.14(cda787c1cf03d36aaaa874796d3dbc34)
+      tsdown: 0.22.14(5d0206a3438b9e0ec371eb579551ff9e)
       typescript: 5.9.3
       typescript-eslint: 8.41.0(eslint@9.34.0)(typescript@5.9.3)
     transitivePeerDependencies:
@@ -18170,60 +18130,6 @@ snapshots:
       globals: 16.3.0
       rollup: 4.62.4
       tsdown: 0.22.14(typescript@5.9.3)
-      typescript: 5.9.3
-      typescript-eslint: 8.41.0(eslint@9.34.0)(typescript@5.9.3)
-    transitivePeerDependencies:
-      - '@arethetypeswrong/core'
-      - '@babel/plugin-transform-runtime'
-      - '@babel/runtime'
-      - '@glint/template'
-      - '@tsdown/css'
-      - '@tsdown/exe'
-      - '@types/babel__core'
-      - '@typescript/native-preview'
-      - '@vitejs/devtools'
-      - '@volar/typescript'
-      - bufferutil
-      - canvas
-      - eslint-import-resolver-typescript
-      - eslint-import-resolver-webpack
-      - jiti
-      - oxc-resolver
-      - publint
-      - rolldown
-      - supports-color
-      - tsx
-      - unplugin-unused
-      - unrun
-      - utf-8-validate
-      - vite
-      - vue-tsc
-
-  '@warp-drive/internal-config@file:tools/internal-config(791c13cb6f0990b63e7b1e0762efd477)':
-    dependencies:
-      '@babel/cli': 7.29.7(@babel/core@7.29.7)
-      '@babel/core': 7.29.7
-      '@babel/eslint-parser': 7.29.7(@babel/core@7.29.7)(eslint@9.34.0)
-      '@eslint/js': 9.34.0
-      '@nullvoxpopuli/ember-rolldown': 2.7.0(c6f52638ec6b072d0f608d119b8b6df2)
-      '@rolldown/plugin-babel': 0.2.3(02d9a2513d9ed1d532b075ffd9c2b5e7)
-      '@rolldown/pluginutils': 1.0.1
-      '@types/debug': 4.1.13
-      '@typescript-eslint/eslint-plugin': 8.41.0(ff068f05036278b96bb632ac0d7d2e3b)
-      '@typescript-eslint/parser': 8.41.0(eslint@9.34.0)(typescript@5.9.3)
-      comment-json: 4.2.5
-      debug: 4.4.3
-      ember-eslint-parser: 0.14.5(70be1ffd0039cc420d8577c8284ed44f)
-      eslint: 9.34.0
-      eslint-config-prettier: 10.1.8(eslint@9.34.0)
-      eslint-plugin-import: 2.32.0(fc509f8ea4793045ea15ebf2a929a9a3)
-      eslint-plugin-mocha: 10.5.0(eslint@9.34.0)
-      eslint-plugin-n: 17.21.3(eslint@9.34.0)(typescript@5.9.3)
-      eslint-plugin-qunit: 8.2.6(eslint@9.34.0)
-      eslint-plugin-simple-import-sort: 12.1.1(eslint@9.34.0)
-      globals: 16.3.0
-      rollup: 4.62.4
-      tsdown: 0.22.14(cda787c1cf03d36aaaa874796d3dbc34)
       typescript: 5.9.3
       typescript-eslint: 8.41.0(eslint@9.34.0)(typescript@5.9.3)
     transitivePeerDependencies:
@@ -18386,6 +18292,60 @@ snapshots:
       globals: 16.3.0
       rollup: 4.62.4
       tsdown: 0.22.14(typescript@5.9.3)
+      typescript: 5.9.3
+      typescript-eslint: 8.41.0(eslint@9.34.0)(typescript@5.9.3)
+    transitivePeerDependencies:
+      - '@arethetypeswrong/core'
+      - '@babel/plugin-transform-runtime'
+      - '@babel/runtime'
+      - '@glint/template'
+      - '@tsdown/css'
+      - '@tsdown/exe'
+      - '@types/babel__core'
+      - '@typescript/native-preview'
+      - '@vitejs/devtools'
+      - '@volar/typescript'
+      - bufferutil
+      - canvas
+      - eslint-import-resolver-typescript
+      - eslint-import-resolver-webpack
+      - jiti
+      - oxc-resolver
+      - publint
+      - rolldown
+      - supports-color
+      - tsx
+      - unplugin-unused
+      - unrun
+      - utf-8-validate
+      - vite
+      - vue-tsc
+
+  '@warp-drive/internal-config@file:tools/internal-config(cb4314c638767b8f713f44d189f2fc92)':
+    dependencies:
+      '@babel/cli': 7.29.7(@babel/core@7.29.7)
+      '@babel/core': 7.29.7
+      '@babel/eslint-parser': 7.29.7(@babel/core@7.29.7)(eslint@9.34.0)
+      '@eslint/js': 9.34.0
+      '@nullvoxpopuli/ember-rolldown': 2.7.0(2aacdd840e8bbec18962f7e662bce1d9)
+      '@rolldown/plugin-babel': 0.2.3(02d9a2513d9ed1d532b075ffd9c2b5e7)
+      '@rolldown/pluginutils': 1.0.1
+      '@types/debug': 4.1.13
+      '@typescript-eslint/eslint-plugin': 8.41.0(ff068f05036278b96bb632ac0d7d2e3b)
+      '@typescript-eslint/parser': 8.41.0(eslint@9.34.0)(typescript@5.9.3)
+      comment-json: 4.2.5
+      debug: 4.4.3
+      ember-eslint-parser: 0.14.5(70be1ffd0039cc420d8577c8284ed44f)
+      eslint: 9.34.0
+      eslint-config-prettier: 10.1.8(eslint@9.34.0)
+      eslint-plugin-import: 2.32.0(fc509f8ea4793045ea15ebf2a929a9a3)
+      eslint-plugin-mocha: 10.5.0(eslint@9.34.0)
+      eslint-plugin-n: 17.21.3(eslint@9.34.0)(typescript@5.9.3)
+      eslint-plugin-qunit: 8.2.6(eslint@9.34.0)
+      eslint-plugin-simple-import-sort: 12.1.1(eslint@9.34.0)
+      globals: 16.3.0
+      rollup: 4.62.4
+      tsdown: 0.22.14(5d0206a3438b9e0ec371eb579551ff9e)
       typescript: 5.9.3
       typescript-eslint: 8.41.0(eslint@9.34.0)(typescript@5.9.3)
     transitivePeerDependencies:
@@ -18986,7 +18946,7 @@ snapshots:
       json-schema-traverse: 1.0.0
       require-from-string: 2.0.2
 
-  alien-signals@2.0.6: {}
+  alien-signals@3.2.1: {}
 
   amd-name-resolver@1.3.1:
     dependencies:
@@ -20280,8 +20240,6 @@ snapshots:
       call-bound: 1.0.4
       es-errors: 1.3.0
       is-data-view: 1.0.2
-
-  de-indent@1.0.2: {}
 
   debug@2.6.9:
     dependencies:
@@ -24365,7 +24323,7 @@ snapshots:
       glob: 13.0.6
       package-json-from-dist: 1.0.1
 
-  rolldown-plugin-dts@0.27.14(e4620a5e73e52ad4cf17f4fc7e60b731):
+  rolldown-plugin-dts@0.27.14(26a3a736814091419989c4916f0456af):
     dependencies:
       dts-resolver: 3.0.0
       get-tsconfig: 5.0.0-beta.5
@@ -24376,7 +24334,7 @@ snapshots:
       yuku-parser: 0.8.4
     optionalDependencies:
       typescript: 5.9.3
-      vue-tsc: 3.0.6(typescript@5.9.3)
+      vue-tsc: 3.3.10(typescript@5.9.3)
     transitivePeerDependencies:
       - oxc-resolver
 
@@ -25468,7 +25426,7 @@ snapshots:
       - oxc-resolver
       - vue-tsc
 
-  tsdown@0.22.14(cda787c1cf03d36aaaa874796d3dbc34):
+  tsdown@0.22.14(5d0206a3438b9e0ec371eb579551ff9e):
     dependencies:
       ansis: 4.3.1
       cac: 7.0.0
@@ -25479,7 +25437,7 @@ snapshots:
       obug: 2.1.4
       picomatch: 4.0.5
       rolldown: 1.2.3
-      rolldown-plugin-dts: 0.27.14(e4620a5e73e52ad4cf17f4fc7e60b731)
+      rolldown-plugin-dts: 0.27.14(26a3a736814091419989c4916f0456af)
       tinyexec: 1.3.0
       tinyglobby: 0.2.17
       tree-kill: 1.2.2
@@ -26084,10 +26042,10 @@ snapshots:
 
   vscode-uri@3.1.0: {}
 
-  vue-tsc@3.0.6(typescript@5.9.3):
+  vue-tsc@3.3.10(typescript@5.9.3):
     dependencies:
-      '@volar/typescript': 2.4.23
-      '@vue/language-core': 3.0.6(typescript@5.9.3)
+      '@volar/typescript': 2.4.28
+      '@vue/language-core': 3.3.10
       typescript: 5.9.3
 
   vue@3.5.41(typescript@5.9.3):
