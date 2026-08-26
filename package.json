@@ -118,7 +118,9 @@
     "overrides": {
       "@embroider/macros": "^1.20.6",
       "ember-auto-import": "^2.13.1",
-      "broccoli-funnel": "^3.0.8",
+      "@embroider/addon-shim>broccoli-funnel": "-",
+      "ember-cli-babel>broccoli-funnel": "-",
+      "qunit-console-grouper>broccoli-funnel": "-",
       "broccoli-merge-trees": "^4.2.0",
       "@glimmer/validator": "^0.95.0",
       "@glint/ember-tsc": "1.10.0",
