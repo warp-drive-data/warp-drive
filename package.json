@@ -146,7 +146,7 @@
       "@types/bun": "1.3.14",
       "bun-types": "1.3.14",
       "lodash": "^4.18.1",
-      "caniuse-lite": "^1.0.30001809",
+      "caniuse-lite": "^1.0.30001810",
       "rollup": "^4.62.4",
       "@babel/types": "^7.29.8",
       "@babel/parser": "^7.29.8",
