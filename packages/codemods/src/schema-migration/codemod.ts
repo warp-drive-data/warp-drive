@@ -1,6 +1,6 @@
 import { existsSync, mkdirSync, readFileSync } from 'fs';
 import { readFile } from 'fs/promises';
-import { glob } from 'glob';
+import { globby } from 'globby';
 import { join, resolve } from 'path';
 
 import type { InstanciatedLogger } from '../../utils/logger.js';
@@ -97,7 +97,7 @@ async function findFiles(
 
   for (const source of sources) {
     try {
-      const files = await glob(source);
+      const files = await globby(source);
 
       for (const file of files) {
         const skipReason = predicate(file);
