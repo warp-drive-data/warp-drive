@@ -1583,8 +1583,8 @@ importers:
         specifier: ^3.0.0
         version: 3.0.0
       ember-strict-application-resolver:
-        specifier: ^0.1.0
-        version: 0.1.0(@babel/core@7.29.7)
+        specifier: ^0.1.1
+        version: 0.1.1(@babel/core@7.29.7)
       ember-template-imports:
         specifier: 4.4.0
         version: 4.4.0
@@ -6690,6 +6690,7 @@ packages:
   '@xmldom/xmldom@0.9.11':
     resolution: {integrity: sha512-tW8bcK3hsG0/uqSnNz6TK4BkcuZSezoU7DlnYssILmZDktPnSHHuDJJFM0AJv+13gz2r0iGdrj6qqKeUnxXEDg==}
     engines: {node: '>=14.6'}
+    deprecated: this version has critical issues, please update to the latest version
 
   '@yuku-codegen/binding-android-arm64@0.8.4':
     resolution: {integrity: sha512-rsYkGl2kOkDRsh1mxriYnk1qBS78vjlBJ3+T2XwtwKwqOliy2n+2Ae0EDxJ/uX1DZLm3KkBZarGO5isEnmHchA==}
@@ -8425,9 +8426,6 @@ packages:
     engines: {node: '>= 20.19'}
     peerDependencies:
       '@glimmer/component': '>= 1.1.2'
-
-  ember-strict-application-resolver@0.1.0:
-    resolution: {integrity: sha512-dmVJPLDoltiB5PN4xhUmg9JrUMPJxdeIlwqUtRBvIHpOLrbi069m7AvXGEh0b+Pq7g1HkLwt/lMm6ouHVry7hQ==}
 
   ember-strict-application-resolver@0.1.1:
     resolution: {integrity: sha512-/49JZ2Yk2ggicAGIoFNWcz05llhe2i+/2dpH5Pv1KlwZOBKkqMMJpTKEB4IMg+FjKBiE0r2yxuZzo9Oly9vc1A==}
@@ -17170,16 +17168,10 @@ snapshots:
       '@types/ember__controller': 4.0.12
       '@types/ember__object': 4.0.12
       '@types/ember__service': 4.0.9
-    transitivePeerDependencies:
-      - '@babel/core'
-      - supports-color
 
   '@types/ember__runloop@4.0.10':
     dependencies:
       '@types/ember': 4.0.11
-    transitivePeerDependencies:
-      - '@babel/core'
-      - supports-color
 
   '@types/ember__service@4.0.9':
     dependencies:
@@ -21045,14 +21037,6 @@ snapshots:
       simple-html-tokenizer: 0.5.11
     transitivePeerDependencies:
       - rsvp
-      - supports-color
-
-  ember-strict-application-resolver@0.1.0(@babel/core@7.29.7):
-    dependencies:
-      '@embroider/addon-shim': 1.10.2
-      decorator-transforms: 2.4.0(@babel/core@7.29.7)
-    transitivePeerDependencies:
-      - '@babel/core'
       - supports-color
 
   ember-strict-application-resolver@0.1.1(@babel/core@7.29.7):
