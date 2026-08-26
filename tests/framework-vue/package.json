@@ -41,7 +41,7 @@
     "@warp-drive/utilities": "workspace:*",
     "@warp-drive/vue": "workspace:*",
     "babel-plugin-debug-macros": "^2.0.0",
-    "decorator-transforms": "^2.3.0",
+    "decorator-transforms": "^2.4.0",
     "typescript": "^5.9.3",
     "vite": "^7.3.1",
     "vue": "^3.5.41",
