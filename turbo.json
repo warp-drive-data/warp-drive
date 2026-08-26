@@ -30,6 +30,28 @@
     /////////////////////////////////////////////////
     /////////////////////////////////////////////////
 
+    // pnpm's sync-injected-deps-after-scripts hook (see .npmrc) only fires
+    // when pnpm itself runs a package's script -- it never fires for a
+    // turbo-orchestrated run, whether turbo actually executes the underlying
+    // command or restores it from cache. That's fine when every build:pkg in
+    // the run is a cache miss (each one still goes through a real pnpm script
+    // invocation as turbo executes it) or when every one is a cache hit (the
+    // last real run already synced everything correctly). It breaks when the
+    // run is a *mix*: if @warp-drive/core#build:pkg is a cache hit (skipped
+    // entirely, no script execution, no hook) while a consumer like
+    // @warp-drive/diagnostic is a cache miss (forced to actually build), the
+    // consumer's injected copy of @warp-drive/core's dist/ was never
+    // refreshed, and its build:pkg -- which imports real runtime code from it
+    // via babel.config.mjs, not just types -- fails with a missing-module
+    // error. `cache: false` forces this task to always execute regardless of
+    // upstream cache state, which closes that gap; it does not force
+    // downstream build:pkg tasks to also miss cache, since turbo hashes a
+    // dependency task by its declared inputs, not by whether it actually ran.
+    "//#sync": {
+      "cache": false,
+      "dependsOn": ["@warp-drive/build-config#build:pkg", "@warp-drive/core#build:pkg"]
+    },
+
     // run build in all library packages
     // these do not require any associated packages
     // to have been built to build other than
@@ -63,7 +85,7 @@
         "cjs-dist/**",
         "tsconfig.tsbuildinfo"
       ],
-      "dependsOn": ["@warp-drive/core#build:pkg"],
+      "dependsOn": ["@warp-drive/core#build:pkg", "//#sync"],
       // https://turbo.build/repo/docs/reference/configuration#outputLogs
       "outputLogs": "new-only",
       // NODE_ENV, EMBER_DATA_FULL_COMPAT, and BABEL_DISABLE_CACHE are only read by
