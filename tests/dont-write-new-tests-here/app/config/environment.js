@@ -11,6 +11,14 @@
 //
 // Fixed by computing the same config directly instead of round-tripping through a meta tag. Keep
 // this in sync with the environment-dependent branches this app actually needs.
+//
+// Every build of this app (build:tests AND build:production) is a testem/QUnit
+// run -- there is no real "ship to users" build here, `production` only means
+// "built with production macro-stripping" (see babel.config.mjs/DEBUG). So
+// unlike a real app's config/environment.js, the test-runner-specific settings
+// below (rootElement/autoboot/locationType) are NOT conditional on that -- they
+// must always apply, or the app boots into the wrong DOM scope and the test
+// harness's router transitions immediately fail.
 const isProduction = import.meta.env.MODE === 'production';
 
 export default {
@@ -18,19 +26,17 @@ export default {
   podModulePrefix: 'main-test-app',
   environment: isProduction ? 'production' : 'test',
   rootURL: '/',
-  locationType: isProduction ? 'history' : 'none',
+  locationType: 'none',
   EmberENV: {
     RAISE_ON_DEPRECATION: false,
     _APPLICATION_TEMPLATE_WRAPPER: false,
     _TEMPLATE_ONLY_GLIMMER_COMPONENTS: true,
     _JQUERY_INTEGRATION: false,
   },
-  APP: isProduction
-    ? {}
-    : {
-        LOG_ACTIVE_GENERATION: false,
-        LOG_VIEW_LOOKUPS: false,
-        rootElement: '#ember-testing',
-        autoboot: false,
-      },
+  APP: {
+    LOG_ACTIVE_GENERATION: false,
+    LOG_VIEW_LOOKUPS: false,
+    rootElement: '#ember-testing',
+    autoboot: false,
+  },
 };

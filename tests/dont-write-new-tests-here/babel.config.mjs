@@ -11,15 +11,6 @@ function isEnabled(flag) {
   return flag === true || flag === 'true' || flag === '1';
 }
 
-function resolve(module) {
-  const filePath = import.meta.resolve(module);
-  const file = filePath.replace('/node_modules/.vite-temp/', '/');
-  if (file.startsWith('file://')) {
-    return file.slice(7);
-  }
-  return file;
-}
-
 // @ember-data/unpublished-test-infra is a v1-shimmed v2 addon that sets its
 // own @embroider/macros config (VERSION, ASSERT_ALL_DEPRECATIONS) via the
 // classic `addon.options['@embroider/macros'].setOwnConfig` convention (see
@@ -35,6 +26,15 @@ function resolve(module) {
 const unpublishedTestInfraEntry = fileURLToPath(import.meta.resolve('@ember-data/unpublished-test-infra'));
 const unpublishedTestInfraPkg = join(dirname(unpublishedTestInfraEntry), '..', 'package.json');
 
+// vite build's own NODE_ENV=production default (forced internally regardless
+// of `--mode`, unless already set) would otherwise make both this app's own
+// DEBUG/PRODUCTION/TESTING resolution (via getEnv() below) and
+// @embroider/macros's own buildMacros() dev-mode detection (which gates
+// isDevelopingApp()/isTesting(), used internally by e.g. ember-source's
+// @ember/debug deprecate/assert/warn) permanently resolve to production. Both
+// read process.env.NODE_ENV directly, so build:tests/build:production set it
+// explicitly before invoking vite (matching tests/framework-ember's pattern)
+// rather than fighting vite's default here.
 const macrosConfig = buildMacros({
   configure: (config) => {
     setConfig(config, {
@@ -62,23 +62,18 @@ const macrosConfig = buildMacros({
 
 const macros = {
   gts: macrosConfig.templateMacros,
-  js: [
-    // babel-plugin-debug-macros is temporarily needed
-    // to convert deprecation/warn calls into console.warn
-    [
-      resolve('babel-plugin-debug-macros'),
-      {
-        flags: [],
-        debugTools: {
-          isDebug: true,
-          source: '@ember/debug',
-          assertPredicateIndex: 1,
-        },
-      },
-      'ember-data-specific-macros-stripping-test',
-    ],
-    ...macrosConfig.babelMacros,
-  ],
+  // note: unlike @warp-drive/core/build-config's babelPlugin() convenience
+  // helper (for apps with no @embroider/macros of their own), this app's
+  // classic ember-cli-build.js never ran babel-plugin-debug-macros over
+  // deprecate()/warn() calls -- it already had @embroider/macros set up via
+  // EmberApp, and @ember/debug's own dist already gates deprecate()/warn()
+  // correctly via @embroider/macros. Adding babel-plugin-debug-macros here
+  // rewrote every deprecate() call (including inside @warp-drive/core's own
+  // dist, since this babel pass has no node_modules exclude) into a bare
+  // console.warn(), bypassing @ember/debug's registerDeprecationHandler
+  // dispatch entirely -- which silently broke every test asserting on
+  // `assert.expectDeprecation()`/deprecation counts.
+  js: [...macrosConfig.babelMacros],
 };
 
 export default {
