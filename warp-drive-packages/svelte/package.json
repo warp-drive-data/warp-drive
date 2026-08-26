@@ -38,7 +38,7 @@
     }
   },
   "peerDependencies": {
-    "svelte": "^5.38.3"
+    "svelte": "^5.56.9"
   },
   "dependencies": {
     "@warp-drive/core": "workspace:*"
@@ -50,7 +50,7 @@
     "@sveltejs/vite-plugin-svelte": "^6.2.4",
     "@warp-drive/internal-config": "workspace:*",
     "@warp-drive/core": "workspace:*",
-    "svelte": "^5.38.3",
+    "svelte": "^5.56.9",
     "typescript": "^5.9.3",
     "vite": "^7.3.1"
   },
