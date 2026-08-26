@@ -43,7 +43,6 @@
     "ember-source": "~6.12.0",
     "execa": "^9.6.0",
     "git-repo-version": "^1.0.2",
-    "globby": "^14.1.0",
     "lerna-changelog": "^2.2.0",
     "prettier": "^3.8.1",
     "prettier-plugin-ember-template-tag": "^2.1.6",
