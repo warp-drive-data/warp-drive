@@ -41,7 +41,7 @@
     "babel-plugin-ember-template-compilation": "^4.0.0",
     "bun-types": "^1.4.0",
     "decorator-transforms": "^2.4.0",
-    "ember-source": "~6.12.0",
+    "ember-source": "~7.2.0",
     "ember-strict-application-resolver": "^0.1.1",
     "terser": "^5.43.1",
     "vite": "^8.2.1",
