@@ -432,8 +432,8 @@ importers:
         specifier: ^0.45.1
         version: 0.45.1
       commander:
-        specifier: ^14.0.0
-        version: 14.0.0
+        specifier: ^14.0.3
+        version: 14.0.3
       ignore:
         specifier: ^7.0.5
         version: 7.0.5
@@ -8093,10 +8093,6 @@ packages:
     resolution: {integrity: sha512-yPVavfyCcRhmorC7rWlkHn15b4wDVgVmBA7kV4QVBsF7kv/9TKJAbAXVTxvTnwP8HHKjRCJDClKbciiYS7p0DQ==}
     engines: {node: '>=16'}
 
-  commander@14.0.0:
-    resolution: {integrity: sha512-2uM9rYjPvyq39NwLRqaiLtWHyDC1FvryJDa2ATTVims5YAS4PupsEQsDvP14FqhFr0P49CYDugi59xaxJlTXRA==}
-    engines: {node: '>=20'}
-
   commander@14.0.3:
     resolution: {integrity: sha512-H+y0Jo/T1RZ9qPP4Eh1pkcQcLRglraJaSLoyOtHxu6AapkjWVCy2Sit1QQ4x3Dng8qDlSsZEet7g5Pq06MvTgw==}
     engines: {node: '>=20'}
@@ -15601,7 +15597,7 @@ snapshots:
   '@ember-data/codemods@file:packages/codemods':
     dependencies:
       '@ast-grep/napi': 0.45.1
-      commander: 14.0.0
+      commander: 14.0.3
       ignore: 7.0.5
       inquirer: 10.2.2
       jscodeshift: 17.3.0
@@ -21360,8 +21356,6 @@ snapshots:
   comma-separated-tokens@2.0.3: {}
 
   commander@11.1.0: {}
-
-  commander@14.0.0: {}
 
   commander@14.0.3: {}
 
