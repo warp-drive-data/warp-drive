@@ -7,12 +7,11 @@ import { getPendingWaiterState } from '@ember/test-waiters';
 import * as QUnit from 'qunit';
 import { setup } from 'qunit-dom';
 
-import { start as startEmberExam } from 'ember-exam/addon-test-support';
-
 import { setBuildURLConfig } from '@ember-data/request-utils';
 import configureAsserts from '@ember-data/unpublished-test-infra/test-support/asserts/index';
 import { Store } from '@warp-drive/core';
 import { setConfig, setTestId } from '@warp-drive/holodeck';
+import startExam from '@warp-drive/internal-exam';
 import { Model, restoreDeprecatedModelRequestBehaviors } from '@warp-drive/legacy/model';
 import { restoreDeprecatedStoreBehaviors } from '@warp-drive/legacy/store';
 
@@ -193,13 +192,12 @@ QUnit.hooks.afterEach(function (assert) {
 setup(QUnit.assert);
 setApplication(Application.create(config.APP));
 
-// under vite, ember-exam's test loader needs an explicit map of
+// @warp-drive/internal-exam's test loader needs an explicit map of
 // { modulePath: () => import(modulePath) } (built from `import.meta.glob`
-// in tests/index.html and passed in here as `availableModules`) instead of
-// relying on the classic AMD `requirejs.entries` registry to discover and
-// lazily load test modules for `--load-balance`/`--parallel` support.
+// in tests/index.html and passed in here as `availableModules`) to discover
+// and lazily load test modules for `--load-balance`/`--parallel` support.
 export async function start(options) {
-  await startEmberExam({
+  await startExam({
     setupEmberOnerrorValidation: false,
     setupTestIsolationValidation: true,
     ...options,
