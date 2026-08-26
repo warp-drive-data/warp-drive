@@ -92,8 +92,7 @@ export interface CollectionResourceDataDocument<T = PersistedResourceKey> {
  * For the Reactive value returned by a request using the store, use {@link ReactiveDataDocument} instead.
  */
 export type ResourceDataDocument<T = PersistedResourceKey> =
-  | SingleResourceDataDocument<T>
-  | CollectionResourceDataDocument<T>;
+  SingleResourceDataDocument<T> | CollectionResourceDataDocument<T>;
 
 /**
  * A type useful for representing the raw {json:api} Error documents that
@@ -133,7 +132,4 @@ export interface ResourceErrorDocument {
  * For the Reactive value returned by a request using the store, use {@link ReactiveDocument} instead.
  */
 export type ResourceDocument<T = PersistedResourceKey> =
-  | ResourceMetaDocument
-  | SingleResourceDataDocument<T>
-  | CollectionResourceDataDocument<T>
-  | ResourceErrorDocument;
+  ResourceMetaDocument | SingleResourceDataDocument<T> | CollectionResourceDataDocument<T> | ResourceErrorDocument;

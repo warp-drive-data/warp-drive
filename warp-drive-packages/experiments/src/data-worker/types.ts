@@ -34,6 +34,4 @@ export type ThreadInitEventData = {
 
 export type MainThreadEvent<T> = MessageEvent<SuccessResponseEventData<T> | ErrorResponseEventData<T>>;
 export type WorkerThreadEvent =
-  | MessageEvent<RequestEventData>
-  | MessageEvent<ThreadInitEventData>
-  | MessageEvent<AbortEventData>;
+  MessageEvent<RequestEventData> | MessageEvent<ThreadInitEventData> | MessageEvent<AbortEventData>;

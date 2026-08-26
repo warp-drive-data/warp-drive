@@ -4,7 +4,8 @@ import { findRecord } from '@warp-drive/legacy/compat/builders';
 const { content: post } = await store
   // 2
   .request(
-    findRecord<Post>( // 3
+    findRecord<Post> // 3
+    (
       // 9
       // 10
       {

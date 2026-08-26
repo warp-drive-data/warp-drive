@@ -34,7 +34,7 @@ module.exports = function collapseRanges(ranges) {
     let [start, end] = ranges[i];
 
     // scan forward for unprocessed ranges
-    for (let j = i + 1; j < ranges.length; ) {
+    for (let j = i + 1; j < ranges.length;) {
       let [nextStart, nextEnd] = ranges[j];
       if (isBetweenOrAdjacent(nextStart, start, end) || isBetweenOrAdjacent(nextEnd, start, end)) {
         start = start > nextStart ? nextStart : start;

@@ -136,7 +136,11 @@ module('Mutate | hasMany in linksMode', function (hooks) {
     // remote state should not show mutated state
     const assertRemoteState = () => {
       assert.equal(record.friends?.length, 2, 'friends has 2 items');
-      assert.arrayEquals(record.friends?.map((friend) => friend.id)!, ['2', '3'], 'friends are correct');
+      assert.arrayEquals(
+        record.friends?.map((friend) => friend.id)!,
+        ['2', '3'],
+        'friends are correct'
+      );
     };
 
     assertRemoteState();
@@ -151,21 +155,33 @@ module('Mutate | hasMany in linksMode', function (hooks) {
     editable.friends?.push(record4);
     assert.equal(editable.friends?.length, 3, 'friends has 3 items');
     assert.equal(editable.friends?.[2].id, '4', 'friends[2].id is accessible');
-    assert.arrayEquals(editable.friends?.map((friend) => friend.id)!, ['2', '3', '4'], 'friends are correct');
+    assert.arrayEquals(
+      editable.friends?.map((friend) => friend.id)!,
+      ['2', '3', '4'],
+      'friends are correct'
+    );
     assertRemoteState();
 
     // unshift a new record
     editable.friends?.unshift(record6);
     assert.equal(editable.friends?.length, 4, 'friends has 4 items');
     assert.equal(editable.friends?.[0].id, '6', 'friends[0].id is accessible');
-    assert.arrayEquals(editable.friends?.map((friend) => friend.id)!, ['6', '2', '3', '4'], 'friends are correct');
+    assert.arrayEquals(
+      editable.friends?.map((friend) => friend.id)!,
+      ['6', '2', '3', '4'],
+      'friends are correct'
+    );
     assertRemoteState();
 
     // splice in a new record
     editable.friends?.splice(1, 0, record5);
     assert.equal(editable.friends?.length, 5, 'friends has 5 items');
     assert.equal(editable.friends?.[1].id, '5', 'friends[1].id is accessible');
-    assert.arrayEquals(editable.friends?.map((friend) => friend.id)!, ['6', '5', '2', '3', '4'], 'friends are correct');
+    assert.arrayEquals(
+      editable.friends?.map((friend) => friend.id)!,
+      ['6', '5', '2', '3', '4'],
+      'friends are correct'
+    );
     assertRemoteState();
 
     // splice all records, currently failing, omitting deleteCount does not work
