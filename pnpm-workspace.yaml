@@ -29,8 +29,8 @@ minimumReleaseAgeExclude:
   - tmp@0.2.6
   # Renovate security update: turbo@2.9.14
   - turbo@2.9.14
-  # Renovate security update: vite@7.3.2
-  - vite@7.3.2
+  # Renovate security update: vite@7.3.2 || 7.3.5
+  - vite@7.3.2 || 7.3.5
   # Renovate security update: @sveltejs/kit@2.57.1 || 2.69.1 || 2.70.2
   - "@sveltejs/kit@2.57.1 || 2.69.1 || 2.70.2"
   # Renovate security update: hono@4.12.25 || 4.12.34
