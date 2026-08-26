@@ -30,6 +30,7 @@ overrides:
   '@babel/types': ^7.29.8
   '@babel/parser': ^7.29.8
   '@babel/traverse': ^7.29.8
+  prettier: ^3.8.1
 
 packageExtensionsChecksum: sha256-LCLIYKLZ85Sw43nBftLnN6QRYf2xc5hd/XNTpLbwBeM=
 
@@ -2823,9 +2824,6 @@ importers:
       vite-plugin-compression2:
         specifier: ^2.2.0
         version: 2.2.0(rollup@4.62.4)
-      zlib:
-        specifier: 1.0.5
-        version: 1.0.5
 
   tests/utilities:
     devDependencies:
@@ -11396,12 +11394,7 @@ packages:
     resolution: {integrity: sha512-NQS/a03LCefDbOJ1o0NeN+4VdfZRJt6NBp6/5yLMXTQ2TNT4fkcbhfXkvcgl7lN9nmssm6GweX51G/CAEvtazg==}
     engines: {node: 18.* || >= 20}
     peerDependencies:
-      prettier: '>= 3.0.0'
-
-  prettier@2.8.8:
-    resolution: {integrity: sha512-tdN8qQGvNjw4CHbY+XXk0JgCXn9QiF21a55rBe5LJAU+kDyC4WQn4+awm2Xfk2lQMk5fKup9XgzTZtGkjBdP9Q==}
-    engines: {node: '>=10.13.0'}
-    hasBin: true
+      prettier: ^3.8.1
 
   prettier@3.8.1:
     resolution: {integrity: sha512-UOnG6LftzbdaHZcKoPFtOcCKztrQ57WkHDeRD9t/PTQtmT0NHSeWWepj6pS0z/N7+08BHFDQVUrfmfMRcZwbMg==}
@@ -13576,10 +13569,6 @@ packages:
 
   zimmerframe@1.1.4:
     resolution: {integrity: sha512-B58NGBEoc8Y9MWWCQGl/gq9xBCe4IiKM0a2x7GZdQKOW5Exr8S1W24J6OgM1njK8xCRGvAJIL/MxXHf6SkmQKQ==}
-
-  zlib@1.0.5:
-    resolution: {integrity: sha512-40fpE2II+Cd3k8HWTWONfeKE2jL+P42iWJ1zzps5W51qcTsOUKM5Q5m2PFb0CLxlmFAaUuUdJGc3OfZy947v0w==}
-    engines: {node: '>=0.2.0'}
 
   zwitch@2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
@@ -17760,11 +17749,17 @@ snapshots:
     dependencies:
       '@types/ember': 4.0.11
       '@types/ember__object': 4.0.12
+    transitivePeerDependencies:
+      - '@babel/core'
+      - supports-color
 
   '@types/ember__component@4.0.22':
     dependencies:
       '@types/ember': 4.0.11
       '@types/ember__object': 4.0.12
+    transitivePeerDependencies:
+      - '@babel/core'
+      - supports-color
 
   '@types/ember__controller@4.0.12':
     dependencies:
@@ -17800,10 +17795,16 @@ snapshots:
       '@types/ember__controller': 4.0.12
       '@types/ember__object': 4.0.12
       '@types/ember__service': 4.0.9
+    transitivePeerDependencies:
+      - '@babel/core'
+      - supports-color
 
   '@types/ember__runloop@4.0.10':
     dependencies:
       '@types/ember': 4.0.11
+    transitivePeerDependencies:
+      - '@babel/core'
+      - supports-color
 
   '@types/ember__service@4.0.9':
     dependencies:
@@ -20039,7 +20040,7 @@ snapshots:
       '@babel/core': 7.29.7
       '@babel/plugin-syntax-decorators': 7.27.1(@babel/core@7.29.7)
       '@babel/plugin-transform-typescript': 7.29.7(@babel/core@7.29.7)
-      prettier: 2.8.8
+      prettier: 3.8.1
     transitivePeerDependencies:
       - supports-color
 
@@ -25041,8 +25042,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  prettier@2.8.8: {}
-
   prettier@3.8.1: {}
 
   pretty-bytes@5.6.0: {}
@@ -25336,7 +25335,7 @@ snapshots:
       '@babel/core': 7.29.7
       '@babel/plugin-syntax-decorators': 7.27.1(@babel/core@7.29.7)
       '@babel/plugin-transform-typescript': 7.29.7(@babel/core@7.29.7)
-      prettier: 2.8.8
+      prettier: 3.8.1
     transitivePeerDependencies:
       - supports-color
 
@@ -27709,7 +27708,5 @@ snapshots:
       '@yuku-parser/binding-win32-x64': 0.8.4
 
   zimmerframe@1.1.4: {}
-
-  zlib@1.0.5: {}
 
   zwitch@2.0.4: {}
