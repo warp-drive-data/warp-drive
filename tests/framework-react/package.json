@@ -33,7 +33,7 @@
     "@embroider/macros": "^1.20.6",
     "@rollup/plugin-babel": "^6.1.0",
     "@types/react": "^19.2.18",
-    "@types/react-dom": "^19.2.4",
+    "@types/react-dom": "^19.2.5",
     "@warp-drive-internal/specs": "workspace:*",
     "@warp-drive/core": "workspace:*",
     "@warp-drive/diagnostic": "workspace:*",

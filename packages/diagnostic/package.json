@@ -110,7 +110,7 @@
     "@ember/test-helpers": "5.2.0",
     "@glimmer/component": "^2.0.0",
     "@types/react": "^19.2.18",
-    "@types/react-dom": "^19.2.4",
+    "@types/react-dom": "^19.2.5",
     "@warp-drive/internal-config": "workspace:*",
     "bun-types": "^1.4.0",
     "ember-cli-test-loader": "^3.1.0",
