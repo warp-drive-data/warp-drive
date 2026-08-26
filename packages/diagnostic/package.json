@@ -108,7 +108,7 @@
     "@babel/preset-typescript": "^7.29.7",
     "@babel/runtime": "^7.29.7",
     "@ember/test-helpers": "5.2.0",
-    "@glimmer/component": "^2.0.0",
+    "@glimmer/component": "^2.1.1",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.4",
     "@warp-drive/internal-config": "workspace:*",

@@ -70,7 +70,7 @@
     "@babel/preset-env": "^7.29.7",
     "@babel/preset-typescript": "^7.29.7",
     "@ember/test-helpers": "5.2.0",
-    "@glimmer/component": "^2.0.0",
+    "@glimmer/component": "^2.1.1",
     "@types/qunit": "2.19.14",
     "@types/semver": "^7.7.0",
     "@warp-drive/diagnostic": "workspace:*",
