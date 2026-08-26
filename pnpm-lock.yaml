@@ -159,7 +159,7 @@ importers:
         version: 0.35.3
       svgo:
         specifier: ^4.0.0
-        version: 4.0.0
+        version: 4.0.1
       typedoc:
         specifier: ^0.28.20
         version: 0.28.20(typescript@5.9.2)
@@ -183,7 +183,7 @@ importers:
         version: 8.2.1
       vite-plugin-image-optimizer:
         specifier: ^2.0.3
-        version: 2.0.3(sharp@0.35.3)(svgo@4.0.0)(vite@8.2.1)
+        version: 2.0.3(sharp@0.35.3)(svgo@4.0.1)(vite@8.2.1)
       vite-plugin-pwa:
         specifier: ^1.3.0
         version: 1.3.0(vite@8.2.1)
@@ -8231,8 +8231,8 @@ packages:
     resolution: {integrity: sha512-2uM9rYjPvyq39NwLRqaiLtWHyDC1FvryJDa2ATTVims5YAS4PupsEQsDvP14FqhFr0P49CYDugi59xaxJlTXRA==}
     engines: {node: '>=20'}
 
-  commander@14.0.2:
-    resolution: {integrity: sha512-TywoWNNRbhoD0BXs1P3ZEScW8W5iKrnbithIl0YH+uCmBd0QpPOA8yc82DS3BIE5Ma6FnBVUsJ7wVUDz4dvOWQ==}
+  commander@14.0.3:
+    resolution: {integrity: sha512-H+y0Jo/T1RZ9qPP4Eh1pkcQcLRglraJaSLoyOtHxu6AapkjWVCy2Sit1QQ4x3Dng8qDlSsZEet7g5Pq06MvTgw==}
     engines: {node: '>=20'}
 
   commander@2.20.3:
@@ -8565,8 +8565,8 @@ packages:
     resolution: {integrity: sha512-OA0mILzGc1kCOCSJerOeqDxDQ4HOh+G8NbOJFOTgOCzpw7fCBubk0fEyxp8AgOL/jvLgYA/uV0cMbe43ElF1JA==}
     engines: {node: ^10 || ^12.20.0 || ^14.13.0 || >=15.0.0, npm: '>=7.0.0'}
 
-  css-tree@3.1.0:
-    resolution: {integrity: sha512-0eW44TGN5SQXU1mWSkKwFstI/22X2bG1nYzZTYMAWjylYURhse752YgbE4Cx46AC+bAvI+/dYTPRk1LqSUnu6w==}
+  css-tree@3.2.1:
+    resolution: {integrity: sha512-X7sjQzceUhu1u7Y/ylrRZFU2FS6LRiFVp6rKLPg23y3x3c3DOKAwuXGDp+PAGjh6CSnCjYeAul8pcT8bAl+lSA==}
     engines: {node: ^10 || ^12.20.0 || ^14.13.0 || >=15.0.0}
 
   css-unit-converter@1.1.2:
@@ -11009,8 +11009,8 @@ packages:
   mdn-data@2.0.28:
     resolution: {integrity: sha512-aylIc7Z9y4yzHYAJNuESG3hfhC+0Ibp/MAMiaOZgNv4pmEdFyfZhhhny4MNiAfWdBQ1RQ2mfDWmM1x8SvGyp8g==}
 
-  mdn-data@2.12.2:
-    resolution: {integrity: sha512-IEn+pegP1aManZuckezWCO+XZQDplx1366JoVhTpMpBB1sPey/SbveZQUosKiKiGYjg1wH4pMlNgXbCiYgihQA==}
+  mdn-data@2.27.1:
+    resolution: {integrity: sha512-9Yubnt3e8A0OKwxYSXyhLymGW4sCufcLG6VdiDdUGVkPhpqLxlvP5vl1983gQjJl3tqbrM731mjaZaP68AgosQ==}
 
   mdurl@2.0.0:
     resolution: {integrity: sha512-Lf+9+2r+Tdp5wXDXC4PcIBjTDtq4UKjCPMQhKIuzpJNW0b96kVqSwW0bT7FhRSfmAiFYgP+SCRvdrDozfh0U5w==}
@@ -12407,8 +12407,9 @@ packages:
     engines: {node: 10.* || >= 12.*}
     hasBin: true
 
-  sax@1.4.1:
-    resolution: {integrity: sha512-+aWOz7yVScEGoKNd4PA10LZ8sk0A/z5+nXQG5giUO5rprX9jgYsTdov9qCchZiPIZezbZH+jRut8nPodFAX4Jg==}
+  sax@1.6.1:
+    resolution: {integrity: sha512-42tBVwLWnaQvW5zc4HbZrTuWccECCZfBi92FDuwtqxasH+JbPB3/FOKb1m222K42R4WxuxzzMsTswfzgtSu64Q==}
+    engines: {node: '>=11.0.0'}
 
   saxes@6.0.0:
     resolution: {integrity: sha512-xAg7SOnEhrm5zI3puOOKyy1OMcMlIJZYNJY7xLBwSze0UjhPLnWfj2GF2EpT0jmzaJKIWKHLsaSSajf35bcYnA==}
@@ -12912,8 +12913,13 @@ packages:
   svg-tags@1.0.0:
     resolution: {integrity: sha512-ovssysQTa+luh7A5Weu3Rta6FJlFBBbInjOh722LIt6klpU2/HtdUbszju/G4devcvk8PGt7FCLv5wftu3THUA==}
 
-  svgo@4.0.0:
-    resolution: {integrity: sha512-VvrHQ+9uniE+Mvx3+C9IEe/lWasXCU0nXMY2kZeLrHNICuRiC8uMPyM14UEaMOFA5mhyQqEkB02VoQ16n3DLaw==}
+  svgo@4.0.1:
+    resolution: {integrity: sha512-XDpWUOPC6FEibaLzjfe0ucaV0YrOjYotGJO1WpF0Zd+n6ZGEQUsSugaoLq9QkEZtAfQIxT42UChcssDVPP3+/w==}
+    engines: {node: '>=16'}
+    hasBin: true
+
+  svgo@4.0.2:
+    resolution: {integrity: sha512-ekx94z1rRc5LDi6oSUaeRnYhd0UOJxdtQCL2rF8xpWxD3TPAsISWOrxezqGovqS38GRZOdpDfvQe3ts6F7nsng==}
     engines: {node: '>=16'}
     hasBin: true
 
@@ -20057,7 +20063,7 @@ snapshots:
       debug: 4.4.1
       front-matter: 4.0.2
       sharp: 0.35.3
-      svgo: 4.0.0
+      svgo: 4.0.2
       typedoc: 0.28.20(typescript@5.9.2)
       typedoc-plugin-markdown: 4.12.0(typedoc@0.28.20(typescript@5.9.2))
       typedoc-plugin-mdn-links: 5.1.1(typedoc@0.28.20(typescript@5.9.2))
@@ -20065,7 +20071,7 @@ snapshots:
       typedoc-vitepress-theme: 1.1.3(3c362d58e02ede1ff411ef200c10043d)
       typescript: 5.9.2
       vite: 8.2.1
-      vite-plugin-image-optimizer: 2.0.3(sharp@0.35.3)(svgo@4.0.0)(vite@8.2.1)
+      vite-plugin-image-optimizer: 2.0.3(sharp@0.35.3)(svgo@4.0.2)(vite@8.2.1)
       vite-plugin-pwa: 1.3.0(vite@8.2.1)
       vitepress: 2.0.0-alpha.19(typescript@5.9.2)
       vitepress-plugin-group-icons: 1.7.6(vite@8.2.1)
@@ -21259,7 +21265,7 @@ snapshots:
       ansi-html: 0.0.9
       broccoli-node-info: 2.2.0
       broccoli-source: 3.0.1
-      commander: 14.0.2
+      commander: 14.0.3
       connect: 3.7.0
       console-ui: 3.1.2
       findup-sync: 5.0.0
@@ -21647,7 +21653,7 @@ snapshots:
 
   commander@14.0.0: {}
 
-  commander@14.0.2: {}
+  commander@14.0.3: {}
 
   commander@2.20.3: {}
 
@@ -21848,9 +21854,9 @@ snapshots:
       mdn-data: 2.0.28
       source-map-js: 1.2.1
 
-  css-tree@3.1.0:
+  css-tree@3.2.1:
     dependencies:
-      mdn-data: 2.12.2
+      mdn-data: 2.27.1
       source-map-js: 1.2.1
 
   css-unit-converter@1.1.2: {}
@@ -25249,7 +25255,7 @@ snapshots:
 
   mdn-data@2.0.28: {}
 
-  mdn-data@2.12.2: {}
+  mdn-data@2.27.1: {}
 
   mdurl@2.0.0: {}
 
@@ -26783,7 +26789,7 @@ snapshots:
       minimist: 1.2.8
       walker: 1.0.8
 
-  sax@1.4.1: {}
+  sax@1.6.1: {}
 
   saxes@6.0.0:
     dependencies:
@@ -27426,15 +27432,25 @@ snapshots:
 
   svg-tags@1.0.0: {}
 
-  svgo@4.0.0:
+  svgo@4.0.1:
     dependencies:
       commander: 11.1.0
       css-select: 5.2.2
-      css-tree: 3.1.0
+      css-tree: 3.2.1
       css-what: 6.2.2
       csso: 5.0.5
       picocolors: 1.1.1
-      sax: 1.4.1
+      sax: 1.6.1
+
+  svgo@4.0.2:
+    dependencies:
+      commander: 11.1.0
+      css-select: 5.2.2
+      css-tree: 3.2.1
+      css-what: 6.2.2
+      csso: 5.0.5
+      picocolors: 1.1.1
+      sax: 1.6.1
 
   symbol-tree@3.2.4: {}
 
@@ -28331,14 +28347,23 @@ snapshots:
     transitivePeerDependencies:
       - rollup
 
-  vite-plugin-image-optimizer@2.0.3(sharp@0.35.3)(svgo@4.0.0)(vite@8.2.1):
+  vite-plugin-image-optimizer@2.0.3(sharp@0.35.3)(svgo@4.0.1)(vite@8.2.1):
     dependencies:
       ansi-colors: 4.1.3
       pathe: 2.0.3
       vite: 8.2.1
     optionalDependencies:
       sharp: 0.35.3
-      svgo: 4.0.0
+      svgo: 4.0.1
+
+  vite-plugin-image-optimizer@2.0.3(sharp@0.35.3)(svgo@4.0.2)(vite@8.2.1):
+    dependencies:
+      ansi-colors: 4.1.3
+      pathe: 2.0.3
+      vite: 8.2.1
+    optionalDependencies:
+      sharp: 0.35.3
+      svgo: 4.0.2
 
   vite-plugin-pwa@1.3.0(vite@8.2.1):
     dependencies:
