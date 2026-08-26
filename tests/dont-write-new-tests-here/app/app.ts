@@ -1,19 +1,24 @@
 import '@warp-drive/ember/install';
 
-// disable the normalization cache as we no longer normalize, the cache has become a bottle neck.
-// import { Registry } from '@ember/-internals/container';
-import Application from '@ember/application';
+// classic ember-cli addons contribute their own app/initializers/*.js files,
+// which get merged into the consuming app's namespace by broccoli's
+// addon-tree-merging and auto-run by ember-load-initializers. Neither of
+// those mechanisms exist in this native (non-compat) pipeline, so addon
+// initializers must be registered explicitly. ember-data's own initializer
+// marks serializers/adapters as non-singleton -- without it, `owner.lookup`
+// caches one shared instance per registration name, which silently breaks
+// any test relying on each store getting its own adapter/serializer.
+import EmberDataInitializer from 'ember-data/app/initializers/ember-data';
+import Application from 'ember-strict-application-resolver';
 
-import compatModules from '@embroider/virtual/compat-modules';
+import Router from './router';
 
-import loadInitializers from 'ember-load-initializers';
-
-import config from './config/environment';
-import Resolver from './resolver';
-
-// (Registry as { prototype: { normalize(v: string): string } }).prototype.normalize = function (i) {
-//   return i;
-// };
+// ember-data's app/initializers/ember-data.js is a plain, untyped classic
+// addon file (no .d.ts), so TypeScript infers its default export as `any`.
+// Cast to whatever `Application.initializer` itself actually expects, rather
+// than guessing/importing a type name that may not match this resolver's own
+// signature.
+Application.initializer(EmberDataInitializer as Parameters<typeof Application.initializer>[0]);
 
 const EventConfig = {
   touchstart: null,
@@ -43,12 +48,17 @@ const EventConfig = {
 };
 
 class App extends Application {
-  modulePrefix = config.modulePrefix;
-  podModulePrefix = config.podModulePrefix;
-  override Resolver = Resolver.withModules(compatModules);
   override customEvents = EventConfig;
-}
 
-loadInitializers(App, config.modulePrefix, compatModules);
+  modules: Application['modules'] = {
+    './router': Router,
+    ...import.meta.glob('./adapters/*', { eager: true }),
+    ...import.meta.glob('./models/*', { eager: true }),
+    ...import.meta.glob('./routes/*', { eager: true }),
+    ...import.meta.glob('./services/*', { eager: true }),
+    ...import.meta.glob('./templates/*', { eager: true }),
+    ...import.meta.glob('./transforms/*', { eager: true }),
+  };
+}
 
 export default App;

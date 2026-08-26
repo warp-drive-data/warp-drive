@@ -1,5 +1,6 @@
 import { setComponentTemplate } from '@ember/component';
 import * as s from '@ember/service';
+import { precompileTemplate } from '@ember/template-compilation';
 import { render, settled } from '@ember/test-helpers';
 import Component from '@glimmer/component';
 import { cached, tracked } from '@glimmer/tracking';
@@ -7,7 +8,6 @@ import { untrack as untracked } from '@glimmer/validator';
 
 import { module, test } from 'qunit';
 
-import { hbs } from 'ember-cli-htmlbars';
 import { setupRenderingTest } from 'ember-qunit';
 
 import Model, { attr } from '@ember-data/model';
@@ -68,21 +68,23 @@ module('acceptance/tracking-transactions', function (hooks) {
       }
     }
 
-    const layout = hbs`
+    const layout = precompileTemplate(`
       <ul>
         {{#each this.widgets.data as |widget|}}
           <li>{{widget.name}} {{if widget.isValid 'Is Valid' 'Is Invalid'}}</li>
         {{/each}}
       </ul>
-    `;
+    `);
 
     owner.register('model:widget', Widget);
     owner.register('component:widget-creator', setComponentTemplate(layout, WidgetCreator));
     this.name = 'Chris';
 
-    await render(hbs`
+    await render(
+      precompileTemplate(`
       <WidgetCreator @name={{this.name}} />
-    `);
+    `)
+    );
     await settled();
 
     assert.dom('ul > li').exists({ count: 1 });

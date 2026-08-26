@@ -9,6 +9,13 @@ module.exports = function (environment) {
     locationType: 'history',
     EmberENV: {
       RAISE_ON_DEPRECATION: false,
+      // Classic ember-cli merges config/optional-features.json into these
+      // EmberENV flags at build time. That merge doesn't happen under the
+      // native (non-compat) @embroider/vite pipeline, so it's replicated
+      // here by hand -- keep these in sync with optional-features.json.
+      _APPLICATION_TEMPLATE_WRAPPER: false,
+      _TEMPLATE_ONLY_GLIMMER_COMPONENTS: true,
+      _JQUERY_INTEGRATION: false,
     },
 
     APP: {

@@ -1,13 +1,13 @@
 import { setComponentTemplate } from '@ember/component';
 import { action } from '@ember/object';
 import * as s from '@ember/service';
+import { precompileTemplate } from '@ember/template-compilation';
 import { click, findAll, render } from '@ember/test-helpers';
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 
 import { module, test } from 'qunit';
 
-import { hbs } from 'ember-cli-htmlbars';
 import { setupRenderingTest } from 'ember-qunit';
 
 import Model, { attr, belongsTo, hasMany } from '@ember-data/model';
@@ -97,7 +97,7 @@ module('tracking state flags on a record', function (hooks) {
         this.newChild = this.store.createRecord('person', { name, parent });
       }
     }
-    const layout = hbs`
+    const layout = precompileTemplate(`
         {{#if this.newChild}}
           <button id="saveChild" {{on "click" this.saveChild}}>Save child</button>
         {{else}}
@@ -117,7 +117,7 @@ module('tracking state flags on a record', function (hooks) {
             <li>{{child.name}} is {{if child.isNew 'young' 'old'}}</li>
         {{/each}}
         </ul>
-        `;
+        `);
     class Serializer {
       normalizeResponse(_, __, response) {
         return response;
@@ -168,7 +168,7 @@ module('tracking state flags on a record', function (hooks) {
     });
 
     this.set('model', person);
-    await render(hbs`<ChildrenList @model={{this.model}} />`);
+    await render(precompileTemplate(`<ChildrenList @model={{this.model}} />`));
 
     let all = findAll('ul#all-children > li').map((e) => e.textContent);
     let filtered = findAll('ul#filtered-children > li').map((e) => e.textContent);

@@ -1,19 +1,87 @@
 import { createRequire } from 'node:module';
+import { fileURLToPath } from 'node:url';
+import { dirname, join } from 'node:path';
 
-import { babelCompatSupport, templateCompatSupport } from '@embroider/compat/babel';
+import { setConfig } from '@warp-drive/core/build-config';
+import { macros as warpDriveMacros } from '@warp-drive/core/build-config/babel-macros';
+import { buildMacros } from '@embroider/macros/babel';
 
 const require = createRequire(import.meta.url);
 
+function isEnabled(flag) {
+  return flag === true || flag === 'true' || flag === '1';
+}
+
+// @ember-data/unpublished-test-infra is a v1-shimmed v2 addon that sets its
+// own @embroider/macros config (VERSION, ASSERT_ALL_DEPRECATIONS) via the
+// classic `addon.options['@embroider/macros'].setOwnConfig` convention (see
+// its addon-main.cjs). That convention is only ever read during classic
+// ember-cli addon-tree resolution, which this app no longer does now that it
+// builds through @embroider/vite's native (non-compat) pipeline. Without
+// this, `getOwnConfig()` inside unpublished-test-infra's own source resolves
+// to `undefined` and crashes. Replicate what the addon-shim would have done.
+//
+// The package's own `exports` map has no `"./package.json"` entry (its `"./*"`
+// wildcard redirects into `dist/`, which doesn't contain one either), so we
+// resolve its main entry and walk up to the package root instead.
+const unpublishedTestInfraEntry = fileURLToPath(import.meta.resolve('@ember-data/unpublished-test-infra'));
+const unpublishedTestInfraPkg = join(dirname(unpublishedTestInfraEntry), '..', 'package.json');
+
+// vite build's own NODE_ENV=production default (forced internally regardless
+// of `--mode`, unless already set) would otherwise make both this app's own
+// DEBUG/PRODUCTION/TESTING resolution (via getEnv() below) and
+// @embroider/macros's own buildMacros() dev-mode detection (which gates
+// isDevelopingApp()/isTesting(), used internally by e.g. ember-source's
+// @ember/debug deprecate/assert/warn) permanently resolve to production. Both
+// read process.env.NODE_ENV directly, so build:tests/build:production set it
+// explicitly before invoking vite (matching tests/framework-ember's pattern)
+// rather than fighting vite's default here.
+const macrosConfig = buildMacros({
+  configure: (config) => {
+    setConfig(config, {
+      compatWith: isEnabled(process.env.EMBER_DATA_FULL_COMPAT) ? '99.0' : null,
+      deprecations: {
+        DEPRECATE_STORE_EXTENDS_EMBER_OBJECT: false,
+        DEPRECATE_TRACKING_PACKAGE: false,
+      },
+      debug: {
+        // LOG_GRAPH: true,
+        // LOG_IDENTIFIERS: true,
+        // LOG_NOTIFICATIONS: true,
+        // LOG_INSTANCE_CACHE: true,
+        // LOG_CACHE: true,
+        // LOG_REQUESTS: true,
+        // LOG_REQUEST_STATUS: true,
+      },
+    });
+    config.setOwnConfig(unpublishedTestInfraPkg, {
+      VERSION: require(unpublishedTestInfraPkg).version,
+      ASSERT_ALL_DEPRECATIONS: Boolean(process.env.ASSERT_ALL_DEPRECATIONS),
+    });
+  },
+});
+
+const macros = {
+  gts: macrosConfig.templateMacros,
+  // deliberately omits babel-plugin-debug-macros: @ember/debug's deprecate()/
+  // warn()/assert() already gate correctly via @embroider/macros on their
+  // own. Rewriting them into console.warn() bypasses registerDeprecationHandler
+  // dispatch, breaking any test asserting on expectDeprecation()/deprecation
+  // counts.
+  //
+  // warpDriveMacros() (from @warp-drive/core/build-config/babel-macros) is a
+  // separate plugin set from buildMacros()/setConfig() above: it rewrites
+  // bare `import { DEBUG } from '@warp-drive/build-config/env'` references
+  // (used directly in an `if`/ternary, not wrapped in macroCondition()) into
+  // a resolvable macroCondition(getGlobalConfig()...) construct. Without it,
+  // such references keep their literal source value (env.ts hardcodes
+  // `DEBUG = true`), so code checking DEBUG this way always sees `true`
+  // regardless of the actual build.
+  js: [...warpDriveMacros(), ...macrosConfig.babelMacros],
+};
+
 export default {
   plugins: [
-    // NOTE: we do NOT also spread `macros()` (from
-    // `@warp-drive/build-config/babel-macros`) here. `ember-cli-build.js`
-    // already registers those same plugins on the classic `EmberApp` via
-    // `babel: { plugins: [...macros()] }`, and `compatBuild`'s addon-widening
-    // step captures that registration. `babelCompatSupport()` below already
-    // re-surfaces it (via `pluginsFromV1Addons()`) for vite's babel pass, so
-    // adding it again here would register the same plugins twice and trip
-    // Babel's duplicate-plugin detection.
     [
       '@babel/plugin-transform-typescript',
       {
@@ -25,19 +93,14 @@ export default {
     [
       'babel-plugin-ember-template-compilation',
       {
-        enableLegacyModules: [
-          'ember-cli-htmlbars',
-          'ember-cli-htmlbars-inline-precompile',
-          'htmlbars-inline-precompile',
-        ],
-        transforms: [...templateCompatSupport()],
+        transforms: [...macros.gts],
       },
     ],
     [
       'module:decorator-transforms',
       {
         runtime: {
-          import: require.resolve('decorator-transforms/runtime-esm'),
+          import: import.meta.resolve('decorator-transforms/runtime-esm'),
         },
       },
     ],
@@ -49,7 +112,7 @@ export default {
         regenerator: false,
       },
     ],
-    ...babelCompatSupport(),
+    ...macros.js,
   ],
 
   generatorOpts: {
