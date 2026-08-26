@@ -33,8 +33,8 @@ minimumReleaseAgeExclude:
   - vite@7.3.2
   # Renovate security update: @sveltejs/kit@2.57.1 || 2.69.1
   - "@sveltejs/kit@2.57.1 || 2.69.1"
-  # Renovate security update: hono@4.12.25
-  - hono@4.12.25
+  # Renovate security update: hono@4.12.25 || 4.12.34
+  - hono@4.12.25 || 4.12.34
   # Renovate security update: morgan@1.11.0
   - morgan@1.11.0
 
