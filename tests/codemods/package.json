@@ -41,7 +41,7 @@
     "@warp-drive/internal-config": "workspace:*",
     "eslint": "^9.34.0",
     "qunit": "^2.26.0",
-    "vitest": "^3.2.7"
+    "vitest": "^4.1.11"
   },
   "volta": {
     "extends": "../../package.json"

@@ -61,7 +61,7 @@
     "@ember-data/tracking": "workspace:*",
     "@ember/test-waiters": "^4.1.2",
     "@warp-drive/internal-config": "workspace:*",
-    "ember-source": "~6.12.0",
+    "ember-source": "catalog:",
     "tsdown": "^0.22.14",
     "typescript": "^5.9.3"
   },

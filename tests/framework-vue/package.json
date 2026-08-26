@@ -43,7 +43,7 @@
     "babel-plugin-debug-macros": "^2.0.0",
     "decorator-transforms": "^2.4.0",
     "typescript": "^5.9.3",
-    "vite": "^8.2.1",
+    "vite": "catalog:",
     "vue": "^3.5.41",
     "vue-tsc": "^3.3.10"
   },

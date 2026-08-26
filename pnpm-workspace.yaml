@@ -128,3 +128,13 @@ packages:
   - "!docs-viewer/projects/*"
   - "tests/*"
   - "specs"
+
+## Single source of truth for devDependency versions that are duplicated
+## across many workspace packages. Package.json entries reference these via
+## "catalog:" instead of a hardcoded version so there's only one place to
+## bump, and pnpm resolves every consumer to the exact same version instead
+## of letting per-package ranges drift apart.
+catalog:
+  ember-source: ~7.2.0
+  vite: ^8.2.1
+  "@types/node": ^26.2.0
