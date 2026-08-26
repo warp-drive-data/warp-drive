@@ -1,13 +1,13 @@
 import { setComponentTemplate } from '@ember/component';
 import { action } from '@ember/object';
 import * as s from '@ember/service';
+import { precompileTemplate } from '@ember/template-compilation';
 import { click, findAll, render } from '@ember/test-helpers';
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 
 import { module, test } from 'qunit';
 
-import { precompileTemplate } from '@ember/template-compilation';
 import { setupRenderingTest } from 'ember-qunit';
 
 import Model, { attr, belongsTo, hasMany } from '@ember-data/model';

@@ -3,6 +3,7 @@ import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 
 import { setConfig } from '@warp-drive/core/build-config';
+import { macros as warpDriveMacros } from '@warp-drive/core/build-config/babel-macros';
 import { buildMacros } from '@embroider/macros/babel';
 
 const require = createRequire(import.meta.url);
@@ -62,18 +63,21 @@ const macrosConfig = buildMacros({
 
 const macros = {
   gts: macrosConfig.templateMacros,
-  // note: unlike @warp-drive/core/build-config's babelPlugin() convenience
-  // helper (for apps with no @embroider/macros of their own), this app's
-  // classic ember-cli-build.js never ran babel-plugin-debug-macros over
-  // deprecate()/warn() calls -- it already had @embroider/macros set up via
-  // EmberApp, and @ember/debug's own dist already gates deprecate()/warn()
-  // correctly via @embroider/macros. Adding babel-plugin-debug-macros here
-  // rewrote every deprecate() call (including inside @warp-drive/core's own
-  // dist, since this babel pass has no node_modules exclude) into a bare
-  // console.warn(), bypassing @ember/debug's registerDeprecationHandler
-  // dispatch entirely -- which silently broke every test asserting on
-  // `assert.expectDeprecation()`/deprecation counts.
-  js: [...macrosConfig.babelMacros],
+  // deliberately omits babel-plugin-debug-macros: @ember/debug's deprecate()/
+  // warn()/assert() already gate correctly via @embroider/macros on their
+  // own. Rewriting them into console.warn() bypasses registerDeprecationHandler
+  // dispatch, breaking any test asserting on expectDeprecation()/deprecation
+  // counts.
+  //
+  // warpDriveMacros() (from @warp-drive/core/build-config/babel-macros) is a
+  // separate plugin set from buildMacros()/setConfig() above: it rewrites
+  // bare `import { DEBUG } from '@warp-drive/build-config/env'` references
+  // (used directly in an `if`/ternary, not wrapped in macroCondition()) into
+  // a resolvable macroCondition(getGlobalConfig()...) construct. Without it,
+  // such references keep their literal source value (env.ts hardcodes
+  // `DEBUG = true`), so code checking DEBUG this way always sees `true`
+  // regardless of the actual build.
+  js: [...warpDriveMacros(), ...macrosConfig.babelMacros],
 };
 
 export default {

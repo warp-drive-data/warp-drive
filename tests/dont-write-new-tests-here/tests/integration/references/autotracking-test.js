@@ -1,9 +1,9 @@
 import EmberObject from '@ember/object';
+import { precompileTemplate } from '@ember/template-compilation';
 import { getRootElement, render, settled } from '@ember/test-helpers';
 
 import { module, test } from 'qunit';
 
-import { precompileTemplate } from '@ember/template-compilation';
 import { setupRenderingTest } from 'ember-qunit';
 
 import Model, { attr, belongsTo, hasMany } from '@ember-data/model';
@@ -231,7 +231,9 @@ module('integration/references/autotracking', function (hooks) {
     const testContext = new TestContext();
     this.set('context', testContext);
     await render(
-      precompileTemplate(`{{#each this.context.friends as |friend|}}id: {{if friend.id friend.id 'null'}}, {{else}}No Friends Loaded{{/each}}`)
+      precompileTemplate(
+        `{{#each this.context.friends as |friend|}}id: {{if friend.id friend.id 'null'}}, {{else}}No Friends Loaded{{/each}}`
+      )
     );
 
     assert.strictEqual(getRootElement().textContent, 'No Friends Loaded', 'the ids are initially correct');
@@ -267,7 +269,9 @@ module('integration/references/autotracking', function (hooks) {
     const testContext = new TestContext();
     this.set('context', testContext);
     await render(
-      precompileTemplate(`{{#each this.context.friends as |friend|}}id: {{if friend.id friend.id 'null'}}, {{else}}No Friends Loaded{{/each}}`)
+      precompileTemplate(
+        `{{#each this.context.friends as |friend|}}id: {{if friend.id friend.id 'null'}}, {{else}}No Friends Loaded{{/each}}`
+      )
     );
 
     assert.strictEqual(getRootElement().textContent, 'No Friends Loaded', 'the ids are initially correct');

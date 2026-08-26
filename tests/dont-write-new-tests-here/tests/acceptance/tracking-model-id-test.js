@@ -1,10 +1,10 @@
 import { setComponentTemplate } from '@ember/component';
+import { precompileTemplate } from '@ember/template-compilation';
 import { render, settled } from '@ember/test-helpers';
 import Component from '@glimmer/component';
 
 import { module, test } from 'qunit';
 
-import { precompileTemplate } from '@ember/template-compilation';
 import { setupRenderingTest } from 'ember-qunit';
 
 import JSONAPIAdapter from '@ember-data/adapter/json-api';
@@ -72,9 +72,11 @@ module('acceptance/tracking-model-id - tracking model id', function (hooks) {
     store.createRecord('widget', { id: '2', name: 'Gadget' });
     this.widgets = store.peekAll('widget');
 
-    await render(precompileTemplate(`
+    await render(
+      precompileTemplate(`
       <WidgetList @widgets={{this.widgets}} />
-    `));
+    `)
+    );
     await settled();
 
     assert.dom('ul>li+li+li').exists();

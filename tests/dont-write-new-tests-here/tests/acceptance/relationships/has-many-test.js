@@ -3,12 +3,12 @@ import { setComponentTemplate } from '@ember/component';
 import { action } from '@ember/object';
 import { sort } from '@ember/object/computed';
 import * as s from '@ember/service';
+import { precompileTemplate } from '@ember/template-compilation';
 import { click, find, findAll, render, rerender, settled } from '@ember/test-helpers';
 import Component from '@glimmer/component';
 
 import QUnit, { module, test } from 'qunit';
 
-import { precompileTemplate } from '@ember/template-compilation';
 import { render as legacyRender } from 'ember-data/test-support';
 import { setupRenderingTest } from 'ember-qunit';
 
@@ -241,13 +241,15 @@ module('async has-many rendering tests', function (hooks) {
       // render
       this.set('parent', parent);
 
-      await legacyRender(precompileTemplate(`
+      await legacyRender(
+        precompileTemplate(`
         <ul>
         {{#each this.parent.children as |child|}}
           <li>{{child.name}}</li>
         {{/each}}
         </ul>
-      `));
+      `)
+      );
 
       const names = findAll('li').map((e) => e.textContent);
 
@@ -270,13 +272,15 @@ module('async has-many rendering tests', function (hooks) {
       // render
       this.set('parent', parent);
 
-      await legacyRender(precompileTemplate(`
+      await legacyRender(
+        precompileTemplate(`
         <ul>
         {{#each this.parent.children as |child|}}
           <li>{{child.name}}</li>
         {{/each}}
         </ul>
-      `));
+      `)
+      );
 
       let items = findAll('li');
       let names = items.map((e) => e.textContent);
@@ -370,13 +374,15 @@ module('async has-many rendering tests', function (hooks) {
         }
       };
 
-      await render(precompileTemplate(`
+      await render(
+        precompileTemplate(`
         <ul>
         {{#each this.parent.children as |child|}}
           <li>{{child.name}}</li>
         {{/each}}
         </ul>
-      `));
+      `)
+      );
 
       await store._getAllPending();
       await settled();
@@ -428,13 +434,15 @@ module('async has-many rendering tests', function (hooks) {
       // render
       this.set('parent', parent);
 
-      await render(precompileTemplate(`
+      await render(
+        precompileTemplate(`
       <ul>
       {{#each this.parent.children as |child|}}
         <li>{{child.name}}</li>
       {{/each}}
       </ul>
-    `));
+    `)
+      );
 
       const names = findAll('li').map((e) => e.textContent);
 
@@ -454,13 +462,15 @@ module('async has-many rendering tests', function (hooks) {
       // render
       this.set('parent', parent);
 
-      await render(precompileTemplate(`
+      await render(
+        precompileTemplate(`
       <ul>
       {{#each this.parent.children as |child|}}
         <li>{{child.name}}</li>
       {{/each}}
       </ul>
-    `));
+    `)
+      );
 
       let items = findAll('li');
       let names = items.map((e) => e.textContent);
@@ -530,13 +540,15 @@ module('async has-many rendering tests', function (hooks) {
         return originalPushResult.call(this, result);
       };
 
-      await render(precompileTemplate(`
+      await render(
+        precompileTemplate(`
       <ul>
       {{#each this.parent.children as |child|}}
         <li>{{child.name}}</li>
       {{/each}}
       </ul>
-    `));
+    `)
+      );
 
       const names = findAll('li').map((e) => e.textContent);
 
@@ -577,13 +589,15 @@ module('async has-many rendering tests', function (hooks) {
       // render
       this.set('parent', parent);
 
-      await render(precompileTemplate(`
+      await render(
+        precompileTemplate(`
       <ul>
       {{#each this.parent.children as |child|}}
         <li>{{child.name}}</li>
       {{/each}}
       </ul>
-    `));
+    `)
+      );
 
       const names = findAll('li').map((e) => e.textContent);
 
@@ -605,13 +619,15 @@ module('async has-many rendering tests', function (hooks) {
       // render
       this.set('parent', parent);
 
-      await render(precompileTemplate(`
+      await render(
+        precompileTemplate(`
       <ul>
       {{#each this.parent.children as |child|}}
         <li>{{child.name}}</li>
       {{/each}}
       </ul>
-    `));
+    `)
+      );
 
       const names = findAll('li').map((e) => e.textContent);
 
@@ -631,13 +647,15 @@ module('async has-many rendering tests', function (hooks) {
       // render
       this.set('parent', parent);
 
-      await render(precompileTemplate(`
+      await render(
+        precompileTemplate(`
       <ul>
       {{#each this.parent.children as |child|}}
         <li>{{child.name}}</li>
       {{/each}}
       </ul>
-    `));
+    `)
+      );
 
       let items = findAll('li');
       let names = items.map((e) => e.textContent);

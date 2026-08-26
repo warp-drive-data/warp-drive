@@ -6,13 +6,9 @@ export default defineConfig({
   build: {
     outDir: 'dist-test',
     sourcemap: false,
-    // this app is only ever built for testing (build:tests/build:production),
-    // never shipped -- the classic ember-cli-build.js explicitly disabled
-    // ember-cli-terser for the equivalent case (EMBER_CLI_TEST_COMMAND &&
-    // EMBER_ENV === 'production') for the same reason. Minifying here adds
-    // nothing (there's no real bundle-size concern for a test app) and
-    // terser's mangling has been observed to break the built app at runtime
-    // (e.g. corrupting router/owner state), so skip it entirely.
+    // @embroider/vite's `ember()` plugin defaults `build.minify` to `'terser'`
+    // for production builds. main-test-app is never published/shipped, so skip
+    // minification entirely rather than paying for it.
     minify: false,
   },
   plugins: [

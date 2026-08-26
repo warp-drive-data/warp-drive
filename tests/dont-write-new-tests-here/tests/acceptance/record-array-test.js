@@ -1,9 +1,9 @@
 import { computed } from '@ember/object';
+import { precompileTemplate } from '@ember/template-compilation';
 import { findAll, render, rerender } from '@ember/test-helpers';
 
 import { module, test } from 'qunit';
 
-import { precompileTemplate } from '@ember/template-compilation';
 import { setupRenderingTest } from 'ember-qunit';
 
 import Model, { attr } from '@ember-data/model';
@@ -38,13 +38,15 @@ module('LiveArray | Classic Chains', function (hooks) {
     const presenter = new Presenter();
     this.set('presenter', presenter);
 
-    await render(precompileTemplate(`
+    await render(
+      precompileTemplate(`
       <ul>
       {{#each this.presenter.records as |record|}}
         <li>{{record.name}}</li>
       {{/each}}
       </ul>
-    `));
+    `)
+    );
 
     let rendered = findAll('li').map((e) => e.textContent);
 
@@ -90,13 +92,15 @@ module('LiveArray | Classic Chains', function (hooks) {
 
       this.set('presenter', presenter);
 
-      await render(precompileTemplate(`
+      await render(
+        precompileTemplate(`
         <ul>
         {{#each this.presenter.names as |name|}}
           <li>{{name}}</li>
         {{/each}}
         </ul>
-      `));
+      `)
+      );
 
       let rendered = findAll('li').map((e) => e.textContent);
 
@@ -145,13 +149,15 @@ module('LiveArray | Classic Chains', function (hooks) {
 
       this.set('presenter', presenter);
 
-      await render(precompileTemplate(`
+      await render(
+        precompileTemplate(`
         <ul>
         {{#each this.presenter.names as |name|}}
           <li>{{name}}</li>
         {{/each}}
         </ul>
-      `));
+      `)
+      );
 
       let rendered = findAll('li').map((e) => e.textContent);
 
@@ -200,13 +206,15 @@ module('LiveArray | Classic Chains', function (hooks) {
 
       this.set('presenter', presenter);
 
-      await render(precompileTemplate(`
+      await render(
+        precompileTemplate(`
         <ul>
         {{#each this.presenter.names as |name|}}
           <li>{{name}}</li>
         {{/each}}
         </ul>
-      `));
+      `)
+      );
 
       let rendered = findAll('li').map((e) => e.textContent);
 
