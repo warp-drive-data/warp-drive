@@ -142,7 +142,8 @@
       "prettier": "^3.8.1",
       "@types/node": "catalog:",
       "@vue/compiler-sfc": "3.5.41",
-      "@shikijs/langs": "4.4.3"
+      "@shikijs/langs": "4.4.3",
+      "string.prototype.matchall": "npm:@nolyfill/string.prototype.matchall@^1"
     },
     "peerDependencyRules": {
       "ignoreMissing": [
