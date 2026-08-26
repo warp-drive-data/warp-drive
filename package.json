@@ -52,7 +52,7 @@
     "typescript": "^5.9.3"
   },
   "dependencies": {
-    "turbo": "^2.7.6"
+    "turbo": "^2.10.11"
   },
   "engines": {
     "node": ">= 25.9.0",
