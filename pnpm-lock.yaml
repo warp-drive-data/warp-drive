@@ -683,10 +683,10 @@ importers:
     dependencies:
       '@hono/node-server':
         specifier: ^1.19.0
-        version: 1.19.0(hono@4.12.34)
+        version: 1.19.0(hono@4.13.3)
       hono:
-        specifier: ^4.9.4
-        version: 4.12.34
+        specifier: ^4.13.3
+        version: 4.13.3
     devDependencies:
       '@babel/core':
         specifier: ^7.29.7
@@ -9356,10 +9356,6 @@ packages:
     resolution: {integrity: sha512-eSmmWE5bZTK2Nou4g0AI3zZ9rswp7GRKoKXS1BLUkvPviOqs4YTN1djQIqrXy9k5gEtdLPy86JjRwsNM9tnDcA==}
     engines: {node: '>=0.10.0'}
 
-  hono@4.12.34:
-    resolution: {integrity: sha512-GqXJqY/xJkJmuloTrnV1ZEXG3fqte+VjkUqoRNZXcrUidiUOP4fMSIHHY4tsqZBK++kVyWmt/AAfSUuy57/eSA==}
-    engines: {node: '>=16.9.0'}
-
   hono@4.13.3:
     resolution: {integrity: sha512-r8AO2mYHoLxSHkgafNeC/BXyb2vWRxD3jem4Ts+ptav8oTG5FIRifAjuJEmZI4bSvvc2ns0GxmIYiZnHqN3mMw==}
     engines: {node: '>=16.9.0'}
@@ -15757,10 +15753,6 @@ snapshots:
 
   '@handlebars/parser@2.2.1': {}
 
-  '@hono/node-server@1.19.0(hono@4.12.34)':
-    dependencies:
-      hono: 4.12.34
-
   '@hono/node-server@1.19.0(hono@4.13.3)':
     dependencies:
       hono: 4.13.3
@@ -17151,9 +17143,6 @@ snapshots:
     dependencies:
       '@types/ember': 4.0.11
       '@types/ember__object': 4.0.12
-    transitivePeerDependencies:
-      - '@babel/core'
-      - supports-color
 
   '@types/ember__component@4.0.22':
     dependencies:
@@ -17198,6 +17187,9 @@ snapshots:
   '@types/ember__runloop@4.0.10':
     dependencies:
       '@types/ember': 4.0.11
+    transitivePeerDependencies:
+      - '@babel/core'
+      - supports-color
 
   '@types/ember__service@4.0.9':
     dependencies:
@@ -17217,6 +17209,9 @@ snapshots:
   '@types/ember__utils@4.0.7':
     dependencies:
       '@types/ember': 4.0.11
+    transitivePeerDependencies:
+      - '@babel/core'
+      - supports-color
 
   '@types/esrecurse@4.3.1': {}
 
@@ -22234,8 +22229,6 @@ snapshots:
   homedir-polyfill@1.0.3:
     dependencies:
       parse-passwd: 1.0.0
-
-  hono@4.12.34: {}
 
   hono@4.13.3: {}
 
