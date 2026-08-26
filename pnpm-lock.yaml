@@ -683,10 +683,10 @@ importers:
     dependencies:
       '@hono/node-server':
         specifier: ^1.19.0
-        version: 1.19.0(hono@4.9.4)
+        version: 1.19.0(hono@4.12.34)
       hono:
         specifier: ^4.9.4
-        version: 4.9.4
+        version: 4.12.34
     devDependencies:
       '@babel/core':
         specifier: ^7.29.7
@@ -6707,6 +6707,7 @@ packages:
   '@xmldom/xmldom@0.9.11':
     resolution: {integrity: sha512-tW8bcK3hsG0/uqSnNz6TK4BkcuZSezoU7DlnYssILmZDktPnSHHuDJJFM0AJv+13gz2r0iGdrj6qqKeUnxXEDg==}
     engines: {node: '>=14.6'}
+    deprecated: this version has critical issues, please update to the latest version
 
   '@yuku-codegen/binding-android-arm64@0.8.4':
     resolution: {integrity: sha512-rsYkGl2kOkDRsh1mxriYnk1qBS78vjlBJ3+T2XwtwKwqOliy2n+2Ae0EDxJ/uX1DZLm3KkBZarGO5isEnmHchA==}
@@ -9348,8 +9349,12 @@ packages:
     resolution: {integrity: sha512-eSmmWE5bZTK2Nou4g0AI3zZ9rswp7GRKoKXS1BLUkvPviOqs4YTN1djQIqrXy9k5gEtdLPy86JjRwsNM9tnDcA==}
     engines: {node: '>=0.10.0'}
 
-  hono@4.9.4:
-    resolution: {integrity: sha512-61hl6MF6ojTl/8QSRu5ran6GXt+6zsngIUN95KzF5v5UjiX/xnrLR358BNRawwIRO49JwUqJqQe3Rb2v559R8Q==}
+  hono@4.12.34:
+    resolution: {integrity: sha512-GqXJqY/xJkJmuloTrnV1ZEXG3fqte+VjkUqoRNZXcrUidiUOP4fMSIHHY4tsqZBK++kVyWmt/AAfSUuy57/eSA==}
+    engines: {node: '>=16.9.0'}
+
+  hono@4.13.3:
+    resolution: {integrity: sha512-r8AO2mYHoLxSHkgafNeC/BXyb2vWRxD3jem4Ts+ptav8oTG5FIRifAjuJEmZI4bSvvc2ns0GxmIYiZnHqN3mMw==}
     engines: {node: '>=16.9.0'}
 
   hookable@5.5.3:
@@ -15775,9 +15780,13 @@ snapshots:
 
   '@handlebars/parser@2.2.1': {}
 
-  '@hono/node-server@1.19.0(hono@4.9.4)':
+  '@hono/node-server@1.19.0(hono@4.12.34)':
     dependencies:
-      hono: 4.9.4
+      hono: 4.12.34
+
+  '@hono/node-server@1.19.0(hono@4.13.3)':
+    dependencies:
+      hono: 4.13.3
 
   '@html-next/vertical-collection@5.0.5':
     dependencies:
@@ -17951,40 +17960,40 @@ snapshots:
 
   '@warp-drive/holodeck@file:packages/holodeck(26310aaa3e223322510bb82c0db267c5)':
     dependencies:
-      '@hono/node-server': 1.19.0(hono@4.9.4)
+      '@hono/node-server': 1.19.0(hono@4.13.3)
       '@warp-drive/core': file:warp-drive-packages/core(40bc2c5d5662a5666eb0d917619838cd)
-      hono: 4.9.4
+      hono: 4.13.3
     optionalDependencies:
       '@warp-drive/utilities': file:warp-drive-packages/utilities(308f337ee79a3c601a0134b4ff5387a8)
 
   '@warp-drive/holodeck@file:packages/holodeck(4ded94bf05a058c4d301833388abca58)':
     dependencies:
-      '@hono/node-server': 1.19.0(hono@4.9.4)
+      '@hono/node-server': 1.19.0(hono@4.13.3)
       '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.29.7)
-      hono: 4.9.4
+      hono: 4.13.3
 
   '@warp-drive/holodeck@file:packages/holodeck(9e42da9e01238c6255d70a6aa7ac3829)':
     dependencies:
-      '@hono/node-server': 1.19.0(hono@4.9.4)
+      '@hono/node-server': 1.19.0(hono@4.13.3)
       '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.29.7)
-      hono: 4.9.4
+      hono: 4.13.3
     optionalDependencies:
       '@warp-drive/legacy': file:warp-drive-packages/legacy(eb285543f9d9812c91771fcfa7474918)
       '@warp-drive/utilities': file:warp-drive-packages/utilities(da83bc0b1ea108dc5be8f251a76f6440)
 
   '@warp-drive/holodeck@file:packages/holodeck(faea43ed3bc42f373ef867b67f0f1952)':
     dependencies:
-      '@hono/node-server': 1.19.0(hono@4.9.4)
+      '@hono/node-server': 1.19.0(hono@4.13.3)
       '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.29.7)
-      hono: 4.9.4
+      hono: 4.13.3
     optionalDependencies:
       '@warp-drive/utilities': file:warp-drive-packages/utilities(da83bc0b1ea108dc5be8f251a76f6440)
 
   '@warp-drive/holodeck@file:packages/holodeck(fcbb7027ca4650034b89b08d92ded0f2)':
     dependencies:
-      '@hono/node-server': 1.19.0(hono@4.9.4)
+      '@hono/node-server': 1.19.0(hono@4.13.3)
       '@warp-drive/core': file:warp-drive-packages/core(40bc2c5d5662a5666eb0d917619838cd)
-      hono: 4.9.4
+      hono: 4.13.3
     optionalDependencies:
       '@warp-drive/legacy': file:warp-drive-packages/legacy(7814d4749341b491ab21a95ea6eadac9)
       '@warp-drive/utilities': file:warp-drive-packages/utilities(308f337ee79a3c601a0134b4ff5387a8)
@@ -22273,7 +22282,9 @@ snapshots:
     dependencies:
       parse-passwd: 1.0.0
 
-  hono@4.9.4: {}
+  hono@4.12.34: {}
+
+  hono@4.13.3: {}
 
   hookable@5.5.3: {}
 
