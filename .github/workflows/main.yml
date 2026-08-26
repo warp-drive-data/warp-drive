@@ -213,12 +213,19 @@ jobs:
         timeout-minutes: 12
         env:
           CI: true
+        # `@embroider/try apply` rewrites this package's package.json in place
+        # to pin the scenario's dependency versions (verified: it touches
+        # nothing else), and package.json is already a tracked build:tests/
+        # test input in turbo.json -- so routing through turbo here, instead
+        # of calling the package's own build:tests/test scripts directly,
+        # gets scenario-aware caching for free: a rerun of the same scenario
+        # on the same commit is a cache hit, while different scenarios still
+        # get distinct hashes because their pinned versions differ.
         run: |
           cd tests/dont-write-new-tests-here;
           pnpm dlx @embroider/try apply ${{ matrix.scenario }};
           pnpm install --no-frozen-lockfile --ignore-scripts --prefer-offline;
-          pnpm build:tests;
-          pnpm run test;
+          pnpm exec turbo run test;
 
   releases:
     timeout-minutes: 12
@@ -245,9 +252,12 @@ jobs:
       - name: Basic tests with ${{ matrix.release }}
         env:
           CI: true
+        # See the matching note on the `lts` job above: routing through turbo
+        # here (instead of the package's own build:tests/test scripts) gets
+        # scenario-aware caching for free, since @embroider/try apply's
+        # package.json rewrite is already a tracked turbo input.
         run: |
           cd tests/dont-write-new-tests-here;
           pnpm dlx @embroider/try apply ${{ matrix.release }};
           pnpm install --no-frozen-lockfile --ignore-scripts --prefer-offline;
-          pnpm build:tests;
-          pnpm run test;
+          pnpm exec turbo run test;
