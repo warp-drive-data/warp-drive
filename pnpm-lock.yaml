@@ -2974,8 +2974,8 @@ importers:
         specifier: ^12.1.1
         version: 12.1.1(eslint@9.34.0)
       globals:
-        specifier: ^16.3.0
-        version: 16.3.0
+        specifier: ^16.5.0
+        version: 16.5.0
       rollup:
         specifier: ^4.62.4
         version: 4.62.4
@@ -9242,8 +9242,8 @@ packages:
     resolution: {integrity: sha512-7ACyT3wmyp3I61S4fG682L0VA2RGD9otkqGJIwNUMF1SWUombIIk+af1unuDYgMm082aHYwD+mzJvv9Iu8dsgg==}
     engines: {node: '>=18'}
 
-  globals@16.3.0:
-    resolution: {integrity: sha512-bqWEnJ1Nt3neqx2q5SFfGS8r/ahumIakg3HcwtNlrVlwXIeNumWn/c7Pn/wKzGhf6SaW6H6uWXLqC30STCMchQ==}
+  globals@16.5.0:
+    resolution: {integrity: sha512-c/c15i26VrJ4IRt5Z89DnIzCGDn9EcebibhAOjw5ibqEHsE1wLUgkPn9RDmNcUKyU87GeaL633nyJ+pplFR2ZQ==}
     engines: {node: '>=18'}
 
   globalthis@1.0.4:
@@ -17986,7 +17986,7 @@ snapshots:
       eslint-plugin-n: 17.21.3(eslint@9.34.0)(typescript@5.9.3)
       eslint-plugin-qunit: 8.2.6(eslint@9.34.0)
       eslint-plugin-simple-import-sort: 12.1.1(eslint@9.34.0)
-      globals: 16.3.0
+      globals: 16.5.0
       rollup: 4.62.4
       tsdown: 0.22.14(typescript@5.9.3)
       typescript: 5.9.3
@@ -18040,7 +18040,7 @@ snapshots:
       eslint-plugin-n: 17.21.3(eslint@9.34.0)(typescript@5.9.3)
       eslint-plugin-qunit: 8.2.6(eslint@9.34.0)
       eslint-plugin-simple-import-sort: 12.1.1(eslint@9.34.0)
-      globals: 16.3.0
+      globals: 16.5.0
       rollup: 4.62.4
       tsdown: 0.22.14(5d0206a3438b9e0ec371eb579551ff9e)
       typescript: 5.9.3
@@ -18094,7 +18094,7 @@ snapshots:
       eslint-plugin-n: 17.21.3(eslint@9.34.0)(typescript@5.9.3)
       eslint-plugin-qunit: 8.2.6(eslint@9.34.0)
       eslint-plugin-simple-import-sort: 12.1.1(eslint@9.34.0)
-      globals: 16.3.0
+      globals: 16.5.0
       rollup: 4.62.4
       tsdown: 0.22.14(typescript@5.9.3)
       typescript: 5.9.3
@@ -18148,7 +18148,7 @@ snapshots:
       eslint-plugin-n: 17.21.3(eslint@9.34.0)(typescript@5.9.3)
       eslint-plugin-qunit: 8.2.6(eslint@9.34.0)
       eslint-plugin-simple-import-sort: 12.1.1(eslint@9.34.0)
-      globals: 16.3.0
+      globals: 16.5.0
       rollup: 4.62.4
       tsdown: 0.22.14(typescript@5.9.3)
       typescript: 5.9.3
@@ -18202,7 +18202,7 @@ snapshots:
       eslint-plugin-n: 17.21.3(eslint@9.34.0)(typescript@5.9.3)
       eslint-plugin-qunit: 8.2.6(eslint@9.34.0)
       eslint-plugin-simple-import-sort: 12.1.1(eslint@9.34.0)
-      globals: 16.3.0
+      globals: 16.5.0
       rollup: 4.62.4
       tsdown: 0.22.14(typescript@5.9.3)
       typescript: 5.9.3
@@ -18256,7 +18256,7 @@ snapshots:
       eslint-plugin-n: 17.21.3(eslint@9.34.0)(typescript@5.9.3)
       eslint-plugin-qunit: 8.2.6(eslint@9.34.0)
       eslint-plugin-simple-import-sort: 12.1.1(eslint@9.34.0)
-      globals: 16.3.0
+      globals: 16.5.0
       rollup: 4.62.4
       tsdown: 0.22.14(typescript@5.9.3)
       typescript: 5.9.3
@@ -18310,7 +18310,7 @@ snapshots:
       eslint-plugin-n: 17.21.3(eslint@9.34.0)(typescript@5.9.3)
       eslint-plugin-qunit: 8.2.6(eslint@9.34.0)
       eslint-plugin-simple-import-sort: 12.1.1(eslint@9.34.0)
-      globals: 16.3.0
+      globals: 16.5.0
       rollup: 4.62.4
       tsdown: 0.22.14(typescript@5.9.3)
       typescript: 5.9.3
@@ -18364,7 +18364,7 @@ snapshots:
       eslint-plugin-n: 17.21.3(eslint@9.34.0)(typescript@5.9.3)
       eslint-plugin-qunit: 8.2.6(eslint@9.34.0)
       eslint-plugin-simple-import-sort: 12.1.1(eslint@9.34.0)
-      globals: 16.3.0
+      globals: 16.5.0
       rollup: 4.62.4
       tsdown: 0.22.14(5d0206a3438b9e0ec371eb579551ff9e)
       typescript: 5.9.3
@@ -18418,7 +18418,7 @@ snapshots:
       eslint-plugin-n: 17.21.3(eslint@9.34.0)(typescript@5.9.3)
       eslint-plugin-qunit: 8.2.6(eslint@9.34.0)
       eslint-plugin-simple-import-sort: 12.1.1(eslint@9.34.0)
-      globals: 16.3.0
+      globals: 16.5.0
       rollup: 4.62.4
       tsdown: 0.22.14(typescript@5.9.3)
       typescript: 5.9.3
@@ -18472,7 +18472,7 @@ snapshots:
       eslint-plugin-n: 17.21.3(eslint@9.34.0)(typescript@5.9.3)
       eslint-plugin-qunit: 8.2.6(eslint@9.34.0)
       eslint-plugin-simple-import-sort: 12.1.1(eslint@9.34.0)
-      globals: 16.3.0
+      globals: 16.5.0
       rollup: 4.62.4
       tsdown: 0.22.14(typescript@5.9.3)
       typescript: 5.9.3
@@ -18526,7 +18526,7 @@ snapshots:
       eslint-plugin-n: 17.21.3(eslint@9.34.0)(typescript@5.9.3)
       eslint-plugin-qunit: 8.2.6(eslint@9.34.0)
       eslint-plugin-simple-import-sort: 12.1.1(eslint@9.34.0)
-      globals: 16.3.0
+      globals: 16.5.0
       rollup: 4.62.4
       tsdown: 0.22.14(typescript@5.9.3)
       typescript: 5.9.3
@@ -18580,7 +18580,7 @@ snapshots:
       eslint-plugin-n: 17.21.3(eslint@9.34.0)(typescript@5.9.3)
       eslint-plugin-qunit: 8.2.6(eslint@9.34.0)
       eslint-plugin-simple-import-sort: 12.1.1(eslint@9.34.0)
-      globals: 16.3.0
+      globals: 16.5.0
       rollup: 4.62.4
       tsdown: 0.22.14(typescript@5.9.3)
       typescript: 5.9.3
@@ -22118,7 +22118,7 @@ snapshots:
 
   globals@15.15.0: {}
 
-  globals@16.3.0: {}
+  globals@16.5.0: {}
 
   globalthis@1.0.4:
     dependencies:
