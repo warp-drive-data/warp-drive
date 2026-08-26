@@ -13,8 +13,5 @@ export default defineConfig({
       },
     },
   },
-  plugins: [
-    ember(),
-    maybeBabel({ extensions }),
-  ],
+  plugins: [ember(), maybeBabel({ extensions })],
 });
