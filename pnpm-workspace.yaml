@@ -39,6 +39,8 @@ minimumReleaseAgeExclude:
   - morgan@1.11.0
   # Renovate security update: vitest@3.2.6
   - vitest@3.2.6
+  # Renovate security update: svelte@5.55.7
+  - svelte@5.55.7
 
 ## Prevents transitive (sub-)dependencies from being resolved via git,
 ## git+ssh, or raw tarball URLs. Only our own direct dependencies may use
