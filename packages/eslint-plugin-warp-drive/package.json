@@ -35,7 +35,7 @@
     "@babel/plugin-proposal-decorators": "7.29.7",
     "@babel/core": "^7.29.7",
     "eslint": "^9.34.0",
-    "mocha": "^11.1.0"
+    "mocha": "^11.8.0"
   },
   "files": [
     "src",
