@@ -2792,8 +2792,8 @@ importers:
         specifier: ^1.3.9
         version: 1.3.9
       vite-plugin-compression2:
-        specifier: ^2.2.0
-        version: 2.2.0(rollup@4.62.4)
+        specifier: ^2.5.3
+        version: 2.5.3(rollup@4.62.4)
 
   tests/utilities:
     devDependencies:
@@ -12520,8 +12520,8 @@ packages:
     engines: {node: ^18.0.0 || ^20.0.0 || >=22.0.0}
     hasBin: true
 
-  vite-plugin-compression2@2.2.0:
-    resolution: {integrity: sha512-7BZlU2mBHbqoBGy0ARkn3tv/7LC/2h8ewVDpG/cyH8iSzLw6E/yH6P4oBOEvchkQxNpl+B5W6rFR5fdSwfDhMA==}
+  vite-plugin-compression2@2.5.3:
+    resolution: {integrity: sha512-ItPgqQWkcnBbVw7is9OKwiZ8v6+ju9rYROl5Lp6QfQDEx/d55AwJQb/KLpsQqsU9HoigYBsZ8tK6I02UwJNvEw==}
 
   vite-plugin-image-optimizer@2.0.3:
     resolution: {integrity: sha512-1vrFOTcpSvv6DCY7h8UXab4wqMAjTJB/ndOzG/Kmj1oDOuPF6mbjkNQoGzzCEYeWGe7qU93jc8oQqvoJ57al3A==}
@@ -17155,9 +17155,6 @@ snapshots:
     dependencies:
       '@types/ember': 4.0.11
       '@types/ember__object': 4.0.12
-    transitivePeerDependencies:
-      - '@babel/core'
-      - supports-color
 
   '@types/ember__controller@4.0.12':
     dependencies:
@@ -25859,7 +25856,7 @@ snapshots:
       - tsx
       - yaml
 
-  vite-plugin-compression2@2.2.0(rollup@4.62.4):
+  vite-plugin-compression2@2.5.3(rollup@4.62.4):
     dependencies:
       '@rollup/pluginutils': 5.1.4(rollup@4.62.4)
       tar-mini: 0.2.0
