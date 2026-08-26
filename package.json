@@ -118,13 +118,6 @@
         "peerDependencies": {
           "@glimmer/component": "*"
         }
-      },
-      "ember-exam": {
-        "peerDependencies": {
-          "ember-cli": "*",
-          "ember-qunit": "*",
-          "qunit": "*"
-        }
       }
     },
     "overrides": {

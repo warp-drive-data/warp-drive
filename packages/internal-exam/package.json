@@ -1,0 +1,47 @@
+{
+  "name": "@warp-drive/internal-exam",
+  "version": "5.9.0-alpha.23",
+  "private": true,
+  "description": "Internal, native-@embroider/vite port of ember-exam's test splitting/randomization/parallelization/load-balancing, without the classic ember-cli dependency.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/warp-drive-data/warp-drive.git",
+    "directory": "packages/internal-exam"
+  },
+  "license": "MIT",
+  "author": "",
+  "type": "module",
+  "files": [
+    "src",
+    "bin"
+  ],
+  "exports": {
+    ".": "./src/index.js",
+    "./*": "./src/*.js"
+  },
+  "bin": {
+    "warp-drive-exam": "./bin/exam.js"
+  },
+  "scripts": {
+    "sync": "echo \"syncing\"",
+    "lint": "eslint . --quiet --cache --cache-strategy=content"
+  },
+  "peerDependencies": {
+    "ember-qunit": "*",
+    "ember-source": "*",
+    "qunit": "*"
+  },
+  "dependencies": {
+    "fs-extra": "^11.3.3",
+    "testem": "^3.20.1"
+  },
+  "devDependencies": {
+    "@warp-drive/internal-config": "workspace:*",
+    "ember-qunit": "9.1.0",
+    "ember-source": "~6.12.0",
+    "qunit": "^2.26.0"
+  },
+  "volta": {
+    "extends": "../../package.json"
+  }
+}
