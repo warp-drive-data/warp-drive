@@ -25,7 +25,7 @@ export default [
 
   // node (script) ================
   node.cjs({
-    files: ['tests/*'],
+    files: ['tests/*', 'tests/**/*.js'],
   }),
 
   mocha.cjs(),

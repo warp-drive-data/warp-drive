@@ -205,6 +205,14 @@ export const COMMANDS: CommandConfig = {
     options: {},
     load: () => import('./commands/eject.ts').then((v) => v.eject),
   },
+  generate: {
+    name: 'Generate',
+    cmd: 'generate',
+    description: 'Generates a model, adapter, serializer, or transform (and their unit tests)',
+    alt: ['g', 'gen'],
+    example: '$ npx warp-drive generate model taco filling:belongs-to:protein toppings:has-many:topping name:string',
+    load: () => import('./commands/generate.ts').then((v) => v.generate),
+  },
 };
 
 export const Bin: {
