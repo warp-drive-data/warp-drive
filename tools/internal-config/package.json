@@ -27,7 +27,7 @@
     "eslint-plugin-n": "^17.21.3",
     "eslint-plugin-qunit": "^8.1.2",
     "eslint-plugin-simple-import-sort": "^12.1.1",
-    "rollup": "^4.48.0",
+    "rollup": "^4.62.4",
     "tsdown": "^0.22.14",
     "typescript": "^5.9.3"
   },
