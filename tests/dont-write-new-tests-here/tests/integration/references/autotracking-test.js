@@ -3,7 +3,7 @@ import { getRootElement, render, settled } from '@ember/test-helpers';
 
 import { module, test } from 'qunit';
 
-import { hbs } from 'ember-cli-htmlbars';
+import { precompileTemplate } from '@ember/template-compilation';
 import { setupRenderingTest } from 'ember-qunit';
 
 import Model, { attr, belongsTo, hasMany } from '@ember-data/model';
@@ -90,7 +90,7 @@ module('integration/references/autotracking', function (hooks) {
 
     const testContext = new TestContext();
     this.set('context', testContext);
-    await render(hbs`id: {{if this.context.bestFriendId this.context.bestFriendId 'null'}}`);
+    await render(precompileTemplate(`id: {{if this.context.bestFriendId this.context.bestFriendId 'null'}}`));
 
     assert.strictEqual(getRootElement().textContent, 'id: 2', 'the id is initially correct');
     assert.strictEqual(testContext.bestFriendId, '2', 'the id is initially correct');
@@ -129,7 +129,7 @@ module('integration/references/autotracking', function (hooks) {
 
     const testContext = new TestContext();
     this.set('context', testContext);
-    await render(hbs`id: {{if this.context.bestFriend this.context.bestFriend.id 'null'}}`);
+    await render(precompileTemplate(`id: {{if this.context.bestFriend this.context.bestFriend.id 'null'}}`));
 
     assert.strictEqual(getRootElement().textContent, 'id: null', 'the value is initially correct');
     assert.strictEqual(testContext.bestFriend, null, 'the value is initially correct');
@@ -154,7 +154,7 @@ module('integration/references/autotracking', function (hooks) {
 
     const testContext = new TestContext();
     this.set('context', testContext);
-    await render(hbs`id: {{if this.context.bestFriendId this.context.bestFriendId 'null'}}`);
+    await render(precompileTemplate(`id: {{if this.context.bestFriendId this.context.bestFriendId 'null'}}`));
 
     assert.strictEqual(getRootElement().textContent, 'id: 2', 'the id is initially correct');
     assert.strictEqual(testContext.bestFriendId, '2', 'the id is initially correct');
@@ -187,7 +187,7 @@ module('integration/references/autotracking', function (hooks) {
     }
     const testContext = new TestContext();
     this.set('context', testContext);
-    await render(hbs`{{#each this.context.friendIds as |id|}}id: {{if id id 'null'}}, {{/each}}`);
+    await render(precompileTemplate(`{{#each this.context.friendIds as |id|}}id: {{if id id 'null'}}, {{/each}}`));
 
     assert.strictEqual(getRootElement().textContent, 'id: 2, ', 'the ids are initially correct');
     assert.deepEqual(testContext.friendIds, ['2'], 'the ids are initially correct');
@@ -231,7 +231,7 @@ module('integration/references/autotracking', function (hooks) {
     const testContext = new TestContext();
     this.set('context', testContext);
     await render(
-      hbs`{{#each this.context.friends as |friend|}}id: {{if friend.id friend.id 'null'}}, {{else}}No Friends Loaded{{/each}}`
+      precompileTemplate(`{{#each this.context.friends as |friend|}}id: {{if friend.id friend.id 'null'}}, {{else}}No Friends Loaded{{/each}}`)
     );
 
     assert.strictEqual(getRootElement().textContent, 'No Friends Loaded', 'the ids are initially correct');
@@ -267,7 +267,7 @@ module('integration/references/autotracking', function (hooks) {
     const testContext = new TestContext();
     this.set('context', testContext);
     await render(
-      hbs`{{#each this.context.friends as |friend|}}id: {{if friend.id friend.id 'null'}}, {{else}}No Friends Loaded{{/each}}`
+      precompileTemplate(`{{#each this.context.friends as |friend|}}id: {{if friend.id friend.id 'null'}}, {{else}}No Friends Loaded{{/each}}`)
     );
 
     assert.strictEqual(getRootElement().textContent, 'No Friends Loaded', 'the ids are initially correct');
@@ -303,7 +303,7 @@ module('integration/references/autotracking', function (hooks) {
     const testContext = new TestContext();
     this.set('context', testContext);
 
-    await render(hbs`id: {{if this.context.id this.context.id 'null'}}, name: {{this.context.name}}`);
+    await render(precompileTemplate(`id: {{if this.context.id this.context.id 'null'}}, name: {{this.context.name}}`));
 
     assert.strictEqual(getRootElement().textContent, 'id: null, name: Dan', 'the id is null');
     assert.strictEqual(testContext.updates, 1, 'id() was accessed by render');

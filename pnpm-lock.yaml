@@ -1563,9 +1563,6 @@ importers:
       ember-cli:
         specifier: ~6.12.0
         version: 6.12.0
-      ember-cli-htmlbars:
-        specifier: ^7.0.1
-        version: 7.0.1(030cd7dd2b3d1da08afa379351eb7195)
       ember-data:
         specifier: workspace:*
         version: file:packages/-ember-data(ad8e36756261eee702a3334f08162766)
@@ -8698,13 +8695,6 @@ packages:
 
   ember-cli-get-component-path-option@1.0.0:
     resolution: {integrity: sha512-k47TDwcJ2zPideBCZE8sCiShSxQSpebY2BHcX2DdipMmBox5gsfyVrbKJWIHeSTTKyEUgmBIvQkqTOozEziCZA==}
-
-  ember-cli-htmlbars@7.0.1:
-    resolution: {integrity: sha512-bNVAwTvBOmk7KjGCN0Vq81w8FAWQ1zXwCS1CUUHTeWdcFypRsv0qUEkTtwxho4H3BYaoqMCXPS45Js9WWtEXYw==}
-    engines: {node: '>= 20'}
-    peerDependencies:
-      '@babel/core': '>= 7'
-      ember-source: '>= 4.0.0'
 
   ember-cli-internal-test-helpers@0.9.1:
     resolution: {integrity: sha512-ia+p7LrAe2tENG+Vewdi93kGlsI7OkjB7tEakTtCELkIvZpmPX+uYGhIi5nVOynLiej2M81MQmNqB8jX93ejqQ==}
@@ -17955,11 +17945,17 @@ snapshots:
     dependencies:
       '@types/ember': 4.0.11
       '@types/ember__object': 4.0.12
+    transitivePeerDependencies:
+      - '@babel/core'
+      - supports-color
 
   '@types/ember__component@4.0.22':
     dependencies:
       '@types/ember': 4.0.11
       '@types/ember__object': 4.0.12
+    transitivePeerDependencies:
+      - '@babel/core'
+      - supports-color
 
   '@types/ember__controller@4.0.12':
     dependencies:
@@ -17995,6 +17991,9 @@ snapshots:
       '@types/ember__controller': 4.0.12
       '@types/ember__object': 4.0.12
       '@types/ember__service': 4.0.9
+    transitivePeerDependencies:
+      - '@babel/core'
+      - supports-color
 
   '@types/ember__runloop@4.0.10':
     dependencies:
@@ -21536,23 +21535,6 @@ snapshots:
       - supports-color
 
   ember-cli-get-component-path-option@1.0.0: {}
-
-  ember-cli-htmlbars@7.0.1(030cd7dd2b3d1da08afa379351eb7195):
-    dependencies:
-      '@babel/core': 7.29.7
-      '@ember/edition-utils': 1.2.0
-      babel-plugin-ember-template-compilation: 2.4.1
-      broccoli-debug: 0.6.5
-      broccoli-persistent-filter: 3.1.3
-      broccoli-plugin: 4.0.7
-      ember-source: 6.12.0(@glimmer/component@2.0.0)
-      fs-tree-diff: 2.0.1
-      heimdalljs-logger: 0.1.10
-      js-string-escape: 1.0.1
-      silent-error: 1.1.1
-      walk-sync: 4.0.1
-    transitivePeerDependencies:
-      - supports-color
 
   ember-cli-internal-test-helpers@0.9.1:
     dependencies:

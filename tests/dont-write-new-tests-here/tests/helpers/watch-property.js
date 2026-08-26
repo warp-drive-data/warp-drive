@@ -4,7 +4,7 @@ import { render } from '@ember/test-helpers';
 
 import QUnit from 'qunit';
 
-import { hbs } from 'ember-cli-htmlbars';
+import { precompileTemplate } from '@ember/template-compilation';
 
 function freeze(obj) {
   if (typeof Object.freeze === 'function') {
@@ -62,13 +62,13 @@ export async function startWatching() {
     })
   );
   this.set('__watchedObjects', this.__watchedObjects);
-  await render(hbs`
+  await render(precompileTemplate(`
   {{#each this.__watchedObjects key="@index" as |obj|}}
     {{#each obj.properties key="@index" as |prop|}}
       {{this.observe obj prop (get obj.context prop)}}
     {{/each}}
   {{/each}}
-`);
+`));
 }
 
 export function watchProperties(obj, propertyNames) {

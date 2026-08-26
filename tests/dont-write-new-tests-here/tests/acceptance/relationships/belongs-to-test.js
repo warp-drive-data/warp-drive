@@ -2,7 +2,7 @@ import { render, settled } from '@ember/test-helpers';
 
 import { module, test } from 'qunit';
 
-import { hbs } from 'ember-cli-htmlbars';
+import { precompileTemplate } from '@ember/template-compilation';
 import { render as legacyRender } from 'ember-data/test-support';
 import { setupRenderingTest } from 'ember-qunit';
 
@@ -365,9 +365,9 @@ module('async belongs-to rendering tests', function (hooks) {
 
       this.set('chris', chris);
 
-      await render(hbs`
+      await render(precompileTemplate(`
       <p>{{this.chris.name}} has {{this.chris.bestDog.name}}</p>
-      `);
+      `));
       assert.strictEqual(this.element.textContent.trim(), 'Chris has', 'initially there is no name for bestDog');
       await settled();
 
@@ -420,9 +420,9 @@ module('async belongs-to rendering tests', function (hooks) {
       // render
       this.set('sedona', sedona);
 
-      await legacyRender(hbs`
+      await legacyRender(precompileTemplate(`
         <p>{{this.sedona.parent.name}}</p>
-      `);
+      `));
 
       assert.strictEqual(this.element.textContent.trim(), 'Kevin has two children and one parent');
     });
@@ -438,9 +438,9 @@ module('async belongs-to rendering tests', function (hooks) {
       // render
       this.set('sedona', sedona);
 
-      await render(hbs`
+      await render(precompileTemplate(`
       <p>{{this.sedona.parent.name}}</p>
-      `);
+      `));
 
       const parent = await sedona.parent;
       await parent.destroyRecord();
@@ -465,9 +465,9 @@ module('async belongs-to rendering tests', function (hooks) {
       // render
       this.set('sedona', sedona);
 
-      await legacyRender(hbs`
+      await legacyRender(precompileTemplate(`
       <p>{{this.sedona.parent.name}}</p>
-      `);
+      `));
 
       assert.strictEqual(this.element.textContent.trim(), 'Kevin has two children and one parent');
 
@@ -523,9 +523,9 @@ module('async belongs-to rendering tests', function (hooks) {
         return originalPushResult.call(this, result);
       };
 
-      await legacyRender(hbs`
+      await legacyRender(precompileTemplate(`
       <p>'{{this.sedona.name}}' has parent '{{this.sedona.parent.name}}'</p>
-      `);
+      `));
 
       assert.strictEqual(this.element.textContent.trim(), "'Sedona has a parent' has parent ''", 'we have no parent');
 
@@ -579,9 +579,9 @@ module('async belongs-to rendering tests', function (hooks) {
         assert.strictEqual(e.message, error, `should have rejected with '${error}'`);
       }
 
-      await render(hbs`
+      await render(precompileTemplate(`
       <p>{{this.sedona.parent.name}}</p>
-      `);
+      `));
 
       assert.strictEqual(this.element.textContent.trim(), '', 'we have no parent');
 
@@ -623,7 +623,7 @@ module('async belongs-to rendering tests', function (hooks) {
       return originalPushResult.call(this, result);
     };
 
-    await render(hbs`<p>{{this.sedona.parent.name}}</p>`);
+    await render(precompileTemplate(`<p>{{this.sedona.parent.name}}</p>`));
 
     const newParent = store.createRecord('person', { name: 'New Person' });
     sedona.set('parent', newParent);

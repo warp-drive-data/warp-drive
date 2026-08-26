@@ -2,7 +2,19 @@ import '@warp-drive/ember/install';
 
 import Application from 'ember-strict-application-resolver';
 
+// classic ember-cli addons contribute their own app/initializers/*.js files,
+// which get merged into the consuming app's namespace by broccoli's
+// addon-tree-merging and auto-run by ember-load-initializers. Neither of
+// those mechanisms exist in this native (non-compat) pipeline, so addon
+// initializers must be registered explicitly. ember-data's own initializer
+// marks serializers/adapters as non-singleton -- without it, `owner.lookup`
+// caches one shared instance per registration name, which silently breaks
+// any test relying on each store getting its own adapter/serializer.
+import EmberDataInitializer from 'ember-data/app/initializers/ember-data';
+
 import Router from './router';
+
+Application.initializer(EmberDataInitializer);
 
 const EventConfig = {
   touchstart: null,

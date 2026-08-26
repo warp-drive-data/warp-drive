@@ -8,7 +8,7 @@ import Component from '@glimmer/component';
 
 import QUnit, { module, test } from 'qunit';
 
-import { hbs } from 'ember-cli-htmlbars';
+import { precompileTemplate } from '@ember/template-compilation';
 import { render as legacyRender } from 'ember-data/test-support';
 import { setupRenderingTest } from 'ember-qunit';
 
@@ -241,13 +241,13 @@ module('async has-many rendering tests', function (hooks) {
       // render
       this.set('parent', parent);
 
-      await legacyRender(hbs`
+      await legacyRender(precompileTemplate(`
         <ul>
         {{#each this.parent.children as |child|}}
           <li>{{child.name}}</li>
         {{/each}}
         </ul>
-      `);
+      `));
 
       const names = findAll('li').map((e) => e.textContent);
 
@@ -270,13 +270,13 @@ module('async has-many rendering tests', function (hooks) {
       // render
       this.set('parent', parent);
 
-      await legacyRender(hbs`
+      await legacyRender(precompileTemplate(`
         <ul>
         {{#each this.parent.children as |child|}}
           <li>{{child.name}}</li>
         {{/each}}
         </ul>
-      `);
+      `));
 
       let items = findAll('li');
       let names = items.map((e) => e.textContent);
@@ -370,13 +370,13 @@ module('async has-many rendering tests', function (hooks) {
         }
       };
 
-      await render(hbs`
+      await render(precompileTemplate(`
         <ul>
         {{#each this.parent.children as |child|}}
           <li>{{child.name}}</li>
         {{/each}}
         </ul>
-      `);
+      `));
 
       await store._getAllPending();
       await settled();
@@ -428,13 +428,13 @@ module('async has-many rendering tests', function (hooks) {
       // render
       this.set('parent', parent);
 
-      await render(hbs`
+      await render(precompileTemplate(`
       <ul>
       {{#each this.parent.children as |child|}}
         <li>{{child.name}}</li>
       {{/each}}
       </ul>
-    `);
+    `));
 
       const names = findAll('li').map((e) => e.textContent);
 
@@ -454,13 +454,13 @@ module('async has-many rendering tests', function (hooks) {
       // render
       this.set('parent', parent);
 
-      await render(hbs`
+      await render(precompileTemplate(`
       <ul>
       {{#each this.parent.children as |child|}}
         <li>{{child.name}}</li>
       {{/each}}
       </ul>
-    `);
+    `));
 
       let items = findAll('li');
       let names = items.map((e) => e.textContent);
@@ -530,13 +530,13 @@ module('async has-many rendering tests', function (hooks) {
         return originalPushResult.call(this, result);
       };
 
-      await render(hbs`
+      await render(precompileTemplate(`
       <ul>
       {{#each this.parent.children as |child|}}
         <li>{{child.name}}</li>
       {{/each}}
       </ul>
-    `);
+    `));
 
       const names = findAll('li').map((e) => e.textContent);
 
@@ -577,13 +577,13 @@ module('async has-many rendering tests', function (hooks) {
       // render
       this.set('parent', parent);
 
-      await render(hbs`
+      await render(precompileTemplate(`
       <ul>
       {{#each this.parent.children as |child|}}
         <li>{{child.name}}</li>
       {{/each}}
       </ul>
-    `);
+    `));
 
       const names = findAll('li').map((e) => e.textContent);
 
@@ -605,13 +605,13 @@ module('async has-many rendering tests', function (hooks) {
       // render
       this.set('parent', parent);
 
-      await render(hbs`
+      await render(precompileTemplate(`
       <ul>
       {{#each this.parent.children as |child|}}
         <li>{{child.name}}</li>
       {{/each}}
       </ul>
-    `);
+    `));
 
       const names = findAll('li').map((e) => e.textContent);
 
@@ -631,13 +631,13 @@ module('async has-many rendering tests', function (hooks) {
       // render
       this.set('parent', parent);
 
-      await render(hbs`
+      await render(precompileTemplate(`
       <ul>
       {{#each this.parent.children as |child|}}
         <li>{{child.name}}</li>
       {{/each}}
       </ul>
-    `);
+    `));
 
       let items = findAll('li');
       let names = items.map((e) => e.textContent);
@@ -752,7 +752,7 @@ module('autotracking through ArrayProxy', function (hooks) {
         this._proxy.destroy();
       }
     }
-    const layout = hbs`
+    const layout = precompileTemplate(`
       <h2 id="comments-count">Comments ({{@person.comments.length}})</h2>
       <ul id="comments">
         {{#each @person.comments as |comment|}}
@@ -771,10 +771,10 @@ module('autotracking through ArrayProxy', function (hooks) {
           <li>{{post.title}}</li>
         {{/each}}
       </ul>
-    `;
+    `);
     owner.register('component:person-overview', setComponentTemplate(layout, PersonOverview));
     this.set('person', chris);
-    await render(hbs`<PersonOverview @person={{this.person}} />`);
+    await render(precompileTemplate(`<PersonOverview @person={{this.person}} />`));
     assert.strictEqual(find('#comments-count').textContent, 'Comments (3)', 'We have the right comments count');
     assert.deepEqual(
       findAll('#comments li').map((e) => e.textContent),
@@ -833,7 +833,7 @@ module('autotracking has-many', function (hooks) {
       }
     }
 
-    const layout = hbs`
+    const layout = precompileTemplate(`
       <button id="createChild" {{on "click" this.createChild}}>Add child</button>
 
       <h2>{{this.sortedChildren.length}}</h2>
@@ -842,7 +842,7 @@ module('autotracking has-many', function (hooks) {
           <li>{{child.name}}</li>
         {{/each}}
       </ul>
-    `;
+    `);
     this.owner.register('component:children-list', setComponentTemplate(layout, ChildrenList));
 
     store.createRecord('person', { id: '1', name: 'Doodad' });
@@ -850,7 +850,7 @@ module('autotracking has-many', function (hooks) {
     const children = await person.children;
     this.model = { person, children };
 
-    await render(hbs`<ChildrenList @model={{this.model}} />`);
+    await render(precompileTemplate(`<ChildrenList @model={{this.model}} />`));
 
     let names = findAll('li').map((e) => e.textContent);
 
@@ -879,7 +879,7 @@ module('autotracking has-many', function (hooks) {
       }
     }
 
-    const layout = hbs`
+    const layout = precompileTemplate(`
       <button id="createChild" {{on "click" this.createChild}}>Add child</button>
 
       <h2>{{@person.children.length}}</h2>
@@ -888,13 +888,13 @@ module('autotracking has-many', function (hooks) {
           <li>{{child.name}}</li>
         {{/each}}
       </ul>
-    `;
+    `);
     this.owner.register('component:children-list', setComponentTemplate(layout, ChildrenList));
 
     store.createRecord('person', { id: '1', name: 'Doodad' });
     this.person = store.peekRecord('person', '1');
 
-    await render(hbs`<ChildrenList @person={{this.person}} />`);
+    await render(precompileTemplate(`<ChildrenList @person={{this.person}} />`));
 
     let names = findAll('li').map((e) => e.textContent);
 
@@ -926,7 +926,7 @@ module('autotracking has-many', function (hooks) {
       }
     }
 
-    const layout = hbs`
+    const layout = precompileTemplate(`
       <button id="createChild" {{on "click" this.createChild}}>Add child</button>
 
       <h2>{{this.sortedChildren.length}}</h2>
@@ -935,14 +935,14 @@ module('autotracking has-many', function (hooks) {
           <li>{{child.name}}</li>
         {{/each}}
       </ul>
-    `;
+    `);
     this.owner.register('component:children-list', setComponentTemplate(layout, ChildrenList));
 
     store.createRecord('person', { id: '1', name: 'Doodad' });
     this.person = store.peekRecord('person', '1');
     this.children = await this.person.children;
 
-    await render(hbs`<ChildrenList @children={{this.children}} @person={{this.person}} />`);
+    await render(precompileTemplate(`<ChildrenList @children={{this.children}} @person={{this.person}} />`));
 
     let names = findAll('li').map((e) => e.textContent);
 
@@ -975,18 +975,18 @@ module('autotracking has-many', function (hooks) {
       }
     }
 
-    const layout = hbs`
+    const layout = precompileTemplate(`
       <button id="createChild" {{on "click" this.createChild}}>Add child</button>
 
       <h2>{{this.firstChild.name}}</h2>
-    `;
+    `);
     this.owner.register('component:children-list', setComponentTemplate(layout, ChildrenList));
 
     store.createRecord('person', { id: '1', name: 'Doodad' });
     this.person = store.peekRecord('person', '1');
     this.children = await this.person.children;
 
-    await render(hbs`<ChildrenList @children={{this.children}} @person={{this.person}} />`);
+    await render(precompileTemplate(`<ChildrenList @children={{this.children}} @person={{this.person}} />`));
 
     assert.dom('h2').hasText('', 'rendered no children');
 
@@ -1015,7 +1015,7 @@ module('autotracking has-many', function (hooks) {
       }
     }
 
-    const layout = hbs`
+    const layout = precompileTemplate(`
       <button id="createChild" {{on "click" this.createChild}}>Add child</button>
 
       <h2>{{this.children.length}}</h2>
@@ -1024,14 +1024,14 @@ module('autotracking has-many', function (hooks) {
           <li>{{child.name}}</li>
         {{/each}}
       </ul>
-    `;
+    `);
     this.owner.register('component:children-list', setComponentTemplate(layout, ChildrenList));
 
     store.createRecord('person', { id: '1', name: 'Doodad' });
     this.person = store.peekRecord('person', '1');
     this.children = await this.person.children;
 
-    await render(hbs`<ChildrenList @children={{this.children}} @person={{this.person}} />`);
+    await render(precompileTemplate(`<ChildrenList @children={{this.children}} @person={{this.person}} />`));
 
     let names = findAll('li').map((e) => e.textContent);
 
@@ -1064,7 +1064,7 @@ module('autotracking has-many', function (hooks) {
       }
     }
 
-    const layout = hbs`
+    const layout = precompileTemplate(`
       <button id="createChild" {{on "click" this.createChild}}>Add child</button>
 
       <h2>{{this.children.length}}</h2>
@@ -1073,14 +1073,14 @@ module('autotracking has-many', function (hooks) {
           <li>{{child.name}}</li>
         {{/each}}
       </ul>
-    `;
+    `);
     this.owner.register('component:children-list', setComponentTemplate(layout, ChildrenList));
 
     store.createRecord('person', { id: '1', name: 'Doodad' });
     this.person = store.peekRecord('person', '1');
     this.children = await this.person.children;
 
-    await render(hbs`<ChildrenList @children={{this.children}} @person={{this.person}} />`);
+    await render(precompileTemplate(`<ChildrenList @children={{this.children}} @person={{this.person}} />`));
 
     let names = findAll('li').map((e) => e.textContent);
 
@@ -1128,7 +1128,7 @@ module('autotracking has-many', function (hooks) {
       }
     }
 
-    const layout = hbs`
+    const layout = precompileTemplate(`
       <button id="createChild" {{on "click" this.createChild}}>Add child</button>
 
       <h2>{{this.children.length}}</h2>
@@ -1137,7 +1137,7 @@ module('autotracking has-many', function (hooks) {
           <li><span>{{child.name}}</span><button class="delete-child" {{on "click" (fn this.deleteChild child)}}>X</button></li>
         {{/each}}
       </ul>
-    `;
+    `);
     this.owner.register('component:children-list', setComponentTemplate(layout, ChildrenList));
 
     this.person = store.push({
@@ -1149,7 +1149,7 @@ module('autotracking has-many', function (hooks) {
     });
     this.children = await this.person.children;
 
-    await render(hbs`<ChildrenList @children={{this.children}} @person={{this.person}} />`);
+    await render(precompileTemplate(`<ChildrenList @children={{this.children}} @person={{this.person}} />`));
 
     let names = findAll('li > span').map((e) => e.textContent);
 
@@ -1212,7 +1212,7 @@ module('autotracking has-many', function (hooks) {
       }
     }
 
-    const layout = hbs`
+    const layout = precompileTemplate(`
       <button id="createPerson" {{on "click" this.createPerson}}>Add person</button>
 
       <h2>{{this.allPeople.length}}</h2>
@@ -1221,12 +1221,12 @@ module('autotracking has-many', function (hooks) {
           <li>{{person.name}}</li>
         {{/each}}
       </ul>
-    `;
+    `);
     this.owner.register('component:people-list', setComponentTemplate(layout, PeopleList));
 
     store.createRecord('person', { id: '1', name: 'Doodad' });
 
-    await render(hbs`<PeopleList />`);
+    await render(precompileTemplate(`<PeopleList />`));
 
     let names = findAll('li').map((e) => e.textContent);
 

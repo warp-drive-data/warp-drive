@@ -4,7 +4,7 @@ import Component from '@glimmer/component';
 
 import { module, test } from 'qunit';
 
-import { hbs } from 'ember-cli-htmlbars';
+import { precompileTemplate } from '@ember/template-compilation';
 import { setupRenderingTest } from 'ember-qunit';
 
 import JSONAPIAdapter from '@ember-data/adapter/json-api';
@@ -27,7 +27,7 @@ class WidgetList extends Component {
   }
 }
 
-const layout = hbs`
+const layout = precompileTemplate(`
   <ul>
     {{#each this.sortedWidgets as |widget index|}}
       <li class="widget{{index}}">
@@ -38,7 +38,7 @@ const layout = hbs`
       </li>
     {{/each}}
   </ul>
-`;
+`);
 
 class TestAdapter extends JSONAPIAdapter {
   createRecord() {
@@ -72,9 +72,9 @@ module('acceptance/tracking-model-id - tracking model id', function (hooks) {
     store.createRecord('widget', { id: '2', name: 'Gadget' });
     this.widgets = store.peekAll('widget');
 
-    await render(hbs`
+    await render(precompileTemplate(`
       <WidgetList @widgets={{this.widgets}} />
-    `);
+    `));
     await settled();
 
     assert.dom('ul>li+li+li').exists();

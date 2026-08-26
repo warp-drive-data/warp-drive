@@ -3,7 +3,7 @@ import { findAll, render, rerender } from '@ember/test-helpers';
 
 import { module, test } from 'qunit';
 
-import { hbs } from 'ember-cli-htmlbars';
+import { precompileTemplate } from '@ember/template-compilation';
 import { setupRenderingTest } from 'ember-qunit';
 
 import Model, { attr } from '@ember-data/model';
@@ -38,13 +38,13 @@ module('LiveArray | Classic Chains', function (hooks) {
     const presenter = new Presenter();
     this.set('presenter', presenter);
 
-    await render(hbs`
+    await render(precompileTemplate(`
       <ul>
       {{#each this.presenter.records as |record|}}
         <li>{{record.name}}</li>
       {{/each}}
       </ul>
-    `);
+    `));
 
     let rendered = findAll('li').map((e) => e.textContent);
 
@@ -90,13 +90,13 @@ module('LiveArray | Classic Chains', function (hooks) {
 
       this.set('presenter', presenter);
 
-      await render(hbs`
+      await render(precompileTemplate(`
         <ul>
         {{#each this.presenter.names as |name|}}
           <li>{{name}}</li>
         {{/each}}
         </ul>
-      `);
+      `));
 
       let rendered = findAll('li').map((e) => e.textContent);
 
@@ -145,13 +145,13 @@ module('LiveArray | Classic Chains', function (hooks) {
 
       this.set('presenter', presenter);
 
-      await render(hbs`
+      await render(precompileTemplate(`
         <ul>
         {{#each this.presenter.names as |name|}}
           <li>{{name}}</li>
         {{/each}}
         </ul>
-      `);
+      `));
 
       let rendered = findAll('li').map((e) => e.textContent);
 
@@ -200,13 +200,13 @@ module('LiveArray | Classic Chains', function (hooks) {
 
       this.set('presenter', presenter);
 
-      await render(hbs`
+      await render(precompileTemplate(`
         <ul>
         {{#each this.presenter.names as |name|}}
           <li>{{name}}</li>
         {{/each}}
         </ul>
-      `);
+      `));
 
       let rendered = findAll('li').map((e) => e.textContent);
 
