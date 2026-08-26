@@ -49,14 +49,14 @@
     "@manypkg/get-packages": "^3.1.0",
     "@warp-drive/core": "workspace:*",
     "comment-json": "^4.2.5",
-    "debug": "^4.4.1",
+    "debug": "^4.4.3",
     "semver": "^7.7.2"
   },
   "devDependencies": {
     "@babel/core": "^7.29.7",
     "@babel/plugin-transform-typescript": "^7.29.7",
     "@babel/preset-typescript": "^7.29.7",
-    "@types/debug": "^4.1.12",
+    "@types/debug": "^4.1.13",
     "@types/node": "^24.3.0",
     "@types/semver": "^7.7.1",
     "@warp-drive/internal-config": "workspace:*",
