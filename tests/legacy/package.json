@@ -31,7 +31,7 @@
     "@babel/runtime": "^7.29.7",
     "@ember-data/unpublished-test-infra": "workspace:*",
     "@ember/test-helpers": "5.2.0",
-    "@ember/test-waiters": "^4.1.0",
+    "@ember/test-waiters": "^4.1.2",
     "@embroider/core": "^4.4.2",
     "@embroider/macros": "^1.20.6",
     "@embroider/vite": "^1.5.0",
