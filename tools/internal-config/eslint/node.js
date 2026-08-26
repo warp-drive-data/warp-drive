@@ -100,7 +100,7 @@ export function esm(config) {
 
   finalConfig.settings = Object.assign({}, finalConfig.settings, {});
   finalConfig.settings.node = Object.assign({}, finalConfig.settings.node, {
-    version: '>=22', // '>=18.20.0',
+    version: '>=25.9.0', // matches "engines.node" in package.json
   });
 
   finalConfig.rules = Object.assign(
