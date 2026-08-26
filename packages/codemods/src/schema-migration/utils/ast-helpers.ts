@@ -1,11 +1,11 @@
 import type { SgNode } from '@ast-grep/napi';
 import { Lang, parse } from '@ast-grep/napi';
 
-import { logger } from '../../../utils/logger.js';
-import type { TransformOptions } from '../config.js';
-import { isMixinImportPath, isSpecialMixinImport } from './import-utils.js';
-import { getLanguageFromPath, removeQuotes } from './path-utils.js';
-import { MIXIN_SUFFIX_REGEX } from './string.js';
+import { logger } from '../../../utils/logger.ts';
+import type { TransformOptions } from '../config.ts';
+import { isMixinImportPath, isSpecialMixinImport } from './import-utils.ts';
+import { getLanguageFromPath, removeQuotes } from './path-utils.ts';
+import { MIXIN_SUFFIX_REGEX } from './string.ts';
 
 const log = logger.for('ast-helpers');
 

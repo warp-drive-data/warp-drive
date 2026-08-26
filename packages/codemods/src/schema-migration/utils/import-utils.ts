@@ -3,17 +3,17 @@ import { parse } from '@ast-grep/napi';
 import { existsSync, readFileSync } from 'fs';
 import { dirname, resolve } from 'path';
 
-import { logger } from '../../../utils/logger.js';
-import type { TransformOptions } from '../config.js';
-import type { SchemaArtifactRegistry } from './artifact.js';
+import { logger } from '../../../utils/logger.ts';
+import type { TransformOptions } from '../config.ts';
+import type { SchemaArtifactRegistry } from './artifact.ts';
 import {
   deriveResourceExtensionName,
   deriveTraitExtensionName,
   deriveTraitInterfaceName,
   findEntityByBaseName,
   isConnectedToModel,
-} from './artifact.js';
-import { findClassDeclaration, findDefaultExport } from './ast-helpers.js';
+} from './artifact.ts';
+import { findClassDeclaration, findDefaultExport } from './ast-helpers.ts';
 import {
   extractBaseName,
   getImportSourceConfig,
@@ -23,7 +23,7 @@ import {
   removeQuotes,
   resolveRelativeImport,
   toPascalCase,
-} from './path-utils.js';
+} from './path-utils.ts';
 import {
   EXT_FILE_PATH_REGEX,
   FILE_EXTENSION_REGEX,
@@ -31,7 +31,7 @@ import {
   IMPORT_PATH_SINGLE_QUOTE_REGEX,
   IMPORT_TYPE_DEFAULT_REGEX,
   SCHEMA_PATH_REGEX,
-} from './string.js';
+} from './string.ts';
 
 const log = logger.for('import-utils');
 

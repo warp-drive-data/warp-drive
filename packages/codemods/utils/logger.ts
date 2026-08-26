@@ -4,7 +4,7 @@ import { stripVTControlCharacters as stripAnsi, styleText } from 'node:util';
 import type { Logform, Logger as WinstonLogger } from 'winston';
 import { createLogger as createWinstonLogger, format as winstonFormat, transports as winstonTransports } from 'winston';
 
-import { isRecord } from './types.js';
+import { isRecord } from './types.ts';
 
 export interface LoggerOptions extends Options {
   verbose?: '0' | '1' | '2';

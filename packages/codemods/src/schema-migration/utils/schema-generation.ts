@@ -2,15 +2,15 @@ import type { SgNode } from '@ast-grep/napi';
 import { existsSync } from 'fs';
 import { join } from 'path';
 
-import { logger } from '../../../utils/logger.js';
-import { getConfiguredImport, type TransformOptions } from '../config.js';
-import type { ArtifactConfig, SchemaArtifactRegistry } from './artifact.js';
-import { deriveResourceExtensionName, deriveTraitExtensionName } from './artifact.js';
-import { type ExtensionContext, generateRegistrationBlock } from './extension-generation.js';
-import { generateTraitImport, isModelImportPath, transformModelToResourceImport } from './import-utils.js';
-import { normalizeClassicImport, removeQuotes, toPascalCase } from './path-utils.js';
-import type { ExtractedType } from './type-utils.js';
-import { schemaFieldToTypeScriptType } from './type-utils.js';
+import { logger } from '../../../utils/logger.ts';
+import { getConfiguredImport, type TransformOptions } from '../config.ts';
+import type { ArtifactConfig, SchemaArtifactRegistry } from './artifact.ts';
+import { deriveResourceExtensionName, deriveTraitExtensionName } from './artifact.ts';
+import { type ExtensionContext, generateRegistrationBlock } from './extension-generation.ts';
+import { generateTraitImport, isModelImportPath, transformModelToResourceImport } from './import-utils.ts';
+import { normalizeClassicImport, removeQuotes, toPascalCase } from './path-utils.ts';
+import type { ExtractedType } from './type-utils.ts';
+import { schemaFieldToTypeScriptType } from './type-utils.ts';
 
 const log = logger.for('schema-generation');
 

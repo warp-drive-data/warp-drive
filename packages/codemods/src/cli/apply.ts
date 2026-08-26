@@ -1,11 +1,11 @@
 import type { Command } from 'commander';
 import { Argument, Option } from 'commander';
 
-import { logger } from '../../utils/logger.js';
-import type { RunOptions } from '../legacy-compat-builders/run.js';
+import { logger } from '../../utils/logger.ts';
+import type { RunOptions } from '../legacy-compat-builders/run.ts';
 import type { MigrateOptions } from '../schema-migration/config.ts';
-import { type ConfigOptions, loadConfig, mergeOptions } from '../schema-migration/utils/config.js';
-import type { SharedCodemodOptions } from './index.js';
+import { type ConfigOptions, loadConfig, mergeOptions } from '../schema-migration/utils/config.ts';
+import type { SharedCodemodOptions } from './index.ts';
 
 export function createApplyCommand(program: Command) {
   const applyCommand = program

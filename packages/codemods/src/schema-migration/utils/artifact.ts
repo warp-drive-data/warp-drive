@@ -1,8 +1,8 @@
-import type { InstanciatedLogger } from '../../../utils/logger.js';
-import type { Filename } from '../codemod.js';
+import type { InstanciatedLogger } from '../../../utils/logger.ts';
+import type { Filename } from '../codemod.ts';
 import type { TransformOptions } from '../config';
 import type { ModelAnalysisResult } from '../processors/model';
-import type { ParsedFile } from './file-parser.js';
+import type { ParsedFile } from './file-parser.ts';
 import { toPascalCase } from './path-utils';
 
 interface ResourceArtifactIdentifiers {

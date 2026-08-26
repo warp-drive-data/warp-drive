@@ -1,21 +1,21 @@
 import { Lang as AstLang, type Lang, parse, type SgNode } from '@ast-grep/napi';
 import { dirname, join, relative, resolve, sep } from 'path';
 
-import { logger } from '../../../utils/logger.js';
-import type { TransformOptions } from '../config.js';
-import { DEFAULT_RESOURCES_DIR, DEFAULT_TRAITS_DIR } from '../config.js';
-import type { ArtifactConfig } from './artifact.js';
-import { findDefaultExport } from './ast-helpers.js';
-import { getModelImportSources } from './import-utils.js';
-import { getFileExtension, getLanguageFromPath, indentCode, removeQuotes } from './path-utils.js';
-import type { TransformArtifact } from './schema-generation.js';
+import { logger } from '../../../utils/logger.ts';
+import type { TransformOptions } from '../config.ts';
+import { DEFAULT_RESOURCES_DIR, DEFAULT_TRAITS_DIR } from '../config.ts';
+import type { ArtifactConfig } from './artifact.ts';
+import { findDefaultExport } from './ast-helpers.ts';
+import { getModelImportSources } from './import-utils.ts';
+import { getFileExtension, getLanguageFromPath, indentCode, removeQuotes } from './path-utils.ts';
+import type { TransformArtifact } from './schema-generation.ts';
 import {
   EXPORT_DEFAULT_LINE_END_REGEX,
   EXPORT_LINE_END_REGEX,
   extractDirectory,
   removeFileExtension,
   removeSameDirPrefix,
-} from './string.js';
+} from './string.ts';
 
 const log = logger.for('extension-generation');
 

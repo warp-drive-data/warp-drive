@@ -1,4 +1,4 @@
-#!/usr/bin/env ts-node
+#!/usr/bin/env node
 
 import type { Transform } from 'jscodeshift';
 import { applyTransform, type TestOptions } from 'jscodeshift/src/testUtils.js';
@@ -9,7 +9,7 @@ import { describe, it } from 'node:test';
 import { fileURLToPath } from 'node:url';
 import * as prettier from 'prettier';
 
-import { legacyCompatBuilders, legacyCompatBuildersLog } from '@ember-data/codemods';
+import { legacyCompatBuilders, legacyCompatBuildersLog } from '../../../packages/codemods/src/index.ts';
 
 const __filename = fileURLToPath(import.meta.url); // get the resolved path to the file
 const __dirname = path.dirname(__filename); // get the name of the directory

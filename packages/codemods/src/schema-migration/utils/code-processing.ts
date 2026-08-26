@@ -1,6 +1,6 @@
 import type { SgNode } from '@ast-grep/napi';
 
-import { removeQuotes } from './path-utils.js';
+import { removeQuotes } from './path-utils.ts';
 
 /** AST node kind for identifier nodes */
 export const NODE_KIND_IDENTIFIER = 'identifier';

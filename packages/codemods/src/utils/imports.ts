@@ -10,8 +10,8 @@ import type {
   TSTypeParameter,
 } from 'jscodeshift';
 
-import { log } from '../legacy-compat-builders/log.js';
-import { TransformError } from './error.js';
+import { log } from '../legacy-compat-builders/log.ts';
+import { TransformError } from './error.ts';
 
 type IdentifierLike = Identifier | JSXIdentifier | TSTypeParameter;
 

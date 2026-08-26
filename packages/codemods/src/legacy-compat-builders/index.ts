@@ -1,10 +1,10 @@
 import type { API, FileInfo } from 'jscodeshift';
 
-import { addImport, parseExistingImports } from '../utils/imports.js';
-import { CONFIGS, IMPORT_INFOS } from './config.js';
-import { transformLegacyStoreMethod } from './legacy-store-method.js';
-import type { Options } from './options.js';
-import { TransformResult } from './result.js';
+import { addImport, parseExistingImports } from '../utils/imports.ts';
+import { CONFIGS, IMPORT_INFOS } from './config.ts';
+import { transformLegacyStoreMethod } from './legacy-store-method.ts';
+import type { Options } from './options.ts';
+import { TransformResult } from './result.ts';
 
 /**
  * | Result       | How-to                      | Meaning                                            |

@@ -1,10 +1,10 @@
 import { existsSync, mkdirSync, writeFileSync } from 'fs';
 import { basename, dirname, join, resolve } from 'path';
 
-import { type InstanciatedLogger, logger } from '../../../utils/logger.js';
-import type { SkippedFile, TransformerResult } from '../codemod.js';
-import { Codemod } from '../codemod.js';
-import type { FinalOptions, MigrateOptions, TransformOptions } from '../config.js';
+import { type InstanciatedLogger, logger } from '../../../utils/logger.ts';
+import type { SkippedFile, TransformerResult } from '../codemod.ts';
+import { Codemod } from '../codemod.ts';
+import type { FinalOptions, MigrateOptions, TransformOptions } from '../config.ts';
 import {
   DEFAULT_INPUT_DIR,
   DEFAULT_MIXIN_SOURCE_DIR,
@@ -13,12 +13,12 @@ import {
   DEFAULT_RESOURCES_DIR,
   DEFAULT_TRAITS_DIR,
   DEFAULT_WARP_DRIVE_IMPORTS,
-} from '../config.js';
-import { toArtifacts as mixinToArtifacts } from '../processors/mixin.js';
-import { processIntermediateModelsToTraits, toArtifacts as modelToArtifacts } from '../processors/model.js';
-import type { SchemaArtifact, SchemaArtifactRegistry } from '../utils/artifact.js';
-import { findEntityByBaseName } from '../utils/artifact.js';
-import type { TransformArtifact } from '../utils/schema-generation.js';
+} from '../config.ts';
+import { toArtifacts as mixinToArtifacts } from '../processors/mixin.ts';
+import { processIntermediateModelsToTraits, toArtifacts as modelToArtifacts } from '../processors/model.ts';
+import type { SchemaArtifact, SchemaArtifactRegistry } from '../utils/artifact.ts';
+import { findEntityByBaseName } from '../utils/artifact.ts';
+import type { TransformArtifact } from '../utils/schema-generation.ts';
 
 const migrateLog = logger.for('migrate');
 

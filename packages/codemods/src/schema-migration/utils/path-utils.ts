@@ -3,7 +3,7 @@ import { Lang as AstLang } from '@ast-grep/napi';
 import { existsSync } from 'fs';
 import path, { dirname, resolve } from 'path';
 
-import type { TransformOptions } from '../config.js';
+import type { TransformOptions } from '../config.ts';
 import {
   capitalizeFirstLetter,
   capitalizeWord,
@@ -16,7 +16,7 @@ import {
   WHITESPACE_REGEX,
   WORD_BOUNDARY_REGEX,
   WORD_SEPARATOR_REGEX,
-} from './string.js';
+} from './string.ts';
 
 /**
  * Extract the file name (without extension) from a file path
