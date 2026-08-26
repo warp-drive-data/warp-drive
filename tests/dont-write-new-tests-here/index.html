@@ -8,6 +8,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
   </head>
   <body>
+    <script>
+			// see tests/index.html for why this can't be set from within a module script.
+			// Keep in sync with config/environment.js and config/optional-features.json.
+			window.EmberENV = {
+				RAISE_ON_DEPRECATION: false,
+				_APPLICATION_TEMPLATE_WRAPPER: false,
+				_TEMPLATE_ONLY_GLIMMER_COMPONENTS: true,
+				_JQUERY_INTEGRATION: false,
+			};
+    </script>
     <script type="module">
       import Application from './app/app';
       import environment from './app/config/environment';

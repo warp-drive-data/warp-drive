@@ -10,6 +10,24 @@
   </head>
   <body>
     <script>
+			// ember-source reads window.EmberENV synchronously the moment its own
+			// modules first evaluate. Classic ember-cli sets this from
+			// config/environment.js's EmberENV (merged with config/optional-features.json)
+			// as part of its generated boot sequence, before any app modules load.
+			// Under the native (non-compat) @embroider/vite pipeline there's no such
+			// boot sequence, and by the time an ES module's own top-level code would
+			// run, its statically-imported dependencies (including, transitively,
+			// ember-source) have already evaluated -- so this has to be a plain,
+			// synchronous, non-module script that runs before any `type="module"`
+			// script tag. Keep in sync with config/environment.js and
+			// config/optional-features.json.
+			window.EmberENV = {
+				RAISE_ON_DEPRECATION: false,
+				_APPLICATION_TEMPLATE_WRAPPER: false,
+				_TEMPLATE_ONLY_GLIMMER_COMPONENTS: true,
+				_JQUERY_INTEGRATION: false,
+			};
+
 			// works together with testem changes below
 			// our test-helpers.js file and our Dot Reporter
 			// to report memory stats after each test to
