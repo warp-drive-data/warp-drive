@@ -182,8 +182,7 @@ export function serializerFor(this: Store, modelName: string): MinimumSerializer
   // by name
   const owner = getOwner(this)!;
   serializer = owner.lookup(`serializer:${normalizedModelName}`) as
-    | (MinimumSerializerInterface & { store: Store })
-    | undefined;
+    (MinimumSerializerInterface & { store: Store }) | undefined;
   if (serializer !== undefined) {
     _serializerCache[normalizedModelName] = serializer;
     return serializer;

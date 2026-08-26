@@ -4,7 +4,8 @@ import { findAll } from '@warp-drive/legacy/compat/builders';
 const { content: post } = await store // 2
   // 3
   .request(
-    findAll<Post>( // 4
+    findAll<Post> // 4
+    (
       'post', // 5
       // 6
       // 10

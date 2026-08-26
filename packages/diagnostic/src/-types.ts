@@ -51,17 +51,19 @@ export type GlobalConfig<TC extends TestContext = TestContext> = {
     package: string;
   };
   params: {
-    [key in
-      | 'search'
-      | 'useConcurrency'
-      | 'noTryCatch'
-      | 'instrument'
-      | 'hideReport'
-      | 'memory'
-      | 'groupLogs'
-      | 'debug'
-      | 'hidecontainer'
-      | 'timeline']: ParamConfig;
+    [
+      key in
+        | 'search'
+        | 'useConcurrency'
+        | 'noTryCatch'
+        | 'instrument'
+        | 'hideReport'
+        | 'memory'
+        | 'groupLogs'
+        | 'debug'
+        | 'hidecontainer'
+        | 'timeline'
+    ]: ParamConfig;
   };
   tests: Set<string>;
   modules: Set<string>;

@@ -4,7 +4,8 @@ import { queryRecord } from '@warp-drive/legacy/compat/builders';
 const { content: post } = await store // 2
   // 3
   .request(
-    queryRecord<Post>( // 4
+    queryRecord<Post> // 4
+    (
       'post', // 5
       // 6
       // 10

@@ -184,9 +184,7 @@ export interface ResourceIdentifier {
  * [{json:api} Spec](https://jsonapi.org/format/#document-resource-identifier-objects)
  */
 export type ResourceIdentifierObject<T extends string = string> =
-  | ResourceIdentifier
-  | ExistingResourceIdentifierObject<T>
-  | NewResourceIdentifierObject<T>;
+  ResourceIdentifier | ExistingResourceIdentifierObject<T> | NewResourceIdentifierObject<T>;
 
 // TODO disallow NewResource, make narrowable
 /**
@@ -251,8 +249,7 @@ export interface CollectionResourceRelationship<T = ExistingResourceIdentifierOb
  * - {@link CollectionResourceRelationship}
  */
 export type InnerRelationshipDocument<T = ExistingResourceIdentifierObject | NewResourceIdentifierObject> =
-  | SingleResourceRelationship<T>
-  | CollectionResourceRelationship<T>;
+  SingleResourceRelationship<T> | CollectionResourceRelationship<T>;
 
 /**
  * The `relationships` member of a {json:api} resource object, keyed
@@ -407,6 +404,4 @@ export type CollectionResourceDocument<T extends string = string> = Document & {
  * @private
  */
 export type JsonApiDocument<T extends string = string> =
-  | EmptyResourceDocument
-  | SingleResourceDocument<T>
-  | CollectionResourceDocument<T>;
+  EmptyResourceDocument | SingleResourceDocument<T> | CollectionResourceDocument<T>;

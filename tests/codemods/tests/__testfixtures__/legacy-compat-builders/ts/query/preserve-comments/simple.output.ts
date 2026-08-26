@@ -4,7 +4,8 @@ import { query } from '@warp-drive/legacy/compat/builders';
 const { content: post } = await store // 2
   // 3
   .request(
-    query<Post>( // 4
+    query<Post> // 4
+    (
       'post', // 5
       // 6
       // 10
