@@ -125,22 +125,31 @@ runs:
     # of each other, more than one can decide "cache miss" and upload an
     # artifact under the *same* content-derived hash name around the same
     # time; GitHub's artifact store has no cross-run dedup, so this produces
-    # two distinct, coexisting artifacts sharing one name -- which is what was
-    # actually causing build:pkg's remote-cache corruption, not (only) list-API
-    # lag. `build:pkg`'s hash is purely a function of file contents, so it is
-    # identical across all three workflows for the same commit -- confirmed
-    # directly (hash `97e7b03c5739bcf2` computed identically by both the Main
-    # and DX runs of the same push).
+    # two distinct, coexisting artifacts sharing one name (confirmed directly:
+    # hash `97e7b03c5739bcf2` was computed identically by both the Main and DX
+    # runs of the same push, and exists as two separate artifact IDs).
     #
-    # Turborepo always checks its own local on-disk cache (`.turbo/cache`)
-    # before ever consulting the remote (felixmosh) cache, so persisting that
-    # directory here -- keyed by commit, not by run -- lets every workflow's
-    # `install` job satisfy `build:pkg` from a plain, well-tested actions/cache
-    # restore, without any of the three ever needing to ask the flaky
-    # remote-cache proxy at all. Whichever job computes it first wins the
-    # exact key (a hit skips the redundant work and the no-op re-save); the
-    # prefix-matched restore-key still gives partial reuse for unchanged
-    # packages across commits.
+    # NOTE: this duplicate-name situation is real, but it turned out not to be
+    # the cause of the build:pkg "missing babel-macros.js" corruption this was
+    # originally written to chase -- that was pnpm's injected workspace
+    # dependencies never getting re-synced after a root-level `build:pkg` run
+    # (see 'Sync Injected Workspace Dependencies' below), unrelated to turbo's
+    # cache at all. With that fixed, this step is purely a performance
+    # optimization, not a correctness fix: it saves the redundant rebuild work
+    # (and the proxy traffic/upload churn that comes with it) across Main, DX,
+    # and Compat, but nothing here is required for build:pkg's output to be
+    # correct.
+    #
+    # `build:pkg`'s hash is purely a function of file contents, so it is
+    # identical across all three workflows for a given commit. Turborepo
+    # always checks its own local on-disk cache (`.turbo/cache`) before ever
+    # consulting the remote (felixmosh) cache, so persisting that directory
+    # here -- keyed by commit, not by run -- lets every workflow's `install`
+    # job satisfy `build:pkg` from a plain, well-tested actions/cache restore,
+    # without needing to ask the remote-cache proxy at all. Whichever job
+    # computes it first wins the exact key (a hit skips the redundant work and
+    # the no-op re-save); the prefix-matched restore-key still gives partial
+    # reuse for unchanged packages across commits.
     - name: 'Restore Turbo Local Build Cache'
       if: ${{ inputs.install == 'true' }}
       uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
