@@ -59,6 +59,12 @@ inputs:
     description: Whether to setup an SSL Cert
     required: false
     default: false
+  cache-key-suffix:
+    description: |
+      Identifies this job (and matrix leg, if any) for the local turbo build
+      cache -- see the note on 'Restore Turbo Local Build Cache' below.
+    required: false
+    default: 'install'
 
 runs:
   using: composite
@@ -117,23 +123,29 @@ runs:
         restore-keys: |
           turbo-remote-cache-
 
-    # `build:pkg`'s hash is purely a function of file contents, so it's
-    # identical for a given commit regardless of which workflow or job
-    # computes it. Turborepo always checks its local on-disk cache
-    # (`.turbo/cache`) before the remote
-    # (felixmosh) cache, so sharing that directory here -- keyed by commit,
-    # not by run -- lets whichever workflow builds it first save the others
-    # the redundant rebuild (and the matching remote-cache upload traffic).
-    # Whichever job computes it first wins the exact key (a hit skips both the
-    # rebuild and the no-op re-save); the prefix-matched restore-key gives
-    # partial reuse for unchanged packages across commits.
+    # Turborepo always checks its local on-disk cache (`.turbo/cache`) before
+    # the remote (felixmosh) cache, and every turbo task's hash is purely a
+    # function of file contents, so sharing that directory here -- keyed by
+    # commit, not by run -- lets a later job/workflow skip a rebuild another
+    # one already did for the same commit, without any remote-cache traffic.
+    #
+    # actions/cache keys are immutable: whichever job finishes first wins a
+    # given key, and every later job's save under that *same* key is silently
+    # a no-op. `cache-key-suffix` gives each job (and matrix leg) its own key,
+    # so e.g. browser-tests' own build:tests/test entries actually get saved
+    # instead of losing a race to whichever job saves under a shared key
+    # first (in practice, always `install`, since nothing else starts
+    # sooner). The `${{ github.sha }}-` restore-key still lets every job
+    # start by restoring *some* same-commit save -- typically install's,
+    # since it finishes first -- before adding its own entries on top.
     - name: 'Restore Turbo Local Build Cache'
       if: ${{ inputs.install == 'true' }}
       uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
       with:
         path: .turbo/cache
-        key: turbo-local-cache-${{ github.sha }}
+        key: turbo-local-cache-${{ github.sha }}-${{ inputs.cache-key-suffix }}
         restore-keys: |
+          turbo-local-cache-${{ github.sha }}-
           turbo-local-cache-
 
     - name: 'Setup local TurboRepo server'
