@@ -117,11 +117,10 @@ runs:
         restore-keys: |
           turbo-remote-cache-
 
-    # Main, DX (blueprint-tests.yml), and Compat (compat-tests.yml) all trigger
-    # on the same `pull_request` event, each with their own `install` job.
     # `build:pkg`'s hash is purely a function of file contents, so it's
-    # identical across all three workflows for a given commit. Turborepo
-    # always checks its local on-disk cache (`.turbo/cache`) before the remote
+    # identical for a given commit regardless of which workflow or job
+    # computes it. Turborepo always checks its local on-disk cache
+    # (`.turbo/cache`) before the remote
     # (felixmosh) cache, so sharing that directory here -- keyed by commit,
     # not by run -- lets whichever workflow builds it first save the others
     # the redundant rebuild (and the matching remote-cache upload traffic).

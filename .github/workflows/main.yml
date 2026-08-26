@@ -52,6 +52,14 @@ jobs:
           install: true
           repo-token: ${{ secrets.GITHUB_TOKEN }}
 
+  dx:
+    needs: [install]
+    if: |
+      github.event_name == 'pull_request' && (
+        github.base_ref == 'main' || github.base_ref == 'v4-main'
+      )
+    uses: ./.github/workflows/blueprint-tests.yml
+
   lint:
     needs: [install]
     timeout-minutes: 8

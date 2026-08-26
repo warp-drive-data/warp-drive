@@ -1,41 +1,19 @@
 name: DX
 
 on:
-  pull_request:
-    branches:
-      - main
-      - v4-main
+  workflow_call:
 
 env:
   TURBO_API: http://127.0.0.1:9080
   TURBO_TOKEN: this-is-not-a-secret
   TURBO_TEAM: myself
 
-# See the matching note in .github/workflows/main.yml: without this, the
-# felixmosh/turborepo-gh-artifacts proxy can't look up artifacts it (or a
-# sibling job) already wrote, and re-uploads duplicates instead.
 permissions:
   contents: read
   actions: read
 
-concurrency:
-  group: docs-${{ github.head_ref || github.ref_name }}
-  cancel-in-progress: true
-
 jobs:
-  # See the matching "install" job in .github/workflows/main.yml.
-  install:
-    timeout-minutes: 8
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-      - uses: ./.github/actions/setup
-        with:
-          install: true
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-
   test:
-    needs: [install]
     timeout-minutes: 5
     runs-on: ubuntu-latest
     steps:
