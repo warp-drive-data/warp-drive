@@ -57,7 +57,7 @@
     "@glint/ember-tsc": "^1.0.9",
     "@glint/template": "^1.7.3",
     "@rollup/plugin-babel": "^6.1.0",
-    "@tsconfig/ember": "^3.0.11",
+    "@tsconfig/ember": "^3.0.12",
     "@types/qunit": "2.19.14",
     "@warp-drive/build-config": "workspace:*",
     "@warp-drive/core": "workspace:*",

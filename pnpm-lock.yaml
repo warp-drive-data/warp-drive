@@ -1510,8 +1510,8 @@ importers:
         specifier: ^6.1.0
         version: 6.1.0(@babel/core@7.29.7)
       '@tsconfig/ember':
-        specifier: ^3.0.11
-        version: 3.0.11
+        specifier: ^3.0.12
+        version: 3.0.12
       '@types/qunit':
         specifier: 2.19.14
         version: 2.19.14
@@ -6302,8 +6302,8 @@ packages:
     resolution: {integrity: sha512-/67zpWDBLV+oYAEL682s1ktXL0HgqX76f6gaVGkGnVZlBbm1zd0v4Bz8MFF2GGhoX9rvfq3KSQHubFHwa6w6/Q==}
     engines: {node: '>=12'}
 
-  '@tsconfig/ember@3.0.11':
-    resolution: {integrity: sha512-c9uaKBN4KxtdT/UNPPxoWghyoDsTRHzYb53Z5Fv9eum+4cok0U+hYwyKNjvCxkBjEPECS8QAyp8nGAhRifZnBQ==}
+  '@tsconfig/ember@3.0.12':
+    resolution: {integrity: sha512-ypFTXqIzQAB5HpYPi4TwDElDcUheWrKsEaYXgjiCAvsH6zxcQ4zUeuJqmfT+FoUlHTPZ3Xyel81OxrcjI+rilw==}
     deprecated: Please use @ember/app-tsconfig or @ember/library-tsconfig instead. These live at https://github.com/ember-cli/tsconfigs
 
   '@turbo/darwin-64@2.9.14':
@@ -18098,7 +18098,7 @@ snapshots:
       magic-string: 0.30.21
       string.prototype.matchall: 4.0.12
 
-  '@tsconfig/ember@3.0.11': {}
+  '@tsconfig/ember@3.0.12': {}
 
   '@turbo/darwin-64@2.9.14':
     optional: true
