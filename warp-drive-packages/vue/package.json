@@ -59,7 +59,7 @@
     "@babel/runtime": "^7.29.7",
     "@warp-drive/core": "workspace:*",
     "@warp-drive/internal-config": "workspace:*",
-    "decorator-transforms": "^2.3.0",
+    "decorator-transforms": "^2.4.0",
     "tsdown": "^0.22.14",
     "typescript": "^5.9.3",
     "unplugin-vue": "^7.2.0",
