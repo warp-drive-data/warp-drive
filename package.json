@@ -45,7 +45,7 @@
     "git-repo-version": "^1.0.2",
     "lerna-changelog": "^2.2.0",
     "prettier": "^3.8.1",
-    "prettier-plugin-ember-template-tag": "^2.1.6",
+    "prettier-plugin-ember-template-tag": "^2.1.7",
     "semver": "^7.7.2",
     "silent-error": "^1.1.1",
     "typedoc": "^0.28.20",
