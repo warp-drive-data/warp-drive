@@ -3,20 +3,13 @@ import { createConfig } from '@warp-drive/internal-config/tsdown/config.js';
 
 import babelConfig from './babel.config.mjs';
 
-export const externals = [
-  '@ember/runloop',
-  '@ember/test-helpers',
-  '@ember/template-compilation',
-  'ember-cli-test-loader/test-support/index',
-  '@glimmer/manager',
-];
+export const externals = ['@ember/runloop', '@ember/test-helpers', '@ember/template-compilation', '@glimmer/manager'];
 export const entryPoints = [
   './src/index.ts',
   './src/reporters/dom.ts',
   './src/runners/dom.ts',
   './src/helpers/install.ts',
   './src/ember.ts',
-  './src/ember-classic.ts',
   './src/react.tsx',
   './src/spec.ts',
   './src/react/test-helpers.ts',

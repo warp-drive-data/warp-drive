@@ -74,15 +74,11 @@
   },
   "peerDependencies": {
     "@ember/test-helpers": "5.2.0",
-    "ember-cli-test-loader": ">= 3.1.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8"
   },
   "peerDependenciesMeta": {
     "@ember/test-helpers": {
-      "optional": true
-    },
-    "ember-cli-test-loader": {
       "optional": true
     },
     "react": {
@@ -113,7 +109,6 @@
     "@types/react-dom": "^19.2.4",
     "@warp-drive/internal-config": "workspace:*",
     "bun-types": "^1.4.0",
-    "ember-cli-test-loader": "^3.1.0",
     "ember-source": "catalog:",
     "tsdown": "^0.22.14",
     "typescript": "^5.9.3"
