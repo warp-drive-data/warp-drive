@@ -113,7 +113,7 @@ importers:
         specifier: ^3.8.1
         version: 3.8.1
       prettier-plugin-ember-template-tag:
-        specifier: ^2.1.6
+        specifier: ^2.1.7
         version: 2.1.7(prettier@3.8.1)
       semver:
         specifier: ^7.7.2
