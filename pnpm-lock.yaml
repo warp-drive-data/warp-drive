@@ -18,7 +18,7 @@ catalogs:
 overrides:
   '@embroider/macros': ^1.20.6
   ember-auto-import: ^2.13.1
-  broccoli-funnel: ^3.0.8
+  broccoli-funnel: ^4.0.0
   broccoli-merge-trees: ^4.2.0
   '@glimmer/validator': ^0.95.0
   '@glint/ember-tsc': 1.10.0
@@ -6591,8 +6591,9 @@ packages:
     resolution: {integrity: sha512-Z/ZeOgVl7bcSYZ/u/rh0fOpvEpq//LZmdbkXyc7syVzjPAhfOa9ebsdTSjEBDU4vs5nC98Kfduj1uFo0qyET3g==}
     engines: {node: '>= 0.4'}
 
-  array-equal@1.0.2:
-    resolution: {integrity: sha512-gUHx76KtnhEgB3HOuFYiCm3FIdEs6ocM2asHvNTkfu/Y09qQVrrVVaOKENmS2KkSaGoxgXNqC+ZVtR/n0MOkSA==}
+  array-equal@2.0.0:
+    resolution: {integrity: sha512-omyuT98dFFarEaqhHvhzcJ6/lX+qxT1kzdNzaAp3Dr/6AkmU2+tXeDXYkdB8n84w0/QhrX6FFRUY6l7U250oCQ==}
+    engines: {node: '>=20'}
 
   array-timsort@1.0.3:
     resolution: {integrity: sha512-/+3GRL7dDAGEfM6TseQk/U+mi18TU2Ms9I3UlLdUMhz2hbvGNTKdj9xniwXfUqgYhHxRx0+8UnKkvlNwVU+cWQ==}
@@ -6800,8 +6801,8 @@ packages:
   broccoli-debug@0.6.5:
     resolution: {integrity: sha512-RIVjHvNar9EMCLDW/FggxFRXqpjhncM/3qq87bn/y+/zR9tqEkHvTqbyOc4QnB97NO2m6342w4wGkemkaeOuWg==}
 
-  broccoli-funnel@3.0.8:
-    resolution: {integrity: sha512-ng4eIhPYiXqMw6SyGoxPHR3YAwEd2lr9FgBI1CyTbspl4txZovOsmzFkMkGAlu88xyvYXJqHiM2crfLa65T1BQ==}
+  broccoli-funnel@4.0.0:
+    resolution: {integrity: sha512-VsEjKM5XBzm2osABRL3gYuK/qD22IFG2URWjNL5Pgh2VsHvhpZ6cFIllR9e1PlmaKTr2tp4x2n7pPiqRizHNdQ==}
     engines: {node: 10.* || >= 12.*}
 
   broccoli-kitchen-sink-helpers@0.3.1:
@@ -6828,6 +6829,10 @@ packages:
   broccoli-plugin@4.0.7:
     resolution: {integrity: sha512-a4zUsWtA1uns1K7p9rExYVYG99rdKeGRymW0qOCNkvDPHQxVi3yVyJHhQbM3EZwdt2E0mnhr5e0c/bPpJ7p3Wg==}
     engines: {node: 10.* || >= 12.*}
+
+  broccoli-plugin@6.0.0:
+    resolution: {integrity: sha512-EyZ7CroBVosQZN9AfCdC9aIoaLytE601AQfmKg2U9EiuNS2K8Gj6Q8gmr8hGOUMGFKSf+yNMn7UCAncCWvgXUg==}
+    engines: {node: '>= 14.14'}
 
   broccoli-source@3.0.1:
     resolution: {integrity: sha512-ZbGVQjivWi0k220fEeIUioN6Y68xjMy0xiLAc0LdieHI99gw+tafU8w0CggBDYVNsJMKUr006AZaM7gNEwCxEg==}
@@ -10842,6 +10847,10 @@ packages:
     resolution: {integrity: sha512-41TvKmDGVpm2iuH7o+DAOt06yyu/cSHpX3uzAwetzASvlNtVddgIjXIb2DfB/Wa20B1Jo86+1Dv1CraSU7hWdw==}
     engines: {node: 10.* || >= 12.*}
 
+  walk-sync@4.0.2:
+    resolution: {integrity: sha512-SPRy/z6vC+Fb20XQDzagaSVVNzX77EcLLPnBJsqNy0CFQgBS6cexbYP62kzRSqNdyIDdRGc7SOCybRrpkf+Pmg==}
+    engines: {node: '>= 20.*'}
+
   warp-drive@file:packages/-warp-drive:
     resolution: {directory: packages/-warp-drive, type: directory}
     hasBin: true
@@ -12497,7 +12506,7 @@ snapshots:
   '@embroider/addon-shim@1.10.0':
     dependencies:
       '@embroider/shared-internals': 3.1.1
-      broccoli-funnel: 3.0.8
+      broccoli-funnel: 4.0.0
       common-ancestor-path: 1.0.1
       semver: 7.8.5
     transitivePeerDependencies:
@@ -12506,7 +12515,7 @@ snapshots:
   '@embroider/addon-shim@1.10.2':
     dependencies:
       '@embroider/shared-internals': 3.1.1
-      broccoli-funnel: 3.0.8
+      broccoli-funnel: 4.0.0
       common-ancestor-path: 1.0.1
       semver: 7.8.5
     transitivePeerDependencies:
@@ -12515,7 +12524,7 @@ snapshots:
   '@embroider/addon-shim@1.10.3':
     dependencies:
       '@embroider/shared-internals': 3.1.1
-      broccoli-funnel: 3.0.8
+      broccoli-funnel: 4.0.0
       common-ancestor-path: 1.0.1
       semver: 7.8.5
     transitivePeerDependencies:
@@ -16062,7 +16071,7 @@ snapshots:
 
   aria-query@5.3.1: {}
 
-  array-equal@1.0.2: {}
+  array-equal@2.0.0: {}
 
   array-timsort@1.0.3: {}
 
@@ -16324,15 +16333,15 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  broccoli-funnel@3.0.8:
+  broccoli-funnel@4.0.0:
     dependencies:
-      array-equal: 1.0.2
-      broccoli-plugin: 4.0.7
+      array-equal: 2.0.0
+      broccoli-plugin: 6.0.0
       debug: 4.4.3
       fs-tree-diff: 2.0.1
       heimdalljs: 0.2.6
-      minimatch: 3.1.5
-      walk-sync: 2.2.0
+      minimatch: 10.2.6
+      walk-sync: 4.0.2
     transitivePeerDependencies:
       - supports-color
 
@@ -16384,6 +16393,16 @@ snapshots:
       promise-map-series: 0.3.0
       quick-temp: 0.1.9
       rimraf: 3.0.2
+      symlink-or-copy: 1.3.1
+    transitivePeerDependencies:
+      - supports-color
+
+  broccoli-plugin@6.0.0:
+    dependencies:
+      broccoli-node-api: 1.7.0
+      broccoli-output-wrapper: 3.2.5
+      fs-merger: 3.2.1
+      promise-map-series: 0.3.0
       symlink-or-copy: 1.3.1
     transitivePeerDependencies:
       - supports-color
@@ -16907,7 +16926,7 @@ snapshots:
       babel-plugin-module-resolver: 5.0.2
       broccoli-babel-transpiler: 8.0.2(@babel/core@7.29.7)
       broccoli-debug: 0.6.5
-      broccoli-funnel: 3.0.8
+      broccoli-funnel: 4.0.0
       broccoli-source: 3.0.1
       calculate-cache-key-for-tree: 2.0.0
       clone: 2.1.2
@@ -19221,7 +19240,7 @@ snapshots:
 
   qunit-console-grouper@0.3.0:
     dependencies:
-      broccoli-funnel: 3.0.8
+      broccoli-funnel: 4.0.0
     transitivePeerDependencies:
       - supports-color
 
@@ -20916,6 +20935,12 @@ snapshots:
       ensure-posix-path: 1.1.1
       matcher-collection: 2.0.1
       minimatch: 3.1.5
+
+  walk-sync@4.0.2:
+    dependencies:
+      ensure-posix-path: 1.1.1
+      matcher-collection: 2.0.1
+      minimatch: 10.2.6
 
   warp-drive@file:packages/-warp-drive:
     dependencies:
