@@ -46,6 +46,7 @@
     "LICENSE.md"
   ],
   "scripts": {
+    "sync": "echo \"syncing\"",
     "skip:test": "mocha tests",
     "lint": "eslint . --quiet --cache --cache-strategy=content"
   },

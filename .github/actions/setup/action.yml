@@ -150,15 +150,9 @@ runs:
         restore-keys: |
           turbo-local-cache-
 
-    # Vendored, patched copy of felixmosh/turborepo-gh-artifacts@v4.1.1 -- its
-    # artifact-existence check does a single unretried call to GitHub's
-    # list-artifacts endpoint, which can lag a few seconds behind a
-    # just-finalized upload and report a false "not found". See
-    # .github/actions/turborepo-gh-artifacts/VENDORED.md for the patch and
-    # the plan to drop this once it's merged upstream.
     - name: 'Setup local TurboRepo server'
       if: ${{ inputs.repo-token }}
-      uses: ./.github/actions/turborepo-gh-artifacts
+      uses: felixmosh/turborepo-gh-artifacts@118f869397261f74bc39cb8565f2d02c0ed4209f # 4.1.1
       with:
         repo-token: ${{ inputs.repo-token }}
 
@@ -210,27 +204,25 @@ runs:
       env:
         ADTL_ARGS: ${{ inputs.adtl-install-args }}
 
-    # TEMPORARY diagnostic for the build:pkg missing-babel-macros investigation.
-    # Prints what's actually on disk right after install/build:pkg, both at the
-    # real path and through a downstream package's node_modules symlink, so we
-    # can see directly whether the file is missing at the source or only
-    # unreachable through the symlink. Remove once root-caused.
-    - name: 'DEBUG: inspect @warp-drive/core build-config output'
-      if: ${{ inputs.install == 'true' }}
+    # Root-caused the build:pkg "missing babel-macros.js" failures: this repo
+    # uses pnpm's injected workspace dependencies (inject-workspace-packages=true
+    # in .npmrc), so consumers get a real hardlinked *copy* of e.g.
+    # @warp-drive/core's dist/, not a live symlink. pnpm's own
+    # sync-injected-deps-after-scripts=[build:pkg] hook is supposed to refresh
+    # those copies whenever a package's build:pkg script runs -- but per the
+    # comment in .npmrc, that hook never fires for scripts invoked at the
+    # monorepo root, which is exactly how `pnpm install`'s `prepare` lifecycle
+    # script runs build:pkg (via `turbo run build:pkg`) above. Nothing was
+    # calling the workaround `sync` script in CI, so every consumer's injected
+    # copy stayed frozen at whatever it was when node_modules was last linked
+    # -- stale by however many commits, independent of and unrelated to any
+    # turbo cache. `sync` fans out to a --if-present "sync" script in every
+    # workspace member with injected deps (an intentional no-op whose only job
+    # is to give pnpm's hook a script name to trigger on).
+    - name: 'Sync Injected Workspace Dependencies'
+      if: ${{ inputs.install == 'true' && inputs.skip-addon-build == 'false' }}
       shell: bash
-      run: |
-        echo "--- real dir: warp-drive-packages/core/dist/build-config ---"
-        ls -la warp-drive-packages/core/dist/build-config/ 2>&1 || echo "MISSING DIR"
-        echo
-        echo "--- packages/graph/node_modules/@warp-drive/core symlink ---"
-        ls -la packages/graph/node_modules/@warp-drive/ 2>&1 || echo "MISSING @warp-drive dir"
-        readlink -f packages/graph/node_modules/@warp-drive/core 2>&1 || echo "not a symlink or missing"
-        echo
-        echo "--- same file, via the symlink ---"
-        ls -la packages/graph/node_modules/@warp-drive/core/dist/build-config/ 2>&1 || echo "MISSING via symlink"
-        echo
-        echo "--- mtimes: real file vs directory vs package.json ---"
-        stat -c '%Y %n' warp-drive-packages/core/dist/build-config/babel-macros.js warp-drive-packages/core/dist/build-config warp-drive-packages/core/package.json 2>&1 || true
+      run: pnpm run sync
 
     - name: 'Generate SSL Cert'
       if: ${{ inputs.with-cert == 'true' }}

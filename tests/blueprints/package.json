@@ -11,6 +11,7 @@
   "license": "MIT",
   "author": "",
   "scripts": {
+    "sync": "echo \"syncing\"",
     "lint": "eslint . --quiet --cache --cache-strategy=content",
     "test:blueprints": "mocha tests"
   },
