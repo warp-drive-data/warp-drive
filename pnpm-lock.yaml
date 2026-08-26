@@ -155,7 +155,7 @@ importers:
         specifier: ^0.35.3
         version: 0.35.3
       svgo:
-        specifier: ^4.0.0
+        specifier: ^4.0.2
         version: 4.0.2
       typedoc:
         specifier: ^0.28.20
