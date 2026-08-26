@@ -77,7 +77,6 @@
     "ember-source": "catalog:",
     "ember-source-channel-url": "^3.0.0",
     "ember-strict-application-resolver": "^0.1.1",
-    "ember-template-imports": "4.4.0",
     "pretender": "^3.4.7",
     "qunit": "^2.26.0",
     "qunit-dom": "^3.6.0",
