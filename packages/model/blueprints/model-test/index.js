@@ -1,13 +1,10 @@
 const path = require('path');
 
-const testInfo = require('ember-cli-test-info');
-const { dasherize } = require('ember-cli-string-utils');
-
-const ModelBlueprint = require('../model');
-
 module.exports = {
   description: 'Generates an EmberData Model unit test',
-  supportsAddon() { return false; },
+  supportsAddon() {
+    return false;
+  },
 
   root: __dirname,
 
@@ -22,18 +19,17 @@ module.exports = {
     };
   },
 
-  locals(options) {
-    const result = ModelBlueprint.locals.apply(this, arguments);
+  async locals(options) {
+    const { generateUnitTestSource } = await import('warp-drive/generators/tests');
+    const { dasherize } = await import('warp-drive/generators/strings');
     const modulePrefix = dasherize(options.project.config().modulePrefix);
+
     return {
-      ...result,
-      friendlyTestDescription: testInfo.description(options.entity.name, 'Unit', 'Model'),
-      modulePrefix,
+      content: generateUnitTestSource('Model', options.entity.name, modulePrefix),
     };
   },
 
   filesPath() {
-    return path.join(__dirname, 'qunit-files')
-  }
+    return path.join(__dirname, 'qunit-files');
+  },
 };
-

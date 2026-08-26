@@ -1,242 +1,69 @@
 'use strict';
 
-const { describe, it, beforeEach, afterEach } = require('mocha');
-const blueprintHelpers = require('ember-cli-blueprint-test-helpers/helpers');
-const chai = require('ember-cli-blueprint-test-helpers/chai');
+const assert = require('node:assert/strict');
+const { describe, it } = require('mocha');
 
-const path = require('path');
-const file = require('ember-cli-blueprint-test-helpers/chai').file;
+const { generateModelSource } = require('warp-drive/generators/model');
+const { generateUnitTestSource } = require('warp-drive/generators/tests');
 
-function fixture(directory, filePath) {
-  return file(path.join(directory, '../fixtures', filePath));
-}
+const fixture = require('./helpers/fixture.js');
 
-const emberNew = blueprintHelpers.emberNew;
-const emberGenerateDestroy = blueprintHelpers.emberGenerateDestroy;
-const modifyPackages = blueprintHelpers.modifyPackages;
-const expect = chai.expect;
-const { setEdition, clearEdition } = require('@ember/edition-utils');
-
-function enableOctane(hooks) {
-  hooks.beforeEach(function () {
-    setEdition('octane');
+describe('generate: model', function () {
+  it('model', function () {
+    const source = generateModelSource('foo', []);
+    assert.match(source, /import Model from '@ember-data\/model';/);
+    assert.match(source, /export default class FooModel extends Model \{/);
   });
 
-  hooks.afterEach(function () {
-    clearEdition();
-  });
-}
+  it('model with attrs', function () {
+    const source = generateModelSource('foo', [
+      'misc',
+      'skills:array',
+      'isActive:boolean',
+      'birthday:date',
+      'someObject:object',
+      'age:number',
+      'name:string',
+      'customAttr:custom-transform',
+    ]);
 
-function enableClassic(hooks) {
-  hooks.beforeEach(function () {
-    setEdition('classic');
-  });
-
-  hooks.afterEach(function () {
-    clearEdition();
-  });
-}
-
-function setupTestHooks(context) {
-  // context.timeout = function () {};
-  blueprintHelpers.setupTestHooks(context);
-}
-
-describe('Acceptance: generate and destroy model blueprints', function () {
-  setupTestHooks(this);
-
-  describe('classic', function () {
-    enableClassic({ beforeEach, afterEach });
-
-    beforeEach(async function () {
-      await emberNew();
-      modifyPackages([{ name: '@ember-data/model', dev: true }]);
-    });
-
-    it('model', function () {
-      const args = ['model', 'foo'];
-
-      return emberGenerateDestroy(args, (_file) => {
-        expect(_file('app/models/foo.js'))
-          .to.contain(`import Model from '@ember-data/model';`)
-          .to.contain('export default Model.extend(');
-
-        expect(_file('tests/unit/models/foo-test.js')).to.equal(fixture(__dirname, 'model-test/foo-default.js'));
-      });
-    });
-
-    it('model with attrs', function () {
-      const args = [
-        'model',
-        'foo',
-        'misc',
-        'skills:array',
-        'isActive:boolean',
-        'birthday:date',
-        'someObject:object',
-        'age:number',
-        'name:string',
-        'customAttr:custom-transform',
-      ];
-
-      return emberGenerateDestroy(args, (_file) => {
-        expect(_file('app/models/foo.js'))
-          .to.contain(`import Model, { attr } from '@ember-data/model';`)
-          .to.contain('export default Model.extend(')
-          .to.contain('  misc: attr(),')
-          .to.contain("  skills: attr('array'),")
-          .to.contain("  isActive: attr('boolean'),")
-          .to.contain("  birthday: attr('date'),")
-          .to.contain("  someObject: attr('object'),")
-          .to.contain("  age: attr('number'),")
-          .to.contain("  name: attr('string'),")
-          .to.contain("  customAttr: attr('custom-transform')");
-
-        expect(_file('tests/unit/models/foo-test.js')).to.equal(fixture(__dirname, 'model-test/foo-default.js'));
-      });
-    });
-
-    it('model with belongsTo', function () {
-      const args = ['model', 'comment', 'post:belongs-to', 'author:belongs-to:user'];
-
-      return emberGenerateDestroy(args, (_file) => {
-        expect(_file('app/models/comment.js'))
-          .to.contain(`import Model, { belongsTo } from '@ember-data/model';`)
-          .to.contain('export default Model.extend(')
-          .to.contain("  post: belongsTo('post', { async: false, inverse: null }),")
-          .to.contain("  author: belongsTo('user', { async: false, inverse: null })");
-
-        expect(_file('tests/unit/models/comment-test.js')).to.equal(
-          fixture(__dirname, 'model-test/comment-default.js')
-        );
-      });
-    });
-
-    it('model with hasMany', function () {
-      const args = ['model', 'post', 'comments:has-many', 'otherComments:has-many:comment'];
-
-      return emberGenerateDestroy(args, (_file) => {
-        expect(_file('app/models/post.js'))
-          .to.contain(`import Model, { hasMany } from '@ember-data/model';`)
-          .to.contain('export default Model.extend(')
-          .to.contain("  comments: hasMany('comment', { async: false, inverse: null })")
-          .to.contain("  otherComments: hasMany('comment', { async: false, inverse: null })");
-
-        expect(_file('tests/unit/models/post-test.js')).to.equal(fixture(__dirname, 'model-test/post-default.js'));
-      });
-    });
-
-    it('model-test', function () {
-      const args = ['model-test', 'foo'];
-
-      return emberGenerateDestroy(args, (_file) => {
-        expect(_file('tests/unit/models/foo-test.js')).to.equal(fixture(__dirname, 'model-test/foo-default.js'));
-      });
-    });
+    assert.match(source, /import Model, \{ attr \} from '@ember-data\/model';/);
+    assert.match(source, /export default class FooModel extends Model \{/);
+    assert.match(source, /^ {2}@attr misc;$/m);
+    assert.match(source, /^ {2}@attr\('array'\) skills;$/m);
+    assert.match(source, /^ {2}@attr\('boolean'\) isActive;$/m);
+    assert.match(source, /^ {2}@attr\('date'\) birthday;$/m);
+    assert.match(source, /^ {2}@attr\('object'\) someObject;$/m);
+    assert.match(source, /^ {2}@attr\('number'\) age;$/m);
+    assert.match(source, /^ {2}@attr\('string'\) name;$/m);
+    assert.match(source, /^ {2}@attr\('custom-transform'\) customAttr;$/m);
   });
 
-  describe('octane', function () {
-    enableOctane({ beforeEach, afterEach });
+  it('model with belongsTo', function () {
+    const source = generateModelSource('comment', ['post:belongs-to', 'author:belongs-to:user']);
 
-    beforeEach(async function () {
-      await emberNew();
-      modifyPackages([{ name: '@ember-data/model', dev: true }]);
-    });
-
-    it('model', function () {
-      const args = ['model', 'foo'];
-
-      return emberGenerateDestroy(args, (_file) => {
-        expect(_file('app/models/foo.js'))
-          .to.contain(`import Model from '@ember-data/model';`)
-          .to.contain('export default class FooModel extends Model {');
-
-        expect(_file('tests/unit/models/foo-test.js')).to.equal(fixture(__dirname, 'model-test/foo-default.js'));
-      });
-    });
-
-    it('model with attrs', function () {
-      const args = [
-        'model',
-        'foo',
-        'misc',
-        'skills:array',
-        'isActive:boolean',
-        'birthday:date',
-        'someObject:object',
-        'age:number',
-        'name:string',
-        'customAttr:custom-transform',
-      ];
-
-      return emberGenerateDestroy(args, (_file) => {
-        expect(_file('app/models/foo.js'))
-          .to.contain(`import Model, { attr } from '@ember-data/model';`)
-          .to.contain('export default class FooModel extends Model {')
-          .to.contain('  @attr misc;')
-          .to.contain("  @attr('array') skills;")
-          .to.contain("  @attr('boolean') isActive;")
-          .to.contain("  @attr('date') birthday;")
-          .to.contain("  @attr('object') someObject;")
-          .to.contain("  @attr('number') age;")
-          .to.contain("  @attr('string') name;")
-          .to.contain("  @attr('custom-transform') customAttr;");
-
-        expect(_file('tests/unit/models/foo-test.js')).to.equal(fixture(__dirname, 'model-test/foo-default.js'));
-      });
-    });
-
-    it('model with belongsTo', function () {
-      const args = ['model', 'comment', 'post:belongs-to', 'author:belongs-to:user'];
-
-      return emberGenerateDestroy(args, (_file) => {
-        expect(_file('app/models/comment.js'))
-          .to.contain(`import Model, { belongsTo } from '@ember-data/model';`)
-          .to.contain('export default class CommentModel extends Model {')
-          .to.contain(`  @belongsTo('post', { async: false, inverse: null }) post;`)
-          .to.contain("  @belongsTo('user', { async: false, inverse: null }) author;");
-
-        expect(_file('tests/unit/models/comment-test.js')).to.equal(
-          fixture(__dirname, 'model-test/comment-default.js')
-        );
-      });
-    });
-
-    it('model with hasMany', function () {
-      const args = ['model', 'post', 'comments:has-many', 'otherComments:has-many:comment'];
-
-      return emberGenerateDestroy(args, (_file) => {
-        expect(_file('app/models/post.js'))
-          .to.contain(`import Model, { hasMany } from '@ember-data/model';`)
-          .to.contain('export default class PostModel extends Model {')
-          .to.contain(`  @hasMany('comment', { async: false, inverse: null }) comments;`)
-          .to.contain("  @hasMany('comment', { async: false, inverse: null }) otherComments;");
-
-        expect(_file('tests/unit/models/post-test.js')).to.equal(fixture(__dirname, 'model-test/post-default.js'));
-      });
-    });
-
-    it('model-test', function () {
-      const args = ['model-test', 'foo'];
-
-      return emberGenerateDestroy(args, (_file) => {
-        expect(_file('tests/unit/models/foo-test.js')).to.equal(fixture(__dirname, 'model-test/foo-default.js'));
-      });
-    });
+    assert.match(source, /import Model, \{ belongsTo \} from '@ember-data\/model';/);
+    assert.match(source, /export default class CommentModel extends Model \{/);
+    assert.match(source, /^ {2}@belongsTo\('post', \{ async: false, inverse: null \}\) post;$/m);
+    assert.match(source, /^ {2}@belongsTo\('user', \{ async: false, inverse: null \}\) author;$/m);
   });
 
-  describe('in addon', function () {
-    beforeEach(async function () {
-      await emberNew({ target: 'addon' });
-      modifyPackages([{ name: '@ember-data/model', dev: true }]);
-    });
+  it('model with hasMany', function () {
+    const source = generateModelSource('post', ['comments:has-many', 'otherComments:has-many:comment']);
 
-    describe('with ember-qunit (default)', function () {
-      it('model-test foo', function () {
-        return emberGenerateDestroy(['model-test', 'foo'], (_file) => {
-          expect(_file('tests/unit/models/foo-test.js')).to.equal(fixture(__dirname, 'model-test/addon-default.js'));
-        });
-      });
-    });
+    assert.match(source, /import Model, \{ hasMany \} from '@ember-data\/model';/);
+    assert.match(source, /export default class PostModel extends Model \{/);
+    assert.match(source, /^ {2}@hasMany\('comment', \{ async: false, inverse: null \}\) comments;$/m);
+    assert.match(source, /^ {2}@hasMany\('comment', \{ async: false, inverse: null \}\) otherComments;$/m);
+  });
+
+  it('model-test', function () {
+    const source = generateUnitTestSource('Model', 'foo', 'my-app');
+    assert.equal(source, fixture('model-test/foo-default.js'));
+  });
+
+  it('model-test in addon', function () {
+    const source = generateUnitTestSource('Model', 'foo', 'dummy');
+    assert.equal(source, fixture('model-test/addon-default.js'));
   });
 });
