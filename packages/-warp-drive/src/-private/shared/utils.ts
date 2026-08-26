@@ -131,7 +131,7 @@ export function isKeyOf<T extends object>(key: string, obj: T): key is keyof T &
 /**
  * colorizes a string based on color<<>> syntax
  * where color is one of the following:
- * - gr (grey)
+ * - gr (gray)
  * - bg (brightGreen)
  * - bm (brightMagenta)
  * - cy (cyan)
@@ -139,11 +139,11 @@ export function isKeyOf<T extends object>(key: string, obj: T): key is keyof T &
  *
  * e.g.
  *
- * color`This is gr<<grey>> and this is bg<<bright green>> and this is bm<<bright magenta>> and this is cy<<cyan>> and this is ye<<yellow>>`
+ * color`This is gr<<gray>> and this is bg<<bright green>> and this is bm<<bright magenta>> and this is cy<<cyan>> and this is ye<<yellow>>`
  */
 export function color(str: string): string {
   const colors = {
-    gr: 'grey',
+    gr: 'gray',
     gb: 'greenBright',
     mb: 'magentaBright',
     cy: 'cyan',
@@ -181,12 +181,12 @@ export function rebalanceLines(str: string, max_length = 75): string {
       continue;
     }
     if (line.trim() === '---') {
-      lines[i] = styleText('grey', getPadding(max_length, '-'));
+      lines[i] = styleText('gray', getPadding(max_length, '-'));
       inContext = false;
       continue;
     }
     if (line.trim() === '===') {
-      lines[i] = styleText('grey', getPadding(max_length, '='));
+      lines[i] = styleText('gray', getPadding(max_length, '='));
       inContext = false;
       continue;
     }

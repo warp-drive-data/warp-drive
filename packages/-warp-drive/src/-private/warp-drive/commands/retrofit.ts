@@ -262,7 +262,7 @@ async function retrofitTypesForProject(
 
   // add the packages to the package.json
   // and install them
-  write(styleText('grey', `\t📦  Updating versions for ${toInstall.size} packages`));
+  write(styleText('gray', `\t📦  Updating versions for ${toInstall.size} packages`));
   if (toInstall.size > 0) {
     // add the packages to the package.json
     for (const [pkgName, config] of toInstall) {
@@ -304,7 +304,7 @@ async function retrofitTypesForProject(
 
   const overrideChanges = new Set<string>();
   if (pkg.pnpm?.overrides) {
-    write(styleText('grey', `\t🔍  Checking for pnpm overrides to update`));
+    write(styleText('gray', `\t🔍  Checking for pnpm overrides to update`));
     for (const pkgName of Object.keys(pkg.pnpm.overrides)) {
       if (toInstall.has(pkgName)) {
         const value = pkg.pnpm.overrides[pkgName];
@@ -317,7 +317,7 @@ async function retrofitTypesForProject(
         }
       }
     }
-    write(styleText('grey', `\t✅ Updated ${overrideChanges.size} pnpm overrides`));
+    write(styleText('gray', `\t✅ Updated ${overrideChanges.size} pnpm overrides`));
   }
 
   const removed = new Set();
@@ -331,7 +331,7 @@ async function retrofitTypesForProject(
       delete devDeps[pkgName];
     }
   }
-  write(styleText('grey', `\t🗑  Removing ${removed.size} DefinitelyTyped packages`));
+  write(styleText('gray', `\t🗑  Removing ${removed.size} DefinitelyTyped packages`));
 
   if (removed.size > 0 || toInstall.size > 0 || overrideChanges.size > 0) {
     writePkgJson(pkg);
@@ -356,7 +356,7 @@ async function retrofitTypesForProject(
   }
 
   if (options?.isRoot) {
-    write(styleText('grey', `\t☑️ Skipped tsconfig.json update for monorepo root`));
+    write(styleText('gray', `\t☑️ Skipped tsconfig.json update for monorepo root`));
     return;
   }
 
@@ -380,7 +380,7 @@ async function retrofitTypesForProject(
     }
     tsConfig.compilerOptions.types.sort();
     fs.writeFileSync(fullTsConfigPath, JSON.stringify(tsConfig, null, 2) + '\n');
-    write(styleText('grey', `\t✅  created a tsconfig.json`));
+    write(styleText('gray', `\t✅  created a tsconfig.json`));
   } else {
     let edited = false;
     const tsConfig = JSONC.parse(fs.readFileSync(fullTsConfigPath, { encoding: 'utf-8' })) as {
@@ -416,7 +416,7 @@ async function retrofitTypesForProject(
     if (edited) {
       tsConfig.compilerOptions.types.sort();
       fs.writeFileSync(fullTsConfigPath, JSONC.stringify(tsConfig, null, 2) + '\n');
-      write(styleText('grey', `\t✅  updated tsconfig.json`));
+      write(styleText('gray', `\t✅  updated tsconfig.json`));
     } else {
       write(`\tNo tsconfig updates required!`);
     }
