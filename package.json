@@ -150,7 +150,8 @@
       "rollup": "^4.62.4",
       "@babel/types": "^7.29.8",
       "@babel/parser": "^7.29.8",
-      "@babel/traverse": "^7.29.8"
+      "@babel/traverse": "^7.29.8",
+      "prettier": "^3.8.1"
     },
     "peerDependencyRules": {
       "ignoreMissing": [
