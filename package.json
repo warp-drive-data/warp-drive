@@ -136,7 +136,7 @@
       "@glint/ember-tsc": "1.10.0",
       "@glint/template": "1.8.0",
       "@glint/tsserver-plugin": "2.7.0",
-      "ember-cli-babel": "^8.2.0",
+      "ember-cli-babel": "^8.3.1",
       "ember-cli-htmlbars": "^7.0.1",
       "ember-cli-typescript": "^5.3.0",
       "qunit": "2.26.0",
