@@ -49,7 +49,7 @@
     "@glint/ember-tsc": "^1.0.9",
     "@glint/template": "^1.7.3",
     "@glint/tsserver-plugin": "^2.0.3",
-    "@html-next/vertical-collection": "^5.0.0",
+    "@html-next/vertical-collection": "^5.0.5",
     "@rollup/plugin-babel": "^6.1.0",
     "@types/morgan": "^1.9.10",
     "@warp-drive/core": "workspace:*",
