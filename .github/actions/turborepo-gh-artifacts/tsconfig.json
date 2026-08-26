@@ -1,0 +1,13 @@
+{
+  "extends": "@tsconfig/node24",
+  "compilerOptions": {
+    "rootDir": "./src",
+    "strict": true,
+    "noImplicitAny": false,
+    "moduleResolution": "bundler",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "declaration": false,
+    "sourceMap": true
+  }
+}

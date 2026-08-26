@@ -117,9 +117,15 @@ runs:
         restore-keys: |
           turbo-remote-cache-
 
+    # Vendored, patched copy of felixmosh/turborepo-gh-artifacts@v4.1.1 -- its
+    # artifact-existence check does a single unretried call to GitHub's
+    # list-artifacts endpoint, which can lag a few seconds behind a
+    # just-finalized upload and report a false "not found". See
+    # .github/actions/turborepo-gh-artifacts/VENDORED.md for the patch and
+    # the plan to drop this once it's merged upstream.
     - name: 'Setup local TurboRepo server'
       if: ${{ inputs.repo-token }}
-      uses: felixmosh/turborepo-gh-artifacts@118f869397261f74bc39cb8565f2d02c0ed4209f # 4.1.1
+      uses: ./.github/actions/turborepo-gh-artifacts
       with:
         repo-token: ${{ inputs.repo-token }}
 

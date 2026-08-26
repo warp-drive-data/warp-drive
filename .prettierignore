@@ -22,6 +22,9 @@ blueprints/
 vendor/
 !tests/blueprints/
 
+# vendored third-party GitHub Action, keep byte-identical to upstream's own style
+.github/actions/turborepo-gh-artifacts/
+
 # prettier is reporting syntax errors in these
 *.yml
 

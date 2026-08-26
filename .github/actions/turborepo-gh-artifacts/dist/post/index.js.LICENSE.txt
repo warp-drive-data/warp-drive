@@ -1,0 +1,68 @@
+/* v8 ignore else -- @preserve */
+
+/* v8 ignore else -- @preserve -- Bug with vitest coverage where it sees an else branch that doesn't exist */
+
+/* v8 ignore next -- @preserve */
+
+/*!
+ * normalize-path <https://github.com/jonschlinkert/normalize-path>
+ *
+ * Copyright (c) 2014-2018, Jon Schlinkert.
+ * Released under the MIT License.
+ */
+
+/*! crc32.js (C) 2014-present SheetJS -- http://sheetjs.com */
+
+/*! formdata-polyfill. MIT License. Jimmy Wärting <https://jimmy.warting.se/opensource> */
+
+/*! safe-buffer. MIT License. Feross Aboukhadijeh <https://feross.org/opensource> */
+
+/*! ws. MIT License. Einar Otto Stangvik <einaros@gmail.com> */
+
+/**
+ * Archiver Core
+ *
+ * @ignore
+ * @license [MIT]{@link https://github.com/archiverjs/node-archiver/blob/master/LICENSE}
+ * @copyright (c) 2012-2014 Chris Talkington, contributors.
+ */
+
+/**
+ * Archiver Vending
+ *
+ * @ignore
+ * @license [MIT]{@link https://github.com/archiverjs/node-archiver/blob/master/LICENSE}
+ * @copyright (c) 2012-2014 Chris Talkington, contributors.
+ */
+
+/**
+ * JSON Format Plugin
+ *
+ * @module plugins/json
+ * @license [MIT]{@link https://github.com/archiverjs/node-archiver/blob/master/LICENSE}
+ * @copyright (c) 2012-2014 Chris Talkington, contributors.
+ */
+
+/**
+ * TAR Format Plugin
+ *
+ * @module plugins/tar
+ * @license [MIT]{@link https://github.com/archiverjs/node-archiver/blob/master/LICENSE}
+ * @copyright (c) 2012-2014 Chris Talkington, contributors.
+ */
+
+/**
+ * ZIP Format Plugin
+ *
+ * @module plugins/zip
+ * @license [MIT]{@link https://github.com/archiverjs/node-archiver/blob/master/LICENSE}
+ * @copyright (c) 2012-2014 Chris Talkington, contributors.
+ */
+
+/**
+ * ZipStream
+ *
+ * @ignore
+ * @license [MIT]{@link https://github.com/archiverjs/node-zip-stream/blob/master/LICENSE}
+ * @copyright (c) 2014 Chris Talkington, contributors.
+ */

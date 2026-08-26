@@ -7,6 +7,9 @@ concat-stats-for
 dist
 dist-*
 cjs-dist
+# vendored third-party action ships its own build output, unlike our own
+# packages' dist/ -- see .github/actions/turborepo-gh-artifacts/VENDORED.md
+!/.github/actions/turborepo-gh-artifacts/dist/
 # transient release-packaging output synthesized from dist/ for alpha/beta
 # types-strategy packages (see tools/release/core/publish/steps/generate-tarballs.ts)
 unstable-preview-types
