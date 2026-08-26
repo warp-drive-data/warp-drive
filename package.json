@@ -136,6 +136,8 @@
       "ember-source>ember-cli-string-utils": "-",
       "ember-source>ember-cli-typescript-blueprint-polyfill": "-",
       "ember-source>ember-cli-version-checker": "-",
+      "@ember/optional-features>ember-cli-version-checker": "-",
+      "unplugin>webpack-virtual-modules": "-",
       "ember-cli-htmlbars": "^7.0.1",
       "qunit": "2.26.0",
       "ember-compatibility-helpers": "^1.2.7",
