@@ -21,7 +21,7 @@ overrides:
   qunit: 2.26.0
   ember-compatibility-helpers: ^1.2.7
   testem: ~3.11.0
-  typescript: 5.9.2
+  typescript: 5.9.3
   '@types/bun': 1.3.14
   bun-types: 1.3.14
   lodash: ^4.18.1
@@ -75,7 +75,7 @@ importers:
         version: 2.0.0
       '@glint/ember-tsc':
         specifier: 1.10.0
-        version: 1.10.0(dbb856d94edbad9c63dd624ad9716a45)
+        version: 1.10.0(a13bc082802bcc39e9642090163738d3)
       '@glint/template':
         specifier: 1.8.0
         version: 1.8.0
@@ -123,10 +123,10 @@ importers:
         version: 1.1.1
       typedoc:
         specifier: ^0.28.20
-        version: 0.28.20(typescript@5.9.2)
+        version: 0.28.20(typescript@5.9.3)
       typescript:
-        specifier: 5.9.2
-        version: 5.9.2
+        specifier: 5.9.3
+        version: 5.9.3
 
   docs-viewer:
     dependencies:
@@ -159,22 +159,22 @@ importers:
         version: 4.0.2
       typedoc:
         specifier: ^0.28.20
-        version: 0.28.20(typescript@5.9.2)
+        version: 0.28.20(typescript@5.9.3)
       typedoc-plugin-markdown:
         specifier: ^4.12.0
-        version: 4.12.0(typedoc@0.28.20(typescript@5.9.2))
+        version: 4.12.0(typedoc@0.28.20(typescript@5.9.3))
       typedoc-plugin-mdn-links:
         specifier: ^5.1.1
-        version: 5.1.1(typedoc@0.28.20(typescript@5.9.2))
+        version: 5.1.1(typedoc@0.28.20(typescript@5.9.3))
       typedoc-plugin-no-inherit:
         specifier: ^1.6.1
-        version: 1.6.1(typedoc@0.28.20(typescript@5.9.2))
+        version: 1.6.1(typedoc@0.28.20(typescript@5.9.3))
       typedoc-vitepress-theme:
         specifier: ^1.1.3
-        version: 1.1.3(3c362d58e02ede1ff411ef200c10043d)
+        version: 1.1.3(82620540a953bbcae8206fafeb376a78)
       typescript:
-        specifier: 5.9.2
-        version: 5.9.2
+        specifier: 5.9.3
+        version: 5.9.3
       vite:
         specifier: ^8.2.1
         version: 8.2.1
@@ -186,7 +186,7 @@ importers:
         version: 1.3.0(vite@8.2.1)
       vitepress:
         specifier: ^2.0.0-alpha.19
-        version: 2.0.0-alpha.19(typescript@5.9.2)
+        version: 2.0.0-alpha.19(typescript@5.9.3)
       vitepress-plugin-group-icons:
         specifier: ^1.7.6
         version: 1.7.6(vite@8.2.1)
@@ -195,10 +195,10 @@ importers:
         version: 1.13.5
       vitepress-plugin-tabs:
         specifier: ^0.9.1
-        version: 0.9.1(d4176d543ffb664dc7905e4304b5e95a)
+        version: 0.9.1(6589ca538ac2f1f51758bee78659f430)
       vue:
         specifier: ^3.5.41
-        version: 3.5.41(typescript@5.9.2)
+        version: 3.5.41(typescript@5.9.3)
 
   packages/-ember-data:
     dependencies:
@@ -295,10 +295,10 @@ importers:
         version: 2.26.0
       tsdown:
         specifier: ^0.22.14
-        version: 0.22.14(typescript@5.9.2)
+        version: 0.22.14(typescript@5.9.3)
       typescript:
-        specifier: 5.9.2
-        version: 5.9.2
+        specifier: 5.9.3
+        version: 5.9.3
 
   packages/-warp-drive:
     dependencies:
@@ -344,10 +344,10 @@ importers:
         version: file:tools/internal-config
       tsdown:
         specifier: ^0.22.14
-        version: 0.22.14(typescript@5.9.2)
+        version: 0.22.14(typescript@5.9.3)
       typescript:
-        specifier: 5.9.2
-        version: 5.9.2
+        specifier: 5.9.3
+        version: 5.9.3
 
   packages/active-record:
     dependencies:
@@ -375,10 +375,10 @@ importers:
         version: file:tools/internal-config
       tsdown:
         specifier: ^0.22.14
-        version: 0.22.14(typescript@5.9.2)
+        version: 0.22.14(typescript@5.9.3)
       typescript:
-        specifier: 5.9.2
-        version: 5.9.2
+        specifier: 5.9.3
+        version: 5.9.3
 
   packages/adapter:
     dependencies:
@@ -421,10 +421,10 @@ importers:
         version: file:tools/internal-config
       tsdown:
         specifier: ^0.22.14
-        version: 0.22.14(typescript@5.9.2)
+        version: 0.22.14(typescript@5.9.3)
       typescript:
-        specifier: 5.9.2
-        version: 5.9.2
+        specifier: 5.9.3
+        version: 5.9.3
 
   packages/codemods:
     dependencies:
@@ -447,8 +447,8 @@ importers:
         specifier: ^3.8.1
         version: 3.8.1
       typescript:
-        specifier: 5.9.2
-        version: 5.9.2
+        specifier: 5.9.3
+        version: 5.9.3
       winston:
         specifier: ^3.19.0
         version: 3.19.0
@@ -495,10 +495,10 @@ importers:
         version: file:tools/internal-config
       tsdown:
         specifier: ^0.22.14
-        version: 0.22.14(typescript@5.9.2)
+        version: 0.22.14(typescript@5.9.3)
       typescript:
-        specifier: 5.9.2
-        version: 5.9.2
+        specifier: 5.9.3
+        version: 5.9.3
 
   packages/debug:
     dependencies:
@@ -538,10 +538,10 @@ importers:
         version: 6.12.0
       tsdown:
         specifier: ^0.22.14
-        version: 0.22.14(typescript@5.9.2)
+        version: 0.22.14(typescript@5.9.3)
       typescript:
-        specifier: 5.9.2
-        version: 5.9.2
+        specifier: 5.9.3
+        version: 5.9.3
 
   packages/diagnostic:
     dependencies:
@@ -608,10 +608,10 @@ importers:
         version: 6.12.0(@glimmer/component@2.0.0)
       tsdown:
         specifier: ^0.22.14
-        version: 0.22.14(typescript@5.9.2)
+        version: 0.22.14(typescript@5.9.3)
       typescript:
-        specifier: 5.9.2
-        version: 5.9.2
+        specifier: 5.9.3
+        version: 5.9.3
 
   packages/eslint-plugin-warp-drive:
     dependencies:
@@ -673,10 +673,10 @@ importers:
         version: file:tools/internal-config
       tsdown:
         specifier: ^0.22.14
-        version: 0.22.14(typescript@5.9.2)
+        version: 0.22.14(typescript@5.9.3)
       typescript:
-        specifier: 5.9.2
-        version: 5.9.2
+        specifier: 5.9.3
+        version: 5.9.3
 
   packages/holodeck:
     dependencies:
@@ -787,10 +787,10 @@ importers:
         version: file:tools/internal-config
       tsdown:
         specifier: ^0.22.14
-        version: 0.22.14(typescript@5.9.2)
+        version: 0.22.14(typescript@5.9.3)
       typescript:
-        specifier: 5.9.2
-        version: 5.9.2
+        specifier: 5.9.3
+        version: 5.9.3
 
   packages/model:
     dependencies:
@@ -839,10 +839,10 @@ importers:
         version: 1.2.2
       tsdown:
         specifier: ^0.22.14
-        version: 0.22.14(typescript@5.9.2)
+        version: 0.22.14(typescript@5.9.3)
       typescript:
-        specifier: 5.9.2
-        version: 5.9.2
+        specifier: 5.9.3
+        version: 5.9.3
 
   packages/request:
     dependencies:
@@ -907,10 +907,10 @@ importers:
         version: 6.12.0
       tsdown:
         specifier: ^0.22.14
-        version: 0.22.14(typescript@5.9.2)
+        version: 0.22.14(typescript@5.9.3)
       typescript:
-        specifier: 5.9.2
-        version: 5.9.2
+        specifier: 5.9.3
+        version: 5.9.3
 
   packages/rest:
     dependencies:
@@ -1021,10 +1021,10 @@ importers:
         version: file:tools/internal-config
       tsdown:
         specifier: ^0.22.14
-        version: 0.22.14(typescript@5.9.2)
+        version: 0.22.14(typescript@5.9.3)
       typescript:
-        specifier: 5.9.2
-        version: 5.9.2
+        specifier: 5.9.3
+        version: 5.9.3
 
   packages/store:
     dependencies:
@@ -1061,10 +1061,10 @@ importers:
         version: 6.12.0
       tsdown:
         specifier: ^0.22.14
-        version: 0.22.14(typescript@5.9.2)
+        version: 0.22.14(typescript@5.9.3)
       typescript:
-        specifier: 5.9.2
-        version: 5.9.2
+        specifier: 5.9.3
+        version: 5.9.3
 
   packages/tracking:
     dependencies:
@@ -1098,10 +1098,10 @@ importers:
         version: 6.12.0
       tsdown:
         specifier: ^0.22.14
-        version: 0.22.14(typescript@5.9.2)
+        version: 0.22.14(typescript@5.9.3)
       typescript:
-        specifier: 5.9.2
-        version: 5.9.2
+        specifier: 5.9.3
+        version: 5.9.3
 
   packages/unpublished-eslint-rules: {}
 
@@ -1161,10 +1161,10 @@ importers:
         version: 3.11.0(patch_hash=cf147865cff81f2d0f3ed51d274f9fdee7b4ad675a902248aa317c07272fbea5)
       tsdown:
         specifier: ^0.22.14
-        version: 0.22.14(typescript@5.9.2)
+        version: 0.22.14(typescript@5.9.3)
       typescript:
-        specifier: 5.9.2
-        version: 5.9.2
+        specifier: 5.9.3
+        version: 5.9.3
 
   specs:
     dependencies:
@@ -1204,10 +1204,10 @@ importers:
         version: 2.4.0(@babel/core@7.29.7)
       tsdown:
         specifier: ^0.22.14
-        version: 0.22.14(typescript@5.9.2)
+        version: 0.22.14(typescript@5.9.3)
       typescript:
-        specifier: 5.9.2
-        version: 5.9.2
+        specifier: 5.9.3
+        version: 5.9.3
 
   tests/blueprints:
     devDependencies:
@@ -1290,8 +1290,8 @@ importers:
         specifier: ^3.8.1
         version: 3.8.1
       typescript:
-        specifier: 5.9.2
-        version: 5.9.2
+        specifier: 5.9.3
+        version: 5.9.3
     devDependencies:
       '@ember-data/codemods':
         specifier: workspace:*
@@ -1355,7 +1355,7 @@ importers:
         version: 2.0.0
       '@glint/ember-tsc':
         specifier: 1.10.0
-        version: 1.10.0(dbb856d94edbad9c63dd624ad9716a45)
+        version: 1.10.0(a13bc082802bcc39e9642090163738d3)
       '@glint/template':
         specifier: 1.8.0
         version: 1.8.0
@@ -1406,7 +1406,7 @@ importers:
         version: 0.1.0(@babel/core@7.29.7)
       eslint-plugin-warp-drive:
         specifier: workspace:*
-        version: file:packages/eslint-plugin-warp-drive(cfb0283a22853ab85a0c88f9bff158f5)
+        version: file:packages/eslint-plugin-warp-drive(eb246e80e8bbac6d1f01f509def34a2d)
       rollup:
         specifier: ^4.62.4
         version: 4.62.4
@@ -1414,8 +1414,8 @@ importers:
         specifier: ^5.39.0
         version: 5.43.1
       typescript:
-        specifier: 5.9.2
-        version: 5.9.2
+        specifier: 5.9.3
+        version: 5.9.3
       vite:
         specifier: ^7.3.1
         version: 7.3.1(terser@5.43.1)
@@ -1502,7 +1502,7 @@ importers:
         version: 2.0.0
       '@glint/ember-tsc':
         specifier: 1.10.0
-        version: 1.10.0(dbb856d94edbad9c63dd624ad9716a45)
+        version: 1.10.0(a13bc082802bcc39e9642090163738d3)
       '@glint/template':
         specifier: 1.8.0
         version: 1.8.0
@@ -1633,8 +1633,8 @@ importers:
         specifier: ~3.11.0
         version: 3.11.0(patch_hash=cf147865cff81f2d0f3ed51d274f9fdee7b4ad675a902248aa317c07272fbea5)
       typescript:
-        specifier: 5.9.2
-        version: 5.9.2
+        specifier: 5.9.3
+        version: 5.9.3
       vite:
         specifier: ^7.3.1
         version: 7.3.1
@@ -1747,8 +1747,8 @@ importers:
         specifier: ^5.39.0
         version: 5.43.1
       typescript:
-        specifier: 5.9.2
-        version: 5.9.2
+        specifier: 5.9.3
+        version: 5.9.3
       vite:
         specifier: ^7.3.1
         version: 7.3.1(terser@5.43.1)
@@ -1831,8 +1831,8 @@ importers:
         specifier: ^5.39.0
         version: 5.43.1
       typescript:
-        specifier: 5.9.2
-        version: 5.9.2
+        specifier: 5.9.3
+        version: 5.9.3
       vite:
         specifier: ^7.3.1
         version: 7.3.1(terser@5.43.1)
@@ -1933,8 +1933,8 @@ importers:
         specifier: ^5.39.0
         version: 5.43.1
       typescript:
-        specifier: 5.9.2
-        version: 5.9.2
+        specifier: 5.9.3
+        version: 5.9.3
       vite:
         specifier: ^7.3.1
         version: 7.3.1(terser@5.43.1)
@@ -2020,8 +2020,8 @@ importers:
         specifier: ^5.39.0
         version: 5.43.1
       typescript:
-        specifier: 5.9.2
-        version: 5.9.2
+        specifier: 5.9.3
+        version: 5.9.3
       vite:
         specifier: ^7.3.1
         version: 7.3.1(terser@5.43.1)
@@ -2066,7 +2066,7 @@ importers:
         version: 2.0.0
       '@glint/ember-tsc':
         specifier: 1.10.0
-        version: 1.10.0(dbb856d94edbad9c63dd624ad9716a45)
+        version: 1.10.0(a13bc082802bcc39e9642090163738d3)
       '@glint/template':
         specifier: 1.8.0
         version: 1.8.0
@@ -2137,8 +2137,8 @@ importers:
         specifier: ~3.11.0
         version: 3.11.0(patch_hash=cf147865cff81f2d0f3ed51d274f9fdee7b4ad675a902248aa317c07272fbea5)
       typescript:
-        specifier: 5.9.2
-        version: 5.9.2
+        specifier: 5.9.3
+        version: 5.9.3
       vite:
         specifier: ^7.3.1
         version: 7.3.1
@@ -2201,7 +2201,7 @@ importers:
         version: 2.0.0
       '@glint/ember-tsc':
         specifier: 1.10.0
-        version: 1.10.0(dbb856d94edbad9c63dd624ad9716a45)
+        version: 1.10.0(a13bc082802bcc39e9642090163738d3)
       '@glint/template':
         specifier: 1.8.0
         version: 1.8.0
@@ -2263,8 +2263,8 @@ importers:
         specifier: ^5.43.1
         version: 5.43.1
       typescript:
-        specifier: 5.9.2
-        version: 5.9.2
+        specifier: 5.9.3
+        version: 5.9.3
       vite:
         specifier: ^7.3.1
         version: 7.3.1(terser@5.43.1)
@@ -2300,7 +2300,7 @@ importers:
         version: 2.0.0
       '@glint/ember-tsc':
         specifier: 1.10.0
-        version: 1.10.0(dbb856d94edbad9c63dd624ad9716a45)
+        version: 1.10.0(a13bc082802bcc39e9642090163738d3)
       '@glint/template':
         specifier: 1.8.0
         version: 1.8.0
@@ -2356,8 +2356,8 @@ importers:
         specifier: ^5.43.1
         version: 5.43.1
       typescript:
-        specifier: 5.9.2
-        version: 5.9.2
+        specifier: 5.9.3
+        version: 5.9.3
       vite:
         specifier: ^7.3.1
         version: 7.3.1(terser@5.43.1)
@@ -2425,8 +2425,8 @@ importers:
         specifier: ^19.2.8
         version: 19.2.8(react@19.2.8)
       typescript:
-        specifier: 5.9.2
-        version: 5.9.2
+        specifier: 5.9.3
+        version: 5.9.3
       vite:
         specifier: ^7.3.1
         version: 7.3.1
@@ -2482,8 +2482,8 @@ importers:
         specifier: ^5.38.3
         version: 5.55.7
       typescript:
-        specifier: 5.9.2
-        version: 5.9.2
+        specifier: 5.9.3
+        version: 5.9.3
       vite:
         specifier: ^7.3.1
         version: 7.3.1
@@ -2507,7 +2507,7 @@ importers:
         version: 6.1.0(@babel/core@7.29.7)
       '@vitejs/plugin-vue':
         specifier: ^6.0.8
-        version: 6.0.8(vite@7.3.1)(vue@3.5.41(typescript@5.9.2))
+        version: 6.0.8(vite@7.3.1)(vue@3.5.41(typescript@5.9.3))
       '@vue/babel-plugin-jsx':
         specifier: ^1.5.0
         version: 1.5.0(@babel/core@7.29.7)
@@ -2525,7 +2525,7 @@ importers:
         version: file:packages/holodeck(faea43ed3bc42f373ef867b67f0f1952)
       '@warp-drive/internal-config':
         specifier: workspace:*
-        version: file:tools/internal-config(7d758069b09e8de85a35930037afc67e)
+        version: file:tools/internal-config(3b8692214ba0d0eacea8d77dd59597b2)
       '@warp-drive/json-api':
         specifier: workspace:*
         version: file:warp-drive-packages/json-api(da83bc0b1ea108dc5be8f251a76f6440)
@@ -2534,7 +2534,7 @@ importers:
         version: file:warp-drive-packages/utilities(da83bc0b1ea108dc5be8f251a76f6440)
       '@warp-drive/vue':
         specifier: workspace:*
-        version: file:warp-drive-packages/vue(04989cb31348c798680b69d8189fa7fc)
+        version: file:warp-drive-packages/vue(71399089a5b134f41cc0f997be4221cf)
       babel-plugin-debug-macros:
         specifier: ^2.0.0
         version: 2.0.0(@babel/core@7.29.7)
@@ -2542,17 +2542,17 @@ importers:
         specifier: ^2.4.0
         version: 2.4.0(@babel/core@7.29.7)
       typescript:
-        specifier: 5.9.2
-        version: 5.9.2
+        specifier: 5.9.3
+        version: 5.9.3
       vite:
         specifier: ^7.3.1
         version: 7.3.1
       vue:
         specifier: ^3.5.41
-        version: 3.5.41(typescript@5.9.2)
+        version: 3.5.41(typescript@5.9.3)
       vue-tsc:
         specifier: ^3.0.6
-        version: 3.0.6(typescript@5.9.2)
+        version: 3.0.6(typescript@5.9.3)
 
   tests/json-api:
     devDependencies:
@@ -2638,8 +2638,8 @@ importers:
         specifier: ^5.39.0
         version: 5.43.1
       typescript:
-        specifier: 5.9.2
-        version: 5.9.2
+        specifier: 5.9.3
+        version: 5.9.3
       vite:
         specifier: ^7.3.1
         version: 7.3.1(terser@5.43.1)
@@ -2678,7 +2678,7 @@ importers:
         version: 2.0.0
       '@glint/ember-tsc':
         specifier: 1.10.0
-        version: 1.10.0(dbb856d94edbad9c63dd624ad9716a45)
+        version: 1.10.0(a13bc082802bcc39e9642090163738d3)
       '@glint/template':
         specifier: 1.8.0
         version: 1.8.0
@@ -2729,7 +2729,7 @@ importers:
         version: 0.1.0(@babel/core@7.29.7)
       eslint-plugin-warp-drive:
         specifier: workspace:*
-        version: file:packages/eslint-plugin-warp-drive(cfb0283a22853ab85a0c88f9bff158f5)
+        version: file:packages/eslint-plugin-warp-drive(eb246e80e8bbac6d1f01f509def34a2d)
       rollup:
         specifier: ^4.62.4
         version: 4.62.4
@@ -2737,8 +2737,8 @@ importers:
         specifier: ^5.39.0
         version: 5.43.1
       typescript:
-        specifier: 5.9.2
-        version: 5.9.2
+        specifier: 5.9.3
+        version: 5.9.3
       vite:
         specifier: ^7.3.1
         version: 7.3.1(terser@5.43.1)
@@ -2938,8 +2938,8 @@ importers:
         specifier: ^5.39.0
         version: 5.43.1
       typescript:
-        specifier: 5.9.2
-        version: 5.9.2
+        specifier: 5.9.3
+        version: 5.9.3
       vite:
         specifier: ^7.3.1
         version: 7.3.1(terser@5.43.1)
@@ -2962,7 +2962,7 @@ importers:
         version: 9.34.0
       '@nullvoxpopuli/ember-rolldown':
         specifier: ^2.7.0
-        version: 2.7.0(b6311b2cd7278fa6ffc8f2e1155543ce)
+        version: 2.7.0(35190290210cd7126c88e642f3389863)
       '@rolldown/plugin-babel':
         specifier: ^0.2.3
         version: 0.2.3(@babel/core@7.29.7)
@@ -2974,10 +2974,10 @@ importers:
         version: 4.1.12
       '@typescript-eslint/eslint-plugin':
         specifier: ^8.40.0
-        version: 8.41.0(ad3e4b2f3df4fca831ef47c5e1339106)
+        version: 8.41.0(ff068f05036278b96bb632ac0d7d2e3b)
       '@typescript-eslint/parser':
         specifier: ^8.40.0
-        version: 8.41.0(eslint@9.34.0)(typescript@5.9.2)
+        version: 8.41.0(eslint@9.34.0)(typescript@5.9.3)
       comment-json:
         specifier: ^4.2.5
         version: 4.2.5
@@ -2986,7 +2986,7 @@ importers:
         version: 4.4.1
       ember-eslint-parser:
         specifier: ^0.14.4
-        version: 0.14.4(51113162d3b00fee9b27a79065193efd)
+        version: 0.14.4(70be1ffd0039cc420d8577c8284ed44f)
       eslint:
         specifier: ^9.34.0
         version: 9.34.0
@@ -2995,13 +2995,13 @@ importers:
         version: 10.1.8(eslint@9.34.0)
       eslint-plugin-import:
         specifier: ^2.32.0
-        version: 2.32.0(438d9ce730bf71cdcaed57735e15ead7)
+        version: 2.32.0(fc509f8ea4793045ea15ebf2a929a9a3)
       eslint-plugin-mocha:
         specifier: ^10.5.0
         version: 10.5.0(eslint@9.34.0)
       eslint-plugin-n:
         specifier: ^17.21.3
-        version: 17.21.3(eslint@9.34.0)(typescript@5.9.2)
+        version: 17.21.3(eslint@9.34.0)(typescript@5.9.3)
       eslint-plugin-qunit:
         specifier: ^8.2.6
         version: 8.2.6(eslint@9.34.0)
@@ -3016,13 +3016,13 @@ importers:
         version: 4.62.4
       tsdown:
         specifier: ^0.22.14
-        version: 0.22.14(typescript@5.9.2)
+        version: 0.22.14(typescript@5.9.3)
       typescript:
-        specifier: 5.9.2
-        version: 5.9.2
+        specifier: 5.9.3
+        version: 5.9.3
       typescript-eslint:
         specifier: ^8.40.0
-        version: 8.41.0(eslint@9.34.0)(typescript@5.9.2)
+        version: 8.41.0(eslint@9.34.0)(typescript@5.9.3)
 
   tools/internal-tooling:
     dependencies:
@@ -3054,8 +3054,8 @@ importers:
         specifier: 4.4.1
         version: 4.4.1
       typescript:
-        specifier: 5.9.2
-        version: 5.9.2
+        specifier: 5.9.3
+        version: 5.9.3
 
   tools/release:
     dependencies:
@@ -3075,8 +3075,8 @@ importers:
         specifier: ^7.7.2
         version: 7.7.2
       typescript:
-        specifier: 5.9.2
-        version: 5.9.2
+        specifier: 5.9.3
+        version: 5.9.3
 
   warp-drive-packages/agent-knowledge: {}
 
@@ -3121,10 +3121,10 @@ importers:
         version: file:tools/internal-config(@types/babel__core@7.20.5)
       tsdown:
         specifier: ^0.22.14
-        version: 0.22.14(typescript@5.9.2)
+        version: 0.22.14(typescript@5.9.3)
       typescript:
-        specifier: 5.9.2
-        version: 5.9.2
+        specifier: 5.9.3
+        version: 5.9.3
 
   warp-drive-packages/core:
     dependencies:
@@ -3158,10 +3158,10 @@ importers:
         version: 1.2.2
       tsdown:
         specifier: ^0.22.14
-        version: 0.22.14(typescript@5.9.2)
+        version: 0.22.14(typescript@5.9.3)
       typescript:
-        specifier: 5.9.2
-        version: 5.9.2
+        specifier: 5.9.3
+        version: 5.9.3
 
   warp-drive-packages/ember:
     dependencies:
@@ -3201,7 +3201,7 @@ importers:
         version: 2.0.0
       '@glint/ember-tsc':
         specifier: 1.10.0
-        version: 1.10.0(dbb856d94edbad9c63dd624ad9716a45)
+        version: 1.10.0(a13bc082802bcc39e9642090163738d3)
       '@glint/template':
         specifier: 1.8.0
         version: 1.8.0
@@ -3228,10 +3228,10 @@ importers:
         version: 4.4.0
       tsdown:
         specifier: ^0.22.14
-        version: 0.22.14(typescript@5.9.2)
+        version: 0.22.14(typescript@5.9.3)
       typescript:
-        specifier: 5.9.2
-        version: 5.9.2
+        specifier: 5.9.3
+        version: 5.9.3
 
   warp-drive-packages/experiments:
     dependencies:
@@ -3262,10 +3262,10 @@ importers:
         version: file:tools/internal-config
       tsdown:
         specifier: ^0.22.14
-        version: 0.22.14(typescript@5.9.2)
+        version: 0.22.14(typescript@5.9.3)
       typescript:
-        specifier: 5.9.2
-        version: 5.9.2
+        specifier: 5.9.3
+        version: 5.9.3
 
   warp-drive-packages/json-api:
     dependencies:
@@ -3305,10 +3305,10 @@ importers:
         version: 1.2.2
       tsdown:
         specifier: ^0.22.14
-        version: 0.22.14(typescript@5.9.2)
+        version: 0.22.14(typescript@5.9.3)
       typescript:
-        specifier: 5.9.2
-        version: 5.9.2
+        specifier: 5.9.3
+        version: 5.9.3
 
   warp-drive-packages/legacy:
     dependencies:
@@ -3348,10 +3348,10 @@ importers:
         version: 1.2.2
       tsdown:
         specifier: ^0.22.14
-        version: 0.22.14(typescript@5.9.2)
+        version: 0.22.14(typescript@5.9.3)
       typescript:
-        specifier: 5.9.2
-        version: 5.9.2
+        specifier: 5.9.3
+        version: 5.9.3
 
   warp-drive-packages/react:
     dependencies:
@@ -3400,10 +3400,10 @@ importers:
         version: 2.4.0(@babel/core@7.29.7)
       tsdown:
         specifier: ^0.22.14
-        version: 0.22.14(typescript@5.9.2)
+        version: 0.22.14(typescript@5.9.3)
       typescript:
-        specifier: 5.9.2
-        version: 5.9.2
+        specifier: 5.9.3
+        version: 5.9.3
 
   warp-drive-packages/schema-dsl:
     dependencies:
@@ -3431,10 +3431,10 @@ importers:
         version: file:tools/internal-config
       tsdown:
         specifier: ^0.22.14
-        version: 0.22.14(typescript@5.9.2)
+        version: 0.22.14(typescript@5.9.3)
       typescript:
-        specifier: 5.9.2
-        version: 5.9.2
+        specifier: 5.9.3
+        version: 5.9.3
 
   warp-drive-packages/svelte:
     dependencies:
@@ -3444,10 +3444,10 @@ importers:
     devDependencies:
       '@sveltejs/kit':
         specifier: ^2.70.3
-        version: 2.70.3(3c81784cf966254afb8df9614d004350)
+        version: 2.70.3(3dd857853420bb885db62ae66a412418)
       '@sveltejs/package':
         specifier: ^2.5.8
-        version: 2.5.8(svelte@5.55.7)(typescript@5.9.2)
+        version: 2.5.8(svelte@5.55.7)(typescript@5.9.3)
       '@sveltejs/vite-plugin-svelte':
         specifier: ^6.1.3
         version: 6.1.3(svelte@5.55.7)(vite@7.3.1)
@@ -3458,8 +3458,8 @@ importers:
         specifier: ^5.38.3
         version: 5.55.7
       typescript:
-        specifier: 5.9.2
-        version: 5.9.2
+        specifier: 5.9.3
+        version: 5.9.3
       vite:
         specifier: ^7.3.1
         version: 7.3.1
@@ -3496,10 +3496,10 @@ importers:
         version: file:tools/internal-config(@babel/runtime@7.29.7)
       tsdown:
         specifier: ^0.22.14
-        version: 0.22.14(typescript@5.9.2)
+        version: 0.22.14(typescript@5.9.3)
       typescript:
-        specifier: 5.9.2
-        version: 5.9.2
+        specifier: 5.9.3
+        version: 5.9.3
 
   warp-drive-packages/utilities:
     dependencies:
@@ -3530,10 +3530,10 @@ importers:
         version: 1.2.2
       tsdown:
         specifier: ^0.22.14
-        version: 0.22.14(typescript@5.9.2)
+        version: 0.22.14(typescript@5.9.3)
       typescript:
-        specifier: 5.9.2
-        version: 5.9.2
+        specifier: 5.9.3
+        version: 5.9.3
 
   warp-drive-packages/vue:
     dependencies:
@@ -3561,25 +3561,25 @@ importers:
         version: 7.29.7
       '@warp-drive/internal-config':
         specifier: workspace:*
-        version: file:tools/internal-config(4f58c35561091b8295b24720bc40a176)
+        version: file:tools/internal-config(791c13cb6f0990b63e7b1e0762efd477)
       decorator-transforms:
         specifier: ^2.4.0
         version: 2.4.0(@babel/core@7.29.7)
       tsdown:
         specifier: ^0.22.14
-        version: 0.22.14(2d08bf30f09f74acf5c22716525a3b86)
+        version: 0.22.14(cda787c1cf03d36aaaa874796d3dbc34)
       typescript:
-        specifier: 5.9.2
-        version: 5.9.2
+        specifier: 5.9.3
+        version: 5.9.3
       unplugin-vue:
         specifier: ^7.2.0
-        version: 7.2.0(vue@3.5.41(typescript@5.9.2))
+        version: 7.2.0(vue@3.5.41(typescript@5.9.3))
       vue:
         specifier: ^3.5.41
-        version: 3.5.41(typescript@5.9.2)
+        version: 3.5.41(typescript@5.9.3)
       vue-tsc:
         specifier: ^3.0.6
-        version: 3.0.6(typescript@5.9.2)
+        version: 3.0.6(typescript@5.9.3)
 
 packages:
 
@@ -5033,7 +5033,7 @@ packages:
     hasBin: true
     peerDependencies:
       ember-source: '>=3.28.0'
-      typescript: 5.9.2
+      typescript: 5.9.3
     peerDependenciesMeta:
       ember-source:
         optional: true
@@ -5551,7 +5551,7 @@ packages:
     engines: {node: '>= 24'}
     peerDependencies:
       tsdown: '>= 0.22.0'
-      typescript: 5.9.2
+      typescript: 5.9.3
     peerDependenciesMeta:
       tsdown:
         optional: true
@@ -6265,7 +6265,7 @@ packages:
       '@opentelemetry/api': ^1.0.0
       '@sveltejs/vite-plugin-svelte': ^3.0.0 || ^4.0.0-next.1 || ^5.0.0 || ^6.0.0-next.0 || ^7.0.0
       svelte: ^4.0.0 || ^5.0.0-next.0
-      typescript: 5.9.2
+      typescript: 5.9.3
       vite: ^5.0.3 || ^6.0.0 || ^7.0.0-beta.0 || ^8.0.0
     peerDependenciesMeta:
       '@opentelemetry/api':
@@ -6594,20 +6594,20 @@ packages:
     peerDependencies:
       '@typescript-eslint/parser': ^8.41.0
       eslint: ^8.57.0 || ^9.0.0
-      typescript: 5.9.2
+      typescript: 5.9.3
 
   '@typescript-eslint/parser@8.41.0':
     resolution: {integrity: sha512-gTtSdWX9xiMPA/7MV9STjJOOYtWwIJIYxkQxnSV1U3xcE+mnJSH3f6zI0RYP+ew66WSlZ5ed+h0VCxsvdC1jJg==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
       eslint: ^8.57.0 || ^9.0.0
-      typescript: 5.9.2
+      typescript: 5.9.3
 
   '@typescript-eslint/project-service@8.41.0':
     resolution: {integrity: sha512-b8V9SdGBQzQdjJ/IO3eDifGpDBJfvrNTp2QD9P2BeqWTGrRibgfgIlBSw6z3b6R7dPzg752tOs4u/7yCLxksSQ==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
-      typescript: 5.9.2
+      typescript: 5.9.3
 
   '@typescript-eslint/scope-manager@8.41.0':
     resolution: {integrity: sha512-n6m05bXn/Cd6DZDGyrpXrELCPVaTnLdPToyhBoFkLIMznRUQUEQdSp96s/pcWSQdqOhrgR1mzJ+yItK7T+WPMQ==}
@@ -6617,20 +6617,20 @@ packages:
     resolution: {integrity: sha512-TDhxYFPUYRFxFhuU5hTIJk+auzM/wKvWgoNYOPcOf6i4ReYlOoYN8q1dV5kOTjNQNJgzWN3TUUQMtlLOcUgdUw==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
-      typescript: 5.9.2
+      typescript: 5.9.3
 
   '@typescript-eslint/tsconfig-utils@8.66.0':
     resolution: {integrity: sha512-9D5gLYZG4rOjcoag8MQ/fWI8WqA9wcPDyOGyWtWFhvM1lHRbliqUSPIY5J3zqCU1tvSwzXxnnjhQhz5Ne7mJ4g==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
-      typescript: 5.9.2
+      typescript: 5.9.3
 
   '@typescript-eslint/type-utils@8.41.0':
     resolution: {integrity: sha512-63qt1h91vg3KsjVVonFJWjgSK7pZHSQFKH6uwqxAH9bBrsyRhO6ONoKyXxyVBzG1lJnFAJcKAcxLS54N1ee1OQ==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
       eslint: ^8.57.0 || ^9.0.0
-      typescript: 5.9.2
+      typescript: 5.9.3
 
   '@typescript-eslint/types@8.41.0':
     resolution: {integrity: sha512-9EwxsWdVqh42afLbHP90n2VdHaWU/oWgbH2P0CfcNfdKL7CuKpwMQGjwev56vWu9cSKU7FWSu6r9zck6CVfnag==}
@@ -6640,14 +6640,14 @@ packages:
     resolution: {integrity: sha512-D43UwUYJmGhuwHfY7MtNKRZMmfd8+p/eNSfFe6tH5mbVDto+VQCayeAt35rOx3Cs6wxD16DQtIKw/YXxt5E0UQ==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
-      typescript: 5.9.2
+      typescript: 5.9.3
 
   '@typescript-eslint/utils@8.41.0':
     resolution: {integrity: sha512-udbCVstxZ5jiPIXrdH+BZWnPatjlYwJuJkDA4Tbo3WyYLh8NvB+h/bKeSZHDOFKfphsZYJQqaFtLeXEqurQn1A==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
       eslint: ^8.57.0 || ^9.0.0
-      typescript: 5.9.2
+      typescript: 5.9.3
 
   '@typescript-eslint/visitor-keys@8.41.0':
     resolution: {integrity: sha512-+GeGMebMCy0elMNg67LRNoVnUFPIm37iu5CmHESVx56/9Jsfdpsvbv605DQ81Pi/x11IdKUsS5nzgTYbCQU9fg==}
@@ -6705,7 +6705,7 @@ packages:
   '@volar/kit@2.4.28':
     resolution: {integrity: sha512-cKX4vK9dtZvDRaAzeoUdaAJEew6IdxHNCRrdp5Kvcl6zZOqb6jTOfk3kXkIkG3T7oTFXguEMt5+9ptyqYR84Pg==}
     peerDependencies:
-      typescript: 5.9.2
+      typescript: 5.9.3
 
   '@volar/language-core@2.4.23':
     resolution: {integrity: sha512-hEEd5ET/oSmBC6pi1j6NaNYRWoAiDhINbT8rmwtINugR39loROSlufGdYMF9TaKGfz+ViGs1Idi3mAhnuPcoGQ==}
@@ -6792,7 +6792,7 @@ packages:
   '@vue/language-core@3.0.6':
     resolution: {integrity: sha512-e2RRzYWm+qGm8apUHW1wA5RQxzNhkqbbKdbKhiDUcmMrNAZGyM8aTiL3UrTqkaFI5s7wJRGGrp4u3jgusuBp2A==}
     peerDependencies:
-      typescript: 5.9.2
+      typescript: 5.9.3
     peerDependenciesMeta:
       typescript:
         optional: true
@@ -12141,7 +12141,7 @@ packages:
       '@typescript/native-preview': '*'
       '@volar/typescript': ~2.4.0
       rolldown: ^1.0.0
-      typescript: 5.9.2
+      typescript: 5.9.3
       vue-tsc: ~3.2.0 || ~3.3.0
     peerDependenciesMeta:
       '@typescript/native-preview':
@@ -12767,7 +12767,7 @@ packages:
     resolution: {integrity: sha512-EpQ/+UHITBULeUojx/LLD3uTYasZXcX1BrqlrzfLUnT9vdUhaOWK59a3ryWcFU8L0sY1SP+gRhJ2Beiis98+qw==}
     peerDependencies:
       svelte: ^3.55 || ^4.0.0-next.0 || ^4.0 || ^5.0.0-next.0
-      typescript: 5.9.2
+      typescript: 5.9.3
 
   svelte@5.55.7:
     resolution: {integrity: sha512-ymI5ykLPwIHW839E053FQbI1G+jnRFJEw3Kv5Y4njixVWywQBx+NUFpkkKyk5LIb36Fg9DVXSYpqiGekLD0hyw==}
@@ -13000,12 +13000,12 @@ packages:
     resolution: {integrity: sha512-CUgTZL1irw8u29bzrOD/nH85jqyc74D6SshFgujOIA7osm2Rz7dYH77agkx7H4FBNxDq7Cjf+IjaX/8zwFW+ZQ==}
     engines: {node: '>=18.12'}
     peerDependencies:
-      typescript: 5.9.2
+      typescript: 5.9.3
 
   ts-declaration-location@1.0.7:
     resolution: {integrity: sha512-EDyGAwH1gO0Ausm9gV6T2nUvBgXT5kGoCMJPllOaooZ+4VvJiKBdZE7wK18N1deEowhcUptS+5GXZK8U/fvpwA==}
     peerDependencies:
-      typescript: 5.9.2
+      typescript: 5.9.3
 
   tsconfig-paths@3.15.0:
     resolution: {integrity: sha512-2Ac2RgzDe/cn48GvOe3M+o82pEFewD3UPbyoUHHdKasHwJKjds4fLXWf/Ux5kATBKN20oaFGu+jbElp1pos0mg==}
@@ -13021,7 +13021,7 @@ packages:
       '@vitejs/devtools': '*'
       publint: ^0.3.8
       tsx: '*'
-      typescript: 5.9.2
+      typescript: 5.9.3
       unplugin-unused: ^0.5.0
       unrun: '*'
     peerDependenciesMeta:
@@ -13144,7 +13144,7 @@ packages:
     engines: {node: '>= 18', pnpm: '>= 10'}
     hasBin: true
     peerDependencies:
-      typescript: 5.9.2
+      typescript: 5.9.3
 
   typesafe-path@0.2.2:
     resolution: {integrity: sha512-OJabfkAg1WLZSqJAJ0Z6Sdt3utnbzr/jh+NAHoyWHJe8CMSy79Gm085094M9nvTPy22KzTVn5Zq5mbapCI/hPA==}
@@ -13157,13 +13157,13 @@ packages:
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
       eslint: ^8.57.0 || ^9.0.0
-      typescript: 5.9.2
+      typescript: 5.9.3
 
   typescript-memoize@1.1.1:
     resolution: {integrity: sha512-GQ90TcKpIH4XxYTI2F98yEQYZgjNMOGPpOgdjIBhaLaWji5HPWlRnZ4AeA1hfBxtY7bCGDJsqDDHk/KaHOl5bA==}
 
-  typescript@5.9.2:
-    resolution: {integrity: sha512-CWBzXQrc/qOkhidw1OzBTQuYRbfyxDXJMVJ1XNwUHGROVmuaeiEm3OslpZ1RV96d7SKKjZKrSJu3+t/xlw3R9A==}
+  typescript@5.9.3:
+    resolution: {integrity: sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw==}
     engines: {node: '>=14.17'}
     hasBin: true
 
@@ -13598,12 +13598,12 @@ packages:
     resolution: {integrity: sha512-Tbs8Whd43R2e2nxez4WXPvvdjGbW24rOSgRhLOHXzWiT4pcP4G7KeWh0YCn18rF4bVwv7tggLLZ6MJnO6jXPBg==}
     hasBin: true
     peerDependencies:
-      typescript: 5.9.2
+      typescript: 5.9.3
 
   vue@3.5.41:
     resolution: {integrity: sha512-2laE0p+aK+/AOPG/XL/WepOs/GlK755LJ1XECi9kDUrz1FKNw8rb2Xzlw9JS1rqEV55nb0ttsKxVlTCcd+R5cg==}
     peerDependencies:
-      typescript: 5.9.2
+      typescript: 5.9.3
     peerDependenciesMeta:
       typescript:
         optional: true
@@ -15618,7 +15618,7 @@ snapshots:
       inquirer: 10.2.2
       jscodeshift: 17.3.0
       prettier: 3.8.1
-      typescript: 5.9.2
+      typescript: 5.9.3
       winston: 3.19.0
     transitivePeerDependencies:
       - '@babel/preset-env'
@@ -16733,11 +16733,11 @@ snapshots:
     dependencies:
       '@glimmer/interfaces': 0.94.6
 
-  '@glint/ember-tsc@1.10.0(dbb856d94edbad9c63dd624ad9716a45)':
+  '@glint/ember-tsc@1.10.0(a13bc082802bcc39e9642090163738d3)':
     dependencies:
       '@glimmer/syntax': 0.95.0
       '@glint/template': 1.8.0
-      '@volar/kit': 2.4.28(typescript@5.9.2)
+      '@volar/kit': 2.4.28(typescript@5.9.3)
       '@volar/language-core': 2.4.28
       '@volar/language-server': 2.4.28
       '@volar/language-service': 2.4.28
@@ -16746,7 +16746,7 @@ snapshots:
       '@volar/typescript': 2.4.28
       content-tag: 4.2.0
       silent-error: 1.1.1
-      typescript: 5.9.2
+      typescript: 5.9.3
       volar-service-html: 0.0.71(@volar/language-service@2.4.28)
       volar-service-typescript: 0.0.71(@volar/language-service@2.4.28)
       vscode-languageserver-protocol: 3.17.5
@@ -16761,11 +16761,11 @@ snapshots:
 
   '@glint/tsserver-plugin@2.7.0(d85bdc81123a97464a513818471b425c)':
     dependencies:
-      '@glint/ember-tsc': 1.10.0(dbb856d94edbad9c63dd624ad9716a45)
+      '@glint/ember-tsc': 1.10.0(a13bc082802bcc39e9642090163738d3)
       '@volar/language-core': 2.4.28
       '@volar/typescript': 2.4.28
       jiti: 2.7.0
-      typescript: 5.9.2
+      typescript: 5.9.3
     transitivePeerDependencies:
       - ember-source
       - supports-color
@@ -17236,28 +17236,7 @@ snapshots:
       - rollup
       - supports-color
 
-  '@nullvoxpopuli/ember-rolldown@2.7.0(076cebb5ec1e095ecf1ac53378db30f5)':
-    dependencies:
-      '@babel/core': 7.29.7
-      '@babel/plugin-transform-typescript': 7.29.7(@babel/core@7.29.7)
-      '@embroider/core': 4.4.2
-      '@nullvoxpopuli/ember-build-tooling-utils': 1.1.0(@types/babel__core@7.20.5)(rollup@4.62.4)
-      babel-plugin-ember-template-compilation: 4.0.0
-      content-tag: 4.2.0
-      decorator-transforms: 2.4.0(@babel/core@7.29.7)
-    optionalDependencies:
-      tsdown: 0.22.14(typescript@5.9.2)
-      typescript: 5.9.2
-    transitivePeerDependencies:
-      - '@glint/template'
-      - '@types/babel__core'
-      - bufferutil
-      - canvas
-      - rollup
-      - supports-color
-      - utf-8-validate
-
-  '@nullvoxpopuli/ember-rolldown@2.7.0(52ee6e0e3587b83bbc0fb68dcf661ede)':
+  '@nullvoxpopuli/ember-rolldown@2.7.0(166ba9dd813fae8ccf61cefc52fd2714)':
     dependencies:
       '@babel/core': 7.29.7
       '@babel/plugin-transform-typescript': 7.29.7(@babel/core@7.29.7)
@@ -17267,8 +17246,8 @@ snapshots:
       content-tag: 4.2.0
       decorator-transforms: 2.4.0(@babel/core@7.29.7)
     optionalDependencies:
-      tsdown: 0.22.14(tsx@4.20.5)(typescript@5.9.2)
-      typescript: 5.9.2
+      tsdown: 0.22.14(tsx@4.20.5)(typescript@5.9.3)
+      typescript: 5.9.3
     transitivePeerDependencies:
       - '@glint/template'
       - '@types/babel__core'
@@ -17278,7 +17257,49 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  '@nullvoxpopuli/ember-rolldown@2.7.0(5d1db3b86a9d4bf0da90bc7a5f123c25)':
+  '@nullvoxpopuli/ember-rolldown@2.7.0(35190290210cd7126c88e642f3389863)':
+    dependencies:
+      '@babel/core': 7.29.7
+      '@babel/plugin-transform-typescript': 7.29.7(@babel/core@7.29.7)
+      '@embroider/core': 4.4.2
+      '@nullvoxpopuli/ember-build-tooling-utils': 1.1.0(rollup@4.62.4)
+      babel-plugin-ember-template-compilation: 4.0.0
+      content-tag: 4.2.0
+      decorator-transforms: 2.4.0(@babel/core@7.29.7)
+    optionalDependencies:
+      tsdown: 0.22.14(typescript@5.9.3)
+      typescript: 5.9.3
+    transitivePeerDependencies:
+      - '@glint/template'
+      - '@types/babel__core'
+      - bufferutil
+      - canvas
+      - rollup
+      - supports-color
+      - utf-8-validate
+
+  '@nullvoxpopuli/ember-rolldown@2.7.0(c6f52638ec6b072d0f608d119b8b6df2)':
+    dependencies:
+      '@babel/core': 7.29.7
+      '@babel/plugin-transform-typescript': 7.29.7(@babel/core@7.29.7)
+      '@embroider/core': 4.4.2
+      '@nullvoxpopuli/ember-build-tooling-utils': 1.1.0(rollup@4.62.4)
+      babel-plugin-ember-template-compilation: 4.0.0
+      content-tag: 4.2.0
+      decorator-transforms: 2.4.0(@babel/core@7.29.7)
+    optionalDependencies:
+      tsdown: 0.22.14(cda787c1cf03d36aaaa874796d3dbc34)
+      typescript: 5.9.3
+    transitivePeerDependencies:
+      - '@glint/template'
+      - '@types/babel__core'
+      - bufferutil
+      - canvas
+      - rollup
+      - supports-color
+      - utf-8-validate
+
+  '@nullvoxpopuli/ember-rolldown@2.7.0(c8f39f27e8182233f20a22a606bbb702)':
     dependencies:
       '@babel/core': 7.29.7
       '@babel/plugin-transform-typescript': 7.29.7(@babel/core@7.29.7)
@@ -17288,8 +17309,8 @@ snapshots:
       content-tag: 4.2.0
       decorator-transforms: 2.4.0(@babel/core@7.29.7)
     optionalDependencies:
-      tsdown: 0.22.14(typescript@5.9.2)
-      typescript: 5.9.2
+      tsdown: 0.22.14(typescript@5.9.3)
+      typescript: 5.9.3
     transitivePeerDependencies:
       - '@glint/template'
       - '@types/babel__core'
@@ -17299,39 +17320,18 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  '@nullvoxpopuli/ember-rolldown@2.7.0(a36ea611edff5ceb33c951b661f2b6b2)':
+  '@nullvoxpopuli/ember-rolldown@2.7.0(e3ca87308ef280fbc816621dc8bb1f89)':
     dependencies:
       '@babel/core': 7.29.7
       '@babel/plugin-transform-typescript': 7.29.7(@babel/core@7.29.7)
       '@embroider/core': 4.4.2
-      '@nullvoxpopuli/ember-build-tooling-utils': 1.1.0(rollup@4.62.4)
+      '@nullvoxpopuli/ember-build-tooling-utils': 1.1.0(@types/babel__core@7.20.5)(rollup@4.62.4)
       babel-plugin-ember-template-compilation: 4.0.0
       content-tag: 4.2.0
       decorator-transforms: 2.4.0(@babel/core@7.29.7)
     optionalDependencies:
-      tsdown: 0.22.14(2d08bf30f09f74acf5c22716525a3b86)
-      typescript: 5.9.2
-    transitivePeerDependencies:
-      - '@glint/template'
-      - '@types/babel__core'
-      - bufferutil
-      - canvas
-      - rollup
-      - supports-color
-      - utf-8-validate
-
-  '@nullvoxpopuli/ember-rolldown@2.7.0(b6311b2cd7278fa6ffc8f2e1155543ce)':
-    dependencies:
-      '@babel/core': 7.29.7
-      '@babel/plugin-transform-typescript': 7.29.7(@babel/core@7.29.7)
-      '@embroider/core': 4.4.2
-      '@nullvoxpopuli/ember-build-tooling-utils': 1.1.0(rollup@4.62.4)
-      babel-plugin-ember-template-compilation: 4.0.0
-      content-tag: 4.2.0
-      decorator-transforms: 2.4.0(@babel/core@7.29.7)
-    optionalDependencies:
-      tsdown: 0.22.14(typescript@5.9.2)
-      typescript: 5.9.2
+      tsdown: 0.22.14(typescript@5.9.3)
+      typescript: 5.9.3
     transitivePeerDependencies:
       - '@glint/template'
       - '@types/babel__core'
@@ -18016,7 +18016,7 @@ snapshots:
     dependencies:
       acorn: 8.18.0
 
-  '@sveltejs/kit@2.70.3(3c81784cf966254afb8df9614d004350)':
+  '@sveltejs/kit@2.70.3(3dd857853420bb885db62ae66a412418)':
     dependencies:
       '@standard-schema/spec': 1.1.0
       '@sveltejs/acorn-typescript': 1.0.13(acorn@8.18.0)
@@ -18034,16 +18034,16 @@ snapshots:
       svelte: 5.55.7
       vite: 7.3.1
     optionalDependencies:
-      typescript: 5.9.2
+      typescript: 5.9.3
 
-  '@sveltejs/package@2.5.8(svelte@5.55.7)(typescript@5.9.2)':
+  '@sveltejs/package@2.5.8(svelte@5.55.7)(typescript@5.9.3)':
     dependencies:
       chokidar: 5.0.0
       kleur: 4.1.5
       sade: 1.8.1
       semver: 7.8.5
       svelte: 5.55.7
-      svelte2tsx: 0.7.61(svelte@5.55.7)(typescript@5.9.2)
+      svelte2tsx: 0.7.61(svelte@5.55.7)(typescript@5.9.3)
     transitivePeerDependencies:
       - typescript
 
@@ -18431,41 +18431,41 @@ snapshots:
 
   '@types/wrap-ansi@3.0.0': {}
 
-  '@typescript-eslint/eslint-plugin@8.41.0(ad3e4b2f3df4fca831ef47c5e1339106)':
+  '@typescript-eslint/eslint-plugin@8.41.0(ff068f05036278b96bb632ac0d7d2e3b)':
     dependencies:
       '@eslint-community/regexpp': 4.12.1
-      '@typescript-eslint/parser': 8.41.0(eslint@9.34.0)(typescript@5.9.2)
+      '@typescript-eslint/parser': 8.41.0(eslint@9.34.0)(typescript@5.9.3)
       '@typescript-eslint/scope-manager': 8.41.0
-      '@typescript-eslint/type-utils': 8.41.0(eslint@9.34.0)(typescript@5.9.2)
-      '@typescript-eslint/utils': 8.41.0(eslint@9.34.0)(typescript@5.9.2)
+      '@typescript-eslint/type-utils': 8.41.0(eslint@9.34.0)(typescript@5.9.3)
+      '@typescript-eslint/utils': 8.41.0(eslint@9.34.0)(typescript@5.9.3)
       '@typescript-eslint/visitor-keys': 8.41.0
       eslint: 9.34.0
       graphemer: 1.4.0
       ignore: 7.0.5
       natural-compare: 1.4.0
-      ts-api-utils: 2.1.0(typescript@5.9.2)
-      typescript: 5.9.2
+      ts-api-utils: 2.1.0(typescript@5.9.3)
+      typescript: 5.9.3
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/parser@8.41.0(eslint@9.34.0)(typescript@5.9.2)':
+  '@typescript-eslint/parser@8.41.0(eslint@9.34.0)(typescript@5.9.3)':
     dependencies:
       '@typescript-eslint/scope-manager': 8.41.0
       '@typescript-eslint/types': 8.41.0
-      '@typescript-eslint/typescript-estree': 8.41.0(typescript@5.9.2)
+      '@typescript-eslint/typescript-estree': 8.41.0(typescript@5.9.3)
       '@typescript-eslint/visitor-keys': 8.41.0
       debug: 4.4.1
       eslint: 9.34.0
-      typescript: 5.9.2
+      typescript: 5.9.3
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/project-service@8.41.0(typescript@5.9.2)':
+  '@typescript-eslint/project-service@8.41.0(typescript@5.9.3)':
     dependencies:
-      '@typescript-eslint/tsconfig-utils': 8.66.0(typescript@5.9.2)
+      '@typescript-eslint/tsconfig-utils': 8.66.0(typescript@5.9.3)
       '@typescript-eslint/types': 8.41.0
       debug: 4.4.1
-      typescript: 5.9.2
+      typescript: 5.9.3
     transitivePeerDependencies:
       - supports-color
 
@@ -18474,34 +18474,34 @@ snapshots:
       '@typescript-eslint/types': 8.41.0
       '@typescript-eslint/visitor-keys': 8.41.0
 
-  '@typescript-eslint/tsconfig-utils@8.41.0(typescript@5.9.2)':
+  '@typescript-eslint/tsconfig-utils@8.41.0(typescript@5.9.3)':
     dependencies:
-      typescript: 5.9.2
+      typescript: 5.9.3
 
   '@typescript-eslint/tsconfig-utils@8.66.0': {}
 
-  '@typescript-eslint/tsconfig-utils@8.66.0(typescript@5.9.2)':
+  '@typescript-eslint/tsconfig-utils@8.66.0(typescript@5.9.3)':
     dependencies:
-      typescript: 5.9.2
+      typescript: 5.9.3
 
-  '@typescript-eslint/type-utils@8.41.0(eslint@9.34.0)(typescript@5.9.2)':
+  '@typescript-eslint/type-utils@8.41.0(eslint@9.34.0)(typescript@5.9.3)':
     dependencies:
       '@typescript-eslint/types': 8.41.0
-      '@typescript-eslint/typescript-estree': 8.41.0(typescript@5.9.2)
-      '@typescript-eslint/utils': 8.41.0(eslint@9.34.0)(typescript@5.9.2)
+      '@typescript-eslint/typescript-estree': 8.41.0(typescript@5.9.3)
+      '@typescript-eslint/utils': 8.41.0(eslint@9.34.0)(typescript@5.9.3)
       debug: 4.4.1
       eslint: 9.34.0
-      ts-api-utils: 2.1.0(typescript@5.9.2)
-      typescript: 5.9.2
+      ts-api-utils: 2.1.0(typescript@5.9.3)
+      typescript: 5.9.3
     transitivePeerDependencies:
       - supports-color
 
   '@typescript-eslint/types@8.41.0': {}
 
-  '@typescript-eslint/typescript-estree@8.41.0(typescript@5.9.2)':
+  '@typescript-eslint/typescript-estree@8.41.0(typescript@5.9.3)':
     dependencies:
-      '@typescript-eslint/project-service': 8.41.0(typescript@5.9.2)
-      '@typescript-eslint/tsconfig-utils': 8.41.0(typescript@5.9.2)
+      '@typescript-eslint/project-service': 8.41.0(typescript@5.9.3)
+      '@typescript-eslint/tsconfig-utils': 8.41.0(typescript@5.9.3)
       '@typescript-eslint/types': 8.41.0
       '@typescript-eslint/visitor-keys': 8.41.0
       debug: 4.4.1
@@ -18509,19 +18509,19 @@ snapshots:
       is-glob: 4.0.3
       minimatch: 9.0.5
       semver: 7.8.5
-      ts-api-utils: 2.1.0(typescript@5.9.2)
-      typescript: 5.9.2
+      ts-api-utils: 2.1.0(typescript@5.9.3)
+      typescript: 5.9.3
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/utils@8.41.0(eslint@9.34.0)(typescript@5.9.2)':
+  '@typescript-eslint/utils@8.41.0(eslint@9.34.0)(typescript@5.9.3)':
     dependencies:
       '@eslint-community/eslint-utils': 4.7.0(eslint@9.34.0)
       '@typescript-eslint/scope-manager': 8.41.0
       '@typescript-eslint/types': 8.41.0
-      '@typescript-eslint/typescript-estree': 8.41.0(typescript@5.9.2)
+      '@typescript-eslint/typescript-estree': 8.41.0(typescript@5.9.3)
       eslint: 9.34.0
-      typescript: 5.9.2
+      typescript: 5.9.3
     transitivePeerDependencies:
       - supports-color
 
@@ -18536,17 +18536,17 @@ snapshots:
     dependencies:
       vite-plugin-pwa: 1.3.0(vite@8.2.1)
 
-  '@vitejs/plugin-vue@6.0.8(vite@7.3.1)(vue@3.5.41(typescript@5.9.2))':
+  '@vitejs/plugin-vue@6.0.8(vite@7.3.1)(vue@3.5.41(typescript@5.9.3))':
     dependencies:
       '@rolldown/pluginutils': 1.0.1
       vite: 7.3.1
-      vue: 3.5.41(typescript@5.9.2)
+      vue: 3.5.41(typescript@5.9.3)
 
-  '@vitejs/plugin-vue@6.0.8(vite@8.2.1)(vue@3.5.41(typescript@5.9.2))':
+  '@vitejs/plugin-vue@6.0.8(vite@8.2.1)(vue@3.5.41(typescript@5.9.3))':
     dependencies:
       '@rolldown/pluginutils': 1.0.1
       vite: 8.2.1
-      vue: 3.5.41(typescript@5.9.2)
+      vue: 3.5.41(typescript@5.9.3)
 
   '@vitest/expect@3.2.7':
     dependencies:
@@ -18590,12 +18590,12 @@ snapshots:
       loupe: 3.2.1
       tinyrainbow: 2.0.0
 
-  '@volar/kit@2.4.28(typescript@5.9.2)':
+  '@volar/kit@2.4.28(typescript@5.9.3)':
     dependencies:
       '@volar/language-service': 2.4.28
       '@volar/typescript': 2.4.28
       typesafe-path: 0.2.2
-      typescript: 5.9.2
+      typescript: 5.9.3
       vscode-languageserver-textdocument: 1.0.12
       vscode-uri: 3.1.0
 
@@ -18758,7 +18758,7 @@ snapshots:
 
   '@vue/devtools-shared@8.2.1': {}
 
-  '@vue/language-core@3.0.6(typescript@5.9.2)':
+  '@vue/language-core@3.0.6(typescript@5.9.3)':
     dependencies:
       '@volar/language-core': 2.4.23
       '@vue/compiler-dom': 3.5.19
@@ -18769,7 +18769,7 @@ snapshots:
       path-browserify: 1.0.1
       picomatch: 4.0.5
     optionalDependencies:
-      typescript: 5.9.2
+      typescript: 5.9.3
 
   '@vue/reactivity@3.5.41':
     dependencies:
@@ -18799,26 +18799,26 @@ snapshots:
 
   '@vue/shared@3.5.41': {}
 
-  '@vueuse/core@14.4.0(vue@3.5.41(typescript@5.9.2))':
+  '@vueuse/core@14.4.0(vue@3.5.41(typescript@5.9.3))':
     dependencies:
       '@types/web-bluetooth': 0.0.21
       '@vueuse/metadata': 14.4.0
-      '@vueuse/shared': 14.4.0(vue@3.5.41(typescript@5.9.2))
-      vue: 3.5.41(typescript@5.9.2)
+      '@vueuse/shared': 14.4.0(vue@3.5.41(typescript@5.9.3))
+      vue: 3.5.41(typescript@5.9.3)
 
-  '@vueuse/integrations@14.4.0(3ff0aeed4fce965650c72c3dbacd307c)':
+  '@vueuse/integrations@14.4.0(978ff0eda7b5b295a9e87fb5ece10bff)':
     dependencies:
-      '@vueuse/core': 14.4.0(vue@3.5.41(typescript@5.9.2))
-      '@vueuse/shared': 14.4.0(vue@3.5.41(typescript@5.9.2))
-      vue: 3.5.41(typescript@5.9.2)
+      '@vueuse/core': 14.4.0(vue@3.5.41(typescript@5.9.3))
+      '@vueuse/shared': 14.4.0(vue@3.5.41(typescript@5.9.3))
+      vue: 3.5.41(typescript@5.9.3)
     optionalDependencies:
       focus-trap: 8.2.2
 
   '@vueuse/metadata@14.4.0': {}
 
-  '@vueuse/shared@14.4.0(vue@3.5.41(typescript@5.9.2))':
+  '@vueuse/shared@14.4.0(vue@3.5.41(typescript@5.9.3))':
     dependencies:
-      vue: 3.5.41(typescript@5.9.2)
+      vue: 3.5.41(typescript@5.9.3)
 
   '@warp-drive-internal/specs@file:specs(2e97ca8f9593bbf07ae9f0b77cb834c4)':
     dependencies:
@@ -19087,27 +19087,81 @@ snapshots:
       '@babel/core': 7.29.7
       '@babel/eslint-parser': 7.29.7(@babel/core@7.29.7)(eslint@9.34.0)
       '@eslint/js': 9.34.0
-      '@nullvoxpopuli/ember-rolldown': 2.7.0(b6311b2cd7278fa6ffc8f2e1155543ce)
+      '@nullvoxpopuli/ember-rolldown': 2.7.0(35190290210cd7126c88e642f3389863)
       '@rolldown/plugin-babel': 0.2.3(@babel/core@7.29.7)
       '@rolldown/pluginutils': 1.0.1
       '@types/debug': 4.1.12
-      '@typescript-eslint/eslint-plugin': 8.41.0(ad3e4b2f3df4fca831ef47c5e1339106)
-      '@typescript-eslint/parser': 8.41.0(eslint@9.34.0)(typescript@5.9.2)
+      '@typescript-eslint/eslint-plugin': 8.41.0(ff068f05036278b96bb632ac0d7d2e3b)
+      '@typescript-eslint/parser': 8.41.0(eslint@9.34.0)(typescript@5.9.3)
       comment-json: 4.2.5
       debug: 4.4.1
-      ember-eslint-parser: 0.14.4(51113162d3b00fee9b27a79065193efd)
+      ember-eslint-parser: 0.14.4(70be1ffd0039cc420d8577c8284ed44f)
       eslint: 9.34.0
       eslint-config-prettier: 10.1.8(eslint@9.34.0)
-      eslint-plugin-import: 2.32.0(438d9ce730bf71cdcaed57735e15ead7)
+      eslint-plugin-import: 2.32.0(fc509f8ea4793045ea15ebf2a929a9a3)
       eslint-plugin-mocha: 10.5.0(eslint@9.34.0)
-      eslint-plugin-n: 17.21.3(eslint@9.34.0)(typescript@5.9.2)
+      eslint-plugin-n: 17.21.3(eslint@9.34.0)(typescript@5.9.3)
       eslint-plugin-qunit: 8.2.6(eslint@9.34.0)
       eslint-plugin-simple-import-sort: 12.1.1(eslint@9.34.0)
       globals: 16.3.0
       rollup: 4.62.4
-      tsdown: 0.22.14(typescript@5.9.2)
-      typescript: 5.9.2
-      typescript-eslint: 8.41.0(eslint@9.34.0)(typescript@5.9.2)
+      tsdown: 0.22.14(typescript@5.9.3)
+      typescript: 5.9.3
+      typescript-eslint: 8.41.0(eslint@9.34.0)(typescript@5.9.3)
+    transitivePeerDependencies:
+      - '@arethetypeswrong/core'
+      - '@babel/plugin-transform-runtime'
+      - '@babel/runtime'
+      - '@glint/template'
+      - '@tsdown/css'
+      - '@tsdown/exe'
+      - '@types/babel__core'
+      - '@typescript/native-preview'
+      - '@vitejs/devtools'
+      - '@volar/typescript'
+      - bufferutil
+      - canvas
+      - eslint-import-resolver-typescript
+      - eslint-import-resolver-webpack
+      - jiti
+      - oxc-resolver
+      - publint
+      - rolldown
+      - supports-color
+      - tsx
+      - unplugin-unused
+      - unrun
+      - utf-8-validate
+      - vite
+      - vue-tsc
+
+  '@warp-drive/internal-config@file:tools/internal-config(3b8692214ba0d0eacea8d77dd59597b2)':
+    dependencies:
+      '@babel/cli': 7.29.7(@babel/core@7.29.7)
+      '@babel/core': 7.29.7
+      '@babel/eslint-parser': 7.29.7(@babel/core@7.29.7)(eslint@9.34.0)
+      '@eslint/js': 9.34.0
+      '@nullvoxpopuli/ember-rolldown': 2.7.0(c6f52638ec6b072d0f608d119b8b6df2)
+      '@rolldown/plugin-babel': 0.2.3(359fdc389a44e19a5aec38d478957a40)
+      '@rolldown/pluginutils': 1.0.1
+      '@types/debug': 4.1.12
+      '@typescript-eslint/eslint-plugin': 8.41.0(ff068f05036278b96bb632ac0d7d2e3b)
+      '@typescript-eslint/parser': 8.41.0(eslint@9.34.0)(typescript@5.9.3)
+      comment-json: 4.2.5
+      debug: 4.4.1
+      ember-eslint-parser: 0.14.4(70be1ffd0039cc420d8577c8284ed44f)
+      eslint: 9.34.0
+      eslint-config-prettier: 10.1.8(eslint@9.34.0)
+      eslint-plugin-import: 2.32.0(fc509f8ea4793045ea15ebf2a929a9a3)
+      eslint-plugin-mocha: 10.5.0(eslint@9.34.0)
+      eslint-plugin-n: 17.21.3(eslint@9.34.0)(typescript@5.9.3)
+      eslint-plugin-qunit: 8.2.6(eslint@9.34.0)
+      eslint-plugin-simple-import-sort: 12.1.1(eslint@9.34.0)
+      globals: 16.3.0
+      rollup: 4.62.4
+      tsdown: 0.22.14(cda787c1cf03d36aaaa874796d3dbc34)
+      typescript: 5.9.3
+      typescript-eslint: 8.41.0(eslint@9.34.0)(typescript@5.9.3)
     transitivePeerDependencies:
       - '@arethetypeswrong/core'
       - '@babel/plugin-transform-runtime'
@@ -19141,81 +19195,27 @@ snapshots:
       '@babel/core': 7.29.7
       '@babel/eslint-parser': 7.29.7(@babel/core@7.29.7)(eslint@9.34.0)
       '@eslint/js': 9.34.0
-      '@nullvoxpopuli/ember-rolldown': 2.7.0(b6311b2cd7278fa6ffc8f2e1155543ce)
+      '@nullvoxpopuli/ember-rolldown': 2.7.0(35190290210cd7126c88e642f3389863)
       '@rolldown/plugin-babel': 0.2.3(56ff18176b12193f0c1c1c271c3d01b5)
       '@rolldown/pluginutils': 1.0.1
       '@types/debug': 4.1.12
-      '@typescript-eslint/eslint-plugin': 8.41.0(ad3e4b2f3df4fca831ef47c5e1339106)
-      '@typescript-eslint/parser': 8.41.0(eslint@9.34.0)(typescript@5.9.2)
+      '@typescript-eslint/eslint-plugin': 8.41.0(ff068f05036278b96bb632ac0d7d2e3b)
+      '@typescript-eslint/parser': 8.41.0(eslint@9.34.0)(typescript@5.9.3)
       comment-json: 4.2.5
       debug: 4.4.1
-      ember-eslint-parser: 0.14.4(51113162d3b00fee9b27a79065193efd)
+      ember-eslint-parser: 0.14.4(70be1ffd0039cc420d8577c8284ed44f)
       eslint: 9.34.0
       eslint-config-prettier: 10.1.8(eslint@9.34.0)
-      eslint-plugin-import: 2.32.0(438d9ce730bf71cdcaed57735e15ead7)
+      eslint-plugin-import: 2.32.0(fc509f8ea4793045ea15ebf2a929a9a3)
       eslint-plugin-mocha: 10.5.0(eslint@9.34.0)
-      eslint-plugin-n: 17.21.3(eslint@9.34.0)(typescript@5.9.2)
+      eslint-plugin-n: 17.21.3(eslint@9.34.0)(typescript@5.9.3)
       eslint-plugin-qunit: 8.2.6(eslint@9.34.0)
       eslint-plugin-simple-import-sort: 12.1.1(eslint@9.34.0)
       globals: 16.3.0
       rollup: 4.62.4
-      tsdown: 0.22.14(typescript@5.9.2)
-      typescript: 5.9.2
-      typescript-eslint: 8.41.0(eslint@9.34.0)(typescript@5.9.2)
-    transitivePeerDependencies:
-      - '@arethetypeswrong/core'
-      - '@babel/plugin-transform-runtime'
-      - '@babel/runtime'
-      - '@glint/template'
-      - '@tsdown/css'
-      - '@tsdown/exe'
-      - '@types/babel__core'
-      - '@typescript/native-preview'
-      - '@vitejs/devtools'
-      - '@volar/typescript'
-      - bufferutil
-      - canvas
-      - eslint-import-resolver-typescript
-      - eslint-import-resolver-webpack
-      - jiti
-      - oxc-resolver
-      - publint
-      - rolldown
-      - supports-color
-      - tsx
-      - unplugin-unused
-      - unrun
-      - utf-8-validate
-      - vite
-      - vue-tsc
-
-  '@warp-drive/internal-config@file:tools/internal-config(4f58c35561091b8295b24720bc40a176)':
-    dependencies:
-      '@babel/cli': 7.29.7(@babel/core@7.29.7)
-      '@babel/core': 7.29.7
-      '@babel/eslint-parser': 7.29.7(@babel/core@7.29.7)(eslint@9.34.0)
-      '@eslint/js': 9.34.0
-      '@nullvoxpopuli/ember-rolldown': 2.7.0(a36ea611edff5ceb33c951b661f2b6b2)
-      '@rolldown/plugin-babel': 0.2.3(02d9a2513d9ed1d532b075ffd9c2b5e7)
-      '@rolldown/pluginutils': 1.0.1
-      '@types/debug': 4.1.12
-      '@typescript-eslint/eslint-plugin': 8.41.0(ad3e4b2f3df4fca831ef47c5e1339106)
-      '@typescript-eslint/parser': 8.41.0(eslint@9.34.0)(typescript@5.9.2)
-      comment-json: 4.2.5
-      debug: 4.4.1
-      ember-eslint-parser: 0.14.4(51113162d3b00fee9b27a79065193efd)
-      eslint: 9.34.0
-      eslint-config-prettier: 10.1.8(eslint@9.34.0)
-      eslint-plugin-import: 2.32.0(438d9ce730bf71cdcaed57735e15ead7)
-      eslint-plugin-mocha: 10.5.0(eslint@9.34.0)
-      eslint-plugin-n: 17.21.3(eslint@9.34.0)(typescript@5.9.2)
-      eslint-plugin-qunit: 8.2.6(eslint@9.34.0)
-      eslint-plugin-simple-import-sort: 12.1.1(eslint@9.34.0)
-      globals: 16.3.0
-      rollup: 4.62.4
-      tsdown: 0.22.14(2d08bf30f09f74acf5c22716525a3b86)
-      typescript: 5.9.2
-      typescript-eslint: 8.41.0(eslint@9.34.0)(typescript@5.9.2)
+      tsdown: 0.22.14(typescript@5.9.3)
+      typescript: 5.9.3
+      typescript-eslint: 8.41.0(eslint@9.34.0)(typescript@5.9.3)
     transitivePeerDependencies:
       - '@arethetypeswrong/core'
       - '@babel/plugin-transform-runtime'
@@ -19249,27 +19249,27 @@ snapshots:
       '@babel/core': 7.29.7
       '@babel/eslint-parser': 7.29.7(@babel/core@7.29.7)(eslint@9.34.0)
       '@eslint/js': 9.34.0
-      '@nullvoxpopuli/ember-rolldown': 2.7.0(5d1db3b86a9d4bf0da90bc7a5f123c25)
+      '@nullvoxpopuli/ember-rolldown': 2.7.0(c8f39f27e8182233f20a22a606bbb702)
       '@rolldown/plugin-babel': 0.2.3(56ff18176b12193f0c1c1c271c3d01b5)
       '@rolldown/pluginutils': 1.0.1
       '@types/debug': 4.1.12
-      '@typescript-eslint/eslint-plugin': 8.41.0(ad3e4b2f3df4fca831ef47c5e1339106)
-      '@typescript-eslint/parser': 8.41.0(eslint@9.34.0)(typescript@5.9.2)
+      '@typescript-eslint/eslint-plugin': 8.41.0(ff068f05036278b96bb632ac0d7d2e3b)
+      '@typescript-eslint/parser': 8.41.0(eslint@9.34.0)(typescript@5.9.3)
       comment-json: 4.2.5
       debug: 4.4.1
-      ember-eslint-parser: 0.14.4(51113162d3b00fee9b27a79065193efd)
+      ember-eslint-parser: 0.14.4(70be1ffd0039cc420d8577c8284ed44f)
       eslint: 9.34.0
       eslint-config-prettier: 10.1.8(eslint@9.34.0)
-      eslint-plugin-import: 2.32.0(438d9ce730bf71cdcaed57735e15ead7)
+      eslint-plugin-import: 2.32.0(fc509f8ea4793045ea15ebf2a929a9a3)
       eslint-plugin-mocha: 10.5.0(eslint@9.34.0)
-      eslint-plugin-n: 17.21.3(eslint@9.34.0)(typescript@5.9.2)
+      eslint-plugin-n: 17.21.3(eslint@9.34.0)(typescript@5.9.3)
       eslint-plugin-qunit: 8.2.6(eslint@9.34.0)
       eslint-plugin-simple-import-sort: 12.1.1(eslint@9.34.0)
       globals: 16.3.0
       rollup: 4.62.4
-      tsdown: 0.22.14(typescript@5.9.2)
-      typescript: 5.9.2
-      typescript-eslint: 8.41.0(eslint@9.34.0)(typescript@5.9.2)
+      tsdown: 0.22.14(typescript@5.9.3)
+      typescript: 5.9.3
+      typescript-eslint: 8.41.0(eslint@9.34.0)(typescript@5.9.3)
     transitivePeerDependencies:
       - '@arethetypeswrong/core'
       - '@babel/plugin-transform-runtime'
@@ -19297,33 +19297,33 @@ snapshots:
       - vite
       - vue-tsc
 
-  '@warp-drive/internal-config@file:tools/internal-config(7d758069b09e8de85a35930037afc67e)':
+  '@warp-drive/internal-config@file:tools/internal-config(791c13cb6f0990b63e7b1e0762efd477)':
     dependencies:
       '@babel/cli': 7.29.7(@babel/core@7.29.7)
       '@babel/core': 7.29.7
       '@babel/eslint-parser': 7.29.7(@babel/core@7.29.7)(eslint@9.34.0)
       '@eslint/js': 9.34.0
-      '@nullvoxpopuli/ember-rolldown': 2.7.0(a36ea611edff5ceb33c951b661f2b6b2)
-      '@rolldown/plugin-babel': 0.2.3(359fdc389a44e19a5aec38d478957a40)
+      '@nullvoxpopuli/ember-rolldown': 2.7.0(c6f52638ec6b072d0f608d119b8b6df2)
+      '@rolldown/plugin-babel': 0.2.3(02d9a2513d9ed1d532b075ffd9c2b5e7)
       '@rolldown/pluginutils': 1.0.1
       '@types/debug': 4.1.12
-      '@typescript-eslint/eslint-plugin': 8.41.0(ad3e4b2f3df4fca831ef47c5e1339106)
-      '@typescript-eslint/parser': 8.41.0(eslint@9.34.0)(typescript@5.9.2)
+      '@typescript-eslint/eslint-plugin': 8.41.0(ff068f05036278b96bb632ac0d7d2e3b)
+      '@typescript-eslint/parser': 8.41.0(eslint@9.34.0)(typescript@5.9.3)
       comment-json: 4.2.5
       debug: 4.4.1
-      ember-eslint-parser: 0.14.4(51113162d3b00fee9b27a79065193efd)
+      ember-eslint-parser: 0.14.4(70be1ffd0039cc420d8577c8284ed44f)
       eslint: 9.34.0
       eslint-config-prettier: 10.1.8(eslint@9.34.0)
-      eslint-plugin-import: 2.32.0(438d9ce730bf71cdcaed57735e15ead7)
+      eslint-plugin-import: 2.32.0(fc509f8ea4793045ea15ebf2a929a9a3)
       eslint-plugin-mocha: 10.5.0(eslint@9.34.0)
-      eslint-plugin-n: 17.21.3(eslint@9.34.0)(typescript@5.9.2)
+      eslint-plugin-n: 17.21.3(eslint@9.34.0)(typescript@5.9.3)
       eslint-plugin-qunit: 8.2.6(eslint@9.34.0)
       eslint-plugin-simple-import-sort: 12.1.1(eslint@9.34.0)
       globals: 16.3.0
       rollup: 4.62.4
-      tsdown: 0.22.14(2d08bf30f09f74acf5c22716525a3b86)
-      typescript: 5.9.2
-      typescript-eslint: 8.41.0(eslint@9.34.0)(typescript@5.9.2)
+      tsdown: 0.22.14(cda787c1cf03d36aaaa874796d3dbc34)
+      typescript: 5.9.3
+      typescript-eslint: 8.41.0(eslint@9.34.0)(typescript@5.9.3)
     transitivePeerDependencies:
       - '@arethetypeswrong/core'
       - '@babel/plugin-transform-runtime'
@@ -19357,27 +19357,27 @@ snapshots:
       '@babel/core': 7.29.7
       '@babel/eslint-parser': 7.29.7(@babel/core@7.29.7)(eslint@9.34.0)
       '@eslint/js': 9.34.0
-      '@nullvoxpopuli/ember-rolldown': 2.7.0(b6311b2cd7278fa6ffc8f2e1155543ce)
+      '@nullvoxpopuli/ember-rolldown': 2.7.0(35190290210cd7126c88e642f3389863)
       '@rolldown/plugin-babel': 0.2.3(02d9a2513d9ed1d532b075ffd9c2b5e7)
       '@rolldown/pluginutils': 1.0.1
       '@types/debug': 4.1.12
-      '@typescript-eslint/eslint-plugin': 8.41.0(ad3e4b2f3df4fca831ef47c5e1339106)
-      '@typescript-eslint/parser': 8.41.0(eslint@9.34.0)(typescript@5.9.2)
+      '@typescript-eslint/eslint-plugin': 8.41.0(ff068f05036278b96bb632ac0d7d2e3b)
+      '@typescript-eslint/parser': 8.41.0(eslint@9.34.0)(typescript@5.9.3)
       comment-json: 4.2.5
       debug: 4.4.1
-      ember-eslint-parser: 0.14.4(51113162d3b00fee9b27a79065193efd)
+      ember-eslint-parser: 0.14.4(70be1ffd0039cc420d8577c8284ed44f)
       eslint: 9.34.0
       eslint-config-prettier: 10.1.8(eslint@9.34.0)
-      eslint-plugin-import: 2.32.0(438d9ce730bf71cdcaed57735e15ead7)
+      eslint-plugin-import: 2.32.0(fc509f8ea4793045ea15ebf2a929a9a3)
       eslint-plugin-mocha: 10.5.0(eslint@9.34.0)
-      eslint-plugin-n: 17.21.3(eslint@9.34.0)(typescript@5.9.2)
+      eslint-plugin-n: 17.21.3(eslint@9.34.0)(typescript@5.9.3)
       eslint-plugin-qunit: 8.2.6(eslint@9.34.0)
       eslint-plugin-simple-import-sort: 12.1.1(eslint@9.34.0)
       globals: 16.3.0
       rollup: 4.62.4
-      tsdown: 0.22.14(typescript@5.9.2)
-      typescript: 5.9.2
-      typescript-eslint: 8.41.0(eslint@9.34.0)(typescript@5.9.2)
+      tsdown: 0.22.14(typescript@5.9.3)
+      typescript: 5.9.3
+      typescript-eslint: 8.41.0(eslint@9.34.0)(typescript@5.9.3)
     transitivePeerDependencies:
       - '@arethetypeswrong/core'
       - '@babel/plugin-transform-runtime'
@@ -19411,27 +19411,27 @@ snapshots:
       '@babel/core': 7.29.7
       '@babel/eslint-parser': 7.29.7(@babel/core@7.29.7)(eslint@9.34.0)
       '@eslint/js': 9.34.0
-      '@nullvoxpopuli/ember-rolldown': 2.7.0(b6311b2cd7278fa6ffc8f2e1155543ce)
+      '@nullvoxpopuli/ember-rolldown': 2.7.0(35190290210cd7126c88e642f3389863)
       '@rolldown/plugin-babel': 0.2.3(359fdc389a44e19a5aec38d478957a40)
       '@rolldown/pluginutils': 1.0.1
       '@types/debug': 4.1.12
-      '@typescript-eslint/eslint-plugin': 8.41.0(ad3e4b2f3df4fca831ef47c5e1339106)
-      '@typescript-eslint/parser': 8.41.0(eslint@9.34.0)(typescript@5.9.2)
+      '@typescript-eslint/eslint-plugin': 8.41.0(ff068f05036278b96bb632ac0d7d2e3b)
+      '@typescript-eslint/parser': 8.41.0(eslint@9.34.0)(typescript@5.9.3)
       comment-json: 4.2.5
       debug: 4.4.1
-      ember-eslint-parser: 0.14.4(51113162d3b00fee9b27a79065193efd)
+      ember-eslint-parser: 0.14.4(70be1ffd0039cc420d8577c8284ed44f)
       eslint: 9.34.0
       eslint-config-prettier: 10.1.8(eslint@9.34.0)
-      eslint-plugin-import: 2.32.0(438d9ce730bf71cdcaed57735e15ead7)
+      eslint-plugin-import: 2.32.0(fc509f8ea4793045ea15ebf2a929a9a3)
       eslint-plugin-mocha: 10.5.0(eslint@9.34.0)
-      eslint-plugin-n: 17.21.3(eslint@9.34.0)(typescript@5.9.2)
+      eslint-plugin-n: 17.21.3(eslint@9.34.0)(typescript@5.9.3)
       eslint-plugin-qunit: 8.2.6(eslint@9.34.0)
       eslint-plugin-simple-import-sort: 12.1.1(eslint@9.34.0)
       globals: 16.3.0
       rollup: 4.62.4
-      tsdown: 0.22.14(typescript@5.9.2)
-      typescript: 5.9.2
-      typescript-eslint: 8.41.0(eslint@9.34.0)(typescript@5.9.2)
+      tsdown: 0.22.14(typescript@5.9.3)
+      typescript: 5.9.3
+      typescript-eslint: 8.41.0(eslint@9.34.0)(typescript@5.9.3)
     transitivePeerDependencies:
       - '@arethetypeswrong/core'
       - '@babel/plugin-transform-runtime'
@@ -19465,27 +19465,27 @@ snapshots:
       '@babel/core': 7.29.7
       '@babel/eslint-parser': 7.29.7(@babel/core@7.29.7)(eslint@9.34.0)
       '@eslint/js': 9.34.0
-      '@nullvoxpopuli/ember-rolldown': 2.7.0(076cebb5ec1e095ecf1ac53378db30f5)
+      '@nullvoxpopuli/ember-rolldown': 2.7.0(e3ca87308ef280fbc816621dc8bb1f89)
       '@rolldown/plugin-babel': 0.2.3(@babel/core@7.29.7)
       '@rolldown/pluginutils': 1.0.1
       '@types/debug': 4.1.12
-      '@typescript-eslint/eslint-plugin': 8.41.0(ad3e4b2f3df4fca831ef47c5e1339106)
-      '@typescript-eslint/parser': 8.41.0(eslint@9.34.0)(typescript@5.9.2)
+      '@typescript-eslint/eslint-plugin': 8.41.0(ff068f05036278b96bb632ac0d7d2e3b)
+      '@typescript-eslint/parser': 8.41.0(eslint@9.34.0)(typescript@5.9.3)
       comment-json: 4.2.5
       debug: 4.4.1
-      ember-eslint-parser: 0.14.4(51113162d3b00fee9b27a79065193efd)
+      ember-eslint-parser: 0.14.4(70be1ffd0039cc420d8577c8284ed44f)
       eslint: 9.34.0
       eslint-config-prettier: 10.1.8(eslint@9.34.0)
-      eslint-plugin-import: 2.32.0(438d9ce730bf71cdcaed57735e15ead7)
+      eslint-plugin-import: 2.32.0(fc509f8ea4793045ea15ebf2a929a9a3)
       eslint-plugin-mocha: 10.5.0(eslint@9.34.0)
-      eslint-plugin-n: 17.21.3(eslint@9.34.0)(typescript@5.9.2)
+      eslint-plugin-n: 17.21.3(eslint@9.34.0)(typescript@5.9.3)
       eslint-plugin-qunit: 8.2.6(eslint@9.34.0)
       eslint-plugin-simple-import-sort: 12.1.1(eslint@9.34.0)
       globals: 16.3.0
       rollup: 4.62.4
-      tsdown: 0.22.14(typescript@5.9.2)
-      typescript: 5.9.2
-      typescript-eslint: 8.41.0(eslint@9.34.0)(typescript@5.9.2)
+      tsdown: 0.22.14(typescript@5.9.3)
+      typescript: 5.9.3
+      typescript-eslint: 8.41.0(eslint@9.34.0)(typescript@5.9.3)
     transitivePeerDependencies:
       - '@arethetypeswrong/core'
       - '@babel/plugin-transform-runtime'
@@ -19519,27 +19519,27 @@ snapshots:
       '@babel/core': 7.29.7
       '@babel/eslint-parser': 7.29.7(@babel/core@7.29.7)(eslint@9.34.0)
       '@eslint/js': 9.34.0
-      '@nullvoxpopuli/ember-rolldown': 2.7.0(5d1db3b86a9d4bf0da90bc7a5f123c25)
+      '@nullvoxpopuli/ember-rolldown': 2.7.0(c8f39f27e8182233f20a22a606bbb702)
       '@rolldown/plugin-babel': 0.2.3(76ae02852a388f8a0b5326c13ea94f1a)
       '@rolldown/pluginutils': 1.0.1
       '@types/debug': 4.1.12
-      '@typescript-eslint/eslint-plugin': 8.41.0(ad3e4b2f3df4fca831ef47c5e1339106)
-      '@typescript-eslint/parser': 8.41.0(eslint@9.34.0)(typescript@5.9.2)
+      '@typescript-eslint/eslint-plugin': 8.41.0(ff068f05036278b96bb632ac0d7d2e3b)
+      '@typescript-eslint/parser': 8.41.0(eslint@9.34.0)(typescript@5.9.3)
       comment-json: 4.2.5
       debug: 4.4.1
-      ember-eslint-parser: 0.14.4(51113162d3b00fee9b27a79065193efd)
+      ember-eslint-parser: 0.14.4(70be1ffd0039cc420d8577c8284ed44f)
       eslint: 9.34.0
       eslint-config-prettier: 10.1.8(eslint@9.34.0)
-      eslint-plugin-import: 2.32.0(438d9ce730bf71cdcaed57735e15ead7)
+      eslint-plugin-import: 2.32.0(fc509f8ea4793045ea15ebf2a929a9a3)
       eslint-plugin-mocha: 10.5.0(eslint@9.34.0)
-      eslint-plugin-n: 17.21.3(eslint@9.34.0)(typescript@5.9.2)
+      eslint-plugin-n: 17.21.3(eslint@9.34.0)(typescript@5.9.3)
       eslint-plugin-qunit: 8.2.6(eslint@9.34.0)
       eslint-plugin-simple-import-sort: 12.1.1(eslint@9.34.0)
       globals: 16.3.0
       rollup: 4.62.4
-      tsdown: 0.22.14(typescript@5.9.2)
-      typescript: 5.9.2
-      typescript-eslint: 8.41.0(eslint@9.34.0)(typescript@5.9.2)
+      tsdown: 0.22.14(typescript@5.9.3)
+      typescript: 5.9.3
+      typescript-eslint: 8.41.0(eslint@9.34.0)(typescript@5.9.3)
     transitivePeerDependencies:
       - '@arethetypeswrong/core'
       - '@babel/plugin-transform-runtime'
@@ -19573,27 +19573,27 @@ snapshots:
       '@babel/core': 7.29.7
       '@babel/eslint-parser': 7.29.7(@babel/core@7.29.7)(eslint@9.34.0)
       '@eslint/js': 9.34.0
-      '@nullvoxpopuli/ember-rolldown': 2.7.0(5d1db3b86a9d4bf0da90bc7a5f123c25)
+      '@nullvoxpopuli/ember-rolldown': 2.7.0(c8f39f27e8182233f20a22a606bbb702)
       '@rolldown/plugin-babel': 0.2.3(02d9a2513d9ed1d532b075ffd9c2b5e7)
       '@rolldown/pluginutils': 1.0.1
       '@types/debug': 4.1.12
-      '@typescript-eslint/eslint-plugin': 8.41.0(ad3e4b2f3df4fca831ef47c5e1339106)
-      '@typescript-eslint/parser': 8.41.0(eslint@9.34.0)(typescript@5.9.2)
+      '@typescript-eslint/eslint-plugin': 8.41.0(ff068f05036278b96bb632ac0d7d2e3b)
+      '@typescript-eslint/parser': 8.41.0(eslint@9.34.0)(typescript@5.9.3)
       comment-json: 4.2.5
       debug: 4.4.1
-      ember-eslint-parser: 0.14.4(51113162d3b00fee9b27a79065193efd)
+      ember-eslint-parser: 0.14.4(70be1ffd0039cc420d8577c8284ed44f)
       eslint: 9.34.0
       eslint-config-prettier: 10.1.8(eslint@9.34.0)
-      eslint-plugin-import: 2.32.0(438d9ce730bf71cdcaed57735e15ead7)
+      eslint-plugin-import: 2.32.0(fc509f8ea4793045ea15ebf2a929a9a3)
       eslint-plugin-mocha: 10.5.0(eslint@9.34.0)
-      eslint-plugin-n: 17.21.3(eslint@9.34.0)(typescript@5.9.2)
+      eslint-plugin-n: 17.21.3(eslint@9.34.0)(typescript@5.9.3)
       eslint-plugin-qunit: 8.2.6(eslint@9.34.0)
       eslint-plugin-simple-import-sort: 12.1.1(eslint@9.34.0)
       globals: 16.3.0
       rollup: 4.62.4
-      tsdown: 0.22.14(typescript@5.9.2)
-      typescript: 5.9.2
-      typescript-eslint: 8.41.0(eslint@9.34.0)(typescript@5.9.2)
+      tsdown: 0.22.14(typescript@5.9.3)
+      typescript: 5.9.3
+      typescript-eslint: 8.41.0(eslint@9.34.0)(typescript@5.9.3)
     transitivePeerDependencies:
       - '@arethetypeswrong/core'
       - '@babel/plugin-transform-runtime'
@@ -19627,27 +19627,27 @@ snapshots:
       '@babel/core': 7.29.7
       '@babel/eslint-parser': 7.29.7(@babel/core@7.29.7)(eslint@9.34.0)
       '@eslint/js': 9.34.0
-      '@nullvoxpopuli/ember-rolldown': 2.7.0(b6311b2cd7278fa6ffc8f2e1155543ce)
+      '@nullvoxpopuli/ember-rolldown': 2.7.0(35190290210cd7126c88e642f3389863)
       '@rolldown/plugin-babel': 0.2.3(717f3e912b14f3dc61040ade147236d3)
       '@rolldown/pluginutils': 1.0.1
       '@types/debug': 4.1.12
-      '@typescript-eslint/eslint-plugin': 8.41.0(ad3e4b2f3df4fca831ef47c5e1339106)
-      '@typescript-eslint/parser': 8.41.0(eslint@9.34.0)(typescript@5.9.2)
+      '@typescript-eslint/eslint-plugin': 8.41.0(ff068f05036278b96bb632ac0d7d2e3b)
+      '@typescript-eslint/parser': 8.41.0(eslint@9.34.0)(typescript@5.9.3)
       comment-json: 4.2.5
       debug: 4.4.1
-      ember-eslint-parser: 0.14.4(51113162d3b00fee9b27a79065193efd)
+      ember-eslint-parser: 0.14.4(70be1ffd0039cc420d8577c8284ed44f)
       eslint: 9.34.0
       eslint-config-prettier: 10.1.8(eslint@9.34.0)
-      eslint-plugin-import: 2.32.0(438d9ce730bf71cdcaed57735e15ead7)
+      eslint-plugin-import: 2.32.0(fc509f8ea4793045ea15ebf2a929a9a3)
       eslint-plugin-mocha: 10.5.0(eslint@9.34.0)
-      eslint-plugin-n: 17.21.3(eslint@9.34.0)(typescript@5.9.2)
+      eslint-plugin-n: 17.21.3(eslint@9.34.0)(typescript@5.9.3)
       eslint-plugin-qunit: 8.2.6(eslint@9.34.0)
       eslint-plugin-simple-import-sort: 12.1.1(eslint@9.34.0)
       globals: 16.3.0
       rollup: 4.62.4
-      tsdown: 0.22.14(typescript@5.9.2)
-      typescript: 5.9.2
-      typescript-eslint: 8.41.0(eslint@9.34.0)(typescript@5.9.2)
+      tsdown: 0.22.14(typescript@5.9.3)
+      typescript: 5.9.3
+      typescript-eslint: 8.41.0(eslint@9.34.0)(typescript@5.9.3)
     transitivePeerDependencies:
       - '@arethetypeswrong/core'
       - '@babel/plugin-transform-runtime'
@@ -19681,27 +19681,27 @@ snapshots:
       '@babel/core': 7.29.7
       '@babel/eslint-parser': 7.29.7(@babel/core@7.29.7)(eslint@9.34.0)
       '@eslint/js': 9.34.0
-      '@nullvoxpopuli/ember-rolldown': 2.7.0(52ee6e0e3587b83bbc0fb68dcf661ede)
+      '@nullvoxpopuli/ember-rolldown': 2.7.0(166ba9dd813fae8ccf61cefc52fd2714)
       '@rolldown/plugin-babel': 0.2.3(@babel/core@7.29.7)
       '@rolldown/pluginutils': 1.0.1
       '@types/debug': 4.1.12
-      '@typescript-eslint/eslint-plugin': 8.41.0(ad3e4b2f3df4fca831ef47c5e1339106)
-      '@typescript-eslint/parser': 8.41.0(eslint@9.34.0)(typescript@5.9.2)
+      '@typescript-eslint/eslint-plugin': 8.41.0(ff068f05036278b96bb632ac0d7d2e3b)
+      '@typescript-eslint/parser': 8.41.0(eslint@9.34.0)(typescript@5.9.3)
       comment-json: 4.2.5
       debug: 4.4.1
-      ember-eslint-parser: 0.14.4(51113162d3b00fee9b27a79065193efd)
+      ember-eslint-parser: 0.14.4(70be1ffd0039cc420d8577c8284ed44f)
       eslint: 9.34.0
       eslint-config-prettier: 10.1.8(eslint@9.34.0)
-      eslint-plugin-import: 2.32.0(438d9ce730bf71cdcaed57735e15ead7)
+      eslint-plugin-import: 2.32.0(fc509f8ea4793045ea15ebf2a929a9a3)
       eslint-plugin-mocha: 10.5.0(eslint@9.34.0)
-      eslint-plugin-n: 17.21.3(eslint@9.34.0)(typescript@5.9.2)
+      eslint-plugin-n: 17.21.3(eslint@9.34.0)(typescript@5.9.3)
       eslint-plugin-qunit: 8.2.6(eslint@9.34.0)
       eslint-plugin-simple-import-sort: 12.1.1(eslint@9.34.0)
       globals: 16.3.0
       rollup: 4.62.4
-      tsdown: 0.22.14(tsx@4.20.5)(typescript@5.9.2)
-      typescript: 5.9.2
-      typescript-eslint: 8.41.0(eslint@9.34.0)(typescript@5.9.2)
+      tsdown: 0.22.14(tsx@4.20.5)(typescript@5.9.3)
+      typescript: 5.9.3
+      typescript-eslint: 8.41.0(eslint@9.34.0)(typescript@5.9.3)
     transitivePeerDependencies:
       - '@arethetypeswrong/core'
       - '@babel/plugin-transform-runtime'
@@ -19735,27 +19735,27 @@ snapshots:
       '@babel/core': 7.29.7
       '@babel/eslint-parser': 7.29.7(@babel/core@7.29.7)(eslint@9.34.0)
       '@eslint/js': 9.34.0
-      '@nullvoxpopuli/ember-rolldown': 2.7.0(b6311b2cd7278fa6ffc8f2e1155543ce)
+      '@nullvoxpopuli/ember-rolldown': 2.7.0(35190290210cd7126c88e642f3389863)
       '@rolldown/plugin-babel': 0.2.3(@babel/core@7.29.7)(vite@7.3.1)
       '@rolldown/pluginutils': 1.0.1
       '@types/debug': 4.1.12
-      '@typescript-eslint/eslint-plugin': 8.41.0(ad3e4b2f3df4fca831ef47c5e1339106)
-      '@typescript-eslint/parser': 8.41.0(eslint@9.34.0)(typescript@5.9.2)
+      '@typescript-eslint/eslint-plugin': 8.41.0(ff068f05036278b96bb632ac0d7d2e3b)
+      '@typescript-eslint/parser': 8.41.0(eslint@9.34.0)(typescript@5.9.3)
       comment-json: 4.2.5
       debug: 4.4.1
-      ember-eslint-parser: 0.14.4(51113162d3b00fee9b27a79065193efd)
+      ember-eslint-parser: 0.14.4(70be1ffd0039cc420d8577c8284ed44f)
       eslint: 9.34.0
       eslint-config-prettier: 10.1.8(eslint@9.34.0)
-      eslint-plugin-import: 2.32.0(438d9ce730bf71cdcaed57735e15ead7)
+      eslint-plugin-import: 2.32.0(fc509f8ea4793045ea15ebf2a929a9a3)
       eslint-plugin-mocha: 10.5.0(eslint@9.34.0)
-      eslint-plugin-n: 17.21.3(eslint@9.34.0)(typescript@5.9.2)
+      eslint-plugin-n: 17.21.3(eslint@9.34.0)(typescript@5.9.3)
       eslint-plugin-qunit: 8.2.6(eslint@9.34.0)
       eslint-plugin-simple-import-sort: 12.1.1(eslint@9.34.0)
       globals: 16.3.0
       rollup: 4.62.4
-      tsdown: 0.22.14(typescript@5.9.2)
-      typescript: 5.9.2
-      typescript-eslint: 8.41.0(eslint@9.34.0)(typescript@5.9.2)
+      tsdown: 0.22.14(typescript@5.9.3)
+      typescript: 5.9.3
+      typescript-eslint: 8.41.0(eslint@9.34.0)(typescript@5.9.3)
     transitivePeerDependencies:
       - '@arethetypeswrong/core'
       - '@babel/plugin-transform-runtime'
@@ -19794,20 +19794,20 @@ snapshots:
       front-matter: 4.0.2
       sharp: 0.35.3
       svgo: 4.0.2
-      typedoc: 0.28.20(typescript@5.9.2)
-      typedoc-plugin-markdown: 4.12.0(typedoc@0.28.20(typescript@5.9.2))
-      typedoc-plugin-mdn-links: 5.1.1(typedoc@0.28.20(typescript@5.9.2))
-      typedoc-plugin-no-inherit: 1.6.1(typedoc@0.28.20(typescript@5.9.2))
-      typedoc-vitepress-theme: 1.1.3(3c362d58e02ede1ff411ef200c10043d)
-      typescript: 5.9.2
+      typedoc: 0.28.20(typescript@5.9.3)
+      typedoc-plugin-markdown: 4.12.0(typedoc@0.28.20(typescript@5.9.3))
+      typedoc-plugin-mdn-links: 5.1.1(typedoc@0.28.20(typescript@5.9.3))
+      typedoc-plugin-no-inherit: 1.6.1(typedoc@0.28.20(typescript@5.9.3))
+      typedoc-vitepress-theme: 1.1.3(82620540a953bbcae8206fafeb376a78)
+      typescript: 5.9.3
       vite: 8.2.1
       vite-plugin-image-optimizer: 2.0.3(sharp@0.35.3)(svgo@4.0.2)(vite@8.2.1)
       vite-plugin-pwa: 1.3.0(vite@8.2.1)
-      vitepress: 2.0.0-alpha.19(typescript@5.9.2)
+      vitepress: 2.0.0-alpha.19(typescript@5.9.3)
       vitepress-plugin-group-icons: 1.7.6(vite@8.2.1)
       vitepress-plugin-llms: 1.13.5
-      vitepress-plugin-tabs: 0.9.1(d4176d543ffb664dc7905e4304b5e95a)
-      vue: 3.5.41(typescript@5.9.2)
+      vitepress-plugin-tabs: 0.9.1(6589ca538ac2f1f51758bee78659f430)
+      vue: 3.5.41(typescript@5.9.3)
     transitivePeerDependencies:
       - '@types/babel__core'
       - '@types/node'
@@ -19850,7 +19850,7 @@ snapshots:
       '@types/debug': 4.1.12
       comment-json: 4.2.5
       debug: 4.4.1
-      typescript: 5.9.2
+      typescript: 5.9.3
     transitivePeerDependencies:
       - supports-color
 
@@ -19984,11 +19984,11 @@ snapshots:
       - '@glint/template'
       - supports-color
 
-  '@warp-drive/vue@file:warp-drive-packages/vue(04989cb31348c798680b69d8189fa7fc)':
+  '@warp-drive/vue@file:warp-drive-packages/vue(71399089a5b134f41cc0f997be4221cf)':
     dependencies:
       '@embroider/macros': 1.20.6(@babel/core@7.29.7)
       '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.29.7)
-      vue: 3.5.41(typescript@5.9.2)
+      vue: 3.5.41(typescript@5.9.3)
     transitivePeerDependencies:
       - '@babel/core'
       - '@glint/template'
@@ -22288,10 +22288,10 @@ snapshots:
 
   ember-disable-prototype-extensions@1.1.3: {}
 
-  ember-eslint-parser@0.14.4(51113162d3b00fee9b27a79065193efd):
+  ember-eslint-parser@0.14.4(70be1ffd0039cc420d8577c8284ed44f):
     dependencies:
       '@glimmer/syntax': 0.95.0
-      '@typescript-eslint/tsconfig-utils': 8.66.0(typescript@5.9.2)
+      '@typescript-eslint/tsconfig-utils': 8.66.0(typescript@5.9.3)
       content-tag: 4.2.0
       ember-estree: 0.6.11
       eslint-scope: 9.1.2
@@ -22300,7 +22300,7 @@ snapshots:
       svg-tags: 1.0.0
     optionalDependencies:
       '@babel/eslint-parser': 7.29.7(@babel/core@7.29.7)(eslint@9.34.0)
-      '@typescript-eslint/parser': 8.41.0(eslint@9.34.0)(typescript@5.9.2)
+      '@typescript-eslint/parser': 8.41.0(eslint@9.34.0)(typescript@5.9.3)
     transitivePeerDependencies:
       - typescript
 
@@ -22319,10 +22319,10 @@ snapshots:
     transitivePeerDependencies:
       - typescript
 
-  ember-eslint-parser@0.14.4(typescript@5.9.2):
+  ember-eslint-parser@0.14.4(typescript@5.9.3):
     dependencies:
       '@glimmer/syntax': 0.95.0
-      '@typescript-eslint/tsconfig-utils': 8.66.0(typescript@5.9.2)
+      '@typescript-eslint/tsconfig-utils': 8.66.0(typescript@5.9.3)
       content-tag: 4.2.0
       ember-estree: 0.6.11
       eslint-scope: 9.1.2
@@ -22770,11 +22770,11 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-module-utils@2.12.1(6dbba65d374732bb9096903ee53e322a):
+  eslint-module-utils@2.12.1(b429c4c1bf5be0d6905bb8f797a5b6cb):
     dependencies:
       debug: 3.2.7
     optionalDependencies:
-      '@typescript-eslint/parser': 8.41.0(eslint@9.34.0)(typescript@5.9.2)
+      '@typescript-eslint/parser': 8.41.0(eslint@9.34.0)(typescript@5.9.3)
       eslint: 9.34.0
       eslint-import-resolver-node: 0.3.9
     transitivePeerDependencies:
@@ -22787,7 +22787,7 @@ snapshots:
       eslint: 9.34.0
       eslint-compat-utils: 0.5.1(eslint@9.34.0)
 
-  eslint-plugin-import@2.32.0(438d9ce730bf71cdcaed57735e15ead7):
+  eslint-plugin-import@2.32.0(fc509f8ea4793045ea15ebf2a929a9a3):
     dependencies:
       '@rtsao/scc': 1.1.0
       array-includes: 3.1.9
@@ -22798,7 +22798,7 @@ snapshots:
       doctrine: 2.1.0
       eslint: 9.34.0
       eslint-import-resolver-node: 0.3.9
-      eslint-module-utils: 2.12.1(6dbba65d374732bb9096903ee53e322a)
+      eslint-module-utils: 2.12.1(b429c4c1bf5be0d6905bb8f797a5b6cb)
       hasown: 2.0.2
       is-core-module: 2.16.1
       is-glob: 4.0.3
@@ -22810,7 +22810,7 @@ snapshots:
       string.prototype.trimend: 1.0.9
       tsconfig-paths: 3.15.0
     optionalDependencies:
-      '@typescript-eslint/parser': 8.41.0(eslint@9.34.0)(typescript@5.9.2)
+      '@typescript-eslint/parser': 8.41.0(eslint@9.34.0)(typescript@5.9.3)
     transitivePeerDependencies:
       - eslint-import-resolver-typescript
       - eslint-import-resolver-webpack
@@ -22823,7 +22823,7 @@ snapshots:
       globals: 13.24.0
       rambda: 7.5.0
 
-  eslint-plugin-n@17.21.3(eslint@9.34.0)(typescript@5.9.2):
+  eslint-plugin-n@17.21.3(eslint@9.34.0)(typescript@5.9.3):
     dependencies:
       '@eslint-community/eslint-utils': 4.7.0(eslint@9.34.0)
       enhanced-resolve: 5.18.1
@@ -22834,7 +22834,7 @@ snapshots:
       globrex: 0.1.2
       ignore: 5.3.2
       semver: 7.7.2
-      ts-declaration-location: 1.0.7(typescript@5.9.2)
+      ts-declaration-location: 1.0.7(typescript@5.9.3)
     transitivePeerDependencies:
       - typescript
 
@@ -22848,11 +22848,11 @@ snapshots:
     dependencies:
       eslint: 9.34.0
 
-  eslint-plugin-warp-drive@file:packages/eslint-plugin-warp-drive(cfb0283a22853ab85a0c88f9bff158f5):
+  eslint-plugin-warp-drive@file:packages/eslint-plugin-warp-drive(eb246e80e8bbac6d1f01f509def34a2d):
     dependencies:
       '@warp-drive/core': file:warp-drive-packages/core(40bc2c5d5662a5666eb0d917619838cd)
       '@warp-drive/utilities': file:warp-drive-packages/utilities(308f337ee79a3c601a0134b4ff5387a8)
-      ember-eslint-parser: 0.14.4(typescript@5.9.2)
+      ember-eslint-parser: 0.14.4(typescript@5.9.3)
       requireindex: 1.2.0
     transitivePeerDependencies:
       - '@babel/core'
@@ -26251,7 +26251,7 @@ snapshots:
       glob: 13.0.0
       package-json-from-dist: 1.0.1
 
-  rolldown-plugin-dts@0.27.14(b777a3ef567e7c63cf3988913b50c456):
+  rolldown-plugin-dts@0.27.14(e4620a5e73e52ad4cf17f4fc7e60b731):
     dependencies:
       dts-resolver: 3.0.0
       get-tsconfig: 5.0.0-beta.5
@@ -26261,8 +26261,8 @@ snapshots:
       yuku-codegen: 0.8.4
       yuku-parser: 0.8.4
     optionalDependencies:
-      typescript: 5.9.2
-      vue-tsc: 3.0.6(typescript@5.9.2)
+      typescript: 5.9.3
+      vue-tsc: 3.0.6(typescript@5.9.3)
     transitivePeerDependencies:
       - oxc-resolver
 
@@ -26278,7 +26278,7 @@ snapshots:
     transitivePeerDependencies:
       - oxc-resolver
 
-  rolldown-plugin-dts@0.27.14(rolldown@1.2.3)(typescript@5.9.2):
+  rolldown-plugin-dts@0.27.14(rolldown@1.2.3)(typescript@5.9.3):
     dependencies:
       dts-resolver: 3.0.0
       get-tsconfig: 5.0.0-beta.5
@@ -26288,7 +26288,7 @@ snapshots:
       yuku-codegen: 0.8.4
       yuku-parser: 0.8.4
     optionalDependencies:
-      typescript: 5.9.2
+      typescript: 5.9.3
     transitivePeerDependencies:
       - oxc-resolver
 
@@ -27079,12 +27079,12 @@ snapshots:
 
   supports-preserve-symlinks-flag@1.0.0: {}
 
-  svelte2tsx@0.7.61(svelte@5.55.7)(typescript@5.9.2):
+  svelte2tsx@0.7.61(svelte@5.55.7)(typescript@5.9.3):
     dependencies:
       dedent-js: 1.0.1
       scule: 1.3.0
       svelte: 5.55.7
-      typescript: 5.9.2
+      typescript: 5.9.3
 
   svelte@5.55.7:
     dependencies:
@@ -27527,14 +27527,14 @@ snapshots:
 
   trough@2.2.0: {}
 
-  ts-api-utils@2.1.0(typescript@5.9.2):
+  ts-api-utils@2.1.0(typescript@5.9.3):
     dependencies:
-      typescript: 5.9.2
+      typescript: 5.9.3
 
-  ts-declaration-location@1.0.7(typescript@5.9.2):
+  ts-declaration-location@1.0.7(typescript@5.9.3):
     dependencies:
       picomatch: 4.0.5
-      typescript: 5.9.2
+      typescript: 5.9.3
 
   tsconfig-paths@3.15.0:
     dependencies:
@@ -27566,7 +27566,7 @@ snapshots:
       - oxc-resolver
       - vue-tsc
 
-  tsdown@0.22.14(2d08bf30f09f74acf5c22716525a3b86):
+  tsdown@0.22.14(cda787c1cf03d36aaaa874796d3dbc34):
     dependencies:
       ansis: 4.3.1
       cac: 7.0.0
@@ -27577,21 +27577,21 @@ snapshots:
       obug: 2.1.4
       picomatch: 4.0.5
       rolldown: 1.2.3
-      rolldown-plugin-dts: 0.27.14(b777a3ef567e7c63cf3988913b50c456)
+      rolldown-plugin-dts: 0.27.14(e4620a5e73e52ad4cf17f4fc7e60b731)
       tinyexec: 1.3.0
       tinyglobby: 0.2.17
       tree-kill: 1.2.2
       unconfig-core: 7.5.0
       verkit: 0.3.2
     optionalDependencies:
-      typescript: 5.9.2
+      typescript: 5.9.3
     transitivePeerDependencies:
       - '@typescript/native-preview'
       - '@volar/typescript'
       - oxc-resolver
       - vue-tsc
 
-  tsdown@0.22.14(tsx@4.20.5)(typescript@5.9.2):
+  tsdown@0.22.14(tsx@4.20.5)(typescript@5.9.3):
     dependencies:
       ansis: 4.3.1
       cac: 7.0.0
@@ -27602,7 +27602,7 @@ snapshots:
       obug: 2.1.4
       picomatch: 4.0.5
       rolldown: 1.2.3
-      rolldown-plugin-dts: 0.27.14(rolldown@1.2.3)(typescript@5.9.2)
+      rolldown-plugin-dts: 0.27.14(rolldown@1.2.3)(typescript@5.9.3)
       tinyexec: 1.3.0
       tinyglobby: 0.2.17
       tree-kill: 1.2.2
@@ -27610,14 +27610,14 @@ snapshots:
       verkit: 0.3.2
     optionalDependencies:
       tsx: 4.20.5
-      typescript: 5.9.2
+      typescript: 5.9.3
     transitivePeerDependencies:
       - '@typescript/native-preview'
       - '@volar/typescript'
       - oxc-resolver
       - vue-tsc
 
-  tsdown@0.22.14(typescript@5.9.2):
+  tsdown@0.22.14(typescript@5.9.3):
     dependencies:
       ansis: 4.3.1
       cac: 7.0.0
@@ -27628,14 +27628,14 @@ snapshots:
       obug: 2.1.4
       picomatch: 4.0.5
       rolldown: 1.2.3
-      rolldown-plugin-dts: 0.27.14(rolldown@1.2.3)(typescript@5.9.2)
+      rolldown-plugin-dts: 0.27.14(rolldown@1.2.3)(typescript@5.9.3)
       tinyexec: 1.3.0
       tinyglobby: 0.2.17
       tree-kill: 1.2.2
       unconfig-core: 7.5.0
       verkit: 0.3.2
     optionalDependencies:
-      typescript: 5.9.2
+      typescript: 5.9.3
     transitivePeerDependencies:
       - '@typescript/native-preview'
       - '@volar/typescript'
@@ -27726,30 +27726,30 @@ snapshots:
       possible-typed-array-names: 1.1.0
       reflect.getprototypeof: 1.0.10
 
-  typedoc-plugin-markdown@4.12.0(typedoc@0.28.20(typescript@5.9.2)):
+  typedoc-plugin-markdown@4.12.0(typedoc@0.28.20(typescript@5.9.3)):
     dependencies:
-      typedoc: 0.28.20(typescript@5.9.2)
+      typedoc: 0.28.20(typescript@5.9.3)
 
-  typedoc-plugin-mdn-links@5.1.1(typedoc@0.28.20(typescript@5.9.2)):
+  typedoc-plugin-mdn-links@5.1.1(typedoc@0.28.20(typescript@5.9.3)):
     dependencies:
-      typedoc: 0.28.20(typescript@5.9.2)
+      typedoc: 0.28.20(typescript@5.9.3)
 
-  typedoc-plugin-no-inherit@1.6.1(typedoc@0.28.20(typescript@5.9.2)):
+  typedoc-plugin-no-inherit@1.6.1(typedoc@0.28.20(typescript@5.9.3)):
     dependencies:
-      typedoc: 0.28.20(typescript@5.9.2)
+      typedoc: 0.28.20(typescript@5.9.3)
 
-  typedoc-vitepress-theme@1.1.3(3c362d58e02ede1ff411ef200c10043d):
+  typedoc-vitepress-theme@1.1.3(82620540a953bbcae8206fafeb376a78):
     dependencies:
-      typedoc: 0.28.20(typescript@5.9.2)
-      typedoc-plugin-markdown: 4.12.0(typedoc@0.28.20(typescript@5.9.2))
+      typedoc: 0.28.20(typescript@5.9.3)
+      typedoc-plugin-markdown: 4.12.0(typedoc@0.28.20(typescript@5.9.3))
 
-  typedoc@0.28.20(typescript@5.9.2):
+  typedoc@0.28.20(typescript@5.9.3):
     dependencies:
       '@gerrit0/mini-shiki': 3.23.0
       lunr: 2.3.9
       markdown-it: 14.3.0
       minimatch: 10.2.6
-      typescript: 5.9.2
+      typescript: 5.9.3
       yaml: 2.9.0
 
   typesafe-path@0.2.2: {}
@@ -27758,20 +27758,20 @@ snapshots:
     dependencies:
       semver: 7.8.5
 
-  typescript-eslint@8.41.0(eslint@9.34.0)(typescript@5.9.2):
+  typescript-eslint@8.41.0(eslint@9.34.0)(typescript@5.9.3):
     dependencies:
-      '@typescript-eslint/eslint-plugin': 8.41.0(ad3e4b2f3df4fca831ef47c5e1339106)
-      '@typescript-eslint/parser': 8.41.0(eslint@9.34.0)(typescript@5.9.2)
-      '@typescript-eslint/typescript-estree': 8.41.0(typescript@5.9.2)
-      '@typescript-eslint/utils': 8.41.0(eslint@9.34.0)(typescript@5.9.2)
+      '@typescript-eslint/eslint-plugin': 8.41.0(ff068f05036278b96bb632ac0d7d2e3b)
+      '@typescript-eslint/parser': 8.41.0(eslint@9.34.0)(typescript@5.9.3)
+      '@typescript-eslint/typescript-estree': 8.41.0(typescript@5.9.3)
+      '@typescript-eslint/utils': 8.41.0(eslint@9.34.0)(typescript@5.9.3)
       eslint: 9.34.0
-      typescript: 5.9.2
+      typescript: 5.9.3
     transitivePeerDependencies:
       - supports-color
 
   typescript-memoize@1.1.1: {}
 
-  typescript@5.9.2: {}
+  typescript@5.9.3: {}
 
   uc.micro@2.1.0: {}
 
@@ -27880,7 +27880,7 @@ snapshots:
 
   unpipe@1.0.0: {}
 
-  unplugin-vue@7.2.0(vue@3.5.41(typescript@5.9.2)):
+  unplugin-vue@7.2.0(vue@3.5.41(typescript@5.9.3)):
     dependencies:
       '@jridgewell/gen-mapping': 0.3.13
       '@jridgewell/trace-mapping': 0.3.31
@@ -27888,7 +27888,7 @@ snapshots:
       obug: 2.1.4
       unplugin: 3.3.0(vite@8.2.1)
       vite: 8.2.1
-      vue: 3.5.41(typescript@5.9.2)
+      vue: 3.5.41(typescript@5.9.3)
     transitivePeerDependencies:
       - '@farmfe/core'
       - '@rspack/core'
@@ -28096,12 +28096,12 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  vitepress-plugin-tabs@0.9.1(d4176d543ffb664dc7905e4304b5e95a):
+  vitepress-plugin-tabs@0.9.1(6589ca538ac2f1f51758bee78659f430):
     dependencies:
-      vitepress: 2.0.0-alpha.19(typescript@5.9.2)
-      vue: 3.5.41(typescript@5.9.2)
+      vitepress: 2.0.0-alpha.19(typescript@5.9.3)
+      vue: 3.5.41(typescript@5.9.3)
 
-  vitepress@2.0.0-alpha.19(typescript@5.9.2):
+  vitepress@2.0.0-alpha.19(typescript@5.9.3):
     dependencies:
       '@docsearch/css': 4.7.0
       '@docsearch/js': 4.7.0
@@ -28111,17 +28111,17 @@ snapshots:
       '@shikijs/transformers': 4.4.3
       '@shikijs/types': 4.4.3
       '@types/markdown-it': 14.1.2
-      '@vitejs/plugin-vue': 6.0.8(vite@8.2.1)(vue@3.5.41(typescript@5.9.2))
+      '@vitejs/plugin-vue': 6.0.8(vite@8.2.1)(vue@3.5.41(typescript@5.9.3))
       '@vue/devtools-api': 8.2.1
       '@vue/shared': 3.5.41
-      '@vueuse/core': 14.4.0(vue@3.5.41(typescript@5.9.2))
-      '@vueuse/integrations': 14.4.0(3ff0aeed4fce965650c72c3dbacd307c)
+      '@vueuse/core': 14.4.0(vue@3.5.41(typescript@5.9.3))
+      '@vueuse/integrations': 14.4.0(978ff0eda7b5b295a9e87fb5ece10bff)
       focus-trap: 8.2.2
       mark.js: 8.11.1
       minisearch: 7.2.0
       shiki: 4.4.3
       vite: 8.2.1
-      vue: 3.5.41(typescript@5.9.2)
+      vue: 3.5.41(typescript@5.9.3)
     transitivePeerDependencies:
       - '@types/node'
       - '@vitejs/devtools'
@@ -28232,13 +28232,13 @@ snapshots:
 
   vscode-uri@3.1.0: {}
 
-  vue-tsc@3.0.6(typescript@5.9.2):
+  vue-tsc@3.0.6(typescript@5.9.3):
     dependencies:
       '@volar/typescript': 2.4.23
-      '@vue/language-core': 3.0.6(typescript@5.9.2)
-      typescript: 5.9.2
+      '@vue/language-core': 3.0.6(typescript@5.9.3)
+      typescript: 5.9.3
 
-  vue@3.5.41(typescript@5.9.2):
+  vue@3.5.41(typescript@5.9.3):
     dependencies:
       '@vue/compiler-dom': 3.5.41
       '@vue/compiler-sfc': 3.5.41
@@ -28246,7 +28246,7 @@ snapshots:
       '@vue/server-renderer': 3.5.41
       '@vue/shared': 3.5.41
     optionalDependencies:
-      typescript: 5.9.2
+      typescript: 5.9.3
 
   w3c-xmlserializer@5.0.0:
     dependencies:
