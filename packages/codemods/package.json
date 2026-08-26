@@ -46,7 +46,7 @@
     "jscodeshift": "^17.3.0",
     "prettier": "^3.8.1",
     "typescript": "^5.9.3",
-    "winston": "^3.17.0"
+    "winston": "^3.19.0"
   },
   "devDependencies": {
     "@types/bun": "^1.4.0",
