@@ -37,7 +37,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@ast-grep/napi": "^0.28.0",
+    "@ast-grep/napi": "^0.45.1",
     "commander": "^14.0.0",
     "glob": "^11.0.0",
     "ignore": "^7.0.5",
