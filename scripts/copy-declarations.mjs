@@ -1,6 +1,6 @@
 import { styleText } from 'node:util';
 import path from 'path';
-import { globby } from 'globby';
+import { glob } from 'node:fs/promises';
 import fs from 'fs';
 
 /** @type {import('bun-types')} */
@@ -53,14 +53,14 @@ async function main() {
     )
   );
 
-  const files = await globby([`${inputPath}/**/*.d.ts`]);
+  const files = await Array.fromAsync(glob(`${inputPath}/**/*.d.ts`));
 
   if (files.length === 0) {
     console.log(styleText('red', `\nNo **/*.d.ts files found in ${styleText('white', relativeInputPath)}\n`));
     process.exitCode = 1;
   }
 
-  console.log(styleText('grey', `\nFound ${styleText('cyan', files.length)} files\n`));
+  console.log(styleText('grey', `\nFound ${styleText('cyan', String(files.length))} files\n`));
 
   for (const file of files) {
     const relativeFile = path.relative(process.cwd(), file);
@@ -79,7 +79,7 @@ async function main() {
     await Bun.write(outFile, inFile);
   }
 
-  console.log(styleText('grey', styleText('bold', `\n✅ Copied ${styleText('cyan', files.length)} files\n`)));
+  console.log(styleText('grey', styleText('bold', `\n✅ Copied ${styleText('cyan', String(files.length))} files\n`)));
 }
 
 await main();

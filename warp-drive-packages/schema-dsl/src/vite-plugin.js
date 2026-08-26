@@ -1,8 +1,7 @@
 import { parse } from '@babel/parser';
 import _traverse from '@babel/traverse';
-import { readFileSync } from 'fs';
+import { globSync, readFileSync } from 'fs';
 import { resolve } from 'path';
-import { globSync } from 'glob';
 
 const traverse = typeof _traverse === 'function' ? _traverse : _traverse.default;
 

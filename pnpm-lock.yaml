@@ -106,9 +106,6 @@ importers:
       git-repo-version:
         specifier: ^1.0.2
         version: 1.0.2
-      globby:
-        specifier: ^14.1.0
-        version: 14.1.0
       lerna-changelog:
         specifier: ^2.2.0
         version: 2.2.0
@@ -437,9 +434,6 @@ importers:
       commander:
         specifier: ^14.0.0
         version: 14.0.0
-      glob:
-        specifier: ^11.0.0
-        version: 11.0.3
       ignore:
         specifier: ^7.0.5
         version: 7.0.5
@@ -3014,9 +3008,6 @@ importers:
       eslint-plugin-simple-import-sort:
         specifier: ^12.1.1
         version: 12.1.1(eslint@9.34.0)
-      glob:
-        specifier: ^11.0.3
-        version: 11.0.3
       globals:
         specifier: ^16.3.0
         version: 16.3.0
@@ -3422,9 +3413,6 @@ importers:
       '@babel/traverse':
         specifier: ^7.29.8
         version: 7.29.8
-      glob:
-        specifier: ^11.0.0
-        version: 11.0.3
     devDependencies:
       '@babel/core':
         specifier: ^7.29.7
@@ -6399,10 +6387,6 @@ packages:
 
   '@simple-dom/interface@1.4.0':
     resolution: {integrity: sha512-l5qumKFWU0S+4ZzMaLXFU8tQZsicHEMEyAxI5kDFGhJsRqDwe0a7/iPA/GdxlGyDKseQQAgIz5kzU7eXTrlSpA==}
-
-  '@sindresorhus/merge-streams@2.3.0':
-    resolution: {integrity: sha512-LtoMMhxAlorcGhmFYI+LhPgbPZCkgP6ra1YL604EeF6U98pLlQ3iWIGMdWSC+vWmPBWBNgmDBAhnAobLROJmwg==}
-    engines: {node: '>=18'}
 
   '@sindresorhus/merge-streams@4.0.0':
     resolution: {integrity: sha512-tlqY9xq5ukxTUZBmoOp+m61cqwQD5pHJtFY3Mn8CA8ps6yghLH/Hw8UPdqg4OLmFW3IFlcXnQNmo/dh8HzXYIQ==}
@@ -9955,10 +9939,6 @@ packages:
   globalyzer@0.1.0:
     resolution: {integrity: sha512-40oNTM9UfG6aBmuKxk/giHn5nQ8RVz/SS4Ir6zgzOv9/qC3kKZ9v4etGTcJbEl/NyVQH7FGU7d+X1egr57Md2Q==}
 
-  globby@14.1.0:
-    resolution: {integrity: sha512-0Ia46fDOaT7k4og1PDW4YbodWWr3scS2vAr2lTbsplOt2WkKp0vQbkI9wKis/T5LV/dqPjO3bpS/z6GTJB82LA==}
-    engines: {node: '>=18'}
-
   globrex@0.1.2:
     resolution: {integrity: sha512-uHJgbwAMwNFf5mLst7IWLNg14x1CkeqglJb/K3doi4dw6q2IvAAmM/Y81kevy83wP+Sst+nutFTYOGg3d1lsxg==}
 
@@ -11782,10 +11762,6 @@ packages:
     resolution: {integrity: sha512-TdrF7fW9Rphjq4RjrW0Kp2AW0Ahwu9sRGTkS6bvDi0SCwZlEZYmcfDbEsTz8RVk0EHIS/Vd1bv3JhG+1xZuAyQ==}
     engines: {node: '>=16'}
 
-  path-type@6.0.0:
-    resolution: {integrity: sha512-Vj7sf++t5pBD637NSfkxpHSMfWaeig5+DKWLhcqIYx6mWQz5hdJTGDVMQiJcw1ZYkhs7AazKDGpRVji1LJCZUQ==}
-    engines: {node: '>=18'}
-
   pathe@1.1.2:
     resolution: {integrity: sha512-whLdWMYL2TwI08hn8/ZqAbrVemu0LNaNNJZX73O6qaIdCTfXutsLhMkjdENX0qhsQ9uIimo4/aQOmXkoon2nDQ==}
 
@@ -12631,10 +12607,6 @@ packages:
   slash@2.0.0:
     resolution: {integrity: sha512-ZYKh3Wh2z1PpEXWr0MpSBZ0V6mZHAQfYevttO11c51CaWjGTaadiKZ+wVt1PbMlDV5qhMFslpZCemhwOK7C89A==}
     engines: {node: '>=6'}
-
-  slash@5.1.0:
-    resolution: {integrity: sha512-ZA6oR3T/pEyuqwMgAKT0/hAv8oAXckzbkmR0UkUosQ+Mc4RxGoJkRmwHgHufaenlyAgE1Mxgpdcrf75y6XcnDg==}
-    engines: {node: '>=14.16'}
 
   smart-buffer@4.2.0:
     resolution: {integrity: sha512-94hK0Hh8rPqQl2xXc3HsaBoOXKV20MToPkcXvwbISWLEs+64sBq5kFgn2kJDHb1Pry9yrP0dxrCI9RRci7RXKg==}
@@ -15822,7 +15794,6 @@ snapshots:
     dependencies:
       '@ast-grep/napi': 0.45.1
       commander: 14.0.0
-      glob: 11.0.3
       ignore: 7.0.5
       inquirer: 10.2.2
       jscodeshift: 17.3.0
@@ -18306,8 +18277,6 @@ snapshots:
 
   '@simple-dom/interface@1.4.0': {}
 
-  '@sindresorhus/merge-streams@2.3.0': {}
-
   '@sindresorhus/merge-streams@4.0.0': {}
 
   '@so-ric/colorspace@1.1.6':
@@ -18532,6 +18501,9 @@ snapshots:
     dependencies:
       '@types/ember': 4.0.11
       '@types/ember__object': 4.0.12
+    transitivePeerDependencies:
+      - '@babel/core'
+      - supports-color
 
   '@types/ember__controller@4.0.12':
     dependencies:
@@ -18567,10 +18539,16 @@ snapshots:
       '@types/ember__controller': 4.0.12
       '@types/ember__object': 4.0.12
       '@types/ember__service': 4.0.9
+    transitivePeerDependencies:
+      - '@babel/core'
+      - supports-color
 
   '@types/ember__runloop@4.0.10':
     dependencies:
       '@types/ember': 4.0.11
+    transitivePeerDependencies:
+      - '@babel/core'
+      - supports-color
 
   '@types/ember__service@4.0.9':
     dependencies:
@@ -18590,6 +18568,9 @@ snapshots:
   '@types/ember__utils@4.0.7':
     dependencies:
       '@types/ember': 4.0.11
+    transitivePeerDependencies:
+      - '@babel/core'
+      - supports-color
 
   '@types/esrecurse@4.3.1': {}
 
@@ -19395,7 +19376,6 @@ snapshots:
       eslint-plugin-n: 17.21.3(eslint@9.34.0)(typescript@5.9.2)
       eslint-plugin-qunit: 8.1.2(eslint@9.34.0)
       eslint-plugin-simple-import-sort: 12.1.1(eslint@9.34.0)
-      glob: 11.0.3
       globals: 16.3.0
       rollup: 4.62.4
       tsdown: 0.22.14(typescript@5.9.2)
@@ -19450,7 +19430,6 @@ snapshots:
       eslint-plugin-n: 17.21.3(eslint@9.34.0)(typescript@5.9.2)
       eslint-plugin-qunit: 8.1.2(eslint@9.34.0)
       eslint-plugin-simple-import-sort: 12.1.1(eslint@9.34.0)
-      glob: 11.0.3
       globals: 16.3.0
       rollup: 4.62.4
       tsdown: 0.22.14(typescript@5.9.2)
@@ -19505,7 +19484,6 @@ snapshots:
       eslint-plugin-n: 17.21.3(eslint@9.34.0)(typescript@5.9.2)
       eslint-plugin-qunit: 8.1.2(eslint@9.34.0)
       eslint-plugin-simple-import-sort: 12.1.1(eslint@9.34.0)
-      glob: 11.0.3
       globals: 16.3.0
       rollup: 4.62.4
       tsdown: 0.22.14(typescript@5.9.2)
@@ -19560,7 +19538,6 @@ snapshots:
       eslint-plugin-n: 17.21.3(eslint@9.34.0)(typescript@5.9.2)
       eslint-plugin-qunit: 8.1.2(eslint@9.34.0)
       eslint-plugin-simple-import-sort: 12.1.1(eslint@9.34.0)
-      glob: 11.0.3
       globals: 16.3.0
       rollup: 4.62.4
       tsdown: 0.22.14(2d08bf30f09f74acf5c22716525a3b86)
@@ -19615,7 +19592,6 @@ snapshots:
       eslint-plugin-n: 17.21.3(eslint@9.34.0)(typescript@5.9.2)
       eslint-plugin-qunit: 8.1.2(eslint@9.34.0)
       eslint-plugin-simple-import-sort: 12.1.1(eslint@9.34.0)
-      glob: 11.0.3
       globals: 16.3.0
       rollup: 4.62.4
       tsdown: 0.22.14(2d08bf30f09f74acf5c22716525a3b86)
@@ -19670,7 +19646,6 @@ snapshots:
       eslint-plugin-n: 17.21.3(eslint@9.34.0)(typescript@5.9.2)
       eslint-plugin-qunit: 8.1.2(eslint@9.34.0)
       eslint-plugin-simple-import-sort: 12.1.1(eslint@9.34.0)
-      glob: 11.0.3
       globals: 16.3.0
       rollup: 4.62.4
       tsdown: 0.22.14(typescript@5.9.2)
@@ -19725,7 +19700,6 @@ snapshots:
       eslint-plugin-n: 17.21.3(eslint@9.34.0)(typescript@5.9.2)
       eslint-plugin-qunit: 8.1.2(eslint@9.34.0)
       eslint-plugin-simple-import-sort: 12.1.1(eslint@9.34.0)
-      glob: 11.0.3
       globals: 16.3.0
       rollup: 4.62.4
       tsdown: 0.22.14(typescript@5.9.2)
@@ -19780,7 +19754,6 @@ snapshots:
       eslint-plugin-n: 17.21.3(eslint@9.34.0)(typescript@5.9.2)
       eslint-plugin-qunit: 8.1.2(eslint@9.34.0)
       eslint-plugin-simple-import-sort: 12.1.1(eslint@9.34.0)
-      glob: 11.0.3
       globals: 16.3.0
       rollup: 4.62.4
       tsdown: 0.22.14(typescript@5.9.2)
@@ -19835,7 +19808,6 @@ snapshots:
       eslint-plugin-n: 17.21.3(eslint@9.34.0)(typescript@5.9.2)
       eslint-plugin-qunit: 8.1.2(eslint@9.34.0)
       eslint-plugin-simple-import-sort: 12.1.1(eslint@9.34.0)
-      glob: 11.0.3
       globals: 16.3.0
       rollup: 4.62.4
       tsdown: 0.22.14(typescript@5.9.2)
@@ -19890,7 +19862,6 @@ snapshots:
       eslint-plugin-n: 17.21.3(eslint@9.34.0)(typescript@5.9.2)
       eslint-plugin-qunit: 8.1.2(eslint@9.34.0)
       eslint-plugin-simple-import-sort: 12.1.1(eslint@9.34.0)
-      glob: 11.0.3
       globals: 16.3.0
       rollup: 4.62.4
       tsdown: 0.22.14(typescript@5.9.2)
@@ -19945,7 +19916,6 @@ snapshots:
       eslint-plugin-n: 17.21.3(eslint@9.34.0)(typescript@5.9.2)
       eslint-plugin-qunit: 8.1.2(eslint@9.34.0)
       eslint-plugin-simple-import-sort: 12.1.1(eslint@9.34.0)
-      glob: 11.0.3
       globals: 16.3.0
       rollup: 4.62.4
       tsdown: 0.22.14(typescript@5.9.2)
@@ -20000,7 +19970,6 @@ snapshots:
       eslint-plugin-n: 17.21.3(eslint@9.34.0)(typescript@5.9.2)
       eslint-plugin-qunit: 8.1.2(eslint@9.34.0)
       eslint-plugin-simple-import-sort: 12.1.1(eslint@9.34.0)
-      glob: 11.0.3
       globals: 16.3.0
       rollup: 4.62.4
       tsdown: 0.22.14(tsx@4.20.5)(typescript@5.9.2)
@@ -20055,7 +20024,6 @@ snapshots:
       eslint-plugin-n: 17.21.3(eslint@9.34.0)(typescript@5.9.2)
       eslint-plugin-qunit: 8.1.2(eslint@9.34.0)
       eslint-plugin-simple-import-sort: 12.1.1(eslint@9.34.0)
-      glob: 11.0.3
       globals: 16.3.0
       rollup: 4.62.4
       tsdown: 0.22.14(typescript@5.9.2)
@@ -20230,7 +20198,6 @@ snapshots:
       '@babel/parser': 7.29.8
       '@babel/traverse': 7.29.8
       '@warp-drive/core': file:warp-drive-packages/core(acb8c44acf8e4c4c164bebbda8d94c61)
-      glob: 11.0.3
     transitivePeerDependencies:
       - supports-color
 
@@ -24105,15 +24072,6 @@ snapshots:
 
   globalyzer@0.1.0: {}
 
-  globby@14.1.0:
-    dependencies:
-      '@sindresorhus/merge-streams': 2.3.0
-      fast-glob: 3.3.3
-      ignore: 7.0.5
-      path-type: 6.0.0
-      slash: 5.1.0
-      unicorn-magic: 0.3.0
-
   globrex@0.1.2: {}
 
   gopd@1.2.0: {}
@@ -26091,8 +26049,6 @@ snapshots:
 
   path-to-regexp@8.2.0: {}
 
-  path-type@6.0.0: {}
-
   pathe@1.1.2: {}
 
   pathe@2.0.3: {}
@@ -27091,8 +27047,6 @@ snapshots:
       totalist: 3.0.1
 
   slash@2.0.0: {}
-
-  slash@5.1.0: {}
 
   smart-buffer@4.2.0: {}
 

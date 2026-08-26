@@ -1,6 +1,5 @@
 import path from 'path';
 import fs from 'fs';
-import { globSync } from '../utils/glob.js';
 
 function loadConfig() {
   const configPath = path.join(process.cwd(), './package.json');
@@ -13,7 +12,7 @@ export function entryPoints(globs, resolve, options) {
 
   // expand all globs
   globs.forEach((glob) => {
-    glob.includes('*') || glob.includes('{') ? files.push(...globSync(glob)) : files.push(glob);
+    glob.includes('*') || glob.includes('{') ? files.push(...fs.globSync(glob)) : files.push(glob);
   });
 
   const srcDir = fixViteHijack(

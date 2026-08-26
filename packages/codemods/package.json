@@ -40,7 +40,6 @@
   "dependencies": {
     "@ast-grep/napi": "^0.45.1",
     "commander": "^14.0.0",
-    "glob": "^11.0.0",
     "ignore": "^7.0.5",
     "inquirer": "^10.0.0",
     "jscodeshift": "^17.3.0",
