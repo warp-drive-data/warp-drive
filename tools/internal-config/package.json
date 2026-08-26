@@ -4,7 +4,6 @@
   "version": "5.9.0-alpha.23",
   "type": "module",
   "dependencies": {
-    "@babel/cli": "^7.29.7",
     "@babel/core": "^7.29.7",
     "@babel/eslint-parser": "7.29.7",
     "@nullvoxpopuli/ember-rolldown": "^2.7.0",
@@ -26,7 +25,6 @@
     "eslint-plugin-n": "^17.21.3",
     "eslint-plugin-qunit": "^8.2.6",
     "eslint-plugin-simple-import-sort": "^12.1.1",
-    "rollup": "^4.62.4",
     "tsdown": "^0.22.14",
     "typescript": "^5.9.3"
   },
