@@ -728,8 +728,8 @@ importers:
   packages/internal-exam:
     dependencies:
       fs-extra:
-        specifier: ^11.3.3
-        version: 11.3.3
+        specifier: ^11.4.0
+        version: 11.4.0
       testem:
         specifier: ~3.20.1
         version: 3.20.1
@@ -6341,6 +6341,7 @@ packages:
   '@xmldom/xmldom@0.9.11':
     resolution: {integrity: sha512-tW8bcK3hsG0/uqSnNz6TK4BkcuZSezoU7DlnYssILmZDktPnSHHuDJJFM0AJv+13gz2r0iGdrj6qqKeUnxXEDg==}
     engines: {node: '>=14.6'}
+    deprecated: this version has critical issues, please update to the latest version
 
   '@yuku-codegen/binding-android-arm64@0.8.4':
     resolution: {integrity: sha512-rsYkGl2kOkDRsh1mxriYnk1qBS78vjlBJ3+T2XwtwKwqOliy2n+2Ae0EDxJ/uX1DZLm3KkBZarGO5isEnmHchA==}
@@ -7596,9 +7597,6 @@ packages:
   ember-cli-get-component-path-option@1.0.0:
     resolution: {integrity: sha512-k47TDwcJ2zPideBCZE8sCiShSxQSpebY2BHcX2DdipMmBox5gsfyVrbKJWIHeSTTKyEUgmBIvQkqTOozEziCZA==}
 
-  ember-cli-is-package-missing@1.0.0:
-    resolution: {integrity: sha512-9hEoZj6Au5onlSDdcoBqYEPT8ehlYntZPxH8pBKV0GO7LNel88otSAQsCfXvbi2eKE+MaSeLG/gNaCI5UdWm9g==}
-
   ember-cli-normalize-entity-name@1.0.0:
     resolution: {integrity: sha512-rF4P1rW2P1gVX1ynZYPmuIf7TnAFDiJmIUFI1Xz16VYykUAyiOCme0Y22LeZq8rTzwBMiwBwoE3RO4GYWehXZA==}
 
@@ -8170,8 +8168,8 @@ packages:
     resolution: {integrity: sha512-oRXApq54ETRj4eMiFzGnHWGy+zo5raudjuxN0b8H7s/RU2oW0Wvsx9O0ACRN/kRq9E8Vu/ReskGB5o3ji+FzHQ==}
     engines: {node: '>=12'}
 
-  fs-extra@11.3.3:
-    resolution: {integrity: sha512-VWSRii4t0AFm6ixFFmLLx1t7wS1gh+ckoa84aOeapGum0h+EZd1EhEumSB+ZdDLnEPuucsVB9oB7cxJHap6Afg==}
+  fs-extra@11.4.0:
+    resolution: {integrity: sha512-EQsFzMUJkCKGr1ePqlYADkIUmHW1s3ZXr5Yqy6wbGrfUCphpl2maM/kyOIRA2HpP3AaFQTZXD4ldjek+nccddA==}
     engines: {node: '>=14.14'}
 
   fs-extra@5.0.0:
@@ -16599,7 +16597,7 @@ snapshots:
     dependencies:
       ember-qunit: 9.1.0(ce2d83ff26ef0a53f073c9c9088e5c9f)
       ember-source: 7.2.0(@glimmer/component@2.1.1)
-      fs-extra: 11.3.3
+      fs-extra: 11.4.0
       qunit: 2.26.0
       testem: 3.20.1(@babel/core@7.29.7)
     transitivePeerDependencies:
@@ -18109,8 +18107,6 @@ snapshots:
 
   ember-cli-get-component-path-option@1.0.0: {}
 
-  ember-cli-is-package-missing@1.0.0: {}
-
   ember-cli-normalize-entity-name@1.0.0:
     dependencies:
       silent-error: 1.1.1
@@ -18965,7 +18961,7 @@ snapshots:
       jsonfile: 6.1.0
       universalify: 2.0.1
 
-  fs-extra@11.3.3:
+  fs-extra@11.4.0:
     dependencies:
       graceful-fs: 4.2.11
       jsonfile: 6.1.0
