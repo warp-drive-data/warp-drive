@@ -22,8 +22,8 @@
   "dependencies": {
     "@types/bun": "^1.4.0",
     "typescript": "^5.9.3",
-    "debug": "4.4.1",
-    "@types/debug": "4.1.12",
+    "debug": "4.4.3",
+    "@types/debug": "4.1.13",
     "@babel/parser": "^7.29.8",
     "@babel/traverse": "^7.29.8",
     "comment-json": "^4.2.5",
