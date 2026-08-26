@@ -1318,7 +1318,7 @@ importers:
         specifier: ^4.20.5
         version: 4.20.5
       vitest:
-        specifier: ^3.0.0
+        specifier: ^3.2.7
         version: 3.2.7(tsx@4.20.5)
 
   tests/core:
@@ -18151,7 +18151,7 @@ snapshots:
 
   '@types/chai-as-promised@7.1.8':
     dependencies:
-      '@types/chai': 4.3.20
+      '@types/chai': 5.2.3
 
   '@types/chai@4.3.20': {}
 
@@ -18240,9 +18240,6 @@ snapshots:
     dependencies:
       '@types/ember': 4.0.11
       '@types/ember__object': 4.0.12
-    transitivePeerDependencies:
-      - '@babel/core'
-      - supports-color
 
   '@types/ember__controller@4.0.12':
     dependencies:
@@ -18278,16 +18275,10 @@ snapshots:
       '@types/ember__controller': 4.0.12
       '@types/ember__object': 4.0.12
       '@types/ember__service': 4.0.9
-    transitivePeerDependencies:
-      - '@babel/core'
-      - supports-color
 
   '@types/ember__runloop@4.0.10':
     dependencies:
       '@types/ember': 4.0.11
-    transitivePeerDependencies:
-      - '@babel/core'
-      - supports-color
 
   '@types/ember__service@4.0.9':
     dependencies:
