@@ -3446,8 +3446,8 @@ importers:
         specifier: ^2.36.2
         version: 2.70.2(3c81784cf966254afb8df9614d004350)
       '@sveltejs/package':
-        specifier: ^2.5.0
-        version: 2.5.0(svelte@5.55.7)(typescript@5.9.2)
+        specifier: ^2.5.8
+        version: 2.5.8(svelte@5.55.7)(typescript@5.9.2)
       '@sveltejs/vite-plugin-svelte':
         specifier: ^6.1.3
         version: 6.1.3(svelte@5.55.7)(vite@7.3.1)
@@ -6272,8 +6272,8 @@ packages:
       typescript:
         optional: true
 
-  '@sveltejs/package@2.5.0':
-    resolution: {integrity: sha512-qpB91oWEraOXA4l1ldpGtMc/rLCthbf1ACw/1oroKxvT3sd2NXPd/+NLhIk5FCvd0IUSEZGYa86K+D94GWW2Zw==}
+  '@sveltejs/package@2.5.8':
+    resolution: {integrity: sha512-zeBbsXYvHiBu56v4gJaGQoEHzg96w0E1j3dOMX8vo56s6vI5eQ57ZEZhudjwjnegnVitRRu5MrmhO0eNvaonIw==}
     engines: {node: ^16.14 || >=18}
     hasBin: true
     peerDependencies:
@@ -7945,6 +7945,10 @@ packages:
   chokidar@4.0.3:
     resolution: {integrity: sha512-Qgzu8kfBvo+cA4962jnP1KkS6Dop5NS6g7R5LFYJr4b8Ub94PPQXUksCw9PvXoeXPRRddRNC5C1JQUR2SMGtnA==}
     engines: {node: '>= 14.16.0'}
+
+  chokidar@5.0.0:
+    resolution: {integrity: sha512-TQMmc3w+5AxjpL8iIiwebF73dRDF4fBIieAqGn9RGCWaEVwQ6Fb2cGe31Yns0RRIzii5goJ1Y7xbMwo1TxMplw==}
+    engines: {node: '>= 20.19.0'}
 
   chownr@2.0.0:
     resolution: {integrity: sha512-bIomtDF5KGpdogkLd9VspvFzk9KfpyyGlS8YFVZl7TGPBHL5snIOnxeshwVgPteQ9b4Eydl+pVbIyE1DcvCWgQ==}
@@ -10766,9 +10770,6 @@ packages:
   loupe@3.2.1:
     resolution: {integrity: sha512-CdzqowRJCeLU72bHvWqwRBBlLcMEtIvGrlvef74kMnV2AolS9Y8xUv1I0U/MNAWMhBlKIoyuEgoJ0t/bbwHbLQ==}
 
-  lower-case@2.0.2:
-    resolution: {integrity: sha512-7fm3l3NAF9WfN6W3JOmf5drwpVqX78JtoGJ3A6W0a6ZnldM41w2fV5D490psKFTpMds8TJse/eHLFFsNHHjHgg==}
-
   lru-cache@10.4.3:
     resolution: {integrity: sha512-JNAzZcXrCt42VGLuYz0zfAzDfAvJWW6AfYlDBQyDV5DClI2m5sAmK+OIO7s59XfsRsWHp02jAJrRadPRGTt6SQ==}
 
@@ -11235,9 +11236,6 @@ packages:
   nice-try@1.0.5:
     resolution: {integrity: sha512-1nh45deeb5olNY7eX82BkPO7SSxR5SSYJiPTrTdFUVYwAl8CKMA5N9PjTYkHiRjisVcxcQ1HXdLhx2qxxJzLNQ==}
 
-  no-case@3.0.4:
-    resolution: {integrity: sha512-fgAN3jGAh+RoxUGZHTSOLJIqUc2wmoBwGR4tbpNAKmmovFoWq0OdRkb0VkldReO2a2iBT/OEulG9XSUc10r3zg==}
-
   node-fetch@2.7.0:
     resolution: {integrity: sha512-c4FRfUm/dbcWZ7U+1Wq0AwCyFL+3nt2bEw05wfxSz+DWpWsitgmSgYmy2dQdWyKC1694ELPqMs/YzUSNozLt8A==}
     engines: {node: 4.x || >=6.0.0}
@@ -11539,9 +11537,6 @@ packages:
   parseurl@1.3.3:
     resolution: {integrity: sha512-CiyeOxFT/JZyN5m0z9PfXw4SCBJ6Sygz1Dpl0wqjlhDEGGBP1GnsUVEL0p63hoG1fcj3fHynXi9NYO4nWOL+qQ==}
     engines: {node: '>= 0.8'}
-
-  pascal-case@3.1.2:
-    resolution: {integrity: sha512-uWlGT3YSnK9x3BQJaOdcZwrnV6hPpd8jFH1/ucpiLRPh/2zCVJKS19E4GvYHvaCcACn3foXZ0cLB9Wrx1KGe5g==}
 
   pascalcase@0.1.1:
     resolution: {integrity: sha512-XHXfu/yOQRy9vYOtUDVMN60OEJjW013GoObG1o+xwQTpB9eYJX/BjXMsdW13ZDPruFhYYn0AG22w0xgQMwl3Nw==}
@@ -11932,6 +11927,10 @@ packages:
     resolution: {integrity: sha512-GDhwkLfywWL2s6vEjyhri+eXmfH6j1L7JE27WhqLeYzoh/A3DBaYGEj2H/HFZCn/kMfim73FXxEJTw06WtxQwg==}
     engines: {node: '>= 14.18.0'}
 
+  readdirp@5.1.1:
+    resolution: {integrity: sha512-Kko+Y5XQ6fM+Ce3dq3m9YGxnacYZYl9cA1wZjaF3Vbry2L3i1qVg8+CAgNPsXRArPMUMCaOR7oa9Nqntc43JKA==}
+    engines: {node: '>= 20.19.0'}
+
   realpath-missing@1.1.0:
     resolution: {integrity: sha512-wnWtnywepjg/eHIgWR97R7UuM5i+qHLA195qdN9UPKvcMqfn60+67S8sPPW3vDlSEfYHoFkKU8IvpCNty3zQvQ==}
     engines: {node: '>=10'}
@@ -12298,6 +12297,9 @@ packages:
   schema-utils@4.3.2:
     resolution: {integrity: sha512-Gn/JaSk/Mt9gYubxTtSn/QCV4em9mpAPiR1rqy/Ocu19u/G9J5WWdNoUT4SiV6mFC3y6cxyFcFwdzPM3FgxGAQ==}
     engines: {node: '>= 10.13.0'}
+
+  scule@1.3.0:
+    resolution: {integrity: sha512-6FtHJEvt+pVMIB9IBY+IcCJ6Z5f1iQnytgyfKMhDKgmzYG+TeH/wx1y3l27rshSbLiSanrR9ffZDrEsmjlQF2g==}
 
   section-matter@1.0.0:
     resolution: {integrity: sha512-vfD3pmTzGpufjScBh50YHKzEu2lxBWhVEHsNGoEXmCmn2hKGfeNLYMzCJpe8cD7gqX7TJluOVpBkAequ6dgMmA==}
@@ -12765,8 +12767,8 @@ packages:
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==}
     engines: {node: '>= 0.4'}
 
-  svelte2tsx@0.7.40:
-    resolution: {integrity: sha512-Fgqe2lzC9DWT/kQTIXqN39O2ot9rUqzUu9dqpbuI6EsaEJ6+RSXVmXnxcNYMlKb2LRPDoIg9TVzXYWwi0zhCmQ==}
+  svelte2tsx@0.7.61:
+    resolution: {integrity: sha512-EpQ/+UHITBULeUojx/LLD3uTYasZXcX1BrqlrzfLUnT9vdUhaOWK59a3ryWcFU8L0sY1SP+gRhJ2Beiis98+qw==}
     peerDependencies:
       svelte: ^3.55 || ^4.0.0-next.0 || ^4.0 || ^5.0.0-next.0
       typescript: 5.9.2
@@ -18056,14 +18058,14 @@ snapshots:
     optionalDependencies:
       typescript: 5.9.2
 
-  '@sveltejs/package@2.5.0(svelte@5.55.7)(typescript@5.9.2)':
+  '@sveltejs/package@2.5.8(svelte@5.55.7)(typescript@5.9.2)':
     dependencies:
-      chokidar: 4.0.3
+      chokidar: 5.0.0
       kleur: 4.1.5
       sade: 1.8.1
-      semver: 7.7.2
+      semver: 7.8.5
       svelte: 5.55.7
-      svelte2tsx: 0.7.40(svelte@5.55.7)(typescript@5.9.2)
+      svelte2tsx: 0.7.61(svelte@5.55.7)(typescript@5.9.2)
     transitivePeerDependencies:
       - typescript
 
@@ -21261,6 +21263,10 @@ snapshots:
   chokidar@4.0.3:
     dependencies:
       readdirp: 4.1.2
+
+  chokidar@5.0.0:
+    dependencies:
+      readdirp: 5.1.1
 
   chownr@2.0.0: {}
 
@@ -24783,10 +24789,6 @@ snapshots:
 
   loupe@3.2.1: {}
 
-  lower-case@2.0.2:
-    dependencies:
-      tslib: 2.8.1
-
   lru-cache@10.4.3: {}
 
   lru-cache@11.1.0: {}
@@ -25398,11 +25400,6 @@ snapshots:
 
   nice-try@1.0.5: {}
 
-  no-case@3.0.4:
-    dependencies:
-      lower-case: 2.0.2
-      tslib: 2.8.1
-
   node-fetch@2.7.0:
     dependencies:
       whatwg-url: 5.0.0
@@ -25721,11 +25718,6 @@ snapshots:
       entities: 6.0.0
 
   parseurl@1.3.3: {}
-
-  pascal-case@3.1.2:
-    dependencies:
-      no-case: 3.0.4
-      tslib: 2.8.1
 
   pascalcase@0.1.1: {}
 
@@ -26057,6 +26049,8 @@ snapshots:
     optional: true
 
   readdirp@4.1.2: {}
+
+  readdirp@5.1.1: {}
 
   realpath-missing@1.1.0: {}
 
@@ -26532,6 +26526,8 @@ snapshots:
       ajv: 8.17.1
       ajv-formats: 2.1.1
       ajv-keywords: 5.1.0(ajv@8.17.1)
+
+  scule@1.3.0: {}
 
   section-matter@1.0.0:
     dependencies:
@@ -27121,10 +27117,10 @@ snapshots:
 
   supports-preserve-symlinks-flag@1.0.0: {}
 
-  svelte2tsx@0.7.40(svelte@5.55.7)(typescript@5.9.2):
+  svelte2tsx@0.7.61(svelte@5.55.7)(typescript@5.9.2):
     dependencies:
       dedent-js: 1.0.1
-      pascal-case: 3.1.2
+      scule: 1.3.0
       svelte: 5.55.7
       typescript: 5.9.2
 
