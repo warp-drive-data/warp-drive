@@ -41,7 +41,7 @@
     "@ast-grep/napi": "^0.45.1",
     "commander": "^14.0.0",
     "ignore": "^7.0.5",
-    "inquirer": "^10.0.0",
+    "inquirer": "^10.2.2",
     "jscodeshift": "^17.3.0",
     "prettier": "^3.8.1",
     "typescript": "^5.9.3",

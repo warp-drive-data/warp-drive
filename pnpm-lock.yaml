@@ -438,7 +438,7 @@ importers:
         specifier: ^7.0.5
         version: 7.0.5
       inquirer:
-        specifier: ^10.0.0
+        specifier: ^10.2.2
         version: 10.2.2
       jscodeshift:
         specifier: ^17.3.0
