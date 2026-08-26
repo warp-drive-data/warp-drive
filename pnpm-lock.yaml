@@ -36,6 +36,8 @@ overrides:
   ember-source>ember-cli-string-utils: '-'
   ember-source>ember-cli-typescript-blueprint-polyfill: '-'
   ember-source>ember-cli-version-checker: '-'
+  '@ember/optional-features>ember-cli-version-checker': '-'
+  unplugin>webpack-virtual-modules: '-'
   ember-cli-htmlbars: ^7.0.1
   qunit: 2.26.0
   ember-compatibility-helpers: ^1.2.7
@@ -7384,10 +7386,6 @@ packages:
   electron-to-chromium@1.5.409:
     resolution: {integrity: sha512-ChI4N44d0B4A6C8prnNjMOaGgE59fUyEVYcRYm2XEXIjMbbvF5i9UL1cblDbpGqiU0uS8FE8UcKxqZqTXdmzbQ==}
 
-  ember-cli-version-checker@5.1.2:
-    resolution: {integrity: sha512-rk7GY+FmLn/2e22HsZs0Ycrz8HQ1W3Fv+2TFOuEFW9optnDXDgkntPBIl6gact/LHsfBM5RKbM3dHsIIeLgl0Q==}
-    engines: {node: 10.* || >= 12.*}
-
   ember-data@file:packages/-ember-data:
     resolution: {directory: packages/-ember-data, type: directory}
     peerDependencies:
@@ -9524,10 +9522,6 @@ packages:
   resolve-package-path@1.2.7:
     resolution: {integrity: sha512-fVEKHGeK85bGbVFuwO9o1aU0n3vqQGrezPc51JGu9UTXpFQfWq5qCeKxyaRUSvephs+06c5j5rPq/dzHGEo8+Q==}
 
-  resolve-package-path@3.1.0:
-    resolution: {integrity: sha512-2oC2EjWbMJwvSN6Z7DbDfJMnD8MYEouaLn5eIX0j8XwPsYCVIyY9bbnX88YHVkbr8XHqvZrYbxaLPibfTYKZMA==}
-    engines: {node: 10.* || >= 12}
-
   resolve-package-path@4.0.3:
     resolution: {integrity: sha512-SRpNAPW4kewOaNUt8VPqhJ0UMxawMwzJD8V7m1cJfdSTK9ieZwS6K7Dabsm4bmLFM96Z5Y/UznrpG5kt1im8yA==}
     engines: {node: '>= 12'}
@@ -10663,9 +10657,6 @@ packages:
   webidl-conversions@7.0.0:
     resolution: {integrity: sha512-VwddBukDzu71offAQR975unBIGqfKZpM+8ZX6ySk8nYhVoo5CYaZyzt3YBvYtRtO+aoGlqxPg/B87NGVZ/fu6g==}
     engines: {node: '>=12'}
-
-  webpack-virtual-modules@0.6.2:
-    resolution: {integrity: sha512-66/V2i5hQanC51vBQKPH4aI8NMAcBW59FVBs+rC7eGHupMyfn34q7rZIE+ETlJ+XTevqfUhVVBgSUNSW2flEUQ==}
 
   whatwg-encoding@3.1.1:
     resolution: {integrity: sha512-6qN4hJdMwfYBtE3YBTTHhoeuUrDBPZmbQaxWAqSALV/MeEnR5z1xd8UKud2RAkFoPkmB+hli1TZSnyi84xz1vQ==}
@@ -12199,7 +12190,6 @@ snapshots:
 
   '@ember/optional-features@3.0.0':
     dependencies:
-      ember-cli-version-checker: 5.1.2
       inquirer: 13.4.3
       silent-error: 1.1.1
       tinyglobby: 0.2.17
@@ -16537,14 +16527,6 @@ snapshots:
 
   electron-to-chromium@1.5.409: {}
 
-  ember-cli-version-checker@5.1.2:
-    dependencies:
-      resolve-package-path: 3.1.0
-      semver: 7.8.5
-      silent-error: 1.1.1
-    transitivePeerDependencies:
-      - supports-color
-
   ember-data@file:packages/-ember-data(af46dc02664d662116157571e70adacf):
     dependencies:
       '@ember-data/adapter': file:packages/adapter(40bc2c5d5662a5666eb0d917619838cd)
@@ -18947,11 +18929,6 @@ snapshots:
       path-root: 0.1.1
       resolve: 1.22.11
 
-  resolve-package-path@3.1.0:
-    dependencies:
-      path-root: 0.1.1
-      resolve: 1.22.11
-
   resolve-package-path@4.0.3:
     dependencies:
       path-root: 0.1.1
@@ -20108,7 +20085,6 @@ snapshots:
     dependencies:
       '@jridgewell/remapping': 2.3.5
       picomatch: 4.0.5
-      webpack-virtual-modules: 0.6.2
     optionalDependencies:
       vite: 8.2.1
 
@@ -20475,8 +20451,6 @@ snapshots:
   webidl-conversions@4.0.2: {}
 
   webidl-conversions@7.0.0: {}
-
-  webpack-virtual-modules@0.6.2: {}
 
   whatwg-encoding@3.1.1:
     dependencies:
