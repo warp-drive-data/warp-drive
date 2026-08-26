@@ -21,8 +21,8 @@ minimumReleaseAge: 10080
 minimumReleaseAgeExclude:
   - "@warp-drive/*"
   - "@ember-data/*"
-  # Renovate security update: svgo@4.0.1
-  - svgo@4.0.1
+  # Renovate security update: svgo@4.0.1 || 4.0.2
+  - svgo@4.0.1 || 4.0.2
   # Renovate security update: @hono/node-server@1.19.13
   - "@hono/node-server@1.19.13"
   # Renovate security update: tmp@0.2.6
