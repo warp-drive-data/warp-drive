@@ -43,7 +43,7 @@
     "eslint": "^9.34.0",
     "qunit": "^2.26.0",
     "tsx": "^4.20.5",
-    "vitest": "^3.0.0"
+    "vitest": "^3.2.7"
   },
   "volta": {
     "extends": "../../package.json"

@@ -1318,7 +1318,7 @@ importers:
         specifier: ^4.20.5
         version: 4.20.5
       vitest:
-        specifier: ^3.0.0
+        specifier: ^3.2.7
         version: 3.2.7(tsx@4.20.5)
 
   tests/core:
@@ -18151,7 +18151,7 @@ snapshots:
 
   '@types/chai-as-promised@7.1.8':
     dependencies:
-      '@types/chai': 4.3.20
+      '@types/chai': 5.2.3
 
   '@types/chai@4.3.20': {}
 
