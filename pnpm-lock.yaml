@@ -3037,10 +3037,10 @@ importers:
         version: 1000.1.5
       '@pnpm/find-workspace-packages':
         specifier: 6.0.9
-        version: 6.0.9(@pnpm/logger@1001.0.0)
+        version: 6.0.9(@pnpm/logger@1001.0.1)
       '@pnpm/logger':
-        specifier: 1001.0.0
-        version: 1001.0.0
+        specifier: 1001.0.1
+        version: 1001.0.1
       '@types/bun':
         specifier: 1.3.14
         version: 1.3.14
@@ -5781,8 +5781,8 @@ packages:
     resolution: {integrity: sha512-14eYp9iOdJ7SyOIVXomXhbVnc14DEhzMLS3eKqxYxi9LkANUfxx1/pwRiRY/lTiP9RFS+OkIcTm2QiLsmNEctw==}
     engines: {node: '>=16.14'}
 
-  '@pnpm/logger@1001.0.0':
-    resolution: {integrity: sha512-nj80XtTHHt7T+b5stLWszzd166MbGx4eTOu9+6h6RdelKMlSWhrb7KUb0j90tYk+yoGx8TeMVdJCaoBnkLp8xw==}
+  '@pnpm/logger@1001.0.1':
+    resolution: {integrity: sha512-gdwlAMXC4Wc0s7Dmg/4wNybMEd/4lSd9LsXQxeg/piWY0PPXjgz1IXJWnVScx6dZRaaodWP3c1ornrw8mZdFZw==}
     engines: {node: '>=18.12'}
 
   '@pnpm/manifest-utils@5.0.1':
@@ -10482,9 +10482,6 @@ packages:
     resolution: {integrity: sha512-qtYiSSFlwot9XHtF9bD9c7rwKjr+RecWT//ZnPvSmEjpV5mmPOCN4j8UjY5hbjNkOwZ/jQv3J6R1/pL7RwgMsg==}
     engines: {node: '>= 0.4'}
 
-  json-stringify-safe@5.0.1:
-    resolution: {integrity: sha512-ZClg6AaYvamvYEE82d3Iyd3vSSIjQ+odgjaTzRuO3s7toCdFKczob2i0zCh7JE8kWn17yvAWhUVxvqGwUalsRA==}
-
   json-to-ast@2.1.0:
     resolution: {integrity: sha512-W9Lq347r8tA1DfMvAGn9QNcgYm4Wm7Yc+k8e6vezpMnRT+NHbtlxgNBXRVjXe9YM6eTn6+p/MKOlV/aABJcSnQ==}
     engines: {node: '>= 4'}
@@ -11196,11 +11193,6 @@ packages:
 
   natural-compare@1.4.0:
     resolution: {integrity: sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==}
-
-  ndjson@2.0.0:
-    resolution: {integrity: sha512-nGl7LRGrzugTtaFcJMhLbpzJM6XdivmbkdlaGcrk/LXg2KL/YBC6z1g70xh0/al+oFuVFP8N8kiWRucmeEH/qQ==}
-    engines: {node: '>=10'}
-    hasBin: true
 
   negotiator@0.6.3:
     resolution: {integrity: sha512-+EUsqGPLsM+j/zdChZjsnX51g4XrHFOIXwfnCVPGlQk/k5giakcKsuxCObBRu6DSm9opw/O6slWbJdghQM4bBg==}
@@ -12553,8 +12545,9 @@ packages:
     resolution: {integrity: sha512-NzNVhJDYpwceVVii8/Hu6DKfD2G+NrQHlS/V/qgv763EYudVwEcMQNxd2lh+0VrUByXN/oJkl5grOhYWvQUYiw==}
     engines: {node: '>=0.10.0'}
 
-  split2@3.2.2:
-    resolution: {integrity: sha512-9NThjpgZnifTkJpzTZ7Eue85S49QwpNhZTq6GRJwObb6jnLFNGB7Qm73V5HewTROPyxD0C29xqmaI68bQtV+hg==}
+  split2@4.2.0:
+    resolution: {integrity: sha512-UcjcJOWknrNkF6PLX83qcHM6KHgVKNkV62Y8a5uYDVv9ydGQVwAHMKqHdJje1VTWpljG0WYpCDhrCdAOYH4TWg==}
+    engines: {node: '>= 10.x'}
 
   sprintf-js@1.0.3:
     resolution: {integrity: sha512-D9cPgkvLlV3t3IzL0D0YLvGA9Ahk4PcvVwUbN0dSGr1aP0Nrt4AEnTUbuGvquEC0mA64Gqt1fzirlRs5ibXx8g==}
@@ -12842,9 +12835,6 @@ packages:
 
   through2@3.0.2:
     resolution: {integrity: sha512-enaDQ4MUyP2W6ZyT6EsMzqBPZaM/avg8iuo+l2d3QCs0J+6RaqkHV/2/lOwDTueBHeJ/2LG9lrLW3d5rWPucuQ==}
-
-  through2@4.0.2:
-    resolution: {integrity: sha512-iOqSav00cVxEEICeD7TjLB1sueEL+81Wpzp2bY17uZjZN0pWZPuo4suZ/61VujxmqSGFfgOcNuTZ85QJwNZQpw==}
 
   through@2.3.8:
     resolution: {integrity: sha512-w89qg7PI8wAdvX60bMDP+bFoD5Dvhm9oLheFp5O4a2QF0cSBGsBX4qZmadPMvVqlLJBBci+WqGGOAPvcDeNSVg==}
@@ -17405,15 +17395,15 @@ snapshots:
       '@pnpm/types': 9.1.0
       load-json-file: 6.2.0
 
-  '@pnpm/cli-utils@2.0.9(@pnpm/logger@1001.0.0)':
+  '@pnpm/cli-utils@2.0.9(@pnpm/logger@1001.0.1)':
     dependencies:
       '@pnpm/cli-meta': 5.0.1
-      '@pnpm/config': 18.4.0(@pnpm/logger@1001.0.0)
-      '@pnpm/default-reporter': 12.2.3(@pnpm/logger@1001.0.0)
+      '@pnpm/config': 18.4.0(@pnpm/logger@1001.0.1)
+      '@pnpm/default-reporter': 12.2.3(@pnpm/logger@1001.0.1)
       '@pnpm/error': 5.0.1
-      '@pnpm/logger': 1001.0.0
-      '@pnpm/manifest-utils': 5.0.1(@pnpm/logger@1001.0.0)
-      '@pnpm/package-is-installable': 8.0.2(@pnpm/logger@1001.0.0)
+      '@pnpm/logger': 1001.0.1
+      '@pnpm/manifest-utils': 5.0.1(@pnpm/logger@1001.0.1)
+      '@pnpm/package-is-installable': 8.0.2(@pnpm/logger@1001.0.1)
       '@pnpm/read-project-manifest': 5.0.1
       '@pnpm/types': 9.1.0
       chalk: 4.1.2
@@ -17421,7 +17411,7 @@ snapshots:
 
   '@pnpm/config.env-replace@1.1.0': {}
 
-  '@pnpm/config@18.4.0(@pnpm/logger@1001.0.0)':
+  '@pnpm/config@18.4.0(@pnpm/logger@1001.0.1)':
     dependencies:
       '@pnpm/config.env-replace': 1.1.0
       '@pnpm/constants': 7.1.0
@@ -17429,7 +17419,7 @@ snapshots:
       '@pnpm/git-utils': 1.0.0
       '@pnpm/matcher': 5.0.0
       '@pnpm/npm-conf': 2.2.0
-      '@pnpm/pnpmfile': 5.0.7(@pnpm/logger@1001.0.0)
+      '@pnpm/pnpmfile': 5.0.7(@pnpm/logger@1001.0.1)
       '@pnpm/read-project-manifest': 5.0.1
       '@pnpm/types': 9.1.0
       better-path-resolve: 1.0.0
@@ -17452,9 +17442,9 @@ snapshots:
 
   '@pnpm/constants@7.1.0': {}
 
-  '@pnpm/core-loggers@9.0.1(@pnpm/logger@1001.0.0)':
+  '@pnpm/core-loggers@9.0.1(@pnpm/logger@1001.0.1)':
     dependencies:
-      '@pnpm/logger': 1001.0.0
+      '@pnpm/logger': 1001.0.1
       '@pnpm/types': 9.1.0
 
   '@pnpm/dedupe.issues-renderer@1.0.0':
@@ -17465,14 +17455,14 @@ snapshots:
 
   '@pnpm/dedupe.types@1.0.0': {}
 
-  '@pnpm/default-reporter@12.2.3(@pnpm/logger@1001.0.0)':
+  '@pnpm/default-reporter@12.2.3(@pnpm/logger@1001.0.1)':
     dependencies:
-      '@pnpm/config': 18.4.0(@pnpm/logger@1001.0.0)
-      '@pnpm/core-loggers': 9.0.1(@pnpm/logger@1001.0.0)
+      '@pnpm/config': 18.4.0(@pnpm/logger@1001.0.1)
+      '@pnpm/core-loggers': 9.0.1(@pnpm/logger@1001.0.1)
       '@pnpm/dedupe.issues-renderer': 1.0.0
       '@pnpm/dedupe.types': 1.0.0
       '@pnpm/error': 5.0.1
-      '@pnpm/logger': 1001.0.0
+      '@pnpm/logger': 1001.0.1
       '@pnpm/render-peer-issues': 4.0.1
       '@pnpm/types': 9.1.0
       ansi-diff: 1.2.0
@@ -17508,9 +17498,9 @@ snapshots:
       '@pnpm/error': 1000.1.0
       find-up: 5.0.0
 
-  '@pnpm/find-workspace-packages@6.0.9(@pnpm/logger@1001.0.0)':
+  '@pnpm/find-workspace-packages@6.0.9(@pnpm/logger@1001.0.1)':
     dependencies:
-      '@pnpm/cli-utils': 2.0.9(@pnpm/logger@1001.0.0)
+      '@pnpm/cli-utils': 2.0.9(@pnpm/logger@1001.0.1)
       '@pnpm/constants': 7.1.0
       '@pnpm/fs.find-packages': 2.0.1
       '@pnpm/types': 9.1.0
@@ -17544,14 +17534,14 @@ snapshots:
     dependencies:
       '@pnpm/types': 9.1.0
 
-  '@pnpm/logger@1001.0.0':
+  '@pnpm/logger@1001.0.1':
     dependencies:
       bole: 5.0.19
-      ndjson: 2.0.0
+      split2: 4.2.0
 
-  '@pnpm/manifest-utils@5.0.1(@pnpm/logger@1001.0.0)':
+  '@pnpm/manifest-utils@5.0.1(@pnpm/logger@1001.0.1)':
     dependencies:
-      '@pnpm/core-loggers': 9.0.1(@pnpm/logger@1001.0.0)
+      '@pnpm/core-loggers': 9.0.1(@pnpm/logger@1001.0.1)
       '@pnpm/error': 5.0.1
       '@pnpm/types': 9.1.0
     transitivePeerDependencies:
@@ -17571,24 +17561,24 @@ snapshots:
       '@pnpm/network.ca-file': 1.0.2
       config-chain: 1.1.13
 
-  '@pnpm/package-is-installable@8.0.2(@pnpm/logger@1001.0.0)':
+  '@pnpm/package-is-installable@8.0.2(@pnpm/logger@1001.0.1)':
     dependencies:
-      '@pnpm/core-loggers': 9.0.1(@pnpm/logger@1001.0.0)
+      '@pnpm/core-loggers': 9.0.1(@pnpm/logger@1001.0.1)
       '@pnpm/error': 5.0.1
-      '@pnpm/logger': 1001.0.0
+      '@pnpm/logger': 1001.0.1
       '@pnpm/types': 9.1.0
       detect-libc: 2.1.2
       execa: safe-execa@0.1.2
       mem: 8.1.1
       semver: 7.8.5
 
-  '@pnpm/pnpmfile@5.0.7(@pnpm/logger@1001.0.0)':
+  '@pnpm/pnpmfile@5.0.7(@pnpm/logger@1001.0.1)':
     dependencies:
-      '@pnpm/core-loggers': 9.0.1(@pnpm/logger@1001.0.0)
+      '@pnpm/core-loggers': 9.0.1(@pnpm/logger@1001.0.1)
       '@pnpm/error': 5.0.1
       '@pnpm/hooks.types': 1.0.1
       '@pnpm/lockfile-types': 5.1.0
-      '@pnpm/logger': 1001.0.0
+      '@pnpm/logger': 1001.0.1
       '@pnpm/store-controller-types': 15.0.1
       '@pnpm/types': 9.1.0
       chalk: 4.1.2
@@ -19821,8 +19811,8 @@ snapshots:
       '@babel/parser': 7.29.8
       '@babel/traverse': 7.29.8
       '@pnpm/find-workspace-dir': 1000.1.5
-      '@pnpm/find-workspace-packages': 6.0.9(@pnpm/logger@1001.0.0)
-      '@pnpm/logger': 1001.0.0
+      '@pnpm/find-workspace-packages': 6.0.9(@pnpm/logger@1001.0.1)
+      '@pnpm/logger': 1001.0.1
       '@types/bun': 1.3.14
       '@types/debug': 4.1.12
       comment-json: 4.2.5
@@ -24478,8 +24468,6 @@ snapshots:
       jsonify: 0.0.1
       object-keys: 1.1.1
 
-  json-stringify-safe@5.0.1: {}
-
   json-to-ast@2.1.0:
     dependencies:
       code-error-fragment: 0.0.230
@@ -25320,14 +25308,6 @@ snapshots:
       - supports-color
 
   natural-compare@1.4.0: {}
-
-  ndjson@2.0.0:
-    dependencies:
-      json-stringify-safe: 5.0.1
-      minimist: 1.2.8
-      readable-stream: 3.6.2
-      split2: 3.2.2
-      through2: 4.0.2
 
   negotiator@0.6.3: {}
 
@@ -26849,9 +26829,7 @@ snapshots:
     dependencies:
       extend-shallow: 3.0.2
 
-  split2@3.2.2:
-    dependencies:
-      readable-stream: 3.6.2
+  split2@4.2.0: {}
 
   sprintf-js@1.0.3: {}
 
@@ -27359,10 +27337,6 @@ snapshots:
   through2@3.0.2:
     dependencies:
       inherits: 2.0.4
-      readable-stream: 3.6.2
-
-  through2@4.0.2:
-    dependencies:
       readable-stream: 3.6.2
 
   through@2.3.8: {}
