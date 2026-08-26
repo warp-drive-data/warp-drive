@@ -31,7 +31,7 @@
   "license": "MIT",
   "dependencies": {
     "jscodeshift": "^17.4.0",
-    "prettier": "^3.8.1",
+    "prettier": "^3.9.6",
     "typescript": "^5.9.3"
   },
   "devDependencies": {
