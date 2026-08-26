@@ -115,7 +115,7 @@ module('Reads | derivation', function (hooks) {
         (e as Error).message,
         DEBUG
           ? "No 'concat' derivation registered for use by the 'derived' field 'fullName'"
-          : 't.derivation(...) is not a function',
+          : 'schema.derivation(...) is not a function',
         'record.fullName throws'
       );
     }
