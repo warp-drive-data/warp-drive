@@ -2906,8 +2906,8 @@ importers:
         specifier: ^1.20.6
         version: 1.20.6
       babel-import-util:
-        specifier: ^2.1.1
-        version: 2.1.1
+        specifier: ^3.0.1
+        version: 3.0.1
       babel-plugin-debug-macros:
         specifier: ^2.0.0
         version: 2.0.0(@babel/core@7.29.7)
@@ -14510,7 +14510,7 @@ snapshots:
     dependencies:
       '@embroider/addon-shim': 1.10.3
       '@embroider/macros': 1.20.6
-      babel-import-util: 2.1.1
+      babel-import-util: 3.0.1
       babel-plugin-debug-macros: 2.0.0
       semver: 7.8.5
     transitivePeerDependencies:
@@ -14522,7 +14522,7 @@ snapshots:
     dependencies:
       '@embroider/addon-shim': 1.10.3
       '@embroider/macros': 1.20.6(@glint/template@1.8.0)
-      babel-import-util: 2.1.1
+      babel-import-util: 3.0.1
       babel-plugin-debug-macros: 2.0.0(@babel/core@7.29.7)
       semver: 7.8.5
     transitivePeerDependencies:
@@ -14534,7 +14534,7 @@ snapshots:
     dependencies:
       '@embroider/addon-shim': 1.10.3
       '@embroider/macros': 1.20.6
-      babel-import-util: 2.1.1
+      babel-import-util: 3.0.1
       babel-plugin-debug-macros: 2.0.0(@babel/core@7.29.7)
       semver: 7.8.5
     transitivePeerDependencies:
