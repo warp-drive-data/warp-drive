@@ -255,7 +255,7 @@ module('Integration | Relationships | Rollback', function (hooks) {
     test('it returns true when a belongsTo has state replaced', function (assert) {
       const store = this.owner.lookup('service:store') as Store;
       const config = store.peekRecord('config', '1') as Config;
-      config.app = store.peekRecord('app', '2') as App;
+      config.app = store.peekRecord('app', '2');
       const configIdentifier = store.cacheKeyManager.getOrCreateRecordIdentifier({ type: 'config', id: '1' });
       assert.true(store.cache.hasChangedRelationships(configIdentifier), 'a belongsTo has state replaced');
     });
@@ -265,7 +265,7 @@ module('Integration | Relationships | Rollback', function (hooks) {
       config.app = null;
       const configIdentifier = store.cacheKeyManager.getOrCreateRecordIdentifier({ type: 'config', id: '1' });
       assert.true(store.cache.hasChangedRelationships(configIdentifier), 'a belongsTo has state replaced');
-      config.app = store.peekRecord('app', '1') as App;
+      config.app = store.peekRecord('app', '1');
       assert.false(store.cache.hasChangedRelationships(configIdentifier), 'a belongsTo has state replaced');
     });
   });
@@ -459,7 +459,7 @@ module('Integration | Relationships | Rollback', function (hooks) {
 
       // we update the config1.app to point at a different app,
       // which will remove config1 from app:1's list of configs
-      config1.app = store.peekRecord('app', '2') as App;
+      config1.app = store.peekRecord('app', '2');
       const configIdentifier = store.cacheKeyManager.getOrCreateRecordIdentifier({ type: 'config', id: '1' });
 
       // confirm the mutation
@@ -484,12 +484,12 @@ module('Integration | Relationships | Rollback', function (hooks) {
       config.app = null;
       const configIdentifier = store.cacheKeyManager.getOrCreateRecordIdentifier({ type: 'config', id: '1' });
       assert.true(store.cache.hasChangedRelationships(configIdentifier), 'a belongsTo has state replaced');
-      config.app = store.peekRecord('app', '1') as App;
+      config.app = store.peekRecord('app', '1');
       assert.false(store.cache.hasChangedRelationships(configIdentifier), 'a belongsTo has state replaced');
 
       const changed = store.cache.rollbackRelationships(configIdentifier);
       assert.arrayStrictEquals(changed, [], 'belongsTo has rolled back');
-      assert.strictEqual(config.app, store.peekRecord('app', '1') as App, 'belongsTo has rolled back');
+      assert.strictEqual(config.app, store.peekRecord('app', '1'), 'belongsTo has rolled back');
     });
 
     test('relationship rollback can be repeated', function (assert) {
@@ -781,7 +781,7 @@ module('Integration | Relationships | Rollback', function (hooks) {
     test('it returns the correct diff when a belongsTo has state replaced', function (assert) {
       const store = this.owner.lookup('service:store') as Store;
       const config = store.peekRecord('config', '1') as Config;
-      config.app = store.peekRecord('app', '2') as App;
+      config.app = store.peekRecord('app', '2');
       const configIdentifier = store.cacheKeyManager.getOrCreateRecordIdentifier({ type: 'config', id: '1' });
       assert.true(store.cache.hasChangedRelationships(configIdentifier), 'a belongsTo has state replaced');
 
@@ -815,7 +815,7 @@ module('Integration | Relationships | Rollback', function (hooks) {
       config.app = null;
       const configIdentifier = store.cacheKeyManager.getOrCreateRecordIdentifier({ type: 'config', id: '1' });
       assert.true(store.cache.hasChangedRelationships(configIdentifier), 'a belongsTo has state replaced');
-      config.app = store.peekRecord('app', '1') as App;
+      config.app = store.peekRecord('app', '1');
       assert.false(store.cache.hasChangedRelationships(configIdentifier), 'a belongsTo has state replaced');
       const changed = store.cache.changedRelationships(configIdentifier);
       assert.strictEqual(changed.size, 0, 'we have no diff');

@@ -176,7 +176,7 @@ module('Integration | NotificationManager batch notifications', function () {
         batchKeyWasSet = true;
       }
       return (originalNotify as (cacheKey: unknown, type: unknown, key: unknown) => boolean)(cacheKey, type, key);
-    }) as typeof store.notifications.notify;
+    });
 
     // a single push that changes multiple attributes on the same record at once,
     // simulating the N*M hot-path (here N=1 record, M=2 changed attributes) called
@@ -261,7 +261,7 @@ module('Integration | NotificationManager batch notifications', function () {
         }
       }
       return (originalNotify as (cacheKey: unknown, type: unknown, key: unknown) => boolean)(cacheKey, type, key);
-    }) as typeof store.notifications.notify;
+    });
 
     // a single upsert that changes two different relationships on the same
     // record at once, simulating the N*M hot-path (here N=1 record, M=2

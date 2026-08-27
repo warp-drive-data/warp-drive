@@ -79,7 +79,7 @@ class TestCache implements Cache {
         const data = doc.content.data.map((resource) => {
           const identifier = this._storeWrapper.cacheKeyManager.getOrCreateRecordIdentifier(
             resource
-          ) as PersistedResourceKey;
+          );
           this.upsert(identifier, resource, this._storeWrapper.hasRecord(identifier));
           return identifier;
         });
@@ -89,7 +89,7 @@ class TestCache implements Cache {
           doc.content.data
         ) as PersistedResourceKey;
         this.upsert(identifier, doc.content.data!, this._storeWrapper.hasRecord(identifier));
-        return { data: identifier } as SingleResourceDataDocument;
+        return { data: identifier };
       }
     } else if ('error' in doc) {
       throw typeof doc.error === 'string' ? new Error(doc.error) : (doc.error as Error);

@@ -417,7 +417,7 @@ export class RequestSubscription<RT, E> {
     this._intervalStart = Date.now();
     this._nextInterval = setTimeout(() => {
       this._maybeUpdate();
-    }, autorefreshThreshold) as unknown as number;
+    }, autorefreshThreshold);
   }
 
   /** @internal */

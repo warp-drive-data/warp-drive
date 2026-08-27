@@ -292,7 +292,7 @@ export class RecordArrayManager {
       return this._keyedArrays.get(config.requestKey.lid)!;
     }
 
-    let array: ReactiveResourceArray | null = null;
+    let array: ReactiveResourceArray;
     if ('requestKey' in config) {
       const options: ReactiveRequestCollectionCreateArgs = {
         store: this.store,

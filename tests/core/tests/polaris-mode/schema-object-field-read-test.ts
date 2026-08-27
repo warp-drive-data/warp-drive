@@ -105,7 +105,7 @@ module('Reads | schema-object fields', function (hooks) {
       'with no transform we will still divorce the object reference'
     );
     assert.satisfies(
-      cachedResourceData?.attributes?.address as address,
+      cachedResourceData?.attributes?.address,
       {
         street: '123 Main St',
         city: 'Anytown',
@@ -222,7 +222,7 @@ module('Reads | schema-object fields', function (hooks) {
       'with no transform we will still divorce the object reference'
     );
     assert.satisfies(
-      cachedResourceData?.attributes?.address as address,
+      cachedResourceData?.attributes?.address,
       {
         street: '123 Main St',
         city: 'Anytown',
@@ -232,7 +232,7 @@ module('Reads | schema-object fields', function (hooks) {
       'the cache values are correct for the object field'
     );
     assert.satisfies(
-      cachedResourceData?.attributes?.business as business,
+      cachedResourceData?.attributes?.business,
       {
         name: 'Acme',
         address: {
@@ -424,7 +424,7 @@ module('Reads | schema-object fields', function (hooks) {
     const cachedResourceData = store.cache.peek(identifier);
 
     assert.satisfies(
-      cachedResourceData?.attributes?.user_address as { zip_code: string },
+      cachedResourceData?.attributes?.user_address,
       {
         zip_code: '12345',
       },
@@ -579,7 +579,7 @@ module('Reads | schema-object fields', function (hooks) {
     const cachedResourceData = store.cache.peek(identifier);
 
     assert.satisfies(
-      cachedResourceData?.attributes?.user_address as { type: string; name: string; zip: string },
+      cachedResourceData?.attributes?.user_address,
       {
         type: 'business',
         name: 'AuditBoard',
@@ -867,7 +867,7 @@ module('Reads | schema-object fields', function (hooks) {
     const cachedResourceData = store.cache.peek(identifier);
 
     assert.satisfies(
-      cachedResourceData?.attributes?.user_address as { type: string; special_type: string; name: string; zip: string },
+      cachedResourceData?.attributes?.user_address,
       {
         type: 'business',
         special_type: 'fragment:address:business',
@@ -1146,7 +1146,7 @@ module('Reads | schema-object fields', function (hooks) {
     const cachedResourceData = store.cache.peek(identifier);
 
     assert.satisfies(
-      cachedResourceData?.attributes?.user_address as { type: string; name: string; zip: string },
+      cachedResourceData?.attributes?.user_address,
       {
         type: 'business',
         name: 'AuditBoard',

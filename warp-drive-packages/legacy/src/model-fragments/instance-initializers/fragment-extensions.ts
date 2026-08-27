@@ -32,5 +32,8 @@ export function initialize(application: ApplicationInstance): void {
 
 export default {
   name: 'fragment-extensions',
+  // the cast is required for isolatedDeclarations to determine this default
+  // export's type without inference, even though it's a no-op for `tsc`'s checker
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
   initialize: initialize as (application: ApplicationInstance) => void,
 };

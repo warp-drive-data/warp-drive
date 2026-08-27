@@ -2,7 +2,7 @@ import type { DocumentCacheOperation, NotificationType } from '@warp-drive/core'
 import { Store } from '@warp-drive/core';
 import { isPrivateStore } from '@warp-drive/core/store/-private';
 import type { CacheCapabilitiesManager } from '@warp-drive/core/types';
-import type { PersistedResourceKey, RequestKey, ResourceKey } from '@warp-drive/core/types/identifier';
+import type { RequestKey, ResourceKey } from '@warp-drive/core/types/identifier';
 import type { StructuredDataDocument, StructuredDocument } from '@warp-drive/core/types/request';
 import { resourceSchema } from '@warp-drive/core/types/schema/fields';
 import type { SingleResourceDataDocument } from '@warp-drive/core/types/spec/document';
@@ -76,7 +76,7 @@ module('Integration | @ember-data/json-api Cache.put(<ResourceDataDocument>)', f
     const identifier = store.cacheKeyManager.getOrCreateRecordIdentifier({
       type: 'user',
       id: '1',
-    }) as PersistedResourceKey;
+    });
 
     assert.equal(responseDocument.data, identifier, 'We were given the correct data back');
   });
@@ -95,7 +95,7 @@ module('Integration | @ember-data/json-api Cache.put(<ResourceDataDocument>)', f
     const identifier = store.cacheKeyManager.getOrCreateRecordIdentifier({
       type: 'user',
       id: '1',
-    }) as PersistedResourceKey;
+    });
     const reqIdentifier = store.cacheKeyManager.getOrCreateDocumentIdentifier({
       method: 'GET',
       url: 'https://api.example.com/v1/users/1',
@@ -140,7 +140,7 @@ module('Integration | @ember-data/json-api Cache.put(<ResourceDataDocument>)', f
     const identifier = store.cacheKeyManager.getOrCreateRecordIdentifier({
       type: 'user',
       id: '1',
-    }) as PersistedResourceKey;
+    });
     const reqIdentifier = store.cacheKeyManager.getOrCreateDocumentIdentifier({
       method: 'GET',
       url: 'https://api.example.com/v1/users/1',

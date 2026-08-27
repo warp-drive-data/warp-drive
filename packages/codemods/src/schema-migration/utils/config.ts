@@ -65,7 +65,9 @@ export function loadConfig(configPath: string): ConfigOptions {
 
     return resolvedOptions;
   } catch (error) {
-    throw new Error(`Failed to parse configuration file: ${error instanceof Error ? error.message : String(error)}`);
+    throw new Error(`Failed to parse configuration file: ${error instanceof Error ? error.message : String(error)}`, {
+      cause: error,
+    });
   }
 }
 
@@ -84,7 +86,9 @@ export function saveConfig(configPath: string, options: ConfigOptions): void {
     const content = JSON.stringify(fullConfig, null, 2);
     writeFileSync(configPath, content, 'utf8');
   } catch (error) {
-    throw new Error(`Failed to save configuration file: ${error instanceof Error ? error.message : String(error)}`);
+    throw new Error(`Failed to save configuration file: ${error instanceof Error ? error.message : String(error)}`, {
+      cause: error,
+    });
   }
 }
 

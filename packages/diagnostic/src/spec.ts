@@ -97,7 +97,7 @@ class Spec<
         // @ts-expect-error we are upgrading the type here
         this.specs[name] = {
           cb,
-          $props: {} as object, // Placeholder for properties
+          $props: {}, // Placeholder for properties
         } as SpecTest<LocalContext, object>;
         return this;
       },
@@ -113,11 +113,11 @@ class Spec<
         const { setup, specs, name: moduleName } = this;
 
         module(`Spec | ${moduleName} | ${framework.name}`, function (hooks) {
-          framework.setup(hooks as Hooks<SpecTestContext<T>>);
+          framework.setup(hooks);
           (hooks as Hooks<SpecTestContext<T>>).beforeEach(function (this: SpecTestContext<T>) {
             this.framework = framework.name;
           });
-          setup(hooks as Hooks<SpecTestContext<T>>);
+          setup(hooks);
           const TestsToImplement = new Set(Object.keys(specs));
           const testRunner: TestRunner<LocalContext, T> = {
             test: (name, impl) => {
@@ -215,7 +215,7 @@ class Spec<
           }
         });
       },
-    } as SuiteBuilder<LocalContext, T>;
+    };
   }
 }
 

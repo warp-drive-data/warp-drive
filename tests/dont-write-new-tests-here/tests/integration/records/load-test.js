@@ -236,7 +236,6 @@ module('integration/load - Loading Records', function (hooks) {
 
     const identifier = store.cacheKeyManager.getOrCreateRecordIdentifier({ type: 'person', id: '1' });
     const instanceCache = store._instanceCache;
-    let cache = store.cache;
 
     // test that our initial state is correct
     assert.false(_isLoading(instanceCache, identifier), 'We have not triggered a load');
@@ -249,7 +248,7 @@ module('integration/load - Loading Records', function (hooks) {
     const record = await recordPromise;
 
     // test that after the initial load our state is correct
-    cache = store.cache;
+    const cache = store.cache;
     assert.false(cache.isEmpty(identifier), 'after first fetch: We are no longer empty');
     assert.false(_isLoading(instanceCache, identifier), 'after first fetch: We have loaded');
     assert.false(record.isReloading, 'after first fetch: We are not reloading');

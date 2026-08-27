@@ -657,7 +657,7 @@ module('Writes | schema-array fields', function (hooks) {
       'with no transform we will still divorce the array reference'
     );
     assert.satisfies(
-      cachedResourceData?.attributes?.addresses as Array<address | null>,
+      cachedResourceData?.attributes?.addresses,
       [
         {
           street: '789 Maple St',
@@ -796,7 +796,7 @@ module('Writes | schema-array fields', function (hooks) {
       'with no transform we will still divorce the array reference'
     );
     assert.satisfies(
-      cachedResourceData?.attributes?.addresses as Array<address | null>,
+      cachedResourceData?.attributes?.addresses,
       [
         {
           street: '789 Maple St',
@@ -931,7 +931,7 @@ module('Writes | schema-array fields', function (hooks) {
       'with no transform we will still divorce the array reference'
     );
     assert.satisfies(
-      cachedResourceData?.attributes?.addresses as Array<address | null>,
+      cachedResourceData?.attributes?.addresses,
       [
         {
           street: '789 Maple St',

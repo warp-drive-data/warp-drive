@@ -981,7 +981,7 @@ class RESTAdapter extends AdapterWithBuildURLMixin {
         }
     }
 
-    return new AdapterError(errors, detailedMessage) as unknown as typeof AdapterError;
+    return new AdapterError(errors, detailedMessage);
   }
 
   /**
@@ -1145,7 +1145,8 @@ class RESTAdapter extends AdapterWithBuildURLMixin {
         } catch (fbError) {
           throw new Error(
             'You are using WarpDrive with no host defined in your adapter. This will attempt to use the host of the FastBoot request, which is not configured for the current host of this request. Please set the hostWhitelist property for in your environment.js. FastBoot Error: ' +
-              (fbError as Error).message
+              (fbError as Error).message,
+            { cause: fbError }
           );
         }
       }

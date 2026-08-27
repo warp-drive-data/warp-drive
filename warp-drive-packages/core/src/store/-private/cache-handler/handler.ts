@@ -207,7 +207,7 @@ export const CacheHandler: CacheHandlerType = {
         ? maybeUpdateUiObjects<T>(store, context.request, { shouldHydrate, identifier }, peeked.content)
         : peeked.content;
       const newError = cloneError(peeked);
-      newError.content = content as object;
+      newError.content = content;
       throw newError;
     }
 

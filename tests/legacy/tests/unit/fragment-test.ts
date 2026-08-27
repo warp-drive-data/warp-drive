@@ -409,7 +409,7 @@ module<AppTestContext>('Unit - `Fragment`', function (hooks) {
 
       assert.equal(person.nickName, 'Johnner', 'nickName is correctly loaded');
       assert.satisfies(
-        person.name as Name,
+        person.name,
         {
           first: 'John',
           last: 'Doe',
@@ -418,7 +418,7 @@ module<AppTestContext>('Unit - `Fragment`', function (hooks) {
         'name is correctly loaded'
       );
       assert.satisfies(
-        person.names?.slice() as Array<Name>,
+        person.names?.slice(),
         [{ first: 'John', last: 'Doe', prefixes: [] as Array<Prefix> }],
         'names is correct'
       );
@@ -461,7 +461,7 @@ module<AppTestContext>('Unit - `Fragment`', function (hooks) {
 
       assert.equal(person.nickName, 'Johnner', 'nickName is correctly loaded');
       assert.satisfies(
-        person.name as Name,
+        person.name,
         {
           first: 'John',
           last: 'Doe',
@@ -470,7 +470,7 @@ module<AppTestContext>('Unit - `Fragment`', function (hooks) {
         'name is correctly loaded'
       );
       assert.satisfies(
-        person.names?.slice() as Array<Name>,
+        person.names?.slice(),
         [{ first: 'John', last: 'Doe', prefixes: [] as Array<Prefix> }],
         'names is correct'
       );

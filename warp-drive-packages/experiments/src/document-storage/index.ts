@@ -193,7 +193,7 @@ class InternalDocumentStorage {
       }
     }
 
-    return document as CacheDocument;
+    return document;
   }
 
   async putDocument(

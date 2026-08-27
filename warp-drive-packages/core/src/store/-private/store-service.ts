@@ -1873,7 +1873,7 @@ export class Store extends BaseClass {
       // give the adapter an opportunity to generate one. Typically,
       // client-side ID generators will use something like uuid.js
       // to avoid conflicts.
-      let id: string | null = null;
+      let id: string | null;
 
       if (properties.id === null || properties.id === undefined) {
         upgradeStore(this);

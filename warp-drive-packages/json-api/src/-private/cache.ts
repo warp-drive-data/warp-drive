@@ -370,7 +370,7 @@ export class JSONAPICache implements Cache {
       // @ts-expect-error
       doc.content = resourceDocument;
       const hasExisting = this.__documents.has(identifier.lid);
-      this.__documents.set(identifier.lid, doc as StructuredDocument<ResourceDocument>);
+      this.__documents.set(identifier.lid, doc);
 
       this._capabilities.notifyChange(identifier, hasExisting ? 'updated' : 'added', null);
     }
@@ -1263,7 +1263,7 @@ export class JSONAPICache implements Cache {
       while (nextLink < path.length - 1) {
         currentLocal = currentLocal[path[nextLink++]] as ObjectValue;
       }
-      currentLocal[path[nextLink]] = value as ObjectValue;
+      currentLocal[path[nextLink]] = value;
 
       cached.changes[basePath] = [existing, cached.localAttrs[basePath] as ObjectValue];
 
@@ -1602,7 +1602,7 @@ function addResourceToDocument(cache: JSONAPICache, op: AddToDocumentOperation):
   const { content } = doc;
 
   if (op.field === 'data') {
-    let shouldNotify = false;
+    let shouldNotify: boolean;
     assert(`Expected to have a data property on the document`, 'data' in content);
     asDoc<ResourceDataDocument>(content);
 

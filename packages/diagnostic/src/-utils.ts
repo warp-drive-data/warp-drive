@@ -19,7 +19,7 @@ export function getGlobal(): typeof globalThis {
       : null;
 
   assert(`Expected to find a global object`, g !== null);
-  return g as unknown as typeof globalThis;
+  return g;
 }
 
 export function getChain<TC extends TestContext>(

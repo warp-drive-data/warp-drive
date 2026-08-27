@@ -66,7 +66,7 @@ export class ContextOwner {
     ) as ImmutableRequestInfo;
     if (DEBUG) {
       if (!request?.cacheOptions?.[SkipCache]) {
-        request = deepFreeze(request) as ImmutableRequestInfo;
+        request = deepFreeze(request);
         enhancedRequest = deepFreeze(enhancedRequest);
       }
     } else {

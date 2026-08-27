@@ -57,7 +57,7 @@ export function module<TC extends TestContext = TestContext>(name: string, cb: M
   }
 
   cb(HooksDelegate);
-  setCurrentModule(parentModule as unknown as ModuleInfo<TC>);
+  setCurrentModule(parentModule);
 }
 
 export function test<TC extends TestContext = TestContext>(name: string, cb: TestCallback<TC>): void {

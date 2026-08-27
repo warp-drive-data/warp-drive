@@ -60,7 +60,7 @@ export function inverseForRelationship(store: Store, type: string, name: string)
     inverseField && (inverseField.kind === 'belongsTo' || inverseField.kind === 'hasMany')
   );
 
-  return (inverseField as LegacyRelationshipField) ?? null;
+  return (inverseField) ?? null;
 }
 
 /**

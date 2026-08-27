@@ -28,7 +28,7 @@ module('Schema DSL | @Resource compilation', function (hooks) {
           { kind: 'field', name: 'email' },
           { kind: 'derived', name: 'constructor', type: '@constructor' },
         ],
-      } as PolarisResourceSchema
+      }
     );
   });
 
@@ -50,7 +50,7 @@ module('Schema DSL | @Resource compilation', function (hooks) {
           { kind: 'field', name: 'name' },
           { kind: 'derived', name: 'constructor', type: '@constructor' },
         ],
-      } as PolarisResourceSchema
+      }
     );
   });
 
@@ -75,7 +75,7 @@ module('Schema DSL | @Resource compilation', function (hooks) {
           { kind: 'field', name: 'createdAt', type: 'date-time' },
           { kind: 'derived', name: 'constructor', type: '@constructor' },
         ],
-      } as PolarisResourceSchema
+      }
     );
   });
 
@@ -99,7 +99,7 @@ module('Schema DSL | @Resource compilation', function (hooks) {
           { kind: 'field', name: 'price', type: 'number', sourceKey: 'unit_price' },
           { kind: 'derived', name: 'constructor', type: '@constructor' },
         ],
-      } as PolarisResourceSchema
+      }
     );
   });
 

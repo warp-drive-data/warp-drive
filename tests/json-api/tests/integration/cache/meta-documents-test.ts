@@ -2,7 +2,7 @@ import type { DocumentCacheOperation } from '@warp-drive/core';
 import { Store } from '@warp-drive/core';
 import { isPrivateStore } from '@warp-drive/core/store/-private';
 import type { CacheCapabilitiesManager } from '@warp-drive/core/types';
-import type { PersistedResourceKey, RequestKey } from '@warp-drive/core/types/identifier';
+import type { RequestKey } from '@warp-drive/core/types/identifier';
 import type { StructuredDataDocument, StructuredDocument } from '@warp-drive/core/types/request';
 import type { CollectionResourceDataDocument, ResourceMetaDocument } from '@warp-drive/core/types/spec/document';
 import { module, test } from '@warp-drive/diagnostic';
@@ -221,7 +221,7 @@ module('Integration | @ember-data/json-api Cach.put(<MetaDocument>)', function (
     const identifier = store.cacheKeyManager.getOrCreateRecordIdentifier({
       type: 'user',
       id: '1',
-    }) as PersistedResourceKey;
+    });
     const reqIdentifier = store.cacheKeyManager.getOrCreateDocumentIdentifier({
       method: 'GET',
       url: 'https://api.example.com/v1/users',

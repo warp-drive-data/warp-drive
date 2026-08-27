@@ -341,7 +341,7 @@ function findRecord<T>(context: StoreRequestContext): Promise<T> {
           !adapter.shouldBackgroundReloadRecord ||
           adapter.shouldBackgroundReloadRecord(
             store,
-            (snapshot = snapshot || store._fetchManager.createSnapshot(identifier, options))
+            snapshot || store._fetchManager.createSnapshot(identifier, options)
           ))
       ) {
         assertIdentifierHasId(identifier);
@@ -359,7 +359,7 @@ function findRecord<T>(context: StoreRequestContext): Promise<T> {
       }
 
       // Return the cached record
-      promise = Promise.resolve(identifier) as Promise<ResourceKey>;
+      promise = Promise.resolve(identifier);
     }
   }
 
@@ -495,7 +495,7 @@ function query<T>(context: StoreRequestContext): Promise<T> {
       serializer,
       store,
       schema,
-      adapterPayload as Record<string, unknown>,
+      adapterPayload,
       null,
       'query'
     );

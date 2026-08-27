@@ -154,7 +154,7 @@ module('integration/relationships/one_to_one_test - OneToOne relationships', fun
   test('Fetching a belongsTo that is set to null removes the record from a relationship - sync', function (assert) {
     const store = this.owner.lookup('service:store');
 
-    var job = store.push({
+    store.push({
       data: {
         id: '2',
         type: 'job',
@@ -180,7 +180,7 @@ module('integration/relationships/one_to_one_test - OneToOne relationships', fun
         },
       },
     });
-    job = store.push({
+    const job = store.push({
       data: {
         id: '2',
         type: 'job',

@@ -65,10 +65,10 @@ const IdentifierField = {
 const DefaultIdentityField = { name: 'id', kind: '@id' } satisfies IdentityField;
 
 function _constructor(record: ReactiveResource) {
-  let state = Support.get(record as WeakKey);
+  let state = Support.get(record);
   if (!state) {
     state = {};
-    Support.set(record as WeakKey, state);
+    Support.set(record, state);
   }
 
   return (state._constructor = state._constructor || {
@@ -912,7 +912,7 @@ export class SchemaService implements SchemaServiceInterface {
     // `assertPolymorphicType` (which reads a field's declared `as` off
     // whatever `schema.fields()` serves for its type) correctly permit the
     // abstract type itself to be pushed directly into this relationship.
-    const abstractField = { ...field } as AbstractTypeImplementerField;
+    const abstractField = { ...field };
     const contribution: AbstractFieldContribution = { field: abstractField, source: implementer };
 
     // all concrete implementations of an abstract type are required to
@@ -1009,7 +1009,7 @@ export class SchemaService implements SchemaServiceInterface {
   }
 
   registerTransformation<T extends Value = string, PT = unknown>(transformation: Transformation<T, PT>): void {
-    this._transforms.set(transformation[Type], transformation as Transformation);
+    this._transforms.set(transformation[Type], transformation);
   }
 
   registerDerivation<R, T, FM extends ObjectValue | null>(derivation: Derivation<R, T, FM>): void {

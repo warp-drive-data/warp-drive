@@ -115,7 +115,7 @@ export class TestSchema implements SchemaService {
   }
   registerTransformation<T extends Value = string, PT = unknown>(transformation: Transformation<T, PT>): void {
     this._assert?.step('TestSchema:registerTransformation');
-    this._transforms.set(transformation[Type], transformation as Transformation);
+    this._transforms.set(transformation[Type], transformation);
   }
 
   registerDerivation<R, T>(derivation: Derivation<R, T>): void {

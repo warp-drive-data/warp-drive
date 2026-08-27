@@ -525,7 +525,7 @@ class Model extends EmberObject implements MinimalLegacyRecord {
     _secretInit.cb(this, identity, _secretInit.store);
 
     this.___recordState = DEBUG
-      ? new RecordState(this as unknown as MinimalLegacyRecord)
+      ? new RecordState(this)
       : (null as unknown as RecordState);
 
     this.setProperties(createProps);
@@ -873,7 +873,7 @@ class Model extends EmberObject implements MinimalLegacyRecord {
     // error.
     if (!DEBUG) {
       if (!this.___recordState) {
-        this.___recordState = new RecordState(this as unknown as MinimalLegacyRecord);
+        this.___recordState = new RecordState(this);
       }
     }
     return this.___recordState;
