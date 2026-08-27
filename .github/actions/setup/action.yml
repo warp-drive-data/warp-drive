@@ -190,21 +190,7 @@ runs:
     - name: Install Dependencies
       if: ${{ inputs.install == 'true' && inputs.skip-addon-build == 'false' }}
       shell: bash
-      # retries: the prepare script's `turbo run build:pkg` occasionally hits an
-      # intermittent tsdown/rolldown crash ("native ECMAScript module configuration
-      # file...") under CPU scheduling contention on shared runners -- a known,
-      # non-deterministic race (see #10731), not a real dependency/lockfile problem.
-      # A genuine install failure (bad lockfile, registry outage) fails the same way
-      # on every attempt, so retrying doesn't mask it -- it just costs a few seconds.
-      run: |
-        for attempt in 1 2 3; do
-          pnpm install --prefer-offline $ADTL_ARGS && exit 0
-          if [ "$attempt" != "3" ]; then
-            echo "pnpm install failed (attempt $attempt/3), retrying in 5s..." >&2
-            sleep 5
-          fi
-        done
-        exit 1
+      run: pnpm install --prefer-offline $ADTL_ARGS
       env:
         ADTL_ARGS: ${{ inputs.adtl-install-args }}
         TURBO_FORCE: ${{ inputs.DISABLE_TURBO_CACHE == 'true' }}
