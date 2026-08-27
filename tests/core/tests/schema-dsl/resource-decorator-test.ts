@@ -17,6 +17,9 @@ module('Schema DSL | @Resource compilation', function (hooks) {
         { kind: 'field', name: 'firstName' },
         { kind: 'field', name: 'lastName' },
         { kind: 'field', name: 'email' },
+        { kind: '@local', name: 'isEditing' },
+        { kind: '@local', name: 'dirtyCount', options: { defaultValue: 0 } },
+        { kind: 'derived', name: 'displayName', type: '@concat' },
         { kind: 'derived', name: 'constructor', type: '@constructor' },
       ],
     });
@@ -46,6 +49,8 @@ module('Schema DSL | @Resource compilation', function (hooks) {
         { kind: 'derived', name: '$type', type: '@identity', options: { key: 'type' } },
         { kind: 'field', name: 'title' },
         { kind: 'field', name: 'createdAt', type: 'date-time' },
+        { kind: 'object', name: 'metadata' },
+        { kind: 'array', name: 'tags' },
         { kind: 'derived', name: 'constructor', type: '@constructor' },
       ],
     });
@@ -61,6 +66,7 @@ module('Schema DSL | @Resource compilation', function (hooks) {
         { kind: 'derived', name: '$type', type: '@identity', options: { key: 'type' } },
         { kind: 'field', name: 'name', sourceKey: 'product_name' },
         { kind: 'field', name: 'price', type: 'number', sourceKey: 'unit_price' },
+        { kind: 'alias', name: 'productName', type: null, options: { kind: 'field', name: 'name' } },
         { kind: 'derived', name: 'constructor', type: '@constructor' },
       ],
     });
