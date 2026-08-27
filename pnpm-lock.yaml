@@ -3035,8 +3035,8 @@ importers:
         specifier: ^2.4.0
         version: 2.4.0(@babel/core@7.29.7)
       ember-provide-consume-context:
-        specifier: ^0.8.0
-        version: 0.8.0(5e5deff66abd2d48ecaa53fbd2988501)
+        specifier: ^0.10.0
+        version: 0.10.0(cbdd508696bb799630f15f73c47548d8)
       ember-source:
         specifier: 'catalog:'
         version: 7.2.0(@glimmer/component@2.1.1)
@@ -6226,7 +6226,7 @@ packages:
     resolution: {directory: warp-drive-packages/ember, type: directory}
     peerDependencies:
       '@ember/test-waiters': ^3.1.0 || ^4.0.0
-      ember-provide-consume-context: ^0.8.0
+      ember-provide-consume-context: ^0.10.0
     peerDependenciesMeta:
       ember-provide-consume-context:
         optional: true
@@ -7426,8 +7426,8 @@ packages:
       '@glimmer/component': '*'
       ember-source: '*'
 
-  ember-provide-consume-context@0.8.0:
-    resolution: {integrity: sha512-/H9y7A6Q7Dlp+Gyu/khVe8DEyM9STrvZijHCbff3zLX4lKZn3bzoNO/GYlgIkbrhPlh6PCZvxb7NhGIYNbqTBQ==}
+  ember-provide-consume-context@0.10.0:
+    resolution: {integrity: sha512-u8tp6wwYX1Kt+r7sAHo7JRx4f0kHf0gqeKDBsBgiOWZzkImIFbXk2VYyD1WwACqCSTqa5v9I+TNlDDBsoXnSbQ==}
     peerDependencies:
       '@ember/test-helpers': ^2.9.1 || ^3.0.0 || ^4.0.0 || >= 5.0.0
       '@glimmer/component': '>= 1.1.2 || >= 2.0.0'
@@ -16609,13 +16609,15 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  ember-provide-consume-context@0.8.0(5e5deff66abd2d48ecaa53fbd2988501):
+  ember-provide-consume-context@0.10.0(cbdd508696bb799630f15f73c47548d8):
     dependencies:
       '@ember/test-helpers': 5.2.0(patch_hash=a1670a4e3977c846a5c2454f317f5a17cbd284aef3a676b190c98141536afb04)(5f449f6cf81f8a9eee2138210a1258e0)
       '@embroider/addon-shim': 1.10.3
+      '@embroider/macros': 1.20.6(@glint/template@1.8.0)
       '@glimmer/component': 2.1.1
       ember-source: 7.2.0(@glimmer/component@2.1.1)
     transitivePeerDependencies:
+      - '@glint/template'
       - supports-color
 
   ember-qunit@9.1.0(ce2d83ff26ef0a53f073c9c9088e5c9f):
