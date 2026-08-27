@@ -16,15 +16,6 @@ inputs:
     description: Whether to restore lint caches
     required: false
     default: false
-  ## Speeds Up Build of bigger apps by enabling reuse
-  restore-broccoli-cache:
-    description: Whether to restore broccoli
-    required: false
-    default: false
-  use-production-caches:
-    description: Whether to restore from production caches
-    required: false
-    default: false
   install:
     description: Whether to install dependencies
     required: false
@@ -86,7 +77,6 @@ runs:
         echo "DISABLE_TURBO_CACHE = ${{ inputs.DISABLE_TURBO_CACHE }}"
         echo "ACTIONS_RUNNER_DEBUG = ${{ inputs.ACTIONS_RUNNER_DEBUG }}"
         echo "restore-lint-caches = ${{ inputs.restore-lint-caches }}"
-        echo "restore-broccoli-cache = ${{ inputs.restore-broccoli-cache }}"
 
     # felixmosh/turborepo-gh-artifacts' local proxy server (below) serves a
     # GET for artifact <id> straight from ${RUNNER_TEMP}/turbo-cache/<id>.gz
@@ -220,27 +210,6 @@ runs:
       # Generates the cert if needed, using our local copy of @warp-drive/holodeck
       run: |
         node ./packages/holodeck/server/ensure-cert.js
-
-    - name: Setup Broccoli Caching
-      if: ${{ inputs.restore-broccoli-cache == 'true' }}
-      shell: bash
-      run: |
-        echo "FORCE_PERSISTENCE_IN_CI=true" >> $GITHUB_ENV
-        echo "BROCCOLI_PERSISTENT_FILTER_CACHE_ROOT=${{ github.workspace }}/.broccoli-cache" >> $GITHUB_ENV
-
-    - name: Restore Broccoli Cache
-      if: ${{ inputs.restore-broccoli-cache == 'true' }}
-      uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
-      with:
-        path: |
-          ${{ github.workspace }}/.broccoli-cache
-          node_modules/.cache
-          tests/dont-write-new-tests-here/node_modules/.cache
-        key: broccoli${{inputs.use-production-caches == 'true' && '-production-' || '-'}}${{ github.head_ref }}-${{inputs.ref }}
-        restore-keys: |
-          broccoli${{inputs.use-production-caches == 'true' && '-production-' || '-'}}${{ github.head_ref }}
-          broccoli${{inputs.use-production-caches == 'true' && '-production-' || '-'}}${{ github.base_ref }}
-          broccoli${{inputs.use-production-caches == 'true' && '-production-' || '-'}}main
 
     - name: Restore Lint Caches
       if: ${{ inputs.restore-lint-caches == 'true' }}
