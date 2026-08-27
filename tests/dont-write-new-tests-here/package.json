@@ -53,7 +53,7 @@
     "@embroider/macros": "^1.20.6",
     "@embroider/vite": "^1.7.9",
     "@glimmer/component": "^2.1.1",
-    "@glint/ember-tsc": "^1.10.0",
+    "@glint/ember-tsc": "^1.11.0",
     "@glint/template": "^1.8.0",
     "@tsconfig/ember": "^3.0.12",
     "@types/qunit": "2.19.14",
