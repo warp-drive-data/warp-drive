@@ -141,7 +141,12 @@ export function browser(config) {
     languageOptions: {
       parser: parser(config.enableGlint),
       parserOptions: {
-        project: './tsconfig.json',
+        // A dedicated, lint-only tsconfig (rather than the package's real
+        // build tsconfig) so `composite`/`references` — which exist for the
+        // build/editor and are otherwise inert for lint — can't accidentally
+        // start mattering here, and so `disableSourceOfProjectReferenceRedirect`
+        // is pinned regardless of what the build tsconfig does.
+        project: './tsconfig.eslint.json',
         projectService: false,
         tsconfigRootDir: config.dirname,
         extraFileExtensions: ['.gts', '.gjs'],
@@ -189,7 +194,7 @@ export function node(config) {
     languageOptions: {
       parser: parser(),
       parserOptions: {
-        project: './tsconfig.json',
+        project: './tsconfig.eslint.json',
         extraFileExtensions: ['.gts', '.gjs'],
       },
       /** @type {2022} */
