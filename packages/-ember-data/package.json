@@ -109,7 +109,7 @@
     "@types/qunit": "2.19.14",
     "@warp-drive/internal-config": "workspace:*",
     "ember-source": "catalog:",
-    "eslint": "^10.8.1",
+    "eslint": "^10.9.1",
     "qunit": "^2.26.0",
     "tsdown": "^0.22.14",
     "typescript": "^5.9.3"
