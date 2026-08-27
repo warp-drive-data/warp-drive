@@ -41,7 +41,7 @@
     "comment-json": "^4.6.2",
     "debug": "^4.4.3",
     "ember-source": "catalog:",
-    "execa": "^9.6.1",
+    "execa": "^10.0.1",
     "git-repo-version": "^1.0.2",
     "lerna-changelog": "^2.2.0",
     "prettier": "^3.9.6",
