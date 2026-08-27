@@ -36,7 +36,7 @@
     "@glint/template": "^1.8.0",
     "@warp-drive/internal-docs-viewer": "workspace:*",
     "@warp-drive/internal-tooling": "workspace:*",
-    "badge-maker": "5.0.2",
+    "badge-maker": "6.0.0",
     "bun-types": "^1.4.0",
     "comment-json": "^4.6.2",
     "debug": "^4.4.3",
