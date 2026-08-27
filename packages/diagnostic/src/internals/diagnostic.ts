@@ -410,7 +410,7 @@ export class Diagnostic<TC extends TestContext> {
                 ? ((err as { stack?: string }).stack ?? '')
                 : '',
             passed: result,
-            actual: err instanceof Error ? err.message : (err),
+            actual: err instanceof Error ? err.message : err,
             expected,
           });
         } else {
@@ -425,7 +425,7 @@ export class Diagnostic<TC extends TestContext> {
                 ? ((err as { stack?: string }).stack ?? '')
                 : '',
             passed: result,
-            actual: err instanceof Error ? err.message : (err),
+            actual: err instanceof Error ? err.message : err,
             expected,
           });
         }

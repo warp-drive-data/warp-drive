@@ -60,7 +60,7 @@ export function fillIn<T extends HelperContext>(this: T, target: Target, text: s
         guardForMaxlength(element, text, 'fillIn');
 
         await __focus__(this, element);
-        (element).value = text;
+        element.value = text;
       } else if (isContentEditable(element)) {
         await __focus__(this, element);
         element.innerHTML = text;

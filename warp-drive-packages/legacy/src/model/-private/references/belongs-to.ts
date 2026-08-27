@@ -463,7 +463,7 @@ export default class BelongsToReference<
     const added = isResourceData
       ? (store._push(doc, true) as PersistedResourceKey)
       : doc.data
-        ? (store.cacheKeyManager.getOrCreateRecordIdentifier(doc.data))
+        ? store.cacheKeyManager.getOrCreateRecordIdentifier(doc.data)
         : null;
     const { identifier } = this.belongsToRelationship;
 

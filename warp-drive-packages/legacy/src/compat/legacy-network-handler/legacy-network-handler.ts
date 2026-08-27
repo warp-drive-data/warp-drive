@@ -491,14 +491,7 @@ function query<T>(context: StoreRequestContext): Promise<T> {
 
   return promise.then((adapterPayload) => {
     const serializer = store.serializerFor(type);
-    const payload = normalizeResponseHelper(
-      serializer,
-      store,
-      schema,
-      adapterPayload,
-      null,
-      'query'
-    );
+    const payload = normalizeResponseHelper(serializer, store, schema, adapterPayload, null, 'query');
     const identifiers = store._push(payload, true);
 
     assert(

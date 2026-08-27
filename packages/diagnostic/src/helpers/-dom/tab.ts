@@ -51,7 +51,7 @@ function compileFocusAreas(root: Element = document.body) {
       }
 
       // Rejects inert containers, if the user agent supports the feature (or if a polyfill is installed.)
-      if (SUPPORTS_INERT && (node).inert) {
+      if (SUPPORTS_INERT && node.inert) {
         return NodeFilter.FILTER_REJECT;
       }
 

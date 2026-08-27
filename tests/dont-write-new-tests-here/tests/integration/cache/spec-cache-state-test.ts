@@ -77,9 +77,7 @@ class TestCache implements Cache {
     if ('content' in doc && !('error' in doc)) {
       if (Array.isArray(doc.content.data)) {
         const data = doc.content.data.map((resource) => {
-          const identifier = this._storeWrapper.cacheKeyManager.getOrCreateRecordIdentifier(
-            resource
-          );
+          const identifier = this._storeWrapper.cacheKeyManager.getOrCreateRecordIdentifier(resource);
           this.upsert(identifier, resource, this._storeWrapper.hasRecord(identifier));
           return identifier;
         });

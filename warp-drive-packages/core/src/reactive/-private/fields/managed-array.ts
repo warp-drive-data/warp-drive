@@ -135,7 +135,7 @@ export class ManagedArray {
     // listener.
     const RefStorage: StorageKlass =
       KeyMode === '@identity'
-        ? (WeakMap)
+        ? WeakMap
         : // CAUTION CAUTION CAUTION
           // this is a pile of lies
           // the Map is Map<string, WeakRef<ReactiveResource>>

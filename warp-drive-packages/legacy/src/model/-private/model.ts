@@ -524,9 +524,7 @@ class Model extends EmberObject implements MinimalLegacyRecord {
     const identity = _secretInit.identifier;
     _secretInit.cb(this, identity, _secretInit.store);
 
-    this.___recordState = DEBUG
-      ? new RecordState(this)
-      : (null as unknown as RecordState);
+    this.___recordState = DEBUG ? new RecordState(this) : (null as unknown as RecordState);
 
     this.setProperties(createProps);
 
