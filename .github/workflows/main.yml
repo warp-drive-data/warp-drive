@@ -198,7 +198,7 @@ jobs:
           retention-days: 1
 
   lts:
-    needs: [browser-tests]
+    needs: [install]
     strategy:
       fail-fast: false
       matrix:
@@ -234,7 +234,7 @@ jobs:
 
   releases:
     timeout-minutes: 12
-    needs: [browser-tests]
+    needs: [install]
     if: |
       github.event_name == 'pull_request' && (
         github.base_ref == 'main' || github.base_ref == 'beta'
@@ -244,7 +244,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        release: [ember-canary, ember-beta]
+        release: [ember-canary]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
