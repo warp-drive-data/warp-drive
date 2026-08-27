@@ -41,7 +41,7 @@
   },
   "peerDependencies": {
     "@ember/test-waiters": "^3.1.0 || ^4.0.0",
-    "ember-provide-consume-context": "^0.8.0"
+    "ember-provide-consume-context": "^0.10.0"
   },
   "dependencies": {
     "@embroider/macros": "^1.20.6",
@@ -69,7 +69,7 @@
     "@warp-drive/internal-config": "workspace:*",
     "babel-plugin-ember-template-compilation": "^4.0.0",
     "decorator-transforms": "^2.4.0",
-    "ember-provide-consume-context": "^0.8.0",
+    "ember-provide-consume-context": "^0.10.0",
     "ember-source": "catalog:",
     "tsdown": "^0.22.14",
     "typescript": "^5.9.3"
