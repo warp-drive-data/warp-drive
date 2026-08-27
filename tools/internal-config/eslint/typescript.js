@@ -141,8 +141,7 @@ export function browser(config) {
     languageOptions: {
       parser: parser(config.enableGlint),
       parserOptions: {
-        project: './tsconfig.json',
-        projectService: false,
+        projectService: true,
         tsconfigRootDir: config.dirname,
         extraFileExtensions: ['.gts', '.gjs'],
       },
@@ -189,7 +188,7 @@ export function node(config) {
     languageOptions: {
       parser: parser(),
       parserOptions: {
-        project: './tsconfig.json',
+        projectService: true,
         extraFileExtensions: ['.gts', '.gjs'],
       },
       /** @type {2022} */

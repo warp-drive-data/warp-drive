@@ -46,7 +46,7 @@ export function browser(config = {}) {
   config.files = Array.isArray(config.files) ? config.files : ['**/*.{js,gjs}'];
   const base = ts.browser(config);
   // @ts-expect-error
-  base.languageOptions.parserOptions.project = null;
+  base.languageOptions.parserOptions.projectService = false;
   base.rules = rules(config);
   base.plugins = imports.plugins();
 
