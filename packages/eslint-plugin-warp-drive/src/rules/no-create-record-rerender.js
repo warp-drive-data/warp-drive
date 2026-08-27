@@ -151,7 +151,11 @@ function getParentFunction(/** @type {import('eslint').Rule.Node} */ node) {
  * @return {Boolean}
  */
 function parentFunctionIsConstructor(maybeParentFunction) {
-  return 'kind' in maybeParentFunction.parent && maybeParentFunction.parent.kind === 'constructor';
+  return (
+    maybeParentFunction.parent !== null &&
+    'kind' in maybeParentFunction.parent &&
+    maybeParentFunction.parent.kind === 'constructor'
+  );
 }
 
 /**
@@ -161,6 +165,7 @@ function parentFunctionIsConstructor(maybeParentFunction) {
  */
 function parentFunctionIsInit(maybeParentFunction) {
   return (
+    maybeParentFunction.parent !== null &&
     'key' in maybeParentFunction.parent &&
     maybeParentFunction.parent.key.type === 'Identifier' &&
     forbiddenParentMethodKeyNames.includes(maybeParentFunction.parent.key.name)
