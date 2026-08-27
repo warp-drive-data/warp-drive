@@ -100,7 +100,8 @@ module('Schema DSL | @local', function (hooks) {
 
   test('@local compiles to @local field', function (assert) {
     const schema = schemas.find((s: { type: string }) => s.type === 'user');
-    const fields = (schema as { fields: Array<{ kind: string; name: string }> }).fields;
+    const fields = (schema as unknown as { fields: Array<{ kind: string; name: string; [key: string]: unknown }> })
+      .fields;
 
     const isEditing = fields.find((f) => f.name === 'isEditing');
     assert.deepEqual(isEditing, { kind: '@local', name: 'isEditing' });
@@ -108,7 +109,8 @@ module('Schema DSL | @local', function (hooks) {
 
   test('@local({ defaultValue }) includes options', function (assert) {
     const schema = schemas.find((s: { type: string }) => s.type === 'user');
-    const fields = (schema as { fields: Array<{ kind: string; name: string }> }).fields;
+    const fields = (schema as unknown as { fields: Array<{ kind: string; name: string; [key: string]: unknown }> })
+      .fields;
 
     const dirtyCount = fields.find((f) => f.name === 'dirtyCount');
     assert.deepEqual(dirtyCount, { kind: '@local', name: 'dirtyCount', options: { defaultValue: 0 } });
@@ -120,7 +122,8 @@ module('Schema DSL | @derived', function (hooks) {
 
   test('@derived compiles to derived field with type', function (assert) {
     const schema = schemas.find((s: { type: string }) => s.type === 'user');
-    const fields = (schema as { fields: Array<{ kind: string; name: string }> }).fields;
+    const fields = (schema as unknown as { fields: Array<{ kind: string; name: string; [key: string]: unknown }> })
+      .fields;
 
     const displayName = fields.find((f) => f.name === 'displayName');
     assert.deepEqual(displayName, { kind: 'derived', name: 'displayName', type: '@concat' });
@@ -132,7 +135,8 @@ module('Schema DSL | @object and @array', function (hooks) {
 
   test('@object compiles to object field', function (assert) {
     const schema = schemas.find((s: { type: string }) => s.type === 'post');
-    const fields = (schema as { fields: Array<{ kind: string; name: string }> }).fields;
+    const fields = (schema as unknown as { fields: Array<{ kind: string; name: string; [key: string]: unknown }> })
+      .fields;
 
     const metadata = fields.find((f) => f.name === 'metadata');
     assert.deepEqual(metadata, { kind: 'object', name: 'metadata' });
@@ -140,7 +144,8 @@ module('Schema DSL | @object and @array', function (hooks) {
 
   test('@array compiles to array field', function (assert) {
     const schema = schemas.find((s: { type: string }) => s.type === 'post');
-    const fields = (schema as { fields: Array<{ kind: string; name: string }> }).fields;
+    const fields = (schema as unknown as { fields: Array<{ kind: string; name: string; [key: string]: unknown }> })
+      .fields;
 
     const tags = fields.find((f) => f.name === 'tags');
     assert.deepEqual(tags, { kind: 'array', name: 'tags' });
@@ -152,7 +157,8 @@ module('Schema DSL | @alias', function (hooks) {
 
   test('@alias compiles to alias field pointing to source', function (assert) {
     const schema = schemas.find((s: { type: string }) => s.type === 'product');
-    const fields = (schema as { fields: Array<{ kind: string; name: string }> }).fields;
+    const fields = (schema as unknown as { fields: Array<{ kind: string; name: string; [key: string]: unknown }> })
+      .fields;
 
     const productName = fields.find((f) => f.name === 'productName');
     assert.deepEqual(productName, {
@@ -169,7 +175,8 @@ module('Schema DSL | legacy decorators', function (hooks) {
 
   test('@attribute compiles to attribute field', function (assert) {
     const schema = schemas.find((s: { type: string }) => s.type === 'comment');
-    const fields = (schema as { fields: Array<{ kind: string; name: string }> }).fields;
+    const fields = (schema as unknown as { fields: Array<{ kind: string; name: string; [key: string]: unknown }> })
+      .fields;
 
     const author = fields.find((f) => f.name === 'author');
     assert.deepEqual(author, { kind: 'attribute', name: 'author', type: 'string' });
@@ -177,7 +184,8 @@ module('Schema DSL | legacy decorators', function (hooks) {
 
   test('@belongsTo compiles to belongsTo field with options', function (assert) {
     const schema = schemas.find((s: { type: string }) => s.type === 'comment');
-    const fields = (schema as { fields: Array<{ kind: string; name: string }> }).fields;
+    const fields = (schema as unknown as { fields: Array<{ kind: string; name: string; [key: string]: unknown }> })
+      .fields;
 
     const post = fields.find((f) => f.name === 'post');
     assert.deepEqual(post, {
@@ -190,7 +198,8 @@ module('Schema DSL | legacy decorators', function (hooks) {
 
   test('@hasMany compiles to hasMany field with options', function (assert) {
     const schema = schemas.find((s: { type: string }) => s.type === 'comment');
-    const fields = (schema as { fields: Array<{ kind: string; name: string }> }).fields;
+    const fields = (schema as unknown as { fields: Array<{ kind: string; name: string; [key: string]: unknown }> })
+      .fields;
 
     const replies = fields.find((f) => f.name === 'replies');
     assert.deepEqual(replies, {
