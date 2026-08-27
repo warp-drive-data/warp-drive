@@ -200,7 +200,7 @@ export class LegacySupport {
 
     if (isAsync) {
       if (relationship.state.hasFailedLoadAttempt) {
-        return this._relationshipProxyCache[name] as PromiseBelongsTo;
+        return this._relationshipProxyCache[name];
       }
 
       const promise = this._findBelongsTo(name, resource as SingleResourceRelationship, relationship, options);

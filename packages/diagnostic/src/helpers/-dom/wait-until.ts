@@ -52,7 +52,7 @@ export function waitUntil<T>(callback: () => T | void | Falsy, options: Options 
         try {
           value = callback();
         } catch (error: unknown) {
-          reject(error as Error);
+          reject(error instanceof Error ? error : new Error(String(error), { cause: error }));
           return;
         }
 

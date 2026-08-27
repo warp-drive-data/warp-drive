@@ -13,7 +13,7 @@ export function getObjectField(context: KindContext<ObjectField>): unknown {
     managedObject = managedObjectMapForRecord.get(field.name);
   }
   if (managedObject) {
-    return managedObject as ManagedObject;
+    return managedObject;
   } else {
     const { store, resourceKey, path } = context;
     const { cache, schema } = store;

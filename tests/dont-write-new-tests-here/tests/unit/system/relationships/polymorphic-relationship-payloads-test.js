@@ -373,7 +373,7 @@ module('unit/relationships/relationship-payloads-manager (polymorphic)', functio
     };
     const motherPayload = {
       type: 'grownup',
-      id: `${id++}`,
+      id: `${id}`,
       attributes: {
         name: 'Kira',
       },
@@ -467,7 +467,7 @@ module('unit/relationships/relationship-payloads-manager (polymorphic)', functio
     };
     const motherPayload = {
       type: 'grownup',
-      id: `${id++}`,
+      id: `${id}`,
       attributes: {
         name: 'Kira',
       },

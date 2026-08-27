@@ -129,7 +129,7 @@ module('Reads | schema-array fields', function (hooks) {
       'with no transform we will still divorce the array reference'
     );
     assert.satisfies(
-      cachedResourceData?.attributes?.addresses as Array<address | null>,
+      cachedResourceData?.attributes?.addresses,
       [
         {
           street: '123 Main St',
@@ -272,7 +272,7 @@ module('Reads | schema-array fields', function (hooks) {
       'with no transform we will still divorce the array reference'
     );
     assert.satisfies(
-      cachedResourceData?.attributes?.businesses as Array<business | null>,
+      cachedResourceData?.attributes?.businesses,
       [
         {
           name: 'Acme',
@@ -447,7 +447,7 @@ module('Reads | schema-array fields', function (hooks) {
     const cachedResourceData = store.cache.peek(identifier);
 
     assert.satisfies(
-      cachedResourceData?.attributes?.user_addresses as Array<Address | null>,
+      cachedResourceData?.attributes?.user_addresses,
       [
         {
           type: 'business',

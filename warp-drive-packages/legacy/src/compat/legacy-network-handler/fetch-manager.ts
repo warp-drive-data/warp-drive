@@ -541,7 +541,7 @@ function _fetchRecord(store: Store, adapter: MinimumAdapterInterface, fetchItem:
     );
 
     return payload;
-  }) as Promise<AdapterPayload>;
+  });
 
   fetchItem.resolver.resolve(promise);
 }

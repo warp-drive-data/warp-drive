@@ -350,5 +350,5 @@ export function useRecommendedStore<T extends Cache>(
     teardownRecord(record: unknown): void {
       return teardownRecord(record);
     }
-  } as typeof ConfiguredStore;
+  };
 }

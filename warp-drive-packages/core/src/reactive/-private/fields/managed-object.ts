@@ -98,7 +98,7 @@ export class ManagedObject {
             if (field.type) {
               const transform = schema.transformation(field);
               newData = transform.hydrate(
-                newData as ObjectValue,
+                newData,
                 (field.options as ObjectValue) ?? null,
                 context.record
               ) as ObjectValue;

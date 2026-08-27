@@ -221,7 +221,7 @@ module('RequestManager | Abort', function () {
       // @ts-expect-error
       async request<T>(context: RequestContext, next: NextFn<T>): Promise<T> | Future<T> {
         assert.true(context.request.signal instanceof AbortSignal, 'we receive the abort signal in handler2');
-        const request: RequestInfo = Object.assign({}, context.request) as RequestInfo;
+        const request: RequestInfo = Object.assign({}, context.request);
         delete request.signal;
         const result = await fetch(request.url!, request);
 

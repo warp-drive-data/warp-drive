@@ -495,7 +495,7 @@ module('Writes | schema-object fields', function (hooks) {
       const cachedResourceData = store.cache.peek(identifier);
 
       assert.satisfies(
-        cachedResourceData?.attributes?.address as address,
+        cachedResourceData?.attributes?.address,
         {
           street: '123 Main St',
           city: 'Anytown',
@@ -505,7 +505,7 @@ module('Writes | schema-object fields', function (hooks) {
         'the cache values are correct for the object field'
       );
       assert.satisfies(
-        cachedResourceData?.attributes?.business as business,
+        cachedResourceData?.attributes?.business,
         {
           name: 'Acme',
           address: {
@@ -741,7 +741,7 @@ module('Writes | schema-object fields', function (hooks) {
     const cachedResourceData = store.cache.peek(identifier);
 
     assert.satisfies(
-      cachedResourceData?.attributes?.address as address,
+      cachedResourceData?.attributes?.address,
       { street: '456 Elm Street', city: 'Sometown', state: 'NJ', zip: '23456' },
       'the cache values are correctly updated'
     );
@@ -920,7 +920,7 @@ module('Writes | schema-object fields', function (hooks) {
     const identifier = recordIdentifierFor(record);
     const cachedResourceData = store.cache.peek(identifier);
     assert.satisfies(
-      cachedResourceData?.attributes?.address as address,
+      cachedResourceData?.attributes?.address,
       { street: '123 Main Street', city: 'Anytown', state: 'NJ', zip: '12345' },
       'the cache values are correctly updated'
     );
@@ -1027,7 +1027,7 @@ module('Writes | schema-object fields', function (hooks) {
     const identifier = recordIdentifierFor(record2);
     const cachedResourceData = store.cache.peek(identifier);
     assert.satisfies(
-      cachedResourceData?.attributes?.address as address,
+      cachedResourceData?.attributes?.address,
       {
         street: '123 Main Street',
         city: 'Anytown',
@@ -1241,7 +1241,7 @@ module('Writes | schema-object fields', function (hooks) {
     const cachedResourceData = store.cache.peek(identifier);
 
     assert.satisfies(
-      cachedResourceData?.attributes?.address as address,
+      cachedResourceData?.attributes?.address,
       {
         street: '123 Main St',
         city: 'Anytown',
@@ -1251,7 +1251,7 @@ module('Writes | schema-object fields', function (hooks) {
       'the cache values are correct for the object field'
     );
     assert.satisfies(
-      cachedResourceData?.attributes?.business as business,
+      cachedResourceData?.attributes?.business,
       {
         name: 'Acme',
         address: {
@@ -1273,7 +1273,7 @@ module('Writes | schema-object fields', function (hooks) {
     // Test that the data entered teh cache properly
     const cachedResourceData2 = store.cache.peek(identifier);
     assert.satisfies(
-      cachedResourceData2?.attributes?.business as business,
+      cachedResourceData2?.attributes?.business,
       {
         name: 'Acme',
         address: {
@@ -1409,7 +1409,7 @@ module('Writes | schema-object fields', function (hooks) {
     const identifier = recordIdentifierFor(record);
     const cachedResourceData = store.cache.peek(identifier);
     assert.satisfies(
-      cachedResourceData?.attributes?.business as business,
+      cachedResourceData?.attributes?.business,
       {
         name: 'Acme',
         addresses: [
@@ -1464,7 +1464,7 @@ module('Writes | schema-object fields', function (hooks) {
     });
     const record = await checkout<EditableUser>(immutableRecord);
     assert.satisfies(
-      record.address as { zip: number },
+      record.address,
       {
         zip: 90219,
       },
@@ -1473,7 +1473,7 @@ module('Writes | schema-object fields', function (hooks) {
     const address = record.address;
     record.address!.zip = 90210;
     assert.satisfies(
-      record.address as { zip: number },
+      record.address,
       {
         zip: 90210,
       },
@@ -1484,7 +1484,7 @@ module('Writes | schema-object fields', function (hooks) {
     const identifier = recordIdentifierFor(record);
     const cachedResourceData = store.cache.peek(identifier);
     assert.satisfies(
-      cachedResourceData?.attributes?.user_address as { zip_code: number },
+      cachedResourceData?.attributes?.user_address,
       { zip_code: 90210 },
       'the cache values are correctly updated'
     );

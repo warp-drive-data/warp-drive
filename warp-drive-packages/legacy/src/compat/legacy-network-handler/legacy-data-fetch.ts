@@ -183,7 +183,7 @@ function ensureRelationshipIsSetToParent(
   if (inverse) {
     const { inverseKey, kind } = inverse;
 
-    const relationshipData = relationships[inverseKey]?.data as RelationshipData | undefined;
+    const relationshipData = relationships[inverseKey]?.data;
 
     if (DEBUG) {
       if (
@@ -298,7 +298,7 @@ function fixRelationshipData(
     type,
   };
 
-  let payload: { type: string; id: string } | { type: string; id: string }[] | null = null;
+  let payload: { type: string; id: string } | { type: string; id: string }[];
 
   if (relationshipKind === 'hasMany') {
     const relData = (relationshipData as { type: string; id: string }[]) || [];

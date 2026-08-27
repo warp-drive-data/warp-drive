@@ -23,9 +23,9 @@ const _fetch: typeof fetch =
     ? (...args) => fetch(...args)
     : typeof FastBoot !== 'undefined'
       ? (...args) => ((FastBoot as FastBoot).require('node-fetch') as typeof fetch)(...args)
-      : ((() => {
+      : () => {
           throw new Error('No Fetch Implementation Found');
-        }) as typeof fetch);
+        };
 
 // clones a response in a way that should still
 // allow it to stream

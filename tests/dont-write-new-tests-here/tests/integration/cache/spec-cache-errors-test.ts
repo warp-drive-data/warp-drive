@@ -67,7 +67,7 @@ class TestCache implements Cache {
         doc.content.data as ExistingResourceObject
       );
       this.upsert(identifier, doc.content.data as ExistingResourceObject, this.wrapper.hasRecord(identifier));
-      return { data: identifier } as SingleResourceDataDocument;
+      return { data: identifier };
     } else if ('error' in doc) {
       throw typeof doc.error === 'string' ? new Error(doc.error) : (doc.error as Error);
     }

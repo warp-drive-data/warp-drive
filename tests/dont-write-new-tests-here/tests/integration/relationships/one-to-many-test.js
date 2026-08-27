@@ -414,8 +414,7 @@ module('integration/relationships/one_to_many_test - OneToMany relationships', f
   test('Fetching a belongsTo that is not defined does not remove the record from a relationship - sync', function (assert) {
     const store = this.owner.lookup('service:store');
 
-    var account, user;
-    account = store.push({
+    store.push({
       data: {
         id: '2',
         type: 'account',
@@ -424,7 +423,7 @@ module('integration/relationships/one_to_many_test - OneToMany relationships', f
         },
       },
     });
-    user = store.push({
+    const user = store.push({
       data: {
         id: '1',
         type: 'user',
@@ -443,7 +442,7 @@ module('integration/relationships/one_to_many_test - OneToMany relationships', f
         },
       },
     });
-    account = store.push({
+    const account = store.push({
       data: {
         id: '2',
         type: 'account',

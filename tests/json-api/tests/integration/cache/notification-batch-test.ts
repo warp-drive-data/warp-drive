@@ -167,7 +167,7 @@ module('Integration | NotificationManager batch notifications', function () {
     // of the overloaded `notify` signature (a well-known TS quirk), narrowing
     // `type`/`key` to types too specific to compare against `'attributes'`/`Set`.
     // Type the spy broadly instead and cast only at the delegating call below.
-    store.notifications.notify = ((
+    store.notifications.notify = (
       cacheKey: ResourceKey | RequestKey,
       type: NotificationType | CacheOperation | DocumentCacheOperation,
       key?: string | NotifyKeys | null
@@ -176,7 +176,7 @@ module('Integration | NotificationManager batch notifications', function () {
         batchKeyWasSet = true;
       }
       return (originalNotify as (cacheKey: unknown, type: unknown, key: unknown) => boolean)(cacheKey, type, key);
-    }) as typeof store.notifications.notify;
+    };
 
     // a single push that changes multiple attributes on the same record at once,
     // simulating the N*M hot-path (here N=1 record, M=2 changed attributes) called
@@ -249,7 +249,7 @@ module('Integration | NotificationManager batch notifications', function () {
     let notifyCallCount = 0;
     let batchKeyWasSet = false;
     const originalNotify = store.notifications.notify.bind(store.notifications);
-    store.notifications.notify = ((
+    store.notifications.notify = (
       cacheKey: ResourceKey | RequestKey,
       type: NotificationType | CacheOperation | DocumentCacheOperation,
       key?: string | NotifyKeys | null
@@ -261,7 +261,7 @@ module('Integration | NotificationManager batch notifications', function () {
         }
       }
       return (originalNotify as (cacheKey: unknown, type: unknown, key: unknown) => boolean)(cacheKey, type, key);
-    }) as typeof store.notifications.notify;
+    };
 
     // a single upsert that changes two different relationships on the same
     // record at once, simulating the N*M hot-path (here N=1 record, M=2

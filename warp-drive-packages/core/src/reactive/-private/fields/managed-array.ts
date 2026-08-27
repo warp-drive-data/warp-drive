@@ -135,7 +135,7 @@ export class ManagedArray {
     // listener.
     const RefStorage: StorageKlass =
       KeyMode === '@identity'
-        ? (WeakMap as unknown as StorageKlass)
+        ? WeakMap
         : // CAUTION CAUTION CAUTION
           // this is a pile of lies
           // the Map is Map<string, WeakRef<ReactiveResource>>
@@ -413,7 +413,7 @@ export class ManagedArray {
               transform.serialize(item, field.options ?? null, self.owner)
             );
           }
-          cache.setAttr(context.resourceKey, context.path, rawValue as Value);
+          cache.setAttr(context.resourceKey, context.path, rawValue);
           _SIGNAL.isStale = true;
         }
         return reflect;

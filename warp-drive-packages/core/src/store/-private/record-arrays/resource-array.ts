@@ -337,6 +337,8 @@ const ArrayHandler: ProxyHandler<ResourceKey[]> = {
       );
     }
 
+    // this Proxy get trap must return raw property values, including methods, unbound
+    // eslint-disable-next-line @typescript-eslint/unbound-method
     return target[prop as keyof ResourceKey[]];
   },
 

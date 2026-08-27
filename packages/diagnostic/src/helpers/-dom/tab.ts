@@ -20,10 +20,6 @@ function getActiveElement(ownerDocument: Document): HTMLElement {
   return (ownerDocument.activeElement as HTMLElement) || ownerDocument.body;
 }
 
-interface InertHTMLElement extends HTMLElement {
-  inert: boolean;
-}
-
 /**
   Compiles a list of nodes that can be focused. Walks the tree, discards hidden elements and a few edge cases. To calculate the right.
   @private
@@ -55,7 +51,7 @@ function compileFocusAreas(root: Element = document.body) {
       }
 
       // Rejects inert containers, if the user agent supports the feature (or if a polyfill is installed.)
-      if (SUPPORTS_INERT && (node as InertHTMLElement).inert) {
+      if (SUPPORTS_INERT && node.inert) {
         return NodeFilter.FILTER_REJECT;
       }
 

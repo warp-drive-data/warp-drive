@@ -38,11 +38,14 @@ EmberObjectMethods.forEach((method) => {
         const decrement = (args[1] as number) ?? 1;
         assert(
           'Must pass a numeric value to decrementProperty',
-          (typeof decrement === 'number' || !isNaN(parseFloat(decrement as unknown as string))) && isFinite(decrement)
+          (typeof decrement === 'number' || !isNaN(parseFloat(decrement))) && isFinite(decrement)
         );
         return set(this, keyName, ((get(this, keyName) as number) || 0) - decrement);
       }
       case 'get':
+        // the cast is required: without it, TS resolves `get` to an overload whose
+        // parameter list isn't a rest/tuple, and the spread below fails to typecheck
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
         return (get as (...args: unknown[]) => unknown)(this, ...args);
       case 'getProperties':
         return (getProperties as (...args: unknown[]) => unknown)(this, ...args);

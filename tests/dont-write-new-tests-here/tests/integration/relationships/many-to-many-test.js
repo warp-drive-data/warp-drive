@@ -163,7 +163,7 @@ module('integration/relationships/many_to_many_test - ManyToMany relationships',
   test('Fetching a hasMany where a record was removed reflects on the other hasMany side - sync', function (assert) {
     const store = this.owner.lookup('service:store');
 
-    let account = store.push({
+    store.push({
       data: {
         id: '2',
         type: 'account',
@@ -191,7 +191,7 @@ module('integration/relationships/many_to_many_test - ManyToMany relationships',
         },
       },
     });
-    account = store.push({
+    const account = store.push({
       data: {
         id: '2',
         type: 'account',

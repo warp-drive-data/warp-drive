@@ -200,7 +200,7 @@ export function buildQueryParams(query: JsonApiQuery | QueryParamsSource): strin
       // include: 'field1,field2'
       // include: ['field1', 'field2']
     } else {
-      finalQuery.include = include as string;
+      finalQuery.include = include;
     }
   }
 

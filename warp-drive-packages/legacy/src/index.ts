@@ -314,7 +314,7 @@ export function useLegacyStore<T extends Cache>(
         enumerable: true,
         get: (): RequestManager => {
           if (!requestManager) {
-            const handlersOption = options.handlers as Handler[] | ((store: Store) => Handler[]) | undefined;
+            const handlersOption = options.handlers;
             const handlers = typeof handlersOption === 'function' ? handlersOption(this) : (handlersOption ?? []);
             requestManager = new RequestManager()
               .use([options.linksMode ? null : LegacyNetworkHandler, ...handlers, Fetch].filter(Boolean) as Handler[])
@@ -486,7 +486,7 @@ export function useLegacyStore<T extends Cache>(
     restoreDeprecatedStoreBehaviors(BaseKlass);
   }
 
-  return LegacyConfiguredStore as typeof ConfiguredStore;
+  return LegacyConfiguredStore;
 }
 
 function assertType(schema: DelegatingSchemaService, type: string) {

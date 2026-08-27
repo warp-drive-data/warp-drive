@@ -3,7 +3,7 @@ import { getElement } from './-get-element.ts';
 import guardForMaxlength from './-guard-for-maxlength.ts';
 import type { HelperContext } from './-helper-context.ts';
 import { assertRenderContext } from './-helper-context.ts';
-import isFormControl, { type FormControl } from './-is-form-control.ts';
+import isFormControl from './-is-form-control.ts';
 import { isContentEditable, type Target } from './-target.ts';
 import { fireEvent } from './fire-event.ts';
 import { __focus__ } from './focus.ts';
@@ -60,7 +60,7 @@ export function fillIn<T extends HelperContext>(this: T, target: Target, text: s
         guardForMaxlength(element, text, 'fillIn');
 
         await __focus__(this, element);
-        (element as FormControl).value = text;
+        element.value = text;
       } else if (isContentEditable(element)) {
         await __focus__(this, element);
         element.innerHTML = text;

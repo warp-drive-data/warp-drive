@@ -211,7 +211,7 @@ export function restoreDeprecatedStoreBehaviors(StoreKlass: typeof Store): void 
       reference = new RecordReference(this, identifier);
       cache.set(identifier, reference);
     }
-    return reference as unknown as ReturnType<PrivateStore['getReference']>;
+    return reference;
   };
 
   StoreKlass.prototype.modelFor = function <T>(
@@ -272,7 +272,7 @@ export function restoreDeprecatedStoreBehaviors(StoreKlass: typeof Store): void 
   };
 }
 
-export { Store };
+export type { Store };
 
 type Caches = PrivateStore['_instanceCache']['__instances'];
 function upgradeInstanceCaches(cache: Caches): Caches & { reference: WeakMap<ResourceKey, RecordReference> } {

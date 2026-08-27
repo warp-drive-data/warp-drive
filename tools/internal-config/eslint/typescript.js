@@ -23,6 +23,11 @@ function mergeTsConfigs(configArray) {
 
 export function rules(config = {}) {
   const ourRules = {
+    // As of 8.67 this rule also flags Promise.all/allSettled/race/any calls whose argument's
+    // element type includes a non-thenable union member (e.g. `void | Promise<void>`), even when
+    // that's an intentional, documented API shape rather than a mistake. No options to scope
+    // this to just the original bare-await check, so it's off entirely rather than case-by-case.
+    '@typescript-eslint/await-thenable': 'off',
     '@typescript-eslint/no-base-to-string': 'off',
     '@typescript-eslint/no-invalid-void-type': 'off',
     '@typescript-eslint/no-non-null-assertion': 'off',

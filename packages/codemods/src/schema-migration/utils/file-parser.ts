@@ -668,10 +668,10 @@ function extractMixinData(
   });
 
   for (const property of directProperties) {
-    let keyNode: SgNode | null = null;
-    let valueNode: SgNode | null = null;
-    let fieldName = '';
-    let originalKey = '';
+    let keyNode: SgNode | null;
+    let valueNode: SgNode | null;
+    let fieldName: string;
+    let originalKey: string;
     let typeInfo: ExtractedType | null = null;
 
     if (property.kind() === NODE_KIND_METHOD_DEFINITION) {

@@ -136,7 +136,7 @@ function _belongsTo<T, Async extends boolean>(
 
       return support.getBelongsTo(key);
     },
-  }).meta(meta) as RelationshipDecorator<T>;
+  }).meta(meta);
 }
 
 /**
