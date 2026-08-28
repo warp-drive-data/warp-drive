@@ -52,6 +52,18 @@
       "dependsOn": ["@warp-drive/build-config#build:pkg", "@warp-drive/core#build:pkg"]
     },
 
+    // Mirrors //#sync above, but for the opposite direction: @warp-drive/core's
+    // own build:pkg needs build-config's *freshly built* output synced into
+    // core's injected copy before core's babel.config.mjs requires it -- //#sync
+    // can't cover this because it depends on core's build:pkg too (using it here
+    // would be a cycle), so it only runs after core has already (possibly
+    // wrongly) built. These are two separate sync points for two separate races;
+    // do not merge them or make either conditional/cached.
+    "//#sync:core": {
+      "cache": false,
+      "dependsOn": ["@warp-drive/build-config#build:pkg"]
+    },
+
     // run build in all library packages
     // these do not require any associated packages
     // to have been built to build other than
@@ -120,7 +132,7 @@
         "../../config/**"
       ],
       "outputs": ["addon-test-support/**", "dist/**", "cjs-dist/**", "tsconfig.tsbuildinfo"],
-      "dependsOn": ["@warp-drive/build-config#build:pkg"],
+      "dependsOn": ["@warp-drive/build-config#build:pkg", "//#sync:core"],
       "outputLogs": "new-only",
       "env": ["IS_UNPKG_BUILD"]
     },
