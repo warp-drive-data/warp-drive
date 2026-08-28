@@ -138,3 +138,90 @@ catalog:
   ember-source: ~7.2.0
   vite: ^8.2.1
   "@types/node": ^26.2.0
+
+## The following settings previously lived under the root package.json's
+## "pnpm" field. pnpm 11 no longer reads that field -- these all moved here.
+packageExtensions:
+  vitepress-plugin-group-icons:
+    peerDependencies:
+      vite: "*"
+  typedoc-vitepress-theme:
+    peerDependencies:
+      typedoc: "*"
+  "@glimmer/syntax":
+    dependencies:
+      "@glimmer/env": ^0.1.7
+  ember-page-title:
+    peerDependencies:
+      "@glimmer/component": "*"
+      ember-source: "*"
+  ember-source:
+    peerDependencies:
+      "@glimmer/component": "*"
+
+overrides:
+  "@embroider/macros": ^1.20.6
+  ember-auto-import: ^2.13.1
+  "@embroider/addon-shim>broccoli-funnel": "-"
+  ember-cli-babel>broccoli-funnel: "-"
+  qunit-console-grouper>broccoli-funnel: "-"
+  broccoli-merge-trees: ^4.2.0
+  "@glimmer/validator": ^0.95.0
+  "@glint/ember-tsc": 1.10.0
+  "@glint/template": 1.8.0
+  "@glint/tsserver-plugin": 2.7.0
+  ember-cli-babel: ^8.3.1
+  "@embroider/macros>ember-cli-babel": "-"
+  ember-source>ember-cli-babel: "-"
+  ember-source>broccoli-file-creator: "-"
+  ember-source>ember-cli-get-component-path-option: "-"
+  ember-source>ember-cli-normalize-entity-name: "-"
+  ember-source>ember-cli-path-utils: "-"
+  ember-source>ember-cli-string-utils: "-"
+  ember-source>ember-cli-typescript-blueprint-polyfill: "-"
+  ember-source>ember-cli-version-checker: "-"
+  "@ember/optional-features>ember-cli-version-checker": "-"
+  unplugin>webpack-virtual-modules: "-"
+  ember-cli-htmlbars: ^7.0.1
+  qunit: 2.26.0
+  ember-compatibility-helpers: ^1.2.7
+  testem: ~3.20.1
+  typescript: 5.9.3
+  "@types/bun": 1.3.14
+  bun-types: 1.4.0
+  lodash: ^4.18.1
+  caniuse-lite: ^1.0.30001809
+  rollup: ^4.62.4
+  "@babel/types": ^7.29.8
+  "@babel/parser": ^7.29.8
+  "@babel/traverse": ^7.29.8
+  prettier: ^3.9.6
+  "@types/node": "catalog:"
+  "@vue/compiler-sfc": 3.5.41
+  "@shikijs/langs": 4.4.3
+  string.prototype.matchall: npm:@nolyfill/string.prototype.matchall@^1.0.44
+
+peerDependencyRules:
+  ignoreMissing:
+    - rsvp
+    - "@glimmer/component"
+    - search-insights
+    - "@pnpm/logger"
+    - "@algolia/client-search"
+  allowAny:
+    - ember-source
+    - "@glimmer/component"
+    - typescript
+    - "@pnpm/logger"
+
+allowUnusedPatches: true
+
+patchedDependencies:
+  qunit@2.19.4: patches/qunit@2.19.4.patch
+  testem@3.11.0: patches/testem@3.11.0.patch
+  "@ember/test-helpers@3.3.0": patches/@ember__test-helpers@3.3.0.patch
+  "@ember/test-helpers@4.0.4": patches/@ember__test-helpers@4.0.4.patch
+  "@ember/test-helpers@5.1.0": patches/@ember__test-helpers@5.1.0.patch
+  "@ember/test-helpers@5.2.0": patches/@ember__test-helpers@5.2.0.patch
+  ember-source@4.4.5: patches/ember-source@4.4.5.patch
+  ember-source@3.28.12: patches/ember-source@3.28.12.patch
