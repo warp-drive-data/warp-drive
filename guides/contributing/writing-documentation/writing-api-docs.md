@@ -393,6 +393,57 @@ with existing ones in the same package (e.g. `Resource Data`,
 `Resource Lifecycle`, `Cache Management`) rather than inventing a new
 one-off name per symbol.
 
+### Marking decorators with `@decorator` and `@classDecorator`
+
+`@decorator` and `@classDecorator` are repo-specific modifier tags
+(implemented by `docs-viewer/typedoc-plugins/decorator-groups.mjs`) for
+functions used as a property/field decorator or a class decorator,
+respectively:
+
+```ts
+/**
+ * @since 5.9.0
+ * @public
+ * @decorator
+ */
+export function attribute(target: object, key: string): void;
+```
+
+```ts
+/**
+ * @since 5.9.0
+ * @public
+ * @classDecorator
+ */
+export function Resource(target: AnyConstructor): void;
+```
+
+Each tag fills in two defaults, as long as the symbol doesn't already
+set its own:
+
+- `@category` — `"Field Decorators"` for `@decorator`, `"Class
+  Decorators"` for `@classDecorator` — so decorators get their own
+  section on the module's index page instead of a flat list mixed in
+  with everything else.
+- `@badge` — `"Decorator"` / `"Class Decorator"` — shown as the kind
+  badge on the symbol's own page instead of the default `"Function"`.
+
+A symbol can still set its own `@category` to opt out of the default
+grouping, same as any other `@category` usage — this is how
+`schema-dsl`'s entity-level decorators (`Resource`, `Trait`,
+`ObjectSchema`, `trait`) end up grouped under their own `Entity
+Decorators` category instead of `Class Decorators`:
+
+```ts
+/**
+ * @since 5.9.0
+ * @public
+ * @classDecorator
+ * @category Entity Decorators
+ */
+export function Resource(target: AnyConstructor): void;
+```
+
 ### Use `@hideconstructor` for classes that aren't directly instantiated by users
 
 [@hideconstructor](https://typedoc.org/documents/Tags._hideconstructor.html#hideconstructor)
