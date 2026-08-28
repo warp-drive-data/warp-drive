@@ -59,6 +59,7 @@ import { ACCEPT_HEADER_VALUE } from './-utils.ts';
  * ```
  *
  * @public
+ * @badge Builder
  */
 export function query<T extends TypedRecordInstance>(
   type: TypeFromInstance<T>,

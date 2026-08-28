@@ -517,6 +517,25 @@ const ApiDocumentation = `# API Docs\n\n`;
 
 const TYPE_DIRS = new Set(['classes', 'functions', 'interfaces', 'type-aliases', 'variables', 'enumerations']);
 
+const KIND_LABELS: Record<string, string> = {
+  classes: 'Class',
+  functions: 'Function',
+  interfaces: 'Interface',
+  'type-aliases': 'Type Alias',
+  variables: 'Variable',
+  enumerations: 'Enumeration',
+};
+
+/** The reflection kind (Function, Class, ...) for a member's own page, derived from its output directory. */
+function fileKindLabel(file: string): string | null {
+  const dir = file.split('/').find((segment) => segment in KIND_LABELS);
+  return dir ? KIND_LABELS[dir] : null;
+}
+
+function kindBadgeMarkup(kind: string): string {
+  return `<KindBadge kind="${kind}" />`;
+}
+
 function fileToImportPath(file: string): string {
   // e.g. "@warp-drive/core/build-config/debugging.md" → "@warp-drive/core/build-config/debugging"
   // e.g. "@warp-drive/core/classes/ConfiguredStore.md" → "@warp-drive/core"
@@ -534,6 +553,175 @@ function fileToImportPath(file: string): string {
 
   if (cleanSubPath.length === 0) return packageName;
   return `${packageName}/${cleanSubPath.join('/')}`;
+}
+
+const HEADING_RE = /^(#{1,6}) (.*)$/;
+
+function sinceBadgeMarkup(version: string): string {
+  return `<SinceBadge version="${version.replace(/"/g, '&quot;')}" />`;
+}
+
+/**
+ * TypeDoc renders each `@since` tag as its own `#### Since` section beneath the heading of the
+ * thing it documents (the page's own H1, or a nested member heading for e.g. a class method).
+ * This removes every such section from the body and turns its version into a `<SinceBadge>`
+ * appended to the heading it described, so `@since` reads as a badge next to the name of the
+ * documented thing rather than as a separate body section.
+ */
+function extractSinceBadges(content: string): { content: string; moduleSince: string | null } {
+  const lines = content.split('\n');
+  const headings: { index: number; level: number; text: string }[] = [];
+  for (let i = 0; i < lines.length; i++) {
+    const m = HEADING_RE.exec(lines[i]);
+    if (m) headings.push({ index: i, level: m[1].length, text: m[2].trim() });
+  }
+
+  const linesToRemove = new Set<number>();
+  const badgesByHeadingLine = new Map<number, string[]>();
+  let moduleSince: string | null = null;
+
+  for (let hi = 0; hi < headings.length; hi++) {
+    const heading = headings[hi];
+    if (heading.text !== 'Since') continue;
+
+    const blockEnd = hi + 1 < headings.length ? headings[hi + 1].index : lines.length;
+    // The tag's own content is just its first paragraph — stop at the first blank line rather
+    // than the next heading, so a trailing `***` member separator (or a following tag section
+    // like `#### Deprecated`) isn't swallowed into the version string.
+    let versionStart = heading.index + 1;
+    while (versionStart < blockEnd && lines[versionStart].trim() === '') versionStart++;
+    let versionEnd = versionStart;
+    while (versionEnd < blockEnd && lines[versionEnd].trim() !== '') versionEnd++;
+    // A version is always a single token (e.g. `5.9.0`); a handful of source comments have a
+    // stray unrecognized tag (e.g. a leftover `@class Foo`) immediately after `@since` with no
+    // blank line between them, which TypeDoc folds into the same tag content as a second line —
+    // only the first line is ever the actual version.
+    const version = (lines[versionStart] ?? '').trim();
+
+    let removalEnd = versionEnd;
+    if (removalEnd < blockEnd && lines[removalEnd].trim() === '') removalEnd++;
+    for (let li = heading.index; li < removalEnd; li++) linesToRemove.add(li);
+
+    let parent: (typeof headings)[number] | null = null;
+    for (let pi = hi - 1; pi >= 0; pi--) {
+      if (headings[pi].level < heading.level) {
+        parent = headings[pi];
+        break;
+      }
+    }
+
+    if (!parent) {
+      // No enclosing heading (e.g. a module's own `@since`, rendered before any heading) —
+      // let the caller attach this to the module badge instead.
+      moduleSince = version;
+      continue;
+    }
+
+    const existing = badgesByHeadingLine.get(parent.index) ?? [];
+    existing.push(sinceBadgeMarkup(version));
+    badgesByHeadingLine.set(parent.index, existing);
+  }
+
+  for (const [lineIndex, badges] of badgesByHeadingLine) {
+    lines[lineIndex] = `${lines[lineIndex]} ${badges.join(' ')}`;
+  }
+
+  const kept = lines
+    .filter((_, i) => !linesToRemove.has(i))
+    .join('\n')
+    .replace(/\n{3,}/g, '\n\n');
+
+  return { content: kept, moduleSince };
+}
+
+// Structural groupings typedoc-plugin-markdown inserts between an overloaded function/method's
+// H1 and its per-overload content — not real nested members, so a `@badge` tag under one of
+// these (once per overload) still counts as belonging to the page's own top-level symbol.
+const PASSTHROUGH_HEADINGS = new Set(['Call Signature', 'Constructor Signature', 'Get Signature', 'Set Signature']);
+
+/**
+ * Reads an optional single-line tag (rendered as e.g. `## Badge` / `## Title`) on the page's own
+ * top-level symbol, and strips its section(s) from the body. Only a tag that belongs to the
+ * page's own symbol counts: walking up from it must reach the H1 without passing through
+ * anything other than the structural signature groupings above — a real nested member (e.g. a
+ * class's own method) blocks it, since these tags only ever affect the page's own H1.
+ */
+function extractTopLevelTagValue(content: string, tagText: string): { content: string; value: string | null } {
+  const lines = content.split('\n');
+  const headings: { index: number; level: number; text: string }[] = [];
+  for (let i = 0; i < lines.length; i++) {
+    const m = HEADING_RE.exec(lines[i]);
+    if (m) headings.push({ index: i, level: m[1].length, text: m[2].trim() });
+  }
+
+  const linesToRemove = new Set<number>();
+  let value: string | null = null;
+
+  for (let hi = 0; hi < headings.length; hi++) {
+    const heading = headings[hi];
+    if (heading.text !== tagText) continue;
+
+    let reachedH1 = false;
+    let idx = hi;
+    while (true) {
+      let parentIdx = -1;
+      for (let pi = idx - 1; pi >= 0; pi--) {
+        if (headings[pi].level < headings[idx].level) {
+          parentIdx = pi;
+          break;
+        }
+      }
+      if (parentIdx === -1) break;
+      if (headings[parentIdx].level === 1) {
+        reachedH1 = true;
+        break;
+      }
+      if (!PASSTHROUGH_HEADINGS.has(headings[parentIdx].text)) break;
+      idx = parentIdx;
+    }
+    if (!reachedH1) continue;
+
+    const blockEnd = hi + 1 < headings.length ? headings[hi + 1].index : lines.length;
+    let contentStart = heading.index + 1;
+    while (contentStart < blockEnd && lines[contentStart].trim() === '') contentStart++;
+    const foundValue = (lines[contentStart] ?? '').trim();
+    if (!foundValue) continue;
+
+    let removalEnd = contentStart + 1;
+    while (removalEnd < blockEnd && lines[removalEnd].trim() !== '') removalEnd++;
+    if (removalEnd < blockEnd && lines[removalEnd].trim() === '') removalEnd++;
+    for (let li = heading.index; li < removalEnd; li++) linesToRemove.add(li);
+
+    value ??= foundValue;
+  }
+
+  const kept = lines
+    .filter((_, i) => !linesToRemove.has(i))
+    .join('\n')
+    .replace(/\n{3,}/g, '\n\n');
+
+  return { content: kept, value };
+}
+
+/** Escapes `<`/`>` so literal component-like syntax (e.g. `<Await />`) renders as text rather
+ * than being parsed as an HTML/Vue tag — matches how TypeDoc itself escapes generics in headings
+ * (e.g. `Await\<T, E\>`). */
+function escapeHeadingText(text: string): string {
+  return text.replace(/</g, '\\<').replace(/>/g, '\\>');
+}
+
+/**
+ * Removes the page's first H1 (and the blank line before it), returning any `<SinceBadge>`
+ * that had been attached to it so the caller can relocate it (module pages show that badge next
+ * to `<ModuleBadge>` instead of a redundant title).
+ */
+function stripH1(content: string): { content: string; badges: string } {
+  let badges = '';
+  const next = content.replace(/\n\n# [^\n]*?((?:\s*<SinceBadge[^\n]*\/>)*)\n\n?/, (_match, b: string) => {
+    badges = b.trim();
+    return '\n\n';
+  });
+  return { content: next, badges };
 }
 
 export async function postProcessApiDocs() {
@@ -589,8 +777,40 @@ export async function postProcessApiDocs() {
     const importPath = fileToImportPath(file);
     newContent = newContent.replace(/^[^\n]+\n\n/, `<ModuleBadge path="${importPath}" />\n\n`);
 
-    // Remove the first H1 heading and the blank line before it
-    newContent = newContent.replace(/\n\n# [^\n]+\n\n?/, '\n\n');
+    // On a member's own page, show its kind (Function, Class, ...) as a <KindBadge> before its
+    // name instead of TypeDoc's "{Kind}: " title prefix (dropped via pageTitleTemplates in
+    // typedoc.config.mjs). A `@badge <Label>` tag overrides the label shown (e.g. a class that's
+    // conceptually a "Component", a variable that's a "Handler"). A `@title <Text>` tag overrides
+    // the name itself (e.g. showing a component's name as `<Await />`).
+    const defaultKind = fileKindLabel(file);
+    if (defaultKind) {
+      const kindOverride = extractTopLevelTagValue(newContent, 'Badge');
+      newContent = kindOverride.content;
+      const titleOverride = extractTopLevelTagValue(newContent, 'Title');
+      newContent = titleOverride.content;
+      const kind = kindOverride.value ?? defaultKind;
+      newContent = newContent.replace(/^# ([^\n]+)$/m, (_match, title: string) => {
+        const displayTitle = titleOverride.value ? escapeHeadingText(titleOverride.value) : title;
+        return `# ${kindBadgeMarkup(kind)} ${displayTitle}`;
+      });
+    }
+
+    // Turn every `#### Since` section into a `<SinceBadge>` next to the heading it describes
+    const sinceResult = extractSinceBadges(newContent);
+    newContent = sinceResult.content;
+
+    if (path.basename(file) === 'index.md') {
+      // Module page: the module name is already shown via <ModuleBadge>, so drop the redundant
+      // H1 title, relocating any `@since` badge it carried onto the <ModuleBadge> line.
+      const { content: withoutH1, badges } = stripH1(newContent);
+      newContent = withoutH1;
+      const since = badges || (sinceResult.moduleSince ? sinceBadgeMarkup(sinceResult.moduleSince) : '');
+      if (since) {
+        newContent = newContent.replace(/^(<ModuleBadge [^\n]+\/>)/, `$1 ${since}`);
+      }
+    }
+    // Non-module pages keep their H1 so the page shows the name of the thing being documented,
+    // with any `<SinceBadge>` appended right next to it.
 
     // if the file is in @warp-drive/legacy add the legacy badge
     if (file.includes('@warp-drive/legacy')) {

@@ -45,6 +45,9 @@ const config = {
     // inheritNone: true,
     useCodeBlocks: true,
     hidePageTitle: false,
+    // Drop the "{kind}: " prefix (e.g. "Function: ") from member page H1s — the kind is shown
+    // as a <KindBadge> next to the name instead (see postProcessApiDocs in site-utils.ts).
+    pageTitleTemplates: { member: '{keyword} {name}' },
     groupReferencesByType: true,
     alwaysCreateEntryPointModule: true,
     groupOrder: [
@@ -61,7 +64,7 @@ const config = {
       'Type Aliases',
       'Modules',
     ],
-    blockTags: [...OptionDefaults.blockTags, '@deprecated', '@until', '@since', '@id'],
+    blockTags: [...OptionDefaults.blockTags, '@deprecated', '@until', '@since', '@id', '@badge', '@title'],
     modifierTags: [
       ...OptionDefaults.modifierTags,
       '@noInheritDoc',
@@ -76,6 +79,7 @@ const config = {
     ],
   },
   plugin: [
+    import.meta.resolve('./src/typedoc-since-plugin.mjs').slice(7),
     import.meta.resolve('typedoc-plugin-no-inherit').slice(7),
     import.meta.resolve('typedoc-plugin-markdown').slice(7),
     import.meta.resolve('typedoc-vitepress-theme').slice(7),
@@ -97,6 +101,7 @@ const config = {
   excludeExternals: true,
   useCodeBlocks: true,
   hidePageTitle: false,
+  pageTitleTemplates: { member: '{keyword} {name}' },
   // typeAliasPropertiesFormat: 'htmlTable',
   // inheritNone: true,
 };
