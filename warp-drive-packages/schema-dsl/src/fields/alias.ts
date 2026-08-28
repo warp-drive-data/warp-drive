@@ -73,6 +73,7 @@ export interface AliasOptions {
  *
  * @since 5.9.0
  * @public
+ * @decorator
  */
 export function alias(options: AliasOptions): (target: object, key: string) => void;
 export function alias(
