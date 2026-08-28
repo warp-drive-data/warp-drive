@@ -517,6 +517,25 @@ const ApiDocumentation = `# API Docs\n\n`;
 
 const TYPE_DIRS = new Set(['classes', 'functions', 'interfaces', 'type-aliases', 'variables', 'enumerations']);
 
+const KIND_LABELS: Record<string, string> = {
+  classes: 'Class',
+  functions: 'Function',
+  interfaces: 'Interface',
+  'type-aliases': 'Type Alias',
+  variables: 'Variable',
+  enumerations: 'Enumeration',
+};
+
+/** The reflection kind (Function, Class, ...) for a member's own page, derived from its output directory. */
+function fileKindLabel(file: string): string | null {
+  const dir = file.split('/').find((segment) => segment in KIND_LABELS);
+  return dir ? KIND_LABELS[dir] : null;
+}
+
+function kindBadgeMarkup(kind: string): string {
+  return `<KindBadge kind="${kind}" />`;
+}
+
 function fileToImportPath(file: string): string {
   // e.g. "@warp-drive/core/build-config/debugging.md" → "@warp-drive/core/build-config/debugging"
   // e.g. "@warp-drive/core/classes/ConfiguredStore.md" → "@warp-drive/core"
@@ -681,6 +700,14 @@ export async function postProcessApiDocs() {
     // Replace the entire breadcrumb line with the badge (no subpath links)
     const importPath = fileToImportPath(file);
     newContent = newContent.replace(/^[^\n]+\n\n/, `<ModuleBadge path="${importPath}" />\n\n`);
+
+    // On a member's own page, show its kind (Function, Class, ...) as a <KindBadge> next to its
+    // name instead of TypeDoc's "{Kind}: " title prefix (dropped via pageTitleTemplates in
+    // typedoc.config.mjs)
+    const kind = fileKindLabel(file);
+    if (kind) {
+      newContent = newContent.replace(/^# ([^\n]+)$/m, (heading) => `${heading} ${kindBadgeMarkup(kind)}`);
+    }
 
     // Turn every `#### Since` section into a `<SinceBadge>` next to the heading it describes
     const sinceResult = extractSinceBadges(newContent);

@@ -45,6 +45,9 @@ const config = {
     // inheritNone: true,
     useCodeBlocks: true,
     hidePageTitle: false,
+    // Drop the "{kind}: " prefix (e.g. "Function: ") from member page H1s — the kind is shown
+    // as a <KindBadge> next to the name instead (see postProcessApiDocs in site-utils.ts).
+    pageTitleTemplates: { member: '{keyword} {name}' },
     groupReferencesByType: true,
     alwaysCreateEntryPointModule: true,
     groupOrder: [
@@ -98,6 +101,7 @@ const config = {
   excludeExternals: true,
   useCodeBlocks: true,
   hidePageTitle: false,
+  pageTitleTemplates: { member: '{keyword} {name}' },
   // typeAliasPropertiesFormat: 'htmlTable',
   // inheritNone: true,
 };
