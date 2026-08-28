@@ -637,12 +637,7 @@ function extractSinceBadges(content: string): { content: string; moduleSince: st
 // Structural groupings typedoc-plugin-markdown inserts between an overloaded function/method's
 // H1 and its per-overload content — not real nested members, so a `@badge` tag under one of
 // these (once per overload) still counts as belonging to the page's own top-level symbol.
-const PASSTHROUGH_HEADINGS = new Set([
-  'Call Signature',
-  'Constructor Signature',
-  'Get Signature',
-  'Set Signature',
-]);
+const PASSTHROUGH_HEADINGS = new Set(['Call Signature', 'Constructor Signature', 'Get Signature', 'Set Signature']);
 
 /**
  * Reads an optional single-line tag (rendered as e.g. `## Badge` / `## Title`) on the page's own
