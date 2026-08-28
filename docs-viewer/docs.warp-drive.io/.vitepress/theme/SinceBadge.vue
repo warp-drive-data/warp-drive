@@ -22,7 +22,6 @@ defineProps<{
   font-weight: 500;
   line-height: 22px;
   border: 1px solid transparent;
-  vertical-align: middle;
 }
 
 /* light mode */

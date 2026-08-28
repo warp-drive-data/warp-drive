@@ -18,7 +18,6 @@ defineProps<{
   font-weight: 600;
   line-height: 22px;
   padding: 0 10px;
-  vertical-align: middle;
   background: #ddd6fe;
   color: #5b21b6;
 }
