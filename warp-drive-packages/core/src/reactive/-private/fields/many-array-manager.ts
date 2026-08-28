@@ -54,7 +54,7 @@ export class ManyArrayManager {
       // because we don't need to worry about associate/disassociate since the graph
       // takes care of that for us
       currentState.length = 0;
-      fastPush(currentState, rawValue.data as ResourceKey[]);
+      fastPush(currentState, rawValue.data);
     }
   }
 
