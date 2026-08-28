@@ -298,6 +298,11 @@ package's `<ModuleBadge>` on the module's index page instead:
 > `core-types/src/cache.ts`). Put `@since` on a subpackage's exported
 > members instead until this is extended.
 
+On a class's own member (a method, property, etc.), `@since` shows up
+on its own line directly below the member's heading instead of next
+to it — a nested heading is much narrower than a page's own title, so
+crowding it with an inline badge reads worse much sooner.
+
 ### Overriding the displayed kind and name with `@badge` and `@title`
 
 Every function, class, interface, variable, type alias, and enumeration

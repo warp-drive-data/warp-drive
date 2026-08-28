@@ -5,7 +5,7 @@ defineProps<{
 </script>
 
 <template>
-  <span class="since-badge">
+  <span class="since-badge ignore-header">
     <span class="since-badge-label">since</span>
     <span class="since-badge-version">v{{ version }}</span>
   </span>

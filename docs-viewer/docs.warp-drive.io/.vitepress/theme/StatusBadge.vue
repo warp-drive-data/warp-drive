@@ -14,7 +14,7 @@ const defaultText: Record<Variant, string> = {
 </script>
 
 <template>
-  <span class="status-badge" :class="variant">{{ text ?? defaultText[props.variant] }}</span>
+  <span class="status-badge ignore-header" :class="variant">{{ text ?? defaultText[props.variant] }}</span>
 </template>
 
 <style scoped>

@@ -582,8 +582,11 @@ function sinceBadgeMarkup(version: string): string {
  * TypeDoc renders each `@since` tag as its own `#### Since` section beneath the heading of the
  * thing it documents (the page's own H1, or a nested member heading for e.g. a class method).
  * This removes every such section from the body and turns its version into a `<SinceBadge>`
- * appended to the heading it described, so `@since` reads as a badge next to the name of the
- * documented thing rather than as a separate body section.
+ * attached to the heading it described, so `@since` reads as a badge next to the name of the
+ * documented thing rather than as a separate body section. The page's own H1 keeps its badge on
+ * the same line as its name; every other (nested member) heading gets it on its own line
+ * directly below instead — inline badges start crowding a smaller heading's name much sooner
+ * than they do the page's title.
  */
 function extractSinceBadges(content: string): { content: string; moduleSince: string | null } {
   const lines = content.split('\n');
@@ -594,7 +597,7 @@ function extractSinceBadges(content: string): { content: string; moduleSince: st
   }
 
   const linesToRemove = new Set<number>();
-  const badgesByHeadingLine = new Map<number, string[]>();
+  const badgesByHeadingLine = new Map<number, { level: number; badges: string[] }>();
   let moduleSince: string | null = null;
 
   for (let hi = 0; hi < headings.length; hi++) {
@@ -634,21 +637,32 @@ function extractSinceBadges(content: string): { content: string; moduleSince: st
       continue;
     }
 
-    const existing = badgesByHeadingLine.get(parent.index) ?? [];
-    existing.push(sinceBadgeMarkup(version));
+    const existing = badgesByHeadingLine.get(parent.index) ?? { level: parent.level, badges: [] };
+    existing.badges.push(sinceBadgeMarkup(version));
     badgesByHeadingLine.set(parent.index, existing);
   }
 
-  for (const [lineIndex, badges] of badgesByHeadingLine) {
-    lines[lineIndex] = `${lines[lineIndex]} ${badges.join(' ')}`;
+  const insertAfterByLine = new Map<number, string>();
+  for (const [lineIndex, { level, badges }] of badgesByHeadingLine) {
+    const markup = badges.join(' ');
+    if (level === 1) {
+      lines[lineIndex] = `${lines[lineIndex]} ${markup}`;
+    } else {
+      insertAfterByLine.set(lineIndex, markup);
+    }
   }
 
-  const kept = lines
-    .filter((_, i) => !linesToRemove.has(i))
-    .join('\n')
-    .replace(/\n{3,}/g, '\n\n');
+  const kept: string[] = [];
+  for (let i = 0; i < lines.length; i++) {
+    if (linesToRemove.has(i)) continue;
+    kept.push(lines[i]);
+    const insertion = insertAfterByLine.get(i);
+    if (insertion !== undefined) kept.push(insertion);
+  }
 
-  return { content: kept, moduleSince };
+  const result = kept.join('\n').replace(/\n{3,}/g, '\n\n');
+
+  return { content: result, moduleSince };
 }
 
 // Structural groupings typedoc-plugin-markdown inserts between an overloaded function/method's

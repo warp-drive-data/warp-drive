@@ -5,7 +5,7 @@ defineProps<{
 </script>
 
 <template>
-  <span class="module-badge">
+  <span class="module-badge ignore-header">
     <span class="module-badge-label">module</span>
     <span class="module-badge-path">{{ path }}</span>
   </span>
