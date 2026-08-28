@@ -421,25 +421,34 @@ export function Resource(target: AnyConstructor): void;
 Each tag fills in two defaults, as long as the symbol doesn't already
 set its own:
 
-- `@category` — `"Field Decorators"` for `@decorator`, `"Class
+- `@group` — `"Field Decorators"` for `@decorator`, `"Class
   Decorators"` for `@classDecorator` — so decorators get their own
   section on the module's index page instead of a flat list mixed in
-  with everything else.
+  with everything else. This uses `@group`, not `@category`, on
+  purpose: TypeDoc renders a module's index page by `@category` the
+  moment *any* symbol in it has one, dumping everything else —
+  including anything only tagged via `@group` — into a generic "Other"
+  bucket instead. Since decorators live in modules (like `schema-dsl`)
+  that don't otherwise use `@category`, keeping them on `@group` avoids
+  ever tripping that switch. If a decorator's module later needs
+  `@category` for something else, either give the decorators an
+  explicit `@category` too, or keep `@category` out of that module
+  entirely — don't let the two mix silently.
 - `@badge` — `"Decorator"` / `"Class Decorator"` — shown as the kind
   badge on the symbol's own page instead of the default `"Function"`.
 
-A symbol can still set its own `@category` to opt out of the default
-grouping, same as any other `@category` usage — this is how
-`schema-dsl`'s entity-level decorators (`Resource`, `Trait`,
-`ObjectSchema`, `trait`) end up grouped under their own `Entity
-Decorators` category instead of `Class Decorators`:
+A symbol can still set its own `@group` to opt out of the default
+bucket, same as any other `@group` usage — this is how `schema-dsl`'s
+entity-level decorators (`Resource`, `Trait`, `ObjectSchema`, `trait`)
+end up grouped under their own `Entity Decorators` section instead of
+`Class Decorators`:
 
 ```ts
 /**
  * @since 5.9.0
  * @public
  * @classDecorator
- * @category Entity Decorators
+ * @group Entity Decorators
  */
 export function Resource(target: AnyConstructor): void;
 ```
