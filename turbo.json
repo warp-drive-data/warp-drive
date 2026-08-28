@@ -167,6 +167,15 @@
       "env": ["IS_UNPKG_BUILD"]
     },
     "@warp-drive/internal-tooling#build:pkg": {
+      // This task's real work (`sync-logos.ts`) reads the monorepo-root `logos/` directory and
+      // writes into every other package's own `logos/` dir plus the docs site's
+      // `public/logos` -- none of which live under this package, so without these, turbo's
+      // cache key is blind to logo changes and (worse) a cache hit restores nothing, silently
+      // skipping the copy. Per-package `logos/` copies are committed to git, so a skipped run
+      // leaves them correct regardless; `public/logos` is gitignored (see .gitignore) and is
+      // the one output that actually depends on this cache entry being accurate.
+      "inputs": ["src/**", "tsconfig.json", "package.json", "../../logos/**"],
+      "outputs": ["../../docs-viewer/docs.warp-drive.io/public/logos/**"],
       "dependsOn": [],
       "outputLogs": "new-only"
     },
