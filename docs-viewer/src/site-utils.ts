@@ -777,7 +777,7 @@ export async function postProcessApiDocs() {
     const importPath = fileToImportPath(file);
     newContent = newContent.replace(/^[^\n]+\n\n/, `<ModuleBadge path="${importPath}" />\n\n`);
 
-    // On a member's own page, show its kind (Function, Class, ...) as a <KindBadge> next to its
+    // On a member's own page, show its kind (Function, Class, ...) as a <KindBadge> before its
     // name instead of TypeDoc's "{Kind}: " title prefix (dropped via pageTitleTemplates in
     // typedoc.config.mjs). A `@badge <Label>` tag on that symbol overrides the label shown (e.g.
     // a class that's conceptually a "Component", a variable that's a "Handler").
@@ -786,7 +786,7 @@ export async function postProcessApiDocs() {
       const kindOverride = extractKindOverride(newContent);
       newContent = kindOverride.content;
       const kind = kindOverride.kind ?? defaultKind;
-      newContent = newContent.replace(/^# ([^\n]+)$/m, (heading) => `${heading} ${kindBadgeMarkup(kind)}`);
+      newContent = newContent.replace(/^# ([^\n]+)$/m, (_match, title: string) => `# ${kindBadgeMarkup(kind)} ${title}`);
     }
 
     // Turn every `#### Since` section into a `<SinceBadge>` next to the heading it describes

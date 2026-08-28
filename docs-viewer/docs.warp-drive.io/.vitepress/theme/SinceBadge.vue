@@ -22,7 +22,7 @@ defineProps<{
   font-weight: 500;
   line-height: 22px;
   border: 1px solid transparent;
-  transform: translateY(-2px);
+  vertical-align: middle;
 }
 
 /* light mode */
