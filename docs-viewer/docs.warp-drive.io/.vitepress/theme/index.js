@@ -5,6 +5,7 @@ import { enhanceAppWithTabs } from 'vitepress-plugin-tabs/client';
 import ModuleBadge from './ModuleBadge.vue';
 import SinceBadge from './SinceBadge.vue';
 import KindBadge from './KindBadge.vue';
+import StatusBadge from './StatusBadge.vue';
 
 export default {
   extends: DefaultTheme,
@@ -13,5 +14,6 @@ export default {
     app.component('ModuleBadge', ModuleBadge);
     app.component('SinceBadge', SinceBadge);
     app.component('KindBadge', KindBadge);
+    app.component('StatusBadge', StatusBadge);
   },
 };
