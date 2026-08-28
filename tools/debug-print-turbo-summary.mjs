@@ -8,9 +8,14 @@ import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 const dir = '.turbo/runs';
-const files = readdirSync(dir)
-  .filter((f) => f.endsWith('.json'))
-  .sort();
+let files;
+try {
+  files = readdirSync(dir)
+    .filter((f) => f.endsWith('.json'))
+    .sort();
+} catch {
+  files = [];
+}
 const latest = files.at(-1);
 if (!latest) {
   console.log('DEBUG_TURBO_SUMMARY: no run summary found in .turbo/runs');
@@ -30,4 +35,31 @@ for (const t of tasks) {
 }
 console.log(
   `DEBUG_TURBO_SUMMARY: sync:core present = ${tasks.some((t) => t.id === '//#sync:core')}`
+);
+
+// Directly inspect the actual on-disk state of the file core's babel.config.mjs
+// needs, both the real (source) copy and core's pnpm-injected copy of it, taken
+// right after prepare finishes (success or failure) -- to see whether //#sync:core
+// running actually refreshed the injected copy, independent of whether turbo
+// resolved/executed the task correctly.
+import { statSync, readFileSync as readFileSync2 } from 'node:fs';
+import { createHash } from 'node:crypto';
+
+function inspect(label, path) {
+  try {
+    const stat = statSync(path);
+    const buf = readFileSync2(path);
+    const hash = createHash('sha1').update(buf).digest('hex').slice(0, 12);
+    console.log(
+      `DEBUG_FILE_STATE: ${label} exists mtimeMs=${stat.mtimeMs} size=${stat.size} sha1=${hash}`
+    );
+  } catch (e) {
+    console.log(`DEBUG_FILE_STATE: ${label} MISSING (${e.code})`);
+  }
+}
+
+inspect('real build-config dist', 'warp-drive-packages/build-config/dist/babel-macros.js');
+inspect(
+  'core injected build-config dist',
+  'warp-drive-packages/core/node_modules/@warp-drive/build-config/dist/babel-macros.js'
 );
