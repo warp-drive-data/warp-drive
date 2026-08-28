@@ -36,6 +36,24 @@ This table is kept in sync with [`skills/index.md`](./skills/index.md), which is
 routing table published inside the package itself for tooling that lands directly in `skills/`
 without reading this README first.
 
+## Editor & Agent Setup
+
+This repo wires the routing table above into every agent surface it develops against, and each
+one just points back to [`skills/index.md`](./skills/index.md) so there's a single place to
+update:
+
+| Agent | File |
+| --- | --- |
+| Claude Code | [`/CLAUDE.md`](../../CLAUDE.md) |
+| Codex, Grok, Cursor, and other tools following the open [AGENTS.md](https://agents.md) convention | [`/AGENTS.md`](../../AGENTS.md) |
+| Gemini CLI | [`/GEMINI.md`](../../GEMINI.md) |
+| GitHub Copilot | [`/.github/copilot-instructions.md`](../../.github/copilot-instructions.md) |
+| Cursor (project rule, in addition to its AGENTS.md support) | [`/.cursor/rules/memory-alpha.mdc`](../../.cursor/rules/memory-alpha.mdc) |
+
+Consuming this package from an app instead of contributing to WarpDrive itself? Copy whichever
+of those files matches your agent into your own repo and swap the path for
+`node_modules/@warp-drive/memory-alpha/skills/index.md`.
+
 ## Structure
 
 This package has no code and no dependencies — it is a directory of markdown files, organized

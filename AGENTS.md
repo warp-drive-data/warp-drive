@@ -1,0 +1,14 @@
+# Agent Instructions
+
+This repo's knowledge base for AI coding agents is [`@warp-drive/memory-alpha`](./warp-drive-packages/memory-alpha),
+shipped as plain markdown at `warp-drive-packages/memory-alpha/skills/`.
+
+Before starting any task in this repo:
+
+1. Read [`warp-drive-packages/memory-alpha/skills/index.md`](./warp-drive-packages/memory-alpha/skills/index.md).
+2. Find the single row that matches your task and read **only** that file.
+3. If nothing matches, the skill doesn't exist yet — proceed using your own judgment and the
+   surrounding code/docs as usual.
+
+Do not browse the rest of `skills/` or read whole directories beyond what the index tells you to
+load — the index is enough to route you.
