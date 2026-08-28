@@ -7,8 +7,10 @@ Each skill is a single markdown file describing one thing to accomplish with War
 a schema, making a request, handling a mutation, and so on. Skills are grouped into directories
 by topic, the same way the [Guides](/guides/index.md) are, and published as the
 [`@warp-drive/memory-alpha`](https://www.npmjs.com/package/@warp-drive/memory-alpha) npm
-package so they can be installed into any project and consumed by an MCP server, a Claude Code
-skill, or adapted into tool-specific instruction files (Cursor rules, Copilot instructions, etc.).
+package — named after the Federation's central archive of all recorded knowledge, minus the
+away-team incident that torched the original — so it can be installed into any project and
+consumed by an MCP server, a Claude Code skill, or adapted into tool-specific instruction files
+(Cursor rules, Copilot instructions, etc.).
 
 Browse the categories in the sidebar to get started. If you're an AI agent rather than a human
 reader, don't start here — read the package's `skills/index.md` (or its

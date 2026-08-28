@@ -2,10 +2,10 @@
 const config = {
   $schema: 'https://typedoc.org/schema.json',
   // this package has no source code, only markdown skills, so its docs
-  // page is just the overview readme with no exported members
+  // page is just a brief intro with no exported members
   entryPoints: [],
   out: 'doc',
-  readme: 'skills/overview.md',
+  readme: 'api-docs.md',
 };
 
 export default config;
