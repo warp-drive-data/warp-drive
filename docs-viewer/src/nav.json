@@ -34,7 +34,10 @@
       "packages": [
         { "name": "@warp-drive/holodeck", "description": "⚡️ Simple, Fast HTTP Mocking for Tests" },
         { "name": "@warp-drive/schema-dsl", "description": "TypeScript DSL for defining WarpDrive schemas" },
-        { "name": "eslint-plugin-warp-drive", "description": "ESLint rules for Applications using WarpDrive or EmberData" },
+        {
+          "name": "eslint-plugin-warp-drive",
+          "description": "ESLint rules for Applications using WarpDrive or EmberData"
+        },
         {
           "name": "@warp-drive/memory-alpha",
           "description": "WarpDrive knowledge packaged as plain markdown for AI coding agents (Claude Skills, MCP servers, Copilot/Cursor instruction files, etc.)"
