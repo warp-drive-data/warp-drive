@@ -16,7 +16,7 @@
     "start": "turbo run start --filter=./packages/* --concurrency=23",
     "start:specs": "turbo run start --filter=./specs",
     "sync:specs": "pnpm --filter './specs' run sync",
-    "sync:core": "mkdir -p warp-drive-packages/core/node_modules/@warp-drive/build-config/dist && rsync -a --exclude=.gitkeep warp-drive-packages/build-config/dist/ warp-drive-packages/core/node_modules/@warp-drive/build-config/dist/",
+    "sync:core": "pnpm --filter @warp-drive/core run sync",
     "preview": "cd docs-viewer && pnpm start",
     "lint:tests": "turbo --log-order=stream lint --filter=./tests/* --continue --concurrency=$(./bin/calculate-jobs)",
     "lint:pkg": "turbo --log-order=stream lint --filter=./packages/* --continue --concurrency=$(./bin/calculate-jobs)",

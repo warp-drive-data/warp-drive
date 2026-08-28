@@ -64,21 +64,20 @@ inspect(
   'warp-drive-packages/core/node_modules/@warp-drive/build-config/dist/babel-macros.js'
 );
 
-// Confirmed via a prior run: even a fully manual, isolated `pnpm --filter
-// @warp-drive/core run sync` (independent of turbo entirely) does NOT fix a
-// missing injected copy -- pnpm's sync-injected-deps-after-scripts hook
-// relies on its own internal change-tracking, tied to a real `pnpm run
-// build:pkg` execution for the *source* package (build-config). It never
-// observes changes that arrive via turbo's cache-restore (a raw file
-// extraction that completely bypasses pnpm). Test the actual fix: a plain,
-// deterministic filesystem copy (this is exactly `sync:core`'s new script).
+// Confirmed via a prior run: a fully manual, isolated `pnpm --filter
+// @warp-drive/core run sync` (core being the *consumer*) does NOT fix a
+// missing injected copy. NOT YET TESTED: running the *source* package's own
+// sync script instead -- @warp-drive/build-config is the one whose dist/
+// needs to reach consumers, and //#sync's own documented rationale is
+// specifically about the hook tied to a *source* package's own script
+// execution pushing its output out to consumers. Test that directly.
 import { execSync } from 'node:child_process';
 try {
-  execSync('pnpm run sync:core', { stdio: 'inherit' });
+  execSync('pnpm --filter @warp-drive/build-config run sync', { stdio: 'inherit' });
 } catch (e) {
   console.log('DEBUG_MANUAL_SYNC: threw', e.message);
 }
 inspect(
-  'core injected build-config dist (after plain cp sync:core)',
+  'core injected build-config dist (after build-config\'s OWN sync script)',
   'warp-drive-packages/core/node_modules/@warp-drive/build-config/dist/babel-macros.js'
 );
