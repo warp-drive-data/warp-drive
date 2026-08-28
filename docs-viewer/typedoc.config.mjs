@@ -64,7 +64,7 @@ const config = {
       'Type Aliases',
       'Modules',
     ],
-    blockTags: [...OptionDefaults.blockTags, '@deprecated', '@until', '@since', '@id', '@badge'],
+    blockTags: [...OptionDefaults.blockTags, '@deprecated', '@until', '@since', '@id', '@badge', '@title'],
     modifierTags: [
       ...OptionDefaults.modifierTags,
       '@noInheritDoc',

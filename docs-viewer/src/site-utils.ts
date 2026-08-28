@@ -645,15 +645,13 @@ const PASSTHROUGH_HEADINGS = new Set([
 ]);
 
 /**
- * Reads an optional `@badge <Label>` tag on the page's own top-level symbol, letting a doc
- * author override the `<KindBadge>` label — e.g. a class that's conceptually a "Component", a
- * variable that's really a "Handler", a function that's a query "Builder" — and strips that tag's
- * section(s) from the body. Only a `@badge` that belongs to the page's own symbol counts: walking
- * up from it must reach the H1 without passing through anything other than the structural
- * signature groupings above — a real nested member (e.g. a class's own method) blocks it, since
- * `<KindBadge>` only ever appears once, next to the page's own H1.
+ * Reads an optional single-line tag (rendered as e.g. `## Badge` / `## Title`) on the page's own
+ * top-level symbol, and strips its section(s) from the body. Only a tag that belongs to the
+ * page's own symbol counts: walking up from it must reach the H1 without passing through
+ * anything other than the structural signature groupings above — a real nested member (e.g. a
+ * class's own method) blocks it, since these tags only ever affect the page's own H1.
  */
-function extractKindOverride(content: string): { content: string; kind: string | null } {
+function extractTopLevelTagValue(content: string, tagText: string): { content: string; value: string | null } {
   const lines = content.split('\n');
   const headings: { index: number; level: number; text: string }[] = [];
   for (let i = 0; i < lines.length; i++) {
@@ -662,11 +660,11 @@ function extractKindOverride(content: string): { content: string; kind: string |
   }
 
   const linesToRemove = new Set<number>();
-  let kind: string | null = null;
+  let value: string | null = null;
 
   for (let hi = 0; hi < headings.length; hi++) {
     const heading = headings[hi];
-    if (heading.text !== 'Badge') continue;
+    if (heading.text !== tagText) continue;
 
     let reachedH1 = false;
     let idx = hi;
@@ -689,17 +687,17 @@ function extractKindOverride(content: string): { content: string; kind: string |
     if (!reachedH1) continue;
 
     const blockEnd = hi + 1 < headings.length ? headings[hi + 1].index : lines.length;
-    let versionStart = heading.index + 1;
-    while (versionStart < blockEnd && lines[versionStart].trim() === '') versionStart++;
-    const value = (lines[versionStart] ?? '').trim();
-    if (!value) continue;
+    let contentStart = heading.index + 1;
+    while (contentStart < blockEnd && lines[contentStart].trim() === '') contentStart++;
+    const foundValue = (lines[contentStart] ?? '').trim();
+    if (!foundValue) continue;
 
-    let removalEnd = versionStart + 1;
+    let removalEnd = contentStart + 1;
     while (removalEnd < blockEnd && lines[removalEnd].trim() !== '') removalEnd++;
     if (removalEnd < blockEnd && lines[removalEnd].trim() === '') removalEnd++;
     for (let li = heading.index; li < removalEnd; li++) linesToRemove.add(li);
 
-    kind ??= value;
+    value ??= foundValue;
   }
 
   const kept = lines
@@ -707,7 +705,14 @@ function extractKindOverride(content: string): { content: string; kind: string |
     .join('\n')
     .replace(/\n{3,}/g, '\n\n');
 
-  return { content: kept, kind };
+  return { content: kept, value };
+}
+
+/** Escapes `<`/`>` so literal component-like syntax (e.g. `<Await />`) renders as text rather
+ * than being parsed as an HTML/Vue tag — matches how TypeDoc itself escapes generics in headings
+ * (e.g. `Await\<T, E\>`). */
+function escapeHeadingText(text: string): string {
+  return text.replace(/</g, '\\<').replace(/>/g, '\\>');
 }
 
 /**
@@ -779,14 +784,20 @@ export async function postProcessApiDocs() {
 
     // On a member's own page, show its kind (Function, Class, ...) as a <KindBadge> before its
     // name instead of TypeDoc's "{Kind}: " title prefix (dropped via pageTitleTemplates in
-    // typedoc.config.mjs). A `@badge <Label>` tag on that symbol overrides the label shown (e.g.
-    // a class that's conceptually a "Component", a variable that's a "Handler").
+    // typedoc.config.mjs). A `@badge <Label>` tag overrides the label shown (e.g. a class that's
+    // conceptually a "Component", a variable that's a "Handler"). A `@title <Text>` tag overrides
+    // the name itself (e.g. showing a component's name as `<Await />`).
     const defaultKind = fileKindLabel(file);
     if (defaultKind) {
-      const kindOverride = extractKindOverride(newContent);
+      const kindOverride = extractTopLevelTagValue(newContent, 'Badge');
       newContent = kindOverride.content;
-      const kind = kindOverride.kind ?? defaultKind;
-      newContent = newContent.replace(/^# ([^\n]+)$/m, (_match, title: string) => `# ${kindBadgeMarkup(kind)} ${title}`);
+      const titleOverride = extractTopLevelTagValue(newContent, 'Title');
+      newContent = titleOverride.content;
+      const kind = kindOverride.value ?? defaultKind;
+      newContent = newContent.replace(/^# ([^\n]+)$/m, (_match, title: string) => {
+        const displayTitle = titleOverride.value ? escapeHeadingText(titleOverride.value) : title;
+        return `# ${kindBadgeMarkup(kind)} ${displayTitle}`;
+      });
     }
 
     // Turn every `#### Since` section into a `<SinceBadge>` next to the heading it describes
