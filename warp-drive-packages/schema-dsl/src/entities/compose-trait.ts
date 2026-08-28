@@ -41,6 +41,7 @@ import type { AnyConstructor } from '../-private/types.ts';
  * @since 5.9.0
  * @public
  * @classDecorator
+ * @category Entity Decorators
  */
 export function trait(..._traits: AnyConstructor[]): (target: AnyConstructor) => void {
   return function (_target: AnyConstructor): void {};

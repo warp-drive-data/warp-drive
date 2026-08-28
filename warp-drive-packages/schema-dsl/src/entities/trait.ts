@@ -66,6 +66,7 @@ export interface TraitOptions {
  * @since 5.9.0
  * @public
  * @classDecorator
+ * @category Entity Decorators
  */
 export function Trait(target: AnyConstructor): void;
 export function Trait(name: string, options?: TraitOptions): (target: AnyConstructor) => void;
