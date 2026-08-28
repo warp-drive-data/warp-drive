@@ -1,5 +1,129 @@
 # enableGlobalVirtualStore: true
 
+## pnpm 11 only reads auth/registry settings from .npmrc -- everything else
+## must live here. These settings used to live in .npmrc; moved as-is.
+##
+## We intentionally are not using `hoisting` and using `injected` workspace
+## packages to ensure properly isolated dep trees for test apps.
+##
+## things like `moduleExists` from @embroider/macros will report false
+## answers for the test apps unless we avoid hoisting.
+##
+## Note, if we ever need to hoist something, we can use hoistPattern: [""]
+## For instance: hoistPattern: ["*node-fetch*"]
+## to hoist the specific thing we need and set this to `true`. When true
+## and a hoist pattern is present only the hoist pattern will be hoisted.
+hoist: false
+
+## We should consider removing these
+## But historically this was the default for pnpm
+## and there is cleanup to do to make things work
+## without these
+## Its also just useful to have these tools top-level
+publicHoistPattern:
+  - "*eslint*"
+  - "*prettier*"
+
+## Ideally this would be dynamic as in CI we only have 4 CPUs
+## While locally we have 10-16 CPUs. The more CPUs we use during
+## install, generally the faster the install will be.
+childConcurrency: 10
+
+## This is the default but its good to be explicit
+## This helps us to ensure we are using the workspace
+## version of a package.
+saveWorkspaceProtocol: rolling
+
+## The current default is "highest" but we want to be explicit
+## Since we also just want to ensure we are always using the
+## latest versions of things we can.
+resolutionMode: highest
+
+## This is documented in a slightly different place in the pnpm
+## docs. If this setting is true (the default) then pnpm will
+## run the pre* and post* versions of a script when running other
+## scripts. For instance running "build" would also run "prebuild"
+## and "postbuild". This is not the behavior we want.
+enablePrePostScripts: false
+
+## We use volta to manage our node and pnpm versions, so we do not
+## want pnpm to manage these for us.
+managePackageManagerVersions: false
+
+## Make sure we don't troll ourselves when updating deps
+verifyDepsBeforeRun: true
+
+## pnpm 11 changed the default of autoInstallPeers from false to true.
+## We do not want to auto-install peers because we want to ensure we
+## understand what is actually required, so that if a consuming app
+## uses strict mode things will work.
+##
+## This said, Apps should probably set this to true.
+autoInstallPeers: false
+
+## We want to error if we did not setup required peers correctly.
+## However, this pnpm bug prevents us using this as it will error when
+## using `--no-lockfile` without reporting any errors:
+## https://github.com/pnpm/pnpm/issues/8382
+strictPeerDependencies: false
+
+## We use so many similarly grouped peers, we want to make the
+## peer-groups easier to distinguish.
+## This forces a shorter sha for all groups (vs the default of 1000)
+peersSuffixMaxLength: 40
+virtualStoreDirMaxLength: 40
+
+## If a dependency is not declared, we do not want to accidentally
+## resolve it from the workspace root. This is a common source of
+## bugs in monorepos.
+resolvePeersFromWorkspaceRoot: false
+
+## Our Workspace Packages are "injected" so prevent devDependencies
+## from being exposed and to allow for us to test optional
+## peerDependencies.
+injectWorkspacePackages: true
+
+## This also means we do not want to hoist them to the root
+## As this would both expose them to all other packages AND
+## results in them using symlinks instead of hardlinks
+hoistWorkspacePackages: false
+
+## We use the `workspace:*` protocol for all workspace packages.
+## In theory it would be nice to use `deep` here just in case we
+## missed something so that we could tell pnpm to use the workspace
+## version of a package if it exists. At any depth.
+##
+## However, it seems that deep/true result in workspace packages
+## that are dependencies being symlinked instead of hardlinked more
+## often, even at the top-level of a package, which is not what we
+## want.
+linkWorkspacePackages: false # deep
+
+## Update injected dependencies when needed. This will rerun after
+## various "build" scripts in our published packages.
+##
+## Unfortunately, this does not run after scripts in the monorepo
+## root, so we have added a special "sync" script to handle this.
+syncInjectedDepsAfterScripts:
+  - build:pkg
+  - sync
+
+## In keeping with our "no hoisting" and "no auto-peers" and
+## "isolated dep trees", we also want to avoid other things that
+## lead to reliance on hoisting.
+## In general, deduping leads to hoisting. This particular setting
+## causes direct-dependencies to resolve from the workspace root if
+## already in root. We don't want this.
+dedupeDirectDeps: false
+
+## We do not want to dedupe peer dependencies as this results in
+## hoisting and violates optional peer isolation.
+dedupePeerDependents: false
+
+## We do not want to dedupe injected dependencies as this results in
+## hoisting and violates optional peer isolation.
+dedupeInjectedDeps: false
+
 ## Supply-chain hardening
 ##
 ## Newly published versions are not installable until they have existed
@@ -138,3 +262,97 @@ catalog:
   ember-source: ~7.2.0
   vite: ^8.2.1
   "@types/node": ^26.2.0
+
+## The following settings previously lived under the root package.json's
+## "pnpm" field. pnpm 11 no longer reads that field -- these all moved here.
+packageExtensions:
+  vitepress-plugin-group-icons:
+    peerDependencies:
+      vite: "*"
+  typedoc-vitepress-theme:
+    peerDependencies:
+      typedoc: "*"
+  "@glimmer/syntax":
+    dependencies:
+      "@glimmer/env": ^0.1.7
+  ember-page-title:
+    peerDependencies:
+      "@glimmer/component": "*"
+      ember-source: "*"
+  ember-source:
+    peerDependencies:
+      "@glimmer/component": "*"
+
+overrides:
+  "@embroider/macros": ^1.20.6
+  ember-auto-import: ^2.13.1
+  "@embroider/addon-shim>broccoli-funnel": "-"
+  ember-cli-babel>broccoli-funnel: "-"
+  qunit-console-grouper>broccoli-funnel: "-"
+  broccoli-merge-trees: ^4.2.0
+  "@glimmer/validator": ^0.95.0
+  "@glint/ember-tsc": 1.10.0
+  "@glint/template": 1.8.0
+  "@glint/tsserver-plugin": 2.7.0
+  ember-cli-babel: ^8.3.1
+  "@embroider/macros>ember-cli-babel": "-"
+  ember-source>ember-cli-babel: "-"
+  ember-source>broccoli-file-creator: "-"
+  ember-source>ember-cli-get-component-path-option: "-"
+  ember-source>ember-cli-normalize-entity-name: "-"
+  ember-source>ember-cli-path-utils: "-"
+  ember-source>ember-cli-string-utils: "-"
+  ember-source>ember-cli-typescript-blueprint-polyfill: "-"
+  ember-source>ember-cli-version-checker: "-"
+  "@ember/optional-features>ember-cli-version-checker": "-"
+  unplugin>webpack-virtual-modules: "-"
+  ember-cli-htmlbars: ^7.0.1
+  qunit: 2.26.0
+  ember-compatibility-helpers: ^1.2.7
+  testem: ~3.20.1
+  typescript: 5.9.3
+  "@types/bun": 1.3.14
+  bun-types: 1.4.0
+  lodash: ^4.18.1
+  caniuse-lite: ^1.0.30001809
+  rollup: ^4.62.4
+  "@babel/types": ^7.29.8
+  "@babel/parser": ^7.29.8
+  "@babel/traverse": ^7.29.8
+  prettier: ^3.9.6
+  "@types/node": "catalog:"
+  "@vue/compiler-sfc": 3.5.41
+  "@shikijs/langs": 4.4.3
+  string.prototype.matchall: npm:@nolyfill/string.prototype.matchall@^1.0.44
+
+peerDependencyRules:
+  ignoreMissing:
+    - rsvp
+    - "@glimmer/component"
+    - search-insights
+    - "@pnpm/logger"
+    - "@algolia/client-search"
+  allowAny:
+    - ember-source
+    - "@glimmer/component"
+    - typescript
+    - "@pnpm/logger"
+
+allowUnusedPatches: true
+
+patchedDependencies:
+  qunit@2.19.4: patches/qunit@2.19.4.patch
+  testem@3.11.0: patches/testem@3.11.0.patch
+  "@ember/test-helpers@3.3.0": patches/@ember__test-helpers@3.3.0.patch
+  "@ember/test-helpers@4.0.4": patches/@ember__test-helpers@4.0.4.patch
+  "@ember/test-helpers@5.1.0": patches/@ember__test-helpers@5.1.0.patch
+  "@ember/test-helpers@5.2.0": patches/@ember__test-helpers@5.2.0.patch
+  ember-source@4.4.5: patches/ember-source@4.4.5.patch
+  ember-source@3.28.12: patches/ember-source@3.28.12.patch
+
+## pnpm 11 requires explicit opt-in for dependency postinstall/build scripts.
+## unrs-resolver (native resolver used transitively by eslint-import-context)
+## is a well-known, widely-used package; its postinstall just fetches the
+## prebuilt native binary for the current platform.
+allowBuilds:
+  unrs-resolver: true
