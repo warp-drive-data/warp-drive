@@ -351,12 +351,44 @@ Both tags only affect the page's own top-level symbol; they have no
 effect when used on a nested class member, since only the page's own
 heading shows these badges.
 
-### Grouping related members with `@category`
+### Organizing a page with `@group` and `@category`
 
-`@category` is a standard TypeDoc tag (not specific to this repo) that
-groups related children — a class's methods/properties, or a module's
-top-level exports — into named sections instead of TypeDoc's default
-kind-based grouping (all methods together, then all properties, etc.).
+TypeDoc supports two independent, standard (not repo-specific) tags
+for organizing the children listed on a class's or module's own page.
+They look similar but behave very differently — pick whichever fits
+what you're organizing.
+
+**`@group <Name>` re-buckets what "kind" a symbol counts as.** Every
+symbol already has a default group — the plural of its TypeScript kind
+(`Functions`, `Classes`, `Properties`, etc.) — so tagging a symbol with
+`@group <Name>` just moves it into a different, named bucket instead.
+Nothing else on the page is affected: every other symbol keeps
+whatever group it already had, explicit or default.
+
+```ts
+class RequestManager {
+  /**
+   * @group Handlers
+   */
+  use(handlers: Handler[]): void {}
+}
+```
+
+**`@category <Name>` arranges children by topic instead of by kind** —
+useful when several different kinds of things (a property, a function,
+a class) together make up one logical feature and should be presented
+as a unit regardless of their TypeScript kind. The tradeoff:
+`@category` is all-or-nothing per page. The moment *any* symbol on a
+page has a `@category`, every symbol without one falls into a generic
+`"Other"` bucket instead — there's no partial opt-in.
+
+Given that tradeoff, **default to `@group`**, and reach for `@category`
+only when the grouping you want genuinely cuts across kinds, and
+you're prepared to categorize everything relevant on that page rather
+than just a few symbols. Never mix the two for symbols that need to
+render together in the same page — see [`@decorator` and
+`@classDecorator`](#marking-decorators-with-decorator-and-classdecorator)
+below for a concrete example of this exact tradeoff.
 
 Tag each member with the category it belongs to:
 
@@ -392,6 +424,64 @@ Keep category names short, human-scannable topic phrases consistent
 with existing ones in the same package (e.g. `Resource Data`,
 `Resource Lifecycle`, `Cache Management`) rather than inventing a new
 one-off name per symbol.
+
+### Marking decorators with `@decorator` and `@classDecorator`
+
+`@decorator` and `@classDecorator` are repo-specific modifier tags
+(implemented by `docs-viewer/typedoc-plugins/decorator-groups.mjs`) for
+functions used as a property/field decorator or a class decorator,
+respectively:
+
+```ts
+/**
+ * @since 5.9.0
+ * @public
+ * @decorator
+ */
+export function attribute(target: object, key: string): void;
+```
+
+```ts
+/**
+ * @since 5.9.0
+ * @public
+ * @classDecorator
+ */
+export function Resource(target: AnyConstructor): void;
+```
+
+Each tag fills in two defaults, as long as the symbol doesn't already
+set its own:
+
+- `@group` — `"Field Decorators"` for `@decorator`, `"Class
+  Decorators"` for `@classDecorator` — so decorators get their own
+  section on the module's index page instead of a flat list mixed in
+  with everything else. This is `@group` rather than `@category` on
+  purpose (see [above](#organizing-a-page-with-group-and-category)):
+  decorators live in modules (like `schema-dsl`) that don't otherwise
+  use `@category`, so `@group` avoids ever tripping the "one
+  `@category` recategorizes the whole page" rule. If a decorator's
+  module later needs `@category` for something else, either give the
+  decorators an explicit `@category` too, or keep `@category` out of
+  that module entirely — don't let the two mix silently.
+- `@badge` — `"Decorator"` / `"Class Decorator"` — shown as the kind
+  badge on the symbol's own page instead of the default `"Function"`.
+
+A symbol can still set its own `@group` to opt out of the default
+bucket, same as any other `@group` usage — this is how `schema-dsl`'s
+entity-level decorators (`Resource`, `Trait`, `ObjectSchema`, `trait`)
+end up grouped under their own `Entity Decorators` section instead of
+`Class Decorators`:
+
+```ts
+/**
+ * @since 5.9.0
+ * @public
+ * @classDecorator
+ * @group Entity Decorators
+ */
+export function Resource(target: AnyConstructor): void;
+```
 
 ### Use `@hideconstructor` for classes that aren't directly instantiated by users
 
