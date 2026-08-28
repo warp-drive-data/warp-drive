@@ -1,0 +1,7 @@
+{
+  "title": "Contributors",
+  "items": ["bail-early-in-hot-paths"],
+  "files": {
+    "bail-early-in-hot-paths": { "title": "Bail Early in Hot Paths" }
+  }
+}

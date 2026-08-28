@@ -31,6 +31,7 @@ other skill files, do not list or read whole directories — this table is enoug
 | --- | --- |
 | Define a resource's shape — fields, relationships, identity — for the `Store` | `skills/schemas/define-a-resource-schema.md` |
 | Fetch or query remote data through the `Store` so it's cached and reactive | `skills/requests/fetch-and-cache-data.md` |
+| Decide where to put a guard/fallback when contributing to WarpDrive's internals | `skills/contributors/bail-early-in-hot-paths.md` |
 
 This table is kept in sync with [`skills/index.md`](./skills/index.md), which is the same
 routing table published inside the package itself for tooling that lands directly in `skills/`

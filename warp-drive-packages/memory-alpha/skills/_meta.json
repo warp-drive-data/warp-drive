@@ -1,6 +1,6 @@
 {
   "title": "Skills",
-  "items": ["schemas", "requests"],
+  "items": ["schemas", "requests", "contributors"],
   "webIndex": "overview",
   "files": {
     "index": { "draft": true }
