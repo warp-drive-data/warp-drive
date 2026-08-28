@@ -56,6 +56,7 @@ export interface ObjectFieldOptions {
  *
  * @since 5.9.0
  * @public
+ * @decorator
  */
 export function object(target: object, key: string): void;
 export function object(options: ObjectFieldOptions): (target: object, key: string) => void;

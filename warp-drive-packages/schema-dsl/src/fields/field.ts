@@ -54,6 +54,7 @@ export interface FieldOptions {
  *
  * @since 5.9.0
  * @public
+ * @decorator
  */
 export function field(target: object, key: string): void;
 export function field(options: FieldOptions): (target: object, key: string) => void;

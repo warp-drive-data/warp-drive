@@ -7,6 +7,7 @@
  *
  * @since 5.9.0
  * @public
+ * @decorator
  */
 export function optional(target: object, key: string): void;
 export function optional(

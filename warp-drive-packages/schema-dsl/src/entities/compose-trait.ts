@@ -40,6 +40,7 @@ import type { AnyConstructor } from '../-private/types.ts';
  * @param traits - the {@link Trait}-decorated classes to compose
  * @since 5.9.0
  * @public
+ * @classDecorator
  */
 export function trait(..._traits: AnyConstructor[]): (target: AnyConstructor) => void {
   return function (_target: AnyConstructor): void {};

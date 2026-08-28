@@ -49,6 +49,7 @@ export interface LocalOptions {
  *
  * @since 5.9.0
  * @public
+ * @decorator
  */
 export function local(target: object, key: string): void;
 export function local(options: LocalOptions): (target: object, key: string) => void;

@@ -62,6 +62,7 @@ export interface ObjectSchemaOptions {
  *
  * @since 5.9.0
  * @public
+ * @classDecorator
  */
 export function ObjectSchema(target: AnyConstructor): void;
 export function ObjectSchema(type: string, options?: ObjectSchemaOptions): (target: AnyConstructor) => void;

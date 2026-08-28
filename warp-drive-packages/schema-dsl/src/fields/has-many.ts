@@ -93,6 +93,7 @@ export interface HasManyOptions {
  *
  * @since 5.9.0
  * @public
+ * @decorator
  */
 export function hasMany(options: HasManyOptions): (target: object, key: string) => void;
 export function hasMany(

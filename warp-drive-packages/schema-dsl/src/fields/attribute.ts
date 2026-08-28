@@ -55,6 +55,7 @@ export interface AttributeOptions {
  *
  * @since 5.9.0
  * @public
+ * @decorator
  */
 export function attribute(target: object, key: string): void;
 export function attribute(options: AttributeOptions): (target: object, key: string) => void;
