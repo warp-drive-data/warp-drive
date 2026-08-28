@@ -1013,6 +1013,70 @@ module('Reads | hasMany in linksMode', function (hooks) {
     assert.equal(record.name, 'Leo', 'name is accessible');
   });
 
+  test('(sync) we do not error when a save response updates the link on an already-materialized links-only relationship', function (assert) {
+    const store = new Store();
+    const { schema } = store;
+
+    schema.registerResource(
+      withDefaults({
+        type: 'user',
+        fields: [
+          {
+            name: 'name',
+            kind: 'field',
+          },
+          {
+            name: 'friends',
+            type: 'user',
+            kind: 'hasMany',
+            options: { inverse: 'friends', async: false, linksMode: true },
+          },
+        ],
+      })
+    );
+
+    // simulates an initial response whose relationship only ever includes a link, never `data`
+    const record = store.push<User>({
+      data: {
+        type: 'user',
+        id: '1',
+        attributes: {
+          name: 'Leo',
+        },
+        relationships: {
+          friends: {
+            links: { related: '/user/1/friends' },
+          },
+        },
+      },
+    });
+
+    // materializes the ManyArray for the first time; `data` is missing so this
+    // takes the "known-to-be-empty" fallback path in `getHasManyField`
+    assert.equal(record.friends?.length, 0, 'friends is treated as known-to-be-empty');
+
+    // simulates a save response (e.g. createRecord/updateRecord) whose relationship
+    // again only includes a link (still no `data`), but with a different href than
+    // before. This marks the relationship stale and forces `ManyArrayManager#_syncArray`
+    // to re-run against the already-materialized ManyArray.
+    store.push<User>({
+      data: {
+        type: 'user',
+        id: '1',
+        attributes: {
+          name: 'Leo',
+        },
+        relationships: {
+          friends: {
+            links: { related: '/user/1/friends?page=2' },
+          },
+        },
+      },
+    });
+
+    assert.equal(record.friends?.length, 0, 'friends is still treated as known-to-be-empty after re-sync');
+  });
+
   test('(sync) we error in linksMode if the related resources are not included (no link)', async function (assert) {
     const store = new Store();
     const { schema } = store;
