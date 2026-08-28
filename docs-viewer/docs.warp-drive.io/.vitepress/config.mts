@@ -196,6 +196,8 @@ export default withPwa(
             ...TypeDocSidebar.corePackages.items,
             { text: 'Frameworks' },
             ...TypeDocSidebar.frameworkPackages.items,
+            { text: 'Tooling' },
+            ...TypeDocSidebar.toolingPackages.items,
           ],
         },
         {

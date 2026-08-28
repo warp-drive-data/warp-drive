@@ -380,60 +380,68 @@ function deepConvert(obj: Record<string, any>, orderedItems?: string[]) {
 
 type SidebarItem = { text: string; items?: SidebarItem[]; link?: string; collapsed?: boolean };
 
-const OLD_PACKAGES = [
-  '@ember-data/adapter',
-  '@ember-data/active-record',
-  '@ember-data/debug',
-  '@ember-data/legacy-compat',
-  '@ember-data/model',
-  '@ember-data/json-api',
-  '@ember-data/store',
-  '@ember-data/graph',
-  '@ember-data/request',
-  '@ember-data/request-utils',
-  '@ember-data/rest',
-  '@ember-data/serializer',
-  '@ember-data/tracking',
-  '@warp-drive/core-types',
-  '@warp-drive/build-config',
-  '@warp-drive/schema-record',
-];
+interface ApiNavGroup {
+  /** The section heading shown in the sidebar. */
+  text: string;
+  /**
+   * Package names belonging to this section, in display order. Packages not
+   * listed in any group fall back to the "Frameworks" group, sorted
+   * alphabetically after this group's explicitly ordered packages.
+   */
+  packages: string[];
+}
 
-const CORE_PACKAGES = [
-  '@warp-drive/core',
-  '@warp-drive/experiments',
-  '@warp-drive/json-api',
-  '@warp-drive/utilities',
-  '@warp-drive/legacy',
-  '@warp-drive/holodeck',
-  'eslint-plugin-warp-drive',
-];
+const API_NAV_GROUPS = (
+  JSON.parse(readFileSync(path.join(__dirname, 'nav.json'), 'utf-8')) as { groups: ApiNavGroup[] }
+).groups;
 
-function isFrameworkPackage(name: string) {
-  return !OLD_PACKAGES.includes(name) && !CORE_PACKAGES.includes(name);
+function findApiNavGroup(text: string): ApiNavGroup {
+  const group = API_NAV_GROUPS.find((g) => g.text === text);
+  if (!group) throw new Error(`Missing "${text}" group in nav.json`);
+  return group;
+}
+
+/** Sorts items by their position in `order`; unlisted items sort alphabetically after listed ones. */
+function sortByPackageOrder(items: SidebarItem[], order: string[]): SidebarItem[] {
+  return [...items].sort((a, b) => {
+    const aIdx = order.indexOf(a.text);
+    const bIdx = order.indexOf(b.text);
+    if (aIdx === -1 && bIdx === -1) return a.text.localeCompare(b.text);
+    if (aIdx === -1) return 1;
+    if (bIdx === -1) return -1;
+    return aIdx - bIdx;
+  });
 }
 
 export function splitApiDocsSidebar(sidebar: SidebarItem[]) {
+  const universalOrder = findApiNavGroup('Universal').packages;
+  const frameworksOrder = findApiNavGroup('Frameworks').packages;
+  const toolingOrder = findApiNavGroup('Tooling').packages;
+  const legacyOrder = findApiNavGroup('Legacy Packages').packages;
+
   const oldPackages: SidebarItem[] = [];
   const corePackages = { text: 'Universal', items: [] as SidebarItem[] } satisfies SidebarItem;
   const frameworkPackages = { text: 'Frameworks', items: [] as SidebarItem[] } satisfies SidebarItem;
+  const toolingPackages = { text: 'Tooling', items: [] as SidebarItem[] } satisfies SidebarItem;
 
   for (const item of sidebar) {
-    if (OLD_PACKAGES.includes(item.text)) {
+    if (legacyOrder.includes(item.text)) {
       oldPackages.push(item);
+    } else if (toolingOrder.includes(item.text)) {
+      toolingPackages.items.push(item);
+    } else if (universalOrder.includes(item.text)) {
+      corePackages.items.push(item);
     } else {
-      if (isFrameworkPackage(item.text)) {
-        frameworkPackages.items.push(item);
-      } else {
-        corePackages.items.push(item);
-      }
+      // Frameworks is the catch-all: anything not explicitly listed elsewhere
+      frameworkPackages.items.push(item);
     }
   }
 
   return {
-    oldPackages,
-    frameworkPackages,
-    corePackages,
+    oldPackages: sortByPackageOrder(oldPackages, legacyOrder),
+    frameworkPackages: { ...frameworkPackages, items: sortByPackageOrder(frameworkPackages.items, frameworksOrder) },
+    toolingPackages: { ...toolingPackages, items: sortByPackageOrder(toolingPackages.items, toolingOrder) },
+    corePackages: { ...corePackages, items: sortByPackageOrder(corePackages.items, universalOrder) },
   };
 }
 
@@ -536,6 +544,7 @@ export async function postProcessApiDocs() {
   // get the package list
   const MainPackages: string[] = [];
   const FrameworkPackages: string[] = [];
+  const ToolingPackages: string[] = [];
   const OldPackages: string[] = [];
   for (const item of sidebar.corePackages.items) {
     MainPackages.push(`- [${item.text}](${item.link!})`);
@@ -543,12 +552,15 @@ export async function postProcessApiDocs() {
   for (const item of sidebar.frameworkPackages.items) {
     FrameworkPackages.push(`- [${item.text}](${item.link!})`);
   }
+  for (const item of sidebar.toolingPackages.items) {
+    ToolingPackages.push(`- [${item.text}](${item.link!})`);
+  }
   for (const item of sidebar.oldPackages) {
     OldPackages.push(`- [${item.text}](${item.link!})`);
   }
 
   // generate the API documentation
-  const apiDocumentation = `${ApiDocumentation}\n\n## Main Packages\n\n${MainPackages.join('\n')}\n\n## Framework Packages\n\n${FrameworkPackages.join('\n')}\n\n## Legacy Packages\n\n${OldPackages.join('\n')}\n\n`;
+  const apiDocumentation = `${ApiDocumentation}\n\n## Main Packages\n\n${MainPackages.join('\n')}\n\n## Framework Packages\n\n${FrameworkPackages.join('\n')}\n\n## Tooling Packages\n\n${ToolingPackages.join('\n')}\n\n## Legacy Packages\n\n${OldPackages.join('\n')}\n\n`;
 
   // copy the rest of the files
   const files = globSync('**/*.md', { cwd: dir, nodir: true });

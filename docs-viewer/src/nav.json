@@ -1,0 +1,50 @@
+{
+  "groups": [
+    {
+      "text": "Universal",
+      "packages": [
+        "@warp-drive/core",
+        "@warp-drive/json-api",
+        "@warp-drive/utilities",
+        "@warp-drive/legacy",
+        "@warp-drive/experiments"
+      ]
+    },
+    {
+      "text": "Frameworks",
+      "packages": [
+        "@warp-drive/ember",
+        "@warp-drive/react"
+      ]
+    },
+    {
+      "text": "Tooling",
+      "packages": [
+        "@warp-drive/holodeck",
+        "@warp-drive/schema-dsl",
+        "eslint-plugin-warp-drive"
+      ]
+    },
+    {
+      "text": "Legacy Packages",
+      "packages": [
+        "@ember-data/adapter",
+        "@ember-data/active-record",
+        "@ember-data/debug",
+        "@ember-data/legacy-compat",
+        "@ember-data/model",
+        "@ember-data/json-api",
+        "@ember-data/store",
+        "@ember-data/graph",
+        "@ember-data/request",
+        "@ember-data/request-utils",
+        "@ember-data/rest",
+        "@ember-data/serializer",
+        "@ember-data/tracking",
+        "@warp-drive/core-types",
+        "@warp-drive/build-config",
+        "@warp-drive/schema-record"
+      ]
+    }
+  ]
+}
