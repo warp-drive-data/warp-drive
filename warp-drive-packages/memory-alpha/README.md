@@ -16,9 +16,11 @@
 [![WarpDrive Discord Server](https://img.shields.io/badge/WarpDrive-grey?logo=discord&logoColor=fdb155)](https://discord.gg/PHBbnWJx5S
 )
 
-# @warp-drive/agent-knowledge
+# @warp-drive/memory-alpha
 
-WarpDrive knowledge for AI coding agents, packaged as plain markdown.
+Named after the Federation's central archive of all recorded knowledge, this package is WarpDrive's
+own Memory Alpha for coding agents: a database of everything they need to know, packaged as plain
+markdown, minus the away-team incident that torched the original.
 
 ## For Agents
 
@@ -77,7 +79,7 @@ under the "Skills" section, using the same markdown-plus-JSON compilation toolin
 Install the package and read markdown files directly from `node_modules`:
 
 ```sh
-npm install @warp-drive/agent-knowledge
+npm install @warp-drive/memory-alpha
 ```
 
 ```ts
@@ -85,7 +87,7 @@ import { readFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const pkgPath = require.resolve('@warp-drive/agent-knowledge/package.json');
+const pkgPath = require.resolve('@warp-drive/memory-alpha/package.json');
 const skill = readFileSync(pkgPath.replace('package.json', 'skills/schemas/define-a-resource-schema.md'), 'utf-8');
 ```
 

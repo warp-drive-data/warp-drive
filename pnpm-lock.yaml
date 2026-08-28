@@ -2895,8 +2895,6 @@ importers:
         specifier: 5.9.3
         version: 5.9.3
 
-  warp-drive-packages/agent-knowledge: {}
-
   warp-drive-packages/build-config:
     dependencies:
       '@embroider/addon-shim':
@@ -3166,6 +3164,8 @@ importers:
       typescript:
         specifier: 5.9.3
         version: 5.9.3
+
+  warp-drive-packages/memory-alpha: {}
 
   warp-drive-packages/react:
     dependencies:
