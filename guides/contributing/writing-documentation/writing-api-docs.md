@@ -264,6 +264,12 @@ we would do the following in `packages/core-types/src/index.ts`
 
 ### Always specify `@since` on non-type public APIs
 
+`@since` renders as a small badge rather than a body section, so it's
+always visible next to the name of the thing it describes without
+taking up page space.
+
+On a function, class, interface, variable, or type alias, it shows up
+right next to that page's own name:
 
 ```ts
 /**
@@ -271,6 +277,121 @@ we would do the following in `packages/core-types/src/index.ts`
  * @public
 */
 ```
+
+On a package's `@module` doc comment, it shows up next to that
+package's `<ModuleBadge>` on the module's index page instead:
+
+```ts
+/**
+ * This package provides essential types and symbols used
+ * by all the other WarpDrive packages.
+ *
+ * @module
+ * @since 5.9.0
+ */
+```
+
+> [!NOTE]
+> Module-level `@since` is currently only picked up from a package's
+> own root entry file (e.g. `packages/core-types/src/index.ts`), not
+> from a subpackage's own `@module` comment (e.g.
+> `core-types/src/cache.ts`). Put `@since` on a subpackage's exported
+> members instead until this is extended.
+
+### Overriding the displayed kind and name with `@badge` and `@title`
+
+Every function, class, interface, variable, type alias, and enumeration
+gets its own page whose heading shows its TypeScript kind (`Function`,
+`Class`, `Interface`, `Variable`, `Type Alias`, `Enumeration`) as a
+badge next to its name. That default is accurate but not always the
+most useful label for a reader — a class can be a component, a plain
+object can be a request handler, a function can be a request builder.
+
+Use `@badge <Label>` to override the kind badge with a more meaningful
+conceptual label:
+
+```ts
+/**
+ * The `<Await />` component allow you to utilize reactive control flow
+ * for asynchronous states in your application.
+ *
+ * @badge Component
+ */
+export class Await<T, E> extends Component<AwaitSignature<T, E>> {}
+```
+
+```ts
+/**
+ * A basic Fetch Handler which converts a request into a
+ * `fetch` call presuming the response to be `json`.
+ *
+ * @badge Handler
+ */
+const Fetch = { ... };
+```
+
+Use `@title <Text>` to override the name shown in the page heading
+itself, when the raw name (or its generic signature) isn't the most
+legible way to present it — for instance showing a component by its
+usage syntax instead of its class signature:
+
+```ts
+/**
+ * @badge Component
+ * @title <Await />
+ */
+export class Await<T, E> extends Component<AwaitSignature<T, E>> {}
+```
+
+renders as **`<Await />`** instead of **`Await<T, E>`**. Write the
+title exactly as it should be read — no escaping needed, even for
+angle brackets.
+
+Both tags only affect the page's own top-level symbol; they have no
+effect when used on a nested class member, since only the page's own
+heading shows these badges.
+
+### Grouping related members with `@category`
+
+`@category` is a standard TypeDoc tag (not specific to this repo) that
+groups related children — a class's methods/properties, or a module's
+top-level exports — into named sections instead of TypeDoc's default
+kind-based grouping (all methods together, then all properties, etc.).
+
+Tag each member with the category it belongs to:
+
+```ts
+class JSONAPICache {
+  /**
+   * @category Cache Management
+   */
+  mutate(mutation: Mutation): void {}
+
+  /**
+   * @category Cache Forking
+   */
+  fork(): Promise<JSONAPICache> {}
+}
+```
+
+which renders as `## Cache Management` and `## Cache Forking` sections
+on `JSONAPICache`'s page, each listing the members tagged into it.
+Optionally add `@categoryDescription <Name>` to the containing class,
+interface, or module's own doc comment to show a short blurb under
+that section's heading:
+
+```ts
+/**
+ * @categoryDescription Cache Management
+ * APIs for primary cache management functionality
+ */
+class JSONAPICache {}
+```
+
+Keep category names short, human-scannable topic phrases consistent
+with existing ones in the same package (e.g. `Resource Data`,
+`Resource Lifecycle`, `Cache Management`) rather than inventing a new
+one-off name per symbol.
 
 ### Use `@hideconstructor` for classes that aren't directly instantiated by users
 
