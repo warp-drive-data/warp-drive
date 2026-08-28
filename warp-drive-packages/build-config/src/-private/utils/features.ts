@@ -5,7 +5,13 @@ import { fileURLToPath } from 'node:url';
 import * as CURRENT_FEATURES from '../../canary-features.ts';
 type FEATURE = keyof typeof CURRENT_FEATURES;
 
-const dirname = typeof __dirname !== 'undefined' ? __dirname : fileURLToPath(new URL('.', import.meta.url));
+// This package's "." export always resolves to this compiled ESM file (see
+// package.json's `exports` map) -- there is no separate CJS build where a real
+// `__dirname` would exist. Node's synchronous require-of-ESM interop (e.g. Babel's
+// `loadPartialConfigSync`, used by @nullvoxpopuli/ember-rolldown's `detectConfigFile`)
+// stubs in `__dirname = "."`, a truthy but wrong value, silently resolving
+// `../package.json` against `process.cwd()` instead of this file's real directory.
+const dirname = fileURLToPath(new URL('.', import.meta.url));
 const relativePkgPath = path.join(dirname, '../package.json');
 
 const version = JSON.parse(fs.readFileSync(relativePkgPath, 'utf-8')).version;
