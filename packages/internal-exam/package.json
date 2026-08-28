@@ -40,8 +40,5 @@
     "ember-qunit": "9.1.0",
     "ember-source": "catalog:",
     "qunit": "^2.26.0"
-  },
-  "volta": {
-    "extends": "../../package.json"
   }
 }

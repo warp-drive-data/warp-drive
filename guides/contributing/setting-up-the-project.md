@@ -1,20 +1,12 @@
 # Setting Up The Project
 
-## Setup Volta
+## Setup mise
 
-If you are not already using [⚡️ volta](https://volta.sh/) or have a version older than `1.1.1` you will want to begin by [installing it](https://docs.volta.sh/guide/getting-started).
+If you don't already have [mise](https://mise.jdx.dev/) you will want to begin by [installing it](https://mise.jdx.dev/getting-started.html) and adding its shell activation to your profile.
 
-For package management, the project uses [PNPM](https://pnpm.io/).
+For package management, the project uses [PNPM](https://pnpm.io/). The repo's `mise.toml` pins the `node` and `pnpm` versions we use; once mise is activated in your shell, run `mise install` from the project root to fetch them.
 
-Volta will manage `node` and `pnpm` versions for you, but for [PNPM there is one more step](https://docs.volta.sh/advanced/pnpm):
-
-To your shell profile you will want to add the following.
-
-```sh
-export VOLTA_FEATURE_PNPM=1;
-```
-
-> **Note** if you have previously installed pnpm globally via other means you should uninstall it from all other locations first. You may also need to uninstall nvm or other node version managers if they turn out to conflict.
+> **Note** if you have previously installed pnpm or node globally via other means (including Volta) you should uninstall them from all other locations first, as they can conflict with mise's shims.
 
 ## Install bun.sh
 

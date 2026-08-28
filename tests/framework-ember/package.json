@@ -62,8 +62,5 @@
     "version": 2,
     "type": "addon",
     "main": "addon-main.cjs"
-  },
-  "volta": {
-    "extends": "../../package.json"
   }
 }

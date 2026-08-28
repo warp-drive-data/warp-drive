@@ -1,6 +1,6 @@
 {
   "name": "@warp-drive/holodeck",
-  "description": "⚡️ Simple, Fast HTTP Mocking for Tests",
+  "description": "\u26a1\ufe0f Simple, Fast HTTP Mocking for Tests",
   "version": "0.1.0-alpha.66",
   "license": "MIT",
   "author": "Chris Thoburn <runspired@users.noreply.github.com>",
@@ -17,9 +17,6 @@
   "keywords": [
     "http-mock"
   ],
-  "volta": {
-    "extends": "../../package.json"
-  },
   "dependencies": {
     "hono": "^4.13.3",
     "@hono/node-server": "^1.19.0"

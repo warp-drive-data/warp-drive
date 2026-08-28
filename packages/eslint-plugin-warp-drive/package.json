@@ -9,9 +9,6 @@
     "url": "https://github.com/warp-drive-data/warp-drive.git",
     "directory": "packages/eslint-plugin-warp-drive"
   },
-  "volta": {
-    "extends": "../../package.json"
-  },
   "exports": {
     ".": {
       "default": "./src/index.js"

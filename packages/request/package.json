@@ -51,9 +51,6 @@
     "@warp-drive/internal-config": "workspace:*",
     "tsdown": "^0.22.14"
   },
-  "volta": {
-    "extends": "../../package.json"
-  },
   "ember-addon": {
     "main": "addon-main.cjs",
     "type": "addon",

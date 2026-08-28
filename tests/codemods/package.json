@@ -42,8 +42,5 @@
     "eslint": "^10.8.1",
     "qunit": "^2.26.0",
     "vitest": "^4.1.11"
-  },
-  "volta": {
-    "extends": "../../package.json"
   }
 }

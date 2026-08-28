@@ -2,7 +2,7 @@
   "name": "@warp-drive/diagnostic",
   "version": "0.0.3-alpha.151",
   "private": true,
-  "description": "⚡️ A Lightweight Modern Test Runner",
+  "description": "\u26a1\ufe0f A Lightweight Modern Test Runner",
   "keywords": [
     "test",
     "assert",
@@ -112,9 +112,6 @@
     "ember-source": "catalog:",
     "tsdown": "^0.22.14",
     "typescript": "^5.9.3"
-  },
-  "volta": {
-    "extends": "../../package.json"
   },
   "ember-addon": {
     "main": "addon-main.cjs",

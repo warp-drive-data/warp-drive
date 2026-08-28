@@ -8,9 +8,6 @@
     "url": "https://github.com/warp-drive-data/warp-drive.git",
     "directory": "packages/unpublished-eslint-rules"
   },
-  "volta": {
-    "extends": "../../package.json"
-  },
   "devDependencies": {},
   "scripts": {},
   "files": []
