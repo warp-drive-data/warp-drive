@@ -60,6 +60,24 @@ function inspect(label, path) {
 
 inspect('real build-config dist', 'warp-drive-packages/build-config/dist/babel-macros.js');
 inspect(
-  'core injected build-config dist',
+  'core injected build-config dist (before manual re-sync)',
+  'warp-drive-packages/core/node_modules/@warp-drive/build-config/dist/babel-macros.js'
+);
+
+// 100% of observed failures have build-config#build:pkg served as a cache HIT
+// (turbo restores cached output directly, bypassing pnpm's script runner
+// entirely -- so pnpm's sync-injected-deps-after-scripts hook never fires for
+// build-config in that case, only for whichever package's *own* script pnpm
+// actually ran). Test directly: does manually invoking `pnpm --filter
+// @warp-drive/core run sync` right now (a genuine, isolated pnpm run,
+// independent of turbo/prepare entirely) fix the injected copy?
+import { execSync } from 'node:child_process';
+try {
+  execSync('pnpm --filter @warp-drive/core run sync', { stdio: 'inherit' });
+} catch (e) {
+  console.log('DEBUG_MANUAL_SYNC: threw', e.message);
+}
+inspect(
+  'core injected build-config dist (after manual re-sync)',
   'warp-drive-packages/core/node_modules/@warp-drive/build-config/dist/babel-macros.js'
 );
