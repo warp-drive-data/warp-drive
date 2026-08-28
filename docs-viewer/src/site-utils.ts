@@ -634,6 +634,82 @@ function extractSinceBadges(content: string): { content: string; moduleSince: st
   return { content: kept, moduleSince };
 }
 
+// Structural groupings typedoc-plugin-markdown inserts between an overloaded function/method's
+// H1 and its per-overload content — not real nested members, so a `@badge` tag under one of
+// these (once per overload) still counts as belonging to the page's own top-level symbol.
+const PASSTHROUGH_HEADINGS = new Set([
+  'Call Signature',
+  'Constructor Signature',
+  'Get Signature',
+  'Set Signature',
+]);
+
+/**
+ * Reads an optional `@badge <Label>` tag on the page's own top-level symbol, letting a doc
+ * author override the `<KindBadge>` label — e.g. a class that's conceptually a "Component", a
+ * variable that's really a "Handler", a function that's a query "Builder" — and strips that tag's
+ * section(s) from the body. Only a `@badge` that belongs to the page's own symbol counts: walking
+ * up from it must reach the H1 without passing through anything other than the structural
+ * signature groupings above — a real nested member (e.g. a class's own method) blocks it, since
+ * `<KindBadge>` only ever appears once, next to the page's own H1.
+ */
+function extractKindOverride(content: string): { content: string; kind: string | null } {
+  const lines = content.split('\n');
+  const headings: { index: number; level: number; text: string }[] = [];
+  for (let i = 0; i < lines.length; i++) {
+    const m = HEADING_RE.exec(lines[i]);
+    if (m) headings.push({ index: i, level: m[1].length, text: m[2].trim() });
+  }
+
+  const linesToRemove = new Set<number>();
+  let kind: string | null = null;
+
+  for (let hi = 0; hi < headings.length; hi++) {
+    const heading = headings[hi];
+    if (heading.text !== 'Badge') continue;
+
+    let reachedH1 = false;
+    let idx = hi;
+    while (true) {
+      let parentIdx = -1;
+      for (let pi = idx - 1; pi >= 0; pi--) {
+        if (headings[pi].level < headings[idx].level) {
+          parentIdx = pi;
+          break;
+        }
+      }
+      if (parentIdx === -1) break;
+      if (headings[parentIdx].level === 1) {
+        reachedH1 = true;
+        break;
+      }
+      if (!PASSTHROUGH_HEADINGS.has(headings[parentIdx].text)) break;
+      idx = parentIdx;
+    }
+    if (!reachedH1) continue;
+
+    const blockEnd = hi + 1 < headings.length ? headings[hi + 1].index : lines.length;
+    let versionStart = heading.index + 1;
+    while (versionStart < blockEnd && lines[versionStart].trim() === '') versionStart++;
+    const value = (lines[versionStart] ?? '').trim();
+    if (!value) continue;
+
+    let removalEnd = versionStart + 1;
+    while (removalEnd < blockEnd && lines[removalEnd].trim() !== '') removalEnd++;
+    if (removalEnd < blockEnd && lines[removalEnd].trim() === '') removalEnd++;
+    for (let li = heading.index; li < removalEnd; li++) linesToRemove.add(li);
+
+    kind ??= value;
+  }
+
+  const kept = lines
+    .filter((_, i) => !linesToRemove.has(i))
+    .join('\n')
+    .replace(/\n{3,}/g, '\n\n');
+
+  return { content: kept, kind };
+}
+
 /**
  * Removes the page's first H1 (and the blank line before it), returning any `<SinceBadge>`
  * that had been attached to it so the caller can relocate it (module pages show that badge next
@@ -703,9 +779,13 @@ export async function postProcessApiDocs() {
 
     // On a member's own page, show its kind (Function, Class, ...) as a <KindBadge> next to its
     // name instead of TypeDoc's "{Kind}: " title prefix (dropped via pageTitleTemplates in
-    // typedoc.config.mjs)
-    const kind = fileKindLabel(file);
-    if (kind) {
+    // typedoc.config.mjs). A `@badge <Label>` tag on that symbol overrides the label shown (e.g.
+    // a class that's conceptually a "Component", a variable that's a "Handler").
+    const defaultKind = fileKindLabel(file);
+    if (defaultKind) {
+      const kindOverride = extractKindOverride(newContent);
+      newContent = kindOverride.content;
+      const kind = kindOverride.kind ?? defaultKind;
       newContent = newContent.replace(/^# ([^\n]+)$/m, (heading) => `${heading} ${kindBadgeMarkup(kind)}`);
     }
 

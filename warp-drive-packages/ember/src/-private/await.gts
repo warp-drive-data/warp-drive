@@ -87,6 +87,7 @@ interface AwaitSignature<T, E = Error | string | object> {
  *
  * @category Components
  * @public
+ * @badge Component
  */
 export class Await<T, E> extends Component<AwaitSignature<T, E>> {
   /**

@@ -129,6 +129,7 @@ const ERROR_STATUS_CODE_FOR = new Map([
  * ```
  *
  * @public
+ * @badge Handler
  */
 const Fetch = {
   /**
