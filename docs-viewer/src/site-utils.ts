@@ -499,11 +499,20 @@ function cleanSidebarItems(items: SidebarItem[], isPrimitive = false): SidebarIt
   return newItems.concat(submodules);
 }
 
-const DOC_FRONTMATTER = `---
+// Matches the first "Defined in: <path>:<line>" typedoc emits for a page (either a plain
+// path, or a markdown link `[path:line](url)` when a source link could be resolved), so we
+// can point the "Edit this page" link at the original source instead of the generated .md.
+const DEFINED_IN_PATTERN = /^Defined in: (?:\[([^:\]]+):\d+\]|([^:\n]+):\d+)/m;
+
+function buildFrontmatter(content: string): string {
+  const match = DEFINED_IN_PATTERN.exec(content);
+  const editSource = match?.[1] ?? match?.[2];
+  return `---
 outline:
-  level: [2, 3]
+  level: [2, 3]${editSource ? `\neditSource: ${editSource}` : ''}
 ---
 `;
+}
 const ApiDocumentation = `# API Docs\n\n`;
 
 const TYPE_DIRS = new Set(['classes', 'functions', 'interfaces', 'type-aliases', 'variables', 'enumerations']);
@@ -589,7 +598,7 @@ export async function postProcessApiDocs() {
     }
 
     // insert frontmatter
-    newContent = DOC_FRONTMATTER + newContent;
+    newContent = buildFrontmatter(newContent) + newContent;
 
     // if the content has a modules list, we remove it
     if (newContent.includes('## Modules')) {

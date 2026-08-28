@@ -215,7 +215,11 @@ export default withPwa(
       ],
 
       editLink: {
-        pattern: 'https://github.com/warp-drive-data/warp-drive/edit/main/:path',
+        // API doc pages are generated from TS source elsewhere in the repo, so their
+        // "edit" target should be the original source file, not the generated markdown
+        // in api/. postProcessApiDocs() stamps that path into frontmatter as `editSource`.
+        pattern: (page) =>
+          `https://github.com/warp-drive-data/warp-drive/edit/main/${page.frontmatter.editSource ?? page.filePath}`,
       },
 
       search: {
