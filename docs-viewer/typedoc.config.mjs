@@ -80,6 +80,7 @@ const config = {
     import.meta.resolve('typedoc-plugin-markdown').slice(7),
     import.meta.resolve('typedoc-vitepress-theme').slice(7),
     import.meta.resolve('typedoc-plugin-mdn-links').slice(7),
+    new URL('./typedoc-plugins/source-links.mjs', import.meta.url).pathname,
     new URL('./typedoc-plugins/decorator-groups.mjs', import.meta.url).pathname,
   ],
   out: './tmp/api',
