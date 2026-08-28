@@ -477,6 +477,16 @@ function cleanSidebarItems(items: SidebarItem[], isPrimitive = false): SidebarIt
       continue;
     }
 
+    if (item.text === 'index') {
+      // Packages whose primary entry point has to be pre-compiled (e.g. @warp-drive/ember,
+      // whose .gts sources typedoc can't parse directly) point typedoc at the compiled
+      // index.d.ts instead of a raw .ts file, and typedoc keeps that as its own "index"
+      // module rather than merging it into the package root the way a raw .ts entry point
+      // is. Merge it by hand so the sidebar shape matches packages that don't need this.
+      hoisted.items!.push(...cleanSidebarItems(item.items || []));
+      continue;
+    }
+
     if (item.text === 'Modules') {
       // hoist modules up
       submodules = cleanSidebarItems(item.items || []);
@@ -494,13 +504,13 @@ function cleanSidebarItems(items: SidebarItem[], isPrimitive = false): SidebarIt
     continue;
   }
 
-  if (submodules.length === 0) {
-    return newItems;
-  }
-
   if (hoisted.items!.length > 0) {
     // if we have hoisted items, we add them to the new items
     newItems.unshift(hoisted);
+  }
+
+  if (submodules.length === 0) {
+    return newItems;
   }
 
   return newItems.concat(submodules);
