@@ -46,10 +46,13 @@ export class ManyArrayManager {
 
     const currentState = array[Context].source;
 
-    // unlike in the normal RecordArray case, we don't need to divorce the reference
-    // because we don't need to worry about associate/disassociate since the graph
-    // takes care of that for us
-    if (currentState !== rawValue.data) {
+    // rawValue.data is undefined when the relationship has never received membership
+    // data (e.g. a links-only payload) - there is nothing to sync in that case, and the
+    // array must already be empty since it could only ever have been populated from data
+    if (rawValue.data !== undefined && currentState !== rawValue.data) {
+      // unlike in the normal RecordArray case, we don't need to divorce the reference
+      // because we don't need to worry about associate/disassociate since the graph
+      // takes care of that for us
       currentState.length = 0;
       fastPush(currentState, rawValue.data as ResourceKey[]);
     }
