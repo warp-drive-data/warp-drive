@@ -433,7 +433,7 @@ PaginateSpec.use(useEmber(), function (b) {
           </:content>
           <:error as |error errorFeatures|>
             <span data-test-error>{{error.message}}<br />Count: {{countFor error}}</span>
-            <button test-id="retry-button" {{on "click" (fn retry errorFeatures)}}>Retry</button>
+            <button data-test-id="retry-button" {{on "click" (fn retry errorFeatures)}}>Retry</button>
           </:error>
         </Paginate>
       </template>;
@@ -521,7 +521,7 @@ PaginateSpec.use(useEmber(), function (b) {
           </:content>
           <:cancelled as |error errorFeatures|>
             <span data-test-cancelled>Cancelled {{error.message}}<br />Count: {{countFor error}}</span>
-            <button test-id="retry-button" {{on "click" (fn retry errorFeatures)}}>Retry</button>
+            <button data-test-id="retry-button" {{on "click" (fn retry errorFeatures)}}>Retry</button>
           </:cancelled>
           <:error as |error|>
             <span data-test-error>{{error.message}}<br />Count: {{countFor error}}</span>

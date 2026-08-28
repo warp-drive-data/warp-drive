@@ -93,5 +93,5 @@ export const InfiniteModeDefaultBlock = <template>
 
 export const BogusModeRejected = <template>
   {{! @glint-expect-error only 'paged' | 'infinite' are valid modes }}
-  <Paginate @request={{request}} @mode="bogus"></Paginate>
+  <Paginate @request={{request}} @mode="bogus" />
 </template>;

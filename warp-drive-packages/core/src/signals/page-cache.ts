@@ -120,7 +120,7 @@ export class PageCache<RT = unknown, E = unknown> {
    */
   @memoized
   get value(): RT | null {
-    return (this.state?.value ?? null) as RT | null;
+    return this.state?.value as RT | null;
   }
 
   /**

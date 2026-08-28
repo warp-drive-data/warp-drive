@@ -477,8 +477,6 @@ export const PaginateSpec: SuiteBuilder<LocalTestContext, PaginateSpecSignature>
         countFor,
       });
 
-      let activePage = null;
-
       assert.equal(counter, 1);
       assert.equal(this.element.querySelector('[data-test-pending]')?.textContent.trim(), 'PendingCount: 1');
       assert.equal(Array.from(paginationState.data).length, 0, 'No data initially');
@@ -488,7 +486,7 @@ export const PaginateSpec: SuiteBuilder<LocalTestContext, PaginateSpecSignature>
       await request;
       await this.h.rerender();
 
-      activePage = paginationState.activePage;
+      let activePage = paginationState.activePage;
 
       assert.deepEqual(activePage?.data, [users[1]], 'Page data');
       assert.equal(Array.from(paginationCache.pages).length, 4, '4 pages known to the graph after the initial load');
@@ -503,13 +501,13 @@ export const PaginateSpec: SuiteBuilder<LocalTestContext, PaginateSpecSignature>
       assert.equal(this.element.querySelectorAll('[data-test-prev]').length, 1, 'Prev link available on page 2');
       assert.equal(this.element.querySelectorAll('[data-test-next]').length, 1, 'Next link available on page 2');
       assert.equal(paginationLinks.first?.url, urls[0], 'First link targets page 1');
-      assert.false(paginationLinks.first?.isCurrent, 'First link is not current on page 2');
+      assert.false(!!paginationLinks.first?.isCurrent, 'First link is not current on page 2');
       assert.equal(paginationLinks.last?.url, urls[5], 'Last link targets page 6');
-      assert.false(paginationLinks.last?.isCurrent, 'Last link is not current on page 2');
+      assert.false(!!paginationLinks.last?.isCurrent, 'Last link is not current on page 2');
       assert.equal(this.element.querySelectorAll('[data-test-first]').length, 1, 'First link rendered on page 2');
       assert.equal(this.element.querySelectorAll('[data-test-last]').length, 1, 'Last link rendered on page 2');
       assert.false(
-        this.element.querySelector('[data-test-first]')?.hasAttribute('disabled'),
+        !!this.element.querySelector('[data-test-first]')?.hasAttribute('disabled'),
         'First link enabled on page 2'
       );
       assert.equal(counter, 2);
@@ -533,14 +531,14 @@ export const PaginateSpec: SuiteBuilder<LocalTestContext, PaginateSpecSignature>
         1,
         'Next link available on the first page'
       );
-      assert.true(paginationLinks.first?.isCurrent, 'First link is current on the first page');
-      assert.false(paginationLinks.last?.isCurrent, 'Last link is not current on the first page');
+      assert.true(!!paginationLinks.first?.isCurrent, 'First link is current on the first page');
+      assert.false(!!paginationLinks.last?.isCurrent, 'Last link is not current on the first page');
       assert.true(
-        this.element.querySelector('[data-test-first]')?.hasAttribute('disabled'),
+        !!this.element.querySelector('[data-test-first]')?.hasAttribute('disabled'),
         'First link disabled on the first page'
       );
       assert.false(
-        this.element.querySelector('[data-test-last]')?.hasAttribute('disabled'),
+        !!this.element.querySelector('[data-test-last]')?.hasAttribute('disabled'),
         'Last link enabled on the first page'
       );
       assert.equal(counter, 4);
@@ -560,10 +558,10 @@ export const PaginateSpec: SuiteBuilder<LocalTestContext, PaginateSpecSignature>
       );
       assert.equal(this.element.querySelectorAll('[data-test-prev]').length, 1, 'Prev link available on the last page');
       assert.equal(this.element.querySelectorAll('[data-test-next]').length, 0, 'No next link on the last page');
-      assert.true(paginationLinks.last?.isCurrent, 'Last link is current on the last page');
-      assert.false(paginationLinks.first?.isCurrent, 'First link is not current on the last page');
+      assert.true(!!paginationLinks.last?.isCurrent, 'Last link is current on the last page');
+      assert.false(!!paginationLinks.first?.isCurrent, 'First link is not current on the last page');
       assert.true(
-        this.element.querySelector('[data-test-last]')?.hasAttribute('disabled'),
+        !!this.element.querySelector('[data-test-last]')?.hasAttribute('disabled'),
         'Last link disabled on the last page'
       );
       assert.equal(counter, 6);
@@ -753,8 +751,6 @@ export const PaginateSpec: SuiteBuilder<LocalTestContext, PaginateSpecSignature>
         countFor,
       });
 
-      let activePage = null;
-
       assert.equal(counter, 1);
       assert.equal(this.element.querySelector('[data-test-pending]')?.textContent.trim(), 'PendingCount: 1');
       assert.equal(Array.from(paginationState.data).length, 0, 'No data initially');
@@ -764,7 +760,7 @@ export const PaginateSpec: SuiteBuilder<LocalTestContext, PaginateSpecSignature>
       await request;
       await this.h.rerender();
 
-      activePage = paginationState.activePage;
+      let activePage = paginationState.activePage;
 
       assert.deepEqual(activePage?.data, [users[1]], 'Page data');
       assert.equal(Array.from(paginationCache.pages).length, 3, '3 pages known to the graph after the initial load');
@@ -991,9 +987,6 @@ export const PaginateSpec: SuiteBuilder<LocalTestContext, PaginateSpecSignature>
       countFor,
     });
 
-    let activePageA = null;
-    let activePageB = null;
-
     assert.equal(counter, 2);
     assert.equal(this.element.querySelector('[data-test-pending]')?.textContent.trim(), 'PendingCount: 1');
     assert.equal(Array.from(paginationStateA.data).length, 0, 'No data initially');
@@ -1004,8 +997,8 @@ export const PaginateSpec: SuiteBuilder<LocalTestContext, PaginateSpecSignature>
     await requestB;
     await this.h.rerender();
 
-    activePageA = paginationStateA.activePage;
-    activePageB = paginationStateB.activePage;
+    let activePageA = paginationStateA.activePage;
+    let activePageB = paginationStateB.activePage;
 
     assert.deepEqual(activePageA?.data, [users[1]], 'Page data');
     assert.deepEqual(activePageA?.pageNumber, 2, 'Page number');
@@ -1705,7 +1698,7 @@ export const PaginateSpec: SuiteBuilder<LocalTestContext, PaginateSpecSignature>
       'the error block renders the reason'
     );
 
-    await this.h.click('[test-id="retry-button"]');
+    await this.h.click('[data-test-id="retry-button"]');
     await retryPromise!;
     // the first rerender picks up the retried request and begins the new
     // pagination state's async setup; the second renders its result
@@ -1878,7 +1871,7 @@ export const PaginateSpec: SuiteBuilder<LocalTestContext, PaginateSpecSignature>
       'the cancelled block renders'
     );
 
-    await this.h.click('[test-id="retry-button"]');
+    await this.h.click('[data-test-id="retry-button"]');
     await retryPromise!;
     // the first rerender picks up the retried request and begins the new
     // pagination state's async setup; the second renders its result
@@ -2232,7 +2225,9 @@ export const PaginateSpec: SuiteBuilder<LocalTestContext, PaginateSpecSignature>
     source.request = adminRequest;
     await this.h.rerender();
 
-    assert.dom('[data-test-user-name]').hasText('Chris Thoburn', 'the existing content stays while the request resolves');
+    assert
+      .dom('[data-test-user-name]')
+      .hasText('Chris Thoburn', 'the existing content stays while the request resolves');
     assert.dom('[data-test-navigating]').exists('isNavigating is true while the request resolves');
 
     await adminRequest;
@@ -2326,7 +2321,9 @@ export const PaginateSpec: SuiteBuilder<LocalTestContext, PaginateSpecSignature>
     );
 
     await this.h.rerender();
-    assert.dom('[data-test-user-name]').hasText('Leo Euclides', 'a component sharing the state renders the adopted page');
+    assert
+      .dom('[data-test-user-name]')
+      .hasText('Leo Euclides', 'a component sharing the state renders the adopted page');
 
     // a request from a different collection is rejected
     const foreignRequest = this.manager.request<CollectionResourceDataDocument<UserResource>>({

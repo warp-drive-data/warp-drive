@@ -46,7 +46,10 @@ export {
   type InfinitePaginationContentFeatures,
   type PaginationContentFeaturesFor,
 } from './pagination-subscription.ts';
-export { createPaginationLinksSubscription, type PaginationLinksSubscription } from './pagination-links-subscription.ts';
+export {
+  createPaginationLinksSubscription,
+  type PaginationLinksSubscription,
+} from './pagination-links-subscription.ts';
 export {
   getPromiseState,
   type PromiseState,

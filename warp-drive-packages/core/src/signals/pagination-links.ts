@@ -366,5 +366,5 @@ export function getPaginationLinks<RT, E>(state: PagedPaginationState<RT, E>): R
     PaginationLinksCache.set(state, links);
   }
 
-  return links as Readonly<PaginationLinks<RT, E>>;
+  return links;
 }
