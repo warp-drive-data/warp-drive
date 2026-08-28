@@ -64,20 +64,21 @@ inspect(
   'warp-drive-packages/core/node_modules/@warp-drive/build-config/dist/babel-macros.js'
 );
 
-// 100% of observed failures have build-config#build:pkg served as a cache HIT
-// (turbo restores cached output directly, bypassing pnpm's script runner
-// entirely -- so pnpm's sync-injected-deps-after-scripts hook never fires for
-// build-config in that case, only for whichever package's *own* script pnpm
-// actually ran). Test directly: does manually invoking `pnpm --filter
-// @warp-drive/core run sync` right now (a genuine, isolated pnpm run,
-// independent of turbo/prepare entirely) fix the injected copy?
+// Confirmed via a prior run: even a fully manual, isolated `pnpm --filter
+// @warp-drive/core run sync` (independent of turbo entirely) does NOT fix a
+// missing injected copy -- pnpm's sync-injected-deps-after-scripts hook
+// relies on its own internal change-tracking, tied to a real `pnpm run
+// build:pkg` execution for the *source* package (build-config). It never
+// observes changes that arrive via turbo's cache-restore (a raw file
+// extraction that completely bypasses pnpm). Test the actual fix: a plain,
+// deterministic filesystem copy (this is exactly `sync:core`'s new script).
 import { execSync } from 'node:child_process';
 try {
-  execSync('pnpm --filter @warp-drive/core run sync', { stdio: 'inherit' });
+  execSync('pnpm run sync:core', { stdio: 'inherit' });
 } catch (e) {
   console.log('DEBUG_MANUAL_SYNC: threw', e.message);
 }
 inspect(
-  'core injected build-config dist (after manual re-sync)',
+  'core injected build-config dist (after plain cp sync:core)',
   'warp-drive-packages/core/node_modules/@warp-drive/build-config/dist/babel-macros.js'
 );
