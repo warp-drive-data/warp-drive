@@ -1,0 +1,8 @@
+{
+  "title": "Contributors",
+  "items": ["fix-at-the-source"],
+  "files": {
+    "index": { "draft": true },
+    "fix-at-the-source": { "title": "Fix at the Source" }
+  }
+}
