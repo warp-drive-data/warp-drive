@@ -146,7 +146,7 @@
       "mirrorPublish": true,
       "unpkgPublish": true
     },
-    "@warp-drive/agent-knowledge": {
+    "@warp-drive/memory-alpha": {
       "stage": "stable",
       "types": "private",
       "typesPublish": false,
