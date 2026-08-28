@@ -1,5 +1,5 @@
 <script setup lang="ts">
-type Variant = 'recommended' | 'discouraged' | 'deprecated';
+type Variant = "recommended" | "discouraged" | "deprecated";
 
 const props = defineProps<{
   variant: Variant;
@@ -7,9 +7,9 @@ const props = defineProps<{
 }>();
 
 const defaultText: Record<Variant, string> = {
-  recommended: 'recommended',
-  discouraged: 'discouraged',
-  deprecated: 'deprecated',
+  recommended: "recommended",
+  discouraged: "discouraged",
+  deprecated: "deprecated",
 };
 </script>
 
