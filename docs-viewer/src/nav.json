@@ -3,40 +3,105 @@
     {
       "text": "Universal",
       "packages": [
-        "@warp-drive/core",
-        "@warp-drive/json-api",
-        "@warp-drive/utilities",
-        "@warp-drive/legacy",
-        "@warp-drive/experiments"
+        { "name": "@warp-drive/core", "description": "Core package for WarpDrive | All the Universal Basics" },
+        { "name": "@warp-drive/json-api", "description": "A {json:api} Cache Implementation for WarpDrive" },
+        {
+          "name": "@warp-drive/utilities",
+          "description": "Utilities package for WarpDrive | Things your app might find useful"
+        },
+        {
+          "name": "@warp-drive/legacy",
+          "description": "Decommissioned Packages for WarpDrive | Things your app might still want to maintain use of for a little longer."
+        },
+        { "name": "@warp-drive/experiments", "description": "Experimental features for WarpDrive" }
       ]
     },
     {
       "text": "Frameworks",
-      "packages": ["@warp-drive/ember", "@warp-drive/react"]
+      "packages": [
+        {
+          "name": "@warp-drive/ember",
+          "description": "Data bindings and utilities for Ember applications using WarpDrive"
+        },
+        {
+          "name": "@warp-drive/react",
+          "description": "Data bindings and utilities for React applications using WarpDrive"
+        }
+      ]
     },
     {
       "text": "Tooling",
-      "packages": ["@warp-drive/holodeck", "@warp-drive/schema-dsl", "eslint-plugin-warp-drive"]
+      "packages": [
+        { "name": "@warp-drive/holodeck", "description": "⚡️ Simple, Fast HTTP Mocking for Tests" },
+        { "name": "@warp-drive/schema-dsl", "description": "TypeScript DSL for defining WarpDrive schemas" },
+        { "name": "eslint-plugin-warp-drive", "description": "ESLint rules for Applications using WarpDrive or EmberData" },
+        {
+          "name": "@warp-drive/memory-alpha",
+          "description": "WarpDrive knowledge packaged as plain markdown for AI coding agents (Claude Skills, MCP servers, Copilot/Cursor instruction files, etc.)"
+        }
+      ]
     },
     {
       "text": "Legacy Packages",
       "packages": [
-        "@ember-data/adapter",
-        "@ember-data/active-record",
-        "@ember-data/debug",
-        "@ember-data/legacy-compat",
-        "@ember-data/model",
-        "@ember-data/json-api",
-        "@ember-data/store",
-        "@ember-data/graph",
-        "@ember-data/request",
-        "@ember-data/request-utils",
-        "@ember-data/rest",
-        "@ember-data/serializer",
-        "@ember-data/tracking",
-        "@warp-drive/core-types",
-        "@warp-drive/build-config",
-        "@warp-drive/schema-record"
+        {
+          "name": "@ember-data/adapter",
+          "description": "(Legacy) JSON:API and REST Implementations of the Adapter Interface for use with @ember-data/store"
+        },
+        {
+          "name": "@ember-data/active-record",
+          "description": "(Legacy) ActiveRecord Format Support for EmberData"
+        },
+        {
+          "name": "@ember-data/debug",
+          "description": "Provides support for the ember-inspector for apps built with Ember and EmberData"
+        },
+        {
+          "name": "@ember-data/legacy-compat",
+          "description": "Compatibility Shims for Older (Legacy) EmberData"
+        },
+        {
+          "name": "@ember-data/model",
+          "description": "(Legacy) Ember implementation of a resource presentation layer for use with @ember-data/store"
+        },
+        {
+          "name": "@ember-data/json-api",
+          "description": "(Legacy) JSON:API document and resource cache implementation for EmberData"
+        },
+        {
+          "name": "@ember-data/store",
+          "description": "(Legacy) EmberData Store service which coordinates the cache with the network and presentation layers."
+        },
+        {
+          "name": "@ember-data/graph",
+          "description": "(Internal) Normalized graph for managing relationships between WarpDrive resources"
+        },
+        {
+          "name": "@ember-data/request",
+          "description": "(Legacy) A simple, small and fast framework-agnostic library to make `fetch` happen"
+        },
+        {
+          "name": "@ember-data/request-utils",
+          "description": "(Legacy) Request Building Utilities for use with EmberData"
+        },
+        { "name": "@ember-data/rest", "description": "(Legacy) REST Format Support for EmberData" },
+        {
+          "name": "@ember-data/serializer",
+          "description": "(Legacy) JSON, JSON:API and REST Implementations of the Serializer Interface for use with @ember-data/store"
+        },
+        { "name": "@ember-data/tracking", "description": "DEPRECATED - Use @warp-drive/ember" },
+        {
+          "name": "@warp-drive/core-types",
+          "description": "(Legacy) Core logic, utils and types for WarpDrive and EmberData"
+        },
+        {
+          "name": "@warp-drive/build-config",
+          "description": "(Legacy) Build Configuration for projects using WarpDrive"
+        },
+        {
+          "name": "@warp-drive/schema-record",
+          "description": "(Legacy) Schema Driven Resource Presentation for WarpDrive and EmberData"
+        }
       ]
     }
   ]

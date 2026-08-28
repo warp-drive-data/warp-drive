@@ -380,15 +380,22 @@ function deepConvert(obj: Record<string, any>, orderedItems?: string[]) {
 
 type SidebarItem = { text: string; items?: SidebarItem[]; link?: string; collapsed?: boolean };
 
+interface ApiNavGroupPackage {
+  /** The package name, matching its `package.json` `name` field. */
+  name: string;
+  /** A short description of the package, shown alongside its nav entry. */
+  description: string;
+}
+
 interface ApiNavGroup {
   /** The section heading shown in the sidebar. */
   text: string;
   /**
-   * Package names belonging to this section, in display order. Packages not
+   * Packages belonging to this section, in display order. Packages not
    * listed in any group fall back to the "Frameworks" group, sorted
    * alphabetically after this group's explicitly ordered packages.
    */
-  packages: string[];
+  packages: ApiNavGroupPackage[];
 }
 
 const API_NAV_GROUPS = (
@@ -414,10 +421,10 @@ function sortByPackageOrder(items: SidebarItem[], order: string[]): SidebarItem[
 }
 
 export function splitApiDocsSidebar(sidebar: SidebarItem[]) {
-  const universalOrder = findApiNavGroup('Universal').packages;
-  const frameworksOrder = findApiNavGroup('Frameworks').packages;
-  const toolingOrder = findApiNavGroup('Tooling').packages;
-  const legacyOrder = findApiNavGroup('Legacy Packages').packages;
+  const universalOrder = findApiNavGroup('Universal').packages.map((p) => p.name);
+  const frameworksOrder = findApiNavGroup('Frameworks').packages.map((p) => p.name);
+  const toolingOrder = findApiNavGroup('Tooling').packages.map((p) => p.name);
+  const legacyOrder = findApiNavGroup('Legacy Packages').packages.map((p) => p.name);
 
   const oldPackages: SidebarItem[] = [];
   const corePackages = { text: 'Universal', items: [] as SidebarItem[] } satisfies SidebarItem;

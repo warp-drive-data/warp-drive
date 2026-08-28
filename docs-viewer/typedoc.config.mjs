@@ -32,6 +32,7 @@ const config = {
     '../warp-drive-packages/json-api',
     '../warp-drive-packages/experiments',
     '../warp-drive-packages/schema-dsl',
+    '../warp-drive-packages/memory-alpha',
   ],
   entryFileName: 'index',
   packageOptions: {

@@ -31,8 +31,10 @@ for (const packagePath of readdirSync(oldPackages)) {
   }
 }
 for (const packagePath of readdirSync(newPackages)) {
-  if (existsSync(join(newPackages, packagePath, 'typedoc.config.mjs'))) {
-    Packages.push(join(newPackages, packagePath, 'src'));
+  const srcPath = join(newPackages, packagePath, 'src');
+  // packages with no source (e.g. memory-alpha, which is markdown-only) have nothing to watch here
+  if (existsSync(join(newPackages, packagePath, 'typedoc.config.mjs')) && existsSync(srcPath)) {
+    Packages.push(srcPath);
   }
 }
 
