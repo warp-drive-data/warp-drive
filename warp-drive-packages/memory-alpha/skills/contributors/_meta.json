@@ -1,8 +1,8 @@
 {
   "title": "Contributors",
-  "items": ["bail-early-in-hot-paths"],
+  "items": ["fix-at-the-source"],
   "files": {
     "index": { "draft": true },
-    "bail-early-in-hot-paths": { "title": "Bail Early in Hot Paths" }
+    "fix-at-the-source": { "title": "Fix at the Source" }
   }
 }

@@ -6,7 +6,7 @@ packages as a dependency in an app). Find the single row below that matches your
 
 | If you need to... | Read exactly |
 | --- | --- |
-| Decide where to put a guard/fallback when touching WarpDrive's internals (`Store`, cache, graph, reactive signals, record arrays) | `bail-early-in-hot-paths.md` |
+| You're fixing a bug, adding a guard, or adding a fallback in WarpDrive's internals (`Store`, cache, graph, reactive signals, record arrays) | `fix-at-the-source.md` |
 
 Each skill file is self-contained for its task and links out to any other skill file it
 genuinely depends on — follow a link only if you hit the specific case it describes.
