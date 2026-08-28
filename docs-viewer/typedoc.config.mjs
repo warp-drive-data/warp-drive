@@ -31,6 +31,7 @@ const config = {
     '../warp-drive-packages/react',
     '../warp-drive-packages/json-api',
     '../warp-drive-packages/experiments',
+    '../warp-drive-packages/schema-dsl',
   ],
   entryFileName: 'index',
   packageOptions: {
