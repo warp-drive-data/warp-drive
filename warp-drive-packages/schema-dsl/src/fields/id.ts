@@ -50,6 +50,7 @@ export interface IdOptions {
  *
  * @since 5.9.0
  * @public
+ * @decorator
  */
 export function id(target: object, key: string): void;
 export function id(options: IdOptions): (target: object, key: string) => void;

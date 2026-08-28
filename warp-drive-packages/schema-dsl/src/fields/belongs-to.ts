@@ -93,6 +93,7 @@ export interface BelongsToOptions {
  *
  * @since 5.9.0
  * @public
+ * @decorator
  */
 export function belongsTo(options: BelongsToOptions): (target: object, key: string) => void;
 export function belongsTo(

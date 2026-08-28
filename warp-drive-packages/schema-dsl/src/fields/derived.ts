@@ -56,6 +56,7 @@ export interface DerivedOptions {
  *
  * @since 5.9.0
  * @public
+ * @decorator
  */
 export function derived(options: DerivedOptions): (target: object, key: string) => void;
 export function derived(

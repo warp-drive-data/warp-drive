@@ -47,6 +47,7 @@ export interface HashOptions {
  *
  * @since 5.9.0
  * @public
+ * @decorator
  */
 export function hash(options: HashOptions): (target: object, key: string) => void;
 export function hash(

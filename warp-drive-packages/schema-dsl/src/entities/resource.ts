@@ -114,6 +114,7 @@ export interface ResourceOptions {
  *
  * @since 5.9.0
  * @public
+ * @classDecorator
  */
 export function Resource(target: AnyConstructor): void;
 export function Resource(type: string, options?: ResourceOptions): (target: AnyConstructor) => void;
