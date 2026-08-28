@@ -654,7 +654,7 @@ The returned state carries both surfaces — the mode narrowing is a type-level 
 of the `<Paginate />` component, so programmatic consumers may use whichever fits.
 
 ```ts
-import { getPaginationState } from '@warp-drive/ember';
+import { getPaginationState } from '@warp-drive/experiments/pagination';
 
 const request = store.request({ url: '/users', method: 'GET' });
 const pages = getPaginationState(request);
@@ -755,7 +755,7 @@ to provide bidirectional infinite scroll.
 **without error/loading states**
 
 ```gjs
-import { Paginate } from '@warp-drive/ember';
+import { Paginate } from '@warp-drive/ember/experiments';
 
 <template>
   <Paginate @request={{@request}} @mode="infinite" as |pages|>
@@ -861,7 +861,8 @@ continue to reference that request until a load succeeds. This enables us to han
 control flow for the subsequent request by passing it into `<Request />`!
 
 ```gjs
-import { Paginate, Request } from '@warp-drive/ember';
+import { Request } from '@warp-drive/ember';
+import { Paginate } from '@warp-drive/ember/experiments';
 
 <template>
   <Paginate @request={{@request}} @mode="infinite">
@@ -947,7 +948,7 @@ UX as it does for InfiniteFeed style UX.
 > not to the activePage.
 
 ```gjs
-import { Paginate } from '@warp-drive/ember';
+import { Paginate } from '@warp-drive/ember/experiments';
 
 <template>
   <Paginate @request={{@request}}>
@@ -986,8 +987,8 @@ in what order. The yielded state exposes:
   control).
 
 ```diff
-- import { Paginate } from '@warp-drive/ember';
-+ import { Paginate, EachLink } from '@warp-drive/ember';
+- import { Paginate } from '@warp-drive/ember/experiments';
++ import { Paginate, EachLink } from '@warp-drive/ember/experiments';
 
  <template>
    <Paginate @request={{@request}}>
@@ -1025,7 +1026,7 @@ In JavaScript, the same reactive links are available via `getPaginationLinks`, k
 by state identity so repeated calls share one instance:
 
 ```ts
-import { getPaginationLinks } from '@warp-drive/ember';
+import { getPaginationLinks } from '@warp-drive/experiments/pagination';
 
 const links = getPaginationLinks(pages);
 links.links; // numbered links and placeholders
@@ -1077,7 +1078,8 @@ In addition to per-page control-flow, this gives us the ability to provide a sta
 and navigation experience that wraps these loading and error states.
 
 ```gjs
-import { Paginate, EachLink, Request } from '@warp-drive/ember';
+import { Request } from '@warp-drive/ember';
+import { Paginate, EachLink } from '@warp-drive/ember/experiments';
 
 <template>
   <Paginate @request={{@request}} as |pages|>

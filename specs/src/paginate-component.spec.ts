@@ -1,18 +1,18 @@
 import { Fetch, RequestManager } from '@warp-drive/core';
 import { PRODUCTION } from '@warp-drive/core/build-config/env';
-import {
-  clearPaginationCache,
-  getPaginationCache,
-  getPaginationLinks,
-  getPaginationState,
-  type PageHints,
-} from '@warp-drive/core/reactive';
 import type { CacheHandler, Future, NextFn } from '@warp-drive/core/request';
 import { signal } from '@warp-drive/core/signals/-leaked';
 import type { RequestContext, StructuredDataDocument } from '@warp-drive/core/types/request';
 import type { CollectionResourceDataDocument } from '@warp-drive/core/types/spec/document';
 import { setupOnError } from '@warp-drive/diagnostic';
 import { spec, type SpecTest, type SuiteBuilder } from '@warp-drive/diagnostic/spec';
+import {
+  clearPaginationCache,
+  getPaginationCache,
+  getPaginationLinks,
+  getPaginationState,
+  type PageHints,
+} from '@warp-drive/experiments/pagination';
 import { mock, MockServerHandler } from '@warp-drive/holodeck';
 import { GET } from '@warp-drive/holodeck/mock';
 import { buildBaseURL } from '@warp-drive/utilities';

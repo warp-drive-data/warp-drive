@@ -31,6 +31,10 @@
     "./image-fetch": {
       "types": "./dist/image-fetch.d.ts",
       "default": "./dist/image-fetch.js"
+    },
+    "./pagination": {
+      "types": "./declarations/pagination.d.ts",
+      "default": "./dist/pagination.js"
     }
   },
   "files": [

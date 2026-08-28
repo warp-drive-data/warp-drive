@@ -1,8 +1,11 @@
 import Component from '@glimmer/component';
 
-import type { PagedPaginationState, PaginationLinks, PaginationLinksSubscription } from '@warp-drive/core/reactive';
-import { createPaginationLinksSubscription } from '@warp-drive/core/reactive';
-import { DISPOSE } from '@warp-drive/core/signals/-leaked';
+import type {
+  PagedPaginationState,
+  PaginationLinks,
+  PaginationLinksSubscription,
+} from '@warp-drive/core/signals/-leaked';
+import { createPaginationLinksSubscription, DISPOSE } from '@warp-drive/core/signals/-leaked';
 
 interface EachLinkSignature<RT, E> {
   Args: {
@@ -50,7 +53,7 @@ interface EachLinkSignature<RT, E> {
  * of the pagination state, keeping every component reading that state in sync.
  *
  * ```gts
- * import { Paginate, EachLink } from '@warp-drive/ember';
+ * import { Paginate, EachLink } from '@warp-drive/ember/experiments';
  *
  * <template>
  *   <Paginate @request={{@request}}>

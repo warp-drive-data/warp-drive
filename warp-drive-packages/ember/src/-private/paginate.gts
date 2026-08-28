@@ -7,16 +7,16 @@ import type { ComponentLike } from '@glint/template';
 
 import type { RequestManager, Store } from '@warp-drive/core';
 import { assert } from '@warp-drive/core/build-config/macros';
-import type { PaginationSubscription, RequestLoadingState } from '@warp-drive/core/reactive';
-import { createPaginationSubscription } from '@warp-drive/core/reactive';
+import type { RequestLoadingState } from '@warp-drive/core/reactive';
 import type {
   PaginateArgs,
   PaginateMode,
   PaginationContentFeaturesFor,
   PaginationStateFor,
+  PaginationSubscription,
   RecoveryFeatures,
 } from '@warp-drive/core/signals/-leaked';
-import { DISPOSE, memoized } from '@warp-drive/core/signals/-leaked';
+import { createPaginationSubscription, DISPOSE, memoized } from '@warp-drive/core/signals/-leaked';
 import type { StructuredErrorDocument } from '@warp-drive/core/types/request';
 
 import { and, Throw } from './await.gts';
@@ -155,7 +155,8 @@ interface PaginateSignature<RT, E, M extends PaginateMode = 'paged'> {
  * or the links yielded by `<EachLink />`:
  *
  * ```gts
- * import { EachLink, Paginate, Request } from '@warp-drive/ember';
+ * import { Request } from '@warp-drive/ember';
+ * import { EachLink, Paginate } from '@warp-drive/ember/experiments';
  *
  * <template>
  *   <Paginate @request={{@request}}>

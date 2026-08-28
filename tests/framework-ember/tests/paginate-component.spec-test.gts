@@ -2,7 +2,8 @@ import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
 
 import { useEmber } from '@warp-drive/diagnostic/ember';
-import { EachLink, Paginate, Request } from '@warp-drive/ember';
+import { Request } from '@warp-drive/ember';
+import { EachLink, Paginate } from '@warp-drive/ember/experiments';
 import { PaginateSpec } from '@warp-drive-internal/specs/paginate-component.spec';
 
 PaginateSpec.use(useEmber(), function (b) {

@@ -1296,6 +1296,9 @@ importers:
       '@warp-drive/diagnostic':
         specifier: workspace:*
         version: file:packages/diagnostic(@babel/core@7.29.7)
+      '@warp-drive/experiments':
+        specifier: workspace:*
+        version: file:warp-drive-packages/experiments(4ded94bf05a058c4d301833388abca58)
       '@warp-drive/holodeck':
         specifier: workspace:*
         version: file:packages/holodeck(a510bc545ed25bc6a53fefeb5da03d5b)
@@ -2262,7 +2265,7 @@ importers:
         version: 2.7.0(cc8cad6b2644672ec8a53791bfc61df2)
       '@warp-drive-internal/specs':
         specifier: workspace:*
-        version: file:specs(4e655989c8af9ea4961abd95444c92fd)
+        version: file:specs(38c88810c00dd43c058bd1893bdddfd5)
       '@warp-drive/core':
         specifier: workspace:*
         version: file:warp-drive-packages/core(40bc2c5d5662a5666eb0d917619838cd)
@@ -2272,6 +2275,9 @@ importers:
       '@warp-drive/ember':
         specifier: workspace:*
         version: file:warp-drive-packages/ember(2fac7a87d207b317b942783043977b8e)
+      '@warp-drive/experiments':
+        specifier: workspace:*
+        version: file:warp-drive-packages/experiments(1c531ff0d42b5d585fbdc4d6d901c6a4)
       '@warp-drive/holodeck':
         specifier: workspace:*
         version: file:packages/holodeck(8bc80b710913e6e758e65e61e6c7db83)
@@ -6417,6 +6423,7 @@ packages:
     peerDependencies:
       '@warp-drive/core': workspace:*
       '@warp-drive/diagnostic': workspace:*
+      '@warp-drive/experiments': workspace:*
       '@warp-drive/holodeck': workspace:*
       '@warp-drive/json-api': workspace:*
       '@warp-drive/utilities': workspace:*
@@ -14772,6 +14779,19 @@ snapshots:
       - '@glint/template'
       - supports-color
 
+  '@warp-drive-internal/specs@file:specs(38c88810c00dd43c058bd1893bdddfd5)':
+    dependencies:
+      '@embroider/macros': 1.20.6(@glint/template@1.8.0)
+      '@warp-drive/core': file:warp-drive-packages/core(40bc2c5d5662a5666eb0d917619838cd)
+      '@warp-drive/diagnostic': file:packages/diagnostic(e49db713e81539b1909af76f9327417c)
+      '@warp-drive/experiments': file:warp-drive-packages/experiments(1c531ff0d42b5d585fbdc4d6d901c6a4)
+      '@warp-drive/holodeck': file:packages/holodeck(8bc80b710913e6e758e65e61e6c7db83)
+      '@warp-drive/json-api': file:warp-drive-packages/json-api(1c531ff0d42b5d585fbdc4d6d901c6a4)
+      '@warp-drive/utilities': file:warp-drive-packages/utilities(1c531ff0d42b5d585fbdc4d6d901c6a4)
+    transitivePeerDependencies:
+      - '@glint/template'
+      - supports-color
+
   '@warp-drive-internal/specs@file:specs(4e655989c8af9ea4961abd95444c92fd)':
     dependencies:
       '@embroider/macros': 1.20.6(@glint/template@1.8.0)
@@ -14972,6 +14992,14 @@ snapshots:
     dependencies:
       '@embroider/macros': 1.20.6(@glint/template@1.8.0)
       '@warp-drive/core': file:warp-drive-packages/core(40bc2c5d5662a5666eb0d917619838cd)
+    transitivePeerDependencies:
+      - '@glint/template'
+      - supports-color
+
+  '@warp-drive/experiments@file:warp-drive-packages/experiments(4ded94bf05a058c4d301833388abca58)':
+    dependencies:
+      '@embroider/macros': 1.20.6
+      '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.29.7)
     transitivePeerDependencies:
       - '@glint/template'
       - supports-color

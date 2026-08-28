@@ -9,8 +9,8 @@ import type {
   InfinitePaginationState,
   PagedPaginationContentFeatures,
   PagedPaginationState,
-} from '@warp-drive/ember';
-import { EachLink, Paginate } from '@warp-drive/ember';
+} from '@warp-drive/ember/experiments';
+import { EachLink, Paginate } from '@warp-drive/ember/experiments';
 
 const request = null as unknown as Future<unknown>;
 
