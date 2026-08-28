@@ -12,18 +12,11 @@
     },
     {
       "text": "Frameworks",
-      "packages": [
-        "@warp-drive/ember",
-        "@warp-drive/react"
-      ]
+      "packages": ["@warp-drive/ember", "@warp-drive/react"]
     },
     {
       "text": "Tooling",
-      "packages": [
-        "@warp-drive/holodeck",
-        "@warp-drive/schema-dsl",
-        "eslint-plugin-warp-drive"
-      ]
+      "packages": ["@warp-drive/holodeck", "@warp-drive/schema-dsl", "eslint-plugin-warp-drive"]
     },
     {
       "text": "Legacy Packages",
