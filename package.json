@@ -9,7 +9,7 @@
   },
   "scripts": {
     "takeoff": "FORCE_COLOR=2 pnpm install --prefer-offline --reporter=append-only",
-    "prepare": "turbo run build:pkg --log-order=stream --concurrency=$(./bin/calculate-jobs);",
+    "prepare": "turbo run build:pkg --log-order=stream --concurrency=$(./bin/calculate-jobs) --summarize; TURBO_EXIT=$?; node ./tools/debug-print-turbo-summary.mjs || true; exit $TURBO_EXIT",
     "release": "./tools/release/index.ts",
     "build": "turbo run build:pkg --log-order=stream --concurrency=$(./bin/calculate-jobs);",
     "sync": "pnpm --filter './packages/*' --filter './warp-drive-packages/*' --filter './tests/*' --filter './specs' run --parallel --if-present sync",
