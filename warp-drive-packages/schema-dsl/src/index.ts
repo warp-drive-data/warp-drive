@@ -1,6 +1,7 @@
 /**
  * @module
  * @mergeModuleWith <project>
+ * @since 5.9.0
  */
 
 export { ObjectSchema, type ObjectSchemaOptions } from './entities/object-schema.ts';

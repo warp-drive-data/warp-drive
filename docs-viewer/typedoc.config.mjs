@@ -76,6 +76,7 @@ const config = {
     ],
   },
   plugin: [
+    import.meta.resolve('./src/typedoc-since-plugin.mjs').slice(7),
     import.meta.resolve('typedoc-plugin-no-inherit').slice(7),
     import.meta.resolve('typedoc-plugin-markdown').slice(7),
     import.meta.resolve('typedoc-vitepress-theme').slice(7),

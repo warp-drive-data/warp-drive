@@ -536,6 +536,99 @@ function fileToImportPath(file: string): string {
   return `${packageName}/${cleanSubPath.join('/')}`;
 }
 
+const HEADING_RE = /^(#{1,6}) (.*)$/;
+
+function sinceBadgeMarkup(version: string): string {
+  return `<SinceBadge version="${version.replace(/"/g, '&quot;')}" />`;
+}
+
+/**
+ * TypeDoc renders each `@since` tag as its own `#### Since` section beneath the heading of the
+ * thing it documents (the page's own H1, or a nested member heading for e.g. a class method).
+ * This removes every such section from the body and turns its version into a `<SinceBadge>`
+ * appended to the heading it described, so `@since` reads as a badge next to the name of the
+ * documented thing rather than as a separate body section.
+ */
+function extractSinceBadges(content: string): { content: string; moduleSince: string | null } {
+  const lines = content.split('\n');
+  const headings: { index: number; level: number; text: string }[] = [];
+  for (let i = 0; i < lines.length; i++) {
+    const m = HEADING_RE.exec(lines[i]);
+    if (m) headings.push({ index: i, level: m[1].length, text: m[2].trim() });
+  }
+
+  const linesToRemove = new Set<number>();
+  const badgesByHeadingLine = new Map<number, string[]>();
+  let moduleSince: string | null = null;
+
+  for (let hi = 0; hi < headings.length; hi++) {
+    const heading = headings[hi];
+    if (heading.text !== 'Since') continue;
+
+    const blockEnd = hi + 1 < headings.length ? headings[hi + 1].index : lines.length;
+    // The tag's own content is just its first paragraph — stop at the first blank line rather
+    // than the next heading, so a trailing `***` member separator (or a following tag section
+    // like `#### Deprecated`) isn't swallowed into the version string.
+    let versionStart = heading.index + 1;
+    while (versionStart < blockEnd && lines[versionStart].trim() === '') versionStart++;
+    let versionEnd = versionStart;
+    while (versionEnd < blockEnd && lines[versionEnd].trim() !== '') versionEnd++;
+    // A version is always a single token (e.g. `5.9.0`); a handful of source comments have a
+    // stray unrecognized tag (e.g. a leftover `@class Foo`) immediately after `@since` with no
+    // blank line between them, which TypeDoc folds into the same tag content as a second line —
+    // only the first line is ever the actual version.
+    const version = (lines[versionStart] ?? '').trim();
+
+    let removalEnd = versionEnd;
+    if (removalEnd < blockEnd && lines[removalEnd].trim() === '') removalEnd++;
+    for (let li = heading.index; li < removalEnd; li++) linesToRemove.add(li);
+
+    let parent: (typeof headings)[number] | null = null;
+    for (let pi = hi - 1; pi >= 0; pi--) {
+      if (headings[pi].level < heading.level) {
+        parent = headings[pi];
+        break;
+      }
+    }
+
+    if (!parent) {
+      // No enclosing heading (e.g. a module's own `@since`, rendered before any heading) —
+      // let the caller attach this to the module badge instead.
+      moduleSince = version;
+      continue;
+    }
+
+    const existing = badgesByHeadingLine.get(parent.index) ?? [];
+    existing.push(sinceBadgeMarkup(version));
+    badgesByHeadingLine.set(parent.index, existing);
+  }
+
+  for (const [lineIndex, badges] of badgesByHeadingLine) {
+    lines[lineIndex] = `${lines[lineIndex]} ${badges.join(' ')}`;
+  }
+
+  const kept = lines
+    .filter((_, i) => !linesToRemove.has(i))
+    .join('\n')
+    .replace(/\n{3,}/g, '\n\n');
+
+  return { content: kept, moduleSince };
+}
+
+/**
+ * Removes the page's first H1 (and the blank line before it), returning any `<SinceBadge>`
+ * that had been attached to it so the caller can relocate it (module pages show that badge next
+ * to `<ModuleBadge>` instead of a redundant title).
+ */
+function stripH1(content: string): { content: string; badges: string } {
+  let badges = '';
+  const next = content.replace(/\n\n# [^\n]*?((?:\s*<SinceBadge[^\n]*\/>)*)\n\n?/, (_match, b: string) => {
+    badges = b.trim();
+    return '\n\n';
+  });
+  return { content: next, badges };
+}
+
 export async function postProcessApiDocs() {
   const dir = path.join(__dirname, '../tmp/api');
   const outDir = path.join(__dirname, '../docs.warp-drive.io/api');
@@ -589,8 +682,22 @@ export async function postProcessApiDocs() {
     const importPath = fileToImportPath(file);
     newContent = newContent.replace(/^[^\n]+\n\n/, `<ModuleBadge path="${importPath}" />\n\n`);
 
-    // Remove the first H1 heading and the blank line before it
-    newContent = newContent.replace(/\n\n# [^\n]+\n\n?/, '\n\n');
+    // Turn every `#### Since` section into a `<SinceBadge>` next to the heading it describes
+    const sinceResult = extractSinceBadges(newContent);
+    newContent = sinceResult.content;
+
+    if (path.basename(file) === 'index.md') {
+      // Module page: the module name is already shown via <ModuleBadge>, so drop the redundant
+      // H1 title, relocating any `@since` badge it carried onto the <ModuleBadge> line.
+      const { content: withoutH1, badges } = stripH1(newContent);
+      newContent = withoutH1;
+      const since = badges || (sinceResult.moduleSince ? sinceBadgeMarkup(sinceResult.moduleSince) : '');
+      if (since) {
+        newContent = newContent.replace(/^(<ModuleBadge [^\n]+\/>)/, `$1 ${since}`);
+      }
+    }
+    // Non-module pages keep their H1 so the page shows the name of the thing being documented,
+    // with any `<SinceBadge>` appended right next to it.
 
     // if the file is in @warp-drive/legacy add the legacy badge
     if (file.includes('@warp-drive/legacy')) {
