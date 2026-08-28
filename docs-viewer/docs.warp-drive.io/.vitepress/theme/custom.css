@@ -43,7 +43,7 @@ body {
  * heading. Making the heading a flex row instead centers every child (badges and text) by actual
  * box height, which holds regardless of the size mismatch.
  */
-.vp-doc :where(h1, h2, h3, h4, h5, h6):has(.kind-badge, .since-badge) {
+.vp-doc :where(h1, h2, h3, h4, h5, h6):has(.kind-badge, .since-badge, .status-badge) {
   display: flex;
   align-items: center;
   flex-wrap: wrap;

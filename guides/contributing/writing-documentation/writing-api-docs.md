@@ -298,6 +298,11 @@ package's `<ModuleBadge>` on the module's index page instead:
 > `core-types/src/cache.ts`). Put `@since` on a subpackage's exported
 > members instead until this is extended.
 
+On a class's own member (a method, property, etc.), `@since` shows up
+on its own line directly below the member's heading instead of next
+to it — a nested heading is much narrower than a page's own title, so
+crowding it with an inline badge reads worse much sooner.
+
 ### Overriding the displayed kind and name with `@badge` and `@title`
 
 Every function, class, interface, variable, type alias, and enumeration
@@ -759,6 +764,11 @@ object because it is actively being removed.
 export type StableRecordIdentifier<T extends string = string> = ResourceKey<T>;
 ```
 
+A glowing red badge is automatically added next to the heading of
+whatever the tag describes; the deprecation message itself stays in
+the page body as its own `#### Deprecated` section rather than being
+absorbed into the badge, since it's usually worth reading in full.
+
 ### The `@discouraged` Tag
 
 `@discouraged` signals that a function, object, or class is an older,
@@ -768,6 +778,9 @@ optional to describe those cases in the tag.
 
 If a `@recommended` alternative exists, cross-link to it.
 
+A glowing orange badge is automatically added next to the heading of
+whatever the tag describes.
+
 ### The `@recommended` Tag
 
 `@recommended` is a companion tag to `@deprecated` and `@discouraged`.
@@ -776,6 +789,35 @@ something. It's not mandatory to link back to the `@discouraged` or
 `@deprecated` alternative(s), but doing so is encouraged. Since
 `@recommended` implies the existence of a `@discouraged` and/or
 `@deprecated` counterpart, it shouldn't be used on its own.
+
+A glowing blue/green badge is automatically added next to the heading
+of whatever the tag describes.
+
+### The `@legacy` Tag, and the `@warp-drive/legacy` and `@warp-drive/experiments` Badges
+
+`@legacy` is a repo-specific modifier tag for symbols that predate the
+current architecture but aren't (yet) `@deprecated` — it renders as a
+plain, unstyled `` **`Legacy`** `` flag before the summary, the same
+way any other modifier tag without special handling does (see
+`@discouraged`/`@recommended` above for tags that *do* get special
+handling).
+
+Separate from that tag, every page under the `@warp-drive/legacy`
+package automatically gets a red "@legacy" badge next to its
+`<ModuleBadge>`, and every page under `@warp-drive/experiments`
+automatically gets an orange "@experimental" badge the same way.
+Both are applied purely by which package a file lives in — via
+`docs-viewer/src/site-utils.ts` checking the generated file's path —
+not by any doc comment tag, so nothing needs to be written in source
+to get them; anything moved into (or out of) either package picks up
+(or loses) its badge automatically.
+
+Note that TypeDoc's own standard `@experimental` modifier tag (along
+with `@alpha`/`@beta`/`@internal`/`@public`) is unrelated to the
+`@warp-drive/experiments` badge above — tagging a symbol
+`@experimental` elsewhere in the codebase does not add that badge, and
+currently renders as nothing more than an unstyled
+`` **`Experimental`** `` flag, same as `@legacy` above.
 
 <br>
 

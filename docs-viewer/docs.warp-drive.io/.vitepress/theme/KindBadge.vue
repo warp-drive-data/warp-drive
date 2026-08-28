@@ -5,7 +5,7 @@ defineProps<{
 </script>
 
 <template>
-  <span class="kind-badge">{{ kind }}</span>
+  <span class="kind-badge ignore-header">{{ kind }}</span>
 </template>
 
 <style scoped>

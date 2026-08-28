@@ -582,8 +582,11 @@ function sinceBadgeMarkup(version: string): string {
  * TypeDoc renders each `@since` tag as its own `#### Since` section beneath the heading of the
  * thing it documents (the page's own H1, or a nested member heading for e.g. a class method).
  * This removes every such section from the body and turns its version into a `<SinceBadge>`
- * appended to the heading it described, so `@since` reads as a badge next to the name of the
- * documented thing rather than as a separate body section.
+ * attached to the heading it described, so `@since` reads as a badge next to the name of the
+ * documented thing rather than as a separate body section. The page's own H1 keeps its badge on
+ * the same line as its name; every other (nested member) heading gets it on its own line
+ * directly below instead — inline badges start crowding a smaller heading's name much sooner
+ * than they do the page's title.
  */
 function extractSinceBadges(content: string): { content: string; moduleSince: string | null } {
   const lines = content.split('\n');
@@ -594,7 +597,7 @@ function extractSinceBadges(content: string): { content: string; moduleSince: st
   }
 
   const linesToRemove = new Set<number>();
-  const badgesByHeadingLine = new Map<number, string[]>();
+  const badgesByHeadingLine = new Map<number, { level: number; badges: string[] }>();
   let moduleSince: string | null = null;
 
   for (let hi = 0; hi < headings.length; hi++) {
@@ -634,21 +637,32 @@ function extractSinceBadges(content: string): { content: string; moduleSince: st
       continue;
     }
 
-    const existing = badgesByHeadingLine.get(parent.index) ?? [];
-    existing.push(sinceBadgeMarkup(version));
+    const existing = badgesByHeadingLine.get(parent.index) ?? { level: parent.level, badges: [] };
+    existing.badges.push(sinceBadgeMarkup(version));
     badgesByHeadingLine.set(parent.index, existing);
   }
 
-  for (const [lineIndex, badges] of badgesByHeadingLine) {
-    lines[lineIndex] = `${lines[lineIndex]} ${badges.join(' ')}`;
+  const insertAfterByLine = new Map<number, string>();
+  for (const [lineIndex, { level, badges }] of badgesByHeadingLine) {
+    const markup = badges.join(' ');
+    if (level === 1) {
+      lines[lineIndex] = `${lines[lineIndex]} ${markup}`;
+    } else {
+      insertAfterByLine.set(lineIndex, markup);
+    }
   }
 
-  const kept = lines
-    .filter((_, i) => !linesToRemove.has(i))
-    .join('\n')
-    .replace(/\n{3,}/g, '\n\n');
+  const kept: string[] = [];
+  for (let i = 0; i < lines.length; i++) {
+    if (linesToRemove.has(i)) continue;
+    kept.push(lines[i]);
+    const insertion = insertAfterByLine.get(i);
+    if (insertion !== undefined) kept.push(insertion);
+  }
 
-  return { content: kept, moduleSince };
+  const result = kept.join('\n').replace(/\n{3,}/g, '\n\n');
+
+  return { content: result, moduleSince };
 }
 
 // Structural groupings typedoc-plugin-markdown inserts between an overloaded function/method's
@@ -728,17 +742,110 @@ function escapeHeadingText(text: string): string {
 }
 
 /**
- * Removes the page's first H1 (and the blank line before it), returning any `<SinceBadge>`
- * that had been attached to it so the caller can relocate it (module pages show that badge next
- * to `<ModuleBadge>` instead of a redundant title).
+ * Removes the page's first H1 (and the blank line before it), returning any `<SinceBadge>`/
+ * `<StatusBadge>` that had been attached to it so the caller can relocate it (module pages show
+ * those badges next to `<ModuleBadge>` instead of a redundant title).
  */
 function stripH1(content: string): { content: string; badges: string } {
   let badges = '';
-  const next = content.replace(/\n\n# [^\n]*?((?:\s*<SinceBadge[^\n]*\/>)*)\n\n?/, (_match, b: string) => {
-    badges = b.trim();
-    return '\n\n';
-  });
+  const next = content.replace(
+    /\n\n# [^\n]*?((?:\s*<(?:SinceBadge|StatusBadge)[^\n]*\/>)*)\n\n?/,
+    (_match, b: string) => {
+      badges = b.trim();
+      return '\n\n';
+    }
+  );
   return { content: next, badges };
+}
+
+function statusBadgeMarkup(variant: 'recommended' | 'discouraged' | 'deprecated'): string {
+  return `<StatusBadge variant="${variant}" />`;
+}
+
+/**
+ * TypeDoc renders every `@deprecated` tag as its own `#### Deprecated` section beneath the
+ * heading of the thing it documents, same shape as `@since`. Unlike `@since`, the deprecation
+ * message is worth keeping visible in the body, so this only appends a `<StatusBadge>` to the
+ * heading it describes rather than removing the section.
+ */
+function extractDeprecatedBadges(content: string): string {
+  const lines = content.split('\n');
+  const headings: { index: number; level: number; text: string }[] = [];
+  for (let i = 0; i < lines.length; i++) {
+    const m = HEADING_RE.exec(lines[i]);
+    if (m) headings.push({ index: i, level: m[1].length, text: m[2].trim() });
+  }
+
+  for (let hi = 0; hi < headings.length; hi++) {
+    const heading = headings[hi];
+    if (heading.text !== 'Deprecated') continue;
+
+    let parent: (typeof headings)[number] | null = null;
+    for (let pi = hi - 1; pi >= 0; pi--) {
+      if (headings[pi].level < heading.level) {
+        parent = headings[pi];
+        break;
+      }
+    }
+    // A bare `@deprecated` with no enclosing heading would only happen via the same
+    // packages-mode readme workaround `typedoc-since-plugin.mjs` needs for `@since` — nothing
+    // injects `@deprecated` that way today, so there's no heading to attach a badge to.
+    if (!parent) continue;
+
+    lines[parent.index] = `${lines[parent.index]} ${statusBadgeMarkup('deprecated')}`;
+  }
+
+  return lines.join('\n');
+}
+
+const FLAG_TOKEN_RE = /\*\*`([A-Za-z]+)`\*\*/g;
+const FLAGS_LINE_RE = /^(?:\*\*`[A-Za-z]+`\*\*)(?: \*\*`[A-Za-z]+`\*\*)*$/;
+const STATUS_FLAG_VARIANTS: Record<string, 'recommended' | 'discouraged'> = {
+  Recommended: 'recommended',
+  Discouraged: 'discouraged',
+};
+
+/**
+ * TypeDoc renders `@recommended`/`@discouraged` (registered as modifier tags, not block tags)
+ * as a bold, backticked flag (e.g. `` **`Recommended`** ``) on its own line right after the
+ * heading of the thing they describe, possibly alongside other flags like `` **`Legacy`** ``.
+ * This turns just the recommended/discouraged token into a `<StatusBadge>` appended to that
+ * heading, leaving any other flag on the same line untouched.
+ */
+function extractStatusFlagBadges(content: string): string {
+  const lines = content.split('\n');
+  const headingLineIndexes: number[] = [];
+  for (let i = 0; i < lines.length; i++) {
+    if (HEADING_RE.test(lines[i])) headingLineIndexes.push(i);
+  }
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i].trim();
+    if (!FLAGS_LINE_RE.test(line)) continue;
+
+    const tokens = [...line.matchAll(FLAG_TOKEN_RE)].map((m) => m[1]);
+    const statusTokens = tokens.filter((t) => t in STATUS_FLAG_VARIANTS);
+    if (statusTokens.length === 0) continue;
+
+    let headingLineIndex = -1;
+    for (let hi = headingLineIndexes.length - 1; hi >= 0; hi--) {
+      if (headingLineIndexes[hi] < i) {
+        headingLineIndex = headingLineIndexes[hi];
+        break;
+      }
+    }
+    // A flags line always sits directly under the heading of the symbol it flags; if somehow
+    // there isn't one above it, leave the line as TypeDoc rendered it.
+    if (headingLineIndex === -1) continue;
+
+    const badges = statusTokens.map((t) => statusBadgeMarkup(STATUS_FLAG_VARIANTS[t]));
+    lines[headingLineIndex] = `${lines[headingLineIndex]} ${badges.join(' ')}`;
+
+    const remainingTokens = tokens.filter((t) => !(t in STATUS_FLAG_VARIANTS));
+    lines[i] = remainingTokens.map((t) => `**\`${t}\`**`).join(' ');
+  }
+
+  return lines.join('\n').replace(/\n{3,}/g, '\n\n');
 }
 
 export async function postProcessApiDocs() {
@@ -816,6 +923,12 @@ export async function postProcessApiDocs() {
     const sinceResult = extractSinceBadges(newContent);
     newContent = sinceResult.content;
 
+    // Turn every `#### Deprecated` section into a `<StatusBadge>` next to the heading it
+    // describes, and turn the `@recommended`/`@discouraged` flags TypeDoc renders for those
+    // modifier tags into matching `<StatusBadge>`s.
+    newContent = extractDeprecatedBadges(newContent);
+    newContent = extractStatusFlagBadges(newContent);
+
     if (path.basename(file) === 'index.md') {
       // Module page: the module name is already shown via <ModuleBadge>, so drop the redundant
       // H1 title, relocating any `@since` badge it carried onto the <ModuleBadge> line.
@@ -832,6 +945,11 @@ export async function postProcessApiDocs() {
     // if the file is in @warp-drive/legacy add the legacy badge
     if (file.includes('@warp-drive/legacy')) {
       newContent = newContent.replace(/^(<ModuleBadge [^\n]+\/>)/, `$1 <Badge type="danger" text="@legacy" />`);
+    }
+
+    // if the file is in @warp-drive/experiments add the experimental badge
+    if (file.includes('@warp-drive/experiments')) {
+      newContent = newContent.replace(/^(<ModuleBadge [^\n]+\/>)/, `$1 <Badge type="warning" text="@experimental" />`);
     }
 
     // insert frontmatter
