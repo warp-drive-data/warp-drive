@@ -1,6 +1,6 @@
 {
   "name": "@warp-drive/holodeck",
-  "description": "\u26a1\ufe0f Simple, Fast HTTP Mocking for Tests",
+  "description": "⚡️ Simple, Fast HTTP Mocking for Tests",
   "version": "0.1.0-alpha.66",
   "license": "MIT",
   "author": "Chris Thoburn <runspired@users.noreply.github.com>",
