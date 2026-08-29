@@ -181,7 +181,7 @@ Fields will automatically update their reactive value when changed by any other 
 
 ### Using `@effect` to Respond to Cross-Tab Updates
 
-Very occassionally, external updates result in needing to synchronize non-reactive/derived state. For instance, in order to properly theme a site for light mode vs dark mode, the mode (and typically a class) needs to be added to the document's root element or body element. Since these elements are not generally rendered via derivation, we can't rely on derived state updates to effect these changes.
+Very occasionally, external updates result in needing to synchronize non-reactive/derived state. For instance, in order to properly theme a site for light mode vs dark mode, the mode (and typically a class) needs to be added to the document's root element or body element. Since these elements are not generally rendered via derivation, we can't rely on derived state updates to effect these changes.
 
 One approach for these scenarios in Ember is to use a template-based modifier or helper to run a callback when the value changes.
 
