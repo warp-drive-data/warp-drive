@@ -1,7 +1,7 @@
-/* eslint-disable @typescript-eslint/no-unused-vars -- imported only for {@link} cross-references in doc comments */
+/* oxlint-disable no-unused-vars */
 import type { HashFn } from '@warp-drive/core/types/schema/concepts';
 import type { HashField } from '@warp-drive/core/types/schema/fields';
-/* eslint-enable @typescript-eslint/no-unused-vars */
+/* oxlint-enable no-unused-vars */
 
 /**
  * Options accepted by the {@link hash} decorator.

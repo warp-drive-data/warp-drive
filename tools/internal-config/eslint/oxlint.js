@@ -4,7 +4,16 @@
 // (see `.oxlintrc.json`'s `ignorePatterns`) — ESLint stays the sole enforcer of these rules
 // there, and this list must only be applied to plain `.ts`/`.tsx`/`.js` configs.
 //
-// Keep this in sync with the enabled ("error") rules in `.oxlintrc.json`'s `rules` map.
+// This deliberately excludes every rule that requires type information (no-unsafe-*,
+// no-floating-promises, require-await, restrict-template-expressions, unbound-method, etc.)
+// even though `.oxlintrc.json` lists them as `"error"`: `tools/internal-config/oxlint/run.sh`
+// invokes plain `oxlint`, and those rules are no-ops without the `--type-aware` flag oxlint
+// requires to enable them (confirmed by running oxlint locally against this repo — none of
+// them fired despite dozens of pre-existing violations ESLint's type-aware pass catches).
+// ESLint must keep enforcing those until oxlint's type-aware mode is actually wired up.
+//
+// Keep this in sync with the enabled ("error"), non-type-aware rules in `.oxlintrc.json`'s
+// `rules` map.
 export const OXLINT_OWNED_RULES = [
   // eslint core
   'eqeqeq',
@@ -71,27 +80,22 @@ export const OXLINT_OWNED_RULES = [
   // oxlint enforces the generic version across both `.ts` and `.js`
   'no-loop-func',
   'no-shadow',
+  'no-unused-expressions',
   'no-unused-vars',
   'no-useless-constructor',
 
   // @typescript-eslint (oxlint's `typescript` plugin subset, plus the recommended/strict
-  // presets `typescript.js`'s `rules()` pulls in by default)
+  // presets `typescript.js`'s `rules()` pulls in by default) — syntactic rules only; see the
+  // note above about excluding anything that needs type information.
   '@typescript-eslint/adjacent-overload-signatures',
-  '@typescript-eslint/consistent-type-exports',
   '@typescript-eslint/consistent-type-imports',
-  '@typescript-eslint/no-array-delete',
   '@typescript-eslint/no-duplicate-enum-values',
-  '@typescript-eslint/no-duplicate-type-constituents',
   '@typescript-eslint/no-empty-object-type',
   '@typescript-eslint/no-explicit-any',
   '@typescript-eslint/no-extra-non-null-assertion',
   '@typescript-eslint/no-extraneous-class',
-  '@typescript-eslint/no-floating-promises',
-  '@typescript-eslint/no-for-in-array',
-  '@typescript-eslint/no-implied-eval',
   '@typescript-eslint/no-import-type-side-effects',
   '@typescript-eslint/no-inferrable-types',
-  '@typescript-eslint/no-meaningless-void-operator',
   '@typescript-eslint/no-misused-new',
   '@typescript-eslint/no-namespace',
   '@typescript-eslint/no-non-null-asserted-nullish-coalescing',
@@ -99,34 +103,17 @@ export const OXLINT_OWNED_RULES = [
   '@typescript-eslint/no-require-imports',
   '@typescript-eslint/no-shadow',
   '@typescript-eslint/no-this-alias',
-  '@typescript-eslint/no-unnecessary-type-arguments',
-  '@typescript-eslint/no-unnecessary-type-assertion',
   '@typescript-eslint/no-unnecessary-type-constraint',
-  '@typescript-eslint/no-unsafe-argument',
-  '@typescript-eslint/no-unsafe-assignment',
-  '@typescript-eslint/no-unsafe-call',
-  '@typescript-eslint/no-unsafe-enum-comparison',
   '@typescript-eslint/no-unsafe-function-type',
-  '@typescript-eslint/no-unsafe-member-access',
-  '@typescript-eslint/no-unsafe-return',
-  '@typescript-eslint/no-unsafe-unary-minus',
+  '@typescript-eslint/no-unused-expressions',
   '@typescript-eslint/no-unused-vars',
   '@typescript-eslint/no-useless-constructor',
   '@typescript-eslint/no-wrapper-object-types',
-  '@typescript-eslint/only-throw-error',
   '@typescript-eslint/prefer-as-const',
-  '@typescript-eslint/prefer-includes',
   '@typescript-eslint/prefer-literal-enum-member',
   '@typescript-eslint/prefer-namespace-keyword',
-  '@typescript-eslint/prefer-promise-reject-errors',
-  '@typescript-eslint/prefer-reduce-type-parameter',
-  '@typescript-eslint/prefer-return-this-type',
   '@typescript-eslint/prefer-ts-expect-error',
-  '@typescript-eslint/require-await',
-  '@typescript-eslint/restrict-plus-operands',
-  '@typescript-eslint/restrict-template-expressions',
   '@typescript-eslint/triple-slash-reference',
-  '@typescript-eslint/unbound-method',
 ];
 
 /** @return {import('eslint').Linter.RulesRecord} */

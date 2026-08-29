@@ -127,7 +127,7 @@ if (TESTING) {
   if (!GlobalSink.__warpDrive_ModuleScopedCaches) {
     GlobalSink.__warpDrive_ModuleScopedCaches = ModuleScopedCaches;
   } else {
-    // eslint-disable-next-line no-console
+    // oxlint-disable-next-line no-console
     console.warn(`
 Multiple copies of WarpDrive have been detected. This may be due to a bug in ember-auto-import
   in which test assets get their own copy of some v2-addons. This can cause the application to

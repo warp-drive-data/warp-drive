@@ -118,7 +118,7 @@ export async function runTest<TC extends TestContext>(
           expected: true,
         });
         if (Config.params.noTryCatch.value) {
-          // eslint-disable-next-line no-unsafe-finally
+          // oxlint-disable-next-line no-unsafe-finally
           throw e;
         }
       }

@@ -1,6 +1,6 @@
 import { assert } from '@warp-drive/core/build-config/macros';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+// oxlint-disable-next-line no-unused-vars
 import type { NotificationManager } from '../../store/-private/managers/notification-manager.ts';
 import { getOrSetGlobal, peekTransient, setTransient } from '../../types/-private.ts';
 

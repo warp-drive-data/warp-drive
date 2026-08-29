@@ -1,11 +1,11 @@
 import type { ResourceKey } from '../identifier.ts';
 import type {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // oxlint-disable-next-line no-unused-vars
   CollectionResourceRelationship,
   Links,
   Meta,
   PaginationLinks,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // oxlint-disable-next-line no-unused-vars
   SingleResourceRelationship,
 } from '../spec/json-api-raw.ts';
 

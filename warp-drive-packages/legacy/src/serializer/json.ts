@@ -6,10 +6,10 @@
 import { getOwner } from '@ember/application';
 import { warn } from '@ember/debug';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+// oxlint-disable-next-line no-unused-vars
 import type { RequestManager, Store } from '@warp-drive/core';
 import { assert } from '@warp-drive/core/build-config/macros';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+// oxlint-disable-next-line no-unused-vars
 import type { Handler } from '@warp-drive/core/request';
 import type { ModelSchema } from '@warp-drive/core/types';
 import type {
@@ -101,7 +101,7 @@ const PRIMARY_ATTRIBUTE_KEY = 'base';
   @class JSONSerializer
   @public
 */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// oxlint-disable-next-line typescript/no-explicit-any
 const JSONSerializer: any = Serializer.extend({
   /**
     The `primaryKey` is used when serializing and deserializing

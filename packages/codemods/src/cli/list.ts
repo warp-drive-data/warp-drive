@@ -25,7 +25,7 @@ export function createListCommand(program: Command) {
       const maxNameLength = Math.max(...codemods.map((config) => config.name.length));
       for (const codemod of codemods) {
         const paddedName = codemod.name.padEnd(maxNameLength, ' ');
-        // eslint-disable-next-line no-console
+        // oxlint-disable-next-line no-console
         console.log(`${paddedName} - ${codemod.description}`);
       }
     });

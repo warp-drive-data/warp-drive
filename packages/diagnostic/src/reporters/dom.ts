@@ -180,7 +180,7 @@ export class DOMReporter implements Reporter {
     const fragment = document.createDocumentFragment();
     if (this.suite.resultsList.hidden) {
       // render the DOM we have so far again
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      // oxlint-disable-next-line no-unused-vars
       for (const [_test, state] of this.suite.results) {
         if (state.dom) {
           fragment.appendChild(state.dom[0]);

@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+// oxlint-disable-next-line no-unused-vars
 import type { RequestManager } from '@warp-drive/core';
 import { assert } from '@warp-drive/core/build-config/macros';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+// oxlint-disable-next-line no-unused-vars
 import type { Handler } from '@warp-drive/core/request';
 import { getOrSetGlobal } from '@warp-drive/core/types/-private';
 import type { ApiError } from '@warp-drive/core/types/spec/error';

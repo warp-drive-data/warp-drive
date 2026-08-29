@@ -6,11 +6,11 @@
 import { warn } from '@ember/debug';
 import type EmberObject from '@ember/object';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+// oxlint-disable-next-line no-unused-vars
 import type { RequestManager } from '@warp-drive/core';
 import { DEBUG } from '@warp-drive/core/build-config/env';
 import { assert } from '@warp-drive/core/build-config/macros';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+// oxlint-disable-next-line no-unused-vars
 import type { Handler } from '@warp-drive/core/request';
 import { dasherize, pluralize, singularize } from '@warp-drive/utilities/string';
 
@@ -138,7 +138,7 @@ import { JSONSerializer } from './json';
   @class JSONAPISerializer
   @public
 */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// oxlint-disable-next-line typescript/no-explicit-any
 const JSONAPISerializer: any = (JSONSerializer as typeof EmberObject).extend({
   /**
     @private

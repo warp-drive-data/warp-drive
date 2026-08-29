@@ -1,7 +1,7 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+// oxlint-disable-next-line no-unused-vars
 import type { RequestManager, Store } from '@warp-drive/core';
 import { assert } from '@warp-drive/core/build-config/macros';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+// oxlint-disable-next-line no-unused-vars
 import type { Handler } from '@warp-drive/core/request';
 import type { ModelSchema } from '@warp-drive/core/types';
 import type { HTTPMethod } from '@warp-drive/core/types/request';

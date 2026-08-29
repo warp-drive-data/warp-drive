@@ -13,7 +13,7 @@ import { assertPrivateStore } from '@warp-drive/core/store/-private';
 import type { ModelSchema } from '@warp-drive/core/types';
 import { capitalize, underscore } from '@warp-drive/utilities/string';
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+// oxlint-disable-next-line typescript/no-empty-object-type
 interface Model extends ModelSchema {}
 declare class Model {
   id: string | null;

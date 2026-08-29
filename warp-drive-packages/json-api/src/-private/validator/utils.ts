@@ -542,7 +542,7 @@ export class Reporter {
     chunks.forEach((chunk, index) => {
       const prefix = index === 0 ? `${contextStr}\n\n` : '';
       const chunkString = prefix + chunk.text.join('\n');
-      // eslint-disable-next-line no-console, @typescript-eslint/no-unused-expressions
+      // oxlint-disable-next-line no-console, no-unused-expressions
       colorize ? console.log(chunkString, ...chunk.colors) : console.log(chunkString);
     });
 

@@ -42,7 +42,7 @@ export type FetchMutationOptions = FindRecordOptions & { [SaveOp]: 'createRecord
 interface PendingFetchItem {
   identifier: PersistedResourceKey;
   queryRequest: Request;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // oxlint-disable-next-line typescript/no-explicit-any
   resolver: Deferred<any>;
   options: FindRecordOptions;
   trace?: unknown;
@@ -50,7 +50,7 @@ interface PendingFetchItem {
 }
 
 interface PendingSaveItem {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // oxlint-disable-next-line typescript/no-explicit-any
   resolver: Deferred<any>;
   snapshot: Snapshot;
   identifier: ResourceKey;

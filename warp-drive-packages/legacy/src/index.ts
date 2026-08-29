@@ -18,7 +18,7 @@ import { DefaultCachePolicy } from '@warp-drive/core/store';
 import type { CacheCapabilitiesManager, ModelSchema, ResourceKey } from '@warp-drive/core/types';
 import type { Cache } from '@warp-drive/core/types/cache';
 import type { TypeFromInstance } from '@warp-drive/core/types/record';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+// oxlint-disable-next-line no-unused-vars
 import type { RequestInfo } from '@warp-drive/core/types/request';
 import type { ObjectSchema, ResourceSchema } from '@warp-drive/core/types/schema/fields';
 
@@ -396,7 +396,7 @@ export function useLegacyStore<T extends Cache>(
     }
 
     createCache(capabilities: CacheCapabilitiesManager) {
-      // eslint-disable-next-line new-cap
+      // oxlint-disable-next-line new-cap
       return new options.cache(capabilities);
     }
 
