@@ -2,6 +2,7 @@ import { DEBUG } from '@warp-drive/build-config/env';
 import { DEPRECATE_COMPUTED_CHAINS } from '@warp-drive/core/build-config/deprecations';
 import { assert } from '@warp-drive/core/build-config/macros';
 
+import type { OpaqueRecordInstance } from '../../-types/q/record-instance.ts';
 import type { ExtensionDef } from '../../../reactive.ts';
 import { Context } from '../../../reactive/-private.ts';
 import {
@@ -23,7 +24,6 @@ import { getOrSetGlobal } from '../../../types/-private.ts';
 import type { RequestKey, ResourceKey } from '../../../types/identifier.ts';
 import type { ObjectValue, Value } from '../../../types/json/raw.ts';
 import type { CollectionField } from '../../../types/schema/fields.ts';
-import type { OpaqueRecordInstance } from '../../-types/q/record-instance.ts';
 import { recordIdentifierFor } from '../caches/instance-cache.ts';
 import { isResourceKey } from '../managers/cache-key-manager.ts';
 import type { Store } from '../store-service.ts';

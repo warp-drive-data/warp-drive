@@ -1,6 +1,6 @@
-import { styleText } from 'node:util';
 import JSONC from 'comment-json';
 import fs from 'fs';
+import { styleText } from 'node:util';
 import path from 'path';
 
 import { exec, getInfo, getPackageManagerFromLockfile, getTags } from '../../shared/npm.ts';

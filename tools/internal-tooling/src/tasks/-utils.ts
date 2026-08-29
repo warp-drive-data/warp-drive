@@ -1,8 +1,8 @@
-import type { BunFile } from 'bun';
-import path from 'path';
-import type { CommentObject } from 'comment-json';
 import { findWorkspaceDir } from '@pnpm/find-workspace-dir';
 import { findWorkspacePackages, type Project } from '@pnpm/find-workspace-packages';
+import type { BunFile } from 'bun';
+import type { CommentObject } from 'comment-json';
+import path from 'path';
 
 export async function getMonorepoRoot() {
   const workspaceDir = await findWorkspaceDir(process.cwd());

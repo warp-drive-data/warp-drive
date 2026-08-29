@@ -1,10 +1,11 @@
 #! /usr/bin/env bun
 
-import { watch, existsSync, readdirSync } from 'fs';
-import { main } from './prepare-website';
-import { join } from 'path';
-import { postProcessApiDocs } from './site-utils';
 import { $ } from 'bun';
+import { watch, existsSync, readdirSync } from 'fs';
+import { join } from 'path';
+
+import { main } from './prepare-website';
+import { postProcessApiDocs } from './site-utils';
 
 const guidesPath = join(__dirname, '../../guides');
 const skillsPath = join(__dirname, '../../warp-drive-packages/memory-alpha/skills');

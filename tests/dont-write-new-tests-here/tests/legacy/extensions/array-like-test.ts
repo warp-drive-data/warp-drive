@@ -2,9 +2,9 @@ import { module, test } from 'qunit';
 
 import JSONAPICache from '@ember-data/json-api';
 import { CacheHandler, Fetch, RequestManager, Store } from '@warp-drive/core';
+import type { Type } from '@warp-drive/core-types/symbols';
 import { instantiateRecord, SchemaService, teardownRecord } from '@warp-drive/core/reactive';
 import type { CacheCapabilitiesManager, ResourceKey } from '@warp-drive/core/types';
-import type { Type } from '@warp-drive/core-types/symbols';
 import { EmberArrayLikeExtension, type WithArrayLike } from '@warp-drive/legacy/compat/extensions';
 import { registerDerivations, withDefaults } from '@warp-drive/legacy/model/migration-support';
 

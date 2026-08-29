@@ -1,10 +1,11 @@
-import { HELP } from '../help/sections/manual.ts';
-import { ABOUT } from '../help/sections/about.ts';
-import { normalizeFlag, type CommandConfig, type FlagConfig } from './parse-args.ts';
-import { CHANNEL, SEMVER_VERSION, VALID_TRAINS, npmDistTagForChannelAndVersion } from './channel.ts';
-import { getGitState, getPublishedChannelInfo } from './git.ts';
 import { styleText } from 'node:util';
 import semver from 'semver';
+
+import { ABOUT } from '../help/sections/about.ts';
+import { HELP } from '../help/sections/manual.ts';
+import { CHANNEL, SEMVER_VERSION, VALID_TRAINS, npmDistTagForChannelAndVersion } from './channel.ts';
+import { getGitState, getPublishedChannelInfo } from './git.ts';
+import { normalizeFlag, type CommandConfig, type FlagConfig } from './parse-args.ts';
 
 /**
  * Like Pick but returns an object type instead of a union type.

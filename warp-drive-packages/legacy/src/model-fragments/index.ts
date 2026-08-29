@@ -1,6 +1,6 @@
 import type { WithArrayLike, WithEmberObject } from '../compat/extensions.ts';
-import type { Fragment } from './extensions/fragment.ts';
 import type { FragmentArray } from './extensions/fragment-array.ts';
+import type { Fragment } from './extensions/fragment.ts';
 
 /**
  * Adds the classic `EmberObject` API (via {@link WithEmberObject}) and the

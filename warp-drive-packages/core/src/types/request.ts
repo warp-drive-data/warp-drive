@@ -49,7 +49,16 @@ export type { FetchError };
  * The HTTP methods WarpDrive's request layer supports.
  */
 export type HTTPMethod =
-  'QUERY' | 'GET' | 'OPTIONS' | 'POST' | 'PUT' | 'PATCH' | 'DELETE' | 'HEAD' | 'CONNECT' | 'TRACE';
+  | 'QUERY'
+  | 'GET'
+  | 'OPTIONS'
+  | 'POST'
+  | 'PUT'
+  | 'PATCH'
+  | 'DELETE'
+  | 'HEAD'
+  | 'CONNECT'
+  | 'TRACE';
 
 /**
  * Use these options to adjust {@link CacheHandler} behavior for a request

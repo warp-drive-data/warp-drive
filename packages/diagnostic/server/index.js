@@ -5,10 +5,10 @@ import path from 'path';
 import { handleBunFetch } from './bun/fetch.js';
 import { launchBrowsers } from './bun/launch-browser.js';
 import { buildHandler } from './bun/socket-handler.js';
-import { debug, error, print } from './utils/debug.js';
-import { getPort } from './utils/port.js';
 import { addCloseHandler } from './bun/watch.js';
 import { startWatchdog } from './bun/watchdog.js';
+import { debug, error, print } from './utils/debug.js';
+import { getPort } from './utils/port.js';
 
 async function getCertInfo() {
   let CERT_PATH = process.env.HOLODECK_SSL_CERT_PATH;

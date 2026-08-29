@@ -1,9 +1,9 @@
-import type { ResourceRelationship } from '../../../types/cache/relationship.ts';
-import type { ResourceKey } from '../../../types/identifier.ts';
-import type { Links, Meta, PaginationLinks } from '../../../types/spec/json-api-raw.ts';
 import type { UpgradedMeta } from '../-edge-definition.ts';
 import type { RelationshipState } from '../-state.ts';
 import { createState } from '../-state.ts';
+import type { ResourceRelationship } from '../../../types/cache/relationship.ts';
+import type { ResourceKey } from '../../../types/identifier.ts';
+import type { Links, Meta, PaginationLinks } from '../../../types/spec/json-api-raw.ts';
 
 /**
  * Stores the data for one side of a "single" resource relationship.

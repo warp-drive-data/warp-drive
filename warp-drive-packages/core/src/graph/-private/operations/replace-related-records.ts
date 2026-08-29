@@ -5,10 +5,10 @@ import { DEPRECATE_RELATIONSHIP_REMOTE_UPDATE_CLEARING_LOCAL_STATE } from '@warp
 import { DEBUG } from '@warp-drive/core/build-config/env';
 import { assert } from '@warp-drive/core/build-config/macros';
 
-import type { ResourceKey } from '../../../types.ts';
-import type { ReplaceRelatedRecordsOperation } from '../../../types/graph.ts';
 import { _add, _removeLocal, _removeRemote, diffCollection } from '../-diff.ts';
 import { checkIfNew, isBelongsTo, isHasMany, notifyChange } from '../-utils.ts';
+import type { ResourceKey } from '../../../types.ts';
+import type { ReplaceRelatedRecordsOperation } from '../../../types/graph.ts';
 import { assertPolymorphicType } from '../debug/assert-polymorphic-type.ts';
 import type { CollectionEdge } from '../edges/collection.ts';
 import type { Graph } from '../graph.ts';

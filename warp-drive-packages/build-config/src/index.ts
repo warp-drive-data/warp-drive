@@ -38,17 +38,18 @@
  * @module
  */
 
-import EmbroiderMacros from '@embroider/macros/src/node.js';
-import { getEnv } from './-private/utils/get-env.ts';
-import { getDeprecations } from './-private/utils/deprecations.ts';
-import { getFeatures } from './-private/utils/features.ts';
-import * as LOGGING from './debugging.ts';
-import type * as FEATURES from './canary-features.ts';
-import type * as DEPRECATIONS from './deprecations.ts';
-import type { MacrosConfig } from '@embroider/macros/src/node.js';
-import { createLoggingConfig } from './-private/utils/logging.ts';
 import type { PluginItem } from '@babel/core';
 import { buildMacros } from '@embroider/macros/src/babel.js';
+import EmbroiderMacros from '@embroider/macros/src/node.js';
+import type { MacrosConfig } from '@embroider/macros/src/node.js';
+
+import { getDeprecations } from './-private/utils/deprecations.ts';
+import { getFeatures } from './-private/utils/features.ts';
+import { getEnv } from './-private/utils/get-env.ts';
+import { createLoggingConfig } from './-private/utils/logging.ts';
+import type * as FEATURES from './canary-features.ts';
+import * as LOGGING from './debugging.ts';
+import type * as DEPRECATIONS from './deprecations.ts';
 
 /**
  * Create the Babel plugin for WarpDrive

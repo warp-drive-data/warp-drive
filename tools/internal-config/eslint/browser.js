@@ -1,6 +1,7 @@
 // @ts-check
 import js from '@eslint/js';
 import prettier from 'eslint-config-prettier';
+
 import * as imports from './imports.js';
 import * as isolation from './isolation.js';
 import * as ts from './typescript.js';

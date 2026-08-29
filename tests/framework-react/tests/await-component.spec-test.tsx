@@ -1,8 +1,9 @@
-import { useMemo, useRef } from "react";
-import { useReact } from "@warp-drive/diagnostic/react";
 import { AwaitSpec } from "@warp-drive-internal/specs/await-component.spec";
+import { useMemo, useRef } from "react";
+
 import { DEBUG } from "@warp-drive/core/build-config/env";
 import { getPromiseState } from "@warp-drive/core/reactive";
+import { useReact } from "@warp-drive/diagnostic/react";
 import { ReactiveContext } from "@warp-drive/react";
 
 function useBetterMemo<T>(getValue: () => T, deps: React.DependencyList) {

@@ -8,9 +8,9 @@ import type { TypeFromInstance } from '@warp-drive/core/types/record';
 import { RecordStore } from '@warp-drive/core/types/symbols';
 
 import { lookupLegacySupport } from './legacy-relationships-support.ts';
+import type { MinimalLegacyRecord } from './model-methods.ts';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { Model } from './model.ts';
-import type { MinimalLegacyRecord } from './model-methods.ts';
 import { isElementDescriptor, normalizeModelName } from './util.ts';
 
 export type IsUnknown<T> = unknown extends T ? true : false;

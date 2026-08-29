@@ -1,7 +1,6 @@
-import '@ember-data/request-utils/deprecation-support';
-
 import { default as Inflector, singularize as inflectorSingularize } from 'ember-inflector';
 
+import '@ember-data/request-utils/deprecation-support';
 import { singularize } from '@ember-data/request-utils/string';
 import { DEPRECATE_EMBER_INFLECTOR } from '@warp-drive/build-config/deprecations';
 import { module, test } from '@warp-drive/diagnostic';

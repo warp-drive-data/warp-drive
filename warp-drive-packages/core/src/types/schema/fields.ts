@@ -2559,7 +2559,11 @@ export function isLegacyResourceSchema(schema: ResourceSchema | ObjectSchema): s
  * @public
  */
 export type LegacyField =
-  LegacyAttributeField | LegacyBelongsToField | LegacyHasManyField | LinksModeBelongsToField | LinksModeHasManyField;
+  | LegacyAttributeField
+  | LegacyBelongsToField
+  | LegacyHasManyField
+  | LinksModeBelongsToField
+  | LinksModeHasManyField;
 
 /**
  * A union of all legacy relationship field schemas, i.e. {@link LegacyField}
@@ -2575,4 +2579,7 @@ export type LegacyField =
  * @public
  */
 export type LegacyRelationshipField =
-  LegacyBelongsToField | LegacyHasManyField | LinksModeBelongsToField | LinksModeHasManyField;
+  | LegacyBelongsToField
+  | LegacyHasManyField
+  | LinksModeBelongsToField
+  | LinksModeHasManyField;

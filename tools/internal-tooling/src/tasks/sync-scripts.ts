@@ -4,6 +4,7 @@
  */
 import debug from 'debug';
 import { styleText } from 'node:util';
+
 import { runPrettier, walkPackages, type ProjectPackage } from './-utils';
 
 const log = debug('wd:sync-scripts');

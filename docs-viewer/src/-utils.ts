@@ -1,7 +1,7 @@
 import { findWorkspaceDir } from '@pnpm/find-workspace-dir';
-import path from 'path';
-import { styleText } from 'node:util';
 import fs from 'fs';
+import { styleText } from 'node:util';
+import path from 'path';
 
 const workspaceRoot = (await findWorkspaceDir(process.cwd())) as string;
 

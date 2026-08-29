@@ -1,11 +1,11 @@
+import { Store as DataStore, CacheHandler, RequestManager, Fetch } from '@warp-drive/core';
+import type { NextFn } from '@warp-drive/core/request';
+import type { CacheCapabilitiesManager, ModelSchema } from '@warp-drive/core/types';
+import type { ResourceKey } from '@warp-drive/core/types';
+import type { RequestContext } from '@warp-drive/core/types/request';
 import { JSONAPICache } from '@warp-drive/json-api';
 import type { Model } from '@warp-drive/legacy/model';
 import { instantiateRecord, teardownRecord, buildSchema, modelFor } from '@warp-drive/legacy/model';
-import { Store as DataStore, CacheHandler, RequestManager, Fetch } from '@warp-drive/core';
-import type { CacheCapabilitiesManager, ModelSchema } from '@warp-drive/core/types';
-import type { ResourceKey } from '@warp-drive/core/types';
-import type { NextFn } from '@warp-drive/core/request';
-import type { RequestContext } from '@warp-drive/core/types/request';
 
 export default class Store extends DataStore {
   requestManager = new RequestManager()

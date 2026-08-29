@@ -1,21 +1,22 @@
-import { publish_flags_config } from '../../utils/flags-config.ts';
-import { parseRawFlags, printConfig } from '../../utils/parse-args.ts';
-import { GIT_TAG, getAllPackagesForGitTag, getGitState } from '../../utils/git.ts';
-import { printHelpDocs } from '../../help/docs.ts';
-import { bumpAllPackages, restorePackagesForDryRun } from './steps/bump-versions.ts';
-import { generatePackageTarballs, verifyTarballs } from './steps/generate-tarballs.ts';
-import { generateMirrorTarballs } from './steps/generate-mirror-tarballs.ts';
-import { printStrategy } from './steps/print-strategy.ts';
-import { AppliedStrategy, applyStrategy } from './steps/generate-strategy.ts';
-import { confirmStrategy } from './steps/confirm-strategy.ts';
-import { publishPackages } from './steps/publish-packages.ts';
-import { gatherPackages, loadStrategy } from '../../utils/package.ts';
-import { CHANNEL, SEMVER_VERSION } from '../../utils/channel.ts';
-import { confirmCommitChangelogs } from '../release-notes/steps/confirm-changelogs.ts';
-import { updateChangelogs } from '../release-notes/steps/update-changelogs.ts';
-import { getChanges } from '../release-notes/steps/get-changes.ts';
-import { generateTypesTarballs } from './steps/generate-types-tarballs.ts';
 import { readFileSync } from 'node:fs';
+
+import { printHelpDocs } from '../../help/docs.ts';
+import { CHANNEL, SEMVER_VERSION } from '../../utils/channel.ts';
+import { publish_flags_config } from '../../utils/flags-config.ts';
+import { GIT_TAG, getAllPackagesForGitTag, getGitState } from '../../utils/git.ts';
+import { gatherPackages, loadStrategy } from '../../utils/package.ts';
+import { parseRawFlags, printConfig } from '../../utils/parse-args.ts';
+import { confirmCommitChangelogs } from '../release-notes/steps/confirm-changelogs.ts';
+import { getChanges } from '../release-notes/steps/get-changes.ts';
+import { updateChangelogs } from '../release-notes/steps/update-changelogs.ts';
+import { bumpAllPackages, restorePackagesForDryRun } from './steps/bump-versions.ts';
+import { confirmStrategy } from './steps/confirm-strategy.ts';
+import { generateMirrorTarballs } from './steps/generate-mirror-tarballs.ts';
+import { AppliedStrategy, applyStrategy } from './steps/generate-strategy.ts';
+import { generatePackageTarballs, verifyTarballs } from './steps/generate-tarballs.ts';
+import { generateTypesTarballs } from './steps/generate-types-tarballs.ts';
+import { printStrategy } from './steps/print-strategy.ts';
+import { publishPackages } from './steps/publish-packages.ts';
 
 export async function executePublish(args: string[]) {
   // get user supplied config

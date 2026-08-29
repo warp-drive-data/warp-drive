@@ -1,13 +1,14 @@
-import { styleText } from 'node:util';
-import { Hono } from 'hono';
 import { serve } from '@hono/node-server';
-import { createSecureServer } from 'node:http2';
-import { logger } from 'hono/logger';
-import { HTTPException } from 'hono/http-exception';
+import { Hono } from 'hono';
 import { cors } from 'hono/cors';
+import { HTTPException } from 'hono/http-exception';
+import { logger } from 'hono/logger';
 import fs from 'node:fs';
-import path from 'path';
+import { createSecureServer } from 'node:http2';
+import { styleText } from 'node:util';
 import { Worker, threadId, parentPort } from 'node:worker_threads';
+import path from 'path';
+
 import {
   bindWithRetry,
   compress,

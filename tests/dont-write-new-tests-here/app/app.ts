@@ -1,5 +1,3 @@
-import '@warp-drive/ember/install';
-
 // classic ember-cli addons contribute their own app/initializers/*.js files,
 // which get merged into the consuming app's namespace by broccoli's
 // addon-tree-merging and auto-run by ember-load-initializers. Neither of
@@ -10,6 +8,8 @@ import '@warp-drive/ember/install';
 // any test relying on each store getting its own adapter/serializer.
 import EmberDataInitializer from 'ember-data/app/initializers/ember-data';
 import Application from 'ember-strict-application-resolver';
+
+import '@warp-drive/ember/install';
 
 import Router from './router';
 

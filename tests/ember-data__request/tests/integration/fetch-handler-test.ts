@@ -1,6 +1,6 @@
 import RequestManager from '@ember-data/request';
-import Fetch from '@ember-data/request/fetch';
 import { buildBaseURL } from '@ember-data/request-utils';
+import Fetch from '@ember-data/request/fetch';
 import { module, test } from '@warp-drive/diagnostic';
 import { mock, MockServerHandler } from '@warp-drive/holodeck';
 import { GET, HEAD } from '@warp-drive/holodeck/mock';

@@ -4,6 +4,7 @@ import { LOG_INSTANCE_CACHE } from '@warp-drive/core/build-config/debugging';
 import { DEBUG } from '@warp-drive/core/build-config/env';
 import { assert } from '@warp-drive/core/build-config/macros';
 
+import type { OpaqueRecordInstance } from '../../-types/q/record-instance.ts';
 import { createReactiveDocument, type ReactiveDocument } from '../../../reactive/-private/document.ts';
 import { _CHECKOUT, ReactiveResource } from '../../../reactive/-private/record.ts';
 import { getOrSetGlobal } from '../../../types/-private.ts';
@@ -11,7 +12,6 @@ import type { Cache } from '../../../types/cache.ts';
 import type { RequestKey, ResourceKey } from '../../../types/identifier.ts';
 import type { TypedRecordInstance, TypeFromInstance, TypeFromInstanceOrString } from '../../../types/record.ts';
 import type { ResourceSchema } from '../../../types/schema/fields.ts';
-import type { OpaqueRecordInstance } from '../../-types/q/record-instance.ts';
 import { log, logGroup } from '../debug/utils.ts';
 import { CacheCapabilitiesManager } from '../managers/cache-capabilities-manager.ts';
 import type { CacheManager } from '../managers/cache-manager.ts';

@@ -1,9 +1,9 @@
-import '@warp-drive/ember/install';
-
 import EmberRouter from '@ember/routing/router';
 import { setApplication } from '@ember/test-helpers';
+
 import EmberApp from 'ember-strict-application-resolver';
 
+import '@warp-drive/ember/install';
 import configureAsserts from '@ember-data/unpublished-test-infra/test-support/asserts/index';
 import { setupGlobalHooks } from '@warp-drive/diagnostic';
 import { configure } from '@warp-drive/diagnostic/ember';

@@ -1,9 +1,10 @@
+import { useEffect } from "react";
+
+import { DEBUG } from "@warp-drive/core/build-config/env";
+import { signal, memoized } from "@warp-drive/core/signals/-leaked";
 import { module, test, setupTest } from "@warp-drive/diagnostic/react";
 import { maybeRerender } from "@warp-drive/diagnostic/react/test-helpers";
 import { ReactiveContext } from "@warp-drive/react";
-import { signal, memoized } from "@warp-drive/core/signals/-leaked";
-import { useEffect } from "react";
-import { DEBUG } from "@warp-drive/core/build-config/env";
 
 class InnerTestClass {
   @signal innerValue = 42;

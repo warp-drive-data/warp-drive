@@ -1,6 +1,6 @@
-import { getSchemaConfig } from './parser/steps/get-config';
-import { gatherSchemaFiles } from './parser/steps/gather-schema-files';
 import { compileJSONSchemas } from './parser/compile/json';
+import { gatherSchemaFiles } from './parser/steps/gather-schema-files';
+import { getSchemaConfig } from './parser/steps/get-config';
 
 async function main() {
   const config = await getSchemaConfig();

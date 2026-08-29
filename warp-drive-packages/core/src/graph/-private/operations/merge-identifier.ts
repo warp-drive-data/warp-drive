@@ -1,5 +1,5 @@
-import type { MergeOperation } from '../../../types/cache/operations.ts';
 import { forAllRelatedIdentifiers, isBelongsTo, isHasMany, notifyChange } from '../-utils.ts';
+import type { MergeOperation } from '../../../types/cache/operations.ts';
 import type { CollectionEdge } from '../edges/collection.ts';
 import type { ImplicitEdge } from '../edges/implicit.ts';
 import type { ResourceEdge } from '../edges/resource.ts';

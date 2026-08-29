@@ -15,6 +15,8 @@ import {
 import { DEBUG, TESTING } from '@warp-drive/core/build-config/env';
 import { assert } from '@warp-drive/core/build-config/macros';
 
+import type { CacheCapabilitiesManager } from '../-types/q/cache-capabilities-manager.ts';
+import type { OpaqueRecordInstance } from '../-types/q/record-instance.ts';
 import type { Graph } from '../../graph/-private.ts';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { ReactiveResource } from '../../reactive.ts';
@@ -42,8 +44,6 @@ import type {
   SingleResourceDocument,
 } from '../../types/spec/json-api-raw.ts';
 import type { Type } from '../../types/symbols.ts';
-import type { CacheCapabilitiesManager } from '../-types/q/cache-capabilities-manager.ts';
-import type { OpaqueRecordInstance } from '../-types/q/record-instance.ts';
 // DEPRECATED STORE METHODS -- see the second `Store` interface below
 import type {
   FindAllOptions,

@@ -1,9 +1,8 @@
+import { ember } from '@nullvoxpopuli/ember-rolldown';
+import babelPlugin from '@rolldown/plugin-babel';
 import fs from 'fs';
 import { createRequire, isBuiltin } from 'module';
 import path from 'path';
-
-import { ember } from '@nullvoxpopuli/ember-rolldown';
-import babelPlugin from '@rolldown/plugin-babel';
 import { defineConfig } from 'tsdown';
 
 import { entryPoints, explicitExternals, external } from '../rollup/external.js';

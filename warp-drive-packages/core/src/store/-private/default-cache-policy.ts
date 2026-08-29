@@ -5,6 +5,8 @@ import { TESTING } from '@warp-drive/core/build-config/env';
 import { assert } from '@warp-drive/core/build-config/macros';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
+import type { CacheHandler, CachePolicy } from '../-private';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { Fetch } from '../../request/-private/fetch';
 import type { Cache } from '../../types/cache';
 import type { RequestKey, ResourceKey } from '../../types/identifier';
@@ -19,8 +21,6 @@ import type {
 } from '../../types/request';
 import type { ResourceDocument } from '../../types/spec/document';
 import { LRUCache } from '../../utils/string';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import type { CacheHandler, CachePolicy } from '../-private';
 
 type UnsubscribeToken = object;
 type CacheOperation = 'added' | 'removed' | 'updated' | 'state';

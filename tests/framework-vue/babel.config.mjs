@@ -1,5 +1,6 @@
-import { setConfig } from '@warp-drive/core/build-config';
 import { buildMacros } from '@embroider/macros/babel';
+
+import { setConfig } from '@warp-drive/core/build-config';
 import { macros } from '@warp-drive/core/build-config/babel-macros';
 
 const Macros = buildMacros({

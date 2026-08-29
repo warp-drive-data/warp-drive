@@ -35,9 +35,9 @@ import {
 import { EmberArrayLikeExtension, EmberObjectArrayExtension, EmberObjectExtension } from './compat/extensions';
 import type Model from './model';
 import { instantiateRecord as instantiateModel, modelFor, teardownRecord as teardownModel } from './model';
-import { DelegatingSchemaService, registerDerivations as registerLegacyDerivations } from './model/migration-support';
 import { FragmentArrayExtension, FragmentExtension } from './model-fragments';
 import { fragmentsModelFor } from './model-fragments/hooks/model-for';
+import { DelegatingSchemaService, registerDerivations as registerLegacyDerivations } from './model/migration-support';
 import { restoreDeprecatedStoreBehaviors } from './store';
 
 interface _LegacyStoreSetupOptions<T extends Cache> extends Omit<StoreSetupOptions<T>, 'schemas'> {

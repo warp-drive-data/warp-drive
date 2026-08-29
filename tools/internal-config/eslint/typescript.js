@@ -1,10 +1,12 @@
+import globals from 'globals';
+import tseslint from 'typescript-eslint';
+
+import emberEslintParser from 'ember-eslint-parser';
+import noop from 'ember-eslint-parser/noop';
+
 // @ts-check
 import * as js from './browser.js';
 import * as imports from './imports.js';
-import tseslint from 'typescript-eslint';
-import globals from 'globals';
-import noop from 'ember-eslint-parser/noop';
-import emberEslintParser from 'ember-eslint-parser';
 
 /** @return {import('eslint').Linter.FlatConfig} */
 function mergeTsConfigs(configArray) {

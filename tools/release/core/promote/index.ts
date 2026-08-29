@@ -1,13 +1,14 @@
-import { promote_flags_config } from '../../utils/flags-config.ts';
-import { parseRawFlags } from '../../utils/parse-args.ts';
-import { GIT_TAG, getAllPackagesForGitTag, getGitState, pushLTSTagToRemoteBranch } from '../../utils/git.ts';
-import { printHelpDocs } from '../../help/docs.ts';
-import { Package } from '../../utils/package.ts';
-import { SEMVER_VERSION } from '../../utils/channel.ts';
 import { styleText } from 'node:util';
-import { colorName } from '../publish/steps/print-strategy.ts';
+
+import { printHelpDocs } from '../../help/docs.ts';
+import { SEMVER_VERSION } from '../../utils/channel.ts';
 import { exec } from '../../utils/cmd.ts';
+import { promote_flags_config } from '../../utils/flags-config.ts';
+import { GIT_TAG, getAllPackagesForGitTag, getGitState, pushLTSTagToRemoteBranch } from '../../utils/git.ts';
+import { Package } from '../../utils/package.ts';
+import { parseRawFlags } from '../../utils/parse-args.ts';
 import { question } from '../publish/steps/confirm-strategy.ts';
+import { colorName } from '../publish/steps/print-strategy.ts';
 import { RETRY_TRUSTED_PUBLISHING } from '../publish/steps/publish-packages.ts';
 
 export async function promoteToLTS(args: string[]) {

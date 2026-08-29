@@ -1,10 +1,10 @@
+import babel from '@babel/parser';
 import { type TraverseOptions } from '@babel/traverse';
+import _traverse from '@babel/traverse';
 import { type ClassProperty, type Node } from '@babel/types';
-import { extractJSONObject } from './extract-json';
 import path from 'path';
 
-import babel from '@babel/parser';
-import _traverse from '@babel/traverse';
+import { extractJSONObject } from './extract-json';
 
 // bun compile has a bug where traverse gets unwrapped improperly
 // so we have to manually grab the default export

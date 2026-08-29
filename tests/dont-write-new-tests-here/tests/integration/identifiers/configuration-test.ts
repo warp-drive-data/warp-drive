@@ -17,9 +17,9 @@ import {
   setIdentifierResetMethod,
   setIdentifierUpdateMethod,
 } from '@ember-data/store';
-import { isPrivateStore } from '@warp-drive/core/store/-private';
 import type { CacheKeyType, ResourceKey } from '@warp-drive/core-types/identifier';
 import type { ExistingResourceObject, ResourceIdentifierObject } from '@warp-drive/core-types/spec/json-api-raw';
+import { isPrivateStore } from '@warp-drive/core/store/-private';
 
 type ResourceData = ResourceIdentifierObject | ExistingResourceObject;
 type GenerationMethod = Parameters<typeof setIdentifierGenerationMethod>[0];

@@ -1,15 +1,16 @@
 #!/usr/bin/env bun
 import { styleText } from 'node:util';
-import { printHelpDocs } from './help/docs.ts';
-import { normalizeFlag } from './utils/parse-args.ts';
-import { getCommands } from './utils/flags-config.ts';
-import { printAbout } from './help/sections/about.ts';
+
+import { backfillReleaseNotes } from './core/backfill-release-notes/index.ts';
+import { latestFor } from './core/latest-for/index.ts';
+import { promoteToLTS } from './core/promote/index.ts';
 import { executePublish } from './core/publish/index.ts';
 import { executeReleaseNoteGeneration } from './core/release-notes/index.ts';
+import { printHelpDocs } from './help/docs.ts';
+import { printAbout } from './help/sections/about.ts';
+import { getCommands } from './utils/flags-config.ts';
+import { normalizeFlag } from './utils/parse-args.ts';
 import { write } from './utils/write.ts';
-import { promoteToLTS } from './core/promote/index.ts';
-import { latestFor } from './core/latest-for/index.ts';
-import { backfillReleaseNotes } from './core/backfill-release-notes/index.ts';
 
 const COMMANDS = {
   help: printHelpDocs,

@@ -18,11 +18,11 @@ import RequestManager from '@ember-data/request';
 import Fetch from '@ember-data/request/fetch';
 import BaseStore, { CacheHandler } from '@ember-data/store';
 import type { CacheCapabilitiesManager, ModelSchema, SchemaService } from '@ember-data/store/types';
-import { ENABLE_LEGACY_REQUEST_METHODS } from '@warp-drive/core/build-config/deprecations';
-import { assert } from '@warp-drive/core/build-config/macros';
 import type { ResourceKey } from '@warp-drive/core-types';
 import type { Cache } from '@warp-drive/core-types/cache';
 import type { TypeFromInstance } from '@warp-drive/core-types/record';
+import { ENABLE_LEGACY_REQUEST_METHODS } from '@warp-drive/core/build-config/deprecations';
+import { assert } from '@warp-drive/core/build-config/macros';
 
 function hasRequestManager(store: BaseStore): boolean {
   return 'requestManager' in store;

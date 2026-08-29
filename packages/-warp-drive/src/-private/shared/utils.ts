@@ -1,5 +1,5 @@
-import { styleText } from 'node:util';
 import fs from 'fs';
+import { styleText } from 'node:util';
 import path from 'path';
 
 import type { SEMVER_VERSION } from './channel';

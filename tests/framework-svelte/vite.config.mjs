@@ -1,5 +1,6 @@
-import { maybeBabel } from '@warp-drive/internal-config/vite/babel.js';
 import { defineConfig } from 'vite';
+
+import { maybeBabel } from '@warp-drive/internal-config/vite/babel.js';
 
 export default defineConfig({
   // esbuild attempts to transform tsx/ts files to js files in a non-spec

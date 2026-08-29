@@ -1,11 +1,12 @@
+import WarpDrive from 'eslint-plugin-warp-drive/recommended';
+
+import * as js from '@warp-drive/internal-config/eslint/browser.js';
+import * as diagnostic from '@warp-drive/internal-config/eslint/diagnostic.js';
+import * as gts from '@warp-drive/internal-config/eslint/gts.js';
 // @ts-check
 import { globalIgnores } from '@warp-drive/internal-config/eslint/ignore.js';
 import * as node from '@warp-drive/internal-config/eslint/node.js';
 import * as typescript from '@warp-drive/internal-config/eslint/typescript.js';
-import * as diagnostic from '@warp-drive/internal-config/eslint/diagnostic.js';
-import * as js from '@warp-drive/internal-config/eslint/browser.js';
-import * as gts from '@warp-drive/internal-config/eslint/gts.js';
-import WarpDrive from 'eslint-plugin-warp-drive/recommended';
 
 const AllowedImports = [
   '@ember/application',

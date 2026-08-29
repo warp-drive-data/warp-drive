@@ -3,9 +3,9 @@ import type { TestContext } from '@warp-drive/diagnostic/ember';
 import { module, setupRenderingTest, skip, test } from '@warp-drive/diagnostic/ember';
 import { PUT } from '@warp-drive/holodeck/mock';
 import type { WithEmberObject } from '@warp-drive/legacy/compat/extensions';
-import type { WithLegacy } from '@warp-drive/legacy/model/migration-support';
 import type { WithFragmentArray } from '@warp-drive/legacy/model-fragments';
 import { withFragmentArrayDefaults, withFragmentDefaults, withLegacy } from '@warp-drive/legacy/model-fragments';
+import type { WithLegacy } from '@warp-drive/legacy/model/migration-support';
 
 import { type Info, InfoSchema } from '../-test-store/schemas/info.ts';
 import { type Order, OrderSchema } from '../-test-store/schemas/order.js';

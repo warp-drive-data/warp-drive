@@ -27,8 +27,8 @@ import { payloadIsNotBlank } from './legacy-data-utils.ts';
 import type { MinimumAdapterInterface } from './minimum-adapter-interface.ts';
 import type { MinimumSerializerInterface } from './minimum-serializer-interface.ts';
 import { normalizeResponseHelper } from './serializer-response.ts';
-import type { Snapshot } from './snapshot.ts';
 import { SnapshotRecordArray } from './snapshot-record-array.ts';
+import type { Snapshot } from './snapshot.ts';
 
 type AdapterErrors = Error & { errors?: unknown[]; isAdapterError?: true; code?: string };
 type SerializerWithParseErrors = MinimumSerializerInterface & {

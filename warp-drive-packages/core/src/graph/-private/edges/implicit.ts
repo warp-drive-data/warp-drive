@@ -1,5 +1,5 @@
-import type { ResourceKey } from '../../../types/identifier.ts';
 import type { UpgradedMeta } from '../-edge-definition.ts';
+import type { ResourceKey } from '../../../types/identifier.ts';
 
 /**
  * The relationship definition (schema metadata) backing an {@link ImplicitEdge}, tagging

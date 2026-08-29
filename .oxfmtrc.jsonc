@@ -1,0 +1,75 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "trailingComma": "es5",
+  "printWidth": 120,
+  "singleQuote": false,
+  "sortPackageJson": false,
+  "insertFinalNewline": true,
+  "sortImports": {
+    "groups": [
+      "side_effect",
+      "ember-glimmer",
+      ["builtin", "external"],
+      "ember-dash",
+      "warp-drive",
+      ["internal", "subpath"],
+      ["parent", "sibling", "index"],
+    ],
+    "customGroups": [
+      {
+        "groupName": "ember-glimmer",
+        "elementNamePattern": ["@ember/**", "@ember", "@glimmer/**", "@glimmer", "ember"],
+      },
+      {
+        "groupName": "warp-drive",
+        "elementNamePattern": ["@ember-data", "@ember-data/**", "@warp-drive", "@warp-drive/**"],
+      },
+      {
+        "groupName": "ember-dash",
+        "elementNamePattern": ["ember-*", "ember-*/**"],
+      },
+    ],
+    "newlinesBetween": true,
+    "partitionByNewline": false,
+    "sortSideEffects": false,
+  },
+  "overrides": [
+    {
+      "files": ["*.js", "*.ts", "*.cjs", "*.cts", "*.mjs", "*.mts"],
+      "options": { "singleQuote": true },
+    },
+    {
+      // golden fixtures asserted against verbatim ember-cli blueprint output;
+      // reordering imports here would desync them from what blueprints actually generate
+      "files": ["tests/blueprints/fixtures/**"],
+      "options": { "sortImports": false },
+    },
+  ],
+  "ignorePatterns": [
+    "pnpm-lock.yaml",
+    "dist",
+    "dist-test",
+    "unstable-preview-types",
+    "preview-types",
+    "warp-drive-packages/core/types",
+    "*.hbs",
+    "*.html",
+    "*.md",
+    "*.gjs",
+    "*.gts",
+    "MOCK_DATA.json",
+    ".mock-cache/",
+    // these fixtures are compared byte-for-byte against real `prettier.format()`
+    // output at test runtime (tests/codemods/tests/index.spec.ts); oxfmt's output
+    // can differ from prettier's in ways unrelated to config (e.g. comment placement)
+    "tests/codemods/tests/__testfixtures__/",
+    "blueprints/",
+    "vendor/",
+    "!tests/blueprints/",
+    "*.yml",
+    "public/",
+    "tmp/",
+    "docs-viewer/docs.warp-drive.io/api/",
+    "docs-viewer/docs.warp-drive.io/guides/",
+  ],
+}

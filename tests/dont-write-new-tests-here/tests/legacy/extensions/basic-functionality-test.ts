@@ -6,9 +6,9 @@ import { module, test } from 'qunit';
 import JSONAPICache from '@ember-data/json-api';
 import { DEPRECATE_COMPUTED_CHAINS } from '@warp-drive/build-config/deprecations';
 import { CacheHandler, Fetch, RequestManager, Store } from '@warp-drive/core';
+import type { Type } from '@warp-drive/core-types/symbols';
 import { instantiateRecord, SchemaService, teardownRecord } from '@warp-drive/core/reactive';
 import type { CacheCapabilitiesManager, ResourceKey } from '@warp-drive/core/types';
-import type { Type } from '@warp-drive/core-types/symbols';
 import { registerDerivations, withDefaults } from '@warp-drive/legacy/model/migration-support';
 
 class TestStore extends Store {
