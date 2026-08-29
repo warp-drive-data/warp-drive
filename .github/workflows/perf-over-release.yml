@@ -39,14 +39,12 @@ jobs:
           originSha=$(git rev-parse HEAD^2)
           echo $originSha > tmp/sha-for-commit.txt
           git show --format=short --no-patch $originSha
+      # Reads Node and Bun versions from `devEngines.runtime` in package.json,
+      # installing both in place of actions/setup-node + oven-sh/setup-bun.
       - uses: pnpm/setup@703c52620218391530e48b9e8870d5c0082e1b9b # v2.1.0
         with:
-          runtime: node@26.8.1
           install: false
           cache: true
-      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
-        with:
-          bun-version: latest
       - name: Get Browser Flags
         id: browser-flags
         run: |
