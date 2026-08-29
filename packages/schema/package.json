@@ -39,8 +39,5 @@
   "dependencies": {},
   "devDependencies": {
     "bun-types": "1.4.0"
-  },
-  "volta": {
-    "extends": "../../package.json"
   }
 }

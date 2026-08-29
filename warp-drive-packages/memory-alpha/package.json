@@ -24,8 +24,5 @@
   },
   "scripts": {
     "sync": "echo \"syncing\""
-  },
-  "volta": {
-    "extends": "../../package.json"
   }
 }

@@ -46,8 +46,5 @@
     "vite": "catalog:",
     "vue": "^3.5.41",
     "vue-tsc": "^3.3.10"
-  },
-  "volta": {
-    "extends": "../../package.json"
   }
 }

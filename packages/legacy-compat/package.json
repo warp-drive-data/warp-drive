@@ -14,9 +14,6 @@
   "keywords": [
     "ember-addon"
   ],
-  "volta": {
-    "extends": "../../package.json"
-  },
   "files": [
     "addon-main.cjs",
     "dist",

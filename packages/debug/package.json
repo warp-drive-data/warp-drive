@@ -63,8 +63,5 @@
     "app-js": {
       "./data-adapter.js": "./dist/_app_/data-adapter.js"
     }
-  },
-  "volta": {
-    "extends": "../../package.json"
   }
 }

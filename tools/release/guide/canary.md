@@ -13,7 +13,7 @@ Subsequent pre-release versions will be auto-released on a chron schedule.
 
 ## Manually Canarying
 
-Ensure you have bun, node and pnpm configured correctly. Volta is preferred for managing
+Ensure you have bun, node and pnpm configured correctly. mise is preferred for managing
 node and pnpm versions. For bun, any `1.x` version should work but minimum version should
 ideally match the installed `bun-types` dependency `package.json`.
 

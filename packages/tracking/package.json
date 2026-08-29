@@ -16,9 +16,6 @@
   "keywords": [
     "ember-addon"
   ],
-  "volta": {
-    "extends": "../../package.json"
-  },
   "dependencies": {
     "@embroider/macros": "^1.20.6",
     "@warp-drive/core": "workspace:*"

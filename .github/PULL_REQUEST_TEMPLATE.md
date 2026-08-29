@@ -3,7 +3,7 @@
 If this PR updates API docs, preview them by:
 
 - install [bun](https://bun.sh/docs/installation) (if needed)
-- install [volta](https://docs.volta.sh/guide/getting-started) and configure it for [pnpm](https://docs.volta.sh/advanced/pnpm) (if needed)
+- install [mise](https://mise.jdx.dev/getting-started.html) and run `mise install` in the root (if needed)
 - run `pnpm install` in the root (if needed)
 - run `pnpm preview` in the root
 

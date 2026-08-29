@@ -54,8 +54,5 @@
     "@types/node": "catalog:",
     "@warp-drive/internal-config": "workspace:*",
     "eslint": "^10.8.1"
-  },
-  "volta": {
-    "extends": "../../package.json"
   }
 }

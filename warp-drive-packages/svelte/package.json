@@ -53,8 +53,5 @@
     "svelte": "^5.56.9",
     "typescript": "^5.9.3",
     "vite": "catalog:"
-  },
-  "volta": {
-    "extends": "../../package.json"
   }
 }

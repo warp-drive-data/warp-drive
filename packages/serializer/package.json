@@ -62,8 +62,5 @@
     "@warp-drive/internal-config": "workspace:*",
     "tsdown": "^0.22.14",
     "typescript": "^5.9.3"
-  },
-  "volta": {
-    "extends": "../../package.json"
   }
 }

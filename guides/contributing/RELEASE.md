@@ -37,7 +37,7 @@ For manual releases, you will need to ensure at least the following:
 - You have configured your NPM account to use `2fa` (two factor authentication)
 - You have logged into your NPM account on your machine (typically sessions preserve nearly forever once you have)
 - You have configured `GITHUB_AUTH` token for `lerna-changelog` to be able to gather info for the release notes.
-- You have installed `bun`, `pnpm` and `node` globally (or better, via `volta`)
+- You have installed `bun`, `pnpm` and `node` globally (or better, via `mise`)
 - the remote `origin` is `git@github.com:warp-drive-data/warp-drive.git`,
 -`origin/main` `origin/beta` `origin/release` etc. need to be the upstreams of the local `main` `beta` `release` branches etc.
 

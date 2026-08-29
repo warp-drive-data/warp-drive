@@ -88,8 +88,5 @@
     "main": "addon-main.cjs",
     "type": "addon",
     "version": 2
-  },
-  "volta": {
-    "extends": "../../package.json"
   }
 }

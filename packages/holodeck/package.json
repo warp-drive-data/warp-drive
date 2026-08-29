@@ -17,9 +17,6 @@
   "keywords": [
     "http-mock"
   ],
-  "volta": {
-    "extends": "../../package.json"
-  },
   "dependencies": {
     "hono": "^4.13.3",
     "@hono/node-server": "^1.19.0"

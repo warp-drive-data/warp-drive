@@ -46,9 +46,10 @@ resolutionMode: highest
 ## and "postbuild". This is not the behavior we want.
 enablePrePostScripts: false
 
-## We use volta to manage our node and pnpm versions, so we do not
-## want pnpm to manage these for us.
-managePackageManagerVersions: false
+## We use mise to manage our node and pnpm versions, so we do not
+## want pnpm to manage these for us. (pnpm 12 renamed
+## managePackageManagerVersions to initPackageManager.)
+initPackageManager: false
 
 ## Make sure we don't troll ourselves when updating deps
 verifyDepsBeforeRun: true
@@ -165,6 +166,11 @@ minimumReleaseAgeExclude:
   - vitest@3.2.6
   # Renovate security update: svelte@5.55.7
   - svelte@5.55.7
+  # One-off exclude to bump pnpm itself to 12.0.0 (released 2026-08-26,
+  # still inside the 7-day window as of this change). Safe to drop once
+  # 12.0.0 is more than 7 days old (~2026-09-02) since ordinary resolution
+  # will pick it up anyway.
+  - pnpm@12.0.0
 
 ## Prevents transitive (sub-)dependencies from being resolved via git,
 ## git+ssh, or raw tarball URLs. Only our own direct dependencies may use

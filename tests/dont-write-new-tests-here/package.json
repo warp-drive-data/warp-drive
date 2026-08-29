@@ -87,9 +87,6 @@
   "ember": {
     "edition": "octane"
   },
-  "volta": {
-    "extends": "../../package.json"
-  },
   "exports": {
     "./tests/*": "./tests/*",
     "./*": "./app/*"

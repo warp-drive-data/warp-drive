@@ -20,8 +20,5 @@
     "mocha": "^11.8.0",
     "warp-drive": "workspace:*"
   },
-  "volta": {
-    "extends": "../../package.json"
-  },
   "dependencies": {}
 }
