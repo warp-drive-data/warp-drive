@@ -65,9 +65,6 @@ benchmarks/results/*.json
 .idea/
 *.iml
 
-# Ignore the cloned repos for docs viewer
-docs-viewer/projects
-
 # Ignore generated output for the docs website
 docs-viewer/docs.warp-drive.io/.vitepress/dist
 docs-viewer/docs.warp-drive.io/.vitepress/cache
