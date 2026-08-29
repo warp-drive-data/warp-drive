@@ -59,6 +59,14 @@
     // would be a cycle), so it only runs after core has already (possibly
     // wrongly) built. These are two separate sync points for two separate races;
     // do not merge them or make either conditional/cached.
+    //
+    // Named for *who* needs the sync (core), but its underlying script
+    // (sync:core, see root package.json) runs @warp-drive/build-config's own
+    // "sync" script, not core's. sync-injected-deps-after-scripts pushes a
+    // package's freshly-built output out to consumers when *that package's
+    // own* script runs -- running core's own sync script (core is the
+    // consumer here) does not pull build-config's output in, no matter how
+    // or when it's invoked; confirmed directly against a live repro.
     "//#sync:core": {
       "cache": false,
       "dependsOn": ["@warp-drive/build-config#build:pkg"]
