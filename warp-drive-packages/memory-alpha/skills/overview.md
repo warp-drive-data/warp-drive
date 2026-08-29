@@ -12,7 +12,16 @@ away-team incident that torched the original — so it can be installed into any
 consumed by an MCP server, a Claude Code skill, or adapted into tool-specific instruction files
 (Cursor rules, Copilot instructions, etc.).
 
-Browse the categories in the sidebar to get started. If you're an AI agent rather than a human
-reader, don't start here — read the package's `skills/index.md` (or its
+Find the row below that matches what you're doing, or browse the categories in the sidebar.
+
+| If you need to... | Go to |
+| --- | --- |
+| Define a resource's shape — fields, relationships, identity — for the `Store` | [Define a Resource Schema](/skills/schemas/define-a-resource-schema.md) |
+| Fetch or query remote data through the `Store` so it's cached and reactive | [Fetch and Cache Data](/skills/requests/fetch-and-cache-data.md) |
+| You're contributing to WarpDrive itself, not just consuming it as a dependency | [Contributor Skills](/skills/contributors/index.md) |
+
+This is the same routing table an AI agent uses to find a skill — it just links out to readable
+pages instead of naming files to read. If you're an AI agent rather than a human reader, don't
+start here — read the package's `skills/index.md` (or its
 [README](https://www.npmjs.com/package/@warp-drive/memory-alpha)) instead, which routes you
 directly to the one file you need without loading this page or any directory listing.
