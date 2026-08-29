@@ -12,7 +12,6 @@ import type {
   StructuredDataDocument,
   StructuredErrorDocument,
 } from '../types/request.ts';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { PendingPromise, PromiseState, RejectedPromise, ResolvedPromise } from './promise-state.ts';
 import { defineNonEnumerableSignal, defineSignal } from './reactivity/signal.ts';
 

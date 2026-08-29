@@ -157,14 +157,11 @@ import { deprecate } from '@ember/debug';
 
 import { dependencySatisfies, importSync, macroCondition } from '@embroider/macros';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { type RequestManager, Store } from '@warp-drive/core';
 import { DEPRECATE_TRACKING_PACKAGE } from '@warp-drive/core/build-config/deprecations';
 import { setupSignals } from '@warp-drive/core/configure';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { Handler } from '@warp-drive/core/request';
 import { peekTransient } from '@warp-drive/core/types/-private';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { Cache } from '@warp-drive/core/types/cache';
 
 export { Store as default };
@@ -203,7 +200,6 @@ if (DEPRECATE_TRACKING_PACKAGE) {
     if (!hasRegisteredFromEmberPackage) {
       // @ts-expect-error
       const { buildSignalConfig } = importSync('@ember-data/tracking');
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       setupSignals(buildSignalConfig);
     }
   }

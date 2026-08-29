@@ -157,7 +157,6 @@ module('Integration | Identifiers - configuration', function (hooks) {
     this.owner.register('serializer:application', TestSerializer);
 
     let updateMethodCalls = 0 as number;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any, prefer-const
     let updateCallback: (...args: any[]) => void;
 
     function updateMethod(
@@ -222,7 +221,6 @@ module('Integration | Identifiers - configuration', function (hooks) {
     this.owner.register('serializer:application', TestSerializer);
 
     let updateMethodCalls = 0 as number;
-    // eslint-disable-next-line prefer-const, @typescript-eslint/no-explicit-any
     let updateCallback: (...args: any[]) => void;
 
     function updateMethod(
@@ -292,7 +290,6 @@ module('Integration | Identifiers - configuration', function (hooks) {
     this.owner.register('serializer:application', TestSerializer);
 
     let updateMethodCalls = 0 as number;
-    // eslint-disable-next-line prefer-const, @typescript-eslint/no-explicit-any
     let updateCallback: (...args: any[]) => void;
 
     function updateMethod(
@@ -397,7 +394,6 @@ module('Integration | Identifiers - configuration', function (hooks) {
         throw new Error(`Unexpected generation of new resource identifier`);
       }
       generateLidCalls++;
-      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
       return `${resource.type}:${resource.id}`;
     });
     let forgetMethodCalls = 0;
@@ -501,7 +497,6 @@ module('Integration | Identifiers - configuration', function (hooks) {
 
   test(`The forget method is called when a record deletion is fully persisted and the record unloaded`, async function (assert) {
     let forgetMethodCalls = 0;
-    // eslint-disable-next-line prefer-const
     let expectedIdentifier;
 
     setIdentifierForgetMethod((identifier) => {

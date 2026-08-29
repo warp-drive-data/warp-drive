@@ -5,5 +5,4 @@ import { version } from '../package.json';
 // can't resolve the value's type from a re-exported `../package.json` import
 // without it -- omitting it makes tsdown/rolldown-plugin-dts's oxc generator
 // try to parse package.json itself as TS source and fail.
-// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
 export default version as string;

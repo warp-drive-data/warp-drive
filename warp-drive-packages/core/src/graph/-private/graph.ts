@@ -312,7 +312,6 @@ export class Graph {
     const relationships = this.identifiers.get(resourceKey);
     if (!relationships) {
       if (LOG_GRAPH) {
-        // eslint-disable-next-line no-console
         console.log(`graph: RELEASABLE ${String(resourceKey)}`);
       }
       return true;
@@ -328,14 +327,12 @@ export class Graph {
       assert(`Expected a relationship`, relationship);
       if (relationship.definition.inverseIsAsync && !checkIfNew(this._realStore, resourceKey)) {
         if (LOG_GRAPH) {
-          // eslint-disable-next-line no-console
           console.log(`graph: <<NOT>> RELEASABLE ${String(resourceKey)}`);
         }
         return false;
       }
     }
     if (LOG_GRAPH) {
-      // eslint-disable-next-line no-console
       console.log(`graph: RELEASABLE ${String(resourceKey)}`);
     }
     return true;
@@ -348,7 +345,6 @@ export class Graph {
    */
   unload(resourceKey: ResourceKey, silenceNotifications?: boolean): void {
     if (LOG_GRAPH) {
-      // eslint-disable-next-line no-console
       console.log(`graph: unload ${String(resourceKey)}`);
     }
     const relationships = this.identifiers.get(resourceKey);
@@ -492,7 +488,6 @@ export class Graph {
    */
   remove(resourceKey: ResourceKey): void {
     if (LOG_GRAPH) {
-      // eslint-disable-next-line no-console
       console.log(`graph: remove ${String(resourceKey)}`);
     }
     assert(`Cannot remove ${String(resourceKey)} while still removing ${String(this._removing)}`, !this._removing);
@@ -509,7 +504,6 @@ export class Graph {
    */
   push(op: RemoteRelationshipOperation): void {
     if (LOG_GRAPH) {
-      // eslint-disable-next-line no-console
       console.log(`graph: push ${String(op.record)}`, op);
     }
     if (op.op === 'deleteRecord') {
@@ -555,7 +549,6 @@ export class Graph {
       op.op === 'deleteRecord' || op.op === 'mergeIdentifiers' || !isImplicit(this.get(op.record, op.field))
     );
     if (LOG_GRAPH) {
-      // eslint-disable-next-line no-console
       console.log(`graph: update (${isRemote ? 'remote' : 'local'}) ${String(op.record)}`, op);
     }
 
@@ -637,7 +630,6 @@ export class Graph {
       return;
     }
     if (LOG_GRAPH) {
-      // eslint-disable-next-line no-console
       console.groupCollapsed(`Graph: Initialized Transaction`);
     }
     let transactionRef = peekTransient<number>('transactionRef') ?? 0;
@@ -663,9 +655,7 @@ export class Graph {
 
     this._transaction = null;
     if (LOG_GRAPH) {
-      // eslint-disable-next-line no-console
       console.log(`Graph: transaction finalized`);
-      // eslint-disable-next-line no-console
       console.groupEnd();
     }
   }
@@ -678,7 +668,6 @@ export class Graph {
   _addToTransaction(relationship: CollectionEdge | ResourceEdge): void {
     assert(`expected a transaction`, this._transaction !== null);
     if (LOG_GRAPH) {
-      // eslint-disable-next-line no-console
       console.log(`Graph: ${String(relationship.identifier)} ${relationship.definition.key} added to transaction`);
     }
     relationship.transactionRef = this._transaction;

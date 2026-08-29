@@ -10,7 +10,6 @@ import type { Diagnostic } from '../../internals/diagnostic';
 export interface HelperContext {
   element: HTMLElement | null;
   config: HelperConfig;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   assert: Diagnostic<any>;
 }
 

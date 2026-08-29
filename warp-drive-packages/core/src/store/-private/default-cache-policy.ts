@@ -4,17 +4,13 @@ import { LOG_CACHE_POLICY } from '@warp-drive/core/build-config/debugging';
 import { TESTING } from '@warp-drive/core/build-config/env';
 import { assert } from '@warp-drive/core/build-config/macros';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { CacheHandler, CachePolicy } from '../-private';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { Fetch } from '../../request/-private/fetch';
 import type { Cache } from '../../types/cache';
 import type { RequestKey, ResourceKey } from '../../types/identifier';
 import type {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   CacheOptions,
   ImmutableRequestInfo,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   RequestInfo,
   ResponseInfo,
   StructuredDocument,
@@ -186,7 +182,6 @@ function isExpired(cacheKey: RequestKey, request: StructuredDocument<ResourceDoc
     const result = constraints.isExpired(request);
     if (result !== null) {
       if (LOG_CACHE_POLICY) {
-        // eslint-disable-next-line no-console
         console.log(
           `CachePolicy: ${cacheKey.lid} is ${result ? 'EXPIRED' : 'NOT expired'} because constraints.isExpired returned ${result}`
         );
@@ -199,7 +194,6 @@ function isExpired(cacheKey: RequestKey, request: StructuredDocument<ResourceDoc
 
   if (!headers) {
     if (LOG_CACHE_POLICY) {
-      // eslint-disable-next-line no-console
       console.log(`CachePolicy: ${cacheKey.lid} is EXPIRED because no headers were provided`);
     }
 
@@ -219,7 +213,6 @@ function isExpired(cacheKey: RequestKey, request: StructuredDocument<ResourceDoc
         const expirationTime = new Date(xWarpDriveExpires).getTime();
         const result = now >= expirationTime;
         if (LOG_CACHE_POLICY) {
-          // eslint-disable-next-line no-console
           console.log(
             `CachePolicy: ${cacheKey.lid} is ${result ? 'EXPIRED' : 'NOT expired'} because the time set by X-WarpDrive-Expires header is ${result ? 'in the past' : 'in the future'}`
           );
@@ -251,7 +244,6 @@ function isExpired(cacheKey: RequestKey, request: StructuredDocument<ResourceDoc
             const result = now >= expirationTime;
 
             if (LOG_CACHE_POLICY) {
-              // eslint-disable-next-line no-console
               console.log(
                 `CachePolicy: ${cacheKey.lid} is ${result ? 'EXPIRED' : 'NOT expired'} because the time set by Cache-Control header is ${result ? 'in the past' : 'in the future'}`
               );
@@ -270,7 +262,6 @@ function isExpired(cacheKey: RequestKey, request: StructuredDocument<ResourceDoc
         const expirationTime = new Date(expires).getTime();
         const result = now >= expirationTime;
         if (LOG_CACHE_POLICY) {
-          // eslint-disable-next-line no-console
           console.log(
             `CachePolicy: ${cacheKey.lid} is ${result ? 'EXPIRED' : 'NOT expired'} because the time set by Expires header is ${result ? 'in the past' : 'in the future'}`
           );
@@ -283,7 +274,6 @@ function isExpired(cacheKey: RequestKey, request: StructuredDocument<ResourceDoc
   // check for Date
   if (!date) {
     if (LOG_CACHE_POLICY) {
-      // eslint-disable-next-line no-console
       console.log(`CachePolicy: ${cacheKey.lid} is EXPIRED because no Date header was provided`);
     }
     return true;
@@ -301,7 +291,6 @@ function isExpired(cacheKey: RequestKey, request: StructuredDocument<ResourceDoc
   const result = now >= deadline;
 
   if (LOG_CACHE_POLICY) {
-    // eslint-disable-next-line no-console
     console.log(
       `CachePolicy: ${cacheKey.lid} is ${result ? 'EXPIRED' : 'NOT expired'} because the apiCacheHardExpires time since the response's Date header is ${result ? 'in the past' : 'in the future'}`
     );
@@ -717,7 +706,6 @@ export class DefaultCachePolicy implements CachePolicy {
 
     if (!cached?.response) {
       if (LOG_CACHE_POLICY) {
-        // eslint-disable-next-line no-console
         console.log(`CachePolicy: ${cacheKey.lid} is EXPIRED because no cache entry was found`);
       }
       return true;
@@ -753,7 +741,6 @@ export class DefaultCachePolicy implements CachePolicy {
 
       if (!date) {
         if (LOG_CACHE_POLICY) {
-          // eslint-disable-next-line no-console
           console.log(`CachePolicy: ${cacheKey.lid} is STALE because no date header was found`);
         }
         return true;
@@ -764,7 +751,6 @@ export class DefaultCachePolicy implements CachePolicy {
         const result = now >= deadline;
 
         if (LOG_CACHE_POLICY) {
-          // eslint-disable-next-line no-console
           console.log(
             `CachePolicy: ${cacheKey.lid} is ${result ? 'STALE' : 'NOT stale'}. Expiration time: ${deadline}, now: ${now}`
           );
@@ -775,7 +761,6 @@ export class DefaultCachePolicy implements CachePolicy {
     }
 
     if (LOG_CACHE_POLICY) {
-      // eslint-disable-next-line no-console
       console.log(`CachePolicy: ${cacheKey.lid} is STALE because no cache entry was found`);
     }
 

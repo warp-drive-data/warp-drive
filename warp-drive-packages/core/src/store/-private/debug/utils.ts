@@ -114,7 +114,6 @@ export function logGroup(
   subScop3: string,
   subScop4: string
 ): void {
-  // eslint-disable-next-line no-console
   console.groupCollapsed(..._log(scope, prefix, subScop1, subScop2, subScop3, subScop4));
 }
 
@@ -160,7 +159,6 @@ export function log(
   subScop3: string,
   subScop4: string
 ): void {
-  // eslint-disable-next-line no-console
   console.log(..._log(scope, prefix, subScop1, subScop2, subScop3, subScop4));
 }
 

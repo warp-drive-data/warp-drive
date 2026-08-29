@@ -15,7 +15,6 @@ import type { Graph } from '../graph.ts';
 
 function count(label: string) {
   // @ts-expect-error
-  // eslint-disable-next-line
   globalThis.__WarpDriveMetricCountData[label] = (globalThis.__WarpDriveMetricCountData[label] || 0) + 1;
 }
 
@@ -224,7 +223,6 @@ function replaceRelatedRecordsRemote(graph: Graph, op: ReplaceRelatedRecordsOper
       } else {
         if (DEBUG_RELATIONSHIP_NOTIFICATIONS) {
           if (!relationship.isDirty) {
-            // eslint-disable-next-line no-console
             console.log(
               `setting relationship to dirty because the remote addition was not in our previous list of local additions`
             );
@@ -242,7 +240,6 @@ function replaceRelatedRecordsRemote(graph: Graph, op: ReplaceRelatedRecordsOper
       } else {
         if (DEBUG_RELATIONSHIP_NOTIFICATIONS) {
           if (!relationship.isDirty) {
-            // eslint-disable-next-line no-console
             console.log(
               `setting relationship to dirty because the remote removal was not in our previous list of local removals`
             );

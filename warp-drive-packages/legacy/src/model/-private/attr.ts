@@ -6,7 +6,6 @@ import { assert } from '@warp-drive/core/build-config/macros';
 import type { ArrayValue, ObjectValue, PrimitiveValue, Value } from '@warp-drive/core/types/json/raw';
 import { RecordStore, type TransformName } from '@warp-drive/core/types/symbols';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { Transform } from '../../serializer/transform.ts';
 import type { Model } from './model.ts';
 import type { DecoratorPropertyDescriptor } from './util.ts';
@@ -151,14 +150,12 @@ type LooseTransformInstance<V, Raw, Name extends string> = {
    *
    */
   // see note on Explicit ANY above
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   serialize: (value: V, options: any) => Raw;
   /**
    * defaultValue type must match the return type of the deserialize method
    *
    */
   // see note on Explicit ANY above
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   deserialize: (value: Raw, options: any) => V;
 
   [TransformName]: Name;
@@ -179,7 +176,6 @@ export type TypedTransformInstance<V, T extends string> =
   | LooseTransformInstance<V, ArrayValue | null, T>;
 
 // see note on Explicit ANY above
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type GetMaybeDeserializeValue<T> = T extends { deserialize: (...args: any[]) => unknown }
   ? ReturnType<T['deserialize']>
   : never;

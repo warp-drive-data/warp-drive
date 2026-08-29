@@ -440,7 +440,6 @@ function _findAll<T>(
     snapshotArray._recordArray.isUpdating = false;
 
     if (LOG_REQUESTS) {
-      // eslint-disable-next-line no-console
       console.log(`request: findAll<${type}> background reload complete`);
     }
     return snapshotArray._recordArray;
@@ -462,7 +461,6 @@ function query<T>(context: StoreRequestContext): Promise<T> {
   let { options } = data as {
     options: { _recordArray?: LegacyQueryArray; adapterOptions?: Record<string, unknown> };
   };
-  // eslint-disable-next-line @typescript-eslint/no-shadow
   const { type, query } = data as {
     type: string;
     query: Record<string, unknown>;
@@ -514,7 +512,6 @@ function assertSingleResourceDocument(payload: JsonApiDocument): asserts payload
 
 function queryRecord<T>(context: StoreRequestContext): Promise<T> {
   const { store, data } = context.request;
-  // eslint-disable-next-line @typescript-eslint/no-shadow
   const { type, query, options } = data as { type: string; query: Record<string, unknown>; options: object };
   upgradeStore(store);
   const adapter = store.adapterFor(type);

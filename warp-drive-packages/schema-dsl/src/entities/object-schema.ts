@@ -1,7 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unused-vars -- imported only for {@link} cross-references in doc comments */
 import type { HashField, ObjectSchema as ObjectSchemaRecord } from '@warp-drive/core/types/schema/fields';
 
-/* eslint-enable @typescript-eslint/no-unused-vars */
 import type { AnyConstructor } from '../-private/types.ts';
 
 /**

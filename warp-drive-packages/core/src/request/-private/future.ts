@@ -28,11 +28,8 @@ export function createDeferred<T>(): Deferred<T> {
 
 export function upgradePromise<T>(promise: Promise<StructuredDocument<T>>, future: Future<T>): Future<T> {
   (promise as Future<T>)[IS_FUTURE] = true;
-  // eslint-disable-next-line @typescript-eslint/unbound-method
   (promise as Future<T>).getStream = future.getStream;
-  // eslint-disable-next-line @typescript-eslint/unbound-method
   (promise as Future<T>).abort = future.abort;
-  // eslint-disable-next-line @typescript-eslint/unbound-method
   (promise as Future<T>).onFinalize = future.onFinalize;
   (promise as Future<T>).id = future.id;
   (promise as Future<T>).lid = future.lid;

@@ -308,7 +308,6 @@ export class InstanceCache {
       }
     }
     if (LOG_INSTANCE_CACHE) {
-      // eslint-disable-next-line no-console
       console.groupCollapsed(`InstanceCache: unloading record for ${String(identifier)}`);
     }
 
@@ -375,7 +374,6 @@ export class InstanceCache {
     }
 
     if (LOG_INSTANCE_CACHE) {
-      // eslint-disable-next-line no-console
       console.log(`InstanceCache: updating id to '${id}' for record ${String(identifier)}`);
     }
 
@@ -440,7 +438,6 @@ function _createRecord(
 
   if (LOG_INSTANCE_CACHE) {
     logGroup('reactive-ui', '', identifier.type, identifier.lid, 'created', '');
-    // eslint-disable-next-line no-console
     console.groupEnd();
   }
 
@@ -471,7 +468,6 @@ function unloadRecord(instances: InstanceCache, identifier: ResourceKey) {
     RecordCache.delete(record);
 
     if (LOG_INSTANCE_CACHE) {
-      // eslint-disable-next-line no-console
       console.log(`InstanceCache: destroyed record for ${String(identifier)}`);
     }
   }
@@ -480,7 +476,6 @@ function unloadRecord(instances: InstanceCache, identifier: ResourceKey) {
     cache.unloadRecord(identifier);
     StoreMap.delete(identifier);
     if (LOG_INSTANCE_CACHE) {
-      // eslint-disable-next-line no-console
       console.log(`InstanceCache: destroyed cache for ${String(identifier)}`);
     }
   } else {
@@ -489,9 +484,7 @@ function unloadRecord(instances: InstanceCache, identifier: ResourceKey) {
 
   instances.store._requestCache._clearEntries(identifier);
   if (LOG_INSTANCE_CACHE) {
-    // eslint-disable-next-line no-console
     console.log(`InstanceCache: unloaded RecordData for ${String(identifier)}`);
-    // eslint-disable-next-line no-console
     console.groupEnd();
   }
 }

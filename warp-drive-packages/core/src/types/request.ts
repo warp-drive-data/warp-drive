@@ -1,18 +1,13 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { Future, Handler } from '../request.ts';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { Fetch } from '../request/-private/fetch.ts';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { RequestManager } from '../request/-private/manager.ts';
 import type { FetchError } from '../request/-private/utils.ts';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { RequestLoadingState } from '../signals/request-state.ts';
 import type { Store } from '../store/-private.ts';
 import { getOrSetGlobal, getOrSetUniversal } from './-private.ts';
 import type { ResourceKey } from './identifier.ts';
 import type { QueryParamsSerializationOptions } from './params.ts';
 import type {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   Includes,
   TypeFromInstanceOrString,
 } from './record.ts';

@@ -32,11 +32,9 @@ export interface ManagedObject {
   [OBJECT_SIGNAL]: WarpDriveSignal;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-extraneous-class
 export class ManagedObject {
   constructor(context: KindContext<ObjectField>) {
     const { field, path } = context;
-    // eslint-disable-next-line @typescript-eslint/no-this-alias
     const self = this;
     this[SOURCE] = Object.assign({}, context.value);
     const signals = withSignalStore(this);

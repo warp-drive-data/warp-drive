@@ -57,7 +57,6 @@ export function loadConfig(configPath: string): ConfigOptions {
     const config = JSON.parse(content) as FullConfig;
 
     // Remove metadata fields that shouldn't be used as CLI options
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { $schema, version, description, ...options } = config;
 
     // Resolve relative paths in config relative to the config file's directory
@@ -116,9 +115,7 @@ export async function generateConfig(): Promise<ConfigOptions> {
   // Dynamic import to avoid type issues with inquirer
   const { default: inquirer } = await import('inquirer');
 
-  // eslint-disable-next-line no-console
   console.log('🔧 Warp Drive Codemod Configuration Generator\n');
-  // eslint-disable-next-line no-console
   console.log('This tool will help you create a configuration file for consistent codemod execution.\n');
 
   // Default to configuring for both transform types
@@ -222,7 +219,6 @@ export async function generateConfig(): Promise<ConfigOptions> {
 
   const typeMapping: Record<string, string> = {};
   if (typeMappingAnswer.configureTypeMapping) {
-    // eslint-disable-next-line no-console
     console.log('\nConfigure type mappings for custom EmberData transforms:');
     let addMore = true;
     while (addMore) {
@@ -257,7 +253,6 @@ export async function generateConfig(): Promise<ConfigOptions> {
   }
 
   // Clean up the answers object and remove empty string values
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { transformType, ...config } = answers;
 
   const finalConfig: ConfigOptions = {

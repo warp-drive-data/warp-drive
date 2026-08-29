@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { expectTypeOf } from 'expect-type';
 
 import type { LegacyManyArray } from '@warp-drive/core/reactive';

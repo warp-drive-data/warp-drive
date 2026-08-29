@@ -35,17 +35,14 @@ export interface TestRunner<
 > {
   test<K extends keyof T & string>(
     name: K,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     impl: (props: T[K]['$props']) => any
   ): TestRunner<LocalContext, T, SEEN | K>;
   skip<K extends keyof T & string>(
     name: K,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     impl: (props: T[K]['$props']) => any
   ): TestRunner<LocalContext, T, SEEN | K>;
   todo<K extends keyof T & string>(
     name: K,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     impl: (props: T[K]['$props']) => any
   ): TestRunner<LocalContext, T, SEEN | K>;
   never(
@@ -133,7 +130,6 @@ class Spec<
 
                 const frameworkRender = context.render.bind(context);
                 context.render = (props) => {
-                  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
                   return frameworkRender(impl(props));
                 };
 
@@ -156,7 +152,6 @@ class Spec<
 
                 const frameworkRender = context.render.bind(context);
                 context.render = (props) => {
-                  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
                   return frameworkRender(impl(props));
                 };
 
@@ -179,7 +174,6 @@ class Spec<
 
                 const frameworkRender = context.render.bind(context);
                 context.render = (props) => {
-                  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
                   return frameworkRender(impl(props));
                 };
 
@@ -219,13 +213,10 @@ class Spec<
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export function spec<LocalContext extends object = {}>(
   name: string,
   setup: (hooks: Hooks<LocalContext & SpecTestContext<object>>) => void
-  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 ): SpecBuilder<LocalContext, {}> {
-  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
   return new Spec<LocalContext, {}>(name, setup);
 }
 

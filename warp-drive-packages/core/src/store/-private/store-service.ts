@@ -18,19 +18,14 @@ import { assert } from '@warp-drive/core/build-config/macros';
 import type { CacheCapabilitiesManager } from '../-types/q/cache-capabilities-manager.ts';
 import type { OpaqueRecordInstance } from '../-types/q/record-instance.ts';
 import type { Graph } from '../../graph/-private.ts';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { ReactiveResource } from '../../reactive.ts';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { ReactiveDocument } from '../../reactive/-private/document.ts';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { CacheHandler as CacheHandlerInterface, Future } from '../../request.ts';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { Fetch } from '../../request/-private/fetch.ts';
 import type { PrivateRequestManager, RequestManager } from '../../request/-private/manager.ts';
 import type { Cache } from '../../types/cache.ts';
 import type { PersistedResourceKey, ResourceKey } from '../../types/identifier.ts';
 import type { TypedRecordInstance, TypeFromInstance } from '../../types/record.ts';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { CacheOptions, RequestInfo } from '../../types/request.ts';
 import { EnableHydration } from '../../types/request.ts';
 import { getRuntimeConfig, setLogging } from '../../types/runtime.ts';
@@ -53,7 +48,6 @@ import type {
   QueryOptions,
   RecordReference,
 } from '../deprecated/-private.ts';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { CacheHandler, StoreRequestInput } from './cache-handler/handler.ts';
 import type { CachePolicy } from './cache-handler/types.ts';
 import {
@@ -63,7 +57,6 @@ import {
   recordIdentifierFor,
   storeFor,
 } from './caches/instance-cache.ts';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { PrivateCacheKeyManager, setIdentifierGenerationMethod } from './managers/cache-key-manager.ts';
 import { CacheKeyManager } from './managers/cache-key-manager.ts';
 import { CacheManager } from './managers/cache-manager.ts';
@@ -88,13 +81,11 @@ if (TESTING) {
 
 if (LOG_METRIC_COUNTS) {
   // @ts-expect-error adding to globalThis
-  // eslint-disable-next-line
   globalThis.__WarpDriveMetricCountData = globalThis.__WarpDriveMetricCountData || {};
 
   // @ts-expect-error adding to globalThis
   globalThis.getWarpDriveMetricCounts = () => {
     // @ts-expect-error
-    // eslint-disable-next-line
     return structuredClone(globalThis.__WarpDriveMetricCountData);
   };
 
@@ -120,16 +111,13 @@ if (LOG_METRIC_COUNTS) {
         globalThis[klassName] = class extends klass {
           // @ts-expect-error
           constructor(...args) {
-            // eslint-disable-next-line
             super(...args);
             // @ts-expect-error
 
             const instanceId = globalThis.__primitiveInstanceId++;
             // @ts-expect-error
-            // eslint-disable-next-line
             globalThis.__WarpDriveMetricCountData[instantiationLabel] =
               // @ts-expect-error
-              // eslint-disable-next-line
               (globalThis.__WarpDriveMetricCountData[instantiationLabel] || 0) + 1;
             // @ts-expect-error
             this.instanceName = `${klassName}:${instanceId} - ${new Error().stack?.split('\n')[2]}`;
@@ -137,14 +125,12 @@ if (LOG_METRIC_COUNTS) {
         };
       } else {
         // @ts-expect-error
-        // eslint-disable-next-line
         const original = klass.prototype[methodName];
         const logName = `${klassName}.${methodName}`;
 
         // @ts-expect-error
         klass.prototype[methodName] = function (...args) {
           // @ts-expect-error
-          // eslint-disable-next-line
           globalThis.__WarpDriveMetricCountData[logName] = (globalThis.__WarpDriveMetricCountData[logName] || 0) + 1;
           // @ts-expect-error
           const { instanceName } = this;
@@ -156,12 +142,9 @@ if (LOG_METRIC_COUNTS) {
           }
           const instanceLogName = `${logName} (${instanceName})`;
           // @ts-expect-error
-          // eslint-disable-next-line
           globalThis.__WarpDriveMetricCountData[instanceLogName] =
             // @ts-expect-error
-            // eslint-disable-next-line
             (globalThis.__WarpDriveMetricCountData[instanceLogName] || 0) + 1;
-          // eslint-disable-next-line
           return original.apply(this, args);
         };
       }
@@ -301,11 +284,8 @@ export interface CreateContext {
   lid?: string;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type ConstructorFunction = new (...args: any[]) => any;
-// eslint-disable-next-line @typescript-eslint/no-extraneous-class
 const EmptyClass: ConstructorFunction = class {
-  // eslint-disable-next-line @typescript-eslint/no-useless-constructor
   constructor(args?: unknown) {}
 };
 const _BaseClass = macroCondition(dependencySatisfies('ember-source', '*'))
@@ -376,7 +356,6 @@ export interface Store {
    * @return A record instance
    * @public
    */
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   instantiateRecord<T>(identifier: ResourceKey, createRecordArgs: { [key: string]: unknown }): OpaqueRecordInstance;
 
   /**
@@ -1748,7 +1727,6 @@ export class Store extends BaseClass {
       } catch {
         options = requestConfig;
       }
-      // eslint-disable-next-line no-console
       console.log(
         `request: [[START]] ${requestConfig.op && !requestConfig.url ? '(LEGACY) ' : ''}${
           requestConfig.op || '<unknown operation>'
@@ -1762,7 +1740,6 @@ export class Store extends BaseClass {
 
     future.onFinalize(() => {
       if (LOG_REQUESTS) {
-        // eslint-disable-next-line no-console
         console.log(
           `request: [[FINALIZE]] ${requestConfig.op && !requestConfig.url ? '(LEGACY) ' : ''}${
             requestConfig.op || '<unknown operation>'
@@ -2480,14 +2457,12 @@ let assertDestroyingStore: (store: Store, method: string) => void;
 let assertDestroyedStoreOnly: (store: Store, method: string) => void;
 
 if (DEBUG) {
-  // eslint-disable-next-line @typescript-eslint/no-shadow
   assertDestroyingStore = function assertDestroyingStore(store: Store, method: string) {
     assert(
       `Attempted to call store.${method}(), but the store instance has already been destroyed.`,
       !(store.isDestroying || store.isDestroyed)
     );
   };
-  // eslint-disable-next-line @typescript-eslint/no-shadow
   assertDestroyedStoreOnly = function assertDestroyedStoreOnly(store: Store, method: string) {
     assert(
       `Attempted to call store.${method}(), but the store instance has already been destroyed.`,

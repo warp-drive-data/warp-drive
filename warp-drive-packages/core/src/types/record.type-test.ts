@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 // tests
 
 import type { ExtractSuggestedCacheTypes, Includes, StringSatisfiesIncludes, TypedRecordInstance } from './record.ts';
@@ -266,12 +265,9 @@ interface Company {
   employees: User[];
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 interface UserPreview extends Pick<User, typeof Type | 'name' | 'title'> {}
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 interface AddressPreview extends Pick<Address, typeof Type | 'city' | 'state'> {}
 type AddressPreview2 = Pick<Address, typeof Type | 'city' | 'state'>;
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 interface CompanyPreviewBase extends Pick<Company, typeof Type | 'name' | 'ceo' | 'headquarters'> {}
 
 interface InvalidAddressPreview extends AddressPreview {

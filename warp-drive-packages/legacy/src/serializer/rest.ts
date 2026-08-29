@@ -1,16 +1,9 @@
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
 import { warn } from '@ember/debug';
 import type EmberObject from '@ember/object';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { RequestManager, Store } from '@warp-drive/core';
 import { DEBUG } from '@warp-drive/core/build-config/env';
 import { assert } from '@warp-drive/core/build-config/macros';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { Handler } from '@warp-drive/core/request';
 import type { ModelSchema } from '@warp-drive/core/types';
 import type { LegacyBelongsToField, LegacyHasManyField } from '@warp-drive/core/types/schema/fields';
@@ -73,7 +66,6 @@ function makeArray(value: unknown): unknown[] {
   @class RESTSerializer
   @public
 */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const RESTSerializer: any = (JSONSerializer as typeof EmberObject).extend({
   /**
    `keyForPolymorphicType` can be used to define a custom key when
@@ -294,7 +286,6 @@ const RESTSerializer: any = (JSONSerializer as typeof EmberObject).extend({
         continue;
       }
 
-      // eslint-disable-next-line no-var
       var isPrimary = !forcedSecondary && this.isPrimaryType(store, type, primaryModelClass);
       const value = payload[prop];
 

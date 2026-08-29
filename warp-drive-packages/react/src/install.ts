@@ -13,27 +13,21 @@ import { type HooksOptions, setupSignals, type SignalHooks } from '@warp-drive/c
 import { WatcherContext } from './-private/reactive-context';
 
 function tryConsumeContext(signal: Signal.State<unknown> | Signal.Computed<unknown>): void {
-  // eslint-disable-next-line no-console
   const logError = console.error;
   try {
-    // eslint-disable-next-line no-console
     console.error = () => {};
     // ensure signals are watched by our closest watcher
     const watcher = use(WatcherContext);
-    // eslint-disable-next-line no-console
     console.error = logError;
     watcher?.watcher.watch(signal);
     if (LOG_REACT_SIGNAL_INTEGRATION) {
-      // eslint-disable-next-line no-console
       console.log(`[WarpDrive] Consumed Context Signal`, signal, watcher);
     }
   } catch {
-    // eslint-disable-next-line no-console
     console.error = logError;
     // if we are not in a React context, we will Error
     // so we just ignore it.
     if (LOG_REACT_SIGNAL_INTEGRATION) {
-      // eslint-disable-next-line no-console
       console.log(`[WarpDrive] No Context Available To Consume Signal`, signal);
     }
   }
@@ -77,10 +71,8 @@ export function buildSignalConfig(options: HooksOptions): SignalHooks {
     notifySignal: (signal: Signal.State<unknown>) => {
       if (LOG_REACT_SIGNAL_INTEGRATION) {
         if (Signal.subtle.hasSinks(signal)) {
-          // eslint-disable-next-line no-console
           console.log(`[WarpDrive] Notifying Signal`, signal);
         } else {
-          // eslint-disable-next-line no-console
           console.log(`[WarpDrive] Notified Signal That Has No Watcher`, signal);
         }
       }

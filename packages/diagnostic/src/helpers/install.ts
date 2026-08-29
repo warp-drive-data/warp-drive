@@ -111,7 +111,6 @@ export function buildHelpers<
     element,
     config: config ?? DEFAULT_RENDER_CONFIG,
     // @ts-expect-error private API
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     assert: context[TEST_CONTEXT] as Diagnostic<any>,
   };
   let resume: ((value?: void | PromiseLike<void>) => void) | undefined;
@@ -154,7 +153,6 @@ export function buildHelpers<
       // @ts-expect-error - this is a global variable that we set to resume the test
       globalThis.resumeTest = resume = undefined;
       // @ts-expect-error - this is a global variable that we set to resume the test
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
       globalThis.pausedTests.delete(info.id);
     },
     pauseTest: () => {
@@ -163,7 +161,6 @@ export function buildHelpers<
       // @ts-expect-error - this is a global variable that we set to resume the test
       globalThis.pausedTests ??= new Set<string>();
       // @ts-expect-error - this is a global variable that we set to resume the test
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
       globalThis.pausedTests.add(info.id);
 
       return new Promise((resolve) => {

@@ -55,12 +55,10 @@ module('unit/model - Custom Class Model', function (hooks: NestedHooks) {
       'adapter:application',
       class extends JSONAPIAdapter {
         shouldBackgroundReloadRecord = () => false;
-        // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
         createRecord = () => Promise.reject();
       }
     );
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     owner.register('serializer:application', JSONAPISerializer);
     // @ts-expect-error missing type
     owner.unregister('service:store');
@@ -367,7 +365,6 @@ module('unit/model - Custom Class Model', function (hooks: NestedHooks) {
       class extends JSONAPIAdapter {
         shouldBackgroundReloadRecord = () => false;
         createRecord = (store, type, snapshot) => {
-          // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
           return Promise.reject();
         };
       }

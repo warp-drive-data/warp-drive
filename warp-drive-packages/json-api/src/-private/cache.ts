@@ -267,9 +267,7 @@ export class JSONAPICache implements Cache {
       if (Counts.size === 0) {
         str += `\t(empty)`;
       }
-      // eslint-disable-next-line no-console
       console.log(str);
-      // eslint-disable-next-line no-console
       console.log({
         lid: doc.content?.lid,
         content: structuredClone(doc.content),
@@ -277,7 +275,6 @@ export class JSONAPICache implements Cache {
         request: doc.request, // structuredClone(doc.request),
         response: doc.response, // structuredClone(doc.response),
       });
-      // eslint-disable-next-line no-console
       console.groupEnd();
     }
 
@@ -418,7 +415,6 @@ export class JSONAPICache implements Cache {
       });
 
       if (LOG_CACHE) {
-        // eslint-disable-next-line no-console
         console.groupEnd();
       }
     } else {
@@ -437,17 +433,14 @@ export class JSONAPICache implements Cache {
       logGroup('cache', 'mutate', mutation.record.type, mutation.record.lid, mutation.field, mutation.op);
       try {
         const _data = JSON.parse(JSON.stringify(mutation)) as object;
-        // eslint-disable-next-line no-console
         console.log(_data);
       } catch {
-        // eslint-disable-next-line no-console
         console.log(mutation);
       }
     }
     this.__graph.update(mutation, false);
 
     if (LOG_CACHE) {
-      // eslint-disable-next-line no-console
       console.groupEnd();
     }
   }
@@ -771,10 +764,8 @@ export class JSONAPICache implements Cache {
     if (LOG_CACHE) {
       try {
         const _data = options ? (JSON.parse(JSON.stringify(options)) as object) : options;
-        // eslint-disable-next-line no-console
         console.log(`WarpDrive | Mutation - clientDidCreate ${identifier.lid}`, _data);
       } catch {
-        // eslint-disable-next-line no-console
         console.log(`WarpDrive | Mutation - clientDidCreate ${identifier.lid}`, options);
       }
     }
@@ -885,10 +876,8 @@ export class JSONAPICache implements Cache {
     if (LOG_CACHE) {
       try {
         const payloadCopy: unknown = payload ? JSON.parse(JSON.stringify(payload)) : payload;
-        // eslint-disable-next-line no-console
         console.log(`WarpDrive | Payload - ${operation}`, payloadCopy);
       } catch {
-        // eslint-disable-next-line no-console
         console.log(`WarpDrive | Payload - ${operation}`, payload);
       }
     }
@@ -2187,10 +2176,8 @@ function cacheUpsert(
     try {
       const _data = JSON.parse(JSON.stringify(data)) as object;
 
-      // eslint-disable-next-line no-console
       console.log(_data);
     } catch {
-      // eslint-disable-next-line no-console
       console.log(data);
     }
   }
@@ -2237,7 +2224,6 @@ function cacheUpsert(
   }
 
   if (LOG_CACHE) {
-    // eslint-disable-next-line no-console
     console.groupEnd();
   }
 
@@ -2261,10 +2247,8 @@ function patchCache(Cache: JSONAPICache, op: Operation): void {
     );
     try {
       const _data = JSON.parse(JSON.stringify(op)) as object;
-      // eslint-disable-next-line no-console
       console.log(_data);
     } catch {
-      // eslint-disable-next-line no-console
       console.log(op);
     }
   }
@@ -2369,7 +2353,6 @@ function patchCache(Cache: JSONAPICache, op: Operation): void {
   }
 
   if (LOG_CACHE) {
-    // eslint-disable-next-line no-console
     console.groupEnd();
   }
 }

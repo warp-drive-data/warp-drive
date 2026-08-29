@@ -15,7 +15,6 @@
  *
  * @module
  */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { Cache } from '../cache.ts';
 import type { PersistedResourceKey, RequestKey, ResourceKey } from '../identifier.ts';
 import type { Value } from '../json/raw.ts';

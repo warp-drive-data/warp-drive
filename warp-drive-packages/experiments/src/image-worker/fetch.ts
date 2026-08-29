@@ -4,7 +4,6 @@ import type { Deferred } from '@warp-drive/core/request';
 import { createDeferred } from '@warp-drive/core/request';
 
 import type { MainThreadEvent, RequestEventData } from './types';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { ImageWorker } from './worker';
 
 export interface FastBoot {

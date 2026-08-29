@@ -15,7 +15,6 @@ import { DefaultCachePolicy } from './store.ts';
 import { CacheHandler, type CachePolicy, Store, recordIdentifierFor } from './store/-private.ts';
 import type { CacheCapabilitiesManager, ResourceKey } from './types.ts';
 import type { Cache } from './types/cache.ts';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { RequestInfo } from './types/request.ts';
 import { getRuntimeConfig, setIsMaybeMirage, setLogging } from './types/runtime.ts';
 import type { Derivation, HashFn, Transformation } from './types/schema/concepts.ts';
@@ -338,7 +337,6 @@ export function useRecommendedStore<T extends Cache>(
     }
 
     createCache(capabilities: CacheCapabilitiesManager) {
-      // eslint-disable-next-line new-cap
       return new options.cache(capabilities);
     }
 

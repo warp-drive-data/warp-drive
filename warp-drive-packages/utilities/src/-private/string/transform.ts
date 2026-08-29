@@ -1,6 +1,5 @@
 import { dasherize as internalDasherize, LRUCache, STRING_DASHERIZE_CACHE } from '@warp-drive/core/utils/string';
 
-// eslint-disable-next-line no-useless-escape
 const STRING_CAMELIZE_REGEXP_1 = /(\-|\_|\.|\s)+(.)?/g;
 const STRING_CAMELIZE_REGEXP_2 = /(^|\/)([A-Z])/g;
 const CAMELIZE_CACHE = new LRUCache<string, string>((key: string) =>
@@ -10,7 +9,6 @@ const CAMELIZE_CACHE = new LRUCache<string, string>((key: string) =>
 );
 
 const STRING_UNDERSCORE_REGEXP_1 = /([a-z\d])([A-Z]+)/g;
-// eslint-disable-next-line no-useless-escape
 const STRING_UNDERSCORE_REGEXP_2 = /\-|\s+/g;
 const UNDERSCORE_CACHE = new LRUCache<string, string>((str: string) =>
   str.replace(STRING_UNDERSCORE_REGEXP_1, '$1_$2').replace(STRING_UNDERSCORE_REGEXP_2, '_').toLowerCase()

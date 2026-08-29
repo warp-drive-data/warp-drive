@@ -101,7 +101,6 @@ export async function start(): Promise<void> {
 
 export function setupOnError(cb: (message: Error | string) => void): () => void {
   const originalLog = console.error;
-  // eslint-disable-next-line prefer-const
   let cleanup!: () => void;
   const handler = function (e: ErrorEvent | (Event & { reason: Error | string })) {
     if (e instanceof ErrorEvent || e instanceof Event) {

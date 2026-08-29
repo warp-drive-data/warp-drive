@@ -172,7 +172,6 @@ export function tab<T extends HelperContext>(
       if (isDocument(root)) {
         // @ts-expect-error root is always supposed to be an HTMLDivElement
         // but in case we ever loosen that, we ignore the type error here.
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         rootElement = root.body;
         ownerDocument = root;
       } else {

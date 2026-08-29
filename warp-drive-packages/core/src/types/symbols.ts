@@ -1,4 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { Store } from '../store/-private/store-service.ts';
 import { getOrSetGlobal } from './-private.ts';
 

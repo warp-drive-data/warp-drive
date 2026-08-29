@@ -1,6 +1,5 @@
 // every `target[prop]` extraction below is immediately invoked via `Reflect.apply(fn, receiver, args)`,
 // which is the correct way to call an unbound method with an explicit `this` — the rule can't see that
-/* eslint-disable @typescript-eslint/unbound-method */
 import { deprecate } from '@ember/debug';
 
 import { DEPRECATE_MANY_ARRAY_DUPLICATES } from '@warp-drive/core/build-config/deprecations';

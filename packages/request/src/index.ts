@@ -3,7 +3,6 @@
  * @mergeModuleWith <project>
  */
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { RequestManager, Store } from '@warp-drive/core';
 
 export * from '@warp-drive/core/request';

@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
 
 import { getOwner } from '@ember/application';
 import { warn } from '@ember/debug';
@@ -8,11 +5,9 @@ import { computed } from '@ember/object';
 import type Mixin from '@ember/object/mixin';
 import type Owner from '@ember/owner';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { RequestManager, Store } from '@warp-drive/core';
 import { DEBUG } from '@warp-drive/core/build-config/env';
 import { assert } from '@warp-drive/core/build-config/macros';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { Handler } from '@warp-drive/core/request';
 import type { ModelSchema } from '@warp-drive/core/types';
 import type { HTTPMethod } from '@warp-drive/core/types/request';
@@ -1040,7 +1035,6 @@ class RESTAdapter extends AdapterWithBuildURLMixin {
       if (response.ok && !(payload instanceof Error)) {
         return fetchSuccessHandler(this, payload, response, requestData);
       } else {
-        // eslint-disable-next-line @typescript-eslint/only-throw-error
         throw fetchErrorHandler(this, payload, response, null, requestData);
       }
     } else {
@@ -1255,7 +1249,6 @@ class RESTAdapter extends AdapterWithBuildURLMixin {
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 interface RESTAdapter extends MixtBuildURLMixin {}
 
 function ajaxSuccess(
@@ -1268,12 +1261,10 @@ function ajaxSuccess(
   try {
     response = adapter.handleResponse(responseData.status, responseData.headers, payload, requestData);
   } catch (error) {
-    // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
     return Promise.reject(error);
   }
 
   if (response && response.isAdapterError) {
-    // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
     return Promise.reject(response);
   } else {
     return response;
@@ -1498,7 +1489,6 @@ function execjQAjax(
 
     hash.error = function (jqXHR, textStatus, errorThrown: Error | string) {
       const error = ajaxErrorHandler(adapter, jqXHR, errorThrown, requestData);
-      // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
       reject(error);
     };
 

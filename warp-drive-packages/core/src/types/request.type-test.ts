@@ -16,7 +16,6 @@ function myBuilder<T>(type: string, id: string) {
 const result = myBuilder<User>('user', '1');
 
 type A = typeof result;
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 type _B = A[typeof RequestSignature];
 
 function expectsUser<T extends { [RequestSignature]: User }>(request: T) {}

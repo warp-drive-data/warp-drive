@@ -242,7 +242,6 @@ function legacySupport(record: MinimalLegacyRecord, options: ObjectValue | null,
     case 'errors':
       // FIXME should be deprecated too?
       // @ts-expect-error
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
       return (state.errors = state.errors || Errors.create({ __record: record }));
     case 'hasDirtyAttributes':
       return record.currentState.isDirty;
@@ -436,7 +435,6 @@ export function withRestoredDeprecatedModelRequestBehaviors(
 export function registerDerivations(schema: SchemaService): void {
   schema.registerDerivation(legacySupport);
   // @ts-expect-error
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   schema._registerMode('@legacy', {
     belongsTo: {
       get(store: Store, record: object, cacheKey: ResourceKey, field: LegacyBelongsToField) {
@@ -493,7 +491,6 @@ export function registerDerivations(schema: SchemaService): void {
     name: 'deprecated-model-behaviors',
     kind: 'object',
     features: {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       get isReloading() {
         deprecate(
           `record.isReloading is deprecated, please use store.request and either <Request> or getRequuestState to keep track of the request state instead.`,
@@ -510,13 +507,10 @@ export function registerDerivations(schema: SchemaService): void {
           }
         );
         // @ts-expect-error
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
         return this._isReloading;
       },
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       set isReloading(v) {
         // @ts-expect-error
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         this._isReloading = v;
       },
     },
@@ -696,7 +690,6 @@ export class DelegatingSchemaService implements SchemaService {
    */
   _registerMode(mode: string, kinds: unknown): void {
     // @ts-expect-error
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     this._preferred._registerMode(mode, kinds);
   }
 
@@ -713,7 +706,6 @@ export class DelegatingSchemaService implements SchemaService {
    */
   _kind(mode: string, kind: 'belongsTo' | 'hasMany'): () => unknown {
     // @ts-expect-error
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     return this._preferred._kind(mode, kind) as () => unknown;
   }
 }

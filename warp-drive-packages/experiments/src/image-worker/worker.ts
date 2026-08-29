@@ -1,4 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { ImageFetch } from './fetch';
 import type { RequestEventData, ThreadInitEventData, WorkerThreadEvent } from './types';
 

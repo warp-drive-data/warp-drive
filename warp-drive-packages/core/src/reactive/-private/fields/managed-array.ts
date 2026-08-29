@@ -111,10 +111,8 @@ export interface ManagedArray extends Omit<Array<unknown>, '[]'> {
   [Context]: KindContext<SchemaArrayField | ArrayField>;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-extraneous-class
 export class ManagedArray {
   constructor(context: KindContext<SchemaArrayField | ArrayField>, owner: ReactiveResource, data: unknown[]) {
-    // eslint-disable-next-line @typescript-eslint/no-this-alias
     const self = this;
     this[SOURCE] = data?.slice();
     const IS_EDITABLE = context.editable ?? false;

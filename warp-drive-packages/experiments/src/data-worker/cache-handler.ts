@@ -51,7 +51,6 @@ export const CacheHandler: CacheHandlerType = {
           })
           .catch((e) => {
             if (DEBUG) {
-              // eslint-disable-next-line no-console
               console.log('Unable to retrieve document from persisted storage', e);
             }
             return completeRequest(identifier, store, context, next);

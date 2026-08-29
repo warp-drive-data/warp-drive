@@ -73,7 +73,6 @@ export function query(
 ): QueryRequestOptions;
 export function query(
   type: string,
-  // eslint-disable-next-line @typescript-eslint/no-shadow
   query: QueryParamsSource = {},
   options: ConstrainedRequestOptions = {}
 ): QueryRequestOptions {
@@ -156,7 +155,6 @@ export function postQuery(
 ): PostQueryRequestOptions;
 export function postQuery(
   type: string,
-  // eslint-disable-next-line @typescript-eslint/no-shadow
   query: QueryParamsSource = {},
   options: ConstrainedRequestOptions = {}
 ): PostQueryRequestOptions {

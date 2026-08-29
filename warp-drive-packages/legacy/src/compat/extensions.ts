@@ -45,7 +45,6 @@ EmberObjectMethods.forEach((method) => {
       case 'get':
         // the cast is required: without it, TS resolves `get` to an overload whose
         // parameter list isn't a rest/tuple, and the spread below fails to typecheck
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
         return (get as (...args: unknown[]) => unknown)(this, ...args);
       case 'getProperties':
         return (getProperties as (...args: unknown[]) => unknown)(this, ...args);
@@ -152,7 +151,6 @@ const EmberArrayLikeFeatures = {
 
   objectsAt<T>(this: T[], indices: number[]): T[] {
     // @ts-expect-error adding MutableArray method
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call
     return indices.map((index) => this.objectAt(index)!);
   },
 

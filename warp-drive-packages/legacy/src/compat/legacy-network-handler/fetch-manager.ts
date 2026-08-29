@@ -42,7 +42,6 @@ export type FetchMutationOptions = FindRecordOptions & { [SaveOp]: 'createRecord
 interface PendingFetchItem {
   identifier: PersistedResourceKey;
   queryRequest: Request;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   resolver: Deferred<any>;
   options: FindRecordOptions;
   trace?: unknown;
@@ -50,7 +49,6 @@ interface PendingFetchItem {
 }
 
 interface PendingSaveItem {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   resolver: Deferred<any>;
   snapshot: Snapshot;
   identifier: ResourceKey;
@@ -384,7 +382,6 @@ function _findMany(
       `Cannot fetch a record without an id`,
       ids.every((v) => v !== null)
     );
-    // eslint-disable-next-line @typescript-eslint/unbound-method
     assert(`Expected this adapter to implement findMany for coalescing`, adapter.findMany);
     const ret = adapter.findMany(store, modelClass, ids, snapshots);
     assert('adapter.findMany returned undefined, this was very likely a mistake', ret !== undefined);

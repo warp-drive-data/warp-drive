@@ -33,7 +33,6 @@ export class TestSchema implements SchemaService {
   declare _schemas: Map<string, InternalSchema>;
   declare _transforms: Map<string, Transformation>;
   declare _hashFns: Map<string, HashFn>;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   declare _derivations: Map<string, Derivation<any, any>>;
   declare _traits: Set<string>;
   declare _assert: Assert | null;

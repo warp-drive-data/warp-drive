@@ -3,7 +3,6 @@ import Mixin from '@ember/object/mixin';
 import { camelize, pluralize } from '@warp-drive/utilities/string';
 
 import type { Snapshot, SnapshotRecordArray } from '../../compat/-private.ts';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { RESTAdapter } from '../rest.ts';
 
 /*
