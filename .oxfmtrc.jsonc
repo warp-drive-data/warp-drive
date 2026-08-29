@@ -20,10 +20,10 @@
       // groups below (e.g. `import '@warp-drive/ember/install'`) does not reliably
       // land in the `side_effect` group — customGroups matching by path appears to
       // win over the `side_effect` selector regardless of declaration order,
-      // modifiers, or pattern specificity (tried all three; this looks like an
-      // oxfmt bug in an early/actively-changing feature — worth re-testing on
-      // oxfmt upgrades). Workaround: mark the specific import with `// oxfmt-ignore`
-      // to pin it in place (see e.g. tests/core/start.ts).
+      // modifiers, or pattern specificity (tried all three). Filed upstream as
+      // https://github.com/oxc-project/oxc/issues/26165 — re-test on oxfmt upgrades.
+      // Workaround: mark the specific import with `// oxfmt-ignore` to pin it in
+      // place (see e.g. tests/core/start.ts).
       {
         "groupName": "ember-glimmer",
         "elementNamePattern": ["@ember/**", "@ember", "@glimmer/**", "@glimmer", "ember"],
