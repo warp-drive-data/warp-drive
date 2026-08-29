@@ -54,6 +54,7 @@ export class Store extends BaseStore {
   serializerFor() {
     if (!this._serializer) {
       const owner = getOwner(this)!;
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       owner.register(`serializer:application`, RESTSerializer);
       this._serializer = owner.lookup(`serializer:application`) as typeof RESTSerializer;
     }
@@ -89,6 +90,7 @@ export function createTestStore(options: Partial<LegacyStoreSetupOptions> = {}, 
     constructor(arg: unknown) {
       super(arg);
       context.owner.register('adapter:application', ApplicationAdapter);
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       context.owner.register('serializer:application', RESTSerializer);
     }
 
