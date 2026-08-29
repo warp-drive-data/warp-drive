@@ -7,6 +7,7 @@ import noop from 'ember-eslint-parser/noop';
 // @ts-check
 import * as js from './browser.js';
 import * as imports from './imports.js';
+import * as oxlint from './oxlint.js';
 
 /** @return {import('eslint').Linter.FlatConfig} */
 function mergeTsConfigs(configArray) {
@@ -159,6 +160,13 @@ export function browser(config) {
     plugins: Object.assign({}, imports.plugins(), plugins()),
   };
 
+  if (!config.enableGlint) {
+    // oxlint already covers these rules for plain `.ts`/`.tsx`/`.js` (see ./oxlint.js).
+    // `.gts`/`.gjs` (config.enableGlint) aren't scanned by oxlint, so ESLint keeps enforcing
+    // the full rule set there.
+    Object.assign(lintconfig.rules, oxlint.disabledRules());
+  }
+
   if (config.enableGlint) {
     lintconfig.processor = 'ember/noop';
     lintconfig.plugins = Object.assign({}, lintconfig.plugins, {
@@ -183,7 +191,7 @@ export function node(config) {
   /** @type {String[]} */
   const files = Array.isArray(config.srcDirs) ? constructFileGlobs(config.srcDirs, config.files) : config.files;
 
-  return {
+  const lintconfig = {
     files,
     linterOptions: {
       reportUnusedDisableDirectives: 'error',
@@ -204,4 +212,10 @@ export function node(config) {
     // @ts-expect-error
     plugins: Object.assign({}, imports.plugins(), plugins()),
   };
+
+  // oxlint already covers these rules for the plain `.ts` node-context sources this
+  // targets (see ./oxlint.js and tools/internal-config/oxlint/scoped-dirs.txt).
+  Object.assign(lintconfig.rules, oxlint.disabledRules());
+
+  return lintconfig;
 }
