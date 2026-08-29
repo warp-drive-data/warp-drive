@@ -7,8 +7,8 @@ import {
   SchemaService,
   teardownRecord,
   withDefaults,
+  getRequestState,
 } from '@warp-drive/core/reactive';
-import { getRequestState } from '@warp-drive/core/reactive';
 import type { CacheHandler, Future, NextFn } from '@warp-drive/core/request';
 import type { RecoveryFeatures } from '@warp-drive/core/signals/-leaked';
 import { signal } from '@warp-drive/core/signals/-leaked';

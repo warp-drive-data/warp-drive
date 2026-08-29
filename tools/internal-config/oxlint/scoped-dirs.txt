@@ -1,0 +1,73 @@
+# Directories oxlint should scan.
+#
+# oxlint runs once, repo-wide, unlike ESLint's per-package turbo pipeline, so it
+# needs its own explicit include-list rather than relying on each package's
+# eslint.config.mjs `srcDirs`. This mirrors those `srcDirs` values for every
+# package that has one, deliberately excluding:
+#   - `tests/**` (qunit-covered test files stay on ESLint)
+#   - `.gts`/`.gjs` sources (oxlint's parser doesn't support template-tag syntax)
+#   - packages/eslint-plugin-warp-drive and packages/internal-exam (Node-context
+#     tooling packages whose active rule set differs from the browser-context
+#     rules oxlintrc.json encodes; see packages/*/eslint.config.mjs for the
+#     `node.cjs()`/`node.esm()` split)
+#   - docs-viewer, tools/, scripts/, packages/schema, packages/unpublished-eslint-rules
+#     (none of these are covered by an eslint.config.mjs today either)
+#
+# Update this list when a package's `srcDirs` changes or a new lintable
+# package is added.
+packages/-ember-data/src
+packages/-warp-drive/src
+packages/active-record/src
+packages/adapter/src
+packages/codemods/bin
+packages/codemods/src
+packages/codemods/utils
+packages/core-types/src
+packages/debug/src
+packages/diagnostic/src
+packages/graph/src
+packages/holodeck/src
+packages/json-api/src
+packages/legacy-compat/src
+packages/model/src
+packages/request-utils/src
+packages/request/src
+packages/rest/src
+packages/schema-record/src
+packages/serializer/src
+packages/store/src
+packages/tracking/src
+specs/src
+tests/blueprints/fixtures
+tests/codemods/src
+tests/core/app
+tests/dont-write-new-tests-here/app
+tests/ember-data__adapter/services
+tests/ember-data__graph/services
+tests/ember-data__model/src
+tests/ember-data__request/src
+tests/example-app-ember/app
+tests/experiments/src
+tests/framework-ember/src
+tests/framework-react/app
+tests/framework-svelte/app
+tests/framework-vue/app
+tests/json-api/src
+tests/legacy/app
+tests/performance/mixins
+tests/performance/models
+tests/performance/routes
+tests/performance/services
+tests/utilities/models
+tests/utilities/services
+warp-drive-packages/core/src
+warp-drive-packages/ember/src
+warp-drive-packages/experiments/src
+warp-drive-packages/json-api/src
+warp-drive-packages/legacy/src
+warp-drive-packages/react/src
+warp-drive-packages/schema-dsl/src
+warp-drive-packages/svelte/src
+warp-drive-packages/tc39-proposal-signals/src
+warp-drive-packages/utilities/src
+warp-drive-packages/vue/src

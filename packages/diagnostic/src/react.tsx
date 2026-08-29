@@ -7,8 +7,9 @@ import { settled } from "@warp-drive/react/install";
 
 import { module as _module, skip as _skip, test as _test, todo as _todo } from "./-define";
 import type { Hooks, ModuleCallback, TestCallback, TestContext } from "./-types";
-import { buildHelpers, TestHelpers } from "./helpers/install";
-import { SpecTestContext } from "./spec";
+import type { TestHelpers } from "./helpers/install";
+import { buildHelpers } from "./helpers/install";
+import type { SpecTestContext } from "./spec";
 
 const act = async (fn: () => void | Promise<void>) => {
   await flushSync(fn);

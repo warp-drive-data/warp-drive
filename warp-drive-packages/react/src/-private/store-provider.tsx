@@ -1,6 +1,7 @@
-import { createContext, JSX, ReactNode, use, useMemo } from "react";
+import type { JSX, ReactNode } from "react";
+import { createContext, use, useMemo } from "react";
 
-import { Store } from "@warp-drive/core";
+import type { Store } from "@warp-drive/core";
 import { assert } from "@warp-drive/core/build-config/macros";
 
 /**
