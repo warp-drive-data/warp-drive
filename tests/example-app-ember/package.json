@@ -1,6 +1,6 @@
 {
   "name": "example-app-ember",
-  "version": "5.9.0-alpha.23",
+  "version": "5.9.0-alpha.24",
   "private": true,
   "type": "module",
   "description": "Demos the incremental adoption of new EmberData for JSON:API",
