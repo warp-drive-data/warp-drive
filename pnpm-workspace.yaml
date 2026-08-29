@@ -171,6 +171,24 @@ minimumReleaseAgeExclude:
   # 12.0.0 is more than 7 days old (~2026-09-02) since ordinary resolution
   # will pick it up anyway.
   - pnpm@12.0.0
+  # Experimental adoption of TypeScript 7's native content-mapper mechanism
+  # for .gts/.gjs type-checking (2026-08-29). Not a security update --
+  # explicitly authorized by the repo owner.
+  #
+  # ember-content-mapper is brand new: every release that has an actual
+  # implementation (0.1.0 and later) is inside the 7-day window, and the only
+  # version old enough to clear it (0.0.0) is an empty placeholder stub, so
+  # there is no gate-eligible version to adopt.
+  #
+  # The mapper hard-depends on `@glint/ember-tsc: ~1.11.0`, and the whole
+  # 1.11.x line is likewise inside the window, as is ember-estree@0.8.0 which
+  # @glint/ember-tsc@1.11.2 depends on. All three are required for the mapper
+  # to be installable at all.
+  #
+  # Safe to drop once they age past the window (~2026-09-04).
+  - ember-content-mapper@0.2.1
+  - "@glint/ember-tsc@1.11.2"
+  - ember-estree@0.8.0
 
 ## Prevents transitive (sub-)dependencies from being resolved via git,
 ## git+ssh, or raw tarball URLs. Only our own direct dependencies may use
@@ -297,9 +315,8 @@ overrides:
   qunit-console-grouper>broccoli-funnel: "-"
   broccoli-merge-trees: ^4.2.0
   "@glimmer/validator": ^0.95.0
-  "@glint/ember-tsc": 1.10.0
+  "@glint/ember-tsc": 1.11.2
   "@glint/template": 1.8.0
-  "@glint/tsserver-plugin": 2.7.0
   ember-cli-babel: ^8.3.1
   "@embroider/macros>ember-cli-babel": "-"
   ember-source>ember-cli-babel: "-"

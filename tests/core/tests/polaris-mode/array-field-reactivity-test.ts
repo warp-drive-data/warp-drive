@@ -3,7 +3,7 @@ import { withDefaults } from '@warp-drive/core/reactive';
 import { module, setupRenderingTest, test } from '@warp-drive/diagnostic/ember';
 import { JSONAPICache } from '@warp-drive/json-api';
 
-import { reactiveContext } from '../-utils/reactive-context';
+import { reactiveContext } from '../-utils/reactive-context.gts';
 
 interface User {
   id: string | null;

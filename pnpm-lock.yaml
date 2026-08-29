@@ -124,9 +124,8 @@ overrides:
   qunit-console-grouper>broccoli-funnel: '-'
   broccoli-merge-trees: ^4.2.0
   '@glimmer/validator': ^0.95.0
-  '@glint/ember-tsc': 1.10.0
+  '@glint/ember-tsc': 1.11.2
   '@glint/template': 1.8.0
-  '@glint/tsserver-plugin': 2.7.0
   ember-cli-babel: ^8.3.1
   '@embroider/macros>ember-cli-babel': '-'
   ember-source>ember-cli-babel: '-'
@@ -185,8 +184,8 @@ importers:
         specifier: ^2.1.1
         version: 2.1.1
       '@glint/ember-tsc':
-        specifier: 1.10.0
-        version: 1.10.0(8baf6c5115e916f49949be2bc6b560e0)
+        specifier: 1.11.2
+        version: 1.11.2(8baf6c5115e916f49949be2bc6b560e0)
       '@glint/template':
         specifier: 1.8.0
         version: 1.8.0
@@ -1397,14 +1396,11 @@ importers:
         specifier: ^2.1.1
         version: 2.1.1
       '@glint/ember-tsc':
-        specifier: 1.10.0
-        version: 1.10.0(8baf6c5115e916f49949be2bc6b560e0)
+        specifier: 1.11.2
+        version: 1.11.2(8baf6c5115e916f49949be2bc6b560e0)
       '@glint/template':
         specifier: 1.8.0
         version: 1.8.0
-      '@glint/tsserver-plugin':
-        specifier: 2.7.0
-        version: 2.7.0(cc8cad6b2644672ec8a53791bfc61df2)
       '@warp-drive-internal/specs':
         specifier: workspace:*
         version: file:specs(16f6e484b66d66a958c8b10203ed6dfe)
@@ -1438,6 +1434,9 @@ importers:
       decorator-transforms:
         specifier: ^2.4.0
         version: 2.4.0(@babel/core@7.29.7)
+      ember-content-mapper:
+        specifier: ^0.2.1
+        version: 0.2.1(8baf6c5115e916f49949be2bc6b560e0)
       ember-source:
         specifier: 'catalog:'
         version: 7.2.0(@glimmer/component@2.1.1)
@@ -1453,6 +1452,9 @@ importers:
       typescript:
         specifier: 5.9.3
         version: 5.9.3
+      typescript-7:
+        specifier: npm:typescript@7.1.0-dev.20260821.1
+        version: typescript@7.1.0-dev.20260821.1
       vite:
         specifier: 'catalog:'
         version: 8.2.1(terser@5.50.0)
@@ -1535,8 +1537,8 @@ importers:
         specifier: ^2.1.1
         version: 2.1.1
       '@glint/ember-tsc':
-        specifier: 1.10.0
-        version: 1.10.0(8baf6c5115e916f49949be2bc6b560e0)
+        specifier: 1.11.2
+        version: 1.11.2(8baf6c5115e916f49949be2bc6b560e0)
       '@glint/template':
         specifier: 1.8.0
         version: 1.8.0
@@ -1585,6 +1587,9 @@ importers:
       decorator-transforms:
         specifier: ^2.4.0
         version: 2.4.0(@babel/core@7.29.7)
+      ember-content-mapper:
+        specifier: ^0.2.1
+        version: 0.2.1(8baf6c5115e916f49949be2bc6b560e0)
       ember-data:
         specifier: workspace:*
         version: file:packages/-ember-data(af46dc02664d662116157571e70adacf)
@@ -1621,6 +1626,9 @@ importers:
       typescript:
         specifier: 5.9.3
         version: 5.9.3
+      typescript-7:
+        specifier: npm:typescript@7.1.0-dev.20260821.1
+        version: typescript@7.1.0-dev.20260821.1
       vite:
         specifier: 'catalog:'
         version: 8.2.1
@@ -2027,14 +2035,11 @@ importers:
         specifier: ^2.1.1
         version: 2.1.1
       '@glint/ember-tsc':
-        specifier: 1.10.0
-        version: 1.10.0(8baf6c5115e916f49949be2bc6b560e0)
+        specifier: 1.11.2
+        version: 1.11.2(8baf6c5115e916f49949be2bc6b560e0)
       '@glint/template':
         specifier: 1.8.0
         version: 1.8.0
-      '@glint/tsserver-plugin':
-        specifier: 2.7.0
-        version: 2.7.0(cc8cad6b2644672ec8a53791bfc61df2)
       '@html-next/vertical-collection':
         specifier: ^5.0.5
         version: 5.0.5
@@ -2065,6 +2070,9 @@ importers:
       decorator-transforms:
         specifier: ^2.4.0
         version: 2.4.0(@babel/core@7.29.7)
+      ember-content-mapper:
+        specifier: ^0.2.1
+        version: 0.2.1(8baf6c5115e916f49949be2bc6b560e0)
       ember-page-title:
         specifier: ^9.0.3
         version: 9.0.3(b7878531927745129b4f7f52f1c24ed8)
@@ -2098,6 +2106,9 @@ importers:
       typescript:
         specifier: 5.9.3
         version: 5.9.3
+      typescript-7:
+        specifier: npm:typescript@7.1.0-dev.20260821.1
+        version: typescript@7.1.0-dev.20260821.1
       vite:
         specifier: 'catalog:'
         version: 8.2.1
@@ -2159,14 +2170,11 @@ importers:
         specifier: ^2.1.1
         version: 2.1.1
       '@glint/ember-tsc':
-        specifier: 1.10.0
-        version: 1.10.0(8baf6c5115e916f49949be2bc6b560e0)
+        specifier: 1.11.2
+        version: 1.11.2(8baf6c5115e916f49949be2bc6b560e0)
       '@glint/template':
         specifier: 1.8.0
         version: 1.8.0
-      '@glint/tsserver-plugin':
-        specifier: 2.7.0
-        version: 2.7.0(cc8cad6b2644672ec8a53791bfc61df2)
       '@warp-drive/build-config':
         specifier: workspace:*
         version: file:warp-drive-packages/build-config(40bc2c5d5662a5666eb0d917619838cd)
@@ -2252,14 +2260,11 @@ importers:
         specifier: ^2.1.1
         version: 2.1.1
       '@glint/ember-tsc':
-        specifier: 1.10.0
-        version: 1.10.0(8baf6c5115e916f49949be2bc6b560e0)
+        specifier: 1.11.2
+        version: 1.11.2(8baf6c5115e916f49949be2bc6b560e0)
       '@glint/template':
         specifier: 1.8.0
         version: 1.8.0
-      '@glint/tsserver-plugin':
-        specifier: 2.7.0
-        version: 2.7.0(cc8cad6b2644672ec8a53791bfc61df2)
       '@warp-drive-internal/specs':
         specifier: workspace:*
         version: file:specs(4e655989c8af9ea4961abd95444c92fd)
@@ -2293,6 +2298,9 @@ importers:
       decorator-transforms:
         specifier: ^2.4.0
         version: 2.4.0(@babel/core@7.29.7)
+      ember-content-mapper:
+        specifier: ^0.2.1
+        version: 0.2.1(8baf6c5115e916f49949be2bc6b560e0)
       ember-source:
         specifier: 'catalog:'
         version: 7.2.0(@glimmer/component@2.1.1)
@@ -2305,6 +2313,9 @@ importers:
       typescript:
         specifier: 5.9.3
         version: 5.9.3
+      typescript-7:
+        specifier: npm:typescript@7.1.0-dev.20260821.1
+        version: typescript@7.1.0-dev.20260821.1
       vite:
         specifier: 'catalog:'
         version: 8.2.1(terser@5.50.0)
@@ -2609,14 +2620,11 @@ importers:
         specifier: ^2.1.1
         version: 2.1.1
       '@glint/ember-tsc':
-        specifier: 1.10.0
-        version: 1.10.0(8baf6c5115e916f49949be2bc6b560e0)
+        specifier: 1.11.2
+        version: 1.11.2(8baf6c5115e916f49949be2bc6b560e0)
       '@glint/template':
         specifier: 1.8.0
         version: 1.8.0
-      '@glint/tsserver-plugin':
-        specifier: 2.7.0
-        version: 2.7.0(cc8cad6b2644672ec8a53791bfc61df2)
       '@warp-drive-internal/specs':
         specifier: workspace:*
         version: file:specs(4e655989c8af9ea4961abd95444c92fd)
@@ -2650,6 +2658,9 @@ importers:
       decorator-transforms:
         specifier: ^2.4.0
         version: 2.4.0(@babel/core@7.29.7)
+      ember-content-mapper:
+        specifier: ^0.2.1
+        version: 0.2.1(8baf6c5115e916f49949be2bc6b560e0)
       ember-source:
         specifier: 'catalog:'
         version: 7.2.0(@glimmer/component@2.1.1)
@@ -2665,6 +2676,9 @@ importers:
       typescript:
         specifier: 5.9.3
         version: 5.9.3
+      typescript-7:
+        specifier: npm:typescript@7.1.0-dev.20260821.1
+        version: typescript@7.1.0-dev.20260821.1
       vite:
         specifier: 'catalog:'
         version: 8.2.1(terser@5.50.0)
@@ -3100,14 +3114,11 @@ importers:
         specifier: ^2.1.1
         version: 2.1.1
       '@glint/ember-tsc':
-        specifier: 1.10.0
-        version: 1.10.0(8baf6c5115e916f49949be2bc6b560e0)
+        specifier: 1.11.2
+        version: 1.11.2(8baf6c5115e916f49949be2bc6b560e0)
       '@glint/template':
         specifier: 1.8.0
         version: 1.8.0
-      '@glint/tsserver-plugin':
-        specifier: 2.7.0
-        version: 2.7.0(cc8cad6b2644672ec8a53791bfc61df2)
       '@warp-drive/internal-config':
         specifier: workspace:*
         version: file:tools/internal-config(e21bb88fa88e86ab389341ee1b23f0ca)
@@ -3117,6 +3128,9 @@ importers:
       decorator-transforms:
         specifier: ^2.4.0
         version: 2.4.0(@babel/core@7.29.7)
+      ember-content-mapper:
+        specifier: ^0.2.1
+        version: 0.2.1(8baf6c5115e916f49949be2bc6b560e0)
       ember-provide-consume-context:
         specifier: ^0.10.0
         version: 0.10.0(cbdd508696bb799630f15f73c47548d8)
@@ -3129,6 +3143,9 @@ importers:
       typescript:
         specifier: 5.9.3
         version: 5.9.3
+      typescript-7:
+        specifier: npm:typescript@7.1.0-dev.20260821.1
+        version: typescript@7.1.0-dev.20260821.1
 
   warp-drive-packages/experiments:
     dependencies:
@@ -4484,8 +4501,8 @@ packages:
   '@glimmer/wire-format@0.94.8':
     resolution: {integrity: sha512-A+Cp5m6vZMAEu0Kg/YwU2dJZXyYxVJs2zI57d3CP6NctmX7FsT8WjViiRUmt5abVmMmRH5b8BUovqY6GSMAdrw==}
 
-  '@glint/ember-tsc@1.10.0':
-    resolution: {integrity: sha512-861yPIu5fNTZwCkKrnTiP2r+roc2JwxCHljoihDpv7eduzpeuiXZxh+hCpvSxume6znv8oRBX96u86FBtk0YqA==}
+  '@glint/ember-tsc@1.11.2':
+    resolution: {integrity: sha512-SByYFCw0janG/VntS5xZwKYZXq1y4uE81KgC0bt5rgprOWAcEUmrPj3Nt3ZEGdsYZ+36SvHuf+vacawuy/y3aA==}
     hasBin: true
     peerDependencies:
       ember-source: '>=3.28.0'
@@ -4496,9 +4513,6 @@ packages:
 
   '@glint/template@1.8.0':
     resolution: {integrity: sha512-TeVv3JnM0wbF86Sl2YyNhxeTEPnR5Q0xtIKqZueVzX8ouL3bj49Rk1gS0jFq7FNL7u6R+1oqToZBQmI+OCL4QA==}
-
-  '@glint/tsserver-plugin@2.7.0':
-    resolution: {integrity: sha512-sID/TfqvIZL6Igf3zrBeSQ32Y1xlSLiBqX6GkNNeiu5nxUHSxrala0zzDT/vgLm8E/BcvqcfzX6E1L040N+iWg==}
 
   '@gwhitney/detect-indent@7.0.1':
     resolution: {integrity: sha512-7bQW+gkKa2kKZPeJf6+c6gFK9ARxQfn+FKy9ScTBppyKRWH2KzsmweXUoklqeEiHiNVWaeP5csIdsNq6w7QhzA==}
@@ -6090,6 +6104,48 @@ packages:
     resolution: {integrity: sha512-fkv8dHRDqfGtTHuJeebdrQ7cX6Ad4WAS00rgHh9UGvMycF1mjBfsxry1XsLIFhWZ6Judlh6UdzK+TYlbpCXgnA==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
+  '@typescript/typescript-darwin-arm64@7.1.0-dev.20260821.1':
+    resolution: {integrity: sha512-kSoefqC9cAFf1Ui14Gn3XmMDRn2SSEy/V4D9/N/dfhJM4/yfoadBiyeaC88o7LmyJEJQTS4zQjTGRu1q29bbhA==}
+    engines: {node: '>=16.20.0'}
+    cpu: [arm64]
+    os: [darwin]
+
+  '@typescript/typescript-darwin-x64@7.1.0-dev.20260821.1':
+    resolution: {integrity: sha512-RJ+NOn3OZ+EYGQE7wiPDcWQkKY5OjOMBk/bhGIfmxKWVJhWYW2Me+4YmacXq+NenzZgOUVhHikFfibMQDvhOtw==}
+    engines: {node: '>=16.20.0'}
+    cpu: [x64]
+    os: [darwin]
+
+  '@typescript/typescript-linux-arm64@7.1.0-dev.20260821.1':
+    resolution: {integrity: sha512-o3xxprsmQ0AKHMUNMgU+QRG+XpRMfswzXUOu+a4ayrQ5AnctYB7IGfdMqOSr3Oc9e/bsOwVY37aZdPcsNAfprg==}
+    engines: {node: '>=16.20.0'}
+    cpu: [arm64]
+    os: [linux]
+
+  '@typescript/typescript-linux-arm@7.1.0-dev.20260821.1':
+    resolution: {integrity: sha512-75ryeQNJLg6vyM67JxGBxP6s6dTccg/lvMSQFJARdgAd+WPilxmfzLzobSwlBHZuc5u5gxh9y42kZTpsn0Yq5Q==}
+    engines: {node: '>=16.20.0'}
+    cpu: [arm]
+    os: [linux]
+
+  '@typescript/typescript-linux-x64@7.1.0-dev.20260821.1':
+    resolution: {integrity: sha512-m2NY6lwHyjLsTOp0f6GrjvS/b1cIRxQbFxO/z7XtnsO17Gu0GTC9XhXiCuiPhyeipeERWK+SOigmEhY1S3QCcg==}
+    engines: {node: '>=16.20.0'}
+    cpu: [x64]
+    os: [linux]
+
+  '@typescript/typescript-win32-arm64@7.1.0-dev.20260821.1':
+    resolution: {integrity: sha512-610sBfx98SyaXpRpPJ5B3gsceM8QqhqQaHDdNoG7HsTlbc/F9KEq5slJ2ZbgL2FJ6cc2UimsIbwu6XfLKkBaug==}
+    engines: {node: '>=16.20.0'}
+    cpu: [arm64]
+    os: [win32]
+
+  '@typescript/typescript-win32-x64@7.1.0-dev.20260821.1':
+    resolution: {integrity: sha512-gTVCj7ecihltJj8ljlNxyR6/8H5ZEnsQSALdmysyufbyqagKkRcI9iCEa1p9CK/FY3g4wX9GT8a0V3Qr1vZUEQ==}
+    engines: {node: '>=16.20.0'}
+    cpu: [x64]
+    os: [win32]
+
   '@ungap/structured-clone@1.3.0':
     resolution: {integrity: sha512-WmoN8qaIAo7WTYWbAZuG8PYEhn5fkz7dZrqTBZ7dtt//lL2Gwms1IcnQ5yHqjDfX8Ft5j4YzDM23f87zBfDe9g==}
     deprecated: Potential CWE-502 - Update to 1.3.1 or higher
@@ -7611,6 +7667,10 @@ packages:
   electron-to-chromium@1.5.409:
     resolution: {integrity: sha512-ChI4N44d0B4A6C8prnNjMOaGgE59fUyEVYcRYm2XEXIjMbbvF5i9UL1cblDbpGqiU0uS8FE8UcKxqZqTXdmzbQ==}
 
+  ember-content-mapper@0.2.1:
+    resolution: {integrity: sha512-3eXewmV1iCjg4uGH88mZTRBZ8BRO+GCxMxM7g15cF/9xIn1IfD6Sx16Qjd/ECU4RdZ+JN081mqfblglXOQkNqQ==}
+    engines: {node: ^22.21.1 || >=24.10.0}
+
   ember-data@file:packages/-ember-data:
     resolution: {directory: packages/-ember-data, type: directory}
     peerDependencies:
@@ -7637,6 +7697,9 @@ packages:
 
   ember-estree@0.6.11:
     resolution: {integrity: sha512-aZyheQGUXyHu8GARPd1YyjbDMGkvqBYKzPj6RVp8qqMqA1L1MbkWKsljWE3K1CwiJcHwTPgm/O3oxS0TY1AX9Q==}
+
+  ember-estree@0.8.0:
+    resolution: {integrity: sha512-FvH2jGEkcIMPDPgQLHFVSTyF5p7HscVIiJ36v6ce1C9q/6KXCcE0EB2idaGcDWlhB42I3PmLg+vLbUp2GIznBQ==}
 
   ember-inflector@6.0.0:
     resolution: {integrity: sha512-g6trqBhQHRwlq9bBmoyxhAl0tD0/CaTKK0xWPUgi3BfxFOgGG1bbiwAx+tjyiAkLzDqU+ihyjtT+sd41y6K1hA==}
@@ -8588,10 +8651,6 @@ packages:
   jake@10.9.4:
     resolution: {integrity: sha512-wpHYzhxiVQL+IV05BLE2Xn34zW1S223hvjtqk0+gsPrwd/8JNLXJgZZM/iPFsYc1xyphF+6M6EvdE5E9MBGkDA==}
     engines: {node: '>=10'}
-    hasBin: true
-
-  jiti@2.7.0:
-    resolution: {integrity: sha512-AC/7JofJvZGrrneWNaEnJeOLUx+JlGt7tNa0wZiRPT4MY1wmfKjt2+6O2p2uz2+skll8OZZmJMNqeke7kKbNgQ==}
     hasBin: true
 
   jju@1.4.0:
@@ -10481,6 +10540,11 @@ packages:
     engines: {node: '>=14.17'}
     hasBin: true
 
+  typescript@7.1.0-dev.20260821.1:
+    resolution: {integrity: sha512-fSbYbC5XWI68TLeO+W0ZEZAJMSuVYlyREG3Z1+zw1vn1Ka6T8rgihYEhm3jNa0Z7PiEyD3NsR1Ux9z2t1viU9g==}
+    engines: {node: '>=16.20.0'}
+    hasBin: true
+
   uc.micro@2.1.0:
     resolution: {integrity: sha512-ARDJmphmdvUk6Glw7y9DQ2bFkKBHwQHLi2lsaH6PPmz/Ka9sFOBsBluozhDltWmnv9u/cF6Rt87znRTPV+yp/A==}
 
@@ -10818,6 +10882,10 @@ packages:
 
   vscode-jsonrpc@8.2.0:
     resolution: {integrity: sha512-C+r0eKJUIfiDIfwJhria30+TYWPtuHJXHtI7J0YlOmKAo7ogxP20T0zxB7HZQIFhIyvoBPwWskjxrvAtfjyZfA==}
+    engines: {node: '>=14.0.0'}
+
+  vscode-jsonrpc@9.0.1:
+    resolution: {integrity: sha512-rfuA6T75H6m5EkbhtEPzre9pT0HPcDI2MMy4+nPFIBks5J8JBAUHD4tRYSgaBOijIEC7SRkC1kKyXTLqbmh9jw==}
     engines: {node: '>=14.0.0'}
 
   vscode-languageserver-protocol@3.17.5:
@@ -12836,7 +12904,7 @@ snapshots:
     dependencies:
       '@glimmer/interfaces': 0.94.6
 
-  '@glint/ember-tsc@1.10.0(8baf6c5115e916f49949be2bc6b560e0)':
+  '@glint/ember-tsc@1.11.2(8baf6c5115e916f49949be2bc6b560e0)':
     dependencies:
       '@glimmer/syntax': 0.95.0
       '@glint/template': 1.8.0
@@ -12848,6 +12916,7 @@ snapshots:
       '@volar/test-utils': 2.4.28(typescript@5.9.3)
       '@volar/typescript': 2.4.28(typescript@5.9.3)
       content-tag: 4.2.0
+      ember-estree: 0.8.0
       silent-error: 1.1.1
       typescript: 5.9.3
       volar-service-html: 0.0.71(05e425a638634b3bca2dc7a158087e3a)
@@ -12861,17 +12930,6 @@ snapshots:
       - supports-color
 
   '@glint/template@1.8.0': {}
-
-  '@glint/tsserver-plugin@2.7.0(cc8cad6b2644672ec8a53791bfc61df2)':
-    dependencies:
-      '@glint/ember-tsc': 1.10.0(8baf6c5115e916f49949be2bc6b560e0)
-      '@volar/language-core': 2.4.28
-      '@volar/typescript': 2.4.28(typescript@5.9.3)
-      jiti: 2.7.0
-      typescript: 5.9.3
-    transitivePeerDependencies:
-      - ember-source
-      - supports-color
 
   '@gwhitney/detect-indent@7.0.1': {}
 
@@ -14453,6 +14511,27 @@ snapshots:
     dependencies:
       '@typescript-eslint/types': 8.67.0
       eslint-visitor-keys: 5.0.1
+
+  '@typescript/typescript-darwin-arm64@7.1.0-dev.20260821.1':
+    optional: true
+
+  '@typescript/typescript-darwin-x64@7.1.0-dev.20260821.1':
+    optional: true
+
+  '@typescript/typescript-linux-arm64@7.1.0-dev.20260821.1':
+    optional: true
+
+  '@typescript/typescript-linux-arm@7.1.0-dev.20260821.1':
+    optional: true
+
+  '@typescript/typescript-linux-x64@7.1.0-dev.20260821.1':
+    optional: true
+
+  '@typescript/typescript-win32-arm64@7.1.0-dev.20260821.1':
+    optional: true
+
+  '@typescript/typescript-win32-x64@7.1.0-dev.20260821.1':
+    optional: true
 
   '@ungap/structured-clone@1.3.0': {}
 
@@ -16799,6 +16878,15 @@ snapshots:
 
   electron-to-chromium@1.5.409: {}
 
+  ember-content-mapper@0.2.1(8baf6c5115e916f49949be2bc6b560e0):
+    dependencies:
+      '@glint/ember-tsc': 1.11.2(8baf6c5115e916f49949be2bc6b560e0)
+      vscode-jsonrpc: 9.0.1
+    transitivePeerDependencies:
+      - ember-source
+      - supports-color
+      - typescript
+
   ember-data@file:packages/-ember-data(af46dc02664d662116157571e70adacf):
     dependencies:
       '@ember-data/adapter': file:packages/adapter(40bc2c5d5662a5666eb0d917619838cd)
@@ -16876,6 +16964,13 @@ snapshots:
       - typescript
 
   ember-estree@0.6.11:
+    dependencies:
+      '@glimmer/env': 0.1.7
+      '@glimmer/syntax': 0.95.0
+      content-tag: 4.2.0
+      oxc-parser: 0.130.0
+
+  ember-estree@0.8.0:
     dependencies:
       '@glimmer/env': 0.1.7
       '@glimmer/syntax': 0.95.0
@@ -17981,8 +18076,6 @@ snapshots:
       async: 3.2.6
       filelist: 1.0.4
       picocolors: 1.1.1
-
-  jiti@2.7.0: {}
 
   jju@1.4.0: {}
 
@@ -20249,6 +20342,16 @@ snapshots:
 
   typescript@5.9.3: {}
 
+  typescript@7.1.0-dev.20260821.1:
+    optionalDependencies:
+      '@typescript/typescript-darwin-arm64': 7.1.0-dev.20260821.1
+      '@typescript/typescript-darwin-x64': 7.1.0-dev.20260821.1
+      '@typescript/typescript-linux-arm': 7.1.0-dev.20260821.1
+      '@typescript/typescript-linux-arm64': 7.1.0-dev.20260821.1
+      '@typescript/typescript-linux-x64': 7.1.0-dev.20260821.1
+      '@typescript/typescript-win32-arm64': 7.1.0-dev.20260821.1
+      '@typescript/typescript-win32-x64': 7.1.0-dev.20260821.1
+
   uc.micro@2.1.0: {}
 
   uglify-js@3.19.3:
@@ -20638,6 +20741,8 @@ snapshots:
       vscode-uri: 3.1.0
 
   vscode-jsonrpc@8.2.0: {}
+
+  vscode-jsonrpc@9.0.1: {}
 
   vscode-languageserver-protocol@3.17.5:
     dependencies:

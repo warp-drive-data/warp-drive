@@ -9,7 +9,7 @@ import Model, { attr } from '@ember-data/model';
 import type Store from '@ember-data/store';
 import { Type } from '@warp-drive/core-types/symbols';
 
-import { reactiveContext } from '../../helpers/reactive-context';
+import { reactiveContext } from '../../helpers/reactive-context.gts';
 
 class User extends Model {
   @attr declare name: string;

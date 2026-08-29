@@ -21,8 +21,11 @@ const CLASSIC_TEST_APP = {
   'check:types': 'tsc --noEmit',
 };
 
+// .gts/.gjs are type-checked by TypeScript 7 itself via the `ember-content-mapper`
+// content mapper declared in the app's tsconfig, so these apps run the TS 7 `tsc`
+// rather than Glint's standalone `ember-tsc` checker.
 const GLINT_TEST_APP = {
-  'check:types': 'ember-tsc',
+  'check:types': 'node ./node_modules/typescript-7/bin/tsc --noEmit --runExternalCode',
 };
 
 const EXAM_TEST_APP = {

@@ -11,7 +11,7 @@ import type { PromiseManyArray } from '@warp-drive/legacy/model/-private';
 import { PromiseBelongsTo } from '@warp-drive/legacy/model/-private';
 import { withRestoredDeprecatedModelRequestBehaviors as withLegacy } from '@warp-drive/legacy/model/migration-support';
 
-import { reactiveContext } from '../-utils/reactive-context';
+import { reactiveContext } from '../-utils/reactive-context.gts';
 
 const Store = useLegacyStore({
   linksMode: false,

@@ -9,7 +9,7 @@ import type Store from '@ember-data/store';
 import { deprecatedTest } from '@ember-data/unpublished-test-infra/test-support/deprecated-test';
 import { Type } from '@warp-drive/core-types/symbols';
 
-import { reactiveContext } from '../../helpers/reactive-context';
+import { reactiveContext } from '../../helpers/reactive-context.gts';
 
 module('Integration | Not Overly Reactive', function (hooks) {
   setupTest(hooks);
