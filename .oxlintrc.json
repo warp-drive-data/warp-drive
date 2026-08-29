@@ -1,9 +1,6 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": [
-    "typescript",
-    "import"
-  ],
+  "plugins": ["typescript", "import"],
   "categories": {},
   "options": {
     "respectEslintDisableDirectives": true
@@ -59,10 +56,7 @@
     "typescript/prefer-namespace-keyword": "error",
     "typescript/prefer-ts-expect-error": "error",
     "typescript/triple-slash-reference": "error",
-    "eqeqeq": [
-      "error",
-      "always"
-    ],
+    "eqeqeq": ["error", "always"],
     "for-direction": "error",
     "import/first": "error",
     "import/newline-after-import": "error",
@@ -94,14 +88,8 @@
     "no-caller": "error",
     "no-case-declarations": "error",
     "no-compare-neg-zero": "error",
-    "no-cond-assign": [
-      "error",
-      "except-parens"
-    ],
-    "no-console": [
-      "error",
-      {}
-    ],
+    "no-cond-assign": ["error", "except-parens"],
+    "no-console": ["error", {}],
     "no-constant-binary-expression": [
       "error",
       {
@@ -141,10 +129,7 @@
       }
     ],
     "no-ex-assign": "error",
-    "no-extra-boolean-cast": [
-      "error",
-      {}
-    ],
+    "no-extra-boolean-cast": ["error", {}],
     "no-fallthrough": [
       "error",
       {
@@ -158,10 +143,7 @@
         "exceptions": []
       }
     ],
-    "no-invalid-regexp": [
-      "error",
-      {}
-    ],
+    "no-invalid-regexp": ["error", {}],
     "no-irregular-whitespace": [
       "error",
       {
@@ -372,9 +354,7 @@
   },
   "overrides": [
     {
-      "files": [
-        "packages/-ember-data/**"
-      ],
+      "files": ["packages/-ember-data/**"],
       "rules": {
         "no-restricted-imports": [
           "error",
@@ -417,9 +397,7 @@
       }
     },
     {
-      "files": [
-        "packages/adapter/**"
-      ],
+      "files": ["packages/adapter/**"],
       "rules": {
         "no-restricted-imports": [
           "error",
@@ -468,9 +446,7 @@
       }
     },
     {
-      "files": [
-        "packages/debug/**"
-      ],
+      "files": ["packages/debug/**"],
       "rules": {
         "no-restricted-imports": [
           "error",
@@ -521,9 +497,7 @@
       }
     },
     {
-      "files": [
-        "packages/diagnostic/**"
-      ],
+      "files": ["packages/diagnostic/**"],
       "rules": {
         "no-restricted-imports": [
           "error",
@@ -575,11 +549,7 @@
       }
     },
     {
-      "files": [
-        "packages/eslint-plugin-warp-drive/**",
-        "packages/internal-exam/**",
-        "tests/blueprints/**"
-      ],
+      "files": ["packages/eslint-plugin-warp-drive/**", "packages/internal-exam/**", "tests/blueprints/**"],
       "rules": {
         "no-restricted-imports": "off"
       }
@@ -644,9 +614,7 @@
       }
     },
     {
-      "files": [
-        "packages/legacy-compat/**"
-      ],
+      "files": ["packages/legacy-compat/**"],
       "rules": {
         "no-restricted-imports": [
           "error",
@@ -698,9 +666,7 @@
       }
     },
     {
-      "files": [
-        "packages/serializer/**"
-      ],
+      "files": ["packages/serializer/**"],
       "rules": {
         "no-restricted-imports": [
           "error",
@@ -748,9 +714,7 @@
       }
     },
     {
-      "files": [
-        "packages/tracking/**"
-      ],
+      "files": ["packages/tracking/**"],
       "rules": {
         "no-restricted-imports": [
           "error",
@@ -815,15 +779,11 @@
         "warp-drive-packages/svelte/**"
       ],
       "rules": {
-        "no-restricted-imports": [
-          "error"
-        ]
+        "no-restricted-imports": ["error"]
       }
     },
     {
-      "files": [
-        "tests/dont-write-new-tests-here/**"
-      ],
+      "files": ["tests/dont-write-new-tests-here/**"],
       "rules": {
         "no-restricted-imports": [
           "error",
@@ -858,11 +818,7 @@
       }
     },
     {
-      "files": [
-        "tests/ember-data__adapter/**",
-        "tests/ember-data__graph/**",
-        "tests/utilities/**"
-      ],
+      "files": ["tests/ember-data__adapter/**", "tests/ember-data__graph/**", "tests/utilities/**"],
       "rules": {
         "no-restricted-imports": [
           "error",
@@ -915,9 +871,7 @@
       }
     },
     {
-      "files": [
-        "tests/example-app-ember/**"
-      ],
+      "files": ["tests/example-app-ember/**"],
       "rules": {
         "no-restricted-imports": [
           "error",
@@ -965,9 +919,7 @@
       }
     },
     {
-      "files": [
-        "warp-drive-packages/core/**"
-      ],
+      "files": ["warp-drive-packages/core/**"],
       "rules": {
         "no-restricted-imports": [
           "error",
@@ -1019,9 +971,7 @@
       }
     },
     {
-      "files": [
-        "warp-drive-packages/ember/**"
-      ],
+      "files": ["warp-drive-packages/ember/**"],
       "rules": {
         "no-restricted-imports": [
           "error",
@@ -1065,9 +1015,7 @@
       }
     },
     {
-      "files": [
-        "warp-drive-packages/legacy/**"
-      ],
+      "files": ["warp-drive-packages/legacy/**"],
       "rules": {
         "no-restricted-imports": [
           "error",
@@ -1118,9 +1066,7 @@
       }
     },
     {
-      "files": [
-        "packages/diagnostic/src/**"
-      ],
+      "files": ["packages/diagnostic/src/**"],
       "rules": {
         "no-console": "off"
       }
