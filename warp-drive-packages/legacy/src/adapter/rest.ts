@@ -1,4 +1,3 @@
-
 import { getOwner } from '@ember/application';
 import { warn } from '@ember/debug';
 import { computed } from '@ember/object';

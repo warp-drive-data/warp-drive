@@ -13,10 +13,7 @@ import type Model from '@warp-drive/legacy/model';
 class AbstractMap {
   declare private store: Store;
   declare private isImplicit: boolean;
-  constructor(
-    store: Store,
-    isImplicit: boolean
-  ) {
+  constructor(store: Store, isImplicit: boolean) {
     this.store = store;
     this.isImplicit = isImplicit;
   }
