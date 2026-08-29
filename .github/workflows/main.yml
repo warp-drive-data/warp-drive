@@ -74,7 +74,11 @@ jobs:
           ACTIONS_RUNNER_DEBUG: ${{ secrets.ACTIONS_RUNNER_DEBUG == 'true' }}
           DISABLE_TURBO_CACHE: ${{ secrets.ACTIONS_RUNNER_DEBUG == 'true' }}
           cache-key-suffix: lint
-      - name: Prettier
+      - name: Oxfmt
+        run: pnpm lint:oxfmt
+        env:
+          TURBO_FORCE: ${{ secrets.ACTIONS_RUNNER_DEBUG == 'true' }}
+      - name: Prettier (gjs/gts)
         run: pnpm lint:prettier
         env:
           TURBO_FORCE: ${{ secrets.ACTIONS_RUNNER_DEBUG == 'true' }}

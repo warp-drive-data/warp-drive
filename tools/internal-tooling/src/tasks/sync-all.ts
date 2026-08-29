@@ -3,8 +3,8 @@ import { styleText } from 'node:util';
 
 const log = debug('wd:sync-all');
 
-import { main as syncLogos } from './sync-logos';
 import { main as syncLicense } from './sync-license';
+import { main as syncLogos } from './sync-logos';
 import { main as syncReferences } from './sync-references';
 import { main as syncScripts } from './sync-scripts';
 

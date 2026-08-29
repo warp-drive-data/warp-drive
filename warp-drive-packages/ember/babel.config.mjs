@@ -1,5 +1,5 @@
-import { macros } from '@warp-drive/core/build-config/babel-macros';
 import { babelPlugin } from '@warp-drive/core/build-config';
+import { macros } from '@warp-drive/core/build-config/babel-macros';
 
 const IS_UNPKG_BUILD = Boolean(process.env.IS_UNPKG_BUILD);
 let Macros = { js: [], gts: [] };

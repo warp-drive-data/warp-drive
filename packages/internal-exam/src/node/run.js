@@ -1,5 +1,4 @@
 import path from 'node:path';
-
 import Testem from 'testem';
 
 import { addToQuery } from './query-helper.js';

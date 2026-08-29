@@ -1,7 +1,8 @@
 import { styleText } from 'node:util';
+
+import { exec } from '../../../utils/cmd.ts';
 import { APPLIED_STRATEGY, Package } from '../../../utils/package.ts';
 import { question } from './confirm-strategy.ts';
-import { exec } from '../../../utils/cmd.ts';
 // import { updateDistTag } from '../../promote';
 
 export async function publishPackages(

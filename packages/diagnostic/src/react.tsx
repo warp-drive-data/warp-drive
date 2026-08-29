@@ -1,12 +1,14 @@
+import { setup } from "qunit-dom";
+import { StrictMode, type ReactNode } from "react";
+import { flushSync } from "react-dom";
+import { createRoot, type Root } from "react-dom/client";
+
+import { settled } from "@warp-drive/react/install";
+
 import { module as _module, skip as _skip, test as _test, todo as _todo } from "./-define";
 import type { Hooks, ModuleCallback, TestCallback, TestContext } from "./-types";
-import { createRoot, type Root } from "react-dom/client";
-import { StrictMode, type ReactNode } from "react";
-import { setup } from "qunit-dom";
 import { buildHelpers, TestHelpers } from "./helpers/install";
-import { flushSync } from "react-dom";
 import { SpecTestContext } from "./spec";
-import { settled } from "@warp-drive/react/install";
 
 const act = async (fn: () => void | Promise<void>) => {
   await flushSync(fn);

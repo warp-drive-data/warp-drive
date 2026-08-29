@@ -515,7 +515,10 @@ export function registerDerivations(schema: SchemaServiceInterface): void {
  * concrete implementation of an abstract polymorphic type.
  */
 type AbstractTypeImplementerField =
-  LegacyBelongsToField | LegacyHasManyField | LinksModeBelongsToField | LinksModeHasManyField;
+  | LegacyBelongsToField
+  | LegacyHasManyField
+  | LinksModeBelongsToField
+  | LinksModeHasManyField;
 
 /**
  * A relationship field contributed to an abstract type's schema, along with

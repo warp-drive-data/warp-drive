@@ -1,7 +1,7 @@
+import fs from 'fs';
+import { glob } from 'node:fs/promises';
 import { styleText } from 'node:util';
 import path from 'path';
-import { glob } from 'node:fs/promises';
-import fs from 'fs';
 
 /** @type {import('bun-types')} */
 

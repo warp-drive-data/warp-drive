@@ -1,6 +1,6 @@
 import { styleText } from 'node:util';
-import path from 'path';
 import os from 'os';
+import path from 'path';
 
 function write($text: string) {
   console.log(styleText('gray', $text));

@@ -1,10 +1,10 @@
+import { buildMacros } from '@embroider/macros/babel';
 import { createRequire } from 'node:module';
-import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 import { setConfig } from '@warp-drive/core/build-config';
 import { macros as warpDriveMacros } from '@warp-drive/core/build-config/babel-macros';
-import { buildMacros } from '@embroider/macros/babel';
 
 const require = createRequire(import.meta.url);
 

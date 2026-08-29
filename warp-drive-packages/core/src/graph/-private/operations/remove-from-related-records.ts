@@ -1,11 +1,11 @@
 import { assert } from '@warp-drive/core/build-config/macros';
 
+import { _remove } from '../-diff.ts';
+import { isBelongsTo, isHasMany, notifyChange } from '../-utils.ts';
 import type { RemoveFromResourceRelationshipMutation } from '../../../types/cache/mutations.ts';
 import type { RemoveFromResourceRelationshipOperation } from '../../../types/cache/operations.ts';
 import type { ReplaceRelatedRecordOperation } from '../../../types/graph.ts';
 import type { ResourceKey } from '../../../types/identifier.ts';
-import { _remove } from '../-diff.ts';
-import { isBelongsTo, isHasMany, notifyChange } from '../-utils.ts';
 import type { CollectionEdge } from '../edges/collection.ts';
 import type { Graph } from '../graph.ts';
 import replaceRelatedRecord from './replace-related-record.ts';

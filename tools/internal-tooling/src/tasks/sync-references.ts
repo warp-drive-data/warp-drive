@@ -6,8 +6,9 @@
  * imports relies entirely on each package's `package.json#exports`.
  */
 import debug from 'debug';
-import path from 'path';
 import { styleText } from 'node:util';
+import path from 'path';
+
 import {
   runPrettier,
   walkPackages,

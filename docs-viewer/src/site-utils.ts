@@ -1,6 +1,6 @@
-import path from 'path';
-import { existsSync, globSync, mkdirSync, readFileSync, renameSync, rmSync, writeFileSync } from 'node:fs';
 import fm from 'front-matter';
+import { existsSync, globSync, mkdirSync, readFileSync, renameSync, rmSync, writeFileSync } from 'node:fs';
+import path from 'path';
 
 const DefaultOpenGroups: string[] = [];
 const AlwaysOpenGroups: string[] = [];

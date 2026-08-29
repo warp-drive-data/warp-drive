@@ -1,5 +1,6 @@
-import * as node from './node.js';
 import mochaPlugin from 'eslint-plugin-mocha';
+
+import * as node from './node.js';
 
 export function cjs(config = {}) {
   config.files = config.files || ['tests/**/*.{js,ts}'];

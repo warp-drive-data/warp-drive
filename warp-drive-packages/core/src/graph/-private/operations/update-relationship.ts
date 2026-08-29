@@ -1,5 +1,6 @@
 import { assert } from '@warp-drive/core/build-config/macros';
 
+import { isBelongsTo, isHasMany, notifyChange } from '../-utils.ts';
 import type { Store } from '../../../index.ts';
 import type { ResourceKey } from '../../../types.ts';
 import type { UpdateResourceRelationshipOperation } from '../../../types/cache/operations.ts';
@@ -8,7 +9,6 @@ import type {
   ExistingResourceIdentifierObject,
   NewResourceIdentifierObject,
 } from '../../../types/spec/json-api-raw.ts';
-import { isBelongsTo, isHasMany, notifyChange } from '../-utils.ts';
 import type { Graph } from '../graph.ts';
 import _normalizeLink from '../normalize-link.ts';
 

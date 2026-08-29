@@ -1,5 +1,5 @@
-import { keepAssets } from '@warp-drive/internal-config/tsdown/keep-assets.js';
 import { createConfig } from '@warp-drive/internal-config/tsdown/config.js';
+import { keepAssets } from '@warp-drive/internal-config/tsdown/keep-assets.js';
 
 import babelConfig from './babel.config.mjs';
 

@@ -1,7 +1,9 @@
+// oxfmt-ignore
 import '@warp-drive/ember/install';
 
 import EmberRouter from '@ember/routing/router';
 import { setApplication } from '@ember/test-helpers';
+
 import EmberApp from 'ember-strict-application-resolver';
 
 import configureAsserts from '@ember-data/unpublished-test-infra/test-support/asserts/index';

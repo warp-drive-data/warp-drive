@@ -1,4 +1,5 @@
 import { styleText } from 'node:util';
+
 import { SchemaModule } from '../utils/process-file';
 import { write } from '../utils/utils';
 import { Schema } from './json-schema-spec';

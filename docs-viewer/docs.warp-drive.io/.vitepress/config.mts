@@ -1,14 +1,15 @@
+import { footnote } from '@mdit/plugin-footnote';
 import { withPwa } from '@vite-pwa/vitepress';
 import { defineConfig, type Plugin } from 'vitepress';
-import { getGuidesStructure, getSkillsStructure, postProcessApiDocs } from '../../src/site-utils.ts';
 import { tabsMarkdownPlugin } from 'vitepress-plugin-tabs';
-import { footnote } from '@mdit/plugin-footnote';
+
+import { getGuidesStructure, getSkillsStructure, postProcessApiDocs } from '../../src/site-utils.ts';
 
 const TypeDocSidebar = await postProcessApiDocs();
 
-import llmstxt from 'vitepress-plugin-llms';
 import { ViteImageOptimizer } from 'vite-plugin-image-optimizer';
 import { groupIconMdPlugin, groupIconVitePlugin } from 'vitepress-plugin-group-icons';
+import llmstxt from 'vitepress-plugin-llms';
 
 const GuidesStructure = await getGuidesStructure();
 const SkillsStructure = await getSkillsStructure();

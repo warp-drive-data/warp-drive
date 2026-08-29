@@ -1,3 +1,4 @@
+// oxfmt-ignore
 import '@warp-drive/ember/install';
 
 import { configure } from '@warp-drive/diagnostic/ember';

@@ -1,9 +1,9 @@
 import { DEBUG } from '@warp-drive/core/build-config/env';
 import { assert } from '@warp-drive/core/build-config/macros';
 
+import type { FindRecordOptions } from '../../-types/q/store.ts';
 import { getOrSetGlobal } from '../../../types/-private.ts';
 import type { ResourceKey } from '../../../types/identifier.ts';
-import type { FindRecordOptions } from '../../-types/q/store.ts';
 import type { Store } from '../store-service.ts';
 
 const Touching: '___(unique) Symbol(Touching)' = getOrSetGlobal('Touching', Symbol('touching'));

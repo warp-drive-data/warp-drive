@@ -1,11 +1,12 @@
+import { spawnSync } from 'child_process';
+import { existsSync, rmSync } from 'fs';
 /*
   Copies content directories into docs.warp-drive.io so the site can render them:
   - the repo-root guides/ folder -> docs.warp-drive.io/guides
   - the @warp-drive/memory-alpha package's skills/ -> docs.warp-drive.io/skills
 */
 import { join } from 'path';
-import { existsSync, rmSync } from 'fs';
-import { spawnSync } from 'child_process';
+
 import { finalizeSyncedContent } from './site-utils';
 
 function sync(sourcePath: string, destPath: string) {

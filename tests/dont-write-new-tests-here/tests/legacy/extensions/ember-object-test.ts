@@ -3,9 +3,9 @@ import { module, test } from 'qunit';
 import JSONAPICache from '@ember-data/json-api';
 import { DEBUG } from '@warp-drive/build-config/env';
 import { CacheHandler, Fetch, RequestManager, Store } from '@warp-drive/core';
+import type { Type } from '@warp-drive/core-types/symbols';
 import { instantiateRecord, SchemaService, teardownRecord } from '@warp-drive/core/reactive';
 import type { CacheCapabilitiesManager, ResourceKey } from '@warp-drive/core/types';
-import type { Type } from '@warp-drive/core-types/symbols';
 import { EmberObjectExtension, type WithEmberObject } from '@warp-drive/legacy/compat/extensions';
 import { registerDerivations, withDefaults } from '@warp-drive/legacy/model/migration-support';
 

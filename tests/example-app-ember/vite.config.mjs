@@ -1,5 +1,6 @@
-import { defineConfig } from 'vite';
 import { extensions, ember, hbs } from '@embroider/vite';
+import { defineConfig } from 'vite';
+
 import { maybeBabel } from '@warp-drive/internal-config/vite/babel.js';
 
 export default defineConfig({

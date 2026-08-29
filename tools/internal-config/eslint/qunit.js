@@ -1,6 +1,7 @@
+import lintQUnit from 'eslint-plugin-qunit';
+
 import * as isolation from './isolation.js';
 import * as typescript from './typescript.js';
-import lintQUnit from 'eslint-plugin-qunit';
 
 const QUNIT_IMPORTS = ['@ember/test-helpers', '@ember/test-waiters', 'ember-qunit', 'qunit'];
 

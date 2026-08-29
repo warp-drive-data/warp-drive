@@ -636,7 +636,10 @@ export interface PrivateRequestState {
  *
  */
 export type RequestState<RT = unknown, E extends StructuredErrorDocument = StructuredErrorDocument> =
-  PendingRequest | ResolvedRequest<RT> | RejectedRequest<RT, E> | CancelledRequest<RT, E>;
+  | PendingRequest
+  | ResolvedRequest<RT>
+  | RejectedRequest<RT, E>
+  | CancelledRequest<RT, E>;
 
 const RequestStateProto = {};
 

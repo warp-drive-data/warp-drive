@@ -1,15 +1,15 @@
-import { parseRawFlags } from '../../utils/parse-args.ts';
 import { printHelpDocs } from '../../help/docs.ts';
+import { SEMVER_VERSION } from '../../utils/channel.ts';
+import { release_notes_flags_config } from '../../utils/flags-config.ts';
 import { GIT_TAG, getAllPackagesForGitTag, getGitState } from '../../utils/git.ts';
 import { gatherPackages, loadStrategy } from '../../utils/package.ts';
+import { parseRawFlags } from '../../utils/parse-args.ts';
+import { confirmStrategy } from '../publish/steps/confirm-strategy.ts';
 import { applyStrategy } from '../publish/steps/generate-strategy.ts';
 import { printStrategy } from '../publish/steps/print-strategy.ts';
-import { confirmStrategy } from '../publish/steps/confirm-strategy.ts';
-import { release_notes_flags_config } from '../../utils/flags-config.ts';
-import { SEMVER_VERSION } from '../../utils/channel.ts';
-import { updateChangelogs } from '../release-notes/steps/update-changelogs.ts';
-import { getChanges } from '../release-notes/steps/get-changes.ts';
 import { confirmCommitChangelogs } from '../release-notes/steps/confirm-changelogs.ts';
+import { getChanges } from '../release-notes/steps/get-changes.ts';
+import { updateChangelogs } from '../release-notes/steps/update-changelogs.ts';
 
 export async function backfillReleaseNotes(args: string[]) {
   // get user supplied config

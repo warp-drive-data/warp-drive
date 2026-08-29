@@ -1,17 +1,18 @@
+// oxfmt-ignore
 import '@warp-drive/ember/install';
 
+import EmberRouter from '@ember/routing/router';
+import { setApplication } from '@ember/test-helpers';
+
+import EmberApp from 'ember-strict-application-resolver';
+
+import configureAsserts from '@ember-data/unpublished-test-infra/test-support/asserts/index';
 import { SHOULD_RECORD } from '@warp-drive/core/build-config/env';
 import { setupGlobalHooks } from '@warp-drive/diagnostic';
 import { configure } from '@warp-drive/diagnostic/ember';
 import { start } from '@warp-drive/diagnostic/runners/dom';
 import { setConfig, setIsRecording, setTestId } from '@warp-drive/holodeck';
 import { setBuildURLConfig } from '@warp-drive/utilities';
-
-import EmberRouter from '@ember/routing/router';
-import { setApplication } from '@ember/test-helpers';
-import EmberApp from 'ember-strict-application-resolver';
-
-import configureAsserts from '@ember-data/unpublished-test-infra/test-support/asserts/index';
 
 import.meta.glob('./tests/**/*-test.{js,ts,gjs,gts}', { eager: true });
 

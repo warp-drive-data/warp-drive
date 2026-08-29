@@ -1,6 +1,7 @@
+import { Glob } from 'bun';
 import { styleText } from 'node:util';
 import path from 'path';
-import { Glob } from 'bun';
+
 import { SchemaModule, parseSchemaFile } from '../utils/process-file';
 import { write } from '../utils/utils';
 import { SchemaConfig } from './get-config';

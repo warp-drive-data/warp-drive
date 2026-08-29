@@ -1,3 +1,5 @@
+import type { BunFile } from 'bun';
+import debug from 'debug';
 /**
  * Performs various README-related maintenance tasks.
  *
@@ -8,12 +10,11 @@
  *
  */
 import { styleText } from 'node:util';
-import { getMonorepoRoot, walkPackages } from './-utils';
-import debug from 'debug';
 import path from 'path';
+
 import { Compatibility } from './-data/compatibility';
-import type { BunFile } from 'bun';
 import { Versions, type Version } from './-data/versions';
+import { getMonorepoRoot, walkPackages } from './-utils';
 
 const log = debug('wd:sync-readme-infos');
 const COMPATIBILITY_START_PLACEHOLDER = '<!-- START-COMPATIBILITY-TABLE-PLACEHOLDER -->';

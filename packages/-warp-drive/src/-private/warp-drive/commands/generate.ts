@@ -5,11 +5,11 @@ import { styleText } from 'node:util';
 import { generateAdapterSource } from '../generators/adapter.ts';
 import { generateModelSource } from '../generators/model.ts';
 import { DESTINATIONS, GENERATOR_TYPES } from '../generators/paths.ts';
+import type { GeneratorType } from '../generators/paths.ts';
 import { generateSerializerSource } from '../generators/serializer.ts';
 import { isAddonProject } from '../generators/shared.ts';
 import { generateUnitTestSource } from '../generators/tests.ts';
 import { generateTransformSource } from '../generators/transform.ts';
-import type { GeneratorType } from '../generators/paths.ts';
 
 const TEST_KIND_FOR_TYPE = {
   'model-test': 'Model',

@@ -1,7 +1,8 @@
-import { setConfig } from '@warp-drive/core/build-config';
 import { buildMacros } from '@embroider/macros/babel';
-import { macros } from '@warp-drive/core/build-config/babel-macros';
 import { readFileSync } from 'node:fs';
+
+import { setConfig } from '@warp-drive/core/build-config';
+import { macros } from '@warp-drive/core/build-config/babel-macros';
 
 const pkg = JSON.parse(readFileSync(new URL('./package.json', import.meta.url), 'utf-8'));
 

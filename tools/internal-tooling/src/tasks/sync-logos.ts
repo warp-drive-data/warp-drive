@@ -1,3 +1,6 @@
+import debug from 'debug';
+import fs from 'fs';
+import { styleText } from 'node:util';
 /**
  * Sync logos from the monorepo root to each public package
  * for use in README files etc. in published artifacts
@@ -5,9 +8,7 @@
  * As well as into docs for use by the docs.
  */
 import path from 'path';
-import fs from 'fs';
-import debug from 'debug';
-import { styleText } from 'node:util';
+
 import { getMonorepoRoot, walkPackages, type ProjectPackage } from './-utils';
 
 const log = debug('wd:sync-logos');

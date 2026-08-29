@@ -8,8 +8,8 @@ import type { LegacyRelationshipField as RelationshipSchema } from '@warp-drive/
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { MinimumSerializerInterface } from './minimum-serializer-interface.ts';
-import type { Snapshot } from './snapshot.ts';
 import type { SnapshotRecordArray } from './snapshot-record-array.ts';
+import type { Snapshot } from './snapshot.ts';
 
 type Group = Snapshot[];
 // TODO this should probably just alias unknown

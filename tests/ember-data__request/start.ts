@@ -1,3 +1,4 @@
+// oxfmt-ignore
 import '@warp-drive/ember/install';
 
 import { setBuildURLConfig } from '@ember-data/request-utils';

@@ -7,8 +7,8 @@ import Model, { attr } from '@ember-data/model';
 import { createDeferred } from '@ember-data/request';
 import type Store from '@ember-data/store';
 import testInDebug from '@ember-data/unpublished-test-infra/test-support/test-in-debug';
-import { Context } from '@warp-drive/core/reactive/-private';
 import { Type } from '@warp-drive/core-types/symbols';
+import { Context } from '@warp-drive/core/reactive/-private';
 
 class Tag extends Model {
   @attr declare name: string;

@@ -1,3 +1,4 @@
+// oxfmt-ignore
 import '@warp-drive/vue/install';
 
 import { SHOULD_RECORD } from '@warp-drive/core/build-config/env';

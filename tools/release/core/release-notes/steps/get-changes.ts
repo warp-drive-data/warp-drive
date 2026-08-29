@@ -1,7 +1,8 @@
 import { styleText } from 'node:util';
+import path from 'path';
+
 import { exec } from '../../../utils/cmd.ts';
 import { Package, RawStrategyConfig } from '../../../utils/package.ts';
-import path from 'path';
 
 export const Committers = Symbol('Committers');
 export type Entry = { packages: string[]; description: string; committer: string };

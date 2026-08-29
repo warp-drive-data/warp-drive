@@ -40,8 +40,8 @@
   use all 10 traits.
 */
 
-import { styleText } from 'node:util';
 import debug from 'debug';
+import { styleText } from 'node:util';
 
 const log = debug('create-complex-payload');
 const logRelationship = debug('create-complex-payload:relationships');

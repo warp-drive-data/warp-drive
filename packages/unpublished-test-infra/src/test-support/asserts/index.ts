@@ -1,8 +1,8 @@
-import type { ResourceKey } from '@warp-drive/core/types';
-import type { Diagnostic, Hooks } from '@warp-drive/diagnostic/-types';
-
 import type { CacheOperation, NotificationType } from '@warp-drive/core';
+import type { ResourceKey } from '@warp-drive/core/types';
 import type { RequestKey } from '@warp-drive/core/types/identifier';
+import type { Diagnostic, Hooks } from '@warp-drive/diagnostic/-types';
+import type { RenderingTestContext } from '@warp-drive/diagnostic/ember';
 
 import { configureAssertAllDeprecations } from './assert-all-deprecations';
 import { configureAssertionHandler } from './assert-assertion';
@@ -10,7 +10,6 @@ import { configureBetterAsserts } from './assert-better';
 import { configureDeprecationHandler, DeprecationConfig, FoundDeprecation } from './assert-deprecation';
 import { configureNotificationsAssert } from './assert-notification';
 import { configureWarningHandler, WarningConfig } from './assert-warning';
-import type { RenderingTestContext } from '@warp-drive/diagnostic/ember';
 
 declare module '@warp-drive/diagnostic/-types' {
   export interface Diagnostic {

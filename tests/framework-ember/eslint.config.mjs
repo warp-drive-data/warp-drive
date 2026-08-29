@@ -1,9 +1,9 @@
+import * as diagnostic from '@warp-drive/internal-config/eslint/diagnostic.js';
+import * as gts from '@warp-drive/internal-config/eslint/gts.js';
 // @ts-check
 import { globalIgnores } from '@warp-drive/internal-config/eslint/ignore.js';
 import * as node from '@warp-drive/internal-config/eslint/node.js';
 import * as typescript from '@warp-drive/internal-config/eslint/typescript.js';
-import * as diagnostic from '@warp-drive/internal-config/eslint/diagnostic.js';
-import * as gts from '@warp-drive/internal-config/eslint/gts.js';
 
 const externals = ['@ember/component/template-only', '@glimmer/component', '@ember/modifier', '@ember/helper'];
 

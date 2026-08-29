@@ -1,5 +1,6 @@
 import { styleText } from 'node:util';
 import path from 'path';
+
 import { write } from '../utils/utils';
 
 export type SchemaConfig = Awaited<ReturnType<typeof getSchemaConfig>>;

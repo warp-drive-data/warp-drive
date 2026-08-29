@@ -3,15 +3,15 @@ import { deprecate } from '@ember/debug';
 import { ENABLE_LEGACY_REQUEST_METHODS } from '@warp-drive/build-config/deprecations';
 import { assert } from '@warp-drive/build-config/macros';
 
-import type { ResourceKey } from '../../types/identifier';
-import type { OpaqueRecordInstance, TypedRecordInstance, TypeFromInstance } from '../../types/record';
-import { SkipCache } from '../../types/request';
-import type { ResourceIdentifierObject } from '../../types/spec/json-api-raw';
 import type { LegacyLiveArray, LegacyQueryArray } from '../-private';
 import { constructResource, ensureStringId, recordIdentifierFor, storeFor } from '../-private';
 import type { Caches } from '../-private/caches/instance-cache';
 import { isMaybeIdentifier, Store } from '../-private/store-service';
 import { normalizeModelName } from '../-private/utils/normalize-model-name';
+import type { ResourceKey } from '../../types/identifier';
+import type { OpaqueRecordInstance, TypedRecordInstance, TypeFromInstance } from '../../types/record';
+import { SkipCache } from '../../types/request';
+import type { ResourceIdentifierObject } from '../../types/spec/json-api-raw';
 import type { FindAllOptions, FindRecordOptions, LegacyResourceQuery, ModelSchema, QueryOptions } from './-private';
 import { getShimClass, preloadData, RecordReference, resourceIsFullyDeleted } from './-private';
 

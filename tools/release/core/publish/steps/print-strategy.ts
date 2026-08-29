@@ -1,6 +1,7 @@
-import { TYPE_STRATEGY } from '../../../utils/channel.ts';
-import { getCharLength, getPadding } from '../../../help/-utils.ts';
 import { styleText } from 'node:util';
+
+import { getCharLength, getPadding } from '../../../help/-utils.ts';
+import { TYPE_STRATEGY } from '../../../utils/channel.ts';
 import { AppliedStrategy } from './generate-strategy.ts';
 
 export const COLORS_BY_STRATEGY: Record<TYPE_STRATEGY, 'red' | 'yellow' | 'green' | 'cyan'> = {

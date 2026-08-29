@@ -1,7 +1,8 @@
+import { TestContext } from '@ember/test-helpers';
+
 import { skip, test } from 'qunit';
 
 import { createDeprecatedTestFn } from './test';
-import { TestContext } from '@ember/test-helpers';
 
 export const deprecatedTest: (
   testName: string,

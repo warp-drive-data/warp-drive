@@ -1,5 +1,7 @@
 import { assert } from '@warp-drive/build-config/macros';
 
+import { ensureStringId, type InstanceCache, recordIdentifierFor } from '../-private';
+import type { NotificationType } from '../-private/managers/notification-manager.ts';
 import { defineSignal } from '../../signals/-private.ts';
 import { getOrSetGlobal } from '../../types/-private.ts';
 import type { Cache } from '../../types/cache.ts';
@@ -17,8 +19,6 @@ import type {
   InnerRelationshipDocument,
 } from '../../types/spec/json-api-raw';
 import type { SingleResourceDocument } from '../../types/spec/json-api-raw.ts';
-import { ensureStringId, type InstanceCache, recordIdentifierFor } from '../-private';
-import type { NotificationType } from '../-private/managers/notification-manager.ts';
 import type { Store } from './store.ts';
 
 /*

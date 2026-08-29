@@ -101,14 +101,15 @@ export function _reload<T extends MinimalLegacyRecord>(this: T, options: Record<
   assert(`You cannot reload a record without an ID`, identifier.id);
 
   this.isReloading = true;
-  const promise = this[RecordStore].request({
-    op: 'findRecord',
-    data: {
-      options,
-      record: identifier,
-    },
-    cacheOptions: { [Symbol.for('wd:skip-cache')]: true },
-  })
+  const promise = this[RecordStore]
+    .request({
+      op: 'findRecord',
+      data: {
+        options,
+        record: identifier,
+      },
+      cacheOptions: { [Symbol.for('wd:skip-cache')]: true },
+    })
     .then(() => this)
     .finally(() => {
       this.isReloading = false;

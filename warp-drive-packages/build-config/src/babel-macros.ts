@@ -1,3 +1,4 @@
+import * as CURRENT_FEATURES from './canary-features.ts';
 /**
  * Babel plugins that convert constants and expressions into [macroConditions](https://www.npmjs.com/package/@embroider/macros#the-macros)
  * so that they can be stripped from the code during the build process.
@@ -20,7 +21,6 @@
  * @module
  */
 import * as LOGGING from './debugging.ts';
-import * as CURRENT_FEATURES from './canary-features.ts';
 import * as CURRENT_DEPRECATIONS from './deprecations.ts';
 
 type FEATURE = keyof typeof CURRENT_FEATURES;

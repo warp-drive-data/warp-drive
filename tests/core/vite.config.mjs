@@ -1,5 +1,6 @@
-import { defineConfig } from 'vite';
 import { extensions, ember } from '@embroider/vite';
+import { defineConfig } from 'vite';
+
 import { maybeBabel } from '@warp-drive/internal-config/vite/babel.js';
 import { schemaDSL } from '@warp-drive/schema-dsl/vite';
 

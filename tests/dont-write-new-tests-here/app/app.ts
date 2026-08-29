@@ -1,3 +1,4 @@
+// oxfmt-ignore
 import '@warp-drive/ember/install';
 
 // classic ember-cli addons contribute their own app/initializers/*.js files,

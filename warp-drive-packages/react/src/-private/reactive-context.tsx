@@ -1,5 +1,6 @@
-import { Signal } from "signal-polyfill";
 import { createContext, type JSX, type ReactNode, useSyncExternalStore, type Context, useMemo } from "react";
+import { Signal } from "signal-polyfill";
+
 import { LOG_REACT_SIGNAL_INTEGRATION } from "@warp-drive/core/build-config/debugging";
 
 let nextFlush: Promise<void> | null = null;

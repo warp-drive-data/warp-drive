@@ -1,3 +1,4 @@
+// oxfmt-ignore
 import '@warp-drive/svelte/install';
 
 import { SHOULD_RECORD } from '@warp-drive/core/build-config/env';

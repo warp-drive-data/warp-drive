@@ -1,7 +1,8 @@
-import { useMemo, useRef } from "react";
-import { useReact } from "@warp-drive/diagnostic/react";
 import { GetRequestStateRenderingSpec } from "@warp-drive-internal/specs/get-request-state-rendering.spec";
+import { useMemo, useRef } from "react";
+
 import { DEBUG } from "@warp-drive/core/build-config/env";
+import { useReact } from "@warp-drive/diagnostic/react";
 import { ReactiveContext } from "@warp-drive/react";
 
 function useBetterMemo<T>(getValue: () => T, deps: React.DependencyList) {

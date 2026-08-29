@@ -6,6 +6,14 @@ import { LOG_IDENTIFIERS } from '@warp-drive/core/build-config/debugging';
 import { DEBUG } from '@warp-drive/core/build-config/env';
 import { assert } from '@warp-drive/core/build-config/macros';
 
+import type {
+  ForgetMethod,
+  GenerationMethod,
+  KeyInfo,
+  KeyInfoMethod,
+  ResetMethod,
+  UpdateMethod,
+} from '../../-types/q/identifier.ts';
 import { getOrSetGlobal, peekTransient, setTransient } from '../../../types/-private.ts';
 import {
   CACHE_OWNER,
@@ -23,14 +31,6 @@ import type {
   ExistingResourceObject,
   ResourceIdentifierObject,
 } from '../../../types/spec/json-api-raw.ts';
-import type {
-  ForgetMethod,
-  GenerationMethod,
-  KeyInfo,
-  KeyInfoMethod,
-  ResetMethod,
-  UpdateMethod,
-} from '../../-types/q/identifier.ts';
 import { hasId, hasLid, hasType } from '../caches/resource-utils.ts';
 import { coerceId } from '../utils/coerce-id.ts';
 import { normalizeModelName } from '../utils/normalize-model-name.ts';

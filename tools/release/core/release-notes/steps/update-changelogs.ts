@@ -1,8 +1,9 @@
+import { BunFile } from 'bun';
+import { styleText } from 'node:util';
+import path from 'path';
+
 import { Package, RawStrategyConfig } from '../../../utils/package.ts';
 import { Committers, Entry, LernaChangeset } from './get-changes.ts';
-import path from 'path';
-import { styleText } from 'node:util';
-import { BunFile } from 'bun';
 
 function findInsertionPoint(lines: string[], version: string) {
   for (let i = 0; i < lines.length; i++) {

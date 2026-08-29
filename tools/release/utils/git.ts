@@ -1,4 +1,6 @@
 import { styleText } from 'node:util';
+import path from 'path';
+
 import {
   branchForChannelAndVersion,
   CHANNEL,
@@ -8,10 +10,9 @@ import {
   VALID_BRANCHES,
   VALID_TRAINS,
 } from './channel.ts';
-import { getFile } from './json-file.ts';
 import { exec } from './cmd.ts';
+import { getFile } from './json-file.ts';
 import { gatherPackages, loadStrategy, Package } from './package.ts';
-import path from 'path';
 
 export type LTS_TAG = `lts-${number}-${number}`;
 export type RELEASE_TAG = `release-${number}-${number}`;

@@ -1,10 +1,10 @@
-import type { CollectionRelationship } from '../../../types/cache/relationship.ts';
-import type { ResourceKey } from '../../../types/identifier.ts';
-import type { Links, Meta, PaginationLinks } from '../../../types/spec/json-api-raw.ts';
 import { computeLocalState } from '../-diff.ts';
 import type { UpgradedMeta } from '../-edge-definition.ts';
 import type { RelationshipState } from '../-state.ts';
 import { createState } from '../-state.ts';
+import type { CollectionRelationship } from '../../../types/cache/relationship.ts';
+import type { ResourceKey } from '../../../types/identifier.ts';
+import type { Links, Meta, PaginationLinks } from '../../../types/spec/json-api-raw.ts';
 
 /**
  * Stores the graph's internal state for one side of a collection (`hasMany`) relationship.

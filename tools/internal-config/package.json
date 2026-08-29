@@ -24,7 +24,6 @@
     "eslint-plugin-mocha": "^12.0.2",
     "eslint-plugin-n": "^17.24.0",
     "eslint-plugin-qunit": "^8.2.6",
-    "eslint-plugin-simple-import-sort": "^12.1.1",
     "tsdown": "^0.22.14",
     "typescript": "^5.9.3"
   }

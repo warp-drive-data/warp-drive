@@ -1,3 +1,4 @@
+// oxfmt-ignore
 import '@warp-drive/ember/install';
 
 import { setupGlobalHooks } from '@warp-drive/diagnostic';

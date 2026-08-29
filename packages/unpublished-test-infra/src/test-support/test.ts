@@ -1,8 +1,9 @@
 import { type TestContext } from '@ember/test-helpers';
 
 import { DEBUG } from '@warp-drive/core/build-config/env';
-import VERSION, { COMPAT_VERSION } from './version';
+
 import { DeprecationConfig } from './asserts/assert-deprecation';
+import VERSION, { COMPAT_VERSION } from './version';
 
 // small comparison function for major and minor semver values
 function gte(EDVersion: string, DeprecationVersion: string): boolean {

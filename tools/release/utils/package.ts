@@ -1,7 +1,8 @@
-import { JSONFile, getFile } from './json-file.ts';
-import { NPM_DIST_TAG, SEMVER_VERSION, STRATEGY_TYPE, TYPE_STRATEGY } from './channel.ts';
 import { Glob } from 'bun';
 import path from 'path';
+
+import { NPM_DIST_TAG, SEMVER_VERSION, STRATEGY_TYPE, TYPE_STRATEGY } from './channel.ts';
+import { JSONFile, getFile } from './json-file.ts';
 export class Package {
   declare projectPath: string;
   declare filePath: string;

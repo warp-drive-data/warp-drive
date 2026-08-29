@@ -1,11 +1,12 @@
+import debug from 'debug';
+import fs from 'fs';
+import { styleText } from 'node:util';
 /**
  * Sync LICENSE file from the monorepo root to each public package
  * so that it can be included in the published artifacts.
  */
 import path from 'path';
-import fs from 'fs';
-import debug from 'debug';
-import { styleText } from 'node:util';
+
 import { getMonorepoRoot, walkPackages, type ProjectPackage } from './-utils';
 
 const log = debug('wd:sync-license');

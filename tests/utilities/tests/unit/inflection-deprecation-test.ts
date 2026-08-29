@@ -1,3 +1,4 @@
+// oxfmt-ignore
 import '@ember-data/request-utils/deprecation-support';
 
 import { default as Inflector, singularize as inflectorSingularize } from 'ember-inflector';

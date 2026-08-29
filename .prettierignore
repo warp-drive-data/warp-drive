@@ -1,32 +1,15 @@
 # In addition to gitignore...
+# Scoped to *.gjs/*.gts only (see .prettierrc.js) — these patterns just guard
+# against picking up generated or vendored files if any ever appear there.
 
 # generated files
-pnpm-lock.yaml
 dist
 dist-test
 unstable-preview-types
 preview-types
 warp-drive-packages/core/types
 
-# we disagree with prettier and we are even more opinionated than they are
-*.hbs
-*.html
-*.md
-
-# these files would be YUGE if we prettified them
-MOCK_DATA.json
-.mock-cache/
-
 # unconventional
 blueprints/
 vendor/
 !tests/blueprints/
-
-# prettier is reporting syntax errors in these
-*.yml
-
-# we don't really care about these
-public/
-tmp/
-docs-viewer/docs.warp-drive.io/api/
-docs-viewer/docs.warp-drive.io/guides/

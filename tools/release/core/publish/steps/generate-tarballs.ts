@@ -1,11 +1,12 @@
+import { Glob } from 'bun';
+import fs from 'fs';
+import { readFileSync } from 'node:fs';
 import { styleText } from 'node:util';
+import path from 'path';
+
 import { exec } from '../../../utils/cmd.ts';
 import { APPLIED_STRATEGY, Package } from '../../../utils/package.ts';
-import path from 'path';
-import fs from 'fs';
-import { Glob } from 'bun';
 import { amendFilesForUnpkg } from './amend-for-unpkg.ts';
-import { readFileSync } from 'node:fs';
 
 export const PROJECT_ROOT = process.cwd();
 export const TARBALL_DIR = path.join(PROJECT_ROOT, 'tmp/tarballs');

@@ -62,8 +62,8 @@
 
 import { readFileSync, writeFileSync, readdirSync, statSync } from 'node:fs';
 import { resolve, dirname, relative, extname, basename, sep, join } from 'node:path';
-import { fileURLToPath } from 'node:url';
 import readline from 'node:readline';
+import { fileURLToPath } from 'node:url';
 
 /* ---------------------------------- Types ----------------------------------- */
 interface MappingEntry {

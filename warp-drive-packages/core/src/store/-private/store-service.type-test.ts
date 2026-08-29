@@ -1,7 +1,7 @@
 import { expectTypeOf } from 'expect-type';
 
-import { Type } from '../../types/symbols';
 import type { LegacyQueryArray } from '../-private';
+import { Type } from '../../types/symbols';
 import type { LegacyLiveArray } from './record-arrays/legacy-live-array';
 import type { CreateRecordProperties } from './store-service';
 import { Store } from './store-service';

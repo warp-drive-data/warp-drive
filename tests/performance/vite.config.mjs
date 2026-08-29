@@ -1,10 +1,10 @@
-import { defineConfig } from 'vite';
 import { extensions, ember, hbs } from '@embroider/vite';
-import { maybeBabel } from '@warp-drive/internal-config/vite/babel.js';
+import zlib from 'node:zlib';
+import { defineConfig } from 'vite';
 import { compression } from 'vite-plugin-compression2';
 // import { analyzer } from 'vite-bundle-analyzer';
 
-import zlib from 'node:zlib';
+import { maybeBabel } from '@warp-drive/internal-config/vite/babel.js';
 
 export default defineConfig({
   plugins: [

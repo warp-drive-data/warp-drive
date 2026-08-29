@@ -3,8 +3,8 @@ import type ApplicationInstance from '@ember/application/instance';
 import type { Store } from '@warp-drive/core';
 import type { SchemaService } from '@warp-drive/core/types';
 
-import FragmentExtension from '../extensions/fragment.ts';
 import FragmentArrayExtension from '../extensions/fragment-array.ts';
+import FragmentExtension from '../extensions/fragment.ts';
 
 /**
  * Registers the {@link FragmentExtension}/{@link FragmentArrayExtension} schema

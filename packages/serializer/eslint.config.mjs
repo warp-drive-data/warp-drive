@@ -1,8 +1,8 @@
+import * as js from '@warp-drive/internal-config/eslint/browser.js';
 // @ts-check
 import { globalIgnores } from '@warp-drive/internal-config/eslint/ignore.js';
 import * as node from '@warp-drive/internal-config/eslint/node.js';
 import * as typescript from '@warp-drive/internal-config/eslint/typescript.js';
-import * as js from '@warp-drive/internal-config/eslint/browser.js';
 
 import { externals } from './tsdown.config.mjs';
 

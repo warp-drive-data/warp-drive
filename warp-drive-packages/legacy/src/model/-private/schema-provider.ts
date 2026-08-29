@@ -23,8 +23,8 @@ import type {
   ResourceSchema,
 } from '@warp-drive/core/types/schema/fields';
 
-import type { FactoryCache, ModelFactory, ModelStore } from './model.ts';
 import _modelForMixin from './model-for-mixin.ts';
+import type { FactoryCache, ModelFactory, ModelStore } from './model.ts';
 import { normalizeModelName } from './util.ts';
 
 type AttributesSchema = ReturnType<Exclude<SchemaService['attributesDefinitionFor'], undefined>>;

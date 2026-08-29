@@ -2,7 +2,7 @@
 type Tag = unknown;
 type Memo<F> = { cb: () => F };
 
-export function consumeTag(tag: Tag) {}
+export function consumeTag(tag: Tag): void;
 
 export function createCache<F>(fn: () => F): Memo<F>;
 

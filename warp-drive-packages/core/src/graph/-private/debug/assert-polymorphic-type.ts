@@ -2,14 +2,14 @@
 import { DEBUG } from '@warp-drive/core/build-config/env';
 import { assert } from '@warp-drive/core/build-config/macros';
 
-import type { CacheCapabilitiesManager } from '../../../types.ts';
-import type { ResourceKey } from '../../../types/identifier.ts';
 import {
   isLegacyField,
   isRelationshipField,
   temporaryConvertToLegacy,
   type UpgradedMeta,
 } from '../-edge-definition.ts';
+import type { CacheCapabilitiesManager } from '../../../types.ts';
+import type { ResourceKey } from '../../../types/identifier.ts';
 
 /*
   Assert that `addedRecord` has a valid type so it can be added to the

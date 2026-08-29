@@ -1,9 +1,9 @@
+import { getOwnConfig } from '@embroider/macros';
+
 import { DEBUG } from '@warp-drive/core/build-config/env';
 
 import type { ExpandedHooks } from '.';
 import { FoundDeprecation } from './assert-deprecation';
-
-import { getOwnConfig } from '@embroider/macros';
 
 const { ASSERT_ALL_DEPRECATIONS } = getOwnConfig<{ ASSERT_ALL_DEPRECATIONS?: boolean }>();
 
