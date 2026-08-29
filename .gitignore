@@ -7,26 +7,10 @@ concat-stats-for
 dist
 dist-*
 cjs-dist
-
 # transient release-packaging output synthesized from dist/ for alpha/beta
 # types-strategy packages (see tools/release/core/publish/steps/generate-tarballs.ts)
 unstable-preview-types
 preview-types
-
-# @warp-drive/build-config is the one workspace package another package
-# (@warp-drive/core) needs *built output* from -- not just types -- to run
-# its own build:pkg (core's babel.config.mjs requires build-config's real
-# dist/ synchronously). pnpm's injected-workspace-package copies mirror
-# whatever exists in the source package's directory at initial `pnpm
-# install` link time; on a fresh checkout dist/ doesn't exist yet (nothing
-# has been built), so core's injected copy of build-config never gets a
-# dist/ directory at all -- and no later re-sync can retroactively add an
-# entirely new top-level directory to an already-linked copy, only refresh
-# files that already exist within one. Keeping an empty dist/ present in
-# git ensures the directory itself is always there to be linked, so later
-# syncs (which *can* refresh existing files) actually work.
-!/warp-drive-packages/build-config/dist/
-!/warp-drive-packages/build-config/dist/.gitkeep
 tmp
 packages/*/addon
 .svelte-kit/

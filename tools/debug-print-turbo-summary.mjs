@@ -64,13 +64,12 @@ inspect(
   'warp-drive-packages/core/node_modules/@warp-drive/build-config/dist/babel-macros.js'
 );
 
-// Confirmed via a prior run: a fully manual, isolated `pnpm --filter
-// @warp-drive/core run sync` (core being the *consumer*) does NOT fix a
-// missing injected copy. NOT YET TESTED: running the *source* package's own
-// sync script instead -- @warp-drive/build-config is the one whose dist/
-// needs to reach consumers, and //#sync's own documented rationale is
-// specifically about the hook tied to a *source* package's own script
-// execution pushing its output out to consumers. Test that directly.
+// Confirmed via a prior run: running the *source* package's own sync script
+// (build-config, not core) does fix a missing injected copy -- this is now
+// exactly what sync:core's script does via //#sync:core during `prepare`.
+// This manual re-run (with no .gitkeep placeholder committed this time) is
+// to confirm the fix works even from a genuinely dist-less starting point,
+// without needing the placeholder at all.
 import { execSync } from 'node:child_process';
 try {
   execSync('pnpm --filter @warp-drive/build-config run sync', { stdio: 'inherit' });
