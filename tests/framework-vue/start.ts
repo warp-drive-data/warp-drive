@@ -1,4 +1,6 @@
+// oxfmt-ignore
 import '@warp-drive/vue/install';
+
 import { SHOULD_RECORD } from '@warp-drive/core/build-config/env';
 import { setupGlobalHooks } from '@warp-drive/diagnostic';
 import { start } from '@warp-drive/diagnostic/runners/dom';

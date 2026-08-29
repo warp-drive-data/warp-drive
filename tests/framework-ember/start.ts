@@ -1,9 +1,11 @@
+// oxfmt-ignore
+import '@warp-drive/ember/install';
+
 import EmberRouter from '@ember/routing/router';
 import { setApplication } from '@ember/test-helpers';
 
 import EmberApp from 'ember-strict-application-resolver';
 
-import '@warp-drive/ember/install';
 import { SHOULD_RECORD } from '@warp-drive/core/build-config/env';
 import { setupGlobalHooks } from '@warp-drive/diagnostic';
 import { configure } from '@warp-drive/diagnostic/ember';

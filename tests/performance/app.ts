@@ -1,8 +1,9 @@
+// oxfmt-ignore
+import '@warp-drive/ember/install';
+
 import EmberRouter from '@ember/routing/router';
 
 import Application from 'ember-strict-application-resolver';
-
-import '@warp-drive/ember/install';
 
 class Router extends EmberRouter {
   location = 'history';

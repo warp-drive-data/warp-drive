@@ -1,3 +1,6 @@
+// oxfmt-ignore
+import '@warp-drive/ember/install';
+
 import { _backburner } from '@ember/runloop';
 import { getSettledState, isSettled, registerHook, setApplication } from '@ember/test-helpers';
 import { getPendingWaiterState } from '@ember/test-waiters';
@@ -5,7 +8,6 @@ import { getPendingWaiterState } from '@ember/test-waiters';
 import * as QUnit from 'qunit';
 import { setup } from 'qunit-dom';
 
-import '@warp-drive/ember/install';
 import { setBuildURLConfig } from '@ember-data/request-utils';
 import configureAsserts from '@ember-data/unpublished-test-infra/test-support/asserts/index';
 import { Store } from '@warp-drive/core';

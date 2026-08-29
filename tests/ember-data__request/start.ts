@@ -1,4 +1,6 @@
+// oxfmt-ignore
 import '@warp-drive/ember/install';
+
 import { setBuildURLConfig } from '@ember-data/request-utils';
 import { setupGlobalHooks } from '@warp-drive/diagnostic';
 import { configure } from '@warp-drive/diagnostic/ember';
