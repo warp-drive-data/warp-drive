@@ -521,9 +521,16 @@ function cleanSidebarItems(items: SidebarItem[], isPrimitive = false): SidebarIt
 // can point the "Edit this page" link at the original source instead of the generated .md.
 const DEFINED_IN_PATTERN = /^Defined in: (?:\[([^:\]]+):\d+\]|([^:\n]+):\d+)/m;
 
-function buildFrontmatter(content: string): string {
+// Packages with no source code (readme-only typedoc entries) never emit a "Defined in" line,
+// so their generated pages fall back to the generated api/ path. Map those pages to the real
+// markdown source that should be edited instead.
+const EDIT_SOURCE_OVERRIDES: Record<string, string> = {
+  '@warp-drive/memory-alpha/index.md': 'warp-drive-packages/memory-alpha/skills/index.md',
+};
+
+function buildFrontmatter(content: string, file: string): string {
   const match = DEFINED_IN_PATTERN.exec(content);
-  const editSource = match?.[1] ?? match?.[2];
+  const editSource = EDIT_SOURCE_OVERRIDES[file] ?? match?.[1] ?? match?.[2];
   return `---
 outline:
   level: [2, 3]${editSource ? `\neditSource: ${editSource}` : ''}
@@ -953,7 +960,7 @@ export async function postProcessApiDocs() {
     }
 
     // insert frontmatter
-    newContent = buildFrontmatter(newContent) + newContent;
+    newContent = buildFrontmatter(newContent, file) + newContent;
 
     // if the content has a modules list, we remove it
     if (newContent.includes('## Modules')) {
