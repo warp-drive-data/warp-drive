@@ -10,6 +10,7 @@ import type {
 import { STRUCTURED } from '../../types/request';
 import { Context, ContextOwner } from './context';
 import { assertValidRequest } from './debug';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { Fetch } from './fetch.ts';
 import { createFuture, isFuture } from './future';
 import { setRequestResult } from './promise-cache';
@@ -257,6 +258,7 @@ export function executeNextHandler<T>(
       }
     } else if (DEBUG) {
       if (!outcome || (!(outcome instanceof Promise) && !(typeof outcome === 'object' && 'then' in outcome))) {
+        // eslint-disable-next-line no-console
         console.log({ request, handler: wares[i], outcome });
         if (outcome === undefined) {
           throw new Error(`Expected handler.request to return a promise, instead received undefined.`);
@@ -268,6 +270,7 @@ export function executeNextHandler<T>(
     if (_isCacheHandler) {
       setRequestResult(owner.requestId, { isError: true, result: ensureDoc(owner, e, true) });
     }
+    // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
     outcome = Promise.reject<StructuredDataDocument<T>>(e);
   }
   const future = createFuture<T>(owner);

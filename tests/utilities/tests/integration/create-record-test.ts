@@ -95,6 +95,7 @@ module('Integration - createRecord', function (hooks) {
     }
 
     // intercept Handler APIs to ensure they are called as expected
+    // eslint-disable-next-line prefer-const
     let response: unknown;
     const TestHandler: Handler = {
       request<T>(context: RequestContext): Promise<T | StructuredDataDocument<T>> | Future<T> {
@@ -190,6 +191,7 @@ module('Integration - createRecord', function (hooks) {
     }
 
     // intercept Handler APIs to ensure they are called as expected
+    // eslint-disable-next-line prefer-const
     let response: unknown;
     const TestHandler: Handler = {
       request<T>(context: RequestContext): Promise<T | StructuredDataDocument<T>> | Future<T> {

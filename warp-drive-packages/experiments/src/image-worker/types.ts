@@ -1,4 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { ImageFetch } from './fetch';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { ImageWorker } from './worker';
 
 /**

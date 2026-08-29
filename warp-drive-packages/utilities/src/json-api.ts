@@ -49,6 +49,7 @@
  * @module
  * @public
  */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { RequestManager, Store } from '@warp-drive/core';
 
 export { findRecord } from './-private/json-api/find-record';

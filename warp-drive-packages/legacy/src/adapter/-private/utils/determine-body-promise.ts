@@ -55,6 +55,7 @@ function _determineContent(response: Response, requestData: JQueryAjaxSettings, 
 
   if (error) {
     if (DEBUG) {
+      // eslint-disable-next-line no-console
       console.warn('This response was unable to be parsed as json.', payload);
     }
     return error;

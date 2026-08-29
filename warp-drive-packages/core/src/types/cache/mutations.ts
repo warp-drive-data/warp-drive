@@ -1,5 +1,7 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { Cache } from '../cache.ts';
 import type { ResourceKey } from '../identifier.ts';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { Operation } from './operations.ts';
 
 /**

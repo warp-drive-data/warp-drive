@@ -9,6 +9,7 @@ interface LocalTestContext {
 type PromiseState<T, E> = ReturnType<typeof getPromiseState<T, E>>;
 const SecretSymbol = Symbol.for('LegacyPromiseProxy') as unknown as 'Symbol(<LegacyPromiseProxy>)';
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type, @typescript-eslint/no-unused-vars
 interface PromiseProxy<T, E> extends Promise<T> {}
 
 function frameworkUsesSyncRender(framework: string) {

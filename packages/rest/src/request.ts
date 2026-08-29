@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { RequestManager, Store } from '@warp-drive/core';
 /**
 This package provides utilities for working with **REST**ful APIs with [*Ember***Data**](https://github.com/warp-drive-data/warp-drive/).

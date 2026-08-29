@@ -25,13 +25,16 @@ export interface BelongsToProxyCreateArgs<T = unknown> {
 export const LegacyPromiseProxy: unique symbol = Symbol.for('LegacyPromiseProxy');
 
 interface PromiseObjectType<T> extends PromiseProxyMixin<T | null>, ObjectProxy<T> {
+  // eslint-disable-next-line @typescript-eslint/no-misused-new
   new <PT>(...args: unknown[]): PromiseObjectType<PT>;
 }
+// eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-extraneous-class
 declare class PromiseObjectType<T> {}
 
 const Extended: PromiseObjectType<OpaqueRecordInstance> =
   PromiseObject as unknown as PromiseObjectType<OpaqueRecordInstance>;
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 interface PromiseBelongsTo<T> {
   [LegacyPromiseProxy]: true;
 }
@@ -60,6 +63,7 @@ class PromiseBelongsTo<T = unknown> extends Extended<T> {
   //  if you need relationship meta, you should do `record.belongsTo(relationshipName).meta()`
   @computed()
   get meta(): void {
+    // eslint-disable-next-line no-constant-condition
     if (1) {
       assert(
         'You attempted to access meta on the promise for the async belongsTo relationship ' +

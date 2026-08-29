@@ -82,6 +82,7 @@ expectTypeOf(attr<ExampleDateTransform>('date')).toEqualTypeOf<DataDecorator>();
 expectTypeOf(attr<ExampleDateTransform>('date', {
   dateOnly: true,
   // @ts-expect-error - defaultValue needs to be a Date so it can be serialized, so must be a function that produces one
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   defaultValue: string
 })).toBeNever;
 

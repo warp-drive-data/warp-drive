@@ -12,6 +12,7 @@ import { dasherize, singularize } from '@warp-drive/utilities/string';
 import type { NoNull, RelationshipDecorator, RelationshipOptions } from './belongs-to.ts';
 import { lookupLegacySupport } from './legacy-relationships-support.ts';
 import type { MinimalLegacyRecord } from './model-methods.ts';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { Model } from './model.ts';
 import { isElementDescriptor } from './util.ts';
 

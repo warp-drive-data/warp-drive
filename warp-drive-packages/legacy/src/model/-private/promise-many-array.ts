@@ -12,6 +12,7 @@ export interface HasManyProxyCreateArgs<T = unknown> {
   content?: ManyArray<T>;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export interface PromiseManyArray<T> {
   /**
    * A property signifying that this object implements the classic Ember

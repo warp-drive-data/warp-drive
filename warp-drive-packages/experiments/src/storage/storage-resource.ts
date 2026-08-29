@@ -122,6 +122,7 @@ export function field(...args: unknown[]): PropertyDecorator | void {
 export function input(type: 'number' | 'boolean' | 'float'): PropertyDecorator {
   assert('input decorator requires a valid type argument', ['number', 'boolean', 'float'].includes(type));
   return function (target: object, key: string, desc: PropertyDescriptor): void {
+    // eslint-disable-next-line @typescript-eslint/unbound-method
     const originalSet = desc.set!;
     desc.set = function (this: object, value: unknown) {
       switch (type) {

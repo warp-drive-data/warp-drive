@@ -371,8 +371,10 @@ export class Diagnostic<TC extends TestContext> {
     }
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   throws(fn: () => Promise<any>, expected?: string | RegExp, message?: string): Promise<void>;
   throws(fn: () => void, expected?: string | RegExp, message?: string): void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   throws(fn: () => void | Promise<any>, expected?: string | RegExp, message?: string): Promise<void> | void {
     try {
       const result = fn();

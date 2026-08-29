@@ -457,6 +457,7 @@ export class CacheKeyManager {
   /** @internal */
   private _getRecordIdentifier(resource: unknown, shouldGenerate: 0 | 1 | 2): ResourceKey | undefined {
     if (LOG_IDENTIFIERS) {
+      // eslint-disable-next-line no-console
       console.groupCollapsed(`Identifiers: ${shouldGenerate ? 'Generating' : 'Peeking'} Identifier`, resource);
     }
     // short circuit if we're already the stable version
@@ -468,7 +469,9 @@ export class CacheKeyManager {
         }
       }
       if (LOG_IDENTIFIERS) {
+        // eslint-disable-next-line no-console
         console.log(`Identifiers: cache HIT - Stable ${resource.lid}`);
+        // eslint-disable-next-line no-console
         console.groupEnd();
       }
       return resource;
@@ -477,12 +480,14 @@ export class CacheKeyManager {
     // the resource is unknown, ask the application to identify this data for us
     const lid = this._generate(resource, 'record');
     if (LOG_IDENTIFIERS) {
+      // eslint-disable-next-line no-console
       console.log(`Identifiers: ${lid ? 'no ' : ''}lid ${lid ? lid + ' ' : ''}determined for resource`, resource);
     }
 
     let identifier: ResourceKey | null = /*#__NOINLINE__*/ getIdentifierFromLid(this._cache, lid, resource);
     if (identifier !== null) {
       if (LOG_IDENTIFIERS) {
+        // eslint-disable-next-line no-console
         console.groupEnd();
       }
       return identifier;
@@ -490,6 +495,7 @@ export class CacheKeyManager {
 
     if (shouldGenerate === 0) {
       if (LOG_IDENTIFIERS) {
+        // eslint-disable-next-line no-console
         console.groupEnd();
       }
       return;
@@ -511,6 +517,7 @@ export class CacheKeyManager {
     addResourceToCache(this._cache, identifier);
 
     if (LOG_IDENTIFIERS) {
+      // eslint-disable-next-line no-console
       console.groupEnd();
     }
 
@@ -634,6 +641,7 @@ export class CacheKeyManager {
     /*#__NOINLINE__*/ addResourceToCache(this._cache, identifier);
 
     if (LOG_IDENTIFIERS) {
+      // eslint-disable-next-line no-console
       console.log(`Identifiers: created identifier ${String(identifier)} for newly generated resource`, data);
     }
 
@@ -688,6 +696,7 @@ export class CacheKeyManager {
       }
 
       if (LOG_IDENTIFIERS) {
+        // eslint-disable-next-line no-console
         console.log(
           `Identifiers: merged identifiers ${generatedIdentifier.lid} and ${existingIdentifier.lid} for resource into ${identifier.lid}`,
           data
@@ -702,6 +711,7 @@ export class CacheKeyManager {
     // add to our own secondary lookup table
     if (id !== newId && newId !== null) {
       if (LOG_IDENTIFIERS) {
+        // eslint-disable-next-line no-console
         console.log(
           `Identifiers: updated id for identifier ${identifier.lid} from '${String(id)}' to '${String(
             newId
@@ -718,6 +728,7 @@ export class CacheKeyManager {
         typeSet.id.delete(id);
       }
     } else if (LOG_IDENTIFIERS) {
+      // eslint-disable-next-line no-console
       console.log(`Identifiers: updated identifier ${identifier.lid} resource`, data);
     }
 
@@ -804,6 +815,7 @@ export class CacheKeyManager {
     identifier[CACHE_OWNER] = undefined;
     this._forget(identifier, 'record');
     if (LOG_IDENTIFIERS) {
+      // eslint-disable-next-line no-console
       console.log(`Identifiers: released identifier ${identifierObject.lid}`);
     }
   }
@@ -997,6 +1009,7 @@ function detectMerge(
 function getIdentifierFromLid(cache: StableCache, lid: string, resource: unknown): ResourceKey | null {
   const identifier = cache.resources.get(lid);
   if (LOG_IDENTIFIERS) {
+    // eslint-disable-next-line no-console
     console.log(`Identifiers: cache ${identifier ? 'HIT' : 'MISS'} - Non-Stable ${lid}`, resource);
   }
   return identifier || null;

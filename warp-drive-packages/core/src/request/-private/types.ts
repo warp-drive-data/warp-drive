@@ -1,3 +1,4 @@
+/* eslint-disable no-irregular-whitespace */
 
 import type { Store } from '../../store/-private';
 import type { RequestKey } from '../../types/identifier';
@@ -7,6 +8,7 @@ import type {
   RequestInfo,
   ResponseInfo,
   StructuredDataDocument,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   StructuredDocument,
 } from '../../types/request';
 import type { RequestManager } from './manager';

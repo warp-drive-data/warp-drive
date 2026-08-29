@@ -9,6 +9,7 @@ export function assert(message: string, test: unknown): asserts test {
 
 export function getGlobal(): typeof globalThis {
   // prettier-ignore
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const g: typeof globalThis | null =
     typeof globalThis !== 'undefined' ? globalThis
       : typeof window !== 'undefined' ? window

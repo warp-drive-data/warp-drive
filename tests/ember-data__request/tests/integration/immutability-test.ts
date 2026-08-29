@@ -54,6 +54,7 @@ module('RequestManager | Immutability', function () {
         const headers = new Headers(context.request.headers);
         headers.append('house', 'home');
         // @ts-expect-error Types are wrong: Property 'entries' does not exist on type 'Headers'.
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
         return Promise.resolve<T>([...headers.entries()] as T);
       },
     };

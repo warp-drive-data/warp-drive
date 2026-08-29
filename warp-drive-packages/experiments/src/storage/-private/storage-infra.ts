@@ -11,11 +11,13 @@ export interface ParamConfig {
    * Convert a value into a string for storage in the URL.
    * `null` indicates the value should be omitted from the URL.
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   serialize: (value: unknown, instance: any) => string | null;
   /**
    * Convert a string value from the URL back into
    * its original type
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   deserialize: (urlValue: string, instance: any) => unknown;
   /**
    * Get the default value for this param from the given instance.
@@ -26,6 +28,7 @@ export interface ParamConfig {
    * This should return the value in the field's native type,
    * not the serialized URL form.
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   getDefault?: (instance: any) => unknown;
 }
 
@@ -64,6 +67,7 @@ export interface StorageResourceMeta {
  * one instance of a resource type, each with its own
  * persisted data.
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type KeyFn = (obj: any) => string;
 
 /**
@@ -241,7 +245,9 @@ export function _createStorageResource(
   type: 'local-resource' | 'session-resource' | 'cache-resource',
   namespace: string | null
 ): ClassDecorator {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   return function (target: Function) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     const meta = getResourceMeta(target.prototype);
     meta.id = typeof id === 'string' ? id : '';
     meta.pkFn = typeof id === 'function' ? id : null;
@@ -253,8 +259,11 @@ export function _createStorageResource(
       // instance.
       // for this, we defer effect installation until
       // until object instantiation by wrapping the constructor
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
       const originalConstructor = target.prototype.constructor;
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       target.prototype.constructor = function DynamicStorageInitializer(...args: unknown[]) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call, new-cap
         const instance = new originalConstructor(...args) as object;
         void installEffectsForDynamicInstance(meta, instance);
         return instance;
@@ -262,6 +271,7 @@ export function _createStorageResource(
     }
 
     if (!('toJSON' in target.prototype)) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       target.prototype.toJSON = function (this: object) {
         const instanceMeta = useMeta(meta, this);
         // we only serialize the id and any localStorage fields, not sessionStorage fields.

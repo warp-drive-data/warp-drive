@@ -180,6 +180,7 @@ export class DOMReporter implements Reporter {
     const fragment = document.createDocumentFragment();
     if (this.suite.resultsList.hidden) {
       // render the DOM we have so far again
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       for (const [_test, state] of this.suite.results) {
         if (state.dom) {
           fragment.appendChild(state.dom[0]);
@@ -197,6 +198,7 @@ export class DOMReporter implements Reporter {
     const updateResultHTMLForTest = (test: TestReport, state: { finalized: boolean; dom: HTMLElement[] }) => {
       const id = test.id;
       // @ts-expect-error - this is a global variable that we set to resume the test
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
       const testIsPaused = globalThis.pausedTests?.has(id) as boolean;
 
       const [tr, checksTr] = state.dom as HTMLTableRowElement[];
@@ -245,6 +247,7 @@ export class DOMReporter implements Reporter {
     const createResultHTMLForTest = (test: TestReport, state: { finalized: boolean; dom: HTMLElement[] | null }) => {
       const id = test.id;
       // @ts-expect-error - this is a global variable that we set to resume the test
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
       const testIsPaused = globalThis.pausedTests?.has(id) as boolean;
 
       const tr = document.createElement('tr');
@@ -329,6 +332,7 @@ function makeRow(tr: HTMLTableRowElement, checksTr: HTMLTableRowElement, cells: 
         'click',
         () => {
           // @ts-expect-error
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-call
           globalThis.resumeTest();
         },
         { once: true }

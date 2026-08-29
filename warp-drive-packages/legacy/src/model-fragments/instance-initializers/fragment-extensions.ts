@@ -23,6 +23,7 @@ export function initialize(application: ApplicationInstance): void {
   if (store) {
     registerFragmentExtensions(store.schema);
   } else {
+    // eslint-disable-next-line no-console
     console.warn(
       'No store service was found, you will need to call `registerFragmentExtensions` manually in your app.'
     );
@@ -33,5 +34,6 @@ export default {
   name: 'fragment-extensions',
   // the cast is required for isolatedDeclarations to determine this default
   // export's type without inference, even though it's a no-op for `tsc`'s checker
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
   initialize: initialize as (application: ApplicationInstance) => void,
 };

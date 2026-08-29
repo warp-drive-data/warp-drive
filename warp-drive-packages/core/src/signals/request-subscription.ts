@@ -116,6 +116,7 @@ export interface RequestArgs<RT, E> extends SubscriptionArgs<RT, E> {
 /**
  * The args accepted by a {@link RequestSubscription}.
  */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export interface SubscriptionArgs<RT, E> {
   /**
    * The request to monitor. This should be a `Future` instance returned
@@ -186,6 +187,7 @@ export interface RequestComponentArgs<RT, E> extends SubscriptionArgs<RT, E> {
   store?: Store | RequestManager;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export interface RequestSubscription<RT, E> {
   /**
    * The method to call when the component this subscription is attached to
@@ -781,6 +783,7 @@ export class RequestSubscription<RT, E> {
         this._updateSubscriptions();
         return request;
       } catch (e) {
+        // eslint-disable-next-line no-console
         console.log(e);
         throw new Error(`Unable to initialize the request`, { cause: e });
       }

@@ -133,6 +133,7 @@ function mergeIntoBuffer(
 
 function count(label: string) {
   // @ts-expect-error
+  // eslint-disable-next-line
   globalThis.__WarpDriveMetricCountData[label] = (globalThis.__WarpDriveMetricCountData[label] || 0) + 1;
 }
 
@@ -153,6 +154,7 @@ function _unsubscribe(
   const cacheKey = token.for;
   if (LOG_NOTIFICATIONS) {
     if (!cacheKey) {
+      // eslint-disable-next-line no-console
       console.log('Passed unknown unsubscribe token to unsubscribe', cacheKey);
     }
   }
@@ -308,6 +310,7 @@ export class NotificationManager {
     );
     if (!isResourceKey(cacheKey) && !isRequestKey(cacheKey)) {
       if (LOG_NOTIFICATIONS) {
+        // eslint-disable-next-line no-console
         console.log(
           `Notifying: Expected to receive a stable Identifier to notify '${value}' '${keyToString(
             key

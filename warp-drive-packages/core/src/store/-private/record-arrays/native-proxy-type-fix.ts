@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /*
   We redefine Proxy because the native Proxy type treats the `target` and
   `receiver` as the same type incorrectly.
@@ -18,6 +19,7 @@ interface ProxyHandler<T extends object> {
    * @param newTarget The constructor that was originally called.
    * @internal
    */
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   construct?(target: T, argArray: any[], newTarget: Function): object;
 
   /**

@@ -1,4 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { SchemaService } from '../../types.ts';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { Cache } from '../cache.ts';
 import type { ObjectValue, PrimitiveValue, Value } from '../json/raw.ts';
 

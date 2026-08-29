@@ -14,8 +14,11 @@
  * @module
  */
 import type { WarpDriveConfig } from '@warp-drive/build-config';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type * as FEATURES from '@warp-drive/core/build-config/canary-features';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type * as LOGGING from '@warp-drive/core/build-config/debugging';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type * as DEPRECATIONS from '@warp-drive/core/build-config/deprecations';
 
 export { setConfig, babelPlugin } from '@warp-drive/build-config';

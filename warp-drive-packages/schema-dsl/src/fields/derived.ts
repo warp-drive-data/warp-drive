@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unused-vars -- imported only for {@link} cross-references in doc comments */
 import type { Derivation } from '@warp-drive/core/types/schema/concepts';
 import type { DerivedField } from '@warp-drive/core/types/schema/fields';
+/* eslint-enable @typescript-eslint/no-unused-vars */
 
 /**
  * Options accepted by the {@link derived} decorator.

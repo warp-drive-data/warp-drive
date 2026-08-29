@@ -226,6 +226,7 @@ function lookupOutletTemplate(owner: Owner): object {
 }
 
 let templateId = 0;
+// eslint-disable-next-line @typescript-eslint/require-await
 export async function render(context: TestContext, template: object): Promise<void> {
   if (!template) {
     throw new Error('you must pass a template to `render()`');

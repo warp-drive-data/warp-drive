@@ -68,6 +68,7 @@ export type ModelStore = Store & { _modelFactoryCache: FactoryCache };
  */
 function computeOnce(target: object, propertyName: string, desc: PropertyDescriptor) {
   const cache = new WeakMap<object, { hasComputed: boolean; value: unknown }>();
+  // eslint-disable-next-line @typescript-eslint/unbound-method
   const getter = desc.get;
   desc.get = function () {
     let meta = cache.get(this);
@@ -1989,6 +1990,7 @@ if (DEBUG) {
     return null;
   };
 
+  // eslint-disable-next-line @typescript-eslint/unbound-method
   const init = Model.prototype.init;
   Model.prototype.init = function (createArgs: ModelCreateArgs) {
     init.call(this, createArgs);

@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { ReactiveDataDocument, ReactiveDocument, ReactiveErrorDocument } from '../../reactive.ts';
 import type { PersistedResourceKey } from '../identifier.ts';
 import type { ApiError } from './error.ts';

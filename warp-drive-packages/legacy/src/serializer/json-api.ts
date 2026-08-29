@@ -1,9 +1,16 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 import { warn } from '@ember/debug';
 import type EmberObject from '@ember/object';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { RequestManager } from '@warp-drive/core';
 import { DEBUG } from '@warp-drive/core/build-config/env';
 import { assert } from '@warp-drive/core/build-config/macros';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { Handler } from '@warp-drive/core/request';
 import { dasherize, pluralize, singularize } from '@warp-drive/utilities/string';
 
@@ -131,6 +138,7 @@ import { JSONSerializer } from './json';
   @class JSONAPISerializer
   @public
 */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const JSONAPISerializer: any = (JSONSerializer as typeof EmberObject).extend({
   /**
     @private

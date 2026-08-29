@@ -159,6 +159,7 @@ export function memoized<T extends object, K extends keyof T & string>(
     typeof descriptor.get === 'function'
   );
 
+  // eslint-disable-next-line @typescript-eslint/unbound-method
   const getter = descriptor.get;
   descriptor.get = function () {
     const signals = withSignalStore(this);
@@ -183,7 +184,9 @@ export function gate<T extends object, K extends keyof T & string>(
   key: K,
   desc: PropertyDescriptor
 ): PropertyDescriptor {
+  // eslint-disable-next-line @typescript-eslint/unbound-method
   const getter = desc.get as (this: T) => unknown;
+  // eslint-disable-next-line @typescript-eslint/unbound-method
   const setter = desc.set as (this: T, v: unknown) => void;
   const isLocal = (desc as unknown as { isLocal?: boolean }).isLocal;
 

@@ -118,6 +118,7 @@ class Logger {
     this.name = name;
     if (Logger.options.logFile) {
       const filename = typeof Logger.options.logFile === 'string' ? Logger.options.logFile : 'ember-data-codemods.log';
+      // eslint-disable-next-line no-console
       console.log('Logging to', filename);
       this._logger = createWinstonLogger({
         format: winstonFormat.combine(winstonFormat.label({ label: name }), winstonFormat.timestamp(), formatForFile),
