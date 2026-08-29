@@ -7,7 +7,10 @@ import type { Store } from '../store/-private.ts';
 import { getOrSetGlobal, getOrSetUniversal } from './-private.ts';
 import type { ResourceKey } from './identifier.ts';
 import type { QueryParamsSerializationOptions } from './params.ts';
-import type { Includes, TypeFromInstanceOrString } from './record.ts';
+import type {
+  Includes,
+  TypeFromInstanceOrString,
+} from './record.ts';
 import type { ResourceIdentifierObject } from './spec/json-api-raw.ts';
 import type { RequestSignature } from './symbols.ts';
 
