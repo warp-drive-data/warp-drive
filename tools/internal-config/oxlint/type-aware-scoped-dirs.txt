@@ -1,0 +1,20 @@
+# Subset of scoped-dirs.txt that oxlint's --type-aware mode (tsgolint) can
+# actually analyze today.
+#
+# tsgolint is built on typescript-go, which is still catching up to the real
+# TypeScript compiler: it hard-errors (a `tsconfig-error` diagnostic, not a
+# regular lint rule, so it can't be downgraded to a warning via `.oxlintrc.json`)
+# on tsconfig.json files using compiler options it doesn't yet support —
+# notably `baseUrl` and `downlevelIteration`, both still valid, load-bearing
+# options in this monorepo's classic `packages/*` tsconfigs — and on `types`
+# entries it can't resolve (e.g. `ember-source/types`).
+#
+# Until tsgolint supports those options (or the affected tsconfigs are
+# migrated off them — a separate, larger effort with real compiler
+# implications, not something to do just to satisfy an experimental linter),
+# type-aware oxlint only runs against packages whose tsconfig.json is already
+# clean under tsgolint. Update this list as more tsconfigs become compatible;
+# see `tools/internal-config/oxlint/run.sh` for how it's used alongside
+# `scoped-dirs.txt`.
+warp-drive-packages/ember/src
+warp-drive-packages/experiments/src
