@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-expressions */
+/* oxlint-disable no-unused-expressions */
 import { expectTypeOf } from 'expect-type';
 
 import { Store } from '@warp-drive/core';

@@ -394,7 +394,7 @@ function findAll<T>(context: StoreRequestContext): Promise<T> {
 
   let fetch: Promise<T> | undefined;
   if (shouldReload) {
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    // oxlint-disable-next-line no-unused-expressions
     maybeRecordArray && (maybeRecordArray.isUpdating = true);
     fetch = _findAll(adapter, store, type, snapshotArray, context.request, true);
   } else {
@@ -405,7 +405,7 @@ function findAll<T>(context: StoreRequestContext): Promise<T> {
       (options.backgroundReload !== false &&
         (!adapter.shouldBackgroundReloadAll || adapter.shouldBackgroundReloadAll(store, snapshotArray)))
     ) {
-      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+      // oxlint-disable-next-line no-unused-expressions
       maybeRecordArray && (maybeRecordArray.isUpdating = true);
       void _findAll(adapter, store, type, snapshotArray, context.request, false);
     }

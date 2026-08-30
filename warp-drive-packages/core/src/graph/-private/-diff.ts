@@ -180,7 +180,7 @@ function _compare<T>(
       // });
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    // oxlint-disable-next-line no-unused-expressions
     changed &&
       // oxlint-disable-next-line no-console
       console.log(
@@ -312,7 +312,7 @@ function _compare<T>(
         // ergo, we never need to set changed in this branch.
         // this log can still be useful for debugging.
         if (DEBUG_RELATIONSHIP_NOTIFICATIONS) {
-          // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+          // oxlint-disable-next-line no-unused-expressions
           !changed &&
             // oxlint-disable-next-line no-console
             console.log(`changed because i >= priorLocalLength && i < finalLength && !finalSet.has(prevMember)`);

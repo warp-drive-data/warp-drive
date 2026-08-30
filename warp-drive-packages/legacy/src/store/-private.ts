@@ -228,7 +228,7 @@ export class RecordReference {
     @return The id of the record.
   */
   id(): string | null {
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    // oxlint-disable-next-line no-unused-expressions
     this._ref; // consume the tracked prop
     return this.___identifier.id;
   }

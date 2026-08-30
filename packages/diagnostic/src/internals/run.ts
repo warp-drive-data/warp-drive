@@ -53,12 +53,12 @@ export async function runTest<TC extends TestContext>(
     [TEST_CONTEXT]: Assert,
   } as unknown as TC;
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+  // oxlint-disable-next-line no-unused-expressions
   groupLogs() && console.groupCollapsed(test.name);
   DelegatingReporter.onTestStart(testReport);
 
   if (test.skip) {
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    // oxlint-disable-next-line no-unused-expressions
     groupLogs() && console.groupEnd();
     testReport.end = instrument() && performance.mark(`test:${test.module.moduleName} > ${test.name}:end`);
     testReport.measure =
@@ -125,7 +125,7 @@ export async function runTest<TC extends TestContext>(
     }
     Assert._finalize();
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    // oxlint-disable-next-line no-unused-expressions
     groupLogs() && console.groupEnd();
     testReport.end = instrument() && performance.mark(`test:${test.module.moduleName} > ${test.name}:end`);
     testReport.measure =
@@ -145,7 +145,7 @@ export async function runModule<TC extends TestContext>(
     return;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+  // oxlint-disable-next-line no-unused-expressions
   groupLogs() && console.groupCollapsed(module.name);
   const moduleReport: ModuleReport = {
     id: module.id,
@@ -213,7 +213,7 @@ export async function runModule<TC extends TestContext>(
   for (const hook of Config.globalHooks.afterModule) {
     await hook();
   }
-  // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+  // oxlint-disable-next-line no-unused-expressions
   groupLogs() && console.groupEnd();
   moduleReport.end = instrument() && performance.mark(`module:${module.moduleName}:end`);
   moduleReport.measure =

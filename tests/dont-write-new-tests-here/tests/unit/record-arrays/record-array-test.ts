@@ -197,7 +197,6 @@ module('unit/record-arrays/live-array - LiveArray', function (hooks) {
     let model1Saved = 0;
     let model2Saved = 0;
     store.saveRecord = (record) => {
-      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       record === record1 ? model1Saved++ : model2Saved++;
       return Promise.resolve(record);
     };

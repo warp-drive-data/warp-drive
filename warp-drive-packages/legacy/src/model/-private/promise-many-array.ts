@@ -67,7 +67,7 @@ export class PromiseManyArray<T = unknown> {
     // shouldn't be needed, but ends up being needed
     // for computed chains even in 4.x
     if (DEPRECATE_COMPUTED_CHAINS) {
-      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+      // oxlint-disable-next-line no-unused-expressions
       this['[]'];
     }
     return this.content ? this.content.length : 0;

@@ -263,9 +263,11 @@ export function _createStorageResource(
       const originalConstructor = target.prototype.constructor;
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       target.prototype.constructor = function DynamicStorageInitializer(...args: unknown[]) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-        // oxlint-disable-next-line new-cap
+        /* eslint-disable @typescript-eslint/no-unsafe-call */
+        /* oxlint-disable new-cap */
         const instance = new originalConstructor(...args) as object;
+        /* oxlint-enable new-cap */
+        /* eslint-enable @typescript-eslint/no-unsafe-call */
         void installEffectsForDynamicInstance(meta, instance);
         return instance;
       };

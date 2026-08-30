@@ -116,7 +116,7 @@ export class WorkerFetch {
   }
 
   send(event: RequestEventData | AbortEventData): void {
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    // oxlint-disable-next-line no-unused-expressions
     this.worker instanceof SharedWorker ? this.worker.port.postMessage(event) : this.channel.port1.postMessage(event);
   }
 
