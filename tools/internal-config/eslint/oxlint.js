@@ -120,3 +120,43 @@ export const OXLINT_OWNED_RULES = [
 export function disabledRules() {
   return Object.fromEntries(OXLINT_OWNED_RULES.map((rule) => [rule, 'off']));
 }
+
+// The type-aware rules excluded from OXLINT_OWNED_RULES above. oxlint only checks these
+// with `--type-aware`, which `tools/internal-config/oxlint/run.sh` runs over the small,
+// vetted subset of packages listed in `tools/internal-config/oxlint/type-aware-scoped-dirs.txt`
+// (most of this repo's tsconfigs aren't parseable by tsgolint yet — see that file). Within
+// that subset, disable the matching ESLint rules per-package (never repo-wide — a package's
+// tsgolint results have to be individually verified against real `tsc`/ESLint first; see
+// `warp-drive-packages/experiments/eslint.config.mjs` for the one currently verified clean).
+export const TYPE_AWARE_OXLINT_RULES = [
+  '@typescript-eslint/consistent-type-exports',
+  '@typescript-eslint/no-array-delete',
+  '@typescript-eslint/no-duplicate-type-constituents',
+  '@typescript-eslint/no-floating-promises',
+  '@typescript-eslint/no-for-in-array',
+  '@typescript-eslint/no-implied-eval',
+  '@typescript-eslint/no-meaningless-void-operator',
+  '@typescript-eslint/no-unnecessary-type-arguments',
+  '@typescript-eslint/no-unnecessary-type-assertion',
+  '@typescript-eslint/no-unsafe-argument',
+  '@typescript-eslint/no-unsafe-assignment',
+  '@typescript-eslint/no-unsafe-call',
+  '@typescript-eslint/no-unsafe-enum-comparison',
+  '@typescript-eslint/no-unsafe-member-access',
+  '@typescript-eslint/no-unsafe-return',
+  '@typescript-eslint/no-unsafe-unary-minus',
+  '@typescript-eslint/only-throw-error',
+  '@typescript-eslint/prefer-includes',
+  '@typescript-eslint/prefer-promise-reject-errors',
+  '@typescript-eslint/prefer-reduce-type-parameter',
+  '@typescript-eslint/prefer-return-this-type',
+  '@typescript-eslint/require-await',
+  '@typescript-eslint/restrict-plus-operands',
+  '@typescript-eslint/restrict-template-expressions',
+  '@typescript-eslint/unbound-method',
+];
+
+/** @return {import('eslint').Linter.RulesRecord} */
+export function disabledTypeAwareRules() {
+  return Object.fromEntries(TYPE_AWARE_OXLINT_RULES.map((rule) => [rule, 'off']));
+}
