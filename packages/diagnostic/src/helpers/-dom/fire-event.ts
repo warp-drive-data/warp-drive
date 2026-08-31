@@ -155,7 +155,7 @@ function buildBasicEvent(type: string, options: any = {}): Event {
     /* oxlint-disable typescript/no-explicit-any */
     (event as any)[prop] = options[prop];
     /* oxlint-enable typescript/no-explicit-any */
-    /* eslint-enable typescript/no-unsafe-assignment, typescript/no-unsafe-member-access */
+    /* oxlint-enable typescript/no-unsafe-assignment, typescript/no-unsafe-member-access */
   }
   return event;
 }
@@ -167,7 +167,7 @@ function buildMouseEvent(type: MouseEventType, options: any = {}) {
   /* oxlint-disable typescript/no-explicit-any */
   const eventOpts: any = { view: window, ...DEFAULT_EVENT_OPTIONS, ...options };
   /* oxlint-enable typescript/no-explicit-any */
-  /* eslint-enable typescript/no-unsafe-assignment */
+  /* oxlint-enable typescript/no-unsafe-assignment */
   if (MOUSE_EVENT_CONSTRUCTOR) {
     // oxlint-disable-next-line typescript/no-unsafe-argument
     event = new MouseEvent(type, eventOpts);
@@ -218,7 +218,7 @@ export function _buildKeyboardEvent(type: KeyboardEventType, options: any = {}):
   /* oxlint-disable typescript/no-explicit-any */
   const eventOpts: any = { ...DEFAULT_EVENT_OPTIONS, ...options };
   /* oxlint-enable typescript/no-explicit-any */
-  /* eslint-enable typescript/no-unsafe-assignment */
+  /* oxlint-enable typescript/no-unsafe-assignment */
   let event: Event | undefined;
   let eventMethodName: 'initKeyboardEvent' | 'initKeyEvent' | undefined;
 
@@ -274,7 +274,7 @@ export function _buildKeyboardEvent(type: KeyboardEventType, options: any = {}):
     /* oxlint-disable typescript/no-explicit-any */
     (event as any)[eventMethodName](
       /* oxlint-enable typescript/no-explicit-any */
-      /* eslint-enable typescript/no-unsafe-call, typescript/no-unsafe-member-access */
+      /* oxlint-enable typescript/no-unsafe-call, typescript/no-unsafe-member-access */
       type,
       // oxlint-disable-next-line typescript/no-unsafe-member-access
       eventOpts.bubbles,
