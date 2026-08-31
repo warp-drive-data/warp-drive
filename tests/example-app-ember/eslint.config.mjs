@@ -22,12 +22,8 @@ export default [
       '@glimmer/component',
       '@glimmer/tracking',
     ],
-    // tsconfig.json's `types` is for TS 7's check:types; ESLint's type-aware
-    // rules need the classic-TS-friendly ember/glint types instead.
-    project: './tsconfig.eslint.json',
-    // oxlint's `--type-aware` pass now covers this cleanly (tsconfig.json carries the same
-    // ember/glint ambient types tsconfig.eslint.json gives ESLint) — verified against real
-    // CI's type-aware run.
+    // oxlint's `--type-aware` pass now covers this cleanly (tsconfig.json carries the ember/glint
+    // ambient types directly) — verified against real CI's type-aware run.
     rules: oxlint.disabledTypeAwareRules(),
   }),
 

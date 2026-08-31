@@ -17,14 +17,11 @@ export default [
     dirname: import.meta.dirname,
     srcDirs: ['src'],
     allowedImports: externals,
-    // tsconfig.json's `types: []` is for TS 7's check:types; ESLint's
-    // type-aware rules need the classic-TS-friendly ember/glint types instead.
-    project: './tsconfig.eslint.json',
     // oxlint's `--type-aware` pass (see tools/internal-config/oxlint/type-aware-scoped-dirs.txt)
-    // covers `src`'s plain .ts files cleanly now that tsconfig.json carries the same
-    // ember/glint ambient types tsconfig.eslint.json gives ESLint — verified against real CI's
-    // type-aware run. `.gts` files are handled by the separate gts.browser() block below, which
-    // keeps full type-aware ESLint coverage since oxlint's parser can't scan those.
+    // covers `src`'s plain .ts files cleanly now that tsconfig.json carries the ember/glint
+    // ambient types directly — verified against real CI's type-aware run. `.gts` files are
+    // handled by the separate gts.browser() block below, which keeps full type-aware ESLint
+    // coverage since oxlint's parser can't scan those.
     rules: oxlint.disabledTypeAwareRules(),
   }),
 
@@ -33,7 +30,6 @@ export default [
     dirname: import.meta.dirname,
     srcDirs: ['src'],
     allowedImports: externals,
-    project: './tsconfig.eslint.json',
   }),
 
   // node (module) ================

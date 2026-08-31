@@ -144,7 +144,7 @@ export function browser(config) {
     languageOptions: {
       parser: parser(config.enableGlint),
       parserOptions: {
-        project: config.project ?? './tsconfig.json',
+        project: './tsconfig.json',
         projectService: false,
         tsconfigRootDir: config.dirname,
         extraFileExtensions: ['.gts', '.gjs'],
