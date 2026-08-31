@@ -270,7 +270,7 @@
     "typescript/prefer-promise-reject-errors": "error",
     "typescript/prefer-reduce-type-parameter": "error",
     "typescript/prefer-return-this-type": "error",
-    "typescript/require-await": "warn",
+    "typescript/require-await": "off",
     "typescript/restrict-plus-operands": "error",
     "typescript/restrict-template-expressions": "error",
     "typescript/unbound-method": "error",
