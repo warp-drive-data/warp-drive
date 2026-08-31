@@ -216,7 +216,7 @@ function InternalRequest<RT, E>($props: RequestProps<RT, E>): JSX.Element {
   }
 
   if (!sink.current && !$props.subscription) {
-    sink.current = createRequestSubscription(store, args.current!);
+    sink.current = createRequestSubscription(store, args.current);
   }
 
   const initialized = useRef<null | {

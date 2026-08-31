@@ -87,7 +87,7 @@ export function setupTest<TC extends ReactTestContext>(hooks: Hooks<TC>, options
 
     this.render = async (App: ReactNode) => {
       await act(async () => {
-        this.root!.render(useStrict ? <StrictMode>{App}</StrictMode> : App);
+        this.root.render(useStrict ? <StrictMode>{App}</StrictMode> : App);
       });
     };
 
