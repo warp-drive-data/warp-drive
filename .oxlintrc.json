@@ -1114,6 +1114,44 @@
         "typescript/restrict-template-expressions": "warn",
         "typescript/unbound-method": "warn"
       }
+    },
+    {
+      // Every tsconfig.json in this monorepo sets "checkJs": false (the one exception,
+      // packages/holodeck/server, isn't in scoped-dirs.txt), meaning real tsc never type-checks
+      // the bodies of plain .js files even where "allowJs" lets them into the program — it only
+      // uses them for module-shape inference from .ts importers. tsgolint doesn't honor that: it
+      // type-checks .js file bodies the same as .ts regardless of checkJs, so every implicitly-
+      // `any` parameter and property in untyped JS gets flagged as "unsafe". That's not a real
+      // finding, just noise from applying strict-TS assumptions to code that was never meant to
+      // be type-checked. Disable the type-aware rules there to match checkJs's actual behavior.
+      "files": ["**/*.js"],
+      "rules": {
+        "typescript/consistent-type-exports": "off",
+        "typescript/no-array-delete": "off",
+        "typescript/no-duplicate-type-constituents": "off",
+        "typescript/no-floating-promises": "off",
+        "typescript/no-for-in-array": "off",
+        "typescript/no-implied-eval": "off",
+        "typescript/no-meaningless-void-operator": "off",
+        "typescript/no-unnecessary-type-arguments": "off",
+        "typescript/no-unnecessary-type-assertion": "off",
+        "typescript/no-unsafe-argument": "off",
+        "typescript/no-unsafe-assignment": "off",
+        "typescript/no-unsafe-call": "off",
+        "typescript/no-unsafe-enum-comparison": "off",
+        "typescript/no-unsafe-member-access": "off",
+        "typescript/no-unsafe-return": "off",
+        "typescript/no-unsafe-unary-minus": "off",
+        "typescript/only-throw-error": "off",
+        "typescript/prefer-includes": "off",
+        "typescript/prefer-promise-reject-errors": "off",
+        "typescript/prefer-reduce-type-parameter": "off",
+        "typescript/prefer-return-this-type": "off",
+        "typescript/require-await": "off",
+        "typescript/restrict-plus-operands": "off",
+        "typescript/restrict-template-expressions": "off",
+        "typescript/unbound-method": "off"
+      }
     }
   ]
 }
