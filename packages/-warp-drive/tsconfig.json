@@ -26,7 +26,8 @@
     "inlineSourceMap": true,
     "inlineSources": true,
     "rootDir": "src",
-    "checkJs": false
+    "checkJs": false,
+    "types": ["node"]
   },
   "references": [
     {

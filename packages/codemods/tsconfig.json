@@ -32,7 +32,8 @@
     "experimentalDecorators": true,
     "incremental": true,
     "paths": {},
-    "checkJs": false
+    "checkJs": false,
+    "types": ["node", "bun"]
   },
   "references": []
 }
