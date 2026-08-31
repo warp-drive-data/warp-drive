@@ -1075,7 +1075,6 @@
       "files": [
         "warp-drive-packages/schema-dsl/src/**",
         "packages/-warp-drive/src/**",
-        "packages/codemods/**",
         "warp-drive-packages/ember/src/**",
         "warp-drive-packages/legacy/src/**",
         "packages/diagnostic/src/**",

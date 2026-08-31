@@ -167,11 +167,11 @@ export function addImport(
     const lastImportCollection = root.find(j.ImportDeclaration).at(-1);
     if (lastImportCollection.length === 0) {
       // YOLO
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+      // oxlint-disable-next-line typescript/no-unsafe-call
       root
         .find(j.Program)
         .get('body', 0)
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        // oxlint-disable-next-line typescript/no-unsafe-member-access
         .insertBefore(j.importDeclaration([specifier], j.literal(sourceValue)));
     } else {
       lastImportCollection.insertAfter(j.importDeclaration([specifier], j.literal(sourceValue)));
