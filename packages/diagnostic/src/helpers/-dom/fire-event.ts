@@ -136,26 +136,26 @@ export function fireEvent(
 function buildBasicEvent(type: string, options: any = {}): Event {
   const event = document.createEvent('Events');
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+  // oxlint-disable-next-line typescript/no-unsafe-assignment, typescript/no-unsafe-member-access
   const bubbles = options.bubbles !== undefined ? options.bubbles : true;
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+  // oxlint-disable-next-line typescript/no-unsafe-assignment, typescript/no-unsafe-member-access
   const cancelable = options.cancelable !== undefined ? options.cancelable : true;
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+  // oxlint-disable-next-line typescript/no-unsafe-member-access
   delete options.bubbles;
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+  // oxlint-disable-next-line typescript/no-unsafe-member-access
   delete options.cancelable;
 
   // bubbles and cancelable are readonly, so they can be
   // set when initializing event
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+  // oxlint-disable-next-line typescript/no-unsafe-argument
   event.initEvent(type, bubbles, cancelable);
   for (const prop in options) {
-    /* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access */
+    /* oxlint-disable typescript/no-unsafe-assignment, typescript/no-unsafe-member-access */
     /* oxlint-disable typescript/no-explicit-any */
     (event as any)[prop] = options[prop];
     /* oxlint-enable typescript/no-explicit-any */
-    /* eslint-enable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access */
+    /* eslint-enable typescript/no-unsafe-assignment, typescript/no-unsafe-member-access */
   }
   return event;
 }
@@ -163,45 +163,45 @@ function buildBasicEvent(type: string, options: any = {}): Event {
 // oxlint-disable-next-line typescript/no-explicit-any
 function buildMouseEvent(type: MouseEventType, options: any = {}) {
   let event;
-  /* eslint-disable @typescript-eslint/no-unsafe-assignment */
+  /* oxlint-disable typescript/no-unsafe-assignment */
   /* oxlint-disable typescript/no-explicit-any */
   const eventOpts: any = { view: window, ...DEFAULT_EVENT_OPTIONS, ...options };
   /* oxlint-enable typescript/no-explicit-any */
-  /* eslint-enable @typescript-eslint/no-unsafe-assignment */
+  /* eslint-enable typescript/no-unsafe-assignment */
   if (MOUSE_EVENT_CONSTRUCTOR) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    // oxlint-disable-next-line typescript/no-unsafe-argument
     event = new MouseEvent(type, eventOpts);
   } else {
     try {
       event = document.createEvent('MouseEvents');
       event.initMouseEvent(
         type,
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
+        // oxlint-disable-next-line typescript/no-unsafe-argument, typescript/no-unsafe-member-access
         eventOpts.bubbles,
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
+        // oxlint-disable-next-line typescript/no-unsafe-argument, typescript/no-unsafe-member-access
         eventOpts.cancelable,
         window,
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
+        // oxlint-disable-next-line typescript/no-unsafe-argument, typescript/no-unsafe-member-access
         eventOpts.detail,
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
+        // oxlint-disable-next-line typescript/no-unsafe-argument, typescript/no-unsafe-member-access
         eventOpts.screenX,
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
+        // oxlint-disable-next-line typescript/no-unsafe-argument, typescript/no-unsafe-member-access
         eventOpts.screenY,
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
+        // oxlint-disable-next-line typescript/no-unsafe-argument, typescript/no-unsafe-member-access
         eventOpts.clientX,
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
+        // oxlint-disable-next-line typescript/no-unsafe-argument, typescript/no-unsafe-member-access
         eventOpts.clientY,
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
+        // oxlint-disable-next-line typescript/no-unsafe-argument, typescript/no-unsafe-member-access
         eventOpts.ctrlKey,
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
+        // oxlint-disable-next-line typescript/no-unsafe-argument, typescript/no-unsafe-member-access
         eventOpts.altKey,
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
+        // oxlint-disable-next-line typescript/no-unsafe-argument, typescript/no-unsafe-member-access
         eventOpts.shiftKey,
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
+        // oxlint-disable-next-line typescript/no-unsafe-argument, typescript/no-unsafe-member-access
         eventOpts.metaKey,
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
+        // oxlint-disable-next-line typescript/no-unsafe-argument, typescript/no-unsafe-member-access
         eventOpts.button,
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
+        // oxlint-disable-next-line typescript/no-unsafe-argument, typescript/no-unsafe-member-access
         eventOpts.relatedTarget
       );
     } catch {
@@ -214,16 +214,16 @@ function buildMouseEvent(type: MouseEventType, options: any = {}) {
 
 // oxlint-disable-next-line typescript/no-explicit-any
 export function _buildKeyboardEvent(type: KeyboardEventType, options: any = {}): Event {
-  /* eslint-disable @typescript-eslint/no-unsafe-assignment */
+  /* oxlint-disable typescript/no-unsafe-assignment */
   /* oxlint-disable typescript/no-explicit-any */
   const eventOpts: any = { ...DEFAULT_EVENT_OPTIONS, ...options };
   /* oxlint-enable typescript/no-explicit-any */
-  /* eslint-enable @typescript-eslint/no-unsafe-assignment */
+  /* eslint-enable typescript/no-unsafe-assignment */
   let event: Event | undefined;
   let eventMethodName: 'initKeyboardEvent' | 'initKeyEvent' | undefined;
 
   try {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    // oxlint-disable-next-line typescript/no-unsafe-argument
     event = new KeyboardEvent(type, eventOpts);
 
     // Property definitions are required for B/C for keyboard event usage
@@ -236,14 +236,14 @@ export function _buildKeyboardEvent(type: KeyboardEventType, options: any = {}):
     // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent
     Object.defineProperty(event, 'keyCode', {
       get() {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
+        // oxlint-disable-next-line typescript/no-unsafe-argument, typescript/no-unsafe-member-access
         return parseInt(eventOpts.keyCode);
       },
     });
 
     Object.defineProperty(event, 'which', {
       get() {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
+        // oxlint-disable-next-line typescript/no-unsafe-argument, typescript/no-unsafe-member-access
         return parseInt(eventOpts.which);
       },
     });
@@ -270,28 +270,28 @@ export function _buildKeyboardEvent(type: KeyboardEventType, options: any = {}):
   }
 
   if (event && eventMethodName) {
-    /* eslint-disable @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access */
+    /* oxlint-disable typescript/no-unsafe-call, typescript/no-unsafe-member-access */
     /* oxlint-disable typescript/no-explicit-any */
     (event as any)[eventMethodName](
       /* oxlint-enable typescript/no-explicit-any */
-      /* eslint-enable @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access */
+      /* eslint-enable typescript/no-unsafe-call, typescript/no-unsafe-member-access */
       type,
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      // oxlint-disable-next-line typescript/no-unsafe-member-access
       eventOpts.bubbles,
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      // oxlint-disable-next-line typescript/no-unsafe-member-access
       eventOpts.cancelable,
       window,
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      // oxlint-disable-next-line typescript/no-unsafe-member-access
       eventOpts.ctrlKey,
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      // oxlint-disable-next-line typescript/no-unsafe-member-access
       eventOpts.altKey,
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      // oxlint-disable-next-line typescript/no-unsafe-member-access
       eventOpts.shiftKey,
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      // oxlint-disable-next-line typescript/no-unsafe-member-access
       eventOpts.metaKey,
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      // oxlint-disable-next-line typescript/no-unsafe-member-access
       eventOpts.keyCode,
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      // oxlint-disable-next-line typescript/no-unsafe-member-access
       eventOpts.charCode
     );
   } else {
@@ -304,7 +304,7 @@ export function _buildKeyboardEvent(type: KeyboardEventType, options: any = {}):
 // oxlint-disable-next-line typescript/no-explicit-any
 function buildFileEvent(type: FileSelectionEventType, element: HTMLInputElement, options: any = {}): Event {
   const event = buildBasicEvent(type);
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+  // oxlint-disable-next-line typescript/no-unsafe-assignment, typescript/no-unsafe-member-access
   const files = options.files;
 
   if (Array.isArray(options)) {
@@ -316,7 +316,7 @@ function buildFileEvent(type: FileSelectionEventType, element: HTMLInputElement,
   if (Array.isArray(files)) {
     Object.defineProperty(files, 'item', {
       value(index: number) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access
+        // oxlint-disable-next-line typescript/no-unsafe-return, typescript/no-unsafe-member-access
         return typeof index === 'number' ? this[index] : null;
       },
       configurable: true,
@@ -326,13 +326,13 @@ function buildFileEvent(type: FileSelectionEventType, element: HTMLInputElement,
       configurable: true,
     });
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    // oxlint-disable-next-line typescript/no-unsafe-assignment
     const elementProto = Object.getPrototypeOf(element);
     const valueProp = Object.getOwnPropertyDescriptor(elementProto, 'value');
     Object.defineProperty(element, 'value', {
       configurable: true,
       get() {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+        // oxlint-disable-next-line typescript/no-unsafe-return
         return valueProp!.get!.call(element);
       },
       set(value) {

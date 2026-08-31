@@ -19,7 +19,6 @@ type NpmInfo = {
 
 const InfoCache: Record<string, NpmInfo> = {};
 
-// eslint-disable-next-line @typescript-eslint/require-await
 export async function exec(cmd: string, args?: Parameters<typeof execSync>[1]): Promise<string | Buffer> {
   debug(`exec: ${cmd}`);
   return execSync(cmd, { ...args });

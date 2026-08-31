@@ -1,6 +1,7 @@
 // @ts-check
 import { globalIgnores } from '@warp-drive/internal-config/eslint/ignore.js';
 import * as node from '@warp-drive/internal-config/eslint/node.js';
+import * as oxlint from '@warp-drive/internal-config/eslint/oxlint.js';
 import * as qunit from '@warp-drive/internal-config/eslint/qunit.js';
 import * as typescript from '@warp-drive/internal-config/eslint/typescript.js';
 
@@ -16,9 +17,11 @@ export default [
     dirname: import.meta.dirname,
     srcDirs: ['src'],
     allowedImports: externals,
-    rules: {
-      '@typescript-eslint/no-unsafe-assignment': 'off',
-    },
+    // oxlint's `--type-aware` pass (see tools/internal-config/oxlint/type-aware-scoped-dirs.txt)
+    // covers `src` cleanly here — verified against real CI's type-aware run. The remaining
+    // genuine no-unsafe-assignment findings (matching this package's long-standing ESLint
+    // precedent) are suppressed inline via oxlint-disable.
+    rules: oxlint.disabledTypeAwareRules(),
   }),
 
   // node (module) ================

@@ -154,7 +154,7 @@ export function buildHelpers<
       // @ts-expect-error - this is a global variable that we set to resume the test
       globalThis.resumeTest = resume = undefined;
       // @ts-expect-error - this is a global variable that we set to resume the test
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+      // oxlint-disable-next-line typescript/no-unsafe-call, typescript/no-unsafe-member-access
       globalThis.pausedTests.delete(info.id);
     },
     pauseTest: () => {
@@ -163,7 +163,7 @@ export function buildHelpers<
       // @ts-expect-error - this is a global variable that we set to resume the test
       globalThis.pausedTests ??= new Set<string>();
       // @ts-expect-error - this is a global variable that we set to resume the test
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+      // oxlint-disable-next-line typescript/no-unsafe-call, typescript/no-unsafe-member-access
       globalThis.pausedTests.add(info.id);
 
       return new Promise((resolve) => {

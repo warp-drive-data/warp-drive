@@ -133,7 +133,7 @@ class Spec<
 
                 const frameworkRender = context.render.bind(context);
                 context.render = (props) => {
-                  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+                  // oxlint-disable-next-line typescript/no-unsafe-argument
                   return frameworkRender(impl(props));
                 };
 
@@ -156,7 +156,7 @@ class Spec<
 
                 const frameworkRender = context.render.bind(context);
                 context.render = (props) => {
-                  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+                  // oxlint-disable-next-line typescript/no-unsafe-argument
                   return frameworkRender(impl(props));
                 };
 
@@ -179,7 +179,7 @@ class Spec<
 
                 const frameworkRender = context.render.bind(context);
                 context.render = (props) => {
-                  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+                  // oxlint-disable-next-line typescript/no-unsafe-argument
                   return frameworkRender(impl(props));
                 };
 

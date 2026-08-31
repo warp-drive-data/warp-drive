@@ -1072,43 +1072,6 @@
       }
     },
     {
-      "files": [
-        "packages/-warp-drive/src/**",
-        "warp-drive-packages/legacy/src/**",
-        "packages/diagnostic/src/**",
-        "packages/-ember-data/src/**",
-        "warp-drive-packages/react/src/**",
-        "tests/core/**"
-      ],
-      "rules": {
-        "typescript/consistent-type-exports": "warn",
-        "typescript/no-array-delete": "warn",
-        "typescript/no-duplicate-type-constituents": "warn",
-        "typescript/no-floating-promises": "warn",
-        "typescript/no-for-in-array": "warn",
-        "typescript/no-implied-eval": "warn",
-        "typescript/no-meaningless-void-operator": "warn",
-        "typescript/no-unnecessary-type-arguments": "warn",
-        "typescript/no-unnecessary-type-assertion": "warn",
-        "typescript/no-unsafe-argument": "warn",
-        "typescript/no-unsafe-assignment": "warn",
-        "typescript/no-unsafe-call": "warn",
-        "typescript/no-unsafe-enum-comparison": "warn",
-        "typescript/no-unsafe-member-access": "warn",
-        "typescript/no-unsafe-return": "warn",
-        "typescript/no-unsafe-unary-minus": "warn",
-        "typescript/only-throw-error": "warn",
-        "typescript/prefer-includes": "warn",
-        "typescript/prefer-promise-reject-errors": "warn",
-        "typescript/prefer-reduce-type-parameter": "warn",
-        "typescript/prefer-return-this-type": "warn",
-        "typescript/require-await": "warn",
-        "typescript/restrict-plus-operands": "warn",
-        "typescript/restrict-template-expressions": "warn",
-        "typescript/unbound-method": "warn"
-      }
-    },
-    {
       // Every tsconfig.json in this monorepo sets "checkJs": false (the one exception,
       // packages/holodeck/server, isn't in scoped-dirs.txt), meaning real tsc never type-checks
       // the bodies of plain .js files even where "allowJs" lets them into the program — it only
