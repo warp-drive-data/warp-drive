@@ -15,7 +15,7 @@ export const externals = [
   '@ember/-internals/metal',
   '@ember/runloop',
 ];
-export const entryPoints = ['./src/index.ts', './src/install.ts'];
+export const entryPoints = ['./src/index.ts', './src/install.ts', './src/experiments.ts'];
 
 export default createConfig(
   {

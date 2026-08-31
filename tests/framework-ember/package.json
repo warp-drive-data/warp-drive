@@ -47,6 +47,7 @@
     "@warp-drive/json-api": "workspace:*",
     "@warp-drive/legacy": "workspace:*",
     "@warp-drive/utilities": "workspace:*",
+    "@warp-drive/experiments": "workspace:*",
     "babel-plugin-ember-template-compilation": "^4.0.0",
     "decorator-transforms": "^2.4.0",
     "ember-source": "catalog:",

@@ -34,6 +34,7 @@
   },
   "peerDependencies": {
     "@warp-drive/core": "workspace:*",
+    "@warp-drive/experiments": "workspace:*",
     "@warp-drive/diagnostic": "workspace:*",
     "@warp-drive/holodeck": "workspace:*",
     "@warp-drive/json-api": "workspace:*",
@@ -47,6 +48,7 @@
     "@babel/plugin-transform-typescript": "^7.29.7",
     "@babel/preset-typescript": "^7.29.7",
     "@warp-drive/core": "workspace:*",
+    "@warp-drive/experiments": "workspace:*",
     "@warp-drive/diagnostic": "workspace:*",
     "@warp-drive/holodeck": "workspace:*",
     "@warp-drive/internal-config": "workspace:*",
