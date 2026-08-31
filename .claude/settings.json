@@ -1,4 +1,7 @@
 {
+  "worktree": {
+    "baseRef": "fresh"
+  },
   "hooks": {
     "SessionStart": [
       {
@@ -7,6 +10,16 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR\"/scripts/cloud-bootstrap.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "startup",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "main=$(git -C \"$CLAUDE_PROJECT_DIR\" worktree list --porcelain | head -1 | sed \"s|^worktree ||\"); ts=$(date +%s); wt=\"$(dirname \"$main\")/$(basename \"$main\")-session-$ts\"; git -C \"$main\" fetch --quiet origin main && git -C \"$main\" worktree add -b \"session-$ts\" \"$wt\" origin/main >/dev/null 2>&1 && echo \"Sister worktree ready: $wt (branch session-$ts, from origin/main). Work there rather than in the primary checkout, and run 'pnpm install' in it before building or testing. It is a SIBLING of the repo on purpose -- see warp-drive-packages/memory-alpha/skills/contributors/start-in-a-fresh-worktree.md and do not relocate it inside the repo.\" || true",
+            "statusMessage": "Creating sister worktree from origin/main..."
           }
         ]
       }

@@ -1,9 +1,10 @@
 {
   "title": "Contributors",
-  "items": ["fix-at-the-source"],
+  "items": ["start-in-a-fresh-worktree", "fix-at-the-source"],
   "webIndex": "overview",
   "files": {
     "index": { "draft": true },
+    "start-in-a-fresh-worktree": { "title": "Start in a Fresh Worktree" },
     "fix-at-the-source": { "title": "Fix at the Source" }
   }
 }
