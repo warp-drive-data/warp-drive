@@ -35,7 +35,6 @@
     "declarationMap": true,
     "inlineSourceMap": true,
     "inlineSources": true,
-    "baseUrl": ".",
     "allowImportingTsExtensions": true,
     "isolatedDeclarations": true,
     "isolatedModules": true,

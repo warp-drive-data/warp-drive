@@ -32,7 +32,6 @@
     "declarationMap": true,
     "inlineSourceMap": true,
     "inlineSources": true,
-    "baseUrl": ".",
     "types": [],
     "allowImportingTsExtensions": true,
     "erasableSyntaxOnly": true,

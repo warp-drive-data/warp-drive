@@ -25,7 +25,6 @@
     "strictNullChecks": true,
     "noErrorTruncation": true,
     "experimentalDecorators": true,
-    "downlevelIteration": false,
     "forceConsistentCasingInFileNames": true,
     "noImplicitOverride": false,
 
@@ -40,7 +39,6 @@
     "declarationMap": true,
     "inlineSourceMap": true,
     "inlineSources": true,
-    "baseUrl": ".",
     "allowImportingTsExtensions": true,
     "erasableSyntaxOnly": true,
     "isolatedDeclarations": true,
