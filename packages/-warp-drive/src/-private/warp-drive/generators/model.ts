@@ -33,14 +33,14 @@ function parseAttrs(rawAttrs: string[]): { attrs: ParsedAttr[]; importedModules:
 
     const dasherizedType = dasherize(type);
 
-    if (/has-many/.test(dasherizedType)) {
+    if (dasherizedType.includes('has-many')) {
       importedModulesSet.add('hasMany');
       attrs.push({
         name: singularize(dasherize(foreignModel)),
         type: dasherizedType,
         propertyName: pluralize(camelize(name)),
       });
-    } else if (/belongs-to/.test(dasherizedType)) {
+    } else if (dasherizedType.includes('belongs-to')) {
       importedModulesSet.add('belongsTo');
       attrs.push({
         name: dasherize(foreignModel),
