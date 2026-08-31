@@ -1073,17 +1073,12 @@
     },
     {
       "files": [
-        "warp-drive-packages/schema-dsl/src/**",
         "packages/-warp-drive/src/**",
         "warp-drive-packages/legacy/src/**",
         "packages/diagnostic/src/**",
         "packages/-ember-data/src/**",
         "warp-drive-packages/react/src/**",
-        "tests/core/**",
-        "tests/dont-write-new-tests-here/**",
-        "tests/example-app-ember/**",
-        "tests/framework-ember/**",
-        "tests/legacy/**"
+        "tests/core/**"
       ],
       "rules": {
         "typescript/consistent-type-exports": "warn",

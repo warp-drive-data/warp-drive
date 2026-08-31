@@ -376,7 +376,7 @@ module('integration/record-data - Custom Cache Implementations', function (hooks
         if (called === 1) {
           return Promise.resolve();
         } else if (called > 1) {
-          // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
+          // oxlint-disable-next-line typescript/prefer-promise-reject-errors
           return Promise.reject();
         }
       },

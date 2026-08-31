@@ -26,7 +26,7 @@ export function enterTestMode() {
   ENV.APP.rootElement = '#ember-testing';
   ENV.APP.autoboot = false;
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+  // oxlint-disable-next-line typescript/no-unsafe-member-access, typescript/no-unsafe-call
   const config = getGlobalConfig()['@embroider/macros'] as { isTesting: boolean } | undefined;
 
   if (config) config.isTesting = true;
