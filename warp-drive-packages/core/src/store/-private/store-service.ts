@@ -88,11 +88,13 @@ if (TESTING) {
 
 if (LOG_METRIC_COUNTS) {
   // @ts-expect-error adding to globalThis
+  // oxlint-disable-next-line
   globalThis.__WarpDriveMetricCountData = globalThis.__WarpDriveMetricCountData || {};
 
   // @ts-expect-error adding to globalThis
   globalThis.getWarpDriveMetricCounts = () => {
     // @ts-expect-error
+    // oxlint-disable-next-line
     return structuredClone(globalThis.__WarpDriveMetricCountData);
   };
 
@@ -118,13 +120,16 @@ if (LOG_METRIC_COUNTS) {
         globalThis[klassName] = class extends klass {
           // @ts-expect-error
           constructor(...args) {
+            // oxlint-disable-next-line
             super(...args);
             // @ts-expect-error
 
             const instanceId = globalThis.__primitiveInstanceId++;
             // @ts-expect-error
+            // oxlint-disable-next-line
             globalThis.__WarpDriveMetricCountData[instantiationLabel] =
               // @ts-expect-error
+              // oxlint-disable-next-line
               (globalThis.__WarpDriveMetricCountData[instantiationLabel] || 0) + 1;
             // @ts-expect-error
             this.instanceName = `${klassName}:${instanceId} - ${new Error().stack?.split('\n')[2]}`;
@@ -132,12 +137,14 @@ if (LOG_METRIC_COUNTS) {
         };
       } else {
         // @ts-expect-error
+        // oxlint-disable-next-line
         const original = klass.prototype[methodName];
         const logName = `${klassName}.${methodName}`;
 
         // @ts-expect-error
         klass.prototype[methodName] = function (...args) {
           // @ts-expect-error
+          // oxlint-disable-next-line
           globalThis.__WarpDriveMetricCountData[logName] = (globalThis.__WarpDriveMetricCountData[logName] || 0) + 1;
           // @ts-expect-error
           const { instanceName } = this;
@@ -149,9 +156,12 @@ if (LOG_METRIC_COUNTS) {
           }
           const instanceLogName = `${logName} (${instanceName})`;
           // @ts-expect-error
+          // oxlint-disable-next-line
           globalThis.__WarpDriveMetricCountData[instanceLogName] =
             // @ts-expect-error
+            // oxlint-disable-next-line
             (globalThis.__WarpDriveMetricCountData[instanceLogName] || 0) + 1;
+          // oxlint-disable-next-line
           return original.apply(this, args);
         };
       }

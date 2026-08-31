@@ -15,6 +15,7 @@ import type { Graph } from '../graph.ts';
 
 function count(label: string) {
   // @ts-expect-error
+  // oxlint-disable-next-line
   globalThis.__WarpDriveMetricCountData[label] = (globalThis.__WarpDriveMetricCountData[label] || 0) + 1;
 }
 
