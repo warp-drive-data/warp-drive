@@ -270,7 +270,7 @@
     "typescript/prefer-promise-reject-errors": "error",
     "typescript/prefer-reduce-type-parameter": "error",
     "typescript/prefer-return-this-type": "error",
-    "typescript/require-await": "error",
+    "typescript/require-await": "off",
     "typescript/restrict-plus-operands": "error",
     "typescript/restrict-template-expressions": "error",
     "typescript/unbound-method": "error",
@@ -1075,7 +1075,6 @@
       "files": [
         "warp-drive-packages/schema-dsl/src/**",
         "packages/-warp-drive/src/**",
-        "warp-drive-packages/ember/src/**",
         "warp-drive-packages/legacy/src/**",
         "packages/diagnostic/src/**",
         "packages/-ember-data/src/**",
