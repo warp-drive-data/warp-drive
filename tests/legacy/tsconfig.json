@@ -20,7 +20,12 @@
     "experimentalDecorators": true,
     "incremental": true,
     "declaration": true,
-    "types": ["vite/client", "@ember-data/unpublished-test-infra/test-support/asserts/index"],
+    "types": [
+      "@glint/ember-tsc/types",
+      "ember-source/types",
+      "vite/client",
+      "@ember-data/unpublished-test-infra/test-support/asserts/index"
+    ],
     "allowImportingTsExtensions": true,
     "composite": true,
     "declarationDir": "unstable-preview-types",

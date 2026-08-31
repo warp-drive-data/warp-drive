@@ -18,7 +18,7 @@
     "experimentalDecorators": true,
     "incremental": true,
     "declaration": true,
-    "types": ["vite/client"],
+    "types": ["@glint/ember-tsc/types", "ember-source/types", "vite/client"],
     "allowImportingTsExtensions": true,
     "composite": true,
     "declarationDir": "unstable-preview-types",
