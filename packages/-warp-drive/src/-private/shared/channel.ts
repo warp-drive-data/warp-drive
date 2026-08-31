@@ -39,9 +39,9 @@ export type STRATEGY_TYPE = 'stable' | 'alpha' | 'beta';
 export type TYPE_STRATEGY = 'stable' | 'alpha' | 'beta' | 'private';
 export type RELEASE_TYPE = 'major' | 'minor' | 'patch';
 
-// eslint-disable-next-line no-useless-escape
+// oxlint-disable-next-line no-useless-escape
 const RELEASE_BRANCH_REGEXP = /^release\-(\d+)\-(\d+)/;
-// eslint-disable-next-line no-useless-escape
+// oxlint-disable-next-line no-useless-escape
 const LTS_BRANCH_REGEXP = /^lts\-(\d+)\-(\d+)/;
 
 export function channelForBranch(branch: string, currentVersion: SEMVER_VERSION, force: boolean): CHANNEL {

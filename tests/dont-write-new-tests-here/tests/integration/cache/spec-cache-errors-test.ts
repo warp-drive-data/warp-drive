@@ -283,7 +283,7 @@ module('integration/record-data Custom Cache (v2) Errors', function (hooks) {
     }
     class TestAdapter extends EmberObject {
       updateRecord() {
-        // oxlint-disable-next-line typescript/prefer-promise-reject-errors
+        // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
         return Promise.reject();
       }
 

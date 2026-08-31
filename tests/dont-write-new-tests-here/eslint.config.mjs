@@ -42,16 +42,26 @@ export default [
     globals: { gc: true },
   }),
 
-  // browser (js/ts) ================
+  // browser (ts) ================
+  // oxlint's `--type-aware` pass now covers app/ cleanly (tsconfig.json carries the
+  // ember/glint ambient types directly) — verified against real CI's type-aware run.
   typescript.browser({
     dirname: import.meta.dirname,
-    srcDirs: ['app', 'tests'],
+    srcDirs: ['app'],
     allowedImports: AllowedImports,
-    // oxlint's `--type-aware` pass now covers this cleanly (tsconfig.json carries the ember/glint
-    // ambient types directly) — verified against real CI's type-aware run. `.gts` files are
-    // handled by the separate gts.browser() block below, which keeps full type-aware ESLint
-    // coverage since oxlint's parser can't scan those.
     rules: oxlint.disabledTypeAwareRules(),
+  }),
+
+  // browser (ts, qunit tests) ================
+  // tests/** isn't in oxlint's scoped-dirs.txt (qunit-covered test files stay on ESLint —
+  // see that file's header comment), so this keeps full type-aware ESLint enforcement,
+  // unlike the app/ block above. `.gts` files are handled by the separate gts.browser()
+  // block below, which also keeps full type-aware ESLint coverage since oxlint's parser
+  // can't scan those.
+  typescript.browser({
+    dirname: import.meta.dirname,
+    srcDirs: ['tests'],
+    allowedImports: AllowedImports,
   }),
 
   // gts

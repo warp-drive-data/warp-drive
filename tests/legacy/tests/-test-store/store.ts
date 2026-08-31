@@ -54,11 +54,11 @@ export class Store extends BaseStore {
   serializerFor() {
     if (!this._serializer) {
       const owner = getOwner(this)!;
-      // oxlint-disable-next-line typescript/no-unsafe-argument
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       owner.register(`serializer:application`, RESTSerializer);
       this._serializer = owner.lookup(`serializer:application`) as typeof RESTSerializer;
     }
-    // oxlint-disable-next-line typescript/no-unsafe-return
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return this._serializer;
   }
   serializeRecord = serializeRecord;
@@ -90,7 +90,7 @@ export function createTestStore(options: Partial<LegacyStoreSetupOptions> = {}, 
     constructor(arg: unknown) {
       super(arg);
       context.owner.register('adapter:application', ApplicationAdapter);
-      // oxlint-disable-next-line typescript/no-unsafe-argument
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       context.owner.register('serializer:application', RESTSerializer);
     }
 
@@ -105,7 +105,7 @@ export function createTestStore(options: Partial<LegacyStoreSetupOptions> = {}, 
       if (!this._serializer) {
         this._serializer = context.owner.lookup(`serializer:application`) as typeof RESTSerializer;
       }
-      // oxlint-disable-next-line typescript/no-unsafe-return
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
       return this._serializer;
     }
   }

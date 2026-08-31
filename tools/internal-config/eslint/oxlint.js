@@ -5,12 +5,10 @@
 // there, and this list must only be applied to plain `.ts`/`.tsx`/`.js` configs.
 //
 // This deliberately excludes every rule that requires type information (no-unsafe-*,
-// no-floating-promises, require-await, restrict-template-expressions, unbound-method, etc.)
-// even though `.oxlintrc.json` lists them as `"error"`: `tools/internal-config/oxlint/run.sh`
-// invokes plain `oxlint`, and those rules are no-ops without the `--type-aware` flag oxlint
-// requires to enable them (confirmed by running oxlint locally against this repo — none of
-// them fired despite dozens of pre-existing violations ESLint's type-aware pass catches).
-// ESLint must keep enforcing those until oxlint's type-aware mode is actually wired up.
+// no-floating-promises, require-await, restrict-template-expressions, unbound-method, etc.):
+// those need `oxlint --type-aware`, a separate, additive pass `tools/internal-config/oxlint/run.sh`
+// also runs — see `TYPE_AWARE_OXLINT_RULES`/`disabledTypeAwareRules()` below for the ESLint-side
+// handoff for those.
 //
 // Keep this in sync with the enabled ("error"), non-type-aware rules in `.oxlintrc.json`'s
 // `rules` map.
@@ -122,12 +120,13 @@ export function disabledRules() {
 }
 
 // The type-aware rules excluded from OXLINT_OWNED_RULES above. oxlint only checks these
-// with `--type-aware`, which `tools/internal-config/oxlint/run.sh` runs over the small,
-// vetted subset of packages listed in `tools/internal-config/oxlint/type-aware-scoped-dirs.txt`
-// (most of this repo's tsconfigs aren't parseable by tsgolint yet — see that file). Within
-// that subset, disable the matching ESLint rules per-package (never repo-wide — a package's
-// tsgolint results have to be individually verified against real `tsc`/ESLint first; see
-// `warp-drive-packages/experiments/eslint.config.mjs` for the one currently verified clean).
+// with `--type-aware`, which `tools/internal-config/oxlint/run.sh` runs over every directory
+// listed in `tools/internal-config/oxlint/type-aware-scoped-dirs.txt` (currently identical to
+// `scoped-dirs.txt` in full). Disable the matching ESLint rules per-package, applied to every
+// package whose sources fall under that list — packages entirely outside oxlint's scope
+// (see `scoped-dirs.txt`'s own header comment, e.g. `packages/eslint-plugin-warp-drive`,
+// `packages/internal-exam`) get no oxlint coverage at all, type-aware or not, so ESLint must
+// keep enforcing these there.
 export const TYPE_AWARE_OXLINT_RULES = [
   '@typescript-eslint/consistent-type-exports',
   '@typescript-eslint/no-array-delete',

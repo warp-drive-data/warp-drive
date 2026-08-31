@@ -397,7 +397,7 @@ module('Integration | Identifiers - configuration', function (hooks) {
         throw new Error(`Unexpected generation of new resource identifier`);
       }
       generateLidCalls++;
-      // oxlint-disable-next-line typescript/restrict-template-expressions
+      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
       return `${resource.type}:${resource.id}`;
     });
     let forgetMethodCalls = 0;

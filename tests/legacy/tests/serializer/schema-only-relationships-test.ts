@@ -32,7 +32,7 @@ module('Serializer Contract | schema-only (migration-support) resources', functi
     const store = new Store();
     setOwner(store, this.owner);
     this.owner.register('service:store', store, { instantiate: false });
-    // oxlint-disable-next-line typescript/no-unsafe-argument
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     this.owner.register('serializer:application', JSONSerializer);
 
     const { schema } = store;
@@ -64,12 +64,12 @@ module('Serializer Contract | schema-only (migration-support) resources', functi
     const watchers = schema.fields({ type: 'post' }).get('watchers');
 
     assert.false(
-      // oxlint-disable-next-line typescript/no-unsafe-argument
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       serializer.shouldSerializeHasMany(snapshot, 'comments', comments),
       'a hasMany relationship with an inverse belongsTo (manyToOne) is not serialized by default'
     );
     assert.true(
-      // oxlint-disable-next-line typescript/no-unsafe-argument
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       serializer.shouldSerializeHasMany(snapshot, 'watchers', watchers),
       'a hasMany relationship with no inverse (manyToNone) is serialized by default'
     );
@@ -79,11 +79,11 @@ module('Serializer Contract | schema-only (migration-support) resources', functi
     const store = new Store();
     setOwner(store, this.owner);
     this.owner.register('service:store', store, { instantiate: false });
-    // oxlint-disable-next-line typescript/no-unsafe-argument
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     this.owner.register('serializer:application', RESTSerializer);
     this.owner.register(
       'serializer:evil-minion',
-      // oxlint-disable-next-line typescript/no-unsafe-argument
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       RESTSerializer.extend(EmbeddedRecordsMixin, {
         attrs: {
           secretWeapon: { embedded: 'always' },

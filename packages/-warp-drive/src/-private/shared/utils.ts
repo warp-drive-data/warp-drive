@@ -193,7 +193,7 @@ export function rebalanceLines(str: string, max_length = 75): string {
     }
 
     const indentMatch = line.match(/^\s+/);
-    // eslint-disable-next-line no-useless-escape
+    // oxlint-disable-next-line no-useless-escape
     const hasBullet = line.match(/^\s*[-\*]\s+/) || line.match(/^\s*\d+\)?\.\s+/);
     const bulletIndent = hasBullet ? hasBullet[0] : '';
     let strIndent = '';
@@ -246,7 +246,7 @@ export function rebalanceLines(str: string, max_length = 75): string {
 }
 
 export function write(out: string): void {
-  // eslint-disable-next-line no-console
+  // oxlint-disable-next-line no-console
   console.log(out);
 }
 
