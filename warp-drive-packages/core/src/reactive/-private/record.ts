@@ -350,7 +350,7 @@ export class ReactiveResource {
             return () => Promise.resolve(_COMMIT(receiver as unknown as ReactiveResource));
           }
           // this Proxy get trap must return raw property values, including methods, unbound
-          // eslint-disable-next-line @typescript-eslint/unbound-method
+          // oxlint-disable-next-line typescript/unbound-method
           return target[prop as keyof ReactiveResource];
         }
         if (prop === Signals) {
@@ -411,7 +411,7 @@ export class ReactiveResource {
                 const json: Record<string, unknown> = {};
                 for (const key in receiver) {
                   // serializing arbitrary property values, never invoking them
-                  // eslint-disable-next-line @typescript-eslint/unbound-method
+                  // oxlint-disable-next-line typescript/unbound-method
                   json[key] = receiver[key as keyof typeof receiver];
                 }
 
@@ -430,7 +430,7 @@ export class ReactiveResource {
               fn = function* () {
                 for (const key in receiver) {
                   // yielding arbitrary property values, never invoking them
-                  // eslint-disable-next-line @typescript-eslint/unbound-method
+                  // oxlint-disable-next-line typescript/unbound-method
                   yield [key, receiver[key as keyof typeof receiver]];
                 }
               };
@@ -629,7 +629,7 @@ export class ReactiveResource {
           const data: Record<string, unknown> = {};
           for (const key of fields.keys()) {
             // building a debug-only snapshot of raw property values, never invoking them
-            // eslint-disable-next-line @typescript-eslint/unbound-method
+            // oxlint-disable-next-line typescript/unbound-method
             data[key] = proxy[key as keyof ReactiveResource];
           }
 

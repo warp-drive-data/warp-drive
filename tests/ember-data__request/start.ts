@@ -19,7 +19,7 @@ setConfig({ host: MockHost });
 setupGlobalHooks((hooks) => {
   hooks.beforeEach(function (assert) {
     // @ts-expect-error compatibility with QUnit
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
+    // oxlint-disable-next-line typescript/no-unsafe-argument, typescript/no-unsafe-member-access
     setTestId(this, assert.test.testId);
   });
   hooks.afterEach(function () {

@@ -77,7 +77,7 @@ export function update(this: ReactiveResourceArray): Promise<ReactiveResourceArr
   this.isUpdating = true;
 
   // @ts-expect-error
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+  // oxlint-disable-next-line typescript/no-unsafe-call
   const updatingPromise = this._update() as Promise<IdentifierArray>;
   void updatingPromise.finally(() => {
     this._updatingPromise = null;
