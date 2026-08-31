@@ -80,3 +80,11 @@ node-compile-cache
 
 # Claude Code local files
 .claude/*.local.*
+
+# Worktrees nested here by Claude Code's built-in mechanisms (--worktree,
+# EnterWorktree, agent isolation). Nested worktrees are NOT how this repo wants
+# to work — Node resolves node_modules upward, so they pick up the outer
+# checkout's dependencies; use a sister worktree instead (see
+# skills/contributors/start-in-a-fresh-worktree.md). Ignored so that a nested
+# one arriving anyway doesn't show up as a repo's worth of untracked files.
+.claude/worktrees/
