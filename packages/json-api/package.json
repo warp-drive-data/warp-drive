@@ -1,6 +1,6 @@
 {
   "name": "@ember-data/json-api",
-  "version": "5.9.0-alpha.24",
+  "version": "5.9.0-alpha.25",
   "description": "(Legacy) JSON:API document and resource cache implementation for EmberData",
   "keywords": [
     "ember-addon"
