@@ -108,8 +108,7 @@ export default class BelongsToReference<
         if (bucket === 'relationships' && notifiedKey === key) {
           this._ref++;
         }
-      },
-      'local'
+      }
     );
 
     // TODO inverse
@@ -147,8 +146,7 @@ export default class BelongsToReference<
           if (bucket === 'identity' || (bucket === 'attributes' && notifiedKey === 'id')) {
             this._ref++;
           }
-        },
-        'local'
+        }
       );
 
       return identifier as ResourceKey<TypeFromInstanceOrString<Related>>;

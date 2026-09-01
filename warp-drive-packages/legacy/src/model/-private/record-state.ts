@@ -192,8 +192,7 @@ export default class RecordState {
             this.notify('isValid');
             break;
         }
-      },
-      'local'
+      }
     );
   }
 

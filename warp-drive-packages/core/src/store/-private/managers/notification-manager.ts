@@ -46,29 +46,36 @@ export type NotifyKeys = Set<string>;
  * a "local" view of the resource (its mutable/editable state), a "remote" view
  * (its last-known-persisted state), or both.
  *
- * - Subscribing with a channel means "only tell me about changes on this
- *   channel" -- used by a reader that only ever displays one side (e.g.
- *   PolarisMode's default immutable record only ever shows remote state, so
- *   it subscribes `'remote'` to skip being woken for purely-local edits it
- *   can't see anyway). A subscription that omits `channel` defaults to
- *   `'local'`, matching how every subscriber behaved before channels
- *   existed: no subscriber has ever actually needed to hear *every* channel,
- *   so `subscribe` has only two effective states (`'local'` or `'remote'`),
- *   not three.
- * - Notifying with a channel means "this specific change only affects this
- *   channel" -- used by a producer that knows a given mutation has no bearing
- *   on the other channel (e.g. a purely local edit has no remote implication,
- *   so it notifies `'local'` so remote-only readers aren't woken for
- *   nothing). Unlike `subscribe`, `notify` keeps its unscoped default: a
- *   `notify` call that omits `channel` still reaches every subscriber
- *   regardless of what channel they subscribed with, identical to how
- *   `notify` behaved before channels existed.
+ * Because a resource's local view is derived from its remote state (remote
+ * state plus any pending local mutations), a change to remote state also
+ * potentially changes what a local view shows -- but a purely local mutation
+ * never changes what a remote-only view shows. Channel filtering is therefore
+ * one-directional: the only notification a subscriber can opt out of is a
+ * purely-local change, by subscribing `'remote'`.
  *
- * Since a subscription's channel is always one of `'local'`/`'remote'`
- * (never itself unscoped), a subscriber is skipped only when the
- * notification was given an explicit channel that disagrees with the
- * subscriber's. Channel only applies to the `'attributes'` and
- * `'relationships'` notification types. All other types (`'errors'`,
+ * - Subscribing `'remote'` means "only tell me about changes that could
+ *   affect remote state" -- used by a reader that only ever displays remote
+ *   state (e.g. PolarisMode's default immutable record), so it isn't woken
+ *   for purely-local edits it can't see anyway. Subscribing `'local'` and
+ *   omitting the channel are the same thing: both receive every
+ *   notification, exactly as every subscriber did before channels existed.
+ * - Notifying `'local'` declares "only local state changed" -- the one tag
+ *   that lets `'remote'` subscribers be skipped. Notifying `'remote'` or
+ *   omitting the channel reaches every subscriber: an unscoped notify cannot
+ *   guarantee the change was local-only, so it must assume it wasn't. This
+ *   keeps every pre-channel `notify` callsite (and any custom cache that
+ *   doesn't know about channels) fully compatible.
+ *
+ * The full delivery matrix:
+ *
+ * | notify ↓ subscribe → | `'local'` | `'remote'` | omitted (= `'local'`) |
+ * | -------------------- | --------- | ---------- | --------------------- |
+ * | `'local'`            | ✅        | ❌         | ✅                    |
+ * | `'remote'`           | ✅        | ✅         | ✅                    |
+ * | omitted              | ✅        | ✅         | ✅                    |
+ *
+ * Channel only applies to the `'attributes'` and `'relationships'`
+ * notification types. All other types (`'errors'`,
  * `'identity'`, `'state'`, and the various `CacheOperation`/
  * `DocumentCacheOperation` values) are never filtered by channel since they
  * have no local/remote duality.
@@ -207,14 +214,13 @@ function mergeIntoBuffer(
 /**
  * Given the set of channels a touch (or coalesced group of touches) was
  * recorded with, determines whether a subscriber scoped to `subscriberChannel`
- * should be delivered to. A subscriber's channel is always concrete (see
- * {@link NotificationChannel} - `subscribe` defaults it to `'local'` rather
- * than leaving it unscoped), so delivery happens whenever at least one touch
- * was itself unscoped (`notify` was not given a channel), or at least one
- * touch matches the subscriber's channel exactly.
+ * should be delivered to. Only one combination is ever skipped (see the
+ * delivery matrix on {@link NotificationChannel}): a `'remote'` subscriber
+ * and a touch-set that was exclusively tagged `'local'`. A `'local'` (or
+ * defaulted) subscriber receives everything.
  */
 function shouldDeliverToChannel(channels: ChannelSet, subscriberChannel: NotificationChannel): boolean {
-  return channels.has(undefined) || channels.has(subscriberChannel);
+  return subscriberChannel !== 'remote' || channels.has(undefined) || channels.has('remote');
 }
 
 function count(label: string) {
@@ -320,12 +326,18 @@ export class NotificationManager {
    * }
    * ```
    *
-   * A `channel` may be provided when subscribing to a `ResourceKey` to scope this
-   * subscription to only `'attributes'`/`'relationships'` notifications made on
-   * that same channel (notifications for other notification types are never
-   * filtered by channel and always reach the subscriber). When omitted, this
-   * subscription defaults to the `'local'` channel -- see
-   * {@link NotificationChannel}.
+   * A `channel` may be provided when subscribing to a `ResourceKey`. Its only
+   * effect is that a `'remote'` subscription skips `'attributes'`/`'relationships'`
+   * notifications explicitly tagged `'local'`; notifications for all other
+   * notification types are never filtered by channel and always reach the
+   * subscriber. Subscribing `'local'` and omitting the channel are the same
+   * thing: both receive every notification. See {@link NotificationChannel}.
+   *
+   * | notify ↓ subscribe → | `'local'` | `'remote'` | omitted (= `'local'`) |
+   * | -------------------- | --------- | ---------- | --------------------- |
+   * | `'local'`            | ✅        | ❌         | ✅                    |
+   * | `'remote'`           | ✅        | ✅         | ✅                    |
+   * | omitted              | ✅        | ✅         | ✅                    |
    *
    * @public
    * @return an opaque token to be used with unsubscribe
@@ -388,8 +400,16 @@ export class NotificationManager {
    * per key.
    *
    * A `channel` may be supplied for the `'attributes'`/`'relationships'`
-   * namespaces to tag this notification as only relevant to that channel --
-   * see {@link NotificationChannel}.
+   * namespaces. Tagging a notification `'local'` declares "only local state
+   * changed", letting `'remote'`-scoped subscribers skip it. Notifying
+   * `'remote'` or omitting the channel reaches every subscriber regardless
+   * of its channel. See {@link NotificationChannel}.
+   *
+   * | notify ↓ subscribe → | `'local'` | `'remote'` | omitted (= `'local'`) |
+   * | -------------------- | --------- | ---------- | --------------------- |
+   * | `'local'`            | ✅        | ❌         | ✅                    |
+   * | `'remote'`           | ✅        | ✅         | ✅                    |
+   * | omitted              | ✅        | ✅         | ✅                    |
    *
    * @private
    */

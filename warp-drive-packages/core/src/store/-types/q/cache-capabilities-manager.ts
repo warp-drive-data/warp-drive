@@ -114,10 +114,11 @@ export type CacheCapabilitiesManager = {
    * scheduling, etc) for every key. The `Set` is iterated as-is and never
    * converted to or from an array.
    *
-   * `channel` may additionally be provided to tag this notification as only
-   * relevant to that {@link NotificationChannel}. Defaults to reaching every
-   * subscriber (regardless of what channel, if any, they subscribed with)
-   * when omitted.
+   * `channel` may additionally be provided: tagging the notification
+   * `'local'` declares "only local state changed", letting `'remote'`-scoped
+   * subscribers skip it; `'remote'` or omitted reaches every subscriber. See
+   * the delivery matrix on the other `notifyChange` overload and
+   * {@link NotificationChannel}.
    *
    * @since 5.9.0
    * @public
@@ -134,10 +135,17 @@ export type CacheCapabilitiesManager = {
    * require a key, but if one is specified it is assumed to be the name
    * of the attribute or relationship that has been updated.
    *
-   * `channel` may be provided for the `'attributes'`/`'relationships'` namespaces to scope
-   * this notification to only subscribers listening on that same channel (see
-   * {@link NotificationChannel}). When omitted, the notification reaches every subscriber
-   * regardless of what channel (if any) they subscribed with.
+   * `channel` may be provided for the `'attributes'`/`'relationships'`
+   * namespaces. Tagging a notification `'local'` declares "only local state
+   * changed", letting `'remote'`-scoped subscribers skip it. Notifying
+   * `'remote'` or omitting the channel reaches every subscriber regardless
+   * of its channel. See {@link NotificationChannel}.
+   *
+   * | notify ↓ subscribe → | `'local'` | `'remote'` | omitted (= `'local'`) |
+   * | -------------------- | --------- | ---------- | --------------------- |
+   * | `'local'`            | ✅        | ❌         | ✅                    |
+   * | `'remote'`           | ✅        | ✅         | ✅                    |
+   * | omitted              | ✅        | ✅         | ✅                    |
    *
    * @public
    */
