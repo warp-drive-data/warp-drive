@@ -1,6 +1,3 @@
-/**
- * @module @warp-drive/ember
- */
 import { assert } from '@warp-drive/build-config/macros';
 
 import type { RequestManager, Store } from '../index.ts';
@@ -107,6 +104,8 @@ export type PaginationStateFor<RT = unknown, E = unknown, M extends PaginateMode
  * Instances are created via {@link getPaginationState} (or by the `<Paginate />`
  * component on your behalf), never constructed directly.
  *
+ * @since 5.9.0
+ * @public
  * @hideconstructor
  */
 export class PaginationState<RT = unknown, E = unknown>
@@ -636,9 +635,8 @@ const PaginationStateCache = new WeakMap<Future<unknown>, PaginationState>();
  * await pages.loadNext();
  * ```
  *
+ * @since 5.9.0
  * @public
- * @static
- * @for @warp-drive/ember
  */
 export function getPaginationState<RT, E>(request: Future<RT>, pageHints?: PageHints): PaginationState<RT, E> {
   let state = PaginationStateCache.get(request);
