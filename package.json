@@ -60,7 +60,7 @@
     "typescript": "^6.0.3"
   },
   "dependencies": {
-    "turbo": "^2.10.11"
+    "turbo": "^2.10.12"
   },
   "engines": {
     "node": ">= 26.8.1",
