@@ -3,7 +3,6 @@ import * as gts from '@warp-drive/internal-config/eslint/gts.js';
 // @ts-check
 import { globalIgnores } from '@warp-drive/internal-config/eslint/ignore.js';
 import * as node from '@warp-drive/internal-config/eslint/node.js';
-import * as oxlint from '@warp-drive/internal-config/eslint/oxlint.js';
 import * as typescript from '@warp-drive/internal-config/eslint/typescript.js';
 
 const externals = ['@ember/component/template-only', '@glimmer/component', '@ember/modifier', '@ember/helper'];
@@ -18,11 +17,11 @@ export default [
     dirname: import.meta.dirname,
     srcDirs: ['tests'],
     allowedImports: externals,
-    // oxlint's `--type-aware` pass now covers this cleanly (tsconfig.json carries the ember/glint
-    // ambient types directly) — verified against real CI's type-aware run. `.gts` files are
-    // handled by the separate gts.browser() block below, which keeps full type-aware ESLint
-    // coverage since oxlint's parser can't scan those.
-    rules: oxlint.disabledTypeAwareRules(),
+    rules: {
+      '@typescript-eslint/no-unsafe-assignment': 'off',
+      '@typescript-eslint/no-unsafe-member-access': 'off',
+      '@typescript-eslint/no-unsafe-call': 'off',
+    },
   }),
 
   // gts

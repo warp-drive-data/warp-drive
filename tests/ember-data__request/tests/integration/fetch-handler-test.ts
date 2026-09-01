@@ -37,7 +37,7 @@ module('RequestManager | Fetch Handler', function (hooks) {
     const doc = await manager.request({ url: buildBaseURL({ resourcePath: 'users/1' }) });
     const serialized = JSON.parse(JSON.stringify(doc)) as unknown;
     // @ts-expect-error
-    // oxlint-disable-next-line typescript/no-unsafe-member-access
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     serialized.response.headers = (serialized.response.headers as [string, string][]).filter((v) => {
       // don't test headers that change every time
       return !['content-length', 'date', 'etag', 'last-modified'].includes(v[0]);
@@ -118,7 +118,7 @@ module('RequestManager | Fetch Handler', function (hooks) {
     const doc = await manager.request({ url: buildBaseURL({ resourcePath: 'users/1' }), method: 'HEAD' });
     const serialized = JSON.parse(JSON.stringify(doc)) as unknown;
     // @ts-expect-error
-    // oxlint-disable-next-line typescript/no-unsafe-member-access
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     serialized.response.headers = (serialized.response.headers as [string, string][]).filter((v) => {
       // don't test headers that change every time
       return !['content-length', 'date', 'etag', 'last-modified'].includes(v[0]);

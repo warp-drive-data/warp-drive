@@ -326,7 +326,7 @@ RequestSpec.use(useReact(), function (b) {
             ),
             content: ({ result }) => (
               <>
-                {/* oxlint-disable-next-line typescript/no-unsafe-member-access */}
+                {/* eslint-disable-next-line @typescript-eslint/no-unsafe-member-access */}
                 {result.data.attributes.name}
                 <br />
                 Count: <CountFor countFor={countFor} data={result} />
