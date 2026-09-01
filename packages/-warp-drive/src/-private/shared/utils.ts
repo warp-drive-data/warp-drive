@@ -156,6 +156,7 @@ export function color(str: string): string {
       throw new Error(`Unknown color ${possibleColor}`);
     }
 
+    // oxlint-disable-next-line typescript/no-unsafe-argument
     return styleText(c, text);
   });
 
@@ -234,7 +235,7 @@ export function rebalanceLines(str: string, max_length = 75): string {
       // we are a new context
       contextIndex = i;
       inContext = true;
-      contextIndent = (strIndent as unknown as string) || '';
+      contextIndent = strIndent || '';
       contextHasBullet = false;
       contextBulletIndent = '';
       continue;

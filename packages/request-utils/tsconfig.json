@@ -30,7 +30,6 @@
     "composite": true,
     "incremental": true,
     "rootDir": "src",
-    "baseUrl": ".",
     "declaration": true,
     "declarationMap": true,
     "inlineSourceMap": true,

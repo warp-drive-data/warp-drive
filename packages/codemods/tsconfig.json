@@ -1,6 +1,5 @@
 {
   "include": ["src", "bin", "utils", "package.json"],
-  "baseUrl": ".",
   "compilerOptions": {
     "lib": ["ESNext"],
     "module": "ESNext",
@@ -10,7 +9,6 @@
     "strict": true,
     "pretty": true,
     "noFallthroughCasesInSwitch": true,
-    "downlevelIteration": true,
     "skipLibCheck": true,
     "disableSourceOfProjectReferenceRedirect": false,
     "allowSyntheticDefaultImports": true,
@@ -28,14 +26,14 @@
     "inlineSourceMap": true,
     "inlineSources": true,
     "allowImportingTsExtensions": true,
-    "baseUrl": ".",
     "composite": true,
     "emitDeclarationOnly": true,
     "erasableSyntaxOnly": true,
     "experimentalDecorators": true,
     "incremental": true,
     "paths": {},
-    "checkJs": false
+    "checkJs": false,
+    "types": ["node", "bun"]
   },
   "references": []
 }

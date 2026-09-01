@@ -217,9 +217,12 @@ if (macroCondition(dependencySatisfies('@ember-data/debug', '*'))) {
 DS.RecordArrayManager = RecordArrayManager;
 DS.RESTAdapter = RESTAdapter;
 DS.BuildURLMixin = BuildURLMixin;
+// oxlint-disable-next-line typescript/no-unsafe-assignment
 DS.RESTSerializer = RESTSerializer;
+// oxlint-disable-next-line typescript/no-unsafe-assignment
 DS.JSONSerializer = JSONSerializer;
 DS.JSONAPIAdapter = JSONAPIAdapter;
+// oxlint-disable-next-line typescript/no-unsafe-assignment
 DS.JSONAPISerializer = JSONAPISerializer;
 DS.Transform = Transform;
 DS.DateTransform = DateTransform;

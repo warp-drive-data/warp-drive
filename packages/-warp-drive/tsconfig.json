@@ -9,7 +9,6 @@
     "strict": true,
     "pretty": true,
     "exactOptionalPropertyTypes": false,
-    "downlevelIteration": true,
     "skipLibCheck": true,
     "disableSourceOfProjectReferenceRedirect": false,
     "allowSyntheticDefaultImports": true,
@@ -18,7 +17,6 @@
     "emitDeclarationOnly": true,
     "declaration": true,
     "composite": true,
-    "baseUrl": ".",
     "declarationMap": true,
     "erasableSyntaxOnly": true,
     "isolatedDeclarations": true,
@@ -28,7 +26,8 @@
     "inlineSourceMap": true,
     "inlineSources": true,
     "rootDir": "src",
-    "checkJs": false
+    "checkJs": false,
+    "types": ["node"]
   },
   "references": [
     {
