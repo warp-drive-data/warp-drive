@@ -47,7 +47,6 @@
     "@babel/preset-typescript": "^7.29.7",
     "@warp-drive/internal-config": "workspace:*",
     "tsdown": "^0.22.14",
-    "typescript": "^5.9.3",
     "typescript-7": "npm:typescript@7.1.0-dev.20260821.1"
   },
   "ember-addon": {

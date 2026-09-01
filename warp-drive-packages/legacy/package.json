@@ -56,7 +56,6 @@
     "ember-source": "catalog:",
     "expect-type": "^1.4.0",
     "tsdown": "^0.22.14",
-    "typescript": "^5.9.3",
     "typescript-7": "npm:typescript@7.1.0-dev.20260821.1"
   },
   "ember-addon": {
