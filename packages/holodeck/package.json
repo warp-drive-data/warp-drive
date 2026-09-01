@@ -12,7 +12,7 @@
   "homepage": "https://github.com/warp-drive-data/warp-drive",
   "bugs": "https://github.com/warp-drive-data/warp-drive/issues",
   "engines": {
-    "node": ">= 18.20.8"
+    "node": ">= 24.19.0"
   },
   "keywords": [
     "http-mock"
