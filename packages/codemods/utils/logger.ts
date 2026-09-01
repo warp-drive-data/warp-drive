@@ -1,6 +1,6 @@
 import assert from 'assert';
 import type { Options, SourceLocation } from 'jscodeshift';
-import { stripVTControlCharacters as stripAnsi, styleText } from 'node:util';
+import { inspect, stripVTControlCharacters as stripAnsi, styleText } from 'node:util';
 import type { Logform, Logger as WinstonLogger } from 'winston';
 import { createLogger as createWinstonLogger, format as winstonFormat, transports as winstonTransports } from 'winston';
 
@@ -60,12 +60,12 @@ function formatMessage(raw: unknown, sanitize = (message: string) => message): s
     }
     if (message.length) {
       if (Object.entries(raw).length) {
-        message += `\n${Bun.inspect(raw)}`;
+        message += `\n${inspect(raw)}`;
       }
       return message;
     }
   }
-  return Bun.inspect(raw);
+  return inspect(raw);
 }
 
 function createFormatter(options: {

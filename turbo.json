@@ -173,8 +173,8 @@
       "env": ["IS_UNPKG_BUILD"]
     },
     "@ember-data/codemods#build:pkg": {
-      "inputs": ["src/**", "tsconfig.json", "package.json"],
-      "outputs": ["dist/**", "tsconfig.tsbuildinfo"],
+      "inputs": ["src/**", "utils/**", "tsdown.config.mjs", "tsconfig.json", "package.json"],
+      "outputs": ["dist/**"],
       "dependsOn": [],
       "outputLogs": "new-only",
       "env": ["IS_UNPKG_BUILD"]

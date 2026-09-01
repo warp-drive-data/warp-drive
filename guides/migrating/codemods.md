@@ -13,6 +13,10 @@ WarpDrive provides automated codemods to help migrate your EmberData application
 
 ## Getting Started
 
+> [!NOTE]
+> The codemods require Node.js `>= 22.2` and run on macOS, Linux (glibc and musl/Alpine),
+> and Windows, on both x64 and arm64. `pnpm dlx` and `bunx` work as well as `npx`.
+
 ### Listing Available Codemods
 
 ```bash
@@ -82,7 +86,7 @@ npx @ember-data/codemods apply migrate-to-schema --config=./codemod.config.json
 ```
 
 > [!TIP]
-> For the full list of available configuration options, see the [config type definition](https://github.com/anthropics/warp-drive/blob/main/packages/codemods/src/schema-migration/config.ts) and the [JSON schema](https://github.com/anthropics/warp-drive/blob/main/packages/codemods/src/schema-migration/config-schema.json).
+> For the full list of available configuration options, see the [config type definition](https://github.com/warp-drive-data/warp-drive/blob/main/packages/codemods/src/schema-migration/config.ts) and the [JSON schema](https://github.com/warp-drive-data/warp-drive/blob/main/packages/codemods/src/schema-migration/config-schema.json).
 
 #### Simple Configuration
 

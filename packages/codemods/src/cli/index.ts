@@ -1,3 +1,6 @@
+#!/usr/bin/env node
+import './ensure-node-version.ts';
+
 import { program } from 'commander';
 
 import { version } from '../../package.json' with { type: 'json' };

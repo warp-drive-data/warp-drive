@@ -1,5 +1,5 @@
 {
-  "include": ["src", "bin", "utils", "package.json"],
+  "include": ["src", "utils", "package.json"],
   "compilerOptions": {
     "lib": ["ESNext"],
     "module": "ESNext",
@@ -33,7 +33,7 @@
     "incremental": true,
     "paths": {},
     "checkJs": false,
-    "types": ["node", "bun"]
+    "types": ["node"]
   },
   "references": []
 }

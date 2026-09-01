@@ -1,6 +1,7 @@
 import ignore from 'ignore';
 import jscodeshift from 'jscodeshift';
-import { styleText } from 'node:util';
+import { glob, readFile, writeFile } from 'node:fs/promises';
+import { inspect, styleText } from 'node:util';
 import path from 'path';
 
 import type { LegacyStoreMethod } from './config.ts';
@@ -21,7 +22,7 @@ export async function runTransform(runOptions: RunOptions) {
   const ig = ignore().add(['**/*.d.ts', '**/node_modules/**/*', '**/dist/**/*', ...(options.ignore ?? [])]);
 
   log.debug('Running with options:', { targetGlobPattern: patterns, ...options });
-  log.debug('Running for paths:', Bun.inspect(patterns));
+  log.debug('Running for paths:', inspect(patterns));
   if (options.dry) {
     log.warn('Running in dry mode. No files will be modified.');
   }
@@ -44,17 +45,22 @@ export async function runTransform(runOptions: RunOptions) {
   const j = jscodeshift.withParser('ts');
 
   for (const pattern of patterns) {
-    const glob = new Bun.Glob(pattern);
-    for await (const filepath of glob.scan('.')) {
-      if (ig.ignores(path.join(filepath))) {
+    // node's glob matches directories as well as files, so request dirents to filter
+    for await (const entry of glob(pattern, { withFileTypes: true })) {
+      if (!entry.isFile()) {
+        continue;
+      }
+      // dirents carry an absolute parentPath, but the `ignore` matcher (and our
+      // log output) expects cwd-relative posix-style paths.
+      const filepath = path.relative(process.cwd(), path.join(entry.parentPath, entry.name)).split(path.sep).join('/');
+      if (ig.ignores(filepath)) {
         log.warn('Skipping ignored file:', filepath);
         result.skipped++;
         continue;
       }
       log.debug('Transforming:', filepath);
       result.matches++;
-      const file = Bun.file(filepath);
-      const originalSource = await file.text();
+      const originalSource = await readFile(filepath, 'utf8');
       let transformedSource: string | undefined;
       try {
         transformedSource = transform(
@@ -87,7 +93,7 @@ export async function runTransform(runOptions: RunOptions) {
             message: 'Transformed source:\n\t' + transformedSource,
           });
         } else {
-          await Bun.write(filepath, transformedSource);
+          await writeFile(filepath, transformedSource, 'utf8');
         }
         result.ok++;
       }

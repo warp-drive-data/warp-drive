@@ -235,6 +235,50 @@ jobs:
           pnpm install --no-frozen-lockfile --ignore-scripts --prefer-offline;
           pnpm exec turbo run test;
 
+  # @ember-data/codemods has shipped broken three times without CI noticing:
+  # a host-platform compiled binary as `bin` (#9979), a `bin` entry pointing at
+  # a file absent from the tarball (#10539), and a bundle with no shebang. All
+  # were invisible to unit tests because they only exist in the packed artifact.
+  # This job packs the real tarball and installs+runs it the way consumers do.
+  # No `if:` on purpose: it must also run on pushes to release branches.
+  codemods-packaging:
+    needs: [install]
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: ./.github/actions/setup
+        with:
+          install: true
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          cache-key-suffix: codemods-packaging
+      - name: Pack tarball (runs prepack, mirroring the release tool)
+        run: |
+          cd packages/codemods
+          bun run prepack
+          mkdir -p "$RUNNER_TEMP/codemods-smoke"
+          pnpm pack --pack-destination "$RUNNER_TEMP/codemods-smoke"
+          echo "TARBALL=$(ls $RUNNER_TEMP/codemods-smoke/*.tgz)" >> "$GITHUB_ENV"
+      - name: Smoke test (npm)
+        run: node tests/codemods/scripts/verify-tarball.mjs --tarball "$TARBALL" --pm npm
+      - name: Smoke test (pnpm)
+        run: node tests/codemods/scripts/verify-tarball.mjs --tarball "$TARBALL" --pm pnpm
+      - name: Smoke test (bun)
+        run: node tests/codemods/scripts/verify-tarball.mjs --tarball "$TARBALL" --pm bun
+      # musl coverage: @ast-grep/napi must resolve its -musl platform package.
+      # An alpine container is the cheap substitute for a cross-OS matrix —
+      # Linux is the strictest platform for every other failure mode here.
+      # (yarn dlx is intentionally not covered: its loader invokes node
+      # directly rather than via the shebang, so npm/pnpm/bun already cover
+      # every distinct bin-execution path available on these runners.)
+      - name: Smoke test (npm, musl/alpine)
+        run: |
+          docker run --rm \
+            -v "$TARBALL:/smoke/pkg.tgz:ro" \
+            -v "$PWD/tests/codemods:/smoke/tests-codemods:ro" \
+            node:22-alpine \
+            node /smoke/tests-codemods/scripts/verify-tarball.mjs --tarball /smoke/pkg.tgz --pm npm
+
   releases:
     timeout-minutes: 12
     needs: [install]
