@@ -69,7 +69,7 @@
     "@babel/plugin-transform-typescript": "^7.29.7",
     "@babel/preset-env": "^7.29.7",
     "@babel/preset-typescript": "^7.29.7",
-    "@ember/test-helpers": "5.2.0",
+    "@ember/test-helpers": "5.4.3",
     "@glimmer/component": "^2.1.1",
     "@types/qunit": "2.19.14",
     "@types/semver": "^7.8.0",

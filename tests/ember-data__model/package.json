@@ -36,7 +36,7 @@
     "@ember-data/request-utils": "workspace:*",
     "@ember-data/serializer": "workspace:*",
     "@ember-data/store": "workspace:*",
-    "@ember/test-helpers": "5.2.0",
+    "@ember/test-helpers": "5.4.3",
     "@ember/test-waiters": "^4.1.2",
     "@embroider/addon-shim": "^1.10.3",
     "@embroider/core": "^4.6.3",

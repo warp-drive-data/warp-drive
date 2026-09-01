@@ -37,7 +37,7 @@
     "@ember-data/request-utils": "workspace:*",
     "@ember-data/store": "workspace:*",
     "@ember-data/unpublished-test-infra": "workspace:*",
-    "@ember/test-helpers": "5.2.0",
+    "@ember/test-helpers": "5.4.3",
     "@ember/test-waiters": "^4.1.2",
     "@embroider/core": "^4.6.3",
     "@embroider/macros": "^1.20.6",
