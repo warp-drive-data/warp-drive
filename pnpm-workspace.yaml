@@ -323,7 +323,7 @@ overrides:
   bun-types: 1.4.0
   lodash: ^4.18.1
   caniuse-lite: ^1.0.30001810
-  rollup: ^4.62.4
+  rollup: ^4.63.0
   "@babel/types": ^7.29.8
   "@babel/parser": ^7.29.8
   "@babel/traverse": ^7.29.8
