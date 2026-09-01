@@ -107,12 +107,6 @@ function isStorageUnavailableError(error: unknown): boolean {
 
 export type EffectStorageEvent = CacheStorageEvent | StorageEvent;
 
-declare global {
-  interface WindowEventMap {
-    storage: CustomEvent<CacheStorageEvent> | StorageEvent;
-  }
-}
-
 /**
  * A reactive wrapper around the Web Storage API (localStorage/sessionStorage)
  * that provides signal-based access to storage items and length.
@@ -157,7 +151,7 @@ class ReactiveStorage implements Storage {
 
     // bind to localStorage events to trigger reactivity
     if (!this._memoryOnly) {
-      window.addEventListener('storage', (event: StorageEvent | CustomEvent<CacheStorageEvent>) => {
+      window.addEventListener('storage', ((event: StorageEvent | CustomEvent<CacheStorageEvent>) => {
         const data = 'detail' in event ? event.detail : event;
 
         // Only react to changes in the same storage area
@@ -170,7 +164,7 @@ class ReactiveStorage implements Storage {
             effect(data);
           }
         }
-      });
+      }) as EventListener);
     }
   }
 

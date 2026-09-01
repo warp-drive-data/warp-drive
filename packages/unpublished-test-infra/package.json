@@ -39,7 +39,7 @@
     "build:pkg": "node node_modules/tsdown/dist/run.mjs",
     "prepack": "pnpm run build:pkg",
     "sync": "echo \"syncing\"",
-    "check:types": "tsc --noEmit"
+    "check:types": "node ./node_modules/typescript-7/bin/tsc --noEmit"
   },
   "peerDependencies": {
     "@ember/test-helpers": "3.3.0 || ^4.0.4 || ^5.1.0",
@@ -79,7 +79,8 @@
     "qunit": "^2.26.0",
     "testem": "^3.20.1",
     "tsdown": "^0.22.14",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "typescript-7": "npm:typescript@7.1.0-dev.20260821.1"
   },
   "ember": {
     "edition": "octane"

@@ -89,10 +89,7 @@ expectTypeOf(attr<ExampleDateTransform>('date', {
 /* prettier-ignore */
 expectTypeOf(
   // @ts-expect-error
-  attr(
-    'string',
-    { defaultValue: ({}) }
-  )
+  attr('string', { defaultValue: ({}) })
 ).toEqualTypeOf<DataDecorator>();
 
 /* prettier-ignore */
