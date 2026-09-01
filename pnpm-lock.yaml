@@ -251,8 +251,8 @@ importers:
   docs-viewer:
     dependencies:
       '@mdit/plugin-footnote':
-        specifier: ^0.23.2
-        version: 0.23.2
+        specifier: ^1.1.0
+        version: 1.1.0
       '@pnpm/find-workspace-dir':
         specifier: 1000.1.5
         version: 1000.1.5
@@ -4920,11 +4920,20 @@ packages:
     resolution: {integrity: sha512-0FOIepYR4ugPYaHwK7hDeHDkfPOBVvayt9QpvRbi2LT/h2b0GaE/gM9Gag7fsnyYyNaTZ2IGyOuVg07IYepvYQ==}
     engines: {node: '>=20.0.0'}
 
-  '@mdit/plugin-footnote@0.23.2':
-    resolution: {integrity: sha512-zE2jAx1KX1ZLuF0v4t2VwgrsfSYHRr23n5viRcxyF2tnbBKLJA38Pmk7jrKfKK9akZVD32zRzZWGrRF39TPXqw==}
-    engines: {node: '>= 20'}
+  '@mdit/helper@1.1.0':
+    resolution: {integrity: sha512-IWOUioaLobXA4ueulPfJopKaOHEGAH2pYDyK3u0cy4ItzxHXFssIJYksvdhUOC4JSHWfSjCArw41LBQdKOgFiw==}
+    engines: {node: '>=22'}
     peerDependencies:
-      markdown-it: ^14.1.0
+      markdown-it: ^15.0.0
+    peerDependenciesMeta:
+      markdown-it:
+        optional: true
+
+  '@mdit/plugin-footnote@1.1.0':
+    resolution: {integrity: sha512-EeVs4w9La5nQJbsU7GVq3aBhhgaNxkO89q8EguWc1ogkNaomL0d2B8jZKbDoZBGo1yg6m2nimraCWQI4jqmXWA==}
+    engines: {node: '>=22'}
+    peerDependencies:
+      markdown-it: ^15.0.0
 
   '@napi-rs/lzma-linux-x64-gnu@1.5.1':
     resolution: {integrity: sha512-oTXEIha4SsuXdTA4Iyskj0kpdx2yVXdhd75c2v3xGrHFfVMsbhTPZU/nMPL4sWKo4pBHm3aucLaqGlF696dTyQ==}
@@ -13278,9 +13287,11 @@ snapshots:
       js-yaml: 4.3.1
       tinyglobby: 0.2.17
 
-  '@mdit/plugin-footnote@0.23.2':
+  '@mdit/helper@1.1.0': {}
+
+  '@mdit/plugin-footnote@1.1.0':
     dependencies:
-      '@types/markdown-it': 14.1.2
+      '@mdit/helper': 1.1.0
 
   '@napi-rs/lzma-linux-x64-gnu@1.5.1':
     optional: true
@@ -15803,7 +15814,7 @@ snapshots:
 
   '@warp-drive/internal-docs-viewer@file:docs-viewer':
     dependencies:
-      '@mdit/plugin-footnote': 0.23.2
+      '@mdit/plugin-footnote': 1.1.0
       '@pnpm/find-workspace-dir': 1000.1.5
       '@types/bun': 1.4.0
       '@types/debug': 4.1.13
