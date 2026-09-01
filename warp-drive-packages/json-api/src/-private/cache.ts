@@ -1,4 +1,4 @@
-import type { NotificationChannel, NotifyKeys, Store } from '@warp-drive/core';
+import type { Store } from '@warp-drive/core';
 import { LOG_CACHE } from '@warp-drive/core/build-config/debugging';
 import { DEPRECATE_RELATIONSHIP_REMOTE_UPDATE_CLEARING_LOCAL_STATE } from '@warp-drive/core/build-config/deprecations';
 import { DEBUG } from '@warp-drive/core/build-config/env';
@@ -1386,9 +1386,9 @@ export class JSONAPICache implements Cache {
 
     if (dirtyKeys && dirtyKeys.length) {
       // `dirtyKeys` is a plain array here (from `Object.keys`), but
-      // `notifyAttributes`/`notifyChange`/`notify` batch as a `Set<string>`,
-      // so wrap it before handing it off.
-      notifyAttributes(this._capabilities, identifier, new Set(dirtyKeys));
+      // `notifyChange`/`notify` batch as a `Set<string>`, so wrap it before
+      // handing it off.
+      this._capabilities.notifyChange(identifier, 'attributes', new Set(dirtyKeys));
     }
 
     return dirtyKeys || [];
@@ -1826,32 +1826,6 @@ function getDefaultValue(
   }
 }
 
-function notifyAttributes(
-  storeWrapper: CacheCapabilitiesManager,
-  identifier: ResourceKey,
-  keys?: NotifyKeys,
-  channel?: NotificationChannel
-) {
-  if (!keys) {
-    storeWrapper.notifyChange(identifier, 'attributes', null, channel);
-    return;
-  }
-
-  // deliver as a single batch instead of one `notifyChange` call per key: this
-  // still results in one notification per key being delivered to subscribers
-  // (in insertion order), but pays the per-call overhead (subscriber lookups,
-  // buffer scheduling, etc) only once for the whole record instead of once
-  // per changed attribute. This matters because this path runs once per
-  // resource during a push/upsert, so with N records each having M changed
-  // attributes the naive per-key approach costs O(N*M) in overhead alone.
-  //
-  // `keys` is handed off exactly as received. For the `calculateChangedKeys`
-  // callers it is already the `Set<string>` they built, so no conversion
-  // happens on this path; only `rollbackAttrs`'s naturally-array `dirtyKeys`
-  // needs to be wrapped in a `Set` before reaching here.
-  storeWrapper.notifyChange(identifier, 'attributes', keys, channel);
-}
-
 /*
       TODO @deprecate IGOR DAVID
       There seems to be a potential bug here, where we will return keys that are not
@@ -2240,7 +2214,11 @@ function cacheUpsert(
   }
 
   if (changedKeys?.size) {
-    notifyAttributes(cache._capabilities, identifier, changedKeys);
+    // deliver the whole record's changed keys as one `notifyChange` batch
+    // instead of one call per key: this path runs once per resource during a
+    // push/upsert, so with N records each having M changed attributes the
+    // per-key approach costs O(N*M) in per-call overhead alone.
+    cache._capabilities.notifyChange(identifier, 'attributes', changedKeys);
   }
 
   if (LOG_CACHE) {
@@ -2529,7 +2507,7 @@ function didCommit(
     cache._capabilities.notifyChange(identifier, 'errors', null);
   }
 
-  if (changedKeys?.size) notifyAttributes(cache._capabilities, identifier, changedKeys);
+  if (changedKeys?.size) cache._capabilities.notifyChange(identifier, 'attributes', changedKeys);
   cache._capabilities.notifyChange(identifier, 'state', null);
 }
 

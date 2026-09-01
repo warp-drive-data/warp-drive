@@ -84,8 +84,9 @@ export class CacheCapabilitiesManager implements StoreWrapper {
     // notification per key (in Set-insertion order), but the per-call overhead
     // (subscriber lookups, buffer scheduling, etc) that `notify` would otherwise
     // repeat for every key is paid only once per identifier. This mirrors the
-    // same N*M concern `attributes` notifications have (see `notifyAttributes`
-    // in the json-api Cache): a single push/mutation pass can dirty many
+    // same N*M concern `attributes` notifications have (the json-api Cache
+    // batches a record's changed attribute keys into a single `notifyChange`
+    // Set for the same reason): a single push/mutation pass can dirty many
     // relationships across many records at once, and each of those records
     // funnels through this same per-identifier `pending` Set.
     //
