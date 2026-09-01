@@ -33,6 +33,10 @@
     "declarationMap": true,
     "inlineSourceMap": true,
     "inlineSources": true,
+    // TypeScript 6.0 deprecated `baseUrl` (removal planned for 7.0); this repo's `typescript`
+    // override is pinned to the classic 6.x line, so silence the deprecation until the `paths`
+    // entry below (which needs `baseUrl` to resolve) is migrated off it.
+    "ignoreDeprecations": "6.0",
     "baseUrl": ".",
     "types": ["@glint/ember-tsc/types", "ember-source/types"],
     "allowImportingTsExtensions": true,
