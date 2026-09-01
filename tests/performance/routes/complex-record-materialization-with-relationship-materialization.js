@@ -42,6 +42,7 @@ export default class extends Route {
       for (const record of recordsOfType) {
         for (const field of fields) {
           if (field.kind === 'attribute') {
+            // oxlint-disable-next-line no-unused-expressions
             record[field];
           }
         }
@@ -55,8 +56,10 @@ export default class extends Route {
       for (const record of recordsOfType) {
         for (const field of fields) {
           if (field.kind === 'belongsTo') {
+            // oxlint-disable-next-line no-unused-expressions
             record[field];
           } else if (field.kind === 'hasMany') {
+            // oxlint-disable-next-line no-unused-expressions
             record[field].length;
           }
         }

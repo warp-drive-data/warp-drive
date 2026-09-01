@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
+/* oxlint-disable typescript/no-non-null-asserted-optional-chain */
 import type { TestContext } from '@ember/test-helpers';
 
 import { useRecommendedStore } from '@warp-drive/core';

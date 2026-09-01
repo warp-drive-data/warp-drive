@@ -38,6 +38,7 @@ module('integration/relationships/inverse_relationships - Inverse Relationships'
 
     assert.expectAssertion(function () {
       post = store.createRecord('post');
+      // oxlint-disable-next-line no-unused-expressions
       post.comments;
     }, /Expected a relationship schema for 'comment.testPost' to match the inverse of 'post.comments', but no relationship schema was found./);
   });
@@ -61,6 +62,7 @@ module('integration/relationships/inverse_relationships - Inverse Relationships'
 
     assert.expectAssertion(function () {
       post = store.createRecord('post');
+      // oxlint-disable-next-line no-unused-expressions
       post.user;
     }, /Expected a relationship schema for 'user.testPost' to match the inverse of 'post.user', but no relationship schema was found./);
   });

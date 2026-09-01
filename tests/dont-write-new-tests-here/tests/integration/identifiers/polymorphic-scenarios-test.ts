@@ -107,6 +107,7 @@ module('Integration | Identifiers - single-table-inheritance polymorphic scenari
 
       const cachedFerrari = store.peekRecord<Ferrari>('ferrari', '1');
       assert.strictEqual(
+        // oxlint-disable-next-line no-unsafe-optional-chaining
         (cachedFerrari?.constructor as unknown as { modelName: string }).modelName,
         'ferrari',
         'We cached the right type'
@@ -171,6 +172,7 @@ module('Integration | Identifiers - single-table-inheritance polymorphic scenari
 
       assert.strictEqual(relation?.id, '1', 'We found the right id');
       assert.strictEqual(
+        // oxlint-disable-next-line no-unsafe-optional-chaining
         (relation?.constructor as unknown as { modelName: string }).modelName,
         'ferrari',
         'We found the right type'

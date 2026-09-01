@@ -94,7 +94,7 @@ module('integration/records/save - Save Record', function (hooks) {
     const adapter = store.adapterFor('application');
     const post = store.createRecord('post', { title: 'toto' });
 
-    var count = 0;
+    let count = 0;
 
     adapter.createRecord = function (store, type, snapshot) {
       const error = new InvalidError([{ title: 'not valid' }]);
@@ -208,7 +208,7 @@ module('integration/records/save - Save Record', function (hooks) {
     const post = store.createRecord('post', { title: 'toto' });
 
     adapter.createRecord = function (store, type, snapshot) {
-      var error = new InvalidError([{ title: 'not valid' }]);
+      const error = new InvalidError([{ title: 'not valid' }]);
       return Promise.reject(error);
     };
 

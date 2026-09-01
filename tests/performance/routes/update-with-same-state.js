@@ -50,6 +50,7 @@ function iterateChild(record, seen) {
   }
   seen.add(record);
 
+  // oxlint-disable-next-line no-unused-expressions
   record.parent;
 }
 

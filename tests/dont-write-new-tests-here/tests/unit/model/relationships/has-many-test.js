@@ -2811,12 +2811,15 @@ module('unit/model/relationships - hasMany', function (hooks) {
     const firstPost = posts.at(0);
     const firstPostCommentsPromise = firstPost.comments;
     const originalPromise = firstPostCommentsPromise.promise;
+    // oxlint-disable-next-line no-unused-expressions
     firstPost.comments; // trigger an extra access
     const firstPostComments = await firstPostCommentsPromise;
+    // oxlint-disable-next-line no-unused-expressions
     firstPost.comments; // trigger an extra access
     assert.true(firstPostCommentsPromise.isFulfilled, 'comments relationship is fulfilled');
     assert.strictEqual(firstPostCommentsPromise.promise, originalPromise, 'we did not re-trigger the property');
     assert.strictEqual(firstPostComments.length, 3, 'we loaded three comments');
+    // oxlint-disable-next-line no-unused-expressions
     firstPost.comments; // trigger an extra access
     assert.true(firstPostCommentsPromise.isFulfilled, 'comments relationship is fulfilled');
   });
@@ -2838,6 +2841,7 @@ module('unit/model/relationships - hasMany', function (hooks) {
 
     const store = this.owner.lookup('service:store');
     const tag = store.createRecord('tag');
+    // oxlint-disable-next-line no-unused-expressions
     tag.hasMany('people').hasManyRelationship;
     const support = LEGACY_SUPPORT.get(recordIdentifierFor(tag));
     const sync = support._syncArray;

@@ -13,5 +13,14 @@ export function cjs(config = {}) {
     'mocha/no-setup-in-suite': 'off',
   });
 
-  return base;
+  // oxlint's `mocha` jsPlugin (see `.oxlintrc.json`'s `jsPlugins`) already covers these rules
+  // for the test files this targets — config files (babel/rollup/etc. configs, also matched by
+  // `node.cjs()`'s base `files`) aren't in oxlint's scope, so this override is scoped to just
+  // `config.files`, not `base.files`.
+  const disabledOverride = {
+    files: config.files,
+    rules: Object.fromEntries(Object.keys(recommended.rules).map((rule) => [rule, 'off'])),
+  };
+
+  return [base, disabledOverride];
 }

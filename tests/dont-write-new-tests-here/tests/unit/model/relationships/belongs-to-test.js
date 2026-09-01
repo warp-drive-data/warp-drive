@@ -741,6 +741,7 @@ module('unit/model/relationships - belongsTo', function (hooks) {
 
     await store.findRecord('person', '1').then((person) => {
       assert.expectWarning(() => {
+        // oxlint-disable-next-line no-unused-expressions
         person.hobby;
       }, /You provided a serialize option on the "hobby" property in the "person" class, this belongs in the serializer. See Serializer and it's implementations/);
     });
@@ -797,6 +798,7 @@ module('unit/model/relationships - belongsTo', function (hooks) {
 
     await store.findRecord('person', '1').then((person) => {
       assert.expectWarning(() => {
+        // oxlint-disable-next-line no-unused-expressions
         person.hobby;
       }, /You provided an embedded option on the "hobby" property in the "person" class, this belongs in the serializer. See EmbeddedRecordsMixin/);
     });

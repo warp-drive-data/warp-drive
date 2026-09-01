@@ -532,6 +532,7 @@ module('integration/relationship/belongs_to Belongs-To Relationships', function 
           },
         },
       });
+      // oxlint-disable-next-line no-unused-expressions
       post.user;
     }, /Encountered a relationship identifier without an id for the belongsTo relationship 'user' on <post:1>, expected an identifier but found/);
   });
@@ -557,6 +558,7 @@ module('integration/relationship/belongs_to Belongs-To Relationships', function 
           },
         },
       });
+      // oxlint-disable-next-line no-unused-expressions
       post.user;
     }, /Encountered a relationship identifier without a type for the belongsTo relationship 'user' on <post:2>, expected an identifier with type 'user' but found/);
   });
@@ -1012,6 +1014,7 @@ module('integration/relationship/belongs_to Belongs-To Relationships', function 
     });
 
     assert.expectAssertion(() => {
+      // oxlint-disable-next-line no-unused-expressions
       message.user;
     }, /You looked up the 'user' relationship on a 'message' with id 1 but some of the associated records were not loaded. Either make sure they are all loaded together with the parent record, or specify that the relationship is async \(`belongsTo\(<type>, { async: true, inverse: <inverse> }\)`\)/);
   });
@@ -1298,6 +1301,7 @@ module('integration/relationship/belongs_to Belongs-To Relationships', function 
     const store = this.owner.lookup('service:store');
 
     const user = store.createRecord('user');
+    // oxlint-disable-next-line no-unused-expressions
     user.favouriteMessage;
     assert.ok(
       hasRelationshipForRecord(user, 'favouriteMessage'),

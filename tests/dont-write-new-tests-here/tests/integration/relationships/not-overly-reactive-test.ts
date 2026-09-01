@@ -7,7 +7,7 @@ import { setupRenderingTest, setupTest } from 'ember-qunit';
 import Model, { attr, belongsTo, hasMany } from '@ember-data/model';
 import type Store from '@ember-data/store';
 import { deprecatedTest } from '@ember-data/unpublished-test-infra/test-support/deprecated-test';
-import { Type } from '@warp-drive/core-types/symbols';
+import type { Type } from '@warp-drive/core-types/symbols';
 
 import { reactiveContext } from '../../helpers/reactive-context.gts';
 

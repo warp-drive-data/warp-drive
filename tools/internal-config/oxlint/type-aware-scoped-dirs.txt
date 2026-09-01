@@ -1,31 +1,26 @@
-# Directories oxlint's --type-aware mode (tsgolint) can actually analyze.
+# Directories oxlint should scan.
 #
-# tsgolint is built on typescript-go, which is still catching up to the real
-# TypeScript compiler: it hard-errors (a `tsconfig-error` diagnostic, not a
-# regular lint rule, so it can't be downgraded to a warning via `.oxlintrc.json`)
-# on tsconfig.json files using compiler options it doesn't yet support.
+# oxlint runs once, repo-wide, unlike ESLint's per-package turbo pipeline, so it
+# needs its own explicit include-list rather than relying on each package's
+# eslint.config.mjs `srcDirs`. This mirrors those `srcDirs` values for every
+# package that has one, deliberately excluding:
+#   - `.gts`/`.gjs` sources (oxlint's parser doesn't support template-tag syntax)
+#   - packages/eslint-plugin-warp-drive and packages/internal-exam (Node-context
+#     tooling packages whose active rule set differs from the browser-context
+#     rules oxlintrc.json encodes; see packages/*/eslint.config.mjs for the
+#     `node.cjs()`/`node.esm()` split)
+#   - docs-viewer, tools/, scripts/, packages/schema, packages/unpublished-eslint-rules
+#     (none of these are covered by an eslint.config.mjs today either)
 #
-# In practice that only ever hit two options in this monorepo's classic
-# `packages/*`-style tsconfigs: `baseUrl` and `downlevelIteration`. Both are
-# dead weight, not load-bearing: every affected tsconfig targets `esnext`, so
-# `downlevelIteration` (which only changes ES5-and-below iteration output) is
-# already a no-op, and none of them pair `baseUrl` with a `paths` map, so it
-# isn't enabling any non-relative import resolution either. Dropping both from
-# every tsconfig that had them made tsgolint parse cleanly repo-wide (verified
-# with a repo-wide `--type-aware` run and `pnpm run check:types`, both clean),
-# so this list is currently identical to `scoped-dirs.txt`. `ember-source/types`
-# in `types` was never actually a blocker once tsgolint got past the tsconfig
-# parse — that theory came from testing in a sandbox without a real `pnpm
-# install`, where the types package wasn't resolvable for unrelated reasons.
+# Every entry below is a real, existing directory — verify with `find` before adding one;
+# a typo here silently means "0 files scanned", not an error.
 #
-# Kept as a separate file (rather than reusing `scoped-dirs.txt` directly in
-# `run.sh`) in case a future tsconfig option regresses tsgolint compatibility
-# for a subset of packages again — update this list if that happens.
+# Update this list when a package's `srcDirs` changes or a new lintable
+# package is added.
 packages/-ember-data/src
 packages/-warp-drive/src
 packages/active-record/src
 packages/adapter/src
-packages/codemods/bin
 packages/codemods/src
 packages/codemods/utils
 packages/core-types/src
@@ -45,27 +40,33 @@ packages/store/src
 packages/tracking/src
 specs/src
 tests/blueprints/fixtures
-tests/codemods/src
-tests/core/app
+tests/blueprints/tests
+tests/codemods/tests
+tests/core/tests
 tests/dont-write-new-tests-here/app
+tests/dont-write-new-tests-here/tests
 tests/ember-data__adapter/services
+tests/ember-data__adapter/tests
 tests/ember-data__graph/services
-tests/ember-data__model/src
-tests/ember-data__request/src
+tests/ember-data__graph/tests
+tests/ember-data__model/tests
+tests/ember-data__request/tests
 tests/example-app-ember/app
-tests/experiments/src
-tests/framework-ember/src
-tests/framework-react/app
-tests/framework-svelte/app
-tests/framework-vue/app
-tests/json-api/src
-tests/legacy/app
+tests/example-app-ember/tests
+tests/experiments/tests
+tests/framework-ember/tests
+tests/framework-react/tests
+tests/framework-svelte/tests
+tests/framework-vue/tests
+tests/json-api/tests
+tests/legacy/tests
 tests/performance/mixins
 tests/performance/models
 tests/performance/routes
 tests/performance/services
 tests/utilities/models
 tests/utilities/services
+tests/utilities/tests
 warp-drive-packages/core/src
 warp-drive-packages/ember/src
 warp-drive-packages/experiments/src

@@ -7,7 +7,7 @@ import Model, { attr, type HasMany, hasMany } from '@ember-data/model';
 import type Store from '@ember-data/store';
 import type { ModelSchema } from '@ember-data/store/types';
 import { DEBUG } from '@warp-drive/build-config/env';
-import { Type } from '@warp-drive/core-types/symbols';
+import type { Type } from '@warp-drive/core-types/symbols';
 
 let IS_DEBUG = false;
 

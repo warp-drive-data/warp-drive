@@ -10,11 +10,10 @@ mapfile -t type_aware_dirs < <(grep -v '^\s*#' "$TYPE_AWARE_DIRS_FILE" | grep -v
 
 cd "$ROOT_DIR"
 
-# Additive type-aware pass over the subset of packages whose tsconfig.json
-# tsgolint can actually parse — see type-aware-scoped-dirs.txt. Its rules are
-# configured at "warn" in .oxlintrc.json for now, so this can't fail the
-# build; it exists to surface findings while we build confidence in it, not
-# yet to replace ESLint's type-aware rules.
+# Type-aware pass over every package listed in type-aware-scoped-dirs.txt (currently
+# identical to scoped-dirs.txt in full). Its rules are at "error" in .oxlintrc.json and
+# replace ESLint's type-aware rules wherever tools/internal-config/eslint/oxlint.js's
+# disabledTypeAwareRules() is wired in.
 node_modules/.bin/oxlint --type-aware "$@" "${type_aware_dirs[@]}"
 type_aware_status=$?
 

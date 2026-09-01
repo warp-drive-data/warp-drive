@@ -31,6 +31,7 @@ module('tracking state flags on a record', function (hooks) {
         enumerable: true,
         configurable: true,
         get() {
+          // oxlint-disable-next-line no-unused-expressions
           tag.rev; // subscribe
           if (_isDirty && !_isUpdating) {
             _isUpdating = true;

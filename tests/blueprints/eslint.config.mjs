@@ -27,5 +27,5 @@ export default [
     files: ['tests/*', 'tests/**/*.js'],
   }),
 
-  mocha.cjs(),
+  ...mocha.cjs(),
 ];

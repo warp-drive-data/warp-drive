@@ -1,5 +1,5 @@
 import { GetPromiseStateSpec } from "@warp-drive-internal/specs/get-promise-state.spec";
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useRef } from "react";
 
 import { DEBUG } from "@warp-drive/core/build-config/env";
 import { useReact } from "@warp-drive/diagnostic/react";

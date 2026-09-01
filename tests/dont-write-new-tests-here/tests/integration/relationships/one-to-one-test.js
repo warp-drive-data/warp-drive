@@ -45,8 +45,7 @@ module('integration/relationships/one_to_one_test - OneToOne relationships', fun
   test('Relationship is available from both sides even if only loaded from one side - async', async function (assert) {
     const store = this.owner.lookup('service:store');
 
-    var stanley, stanleysFriend;
-    stanley = store.push({
+    const stanley = store.push({
       data: {
         id: '1',
         type: 'user',
@@ -63,7 +62,7 @@ module('integration/relationships/one_to_one_test - OneToOne relationships', fun
         },
       },
     });
-    stanleysFriend = store.push({
+    const stanleysFriend = store.push({
       data: {
         id: '2',
         type: 'user',
@@ -81,8 +80,7 @@ module('integration/relationships/one_to_one_test - OneToOne relationships', fun
   test('Relationship is available from both sides even if only loaded from one side - sync', function (assert) {
     const store = this.owner.lookup('service:store');
 
-    var job, user;
-    job = store.push({
+    const job = store.push({
       data: {
         id: '2',
         type: 'job',
@@ -91,7 +89,7 @@ module('integration/relationships/one_to_one_test - OneToOne relationships', fun
         },
       },
     });
-    user = store.push({
+    const user = store.push({
       data: {
         id: '1',
         type: 'user',
@@ -114,8 +112,7 @@ module('integration/relationships/one_to_one_test - OneToOne relationships', fun
   test('Fetching a belongsTo that is set to null removes the record from a relationship - async', async function (assert) {
     const store = this.owner.lookup('service:store');
 
-    var stanleysFriend;
-    stanleysFriend = store.push({
+    const stanleysFriend = store.push({
       data: {
         id: '2',
         type: 'user',
@@ -376,8 +373,7 @@ module('integration/relationships/one_to_one_test - OneToOne relationships', fun
   test('Setting a OneToOne relationship reflects correctly on the other side- async', async function (assert) {
     const store = this.owner.lookup('service:store');
 
-    var stanley, stanleysFriend;
-    stanley = store.push({
+    const stanley = store.push({
       data: {
         id: '1',
         type: 'user',
@@ -386,7 +382,7 @@ module('integration/relationships/one_to_one_test - OneToOne relationships', fun
         },
       },
     });
-    stanleysFriend = store.push({
+    const stanleysFriend = store.push({
       data: {
         id: '2',
         type: 'user',
@@ -404,8 +400,7 @@ module('integration/relationships/one_to_one_test - OneToOne relationships', fun
   test('Setting a OneToOne relationship reflects correctly on the other side- sync', function (assert) {
     const store = this.owner.lookup('service:store');
 
-    var job, user;
-    job = store.push({
+    const job = store.push({
       data: {
         id: '2',
         type: 'job',
@@ -414,7 +409,7 @@ module('integration/relationships/one_to_one_test - OneToOne relationships', fun
         },
       },
     });
-    user = store.push({
+    const user = store.push({
       data: {
         id: '1',
         type: 'user',
@@ -465,8 +460,7 @@ module('integration/relationships/one_to_one_test - OneToOne relationships', fun
   test('Setting a OneToOne relationship to null reflects correctly on the other side - async', async function (assert) {
     const store = this.owner.lookup('service:store');
 
-    var stanley, stanleysFriend;
-    stanley = store.push({
+    const stanley = store.push({
       data: {
         id: '1',
         type: 'user',
@@ -483,7 +477,7 @@ module('integration/relationships/one_to_one_test - OneToOne relationships', fun
         },
       },
     });
-    stanleysFriend = store.push({
+    const stanleysFriend = store.push({
       data: {
         id: '2',
         type: 'user',
@@ -510,8 +504,7 @@ module('integration/relationships/one_to_one_test - OneToOne relationships', fun
   test('Setting a OneToOne relationship to null reflects correctly on the other side - sync', function (assert) {
     const store = this.owner.lookup('service:store');
 
-    var job, user;
-    job = store.push({
+    const job = store.push({
       data: {
         id: '2',
         type: 'job',
@@ -528,7 +521,7 @@ module('integration/relationships/one_to_one_test - OneToOne relationships', fun
         },
       },
     });
-    user = store.push({
+    const user = store.push({
       data: {
         id: '1',
         type: 'user',
@@ -555,8 +548,7 @@ module('integration/relationships/one_to_one_test - OneToOne relationships', fun
 
     const store = this.owner.lookup('service:store');
 
-    var stanley, stanleysFriend;
-    stanley = store.push({
+    const stanley = store.push({
       data: {
         id: '1',
         type: 'user',
@@ -573,7 +565,7 @@ module('integration/relationships/one_to_one_test - OneToOne relationships', fun
         },
       },
     });
-    stanleysFriend = store.push({
+    const stanleysFriend = store.push({
       data: {
         id: '2',
         type: 'user',
@@ -593,7 +585,7 @@ module('integration/relationships/one_to_one_test - OneToOne relationships', fun
 
     const fetchedUser = await stanleysFriend.bestFriend;
     assert.strictEqual(fetchedUser, stanley, 'User relationship was initally setup correctly');
-    var stanleysNewFriend = store.push({
+    const stanleysNewFriend = store.push({
       data: {
         id: '3',
         type: 'user',
@@ -615,8 +607,7 @@ module('integration/relationships/one_to_one_test - OneToOne relationships', fun
   test('Setting a belongsTo to a different record, sets the old relationship to null - sync', function (assert) {
     const store = this.owner.lookup('service:store');
 
-    var job, user, newBetterJob;
-    job = store.push({
+    const job = store.push({
       data: {
         id: '2',
         type: 'job',
@@ -625,7 +616,7 @@ module('integration/relationships/one_to_one_test - OneToOne relationships', fun
         },
       },
     });
-    user = store.push({
+    const user = store.push({
       data: {
         id: '1',
         type: 'user',
@@ -645,7 +636,7 @@ module('integration/relationships/one_to_one_test - OneToOne relationships', fun
 
     assert.strictEqual(job.user, user, 'Job and user initially setup correctly');
 
-    newBetterJob = store.push({
+    const newBetterJob = store.push({
       data: {
         id: '3',
         type: 'job',
@@ -669,8 +660,7 @@ module('integration/relationships/one_to_one_test - OneToOne relationships', fun
   test('Rollbacking attributes of deleted record restores the relationship on both sides - async', async function (assert) {
     const store = this.owner.lookup('service:store');
 
-    var stanley, stanleysFriend;
-    stanley = store.push({
+    const stanley = store.push({
       data: {
         id: '1',
         type: 'user',
@@ -687,7 +677,7 @@ module('integration/relationships/one_to_one_test - OneToOne relationships', fun
         },
       },
     });
-    stanleysFriend = store.push({
+    const stanleysFriend = store.push({
       data: {
         id: '2',
         type: 'user',
@@ -709,8 +699,7 @@ module('integration/relationships/one_to_one_test - OneToOne relationships', fun
   test('Rollbacking attributes of deleted record restores the relationship on both sides - sync', function (assert) {
     const store = this.owner.lookup('service:store');
 
-    var job, user;
-    job = store.push({
+    const job = store.push({
       data: {
         id: '2',
         type: 'job',
@@ -719,7 +708,7 @@ module('integration/relationships/one_to_one_test - OneToOne relationships', fun
         },
       },
     });
-    user = store.push({
+    const user = store.push({
       data: {
         id: '1',
         type: 'user',

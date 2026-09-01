@@ -4,7 +4,6 @@
 # needs its own explicit include-list rather than relying on each package's
 # eslint.config.mjs `srcDirs`. This mirrors those `srcDirs` values for every
 # package that has one, deliberately excluding:
-#   - `tests/**` (qunit-covered test files stay on ESLint)
 #   - `.gts`/`.gjs` sources (oxlint's parser doesn't support template-tag syntax)
 #   - packages/eslint-plugin-warp-drive and packages/internal-exam (Node-context
 #     tooling packages whose active rule set differs from the browser-context
@@ -13,13 +12,15 @@
 #   - docs-viewer, tools/, scripts/, packages/schema, packages/unpublished-eslint-rules
 #     (none of these are covered by an eslint.config.mjs today either)
 #
+# Every entry below is a real, existing directory — verify with `find` before adding one;
+# a typo here silently means "0 files scanned", not an error.
+#
 # Update this list when a package's `srcDirs` changes or a new lintable
 # package is added.
 packages/-ember-data/src
 packages/-warp-drive/src
 packages/active-record/src
 packages/adapter/src
-packages/codemods/bin
 packages/codemods/src
 packages/codemods/utils
 packages/core-types/src
@@ -39,27 +40,33 @@ packages/store/src
 packages/tracking/src
 specs/src
 tests/blueprints/fixtures
-tests/codemods/src
-tests/core/app
+tests/blueprints/tests
+tests/codemods/tests
+tests/core/tests
 tests/dont-write-new-tests-here/app
+tests/dont-write-new-tests-here/tests
 tests/ember-data__adapter/services
+tests/ember-data__adapter/tests
 tests/ember-data__graph/services
-tests/ember-data__model/src
-tests/ember-data__request/src
+tests/ember-data__graph/tests
+tests/ember-data__model/tests
+tests/ember-data__request/tests
 tests/example-app-ember/app
-tests/experiments/src
-tests/framework-ember/src
-tests/framework-react/app
-tests/framework-svelte/app
-tests/framework-vue/app
-tests/json-api/src
-tests/legacy/app
+tests/example-app-ember/tests
+tests/experiments/tests
+tests/framework-ember/tests
+tests/framework-react/tests
+tests/framework-svelte/tests
+tests/framework-vue/tests
+tests/json-api/tests
+tests/legacy/tests
 tests/performance/mixins
 tests/performance/models
 tests/performance/routes
 tests/performance/services
 tests/utilities/models
 tests/utilities/services
+tests/utilities/tests
 warp-drive-packages/core/src
 warp-drive-packages/ember/src
 warp-drive-packages/experiments/src

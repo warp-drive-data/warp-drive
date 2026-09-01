@@ -31,8 +31,10 @@ export default [
   node.cjs(),
 
   // Test Support ================
-  qunit.ember({
-    files: ['src/test-support/**/*.{js,ts}'],
-    allowedImports: ['@ember/debug', '@ember/owner'],
-  }),
+  ...qunit.toArray(
+    qunit.ember({
+      files: ['src/test-support/**/*.{js,ts}'],
+      allowedImports: ['@ember/debug', '@ember/owner'],
+    })
+  ),
 ];

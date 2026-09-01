@@ -6,7 +6,7 @@ import type { Snapshot } from '@ember-data/legacy-compat/-private';
 import Model, { attr } from '@ember-data/model';
 import { createDeferred } from '@ember-data/request';
 import type Store from '@ember-data/store';
-import { Type } from '@warp-drive/core-types/symbols';
+import type { Type } from '@warp-drive/core-types/symbols';
 
 module('Integration | Record | concurrent saves', function (hooks) {
   setupTest(hooks);

@@ -97,6 +97,7 @@ module('Legacy Mode', function (hooks) {
 
     if (DEBUG) {
       try {
+        // oxlint-disable-next-line no-unused-expressions
         record.$type;
         assert.ok(false, 'record.$type should throw');
       } catch (e) {
@@ -134,6 +135,7 @@ module('Legacy Mode', function (hooks) {
 
     if (DEBUG) {
       try {
+        // oxlint-disable-next-line no-unused-expressions
         (record.constructor as { modelName?: string }).modelName;
         assert.ok(false, 'record.constructor.modelName should throw');
       } catch (e) {

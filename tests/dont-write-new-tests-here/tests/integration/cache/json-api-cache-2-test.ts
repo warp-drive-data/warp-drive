@@ -7,7 +7,7 @@ import { setupRenderingTest } from 'ember-qunit';
 
 import Model, { attr } from '@ember-data/model';
 import type Store from '@ember-data/store';
-import { Type } from '@warp-drive/core-types/symbols';
+import type { Type } from '@warp-drive/core-types/symbols';
 
 import { reactiveContext } from '../../helpers/reactive-context.gts';
 

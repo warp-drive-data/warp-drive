@@ -174,6 +174,7 @@ module('unit/PromiseBelongsTo', function (hooks) {
 
     assert.expectAssertion(
       () => {
+        // oxlint-disable-next-line no-unused-expressions
         belongsToProxy.meta;
       },
       'You attempted to access meta on the promise for the async belongsTo relationship ' +
