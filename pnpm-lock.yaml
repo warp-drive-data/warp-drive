@@ -275,14 +275,14 @@ importers:
         specifier: ^0.35.3
         version: 0.35.3
       svgo:
-        specifier: ^4.0.2
-        version: 4.0.2
+        specifier: ^4.1.0
+        version: 4.1.0
       typedoc:
         specifier: ^0.28.20
         version: 0.28.20(typescript@6.0.3)
       typedoc-plugin-markdown:
-        specifier: ^4.12.0
-        version: 4.12.0(typedoc@0.28.20(typescript@6.0.3))
+        specifier: ^4.13.0
+        version: 4.13.0(typedoc@0.28.20(typescript@6.0.3))
       typedoc-plugin-mdn-links:
         specifier: ^5.1.1
         version: 5.1.1(typedoc@0.28.20(typescript@6.0.3))
@@ -291,7 +291,7 @@ importers:
         version: 1.6.1(typedoc@0.28.20(typescript@6.0.3))
       typedoc-vitepress-theme:
         specifier: ^1.1.3
-        version: 1.1.3(af15eb56ff40430f73929d5db63af4ca)
+        version: 1.1.3(8099f80c9a0e04945c50a997bc2a64f8)
       typescript:
         specifier: 6.0.3
         version: 6.0.3
@@ -300,7 +300,7 @@ importers:
         version: 8.2.2
       vite-plugin-image-optimizer:
         specifier: ^2.0.3
-        version: 2.0.3(sharp@0.35.3)(svgo@4.0.2)(vite@8.2.2)
+        version: 2.0.3(sharp@0.35.3)(svgo@4.1.0)(vite@8.2.2)
       vite-plugin-pwa:
         specifier: ^1.3.0
         version: 1.3.0(vite@8.2.2)
@@ -7692,8 +7692,8 @@ packages:
   css-color-converter@2.0.0:
     resolution: {integrity: sha512-oLIG2soZz3wcC3aAl/7Us5RS8Hvvc6I8G8LniF/qfMmrm7fIKQ8RIDDRZeKyGL2SrWfNqYspuLShbnjBMVWm8g==}
 
-  css-select@5.2.2:
-    resolution: {integrity: sha512-TizTzUddG/xYLA3NXodFM0fSbNizXjOKhqiQQwvhlspadZokn1KDy0NZFS0wuEubIYAV5/c1/lAr0TaaFXEXzw==}
+  css-select@6.0.0:
+    resolution: {integrity: sha512-rZZVSLle8v0+EY8QAkDWrKhpgt6SA5OtHsgBnsj6ZaLb5dmDVOWUDtQitd9ydxxvEjhewNudS6eTVU7uOyzvXw==}
 
   css-tree@2.2.1:
     resolution: {integrity: sha512-OA0mILzGc1kCOCSJerOeqDxDQ4HOh+G8NbOJFOTgOCzpw7fCBubk0fEyxp8AgOL/jvLgYA/uV0cMbe43ElF1JA==}
@@ -7706,8 +7706,8 @@ packages:
   css-unit-converter@1.1.2:
     resolution: {integrity: sha512-IiJwMC8rdZE0+xiEZHeru6YoONC4rfPMqGm2W85jMIbkFvv5nFTwJVFHam2eFrN6txmoUYFAFXiv8ICVeTO0MA==}
 
-  css-what@6.2.2:
-    resolution: {integrity: sha512-u/O3vwbptzhMs3L1fQE82ZSLHQQfto5gyZzwteVIEyeaY5Fc7R4dapF/BvRoSYFeqfBk4m0V1Vafq5Pjv25wvA==}
+  css-what@7.0.0:
+    resolution: {integrity: sha512-wD5oz5xibMOPHzy13CyGmogB3phdvcDaB5t0W/Nr5Z2O/agcB8YwOz6e2Lsp10pNDzBoDO9nVa3RGs/2BttpHQ==}
     engines: {node: '>= 6'}
 
   csso@5.0.5:
@@ -10431,8 +10431,8 @@ packages:
   svg-tags@1.0.0:
     resolution: {integrity: sha512-ovssysQTa+luh7A5Weu3Rta6FJlFBBbInjOh722LIt6klpU2/HtdUbszju/G4devcvk8PGt7FCLv5wftu3THUA==}
 
-  svgo@4.0.2:
-    resolution: {integrity: sha512-ekx94z1rRc5LDi6oSUaeRnYhd0UOJxdtQCL2rF8xpWxD3TPAsISWOrxezqGovqS38GRZOdpDfvQe3ts6F7nsng==}
+  svgo@4.1.0:
+    resolution: {integrity: sha512-bkxnTg1kSU0guhIBmibA6UUhrQmPVA1XsQLN+ylCd+UWzbnLkySOcXpyk1mrl05f+pcaCx2eHb+sp6BgMZWX+Q==}
     engines: {node: '>=16'}
     hasBin: true
 
@@ -10671,8 +10671,8 @@ packages:
     resolution: {integrity: sha512-OZs6gsjF4vMp32qrCbiVSkrFmXtG/AZhY3t0iAMrMBiAZyV9oALtXO8hsrHbMXF9x6L3grlFuwW2oAz7cav+Gw==}
     engines: {node: '>= 0.6'}
 
-  typedoc-plugin-markdown@4.12.0:
-    resolution: {integrity: sha512-eJDEMAfxCmede22c/Jw7d0FA13ggAQv+KkwQYKYCdqI02cin6Rc9QRwbG/7XvvHWinuFejySnZVUWDtvGk3Vbg==}
+  typedoc-plugin-markdown@4.13.0:
+    resolution: {integrity: sha512-OHaOLoMTS0wL2ud73WXvxv486mrUEtgXxW4iKiTOGJVipT/VBWY76rlVRMQGes7aVonoIf5roWRe1UvHbufLlQ==}
     engines: {node: '>= 18'}
     peerDependencies:
       typedoc: 0.28.x
@@ -16009,15 +16009,15 @@ snapshots:
       debug: 4.4.3
       front-matter: 4.0.2
       sharp: 0.35.3
-      svgo: 4.0.2
+      svgo: 4.1.0
       typedoc: 0.28.20(typescript@6.0.3)
-      typedoc-plugin-markdown: 4.12.0(typedoc@0.28.20(typescript@6.0.3))
+      typedoc-plugin-markdown: 4.13.0(typedoc@0.28.20(typescript@6.0.3))
       typedoc-plugin-mdn-links: 5.1.1(typedoc@0.28.20(typescript@6.0.3))
       typedoc-plugin-no-inherit: 1.6.1(typedoc@0.28.20(typescript@6.0.3))
-      typedoc-vitepress-theme: 1.1.3(af15eb56ff40430f73929d5db63af4ca)
+      typedoc-vitepress-theme: 1.1.3(8099f80c9a0e04945c50a997bc2a64f8)
       typescript: 6.0.3
       vite: 8.2.2
-      vite-plugin-image-optimizer: 2.0.3(sharp@0.35.3)(svgo@4.0.2)(vite@8.2.2)
+      vite-plugin-image-optimizer: 2.0.3(sharp@0.35.3)(svgo@4.1.0)(vite@8.2.2)
       vite-plugin-pwa: 1.3.0(vite@8.2.2)
       vitepress: 2.0.0-alpha.19(typescript@6.0.3)
       vitepress-plugin-group-icons: 1.7.6(vite@8.2.2)
@@ -17005,10 +17005,10 @@ snapshots:
       color-name: 1.1.4
       css-unit-converter: 1.1.2
 
-  css-select@5.2.2:
+  css-select@6.0.0:
     dependencies:
       boolbase: 1.0.0
-      css-what: 6.2.2
+      css-what: 7.0.0
       domhandler: 5.0.3
       domutils: 3.2.2
       nth-check: 2.1.1
@@ -17025,7 +17025,7 @@ snapshots:
 
   css-unit-converter@1.1.2: {}
 
-  css-what@6.2.2: {}
+  css-what@7.0.0: {}
 
   csso@5.0.5:
     dependencies:
@@ -20190,12 +20190,12 @@ snapshots:
 
   svg-tags@1.0.0: {}
 
-  svgo@4.0.2:
+  svgo@4.1.0:
     dependencies:
       commander: 11.1.0
-      css-select: 5.2.2
+      css-select: 6.0.0
       css-tree: 3.1.0
-      css-what: 6.2.2
+      css-what: 7.0.0
       csso: 5.0.5
       picocolors: 1.1.1
       sax: 1.6.1
@@ -20637,7 +20637,7 @@ snapshots:
       media-typer: 1.1.0
       mime-types: 3.0.1
 
-  typedoc-plugin-markdown@4.12.0(typedoc@0.28.20(typescript@6.0.3)):
+  typedoc-plugin-markdown@4.13.0(typedoc@0.28.20(typescript@6.0.3)):
     dependencies:
       typedoc: 0.28.20(typescript@6.0.3)
 
@@ -20649,10 +20649,10 @@ snapshots:
     dependencies:
       typedoc: 0.28.20(typescript@6.0.3)
 
-  typedoc-vitepress-theme@1.1.3(af15eb56ff40430f73929d5db63af4ca):
+  typedoc-vitepress-theme@1.1.3(8099f80c9a0e04945c50a997bc2a64f8):
     dependencies:
       typedoc: 0.28.20(typescript@6.0.3)
-      typedoc-plugin-markdown: 4.12.0(typedoc@0.28.20(typescript@6.0.3))
+      typedoc-plugin-markdown: 4.13.0(typedoc@0.28.20(typescript@6.0.3))
 
   typedoc@0.28.20(typescript@6.0.3):
     dependencies:
@@ -20894,14 +20894,14 @@ snapshots:
     transitivePeerDependencies:
       - rollup
 
-  vite-plugin-image-optimizer@2.0.3(sharp@0.35.3)(svgo@4.0.2)(vite@8.2.2):
+  vite-plugin-image-optimizer@2.0.3(sharp@0.35.3)(svgo@4.1.0)(vite@8.2.2):
     dependencies:
       ansi-colors: 4.1.3
       pathe: 2.0.3
       vite: 8.2.2
     optionalDependencies:
       sharp: 0.35.3
-      svgo: 4.0.2
+      svgo: 4.1.0
 
   vite-plugin-pwa@1.3.0(vite@8.2.2):
     dependencies:
