@@ -9,6 +9,24 @@
     { "name": "mocha", "specifier": "eslint-plugin-mocha" }
   ],
   "categories": {},
+  // Needed for `no-undef` (see the `rules` map below). ESLint splits these into
+  // `globals.browser`/`globals.node`/`globals.nodeBuiltin` per file context (browser vs. node
+  // config files) via each package's `eslint.config.mjs`; oxlint's config isn't scoped that
+  // finely; we deliberately union both here rather than replicate that per-directory split, so
+  // `no-undef` won't false-positive on a node-context identifier used in a browser-context file
+  // (or vice versa) — a real but narrow loss compared to ESLint's stricter, context-aware check.
+  "env": {
+    "builtin": true,
+    "browser": true,
+    "node": true,
+    "qunit": true
+  },
+  "globals": {
+    // node's `--expose-gc` global, used by a couple of test packages
+    "gc": "readonly",
+    // packages/diagnostic's Bun-specific test runner path
+    "Bun": "readonly"
+  },
   "options": {
     "respectEslintDisableDirectives": true
   },
@@ -360,6 +378,20 @@
     "typescript/require-array-sort-compare": "off"
   },
   "overrides": [
+    {
+      // `no-undef`/`no-redeclare` are JS-only, scope-based checks with no understanding of
+      // TypeScript declaration merging (`interface Foo {}` + `declare class Foo {}`, a common
+      // mixin-typing idiom here) or ambient `declare global` blocks (e.g. `FastBoot`) — both
+      // fire false positives on `.ts`/`.tsx`. `tsc` (via each package's `check:types`) already
+      // catches genuine duplicate-identifier and undefined-identifier bugs there with full
+      // type/ambient-declaration awareness, so these two are scoped to plain `.js`, which has
+      // no such safety net.
+      "files": ["**/*.js"],
+      "rules": {
+        "no-redeclare": "error",
+        "no-undef": "error"
+      }
+    },
     {
       "files": ["packages/-ember-data/**"],
       "rules": {
