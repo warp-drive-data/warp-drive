@@ -57,11 +57,17 @@ export default [
   // see that file's header comment), so this keeps full type-aware ESLint enforcement,
   // unlike the app/ block above. `.gts` files are handled by the separate gts.browser()
   // block below, which also keeps full type-aware ESLint coverage since oxlint's parser
-  // can't scan those.
+  // can't scan those. The no-unsafe-* overrides below predate the handoff split (they used
+  // to apply to this whole package, app/ included) and still apply here.
   typescript.browser({
     dirname: import.meta.dirname,
     srcDirs: ['tests'],
     allowedImports: AllowedImports,
+    rules: {
+      '@typescript-eslint/no-unsafe-assignment': 'off',
+      '@typescript-eslint/no-unsafe-member-access': 'off',
+      '@typescript-eslint/no-unsafe-call': 'off',
+    },
   }),
 
   // gts
