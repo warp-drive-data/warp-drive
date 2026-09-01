@@ -18,7 +18,7 @@
     "http-mock"
   ],
   "dependencies": {
-    "hono": "^4.13.3",
+    "hono": "^4.13.4",
     "@hono/node-server": "^1.19.0"
   },
   "type": "module",

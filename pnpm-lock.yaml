@@ -784,10 +784,10 @@ importers:
     dependencies:
       '@hono/node-server':
         specifier: ^1.19.0
-        version: 1.19.0(hono@4.13.3)
+        version: 1.19.0(hono@4.13.4)
       hono:
-        specifier: ^4.13.3
-        version: 4.13.3
+        specifier: ^4.13.4
+        version: 4.13.4
     devDependencies:
       '@babel/core':
         specifier: ^7.29.7
@@ -8459,8 +8459,8 @@ packages:
   highlight.js@10.7.3:
     resolution: {integrity: sha512-tzcUFauisWKNHaRkN4Wjl/ZA07gENAjFl3J/c480dprkGTg5EQstgaNFqBfUqCq54kZRIEcreTsAgF/m2quD7A==}
 
-  hono@4.13.3:
-    resolution: {integrity: sha512-r8AO2mYHoLxSHkgafNeC/BXyb2vWRxD3jem4Ts+ptav8oTG5FIRifAjuJEmZI4bSvvc2ns0GxmIYiZnHqN3mMw==}
+  hono@4.13.4:
+    resolution: {integrity: sha512-AGEwKIyRMHRv1t8Wjwa3LHxQ61X5CqrdFT+4BRNTpqS5aJNnpl5WLjADb7vFlJzI/8uK7T5QLVApCMQKNa3LgQ==}
     engines: {node: '>=16.9.0'}
 
   hookable@5.5.3:
@@ -12979,9 +12979,9 @@ snapshots:
 
   '@handlebars/parser@2.2.1': {}
 
-  '@hono/node-server@1.19.0(hono@4.13.3)':
+  '@hono/node-server@1.19.0(hono@4.13.4)':
     dependencies:
-      hono: 4.13.3
+      hono: 4.13.4
 
   '@html-next/vertical-collection@5.0.5':
     dependencies:
@@ -15139,41 +15139,41 @@ snapshots:
 
   '@warp-drive/holodeck@file:packages/holodeck(2eeb0baf24a3535528995f8bc8048cb9)':
     dependencies:
-      '@hono/node-server': 1.19.0(hono@4.13.3)
+      '@hono/node-server': 1.19.0(hono@4.13.4)
       '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.29.7)
-      hono: 4.13.3
+      hono: 4.13.4
     optionalDependencies:
       '@warp-drive/legacy': file:warp-drive-packages/legacy(a510bc545ed25bc6a53fefeb5da03d5b)
       '@warp-drive/utilities': file:warp-drive-packages/utilities(4ded94bf05a058c4d301833388abca58)
 
   '@warp-drive/holodeck@file:packages/holodeck(4ded94bf05a058c4d301833388abca58)':
     dependencies:
-      '@hono/node-server': 1.19.0(hono@4.13.3)
+      '@hono/node-server': 1.19.0(hono@4.13.4)
       '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.29.7)
-      hono: 4.13.3
+      hono: 4.13.4
 
   '@warp-drive/holodeck@file:packages/holodeck(8bc80b710913e6e758e65e61e6c7db83)':
     dependencies:
-      '@hono/node-server': 1.19.0(hono@4.13.3)
+      '@hono/node-server': 1.19.0(hono@4.13.4)
       '@warp-drive/core': file:warp-drive-packages/core(40bc2c5d5662a5666eb0d917619838cd)
-      hono: 4.13.3
+      hono: 4.13.4
     optionalDependencies:
       '@warp-drive/legacy': file:warp-drive-packages/legacy(8f545e4aa3e427080f63ed8d664f6977)
       '@warp-drive/utilities': file:warp-drive-packages/utilities(1c531ff0d42b5d585fbdc4d6d901c6a4)
 
   '@warp-drive/holodeck@file:packages/holodeck(a1118444cd056e913201e1864a1927c2)':
     dependencies:
-      '@hono/node-server': 1.19.0(hono@4.13.3)
+      '@hono/node-server': 1.19.0(hono@4.13.4)
       '@warp-drive/core': file:warp-drive-packages/core(40bc2c5d5662a5666eb0d917619838cd)
-      hono: 4.13.3
+      hono: 4.13.4
     optionalDependencies:
       '@warp-drive/utilities': file:warp-drive-packages/utilities(1c531ff0d42b5d585fbdc4d6d901c6a4)
 
   '@warp-drive/holodeck@file:packages/holodeck(a510bc545ed25bc6a53fefeb5da03d5b)':
     dependencies:
-      '@hono/node-server': 1.19.0(hono@4.13.3)
+      '@hono/node-server': 1.19.0(hono@4.13.4)
       '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.29.7)
-      hono: 4.13.3
+      hono: 4.13.4
     optionalDependencies:
       '@warp-drive/utilities': file:warp-drive-packages/utilities(4ded94bf05a058c4d301833388abca58)
 
@@ -17909,7 +17909,7 @@ snapshots:
 
   highlight.js@10.7.3: {}
 
-  hono@4.13.3: {}
+  hono@4.13.4: {}
 
   hookable@5.5.3: {}
 
