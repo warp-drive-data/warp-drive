@@ -188,3 +188,11 @@ export const TYPE_AWARE_OXLINT_RULES = [
 export function disabledTypeAwareRules() {
   return Object.fromEntries(TYPE_AWARE_OXLINT_RULES.map((rule) => [rule, 'off']));
 }
+
+// For a `typescript.browser()`/`typescript.node()` block whose only remaining purpose is
+// providing the TS parser for a rule oxlint can't cover (e.g. a custom eslint-plugin-warp-drive
+// rule) — every oxlint-owned rule, syntactic and type-aware alike, off in one call.
+/** @return {import('eslint').Linter.RulesRecord} */
+export function disabledAllRules() {
+  return Object.assign({}, disabledRules(), disabledTypeAwareRules());
+}
