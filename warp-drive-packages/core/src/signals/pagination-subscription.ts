@@ -98,7 +98,7 @@ export interface PaginateArgs<RT, E> extends PaginationSubscriptionArgs<RT, E> {
   store?: Store | RequestManager;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+// oxlint-disable-next-line no-unused-vars
 export interface PaginationSubscription<RT, E> {
   /**
    * The method to call when the component this subscription is attached to
@@ -112,6 +112,8 @@ export interface PaginationSubscription<RT, E> {
  * {@link RequestSubscription} (loading/error state, autorefresh, disposal) and
  * the per-component {@link PaginationState} that it hands to the component.
  *
+ * @since 5.9.0
+ * @public
  * @hideconstructor
  */
 export class PaginationSubscription<RT, E> {
@@ -394,6 +396,14 @@ defineSignal(PaginationSubscription.prototype, '_navRequest', null);
  * manage its request lifecycle and pagination state. Pass the result back into
  * the component via `@subscription` to manage the lifecycle externally.
  *
+ * ```ts
+ * const subscription = createPaginationSubscription(store, { request });
+ *
+ * subscription.paginationState; // the per-component PaginationState
+ * subscription[DISPOSE](); // tear down when the owning component unmounts
+ * ```
+ *
+ * @since 5.9.0
  * @public
  */
 export function createPaginationSubscription<RT, E>(

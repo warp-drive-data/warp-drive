@@ -645,7 +645,13 @@ function extractSinceBadges(content: string): { content: string; moduleSince: st
     }
 
     const existing = badgesByHeadingLine.get(parent.index) ?? { level: parent.level, badges: [] };
-    existing.badges.push(sinceBadgeMarkup(version));
+    const badge = sinceBadgeMarkup(version);
+    // A callable interface/type's doc comment is copied onto both the interface reflection and
+    // its call signature, producing two `#### Since` sections that both resolve to this same
+    // parent heading -- skip the duplicate rather than rendering the badge twice.
+    if (!existing.badges.includes(badge)) {
+      existing.badges.push(badge);
+    }
     badgesByHeadingLine.set(parent.index, existing);
   }
 

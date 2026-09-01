@@ -4,7 +4,7 @@ import { getPaginationLinks } from './pagination-links.ts';
 import type { PagedPaginationState } from './pagination-state.ts';
 import { DISPOSE } from './request-subscription.ts';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+// oxlint-disable-next-line no-unused-vars
 export interface PaginationLinksSubscription<RT, E> {
   /**
    * The method to call when the component this subscription is attached to
@@ -31,6 +31,8 @@ export interface PaginationLinksSubscriptionArgs<RT, E> {
  * `<Paginate />` component, so they stay in sync as pages load and the active
  * page changes.
  *
+ * @since 5.9.0
+ * @public
  * @hideconstructor
  */
 export class PaginationLinksSubscription<RT, E> {
@@ -66,6 +68,14 @@ export class PaginationLinksSubscription<RT, E> {
  * Creates the {@link PaginationLinksSubscription} a links component (such as
  * `<EachLink />`) uses to derive its links from a {@link PagedPaginationState}.
  *
+ * ```ts
+ * const subscription = createPaginationLinksSubscription({ pages: paginationState });
+ *
+ * subscription.paginationLinks; // the derived PaginationLinks
+ * subscription[DISPOSE](); // tear down when the owning component unmounts
+ * ```
+ *
+ * @since 5.9.0
  * @public
  */
 export function createPaginationLinksSubscription<RT, E>(

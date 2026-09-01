@@ -1,6 +1,3 @@
-/**
- * @module @warp-drive/ember
- */
 import { assert } from '@warp-drive/core/build-config/macros';
 
 import type { ReactiveDocument } from '../reactive.ts';
@@ -65,6 +62,8 @@ type Links = {
  * }
  * ```
  *
+ * @since 5.9.0
+ * @public
  * @hideconstructor
  */
 export class PageCache<RT = unknown, E = unknown> {

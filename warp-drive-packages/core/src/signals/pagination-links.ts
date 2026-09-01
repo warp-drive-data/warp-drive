@@ -22,6 +22,8 @@ const PaginationLinksCache = new WeakMap<PagedPaginationState, PaginationLinks>(
  * </EachLink>
  * ```
  *
+ * @since 5.9.0
+ * @public
  * @hideconstructor
  */
 export class RealPaginationLink {
@@ -75,6 +77,8 @@ export class RealPaginationLink {
  * </EachLink>
  * ```
  *
+ * @since 5.9.0
+ * @public
  * @hideconstructor
  */
 export class PlaceholderPaginationLink {
@@ -132,6 +136,8 @@ export class PlaceholderPaginationLink {
  * </EachLink>
  * ```
  *
+ * @since 5.9.0
+ * @public
  * @hideconstructor
  */
 export class RelationalPaginationLink {
@@ -223,6 +229,8 @@ export type PaginationLink = RealPaginationLink | PlaceholderPaginationLink;
  * - {@link PlaceholderPaginationLink}
  * - {@link RelationalPaginationLink}
  *
+ * @since 5.9.0
+ * @public
  * @hideconstructor
  */
 export class PaginationLinks<RT = unknown, E = unknown> {
@@ -357,6 +365,9 @@ export class PaginationLinks<RT = unknown, E = unknown> {
  *   }
  * }
  * ```
+ *
+ * @since 5.9.0
+ * @public
  */
 export function getPaginationLinks<RT, E>(state: PagedPaginationState<RT, E>): Readonly<PaginationLinks<RT, E>> {
   let links = PaginationLinksCache.get(state);

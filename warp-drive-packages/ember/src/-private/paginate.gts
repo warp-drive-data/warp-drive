@@ -241,8 +241,10 @@ interface PaginateSignature<RT, E, M extends PaginateMode = 'paged'> {
  * with `createPaginationSubscription` and pass it via `@subscription` — the
  * component then uses it instead of creating and disposing its own.
  *
- * @class <Paginate />
+ * @since 5.9.0
  * @public
+ * @badge Component
+ * @title <Paginate />
  */
 export class Paginate<RT, E, M extends PaginateMode = 'paged'> extends Component<PaginateSignature<RT, E, M>> {
   /**

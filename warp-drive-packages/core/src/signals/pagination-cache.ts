@@ -1,6 +1,3 @@
-/**
- * @module @warp-drive/ember
- */
 import { assert } from '@warp-drive/build-config/macros';
 
 import type { ReactiveDocument } from '../reactive.ts';
@@ -13,14 +10,20 @@ const PaginationCacheMap = new Map<string, PaginationCache>();
 
 /**
  * A hint function for extracting the `currentPage` and `totalPages` from a loaded
- * document. Provided by the consumer via `<Paginate @pageHints={{...}} />` when the
- * response does not expose these values through the default `meta` locations.
+ * document, for when the response does not expose these values through the
+ * default `meta` locations. Provided by the consumer via `<Paginate />`'s
+ * `@pageHints` arg:
+ *
+ * ```gts
+ * <Paginate @pageHints={{...}} />
+ * ```
  *
  * Since these values are attached to the shared {@link PaginationCache}, the hint is
  * a property of the *collection*, not the component. Every `<Paginate />` sharing a
  * collection must provide the same function reference — define it once at module
  * scope and import it everywhere.
  *
+ * @since 5.9.0
  * @public
  */
 export interface PageHints {
@@ -32,6 +35,7 @@ export interface PageHints {
  * document `meta`, matching the behavior used before `pageHints` was configurable.
  * Used whenever the consumer does not provide a `pageHints` function.
  *
+ * @since 5.9.0
  * @public
  */
 export const defaultPageHints: PageHints = (document) => {
@@ -50,6 +54,8 @@ export const defaultPageHints: PageHints = (document) => {
  * interact with — the cache itself is plumbing shared between the pagination
  * classes.
  *
+ * @since 5.9.0
+ * @public
  * @hideconstructor
  */
 export class PaginationCache<RT = unknown, E = unknown> {
@@ -192,7 +198,7 @@ export class PaginationCache<RT = unknown, E = unknown> {
    */
   @memoized
   get pages(): Iterable<Readonly<PageCache<RT, E>>> {
-    // eslint-disable-next-line @typescript-eslint/no-this-alias
+    // oxlint-disable-next-line typescript/no-this-alias
     const self = this;
     return {
       *[Symbol.iterator]() {
@@ -215,7 +221,7 @@ export class PaginationCache<RT = unknown, E = unknown> {
    */
   @memoized
   get data(): Iterable<ContentItem<RT>> {
-    // eslint-disable-next-line @typescript-eslint/no-this-alias
+    // oxlint-disable-next-line typescript/no-this-alias
     const self = this;
     return {
       *[Symbol.iterator]() {
@@ -234,9 +240,8 @@ export class PaginationCache<RT = unknown, E = unknown> {
  * `first` or `self` link). Returns the same instance for the same key for the
  * lifetime of the module.
  *
+ * @since 5.9.0
  * @public
- * @static
- * @for @warp-drive/ember
  */
 export function getPaginationCache<RT, E>(key: string): PaginationCache<RT, E> {
   let cache = PaginationCacheMap.get(key);
@@ -254,9 +259,8 @@ export function getPaginationCache<RT, E>(key: string): PaginationCache<RT, E> {
  * Primarily intended for test isolation, since the cache is keyed by url and
  * otherwise persists for the lifetime of the module.
  *
+ * @since 5.9.0
  * @public
- * @static
- * @for @warp-drive/ember
  */
 export function clearPaginationCache(): void {
   PaginationCacheMap.clear();

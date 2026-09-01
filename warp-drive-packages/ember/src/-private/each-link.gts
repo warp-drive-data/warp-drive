@@ -87,8 +87,10 @@ interface EachLinkSignature<RT, E> {
  * Since the links all read from the shared page graph, they update as pages
  * load and as the active page changes.
  *
- * @class <EachLink />
+ * @since 5.9.0
  * @public
+ * @badge Component
+ * @title <EachLink />
  */
 export class EachLink<RT, E> extends Component<EachLinkSignature<RT, E>> {
   /** @internal */
