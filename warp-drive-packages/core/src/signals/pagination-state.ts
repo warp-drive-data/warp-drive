@@ -222,7 +222,7 @@ export class PaginationState<RT = unknown, E = unknown>
    */
   @memoized
   get pages(): Iterable<Readonly<PageCache<RT, E>>> {
-    // eslint-disable-next-line @typescript-eslint/no-this-alias
+    // oxlint-disable-next-line typescript/no-this-alias
     const self = this;
     return {
       *[Symbol.iterator]() {
@@ -263,7 +263,7 @@ export class PaginationState<RT = unknown, E = unknown>
    */
   @memoized
   get data(): Iterable<ContentItem<RT>> {
-    // eslint-disable-next-line @typescript-eslint/no-this-alias
+    // oxlint-disable-next-line typescript/no-this-alias
     const self = this;
     return {
       *[Symbol.iterator]() {
