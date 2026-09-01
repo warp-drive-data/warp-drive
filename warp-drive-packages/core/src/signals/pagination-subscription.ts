@@ -98,6 +98,7 @@ export interface PaginateArgs<RT, E> extends PaginationSubscriptionArgs<RT, E> {
   store?: Store | RequestManager;
 }
 
+// oxlint-disable-next-line no-unused-vars
 export interface PaginationSubscription<RT, E> {
   /**
    * The method to call when the component this subscription is attached to
