@@ -1,5 +1,6 @@
 {
   "include": ["tests/**/*"],
+  "contentMappers": [{ "package": "ember-content-mapper", "extensions": [".gts", ".gjs"] }],
   "compilerOptions": {
     "lib": ["DOM", "ESNext"],
     "module": "esnext",
@@ -19,8 +20,6 @@
     "incremental": true,
     "declaration": true,
     "types": [
-      "@glint/ember-tsc/types",
-      "ember-source/types",
       "vite/client",
       "@warp-drive/schema-dsl/virtual",
       "@ember-data/unpublished-test-infra/test-support/asserts/index"

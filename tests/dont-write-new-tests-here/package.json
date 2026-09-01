@@ -17,7 +17,7 @@
     "build:tests": "NODE_ENV=development IS_TESTING=true EMBER_CLI_TEST_COMMAND=true vite build --mode development --outDir dist-test",
     "build:production": "FORCE_BUILD_TESTS=true NODE_ENV=production IS_TESTING=true EMBER_CLI_TEST_COMMAND=true vite build --mode production --outDir dist-test",
     "lint": "eslint . --quiet --cache --cache-strategy=content",
-    "check:types": "ember-tsc --noEmit",
+    "check:types": "node ./node_modules/typescript-7/bin/tsc --noEmit --runExternalCode",
     "examine": "export EXAM_PARALLEL_COUNT=$(./bin/calculate-test-jobs); warp-drive-exam --test-port=0 --path=dist-test --parallel=$EXAM_PARALLEL_COUNT --load-balance",
     "launch:tests": "warp-drive-exam --test-port=0 --path=dist-test --server --no-launch",
     "start": "bun run build:tests --watch",
@@ -53,7 +53,7 @@
     "@embroider/macros": "^1.20.6",
     "@embroider/vite": "^1.7.9",
     "@glimmer/component": "^2.1.1",
-    "@glint/ember-tsc": "^1.10.0",
+    "@glint/ember-tsc": "^1.11.2",
     "@glint/template": "^1.8.0",
     "@tsconfig/ember": "^3.0.12",
     "@types/qunit": "2.19.14",
@@ -70,6 +70,7 @@
     "@warp-drive/utilities": "workspace:*",
     "babel-plugin-ember-template-compilation": "^4.0.0",
     "decorator-transforms": "^2.4.0",
+    "ember-content-mapper": "^0.2.1",
     "ember-data": "workspace:*",
     "ember-inflector": "6.0.0",
     "ember-qunit": "9.1.0",
@@ -82,6 +83,7 @@
     "qunit-dom": "^3.6.0",
     "testem": "^3.20.1",
     "typescript": "^5.9.3",
+    "typescript-7": "npm:typescript@7.1.0-dev.20260821.1",
     "vite": "catalog:"
   },
   "ember": {

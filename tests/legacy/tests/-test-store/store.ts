@@ -77,7 +77,12 @@ export function createTestStore(options: Partial<LegacyStoreSetupOptions> = {}, 
     },
     options
   ) as LegacyModelAndNetworkAndRequestStoreSetupOptions<JSONAPICache>;
-  const AppStore = useLegacyStore(config);
+  // `useLegacyStore` returns `typeof ConfiguredStore<{ cache: JSONAPICache }>`, a
+  // generic class instantiation expression. TypeScript 7 cannot use one of those as
+  // a base class (TS2314), so widen to the un-instantiated base before extending.
+  // Nothing below relies on the `createCache(): T['cache']` refinement the
+  // instantiation adds.
+  const AppStore: typeof BaseStore = useLegacyStore(config);
   class TestStore extends AppStore {
     _adapter?: ApplicationAdapter;
     _serializer?: typeof RESTSerializer;

@@ -30,7 +30,7 @@
     "start": "vite",
     "start:server": "node serve.js",
     "lint": "eslint . --quiet --cache --cache-strategy=content",
-    "check:types": "ember-tsc --noEmit",
+    "check:types": "node ./node_modules/typescript-7/bin/tsc --noEmit --runExternalCode",
     "test:examples": "vite build --mode development && testem ci"
   },
   "devDependencies": {
@@ -46,9 +46,8 @@
     "@embroider/macros": "^1.20.6",
     "@embroider/vite": "^1.7.9",
     "@glimmer/component": "^2.1.1",
-    "@glint/ember-tsc": "^1.10.0",
+    "@glint/ember-tsc": "^1.11.2",
     "@glint/template": "^1.8.0",
-    "@glint/tsserver-plugin": "^2.7.0",
     "@html-next/vertical-collection": "^5.0.5",
     "@types/morgan": "^1.9.10",
     "@warp-drive/core": "workspace:*",
@@ -59,6 +58,7 @@
     "@warp-drive/utilities": "workspace:*",
     "babel-plugin-ember-template-compilation": "^4.0.0",
     "decorator-transforms": "^2.4.0",
+    "ember-content-mapper": "^0.2.1",
     "ember-page-title": "^9.0.3",
     "ember-qunit": "^9.1.0",
     "ember-source": "catalog:",
@@ -70,6 +70,7 @@
     "qunit-dom": "^3.6.0",
     "testem": "^3.20.1",
     "typescript": "^5.9.3",
+    "typescript-7": "npm:typescript@7.1.0-dev.20260821.1",
     "vite": "catalog:"
   },
   "ember": {

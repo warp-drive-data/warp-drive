@@ -13,8 +13,8 @@ import { DEPRECATE_MANY_ARRAY_DUPLICATES } from '@warp-drive/build-config/deprec
 import type { ExistingResourceIdentifierObject } from '@warp-drive/core-types/spec/json-api-raw';
 import { Type } from '@warp-drive/core-types/symbols';
 
-import type { ReactiveContext } from '../../../helpers/reactive-context';
-import { reactiveContext } from '../../../helpers/reactive-context';
+import type { ReactiveContext } from '../../../helpers/reactive-context.gts';
+import { reactiveContext } from '../../../helpers/reactive-context.gts';
 
 class User extends Model {
   @attr declare name: string;

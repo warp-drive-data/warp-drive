@@ -6,7 +6,7 @@ import { Type } from '@warp-drive/core/types/symbols';
 import { module, setupRenderingTest, test } from '@warp-drive/diagnostic/ember';
 import { JSONAPICache } from '@warp-drive/json-api';
 
-import { reactiveContext } from '../-utils/reactive-context';
+import { reactiveContext } from '../-utils/reactive-context.gts';
 
 const Store = useRecommendedStore({
   cache: JSONAPICache,

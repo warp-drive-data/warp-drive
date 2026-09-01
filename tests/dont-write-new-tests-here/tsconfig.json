@@ -1,5 +1,6 @@
 {
   "include": ["app/**/*", "config/**/*", "tests/**/*", "../../@types/ember-data-qunit-asserts"],
+  "contentMappers": [{ "package": "ember-content-mapper", "extensions": [".gts", ".gjs"] }],
   "compilerOptions": {
     "lib": ["DOM", "ESNext"],
     "module": "esnext",
@@ -20,7 +21,7 @@
     "experimentalDecorators": true,
     "incremental": true,
     "declaration": true,
-    "types": ["@glint/ember-tsc/types", "ember-source/types", "@embroider/core/virtual", "vite/client"],
+    "types": ["@embroider/core/virtual", "vite/client"],
     "paths": {
       "main-test-app/*": ["./app/*"]
     },

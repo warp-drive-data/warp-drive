@@ -7,10 +7,15 @@ import BookList from './book-list.gts';
 import { on } from '@ember/modifier';
 import not from '../helpers/not';
 import eq from '../helpers/eq';
+import type { Author } from '../schemas/author';
+import type { Genre } from '../schemas/genre';
 
 export interface BookSearchSignature {
   Element: HTMLDivElement;
-  Args: null;
+  Args: {
+    authors: Author[];
+    genres: Genre[];
+  };
 }
 
 function assertDomEvent(event: Event): asserts event is InputEvent & { target: HTMLInputElement } {}

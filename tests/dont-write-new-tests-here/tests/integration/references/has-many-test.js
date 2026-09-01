@@ -7,7 +7,7 @@ import Model, { attr, belongsTo, hasMany } from '@ember-data/model';
 import JSONAPISerializer from '@ember-data/serializer/json-api';
 import testInDebug from '@ember-data/unpublished-test-infra/test-support/test-in-debug';
 
-import createTrackingContext from '../../helpers/create-tracking-context';
+import createTrackingContext from '../../helpers/create-tracking-context.gjs';
 
 class Family extends Model {
   @hasMany('person', { async: true, inverse: 'family' }) persons;

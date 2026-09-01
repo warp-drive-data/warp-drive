@@ -46,6 +46,9 @@ export default [
     dirname: import.meta.dirname,
     srcDirs: ['app', 'tests'],
     allowedImports: AllowedImports,
+    // tsconfig.json's `types` is for TS 7's check:types; ESLint's type-aware
+    // rules need the classic-TS-friendly ember/glint types instead.
+    project: './tsconfig.eslint.json',
     rules: {
       '@typescript-eslint/no-unsafe-assignment': 'off',
       '@typescript-eslint/no-unsafe-member-access': 'off',
@@ -58,6 +61,7 @@ export default [
     dirname: import.meta.dirname,
     srcDirs: ['app', 'tests'],
     allowedImports: AllowedImports,
+    project: './tsconfig.eslint.json',
     rules: {
       '@typescript-eslint/no-unsafe-assignment': 'off',
       '@typescript-eslint/no-unsafe-member-access': 'off',
