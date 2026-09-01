@@ -213,12 +213,30 @@ runs:
       with:
         # Type-check (tsconfig.tsbuildinfo) and lint (.eslintcache) artifacts are
         # produced per-package by turbo rather than at the repo root, so these
-        # paths must be globbed to cover every workspace package. Prettier still
-        # runs once from the repo root, so `.prettier-cache` stays un-globbed.
+        # paths must cover every workspace package. This used to be a `**` glob,
+        # but @actions/glob's walk for that isn't scoped to skip node_modules,
+        # so it was walking this repo's entire (thousands-of-directories) tree
+        # on every save -- most of this step's ~30s. Enumerating the real
+        # workspace roots (matching pnpm-workspace.yaml's `packages` list) skips
+        # that walk entirely. oxlint/oxfmt have no cache of their own to add
+        # here (neither tool has a `--cache` flag as of this writing). Prettier
+        # still runs once from the repo root (see `lint:prettier`), so
+        # `.prettier-cache` stays un-globbed -- if that ever changes to a
+        # per-package invocation, glob it the same way as the paths below.
+        #
+        # Update this list when a new package gains a `check:types`/`lint`
+        # script -- an outdated entry here just means a colder cache for that
+        # one package, not an error.
         path: |
           .prettier-cache
-          **/.eslintcache
-          **/tsconfig.tsbuildinfo
+          packages/*/.eslintcache
+          packages/*/tsconfig.tsbuildinfo
+          warp-drive-packages/*/.eslintcache
+          warp-drive-packages/*/tsconfig.tsbuildinfo
+          tests/*/.eslintcache
+          tests/*/tsconfig.tsbuildinfo
+          specs/.eslintcache
+          specs/tsconfig.tsbuildinfo
         key: lint-${{ github.head_ref }}-${{ inputs.ref }}
         restore-keys: |
           lint-${{ github.head_ref }}
