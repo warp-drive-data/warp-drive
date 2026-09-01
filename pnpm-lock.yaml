@@ -1406,8 +1406,8 @@ importers:
         specifier: ^1.20.6
         version: 1.20.6(@glint/template@1.8.0)
       '@embroider/vite':
-        specifier: ^1.7.9
-        version: 1.7.9(d76eac855dabb3f1c4be79937dc8f0ec)
+        specifier: ^1.7.10
+        version: 1.7.10(d76eac855dabb3f1c4be79937dc8f0ec)
       '@glimmer/component':
         specifier: ^2.1.1
         version: 2.1.1
@@ -1547,8 +1547,8 @@ importers:
         specifier: ^1.20.6
         version: 1.20.6(@glint/template@1.8.0)
       '@embroider/vite':
-        specifier: ^1.7.9
-        version: 1.7.9(f2d9140a48123d3212894e4b67e2704b)
+        specifier: ^1.7.10
+        version: 1.7.10(f2d9140a48123d3212894e4b67e2704b)
       '@glimmer/component':
         specifier: ^2.1.1
         version: 2.1.1
@@ -1706,8 +1706,8 @@ importers:
         specifier: ^1.20.6
         version: 1.20.6
       '@embroider/vite':
-        specifier: ^1.7.9
-        version: 1.7.9(b67b0bcab1bc56936fb1c8ecc3985dd6)
+        specifier: ^1.7.10
+        version: 1.7.10(b67b0bcab1bc56936fb1c8ecc3985dd6)
       '@glimmer/component':
         specifier: ^2.1.1
         version: 2.1.1
@@ -1788,8 +1788,8 @@ importers:
         specifier: ^1.20.6
         version: 1.20.6
       '@embroider/vite':
-        specifier: ^1.7.9
-        version: 1.7.9(b67b0bcab1bc56936fb1c8ecc3985dd6)
+        specifier: ^1.7.10
+        version: 1.7.10(b67b0bcab1bc56936fb1c8ecc3985dd6)
       '@glimmer/component':
         specifier: ^2.1.1
         version: 2.1.1
@@ -1887,8 +1887,8 @@ importers:
         specifier: ^1.20.6
         version: 1.20.6
       '@embroider/vite':
-        specifier: ^1.7.9
-        version: 1.7.9(b67b0bcab1bc56936fb1c8ecc3985dd6)
+        specifier: ^1.7.10
+        version: 1.7.10(b67b0bcab1bc56936fb1c8ecc3985dd6)
       '@glimmer/component':
         specifier: ^2.1.1
         version: 2.1.1
@@ -1965,8 +1965,8 @@ importers:
         specifier: ^1.20.6
         version: 1.20.6
       '@embroider/vite':
-        specifier: ^1.7.9
-        version: 1.7.9(b67b0bcab1bc56936fb1c8ecc3985dd6)
+        specifier: ^1.7.10
+        version: 1.7.10(b67b0bcab1bc56936fb1c8ecc3985dd6)
       '@glimmer/component':
         specifier: ^2.1.1
         version: 2.1.1
@@ -2046,8 +2046,8 @@ importers:
         specifier: ^1.20.6
         version: 1.20.6(@glint/template@1.8.0)
       '@embroider/vite':
-        specifier: ^1.7.9
-        version: 1.7.9(f2d9140a48123d3212894e4b67e2704b)
+        specifier: ^1.7.10
+        version: 1.7.10(f2d9140a48123d3212894e4b67e2704b)
       '@glimmer/component':
         specifier: ^2.1.1
         version: 2.1.1
@@ -2178,8 +2178,8 @@ importers:
         specifier: ^1.20.6
         version: 1.20.6(@glint/template@1.8.0)
       '@embroider/vite':
-        specifier: ^1.7.9
-        version: 1.7.9(d76eac855dabb3f1c4be79937dc8f0ec)
+        specifier: ^1.7.10
+        version: 1.7.10(d76eac855dabb3f1c4be79937dc8f0ec)
       '@glimmer/component':
         specifier: ^2.1.1
         version: 2.1.1
@@ -2268,8 +2268,8 @@ importers:
         specifier: ^1.20.6
         version: 1.20.6(@glint/template@1.8.0)
       '@embroider/vite':
-        specifier: ^1.7.9
-        version: 1.7.9(d76eac855dabb3f1c4be79937dc8f0ec)
+        specifier: ^1.7.10
+        version: 1.7.10(d76eac855dabb3f1c4be79937dc8f0ec)
       '@glimmer/component':
         specifier: ^2.1.1
         version: 2.1.1
@@ -2550,8 +2550,8 @@ importers:
         specifier: ^1.20.6
         version: 1.20.6
       '@embroider/vite':
-        specifier: ^1.7.9
-        version: 1.7.9(b67b0bcab1bc56936fb1c8ecc3985dd6)
+        specifier: ^1.7.10
+        version: 1.7.10(b67b0bcab1bc56936fb1c8ecc3985dd6)
       '@glimmer/component':
         specifier: ^2.1.1
         version: 2.1.1
@@ -2631,8 +2631,8 @@ importers:
         specifier: ^1.20.6
         version: 1.20.6(@glint/template@1.8.0)
       '@embroider/vite':
-        specifier: ^1.7.9
-        version: 1.7.9(d76eac855dabb3f1c4be79937dc8f0ec)
+        specifier: ^1.7.10
+        version: 1.7.10(d76eac855dabb3f1c4be79937dc8f0ec)
       '@glimmer/component':
         specifier: ^2.1.1
         version: 2.1.1
@@ -2727,8 +2727,8 @@ importers:
         specifier: ^1.20.6
         version: 1.20.6
       '@embroider/vite':
-        specifier: ^1.7.9
-        version: 1.7.9(b67b0bcab1bc56936fb1c8ecc3985dd6)
+        specifier: ^1.7.10
+        version: 1.7.10(b67b0bcab1bc56936fb1c8ecc3985dd6)
       '@glimmer/component':
         specifier: ^2.1.1
         version: 2.1.1
@@ -2838,8 +2838,8 @@ importers:
         specifier: ^1.20.6
         version: 1.20.6
       '@embroider/vite':
-        specifier: ^1.7.9
-        version: 1.7.9(b67b0bcab1bc56936fb1c8ecc3985dd6)
+        specifier: ^1.7.10
+        version: 1.7.10(b67b0bcab1bc56936fb1c8ecc3985dd6)
       '@glimmer/component':
         specifier: ^2.1.1
         version: 2.1.1
@@ -4422,8 +4422,8 @@ packages:
     resolution: {integrity: sha512-IlxD8okTt9cRUFpJKD8gTuQUBuEflrhCUju1xZFdYvmGm5XVqHPfG4I6+bEdKb8NO92aqHxr9SYuYibDmpMM9w==}
     engines: {node: 12.* || 14.* || >= 16}
 
-  '@embroider/vite@1.7.9':
-    resolution: {integrity: sha512-TmatvdDPM4THy4wKA7JvTZa4sJSagQEZeFyeYQCxKBFcIcOxvtrDzDV9oPhv0+LPr+7XXqVOni593Io2m0xnMQ==}
+  '@embroider/vite@1.7.10':
+    resolution: {integrity: sha512-cKMjDQm7OgKJMHIlOX46sZtDDcN2ATKW4oZtBVewQHZKp7RYfCtl0MQFq88p2ruSa+d1OQ01GWg1ybdvCoFaoQ==}
     peerDependencies:
       '@embroider/core': ^4.6.3
       vite: '>= 5.2.0'
@@ -12742,7 +12742,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@embroider/vite@1.7.9(b67b0bcab1bc56936fb1c8ecc3985dd6)':
+  '@embroider/vite@1.7.10(b67b0bcab1bc56936fb1c8ecc3985dd6)':
     dependencies:
       '@babel/core': 7.29.7
       '@embroider/core': 4.6.3
@@ -12768,7 +12768,7 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  '@embroider/vite@1.7.9(d76eac855dabb3f1c4be79937dc8f0ec)':
+  '@embroider/vite@1.7.10(d76eac855dabb3f1c4be79937dc8f0ec)':
     dependencies:
       '@babel/core': 7.29.7
       '@embroider/core': 4.6.3(@glint/template@1.8.0)
@@ -12794,7 +12794,7 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  '@embroider/vite@1.7.9(f2d9140a48123d3212894e4b67e2704b)':
+  '@embroider/vite@1.7.10(f2d9140a48123d3212894e4b67e2704b)':
     dependencies:
       '@babel/core': 7.29.7
       '@embroider/core': 4.6.3(@glint/template@1.8.0)
