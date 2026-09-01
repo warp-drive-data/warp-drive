@@ -15,7 +15,6 @@
   "scripts": {
     "build:pkg": "node node_modules/tsdown/dist/run.mjs",
     "prepack": "pnpm run build:pkg",
-    "lint": "eslint . --quiet --cache --cache-strategy=content",
     "check:types": "tsc --noEmit",
     "sync": "echo \"syncing\"",
     "start": "node node_modules/tsdown/dist/run.mjs --watch"

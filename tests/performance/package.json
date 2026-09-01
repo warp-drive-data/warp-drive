@@ -18,7 +18,6 @@
     "sync": "echo \"syncing\"",
     "build": "vite build",
     "start": "bun ./server/index.ts",
-    "lint": "eslint . --quiet --cache --cache-strategy=content",
     "fixtures": "bun run ./fixtures/index.js"
   },
   "devDependencies": {

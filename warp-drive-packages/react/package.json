@@ -21,7 +21,6 @@
     "build:pkg": "NODE_ENV=production node node_modules/tsdown/dist/run.mjs",
     "prepack": "pnpm run build:pkg",
     "sync": "echo \"syncing\"",
-    "lint": "eslint . --quiet --cache --cache-strategy=content",
     "check:types": "tsc --noEmit",
     "start": "node node_modules/tsdown/dist/run.mjs --watch"
   },

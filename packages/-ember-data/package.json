@@ -15,7 +15,6 @@
     "test": "tests"
   },
   "scripts": {
-    "lint": "eslint . --quiet --cache --cache-strategy=content",
     "build:pkg": "node node_modules/tsdown/dist/run.mjs",
     "prepack": "pnpm run build:pkg",
     "sync": "echo \"syncing\"",

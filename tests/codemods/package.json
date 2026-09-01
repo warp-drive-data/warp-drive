@@ -16,7 +16,6 @@
   "scripts": {
     "sync": "echo \"syncing\"",
     "check:types": "",
-    "lint": "eslint . --quiet --cache --cache-strategy=content",
     "test": "pnpm test:fixtures && pnpm test:unit",
     "test:fixtures": "node --test tests/index.spec.ts",
     "test:unit": "vitest run tests/",

@@ -19,7 +19,6 @@
     "build:tests": "export IS_TESTING=true; export NODE_ENV=development; vite build -m development --outDir dist-test",
     "start": "export IS_TESTING=true; export NODE_ENV=development; vite build -m development --watch --outDir dist-test",
     "_temporarily_deactivated_build:production": "export IS_TESTING=true; export NODE_ENV=production; vite build --outDir dist-test",
-    "lint": "eslint . --quiet --cache --cache-strategy=content",
     "check:types": "tsc --noEmit",
     "test": "export IS_TESTING=true; export NODE_ENV=development; bun ./diagnostic.js",
     "_temporarily_deactivated_test:production": "export IS_TESTING=true; export NODE_ENV=production; bun ./diagnostic.js",

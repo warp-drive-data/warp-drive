@@ -17,7 +17,6 @@
     "build:pkg": "svelte-package",
     "prepack": "svelte-package",
     "sync": "echo \"syncing\"",
-    "lint": "eslint . --quiet --cache --cache-strategy=content",
     "check:types": "tsc --noEmit",
     "start": "vite"
   },
