@@ -117,7 +117,9 @@ module('integration/adapter/store-adapter - DS.Store and DS.Adapter integration 
       });
     };
 
+    // oxlint-disable-next-line no-useless-assignment -- read as `tom.save()` below before being reassigned
     let tom = store.createRecord('person', { name: 'Tom Dale' });
+    // oxlint-disable-next-line no-useless-assignment -- read as `yehuda.save()` below before being reassigned
     let yehuda = store.createRecord('person', { name: 'Yehuda Katz' });
 
     [tom, yehuda] = await Promise.all([tom.save(), yehuda.save()]);

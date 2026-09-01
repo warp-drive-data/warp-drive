@@ -335,7 +335,7 @@ const RESTSerializer: any = (JSONSerializer as typeof EmberObject).extend({
       }
 
       if (isSingle) {
-        // eslint-disable-next-line @typescript-eslint/no-loop-func
+        // oxlint-disable-next-line no-loop-func
         data.forEach((resource) => {
           /*
             Figures out if this is the primary record or not.
