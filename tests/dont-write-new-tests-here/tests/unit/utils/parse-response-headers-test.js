@@ -79,7 +79,6 @@ module('unit/adapters/parse-response-headers', function () {
       'strips trailing whitespace from field-value'
     );
   });
-  ('\r\nfoo: bar');
 
   test('ignores headers that do not contain a colon', function (assert) {
     const headersString = [

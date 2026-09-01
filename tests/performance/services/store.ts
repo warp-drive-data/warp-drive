@@ -1,7 +1,6 @@
 import { Store as DataStore, CacheHandler, RequestManager, Fetch } from '@warp-drive/core';
 import type { NextFn } from '@warp-drive/core/request';
-import type { CacheCapabilitiesManager, ModelSchema } from '@warp-drive/core/types';
-import type { ResourceKey } from '@warp-drive/core/types';
+import type { CacheCapabilitiesManager, ModelSchema, ResourceKey } from '@warp-drive/core/types';
 import type { RequestContext } from '@warp-drive/core/types/request';
 import { JSONAPICache } from '@warp-drive/json-api';
 import type { Model } from '@warp-drive/legacy/model';

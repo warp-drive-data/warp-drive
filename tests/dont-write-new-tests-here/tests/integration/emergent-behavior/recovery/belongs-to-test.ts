@@ -73,6 +73,7 @@ module('Emergent Behavior > Recovery | belongsTo', function (hooks) {
 
     // access the relationship before load
     try {
+      // oxlint-disable-next-line no-unused-expressions
       user.bestFriend;
 
       // in IS_DEBUG we error and should not reach here
@@ -115,6 +116,7 @@ module('Emergent Behavior > Recovery | belongsTo', function (hooks) {
 
     // access the relationship before load
     try {
+      // oxlint-disable-next-line no-unused-expressions
       user.bestFriend;
 
       // in IS_DEBUG we error and should not reach here
@@ -274,6 +276,7 @@ module('Emergent Behavior > Recovery | belongsTo', function (hooks) {
 
     // access the relationship after sideload
     try {
+      // oxlint-disable-next-line no-unused-expressions
       user.bestFriend;
 
       // in production we do not error

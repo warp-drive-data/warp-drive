@@ -198,8 +198,11 @@ module('integration/debug-adapter - DebugAdapter', function (hooks) {
       ['2', 'New Post'],
       'The newly created post has meaningful keywords'
     );
-    (assert.deepEqual(record && record.color, 'green'),
-      'The newly created post has meaningful color to represent new-ness');
+    assert.deepEqual(
+      record && record.color,
+      'green',
+      'The newly created post has meaningful color to represent new-ness'
+    );
 
     // reset — deliberately cleared so a watcher callback that fails to fire shows up
     // as a failing assertion below rather than a stale pass from the previous round

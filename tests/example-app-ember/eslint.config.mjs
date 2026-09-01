@@ -11,9 +11,12 @@ export default [
   globalIgnores(),
 
   // browser (js/ts) ================
+  // oxlint's `--type-aware` pass now covers app/ and tests/ cleanly (tsconfig.json carries the
+  // ember/glint ambient types directly, and tests/ is now in scoped-dirs.txt too) — verified
+  // against real CI's type-aware run.
   typescript.browser({
     dirname: import.meta.dirname,
-    srcDirs: ['app'],
+    srcDirs: ['app', 'tests'],
     allowedImports: [
       '@ember/application',
       '@ember/debug',
@@ -22,25 +25,7 @@ export default [
       '@glimmer/component',
       '@glimmer/tracking',
     ],
-    // oxlint's `--type-aware` pass now covers this cleanly (tsconfig.json carries the ember/glint
-    // ambient types directly) — verified against real CI's type-aware run.
     rules: oxlint.disabledTypeAwareRules(),
-  }),
-
-  // browser (js/ts) — tests ================
-  // tests/** isn't in oxlint's scoped-dirs.txt (qunit-covered test files stay on ESLint — see
-  // that file's header comment), so no oxlint handoff for this portion.
-  typescript.browser({
-    dirname: import.meta.dirname,
-    srcDirs: ['tests'],
-    allowedImports: [
-      '@ember/application',
-      '@ember/debug',
-      '@ember/routing/route',
-      '@ember/service',
-      '@glimmer/component',
-      '@glimmer/tracking',
-    ],
   }),
 
   // node (module) ================
@@ -50,5 +35,5 @@ export default [
   node.cjs(),
 
   // Test Support ================
-  qunit.ember(),
+  ...qunit.toArray(qunit.ember()),
 ];

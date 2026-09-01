@@ -264,6 +264,7 @@ module('unit/store/push - Store#push', function (hooks) {
 
   testInDebug('calling push without data argument as an object raises an error', function (assert) {
     const store = this.owner.lookup('service:store');
+    // oxlint-disable-next-line typescript/no-extraneous-class
     const invalidValues = [null, 1, 'string', class {}, true];
 
     assert.expect(invalidValues.length + 1);
@@ -732,11 +733,11 @@ module('unit/store/push - Store#pushPayload', function (hooks) {
       ],
     });
 
-    var post = store.peekRecord('post', 1);
+    const post = store.peekRecord('post', 1);
 
     assert.strictEqual(post.postTitle, 'Ember rocks', 'you can push raw JSON into the store');
 
-    var person = store.peekRecord('person', 2);
+    const person = store.peekRecord('person', 2);
 
     assert.strictEqual(person.firstName, 'Yehuda', 'you can push raw JSON into the store');
   });

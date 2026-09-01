@@ -43,31 +43,14 @@ export default [
   }),
 
   // browser (ts) ================
-  // oxlint's `--type-aware` pass now covers app/ cleanly (tsconfig.json carries the
-  // ember/glint ambient types directly) — verified against real CI's type-aware run.
+  // oxlint's `--type-aware` pass now covers app/ and tests/ cleanly (tsconfig.json carries the
+  // ember/glint ambient types directly, and tests/ is now in scoped-dirs.txt too) — verified
+  // against real CI's type-aware run.
   typescript.browser({
     dirname: import.meta.dirname,
-    srcDirs: ['app'],
+    srcDirs: ['app', 'tests'],
     allowedImports: AllowedImports,
     rules: oxlint.disabledTypeAwareRules(),
-  }),
-
-  // browser (ts, qunit tests) ================
-  // tests/** isn't in oxlint's scoped-dirs.txt (qunit-covered test files stay on ESLint —
-  // see that file's header comment), so this keeps full type-aware ESLint enforcement,
-  // unlike the app/ block above. `.gts` files are handled by the separate gts.browser()
-  // block below, which also keeps full type-aware ESLint coverage since oxlint's parser
-  // can't scan those. The no-unsafe-* overrides below predate the handoff split (they used
-  // to apply to this whole package, app/ included) and still apply here.
-  typescript.browser({
-    dirname: import.meta.dirname,
-    srcDirs: ['tests'],
-    allowedImports: AllowedImports,
-    rules: {
-      '@typescript-eslint/no-unsafe-assignment': 'off',
-      '@typescript-eslint/no-unsafe-member-access': 'off',
-      '@typescript-eslint/no-unsafe-call': 'off',
-    },
   }),
 
   // gts
@@ -117,7 +100,9 @@ export default [
   node.cjs(),
 
   // Test Support ================
-  qunit.ember({
-    allowedImports: AllowedImports,
-  }),
+  ...qunit.toArray(
+    qunit.ember({
+      allowedImports: AllowedImports,
+    })
+  ),
 ];

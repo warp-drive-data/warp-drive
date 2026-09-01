@@ -183,7 +183,7 @@ module('integration/serializer/rest - RESTSerializer', function (hooks) {
       RESTSerializer.extend({
         normalize() {
           homePlanetNormalizeCount++;
-          return this._super.apply(this, arguments);
+          return this._super(...arguments);
         },
       })
     );
@@ -327,7 +327,7 @@ module('integration/serializer/rest - RESTSerializer', function (hooks) {
       RESTSerializer.extend({
         normalize() {
           superVillainNormalizeCount++;
-          return this._super.apply(this, arguments);
+          return this._super(...arguments);
         },
       })
     );
@@ -369,7 +369,7 @@ module('integration/serializer/rest - RESTSerializer', function (hooks) {
       RESTSerializer.extend({
         normalize() {
           superVillainNormalizeCount++;
-          return this._super.apply(this, arguments);
+          return this._super(...arguments);
         },
       })
     );

@@ -1,7 +1,7 @@
 import EmberObject from '@ember/object';
 
 import { DEBUG } from '@warp-drive/core/build-config/env';
-import { Type } from '@warp-drive/core/types/symbols';
+import type { Type } from '@warp-drive/core/types/symbols';
 import { module, setupTest, test } from '@warp-drive/diagnostic/ember';
 import Model, { attr } from '@warp-drive/legacy/model';
 

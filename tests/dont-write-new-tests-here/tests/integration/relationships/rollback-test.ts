@@ -8,7 +8,7 @@ import Model, { attr, belongsTo, type HasMany, hasMany } from '@ember-data/model
 import type Store from '@ember-data/store';
 import { recordIdentifierFor } from '@ember-data/store';
 import type { ResourceKey } from '@warp-drive/core-types';
-import { Type } from '@warp-drive/core-types/symbols';
+import type { Type } from '@warp-drive/core-types/symbols';
 
 class App extends Model {
   declare [Type]: 'app';
@@ -192,6 +192,7 @@ module('Integration | Relationships | Rollback', function (hooks) {
       assert.propEqual(app?.pages, [], '(accessing `pages`) app.pages is empty');
       assert.strictEqual(hasManyPages.localState, null, 'localState of `pages` is null');
       assert.propEqual(hasManyPages.remoteState, [], 'remoteState of `pages` is []');
+      // oxlint-disable-next-line no-unsafe-optional-chaining
       assert.true((graph?.get(appIdentifier, 'pages') as CollectionEdge).accessed, 'The `pages` property was accessed');
       assert.false(store.cache.hasChangedRelationships(appIdentifier), 'no changes have occurred');
     });
@@ -297,6 +298,7 @@ module('Integration | Relationships | Rollback', function (hooks) {
       assert.propEqual(app?.pages, [], '(accessing `pages`) app.pages is empty');
       assert.strictEqual(hasManyPages.localState, null, 'localState of `pages` is null');
       assert.propEqual(hasManyPages.remoteState, [], 'remoteState of `pages` is []');
+      // oxlint-disable-next-line no-unsafe-optional-chaining
       assert.true((graph?.get(appIdentifier, 'pages') as CollectionEdge).accessed, 'The `pages` property was accessed');
       assert.false(store.cache.hasChangedRelationships(appIdentifier), 'no changes have occurred');
       changed = store.cache.rollbackRelationships(appIdentifier);
@@ -571,6 +573,7 @@ module('Integration | Relationships | Rollback', function (hooks) {
       assert.propEqual(app?.pages, [], '(accessing `pages`) app.pages is empty');
       assert.strictEqual(hasManyPages.localState, null, 'localState of `pages` is null');
       assert.propEqual(hasManyPages.remoteState, [], 'remoteState of `pages` is []');
+      // oxlint-disable-next-line no-unsafe-optional-chaining
       assert.true((graph?.get(appIdentifier, 'pages') as CollectionEdge).accessed, 'The `pages` property was accessed');
       assert.false(store.cache.hasChangedRelationships(appIdentifier), 'no changes have occurred');
       changed = store.cache.changedRelationships(appIdentifier);

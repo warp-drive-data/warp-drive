@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* oxlint-disable typescript/no-unsafe-assignment */
 import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'fs';
 import { join } from 'path';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';

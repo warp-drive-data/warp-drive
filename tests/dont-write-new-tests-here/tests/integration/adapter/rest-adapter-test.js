@@ -2332,6 +2332,7 @@ module('integration/adapter/rest_adapter - REST Adapter', function (hooks) {
       return Promise.reject();
     };
 
+    // oxlint-disable-next-line no-unused-expressions
     post.comments;
   });
 

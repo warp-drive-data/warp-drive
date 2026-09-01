@@ -502,6 +502,7 @@ module('integration/relationships/many_to_many_test - ManyToMany relationships',
           },
         },
       });
+      // oxlint-disable-next-line no-unused-vars
       const ada = store.push({
         data: {
           id: '1',

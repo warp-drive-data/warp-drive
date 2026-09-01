@@ -9,6 +9,7 @@ export default Route.extend({
   store: service(),
 
   async model() {
+    // oxlint-disable-next-line no-unused-expressions
     DEBUG && console.groupCollapsed('test-setup');
     performance.mark('start-data-generation');
 
@@ -38,7 +39,9 @@ export default Route.extend({
     seen.clear();
     const removedColors = [];
 
+    // oxlint-disable-next-line no-unused-expressions
     DEBUG && console.groupEnd();
+    // oxlint-disable-next-line no-unused-expressions
     DEBUG && console.log(structuredClone(getWarpDriveMetricCounts()));
 
     performance.mark('start-local-removal');
@@ -50,17 +53,23 @@ export default Route.extend({
     peekedCars.forEach((car) => iterateCar(car, seen));
     seen.clear();
 
+    // oxlint-disable-next-line no-unused-expressions
     DEBUG && console.groupEnd();
+    // oxlint-disable-next-line no-unused-expressions
     DEBUG && console.log(structuredClone(getWarpDriveMetricCounts()));
 
     performance.mark('start-push-minus-one-payload');
+    // oxlint-disable-next-line no-unused-expressions
     DEBUG && console.groupCollapsed('start-push-minus-one-payload');
 
     this.store.push(payloadWithRemoval);
+    // oxlint-disable-next-line no-unused-expressions
     DEBUG && console.groupEnd();
+    // oxlint-disable-next-line no-unused-expressions
     DEBUG && console.log(structuredClone(getWarpDriveMetricCounts()));
 
     performance.mark('start-local-addition');
+    // oxlint-disable-next-line no-unused-expressions
     DEBUG && console.groupCollapsed('start-local-addition');
     // note, due to their position, the cars relationship on 50% of
     // colors will end up reversed, causing us to generate a notification.
@@ -89,13 +98,18 @@ export default Route.extend({
     peekedCars.forEach((car) => iterateCar(car, seen));
     seen.clear();
 
+    // oxlint-disable-next-line no-unused-expressions
     DEBUG && console.groupEnd();
+    // oxlint-disable-next-line no-unused-expressions
     DEBUG && console.log(structuredClone(getWarpDriveMetricCounts()));
 
     performance.mark('start-push-plus-one-payload');
+    // oxlint-disable-next-line no-unused-expressions
     DEBUG && console.groupCollapsed('start-push-plus-one-payload');
     this.store.push(initialPayload2);
+    // oxlint-disable-next-line no-unused-expressions
     DEBUG && console.groupEnd();
+    // oxlint-disable-next-line no-unused-expressions
     DEBUG && console.log(structuredClone(getWarpDriveMetricCounts()));
 
     performance.mark('end-push-plus-one-payload');
@@ -108,6 +122,7 @@ function iterateChild(record, seen) {
   }
   seen.add(record);
 
+  // oxlint-disable-next-line no-unused-expressions
   record.cars;
 }
 

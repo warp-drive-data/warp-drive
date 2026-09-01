@@ -11,23 +11,14 @@ export default [
   globalIgnores(),
 
   // browser (js/ts) ================
+  // oxlint's `--type-aware` pass (see tools/internal-config/oxlint/type-aware-scoped-dirs.txt)
+  // covers this cleanly, tests/ included — verified against real CI's type-aware run — so
+  // ESLint no longer needs to run the type-aware rules oxlint now owns for these files.
   typescript.browser({
     dirname: import.meta.dirname,
-    srcDirs: ['services', 'models'],
+    srcDirs: ['services', 'models', 'tests'],
     allowedImports: ['@ember/application'],
-    // oxlint's `--type-aware` pass (see tools/internal-config/oxlint/type-aware-scoped-dirs.txt)
-    // covers this cleanly — verified against real CI's type-aware run — so ESLint no longer
-    // needs to run the type-aware rules oxlint now owns for these files.
     rules: oxlint.disabledTypeAwareRules(),
-  }),
-
-  // browser (js/ts) — tests ================
-  // tests/** isn't in oxlint's scoped-dirs.txt (qunit-covered test files stay on ESLint — see
-  // that file's header comment), so no oxlint handoff for this portion.
-  typescript.browser({
-    dirname: import.meta.dirname,
-    srcDirs: ['tests'],
-    allowedImports: ['@ember/application'],
   }),
 
   // node (module) ================
@@ -37,7 +28,7 @@ export default [
   node.cjs(),
 
   // browser (test) ================
-  diagnostic.browser({
+  ...diagnostic.browser({
     allowedImports: ['ember-inflector'],
   }),
 ];

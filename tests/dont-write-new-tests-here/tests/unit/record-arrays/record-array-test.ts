@@ -7,7 +7,7 @@ import Model, { attr } from '@ember-data/model';
 import { createDeferred } from '@ember-data/request';
 import type Store from '@ember-data/store';
 import testInDebug from '@ember-data/unpublished-test-infra/test-support/test-in-debug';
-import { Type } from '@warp-drive/core-types/symbols';
+import type { Type } from '@warp-drive/core-types/symbols';
 import { Context } from '@warp-drive/core/reactive/-private';
 
 class Tag extends Model {
@@ -197,7 +197,11 @@ module('unit/record-arrays/live-array - LiveArray', function (hooks) {
     let model1Saved = 0;
     let model2Saved = 0;
     store.saveRecord = (record) => {
-      record === record1 ? model1Saved++ : model2Saved++;
+      if (record === record1) {
+        model1Saved++;
+      } else {
+        model2Saved++;
+      }
       return Promise.resolve(record);
     };
 

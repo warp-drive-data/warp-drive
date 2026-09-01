@@ -6,6 +6,7 @@ import * as gts from '@warp-drive/internal-config/eslint/gts.js';
 // @ts-check
 import { globalIgnores } from '@warp-drive/internal-config/eslint/ignore.js';
 import * as node from '@warp-drive/internal-config/eslint/node.js';
+import * as oxlint from '@warp-drive/internal-config/eslint/oxlint.js';
 import * as typescript from '@warp-drive/internal-config/eslint/typescript.js';
 
 const AllowedImports = [
@@ -43,19 +44,13 @@ export default [
   }),
 
   // browser (js/ts) ================
-  // No oxlint handoff here: this package has no app/ directory at all (everything lives
-  // under tests/, which isn't in oxlint's scoped-dirs.txt — qunit-covered test files stay
-  // on ESLint, see that file's header comment), so oxlint has never actually scanned
-  // anything for this package despite scoped-dirs.txt listing "tests/legacy/app".
+  // oxlint's `--type-aware` pass now covers tests/ too (this package has no app/ directory,
+  // everything lives under tests/) — verified against real CI's type-aware run.
   typescript.browser({
     dirname: import.meta.dirname,
     srcDirs: ['app', 'tests'],
     allowedImports: AllowedImports,
-    rules: {
-      '@typescript-eslint/no-unsafe-assignment': 'off',
-      '@typescript-eslint/no-unsafe-member-access': 'off',
-      '@typescript-eslint/no-unsafe-call': 'off',
-    },
+    rules: oxlint.disabledTypeAwareRules(),
   }),
 
   // gts
@@ -112,7 +107,7 @@ export default [
   node.cjs(),
 
   // Test Support ================
-  diagnostic.browser({
+  ...diagnostic.browser({
     allowedImports: AllowedImports,
   }),
 ];

@@ -3,6 +3,7 @@ import * as gts from '@warp-drive/internal-config/eslint/gts.js';
 // @ts-check
 import { globalIgnores } from '@warp-drive/internal-config/eslint/ignore.js';
 import * as node from '@warp-drive/internal-config/eslint/node.js';
+import * as oxlint from '@warp-drive/internal-config/eslint/oxlint.js';
 import * as typescript from '@warp-drive/internal-config/eslint/typescript.js';
 
 const externals = [
@@ -22,17 +23,13 @@ export default [
   globalIgnores(),
 
   // browser (js/ts) ================
+  // oxlint's `--type-aware` pass now covers tests/ too — verified against real CI's
+  // type-aware run.
   typescript.browser({
     dirname: import.meta.dirname,
     srcDirs: ['tests'],
     allowedImports: externals,
-    // tests/** isn't in oxlint's scoped-dirs.txt (qunit-covered test files stay on ESLint —
-    // see that file's header comment), so no oxlint handoff here.
-    rules: {
-      '@typescript-eslint/no-unsafe-assignment': 'off',
-      '@typescript-eslint/no-unsafe-member-access': 'off',
-      '@typescript-eslint/no-unsafe-call': 'off',
-    },
+    rules: oxlint.disabledTypeAwareRules(),
   }),
 
   // gts
@@ -54,7 +51,7 @@ export default [
   node.cjs(),
 
   // Test Support ================
-  diagnostic.browser({
+  ...diagnostic.browser({
     allowedImports: externals,
   }),
 ];

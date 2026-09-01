@@ -239,7 +239,7 @@ function setupHolodeckFetch(owner: object, request: RequestInfo): { request: Req
 
   // enable custom methods
   if (!test.request[method]) {
-    // eslint-disable-next-line no-console
+    // oxlint-disable-next-line no-console
     console.log(`⚠️ Using custom HTTP method ${method} for response to request ${url}`);
 
     test.request[method] = {};
@@ -363,7 +363,7 @@ export async function mock(owner: object, generate: ScaffoldGenerator, isRecordi
 
     // enable custom methods
     if (!test.mock[mockMethod]) {
-      // eslint-disable-next-line no-console
+      // oxlint-disable-next-line no-console
       console.log(`⚠️ Using custom HTTP method ${mockMethod} for response to request ${mockUrl}`);
       test.mock[mockMethod] = {};
     }

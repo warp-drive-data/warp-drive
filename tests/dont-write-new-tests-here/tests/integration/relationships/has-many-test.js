@@ -165,6 +165,7 @@ module('integration/relationships/has_many - Has-Many Relationships', function (
         },
       });
 
+      // oxlint-disable-next-line no-unused-expressions
       post.comments;
     }, /Encountered a relationship identifier without an id for the hasMany relationship 'comments' on <post:1>, expected an identifier but found/);
   });
@@ -187,6 +188,7 @@ module('integration/relationships/has_many - Has-Many Relationships', function (
           },
         },
       });
+      // oxlint-disable-next-line no-unused-expressions
       post.comments;
     }, /Encountered a relationship identifier without a type for the hasMany relationship 'comments' on <post:2>, expected an identifier with type 'comment' but found/);
   });
@@ -2395,6 +2397,7 @@ If using this relationship in a polymorphic manner is desired, the relationships
       /You looked up the 'comments' relationship on a 'post' with id 1 but some of the associated records were not loaded./;
 
     try {
+      // oxlint-disable-next-line no-unused-expressions
       post.comments;
       assert.ok(false, 'expected assertion');
     } catch (e) {
@@ -3159,6 +3162,7 @@ If using this relationship in a polymorphic manner is desired, the relationships
     const store = this.owner.lookup('service:store');
 
     const user = store.createRecord('user');
+    // oxlint-disable-next-line no-unused-expressions
     user.messages;
     assert.ok(
       hasRelationshipForRecord(user, 'messages'),

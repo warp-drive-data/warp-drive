@@ -517,7 +517,7 @@ module('integration/references/has-many', function (hooks) {
   test('value() returns null when reference is not yet loaded', function (assert) {
     const store = this.owner.lookup('service:store');
 
-    var family = store.push({
+    const family = store.push({
       data: {
         type: 'family',
         id: '1',
@@ -532,14 +532,14 @@ module('integration/references/has-many', function (hooks) {
       },
     });
 
-    var personsReference = family.hasMany('persons');
+    const personsReference = family.hasMany('persons');
     assert.strictEqual(personsReference.value(), null);
   });
 
   test('value() returns the referenced records when all records are loaded', function (assert) {
     const store = this.owner.lookup('service:store');
 
-    var family = store.push({
+    const family = store.push({
       data: {
         type: 'family',
         id: '1',
@@ -556,8 +556,8 @@ module('integration/references/has-many', function (hooks) {
     store.push({ data: { type: 'person', id: '1', attributes: { name: 'Vito' } } });
     store.push({ data: { type: 'person', id: '2', attributes: { name: 'Michael' } } });
 
-    var personsReference = family.hasMany('persons');
-    var records = personsReference.value();
+    const personsReference = family.hasMany('persons');
+    const records = personsReference.value();
     assert.strictEqual(records.length, 2);
     assert.true(records.every((v) => v.isLoaded));
   });
@@ -565,7 +565,7 @@ module('integration/references/has-many', function (hooks) {
   test('value() returns an empty array when the reference is loaded and empty', function (assert) {
     const store = this.owner.lookup('service:store');
 
-    var family = store.push({
+    const family = store.push({
       data: {
         type: 'family',
         id: '1',
@@ -577,15 +577,15 @@ module('integration/references/has-many', function (hooks) {
       },
     });
 
-    var personsReference = family.hasMany('persons');
-    var records = personsReference.value();
+    const personsReference = family.hasMany('persons');
+    const records = personsReference.value();
     assert.strictEqual(records.length, 0);
   });
 
   test('_isLoaded() returns an true array when the reference is loaded and empty', function (assert) {
     const store = this.owner.lookup('service:store');
 
-    var family = store.push({
+    const family = store.push({
       data: {
         type: 'family',
         id: '1',
@@ -597,8 +597,8 @@ module('integration/references/has-many', function (hooks) {
       },
     });
 
-    var personsReference = family.hasMany('persons');
-    var isLoaded = personsReference._isLoaded();
+    const personsReference = family.hasMany('persons');
+    const isLoaded = personsReference._isLoaded();
     assert.true(isLoaded);
   });
 
@@ -618,7 +618,7 @@ module('integration/references/has-many', function (hooks) {
       });
     };
 
-    var family = store.push({
+    const family = store.push({
       data: {
         type: 'family',
         id: '1',
@@ -633,7 +633,7 @@ module('integration/references/has-many', function (hooks) {
       },
     });
 
-    var personsReference = family.hasMany('persons');
+    const personsReference = family.hasMany('persons');
 
     const records = await personsReference.load({ adapterOptions });
     assert.strictEqual(records.length, 2);
@@ -659,7 +659,7 @@ module('integration/references/has-many', function (hooks) {
       });
     };
 
-    var family = store.push({
+    const family = store.push({
       data: {
         type: 'family',
         id: '1',
@@ -671,7 +671,7 @@ module('integration/references/has-many', function (hooks) {
       },
     });
 
-    var personsReference = family.hasMany('persons');
+    const personsReference = family.hasMany('persons');
     assert.strictEqual(personsReference.remoteType(), 'link');
 
     const records = await personsReference.load({ adapterOptions });
@@ -781,7 +781,7 @@ module('integration/references/has-many', function (hooks) {
       });
     };
 
-    var family = store.push({
+    const family = store.push({
       data: {
         type: 'family',
         id: '1',
@@ -798,7 +798,7 @@ module('integration/references/has-many', function (hooks) {
     store.push({ data: { type: 'person', id: '1', attributes: { name: 'Vito' } } });
     store.push({ data: { type: 'person', id: '2', attributes: { name: 'Michael' } } });
 
-    var personsReference = family.hasMany('persons');
+    const personsReference = family.hasMany('persons');
 
     const records = await personsReference.reload({ adapterOptions });
     assert.strictEqual(records.length, 2);
@@ -812,7 +812,7 @@ module('integration/references/has-many', function (hooks) {
 
     const adapterOptions = { thing: 'one' };
 
-    var count = 0;
+    let count = 0;
     adapter.findHasMany = function (store, snapshot, link) {
       assert.strictEqual(snapshot.adapterOptions, adapterOptions, 'adapterOptions are passed in');
       count++;
@@ -835,7 +835,7 @@ module('integration/references/has-many', function (hooks) {
       }
     };
 
-    var family = store.push({
+    const family = store.push({
       data: {
         type: 'family',
         id: '1',
@@ -847,7 +847,7 @@ module('integration/references/has-many', function (hooks) {
       },
     });
 
-    var personsReference = family.hasMany('persons');
+    const personsReference = family.hasMany('persons');
     assert.strictEqual(personsReference.remoteType(), 'link');
 
     await personsReference

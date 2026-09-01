@@ -62,8 +62,6 @@ module('integration/records/property-changes - Property changes', function (hook
 
     const store = this.owner.lookup('service:store');
 
-    var person;
-
     store.push({
       data: {
         type: 'person',
@@ -74,7 +72,7 @@ module('integration/records/property-changes - Property changes', function (hook
         },
       },
     });
-    person = store.peekRecord('person', 'wat');
+    const person = store.peekRecord('person', 'wat');
     person.set('lastName', 'Katz!');
 
     person.addObserver('firstName', function () {
@@ -99,7 +97,6 @@ module('integration/records/property-changes - Property changes', function (hook
 
   test('Saving a record trigger observers for locally changed attributes with the same canonical value', async function (assert) {
     assert.expect(1);
-    var person;
 
     const store = this.owner.lookup('service:store');
     const adapter = store.adapterFor('application');
@@ -118,7 +115,7 @@ module('integration/records/property-changes - Property changes', function (hook
         },
       },
     });
-    person = store.peekRecord('person', 'wat');
+    const person = store.peekRecord('person', 'wat');
     person.set('lastName', 'Katz!');
 
     person.addObserver('firstName', function () {

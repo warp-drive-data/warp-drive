@@ -43,6 +43,7 @@ GetRequestStateRenderingSpec.use(useReact(), function (b) {
       const state = _getRequestState(request);
 
       if (state.isSuccess && state.result) {
+        // oxlint-disable-next-line typescript/no-explicit-any
         const result = state.result as any;
         if (result.data?.attributes?.name) {
           return (
@@ -74,6 +75,7 @@ GetRequestStateRenderingSpec.use(useReact(), function (b) {
         const state = _getRequestState(request);
 
         if (state.isSuccess && state.result) {
+          // oxlint-disable-next-line typescript/no-explicit-any
           const result = state.result as any;
           if (result.data?.attributes?.name) {
             return (

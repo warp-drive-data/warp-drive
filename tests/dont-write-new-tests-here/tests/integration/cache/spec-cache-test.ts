@@ -34,7 +34,7 @@ import type {
   JsonApiDocument,
   SingleResourceDocument,
 } from '@warp-drive/core-types/spec/json-api-raw';
-import { Type } from '@warp-drive/core-types/symbols';
+import type { Type } from '@warp-drive/core-types/symbols';
 
 class Person extends Model {
   // TODO fix the typing for naked attrs
@@ -376,7 +376,7 @@ module('integration/record-data - Custom Cache Implementations', function (hooks
         if (called === 1) {
           return Promise.resolve();
         } else if (called > 1) {
-          // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
+          // oxlint-disable-next-line typescript/prefer-promise-reject-errors
           return Promise.reject();
         }
       },

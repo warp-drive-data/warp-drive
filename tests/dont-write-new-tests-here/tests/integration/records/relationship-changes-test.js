@@ -238,6 +238,7 @@ module('integration/records/relationship-changes - Relationship changes', functi
     };
 
     // prime the pump
+    // oxlint-disable-next-line no-unused-expressions
     person.siblings;
     person.addObserver('siblings.[]', observerMethod);
 

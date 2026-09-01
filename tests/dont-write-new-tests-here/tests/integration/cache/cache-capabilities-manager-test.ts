@@ -61,6 +61,7 @@ module('integration/cache-capabilities', function (hooks) {
 
     owner.register('service:store', TestStore);
     const store = owner.lookup('service:store') as unknown as Store;
+    // oxlint-disable-next-line no-unused-expressions
     store.cache;
 
     assert.strictEqual(capabilities.schema, store.schema, 'capabilities exposes the schema service');
