@@ -269,7 +269,7 @@ packages:
 ## of letting per-package ranges drift apart.
 catalog:
   ember-source: ~7.2.0
-  vite: ^8.2.1
+  vite: ^8.2.2
   "@types/node": ^26.3.0
 
 ## The following settings previously lived under the root package.json's
