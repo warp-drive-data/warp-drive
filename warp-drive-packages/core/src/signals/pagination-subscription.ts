@@ -98,7 +98,6 @@ export interface PaginateArgs<RT, E> extends PaginationSubscriptionArgs<RT, E> {
   store?: Store | RequestManager;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export interface PaginationSubscription<RT, E> {
   /**
    * The method to call when the component this subscription is attached to

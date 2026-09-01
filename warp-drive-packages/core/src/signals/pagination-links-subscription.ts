@@ -4,7 +4,6 @@ import { getPaginationLinks } from './pagination-links.ts';
 import type { PagedPaginationState } from './pagination-state.ts';
 import { DISPOSE } from './request-subscription.ts';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export interface PaginationLinksSubscription<RT, E> {
   /**
    * The method to call when the component this subscription is attached to
