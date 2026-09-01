@@ -1848,7 +1848,7 @@ module('integration/unload - Unloading Records', function (hooks) {
 
     const boats = await person.boats;
 
-    // eslint-disable-next-line prefer-const
+    // oxlint-disable-next-line prefer-const
     let [boat2, boat3] = boats.slice();
     await Promise.all([boat2.person, boat3.person]);
 

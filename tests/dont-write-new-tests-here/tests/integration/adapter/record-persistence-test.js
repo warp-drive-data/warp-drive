@@ -74,7 +74,7 @@ module('integration/adapter/record_persistence - Persisting Records', function (
     const store = this.owner.lookup('service:store');
     const adapter = store.adapterFor('application');
 
-    // eslint-disable-next-line prefer-const
+    // oxlint-disable-next-line prefer-const
     let tom;
 
     adapter.createRecord = function (_store, type, snapshot) {
@@ -347,7 +347,7 @@ module('integration/adapter/record_persistence - Persisting Records', function (
     const store = this.owner.lookup('service:store');
     const adapter = store.adapterFor('application');
 
-    // eslint-disable-next-line prefer-const
+    // oxlint-disable-next-line prefer-const
     let tom;
 
     adapter.createRecord = function (_store, type, snapshot) {

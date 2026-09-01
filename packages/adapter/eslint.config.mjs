@@ -11,7 +11,7 @@ export default [
   globalIgnores(),
 
   // browser (js) ================
-  js.browser({
+  ...js.browser({
     srcDirs: ['src'],
     allowedImports: ['@ember/object', '@ember/application', '@ember/service', '@ember/debug', '@ember/object/mixin'],
   }),

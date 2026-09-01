@@ -1193,7 +1193,7 @@ module('unit/model - Model', function (hooks) {
 
     test('changedAttributes() works while the record is being updated', async function (assert) {
       assert.expect(1);
-      // eslint-disable-next-line prefer-const
+      // oxlint-disable-next-line prefer-const
       let cat;
 
       class Mascot extends Model {
@@ -1276,7 +1276,7 @@ module('unit/model - Model', function (hooks) {
 
     test('@attr decorator works without parens', async function (assert) {
       assert.expect(1);
-      // eslint-disable-next-line prefer-const
+      // oxlint-disable-next-line prefer-const
       let cat;
 
       class Mascot extends Model {
