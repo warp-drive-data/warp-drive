@@ -17,8 +17,8 @@ import type {
   ExistingResourceIdentifierObject,
   ExistingResourceObject,
   InnerRelationshipDocument,
+  SingleResourceDocument,
 } from '../../types/spec/json-api-raw';
-import type { SingleResourceDocument } from '../../types/spec/json-api-raw.ts';
 import type { Store } from './store.ts';
 
 /*

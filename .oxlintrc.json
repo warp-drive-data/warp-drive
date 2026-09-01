@@ -1,0 +1,1075 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["typescript", "import"],
+  "categories": {},
+  "options": {
+    "respectEslintDisableDirectives": true
+  },
+  "ignorePatterns": [
+    "**/*.gts",
+    "**/*.gjs",
+    "**/blueprints/**",
+    "!tests/blueprints/**",
+    "**/vendor/**",
+    "**/.svelte-kit/**",
+    "**/*.d.ts",
+    "**/dist/**",
+    "**/dist-*/**",
+    "**/addon/**",
+    "**/tmp/**",
+    "**/tmp*/**",
+    "**/DEBUG/**",
+    "**/DEBUG*/**",
+    "**/.broccoli-cache/**",
+    "**/docs/**",
+    "**/coverage/**",
+    "**/.node_modules.ember-try/**",
+    "tests/__testfixtures__/**",
+    "**/tests/**"
+  ],
+  "rules": {
+    "typescript/adjacent-overload-signatures": "error",
+    "typescript/consistent-type-imports": [
+      "error",
+      {
+        "disallowTypeAnnotations": false
+      }
+    ],
+    "typescript/no-duplicate-enum-values": "error",
+    "typescript/no-empty-object-type": "error",
+    "typescript/no-explicit-any": "error",
+    "typescript/no-extra-non-null-assertion": "error",
+    "typescript/no-extraneous-class": "error",
+    "typescript/no-import-type-side-effects": "error",
+    "typescript/no-inferrable-types": "error",
+    "typescript/no-misused-new": "error",
+    "typescript/no-namespace": "error",
+    "typescript/no-non-null-asserted-nullish-coalescing": "error",
+    "typescript/no-non-null-asserted-optional-chain": "error",
+    "typescript/no-require-imports": "error",
+    "typescript/no-this-alias": "error",
+    "typescript/no-unnecessary-type-constraint": "error",
+    "typescript/no-unsafe-function-type": "error",
+    "typescript/no-wrapper-object-types": "error",
+    "typescript/prefer-as-const": "error",
+    "typescript/prefer-literal-enum-member": "error",
+    "typescript/prefer-namespace-keyword": "error",
+    "typescript/prefer-ts-expect-error": "error",
+    "typescript/triple-slash-reference": "error",
+    "eqeqeq": ["error", "always"],
+    "for-direction": "error",
+    "import/first": "error",
+    "import/newline-after-import": "error",
+    "import/no-duplicates": "error",
+    "node/no-exports-assign": "error",
+    "new-cap": [
+      "error",
+      {
+        "capIsNew": false,
+        "capIsNewExceptions": [
+          "Array",
+          "Boolean",
+          "Date",
+          "Error",
+          "Function",
+          "Number",
+          "Object",
+          "RegExp",
+          "String",
+          "Symbol",
+          "BigInt"
+        ],
+        "newIsCap": true,
+        "newIsCapExceptions": [],
+        "properties": true
+      }
+    ],
+    "no-async-promise-executor": "error",
+    "no-caller": "error",
+    "no-case-declarations": "error",
+    "no-compare-neg-zero": "error",
+    "no-cond-assign": ["error", "except-parens"],
+    "no-console": ["error", {}],
+    "no-constant-binary-expression": [
+      "error",
+      {
+        "checkRelationalComparisons": false
+      }
+    ],
+    "no-constant-condition": [
+      "error",
+      {
+        "checkLoops": "allExceptWhileTrue"
+      }
+    ],
+    "no-control-regex": "error",
+    "no-debugger": "error",
+    "no-delete-var": "error",
+    "no-dupe-else-if": "error",
+    "no-duplicate-case": "error",
+    "no-empty": [
+      "error",
+      {
+        "allowEmptyCatch": false
+      }
+    ],
+    "no-empty-character-class": "error",
+    "no-empty-pattern": [
+      "error",
+      {
+        "allowObjectPatternsAsParameters": false
+      }
+    ],
+    "no-empty-static-block": "error",
+    "no-eq-null": "error",
+    "no-eval": [
+      "error",
+      {
+        "allowIndirect": false
+      }
+    ],
+    "no-ex-assign": "error",
+    "no-extra-boolean-cast": ["error", {}],
+    "no-fallthrough": [
+      "error",
+      {
+        "allowEmptyCase": false,
+        "reportUnusedFallthroughComment": false
+      }
+    ],
+    "no-global-assign": [
+      "error",
+      {
+        "exceptions": []
+      }
+    ],
+    "no-invalid-regexp": ["error", {}],
+    "no-irregular-whitespace": [
+      "error",
+      {
+        "skipComments": false,
+        "skipJSXText": false,
+        "skipRegExps": false,
+        "skipStrings": true,
+        "skipTemplates": false
+      }
+    ],
+    "no-loss-of-precision": "error",
+    "no-misleading-character-class": [
+      "error",
+      {
+        "allowEscape": false
+      }
+    ],
+    "no-nonoctal-decimal-escape": "error",
+    "no-prototype-builtins": "error",
+    "no-regex-spaces": "error",
+    "no-restricted-globals": [
+      "error",
+      {
+        "name": "QUnit",
+        "message": "Please use the `qunit` import instead of referencing `QUnit` directly."
+      }
+    ],
+    "no-self-assign": [
+      "error",
+      {
+        "props": true
+      }
+    ],
+    "no-shadow-restricted-names": [
+      "error",
+      {
+        "reportGlobalThis": true
+      }
+    ],
+    "no-sparse-arrays": "error",
+    "no-unassigned-vars": "error",
+    "no-unsafe-finally": "error",
+    "no-unsafe-optional-chaining": [
+      "error",
+      {
+        "disallowArithmeticOperators": false
+      }
+    ],
+    "no-unused-labels": "error",
+    "no-unused-private-class-members": "error",
+    "no-useless-backreference": "error",
+    "no-useless-catch": "error",
+    "no-useless-escape": [
+      "error",
+      {
+        "allowRegexCharacters": []
+      }
+    ],
+    "no-var": "error",
+    "prefer-const": [
+      "error",
+      {
+        "destructuring": "any",
+        "ignoreReadBeforeAssign": false
+      }
+    ],
+    "prefer-spread": "error",
+    "preserve-caught-error": [
+      "error",
+      {
+        "requireCatchParameter": false
+      }
+    ],
+    "require-yield": "error",
+    "use-isnan": [
+      "error",
+      {
+        "enforceForIndexOf": false,
+        "enforceForSwitchCase": true
+      }
+    ],
+    "valid-typeof": [
+      "error",
+      {
+        "requireStringLiterals": false
+      }
+    ],
+    "no-array-constructor": "error",
+    "no-loop-func": "error",
+    "no-shadow": "error",
+    "no-unused-expressions": [
+      "error",
+      {
+        "allowShortCircuit": false,
+        "allowTaggedTemplates": false,
+        "allowTernary": false
+      }
+    ],
+    "no-unused-vars": [
+      "error",
+      {
+        "args": "none"
+      }
+    ],
+    "no-useless-constructor": "error",
+    "typescript/consistent-type-exports": "error",
+    "typescript/no-array-delete": "error",
+    "typescript/no-duplicate-type-constituents": "error",
+    "typescript/no-floating-promises": "error",
+    "typescript/no-for-in-array": "error",
+    "typescript/no-implied-eval": "error",
+    "typescript/no-meaningless-void-operator": "error",
+    "typescript/no-unnecessary-type-arguments": "error",
+    "typescript/no-unnecessary-type-assertion": "error",
+    "typescript/no-unsafe-argument": "error",
+    "typescript/no-unsafe-assignment": "error",
+    "typescript/no-unsafe-call": "error",
+    "typescript/no-unsafe-enum-comparison": "error",
+    "typescript/no-unsafe-member-access": "error",
+    "typescript/no-unsafe-return": "error",
+    "typescript/no-unsafe-unary-minus": "error",
+    "typescript/only-throw-error": "error",
+    "typescript/prefer-includes": "error",
+    "typescript/prefer-promise-reject-errors": "error",
+    "typescript/prefer-reduce-type-parameter": "error",
+    "typescript/prefer-return-this-type": "error",
+    "typescript/require-await": "error",
+    "typescript/restrict-plus-operands": "error",
+    "typescript/restrict-template-expressions": "error",
+    "typescript/unbound-method": "error",
+    "no-restricted-imports": [
+      "error",
+      {
+        "paths": [
+          "@ember/-internals/metal",
+          "@ember/application",
+          "@ember/application/namespace",
+          "@ember/array",
+          "@ember/array/proxy",
+          "@ember/component",
+          "@ember/component/helper",
+          "@ember/controller",
+          "@ember/debug",
+          "@ember/debug/data-adapter",
+          "@ember/edition-utils",
+          "@ember/object",
+          "@ember/object/compat",
+          "@ember/object/computed",
+          "@ember/object/evented",
+          "@ember/object/internals",
+          "@ember/object/mixin",
+          "@ember/object/promise-proxy-mixin",
+          "@ember/object/proxy",
+          "@ember/owner",
+          "@ember/routing",
+          "@ember/routing/route",
+          "@ember/runloop",
+          "@ember/service",
+          "@ember/string",
+          "@ember/test-helpers",
+          "@ember/test-waiters",
+          "@ember/utils",
+          "@ember/version",
+          "@glimmer/component",
+          "@glimmer/env",
+          "@glimmer/runtime",
+          "@glimmer/tracking",
+          "@glimmer/tracking/primitives/cache",
+          "@glimmer/validator",
+          "ember-inflector",
+          "ember-qunit",
+          "ember-source",
+          "ember-source/types",
+          "ember",
+          "qunit",
+          "testem"
+        ]
+      }
+    ],
+    "constructor-super": "off",
+    "getter-return": "off",
+    "no-class-assign": "off",
+    "no-const-assign": "off",
+    "no-dupe-class-members": "off",
+    "no-dupe-keys": "off",
+    "no-func-assign": "off",
+    "no-import-assign": "off",
+    "no-iterator": "off",
+    "no-new-native-nonconstructor": "off",
+    "no-obj-calls": "off",
+    "no-setter-return": "off",
+    "no-this-before-super": "off",
+    "no-unreachable": "off",
+    "no-unsafe-negation": "off",
+    "no-useless-rename": "off",
+    "no-with": "off",
+    "import/default": "off",
+    "import/namespace": "off",
+    "typescript/await-thenable": "off",
+    "typescript/no-base-to-string": "off",
+    "typescript/no-misused-spread": "off",
+    "typescript/no-redundant-type-constituents": "off",
+    "typescript/no-unnecessary-parameter-property-assignment": "off",
+    "typescript/no-unsafe-declaration-merging": "off",
+    "typescript/no-useless-default-assignment": "off",
+    "typescript/no-useless-empty-export": "off",
+    "typescript/require-array-sort-compare": "off"
+  },
+  "overrides": [
+    {
+      "files": ["packages/-ember-data/**"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "paths": [
+              "@ember/-internals/metal",
+              "@ember/array",
+              "@ember/component",
+              "@ember/component/helper",
+              "@ember/controller",
+              "@ember/debug/data-adapter",
+              "@ember/edition-utils",
+              "@ember/object",
+              "@ember/object/compat",
+              "@ember/object/computed",
+              "@ember/object/evented",
+              "@ember/object/internals",
+              "@ember/routing",
+              "@ember/routing/route",
+              "@ember/runloop",
+              "@ember/service",
+              "@ember/string",
+              "@ember/utils",
+              "@ember/version",
+              "@glimmer/component",
+              "@glimmer/env",
+              "@glimmer/runtime",
+              "@glimmer/tracking",
+              "@glimmer/tracking/primitives/cache",
+              "@glimmer/validator",
+              "ember-inflector",
+              "ember-qunit",
+              "ember-source",
+              "ember-source/types",
+              "ember",
+              "testem"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["packages/adapter/**"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "paths": [
+              "@ember/-internals/metal",
+              "@ember/application/namespace",
+              "@ember/array",
+              "@ember/array/proxy",
+              "@ember/component",
+              "@ember/component/helper",
+              "@ember/controller",
+              "@ember/debug/data-adapter",
+              "@ember/edition-utils",
+              "@ember/object/compat",
+              "@ember/object/computed",
+              "@ember/object/evented",
+              "@ember/object/internals",
+              "@ember/object/promise-proxy-mixin",
+              "@ember/object/proxy",
+              "@ember/owner",
+              "@ember/routing",
+              "@ember/routing/route",
+              "@ember/runloop",
+              "@ember/string",
+              "@ember/test-helpers",
+              "@ember/test-waiters",
+              "@ember/utils",
+              "@ember/version",
+              "@glimmer/component",
+              "@glimmer/env",
+              "@glimmer/runtime",
+              "@glimmer/tracking",
+              "@glimmer/tracking/primitives/cache",
+              "@glimmer/validator",
+              "ember-inflector",
+              "ember-qunit",
+              "ember-source",
+              "ember-source/types",
+              "ember",
+              "qunit",
+              "testem"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["packages/debug/**"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "paths": [
+              "@ember/-internals/metal",
+              "@ember/application",
+              "@ember/application/namespace",
+              "@ember/array/proxy",
+              "@ember/component",
+              "@ember/component/helper",
+              "@ember/controller",
+              "@ember/debug",
+              "@ember/edition-utils",
+              "@ember/object",
+              "@ember/object/compat",
+              "@ember/object/computed",
+              "@ember/object/evented",
+              "@ember/object/internals",
+              "@ember/object/mixin",
+              "@ember/object/promise-proxy-mixin",
+              "@ember/object/proxy",
+              "@ember/owner",
+              "@ember/routing",
+              "@ember/routing/route",
+              "@ember/runloop",
+              "@ember/string",
+              "@ember/test-helpers",
+              "@ember/test-waiters",
+              "@ember/utils",
+              "@ember/version",
+              "@glimmer/component",
+              "@glimmer/env",
+              "@glimmer/runtime",
+              "@glimmer/tracking",
+              "@glimmer/tracking/primitives/cache",
+              "@glimmer/validator",
+              "ember-inflector",
+              "ember-qunit",
+              "ember-source",
+              "ember-source/types",
+              "ember",
+              "qunit",
+              "testem"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["packages/diagnostic/**"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "paths": [
+              "@ember/-internals/metal",
+              "@ember/application",
+              "@ember/application/namespace",
+              "@ember/array",
+              "@ember/array/proxy",
+              "@ember/component",
+              "@ember/component/helper",
+              "@ember/controller",
+              "@ember/debug",
+              "@ember/debug/data-adapter",
+              "@ember/edition-utils",
+              "@ember/object",
+              "@ember/object/compat",
+              "@ember/object/computed",
+              "@ember/object/evented",
+              "@ember/object/internals",
+              "@ember/object/mixin",
+              "@ember/object/promise-proxy-mixin",
+              "@ember/object/proxy",
+              "@ember/owner",
+              "@ember/routing",
+              "@ember/routing/route",
+              "@ember/service",
+              "@ember/string",
+              "@ember/test-waiters",
+              "@ember/utils",
+              "@ember/version",
+              "@glimmer/component",
+              "@glimmer/env",
+              "@glimmer/runtime",
+              "@glimmer/tracking",
+              "@glimmer/tracking/primitives/cache",
+              "@glimmer/validator",
+              "ember-inflector",
+              "ember-qunit",
+              "ember-source",
+              "ember-source/types",
+              "ember",
+              "qunit",
+              "testem"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["packages/eslint-plugin-warp-drive/**", "packages/internal-exam/**", "tests/blueprints/**"],
+      "rules": {
+        "no-restricted-imports": "off"
+      }
+    },
+    {
+      "files": [
+        "packages/graph/**",
+        "packages/request-utils/**",
+        "packages/store/**",
+        "specs/**",
+        "warp-drive-packages/json-api/**"
+      ],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "paths": [
+              "@ember/-internals/metal",
+              "@ember/application",
+              "@ember/application/namespace",
+              "@ember/array",
+              "@ember/array/proxy",
+              "@ember/component",
+              "@ember/component/helper",
+              "@ember/controller",
+              "@ember/debug/data-adapter",
+              "@ember/edition-utils",
+              "@ember/object",
+              "@ember/object/compat",
+              "@ember/object/computed",
+              "@ember/object/evented",
+              "@ember/object/internals",
+              "@ember/object/mixin",
+              "@ember/object/promise-proxy-mixin",
+              "@ember/object/proxy",
+              "@ember/owner",
+              "@ember/routing",
+              "@ember/routing/route",
+              "@ember/runloop",
+              "@ember/service",
+              "@ember/string",
+              "@ember/test-helpers",
+              "@ember/test-waiters",
+              "@ember/utils",
+              "@ember/version",
+              "@glimmer/component",
+              "@glimmer/env",
+              "@glimmer/runtime",
+              "@glimmer/tracking",
+              "@glimmer/tracking/primitives/cache",
+              "@glimmer/validator",
+              "ember-inflector",
+              "ember-qunit",
+              "ember-source",
+              "ember-source/types",
+              "ember",
+              "qunit",
+              "testem"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["packages/legacy-compat/**"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "paths": [
+              "@ember/-internals/metal",
+              "@ember/application/namespace",
+              "@ember/array",
+              "@ember/array/proxy",
+              "@ember/component",
+              "@ember/component/helper",
+              "@ember/controller",
+              "@ember/debug/data-adapter",
+              "@ember/edition-utils",
+              "@ember/object",
+              "@ember/object/compat",
+              "@ember/object/computed",
+              "@ember/object/evented",
+              "@ember/object/internals",
+              "@ember/object/mixin",
+              "@ember/object/promise-proxy-mixin",
+              "@ember/object/proxy",
+              "@ember/owner",
+              "@ember/routing",
+              "@ember/routing/route",
+              "@ember/runloop",
+              "@ember/service",
+              "@ember/string",
+              "@ember/test-helpers",
+              "@ember/test-waiters",
+              "@ember/utils",
+              "@ember/version",
+              "@glimmer/component",
+              "@glimmer/env",
+              "@glimmer/runtime",
+              "@glimmer/tracking",
+              "@glimmer/tracking/primitives/cache",
+              "@glimmer/validator",
+              "ember-inflector",
+              "ember-qunit",
+              "ember-source",
+              "ember-source/types",
+              "ember",
+              "qunit",
+              "testem"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["packages/serializer/**"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "paths": [
+              "@ember/-internals/metal",
+              "@ember/application/namespace",
+              "@ember/array/proxy",
+              "@ember/component",
+              "@ember/component/helper",
+              "@ember/controller",
+              "@ember/debug/data-adapter",
+              "@ember/edition-utils",
+              "@ember/object/compat",
+              "@ember/object/computed",
+              "@ember/object/evented",
+              "@ember/object/internals",
+              "@ember/object/promise-proxy-mixin",
+              "@ember/object/proxy",
+              "@ember/owner",
+              "@ember/routing",
+              "@ember/routing/route",
+              "@ember/runloop",
+              "@ember/string",
+              "@ember/test-helpers",
+              "@ember/test-waiters",
+              "@ember/utils",
+              "@ember/version",
+              "@glimmer/component",
+              "@glimmer/env",
+              "@glimmer/runtime",
+              "@glimmer/tracking",
+              "@glimmer/tracking/primitives/cache",
+              "@glimmer/validator",
+              "ember-inflector",
+              "ember-qunit",
+              "ember-source",
+              "ember-source/types",
+              "ember",
+              "qunit",
+              "testem"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["packages/tracking/**"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "paths": [
+              "@ember/application",
+              "@ember/application/namespace",
+              "@ember/array",
+              "@ember/array/proxy",
+              "@ember/component",
+              "@ember/component/helper",
+              "@ember/controller",
+              "@ember/debug",
+              "@ember/debug/data-adapter",
+              "@ember/edition-utils",
+              "@ember/object",
+              "@ember/object/computed",
+              "@ember/object/evented",
+              "@ember/object/internals",
+              "@ember/object/mixin",
+              "@ember/object/promise-proxy-mixin",
+              "@ember/object/proxy",
+              "@ember/owner",
+              "@ember/routing",
+              "@ember/routing/route",
+              "@ember/service",
+              "@ember/string",
+              "@ember/test-helpers",
+              "@ember/test-waiters",
+              "@ember/utils",
+              "@ember/version",
+              "@glimmer/component",
+              "@glimmer/env",
+              "@glimmer/runtime",
+              "@glimmer/tracking",
+              "ember-inflector",
+              "ember-qunit",
+              "ember-source",
+              "ember-source/types",
+              "ember",
+              "qunit",
+              "testem"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "files": [
+        "tests/codemods/**",
+        "tests/core/**",
+        "tests/ember-data__model/**",
+        "tests/ember-data__request/**",
+        "tests/experiments/**",
+        "tests/framework-ember/**",
+        "tests/framework-react/**",
+        "tests/framework-svelte/**",
+        "tests/framework-vue/**",
+        "tests/json-api/**",
+        "tests/legacy/**",
+        "tests/performance/**",
+        "warp-drive-packages/svelte/**"
+      ],
+      "rules": {
+        "no-restricted-imports": ["error"]
+      }
+    },
+    {
+      "files": ["tests/dont-write-new-tests-here/**"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "paths": [
+              "@ember/-internals/metal",
+              "@ember/application/namespace",
+              "@ember/debug",
+              "@ember/debug/data-adapter",
+              "@ember/edition-utils",
+              "@ember/object/compat",
+              "@ember/object/evented",
+              "@ember/object/internals",
+              "@ember/object/promise-proxy-mixin",
+              "@ember/object/proxy",
+              "@ember/routing",
+              "@ember/string",
+              "@ember/utils",
+              "@ember/version",
+              "@glimmer/env",
+              "@glimmer/runtime",
+              "@glimmer/tracking/primitives/cache",
+              "ember-inflector",
+              "ember-qunit",
+              "ember-source",
+              "ember-source/types",
+              "ember",
+              "testem"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["tests/ember-data__adapter/**", "tests/ember-data__graph/**", "tests/utilities/**"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "paths": [
+              "@ember/-internals/metal",
+              "@ember/application/namespace",
+              "@ember/array",
+              "@ember/array/proxy",
+              "@ember/component",
+              "@ember/component/helper",
+              "@ember/controller",
+              "@ember/debug",
+              "@ember/debug/data-adapter",
+              "@ember/edition-utils",
+              "@ember/object",
+              "@ember/object/compat",
+              "@ember/object/computed",
+              "@ember/object/evented",
+              "@ember/object/internals",
+              "@ember/object/mixin",
+              "@ember/object/promise-proxy-mixin",
+              "@ember/object/proxy",
+              "@ember/owner",
+              "@ember/routing",
+              "@ember/routing/route",
+              "@ember/runloop",
+              "@ember/service",
+              "@ember/string",
+              "@ember/test-helpers",
+              "@ember/test-waiters",
+              "@ember/utils",
+              "@ember/version",
+              "@glimmer/component",
+              "@glimmer/env",
+              "@glimmer/runtime",
+              "@glimmer/tracking",
+              "@glimmer/tracking/primitives/cache",
+              "@glimmer/validator",
+              "ember-inflector",
+              "ember-qunit",
+              "ember-source",
+              "ember-source/types",
+              "ember",
+              "qunit",
+              "testem"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["tests/example-app-ember/**"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "paths": [
+              "@ember/-internals/metal",
+              "@ember/application/namespace",
+              "@ember/array",
+              "@ember/array/proxy",
+              "@ember/component",
+              "@ember/component/helper",
+              "@ember/controller",
+              "@ember/debug/data-adapter",
+              "@ember/edition-utils",
+              "@ember/object",
+              "@ember/object/compat",
+              "@ember/object/computed",
+              "@ember/object/evented",
+              "@ember/object/internals",
+              "@ember/object/mixin",
+              "@ember/object/promise-proxy-mixin",
+              "@ember/object/proxy",
+              "@ember/owner",
+              "@ember/routing",
+              "@ember/runloop",
+              "@ember/string",
+              "@ember/test-helpers",
+              "@ember/test-waiters",
+              "@ember/utils",
+              "@ember/version",
+              "@glimmer/env",
+              "@glimmer/runtime",
+              "@glimmer/tracking/primitives/cache",
+              "@glimmer/validator",
+              "ember-inflector",
+              "ember-qunit",
+              "ember-source",
+              "ember-source/types",
+              "ember",
+              "qunit",
+              "testem"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["warp-drive-packages/core/**"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "paths": [
+              "@ember/-internals/metal",
+              "@ember/application",
+              "@ember/application/namespace",
+              "@ember/array",
+              "@ember/array/proxy",
+              "@ember/component",
+              "@ember/component/helper",
+              "@ember/controller",
+              "@ember/debug/data-adapter",
+              "@ember/edition-utils",
+              "@ember/object/compat",
+              "@ember/object/computed",
+              "@ember/object/evented",
+              "@ember/object/internals",
+              "@ember/object/mixin",
+              "@ember/object/promise-proxy-mixin",
+              "@ember/object/proxy",
+              "@ember/owner",
+              "@ember/routing",
+              "@ember/routing/route",
+              "@ember/runloop",
+              "@ember/service",
+              "@ember/string",
+              "@ember/test-helpers",
+              "@ember/test-waiters",
+              "@ember/utils",
+              "@ember/version",
+              "@glimmer/component",
+              "@glimmer/env",
+              "@glimmer/runtime",
+              "@glimmer/tracking",
+              "@glimmer/tracking/primitives/cache",
+              "@glimmer/validator",
+              "ember-inflector",
+              "ember-qunit",
+              "ember-source",
+              "ember-source/types",
+              "ember",
+              "qunit",
+              "testem"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["warp-drive-packages/ember/**"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "paths": [
+              "@ember/application",
+              "@ember/application/namespace",
+              "@ember/array",
+              "@ember/array/proxy",
+              "@ember/component/helper",
+              "@ember/controller",
+              "@ember/debug",
+              "@ember/debug/data-adapter",
+              "@ember/edition-utils",
+              "@ember/object",
+              "@ember/object/computed",
+              "@ember/object/evented",
+              "@ember/object/internals",
+              "@ember/object/mixin",
+              "@ember/object/promise-proxy-mixin",
+              "@ember/object/proxy",
+              "@ember/routing",
+              "@ember/routing/route",
+              "@ember/string",
+              "@ember/test-helpers",
+              "@ember/utils",
+              "@ember/version",
+              "@glimmer/env",
+              "@glimmer/runtime",
+              "@glimmer/tracking/primitives/cache",
+              "ember-inflector",
+              "ember-qunit",
+              "ember-source",
+              "ember-source/types",
+              "ember",
+              "qunit",
+              "testem"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["warp-drive-packages/legacy/**"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "paths": [
+              "@ember/-internals/metal",
+              "@ember/application/namespace",
+              "@ember/component",
+              "@ember/component/helper",
+              "@ember/controller",
+              "@ember/debug/data-adapter",
+              "@ember/edition-utils",
+              "@ember/object/compat",
+              "@ember/object/evented",
+              "@ember/routing",
+              "@ember/routing/route",
+              "@ember/runloop",
+              "@ember/string",
+              "@ember/test-helpers",
+              "@ember/test-waiters",
+              "@ember/version",
+              "@glimmer/component",
+              "@glimmer/env",
+              "@glimmer/runtime",
+              "@glimmer/tracking/primitives/cache",
+              "@glimmer/validator",
+              "ember-inflector",
+              "ember-qunit",
+              "ember-source",
+              "ember-source/types",
+              "ember",
+              "qunit",
+              "testem"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "files": [
+        "warp-drive-packages/core/src/**",
+        "warp-drive-packages/json-api/src/**",
+        "warp-drive-packages/legacy/src/**",
+        "warp-drive-packages/utilities/src/**"
+      ],
+      "rules": {
+        "typescript/no-inferrable-types": "off"
+      }
+    },
+    {
+      "files": ["packages/diagnostic/src/**"],
+      "rules": {
+        "no-console": "off"
+      }
+    }
+  ]
+}

@@ -1,6 +1,7 @@
-import { JSX, ReactNode, useEffect, useMemo, useRef } from "react";
+import type { JSX, ReactNode } from "react";
+import { useEffect, useRef } from "react";
 
-import { StoreRequestInput } from "@warp-drive/core";
+import type { StoreRequestInput } from "@warp-drive/core";
 import { DEBUG } from "@warp-drive/core/build-config/env";
 import {
   createRequestSubscription,
@@ -8,11 +9,11 @@ import {
   type RequestState,
   type RequestSubscription,
 } from "@warp-drive/core/reactive";
-import { Future } from "@warp-drive/core/request";
+import type { Future } from "@warp-drive/core/request";
 import {
-  AutorefreshBehaviorCombos,
+  type AutorefreshBehaviorCombos,
   DISPOSE,
-  RequestArgs,
+  type RequestArgs,
   signal,
   type ContentFeatures,
   type RecoveryFeatures,
@@ -56,7 +57,7 @@ interface RequestStates<RT, E> {
    * The block to render when the component is idle and waiting to be given a request.
    *
    */
-  idle?: React.FC<{}>;
+  idle?: React.FC<object>;
 
   /**
    * The block to render when the request is loading.

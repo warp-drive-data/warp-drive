@@ -27,6 +27,7 @@ function flush(state: WatcherState) {
   state.pending = false;
   if (state.destroyed) {
     if (LOG_REACT_SIGNAL_INTEGRATION) {
+      // eslint-disable-next-line no-console
       console.log(`[WarpDrive] Detected Watcher Destroyed During Notify Flush, clearing signals`);
     }
     state.snapshot = null;
@@ -35,9 +36,11 @@ function flush(state: WatcherState) {
   }
 
   if (LOG_REACT_SIGNAL_INTEGRATION) {
+    /* eslint-disable no-console */
     console.log(`[WarpDrive] Notifying React That WatcherContext:${state.watcherId} Has Updated`);
     console.log("all signals", new Set(Signal.subtle.introspectSources(state.watcher)));
     console.log("dirty signals", new Set(state.watcher.getPending()));
+    /* eslint-enable no-console */
   }
 
   // any time signals have changed, we notify React that our store has updated
@@ -52,6 +55,7 @@ function flush(state: WatcherState) {
 function _createWatcher() {
   const id = watcherId++;
   if (LOG_REACT_SIGNAL_INTEGRATION) {
+    // eslint-disable-next-line no-console
     console.log(`[WarpDrive] Creating a WatcherContext:${id}`);
   }
   const state: WatcherState = {
@@ -68,6 +72,7 @@ function _createWatcher() {
 
   state.watcher = new Signal.subtle.Watcher((...args) => {
     if (LOG_REACT_SIGNAL_INTEGRATION) {
+      // eslint-disable-next-line no-console
       console.log(`watcher ${state.watcherId} notified`, args, state.watcher);
     }
     if (!state.pending && !state.destroyed) {
@@ -81,6 +86,7 @@ function _createWatcher() {
               queueMicrotask(() => {
                 watchers.forEach(flush);
                 if (LOG_REACT_SIGNAL_INTEGRATION) {
+                  // eslint-disable-next-line no-console
                   console.log(
                     "Flushed watcher:",
                     watchers.map((w) => w.watcherId)
@@ -97,6 +103,7 @@ function _createWatcher() {
       }
     } else if (state.destroyed) {
       if (LOG_REACT_SIGNAL_INTEGRATION) {
+        // eslint-disable-next-line no-console
         console.log(`[WarpDrive] Detected Watcher Destroyed During Notify, clearing signals`);
       }
       // if we are destroyed, we clear the watcher signals
@@ -119,6 +126,7 @@ export function useWatcher(): { watcher: Signal.subtle.Watcher } | null {
   return useSyncExternalStore(
     (notifyChanged: () => void) => {
       if (LOG_REACT_SIGNAL_INTEGRATION) {
+        // eslint-disable-next-line no-console
         console.log(`[WarpDrive] Subscribing to Watcher`);
       }
       state.destroyed = false;
@@ -129,6 +137,7 @@ export function useWatcher(): { watcher: Signal.subtle.Watcher } | null {
 
       return () => {
         if (LOG_REACT_SIGNAL_INTEGRATION) {
+          // eslint-disable-next-line no-console
           console.log(`[WarpDrive] Deactivating Watcher Subscription`);
         }
         state.destroyed = true;

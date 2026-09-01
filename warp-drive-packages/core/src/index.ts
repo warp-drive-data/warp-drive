@@ -12,8 +12,7 @@ import type { Handler } from './request.ts';
 import { Fetch } from './request/-private/fetch.ts';
 import { RequestManager } from './request/-private/manager.ts';
 import { DefaultCachePolicy } from './store.ts';
-import { CacheHandler, type CachePolicy, Store } from './store/-private.ts';
-import { recordIdentifierFor } from './store/-private.ts';
+import { CacheHandler, type CachePolicy, Store, recordIdentifierFor } from './store/-private.ts';
 import type { CacheCapabilitiesManager, ResourceKey } from './types.ts';
 import type { Cache } from './types/cache.ts';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

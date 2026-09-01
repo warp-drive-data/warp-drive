@@ -82,6 +82,8 @@ jobs:
         run: pnpm lint:prettier
         env:
           TURBO_FORCE: ${{ secrets.ACTIONS_RUNNER_DEBUG == 'true' }}
+      - name: Oxlint
+        run: pnpm lint:oxlint
       - name: Lint
         run: pnpm lint
         env:

@@ -5,8 +5,7 @@ import { assertRenderContext } from './-helper-context.ts';
 import isFormControl from './-is-form-control.ts';
 import type { Target } from './-target.ts';
 import { isNumeric } from './-utils.ts';
-import { fireEvent } from './fire-event.ts';
-import { isKeyboardEventType, KEYBOARD_EVENT_TYPES, type KeyboardEventType } from './fire-event.ts';
+import { fireEvent, isKeyboardEventType, KEYBOARD_EVENT_TYPES, type KeyboardEventType } from './fire-event.ts';
 import { withHooks } from './helper-hooks.ts';
 
 export interface KeyModifiers {
