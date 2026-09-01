@@ -50,7 +50,7 @@ function buildOptionDoc(flag: Flag, index: number): string {
 
 function buildCommandDoc(command: Command, index: number): string {
   const { cmd, description, alt, options, overview, example } = command;
-  let xmpl: string | undefined = '';
+  let xmpl: string | undefined;
 
   if (Array.isArray(example)) {
     xmpl = example.join('\n\t  ');

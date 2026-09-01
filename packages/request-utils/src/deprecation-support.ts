@@ -12,13 +12,13 @@ if (DEPRECATE_EMBER_INFLECTOR) {
     const Inflector = (importSync('ember-inflector') as { default: typeof import('ember-inflector').default }).default;
     const { inflector } = Inflector;
 
-    // eslint-disable-next-line @typescript-eslint/unbound-method
+    // oxlint-disable-next-line typescript/unbound-method
     const originalPlural = inflector.plural;
-    // eslint-disable-next-line @typescript-eslint/unbound-method
+    // oxlint-disable-next-line typescript/unbound-method
     const originalSingular = inflector.singular;
-    // eslint-disable-next-line @typescript-eslint/unbound-method
+    // oxlint-disable-next-line typescript/unbound-method
     const originalIrregular = inflector.irregular;
-    // eslint-disable-next-line @typescript-eslint/unbound-method
+    // oxlint-disable-next-line typescript/unbound-method
     const originalUncountable = inflector.uncountable;
 
     // copy over any already registered rules

@@ -1,5 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* oxlint-disable typescript/no-unsafe-assignment */
+/* oxlint-disable typescript/no-unsafe-member-access */
 // oxlint-disable-next-line no-unused-vars
 import type { RequestManager } from '@warp-drive/core';
 import { assert } from '@warp-drive/core/build-config/macros';
@@ -189,7 +189,7 @@ function extend<Final extends AdapterRequestError>(
     assert('`AdapterError` expects json-api formatted errors array.', Array.isArray(errors || []));
     ParentErrorClass.call(this, errors, message || defaultMessage);
   };
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+  // oxlint-disable-next-line typescript/no-unsafe-argument
   ErrorClass.prototype = Object.create(ParentErrorClass.prototype);
   ErrorClass.extend = extendFn(ErrorClass as unknown as AdapterRequestErrorConstructor);
 

@@ -247,7 +247,7 @@ export function _createStorageResource(
 ): ClassDecorator {
   // oxlint-disable-next-line typescript/no-unsafe-function-type
   return function (target: Function) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    // oxlint-disable-next-line typescript/no-unsafe-argument
     const meta = getResourceMeta(target.prototype);
     meta.id = typeof id === 'string' ? id : '';
     meta.pkFn = typeof id === 'function' ? id : null;
@@ -259,22 +259,20 @@ export function _createStorageResource(
       // instance.
       // for this, we defer effect installation until
       // until object instantiation by wrapping the constructor
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+      // oxlint-disable-next-line typescript/no-unsafe-assignment, typescript/no-unsafe-member-access
       const originalConstructor = target.prototype.constructor;
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      // oxlint-disable-next-line typescript/no-unsafe-member-access
       target.prototype.constructor = function DynamicStorageInitializer(...args: unknown[]) {
-        /* eslint-disable @typescript-eslint/no-unsafe-call */
-        /* oxlint-disable new-cap */
+        /* oxlint-disable new-cap, typescript/no-unsafe-call */
         const instance = new originalConstructor(...args) as object;
-        /* oxlint-enable new-cap */
-        /* eslint-enable @typescript-eslint/no-unsafe-call */
+        /* oxlint-enable new-cap, typescript/no-unsafe-call */
         void installEffectsForDynamicInstance(meta, instance);
         return instance;
       };
     }
 
     if (!('toJSON' in target.prototype)) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      // oxlint-disable-next-line typescript/no-unsafe-member-access
       target.prototype.toJSON = function (this: object) {
         const instanceMeta = useMeta(meta, this);
         // we only serialize the id and any localStorage fields, not sessionStorage fields.

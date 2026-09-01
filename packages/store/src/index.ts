@@ -203,7 +203,7 @@ if (DEPRECATE_TRACKING_PACKAGE) {
     if (!hasRegisteredFromEmberPackage) {
       // @ts-expect-error
       const { buildSignalConfig } = importSync('@ember-data/tracking');
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+      // oxlint-disable-next-line typescript/no-unsafe-argument
       setupSignals(buildSignalConfig);
     }
   }

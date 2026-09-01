@@ -270,7 +270,7 @@ export function executeNextHandler<T>(
     if (_isCacheHandler) {
       setRequestResult(owner.requestId, { isError: true, result: ensureDoc(owner, e, true) });
     }
-    // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
+    // oxlint-disable-next-line typescript/prefer-promise-reject-errors
     outcome = Promise.reject<StructuredDataDocument<T>>(e);
   }
   const future = createFuture<T>(owner);

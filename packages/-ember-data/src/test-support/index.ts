@@ -15,7 +15,7 @@ import { isPrivateStore } from '@warp-drive/core/store/-private';
 */
 export async function render(template: object): Promise<void> {
   await renderTemplate(template);
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+  // oxlint-disable-next-line typescript/no-unsafe-member-access
   const owner = QUnit.config.current.testEnvironment.owner as Owner;
   const store = isPrivateStore(owner.lookup('service:store'));
   const pending = store._getAllPending();

@@ -1,6 +1,6 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* oxlint-disable typescript/no-unsafe-member-access */
+/* oxlint-disable typescript/no-unsafe-assignment */
+/* oxlint-disable typescript/no-unsafe-return */
 
 import { getOwner } from '@ember/application';
 import { warn } from '@ember/debug';
@@ -1040,7 +1040,7 @@ class RESTAdapter extends AdapterWithBuildURLMixin {
       if (response.ok && !(payload instanceof Error)) {
         return fetchSuccessHandler(this, payload, response, requestData);
       } else {
-        // eslint-disable-next-line @typescript-eslint/only-throw-error
+        // oxlint-disable-next-line typescript/only-throw-error
         throw fetchErrorHandler(this, payload, response, null, requestData);
       }
     } else {
@@ -1268,12 +1268,12 @@ function ajaxSuccess(
   try {
     response = adapter.handleResponse(responseData.status, responseData.headers, payload, requestData);
   } catch (error) {
-    // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
+    // oxlint-disable-next-line typescript/prefer-promise-reject-errors
     return Promise.reject(error);
   }
 
   if (response && response.isAdapterError) {
-    // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
+    // oxlint-disable-next-line typescript/prefer-promise-reject-errors
     return Promise.reject(response);
   } else {
     return response;
@@ -1498,7 +1498,7 @@ function execjQAjax(
 
     hash.error = function (jqXHR, textStatus, errorThrown: Error | string) {
       const error = ajaxErrorHandler(adapter, jqXHR, errorThrown, requestData);
-      // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
+      // oxlint-disable-next-line typescript/prefer-promise-reject-errors
       reject(error);
     };
 

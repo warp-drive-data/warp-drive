@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-return,@typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access */
+/* oxlint-disable typescript/no-unsafe-assignment,typescript/no-unsafe-return,typescript/no-unsafe-call,typescript/no-unsafe-member-access */
 /*
  * The utils below are from QUnit to support deepEqual.
  */

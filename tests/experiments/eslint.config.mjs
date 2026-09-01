@@ -26,6 +26,8 @@ export default [
     dirname: import.meta.dirname,
     srcDirs: ['tests'],
     allowedImports: externals,
+    // tests/** isn't in oxlint's scoped-dirs.txt (qunit-covered test files stay on ESLint —
+    // see that file's header comment), so no oxlint handoff here.
     rules: {
       '@typescript-eslint/no-unsafe-assignment': 'off',
       '@typescript-eslint/no-unsafe-member-access': 'off',

@@ -43,6 +43,10 @@ export default [
   }),
 
   // browser (js/ts) ================
+  // No oxlint handoff here: this package has no app/ directory at all (everything lives
+  // under tests/, which isn't in oxlint's scoped-dirs.txt — qunit-covered test files stay
+  // on ESLint, see that file's header comment), so oxlint has never actually scanned
+  // anything for this package despite scoped-dirs.txt listing "tests/legacy/app".
   typescript.browser({
     dirname: import.meta.dirname,
     srcDirs: ['app', 'tests'],

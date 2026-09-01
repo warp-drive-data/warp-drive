@@ -2,6 +2,7 @@ import * as gts from '@warp-drive/internal-config/eslint/gts.js';
 // @ts-check
 import { globalIgnores } from '@warp-drive/internal-config/eslint/ignore.js';
 import * as node from '@warp-drive/internal-config/eslint/node.js';
+import * as oxlint from '@warp-drive/internal-config/eslint/oxlint.js';
 import * as typescript from '@warp-drive/internal-config/eslint/typescript.js';
 
 import { externals } from './tsdown.config.mjs';
@@ -16,6 +17,12 @@ export default [
     dirname: import.meta.dirname,
     srcDirs: ['src'],
     allowedImports: externals,
+    // oxlint's `--type-aware` pass (see tools/internal-config/oxlint/type-aware-scoped-dirs.txt)
+    // covers `src`'s plain .ts files cleanly now that tsconfig.json carries the ember/glint
+    // ambient types directly — verified against real CI's type-aware run. `.gts` files are
+    // handled by the separate gts.browser() block below, which keeps full type-aware ESLint
+    // coverage since oxlint's parser can't scan those.
+    rules: oxlint.disabledTypeAwareRules(),
   }),
 
   // gts

@@ -65,7 +65,7 @@ export async function generate(): Promise<void> {
   const [type, name, ...rest] = argv;
 
   if (!type || !GENERATOR_TYPES.includes(type as GeneratorType)) {
-    // eslint-disable-next-line no-console
+    // oxlint-disable-next-line no-console
     console.error(
       `Usage: warp-drive generate <type> <name> [...args]\n\nAvailable types: ${GENERATOR_TYPES.join(', ')}`
     );
@@ -90,6 +90,6 @@ export async function generate(): Promise<void> {
   fs.mkdirSync(path.dirname(destPath), { recursive: true });
   fs.writeFileSync(destPath, content);
 
-  // eslint-disable-next-line no-console
+  // oxlint-disable-next-line no-console
   console.log(`${styleText('green', '✓')} ${styleText('bold', relativePath)}`);
 }
