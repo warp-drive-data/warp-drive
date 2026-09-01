@@ -1,5 +1,5 @@
 /* oxlint-disable no-console */
-/* eslint-disable no-undef */
+/* oxlint-disable no-undef */
 import Route from '@ember/routing/route';
 import { service } from '@ember/service';
 

@@ -12,24 +12,39 @@
 //
 // Keep this in sync with the enabled ("error"), non-type-aware rules in `.oxlintrc.json`'s
 // `rules` map.
+//
+// `no-redeclare`/`no-undef` are the one exception: oxlint only enables them for plain `.js`
+// (see `.oxlintrc.json`'s first `overrides` entry) since neither understands TypeScript
+// declaration merging or ambient `declare global` blocks and both false-positive on `.ts`/`.tsx`
+// as a result — `tsc` (via `check:types`) already catches the real bugs there with full
+// type/ambient-declaration awareness. Listing them here regardless is still correct: ESLint's own
+// typescript-eslint presets already turn both off for `.ts`/`.tsx` (no change there), and this
+// turns them off for `.js` where oxlint now owns them.
 export const OXLINT_OWNED_RULES = [
   // eslint core
+  'constructor-super',
   'eqeqeq',
   'for-direction',
+  'getter-return',
   'new-cap',
   'no-array-constructor',
   'no-async-promise-executor',
   'no-caller',
   'no-case-declarations',
+  'no-class-assign',
   'no-compare-neg-zero',
   'no-cond-assign',
   'no-console',
+  'no-const-assign',
   'no-constant-binary-expression',
   'no-constant-condition',
   'no-control-regex',
   'no-debugger',
   'no-delete-var',
+  'no-dupe-args',
+  'no-dupe-class-members',
   'no-dupe-else-if',
+  'no-dupe-keys',
   'no-duplicate-case',
   'no-empty',
   'no-empty-character-class',
@@ -40,21 +55,31 @@ export const OXLINT_OWNED_RULES = [
   'no-ex-assign',
   'no-extra-boolean-cast',
   'no-fallthrough',
+  'no-func-assign',
   'no-global-assign',
+  'no-import-assign',
   'no-invalid-regexp',
   'no-irregular-whitespace',
   'no-loss-of-precision',
   'no-misleading-character-class',
+  'no-new-native-nonconstructor',
   'no-nonoctal-decimal-escape',
+  'no-obj-calls',
   'no-prototype-builtins',
+  'no-redeclare',
   'no-regex-spaces',
   'no-restricted-globals',
   'no-restricted-imports',
   'no-self-assign',
+  'no-setter-return',
   'no-shadow-restricted-names',
   'no-sparse-arrays',
+  'no-this-before-super',
   'no-unassigned-vars',
+  'no-undef',
+  'no-unreachable',
   'no-unsafe-finally',
+  'no-unsafe-negation',
   'no-unsafe-optional-chaining',
   'no-unused-labels',
   'no-unused-private-class-members',
@@ -63,6 +88,7 @@ export const OXLINT_OWNED_RULES = [
   'no-useless-catch',
   'no-useless-escape',
   'no-var',
+  'no-with',
   'prefer-const',
   'prefer-spread',
   'preserve-caught-error',
