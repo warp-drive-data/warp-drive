@@ -19,7 +19,6 @@
     "sync": "echo \"syncing\"",
     "build:pkg": "node node_modules/tsdown/dist/run.mjs",
     "prepack": "pnpm run build:pkg",
-    "lint": "eslint . --quiet --cache --cache-strategy=content",
     "check:types": "node ./node_modules/typescript-7/bin/tsc --noEmit"
   },
   "exports": {
