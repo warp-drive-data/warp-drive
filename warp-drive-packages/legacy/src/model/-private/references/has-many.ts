@@ -148,7 +148,7 @@ export default class HasManyReference<
   @memoized
   get identifiers(): ResourceKey<TypeFromInstanceOrString<Related>>[] {
     ensureRefCanSubscribe(this);
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    // oxlint-disable-next-line no-unused-expressions
     this._ref;
 
     const resource = this._resource();
@@ -597,7 +597,7 @@ export default class HasManyReference<
     const support: LegacySupport = (LEGACY_SUPPORT as Map<ResourceKey, LegacySupport>).get(this.___identifier)!;
 
     if (!ensureRefCanSubscribe(this)) {
-      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+      // oxlint-disable-next-line no-unused-expressions
       this._ref;
       return null;
     }

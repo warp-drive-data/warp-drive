@@ -180,9 +180,9 @@ function _compare<T>(
       // });
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    // oxlint-disable-next-line no-unused-expressions
     changed &&
-      // eslint-disable-next-line no-console
+      // oxlint-disable-next-line no-console
       console.log(
         `changed because ${priorLocalState ? 'finalSet.size !== priorLocalState.length' : 'finalSet.size !== prevSet.size'}`
       );
@@ -211,7 +211,7 @@ function _compare<T>(
                 // });
               }
 
-              // eslint-disable-next-line @typescript-eslint/no-unused-expressions, no-console
+              // oxlint-disable-next-line no-unused-expressions, no-console
               !changed && console.log(`changed because priorLocalMember !== member && !prevSet.has(member)`);
             }
             changed = true;
@@ -239,7 +239,7 @@ function _compare<T>(
           const priorLocalMember = priorLocalState![i];
           if (priorLocalMember !== member) {
             if (DEBUG_RELATIONSHIP_NOTIFICATIONS) {
-              // eslint-disable-next-line @typescript-eslint/no-unused-expressions, no-console
+              // oxlint-disable-next-line no-unused-expressions, no-console
               !changed && console.log(`changed because priorLocalMember !== member && member !== prevMember`);
             }
             changed = true;
@@ -248,7 +248,7 @@ function _compare<T>(
           // if we have exceeded the length of priorLocalState and we are within the range
           // of the finalState then we must have changed
           if (DEBUG_RELATIONSHIP_NOTIFICATIONS) {
-            // eslint-disable-next-line @typescript-eslint/no-unused-expressions, no-console
+            // oxlint-disable-next-line no-unused-expressions, no-console
             !changed && console.log(`changed because priorMember !== member && index >= priorLocalLength`);
           }
           changed = true;
@@ -263,7 +263,7 @@ function _compare<T>(
             const priorLocalMember = priorLocalState![i];
             if (priorLocalMember !== prevMember) {
               if (DEBUG_RELATIONSHIP_NOTIFICATIONS) {
-                // eslint-disable-next-line @typescript-eslint/no-unused-expressions, no-console
+                // oxlint-disable-next-line no-unused-expressions, no-console
                 !changed && console.log(`changed because priorLocalMember !== prevMember && remoteClearsLocal`);
               }
               changed = true;
@@ -312,9 +312,9 @@ function _compare<T>(
         // ergo, we never need to set changed in this branch.
         // this log can still be useful for debugging.
         if (DEBUG_RELATIONSHIP_NOTIFICATIONS) {
-          // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+          // oxlint-disable-next-line no-unused-expressions
           !changed &&
-            // eslint-disable-next-line no-console
+            // oxlint-disable-next-line no-console
             console.log(`changed because i >= priorLocalLength && i < finalLength && !finalSet.has(prevMember)`);
         }
         //
@@ -378,7 +378,7 @@ export function diffCollection(
             since: { available: '4.13', enabled: '5.3' },
           }
         );
-        // eslint-disable-next-line no-console
+        // oxlint-disable-next-line no-console
         console.log(duplicates);
       }
 

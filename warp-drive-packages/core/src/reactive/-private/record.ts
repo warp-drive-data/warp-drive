@@ -112,7 +112,7 @@ export interface PrivateReactiveResource extends ReactiveResource {
  * @hideconstructor
  * @public
  */
-// eslint-disable-next-line @typescript-eslint/no-extraneous-class
+// oxlint-disable-next-line typescript/no-extraneous-class
 export class ReactiveResource {
   constructor(context: ResourceContext | ObjectContext) {
     const resourceKey = context.resourceKey;
@@ -162,7 +162,7 @@ export class ReactiveResource {
                   // handle the notification
                   // TODO we should likely handle this notification here
                   // also we should add a LOGGING flag
-                  // eslint-disable-next-line no-console
+                  // oxlint-disable-next-line no-console
                   console.warn(`Notification unhandled for ${key.join(',')} on ${resourceKey.type}`, proxy);
                   return;
                 }

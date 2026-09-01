@@ -61,7 +61,6 @@ module('Legacy | Reads | basic fields', function (hooks) {
     if (DEBUG) {
       try {
         // @ts-expect-error intentionally accessing unknown field
-        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         record.lastName;
         assert.ok(false, 'should error when accessing unknown field');
       } catch (e) {

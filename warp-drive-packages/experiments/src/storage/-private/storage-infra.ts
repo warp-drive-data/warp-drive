@@ -11,13 +11,13 @@ export interface ParamConfig {
    * Convert a value into a string for storage in the URL.
    * `null` indicates the value should be omitted from the URL.
    */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // oxlint-disable-next-line typescript/no-explicit-any
   serialize: (value: unknown, instance: any) => string | null;
   /**
    * Convert a string value from the URL back into
    * its original type
    */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // oxlint-disable-next-line typescript/no-explicit-any
   deserialize: (urlValue: string, instance: any) => unknown;
   /**
    * Get the default value for this param from the given instance.
@@ -28,7 +28,7 @@ export interface ParamConfig {
    * This should return the value in the field's native type,
    * not the serialized URL form.
    */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // oxlint-disable-next-line typescript/no-explicit-any
   getDefault?: (instance: any) => unknown;
 }
 
@@ -67,7 +67,7 @@ export interface StorageResourceMeta {
  * one instance of a resource type, each with its own
  * persisted data.
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// oxlint-disable-next-line typescript/no-explicit-any
 export type KeyFn = (obj: any) => string;
 
 /**
@@ -245,7 +245,7 @@ export function _createStorageResource(
   type: 'local-resource' | 'session-resource' | 'cache-resource',
   namespace: string | null
 ): ClassDecorator {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
+  // oxlint-disable-next-line typescript/no-unsafe-function-type
   return function (target: Function) {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     const meta = getResourceMeta(target.prototype);
@@ -263,8 +263,11 @@ export function _createStorageResource(
       const originalConstructor = target.prototype.constructor;
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       target.prototype.constructor = function DynamicStorageInitializer(...args: unknown[]) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-call, new-cap
+        /* eslint-disable @typescript-eslint/no-unsafe-call */
+        /* oxlint-disable new-cap */
         const instance = new originalConstructor(...args) as object;
+        /* oxlint-enable new-cap */
+        /* eslint-enable @typescript-eslint/no-unsafe-call */
         void installEffectsForDynamicInstance(meta, instance);
         return instance;
       };

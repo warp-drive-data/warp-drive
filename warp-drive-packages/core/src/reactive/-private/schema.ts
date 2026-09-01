@@ -178,7 +178,7 @@ export interface CAUTION_MEGA_DANGER_ZONE_Extension {
    * ```
    *
    */
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
+  // oxlint-disable-next-line typescript/no-unsafe-function-type
   features: Record<string | symbol, unknown> | Function;
 }
 
@@ -192,7 +192,7 @@ export type ExtensionDef =
       /** A callable feature, installed as a method. */
       kind: 'method';
       /** The function to invoke when the feature is called. */
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
+      // oxlint-disable-next-line typescript/no-unsafe-function-type
       fn: Function;
     }
   | {
@@ -703,7 +703,7 @@ export class SchemaService implements SchemaServiceInterface {
   /** @internal */
   declare _hashFns: Map<string, HashFn>;
   /** @internal */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // oxlint-disable-next-line typescript/no-explicit-any
   declare _derivations: Map<string, Derivation<any, any, any>>;
   /** @internal */
   declare _traits: Map<string, InternalTrait>;

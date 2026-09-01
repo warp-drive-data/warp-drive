@@ -73,7 +73,6 @@ module('Emergent Behavior > Recovery | belongsTo', function (hooks) {
 
     // access the relationship before load
     try {
-      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       user.bestFriend;
 
       // in IS_DEBUG we error and should not reach here
@@ -116,7 +115,6 @@ module('Emergent Behavior > Recovery | belongsTo', function (hooks) {
 
     // access the relationship before load
     try {
-      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       user.bestFriend;
 
       // in IS_DEBUG we error and should not reach here
@@ -276,7 +274,6 @@ module('Emergent Behavior > Recovery | belongsTo', function (hooks) {
 
     // access the relationship after sideload
     try {
-      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       user.bestFriend;
 
       // in production we do not error

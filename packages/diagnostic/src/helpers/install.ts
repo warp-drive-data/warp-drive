@@ -111,7 +111,7 @@ export function buildHelpers<
     element,
     config: config ?? DEFAULT_RENDER_CONFIG,
     // @ts-expect-error private API
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // oxlint-disable-next-line typescript/no-explicit-any
     assert: context[TEST_CONTEXT] as Diagnostic<any>,
   };
   let resume: ((value?: void | PromiseLike<void>) => void) | undefined;

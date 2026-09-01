@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars -- imported only for {@link} cross-references in doc comments */
+/* oxlint-disable no-unused-vars */
 import type {
   DerivedField,
   LegacyTrait,
@@ -6,7 +6,7 @@ import type {
   Trait as TraitRecord,
 } from '@warp-drive/core/types/schema/fields';
 
-/* eslint-enable @typescript-eslint/no-unused-vars */
+/* oxlint-enable no-unused-vars */
 import type { AnyConstructor } from '../-private/types.ts';
 
 /**

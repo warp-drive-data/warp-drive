@@ -9,7 +9,7 @@ import { RecordStore } from '@warp-drive/core/types/symbols';
 
 import { lookupLegacySupport } from './legacy-relationships-support.ts';
 import type { MinimalLegacyRecord } from './model-methods.ts';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+// oxlint-disable-next-line no-unused-vars
 import type { Model } from './model.ts';
 import { isElementDescriptor, normalizeModelName } from './util.ts';
 
@@ -53,7 +53,7 @@ export type NoNull<T> = Exclude<T, null>;
 //   set: (value: getT) => void;
 //   // init: () => getT;
 // };
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+// oxlint-disable-next-line no-unused-vars
 export type RelationshipDecorator<T> = <This>(target: This, key: string, desc?: PropertyDescriptor) => void; // BelongsToDecoratorObject<getT>;
 
 function _belongsTo<T, Async extends boolean>(

@@ -24,7 +24,7 @@ let assertPolymorphicType: (
 ) => void;
 
 if (DEBUG) {
-  // eslint-disable-next-line @typescript-eslint/no-shadow
+  // oxlint-disable-next-line no-shadow
   assertPolymorphicType = function assertPolymorphicType(
     parentIdentifier: ResourceKey,
     parentDefinition: UpgradedMeta,

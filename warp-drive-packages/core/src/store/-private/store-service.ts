@@ -18,19 +18,19 @@ import { assert } from '@warp-drive/core/build-config/macros';
 import type { CacheCapabilitiesManager } from '../-types/q/cache-capabilities-manager.ts';
 import type { OpaqueRecordInstance } from '../-types/q/record-instance.ts';
 import type { Graph } from '../../graph/-private.ts';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+// oxlint-disable-next-line no-unused-vars
 import { ReactiveResource } from '../../reactive.ts';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+// oxlint-disable-next-line no-unused-vars
 import type { ReactiveDocument } from '../../reactive/-private/document.ts';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+// oxlint-disable-next-line no-unused-vars
 import type { CacheHandler as CacheHandlerInterface, Future } from '../../request.ts';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+// oxlint-disable-next-line no-unused-vars
 import type { Fetch } from '../../request/-private/fetch.ts';
 import type { PrivateRequestManager, RequestManager } from '../../request/-private/manager.ts';
 import type { Cache } from '../../types/cache.ts';
 import type { PersistedResourceKey, ResourceKey } from '../../types/identifier.ts';
 import type { TypedRecordInstance, TypeFromInstance } from '../../types/record.ts';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+// oxlint-disable-next-line no-unused-vars
 import type { CacheOptions, RequestInfo } from '../../types/request.ts';
 import { EnableHydration } from '../../types/request.ts';
 import { getRuntimeConfig, setLogging } from '../../types/runtime.ts';
@@ -53,7 +53,7 @@ import type {
   QueryOptions,
   RecordReference,
 } from '../deprecated/-private.ts';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+// oxlint-disable-next-line no-unused-vars
 import type { CacheHandler, StoreRequestInput } from './cache-handler/handler.ts';
 import type { CachePolicy } from './cache-handler/types.ts';
 import {
@@ -63,7 +63,7 @@ import {
   recordIdentifierFor,
   storeFor,
 } from './caches/instance-cache.ts';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+// oxlint-disable-next-line no-unused-vars
 import type { PrivateCacheKeyManager, setIdentifierGenerationMethod } from './managers/cache-key-manager.ts';
 import { CacheKeyManager } from './managers/cache-key-manager.ts';
 import { CacheManager } from './managers/cache-manager.ts';
@@ -301,11 +301,11 @@ export interface CreateContext {
   lid?: string;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// oxlint-disable-next-line typescript/no-explicit-any
 type ConstructorFunction = new (...args: any[]) => any;
-// eslint-disable-next-line @typescript-eslint/no-extraneous-class
+// oxlint-disable-next-line typescript/no-extraneous-class
 const EmptyClass: ConstructorFunction = class {
-  // eslint-disable-next-line @typescript-eslint/no-useless-constructor
+  // oxlint-disable-next-line no-useless-constructor
   constructor(args?: unknown) {}
 };
 const _BaseClass = macroCondition(dependencySatisfies('ember-source', '*'))
@@ -376,7 +376,7 @@ export interface Store {
    * @return A record instance
    * @public
    */
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // oxlint-disable-next-line no-unused-vars
   instantiateRecord<T>(identifier: ResourceKey, createRecordArgs: { [key: string]: unknown }): OpaqueRecordInstance;
 
   /**
@@ -1748,7 +1748,7 @@ export class Store extends BaseClass {
       } catch {
         options = requestConfig;
       }
-      // eslint-disable-next-line no-console
+      // oxlint-disable-next-line no-console
       console.log(
         `request: [[START]] ${requestConfig.op && !requestConfig.url ? '(LEGACY) ' : ''}${
           requestConfig.op || '<unknown operation>'
@@ -1762,7 +1762,7 @@ export class Store extends BaseClass {
 
     future.onFinalize(() => {
       if (LOG_REQUESTS) {
-        // eslint-disable-next-line no-console
+        // oxlint-disable-next-line no-console
         console.log(
           `request: [[FINALIZE]] ${requestConfig.op && !requestConfig.url ? '(LEGACY) ' : ''}${
             requestConfig.op || '<unknown operation>'
@@ -2480,14 +2480,14 @@ let assertDestroyingStore: (store: Store, method: string) => void;
 let assertDestroyedStoreOnly: (store: Store, method: string) => void;
 
 if (DEBUG) {
-  // eslint-disable-next-line @typescript-eslint/no-shadow
+  // oxlint-disable-next-line no-shadow
   assertDestroyingStore = function assertDestroyingStore(store: Store, method: string) {
     assert(
       `Attempted to call store.${method}(), but the store instance has already been destroyed.`,
       !(store.isDestroying || store.isDestroyed)
     );
   };
-  // eslint-disable-next-line @typescript-eslint/no-shadow
+  // oxlint-disable-next-line no-shadow
   assertDestroyedStoreOnly = function assertDestroyedStoreOnly(store: Store, method: string) {
     assert(
       `Attempted to call store.${method}(), but the store instance has already been destroyed.`,

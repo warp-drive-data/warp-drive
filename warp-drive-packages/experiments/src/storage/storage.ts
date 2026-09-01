@@ -329,7 +329,7 @@ class ReactiveStorage implements Storage {
    */
   key(index: number): string | null {
     assert('ReactiveStorage.key: index must be a number', typeof index === 'number');
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    // oxlint-disable-next-line no-unused-expressions
     this._length; // track length access
 
     if (this._memoryOnly) {

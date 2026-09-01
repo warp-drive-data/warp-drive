@@ -16,9 +16,6 @@ export default [
     dirname: import.meta.dirname,
     srcDirs: ['src'],
     allowedImports: externals,
-    // tsconfig.json's `types: []` is for TS 7's check:types; ESLint's
-    // type-aware rules need the classic-TS-friendly ember/glint types instead.
-    project: './tsconfig.eslint.json',
   }),
 
   // gts
@@ -26,7 +23,6 @@ export default [
     dirname: import.meta.dirname,
     srcDirs: ['src'],
     allowedImports: externals,
-    project: './tsconfig.eslint.json',
   }),
 
   // node (module) ================

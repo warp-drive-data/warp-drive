@@ -1,12 +1,12 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+// oxlint-disable-next-line no-unused-vars
 import type { RequestManager, Store } from '@warp-drive/core';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+// oxlint-disable-next-line no-unused-vars
 import type { Handler } from '@warp-drive/core/request';
 import type { LegacyQueryArray } from '@warp-drive/core/store/-private';
 import type { ModelSchema } from '@warp-drive/core/types';
 import type { LegacyRelationshipField as RelationshipSchema } from '@warp-drive/core/types/schema/fields';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+// oxlint-disable-next-line no-unused-vars
 import type { MinimumSerializerInterface } from './minimum-serializer-interface.ts';
 import type { SnapshotRecordArray } from './snapshot-record-array.ts';
 import type { Snapshot } from './snapshot.ts';

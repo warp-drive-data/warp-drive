@@ -1,6 +1,6 @@
 import type { TransformName } from '@warp-drive/core/types/symbols';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+// oxlint-disable-next-line no-unused-vars
 import type { attr } from '../../../model';
 
 export interface BooleanTransform {

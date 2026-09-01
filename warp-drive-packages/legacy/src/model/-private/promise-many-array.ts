@@ -12,7 +12,7 @@ export interface HasManyProxyCreateArgs<T = unknown> {
   content?: ManyArray<T>;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+// oxlint-disable-next-line no-unused-vars
 export interface PromiseManyArray<T> {
   /**
    * A property signifying that this object implements the classic Ember
@@ -67,7 +67,7 @@ export class PromiseManyArray<T = unknown> {
     // shouldn't be needed, but ends up being needed
     // for computed chains even in 4.x
     if (DEPRECATE_COMPUTED_CHAINS) {
-      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+      // oxlint-disable-next-line no-unused-expressions
       this['[]'];
     }
     return this.content ? this.content.length : 0;

@@ -15,7 +15,7 @@ class AbstractMap {
   declare private isImplicit: boolean;
   constructor(
     store: Store,
-    // eslint-disable-next-line @typescript-eslint/no-shadow
+    // oxlint-disable-next-line no-shadow
     isImplicit: boolean
   ) {
     this.store = store;

@@ -8,11 +8,11 @@ import { computed } from '@ember/object';
 import type Mixin from '@ember/object/mixin';
 import type Owner from '@ember/owner';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+// oxlint-disable-next-line no-unused-vars
 import type { RequestManager, Store } from '@warp-drive/core';
 import { DEBUG } from '@warp-drive/core/build-config/env';
 import { assert } from '@warp-drive/core/build-config/macros';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+// oxlint-disable-next-line no-unused-vars
 import type { Handler } from '@warp-drive/core/request';
 import type { ModelSchema } from '@warp-drive/core/types';
 import type { HTTPMethod } from '@warp-drive/core/types/request';
@@ -1255,7 +1255,7 @@ class RESTAdapter extends AdapterWithBuildURLMixin {
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+// oxlint-disable-next-line typescript/no-empty-object-type
 interface RESTAdapter extends MixtBuildURLMixin {}
 
 function ajaxSuccess(

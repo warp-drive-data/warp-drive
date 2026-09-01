@@ -51,14 +51,14 @@ export function fireEvent(
   scope: HelperContext,
   element: Element | Document | Window,
   eventType: KeyboardEventType,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // oxlint-disable-next-line typescript/no-explicit-any
   options?: any
 ): Promise<Event>;
 export function fireEvent(
   scope: HelperContext,
   element: Element | Document | Window,
   eventType: MouseEventType,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // oxlint-disable-next-line typescript/no-explicit-any
   options?: any
 ): Promise<Event | void>;
 
@@ -66,7 +66,7 @@ export function fireEvent(
   scope: HelperContext,
   element: Element | Document | Window,
   eventType: string,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // oxlint-disable-next-line typescript/no-explicit-any
   options?: any
 ): Promise<Event>;
 /**
@@ -132,7 +132,7 @@ export function fireEvent(
   });
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// oxlint-disable-next-line typescript/no-explicit-any
 function buildBasicEvent(type: string, options: any = {}): Event {
   const event = document.createEvent('Events');
 
@@ -151,17 +151,23 @@ function buildBasicEvent(type: string, options: any = {}): Event {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   event.initEvent(type, bubbles, cancelable);
   for (const prop in options) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-explicit-any
+    /* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access */
+    /* oxlint-disable typescript/no-explicit-any */
     (event as any)[prop] = options[prop];
+    /* oxlint-enable typescript/no-explicit-any */
+    /* eslint-enable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access */
   }
   return event;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// oxlint-disable-next-line typescript/no-explicit-any
 function buildMouseEvent(type: MouseEventType, options: any = {}) {
   let event;
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any
+  /* eslint-disable @typescript-eslint/no-unsafe-assignment */
+  /* oxlint-disable typescript/no-explicit-any */
   const eventOpts: any = { view: window, ...DEFAULT_EVENT_OPTIONS, ...options };
+  /* oxlint-enable typescript/no-explicit-any */
+  /* eslint-enable @typescript-eslint/no-unsafe-assignment */
   if (MOUSE_EVENT_CONSTRUCTOR) {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     event = new MouseEvent(type, eventOpts);
@@ -206,10 +212,13 @@ function buildMouseEvent(type: MouseEventType, options: any = {}) {
   return event;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// oxlint-disable-next-line typescript/no-explicit-any
 export function _buildKeyboardEvent(type: KeyboardEventType, options: any = {}): Event {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any
+  /* eslint-disable @typescript-eslint/no-unsafe-assignment */
+  /* oxlint-disable typescript/no-explicit-any */
   const eventOpts: any = { ...DEFAULT_EVENT_OPTIONS, ...options };
+  /* oxlint-enable typescript/no-explicit-any */
+  /* eslint-enable @typescript-eslint/no-unsafe-assignment */
   let event: Event | undefined;
   let eventMethodName: 'initKeyboardEvent' | 'initKeyEvent' | undefined;
 
@@ -261,8 +270,11 @@ export function _buildKeyboardEvent(type: KeyboardEventType, options: any = {}):
   }
 
   if (event && eventMethodName) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-explicit-any
+    /* eslint-disable @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access */
+    /* oxlint-disable typescript/no-explicit-any */
     (event as any)[eventMethodName](
+      /* oxlint-enable typescript/no-explicit-any */
+      /* eslint-enable @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access */
       type,
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       eventOpts.bubbles,
@@ -289,7 +301,7 @@ export function _buildKeyboardEvent(type: KeyboardEventType, options: any = {}):
   return event;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// oxlint-disable-next-line typescript/no-explicit-any
 function buildFileEvent(type: FileSelectionEventType, element: HTMLInputElement, options: any = {}): Event {
   const event = buildBasicEvent(type);
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access

@@ -232,13 +232,13 @@ export function notifyChange(graph: Graph, relationship: CollectionEdge | Resour
 
   if (resourceKey === graph._removing) {
     if (LOG_GRAPH) {
-      // eslint-disable-next-line no-console
+      // oxlint-disable-next-line no-console
       console.log(`Graph: ignoring relationship change for removed identifier ${String(resourceKey)} ${key}`);
     }
     return;
   }
   if (LOG_GRAPH) {
-    // eslint-disable-next-line no-console
+    // oxlint-disable-next-line no-console
     console.log(`Graph: notifying relationship change for ${String(resourceKey)} ${key}`);
   }
 

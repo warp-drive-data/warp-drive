@@ -429,7 +429,7 @@ function colorizeLines(lines: string[]): void {
 }
 
 function log(...args: unknown[]): void {
-  // eslint-disable-next-line no-console
+  // oxlint-disable-next-line no-console
   console.log(...args);
 }
 

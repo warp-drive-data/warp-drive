@@ -1,7 +1,7 @@
 import { Config } from '../../internals/config';
 import type { HelperContext } from './-helper-context';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// oxlint-disable-next-line typescript/no-explicit-any
 export type Hook = (...args: any[]) => void | Promise<void>;
 export type HookLabel = 'start' | 'end' | 'targetFound';
 export type HookUnregister = {

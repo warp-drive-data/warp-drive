@@ -114,7 +114,7 @@ export class Snapshot<R = unknown> {
       the values.
      */
     if (hasRecord) {
-      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+      // oxlint-disable-next-line no-unused-expressions
       this._attributes;
     }
 
