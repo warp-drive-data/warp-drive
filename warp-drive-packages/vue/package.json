@@ -23,7 +23,7 @@
     "prepack": "pnpm run build:pkg",
     "sync": "echo \"syncing\"",
     "lint": "eslint . --quiet --cache --cache-strategy=content",
-    "check:types": "tsc --noEmit",
+    "check:types": "node ./node_modules/typescript-7/bin/tsc --noEmit",
     "start": "node node_modules/tsdown/dist/run.mjs --watch"
   },
   "files": [
@@ -62,6 +62,7 @@
     "decorator-transforms": "^2.4.0",
     "tsdown": "^0.22.14",
     "typescript": "^5.9.3",
+    "typescript-7": "npm:typescript@7.1.0-dev.20260821.1",
     "unplugin-vue": "^7.2.0",
     "vue": "^3.5.41",
     "vue-tsc": "^3.3.10"

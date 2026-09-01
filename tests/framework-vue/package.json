@@ -19,7 +19,7 @@
     "build:tests": "export IS_TESTING=true; export NODE_ENV=development; vite build -m development --outDir dist-test",
     "build:production": "export IS_TESTING=true; export NODE_ENV=production; vite build --outDir dist-test",
     "lint": "eslint . --quiet --cache --cache-strategy=content",
-    "check:types": "tsc --noEmit",
+    "check:types": "node ./node_modules/typescript-7/bin/tsc --noEmit",
     "start": "export IS_TESTING=true; export NODE_ENV=development; vite build -m development --watch --outDir dist-test",
     "test": "export IS_TESTING=true; export NODE_ENV=development; bun ./diagnostic.js",
     "test:production": "export IS_TESTING=true; export NODE_ENV=production; bun ./diagnostic.js",
@@ -43,6 +43,7 @@
     "babel-plugin-debug-macros": "^2.0.0",
     "decorator-transforms": "^2.4.0",
     "typescript": "^5.9.3",
+    "typescript-7": "npm:typescript@7.1.0-dev.20260821.1",
     "vite": "catalog:",
     "vue": "^3.5.41",
     "vue-tsc": "^3.3.10"

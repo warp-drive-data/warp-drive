@@ -39,7 +39,8 @@
     "allowJs": false,
     "erasableSyntaxOnly": true,
     "isolatedDeclarations": true,
-    "isolatedModules": true
+    "isolatedModules": true,
+    "types": ["node"]
   },
   "references": []
 }

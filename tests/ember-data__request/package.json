@@ -20,7 +20,7 @@
     "start": "export IS_TESTING=true; export NODE_ENV=development; vite build -m development --watch --outDir dist-test",
     "_temporarily_deactivated_build:production": "export IS_TESTING=true; export NODE_ENV=production; vite build --outDir dist-test",
     "lint": "eslint . --quiet --cache --cache-strategy=content",
-    "check:types": "tsc --noEmit",
+    "check:types": "node ./node_modules/typescript-7/bin/tsc --noEmit",
     "test": "export IS_TESTING=true; export NODE_ENV=development; bun ./diagnostic.js",
     "_temporarily_deactivated_test:production": "export IS_TESTING=true; export NODE_ENV=production; bun ./diagnostic.js",
     "test:start": "bun ./diagnostic.js --serve --no-launch"
@@ -51,6 +51,7 @@
     "ember-strict-application-resolver": "^0.1.1",
     "terser": "^5.50.0",
     "typescript": "^5.9.3",
+    "typescript-7": "npm:typescript@7.1.0-dev.20260821.1",
     "vite": "catalog:"
   },
   "ember": {
