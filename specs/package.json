@@ -56,7 +56,7 @@
     "@warp-drive/utilities": "workspace:*",
     "decorator-transforms": "^2.4.0",
     "tsdown": "^0.22.14",
-    "typescript": "^5.9.3"
+    "typescript": "^6.0.3"
   },
   "ember-addon": {
     "main": "addon-main.cjs",

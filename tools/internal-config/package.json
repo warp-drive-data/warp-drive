@@ -25,6 +25,6 @@
     "eslint-plugin-n": "^17.24.0",
     "eslint-plugin-qunit": "^8.2.6",
     "tsdown": "^0.22.14",
-    "typescript": "^5.9.3"
+    "typescript": "^6.0.3"
   }
 }

@@ -8,7 +8,7 @@
     "@types/semver": "^7.8.0",
     "@types/bun": "^1.4.0",
     "lerna-changelog": "^2.2.0",
-    "typescript": "^5.9.3",
+    "typescript": "^6.0.3",
     "bun-types": "^1.4.0"
   }
 }

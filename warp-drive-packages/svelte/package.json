@@ -50,7 +50,7 @@
     "@warp-drive/internal-config": "workspace:*",
     "@warp-drive/core": "workspace:*",
     "svelte": "^5.56.9",
-    "typescript": "^5.9.3",
+    "typescript": "^6.0.3",
     "typescript-7": "npm:typescript@7.1.0-dev.20260821.1",
     "vite": "catalog:"
   }

@@ -82,7 +82,7 @@
     "qunit": "^2.26.0",
     "qunit-dom": "^3.6.0",
     "testem": "^3.20.1",
-    "typescript": "^5.9.3",
+    "typescript": "^6.0.3",
     "typescript-7": "npm:typescript@7.1.0-dev.20260821.1",
     "vite": "catalog:"
   },
