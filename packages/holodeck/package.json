@@ -38,7 +38,6 @@
     "build:pkg": "node node_modules/tsdown/dist/run.mjs",
     "prepack": "pnpm run build:pkg",
     "sync": "echo \"syncing\"",
-    "_temporarily_deactivated_lint": "eslint . --quiet --cache --cache-strategy=content",
     "start": "node node_modules/tsdown/dist/run.mjs --watch"
   },
   "peerDependencies": {

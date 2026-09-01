@@ -18,7 +18,6 @@
     "sync": "echo \"syncing\"",
     "build:tests": "export IS_TESTING=true; export NODE_ENV=development; vite build -m development --outDir dist-test",
     "build:production": "export IS_TESTING=true; export NODE_ENV=production; vite build --outDir dist-test",
-    "lint": "eslint . --quiet --cache --cache-strategy=content",
     "check:types": "node ./node_modules/typescript-7/bin/tsc --noEmit",
     "start": "export IS_TESTING=true; export NODE_ENV=development; vite build -m development --watch --outDir dist-test",
     "test": "export IS_TESTING=true; export NODE_ENV=development; bun ./diagnostic.js",
