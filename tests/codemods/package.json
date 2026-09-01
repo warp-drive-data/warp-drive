@@ -38,7 +38,7 @@
     "@types/bun": "^1.4.0",
     "@types/jscodeshift": "^17.3.0",
     "@warp-drive/internal-config": "workspace:*",
-    "eslint": "^10.8.1",
+    "eslint": "^10.9.1",
     "qunit": "^2.26.0",
     "vitest": "^4.1.11"
   }
