@@ -1,5 +1,6 @@
 import { Glob } from 'bun';
 import fs from 'fs';
+import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import { styleText } from 'node:util';
 import path from 'path';
@@ -13,6 +14,30 @@ export const TARBALL_DIR = path.join(PROJECT_ROOT, 'tmp/tarballs');
 
 export function toTarballName(name: string) {
   return name.replace('@', '').replace('/', '-');
+}
+
+/**
+ * Returns the bin entries of the packed manifest whose target file is absent
+ * from the tarball. npm creates no bin link for a missing target and emits no
+ * warning at install time (bin-links skips it), so the only place this can
+ * fail loudly is here. (@ember-data/codemods shipped that way for months —
+ * see issue #10539.)
+ */
+function findMissingBinFiles(tarballPath: string): string[] {
+  const listing = new Set(execFileSync('tar', ['-tzf', tarballPath], { encoding: 'utf8' }).split('\n').filter(Boolean));
+  const manifest = JSON.parse(
+    execFileSync('tar', ['-xzOf', tarballPath, 'package/package.json'], { encoding: 'utf8' })
+  );
+  const bin: Record<string, string> =
+    typeof manifest.bin === 'string' ? { [manifest.name.split('/').pop()]: manifest.bin } : (manifest.bin ?? {});
+
+  const missing: string[] = [];
+  for (const [name, target] of Object.entries(bin)) {
+    if (!listing.has(path.posix.join('package', target))) {
+      missing.push(`"${name}" -> ${target}`);
+    }
+  }
+  return missing;
 }
 
 export async function verifyTarballs(
@@ -39,6 +64,16 @@ export async function verifyTarballs(
 
     if (tarballExists) {
       results.push(styleText('grey', `\t✅ Tarball exists for package ${styleText('green', pkg.pkgData.name)}`));
+      const missingBinFiles = findMissingBinFiles(tarballPath);
+      if (missingBinFiles.length > 0) {
+        results.push(
+          styleText(
+            'grey',
+            `\t❌ Bin entries of ${styleText('red', pkg.pkgData.name)} point at files missing from its tarball: ${missingBinFiles.join(', ')}`
+          )
+        );
+        hasErrors = true;
+      }
     } else {
       results.push(
         styleText(

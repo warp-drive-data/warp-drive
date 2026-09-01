@@ -32,9 +32,16 @@ Codemods for WarpDrive/EmberData paradigms.
 
 ## Usage
 
+### Requirements
+
+Node.js `>= 22.2` is required. The CLI runs on macOS, Linux (glibc and musl/Alpine), and
+Windows, on both x64 and arm64 — the platform-specific parsing binary is provided by
+[`@ast-grep/napi`](https://www.npmjs.com/package/@ast-grep/napi)'s prebuilds and installed
+automatically for your platform.
+
 ### List all available codemods 
 ```
-npx @ember-data/codemods apply --help
+npx @ember-data/codemods list
 ```
 
 ### List available CLI options for a given codemod
@@ -52,8 +59,12 @@ npx @ember-data/codemods apply <codemod-name> [codemod-options] <target-glob-pat
 For example:
 
 ```
-npx @ember-data/codemods apply legacy-compat-builders ./app/**/*.{js,ts}
+npx @ember-data/codemods apply legacy-compat-builders './app/**/*.{js,ts}'
 ```
+
+> [!TIP]
+> Quote the glob pattern so it is expanded by the codemod rather than by your shell —
+> unquoted `**` behaves differently across shells.
 
 ## Codemods
 
@@ -86,7 +97,7 @@ WarpDrive doesn't require users to follow a specific file structure, but it does
 
 > [!TIP]
 > The codemod includes "knobs" to help with this situation that can be configured via a json file.
-> [`example.config.json`](https://github.com/mainmatter/warp-drive/blob/4f736d04a4a03706b05bbf108f2e16a205fba53c/packages/codemods/src/schema-migration/example.config.json). See all available options in [`config.ts`](https://github.com/mainmatter/warp-drive/blob/4f736d04a4a03706b05bbf108f2e16a205fba53c/packages/codemods/src/schema-migration/config.ts#L3)
+> [`example.config.json`](https://github.com/warp-drive-data/warp-drive/blob/4f736d04a4a03706b05bbf108f2e16a205fba53c/packages/codemods/src/schema-migration/example.config.json). See all available options in [`config.ts`](https://github.com/warp-drive-data/warp-drive/blob/4f736d04a4a03706b05bbf108f2e16a205fba53c/packages/codemods/src/schema-migration/config.ts#L3)
 > `npx @ember-data/codemods apply migrate-to-schema --config=./example-codemod.config.json` 
 
 - Codemod requires manual input and additional configuration for deep hierarchies. Such as "Base classes" or Re-exported models or models imported from libraries.

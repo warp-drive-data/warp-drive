@@ -102,7 +102,7 @@ function createLegacyCompatBuildersCommand(applyCommand: Command) {
 }
 
 async function handleLegacyCompatBuilders(patterns: string[] | string, options: SharedCodemodOptions & RunOptions) {
-  const { runTransform } = await import('../legacy-compat-builders/run.js');
+  const { runTransform } = await import('../legacy-compat-builders/run.ts');
   const patternArray = Array.isArray(patterns) ? patterns : [patterns];
 
   await runTransform({
@@ -119,7 +119,7 @@ async function handleMigrateToSchema(
   options: SharedCodemodOptions & Record<string, unknown>
 ) {
   const log = logger.for('migrate-to-schema');
-  const { runMigration } = await import('../schema-migration/tasks/migrate.js');
+  const { runMigration } = await import('../schema-migration/tasks/migrate.ts');
   const inputDir = (typeof patterns === 'string' ? patterns : patterns[0]) || './app';
 
   let configOptions = {};

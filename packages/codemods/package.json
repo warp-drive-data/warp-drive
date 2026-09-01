@@ -9,12 +9,16 @@
     "directory": "packages/codemods"
   },
   "type": "module",
-  "bin": "dist/index.js",
+  "bin": {
+    "codemods": "./dist/index.js"
+  },
+  "engines": {
+    "node": ">=22.22.2"
+  },
   "scripts": {
     "sync": "echo \"syncing\"",
-    "build:cli": "bun build src/cli/index.ts --target node --outdir dist --sourcemap --external @ast-grep/napi",
-    "build:pkg": "tsc",
-    "prepack": "pnpm run build:cli",
+    "build:pkg": "node node_modules/tsdown/dist/run.mjs",
+    "prepack": "pnpm run build:pkg",
     "lint": "eslint . --quiet --cache --cache-strategy=content",
     "check:types": "tsc --noEmit"
   },
@@ -23,36 +27,31 @@
       "default": "./src/index.ts"
     },
     "./schema-migration/*": {
-      "types": "./dist/src/schema-migration/*",
       "default": "./src/schema-migration/*"
     }
   },
   "files": [
-    "bin",
+    "dist/index.js",
     "src",
     "utils",
-    "codemods",
-    "logos",
-    "LICENSE.md"
+    "LICENSE.md",
+    "logos"
   ],
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@ast-grep/napi": "^0.45.1",
-    "commander": "^14.0.3",
-    "ignore": "^7.0.6",
-    "inquirer": "^10.2.2",
-    "jscodeshift": "^17.4.0",
-    "prettier": "^3.9.6",
-    "typescript": "^5.9.3",
-    "winston": "^3.19.0"
+    "@ast-grep/napi": "^0.45.1"
   },
   "devDependencies": {
-    "@types/bun": "^1.4.0",
-    "@types/inquirer": "^9.0.10",
     "@types/jscodeshift": "^17.3.0",
     "@types/node": "catalog:",
     "@warp-drive/internal-config": "workspace:*",
-    "eslint": "^10.8.1"
+    "commander": "^14.0.3",
+    "eslint": "^10.8.1",
+    "ignore": "^7.0.6",
+    "jscodeshift": "^17.4.0",
+    "tsdown": "^0.22.14",
+    "typescript": "^5.9.3",
+    "winston": "^3.19.0"
   }
 }
