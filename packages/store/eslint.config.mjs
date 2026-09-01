@@ -12,7 +12,7 @@ export default [
   // all ================
   globalIgnores(),
 
-  js.browser({
+  ...js.browser({
     srcDirs: ['src'],
     allowedImports: externals,
   }),

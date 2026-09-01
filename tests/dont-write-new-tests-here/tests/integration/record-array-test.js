@@ -207,7 +207,7 @@ module('integration/live-array', function (hooks) {
 
     assert.strictEqual(recordArray.length, 0, 'initial length 0');
 
-    // eslint-disable-next-line no-unused-vars
+    // oxlint-disable-next-line no-unused-vars
     const [one, two, three] = store.push({
       data: [
         { type: 'person', id: '1', attributes: { name: 'Chris' } },

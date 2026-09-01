@@ -174,7 +174,7 @@ module('integration/debug-adapter - DebugAdapter', function (hooks) {
 
     // reset — deliberately cleared so a watcher callback that fails to fire shows up
     // as a failing assertion below rather than a stale pass from the previous round
-    // eslint-disable-next-line no-useless-assignment
+    // oxlint-disable-next-line no-useless-assignment
     addedRecords = updatedRecords = [];
 
     post = store.createRecord('post', { id: '2', title: 'New Post' });
@@ -206,7 +206,7 @@ module('integration/debug-adapter - DebugAdapter', function (hooks) {
 
     // reset — deliberately cleared so a watcher callback that fails to fire shows up
     // as a failing assertion below rather than a stale pass from the previous round
-    // eslint-disable-next-line no-useless-assignment
+    // oxlint-disable-next-line no-useless-assignment
     addedRecords = updatedRecords = [];
 
     post.unloadRecord();

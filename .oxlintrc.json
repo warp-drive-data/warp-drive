@@ -200,6 +200,7 @@
     ],
     "no-unused-labels": "error",
     "no-unused-private-class-members": "error",
+    "no-useless-assignment": "error",
     "no-useless-backreference": "error",
     "no-useless-catch": "error",
     "no-useless-escape": [
@@ -781,11 +782,60 @@
         "tests/framework-vue/**",
         "tests/json-api/**",
         "tests/legacy/**",
-        "tests/performance/**",
         "warp-drive-packages/svelte/**"
       ],
       "rules": {
         "no-restricted-imports": ["error"]
+      }
+    },
+    {
+      "files": ["tests/performance/**"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "paths": [
+              "@ember/-internals/metal",
+              "@ember/application/namespace",
+              "@ember/array",
+              "@ember/array/proxy",
+              "@ember/component",
+              "@ember/component/helper",
+              "@ember/controller",
+              "@ember/debug",
+              "@ember/debug/data-adapter",
+              "@ember/edition-utils",
+              "@ember/object/compat",
+              "@ember/object/computed",
+              "@ember/object/evented",
+              "@ember/object/internals",
+              "@ember/object/mixin",
+              "@ember/object/promise-proxy-mixin",
+              "@ember/object/proxy",
+              "@ember/owner",
+              "@ember/routing",
+              "@ember/runloop",
+              "@ember/string",
+              "@ember/test-helpers",
+              "@ember/test-waiters",
+              "@ember/utils",
+              "@ember/version",
+              "@glimmer/component",
+              "@glimmer/env",
+              "@glimmer/runtime",
+              "@glimmer/tracking",
+              "@glimmer/tracking/primitives/cache",
+              "@glimmer/validator",
+              "ember-inflector",
+              "ember-qunit",
+              "ember-source",
+              "ember-source/types",
+              "ember",
+              "qunit",
+              "testem"
+            ]
+          }
+        ]
       }
     },
     {

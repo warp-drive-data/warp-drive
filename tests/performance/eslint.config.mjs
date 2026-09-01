@@ -9,7 +9,7 @@ export default [
   globalIgnores(),
 
   // browser (js/ts) ================
-  js.browser({
+  ...js.browser({
     dirname: import.meta.dirname,
     srcDirs: ['models', 'mixins', 'routes', 'services'],
     allowedImports: ['@ember/application', '@ember/object', '@ember/routing/route', '@ember/service'],

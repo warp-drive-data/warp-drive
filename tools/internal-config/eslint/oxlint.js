@@ -58,6 +58,7 @@ export const OXLINT_OWNED_RULES = [
   'no-unsafe-optional-chaining',
   'no-unused-labels',
   'no-unused-private-class-members',
+  'no-useless-assignment',
   'no-useless-backreference',
   'no-useless-catch',
   'no-useless-escape',
@@ -87,6 +88,7 @@ export const OXLINT_OWNED_RULES = [
   // note above about excluding anything that needs type information.
   '@typescript-eslint/adjacent-overload-signatures',
   '@typescript-eslint/consistent-type-imports',
+  '@typescript-eslint/no-array-constructor',
   '@typescript-eslint/no-duplicate-enum-values',
   '@typescript-eslint/no-empty-object-type',
   '@typescript-eslint/no-explicit-any',
@@ -94,6 +96,7 @@ export const OXLINT_OWNED_RULES = [
   '@typescript-eslint/no-extraneous-class',
   '@typescript-eslint/no-import-type-side-effects',
   '@typescript-eslint/no-inferrable-types',
+  '@typescript-eslint/no-loop-func',
   '@typescript-eslint/no-misused-new',
   '@typescript-eslint/no-namespace',
   '@typescript-eslint/no-non-null-asserted-nullish-coalescing',

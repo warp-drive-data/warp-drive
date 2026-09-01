@@ -10,7 +10,7 @@ export default [
   globalIgnores(),
 
   // browser (js/ts) ================
-  js.browser({
+  ...js.browser({
     srcDirs: ['fixtures'],
     allowedImports: ['qunit'],
     rules: {

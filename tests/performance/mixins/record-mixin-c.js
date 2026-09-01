@@ -1,4 +1,4 @@
-// eslint-disable-next-line no-restricted-imports
+// oxlint-disable-next-line no-restricted-imports
 import Mixin from '@ember/object/mixin';
 
 import { attr, hasMany } from '@warp-drive/legacy/model';

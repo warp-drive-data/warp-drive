@@ -12,7 +12,7 @@ export default [
   globalIgnores(),
 
   // browser (js) ================
-  js.browser({
+  ...js.browser({
     srcDirs: ['tests'],
     allowedImports: ['@ember/application'],
   }),

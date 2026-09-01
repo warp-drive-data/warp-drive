@@ -236,7 +236,7 @@ const Fetch = {
           isStreaming = true;
           stream = new TransformStream();
           // Listen for the abort event on the AbortSignal
-          // eslint-disable-next-line @typescript-eslint/no-loop-func
+          // oxlint-disable-next-line no-loop-func
           context.request.signal?.addEventListener('abort', () => {
             if (!isStreaming) {
               return;
