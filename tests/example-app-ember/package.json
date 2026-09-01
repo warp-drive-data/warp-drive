@@ -29,7 +29,6 @@
     "build": "vite build",
     "start": "vite",
     "start:server": "node serve.js",
-    "lint": "eslint . --quiet --cache --cache-strategy=content",
     "check:types": "node ./node_modules/typescript-7/bin/tsc --noEmit --runExternalCode",
     "test:examples": "vite build --mode development && testem ci"
   },

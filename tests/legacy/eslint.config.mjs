@@ -1,11 +1,9 @@
 import WarpDrive from 'eslint-plugin-warp-drive/recommended';
 
-import * as js from '@warp-drive/internal-config/eslint/browser.js';
 import * as diagnostic from '@warp-drive/internal-config/eslint/diagnostic.js';
 import * as gts from '@warp-drive/internal-config/eslint/gts.js';
 // @ts-check
 import { globalIgnores } from '@warp-drive/internal-config/eslint/ignore.js';
-import * as node from '@warp-drive/internal-config/eslint/node.js';
 import * as oxlint from '@warp-drive/internal-config/eslint/oxlint.js';
 import * as typescript from '@warp-drive/internal-config/eslint/typescript.js';
 
@@ -33,27 +31,23 @@ const AllowedImports = [
 /** @type {import('eslint').Linter.Config[]} */
 export default [
   // all ================
-  globalIgnores(),
-
-  // browser (js) ================
-  ...js.browser({
-    dirname: import.meta.dirname,
-    srcDirs: ['app', 'tests'],
-    allowedImports: AllowedImports,
-    globals: { gc: true },
-  }),
+  // `.ts` stays matched below (typescript.browser()) so eslint-plugin-warp-drive keeps
+  // running there; `.js` has no oxlint-independent rule left to run, so ESLint skips it
+  // entirely rather than attempt a default (non-decorator-aware) parse of it.
+  globalIgnores(['**/*.js']),
 
   // browser (js/ts) ================
-  // oxlint's `--type-aware` pass now covers tests/ too (this package has no app/ directory,
-  // everything lives under tests/) — verified against real CI's type-aware run.
+  // oxlint fully covers plain `.ts`/`.js` now (syntactic + type-aware) — this block only
+  // survives to give `.ts` files the parser eslint-plugin-warp-drive's rules below need; every
+  // oxlint-owned rule is explicitly off.
   typescript.browser({
     dirname: import.meta.dirname,
     srcDirs: ['app', 'tests'],
     allowedImports: AllowedImports,
-    rules: oxlint.disabledTypeAwareRules(),
+    rules: oxlint.disabledAllRules(),
   }),
 
-  // gts
+  // gts — oxlint's parser can't scan `.gts`/`.gjs`, so this stays the sole enforcer there.
   gts.browser({
     dirname: import.meta.dirname,
     srcDirs: ['app', 'tests'],
@@ -65,6 +59,7 @@ export default [
     },
   }),
 
+  // eslint-plugin-warp-drive has no oxlint equivalent — keeps running on every file above.
   ...WarpDrive,
   {
     rules: {
@@ -72,42 +67,10 @@ export default [
     },
   },
 
-  // files converted to strict must pass these rules before they can be removed from
-  // the files list here
-  // see https://github.com/emberjs/data/issues/6233#issuecomment-849279594
-  {
-    files: [
-      'tests/helpers/accessors.ts',
-      'tests/integration/identifiers/configuration-test.ts',
-      'tests/integration/identifiers/new-records-test.ts',
-      // 'tests/integration/identifiers/polymorphic-scenarios-test.ts',
-      'tests/integration/identifiers/record-identifier-for-test.ts',
-      'tests/integration/identifiers/scenarios-test.ts',
-      'tests/integration/model-errors-test.ts',
-      'tests/integration/record-data/record-data-errors-test.ts',
-      'tests/integration/record-data/record-data-state-test.ts',
-      'tests/integration/record-data/record-data-test.ts',
-      'tests/integration/record-data/store-wrapper-test.ts',
-      'tests/integration/relationships/rollback-test.ts',
-      'tests/integration/request-state-service-test.ts',
-      'tests/unit/custom-class-support/custom-class-model-test.ts',
-    ],
-    rules: {
-      '@typescript-eslint/no-unsafe-assignment': 'off',
-      '@typescript-eslint/no-unsafe-call': 'off',
-      '@typescript-eslint/no-unsafe-member-access': 'off',
-      '@typescript-eslint/no-unsafe-return': 'off',
-    },
-  },
-
-  // node (module) ================
-  node.esm(),
-
-  // node (script) ================
-  node.cjs(),
-
-  // Test Support ================
-  ...diagnostic.browser({
-    allowedImports: AllowedImports,
-  }),
+  // Test Support (`.gts`/`.gjs` only — oxlint's `qunit` jsPlugin covers plain `.ts`/`.js`)
+  ...[
+    diagnostic.templateTag({
+      allowedImports: AllowedImports,
+    }),
+  ].filter(Boolean),
 ];
