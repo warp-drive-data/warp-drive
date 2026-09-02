@@ -2970,10 +2970,10 @@ importers:
         version: 1000.1.5
       '@pnpm/find-workspace-packages':
         specifier: 6.0.9
-        version: 6.0.9(@pnpm/logger@1001.0.1)
+        version: 6.0.9(@pnpm/logger@1100.0.0)
       '@pnpm/logger':
-        specifier: 1001.0.1
-        version: 1001.0.1
+        specifier: 1100.0.0
+        version: 1100.0.0
       '@types/bun':
         specifier: 1.4.0
         version: 1.4.0
@@ -5498,9 +5498,9 @@ packages:
     resolution: {integrity: sha512-14eYp9iOdJ7SyOIVXomXhbVnc14DEhzMLS3eKqxYxi9LkANUfxx1/pwRiRY/lTiP9RFS+OkIcTm2QiLsmNEctw==}
     engines: {node: '>=16.14'}
 
-  '@pnpm/logger@1001.0.1':
-    resolution: {integrity: sha512-gdwlAMXC4Wc0s7Dmg/4wNybMEd/4lSd9LsXQxeg/piWY0PPXjgz1IXJWnVScx6dZRaaodWP3c1ornrw8mZdFZw==}
-    engines: {node: '>=18.12'}
+  '@pnpm/logger@1100.0.0':
+    resolution: {integrity: sha512-A3bRMTIZ5ptDPAE/KsDeY1J5UqqOiyo66+k/mUvaVjx++OJdMbp9If5kisEq9ljAV5r5TRpkxsJbSdrdJ5WtzQ==}
+    engines: {node: '>=22.13'}
 
   '@pnpm/manifest-utils@5.0.1':
     resolution: {integrity: sha512-vQUmd0NQNv1yWEeFA4pjuBCs4AqhaHW4bVpuaD19lHE5J9SCs7iNRDpjnxjTm/qgDgO/hqu/spuAXEbPxR8u0A==}
@@ -13801,15 +13801,15 @@ snapshots:
       '@pnpm/types': 9.1.0
       load-json-file: 6.2.0
 
-  '@pnpm/cli-utils@2.0.9(@pnpm/logger@1001.0.1)':
+  '@pnpm/cli-utils@2.0.9(@pnpm/logger@1100.0.0)':
     dependencies:
       '@pnpm/cli-meta': 5.0.1
-      '@pnpm/config': 18.4.0(@pnpm/logger@1001.0.1)
-      '@pnpm/default-reporter': 12.2.3(@pnpm/logger@1001.0.1)
+      '@pnpm/config': 18.4.0(@pnpm/logger@1100.0.0)
+      '@pnpm/default-reporter': 12.2.3(@pnpm/logger@1100.0.0)
       '@pnpm/error': 5.0.1
-      '@pnpm/logger': 1001.0.1
-      '@pnpm/manifest-utils': 5.0.1(@pnpm/logger@1001.0.1)
-      '@pnpm/package-is-installable': 8.0.2(@pnpm/logger@1001.0.1)
+      '@pnpm/logger': 1100.0.0
+      '@pnpm/manifest-utils': 5.0.1(@pnpm/logger@1100.0.0)
+      '@pnpm/package-is-installable': 8.0.2(@pnpm/logger@1100.0.0)
       '@pnpm/read-project-manifest': 5.0.1
       '@pnpm/types': 9.1.0
       chalk: 4.1.2
@@ -13817,7 +13817,7 @@ snapshots:
 
   '@pnpm/config.env-replace@1.1.0': {}
 
-  '@pnpm/config@18.4.0(@pnpm/logger@1001.0.1)':
+  '@pnpm/config@18.4.0(@pnpm/logger@1100.0.0)':
     dependencies:
       '@pnpm/config.env-replace': 1.1.0
       '@pnpm/constants': 7.1.0
@@ -13825,7 +13825,7 @@ snapshots:
       '@pnpm/git-utils': 1.0.0
       '@pnpm/matcher': 5.0.0
       '@pnpm/npm-conf': 2.2.0
-      '@pnpm/pnpmfile': 5.0.7(@pnpm/logger@1001.0.1)
+      '@pnpm/pnpmfile': 5.0.7(@pnpm/logger@1100.0.0)
       '@pnpm/read-project-manifest': 5.0.1
       '@pnpm/types': 9.1.0
       better-path-resolve: 1.0.0
@@ -13848,9 +13848,9 @@ snapshots:
 
   '@pnpm/constants@7.1.0': {}
 
-  '@pnpm/core-loggers@9.0.1(@pnpm/logger@1001.0.1)':
+  '@pnpm/core-loggers@9.0.1(@pnpm/logger@1100.0.0)':
     dependencies:
-      '@pnpm/logger': 1001.0.1
+      '@pnpm/logger': 1100.0.0
       '@pnpm/types': 9.1.0
 
   '@pnpm/dedupe.issues-renderer@1.0.0':
@@ -13861,14 +13861,14 @@ snapshots:
 
   '@pnpm/dedupe.types@1.0.0': {}
 
-  '@pnpm/default-reporter@12.2.3(@pnpm/logger@1001.0.1)':
+  '@pnpm/default-reporter@12.2.3(@pnpm/logger@1100.0.0)':
     dependencies:
-      '@pnpm/config': 18.4.0(@pnpm/logger@1001.0.1)
-      '@pnpm/core-loggers': 9.0.1(@pnpm/logger@1001.0.1)
+      '@pnpm/config': 18.4.0(@pnpm/logger@1100.0.0)
+      '@pnpm/core-loggers': 9.0.1(@pnpm/logger@1100.0.0)
       '@pnpm/dedupe.issues-renderer': 1.0.0
       '@pnpm/dedupe.types': 1.0.0
       '@pnpm/error': 5.0.1
-      '@pnpm/logger': 1001.0.1
+      '@pnpm/logger': 1100.0.0
       '@pnpm/render-peer-issues': 4.0.1
       '@pnpm/types': 9.1.0
       ansi-diff: 1.2.0
@@ -13904,9 +13904,9 @@ snapshots:
       '@pnpm/error': 1000.1.0
       find-up: 5.0.0
 
-  '@pnpm/find-workspace-packages@6.0.9(@pnpm/logger@1001.0.1)':
+  '@pnpm/find-workspace-packages@6.0.9(@pnpm/logger@1100.0.0)':
     dependencies:
-      '@pnpm/cli-utils': 2.0.9(@pnpm/logger@1001.0.1)
+      '@pnpm/cli-utils': 2.0.9(@pnpm/logger@1100.0.0)
       '@pnpm/constants': 7.1.0
       '@pnpm/fs.find-packages': 2.0.1
       '@pnpm/types': 9.1.0
@@ -13940,14 +13940,14 @@ snapshots:
     dependencies:
       '@pnpm/types': 9.1.0
 
-  '@pnpm/logger@1001.0.1':
+  '@pnpm/logger@1100.0.0':
     dependencies:
       bole: 5.0.19
       split2: 4.2.0
 
-  '@pnpm/manifest-utils@5.0.1(@pnpm/logger@1001.0.1)':
+  '@pnpm/manifest-utils@5.0.1(@pnpm/logger@1100.0.0)':
     dependencies:
-      '@pnpm/core-loggers': 9.0.1(@pnpm/logger@1001.0.1)
+      '@pnpm/core-loggers': 9.0.1(@pnpm/logger@1100.0.0)
       '@pnpm/error': 5.0.1
       '@pnpm/types': 9.1.0
     transitivePeerDependencies:
@@ -13967,24 +13967,24 @@ snapshots:
       '@pnpm/network.ca-file': 1.0.2
       config-chain: 1.1.13
 
-  '@pnpm/package-is-installable@8.0.2(@pnpm/logger@1001.0.1)':
+  '@pnpm/package-is-installable@8.0.2(@pnpm/logger@1100.0.0)':
     dependencies:
-      '@pnpm/core-loggers': 9.0.1(@pnpm/logger@1001.0.1)
+      '@pnpm/core-loggers': 9.0.1(@pnpm/logger@1100.0.0)
       '@pnpm/error': 5.0.1
-      '@pnpm/logger': 1001.0.1
+      '@pnpm/logger': 1100.0.0
       '@pnpm/types': 9.1.0
       detect-libc: 2.1.2
       execa: safe-execa@0.1.2
       mem: 8.1.1
       semver: 7.8.5
 
-  '@pnpm/pnpmfile@5.0.7(@pnpm/logger@1001.0.1)':
+  '@pnpm/pnpmfile@5.0.7(@pnpm/logger@1100.0.0)':
     dependencies:
-      '@pnpm/core-loggers': 9.0.1(@pnpm/logger@1001.0.1)
+      '@pnpm/core-loggers': 9.0.1(@pnpm/logger@1100.0.0)
       '@pnpm/error': 5.0.1
       '@pnpm/hooks.types': 1.0.1
       '@pnpm/lockfile-types': 5.1.0
-      '@pnpm/logger': 1001.0.1
+      '@pnpm/logger': 1100.0.0
       '@pnpm/store-controller-types': 15.0.1
       '@pnpm/types': 9.1.0
       chalk: 4.1.2
@@ -16129,8 +16129,8 @@ snapshots:
       '@babel/parser': 7.29.8
       '@babel/traverse': 7.29.8
       '@pnpm/find-workspace-dir': 1000.1.5
-      '@pnpm/find-workspace-packages': 6.0.9(@pnpm/logger@1001.0.1)
-      '@pnpm/logger': 1001.0.1
+      '@pnpm/find-workspace-packages': 6.0.9(@pnpm/logger@1100.0.0)
+      '@pnpm/logger': 1100.0.0
       '@types/bun': 1.4.0
       '@types/debug': 4.1.13
       comment-json: 4.6.2
