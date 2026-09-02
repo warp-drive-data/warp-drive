@@ -73,7 +73,7 @@
     "@warp-drive/core": "workspace:*",
     "@warp-drive/internal-config": "workspace:*",
     "tsdown": "^0.22.14",
-    "typescript-7": "npm:typescript@7.1.0-dev.20260825.1"
+    "typescript-7": "npm:typescript@7.1.0-dev.20260826.1"
   },
   "keywords": [
     "ember-addon"
