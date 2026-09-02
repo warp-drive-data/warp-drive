@@ -784,10 +784,10 @@ importers:
     dependencies:
       '@hono/node-server':
         specifier: ^1.19.0
-        version: 1.19.0(hono@4.13.4)
+        version: 1.19.0(hono@4.13.5)
       hono:
-        specifier: ^4.13.4
-        version: 4.13.4
+        specifier: ^4.13.5
+        version: 4.13.5
     devDependencies:
       '@babel/core':
         specifier: ^7.29.7
@@ -4292,7 +4292,7 @@ packages:
 
   '@ember-data/codemods@file:packages/codemods':
     resolution: {directory: packages/codemods, type: directory}
-    engines: {node: '>=24.19.0'}
+    engines: {node: '>=24.20.0'}
     hasBin: true
 
   '@ember-data/debug@file:packages/debug':
@@ -6721,7 +6721,7 @@ packages:
 
   '@warp-drive/holodeck@file:packages/holodeck':
     resolution: {directory: packages/holodeck, type: directory}
-    engines: {node: '>= 24.19.0'}
+    engines: {node: '>= 24.20.0'}
     hasBin: true
     peerDependencies:
       '@warp-drive/core': workspace:*
@@ -8573,8 +8573,8 @@ packages:
   highlight.js@10.7.3:
     resolution: {integrity: sha512-tzcUFauisWKNHaRkN4Wjl/ZA07gENAjFl3J/c480dprkGTg5EQstgaNFqBfUqCq54kZRIEcreTsAgF/m2quD7A==}
 
-  hono@4.13.4:
-    resolution: {integrity: sha512-AGEwKIyRMHRv1t8Wjwa3LHxQ61X5CqrdFT+4BRNTpqS5aJNnpl5WLjADb7vFlJzI/8uK7T5QLVApCMQKNa3LgQ==}
+  hono@4.13.5:
+    resolution: {integrity: sha512-O6+/eCYRkzzzy0rPWwKLiGBR1nFuUPZynnwjxN1MBA62NNqbT0wQEzQyK2gSO5yDIDB336sXQleAhOHrzlYyKw==}
     engines: {node: '>=16.9.0'}
 
   hookable@5.5.3:
@@ -13136,9 +13136,9 @@ snapshots:
 
   '@handlebars/parser@2.2.1': {}
 
-  '@hono/node-server@1.19.0(hono@4.13.4)':
+  '@hono/node-server@1.19.0(hono@4.13.5)':
     dependencies:
-      hono: 4.13.4
+      hono: 4.13.5
 
   '@html-next/vertical-collection@5.0.5':
     dependencies:
@@ -15343,41 +15343,41 @@ snapshots:
 
   '@warp-drive/holodeck@file:packages/holodeck(2eeb0baf24a3535528995f8bc8048cb9)':
     dependencies:
-      '@hono/node-server': 1.19.0(hono@4.13.4)
+      '@hono/node-server': 1.19.0(hono@4.13.5)
       '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.29.7)
-      hono: 4.13.4
+      hono: 4.13.5
     optionalDependencies:
       '@warp-drive/legacy': file:warp-drive-packages/legacy(a510bc545ed25bc6a53fefeb5da03d5b)
       '@warp-drive/utilities': file:warp-drive-packages/utilities(4ded94bf05a058c4d301833388abca58)
 
   '@warp-drive/holodeck@file:packages/holodeck(4ded94bf05a058c4d301833388abca58)':
     dependencies:
-      '@hono/node-server': 1.19.0(hono@4.13.4)
+      '@hono/node-server': 1.19.0(hono@4.13.5)
       '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.29.7)
-      hono: 4.13.4
+      hono: 4.13.5
 
   '@warp-drive/holodeck@file:packages/holodeck(8bc80b710913e6e758e65e61e6c7db83)':
     dependencies:
-      '@hono/node-server': 1.19.0(hono@4.13.4)
+      '@hono/node-server': 1.19.0(hono@4.13.5)
       '@warp-drive/core': file:warp-drive-packages/core(40bc2c5d5662a5666eb0d917619838cd)
-      hono: 4.13.4
+      hono: 4.13.5
     optionalDependencies:
       '@warp-drive/legacy': file:warp-drive-packages/legacy(8f545e4aa3e427080f63ed8d664f6977)
       '@warp-drive/utilities': file:warp-drive-packages/utilities(1c531ff0d42b5d585fbdc4d6d901c6a4)
 
   '@warp-drive/holodeck@file:packages/holodeck(a1118444cd056e913201e1864a1927c2)':
     dependencies:
-      '@hono/node-server': 1.19.0(hono@4.13.4)
+      '@hono/node-server': 1.19.0(hono@4.13.5)
       '@warp-drive/core': file:warp-drive-packages/core(40bc2c5d5662a5666eb0d917619838cd)
-      hono: 4.13.4
+      hono: 4.13.5
     optionalDependencies:
       '@warp-drive/utilities': file:warp-drive-packages/utilities(1c531ff0d42b5d585fbdc4d6d901c6a4)
 
   '@warp-drive/holodeck@file:packages/holodeck(a510bc545ed25bc6a53fefeb5da03d5b)':
     dependencies:
-      '@hono/node-server': 1.19.0(hono@4.13.4)
+      '@hono/node-server': 1.19.0(hono@4.13.5)
       '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.29.7)
-      hono: 4.13.4
+      hono: 4.13.5
     optionalDependencies:
       '@warp-drive/utilities': file:warp-drive-packages/utilities(4ded94bf05a058c4d301833388abca58)
 
@@ -18126,7 +18126,7 @@ snapshots:
 
   highlight.js@10.7.3: {}
 
-  hono@4.13.4: {}
+  hono@4.13.5: {}
 
   hookable@5.5.3: {}
 
