@@ -43,7 +43,7 @@
     "@warp-drive/internal-tooling": "workspace:*",
     "badge-maker": "6.0.0",
     "bun-types": "^1.4.0",
-    "comment-json": "^4.6.2",
+    "comment-json": "^5.0.0",
     "debug": "^4.4.3",
     "ember-source": "catalog:",
     "execa": "^10.0.1",

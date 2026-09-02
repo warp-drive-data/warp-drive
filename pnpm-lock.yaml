@@ -203,8 +203,8 @@ importers:
         specifier: 1.4.0
         version: 1.4.0
       comment-json:
-        specifier: ^4.6.2
-        version: 4.6.2
+        specifier: ^5.0.0
+        version: 5.0.0
       debug:
         specifier: ^4.4.3
         version: 4.4.3
@@ -432,8 +432,8 @@ importers:
         specifier: workspace:*
         version: file:warp-drive-packages/core(@babel/core@7.29.7)
       comment-json:
-        specifier: ^4.6.2
-        version: 4.6.2
+        specifier: ^5.0.0
+        version: 5.0.0
       debug:
         specifier: ^4.4.3
         version: 4.4.3
@@ -2918,8 +2918,8 @@ importers:
         specifier: ^8.68.0
         version: 8.68.0(eslint@10.9.1)(typescript@6.0.3)
       comment-json:
-        specifier: ^4.6.2
-        version: 4.6.2
+        specifier: ^5.0.0
+        version: 5.0.0
       debug:
         specifier: ^4.4.3
         version: 4.4.3
@@ -2981,8 +2981,8 @@ importers:
         specifier: 4.1.13
         version: 4.1.13
       comment-json:
-        specifier: ^4.6.2
-        version: 4.6.2
+        specifier: ^5.0.0
+        version: 5.0.0
       debug:
         specifier: 4.4.3
         version: 4.4.3
@@ -7467,8 +7467,8 @@ packages:
     resolution: {integrity: sha512-QrWXB+ZQSVPmIWIhtEO9H+gwHaMGYiF5ChvoJ+K9ZGHG/sVsa6yiesAD1GC/x46sET00Xlwo1u49RVVVzvcSkw==}
     engines: {node: '>= 10'}
 
-  comment-json@4.6.2:
-    resolution: {integrity: sha512-R2rze/hDX30uul4NZoIZ76ImSJLFxn/1/ZxtKC1L77y2X1k+yYu1joKbAtMA2Fg3hZrTOiw0I5mwVMo0cf250w==}
+  comment-json@5.0.0:
+    resolution: {integrity: sha512-uiqLcOiVDJtBP8WGkZHEP+FZIhTzP1dxvn59EfoYUi9gqupjrBWVQkO2atDrbnKPwLeotFYDsuNb26uBMqB+hw==}
     engines: {node: '>= 6'}
 
   comment-parser@1.4.8:
@@ -15396,7 +15396,7 @@ snapshots:
       '@types/debug': 4.1.13
       '@typescript-eslint/eslint-plugin': 8.68.0(4c5cc002ea858b38603d194b410bb4f4)
       '@typescript-eslint/parser': 8.68.0(eslint@10.9.1)(typescript@6.0.3)
-      comment-json: 4.6.2
+      comment-json: 5.0.0
       debug: 4.4.3
       ember-eslint-parser: 0.14.6(08d5010b88e2b8bf1198eee8ae61ed04)
       eslint: 10.9.1
@@ -15448,7 +15448,7 @@ snapshots:
       '@types/debug': 4.1.13
       '@typescript-eslint/eslint-plugin': 8.68.0(4c5cc002ea858b38603d194b410bb4f4)
       '@typescript-eslint/parser': 8.68.0(eslint@10.9.1)(typescript@6.0.3)
-      comment-json: 4.6.2
+      comment-json: 5.0.0
       debug: 4.4.3
       ember-eslint-parser: 0.14.6(08d5010b88e2b8bf1198eee8ae61ed04)
       eslint: 10.9.1
@@ -15500,7 +15500,7 @@ snapshots:
       '@types/debug': 4.1.13
       '@typescript-eslint/eslint-plugin': 8.68.0(4c5cc002ea858b38603d194b410bb4f4)
       '@typescript-eslint/parser': 8.68.0(eslint@10.9.1)(typescript@6.0.3)
-      comment-json: 4.6.2
+      comment-json: 5.0.0
       debug: 4.4.3
       ember-eslint-parser: 0.14.6(08d5010b88e2b8bf1198eee8ae61ed04)
       eslint: 10.9.1
@@ -15552,7 +15552,7 @@ snapshots:
       '@types/debug': 4.1.13
       '@typescript-eslint/eslint-plugin': 8.68.0(4c5cc002ea858b38603d194b410bb4f4)
       '@typescript-eslint/parser': 8.68.0(eslint@10.9.1)(typescript@6.0.3)
-      comment-json: 4.6.2
+      comment-json: 5.0.0
       debug: 4.4.3
       ember-eslint-parser: 0.14.6(08d5010b88e2b8bf1198eee8ae61ed04)
       eslint: 10.9.1
@@ -15604,7 +15604,7 @@ snapshots:
       '@types/debug': 4.1.13
       '@typescript-eslint/eslint-plugin': 8.68.0(4c5cc002ea858b38603d194b410bb4f4)
       '@typescript-eslint/parser': 8.68.0(eslint@10.9.1)(typescript@6.0.3)
-      comment-json: 4.6.2
+      comment-json: 5.0.0
       debug: 4.4.3
       ember-eslint-parser: 0.14.6(08d5010b88e2b8bf1198eee8ae61ed04)
       eslint: 10.9.1
@@ -15656,7 +15656,7 @@ snapshots:
       '@types/debug': 4.1.13
       '@typescript-eslint/eslint-plugin': 8.68.0(4c5cc002ea858b38603d194b410bb4f4)
       '@typescript-eslint/parser': 8.68.0(eslint@10.9.1)(typescript@6.0.3)
-      comment-json: 4.6.2
+      comment-json: 5.0.0
       debug: 4.4.3
       ember-eslint-parser: 0.14.6(08d5010b88e2b8bf1198eee8ae61ed04)
       eslint: 10.9.1
@@ -15708,7 +15708,7 @@ snapshots:
       '@types/debug': 4.1.13
       '@typescript-eslint/eslint-plugin': 8.68.0(4c5cc002ea858b38603d194b410bb4f4)
       '@typescript-eslint/parser': 8.68.0(eslint@10.9.1)(typescript@6.0.3)
-      comment-json: 4.6.2
+      comment-json: 5.0.0
       debug: 4.4.3
       ember-eslint-parser: 0.14.6(08d5010b88e2b8bf1198eee8ae61ed04)
       eslint: 10.9.1
@@ -15760,7 +15760,7 @@ snapshots:
       '@types/debug': 4.1.13
       '@typescript-eslint/eslint-plugin': 8.68.0(4c5cc002ea858b38603d194b410bb4f4)
       '@typescript-eslint/parser': 8.68.0(eslint@10.9.1)(typescript@6.0.3)
-      comment-json: 4.6.2
+      comment-json: 5.0.0
       debug: 4.4.3
       ember-eslint-parser: 0.14.6(08d5010b88e2b8bf1198eee8ae61ed04)
       eslint: 10.9.1
@@ -15812,7 +15812,7 @@ snapshots:
       '@types/debug': 4.1.13
       '@typescript-eslint/eslint-plugin': 8.68.0(4c5cc002ea858b38603d194b410bb4f4)
       '@typescript-eslint/parser': 8.68.0(eslint@10.9.1)(typescript@6.0.3)
-      comment-json: 4.6.2
+      comment-json: 5.0.0
       debug: 4.4.3
       ember-eslint-parser: 0.14.6(08d5010b88e2b8bf1198eee8ae61ed04)
       eslint: 10.9.1
@@ -15864,7 +15864,7 @@ snapshots:
       '@types/debug': 4.1.13
       '@typescript-eslint/eslint-plugin': 8.68.0(4c5cc002ea858b38603d194b410bb4f4)
       '@typescript-eslint/parser': 8.68.0(eslint@10.9.1)(typescript@6.0.3)
-      comment-json: 4.6.2
+      comment-json: 5.0.0
       debug: 4.4.3
       ember-eslint-parser: 0.14.6(08d5010b88e2b8bf1198eee8ae61ed04)
       eslint: 10.9.1
@@ -15916,7 +15916,7 @@ snapshots:
       '@types/debug': 4.1.13
       '@typescript-eslint/eslint-plugin': 8.68.0(4c5cc002ea858b38603d194b410bb4f4)
       '@typescript-eslint/parser': 8.68.0(eslint@10.9.1)(typescript@6.0.3)
-      comment-json: 4.6.2
+      comment-json: 5.0.0
       debug: 4.4.3
       ember-eslint-parser: 0.14.6(08d5010b88e2b8bf1198eee8ae61ed04)
       eslint: 10.9.1
@@ -15968,7 +15968,7 @@ snapshots:
       '@types/debug': 4.1.13
       '@typescript-eslint/eslint-plugin': 8.68.0(4c5cc002ea858b38603d194b410bb4f4)
       '@typescript-eslint/parser': 8.68.0(eslint@10.9.1)(typescript@6.0.3)
-      comment-json: 4.6.2
+      comment-json: 5.0.0
       debug: 4.4.3
       ember-eslint-parser: 0.14.6(08d5010b88e2b8bf1198eee8ae61ed04)
       eslint: 10.9.1
@@ -16133,7 +16133,7 @@ snapshots:
       '@pnpm/logger': 1100.0.0
       '@types/bun': 1.4.0
       '@types/debug': 4.1.13
-      comment-json: 4.6.2
+      comment-json: 5.0.0
       debug: 4.4.3
       typescript: 6.0.3
     transitivePeerDependencies:
@@ -16923,7 +16923,7 @@ snapshots:
 
   commander@7.2.0: {}
 
-  comment-json@4.6.2:
+  comment-json@5.0.0:
     dependencies:
       array-timsort: 1.0.3
       esprima: 4.0.1
@@ -21192,7 +21192,7 @@ snapshots:
       '@embroider/macros': 1.20.6
       '@manypkg/get-packages': 3.1.0
       '@warp-drive/core': file:warp-drive-packages/core
-      comment-json: 4.6.2
+      comment-json: 5.0.0
       debug: 4.4.3
       inflection: 3.0.2
       semver: 7.8.5
@@ -21206,7 +21206,7 @@ snapshots:
       '@embroider/macros': 1.20.6(@glint/template@1.8.0)
       '@manypkg/get-packages': 3.1.0
       '@warp-drive/core': file:warp-drive-packages/core(40bc2c5d5662a5666eb0d917619838cd)
-      comment-json: 4.6.2
+      comment-json: 5.0.0
       debug: 4.4.3
       inflection: 3.0.2
       semver: 7.8.5
@@ -21220,7 +21220,7 @@ snapshots:
       '@embroider/macros': 1.20.6
       '@manypkg/get-packages': 3.1.0
       '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.29.7)
-      comment-json: 4.6.2
+      comment-json: 5.0.0
       debug: 4.4.3
       inflection: 3.0.2
       semver: 7.8.5
