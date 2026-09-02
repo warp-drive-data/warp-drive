@@ -136,7 +136,7 @@ runs:
 
     - name: 'Setup local TurboRepo server'
       if: ${{ inputs.repo-token }}
-      uses: felixmosh/turborepo-gh-artifacts@118f869397261f74bc39cb8565f2d02c0ed4209f # 4.1.1
+      uses: felixmosh/turborepo-gh-artifacts@118f869397261f74bc39cb8565f2d02c0ed4209f # v4.1.1
       with:
         repo-token: ${{ inputs.repo-token }}
 
