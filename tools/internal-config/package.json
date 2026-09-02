@@ -16,7 +16,7 @@
     "@eslint/js": "^10.0.1",
     "comment-json": "^4.6.2",
     "debug": "^4.4.3",
-    "globals": "^16.5.0",
+    "globals": "^17.11.0",
     "ember-eslint-parser": "^0.14.6",
     "eslint": "^10.9.1",
     "eslint-config-prettier": "^10.1.8",
