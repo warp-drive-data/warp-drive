@@ -6,15 +6,10 @@ release-versions:
 teams:
   - data
 prs:
-  accepted: # Fill this in with the URL for the Proposal RFC PR
+  accepted: https://github.com/emberjs/rfcs/pull/1233
 project-link:
 suite:
 ---
-
-<!--
-Per process: once the proposal PR is open, rename this file to use the PR number and
-fill `prs.accepted` above with the PR URL.
--->
 
 # A Framework-Agnostic Build Plugin for WarpDrive
 
