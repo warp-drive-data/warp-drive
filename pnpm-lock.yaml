@@ -2945,8 +2945,8 @@ importers:
         specifier: ^8.2.6
         version: 8.2.6(eslint@10.9.1)
       globals:
-        specifier: ^16.5.0
-        version: 16.5.0
+        specifier: ^17.11.0
+        version: 17.11.0
       tsdown:
         specifier: ^0.22.14
         version: 0.22.14(typescript@6.0.3)
@@ -8496,8 +8496,8 @@ packages:
     resolution: {integrity: sha512-7ACyT3wmyp3I61S4fG682L0VA2RGD9otkqGJIwNUMF1SWUombIIk+af1unuDYgMm082aHYwD+mzJvv9Iu8dsgg==}
     engines: {node: '>=18'}
 
-  globals@16.5.0:
-    resolution: {integrity: sha512-c/c15i26VrJ4IRt5Z89DnIzCGDn9EcebibhAOjw5ibqEHsE1wLUgkPn9RDmNcUKyU87GeaL633nyJ+pplFR2ZQ==}
+  globals@17.11.0:
+    resolution: {integrity: sha512-Z2I8hM+PbJDXQDq3Icgpzv+mPdwr68iZUU9d5WW4FuXfDUQfkZaZuvjMv42/5crNyw154+9+VWXbYrUgDXbxNw==}
     engines: {node: '>=18'}
 
   globals@17.8.0:
@@ -15401,7 +15401,7 @@ snapshots:
       eslint-plugin-mocha: 12.0.2(eslint@10.9.1)
       eslint-plugin-n: 18.3.0(eslint@10.9.1)(typescript@6.0.3)
       eslint-plugin-qunit: 8.2.6(eslint@10.9.1)
-      globals: 16.5.0
+      globals: 17.11.0
       tsdown: 0.22.14(typescript@6.0.3)
       typescript: 6.0.3
       typescript-eslint: 8.68.0(eslint@10.9.1)(typescript@6.0.3)
@@ -15454,7 +15454,7 @@ snapshots:
       eslint-plugin-mocha: 12.0.2(eslint@10.9.1)
       eslint-plugin-n: 18.3.0(eslint@10.9.1)(typescript@6.0.3)
       eslint-plugin-qunit: 8.2.6(eslint@10.9.1)
-      globals: 16.5.0
+      globals: 17.11.0
       tsdown: 0.22.14(typescript@6.0.3)
       typescript: 6.0.3
       typescript-eslint: 8.68.0(eslint@10.9.1)(typescript@6.0.3)
@@ -15507,7 +15507,7 @@ snapshots:
       eslint-plugin-mocha: 12.0.2(eslint@10.9.1)
       eslint-plugin-n: 18.3.0(eslint@10.9.1)(typescript@6.0.3)
       eslint-plugin-qunit: 8.2.6(eslint@10.9.1)
-      globals: 16.5.0
+      globals: 17.11.0
       tsdown: 0.22.14(typescript@6.0.3)
       typescript: 6.0.3
       typescript-eslint: 8.68.0(eslint@10.9.1)(typescript@6.0.3)
@@ -15560,7 +15560,7 @@ snapshots:
       eslint-plugin-mocha: 12.0.2(eslint@10.9.1)
       eslint-plugin-n: 18.3.0(eslint@10.9.1)(typescript@6.0.3)
       eslint-plugin-qunit: 8.2.6(eslint@10.9.1)
-      globals: 16.5.0
+      globals: 17.11.0
       tsdown: 0.22.14(typescript@6.0.3)
       typescript: 6.0.3
       typescript-eslint: 8.68.0(eslint@10.9.1)(typescript@6.0.3)
@@ -15613,7 +15613,7 @@ snapshots:
       eslint-plugin-mocha: 12.0.2(eslint@10.9.1)
       eslint-plugin-n: 18.3.0(eslint@10.9.1)(typescript@6.0.3)
       eslint-plugin-qunit: 8.2.6(eslint@10.9.1)
-      globals: 16.5.0
+      globals: 17.11.0
       tsdown: 0.22.14(typescript@6.0.3)
       typescript: 6.0.3
       typescript-eslint: 8.68.0(eslint@10.9.1)(typescript@6.0.3)
@@ -15666,7 +15666,7 @@ snapshots:
       eslint-plugin-mocha: 12.0.2(eslint@10.9.1)
       eslint-plugin-n: 18.3.0(eslint@10.9.1)(typescript@6.0.3)
       eslint-plugin-qunit: 8.2.6(eslint@10.9.1)
-      globals: 16.5.0
+      globals: 17.11.0
       tsdown: 0.22.14(typescript@6.0.3)
       typescript: 6.0.3
       typescript-eslint: 8.68.0(eslint@10.9.1)(typescript@6.0.3)
@@ -15719,7 +15719,7 @@ snapshots:
       eslint-plugin-mocha: 12.0.2(eslint@10.9.1)
       eslint-plugin-n: 18.3.0(eslint@10.9.1)(typescript@6.0.3)
       eslint-plugin-qunit: 8.2.6(eslint@10.9.1)
-      globals: 16.5.0
+      globals: 17.11.0
       tsdown: 0.22.14(typescript@6.0.3)
       typescript: 6.0.3
       typescript-eslint: 8.68.0(eslint@10.9.1)(typescript@6.0.3)
@@ -15772,7 +15772,7 @@ snapshots:
       eslint-plugin-mocha: 12.0.2(eslint@10.9.1)
       eslint-plugin-n: 18.3.0(eslint@10.9.1)(typescript@6.0.3)
       eslint-plugin-qunit: 8.2.6(eslint@10.9.1)
-      globals: 16.5.0
+      globals: 17.11.0
       tsdown: 0.22.14(8629f0e8b88655ec10c392d26f344896)
       typescript: 6.0.3
       typescript-eslint: 8.68.0(eslint@10.9.1)(typescript@6.0.3)
@@ -15825,7 +15825,7 @@ snapshots:
       eslint-plugin-mocha: 12.0.2(eslint@10.9.1)
       eslint-plugin-n: 18.3.0(eslint@10.9.1)(typescript@6.0.3)
       eslint-plugin-qunit: 8.2.6(eslint@10.9.1)
-      globals: 16.5.0
+      globals: 17.11.0
       tsdown: 0.22.14(typescript@6.0.3)
       typescript: 6.0.3
       typescript-eslint: 8.68.0(eslint@10.9.1)(typescript@6.0.3)
@@ -15878,7 +15878,7 @@ snapshots:
       eslint-plugin-mocha: 12.0.2(eslint@10.9.1)
       eslint-plugin-n: 18.3.0(eslint@10.9.1)(typescript@6.0.3)
       eslint-plugin-qunit: 8.2.6(eslint@10.9.1)
-      globals: 16.5.0
+      globals: 17.11.0
       tsdown: 0.22.14(typescript@6.0.3)
       typescript: 6.0.3
       typescript-eslint: 8.68.0(eslint@10.9.1)(typescript@6.0.3)
@@ -15931,7 +15931,7 @@ snapshots:
       eslint-plugin-mocha: 12.0.2(eslint@10.9.1)
       eslint-plugin-n: 18.3.0(eslint@10.9.1)(typescript@6.0.3)
       eslint-plugin-qunit: 8.2.6(eslint@10.9.1)
-      globals: 16.5.0
+      globals: 17.11.0
       tsdown: 0.22.14(8629f0e8b88655ec10c392d26f344896)
       typescript: 6.0.3
       typescript-eslint: 8.68.0(eslint@10.9.1)(typescript@6.0.3)
@@ -15984,7 +15984,7 @@ snapshots:
       eslint-plugin-mocha: 12.0.2(eslint@10.9.1)
       eslint-plugin-n: 18.3.0(eslint@10.9.1)(typescript@6.0.3)
       eslint-plugin-qunit: 8.2.6(eslint@10.9.1)
-      globals: 16.5.0
+      globals: 17.11.0
       tsdown: 0.22.14(typescript@6.0.3)
       typescript: 6.0.3
       typescript-eslint: 8.68.0(eslint@10.9.1)(typescript@6.0.3)
@@ -18041,7 +18041,7 @@ snapshots:
 
   globals@15.15.0: {}
 
-  globals@16.5.0: {}
+  globals@17.11.0: {}
 
   globals@17.8.0: {}
 
