@@ -1522,6 +1522,9 @@ importers:
       '@ember-data/unpublished-test-infra':
         specifier: workspace:*
         version: file:packages/unpublished-test-infra(158614c5737c1517d3e3493d0428760a)
+      '@ember/app-tsconfig':
+        specifier: ^2.0.0
+        version: 2.0.0
       '@ember/edition-utils':
         specifier: ^1.2.0
         version: 1.2.0
@@ -1558,9 +1561,6 @@ importers:
       '@glint/template':
         specifier: 1.8.0
         version: 1.8.0
-      '@tsconfig/ember':
-        specifier: ^3.0.12
-        version: 3.0.12
       '@types/qunit':
         specifier: 2.19.14
         version: 2.19.14
@@ -4359,6 +4359,9 @@ packages:
       testem:
         optional: true
 
+  '@ember/app-tsconfig@2.0.0':
+    resolution: {integrity: sha512-NmD1OZFtCF49k4WDaPdhGP4OKoRbPaXpTBO3AsJe0okIJeCVUiEiC8YUpfTJmld9EJOEa9mW/p0tJQS70GktOA==}
+
   '@ember/edition-utils@1.2.0':
     resolution: {integrity: sha512-VmVq/8saCaPdesQmftPqbFtxJWrzxNGSQ+e8x8LLe3Hjm36pJ04Q8LeORGZkAeOhldoUX9seLGmSaHeXkIqoog==}
 
@@ -6080,10 +6083,6 @@ packages:
   '@trickfilm400/rollup-plugin-off-main-thread@3.0.0-pre1':
     resolution: {integrity: sha512-/67zpWDBLV+oYAEL682s1ktXL0HgqX76f6gaVGkGnVZlBbm1zd0v4Bz8MFF2GGhoX9rvfq3KSQHubFHwa6w6/Q==}
     engines: {node: '>=12'}
-
-  '@tsconfig/ember@3.0.12':
-    resolution: {integrity: sha512-ypFTXqIzQAB5HpYPi4TwDElDcUheWrKsEaYXgjiCAvsH6zxcQ4zUeuJqmfT+FoUlHTPZ3Xyel81OxrcjI+rilw==}
-    deprecated: Please use @ember/app-tsconfig or @ember/library-tsconfig instead. These live at https://github.com/ember-cli/tsconfigs
 
   '@turbo/darwin-64@2.10.12':
     resolution: {integrity: sha512-9nKgKoF6ZOUsM+or0OtNf+TTJSfGvDNP7ZFv/ZGWVwOSCkumyctQiTeHwB4UNljHTnC41AqylgbunLDHoccNrA==}
@@ -12697,6 +12696,8 @@ snapshots:
       - '@glint/template'
       - supports-color
 
+  '@ember/app-tsconfig@2.0.0': {}
+
   '@ember/edition-utils@1.2.0': {}
 
   '@ember/optional-features@3.0.0':
@@ -14473,8 +14474,6 @@ snapshots:
       json5: 2.2.3
       magic-string: 0.30.21
       string.prototype.matchall: '@nolyfill/string.prototype.matchall@1.0.44'
-
-  '@tsconfig/ember@3.0.12': {}
 
   '@turbo/darwin-64@2.10.12':
     optional: true
