@@ -48,7 +48,7 @@ function flush(store: Store): void {
 }
 
 module('Integration | NotificationManager channels', function () {
-  test('a subscriber that omits channel behaves as "local": it receives every notification', function (assert) {
+  test('a subscriber that omits channel behaves as "local": it hears unscoped and local notifies, but not remote', function (assert) {
     const store = new TestStore();
     void store.cache; // trigger lazy createCache so _capabilities is populated
     const identifier = store.cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '1' });
@@ -65,13 +65,14 @@ module('Integration | NotificationManager channels', function () {
     store._capabilities.notifyChange(identifier, 'attributes', 'name', 'local');
     assert.equal(calls, 2, 'received the local-channel notify');
 
-    // a local view is derived from remote state, so a remote change is always
-    // relevant to it: local (and defaulted) subscribers hear everything.
+    // a 'remote'-tagged notify declares "only the remote view changed"; a
+    // local-view subscriber re-pulls reconciled local state when notified,
+    // and that view did not change, so it is skipped.
     store._capabilities.notifyChange(identifier, 'attributes', 'name', 'remote');
-    assert.equal(calls, 3, 'received the remote-channel notify (local subscribers hear everything)');
+    assert.equal(calls, 2, 'did not receive the remote-channel notify (the local view did not change)');
   });
 
-  test('a subscriber scoped to "local" receives every notification, same as omitting the channel', function (assert) {
+  test('a subscriber scoped to "local" hears unscoped and local notifies, but not remote, same as omitting the channel', function (assert) {
     const store = new TestStore();
     void store.cache; // trigger lazy createCache so _capabilities is populated
     const identifier = store.cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '1' });
@@ -85,13 +86,13 @@ module('Integration | NotificationManager channels', function () {
     );
 
     store._capabilities.notifyChange(identifier, 'attributes', 'name', 'remote');
-    assert.equal(calls, 1, 'received the remote-channel notify (a remote change also affects the local view)');
+    assert.equal(calls, 0, 'did not receive the remote-channel notify (the local view did not change)');
 
     store._capabilities.notifyChange(identifier, 'attributes', 'name', 'local');
-    assert.equal(calls, 2, 'received the local-channel notify');
+    assert.equal(calls, 1, 'received the local-channel notify');
 
     store._capabilities.notifyChange(identifier, 'attributes', 'name');
-    assert.equal(calls, 3, 'received the unscoped notify (unscoped reaches every subscriber)');
+    assert.equal(calls, 2, 'received the unscoped notify (unscoped reaches every subscriber)');
   });
 
   test('a subscriber scoped to "remote" hears unscoped and remote notifies, but not local', function (assert) {
@@ -117,7 +118,7 @@ module('Integration | NotificationManager channels', function () {
     assert.equal(calls, 2, 'received the remote-channel notify');
   });
 
-  test('the only skipped delivery is an explicit "local" notify to an explicit "remote" subscriber', function (assert) {
+  test('a scoped notify is delivered only to that channel; unscoped reaches both', function (assert) {
     const store = new TestStore();
     void store.cache;
     const identifier = store.cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '1' });
@@ -149,11 +150,7 @@ module('Integration | NotificationManager channels', function () {
     assert.equal(remoteCalls, 1, 'remote subscriber did not receive the local-channel notify');
 
     store._capabilities.notifyChange(identifier, 'attributes', 'name', 'remote');
-    assert.equal(
-      localCalls,
-      3,
-      'local subscriber received the remote-channel notify (a remote change also affects the local view)'
-    );
+    assert.equal(localCalls, 2, 'local subscriber did not receive the remote-channel notify');
     assert.equal(remoteCalls, 2, 'remote subscriber received the remote-channel notify');
   });
 
@@ -253,9 +250,9 @@ module('Integration | NotificationManager channels', function () {
 
     const restore = deferFlushes(store);
     // the same key, touched twice before a single flush: once tagged 'local',
-    // once tagged 'remote'. The 'local' subscriber hears everything and the
-    // 'remote' subscriber matches the 'remote'-tagged touch, so each must be
-    // notified exactly once -- neither zero times nor twice.
+    // once tagged 'remote'. Each subscriber matches the touch tagged with its
+    // own channel, so each must be notified exactly once -- neither zero
+    // times nor twice.
     store._capabilities.notifyChange(identifier, 'attributes', 'name', 'local');
     store._capabilities.notifyChange(identifier, 'attributes', 'name', 'remote');
     restore();

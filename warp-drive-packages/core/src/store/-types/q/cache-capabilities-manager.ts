@@ -136,15 +136,16 @@ export type CacheCapabilitiesManager = {
    * of the attribute or relationship that has been updated.
    *
    * `channel` may be provided for the `'attributes'`/`'relationships'`
-   * namespaces. Tagging a notification `'local'` declares "only local state
-   * changed", letting `'remote'`-scoped subscribers skip it. Notifying
-   * `'remote'` or omitting the channel reaches every subscriber regardless
-   * of its channel. See {@link NotificationChannel}.
+   * namespaces. Tagging a notification `'local'` declares "only the local
+   * (reconciled/editable) view changed"; tagging it `'remote'` declares "only
+   * the remote view changed". Each tag is delivered only to that channel's
+   * subscribers. Omitting the channel reaches every subscriber regardless of
+   * its channel. See {@link NotificationChannel}.
    *
    * | notify ↓ subscribe → | `'local'` | `'remote'` | omitted (= `'local'`) |
    * | -------------------- | --------- | ---------- | --------------------- |
    * | `'local'`            | ✅        | ❌         | ✅                    |
-   * | `'remote'`           | ✅        | ✅         | ✅                    |
+   * | `'remote'`           | ❌        | ✅         | ❌                    |
    * | omitted              | ✅        | ✅         | ✅                    |
    *
    * @public

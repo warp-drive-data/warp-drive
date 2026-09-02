@@ -7,6 +7,7 @@ import { assert } from '@warp-drive/core/build-config/macros';
 
 import { _add, _removeLocal, _removeRemote, diffCollection } from '../-diff.ts';
 import { checkIfNew, isBelongsTo, isHasMany, notifyChange } from '../-utils.ts';
+import type { NotificationChannel } from '../../../store/-private/managers/notification-manager.ts';
 import type { ResourceKey } from '../../../types.ts';
 import type { ReplaceRelatedRecordsOperation } from '../../../types/graph.ts';
 import { assertPolymorphicType } from '../debug/assert-polymorphic-type.ts';
@@ -344,33 +345,39 @@ function replaceRelatedRecordsRemote(graph: Graph, op: ReplaceRelatedRecordsOper
     }
   }
 
-  // Gate directly on `diff.changed` rather than the `isDirty` false->true
-  // transition (`relationship.isDirty && !wasDirty`) that used to guard this.
-  // `diff.changed` is exactly "did this remote update, once reconciled
-  // against whatever local currently shows, produce an observably different
-  // local materialization" - which is precisely what should trigger a
-  // flush/notify, and it already accounts for the deprecated
-  // `resetOnRemoteUpdate`/`DEPRECATE_RELATIONSHIP_REMOTE_UPDATE_CLEARING_LOCAL_STATE`
-  // reconciliation rules (see `_compare` in -diff.ts).
+  // A remote update is notified per projection, on that projection's channel
+  // (see NotificationChannel's delivery matrix):
   //
-  // The old `isDirty`-transition gate is not equivalent: `isDirty` is only
-  // reset back to `false` by `computeLocalState`, so a reader that never
-  // calls it (e.g. a `linksMode` array, which reads relationship data
-  // straight from the graph) can leave `isDirty` latched `true` forever
-  // after the very first remote change - silently suppressing every
-  // subsequent genuine change for that relationship, since `!wasDirty` would
-  // always be `false` from then on. This was caught by
-  // `tests/json-api`'s "update hasMany with repeated patch" (a `linksMode`
-  // hasMany that must reconcile correctly across more than one remote
-  // update). Gating on `diff.changed` directly fixes that without the
-  // over-eager regression an earlier attempt at this fix caused: gating (or
-  // additionally gating) on `diff.remoteOrderChanged` instead flagged a
-  // remote push that merely catches up to what local already independently
-  // reflects (no observable difference for any consumer) as needing a
-  // flush, regressing tests/ember-data__graph's diff-preservation suite
-  // ("... does not produce a notification for a committed removal/addition").
+  // - `diff.remoteOrderChanged` is exactly "did remoteState's membership or
+  //   order change". Remote-only readers (e.g. a non-editable `linksMode`
+  //   ManyArray) re-pull remote state when notified, so they are notified on
+  //   the `'remote'` channel whenever it changes - including a push that
+  //   merely confirms an already-committed local mutation, since the remote
+  //   projection genuinely changes there too.
+  // - `diff.changed` is exactly "did this remote update, once reconciled
+  //   against whatever local currently shows, produce an observably different
+  //   local materialization" (it already accounts for the deprecated
+  //   `resetOnRemoteUpdate` reconciliation rules - see `_compare` in
+  //   -diff.ts). Local-view readers re-pull reconciled local state when
+  //   notified, so they are notified on the `'local'` channel; a push that
+  //   only confirms a committed local mutation leaves their view unchanged
+  //   and correctly stays silent for them.
+  //
+  // When both change, the two schedules coalesce into a single unscoped
+  // notification (see `Graph._scheduleLocalSync`).
+  //
+  // Neither gate consults `relationship.isDirty` or `localState` freshness
+  // beyond what the diff itself computed: the old `isDirty`-transition gate
+  // (`relationship.isDirty && !wasDirty`) latched `true` forever for readers
+  // that never run `computeLocalState`, and a single ungated/unscoped
+  // `diff.changed` notify let a stale `localState` snapshot (never refreshed
+  // by remote-only readers) suppress genuine remote changes - both caught by
+  // `tests/json-api`'s "update hasMany with repeated patch".
+  if (diff.remoteOrderChanged) {
+    flushCanonical(graph, relationship, 'remote');
+  }
   if (diff.changed) {
-    flushCanonical(graph, relationship);
+    flushCanonical(graph, relationship, 'local');
   }
 }
 
@@ -523,8 +530,8 @@ export function removeFromInverse(
   }
 }
 
-function flushCanonical(graph: Graph, rel: CollectionEdge) {
+function flushCanonical(graph: Graph, rel: CollectionEdge, channel?: NotificationChannel) {
   if (rel.accessed) {
-    graph._scheduleLocalSync(rel);
+    graph._scheduleLocalSync(rel, channel);
   }
 }

@@ -5,11 +5,19 @@ import type Assert from 'ember-data-qunit-asserts';
 import type { Store, DocumentCacheOperation, NotificationType } from '@warp-drive/core';
 import type { ResourceKey, RequestKey } from '@warp-drive/core/types/identifier';
 
-type Counter = { count: number; delivered: number; ignored: number };
+// 'unscoped' counts notify() calls that carried no channel; such calls are
+// delivered to every subscriber. See NotificationChannel in @warp-drive/core.
+type CountableChannel = 'local' | 'remote' | 'unscoped';
+type ChannelCounts = Record<CountableChannel, number>;
+type Counter = { count: number; delivered: number; ignored: number; channels: ChannelCounts };
 type NotificationStorage = Map<
   RequestKey | ResourceKey | 'document' | 'resource',
   Map<NotificationType | DocumentCacheOperation, Counter | Map<string | symbol, Counter>>
 >;
+
+function makeCounter(): Counter {
+  return { count: 0, delivered: 0, ignored: 0, channels: { local: 0, remote: 0, unscoped: 0 } };
+}
 
 function getCounter(
   context: TestContext,
@@ -31,7 +39,7 @@ function getCounter(
   let bucketStorage = identifierStorage.get(bucket);
   if (!bucketStorage) {
     if (bucket === 'added' || bucket === 'removed' || bucket === 'updated' || bucket === 'state') {
-      bucketStorage = { count: 0, delivered: 0, ignored: 0 };
+      bucketStorage = makeCounter();
     } else {
       bucketStorage = new Map();
     }
@@ -43,7 +51,7 @@ function getCounter(
     const _key = key || Symbol.for(bucket);
     counter = bucketStorage.get(_key)!;
     if (!counter) {
-      counter = { count: 0, delivered: 0, ignored: 0 };
+      counter = makeCounter();
       bucketStorage.set(_key, counter);
     }
   } else {
@@ -70,7 +78,8 @@ function setupNotifications(context: TestContext, store: Store) {
   notifications.notify = function (
     cacheKey: ResourceKey | RequestKey,
     bucket: NotificationType | DocumentCacheOperation,
-    key?: string | Set<string> | null
+    key?: string | Set<string> | null,
+    channel?: 'local' | 'remote'
   ) {
     // `key` may be a `Set<string>` when many keys for the same cacheKey+bucket
     // are delivered in a single batched `notify` call (see NotificationManager
@@ -82,11 +91,12 @@ function setupNotifications(context: TestContext, store: Store) {
     const keys = key instanceof Set ? Array.from(key) : [key ?? null];
 
     // @ts-expect-error TS is bad at curried overloads
-    const scheduled = originalNotify.apply(notifications, [cacheKey, bucket, key]);
+    const scheduled = originalNotify.apply(notifications, [cacheKey, bucket, key, channel]);
 
     for (const singleKey of keys) {
       const counter = getCounter(context, cacheKey, bucket, singleKey);
       counter.count++;
+      counter.channels[channel ?? 'unscoped']++;
 
       if (scheduled) {
         counter.delivered++;
@@ -126,6 +136,26 @@ export function configureNotificationsAssert(this: TestContext, assert: unknown)
     });
 
     counter.count = 0;
+    counter.channels = { local: 0, remote: 0, unscoped: 0 };
+  };
+
+  (assert as Assert).notifiedOn = function (
+    this: Assert,
+    channel: CountableChannel,
+    cacheKey: ResourceKey | RequestKey,
+    bucket: NotificationType | DocumentCacheOperation,
+    key: string | null,
+    count: number,
+    message?: string
+  ) {
+    const counter = getCounter(context, cacheKey, bucket, key);
+
+    this.pushResult({
+      result: counter.channels[channel] === count,
+      actual: counter.channels[channel],
+      expected: count,
+      message: `${message ? message + ' | ' : ''}Expected ${count} ${channel}-channel ${bucket} notifications for ${cacheKey.lid} ${key || ''}, got ${counter.channels[channel]}`,
+    });
   };
 
   (assert as Assert).clearNotifications = function () {

@@ -3,6 +3,7 @@ import { DEBUG } from '@warp-drive/core/build-config/env';
 import { assert } from '@warp-drive/core/build-config/macros';
 
 import type { Store } from '../../store/-private.ts';
+import type { NotificationChannel } from '../../store/-private/managers/notification-manager.ts';
 import type { CacheCapabilitiesManager, ResourceKey } from '../../types.ts';
 import { getOrSetGlobal, peekTransient, setTransient } from '../../types/-private.ts';
 import type { RelationshipDiff } from '../../types/cache.ts';
@@ -142,10 +143,13 @@ export class Graph {
    */
   declare _pushedUpdates: PendingOps;
   /**
-   * The set of {@link CollectionEdge}s that have local changes pending notification, scheduled
-   * via {@link Graph._scheduleLocalSync} and drained by {@link Graph._flushLocalQueue}.
+   * The {@link CollectionEdge}s that have changes pending notification, scheduled via
+   * {@link Graph._scheduleLocalSync} and drained by {@link Graph._flushLocalQueue}, each
+   * mapped to the {@link NotificationChannel} the notification should be scoped to —
+   * `null` when it must reach every subscriber (scheduled unscoped, or scheduled for
+   * both channels).
    */
-  declare _updatedRelationships: Set<CollectionEdge>;
+  declare _updatedRelationships: Map<CollectionEdge, NotificationChannel | null>;
   /**
    * The identifier of the current remote-update transaction, or `null` when no transaction is
    * in progress. Set by {@link Graph._flushRemoteQueue} and stamped onto edges via
@@ -173,7 +177,7 @@ export class Graph {
       hasMany: undefined,
       deletions: [],
     };
-    this._updatedRelationships = new Set();
+    this._updatedRelationships = new Map();
     this._transaction = null;
     this._removing = null;
     this.silenceNotifications = false;
@@ -615,12 +619,21 @@ export class Graph {
   }
 
   /**
-   * Marks a {@link CollectionEdge} as having local changes that need to be notified, and
-   * schedules a flush of the local sync queue (see {@link Graph._flushLocalQueue}) if one is not
-   * already pending.
+   * Marks a {@link CollectionEdge} as having changes that need to be notified on the given
+   * {@link NotificationChannel} (omitted = unscoped, reaching every subscriber), and schedules
+   * a flush of the sync queue (see {@link Graph._flushLocalQueue}) if one is not already
+   * pending. Scheduling the same edge for both channels (or once unscoped) coalesces into a
+   * single unscoped notification.
    */
-  _scheduleLocalSync(relationship: CollectionEdge): void {
-    this._updatedRelationships.add(relationship);
+  _scheduleLocalSync(relationship: CollectionEdge, channel?: NotificationChannel): void {
+    const pending = this._updatedRelationships;
+    if (!pending.has(relationship)) {
+      pending.set(relationship, channel ?? null);
+    } else if (pending.get(relationship) !== (channel ?? null)) {
+      // two different scopes (or a scope + unscoped) for the same edge merge
+      // into one unscoped notification rather than notifying twice.
+      pending.set(relationship, null);
+    }
     if (!this._willSyncLocal) {
       this._willSyncLocal = true;
       getStore(this.store)._schedule('sync', () => this._flushLocalQueue());
@@ -696,14 +709,14 @@ export class Graph {
 
     if (this.silenceNotifications) {
       this.silenceNotifications = false;
-      this._updatedRelationships = new Set();
+      this._updatedRelationships = new Map();
       return;
     }
 
     this._willSyncLocal = false;
     const updated = this._updatedRelationships;
-    this._updatedRelationships = new Set();
-    updated.forEach((rel) => notifyChange(this, rel));
+    this._updatedRelationships = new Map();
+    updated.forEach((channel, rel) => notifyChange(this, rel, channel ?? undefined));
   }
 
   /**

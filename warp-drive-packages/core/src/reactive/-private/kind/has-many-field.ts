@@ -28,9 +28,14 @@ export function getHasManyField(context: KindContext<LegacyHasManyField>): unkno
     }
     const { editable, resourceKey } = context;
     const { cache } = store;
-    const rawValue = cache.getRelationship(
-      resourceKey,
-      getFieldCacheKeyStrict(field)
+    // the editable copy renders reconciled local state; the readonly copy
+    // renders remote state (and re-pulls remote state when notified on the
+    // 'remote' channel), mirroring ManyArrayManager._syncArray and
+    // getBelongsToField.
+    const rawValue = (
+      editable
+        ? cache.getRelationship(resourceKey, getFieldCacheKeyStrict(field))
+        : cache.getRemoteRelationship(resourceKey, getFieldCacheKeyStrict(field))
     ) as CollectionResourceRelationship;
     if (!rawValue) {
       return null;

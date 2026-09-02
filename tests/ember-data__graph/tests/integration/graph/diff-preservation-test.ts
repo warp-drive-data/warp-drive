@@ -892,7 +892,7 @@ module('Integration | Graph | Diff Preservation', function (hooks) {
     );
   }
 
-  test('updateRelationship operation matching localState does not produce a notification for a committed removal (resetOnRemoteUpdate=false)', function (assert) {
+  test('updateRelationship operation matching localState notifies only the remote channel for a committed removal (resetOnRemoteUpdate=false)', function (assert) {
     class User extends Model {
       @attr declare name: string;
       @hasMany('comment', { async: false, inverse: 'user', resetOnRemoteUpdate: false }) declare comments: Comment[];
@@ -964,6 +964,14 @@ module('Integration | Graph | Diff Preservation', function (hooks) {
     });
 
     // mutation should notify
+    assert.notifiedOn(
+      'local',
+      userIdentifier,
+      'relationships',
+      'comments',
+      1,
+      'the mutation notifies the local channel: only the local view changed'
+    );
     assert.notified(
       userIdentifier,
       'relationships',
@@ -1004,12 +1012,28 @@ module('Integration | Graph | Diff Preservation', function (hooks) {
       'state is still the same'
     );
 
-    assert.notified(
+    assert.notifiedOn(
+      'remote',
+      userIdentifier,
+      'relationships',
+      'comments',
+      1,
+      'the remote channel is notified after a remote push that matches local state: the remote view changed (the commit landed)'
+    );
+    assert.notifiedOn(
+      'local',
       userIdentifier,
       'relationships',
       'comments',
       0,
-      'We should have no notifciations after remote push matches local state'
+      'the local channel is not notified after a remote push that matches local state: the local view did not change'
+    );
+    assert.notified(
+      userIdentifier,
+      'relationships',
+      'comments',
+      1,
+      'exactly one notification total after a remote push that matches local state'
     );
 
     // push an update that does not match the local state
@@ -1028,6 +1052,14 @@ module('Integration | Graph | Diff Preservation', function (hooks) {
     });
 
     // we should have notifications
+    assert.notifiedOn(
+      'unscoped',
+      userIdentifier,
+      'relationships',
+      'comments',
+      1,
+      'both views changed, so the two channel schedules coalesce into a single unscoped notification'
+    );
     assert.notified(
       userIdentifier,
       'relationships',
@@ -1041,7 +1073,7 @@ module('Integration | Graph | Diff Preservation', function (hooks) {
     assert.arrayStrictEquals(data4.data, [comment1Identifier, comment4Identifier], 'state is updated');
   });
 
-  test('updateRelationship operation matching localState does not produce a notification for a committed addition (resetOnRemoteUpdate=false)', function (assert) {
+  test('updateRelationship operation matching localState notifies only the remote channel for a committed addition (resetOnRemoteUpdate=false)', function (assert) {
     class User extends Model {
       @attr declare name: string;
       @hasMany('comment', { async: false, inverse: 'user', resetOnRemoteUpdate: false }) declare comments: Comment[];
@@ -1130,12 +1162,28 @@ module('Integration | Graph | Diff Preservation', function (hooks) {
     });
 
     // we should have no notifications
-    assert.notified(
+    assert.notifiedOn(
+      'remote',
+      userIdentifier,
+      'relationships',
+      'comments',
+      1,
+      'the remote channel is notified after a remote push that matches local state: the remote view changed (the commit landed)'
+    );
+    assert.notifiedOn(
+      'local',
       userIdentifier,
       'relationships',
       'comments',
       0,
-      'no notifications after remote push matches local state'
+      'the local channel is not notified after a remote push that matches local state: the local view did not change'
+    );
+    assert.notified(
+      userIdentifier,
+      'relationships',
+      'comments',
+      1,
+      'exactly one notification total after a remote push that matches local state'
     );
 
     // check state is still the same
@@ -1164,6 +1212,14 @@ module('Integration | Graph | Diff Preservation', function (hooks) {
     });
 
     // we should have notifications
+    assert.notifiedOn(
+      'unscoped',
+      userIdentifier,
+      'relationships',
+      'comments',
+      1,
+      'both views changed, so the two channel schedules coalesce into a single unscoped notification'
+    );
     assert.notified(
       userIdentifier,
       'relationships',
@@ -1181,7 +1237,7 @@ module('Integration | Graph | Diff Preservation', function (hooks) {
     );
   });
 
-  test('updateRelationship operation matching localState does not produce a notification for a committed removal', function (assert) {
+  test('updateRelationship operation matching localState notifies only the remote channel for a committed removal', function (assert) {
     class User extends Model {
       @attr declare name: string;
       @hasMany('comment', { async: false, inverse: 'user', resetOnRemoteUpdate: true }) declare comments: Comment[];
@@ -1253,6 +1309,14 @@ module('Integration | Graph | Diff Preservation', function (hooks) {
     });
 
     // mutation should notify
+    assert.notifiedOn(
+      'local',
+      userIdentifier,
+      'relationships',
+      'comments',
+      1,
+      'the mutation notifies the local channel: only the local view changed'
+    );
     assert.notified(
       userIdentifier,
       'relationships',
@@ -1293,12 +1357,28 @@ module('Integration | Graph | Diff Preservation', function (hooks) {
       'state is still the same'
     );
 
-    assert.notified(
+    assert.notifiedOn(
+      'remote',
+      userIdentifier,
+      'relationships',
+      'comments',
+      1,
+      'the remote channel is notified after a remote push that matches local state: the remote view changed (the commit landed)'
+    );
+    assert.notifiedOn(
+      'local',
       userIdentifier,
       'relationships',
       'comments',
       0,
-      'We should have no notifciations after remote push matches local state'
+      'the local channel is not notified after a remote push that matches local state: the local view did not change'
+    );
+    assert.notified(
+      userIdentifier,
+      'relationships',
+      'comments',
+      1,
+      'exactly one notification total after a remote push that matches local state'
     );
 
     // push an update that does not match the local state
@@ -1317,6 +1397,14 @@ module('Integration | Graph | Diff Preservation', function (hooks) {
     });
 
     // we should have notifications
+    assert.notifiedOn(
+      'unscoped',
+      userIdentifier,
+      'relationships',
+      'comments',
+      1,
+      'both views changed, so the two channel schedules coalesce into a single unscoped notification'
+    );
     assert.notified(
       userIdentifier,
       'relationships',
@@ -1330,7 +1418,7 @@ module('Integration | Graph | Diff Preservation', function (hooks) {
     assert.arrayStrictEquals(data4.data, [comment1Identifier, comment4Identifier], 'state is updated');
   });
 
-  test('updateRelationship operation matching localState does not produce a notification for a committed addition', function (assert) {
+  test('updateRelationship operation matching localState notifies only the remote channel for a committed addition', function (assert) {
     class User extends Model {
       @attr declare name: string;
       @hasMany('comment', { async: false, inverse: 'user', resetOnRemoteUpdate: true }) declare comments: Comment[];
@@ -1419,12 +1507,28 @@ module('Integration | Graph | Diff Preservation', function (hooks) {
     });
 
     // we should have no notifications
-    assert.notified(
+    assert.notifiedOn(
+      'remote',
+      userIdentifier,
+      'relationships',
+      'comments',
+      1,
+      'the remote channel is notified after a remote push that matches local state: the remote view changed (the commit landed)'
+    );
+    assert.notifiedOn(
+      'local',
       userIdentifier,
       'relationships',
       'comments',
       0,
-      'no notifications after remote push matches local state'
+      'the local channel is not notified after a remote push that matches local state: the local view did not change'
+    );
+    assert.notified(
+      userIdentifier,
+      'relationships',
+      'comments',
+      1,
+      'exactly one notification total after a remote push that matches local state'
     );
 
     // check state is still the same
@@ -1453,6 +1557,14 @@ module('Integration | Graph | Diff Preservation', function (hooks) {
     });
 
     // we should have notifications
+    assert.notifiedOn(
+      'unscoped',
+      userIdentifier,
+      'relationships',
+      'comments',
+      1,
+      'both views changed, so the two channel schedules coalesce into a single unscoped notification'
+    );
     assert.notified(
       userIdentifier,
       'relationships',
