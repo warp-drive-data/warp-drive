@@ -256,8 +256,9 @@ export class ReactiveResource {
       // PolarisMode's default immutable instance shows only remote state, so it
       // subscribes 'remote' to skip purely-local edits it can't see. Legacy-mode
       // schemas and any editable instance (including a checked-out PolarisMode
-      // copy) show a reconciled local view and so hear everything (the default).
-      context.legacy || context.editable ? undefined : 'remote'
+      // copy) show a reconciled local view and so subscribe 'local' (the same
+      // as omitting the channel): they hear everything.
+      context.legacy || context.editable ? 'local' : 'remote'
     );
 
     const proxy = new Proxy(this, {
