@@ -34,11 +34,20 @@ function mergeInRelationship(graph: Graph, rel: GraphEdge, op: MergeOperation): 
 }
 
 function mergeBelongsTo(graph: Graph, rel: ResourceEdge, op: MergeOperation): void {
+  // both branches below independently indicate a real change (remote identity
+  // substitution, or a local mutation referencing the merged identifier), so a
+  // single unconditional notify covers both without needing to reason about
+  // which side triggered it.
+  let changed = false;
   if (rel.remoteState === op.record) {
     rel.remoteState = op.value;
+    changed = true;
   }
   if (rel.localState === op.record) {
     rel.localState = op.value;
+    changed = true;
+  }
+  if (changed) {
     notifyChange(graph, rel);
   }
 }

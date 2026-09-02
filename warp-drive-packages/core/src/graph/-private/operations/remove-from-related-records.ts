@@ -50,7 +50,11 @@ export default function removeFromRelatedRecords(
     removeRelatedRecord(graph, record, relationship, value, op.index ?? null, isRemote);
   }
 
-  notifyChange(graph, relationship);
+  // a purely local mutation (isRemote=false) has no remote implication, so
+  // remote-only readers don't need to be woken for it. 'remote' delivers to
+  // every subscriber (same as an omitted channel); passing it explicitly
+  // keeps this call monomorphic.
+  notifyChange(graph, relationship, isRemote ? 'remote' : 'local');
 }
 
 function removeRelatedRecord(

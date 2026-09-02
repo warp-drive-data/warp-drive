@@ -171,7 +171,9 @@ function replaceRelatedRecordsLocal(graph: Graph, op: ReplaceRelatedRecordsOpera
   // we only notify if the localState changed and were not already dirty before
   // because if we were already dirty then we have already notified
   if (becameDirty && !wasDirty) {
-    notifyChange(graph, relationship);
+    // this is a purely local mutation -- nothing about remote state changed,
+    // so a remote-only reader has nothing to see here and shouldn't be woken.
+    notifyChange(graph, relationship, 'local');
   }
 }
 
@@ -342,7 +344,32 @@ function replaceRelatedRecordsRemote(graph: Graph, op: ReplaceRelatedRecordsOper
     }
   }
 
-  if (relationship.isDirty && !wasDirty) {
+  // Gate directly on `diff.changed` rather than the `isDirty` false->true
+  // transition (`relationship.isDirty && !wasDirty`) that used to guard this.
+  // `diff.changed` is exactly "did this remote update, once reconciled
+  // against whatever local currently shows, produce an observably different
+  // local materialization" - which is precisely what should trigger a
+  // flush/notify, and it already accounts for the deprecated
+  // `resetOnRemoteUpdate`/`DEPRECATE_RELATIONSHIP_REMOTE_UPDATE_CLEARING_LOCAL_STATE`
+  // reconciliation rules (see `_compare` in -diff.ts).
+  //
+  // The old `isDirty`-transition gate is not equivalent: `isDirty` is only
+  // reset back to `false` by `computeLocalState`, so a reader that never
+  // calls it (e.g. a `linksMode` array, which reads relationship data
+  // straight from the graph) can leave `isDirty` latched `true` forever
+  // after the very first remote change - silently suppressing every
+  // subsequent genuine change for that relationship, since `!wasDirty` would
+  // always be `false` from then on. This was caught by
+  // `tests/json-api`'s "update hasMany with repeated patch" (a `linksMode`
+  // hasMany that must reconcile correctly across more than one remote
+  // update). Gating on `diff.changed` directly fixes that without the
+  // over-eager regression an earlier attempt at this fix caused: gating (or
+  // additionally gating) on `diff.remoteOrderChanged` instead flagged a
+  // remote push that merely catches up to what local already independently
+  // reflects (no observable difference for any consumer) as needing a
+  // flush, regressing tests/ember-data__graph's diff-preservation suite
+  // ("... does not produce a notification for a committed removal/addition").
+  if (diff.changed) {
     flushCanonical(graph, relationship);
   }
 }
@@ -374,6 +401,10 @@ export function addToInverse(
         removeFromInverse(graph, relationship.remoteState, relationship.definition.inverseKey, resourceKey, isRemote);
       }
       relationship.remoteState = value;
+      // remote state definitely changed here (we just assigned it), independent of
+      // whether local also needs reconciling below -- notify unconditionally so a
+      // remote-only reader isn't at the mercy of the localState check further down.
+      notifyChange(graph, relationship);
     }
 
     if (relationship.localState !== value) {
@@ -382,7 +413,10 @@ export function addToInverse(
       }
       relationship.localState = value;
 
-      notifyChange(graph, relationship);
+      if (!isRemote) {
+        // purely local mutation; already notified (unscoped) above for the remote case.
+        notifyChange(graph, relationship, 'local');
+      }
     }
   } else if (isHasMany(relationship)) {
     if (isRemote) {
@@ -412,7 +446,7 @@ export function addToInverse(
       }
 
       if (_add(graph, resourceKey, relationship, value, null, isRemote)) {
-        notifyChange(graph, relationship);
+        notifyChange(graph, relationship, 'local');
       }
     }
   } else {
@@ -456,11 +490,15 @@ export function removeFromInverse(
     if (isRemote) {
       graph._addToTransaction(relationship);
       relationship.remoteState = null;
+      // remote state definitely changed here; see the equivalent comment in addToInverse.
+      notifyChange(graph, relationship);
     }
     if (relationship.localState === value) {
       relationship.localState = null;
 
-      notifyChange(graph, relationship);
+      if (!isRemote) {
+        notifyChange(graph, relationship, 'local');
+      }
     }
   } else if (isHasMany(relationship)) {
     if (isRemote) {
@@ -470,7 +508,7 @@ export function removeFromInverse(
       }
     } else {
       if (_removeLocal(relationship, value)) {
-        notifyChange(graph, relationship);
+        notifyChange(graph, relationship, 'local');
       }
     }
   } else {
