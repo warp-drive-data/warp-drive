@@ -33,7 +33,7 @@
   },
   "dependencies": {
     "fs-extra": "^11.4.0",
-    "testem": "^3.20.1"
+    "testem": "^3.20.2"
   },
   "devDependencies": {
     "@warp-drive/internal-config": "workspace:*",
