@@ -317,7 +317,7 @@ overrides:
   ember-cli-htmlbars: ^7.0.1
   qunit: 2.26.0
   ember-compatibility-helpers: ^1.2.7
-  testem: ~3.20.1
+  testem: ~3.20.2
   typescript: 6.0.3
   "@types/bun": 1.4.0
   bun-types: 1.4.0

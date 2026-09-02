@@ -45,7 +45,7 @@
     "@ember/test-helpers": "3.3.0 || ^4.0.4 || ^5.1.0",
     "@warp-drive/diagnostic": "workspace:*",
     "qunit": "^2.26.0",
-    "testem": "^3.20.1"
+    "testem": "^3.20.2"
   },
   "peerDependenciesMeta": {
     "qunit": {
@@ -77,7 +77,7 @@
     "@warp-drive/internal-config": "workspace:*",
     "ember-source": "catalog:",
     "qunit": "^2.26.0",
-    "testem": "^3.20.1",
+    "testem": "^3.20.2",
     "tsdown": "^0.22.14",
     "typescript-7": "npm:typescript@7.1.0-dev.20260826.1"
   },
