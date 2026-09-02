@@ -1,7 +1,7 @@
 {
   "name": "@warp-drive/holodeck",
   "description": "⚡️ Simple, Fast HTTP Mocking for Tests",
-  "version": "0.1.0-alpha.67",
+  "version": "0.1.0-alpha.68",
   "license": "MIT",
   "author": "Chris Thoburn <runspired@users.noreply.github.com>",
   "repository": {
@@ -12,13 +12,13 @@
   "homepage": "https://github.com/warp-drive-data/warp-drive",
   "bugs": "https://github.com/warp-drive-data/warp-drive/issues",
   "engines": {
-    "node": ">= 18.20.8"
+    "node": ">= 24.20.0"
   },
   "keywords": [
     "http-mock"
   ],
   "dependencies": {
-    "hono": "^4.13.3",
+    "hono": "^4.13.4",
     "@hono/node-server": "^1.19.0"
   },
   "type": "module",
@@ -64,7 +64,7 @@
     "@warp-drive/core": "workspace:*",
     "@warp-drive/internal-config": "workspace:*",
     "tsdown": "^0.22.14",
-    "typescript-7": "npm:typescript@7.1.0-dev.20260821.1"
+    "typescript-7": "npm:typescript@7.1.0-dev.20260825.1"
   },
   "exports": {
     ".": {

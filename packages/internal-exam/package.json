@@ -1,6 +1,6 @@
 {
   "name": "@warp-drive/internal-exam",
-  "version": "5.9.0-alpha.24",
+  "version": "5.9.0-alpha.25",
   "private": true,
   "description": "Internal, native-@embroider/vite port of ember-exam's test splitting/randomization/parallelization/load-balancing, without the classic ember-cli dependency.",
   "repository": {

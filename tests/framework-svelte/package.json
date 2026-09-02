@@ -1,6 +1,6 @@
 {
   "name": "framework-svelte",
-  "version": "5.9.0-alpha.24",
+  "version": "5.9.0-alpha.25",
   "description": "Provides tests for @warp-drive/svelte",
   "private": true,
   "keywords": [],
@@ -39,8 +39,8 @@
     "@warp-drive/utilities": "workspace:*",
     "babel-plugin-debug-macros": "^2.0.0",
     "decorator-transforms": "^2.4.0",
-    "svelte": "^5.56.9",
-    "typescript-7": "npm:typescript@7.1.0-dev.20260821.1",
+    "svelte": "^5.56.10",
+    "typescript-7": "npm:typescript@7.1.0-dev.20260825.1",
     "vite": "catalog:"
   }
 }

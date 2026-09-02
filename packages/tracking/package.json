@@ -1,7 +1,7 @@
 {
   "name": "@ember-data/tracking",
   "description": "DEPRECATED - Use @warp-drive/ember",
-  "version": "5.9.0-alpha.24",
+  "version": "5.9.0-alpha.25",
   "deprecated": "Use @warp-drive/ember",
   "private": false,
   "license": "MIT",
@@ -46,12 +46,7 @@
   "ember-addon": {
     "main": "addon-main.cjs",
     "type": "addon",
-    "version": 2,
-    "externals": [
-      "@ember/-internals",
-      "@ember/-internals/metal",
-      "@glimmer/validator"
-    ]
+    "version": 2
   },
   "devDependencies": {
     "@babel/core": "^7.29.7",
@@ -62,7 +57,7 @@
     "@warp-drive/internal-config": "workspace:*",
     "ember-source": "catalog:",
     "tsdown": "^0.22.14",
-    "typescript-7": "npm:typescript@7.1.0-dev.20260821.1"
+    "typescript-7": "npm:typescript@7.1.0-dev.20260825.1"
   },
   "ember": {
     "edition": "octane"

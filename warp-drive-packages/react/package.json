@@ -1,7 +1,7 @@
 {
   "name": "@warp-drive/react",
   "description": "Data bindings and utilities for React applications using WarpDrive",
-  "version": "5.9.0-alpha.24",
+  "version": "5.9.0-alpha.25",
   "license": "MIT",
   "author": "Chris Thoburn <runspired@users.noreply.github.com>",
   "repository": {
@@ -62,13 +62,12 @@
     "decorator-transforms": "^2.4.0",
     "react": "^19.2.8",
     "tsdown": "^0.22.14",
-    "typescript-7": "npm:typescript@7.1.0-dev.20260821.1"
+    "typescript-7": "npm:typescript@7.1.0-dev.20260825.1"
   },
   "ember-addon": {
     "main": "addon-main.cjs",
     "type": "addon",
-    "version": 2,
-    "externals": []
+    "version": 2
   },
   "ember": {
     "edition": "octane"

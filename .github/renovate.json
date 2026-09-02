@@ -53,7 +53,7 @@
   },
   "rangeStrategy": "bump",
   "prHourlyLimit": 10,
-  "branchConcurrentLimit": 3,
+  "branchConcurrentLimit": 12,
   "vulnerabilityAlerts": {
     "labels": [":label: security"],
     "automerge": false,

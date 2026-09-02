@@ -7,7 +7,7 @@ import type { SchemaService } from '../../../types/schema/schema-service.ts';
 import type { PrivateStore, Store } from '../store-service.ts';
 import type { CacheKeyManager } from './cache-key-manager.ts';
 import { isRequestKey, isResourceKey } from './cache-key-manager.ts';
-import type { NotificationType, NotifyKeys } from './notification-manager.ts';
+import type { NotificationChannel, NotificationType, NotifyKeys } from './notification-manager.ts';
 
 export interface CacheCapabilitiesManager {
   /** @deprecated - use {@link CacheCapabilitiesManager.schema} */
@@ -18,7 +18,7 @@ export class CacheCapabilitiesManager implements StoreWrapper {
   declare private _willNotify: boolean;
 
   /** @internal */
-  declare private _pendingNotifies: Map<ResourceKey, Set<string>>;
+  declare private _pendingNotifies: Map<ResourceKey, Map<string, Set<NotificationChannel | undefined>>>;
 
   /** @internal */
   declare _store: Store;
@@ -39,14 +39,19 @@ export class CacheCapabilitiesManager implements StoreWrapper {
   }
 
   /** @internal */
-  private _scheduleNotification(identifier: ResourceKey, key: string): void {
+  private _scheduleNotification(identifier: ResourceKey, key: string, channel: NotificationChannel | undefined): void {
     let pending = this._pendingNotifies.get(identifier);
 
     if (!pending) {
-      pending = new Set();
+      pending = new Map();
       this._pendingNotifies.set(identifier, pending);
     }
-    pending.add(key);
+    let channels = pending.get(key);
+    if (!channels) {
+      channels = new Set();
+      pending.set(key, channels);
+    }
+    channels.add(channel);
 
     if (this._willNotify === true) {
       return;
@@ -79,39 +84,67 @@ export class CacheCapabilitiesManager implements StoreWrapper {
     // notification per key (in Set-insertion order), but the per-call overhead
     // (subscriber lookups, buffer scheduling, etc) that `notify` would otherwise
     // repeat for every key is paid only once per identifier. This mirrors the
-    // same N*M concern `attributes` notifications have (see `notifyAttributes`
-    // in the json-api Cache): a single push/mutation pass can dirty many
+    // same N*M concern `attributes` notifications have (the json-api Cache
+    // batches a record's changed attribute keys into a single `notifyChange`
+    // Set for the same reason): a single push/mutation pass can dirty many
     // relationships across many records at once, and each of those records
     // funnels through this same per-identifier `pending` Set.
     //
-    // `set` here is already the `Set<string>` we've been collecting pending
-    // keys into above, and `notify` accepts a `Set` directly, so it is handed
-    // off as-is: no `Array.from` (or any other) conversion is performed.
-    pending.forEach((set, identifier) => {
-      this._store.notifications.notify(identifier, 'relationships', set);
+    // Keys touched with more than one distinct channel during this window
+    // (e.g. once unscoped and once on `'local'`) are re-grouped by channel
+    // below so that each distinct channel is still handed off to `notify` as
+    // a single `Set<string>` batch call (never one call per key) -- `notify`'s
+    // own buffer (see NotificationManager) is what dedupes/coalesces these
+    // per-channel batches back down to a single delivery per subscriber.
+    pending.forEach((channelsByKey, identifier) => {
+      const keysByChannel = new Map<NotificationChannel | undefined, Set<string>>();
+      channelsByKey.forEach((channels, key) => {
+        channels.forEach((channel) => {
+          let keys = keysByChannel.get(channel);
+          if (!keys) {
+            keys = new Set();
+            keysByChannel.set(channel, keys);
+          }
+          keys.add(key);
+        });
+      });
+      keysByChannel.forEach((keys, channel) => {
+        this._store.notifications.notify(identifier, 'relationships', keys, channel);
+      });
     });
   }
 
   notifyChange(identifier: ResourceKey, namespace: 'added' | 'removed', key: null): void;
   notifyChange(identifier: RequestKey, namespace: 'added' | 'updated' | 'removed', key: null): void;
-  notifyChange(identifier: ResourceKey, namespace: 'attributes', key: string | NotifyKeys | null): void;
-  notifyChange(identifier: ResourceKey, namespace: NotificationType, key: string | null): void;
+  notifyChange(
+    identifier: ResourceKey,
+    namespace: 'attributes',
+    key: string | NotifyKeys | null,
+    channel?: NotificationChannel
+  ): void;
+  notifyChange(
+    identifier: ResourceKey,
+    namespace: NotificationType,
+    key: string | null,
+    channel?: NotificationChannel
+  ): void;
   notifyChange(
     identifier: ResourceKey | RequestKey,
     namespace: NotificationType | 'added' | 'removed' | 'updated',
-    key: string | NotifyKeys | null
+    key: string | NotifyKeys | null,
+    channel?: NotificationChannel
   ): void {
     assert(`Expected a stable identifier`, isResourceKey(identifier) || isRequestKey(identifier));
 
     // TODO do we still get value from this?
     if (namespace === 'relationships' && key) {
       assert(`Expected a single relationship key`, typeof key === 'string');
-      this._scheduleNotification(identifier as ResourceKey, key);
+      this._scheduleNotification(identifier as ResourceKey, key, channel);
       return;
     }
 
     // @ts-expect-error
-    this._store.notifications.notify(identifier, namespace, key);
+    this._store.notifications.notify(identifier, namespace, key, channel);
   }
 
   get schema(): SchemaService {

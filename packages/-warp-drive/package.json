@@ -1,6 +1,6 @@
 {
   "name": "warp-drive",
-  "version": "0.2.0-alpha.67",
+  "version": "0.2.0-alpha.68",
   "description": "WarpDrive is the data framework for ambitious web applications",
   "keywords": [
     "typescript",
@@ -53,7 +53,7 @@
     "@embroider/macros": "^1.20.6",
     "@manypkg/get-packages": "^3.1.0",
     "@warp-drive/core": "workspace:*",
-    "comment-json": "^4.6.2",
+    "comment-json": "^5.0.0",
     "debug": "^4.4.3",
     "inflection": "~3.0.2",
     "semver": "^7.8.5"
@@ -67,6 +67,6 @@
     "@types/semver": "^7.8.0",
     "@warp-drive/internal-config": "workspace:*",
     "tsdown": "^0.22.14",
-    "typescript-7": "npm:typescript@7.1.0-dev.20260821.1"
+    "typescript-7": "npm:typescript@7.1.0-dev.20260825.1"
   }
 }

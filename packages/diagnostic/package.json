@@ -1,6 +1,6 @@
 {
   "name": "@warp-drive/diagnostic",
-  "version": "0.0.3-alpha.152",
+  "version": "0.0.3-alpha.153",
   "private": true,
   "description": "⚡️ A Lightweight Modern Test Runner",
   "keywords": [
@@ -72,7 +72,7 @@
     "start": "node node_modules/tsdown/dist/run.mjs --watch"
   },
   "peerDependencies": {
-    "@ember/test-helpers": "5.2.0",
+    "@ember/test-helpers": "5.4.3",
     "react": "^19.2.8",
     "react-dom": "^19.2.8"
   },
@@ -102,7 +102,7 @@
     "@babel/preset-react": "^7.29.7",
     "@babel/preset-typescript": "^7.29.7",
     "@babel/runtime": "^7.29.7",
-    "@ember/test-helpers": "5.2.0",
+    "@ember/test-helpers": "5.4.3",
     "@glimmer/component": "^2.1.1",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.4",

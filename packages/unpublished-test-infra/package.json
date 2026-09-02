@@ -1,6 +1,6 @@
 {
   "name": "@ember-data/unpublished-test-infra",
-  "version": "5.9.0-alpha.24",
+  "version": "5.9.0-alpha.25",
   "private": true,
   "description": "The default blueprint for ember-data private packages.",
   "keywords": [
@@ -69,7 +69,7 @@
     "@babel/plugin-transform-typescript": "^7.29.7",
     "@babel/preset-env": "^7.29.7",
     "@babel/preset-typescript": "^7.29.7",
-    "@ember/test-helpers": "5.2.0",
+    "@ember/test-helpers": "5.4.3",
     "@glimmer/component": "^2.1.1",
     "@types/qunit": "2.19.14",
     "@types/semver": "^7.8.0",
@@ -79,7 +79,7 @@
     "qunit": "^2.26.0",
     "testem": "^3.20.1",
     "tsdown": "^0.22.14",
-    "typescript-7": "npm:typescript@7.1.0-dev.20260821.1"
+    "typescript-7": "npm:typescript@7.1.0-dev.20260825.1"
   },
   "ember": {
     "edition": "octane"

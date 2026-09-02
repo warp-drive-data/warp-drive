@@ -13,11 +13,11 @@ assert('foo', true);
 */
 
 // => _macros.getGlobalConfig().WarpDrive.env.DEBUG
-function buildMacroConstDEBUG(types, binding, state) {
+function buildMacroConstDEBUG(types, target, state) {
   return types.memberExpression(
     types.memberExpression(
       types.memberExpression(
-        types.callExpression(state.importer.import(binding, '@embroider/macros', 'getGlobalConfig'), []),
+        types.callExpression(state.importer.import(target, '@embroider/macros', 'getGlobalConfig'), []),
         types.identifier('WarpDrive')
       ),
       types.identifier('env')
@@ -27,9 +27,9 @@ function buildMacroConstDEBUG(types, binding, state) {
 }
 
 // => _macros.macroCondition(_macros.getGlobalConfig().WarpDrive.env.DEBUG)
-function buildMacroConditionDEBUG(types, binding, state) {
-  return types.callExpression(state.importer.import(binding, '@embroider/macros', 'macroCondition'), [
-    buildMacroConstDEBUG(types, binding, state),
+function buildMacroConditionDEBUG(types, target, state) {
+  return types.callExpression(state.importer.import(target, '@embroider/macros', 'macroCondition'), [
+    buildMacroConstDEBUG(types, target, state),
   ]);
 }
 
@@ -54,10 +54,10 @@ function buildAssert(types, originalCallExpression) {
 }
 
 // => ( <debug-macro> ? <assert-exp> : {});
-function buildAssertTernary(types, binding, state, originalCallExpression) {
+function buildAssertTernary(types, target, state, originalCallExpression) {
   return types.expressionStatement(
     types.conditionalExpression(
-      buildMacroConditionDEBUG(types, binding, state),
+      buildMacroConditionDEBUG(types, target, state),
       buildAssert(types, originalCallExpression),
       types.objectExpression([])
     )
@@ -109,7 +109,7 @@ export default function (babel) {
                 throw new Error('Expected a call expression');
               }
 
-              const assertTernary = buildAssertTernary(t, binding, state, originalCallExpression);
+              const assertTernary = buildAssertTernary(t, p, state, originalCallExpression);
               p.parentPath.replaceWith(assertTernary);
             });
             specifier.scope.removeOwnBinding(localBindingName);
@@ -123,7 +123,7 @@ export default function (babel) {
       },
 
       Program(path, state) {
-        state.importer = new ImportUtil(t, path);
+        state.importer = new ImportUtil(babel, path);
       },
     },
   };

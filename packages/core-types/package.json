@@ -1,6 +1,6 @@
 {
   "name": "@warp-drive/core-types",
-  "version": "5.9.0-alpha.24",
+  "version": "5.9.0-alpha.25",
   "description": "(Legacy) Core logic, utils and types for WarpDrive and EmberData",
   "keywords": [
     "ember-addon"
@@ -46,7 +46,7 @@
     "@babel/preset-typescript": "^7.29.7",
     "@warp-drive/internal-config": "workspace:*",
     "tsdown": "^0.22.14",
-    "typescript-7": "npm:typescript@7.1.0-dev.20260821.1"
+    "typescript-7": "npm:typescript@7.1.0-dev.20260825.1"
   },
   "ember-addon": {
     "main": "addon-main.cjs",

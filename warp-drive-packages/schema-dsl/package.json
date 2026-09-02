@@ -1,7 +1,7 @@
 {
   "name": "@warp-drive/schema-dsl",
   "private": true,
-  "version": "5.9.0-alpha.10",
+  "version": "5.9.0-alpha.11",
   "description": "TypeScript DSL for defining WarpDrive schemas",
   "license": "MIT",
   "author": "Chris Thoburn <runspired@users.noreply.github.com>",
@@ -56,7 +56,7 @@
     "@warp-drive/internal-config": "workspace:*",
     "@warp-drive/core": "workspace:*",
     "tsdown": "^0.22.14",
-    "typescript-7": "npm:typescript@7.1.0-dev.20260821.1"
+    "typescript-7": "npm:typescript@7.1.0-dev.20260825.1"
   },
   "packageManager": "pnpm@12.0.0"
 }

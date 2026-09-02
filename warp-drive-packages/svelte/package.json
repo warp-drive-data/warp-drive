@@ -1,7 +1,7 @@
 {
   "name": "@warp-drive/svelte",
   "description": "Data bindings and utilities for Svelte",
-  "version": "5.9.0-alpha.24",
+  "version": "5.9.0-alpha.25",
   "private": true,
   "license": "MIT",
   "author": "Chris Thoburn <runspired@users.noreply.github.com>",
@@ -37,7 +37,7 @@
     }
   },
   "peerDependencies": {
-    "svelte": "^5.56.9"
+    "svelte": "^5.56.10"
   },
   "dependencies": {
     "@warp-drive/core": "workspace:*"
@@ -49,9 +49,9 @@
     "@sveltejs/vite-plugin-svelte": "^7.3.0",
     "@warp-drive/internal-config": "workspace:*",
     "@warp-drive/core": "workspace:*",
-    "svelte": "^5.56.9",
+    "svelte": "^5.56.10",
     "typescript": "^6.0.3",
-    "typescript-7": "npm:typescript@7.1.0-dev.20260821.1",
+    "typescript-7": "npm:typescript@7.1.0-dev.20260825.1",
     "vite": "catalog:"
   }
 }

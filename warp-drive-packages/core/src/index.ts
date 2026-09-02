@@ -51,6 +51,7 @@ export type Document<T> = ReactiveDocument<T>;
 export type {
   DocumentCacheOperation,
   CacheOperation,
+  NotificationChannel,
   NotificationType,
   NotifyKeys,
 } from './store/-private/managers/notification-manager.ts';

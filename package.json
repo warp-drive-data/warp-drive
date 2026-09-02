@@ -1,6 +1,6 @@
 {
   "name": "root",
-  "version": "5.9.0-alpha.24",
+  "version": "5.9.0-alpha.25",
   "private": true,
   "license": "MIT",
   "repository": {
@@ -43,14 +43,14 @@
     "@warp-drive/internal-tooling": "workspace:*",
     "badge-maker": "6.0.0",
     "bun-types": "^1.4.0",
-    "comment-json": "^4.6.2",
+    "comment-json": "^5.0.0",
     "debug": "^4.4.3",
     "ember-source": "catalog:",
     "execa": "^10.0.1",
     "git-repo-version": "^1.0.2",
     "lerna-changelog": "^2.2.0",
-    "oxfmt": "^0.64.0",
-    "oxlint": "^1.79.0",
+    "oxfmt": "^0.65.0",
+    "oxlint": "^1.80.0",
     "oxlint-tsgolint": "^7.0.2001",
     "prettier": "^3.9.6",
     "prettier-plugin-ember-template-tag": "^2.1.8",
@@ -60,7 +60,7 @@
     "typescript": "^6.0.3"
   },
   "dependencies": {
-    "turbo": "^2.10.11"
+    "turbo": "^2.10.12"
   },
   "engines": {
     "node": ">= 26.8.1",

@@ -1,6 +1,6 @@
 {
   "name": "ember-data__graph",
-  "version": "5.9.0-alpha.24",
+  "version": "5.9.0-alpha.25",
   "private": true,
   "description": "Provides tests for @ember-data/graph",
   "keywords": [],
@@ -29,12 +29,12 @@
     "@babel/plugin-transform-typescript": "^7.29.7",
     "@babel/runtime": "^7.29.7",
     "@ember-data/unpublished-test-infra": "workspace:*",
-    "@ember/test-helpers": "5.2.0",
+    "@ember/test-helpers": "5.4.3",
     "@ember/test-waiters": "^4.1.2",
     "@embroider/addon-shim": "^1.10.3",
     "@embroider/core": "^4.6.3",
     "@embroider/macros": "^1.20.6",
-    "@embroider/vite": "^1.7.9",
+    "@embroider/vite": "^1.7.10",
     "@glimmer/component": "^2.1.1",
     "@warp-drive/core": "workspace:*",
     "@warp-drive/diagnostic": "workspace:*",
@@ -48,7 +48,7 @@
     "ember-source": "catalog:",
     "ember-strict-application-resolver": "^0.1.1",
     "terser": "^5.50.0",
-    "typescript-7": "npm:typescript@7.1.0-dev.20260821.1",
+    "typescript-7": "npm:typescript@7.1.0-dev.20260825.1",
     "vite": "catalog:"
   },
   "ember": {

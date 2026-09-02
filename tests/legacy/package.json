@@ -1,6 +1,6 @@
 {
   "name": "@warp-drive/legacy-tests",
-  "version": "5.9.0-alpha.24",
+  "version": "5.9.0-alpha.25",
   "private": true,
   "description": "A data layer for your Ember applications.",
   "repository": {
@@ -30,11 +30,11 @@
     "@babel/plugin-transform-typescript": "^7.29.7",
     "@babel/runtime": "^7.29.7",
     "@ember-data/unpublished-test-infra": "workspace:*",
-    "@ember/test-helpers": "5.2.0",
+    "@ember/test-helpers": "5.4.3",
     "@ember/test-waiters": "^4.1.2",
     "@embroider/core": "^4.6.3",
     "@embroider/macros": "^1.20.6",
-    "@embroider/vite": "^1.7.9",
+    "@embroider/vite": "^1.7.10",
     "@glimmer/component": "^2.1.1",
     "@glint/ember-tsc": "^1.11.2",
     "@glint/template": "^1.8.0",
@@ -55,7 +55,7 @@
     "eslint-plugin-warp-drive": "workspace:*",
     "terser": "^5.50.0",
     "typescript": "^6.0.3",
-    "typescript-7": "npm:typescript@7.1.0-dev.20260821.1",
+    "typescript-7": "npm:typescript@7.1.0-dev.20260825.1",
     "vite": "catalog:"
   },
   "ember": {

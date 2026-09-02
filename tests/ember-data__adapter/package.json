@@ -1,6 +1,6 @@
 {
   "name": "ember-data__adapter",
-  "version": "5.9.0-alpha.24",
+  "version": "5.9.0-alpha.25",
   "private": true,
   "description": "Tests for @ember-data/adapter",
   "repository": {
@@ -38,12 +38,12 @@
     "@ember-data/serializer": "workspace:*",
     "@ember-data/store": "workspace:*",
     "@ember-data/unpublished-test-infra": "workspace:*",
-    "@ember/test-helpers": "5.2.0",
+    "@ember/test-helpers": "5.4.3",
     "@ember/test-waiters": "^4.1.2",
     "@embroider/addon-shim": "^1.10.3",
     "@embroider/core": "^4.6.3",
     "@embroider/macros": "^1.20.6",
-    "@embroider/vite": "^1.7.9",
+    "@embroider/vite": "^1.7.10",
     "@glimmer/component": "^2.1.1",
     "@warp-drive/core-types": "workspace:*",
     "@warp-drive/build-config": "workspace:*",
@@ -64,6 +64,6 @@
     "edition": "octane"
   },
   "devDependencies": {
-    "typescript-7": "npm:typescript@7.1.0-dev.20260821.1"
+    "typescript-7": "npm:typescript@7.1.0-dev.20260825.1"
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "ember-data",
-  "version": "5.9.0-alpha.24",
+  "version": "5.9.0-alpha.25",
   "description": "(Legacy) The lightweight reactive data library for Ember applications",
   "keywords": [
     "ember-addon"
@@ -103,12 +103,12 @@
     "@babel/plugin-transform-typescript": "^7.29.7",
     "@babel/preset-env": "^7.29.7",
     "@babel/preset-typescript": "^7.29.7",
-    "@ember/test-helpers": "5.2.0",
+    "@ember/test-helpers": "5.4.3",
     "@ember/test-waiters": "^4.1.2",
     "@types/qunit": "2.19.14",
     "@warp-drive/internal-config": "workspace:*",
     "ember-source": "catalog:",
-    "eslint": "^10.8.1",
+    "eslint": "^10.9.1",
     "qunit": "^2.26.0",
     "tsdown": "^0.22.14",
     "typescript": "^6.0.3"
