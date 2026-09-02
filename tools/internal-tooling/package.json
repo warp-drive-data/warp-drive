@@ -26,7 +26,7 @@
     "@types/debug": "4.1.13",
     "@babel/parser": "^7.29.8",
     "@babel/traverse": "^7.29.8",
-    "comment-json": "^4.6.2",
+    "comment-json": "^5.0.0",
     "@pnpm/find-workspace-dir": "1000.1.5",
     "@pnpm/find-workspace-packages": "6.0.9",
     "@pnpm/logger": "1001.0.1"

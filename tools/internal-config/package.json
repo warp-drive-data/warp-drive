@@ -14,7 +14,7 @@
     "@types/debug": "4.1.13",
     "typescript-eslint": "^8.68.0",
     "@eslint/js": "^10.0.1",
-    "comment-json": "^4.6.2",
+    "comment-json": "^5.0.0",
     "debug": "^4.4.3",
     "globals": "^16.5.0",
     "ember-eslint-parser": "^0.14.6",
