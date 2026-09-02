@@ -77,13 +77,20 @@ export type NotifyKeys = Set<string>;
 export type NotificationChannel = 'local' | 'remote';
 
 /**
- * The set of channels (if any) a given `'attributes'`/`'relationships'` touch
- * was tagged with while buffered. `undefined` is included in this set when at
- * least one of the coalesced touches was itself unscoped (no channel given),
- * since an unscoped touch always reaches every subscriber regardless of what
- * channel(s) it was also touched with.
+ * Well-known sentinel recorded in a {@link ChannelSet} for a touch that
+ * carried no channel. An unscoped touch always reaches every subscriber
+ * regardless of what channel(s) the same key was also touched with, so its
+ * presence in the set short-circuits channel filtering.
  */
-type ChannelSet = Set<NotificationChannel | undefined>;
+const UnscopedChannel = Symbol('unscoped');
+
+/**
+ * The set of channels (if any) a given `'attributes'`/`'relationships'` touch
+ * was tagged with while buffered. {@link UnscopedChannel} is included in this
+ * set when at least one of the coalesced touches was itself unscoped (no
+ * channel given).
+ */
+type ChannelSet = Set<NotificationChannel | typeof UnscopedChannel>;
 
 export interface NotificationCallback {
   (cacheKey: ResourceKey, notificationType: 'attributes' | 'relationships', key?: string): void;
@@ -131,8 +138,8 @@ function keyToString(key: string | NotifyKeys | null | undefined): string {
  * For `'attributes'`/`'relationships'`, a key (or channel) *does* matter, so
  * the bucket is one of:
  * - a `Map<string, ChannelSet>`: the normal case, mapping each specific key
- *   touched to the set of channels it was touched with (`undefined` in that
- *   set means at least one of those touches was itself unscoped).
+ *   touched to the set of channels it was touched with ({@link UnscopedChannel}
+ *   in that set means at least one of those touches was itself unscoped).
  * - a `ChannelSet` directly: a wildcard meaning "an unspecified set of keys
  *   changed" - a strict superset of any specific key list, per the existing
  *   contract of {@link CacheCapabilitiesManager.notifyChange} - tagged with
@@ -175,7 +182,7 @@ function mergeIntoBuffer(
         for (const ch of channelsForKey) channels.add(ch);
       }
     }
-    channels.add(channel);
+    channels.add(channel ?? UnscopedChannel);
     buffer.set(value, channels);
     return;
   }
@@ -183,7 +190,7 @@ function mergeIntoBuffer(
   if (existing instanceof Set) {
     // already a wildcard: specific keys can never downgrade it back to a
     // Map, but this touch's channel still needs to be folded in.
-    existing.add(channel);
+    existing.add(channel ?? UnscopedChannel);
     return;
   }
 
@@ -199,7 +206,7 @@ function mergeIntoBuffer(
       channels = new Set();
       map.set(k, channels);
     }
-    channels.add(channel);
+    channels.add(channel ?? UnscopedChannel);
   }
 }
 
@@ -212,7 +219,7 @@ function mergeIntoBuffer(
  * touch-set exclusively tagged with the *other* channel is skipped.
  */
 function shouldDeliverToChannel(channels: ChannelSet, subscriberChannel: NotificationChannel): boolean {
-  return channels.has(undefined) || channels.has(subscriberChannel);
+  return channels.has(UnscopedChannel) || channels.has(subscriberChannel);
 }
 
 function count(label: string) {

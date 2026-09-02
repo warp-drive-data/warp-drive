@@ -964,6 +964,14 @@ module('Integration | Graph | Diff Preservation', function (hooks) {
     });
 
     // mutation should notify
+    assert.notifiedOn(
+      'local',
+      userIdentifier,
+      'relationships',
+      'comments',
+      1,
+      'the mutation notifies the local channel: only the local view changed'
+    );
     assert.notified(
       userIdentifier,
       'relationships',
@@ -1004,12 +1012,28 @@ module('Integration | Graph | Diff Preservation', function (hooks) {
       'state is still the same'
     );
 
+    assert.notifiedOn(
+      'remote',
+      userIdentifier,
+      'relationships',
+      'comments',
+      1,
+      'the remote channel is notified after a remote push that matches local state: the remote view changed (the commit landed)'
+    );
+    assert.notifiedOn(
+      'local',
+      userIdentifier,
+      'relationships',
+      'comments',
+      0,
+      'the local channel is not notified after a remote push that matches local state: the local view did not change'
+    );
     assert.notified(
       userIdentifier,
       'relationships',
       'comments',
       1,
-      'one remote-channel notification after a remote push that matches local state: the remote view changed (the commit landed) while the local view did not'
+      'exactly one notification total after a remote push that matches local state'
     );
 
     // push an update that does not match the local state
@@ -1028,6 +1052,14 @@ module('Integration | Graph | Diff Preservation', function (hooks) {
     });
 
     // we should have notifications
+    assert.notifiedOn(
+      'unscoped',
+      userIdentifier,
+      'relationships',
+      'comments',
+      1,
+      'both views changed, so the two channel schedules coalesce into a single unscoped notification'
+    );
     assert.notified(
       userIdentifier,
       'relationships',
@@ -1130,12 +1162,28 @@ module('Integration | Graph | Diff Preservation', function (hooks) {
     });
 
     // we should have no notifications
+    assert.notifiedOn(
+      'remote',
+      userIdentifier,
+      'relationships',
+      'comments',
+      1,
+      'the remote channel is notified after a remote push that matches local state: the remote view changed (the commit landed)'
+    );
+    assert.notifiedOn(
+      'local',
+      userIdentifier,
+      'relationships',
+      'comments',
+      0,
+      'the local channel is not notified after a remote push that matches local state: the local view did not change'
+    );
     assert.notified(
       userIdentifier,
       'relationships',
       'comments',
       1,
-      'one remote-channel notification after a remote push that matches local state: the remote view changed (the commit landed) while the local view did not'
+      'exactly one notification total after a remote push that matches local state'
     );
 
     // check state is still the same
@@ -1164,6 +1212,14 @@ module('Integration | Graph | Diff Preservation', function (hooks) {
     });
 
     // we should have notifications
+    assert.notifiedOn(
+      'unscoped',
+      userIdentifier,
+      'relationships',
+      'comments',
+      1,
+      'both views changed, so the two channel schedules coalesce into a single unscoped notification'
+    );
     assert.notified(
       userIdentifier,
       'relationships',
@@ -1253,6 +1309,14 @@ module('Integration | Graph | Diff Preservation', function (hooks) {
     });
 
     // mutation should notify
+    assert.notifiedOn(
+      'local',
+      userIdentifier,
+      'relationships',
+      'comments',
+      1,
+      'the mutation notifies the local channel: only the local view changed'
+    );
     assert.notified(
       userIdentifier,
       'relationships',
@@ -1293,12 +1357,28 @@ module('Integration | Graph | Diff Preservation', function (hooks) {
       'state is still the same'
     );
 
+    assert.notifiedOn(
+      'remote',
+      userIdentifier,
+      'relationships',
+      'comments',
+      1,
+      'the remote channel is notified after a remote push that matches local state: the remote view changed (the commit landed)'
+    );
+    assert.notifiedOn(
+      'local',
+      userIdentifier,
+      'relationships',
+      'comments',
+      0,
+      'the local channel is not notified after a remote push that matches local state: the local view did not change'
+    );
     assert.notified(
       userIdentifier,
       'relationships',
       'comments',
       1,
-      'one remote-channel notification after a remote push that matches local state: the remote view changed (the commit landed) while the local view did not'
+      'exactly one notification total after a remote push that matches local state'
     );
 
     // push an update that does not match the local state
@@ -1317,6 +1397,14 @@ module('Integration | Graph | Diff Preservation', function (hooks) {
     });
 
     // we should have notifications
+    assert.notifiedOn(
+      'unscoped',
+      userIdentifier,
+      'relationships',
+      'comments',
+      1,
+      'both views changed, so the two channel schedules coalesce into a single unscoped notification'
+    );
     assert.notified(
       userIdentifier,
       'relationships',
@@ -1419,12 +1507,28 @@ module('Integration | Graph | Diff Preservation', function (hooks) {
     });
 
     // we should have no notifications
+    assert.notifiedOn(
+      'remote',
+      userIdentifier,
+      'relationships',
+      'comments',
+      1,
+      'the remote channel is notified after a remote push that matches local state: the remote view changed (the commit landed)'
+    );
+    assert.notifiedOn(
+      'local',
+      userIdentifier,
+      'relationships',
+      'comments',
+      0,
+      'the local channel is not notified after a remote push that matches local state: the local view did not change'
+    );
     assert.notified(
       userIdentifier,
       'relationships',
       'comments',
       1,
-      'one remote-channel notification after a remote push that matches local state: the remote view changed (the commit landed) while the local view did not'
+      'exactly one notification total after a remote push that matches local state'
     );
 
     // check state is still the same
@@ -1453,6 +1557,14 @@ module('Integration | Graph | Diff Preservation', function (hooks) {
     });
 
     // we should have notifications
+    assert.notifiedOn(
+      'unscoped',
+      userIdentifier,
+      'relationships',
+      'comments',
+      1,
+      'both views changed, so the two channel schedules coalesce into a single unscoped notification'
+    );
     assert.notified(
       userIdentifier,
       'relationships',

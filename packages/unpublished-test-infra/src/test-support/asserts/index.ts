@@ -46,10 +46,31 @@ declare module '@warp-drive/diagnostic/-types' {
      * Asserts that the given identifier has been notified of a change to the given bucket
      * and optional key the given number of times during the test.
      *
-     * Clears the notification count for the given identifier, bucket and key after the assertion
-     * is made so that it is easy to assert notification counts in between steps of a test.
+     * Clears the notification counts (total and per-channel) for the given identifier,
+     * bucket and key after the assertion is made so that it is easy to assert notification
+     * counts in between steps of a test. When also asserting per-channel counts for the
+     * same step via `notifiedOn`, make those assertions first.
      */
     notified(
+      identifier: RequestKey | ResourceKey,
+      bucket: NotificationType | CacheOperation,
+      key: string | null,
+      count: number,
+      message?: string
+    ): void;
+
+    /**
+     * Asserts that the given identifier has been notified of a change to the given bucket
+     * and optional key the given number of times *on the given notification channel*
+     * ('local', 'remote', or 'unscoped' for notify calls that carried no channel; an
+     * unscoped notify is delivered to every subscriber).
+     *
+     * Unlike `notified`, this does not clear any counts: it is a probe. Assert the
+     * per-channel counts first, then close out the step with `notified` (which clears
+     * both the total and the per-channel counts).
+     */
+    notifiedOn(
+      channel: 'local' | 'remote' | 'unscoped',
       identifier: RequestKey | ResourceKey,
       bucket: NotificationType | CacheOperation,
       key: string | null,
