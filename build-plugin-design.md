@@ -1,4 +1,4 @@
-# `@warp-drive/build` — A Framework-Agnostic Build Plugin
+# WarpDrive's Framework-Agnostic Build Plugin (`@warp-drive/core/build-plugin`)
 
 **Status:** design proposal
 **Scope:** replace the app-facing `@embroider/macros` + babel build path with one unplugin-based
@@ -16,11 +16,21 @@ facts below cite real files; counts come from grep over built `dist/` output.
 
 ## 0. Executive summary
 
-Ship a new **sibling package `@warp-drive/build`** (unplugin-based, per-bundler subpath exports).
-It is not a literal drop-in — there is no existing bundler-plugin API to swap under; today's app
-path is a babel config — but it is *adoption-drop-in*: existing `setConfig()` call sites keep
-working as config sources, every already-published dist is consumed as-is, and adoption for a
-Vite app is "add one plugin line, delete the babel scaffolding."
+Ship **one unplugin-based plugin whose implementation lives in `@warp-drive/build-config`
+and whose user-facing import is re-exported from `@warp-drive/core` as
+`@warp-drive/core/build-plugin`** — no new package. It is one plugin, not one per framework:
+a single `createUnplugin` instance whose per-bundler adapters (`warpDrive.vite()`,
+`warpDrive.webpack()`, …) are unplugin's job, with only the tiny shims unplugin cannot provide
+(a webpack-loader-shaped file for Turbopack, a babel bridge for classic Ember).
+
+It is not a literal drop-in — there is no existing bundler-plugin API to swap under; today's
+app path is a babel config — but it is *adoption-drop-in*, and precisely **because it is not a
+babel plugin, migration is an insertion, not a swap**: the plugin runs ahead of wherever babel
+sits in the build (`enforce: 'pre'`), consumes WarpDrive's files before babel ever sees them,
+and thereby turns an existing `@embroider/macros`/babel-macros setup into a provable no-op on
+those files *without the user touching it* (§6). Existing `setConfig()` call sites keep working
+as config sources, every already-published dist is consumed as-is, and adoption for a Vite app
+is "add one plugin line; delete the babel scaffolding whenever convenient."
 
 The pragmatic insight that makes this low-risk: **nothing about WarpDrive's published dist has to
 change for the plugin to be useful on day one.** The published macro surface is a small, closed,
@@ -31,10 +41,10 @@ plugin entries) — against already-published 5.x dists.
 
 | Release | Type | What ships | Dist carrier | Who must change |
 |---|---|---|---|---|
-| **5.x "A"** (e.g. 5.9) | minor | `@warp-drive/build` v1 (legacy embroider shapes + `@ember/debug` + app-code flag imports); `@warp-drive/build-config` patch: neutral config store bridge in `setConfig`; coherent runtime defaults + `-seed` module + `runtime-debug` module in the flag modules | unchanged (embroider shapes) | nobody (opt-in) |
+| **5.x "A"** (e.g. 5.9) | minor | `@warp-drive/build-config` gains the plugin (legacy embroider shapes + `@ember/debug` + app-code flag imports) and the neutral config store, with `setConfig` bridged into it; `@warp-drive/core/build-plugin` re-export; coherent runtime defaults + `-seed` module + `runtime-debug` module in the flag modules | unchanged (embroider shapes) | nobody (opt-in) |
 | **5.x "B"** (the following minor) | minor | Docs flip: unplugin is the default recipe for every non-classic environment; `babelPlugin()` bugfix (its `js` array finally spreads `...macros()` — the five plugin entries Simple-Config users were always missing); soft one-time info log on the babel path | unchanged | nobody forced |
 | **6.0** | major | Dist flips to the **neutral carrier ("Carrier v2", §7)**; `@embroider/macros` and `@ember/debug` leave runtime package deps; classic ember served by an addon-main-injected first-party babel plugin (env-flag-baked through the whole beta) | Carrier v2 | classic apps: nothing if the injection bakes green; babel-path holdouts swap `Macros.babelMacros` for one first-party plugin |
-| **6.x** | minors | `@warp-drive/build-config` folds into `@warp-drive/build/legacy`; the legacy-shape engine is retained indefinitely (~small, lets 6.x apps consume 5.x dists) | Carrier v2 | — |
+| **6.x** | minors | `@warp-drive/build-config`'s legacy babel path (`babelPlugin`/`macros()`/embroider bridge) is deprecated in place; the package lives on as the plugin's home; the legacy-shape engine is retained indefinitely (~small, lets 6.x apps consume 5.x dists) | Carrier v2 | — |
 
 The critical coexistence property (§6): **during the entire transition an app may have both the
 babel/embroider path and the unplugin wired, in either order, and gets equivalent output** —
@@ -220,46 +230,66 @@ From `@embroider/macros@1.20.6` sources:
 
 ## 2. Package layout and user-facing API
 
-### 2.1 `@warp-drive/build`
+### 2.1 Where the code lives: `@warp-drive/build-config`, re-exported from core
+
+**No new package.** The implementation lives in `@warp-drive/build-config` (which already owns
+`setConfig`, the flag modules, and the publish transforms — the store and the plugin sit next
+to the things they read), and the user-facing import is `@warp-drive/core/build-plugin`, a
+re-export following exactly the existing `@warp-drive/core/build-config` pattern (core already
+depends on build-config as `workspace:*`, and its `./*` exports map serves the new subpath with
+no exports-map change).
 
 ```jsonc
-// package.json (abridged)
+// @warp-drive/build-config package.json (delta, abridged)
 {
-  "name": "@warp-drive/build",
-  "type": "module",
   "exports": {
-    ".":            { "types": "./dist/index.d.ts", "default": "./dist/index.js" },
-    "./vite":       { "default": "./dist/vite.js" },
-    "./rollup":     { "default": "./dist/rollup.js" },
-    "./rolldown":   { "default": "./dist/rolldown.js" },
-    "./webpack":    { "default": "./dist/webpack.js" },
-    "./rspack":     { "default": "./dist/rspack.js" },
-    "./rsbuild":    { "default": "./dist/rsbuild.js" },
-    "./esbuild":    { "default": "./dist/esbuild.js" },
+    // ...existing entries unchanged...
+    "./plugin":        { "types": "./dist/plugin.d.ts", "default": "./dist/plugin.js" },
     // transform-only webpack-loader shape: Turbopack + "bring your own wiring" bridge
-    "./loader":     { "default": "./dist/loader.cjs" },
+    "./plugin/loader": { "default": "./dist/plugin/loader.cjs" },
     // 6.0 classic-ember bridge + babel-only holdouts (§8.3)
-    "./babel-plugin": { "default": "./dist/babel-plugin.cjs" },
-    // internal: the config store, shared with @warp-drive/build-config's patched setConfig
-    "./store":      { "default": "./dist/store.js" }
+    "./plugin/babel":  { "default": "./dist/plugin/babel.cjs" }
   },
   "dependencies": {
+    // added:
     "unplugin": "^3.3.0",
     "oxc-parser": "^0.130.0",
-    "magic-string": "^0.30.21",
-    "semver": "^7.8.5",
-    "@warp-drive/build-config": "workspace:*"   // -primitives reuse, §2.2
+    "magic-string": "^0.30.21"
+    // "semver" already present; babel-* deps remain for the legacy path until they retire
   },
   "peerDependencies": { "content-tag": "^4.2.0" },
   "peerDependenciesMeta": { "content-tag": { "optional": true } }
 }
 ```
 
-- Per-bundler entries are 3-line re-exports of one `createUnplugin` instance (the
-  `unplugin-vue` precedent).
+```js
+// @warp-drive/core/dist/build-plugin.js — the whole re-export, same pattern as build-config.js
+export { warpDrive, warpDrive as default } from '@warp-drive/build-config/plugin';
+```
+
+- **One plugin, not one per framework.** `warpDrive` is a single `createUnplugin` instance;
+  the per-bundler adapters are properties unplugin itself provides — `warpDrive.vite()`,
+  `warpDrive.rollup()`, `warpDrive.rolldown()`, `warpDrive.webpack()`, `warpDrive.rspack()`,
+  `warpDrive.rsbuild()`, `warpDrive.esbuild()` — so there is **one import path for every
+  bundler** and zero per-framework code beyond what unplugin generates. (Vite, Rollup, and
+  Rolldown additionally share the rollup plugin shape, but users still go through `.vite()` in
+  Vite so the vite-specific `config` sub-hook — the `optimizeDeps.exclude` push — engages.)
+  Only two artifacts cannot be unplugin accessors, because hosts demand a *file path*, not a
+  plugin object: `./plugin/loader` (Turbopack rules point at a loader module) and
+  `./plugin/babel` (classic ember injects a babel plugin path). Both are thin wrappers over
+  the same transform core.
+- **Dependency-weight tradeoff, stated:** every runtime package depends on core → core depends
+  on build-config → every consumer now installs `unplugin` + `oxc-parser` (napi binaries as
+  platform-specific optionalDependencies, wasm fallback) transitively, even before wiring the
+  plugin. These are node-only, never bundled, and deduped by the package manager; accepted as
+  the cost of "no new package", and listed in §10.
+- The neutral config store is a private module inside build-config, **the same package as
+  `setConfig`** — the earlier vendored-copy interop dance disappears; multiple installed
+  *copies* of build-config still converge because the store is keyed by `Symbol.for` and holds
+  only JSON-plain data (§5).
 - **No virtual modules, no `resolveId`, no emitted import specifiers.** Everything the
   transform emits is inlined: boolean literals, the 2-line `esCompat` helper, and the
-  ember-debug shim preamble (§4.3). This is a deliberate constraint: it makes `./loader` a
+  ember-debug shim preamble (§4.3). This is a deliberate constraint: it makes `./plugin/loader` a
   pure `code in → code out` webpack loader — the only shape Turbopack's `turbopack.rules` can
   host — sidesteps webpack/rspack virtual-module machinery entirely, and leaves no emitted
   specifier whose resolution could fail on any host (the sole exception is `importSync`
@@ -324,17 +354,29 @@ export interface WarpDriveBuildOptions extends WarpDriveConfig {
 export declare const warpDrive: UnpluginInstance<WarpDriveBuildOptions | undefined>;
 ```
 
-**Config semantics are reused, not reimplemented.** `@warp-drive/build-config` gains a
-dependency-free internal entry `-primitives` exporting today's actual `getEnv`,
-`getDeprecations`, `getFeatures`, `createLoggingConfig`, and the `InternalWarpDriveConfig`
-shape (none of which import embroider); `@warp-drive/build` imports them. One implementation in
-the repo → the option surface and env-var contract (`EMBER_ENV`, `IS_TESTING`,
-`EMBER_CLI_TEST_COMMAND`, `NODE_ENV`, `CI`, `IS_RECORDING`, `WARP_DRIVE_FEATURE_OVERRIDE`,
-`forceMode` including its undocumented `'debug'` alias, the `compatWith` semver resolution, the
-`includeDataAdapter` formula) cannot drift. **No migration mapping is needed: the option
-surface is identical to `setConfig`'s today.**
+**Config semantics are reused, not reimplemented — trivially now, since the plugin lives in
+the same package.** The existing `-private/utils/*` resolution code (`getEnv`,
+`getDeprecations`, `getFeatures`, `createLoggingConfig`, the `InternalWarpDriveConfig` shape —
+none of which import embroider) is imported directly by both `setConfig` and the plugin. One
+implementation in the repo → the option surface and env-var contract (`EMBER_ENV`,
+`IS_TESTING`, `EMBER_CLI_TEST_COMMAND`, `NODE_ENV`, `CI`, `IS_RECORDING`,
+`WARP_DRIVE_FEATURE_OVERRIDE`, `forceMode` including its undocumented `'debug'` alias, the
+`compatWith` semver resolution, the `includeDataAdapter` formula) cannot drift. **No migration
+mapping is needed: the option surface is identical to `setConfig`'s today.**
+
+**App-code flags need zero additional config.** Any file in the graph — app source included —
+that imports the boolean flag modules (`import { DEBUG } from
+'@warp-drive/core/build-config/env'`, `if (DEPRECATE_FOO)`, `assert(...)`, `if (LOG_X)`) is
+compiled by the same plugin, by default (§4.4, the non-owned row of the ownership table). The
+trigger is the import specifier itself — the ten `@warp-drive/*/build-config/*` module names
+are first-party by definition, so this cannot touch any other import — which means users get
+the same flag vocabulary WarpDrive's own source uses, in their own code, with no options set.
+This subsumes what `macros()` did for app code in the babel path.
 
 ### 2.3 Per-framework wiring (real snippets)
+
+One import path serves every bundler — the per-bundler adapter is a property access on the
+single instance:
 
 **Vite + React** (also SolidStart, Astro, Qwik, Nuxt via `addVitePlugin`):
 
@@ -342,10 +384,10 @@ surface is identical to `setConfig`'s today.**
 // vite.config.ts
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import warpDrive from '@warp-drive/build/vite';
+import { warpDrive } from '@warp-drive/core/build-plugin';
 
 export default defineConfig({
-  plugins: [react(), warpDrive({ compatWith: '5.7' })],
+  plugins: [react(), warpDrive.vite({ compatWith: '5.7' })],
 });
 // babel.config.mjs: DELETED. The `esbuild: false` hack: DELETED — vite's native oxc
 // transformer handles TS/JSX; WarpDrive's macros were the only reason babel existed here.
@@ -355,18 +397,18 @@ export default defineConfig({
 
 ```ts
 import { sveltekit } from '@sveltejs/kit/vite';
-import warpDrive from '@warp-drive/build/vite';
-export default { plugins: [sveltekit(), warpDrive({ compatWith: '5.7' })] };
+import { warpDrive } from '@warp-drive/core/build-plugin';
+export default { plugins: [sveltekit(), warpDrive.vite({ compatWith: '5.7' })] };
 ```
 
 **Next.js (webpack):**
 
 ```js
 // next.config.mjs
-import warpDrive from '@warp-drive/build/webpack';
+import { warpDrive } from '@warp-drive/core/build-plugin';
 export default {
   webpack(config) {
-    config.plugins.push(warpDrive({ compatWith: '5.7' }));
+    config.plugins.push(warpDrive.webpack({ compatWith: '5.7' }));
     return config;
   },
 };
@@ -380,10 +422,10 @@ export default {
   turbopack: {
     rules: {
       '**/node_modules/{@warp-drive,@ember-data,ember-data}/**/*.js': {
-        loaders: [{ loader: '@warp-drive/build/loader', options: { compatWith: '5.7' } }],
+        loaders: [{ loader: '@warp-drive/core/build-plugin/loader.cjs', options: { compatWith: '5.7' } }],
       },
       './src/**/*.{ts,tsx}': {
-        loaders: [{ loader: '@warp-drive/build/loader', options: { compatWith: '5.7' } }],
+        loaders: [{ loader: '@warp-drive/core/build-plugin/loader.cjs', options: { compatWith: '5.7' } }],
       },
     },
   },
@@ -391,8 +433,12 @@ export default {
 ```
 
 The loader applies the same internal marker filter, so blanket globs are safe; options must be
-JSON. The general rule: **the globs must cover every name in the `packages` option** — note the
-unscoped `ember-data` entry above (its dist carries macros too). Known limitation: the globs
+JSON. The loader specifier goes through **core** (a direct app dependency, resolvable from the
+app root under pnpm strict layouts, unlike the transitive build-config) via core's existing
+`./*.cjs` → `cjs-dist` re-export convention — the same pattern as `@warp-drive/core/
+addon-shim.cjs` today. The general rule: **the globs must cover every name in the `packages`
+option** — note the unscoped `ember-data` entry above (its dist carries macros too). Known
+limitation: the globs
 assume a `/node_modules/<name>/` path segment — true for npm and pnpm (which preserves the
 segment under `.pnpm`), not for Yarn PnP or exotic layouts, which fall through to zero-plugin
 behavior; the runtime unconfigured-warning (§7.3) is the detection story, and the docs must say
@@ -407,8 +453,8 @@ so.
 ```
 ```js
 // warp-drive.esbuild.mjs
-import warpDrive from '@warp-drive/build/esbuild';
-export default warpDrive({ compatWith: '5.7' });
+import { warpDrive } from '@warp-drive/core/build-plugin';
+export default warpDrive.esbuild({ compatWith: '5.7' });
 ```
 
 The esbuild adapter sets `esbuild.onLoadFilter` to a regex matching only owned node_modules
@@ -429,11 +475,11 @@ assertion surfaces, never wrong rewrites.)*
 ```js
 // vite.config.mjs
 import { ember, extensions } from '@embroider/vite';
-import warpDrive from '@warp-drive/build/vite';
+import { warpDrive } from '@warp-drive/core/build-plugin';
 export default {
   plugins: [
-    ...ember(),                        // templateTag() runs here, enforce:'pre'
-    warpDrive({ compatWith: '5.7' }),  // also enforce:'pre', AFTER ember() in array order
+    ...ember(),                             // templateTag() runs here, enforce:'pre'
+    warpDrive.vite({ compatWith: '5.7' }),  // also enforce:'pre', AFTER ember() in array order
   ],
 };
 // babel.config.mjs shrinks to decorators + template-compilation. No buildMacros, no setConfig,
@@ -450,8 +496,8 @@ inert in classic but giving mixed setups one source of truth. The 6.0 classic st
 **rspack/rsbuild:**
 
 ```js
-import warpDrive from '@warp-drive/build/rspack';
-export default { plugins: [warpDrive({ compatWith: '5.7' })] };
+import { warpDrive } from '@warp-drive/core/build-plugin';
+export default { plugins: [warpDrive.rspack({ compatWith: '5.7' })] };
 ```
 
 ---
@@ -624,7 +670,8 @@ guards the case.
   `Symbol.for('warp-drive.debug-shim')`-keyed `globalThis` slot so all 36 shimmed files share
   one state). Inlining — rather than rewriting the specifier to a module in the plugin package
   — is deliberate: no emitted import specifier means no resolution question at all, which
-  sidesteps pnpm strict resolution (core doesn't declare `@warp-drive/build`), Vite's
+  sidesteps pnpm strict resolution (older published dists of legacy/holodeck/@ember-data/*
+  cannot resolve a specifier only newer packages declare), Vite's
   `server.fs.allow` for out-of-workspace plugin files in symlinked monorepos, Windows
   drive-letter specifiers in emitted ESM, and Turbopack's unverified handling of absolute
   specifiers — and keeps the no-`resolveId` constraint intact. `registerDeprecationHandler`/
@@ -638,7 +685,7 @@ guards the case.
 WarpDrive publishing new shapes) → hard error in prod, warn-and-skip in dev, naming both
 versions. Additively from release "A" onward, dist-emitting packages declare
 `"warpDrive": { "distGrammar": 1 }` in package.json so the error can say precisely "upgrade
-`@warp-drive/build` to ≥ X".
+`@warp-drive/core` (which carries the plugin) to ≥ X".
 
 ### 4.4 Carrier engine — flag-module imports (app code now; Carrier v2 dists at 6.0)
 
@@ -656,7 +703,9 @@ plus at 6.0 the `-activation`, `-flags`, and `-seed` internal modules (§7).
 | unknown name from a flag module | build error `Unexpected flag ${name} imported from ${path}` (same contract as today) | same |
 
 The `-seed` module (§7.1) is the one file whose *content* is replaced wholesale: the resolved
-config JSON with an applied-sentinel banner.
+config JSON with an applied-sentinel banner that also stamps the `configHash`
+(`/*! @warp-drive/build-config seed applied cfg:<hash> */`) — idempotency marker and
+cross-build drift diagnostic in one (§5.5, layer 4).
 
 TDZ note (accepted residual): replacing a live import binding with a prepended `const` differs
 only if a circular-import back-edge calls into the module before its first statement runs. Flag
@@ -719,8 +768,9 @@ markers). This is the only workable detector for the esbuild adapter's silent fa
 
 ### 5.1 Threat model
 
-One build process may contain: N copies of `@warp-drive/build` (pnpm peer-dedup failures,
-nested tooling), P copies of the patched `@warp-drive/build-config` (babel path), K plugin
+One build process may contain: N copies of `@warp-drive/build-config` carrying the plugin and
+store (node resolution gives every `@warp-drive/*` copy its own build-config dependency edge;
+version skew and pnpm peer-dedup failures multiply them), K plugin
 *instances* (vite client+SSR environments, a stray loader), M copies of `@warp-drive/*` runtime
 libraries — plus a real embroider `MacrosConfig` alive for other packages. All transformers
 must apply **one** config. Additionally: worker processes (webpack `thread-loader`, vite worker
@@ -734,8 +784,9 @@ sites). The runtime side has its own shipped highlander (`getOrSetUniversal` /
 ### 5.2 The store
 
 ```ts
-// @warp-drive/build/store — also imported (or byte-identical vendored) by
-// @warp-drive/build-config's patched setConfig. Symbol.for makes every physical copy converge.
+// a private module inside @warp-drive/build-config — the SAME package as setConfig and the
+// plugin, so there is exactly one store implementation and no cross-package interop dance.
+// Symbol.for makes every physical COPY of build-config converge on one store object.
 const KEY = Symbol.for('warp-drive.build-store');
 
 interface StoreV1 {
@@ -751,7 +802,7 @@ interface ConfigEntry {
   finalized: InternalWarpDriveConfig | null; // exact today's shape ┘ must keep these readable
   envSnapshot: Record<string, string | undefined>;  // the 7 env vars at finalize time
   sources: Array<{ from: string; via: 'plugin' | 'setConfig' | 'legacy-app-options' }>;
-  finalizedBy?: string;               // "vite@8.2.2 via @warp-drive/build@1.0.0 (/abs/path)"
+  finalizedBy?: string;               // "vite@8.2.2 via @warp-drive/build-config@5.9.0 (/abs/path)"
   // unknown extra fields MUST be preserved verbatim by all writers
 }
 ```
@@ -778,7 +829,7 @@ Design rules, each closing a named embroider failure mode (§1.2):
   copies converge. Different hash before finalize → immediate error carrying both provenances
   and the first differing keys:
 
-  > `[WarpDrive::build] Conflicting WarpDrive build configs for app '/srv/app'. First set from ember-cli-build.js via setConfig() with compatWith: '4.12'; then from vite.config.mjs via @warp-drive/build with compatWith: '5.6'. WarpDrive config must be identical everywhere it is declared. Differing keys: compatWith, deprecations.DEPRECATE_TRACKING_PACKAGE.`
+  > `[WarpDrive::build] Conflicting WarpDrive build configs for app '/srv/app'. First set from ember-cli-build.js via setConfig() with compatWith: '4.12'; then from vite.config.mjs via warpDrive.vite() with compatWith: '5.6'. WarpDrive config must be identical everywhere it is declared. Differing keys: compatWith, deprecations.DEPRECATE_TRACKING_PACKAGE.`
 
   Never first-write-wins, never last-write-wins (embroider's `setGlobalConfig` is silent
   last-write-wins).
@@ -802,7 +853,7 @@ Design rules, each closing a named embroider failure mode (§1.2):
     running that loader under `thread-loader`-style worker parallelism is therefore
     **unsupported and documented as such**; cache correctness in that host comes from the
     cache-version contribution (§4.7), not from options.
-  - **the `./loader` export** (Turbopack + bring-your-own-wiring) takes JSON options carrying
+  - **the `./plugin/loader` export** (Turbopack + bring-your-own-wiring) takes JSON options carrying
     `{ raw, configHash }`; it re-normalizes from options + its own `process.env` and **throws
     if its hash disagrees** — env drift between orchestrator and worker becomes a diagnosable
     error instead of silently divergent output.
@@ -817,9 +868,10 @@ vars alone (`NODE_ENV=production` → correctly stripped prod defaults).
 (all overloads, including the classic 3-arg form and `ember-data`'s `app.options.emberData`
 auto-path) does two writes:
 
-1. `register(appRoot, userConfig, { via: 'setConfig' })` into the neutral store (imported from
-   `@warp-drive/build/store` when resolvable, else a byte-identical vendored copy — same
-   `Symbol.for` key, interoperable by construction);
+1. `register(appRoot, userConfig, { via: 'setConfig' })` into the neutral store — a plain
+   same-package import, since store and `setConfig` both live in build-config (a *different
+   installed copy* of build-config calling `setConfig` still lands in the same store object
+   via the `Symbol.for` key);
 2. **unchanged**: `macros.setGlobalConfig(..., 'WarpDrive', normalized)` into embroider — for as
    long as an embroider pass may legally run anywhere. (One-way bridging was explicitly
    rejected: it creates the silent wrong-mode failure where a misordered embroider-first pass
@@ -855,7 +907,53 @@ Convergence table:
 | unplugin only | store populated; best-effort `setGlobalConfig` bridge into embroider iff `@embroider/macros` is resolvable and an app-level MacrosConfig exists (classic-addon edge); silence otherwise is the expected end state |
 | 2 plugin copies, same options | same store via `Symbol.for`; equal hash; idempotent double-transform (§4.2) |
 | plugin newer than library | legacy engine is shape-keyed, not version-keyed; unknown shapes hit the distGrammar tripwire |
-| library newer than plugin | unrecognized `/build-config/-` specifiers from an owned path → "carrier v(N) detected; upgrade @warp-drive/build" + seed-derived runtime defaults (correct, unoptimized) |
+| library newer than plugin | unrecognized `/build-config/-` specifiers from an owned path → "carrier v(N) detected; upgrade the @warp-drive/core powering your build plugin" + seed-derived runtime defaults (correct, unoptimized) |
+
+### 5.5 Node resolution, duplicate copies, threads, and processes — the full answer
+
+Node resolution *will* produce multiple physical copies of the plugin/store code and of the
+libraries, and parallel builds *will* split across threads and processes. The design's answer
+is layered — each layer handles the failure the previous one can't:
+
+**Layer 1 — duplicate code copies in one process: the `Symbol.for` store.** Resolution
+duplicates *code*, not *registry keys*: `Symbol.for('warp-drive.build-store')` returns the
+same symbol to every copy of every version of build-config in a process, so all copies
+converge on one store *object* even when zero modules are shared. Three rules make that safe
+across version skew: the store holds only JSON-plain data (no instances, no closures — any
+copy's code can read any copy's writes), unknown fields are preserved verbatim and four core
+fields are frozen forever (a newer copy can extend the shape without stranding an older one),
+and the explicit `protocol` number turns true incompatibility into a loud error naming both
+copies and their paths — never silent divergence (embroider's handshake, by contrast, keys a
+WeakMap on an object identity that `buildMacros` never shares, so its copies silently diverge
+today).
+
+**Layer 2 — duplicate copies of the *libraries*: the transform is copy-agnostic.** Library
+copies hold no build-time state; they are inert text. Ownership is by package-*name* walk, so
+every physical copy of every owned package — whatever pnpm hash directory it lives in — is
+transformed with the same finalized config, and every copy's `-seed` module receives the same
+resolved JSON. Consistency comes from one *config*, not one *copy*; browser-side multi-copy
+reconciliation remains the library's existing runtime highlander (`getOrSetUniversal`),
+untouched.
+
+**Layer 3 — threads and processes: determinism, not shared memory.** `globalThis` does not
+cross workers, so the design never relies on it there. The normalized config is a pure
+function of `(plugin options, the seven env vars, lockfile)` — every thread or process that
+evaluates the same bundler config file re-derives the identical result independently. Where
+config must travel as data (the `./plugin/loader` path — Turbopack, custom wiring), the
+options are JSON and carry `configHash`; the receiving side re-normalizes locally and
+**throws on hash mismatch**, converting env drift between orchestrator and worker into a
+diagnosable error. Where options cannot travel (unplugin's injected webpack/rspack loader
+holds a live plugin object), the hook only ever runs on the thread that instantiated the
+plugin — `thread-loader`-style parallelism over that loader is impossible and documented
+unsupported, so there is no silent-divergence path, only a "doesn't run there" one.
+
+**Layer 4 — separate whole builds (SSR + client in different processes, parallel Angular
+targets, turbo/nx):** each process independently re-derives config from its own evaluation of
+the same config file; divergence requires divergent inputs (usually env). For post-hoc
+diagnosis, the seed rewrite stamps the `configHash` into its applied-sentinel banner
+(`/*! @warp-drive/build-config seed applied cfg:<hash> */`), so two build outputs that were
+supposed to agree can be compared with `grep` — cheap, and it turns "the SSR bundle behaves
+differently" from a mystery into a one-line check.
 
 ---
 
@@ -1011,17 +1109,26 @@ Also at 6.0:
 
 ### 8.1 Release "A" (minor)
 
-`@warp-drive/build@1.0`: legacy engine + `@ember/debug` handling + app-code flag compilation
-(subsuming `macros()` for app code) — verified against the current workspace dist, with
+`@warp-drive/build-config` gains the plugin (legacy engine + `@ember/debug` handling +
+app-code flag compilation, subsuming `macros()` for app code), the neutral store with the
+`setConfig` dual-write, seed + coherent runtime defaults + `runtime-debug`; `@warp-drive/core`
+gains the `build-plugin` re-export. Verified against the current workspace dist, with
 **published-tarball verification as an explicit release gate**: fetch representative published
 artifacts (4.12, 5.3–5.6 — emitted by older publish pipelines that may predate the current
 rolldown-simplified shapes), run the shape inventory over them, and add them to the golden
-corpus *before* claiming compatibility with every published release. A
-React/Vue/Svelte/plain-Vite app deletes babel entirely on day one. `@warp-drive/build-config`
-patch: store dual-write in `setConfig`, `-primitives` entry, seed + coherent defaults +
-`runtime-debug`. Golden-file test corpus: transform real dist files (including the §1.1
-statement-nesting composites) and assert byte-level expectations; plus the **vite dev-server
-test** (§0, requirement 1).
+corpus *before* claiming compatibility with every published release.
+
+**The migration mechanic is insertion, not replacement — because this is not a babel plugin.**
+The adoption instruction for every framework is one sentence: *add `warpDrive.<bundler>()`
+ahead of wherever babel (or any transform stage) sits in your build.* The plugin is
+`enforce: 'pre'` and consumes WarpDrive's files first; an existing `buildMacros`/`macros()`/
+`babel-plugin-debug-macros` setup then finds nothing to do in those files (§6) and can be
+deleted at leisure — or never, in mixed apps where other addons still need embroider. A
+React/Vue/Svelte/plain-Vite app can delete babel entirely on day one.
+
+Golden-file test corpus: transform real dist files (including the §1.1 statement-nesting
+composites) and assert byte-level expectations; plus the **vite dev-server test** (§0,
+requirement 1).
 
 ### 8.2 Release "B" (minor)
 
@@ -1039,15 +1146,16 @@ Carrier flip per §7.2. Consumer matrix:
 
 - **Unplugin users**: nothing — the plugin already speaks both carriers.
 - **Babel-path holdouts**: swap `...macros(), ...Macros.babelMacros, <debug-macros entry>` for
-  the single first-party `['@warp-drive/build/babel-plugin', { ...config }]` — a babel plugin
-  wrapping the same normalize+store+carrier-rewrite core, no embroider involved.
+  the single first-party `['@warp-drive/core/build-plugin/babel.cjs', { ...config }]` — a
+  babel plugin wrapping the same normalize+store+carrier-rewrite core, no embroider involved.
   `buildMacros`/`setConfig` composition stays legal for apps using embroider for other packages.
 - **Ember classic**: `@warp-drive/core`'s `addon-main.cjs` grows what `ember-data`'s
   addon-main already proves possible for `setConfig`: in `included()`, push
-  `['@warp-drive/build/babel-plugin', { fromStore: appRoot }]` into
-  `app.options.babel.plugins` (deduped by label), so ember-auto-import compiles v2-addon dist
-  with the injected plugin and `ember-cli-build.js` `setConfig(...)` remains the entire user
-  surface. **This is the single riskiest mechanism in the design** — the precedent proves the
+  `[require.resolve('@warp-drive/build-config/plugin/babel'), { fromStore: appRoot }]` into
+  `app.options.babel.plugins` (deduped by label) — note the injection resolves the plugin from
+  *core's own* dependency graph (core declares build-config), so app-level resolvability never
+  enters the picture. ember-auto-import compiles v2-addon dist with the injected plugin and
+  `ember-cli-build.js` `setConfig(...)` remains the entire user surface. **This is the single riskiest mechanism in the design** — the precedent proves the
   injection point, not babel-plugin propagation into ember-auto-import's compilation of addon
   code across addon orderings, engines, and ember-cli-babel version skew. De-risking is
   therefore structural: ship behind `WARP_DRIVE_CLASSIC_NEUTRAL=1` for the entire 6.0
@@ -1061,14 +1169,16 @@ Carrier flip per §7.2. Consumer matrix:
 
 **Timeline summary**: `@embroider/macros` is out of the *app-facing path* at release "A" for
 unplugin adopters; out of WarpDrive's dependency graph entirely at 6.0. Babel: out of the app
-path at "A"; the `./babel-plugin` bridge remains an optional integration indefinitely.
-`@warp-drive/build-config`: re-exported from `@warp-drive/build/legacy` in 6.x, retired 7.0.
+path at "A"; the `./plugin/babel` bridge remains an optional integration indefinitely.
+`@warp-drive/build-config` lives on as the plugin's home; its legacy babel surface
+(`babelPlugin`, `macros()`, the embroider `MacrosConfig` bridge, addon-shim CJS entries) is
+deprecated across 6.x and removed in 7.0.
 
 ---
 
 ## 9. Dev / test / prod behavior matrix
 
-Env derivation is today's `getEnv`, verbatim (via `-primitives`): `PRODUCTION` from
+Env derivation is today's `getEnv`, verbatim (same-package code reuse, §2.2): `PRODUCTION` from
 `EMBER_ENV`/`NODE_ENV`; `DEBUG = !PRODUCTION`; `TESTING ⊇ DEBUG`; `forceMode` override;
 `SHOULD_RECORD`/`IS_CI` for holodeck/diagnostic.
 
@@ -1132,16 +1242,20 @@ path; toggling needs zero rebuilds; the whole `globalThis` ABI survives byte-ide
 9. **`SHOULD_RECORD` zero-plugin default** proposed `false` (never silently record) vs today's
    local-dev-truthy placeholder; holodeck always runs with a plugin/env in practice. Needs
    sign-off.
-10. **Naming**: `@warp-drive/build` vs `@warp-drive/unplugin`. This document assumes
-    `@warp-drive/build` (the export surface is bigger than unplugin: loader, babel bridge,
-    runtime shim); rename is mechanical if the team prefers wearing the ecosystem badge.
+10. **Dependency weight of "no new package"**: housing the plugin in build-config puts
+    `unplugin` and `oxc-parser` (napi binaries as platform-specific optionalDependencies +
+    wasm fallback) into the transitive install of every consumer via core → build-config,
+    wired-or-not. Node-only, never bundled, deduped by the package manager — accepted, but it
+    is real install weight and CI-image surface; if it ever becomes a complaint, the escape
+    hatch is demoting them to optional peer deps with a clear plugin-side error, at a DX cost.
 
 ---
 
 ## Appendix A — Factory sketch
 
 ```ts
-// @warp-drive/build/src/index.ts
+// @warp-drive/build-config/src/plugin/index.ts — exported as ./plugin,
+// re-exported by @warp-drive/core/build-plugin
 import { createUnplugin } from 'unplugin';
 import { parseSync } from 'oxc-parser';
 import MagicString from 'magic-string';
