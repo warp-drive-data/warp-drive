@@ -892,7 +892,7 @@ module('Integration | Graph | Diff Preservation', function (hooks) {
     );
   }
 
-  test('updateRelationship operation matching localState does not produce a notification for a committed removal (resetOnRemoteUpdate=false)', function (assert) {
+  test('updateRelationship operation matching localState notifies only the remote channel for a committed removal (resetOnRemoteUpdate=false)', function (assert) {
     class User extends Model {
       @attr declare name: string;
       @hasMany('comment', { async: false, inverse: 'user', resetOnRemoteUpdate: false }) declare comments: Comment[];
@@ -1008,8 +1008,8 @@ module('Integration | Graph | Diff Preservation', function (hooks) {
       userIdentifier,
       'relationships',
       'comments',
-      0,
-      'We should have no notifciations after remote push matches local state'
+      1,
+      'one remote-channel notification after a remote push that matches local state: the remote view changed (the commit landed) while the local view did not'
     );
 
     // push an update that does not match the local state
@@ -1041,7 +1041,7 @@ module('Integration | Graph | Diff Preservation', function (hooks) {
     assert.arrayStrictEquals(data4.data, [comment1Identifier, comment4Identifier], 'state is updated');
   });
 
-  test('updateRelationship operation matching localState does not produce a notification for a committed addition (resetOnRemoteUpdate=false)', function (assert) {
+  test('updateRelationship operation matching localState notifies only the remote channel for a committed addition (resetOnRemoteUpdate=false)', function (assert) {
     class User extends Model {
       @attr declare name: string;
       @hasMany('comment', { async: false, inverse: 'user', resetOnRemoteUpdate: false }) declare comments: Comment[];
@@ -1134,8 +1134,8 @@ module('Integration | Graph | Diff Preservation', function (hooks) {
       userIdentifier,
       'relationships',
       'comments',
-      0,
-      'no notifications after remote push matches local state'
+      1,
+      'one remote-channel notification after a remote push that matches local state: the remote view changed (the commit landed) while the local view did not'
     );
 
     // check state is still the same
@@ -1181,7 +1181,7 @@ module('Integration | Graph | Diff Preservation', function (hooks) {
     );
   });
 
-  test('updateRelationship operation matching localState does not produce a notification for a committed removal', function (assert) {
+  test('updateRelationship operation matching localState notifies only the remote channel for a committed removal', function (assert) {
     class User extends Model {
       @attr declare name: string;
       @hasMany('comment', { async: false, inverse: 'user', resetOnRemoteUpdate: true }) declare comments: Comment[];
@@ -1297,8 +1297,8 @@ module('Integration | Graph | Diff Preservation', function (hooks) {
       userIdentifier,
       'relationships',
       'comments',
-      0,
-      'We should have no notifciations after remote push matches local state'
+      1,
+      'one remote-channel notification after a remote push that matches local state: the remote view changed (the commit landed) while the local view did not'
     );
 
     // push an update that does not match the local state
@@ -1330,7 +1330,7 @@ module('Integration | Graph | Diff Preservation', function (hooks) {
     assert.arrayStrictEquals(data4.data, [comment1Identifier, comment4Identifier], 'state is updated');
   });
 
-  test('updateRelationship operation matching localState does not produce a notification for a committed addition', function (assert) {
+  test('updateRelationship operation matching localState notifies only the remote channel for a committed addition', function (assert) {
     class User extends Model {
       @attr declare name: string;
       @hasMany('comment', { async: false, inverse: 'user', resetOnRemoteUpdate: true }) declare comments: Comment[];
@@ -1423,8 +1423,8 @@ module('Integration | Graph | Diff Preservation', function (hooks) {
       userIdentifier,
       'relationships',
       'comments',
-      0,
-      'no notifications after remote push matches local state'
+      1,
+      'one remote-channel notification after a remote push that matches local state: the remote view changed (the commit landed) while the local view did not'
     );
 
     // check state is still the same

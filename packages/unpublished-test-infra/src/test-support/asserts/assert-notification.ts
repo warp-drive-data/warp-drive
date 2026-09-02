@@ -70,7 +70,8 @@ function setupNotifications(context: TestContext, store: Store) {
   notifications.notify = function (
     cacheKey: ResourceKey | RequestKey,
     bucket: NotificationType | DocumentCacheOperation,
-    key?: string | Set<string> | null
+    key?: string | Set<string> | null,
+    channel?: 'local' | 'remote'
   ) {
     // `key` may be a `Set<string>` when many keys for the same cacheKey+bucket
     // are delivered in a single batched `notify` call (see NotificationManager
@@ -82,7 +83,7 @@ function setupNotifications(context: TestContext, store: Store) {
     const keys = key instanceof Set ? Array.from(key) : [key ?? null];
 
     // @ts-expect-error TS is bad at curried overloads
-    const scheduled = originalNotify.apply(notifications, [cacheKey, bucket, key]);
+    const scheduled = originalNotify.apply(notifications, [cacheKey, bucket, key, channel]);
 
     for (const singleKey of keys) {
       const counter = getCounter(context, cacheKey, bucket, singleKey);

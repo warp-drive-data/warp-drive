@@ -253,11 +253,14 @@ export class ReactiveResource {
             break;
         }
       },
-      // PolarisMode's default immutable instance shows only remote state, so it
-      // subscribes 'remote' to skip purely-local edits it can't see. Legacy-mode
-      // schemas and any editable instance (including a checked-out PolarisMode
-      // copy) show a reconciled local view and so subscribe 'local' (the same
-      // as omitting the channel): they hear everything.
+      // Each copy subscribes to the channel of the projection it renders and
+      // re-pulls that projection when notified. PolarisMode's default immutable
+      // instance shows only remote state, so it subscribes 'remote' and is not
+      // woken for purely-local changes it can't see. Legacy-mode schemas and any
+      // editable instance (including a checked-out PolarisMode copy) show a
+      // reconciled local view and so subscribe 'local' (the same as omitting the
+      // channel) and are not woken for purely-remote changes (e.g. a push that
+      // merely confirms a committed local mutation) that leave their view as-is.
       context.legacy || context.editable ? 'local' : 'remote'
     );
 

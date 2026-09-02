@@ -51,10 +51,10 @@ export default function removeFromRelatedRecords(
   }
 
   // a purely local mutation (isRemote=false) has no remote implication, so
-  // remote-only readers don't need to be woken for it. 'remote' delivers to
-  // every subscriber (same as an omitted channel); passing it explicitly
-  // keeps this call monomorphic.
-  notifyChange(graph, relationship, isRemote ? 'remote' : 'local');
+  // remote-only readers don't need to be woken for it. A remote removal
+  // changes remote state and the reconciled local view alike, so it is
+  // notified unscoped, reaching every subscriber.
+  notifyChange(graph, relationship, isRemote ? undefined : 'local');
 }
 
 function removeRelatedRecord(
