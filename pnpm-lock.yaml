@@ -2939,8 +2939,8 @@ importers:
         specifier: ^12.0.2
         version: 12.0.2(eslint@10.9.1)
       eslint-plugin-n:
-        specifier: ^17.24.0
-        version: 17.24.0(eslint@10.9.1)(typescript@6.0.3)
+        specifier: ^18.3.0
+        version: 18.3.0(eslint@10.9.1)(typescript@6.0.3)
       eslint-plugin-qunit:
         specifier: ^8.2.6
         version: 8.2.6(eslint@10.9.1)
@@ -4454,10 +4454,6 @@ packages:
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     peerDependencies:
       eslint: ^6.0.0 || ^7.0.0 || >=8.0.0
-
-  '@eslint-community/regexpp@4.12.1':
-    resolution: {integrity: sha512-CCZCDJuduB9OUkFkY2IgppNZMi2lBQgD2qzwXkEia16cge2pijY/aXi96CJMquDMn3nJdlPV1A5KrJEXwfLNzQ==}
-    engines: {node: ^12.0.0 || ^14.0.0 || >=16.0.0}
 
   '@eslint-community/regexpp@4.12.2':
     resolution: {integrity: sha512-EriSTlt5OC9/7SXkRSCAhfSxxoSUgBm33OH+IkwbdpgoqsSsUg7y3uh+IICI/Qg4BBWr3U2i39RpmycbxMq4ew==}
@@ -8082,11 +8078,18 @@ packages:
     peerDependencies:
       eslint: '>=10.2.0'
 
-  eslint-plugin-n@17.24.0:
-    resolution: {integrity: sha512-/gC7/KAYmfNnPNOb3eu8vw+TdVnV0zhdQwexsw6FLXbhzroVj20vRn2qL8lDWDGnAQ2J8DhdfvXxX9EoxvERvw==}
-    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+  eslint-plugin-n@18.3.0:
+    resolution: {integrity: sha512-cPVguuDe6DrIPb/qUXHf8P89MaVTUmiYWwpt5gX5AILsvRIiZAxMFXcFR6QHYBksqKJpjfUBlL/RleCJUWcD7w==}
+    engines: {node: ^20.19.0 || ^22.13.0 || >=24}
     peerDependencies:
-      eslint: '>=8.23.0'
+      eslint: '>=8.57.1'
+      ts-declaration-location: ^1.0.6
+      typescript: 6.0.3
+    peerDependenciesMeta:
+      ts-declaration-location:
+        optional: true
+      typescript:
+        optional: true
 
   eslint-plugin-qunit@8.2.6:
     resolution: {integrity: sha512-S1jC/DIW9J8VtNX4uG1vlf5FZVrfQFlcuiYmvTHR2IICUhubHqpWA5o+qS1tujh+81Gs39omKV2D4OXfbSJE5g==}
@@ -10596,11 +10599,6 @@ packages:
     peerDependencies:
       typescript: 6.0.3
 
-  ts-declaration-location@1.0.7:
-    resolution: {integrity: sha512-EDyGAwH1gO0Ausm9gV6T2nUvBgXT5kGoCMJPllOaooZ+4VvJiKBdZE7wK18N1deEowhcUptS+5GXZK8U/fvpwA==}
-    peerDependencies:
-      typescript: 6.0.3
-
   tsdown@0.22.14:
     resolution: {integrity: sha512-ule7Y+fsAN2iZbLDoo7C4KYljFJNJJ+fLshyn+9gozeTspVersWHxwdGB+Dm2hzA38s6muFnUTl0jK3vJm9ifQ==}
     engines: {node: ^22.18.0 || >=24.11.0}
@@ -13003,8 +13001,6 @@ snapshots:
       eslint: 10.9.1
       eslint-visitor-keys: 3.4.3
 
-  '@eslint-community/regexpp@4.12.1': {}
-
   '@eslint-community/regexpp@4.12.2': {}
 
   '@eslint/config-array@0.23.5':
@@ -15392,7 +15388,7 @@ snapshots:
       eslint-config-prettier: 10.1.8(eslint@10.9.1)
       eslint-plugin-import-x: 4.17.1(eslint@10.9.1)
       eslint-plugin-mocha: 12.0.2(eslint@10.9.1)
-      eslint-plugin-n: 17.24.0(eslint@10.9.1)(typescript@6.0.3)
+      eslint-plugin-n: 18.3.0(eslint@10.9.1)(typescript@6.0.3)
       eslint-plugin-qunit: 8.2.6(eslint@10.9.1)
       globals: 16.5.0
       tsdown: 0.22.14(typescript@6.0.3)
@@ -15419,6 +15415,7 @@ snapshots:
       - rolldown
       - rollup
       - supports-color
+      - ts-declaration-location
       - tsx
       - unplugin-unused
       - unrun
@@ -15444,7 +15441,7 @@ snapshots:
       eslint-config-prettier: 10.1.8(eslint@10.9.1)
       eslint-plugin-import-x: 4.17.1(eslint@10.9.1)
       eslint-plugin-mocha: 12.0.2(eslint@10.9.1)
-      eslint-plugin-n: 17.24.0(eslint@10.9.1)(typescript@6.0.3)
+      eslint-plugin-n: 18.3.0(eslint@10.9.1)(typescript@6.0.3)
       eslint-plugin-qunit: 8.2.6(eslint@10.9.1)
       globals: 16.5.0
       tsdown: 0.22.14(typescript@6.0.3)
@@ -15471,6 +15468,7 @@ snapshots:
       - rolldown
       - rollup
       - supports-color
+      - ts-declaration-location
       - tsx
       - unplugin-unused
       - unrun
@@ -15496,7 +15494,7 @@ snapshots:
       eslint-config-prettier: 10.1.8(eslint@10.9.1)
       eslint-plugin-import-x: 4.17.1(eslint@10.9.1)
       eslint-plugin-mocha: 12.0.2(eslint@10.9.1)
-      eslint-plugin-n: 17.24.0(eslint@10.9.1)(typescript@6.0.3)
+      eslint-plugin-n: 18.3.0(eslint@10.9.1)(typescript@6.0.3)
       eslint-plugin-qunit: 8.2.6(eslint@10.9.1)
       globals: 16.5.0
       tsdown: 0.22.14(typescript@6.0.3)
@@ -15523,6 +15521,7 @@ snapshots:
       - rolldown
       - rollup
       - supports-color
+      - ts-declaration-location
       - tsx
       - unplugin-unused
       - unrun
@@ -15548,7 +15547,7 @@ snapshots:
       eslint-config-prettier: 10.1.8(eslint@10.9.1)
       eslint-plugin-import-x: 4.17.1(eslint@10.9.1)
       eslint-plugin-mocha: 12.0.2(eslint@10.9.1)
-      eslint-plugin-n: 17.24.0(eslint@10.9.1)(typescript@6.0.3)
+      eslint-plugin-n: 18.3.0(eslint@10.9.1)(typescript@6.0.3)
       eslint-plugin-qunit: 8.2.6(eslint@10.9.1)
       globals: 16.5.0
       tsdown: 0.22.14(typescript@6.0.3)
@@ -15575,6 +15574,7 @@ snapshots:
       - rolldown
       - rollup
       - supports-color
+      - ts-declaration-location
       - tsx
       - unplugin-unused
       - unrun
@@ -15600,7 +15600,7 @@ snapshots:
       eslint-config-prettier: 10.1.8(eslint@10.9.1)
       eslint-plugin-import-x: 4.17.1(eslint@10.9.1)
       eslint-plugin-mocha: 12.0.2(eslint@10.9.1)
-      eslint-plugin-n: 17.24.0(eslint@10.9.1)(typescript@6.0.3)
+      eslint-plugin-n: 18.3.0(eslint@10.9.1)(typescript@6.0.3)
       eslint-plugin-qunit: 8.2.6(eslint@10.9.1)
       globals: 16.5.0
       tsdown: 0.22.14(typescript@6.0.3)
@@ -15627,6 +15627,7 @@ snapshots:
       - rolldown
       - rollup
       - supports-color
+      - ts-declaration-location
       - tsx
       - unplugin-unused
       - unrun
@@ -15652,7 +15653,7 @@ snapshots:
       eslint-config-prettier: 10.1.8(eslint@10.9.1)
       eslint-plugin-import-x: 4.17.1(eslint@10.9.1)
       eslint-plugin-mocha: 12.0.2(eslint@10.9.1)
-      eslint-plugin-n: 17.24.0(eslint@10.9.1)(typescript@6.0.3)
+      eslint-plugin-n: 18.3.0(eslint@10.9.1)(typescript@6.0.3)
       eslint-plugin-qunit: 8.2.6(eslint@10.9.1)
       globals: 16.5.0
       tsdown: 0.22.14(typescript@6.0.3)
@@ -15679,6 +15680,7 @@ snapshots:
       - rolldown
       - rollup
       - supports-color
+      - ts-declaration-location
       - tsx
       - unplugin-unused
       - unrun
@@ -15704,7 +15706,7 @@ snapshots:
       eslint-config-prettier: 10.1.8(eslint@10.9.1)
       eslint-plugin-import-x: 4.17.1(eslint@10.9.1)
       eslint-plugin-mocha: 12.0.2(eslint@10.9.1)
-      eslint-plugin-n: 17.24.0(eslint@10.9.1)(typescript@6.0.3)
+      eslint-plugin-n: 18.3.0(eslint@10.9.1)(typescript@6.0.3)
       eslint-plugin-qunit: 8.2.6(eslint@10.9.1)
       globals: 16.5.0
       tsdown: 0.22.14(typescript@6.0.3)
@@ -15731,6 +15733,7 @@ snapshots:
       - rolldown
       - rollup
       - supports-color
+      - ts-declaration-location
       - tsx
       - unplugin-unused
       - unrun
@@ -15756,7 +15759,7 @@ snapshots:
       eslint-config-prettier: 10.1.8(eslint@10.9.1)
       eslint-plugin-import-x: 4.17.1(eslint@10.9.1)
       eslint-plugin-mocha: 12.0.2(eslint@10.9.1)
-      eslint-plugin-n: 17.24.0(eslint@10.9.1)(typescript@6.0.3)
+      eslint-plugin-n: 18.3.0(eslint@10.9.1)(typescript@6.0.3)
       eslint-plugin-qunit: 8.2.6(eslint@10.9.1)
       globals: 16.5.0
       tsdown: 0.22.14(8629f0e8b88655ec10c392d26f344896)
@@ -15783,6 +15786,7 @@ snapshots:
       - rolldown
       - rollup
       - supports-color
+      - ts-declaration-location
       - tsx
       - unplugin-unused
       - unrun
@@ -15808,7 +15812,7 @@ snapshots:
       eslint-config-prettier: 10.1.8(eslint@10.9.1)
       eslint-plugin-import-x: 4.17.1(eslint@10.9.1)
       eslint-plugin-mocha: 12.0.2(eslint@10.9.1)
-      eslint-plugin-n: 17.24.0(eslint@10.9.1)(typescript@6.0.3)
+      eslint-plugin-n: 18.3.0(eslint@10.9.1)(typescript@6.0.3)
       eslint-plugin-qunit: 8.2.6(eslint@10.9.1)
       globals: 16.5.0
       tsdown: 0.22.14(typescript@6.0.3)
@@ -15835,6 +15839,7 @@ snapshots:
       - rolldown
       - rollup
       - supports-color
+      - ts-declaration-location
       - tsx
       - unplugin-unused
       - unrun
@@ -15860,7 +15865,7 @@ snapshots:
       eslint-config-prettier: 10.1.8(eslint@10.9.1)
       eslint-plugin-import-x: 4.17.1(eslint@10.9.1)
       eslint-plugin-mocha: 12.0.2(eslint@10.9.1)
-      eslint-plugin-n: 17.24.0(eslint@10.9.1)(typescript@6.0.3)
+      eslint-plugin-n: 18.3.0(eslint@10.9.1)(typescript@6.0.3)
       eslint-plugin-qunit: 8.2.6(eslint@10.9.1)
       globals: 16.5.0
       tsdown: 0.22.14(typescript@6.0.3)
@@ -15887,6 +15892,7 @@ snapshots:
       - rolldown
       - rollup
       - supports-color
+      - ts-declaration-location
       - tsx
       - unplugin-unused
       - unrun
@@ -15912,7 +15918,7 @@ snapshots:
       eslint-config-prettier: 10.1.8(eslint@10.9.1)
       eslint-plugin-import-x: 4.17.1(eslint@10.9.1)
       eslint-plugin-mocha: 12.0.2(eslint@10.9.1)
-      eslint-plugin-n: 17.24.0(eslint@10.9.1)(typescript@6.0.3)
+      eslint-plugin-n: 18.3.0(eslint@10.9.1)(typescript@6.0.3)
       eslint-plugin-qunit: 8.2.6(eslint@10.9.1)
       globals: 16.5.0
       tsdown: 0.22.14(8629f0e8b88655ec10c392d26f344896)
@@ -15939,6 +15945,7 @@ snapshots:
       - rolldown
       - rollup
       - supports-color
+      - ts-declaration-location
       - tsx
       - unplugin-unused
       - unrun
@@ -15964,7 +15971,7 @@ snapshots:
       eslint-config-prettier: 10.1.8(eslint@10.9.1)
       eslint-plugin-import-x: 4.17.1(eslint@10.9.1)
       eslint-plugin-mocha: 12.0.2(eslint@10.9.1)
-      eslint-plugin-n: 17.24.0(eslint@10.9.1)(typescript@6.0.3)
+      eslint-plugin-n: 18.3.0(eslint@10.9.1)(typescript@6.0.3)
       eslint-plugin-qunit: 8.2.6(eslint@10.9.1)
       globals: 16.5.0
       tsdown: 0.22.14(typescript@6.0.3)
@@ -15991,6 +15998,7 @@ snapshots:
       - rolldown
       - rollup
       - supports-color
+      - ts-declaration-location
       - tsx
       - unplugin-unused
       - unrun
@@ -17468,8 +17476,8 @@ snapshots:
 
   eslint-plugin-es-x@7.8.0(eslint@10.9.1):
     dependencies:
-      '@eslint-community/eslint-utils': 4.7.0(eslint@10.9.1)
-      '@eslint-community/regexpp': 4.12.1
+      '@eslint-community/eslint-utils': 4.10.1(eslint@10.9.1)
+      '@eslint-community/regexpp': 4.12.2
       eslint: 10.9.1
       eslint-compat-utils: 0.5.1(eslint@10.9.1)
 
@@ -17498,9 +17506,9 @@ snapshots:
       json-schema-to-ts: 3.1.1
       type-fest: 5.8.0
 
-  eslint-plugin-n@17.24.0(eslint@10.9.1)(typescript@6.0.3):
+  eslint-plugin-n@18.3.0(eslint@10.9.1)(typescript@6.0.3):
     dependencies:
-      '@eslint-community/eslint-utils': 4.7.0(eslint@10.9.1)
+      '@eslint-community/eslint-utils': 4.10.1(eslint@10.9.1)
       enhanced-resolve: 5.18.1
       eslint: 10.9.1
       eslint-plugin-es-x: 7.8.0(eslint@10.9.1)
@@ -17509,9 +17517,8 @@ snapshots:
       globrex: 0.1.2
       ignore: 5.3.2
       semver: 7.8.5
-      ts-declaration-location: 1.0.7(typescript@6.0.3)
-    transitivePeerDependencies:
-      - typescript
+    optionalDependencies:
+      typescript: 6.0.3
 
   eslint-plugin-qunit@8.2.6(eslint@10.9.1):
     dependencies:
@@ -20496,11 +20503,6 @@ snapshots:
 
   ts-api-utils@2.5.0(typescript@6.0.3):
     dependencies:
-      typescript: 6.0.3
-
-  ts-declaration-location@1.0.7(typescript@6.0.3):
-    dependencies:
-      picomatch: 4.0.5
       typescript: 6.0.3
 
   tsdown@0.22.14(39b32ab90c7a706d925472bd5a2f89a6):
