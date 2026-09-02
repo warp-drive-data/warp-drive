@@ -134,25 +134,7 @@ module<CustomContext>('mutation-request', function (hooks) {
     assert.equal(user2?.id, 'id2', 'second record has correct id');
   });
 
-  // TODO: a `linksMode` hasMany's rendered array caches itself on the record's
-  // signal after its first read (see `getHasManyField`), so `graph.getData`/
-  // `computeLocalState` -- the only place a `CollectionEdge`'s `isDirty` flag
-  // and `localState` snapshot are ever refreshed -- is never called again for
-  // that field after the first access. A second (or later) remote update
-  // then diffs against that now-stale `localState`, which can make
-  // `diff.changed` (and, before it, `relationship.isDirty`) come out `false`
-  // even though membership genuinely changed, so the second update's
-  // notification never fires and the rendered array goes stale. Neither
-  // gating on `diff.changed` (correct for the general case, see
-  // `replaceRelatedRecordsRemote`) nor unconditionally on `diff.remoteOrderChanged`
-  // (which regresses tests/ember-data__graph's diff-preservation suite, since
-  // a remote update that merely catches up to an already-committed local
-  // change would then also (mis)report as "changed") resolves this on its
-  // own; fixing it needs the `linksMode` read path itself to keep the graph's
-  // local-state tracking in sync, which is a larger change than this test's
-  // surrounding rebase warrants. Left as `todo` (asserts real, currently
-  // failing behavior) rather than silently deleted or shipped red.
-  todo<CustomContext>('update hasMany with repeated patch', async function (assert) {
+  test<CustomContext>('update hasMany with repeated patch', async function (assert) {
     const { store } = this;
     const url = buildBaseURL({ resourcePath: 'api/user/1' });
 

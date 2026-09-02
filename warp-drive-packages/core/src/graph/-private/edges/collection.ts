@@ -101,7 +101,17 @@ export function legacyGetCollectionRelationshipData(
   const payload: CollectionRelationship = {};
 
   if (source.state.hasReceivedData) {
-    payload.data = getRemoteState ? source.remoteState.slice() : computeLocalState(source);
+    // every access refreshes the edge's local-state tracking, remote-state reads
+    // included: `computeLocalState` is the only place `isDirty` is cleared and the
+    // `localState` snapshot re-derived, and `diffCollection` trusts that snapshot
+    // as "what an up-to-date reader currently sees" when deciding whether the next
+    // remote update changed anything. A reader that only ever consumes remote
+    // state (e.g. a non-editable `linksMode` ManyArray syncing via
+    // `getRemoteRelationship`) would otherwise leave the snapshot permanently
+    // stale after the first remote change, making a later genuine membership
+    // change diff as "unchanged" and never notify.
+    const localState = computeLocalState(source);
+    payload.data = getRemoteState ? source.remoteState.slice() : localState;
   }
 
   if (source.links) {
