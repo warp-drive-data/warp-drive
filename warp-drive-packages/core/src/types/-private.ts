@@ -86,6 +86,8 @@ type GlobalKey =
   // @warp-drive/core/types/request
   | 'IS_FUTURE'
   | 'DOC'
+  // @warp-drive/core NotificationManager
+  | 'UnscopedChannel'
   // @warp-drive/core/reactive
   | 'ManagedArrayMap'
   | 'ManagedObjectMap'

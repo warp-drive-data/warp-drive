@@ -2,6 +2,7 @@ import { LOG_METRIC_COUNTS, LOG_NOTIFICATIONS } from '@warp-drive/core/build-con
 import { assert } from '@warp-drive/core/build-config/macros';
 
 import { willSyncFlushWatchers } from '../../../signals/-private.ts';
+import { getOrSetGlobal } from '../../../types/-private.ts';
 import type { RequestKey, ResourceKey } from '../../../types/identifier.ts';
 import { log } from '../debug/utils.ts';
 import type { Store } from '../store-service.ts';
@@ -82,7 +83,7 @@ export type NotificationChannel = 'local' | 'remote';
  * regardless of what channel(s) the same key was also touched with, so its
  * presence in the set short-circuits channel filtering.
  */
-const UnscopedChannel = Symbol('unscoped');
+const UnscopedChannel: '___(unique) Symbol(UnscopedChannel)' = getOrSetGlobal('UnscopedChannel', Symbol('unscoped'));
 
 /**
  * The set of channels (if any) a given `'attributes'`/`'relationships'` touch
