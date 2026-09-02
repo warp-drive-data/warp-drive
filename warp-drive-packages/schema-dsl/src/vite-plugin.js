@@ -286,6 +286,49 @@ function parseHasManyArgs(node) {
   return null;
 }
 
+function parseSchemaObjectArgs(node) {
+  if (node.type !== 'Decorator') return null;
+  const expr = node.expression;
+
+  if (expr.type === 'CallExpression' && expr.arguments.length > 0) {
+    const opts = extractObjectOptions(expr.arguments[0]);
+    return {
+      type: opts.type !== undefined ? opts.type : null,
+      sourceKey: opts.sourceKey,
+      polymorphic: opts.polymorphic,
+      typeField: opts.typeField,
+      defaultValue: opts.defaultValue,
+    };
+  }
+  return null;
+}
+
+function parseSchemaArrayArgs(node) {
+  if (node.type !== 'Decorator') return null;
+  const expr = node.expression;
+
+  if (expr.type === 'CallExpression' && expr.arguments.length > 0) {
+    const opts = extractObjectOptions(expr.arguments[0]);
+    return {
+      type: opts.type !== undefined ? opts.type : null,
+      sourceKey: opts.sourceKey,
+      polymorphic: opts.polymorphic,
+      typeField: opts.typeField,
+      key: opts.key,
+      defaultValue: opts.defaultValue,
+    };
+  }
+  return null;
+}
+
+function schemaFieldOptions(opts, extra) {
+  const options = extra ? { ...extra } : {};
+  if (opts.polymorphic) options.polymorphic = opts.polymorphic;
+  if (opts.typeField !== undefined) options.type = opts.typeField;
+  if (opts.defaultValue !== undefined) options.defaultValue = opts.defaultValue;
+  return Object.keys(options).length > 0 ? options : null;
+}
+
 // ---------------------------------------------------------------------------
 // Schema extraction
 // ---------------------------------------------------------------------------
@@ -462,6 +505,30 @@ function extractSchemas(source) {
               if (opts.polymorphic) f.options.polymorphic = opts.polymorphic;
               if (opts.as) f.options.as = opts.as;
               if (opts.sourceKey) f.sourceKey = opts.sourceKey;
+              fields.push(f);
+            }
+            break;
+          }
+          if (original === 'schemaObject') {
+            const opts = parseSchemaObjectArgs(dec);
+            if (opts) {
+              const f = { kind: 'schema-object', name: propName, type: opts.type };
+              if (opts.sourceKey) f.sourceKey = opts.sourceKey;
+              const options = schemaFieldOptions(opts);
+              if (options) f.options = options;
+              fields.push(f);
+            }
+            break;
+          }
+          if (original === 'schemaArray') {
+            const opts = parseSchemaArrayArgs(dec);
+            if (opts) {
+              const f = { kind: 'schema-array', name: propName, type: opts.type };
+              if (opts.sourceKey) f.sourceKey = opts.sourceKey;
+              const extra = {};
+              if (opts.key !== undefined) extra.key = opts.key;
+              const options = schemaFieldOptions(opts, extra);
+              if (options) f.options = options;
               fields.push(f);
             }
             break;

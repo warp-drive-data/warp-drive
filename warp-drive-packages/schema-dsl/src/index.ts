@@ -24,3 +24,5 @@ export { local, type LocalOptions } from './fields/local.ts';
 export { object, type ObjectFieldOptions } from './fields/object.ts';
 export { optional } from './fields/optional.ts';
 export { readonly } from './fields/readonly.ts';
+export { schemaArray, type SchemaArrayOptions } from './fields/schema-array.ts';
+export { schemaObject, type SchemaObjectOptions } from './fields/schema-object.ts';
