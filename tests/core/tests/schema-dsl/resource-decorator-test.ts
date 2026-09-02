@@ -20,6 +20,7 @@ module('Schema DSL | @Resource compilation', function (hooks) {
         { kind: '@local', name: 'isEditing' },
         { kind: '@local', name: 'dirtyCount', options: { defaultValue: 0 } },
         { kind: 'derived', name: 'displayName', type: '@concat' },
+        { kind: 'schema-object', name: 'address', type: 'address' },
         { kind: 'derived', name: 'constructor', type: '@constructor' },
       ],
     });
@@ -51,6 +52,8 @@ module('Schema DSL | @Resource compilation', function (hooks) {
         { kind: 'field', name: 'createdAt', type: 'date-time' },
         { kind: 'object', name: 'metadata' },
         { kind: 'array', name: 'tags' },
+        { kind: 'schema-array', name: 'locations', type: 'address', options: { key: '@index', defaultValue: true } },
+        { kind: 'schema-object', name: 'content', type: null, options: { polymorphic: true, type: 'type' } },
         { kind: 'derived', name: 'constructor', type: '@constructor' },
       ],
     });
@@ -67,6 +70,13 @@ module('Schema DSL | @Resource compilation', function (hooks) {
         { kind: 'field', name: 'name', sourceKey: 'product_name' },
         { kind: 'field', name: 'price', type: 'number', sourceKey: 'unit_price' },
         { kind: 'alias', name: 'productName', type: null, options: { kind: 'field', name: 'name' } },
+        {
+          kind: 'schema-object',
+          name: 'kind',
+          type: '@computeKind',
+          sourceKey: 'kind_data',
+          options: { polymorphic: true, type: '@hash' },
+        },
         { kind: 'derived', name: 'constructor', type: '@constructor' },
       ],
     });
@@ -220,6 +230,62 @@ module('Schema DSL | @trait composition', function (hooks) {
   });
 });
 
+module('Schema DSL | @schemaObject and @schemaArray', function (hooks) {
+  setupTest(hooks);
+
+  test('@schemaObject compiles to schema-object field', function (assert) {
+    const schema = schemas.find((s: { type: string }) => s.type === 'user');
+    const fields = (schema as unknown as { fields: Array<{ kind: string; name: string; [key: string]: unknown }> })
+      .fields;
+
+    const address = fields.find((f) => f.name === 'address');
+    assert.deepEqual(address, { kind: 'schema-object', name: 'address', type: 'address' });
+  });
+
+  test('@schemaObject({ polymorphic, typeField }) maps typeField to options.type', function (assert) {
+    const schema = schemas.find((s: { type: string }) => s.type === 'post');
+    const fields = (schema as unknown as { fields: Array<{ kind: string; name: string; [key: string]: unknown }> })
+      .fields;
+
+    const content = fields.find((f) => f.name === 'content');
+    assert.deepEqual(content, {
+      kind: 'schema-object',
+      name: 'content',
+      type: null,
+      options: { polymorphic: true, type: 'type' },
+    });
+  });
+
+  test('@schemaObject({ typeField: "@hash" }) keeps type as the hashFn name', function (assert) {
+    const schema = schemas.find((s: { type: string }) => s.type === 'product');
+    const fields = (schema as unknown as { fields: Array<{ kind: string; name: string; [key: string]: unknown }> })
+      .fields;
+
+    const kind = fields.find((f) => f.name === 'kind');
+    assert.deepEqual(kind, {
+      kind: 'schema-object',
+      name: 'kind',
+      type: '@computeKind',
+      sourceKey: 'kind_data',
+      options: { polymorphic: true, type: '@hash' },
+    });
+  });
+
+  test('@schemaArray compiles with key and defaultValue', function (assert) {
+    const schema = schemas.find((s: { type: string }) => s.type === 'post');
+    const fields = (schema as unknown as { fields: Array<{ kind: string; name: string; [key: string]: unknown }> })
+      .fields;
+
+    const locations = fields.find((f) => f.name === 'locations');
+    assert.deepEqual(locations, {
+      kind: 'schema-array',
+      name: 'locations',
+      type: 'address',
+      options: { key: '@index', defaultValue: true },
+    });
+  });
+});
+
 module('Schema DSL | @Object compilation', function (hooks) {
   setupTest(hooks);
 
@@ -271,7 +337,10 @@ module('Schema DSL | compilation totals', function (hooks) {
 
   test('compiles object schemas', function (assert) {
     assert.ok(Array.isArray(objects), 'objects export is an array');
-    assert.equal(objects.length, 1, 'one object schema compiled');
+    assert.equal(objects.length, 3, 'three object schemas compiled');
+
+    const types = objects.map((s: { type: string }) => s.type).sort();
+    assert.deepEqual(types, ['address', 'text-content', 'video-content']);
   });
 
   test('compiles trait schemas', function (assert) {
