@@ -1,4 +1,5 @@
 import fs from 'fs';
+import { isBuiltin } from 'module';
 import path from 'path';
 
 function loadConfig() {
@@ -65,6 +66,14 @@ export function external(manual = []) {
 
   // console.log({ externals: result });
   return function (id) {
+    // A Node builtin is external regardless of whether it's spelled with or
+    // without the `node:` prefix -- `isBuiltin` treats both forms the same,
+    // so callers no longer need to enumerate a builtin in their manual
+    // `externals` list for every prefix variant it might be imported with.
+    if (isBuiltin(id)) {
+      return true;
+    }
+
     // An explicit (manual) external, or a declared dependency/peerDependency,
     // always wins -- even if it also happens to be a self-referencing
     // subpath of this very package (e.g. `@ember-data/debug` deliberately
@@ -121,6 +130,9 @@ export function external(manual = []) {
 
 export function explicitExternals(manual = []) {
   return function (id) {
+    if (isBuiltin(id)) {
+      return true;
+    }
     if (manual.includes(id)) {
       return true;
     }
