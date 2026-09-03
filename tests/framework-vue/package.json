@@ -43,7 +43,7 @@
     "decorator-transforms": "^2.4.0",
     "typescript-7": "npm:typescript@7.1.0-dev.20260826.1",
     "vite": "catalog:",
-    "vue": "^3.5.41",
+    "vue": "^3.5.42",
     "vue-tsc": "^3.3.11"
   }
 }
