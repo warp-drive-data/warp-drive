@@ -57,7 +57,7 @@
     "decorator-transforms": "^2.4.0",
     "ember-source": "catalog:",
     "ember-strict-application-resolver": "^0.1.1",
-    "terser": "^5.51.0",
+    "terser": "^5.51.2",
     "vite": "catalog:"
   },
   "ember": {
