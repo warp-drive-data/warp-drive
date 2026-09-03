@@ -145,7 +145,9 @@ export declare class ConfiguredStore<
      */
     cache: Cache;
   },
+  Policy extends CachePolicy = CachePolicy,
 > extends Store {
+  lifetimes: Policy;
   // get cache(): T extends OptionsWithCache<infer R> ? R : never;
   createCache(capabilities: CacheCapabilitiesManager): T['cache'];
 }
@@ -257,6 +259,18 @@ export declare class ConfiguredStore<
  * explicitly, so a handler relying on it should treat it as optional (as
  * `LoggingHandler` does above).
  */
+export function useRecommendedStore<T extends Cache, Policy extends CachePolicy>(
+  options: StoreSetupOptions<T> & { policy: Policy },
+  StoreKlass?: typeof Store
+): typeof ConfiguredStore<{ cache: T }, Policy>;
+export function useRecommendedStore<T extends Cache>(
+  options: StoreSetupOptions<T> & { policy?: undefined },
+  StoreKlass?: typeof Store
+): typeof ConfiguredStore<{ cache: T }, DefaultCachePolicy>;
+export function useRecommendedStore<T extends Cache>(
+  options: StoreSetupOptions<T>,
+  StoreKlass?: typeof Store
+): typeof ConfiguredStore<{ cache: T }>;
 export function useRecommendedStore<T extends Cache>(
   options: StoreSetupOptions<T>,
   StoreKlass: typeof Store = Store
