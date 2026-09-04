@@ -326,6 +326,11 @@ module.exports = async function (defaults) {
 
 == Vite Minimal Config
 
+> [!WARNING]
+> This tab only applies if your app has **already fully migrated off** `ember-cli-build.js` and `@embroider/compat`'s `compatBuild` — i.e. you have a native-Vite build that uses `@embroider/vite`'s `ember()` plugin directly, with no classic/compat resolution step.
+>
+> If your app still has an `ember-cli-build.js` file (true for almost everyone following this migration guide), use the **Classic Config** tab instead and configure ***Warp*Drive** there, as described in the [Setup guide](/guides/configuration/index.md#configure-the-build-plugin). Pasting this minimal config into a compat app's `babel.config` will drop the plugins `@embroider/compat/babel`'s `babelCompatSupport()` (and template/decorator compilation) provides for compat builds, and re-adding them alongside this config is likely to conflict rather than help.
+
 ```ts [babel.config.mjs]
 import { setConfig } from '@warp-drive-mirror/core/build-config';
 import { buildMacros } from '@embroider/macros/babel';
