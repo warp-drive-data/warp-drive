@@ -96,7 +96,7 @@ export async function updateTags(
     `✅ ` +
       styleText(
         'cyan',
-        `Moved ${styleText('greenBright', packages.size)} 📦 packages to ${styleText('magenta', distTag)} channel`
+        `Moved ${styleText('greenBright', String(packages.size))} 📦 packages to ${styleText('magenta', distTag)} channel`
       )
   );
 }

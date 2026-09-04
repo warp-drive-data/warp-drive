@@ -125,7 +125,7 @@ runs:
     # start by restoring *some* same-commit save -- typically install's,
     # since it finishes first -- before adding its own entries on top.
     - name: 'Restore Turbo Local Build Cache'
-      if: ${{ inputs.install == 'true' }}
+      if: ${{ inputs.install == 'true' && inputs.DISABLE_TURBO_CACHE != 'true' }}
       uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
       with:
         path: .turbo/cache

@@ -63,12 +63,12 @@ export async function verifyTarballs(
     const mirrorTarballExists = mirrorTarballPath ? fs.existsSync(mirrorTarballPath) : false;
 
     if (tarballExists) {
-      results.push(styleText('grey', `\t✅ Tarball exists for package ${styleText('green', pkg.pkgData.name)}`));
+      results.push(styleText('gray', `\t✅ Tarball exists for package ${styleText('green', pkg.pkgData.name)}`));
       const missingBinFiles = findMissingBinFiles(tarballPath);
       if (missingBinFiles.length > 0) {
         results.push(
           styleText(
-            'grey',
+            'gray',
             `\t❌ Bin entries of ${styleText('red', pkg.pkgData.name)} point at files missing from its tarball: ${missingBinFiles.join(', ')}`
           )
         );
@@ -77,7 +77,7 @@ export async function verifyTarballs(
     } else {
       results.push(
         styleText(
-          'grey',
+          'gray',
           `\t❌ Tarball ${tarballPath} does not exist for package ${styleText('red', pkg.pkgData.name)}`
         )
       );
@@ -86,14 +86,14 @@ export async function verifyTarballs(
 
     if (!typesTarballPath) {
       results.push(
-        styleText('grey', `\t✖️ Types tarball path is missing for package ${styleText('yellow', pkg.pkgData.name)}`)
+        styleText('gray', `\t✖️ Types tarball path is missing for package ${styleText('yellow', pkg.pkgData.name)}`)
       );
     } else if (typesTarballExists) {
-      results.push(styleText('grey', `\t✅ Types tarball exists for package ${styleText('green', pkg.pkgData.name)}`));
+      results.push(styleText('gray', `\t✅ Types tarball exists for package ${styleText('green', pkg.pkgData.name)}`));
     } else {
       results.push(
         styleText(
-          'grey',
+          'gray',
           `\t❌ Types tarball ${typesTarballPath} does not exist for package ${styleText('red', pkg.pkgData.name)}`
         )
       );
@@ -102,14 +102,14 @@ export async function verifyTarballs(
 
     if (!mirrorTarballPath) {
       results.push(
-        styleText('grey', `\t✖️ Mirror tarball path is missing for package ${styleText('yellow', pkg.pkgData.name)}`)
+        styleText('gray', `\t✖️ Mirror tarball path is missing for package ${styleText('yellow', pkg.pkgData.name)}`)
       );
     } else if (mirrorTarballExists) {
-      results.push(styleText('grey', `\t✅ Mirror tarball exists for package ${styleText('green', pkg.pkgData.name)}`));
+      results.push(styleText('gray', `\t✅ Mirror tarball exists for package ${styleText('green', pkg.pkgData.name)}`));
     } else {
       results.push(
         styleText(
-          'grey',
+          'gray',
           `\t❌ Mirror tarball ${mirrorTarballPath} does not exist for package ${styleText('red', pkg.pkgData.name)}`
         )
       );
@@ -677,7 +677,7 @@ async function restoreTypesStrategyChanges(pkg: Package, _strategy: APPLIED_STRA
   process.stdout.write(
     `\t\t♻️ ` +
       styleText(
-        'grey',
+        'gray',
         `Successfully Restored Assets Modified for Types Strategy During Publish in ${styleText('cyan', pkg.pkgData.name)}\n`
       )
   );

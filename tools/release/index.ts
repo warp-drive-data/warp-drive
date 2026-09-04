@@ -56,12 +56,12 @@ async function main() {
   if (cmdString !== 'latest_for') {
     write(
       styleText(
-        'grey',
+        'gray',
         `\n\t${styleText(
           'bold',
           styleText('greenBright', 'Warp') + styleText('magentaBright', 'Drive')
         )} | Automated Release\n\t==============================`
-      ) + styleText('grey', `\n\tengine: ${styleText('cyan', 'bun@' + Bun.version)}\n`)
+      ) + styleText('gray', `\n\tengine: ${styleText('cyan', 'bun@' + Bun.version)}\n`)
     );
   }
 

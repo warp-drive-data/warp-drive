@@ -13,7 +13,7 @@ export const COLORS_BY_STRATEGY: Record<TYPE_STRATEGY, 'red' | 'yellow' | 'green
 
 export function convertToLabel(name: string) {
   if (name === 'N/A') {
-    return styleText('grey', name);
+    return styleText('gray', name);
   }
   return '✅';
 }
@@ -32,7 +32,7 @@ export function colorName(name: string) {
   } else if (name.startsWith('@ember-data/')) {
     return styleText('cyanBright', '@ember-data/') + styleText('yellow', name.substring(12));
   } else if (name === 'N/A') {
-    return styleText('grey', name);
+    return styleText('gray', name);
   }
   return styleText('cyan', name);
 }
@@ -87,13 +87,13 @@ export async function printStrategy(config: Map<string, string | number | boolea
       colorName(name),
       convertToLabel(applied.mirrorPublishTo),
       convertToLabel(applied.typesPublishTo),
-      styleText('grey', applied.fromVersion),
+      styleText('gray', applied.fromVersion),
       styleText(COLORS_BY_STRATEGY[applied.stage], applied.toVersion),
       styleText(COLORS_BY_STRATEGY[applied.stage], applied.stage),
       styleText(COLORS_BY_STRATEGY[applied.types], applied.types),
       styleText('magentaBright', applied.distTag),
       styleText('cyanBright', 'public'),
-      styleText('grey', applied.pkgDir),
+      styleText('gray', applied.pkgDir),
     ]);
   });
   const groups = new Map<string, string[][]>();
@@ -108,13 +108,13 @@ export async function printStrategy(config: Map<string, string | number | boolea
       colorName(name),
       colorName(applied.mirrorPublishTo),
       colorName(applied.typesPublishTo),
-      styleText('grey', applied.fromVersion),
+      styleText('gray', applied.fromVersion),
       styleText(COLORS_BY_STRATEGY[applied.stage], applied.toVersion),
       styleText(COLORS_BY_STRATEGY[applied.stage], applied.stage),
       styleText(COLORS_BY_STRATEGY[applied.types], applied.types),
-      styleText('grey', 'N/A'),
+      styleText('gray', 'N/A'),
       styleText('yellow', 'private'),
-      styleText('grey', applied.pkgDir),
+      styleText('gray', applied.pkgDir),
     ]);
   });
   groups.forEach((group) => {
@@ -124,10 +124,10 @@ export async function printStrategy(config: Map<string, string | number | boolea
 
   printTable(
     styleText(
-      'grey',
-      `${styleText('white', 'Release Strategy')} for ${styleText('cyan', config.get('increment'))} bump in ${styleText(
+      'gray',
+      `${styleText('white', 'Release Strategy')} for ${styleText('cyan', String(config.get('increment')))} bump in ${styleText(
         'cyan',
-        config.get('channel')
+        String(config.get('channel'))
       )} channel`
     ),
     tableRows

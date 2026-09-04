@@ -1,4 +1,4 @@
-import { styleText } from 'node:util';
+import { styleText, type InspectColor } from 'node:util';
 
 export function getCharLength(str: string | undefined): number {
   if (!str) {
@@ -89,7 +89,7 @@ export function getNumTabs(str: string) {
 /**
  * colorizes a string based on color<<>> syntax
  * where color is one of the following:
- * - gr (grey)
+ * - gr (gray)
  * - bg (brightGreen)
  * - bm (brightMagenta)
  * - cy (cyan)
@@ -100,8 +100,8 @@ export function getNumTabs(str: string) {
  * color`This is gr<<grey>> and this is bg<<bright green>> and this is bm<<bright magenta>> and this is cy<<cyan>> and this is ye<<yellow>>`
  */
 export function color(str: string) {
-  const colors = {
-    gr: 'grey',
+  const colors: Record<string, InspectColor> = {
+    gr: 'gray',
     gb: 'greenBright',
     mb: 'magentaBright',
     cy: 'cyan',
@@ -138,12 +138,12 @@ export function rebalanceLines(str: string, max_length = 75): string {
       continue;
     }
     if (line.trim() === '---') {
-      lines[i] = styleText('grey', getPadding(max_length, '-'));
+      lines[i] = styleText('gray', getPadding(max_length, '-'));
       inContext = false;
       continue;
     }
     if (line.trim() === '===') {
-      lines[i] = styleText('grey', getPadding(max_length, '='));
+      lines[i] = styleText('gray', getPadding(max_length, '='));
       inContext = false;
       continue;
     }

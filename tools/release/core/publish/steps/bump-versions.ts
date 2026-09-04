@@ -82,7 +82,7 @@ export async function updateWorkspaceVersionsForPublish(
       await pkg.file.write();
     } else {
       console.log(
-        styleText('grey', `\tNo workspace:* dependencies to update for ${styleText('cyan', pkg.pkgData.name)}`)
+        styleText('gray', `\tNo workspace:* dependencies to update for ${styleText('cyan', pkg.pkgData.name)}`)
       );
     }
   }
@@ -135,5 +135,5 @@ export async function restorePackagesForDryRun(
   //   await pkg.file.write();
   // }
 
-  console.log(`\t♻️ ` + styleText('grey', `Successfully Restored Versions for DryRun`));
+  console.log(`\t♻️ ` + styleText('gray', `Successfully Restored Versions for DryRun`));
 }
