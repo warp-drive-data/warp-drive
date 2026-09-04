@@ -24,6 +24,7 @@ import { getResourceField, setResourceField } from './kind/resource-field.ts';
 import { getSchemaArrayField, setSchemaArrayField } from './kind/schema-array-field.ts';
 import { getSchemaObjectField, setSchemaObjectField } from './kind/schema-object-field.ts';
 import type { ReactiveResource } from './record.ts';
+import { Destroy } from './symbols.ts';
 
 export type PathLike = string | symbol | Array<string | symbol>;
 
@@ -34,6 +35,9 @@ export interface ModeInfo {
   editable: boolean;
 }
 
+export interface Destroyable {
+  [Destroy](): void;
+}
 export interface BaseContext {
   /**
    * The {@link Store} instance that owns
@@ -62,6 +66,7 @@ export interface BaseContext {
    * and false if the record is currently in a read-only state.
    */
   editable: boolean;
+  destroyables: Set<Destroyable>;
 }
 
 export interface ResourceContext extends BaseContext {

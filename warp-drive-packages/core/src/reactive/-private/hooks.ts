@@ -34,6 +34,7 @@ export function instantiateRecord(
     modeName: legacy ? 'legacy' : 'polaris',
     legacy: legacy,
     editable: editable,
+    destroyables: new Set(),
     path: null,
     field: null,
     value: null,
