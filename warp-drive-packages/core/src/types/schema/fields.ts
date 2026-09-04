@@ -5,6 +5,32 @@ import type { Cache } from '../cache.ts';
 import type { ObjectValue, PrimitiveValue, Value } from '../json/raw.ts';
 
 /**
+ * Built-in extension names for objects (ReactiveResources and ReactiveObjects).
+ *
+ * These extensions are available in `@warp-drive/legacy` and provide migration support:
+ *
+ * - `'ember-object'`: EmberObject methods like `get`, `set`, `notifyPropertyChange`
+ * - `'fragment'`: Fragment behaviors like `hasDirtyAttributes`, `rollbackAttributes`
+ * - `'deprecated-model-behaviors'`: Deprecated Model behaviors for migration
+ *
+ * @public
+ */
+export type BuiltInObjectExtension = 'ember-object' | 'fragment' | 'deprecated-model-behaviors';
+
+/**
+ * Built-in extension names for arrays (ReactiveArrays).
+ *
+ * These extensions are available in `@warp-drive/legacy` and provide migration support:
+ *
+ * - `'ember-object'`: EmberObject methods for arrays
+ * - `'ember-array-like'`: MutableArray methods like `addObject`, `removeObject`, `filterBy`
+ * - `'fragment-array'`: FragmentArray methods like `addFragment`, `createFragment`
+ *
+ * @public
+ */
+export type BuiltInArrayExtension = 'ember-object' | 'ember-array-like' | 'fragment-array';
+
+/**
  * Options signature for Legacy Attributes.
  */
 export interface AttrOptions {
@@ -539,7 +565,7 @@ export interface ObjectField {
      * to objects to support migrating away from deprecated patterns
      * like custom getters, computeds, and methods
      */
-    objectExtensions?: string[];
+    objectExtensions?: (BuiltInObjectExtension | string)[];
 
     [key: string]: Value | undefined;
   };
@@ -644,7 +670,7 @@ export interface SchemaObjectField {
      * to objects to support migrating away from deprecated patterns
      * like custom getters, computeds, and methods
      */
-    objectExtensions?: string[];
+    objectExtensions?: (BuiltInObjectExtension | string)[];
 
     /**
      * Whether this SchemaObject is Polymorphic.
@@ -753,7 +779,7 @@ export interface ArrayField {
      * to arrays to support migrating away from deprecated behaviors
      * such as Ember's "ArrayLike" and FragmentArray from ember-data-model-fragments
      */
-    arrayExtensions?: string[];
+    arrayExtensions?: (BuiltInArrayExtension | string)[];
 
     [key: string]: Value | undefined;
   };
@@ -873,7 +899,7 @@ export interface SchemaArrayField {
      * to arrays to support migrating away from deprecated behaviors
      * such as Ember's "ArrayLike" and FragmentArray from ember-data-model-fragments
      */
-    arrayExtensions?: string[];
+    arrayExtensions?: (BuiltInArrayExtension | string)[];
     /**
      * ::: warning ⚠️ Dangerous Feature Ahead
      * :::
@@ -887,7 +913,7 @@ export interface SchemaArrayField {
      * to objects to support migrating away from deprecated patterns
      * like custom getters, computeds, and methods
      */
-    objectExtensions?: string[];
+    objectExtensions?: (BuiltInObjectExtension | string)[];
 
     /**
      * Configures how the SchemaArray determines whether
@@ -2326,7 +2352,7 @@ export interface LegacyResourceSchema {
    * to objects to support migrating away from deprecated patterns
    * like custom getters, computeds, and methods
    */
-  objectExtensions?: string[];
+  objectExtensions?: (BuiltInObjectExtension | string)[];
 }
 
 /**
@@ -2399,7 +2425,7 @@ export interface ObjectSchema {
    * to objects to support migrating away from deprecated patterns
    * like custom getters, computeds, and methods
    */
-  objectExtensions?: string[];
+  objectExtensions?: (BuiltInObjectExtension | string)[];
 }
 
 /**
