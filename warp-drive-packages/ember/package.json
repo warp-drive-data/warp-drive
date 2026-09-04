@@ -63,7 +63,7 @@
     "@embroider/addon-dev": "^8.3.1",
     "@glimmer/component": "^2.1.1",
     "@glint/ember-tsc": "^1.11.2",
-    "@glint/template": "^1.8.0",
+    "@glint/template": "^1.8.1",
     "@warp-drive/core": "workspace:*",
     "@warp-drive/internal-config": "workspace:*",
     "babel-plugin-ember-template-compilation": "^4.0.0",

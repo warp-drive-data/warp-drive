@@ -55,7 +55,7 @@
     "@embroider/vite": "^1.7.10",
     "@glimmer/component": "^2.1.1",
     "@glint/ember-tsc": "^1.11.2",
-    "@glint/template": "^1.8.0",
+    "@glint/template": "^1.8.1",
     "@types/qunit": "2.19.14",
     "@warp-drive/build-config": "workspace:*",
     "@warp-drive/core": "workspace:*",

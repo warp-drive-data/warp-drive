@@ -301,7 +301,7 @@ overrides:
   broccoli-merge-trees: ^4.2.0
   "@glimmer/validator": ^0.95.0
   "@glint/ember-tsc": 1.11.2
-  "@glint/template": 1.8.0
+  "@glint/template": 1.8.1
   ember-cli-babel: ^8.3.2
   "@embroider/macros>ember-cli-babel": "-"
   ember-source>ember-cli-babel: "-"
