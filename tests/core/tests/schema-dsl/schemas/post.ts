@@ -1,4 +1,7 @@
-import { array, field, id, object, Resource } from '@warp-drive/schema-dsl';
+import { array, field, id, object, Resource, schemaArray, schemaObject } from '@warp-drive/schema-dsl';
+
+import type { Address } from './address.ts';
+import type { TextContent, VideoContent } from './content.ts';
 
 @Resource
 export class Post {
@@ -7,4 +10,6 @@ export class Post {
   @field({ type: 'date-time' }) declare createdAt: string;
   @object declare metadata: Record<string, unknown>;
   @array declare tags: string[];
+  @schemaArray({ type: 'address', key: '@index', defaultValue: true }) declare locations: Address[];
+  @schemaObject({ polymorphic: true, typeField: 'type' }) declare content: TextContent | VideoContent;
 }

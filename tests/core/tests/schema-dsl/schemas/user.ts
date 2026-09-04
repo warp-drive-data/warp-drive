@@ -1,4 +1,6 @@
-import { derived, field, local, Resource } from '@warp-drive/schema-dsl';
+import { derived, field, local, Resource, schemaObject } from '@warp-drive/schema-dsl';
+
+import type { Address } from './address.ts';
 
 @Resource
 export class User {
@@ -8,4 +10,5 @@ export class User {
   @local declare isEditing: boolean;
   @local({ defaultValue: 0 }) declare dirtyCount: number;
   @derived({ type: '@concat' }) declare displayName: string;
+  @schemaObject({ type: 'address' }) declare address: Address;
 }
