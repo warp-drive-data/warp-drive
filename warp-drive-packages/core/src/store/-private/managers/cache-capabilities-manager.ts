@@ -15,18 +15,10 @@ export interface CacheCapabilitiesManager {
 }
 export class CacheCapabilitiesManager implements StoreWrapper {
   /** @internal */
-  declare private _willNotify: boolean;
-
-  /** @internal */
-  declare private _pendingNotifies: Map<ResourceKey, Map<string, Set<NotificationChannel | undefined>>>;
-
-  /** @internal */
   declare _store: Store;
 
   constructor(_store: Store) {
     this._store = _store;
-    this._willNotify = false;
-    this._pendingNotifies = new Map();
   }
 
   get cacheKeyManager(): CacheKeyManager {
@@ -36,82 +28,6 @@ export class CacheCapabilitiesManager implements StoreWrapper {
   /** @deprecated use {@link CacheCapabilitiesManager.cacheKeyManager} */
   get identifierCache(): CacheKeyManager {
     return this.cacheKeyManager;
-  }
-
-  /** @internal */
-  private _scheduleNotification(identifier: ResourceKey, key: string, channel: NotificationChannel | undefined): void {
-    let pending = this._pendingNotifies.get(identifier);
-
-    if (!pending) {
-      pending = new Map();
-      this._pendingNotifies.set(identifier, pending);
-    }
-    let channels = pending.get(key);
-    if (!channels) {
-      channels = new Set();
-      pending.set(key, channels);
-    }
-    channels.add(channel);
-
-    if (this._willNotify === true) {
-      return;
-    }
-
-    this._willNotify = true;
-    // it's possible a cache adhoc notifies us,
-    // in which case we sync flush
-    if (this._store._cbs) {
-      this._store._schedule('notify', () => this._flushNotifications());
-    } else {
-      // TODO @runspired determine if relationship mutations should schedule
-      // into join/run vs immediate flush
-      this._flushNotifications();
-    }
-  }
-
-  /** @internal */
-  private _flushNotifications(): void {
-    if (this._willNotify === false) {
-      return;
-    }
-
-    const pending = this._pendingNotifies;
-    this._pendingNotifies = new Map();
-    this._willNotify = false;
-
-    // deliver all relationship keys pending for a given identifier as a single
-    // batch instead of one `notify` call per key: subscribers still receive one
-    // notification per key (in Set-insertion order), but the per-call overhead
-    // (subscriber lookups, buffer scheduling, etc) that `notify` would otherwise
-    // repeat for every key is paid only once per identifier. This mirrors the
-    // same N*M concern `attributes` notifications have (the json-api Cache
-    // batches a record's changed attribute keys into a single `notifyChange`
-    // Set for the same reason): a single push/mutation pass can dirty many
-    // relationships across many records at once, and each of those records
-    // funnels through this same per-identifier `pending` Set.
-    //
-    // Keys touched with more than one distinct channel during this window
-    // (e.g. once unscoped and once on `'local'`) are re-grouped by channel
-    // below so that each distinct channel is still handed off to `notify` as
-    // a single `Set<string>` batch call (never one call per key) -- `notify`'s
-    // own buffer (see NotificationManager) is what dedupes/coalesces these
-    // per-channel batches back down to a single delivery per subscriber.
-    pending.forEach((channelsByKey, identifier) => {
-      const keysByChannel = new Map<NotificationChannel | undefined, Set<string>>();
-      channelsByKey.forEach((channels, key) => {
-        channels.forEach((channel) => {
-          let keys = keysByChannel.get(channel);
-          if (!keys) {
-            keys = new Set();
-            keysByChannel.set(channel, keys);
-          }
-          keys.add(key);
-        });
-      });
-      keysByChannel.forEach((keys, channel) => {
-        this._store.notifications.notify(identifier, 'relationships', keys, channel);
-      });
-    });
   }
 
   notifyChange(identifier: ResourceKey, namespace: 'added' | 'removed', key: null): void;
@@ -136,13 +52,6 @@ export class CacheCapabilitiesManager implements StoreWrapper {
   ): void {
     assert(`Expected a stable identifier`, isResourceKey(identifier) || isRequestKey(identifier));
 
-    // TODO do we still get value from this?
-    if (namespace === 'relationships' && key) {
-      assert(`Expected a single relationship key`, typeof key === 'string');
-      this._scheduleNotification(identifier as ResourceKey, key, channel);
-      return;
-    }
-
     // @ts-expect-error
     this._store.notifications.notify(identifier, namespace, key, channel);
   }
@@ -163,7 +72,6 @@ export class CacheCapabilitiesManager implements StoreWrapper {
   disconnectRecord(identifier: ResourceKey): void {
     assert(`Expected a stable identifier`, isResourceKey(identifier));
     this._store._instanceCache.disconnect(identifier);
-    this._pendingNotifies.delete(identifier);
   }
 }
 
