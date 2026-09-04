@@ -46,7 +46,7 @@
     "@embroider/vite": "^1.7.10",
     "@glimmer/component": "^2.1.1",
     "@glint/ember-tsc": "^1.11.2",
-    "@glint/template": "^1.8.0",
+    "@glint/template": "^1.8.1",
     "@html-next/vertical-collection": "^5.0.5",
     "@types/morgan": "^1.9.10",
     "@warp-drive/core": "workspace:*",
