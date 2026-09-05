@@ -160,7 +160,7 @@ jobs:
       - uses: ./.github/actions/setup
         with:
           install: true
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          DISABLE_TURBO_CACHE: true
       - name: Make sure git user is setup
         run: |
           git config --local user.email ${{ secrets.GH_DEPLOY_EMAIL }}
@@ -217,7 +217,7 @@ jobs:
       - uses: ./.github/actions/setup
         with:
           install: true
-          repo-token: ${{ secrets.GH_DEPLOY_TOKEN }}
+          DISABLE_TURBO_CACHE: true
       - name: Get most recent beta version
         id: version
         if: github.event.inputs.beta_kind == 'mirror'
@@ -288,7 +288,7 @@ jobs:
       - uses: ./.github/actions/setup
         with:
           install: true
-          repo-token: ${{ secrets.GH_DEPLOY_TOKEN }}
+          DISABLE_TURBO_CACHE: true
       - name: Publish New Release
         # If we are not reversioning
         # Then we do the default patch increment from the current branch state.
@@ -392,7 +392,7 @@ jobs:
       - uses: ./.github/actions/setup
         with:
           install: true
-          repo-token: ${{ secrets.GH_DEPLOY_TOKEN }}
+          DISABLE_TURBO_CACHE: true
       - name: Publish New LTS Release
         # We always increment from the branch state
         run: bun release publish ${{ github.event.inputs.channel }} --publish=${{ github.event.inputs.skipPublish != 'true' }} --dry-run=${{ github.event.inputs.dryRun }}
@@ -428,7 +428,7 @@ jobs:
       - uses: ./.github/actions/setup
         with:
           install: true
-          repo-token: ${{ secrets.GH_DEPLOY_TOKEN }}
+          DISABLE_TURBO_CACHE: true
       - name: Make sure git user is setup
         run: |
           git config --local user.email ${{ secrets.GH_DEPLOY_EMAIL }}

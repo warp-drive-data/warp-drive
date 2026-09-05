@@ -12,7 +12,7 @@ export async function confirmCommitChangelogs(
   const dryRun = config.get('dry_run') as boolean;
 
   if (config.get('commit') === false) {
-    console.log(styleText('grey', `\t➠ Skipped commit of changelogs.`));
+    console.log(styleText('gray', `\t➠ Skipped commit of changelogs.`));
     return;
   }
 
@@ -34,9 +34,9 @@ export async function confirmCommitChangelogs(
 
     if (config.get('upstream')) {
       await exec(['sh', '-c', `git push`]);
-      console.log(styleText('grey', `\t✅ pushed changelog commit to upstream.`));
+      console.log(styleText('gray', `\t✅ pushed changelog commit to upstream.`));
     } else {
-      console.log(styleText('grey', `\t➠ Skipped push of changelogs.`));
+      console.log(styleText('gray', `\t➠ Skipped push of changelogs.`));
     }
   }
 }

@@ -20,7 +20,7 @@ function getDefaultValueDescriptor(value: unknown) {
       return styleText('cyan', `Function`);
     }
   } else {
-    return styleText('grey', 'N/A');
+    return styleText('gray', 'N/A');
   }
 }
 
@@ -29,15 +29,15 @@ function buildOptionDoc(flag: Flag, index: number): string {
   const flag_shape =
     styleText('magentaBright', flag.positional ? `<${flag.flag}>` : `--${flag.flag}`) +
     (flag.required ? styleText('yellow', styleText('italic', ` required`)) : '');
-  const flag_aliases_str = styleText('grey', flag_aliases?.join(', ') || 'N/A');
-  const flag_mispellings_str = styleText('grey', flag_mispellings?.join(', ') || 'N/A');
+  const flag_aliases_str = styleText('gray', flag_aliases?.join(', ') || 'N/A');
+  const flag_mispellings_str = styleText('gray', flag_mispellings?.join(', ') || 'N/A');
 
   return `${flag_shape} ${styleText('greenBright', flag.name)}
   ${indent(description, 1)}
   ${styleText('yellow', 'default')}: ${getDefaultValueDescriptor(flag.default_value)}
   ${styleText('yellow', 'aliases')}: ${flag_aliases_str}
   ${styleText('yellow', 'alt')}: ${flag_mispellings_str}
-  ${styleText('grey', 'Examples')}:
+  ${styleText('gray', 'Examples')}:
   ${examples
     .map((example) => {
       if (typeof example === 'string') {

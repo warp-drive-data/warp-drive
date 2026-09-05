@@ -73,7 +73,7 @@ export async function getGitState(options: Map<string, boolean | string | number
           ? base +
               styleText('yellow', '\n\t\tPassed option: ') +
               styleText('white', '--dangerously-force') +
-              styleText('grey', ' :: ignoring unclean git working tree')
+              styleText('gray', ' :: ignoring unclean git working tree')
           : base
       );
       if (!isHelp) {
@@ -83,11 +83,11 @@ export async function getGitState(options: Map<string, boolean | string | number
     } else {
       console.log(
         styleText('red', '💥 Git working tree is not clean. 💥 \n\t') +
-          styleText('grey', 'Use ') +
+          styleText('gray', 'Use ') +
           styleText('white', '--dangerously-force') +
-          styleText('grey', ' to ignore this warning and publish anyway\n') +
+          styleText('gray', ' to ignore this warning and publish anyway\n') +
           styleText('yellow', '⚠️  Publishing from an unclean working state may result in a broken release ⚠️\n\n') +
-          styleText('grey', `Status:\n${status}`)
+          styleText('gray', `Status:\n${status}`)
       );
       process.exit(1);
     }
@@ -101,17 +101,17 @@ export async function getGitState(options: Map<string, boolean | string | number
             ? base +
                 styleText('yellow', '\n\t\tPassed option: ') +
                 styleText('white', '--dangerously-force') +
-                styleText('grey', ' :: ignoring unsynced git branch')
+                styleText('gray', ' :: ignoring unsynced git branch')
             : base
         );
       } else {
         console.log(
           styleText('red', '💥 Local Git branch is not in sync with origin branch. 💥 \n\t') +
-            styleText('grey', 'Use ') +
+            styleText('gray', 'Use ') +
             styleText('white', '--dangerously-force') +
-            styleText('grey', ' to ignore this warning and publish anyway\n') +
+            styleText('gray', ' to ignore this warning and publish anyway\n') +
             styleText('yellow', '⚠️  Publishing from an unsynced working state may result in a broken release ⚠️') +
-            styleText('grey', `Status:\n${status}`)
+            styleText('gray', `Status:\n${status}`)
         );
         process.exit(1);
       }
@@ -137,7 +137,7 @@ export async function getGitState(options: Map<string, boolean | string | number
           ? base +
               styleText('yellow', '\n\t\tPassed option: ') +
               styleText('white', '--dangerously-force') +
-              styleText('grey', ' :: ignoring unexpected branch')
+              styleText('gray', ' :: ignoring unexpected branch')
           : base
       );
     } else {
@@ -146,9 +146,9 @@ export async function getGitState(options: Map<string, boolean | string | number
           'red',
           `💥 Expected to publish the release-channel '${channel}' from the git branch '${expectedBranch}', but found '${foundBranch}' 💥 \n\t`
         ) +
-          styleText('grey', 'Use ') +
+          styleText('gray', 'Use ') +
           styleText('white', '--dangerously-force') +
-          styleText('grey', ' to ignore this warning and publish anyway\n') +
+          styleText('gray', ' to ignore this warning and publish anyway\n') +
           styleText('yellow', '⚠️  Publishing from an incorrect branch may result in a broken release ⚠️')
       );
       process.exit(1);

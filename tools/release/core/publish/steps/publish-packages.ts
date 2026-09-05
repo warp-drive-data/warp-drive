@@ -157,7 +157,9 @@ export async function publishPackages(
     }
   }
 
-  console.log(`✅ ` + styleText('cyan', `published ${styleText('greenBright', publishCount)} 📦 packages to npm`));
+  console.log(
+    `✅ ` + styleText('cyan', `published ${styleText('greenBright', String(publishCount))} 📦 packages to npm`)
+  );
   if (errors.length > 0) {
     console.log(styleText('red', `🚫 ${errors.length} errors occurred while publishing packages to npm`));
     for (const error of errors) {

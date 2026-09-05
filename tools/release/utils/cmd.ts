@@ -113,7 +113,7 @@ class CLICondenser {
       await rd.commit();
     }
     process.stdout.write(
-      `\t☑️\t${styleText('grey', cmd)} in ${styleText('greenBright', path.relative(process.cwd(), this.cwd) || '<root>')}\n`
+      `\t☑️\t${styleText('gray', cmd)} in ${styleText('greenBright', path.relative(process.cwd(), this.cwd) || '<root>')}\n`
     );
 
     return output;
@@ -138,12 +138,12 @@ export async function exec(cmd: string[] | string | CMD, dryRun: boolean = false
 
   if (dryRun) {
     console.log(
-      `\t` + styleText('grey', `Would Run: ${Array.isArray(mainCommand) ? mainCommand.join(' ') : mainCommand}`)
+      `\t` + styleText('gray', `Would Run: ${Array.isArray(mainCommand) ? mainCommand.join(' ') : mainCommand}`)
     );
   } else if (!isCmdWithConfig || (!cmd.condense && !cmd.silent)) {
     console.log(
       `\t` +
-        styleText('grey', `Running: ${args.join(' ')} in ${styleText('green', path.relative(process.cwd(), cwd))}\t...`)
+        styleText('gray', `Running: ${args.join(' ')} in ${styleText('green', path.relative(process.cwd(), cwd))}\t...`)
     );
   }
 
