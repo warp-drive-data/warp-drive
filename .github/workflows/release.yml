@@ -206,7 +206,9 @@ jobs:
           fetch-depth: 3
           ref: ${{ steps.desired-branch.outputs.DESIRED_BRANCH }}
       - run: git fetch origin main --depth=1
-      - run: git fetch origin --tags --depth=1
+      # scoped to `refs/tags/*` on purpose: `--tags --depth=1` would also match the
+      # remote's default refspec and re-shallow every branch to a single commit
+      - run: git fetch origin --depth=1 "+refs/tags/*:refs/tags/*"
       - name: Make sure git user is setup
         run: |
           git config --local user.email ${{ secrets.GH_DEPLOY_EMAIL }}
@@ -273,11 +275,15 @@ jobs:
           fetch-tags: true
           show-progress: false
           token: ${{ secrets.GH_DEPLOY_TOKEN }}
-          fetch-depth: 1000 # release notes will need more history
+          # release notes are generated from `git log <last-stable-tag>..HEAD`, so we need
+          # the full history *and* the full history behind every tag. `--depth` is not an
+          # option here: it applies to every ref in the fetch, so any shallow fetch after
+          # this point re-truncates the branch we just checked out (see the tag fetches in
+          # the other jobs below).
+          fetch-depth: 0
           ref: ${{ steps.desired-branch.outputs.DESIRED_BRANCH }}
       ## Ensure we have a full copy of the source branch
       - run: git fetch origin ${{ github.event.inputs.stable_source-branch }}
-      - run: git fetch origin --tags --depth=1
       - name: Make sure git user is setup
         run: |
           git config --local user.email ${{ secrets.GH_DEPLOY_EMAIL }}
@@ -323,7 +329,7 @@ jobs:
           TARGET: ${{ steps.desired-branch.outputs.MAIN_BRANCH }}
         run: |
           git checkout -- .
-          git fetch origin $TARGET --depth=1
+          git fetch origin $TARGET
           git checkout -B $TARGET origin/$TARGET
           if git cherry-pick $SHA; then
             git push origin $TARGET
@@ -347,7 +353,7 @@ jobs:
           TARGET: ${{ steps.desired-branch.outputs.BETA_BRANCH }}
         run: |
           git checkout -- .
-          git fetch origin $TARGET --depth=1
+          git fetch origin $TARGET
           git checkout -B $TARGET origin/$TARGET
           if git cherry-pick $SHA; then
             git push origin $TARGET
@@ -382,9 +388,10 @@ jobs:
           fetch-tags: true
           show-progress: false
           token: ${{ secrets.GH_DEPLOY_TOKEN }}
-          fetch-depth: 25
+          # as with the stable job, release notes need full history behind the branch and
+          # behind the tag we diff against
+          fetch-depth: 0
           ref: ${{ github.event.inputs.lts_branch_or_promote_channel }}
-      - run: git fetch origin --tags --depth=1
       - name: Make sure git user is setup
         run: |
           git config --local user.email ${{ secrets.GH_DEPLOY_EMAIL }}
@@ -424,7 +431,9 @@ jobs:
           fetch-tags: true
           show-progress: false
           token: ${{ secrets.GH_DEPLOY_TOKEN }}
-      - run: git fetch origin --tags --depth=1
+      # scoped to `refs/tags/*` on purpose: `--tags --depth=1` would also match the
+      # remote's default refspec and re-shallow every branch to a single commit
+      - run: git fetch origin --depth=1 "+refs/tags/*:refs/tags/*"
       - uses: ./.github/actions/setup
         with:
           install: true
