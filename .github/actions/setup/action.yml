@@ -101,7 +101,7 @@ runs:
     # restore-key so every run still starts from the most recently saved
     # state regardless of which prior run wrote it.
     - name: 'Restore Turbo Remote-Cache Proxy Disk Cache'
-      if: ${{ inputs.repo-token }}
+      if: ${{ inputs.repo-token && inputs.DISABLE_TURBO_CACHE != 'true' }}
       uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
       with:
         path: ${{ runner.temp }}/turbo-cache
@@ -135,7 +135,7 @@ runs:
           turbo-local-cache-
 
     - name: 'Setup local TurboRepo server'
-      if: ${{ inputs.repo-token }}
+      if: ${{ inputs.repo-token && inputs.DISABLE_TURBO_CACHE != 'true' }}
       uses: felixmosh/turborepo-gh-artifacts@118f869397261f74bc39cb8565f2d02c0ed4209f # v4.1.1
       with:
         repo-token: ${{ inputs.repo-token }}
