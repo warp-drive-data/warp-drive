@@ -36,6 +36,12 @@ jobs:
       - uses: ./.github/actions/setup
         with:
           install: true
+          # This command only reads package.json metadata and talks to the npm
+          # registry -- it never needs any workspace package's build output, so
+          # skip the (slow) turbo build:pkg a normal `pnpm install` triggers.
+          # DISABLE_TURBO_CACHE too: with no build ever running, there's
+          # nothing for a turbo build-cache restore/save to do here either.
+          skip-addon-build: true
           DISABLE_TURBO_CACHE: true
       - name: Bootstrap new packages
         run: bun release exec bootstrap --dry_run=${{ github.event.inputs.dryRun }} --otp=${{ github.event.inputs.otp }}
