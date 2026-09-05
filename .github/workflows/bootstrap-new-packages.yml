@@ -1,0 +1,45 @@
+name: Bootstrap New Packages
+
+concurrency:
+  group: bootstrap-new-packages
+  # only one run at a time; a run publishing a placeholder shouldn't overlap another
+
+permissions:
+  contents: read
+
+on:
+  workflow_dispatch:
+    inputs:
+      dryRun:
+        name: Dry Run
+        description: 'Report only -- do not actually publish any 0.0.0 placeholders'
+        required: true
+        default: true
+        type: boolean
+      otp:
+        name: One-Time Password
+        description: '2FA code for NPM_BOOTSTRAP_TOKEN, if it is not an Automation-type token (which is exempt from 2FA). Only used when dryRun is false.'
+        required: false
+        default: ''
+        type: string
+
+jobs:
+  bootstrap:
+    name: Bootstrap New Packages
+    runs-on: ubuntu-latest
+    environment: deployment
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 1
+          show-progress: false
+      - uses: ./.github/actions/setup
+        with:
+          install: true
+          DISABLE_TURBO_CACHE: true
+      - name: Bootstrap new packages
+        run: bun release exec bootstrap --dry_run=${{ github.event.inputs.dryRun }} --otp=${{ github.event.inputs.otp }}
+        env:
+          FORCE_COLOR: 2
+          CI: true
+          NPM_BOOTSTRAP_TOKEN: ${{ secrets.NPM_BOOTSTRAP_TOKEN }}

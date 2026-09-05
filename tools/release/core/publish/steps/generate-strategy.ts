@@ -26,7 +26,27 @@ function sortByName(map: Map<string, { name: string }>) {
   });
 }
 
-function getMirrorPackageName(name: string) {
+/**
+ * Whether a package should also produce a mirror and/or types publish,
+ * per the release strategy rule that applies to it (falling back to
+ * strategy.defaults). Shared so callers other than applyStrategy() (e.g.
+ * the bootstrap command, which needs to know the derived mirror/types
+ * names for a package without computing a version bump) can't drift out
+ * of sync with what a real publish would actually do.
+ */
+export function getMirrorAndTypesFlags(
+  name: string,
+  isPrivate: boolean,
+  strategy: STRATEGY
+): { mirrorPublish: boolean; typesPublish: boolean } {
+  const rule = strategy.rules[name] || strategy.defaults;
+  return {
+    mirrorPublish: !isPrivate && (rule.mirrorPublish ?? strategy.defaults.mirrorPublish ?? false),
+    typesPublish: !isPrivate && (rule.typesPublish ?? strategy.defaults.typesPublish ?? false),
+  };
+}
+
+export function getMirrorPackageName(name: string) {
   if (name === 'root') {
     return 'N/A';
   }
@@ -40,7 +60,7 @@ function getMirrorPackageName(name: string) {
   throw new Error(`Could not determine mirror package name for ${name}`);
 }
 
-function getTypesPackageName(name: string) {
+export function getTypesPackageName(name: string) {
   if (name === 'root') {
     return 'N/A';
   }
@@ -106,10 +126,9 @@ export async function applyStrategy(
     applied_strategy.new = !fromPkg;
     applied_strategy.unpkgPublish =
       !applied_strategy.private && (rule.unpkgPublish ?? strategy.defaults.unpkgPublish ?? false);
-    applied_strategy.mirrorPublish =
-      !applied_strategy.private && (rule.mirrorPublish ?? strategy.defaults.mirrorPublish ?? false);
-    applied_strategy.typesPublish =
-      !applied_strategy.private && (rule.typesPublish ?? strategy.defaults.typesPublish ?? false);
+    const { mirrorPublish, typesPublish } = getMirrorAndTypesFlags(name, applied_strategy.private, strategy);
+    applied_strategy.mirrorPublish = mirrorPublish;
+    applied_strategy.typesPublish = typesPublish;
     applied_strategy.mirrorPublishTo = applied_strategy.mirrorPublish ? getMirrorPackageName(name) : 'N/A';
     applied_strategy.typesPublishTo = applied_strategy.typesPublish ? getTypesPackageName(name) : 'N/A';
 
