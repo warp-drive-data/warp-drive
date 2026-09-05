@@ -51,6 +51,11 @@ jobs:
         env:
           BASE: ''
           HOSTNAME: 'https://canary.warp-drive.io'
+          # authenticates the docs build's calls to api.github.com (contributor list +
+          # profile lookups) so they get the 5,000/hour per-token limit instead of the
+          # 60/hour per-IP anonymous limit, which is shared with unrelated jobs across
+          # the whole GitHub Actions runner pool and fails intermittently under load
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Upload artifact
         uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
         with:

@@ -8,6 +8,15 @@ export interface Contributor {
   githubLink: string;
 }
 
+// Unauthenticated requests to api.github.com are capped at 60/hour *per
+// source IP*, and that IP is shared with unrelated jobs across every
+// GitHub Actions runner in the pool -- an authenticated token raises this
+// to 5,000/hour and is scoped to this token alone.
+export function githubHeaders(): HeadersInit | undefined {
+  const token = process.env.GITHUB_TOKEN;
+  return token ? { Authorization: `Bearer ${token}` } : undefined;
+}
+
 export async function getFromCache(key: string): Promise<any | null> {
   const CacheDir = './docs.warp-drive.io/.vitepress/cache/github-api';
   const filePath = `${CacheDir}/${key}.json`;
@@ -47,7 +56,8 @@ async function load() {
       contributors = cached;
     } else {
       const res = await fetch(
-        `https://api.github.com/repos/warp-drive-data/warp-drive/contributors?per_page=${PAGE_SIZE}&page=${pages + 1}`
+        `https://api.github.com/repos/warp-drive-data/warp-drive/contributors?per_page=${PAGE_SIZE}&page=${pages + 1}`,
+        { headers: githubHeaders() }
       );
       contributors = await res.json();
       // store the result in cache if successful
