@@ -6,8 +6,13 @@ import { styleText } from 'node:util';
 import { printHelpDocs } from '../../help/docs.ts';
 import { exec } from '../../utils/cmd.ts';
 import { bootstrap_flags_config } from '../../utils/flags-config.ts';
-import { gatherPackages, loadStrategy, Package } from '../../utils/package.ts';
+import { gatherPackages, loadStrategy, Package, STRATEGY } from '../../utils/package.ts';
 import { parseRawFlags } from '../../utils/parse-args.ts';
+import {
+  getMirrorAndTypesFlags,
+  getMirrorPackageName,
+  getTypesPackageName,
+} from '../publish/steps/generate-strategy.ts';
 
 /**
  * npm's Trusted Publishing (OIDC) can only be configured for a package that
@@ -30,19 +35,47 @@ import { parseRawFlags } from '../../utils/parse-args.ts';
  * -- that path is OIDC-only by design, and this is the one place in the
  * release tooling that deliberately is not.
  *
- * Scope: only checks the primary name of each package.json under the
- * monorepo's package roots. It does not compute or check the derived
- * mirror/types publish names (e.g. `ember-data-mirror`, `ember-data-types`)
- * that the real publish strategy generates for some packages -- those are
- * synthesized at publish time, not present as their own package.json, and
- * are far less likely to be the first thing published for a brand-new
- * package. If one of those ever needs bootstrapping, do it manually.
+ * Also checks the derived mirror/types names (e.g. `ember-data-mirror`,
+ * `ember-data-types`) for any package whose release strategy rule enables
+ * them, using the same getMirrorAndTypesFlags()/getMirrorPackageName()/
+ * getTypesPackageName() helpers applyStrategy() uses for a real publish --
+ * those names aren't their own package.json in the repo, so they'd
+ * otherwise be invisible to a scan of package.json files alone.
  */
 
 type RegistryStatus =
   | { kind: 'never-published' }
   | { kind: 'published'; latest: string }
   | { kind: 'lookup-error'; message: string };
+
+type BootstrapTarget = {
+  /** the actual npm package name to check/reserve on the registry */
+  name: string;
+  /** the repo package.json this name was derived from, for placeholder metadata (license, repository) */
+  sourcePkg: Package;
+};
+
+/**
+ * Expands each public package into every npm package name its release
+ * strategy rule says should exist: its own primary name, and (when enabled
+ * for that package) its mirror and/or types publish names.
+ */
+function computeBootstrapTargets(publicPackages: Package[], strategy: STRATEGY): BootstrapTarget[] {
+  const targets: BootstrapTarget[] = [];
+  for (const pkg of publicPackages) {
+    const name = pkg.pkgData.name;
+    targets.push({ name, sourcePkg: pkg });
+
+    const { mirrorPublish, typesPublish } = getMirrorAndTypesFlags(name, false, strategy);
+    if (mirrorPublish) {
+      targets.push({ name: getMirrorPackageName(name), sourcePkg: pkg });
+    }
+    if (typesPublish) {
+      targets.push({ name: getTypesPackageName(name), sourcePkg: pkg });
+    }
+  }
+  return targets;
+}
 
 async function checkRegistryStatus(name: string): Promise<RegistryStatus> {
   try {
@@ -59,9 +92,11 @@ async function checkRegistryStatus(name: string): Promise<RegistryStatus> {
   }
 }
 
-async function publishPlaceholder(pkg: Package, dryRun: boolean): Promise<Error | null> {
+async function publishPlaceholder(target: BootstrapTarget, dryRun: boolean): Promise<Error | null> {
+  const { name, sourcePkg } = target;
+
   if (dryRun) {
-    console.log(styleText('gray', `\t[dry-run] would publish a 0.0.0 placeholder for ${pkg.pkgData.name}`));
+    console.log(styleText('gray', `\t[dry-run] would publish a 0.0.0 placeholder for ${name}`));
     return null;
   }
 
@@ -75,18 +110,18 @@ async function publishPlaceholder(pkg: Package, dryRun: boolean): Promise<Error 
   const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'warp-drive-bootstrap-'));
   try {
     const placeholderPkg = {
-      name: pkg.pkgData.name,
+      name,
       version: '0.0.0',
       private: false,
-      description: `Reserved placeholder for ${pkg.pkgData.name}, published ahead of its first real release from https://github.com/warp-drive-data/warp-drive.`,
-      license: pkg.pkgData.license ?? 'MIT',
-      repository: pkg.pkgData.repository,
+      description: `Reserved placeholder for ${name}, published ahead of its first real release from https://github.com/warp-drive-data/warp-drive.`,
+      license: sourcePkg.pkgData.license ?? 'MIT',
+      repository: sourcePkg.pkgData.repository,
     };
     fs.writeFileSync(path.join(tmpDir, 'package.json'), JSON.stringify(placeholderPkg, null, 2));
     fs.writeFileSync(path.join(tmpDir, 'index.js'), '// placeholder release, see README\nmodule.exports = {};\n');
     fs.writeFileSync(
       path.join(tmpDir, 'README.md'),
-      `# ${pkg.pkgData.name}\n\nThis \`0.0.0\` version is a placeholder published only to reserve this package name ahead of its first real release from [warp-drive-data/warp-drive](https://github.com/warp-drive-data/warp-drive).\n`
+      `# ${name}\n\nThis \`0.0.0\` version is a placeholder published only to reserve this package name ahead of its first real release from [warp-drive-data/warp-drive](https://github.com/warp-drive-data/warp-drive).\n`
     );
     // Written directly with the resolved secret value (not a template) into a
     // throwaway directory outside the repo -- never committed, never printed.
@@ -120,16 +155,22 @@ export async function bootstrapNewPackages(args: string[]) {
   const packages = await gatherPackages(strategy.config);
 
   const publicPackages = Array.from(packages.values()).filter((pkg) => !pkg.pkgData.private);
+  const targets = computeBootstrapTargets(publicPackages, strategy);
 
-  console.log(styleText('cyan', `Scanning ${String(publicPackages.length)} public packages for registry status...`));
+  console.log(
+    styleText(
+      'cyan',
+      `Scanning ${String(targets.length)} public package names (including mirror/types variants) for registry status...`
+    )
+  );
 
   const reserved: string[] = [];
   const stillNeedsOidc: string[] = [];
   const errors: { name: string; message: string }[] = [];
   const ok: string[] = [];
 
-  for (const pkg of publicPackages) {
-    const name = pkg.pkgData.name;
+  for (const target of targets) {
+    const { name } = target;
     const status = await checkRegistryStatus(name);
 
     if (status.kind === 'lookup-error') {
@@ -150,7 +191,7 @@ export async function bootstrapNewPackages(args: string[]) {
 
     // never-published
     console.log(styleText('cyan', `\t📦 ${name} has never been published, reserving with a 0.0.0 placeholder...`));
-    const error = await publishPlaceholder(pkg, dryRun);
+    const error = await publishPlaceholder(target, dryRun);
     if (error) {
       console.log(styleText('red', `\t🚫 Error publishing placeholder for ${name}: ${error.message}`));
       errors.push({ name, message: error.message });
