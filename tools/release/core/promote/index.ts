@@ -7,9 +7,7 @@ import { promote_flags_config } from '../../utils/flags-config.ts';
 import { GIT_TAG, getAllPackagesForGitTag, getGitState, pushLTSTagToRemoteBranch } from '../../utils/git.ts';
 import { Package } from '../../utils/package.ts';
 import { parseRawFlags } from '../../utils/parse-args.ts';
-import { question } from '../publish/steps/confirm-strategy.ts';
 import { colorName } from '../publish/steps/print-strategy.ts';
-import { RETRY_TRUSTED_PUBLISHING } from '../publish/steps/publish-packages.ts';
 
 export async function promoteToLTS(args: string[]) {
   // get user supplied config
@@ -50,40 +48,16 @@ export async function updateTags(
   packages: Map<string, SEMVER_VERSION>
 ) {
   const distTag = config.get('tag') as string;
-  const NODE_AUTH_TOKEN = process.env.NODE_AUTH_TOKEN;
-  const CI = process.env.CI;
-  let token: string | undefined;
-
-  // allow OTP token usage locally
-  if (!CI) {
-    if (!NODE_AUTH_TOKEN) {
-      console.log(
-        styleText(
-          'red',
-          '🚫 NODE_AUTH_TOKEN not found in ENV. NODE_AUTH_TOKEN is required in ENV to publish from CI. Exiting...'
-        )
-      );
-      process.exit(1);
-    }
-
-    const result = await question(
-      `\n${styleText('cyan', 'NODE_AUTH_TOKEN')} found in ENV.\nPublish ${config.get('increment')} release in ${config.get(
-        'channel'
-      )} channel to the ${config.get('tag')} tag on the npm registry? ${styleText('yellow', '[y/n]')}:`
-    );
-    const input = result.trim().toLowerCase();
-    if (input !== 'y' && input !== 'yes') {
-      console.log(styleText('red', '🚫 Publishing not confirmed. Exiting...'));
-      process.exit(1);
-    }
-
-    token = await getOTPToken(distTag);
-  }
-
   const dryRun = config.get('dry_run') as boolean;
-  let error: Error | null = null;
+  const errors: Error[] = [];
+
   for (const [pkgName, version] of packages) {
-    [token, error] = await updateDistTag(pkgName, version, distTag, dryRun, token);
+    const error = await updateDistTag(pkgName, version, distTag, dryRun);
+    if (error) {
+      console.log(styleText('red', `\t🚫 Error updating dist-tag for ${colorName(pkgName)}: ${error.message}`));
+      errors.push(error);
+      continue;
+    }
     console.log(
       styleText(
         'green',
@@ -96,22 +70,16 @@ export async function updateTags(
     `✅ ` +
       styleText(
         'cyan',
-        `Moved ${styleText('greenBright', String(packages.size))} 📦 packages to ${styleText('magenta', distTag)} channel`
+        `Moved ${styleText('greenBright', String(packages.size - errors.length))} 📦 packages to ${styleText('magenta', distTag)} channel`
       )
   );
-}
-
-async function getOTPToken(distTag: string, reprompt?: boolean) {
-  const prompt = reprompt
-    ? `The provided OTP token has expired. Please enter a new OTP token: `
-    : `\nℹ️ ${styleText(
-        'cyan',
-        'NODE_AUTH_TOKEN'
-      )} not found in ENV.\n\nConfiguring NODE_AUTH_TOKEN is the preferred mechanism by which to publish. Alternatively you may continue using an OTP token.\n\nUpdating ${distTag} tag on the npm registry.\n\nEnter your OTP token: `;
-
-  let token = await question(prompt);
-
-  return token.trim();
+  if (errors.length > 0) {
+    console.log(styleText('red', `🚫 ${errors.length} errors occurred while updating dist-tags`));
+    for (const error of errors) {
+      console.log(styleText('red', error.message));
+    }
+    throw new Error(`${errors.length} errors occurred while updating dist-tags.`);
+  }
 }
 
 export async function updateDistTag(
@@ -119,32 +87,28 @@ export async function updateDistTag(
   version: string,
   distTag: string,
   dryRun: boolean,
-  otp?: string
-): Promise<[string | undefined, Error | null]> {
-  let cmd = `npm dist-tag add ${pkg}@${version} ${distTag}`;
+  isRetry = false
+): Promise<Error | null> {
+  const cmd = `pnpm dist-tag add ${pkg}@${version} ${distTag}`;
 
-  if (otp && otp !== RETRY_TRUSTED_PUBLISHING) {
-    cmd += ` --otp=${otp}`;
-  }
-
+  // pnpm's dist-tag command has no --dry-run flag, so a dry run skips
+  // executing it entirely rather than passing an unsupported flag through.
   if (dryRun) {
-    cmd += ' --dry-run';
+    console.log(styleText('gray', `\t[dry-run] would run: ${cmd}`));
+    return null;
   }
 
   try {
     await exec({ cmd, condense: true });
   } catch (e) {
     const error = !(e instanceof Error) ? new Error(e as string) : e;
-    if (otp && otp !== RETRY_TRUSTED_PUBLISHING) {
-      if (error.message.includes('E401') || error.message.includes('EOTP')) {
-        otp = await getOTPToken(distTag, true);
-        return updateDistTag(pkg, version, distTag, dryRun, otp);
-      }
-    } else if (!otp) {
-      return updateDistTag(pkg, version, distTag, dryRun, RETRY_TRUSTED_PUBLISHING);
+    // A GitHub Actions OIDC token can go stale between packages in a long
+    // promote loop; one retry is enough to get a fresh one negotiated.
+    if (!isRetry && error.message.includes('E401')) {
+      return updateDistTag(pkg, version, distTag, dryRun, true);
     }
-    return [otp === RETRY_TRUSTED_PUBLISHING ? '' : otp, error];
+    return error;
   }
 
-  return [otp === RETRY_TRUSTED_PUBLISHING ? '' : otp, null];
+  return null;
 }
