@@ -1,5 +1,33 @@
 # @ember-data/legacy-compat Changelog
 
+## v5.9.0 (2026-09-05)
+
+#### :memo: Documentation
+
+* [#10502](https://github.com/warp-drive-data/warp-drive/pull/10502) chore(docs): fix link to /guides/migrating/index.md ([@BobrImperator](https://github.com/BobrImperator))
+* [#10471](https://github.com/warp-drive-data/warp-drive/pull/10471) [docs] Ensure consistent legacy package warnings ([@gitKrystan](https://github.com/gitKrystan))
+
+#### :bug: Bug Fix
+
+* [#10458](https://github.com/warp-drive-data/warp-drive/pull/10458) fix: bump build dependencies ([@runspired](https://github.com/runspired))
+
+#### :house: Internal
+
+* [#10955](https://github.com/warp-drive-data/warp-drive/pull/10955) chore(deps): drop now-unused classic typescript devDependency ([@runspired](https://github.com/runspired))
+* [#10948](https://github.com/warp-drive-data/warp-drive/pull/10948) chore(types): move all remaining packages to TypeScript 7 for check:types ([@runspired](https://github.com/runspired))
+* [#10928](https://github.com/warp-drive-data/warp-drive/pull/10928) chore: bump pnpm to 12.0.0, replace Volta with mise ([@runspired](https://github.com/runspired))
+* [#10729](https://github.com/warp-drive-data/warp-drive/pull/10729) fix: invoke tsdown directly via node to avoid racy bin-shim resolution ([@runspired](https://github.com/runspired))
+* [#10696](https://github.com/warp-drive-data/warp-drive/pull/10696) chore(types): drop redundant tsconfig paths, keep references editor-only ([@runspired](https://github.com/runspired))
+* [#10678](https://github.com/warp-drive-data/warp-drive/pull/10678) feat: migrate @ember-data/legacy-compat's build to rolldown via tsdown ([@runspired](https://github.com/runspired))
+* [#10643](https://github.com/warp-drive-data/warp-drive/pull/10643) feat: migrate @warp-drive/core's build to rolldown via tsdown ([@runspired](https://github.com/runspired))
+* [#10459](https://github.com/warp-drive-data/warp-drive/pull/10459) chore: tweak install ([@runspired](https://github.com/runspired))
+
+#### Committers: (3)
+
+Bartlomiej Dudzik ([@BobrImperator](https://github.com/BobrImperator))
+Krystan HuffMenne ([@gitKrystan](https://github.com/gitKrystan))
+Chris Thoburn ([@runspired](https://github.com/runspired))
+
 ## v5.8.0 (2025-10-07)
 
 #### :house: Internal

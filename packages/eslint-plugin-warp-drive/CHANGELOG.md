@@ -1,5 +1,31 @@
 # eslint-plugin-warp-drive Changelog
 
+## v5.9.0 (2026-09-05)
+
+#### :memo: Documentation
+
+* [#10885](https://github.com/warp-drive-data/warp-drive/pull/10885) fix(eslint-plugin): guard null parent in no-create-record-rerender rule ([@runspired](https://github.com/runspired))
+
+#### :rocket: Enhancement
+
+* [#10613](https://github.com/warp-drive-data/warp-drive/pull/10613) feat: add template-always-use-request-content rule to eslint-plugin-warp-drive ([@runspired](https://github.com/runspired))
+
+#### :bug: Bug Fix
+
+* [#10557](https://github.com/warp-drive-data/warp-drive/pull/10557) fix: account for * re-exports in lint map ([@runspired](https://github.com/runspired))
+* [#10556](https://github.com/warp-drive-data/warp-drive/pull/10556) fix: account for type-only imports in lint fix ([@runspired](https://github.com/runspired))
+* [#10546](https://github.com/warp-drive-data/warp-drive/pull/10546) fix: address issues with import modernization lint ([@runspired](https://github.com/runspired))
+
+#### :house: Internal
+
+* [#10928](https://github.com/warp-drive-data/warp-drive/pull/10928) chore: bump pnpm to 12.0.0, replace Volta with mise ([@runspired](https://github.com/runspired))
+* [#10884](https://github.com/warp-drive-data/warp-drive/pull/10884) fix(deps): bump eslint to v10 and typescript-eslint to ^8.67 together ([@runspired](https://github.com/runspired))
+* [#10648](https://github.com/warp-drive-data/warp-drive/pull/10648) docs: fix dead links breaking docs build ([@runspired](https://github.com/runspired))
+
+#### Committers: (1)
+
+Chris Thoburn ([@runspired](https://github.com/runspired))
+
 ## v5.8.0 (2025-10-07)
 
 #### :memo: Documentation

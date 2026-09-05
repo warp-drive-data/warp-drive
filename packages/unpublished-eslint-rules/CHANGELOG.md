@@ -1,5 +1,15 @@
 # eslint-plugin-ember-data-internal Changelog
 
+## v5.9.0 (2026-09-05)
+
+#### :house: Internal
+
+* [#10928](https://github.com/warp-drive-data/warp-drive/pull/10928) chore: bump pnpm to 12.0.0, replace Volta with mise ([@runspired](https://github.com/runspired))
+
+#### Committers: (1)
+
+Chris Thoburn ([@runspired](https://github.com/runspired))
+
 ## v5.8.0 (2025-10-07)
 
 #### :house: Internal

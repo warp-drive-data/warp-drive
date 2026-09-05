@@ -1,5 +1,52 @@
 # @ember-data/codemods Changelog
 
+## v5.9.0 (2026-09-05)
+
+#### :memo: Documentation
+
+* [#10501](https://github.com/warp-drive-data/warp-drive/pull/10501) chore(codemods): add codemods guide documentation ([@BobrImperator](https://github.com/BobrImperator))
+
+#### :rocket: Enhancement
+
+* [#10506](https://github.com/warp-drive-data/warp-drive/pull/10506) feat(codemods): add withDefaults to the warpDriveImports configuration ([@BobrImperator](https://github.com/BobrImperator))
+* [#10466](https://github.com/warp-drive-data/warp-drive/pull/10466) codemods: model-to-schema migration codemod ([@BobrImperator](https://github.com/BobrImperator))
+
+#### :bug: Bug Fix
+
+* [#10949](https://github.com/warp-drive-data/warp-drive/pull/10949) fix(codemods): distribute the CLI as a portable node bundle ([@runspired](https://github.com/runspired))
+* [#10501](https://github.com/warp-drive-data/warp-drive/pull/10501) chore(codemods): add codemods guide documentation ([@BobrImperator](https://github.com/BobrImperator))
+* [#10500](https://github.com/warp-drive-data/warp-drive/pull/10500) fix(deploy): @ember-data/codemods fails on different platforms  ([@BobrImperator](https://github.com/BobrImperator))
+* [#10497](https://github.com/warp-drive-data/warp-drive/pull/10497) fix(codemods): resolve eslint errors in schema-migration ([@richgt](https://github.com/richgt))
+* [#10458](https://github.com/warp-drive-data/warp-drive/pull/10458) fix: bump build dependencies ([@runspired](https://github.com/runspired))
+
+#### :house: Internal
+
+* [#10955](https://github.com/warp-drive-data/warp-drive/pull/10955) chore(deps): drop now-unused classic typescript devDependency ([@runspired](https://github.com/runspired))
+* [#10948](https://github.com/warp-drive-data/warp-drive/pull/10948) chore(types): move all remaining packages to TypeScript 7 for check:types ([@runspired](https://github.com/runspired))
+* [#10928](https://github.com/warp-drive-data/warp-drive/pull/10928) chore: bump pnpm to 12.0.0, replace Volta with mise ([@runspired](https://github.com/runspired))
+* [#10884](https://github.com/warp-drive-data/warp-drive/pull/10884) fix(deps): bump eslint to v10 and typescript-eslint to ^8.67 together ([@runspired](https://github.com/runspired))
+* [#10869](https://github.com/warp-drive-data/warp-drive/pull/10869) chore(deps): dedupe ember-source, vite, @types/node, @vue/compiler-sfc, @shikijs/langs, rxjs ([@runspired](https://github.com/runspired))
+* [#10838](https://github.com/warp-drive-data/warp-drive/pull/10838) chore(deps): drop tsx from tests/codemods in favor of node's native TS support ([@runspired](https://github.com/runspired))
+* [#10791](https://github.com/warp-drive-data/warp-drive/pull/10791) chore(deps): remove glob and globby, use node:fs's built-in glob ([@runspired](https://github.com/runspired))
+* [#10778](https://github.com/warp-drive-data/warp-drive/pull/10778) chore(deps): remove dead url/zlib shims, replace tmp/strip-ansi with builtins ([@runspired](https://github.com/runspired))
+* [#10776](https://github.com/warp-drive-data/warp-drive/pull/10776) chore(deps): replace chalk with node:util's styleText ([@runspired](https://github.com/runspired))
+* [#10773](https://github.com/warp-drive-data/warp-drive/pull/10773) chore(deps): dedupe lodash, caniuse-lite, rollup, and babel across the workspace ([@runspired](https://github.com/runspired))
+* [#10696](https://github.com/warp-drive-data/warp-drive/pull/10696) chore(types): drop redundant tsconfig paths, keep references editor-only ([@runspired](https://github.com/runspired))
+* [#10497](https://github.com/warp-drive-data/warp-drive/pull/10497) fix(codemods): resolve eslint errors in schema-migration ([@richgt](https://github.com/richgt))
+* [#10486](https://github.com/warp-drive-data/warp-drive/pull/10486) feat(codemods): log what and why files were skipped ([@BobrImperator](https://github.com/BobrImperator))
+* [#10485](https://github.com/warp-drive-data/warp-drive/pull/10485) refactor(codemods): use the existing file parsing utility ([@BobrImperator](https://github.com/BobrImperator))
+* [#10484](https://github.com/warp-drive-data/warp-drive/pull/10484) refactor(codemods): remove extraenous logger implementation ([@BobrImperator](https://github.com/BobrImperator))
+* [#10481](https://github.com/warp-drive-data/warp-drive/pull/10481) refactor(codemods): deduplicate interface generation ([@BobrImperator](https://github.com/BobrImperator))
+* [#10480](https://github.com/warp-drive-data/warp-drive/pull/10480) refactor(codemods): small cleanups ([@BobrImperator](https://github.com/BobrImperator))
+* [#10479](https://github.com/warp-drive-data/warp-drive/pull/10479) feat(codemods): Publishing `@ember-data/codemods` ([@BobrImperator](https://github.com/BobrImperator))
+* [#10459](https://github.com/warp-drive-data/warp-drive/pull/10459) chore: tweak install ([@runspired](https://github.com/runspired))
+
+#### Committers: (3)
+
+Bartlomiej Dudzik ([@BobrImperator](https://github.com/BobrImperator))
+Chris Thoburn ([@runspired](https://github.com/runspired))
+Rich Glazerman ([@richgt](https://github.com/richgt))
+
 ## v5.8.0 (2025-10-07)
 
 #### :rocket: Enhancement
