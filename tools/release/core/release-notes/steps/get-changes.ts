@@ -263,11 +263,49 @@ function* lines(markdown: string): Generator<string> {
   yield* markdown.split(/\r?\n/);
 }
 
+/**
+ * lerna-changelog builds its commit list from `git log <fromTag>..HEAD`, so it is only
+ * correct when both `fromTag` and `HEAD` have their full ancestry present locally.
+ *
+ * A shallow checkout breaks this silently rather than loudly: git happily resolves the
+ * range, it just walks a truncated graph. Depending on where the boundary lands we either
+ * get nothing at all (HEAD truncated to the release commit, which carries no PR number)
+ * or every commit we happen to have (`fromTag` truncated to a parentless root, so it
+ * excludes nothing). Both yield a wrong changelog, and the second one is wrong in a way
+ * that is easy to miss in review.
+ *
+ * The two commits having a common ancestor is exactly the condition the range needs, so
+ * check for it up front and explain the fix.
+ *
+ * @internal
+ */
+async function assertHistoryIsComplete(fromTag: string): Promise<void> {
+  try {
+    await exec({ cmd: ['git', 'merge-base', fromTag, 'HEAD'], silent: true });
+    return;
+  } catch {
+    // no common ancestor (or `fromTag` is unknown) — fall through to diagnose
+  }
+
+  const isShallow = (await exec({ cmd: ['git', 'rev-parse', '--is-shallow-repository'], silent: true })).trim();
+
+  throw new Error(
+    `Cannot generate release notes: ${fromTag} and HEAD have no common ancestor in this checkout.` +
+      (isShallow === 'true'
+        ? ` This checkout is a shallow clone, so the history behind ${fromTag} is truncated. Release notes need the` +
+          ` complete history of both refs: fetch it with \`git fetch --unshallow\`, and in CI check out with` +
+          ` \`fetch-depth: 0\`. Note that a later \`git fetch --depth=<n>\` re-truncates every ref it matches, not` +
+          ` just the one named on the command line.`
+        : ` Make sure ${fromTag} exists and is a tag of this repository.`)
+  );
+}
+
 export async function getChanges(
   strategy: RawStrategyConfig,
   packages: Map<string, Package>,
   fromTag: string
 ): Promise<VersionedLernaChangeset[]> {
+  await assertHistoryIsComplete(fromTag);
   const raw = await exec(['sh', '-c', `pnpm exec lerna-changelog --from=${fromTag}`]);
   // lerna-changelog emits ANSI color codes; strip them before parsing
   const changelogMarkdown = raw.replace(/\u001b\[[0-9;]*[a-zA-Z]/g, '');
