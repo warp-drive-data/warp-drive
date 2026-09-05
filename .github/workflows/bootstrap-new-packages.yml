@@ -1,6 +1,8 @@
 name: Bootstrap New Packages
 
 # OIDC Flows Don't Work For Initial Publish
+# So we use this workflow to bootstrap a 0.0.0
+# version of new packages via a 2fa+token flow.
 
 concurrency:
   group: bootstrap-new-packages
