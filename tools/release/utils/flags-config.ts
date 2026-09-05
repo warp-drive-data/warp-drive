@@ -425,7 +425,19 @@ export const promote_flags_config: FlagConfig = merge(
   }
 );
 
-export const bootstrap_flags_config: FlagConfig = pick(publish_flags_config, ['help', 'dry_run']);
+export const bootstrap_flags_config: FlagConfig = merge(pick(publish_flags_config, ['help', 'dry_run']), {
+  otp: {
+    name: 'One-Time Password',
+    flag: 'otp',
+    flag_aliases: ['o'],
+    flag_mispellings: ['otp_code', '2fa', 'two_factor'],
+    description:
+      'A 2FA one-time password to use when publishing placeholders, from the authenticator tied to NPM_BOOTSTRAP_TOKEN. Only needed if that token is not an Automation-type token (which is exempt from 2FA).',
+    type: String,
+    examples: [],
+    default_value: '',
+  },
+});
 
 export const command_config: CommandConfig = {
   help: {

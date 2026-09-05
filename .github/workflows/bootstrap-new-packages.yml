@@ -16,8 +16,19 @@ on:
         required: true
         default: true
         type: boolean
+      otp:
+        name: One-Time Password
+        description: '2FA code for NPM_BOOTSTRAP_TOKEN, if it is not an Automation-type token (which is exempt from 2FA). Only used when dryRun is false.'
+        required: false
+        default: ''
+        type: string
   schedule:
-    - cron: '0 15 * * 1' # weekly (Monday) 8 AM PST -- runs for real (not a dry run)
+    # Weekly (Monday) 8 AM PST. Always a dry run (report only): a scheduled
+    # run has no human present to supply a fresh OTP, so it can never
+    # actually publish a placeholder unless NPM_BOOTSTRAP_TOKEN is an
+    # Automation-type token -- this just surfaces the report so a human
+    # knows to trigger a real (non-dry-run) run with the current OTP.
+    - cron: '0 15 * * 1'
 
 jobs:
   bootstrap:
@@ -34,7 +45,7 @@ jobs:
           install: true
           DISABLE_TURBO_CACHE: true
       - name: Bootstrap new packages
-        run: bun release exec bootstrap --dry_run=${{ github.event.inputs.dryRun }}
+        run: bun release exec bootstrap --dry_run=${{ github.event_name == 'schedule' && 'true' || github.event.inputs.dryRun }} --otp=${{ github.event.inputs.otp }}
         env:
           FORCE_COLOR: 2
           CI: true
