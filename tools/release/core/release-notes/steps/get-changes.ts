@@ -310,5 +310,52 @@ export async function getChanges(
   // lerna-changelog emits ANSI color codes; strip them before parsing
   const changelogMarkdown = raw.replace(/\u001b\[[0-9;]*[a-zA-Z]/g, '');
   const results = parseLernaOutput(changelogMarkdown, strategy, packages);
+
+  // An empty result has two very different causes, and they need opposite handling.
+  //
+  // lerna-changelog prints *nothing at all* when no commit in the range carries one of the
+  // labels configured in package.json#changelog.labels: renderRelease() returns "" for a
+  // release whose categories are all empty, and renderMarkdown() returns "" when every
+  // release renders empty. That is a legitimate release — one made up entirely of
+  // unlabelled or infra commits — and it should publish with no changelog entry rather
+  // than halt. Report it as an empty result and let the caller decide.
+  //
+  // Output we did get but could not parse into a version block is the genuinely broken
+  // case, and still throws — with the raw output attached, since exec() captures stdout
+  // and nothing else would ever print it.
+  if (results.length === 0 && changelogMarkdown.trim().length > 0) {
+    throw new Error(
+      `lerna-changelog produced output from ${fromTag} that could not be parsed into a release block.` +
+        ` Raw output:\n${changelogMarkdown}`
+    );
+  }
+
   return results;
+}
+
+/**
+ * Explain a release that carries no changelog entries, so an empty changelog reads as a
+ * deliberate outcome in the job log rather than as something that silently didn't happen.
+ * Lists the commits in the range: if any of them *should* have appeared, the fix is a
+ * changelog label on its PR, and seeing the commit is what makes that obvious.
+ *
+ * @internal
+ */
+export async function reportNoChangelogEntries(fromTag: string): Promise<void> {
+  const log = (await exec({ cmd: ['git', 'log', '--oneline', `${fromTag}..HEAD`], silent: true })).trim();
+
+  console.log(
+    `\n\t${styleText('yellow', `➠ No changelog entries since ${fromTag}.`)}\n\t${styleText(
+      'gray',
+      'No commit in the range carries a label from package.json#changelog.labels, so there is nothing to write. Skipping the changelog update.'
+    )}`
+  );
+
+  if (log) {
+    console.log(`\t${styleText('gray', 'Commits in range:')}`);
+    for (const line of log.split('\n')) {
+      console.log(`\t  ${styleText('gray', line)}`);
+    }
+  }
+  console.log('');
 }
