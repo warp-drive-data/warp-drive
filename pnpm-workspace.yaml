@@ -57,7 +57,9 @@ strictPeerDependencies: false
 ## peer-groups easier to distinguish.
 ## This forces a shorter sha for all groups (vs the default of 1000)
 peersSuffixMaxLength: 40
-virtualStoreType: global
+## We want to use this to optimize git worktree usage for faster installs
+## and reduced disk usage. However, it seems to cause lint to fail.
+# virtualStoreType: global
 virtualStoreDirMaxLength: 40
 
 ## If a dependency is not declared, we do not want to accidentally
