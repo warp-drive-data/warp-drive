@@ -1,4 +1,4 @@
-import { Contributor, getFromCache, default as loadAll, saveToCache } from './contributors.data.ts';
+import { Contributor, getFromCache, githubHeaders, default as loadAll, saveToCache } from './contributors.data.ts';
 import { CoreTeamMember, default as loadCore } from './core.data.ts';
 
 // https://api.github.com/users/
@@ -73,7 +73,7 @@ async function fetchPerson(username: string) {
   const cached = await getFromCache(cacheKey);
   if (cached) return cached;
 
-  const res = await fetch(`https://api.github.com/users/${username}`);
+  const res = await fetch(`https://api.github.com/users/${username}`, { headers: githubHeaders() });
   if (res.ok) {
     const profile = await res.json();
     await saveToCache(cacheKey, profile);
