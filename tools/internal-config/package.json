@@ -8,7 +8,7 @@
     "@babel/eslint-parser": "7.29.7",
     "@nullvoxpopuli/ember-rolldown": "^2.7.0",
     "@rolldown/plugin-babel": "^0.2.3",
-    "@rollup/plugin-babel": "^6.1.0",
+    "@rollup/plugin-babel": "^7.1.0",
     "@typescript-eslint/eslint-plugin": "^8.68.0",
     "@typescript-eslint/parser": "^8.68.0",
     "@types/debug": "4.1.13",

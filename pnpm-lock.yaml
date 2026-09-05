@@ -2906,8 +2906,8 @@ importers:
         specifier: ^0.2.3
         version: 0.2.3(@babel/core@7.29.7)
       '@rollup/plugin-babel':
-        specifier: ^6.1.0
-        version: 6.1.0(@babel/core@7.29.7)
+        specifier: ^7.1.0
+        version: 7.1.0(@babel/core@7.29.7)
       '@types/debug':
         specifier: 4.1.13
         version: 4.1.13
@@ -14194,24 +14194,6 @@ snapshots:
 
   '@rolldown/pluginutils@1.0.1': {}
 
-  '@rollup/plugin-babel@6.1.0(6ad958b0fac2ae7830d3cd04df3c1700)':
-    dependencies:
-      '@babel/core': 7.29.7
-      '@babel/helper-module-imports': 7.29.7
-      '@rollup/pluginutils': 5.1.4
-    optionalDependencies:
-      '@types/babel__core': 7.20.5
-    transitivePeerDependencies:
-      - supports-color
-
-  '@rollup/plugin-babel@6.1.0(@babel/core@7.29.7)':
-    dependencies:
-      '@babel/core': 7.29.7
-      '@babel/helper-module-imports': 7.29.7
-      '@rollup/pluginutils': 5.1.4
-    transitivePeerDependencies:
-      - supports-color
-
   '@rollup/plugin-babel@6.1.0(@babel/core@7.29.7)(rollup@4.63.1)':
     dependencies:
       '@babel/core': 7.29.7
@@ -15416,7 +15398,7 @@ snapshots:
       '@eslint/js': 10.0.1(eslint@10.9.1)
       '@nullvoxpopuli/ember-rolldown': 2.7.0(9ec8e8dc0efa15f8799162fd67b13f37)
       '@rolldown/plugin-babel': 0.2.3(@babel/core@7.29.7)
-      '@rollup/plugin-babel': 6.1.0(@babel/core@7.29.7)
+      '@rollup/plugin-babel': 7.1.0(@babel/core@7.29.7)
       '@types/debug': 4.1.13
       '@typescript-eslint/eslint-plugin': 8.68.0(4c5cc002ea858b38603d194b410bb4f4)
       '@typescript-eslint/parser': 8.68.0(eslint@10.9.1)(typescript@6.0.3)
@@ -15469,7 +15451,7 @@ snapshots:
       '@eslint/js': 10.0.1(eslint@10.9.1)
       '@nullvoxpopuli/ember-rolldown': 2.7.0(41a64928e9c0b0211344ad0d07b643e5)
       '@rolldown/plugin-babel': 0.2.3(e36f4c5c78a179bed16b520e05120361)
-      '@rollup/plugin-babel': 6.1.0(@babel/core@7.29.7)
+      '@rollup/plugin-babel': 7.1.0(@babel/core@7.29.7)
       '@types/debug': 4.1.13
       '@typescript-eslint/eslint-plugin': 8.68.0(4c5cc002ea858b38603d194b410bb4f4)
       '@typescript-eslint/parser': 8.68.0(eslint@10.9.1)(typescript@6.0.3)
@@ -15522,7 +15504,7 @@ snapshots:
       '@eslint/js': 10.0.1(eslint@10.9.1)
       '@nullvoxpopuli/ember-rolldown': 2.7.0(9ec8e8dc0efa15f8799162fd67b13f37)
       '@rolldown/plugin-babel': 0.2.3(59f2fa0795344b619d0db7caea9d8326)
-      '@rollup/plugin-babel': 6.1.0(@babel/core@7.29.7)
+      '@rollup/plugin-babel': 7.1.0(@babel/core@7.29.7)
       '@types/debug': 4.1.13
       '@typescript-eslint/eslint-plugin': 8.68.0(4c5cc002ea858b38603d194b410bb4f4)
       '@typescript-eslint/parser': 8.68.0(eslint@10.9.1)(typescript@6.0.3)
@@ -15575,7 +15557,7 @@ snapshots:
       '@eslint/js': 10.0.1(eslint@10.9.1)
       '@nullvoxpopuli/ember-rolldown': 2.7.0(41a64928e9c0b0211344ad0d07b643e5)
       '@rolldown/plugin-babel': 0.2.3(59f2fa0795344b619d0db7caea9d8326)
-      '@rollup/plugin-babel': 6.1.0(@babel/core@7.29.7)
+      '@rollup/plugin-babel': 7.1.0(@babel/core@7.29.7)
       '@types/debug': 4.1.13
       '@typescript-eslint/eslint-plugin': 8.68.0(4c5cc002ea858b38603d194b410bb4f4)
       '@typescript-eslint/parser': 8.68.0(eslint@10.9.1)(typescript@6.0.3)
@@ -15628,7 +15610,7 @@ snapshots:
       '@eslint/js': 10.0.1(eslint@10.9.1)
       '@nullvoxpopuli/ember-rolldown': 2.7.0(9ec8e8dc0efa15f8799162fd67b13f37)
       '@rolldown/plugin-babel': 0.2.3(abd7fc075a76404ea361dd5f25237cb6)
-      '@rollup/plugin-babel': 6.1.0(@babel/core@7.29.7)
+      '@rollup/plugin-babel': 7.1.0(@babel/core@7.29.7)
       '@types/debug': 4.1.13
       '@typescript-eslint/eslint-plugin': 8.68.0(4c5cc002ea858b38603d194b410bb4f4)
       '@typescript-eslint/parser': 8.68.0(eslint@10.9.1)(typescript@6.0.3)
@@ -15681,7 +15663,7 @@ snapshots:
       '@eslint/js': 10.0.1(eslint@10.9.1)
       '@nullvoxpopuli/ember-rolldown': 2.7.0(be8732a2fa8baca6bf6edc054f82788f)
       '@rolldown/plugin-babel': 0.2.3(22db23e7c975b0c1a7930213700e17ae)
-      '@rollup/plugin-babel': 6.1.0(@babel/core@7.29.7)
+      '@rollup/plugin-babel': 7.1.0(@babel/core@7.29.7)
       '@types/debug': 4.1.13
       '@typescript-eslint/eslint-plugin': 8.68.0(4c5cc002ea858b38603d194b410bb4f4)
       '@typescript-eslint/parser': 8.68.0(eslint@10.9.1)(typescript@6.0.3)
@@ -15734,7 +15716,7 @@ snapshots:
       '@eslint/js': 10.0.1(eslint@10.9.1)
       '@nullvoxpopuli/ember-rolldown': 2.7.0(9ec8e8dc0efa15f8799162fd67b13f37)
       '@rolldown/plugin-babel': 0.2.3(02d9a2513d9ed1d532b075ffd9c2b5e7)
-      '@rollup/plugin-babel': 6.1.0(@babel/core@7.29.7)
+      '@rollup/plugin-babel': 7.1.0(@babel/core@7.29.7)
       '@types/debug': 4.1.13
       '@typescript-eslint/eslint-plugin': 8.68.0(4c5cc002ea858b38603d194b410bb4f4)
       '@typescript-eslint/parser': 8.68.0(eslint@10.9.1)(typescript@6.0.3)
@@ -15787,7 +15769,7 @@ snapshots:
       '@eslint/js': 10.0.1(eslint@10.9.1)
       '@nullvoxpopuli/ember-rolldown': 2.7.0(9ec8e8dc0efa15f8799162fd67b13f37)
       '@rolldown/plugin-babel': 0.2.3(22db23e7c975b0c1a7930213700e17ae)
-      '@rollup/plugin-babel': 6.1.0(@babel/core@7.29.7)
+      '@rollup/plugin-babel': 7.1.0(@babel/core@7.29.7)
       '@types/debug': 4.1.13
       '@typescript-eslint/eslint-plugin': 8.68.0(4c5cc002ea858b38603d194b410bb4f4)
       '@typescript-eslint/parser': 8.68.0(eslint@10.9.1)(typescript@6.0.3)
@@ -15840,7 +15822,7 @@ snapshots:
       '@eslint/js': 10.0.1(eslint@10.9.1)
       '@nullvoxpopuli/ember-rolldown': 2.7.0(cb99b9e1817872a97ded65f2fa6b2728)
       '@rolldown/plugin-babel': 0.2.3(@babel/core@7.29.7)
-      '@rollup/plugin-babel': 6.1.0(6ad958b0fac2ae7830d3cd04df3c1700)
+      '@rollup/plugin-babel': 7.1.0(6ad958b0fac2ae7830d3cd04df3c1700)
       '@types/debug': 4.1.13
       '@typescript-eslint/eslint-plugin': 8.68.0(4c5cc002ea858b38603d194b410bb4f4)
       '@typescript-eslint/parser': 8.68.0(eslint@10.9.1)(typescript@6.0.3)
@@ -15893,7 +15875,7 @@ snapshots:
       '@eslint/js': 10.0.1(eslint@10.9.1)
       '@nullvoxpopuli/ember-rolldown': 2.7.0(be8732a2fa8baca6bf6edc054f82788f)
       '@rolldown/plugin-babel': 0.2.3(02d9a2513d9ed1d532b075ffd9c2b5e7)
-      '@rollup/plugin-babel': 6.1.0(@babel/core@7.29.7)
+      '@rollup/plugin-babel': 7.1.0(@babel/core@7.29.7)
       '@types/debug': 4.1.13
       '@typescript-eslint/eslint-plugin': 8.68.0(4c5cc002ea858b38603d194b410bb4f4)
       '@typescript-eslint/parser': 8.68.0(eslint@10.9.1)(typescript@6.0.3)
@@ -15946,7 +15928,7 @@ snapshots:
       '@eslint/js': 10.0.1(eslint@10.9.1)
       '@nullvoxpopuli/ember-rolldown': 2.7.0(41a64928e9c0b0211344ad0d07b643e5)
       '@rolldown/plugin-babel': 0.2.3(02d9a2513d9ed1d532b075ffd9c2b5e7)
-      '@rollup/plugin-babel': 6.1.0(@babel/core@7.29.7)
+      '@rollup/plugin-babel': 7.1.0(@babel/core@7.29.7)
       '@types/debug': 4.1.13
       '@typescript-eslint/eslint-plugin': 8.68.0(4c5cc002ea858b38603d194b410bb4f4)
       '@typescript-eslint/parser': 8.68.0(eslint@10.9.1)(typescript@6.0.3)
@@ -15999,7 +15981,7 @@ snapshots:
       '@eslint/js': 10.0.1(eslint@10.9.1)
       '@nullvoxpopuli/ember-rolldown': 2.7.0(9ec8e8dc0efa15f8799162fd67b13f37)
       '@rolldown/plugin-babel': 0.2.3(@babel/core@7.29.7)(vite@8.2.2)
-      '@rollup/plugin-babel': 6.1.0(@babel/core@7.29.7)
+      '@rollup/plugin-babel': 7.1.0(@babel/core@7.29.7)
       '@types/debug': 4.1.13
       '@typescript-eslint/eslint-plugin': 8.68.0(4c5cc002ea858b38603d194b410bb4f4)
       '@typescript-eslint/parser': 8.68.0(eslint@10.9.1)(typescript@6.0.3)
