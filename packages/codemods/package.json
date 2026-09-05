@@ -50,7 +50,7 @@
     "ignore": "^7.0.6",
     "jscodeshift": "^17.4.0",
     "tsdown": "^0.22.14",
-    "typescript-7": "npm:typescript@7.1.0-dev.20260828.1",
+    "typescript-7": "npm:typescript@7.1.0-dev.20260829.1",
     "winston": "^3.19.0"
   }
 }
