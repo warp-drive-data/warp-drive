@@ -2,7 +2,6 @@ import { styleText } from 'node:util';
 
 import { exec } from '../../../utils/cmd.ts';
 import { APPLIED_STRATEGY, Package } from '../../../utils/package.ts';
-import { question } from './confirm-strategy.ts';
 // import { updateDistTag } from '../../promote';
 
 export async function publishPackages(
@@ -10,46 +9,12 @@ export async function publishPackages(
   packages: Map<string, Package>,
   strategy: Map<string, APPLIED_STRATEGY>
 ) {
-  const NODE_AUTH_TOKEN = process.env.NODE_AUTH_TOKEN;
-  const CI = process.env.CI;
-  let token: string | undefined;
-
-  // allow OTP token usage locally
-  if (!CI) {
-    if (!NODE_AUTH_TOKEN) {
-      console.log(
-        styleText(
-          'red',
-          '🚫 NODE_AUTH_TOKEN not found in ENV. NODE_AUTH_TOKEN is required in ENV to publish from CI. Exiting...'
-        )
-      );
-      process.exit(1);
-    }
-    const result = await question(
-      `\n${styleText('cyan', 'NODE_AUTH_TOKEN')} found in ENV.\nPublish ${config.get('increment')} release in ${config.get(
-        'channel'
-      )} channel to the ${config.get('tag')} tag on the npm registry? ${styleText('yellow', '[y/n]')}:`
-    );
-    const input = result.trim().toLowerCase();
-    if (input !== 'y' && input !== 'yes') {
-      console.log(styleText('red', '🚫 Publishing not confirmed. Exiting...'));
-      process.exit(1);
-    }
-    token = await getOTPToken(config);
-  }
-
+  const dryRun = config.get('dry_run') as boolean;
   let publishCount = 0;
-  let error: Error | null = null;
   const errors: Error[] = [];
   for (const [, strat] of strategy) {
     const pkg = packages.get(strat.name)!;
-    [token, error] = await publishPackage(
-      config,
-      strat.distTag,
-      pkg.tarballPath,
-      config.get('dry_run') as boolean,
-      token
-    );
+    let error = await publishPackage(strat.distTag, pkg.tarballPath, dryRun);
     if (error) {
       console.log(
         styleText('red', `\t🚫 Error publishing ${styleText('cyan', pkg.pkgData.name)} to npm: ${error.message}`)
@@ -62,29 +27,24 @@ export async function publishPackages(
     // TODO - only do this if its a stable release
     // TODO - moving to OIDC breaks this, bring it back once npm adds the feature
     // if (strat.stage === 'alpha' || strat.stage === 'beta') {
-    //   [token, error] = await updateDistTag(
+    //   error = await updateDistTag(
     //     strat.name,
     //     pkg.pkgData.version,
     //     'latest',
-    //     config.get('dry_run') as boolean,
-    //     token
+    //     config.get('dry_run') as boolean
     //   );
     //   if (error) {
     //     console.log(
-    //       styleText('red', `\t🚫 Error updating dist-tag for ${styleText('cyan', pkg.pkgData.name)} to latest: ${error.message}`)
+    //       styleText('red',
+    //         `\t🚫 Error updating dist-tag for ${styleText('cyan', pkg.pkgData.name)} to latest: ${error.message}`
+    //       )
     //     );
     //     errors.push(error);
     //   }
     // }
 
     if (strat.mirrorPublish) {
-      [token, error] = await publishPackage(
-        config,
-        strat.distTag,
-        pkg.mirrorTarballPath,
-        config.get('dry_run') as boolean,
-        token
-      );
+      error = await publishPackage(strat.distTag, pkg.mirrorTarballPath, dryRun);
       if (error) {
         console.log(
           styleText(
@@ -100,12 +60,11 @@ export async function publishPackages(
       // TODO - only do this if its a stable release
       // TODO - moving to OIDC breaks this, bring it back once npm adds the feature
       // if (strat.stage === 'alpha' || strat.stage === 'beta') {
-      //   [token, error] = await updateDistTag(
+      //   error = await updateDistTag(
       //     strat.mirrorPublishTo,
       //     pkg.pkgData.version,
       //     'latest',
-      //     config.get('dry_run') as boolean,
-      //     token
+      //     config.get('dry_run') as boolean
       //   );
       //   if (error) {
       //     console.log(
@@ -118,13 +77,7 @@ export async function publishPackages(
       // }
     }
     if (strat.typesPublish) {
-      [token, error] = await publishPackage(
-        config,
-        strat.distTag,
-        pkg.typesTarballPath,
-        config.get('dry_run') as boolean,
-        token
-      );
+      error = await publishPackage(strat.distTag, pkg.typesTarballPath, dryRun);
       if (error) {
         console.log(
           styleText(
@@ -140,12 +93,11 @@ export async function publishPackages(
       // TODO - only do this if its a stable release
       // TODO - moving to OIDC breaks this, bring it back once npm adds the feature
       // if (strat.stage === 'alpha' || strat.stage === 'beta') {
-      //   [token, error] = await updateDistTag(
+      //   error = await updateDistTag(
       //     strat.typesPublishTo,
       //     pkg.pkgData.version,
       //     'latest',
-      //     config.get('dry_run') as boolean,
-      //     token
+      //     config.get('dry_run') as boolean
       //   );
       //   if (error) {
       //     console.log(
@@ -169,37 +121,13 @@ export async function publishPackages(
   }
 }
 
-export async function getOTPToken(config: Map<string, string | number | boolean | null>, reprompt?: boolean) {
-  const prompt = reprompt
-    ? `The provided OTP token has expired. Please enter a new OTP token: `
-    : `\nℹ️ ${styleText(
-        'cyan',
-        'NODE_AUTH_TOKEN'
-      )} not found in ENV.\n\nConfiguring NODE_AUTH_TOKEN is the preferred mechanism by which to publish. Alternatively you may continue using an OTP token.\n\nPublishing ${config.get(
-        'increment'
-      )} release in ${config.get('channel')} channel to the ${config.get(
-        'tag'
-      )} tag on the npm registry.\n\nEnter your OTP token: `;
-
-  let token = await question(prompt);
-
-  return token.trim();
-}
-
-export const RETRY_TRUSTED_PUBLISHING = 'RETRY DUE TO STALE OIDC TOKEN';
-
 async function publishPackage(
-  config: Map<string, string | number | boolean | null>,
   distTag: string,
   tarball: string,
   dryRun: boolean,
-  otp?: string
-): Promise<[string | undefined, Error | null]> {
-  let cmd = `npm publish ${tarball} --tag=${distTag} --access=public`;
-
-  if (otp && otp !== RETRY_TRUSTED_PUBLISHING) {
-    cmd += ` --otp=${otp}`;
-  }
+  isRetry = false
+): Promise<Error | null> {
+  let cmd = `pnpm publish ${tarball} --tag=${distTag} --access=public --provenance --no-git-checks`;
 
   if (dryRun) {
     cmd += ' --dry-run';
@@ -209,16 +137,13 @@ async function publishPackage(
     await exec({ cmd, condense: true });
   } catch (e: unknown) {
     const error = !(e instanceof Error) ? new Error(e as string) : e;
-    if (otp && otp !== RETRY_TRUSTED_PUBLISHING) {
-      if (error.message.includes('E401') || error.message.includes('EOTP')) {
-        otp = await getOTPToken(config, true);
-        return publishPackage(config, distTag, tarball, dryRun, otp);
-      }
-    } else if (error.message.includes('E401') && process.env.CI && otp !== RETRY_TRUSTED_PUBLISHING) {
-      return publishPackage(config, distTag, tarball, dryRun, RETRY_TRUSTED_PUBLISHING);
+    // A GitHub Actions OIDC token can go stale between packages in a long
+    // publish loop; one retry is enough to get a fresh one negotiated.
+    if (!isRetry && error.message.includes('E401')) {
+      return publishPackage(distTag, tarball, dryRun, true);
     }
-    return [process.env.CI ? undefined : otp, error];
+    return error;
   }
 
-  return [process.env.CI ? undefined : otp, null];
+  return null;
 }

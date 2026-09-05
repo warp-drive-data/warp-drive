@@ -25,12 +25,11 @@ This script is used to automate the release process for cy<<WarpDrivea>>.
 
 ye<<##>> Who Can Release?
 
-It is intended that this process is run in CI (ENV cy<<CI=true>>);
-however, it is able to be run manually as well.
-
-For both CI and locally it is expected that ENV contains a cy<<NODE_AUTH_TOKEN>>
-with proper permissions to publish the various packages within the ember-data NPM
-organization.
+Publishing requires npm's cy<<Trusted Publishing>> (OIDC) and is therefore
+only possible from the configured GitHub Actions release workflow (ENV
+cy<<CI=true>>) -- there is no local/manual publish path. Other steps (e.g.
+generating a release strategy, or a cy<<--dry-run>>) can still be run
+manually to review a release before triggering it for real in CI.
 
 Users (or CI) will also need special permission to push to main, beta, lts, lts-*-*
 and release-*-* branches. For CI based triggers, the user triggering MUST have been

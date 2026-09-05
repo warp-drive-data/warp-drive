@@ -498,7 +498,7 @@ export const command_config: CommandConfig = {
     cmd: 'publish',
     default: true,
     description:
-      'Publish a new version of WarpDrive to the specified channel.\nRequires a configured ye<<NODE_AUTH_TOKEN>> with npm access to all associated scopes and packages,\nor the ability to generate an OTP token for the same.',
+      'Publish a new version of WarpDrive to the specified channel.\nRequires npm Trusted Publishing (OIDC) -- only runnable from the configured GitHub Actions release workflow.',
     options: publish_flags_config,
     example: ['$ bun release', '$ bun release publish'],
   },
