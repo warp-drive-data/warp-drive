@@ -331,6 +331,14 @@ export async function getSkillsStructure() {
   return getContentStructure({ dirName: 'skills' });
 }
 
+export async function getUpgradingStructure() {
+  return getContentStructure({ dirName: 'upgrading' });
+}
+
+export async function getBlogStructure() {
+  return getContentStructure({ dirName: 'blog' });
+}
+
 function deepConvert(obj: Record<string, any>, orderedItems?: string[]) {
   const groups = Array.from(Object.values(obj));
 

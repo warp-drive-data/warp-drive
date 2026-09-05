@@ -26,7 +26,7 @@ From this perspective, here are a few guidelines to keep in mind:
 
 Some examples of ways to achieve this balance:
 
-- Migrations is a top level section to help those category 5 users find what they are looking for faster.
+- [Upgrading](/upgrading/) is a top level section to help those category 5 users find what they are looking for faster.
 - Explicitly named legacy pages (such as [Setup - Legacy (Ember)](/guides/configuration/ember) help those users without muddying instructions for everyone else. Note: this clarity also helps decision makers, as they will like to see that when the time for change comes there are resources to help them that are easy to find and well marked - but which they don't need to know about just yet.
 
 ## 2. Iterate, A Lot
