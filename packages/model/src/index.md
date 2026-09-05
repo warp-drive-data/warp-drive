@@ -25,4 +25,4 @@ This package provides runtime classes for use as a source of ResourceSchema and 
 
 **When you still need this:** Only use Model classes if you're maintaining an existing Ember application that hasn't migrated to modern WarpDrive schemas.
 
-For guidance on migrating from Model classes to schema objects, see the [Schema Guide](/guides/the-manual/schemas) and [Migration Guide](/guides/migrating).
+For guidance on migrating from Model classes to schema objects, see the [Schema Guide](/guides/the-manual/schemas) and [Migration Guide](/upgrading/v5/).

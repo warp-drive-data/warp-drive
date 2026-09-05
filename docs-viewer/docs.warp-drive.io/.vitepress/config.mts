@@ -3,7 +3,13 @@ import { withPwa } from '@vite-pwa/vitepress';
 import { defineConfig, type Plugin } from 'vitepress';
 import { tabsMarkdownPlugin } from 'vitepress-plugin-tabs';
 
-import { getGuidesStructure, getSkillsStructure, postProcessApiDocs } from '../../src/site-utils.ts';
+import {
+  getBlogStructure,
+  getGuidesStructure,
+  getSkillsStructure,
+  getUpgradingStructure,
+  postProcessApiDocs,
+} from '../../src/site-utils.ts';
 
 const TypeDocSidebar = await postProcessApiDocs();
 
@@ -13,6 +19,8 @@ import llmstxt from 'vitepress-plugin-llms';
 
 const GuidesStructure = await getGuidesStructure();
 const SkillsStructure = await getSkillsStructure();
+const UpgradingStructure = await getUpgradingStructure();
+const BlogStructure = await getBlogStructure();
 
 // insert the Skills section right below "The Manual" in the guides sidebar
 const sidebarItems = [...GuidesStructure.paths];
@@ -23,6 +31,22 @@ sidebarItems.splice(theManualIndex + 1, 0, {
   collapsed: true,
   items: SkillsStructure.paths,
 });
+// Upgrading and Blog are top-level, permanent-URL sections (see /upgrading and /blog) — kept
+// as their own sidebar groups alongside "The Manual" rather than nested underneath it.
+sidebarItems.push(
+  {
+    text: 'Upgrading',
+    link: '/upgrading/index.md',
+    collapsed: true,
+    items: UpgradingStructure.paths,
+  },
+  {
+    text: 'Blog',
+    link: '/blog/index.md',
+    collapsed: true,
+    items: BlogStructure.paths,
+  }
+);
 const plugin = groupIconVitePlugin({
   customIcon: {
     ember: 'vscode-icons:file-type-ember',
@@ -181,7 +205,9 @@ export default withPwa(
       // https://vitepress.dev/reference/default-theme-config
       nav: [
         { text: 'Guides', link: '/guides' },
+        { text: 'Upgrading', link: '/upgrading' },
         { text: 'API Docs', link: '/api' },
+        { text: 'Blog', link: '/blog' },
         { text: 'Skills', link: '/skills' },
         { text: 'Contributing', link: '/guides/contributing/become-a-contributor' },
       ],

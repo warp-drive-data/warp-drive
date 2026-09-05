@@ -118,5 +118,5 @@ version (before resuming work complete removal of the deprecated features). A co
 
 Further Reading
 
-- [The Two Store Approach](../../../migrating/two-store-migration.md). This approach enables migrating while also upgrading versions and starting relatively fresh. This enables the same ResourceType (for instance `user`) to be used as a Model in some areas of the app and via ReactiveResource in others by sourcing data from separately configured store instances.
-- [The V4 to V5 Migration Guide](../../../migrating/index.md)
+- [The Two Store Approach](/upgrading/v5/two-store-migration.md). This approach enables migrating while also upgrading versions and starting relatively fresh. This enables the same ResourceType (for instance `user`) to be used as a Model in some areas of the app and via ReactiveResource in others by sourcing data from separately configured store instances.
+- [The V4 to V5 Migration Guide](/upgrading/v5/index.md)
