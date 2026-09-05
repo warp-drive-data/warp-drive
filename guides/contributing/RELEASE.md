@@ -21,25 +21,20 @@ all recent planning discussions and work is properly accounted for.
 
 ## Getting Setup To Do A Release
 
-In order to release WarpDrive you must have commit rights to `warp-drive-data/warp-drive` on GITHUB.
-Everything else is handled by automation.
+In order to release WarpDrive you must have commit rights to `warp-drive-data/warp-drive` on
+GitHub, along with permission to trigger the `0. Release` workflow. Everything else is handled
+by automation.
 
-In the event you do need to perform a manual release, you must also have permission
-to push to protected branches, and access tokens for npm and github with permissions
-to the related package scopes. For more information about manual releases run 
-`bun release about` in the repository.
+Publishing to npm requires npm's [Trusted Publishing](https://docs.npmjs.com/trusted-publishers/)
+(OIDC), which is only available from within that GitHub Actions workflow -- there is no manual
+or local publish path, and no npm account, access token, or 2FA setup is needed to perform a
+release. For more information run `bun release about` in the repository.
 
-For manual releases, you will need to ensure at least the following:
+If you want to run a release step locally for review (e.g. a `--dry-run`, or generating a
+release strategy) rather than actually publishing, you will additionally need:
 
-- You have `commit` rights to `ember-data` on GitHub
-- You have an account on `npm` and it belongs to the `ember-data` and `warp-drive` organizations on NPM
-- You have `publish` rights within the `ember-data` and `warp-drive` organizations on NPM
-- You have configured your NPM account to use `2fa` (two factor authentication)
-- You have logged into your NPM account on your machine (typically sessions preserve nearly forever once you have)
-- You have configured `GITHUB_AUTH` token for `lerna-changelog` to be able to gather info for the release notes.
-- You have installed `bun`, `pnpm` and `node` globally (or better, via `mise`)
-- the remote `origin` is `git@github.com:warp-drive-data/warp-drive.git`,
--`origin/main` `origin/beta` `origin/release` etc. need to be the upstreams of the local `main` `beta` `release` branches etc.
+- `bun`, `pnpm` and `node` installed globally (or better, via `mise`)
+- A `GITHUB_AUTH` token configured for `lerna-changelog`, to gather info for the release notes
 
 ## Release Order
 
