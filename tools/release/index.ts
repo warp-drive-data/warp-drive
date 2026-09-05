@@ -2,6 +2,7 @@
 import { styleText } from 'node:util';
 
 import { backfillReleaseNotes } from './core/backfill-release-notes/index.ts';
+import { bootstrapNewPackages } from './core/bootstrap/index.ts';
 import { latestFor } from './core/latest-for/index.ts';
 import { promoteToLTS } from './core/promote/index.ts';
 import { executePublish } from './core/publish/index.ts';
@@ -17,6 +18,7 @@ const COMMANDS = {
   about: printAbout,
   release_notes: executeReleaseNoteGeneration,
   backfill_release_notes: backfillReleaseNotes,
+  bootstrap: bootstrapNewPackages,
   publish: executePublish,
   latest_for: latestFor,
   promote: promoteToLTS,

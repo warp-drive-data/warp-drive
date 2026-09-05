@@ -425,6 +425,8 @@ export const promote_flags_config: FlagConfig = merge(
   }
 );
 
+export const bootstrap_flags_config: FlagConfig = pick(publish_flags_config, ['help', 'dry_run']);
+
 export const command_config: CommandConfig = {
   help: {
     name: 'Help',
@@ -492,6 +494,15 @@ export const command_config: CommandConfig = {
       '$ bun release promote --version=5.3.0 --tag=lts',
       '$ bun release promote 4.12.5 --tag=lts-4-12',
     ],
+  },
+  bootstrap: {
+    name: 'Bootstrap New Packages',
+    cmd: 'bootstrap-packages',
+    description:
+      'Reserve npm names for any public package in the monorepo that has never been published, by publishing a 0.0.0 placeholder with a classic npm token.\nOnly needed because npm Trusted Publishing cannot be configured for a package that does not exist yet -- this exists so that step does not require a manual local publish.',
+    alt: ['bootstrap', 'reserve', 'reserve-packages', 'bootstrap-new-packages'],
+    options: bootstrap_flags_config,
+    example: ['$ bun release bootstrap-packages', '$ bun release bootstrap-packages --dry_run'],
   },
   default: {
     name: 'Publish',
