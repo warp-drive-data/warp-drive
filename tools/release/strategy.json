@@ -105,7 +105,7 @@
       "unpkgPublish": true
     },
     "@warp-drive/experiments": {
-      "stage": "beta",
+      "stage": "stable",
       "types": "stable",
       "typesPublish": false,
       "mirrorPublish": true,
