@@ -1,6 +1,6 @@
 {
   "name": "@warp-drive/build-config",
-  "version": "5.9.0-alpha.30",
+  "version": "5.9.0-alpha.31",
   "description": "(Legacy) Build Configuration for projects using WarpDrive",
   "keywords": [
     "ember-data",
