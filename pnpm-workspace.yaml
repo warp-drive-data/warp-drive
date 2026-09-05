@@ -321,7 +321,7 @@ overrides:
   qunit: 2.26.0
   ember-compatibility-helpers: ^1.2.7
   testem: ~3.20.2
-  typescript: 6.0.3
+  typescript: 7.0.2
   "@types/bun": 1.4.0
   bun-types: 1.4.0
   lodash: ^4.18.1
