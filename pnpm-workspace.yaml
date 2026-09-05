@@ -57,6 +57,7 @@ strictPeerDependencies: false
 ## peer-groups easier to distinguish.
 ## This forces a shorter sha for all groups (vs the default of 1000)
 peersSuffixMaxLength: 40
+virtualStoreType: global
 virtualStoreDirMaxLength: 40
 
 ## If a dependency is not declared, we do not want to accidentally
