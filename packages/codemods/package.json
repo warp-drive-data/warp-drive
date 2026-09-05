@@ -1,6 +1,6 @@
 {
   "name": "@ember-data/codemods",
-  "version": "5.9.0-alpha.31",
+  "version": "5.9.0-beta.2",
   "description": "Codemods for WarpDrive/EmberData paradigms",
   "keywords": [],
   "repository": {
