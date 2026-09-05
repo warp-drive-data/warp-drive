@@ -83,7 +83,7 @@
     "qunit-dom": "^3.6.0",
     "testem": "^3.20.2",
     "typescript": "^6.0.3",
-    "typescript-7": "npm:typescript@7.1.0-dev.20260828.1",
+    "typescript-7": "npm:typescript@7.1.0-dev.20260829.1",
     "vite": "catalog:"
   },
   "ember": {
