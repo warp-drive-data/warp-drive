@@ -1,5 +1,22 @@
 # @warp-drive/schema Changelog
 
+## v5.9.0 (2026-09-05)
+
+#### :bug: Bug Fix
+
+* [#10458](https://github.com/warp-drive-data/warp-drive/pull/10458) fix: bump build dependencies ([@runspired](https://github.com/runspired))
+
+#### :house: Internal
+
+* [#10937](https://github.com/warp-drive-data/warp-drive/pull/10937) build: migrate formatting from prettier to oxfmt ([@runspired](https://github.com/runspired))
+* [#10928](https://github.com/warp-drive-data/warp-drive/pull/10928) chore: bump pnpm to 12.0.0, replace Volta with mise ([@runspired](https://github.com/runspired))
+* [#10776](https://github.com/warp-drive-data/warp-drive/pull/10776) chore(deps): replace chalk with node:util's styleText ([@runspired](https://github.com/runspired))
+* [#10459](https://github.com/warp-drive-data/warp-drive/pull/10459) chore: tweak install ([@runspired](https://github.com/runspired))
+
+#### Committers: (1)
+
+Chris Thoburn ([@runspired](https://github.com/runspired))
+
 ## v5.8.0 (2025-10-07)
 
 #### :house: Internal

@@ -1,5 +1,37 @@
 # ember-data Changelog
 
+## v5.9.0 (2026-09-05)
+
+#### :memo: Documentation
+
+* [#10471](https://github.com/warp-drive-data/warp-drive/pull/10471) [docs] Ensure consistent legacy package warnings ([@gitKrystan](https://github.com/gitKrystan))
+
+#### :bug: Bug Fix
+
+* [#10513](https://github.com/warp-drive-data/warp-drive/pull/10513) port: remove all `import Ember from 'ember'` (from #10511) ([@NullVoxPopuli-ai-agent](https://github.com/NullVoxPopuli-ai-agent))
+* [#10458](https://github.com/warp-drive-data/warp-drive/pull/10458) fix: bump build dependencies ([@runspired](https://github.com/runspired))
+
+#### :house: Internal
+
+* [#10957](https://github.com/warp-drive-data/warp-drive/pull/10957) chore(deps): bump classic typescript override from 5.9.3 to 6.0.3 ([@runspired](https://github.com/runspired))
+* [#10946](https://github.com/warp-drive-data/warp-drive/pull/10946) build(lint): run oxlint on tests/, hand off qunit/mocha rules via jsPlugins ([@runspired](https://github.com/runspired))
+* [#10937](https://github.com/warp-drive-data/warp-drive/pull/10937) build: migrate formatting from prettier to oxfmt ([@runspired](https://github.com/runspired))
+* [#10928](https://github.com/warp-drive-data/warp-drive/pull/10928) chore: bump pnpm to 12.0.0, replace Volta with mise ([@runspired](https://github.com/runspired))
+* [#10884](https://github.com/warp-drive-data/warp-drive/pull/10884) fix(deps): bump eslint to v10 and typescript-eslint to ^8.67 together ([@runspired](https://github.com/runspired))
+* [#10869](https://github.com/warp-drive-data/warp-drive/pull/10869) chore(deps): dedupe ember-source, vite, @types/node, @vue/compiler-sfc, @shikijs/langs, rxjs ([@runspired](https://github.com/runspired))
+* [#10729](https://github.com/warp-drive-data/warp-drive/pull/10729) fix: invoke tsdown directly via node to avoid racy bin-shim resolution ([@runspired](https://github.com/runspired))
+* [#10696](https://github.com/warp-drive-data/warp-drive/pull/10696) chore(types): drop redundant tsconfig paths, keep references editor-only ([@runspired](https://github.com/runspired))
+* [#10695](https://github.com/warp-drive-data/warp-drive/pull/10695) feat: migrate ember-data's build to rolldown via tsdown ([@runspired](https://github.com/runspired))
+* [#10643](https://github.com/warp-drive-data/warp-drive/pull/10643) feat: migrate @warp-drive/core's build to rolldown via tsdown ([@runspired](https://github.com/runspired))
+* [#10514](https://github.com/warp-drive-data/warp-drive/pull/10514) chore: bump build deps ([@runspired](https://github.com/runspired))
+* [#10459](https://github.com/warp-drive-data/warp-drive/pull/10459) chore: tweak install ([@runspired](https://github.com/runspired))
+
+#### Committers: (3)
+
+Krystan HuffMenne ([@gitKrystan](https://github.com/gitKrystan))
+@NullVoxPopuli's reduced-access machine account for AI usage ([@NullVoxPopuli-ai-agent](https://github.com/NullVoxPopuli-ai-agent))
+Chris Thoburn ([@runspired](https://github.com/runspired))
+
 ## v5.8.2 (2026-04-17)
 
 #### :bug: Bug Fix

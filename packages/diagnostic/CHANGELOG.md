@@ -1,5 +1,35 @@
 # @warp-drive/diagnostic Changelog
 
+## v5.9.0 (2026-09-05)
+
+#### :bug: Bug Fix
+
+* [#10458](https://github.com/warp-drive-data/warp-drive/pull/10458) fix: bump build dependencies ([@runspired](https://github.com/runspired))
+
+#### :house: Internal
+
+* [#10957](https://github.com/warp-drive-data/warp-drive/pull/10957) chore(deps): bump classic typescript override from 5.9.3 to 6.0.3 ([@runspired](https://github.com/runspired))
+* [#10937](https://github.com/warp-drive-data/warp-drive/pull/10937) build: migrate formatting from prettier to oxfmt ([@runspired](https://github.com/runspired))
+* [#10877](https://github.com/warp-drive-data/warp-drive/pull/10877) feat(diagnostic)!: remove ember-classic entry point and ember-cli-test-loader dep ([@runspired](https://github.com/runspired))
+* [#10928](https://github.com/warp-drive-data/warp-drive/pull/10928) chore: bump pnpm to 12.0.0, replace Volta with mise ([@runspired](https://github.com/runspired))
+* [#10884](https://github.com/warp-drive-data/warp-drive/pull/10884) fix(deps): bump eslint to v10 and typescript-eslint to ^8.67 together ([@runspired](https://github.com/runspired))
+* [#10869](https://github.com/warp-drive-data/warp-drive/pull/10869) chore(deps): dedupe ember-source, vite, @types/node, @vue/compiler-sfc, @shikijs/langs, rxjs ([@runspired](https://github.com/runspired))
+* [#10778](https://github.com/warp-drive-data/warp-drive/pull/10778) chore(deps): remove dead url/zlib shims, replace tmp/strip-ansi with builtins ([@runspired](https://github.com/runspired))
+* [#10776](https://github.com/warp-drive-data/warp-drive/pull/10776) chore(deps): replace chalk with node:util's styleText ([@runspired](https://github.com/runspired))
+* [#10729](https://github.com/warp-drive-data/warp-drive/pull/10729) fix: invoke tsdown directly via node to avoid racy bin-shim resolution ([@runspired](https://github.com/runspired))
+* [#10721](https://github.com/warp-drive-data/warp-drive/pull/10721) fix: close the diagnostic/holodeck port race blocking test parallelization ([@runspired](https://github.com/runspired))
+* [#10696](https://github.com/warp-drive-data/warp-drive/pull/10696) chore(types): drop redundant tsconfig paths, keep references editor-only ([@runspired](https://github.com/runspired))
+* [#10687](https://github.com/warp-drive-data/warp-drive/pull/10687) feat: migrate @warp-drive/diagnostic's build to rolldown via tsdown ([@runspired](https://github.com/runspired))
+* [#10643](https://github.com/warp-drive-data/warp-drive/pull/10643) feat: migrate @warp-drive/core's build to rolldown via tsdown ([@runspired](https://github.com/runspired))
+* [#10627](https://github.com/warp-drive-data/warp-drive/pull/10627) fix: parallelize special-build-tests CI job and fix diagnostic runner hang ([@runspired](https://github.com/runspired))
+* [#10558](https://github.com/warp-drive-data/warp-drive/pull/10558) chore: fix test reporter output for todo style tests ([@runspired](https://github.com/runspired))
+* [#10514](https://github.com/warp-drive-data/warp-drive/pull/10514) chore: bump build deps ([@runspired](https://github.com/runspired))
+* [#10459](https://github.com/warp-drive-data/warp-drive/pull/10459) chore: tweak install ([@runspired](https://github.com/runspired))
+
+#### Committers: (1)
+
+Chris Thoburn ([@runspired](https://github.com/runspired))
+
 ## v5.8.0 (2025-10-07)
 
 #### :bug: Bug Fix
