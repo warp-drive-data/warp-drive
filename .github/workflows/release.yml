@@ -295,6 +295,11 @@ jobs:
         with:
           install: true
           DISABLE_TURBO_CACHE: true
+      # Recorded before the release script commits anything, so the changelog lookup below
+      # can be limited to the commits this run actually created.
+      - name: Record pre-release HEAD
+        id: pre-release
+        run: echo "sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
       - name: Publish New Release
         # If we are not reversioning
         # Then we do the default patch increment from the current branch state.
@@ -319,7 +324,11 @@ jobs:
         id: changelog-commit
         if: github.event.inputs.dryRun != 'true'
         run: |
-          SHA=$(git log --format='%H' -n 1 --grep="chore: update changelogs")
+          # Scoped to the commits this run created. A release with no changelog-worthy
+          # changes makes no changelog commit, and an unscoped search would then find the
+          # *previous* release's commit and cherry-pick it a second time. No match leaves
+          # SHA empty, which already skips the cherry-pick steps below.
+          SHA=$(git log --format='%H' -n 1 --grep="chore: update changelogs" ${{ steps.pre-release.outputs.sha }}..HEAD)
           echo "sha=${SHA}" >> $GITHUB_OUTPUT
       - name: Cherry-pick changelog to main
         if: github.event.inputs.dryRun != 'true' && steps.changelog-commit.outputs.sha != ''

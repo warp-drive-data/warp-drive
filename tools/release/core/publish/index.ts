@@ -7,7 +7,7 @@ import { GIT_TAG, getAllPackagesForGitTag, getGitState } from '../../utils/git.t
 import { gatherPackages, loadStrategy } from '../../utils/package.ts';
 import { parseRawFlags, printConfig } from '../../utils/parse-args.ts';
 import { confirmCommitChangelogs } from '../release-notes/steps/confirm-changelogs.ts';
-import { getChanges } from '../release-notes/steps/get-changes.ts';
+import { getChanges, reportNoChangelogEntries } from '../release-notes/steps/get-changes.ts';
 import { updateChangelogs } from '../release-notes/steps/update-changelogs.ts';
 import { bumpAllPackages, restorePackagesForDryRun } from './steps/bump-versions.ts';
 import { confirmStrategy } from './steps/confirm-strategy.ts';
@@ -63,29 +63,31 @@ export async function executePublish(args: string[]) {
     // generate the list of changes (first entry is the unreleased block)
     const changesets = await getChanges(strategy.config, packages, fromTag);
     const newChanges = changesets[0];
+
+    // a release with nothing changelog-worthy in it is a real release, not a failure:
+    // publish it, just without a changelog commit. getChanges() throws if lerna-changelog
+    // actually broke, so reaching here means it ran and had nothing to report.
     if (!newChanges) {
-      throw new Error(
-        `lerna-changelog produced no parseable output from ${fromTag}. Check the log above for the raw output.`
+      await reportNoChangelogEntries(fromTag);
+    } else {
+      const toTag = `v${versions.get('root')!}` as GIT_TAG;
+      const date = new Date().toISOString().split('T')[0];
+
+      // update all changelogs, including the primary changelog
+      // and the changelogs for each package in changelogRoots
+      // this will not commit the changes
+      const changedFiles = await updateChangelogs(
+        fromTag,
+        toTag,
+        date,
+        newChanges,
+        config.full,
+        strategy.config,
+        packages
       );
+
+      await confirmCommitChangelogs(changedFiles, config.full, versions);
     }
-
-    const toTag = `v${versions.get('root')!}` as GIT_TAG;
-    const date = new Date().toISOString().split('T')[0];
-
-    // update all changelogs, including the primary changelog
-    // and the changelogs for each package in changelogRoots
-    // this will not commit the changes
-    const changedFiles = await updateChangelogs(
-      fromTag,
-      toTag,
-      date,
-      newChanges,
-      config.full,
-      strategy.config,
-      packages
-    );
-
-    await confirmCommitChangelogs(changedFiles, config.full, versions);
   }
 
   // Bump package.json versions & commit/tag
