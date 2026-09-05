@@ -1,7 +1,7 @@
 {
   "name": "@warp-drive/schema-dsl",
   "private": true,
-  "version": "5.9.0",
+  "version": "5.9.1",
   "description": "TypeScript DSL for defining WarpDrive schemas",
   "license": "MIT",
   "author": "Chris Thoburn <runspired@users.noreply.github.com>",
