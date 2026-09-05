@@ -1,5 +1,15 @@
 # WarpDrive Changelog
 
+## v5.9.1 (2026-09-05)
+
+#### :bug: Bug Fix
+
+* [#11023](https://github.com/warp-drive-data/warp-drive/pull/11023) fix(release): put @warp-drive/experiments on the 5.x train on release ([@runspired](https://github.com/runspired))
+
+#### Committers: (1)
+
+Chris Thoburn ([@runspired](https://github.com/runspired))
+
 ## v5.9.0 (2026-09-05)
 
 #### :memo: Documentation
