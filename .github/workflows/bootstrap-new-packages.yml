@@ -22,13 +22,6 @@ on:
         required: false
         default: ''
         type: string
-  schedule:
-    # Weekly (Monday) 8 AM PST. Always a dry run (report only): a scheduled
-    # run has no human present to supply a fresh OTP, so it can never
-    # actually publish a placeholder unless NPM_BOOTSTRAP_TOKEN is an
-    # Automation-type token -- this just surfaces the report so a human
-    # knows to trigger a real (non-dry-run) run with the current OTP.
-    - cron: '0 15 * * 1'
 
 jobs:
   bootstrap:
@@ -45,7 +38,7 @@ jobs:
           install: true
           DISABLE_TURBO_CACHE: true
       - name: Bootstrap new packages
-        run: bun release exec bootstrap --dry_run=${{ github.event_name == 'schedule' && 'true' || github.event.inputs.dryRun }} --otp=${{ github.event.inputs.otp }}
+        run: bun release exec bootstrap --dry_run=${{ github.event.inputs.dryRun }} --otp=${{ github.event.inputs.otp }}
         env:
           FORCE_COLOR: 2
           CI: true
