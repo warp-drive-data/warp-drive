@@ -49,7 +49,7 @@
     "ember-source": "catalog:",
     "ember-strict-application-resolver": "^0.1.1",
     "terser": "^5.51.2",
-    "typescript-7": "npm:typescript@7.1.0-dev.20260829.1",
+    "typescript-7": "npm:typescript@7.1.0-dev.20260830.1",
     "vite": "catalog:"
   },
   "ember": {
