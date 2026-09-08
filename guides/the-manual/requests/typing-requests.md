@@ -248,8 +248,7 @@ type promises no shape — `errors` is `object[]`.
 A third type param declares what the endpoint actually returns. The builders in
 `@warp-drive/utilities/json-api` default it to
 [ApiError](/api/@warp-drive/core/types/spec/error/interfaces/ApiError), the
-[{json:api} error object](https://jsonapi.org/format/#error-objects), because that is what the
-dialect specifies. `status` there is a string, not a number, and every member is optional:
+[{json:api} error object](https://jsonapi.org/format/#error-objects):
 
 ```ts
 import { query } from '@warp-drive/utilities/json-api';
@@ -263,8 +262,8 @@ if (nextPage?.errors) {
 }
 ```
 
-The `rest` and `active-record` builders leave it as `object`, since neither dialect specifies an
-error shape. Supply your own when you know it:
+The `rest` and `active-record` builders leave it as `object`, since neither REST nor ActiveRecord
+specifies an error shape. Supply your own when you know it:
 
 ```ts
 type MyError = { code: string; message: string };
