@@ -37,7 +37,7 @@
   "devDependencies": {
     "@babel/core": "^7.29.7",
     "@glimmer/component": "^2.1.1",
-    "@glint/ember-tsc": "^1.11.2",
+    "@glint/ember-tsc": "^1.11.4",
     "@glint/template": "^1.9.0",
     "@warp-drive/internal-docs-viewer": "workspace:*",
     "@warp-drive/internal-tooling": "workspace:*",

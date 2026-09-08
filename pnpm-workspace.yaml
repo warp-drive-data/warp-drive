@@ -303,7 +303,7 @@ overrides:
   qunit-console-grouper>broccoli-funnel: "-"
   broccoli-merge-trees: ^4.2.0
   "@glimmer/validator": ^0.95.0
-  "@glint/ember-tsc": 1.11.2
+  "@glint/ember-tsc": 1.11.4
   "@glint/template": 1.9.0
   ember-cli-babel: ^8.3.2
   "@embroider/macros>ember-cli-babel": "-"
