@@ -58,14 +58,15 @@ const handWritten = withReactiveResponse<User[], PageMeta, ApiError>({ url: '/us
  */
 type DocumentParamsReachTheirMembers = [
   // -- meta ---------------------------------------------------------------
-  // the supplied meta reaches `meta` unchanged, on both arms
-  MustBeTrue<Exact<ReactiveDataDocument<User, PageMeta>['meta'], PageMeta | undefined>>,
-  MustBeTrue<Exact<ReactiveErrorDocument<User, PageMeta>['meta'], PageMeta | undefined>>,
+  // the supplied meta reaches `meta` unchanged, on both arms, and is not
+  // optional there — declaring the shape is what removes the `?.`
+  MustBeTrue<Exact<ReactiveDataDocument<User, PageMeta>['meta'], PageMeta>>,
+  MustBeTrue<Exact<ReactiveErrorDocument<User, PageMeta>['meta'], PageMeta>>,
   // omitting it leaves today's behavior in place
   MustBeTrue<Exact<ReactiveDataDocument<User>['meta'], Meta | undefined>>,
   // a meta-only endpoint has no primary data to name — `never` says so, and
   // the meta is still typed
-  MustBeTrue<Exact<ReactiveDataDocument<never, PageMeta>['meta'], PageMeta | undefined>>,
+  MustBeTrue<Exact<ReactiveDataDocument<never, PageMeta>['meta'], PageMeta>>,
   MustBeTrue<Exact<ReactiveDataDocument<never, PageMeta>['data'], never>>,
 
   // -- errors -------------------------------------------------------------

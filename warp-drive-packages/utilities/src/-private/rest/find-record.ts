@@ -64,7 +64,7 @@ import { copyForwardUrlOptions, extractCacheOptions } from '../builder-utils.ts'
  *
  * @public
  */
-export function findRecord<T, M extends Meta = Meta, E extends object = object>(
+export function findRecord<T, M extends Meta | undefined = Meta | undefined, E extends object = object>(
   identifier: RemotelyAccessibleIdentifier<TypeFromInstance<T>>,
   options?: FindRecordOptions
 ): FindRecordRequestOptions<ReactiveDataDocument<T, M, E>, T>;
@@ -72,13 +72,13 @@ export function findRecord(
   identifier: RemotelyAccessibleIdentifier,
   options?: FindRecordOptions
 ): FindRecordRequestOptions;
-export function findRecord<T, M extends Meta = Meta, E extends object = object>(
+export function findRecord<T, M extends Meta | undefined = Meta | undefined, E extends object = object>(
   type: TypeFromInstance<T>,
   id: string,
   options?: FindRecordOptions
 ): FindRecordRequestOptions<ReactiveDataDocument<T, M, E>, T>;
 export function findRecord(type: string, id: string, options?: FindRecordOptions): FindRecordRequestOptions;
-export function findRecord<T, M extends Meta = Meta, E extends object = object>(
+export function findRecord<T, M extends Meta | undefined = Meta | undefined, E extends object = object>(
   arg1: TypeFromInstance<T> | RemotelyAccessibleIdentifier<TypeFromInstance<T>>,
   arg2: string | FindRecordOptions | undefined,
   arg3?: FindRecordOptions
@@ -112,8 +112,8 @@ export function findRecord<T, M extends Meta = Meta, E extends object = object>(
 }
 
 /** @deprecated use {@link ReactiveDataDocument} instead */
-export type FindRecordResultDocument<T, M extends Meta = Meta, E extends object = object> = ReactiveDataDocument<
+export type FindRecordResultDocument<
   T,
-  M,
-  E
->;
+  M extends Meta | undefined = Meta | undefined,
+  E extends object = object,
+> = ReactiveDataDocument<T, M, E>;

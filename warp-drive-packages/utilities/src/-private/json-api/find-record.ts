@@ -88,7 +88,7 @@ import { ACCEPT_HEADER_VALUE } from './-utils.ts';
  *
  * @public
  */
-export function findRecord<T, M extends Meta = Meta, E extends object = ApiError>(
+export function findRecord<T, M extends Meta | undefined = Meta | undefined, E extends object = ApiError>(
   identifier: RemotelyAccessibleIdentifier<TypeFromInstance<T>>,
   options?: FindRecordOptions
 ): FindRecordRequestOptions<ReactiveDataDocument<T, M, E>, T>;
@@ -96,7 +96,7 @@ export function findRecord(
   identifier: RemotelyAccessibleIdentifier,
   options?: FindRecordOptions
 ): FindRecordRequestOptions;
-export function findRecord<T, M extends Meta = Meta, E extends object = ApiError>(
+export function findRecord<T, M extends Meta | undefined = Meta | undefined, E extends object = ApiError>(
   type: TypeFromInstance<T>,
   id: string,
   options?: FindRecordOptions
@@ -135,8 +135,8 @@ export function findRecord(
 }
 
 /** @deprecated use {@link ReactiveDataDocument} */
-export type FindRecordResultDocument<T, M extends Meta = Meta, E extends object = ApiError> = ReactiveDataDocument<
+export type FindRecordResultDocument<
   T,
-  M,
-  E
->;
+  M extends Meta | undefined = Meta | undefined,
+  E extends object = ApiError,
+> = ReactiveDataDocument<T, M, E>;

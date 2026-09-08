@@ -63,7 +63,11 @@ import { ACCEPT_HEADER_VALUE } from './-utils.ts';
  * @public
  * @badge Builder
  */
-export function query<T extends TypedRecordInstance, M extends Meta = Meta, E extends object = ApiError>(
+export function query<
+  T extends TypedRecordInstance,
+  M extends Meta | undefined = Meta | undefined,
+  E extends object = ApiError,
+>(
   type: TypeFromInstance<T>,
   query?: QueryParamsSource,
   options?: ConstrainedRequestOptions
@@ -146,7 +150,7 @@ export function query(
  * @param query - the query params to send with the request
  * @param options - options to modify the request behavior
  */
-export function postQuery<T, M extends Meta = Meta, E extends object = ApiError>(
+export function postQuery<T, M extends Meta | undefined = Meta | undefined, E extends object = ApiError>(
   type: TypeFromInstance<T>,
   query?: QueryParamsSource,
   options?: ConstrainedRequestOptions

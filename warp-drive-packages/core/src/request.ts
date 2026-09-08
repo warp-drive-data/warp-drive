@@ -71,7 +71,12 @@ export function withResponseType<T>(obj: RequestInfo): RequestInfo<T> & {
  *
  * @public
  */
-export function withReactiveResponse<T, M extends Meta = Meta, E extends object = object, EM extends Meta = M>(
+export function withReactiveResponse<
+  T,
+  M extends Meta | undefined = Meta | undefined,
+  E extends object = object,
+  EM extends Meta | undefined = M,
+>(
   obj: RequestInfo
 ): RequestInfo<ReactiveDataDocument<T, M, E, EM>> & {
   /** The branded response type. Present only at the type level; carries no runtime value. */

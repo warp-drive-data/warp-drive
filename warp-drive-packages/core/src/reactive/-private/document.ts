@@ -17,7 +17,12 @@ function urlFromLink(link: Link): string {
   return link.href;
 }
 
-export interface ReactiveDocumentBase<T, M extends Meta = Meta, E extends object = object, EM extends Meta = M> {
+export interface ReactiveDocumentBase<
+  T,
+  M extends Meta | undefined = Meta | undefined,
+  E extends object = object,
+  EM extends Meta | undefined = M,
+> {
   /**
    * The links object for this document, if any
    *
@@ -108,9 +113,9 @@ export interface ReactiveDocumentBase<T, M extends Meta = Meta, E extends object
  */
 export interface ReactiveErrorDocument<
   T,
-  EM extends Meta = Meta,
+  EM extends Meta | undefined = Meta | undefined,
   E extends object = object,
-  M extends Meta = EM,
+  M extends Meta | undefined = EM,
 > extends ReactiveDocumentBase<T, M, E, EM> {
   /**
    * The primary data for this document, if any.
@@ -137,7 +142,7 @@ export interface ReactiveErrorDocument<
    *
    * @public
    */
-  readonly meta?: EM;
+  readonly meta: EM;
 
   /**
    * The errors returned by the API for this request, if any
@@ -159,9 +164,9 @@ export interface ReactiveErrorDocument<
  */
 export interface ReactiveDataDocument<
   T,
-  M extends Meta = Meta,
+  M extends Meta | undefined = Meta | undefined,
   E extends object = object,
-  EM extends Meta = M,
+  EM extends Meta | undefined = M,
 > extends ReactiveDocumentBase<T, M, E, EM> {
   /**
    * The primary data for this document, if any.
@@ -193,7 +198,7 @@ export interface ReactiveDataDocument<
    *
    * @public
    */
-  readonly meta?: M;
+  readonly meta: M;
 
   /**
    * The errors returned by the API for this request, if any
@@ -213,7 +218,12 @@ interface PrivateReactiveDocument {
   /** @internal */
   _subscription: UnsubscribeToken;
 
-  _request<T, M extends Meta = Meta, E extends object = object, EM extends Meta = M>(
+  _request<
+    T,
+    M extends Meta | undefined = Meta | undefined,
+    E extends object = object,
+    EM extends Meta | undefined = M,
+  >(
     this: ReactiveDocumentBase<T, M, E, EM>,
     link: keyof PaginationLinks,
     options?: RequestInfo<ReactiveDataDocument<T, M, E, EM>>
@@ -232,12 +242,20 @@ function upgradeThis(doc: unknown): asserts doc is PrivateReactiveDocument {}
  *
  * @public
  */
-export type ReactiveDocument<T, M extends Meta = Meta, E extends object = object, EM extends Meta = M> =
-  | ReactiveDataDocument<T, M, E, EM>
-  | ReactiveErrorDocument<T, EM, E, M>;
+export type ReactiveDocument<
+  T,
+  M extends Meta | undefined = Meta | undefined,
+  E extends object = object,
+  EM extends Meta | undefined = M,
+> = ReactiveDataDocument<T, M, E, EM> | ReactiveErrorDocument<T, EM, E, M>;
 
 const ReactiveDocumentProto = {
-  async _request<T, M extends Meta = Meta, E extends object = object, EM extends Meta = M>(
+  async _request<
+    T,
+    M extends Meta | undefined = Meta | undefined,
+    E extends object = object,
+    EM extends Meta | undefined = M,
+  >(
     this: ReactiveDocumentBase<T, M, E, EM>,
     link: keyof PaginationLinks,
     options: RequestInfo<ReactiveDocument<T, M, E, EM>> = withBrand<ReactiveDocument<T, M, E, EM>>({
@@ -258,7 +276,7 @@ const ReactiveDocumentProto = {
     return response.content;
   },
 
-  fetch<T, M extends Meta = Meta, E extends object = object, EM extends Meta = M>(
+  fetch<T, M extends Meta | undefined = Meta | undefined, E extends object = object, EM extends Meta | undefined = M>(
     this: ReactiveDocument<T, M, E, EM>,
     options: RequestInfo<ReactiveDocument<T, M, E, EM>> = withBrand<ReactiveDataDocument<T, M, E, EM>>({
       url: '',
@@ -275,7 +293,7 @@ const ReactiveDocumentProto = {
     ) as Promise<ReactiveDataDocument<T, M, E, EM>>;
   },
 
-  next<T, M extends Meta = Meta, E extends object = object, EM extends Meta = M>(
+  next<T, M extends Meta | undefined = Meta | undefined, E extends object = object, EM extends Meta | undefined = M>(
     this: ReactiveDocument<T, M, E, EM>,
     options?: RequestInfo<ReactiveDataDocument<T, M, E, EM>>
   ): Promise<ReactiveDataDocument<T, M, E, EM> | null> {
@@ -283,7 +301,7 @@ const ReactiveDocumentProto = {
     return this._request<T, M, E, EM>('next', options);
   },
 
-  prev<T, M extends Meta = Meta, E extends object = object, EM extends Meta = M>(
+  prev<T, M extends Meta | undefined = Meta | undefined, E extends object = object, EM extends Meta | undefined = M>(
     this: ReactiveDocument<T, M, E, EM>,
     options: RequestInfo<ReactiveDataDocument<T, M, E, EM>>
   ): Promise<ReactiveDataDocument<T, M, E, EM> | null> {
@@ -291,7 +309,7 @@ const ReactiveDocumentProto = {
     return this._request<T, M, E, EM>('prev', options);
   },
 
-  first<T, M extends Meta = Meta, E extends object = object, EM extends Meta = M>(
+  first<T, M extends Meta | undefined = Meta | undefined, E extends object = object, EM extends Meta | undefined = M>(
     this: ReactiveDocument<T, M, E, EM>,
     options: RequestInfo<ReactiveDataDocument<T, M, E, EM>>
   ): Promise<ReactiveDataDocument<T, M, E, EM> | null> {
@@ -299,7 +317,7 @@ const ReactiveDocumentProto = {
     return this._request<T, M, E, EM>('first', options);
   },
 
-  last<T, M extends Meta = Meta, E extends object = object, EM extends Meta = M>(
+  last<T, M extends Meta | undefined = Meta | undefined, E extends object = object, EM extends Meta | undefined = M>(
     this: ReactiveDocument<T, M, E, EM>,
     options: RequestInfo<ReactiveDataDocument<T, M, E, EM>>
   ): Promise<ReactiveDataDocument<T, M, E, EM> | null> {
@@ -307,7 +325,7 @@ const ReactiveDocumentProto = {
     return this._request<T, M, E, EM>('last', options);
   },
 
-  toJSON<T, M extends Meta = Meta, E extends object = object, EM extends Meta = M>(
+  toJSON<T, M extends Meta | undefined = Meta | undefined, E extends object = object, EM extends Meta | undefined = M>(
     this: ReactiveDocument<T, M, E, EM>
   ): object {
     upgradeThis(this);
@@ -328,9 +346,12 @@ const ReactiveDocumentProto = {
     return data;
   },
 
-  [Destroy]<T, M extends Meta = Meta, E extends object = object, EM extends Meta = M>(
-    this: ReactiveDocument<T, M, E, EM>
-  ): void {
+  [Destroy]<
+    T,
+    M extends Meta | undefined = Meta | undefined,
+    E extends object = object,
+    EM extends Meta | undefined = M,
+  >(this: ReactiveDocument<T, M, E, EM>): void {
     upgradeThis(this);
     assert(`Cannot destroy a ReactiveDocument which has already been destroyed`, this._store);
     if (this._subscription) {
@@ -413,7 +434,12 @@ defineGate(ReactiveDocumentProto, 'meta', {
   },
 });
 
-export function createReactiveDocument<T, M extends Meta = Meta, E extends object = object, EM extends Meta = M>(
+export function createReactiveDocument<
+  T,
+  M extends Meta | undefined = Meta | undefined,
+  E extends object = object,
+  EM extends Meta | undefined = M,
+>(
   store: Store,
   cacheKey: RequestKey | null,
   localCache: { document: ResourceDocument; request: ImmutableRequestInfo } | null

@@ -45,19 +45,14 @@ type MustBeTrue<T extends true> = T;
  */
 type ErrorMetaIsSeparatelyTypeable = [
   // each arm's own meta is its second param
-  MustBeTrue<Exact<UsersDocument['meta'], UserPageMeta | undefined>>,
-  MustBeTrue<Exact<UsersErrorDocument['meta'], UserErrorMeta | undefined>>,
+  MustBeTrue<Exact<UsersDocument['meta'], UserPageMeta>>,
+  MustBeTrue<Exact<UsersErrorDocument['meta'], UserErrorMeta>>,
   // ...and an error document needs only that param to be fully described
-  MustBeTrue<Exact<ReactiveErrorDocument<User[], UserErrorMeta, ApiError>['meta'], UserErrorMeta | undefined>>,
+  MustBeTrue<Exact<ReactiveErrorDocument<User[], UserErrorMeta, ApiError>['meta'], UserErrorMeta>>,
   // within the union, omitting `EM` leaves the error arm sharing `M`
-  MustBeTrue<Exact<ErrorArmOf<ReactiveDocument<User[], UserPageMeta, ApiError>>['meta'], UserPageMeta | undefined>>,
+  MustBeTrue<Exact<ErrorArmOf<ReactiveDocument<User[], UserPageMeta, ApiError>>['meta'], UserPageMeta>>,
   // ...and supplying it separates them without disturbing the data arm
-  MustBeTrue<
-    Exact<
-      ErrorArmOf<ReactiveDocument<User[], UserPageMeta, ApiError, UserErrorMeta>>['meta'],
-      UserErrorMeta | undefined
-    >
-  >,
+  MustBeTrue<Exact<ErrorArmOf<ReactiveDocument<User[], UserPageMeta, ApiError, UserErrorMeta>>['meta'], UserErrorMeta>>,
 ];
 
 const EXPECTED = [true, true, true, true, true] as const;
@@ -111,7 +106,7 @@ module('Integration | @warp-drive/json-api | error document meta', function () {
       const content = state.reason.content;
 
       // `meta` survives onto the error document, and is typed by `EM`
-      assert.equal(content?.meta?.requestId, 'req-8f21c3', 'the error meta is present and typed');
+      assert.equal(content?.meta.requestId, 'req-8f21c3', 'the error meta is present and typed');
 
       // `errors` is typed by `E` on the same document
       assert.equal(content?.errors[0]?.status, '422', 'status is the {json:api} string, not a number');

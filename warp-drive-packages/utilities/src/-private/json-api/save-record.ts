@@ -255,7 +255,7 @@ export function createRecord(record: unknown, options: ConstrainedRequestOptions
 export function updateRecord<
   T extends TypedRecordInstance,
   RT extends TypedRecordInstance = T,
-  M extends Meta = Meta,
+  M extends Meta | undefined = Meta | undefined,
   E extends object = ApiError,
 >(
   record: T,

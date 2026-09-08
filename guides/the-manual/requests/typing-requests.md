@@ -188,7 +188,8 @@ const { content } = await store.request(getUsers());
 Number(content.meta?.total ?? 0); // meta.total is unknown
 ```
 
-Both `ReactiveDataDocument` and `withReactiveResponse` take an optional second type param for the meta:
+Both `ReactiveDataDocument` and `withReactiveResponse` take an optional second type param for the meta.
+Supplying it also makes `meta` non-optional, so you stop writing `?.` for a key you just declared:
 
 ```ts
 import { withReactiveResponse } from '@warp-drive/core/request';
@@ -206,12 +207,15 @@ function getUsers() {
 }
 
 const { content } = await store.request(getUsers());
-content.meta?.total; // number | undefined
+content.meta.total; // number
 ```
 
 NOTE: The param must be a `type` alias rather than an `interface`. This is because `Meta` is an index-signature type, and
 TypeScript gives implicit index signatures to aliases only, so an `interface` will not satisfy the
-`M extends Meta` constraint.
+`M extends Meta | undefined` constraint.
+
+Pass `PageMeta | undefined` instead if the endpoint only sometimes returns its `meta` — the default,
+`Meta | undefined`, is that same shape with no keys named.
 
 The builders in `@warp-drive/utilities` take the same param, so a builder can declare its own meta
 without hand-writing the document type:
@@ -223,7 +227,7 @@ import type { User } from '#/data/user';
 const options = query<User, PageMeta>('user', { page: { limit: 10 } });
 const { content } = await store.request(options);
 
-content.meta?.page.limit; // number
+content.meta.page.limit; // number
 ```
 
 `next`, `prev`, `first`, `last` and `fetch` carry the same meta type through to the document they
@@ -236,7 +240,7 @@ resource type to name. Pass `never` for the first param:
 const options = withReactiveResponse<never, { total: number }>({ url: '/users/count' });
 const { content } = await store.request(options);
 
-content.meta?.total; // number
+content.meta.total; // number
 ```
 
 ## Typing Errors
@@ -292,7 +296,7 @@ const future = store.request<UsersDocument>({ url: '/users' });
 const state = getRequestState<UsersDocument, UsersErrorDocument>(future);
 
 if (state.isError) {
-  state.reason.content?.meta?.requestId; // string | undefined
+  state.reason.content?.meta.requestId; // string | undefined
   state.reason.content?.errors[0].status; // string | undefined
 }
 ```
