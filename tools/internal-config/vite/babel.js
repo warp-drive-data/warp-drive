@@ -97,10 +97,14 @@ export function maybeBabel(userOptions) {
     return extraCodePatterns.some((pattern) => pattern.test(sourceCode));
   }
 
+  // `@rollup/plugin-babel`@7 switched `transform` from a plain function to an
+  // object-hook shape (`{ filter, handler }`, per rollup/plugins#1954) --
+  // unwrap it so wrapping the hook keeps working across both v6 and v7.
   const originalTransform = plugin.transform;
+  const originalHandler = typeof originalTransform === 'function' ? originalTransform : originalTransform.handler;
   plugin.transform = function wrappedTransform(sourceCode, id) {
     if (!shouldTransform(sourceCode, id)) return null;
-    return originalTransform.call(this, sourceCode, id);
+    return originalHandler.call(this, sourceCode, id);
   };
 
   return { ...plugin, enforce: 'pre', name: 'warp-drive:maybe-babel' };
