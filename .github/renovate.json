@@ -23,8 +23,8 @@
       "groupName": "legacy-ember-types"
     },
     {
-      "matchPackageNames": ["bun-types", "@types/bun"],
-      "groupName": "bun"
+      "matchPackageNames": ["bun", "bun-types", "@types/bun", "node", "@types/node"],
+      "groupName": "dev-engines"
     },
     {
       "matchPackageNames": ["typescript", "globals"],
@@ -39,8 +39,8 @@
       "groupName": "eslint"
     },
     {
-      "matchPackageNames": ["/vite/"],
-      "groupName": "vite"
+      "matchPackageNames": ["/vite/", "/rollup/", "/rolldown/", "/tsdown/", "/unplugin/"],
+      "groupName": "build-tools"
     },
     {
       "matchPackageNames": [
