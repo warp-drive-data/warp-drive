@@ -39,8 +39,8 @@
       "groupName": "eslint"
     },
     {
-      "matchPackageNames": ["/vite/"],
-      "groupName": "vite"
+      "matchPackageNames": ["/vite/", "/rollup/", "/rolldown/", "/tsdown/", "/unplugin/"],
+      "groupName": "build-tools"
     },
     {
       "matchPackageNames": [
