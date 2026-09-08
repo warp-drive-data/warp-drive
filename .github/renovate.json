@@ -27,8 +27,20 @@
       "groupName": "bun"
     },
     {
+      "matchPackageNames": ["typescript", "globals"],
+      "groupName": "typescript"
+    },
+    {
       "matchPackageNames": ["/qunit/"],
       "groupName": "qunit"
+    },
+    {
+      "matchPackageNames": ["/eslint/"],
+      "groupName": "eslint"
+    },
+    {
+      "matchPackageNames": ["/vite/"],
+      "groupName": "vite"
     },
     {
       "matchPackageNames": [
