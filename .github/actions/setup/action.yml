@@ -109,6 +109,18 @@ runs:
         restore-keys: |
           turbo-remote-cache-
 
+    # felixmosh's server process appends its stdout/stderr to this file
+    # (open(..., 'a'), never truncated) for the whole job, and its post step
+    # unconditionally cats the file as "Server logs:" during cleanup. Since
+    # the restore above carries turbo-cache/ forward from whichever prior run
+    # last saved it, a crash logged by one run would otherwise keep
+    # reappearing in every later run's cleanup output forever. Clearing it
+    # here means each run only ever sees its own server's logs.
+    - name: 'Reset Turbo Remote-Cache Proxy Server Log'
+      if: ${{ inputs.repo-token && inputs.DISABLE_TURBO_CACHE != 'true' }}
+      shell: bash
+      run: rm -f "${{ runner.temp }}/turbo-cache/out.log"
+
     # Turborepo always checks its local on-disk cache (`.turbo/cache`) before
     # the remote (felixmosh) cache, and every turbo task's hash is purely a
     # function of file contents, so sharing that directory here -- keyed by
