@@ -9,6 +9,7 @@ import type {
   DeleteRequestOptions,
   UpdateRequestOptions,
 } from '@warp-drive/core/types/request';
+import type { ApiError } from '@warp-drive/core/types/spec/error';
 import type { Meta } from '@warp-drive/core/types/spec/json-api-raw';
 
 import {
@@ -251,10 +252,15 @@ export function createRecord(record: unknown, options: ConstrainedRequestOptions
  * @param record
  * @param options
  */
-export function updateRecord<T extends TypedRecordInstance, RT extends TypedRecordInstance = T, M extends Meta = Meta>(
+export function updateRecord<
+  T extends TypedRecordInstance,
+  RT extends TypedRecordInstance = T,
+  M extends Meta = Meta,
+  E extends object = ApiError,
+>(
   record: T,
   options?: ConstrainedRequestOptions & { patch?: boolean }
-): UpdateRequestOptions<ReactiveDataDocument<RT, M>, T>;
+): UpdateRequestOptions<ReactiveDataDocument<RT, M, E>, T>;
 export function updateRecord(
   record: unknown,
   options?: ConstrainedRequestOptions & { patch?: boolean }

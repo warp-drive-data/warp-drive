@@ -229,20 +229,47 @@ content.meta?.page.limit; // number
 `next`, `prev`, `first`, `last` and `fetch` carry the same meta type through to the document they
 resolve with, since they hit the same endpoint.
 
+An endpoint that returns only `meta` and no primary data — a `count`, for instance — has no
+resource type to name. Pass `never` for the first param:
+
+```ts
+const options = withReactiveResponse<never, { total: number }>({ url: '/users/count' });
+const { content } = await store.request(options);
+
+content.meta?.total; // number
+```
+
 ## Typing Errors
 
 The error variant of a document, [ReactiveErrorDocument](/api/@warp-drive/core/reactive/interfaces/ReactiveErrorDocument),
-exposes `errors` as [ApiError](/api/@warp-drive/core/types/spec/error/interfaces/ApiError)`[]` — the
-[{json:api} error object](https://jsonapi.org/format/#error-objects). Note that `status` is a string,
-not a number, and every member is optional:
+exposes `errors`. The cache stores whatever the API sent without validating it, so by default the
+type promises no shape — `errors` is `object[]`.
+
+A third type param declares what the endpoint actually returns. The builders in
+`@warp-drive/utilities/json-api` default it to
+[ApiError](/api/@warp-drive/core/types/spec/error/interfaces/ApiError), the
+[{json:api} error object](https://jsonapi.org/format/#error-objects), because that is what the
+dialect specifies. `status` there is a string, not a number, and every member is optional:
 
 ```ts
-const { content } = await store.request(getUsers());
+import { query } from '@warp-drive/utilities/json-api';
 
-if (content.errors) {
-  content.errors[0].status; // string | undefined
-  content.errors[0].source?.pointer; // string | undefined
+const { content } = await store.request(query<User>('user'));
+const nextPage = await content.next(); // resolves with the document union
+
+if (nextPage?.errors) {
+  nextPage.errors[0].status; // string | undefined
+  nextPage.errors[0].source?.pointer; // string | undefined
 }
+```
+
+The `rest` and `active-record` builders leave it as `object`, since neither dialect specifies an
+error shape. Supply your own when you know it:
+
+```ts
+type MyError = { code: string; message: string };
+
+const options = withReactiveResponse<User[], PageMeta, MyError>({ url: '/users' });
 ```
 
 ## How it works (for the curious)

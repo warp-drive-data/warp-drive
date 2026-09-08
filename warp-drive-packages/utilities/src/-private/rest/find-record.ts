@@ -64,25 +64,25 @@ import { copyForwardUrlOptions, extractCacheOptions } from '../builder-utils.ts'
  *
  * @public
  */
-export function findRecord<T, M extends Meta = Meta>(
+export function findRecord<T, M extends Meta = Meta, E extends object = object>(
   identifier: RemotelyAccessibleIdentifier<TypeFromInstance<T>>,
   options?: FindRecordOptions
-): FindRecordRequestOptions<ReactiveDataDocument<T, M>, T>;
+): FindRecordRequestOptions<ReactiveDataDocument<T, M, E>, T>;
 export function findRecord(
   identifier: RemotelyAccessibleIdentifier,
   options?: FindRecordOptions
 ): FindRecordRequestOptions;
-export function findRecord<T, M extends Meta = Meta>(
+export function findRecord<T, M extends Meta = Meta, E extends object = object>(
   type: TypeFromInstance<T>,
   id: string,
   options?: FindRecordOptions
-): FindRecordRequestOptions<ReactiveDataDocument<T, M>, T>;
+): FindRecordRequestOptions<ReactiveDataDocument<T, M, E>, T>;
 export function findRecord(type: string, id: string, options?: FindRecordOptions): FindRecordRequestOptions;
-export function findRecord<T, M extends Meta = Meta>(
+export function findRecord<T, M extends Meta = Meta, E extends object = object>(
   arg1: TypeFromInstance<T> | RemotelyAccessibleIdentifier<TypeFromInstance<T>>,
   arg2: string | FindRecordOptions | undefined,
   arg3?: FindRecordOptions
-): FindRecordRequestOptions<ReactiveDataDocument<T, M>, T> {
+): FindRecordRequestOptions<ReactiveDataDocument<T, M, E>, T> {
   const identifier: RemotelyAccessibleIdentifier<TypeFromInstance<T>> =
     typeof arg1 === 'string' ? { type: arg1, id: arg2 as string } : arg1;
   const options: FindRecordOptions = (typeof arg1 === 'string' ? arg3 : (arg2 as FindRecordOptions)) || {};
@@ -112,4 +112,8 @@ export function findRecord<T, M extends Meta = Meta>(
 }
 
 /** @deprecated use {@link ReactiveDataDocument} instead */
-export type FindRecordResultDocument<T, M extends Meta = Meta> = ReactiveDataDocument<T, M>;
+export type FindRecordResultDocument<T, M extends Meta = Meta, E extends object = object> = ReactiveDataDocument<
+  T,
+  M,
+  E
+>;

@@ -55,11 +55,11 @@ import { copyForwardUrlOptions, extractCacheOptions } from '../builder-utils.ts'
  * @param query
  * @param options
  */
-export function query<T, M extends Meta = Meta>(
+export function query<T, M extends Meta = Meta, E extends object = object>(
   type: TypeFromInstance<T>,
   query?: QueryParamsSource,
   options?: ConstrainedRequestOptions
-): QueryRequestOptions<ReactiveDataDocument<T[], M>>;
+): QueryRequestOptions<ReactiveDataDocument<T[], M, E>>;
 export function query(
   type: string,
   query?: QueryParamsSource,

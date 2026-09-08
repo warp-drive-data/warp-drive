@@ -66,19 +66,19 @@ import { copyForwardUrlOptions, extractCacheOptions } from '../builder-utils.ts'
  * @param identifier
  * @param options
  */
-export function findRecord<T, M extends Meta = Meta>(
+export function findRecord<T, M extends Meta = Meta, E extends object = object>(
   identifier: RemotelyAccessibleIdentifier<TypeFromInstance<T>>,
   options?: FindRecordOptions
-): FindRecordRequestOptions<ReactiveDataDocument<T, M>, T>;
+): FindRecordRequestOptions<ReactiveDataDocument<T, M, E>, T>;
 export function findRecord(
   identifier: RemotelyAccessibleIdentifier,
   options?: FindRecordOptions
 ): FindRecordRequestOptions;
-export function findRecord<T, M extends Meta = Meta>(
+export function findRecord<T, M extends Meta = Meta, E extends object = object>(
   type: TypeFromInstance<T>,
   id: string,
   options?: FindRecordOptions
-): FindRecordRequestOptions<ReactiveDataDocument<T, M>, T>;
+): FindRecordRequestOptions<ReactiveDataDocument<T, M, E>, T>;
 export function findRecord(type: string, id: string, options?: FindRecordOptions): FindRecordRequestOptions;
 export function findRecord(
   arg1: string | RemotelyAccessibleIdentifier,
@@ -113,4 +113,8 @@ export function findRecord(
 }
 
 /** @deprecated use {@link ReactiveDataDocument} instead */
-export type FindRecordResultDocument<T, M extends Meta = Meta> = ReactiveDataDocument<T, M>;
+export type FindRecordResultDocument<T, M extends Meta = Meta, E extends object = object> = ReactiveDataDocument<
+  T,
+  M,
+  E
+>;

@@ -5,6 +5,7 @@ import type {
   FindRecordRequestOptions,
   RemotelyAccessibleIdentifier,
 } from '@warp-drive/core/types/request';
+import type { ApiError } from '@warp-drive/core/types/spec/error';
 import type { Meta } from '@warp-drive/core/types/spec/json-api-raw';
 
 import { buildBaseURL, buildQueryParams, type FindRecordUrlOptions } from '../../index.ts';
@@ -87,19 +88,19 @@ import { ACCEPT_HEADER_VALUE } from './-utils.ts';
  *
  * @public
  */
-export function findRecord<T, M extends Meta = Meta>(
+export function findRecord<T, M extends Meta = Meta, E extends object = ApiError>(
   identifier: RemotelyAccessibleIdentifier<TypeFromInstance<T>>,
   options?: FindRecordOptions
-): FindRecordRequestOptions<ReactiveDataDocument<T, M>, T>;
+): FindRecordRequestOptions<ReactiveDataDocument<T, M, E>, T>;
 export function findRecord(
   identifier: RemotelyAccessibleIdentifier,
   options?: FindRecordOptions
 ): FindRecordRequestOptions;
-export function findRecord<T, M extends Meta = Meta>(
+export function findRecord<T, M extends Meta = Meta, E extends object = ApiError>(
   type: TypeFromInstance<T>,
   id: string,
   options?: FindRecordOptions
-): FindRecordRequestOptions<ReactiveDataDocument<T, M>, T>;
+): FindRecordRequestOptions<ReactiveDataDocument<T, M, E>, T>;
 export function findRecord(type: string, id: string, options?: FindRecordOptions): FindRecordRequestOptions;
 export function findRecord(
   arg1: string | RemotelyAccessibleIdentifier,
@@ -134,4 +135,8 @@ export function findRecord(
 }
 
 /** @deprecated use {@link ReactiveDataDocument} */
-export type FindRecordResultDocument<T, M extends Meta = Meta> = ReactiveDataDocument<T, M>;
+export type FindRecordResultDocument<T, M extends Meta = Meta, E extends object = ApiError> = ReactiveDataDocument<
+  T,
+  M,
+  E
+>;

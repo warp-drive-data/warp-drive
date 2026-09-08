@@ -47,7 +47,7 @@ export { type StoreRequestContext, type StoreRequestInput, storeFor } from './st
 /**
  * @deprecated use {@link ReactiveDocument} instead
  */
-export type Document<T, M extends Meta = Meta> = ReactiveDocument<T, M>;
+export type Document<T, M extends Meta = Meta, E extends object = object> = ReactiveDocument<T, M, E>;
 
 export type {
   DocumentCacheOperation,
