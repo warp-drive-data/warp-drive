@@ -177,6 +177,75 @@ function getUsers() {
 
 :::
 
+## Typing the Document's `meta`
+
+A reactive document also carries the response's [meta](https://jsonapi.org/format/#document-meta). By
+default it is typed `Meta` — an arbitrary JSON object — so reading a key off it gives you `unknown`
+and every callsite ends up coercing:
+
+```ts
+const { content } = await store.request(getUsers());
+
+Number(content.meta?.total ?? 0); // meta.total is unknown
+```
+
+Both `ReactiveDataDocument` and `withReactiveResponse` take a second type param for the meta, so the
+request declares once what its endpoint returns:
+
+```ts
+import { withReactiveResponse } from '@warp-drive/core/request';
+import type { User } from '#/data/user';
+
+type PageMeta = {
+  page: { limit: number; offset: number };
+  total?: number;
+};
+
+function getUsers() {
+  return withReactiveResponse<User[], PageMeta>({
+    url: '/users'
+  });
+}
+
+const { content } = await store.request(getUsers());
+content.meta?.total; // number | undefined
+```
+
+The param must be a `type` alias rather than an `interface`: `Meta` is an index-signature type, and
+TypeScript gives implicit index signatures to aliases only, so an `interface` will not satisfy the
+`M extends Meta` constraint.
+
+The builders in `@warp-drive/utilities` take the same param, so a builder can declare its own meta
+without hand-writing the document type:
+
+```ts
+import { query } from '@warp-drive/utilities/json-api';
+import type { User } from '#/data/user';
+
+const options = query<User, PageMeta>('user', { page: { limit: 10 } });
+const { content } = await store.request(options);
+
+content.meta?.page.limit; // number
+```
+
+`next`, `prev`, `first`, `last` and `fetch` carry the same meta type through to the document they
+resolve with, since they hit the same endpoint.
+
+## Typing Errors
+
+The error variant of a document, [ReactiveErrorDocument](/api/@warp-drive/core/reactive/interfaces/ReactiveErrorDocument),
+exposes `errors` as [ApiError](/api/@warp-drive/core/types/spec/error/interfaces/ApiError)`[]` — the
+[{json:api} error object](https://jsonapi.org/format/#error-objects). Note that `status` is a string,
+not a number, and every member is optional:
+
+```ts
+const { content } = await store.request(getUsers());
+
+if (content.errors) {
+  content.errors[0].status; // string | undefined
+  content.errors[0].source?.pointer; // string | undefined
+}
+```
 
 ## How it works (for the curious)
 

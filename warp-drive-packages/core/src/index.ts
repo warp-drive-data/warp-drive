@@ -20,6 +20,7 @@ import type { RequestInfo } from './types/request.ts';
 import { getRuntimeConfig, setIsMaybeMirage, setLogging } from './types/runtime.ts';
 import type { Derivation, HashFn, Transformation } from './types/schema/concepts.ts';
 import type { ObjectSchema, PolarisResourceSchema, Trait } from './types/schema/fields.ts';
+import type { Meta } from './types/spec/json-api-raw.ts';
 
 export { recordIdentifierFor, recordIdentifierFor as cacheKeyFor };
 
@@ -46,7 +47,7 @@ export { type StoreRequestContext, type StoreRequestInput, storeFor } from './st
 /**
  * @deprecated use {@link ReactiveDocument} instead
  */
-export type Document<T> = ReactiveDocument<T>;
+export type Document<T, M extends Meta = Meta> = ReactiveDocument<T, M>;
 
 export type {
   DocumentCacheOperation,

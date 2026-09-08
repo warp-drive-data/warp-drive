@@ -1,5 +1,6 @@
 import type { ReactiveDataDocument } from './reactive.ts';
 import type { RequestInfo } from './types/request.ts';
+import type { Meta } from './types/spec/json-api-raw.ts';
 import type { RequestSignature } from './types/symbols.ts';
 
 export { createDeferred } from './request/-private/future.ts';
@@ -56,14 +57,28 @@ export function withResponseType<T>(obj: RequestInfo): RequestInfo<T> & {
  * result.content.data; // will have type User
  * ```
  *
+ * Pass a second type param to declare the `meta` the endpoint returns:
+ *
+ * ```ts
+ * type PageMeta = { page: { limit: number; offset: number }; total?: number };
+ *
+ * const result = await store.request(
+ *   withReactiveResponse<User[], PageMeta>({ url: '/users' })
+ * );
+ *
+ * result.content.meta?.total; // number | undefined
+ * ```
+ *
  * @public
  */
-export function withReactiveResponse<T>(obj: RequestInfo): RequestInfo<ReactiveDataDocument<T>> & {
+export function withReactiveResponse<T, M extends Meta = Meta>(
+  obj: RequestInfo
+): RequestInfo<ReactiveDataDocument<T, M>> & {
   /** The branded response type. Present only at the type level; carries no runtime value. */
-  [RequestSignature]: ReactiveDataDocument<T>;
+  [RequestSignature]: ReactiveDataDocument<T, M>;
 } {
-  return obj as RequestInfo<ReactiveDataDocument<T>> & {
-    [RequestSignature]: ReactiveDataDocument<T>;
+  return obj as RequestInfo<ReactiveDataDocument<T, M>> & {
+    [RequestSignature]: ReactiveDataDocument<T, M>;
   };
 }
 

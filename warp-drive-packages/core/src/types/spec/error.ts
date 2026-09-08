@@ -52,12 +52,16 @@ export interface ApiError {
   code?: string;
   /**
    * an object containing references to the primary source of the error
+   *
+   * The spec says this SHOULD include one of `pointer`, `parameter` or
+   * `header` — an error sourced from a query param carries `parameter` and no
+   * `pointer` — so every member is optional here.
    */
   source?: {
     /**
      * a JSON Pointer to the value in the request document that caused the error
      */
-    pointer: string;
+    pointer?: string;
     /**
      * the URI query parameter that caused the error
      */

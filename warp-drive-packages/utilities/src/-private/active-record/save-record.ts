@@ -9,6 +9,7 @@ import type {
   DeleteRequestOptions,
   UpdateRequestOptions,
 } from '@warp-drive/core/types/request';
+import type { Meta } from '@warp-drive/core/types/spec/json-api-raw';
 
 import {
   buildBaseURL,
@@ -214,10 +215,10 @@ export function createRecord(record: unknown, options: ConstrainedRequestOptions
  * @param record
  * @param options
  */
-export function updateRecord<T extends TypedRecordInstance, RT extends TypedRecordInstance = T>(
+export function updateRecord<T extends TypedRecordInstance, RT extends TypedRecordInstance = T, M extends Meta = Meta>(
   record: T,
   options?: ConstrainedRequestOptions & { patch?: boolean }
-): UpdateRequestOptions<ReactiveDataDocument<RT>, T>;
+): UpdateRequestOptions<ReactiveDataDocument<RT, M>, T>;
 export function updateRecord(
   record: unknown,
   options?: ConstrainedRequestOptions & { patch?: boolean }

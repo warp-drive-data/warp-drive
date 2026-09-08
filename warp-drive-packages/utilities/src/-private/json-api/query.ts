@@ -7,6 +7,7 @@ import type {
   PostQueryRequestOptions,
   QueryRequestOptions,
 } from '@warp-drive/core/types/request';
+import type { Meta } from '@warp-drive/core/types/spec/json-api-raw';
 
 import { buildBaseURL, buildQueryParams, type QueryUrlOptions } from '../../index.ts';
 import { pluralize } from '../../string.ts';
@@ -61,11 +62,11 @@ import { ACCEPT_HEADER_VALUE } from './-utils.ts';
  * @public
  * @badge Builder
  */
-export function query<T extends TypedRecordInstance>(
+export function query<T extends TypedRecordInstance, M extends Meta = Meta>(
   type: TypeFromInstance<T>,
   query?: QueryParamsSource,
   options?: ConstrainedRequestOptions
-): QueryRequestOptions<ReactiveDataDocument<T[]>>;
+): QueryRequestOptions<ReactiveDataDocument<T[], M>>;
 export function query(
   type: string,
   query?: QueryParamsSource,
@@ -144,11 +145,11 @@ export function query(
  * @param query - the query params to send with the request
  * @param options - options to modify the request behavior
  */
-export function postQuery<T>(
+export function postQuery<T, M extends Meta = Meta>(
   type: TypeFromInstance<T>,
   query?: QueryParamsSource,
   options?: ConstrainedRequestOptions
-): PostQueryRequestOptions<ReactiveDataDocument<T[]>>;
+): PostQueryRequestOptions<ReactiveDataDocument<T[], M>>;
 export function postQuery(
   type: string,
   query?: QueryParamsSource,

@@ -5,6 +5,7 @@ import type {
   FindRecordRequestOptions,
   RemotelyAccessibleIdentifier,
 } from '@warp-drive/core/types/request';
+import type { Meta } from '@warp-drive/core/types/spec/json-api-raw';
 
 import { buildBaseURL, buildQueryParams, type FindRecordUrlOptions } from '../../index.ts';
 import { camelize, pluralize } from '../../string';
@@ -63,25 +64,25 @@ import { copyForwardUrlOptions, extractCacheOptions } from '../builder-utils.ts'
  *
  * @public
  */
-export function findRecord<T>(
+export function findRecord<T, M extends Meta = Meta>(
   identifier: RemotelyAccessibleIdentifier<TypeFromInstance<T>>,
   options?: FindRecordOptions
-): FindRecordRequestOptions<ReactiveDataDocument<T>, T>;
+): FindRecordRequestOptions<ReactiveDataDocument<T, M>, T>;
 export function findRecord(
   identifier: RemotelyAccessibleIdentifier,
   options?: FindRecordOptions
 ): FindRecordRequestOptions;
-export function findRecord<T>(
+export function findRecord<T, M extends Meta = Meta>(
   type: TypeFromInstance<T>,
   id: string,
   options?: FindRecordOptions
-): FindRecordRequestOptions<ReactiveDataDocument<T>, T>;
+): FindRecordRequestOptions<ReactiveDataDocument<T, M>, T>;
 export function findRecord(type: string, id: string, options?: FindRecordOptions): FindRecordRequestOptions;
-export function findRecord<T>(
+export function findRecord<T, M extends Meta = Meta>(
   arg1: TypeFromInstance<T> | RemotelyAccessibleIdentifier<TypeFromInstance<T>>,
   arg2: string | FindRecordOptions | undefined,
   arg3?: FindRecordOptions
-): FindRecordRequestOptions<ReactiveDataDocument<T>, T> {
+): FindRecordRequestOptions<ReactiveDataDocument<T, M>, T> {
   const identifier: RemotelyAccessibleIdentifier<TypeFromInstance<T>> =
     typeof arg1 === 'string' ? { type: arg1, id: arg2 as string } : arg1;
   const options: FindRecordOptions = (typeof arg1 === 'string' ? arg3 : (arg2 as FindRecordOptions)) || {};
@@ -111,4 +112,4 @@ export function findRecord<T>(
 }
 
 /** @deprecated use {@link ReactiveDataDocument} instead */
-export type FindRecordResultDocument<T> = ReactiveDataDocument<T>;
+export type FindRecordResultDocument<T, M extends Meta = Meta> = ReactiveDataDocument<T, M>;

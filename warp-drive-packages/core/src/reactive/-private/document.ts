@@ -8,6 +8,7 @@ import type { ResourceKey } from '../../types.ts';
 import type { RequestKey } from '../../types/identifier.ts';
 import type { ImmutableRequestInfo, RequestInfo } from '../../types/request.ts';
 import type { ResourceDocument } from '../../types/spec/document.ts';
+import type { ApiError } from '../../types/spec/error.ts';
 import type { Link, Meta, PaginationLinks } from '../../types/spec/json-api-raw.ts';
 import type { Mutable } from '../../types/utils.ts';
 import { Destroy } from './symbols.ts';
@@ -17,7 +18,7 @@ function urlFromLink(link: Link): string {
   return link.href;
 }
 
-export interface ReactiveDocumentBase<T> {
+export interface ReactiveDocumentBase<T, M extends Meta = Meta> {
   /**
    * The links object for this document, if any
    *
@@ -36,9 +37,21 @@ export interface ReactiveDocumentBase<T> {
   /**
    * The meta object for this document, if any
    *
+   * By default this is {@link Meta}, an arbitrary JSON object. Requests that
+   * know the shape of the `meta` their endpoint returns may narrow it by
+   * supplying the `M` type param, in which case reading a documented key
+   * requires no cast or coercion.
+   *
+   * ```ts
+   * type PageMeta = { page: { limit: number; offset: number }; total?: number };
+   *
+   * const { content } = await store.request(query<User, PageMeta>('user'));
+   * content.meta?.total; // number | undefined, not unknown
+   * ```
+   *
    * @public
    */
-  readonly meta?: Meta;
+  readonly meta?: M;
 
   /**
    * The RequestKey associated with this document, if any
@@ -54,7 +67,7 @@ export interface ReactiveDocumentBase<T> {
    *
    * @public
    */
-  fetch(options?: RequestInfo<ReactiveDocument<T>>): Promise<ReactiveDocument<T>>;
+  fetch(options?: RequestInfo<ReactiveDocument<T, M>>): Promise<ReactiveDocument<T, M>>;
 
   /**
    * Fetches the next link for this document, returning a promise that resolves
@@ -63,7 +76,7 @@ export interface ReactiveDocumentBase<T> {
    *
    * @public
    */
-  next(options?: RequestInfo<ReactiveDocument<T>>): Promise<ReactiveDocument<T> | null>;
+  next(options?: RequestInfo<ReactiveDocument<T, M>>): Promise<ReactiveDocument<T, M> | null>;
 
   /**
    * Fetches the prev link for this document, returning a promise that resolves
@@ -72,7 +85,7 @@ export interface ReactiveDocumentBase<T> {
    *
    * @public
    */
-  prev(options: RequestInfo<ReactiveDocument<T>>): Promise<ReactiveDocument<T> | null>;
+  prev(options: RequestInfo<ReactiveDocument<T, M>>): Promise<ReactiveDocument<T, M> | null>;
 
   /**
    * Fetches the first link for this document, returning a promise that resolves
@@ -81,7 +94,7 @@ export interface ReactiveDocumentBase<T> {
    *
    * @public
    */
-  first(options: RequestInfo<ReactiveDocument<T>>): Promise<ReactiveDocument<T> | null>;
+  first(options: RequestInfo<ReactiveDocument<T, M>>): Promise<ReactiveDocument<T, M> | null>;
 
   /**
    * Fetches the last link for this document, returning a promise that resolves
@@ -90,7 +103,7 @@ export interface ReactiveDocumentBase<T> {
    *
    * @public
    */
-  last(options: RequestInfo<ReactiveDocument<T>>): Promise<ReactiveDocument<T> | null>;
+  last(options: RequestInfo<ReactiveDocument<T, M>>): Promise<ReactiveDocument<T, M> | null>;
 
   /**
    * Implemented for `JSON.stringify` support.
@@ -113,7 +126,7 @@ export interface ReactiveDocumentBase<T> {
  *
  * @public
  */
-export interface ReactiveErrorDocument<T> extends ReactiveDocumentBase<T> {
+export interface ReactiveErrorDocument<T, M extends Meta = Meta> extends ReactiveDocumentBase<T, M> {
   /**
    * The primary data for this document, if any.
    *
@@ -130,9 +143,12 @@ export interface ReactiveErrorDocument<T> extends ReactiveDocumentBase<T> {
   /**
    * The errors returned by the API for this request, if any
    *
+   * Each entry is an {@link ApiError}, the same shape the cache stores for
+   * an error document.
+   *
    * @public
    */
-  readonly errors: object[];
+  readonly errors: ApiError[];
 }
 
 /**
@@ -141,7 +157,7 @@ export interface ReactiveErrorDocument<T> extends ReactiveDocumentBase<T> {
  *
  * @public
  */
-export interface ReactiveDataDocument<T> extends ReactiveDocumentBase<T> {
+export interface ReactiveDataDocument<T, M extends Meta = Meta> extends ReactiveDocumentBase<T, M> {
   /**
    * The primary data for this document, if any.
    *
@@ -173,11 +189,11 @@ interface PrivateReactiveDocument {
   /** @internal */
   _subscription: UnsubscribeToken;
 
-  _request<T>(
-    this: ReactiveDocumentBase<T>,
+  _request<T, M extends Meta = Meta>(
+    this: ReactiveDocumentBase<T, M>,
     link: keyof PaginationLinks,
-    options?: RequestInfo<ReactiveDataDocument<T>>
-  ): Promise<ReactiveDataDocument<T> | null>;
+    options?: RequestInfo<ReactiveDataDocument<T, M>>
+  ): Promise<ReactiveDataDocument<T, M> | null>;
 }
 function upgradeThis(doc: unknown): asserts doc is PrivateReactiveDocument {}
 
@@ -192,14 +208,14 @@ function upgradeThis(doc: unknown): asserts doc is PrivateReactiveDocument {}
  *
  * @public
  */
-export type ReactiveDocument<T> = ReactiveDataDocument<T> | ReactiveErrorDocument<T>;
+export type ReactiveDocument<T, M extends Meta = Meta> = ReactiveDataDocument<T, M> | ReactiveErrorDocument<T, M>;
 
 const ReactiveDocumentProto = {
-  async _request<T>(
-    this: ReactiveDocumentBase<T>,
+  async _request<T, M extends Meta = Meta>(
+    this: ReactiveDocumentBase<T, M>,
     link: keyof PaginationLinks,
-    options: RequestInfo<ReactiveDocument<T>> = withBrand<ReactiveDocument<T>>({ url: '', method: 'GET' })
-  ): Promise<ReactiveDataDocument<T> | null> {
+    options: RequestInfo<ReactiveDocument<T, M>> = withBrand<ReactiveDocument<T, M>>({ url: '', method: 'GET' })
+  ): Promise<ReactiveDataDocument<T, M> | null> {
     upgradeThis(this);
     const href = this.links?.[link];
     if (!href) {
@@ -208,60 +224,60 @@ const ReactiveDocumentProto = {
 
     options.method = options.method || 'GET';
     Object.assign(options, { url: urlFromLink(href) });
-    const response = await this._store.request<ReactiveDataDocument<T>>(options);
+    const response = await this._store.request<ReactiveDataDocument<T, M>>(options);
 
     return response.content;
   },
 
-  fetch<T>(
-    this: ReactiveDocument<T>,
-    options: RequestInfo<ReactiveDocument<T>> = withBrand<ReactiveDataDocument<T>>({ url: '', method: 'GET' })
-  ): Promise<ReactiveDataDocument<T>> {
+  fetch<T, M extends Meta = Meta>(
+    this: ReactiveDocument<T, M>,
+    options: RequestInfo<ReactiveDocument<T, M>> = withBrand<ReactiveDataDocument<T, M>>({ url: '', method: 'GET' })
+  ): Promise<ReactiveDataDocument<T, M>> {
     upgradeThis(this);
     assert(`No self or related link`, this.links?.related || this.links?.self);
     options.cacheOptions = options.cacheOptions || {};
     options.cacheOptions.key = this.identifier?.lid;
     return this._request(
       this.links.related ? 'related' : 'self',
-      options as RequestInfo<ReactiveDataDocument<T>>
-    ) as Promise<ReactiveDataDocument<T>>;
+      options as RequestInfo<ReactiveDataDocument<T, M>>
+    ) as Promise<ReactiveDataDocument<T, M>>;
   },
 
-  next<T>(
-    this: ReactiveDocument<T>,
-    options?: RequestInfo<ReactiveDataDocument<T>>
-  ): Promise<ReactiveDataDocument<T> | null> {
+  next<T, M extends Meta = Meta>(
+    this: ReactiveDocument<T, M>,
+    options?: RequestInfo<ReactiveDataDocument<T, M>>
+  ): Promise<ReactiveDataDocument<T, M> | null> {
     upgradeThis(this);
     return this._request('next', options);
   },
 
-  prev<T>(
-    this: ReactiveDocument<T>,
-    options: RequestInfo<ReactiveDataDocument<T>>
-  ): Promise<ReactiveDataDocument<T> | null> {
+  prev<T, M extends Meta = Meta>(
+    this: ReactiveDocument<T, M>,
+    options: RequestInfo<ReactiveDataDocument<T, M>>
+  ): Promise<ReactiveDataDocument<T, M> | null> {
     upgradeThis(this);
     return this._request('prev', options);
   },
 
-  first<T>(
-    this: ReactiveDocument<T>,
-    options: RequestInfo<ReactiveDataDocument<T>>
-  ): Promise<ReactiveDataDocument<T> | null> {
+  first<T, M extends Meta = Meta>(
+    this: ReactiveDocument<T, M>,
+    options: RequestInfo<ReactiveDataDocument<T, M>>
+  ): Promise<ReactiveDataDocument<T, M> | null> {
     upgradeThis(this);
     return this._request('first', options);
   },
 
-  last<T>(
-    this: ReactiveDocument<T>,
-    options: RequestInfo<ReactiveDataDocument<T>>
-  ): Promise<ReactiveDataDocument<T> | null> {
+  last<T, M extends Meta = Meta>(
+    this: ReactiveDocument<T, M>,
+    options: RequestInfo<ReactiveDataDocument<T, M>>
+  ): Promise<ReactiveDataDocument<T, M> | null> {
     upgradeThis(this);
     return this._request('last', options);
   },
 
-  toJSON<T>(this: ReactiveDocument<T>): object {
+  toJSON<T, M extends Meta = Meta>(this: ReactiveDocument<T, M>): object {
     upgradeThis(this);
-    const data: Mutable<Partial<ReactiveDocument<T>>> = {};
+    const data: Mutable<Partial<ReactiveDocument<T, M>>> = {};
     data.identifier = this.identifier;
     if (this.data !== undefined) {
       data.data = this.data;
@@ -278,7 +294,7 @@ const ReactiveDocumentProto = {
     return data;
   },
 
-  [Destroy]<T>(this: ReactiveDocument<T>): void {
+  [Destroy]<T, M extends Meta = Meta>(this: ReactiveDocument<T, M>): void {
     upgradeThis(this);
     assert(`Cannot destroy a ReactiveDocument which has already been destroyed`, this._store);
     if (this._subscription) {
@@ -292,7 +308,7 @@ const ReactiveDocumentProto = {
 };
 
 defineGate(ReactiveDocumentProto, 'errors', {
-  get<T>(this: ReactiveDocument<T>): object[] | undefined {
+  get<T>(this: ReactiveDocument<T>): ApiError[] | undefined {
     upgradeThis(this);
     const { identifier } = this;
 
@@ -361,12 +377,12 @@ defineGate(ReactiveDocumentProto, 'meta', {
   },
 });
 
-export function createReactiveDocument<T>(
+export function createReactiveDocument<T, M extends Meta = Meta>(
   store: Store,
   cacheKey: RequestKey | null,
   localCache: { document: ResourceDocument; request: ImmutableRequestInfo } | null
-): ReactiveDocument<T> {
-  const doc = Object.create(ReactiveDocumentProto) as ReactiveDocument<T> & PrivateReactiveDocument;
+): ReactiveDocument<T, M> {
+  const doc = Object.create(ReactiveDocumentProto) as ReactiveDocument<T, M> & PrivateReactiveDocument;
   doc._store = store;
   doc._localCache = localCache;
   // @ts-expect-error we are initializing it here

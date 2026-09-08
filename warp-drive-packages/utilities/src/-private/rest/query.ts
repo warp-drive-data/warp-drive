@@ -2,6 +2,7 @@ import type { ReactiveDataDocument } from '@warp-drive/core/reactive';
 import type { QueryParamsSource } from '@warp-drive/core/types/params';
 import type { TypeFromInstance } from '@warp-drive/core/types/record';
 import type { ConstrainedRequestOptions, QueryRequestOptions } from '@warp-drive/core/types/request';
+import type { Meta } from '@warp-drive/core/types/spec/json-api-raw';
 
 import { buildBaseURL, buildQueryParams, type QueryUrlOptions } from '../../index.ts';
 import { camelize, pluralize } from '../../string';
@@ -54,11 +55,11 @@ import { copyForwardUrlOptions, extractCacheOptions } from '../builder-utils.ts'
  * @param query
  * @param options
  */
-export function query<T>(
+export function query<T, M extends Meta = Meta>(
   type: TypeFromInstance<T>,
   query?: QueryParamsSource,
   options?: ConstrainedRequestOptions
-): QueryRequestOptions<ReactiveDataDocument<T[]>>;
+): QueryRequestOptions<ReactiveDataDocument<T[], M>>;
 export function query(
   type: string,
   query?: QueryParamsSource,
