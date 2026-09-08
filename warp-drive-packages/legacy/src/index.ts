@@ -37,6 +37,7 @@ import type Model from './model';
 import { instantiateRecord as instantiateModel, modelFor, teardownRecord as teardownModel } from './model';
 import { FragmentArrayExtension, FragmentExtension } from './model-fragments';
 import { fragmentsModelFor } from './model-fragments/hooks/model-for';
+import { releaseLegacySupport } from './model/-private/legacy-relationships-support';
 import { DelegatingSchemaService, registerDerivations as registerLegacyDerivations } from './model/migration-support';
 import { restoreDeprecatedStoreBehaviors } from './store';
 
@@ -412,6 +413,7 @@ export function useLegacyStore<T extends Cache>(
       if (this.schema.isDelegated(key)) {
         return teardownModel.call(this, record as Model);
       }
+      releaseLegacySupport(key);
       return teardownRecord(record);
     }
 

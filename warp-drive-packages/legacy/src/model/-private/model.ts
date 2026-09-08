@@ -14,7 +14,7 @@ import { RecordStore } from '@warp-drive/core/types/symbols';
 
 import type { Snapshot } from '../../compat/-private.ts';
 import { Errors } from './errors.ts';
-import { LEGACY_SUPPORT } from './legacy-relationships-support.ts';
+import { releaseLegacySupport } from './legacy-relationships-support.ts';
 import type { MinimalLegacyRecord } from './model-methods.ts';
 import {
   _destroyRecord,
@@ -545,11 +545,7 @@ class Model extends EmberObject implements MinimalLegacyRecord {
     const store = storeFor(this, false)!;
     store.notifications.unsubscribe(this.___private_notifications);
 
-    const support = LEGACY_SUPPORT.get(identifier);
-    if (support) {
-      support.destroy();
-      LEGACY_SUPPORT.delete(identifier);
-    }
+    releaseLegacySupport(identifier);
 
     super.destroy();
   }
