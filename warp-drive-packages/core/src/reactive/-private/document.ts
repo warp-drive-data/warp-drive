@@ -8,6 +8,7 @@ import type { ResourceKey } from '../../types.ts';
 import type { RequestKey } from '../../types/identifier.ts';
 import type { ImmutableRequestInfo, RequestInfo } from '../../types/request.ts';
 import type { ResourceDocument } from '../../types/spec/document.ts';
+// oxlint-disable-next-line no-unused-vars
 import type { ApiError } from '../../types/spec/error.ts';
 import type { Link, Meta, PaginationLinks } from '../../types/spec/json-api-raw.ts';
 import type { Mutable } from '../../types/utils.ts';
