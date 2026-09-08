@@ -26,7 +26,7 @@ type UserPageMeta = { page: { limit: number; offset: number }; total?: number };
 type UserErrorMeta = { requestId: string };
 
 type UsersDocument = ReactiveDataDocument<User[], UserPageMeta, ApiError, UserErrorMeta>;
-type UsersErrorDocument = ReactiveErrorDocument<User[], UserErrorMeta, ApiError, UserPageMeta>;
+type UsersErrorDocument = ReactiveErrorDocument<User[], UserErrorMeta, ApiError>;
 
 /** The error arm of a document union, however that union was parameterized. */
 type ErrorArmOf<D> = Extract<D, { errors: unknown[] }>;

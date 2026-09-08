@@ -271,11 +271,10 @@ type MyError = { code: string; message: string };
 const options = withReactiveResponse<User[], PageMeta, MyError>({ url: '/users' });
 ```
 
-## Typing the Error Document's `meta`
+### Typing the Error Document's `meta`
 
-A failed request need not carry the same `meta` a successful one does. A fourth type param types the
-error document's `meta` separately, and it defaults to the success meta — so an API that returns one
-envelope either way needs nothing extra:
+Because error responses may return different `meta` than successful responses, you can pass an optional fourth type param to type the
+error document's `meta` separately (otherwise it will fall back to the same `meta` type as the success response):
 
 ```ts
 type PageMeta = { page: { limit: number; offset: number } };
@@ -285,13 +284,8 @@ type UsersDocument = ReactiveDataDocument<User[], PageMeta, ApiError, ErrorMeta>
 type UsersErrorDocument = ReactiveErrorDocument<User[], ErrorMeta, ApiError>;
 ```
 
-The second param is always *this* document's `meta`, on either variant. The fourth is the other
-variant's, and it exists only so `next`/`prev`/`fetch` can say what they resolve with — you rarely
-need to supply it.
-
-Reach the error document through [getRequestState](/api/@warp-drive/core/reactive/functions/getRequestState),
-which takes the error content type as its own param. A failed request rejects, so this is the typed
-path to it:
+You can access the error document through [getRequestState](/api/@warp-drive/core/reactive/functions/getRequestState),
+which takes the error content type as an optional second param:
 
 ```ts
 const future = store.request<UsersDocument>({ url: '/users' });
