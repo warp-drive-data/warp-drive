@@ -62,7 +62,7 @@
     "@ember/test-waiters": "^4.1.2",
     "@embroider/addon-dev": "^8.3.1",
     "@glimmer/component": "^2.1.1",
-    "@glint/ember-tsc": "^1.11.2",
+    "@glint/ember-tsc": "^1.11.4",
     "@glint/template": "^1.9.0",
     "@warp-drive/core": "workspace:*",
     "@warp-drive/internal-config": "workspace:*",
