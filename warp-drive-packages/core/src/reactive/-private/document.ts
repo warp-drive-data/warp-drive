@@ -108,9 +108,9 @@ export interface ReactiveDocumentBase<T, M extends Meta = Meta, E extends object
  */
 export interface ReactiveErrorDocument<
   T,
-  M extends Meta = Meta,
+  EM extends Meta = Meta,
   E extends object = object,
-  EM extends Meta = M,
+  M extends Meta = EM,
 > extends ReactiveDocumentBase<T, M, E, EM> {
   /**
    * The primary data for this document, if any.
@@ -129,9 +129,11 @@ export interface ReactiveErrorDocument<
    * The meta object for this document, if any
    *
    * A failed request need not carry the same `meta` a successful one does, so
-   * this is the `EM` type param rather than `M`. `EM` defaults to `M`, which
-   * is the right answer for an API that returns one envelope either way;
-   * supply it when the two differ.
+   * this document names its own meta as its second type param, just as
+   * {@link ReactiveDataDocument} does. The fourth param is the *other* arm's
+   * meta, needed only to type what `next`/`prev`/`fetch` resolve with, and it
+   * defaults to this one — the right answer for an API that returns one
+   * envelope either way.
    *
    * @public
    */
@@ -232,7 +234,7 @@ function upgradeThis(doc: unknown): asserts doc is PrivateReactiveDocument {}
  */
 export type ReactiveDocument<T, M extends Meta = Meta, E extends object = object, EM extends Meta = M> =
   | ReactiveDataDocument<T, M, E, EM>
-  | ReactiveErrorDocument<T, M, E, EM>;
+  | ReactiveErrorDocument<T, EM, E, M>;
 
 const ReactiveDocumentProto = {
   async _request<T, M extends Meta = Meta, E extends object = object, EM extends Meta = M>(

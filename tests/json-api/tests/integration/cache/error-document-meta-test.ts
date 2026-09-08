@@ -1,6 +1,6 @@
 import { CacheHandler, Fetch, RequestManager, Store } from '@warp-drive/core';
 import { getRequestState } from '@warp-drive/core/reactive';
-import type { ReactiveDataDocument, ReactiveErrorDocument } from '@warp-drive/core/reactive';
+import type { ReactiveDataDocument, ReactiveDocument, ReactiveErrorDocument } from '@warp-drive/core/reactive';
 import type { CacheCapabilitiesManager } from '@warp-drive/core/types';
 import type { ApiError } from '@warp-drive/core/types/spec/error';
 import { module, test } from '@warp-drive/diagnostic';
@@ -26,7 +26,10 @@ type UserPageMeta = { page: { limit: number; offset: number }; total?: number };
 type UserErrorMeta = { requestId: string };
 
 type UsersDocument = ReactiveDataDocument<User[], UserPageMeta, ApiError, UserErrorMeta>;
-type UsersErrorDocument = ReactiveErrorDocument<User[], UserPageMeta, ApiError, UserErrorMeta>;
+type UsersErrorDocument = ReactiveErrorDocument<User[], UserErrorMeta, ApiError, UserPageMeta>;
+
+/** The error arm of a document union, however that union was parameterized. */
+type ErrorArmOf<D> = Extract<D, { errors: unknown[] }>;
 
 /** `true` when `A` and `B` are mutually assignable, `false` otherwise. */
 type Exact<A, B> = [A] extends [B] ? ([B] extends [A] ? true : false) : false;
@@ -35,16 +38,29 @@ type Exact<A, B> = [A] extends [B] ? ([B] extends [A] ? true : false) : false;
 type MustBeTrue<T extends true> = T;
 
 /**
- * `EM` reaches the error arm's `meta` while `M` stays on the data arm's, and
- * omitting `EM` leaves both sharing `M` — the behavior before it existed.
+ * Each arm names its own `meta` as its second type param, so neither has to
+ * spell out the other's to say what it carries. Within the union the error
+ * arm's meta comes from `EM`, which defaults to `M` — the behavior before
+ * `EM` existed, and the right answer for an API with one envelope.
  */
 type ErrorMetaIsSeparatelyTypeable = [
+  // each arm's own meta is its second param
   MustBeTrue<Exact<UsersDocument['meta'], UserPageMeta | undefined>>,
   MustBeTrue<Exact<UsersErrorDocument['meta'], UserErrorMeta | undefined>>,
-  MustBeTrue<Exact<ReactiveErrorDocument<User[], UserPageMeta, ApiError>['meta'], UserPageMeta | undefined>>,
+  // ...and an error document needs only that param to be fully described
+  MustBeTrue<Exact<ReactiveErrorDocument<User[], UserErrorMeta, ApiError>['meta'], UserErrorMeta | undefined>>,
+  // within the union, omitting `EM` leaves the error arm sharing `M`
+  MustBeTrue<Exact<ErrorArmOf<ReactiveDocument<User[], UserPageMeta, ApiError>>['meta'], UserPageMeta | undefined>>,
+  // ...and supplying it separates them without disturbing the data arm
+  MustBeTrue<
+    Exact<
+      ErrorArmOf<ReactiveDocument<User[], UserPageMeta, ApiError, UserErrorMeta>>['meta'],
+      UserErrorMeta | undefined
+    >
+  >,
 ];
 
-const EXPECTED = [true, true, true] as const;
+const EXPECTED = [true, true, true, true, true] as const;
 
 module('Integration | @warp-drive/json-api | error document meta', function () {
   test('an error response carries its own meta, typed by the `EM` param', async function (assert) {
