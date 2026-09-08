@@ -54,8 +54,8 @@ export interface ApiError {
    * an object containing references to the primary source of the error
    *
    * The spec says this SHOULD include one of `pointer`, `parameter` or
-   * `header` — an error sourced from a query param carries `parameter` and no
-   * `pointer` — so every member is optional here.
+   * `header`. For example, an error sourced from a query param includes `parameter` and no
+   * `pointer`.
    */
   source?: {
     /**

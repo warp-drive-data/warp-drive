@@ -180,8 +180,7 @@ function getUsers() {
 ## Typing the Document's `meta`
 
 A reactive document also carries the response's [meta](https://jsonapi.org/format/#document-meta). By
-default it is typed `Meta` — an arbitrary JSON object — so reading a key off it gives you `unknown`
-and every callsite ends up coercing:
+default it is typed `Meta` — an arbitrary JSON object — so reading a key off it gives you `unknown`:
 
 ```ts
 const { content } = await store.request(getUsers());
@@ -189,8 +188,7 @@ const { content } = await store.request(getUsers());
 Number(content.meta?.total ?? 0); // meta.total is unknown
 ```
 
-Both `ReactiveDataDocument` and `withReactiveResponse` take a second type param for the meta, so the
-request declares once what its endpoint returns:
+Both `ReactiveDataDocument` and `withReactiveResponse` take an optional second type param for the meta:
 
 ```ts
 import { withReactiveResponse } from '@warp-drive/core/request';
@@ -211,7 +209,7 @@ const { content } = await store.request(getUsers());
 content.meta?.total; // number | undefined
 ```
 
-The param must be a `type` alias rather than an `interface`: `Meta` is an index-signature type, and
+NOTE: The param must be a `type` alias rather than an `interface`. This is because `Meta` is an index-signature type, and
 TypeScript gives implicit index signatures to aliases only, so an `interface` will not satisfy the
 `M extends Meta` constraint.
 
