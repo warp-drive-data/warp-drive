@@ -19,7 +19,7 @@
   "dependencies": {
     "vitepress": "^2.0.0-alpha.19",
     "@types/bun": "^1.4.0",
-    "typescript": "^6.0.3",
+    "typescript": "^7.0.2",
     "debug": "4.4.3",
     "@mdit/plugin-footnote": "^1.1.0",
     "@pnpm/find-workspace-dir": "1000.1.5",
