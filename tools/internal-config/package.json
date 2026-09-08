@@ -5,7 +5,7 @@
   "type": "module",
   "dependencies": {
     "@babel/core": "^7.29.7",
-    "@babel/eslint-parser": "7.29.7",
+    "@babel/eslint-parser": "8.0.1",
     "@nullvoxpopuli/ember-rolldown": "^2.7.0",
     "@rolldown/plugin-babel": "^0.2.3",
     "@rollup/plugin-babel": "^6.1.0",
