@@ -68,7 +68,7 @@
     "@warp-drive/internal-config": "workspace:*",
     "babel-plugin-ember-template-compilation": "^4.0.0",
     "decorator-transforms": "^2.4.0",
-    "ember-content-mapper": "^0.2.1",
+    "ember-content-mapper": "^0.3.1",
     "ember-provide-consume-context": "^0.10.0",
     "ember-source": "catalog:",
     "tsdown": "^0.22.14",
