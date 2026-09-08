@@ -45,6 +45,14 @@ export const LEGACY_SUPPORT: Map<ResourceKey | MinimalLegacyRecord, LegacySuppor
   new Map<ResourceKey | MinimalLegacyRecord, LegacySupport>()
 );
 
+export function releaseLegacySupport(identifier: ResourceKey): void {
+  const support = LEGACY_SUPPORT.get(identifier);
+  if (support) {
+    support.destroy();
+    LEGACY_SUPPORT.delete(identifier);
+  }
+}
+
 export function lookupLegacySupport(record: MinimalLegacyRecord): LegacySupport {
   const identifier = recordIdentifierFor(record);
   assert(`Expected a record`, identifier);
