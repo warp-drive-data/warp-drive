@@ -45,6 +45,10 @@
  * - URLs are stable. The same query will produce the same URL every time, even if the order of keys in
  *   the query or values in an array changes.
  * - URLs follow the most common {json:api} format (dasherized pluralized resource types)
+ * - The response document's `errors` are typed as `ApiError`, the
+ *   [{json:api} error object](https://jsonapi.org/format/#error-objects), since that is the shape
+ *   the spec calls for. Pass the builder's third type param to say otherwise. The `rest` and
+ *   `active-record` builders leave it as `object`, because neither dialect specifies an error shape.
  *
  * @module
  * @public

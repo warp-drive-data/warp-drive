@@ -8,8 +8,6 @@ import type { ResourceKey } from '../../types.ts';
 import type { RequestKey } from '../../types/identifier.ts';
 import type { ImmutableRequestInfo, RequestInfo } from '../../types/request.ts';
 import type { ResourceDocument } from '../../types/spec/document.ts';
-// oxlint-disable-next-line no-unused-vars
-import type { ApiError } from '../../types/spec/error.ts';
 import type { Link, Meta, PaginationLinks } from '../../types/spec/json-api-raw.ts';
 import type { Mutable } from '../../types/utils.ts';
 import { Destroy } from './symbols.ts';
@@ -150,9 +148,7 @@ export interface ReactiveErrorDocument<
    *
    * The cache stores whatever the API sent without validating it, so by
    * default this is `object` — no shape is promised. Requests that know what
-   * their endpoint returns may narrow it by supplying the `E` type param. The
-   * builders in `@warp-drive/utilities/json-api` default it to
-   * {@link ApiError}, the {json:api} error object.
+   * their endpoint returns may narrow it by supplying the `E` type param.
    *
    * @public
    */
