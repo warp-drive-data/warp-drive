@@ -71,14 +71,14 @@ export function withResponseType<T>(obj: RequestInfo): RequestInfo<T> & {
  *
  * @public
  */
-export function withReactiveResponse<T, M extends Meta = Meta, E extends object = object>(
+export function withReactiveResponse<T, M extends Meta = Meta, E extends object = object, EM extends Meta = M>(
   obj: RequestInfo
-): RequestInfo<ReactiveDataDocument<T, M, E>> & {
+): RequestInfo<ReactiveDataDocument<T, M, E, EM>> & {
   /** The branded response type. Present only at the type level; carries no runtime value. */
-  [RequestSignature]: ReactiveDataDocument<T, M, E>;
+  [RequestSignature]: ReactiveDataDocument<T, M, E, EM>;
 } {
-  return obj as RequestInfo<ReactiveDataDocument<T, M, E>> & {
-    [RequestSignature]: ReactiveDataDocument<T, M, E>;
+  return obj as RequestInfo<ReactiveDataDocument<T, M, E, EM>> & {
+    [RequestSignature]: ReactiveDataDocument<T, M, E, EM>;
   };
 }
 

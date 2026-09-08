@@ -271,6 +271,34 @@ type MyError = { code: string; message: string };
 const options = withReactiveResponse<User[], PageMeta, MyError>({ url: '/users' });
 ```
 
+## Typing the Error Document's `meta`
+
+A failed request need not carry the same `meta` a successful one does. A fourth type param types the
+error document's `meta` separately, and it defaults to the success meta — so an API that returns one
+envelope either way needs nothing extra:
+
+```ts
+type PageMeta = { page: { limit: number; offset: number } };
+type ErrorMeta = { requestId: string };
+
+type UsersDocument = ReactiveDataDocument<User[], PageMeta, ApiError, ErrorMeta>;
+type UsersErrorDocument = ReactiveErrorDocument<User[], PageMeta, ApiError, ErrorMeta>;
+```
+
+Reach the error document through [getRequestState](/api/@warp-drive/core/reactive/functions/getRequestState),
+which takes the error content type as its own param. A failed request rejects, so this is the typed
+path to it:
+
+```ts
+const future = store.request<UsersDocument>({ url: '/users' });
+const state = getRequestState<UsersDocument, UsersErrorDocument>(future);
+
+if (state.isError) {
+  state.reason.content?.meta?.requestId; // string | undefined
+  state.reason.content?.errors[0].status; // string | undefined
+}
+```
+
 ## How it works (for the curious)
 
 `requestManager.request` and `store.request` each take a generic that can be used to set the return type of the content of the associated request.
