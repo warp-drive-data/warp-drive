@@ -177,6 +177,129 @@ function getUsers() {
 
 :::
 
+## Typing the Document's `meta`
+
+A reactive document also carries the response's [meta](https://jsonapi.org/format/#document-meta). By
+default it is typed `Meta` — an arbitrary JSON object — so reading a key off it gives you `unknown`:
+
+```ts
+const { content } = await store.request(getUsers());
+
+Number(content.meta?.total ?? 0); // meta.total is unknown
+```
+
+Both `ReactiveDataDocument` and `withReactiveResponse` take an optional second type param for the meta.
+Supplying it also makes `meta` non-optional, so you stop writing `?.` for a key you just declared:
+
+```ts
+import { withReactiveResponse } from '@warp-drive/core/request';
+import type { User } from '#/data/user';
+
+type PageMeta = {
+  page: { limit: number; offset: number };
+  total?: number;
+};
+
+function getUsers() {
+  return withReactiveResponse<User[], PageMeta>({
+    url: '/users'
+  });
+}
+
+const { content } = await store.request(getUsers());
+content.meta.total; // number
+```
+
+NOTE: The param must be a `type` alias rather than an `interface`. This is because `Meta` is an index-signature type, and
+TypeScript gives implicit index signatures to aliases only, so an `interface` will not satisfy the
+`M extends Meta | undefined` constraint.
+
+Pass `PageMeta | undefined` instead if the endpoint only sometimes returns its `meta` — the default,
+`Meta | undefined`, is that same shape with no keys named.
+
+The builders in `@warp-drive/utilities` take the same param, so a builder can declare its own meta
+without hand-writing the document type:
+
+```ts
+import { query } from '@warp-drive/utilities/json-api';
+import type { User } from '#/data/user';
+
+const options = query<User, PageMeta>('user', { page: { limit: 10 } });
+const { content } = await store.request(options);
+
+content.meta.page.limit; // number
+```
+
+`next`, `prev`, `first`, `last` and `fetch` carry the same meta type through to the document they
+resolve with, since they hit the same endpoint.
+
+An endpoint that returns only `meta` and no primary data — a `count`, for instance — has no
+resource type to name. Pass `never` for the first param:
+
+```ts
+const options = withReactiveResponse<never, { total: number }>({ url: '/users/count' });
+const { content } = await store.request(options);
+
+content.meta.total; // number
+```
+
+## Typing Errors
+
+The error variant of a document, [ReactiveErrorDocument](/api/@warp-drive/core/reactive/interfaces/ReactiveErrorDocument),
+exposes `errors`. The cache stores whatever the API sent without validating it, so by default the
+type promises no shape — `errors` is `object[]`.
+
+A third type param declares what the endpoint actually returns. The builders in
+`@warp-drive/utilities/json-api` default it to
+[ApiError](/api/@warp-drive/core/types/spec/error/interfaces/ApiError), the
+[{json:api} error object](https://jsonapi.org/format/#error-objects):
+
+```ts
+import { query } from '@warp-drive/utilities/json-api';
+
+const { content } = await store.request(query<User>('user'));
+const nextPage = await content.next(); // resolves with the document union
+
+if (nextPage?.errors) {
+  nextPage.errors[0].status; // string | undefined
+  nextPage.errors[0].source?.pointer; // string | undefined
+}
+```
+
+The `rest` and `active-record` builders leave it as `object`, since neither REST nor ActiveRecord
+specifies an error shape. Supply your own when you know it:
+
+```ts
+type MyError = { code: string; message: string };
+
+const options = withReactiveResponse<User[], PageMeta, MyError>({ url: '/users' });
+```
+
+### Typing the Error Document's `meta`
+
+Because error responses may return different `meta` than successful responses, you can pass an optional fourth type param to type the
+error document's `meta` separately (otherwise it will fall back to the same `meta` type as the success response):
+
+```ts
+type PageMeta = { page: { limit: number; offset: number } };
+type ErrorMeta = { requestId: string };
+
+type UsersDocument = ReactiveDataDocument<User[], PageMeta, ApiError, ErrorMeta>;
+type UsersErrorDocument = ReactiveErrorDocument<User[], ErrorMeta, ApiError>;
+```
+
+You can access the error document through [getRequestState](/api/@warp-drive/core/reactive/functions/getRequestState),
+which takes the error content type as an optional second param:
+
+```ts
+const future = store.request<UsersDocument>({ url: '/users' });
+const state = getRequestState<UsersDocument, UsersErrorDocument>(future);
+
+if (state.isError) {
+  state.reason.content?.meta.requestId; // string | undefined
+  state.reason.content?.errors[0].status; // string | undefined
+}
+```
 
 ## How it works (for the curious)
 
