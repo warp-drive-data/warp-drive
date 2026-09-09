@@ -61,5 +61,5 @@
   "ember": {
     "edition": "octane"
   },
-  "packageManager": "pnpm@12.2.1"
+  "packageManager": "pnpm@12.3.4"
 }
