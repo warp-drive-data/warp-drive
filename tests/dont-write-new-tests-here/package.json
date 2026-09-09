@@ -52,7 +52,7 @@
     "@embroider/config-meta-loader": "1.0.1-unstable.f9c81e9",
     "@embroider/core": "^4.6.5",
     "@embroider/macros": "^1.20.7",
-    "@embroider/vite": "^1.7.10",
+    "@embroider/vite": "^1.7.11",
     "@glimmer/component": "^2.1.1",
     "@glint/ember-tsc": "^1.11.4",
     "@glint/template": "^1.9.0",

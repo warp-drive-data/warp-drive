@@ -72,7 +72,7 @@
     "@sqlite.org/sqlite-wasm": "3.46.0-build2",
     "@warp-drive/core": "workspace:*",
     "@warp-drive/internal-config": "workspace:*",
-    "tsdown": "^0.22.14",
+    "tsdown": "^0.23.0",
     "typescript-7": "npm:typescript@7.1.0-dev.20260905.1"
   },
   "keywords": [
