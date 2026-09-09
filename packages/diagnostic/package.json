@@ -107,7 +107,7 @@
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.7",
     "@warp-drive/internal-config": "workspace:*",
-    "bun-types": "^1.4.0",
+    "bun-types": "^1.4.2",
     "ember-source": "catalog:",
     "tsdown": "^0.22.14",
     "typescript": "^6.0.3"

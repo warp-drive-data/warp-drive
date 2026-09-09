@@ -6,9 +6,9 @@
   "dependencies": {
     "semver": "^7.8.5",
     "@types/semver": "^7.8.0",
-    "@types/bun": "^1.4.0",
+    "@types/bun": "^1.4.1",
     "lerna-changelog": "^2.2.0",
     "typescript": "^6.0.3",
-    "bun-types": "^1.4.0"
+    "bun-types": "^1.4.2"
   }
 }
