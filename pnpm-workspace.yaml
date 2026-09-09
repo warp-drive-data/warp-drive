@@ -121,9 +121,9 @@ dedupeInjectedDeps: false
 ## maintainer account or leaked publish token) before we can pull them in,
 ## including as transitive dependencies.
 ##
-## 10080 minutes = 7 days.
+## 4320 minutes = 3 days.
 ##
-minimumReleaseAge: 10080
+minimumReleaseAge: 4320
 
 ## Our own packages are published by our own release automation and are
 ## never installed from a public attacker's account, so there's no reason
