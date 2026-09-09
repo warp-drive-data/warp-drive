@@ -60,9 +60,7 @@
       "groupName": "github-actions"
     }
   ],
-  "npm": {
-    "minimumReleaseAge": "7 days"
-  },
+  "minimumReleaseAge": "3 days",
   "rangeStrategy": "bump",
   "prHourlyLimit": 10,
   "branchConcurrentLimit": 12,
