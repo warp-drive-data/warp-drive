@@ -55,7 +55,7 @@
     "@warp-drive/json-api": "workspace:*",
     "@warp-drive/utilities": "workspace:*",
     "decorator-transforms": "^2.4.0",
-    "tsdown": "^0.22.14",
+    "tsdown": "^0.23.0",
     "typescript": "^6.0.3"
   },
   "ember-addon": {

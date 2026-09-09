@@ -61,7 +61,7 @@
     "@ember/test-waiters": "^4.1.2",
     "@warp-drive/internal-config": "workspace:*",
     "ember-source": "catalog:",
-    "tsdown": "^0.22.14",
+    "tsdown": "^0.23.0",
     "typescript-7": "npm:typescript@7.1.0-dev.20260905.1"
   },
   "ember-addon": {
