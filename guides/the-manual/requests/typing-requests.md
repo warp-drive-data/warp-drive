@@ -189,7 +189,10 @@ Number(content.meta?.total ?? 0); // meta.total is unknown
 ```
 
 Both `ReactiveDataDocument` and `withReactiveResponse` take an optional second type param for the meta.
-Supplying it also makes `meta` non-optional, so you stop writing `?.` for a key you just declared:
+Supplying it also makes `meta` non-optional, so you stop writing `?.` for a key you just declared.
+Leave it off and `meta` stays optional, which is what keeps a document type derivable — an interface
+that re-declares `meta?:`, an intersection with `{ meta?: X }`, or a `class ... implements` all
+continue to work:
 
 ```ts
 import { withReactiveResponse } from '@warp-drive/core/request';
