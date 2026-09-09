@@ -29,7 +29,7 @@
     "@babel/plugin-transform-typescript": "^7.29.7",
     "@babel/preset-react": "^7.29.7",
     "@babel/runtime": "^7.29.7",
-    "@embroider/macros": "^1.20.6",
+    "@embroider/macros": "^1.20.7",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.5",
     "@warp-drive-internal/specs": "workspace:*",
