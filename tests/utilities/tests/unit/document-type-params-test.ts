@@ -36,6 +36,15 @@ type ErrorsOf<D extends { next: (...args: never[]) => unknown }> = Extract<
   { errors: unknown[] }
 >['errors'];
 
+/**
+ * `true` when `K` is an OPTIONAL property of `T`.
+ *
+ * The empty object type is load-bearing here — it is the only thing assignable
+ * to a `Pick` whose sole member is optional — so the lint rule does not apply.
+ */
+// oxlint-disable-next-line typescript/no-empty-object-type
+type IsOptional<T, K extends keyof T> = {} extends Pick<T, K> ? true : false;
+
 interface User {
   id: string;
   name: string;
@@ -99,6 +108,34 @@ type DocumentParamsReachTheirMembers = [
   MustBeTrue<Exact<ErrorsOf<ContentOf<typeof restCollection>>, object[]>>,
 ];
 
+/**
+ * Deriving a type from a document has to keep working — it is a first-class
+ * usage pattern, not just something test doubles do. All of it follows from
+ * `meta` staying OPTIONAL until a request narrows it: a required member cannot
+ * be re-declared optional by an extending interface, is not mutually assignable
+ * with a mirrored copy that kept `meta?:`, must be declared by a
+ * `class ... implements`, and survives an intersection as required.
+ */
+type MetaStaysDerivable = [
+  // optional until narrowed...
+  MustBeTrue<IsOptional<ReactiveDataDocument<User[]>, 'meta'>>,
+  MustBeTrue<IsOptional<ReactiveErrorDocument<User[]>, 'meta'>>,
+  // ...required once it is, which is what removes the `?.`
+  MustBeTrue<Exact<IsOptional<ReactiveDataDocument<User[], PageMeta>, 'meta'>, false>>,
+  MustBeTrue<Exact<ReactiveDataDocument<User[], PageMeta>['meta'], PageMeta>>,
+  // an intersection still yields an optional `meta` at the default
+  MustBeTrue<IsOptional<ReactiveDataDocument<User[]> & { meta?: PageMeta }, 'meta'>>,
+];
+
+/**
+ * Declaring this at all is the assertion: an interface cannot re-declare an
+ * inherited REQUIRED property as optional, so this fails to compile if `meta`
+ * stops being optional at the default.
+ */
+interface DerivedDocument extends ReactiveDataDocument<User[]> {
+  meta?: PageMeta;
+}
+
 const EXPECTED = [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true] as const;
 
 module('Unit | Document type params', function () {
@@ -106,8 +143,12 @@ module('Unit | Document type params', function () {
     // The real assertions are the type above: this case exists so a failure has
     // a home in the suite, and so the type is referenced rather than unused.
     const assertions: DocumentParamsReachTheirMembers = [...EXPECTED];
+    const derivable: MetaStaysDerivable = [true, true, true, true, true];
+    const derived = { meta: undefined } as DerivedDocument;
 
     assert.deepEqual(assertions, [...EXPECTED], 'both params reach every document member');
+    assert.deepEqual(derivable, [true, true, true, true, true], '`meta` stays optional until narrowed');
+    assert.equal(derived.meta, undefined, 'an extending interface may re-declare `meta` as optional');
     assert.equal(collection.method, 'GET', 'query built a GET request');
     assert.equal(resource.method, 'GET', 'findRecord built a GET request');
     assert.equal(handWritten.url, '/users', 'withReactiveResponse passed the object through');

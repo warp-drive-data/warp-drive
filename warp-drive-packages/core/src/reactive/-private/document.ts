@@ -9,7 +9,6 @@ import type { RequestKey } from '../../types/identifier.ts';
 import type { ImmutableRequestInfo, RequestInfo } from '../../types/request.ts';
 import type { ResourceDocument } from '../../types/spec/document.ts';
 import type { Link, Meta, PaginationLinks } from '../../types/spec/json-api-raw.ts';
-import type { Mutable } from '../../types/utils.ts';
 import { Destroy } from './symbols.ts';
 
 function urlFromLink(link: Link): string {
@@ -106,55 +105,87 @@ export interface ReactiveDocumentBase<
 }
 
 /**
+ * The `meta` member of a reactive document.
+ *
+ * Optional when the meta type has not been narrowed — the default,
+ * `Meta | undefined`, is "any JSON object, or nothing" — and required once a
+ * request declares what its endpoint returns, so a declared key needs no `?.`.
+ *
+ * Keeping it optional at the default is what lets consumers keep deriving from
+ * these types: an interface that re-declares `meta?:`, a mirrored copy checked
+ * by mutual assignability, a `class ... implements`, an intersection with
+ * `{ meta?: X }`, and `satisfies` all continue to work.
+ *
+ * The check is `undefined extends M` and not `M extends undefined`: a naked
+ * type param on the left of a conditional distributes over the union default
+ * and yields `{ meta: Meta } | { meta?: undefined }` rather than one object
+ * type.
+ */
+type DocumentMeta<M extends Meta | undefined> = undefined extends M
+  ? {
+      /**
+       * The meta object for this document, if any.
+       *
+       * @public
+       */
+      readonly meta?: M;
+    }
+  : {
+      /**
+       * The meta object for this document.
+       *
+       * Required because the request named the shape it returns — read a
+       * documented key directly, no cast, coercion, or `?.`.
+       *
+       * ```ts
+       * type PageMeta = { page: { limit: number; offset: number }; total?: number };
+       *
+       * const { content } = await store.request(query<User, PageMeta>('user'));
+       * content.meta.total; // number | undefined, not unknown
+       * ```
+       *
+       * @public
+       */
+      readonly meta: M;
+    };
+
+/**
  * The variant of {@link ReactiveDocument} returned for a request whose
  * response contained no primary data, e.g. an error response.
  *
  * @public
  */
-export interface ReactiveErrorDocument<
+export type ReactiveErrorDocument<
   T,
   EM extends Meta | undefined = Meta | undefined,
   E extends object = object,
   M extends Meta | undefined = EM,
-> extends ReactiveDocumentBase<T, M, E, EM> {
-  /**
-   * The primary data for this document, if any.
-   *
-   * If this document has no primary data (e.g. because it is an error document)
-   * this property will be `undefined`.
-   *
-   * For collections this will be an array of record instances,
-   * for single resource requests it will be a single record instance or null.
-   *
-   * @public
-   */
-  readonly data?: undefined;
+> = ReactiveDocumentBase<T, M, E, EM> &
+  DocumentMeta<EM> & {
+    /**
+     * The primary data for this document, if any.
+     *
+     * If this document has no primary data (e.g. because it is an error document)
+     * this property will be `undefined`.
+     *
+     * For collections this will be an array of record instances,
+     * for single resource requests it will be a single record instance or null.
+     *
+     * @public
+     */
+    readonly data?: undefined;
 
-  /**
-   * The meta object for this document, if any
-   *
-   * A failed request need not carry the same `meta` a successful one does, so
-   * this document names its own meta as its second type param, just as
-   * {@link ReactiveDataDocument} does. The fourth param is the *other* arm's
-   * meta, needed only to type what `next`/`prev`/`fetch` resolve with, and it
-   * defaults to this one — the right answer for an API that returns one
-   * envelope either way.
-   *
-   * @public
-   */
-  readonly meta: EM;
-
-  /**
-   * The errors returned by the API for this request, if any
-   *
-   * The cache stores whatever the API sent without validating it, so by
-   * default this is `object` — no shape is promised. Requests that know what
-   * their endpoint returns may narrow it by supplying the `E` type param.
-   *
-   * @public
-   */
-  readonly errors: E[];
-}
+    /**
+     * The errors returned by the API for this request, if any
+     *
+     * The cache stores whatever the API sent without validating it, so by
+     * default this is `object` — no shape is promised. Requests that know what
+     * their endpoint returns may narrow it by supplying the `E` type param.
+     *
+     * @public
+     */
+    readonly errors: E[];
+  };
 
 /**
  * The variant of {@link ReactiveDocument} returned for a request whose
@@ -162,51 +193,33 @@ export interface ReactiveErrorDocument<
  *
  * @public
  */
-export interface ReactiveDataDocument<
+export type ReactiveDataDocument<
   T,
   M extends Meta | undefined = Meta | undefined,
   E extends object = object,
   EM extends Meta | undefined = M,
-> extends ReactiveDocumentBase<T, M, E, EM> {
-  /**
-   * The primary data for this document, if any.
-   *
-   * If this document has no primary data (e.g. because it is an error document)
-   * this property will be `undefined`.
-   *
-   * For collections this will be an array of record instances,
-   * for single resource requests it will be a single record instance or null.
-   *
-   * @public
-   */
-  readonly data: T;
+> = ReactiveDocumentBase<T, M, E, EM> &
+  DocumentMeta<M> & {
+    /**
+     * The primary data for this document, if any.
+     *
+     * If this document has no primary data (e.g. because it is an error document)
+     * this property will be `undefined`.
+     *
+     * For collections this will be an array of record instances,
+     * for single resource requests it will be a single record instance or null.
+     *
+     * @public
+     */
+    readonly data: T;
 
-  /**
-   * The meta object for this document, if any
-   *
-   * By default this is {@link Meta}, an arbitrary JSON object. Requests that
-   * know the shape of the `meta` their endpoint returns may narrow it by
-   * supplying the `M` type param, in which case reading a documented key
-   * requires no cast or coercion.
-   *
-   * ```ts
-   * type PageMeta = { page: { limit: number; offset: number }; total?: number };
-   *
-   * const { content } = await store.request(query<User, PageMeta>('user'));
-   * content.meta?.total; // number | undefined, not unknown
-   * ```
-   *
-   * @public
-   */
-  readonly meta: M;
-
-  /**
-   * The errors returned by the API for this request, if any
-   *
-   * @public
-   */
-  readonly errors?: undefined;
-}
+    /**
+     * The errors returned by the API for this request, if any
+     *
+     * @public
+     */
+    readonly errors?: undefined;
+  };
 
 interface PrivateReactiveDocument {
   /** @internal */
@@ -329,7 +342,16 @@ const ReactiveDocumentProto = {
     this: ReactiveDocument<T, M, E, EM>
   ): object {
     upgradeThis(this);
-    const data: Mutable<Partial<ReactiveDocument<T, M, E, EM>>> = {};
+    // Spelled out rather than `Partial<ReactiveDocument<…>>`: the document is a
+    // union of intersections, and `Partial` over that distributes into per-arm
+    // indexed accesses that no single accumulator satisfies.
+    const data: {
+      identifier?: RequestKey | null;
+      data?: T;
+      links?: PaginationLinks;
+      errors?: E[];
+      meta?: M | EM;
+    } = {};
     data.identifier = this.identifier;
     if (this.data !== undefined) {
       data.data = this.data;
