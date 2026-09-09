@@ -46,7 +46,7 @@
     "@types/node": "catalog:",
     "@warp-drive/internal-config": "workspace:*",
     "commander": "^15.0.0",
-    "eslint": "^10.9.1",
+    "eslint": "^10.10.0",
     "ignore": "^7.0.8",
     "jscodeshift": "^17.4.0",
     "tsdown": "^0.23.0",
