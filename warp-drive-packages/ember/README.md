@@ -244,7 +244,11 @@ import { Await } from '@warp-drive/ember';
 ```
 
 When using the Await component, if no error block is provided and the promise rejects,
-the error will be thrown.
+the error will be rethrown asynchronously (a tick after the render that observed the
+rejection) instead of crashing the current render. It remains an uncaught error that
+crash-reporting instrumentation can observe. Prefer providing an `<:error>` block --
+the `template-require-request-error-block` rule in `eslint-plugin-warp-drive` flags a
+missing one statically.
 
 ### RequestState
 
@@ -355,8 +359,12 @@ import { Request } from '@warp-drive/ember';
 </template>
 ```
 
-When using the Await component, if no error block is provided and the request rejects,
-the error will be thrown. Cancellation errors are not rethrown if no error block or
+When using the Request component, if no error block is provided and the request rejects,
+the error will be rethrown asynchronously (a tick after the render that observed the
+rejection) instead of crashing the current render. It remains an uncaught error that
+crash-reporting instrumentation can observe. Prefer providing an `<:error>` block --
+the `template-require-request-error-block` rule in `eslint-plugin-warp-drive` flags a
+missing one statically. Cancellation errors are not rethrown if no error block or
 cancellation block is present.
 
 ### Streaming Data

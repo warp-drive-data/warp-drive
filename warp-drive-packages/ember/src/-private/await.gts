@@ -42,6 +42,46 @@ export class Throw<T> extends Component<ThrowSignature<T>> {
   <template></template>
 }
 
+/**
+ * The `<ThrowAsync />` component rethrows the given error a tick later instead of
+ * synchronously as `<Throw />` does.
+ *
+ * It exists specifically for request/promise rejections that reach this point
+ * because no `<:error>` block was provided. A synchronous throw here would unwind
+ * the current render, which for a runtime failure (as opposed to a static
+ * misconfiguration, like a missing required block) is worse than surfacing the
+ * error a tick later: the deferred throw still becomes an uncaught exception that
+ * global error handlers (`window.onerror`, crash-reporting SDKs, etc.) can observe,
+ * without taking down the component tree that was rendering when the rejection
+ * arrived.
+ *
+ * Prefer providing an `<:error>` block over relying on this fallback -- the
+ * `template-require-request-error-block` (Ember) and `require-request-error-block`
+ * (React) ESLint rules in `eslint-plugin-warp-drive` flag a missing one statically.
+ *
+ * @category Components
+ * @public
+ */
+export class ThrowAsync<T> extends Component<ThrowSignature<T>> {
+  constructor(owner: Owner, args: ThrowSignature<T>['Args']) {
+    super(owner, args);
+    // this error is opaque (user supplied) so we don't validate it
+    // as an Error instance.
+
+    if (PRODUCTION) {
+      // eslint-disable-next-line no-console
+      console.error(this.args.error);
+    } else {
+      const error = this.args.error;
+      queueMicrotask(() => {
+        // eslint-disable-next-line @typescript-eslint/only-throw-error
+        throw error;
+      });
+    }
+  }
+  <template></template>
+}
+
 interface AwaitSignature<T, E = Error | string | object> {
   Args: {
     promise: Promise<T> | Awaitable<T, E>;
@@ -82,8 +122,12 @@ interface AwaitSignature<T, E = Error | string | object> {
  *
  * The `<Await />` component requires that error states are properly handled.
  *
- * If no error block is provided and the promise rejects, the error will
- * be thrown.
+ * If no error block is provided and the promise rejects, the error will be
+ * rethrown asynchronously (a tick after the render that observed the rejection)
+ * instead of crashing the current render. It remains an uncaught error that
+ * crash-reporting instrumentation can observe. Prefer providing an `<:error>`
+ * block -- the `template-require-request-error-block` ESLint rule flags a missing
+ * one statically.
  *
  * @category Components
  * @public
@@ -120,7 +164,7 @@ export class Await<T, E> extends Component<AwaitSignature<T, E>> {
     {{else if this.state.isSuccess}}
       {{yield this.result to="success"}}
     {{else}}
-      <Throw @error={{this.error}} />
+      <ThrowAsync @error={{this.error}} />
     {{/if}}
   </template>
 }
