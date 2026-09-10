@@ -71,9 +71,7 @@ module.exports = {
         if (!expression || expression.type !== 'ObjectExpression') return;
 
         const hasSpread = expression.properties.some((property) => property.type === 'SpreadElement');
-        const errorProperty = expression.properties.find(
-          (property) => getPropertyKeyName(property) === 'error'
-        );
+        const errorProperty = expression.properties.find((property) => getPropertyKeyName(property) === 'error');
 
         if (errorProperty) {
           // A property explicitly named `error` was found; only flag it if it's a bare
