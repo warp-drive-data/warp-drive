@@ -40,6 +40,6 @@
     "@warp-drive/internal-config": "workspace:*",
     "eslint": "^10.10.0",
     "qunit": "^2.26.0",
-    "vitest": "^4.1.11"
+    "vitest": "^5.0.0"
   }
 }
