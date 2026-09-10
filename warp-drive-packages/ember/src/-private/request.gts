@@ -13,7 +13,7 @@ import type { ContentFeatures, RecoveryFeatures, RequestArgs } from '@warp-drive
 import { DISPOSE, memoized } from '@warp-drive/core/signals/-leaked';
 import type { StructuredErrorDocument } from '@warp-drive/core/types/request';
 
-import { and, Throw } from './await.gts';
+import { and, Throw, ThrowAsync } from './await.gts';
 
 export type { ContentFeatures, RecoveryFeatures };
 
@@ -128,7 +128,11 @@ interface RequestSignature<RT, E> {
  * the `content` state.
  *
  * As with the `<Await />` component, if no error block is provided and the request
- * rejects, the error will be thrown. Cancellation errors are swallowed instead of
+ * rejects, the error will be rethrown asynchronously (a tick after the render that
+ * observed the rejection) instead of crashing the current render. It remains an
+ * uncaught error that crash-reporting instrumentation can observe. Prefer providing
+ * an `<:error>` block -- the `template-require-request-error-block` ESLint rule
+ * flags a missing one statically. Cancellation errors are swallowed instead of
  * rethrown if no error block or cancellation block is present.
  *
  * ```gts
@@ -414,7 +418,7 @@ export class Request<RT, E> extends Component<RequestSignature<RT, E>> {
         {{yield this.state.result this.state.contentFeatures to="content"}}
 
       {{else if (not this.state.reqState.isCancelled)}}
-        <Throw @error={{(notNull this.state.reqState.reason)}} />
+        <ThrowAsync @error={{(notNull this.state.reqState.reason)}} />
       {{/if}}
 
       {{yield this.state.reqState to="always"}}

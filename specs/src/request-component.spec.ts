@@ -802,14 +802,11 @@ export const RequestSpec: SuiteBuilder<LocalTestContext, RequestSpecSignature> =
       const cleanup = setupOnError((error) => {
         assert.step('render-error');
         const message = error instanceof Error ? error.message : error;
-        const matches =
-          typeof message === 'string' &&
-          // ember
-          ((PRODUCTION
-            ? message.startsWith('[404 Not Found] GET (cors) - ')
-            : message.startsWith('\n\nError occurred:\n\n- While rendering:')) ||
-            // react
-            message.startsWith('[404 Not Found] GET (cors) - '));
+        // Ember rethrows this one asynchronously (outside the render pass) so that a
+        // missing <:error> block doesn't crash the current render, so unlike a normal
+        // render-time error it is never wrapped in Ember's own "While rendering:"
+        // messaging -- the raw error surfaces here the same as it does for React.
+        const matches = typeof message === 'string' && message.startsWith('[404 Not Found] GET (cors) - ');
         assert.true(matches, 'error message is correct');
         if (!matches) {
           throw new Error(`Unmatched Error Encountered`, { cause: message });
