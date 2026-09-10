@@ -5,24 +5,25 @@ import babelConfig from './babel.config.mjs';
 
 export const externals = ['@ember/runloop', '@ember/test-helpers', '@ember/template-compilation', '@glimmer/manager'];
 export const entryPoints = [
-  './src/index.ts',
-  './src/reporters/dom.ts',
-  './src/runners/dom.ts',
-  './src/helpers/install.ts',
-  './src/ember.ts',
-  './src/react.tsx',
-  './src/spec.ts',
-  './src/react/test-helpers.ts',
-  './src/-types.ts',
+  './client/src/index.ts',
+  './client/src/reporters/dom.ts',
+  './client/src/runners/dom.ts',
+  './client/src/helpers/install.ts',
+  './client/src/ember.ts',
+  './client/src/react.tsx',
+  './client/src/spec.ts',
+  './client/src/react/test-helpers.ts',
+  './client/src/-types.ts',
 ];
 
 export default createConfig(
   {
+    srcDir: './client/src',
     entryPoints,
     externals,
     jsx: true,
     babelConfig,
-    plugins: [keepAssets({ from: 'src', include: ['./styles/**/*.css'], dist: 'dist' })],
+    plugins: [keepAssets({ from: './client/src', include: ['./styles/**/*.css'], dist: 'dist' })],
   },
   import.meta.resolve
 );

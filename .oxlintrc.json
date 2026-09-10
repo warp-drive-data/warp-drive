@@ -1154,7 +1154,7 @@
       }
     },
     {
-      "files": ["packages/diagnostic/src/**"],
+      "files": ["packages/diagnostic/client/src/**"],
       "rules": {
         "no-console": "off"
       }

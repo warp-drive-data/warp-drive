@@ -3,7 +3,6 @@ import { styleText } from 'node:util';
 import path from 'path';
 
 import { getBrowser, recommendedArgs } from './browsers/index.js';
-import { launch } from './index.js';
 import DefaultReporter from './reporters/default.js';
 import { getFlags } from './utils/get-flags.js';
 
@@ -30,7 +29,7 @@ const SUITE_TIMEOUT = process.env.SUITE_TIMEOUT
   ? Number(process.env.SUITE_TIMEOUT) - SUITE_TIMEOUT_BUFFER
   : DEFAULT_SUITE_TIMEOUT;
 
-export default async function launchDefault(overrides = {}) {
+export async function launchDefault(overrides = {}) {
   const flags = getFlags().filtered;
   Object.assign(overrides, flags);
 
@@ -74,7 +73,7 @@ export default async function launchDefault(overrides = {}) {
     `\n\nLaunching with ${styleText('bold', styleText('cyan', CI_BROWSER))} (worker count ${styleText('bold', styleText('yellow', String(parallel)))})\n\n`
   );
 
-  await launch({
+  return {
     // flag config
     serve: overrides.serve ?? false,
     noLaunch: overrides.noLaunch ?? false,
@@ -117,5 +116,5 @@ export default async function launchDefault(overrides = {}) {
         args: recommendedArgs(BROWSER_TAG, overrides),
       },
     },
-  });
+  };
 }

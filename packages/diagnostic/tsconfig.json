@@ -1,5 +1,5 @@
 {
-  "include": ["src/**/*"],
+  "include": ["client/src/**/*"],
   "compilerOptions": {
     "lib": ["DOM", "ESNext"],
     "module": "esnext",
@@ -19,7 +19,7 @@
     // but causes us to not rebuild properly
     "composite": true,
     "incremental": true,
-    "rootDir": "src",
+    "rootDir": "client/src",
     "declaration": true,
     "declarationMap": true,
     "inlineSourceMap": true,
