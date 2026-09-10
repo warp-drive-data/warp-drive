@@ -18,6 +18,9 @@
     },
     "./recommended-templates": {
       "default": "./src/recommended-templates.js"
+    },
+    "./recommended-react": {
+      "default": "./src/recommended-react.js"
     }
   },
   "dependencies": {

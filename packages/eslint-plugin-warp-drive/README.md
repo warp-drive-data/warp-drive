@@ -71,6 +71,19 @@ for integrating template linting into ESLint.
 | Rule | Description | 🏷️ | ✨ |
 | ---- | ----------- | -- | -- |
 | [template-always-use-request-content](./docs/template-always-use-request-content.md) | Ensures the result of a `<Request>` is actually consumed | 🐞 | |
+| [template-require-request-error-block](./docs/template-require-request-error-block.md) | Ensures `<Request>`/`<Await>` always provide an `:error` block | 🐞 | |
+
+## React Rules
+
+React rules operate on the JSX AST rather than the Glimmer template AST used by the `template-*`
+rules above. They don't require any special parser dependency beyond enabling JSX parsing --
+ESLint's default parser (or `@typescript-eslint/parser` for `.tsx` files) already exposes plain
+`JSX*`-prefixed nodes (e.g. `JSXElement`, `JSXOpeningElement`) once `parserOptions.ecmaFeatures.jsx`
+is enabled.
+
+| Rule | Description | 🏷️ | ✨ |
+| ---- | ----------- | -- | -- |
+| [require-request-error-block](./docs/require-request-error-block.md) | Ensures `<Request>` is always given a `states.error` handler | 🐞 | |
 
 ## Usage
 
@@ -102,3 +115,17 @@ module.exports = [
 To lint classic `.hbs` files instead of (or in addition to) `.gjs`/`.gts`, add your own override
 using [`ember-eslint-parser/hbs`](https://github.com/NullVoxPopuli/ember-eslint-parser#hbs-handlebars-support)
 as the parser for `**/*.hbs`.
+
+React rules are also available as a separate flat config, since they additionally wire up JSX
+parsing for `.jsx`/`.tsx` files:
+
+```ts
+// eslint.config.js (flat config)
+const WarpDriveRecommended = require('eslint-plugin-warp-drive/recommended');
+const WarpDriveReactRecommended = require('eslint-plugin-warp-drive/recommended-react');
+
+module.exports = [
+  ...WarpDriveRecommended,
+  ...WarpDriveReactRecommended,
+];
+```

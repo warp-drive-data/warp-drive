@@ -25,6 +25,7 @@ module.exports = [
     },
     rules: {
       'warp-drive/template-always-use-request-content': 'error',
+      'warp-drive/template-require-request-error-block': 'error',
     },
   },
 ];
