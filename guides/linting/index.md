@@ -38,6 +38,14 @@ what exposes template nodes to ESLint as `Glimmer`-prefixed selectors (e.g. `Gli
 [First-Class Component Templates RFC](https://rfcs.emberjs.com/id/0779-first-class-component-templates/#linting-and-formatting)
 for integrating template linting into ESLint.
 
+## React Rules
+
+React rules operate on the JSX AST rather than the JS/TS AST or the Glimmer template AST used by
+the rules above. They don't require any special parser dependency beyond enabling JSX parsing --
+ESLint's default parser (or `@typescript-eslint/parser` for `.tsx` files) already exposes plain
+`JSX*`-prefixed selectors (e.g. `JSXElement`, `JSXOpeningElement`) once
+`parserOptions.ecmaFeatures.jsx` is enabled.
+
 ## Usage
 
 Recommended Rules are available as a flat config for easy consumption:
@@ -45,8 +53,12 @@ Recommended Rules are available as a flat config for easy consumption:
 ```ts
 // eslint.config.js (flat config)
 const WarpDriveRecommended = require('eslint-plugin-warp-drive/recommended');
+const WarpDriveTemplateRecommended = require('eslint-plugin-warp-drive/recommended-templates');
+const WarpDriveReactRecommended = require('eslint-plugin-warp-drive/recommended-react');
 
 module.exports = [
   ...WarpDriveRecommended,
+  ...WarpDriveTemplateRecommended,
+  ...WarpDriveReactRecommended,
 ];
 ```
