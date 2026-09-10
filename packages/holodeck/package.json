@@ -12,7 +12,7 @@
   "homepage": "https://github.com/warp-drive-data/warp-drive",
   "bugs": "https://github.com/warp-drive-data/warp-drive/issues",
   "engines": {
-    "node": ">= 24.20.0"
+    "node": ">= 24.21.0"
   },
   "keywords": [
     "http-mock"
@@ -64,7 +64,7 @@
     "@warp-drive/core": "workspace:*",
     "@warp-drive/internal-config": "workspace:*",
     "tsdown": "^0.23.0",
-    "typescript-7": "npm:typescript@7.1.0-dev.20260905.1"
+    "typescript-7": "npm:typescript@7.1.0-dev.20260906.1"
   },
   "exports": {
     ".": {

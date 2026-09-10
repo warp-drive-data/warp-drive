@@ -56,7 +56,7 @@
     "@warp-drive/internal-config": "workspace:*",
     "@warp-drive/core": "workspace:*",
     "tsdown": "^0.23.0",
-    "typescript-7": "npm:typescript@7.1.0-dev.20260905.1"
+    "typescript-7": "npm:typescript@7.1.0-dev.20260906.1"
   },
   "packageManager": "pnpm@12.3.4"
 }
