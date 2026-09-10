@@ -22,7 +22,7 @@ class SiteTheme {
 ```
 
 ```ts [Decorated]
-import { LocalResource, field } from '@warp-drive/experiments/storage/resource';
+import { LocalResource, field } from '@warp-drive/experiments/storage';
 
 @LocalResource('site-theme')
 export class SiteTheme {
@@ -58,7 +58,7 @@ Storage Resources are either a `LocalResource` (backed by localStorage) or a Ses
 ::: code-group
 
 ```ts [LocalResource]
-import { LocalResource, field } from '@warp-drive/experiments/storage/resource';
+import { LocalResource, field } from '@warp-drive/experiments/storage';
 
 @LocalResource('home-page')
 export class HomePage {
@@ -67,7 +67,7 @@ export class HomePage {
 ```
 
 ```ts [SessionResource]
-import { SessionResource, field } from '@warp-drive/experiments/storage/resource';
+import { SessionResource, field } from '@warp-drive/experiments/storage';
 
 @SessionResource('home-page')
 export class HomePage {
@@ -85,7 +85,7 @@ field configuration achieved using both a LocalResource and a SessionResource.
 ::: code-group
 
 ```ts [LocalResource]
-import { LocalResource, field } from '@warp-drive/experiments/storage/resource';
+import { LocalResource, field } from '@warp-drive/experiments/storage';
 
 @LocalResource('home-page')
 export class HomePage {
@@ -95,7 +95,7 @@ export class HomePage {
 ```
 
 ```ts [SessionResource]
-import { SessionResource, field } from '@warp-drive/experiments/storage/resource';
+import { SessionResource, field } from '@warp-drive/experiments/storage';
 
 @SessionResource('home-page')
 export class HomePage {
@@ -164,7 +164,7 @@ Ideally, field values should be primitives (`string` `number` `boolean` `null`),
 Default values are provided via the field initializer.
 
 ```ts
-import { LocalResource, field } from '@warp-drive/experiments/storage/resource';
+import { LocalResource, field } from '@warp-drive/experiments/storage';
 
 @LocalResource('home-page')
 export class HomePage {
@@ -201,7 +201,7 @@ But this involves manually wiring up the effect in a different file, which may n
 Instead, we can change our field into an `effect`.
 
 ```ts
-import { LocalResource, field } from '@warp-drive/experiments/storage/resource';
+import { LocalResource, field } from '@warp-drive/experiments/storage';
 
 @LocalResource('settings')
 export class HomePage {
@@ -230,7 +230,7 @@ resource key and setting our default values.
 
 ```gts
 import Component from '@glimmer/component';
-import { SessionResource, field } from '@warp-drive/experiments/storage/resource';
+import { SessionResource, field } from '@warp-drive/experiments/storage';
 
 interface LocationSignature {
   Args: {
@@ -254,7 +254,7 @@ regular classes.
 
 ```ts
 import Service from '@ember/service';
-import { LocalResource, field } from '@warp-drive/experiments/storage/resource';
+import { LocalResource, field } from '@warp-drive/experiments/storage';
 
 @LocalResource('route-history')
 export class HistoryService extends Service {
@@ -375,7 +375,7 @@ Configure storage behavior before first use:
 import {
   configureLocalStorage,
   configureSessionStorage
-} from '@warp-drive/experiments/storage/storage';
+} from '@warp-drive/experiments/storage';
 
 configureLocalStorage({
   // Fallback to in-memory storage in private browsing mode
