@@ -89,8 +89,8 @@
     "@warp-drive/react": "workspace:*",
     "debug": "^4.4.3",
     "dom-element-descriptors": "^0.5.1",
-    "hono": "^4.9.4",
-    "@hono/node-server": "^1.19.0",
+    "hono": "^4.13.7",
+    "@hono/node-server": "^1.19.13",
     "@hono/node-ws": "^1.2.0",
     "qunit-dom": "^3.6.0"
   },

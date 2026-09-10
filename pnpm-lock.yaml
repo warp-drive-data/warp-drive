@@ -654,11 +654,11 @@ importers:
         specifier: ^1.20.7
         version: 1.20.7
       '@hono/node-server':
-        specifier: ^1.19.0
-        version: 1.19.0(hono@4.13.7)
+        specifier: ^1.19.13
+        version: 1.19.17(hono@4.13.7)
       '@hono/node-ws':
         specifier: ^1.2.0
-        version: 1.3.1(fbe69a74d785037cdffd569704d4924d)
+        version: 1.3.1(0a71d02f9b2d4cc962cab478be717c6c)
       '@warp-drive/core':
         specifier: workspace:*
         version: file:warp-drive-packages/core(@babel/core@7.29.7)
@@ -672,7 +672,7 @@ importers:
         specifier: ^0.5.1
         version: 0.5.1
       hono:
-        specifier: ^4.9.4
+        specifier: ^4.13.7
         version: 4.13.7
       qunit-dom:
         specifier: ^3.6.0
@@ -4559,6 +4559,12 @@ packages:
 
   '@hono/node-server@1.19.0':
     resolution: {integrity: sha512-1k8/8OHf5VIymJEcJyVksFpT+AQ5euY0VA5hUkCnlKpD4mr8FSbvXaHblxeTTEr90OaqWzAkQaqD80qHZQKxBA==}
+    engines: {node: '>=18.14.1'}
+    peerDependencies:
+      hono: ^4
+
+  '@hono/node-server@1.19.17':
+    resolution: {integrity: sha512-dSneS5qhiauZWGDCeK4o695Xd9nUNjviSZCMQrj10eetr8Uln1ucn6bbphOM6UynAMMtNIzZNSpL9vnASJwrPQ==}
     engines: {node: '>=18.14.1'}
     peerDependencies:
       hono: ^4
@@ -13330,9 +13336,13 @@ snapshots:
     dependencies:
       hono: 4.13.7
 
-  '@hono/node-ws@1.3.1(fbe69a74d785037cdffd569704d4924d)':
+  '@hono/node-server@1.19.17(hono@4.13.7)':
     dependencies:
-      '@hono/node-server': 1.19.0(hono@4.13.7)
+      hono: 4.13.7
+
+  '@hono/node-ws@1.3.1(0a71d02f9b2d4cc962cab478be717c6c)':
+    dependencies:
+      '@hono/node-server': 1.19.17(hono@4.13.7)
       hono: 4.13.7
       ws: 8.18.2
     transitivePeerDependencies:
@@ -15500,8 +15510,8 @@ snapshots:
   '@warp-drive/diagnostic@file:packages/diagnostic(53b7108dd10d63f6e90ed13ef4be4016)':
     dependencies:
       '@embroider/macros': 1.20.7(@glint/template@1.9.0)
-      '@hono/node-server': 1.19.0(hono@4.13.7)
-      '@hono/node-ws': 1.3.1(fbe69a74d785037cdffd569704d4924d)
+      '@hono/node-server': 1.19.17(hono@4.13.7)
+      '@hono/node-ws': 1.3.1(0a71d02f9b2d4cc962cab478be717c6c)
       '@warp-drive/core': file:warp-drive-packages/core(e0ff4349d3585fabae29421d7a4b80a6)
       '@warp-drive/react': file:warp-drive-packages/react(e0ff4349d3585fabae29421d7a4b80a6)
       debug: 4.4.3
@@ -15520,8 +15530,8 @@ snapshots:
   '@warp-drive/diagnostic@file:packages/diagnostic(6a458261938665ef4bc4d5414f096c5f)':
     dependencies:
       '@embroider/macros': 1.20.7
-      '@hono/node-server': 1.19.0(hono@4.13.7)
-      '@hono/node-ws': 1.3.1(fbe69a74d785037cdffd569704d4924d)
+      '@hono/node-server': 1.19.17(hono@4.13.7)
+      '@hono/node-ws': 1.3.1(0a71d02f9b2d4cc962cab478be717c6c)
       '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.29.7)
       '@warp-drive/react': file:warp-drive-packages/react(@babel/core@7.29.7)
       debug: 4.4.3
@@ -15540,8 +15550,8 @@ snapshots:
   '@warp-drive/diagnostic@file:packages/diagnostic(@babel/core@7.29.7)':
     dependencies:
       '@embroider/macros': 1.20.7
-      '@hono/node-server': 1.19.0(hono@4.13.7)
-      '@hono/node-ws': 1.3.1(fbe69a74d785037cdffd569704d4924d)
+      '@hono/node-server': 1.19.17(hono@4.13.7)
+      '@hono/node-ws': 1.3.1(0a71d02f9b2d4cc962cab478be717c6c)
       '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.29.7)
       '@warp-drive/react': file:warp-drive-packages/react(@babel/core@7.29.7)
       debug: 4.4.3
@@ -15558,8 +15568,8 @@ snapshots:
   '@warp-drive/diagnostic@file:packages/diagnostic(a1d731b3ac87b6eb45f39e08a20591fd)':
     dependencies:
       '@embroider/macros': 1.20.7
-      '@hono/node-server': 1.19.0(hono@4.13.7)
-      '@hono/node-ws': 1.3.1(fbe69a74d785037cdffd569704d4924d)
+      '@hono/node-server': 1.19.17(hono@4.13.7)
+      '@hono/node-ws': 1.3.1(0a71d02f9b2d4cc962cab478be717c6c)
       '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.29.7)
       '@warp-drive/react': file:warp-drive-packages/react(@babel/core@7.29.7)
       debug: 4.4.3
