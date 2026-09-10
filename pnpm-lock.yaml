@@ -251,8 +251,8 @@ importers:
   docs-viewer:
     dependencies:
       '@mdit/plugin-footnote':
-        specifier: ^1.1.0
-        version: 1.1.0
+        specifier: ^1.1.1
+        version: 1.1.1
       '@pnpm/find-workspace-dir':
         specifier: 1000.1.5
         version: 1000.1.5
@@ -290,8 +290,8 @@ importers:
         specifier: ^1.6.1
         version: 1.6.1(typedoc@0.28.20(typescript@6.0.3))
       typedoc-vitepress-theme:
-        specifier: ^1.1.3
-        version: 1.1.3(8099f80c9a0e04945c50a997bc2a64f8)
+        specifier: ^1.1.4
+        version: 1.1.4(8099f80c9a0e04945c50a997bc2a64f8)
       typescript:
         specifier: 6.0.3
         version: 6.0.3
@@ -305,7 +305,7 @@ importers:
         specifier: ^1.3.0
         version: 1.3.0(vite@8.2.2)
       vitepress:
-        specifier: ^2.0.0-alpha.19
+        specifier: ^2.0.0-alpha.20
         version: 2.0.0-alpha.19(typescript@6.0.3)
       vitepress-plugin-group-icons:
         specifier: ^1.7.6
@@ -4942,20 +4942,20 @@ packages:
     resolution: {integrity: sha512-0FOIepYR4ugPYaHwK7hDeHDkfPOBVvayt9QpvRbi2LT/h2b0GaE/gM9Gag7fsnyYyNaTZ2IGyOuVg07IYepvYQ==}
     engines: {node: '>=20.0.0'}
 
-  '@mdit/helper@1.1.0':
-    resolution: {integrity: sha512-IWOUioaLobXA4ueulPfJopKaOHEGAH2pYDyK3u0cy4ItzxHXFssIJYksvdhUOC4JSHWfSjCArw41LBQdKOgFiw==}
+  '@mdit/helper@1.1.1':
+    resolution: {integrity: sha512-Rrl14ZjFerzfAqCt0zxAWbPgRpsumgm9iBLrCVE05WS8dM6v/LnF1ppPFVnRz1F7fAaxn0kTFOlYwzcY+kRsHQ==}
     engines: {node: '>=22'}
     peerDependencies:
-      markdown-it: ^15.0.0
+      markdown-it: ^15.0.1
     peerDependenciesMeta:
       markdown-it:
         optional: true
 
-  '@mdit/plugin-footnote@1.1.0':
-    resolution: {integrity: sha512-EeVs4w9La5nQJbsU7GVq3aBhhgaNxkO89q8EguWc1ogkNaomL0d2B8jZKbDoZBGo1yg6m2nimraCWQI4jqmXWA==}
+  '@mdit/plugin-footnote@1.1.1':
+    resolution: {integrity: sha512-0VV4rhegFSX8mp4/nG1rO3fgoDLofjnXIsAwRDK6Ajs9aj3NqSBB8HyYPnT7Ti0yPNn7XHHtqgrgJzYsbcDfyA==}
     engines: {node: '>=22'}
     peerDependencies:
-      markdown-it: ^15.0.0
+      markdown-it: ^15.0.1
 
   '@napi-rs/lzma-linux-x64-gnu@1.5.1':
     resolution: {integrity: sha512-oTXEIha4SsuXdTA4Iyskj0kpdx2yVXdhd75c2v3xGrHFfVMsbhTPZU/nMPL4sWKo4pBHm3aucLaqGlF696dTyQ==}
@@ -10799,10 +10799,11 @@ packages:
     peerDependencies:
       typedoc: 0.26.x || 0.27.x || 0.28.x
 
-  typedoc-vitepress-theme@1.1.3:
-    resolution: {integrity: sha512-EK9iV7e3+R8lFNigdc0rIPWMxqfmDku0uGac3qYUu9tS4Qf1rhWZnyZJ4zu4G3iXrP5mqNPkv2wpODzRlA7jLw==}
+  typedoc-vitepress-theme@1.1.4:
+    resolution: {integrity: sha512-RDFWSuFUYgHv8UYZnHRaTaep53+Tl/4dsl5EN+6laSdTFKp920KHdDNovHD1OKGqnJr47kXNwOM7LFj3IWMrtw==}
+    engines: {node: '>= 18'}
     peerDependencies:
-      typedoc: '*'
+      typedoc: 0.28.x
       typedoc-plugin-markdown: '>=4.11.0'
 
   typedoc@0.28.20:
@@ -11144,6 +11145,18 @@ packages:
 
   vitepress@2.0.0-alpha.19:
     resolution: {integrity: sha512-WnBsb0Bwr43kXKyiis+lld/7ri3hnMbthS8N3hpFtjjwsdLO4IRmiAE08D7aud4q6oMDf9uwRowxzNqRFe/amw==}
+    hasBin: true
+    peerDependencies:
+      markdown-it-mathjax3: ^4
+      postcss: ^8
+    peerDependenciesMeta:
+      markdown-it-mathjax3:
+        optional: true
+      postcss:
+        optional: true
+
+  vitepress@2.0.0-alpha.20:
+    resolution: {integrity: sha512-uQWKmP9PaBkf9zxHn0iOml/ZPPDaGKqQXVMBHz3yjwyyd9Eg+BKLGxbqmOGlfOMCt6Fj8TLiAnE59qlKZ0A3xw==}
     hasBin: true
     peerDependencies:
       markdown-it-mathjax3: ^4
@@ -13646,11 +13659,11 @@ snapshots:
       js-yaml: 4.3.1
       tinyglobby: 0.2.17
 
-  '@mdit/helper@1.1.0': {}
+  '@mdit/helper@1.1.1': {}
 
-  '@mdit/plugin-footnote@1.1.0':
+  '@mdit/plugin-footnote@1.1.1':
     dependencies:
-      '@mdit/helper': 1.1.0
+      '@mdit/helper': 1.1.1
 
   '@napi-rs/lzma-linux-x64-gnu@1.5.1':
     optional: true
@@ -16274,7 +16287,7 @@ snapshots:
 
   '@warp-drive/internal-docs-viewer@file:docs-viewer':
     dependencies:
-      '@mdit/plugin-footnote': 1.1.0
+      '@mdit/plugin-footnote': 1.1.1
       '@pnpm/find-workspace-dir': 1000.1.5
       '@types/bun': 1.4.1
       '@types/debug': 4.1.13
@@ -16287,15 +16300,15 @@ snapshots:
       typedoc-plugin-markdown: 4.13.0(typedoc@0.28.20(typescript@6.0.3))
       typedoc-plugin-mdn-links: 5.1.1(typedoc@0.28.20(typescript@6.0.3))
       typedoc-plugin-no-inherit: 1.6.1(typedoc@0.28.20(typescript@6.0.3))
-      typedoc-vitepress-theme: 1.1.3(8099f80c9a0e04945c50a997bc2a64f8)
+      typedoc-vitepress-theme: 1.1.4(8099f80c9a0e04945c50a997bc2a64f8)
       typescript: 6.0.3
       vite: 8.2.2
       vite-plugin-image-optimizer: 2.0.3(sharp@0.35.4)(svgo@4.1.0)(vite@8.2.2)
       vite-plugin-pwa: 1.3.0(vite@8.2.2)
-      vitepress: 2.0.0-alpha.19(typescript@6.0.3)
+      vitepress: 2.0.0-alpha.20(typescript@6.0.3)
       vitepress-plugin-group-icons: 1.7.6(vite@8.2.2)
       vitepress-plugin-llms: 1.13.5
-      vitepress-plugin-tabs: 0.9.1(dd80223963fd8c5a79d6d2f521b4a26d)
+      vitepress-plugin-tabs: 0.9.1(6d944395c02d1f588fe00733b89f8220)
       vue: 3.5.42(typescript@6.0.3)
     transitivePeerDependencies:
       - '@types/babel__core'
@@ -20915,7 +20928,7 @@ snapshots:
     dependencies:
       typedoc: 0.28.20(typescript@6.0.3)
 
-  typedoc-vitepress-theme@1.1.3(8099f80c9a0e04945c50a997bc2a64f8):
+  typedoc-vitepress-theme@1.1.4(8099f80c9a0e04945c50a997bc2a64f8):
     dependencies:
       typedoc: 0.28.20(typescript@6.0.3)
       typedoc-plugin-markdown: 4.13.0(typedoc@0.28.20(typescript@6.0.3))
@@ -21243,6 +21256,11 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  vitepress-plugin-tabs@0.9.1(6d944395c02d1f588fe00733b89f8220):
+    dependencies:
+      vitepress: 2.0.0-alpha.20(typescript@6.0.3)
+      vue: 3.5.42(typescript@6.0.3)
+
   vitepress-plugin-tabs@0.9.1(dd80223963fd8c5a79d6d2f521b4a26d):
     dependencies:
       vitepress: 2.0.0-alpha.19(typescript@6.0.3)
@@ -21261,6 +21279,51 @@ snapshots:
       '@vitejs/plugin-vue': 6.0.8(vite@8.2.2)(vue@3.5.42(typescript@6.0.3))
       '@vue/devtools-api': 8.2.1
       '@vue/shared': 3.5.41
+      '@vueuse/core': 14.4.0(vue@3.5.42(typescript@6.0.3))
+      '@vueuse/integrations': 14.4.0(a56c147da6b9c29e7114892392b226d4)
+      focus-trap: 8.2.2
+      mark.js: 8.11.1
+      minisearch: 7.2.0
+      shiki: 4.4.3
+      vite: 8.2.2
+      vue: 3.5.42(typescript@6.0.3)
+    transitivePeerDependencies:
+      - '@types/node'
+      - '@vitejs/devtools'
+      - async-validator
+      - axios
+      - change-case
+      - drauu
+      - esbuild
+      - fuse.js
+      - idb-keyval
+      - jiti
+      - jwt-decode
+      - less
+      - nprogress
+      - qrcode
+      - sass
+      - sass-embedded
+      - sortablejs
+      - stylus
+      - sugarss
+      - terser
+      - tsx
+      - typescript
+      - universal-cookie
+      - yaml
+
+  vitepress@2.0.0-alpha.20(typescript@6.0.3):
+    dependencies:
+      '@docsearch/css': 4.7.0
+      '@docsearch/js': 4.7.0
+      '@docsearch/sidepanel-js': 4.7.0
+      '@iconify-json/simple-icons': 1.2.93
+      '@shikijs/transformers': 4.4.3
+      '@types/markdown-it': 14.1.2
+      '@vitejs/plugin-vue': 6.0.8(vite@8.2.2)(vue@3.5.42(typescript@6.0.3))
+      '@vue/devtools-api': 8.2.1
+      '@vue/shared': 3.5.42
       '@vueuse/core': 14.4.0(vue@3.5.42(typescript@6.0.3))
       '@vueuse/integrations': 14.4.0(a56c147da6b9c29e7114892392b226d4)
       focus-trap: 8.2.2
