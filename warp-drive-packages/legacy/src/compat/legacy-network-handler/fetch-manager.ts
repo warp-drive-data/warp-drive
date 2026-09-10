@@ -340,8 +340,10 @@ function includesSatisfies(current: undefined | string | string[], existing: und
     return false;
   }
 
-  const arrCurrent = (Array.isArray(current) ? current : current.split(',')).sort();
-  const arrExisting = (Array.isArray(existing) ? existing : existing.split(',')).sort();
+  // toSorted for the array branch: these arrays belong to the request options
+  // the caller passed us, sorting them in place would reorder their state.
+  const arrCurrent = Array.isArray(current) ? current.toSorted() : current.split(',').sort();
+  const arrExisting = Array.isArray(existing) ? existing.toSorted() : existing.split(',').sort();
 
   // includes are identical
   if (arrCurrent.join(',') === arrExisting.join(',')) {

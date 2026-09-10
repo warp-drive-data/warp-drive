@@ -645,6 +645,10 @@ export function filterEmpty(source: Record<string, Serializable>): Record<string
  *
  * Treats `included` specially, splicing it into an array if it is a string and sorting the array.
  *
+ * The `params` given are never mutated: neither the object itself nor any array
+ * value it holds is reordered or replaced, so passing state that is also
+ * rendered (a tracked array of filter values, for instance) is safe.
+ *
  * Options:
  * - arrayFormat: 'bracket' | 'indices' | 'repeat' | 'comma'
  *
@@ -660,7 +664,10 @@ export function sortQueryParams(params: QueryParamsSource, options?: QueryParams
   const opts = Object.assign({}, DEFAULT_QUERY_PARAMS_SERIALIZATION_OPTIONS, options);
   const paramsIsObject = !(params instanceof URLSearchParams);
   const urlParams = new URLSearchParams();
-  const dictionaryParams: Record<string, Serializable> = paramsIsObject ? params : {};
+  // shallow copy so that normalizing `include` below does not write back onto
+  // the caller's object. Array values are still shared with the caller, so
+  // everything downstream must sort copies rather than sorting in place.
+  const dictionaryParams: Record<string, Serializable> = paramsIsObject ? Object.assign({}, params) : {};
 
   if (!paramsIsObject) {
     params.forEach((value, key) => {
@@ -686,26 +693,26 @@ export function sortQueryParams(params: QueryParamsSource, options?: QueryParams
   sortedKeys.forEach((key) => {
     const value = dictionaryParams[key];
     if (Array.isArray(value)) {
-      value.sort();
+      const sortedValue = value.toSorted();
       switch (opts.arrayFormat) {
         case 'indices':
-          value.forEach((v, i) => {
+          sortedValue.forEach((v, i) => {
             urlParams.append(`${key}[${i}]`, String(v));
           });
           return;
         case 'bracket':
-          value.forEach((v) => {
+          sortedValue.forEach((v) => {
             urlParams.append(`${key}[]`, String(v));
           });
           return;
         case 'repeat':
-          value.forEach((v) => {
+          sortedValue.forEach((v) => {
             urlParams.append(key, String(v));
           });
           return;
         case 'comma':
         default:
-          urlParams.append(key, value.join(','));
+          urlParams.append(key, sortedValue.join(','));
           return;
       }
     } else {
@@ -720,6 +727,10 @@ export function sortQueryParams(params: QueryParamsSource, options?: QueryParams
  * Sorts query params by both key and value, returning a query params string
  *
  * Treats `included` specially, splicing it into an array if it is a string and sorting the array.
+ *
+ * The `params` given are never mutated: neither the object itself nor any array
+ * value it holds is reordered or replaced, so passing state that is also
+ * rendered (a tracked array of filter values, for instance) is safe.
  *
  * Options:
  * - arrayFormat: 'bracket' | 'indices' | 'repeat' | 'comma'

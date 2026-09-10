@@ -212,7 +212,9 @@ export function buildQueryParams(query: JsonApiQuery | QueryParamsSource): strin
 
       // fields: { 'company': ['field1', 'field2'] }
       if (Array.isArray(value)) {
-        finalQuery[`fields[${resourceType}]`] = value.sort().join(',');
+        // toSorted: `value` belongs to the caller, sorting it in place would
+        // reorder whatever else they are doing with it
+        finalQuery[`fields[${resourceType}]`] = value.toSorted().join(',');
 
         // fields: { 'company': 'field1' }
         // fields: { 'company': 'field1,field2' }
