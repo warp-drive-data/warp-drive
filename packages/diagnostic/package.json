@@ -33,19 +33,15 @@
     "logos"
   ],
   "exports": {
-    ".": {
+    "./server": {
       "node": "./server/index.js",
       "bun": "./server/index.js",
       "deno": "./server/index.js",
-      "browser": {
-        "types": "./dist/index.d.ts",
-        "default": "./dist/index.js"
-      },
-      "import": {
-        "types": "./dist/index.d.ts",
-        "default": "./dist/index.js"
-      },
       "default": "./server/index.js"
+    },
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
     },
     "./*.css": {
       "default": "./dist/*.css"
@@ -93,6 +89,9 @@
     "@warp-drive/react": "workspace:*",
     "debug": "^4.4.3",
     "dom-element-descriptors": "^0.5.1",
+    "hono": "^4.13.7",
+    "@hono/node-server": "^1.19.13",
+    "@hono/node-ws": "^1.2.0",
     "qunit-dom": "^3.6.0"
   },
   "devDependencies": {

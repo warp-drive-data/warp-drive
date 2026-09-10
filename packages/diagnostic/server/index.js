@@ -7,6 +7,7 @@ import { launchBrowsers } from './bun/launch-browser.js';
 import { buildHandler } from './bun/socket-handler.js';
 import { addCloseHandler } from './bun/watch.js';
 import { startWatchdog } from './bun/watchdog.js';
+import { launchDefault } from './default-setup.js';
 import { debug, error, print } from './utils/debug.js';
 import { getPort } from './utils/port.js';
 
@@ -67,7 +68,8 @@ async function getCertInfo() {
 /** @type {import('bun-types')} */
 const isBun = typeof Bun !== 'undefined';
 
-export async function launch(config) {
+export async function launch(settings) {
+  const config = await launchDefault(settings);
   if (isBun) {
     debug(`Bun detected, using Bun.serve()`);
 
