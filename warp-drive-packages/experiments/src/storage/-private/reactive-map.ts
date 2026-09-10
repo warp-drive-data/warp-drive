@@ -1,7 +1,6 @@
 import { assert } from '@warp-drive/core/build-config/macros';
 import type { SignalStore } from '@warp-drive/core/signals/-leaked';
 import {
-  defineSignal,
   entangleSignal,
   getOrCreateInternalSignal,
   notifyInternalSignal,
@@ -14,16 +13,22 @@ import {
  */
 export class SignalMap<K extends string> {
   private _map: Record<K, number> = {} as Record<K, number>;
-  // _size is signal-backed via defineSignal below
-  declare private _size: number;
+  // Deliberately a plain field rather than a signal. `subscribe` runs inside a
+  // consumer's read (`ReactiveStorage.getItem`), and dirtying a signal there
+  // trips the backtracking-rerender assertion the moment anything has already
+  // consumed it in the same computation — which is every `@field` read under
+  // Ember's tracking. Nothing consumes `size` reactively today; if that ever
+  // changes it needs a design that doesn't write during a read.
+  private _size = 0;
   private _signals: SignalStore = withSignalStore(this._map);
 
   subscribe(key: K): boolean {
     assert(`ReactiveMap keys must be strings, got ${typeof key}`, typeof key === 'string');
     const existing = this._signals.has(key);
     entangleSignal(this._signals, this._map, key, undefined);
-    const size = this._size;
-    this._size = existing ? size : size + 1;
+    if (!existing) {
+      this._size += 1;
+    }
     return existing;
   }
 
@@ -44,4 +49,3 @@ export class SignalMap<K extends string> {
     return this._size;
   }
 }
-defineSignal(SignalMap.prototype, '_size', 0);

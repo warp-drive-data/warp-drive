@@ -108,6 +108,33 @@ function isStorageUnavailableError(error: unknown): boolean {
 export type EffectStorageEvent = CacheStorageEvent | StorageEvent;
 
 /**
+ * Subscribes to storage-change events, whether they originate from the
+ * native Storage API (a `StorageEvent`, fired cross-tab) or from
+ * {@link CacheStorage}'s own same-tab notifications (dispatched as a
+ * `CustomEvent` under the same 'storage' name — see `emitStorageEvent`
+ * in `./cache.ts`).
+ *
+ * Returns an unsubscribe function.
+ *
+ * This can't be expressed by widening the global `WindowEventMap.storage`
+ * type: that entry is inherited from `WindowEventHandlersEventMap` as
+ * `StorageEvent`, and a declaration-merged override has to stay assignable
+ * to the type it's overriding, not the other way around — deliberately
+ * reusing this event name for a wider union has no way to satisfy that.
+ *
+ * Route storage-event subscribers through this helper instead of calling
+ * `window.addEventListener('storage', ...)` directly.
+ */
+export function onStorageEvent(listener: (event: EffectStorageEvent) => void): () => void {
+  const handler = (event: StorageEvent | CustomEvent<CacheStorageEvent>): void => {
+    listener('detail' in event ? event.detail : event);
+  };
+
+  window.addEventListener('storage', handler as EventListener);
+  return () => window.removeEventListener('storage', handler as EventListener);
+}
+
+/**
  * A reactive wrapper around the Web Storage API (localStorage/sessionStorage)
  * that provides signal-based access to storage items and length.
  *
@@ -151,9 +178,7 @@ class ReactiveStorage implements Storage {
 
     // bind to localStorage events to trigger reactivity
     if (!this._memoryOnly) {
-      window.addEventListener('storage', ((event: StorageEvent | CustomEvent<CacheStorageEvent>) => {
-        const data = 'detail' in event ? event.detail : event;
-
+      onStorageEvent((data) => {
         // Only react to changes in the same storage area
         if (data.storageArea === storage) {
           this._values[data.key as string] = data.newValue;
@@ -164,7 +189,7 @@ class ReactiveStorage implements Storage {
             effect(data);
           }
         }
-      }) as EventListener);
+      });
     }
   }
 

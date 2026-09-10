@@ -1,36 +1,8 @@
 import { assert } from '@warp-drive/core/build-config/macros';
 import { memoized } from '@warp-drive/core/signals/-leaked';
 
+import type { ParamConfig } from '../query-params.ts';
 import { type EffectStorageEvent, getCacheStorage, getLocalStorage, getSessionStorage } from '../storage.ts';
-
-/**
- * Configuration options for fields that are also query parameters
- */
-export interface ParamConfig {
-  /**
-   * Convert a value into a string for storage in the URL.
-   * `null` indicates the value should be omitted from the URL.
-   */
-  // oxlint-disable-next-line typescript/no-explicit-any
-  serialize: (value: unknown, instance: any) => string | null;
-  /**
-   * Convert a string value from the URL back into
-   * its original type
-   */
-  // oxlint-disable-next-line typescript/no-explicit-any
-  deserialize: (urlValue: string, instance: any) => unknown;
-  /**
-   * Get the default value for this param from the given instance.
-   *
-   * If not present, the value passed to the field initializer
-   * will be used as the default.
-   *
-   * This should return the value in the field's native type,
-   * not the serialized URL form.
-   */
-  // oxlint-disable-next-line typescript/no-explicit-any
-  getDefault?: (instance: any) => unknown;
-}
 
 interface InternalParamConfig extends ParamConfig {
   initialized?: boolean;
@@ -155,9 +127,13 @@ function keyFor(meta: StorageResourceMeta, key: string): string {
 }
 
 function getStorage(type: string, namespace: string | null) {
-  if (type === 'local-resource') {
+  // `type` is either a resource's own meta.type ('local-resource' /
+  // 'session-resource' / 'cache-resource') or a per-field override from
+  // typeOverrides ('local-storage' / 'session-storage' / 'cache-storage') —
+  // both forms must resolve to the same storage.
+  if (type === 'local-resource' || type === 'local-storage') {
     return getLocalStorage();
-  } else if (type === 'session-resource') {
+  } else if (type === 'session-resource' || type === 'session-storage') {
     return getSessionStorage();
   } else {
     return getCacheStorage(namespace);
