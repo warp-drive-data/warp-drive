@@ -81,7 +81,7 @@
     "pretender": "^3.4.7",
     "qunit": "^2.26.0",
     "qunit-dom": "^3.6.0",
-    "testem": "^3.20.2",
+    "testem": "^3.21.0",
     "typescript": "^6.0.3",
     "typescript-7": "npm:typescript@7.1.0-dev.20260907.1",
     "vite": "catalog:"
