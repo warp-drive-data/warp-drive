@@ -78,10 +78,12 @@ export async function generateMirrorTarballs(
           newContents = newContents.replace(new RegExp(`"${from}`, 'g'), `"${to}`);
         }
 
-        // macros.globalConfig['WarpDrive']
-        // macros.setGlobalConfig(import.meta.filename, 'WarpDrive', finalizedConfig);
+        // Both quote styles, because the emitted quote style is not ours to control:
+        //   macros.setGlobalConfig(import.meta.filename, "WarpDrive", finalizedConfig)
+        //   macros.globalConfig["WarpDrive"]
+        //   types.identifier("WarpDrive")  <- emitted by the babel-plugin-transform-* files
         if (strat.name === '@warp-drive/build-config') {
-          newContents = newContents.replace(new RegExp(`'WarpDrive'`, 'g'), `'WarpDriveMirror'`);
+          newContents = newContents.replace(/(['"])WarpDrive\1/g, '$1WarpDriveMirror$1');
         }
 
         newContents = newContents.replace(/getGlobalConfig\(\)\.WarpDrive\./g, 'getGlobalConfig().WarpDriveMirror.');
