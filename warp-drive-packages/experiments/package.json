@@ -12,6 +12,10 @@
   "homepage": "https://github.com/warp-drive-data/warp-drive",
   "bugs": "https://github.com/warp-drive-data/warp-drive/issues",
   "exports": {
+    "./storage": {
+      "types": "./dist/storage.d.ts",
+      "default": "./dist/storage.js"
+    },
     "./document-storage": {
       "types": "./dist/document-storage.d.ts",
       "default": "./dist/document-storage.js"
