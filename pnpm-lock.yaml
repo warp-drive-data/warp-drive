@@ -653,6 +653,12 @@ importers:
       '@embroider/macros':
         specifier: ^1.20.7
         version: 1.20.7
+      '@hono/node-server':
+        specifier: ^1.19.0
+        version: 1.19.0(hono@4.13.7)
+      '@hono/node-ws':
+        specifier: ^1.2.0
+        version: 1.3.1(fbe69a74d785037cdffd569704d4924d)
       '@warp-drive/core':
         specifier: workspace:*
         version: file:warp-drive-packages/core(@babel/core@7.29.7)
@@ -665,6 +671,9 @@ importers:
       dom-element-descriptors:
         specifier: ^0.5.1
         version: 0.5.1
+      hono:
+        specifier: ^4.9.4
+        version: 4.13.7
       qunit-dom:
         specifier: ^3.6.0
         version: 3.6.0
@@ -4553,6 +4562,13 @@ packages:
     engines: {node: '>=18.14.1'}
     peerDependencies:
       hono: ^4
+
+  '@hono/node-ws@1.3.1':
+    resolution: {integrity: sha512-vo/MwCnpJAVHBkGzWjCJ28wF45fYHAfbPZcH2rodZODHtch2GHA94KtMfusmVycTUtsLAsaNsHhtY6P8X3RQsA==}
+    engines: {node: '>=18.14.1'}
+    peerDependencies:
+      '@hono/node-server': ^1.19.11
+      hono: ^4.6.0
 
   '@html-next/vertical-collection@5.0.5':
     resolution: {integrity: sha512-LEed/9M50OsyZKS0y/gg03KumAq5QX/KHRI8dQKS7MfVejEXlO2tPTjhzjVPRjBfepQ8K7+b8YK6cUBwgQJbaw==}
@@ -13314,6 +13330,15 @@ snapshots:
     dependencies:
       hono: 4.13.7
 
+  '@hono/node-ws@1.3.1(fbe69a74d785037cdffd569704d4924d)':
+    dependencies:
+      '@hono/node-server': 1.19.0(hono@4.13.7)
+      hono: 4.13.7
+      ws: 8.18.2
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+
   '@html-next/vertical-collection@5.0.5':
     dependencies:
       '@embroider/addon-shim': 1.10.3
@@ -15475,53 +15500,71 @@ snapshots:
   '@warp-drive/diagnostic@file:packages/diagnostic(53b7108dd10d63f6e90ed13ef4be4016)':
     dependencies:
       '@embroider/macros': 1.20.7(@glint/template@1.9.0)
+      '@hono/node-server': 1.19.0(hono@4.13.7)
+      '@hono/node-ws': 1.3.1(fbe69a74d785037cdffd569704d4924d)
       '@warp-drive/core': file:warp-drive-packages/core(e0ff4349d3585fabae29421d7a4b80a6)
       '@warp-drive/react': file:warp-drive-packages/react(e0ff4349d3585fabae29421d7a4b80a6)
       debug: 4.4.3
       dom-element-descriptors: 0.5.1
+      hono: 4.13.7
       qunit-dom: 3.6.0
     optionalDependencies:
       '@ember/test-helpers': 5.4.3(patch_hash=86f2f8b3084fb3708a58dfcf3bad3e5afe71bdead6f4f6ce10b8964db8e5de99)(@babel/core@7.29.7)
     transitivePeerDependencies:
       - '@babel/core'
       - '@glint/template'
+      - bufferutil
       - supports-color
+      - utf-8-validate
 
   '@warp-drive/diagnostic@file:packages/diagnostic(6a458261938665ef4bc4d5414f096c5f)':
     dependencies:
       '@embroider/macros': 1.20.7
+      '@hono/node-server': 1.19.0(hono@4.13.7)
+      '@hono/node-ws': 1.3.1(fbe69a74d785037cdffd569704d4924d)
       '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.29.7)
       '@warp-drive/react': file:warp-drive-packages/react(@babel/core@7.29.7)
       debug: 4.4.3
       dom-element-descriptors: 0.5.1
+      hono: 4.13.7
       qunit-dom: 3.6.0
     optionalDependencies:
       '@ember/test-helpers': 5.4.3(patch_hash=86f2f8b3084fb3708a58dfcf3bad3e5afe71bdead6f4f6ce10b8964db8e5de99)(@babel/core@7.29.7)
     transitivePeerDependencies:
       - '@babel/core'
       - '@glint/template'
+      - bufferutil
       - supports-color
+      - utf-8-validate
 
   '@warp-drive/diagnostic@file:packages/diagnostic(@babel/core@7.29.7)':
     dependencies:
       '@embroider/macros': 1.20.7
+      '@hono/node-server': 1.19.0(hono@4.13.7)
+      '@hono/node-ws': 1.3.1(fbe69a74d785037cdffd569704d4924d)
       '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.29.7)
       '@warp-drive/react': file:warp-drive-packages/react(@babel/core@7.29.7)
       debug: 4.4.3
       dom-element-descriptors: 0.5.1
+      hono: 4.13.7
       qunit-dom: 3.6.0
     transitivePeerDependencies:
       - '@babel/core'
       - '@glint/template'
+      - bufferutil
       - supports-color
+      - utf-8-validate
 
   '@warp-drive/diagnostic@file:packages/diagnostic(a1d731b3ac87b6eb45f39e08a20591fd)':
     dependencies:
       '@embroider/macros': 1.20.7
+      '@hono/node-server': 1.19.0(hono@4.13.7)
+      '@hono/node-ws': 1.3.1(fbe69a74d785037cdffd569704d4924d)
       '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.29.7)
       '@warp-drive/react': file:warp-drive-packages/react(@babel/core@7.29.7)
       debug: 4.4.3
       dom-element-descriptors: 0.5.1
+      hono: 4.13.7
       qunit-dom: 3.6.0
     optionalDependencies:
       react: 19.2.8
@@ -15529,7 +15572,9 @@ snapshots:
     transitivePeerDependencies:
       - '@babel/core'
       - '@glint/template'
+      - bufferutil
       - supports-color
+      - utf-8-validate
 
   '@warp-drive/ember@file:warp-drive-packages/ember(55de178235eb5990a078df764e61b44e)':
     dependencies:
