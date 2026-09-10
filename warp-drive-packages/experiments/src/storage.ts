@@ -4,4 +4,6 @@ export * from './storage/storage-resource.ts';
 export type * from './storage/storage-resource.ts';
 export * from './storage/cache.ts';
 export type * from './storage/cache.ts';
+export * from './storage/query-params.ts';
+export type * from './storage/query-params.ts';
 export { initMeta as _initMeta, getParamCompanion as _getParamCompanion } from './storage/-private/storage-infra.ts';
