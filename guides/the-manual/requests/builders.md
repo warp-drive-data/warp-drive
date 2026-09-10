@@ -219,4 +219,10 @@ enough, and when it is not the following utilities will come in handy:
 - [buildQueryParams](/api/@warp-drive/utilities/functions/buildQueryParams)
 - [filterEmpty](/api/@warp-drive/utilities/functions/filterEmpty)
 
+:::tip 💡 TIP
+All three sort and filter *copies*. The params you hand them are never mutated, so it is safe to
+pass state you also render — a tracked array of filter values, say — without the act of building a
+request reordering what the user sees.
+:::
+
 

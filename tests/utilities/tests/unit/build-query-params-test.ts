@@ -1,4 +1,4 @@
-import { buildQueryParams } from '@ember-data/request-utils';
+import { buildQueryParams, sortQueryParams } from '@ember-data/request-utils';
 import { module, test } from '@warp-drive/diagnostic';
 
 module('buildQueryParams', function (hooks) {
@@ -134,5 +134,64 @@ module('buildQueryParams', function (hooks) {
       'baz=d%2Ce%2Cf&foo=a%2Cb%2Cc',
       `buildQueryParams works`
     );
+  });
+
+  test('It does not reorder the arrays it was given', function (assert) {
+    const foo = ['c', 'b', 'a'];
+    const baz = ['f', 'd', 'e'];
+
+    assert.equal(buildQueryParams({ foo, baz }), 'baz=d%2Ce%2Cf&foo=a%2Cb%2Cc', `buildQueryParams works`);
+
+    assert.deepEqual(foo, ['c', 'b', 'a'], `foo was not sorted in place`);
+    assert.deepEqual(baz, ['f', 'd', 'e'], `baz was not sorted in place`);
+  });
+
+  test('It does not reorder the arrays it was given for non-comma arrayFormats', function (assert) {
+    for (const arrayFormat of ['bracket', 'indices', 'repeat', 'comma'] as const) {
+      const foo = ['c', 'b', 'a'];
+
+      buildQueryParams({ foo }, { arrayFormat });
+
+      assert.deepEqual(foo, ['c', 'b', 'a'], `foo was not sorted in place for arrayFormat '${arrayFormat}'`);
+    }
+  });
+
+  test('It does not mutate the object it was given', function (assert) {
+    const params = { include: 'foo,bar', foo: ['c', 'b', 'a'] };
+
+    assert.equal(buildQueryParams(params), 'foo=a%2Cb%2Cc&include=bar%2Cfoo', `buildQueryParams works`);
+
+    assert.deepEqual(
+      params,
+      { include: 'foo,bar', foo: ['c', 'b', 'a'] },
+      `the source object was not mutated, include is still a string`
+    );
+  });
+
+  test('It does not reorder an include array it was given', function (assert) {
+    const include = ['foo', 'bar'];
+
+    assert.equal(buildQueryParams({ include }), 'include=bar%2Cfoo', `buildQueryParams works`);
+
+    assert.deepEqual(include, ['foo', 'bar'], `include was not sorted in place`);
+  });
+
+  test('sortQueryParams does not mutate the object it was given', function (assert) {
+    const foo = ['c', 'b', 'a'];
+    const params = { include: 'foo,bar', foo };
+
+    assert.equal(sortQueryParams(params).toString(), 'foo=a%2Cb%2Cc&include=bar%2Cfoo', `sortQueryParams works`);
+
+    assert.deepEqual(foo, ['c', 'b', 'a'], `foo was not sorted in place`);
+    assert.equal(params.include, 'foo,bar', `include is still the string it was`);
+  });
+
+  test('It produces the same output when called repeatedly with the same source', function (assert) {
+    const params = { include: 'foo,bar', foo: ['c', 'b', 'a'] };
+
+    const first = buildQueryParams(params);
+    const second = buildQueryParams(params);
+
+    assert.equal(first, second, `buildQueryParams is stable across calls`);
   });
 });
