@@ -654,7 +654,7 @@ importers:
         specifier: ^1.20.7
         version: 1.20.7
       '@hono/node-server':
-        specifier: ^1.19.13
+        specifier: ^1.19.17
         version: 1.19.17(hono@4.13.7)
       '@hono/node-ws':
         specifier: ^1.2.0
@@ -792,8 +792,8 @@ importers:
   packages/holodeck:
     dependencies:
       '@hono/node-server':
-        specifier: ^1.19.0
-        version: 1.19.0(hono@4.13.7)
+        specifier: ^1.19.17
+        version: 1.19.17(hono@4.13.7)
       hono:
         specifier: ^4.13.7
         version: 4.13.7
@@ -4559,12 +4559,6 @@ packages:
   '@handlebars/parser@2.2.1':
     resolution: {integrity: sha512-D76vKOZFEGA9v6g0rZTYTQDUXNopCblW1Zeas3EEVrbdeh8gWrCEO9/goocKmcgtqAwv1Md76p58UQp7HeFTEw==}
     engines: {node: ^18 || ^20 || ^22 || >=24}
-
-  '@hono/node-server@1.19.0':
-    resolution: {integrity: sha512-1k8/8OHf5VIymJEcJyVksFpT+AQ5euY0VA5hUkCnlKpD4mr8FSbvXaHblxeTTEr90OaqWzAkQaqD80qHZQKxBA==}
-    engines: {node: '>=18.14.1'}
-    peerDependencies:
-      hono: ^4
 
   '@hono/node-server@1.19.17':
     resolution: {integrity: sha512-dSneS5qhiauZWGDCeK4o695Xd9nUNjviSZCMQrj10eetr8Uln1ucn6bbphOM6UynAMMtNIzZNSpL9vnASJwrPQ==}
@@ -13334,10 +13328,6 @@ snapshots:
   '@gwhitney/detect-indent@7.0.1': {}
 
   '@handlebars/parser@2.2.1': {}
-
-  '@hono/node-server@1.19.0(hono@4.13.7)':
-    dependencies:
-      hono: 4.13.7
 
   '@hono/node-server@1.19.17(hono@4.13.7)':
     dependencies:
