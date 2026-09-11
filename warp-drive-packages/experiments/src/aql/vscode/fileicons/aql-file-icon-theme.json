@@ -1,0 +1,18 @@
+{
+  "iconDefinitions": {
+    "_aql_dark": {
+      "iconPath": "../icons/NCC-1701-a.svg"
+    },
+    "_aql_light": {
+      "iconPath": "../icons/NCC-1701-a-blue.svg"
+    }
+  },
+  "fileExtensions": {
+    "aql": "_aql_dark"
+  },
+  "light": {
+    "fileExtensions": {
+      "aql": "_aql_light"
+    }
+  }
+}

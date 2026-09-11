@@ -1,0 +1,54 @@
+{
+  "name": "warp-drive-aql",
+  "displayName": "WarpDrive AQL Support",
+  "description": "Syntax highlighting for .aql files and aql`` tagged template literals",
+  "version": "0.1.0",
+  "private": true,
+  "license": "MIT",
+  "publisher": "warp-drive",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com:warp-drive-data/warp-drive.git",
+    "directory": "warp-drive-packages/experiments/src/aql/vscode"
+  },
+  "engines": {
+    "vscode": "^1.34.0"
+  },
+  "categories": ["Programming Languages"],
+  "keywords": ["JSON:API", "AQL", "query language"],
+  "contributes": {
+    "languages": [
+      {
+        "id": "warp-drive.aql",
+        "extensions": [".aql"],
+        "configuration": "./language-configuration.json",
+        "icon": {
+          "light": "./icons/NCC-1701-a-blue.svg",
+          "dark": "./icons/NCC-1701-a.svg"
+        }
+      }
+    ],
+    "grammars": [
+      {
+        "language": "warp-drive.aql",
+        "scopeName": "source.aql",
+        "path": "./syntaxes/aql.tmLanguage.json"
+      },
+      {
+        "injectTo": ["source.js", "source.js.jsx", "source.jsx", "source.svelte", "source.ts", "source.tsx"],
+        "scopeName": "inline.tagged-template-aql",
+        "path": "./syntaxes/embedded-aql.tmLanguage.json",
+        "embeddedLanguages": {
+          "meta.embedded.block.aql": "warp-drive.aql"
+        }
+      }
+    ],
+    "iconThemes": [
+      {
+        "id": "warp-drive-aql-icons",
+        "label": "WarpDrive AQL Icons",
+        "path": "./fileicons/aql-file-icon-theme.json"
+      }
+    ]
+  }
+}

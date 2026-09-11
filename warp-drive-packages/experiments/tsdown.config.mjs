@@ -10,6 +10,7 @@ export const entryPoints = [
   './src/image-fetch.ts',
   './src/storage.ts',
   './src/pagination.ts',
+  './src/aql.ts',
 ];
 
 export default createConfig(

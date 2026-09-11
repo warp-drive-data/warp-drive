@@ -1,0 +1,33 @@
+{
+  "include": ["tests"],
+  "compilerOptions": {
+    "lib": ["ESNext", "DOM"],
+    "module": "NodeNext",
+    "target": "ESNext",
+    "moduleResolution": "NodeNext",
+    "moduleDetection": "force",
+    "strict": true,
+    "pretty": true,
+    "skipLibCheck": true,
+    "disableSourceOfProjectReferenceRedirect": false,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitOverride": true,
+    "rootDir": "tests",
+    "inlineSourceMap": true,
+    "inlineSources": true,
+    "allowImportingTsExtensions": true,
+    "composite": true,
+    "declaration": true,
+    "declarationDir": "unstable-preview-types",
+    "declarationMap": true,
+    "emitDeclarationOnly": true,
+    "erasableSyntaxOnly": true,
+    "incremental": true,
+    "paths": {
+      "@warp-drive/experiments/aql": ["../../warp-drive-packages/experiments/src/aql"]
+    },
+    "checkJs": false
+  },
+  "references": [{ "path": "../../warp-drive-packages/experiments" }]
+}

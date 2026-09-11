@@ -1,0 +1,156 @@
+{
+  "scopeName": "source.aql",
+  "fileTypes": ["aql"],
+  "name": "AQL",
+  "patterns": [
+    { "include": "#comment" },
+    { "include": "#query" }
+  ],
+  "repository": {
+    "comment": {
+      "name": "comment.line.number-sign.aql",
+      "begin": "#",
+      "beginCaptures": {
+        "0": { "name": "punctuation.definition.comment.aql" }
+      },
+      "end": "(?=$)"
+    },
+    "punctuation": {
+      "patterns": [
+        { "match": "[{}]", "name": "punctuation.section.block.aql" },
+        { "match": "[()]", "name": "punctuation.section.parens.aql" },
+        { "match": ",", "name": "punctuation.separator.comma.aql" },
+        { "match": ";", "name": "punctuation.terminator.statement.aql" },
+        { "match": "=", "name": "keyword.operator.assignment.aql" }
+      ]
+    },
+    "literals": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.aql",
+          "begin": "\"",
+          "beginCaptures": { "0": { "name": "punctuation.definition.string.begin.aql" } },
+          "end": "\"",
+          "endCaptures": { "0": { "name": "punctuation.definition.string.end.aql" } },
+          "patterns": [{ "match": "\\\\.", "name": "constant.character.escape.aql" }]
+        },
+        {
+          "match": "-?\\b\\d+(\\.\\d+)?\\b",
+          "name": "constant.numeric.aql"
+        },
+        {
+          "match": "\\b(true|false)\\b",
+          "name": "constant.language.boolean.aql"
+        },
+        {
+          "match": "\\bnull\\b",
+          "name": "constant.language.null.aql"
+        }
+      ]
+    },
+    "arg-declaration": {
+      "name": "meta.arg-declaration.aql",
+      "begin": "(@arg)\\b",
+      "beginCaptures": {
+        "1": { "name": "keyword.control.arg.aql" }
+      },
+      "end": "(?=[;\\n}#])",
+      "patterns": [
+        {
+          "begin": "\\(",
+          "beginCaptures": { "0": { "name": "punctuation.section.parens.begin.aql" } },
+          "end": "\\)",
+          "endCaptures": { "0": { "name": "punctuation.section.parens.end.aql" } },
+          "patterns": [
+            { "match": "\\bnull\\b", "name": "support.type.aql" },
+            { "match": "[A-Za-z_$][\\w$]*", "name": "support.type.aql" },
+            { "include": "#punctuation" }
+          ]
+        },
+        {
+          "match": "[A-Za-z_$][\\w$]*",
+          "name": "variable.other.property.aql"
+        },
+        { "include": "#literals" },
+        { "include": "#punctuation" }
+      ]
+    },
+    "assignment": {
+      "match": "([A-Za-z_$][\\w$]*)\\s*(=)",
+      "captures": {
+        "1": { "name": "variable.other.property.aql" },
+        "2": { "name": "keyword.operator.assignment.aql" }
+      }
+    },
+    "field-selection": {
+      "patterns": [
+        {
+          "match": "([A-Za-z_$][\\w$]*)(?=\\s*\\{)",
+          "name": "entity.name.tag.relationship.aql"
+        },
+        {
+          "match": "[A-Za-z_$][\\w$]*",
+          "name": "variable.other.property.aql"
+        }
+      ]
+    },
+    "data-block": {
+      "name": "meta.block.data.aql",
+      "begin": "\\b(data)\\b\\s*(\\{)",
+      "beginCaptures": {
+        "1": { "name": "keyword.control.section.aql" },
+        "2": { "name": "punctuation.section.block.begin.aql" }
+      },
+      "end": "\\}",
+      "endCaptures": {
+        "0": { "name": "punctuation.section.block.end.aql" }
+      },
+      "patterns": [
+        { "include": "#comment" },
+        { "include": "#data-block" },
+        { "include": "#field-selection" },
+        { "include": "#punctuation" }
+      ]
+    },
+    "filter-or-page-block": {
+      "name": "meta.block.filter-page.aql",
+      "begin": "\\b(filter|page)\\b\\s*(\\{)",
+      "beginCaptures": {
+        "1": { "name": "keyword.control.section.aql" },
+        "2": { "name": "punctuation.section.block.begin.aql" }
+      },
+      "end": "\\}",
+      "endCaptures": {
+        "0": { "name": "punctuation.section.block.end.aql" }
+      },
+      "patterns": [
+        { "include": "#comment" },
+        { "include": "#arg-declaration" },
+        { "include": "#assignment" },
+        { "include": "#literals" },
+        { "include": "#punctuation" }
+      ]
+    },
+    "query-body": {
+      "patterns": [
+        { "include": "#comment" },
+        { "include": "#data-block" },
+        { "include": "#filter-or-page-block" }
+      ]
+    },
+    "query": {
+      "name": "meta.block.query.aql",
+      "begin": "\\b(QUERY)\\b\\s*([A-Za-z_$][\\w$]*)\\s*(\\{)",
+      "beginCaptures": {
+        "1": { "name": "keyword.control.query.aql" },
+        "2": { "name": "entity.name.type.resource.aql" },
+        "3": { "name": "punctuation.section.block.begin.aql" }
+      },
+      "end": "\\}",
+      "endCaptures": {
+        "0": { "name": "punctuation.section.block.end.aql" }
+      },
+      "patterns": [{ "include": "#query-body" }]
+    }
+  }
+}
