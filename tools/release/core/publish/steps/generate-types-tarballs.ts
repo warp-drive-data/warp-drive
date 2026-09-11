@@ -5,6 +5,12 @@ import { exec } from '../../../utils/cmd.ts';
 import { APPLIED_STRATEGY, Package } from '../../../utils/package.ts';
 import { PROJECT_ROOT, TARBALL_DIR, toTarballName } from './generate-tarballs.ts';
 
+const TYPES_SUBDIR = 'unstable-preview-types';
+
+function hasDeclaration(entry: string | Buffer) {
+  return String(entry).endsWith('.d.ts');
+}
+
 const INVALID_FILES = new Set([
   'src',
   'dist',
@@ -47,10 +53,32 @@ export async function generateTypesTarballs(
       // create a new package.json
       const pkg = packages.get(strat.name)!;
       const pkgData = pkg.pkgData;
+
+      // `makeTypesAlpha` synthesizes this directory and pushes it onto `pkgData.files`,
+      // but that push is in-memory only and `restoreTypesStrategyChanges` has since run
+      // `git checkout HEAD -- <package.json>` + `pkg.refresh()` for every package, so by
+      // the time we get here `pkgData.files` is back to its on-disk state. Before
+      // declarations moved into `dist/` the directory was declared in `files` on disk and
+      // survived that restore; now it does not, and relying on `files` alone ships a
+      // types package containing nothing but a README.
+      const sourceFiles = [...(pkgData.files ?? [])];
+      if (!sourceFiles.includes(TYPES_SUBDIR)) {
+        sourceFiles.push(TYPES_SUBDIR);
+      }
+
+      const typesDir = path.join(path.dirname(pkg.filePath), TYPES_SUBDIR);
+      if (!fs.existsSync(typesDir) || !fs.readdirSync(typesDir, { recursive: true }).some(hasDeclaration)) {
+        throw new Error(
+          `Expected ${pkgData.name} to have a populated ${TYPES_SUBDIR} directory to publish as ` +
+            `${strat.typesPublishTo}, but it is missing or contains no .d.ts files. It is synthesized by ` +
+            `makeTypesAlpha during tarball generation — check that step ran for this package.`
+        );
+      }
+
       const newPkgData = {
         name: strat.typesPublishTo,
         version: pkgData.version,
-        files: pkgData.files?.filter((f) => !INVALID_FILES.has(f)) ?? [],
+        files: sourceFiles.filter((f) => !INVALID_FILES.has(f)),
         private: false,
         description: `Type Declarations for ${pkgData.name}`,
         author: pkgData.author,
@@ -63,18 +91,8 @@ export async function generateTypesTarballs(
       const newPkgJson = path.join(tmpTypesDir, 'package.json');
       fs.writeFileSync(newPkgJson, JSON.stringify(newPkgData, null, 2));
 
-      // // copy the types directory
-      // const typesDir = path.join(path.dirname(pkg.filePath), 'unstable-preview-types');
-      // if (!fs.existsSync(typesDir)) {
-      //   throw new Error(`Types directory does not exist: ${typesDir}`);
-      // }
-      // const typesDest = path.join(tmpTypesDir, 'unstable-preview-types');
-      // fs.mkdirSync(typesDest, { recursive: true });
-      // await exec(`cp -r ${typesDir}/* ${typesDest}`);
-
       // copy files that are needed
-      const files = pkgData.files ?? [];
-      for (const file of files) {
+      for (const file of sourceFiles) {
         const src = path.join(path.dirname(pkg.filePath), file);
         const dest = path.join(tmpTypesDir, file);
         fs.mkdirSync(path.dirname(dest), { recursive: true });
