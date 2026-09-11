@@ -1948,6 +1948,36 @@ function setupRelationships(
   }
 }
 
+/**
+ * {json:api} requires a resource's fields to share one namespace, so a
+ * relationship's data never legitimately appears in `data.attributes`. When a
+ * payload violates that, the offending key must not be merged into
+ * `remoteAttrs`: `Cache#peek` composes its `attributes` from those buckets and
+ * `serializeResources` builds outgoing request bodies from `peek`, so the
+ * phantom key is otherwise echoed back to the API inside a document that is
+ * itself invalid — carrying the same field name in both `attributes` and
+ * `relationships`.
+ *
+ * Returns `updates` unchanged when there is nothing to strip, so the ordinary
+ * path allocates nothing.
+ */
+function withoutRelationshipFields(
+  updates: Exclude<ExistingResourceObject['attributes'], undefined>,
+  fields: ReturnType<Store['schema']['fields']>
+): Exclude<ExistingResourceObject['attributes'], undefined> {
+  let filtered: Exclude<ExistingResourceObject['attributes'], undefined> | undefined;
+
+  for (const key of Object.keys(updates)) {
+    const field = fields.get(key);
+    if (field && isRelationship(field)) {
+      filtered = filtered || Object.assign({}, updates);
+      delete filtered[key];
+    }
+  }
+
+  return filtered || updates;
+}
+
 function isRelationship(field: FieldSchema): field is LegacyRelationshipField | CollectionField | ResourceField {
   const { kind } = field;
   return kind === 'hasMany' || kind === 'belongsTo' || kind === 'resource' || kind === 'collection';
@@ -2192,7 +2222,7 @@ function cacheUpsert(
 
   cached.remoteAttrs = Object.assign(
     cached.remoteAttrs || (Object.create(null) as Record<string, unknown>),
-    data.attributes
+    data.attributes && withoutRelationshipFields(data.attributes, fields)
   );
 
   if (cached.localAttrs) {
@@ -2497,7 +2527,7 @@ function didCommit(
   cached.remoteAttrs = Object.assign(
     cached.remoteAttrs || (Object.create(null) as Record<string, unknown>),
     cached.inflightAttrs,
-    newCanonicalAttributes
+    newCanonicalAttributes && withoutRelationshipFields(newCanonicalAttributes, fields)
   );
   cached.inflightAttrs = null;
   patchLocalAttributes(cached, changedKeys);
