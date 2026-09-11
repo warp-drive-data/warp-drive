@@ -3252,9 +3252,21 @@ importers:
 
   warp-drive-packages/legacy:
     dependencies:
+      '@ember/edition-utils':
+        specifier: ^1.2.0
+        version: 1.2.0
       '@embroider/macros':
         specifier: ^1.20.7
         version: 1.20.7
+      ember-cli-string-utils:
+        specifier: ^1.1.0
+        version: 1.1.0
+      ember-cli-test-info:
+        specifier: ^1.0.0
+        version: 1.0.0
+      inflection:
+        specifier: ~3.0.2
+        version: 3.0.2
     devDependencies:
       '@babel/core':
         specifier: ^7.29.7
@@ -8006,6 +8018,12 @@ packages:
 
   electron-to-chromium@1.5.409:
     resolution: {integrity: sha512-ChI4N44d0B4A6C8prnNjMOaGgE59fUyEVYcRYm2XEXIjMbbvF5i9UL1cblDbpGqiU0uS8FE8UcKxqZqTXdmzbQ==}
+
+  ember-cli-string-utils@1.1.0:
+    resolution: {integrity: sha512-PlJt4fUDyBrC/0X+4cOpaGCiMawaaB//qD85AXmDRikxhxVzfVdpuoec02HSiTGTTB85qCIzWBIh8lDOiMyyFg==}
+
+  ember-cli-test-info@1.0.0:
+    resolution: {integrity: sha512-dEVTIpmUfCzweC97NGf6p7L6XKBwV2GmSM4elmzKvkttEp5P7AvGA9uGyN4GqFq+RwhW+2b0I2qlX00w+skm+A==}
 
   ember-content-mapper@0.3.1:
     resolution: {integrity: sha512-m46P1JIJiuMmYZc9PNWZA+KWBc7lkfTpTbtixOknxHoR9Nj5WDmLgWG011edUzqzzzFT22fvMvdukHnEYlTNgA==}
@@ -15624,7 +15642,7 @@ snapshots:
 
   '@warp-drive/holodeck@file:packages/holodeck(2eeb0baf24a3535528995f8bc8048cb9)':
     dependencies:
-      '@hono/node-server': 1.19.0(hono@4.13.7)
+      '@hono/node-server': 1.19.17(hono@4.13.7)
       '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.29.7)
       hono: 4.13.7
     optionalDependencies:
@@ -15633,13 +15651,13 @@ snapshots:
 
   '@warp-drive/holodeck@file:packages/holodeck(4ded94bf05a058c4d301833388abca58)':
     dependencies:
-      '@hono/node-server': 1.19.0(hono@4.13.7)
+      '@hono/node-server': 1.19.17(hono@4.13.7)
       '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.29.7)
       hono: 4.13.7
 
   '@warp-drive/holodeck@file:packages/holodeck(7177c548027c2a74b121edf1bbb1c07d)':
     dependencies:
-      '@hono/node-server': 1.19.0(hono@4.13.7)
+      '@hono/node-server': 1.19.17(hono@4.13.7)
       '@warp-drive/core': file:warp-drive-packages/core(e0ff4349d3585fabae29421d7a4b80a6)
       hono: 4.13.7
     optionalDependencies:
@@ -15647,7 +15665,7 @@ snapshots:
 
   '@warp-drive/holodeck@file:packages/holodeck(a510bc545ed25bc6a53fefeb5da03d5b)':
     dependencies:
-      '@hono/node-server': 1.19.0(hono@4.13.7)
+      '@hono/node-server': 1.19.17(hono@4.13.7)
       '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.29.7)
       hono: 4.13.7
     optionalDependencies:
@@ -15655,7 +15673,7 @@ snapshots:
 
   '@warp-drive/holodeck@file:packages/holodeck(c225825406496ecace1e537ba0f768d1)':
     dependencies:
-      '@hono/node-server': 1.19.0(hono@4.13.7)
+      '@hono/node-server': 1.19.17(hono@4.13.7)
       '@warp-drive/core': file:warp-drive-packages/core(e0ff4349d3585fabae29421d7a4b80a6)
       hono: 4.13.7
     optionalDependencies:
@@ -16449,18 +16467,26 @@ snapshots:
 
   '@warp-drive/legacy@file:warp-drive-packages/legacy(3f8bc03ddae2558c38d0ba7a4612f4c1)':
     dependencies:
+      '@ember/edition-utils': 1.2.0
       '@embroider/macros': 1.20.7(@glint/template@1.9.0)
       '@warp-drive/core': file:warp-drive-packages/core(e0ff4349d3585fabae29421d7a4b80a6)
       '@warp-drive/utilities': file:warp-drive-packages/utilities(edee9e53a6af44fd6387ab28cd9cc109)
+      ember-cli-string-utils: 1.1.0
+      ember-cli-test-info: 1.0.0
+      inflection: 3.0.2
     transitivePeerDependencies:
       - '@glint/template'
       - supports-color
 
   '@warp-drive/legacy@file:warp-drive-packages/legacy(a510bc545ed25bc6a53fefeb5da03d5b)':
     dependencies:
+      '@ember/edition-utils': 1.2.0
       '@embroider/macros': 1.20.7
       '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.29.7)
       '@warp-drive/utilities': file:warp-drive-packages/utilities(4ded94bf05a058c4d301833388abca58)
+      ember-cli-string-utils: 1.1.0
+      ember-cli-test-info: 1.0.0
+      inflection: 3.0.2
     transitivePeerDependencies:
       - '@glint/template'
       - supports-color
@@ -17444,6 +17470,12 @@ snapshots:
       jake: 10.9.4
 
   electron-to-chromium@1.5.409: {}
+
+  ember-cli-string-utils@1.1.0: {}
+
+  ember-cli-test-info@1.0.0:
+    dependencies:
+      ember-cli-string-utils: 1.1.0
 
   ember-content-mapper@0.3.1(193c5d1faa3fb7d58f8591e5a7b926ae):
     dependencies:
