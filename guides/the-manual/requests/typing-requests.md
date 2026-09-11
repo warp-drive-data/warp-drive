@@ -52,7 +52,7 @@ export default <template>
 
 ## Typing Reactive Responses
 
-Requests that return reactive responses wrap the primary resource data in a [ReactiveDocument](/api/@warp-drive/core/reactive/type-aliases/ReactiveDocument). In the case of an error, this will be a [ReactiveErrorDocument](/api/@warp-drive/core/reactive/interfaces/ReactiveErrorDocument) and in the case of success it will be a [ReactiveDataDocument](/api/@warp-drive/core/reactive/interfaces/ReactiveDataDocument)
+Requests that return reactive responses wrap the primary resource data in a [ReactiveDocument](/api/@warp-drive/core/reactive/type-aliases/ReactiveDocument). In the case of an error, this will be a [ReactiveErrorDocument](/api/@warp-drive/core/reactive/type-aliases/ReactiveErrorDocument) and in the case of success it will be a [ReactiveDataDocument](/api/@warp-drive/core/reactive/type-aliases/ReactiveDataDocument)
 
 A conventient utility is available for [typing these reactive responses](/api/@warp-drive/core/request/functions/withReactiveResponse).
 
@@ -248,7 +248,7 @@ content.meta.total; // number
 
 ## Typing Errors
 
-The error variant of a document, [ReactiveErrorDocument](/api/@warp-drive/core/reactive/interfaces/ReactiveErrorDocument),
+The error variant of a document, [ReactiveErrorDocument](/api/@warp-drive/core/reactive/type-aliases/ReactiveErrorDocument),
 exposes `errors`. The cache stores whatever the API sent without validating it, so by default the
 type promises no shape — `errors` is `object[]`.
 
