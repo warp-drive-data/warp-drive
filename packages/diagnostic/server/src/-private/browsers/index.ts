@@ -147,7 +147,13 @@ const TMP_DIRS = new Map<'chrome', string>();
 
 process.on('exit', () => {
   for (const dir of TMP_DIRS.values()) {
-    fs.rmSync(dir, { recursive: true, force: true });
+    try {
+      fs.rmSync(dir, { recursive: true, force: true });
+    } catch {
+      // best-effort: the browser process may still be releasing its lock on
+      // a file in this profile dir at exit time (e.g. a lockfile or cache
+      // entry being flushed); the OS will reclaim /tmp eventually regardless.
+    }
   }
 });
 

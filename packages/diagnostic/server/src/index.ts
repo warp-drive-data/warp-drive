@@ -93,6 +93,33 @@ export interface ServeOptions {
   };
 }
 
+// A browser tab closing, reloading, or being killed can race with the
+// server's own in-flight write to that connection's stream (e.g. an HTTP2
+// response, or the suite-finish websocket acknowledgement) -- node/undici's
+// stream internals then report a stray "ReadableStream already closed" as an
+// *asynchronous* uncaught exception well after the responsible close handler
+// has already returned. This race is not confined to our own deliberate
+// shutdown sequence -- it can fire at any point a connection drops mid-write
+// during the run -- and it carries no useful diagnostic beyond "a socket
+// closed while a write was in flight", so we always swallow this specific
+// error rather than let it crash the process or override our exit code.
+function isStrayStreamCloseRace(err: unknown): boolean {
+  return (
+    err instanceof TypeError &&
+    (err as NodeJS.ErrnoException).code === 'ERR_INVALID_STATE' &&
+    err.message.includes('ReadableStream is already closed')
+  );
+}
+let isShuttingDown = false;
+process.on('uncaughtException', (err) => {
+  if (isStrayStreamCloseRace(err)) {
+    debug(`Ignoring stray stream-close race: ${err.message}`);
+    return;
+  }
+  if (!isShuttingDown) throw err;
+  debug(`Ignoring error during shutdown: ${err instanceof Error ? err.message : String(err)}`);
+});
+
 export async function launch(config: Partial<LaunchConfig>) {
   const resolvedConfig = launchDefaults(config);
 
@@ -140,6 +167,7 @@ export async function launch(config: Partial<LaunchConfig>) {
   }
 
   state.safeCleanup = async () => {
+    isShuttingDown = true;
     debug(`Running close handlers`);
     const promises = [];
     for (const handler of state.closeHandlers) {
@@ -284,12 +312,19 @@ export async function launch(config: Partial<LaunchConfig>) {
 
     state.server = server;
 
-    addCloseHandler(state, () => {
+    addCloseHandler(state, async () => {
       debug(`Diagnostic Shutting Down`);
+      // Stop accepting new connections and let a final in-flight write
+      // (e.g. the suite-finish acknowledgement itself) get a moment to flush
+      // before killing the browsers that are their other end -- the
+      // diagnostic websocket channel stays open for the run's whole
+      // duration, so awaiting server.close()'s own callback (which only
+      // fires once every connection ends) would hang here rather than help.
+      state.server.close();
+      await new Promise((resolve) => setTimeout(resolve, 50));
       state.browsers?.forEach((browser) => {
         browser.proc.kill();
       });
-      state.server.close();
       debug(`Diagnostic Complete`);
     });
 
