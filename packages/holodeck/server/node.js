@@ -5,6 +5,7 @@ import { HTTPException } from 'hono/http-exception';
 import { logger } from 'hono/logger';
 import fs from 'node:fs';
 import { createSecureServer } from 'node:http2';
+import { Readable } from 'node:stream';
 import { styleText } from 'node:util';
 import { Worker, threadId, parentPort } from 'node:worker_threads';
 import path from 'path';
@@ -43,21 +44,23 @@ async function replayRequest(context, cacheKey) {
 
   try {
     const bodyPath = `${cacheKey}.body.br`;
-    // Read the recorded body into memory rather than streaming it. Handing a
-    // Node `fs.ReadStream` to `new Response()` leaves undici to adapt it as an
-    // async iterable, and that adapter closes the byte stream's controller from
-    // inside a queued microtask. A client that aborts mid-response (which the
-    // cancelled-request specs do deliberately) closes the controller first, so
-    // the already-queued `close()` then throws `ERR_INVALID_STATE: ReadableStream
-    // is already closed`. That throw happens synchronously inside a microtask,
-    // where no `.catch()` or `unhandledRejection` handler can reach it, so it
-    // terminates the whole mock-server process and every later request in the
-    // run fails as a network error.
+    // Convert to a web stream explicitly rather than handing `new Response()` a
+    // Node `Readable`. Undici treats a Node stream as an async iterable and
+    // adapts it into a byte stream whose controller it closes from inside a
+    // queued microtask. A client that aborts mid-response -- which the
+    // cancelled-request specs do deliberately, and which any real client does by
+    // navigating away -- closes that controller first, so the already-queued
+    // `close()` then throws `ERR_INVALID_STATE: ReadableStream is already
+    // closed`. Being a synchronous throw inside a microtask, it lands as an
+    // `uncaughtException` that no `.catch()` or `unhandledRejection` handler can
+    // intercept, and it terminates the whole mock-server process -- every later
+    // request in the run then fails as a network error.
     //
-    // Recorded bodies are brotli-compressed test fixtures -- the largest in this
-    // repo is under 200 bytes -- so streaming them buys nothing, and their
-    // `Content-Length` is already fixed at record time.
-    const bodyInit = metaJson.status !== 204 && metaJson.status < 500 ? fs.readFileSync(bodyPath) : '';
+    // `Readable.toWeb` hands undici a real `ReadableStream`, which it uses
+    // directly instead of going through that adapter, so chunked reads,
+    // backpressure, and not buffering the whole body are all preserved.
+    const bodyInit =
+      metaJson.status !== 204 && metaJson.status < 500 ? Readable.toWeb(fs.createReadStream(bodyPath)) : '';
 
     const headers = new Headers(metaJson.headers || {});
     const response = new Response(bodyInit, {
