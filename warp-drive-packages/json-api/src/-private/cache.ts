@@ -1827,78 +1827,140 @@ function getDefaultValue(
 }
 
 /**
- * The keys a commit promotes from `inflightAttrs` into `remoteAttrs` that the remote projection
- * has not otherwise been told about: saved keys the server echoed verbatim or omitted from its
- * response. Keys already in `changedKeys` are excluded because `didCommit` notifies those
- * unscoped, and keys whose remote value is unchanged are excluded so a no-op commit stays silent.
- *
- * Must be called before `remoteAttrs` is merged, while it still holds the pre-commit values.
+ * Narrow `subset` to the members that survived {@link patchLocalAttributes}' pruning. Only called
+ * when that pruning actually removed something, so the allocation is skipped on the common path
+ * where a resource has no local edits at all.
  */
-function collectPromotedRemoteKeys(
-  cached: CachedResource,
-  changedKeys: Set<string> | undefined,
-  fields: ReturnType<Store['schema']['fields']>
-): Set<string> | undefined {
-  const inflight = cached.inflightAttrs;
-  if (!inflight) return undefined;
-
-  const priorRemote = cached.remoteAttrs;
-  let promoted: Set<string> | undefined;
-
-  for (const key of Object.keys(inflight)) {
-    if (!fields.has(key)) continue;
-    if (changedKeys?.has(key)) continue;
-    if (priorRemote && priorRemote[key] === inflight[key]) continue;
-    promoted = promoted || new Set<string>();
-    promoted.add(key);
+function retainSurviving(subset: Set<string> | undefined, survivors: Set<string>): Set<string> | undefined {
+  if (!subset?.size) return subset;
+  const result = new Set<string>();
+  for (const key of subset) {
+    if (survivors.has(key)) result.add(key);
   }
-
-  return promoted;
+  return result.size ? result : undefined;
 }
 
-/*
-      TODO @deprecate IGOR DAVID
-      There seems to be a potential bug here, where we will return keys that are not
-      in the schema
-  */
+/**
+ * A resource has two views, each reading its own projection of the data, and the two can move
+ * independently:
+ *
+ * - **local** — what an editable checkout or a legacy record reads:
+ *   `localAttrs`, else `inflightAttrs`, else `remoteAttrs`.
+ * - **remote** — what PolarisMode's default immutable record reads: `remoteAttrs` alone.
+ *
+ * Asking only "did the server send something different from what we sent" answers for the local
+ * projection and says nothing about the remote one, which is how a save whose response echoed our
+ * own values back could leave an immutable record rendering the pre-save value: the value moved
+ * into `remoteAttrs`, and nothing reported it as changed.
+ *
+ * So partition instead. Each bucket maps onto the channel that should carry it — `localOnly` and
+ * `remoteOnly` to their own channels, `both` unscoped — and `remoteChanged` is the union the
+ * `remoteAttrs` reconciliation in {@link patchLocalAttributes} needs.
+ *
+ * Buckets are `undefined` rather than empty Sets: this runs on every `upsert`, where the usual
+ * outcome is that nothing moved, and an unchanged resource should cost no allocation.
+ */
+interface ProjectionChanges {
+  /** only the local projection's value moved */
+  localOnly: Set<string> | undefined;
+  /** only the remote projection's value moved */
+  remoteOnly: Set<string> | undefined;
+  /** both projections moved */
+  both: Set<string> | undefined;
+  /** every key whose persisted value moved: the union of `remoteOnly` and `both` */
+  remoteChanged: Set<string> | undefined;
+}
+
+const NO_PROJECTION_CHANGES: ProjectionChanges = Object.freeze({
+  localOnly: undefined,
+  remoteOnly: undefined,
+  both: undefined,
+  remoteChanged: undefined,
+});
+
+/**
+ * Partition the keys an incoming payload touches by which projection each one moves.
+ *
+ * `promoted` is the `inflightAttrs` a commit is about to merge into `remoteAttrs`, or `null` for
+ * an upsert that merges only `updates`. It has to be passed rather than read off `cached` because
+ * the two callers merge different things, and the post-merge remote value is what decides the
+ * partition.
+ *
+ * Must be called before `remoteAttrs` is merged, while it still holds the pre-merge values.
+ */
 function calculateChangedKeys(
   cached: CachedResource,
-  updates: Exclude<ExistingResourceObject['attributes'], undefined>,
+  updates: ExistingResourceObject['attributes'],
+  promoted: Record<string, unknown> | null,
   fields: ReturnType<Store['schema']['fields']>
-): Set<string> {
-  const changedKeys = new Set<string>();
-  const keys = Object.keys(updates);
-  const length = keys.length;
-  const localAttrs = cached.localAttrs;
+): ProjectionChanges {
+  const updateKeys = updates ? Object.keys(updates) : null;
+  const promotedKeys = promoted ? Object.keys(promoted) : null;
+  if (!updateKeys?.length && !promotedKeys?.length) {
+    return NO_PROJECTION_CHANGES;
+  }
 
-  const original: Record<string, unknown> = Object.assign(
-    Object.create(null) as Record<string, unknown>,
-    cached.remoteAttrs,
-    cached.inflightAttrs
-  );
-
-  for (let i = 0; i < length; i++) {
-    const key = keys[i];
-    if (!fields.has(key)) {
-      continue;
-    }
-
-    const value = updates[key];
-
-    // A value in localAttrs means the user has a local change to
-    // this attribute. We never override this value when merging
-    // updates from the backend so we should not sent a change
-    // notification if the server value differs from the original.
-    if (localAttrs && localAttrs[key] !== undefined) {
-      continue;
-    }
-
-    if (original[key] !== value) {
-      changedKeys.add(key);
+  // `upsert` passes no `promoted`, so it reuses the `Object.keys` array as-is. Only a commit
+  // carrying both a payload and promoted attrs pays for a copy, and that is once per save
+  // rather than once per resource in a document.
+  let keys: string[];
+  if (!promotedKeys?.length) {
+    keys = updateKeys!;
+  } else if (!updateKeys?.length) {
+    keys = promotedKeys;
+  } else {
+    keys = updateKeys.slice();
+    for (let i = 0; i < promotedKeys.length; i++) {
+      if (!(promotedKeys[i] in updates!)) keys.push(promotedKeys[i]);
     }
   }
 
-  return changedKeys;
+  const { localAttrs, remoteAttrs } = cached;
+  let localOnly: Set<string> | undefined;
+  let remoteOnly: Set<string> | undefined;
+  let both: Set<string> | undefined;
+  let remoteChanged: Set<string> | undefined;
+
+  for (let i = 0; i < keys.length; i++) {
+    const key = keys[i];
+
+    // `updates` is always `data.attributes` and these keys dispatch under the `attributes`
+    // notification bucket, so membership in the cache-field set is not enough: relationship
+    // fields are cache fields too, and a payload that puts a relationship name inside
+    // `attributes` would otherwise be announced as an attribute change for a key whose data
+    // lives in the graph and is never read back out of `remoteAttrs`.
+    const field = fields.get(key);
+    if (!field || isRelationship(field)) {
+      continue;
+    }
+
+    const prevRemote = remoteAttrs ? remoteAttrs[key] : undefined;
+    // mirrors `Object.assign(remoteAttrs, promoted, updates)` -- `updates` wins over `promoted`
+    const nextRemote =
+      updates && key in updates ? updates[key] : promoted && key in promoted ? promoted[key] : prevRemote;
+
+    // a local edit shadows both projections' reads of it, before and after
+    const local = localAttrs ? localAttrs[key] : undefined;
+    const hasLocal = local !== undefined;
+    const prevLocal = hasLocal ? local : promoted && key in promoted ? promoted[key] : prevRemote;
+    const nextLocal = hasLocal ? local : nextRemote;
+
+    const remoteMoved = prevRemote !== nextRemote;
+    const localMoved = prevLocal !== nextLocal;
+
+    if (remoteMoved) {
+      (remoteChanged ??= new Set<string>()).add(key);
+      if (localMoved) {
+        (both ??= new Set<string>()).add(key);
+      } else {
+        (remoteOnly ??= new Set<string>()).add(key);
+      }
+    } else if (localMoved) {
+      (localOnly ??= new Set<string>()).add(key);
+    }
+  }
+
+  return remoteChanged || localOnly ? { localOnly, remoteOnly, both, remoteChanged } : NO_PROJECTION_CHANGES;
 }
 
 function cacheIsEmpty(cached: CachedResource | undefined): boolean {
@@ -2217,7 +2279,10 @@ function cacheUpsert(
   // if no cache entry existed, no record exists / property has been accessed
   // and thus we do not need to notify changes to any properties.
   if (calculateChanges && existed && data.attributes) {
-    changedKeys = calculateChangedKeys(cached, data.attributes, fields);
+    // an upsert merges only `updates`, so nothing is being promoted. Channel-scoping this path
+    // off the partition is a separate change -- for now it keeps announcing the union unscoped,
+    // exactly as before.
+    changedKeys = calculateChangedKeys(cached, data.attributes, null, fields).remoteChanged;
   }
 
   cached.remoteAttrs = Object.assign(
@@ -2522,12 +2587,9 @@ function didCommit(
     }
     newCanonicalAttributes = data.attributes;
   }
-  const changedKeys = newCanonicalAttributes && calculateChangedKeys(cached, newCanonicalAttributes, fields);
-  // `calculateChangedKeys` baselines against `inflightAttrs`, so keys the server echoed
-  // verbatim or omitted are absent from `changedKeys` -- yet they do move into `remoteAttrs`
-  // below. Tagged 'remote', not unscoped: the local projection already read these values, so
-  // its value does not move across the commit.
-  const promotedKeys = collectPromotedRemoteKeys(cached, changedKeys, fields);
+  // partitioned before the merge below, which overwrites the pre-commit remote values the
+  // comparison depends on
+  const changes = calculateChangedKeys(cached, newCanonicalAttributes, cached.inflightAttrs, fields);
 
   cached.remoteAttrs = Object.assign(
     cached.remoteAttrs || (Object.create(null) as Record<string, unknown>),
@@ -2535,15 +2597,25 @@ function didCommit(
     newCanonicalAttributes
   );
   cached.inflightAttrs = null;
-  patchLocalAttributes(cached, changedKeys);
+  // prunes keys whose local edit the server has now confirmed, so they are not announced twice
+  const pruned = patchLocalAttributes(cached, changes.remoteChanged);
 
   if (cached.errors) {
     cached.errors = null;
     cache._capabilities.notifyChange(identifier, 'errors', null);
   }
 
-  if (changedKeys?.size) cache._capabilities.notifyChange(identifier, 'attributes', changedKeys);
-  if (promotedKeys?.size) cache._capabilities.notifyChange(identifier, 'attributes', promotedKeys, 'remote');
+  // each bucket goes out on the channel it actually moved. Pruning only happens for a resource
+  // that had local edits the server confirmed, and `patchLocalAttributes` reports whether it
+  // removed anything -- so the re-filter is skipped entirely on the common path.
+  const { remoteChanged, localOnly } = changes;
+  const reprune = pruned && remoteChanged !== undefined;
+  const both = reprune ? retainSurviving(changes.both, remoteChanged) : changes.both;
+  const remoteOnly = reprune ? retainSurviving(changes.remoteOnly, remoteChanged) : changes.remoteOnly;
+
+  if (both?.size) cache._capabilities.notifyChange(identifier, 'attributes', both);
+  if (remoteOnly?.size) cache._capabilities.notifyChange(identifier, 'attributes', remoteOnly, 'remote');
+  if (localOnly?.size) cache._capabilities.notifyChange(identifier, 'attributes', localOnly, 'local');
   cache._capabilities.notifyChange(identifier, 'state', null);
 }
 
