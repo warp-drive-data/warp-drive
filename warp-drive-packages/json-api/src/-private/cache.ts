@@ -1841,24 +1841,12 @@ function retainSurviving(subset: Set<string> | undefined, survivors: Set<string>
 }
 
 /**
- * A resource has two views, each reading its own projection of the data, and the two can move
- * independently:
+ * Which projection each changed key moved, so the caller can notify on the matching channel:
+ * `localOnly` and `remoteOnly` on theirs, `both` unscoped. `remoteChanged` is the union
+ * {@link patchLocalAttributes} reconciles against.
  *
- * - **local** — what an editable checkout or a legacy record reads:
- *   `localAttrs`, else `inflightAttrs`, else `remoteAttrs`.
- * - **remote** — what PolarisMode's default immutable record reads: `remoteAttrs` alone.
- *
- * Asking only "did the server send something different from what we sent" answers for the local
- * projection and says nothing about the remote one, which is how a save whose response echoed our
- * own values back could leave an immutable record rendering the pre-save value: the value moved
- * into `remoteAttrs`, and nothing reported it as changed.
- *
- * So partition instead. Each bucket maps onto the channel that should carry it — `localOnly` and
- * `remoteOnly` to their own channels, `both` unscoped — and `remoteChanged` is the union the
- * `remoteAttrs` reconciliation in {@link patchLocalAttributes} needs.
- *
- * Buckets are `undefined` rather than empty Sets: this runs on every `upsert`, where the usual
- * outcome is that nothing moved, and an unchanged resource should cost no allocation.
+ * `undefined` rather than empty Sets: this runs on every `upsert`, and a resource where nothing
+ * moved should cost no allocation.
  */
 interface ProjectionChanges {
   /** only the local projection's value moved */
@@ -1878,16 +1866,6 @@ const NO_PROJECTION_CHANGES: ProjectionChanges = Object.freeze({
   remoteChanged: undefined,
 });
 
-/**
- * Partition the keys an incoming payload touches by which projection each one moves.
- *
- * `promoted` is the `inflightAttrs` a commit is about to merge into `remoteAttrs`, or `null` for
- * an upsert that merges only `updates`. It has to be passed rather than read off `cached` because
- * the two callers merge different things, and the post-merge remote value is what decides the
- * partition.
- *
- * Must be called before `remoteAttrs` is merged, while it still holds the pre-merge values.
- */
 /**
  * The keys a merge could move: everything the payload carries, plus anything being promoted that
  * the payload did not mention. `null` when there is nothing to examine.
@@ -1913,8 +1891,17 @@ function candidateKeys(
   return keys;
 }
 
+/**
+ * Partition the keys an incoming payload touches by which projection each one moves.
+ *
+ * Takes the values rather than the `CachedResource` so it cannot observe the merge it is
+ * describing: `prevRemote` is the remote state as it stands *before* `promoted` and `updates` are
+ * applied, and the two callers merge different things. Reading them off `cached` would make the
+ * result depend on whether the caller had already mutated it.
+ */
 function calculateChangedKeys(
-  cached: CachedResource,
+  prevRemote: Record<string, unknown> | null,
+  localAttrs: Record<string, unknown> | null,
   updates: ExistingResourceObject['attributes'],
   promoted: Record<string, unknown> | null,
   fields: ReturnType<Store['schema']['fields']>
@@ -1922,7 +1909,6 @@ function calculateChangedKeys(
   const keys = candidateKeys(updates, promoted);
   if (keys === null) return NO_PROJECTION_CHANGES;
 
-  const { localAttrs, remoteAttrs } = cached;
   let localOnly: Set<string> | undefined;
   let remoteOnly: Set<string> | undefined;
   let both: Set<string> | undefined;
@@ -1946,7 +1932,7 @@ function calculateChangedKeys(
 
     // what the remote projection reads, before and after. Mirrors the
     // `Object.assign(remoteAttrs, promoted, updates)` below it, so `updates` wins.
-    const wasRemote = remoteAttrs ? remoteAttrs[key] : undefined;
+    const wasRemote = prevRemote ? prevRemote[key] : undefined;
     const nowRemote = isUpdated ? updates[key] : isPromoted ? promoted[key] : wasRemote;
 
     // and what the local projection reads. An uncommitted local edit shadows the key in that
@@ -2293,7 +2279,13 @@ function cacheUpsert(
     // an upsert merges only `updates`, so nothing is being promoted. Channel-scoping this path
     // off the partition is a separate change -- for now it keeps announcing the union unscoped,
     // exactly as before.
-    changedKeys = calculateChangedKeys(cached, data.attributes, null, fields).remoteChanged;
+    changedKeys = calculateChangedKeys(
+      cached.remoteAttrs,
+      cached.localAttrs,
+      data.attributes,
+      null,
+      fields
+    ).remoteChanged;
   }
 
   cached.remoteAttrs = Object.assign(
@@ -2600,7 +2592,13 @@ function didCommit(
   }
   // partitioned before the merge below, which overwrites the pre-commit remote values the
   // comparison depends on
-  const changes = calculateChangedKeys(cached, newCanonicalAttributes, cached.inflightAttrs, fields);
+  const changes = calculateChangedKeys(
+    cached.remoteAttrs,
+    cached.localAttrs,
+    newCanonicalAttributes,
+    cached.inflightAttrs,
+    fields
+  );
 
   cached.remoteAttrs = Object.assign(
     cached.remoteAttrs || (Object.create(null) as Record<string, unknown>),
