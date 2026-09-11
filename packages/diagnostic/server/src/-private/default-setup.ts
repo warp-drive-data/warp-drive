@@ -221,7 +221,7 @@ export interface LaunchConfig {
   /**
    * The timeout for browser startup (in seconds)
    *
-   * @default 15
+   * @default 90
    */
   browserStartTimeout: number;
   /**
@@ -377,8 +377,11 @@ export function launchDefaults(overrides: Partial<LaunchConfig> = {}): LaunchCon
     // CI runners frequently have several browsers/builds contending for CPU
     // at once, and Chrome's own startup emits a bunch of harmless DBus
     // connection-attempt noise before it's ready; 15s was observed killing
-    // browsers that were still legitimately starting up.
-    browserStartTimeout: overrides.browserStartTimeout ?? 45,
+    // browsers that were still legitimately starting up, and under heavier
+    // concurrent CI load (many test apps launching a browser at once) even
+    // 45s has been observed to trip this watchdog on an otherwise-passing
+    // run.
+    browserStartTimeout: overrides.browserStartTimeout ?? 90,
     socketHeartbeatTimeout: overrides.socketHeartbeatTimeout ?? 15,
 
     setup: overrides.setup ?? (() => {}),

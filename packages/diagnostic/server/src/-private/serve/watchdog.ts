@@ -17,8 +17,8 @@ const MIN_DISCONNECT_TIMEOUT_MS = 63_000;
  * Returns a function that stops the watchdog once no longer needed.
  */
 export function startWatchdog(config: LaunchConfig, state: LaunchState): () => void {
-  const startTimeoutMs = (config.browserStartTimeout ?? 15) * 1000;
-  const disconnectTimeoutMs = Math.max((config.browserDisconnectTimeout ?? 15) * 1000, MIN_DISCONNECT_TIMEOUT_MS);
+  const startTimeoutMs = config.browserStartTimeout * 1000;
+  const disconnectTimeoutMs = Math.max(config.browserDisconnectTimeout * 1000, MIN_DISCONNECT_TIMEOUT_MS);
   const launchedAt = Date.now();
 
   const timer = setInterval(() => {
