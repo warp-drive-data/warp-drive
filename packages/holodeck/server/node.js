@@ -44,21 +44,14 @@ async function replayRequest(context, cacheKey) {
 
   try {
     const bodyPath = `${cacheKey}.body.br`;
-    // Convert to a web stream explicitly rather than handing `new Response()` a
-    // Node `Readable`. Undici treats a Node stream as an async iterable and
-    // adapts it into a byte stream whose controller it closes from inside a
-    // queued microtask. A client that aborts mid-response -- which the
-    // cancelled-request specs do deliberately, and which any real client does by
-    // navigating away -- closes that controller first, so the already-queued
-    // `close()` then throws `ERR_INVALID_STATE: ReadableStream is already
-    // closed`. Being a synchronous throw inside a microtask, it lands as an
-    // `uncaughtException` that no `.catch()` or `unhandledRejection` handler can
-    // intercept, and it terminates the whole mock-server process -- every later
-    // request in the run then fails as a network error.
-    //
-    // `Readable.toWeb` hands undici a real `ReadableStream`, which it uses
-    // directly instead of going through that adapter, so chunked reads,
-    // backpressure, and not buffering the whole body are all preserved.
+    // Hand `new Response()` a web stream explicitly. Undici treats a Node
+    // `Readable` as an async iterable and adapts it into a byte stream whose
+    // controller it closes from a queued microtask, so a client that aborts
+    // mid-response closes that controller first and the queued `close()` then
+    // throws `ERR_INVALID_STATE`. It throws synchronously inside a microtask,
+    // so it is an `uncaughtException` -- unreachable by `.catch()` or an
+    // `unhandledRejection` handler, and fatal to this process. Do not "fix" a
+    // recurrence by installing one; keep the body a real `ReadableStream`.
     const bodyInit =
       metaJson.status !== 204 && metaJson.status < 500 ? Readable.toWeb(fs.createReadStream(bodyPath)) : '';
 

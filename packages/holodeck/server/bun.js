@@ -43,13 +43,10 @@ async function replayRequest(context, cacheKey) {
 
   try {
     const bodyPath = `${cacheKey}.body.br`;
-    // Convert to a web stream explicitly rather than handing `new Response()` a
-    // Node `Readable` -- see the longer note on the same line in ./node.js. A
-    // Node stream is adapted by undici as an async iterable whose controller is
-    // closed from a queued microtask, so a client aborting mid-response can make
-    // that `close()` throw `ERR_INVALID_STATE` somewhere no handler can catch
-    // it, killing the mock-server process. `Readable.toWeb` keeps the streaming
-    // behaviour while avoiding that adapter.
+    // Hand `new Response()` a web stream explicitly, never a Node `Readable` --
+    // see the longer note on the same line in ./node.js. A Node stream reaches
+    // undici through an adapter whose queued-microtask `close()` races a client
+    // abort and can kill this process.
     const bodyInit =
       metaJson.status !== 204 && metaJson.status < 500 ? Readable.toWeb(fs.createReadStream(bodyPath)) : '';
 
