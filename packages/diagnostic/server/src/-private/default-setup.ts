@@ -49,9 +49,14 @@ export interface LaunchConfig {
    */
   debug: boolean;
   /**
-   * Whether to use the cors middleware
+   * Whether to use the cors middleware. The diagnostic server itself is
+   * always same-origin to the page it serves (including when proxying),
+   * so this is only needed if a consumer's own setup/cleanup hooks add
+   * routes that are fetched cross-origin; mock servers like holodeck
+   * apply their own cors middleware for their own (genuinely
+   * cross-origin) endpoints.
    *
-   * @default true
+   * @default false
    */
   useCors: boolean;
   /**
@@ -333,7 +338,7 @@ export function launchDefaults(overrides: Partial<LaunchConfig> = {}): LaunchCon
     noLaunch: overrides.noLaunch ?? false,
     filter: overrides.filter ?? false,
     debug: overrides.debug ?? false,
-    useCors: overrides.useCors ?? true,
+    useCors: overrides.useCors ?? false,
     headless: overrides.headless ?? false,
     useExisting: overrides.useExisting ?? true,
     key: overrides.key ?? null,
