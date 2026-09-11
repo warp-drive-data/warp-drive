@@ -15,7 +15,7 @@ module.exports = {
     });
 
     return {
-      content: generateModelSource(options.entity.name, rawAttrs),
+      content: generateModelSource(options.entity.name, rawAttrs, { packageName: '@warp-drive/legacy/model' }),
     };
   },
 };

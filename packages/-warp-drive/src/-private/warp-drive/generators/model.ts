@@ -75,13 +75,14 @@ function renderAttr(attr: ParsedAttr): string {
 /**
  * Generates the source for an `@ember-data/model` Model class.
  */
-export function generateModelSource(name: string, rawAttrs: string[]): string {
+export function generateModelSource(name: string, rawAttrs: string[], options?: { packageName?: string }): string {
   const { attrs, importedModules } = parseAttrs(rawAttrs);
   const className = classify(name);
   const importClause = importedModules.length ? `, { ${importedModules.join(', ')} }` : '';
   const body = attrs.map(renderAttr).join('\n');
+  const packageName = options?.packageName ?? '@ember-data/model';
 
-  return `import Model${importClause} from '@ember-data/model';
+  return `import Model${importClause} from '${packageName}';
 
 export default class ${className}Model extends Model {
 ${body}
