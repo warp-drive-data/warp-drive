@@ -26,6 +26,10 @@ export function extendFromApplicationEntity(
     isAddon: boolean;
     baseClass?: string;
     relativePath?: string;
+    /** The package to import the default base class from. Defaults to `@ember-data/${kind}`. */
+    packageName?: string;
+    /** Whether the package exports the default base class as a named or default export. Defaults to `default`. */
+    importStyle?: 'default' | 'named';
   }
 ): BaseClassResult {
   const entityName = options.entityName;
@@ -52,7 +56,7 @@ export function extendFromApplicationEntity(
     baseClass = classify(baseClassOption.replace('/', '-')) + classify(kind);
     importStatement = `import ${baseClass} from '${relativePath}${baseClassOption}';`;
   } else {
-    let baseClassPath = `@ember-data/${kind}`;
+    let baseClassPath = options.packageName ?? `@ember-data/${kind}`;
 
     if (baseClass.startsWith('JSONAPI')) {
       baseClassPath += '/json-api';
@@ -61,7 +65,10 @@ export function extendFromApplicationEntity(
       baseClassPath += '/rest';
     }
 
-    importStatement = `import ${baseClass} from '${baseClassPath}';`;
+    importStatement =
+      options.importStyle === 'named'
+        ? `import { ${baseClass} } from '${baseClassPath}';`
+        : `import ${baseClass} from '${baseClassPath}';`;
   }
 
   return { importStatement, baseClass };

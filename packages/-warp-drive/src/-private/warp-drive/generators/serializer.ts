@@ -5,6 +5,10 @@ export interface SerializerOptions {
   cwd: string;
   isAddon: boolean;
   baseClass?: string;
+  /** The package to import the default base class from. Defaults to `@ember-data/serializer`. */
+  packageName?: string;
+  /** Whether the package exports the default base class as a named or default export. Defaults to `default`. */
+  importStyle?: 'default' | 'named';
 }
 
 /**
@@ -16,6 +20,8 @@ export function generateSerializerSource(name: string, options: SerializerOption
     entityName: name,
     isAddon: options.isAddon,
     baseClass: options.baseClass,
+    packageName: options.packageName,
+    importStyle: options.importStyle,
   });
 
   return `${importStatement}
