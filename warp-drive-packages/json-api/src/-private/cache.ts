@@ -1826,11 +1826,6 @@ function getDefaultValue(
   }
 }
 
-/*
-      TODO @deprecate IGOR DAVID
-      There seems to be a potential bug here, where we will return keys that are not
-      in the schema
-  */
 function calculateChangedKeys(
   cached: CachedResource,
   updates: Exclude<ExistingResourceObject['attributes'], undefined>,
