@@ -14,13 +14,21 @@
   "engines": {
     "vscode": "^1.34.0"
   },
-  "categories": ["Programming Languages"],
-  "keywords": ["JSON:API", "AQL", "query language"],
+  "categories": [
+    "Programming Languages"
+  ],
+  "keywords": [
+    "JSON:API",
+    "AQL",
+    "query language"
+  ],
   "contributes": {
     "languages": [
       {
         "id": "warp-drive.aql",
-        "extensions": [".aql"],
+        "extensions": [
+          ".aql"
+        ],
         "configuration": "./language-configuration.json",
         "icon": {
           "light": "./icons/NCC-1701-a-blue.svg",
@@ -35,7 +43,14 @@
         "path": "./syntaxes/aql.tmLanguage.json"
       },
       {
-        "injectTo": ["source.js", "source.js.jsx", "source.jsx", "source.svelte", "source.ts", "source.tsx"],
+        "injectTo": [
+          "source.js",
+          "source.js.jsx",
+          "source.jsx",
+          "source.svelte",
+          "source.ts",
+          "source.tsx"
+        ],
         "scopeName": "inline.tagged-template-aql",
         "path": "./syntaxes/embedded-aql.tmLanguage.json",
         "embeddedLanguages": {

@@ -2,10 +2,7 @@
   "scopeName": "source.aql",
   "fileTypes": ["aql"],
   "name": "AQL",
-  "patterns": [
-    { "include": "#comment" },
-    { "include": "#query" }
-  ],
+  "patterns": [{ "include": "#comment" }, { "include": "#query" }],
   "repository": {
     "comment": {
       "name": "comment.line.number-sign.aql",
@@ -132,11 +129,7 @@
       ]
     },
     "query-body": {
-      "patterns": [
-        { "include": "#comment" },
-        { "include": "#data-block" },
-        { "include": "#filter-or-page-block" }
-      ]
+      "patterns": [{ "include": "#comment" }, { "include": "#data-block" }, { "include": "#filter-or-page-block" }]
     },
     "query": {
       "name": "meta.block.query.aql",
