@@ -42,10 +42,16 @@ async function replayRequest(context, cacheKey) {
 
   try {
     const bodyPath = `${cacheKey}.body.br`;
-    const bodyInit = metaJson.status !== 204 && metaJson.status < 500 ? fs.createReadStream(bodyPath) : '';
+    // Read the recorded body into memory rather than streaming it -- see the
+    // longer note on the same line in ./node.js. A Node `fs.ReadStream` handed
+    // to `new Response()` is adapted as an async iterable whose controller is
+    // closed from a queued microtask, so a client aborting mid-response can
+    // make that `close()` throw `ERR_INVALID_STATE` somewhere no handler can
+    // catch it, killing the mock-server process. Recorded bodies are tiny
+    // brotli-compressed fixtures with a `Content-Length` fixed at record time.
+    const bodyInit = metaJson.status !== 204 && metaJson.status < 500 ? fs.readFileSync(bodyPath) : '';
 
     const headers = new Headers(metaJson.headers || {});
-    // @ts-expect-error - createReadStream is supported in node
     const response = new Response(bodyInit, {
       status: metaJson.status,
       statusText: metaJson.statusText,

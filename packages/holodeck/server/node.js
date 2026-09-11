@@ -43,10 +43,23 @@ async function replayRequest(context, cacheKey) {
 
   try {
     const bodyPath = `${cacheKey}.body.br`;
-    const bodyInit = metaJson.status !== 204 && metaJson.status < 500 ? fs.createReadStream(bodyPath) : '';
+    // Read the recorded body into memory rather than streaming it. Handing a
+    // Node `fs.ReadStream` to `new Response()` leaves undici to adapt it as an
+    // async iterable, and that adapter closes the byte stream's controller from
+    // inside a queued microtask. A client that aborts mid-response (which the
+    // cancelled-request specs do deliberately) closes the controller first, so
+    // the already-queued `close()` then throws `ERR_INVALID_STATE: ReadableStream
+    // is already closed`. That throw happens synchronously inside a microtask,
+    // where no `.catch()` or `unhandledRejection` handler can reach it, so it
+    // terminates the whole mock-server process and every later request in the
+    // run fails as a network error.
+    //
+    // Recorded bodies are brotli-compressed test fixtures -- the largest in this
+    // repo is under 200 bytes -- so streaming them buys nothing, and their
+    // `Content-Length` is already fixed at record time.
+    const bodyInit = metaJson.status !== 204 && metaJson.status < 500 ? fs.readFileSync(bodyPath) : '';
 
     const headers = new Headers(metaJson.headers || {});
-    // @ts-expect-error - createReadStream is supported in node
     const response = new Response(bodyInit, {
       status: metaJson.status,
       statusText: metaJson.statusText,
