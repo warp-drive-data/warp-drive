@@ -1844,7 +1844,14 @@ function calculateChangedKeys(
 
   for (let i = 0; i < length; i++) {
     const key = keys[i];
-    if (!fields.has(key)) {
+    // `updates` is always `data.attributes` and the keys we return are always
+    // dispatched under the `attributes` notification bucket, so membership in
+    // the cache-field set is not enough: relationship fields are cache fields
+    // too, and a payload that puts a relationship name inside `attributes`
+    // would otherwise be announced as an attribute change for a key whose data
+    // lives in the graph and is never read back out of `remoteAttrs`.
+    const field = fields.get(key);
+    if (!field || isRelationship(field)) {
       continue;
     }
 
