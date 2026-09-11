@@ -1,5 +1,5 @@
 import type { Context } from 'hono';
-import { existsSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { readFile } from 'node:fs/promises';
 import { Agent } from 'node:https';
 import path from 'node:path';
@@ -11,11 +11,29 @@ import type { LaunchConfig } from '../default-setup.ts';
 import { INDEX_PATHS } from '../utils/const.ts';
 import { debug, info } from '../utils/debug.ts';
 
-// Create an agent that can negotiate both HTTP/1.1 and HTTP/2
-const httpsAgent = new Agent({
-  rejectUnauthorized: false, // For development with self-signed certs
-  ALPNProtocols: ['http/1.1', 'h2'], // Try HTTP/1.1 first, then HTTP/2
-});
+/**
+ * Proxy targets are always the diagnostic server's own holodeck companion
+ * (see LaunchConfig.proxy's docs), which shares this server's own self-signed
+ * cert (both read from HOLODECK_SSL_CERT_PATH). Trusting exactly that cert as
+ * the agent's CA -- rather than disabling certificate validation outright --
+ * lets the proxy accept holodeck's certificate without accepting an
+ * arbitrary/untrusted one. One agent is cached per cert path since an Agent
+ * pools connections and shouldn't be recreated per-request.
+ */
+const proxyAgents = new Map<string, Agent>();
+function getProxyAgent(certPath: string | null): Agent {
+  const key = certPath ?? '';
+  let agent = proxyAgents.get(key);
+  if (!agent) {
+    agent = new Agent({
+      ca: certPath ? readFileSync(certPath) : undefined,
+      // Try HTTP/1.1 first, then HTTP/2
+      ALPNProtocols: ['http/1.1', 'h2'],
+    });
+    proxyAgents.set(key, agent);
+  }
+  return agent;
+}
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -57,7 +75,7 @@ export async function handleFetch(config: LaunchConfig, state: LaunchState, c: C
           referrerPolicy: '' as const,
           headers,
           // @ts-expect-error
-          agent: httpsAgent,
+          agent: getProxyAgent(config.cert),
         };
 
         // if the original request had a body, forward it
@@ -77,9 +95,6 @@ export async function handleFetch(config: LaunchConfig, state: LaunchState, c: C
             delete headers[key];
           }
         }
-
-        console.log(newUrl);
-        console.dir(newReq, { depth: 2 });
 
         try {
           const response = await fetch(newUrl, newReq);
