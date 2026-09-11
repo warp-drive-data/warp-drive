@@ -148,9 +148,9 @@ describe('parseAQL', () => {
   });
 
   test('throws on an unterminated string literal', async () => {
-    await expect(
-      parseAQL('QUERY company { filter { label = "unterminated } }', makeSchemas())
-    ).rejects.toThrow(/Unterminated string literal/);
+    await expect(parseAQL('QUERY company { filter { label = "unterminated } }', makeSchemas())).rejects.toThrow(
+      /Unterminated string literal/
+    );
   });
 
   test('throws for an unregistered primary resource type', async () => {
