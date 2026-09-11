@@ -4,12 +4,10 @@ import { styleText } from 'node:util';
 
 import type { LaunchState } from '../../index.ts';
 import type { LaunchConfig } from '../default-setup.ts';
+import type { ReportMessage } from '../reporters/default.ts';
 import { debug, info } from '../utils/debug.ts';
 import { sinceStart } from '../utils/time.ts';
 import { watchAssets } from './watch.ts';
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type ReportMessage = Record<string, any>;
 
 export function buildHandler(config: LaunchConfig, state: LaunchState): (c: Context) => WSEvents {
   const Connections = new Set<WSContext>();
@@ -30,6 +28,10 @@ export function buildHandler(config: LaunchConfig, state: LaunchState): (c: Cont
 
       async onMessage(evt, ws) {
         state.lastMessageAt = Date.now();
+        // tsgolint (oxlint's type-aware checker) fails to resolve hono/ws's
+        // generic `MessageEvent<WSMessageReceive>` here and falls back to an
+        // error type, even though this type-checks cleanly under real tsc.
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         const msg = JSON.parse(evt.data as string) as ReportMessage;
         msg.launcher = state.browsers.get(msg.browserId)?.launcher ?? '<unknown>';
 
@@ -52,7 +54,7 @@ export function buildHandler(config: LaunchConfig, state: LaunchState): (c: Cont
             config.reporter.onTestFinish(msg);
             break;
           case 'suite-finish':
-            config.reporter.onSuiteFinish(msg);
+            config.reporter.onSuiteFinish();
 
             if (!config.serve) {
               ws.send(JSON.stringify({ name: 'close' }));
@@ -66,7 +68,7 @@ export function buildHandler(config: LaunchConfig, state: LaunchState): (c: Cont
               )}`
             );
             if (state.completed === state.expected) {
-              const exitCode = config.reporter.onRunFinish(msg) as number;
+              const exitCode = config.reporter.onRunFinish(msg);
               debug(`${styleText('green', '✅ [All Complete]')} ${styleText('yellow', '@' + sinceStart())}`);
 
               if (!config.serve) {

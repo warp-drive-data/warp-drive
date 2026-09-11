@@ -17,21 +17,55 @@ function indent(text: string, width = 2): string {
     .join('\n');
 }
 
+const HEADER_STR = '===================================================================';
+
+export interface DiagnosticResult {
+  testId: string;
+  message: string;
+  passed: boolean;
+  expected?: unknown;
+  actual?: unknown;
+  stack?: string;
+}
+
+export interface TestResult {
+  testId: string;
+  name: string;
+  passed: boolean;
+  skipped: boolean;
+  todo: boolean;
+  runDuration: number;
+  items: DiagnosticResult[];
+}
+
 /**
  * The server's reporter receives whatever shape the diagnostic wire protocol
  * emits over the websocket (see ../serve/socket-handler.ts) -- a JSON.parse()'d
  * message keyed by `name`, with server-only bookkeeping fields (testNo,
  * launcherDescription, _testStarted, etc.) mutated onto it in place as the run
- * progresses. There is no shared type with the client's emitter for this wire
- * shape, so this is intentionally loose.
+ * progresses.
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type ReportMessage = Record<string, any>;
-
-const HEADER_STR = '===================================================================';
+export interface ReportMessage {
+  name: string;
+  browserId: string;
+  windowId: string;
+  launcher: string;
+  launcherDescription: string;
+  testNo: number | string;
+  _testStarted: number;
+  data: TestResult;
+  timestamp: number;
+  error?: { name?: string; message?: string; stack?: string };
+}
 
 interface ReporterConfig {
   mode: 'dot' | 'compact' | 'verbose';
+}
+
+interface LauncherBrowser {
+  launcher: string;
+  id: string;
+  tabs: Set<string>;
 }
 
 export class CustomDotReporter {
@@ -42,7 +76,7 @@ export class CustomDotReporter {
 
   out: NodeJS.WriteStream;
 
-  launchers: Record<string, ReportMessage>;
+  launchers: Record<string, Record<string, LauncherBrowser>>;
   tabs: Map<string, { running: Map<string, ReportMessage> }>;
   idsToStartNumber: Map<string, number>;
 
@@ -269,8 +303,11 @@ export class CustomDotReporter {
 
     this.summarizeResults();
 
-    // Print run duration stats
-    const { startTime, realStartTime } = this;
+    // Print run duration stats. Guaranteed to be set by this point: onRunStart
+    // always runs before onRunFinish (see socket-handler.ts's suite-start/-finish
+    // wiring).
+    const startTime = this.startTime!;
+    const realStartTime = this.realStartTime!;
     const endTime = performance.now();
     const endDate = new Date();
     const fullElapsed = endTime - this.timeZero;
@@ -329,7 +366,7 @@ export class CustomDotReporter {
   }
 
   now(): number {
-    return performance.now() - this.startTime;
+    return performance.now() - this.startTime!;
   }
 
   displayDotLegend() {
@@ -370,7 +407,7 @@ export class CustomDotReporter {
 
     const result = report.data;
     if (result.passed && !result.todo) {
-      this.write(styleText('grey', '.'));
+      this.write(styleText('gray', '.'));
     } else if (!result.passed && result.todo) {
       this.write(styleText('cyan', 'T'));
     } else if (result.skipped) {
@@ -383,10 +420,10 @@ export class CustomDotReporter {
 
   displayFullResult(report: ReportMessage, verbose: boolean) {
     const result = report.data;
-    const name = `${styleText('grey', result.runDuration.toLocaleString('en-US') + 'ms')} ${styleText(
+    const name = `${styleText('gray', result.runDuration.toLocaleString('en-US') + 'ms')} ${styleText(
       'white',
       '#' + report.testNo
-    )} ${result.name} ${styleText('grey', report.launcherDescription)}`;
+    )} ${result.name} ${styleText('gray', report.launcherDescription)}`;
     if (result.passed && !result.todo) {
       this.write(`\t✅ ${styleText('green', 'Passed')}: ${name}\n`);
     } else if (!result.passed && result.todo) {
@@ -447,7 +484,7 @@ export class CustomDotReporter {
         if (duration > DEFAULT_TEST_TIMEOUT) {
           this.write(
             styleText(
-              'grey',
+              'gray',
               `\n\n⚠️  ${styleText('yellow', 'Pending:')} ${styleText('white', report.name)} has been running for ${styleText(
                 'yellow',
                 duration.toLocaleString('en-US') + 'ms'
@@ -491,7 +528,7 @@ export class CustomDotReporter {
             'yellow',
             `\t⛔️ Stuck (${styleText('red', duration.toLocaleString('en-US') + ' ms')}): (${
               report.data.testId
-            }) ${styleText('white', report.name)} ${styleText('grey', report.launcherDescription)}\n`
+            }) ${styleText('white', report.name)} ${styleText('gray', report.launcherDescription)}\n`
           )
         );
       });
@@ -503,7 +540,7 @@ export class CustomDotReporter {
     let totalDuration = 0;
     let testsToPrint = SLOW_TEST_COUNT;
     results.sort((a, b) => {
-      return a.runDuration > b.runDuration ? -1 : 1;
+      return a.data.runDuration > b.data.runDuration ? -1 : 1;
     });
 
     this.write(
@@ -568,7 +605,9 @@ export class CustomDotReporter {
     }
 
     this.globalFailures.forEach((failure) => {
-      const result = failure.error;
+      // guaranteed to be set: onGlobalFailure() is only ever called with a
+      // report that wraps an error.
+      const result = failure.error!;
       const label =
         result.name && result.message
           ? `[${result.name}] ${result.message}`
@@ -584,7 +623,7 @@ export class CustomDotReporter {
   }
 
   updateFailedTestCache() {
-    const failedTestIds = [...this.failedTestIds.entries()];
+    const failedTestIds = [...this.failedTestIds];
     const allFailuresAccounted = this.globalFailures.length === 0;
     const cacheFile = failedTestsFile;
 
@@ -598,7 +637,7 @@ export class CustomDotReporter {
             `\n\nSaved ${styleText('white', String(failedTestIds.length))} Failed Tests for Retry with IDS ${styleText(
               'white',
               failedTestIds.join(',')
-            )} in ${styleText('grey', cacheFile)}`
+            )} in ${styleText('gray', cacheFile)}`
           )
         );
 

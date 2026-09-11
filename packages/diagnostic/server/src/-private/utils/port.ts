@@ -57,11 +57,12 @@ export async function getPort(
       const port = await discoverPortPair(config.defaultPort || DEFAULT_PORT, checkPort);
       return { port, release: () => releasePortPair(port) };
     } else {
-      if (!acquirePortPair(config.port) || !(await pairIsFree(config.port, checkPort))) {
-        releasePortPair(config.port);
-        throw new Error(`Port ${config.port} (or ${config.port + 1}) is not available`);
+      const port = config.port;
+      if (!acquirePortPair(port) || !(await pairIsFree(port, checkPort))) {
+        releasePortPair(port);
+        throw new Error(`Port ${port} (or ${port + 1}) is not available`);
       }
-      return { port: config.port, release: () => releasePortPair(config.port) };
+      return { port, release: () => releasePortPair(port) };
     }
   } else {
     debug(`Port is not set, discovering available port pair`);

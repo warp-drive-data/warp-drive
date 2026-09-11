@@ -69,7 +69,7 @@ export async function handleFetch(config: LaunchConfig, state: LaunchState, c: C
         // // update to make sameOrigin
         headers['origin'] = target;
 
-        for (const [key, value] of Object.entries(headers)) {
+        for (const key of Object.keys(headers)) {
           if (key.startsWith('sec-')) {
             delete headers[key];
           }

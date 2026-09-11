@@ -1,7 +1,19 @@
 import { createConfig } from '@warp-drive/internal-config/tsdown/config.js';
 import { keepAssets } from '@warp-drive/internal-config/tsdown/keep-assets.js';
 
-export const externals = [];
+export const externals = [
+  'node:child_process',
+  'node:fs',
+  'node:fs/promises',
+  'node:http',
+  'node:http2',
+  'node:https',
+  'node:net',
+  'node:os',
+  'node:path',
+  'node:url',
+  'node:util',
+];
 export const entryPoints = ['./server/src/index.ts'];
 
 export default createConfig(

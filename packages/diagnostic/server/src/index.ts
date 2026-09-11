@@ -79,7 +79,7 @@ export interface LaunchState {
   completed: number;
   expected: number;
   closeHandlers: Array<() => void | Promise<void>>;
-  safeCleanup: () => void | Promise<void>;
+  safeCleanup: () => Promise<void>;
   server: ServerType;
   lastMessageAt: number | null;
 }
@@ -126,7 +126,7 @@ export async function launch(config: Partial<LaunchConfig>) {
     completed: 0,
     expected: resolvedConfig.parallel ?? 1,
     closeHandlers: [],
-    safeCleanup: () => void 0,
+    safeCleanup: () => Promise.resolve(),
     server: null as unknown as ServerType,
     lastMessageAt: null,
   } as LaunchState;
@@ -230,31 +230,44 @@ export async function launch(config: Partial<LaunchConfig>) {
     // @hono/node-server's serve() wraps node's http(2) server, whose
     // .listen() reports a bind failure asynchronously via an 'error' event,
     // so the retry loop has to await that event rather than a thrown error.
+    function bindServer(bindPort: number, bindHostname: string): Promise<ServerType> {
+      return new Promise<ServerType>((resolve, reject) => {
+        const s =
+          protocol === 'https'
+            ? serve(
+                {
+                  overrideGlobalObjects: true,
+                  fetch: app.fetch,
+                  serverOptions: {
+                    ...serveOptions.tls,
+                    // Allow HTTP/1.1 fallback for ALPN negotiation
+                    allowHTTP1: true,
+                  },
+                  createServer: createSecureServer,
+                  port: bindPort,
+                  hostname: bindHostname,
+                },
+                () => resolve(s)
+              )
+            : serve(
+                {
+                  overrideGlobalObjects: true,
+                  fetch: app.fetch,
+                  createServer: createHttpServer,
+                  port: bindPort,
+                  hostname: bindHostname,
+                },
+                () => resolve(s)
+              );
+        s.once('error', reject);
+      });
+    }
+
     const MAX_BIND_ATTEMPTS = 5;
     let server: ServerType;
     for (let attempt = 1; ; attempt++) {
       try {
-        server = await new Promise<ServerType>((resolve, reject) => {
-          const s = serve(
-            {
-              overrideGlobalObjects: true,
-              fetch: app.fetch,
-              serverOptions:
-                protocol === 'https'
-                  ? {
-                      ...serveOptions.tls,
-                      // Allow HTTP/1.1 fallback for ALPN negotiation
-                      allowHTTP1: true,
-                    }
-                  : {},
-              createServer: protocol === 'https' ? createSecureServer : createHttpServer,
-              port,
-              hostname,
-            },
-            () => resolve(s)
-          );
-          s.once('error', reject);
-        });
+        server = await bindServer(port, hostname);
         break;
       } catch (e) {
         if ((e as NodeJS.ErrnoException).code !== 'EADDRINUSE' || attempt >= MAX_BIND_ATTEMPTS) {

@@ -9,7 +9,7 @@ import { getFlags } from './utils/get-flags.ts';
 const CI_BROWSER = process.env.CI_BROWSER || 'chrome';
 const BROWSER_TAG = CI_BROWSER.toLowerCase() as 'chrome';
 
-const browser = await getBrowser(BROWSER_TAG as 'chrome' | 'chrome-beta' | 'chrome-canary');
+const browser = await getBrowser(BROWSER_TAG);
 
 let TEST_FAILURES: string | false;
 try {
@@ -291,7 +291,7 @@ export function launchDefaults(overrides: Partial<LaunchConfig> = {}): LaunchCon
   if (RETRY_TESTS) {
     console.log(
       styleText(
-        'grey',
+        'gray',
         `⚠️ Retrying ${styleText('bold', styleText('yellow', String(FAILURES.length)))} failed tests: ${styleText(
           'bold',
           styleText('white', FAILURES.join(','))
