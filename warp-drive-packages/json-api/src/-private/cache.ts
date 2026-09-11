@@ -1888,32 +1888,39 @@ const NO_PROJECTION_CHANGES: ProjectionChanges = Object.freeze({
  *
  * Must be called before `remoteAttrs` is merged, while it still holds the pre-merge values.
  */
+/**
+ * The keys a merge could move: everything the payload carries, plus anything being promoted that
+ * the payload did not mention. `null` when there is nothing to examine.
+ *
+ * `upsert` promotes nothing, so it gets the `Object.keys` array back unchanged. Only a commit
+ * carrying both a payload and promoted attrs pays for a copy, and that is once per save rather
+ * than once per resource in a document.
+ */
+function candidateKeys(
+  updates: ExistingResourceObject['attributes'],
+  promoted: Record<string, unknown> | null
+): string[] | null {
+  const updateKeys = updates ? Object.keys(updates) : null;
+  const promotedKeys = promoted ? Object.keys(promoted) : null;
+
+  if (!promotedKeys?.length) return updateKeys?.length ? updateKeys : null;
+  if (!updateKeys?.length) return promotedKeys;
+
+  const keys = updateKeys.slice();
+  for (let i = 0; i < promotedKeys.length; i++) {
+    if (!(promotedKeys[i] in updates!)) keys.push(promotedKeys[i]);
+  }
+  return keys;
+}
+
 function calculateChangedKeys(
   cached: CachedResource,
   updates: ExistingResourceObject['attributes'],
   promoted: Record<string, unknown> | null,
   fields: ReturnType<Store['schema']['fields']>
 ): ProjectionChanges {
-  const updateKeys = updates ? Object.keys(updates) : null;
-  const promotedKeys = promoted ? Object.keys(promoted) : null;
-  if (!updateKeys?.length && !promotedKeys?.length) {
-    return NO_PROJECTION_CHANGES;
-  }
-
-  // `upsert` passes no `promoted`, so it reuses the `Object.keys` array as-is. Only a commit
-  // carrying both a payload and promoted attrs pays for a copy, and that is once per save
-  // rather than once per resource in a document.
-  let keys: string[];
-  if (!promotedKeys?.length) {
-    keys = updateKeys!;
-  } else if (!updateKeys?.length) {
-    keys = promotedKeys;
-  } else {
-    keys = updateKeys.slice();
-    for (let i = 0; i < promotedKeys.length; i++) {
-      if (!(promotedKeys[i] in updates!)) keys.push(promotedKeys[i]);
-    }
-  }
+  const keys = candidateKeys(updates, promoted);
+  if (keys === null) return NO_PROJECTION_CHANGES;
 
   const { localAttrs, remoteAttrs } = cached;
   let localOnly: Set<string> | undefined;
@@ -1930,23 +1937,27 @@ function calculateChangedKeys(
     // `attributes` would otherwise be announced as an attribute change for a key whose data
     // lives in the graph and is never read back out of `remoteAttrs`.
     const field = fields.get(key);
-    if (!field || isRelationship(field)) {
-      continue;
-    }
+    if (!field || isRelationship(field)) continue;
 
-    const prevRemote = remoteAttrs ? remoteAttrs[key] : undefined;
-    // mirrors `Object.assign(remoteAttrs, promoted, updates)` -- `updates` wins over `promoted`
-    const nextRemote =
-      updates && key in updates ? updates[key] : promoted && key in promoted ? promoted[key] : prevRemote;
+    // `in` rather than a truthy check throughout: a field explicitly set to `undefined` is
+    // present, and treating it as absent would read the wrong value as the baseline.
+    const isPromoted = promoted !== null && key in promoted;
+    const isUpdated = updates !== undefined && key in updates;
 
-    // a local edit shadows both projections' reads of it, before and after
-    const local = localAttrs ? localAttrs[key] : undefined;
-    const hasLocal = local !== undefined;
-    const prevLocal = hasLocal ? local : promoted && key in promoted ? promoted[key] : prevRemote;
-    const nextLocal = hasLocal ? local : nextRemote;
+    // what the remote projection reads, before and after. Mirrors the
+    // `Object.assign(remoteAttrs, promoted, updates)` below it, so `updates` wins.
+    const wasRemote = remoteAttrs ? remoteAttrs[key] : undefined;
+    const nowRemote = isUpdated ? updates[key] : isPromoted ? promoted[key] : wasRemote;
 
-    const remoteMoved = prevRemote !== nextRemote;
-    const localMoved = prevLocal !== nextLocal;
+    // and what the local projection reads. An uncommitted local edit shadows the key in that
+    // projection, so its value is the same before and after.
+    const localEdit = localAttrs ? localAttrs[key] : undefined;
+    const isEdited = localEdit !== undefined;
+    const wasLocal = isEdited ? localEdit : isPromoted ? promoted[key] : wasRemote;
+    const nowLocal = isEdited ? localEdit : nowRemote;
+
+    const remoteMoved = wasRemote !== nowRemote;
+    const localMoved = wasLocal !== nowLocal;
 
     if (remoteMoved) {
       (remoteChanged ??= new Set<string>()).add(key);
