@@ -9,9 +9,11 @@ import type { NewResourceKey, ResourceKey } from '../../types/identifier.ts';
 import type { Value } from '../../types/json/raw';
 import type { OpaqueRecordInstance, TypedRecordInstance, TypeFromInstance } from '../../types/record.ts';
 import type {
+  CollectionField,
+  FieldSchema,
   LegacyAttributeField,
   LegacyRelationshipField,
-  LegacyRelationshipField as RelationshipSchema,
+  ResourceField,
 } from '../../types/schema/fields.ts';
 import type {
   ExistingResourceIdentifierObject,
@@ -33,6 +35,13 @@ import type { Store } from './store.ts';
     models.
   */
 type PreloadRelationshipValue = OpaqueRecordInstance | string;
+
+/**
+ * Every field kind whose data belongs in a ResourceObject's `relationships`:
+ * LegacyMode's `belongsTo`/`hasMany` and their PolarisMode counterparts
+ * `resource`/`collection`.
+ */
+type RelationshipSchema = LegacyRelationshipField | ResourceField | CollectionField;
 export function preloadData(store: Store, identifier: NewResourceKey, preload: Record<string, Value>): void {
   const jsonPayload: Partial<ExistingResourceObject> = {};
   //TODO(Igor) consider the polymorphic case
@@ -42,7 +51,7 @@ export function preloadData(store: Store, identifier: NewResourceKey, preload: R
     const preloadValue = preload[key];
 
     const field = fields.get(key);
-    if (field && (field.kind === 'hasMany' || field.kind === 'belongsTo')) {
+    if (field && isPreloadableRelationship(field)) {
       if (!jsonPayload.relationships) {
         jsonPayload.relationships = {};
       }
@@ -59,18 +68,32 @@ export function preloadData(store: Store, identifier: NewResourceKey, preload: R
   cache.upsert(identifier, jsonPayload, hasRecord);
 }
 
+/**
+ * Relationship data belongs in `relationships`, never in `attributes`. Both
+ * field-kind vocabularies have to be recognized here: LegacyMode's
+ * `belongsTo`/`hasMany` and PolarisMode's `resource`/`collection`. A resource
+ * can be in PolarisMode while its store still offers the legacy `preload`
+ * option, so only checking the legacy pair silently routed `resource` and
+ * `collection` preloads into `attributes`.
+ */
+function isPreloadableRelationship(field: FieldSchema): field is RelationshipSchema {
+  const { kind } = field;
+  return kind === 'belongsTo' || kind === 'hasMany' || kind === 'resource' || kind === 'collection';
+}
+
 function preloadRelationship(
   schema: RelationshipSchema,
   preloadValue: PreloadRelationshipValue | null | Array<PreloadRelationshipValue>
 ): InnerRelationshipDocument<ExistingResourceIdentifierObject> {
   const relatedType = schema.type;
+  const { kind } = schema;
 
-  if (schema.kind === 'hasMany') {
-    assert('You need to pass in an array to set a hasMany property on a record', Array.isArray(preloadValue));
+  if (kind === 'hasMany' || kind === 'collection') {
+    assert(`You need to pass in an array to set a ${kind} property on a record`, Array.isArray(preloadValue));
     return { data: preloadValue.map((value) => _convertPreloadRelationshipToJSON(value, relatedType)) };
   }
 
-  assert('You should not pass in an array to set a belongsTo property on a record', !Array.isArray(preloadValue));
+  assert(`You should not pass in an array to set a ${kind} property on a record`, !Array.isArray(preloadValue));
   return { data: preloadValue ? _convertPreloadRelationshipToJSON(preloadValue, relatedType) : null };
 }
 
