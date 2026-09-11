@@ -1826,6 +1826,36 @@ function getDefaultValue(
   }
 }
 
+/**
+ * The keys a commit promotes from `inflightAttrs` into `remoteAttrs` that the remote projection
+ * has not otherwise been told about: saved keys the server echoed verbatim or omitted from its
+ * response. Keys already in `changedKeys` are excluded because `didCommit` notifies those
+ * unscoped, and keys whose remote value is unchanged are excluded so a no-op commit stays silent.
+ *
+ * Must be called before `remoteAttrs` is merged, while it still holds the pre-commit values.
+ */
+function collectPromotedRemoteKeys(
+  cached: CachedResource,
+  changedKeys: Set<string> | undefined,
+  fields: ReturnType<Store['schema']['fields']>
+): Set<string> | undefined {
+  const inflight = cached.inflightAttrs;
+  if (!inflight) return undefined;
+
+  const priorRemote = cached.remoteAttrs;
+  let promoted: Set<string> | undefined;
+
+  for (const key of Object.keys(inflight)) {
+    if (!fields.has(key)) continue;
+    if (changedKeys?.has(key)) continue;
+    if (priorRemote && priorRemote[key] === inflight[key]) continue;
+    promoted = promoted || new Set<string>();
+    promoted.add(key);
+  }
+
+  return promoted;
+}
+
 /*
       TODO @deprecate IGOR DAVID
       There seems to be a potential bug here, where we will return keys that are not
@@ -2493,6 +2523,11 @@ function didCommit(
     newCanonicalAttributes = data.attributes;
   }
   const changedKeys = newCanonicalAttributes && calculateChangedKeys(cached, newCanonicalAttributes, fields);
+  // `calculateChangedKeys` baselines against `inflightAttrs`, so keys the server echoed
+  // verbatim or omitted are absent from `changedKeys` -- yet they do move into `remoteAttrs`
+  // below. Tagged 'remote', not unscoped: the local projection already read these values, so
+  // its value does not move across the commit.
+  const promotedKeys = collectPromotedRemoteKeys(cached, changedKeys, fields);
 
   cached.remoteAttrs = Object.assign(
     cached.remoteAttrs || (Object.create(null) as Record<string, unknown>),
@@ -2508,6 +2543,7 @@ function didCommit(
   }
 
   if (changedKeys?.size) cache._capabilities.notifyChange(identifier, 'attributes', changedKeys);
+  if (promotedKeys?.size) cache._capabilities.notifyChange(identifier, 'attributes', promotedKeys, 'remote');
   cache._capabilities.notifyChange(identifier, 'state', null);
 }
 
