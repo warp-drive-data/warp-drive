@@ -1,0 +1,28 @@
+{
+  "name": "aql-tests",
+  "private": true,
+  "version": "5.10.0-alpha.5",
+  "description": "Tests for @warp-drive/experiments' AQL parser",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com:warp-drive-data/warp-drive.git",
+    "directory": "tests/aql"
+  },
+  "directories": {
+    "test": "tests"
+  },
+  "type": "module",
+  "scripts": {
+    "sync": "echo \"syncing\"",
+    "check:types": "node ./node_modules/typescript-7/bin/tsc --noEmit",
+    "test": "vitest run tests/"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@warp-drive/experiments": "workspace:*",
+    "@warp-drive/internal-config": "workspace:*",
+    "typescript-7": "npm:typescript@7.1.0-dev.20260907.1",
+    "vitest": "^4.1.11"
+  }
+}
