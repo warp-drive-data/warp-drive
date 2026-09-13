@@ -1033,8 +1033,8 @@ importers:
         specifier: workspace:*
         version: file:tools/internal-config
       ember-inflector:
-        specifier: 6.0.0
-        version: 6.0.0(@babel/core@7.29.7)
+        specifier: 7.0.0
+        version: 7.0.0(@babel/core@7.29.7)
       ember-source:
         specifier: 'catalog:'
         version: 7.2.0
@@ -1521,7 +1521,7 @@ importers:
         version: file:packages/request(e0ff4349d3585fabae29421d7a4b80a6)
       '@ember-data/request-utils':
         specifier: workspace:*
-        version: file:packages/request-utils(3daec088a365faaf05f548d322c3a0f9)
+        version: file:packages/request-utils(778d45e2ea35549b5602b3c60d05f11a)
       '@ember-data/serializer':
         specifier: workspace:*
         version: file:packages/serializer(e0ff4349d3585fabae29421d7a4b80a6)
@@ -1617,10 +1617,10 @@ importers:
         version: 0.3.1(193c5d1faa3fb7d58f8591e5a7b926ae)
       ember-data:
         specifier: workspace:*
-        version: file:packages/-ember-data(1923e5fa5dd7254527c29656dd34eb6a)
+        version: file:packages/-ember-data(5f9a29dfc0c333abd85bdd0bd63b70e5)
       ember-inflector:
-        specifier: 6.0.0
-        version: 6.0.0(@babel/core@7.29.7)
+        specifier: 7.0.0
+        version: 7.0.0(@babel/core@7.29.7)
       ember-qunit:
         specifier: 9.1.0
         version: 9.1.0(30de2af0219ff80cd0c2cfde12ce49e3)
@@ -2821,7 +2821,7 @@ importers:
         version: file:packages/request(@babel/core@7.29.7)
       '@ember-data/request-utils':
         specifier: workspace:*
-        version: file:packages/request-utils(3a23d15216661fdc31ba79ef395bed77)
+        version: file:packages/request-utils(427b56a62dfe7f012a405793ca98528c)
       '@ember-data/rest':
         specifier: workspace:*
         version: file:packages/rest(@babel/core@7.29.7)
@@ -2877,8 +2877,8 @@ importers:
         specifier: ^2.4.0
         version: 2.4.0(@babel/core@7.29.7)
       ember-inflector:
-        specifier: ^6.0.0
-        version: 6.0.0(@babel/core@7.29.7)
+        specifier: ^7.0.0
+        version: 7.0.0(@babel/core@7.29.7)
       ember-source:
         specifier: 'catalog:'
         version: 7.2.0(@glimmer/component@2.1.1)
@@ -4331,7 +4331,7 @@ packages:
   '@ember-data/request-utils@file:packages/request-utils':
     resolution: {directory: packages/request-utils, type: directory}
     peerDependencies:
-      ember-inflector: ^4.0.2 || ^5.0.0 || ^6.0.0
+      ember-inflector: ^4.0.2 || ^5.0.0 || ^6.0.0 || ^7.0.0
     peerDependenciesMeta:
       ember-inflector:
         optional: true
@@ -8044,8 +8044,8 @@ packages:
   ember-estree@0.8.0:
     resolution: {integrity: sha512-FvH2jGEkcIMPDPgQLHFVSTyF5p7HscVIiJ36v6ce1C9q/6KXCcE0EB2idaGcDWlhB42I3PmLg+vLbUp2GIznBQ==}
 
-  ember-inflector@6.0.0:
-    resolution: {integrity: sha512-g6trqBhQHRwlq9bBmoyxhAl0tD0/CaTKK0xWPUgi3BfxFOgGG1bbiwAx+tjyiAkLzDqU+ihyjtT+sd41y6K1hA==}
+  ember-inflector@7.0.0:
+    resolution: {integrity: sha512-dHnlYfxBnpiRMZUgrYpdcQ/kGGMCuVh3KhHhJ0TU2PPJY7TB+3XqUWCf7ihppxkbRf1igLVRietYK2v0OXzm8Q==}
 
   ember-page-title@9.0.3:
     resolution: {integrity: sha512-fedRHUsvq8tIZgOii8jTrfAyeq+la/9H5eAzhNNwEyzo7nDMmqK2SxsyBUGXprd8fOacsPabLlzlucMi/4mUpA==}
@@ -12607,25 +12607,25 @@ snapshots:
       - '@glint/template'
       - supports-color
 
-  '@ember-data/request-utils@file:packages/request-utils(3a23d15216661fdc31ba79ef395bed77)':
+  '@ember-data/request-utils@file:packages/request-utils(427b56a62dfe7f012a405793ca98528c)':
     dependencies:
       '@embroider/macros': 1.20.7
       '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.29.7)
       '@warp-drive/utilities': file:warp-drive-packages/utilities(4ded94bf05a058c4d301833388abca58)
     optionalDependencies:
-      ember-inflector: 6.0.0(@babel/core@7.29.7)
+      ember-inflector: 7.0.0(@babel/core@7.29.7)
     transitivePeerDependencies:
       - '@babel/core'
       - '@glint/template'
       - supports-color
 
-  '@ember-data/request-utils@file:packages/request-utils(3daec088a365faaf05f548d322c3a0f9)':
+  '@ember-data/request-utils@file:packages/request-utils(778d45e2ea35549b5602b3c60d05f11a)':
     dependencies:
       '@embroider/macros': 1.20.7(@glint/template@1.9.0)
       '@warp-drive/core': file:warp-drive-packages/core(e0ff4349d3585fabae29421d7a4b80a6)
       '@warp-drive/utilities': file:warp-drive-packages/utilities(edee9e53a6af44fd6387ab28cd9cc109)
     optionalDependencies:
-      ember-inflector: 6.0.0(@babel/core@7.29.7)
+      ember-inflector: 7.0.0(@babel/core@7.29.7)
     transitivePeerDependencies:
       - '@babel/core'
       - '@glint/template'
@@ -17472,7 +17472,7 @@ snapshots:
       - supports-color
       - typescript
 
-  ember-data@file:packages/-ember-data(1923e5fa5dd7254527c29656dd34eb6a):
+  ember-data@file:packages/-ember-data(5f9a29dfc0c333abd85bdd0bd63b70e5):
     dependencies:
       '@ember-data/adapter': file:packages/adapter(e0ff4349d3585fabae29421d7a4b80a6)
       '@ember-data/debug': file:packages/debug(e0ff4349d3585fabae29421d7a4b80a6)
@@ -17481,7 +17481,7 @@ snapshots:
       '@ember-data/legacy-compat': file:packages/legacy-compat(e0ff4349d3585fabae29421d7a4b80a6)
       '@ember-data/model': file:packages/model(e0ff4349d3585fabae29421d7a4b80a6)
       '@ember-data/request': file:packages/request(e0ff4349d3585fabae29421d7a4b80a6)
-      '@ember-data/request-utils': file:packages/request-utils(3daec088a365faaf05f548d322c3a0f9)
+      '@ember-data/request-utils': file:packages/request-utils(778d45e2ea35549b5602b3c60d05f11a)
       '@ember-data/serializer': file:packages/serializer(e0ff4349d3585fabae29421d7a4b80a6)
       '@ember-data/store': file:packages/store(1db19aeacb23dc35e135a30c3e2e982e)
       '@ember-data/tracking': file:packages/tracking(c3b811ac8aadeb1fb26c7cc7a16e4531)
@@ -17562,9 +17562,9 @@ snapshots:
       content-tag: 4.2.0
       oxc-parser: 0.130.0
 
-  ember-inflector@6.0.0(@babel/core@7.29.7):
+  ember-inflector@7.0.0(@babel/core@7.29.7):
     dependencies:
-      '@embroider/addon-shim': 1.10.0
+      '@embroider/addon-shim': 1.10.3
       decorator-transforms: 2.4.0(@babel/core@7.29.7)
     transitivePeerDependencies:
       - '@babel/core'

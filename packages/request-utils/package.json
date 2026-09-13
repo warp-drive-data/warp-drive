@@ -45,7 +45,7 @@
     "version": 2
   },
   "peerDependencies": {
-    "ember-inflector": "^4.0.2 || ^5.0.0 || ^6.0.0"
+    "ember-inflector": "^4.0.2 || ^5.0.0 || ^6.0.0 || ^7.0.0"
   },
   "peerDependenciesMeta": {
     "ember-inflector": {
@@ -63,7 +63,7 @@
     "@babel/preset-env": "^7.29.7",
     "@babel/preset-typescript": "^7.29.7",
     "@warp-drive/internal-config": "workspace:*",
-    "ember-inflector": "6.0.0",
+    "ember-inflector": "7.0.0",
     "ember-source": "catalog:",
     "tsdown": "^0.23.0",
     "typescript-7": "npm:typescript@7.1.0-dev.20260907.1"
