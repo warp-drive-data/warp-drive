@@ -4,6 +4,7 @@ import { HTTPException } from 'hono/http-exception';
 import { logger } from 'hono/logger';
 import fs from 'node:fs';
 import { createSecureServer } from 'node:http2';
+import { Readable } from 'node:stream';
 import { styleText } from 'node:util';
 import { Worker, threadId, parentPort } from 'node:worker_threads';
 import path from 'path';
@@ -42,10 +43,14 @@ async function replayRequest(context, cacheKey) {
 
   try {
     const bodyPath = `${cacheKey}.body.br`;
-    const bodyInit = metaJson.status !== 204 && metaJson.status < 500 ? fs.createReadStream(bodyPath) : '';
+    // Hand `new Response()` a web stream explicitly, never a Node `Readable` --
+    // see the longer note on the same line in ./node.js. A Node stream reaches
+    // undici through an adapter whose queued-microtask `close()` races a client
+    // abort and can kill this process.
+    const bodyInit =
+      metaJson.status !== 204 && metaJson.status < 500 ? Readable.toWeb(fs.createReadStream(bodyPath)) : '';
 
     const headers = new Headers(metaJson.headers || {});
-    // @ts-expect-error - createReadStream is supported in node
     const response = new Response(bodyInit, {
       status: metaJson.status,
       statusText: metaJson.statusText,

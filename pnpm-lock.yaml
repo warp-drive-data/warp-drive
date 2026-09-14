@@ -703,11 +703,11 @@ importers:
         specifier: ^2.1.1
         version: 2.1.1
       '@types/react':
-        specifier: ^19.2.18
-        version: 19.2.18
+        specifier: ^19.3.0
+        version: 19.3.0
       '@types/react-dom':
-        specifier: ^19.2.7
-        version: 19.2.7(@types/react@19.2.18)
+        specifier: ^19.3.0
+        version: 19.3.0(@types/react@19.3.0)
       '@warp-drive/internal-config':
         specifier: workspace:*
         version: file:tools/internal-config(@babel/runtime@7.29.7)
@@ -2364,20 +2364,20 @@ importers:
         specifier: ^1.20.7
         version: 1.20.7
       '@types/react':
-        specifier: ^19.2.18
-        version: 19.2.18
+        specifier: ^19.3.0
+        version: 19.3.0
       '@types/react-dom':
-        specifier: ^19.2.7
-        version: 19.2.7(@types/react@19.2.18)
+        specifier: ^19.3.0
+        version: 19.3.0(@types/react@19.3.0)
       '@warp-drive-internal/specs':
         specifier: workspace:*
-        version: file:specs(68d6cc8ec332d7efeb52ea97b5bbec0b)
+        version: file:specs(a7ff23c8118f752c1ebc654ecc3746ca)
       '@warp-drive/core':
         specifier: workspace:*
         version: file:warp-drive-packages/core(@babel/core@7.29.7)
       '@warp-drive/diagnostic':
         specifier: workspace:*
-        version: file:packages/diagnostic(a1d731b3ac87b6eb45f39e08a20591fd)
+        version: file:packages/diagnostic(a10e3d29b4c298437c5600599f1b5217)
       '@warp-drive/holodeck':
         specifier: workspace:*
         version: file:packages/holodeck(a510bc545ed25bc6a53fefeb5da03d5b)
@@ -2400,11 +2400,11 @@ importers:
         specifier: ^2.4.0
         version: 2.4.0(@babel/core@7.29.7)
       react:
-        specifier: ^19.2.8
-        version: 19.2.8
+        specifier: ^19.3.0
+        version: 19.3.0
       react-dom:
-        specifier: ^19.2.8
-        version: 19.2.8(react@19.2.8)
+        specifier: ^19.3.0
+        version: 19.3.0(react@19.3.0)
       typescript-7:
         specifier: npm:typescript@7.1.0-dev.20260907.1
         version: typescript@7.1.0-dev.20260907.1
@@ -3310,8 +3310,8 @@ importers:
         specifier: workspace:*
         version: file:warp-drive-packages/tc39-proposal-signals(@babel/core@7.29.7)
       react:
-        specifier: ^19.2.8
-        version: 19.2.8
+        specifier: ^19.3.0
+        version: 19.3.0
       signal-polyfill:
         specifier: ^0.2.2
         version: 0.2.2
@@ -3335,8 +3335,8 @@ importers:
         specifier: ^7.29.7
         version: 7.29.7
       '@types/react':
-        specifier: ^19.2.18
-        version: 19.2.18
+        specifier: ^19.3.0
+        version: 19.3.0
       '@warp-drive/internal-config':
         specifier: workspace:*
         version: file:tools/internal-config(@babel/runtime@7.29.7)
@@ -6347,13 +6347,13 @@ packages:
   '@types/qunit@2.19.14':
     resolution: {integrity: sha512-ou2RMtwyDnW1btrMnDMZeL6V5/yRRbuHKrRC6y8IuzDljjVzw6wPCVFb8p4qJD0NkUkf3BdZeJJIBzjK1BUUDQ==}
 
-  '@types/react-dom@19.2.7':
-    resolution: {integrity: sha512-I8bPpDLcHBv1qiIiXDCy71Rt8eQDKJP0sMSWJphDdAcdqiJ1sGpZamavoEIRZmYzjia9LuEb2HlYdDpmoENpvQ==}
+  '@types/react-dom@19.3.0':
+    resolution: {integrity: sha512-ZI7bU42mZXXKHn/qNLEw2IrbiINU7X5+vfgdixBHkCNpYWXjKgfQ/P+uyGb5CjOLB9UcnTeg3rylQtV2hym44Q==}
     peerDependencies:
-      '@types/react': ^19.2.0
+      '@types/react': ^19.3.0
 
-  '@types/react@19.2.18':
-    resolution: {integrity: sha512-AnzbBERsrLKtk2XSfTbYRLjQPdy116Sty4q+T+Bp3IC4l6jNBvreVPAHmpq9qhXQM7CXZPjLVmGMw9sy+hxQ3w==}
+  '@types/react@19.3.0':
+    resolution: {integrity: sha512-N0rFCuH9YoxG9/m61l9MfpJKfmLOVU0em7ipIz6TRgSSkvReLB9vL85GB+yr8Bs5leqpvg96JSwF4ZS1s4viQg==}
 
   '@types/resolve@1.20.2':
     resolution: {integrity: sha512-60BCwRFOZCQhDncwQdxxeOEEkbc5dIMccYLwbxsS4TUNeVECQ/pBJ0j09mrHOl/JJvpRPGwO9SvE4nR2Nb/a4Q==}
@@ -6847,8 +6847,8 @@ packages:
     resolution: {directory: packages/diagnostic, type: directory}
     peerDependencies:
       '@ember/test-helpers': 5.4.3
-      react: ^19.2.8
-      react-dom: ^19.2.8
+      react: ^19.3.0
+      react-dom: ^19.3.0
     peerDependenciesMeta:
       '@ember/test-helpers':
         optional: true
@@ -9978,13 +9978,13 @@ packages:
     resolution: {integrity: sha512-K5zQjDllxWkf7Z5xJdV0/B0WTNqx6vxG70zJE4N0kBs4LovmEYWJzQGxC9bS9RAKu3bgM40lrd5zoLJ12MQ5BA==}
     engines: {node: '>= 0.10'}
 
-  react-dom@19.2.8:
-    resolution: {integrity: sha512-rVprimfGBG3DR+Tq0IQG2DT5PxKth1WIGDmj5yPmlzr4YBe7uyE+Du4oVqTDXZSHGGGXRtTJEGSSePyQCMBglQ==}
+  react-dom@19.3.0:
+    resolution: {integrity: sha512-JDk8dgif51OjFoDE70+OT9ICyYr+69HlmihNwp1+Nsfbna3t5sIiCa9ZJktDmQ4/1b/rn26hIAR2uYXDMr5r0Q==}
     peerDependencies:
-      react: ^19.2.8
+      react: ^19.3.0
 
-  react@19.2.8:
-    resolution: {integrity: sha512-PWaYA1L/q9u2u7xYQi+Y3L3Yfnie7XyLeaJICV1MGD6LprsBxcAqGjYyr0eY3p+QdsA+x/Irkt4Qif8D63+Sbw==}
+  react@19.3.0:
+    resolution: {integrity: sha512-E8LUcbtBWt20bbl2YoHfx4ZDBdxVTfOKtCZn9cDSJ4l6/nuoApcpIBcj47t2wZoVX8g2ZHuMHbiShgCR1T5Sog==}
     engines: {node: '>=0.10.0'}
 
   read-ini-file@4.0.0:
@@ -10237,8 +10237,8 @@ packages:
     resolution: {integrity: sha512-xAg7SOnEhrm5zI3puOOKyy1OMcMlIJZYNJY7xLBwSze0UjhPLnWfj2GF2EpT0jmzaJKIWKHLsaSSajf35bcYnA==}
     engines: {node: '>=v12.22.7'}
 
-  scheduler@0.27.0:
-    resolution: {integrity: sha512-eNv+WrVbKu1f3vbYJT/xtiF5syA5HPIMtf9IgY/nKg0sWqzAUEvqY/xm7OcZc/qafLx/iO9FgOmeSAp4v5ti/Q==}
+  scheduler@0.28.0:
+    resolution: {integrity: sha512-juorfCmIkIw8tT+p5BXSm6PJjQF/ycEYmKyzURCIt/RaZIhL+PulbQ9Yu2z1HdOJDdqDTlxA1+xKBmHXJsczAw==}
 
   scule@1.3.0:
     resolution: {integrity: sha512-6FtHJEvt+pVMIB9IBY+IcCJ6Z5f1iQnytgyfKMhDKgmzYG+TeH/wx1y3l27rshSbLiSanrR9ffZDrEsmjlQF2g==}
@@ -14842,11 +14842,11 @@ snapshots:
 
   '@types/qunit@2.19.14': {}
 
-  '@types/react-dom@19.2.7(@types/react@19.2.18)':
+  '@types/react-dom@19.3.0(@types/react@19.3.0)':
     dependencies:
-      '@types/react': 19.2.18
+      '@types/react': 19.3.0
 
-  '@types/react@19.2.18':
+  '@types/react@19.3.0':
     dependencies:
       csstype: 3.2.3
 
@@ -15380,18 +15380,6 @@ snapshots:
       - '@glint/template'
       - supports-color
 
-  '@warp-drive-internal/specs@file:specs(68d6cc8ec332d7efeb52ea97b5bbec0b)':
-    dependencies:
-      '@embroider/macros': 1.20.7
-      '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.29.7)
-      '@warp-drive/diagnostic': file:packages/diagnostic(a1d731b3ac87b6eb45f39e08a20591fd)
-      '@warp-drive/holodeck': file:packages/holodeck(a510bc545ed25bc6a53fefeb5da03d5b)
-      '@warp-drive/json-api': file:warp-drive-packages/json-api(4ded94bf05a058c4d301833388abca58)
-      '@warp-drive/utilities': file:warp-drive-packages/utilities(4ded94bf05a058c4d301833388abca58)
-    transitivePeerDependencies:
-      - '@glint/template'
-      - supports-color
-
   '@warp-drive-internal/specs@file:specs(820bb9dd2f57b4c90c61cd37a49f93c1)':
     dependencies:
       '@embroider/macros': 1.20.7(@glint/template@1.9.0)
@@ -15401,6 +15389,18 @@ snapshots:
       '@warp-drive/holodeck': file:packages/holodeck(03abbaa9f63acaebd13d49b7d579fd2d)
       '@warp-drive/json-api': file:warp-drive-packages/json-api(edee9e53a6af44fd6387ab28cd9cc109)
       '@warp-drive/utilities': file:warp-drive-packages/utilities(edee9e53a6af44fd6387ab28cd9cc109)
+    transitivePeerDependencies:
+      - '@glint/template'
+      - supports-color
+
+  '@warp-drive-internal/specs@file:specs(a7ff23c8118f752c1ebc654ecc3746ca)':
+    dependencies:
+      '@embroider/macros': 1.20.7
+      '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.29.7)
+      '@warp-drive/diagnostic': file:packages/diagnostic(a10e3d29b4c298437c5600599f1b5217)
+      '@warp-drive/holodeck': file:packages/holodeck(a510bc545ed25bc6a53fefeb5da03d5b)
+      '@warp-drive/json-api': file:warp-drive-packages/json-api(4ded94bf05a058c4d301833388abca58)
+      '@warp-drive/utilities': file:warp-drive-packages/utilities(4ded94bf05a058c4d301833388abca58)
     transitivePeerDependencies:
       - '@glint/template'
       - supports-color
@@ -15568,7 +15568,7 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  '@warp-drive/diagnostic@file:packages/diagnostic(a1d731b3ac87b6eb45f39e08a20591fd)':
+  '@warp-drive/diagnostic@file:packages/diagnostic(a10e3d29b4c298437c5600599f1b5217)':
     dependencies:
       '@embroider/macros': 1.20.7
       '@hono/node-server': 1.19.17(hono@4.13.7)
@@ -15580,8 +15580,8 @@ snapshots:
       hono: 4.13.7
       qunit-dom: 3.6.0
     optionalDependencies:
-      react: 19.2.8
-      react-dom: 19.2.8(react@19.2.8)
+      react: 19.3.0
+      react-dom: 19.3.0(react@19.3.0)
     transitivePeerDependencies:
       - '@babel/core'
       - '@glint/template'
@@ -16477,7 +16477,7 @@ snapshots:
       '@embroider/macros': 1.20.7
       '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.29.7)
       '@warp-drive/tc39-proposal-signals': file:warp-drive-packages/tc39-proposal-signals(@babel/core@7.29.7)
-      react: 19.2.8
+      react: 19.3.0
       signal-polyfill: 0.2.2
     transitivePeerDependencies:
       - '@babel/core'
@@ -16489,7 +16489,7 @@ snapshots:
       '@embroider/macros': 1.20.7(@glint/template@1.9.0)
       '@warp-drive/core': file:warp-drive-packages/core(e0ff4349d3585fabae29421d7a4b80a6)
       '@warp-drive/tc39-proposal-signals': file:warp-drive-packages/tc39-proposal-signals(e0ff4349d3585fabae29421d7a4b80a6)
-      react: 19.2.8
+      react: 19.3.0
       signal-polyfill: 0.2.2
     transitivePeerDependencies:
       - '@babel/core'
@@ -19715,12 +19715,12 @@ snapshots:
       iconv-lite: 0.7.2
       unpipe: 1.0.0
 
-  react-dom@19.2.8(react@19.2.8):
+  react-dom@19.3.0(react@19.3.0):
     dependencies:
-      react: 19.2.8
-      scheduler: 0.27.0
+      react: 19.3.0
+      scheduler: 0.28.0
 
-  react@19.2.8: {}
+  react@19.3.0: {}
 
   read-ini-file@4.0.0:
     dependencies:
@@ -20103,7 +20103,7 @@ snapshots:
     dependencies:
       xmlchars: 2.2.0
 
-  scheduler@0.27.0: {}
+  scheduler@0.28.0: {}
 
   scule@1.3.0: {}
 
