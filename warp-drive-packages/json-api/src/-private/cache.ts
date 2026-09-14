@@ -2276,9 +2276,9 @@ function cacheUpsert(
   // if no cache entry existed, no record exists / property has been accessed
   // and thus we do not need to notify changes to any properties.
   if (calculateChanges && existed && data.attributes) {
-    // an upsert merges only `updates`, so nothing is being promoted. Channel-scoping this path
-    // off the partition is a separate change -- for now it keeps announcing the union unscoped,
-    // exactly as before.
+    // upsert merges only `updates`, so nothing is promoted and the notify stays unscoped.
+    // NOTE: this does not skip locally-edited keys. An edit that still diverges from the
+    // incoming value is reported; one that matches is dropped by patchLocalAttributes.
     changedKeys = calculateChangedKeys(
       cached.remoteAttrs,
       cached.localAttrs,
