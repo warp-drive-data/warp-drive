@@ -50,7 +50,7 @@
     }
   },
   "dependencies": {
-    "@embroider/macros": "^1.20.7",
+    "@embroider/macros": "^1.21.1",
     "@manypkg/get-packages": "^3.1.0",
     "@warp-drive/core": "workspace:*",
     "comment-json": "^5.0.0",

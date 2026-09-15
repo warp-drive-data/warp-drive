@@ -44,7 +44,7 @@
     "ember-provide-consume-context": "^0.10.0"
   },
   "dependencies": {
-    "@embroider/macros": "^1.20.7",
+    "@embroider/macros": "^1.21.1",
     "@warp-drive/core": "workspace:*"
   },
   "peerDependenciesMeta": {
@@ -60,7 +60,7 @@
     "@babel/runtime": "^7.29.7",
     "@ember/test-helpers": "5.4.3",
     "@ember/test-waiters": "^4.1.2",
-    "@embroider/addon-dev": "^8.3.1",
+    "@embroider/addon-dev": "^8.4.0",
     "@glimmer/component": "^2.1.1",
     "@glint/ember-tsc": "^1.11.4",
     "@glint/template": "^1.9.0",

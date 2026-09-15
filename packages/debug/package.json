@@ -40,7 +40,7 @@
   },
   "dependencies": {
     "@ember/edition-utils": "^1.2.0",
-    "@embroider/macros": "^1.20.7",
+    "@embroider/macros": "^1.21.1",
     "@warp-drive/core": "workspace:*",
     "@warp-drive/utilities": "workspace:*"
   },
