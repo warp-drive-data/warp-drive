@@ -4,7 +4,7 @@ url: /api/@warp-drive/schema-dsl/interfaces/ObjectSchemaOptions.md
 
 # &#x20;ObjectSchemaOptions
 
-Defined in: [entities/object-schema.ts:12](https://github.com/warp-drive-data/warp-drive/blob/b6590b8852e5d32b32e3eece336d0f892e8b02a5/warp-drive-packages/schema-dsl/src/entities/object-schema.ts#L12)
+Defined in: [entities/object-schema.ts:12](https://github.com/warp-drive-data/warp-drive/blob/3f5536455a585951f2252138f2bb555d8ad844bf/warp-drive-packages/schema-dsl/src/entities/object-schema.ts#L12)
 
 Options accepted by the [ObjectSchema](../functions/ObjectSchema.md) decorator.
 
@@ -16,7 +16,7 @@ Options accepted by the [ObjectSchema](../functions/ObjectSchema.md) decorator.
 optional hash?: boolean;
 ```
 
-Defined in: [entities/object-schema.ts:20](https://github.com/warp-drive-data/warp-drive/blob/b6590b8852e5d32b32e3eece336d0f892e8b02a5/warp-drive-packages/schema-dsl/src/entities/object-schema.ts#L20)
+Defined in: [entities/object-schema.ts:20](https://github.com/warp-drive-data/warp-drive/blob/3f5536455a585951f2252138f2bb555d8ad844bf/warp-drive-packages/schema-dsl/src/entities/object-schema.ts#L20)
 
 Reserved for future use. The compiled schema's `identity` is currently
 determined solely by whether a property on the class is decorated with

@@ -6,7 +6,7 @@ url: /api/@warp-drive/experiments/storage/interfaces/ReactiveStorageOptions.md
 
 # &#x20;ReactiveStorageOptions
 
-Defined in: [storage/storage.ts:7](https://github.com/warp-drive-data/warp-drive/blob/b6590b8852e5d32b32e3eece336d0f892e8b02a5/warp-drive-packages/experiments/src/storage/storage.ts#L7)
+Defined in: [storage/storage.ts:7](https://github.com/warp-drive-data/warp-drive/blob/3f5536455a585951f2252138f2bb555d8ad844bf/warp-drive-packages/experiments/src/storage/storage.ts#L7)
 
 ## Properties
 
@@ -16,7 +16,7 @@ Defined in: [storage/storage.ts:7](https://github.com/warp-drive-data/warp-drive
 optional fallbackToMemory?: boolean;
 ```
 
-Defined in: [storage/storage.ts:12](https://github.com/warp-drive-data/warp-drive/blob/b6590b8852e5d32b32e3eece336d0f892e8b02a5/warp-drive-packages/experiments/src/storage/storage.ts#L12)
+Defined in: [storage/storage.ts:12](https://github.com/warp-drive-data/warp-drive/blob/3f5536455a585951f2252138f2bb555d8ad844bf/warp-drive-packages/experiments/src/storage/storage.ts#L12)
 
 If true, falls back to in-memory storage when the underlying
 storage is unavailable (e.g., private browsing mode).
@@ -31,7 +31,7 @@ optional onQuotaExceeded?: (key, value) =>
 | Promise<boolean>;
 ```
 
-Defined in: [storage/storage.ts:24](https://github.com/warp-drive-data/warp-drive/blob/b6590b8852e5d32b32e3eece336d0f892e8b02a5/warp-drive-packages/experiments/src/storage/storage.ts#L24)
+Defined in: [storage/storage.ts:24](https://github.com/warp-drive-data/warp-drive/blob/3f5536455a585951f2252138f2bb555d8ad844bf/warp-drive-packages/experiments/src/storage/storage.ts#L24)
 
 Called when a write fails due to quota exceeded.
 Return true to retry the write after freeing space.
@@ -59,7 +59,7 @@ Return true to retry the write after freeing space.
 optional updateOnQuotaExceeded?: boolean;
 ```
 
-Defined in: [storage/storage.ts:18](https://github.com/warp-drive-data/warp-drive/blob/b6590b8852e5d32b32e3eece336d0f892e8b02a5/warp-drive-packages/experiments/src/storage/storage.ts#L18)
+Defined in: [storage/storage.ts:18](https://github.com/warp-drive-data/warp-drive/blob/3f5536455a585951f2252138f2bb555d8ad844bf/warp-drive-packages/experiments/src/storage/storage.ts#L18)
 
 If true, updates signal state even when writes fail due to quota.
 The onQuotaExceeded callback will be invoked before retrying.

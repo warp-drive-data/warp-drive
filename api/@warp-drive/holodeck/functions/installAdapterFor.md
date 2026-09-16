@@ -8,7 +8,7 @@ url: /api/@warp-drive/holodeck/functions/installAdapterFor.md
 function installAdapterFor(owner, store): void;
 ```
 
-Defined in: [index.ts:312](https://github.com/warp-drive-data/warp-drive/blob/b6590b8852e5d32b32e3eece336d0f892e8b02a5/packages/holodeck/src/index.ts#L312)
+Defined in: [index.ts:312](https://github.com/warp-drive-data/warp-drive/blob/3f5536455a585951f2252138f2bb555d8ad844bf/packages/holodeck/src/index.ts#L312)
 
 Creates an adapterFor function that wraps the provided adapterFor function
 to override the adapter's \_fetchRequest method to route requests through

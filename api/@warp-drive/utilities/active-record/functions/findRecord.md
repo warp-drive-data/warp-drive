@@ -10,7 +10,7 @@ url: /api/@warp-drive/utilities/active-record/functions/findRecord.md
 function findRecord<T, M, E>(identifier, options?): FindRecordRequestOptions<ReactiveDataDocument<T, M, E>, T>;
 ```
 
-Defined in: [-private/active-record/find-record.ts:69](https://github.com/warp-drive-data/warp-drive/blob/b6590b8852e5d32b32e3eece336d0f892e8b02a5/warp-drive-packages/utilities/src/-private/active-record/find-record.ts#L69)
+Defined in: [-private/active-record/find-record.ts:69](https://github.com/warp-drive-data/warp-drive/blob/3f5536455a585951f2252138f2bb555d8ad844bf/warp-drive-packages/utilities/src/-private/active-record/find-record.ts#L69)
 
 Builds request options to fetch a single resource by a known id or identifier
 configured for the url and header expectations of most ActiveRecord APIs.
@@ -100,7 +100,7 @@ const data = await store.request(options);
 function findRecord(identifier, options?): FindRecordRequestOptions;
 ```
 
-Defined in: [-private/active-record/find-record.ts:73](https://github.com/warp-drive-data/warp-drive/blob/b6590b8852e5d32b32e3eece336d0f892e8b02a5/warp-drive-packages/utilities/src/-private/active-record/find-record.ts#L73)
+Defined in: [-private/active-record/find-record.ts:73](https://github.com/warp-drive-data/warp-drive/blob/3f5536455a585951f2252138f2bb555d8ad844bf/warp-drive-packages/utilities/src/-private/active-record/find-record.ts#L73)
 
 Builds request options to fetch a single resource by a known id or identifier
 configured for the url and header expectations of most ActiveRecord APIs.
@@ -176,7 +176,7 @@ function findRecord<T, M, E>(
 ): FindRecordRequestOptions<ReactiveDataDocument<T, M, E>, T>;
 ```
 
-Defined in: [-private/active-record/find-record.ts:77](https://github.com/warp-drive-data/warp-drive/blob/b6590b8852e5d32b32e3eece336d0f892e8b02a5/warp-drive-packages/utilities/src/-private/active-record/find-record.ts#L77)
+Defined in: [-private/active-record/find-record.ts:77](https://github.com/warp-drive-data/warp-drive/blob/3f5536455a585951f2252138f2bb555d8ad844bf/warp-drive-packages/utilities/src/-private/active-record/find-record.ts#L77)
 
 Builds request options to fetch a single resource by a known id or identifier
 configured for the url and header expectations of most ActiveRecord APIs.
@@ -274,7 +274,7 @@ function findRecord(
 ): FindRecordRequestOptions;
 ```
 
-Defined in: [-private/active-record/find-record.ts:82](https://github.com/warp-drive-data/warp-drive/blob/b6590b8852e5d32b32e3eece336d0f892e8b02a5/warp-drive-packages/utilities/src/-private/active-record/find-record.ts#L82)
+Defined in: [-private/active-record/find-record.ts:82](https://github.com/warp-drive-data/warp-drive/blob/3f5536455a585951f2252138f2bb555d8ad844bf/warp-drive-packages/utilities/src/-private/active-record/find-record.ts#L82)
 
 Builds request options to fetch a single resource by a known id or identifier
 configured for the url and header expectations of most ActiveRecord APIs.

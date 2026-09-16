@@ -8,7 +8,7 @@ url: /api/@warp-drive/core/reactive/functions/getRequestState.md
 function getRequestState<RT, E>(future): Readonly<RequestState<RT, StructuredErrorDocument<E>>>;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-state.ts:825](https://github.com/warp-drive-data/warp-drive/blob/b6590b8852e5d32b32e3eece336d0f892e8b02a5/warp-drive-packages/core/src/signals/request-state.ts#L825)
+Defined in: [warp-drive-packages/core/src/signals/request-state.ts:825](https://github.com/warp-drive-data/warp-drive/blob/3f5536455a585951f2252138f2bb555d8ad844bf/warp-drive-packages/core/src/signals/request-state.ts#L825)
 
 `getRequestState` can be used in both JavaScript and Template contexts.
 

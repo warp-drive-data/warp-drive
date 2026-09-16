@@ -6,7 +6,7 @@ url: /api/@warp-drive/legacy/serializer/rest/classes/RESTSerializer.md
 
 # &#x20;RESTSerializer
 
-Defined in: [warp-drive-packages/legacy/src/serializer/rest.ts:77](https://github.com/warp-drive-data/warp-drive/blob/b6590b8852e5d32b32e3eece336d0f892e8b02a5/warp-drive-packages/legacy/src/serializer/rest.ts#L77)
+Defined in: [warp-drive-packages/legacy/src/serializer/rest.ts:77](https://github.com/warp-drive-data/warp-drive/blob/3f5536455a585951f2252138f2bb555d8ad844bf/warp-drive-packages/legacy/src/serializer/rest.ts#L77)
 
 :::danger
 ⚠️ **This is LEGACY documentation** for a feature that is no longer encouraged to be used.

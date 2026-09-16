@@ -10,7 +10,7 @@ url: /api/@warp-drive/experiments/storage/functions/onStorageEvent.md
 function onStorageEvent(listener): () => void;
 ```
 
-Defined in: [storage/storage.ts:128](https://github.com/warp-drive-data/warp-drive/blob/b6590b8852e5d32b32e3eece336d0f892e8b02a5/warp-drive-packages/experiments/src/storage/storage.ts#L128)
+Defined in: [storage/storage.ts:128](https://github.com/warp-drive-data/warp-drive/blob/3f5536455a585951f2252138f2bb555d8ad844bf/warp-drive-packages/experiments/src/storage/storage.ts#L128)
 
 Subscribes to storage-change events, whether they originate from the
 native Storage API (a `StorageEvent`, fired cross-tab) or from

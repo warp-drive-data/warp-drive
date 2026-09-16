@@ -8,7 +8,7 @@ url: /api/@warp-drive/core/types/request/type-aliases/PostQueryRequestOptions.md
 type PostQueryRequestOptions<RT> = object;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:187](https://github.com/warp-drive-data/warp-drive/blob/b6590b8852e5d32b32e3eece336d0f892e8b02a5/warp-drive-packages/core/src/types/request.ts#L187)
+Defined in: [warp-drive-packages/core/src/types/request.ts:187](https://github.com/warp-drive-data/warp-drive/blob/3f5536455a585951f2252138f2bb555d8ad844bf/warp-drive-packages/core/src/types/request.ts#L187)
 
 The request shape produced by the `postQuery` request builders, for
 use with [Store.request](../../../classes/Store.md#request).
@@ -30,7 +30,7 @@ optional body?:
   | FormData;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:203](https://github.com/warp-drive-data/warp-drive/blob/b6590b8852e5d32b32e3eece336d0f892e8b02a5/warp-drive-packages/core/src/types/request.ts#L203)
+Defined in: [warp-drive-packages/core/src/types/request.ts:203](https://github.com/warp-drive-data/warp-drive/blob/3f5536455a585951f2252138f2bb555d8ad844bf/warp-drive-packages/core/src/types/request.ts#L203)
 
 the body to send with the request
 
@@ -42,7 +42,7 @@ the body to send with the request
 cacheOptions: CacheOptions & object;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:208](https://github.com/warp-drive-data/warp-drive/blob/b6590b8852e5d32b32e3eece336d0f892e8b02a5/warp-drive-packages/core/src/types/request.ts#L208)
+Defined in: [warp-drive-packages/core/src/types/request.ts:208](https://github.com/warp-drive-data/warp-drive/blob/3f5536455a585951f2252138f2bb555d8ad844bf/warp-drive-packages/core/src/types/request.ts#L208)
 
 see [CacheOptions](../interfaces/CacheOptions.md). A `key` is required since `POST`/`QUERY`
 requests otherwise have no cache-safe way to derive one from the url.
@@ -65,7 +65,7 @@ a key that uniquely identifies this request
 headers: Headers;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:199](https://github.com/warp-drive-data/warp-drive/blob/b6590b8852e5d32b32e3eece336d0f892e8b02a5/warp-drive-packages/core/src/types/request.ts#L199)
+Defined in: [warp-drive-packages/core/src/types/request.ts:199](https://github.com/warp-drive-data/warp-drive/blob/3f5536455a585951f2252138f2bb555d8ad844bf/warp-drive-packages/core/src/types/request.ts#L199)
 
 the headers to send with the request
 
@@ -77,7 +77,7 @@ the headers to send with the request
 method: "POST" | "QUERY";
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:195](https://github.com/warp-drive-data/warp-drive/blob/b6590b8852e5d32b32e3eece336d0f892e8b02a5/warp-drive-packages/core/src/types/request.ts#L195)
+Defined in: [warp-drive-packages/core/src/types/request.ts:195](https://github.com/warp-drive-data/warp-drive/blob/3f5536455a585951f2252138f2bb555d8ad844bf/warp-drive-packages/core/src/types/request.ts#L195)
 
 the HTTP method to use
 
@@ -89,7 +89,7 @@ the HTTP method to use
 op: "query";
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:217](https://github.com/warp-drive-data/warp-drive/blob/b6590b8852e5d32b32e3eece336d0f892e8b02a5/warp-drive-packages/core/src/types/request.ts#L217)
+Defined in: [warp-drive-packages/core/src/types/request.ts:217](https://github.com/warp-drive-data/warp-drive/blob/3f5536455a585951f2252138f2bb555d8ad844bf/warp-drive-packages/core/src/types/request.ts#L217)
 
 the name of the request operation
 
@@ -101,6 +101,6 @@ the name of the request operation
 url: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:191](https://github.com/warp-drive-data/warp-drive/blob/b6590b8852e5d32b32e3eece336d0f892e8b02a5/warp-drive-packages/core/src/types/request.ts#L191)
+Defined in: [warp-drive-packages/core/src/types/request.ts:191](https://github.com/warp-drive-data/warp-drive/blob/3f5536455a585951f2252138f2bb555d8ad844bf/warp-drive-packages/core/src/types/request.ts#L191)
 
 the url to request
