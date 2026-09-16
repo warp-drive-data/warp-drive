@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/warp-drive/pr-preview/pr-11111/sw.js', { scope: '/warp-drive/pr-preview/pr-11111/' })})}

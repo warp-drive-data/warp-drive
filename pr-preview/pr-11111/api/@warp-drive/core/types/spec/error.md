@@ -1,0 +1,7 @@
+---
+url: /warp-drive/pr-preview/pr-11111/api/@warp-drive/core/types/spec/error.md
+---
+
+## Types
+
+* [ApiError](interfaces/ApiError.md)
