@@ -1,0 +1,103 @@
+# Deploys a preview of the docs site for each pull request to
+# https://canary.warp-drive.io/pr-preview/pr-<number>/
+#
+# This targets the `gh-pages` branch directly (via rossjrw/pr-preview-action, which
+# namespaces each PR under pr-preview/pr-<number>/ on that branch) rather than the
+# "GitHub Actions" Pages build type that .github/workflows/deploy.yml used to use --
+# that type publishes one atomic, whole-site artifact per run, which can't host
+# per-PR subfolders alongside the production deploy. See deploy.yml for the
+# production side of this same gh-pages branch.
+#
+# BASE is root-relative (no /warp-drive/ prefix) to match deploy.yml's BASE=''
+# for production -- both assume the canary.warp-drive.io custom domain, which
+# deploy.yml binds via a CNAME file at the branch root, as the canonical way this
+# site is served. (It'll also still resolve at
+# https://warp-drive-data.github.io/warp-drive/pr-preview/pr-<number>/ once GitHub's
+# custom-domain redirect kicks in, but that's incidental, not the target.)
+#
+# NOTE: for this to work, this repository's Settings > Pages > "Build and
+# deployment" source must be set to "Deploy from a branch" (gh-pages / root),
+# not "GitHub Actions".
+#
+# Gated to PRs labeled ":label: feat" or ":label: doc" (this repo's actual label
+# names -- see enforce-pr-labels-canary.yml) -- most PRs don't touch the docs, and
+# building the whole site isn't free. `labeled`/`unlabeled` are included so a
+# preview appears as soon as one of those labels is added (not just on the next
+# push) and gets torn down if the label is later removed, without a merge or push
+# to a PR that was already open.
+name: docs PR preview
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, labeled, unlabeled, closed]
+
+# One deploy at a time per PR, so an old, in-flight build for a superseded commit
+# can't win a race against (and clobber) the one for the latest commit.
+concurrency:
+  group: pr-preview-${{ github.event.number }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  pull-requests: write
+
+env:
+  TURBO_API: http://127.0.0.1:9080
+  TURBO_TOKEN: this-is-not-a-secret
+  TURBO_TEAM: myself
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Determine deploy vs remove vs no-op
+        id: mode
+        env:
+          # reflects the PR's labels *after* this event (e.g. post-removal on an
+          # `unlabeled` event), so this alone is enough to decide what to do
+          HAS_QUALIFYING_LABEL: "${{ contains(github.event.pull_request.labels.*.name, ':label: feat') || contains(github.event.pull_request.labels.*.name, ':label: doc') }}"
+        run: |
+          if [ "${{ github.event.action }}" = "closed" ]; then
+            echo "action=remove" >> "$GITHUB_OUTPUT"
+          elif [ "$HAS_QUALIFYING_LABEL" = "true" ]; then
+            echo "action=deploy" >> "$GITHUB_OUTPUT"
+          elif [ "${{ github.event.action }}" = "unlabeled" ]; then
+            # the qualifying label (if any) was just removed and none remain
+            echo "action=remove" >> "$GITHUB_OUTPUT"
+          else
+            # e.g. opened/synchronize on a PR with neither label -- nothing to do
+            echo "action=none" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Checkout
+        if: steps.mode.outputs.action == 'deploy'
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 1
+      - uses: ./.github/actions/setup
+        if: steps.mode.outputs.action == 'deploy'
+        with:
+          install: true
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          ACTIONS_RUNNER_DEBUG: ${{ secrets.ACTIONS_RUNNER_DEBUG == 'true' }}
+          DISABLE_TURBO_CACHE: ${{ secrets.ACTIONS_RUNNER_DEBUG == 'true' }}
+      - name: Build docs
+        if: steps.mode.outputs.action == 'deploy'
+        run: pnpm run build
+        working-directory: docs-viewer
+        env:
+          BASE: /pr-preview/pr-${{ github.event.number }}/
+          HOSTNAME: https://canary.warp-drive.io
+          # see the matching comment on `pwa` in config.mts
+          DISABLE_PWA: 'true'
+          # see the matching comment in deploy.yml
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Deploy or remove preview
+        if: steps.mode.outputs.action != 'none'
+        uses: rossjrw/pr-preview-action@ffa7509e91a3ec8dfc2e5536c4d5c1acdf7a6de9 # v1.8.1
+        with:
+          action: ${{ steps.mode.outputs.action }}
+          source-dir: docs-viewer/docs.warp-drive.io/.vitepress/dist
+          # matches the custom domain deploy.yml binds via its `cname` input, so the
+          # sticky PR comment/QR code link to the URL that actually works, not the
+          # default <owner>.github.io/<repo>/ path (which BASE above doesn't target)
+          pages-base-url: https://canary.warp-drive.io
