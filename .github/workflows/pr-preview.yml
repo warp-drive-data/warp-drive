@@ -1,0 +1,63 @@
+# Deploys a preview of the docs site for each pull request to
+# https://warp-drive-data.github.io/warp-drive/pr-preview/pr-<number>/
+#
+# This targets the `gh-pages` branch directly (via rossjrw/pr-preview-action, which
+# namespaces each PR under pr-preview/pr-<number>/ on that branch) rather than the
+# "GitHub Actions" Pages build type that .github/workflows/deploy.yml used to use --
+# that type publishes one atomic, whole-site artifact per run, which can't host
+# per-PR subfolders alongside the production deploy. See deploy.yml for the
+# production side of this same gh-pages branch.
+#
+# NOTE: for this to work, this repository's Settings > Pages > "Build and
+# deployment" source must be set to "Deploy from a branch" (gh-pages / root),
+# not "GitHub Actions".
+name: docs PR preview
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, closed]
+
+# One deploy at a time per PR, so an old, in-flight build for a superseded commit
+# can't win a race against (and clobber) the one for the latest commit.
+concurrency:
+  group: pr-preview-${{ github.event.number }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  pull-requests: write
+
+env:
+  TURBO_API: http://127.0.0.1:9080
+  TURBO_TOKEN: this-is-not-a-secret
+  TURBO_TEAM: myself
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        if: github.event.action != 'closed'
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 1
+      - uses: ./.github/actions/setup
+        if: github.event.action != 'closed'
+        with:
+          install: true
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          ACTIONS_RUNNER_DEBUG: ${{ secrets.ACTIONS_RUNNER_DEBUG == 'true' }}
+          DISABLE_TURBO_CACHE: ${{ secrets.ACTIONS_RUNNER_DEBUG == 'true' }}
+      - name: Build docs
+        if: github.event.action != 'closed'
+        run: pnpm run build
+        working-directory: docs-viewer
+        env:
+          BASE: /warp-drive/pr-preview/pr-${{ github.event.number }}/
+          HOSTNAME: https://warp-drive-data.github.io
+          # see the matching comment in deploy.yml
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Deploy or remove preview
+        uses: rossjrw/pr-preview-action@ffa7509e91a3ec8dfc2e5536c4d5c1acdf7a6de9 # v1.8.1
+        with:
+          source-dir: docs-viewer/docs.warp-drive.io/.vitepress/dist

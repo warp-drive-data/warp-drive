@@ -11,16 +11,17 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+# Sets permissions of the GITHUB_TOKEN to allow deployment to the gh-pages branch
+# (see .github/workflows/pr-preview.yml, which pushes to the same branch for PR
+# previews -- the "GitHub Actions" build type's single-artifact-per-run model can't
+# host those alongside this deploy, so both workflows target the branch instead)
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
 
 # Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
 # However, do ~~NOT~~ cancel in-progress runs as we want to allow these production deployments to complete.
 concurrency:
-  group: pages
+  group: pages-production
   cancel-in-progress: true
 
 env:
@@ -29,8 +30,7 @@ env:
   TURBO_TEAM: myself
 
 jobs:
-  # Build job
-  build:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -43,9 +43,7 @@ jobs:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           ACTIONS_RUNNER_DEBUG: ${{ secrets.ACTIONS_RUNNER_DEBUG == 'true' }}
           DISABLE_TURBO_CACHE: ${{ secrets.ACTIONS_RUNNER_DEBUG == 'true' }}
-      - name: Setup Pages
-        uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
-      - name: Generate Artifact
+      - name: Build docs
         run: pnpm run build
         working-directory: docs-viewer
         env:
@@ -56,20 +54,13 @@ jobs:
           # 60/hour per-IP anonymous limit, which is shared with unrelated jobs across
           # the whole GitHub Actions runner pool and fails intermittently under load
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
-        with:
-          path: docs-viewer/docs.warp-drive.io/.vitepress/dist
-
-  # Deployment job
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    needs: build
-    runs-on: ubuntu-latest
-    name: Deploy
-    steps:
       - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1
+        uses: peaceiris/actions-gh-pages@1ef5a1b1df4c63fe21a2242edbee6cac921ece01 # v4.1.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: docs-viewer/docs.warp-drive.io/.vitepress/dist
+          cname: canary.warp-drive.io
+          # PR previews live under pr-preview/ on this same gh-pages branch (see
+          # .github/workflows/pr-preview.yml) -- keep_files stops this production
+          # deploy from wiping them out on every push to main.
+          keep_files: true
