@@ -17,8 +17,7 @@ import { entryPoints, explicitExternals, external } from '../rollup/external.js'
  * (and be rejected by) the external-dependency guardrail below. This plugin
  * maps them back to the matching entry point before that guardrail ever sees them.
  */
-function selfReferenceEntries(entryMap) {
-  const pkg = JSON.parse(fs.readFileSync(path.join(process.cwd(), './package.json'), 'utf-8'));
+function selfReferenceEntries(entryMap, pkg) {
   const pkgName = pkg.name;
 
   return {
@@ -155,6 +154,7 @@ export function createConfig(options, resolve) {
   options.compileTypes = options.compileTypes ?? true;
   options.outDir = options.outDir ?? 'dist';
 
+  const pkg = JSON.parse(fs.readFileSync(path.join(process.cwd(), './package.json'), 'utf-8'));
   const entryMap = entryPoints(options.entryPoints, resolve, options);
 
   return defineConfig({
@@ -168,6 +168,18 @@ export function createConfig(options, resolve) {
     minify: false,
     report: false,
     dts: options.compileTypes ? { sourcemap: true } : false,
+    // Substituted as literal string constants at build time so source
+    // consumers (e.g. `warp-drive-packages/core/src/types/-private.ts`) can
+    // read their own package's name/version without a static `import ...
+    // from '../../package.json'` -- tsdown/rolldown inlines that kind of
+    // JSON import as a synthetic sourcemap source with empty
+    // `sourcesContent`, which points outside the published package once the
+    // built chunk is re-bundled by a consumer (see #11099).
+    define: {
+      __WARP_DRIVE_PACKAGE_NAME__: JSON.stringify(pkg.name),
+      __WARP_DRIVE_PACKAGE_VERSION__: JSON.stringify(pkg.version),
+      ...options.define,
+    },
     // Keep `.js` for esm output (matching this repo's existing `exports` maps),
     // but a `format: 'cjs'` build (e.g. a standalone cjs bundle) needs the
     // real `.cjs` extension -- these packages don't set `"type": "module"`,
@@ -189,7 +201,7 @@ export function createConfig(options, resolve) {
       onlyBundle: options.explicitExternalsOnly ? false : undefined,
     },
     plugins: [
-      selfReferenceEntries(entryMap),
+      selfReferenceEntries(entryMap, pkg),
       forceBundleOverEmberExternals(options),
       ...ember(withMacroImportsAlwaysBabeled(options.ember)),
       options.jsx ? jsxBabel(options.babelConfig) : null,

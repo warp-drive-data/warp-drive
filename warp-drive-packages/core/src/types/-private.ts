@@ -2,7 +2,15 @@
 // these maps, due to bugs in ember-auto-import
 import { DEBUG, TESTING } from '@warp-drive/core/build-config/env';
 
-import { name, version } from '../../package.json';
+// Substituted at build time (see `tools/internal-config/tsdown/config.js`)
+// with this package's own `name`/`version` from its `package.json`. Reading
+// it via a static import instead would get inlined by tsdown as a synthetic
+// sourcemap source with empty `sourcesContent`, which points outside the
+// published package once the built chunk is re-bundled by a consumer.
+declare const __WARP_DRIVE_PACKAGE_NAME__: string;
+declare const __WARP_DRIVE_PACKAGE_VERSION__: string;
+const name = __WARP_DRIVE_PACKAGE_NAME__;
+const version = __WARP_DRIVE_PACKAGE_VERSION__;
 
 type UniversalTransientKey =
   // @warp-drive/core/request
