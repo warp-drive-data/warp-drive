@@ -8,4 +8,4 @@ url: /api/@warp-drive/ember/install/type-aliases/Tag.md
 type Tag = ReturnType<typeof tagForProperty>;
 ```
 
-Defined in: [warp-drive-packages/ember/dist/install.d.ts:4](https://github.com/warp-drive-data/warp-drive/blob/3f5536455a585951f2252138f2bb555d8ad844bf/warp-drive-packages/ember/dist/install.d.ts#L4)
+Defined in: [warp-drive-packages/ember/dist/install.d.ts:4](https://github.com/warp-drive-data/warp-drive/blob/cb1ab85858f637f156a9ff4e6ba8896c245d7a2c/warp-drive-packages/ember/dist/install.d.ts#L4)

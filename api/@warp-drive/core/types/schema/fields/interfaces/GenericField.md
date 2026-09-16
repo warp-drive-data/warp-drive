@@ -4,7 +4,7 @@ url: /api/@warp-drive/core/types/schema/fields/interfaces/GenericField.md
 
 # &#x20;GenericField
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:34](https://github.com/warp-drive-data/warp-drive/blob/3f5536455a585951f2252138f2bb555d8ad844bf/warp-drive-packages/core/src/types/schema/fields.ts#L34)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:34](https://github.com/warp-drive-data/warp-drive/blob/cb1ab85858f637f156a9ff4e6ba8896c245d7a2c/warp-drive-packages/core/src/types/schema/fields.ts#L34)
 
 A generic "field" that can be used to define
 primitive value fields.
@@ -27,7 +27,7 @@ that a record implmentation *must* use.
 kind: "field";
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:40](https://github.com/warp-drive-data/warp-drive/blob/3f5536455a585951f2252138f2bb555d8ad844bf/warp-drive-packages/core/src/types/schema/fields.ts#L40)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:40](https://github.com/warp-drive-data/warp-drive/blob/cb1ab85858f637f156a9ff4e6ba8896c245d7a2c/warp-drive-packages/core/src/types/schema/fields.ts#L40)
 
 The kind of field this is.
 
@@ -39,7 +39,7 @@ The kind of field this is.
 name: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:47](https://github.com/warp-drive-data/warp-drive/blob/3f5536455a585951f2252138f2bb555d8ad844bf/warp-drive-packages/core/src/types/schema/fields.ts#L47)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:47](https://github.com/warp-drive-data/warp-drive/blob/cb1ab85858f637f156a9ff4e6ba8896c245d7a2c/warp-drive-packages/core/src/types/schema/fields.ts#L47)
 
 The name of the field.
 
@@ -51,7 +51,7 @@ The name of the field.
 optional options?: ObjectValue;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:88](https://github.com/warp-drive-data/warp-drive/blob/3f5536455a585951f2252138f2bb555d8ad844bf/warp-drive-packages/core/src/types/schema/fields.ts#L88)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:88](https://github.com/warp-drive-data/warp-drive/blob/cb1ab85858f637f156a9ff4e6ba8896c245d7a2c/warp-drive-packages/core/src/types/schema/fields.ts#L88)
 
 Options to pass to the transform, if any
 
@@ -66,7 +66,7 @@ schema.
 optional sourceKey?: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:71](https://github.com/warp-drive-data/warp-drive/blob/3f5536455a585951f2252138f2bb555d8ad844bf/warp-drive-packages/core/src/types/schema/fields.ts#L71)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:71](https://github.com/warp-drive-data/warp-drive/blob/cb1ab85858f637f156a9ff4e6ba8896c245d7a2c/warp-drive-packages/core/src/types/schema/fields.ts#L71)
 
 The name of the field as returned by the API
 and inserted into the [Cache](../../../cache/interfaces/Cache.md) if it differs
@@ -97,6 +97,6 @@ This option is only needed when the value differs from name.
 optional type?: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:78](https://github.com/warp-drive-data/warp-drive/blob/3f5536455a585951f2252138f2bb555d8ad844bf/warp-drive-packages/core/src/types/schema/fields.ts#L78)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:78](https://github.com/warp-drive-data/warp-drive/blob/cb1ab85858f637f156a9ff4e6ba8896c245d7a2c/warp-drive-packages/core/src/types/schema/fields.ts#L78)
 
 the name of the Transformation to use, if any

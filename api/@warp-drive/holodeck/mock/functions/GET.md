@@ -13,7 +13,7 @@ function GET(
 ): Promise<void>;
 ```
 
-Defined in: [mock.ts:43](https://github.com/warp-drive-data/warp-drive/blob/3f5536455a585951f2252138f2bb555d8ad844bf/packages/holodeck/src/mock.ts#L43)
+Defined in: [mock.ts:43](https://github.com/warp-drive-data/warp-drive/blob/cb1ab85858f637f156a9ff4e6ba8896c245d7a2c/packages/holodeck/src/mock.ts#L43)
 
 Sets up Mocking for a GET request on the mock server
 for the supplied url.

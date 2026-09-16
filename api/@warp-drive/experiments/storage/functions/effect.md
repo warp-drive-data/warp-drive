@@ -10,7 +10,7 @@ url: /api/@warp-drive/experiments/storage/functions/effect.md
 function effect(fn, type?): PropertyDecorator;
 ```
 
-Defined in: [storage/storage-resource.ts:206](https://github.com/warp-drive-data/warp-drive/blob/3f5536455a585951f2252138f2bb555d8ad844bf/warp-drive-packages/experiments/src/storage/storage-resource.ts#L206)
+Defined in: [storage/storage-resource.ts:206](https://github.com/warp-drive-data/warp-drive/blob/cb1ab85858f637f156a9ff4e6ba8896c245d7a2c/warp-drive-packages/experiments/src/storage/storage-resource.ts#L206)
 
 Effects are fields that run a side-effecting function.
 

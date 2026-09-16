@@ -8,7 +8,7 @@ url: /api/@warp-drive/build-config/babel-macros/functions/macros.md
 function macros(): BabelPlugin[];
 ```
 
-Defined in: [babel-macros.ts:54](https://github.com/warp-drive-data/warp-drive/blob/3f5536455a585951f2252138f2bb555d8ad844bf/warp-drive-packages/build-config/src/babel-macros.ts#L54)
+Defined in: [babel-macros.ts:54](https://github.com/warp-drive-data/warp-drive/blob/cb1ab85858f637f156a9ff4e6ba8896c245d7a2c/warp-drive-packages/build-config/src/babel-macros.ts#L54)
 
 ## Returns
 

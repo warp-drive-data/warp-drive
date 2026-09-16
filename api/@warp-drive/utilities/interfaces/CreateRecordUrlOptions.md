@@ -4,7 +4,7 @@ url: /api/@warp-drive/utilities/interfaces/CreateRecordUrlOptions.md
 
 # &#x20;CreateRecordUrlOptions
 
-Defined in: [index.ts:288](https://github.com/warp-drive-data/warp-drive/blob/3f5536455a585951f2252138f2bb555d8ad844bf/warp-drive-packages/utilities/src/index.ts#L288)
+Defined in: [index.ts:288](https://github.com/warp-drive-data/warp-drive/blob/cb1ab85858f637f156a9ff4e6ba8896c245d7a2c/warp-drive-packages/utilities/src/index.ts#L288)
 
 [buildBaseURL](../functions/buildBaseURL.md) options for a `createRecord` request.
 
@@ -16,7 +16,7 @@ Defined in: [index.ts:288](https://github.com/warp-drive-data/warp-drive/blob/3f
 optional host?: string;
 ```
 
-Defined in: [index.ts:309](https://github.com/warp-drive-data/warp-drive/blob/3f5536455a585951f2252138f2bb555d8ad844bf/warp-drive-packages/utilities/src/index.ts#L309)
+Defined in: [index.ts:309](https://github.com/warp-drive-data/warp-drive/blob/cb1ab85858f637f156a9ff4e6ba8896c245d7a2c/warp-drive-packages/utilities/src/index.ts#L309)
 
 Overrides the globally configured host for this call only.
 
@@ -28,7 +28,7 @@ Overrides the globally configured host for this call only.
 identifier: object;
 ```
 
-Defined in: [index.ts:296](https://github.com/warp-drive-data/warp-drive/blob/3f5536455a585951f2252138f2bb555d8ad844bf/warp-drive-packages/utilities/src/index.ts#L296)
+Defined in: [index.ts:296](https://github.com/warp-drive-data/warp-drive/blob/cb1ab85858f637f156a9ff4e6ba8896c245d7a2c/warp-drive-packages/utilities/src/index.ts#L296)
 
 The type of the record being created.
 
@@ -48,7 +48,7 @@ The resource type.
 optional namespace?: string;
 ```
 
-Defined in: [index.ts:313](https://github.com/warp-drive-data/warp-drive/blob/3f5536455a585951f2252138f2bb555d8ad844bf/warp-drive-packages/utilities/src/index.ts#L313)
+Defined in: [index.ts:313](https://github.com/warp-drive-data/warp-drive/blob/cb1ab85858f637f156a9ff4e6ba8896c245d7a2c/warp-drive-packages/utilities/src/index.ts#L313)
 
 Overrides the globally configured namespace for this call only.
 
@@ -60,7 +60,7 @@ Overrides the globally configured namespace for this call only.
 op: "createRecord";
 ```
 
-Defined in: [index.ts:292](https://github.com/warp-drive-data/warp-drive/blob/3f5536455a585951f2252138f2bb555d8ad844bf/warp-drive-packages/utilities/src/index.ts#L292)
+Defined in: [index.ts:292](https://github.com/warp-drive-data/warp-drive/blob/cb1ab85858f637f156a9ff4e6ba8896c245d7a2c/warp-drive-packages/utilities/src/index.ts#L292)
 
 The request operation this URL is for.
 
@@ -72,6 +72,6 @@ The request operation this URL is for.
 optional resourcePath?: string;
 ```
 
-Defined in: [index.ts:305](https://github.com/warp-drive-data/warp-drive/blob/3f5536455a585951f2252138f2bb555d8ad844bf/warp-drive-packages/utilities/src/index.ts#L305)
+Defined in: [index.ts:305](https://github.com/warp-drive-data/warp-drive/blob/cb1ab85858f637f156a9ff4e6ba8896c245d7a2c/warp-drive-packages/utilities/src/index.ts#L305)
 
 The path segment for the resource, defaults to `identifier.type` if not provided.

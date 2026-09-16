@@ -4,7 +4,7 @@ url: /api/@warp-drive/core/reactive/interfaces/ProcessedExtension.md
 
 # &#x20;ProcessedExtension
 
-Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:236](https://github.com/warp-drive-data/warp-drive/blob/3f5536455a585951f2252138f2bb555d8ad844bf/warp-drive-packages/core/src/reactive/-private/schema.ts#L236)
+Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:236](https://github.com/warp-drive-data/warp-drive/blob/cb1ab85858f637f156a9ff4e6ba8896c245d7a2c/warp-drive-packages/core/src/reactive/-private/schema.ts#L236)
 
 The result of processExtension normalizing a
 [CAUTION\_MEGA\_DANGER\_ZONE\_Extension](CAUTION_MEGA_DANGER_ZONE_Extension.md) into a lookup of its features
@@ -18,7 +18,7 @@ by name.
 features: Map<string | symbol, ExtensionDef>;
 ```
 
-Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:242](https://github.com/warp-drive-data/warp-drive/blob/3f5536455a585951f2252138f2bb555d8ad844bf/warp-drive-packages/core/src/reactive/-private/schema.ts#L242)
+Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:242](https://github.com/warp-drive-data/warp-drive/blob/cb1ab85858f637f156a9ff4e6ba8896c245d7a2c/warp-drive-packages/core/src/reactive/-private/schema.ts#L242)
 
 Each feature the extension exposes, keyed by its property name.
 
@@ -30,7 +30,7 @@ Each feature the extension exposes, keyed by its property name.
 kind: "object" | "array";
 ```
 
-Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:238](https://github.com/warp-drive-data/warp-drive/blob/3f5536455a585951f2252138f2bb555d8ad844bf/warp-drive-packages/core/src/reactive/-private/schema.ts#L238)
+Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:238](https://github.com/warp-drive-data/warp-drive/blob/cb1ab85858f637f156a9ff4e6ba8896c245d7a2c/warp-drive-packages/core/src/reactive/-private/schema.ts#L238)
 
 Whether this extension applies to objects/resources or to arrays.
 
@@ -42,6 +42,6 @@ Whether this extension applies to objects/resources or to arrays.
 name: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:240](https://github.com/warp-drive-data/warp-drive/blob/3f5536455a585951f2252138f2bb555d8ad844bf/warp-drive-packages/core/src/reactive/-private/schema.ts#L240)
+Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:240](https://github.com/warp-drive-data/warp-drive/blob/cb1ab85858f637f156a9ff4e6ba8896c245d7a2c/warp-drive-packages/core/src/reactive/-private/schema.ts#L240)
 
 The name the extension was registered under.

@@ -8,7 +8,7 @@ url: /api/@warp-drive/utilities/string/functions/plural.md
 function plural(regex, string): void;
 ```
 
-Defined in: [-private/string/inflect.ts:166](https://github.com/warp-drive-data/warp-drive/blob/3f5536455a585951f2252138f2bb555d8ad844bf/warp-drive-packages/utilities/src/-private/string/inflect.ts#L166)
+Defined in: [-private/string/inflect.ts:166](https://github.com/warp-drive-data/warp-drive/blob/cb1ab85858f637f156a9ff4e6ba8896c245d7a2c/warp-drive-packages/utilities/src/-private/string/inflect.ts#L166)
 
 Adds a pluralization rule.
 

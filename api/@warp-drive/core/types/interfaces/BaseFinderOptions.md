@@ -4,7 +4,7 @@ url: /api/@warp-drive/core/types/interfaces/BaseFinderOptions.md
 
 # &#x20;BaseFinderOptions
 
-Defined in: [warp-drive-packages/core/src/store/-types/q/store.ts:8](https://github.com/warp-drive-data/warp-drive/blob/3f5536455a585951f2252138f2bb555d8ad844bf/warp-drive-packages/core/src/store/-types/q/store.ts#L8)
+Defined in: [warp-drive-packages/core/src/store/-types/q/store.ts:8](https://github.com/warp-drive-data/warp-drive/blob/cb1ab85858f637f156a9ff4e6ba8896c245d7a2c/warp-drive-packages/core/src/store/-types/q/store.ts#L8)
 
 Options shared by [FindRecordOptions](FindRecordOptions.md) and [FindAllOptions](../type-aliases/FindAllOptions.md)
 for controlling reload behavior and adapter/serializer specific
@@ -22,7 +22,7 @@ configuration when using the legacy Adapter/Serializer network layer.
 optional adapterOptions?: Record<string, unknown>;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-types/q/store.ts:37](https://github.com/warp-drive-data/warp-drive/blob/3f5536455a585951f2252138f2bb555d8ad844bf/warp-drive-packages/core/src/store/-types/q/store.ts#L37)
+Defined in: [warp-drive-packages/core/src/store/-types/q/store.ts:37](https://github.com/warp-drive-data/warp-drive/blob/cb1ab85858f637f156a9ff4e6ba8896c245d7a2c/warp-drive-packages/core/src/store/-types/q/store.ts#L37)
 
 Arbitrary options made available to the adapter via the request's
 snapshot (`snapshot.adapterOptions`). The store does not interpret
@@ -36,7 +36,7 @@ this value itself.
 optional backgroundReload?: boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-types/q/store.ts:23](https://github.com/warp-drive-data/warp-drive/blob/3f5536455a585951f2252138f2bb555d8ad844bf/warp-drive-packages/core/src/store/-types/q/store.ts#L23)
+Defined in: [warp-drive-packages/core/src/store/-types/q/store.ts:23](https://github.com/warp-drive-data/warp-drive/blob/cb1ab85858f637f156a9ff4e6ba8896c245d7a2c/warp-drive-packages/core/src/store/-types/q/store.ts#L23)
 
 If `true` or `false`, forces or prevents a background reload of the
 cached resource(s) after resolving with the cached data. If omitted,
@@ -51,7 +51,7 @@ hook decides whether to reload in the background.
 optional include?: string | string[];
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-types/q/store.ts:30](https://github.com/warp-drive-data/warp-drive/blob/3f5536455a585951f2252138f2bb555d8ad844bf/warp-drive-packages/core/src/store/-types/q/store.ts#L30)
+Defined in: [warp-drive-packages/core/src/store/-types/q/store.ts:30](https://github.com/warp-drive-data/warp-drive/blob/cb1ab85858f637f156a9ff4e6ba8896c245d7a2c/warp-drive-packages/core/src/store/-types/q/store.ts#L30)
 
 The names of relationships to load along with this request, used to
 build the `include` query parameter for adapters (such as the
@@ -65,7 +65,7 @@ JSON:API adapter) that support it.
 optional reload?: boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-types/q/store.ts:15](https://github.com/warp-drive-data/warp-drive/blob/3f5536455a585951f2252138f2bb555d8ad844bf/warp-drive-packages/core/src/store/-types/q/store.ts#L15)
+Defined in: [warp-drive-packages/core/src/store/-types/q/store.ts:15](https://github.com/warp-drive-data/warp-drive/blob/cb1ab85858f637f156a9ff4e6ba8896c245d7a2c/warp-drive-packages/core/src/store/-types/q/store.ts#L15)
 
 If `true`, forces the request to go to the adapter even if a cached
 copy of the requested resource(s) already exists in the store. If

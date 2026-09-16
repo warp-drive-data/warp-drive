@@ -8,6 +8,6 @@ url: /api/@warp-drive/build-config/debugging/variables/LOG_CACHE_POLICY.md
 const LOG_CACHE_POLICY: boolean = false;
 ```
 
-Defined in: [debugging.ts:64](https://github.com/warp-drive-data/warp-drive/blob/3f5536455a585951f2252138f2bb555d8ad844bf/warp-drive-packages/build-config/src/debugging.ts#L64)
+Defined in: [debugging.ts:64](https://github.com/warp-drive-data/warp-drive/blob/cb1ab85858f637f156a9ff4e6ba8896c245d7a2c/warp-drive-packages/build-config/src/debugging.ts#L64)
 
 Log decisions made by the Basic CachePolicy
