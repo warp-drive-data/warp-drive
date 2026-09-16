@@ -20,15 +20,15 @@
     "sync-all": "src/sync-all.ts"
   },
   "dependencies": {
-    "@types/bun": "^1.4.2",
-    "typescript": "^6.0.3",
-    "debug": "4.4.3",
-    "@types/debug": "4.1.13",
-    "@babel/parser": "^7.29.8",
-    "@babel/traverse": "^7.29.8",
-    "comment-json": "^5.0.0",
-    "@pnpm/find-workspace-dir": "1000.1.5",
-    "@pnpm/find-workspace-packages": "6.0.9",
-    "@pnpm/logger": "1100.0.0"
+    "@types/bun": "catalog:",
+    "typescript": "catalog:",
+    "debug": "catalog:",
+    "@types/debug": "catalog:",
+    "@babel/parser": "catalog:",
+    "@babel/traverse": "catalog:",
+    "comment-json": "catalog:",
+    "@pnpm/find-workspace-dir": "catalog:",
+    "@pnpm/find-workspace-packages": "catalog:",
+    "@pnpm/logger": "catalog:"
   }
 }

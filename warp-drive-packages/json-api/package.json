@@ -46,16 +46,16 @@
     "json-to-ast": "2.1.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.29.7",
-    "@babel/plugin-transform-typescript": "^7.29.7",
-    "@babel/preset-typescript": "^7.29.7",
-    "@types/json-to-ast": "^2.1.4",
+    "@babel/core": "catalog:",
+    "@babel/plugin-transform-typescript": "catalog:",
+    "@babel/preset-typescript": "catalog:",
+    "@types/json-to-ast": "catalog:",
     "@warp-drive/core": "workspace:*",
     "@warp-drive/internal-config": "workspace:*",
-    "decorator-transforms": "^2.4.0",
-    "expect-type": "^1.4.0",
-    "tsdown": "^0.23.0",
-    "typescript-7": "npm:typescript@7.1.0-dev.20260912.1"
+    "decorator-transforms": "catalog:",
+    "expect-type": "catalog:",
+    "tsdown": "catalog:",
+    "typescript-7": "catalog:"
   },
   "ember-addon": {
     "main": "addon-main.cjs",

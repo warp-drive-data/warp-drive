@@ -47,18 +47,18 @@
     "warp-drive": "workspace:*"
   },
   "devDependencies": {
-    "@babel/core": "^7.29.7",
-    "@babel/plugin-transform-typescript": "^7.29.7",
-    "@babel/preset-typescript": "^7.29.7",
-    "@types/jquery": "^4.0.1",
+    "@babel/core": "catalog:",
+    "@babel/plugin-transform-typescript": "catalog:",
+    "@babel/preset-typescript": "catalog:",
+    "@types/jquery": "catalog:",
     "@warp-drive/core": "workspace:*",
     "@warp-drive/internal-config": "workspace:*",
     "@warp-drive/utilities": "workspace:*",
-    "decorator-transforms": "^2.4.0",
+    "decorator-transforms": "catalog:",
     "ember-source": "catalog:",
-    "expect-type": "^1.4.0",
-    "tsdown": "^0.23.0",
-    "typescript-7": "npm:typescript@7.1.0-dev.20260912.1"
+    "expect-type": "catalog:",
+    "tsdown": "catalog:",
+    "typescript-7": "catalog:"
   },
   "ember-addon": {
     "main": "addon-main.cjs",

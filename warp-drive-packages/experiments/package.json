@@ -69,15 +69,15 @@
     "@embroider/macros": "^1.21.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.29.7",
-    "@babel/plugin-transform-typescript": "^7.29.7",
-    "@babel/preset-env": "^7.29.7",
-    "@babel/preset-typescript": "^7.29.7",
-    "@sqlite.org/sqlite-wasm": "3.46.0-build2",
+    "@babel/core": "catalog:",
+    "@babel/plugin-transform-typescript": "catalog:",
+    "@babel/preset-env": "catalog:",
+    "@babel/preset-typescript": "catalog:",
+    "@sqlite.org/sqlite-wasm": "catalog:",
     "@warp-drive/core": "workspace:*",
     "@warp-drive/internal-config": "workspace:*",
-    "tsdown": "^0.23.0",
-    "typescript-7": "npm:typescript@7.1.0-dev.20260912.1"
+    "tsdown": "catalog:",
+    "typescript-7": "catalog:"
   },
   "keywords": [
     "ember-addon"
