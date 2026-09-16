@@ -12,7 +12,7 @@ url: /pr-preview/pr-11087/api/@warp-drive/legacy/functions/useLegacyStore.md
 function useLegacyStore<T>(options, StoreKlass?): typeof ConfiguredStore;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/index.ts:285](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/legacy/src/index.ts#L285)
+Defined in: [warp-drive-packages/legacy/src/index.ts:285](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/legacy/src/index.ts#L285)
 
 Use the legacy store with the given options.
 
@@ -153,7 +153,7 @@ explicitly, so a handler relying on it should treat it as optional (as
 function useLegacyStore<T>(options, StoreKlass?): typeof ConfiguredStore;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/index.ts:289](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/legacy/src/index.ts#L289)
+Defined in: [warp-drive-packages/legacy/src/index.ts:289](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/legacy/src/index.ts#L289)
 
 Use the legacy store with the given options.
 
@@ -294,7 +294,7 @@ explicitly, so a handler relying on it should treat it as optional (as
 function useLegacyStore<T>(options, StoreKlass?): typeof ConfiguredStore;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/index.ts:293](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/legacy/src/index.ts#L293)
+Defined in: [warp-drive-packages/legacy/src/index.ts:293](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/legacy/src/index.ts#L293)
 
 Use the legacy store with the given options.
 

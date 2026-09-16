@@ -5,7 +5,7 @@ url: >-
 
 # &#x20;ResponseInfo
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:728](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/core/src/types/request.ts#L728)
+Defined in: [warp-drive-packages/core/src/types/request.ts:728](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/core/src/types/request.ts#L728)
 
 An immutable, JSON-serializable subset of the native [Response](https://developer.mozilla.org/docs/Web/API/Response)
 interface.
@@ -18,7 +18,7 @@ interface.
 readonly headers: ImmutableHeaders;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:732](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/core/src/types/request.ts#L732)
+Defined in: [warp-drive-packages/core/src/types/request.ts:732](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/core/src/types/request.ts#L732)
 
 see [ImmutableHeaders](ImmutableHeaders.md)
 
@@ -30,7 +30,7 @@ see [ImmutableHeaders](ImmutableHeaders.md)
 readonly ok: boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:736](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/core/src/types/request.ts#L736)
+Defined in: [warp-drive-packages/core/src/types/request.ts:736](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/core/src/types/request.ts#L736)
 
 whether the response's status code was in the 200-299 range
 
@@ -42,7 +42,7 @@ whether the response's status code was in the 200-299 range
 readonly redirected: boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:740](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/core/src/types/request.ts#L740)
+Defined in: [warp-drive-packages/core/src/types/request.ts:740](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/core/src/types/request.ts#L740)
 
 whether the response is the result of a redirect
 
@@ -54,7 +54,7 @@ whether the response is the result of a redirect
 readonly status: number;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:744](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/core/src/types/request.ts#L744)
+Defined in: [warp-drive-packages/core/src/types/request.ts:744](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/core/src/types/request.ts#L744)
 
 the response's HTTP status code
 
@@ -66,7 +66,7 @@ the response's HTTP status code
 readonly statusText: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:748](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/core/src/types/request.ts#L748)
+Defined in: [warp-drive-packages/core/src/types/request.ts:748](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/core/src/types/request.ts#L748)
 
 the status message associated with the response's status code
 
@@ -78,7 +78,7 @@ the status message associated with the response's status code
 readonly type: ResponseType;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:752](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/core/src/types/request.ts#L752)
+Defined in: [warp-drive-packages/core/src/types/request.ts:752](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/core/src/types/request.ts#L752)
 
 the type of the response, see [MDN Reference](https://developer.mozilla.org/docs/Web/API/Response/type)
 
@@ -90,6 +90,6 @@ the type of the response, see [MDN Reference](https://developer.mozilla.org/docs
 readonly url: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:756](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/core/src/types/request.ts#L756)
+Defined in: [warp-drive-packages/core/src/types/request.ts:756](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/core/src/types/request.ts#L756)
 
 the url of the response

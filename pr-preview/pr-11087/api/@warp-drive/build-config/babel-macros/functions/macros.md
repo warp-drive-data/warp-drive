@@ -9,7 +9,7 @@ url: >-
 function macros(): BabelPlugin[];
 ```
 
-Defined in: [babel-macros.ts:54](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/build-config/src/babel-macros.ts#L54)
+Defined in: [babel-macros.ts:54](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/build-config/src/babel-macros.ts#L54)
 
 ## Returns
 

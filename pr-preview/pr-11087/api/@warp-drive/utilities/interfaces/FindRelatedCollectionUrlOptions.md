@@ -5,7 +5,7 @@ url: >-
 
 # &#x20;FindRelatedCollectionUrlOptions
 
-Defined in: [index.ts:206](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/utilities/src/index.ts#L206)
+Defined in: [index.ts:206](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/utilities/src/index.ts#L206)
 
 [buildBaseURL](../functions/buildBaseURL.md) options for a `findRelatedCollection` request.
 
@@ -17,7 +17,7 @@ Defined in: [index.ts:206](https://github.com/warp-drive-data/warp-drive/blob/53
 fieldPath: string;
 ```
 
-Defined in: [index.ts:227](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/utilities/src/index.ts#L227)
+Defined in: [index.ts:227](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/utilities/src/index.ts#L227)
 
 The relationship field name, appended to the resource path.
 
@@ -29,7 +29,7 @@ The relationship field name, appended to the resource path.
 optional host?: string;
 ```
 
-Defined in: [index.ts:235](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/utilities/src/index.ts#L235)
+Defined in: [index.ts:235](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/utilities/src/index.ts#L235)
 
 Overrides the globally configured host for this call only.
 
@@ -41,7 +41,7 @@ Overrides the globally configured host for this call only.
 identifier: object;
 ```
 
-Defined in: [index.ts:214](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/utilities/src/index.ts#L214)
+Defined in: [index.ts:214](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/utilities/src/index.ts#L214)
 
 The type and id of the record whose relationship is being fetched.
 
@@ -69,7 +69,7 @@ The resource type.
 optional namespace?: string;
 ```
 
-Defined in: [index.ts:239](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/utilities/src/index.ts#L239)
+Defined in: [index.ts:239](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/utilities/src/index.ts#L239)
 
 Overrides the globally configured namespace for this call only.
 
@@ -81,7 +81,7 @@ Overrides the globally configured namespace for this call only.
 op: "findRelatedCollection";
 ```
 
-Defined in: [index.ts:210](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/utilities/src/index.ts#L210)
+Defined in: [index.ts:210](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/utilities/src/index.ts#L210)
 
 The request operation this URL is for.
 
@@ -93,6 +93,6 @@ The request operation this URL is for.
 optional resourcePath?: string;
 ```
 
-Defined in: [index.ts:231](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/utilities/src/index.ts#L231)
+Defined in: [index.ts:231](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/utilities/src/index.ts#L231)
 
 The path segment for the resource, defaults to `identifier.type` if not provided.

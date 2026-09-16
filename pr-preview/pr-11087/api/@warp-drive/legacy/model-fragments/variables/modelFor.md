@@ -11,7 +11,7 @@ url: >-
 const modelFor: typeof fragmentsModelFor = fragmentsModelFor;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model-fragments/hooks/model-for.ts:140](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/legacy/src/model-fragments/hooks/model-for.ts#L140)
+Defined in: [warp-drive-packages/legacy/src/model-fragments/hooks/model-for.ts:140](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/legacy/src/model-fragments/hooks/model-for.ts#L140)
 
 The `modelFor` fallback used to construct a `ShimModelClass` schema for a
 type when ModelFragments support is enabled and no real `Model` subclass

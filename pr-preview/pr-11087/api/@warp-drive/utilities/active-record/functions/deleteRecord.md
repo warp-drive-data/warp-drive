@@ -11,7 +11,7 @@ url: >-
 function deleteRecord<T>(record, options?): DeleteRequestOptions<T>;
 ```
 
-Defined in: [-private/active-record/save-record.ts:76](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/utilities/src/-private/active-record/save-record.ts#L76)
+Defined in: [-private/active-record/save-record.ts:76](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/utilities/src/-private/active-record/save-record.ts#L76)
 
 Builds request options to delete record for resources,
 configured for the url, method and header expectations of ActiveRecord APIs.
@@ -83,7 +83,7 @@ const data = await store.request(options);
 function deleteRecord(record, options?): DeleteRequestOptions;
 ```
 
-Defined in: [-private/active-record/save-record.ts:77](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/utilities/src/-private/active-record/save-record.ts#L77)
+Defined in: [-private/active-record/save-record.ts:77](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/utilities/src/-private/active-record/save-record.ts#L77)
 
 Builds request options to delete record for resources,
 configured for the url, method and header expectations of ActiveRecord APIs.

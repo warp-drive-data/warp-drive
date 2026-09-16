@@ -5,7 +5,7 @@ url: >-
 
 # &#x20;PaginationLinks\<RT, E>&#x20;
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-links.ts:236](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/core/src/signals/pagination-links.ts#L236)
+Defined in: [warp-drive-packages/core/src/signals/pagination-links.ts:236](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/core/src/signals/pagination-links.ts#L236)
 
 **`Hideconstructor`**
 
@@ -57,7 +57,7 @@ See also:
 get first(): RelationalPaginationLink | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-links.ts:252](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/core/src/signals/pagination-links.ts#L252)
+Defined in: [warp-drive-packages/core/src/signals/pagination-links.ts:252](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/core/src/signals/pagination-links.ts#L252)
 
 The relational `first` link of the collection, or `null` when the active
 page's response did not expose one. Unlike [prev](#prev)/[next](#next) it is
@@ -79,7 +79,7 @@ link's [isCurrent](RelationalPaginationLink.md#iscurrent) is `true`
 get last(): RelationalPaginationLink | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-links.ts:292](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/core/src/signals/pagination-links.ts#L292)
+Defined in: [warp-drive-packages/core/src/signals/pagination-links.ts:292](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/core/src/signals/pagination-links.ts#L292)
 
 The relational `last` link of the collection, or `null` when the active
 page's response did not expose one. Mirror of [first](#first) for the end of
@@ -99,7 +99,7 @@ the collection.
 get links(): PaginationLink[];
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-links.ts:308](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/core/src/signals/pagination-links.ts#L308)
+Defined in: [warp-drive-packages/core/src/signals/pagination-links.ts:308](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/core/src/signals/pagination-links.ts#L308)
 
 The numbered links and placeholders, derived from the shared page graph.
 
@@ -121,7 +121,7 @@ Cursor-based collections have no page numbers, so this is empty — use
 get next(): RelationalPaginationLink | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-links.ts:278](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/core/src/signals/pagination-links.ts#L278)
+Defined in: [warp-drive-packages/core/src/signals/pagination-links.ts:278](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/core/src/signals/pagination-links.ts#L278)
 
 The relational `next` link for the active page, or `null` at the end of the
 collection. Available in both numbered and cursor pagination.
@@ -140,7 +140,7 @@ collection. Available in both numbered and cursor pagination.
 get prev(): RelationalPaginationLink | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-links.ts:265](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/core/src/signals/pagination-links.ts#L265)
+Defined in: [warp-drive-packages/core/src/signals/pagination-links.ts:265](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/core/src/signals/pagination-links.ts#L265)
 
 The relational `prev` link for the active page, or `null` at the start of the
 collection. Available in both numbered and cursor pagination.

@@ -12,7 +12,7 @@ url: /pr-preview/pr-11087/api/@warp-drive/legacy/model/functions/belongsTo.md
 function belongsTo(): never;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/belongs-to.ts:298](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/legacy/src/model/-private/belongs-to.ts#L298)
+Defined in: [warp-drive-packages/legacy/src/model/-private/belongs-to.ts:298](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/legacy/src/model/-private/belongs-to.ts#L298)
 
 `belongsTo` is used to define One-To-One and One-To-Many, and One-To-None
 relationships on a [Model](../classes/Model.md).
@@ -174,7 +174,7 @@ type each record satisfies on both sides.
 function belongsTo(type): never;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/belongs-to.ts:299](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/legacy/src/model/-private/belongs-to.ts#L299)
+Defined in: [warp-drive-packages/legacy/src/model/-private/belongs-to.ts:299](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/legacy/src/model/-private/belongs-to.ts#L299)
 
 `belongsTo` is used to define One-To-One and One-To-Many, and One-To-None
 relationships on a [Model](../classes/Model.md).
@@ -344,7 +344,7 @@ the name of the related resource
 function belongsTo<T>(type, options): RelationshipDecorator<T>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/belongs-to.ts:300](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/legacy/src/model/-private/belongs-to.ts#L300)
+Defined in: [warp-drive-packages/legacy/src/model/-private/belongs-to.ts:300](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/legacy/src/model/-private/belongs-to.ts#L300)
 
 `belongsTo` is used to define One-To-One and One-To-Many, and One-To-None
 relationships on a [Model](../classes/Model.md).
@@ -526,7 +526,7 @@ a hash of options
 function belongsTo(type, options): RelationshipDecorator<unknown>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/belongs-to.ts:308](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/legacy/src/model/-private/belongs-to.ts#L308)
+Defined in: [warp-drive-packages/legacy/src/model/-private/belongs-to.ts:308](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/legacy/src/model/-private/belongs-to.ts#L308)
 
 `belongsTo` is used to define One-To-One and One-To-Many, and One-To-None
 relationships on a [Model](../classes/Model.md).

@@ -5,7 +5,7 @@ url: >-
 
 # &#x20;PageHints()&#x20;
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-cache.ts:29](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/core/src/signals/pagination-cache.ts#L29)
+Defined in: [warp-drive-packages/core/src/signals/pagination-cache.ts:29](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/core/src/signals/pagination-cache.ts#L29)
 
 A hint function for extracting the `currentPage` and `totalPages` from a loaded
 document, for when the response does not expose these values through the
@@ -25,7 +25,7 @@ scope and import it everywhere.
 PageHints(document): object;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-cache.ts:30](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/core/src/signals/pagination-cache.ts#L30)
+Defined in: [warp-drive-packages/core/src/signals/pagination-cache.ts:30](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/core/src/signals/pagination-cache.ts#L30)
 
 A hint function for extracting the `currentPage` and `totalPages` from a loaded
 document, for when the response does not expose these values through the

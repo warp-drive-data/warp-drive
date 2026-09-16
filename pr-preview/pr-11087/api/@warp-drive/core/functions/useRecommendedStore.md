@@ -10,7 +10,7 @@ url: /pr-preview/pr-11087/api/@warp-drive/core/functions/useRecommendedStore.md
 function useRecommendedStore<T, Policy>(options, StoreKlass?): typeof ConfiguredStore;
 ```
 
-Defined in: [warp-drive-packages/core/src/index.ts:268](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/core/src/index.ts#L268)
+Defined in: [warp-drive-packages/core/src/index.ts:268](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/core/src/index.ts#L268)
 
 Creates a configured Store class with recommended defaults
 for schema handling, reactivity, caching, and request management.
@@ -148,7 +148,7 @@ explicitly, so a handler relying on it should treat it as optional (as
 function useRecommendedStore<T>(options, StoreKlass?): typeof ConfiguredStore;
 ```
 
-Defined in: [warp-drive-packages/core/src/index.ts:272](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/core/src/index.ts#L272)
+Defined in: [warp-drive-packages/core/src/index.ts:272](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/core/src/index.ts#L272)
 
 Creates a configured Store class with recommended defaults
 for schema handling, reactivity, caching, and request management.
@@ -282,7 +282,7 @@ explicitly, so a handler relying on it should treat it as optional (as
 function useRecommendedStore<T>(options, StoreKlass?): typeof ConfiguredStore;
 ```
 
-Defined in: [warp-drive-packages/core/src/index.ts:276](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/core/src/index.ts#L276)
+Defined in: [warp-drive-packages/core/src/index.ts:276](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/core/src/index.ts#L276)
 
 Creates a configured Store class with recommended defaults
 for schema handling, reactivity, caching, and request management.

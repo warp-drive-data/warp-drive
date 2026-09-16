@@ -9,7 +9,7 @@ url: >-
 function resourceSchema<T>(schema): T;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2510](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/core/src/types/schema/fields.ts#L2510)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2510](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/core/src/types/schema/fields.ts#L2510)
 
 A no-op type utility that enables type-checking resource schema
 definitions.

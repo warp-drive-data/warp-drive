@@ -8,7 +8,7 @@ url: /pr-preview/pr-11087/api/@warp-drive/schema-dsl/functions/hash.md
 function hash(options): (target, key) => void;
 ```
 
-Defined in: [fields/hash.ts:52](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/schema-dsl/src/fields/hash.ts#L52)
+Defined in: [fields/hash.ts:52](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/schema-dsl/src/fields/hash.ts#L52)
 
 **`Decorator`**
 

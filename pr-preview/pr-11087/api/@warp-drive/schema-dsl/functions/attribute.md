@@ -10,7 +10,7 @@ url: /pr-preview/pr-11087/api/@warp-drive/schema-dsl/functions/attribute.md
 function attribute(target, key): void;
 ```
 
-Defined in: [fields/attribute.ts:60](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/schema-dsl/src/fields/attribute.ts#L60)
+Defined in: [fields/attribute.ts:60](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/schema-dsl/src/fields/attribute.ts#L60)
 
 **`Decorator`**
 
@@ -62,7 +62,7 @@ export class Comment {
 function attribute(options): (target, key) => void;
 ```
 
-Defined in: [fields/attribute.ts:61](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/schema-dsl/src/fields/attribute.ts#L61)
+Defined in: [fields/attribute.ts:61](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/schema-dsl/src/fields/attribute.ts#L61)
 
 **`Decorator`**
 

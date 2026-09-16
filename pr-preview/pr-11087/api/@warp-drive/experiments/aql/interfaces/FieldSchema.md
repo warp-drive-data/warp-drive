@@ -6,7 +6,7 @@ url: /pr-preview/pr-11087/api/@warp-drive/experiments/aql/interfaces/FieldSchema
 
 # &#x20;FieldSchema
 
-Defined in: [aql/parse.ts:8](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/experiments/src/aql/parse.ts#L8)
+Defined in: [aql/parse.ts:8](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/experiments/src/aql/parse.ts#L8)
 
 Compiles `.aql` (Abstract Query Language) source text into the persisted-query
 envelope described by the JSON:API `QUERY` extension (`q:id`/`q:type`/`q:search`).
@@ -21,7 +21,7 @@ See `./README.md` for the language grammar and worked examples.
 kind: "object" | "attribute" | "resource" | "collection" | "derived" | "array";
 ```
 
-Defined in: [aql/parse.ts:11](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/experiments/src/aql/parse.ts#L11)
+Defined in: [aql/parse.ts:11](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/experiments/src/aql/parse.ts#L11)
 
 ***
 
@@ -31,7 +31,7 @@ Defined in: [aql/parse.ts:11](https://github.com/warp-drive-data/warp-drive/blob
 name: string;
 ```
 
-Defined in: [aql/parse.ts:10](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/experiments/src/aql/parse.ts#L10)
+Defined in: [aql/parse.ts:10](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/experiments/src/aql/parse.ts#L10)
 
 ***
 
@@ -41,7 +41,7 @@ Defined in: [aql/parse.ts:10](https://github.com/warp-drive-data/warp-drive/blob
 optional options?: Record<string, unknown>;
 ```
 
-Defined in: [aql/parse.ts:12](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/experiments/src/aql/parse.ts#L12)
+Defined in: [aql/parse.ts:12](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/experiments/src/aql/parse.ts#L12)
 
 ***
 
@@ -51,4 +51,4 @@ Defined in: [aql/parse.ts:12](https://github.com/warp-drive-data/warp-drive/blob
 type: string | null;
 ```
 
-Defined in: [aql/parse.ts:9](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/experiments/src/aql/parse.ts#L9)
+Defined in: [aql/parse.ts:9](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/experiments/src/aql/parse.ts#L9)

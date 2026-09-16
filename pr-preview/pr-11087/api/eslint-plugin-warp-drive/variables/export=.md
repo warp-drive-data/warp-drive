@@ -8,7 +8,7 @@ url: /pr-preview/pr-11087/api/eslint-plugin-warp-drive/variables/export=.md
 export=: object;
 ```
 
-Defined in: [index.js:10](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/packages/eslint-plugin-warp-drive/src/index.js#L10)
+Defined in: [index.js:10](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/packages/eslint-plugin-warp-drive/src/index.js#L10)
 
 ## Type Declaration
 

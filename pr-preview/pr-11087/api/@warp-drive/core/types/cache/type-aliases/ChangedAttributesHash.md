@@ -9,7 +9,7 @@ url: >-
 type ChangedAttributesHash = Record<string, [Value | undefined, Value]>;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache.ts:18](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/core/src/types/cache.ts#L18)
+Defined in: [warp-drive-packages/core/src/types/cache.ts:18](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/core/src/types/cache.ts#L18)
 
 A hash of changed attributes with the key being the attribute name and the value being an
 array of `[oldValue, newValue]`.

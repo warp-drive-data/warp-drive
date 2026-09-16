@@ -9,7 +9,7 @@ url: >-
 function setPromiseResult(promise, result): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/request/-private/promise-cache.ts:57](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/core/src/request/-private/promise-cache.ts#L57)
+Defined in: [warp-drive-packages/core/src/request/-private/promise-cache.ts:57](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/core/src/request/-private/promise-cache.ts#L57)
 
 Cache the settled result (or error) of a promise-like value so that its
 outcome can be synchronously read later via [getPromiseResult](getPromiseResult.md),

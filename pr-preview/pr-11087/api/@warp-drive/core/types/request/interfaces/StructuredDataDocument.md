@@ -5,7 +5,7 @@ url: >-
 
 # &#x20;StructuredDataDocument\<T>
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:445](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/core/src/types/request.ts#L445)
+Defined in: [warp-drive-packages/core/src/types/request.ts:445](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/core/src/types/request.ts#L445)
 
 When a [Future](../../../request/interfaces/Future.md) resolves, it returns an object
 containing the original [request](RequestInfo.md),
@@ -26,7 +26,7 @@ the processed content.
 content: T;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:461](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/core/src/types/request.ts#L461)
+Defined in: [warp-drive-packages/core/src/types/request.ts:461](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/core/src/types/request.ts#L461)
 
 the processed content of the response
 
@@ -38,7 +38,7 @@ the processed content of the response
 request: ImmutableRequestInfo;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:453](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/core/src/types/request.ts#L453)
+Defined in: [warp-drive-packages/core/src/types/request.ts:453](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/core/src/types/request.ts#L453)
 
 #### See
 
@@ -55,6 +55,6 @@ response:
   | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:457](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/core/src/types/request.ts#L457)
+Defined in: [warp-drive-packages/core/src/types/request.ts:457](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/core/src/types/request.ts#L457)
 
 the response set by the handler chain, if any

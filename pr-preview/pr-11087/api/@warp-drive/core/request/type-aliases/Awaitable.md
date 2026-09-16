@@ -8,7 +8,7 @@ url: /pr-preview/pr-11087/api/@warp-drive/core/request/type-aliases/Awaitable.md
 type Awaitable<T, E> = object;
 ```
 
-Defined in: [warp-drive-packages/core/src/request/-private/promise-cache.ts:13](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/core/src/request/-private/promise-cache.ts#L13)
+Defined in: [warp-drive-packages/core/src/request/-private/promise-cache.ts:13](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/core/src/request/-private/promise-cache.ts#L13)
 
 The minimal, structural subset of the `Promise` interface required to be
 cached and inspected by [setPromiseResult](../functions/setPromiseResult.md) / [getPromiseResult](../functions/getPromiseResult.md)
@@ -33,7 +33,7 @@ cached and inspected by [setPromiseResult](../functions/setPromiseResult.md) / [
 catch: (onRejected) => unknown;
 ```
 
-Defined in: [warp-drive-packages/core/src/request/-private/promise-cache.ts:25](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/core/src/request/-private/promise-cache.ts#L25)
+Defined in: [warp-drive-packages/core/src/request/-private/promise-cache.ts:25](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/core/src/request/-private/promise-cache.ts#L25)
 
 Registers a rejection handler, `Promise.prototype.catch`-style.
 
@@ -55,7 +55,7 @@ Registers a rejection handler, `Promise.prototype.catch`-style.
 finally: (onFinally) => unknown;
 ```
 
-Defined in: [warp-drive-packages/core/src/request/-private/promise-cache.ts:31](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/core/src/request/-private/promise-cache.ts#L31)
+Defined in: [warp-drive-packages/core/src/request/-private/promise-cache.ts:31](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/core/src/request/-private/promise-cache.ts#L31)
 
 Registers a handler run on settlement, `Promise.prototype.finally`-style.
 
@@ -77,7 +77,7 @@ Registers a handler run on settlement, `Promise.prototype.finally`-style.
 then: (onFulfilled, onRejected) => unknown;
 ```
 
-Defined in: [warp-drive-packages/core/src/request/-private/promise-cache.ts:19](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/core/src/request/-private/promise-cache.ts#L19)
+Defined in: [warp-drive-packages/core/src/request/-private/promise-cache.ts:19](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/core/src/request/-private/promise-cache.ts#L19)
 
 Registers fulfillment/rejection handlers, `Promise.prototype.then`-style.
 

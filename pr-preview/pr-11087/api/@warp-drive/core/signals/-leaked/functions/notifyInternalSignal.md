@@ -9,7 +9,7 @@ url: >-
 function notifyInternalSignal(signal): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/reactivity/internal.ts:286](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/core/src/signals/reactivity/internal.ts#L286)
+Defined in: [warp-drive-packages/core/src/signals/reactivity/internal.ts:286](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/core/src/signals/reactivity/internal.ts#L286)
 
 Marks `signal` as stale and notifies its underlying framework/TC39
 signal, scheduling any of its consumers for re-render/re-computation.

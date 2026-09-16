@@ -9,6 +9,6 @@ url: >-
 const LOG_GRAPH: boolean = false;
 ```
 
-Defined in: [debugging.ts:98](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/build-config/src/debugging.ts#L98)
+Defined in: [debugging.ts:98](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/build-config/src/debugging.ts#L98)
 
 log updates received by the graph (relationship pointer storage)

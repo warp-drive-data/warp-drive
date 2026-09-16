@@ -8,7 +8,7 @@ url: /pr-preview/pr-11087/api/@warp-drive/utilities/functions/setBuildURLConfig.
 function setBuildURLConfig(config): void;
 ```
 
-Defined in: [index.ts:71](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/utilities/src/index.ts#L71)
+Defined in: [index.ts:71](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/utilities/src/index.ts#L71)
 
 Sets the global configuration for `buildBaseURL`
 for host and namespace values for the application.

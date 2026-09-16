@@ -7,7 +7,7 @@ url: >-
 
 # &#x20;MinimumSerializerInterface
 
-Defined in: [warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-serializer-interface.ts:49](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-serializer-interface.ts#L49)
+Defined in: [warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-serializer-interface.ts:49](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-serializer-interface.ts#L49)
 
 :::danger
 ⚠️ **This is LEGACY documentation** for a feature that is no longer encouraged to be used.
@@ -29,7 +29,7 @@ Methods that are not required are marked as **optional**.
 optional destroy(): void;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-serializer-interface.ts:256](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-serializer-interface.ts#L256)
+Defined in: [warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-serializer-interface.ts:256](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-serializer-interface.ts#L256)
 
 **`Optional`**
 
@@ -54,7 +54,7 @@ optional normalize(
 ): SingleResourceDocument;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-serializer-interface.ts:164](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-serializer-interface.ts#L164)
+Defined in: [warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-serializer-interface.ts:164](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-serializer-interface.ts#L164)
 
 **`Optional`**
 
@@ -142,7 +142,7 @@ normalizeResponse(
 ): JsonApiDocument;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-serializer-interface.ts:78](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-serializer-interface.ts#L78)
+Defined in: [warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-serializer-interface.ts:78](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-serializer-interface.ts#L78)
 
 This method is responsible for normalizing the value resolved from the promise returned
 by an Adapter request into the format expected by the `Store`.
@@ -217,7 +217,7 @@ a document following the structure of a [{json:api} Document](https://jsonapi.or
 optional pushPayload(store, rawPayload): void;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-serializer-interface.ts:245](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-serializer-interface.ts#L245)
+Defined in: [warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-serializer-interface.ts:245](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-serializer-interface.ts#L245)
 
 **`Optional`**
 
@@ -281,7 +281,7 @@ This JSON should be in the API format expected by the serializer.
 serialize(snapshot, options?): ObjectValue;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-serializer-interface.ts:111](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-serializer-interface.ts#L111)
+Defined in: [warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-serializer-interface.ts:111](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-serializer-interface.ts#L111)
 
 This method is responsible for serializing an individual record
 via a Snapshot into the format expected by the API.
@@ -323,7 +323,7 @@ optional serializeIntoHash(
 ): void;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-serializer-interface.ts:203](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-serializer-interface.ts#L203)
+Defined in: [warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-serializer-interface.ts:203](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-serializer-interface.ts#L203)
 
 **`Optional`**
 

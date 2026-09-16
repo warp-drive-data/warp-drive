@@ -4,7 +4,7 @@ url: /pr-preview/pr-11087/api/@warp-drive/schema-dsl/interfaces/AttributeOptions
 
 # &#x20;AttributeOptions
 
-Defined in: [fields/attribute.ts:10](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/schema-dsl/src/fields/attribute.ts#L10)
+Defined in: [fields/attribute.ts:10](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/schema-dsl/src/fields/attribute.ts#L10)
 
 Options accepted by the [attribute](../functions/attribute.md) decorator.
 
@@ -16,7 +16,7 @@ Options accepted by the [attribute](../functions/attribute.md) decorator.
 optional sourceKey?: string;
 ```
 
-Defined in: [fields/attribute.ts:18](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/schema-dsl/src/fields/attribute.ts#L18)
+Defined in: [fields/attribute.ts:18](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/schema-dsl/src/fields/attribute.ts#L18)
 
 The name of the field as returned by the API, if it differs from the
 decorated property's name. Compiles onto the
@@ -30,6 +30,6 @@ decorated property's name. Compiles onto the
 optional type?: string;
 ```
 
-Defined in: [fields/attribute.ts:25](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/schema-dsl/src/fields/attribute.ts#L25)
+Defined in: [fields/attribute.ts:25](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/schema-dsl/src/fields/attribute.ts#L25)
 
 The name of a legacy transform to compile onto the field's `type`.

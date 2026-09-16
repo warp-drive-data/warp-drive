@@ -11,7 +11,7 @@ url: >-
 function configureTypeNormalization(fn): void;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat/utils.ts:70](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/legacy/src/compat/utils.ts#L70)
+Defined in: [warp-drive-packages/legacy/src/compat/utils.ts:70](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/legacy/src/compat/utils.ts#L70)
 
 Configure a function to be called to normalize
 a resource type string. Used by both formattedType

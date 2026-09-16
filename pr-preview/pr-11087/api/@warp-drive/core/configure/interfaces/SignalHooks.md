@@ -4,7 +4,7 @@ url: /pr-preview/pr-11087/api/@warp-drive/core/configure/interfaces/SignalHooks.
 
 # &#x20;SignalHooks\<T>
 
-Defined in: [warp-drive-packages/core/src/signals/reactivity/configure.ts:70](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/core/src/signals/reactivity/configure.ts#L70)
+Defined in: [warp-drive-packages/core/src/signals/reactivity/configure.ts:70](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/core/src/signals/reactivity/configure.ts#L70)
 
 The hooks which MUST be configured in order to use reactive arrays,
 resources and documents with framework specfic signals or TC39 signals.
@@ -41,7 +41,7 @@ more directly.
 consumeSignal: (signal) => void;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/reactivity/configure.ts:84](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/core/src/signals/reactivity/configure.ts#L84)
+Defined in: [warp-drive-packages/core/src/signals/reactivity/configure.ts:84](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/core/src/signals/reactivity/configure.ts#L84)
 
 Consume (mark as acccessed) a signal previously created via createSignal.
 
@@ -63,7 +63,7 @@ Consume (mark as acccessed) a signal previously created via createSignal.
 createMemo: <F>(obj, key, fn) => () => F;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/reactivity/configure.ts:96](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/core/src/signals/reactivity/configure.ts#L96)
+Defined in: [warp-drive-packages/core/src/signals/reactivity/configure.ts:96](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/core/src/signals/reactivity/configure.ts#L96)
 
 Take the given function and wrap it in signals-based memoization. Analagous
 to a Computed in the TC39 spec.
@@ -103,7 +103,7 @@ function.
 createSignal: (obj, key) => T;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/reactivity/configure.ts:80](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/core/src/signals/reactivity/configure.ts#L80)
+Defined in: [warp-drive-packages/core/src/signals/reactivity/configure.ts:80](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/core/src/signals/reactivity/configure.ts#L80)
 
 Create a signal for the given key associated to the given object.
 
@@ -135,7 +135,7 @@ useful to ensure such cache is properly updated.
 notifySignal: (signal) => void;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/reactivity/configure.ts:88](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/core/src/signals/reactivity/configure.ts#L88)
+Defined in: [warp-drive-packages/core/src/signals/reactivity/configure.ts:88](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/core/src/signals/reactivity/configure.ts#L88)
 
 Alert a signal previously created via createSignal that its associated value has changed.
 
@@ -157,7 +157,7 @@ Alert a signal previously created via createSignal that its associated value has
 optional waitFor?: <K>(promise) => Promise<K>;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/reactivity/configure.ts:115](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/core/src/signals/reactivity/configure.ts#L115)
+Defined in: [warp-drive-packages/core/src/signals/reactivity/configure.ts:115](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/core/src/signals/reactivity/configure.ts#L115)
 
 An optional method that allows wrapping key promises within WarpDrive
 for things like test-waiters.
@@ -186,7 +186,7 @@ for things like test-waiters.
 willSyncFlushWatchers: () => boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/reactivity/configure.ts:109](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/core/src/signals/reactivity/configure.ts#L109)
+Defined in: [warp-drive-packages/core/src/signals/reactivity/configure.ts:109](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/core/src/signals/reactivity/configure.ts#L109)
 
 If the signals implementation allows synchronous flushing of watchers, and
 has scheduled such a flush (e.g. watchers will run before the current calling

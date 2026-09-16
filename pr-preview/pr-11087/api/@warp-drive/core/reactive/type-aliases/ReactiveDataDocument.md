@@ -9,7 +9,7 @@ url: >-
 type ReactiveDataDocument<T, M, E, EM> = ReactiveDocumentBase<T, M, E, EM> & DocumentMeta<M> & object;
 ```
 
-Defined in: [warp-drive-packages/core/src/reactive/-private/document.ts:196](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/core/src/reactive/-private/document.ts#L196)
+Defined in: [warp-drive-packages/core/src/reactive/-private/document.ts:196](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/core/src/reactive/-private/document.ts#L196)
 
 The variant of [ReactiveDocument](ReactiveDocument.md) returned for a request whose
 response contained primary data.

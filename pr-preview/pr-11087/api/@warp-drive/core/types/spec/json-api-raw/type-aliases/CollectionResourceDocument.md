@@ -9,7 +9,7 @@ url: >-
 type CollectionResourceDocument<T> = Document & object;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:389](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L389)
+Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:389](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L389)
 
 Represents a {json:api} document containing a collection of resources.
 

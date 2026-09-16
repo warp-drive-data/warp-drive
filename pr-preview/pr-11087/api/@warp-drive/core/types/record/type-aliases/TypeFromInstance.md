@@ -9,7 +9,7 @@ url: >-
 type TypeFromInstance<T> = T extends TypedRecordInstance ? T[typeof Type] : never;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/record.ts:38](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/core/src/types/record.ts#L38)
+Defined in: [warp-drive-packages/core/src/types/record.ts:38](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/core/src/types/record.ts#L38)
 
 A type utility that extracts the Type if available,
 otherwise it returns never.

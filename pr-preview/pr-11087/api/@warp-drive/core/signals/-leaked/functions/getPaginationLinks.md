@@ -9,7 +9,7 @@ url: >-
 function getPaginationLinks<RT, E>(state): Readonly<PaginationLinks<RT, E>>;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-links.ts:372](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/core/src/signals/pagination-links.ts#L372)
+Defined in: [warp-drive-packages/core/src/signals/pagination-links.ts:372](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/core/src/signals/pagination-links.ts#L372)
 
 Get the [PaginationLinks](../interfaces/PaginationLinks.md) for a given [PaginationState](../interfaces/PaginationState.md). Returns
 the same instance for the same state, so repeated calls (for example a

@@ -5,7 +5,7 @@ url: >-
 
 # &#x20;CollectionResourceDataDocument\<T>
 
-Defined in: [warp-drive-packages/core/src/types/spec/document.ts:61](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/core/src/types/spec/document.ts#L61)
+Defined in: [warp-drive-packages/core/src/types/spec/document.ts:61](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/core/src/types/spec/document.ts#L61)
 
 This type represents a raw {json:api} document for a resource collection
 returned by a request intended to be inserted into the cache.
@@ -26,7 +26,7 @@ For the Reactive value returned by a request using the store, use [ReactiveDataD
 data: T[];
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/document.ts:77](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/core/src/types/spec/document.ts#L77)
+Defined in: [warp-drive-packages/core/src/types/spec/document.ts:77](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/core/src/types/spec/document.ts#L77)
 
 the resources the document represents
 
@@ -38,7 +38,7 @@ the resources the document represents
 optional included?: T[];
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/document.ts:81](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/core/src/types/spec/document.ts#L81)
+Defined in: [warp-drive-packages/core/src/types/spec/document.ts:81](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/core/src/types/spec/document.ts#L81)
 
 any additional resources included via sideloading
 
@@ -50,7 +50,7 @@ any additional resources included via sideloading
 optional lid?: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/document.ts:65](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/core/src/types/spec/document.ts#L65)
+Defined in: [warp-drive-packages/core/src/types/spec/document.ts:65](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/core/src/types/spec/document.ts#L65)
 
 the url or cache-key associated with the structured document
 
@@ -64,7 +64,7 @@ optional links?:
   | PaginationLinks;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/document.ts:69](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/core/src/types/spec/document.ts#L69)
+Defined in: [warp-drive-packages/core/src/types/spec/document.ts:69](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/core/src/types/spec/document.ts#L69)
 
 links related to the document, including pagination links
 
@@ -76,6 +76,6 @@ links related to the document, including pagination links
 optional meta?: ObjectValue;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/document.ts:73](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/core/src/types/spec/document.ts#L73)
+Defined in: [warp-drive-packages/core/src/types/spec/document.ts:73](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/core/src/types/spec/document.ts#L73)
 
 meta information about the document

@@ -8,7 +8,7 @@ url: /pr-preview/pr-11087/api/@warp-drive/core/functions/setKeyInfoForResource.m
 function setKeyInfoForResource(method): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts:291](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts#L291)
+Defined in: [warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts:291](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts#L291)
 
 Configure a callback for when the identifier cache is generating a new
 ResourceKey for a resource.

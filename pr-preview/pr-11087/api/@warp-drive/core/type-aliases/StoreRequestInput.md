@@ -10,7 +10,7 @@ type StoreRequestInput<RT> =
 | LooseStoreRequestInfo<RT>;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/cache-handler/handler.ts:47](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/core/src/store/-private/cache-handler/handler.ts#L47)
+Defined in: [warp-drive-packages/core/src/store/-private/cache-handler/handler.ts:47](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/core/src/store/-private/cache-handler/handler.ts#L47)
 
 The request shape accepted by [Store.request](../classes/Store.md#request), either a fully-formed
 [ImmutableRequestInfo](../types/request/type-aliases/ImmutableRequestInfo.md) or the looser LooseStoreRequestInfo.

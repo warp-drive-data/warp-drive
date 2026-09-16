@@ -9,7 +9,7 @@ url: >-
 const ENFORCE_STRICT_RESOURCE_FINALIZATION: boolean | null = false;
 ```
 
-Defined in: [canary-features.ts:150](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/build-config/src/canary-features.ts#L150)
+Defined in: [canary-features.ts:150](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/build-config/src/canary-features.ts#L150)
 
 This upcoming feature adds a validation step when `schema.fields({ type })`
 is called for the first time for a resource.

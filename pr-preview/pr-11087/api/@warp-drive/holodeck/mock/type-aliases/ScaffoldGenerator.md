@@ -9,7 +9,7 @@ url: >-
 type ScaffoldGenerator = () => Scaffold;
 ```
 
-Defined in: [mock.ts:19](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/packages/holodeck/src/mock.ts#L19)
+Defined in: [mock.ts:19](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/packages/holodeck/src/mock.ts#L19)
 
 ## Returns
 

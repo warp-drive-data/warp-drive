@@ -5,7 +5,7 @@ url: >-
 
 # &#x20;LinksModeHasManyField
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:1858](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/core/src/types/schema/fields.ts#L1858)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:1858](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/core/src/types/schema/fields.ts#L1858)
 
 > \[!CAUTION]
 > This Field is LEGACY
@@ -23,7 +23,7 @@ This is the legacy version of the `CollectionField`.
 kind: "hasMany";
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:1864](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/core/src/types/schema/fields.ts#L1864)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:1864](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/core/src/types/schema/fields.ts#L1864)
 
 The kind of field this is.
 
@@ -35,7 +35,7 @@ The kind of field this is.
 name: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:1871](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/core/src/types/schema/fields.ts#L1871)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:1871](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/core/src/types/schema/fields.ts#L1871)
 
 The name of the field.
 
@@ -47,7 +47,7 @@ The name of the field.
 options: object;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:1912](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/core/src/types/schema/fields.ts#L1912)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:1912](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/core/src/types/schema/fields.ts#L1912)
 
 Options for hasMany are mandatory.
 
@@ -192,7 +192,7 @@ or abstract type specified in `type`.
 optional sourceKey?: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:1895](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/core/src/types/schema/fields.ts#L1895)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:1895](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/core/src/types/schema/fields.ts#L1895)
 
 The name of the field as returned by the API
 and inserted into the [Cache](../../../cache/interfaces/Cache.md) if it differs
@@ -223,7 +223,7 @@ This option is only needed when the value differs from name.
 type: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:1905](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/core/src/types/schema/fields.ts#L1905)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:1905](https://github.com/warp-drive-data/warp-drive/blob/a37221ebf6a3775fa6d7b559641a9238e4f43660/warp-drive-packages/core/src/types/schema/fields.ts#L1905)
 
 the name of the resource that this field
 refers to. In the case of a polymorphic
