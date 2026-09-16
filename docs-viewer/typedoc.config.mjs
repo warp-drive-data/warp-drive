@@ -45,6 +45,12 @@ const config = {
     excludeExternals: true,
     // inheritNone: true,
     useCodeBlocks: true,
+    // Show full type/parameter text instead of truncated placeholders (e.g. an object type
+    // alias's shape instead of `object`, a parameter's type instead of just its name) — needed
+    // so the type-signature block inserted by typedoc-plugins/type-signature.mjs (and the
+    // default per-signature title typedoc-plugin-markdown already renders) shows the real type.
+    expandObjects: true,
+    expandParameters: true,
     hidePageTitle: false,
     // Drop the "{kind}: " prefix (e.g. "Function: ") from member page H1s — the kind is shown
     // as a <KindBadge> next to the name instead (see postProcessApiDocs in site-utils.ts).
@@ -89,6 +95,7 @@ const config = {
     new URL('./typedoc-plugins/decorator-groups.mjs', import.meta.url).pathname,
     new URL('./typedoc-plugins/types-router.mjs', import.meta.url).pathname,
     new URL('./typedoc-plugins/type-kind-badges.mjs', import.meta.url).pathname,
+    new URL('./typedoc-plugins/type-signature.mjs', import.meta.url).pathname,
   ],
   // Routes interfaces and type-aliases to a shared `types/` directory instead of typedoc's
   // default `interfaces/` and `type-aliases/` split, so a symbol's URL is stable across that
@@ -107,6 +114,8 @@ const config = {
   excludeInternal: true,
   excludeExternals: true,
   useCodeBlocks: true,
+  expandObjects: true,
+  expandParameters: true,
   hidePageTitle: false,
   pageTitleTemplates: { member: '{keyword} {name}' },
   // typeAliasPropertiesFormat: 'htmlTable',

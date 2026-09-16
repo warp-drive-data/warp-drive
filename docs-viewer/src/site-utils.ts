@@ -872,6 +872,149 @@ function extractStatusFlagBadges(content: string): string {
   return lines.join('\n').replace(/\n{3,}/g, '\n\n');
 }
 
+// The two structural groupings PASSTHROUGH_HEADINGS uses for a *constructor's* own overloads
+// (`Constructor Signature`) don't apply here: a class's repeated `### Constructor` headings sit
+// one level below `## Constructors`, not below `# Class: Name` itself, and typedoc-plugins/
+// type-signature.mjs already puts every constructor overload in the class's own top-of-page
+// block — consolidating them again here would just duplicate that. `Get Signature`/
+// `Set Signature` are included for parity even though an accessor's getter and setter are never
+// each other's overload (so a run of 2+ never occurs) — see PASSTHROUGH_HEADINGS above.
+const OVERLOAD_HEADING_TEXTS = new Set(['Call Signature', 'Get Signature', 'Set Signature']);
+
+/**
+ * A function or method with 2+ overloads gets one `## Call Signature` (or deeper, when nested
+ * inside a class/interface) heading per overload from typedoc-plugin-markdown, each with its own
+ * ```ts signature, `Parameters`, and `Returns` scattered down the page — nothing shows every
+ * overload together. This finds each such run of sibling headings (same level and text, all
+ * direct children of the same parent heading), pulls the ```ts code block that immediately
+ * follows each one, and inserts a single consolidated ```ts block combining them all right after
+ * the parent heading — the page's own H1 for a top-level function, or a method's own heading for
+ * a class/interface member — so every overload is visible in one place before any of the
+ * per-overload detail below it.
+ */
+function consolidateOverloadSignatures(content: string): string {
+  const lines = content.split('\n');
+  const headings: { index: number; level: number; text: string }[] = [];
+  for (let i = 0; i < lines.length; i++) {
+    const m = HEADING_RE.exec(lines[i]);
+    if (m) headings.push({ index: i, level: m[1].length, text: m[2].trim() });
+  }
+
+  const insertionsByParentLine = new Map<number, string[]>();
+  let i = 0;
+  while (i < headings.length) {
+    const heading = headings[i];
+    if (!OVERLOAD_HEADING_TEXTS.has(heading.text)) {
+      i++;
+      continue;
+    }
+
+    // Collect this heading's same-level, same-text siblings, skipping over each one's own
+    // (deeper-level) Parameters/Returns/etc. content rather than stopping at it.
+    const run: typeof headings = [];
+    let j = i;
+    while (j < headings.length) {
+      const candidate = headings[j];
+      if (candidate.level < heading.level) break;
+      if (candidate.level === heading.level) {
+        if (candidate.text !== heading.text) break;
+        run.push(candidate);
+      }
+      j++;
+    }
+    if (run.length < 2) {
+      i = j;
+      continue;
+    }
+
+    let parentIndex = -1;
+    for (let p = i - 1; p >= 0; p--) {
+      if (headings[p].level < heading.level) {
+        parentIndex = headings[p].index;
+        break;
+      }
+    }
+    if (parentIndex === -1) {
+      i = j;
+      continue;
+    }
+
+    const signatureLines: string[] = [];
+    let everyOverloadHasCode = true;
+    for (const overload of run) {
+      let li = overload.index + 1;
+      while (li < lines.length && lines[li].trim() === '') li++;
+      if (lines[li]?.trim() !== '```ts') {
+        everyOverloadHasCode = false;
+        break;
+      }
+      li++;
+      while (li < lines.length && lines[li].trim() !== '```') {
+        signatureLines.push(lines[li]);
+        li++;
+      }
+    }
+
+    if (everyOverloadHasCode && signatureLines.length) {
+      const block = '```ts\n' + signatureLines.join('\n') + '\n```';
+      const existing = insertionsByParentLine.get(parentIndex) ?? [];
+      existing.push(block);
+      insertionsByParentLine.set(parentIndex, existing);
+    }
+    i = j;
+  }
+
+  if (insertionsByParentLine.size === 0) return content;
+
+  const result: string[] = [];
+  for (let li = 0; li < lines.length; li++) {
+    result.push(lines[li]);
+    const blocks = insertionsByParentLine.get(li);
+    if (blocks) {
+      result.push('', ...blocks.join('\n\n').split('\n'));
+    }
+  }
+  return result.join('\n');
+}
+
+/**
+ * typedoc-plugin-markdown's `declarationType` partial (used once `expandObjects` is on) indents
+ * every named property of a nested object type, but not an index signature sitting alongside
+ * them — so `{ [key: string]: Value; arrayExtensions?: string[] }` renders with its index
+ * signature line flush against the left margin while its sibling property is indented. This
+ * finds each ```ts code block's index-signature line left at column 0 that sits directly inside
+ * an object literal (its nearest preceding non-blank line ends in `{`) and indents it to match —
+ * a line genuinely meant to sit at column 0 (e.g. a standalone `#### Index Signature` block with
+ * nothing around it) never has such a preceding line, so it's left alone.
+ */
+function fixIndexSignatureIndent(content: string): string {
+  const lines = content.split('\n');
+  let inCodeBlock = false;
+  for (let i = 0; i < lines.length; i++) {
+    const trimmed = lines[i].trim();
+    if (trimmed === '```ts') {
+      inCodeBlock = true;
+      continue;
+    }
+    if (trimmed === '```') {
+      inCodeBlock = false;
+      continue;
+    }
+    if (!inCodeBlock || !lines[i].startsWith('[')) continue;
+
+    for (let p = i - 1; p >= 0; p--) {
+      const prevLine = lines[p];
+      if (prevLine.trim() === '') continue;
+      if (/\{$/.test(prevLine.trim())) {
+        const prevIndent = /^ */.exec(prevLine)![0].length;
+        lines[i] = ' '.repeat(prevIndent + 2) + lines[i];
+      }
+      break;
+    }
+  }
+  return lines.join('\n');
+}
+
 export async function postProcessApiDocs() {
   const dir = path.join(__dirname, '../tmp/api');
   const outDir = path.join(__dirname, '../docs.warp-drive.io/api');
@@ -920,6 +1063,13 @@ export async function postProcessApiDocs() {
     mkdirSync(path.dirname(outFile), { recursive: true });
 
     let newContent = content;
+
+    // Consolidate an overloaded function's or method's per-overload signatures into one block
+    // right under its own heading, before any other content below it is touched.
+    newContent = consolidateOverloadSignatures(newContent);
+
+    // Fix an index signature's indentation wherever it's nested inside an expanded object type.
+    newContent = fixIndexSignatureIndent(newContent);
 
     // Replace the entire breadcrumb line with the badge (no subpath links)
     const importPath = fileToImportPath(file);
