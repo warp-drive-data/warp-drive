@@ -4,13 +4,18 @@ url: /api/@warp-drive/schema-dsl/functions/attribute.md
 
 # &#x20;attribute()
 
+```ts
+function attribute(target: object, key: string): void;
+function attribute(options: AttributeOptions): (target: object, key: string) => void;
+```
+
 ## Call Signature
 
 ```ts
-function attribute(target, key): void;
+function attribute(target: object, key: string): void;
 ```
 
-Defined in: [fields/attribute.ts:60](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/schema-dsl/src/fields/attribute.ts#L60)
+Defined in: [fields/attribute.ts:60](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/schema-dsl/src/fields/attribute.ts#L60)
 
 **`Decorator`**
 
@@ -59,10 +64,10 @@ export class Comment {
 ## Call Signature
 
 ```ts
-function attribute(options): (target, key) => void;
+function attribute(options: AttributeOptions): (target: object, key: string) => void;
 ```
 
-Defined in: [fields/attribute.ts:61](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/schema-dsl/src/fields/attribute.ts#L61)
+Defined in: [fields/attribute.ts:61](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/schema-dsl/src/fields/attribute.ts#L61)
 
 **`Decorator`**
 
@@ -81,7 +86,7 @@ Marks a property as a [LegacyAttributeField](../../core/types/schema/fields/type
 
 ### Returns
 
-(`target`, `key`) => `void`
+(`target`: `object`, `key`: `string`) => `void`
 
 ### Example
 

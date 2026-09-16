@@ -4,13 +4,19 @@ url: /api/@warp-drive/schema-dsl/functions/Trait-1.md
 
 # &#x20;Trait()
 
+```ts
+function Trait(target: AnyConstructor): void;
+function Trait(name: string, options?: TraitOptions): (target: AnyConstructor) => void;
+function Trait(options: TraitOptions): (target: AnyConstructor) => void;
+```
+
 ## Call Signature
 
 ```ts
-function Trait(target): void;
+function Trait(target: AnyConstructor): void;
 ```
 
-Defined in: [entities/trait.ts:71](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/schema-dsl/src/entities/trait.ts#L71)
+Defined in: [entities/trait.ts:71](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/schema-dsl/src/entities/trait.ts#L71)
 
 **`Class Decorator`**
 
@@ -66,10 +72,10 @@ export class Timestamped {
 ## Call Signature
 
 ```ts
-function Trait(name, options?): (target) => void;
+function Trait(name: string, options?: TraitOptions): (target: AnyConstructor) => void;
 ```
 
-Defined in: [entities/trait.ts:72](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/schema-dsl/src/entities/trait.ts#L72)
+Defined in: [entities/trait.ts:72](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/schema-dsl/src/entities/trait.ts#L72)
 
 **`Class Decorator`**
 
@@ -97,7 +103,7 @@ trait's fields are merged into whichever resource composes it.
 
 ### Returns
 
-(`target`) => `void`
+(`target`: `AnyConstructor`) => `void`
 
 ### Example
 
@@ -129,10 +135,10 @@ export class Timestamped {
 ## Call Signature
 
 ```ts
-function Trait(options): (target) => void;
+function Trait(options: TraitOptions): (target: AnyConstructor) => void;
 ```
 
-Defined in: [entities/trait.ts:73](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/schema-dsl/src/entities/trait.ts#L73)
+Defined in: [entities/trait.ts:73](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/schema-dsl/src/entities/trait.ts#L73)
 
 **`Class Decorator`**
 
@@ -156,7 +162,7 @@ trait's fields are merged into whichever resource composes it.
 
 ### Returns
 
-(`target`) => `void`
+(`target`: `AnyConstructor`) => `void`
 
 ### Example
 

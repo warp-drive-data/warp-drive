@@ -5,10 +5,10 @@ url: /api/@warp-drive/utilities/string/functions/underscore.md
 # &#x20;underscore()&#x20;
 
 ```ts
-function underscore(str): string;
+function underscore(str: string): string;
 ```
 
-Defined in: [-private/string/transform.ts:79](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/utilities/src/-private/string/transform.ts#L79)
+Defined in: [-private/string/transform.ts:79](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/utilities/src/-private/string/transform.ts#L79)
 
 Returns the lower\_case\_and\_underscored form of a string.
 

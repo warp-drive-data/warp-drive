@@ -4,7 +4,7 @@ url: /api/@warp-drive/ember/experiments/classes/EachLink.md
 
 # &#x20;\<EachLink />&#x20;
 
-Defined in: [warp-drive-packages/ember/dist/experiments.d.ts:319](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/ember/dist/experiments.d.ts#L319)
+Defined in: [warp-drive-packages/ember/dist/experiments.d.ts:319](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/ember/dist/experiments.d.ts#L319)
 
 The `<EachLink />` component yields the navigation links for a paginated
 collection, derived from the PagedPaginationState a `<Paginate />`
@@ -85,10 +85,12 @@ load and as the active page changes.
 ### Constructor
 
 ```ts
-new EachLink<RT, E>(owner, args): EachLink<RT, E>;
+new EachLink<RT, E>(owner: Owner, args: {
+  pages: PagedPaginationState<RT, E>;
+}): EachLink<RT, E>;
 ```
 
-Defined in: [node\_modules/.pnpm/@glimmer+component@2.1.1/node\_modules/@glimmer/component/dist/index.d.ts:389](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/node_modules/.pnpm/@glimmer+component@2.1.1/node_modules/@glimmer/component/dist/index.d.ts#L389)
+Defined in: [node\_modules/.pnpm/@glimmer+component@2.1.1/node\_modules/@glimmer/component/dist/index.d.ts:389](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/node_modules/.pnpm/@glimmer+component@2.1.1/node_modules/@glimmer/component/dist/index.d.ts#L389)
 
 #### Parameters
 
@@ -123,7 +125,7 @@ Component<EachLinkSignature<RT, E>>.constructor
 willDestroy(): void;
 ```
 
-Defined in: [warp-drive-packages/ember/dist/experiments.d.ts:322](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/ember/dist/experiments.d.ts#L322)
+Defined in: [warp-drive-packages/ember/dist/experiments.d.ts:322](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/ember/dist/experiments.d.ts#L322)
 
 Called before the component has been removed from the DOM.
 

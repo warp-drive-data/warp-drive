@@ -5,10 +5,10 @@ url: /api/@warp-drive/schema-dsl/functions/readonly.md
 # &#x20;readonly()&#x20;
 
 ```ts
-function readonly(target, key): void;
+function readonly(target: object, key: string): void;
 ```
 
-Defined in: [fields/readonly.ts:12](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/schema-dsl/src/fields/readonly.ts#L12)
+Defined in: [fields/readonly.ts:12](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/schema-dsl/src/fields/readonly.ts#L12)
 
 **`Decorator`**
 

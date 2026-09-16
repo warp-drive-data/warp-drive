@@ -5,10 +5,12 @@ url: /api/@warp-drive/utilities/json-api/functions/serializePatch.md
 # &#x20;serializePatch()
 
 ```ts
-function serializePatch(cache, identifier): object;
+function serializePatch(cache: Cache, identifier: ResourceKey): {
+  data: JsonApiResourcePatch;
+};
 ```
 
-Defined in: [-private/json-api/serialize.ts:157](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/utilities/src/-private/json-api/serialize.ts#L157)
+Defined in: [-private/json-api/serialize.ts:157](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/utilities/src/-private/json-api/serialize.ts#L157)
 
 :::warning ⚠️ **This util often won't produce the necessary body for a {json:api} request**
 

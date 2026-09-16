@@ -4,7 +4,45 @@ url: /api/@warp-drive/core/types/request/types/FetchError.md
 
 # &#x20;FetchError
 
-Defined in: [warp-drive-packages/core/src/request/-private/utils.ts:117](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/request/-private/utils.ts#L117)
+```ts
+interface FetchError extends DOMException {
+  readonly ABORT_ERR: 20;
+  cause?: unknown;
+  code: number;
+  readonly DATA_CLONE_ERR: 25;
+  readonly DOMSTRING_SIZE_ERR: 2;
+  readonly HIERARCHY_REQUEST_ERR: 3;
+  readonly INDEX_SIZE_ERR: 1;
+  readonly INUSE_ATTRIBUTE_ERR: 10;
+  readonly INVALID_ACCESS_ERR: 15;
+  readonly INVALID_CHARACTER_ERR: 5;
+  readonly INVALID_MODIFICATION_ERR: 13;
+  readonly INVALID_NODE_TYPE_ERR: 24;
+  readonly INVALID_STATE_ERR: 11;
+  isRequestError: true;
+  readonly message: string;
+  name: string;
+  readonly NAMESPACE_ERR: 14;
+  readonly NETWORK_ERR: 19;
+  readonly NO_DATA_ALLOWED_ERR: 6;
+  readonly NO_MODIFICATION_ALLOWED_ERR: 7;
+  readonly NOT_FOUND_ERR: 8;
+  readonly NOT_SUPPORTED_ERR: 9;
+  readonly QUOTA_EXCEEDED_ERR: 22;
+  readonly SECURITY_ERR: 18;
+  stack?: string;
+  status: number;
+  statusText: string;
+  readonly SYNTAX_ERR: 12;
+  readonly TIMEOUT_ERR: 23;
+  readonly TYPE_MISMATCH_ERR: 17;
+  readonly URL_MISMATCH_ERR: 21;
+  readonly VALIDATION_ERR: 16;
+  readonly WRONG_DOCUMENT_ERR: 4;
+}
+```
+
+Defined in: [warp-drive-packages/core/src/request/-private/utils.ts:117](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/request/-private/utils.ts#L117)
 
 Additional properties exposed on errors thrown by the
 [Fetch Handler](../../../variables/Fetch.md).
@@ -28,7 +66,7 @@ to [Error](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Ob
 readonly ABORT_ERR: 20;
 ```
 
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.dom.d.ts:11354](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.dom.d.ts#L11354)
+Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.dom.d.ts:11354](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.dom.d.ts#L11354)
 
 #### Inherited from
 
@@ -44,7 +82,7 @@ DOMException.ABORT_ERR
 optional cause?: unknown;
 ```
 
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.es2022.error.d.ts:24](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.es2022.error.d.ts#L24)
+Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.es2022.error.d.ts:24](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.es2022.error.d.ts#L24)
 
 #### Inherited from
 
@@ -60,7 +98,7 @@ DOMException.cause
 code: number;
 ```
 
-Defined in: [warp-drive-packages/core/src/request/-private/utils.ts:123](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/request/-private/utils.ts#L123)
+Defined in: [warp-drive-packages/core/src/request/-private/utils.ts:123](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/request/-private/utils.ts#L123)
 
 Alias for [status](#status).
 
@@ -80,7 +118,7 @@ DOMException.code
 readonly DATA_CLONE_ERR: 25;
 ```
 
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.dom.d.ts:11359](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.dom.d.ts#L11359)
+Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.dom.d.ts:11359](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.dom.d.ts#L11359)
 
 #### Inherited from
 
@@ -96,7 +134,7 @@ DOMException.DATA_CLONE_ERR
 readonly DOMSTRING_SIZE_ERR: 2;
 ```
 
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.dom.d.ts:11336](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.dom.d.ts#L11336)
+Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.dom.d.ts:11336](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.dom.d.ts#L11336)
 
 #### Inherited from
 
@@ -112,7 +150,7 @@ DOMException.DOMSTRING_SIZE_ERR
 readonly HIERARCHY_REQUEST_ERR: 3;
 ```
 
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.dom.d.ts:11337](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.dom.d.ts#L11337)
+Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.dom.d.ts:11337](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.dom.d.ts#L11337)
 
 #### Inherited from
 
@@ -128,7 +166,7 @@ DOMException.HIERARCHY_REQUEST_ERR
 readonly INDEX_SIZE_ERR: 1;
 ```
 
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.dom.d.ts:11335](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.dom.d.ts#L11335)
+Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.dom.d.ts:11335](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.dom.d.ts#L11335)
 
 #### Inherited from
 
@@ -144,7 +182,7 @@ DOMException.INDEX_SIZE_ERR
 readonly INUSE_ATTRIBUTE_ERR: 10;
 ```
 
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.dom.d.ts:11344](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.dom.d.ts#L11344)
+Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.dom.d.ts:11344](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.dom.d.ts#L11344)
 
 #### Inherited from
 
@@ -160,7 +198,7 @@ DOMException.INUSE_ATTRIBUTE_ERR
 readonly INVALID_ACCESS_ERR: 15;
 ```
 
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.dom.d.ts:11349](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.dom.d.ts#L11349)
+Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.dom.d.ts:11349](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.dom.d.ts#L11349)
 
 #### Inherited from
 
@@ -176,7 +214,7 @@ DOMException.INVALID_ACCESS_ERR
 readonly INVALID_CHARACTER_ERR: 5;
 ```
 
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.dom.d.ts:11339](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.dom.d.ts#L11339)
+Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.dom.d.ts:11339](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.dom.d.ts#L11339)
 
 #### Inherited from
 
@@ -192,7 +230,7 @@ DOMException.INVALID_CHARACTER_ERR
 readonly INVALID_MODIFICATION_ERR: 13;
 ```
 
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.dom.d.ts:11347](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.dom.d.ts#L11347)
+Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.dom.d.ts:11347](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.dom.d.ts#L11347)
 
 #### Inherited from
 
@@ -208,7 +246,7 @@ DOMException.INVALID_MODIFICATION_ERR
 readonly INVALID_NODE_TYPE_ERR: 24;
 ```
 
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.dom.d.ts:11358](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.dom.d.ts#L11358)
+Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.dom.d.ts:11358](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.dom.d.ts#L11358)
 
 #### Inherited from
 
@@ -224,7 +262,7 @@ DOMException.INVALID_NODE_TYPE_ERR
 readonly INVALID_STATE_ERR: 11;
 ```
 
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.dom.d.ts:11345](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.dom.d.ts#L11345)
+Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.dom.d.ts:11345](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.dom.d.ts#L11345)
 
 #### Inherited from
 
@@ -240,7 +278,7 @@ DOMException.INVALID_STATE_ERR
 isRequestError: true;
 ```
 
-Defined in: [warp-drive-packages/core/src/request/-private/utils.ts:153](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/request/-private/utils.ts#L153)
+Defined in: [warp-drive-packages/core/src/request/-private/utils.ts:153](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/request/-private/utils.ts#L153)
 
 A property signifying that an Error uses the FetchError
 interface.
@@ -253,7 +291,7 @@ interface.
 readonly message: string;
 ```
 
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.dom.d.ts:11328](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.dom.d.ts#L11328)
+Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.dom.d.ts:11328](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.dom.d.ts#L11328)
 
 The **`message`** read-only property of the DOMException interface returns a string representing a message or description associated with the given error name.
 
@@ -273,7 +311,7 @@ DOMException.message
 name: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/request/-private/utils.ts:131](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/request/-private/utils.ts#L131)
+Defined in: [warp-drive-packages/core/src/request/-private/utils.ts:131](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/request/-private/utils.ts#L131)
 
 The name associated to the [status code](#status).
 
@@ -295,7 +333,7 @@ DOMException.name
 readonly NAMESPACE_ERR: 14;
 ```
 
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.dom.d.ts:11348](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.dom.d.ts#L11348)
+Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.dom.d.ts:11348](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.dom.d.ts#L11348)
 
 #### Inherited from
 
@@ -311,7 +349,7 @@ DOMException.NAMESPACE_ERR
 readonly NETWORK_ERR: 19;
 ```
 
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.dom.d.ts:11353](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.dom.d.ts#L11353)
+Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.dom.d.ts:11353](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.dom.d.ts#L11353)
 
 #### Inherited from
 
@@ -327,7 +365,7 @@ DOMException.NETWORK_ERR
 readonly NO_DATA_ALLOWED_ERR: 6;
 ```
 
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.dom.d.ts:11340](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.dom.d.ts#L11340)
+Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.dom.d.ts:11340](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.dom.d.ts#L11340)
 
 #### Inherited from
 
@@ -343,7 +381,7 @@ DOMException.NO_DATA_ALLOWED_ERR
 readonly NO_MODIFICATION_ALLOWED_ERR: 7;
 ```
 
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.dom.d.ts:11341](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.dom.d.ts#L11341)
+Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.dom.d.ts:11341](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.dom.d.ts#L11341)
 
 #### Inherited from
 
@@ -359,7 +397,7 @@ DOMException.NO_MODIFICATION_ALLOWED_ERR
 readonly NOT_FOUND_ERR: 8;
 ```
 
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.dom.d.ts:11342](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.dom.d.ts#L11342)
+Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.dom.d.ts:11342](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.dom.d.ts#L11342)
 
 #### Inherited from
 
@@ -375,7 +413,7 @@ DOMException.NOT_FOUND_ERR
 readonly NOT_SUPPORTED_ERR: 9;
 ```
 
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.dom.d.ts:11343](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.dom.d.ts#L11343)
+Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.dom.d.ts:11343](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.dom.d.ts#L11343)
 
 #### Inherited from
 
@@ -391,7 +429,7 @@ DOMException.NOT_SUPPORTED_ERR
 readonly QUOTA_EXCEEDED_ERR: 22;
 ```
 
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.dom.d.ts:11356](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.dom.d.ts#L11356)
+Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.dom.d.ts:11356](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.dom.d.ts#L11356)
 
 #### Inherited from
 
@@ -407,7 +445,7 @@ DOMException.QUOTA_EXCEEDED_ERR
 readonly SECURITY_ERR: 18;
 ```
 
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.dom.d.ts:11352](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.dom.d.ts#L11352)
+Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.dom.d.ts:11352](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.dom.d.ts#L11352)
 
 #### Inherited from
 
@@ -423,7 +461,7 @@ DOMException.SECURITY_ERR
 optional stack?: string;
 ```
 
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.es5.d.ts:1076](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.es5.d.ts#L1076)
+Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.es5.d.ts:1076](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.es5.d.ts#L1076)
 
 #### Inherited from
 
@@ -439,7 +477,7 @@ DOMException.stack
 status: number;
 ```
 
-Defined in: [warp-drive-packages/core/src/request/-private/utils.ts:140](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/request/-private/utils.ts#L140)
+Defined in: [warp-drive-packages/core/src/request/-private/utils.ts:140](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/request/-private/utils.ts#L140)
 
 The http status code associated to the returned error.
 
@@ -456,7 +494,7 @@ Aborted requests will have an error code of `20`.
 statusText: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/request/-private/utils.ts:148](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/request/-private/utils.ts#L148)
+Defined in: [warp-drive-packages/core/src/request/-private/utils.ts:148](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/request/-private/utils.ts#L148)
 
 The Status Text associated to the [status code](#status)
 for the error.
@@ -471,7 +509,7 @@ for the error.
 readonly SYNTAX_ERR: 12;
 ```
 
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.dom.d.ts:11346](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.dom.d.ts#L11346)
+Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.dom.d.ts:11346](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.dom.d.ts#L11346)
 
 #### Inherited from
 
@@ -487,7 +525,7 @@ DOMException.SYNTAX_ERR
 readonly TIMEOUT_ERR: 23;
 ```
 
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.dom.d.ts:11357](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.dom.d.ts#L11357)
+Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.dom.d.ts:11357](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.dom.d.ts#L11357)
 
 #### Inherited from
 
@@ -503,7 +541,7 @@ DOMException.TIMEOUT_ERR
 readonly TYPE_MISMATCH_ERR: 17;
 ```
 
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.dom.d.ts:11351](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.dom.d.ts#L11351)
+Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.dom.d.ts:11351](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.dom.d.ts#L11351)
 
 #### Inherited from
 
@@ -519,7 +557,7 @@ DOMException.TYPE_MISMATCH_ERR
 readonly URL_MISMATCH_ERR: 21;
 ```
 
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.dom.d.ts:11355](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.dom.d.ts#L11355)
+Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.dom.d.ts:11355](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.dom.d.ts#L11355)
 
 #### Inherited from
 
@@ -535,7 +573,7 @@ DOMException.URL_MISMATCH_ERR
 readonly VALIDATION_ERR: 16;
 ```
 
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.dom.d.ts:11350](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.dom.d.ts#L11350)
+Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.dom.d.ts:11350](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.dom.d.ts#L11350)
 
 #### Inherited from
 
@@ -551,7 +589,7 @@ DOMException.VALIDATION_ERR
 readonly WRONG_DOCUMENT_ERR: 4;
 ```
 
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.dom.d.ts:11338](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.dom.d.ts#L11338)
+Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.dom.d.ts:11338](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.dom.d.ts#L11338)
 
 #### Inherited from
 

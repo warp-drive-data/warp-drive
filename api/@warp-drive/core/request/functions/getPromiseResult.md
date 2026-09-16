@@ -5,10 +5,12 @@ url: /api/@warp-drive/core/request/functions/getPromiseResult.md
 # &#x20;getPromiseResult()
 
 ```ts
-function getPromiseResult<T, E>(promise): CacheResult<T, E> | undefined;
+function getPromiseResult<T, E>(promise: 
+  | Promise<T>
+  | Awaitable<T, E>): CacheResult<T, E> | undefined;
 ```
 
-Defined in: [warp-drive-packages/core/src/request/-private/promise-cache.ts:67](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/request/-private/promise-cache.ts#L67)
+Defined in: [warp-drive-packages/core/src/request/-private/promise-cache.ts:67](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/request/-private/promise-cache.ts#L67)
 
 Synchronously read the settled result (or error) previously recorded for
 a promise-like value via [setPromiseResult](setPromiseResult.md), if any.

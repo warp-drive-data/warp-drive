@@ -2,13 +2,18 @@
 url: /api/@warp-drive/core/types/schema/concepts/types/Transformation.md
 ---
 
-# &#x20;Transformation\<T, PT>
+# &#x20;Transformation\<T *extends* [`Value`](../../../json/raw/types/Value.md) = [`Value`](../../../json/raw/types/Value.md), PT = `unknown`>
 
 ```ts
-type Transformation<T, PT> = object;
+type Transformation<T extends Value = Value, PT = unknown> = {
+  ___(unique) Symbol($type): string;
+  defaultValue?: T;
+  hydrate: PT;
+  serialize: T;
+};
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/concepts.ts:18](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/types/schema/concepts.ts#L18)
+Defined in: [warp-drive-packages/core/src/types/schema/concepts.ts:18](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/types/schema/concepts.ts#L18)
 
 A Transformation converts a cached primitive value into a richer
 "presentation" value exposed on a record, and back again.
@@ -36,10 +41,10 @@ name assigned to their [Type](../../../symbols/variables/Type.md) property.
 ### defaultValue()?
 
 ```ts
-optional defaultValue(options, identifier): T;
+optional defaultValue(options: ObjectValue | null, identifier: ResourceKey): T;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/concepts.ts:35](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/types/schema/concepts.ts#L35)
+Defined in: [warp-drive-packages/core/src/types/schema/concepts.ts:35](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/types/schema/concepts.ts#L35)
 
 Computes the value to use when no value is present in the cache
 for the field.
@@ -64,13 +69,13 @@ for the field.
 
 ```ts
 hydrate(
-   value, 
-   options, 
-   record
+   value: T | undefined, 
+   options: ObjectValue | null, 
+   record: unknown
 ): PT;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/concepts.ts:29](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/types/schema/concepts.ts#L29)
+Defined in: [warp-drive-packages/core/src/types/schema/concepts.ts:29](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/types/schema/concepts.ts#L29)
 
 Converts a value from its raw cached form into the presentation
 form exposed on a record.
@@ -99,13 +104,13 @@ form exposed on a record.
 
 ```ts
 serialize(
-   value, 
-   options, 
-   record
+   value: PT, 
+   options: ObjectValue | null, 
+   record: unknown
 ): T;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/concepts.ts:23](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/types/schema/concepts.ts#L23)
+Defined in: [warp-drive-packages/core/src/types/schema/concepts.ts:23](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/types/schema/concepts.ts#L23)
 
 Converts a value from its presentation form (as read from or written
 to a record) into the raw form to be stored in the cache.
@@ -136,6 +141,6 @@ to a record) into the raw form to be stored in the cache.
 ___(unique) Symbol($type): string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/concepts.ts:40](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/types/schema/concepts.ts#L40)
+Defined in: [warp-drive-packages/core/src/types/schema/concepts.ts:40](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/types/schema/concepts.ts#L40)
 
 The unique name this transformation is registered under.

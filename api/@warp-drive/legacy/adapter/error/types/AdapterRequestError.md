@@ -4,9 +4,17 @@ url: /api/@warp-drive/legacy/adapter/error/types/AdapterRequestError.md
 
 &#x20;
 
-# &#x20;AdapterRequestError\<T>
+# &#x20;AdapterRequestError\<T *extends* `string` = `string`>
 
-Defined in: [warp-drive-packages/legacy/src/adapter/error.ts:40](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/adapter/error.ts#L40)
+```ts
+interface AdapterRequestError<T extends string = string> extends Error {
+  code: T;
+  errors: ApiError[];
+  isAdapterError: true;
+}
+```
+
+Defined in: [warp-drive-packages/legacy/src/adapter/error.ts:40](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/adapter/error.ts#L40)
 
 The shape of the errors thrown/returned by [AdapterError](../variables/AdapterError.md) and its subclasses.
 
@@ -28,7 +36,7 @@ The shape of the errors thrown/returned by [AdapterError](../variables/AdapterEr
 code: T;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/error.ts:48](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/adapter/error.ts#L48)
+Defined in: [warp-drive-packages/legacy/src/adapter/error.ts:48](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/adapter/error.ts#L48)
 
 A short code identifying the kind of error, e.g. `'NotFoundError'`.
 
@@ -40,7 +48,7 @@ A short code identifying the kind of error, e.g. `'NotFoundError'`.
 errors: ApiError[];
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/error.ts:52](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/adapter/error.ts#L52)
+Defined in: [warp-drive-packages/legacy/src/adapter/error.ts:52](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/adapter/error.ts#L52)
 
 The {json:api} formatted errors associated with the request.
 
@@ -52,6 +60,6 @@ The {json:api} formatted errors associated with the request.
 isAdapterError: true;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/error.ts:44](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/adapter/error.ts#L44)
+Defined in: [warp-drive-packages/legacy/src/adapter/error.ts:44](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/adapter/error.ts#L44)
 
 A property signifying that an Error uses the AdapterRequestError interface.

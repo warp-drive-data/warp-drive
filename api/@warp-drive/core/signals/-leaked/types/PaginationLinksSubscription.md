@@ -4,7 +4,14 @@ url: /api/@warp-drive/core/signals/-leaked/types/PaginationLinksSubscription.md
 
 # &#x20;PaginationLinksSubscription\<RT, E>&#x20;
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-links-subscription.ts:8](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/signals/pagination-links-subscription.ts#L8)
+```ts
+interface PaginationLinksSubscription<RT, E> {
+  get paginationLinks(): Readonly<PaginationLinks<RT, E>>;
+  (symbol) dispose(): void;
+}
+```
+
+Defined in: [warp-drive-packages/core/src/signals/pagination-links-subscription.ts:8](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/signals/pagination-links-subscription.ts#L8)
 
 **`Hideconstructor`**
 
@@ -39,7 +46,7 @@ page changes.
 (symbol) dispose(): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-links-subscription.ts:13](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/signals/pagination-links-subscription.ts#L13)
+Defined in: [warp-drive-packages/core/src/signals/pagination-links-subscription.ts:13](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/signals/pagination-links-subscription.ts#L13)
 
 The method to call when the component this subscription is attached to
 unmounts.
@@ -58,7 +65,7 @@ unmounts.
 get paginationLinks(): Readonly<PaginationLinks<RT, E>>;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-links-subscription.ts:62](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/signals/pagination-links-subscription.ts#L62)
+Defined in: [warp-drive-packages/core/src/signals/pagination-links-subscription.ts:62](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/signals/pagination-links-subscription.ts#L62)
 
 The [PaginationLinks](PaginationLinks.md) derived from the [PagedPaginationState](PagedPaginationState.md)
 passed as an arg — the surface a links component yields to its consumer:

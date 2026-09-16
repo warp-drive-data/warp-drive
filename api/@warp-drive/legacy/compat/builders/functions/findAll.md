@@ -6,13 +6,18 @@ url: /api/@warp-drive/legacy/compat/builders/functions/findAll.md
 
 # &#x20;~~findAll()~~
 
+```ts
+function findAll<T extends TypedRecordInstance>(type: TypeFromInstance<T>, options?: BaseFinderOptions): FindAllRequestInput<TypeFromInstance<T>, T[]>;
+function findAll(type: string, options?: BaseFinderOptions): FindAllRequestInput;
+```
+
 ## Call Signature&#x20;
 
 ```ts
-function findAll<T>(type, options?): FindAllRequestInput<TypeFromInstance<T>, T[]>;
+function findAll<T extends TypedRecordInstance>(type: TypeFromInstance<T>, options?: BaseFinderOptions): FindAllRequestInput<TypeFromInstance<T>, T[]>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat/builders/find-all.ts:36](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/compat/builders/find-all.ts#L36)
+Defined in: [warp-drive-packages/legacy/src/compat/builders/find-all.ts:36](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/compat/builders/find-all.ts#L36)
 
 This function builds a request config to perform a `findAll` request for the given type.
 When passed to `store.request`, this config will result in the same behavior as a `store.findAll` request.
@@ -53,10 +58,10 @@ request config
 ## Call Signature&#x20;
 
 ```ts
-function findAll(type, options?): FindAllRequestInput;
+function findAll(type: string, options?: BaseFinderOptions): FindAllRequestInput;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat/builders/find-all.ts:40](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/compat/builders/find-all.ts#L40)
+Defined in: [warp-drive-packages/legacy/src/compat/builders/find-all.ts:40](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/compat/builders/find-all.ts#L40)
 
 This function builds a request config to perform a `findAll` request for the given type.
 When passed to `store.request`, this config will result in the same behavior as a `store.findAll` request.

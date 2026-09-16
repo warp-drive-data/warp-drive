@@ -8,7 +8,7 @@ url: /api/@warp-drive/holodeck/mock/types/ResponseGenerator.md
 type ResponseGenerator = () => Record<string, unknown>;
 ```
 
-Defined in: [mock.ts:24](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/packages/holodeck/src/mock.ts#L24)
+Defined in: [mock.ts:24](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/packages/holodeck/src/mock.ts#L24)
 
 ## Returns
 

@@ -4,13 +4,19 @@ url: /api/@warp-drive/schema-dsl/functions/ObjectSchema.md
 
 # &#x20;ObjectSchema()
 
+```ts
+function ObjectSchema(target: AnyConstructor): void;
+function ObjectSchema(type: string, options?: ObjectSchemaOptions): (target: AnyConstructor) => void;
+function ObjectSchema(options: ObjectSchemaOptions): (target: AnyConstructor) => void;
+```
+
 ## Call Signature
 
 ```ts
-function ObjectSchema(target): void;
+function ObjectSchema(target: AnyConstructor): void;
 ```
 
-Defined in: [entities/object-schema.ts:67](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/schema-dsl/src/entities/object-schema.ts#L67)
+Defined in: [entities/object-schema.ts:67](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/schema-dsl/src/entities/object-schema.ts#L67)
 
 **`Class Decorator`**
 
@@ -66,10 +72,10 @@ export class Address {
 ## Call Signature
 
 ```ts
-function ObjectSchema(type, options?): (target) => void;
+function ObjectSchema(type: string, options?: ObjectSchemaOptions): (target: AnyConstructor) => void;
 ```
 
-Defined in: [entities/object-schema.ts:68](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/schema-dsl/src/entities/object-schema.ts#L68)
+Defined in: [entities/object-schema.ts:68](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/schema-dsl/src/entities/object-schema.ts#L68)
 
 **`Class Decorator`**
 
@@ -97,7 +103,7 @@ compiled `fields` array, in declaration order.
 
 ### Returns
 
-(`target`) => `void`
+(`target`: `AnyConstructor`) => `void`
 
 ### Example
 
@@ -129,10 +135,10 @@ export class Address {
 ## Call Signature
 
 ```ts
-function ObjectSchema(options): (target) => void;
+function ObjectSchema(options: ObjectSchemaOptions): (target: AnyConstructor) => void;
 ```
 
-Defined in: [entities/object-schema.ts:69](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/schema-dsl/src/entities/object-schema.ts#L69)
+Defined in: [entities/object-schema.ts:69](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/schema-dsl/src/entities/object-schema.ts#L69)
 
 **`Class Decorator`**
 
@@ -156,7 +162,7 @@ compiled `fields` array, in declaration order.
 
 ### Returns
 
-(`target`) => `void`
+(`target`: `AnyConstructor`) => `void`
 
 ### Example
 

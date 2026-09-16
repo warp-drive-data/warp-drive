@@ -2,13 +2,17 @@
 url: /api/@warp-drive/core/types/request/types/RemotelyAccessibleIdentifier.md
 ---
 
-# &#x20;RemotelyAccessibleIdentifier\<T>
+# &#x20;RemotelyAccessibleIdentifier\<T *extends* `string` = `string`>
 
 ```ts
-type RemotelyAccessibleIdentifier<T> = object;
+type RemotelyAccessibleIdentifier<T extends string = string> = {
+  id: string;
+  lid?: string;
+  type: T;
+};
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:378](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/types/request.ts#L378)
+Defined in: [warp-drive-packages/core/src/types/request.ts:378](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/types/request.ts#L378)
 
 A minimal reference to a resource sufficient to build a URL for it,
 as accepted by the request builders.
@@ -27,7 +31,7 @@ as accepted by the request builders.
 id: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:382](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/types/request.ts#L382)
+Defined in: [warp-drive-packages/core/src/types/request.ts:382](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/types/request.ts#L382)
 
 the resource's persisted id
 
@@ -39,7 +43,7 @@ the resource's persisted id
 optional lid?: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:390](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/types/request.ts#L390)
+Defined in: [warp-drive-packages/core/src/types/request.ts:390](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/types/request.ts#L390)
 
 the local identifier WarpDrive has assigned to the resource, if known
 
@@ -51,6 +55,6 @@ the local identifier WarpDrive has assigned to the resource, if known
 type: T;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:386](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/types/request.ts#L386)
+Defined in: [warp-drive-packages/core/src/types/request.ts:386](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/types/request.ts#L386)
 
 the resource's type

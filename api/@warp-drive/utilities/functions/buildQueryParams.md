@@ -5,10 +5,10 @@ url: /api/@warp-drive/utilities/functions/buildQueryParams.md
 # &#x20;buildQueryParams()
 
 ```ts
-function buildQueryParams(params, options?): string;
+function buildQueryParams(params: QueryParamsSource, options?: QueryParamsSerializationOptions): string;
 ```
 
-Defined in: [index.ts:746](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/utilities/src/index.ts#L746)
+Defined in: [index.ts:746](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/utilities/src/index.ts#L746)
 
 Sorts query params by both key and value, returning a query params string
 

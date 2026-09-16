@@ -4,7 +4,17 @@ url: /api/@warp-drive/core/types/spec/document/types/ResourceMetaDocument.md
 
 # &#x20;ResourceMetaDocument
 
-Defined in: [warp-drive-packages/core/src/types/spec/document.ts:11](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/types/spec/document.ts#L11)
+```ts
+interface ResourceMetaDocument {
+  lid?: string;
+  links?: 
+  | Links
+  | PaginationLinks;
+  meta: ObjectValue;
+}
+```
+
+Defined in: [warp-drive-packages/core/src/types/spec/document.ts:11](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/types/spec/document.ts#L11)
 
 This type represents a raw {json:api} document for a meta-only
 document returned by a request intended to be inserted into the cache.
@@ -17,7 +27,7 @@ document returned by a request intended to be inserted into the cache.
 optional lid?: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/document.ts:15](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/types/spec/document.ts#L15)
+Defined in: [warp-drive-packages/core/src/types/spec/document.ts:15](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/types/spec/document.ts#L15)
 
 the url or cache-key associated with the structured document
 
@@ -31,7 +41,7 @@ optional links?:
   | PaginationLinks;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/document.ts:23](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/types/spec/document.ts#L23)
+Defined in: [warp-drive-packages/core/src/types/spec/document.ts:23](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/types/spec/document.ts#L23)
 
 links related to the document
 
@@ -43,6 +53,6 @@ links related to the document
 meta: ObjectValue;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/document.ts:19](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/types/spec/document.ts#L19)
+Defined in: [warp-drive-packages/core/src/types/spec/document.ts:19](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/types/spec/document.ts#L19)
 
 meta information about the document

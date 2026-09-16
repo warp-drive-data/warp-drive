@@ -5,10 +5,10 @@ url: /api/@warp-drive/core/configure/functions/setupSignals.md
 # &#x20;setupSignals()
 
 ```ts
-function setupSignals<T>(buildConfig): void;
+function setupSignals<T>(buildConfig: (options: HooksOptions) => SignalHooks<T>): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/reactivity/configure.ts:164](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/signals/reactivity/configure.ts#L164)
+Defined in: [warp-drive-packages/core/src/signals/reactivity/configure.ts:164](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/signals/reactivity/configure.ts#L164)
 
 Configures the signals implementation to use. Supports multiple
 implementations simultaneously.
@@ -29,7 +29,7 @@ return.
 
 ### buildConfig
 
-(`options`) => [`SignalHooks`](../types/SignalHooks.md)<`T`>
+(`options`: [`HooksOptions`](../types/HooksOptions.md)) => [`SignalHooks`](../types/SignalHooks.md)<`T`>
 
 a function that takes options and returns a configuration object
 

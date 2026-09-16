@@ -4,13 +4,13 @@ url: /api/@warp-drive/legacy/model/migration-support/types/WithLegacy.md
 
 &#x20;
 
-# &#x20;WithLegacy\<T>
+# &#x20;WithLegacy\<T *extends* [`TypedRecordInstance`](../../../../core/types/record/types/TypedRecordInstance.md)>
 
 ```ts
-type WithLegacy<T> = T & LegacyModeRecord<T>;
+type WithLegacy<T extends TypedRecordInstance> = T & LegacyModeRecord<T>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/migration-support.ts:205](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/model/migration-support.ts#L205)
+Defined in: [warp-drive-packages/legacy/src/model/migration-support.ts:205](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/model/migration-support.ts#L205)
 
 A Type utility that enables quickly adding type information for the fields
 defined by `import { withDefaults } from '@warp-drive/legacy/model/migration-support'`.

@@ -7,10 +7,14 @@ url: /api/@warp-drive/legacy/model-fragments/variables/FragmentArrayExtension.md
 # &#x20;FragmentArrayExtension
 
 ```ts
-const FragmentArrayExtension: object;
+const FragmentArrayExtension: {
+  features: typeof FragmentArray;
+  kind: "array";
+  name: "fragment-array";
+};
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model-fragments/extensions/fragment-array.ts:95](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/model-fragments/extensions/fragment-array.ts#L95)
+Defined in: [warp-drive-packages/legacy/src/model-fragments/extensions/fragment-array.ts:95](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/model-fragments/extensions/fragment-array.ts#L95)
 
 A schema extension that adds the [FragmentArray](../classes/FragmentArray.md) API to migrated
 `ModelFragments` array resources.

@@ -4,7 +4,14 @@ url: /api/@warp-drive/schema-dsl/types/DerivedOptions.md
 
 # &#x20;DerivedOptions
 
-Defined in: [fields/derived.ts:11](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/schema-dsl/src/fields/derived.ts#L11)
+```ts
+interface DerivedOptions {
+  options?: Record<string, unknown>;
+  type: string;
+}
+```
+
+Defined in: [fields/derived.ts:11](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/schema-dsl/src/fields/derived.ts#L11)
 
 Options accepted by the [derived](../functions/derived.md) decorator.
 
@@ -16,7 +23,7 @@ Options accepted by the [derived](../functions/derived.md) decorator.
 optional options?: Record<string, unknown>;
 ```
 
-Defined in: [fields/derived.ts:27](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/schema-dsl/src/fields/derived.ts#L27)
+Defined in: [fields/derived.ts:27](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/schema-dsl/src/fields/derived.ts#L27)
 
 Options to pass to the derivation. Must comply with the specific
 derivation's options schema.
@@ -29,7 +36,7 @@ derivation's options schema.
 type: string;
 ```
 
-Defined in: [fields/derived.ts:19](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/schema-dsl/src/fields/derived.ts#L19)
+Defined in: [fields/derived.ts:19](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/schema-dsl/src/fields/derived.ts#L19)
 
 The name of a [Derivation](../../core/types/schema/concepts/types/Derivation.md) registered with the schema service,
 used to compute this field's value. Compiles onto the

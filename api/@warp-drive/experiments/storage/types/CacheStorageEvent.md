@@ -6,7 +6,16 @@ url: /api/@warp-drive/experiments/storage/types/CacheStorageEvent.md
 
 # &#x20;CacheStorageEvent
 
-Defined in: [storage/cache.ts:14](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/experiments/src/storage/cache.ts#L14)
+```ts
+interface CacheStorageEvent {
+  key: string | null;
+  newValue: string | null;
+  oldValue: string | null;
+  storageArea: CacheStorage;
+}
+```
+
+Defined in: [storage/cache.ts:14](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/experiments/src/storage/cache.ts#L14)
 
 ## Properties
 
@@ -16,7 +25,7 @@ Defined in: [storage/cache.ts:14](https://github.com/warp-drive-data/warp-drive/
 key: string | null;
 ```
 
-Defined in: [storage/cache.ts:16](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/experiments/src/storage/cache.ts#L16)
+Defined in: [storage/cache.ts:16](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/experiments/src/storage/cache.ts#L16)
 
 ***
 
@@ -26,7 +35,7 @@ Defined in: [storage/cache.ts:16](https://github.com/warp-drive-data/warp-drive/
 newValue: string | null;
 ```
 
-Defined in: [storage/cache.ts:18](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/experiments/src/storage/cache.ts#L18)
+Defined in: [storage/cache.ts:18](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/experiments/src/storage/cache.ts#L18)
 
 ***
 
@@ -36,7 +45,7 @@ Defined in: [storage/cache.ts:18](https://github.com/warp-drive-data/warp-drive/
 oldValue: string | null;
 ```
 
-Defined in: [storage/cache.ts:17](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/experiments/src/storage/cache.ts#L17)
+Defined in: [storage/cache.ts:17](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/experiments/src/storage/cache.ts#L17)
 
 ***
 
@@ -46,4 +55,4 @@ Defined in: [storage/cache.ts:17](https://github.com/warp-drive-data/warp-drive/
 storageArea: CacheStorage;
 ```
 
-Defined in: [storage/cache.ts:15](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/experiments/src/storage/cache.ts#L15)
+Defined in: [storage/cache.ts:15](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/experiments/src/storage/cache.ts#L15)

@@ -7,10 +7,10 @@ url: /api/@warp-drive/experiments/storage/functions/onStorageEvent.md
 # &#x20;onStorageEvent()
 
 ```ts
-function onStorageEvent(listener): () => void;
+function onStorageEvent(listener: (event: EffectStorageEvent) => void): () => void;
 ```
 
-Defined in: [storage/storage.ts:128](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/experiments/src/storage/storage.ts#L128)
+Defined in: [storage/storage.ts:128](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/experiments/src/storage/storage.ts#L128)
 
 Subscribes to storage-change events, whether they originate from the
 native Storage API (a `StorageEvent`, fired cross-tab) or from
@@ -33,7 +33,7 @@ Route storage-event subscribers through this helper instead of calling
 
 ### listener
 
-(`event`) => `void`
+(`event`: [`EffectStorageEvent`](../types/EffectStorageEvent.md)) => `void`
 
 ## Returns
 

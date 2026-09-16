@@ -4,13 +4,18 @@ url: /api/@warp-drive/schema-dsl/functions/field.md
 
 # &#x20;field()
 
+```ts
+function field(target: object, key: string): void;
+function field(options: FieldOptions): (target: object, key: string) => void;
+```
+
 ## Call Signature
 
 ```ts
-function field(target, key): void;
+function field(target: object, key: string): void;
 ```
 
-Defined in: [fields/field.ts:59](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/schema-dsl/src/fields/field.ts#L59)
+Defined in: [fields/field.ts:59](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/schema-dsl/src/fields/field.ts#L59)
 
 **`Decorator`**
 
@@ -58,10 +63,10 @@ export class User {
 ## Call Signature
 
 ```ts
-function field(options): (target, key) => void;
+function field(options: FieldOptions): (target: object, key: string) => void;
 ```
 
-Defined in: [fields/field.ts:60](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/schema-dsl/src/fields/field.ts#L60)
+Defined in: [fields/field.ts:60](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/schema-dsl/src/fields/field.ts#L60)
 
 **`Decorator`**
 
@@ -77,7 +82,7 @@ primitive values (strings, numbers, booleans) — on a
 
 ### Returns
 
-(`target`, `key`) => `void`
+(`target`: `object`, `key`: `string`) => `void`
 
 ### Example
 

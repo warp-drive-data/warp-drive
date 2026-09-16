@@ -4,7 +4,11 @@ url: /api/@warp-drive/core/signals/-leaked/types/PageHints.md
 
 # &#x20;PageHints()&#x20;
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-cache.ts:29](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/signals/pagination-cache.ts#L29)
+```ts
+interface PageHints {}
+```
+
+Defined in: [warp-drive-packages/core/src/signals/pagination-cache.ts:29](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/signals/pagination-cache.ts#L29)
 
 A hint function for extracting the `currentPage` and `totalPages` from a loaded
 document, for when the response does not expose these values through the
@@ -21,10 +25,13 @@ collection must provide the same function reference — define it once at module
 scope and import it everywhere.
 
 ```ts
-PageHints(document): object;
+PageHints(document: ReactiveDocument<unknown>): {
+  currentPage: number;
+  totalPages: number;
+};
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-cache.ts:30](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/signals/pagination-cache.ts#L30)
+Defined in: [warp-drive-packages/core/src/signals/pagination-cache.ts:30](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/signals/pagination-cache.ts#L30)
 
 A hint function for extracting the `currentPage` and `totalPages` from a loaded
 document, for when the response does not expose these values through the
@@ -48,7 +55,12 @@ scope and import it everywhere.
 
 ## Returns
 
-`object`
+```ts
+{
+  currentPage: number;
+  totalPages: number;
+}
+```
 
 ### currentPage
 

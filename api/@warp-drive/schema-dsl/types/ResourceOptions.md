@@ -4,7 +4,14 @@ url: /api/@warp-drive/schema-dsl/types/ResourceOptions.md
 
 # &#x20;ResourceOptions
 
-Defined in: [entities/resource.ts:17](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/schema-dsl/src/entities/resource.ts#L17)
+```ts
+interface ResourceOptions {
+  identityField?: string;
+  legacy?: boolean;
+}
+```
+
+Defined in: [entities/resource.ts:17](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/schema-dsl/src/entities/resource.ts#L17)
 
 Options accepted by the [Resource](../functions/Resource.md) decorator.
 
@@ -16,7 +23,7 @@ Options accepted by the [Resource](../functions/Resource.md) decorator.
 optional identityField?: string;
 ```
 
-Defined in: [entities/resource.ts:39](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/schema-dsl/src/entities/resource.ts#L39)
+Defined in: [entities/resource.ts:39](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/schema-dsl/src/entities/resource.ts#L39)
 
 The name of the property that serves as this resource's primary key,
 used only when no property on the class is decorated with [id](../functions/id.md).
@@ -33,7 +40,7 @@ omitted (and no [id](../functions/id.md) is present), the identity defaults to
 optional legacy?: boolean;
 ```
 
-Defined in: [entities/resource.ts:27](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/schema-dsl/src/entities/resource.ts#L27)
+Defined in: [entities/resource.ts:27](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/schema-dsl/src/entities/resource.ts#L27)
 
 Compiles the class to a [LegacyResourceSchema](../../core/types/schema/fields/types/LegacyResourceSchema.md) for use with
 `@warp-drive/legacy/model` instead of a [PolarisResourceSchema](../../core/types/schema/fields/types/PolarisResourceSchema.md).

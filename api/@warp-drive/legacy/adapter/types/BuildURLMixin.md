@@ -6,7 +6,34 @@ url: /api/@warp-drive/legacy/adapter/types/BuildURLMixin.md
 
 # &#x20;BuildURLMixin
 
-Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:26](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L26)
+```ts
+interface BuildURLMixin {
+  buildURL(this: MixtBuildURLMixin, modelName: string, id: string, snapshot: Snapshot, requestType: "findRecord"): string;
+  buildURL(this: MixtBuildURLMixin, modelName: string, id: null, snapshot: SnapshotRecordArray, requestType: "findAll"): string;
+  buildURL(this: MixtBuildURLMixin, modelName: string, id: null, snapshot: null, requestType: "query", query: Record<string, unknown>): string;
+  buildURL(this: MixtBuildURLMixin, modelName: string, id: null, snapshot: null, requestType: "queryRecord", query: Record<string, unknown>): string;
+  buildURL(this: MixtBuildURLMixin, modelName: string, id: string[], snapshot: Snapshot<unknown>[], requestType: "findMany"): string;
+  buildURL(this: MixtBuildURLMixin, modelName: string, id: string, snapshot: Snapshot, requestType: "findHasMany"): string;
+  buildURL(this: MixtBuildURLMixin, modelName: string, id: string, snapshot: Snapshot, requestType: "findBelongsTo"): string;
+  buildURL(this: MixtBuildURLMixin, modelName: string, id: string | null, snapshot: Snapshot, requestType: "createRecord"): string;
+  buildURL(this: MixtBuildURLMixin, modelName: string, id: string, snapshot: Snapshot, requestType: "updateRecord"): string;
+  buildURL(this: MixtBuildURLMixin, modelName: string, id: string, snapshot: Snapshot, requestType: "deleteRecord"): string;
+  buildURL(this: MixtBuildURLMixin, modelName: string, id: string, snapshot: Snapshot): string;
+  pathForType(this: MixtBuildURLMixin, modelName: string): string;
+  urlForCreateRecord(this: MixtBuildURLMixin, modelName: string, snapshot: Snapshot): string;
+  urlForDeleteRecord(this: MixtBuildURLMixin, id: string, modelName: string, snapshot: Snapshot): string;
+  urlForFindAll(this: MixtBuildURLMixin, modelName: string, snapshots: SnapshotRecordArray): string;
+  urlForFindBelongsTo(this: MixtBuildURLMixin, id: string, modelName: string, snapshot: Snapshot): string;
+  urlForFindHasMany(this: MixtBuildURLMixin, id: string, modelName: string, snapshot: Snapshot): string;
+  urlForFindMany(this: MixtBuildURLMixin, ids: string[], modelName: string, snapshots: Snapshot<unknown>[]): string;
+  urlForFindRecord(this: MixtBuildURLMixin, id: string, modelName: string, snapshot: Snapshot): string;
+  urlForQuery(this: MixtBuildURLMixin, query: Record<string, unknown>, modelName: string): string;
+  urlForQueryRecord(this: MixtBuildURLMixin, query: Record<string, unknown>, modelName: string): string;
+  urlForUpdateRecord(this: MixtBuildURLMixin, id: string, modelName: string, snapshot: Snapshot): string;
+}
+```
+
+Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:26](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L26)
 
 The methods provided by the `BuildURLMixin` mixin (see the exported
 `BuildURLMixin` Mixin below).
@@ -18,19 +45,100 @@ within these methods.
 
 ### buildURL()
 
+```ts
+buildURL(
+   this: MixtBuildURLMixin, 
+   modelName: string, 
+   id: string, 
+   snapshot: Snapshot, 
+   requestType: "findRecord"
+): string;
+buildURL(
+   this: MixtBuildURLMixin, 
+   modelName: string, 
+   id: null, 
+   snapshot: SnapshotRecordArray, 
+   requestType: "findAll"
+): string;
+buildURL(
+   this: MixtBuildURLMixin, 
+   modelName: string, 
+   id: null, 
+   snapshot: null, 
+   requestType: "query", 
+   query: Record<string, unknown>
+): string;
+buildURL(
+   this: MixtBuildURLMixin, 
+   modelName: string, 
+   id: null, 
+   snapshot: null, 
+   requestType: "queryRecord", 
+   query: Record<string, unknown>
+): string;
+buildURL(
+   this: MixtBuildURLMixin, 
+   modelName: string, 
+   id: string[], 
+   snapshot: Snapshot<unknown>[], 
+   requestType: "findMany"
+): string;
+buildURL(
+   this: MixtBuildURLMixin, 
+   modelName: string, 
+   id: string, 
+   snapshot: Snapshot, 
+   requestType: "findHasMany"
+): string;
+buildURL(
+   this: MixtBuildURLMixin, 
+   modelName: string, 
+   id: string, 
+   snapshot: Snapshot, 
+   requestType: "findBelongsTo"
+): string;
+buildURL(
+   this: MixtBuildURLMixin, 
+   modelName: string, 
+   id: string | null, 
+   snapshot: Snapshot, 
+   requestType: "createRecord"
+): string;
+buildURL(
+   this: MixtBuildURLMixin, 
+   modelName: string, 
+   id: string, 
+   snapshot: Snapshot, 
+   requestType: "updateRecord"
+): string;
+buildURL(
+   this: MixtBuildURLMixin, 
+   modelName: string, 
+   id: string, 
+   snapshot: Snapshot, 
+   requestType: "deleteRecord"
+): string;
+buildURL(
+   this: MixtBuildURLMixin, 
+   modelName: string, 
+   id: string, 
+   snapshot: Snapshot
+): string;
+```
+
 #### Call Signature
 
 ```ts
 buildURL(
-   this, 
-   modelName, 
-   id, 
-   snapshot, 
-   requestType
+   this: MixtBuildURLMixin, 
+   modelName: string, 
+   id: string, 
+   snapshot: Snapshot, 
+   requestType: "findRecord"
 ): string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:41](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L41)
+Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:41](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L41)
 
 Builds a URL for a given type and optional ID.
 
@@ -73,15 +181,15 @@ This overload builds the URL for a `store.findRecord(type, id)` call.
 
 ```ts
 buildURL(
-   this, 
-   modelName, 
-   id, 
-   snapshot, 
-   requestType
+   this: MixtBuildURLMixin, 
+   modelName: string, 
+   id: null, 
+   snapshot: SnapshotRecordArray, 
+   requestType: "findAll"
 ): string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:53](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L53)
+Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:53](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L53)
 
 Builds the URL for a `store.findAll(type)` call.
 
@@ -115,16 +223,16 @@ Builds the URL for a `store.findAll(type)` call.
 
 ```ts
 buildURL(
-   this, 
-   modelName, 
-   id, 
-   snapshot, 
-   requestType, 
-   query
+   this: MixtBuildURLMixin, 
+   modelName: string, 
+   id: null, 
+   snapshot: null, 
+   requestType: "query", 
+   query: Record<string, unknown>
 ): string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:65](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L65)
+Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:65](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L65)
 
 Builds the URL for a `store.query(type, query)` call.
 
@@ -162,16 +270,16 @@ Builds the URL for a `store.query(type, query)` call.
 
 ```ts
 buildURL(
-   this, 
-   modelName, 
-   id, 
-   snapshot, 
-   requestType, 
-   query
+   this: MixtBuildURLMixin, 
+   modelName: string, 
+   id: null, 
+   snapshot: null, 
+   requestType: "queryRecord", 
+   query: Record<string, unknown>
 ): string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:78](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L78)
+Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:78](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L78)
 
 Builds the URL for a `store.queryRecord(type, query)` call.
 
@@ -209,15 +317,15 @@ Builds the URL for a `store.queryRecord(type, query)` call.
 
 ```ts
 buildURL(
-   this, 
-   modelName, 
-   id, 
-   snapshot, 
-   requestType
+   this: MixtBuildURLMixin, 
+   modelName: string, 
+   id: string[], 
+   snapshot: Snapshot<unknown>[], 
+   requestType: "findMany"
 ): string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:94](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L94)
+Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:94](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L94)
 
 Builds the URL for coalescing multiple `store.findRecord(type, id)`
 records into 1 request when the adapter's `coalesceFindRequests`
@@ -254,15 +362,15 @@ arrays of ids and snapshots.
 
 ```ts
 buildURL(
-   this, 
-   modelName, 
-   id, 
-   snapshot, 
-   requestType
+   this: MixtBuildURLMixin, 
+   modelName: string, 
+   id: string, 
+   snapshot: Snapshot, 
+   requestType: "findHasMany"
 ): string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:107](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L107)
+Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:107](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L107)
 
 Builds the URL for fetching an async `hasMany` relationship when a
 URL is not provided by the server.
@@ -297,15 +405,15 @@ URL is not provided by the server.
 
 ```ts
 buildURL(
-   this, 
-   modelName, 
-   id, 
-   snapshot, 
-   requestType
+   this: MixtBuildURLMixin, 
+   modelName: string, 
+   id: string, 
+   snapshot: Snapshot, 
+   requestType: "findBelongsTo"
 ): string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:120](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L120)
+Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:120](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L120)
 
 Builds the URL for fetching an async `belongsTo` relationship when a
 URL is not provided by the server.
@@ -340,15 +448,15 @@ URL is not provided by the server.
 
 ```ts
 buildURL(
-   this, 
-   modelName, 
-   id, 
-   snapshot, 
-   requestType
+   this: MixtBuildURLMixin, 
+   modelName: string, 
+   id: string | null, 
+   snapshot: Snapshot, 
+   requestType: "createRecord"
 ): string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:133](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L133)
+Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:133](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L133)
 
 Builds the URL for a `record.save()` call when the record was
 created locally using `store.createRecord()`.
@@ -383,15 +491,15 @@ created locally using `store.createRecord()`.
 
 ```ts
 buildURL(
-   this, 
-   modelName, 
-   id, 
-   snapshot, 
-   requestType
+   this: MixtBuildURLMixin, 
+   modelName: string, 
+   id: string, 
+   snapshot: Snapshot, 
+   requestType: "updateRecord"
 ): string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:146](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L146)
+Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:146](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L146)
 
 Builds the URL for a `record.save()` call when the record has been
 updated locally.
@@ -426,15 +534,15 @@ updated locally.
 
 ```ts
 buildURL(
-   this, 
-   modelName, 
-   id, 
-   snapshot, 
-   requestType
+   this: MixtBuildURLMixin, 
+   modelName: string, 
+   id: string, 
+   snapshot: Snapshot, 
+   requestType: "deleteRecord"
 ): string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:159](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L159)
+Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:159](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L159)
 
 Builds the URL for a `record.save()` call when the record has been
 deleted locally.
@@ -469,14 +577,14 @@ deleted locally.
 
 ```ts
 buildURL(
-   this, 
-   modelName, 
-   id, 
-   snapshot
+   this: MixtBuildURLMixin, 
+   modelName: string, 
+   id: string, 
+   snapshot: Snapshot
 ): string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:171](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L171)
+Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:171](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L171)
 
 Builds a URL for a given type and ID without a specific request type.
 
@@ -507,10 +615,10 @@ Builds a URL for a given type and ID without a specific request type.
 ### pathForType()
 
 ```ts
-pathForType(this, modelName): string;
+pathForType(this: MixtBuildURLMixin, modelName: string): string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:255](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L255)
+Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:255](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L255)
 
 Determines the pathname for a given type.
 
@@ -537,13 +645,13 @@ becomes 'posts' and 'person' becomes 'people').
 
 ```ts
 urlForCreateRecord(
-   this, 
-   modelName, 
-   snapshot
+   this: MixtBuildURLMixin, 
+   modelName: string, 
+   snapshot: Snapshot
 ): string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:228](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L228)
+Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:228](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L228)
 
 Builds a URL for a `record.save()` call when the record was created
 locally using `store.createRecord()`.
@@ -572,14 +680,14 @@ locally using `store.createRecord()`.
 
 ```ts
 urlForDeleteRecord(
-   this, 
-   id, 
-   modelName, 
-   snapshot
+   this: MixtBuildURLMixin, 
+   id: string, 
+   modelName: string, 
+   snapshot: Snapshot
 ): string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:242](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L242)
+Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:242](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L242)
 
 Builds a URL for a `record.save()` call when the record has been
 deleted locally.
@@ -612,13 +720,13 @@ deleted locally.
 
 ```ts
 urlForFindAll(
-   this, 
-   modelName, 
-   snapshots
+   this: MixtBuildURLMixin, 
+   modelName: string, 
+   snapshots: SnapshotRecordArray
 ): string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:187](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L187)
+Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:187](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L187)
 
 Builds a URL for a `store.findAll(type)` call.
 
@@ -646,14 +754,14 @@ Builds a URL for a `store.findAll(type)` call.
 
 ```ts
 urlForFindBelongsTo(
-   this, 
-   id, 
-   modelName, 
-   snapshot
+   this: MixtBuildURLMixin, 
+   id: string, 
+   modelName: string, 
+   snapshot: Snapshot
 ): string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:221](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L221)
+Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:221](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L221)
 
 Builds a URL for fetching an async `belongsTo` relationship when a
 URL is not provided by the server.
@@ -686,14 +794,14 @@ URL is not provided by the server.
 
 ```ts
 urlForFindHasMany(
-   this, 
-   id, 
-   modelName, 
-   snapshot
+   this: MixtBuildURLMixin, 
+   id: string, 
+   modelName: string, 
+   snapshot: Snapshot
 ): string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:214](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L214)
+Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:214](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L214)
 
 Builds a URL for fetching an async `hasMany` relationship when a
 URL is not provided by the server.
@@ -726,14 +834,14 @@ URL is not provided by the server.
 
 ```ts
 urlForFindMany(
-   this, 
-   ids, 
-   modelName, 
-   snapshots
+   this: MixtBuildURLMixin, 
+   ids: string[], 
+   modelName: string, 
+   snapshots: Snapshot<unknown>[]
 ): string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:207](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L207)
+Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:207](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L207)
 
 Builds a URL for coalescing multiple `store.findRecord(type, id)`
 records into 1 request when the adapter's `coalesceFindRequests`
@@ -767,14 +875,14 @@ property is `true`.
 
 ```ts
 urlForFindRecord(
-   this, 
-   id, 
-   modelName, 
-   snapshot
+   this: MixtBuildURLMixin, 
+   id: string, 
+   modelName: string, 
+   snapshot: Snapshot
 ): string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:181](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L181)
+Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:181](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L181)
 
 Builds a URL for a `store.findRecord(type, id)` call.
 
@@ -806,13 +914,13 @@ Builds a URL for a `store.findRecord(type, id)` call.
 
 ```ts
 urlForQuery(
-   this, 
-   query, 
-   modelName
+   this: MixtBuildURLMixin, 
+   query: Record<string, unknown>, 
+   modelName: string
 ): string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:199](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L199)
+Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:199](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L199)
 
 Builds a URL for a `store.query(type, query)` call.
 
@@ -840,13 +948,13 @@ Builds a URL for a `store.query(type, query)` call.
 
 ```ts
 urlForQueryRecord(
-   this, 
-   query, 
-   modelName
+   this: MixtBuildURLMixin, 
+   query: Record<string, unknown>, 
+   modelName: string
 ): string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:193](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L193)
+Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:193](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L193)
 
 Builds a URL for a `store.queryRecord(type, query)` call.
 
@@ -874,14 +982,14 @@ Builds a URL for a `store.queryRecord(type, query)` call.
 
 ```ts
 urlForUpdateRecord(
-   this, 
-   id, 
-   modelName, 
-   snapshot
+   this: MixtBuildURLMixin, 
+   id: string, 
+   modelName: string, 
+   snapshot: Snapshot
 ): string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:235](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L235)
+Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:235](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L235)
 
 Builds a URL for a `record.save()` call when the record has been
 updated locally.

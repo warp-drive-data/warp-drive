@@ -6,13 +6,19 @@ url: /api/@warp-drive/legacy/compat/utils/functions/formattedId.md
 
 # &#x20;formattedId()
 
+```ts
+function formattedId(id: string | number): string;
+function formattedId(id: null): null;
+function formattedId(id: string | number | null): string | null;
+```
+
 ## Call Signature
 
 ```ts
-function formattedId(id): string;
+function formattedId(id: string | number): string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat/utils.ts:144](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/compat/utils.ts#L144)
+Defined in: [warp-drive-packages/legacy/src/compat/utils.ts:144](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/compat/utils.ts#L144)
 
 Format an id to the format expected by the WarpDrive Cache.
 Currently this means that id should be `string | null`.
@@ -46,10 +52,10 @@ the normalized id
 ## Call Signature
 
 ```ts
-function formattedId(id): null;
+function formattedId(id: null): null;
 ````
 
-Defined in: [warp-drive-packages/legacy/src/compat/utils.ts:145](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/compat/utils.ts#L145)
+Defined in: [warp-drive-packages/legacy/src/compat/utils.ts:145](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/compat/utils.ts#L145)
 
 Format an id to the format expected by the WarpDrive Cache.
 Currently this means that id should be `string | null`.
@@ -83,10 +89,10 @@ the normalized id
 ## Call Signature
 
 ```ts
-function formattedId(id): string | null;
+function formattedId(id: string | number | null): string | null;
 ````
 
-Defined in: [warp-drive-packages/legacy/src/compat/utils.ts:146](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/compat/utils.ts#L146)
+Defined in: [warp-drive-packages/legacy/src/compat/utils.ts:146](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/compat/utils.ts#L146)
 
 Format an id to the format expected by the WarpDrive Cache.
 Currently this means that id should be `string | null`.

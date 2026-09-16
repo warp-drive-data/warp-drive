@@ -7,10 +7,10 @@ url: /api/@warp-drive/legacy/compat/utils/functions/isEquivId.md
 # &#x20;isEquivId()
 
 ```ts
-function isEquivId(expected, actual): boolean;
+function isEquivId(expected: string | number, actual: string | number | null): boolean;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat/utils.ts:245](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/compat/utils.ts#L245)
+Defined in: [warp-drive-packages/legacy/src/compat/utils.ts:245](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/compat/utils.ts#L245)
 
 Compares two IDs for strict equality, converting them to
 the format expected by the WarpDrive Cache to ensure

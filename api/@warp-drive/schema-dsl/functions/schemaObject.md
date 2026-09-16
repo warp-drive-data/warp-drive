@@ -5,10 +5,10 @@ url: /api/@warp-drive/schema-dsl/functions/schemaObject.md
 # &#x20;schemaObject()&#x20;
 
 ```ts
-function schemaObject(options): (target, key) => void;
+function schemaObject(options: SchemaObjectOptions): (target: object, key: string) => void;
 ```
 
-Defined in: [fields/schema-object.ts:112](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/schema-dsl/src/fields/schema-object.ts#L112)
+Defined in: [fields/schema-object.ts:112](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/schema-dsl/src/fields/schema-object.ts#L112)
 
 **`Decorator`**
 
@@ -29,7 +29,7 @@ For a bag of primitives with no schema, use [object](object.md) instead.
 
 ## Returns
 
-(`target`, `key`) => `void`
+(`target`: `object`, `key`: `string`) => `void`
 
 ## Example
 

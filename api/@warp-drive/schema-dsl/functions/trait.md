@@ -5,10 +5,10 @@ url: /api/@warp-drive/schema-dsl/functions/trait.md
 # &#x20;trait()&#x20;
 
 ```ts
-function trait(..._traits): (target) => void;
+function trait(..._traits: AnyConstructor[]): (target: AnyConstructor) => void;
 ```
 
-Defined in: [entities/compose-trait.ts:46](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/schema-dsl/src/entities/compose-trait.ts#L46)
+Defined in: [entities/compose-trait.ts:46](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/schema-dsl/src/entities/compose-trait.ts#L46)
 
 **`Class Decorator`**
 
@@ -32,7 +32,7 @@ object schemas do not compile a `traits` array.
 
 ## Returns
 
-(`target`) => `void`
+(`target`: `AnyConstructor`) => `void`
 
 ## Example
 

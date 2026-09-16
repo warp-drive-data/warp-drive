@@ -6,13 +6,18 @@ url: /api/@warp-drive/legacy/compat/utils/functions/expectId.md
 
 # &#x20;expectId()
 
+```ts
+function expectId(id: string | number): string;
+function expectId(id: null): never;
+```
+
 ## Call Signature
 
 ```ts
-function expectId(id): string;
+function expectId(id: string | number): string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat/utils.ts:172](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/compat/utils.ts#L172)
+Defined in: [warp-drive-packages/legacy/src/compat/utils.ts:172](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/compat/utils.ts#L172)
 
 Like [formattedId](formattedId.md), but asserts that `id` is not `null` rather
 than allowing and passing through `null`.
@@ -30,10 +35,10 @@ than allowing and passing through `null`.
 ## Call Signature
 
 ```ts
-function expectId(id): never;
+function expectId(id: null): never;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat/utils.ts:178](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/compat/utils.ts#L178)
+Defined in: [warp-drive-packages/legacy/src/compat/utils.ts:178](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/compat/utils.ts#L178)
 
 Throws, since `id` is `null`.
 

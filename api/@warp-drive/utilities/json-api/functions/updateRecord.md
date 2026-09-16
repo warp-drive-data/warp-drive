@@ -4,13 +4,32 @@ url: /api/@warp-drive/utilities/json-api/functions/updateRecord.md
 
 # &#x20;updateRecord()
 
+```ts
+function updateRecord<T extends TypedRecordInstance, RT extends TypedRecordInstance = T, M extends 
+  | ObjectValue
+  | undefined = 
+  | ObjectValue
+  | undefined, E extends object = ApiError>(record: T, options?: ConstrainedRequestOptions & {
+  patch?: boolean;
+}): UpdateRequestOptions<ReactiveDataDocument<RT, M, E>, T>;
+function updateRecord(record: unknown, options?: ConstrainedRequestOptions & {
+  patch?: boolean;
+}): UpdateRequestOptions;
+```
+
 ## Call Signature
 
 ```ts
-function updateRecord<T, RT, M, E>(record, options?): UpdateRequestOptions<ReactiveDataDocument<RT, M, E>, T>;
+function updateRecord<T extends TypedRecordInstance, RT extends TypedRecordInstance = T, M extends 
+  | ObjectValue
+  | undefined = 
+  | ObjectValue
+  | undefined, E extends object = ApiError>(record: T, options?: ConstrainedRequestOptions & {
+  patch?: boolean;
+}): UpdateRequestOptions<ReactiveDataDocument<RT, M, E>, T>;
 ```
 
-Defined in: [-private/json-api/save-record.ts:255](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/utilities/src/-private/json-api/save-record.ts#L255)
+Defined in: [-private/json-api/save-record.ts:255](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/utilities/src/-private/json-api/save-record.ts#L255)
 
 :::warning ⚠️ **These Mutation Builders DO NOT Set The Necessary Request Body**
 While this may come as a surprise, the app providing the body ensures that only
@@ -93,7 +112,9 @@ const data = await store.request(options);
 
 #### options?
 
-`ConstrainedRequestOptions` & `object`
+`ConstrainedRequestOptions` & {
+`patch?`: `boolean`;
+}
 
 ### Returns
 
@@ -102,10 +123,12 @@ const data = await store.request(options);
 ## Call Signature
 
 ```ts
-function updateRecord(record, options?): UpdateRequestOptions;
+function updateRecord(record: unknown, options?: ConstrainedRequestOptions & {
+  patch?: boolean;
+}): UpdateRequestOptions;
 ```
 
-Defined in: [-private/json-api/save-record.ts:264](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/utilities/src/-private/json-api/save-record.ts#L264)
+Defined in: [-private/json-api/save-record.ts:264](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/utilities/src/-private/json-api/save-record.ts#L264)
 
 :::warning ⚠️ **These Mutation Builders DO NOT Set The Necessary Request Body**
 While this may come as a surprise, the app providing the body ensures that only
@@ -166,7 +189,9 @@ const data = await store.request(options);
 
 #### options?
 
-`ConstrainedRequestOptions` & `object`
+`ConstrainedRequestOptions` & {
+`patch?`: `boolean`;
+}
 
 ### Returns
 

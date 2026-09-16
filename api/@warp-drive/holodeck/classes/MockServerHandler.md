@@ -4,7 +4,7 @@ url: /api/@warp-drive/holodeck/classes/MockServerHandler.md
 
 # &#x20;MockServerHandler
 
-Defined in: [index.ts:209](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/packages/holodeck/src/index.ts#L209)
+Defined in: [index.ts:209](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/packages/holodeck/src/index.ts#L209)
 
 A request handler that intercepts requests and routes them through
 the Holodeck mock server.
@@ -29,10 +29,10 @@ the test context object used to retrieve the test ID.
 ### Constructor
 
 ```ts
-new MockServerHandler(owner): MockServerHandler;
+new MockServerHandler(owner: object): MockServerHandler;
 ```
 
-Defined in: [index.ts:211](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/packages/holodeck/src/index.ts#L211)
+Defined in: [index.ts:211](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/packages/holodeck/src/index.ts#L211)
 
 #### Parameters
 
@@ -49,10 +49,10 @@ Defined in: [index.ts:211](https://github.com/warp-drive-data/warp-drive/blob/3f
 ### request()
 
 ```ts
-request<T>(context, next): Promise<StructuredDataDocument<T>>;
+request<T>(context: RequestContext, next: NextFn<T>): Promise<StructuredDataDocument<T>>;
 ```
 
-Defined in: [index.ts:214](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/packages/holodeck/src/index.ts#L214)
+Defined in: [index.ts:214](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/packages/holodeck/src/index.ts#L214)
 
 Method to implement to handle requests. Receives the request
 context and a nextFn to call to pass-along the request to
@@ -92,4 +92,4 @@ Handler.request
 owner: object;
 ```
 
-Defined in: [index.ts:210](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/packages/holodeck/src/index.ts#L210)
+Defined in: [index.ts:210](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/packages/holodeck/src/index.ts#L210)

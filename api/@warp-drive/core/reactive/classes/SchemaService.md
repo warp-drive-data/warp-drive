@@ -4,7 +4,7 @@ url: /api/@warp-drive/core/reactive/classes/SchemaService.md
 
 # &#x20;SchemaService
 
-Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:680](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/reactive/-private/schema.ts#L680)
+Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:680](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/reactive/-private/schema.ts#L680)
 
 A SchemaService designed to work with dynamically registered schemas.
 
@@ -20,7 +20,7 @@ A SchemaService designed to work with dynamically registered schemas.
 new SchemaService(): SchemaService;
 ```
 
-Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:735](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/reactive/-private/schema.ts#L735)
+Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:735](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/reactive/-private/schema.ts#L735)
 
 #### Returns
 
@@ -31,10 +31,12 @@ Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:735](https
 ### ~~attributesDefinitionFor()~~&#x20;
 
 ```ts
-attributesDefinitionFor(identifier): Record<string, LegacyAttributeField>;
+attributesDefinitionFor(identifier: {
+  type: string;
+}): Record<string, LegacyAttributeField>;
 ```
 
-Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:682](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/reactive/-private/schema.ts#L682)
+Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:682](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/reactive/-private/schema.ts#L682)
 
 DEPRECATED - use `fields` instead
 
@@ -94,7 +96,9 @@ Would be returned as:
 ### cacheFields()
 
 ```ts
-cacheFields(__namedParameters): Map<string, 
+cacheFields(__namedParameters: {
+  type: string;
+}): Map<string, 
   | GenericField
   | ObjectField
   | SchemaObjectField
@@ -109,7 +113,7 @@ cacheFields(__namedParameters): Map<string,
 | CollectionField>;
 ```
 
-Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:1107](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/reactive/-private/schema.ts#L1107)
+Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:1107](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/reactive/-private/schema.ts#L1107)
 
 Queries for the fields of a given resource type or resource identity.
 
@@ -144,12 +148,12 @@ Should error if the resource type is not recognized.
 ### CAUTION\_MEGA\_DANGER\_ZONE\_arrayExtensions()
 
 ```ts
-CAUTION_MEGA_DANGER_ZONE_arrayExtensions(field): 
+CAUTION_MEGA_DANGER_ZONE_arrayExtensions(field: ExtensibleField): 
   | Map<string | symbol, ExtensionDef>
   | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:1044](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/reactive/-private/schema.ts#L1044)
+Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:1044](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/reactive/-private/schema.ts#L1044)
 
 Retrieve the extension map for an array field
 
@@ -169,10 +173,13 @@ Retrieve the extension map for an array field
 ### CAUTION\_MEGA\_DANGER\_ZONE\_hasExtension()
 
 ```ts
-CAUTION_MEGA_DANGER_ZONE_hasExtension(ext): boolean;
+CAUTION_MEGA_DANGER_ZONE_hasExtension(ext: {
+  kind: "object" | "array";
+  name: string;
+}): boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:1048](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/reactive/-private/schema.ts#L1048)
+Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:1048](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/reactive/-private/schema.ts#L1048)
 
 Check if a specific extension has been registered previously
 
@@ -197,12 +204,12 @@ Check if a specific extension has been registered previously
 ### CAUTION\_MEGA\_DANGER\_ZONE\_objectExtensions()
 
 ```ts
-CAUTION_MEGA_DANGER_ZONE_objectExtensions(field, resolvedType): 
+CAUTION_MEGA_DANGER_ZONE_objectExtensions(field: ExtensibleField, resolvedType: string | null): 
   | Map<string | symbol, ExtensionDef>
   | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:1037](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/reactive/-private/schema.ts#L1037)
+Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:1037](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/reactive/-private/schema.ts#L1037)
 
 Retrieve the extension map for an object field
 
@@ -226,10 +233,10 @@ Retrieve the extension map for an object field
 ### CAUTION\_MEGA\_DANGER\_ZONE\_registerExtension()
 
 ```ts
-CAUTION_MEGA_DANGER_ZONE_registerExtension(extension): void;
+CAUTION_MEGA_DANGER_ZONE_registerExtension(extension: CAUTION_MEGA_DANGER_ZONE_Extension): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:1022](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/reactive/-private/schema.ts#L1022)
+Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:1022](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/reactive/-private/schema.ts#L1022)
 
 Register an extension for either objects or arrays
 
@@ -250,12 +257,16 @@ See also [CAUTION\_MEGA\_DANGER\_ZONE\_Extension](../types/CAUTION_MEGA_DANGER_Z
 ### CAUTION\_MEGA\_DANGER\_ZONE\_resourceExtensions()
 
 ```ts
-CAUTION_MEGA_DANGER_ZONE_resourceExtensions(resource): 
+CAUTION_MEGA_DANGER_ZONE_resourceExtensions(resource: 
+  | ResourceKey
+  | {
+  type: string;
+}): 
   | Map<string | symbol, ExtensionDef>
   | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:1030](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/reactive/-private/schema.ts#L1030)
+Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:1030](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/reactive/-private/schema.ts#L1030)
 
 Retrieve the extension map for a resource
 
@@ -278,10 +289,14 @@ Retrieve the extension map for a resource
 ### derivation()
 
 ```ts
-derivation(field): Derivation;
+derivation(field: 
+  | DerivedField
+  | {
+  type: string;
+}): Derivation;
 ```
 
-Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:780](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/reactive/-private/schema.ts#L780)
+Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:780](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/reactive/-private/schema.ts#L780)
 
 Returns the derivation registered with the name provided
 by `field.type`. Validates that the field is a valid DerivedField.
@@ -304,10 +319,10 @@ by `field.type`. Validates that the field is a valid DerivedField.
 ### ~~doesTypeExist()~~&#x20;
 
 ```ts
-doesTypeExist(type): boolean;
+doesTypeExist(type: string): boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:681](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/reactive/-private/schema.ts#L681)
+Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:681](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/reactive/-private/schema.ts#L681)
 
 DEPRECATED - use `hasResource` instead
 
@@ -332,10 +347,12 @@ Queries whether the SchemaService recognizes `type` as a resource type
 ### fields()
 
 ```ts
-fields(__namedParameters): Map<string, FieldSchema>;
+fields(__namedParameters: {
+  type: string;
+}): Map<string, FieldSchema>;
 ```
 
-Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:1096](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/reactive/-private/schema.ts#L1096)
+Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:1096](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/reactive/-private/schema.ts#L1096)
 
 Queries for the fields of a given resource type or resource identity.
 
@@ -358,10 +375,14 @@ Should error if the resource type is not recognized.
 ### hashFn()
 
 ```ts
-hashFn(field): HashFn;
+hashFn(field: 
+  | HashField
+  | {
+  type: string;
+}): HashFn;
 ```
 
-Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:797](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/reactive/-private/schema.ts#L797)
+Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:797](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/reactive/-private/schema.ts#L797)
 
 Returns the hash function registered with the name provided
 by `field.type`. Validates that the field is a valid HashField.
@@ -384,10 +405,12 @@ by `field.type`. Validates that the field is a valid HashField.
 ### hasResource()
 
 ```ts
-hasResource(resource): boolean;
+hasResource(resource: {
+  type: string;
+}): boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:1118](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/reactive/-private/schema.ts#L1118)
+Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:1118](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/reactive/-private/schema.ts#L1118)
 
 Queries whether the SchemaService recognizes `type` as a resource type
 
@@ -408,10 +431,10 @@ Queries whether the SchemaService recognizes `type` as a resource type
 ### hasTrait()
 
 ```ts
-hasTrait(type): boolean;
+hasTrait(type: string): boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:757](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/reactive/-private/schema.ts#L757)
+Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:757](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/reactive/-private/schema.ts#L757)
 
 Queries whether the SchemaService recognizes `type` as a resource trait
 
@@ -430,10 +453,10 @@ Queries whether the SchemaService recognizes `type` as a resource trait
 ### registerDerivation()
 
 ```ts
-registerDerivation<R, T, FM>(derivation): void;
+registerDerivation<R, T, FM extends ObjectValue | null>(derivation: Derivation<R, T, FM>): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:1018](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/reactive/-private/schema.ts#L1018)
+Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:1018](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/reactive/-private/schema.ts#L1018)
 
 Enables registration of a derivation.
 
@@ -469,10 +492,10 @@ attached to it's `[Type]` property.
 ### registerHashFn()
 
 ```ts
-registerHashFn<T>(hashFn): void;
+registerHashFn<T extends object>(hashFn: HashFn<T>): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:1092](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/reactive/-private/schema.ts#L1092)
+Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:1092](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/reactive/-private/schema.ts#L1092)
 
 Registers a [HashFn](../../types/schema/concepts/types/HashFn.md) for use with a [HashField](../../types/schema/fields/types/HashField.md) for
 either [ObjectSchema](../../types/schema/fields/types/ObjectSchema.md) identity or polymorphic type calculation.
@@ -498,10 +521,12 @@ either [ObjectSchema](../../types/schema/fields/types/ObjectSchema.md) identity 
 ### registerResource()
 
 ```ts
-registerResource(schema): void;
+registerResource(schema: 
+  | ResourceSchema
+  | ObjectSchema): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:823](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/reactive/-private/schema.ts#L823)
+Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:823](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/reactive/-private/schema.ts#L823)
 
 Enables registration of a single Schema representing either
 a resource in PolarisMode or LegacyMode or an ObjectSchema
@@ -527,10 +552,12 @@ or other sources just-in-time.
 ### registerResources()
 
 ```ts
-registerResources(schemas): void;
+registerResources(schemas: (
+  | ResourceSchema
+  | ObjectSchema)[]): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:818](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/reactive/-private/schema.ts#L818)
+Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:818](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/reactive/-private/schema.ts#L818)
 
 Enables registration of multiple Schemas at once.
 
@@ -555,10 +582,10 @@ or other sources just-in-time.
 ### registerTrait()
 
 ```ts
-registerTrait(trait): void;
+registerTrait(trait: Trait): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:1006](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/reactive/-private/schema.ts#L1006)
+Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:1006](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/reactive/-private/schema.ts#L1006)
 
 Registers a [Trait](../../types/schema/fields/types/Trait.md) for use by resource schemas.
 
@@ -600,10 +627,10 @@ resource's fields always being applied last and winning out.
 ### registerTransformation()
 
 ```ts
-registerTransformation<T, PT>(transformation): void;
+registerTransformation<T extends Value = string, PT = unknown>(transformation: Transformation<T, PT>): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:1014](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/reactive/-private/schema.ts#L1014)
+Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:1014](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/reactive/-private/schema.ts#L1014)
 
 Enables registration of a transformation.
 
@@ -635,10 +662,12 @@ attached to it's `[Type]` property.
 ### ~~relationshipsDefinitionFor()~~&#x20;
 
 ```ts
-relationshipsDefinitionFor(identifier): Record<string, LegacyRelationshipField>;
+relationshipsDefinitionFor(identifier: {
+  type: string;
+}): Record<string, LegacyRelationshipField>;
 ```
 
-Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:683](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/reactive/-private/schema.ts#L683)
+Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:683](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/reactive/-private/schema.ts#L683)
 
 DEPRECATED - use `fields` instead
 
@@ -739,12 +768,16 @@ Which would be returned as
 ### resource()
 
 ```ts
-resource(resource): 
+resource(resource: 
+  | ResourceKey
+  | {
+  type: string;
+}): 
   | ResourceSchema
   | ObjectSchema;
 ```
 
-Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:814](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/reactive/-private/schema.ts#L814)
+Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:814](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/reactive/-private/schema.ts#L814)
 
 Returns the schema for the provided resource type.
 
@@ -767,10 +800,14 @@ Returns the schema for the provided resource type.
 ### resourceHasTrait()
 
 ```ts
-resourceHasTrait(resource, trait): boolean;
+resourceHasTrait(resource: 
+  | ResourceKey
+  | {
+  type: string;
+}, trait: string): boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:760](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/reactive/-private/schema.ts#L760)
+Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:760](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/reactive/-private/schema.ts#L760)
 
 Queries whether the given resource has the given trait
 
@@ -799,7 +836,7 @@ Queries whether the given resource has the given trait
 resourceTypes(): readonly string[];
 ```
 
-Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:753](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/reactive/-private/schema.ts#L753)
+Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:753](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/reactive/-private/schema.ts#L753)
 
 Returns all known resource types
 
@@ -812,10 +849,16 @@ readonly `string`\[]
 ### transformation()
 
 ```ts
-transformation(field): Transformation;
+transformation(field: 
+  | GenericField
+  | ObjectField
+  | ArrayField
+  | {
+  type: string;
+}): Transformation;
 ```
 
-Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:763](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/reactive/-private/schema.ts#L763)
+Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:763](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/reactive/-private/schema.ts#L763)
 
 Returns the transformation registered with the name provided
 by `field.type`. Validates that the field is a valid transformable.

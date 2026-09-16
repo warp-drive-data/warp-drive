@@ -5,10 +5,10 @@ url: /api/@warp-drive/schema-dsl/functions/schemaArray.md
 # &#x20;schemaArray()&#x20;
 
 ```ts
-function schemaArray(options): (target, key) => void;
+function schemaArray(options: SchemaArrayOptions): (target: object, key: string) => void;
 ```
 
-Defined in: [fields/schema-array.ts:132](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/schema-dsl/src/fields/schema-array.ts#L132)
+Defined in: [fields/schema-array.ts:132](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/schema-dsl/src/fields/schema-array.ts#L132)
 
 **`Decorator`**
 
@@ -29,7 +29,7 @@ For an array of primitives with no schema, use [array](array.md) instead.
 
 ## Returns
 
-(`target`, `key`) => `void`
+(`target`: `object`, `key`: `string`) => `void`
 
 ## Example
 

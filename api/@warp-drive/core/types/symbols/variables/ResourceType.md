@@ -8,7 +8,7 @@ url: /api/@warp-drive/core/types/symbols/variables/ResourceType.md
 const ResourceType: "___(unique) Symbol($type)" = Type;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/symbols.ts:66](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/types/symbols.ts#L66)
+Defined in: [warp-drive-packages/core/src/types/symbols.ts:66](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/types/symbols.ts#L66)
 
 Symbol for the type of a resource.
 

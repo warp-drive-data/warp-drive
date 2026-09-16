@@ -5,10 +5,10 @@ url: /api/@warp-drive/utilities/string/functions/plural.md
 # &#x20;plural()&#x20;
 
 ```ts
-function plural(regex, string): void;
+function plural(regex: RegExp, string: string): void;
 ```
 
-Defined in: [-private/string/inflect.ts:166](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/utilities/src/-private/string/inflect.ts#L166)
+Defined in: [-private/string/inflect.ts:166](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/utilities/src/-private/string/inflect.ts#L166)
 
 Adds a pluralization rule.
 

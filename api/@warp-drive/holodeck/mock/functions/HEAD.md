@@ -6,14 +6,16 @@ url: /api/@warp-drive/holodeck/mock/functions/HEAD.md
 
 ```ts
 function HEAD(
-   owner, 
-   url, 
-   response, 
-   options?
+   owner: object, 
+   url: string, 
+   response: ResponseGenerator, 
+   options?: Partial<Omit<Scaffold, "response" | "url" | "method">> & {
+  RECORD?: boolean;
+}
 ): Promise<void>;
 ```
 
-Defined in: [mock.ts:260](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/packages/holodeck/src/mock.ts#L260)
+Defined in: [mock.ts:260](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/packages/holodeck/src/mock.ts#L260)
 
 Sets up Mocking for a HEAD request on the mock server
 for the supplied url.
@@ -47,7 +49,9 @@ a function which generates the response to return
 
 ### options?
 
-[`Partial`](https://www.typescriptlang.org/docs/handbook/utility-types.html#partialtype)<[`Omit`](https://www.typescriptlang.org/docs/handbook/utility-types.html#omittype-keys)<[`Scaffold`](../types/Scaffold.md), `"response"` | `"url"` | `"method"`>> & `object`
+[`Partial`](https://www.typescriptlang.org/docs/handbook/utility-types.html#partialtype)<[`Omit`](https://www.typescriptlang.org/docs/handbook/utility-types.html#omittype-keys)<[`Scaffold`](../types/Scaffold.md), `"response"` | `"url"` | `"method"`>> & {
+`RECORD?`: `boolean`;
+}
 
 status, headers for the response, body to match against for the request, and whether to record the request
 

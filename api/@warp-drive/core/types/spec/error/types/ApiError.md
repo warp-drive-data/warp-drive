@@ -4,7 +4,20 @@ url: /api/@warp-drive/core/types/spec/error/types/ApiError.md
 
 # &#x20;ApiError
 
-Defined in: [warp-drive-packages/core/src/types/spec/error.ts:18](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/types/spec/error.ts#L18)
+```ts
+interface ApiError {
+  code?: string;
+  detail?: string;
+  id?: string;
+  links?: { about?: Link; type?: Link };
+  meta?: ObjectValue;
+  source?: { header?: string; parameter?: string; pointer?: string };
+  status?: string;
+  title?: string;
+}
+```
+
+Defined in: [warp-drive-packages/core/src/types/spec/error.ts:18](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/types/spec/error.ts#L18)
 
 Represents a single error in the `errors` member of a {json:api} document.
 
@@ -29,7 +42,7 @@ Represents a single error in the `errors` member of a {json:api} document.
 optional code?: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/error.ts:52](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/types/spec/error.ts#L52)
+Defined in: [warp-drive-packages/core/src/types/spec/error.ts:52](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/types/spec/error.ts#L52)
 
 an application-specific error code, expressed as a string value
 
@@ -41,7 +54,7 @@ an application-specific error code, expressed as a string value
 optional detail?: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/error.ts:31](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/types/spec/error.ts#L31)
+Defined in: [warp-drive-packages/core/src/types/spec/error.ts:31](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/types/spec/error.ts#L31)
 
 a human-readable explanation specific to this occurrence of the problem
 
@@ -53,7 +66,7 @@ a human-readable explanation specific to this occurrence of the problem
 optional id?: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/error.ts:22](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/types/spec/error.ts#L22)
+Defined in: [warp-drive-packages/core/src/types/spec/error.ts:22](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/types/spec/error.ts#L22)
 
 a unique identifier for this particular occurrence of the problem
 
@@ -62,10 +75,13 @@ a unique identifier for this particular occurrence of the problem
 ### links?
 
 ```ts
-optional links?: object;
+optional links?: {
+  about?: Link;
+  type?: Link;
+};
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/error.ts:35](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/types/spec/error.ts#L35)
+Defined in: [warp-drive-packages/core/src/types/spec/error.ts:35](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/types/spec/error.ts#L35)
 
 links related to the error
 
@@ -93,7 +109,7 @@ a link that identifies the type of error that this particular error is an instan
 optional meta?: ObjectValue;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/error.ts:77](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/types/spec/error.ts#L77)
+Defined in: [warp-drive-packages/core/src/types/spec/error.ts:77](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/types/spec/error.ts#L77)
 
 non-standard meta-information about the error
 
@@ -102,10 +118,14 @@ non-standard meta-information about the error
 ### source?
 
 ```ts
-optional source?: object;
+optional source?: {
+  header?: string;
+  parameter?: string;
+  pointer?: string;
+};
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/error.ts:60](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/types/spec/error.ts#L60)
+Defined in: [warp-drive-packages/core/src/types/spec/error.ts:60](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/types/spec/error.ts#L60)
 
 an object containing references to the primary source of the error
 
@@ -145,7 +165,7 @@ a JSON Pointer to the value in the request document that caused the error
 optional status?: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/error.ts:48](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/types/spec/error.ts#L48)
+Defined in: [warp-drive-packages/core/src/types/spec/error.ts:48](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/types/spec/error.ts#L48)
 
 the HTTP status code applicable to this problem, expressed as a string value
 
@@ -157,7 +177,7 @@ the HTTP status code applicable to this problem, expressed as a string value
 optional title?: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/error.ts:27](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/types/spec/error.ts#L27)
+Defined in: [warp-drive-packages/core/src/types/spec/error.ts:27](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/types/spec/error.ts#L27)
 
 a short, human-readable summary of the problem that should not
 change from occurrence to occurrence of the problem

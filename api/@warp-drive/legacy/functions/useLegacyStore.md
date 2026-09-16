@@ -6,13 +6,19 @@ url: /api/@warp-drive/legacy/functions/useLegacyStore.md
 
 # &#x20;useLegacyStore()
 
+```ts
+function useLegacyStore<T extends Cache>(options: LegacyModelStoreSetupOptions<T>, StoreKlass?: typeof Store$1): typeof ConfiguredStore;
+function useLegacyStore<T extends Cache>(options: LegacyModelAndNetworkStoreSetupOptions<T>, StoreKlass?: typeof Store$1): typeof ConfiguredStore;
+function useLegacyStore<T extends Cache>(options: LegacyModelAndNetworkAndRequestStoreSetupOptions<T>, StoreKlass?: typeof Store$1): typeof ConfiguredStore;
+```
+
 ## Call Signature
 
 ```ts
-function useLegacyStore<T>(options, StoreKlass?): typeof ConfiguredStore;
+function useLegacyStore<T extends Cache>(options: LegacyModelStoreSetupOptions<T>, StoreKlass?: typeof Store$1): typeof ConfiguredStore;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/index.ts:285](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/index.ts#L285)
+Defined in: [warp-drive-packages/legacy/src/index.ts:285](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/index.ts#L285)
 
 Use the legacy store with the given options.
 
@@ -150,10 +156,10 @@ explicitly, so a handler relying on it should treat it as optional (as
 ## Call Signature
 
 ```ts
-function useLegacyStore<T>(options, StoreKlass?): typeof ConfiguredStore;
+function useLegacyStore<T extends Cache>(options: LegacyModelAndNetworkStoreSetupOptions<T>, StoreKlass?: typeof Store$1): typeof ConfiguredStore;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/index.ts:289](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/index.ts#L289)
+Defined in: [warp-drive-packages/legacy/src/index.ts:289](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/index.ts#L289)
 
 Use the legacy store with the given options.
 
@@ -291,10 +297,10 @@ explicitly, so a handler relying on it should treat it as optional (as
 ## Call Signature
 
 ```ts
-function useLegacyStore<T>(options, StoreKlass?): typeof ConfiguredStore;
+function useLegacyStore<T extends Cache>(options: LegacyModelAndNetworkAndRequestStoreSetupOptions<T>, StoreKlass?: typeof Store$1): typeof ConfiguredStore;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/index.ts:293](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/index.ts#L293)
+Defined in: [warp-drive-packages/legacy/src/index.ts:293](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/index.ts#L293)
 
 Use the legacy store with the given options.
 

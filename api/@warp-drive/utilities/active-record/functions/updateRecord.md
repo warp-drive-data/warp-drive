@@ -4,13 +4,32 @@ url: /api/@warp-drive/utilities/active-record/functions/updateRecord.md
 
 # &#x20;updateRecord()
 
+```ts
+function updateRecord<T extends TypedRecordInstance, RT extends TypedRecordInstance = T, M extends 
+  | ObjectValue
+  | undefined = 
+  | ObjectValue
+  | undefined, E extends object = object>(record: T, options?: ConstrainedRequestOptions & {
+  patch?: boolean;
+}): UpdateRequestOptions<ReactiveDataDocument<RT, M, E>, T>;
+function updateRecord(record: unknown, options?: ConstrainedRequestOptions & {
+  patch?: boolean;
+}): UpdateRequestOptions;
+```
+
 ## Call Signature
 
 ```ts
-function updateRecord<T, RT, M, E>(record, options?): UpdateRequestOptions<ReactiveDataDocument<RT, M, E>, T>;
+function updateRecord<T extends TypedRecordInstance, RT extends TypedRecordInstance = T, M extends 
+  | ObjectValue
+  | undefined = 
+  | ObjectValue
+  | undefined, E extends object = object>(record: T, options?: ConstrainedRequestOptions & {
+  patch?: boolean;
+}): UpdateRequestOptions<ReactiveDataDocument<RT, M, E>, T>;
 ```
 
-Defined in: [-private/active-record/save-record.ts:218](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/utilities/src/-private/active-record/save-record.ts#L218)
+Defined in: [-private/active-record/save-record.ts:218](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/utilities/src/-private/active-record/save-record.ts#L218)
 
 Builds request options to update existing record for resources,
 configured for the url, method and header expectations of most ActiveRecord APIs.
@@ -79,7 +98,9 @@ const data = await store.request(options);
 
 #### options?
 
-`ConstrainedRequestOptions` & `object`
+`ConstrainedRequestOptions` & {
+`patch?`: `boolean`;
+}
 
 ### Returns
 
@@ -88,10 +109,12 @@ const data = await store.request(options);
 ## Call Signature
 
 ```ts
-function updateRecord(record, options?): UpdateRequestOptions;
+function updateRecord(record: unknown, options?: ConstrainedRequestOptions & {
+  patch?: boolean;
+}): UpdateRequestOptions;
 ```
 
-Defined in: [-private/active-record/save-record.ts:227](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/utilities/src/-private/active-record/save-record.ts#L227)
+Defined in: [-private/active-record/save-record.ts:227](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/utilities/src/-private/active-record/save-record.ts#L227)
 
 Builds request options to update existing record for resources,
 configured for the url, method and header expectations of most ActiveRecord APIs.
@@ -138,7 +161,9 @@ const data = await store.request(options);
 
 #### options?
 
-`ConstrainedRequestOptions` & `object`
+`ConstrainedRequestOptions` & {
+`patch?`: `boolean`;
+}
 
 ### Returns
 

@@ -5,10 +5,12 @@ url: /api/@warp-drive/core/request/functions/withReactiveResponse.md
 # &#x20;withReactiveResponse()
 
 ```ts
-function withReactiveResponse<T, M, E, EM>(obj): RequestInfo<ReactiveDataDocument<T, M, E, EM>> & object;
+function withReactiveResponse<T, M extends ObjectValue | undefined = ObjectValue | undefined, E extends object = object, EM extends ObjectValue | undefined = M>(obj: RequestInfo): RequestInfo<ReactiveDataDocument<T, M, E, EM>> & {
+  ___(unique) Symbol(RequestSignature): ReactiveDataDocument<T, M, E, EM>;
+};
 ```
 
-Defined in: [warp-drive-packages/core/src/request.ts:74](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/request.ts#L74)
+Defined in: [warp-drive-packages/core/src/request.ts:74](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/request.ts#L74)
 
 Brands the supplied object with the supplied response type
 wrapped in [ReactiveDataDocument](../../reactive/types/ReactiveDataDocument.md). This is a convenience for

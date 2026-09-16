@@ -6,11 +6,13 @@ url: /api/@warp-drive/core/types/params/types/QueryParamsSource.md
 
 ```ts
 type QueryParamsSource = 
-  | object & Record<Exclude<string, "include">, Serializable>
+  | {
+  include?: string | string[];
+} & Record<Exclude<string, "include">, Serializable>
   | URLSearchParams;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/params.ts:38](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/types/params.ts#L38)
+Defined in: [warp-drive-packages/core/src/types/params.ts:38](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/types/params.ts#L38)
 
 The query parameters to serialize for a request: either a
 dictionary of [Serializable](Serializable.md) values (with an optional

@@ -4,7 +4,16 @@ url: /api/@warp-drive/core/types/schema/fields/types/LegacyTrait.md
 
 # &#x20;LegacyTrait
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2459](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/types/schema/fields.ts#L2459)
+```ts
+interface LegacyTrait {
+  fields: LegacyModeFieldSchema[];
+  mode: "legacy";
+  name: string;
+  traits?: string[];
+}
+```
+
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2459](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/types/schema/fields.ts#L2459)
 
 A trait for use on a LegacyMode record.
 
@@ -20,7 +29,7 @@ multiple resource types.
 fields: LegacyModeFieldSchema[];
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2480](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/types/schema/fields.ts#L2480)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2480](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/types/schema/fields.ts#L2480)
 
 The fields that this trait contributes to any resource schema
 that implements it.
@@ -33,7 +42,7 @@ that implements it.
 mode: "legacy";
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2474](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/types/schema/fields.ts#L2474)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2474](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/types/schema/fields.ts#L2474)
 
 The mode this trait is valid for use with.
 
@@ -47,7 +56,7 @@ A LegacyTrait may only be applied to LegacyMode resource schemas.
 name: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2467](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/types/schema/fields.ts#L2467)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2467](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/types/schema/fields.ts#L2467)
 
 The name of the trait.
 
@@ -63,7 +72,7 @@ trait.
 optional traits?: string[];
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2488](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/types/schema/fields.ts#L2488)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2488](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/types/schema/fields.ts#L2488)
 
 A list of other traits that this trait itself implements.
 

@@ -6,7 +6,7 @@ url: /api/@warp-drive/experiments/storage/classes/CacheStorage.md
 
 # &#x20;CacheStorage
 
-Defined in: [storage/cache.ts:84](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/experiments/src/storage/cache.ts#L84)
+Defined in: [storage/cache.ts:84](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/experiments/src/storage/cache.ts#L84)
 
 A reactive interface for json stored in the browser [Cache](https://developer.mozilla.org/en-US/docs/Web/API/Cache) API.
 
@@ -22,10 +22,10 @@ but should not be used as a permanent DB or storage solution.
 ### Constructor
 
 ```ts
-new CacheStorage(cacheId): CacheStorage;
+new CacheStorage(cacheId: string): CacheStorage;
 ```
 
-Defined in: [storage/cache.ts:102](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/experiments/src/storage/cache.ts#L102)
+Defined in: [storage/cache.ts:102](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/experiments/src/storage/cache.ts#L102)
 
 #### Parameters
 
@@ -45,7 +45,7 @@ Defined in: [storage/cache.ts:102](https://github.com/warp-drive-data/warp-drive
 clear(): void;
 ```
 
-Defined in: [storage/cache.ts:136](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/experiments/src/storage/cache.ts#L136)
+Defined in: [storage/cache.ts:136](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/experiments/src/storage/cache.ts#L136)
 
 The **`clear()`** method of the Storage interface clears all keys stored in a given Storage object.
 
@@ -66,10 +66,10 @@ Storage.clear
 ### getItem()
 
 ```ts
-getItem(key): string | null;
+getItem(key: string): string | null;
 ```
 
-Defined in: [storage/cache.ts:141](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/experiments/src/storage/cache.ts#L141)
+Defined in: [storage/cache.ts:141](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/experiments/src/storage/cache.ts#L141)
 
 The **`getItem()`** method of the Storage interface, when passed a key name, will return that key's value, or null if the key does not exist, in the given Storage object.
 
@@ -96,10 +96,10 @@ Storage.getItem
 ### key()
 
 ```ts
-key(index): string | null;
+key(index: number): string | null;
 ```
 
-Defined in: [storage/cache.ts:145](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/experiments/src/storage/cache.ts#L145)
+Defined in: [storage/cache.ts:145](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/experiments/src/storage/cache.ts#L145)
 
 The **`key()`** method of the Storage interface, when passed a number n, returns the name of the nth key in a given Storage object. The order of keys is user-agent defined, so you should not rely on it.
 
@@ -126,10 +126,10 @@ Storage.key
 ### removeItem()
 
 ```ts
-removeItem(key): void;
+removeItem(key: string): void;
 ```
 
-Defined in: [storage/cache.ts:161](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/experiments/src/storage/cache.ts#L161)
+Defined in: [storage/cache.ts:161](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/experiments/src/storage/cache.ts#L161)
 
 The **`removeItem()`** method of the Storage interface, when passed a key name, will remove that key from the given Storage object if it exists. The Storage interface of the Web Storage API provides access to a particular domain's session or local storage.
 
@@ -156,10 +156,10 @@ Storage.removeItem
 ### setItem()
 
 ```ts
-setItem(key, value): void;
+setItem(key: string, value: string): void;
 ```
 
-Defined in: [storage/cache.ts:169](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/experiments/src/storage/cache.ts#L169)
+Defined in: [storage/cache.ts:169](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/experiments/src/storage/cache.ts#L169)
 
 The **`setItem()`** method of the Storage interface, when passed a key name and value, will add that key to the given Storage object, or update that key's value if it already exists.
 
@@ -190,10 +190,10 @@ Storage.setItem
 ### expectCache()
 
 ```ts
-static expectCache(cacheId?): CacheStorage;
+static expectCache(cacheId?: string): CacheStorage;
 ```
 
-Defined in: [storage/cache.ts:193](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/experiments/src/storage/cache.ts#L193)
+Defined in: [storage/cache.ts:193](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/experiments/src/storage/cache.ts#L193)
 
 #### Parameters
 
@@ -210,10 +210,10 @@ Defined in: [storage/cache.ts:193](https://github.com/warp-drive-data/warp-drive
 ### get()
 
 ```ts
-static get(cacheId?): Promise<CacheStorage>;
+static get(cacheId?: string): Promise<CacheStorage>;
 ```
 
-Defined in: [storage/cache.ts:184](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/experiments/src/storage/cache.ts#L184)
+Defined in: [storage/cache.ts:184](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/experiments/src/storage/cache.ts#L184)
 
 Get the singleton CacheStorage instance.
 
@@ -235,7 +235,7 @@ Get the singleton CacheStorage instance.
 static getAllCacheIds(): string[];
 ```
 
-Defined in: [storage/cache.ts:205](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/experiments/src/storage/cache.ts#L205)
+Defined in: [storage/cache.ts:205](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/experiments/src/storage/cache.ts#L205)
 
 Returns the IDs of all CacheStorage instances that have been
 opened in this context via [CacheStorage.get](#get).
@@ -252,7 +252,7 @@ opened in this context via [CacheStorage.get](#get).
 _bufferedEvents: InternalCacheStorageEvent[] = [];
 ```
 
-Defined in: [storage/cache.ts:90](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/experiments/src/storage/cache.ts#L90)
+Defined in: [storage/cache.ts:90](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/experiments/src/storage/cache.ts#L90)
 
 ***
 
@@ -262,7 +262,7 @@ Defined in: [storage/cache.ts:90](https://github.com/warp-drive-data/warp-drive/
 _data: Map<string, string | null>;
 ```
 
-Defined in: [storage/cache.ts:88](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/experiments/src/storage/cache.ts#L88)
+Defined in: [storage/cache.ts:88](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/experiments/src/storage/cache.ts#L88)
 
 ***
 
@@ -272,7 +272,7 @@ Defined in: [storage/cache.ts:88](https://github.com/warp-drive-data/warp-drive/
 _nextUpdate: number | null = null;
 ```
 
-Defined in: [storage/cache.ts:89](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/experiments/src/storage/cache.ts#L89)
+Defined in: [storage/cache.ts:89](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/experiments/src/storage/cache.ts#L89)
 
 ### length
 
@@ -282,7 +282,7 @@ Defined in: [storage/cache.ts:89](https://github.com/warp-drive-data/warp-drive/
 get length(): number;
 ```
 
-Defined in: [storage/cache.ts:108](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/experiments/src/storage/cache.ts#L108)
+Defined in: [storage/cache.ts:108](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/experiments/src/storage/cache.ts#L108)
 
 The **`length`** read-only property of the Storage interface returns the number of data items stored in a given Storage object.
 

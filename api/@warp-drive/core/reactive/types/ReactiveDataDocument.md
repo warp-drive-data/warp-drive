@@ -2,13 +2,16 @@
 url: /api/@warp-drive/core/reactive/types/ReactiveDataDocument.md
 ---
 
-# &#x20;ReactiveDataDocument\<T, M, E, EM>
+# &#x20;ReactiveDataDocument\<T, M *extends* [`Meta`](../../types/spec/json-api-raw/types/Meta.md) | `undefined` = [`Meta`](../../types/spec/json-api-raw/types/Meta.md) | `undefined`, E *extends* `object` = `object`, EM *extends* [`Meta`](../../types/spec/json-api-raw/types/Meta.md) | `undefined` = `M`>
 
 ```ts
-type ReactiveDataDocument<T, M, E, EM> = ReactiveDocumentBase<T, M, E, EM> & DocumentMeta<M> & object;
+type ReactiveDataDocument<T, M extends Meta | undefined = Meta | undefined, E extends object = object, EM extends Meta | undefined = M> = ReactiveDocumentBase<T, M, E, EM> & DocumentMeta<M> & {
+  data: T;
+  errors?: undefined;
+};
 ```
 
-Defined in: [warp-drive-packages/core/src/reactive/-private/document.ts:196](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/reactive/-private/document.ts#L196)
+Defined in: [warp-drive-packages/core/src/reactive/-private/document.ts:196](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/reactive/-private/document.ts#L196)
 
 The variant of [ReactiveDocument](ReactiveDocument.md) returned for a request whose
 response contained primary data.

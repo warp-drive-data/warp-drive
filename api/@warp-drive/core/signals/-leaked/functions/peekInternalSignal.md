@@ -5,10 +5,10 @@ url: /api/@warp-drive/core/signals/-leaked/functions/peekInternalSignal.md
 # &#x20;peekInternalSignal()
 
 ```ts
-function peekInternalSignal(signals, key): WarpDriveSignal | undefined;
+function peekInternalSignal(signals: SignalStore | undefined, key: string | symbol): WarpDriveSignal | undefined;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/reactivity/internal.ts:270](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/signals/reactivity/internal.ts#L270)
+Defined in: [warp-drive-packages/core/src/signals/reactivity/internal.ts:270](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/signals/reactivity/internal.ts#L270)
 
 Looks up the WarpDriveSignal stored for `key` in `signals`,
 if one has already been created, without creating or consuming it.

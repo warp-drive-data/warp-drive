@@ -7,10 +7,14 @@ url: /api/@warp-drive/legacy/adapter/rest/types/RequestData.md
 # &#x20;RequestData
 
 ```ts
-type RequestData = object;
+type RequestData = {
+  [key: string]: unknown;
+  method: HTTPMethod;
+  url: string;
+};
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:101](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/adapter/rest.ts#L101)
+Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:101](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/adapter/rest.ts#L101)
 
 A minimal description of an in-flight request, used for building
 error messages when a request fails.
@@ -29,7 +33,7 @@ error messages when a request fails.
 method: HTTPMethod;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:109](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/adapter/rest.ts#L109)
+Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:109](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/adapter/rest.ts#L109)
 
 the HTTP method that was used
 
@@ -41,6 +45,6 @@ the HTTP method that was used
 url: string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:105](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/adapter/rest.ts#L105)
+Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:105](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/adapter/rest.ts#L105)
 
 the url that was requested

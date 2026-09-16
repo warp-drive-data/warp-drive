@@ -5,14 +5,14 @@ url: /api/@warp-drive/core/signals/-leaked/functions/memoized.md
 # &#x20;memoized()
 
 ```ts
-function memoized<T, K>(
-   target, 
-   key, 
-   descriptor
+function memoized<T extends object, K extends string>(
+   target: T, 
+   key: K, 
+   descriptor: PropertyDescriptor
 ): PropertyDescriptor;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/reactivity/signal.ts:137](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/signals/reactivity/signal.ts#L137)
+Defined in: [warp-drive-packages/core/src/signals/reactivity/signal.ts:137](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/signals/reactivity/signal.ts#L137)
 
 Decorator version of creating a memoized getter
 

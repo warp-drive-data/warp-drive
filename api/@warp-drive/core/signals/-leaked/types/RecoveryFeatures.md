@@ -4,7 +4,15 @@ url: /api/@warp-drive/core/signals/-leaked/types/RecoveryFeatures.md
 
 # &#x20;RecoveryFeatures
 
-Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:44](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/signals/request-subscription.ts#L44)
+```ts
+interface RecoveryFeatures {
+  isHidden: boolean;
+  isOnline: boolean;
+  retry: () => Promise<void>;
+}
+```
+
+Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:44](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/signals/request-subscription.ts#L44)
 
 Utilities to assist in recovering from the error.
 
@@ -16,7 +24,7 @@ Utilities to assist in recovering from the error.
 isHidden: boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:52](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/signals/request-subscription.ts#L52)
+Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:52](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/signals/request-subscription.ts#L52)
 
 Whether the browser reports that the tab is hidden.
 
@@ -28,7 +36,7 @@ Whether the browser reports that the tab is hidden.
 isOnline: boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:48](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/signals/request-subscription.ts#L48)
+Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:48](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/signals/request-subscription.ts#L48)
 
 Whether the browser reports that the network is online.
 
@@ -40,7 +48,7 @@ Whether the browser reports that the network is online.
 retry: () => Promise<void>;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:56](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/signals/request-subscription.ts#L56)
+Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:56](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/signals/request-subscription.ts#L56)
 
 Retries the request, reloading it from the server.
 

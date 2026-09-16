@@ -4,13 +4,18 @@ url: /api/@warp-drive/schema-dsl/functions/object.md
 
 # &#x20;object()
 
+```ts
+function object(target: object, key: string): void;
+function object(options: ObjectFieldOptions): (target: object, key: string) => void;
+```
+
 ## Call Signature
 
 ```ts
-function object(target, key): void;
+function object(target: object, key: string): void;
 ```
 
-Defined in: [fields/object.ts:62](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/schema-dsl/src/fields/object.ts#L62)
+Defined in: [fields/object.ts:62](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/schema-dsl/src/fields/object.ts#L62)
 
 **`Decorator`**
 
@@ -58,10 +63,10 @@ export class User {
 ## Call Signature
 
 ```ts
-function object(options): (target, key) => void;
+function object(options: ObjectFieldOptions): (target: object, key: string) => void;
 ```
 
-Defined in: [fields/object.ts:63](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/schema-dsl/src/fields/object.ts#L63)
+Defined in: [fields/object.ts:63](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/schema-dsl/src/fields/object.ts#L63)
 
 **`Decorator`**
 
@@ -78,7 +83,7 @@ well-defined shape, use [schemaObject](schemaObject.md) with an
 
 ### Returns
 
-(`target`, `key`) => `void`
+(`target`: `object`, `key`: `string`) => `void`
 
 ### Example
 

@@ -7,10 +7,13 @@ url: /api/@warp-drive/legacy/adapter/rest/types/QueryState.md
 # &#x20;QueryState
 
 ```ts
-type QueryState = object;
+type QueryState = {
+  include?: unknown;
+  since?: unknown;
+};
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:50](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/adapter/rest.ts#L50)
+Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:50](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/adapter/rest.ts#L50)
 
 The query params built by [buildQuery](../classes/RESTAdapter.md#buildquery) for a
 `findAll`/`findRecord` request.
@@ -23,7 +26,7 @@ The query params built by [buildQuery](../classes/RESTAdapter.md#buildquery) for
 optional include?: unknown;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:54](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/adapter/rest.ts#L54)
+Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:54](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/adapter/rest.ts#L54)
 
 the relationship paths to sideload
 
@@ -35,6 +38,6 @@ the relationship paths to sideload
 optional since?: unknown;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:58](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/adapter/rest.ts#L58)
+Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:58](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/adapter/rest.ts#L58)
 
 a value used to request only records updated since the given value

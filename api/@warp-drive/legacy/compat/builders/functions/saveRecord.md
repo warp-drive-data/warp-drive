@@ -7,10 +7,10 @@ url: /api/@warp-drive/legacy/compat/builders/functions/saveRecord.md
 # &#x20;~~saveRecord()~~&#x20;
 
 ```ts
-function saveRecord<T>(record, options?): SaveRecordRequestInput<TypeFromInstance<T>, T>;
+function saveRecord<T extends TypedRecordInstance>(record: T, options?: Record<string, unknown>): SaveRecordRequestInput<TypeFromInstance<T>, T>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat/builders/save-record.ts:46](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/compat/builders/save-record.ts#L46)
+Defined in: [warp-drive-packages/legacy/src/compat/builders/save-record.ts:46](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/compat/builders/save-record.ts#L46)
 
 This function builds a request config for saving the given record (e.g. creating, updating, or deleting the record).
 When passed to `store.request`, this config will result in the same behavior as a legacy `store.saveRecord` request.

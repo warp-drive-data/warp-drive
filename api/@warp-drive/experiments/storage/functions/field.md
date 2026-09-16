@@ -6,13 +6,22 @@ url: /api/@warp-drive/experiments/storage/functions/field.md
 
 # &#x20;field()
 
+```ts
+function field(type: "cache" | "local" | "session"): PropertyDecorator;
+function field(
+   target: object, 
+   key: string, 
+   descriptor?: PropertyDescriptor
+): void;
+```
+
 ## Call Signature
 
 ```ts
-function field(type): PropertyDecorator;
+function field(type: "cache" | "local" | "session"): PropertyDecorator;
 ```
 
-Defined in: [storage/storage-resource.ts:105](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/experiments/src/storage/storage-resource.ts#L105)
+Defined in: [storage/storage-resource.ts:105](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/experiments/src/storage/storage-resource.ts#L105)
 
 Decorator which marks a property as a field on
 a LocalResource or SessionResource
@@ -57,13 +66,13 @@ class UserSettings {
 
 ```ts
 function field(
-   target, 
-   key, 
-   descriptor?
+   target: object, 
+   key: string, 
+   descriptor?: PropertyDescriptor
 ): void;
 ```
 
-Defined in: [storage/storage-resource.ts:106](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/experiments/src/storage/storage-resource.ts#L106)
+Defined in: [storage/storage-resource.ts:106](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/experiments/src/storage/storage-resource.ts#L106)
 
 Decorator which marks a property as a field on
 a LocalResource or SessionResource

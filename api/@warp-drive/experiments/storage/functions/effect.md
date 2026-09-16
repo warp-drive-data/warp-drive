@@ -7,10 +7,10 @@ url: /api/@warp-drive/experiments/storage/functions/effect.md
 # &#x20;effect()
 
 ```ts
-function effect(fn, type?): PropertyDecorator;
+function effect(fn: <K>(update: ValueTransition<K>) => void, type?: "local" | "session"): PropertyDecorator;
 ```
 
-Defined in: [storage/storage-resource.ts:206](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/experiments/src/storage/storage-resource.ts#L206)
+Defined in: [storage/storage-resource.ts:206](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/experiments/src/storage/storage-resource.ts#L206)
 
 Effects are fields that run a side-effecting function.
 
@@ -66,7 +66,7 @@ function syncThemeToDOM(update: ValueTransition<'light' | 'dark' | null>): void 
 
 ### fn
 
-<`K`>(`update`) => `void`
+<`K`>(`update`: [`ValueTransition`](../types/ValueTransition.md)<`K`>) => `void`
 
 ### type?
 

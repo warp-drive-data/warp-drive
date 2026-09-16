@@ -4,13 +4,18 @@ url: /api/@warp-drive/schema-dsl/functions/array.md
 
 # &#x20;array()
 
+```ts
+function array(target: object, key: string): void;
+function array(options: ArrayFieldOptions): (target: object, key: string) => void;
+```
+
 ## Call Signature
 
 ```ts
-function array(target, key): void;
+function array(target: object, key: string): void;
 ```
 
-Defined in: [fields/array.ts:60](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/schema-dsl/src/fields/array.ts#L60)
+Defined in: [fields/array.ts:60](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/schema-dsl/src/fields/array.ts#L60)
 
 **`Decorator`**
 
@@ -56,10 +61,10 @@ export class Post {
 ## Call Signature
 
 ```ts
-function array(options): (target, key) => void;
+function array(options: ArrayFieldOptions): (target: object, key: string) => void;
 ```
 
-Defined in: [fields/array.ts:61](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/schema-dsl/src/fields/array.ts#L61)
+Defined in: [fields/array.ts:61](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/schema-dsl/src/fields/array.ts#L61)
 
 **`Decorator`**
 
@@ -74,7 +79,7 @@ values. For arrays of well-defined objects, use [schemaArray](schemaArray.md).
 
 ### Returns
 
-(`target`, `key`) => `void`
+(`target`: `object`, `key`: `string`) => `void`
 
 ### Example
 

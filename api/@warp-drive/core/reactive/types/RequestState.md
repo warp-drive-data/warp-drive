@@ -2,17 +2,17 @@
 url: /api/@warp-drive/core/reactive/types/RequestState.md
 ---
 
-# &#x20;RequestState\<RT, E>
+# &#x20;RequestState\<RT = `unknown`, E *extends* [`StructuredErrorDocument`](../../types/request/types/StructuredErrorDocument.md) = [`StructuredErrorDocument`](../../types/request/types/StructuredErrorDocument.md)>
 
 ```ts
-type RequestState<RT, E> = 
+type RequestState<RT = unknown, E extends StructuredErrorDocument = StructuredErrorDocument> = 
   | PendingRequest
   | ResolvedRequest<RT>
   | RejectedRequest<RT, E>
 | CancelledRequest<RT, E>;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-state.ts:638](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/signals/request-state.ts#L638)
+Defined in: [warp-drive-packages/core/src/signals/request-state.ts:638](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/signals/request-state.ts#L638)
 
 RequestState extends the concept of [PromiseState](PromiseState.md) to provide a reactive
 wrapper for a request [Future](../../request/types/Future.md) which allows you write declarative code

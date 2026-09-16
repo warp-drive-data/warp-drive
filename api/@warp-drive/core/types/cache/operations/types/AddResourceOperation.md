@@ -4,7 +4,15 @@ url: /api/@warp-drive/core/types/cache/operations/types/AddResourceOperation.md
 
 # &#x20;AddResourceOperation
 
-Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:87](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/types/cache/operations.ts#L87)
+```ts
+interface AddResourceOperation extends Op {
+  op: "add";
+  record: PersistedResourceKey;
+  value: ExistingResourceObject;
+}
+```
+
+Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:87](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/types/cache/operations.ts#L87)
 
 Adds a resource to the cache.
 
@@ -20,7 +28,7 @@ Adds a resource to the cache.
 op: "add";
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:88](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/types/cache/operations.ts#L88)
+Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:88](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/types/cache/operations.ts#L88)
 
 The name of the [operation](Op.md)
 
@@ -36,7 +44,7 @@ The name of the [operation](Op.md)
 record: PersistedResourceKey;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:92](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/types/cache/operations.ts#L92)
+Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:92](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/types/cache/operations.ts#L92)
 
 The cache key for the resource
 
@@ -48,6 +56,6 @@ The cache key for the resource
 value: ExistingResourceObject;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:96](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/types/cache/operations.ts#L96)
+Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:96](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/types/cache/operations.ts#L96)
 
 The data for the resource

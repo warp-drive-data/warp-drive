@@ -7,10 +7,18 @@ url: /api/@warp-drive/legacy/model-fragments/functions/withFragmentArrayDefaults
 # &#x20;withFragmentArrayDefaults()
 
 ```ts
-function withFragmentArrayDefaults<FragmentArrayType, FragmentArrayName>(fragmentArrayType, fragmentArrayName?): object;
+function withFragmentArrayDefaults<FragmentArrayType extends string, FragmentArrayName extends string>(fragmentArrayType: FragmentArrayType, fragmentArrayName?: FragmentArrayName): {
+  kind: "schema-array";
+  name: string;
+  options: {
+     arrayExtensions: string[];
+     defaultValue: boolean;
+  };
+  type: `fragment:${string}`;
+};
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model-fragments/utilities/with-fragment-array-defaults.ts:11](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/model-fragments/utilities/with-fragment-array-defaults.ts#L11)
+Defined in: [warp-drive-packages/legacy/src/model-fragments/utilities/with-fragment-array-defaults.ts:11](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/model-fragments/utilities/with-fragment-array-defaults.ts#L11)
 
 Used as a helper to setup the relevant parts of a fragment-array
 schema and add extensions etc.
@@ -62,7 +70,10 @@ The name of the fragment-array field.
 ### options
 
 ```ts
-options: object;
+options: {
+  arrayExtensions: string[];
+  defaultValue: boolean;
+};
 ```
 
 The schema options for this fragment-array field.

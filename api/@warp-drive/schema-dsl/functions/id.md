@@ -4,13 +4,18 @@ url: /api/@warp-drive/schema-dsl/functions/id.md
 
 # &#x20;id()
 
+```ts
+function id(target: object, key: string): void;
+function id(options: IdOptions): (target: object, key: string) => void;
+```
+
 ## Call Signature
 
 ```ts
-function id(target, key): void;
+function id(target: object, key: string): void;
 ```
 
-Defined in: [fields/id.ts:55](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/schema-dsl/src/fields/id.ts#L55)
+Defined in: [fields/id.ts:55](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/schema-dsl/src/fields/id.ts#L55)
 
 **`Decorator`**
 
@@ -61,10 +66,10 @@ export class Post {
 ## Call Signature
 
 ```ts
-function id(options): (target, key) => void;
+function id(options: IdOptions): (target: object, key: string) => void;
 ```
 
-Defined in: [fields/id.ts:56](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/schema-dsl/src/fields/id.ts#L56)
+Defined in: [fields/id.ts:56](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/schema-dsl/src/fields/id.ts#L56)
 
 **`Decorator`**
 
@@ -83,7 +88,7 @@ resources can rely on [Resource](Resource.md)'s default identity instead.
 
 ### Returns
 
-(`target`, `key`) => `void`
+(`target`: `object`, `key`: `string`) => `void`
 
 ### Example
 

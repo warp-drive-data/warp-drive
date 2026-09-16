@@ -7,10 +7,10 @@ url: /api/@warp-drive/experiments/storage/functions/NumberParam.md
 # &#x20;NumberParam()
 
 ```ts
-function NumberParam(precision?, getDefault?): ParamConfig;
+function NumberParam(precision?: number, getDefault?: (instance: any) => number | undefined): ParamConfig;
 ```
 
-Defined in: [storage/query-params.ts:65](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/experiments/src/storage/query-params.ts#L65)
+Defined in: [storage/query-params.ts:65](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/experiments/src/storage/query-params.ts#L65)
 
 Creates a [ParamConfig](../types/ParamConfig.md) for numeric fields with default value checking.
 
@@ -24,7 +24,7 @@ When given, the number of digits to serialize after the decimal point
 
 ### getDefault?
 
-(`instance`) => `number` | `undefined`
+(`instance`: `any`) => `number` | `undefined`
 
 Function to get the default value for comparison
 

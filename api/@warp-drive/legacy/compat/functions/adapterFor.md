@@ -6,13 +6,24 @@ url: /api/@warp-drive/legacy/compat/functions/adapterFor.md
 
 # &#x20;adapterFor()
 
+```ts
+function adapterFor(this: Store$1, modelName: string): MinimumAdapterInterface;
+function adapterFor(
+   this: Store$1, 
+   modelName: string, 
+   _allowMissing: true
+): 
+  | MinimumAdapterInterface
+  | undefined;
+```
+
 ## Call Signature
 
 ```ts
-function adapterFor(this, modelName): MinimumAdapterInterface;
+function adapterFor(this: Store$1, modelName: string): MinimumAdapterInterface;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat.ts:99](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/compat.ts#L99)
+Defined in: [warp-drive-packages/legacy/src/compat.ts:99](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/compat.ts#L99)
 
 Returns an instance of the adapter for a given type. For
 example, `adapterFor('person')` will return an instance of
@@ -40,15 +51,15 @@ your entire application).
 
 ```ts
 function adapterFor(
-   this, 
-   modelName, 
-   _allowMissing
+   this: Store$1, 
+   modelName: string, 
+   _allowMissing: true
 ): 
   | MinimumAdapterInterface
   | undefined;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat.ts:100](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/compat.ts#L100)
+Defined in: [warp-drive-packages/legacy/src/compat.ts:100](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/compat.ts#L100)
 
 Returns an instance of the adapter for a given type. For
 example, `adapterFor('person')` will return an instance of

@@ -21,7 +21,7 @@ type RelationshipDiff =
 };
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache.ts:36](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/types/cache.ts#L36)
+Defined in: [warp-drive-packages/core/src/types/cache.ts:36](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/types/cache.ts#L36)
 
 Describes the local (uncommitted) changes to a single relationship,
 as returned by [Cache.changedRelationships](Cache.md#changedrelationships).

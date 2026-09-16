@@ -6,13 +6,13 @@ url: /api/@warp-drive/holodeck/functions/mock.md
 
 ```ts
 function mock(
-   owner, 
-   generate, 
-   isRecording?
+   owner: object, 
+   generate: ScaffoldGenerator, 
+   isRecording?: boolean
 ): Promise<void>;
 ```
 
-Defined in: [index.ts:351](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/packages/holodeck/src/index.ts#L351)
+Defined in: [index.ts:351](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/packages/holodeck/src/index.ts#L351)
 
 Mock a request by sending the scaffold to the mock server.
 

@@ -5,10 +5,10 @@ url: /api/@warp-drive/schema-dsl/functions/derived.md
 # &#x20;derived()&#x20;
 
 ```ts
-function derived(options): (target, key) => void;
+function derived(options: DerivedOptions): (target: object, key: string) => void;
 ```
 
-Defined in: [fields/derived.ts:61](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/schema-dsl/src/fields/derived.ts#L61)
+Defined in: [fields/derived.ts:61](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/schema-dsl/src/fields/derived.ts#L61)
 
 **`Decorator`**
 
@@ -24,7 +24,7 @@ cache and are never sent to the server.
 
 ## Returns
 
-(`target`, `key`) => `void`
+(`target`: `object`, `key`: `string`) => `void`
 
 ## Example
 

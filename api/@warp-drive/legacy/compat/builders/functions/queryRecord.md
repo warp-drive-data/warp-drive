@@ -6,17 +6,30 @@ url: /api/@warp-drive/legacy/compat/builders/functions/queryRecord.md
 
 # &#x20;~~queryRecord()~~
 
+```ts
+function queryRecord<T extends TypedRecordInstance>(
+   type: TypeFromInstance<T>, 
+   query: LegacyResourceQuery, 
+   options?: QueryOptions
+): QueryRecordRequestInput<TypeFromInstance<T>, T | null>;
+function queryRecord(
+   type: string, 
+   query: LegacyResourceQuery, 
+   options?: QueryOptions
+): QueryRecordRequestInput;
+```
+
 ## Call Signature&#x20;
 
 ```ts
-function queryRecord<T>(
-   type, 
-   query, 
-   options?
+function queryRecord<T extends TypedRecordInstance>(
+   type: TypeFromInstance<T>, 
+   query: LegacyResourceQuery, 
+   options?: QueryOptions
 ): QueryRecordRequestInput<TypeFromInstance<T>, T | null>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat/builders/query.ts:97](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/compat/builders/query.ts#L97)
+Defined in: [warp-drive-packages/legacy/src/compat/builders/query.ts:97](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/compat/builders/query.ts#L97)
 
 This function builds a request config for a given type and query object.
 When passed to `store.request`, this config will result in the same behavior as a `store.queryRecord` request.
@@ -64,13 +77,13 @@ request config
 
 ```ts
 function queryRecord(
-   type, 
-   query, 
-   options?
+   type: string, 
+   query: LegacyResourceQuery, 
+   options?: QueryOptions
 ): QueryRecordRequestInput;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat/builders/query.ts:102](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/compat/builders/query.ts#L102)
+Defined in: [warp-drive-packages/legacy/src/compat/builders/query.ts:102](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/compat/builders/query.ts#L102)
 
 This function builds a request config for a given type and query object.
 When passed to `store.request`, this config will result in the same behavior as a `store.queryRecord` request.

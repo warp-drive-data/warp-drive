@@ -6,7 +6,30 @@ url: /api/@warp-drive/legacy/compat/types/MinimumAdapterInterface.md
 
 # &#x20;MinimumAdapterInterface
 
-Defined in: [warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts:42](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts#L42)
+```ts
+interface MinimumAdapterInterface {
+  coalesceFindRequests?: boolean;
+  createRecord(store: Store$1, schema: ModelSchema, snapshot: Snapshot): Promise<AdapterPayload>;
+  deleteRecord(store: Store$1, schema: ModelSchema, snapshot: Snapshot): Promise<AdapterPayload>;
+  destroy?(): void;
+  findAll(store: Store$1, schema: ModelSchema, sinceToken: null, snapshotRecordArray: SnapshotRecordArray): Promise<AdapterPayload>;
+  findBelongsTo?(store: Store$1, snapshot: Snapshot, relatedLink: string, relationship: LegacyRelationshipField): Promise<AdapterPayload>;
+  findHasMany?(store: Store$1, snapshot: Snapshot, relatedLink: string, relationship: LegacyRelationshipField): Promise<AdapterPayload>;
+  findMany?(store: Store$1, schema: ModelSchema, ids: string[], snapshots: Snapshot<unknown>[]): Promise<AdapterPayload>;
+  findRecord(store: Store$1, schema: ModelSchema, id: string, snapshot: Snapshot): Promise<AdapterPayload>;
+  generateIdForRecord?(store: Store$1, type: string, properties: unknown): string;
+  groupRecordsForFindMany?(store: Store$1, snapshots: Snapshot<unknown>[]): Group[];
+  query(store: Store$1, schema: ModelSchema, query: Record<string, unknown>, recordArray: LegacyQueryArray, options: { adapterOptions?: unknown }): Promise<AdapterPayload>;
+  queryRecord(store: Store$1, schema: ModelSchema, query: Record<string, unknown>, options: { adapterOptions?: unknown }): Promise<AdapterPayload>;
+  shouldBackgroundReloadAll?(store: Store$1, snapshotArray: SnapshotRecordArray): boolean;
+  shouldBackgroundReloadRecord?(store: Store$1, snapshot: Snapshot): boolean;
+  shouldReloadAll?(store: Store$1, snapshotArray: SnapshotRecordArray): boolean;
+  shouldReloadRecord?(store: Store$1, snapshot: Snapshot): boolean;
+  updateRecord(store: Store$1, schema: ModelSchema, snapshot: Snapshot): Promise<AdapterPayload>;
+}
+```
+
+Defined in: [warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts:42](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts#L42)
 
 :::danger
 ⚠️ **This is LEGACY documentation** for a feature that is no longer encouraged to be used.
@@ -28,13 +51,13 @@ Methods that are not required are marked as **optional**.
 
 ```ts
 createRecord(
-   store, 
-   schema, 
-   snapshot
+   store: Store$1, 
+   schema: ModelSchema, 
+   snapshot: Snapshot
 ): Promise<AdapterPayload>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts:224](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts#L224)
+Defined in: [warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts:224](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts#L224)
 
 `adapter.createRecord` takes a request to create a resource of a given `type` and should
 return a `Promise` which fulfills with data for the newly created resource.
@@ -109,13 +132,13 @@ a promise resolving with resource data to feed to the associated serializer
 
 ```ts
 deleteRecord(
-   store, 
-   schema, 
-   snapshot
+   store: Store$1, 
+   schema: ModelSchema, 
+   snapshot: Snapshot
 ): Promise<AdapterPayload>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts:302](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts#L302)
+Defined in: [warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts:302](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts#L302)
 
 `adapter.deleteRecord` takes a request to delete a resource of a given `type` and
 should return a `Promise` which resolves when that deletion is complete.
@@ -167,7 +190,7 @@ A Snapshot containing the record's current data
 optional destroy(): void;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts:578](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts#L578)
+Defined in: [warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts:578](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts#L578)
 
 **`Optional`**
 
@@ -186,14 +209,14 @@ If not implemented, the store does not inform the adapter of destruction.
 
 ```ts
 findAll(
-   store, 
-   schema, 
-   sinceToken, 
-   snapshotRecordArray
+   store: Store$1, 
+   schema: ModelSchema, 
+   sinceToken: null, 
+   snapshotRecordArray: SnapshotRecordArray
 ): Promise<AdapterPayload>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts:100](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts#L100)
+Defined in: [warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts:100](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts#L100)
 
 `adapter.findAll` takes a request for resources of a given `type` and should return
 a `Promise` which fulfills with a collection of resource data matching that `type`.
@@ -254,14 +277,14 @@ a promise resolving with resource data to feed to the associated serializer
 
 ```ts
 optional findBelongsTo(
-   store, 
-   snapshot, 
-   relatedLink, 
-   relationship
+   store: Store$1, 
+   snapshot: Snapshot, 
+   relatedLink: string, 
+   relationship: LegacyRelationshipField
 ): Promise<AdapterPayload>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts:333](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts#L333)
+Defined in: [warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts:333](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts#L333)
 
 **`Optional`**
 
@@ -321,14 +344,14 @@ a promise resolving with resource data to feed to the associated serializer
 
 ```ts
 optional findHasMany(
-   store, 
-   snapshot, 
-   relatedLink, 
-   relationship
+   store: Store$1, 
+   snapshot: Snapshot, 
+   relatedLink: string, 
+   relationship: LegacyRelationshipField
 ): Promise<AdapterPayload>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts:370](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts#L370)
+Defined in: [warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts:370](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts#L370)
 
 **`Optional`**
 
@@ -389,14 +412,14 @@ a promise resolving with resource data to feed to the associated serializer
 
 ```ts
 optional findMany(
-   store, 
-   schema, 
-   ids, 
-   snapshots
+   store: Store$1, 
+   schema: ModelSchema, 
+   ids: string[], 
+   snapshots: Snapshot<unknown>[]
 ): Promise<AdapterPayload>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts:405](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts#L405)
+Defined in: [warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts:405](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts#L405)
 
 **`Optional`**
 
@@ -457,14 +480,14 @@ a promise resolving with resource data to feed to the associated serializer
 
 ```ts
 findRecord(
-   store, 
-   schema, 
-   id, 
-   snapshot
+   store: Store$1, 
+   schema: ModelSchema, 
+   id: string, 
+   snapshot: Snapshot
 ): Promise<AdapterPayload>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts:69](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts#L69)
+Defined in: [warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts:69](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts#L69)
 
 `adapter.findRecord` takes a request for a resource of a given `type` and `id` combination
 and should return a `Promise` which fulfills with data for a single resource matching that
@@ -518,13 +541,13 @@ a promise resolving with resource data to feed to the associated serializer
 
 ```ts
 optional generateIdForRecord(
-   store, 
-   type, 
-   properties
+   store: Store$1, 
+   type: string, 
+   properties: unknown
 ): string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts:425](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts#L425)
+Defined in: [warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts:425](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts#L425)
 
 **`Optional`**
 
@@ -569,10 +592,10 @@ a string ID that should be unique (no other models of `type` in the cache should
 ### groupRecordsForFindMany()?
 
 ```ts
-optional groupRecordsForFindMany(store, snapshots): Group[];
+optional groupRecordsForFindMany(store: Store$1, snapshots: Snapshot<unknown>[]): Group[];
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts:467](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts#L467)
+Defined in: [warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts:467](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts#L467)
 
 **`Optional`**
 
@@ -616,15 +639,17 @@ An array of Snapshot arrays
 
 ```ts
 query(
-   store, 
-   schema, 
-   query, 
-   recordArray, 
-   options
+   store: Store$1, 
+   schema: ModelSchema, 
+   query: Record<string, unknown>, 
+   recordArray: LegacyQueryArray, 
+   options: {
+  adapterOptions?: unknown;
+}
 ): Promise<AdapterPayload>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts:137](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts#L137)
+Defined in: [warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts:137](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts#L137)
 
 `adapter.query` takes a request for resources of a given `type` and should return
 a `Promise` which fulfills with a collection of resource data matching that `type`.
@@ -687,14 +712,16 @@ a promise resolving with resource data to feed to the associated serializer
 
 ```ts
 queryRecord(
-   store, 
-   schema, 
-   query, 
-   options
+   store: Store$1, 
+   schema: ModelSchema, 
+   query: Record<string, unknown>, 
+   options: {
+  adapterOptions?: unknown;
+}
 ): Promise<AdapterPayload>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts:167](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts#L167)
+Defined in: [warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts:167](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts#L167)
 
 `adapter.queryRecord` takes a request for resource of a given `type` and should return
 a `Promise` which fulfills with data for a single resource matching that `type`.
@@ -745,10 +772,10 @@ a promise resolving with resource data to feed to the associated serializer
 ### shouldBackgroundReloadAll()?
 
 ```ts
-optional shouldBackgroundReloadAll(store, snapshotArray): boolean;
+optional shouldBackgroundReloadAll(store: Store$1, snapshotArray: SnapshotRecordArray): boolean;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts:567](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts#L567)
+Defined in: [warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts:567](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts#L567)
 
 **`Optional`**
 
@@ -789,10 +816,10 @@ true if the a new request for all records of the type in SnapshotRecordArray sho
 ### shouldBackgroundReloadRecord()?
 
 ```ts
-optional shouldBackgroundReloadRecord(store, snapshot): boolean;
+optional shouldBackgroundReloadRecord(store: Store$1, snapshot: Snapshot): boolean;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts:544](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts#L544)
+Defined in: [warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts:544](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts#L544)
 
 **`Optional`**
 
@@ -838,10 +865,10 @@ true if the record should be reloaded in the background, false otherwise
 ### shouldReloadAll()?
 
 ```ts
-optional shouldReloadAll(store, snapshotArray): boolean;
+optional shouldReloadAll(store: Store$1, snapshotArray: SnapshotRecordArray): boolean;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts:518](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts#L518)
+Defined in: [warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts:518](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts#L518)
 
 **`Optional`**
 
@@ -885,10 +912,10 @@ true if the a new request for all records of the type in SnapshotRecordArray sho
 ### shouldReloadRecord()?
 
 ```ts
-optional shouldReloadRecord(store, snapshot): boolean;
+optional shouldReloadRecord(store: Store$1, snapshot: Snapshot): boolean;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts:492](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts#L492)
+Defined in: [warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts:492](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts#L492)
 
 **`Optional`**
 
@@ -934,13 +961,13 @@ true if the record should be reloaded immediately, false otherwise
 
 ```ts
 updateRecord(
-   store, 
-   schema, 
-   snapshot
+   store: Store$1, 
+   schema: ModelSchema, 
+   snapshot: Snapshot
 ): Promise<AdapterPayload>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts:275](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts#L275)
+Defined in: [warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts:275](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts#L275)
 
 `adapter.updateRecord` takes a request to update a resource of a given `type` and should
 return a `Promise` which fulfills with the updated data for the resource.
@@ -1015,7 +1042,7 @@ the type, attributes and relationships of the primary type associated with the r
 optional coalesceFindRequests?: boolean;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts:444](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts#L444)
+Defined in: [warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts:444](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts#L444)
 
 **`Optional`**
 

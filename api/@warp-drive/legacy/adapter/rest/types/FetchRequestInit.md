@@ -6,7 +6,15 @@ url: /api/@warp-drive/legacy/adapter/rest/types/FetchRequestInit.md
 
 # &#x20;FetchRequestInit
 
-Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:64](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/adapter/rest.ts#L64)
+```ts
+interface FetchRequestInit extends RequestInit {
+  method: HTTPMethod;
+  type: HTTPMethod;
+  url: string;
+}
+```
+
+Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:64](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/adapter/rest.ts#L64)
 
 The options passed to the native `fetch` API by RESTAdapter.\_fetchRequest | \_fetchRequest.
 
@@ -22,7 +30,7 @@ The options passed to the native `fetch` API by RESTAdapter.\_fetchRequest | \_f
 method: HTTPMethod;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:72](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/adapter/rest.ts#L72)
+Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:72](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/adapter/rest.ts#L72)
 
 the HTTP method to use
 
@@ -40,7 +48,7 @@ RequestInit.method
 type: HTTPMethod;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:76](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/adapter/rest.ts#L76)
+Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:76](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/adapter/rest.ts#L76)
 
 the HTTP method to use, duplicated for jQuery/fetch option compatibility
 
@@ -52,6 +60,6 @@ the HTTP method to use, duplicated for jQuery/fetch option compatibility
 url: string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:68](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/adapter/rest.ts#L68)
+Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:68](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/adapter/rest.ts#L68)
 
 the url to request

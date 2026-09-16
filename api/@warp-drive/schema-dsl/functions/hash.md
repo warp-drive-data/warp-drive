@@ -5,10 +5,10 @@ url: /api/@warp-drive/schema-dsl/functions/hash.md
 # &#x20;hash()&#x20;
 
 ```ts
-function hash(options): (target, key) => void;
+function hash(options: HashOptions): (target: object, key: string) => void;
 ```
 
-Defined in: [fields/hash.ts:52](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/schema-dsl/src/fields/hash.ts#L52)
+Defined in: [fields/hash.ts:52](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/schema-dsl/src/fields/hash.ts#L52)
 
 **`Decorator`**
 
@@ -24,7 +24,7 @@ this decorator, and doing so becomes that schema's `identity`.
 
 ## Returns
 
-(`target`, `key`) => `void`
+(`target`: `object`, `key`: `string`) => `void`
 
 ## Example
 

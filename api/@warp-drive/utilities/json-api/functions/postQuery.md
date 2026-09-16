@@ -4,17 +4,38 @@ url: /api/@warp-drive/utilities/json-api/functions/postQuery.md
 
 # &#x20;postQuery()
 
+```ts
+function postQuery<T, M extends 
+  | ObjectValue
+  | undefined = 
+  | ObjectValue
+  | undefined, E extends object = ApiError>(
+   type: TypeFromInstance<T>, 
+   query?: QueryParamsSource, 
+   options?: ConstrainedRequestOptions
+): PostQueryRequestOptions<ReactiveDataDocument<T[], M, E>>;
+function postQuery(
+   type: string, 
+   query?: QueryParamsSource, 
+   options?: ConstrainedRequestOptions
+): PostQueryRequestOptions;
+```
+
 ## Call Signature
 
 ```ts
-function postQuery<T, M, E>(
-   type, 
-   query?, 
-   options?
+function postQuery<T, M extends 
+  | ObjectValue
+  | undefined = 
+  | ObjectValue
+  | undefined, E extends object = ApiError>(
+   type: TypeFromInstance<T>, 
+   query?: QueryParamsSource, 
+   options?: ConstrainedRequestOptions
 ): PostQueryRequestOptions<ReactiveDataDocument<T[], M, E>>;
 ```
 
-Defined in: [-private/json-api/query.ts:153](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/utilities/src/-private/json-api/query.ts#L153)
+Defined in: [-private/json-api/query.ts:153](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/utilities/src/-private/json-api/query.ts#L153)
 
 Builds request options to query for resources, usually by a primary
 type, configured for the url and header expectations of most JSON:API APIs.
@@ -100,13 +121,13 @@ options to modify the request behavior
 
 ```ts
 function postQuery(
-   type, 
-   query?, 
-   options?
+   type: string, 
+   query?: QueryParamsSource, 
+   options?: ConstrainedRequestOptions
 ): PostQueryRequestOptions;
 ```
 
-Defined in: [-private/json-api/query.ts:158](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/utilities/src/-private/json-api/query.ts#L158)
+Defined in: [-private/json-api/query.ts:158](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/utilities/src/-private/json-api/query.ts#L158)
 
 Builds request options to query for resources, usually by a primary
 type, configured for the url and header expectations of most JSON:API APIs.

@@ -7,12 +7,12 @@ url: /api/@warp-drive/legacy/compat/functions/serializerFor.md
 # &#x20;serializerFor()
 
 ```ts
-function serializerFor(this, modelName): 
+function serializerFor(this: Store$1, modelName: string): 
   | MinimumSerializerInterface
   | null;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat.ts:161](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/compat.ts#L161)
+Defined in: [warp-drive-packages/legacy/src/compat.ts:161](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/compat.ts#L161)
 
 Returns an instance of the serializer for a given type. For
 example, `serializerFor('person')` will return an instance of

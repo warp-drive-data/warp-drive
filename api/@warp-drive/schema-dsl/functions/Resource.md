@@ -4,13 +4,19 @@ url: /api/@warp-drive/schema-dsl/functions/Resource.md
 
 # &#x20;Resource()
 
+```ts
+function Resource(target: AnyConstructor): void;
+function Resource(type: string, options?: ResourceOptions): (target: AnyConstructor) => void;
+function Resource(options: ResourceOptions): (target: AnyConstructor) => void;
+```
+
 ## Call Signature
 
 ```ts
-function Resource(target): void;
+function Resource(target: AnyConstructor): void;
 ```
 
-Defined in: [entities/resource.ts:120](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/schema-dsl/src/entities/resource.ts#L120)
+Defined in: [entities/resource.ts:120](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/schema-dsl/src/entities/resource.ts#L120)
 
 **`Class Decorator`**
 
@@ -100,10 +106,10 @@ export class Post {
 ## Call Signature
 
 ```ts
-function Resource(type, options?): (target) => void;
+function Resource(type: string, options?: ResourceOptions): (target: AnyConstructor) => void;
 ```
 
-Defined in: [entities/resource.ts:121](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/schema-dsl/src/entities/resource.ts#L121)
+Defined in: [entities/resource.ts:121](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/schema-dsl/src/entities/resource.ts#L121)
 
 **`Class Decorator`**
 
@@ -136,7 +142,7 @@ declared fields, the second after.
 
 ### Returns
 
-(`target`) => `void`
+(`target`: `AnyConstructor`) => `void`
 
 ### Example
 
@@ -197,10 +203,10 @@ export class Post {
 ## Call Signature
 
 ```ts
-function Resource(options): (target) => void;
+function Resource(options: ResourceOptions): (target: AnyConstructor) => void;
 ```
 
-Defined in: [entities/resource.ts:122](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/schema-dsl/src/entities/resource.ts#L122)
+Defined in: [entities/resource.ts:122](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/schema-dsl/src/entities/resource.ts#L122)
 
 **`Class Decorator`**
 
@@ -229,7 +235,7 @@ declared fields, the second after.
 
 ### Returns
 
-(`target`) => `void`
+(`target`: `AnyConstructor`) => `void`
 
 ### Example
 

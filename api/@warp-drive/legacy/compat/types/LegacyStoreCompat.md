@@ -6,7 +6,19 @@ url: /api/@warp-drive/legacy/compat/types/LegacyStoreCompat.md
 
 # &#x20;LegacyStoreCompat
 
-Defined in: [warp-drive-packages/legacy/src/compat.ts:31](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/compat.ts#L31)
+```ts
+interface LegacyStoreCompat extends Store$1 {
+  [key: string]: any;
+  adapterFor(this: Store$1, modelName: string): MinimumAdapterInterface;
+  adapterFor(this: Store$1, modelName: string, _allowMissing: true): MinimumAdapterInterface | undefined;
+  normalize(modelName: string, payload: ObjectValue): ObjectValue;
+  pushPayload(modelName: string, payload: ObjectValue): void;
+  serializeRecord(record: unknown, options?: SerializerOptions): unknown;
+  serializerFor<K extends string>(modelName: K, _allowMissing?: boolean): MinimumSerializerInterface | null;
+}
+```
+
+Defined in: [warp-drive-packages/legacy/src/compat.ts:31](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/compat.ts#L31)
 
 **`No Inherit Doc`** **`Legacy`**
 
@@ -27,13 +39,22 @@ methods available when using the legacy network layer.
 
 ### adapterFor()
 
+```ts
+adapterFor(this: Store$1, modelName: string): MinimumAdapterInterface;
+adapterFor(
+   this: Store$1, 
+   modelName: string, 
+   _allowMissing: true
+): MinimumAdapterInterface | undefined;
+```
+
 #### Call Signature
 
 ```ts
-adapterFor(this, modelName): MinimumAdapterInterface;
+adapterFor(this: Store$1, modelName: string): MinimumAdapterInterface;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat.ts:41](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/compat.ts#L41)
+Defined in: [warp-drive-packages/legacy/src/compat.ts:41](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/compat.ts#L41)
 
 Returns the adapter instance for the given model type, instantiating
 it (and caching the instance) if necessary. See [adapterFor](../functions/adapterFor.md).
@@ -56,13 +77,13 @@ it (and caching the instance) if necessary. See [adapterFor](../functions/adapte
 
 ```ts
 adapterFor(
-   this, 
-   modelName, 
-   _allowMissing
+   this: Store$1, 
+   modelName: string, 
+   _allowMissing: true
 ): MinimumAdapterInterface | undefined;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat.ts:47](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/compat.ts#L47)
+Defined in: [warp-drive-packages/legacy/src/compat.ts:47](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/compat.ts#L47)
 
 Same as the single-argument overload, but returns `undefined` instead
 of throwing/asserting when `_allowMissing` is `true` and no adapter
@@ -91,10 +112,10 @@ is found.
 ### normalize()
 
 ```ts
-normalize(modelName, payload): ObjectValue;
+normalize(modelName: string, payload: ObjectValue): ObjectValue;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat.ts:59](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/compat.ts#L59)
+Defined in: [warp-drive-packages/legacy/src/compat.ts:59](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/compat.ts#L59)
 
 Normalizes a payload for the given model type using its serializer.
 See [normalize](../functions/normalize.md).
@@ -118,10 +139,10 @@ See [normalize](../functions/normalize.md).
 ### pushPayload()
 
 ```ts
-pushPayload(modelName, payload): void;
+pushPayload(modelName: string, payload: ObjectValue): void;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat.ts:65](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/compat.ts#L65)
+Defined in: [warp-drive-packages/legacy/src/compat.ts:65](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/compat.ts#L65)
 
 Pushes a payload into the store using the appropriate serializer to
 normalize it first. See [pushPayload](../functions/pushPayload.md).
@@ -145,10 +166,10 @@ normalize it first. See [pushPayload](../functions/pushPayload.md).
 ### serializeRecord()
 
 ```ts
-serializeRecord(record, options?): unknown;
+serializeRecord(record: unknown, options?: SerializerOptions): unknown;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat.ts:70](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/compat.ts#L70)
+Defined in: [warp-drive-packages/legacy/src/compat.ts:70](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/compat.ts#L70)
 
 Serializes a record using its serializer. See [serializeRecord](../functions/serializeRecord.md).
 
@@ -171,10 +192,10 @@ Serializes a record using its serializer. See [serializeRecord](../functions/ser
 ### serializerFor()
 
 ```ts
-serializerFor<K>(modelName, _allowMissing?): MinimumSerializerInterface | null;
+serializerFor<K extends string>(modelName: K, _allowMissing?: boolean): MinimumSerializerInterface | null;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat.ts:53](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/compat.ts#L53)
+Defined in: [warp-drive-packages/legacy/src/compat.ts:53](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/compat.ts#L53)
 
 Returns the serializer instance for the given model type, instantiating
 it (and caching the instance) if necessary. See [serializerFor](../functions/serializerFor.md).

@@ -4,9 +4,16 @@ url: /api/@warp-drive/legacy/adapter/error/types/AdapterRequestErrorConstructor.
 
 &#x20;
 
-# &#x20;AdapterRequestErrorConstructor\<Instance>
+# &#x20;AdapterRequestErrorConstructor\<Instance *extends* [`AdapterRequestError`](AdapterRequestError.md) = [`AdapterRequestError`](AdapterRequestError.md)>
 
-Defined in: [warp-drive-packages/legacy/src/adapter/error.ts:58](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/adapter/error.ts#L58)
+```ts
+interface AdapterRequestErrorConstructor<Instance extends AdapterRequestError = AdapterRequestError> {
+  constructor: unknown;
+  extend(options: { message: string }): AdapterRequestErrorConstructor;
+}
+```
+
+Defined in: [warp-drive-packages/legacy/src/adapter/error.ts:58](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/adapter/error.ts#L58)
 
 The static interface shared by [AdapterError](../variables/AdapterError.md) and its subclasses,
 allowing further subclassing via [extend](#extend).
@@ -22,10 +29,10 @@ allowing further subclassing via [extend](#extend).
 ### Constructor
 
 ```ts
-new AdapterRequestErrorConstructor(errors?, message?): Instance;
+new AdapterRequestErrorConstructor(errors?: unknown[], message?: string): Instance;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/error.ts:59](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/adapter/error.ts#L59)
+Defined in: [warp-drive-packages/legacy/src/adapter/error.ts:59](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/adapter/error.ts#L59)
 
 #### Parameters
 
@@ -46,10 +53,12 @@ Defined in: [warp-drive-packages/legacy/src/adapter/error.ts:59](https://github.
 ### extend()
 
 ```ts
-extend(options): AdapterRequestErrorConstructor;
+extend(options: {
+  message: string;
+}): AdapterRequestErrorConstructor;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/error.ts:63](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/adapter/error.ts#L63)
+Defined in: [warp-drive-packages/legacy/src/adapter/error.ts:63](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/adapter/error.ts#L63)
 
 Creates a new AdapterRequestErrorConstructor that inherits from this one.
 

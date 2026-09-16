@@ -25,15 +25,15 @@ type ExtensionDef =
   | {
   get: () => unknown;
   kind: "mutable-field";
-  set: (value) => void;
+  set: (value: unknown) => void;
 }
   | {
   kind: "writeonly-field";
-  set: (value) => void;
+  set: (value: unknown) => void;
 };
 ```
 
-Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:190](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/reactive/-private/schema.ts#L190)
+Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:190](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/reactive/-private/schema.ts#L190)
 
 Describes one feature added to a resource by a schema extension, as
 classified by processExtension from the property descriptor it
@@ -159,7 +159,7 @@ An accessor feature with only a getter.
 {
   get: () => unknown;
   kind: "mutable-field";
-  set: (value) => void;
+  set: (value: unknown) => void;
 }
 ```
 
@@ -186,7 +186,7 @@ An accessor feature with both a getter and a setter.
 #### set
 
 ```ts
-set: (value) => void;
+set: (value: unknown) => void;
 ```
 
 Assigns the feature's value.
@@ -208,7 +208,7 @@ Assigns the feature's value.
 ```ts
 {
   kind: "writeonly-field";
-  set: (value) => void;
+  set: (value: unknown) => void;
 }
 ```
 
@@ -223,7 +223,7 @@ An accessor feature with only a setter.
 #### set
 
 ```ts
-set: (value) => void;
+set: (value: unknown) => void;
 ```
 
 Assigns the feature's value.

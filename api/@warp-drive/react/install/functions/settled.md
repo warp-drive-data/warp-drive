@@ -8,7 +8,7 @@ url: /api/@warp-drive/react/install/functions/settled.md
 function settled(): Promise<void>;
 ```
 
-Defined in: [install.ts:50](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/react/src/install.ts#L50)
+Defined in: [install.ts:50](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/react/src/install.ts#L50)
 
 Resolves once all pending requests started via WarpDrive's React signal
 integration have settled. Only tracks requests while `TESTING` is enabled;

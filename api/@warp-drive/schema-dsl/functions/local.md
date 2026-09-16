@@ -4,13 +4,18 @@ url: /api/@warp-drive/schema-dsl/functions/local.md
 
 # &#x20;local()
 
+```ts
+function local(target: object, key: string): void;
+function local(options: LocalOptions): (target: object, key: string) => void;
+```
+
 ## Call Signature
 
 ```ts
-function local(target, key): void;
+function local(target: object, key: string): void;
 ```
 
-Defined in: [fields/local.ts:54](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/schema-dsl/src/fields/local.ts#L54)
+Defined in: [fields/local.ts:54](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/schema-dsl/src/fields/local.ts#L54)
 
 **`Decorator`**
 
@@ -59,10 +64,10 @@ export class User {
 ## Call Signature
 
 ```ts
-function local(options): (target, key) => void;
+function local(options: LocalOptions): (target: object, key: string) => void;
 ```
 
-Defined in: [fields/local.ts:55](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/schema-dsl/src/fields/local.ts#L55)
+Defined in: [fields/local.ts:55](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/schema-dsl/src/fields/local.ts#L55)
 
 **`Decorator`**
 
@@ -78,7 +83,7 @@ never sent to the server.
 
 ### Returns
 
-(`target`, `key`) => `void`
+(`target`: `object`, `key`: `string`) => `void`
 
 ### Example
 

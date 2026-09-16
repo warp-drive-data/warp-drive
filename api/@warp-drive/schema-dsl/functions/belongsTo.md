@@ -5,10 +5,10 @@ url: /api/@warp-drive/schema-dsl/functions/belongsTo.md
 # &#x20;belongsTo()&#x20;
 
 ```ts
-function belongsTo(options): (target, key) => void;
+function belongsTo(options: BelongsToOptions): (target: object, key: string) => void;
 ```
 
-Defined in: [fields/belongs-to.ts:98](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/schema-dsl/src/fields/belongs-to.ts#L98)
+Defined in: [fields/belongs-to.ts:98](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/schema-dsl/src/fields/belongs-to.ts#L98)
 
 **`Decorator`**
 
@@ -27,7 +27,7 @@ Marks a property as a [LegacyBelongsToField](../../core/types/schema/fields/type
 
 ## Returns
 
-(`target`, `key`) => `void`
+(`target`: `object`, `key`: `string`) => `void`
 
 ## Example
 

@@ -6,7 +6,15 @@ url: /api/@warp-drive/experiments/storage/types/ParamConfig.md
 
 # &#x20;ParamConfig
 
-Defined in: [storage/query-params.ts:9](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/experiments/src/storage/query-params.ts#L9)
+```ts
+interface ParamConfig {
+  deserialize: (urlValue: string, instance: any) => unknown;
+  getDefault?: (instance: any) => unknown;
+  serialize: (value: unknown, instance: any) => string | null;
+}
+```
+
+Defined in: [storage/query-params.ts:9](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/experiments/src/storage/query-params.ts#L9)
 
 Configuration options for fields that are also query parameters
 
@@ -15,10 +23,10 @@ Configuration options for fields that are also query parameters
 ### deserialize
 
 ```ts
-deserialize: (urlValue, instance) => unknown;
+deserialize: (urlValue: string, instance: any) => unknown;
 ```
 
-Defined in: [storage/query-params.ts:19](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/experiments/src/storage/query-params.ts#L19)
+Defined in: [storage/query-params.ts:19](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/experiments/src/storage/query-params.ts#L19)
 
 Convert a string value from the URL back into
 its original type
@@ -42,10 +50,10 @@ its original type
 ### getDefault?
 
 ```ts
-optional getDefault?: (instance) => unknown;
+optional getDefault?: (instance: any) => unknown;
 ```
 
-Defined in: [storage/query-params.ts:29](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/experiments/src/storage/query-params.ts#L29)
+Defined in: [storage/query-params.ts:29](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/experiments/src/storage/query-params.ts#L29)
 
 Get the default value for this param from the given instance.
 
@@ -70,10 +78,10 @@ not the serialized URL form.
 ### serialize
 
 ```ts
-serialize: (value, instance) => string | null;
+serialize: (value: unknown, instance: any) => string | null;
 ```
 
-Defined in: [storage/query-params.ts:14](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/experiments/src/storage/query-params.ts#L14)
+Defined in: [storage/query-params.ts:14](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/experiments/src/storage/query-params.ts#L14)
 
 Convert a value into a string for storage in the URL.
 `null` indicates the value should be omitted from the URL.

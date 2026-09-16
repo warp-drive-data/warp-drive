@@ -6,17 +6,30 @@ url: /api/@warp-drive/legacy/compat/builders/functions/query.md
 
 # &#x20;~~query()~~
 
+```ts
+function query<T extends TypedRecordInstance>(
+   type: TypeFromInstance<T>, 
+   query: LegacyResourceQuery, 
+   options?: QueryOptions
+): QueryRequestInput<TypeFromInstance<T>, T[]>;
+function query(
+   type: string, 
+   query: LegacyResourceQuery, 
+   options?: QueryOptions
+): QueryRequestInput;
+```
+
 ## Call Signature&#x20;
 
 ```ts
-function query<T>(
-   type, 
-   query, 
-   options?
+function query<T extends TypedRecordInstance>(
+   type: TypeFromInstance<T>, 
+   query: LegacyResourceQuery, 
+   options?: QueryOptions
 ): QueryRequestInput<TypeFromInstance<T>, T[]>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat/builders/query.ts:38](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/compat/builders/query.ts#L38)
+Defined in: [warp-drive-packages/legacy/src/compat/builders/query.ts:38](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/compat/builders/query.ts#L38)
 
 This function builds a request config for a given type and query object.
 When passed to `store.request`, this config will result in the same behavior as a `store.query` request.
@@ -64,13 +77,13 @@ request config
 
 ```ts
 function query(
-   type, 
-   query, 
-   options?
+   type: string, 
+   query: LegacyResourceQuery, 
+   options?: QueryOptions
 ): QueryRequestInput;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat/builders/query.ts:43](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/compat/builders/query.ts#L43)
+Defined in: [warp-drive-packages/legacy/src/compat/builders/query.ts:43](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/compat/builders/query.ts#L43)
 
 This function builds a request config for a given type and query object.
 When passed to `store.request`, this config will result in the same behavior as a `store.query` request.

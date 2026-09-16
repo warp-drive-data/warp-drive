@@ -4,7 +4,27 @@ url: /api/@warp-drive/core/request/types/Future.md
 
 # &#x20;Future\<T>
 
-Defined in: [warp-drive-packages/core/src/request/-private/types.ts:68](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/request/-private/types.ts#L68)
+```ts
+interface Future<T> extends Promise<StructuredDataDocument<T>> {
+  readonly [toStringTag]: string;
+  id: number;
+  lid: RequestKey | null;
+  abort(reason?: string): void;
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<
+  | StructuredDataDocument<T>
+  | TResult>;
+  finally(onfinally?: (() => void) | null): Promise<StructuredDataDocument<T>>;
+  getStream(): Promise<
+  | ReadableStream<any>
+  | null>;
+  onFinalize(cb: () => void): void;
+  then<TResult1 = StructuredDataDocument<T>, TResult2 = never>(onfulfilled?: 
+  | ((value: StructuredDataDocument) => TResult1 | PromiseLike<TResult1>)
+  | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2>;
+}
+```
+
+Defined in: [warp-drive-packages/core/src/request/-private/types.ts:68](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/request/-private/types.ts#L68)
 
 A Future is a [Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) which resolves or rejects with a [StructuredDocument](../../types/request/types/StructuredDocument.md)
 while providing the ability to [abort](#abort) the underlying request, and
@@ -25,10 +45,10 @@ while providing the ability to [abort](#abort) the underlying request, and
 ### abort()
 
 ```ts
-abort(reason?): void;
+abort(reason?: string): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/request/-private/types.ts:83](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/request/-private/types.ts#L83)
+Defined in: [warp-drive-packages/core/src/request/-private/types.ts:83](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/request/-private/types.ts#L83)
 
 Cancel this request by firing the [AbortController](https://developer.mozilla.org/docs/Web/API/AbortController)'s signal.
 
@@ -52,12 +72,12 @@ optional reason for aborting the request
 ### catch()
 
 ```ts
-catch<TResult>(onrejected?): Promise<
+catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<
   | StructuredDataDocument<T>
 | TResult>;
 ```
 
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.es5.d.ts:1562](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.es5.d.ts#L1562)
+Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.es5.d.ts:1562](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.es5.d.ts#L1562)
 
 Attaches a callback for only the rejection of the Promise.
 
@@ -71,7 +91,7 @@ Attaches a callback for only the rejection of the Promise.
 
 ##### onrejected?
 
-((`reason`) => `TResult` | `PromiseLike`<`TResult`>) | `null`
+((`reason`: `any`) => `TResult` | `PromiseLike`<`TResult`>) | `null`
 
 The callback to execute when the Promise is rejected.
 
@@ -94,10 +114,10 @@ Promise.catch
 ### finally()
 
 ```ts
-finally(onfinally?): Promise<StructuredDataDocument<T>>;
+finally(onfinally?: (() => void) | null): Promise<StructuredDataDocument<T>>;
 ```
 
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.es2018.promise.d.ts:27](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.es2018.promise.d.ts#L27)
+Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.es2018.promise.d.ts:27](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.es2018.promise.d.ts#L27)
 
 Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
 resolved value cannot be modified from the callback.
@@ -132,7 +152,7 @@ getStream(): Promise<
 | null>;
 ```
 
-Defined in: [warp-drive-packages/core/src/request/-private/types.ts:92](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/request/-private/types.ts#L92)
+Defined in: [warp-drive-packages/core/src/request/-private/types.ts:92](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/request/-private/types.ts#L92)
 
 Get the response stream, if any, once made available.
 
@@ -150,10 +170,10 @@ context is bound to the Future instance.
 ### onFinalize()
 
 ```ts
-onFinalize(cb): void;
+onFinalize(cb: () => void): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/request/-private/types.ts:100](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/request/-private/types.ts#L100)
+Defined in: [warp-drive-packages/core/src/request/-private/types.ts:100](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/request/-private/types.ts#L100)
 
 Run a callback when this request completes. Use sparingly,
 mostly useful for instrumentation and infrastructure.
@@ -175,10 +195,12 @@ the callback to run
 ### then()
 
 ```ts
-then<TResult1, TResult2>(onfulfilled?, onrejected?): Promise<TResult1 | TResult2>;
+then<TResult1 = StructuredDataDocument<T>, TResult2 = never>(onfulfilled?: 
+  | ((value: StructuredDataDocument) => TResult1 | PromiseLike<TResult1>)
+| null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2>;
 ```
 
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.es5.d.ts:1555](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.es5.d.ts#L1555)
+Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.es5.d.ts:1555](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.es5.d.ts#L1555)
 
 Attaches callbacks for the resolution and/or rejection of the Promise.
 
@@ -196,13 +218,14 @@ Attaches callbacks for the resolution and/or rejection of the Promise.
 
 ##### onfulfilled?
 
-((`value`) => `TResult1` | `PromiseLike`<`TResult1`>) | `null`
+| ((`value`: [`StructuredDataDocument`](../../types/request/types/StructuredDataDocument.md)) => `TResult1` | `PromiseLike`<`TResult1`>)
+| `null`
 
 The callback to execute when the Promise is resolved.
 
 ##### onrejected?
 
-((`reason`) => `TResult2` | `PromiseLike`<`TResult2`>) | `null`
+((`reason`: `any`) => `TResult2` | `PromiseLike`<`TResult2`>) | `null`
 
 The callback to execute when the Promise is rejected.
 
@@ -226,7 +249,7 @@ Promise.then
 readonly [toStringTag]: string;
 ```
 
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.es2015.symbol.wellknown.d.ts:174](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.es2015.symbol.wellknown.d.ts#L174)
+Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.es2015.symbol.wellknown.d.ts:174](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.es2015.symbol.wellknown.d.ts#L174)
 
 #### Inherited from
 
@@ -242,7 +265,7 @@ Promise.[toStringTag]
 id: number;
 ```
 
-Defined in: [warp-drive-packages/core/src/request/-private/types.ts:115](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/request/-private/types.ts#L115)
+Defined in: [warp-drive-packages/core/src/request/-private/types.ts:115](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/request/-private/types.ts#L115)
 
 The id of the associated request, if any, as assigned
 by the RequestManager
@@ -258,7 +281,7 @@ be used to identify or dedupe requests.
 lid: RequestKey | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/request/-private/types.ts:106](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/request/-private/types.ts#L106)
+Defined in: [warp-drive-packages/core/src/request/-private/types.ts:106](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/request/-private/types.ts#L106)
 
 The identifier of the associated request, if any, as
 assigned by the CacheHandler.
