@@ -35,7 +35,7 @@
 >
 > **This is LEGACY documentation** for a feature that is no longer encouraged to be used.
 
-> If starting a new app or thinking of implementing a new serializer, consider writing a [Handler](https://warp-drive.io/api/@warp-drive/core/request/interfaces/Handler)
+> If starting a new app or thinking of implementing a new serializer, consider writing a [Handler](https://warp-drive.io/api/@warp-drive/core/request/types/Handler)
 > instead to be used with the [RequestManager](https://warp-drive.io/api/@warp-drive/core/classes/RequestManager)
 
 ## Installation

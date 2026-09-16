@@ -4,7 +4,7 @@
 **Most apps should use this Cache implementation**.
 :::
 
-This package provides an in-memory [{json:api}](https://jsonapi.org/) document and resource [Cache](/api/@warp-drive/core/types/cache/interfaces/Cache).
+This package provides an in-memory [{json:api}](https://jsonapi.org/) document and resource [Cache](/api/@warp-drive/core/types/cache/types/Cache).
 
 `{json:api}` excels at simplifying common complex problems around cache consistency 
 and information density, especially in regards to relational or polymorphic data.

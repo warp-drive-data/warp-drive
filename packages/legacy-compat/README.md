@@ -31,7 +31,7 @@
 > [!CAUTION]
 > **⚠️ This is a legacy compatibility package** not recommended for new applications.
 >
-> Use [Handlers](https://warp-drive.io/api/@warp-drive/core/request/interfaces/Handler) with [@warp-drive/core](https://warp-drive.io/api/@warp-drive/core/) instead.
+> Use [Handlers](https://warp-drive.io/api/@warp-drive/core/request/types/Handler) with [@warp-drive/core](https://warp-drive.io/api/@warp-drive/core/) instead.
 
 This package provides **compatibility shims** to bridge legacy EmberData patterns (Models, Adapters, Serializers) with modern WarpDrive infrastructure (RequestManager, Handlers, Cache).
 

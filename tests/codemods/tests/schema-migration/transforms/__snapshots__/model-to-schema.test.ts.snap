@@ -59,7 +59,7 @@ export default ProcessedModelSchema;
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  *
  * See also {@link ProcessedModel} for fields + legacy mode features
  */
@@ -141,7 +141,7 @@ export default UserSchema;
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  *
  * See also {@link User} for fields + legacy mode features
  */
@@ -208,7 +208,7 @@ export default TypedModelSchema;
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  *
  * See also {@link TypedModel} for fields + legacy mode features
  */
@@ -301,7 +301,7 @@ export default RelationshipModelSchema;
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  *
  * See also {@link RelationshipModel} for fields + legacy mode features
  */
@@ -369,7 +369,7 @@ export default UnknownTypesModelSchema;
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  *
  * See also {@link UnknownTypesModel} for fields + legacy mode features
  */
@@ -436,7 +436,7 @@ export default DocumentSchema;
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  *
  * See also {@link Document} for fields + legacy mode features
  */
@@ -525,7 +525,7 @@ export default ComplexModelSchema;
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  *
  * See also {@link ComplexModel} for fields + legacy mode features
  */
@@ -593,7 +593,7 @@ export default DocumentSchema;
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  *
  * See also {@link Document} for fields + legacy mode features
  */
@@ -746,7 +746,7 @@ export default UserSchema;
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  *
  * See also {@link User} for fields + legacy mode features
  */
@@ -814,7 +814,7 @@ export default CustomModelSchema;
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  *
  * See also {@link CustomModel} for fields + legacy mode features
  */
@@ -879,7 +879,7 @@ export default CustomTypesModelSchema;
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  *
  * See also {@link CustomTypesModel} for fields + legacy mode features
  */
@@ -940,7 +940,7 @@ export default UnmappedTypesModelSchema;
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  *
  * See also {@link UnmappedTypesModel} for fields + legacy mode features
  */
@@ -1002,7 +1002,7 @@ export default AliasedModelSchema;
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  *
  * See also {@link AliasedModel} for fields + legacy mode features
  */
@@ -1064,7 +1064,7 @@ export default ComplexOptionsModelSchema;
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  *
  * See also {@link ComplexOptionsModel} for fields + legacy mode features
  */
@@ -1146,7 +1146,7 @@ export default RelationshipModelSchema;
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  *
  * See also {@link RelationshipModel} for fields + legacy mode features
  */
@@ -1207,7 +1207,7 @@ export default DocumentSchema;
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  *
  * See also {@link Document} for fields + legacy mode features
  */
@@ -1269,7 +1269,7 @@ export default ComplexDocumentSchema;
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  *
  * See also {@link ComplexDocument} for fields + legacy mode features
  */

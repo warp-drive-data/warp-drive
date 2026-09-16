@@ -60,7 +60,7 @@ describe('combineSchemasAndTypes: false (default) - trait type files', function 
          * >
          * > For those cases, you can create a more specific type that derives
          * > from this type to ensure that your type definitions stay consistent
-         * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+         * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
          *
          * See also {@link User} for fields + legacy mode features
          */
@@ -116,7 +116,7 @@ describe('combineSchemasAndTypes: false (default) - trait type files', function 
          * >
          * > For those cases, you can create a more specific type that derives
          * > from this type to ensure that your type definitions stay consistent
-         * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+         * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
          */
         export interface TimestampedTrait {
           createdAt?: Date | null;
@@ -183,7 +183,7 @@ describe('combineSchemasAndTypes: false (default) - trait type files', function 
          * >
          * > For those cases, you can create a more specific type that derives
          * > from this type to ensure that your type definitions stay consistent
-         * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+         * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
          *
          * See also {@link User} for fields + legacy mode features
          */
@@ -239,7 +239,7 @@ describe('combineSchemasAndTypes: false (default) - trait type files', function 
          * >
          * > For those cases, you can create a more specific type that derives
          * > from this type to ensure that your type definitions stay consistent
-         * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+         * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
          */
         export interface TimestampedTrait {
           createdAt?: Date | null;
@@ -312,7 +312,7 @@ describe('combineSchemasAndTypes: false (default) - trait type files', function 
          * >
          * > For those cases, you can create a more specific type that derives
          * > from this type to ensure that your type definitions stay consistent
-         * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+         * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
          *
          * See also {@link Project} for fields + legacy mode features
          */
@@ -371,7 +371,7 @@ describe('combineSchemasAndTypes: false (default) - trait type files', function 
          * >
          * > For those cases, you can create a more specific type that derives
          * > from this type to ensure that your type definitions stay consistent
-         * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+         * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
          */
         export interface TeamableTrait {
           allowedTeams?: HasMany<AllowedTeam>;
@@ -470,7 +470,7 @@ describe('combineSchemasAndTypes: false (default) - trait type files', function 
          * >
          * > For those cases, you can create a more specific type that derives
          * > from this type to ensure that your type definitions stay consistent
-         * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+         * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
          *
          * See also {@link User} for fields + legacy mode features
          */
@@ -525,7 +525,7 @@ describe('combineSchemasAndTypes: false (default) - trait type files', function 
          * >
          * > For those cases, you can create a more specific type that derives
          * > from this type to ensure that your type definitions stay consistent
-         * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+         * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
          *
          * See also {@link Post} for fields + legacy mode features
          */
@@ -581,7 +581,7 @@ describe('combineSchemasAndTypes: false (default) - trait type files', function 
          * >
          * > For those cases, you can create a more specific type that derives
          * > from this type to ensure that your type definitions stay consistent
-         * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+         * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
          */
         export interface TimestampedTrait {
           createdAt?: Date | null;
@@ -623,7 +623,7 @@ describe('combineSchemasAndTypes: false (default) - trait type files', function 
          * >
          * > For those cases, you can create a more specific type that derives
          * > from this type to ensure that your type definitions stay consistent
-         * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+         * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
          */
         export interface PublishableTrait extends TimestampedTrait {
           publishedAt?: Date | null;

@@ -1,6 +1,6 @@
 # Builders
 
-Builders are simple functions that produce a json [request object](/api/@warp-drive/core/types/request/interfaces/RequestInfo). Builders help you to write organized, reusable requests.
+Builders are simple functions that produce a json [request object](/api/@warp-drive/core/types/request/types/RequestInfo). Builders help you to write organized, reusable requests.
 
 The simplest builder could produce an object with just a `url`, though usually builders will want to provide a few ***Warp*Drive** specific properties as well set the request method, headers and any other desired [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/RequestInit) properties.
 
@@ -151,7 +151,7 @@ component API and the JS API seamlessly - even in templating syntaxes where cast
 to a type or invoking a function with generics would not otherwise work. Builders, by nature,
 enable sharing typed requests cross-framework!
 
-Builders also help to ensure that for a given set of args the same [cache key](/api/@warp-drive/core/types/identifier/interfaces/RequestKey) is produced. Generating stable cache keys is harder
+Builders also help to ensure that for a given set of args the same [cache key](/api/@warp-drive/core/types/identifier/types/RequestKey) is produced. Generating stable cache keys is harder
 than it might seem, but builders help to simplify this and ***Warp*Drive** provides additional
 [utilities](/api/@warp-drive/utilities/) to make it even easier still.
 
@@ -159,7 +159,7 @@ than it might seem, but builders help to simplify this and ***Warp*Drive** provi
 
 In order for two requests to be considered the same, their `RequestKey` must match. For GET requests
 the `RequestKey` is typically the `url`, while queries issued using a `POST` request (or other means)
-may need to explicitly set [cacheOptions.key](/api/@warp-drive/core/types/request/interfaces/CacheOptions#key).
+may need to explicitly set [cacheOptions.key](/api/@warp-drive/core/types/request/types/CacheOptions#key).
 
 For the `url` case, this means that the order and formatting of [URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams) must be the same for a match to occur. Similarly, when
 `cacheOptions.key` is used sorting and order of the information being used to produce the string key
