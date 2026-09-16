@@ -9,7 +9,7 @@ url: >-
 function checkout<T>(resource): Promise<T & ReactiveResource>;
 ```
 
-Defined in: [warp-drive-packages/core/src/reactive/-private/record.ts:755](https://github.com/warp-drive-data/warp-drive/blob/998da8d5cb68764b43a8503a38424bc85af654e3/warp-drive-packages/core/src/reactive/-private/record.ts#L755)
+Defined in: [warp-drive-packages/core/src/reactive/-private/record.ts:755](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/reactive/-private/record.ts#L755)
 
 Checkout an immutable resource for editing.
 

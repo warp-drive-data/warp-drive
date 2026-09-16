@@ -4,7 +4,7 @@ url: /warp-drive/pr-preview/pr-11111/api/@warp-drive/ember/index/classes/Await.m
 
 # &#x20;\<Await />
 
-Defined in: [warp-drive-packages/ember/dist/index.d.ts:374](https://github.com/warp-drive-data/warp-drive/blob/998da8d5cb68764b43a8503a38424bc85af654e3/warp-drive-packages/ember/dist/index.d.ts#L374)
+Defined in: [warp-drive-packages/ember/dist/index.d.ts:374](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/ember/dist/index.d.ts#L374)
 
 The `<Await />` component allow you to utilize reactive control flow
 for asynchronous states in your application.
@@ -63,7 +63,7 @@ one statically.
 new Await<T, E>(owner, args): Await<T, E>;
 ```
 
-Defined in: [node\_modules/.pnpm/@glimmer+component@2.1.1/node\_modules/@glimmer/component/dist/index.d.ts:389](https://github.com/warp-drive-data/warp-drive/blob/998da8d5cb68764b43a8503a38424bc85af654e3/node_modules/.pnpm/@glimmer+component@2.1.1/node_modules/@glimmer/component/dist/index.d.ts#L389)
+Defined in: [node\_modules/.pnpm/@glimmer+component@2.1.1/node\_modules/@glimmer/component/dist/index.d.ts:389](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/node_modules/.pnpm/@glimmer+component@2.1.1/node_modules/@glimmer/component/dist/index.d.ts#L389)
 
 #### Parameters
 
@@ -98,7 +98,7 @@ Component<AwaitSignature<T, E>>.constructor
 get error(): E;
 ```
 
-Defined in: [warp-drive-packages/ember/dist/index.d.ts:380](https://github.com/warp-drive-data/warp-drive/blob/998da8d5cb68764b43a8503a38424bc85af654e3/warp-drive-packages/ember/dist/index.d.ts#L380)
+Defined in: [warp-drive-packages/ember/dist/index.d.ts:380](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/ember/dist/index.d.ts#L380)
 
 The rejection reason, once [state](#state) has errored.
 
@@ -116,7 +116,7 @@ The rejection reason, once [state](#state) has errored.
 get result(): T;
 ```
 
-Defined in: [warp-drive-packages/ember/dist/index.d.ts:383](https://github.com/warp-drive-data/warp-drive/blob/998da8d5cb68764b43a8503a38424bc85af654e3/warp-drive-packages/ember/dist/index.d.ts#L383)
+Defined in: [warp-drive-packages/ember/dist/index.d.ts:383](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/ember/dist/index.d.ts#L383)
 
 The resolved value, once [state](#state) has succeeded.
 
@@ -134,7 +134,7 @@ The resolved value, once [state](#state) has succeeded.
 get state(): Readonly<PromiseState<T, E>>;
 ```
 
-Defined in: [warp-drive-packages/ember/dist/index.d.ts:377](https://github.com/warp-drive-data/warp-drive/blob/998da8d5cb68764b43a8503a38424bc85af654e3/warp-drive-packages/ember/dist/index.d.ts#L377)
+Defined in: [warp-drive-packages/ember/dist/index.d.ts:377](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/ember/dist/index.d.ts#L377)
 
 The reactive PromiseState for the awaited promise.
 

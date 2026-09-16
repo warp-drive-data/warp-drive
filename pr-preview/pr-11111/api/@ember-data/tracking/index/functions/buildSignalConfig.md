@@ -9,7 +9,7 @@ url: >-
 function buildSignalConfig(options): object;
 ```
 
-Defined in: [index.ts:90](https://github.com/warp-drive-data/warp-drive/blob/998da8d5cb68764b43a8503a38424bc85af654e3/packages/tracking/src/index.ts#L90)
+Defined in: [index.ts:90](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/packages/tracking/src/index.ts#L90)
 
 Creates a signal configuration object for WarpDrive that integrates with Ember's
 reactivity system. This will be automatically imported and registered by

@@ -15,7 +15,7 @@ function query<T, M, E>(
 ): QueryRequestOptions<ReactiveDataDocument<T[], M, E>>;
 ```
 
-Defined in: [-private/json-api/query.ts:66](https://github.com/warp-drive-data/warp-drive/blob/998da8d5cb68764b43a8503a38424bc85af654e3/warp-drive-packages/utilities/src/-private/json-api/query.ts#L66)
+Defined in: [-private/json-api/query.ts:66](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/utilities/src/-private/json-api/query.ts#L66)
 
 Builds request options to query for resources, usually by a primary
 type, configured for the url and header expectations of most JSON:API APIs.
@@ -108,7 +108,7 @@ function query(
 ): QueryRequestOptions;
 ```
 
-Defined in: [-private/json-api/query.ts:75](https://github.com/warp-drive-data/warp-drive/blob/998da8d5cb68764b43a8503a38424bc85af654e3/warp-drive-packages/utilities/src/-private/json-api/query.ts#L75)
+Defined in: [-private/json-api/query.ts:75](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/utilities/src/-private/json-api/query.ts#L75)
 
 Builds request options to query for resources, usually by a primary
 type, configured for the url and header expectations of most JSON:API APIs.

@@ -22,7 +22,7 @@ type CacheableFieldSchema =
   | LinksModeHasManyField;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2148](https://github.com/warp-drive-data/warp-drive/blob/998da8d5cb68764b43a8503a38424bc85af654e3/warp-drive-packages/core/src/types/schema/fields.ts#L2148)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2148](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/types/schema/fields.ts#L2148)
 
 A union of all possible LegacyMode and PolarisMode
 field schemas that represent data that could be in

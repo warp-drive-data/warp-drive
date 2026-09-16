@@ -11,7 +11,7 @@ url: >-
 function Resource(target): void;
 ```
 
-Defined in: [entities/resource.ts:120](https://github.com/warp-drive-data/warp-drive/blob/998da8d5cb68764b43a8503a38424bc85af654e3/warp-drive-packages/schema-dsl/src/entities/resource.ts#L120)
+Defined in: [entities/resource.ts:120](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/schema-dsl/src/entities/resource.ts#L120)
 
 **`Class Decorator`**
 
@@ -104,7 +104,7 @@ export class Post {
 function Resource(type, options?): (target) => void;
 ```
 
-Defined in: [entities/resource.ts:121](https://github.com/warp-drive-data/warp-drive/blob/998da8d5cb68764b43a8503a38424bc85af654e3/warp-drive-packages/schema-dsl/src/entities/resource.ts#L121)
+Defined in: [entities/resource.ts:121](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/schema-dsl/src/entities/resource.ts#L121)
 
 **`Class Decorator`**
 
@@ -201,7 +201,7 @@ export class Post {
 function Resource(options): (target) => void;
 ```
 
-Defined in: [entities/resource.ts:122](https://github.com/warp-drive-data/warp-drive/blob/998da8d5cb68764b43a8503a38424bc85af654e3/warp-drive-packages/schema-dsl/src/entities/resource.ts#L122)
+Defined in: [entities/resource.ts:122](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/schema-dsl/src/entities/resource.ts#L122)
 
 **`Class Decorator`**
 

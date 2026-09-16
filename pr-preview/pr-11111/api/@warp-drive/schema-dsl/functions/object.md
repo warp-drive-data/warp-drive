@@ -10,7 +10,7 @@ url: /warp-drive/pr-preview/pr-11111/api/@warp-drive/schema-dsl/functions/object
 function object(target, key): void;
 ```
 
-Defined in: [fields/object.ts:62](https://github.com/warp-drive-data/warp-drive/blob/998da8d5cb68764b43a8503a38424bc85af654e3/warp-drive-packages/schema-dsl/src/fields/object.ts#L62)
+Defined in: [fields/object.ts:62](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/schema-dsl/src/fields/object.ts#L62)
 
 **`Decorator`**
 
@@ -61,7 +61,7 @@ export class User {
 function object(options): (target, key) => void;
 ```
 
-Defined in: [fields/object.ts:63](https://github.com/warp-drive-data/warp-drive/blob/998da8d5cb68764b43a8503a38424bc85af654e3/warp-drive-packages/schema-dsl/src/fields/object.ts#L63)
+Defined in: [fields/object.ts:63](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/schema-dsl/src/fields/object.ts#L63)
 
 **`Decorator`**
 

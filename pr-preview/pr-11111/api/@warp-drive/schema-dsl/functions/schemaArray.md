@@ -9,7 +9,7 @@ url: >-
 function schemaArray(options): (target, key) => void;
 ```
 
-Defined in: [fields/schema-array.ts:132](https://github.com/warp-drive-data/warp-drive/blob/998da8d5cb68764b43a8503a38424bc85af654e3/warp-drive-packages/schema-dsl/src/fields/schema-array.ts#L132)
+Defined in: [fields/schema-array.ts:132](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/schema-dsl/src/fields/schema-array.ts#L132)
 
 **`Decorator`**
 

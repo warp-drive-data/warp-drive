@@ -9,7 +9,7 @@ url: >-
 function belongsTo(options): (target, key) => void;
 ```
 
-Defined in: [fields/belongs-to.ts:98](https://github.com/warp-drive-data/warp-drive/blob/998da8d5cb68764b43a8503a38424bc85af654e3/warp-drive-packages/schema-dsl/src/fields/belongs-to.ts#L98)
+Defined in: [fields/belongs-to.ts:98](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/schema-dsl/src/fields/belongs-to.ts#L98)
 
 **`Decorator`**
 

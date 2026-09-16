@@ -9,7 +9,7 @@ url: >-
 const LOG_CACHE: boolean = false;
 ```
 
-Defined in: [debugging.ts:21](https://github.com/warp-drive-data/warp-drive/blob/998da8d5cb68764b43a8503a38424bc85af654e3/warp-drive-packages/build-config/src/debugging.ts#L21)
+Defined in: [debugging.ts:21](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/build-config/src/debugging.ts#L21)
 
 log cache updates for both local
 and remote state. Note in some older versions

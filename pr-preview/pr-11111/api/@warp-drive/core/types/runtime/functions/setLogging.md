@@ -9,7 +9,7 @@ url: >-
 function setLogging(config): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/runtime.ts:63](https://github.com/warp-drive-data/warp-drive/blob/998da8d5cb68764b43a8503a38424bc85af654e3/warp-drive-packages/core/src/types/runtime.ts#L63)
+Defined in: [warp-drive-packages/core/src/types/runtime.ts:63](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/types/runtime.ts#L63)
 
 Upserts the specified logging configuration into the runtime
 config.

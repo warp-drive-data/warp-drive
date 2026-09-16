@@ -15,7 +15,7 @@ function postQuery<T, M, E>(
 ): PostQueryRequestOptions<ReactiveDataDocument<T[], M, E>>;
 ```
 
-Defined in: [-private/json-api/query.ts:153](https://github.com/warp-drive-data/warp-drive/blob/998da8d5cb68764b43a8503a38424bc85af654e3/warp-drive-packages/utilities/src/-private/json-api/query.ts#L153)
+Defined in: [-private/json-api/query.ts:153](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/utilities/src/-private/json-api/query.ts#L153)
 
 Builds request options to query for resources, usually by a primary
 type, configured for the url and header expectations of most JSON:API APIs.
@@ -107,7 +107,7 @@ function postQuery(
 ): PostQueryRequestOptions;
 ```
 
-Defined in: [-private/json-api/query.ts:158](https://github.com/warp-drive-data/warp-drive/blob/998da8d5cb68764b43a8503a38424bc85af654e3/warp-drive-packages/utilities/src/-private/json-api/query.ts#L158)
+Defined in: [-private/json-api/query.ts:158](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/utilities/src/-private/json-api/query.ts#L158)
 
 Builds request options to query for resources, usually by a primary
 type, configured for the url and header expectations of most JSON:API APIs.

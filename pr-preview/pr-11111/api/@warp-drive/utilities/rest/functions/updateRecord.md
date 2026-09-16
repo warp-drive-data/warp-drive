@@ -11,7 +11,7 @@ url: >-
 function updateRecord<T, RT, M, E>(record, options?): UpdateRequestOptions<ReactiveDataDocument<RT, M, E>, T>;
 ```
 
-Defined in: [-private/rest/save-record.ts:218](https://github.com/warp-drive-data/warp-drive/blob/998da8d5cb68764b43a8503a38424bc85af654e3/warp-drive-packages/utilities/src/-private/rest/save-record.ts#L218)
+Defined in: [-private/rest/save-record.ts:218](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/utilities/src/-private/rest/save-record.ts#L218)
 
 Builds request options to update existing record for resources,
 configured for the url, method and header expectations of most REST APIs.
@@ -92,7 +92,7 @@ const data = await store.request(options);
 function updateRecord(record, options?): UpdateRequestOptions;
 ```
 
-Defined in: [-private/rest/save-record.ts:227](https://github.com/warp-drive-data/warp-drive/blob/998da8d5cb68764b43a8503a38424bc85af654e3/warp-drive-packages/utilities/src/-private/rest/save-record.ts#L227)
+Defined in: [-private/rest/save-record.ts:227](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/utilities/src/-private/rest/save-record.ts#L227)
 
 Builds request options to update existing record for resources,
 configured for the url, method and header expectations of most REST APIs.

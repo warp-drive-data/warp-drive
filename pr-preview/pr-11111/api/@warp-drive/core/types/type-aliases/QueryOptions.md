@@ -9,7 +9,7 @@ url: >-
 type QueryOptions = { [K in string | "adapterOptions"]?: K extends "adapterOptions" ? Record<string, unknown> : unknown };
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-types/q/store.ts:67](https://github.com/warp-drive-data/warp-drive/blob/998da8d5cb68764b43a8503a38424bc85af654e3/warp-drive-packages/core/src/store/-types/q/store.ts#L67)
+Defined in: [warp-drive-packages/core/src/store/-types/q/store.ts:67](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/store/-types/q/store.ts#L67)
 
 Options for `store.query()` and `store.queryRecord()`. Unlike
 [LegacyResourceQuery](LegacyResourceQuery.md), these options are not sent to the server;

@@ -5,7 +5,7 @@ url: >-
 
 # &#x20;ModelSchema\<T>
 
-Defined in: [warp-drive-packages/core/src/store/deprecated/-private.ts:139](https://github.com/warp-drive-data/warp-drive/blob/998da8d5cb68764b43a8503a38424bc85af654e3/warp-drive-packages/core/src/store/deprecated/-private.ts#L139)
+Defined in: [warp-drive-packages/core/src/store/deprecated/-private.ts:139](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/store/deprecated/-private.ts#L139)
 
 Minimum subset of static schema methods and properties on the
 "model" class.
@@ -28,7 +28,7 @@ Adapters/Serializers.
 eachAttribute<K>(callback, binding?): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/deprecated/-private.ts:167](https://github.com/warp-drive-data/warp-drive/blob/998da8d5cb68764b43a8503a38424bc85af654e3/warp-drive-packages/core/src/store/deprecated/-private.ts#L167)
+Defined in: [warp-drive-packages/core/src/store/deprecated/-private.ts:167](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/store/deprecated/-private.ts#L167)
 
 Invokes `callback` once for each attribute field defined on this resource
 type, passing the attribute's key and schema.
@@ -61,7 +61,7 @@ type, passing the attribute's key and schema.
 eachRelationship<K>(callback, binding?): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/deprecated/-private.ts:176](https://github.com/warp-drive-data/warp-drive/blob/998da8d5cb68764b43a8503a38424bc85af654e3/warp-drive-packages/core/src/store/deprecated/-private.ts#L176)
+Defined in: [warp-drive-packages/core/src/store/deprecated/-private.ts:176](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/store/deprecated/-private.ts#L176)
 
 Invokes `callback` once for each relationship field defined on this
 resource type, passing the relationship's key and schema.
@@ -94,7 +94,7 @@ resource type, passing the relationship's key and schema.
 eachTransformedAttribute<K>(callback, binding?): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/deprecated/-private.ts:186](https://github.com/warp-drive-data/warp-drive/blob/998da8d5cb68764b43a8503a38424bc85af654e3/warp-drive-packages/core/src/store/deprecated/-private.ts#L186)
+Defined in: [warp-drive-packages/core/src/store/deprecated/-private.ts:186](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/store/deprecated/-private.ts#L186)
 
 Invokes `callback` once for each attribute field defined on this resource
 type that has a transform (a `type`), passing the attribute's key and the
@@ -128,7 +128,7 @@ name of the transform to apply.
 attributes: Map<KeyOrString<T>, LegacyAttributeField>;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/deprecated/-private.ts:155](https://github.com/warp-drive-data/warp-drive/blob/998da8d5cb68764b43a8503a38424bc85af654e3/warp-drive-packages/core/src/store/deprecated/-private.ts#L155)
+Defined in: [warp-drive-packages/core/src/store/deprecated/-private.ts:155](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/store/deprecated/-private.ts#L155)
 
 A map of every attribute field defined on this resource type, keyed by
 attribute name.
@@ -141,7 +141,7 @@ attribute name.
 fields: Map<KeyOrString<T>, "attribute" | "belongsTo" | "hasMany">;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/deprecated/-private.ts:149](https://github.com/warp-drive-data/warp-drive/blob/998da8d5cb68764b43a8503a38424bc85af654e3/warp-drive-packages/core/src/store/deprecated/-private.ts#L149)
+Defined in: [warp-drive-packages/core/src/store/deprecated/-private.ts:149](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/store/deprecated/-private.ts#L149)
 
 A map of every field defined on this resource type to its kind
 (`'attribute'`, `'belongsTo'`, or `'hasMany'`).
@@ -154,7 +154,7 @@ A map of every field defined on this resource type to its kind
 modelName: T extends TypedRecordInstance ? TypeFromInstance<T> : string;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/deprecated/-private.ts:143](https://github.com/warp-drive-data/warp-drive/blob/998da8d5cb68764b43a8503a38424bc85af654e3/warp-drive-packages/core/src/store/deprecated/-private.ts#L143)
+Defined in: [warp-drive-packages/core/src/store/deprecated/-private.ts:143](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/store/deprecated/-private.ts#L143)
 
 The resource type (model name) that this schema describes.
 
@@ -166,7 +166,7 @@ The resource type (model name) that this schema describes.
 relationshipsByName: Map<KeyOrString<T>, LegacyRelationshipField>;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/deprecated/-private.ts:161](https://github.com/warp-drive-data/warp-drive/blob/998da8d5cb68764b43a8503a38424bc85af654e3/warp-drive-packages/core/src/store/deprecated/-private.ts#L161)
+Defined in: [warp-drive-packages/core/src/store/deprecated/-private.ts:161](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/store/deprecated/-private.ts#L161)
 
 A map of every relationship (`belongsTo`/`hasMany`) field defined on this
 resource type, keyed by relationship name.

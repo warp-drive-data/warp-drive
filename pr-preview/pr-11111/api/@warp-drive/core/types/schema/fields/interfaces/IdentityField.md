@@ -5,7 +5,7 @@ url: >-
 
 # &#x20;IdentityField
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:298](https://github.com/warp-drive-data/warp-drive/blob/998da8d5cb68764b43a8503a38424bc85af654e3/warp-drive-packages/core/src/types/schema/fields.ts#L298)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:298](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/types/schema/fields.ts#L298)
 
 Represents a field whose value is the primary
 key of the resource.
@@ -26,7 +26,7 @@ primary key field instead of 'id'.
 kind: "@id";
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:304](https://github.com/warp-drive-data/warp-drive/blob/998da8d5cb68764b43a8503a38424bc85af654e3/warp-drive-packages/core/src/types/schema/fields.ts#L304)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:304](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/types/schema/fields.ts#L304)
 
 The kind of field this is.
 
@@ -38,7 +38,7 @@ The kind of field this is.
 name: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:312](https://github.com/warp-drive-data/warp-drive/blob/998da8d5cb68764b43a8503a38424bc85af654e3/warp-drive-packages/core/src/types/schema/fields.ts#L312)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:312](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/types/schema/fields.ts#L312)
 
 The name of the field that serves as the
 primary key for the resource.
@@ -51,7 +51,7 @@ primary key for the resource.
 optional sourceKey?: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:334](https://github.com/warp-drive-data/warp-drive/blob/998da8d5cb68764b43a8503a38424bc85af654e3/warp-drive-packages/core/src/types/schema/fields.ts#L334)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:334](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/types/schema/fields.ts#L334)
 
 The name of the field as returned by the API
 and inserted into the [Cache](../../../cache/interfaces/Cache.md) if it differs

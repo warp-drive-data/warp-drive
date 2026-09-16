@@ -11,7 +11,7 @@ url: >-
 const FragmentExtension: object;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model-fragments/extensions/fragment.ts:73](https://github.com/warp-drive-data/warp-drive/blob/998da8d5cb68764b43a8503a38424bc85af654e3/warp-drive-packages/legacy/src/model-fragments/extensions/fragment.ts#L73)
+Defined in: [warp-drive-packages/legacy/src/model-fragments/extensions/fragment.ts:73](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/legacy/src/model-fragments/extensions/fragment.ts#L73)
 
 A schema extension that adds the [Fragment](../classes/Fragment.md) API to migrated
 `ModelFragments` object resources.

@@ -5,7 +5,7 @@ url: >-
 
 # &#x20;Op
 
-Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:30](https://github.com/warp-drive-data/warp-drive/blob/998da8d5cb68764b43a8503a38424bc85af654e3/warp-drive-packages/core/src/types/cache/operations.ts#L30)
+Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:30](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/types/cache/operations.ts#L30)
 
 All operations are objects with at least one property,
 `op` which contains a string with the name of the operation
@@ -33,6 +33,6 @@ to perform.
 op: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:34](https://github.com/warp-drive-data/warp-drive/blob/998da8d5cb68764b43a8503a38424bc85af654e3/warp-drive-packages/core/src/types/cache/operations.ts#L34)
+Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:34](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/types/cache/operations.ts#L34)
 
 The name of the operation

@@ -7,7 +7,7 @@ url: >-
 
 # &#x20;InternalCacheStorageEvent
 
-Defined in: [storage/cache.ts:8](https://github.com/warp-drive-data/warp-drive/blob/998da8d5cb68764b43a8503a38424bc85af654e3/warp-drive-packages/experiments/src/storage/cache.ts#L8)
+Defined in: [storage/cache.ts:8](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/experiments/src/storage/cache.ts#L8)
 
 ## Properties
 
@@ -17,7 +17,7 @@ Defined in: [storage/cache.ts:8](https://github.com/warp-drive-data/warp-drive/b
 key: string | null;
 ```
 
-Defined in: [storage/cache.ts:10](https://github.com/warp-drive-data/warp-drive/blob/998da8d5cb68764b43a8503a38424bc85af654e3/warp-drive-packages/experiments/src/storage/cache.ts#L10)
+Defined in: [storage/cache.ts:10](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/experiments/src/storage/cache.ts#L10)
 
 ***
 
@@ -27,7 +27,7 @@ Defined in: [storage/cache.ts:10](https://github.com/warp-drive-data/warp-drive/
 newValue: string | null;
 ```
 
-Defined in: [storage/cache.ts:12](https://github.com/warp-drive-data/warp-drive/blob/998da8d5cb68764b43a8503a38424bc85af654e3/warp-drive-packages/experiments/src/storage/cache.ts#L12)
+Defined in: [storage/cache.ts:12](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/experiments/src/storage/cache.ts#L12)
 
 ***
 
@@ -37,7 +37,7 @@ Defined in: [storage/cache.ts:12](https://github.com/warp-drive-data/warp-drive/
 oldValue: string | null;
 ```
 
-Defined in: [storage/cache.ts:11](https://github.com/warp-drive-data/warp-drive/blob/998da8d5cb68764b43a8503a38424bc85af654e3/warp-drive-packages/experiments/src/storage/cache.ts#L11)
+Defined in: [storage/cache.ts:11](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/experiments/src/storage/cache.ts#L11)
 
 ***
 
@@ -47,4 +47,4 @@ Defined in: [storage/cache.ts:11](https://github.com/warp-drive-data/warp-drive/
 storageArea: string;
 ```
 
-Defined in: [storage/cache.ts:9](https://github.com/warp-drive-data/warp-drive/blob/998da8d5cb68764b43a8503a38424bc85af654e3/warp-drive-packages/experiments/src/storage/cache.ts#L9)
+Defined in: [storage/cache.ts:9](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/experiments/src/storage/cache.ts#L9)

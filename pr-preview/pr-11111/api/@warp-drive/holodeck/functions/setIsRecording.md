@@ -9,7 +9,7 @@ url: >-
 function setIsRecording(value): void;
 ```
 
-Defined in: [index.ts:187](https://github.com/warp-drive-data/warp-drive/blob/998da8d5cb68764b43a8503a38424bc85af654e3/packages/holodeck/src/index.ts#L187)
+Defined in: [index.ts:187](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/packages/holodeck/src/index.ts#L187)
 
 ## Parameters
 

@@ -9,7 +9,7 @@ url: >-
 function teardownRecord(record): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/reactive/-private/hooks.ts:60](https://github.com/warp-drive-data/warp-drive/blob/998da8d5cb68764b43a8503a38424bc85af654e3/warp-drive-packages/core/src/reactive/-private/hooks.ts#L60)
+Defined in: [warp-drive-packages/core/src/reactive/-private/hooks.ts:60](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/reactive/-private/hooks.ts#L60)
 
 The store's default `teardownRecord` hook implementation, which asserts
 that `record` is a [ReactiveResource](../interfaces/ReactiveResource.md) and invokes its `Destroy`

@@ -5,7 +5,7 @@ url: >-
 
 # &#x20;RemoveDocumentOperation
 
-Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:63](https://github.com/warp-drive-data/warp-drive/blob/998da8d5cb68764b43a8503a38424bc85af654e3/warp-drive-packages/core/src/types/cache/operations.ts#L63)
+Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:63](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/types/cache/operations.ts#L63)
 
 Removes a document and its associated request from
 the cache.
@@ -22,7 +22,7 @@ the cache.
 op: "remove";
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:64](https://github.com/warp-drive-data/warp-drive/blob/998da8d5cb68764b43a8503a38424bc85af654e3/warp-drive-packages/core/src/types/cache/operations.ts#L64)
+Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:64](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/types/cache/operations.ts#L64)
 
 The name of the [operation](Op.md)
 
@@ -38,6 +38,6 @@ The name of the [operation](Op.md)
 record: RequestKey;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:68](https://github.com/warp-drive-data/warp-drive/blob/998da8d5cb68764b43a8503a38424bc85af654e3/warp-drive-packages/core/src/types/cache/operations.ts#L68)
+Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:68](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/types/cache/operations.ts#L68)
 
 The cache key for the request

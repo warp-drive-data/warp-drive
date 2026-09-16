@@ -9,7 +9,7 @@ url: >-
 function underscore(str): string;
 ```
 
-Defined in: [-private/string/transform.ts:79](https://github.com/warp-drive-data/warp-drive/blob/998da8d5cb68764b43a8503a38424bc85af654e3/warp-drive-packages/utilities/src/-private/string/transform.ts#L79)
+Defined in: [-private/string/transform.ts:79](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/utilities/src/-private/string/transform.ts#L79)
 
 Returns the lower\_case\_and\_underscored form of a string.
 

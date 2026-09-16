@@ -9,7 +9,7 @@ url: >-
 type RelationshipsSchema = Record<string, LegacyRelationshipField>;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/schema-service.ts:37](https://github.com/warp-drive-data/warp-drive/blob/998da8d5cb68764b43a8503a38424bc85af654e3/warp-drive-packages/core/src/types/schema/schema-service.ts#L37)
+Defined in: [warp-drive-packages/core/src/types/schema/schema-service.ts:37](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/types/schema/schema-service.ts#L37)
 
 A dictionary of [LegacyRelationshipField](../../fields/type-aliases/LegacyRelationshipField.md) definitions keyed by
 relationship name, as returned by the deprecated

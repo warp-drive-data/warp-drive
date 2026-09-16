@@ -9,7 +9,7 @@ url: >-
 type ReactiveErrorDocument<T, EM, E, M> = ReactiveDocumentBase<T, M, E, EM> & DocumentMeta<EM> & object;
 ```
 
-Defined in: [warp-drive-packages/core/src/reactive/-private/document.ts:158](https://github.com/warp-drive-data/warp-drive/blob/998da8d5cb68764b43a8503a38424bc85af654e3/warp-drive-packages/core/src/reactive/-private/document.ts#L158)
+Defined in: [warp-drive-packages/core/src/reactive/-private/document.ts:158](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/reactive/-private/document.ts#L158)
 
 The variant of [ReactiveDocument](ReactiveDocument.md) returned for a request whose
 response contained no primary data, e.g. an error response.

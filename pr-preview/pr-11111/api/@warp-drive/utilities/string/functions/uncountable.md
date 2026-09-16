@@ -9,7 +9,7 @@ url: >-
 function uncountable(word): void;
 ```
 
-Defined in: [-private/string/inflect.ts:31](https://github.com/warp-drive-data/warp-drive/blob/998da8d5cb68764b43a8503a38424bc85af654e3/warp-drive-packages/utilities/src/-private/string/inflect.ts#L31)
+Defined in: [-private/string/inflect.ts:31](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/utilities/src/-private/string/inflect.ts#L31)
 
 Marks a word as uncountable. Uncountable words are not pluralized
 or singularized.

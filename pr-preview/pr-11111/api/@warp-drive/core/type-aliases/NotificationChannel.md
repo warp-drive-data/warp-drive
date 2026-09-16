@@ -9,7 +9,7 @@ url: >-
 type NotificationChannel = "local" | "remote";
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/managers/notification-manager.ts:78](https://github.com/warp-drive-data/warp-drive/blob/998da8d5cb68764b43a8503a38424bc85af654e3/warp-drive-packages/core/src/store/-private/managers/notification-manager.ts#L78)
+Defined in: [warp-drive-packages/core/src/store/-private/managers/notification-manager.ts:78](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/store/-private/managers/notification-manager.ts#L78)
 
 A change to a resource's `attributes` or `relationships` can be relevant to
 a "local" view of the resource (its mutable/editable state), a "remote" view

@@ -9,7 +9,7 @@ url: >-
 const MAX_URL_LENGTH: 8192 = 8192;
 ```
 
-Defined in: [-private/handlers/utils.ts:68](https://github.com/warp-drive-data/warp-drive/blob/998da8d5cb68764b43a8503a38424bc85af654e3/warp-drive-packages/utilities/src/-private/handlers/utils.ts#L68)
+Defined in: [-private/handlers/utils.ts:68](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/utilities/src/-private/handlers/utils.ts#L68)
 
 Source: https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/cloudfront-limits.html
 As of 2024-12-05 the maximum URL length is 8192 bytes.

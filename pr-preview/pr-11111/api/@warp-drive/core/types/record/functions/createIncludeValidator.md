@@ -9,7 +9,7 @@ url: >-
 function createIncludeValidator<T>(): <U>(includes) => U;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/record.ts:225](https://github.com/warp-drive-data/warp-drive/blob/998da8d5cb68764b43a8503a38424bc85af654e3/warp-drive-packages/core/src/types/record.ts#L225)
+Defined in: [warp-drive-packages/core/src/types/record.ts:225](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/types/record.ts#L225)
 
 Creates a runtime validator function for comma-separated `include` strings,
 ensuring at compile time that only valid paths for `T` (per [Includes](../type-aliases/Includes.md))

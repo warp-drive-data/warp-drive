@@ -11,7 +11,7 @@ url: >-
 function withArrayDefaults<ArrayName, PrimitiveType>(arrayName, primitiveType?): PrimitiveType extends undefined ? object : object;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model-fragments/utilities/with-array-defaults.ts:9](https://github.com/warp-drive-data/warp-drive/blob/998da8d5cb68764b43a8503a38424bc85af654e3/warp-drive-packages/legacy/src/model-fragments/utilities/with-array-defaults.ts#L9)
+Defined in: [warp-drive-packages/legacy/src/model-fragments/utilities/with-array-defaults.ts:9](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/legacy/src/model-fragments/utilities/with-array-defaults.ts#L9)
 
 Used as a helper to setup the relevant parts of an array
 schema and add extensions etc.

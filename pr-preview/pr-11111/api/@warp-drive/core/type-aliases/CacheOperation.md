@@ -9,6 +9,6 @@ url: >-
 type CacheOperation = "added" | "removed" | "updated" | "state";
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/managers/notification-manager.ts:16](https://github.com/warp-drive-data/warp-drive/blob/998da8d5cb68764b43a8503a38424bc85af654e3/warp-drive-packages/core/src/store/-private/managers/notification-manager.ts#L16)
+Defined in: [warp-drive-packages/core/src/store/-private/managers/notification-manager.ts:16](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/store/-private/managers/notification-manager.ts#L16)
 
 The kinds of change notifications the [NotificationManager](../store/interfaces/NotificationManager.md) can emit for a resource.

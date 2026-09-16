@@ -9,7 +9,7 @@ url: >-
 function getPaginationState<RT, E>(request, pageHints?): PaginationState<RT, E>;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:641](https://github.com/warp-drive-data/warp-drive/blob/998da8d5cb68764b43a8503a38424bc85af654e3/warp-drive-packages/core/src/signals/pagination-state.ts#L641)
+Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:641](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/signals/pagination-state.ts#L641)
 
 Get the [PaginationState](../interfaces/PaginationState.md) for a given request. Returns the same instance
 for the same request future, so that repeated calls (e.g. in a template, or

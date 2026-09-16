@@ -9,7 +9,7 @@ url: >-
 const DEPRECATE_NON_STRICT_ID: boolean = true;
 ```
 
-Defined in: [deprecations.ts:185](https://github.com/warp-drive-data/warp-drive/blob/998da8d5cb68764b43a8503a38424bc85af654e3/warp-drive-packages/build-config/src/deprecations.ts#L185)
+Defined in: [deprecations.ts:185](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/build-config/src/deprecations.ts#L185)
 
 Currently, WarpDrive expects that the `id` property associated with
 a resource is a string.

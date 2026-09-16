@@ -9,7 +9,7 @@ url: >-
 function withDefaults(schema): PolarisResourceSchema;
 ```
 
-Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:435](https://github.com/warp-drive-data/warp-drive/blob/998da8d5cb68764b43a8503a38424bc85af654e3/warp-drive-packages/core/src/reactive/-private/schema.ts#L435)
+Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:435](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/reactive/-private/schema.ts#L435)
 
 Utility for constructing a ResourceSchema with the recommended
 fields for the PolarisMode experience.

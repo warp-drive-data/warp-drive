@@ -9,7 +9,7 @@ url: >-
 const EnableHydration: "___(unique) Symbol(EnableHydration)";
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:33](https://github.com/warp-drive-data/warp-drive/blob/998da8d5cb68764b43a8503a38424bc85af654e3/warp-drive-packages/core/src/types/request.ts#L33)
+Defined in: [warp-drive-packages/core/src/types/request.ts:33](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/types/request.ts#L33)
 
 A [RequestInfo](../interfaces/RequestInfo.md) flag which, when set, signals to the store's
 `instantiateRecord` hook that the resolved content should be hydrated

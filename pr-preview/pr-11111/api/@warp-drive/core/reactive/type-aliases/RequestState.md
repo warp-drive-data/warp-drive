@@ -13,7 +13,7 @@ type RequestState<RT, E> =
 | CancelledRequest<RT, E>;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-state.ts:638](https://github.com/warp-drive-data/warp-drive/blob/998da8d5cb68764b43a8503a38424bc85af654e3/warp-drive-packages/core/src/signals/request-state.ts#L638)
+Defined in: [warp-drive-packages/core/src/signals/request-state.ts:638](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/signals/request-state.ts#L638)
 
 RequestState extends the concept of [PromiseState](PromiseState.md) to provide a reactive
 wrapper for a request [Future](../../request/interfaces/Future.md) which allows you write declarative code

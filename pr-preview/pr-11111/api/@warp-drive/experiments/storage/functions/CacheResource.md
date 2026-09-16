@@ -11,7 +11,7 @@ url: >-
 function CacheResource(id, namespace?): ClassDecorator;
 ```
 
-Defined in: [storage/storage-resource.ts:70](https://github.com/warp-drive-data/warp-drive/blob/998da8d5cb68764b43a8503a38424bc85af654e3/warp-drive-packages/experiments/src/storage/storage-resource.ts#L70)
+Defined in: [storage/storage-resource.ts:70](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/experiments/src/storage/storage-resource.ts#L70)
 
 Decorator which transforms a class into a StorageResource
 persisted via the [Cache API](https://developer.mozilla.org/en-US/docs/Web/API/Cache).

@@ -11,7 +11,7 @@ url: >-
 function configureAssertFn(fn): void;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat/utils.ts:53](https://github.com/warp-drive-data/warp-drive/blob/998da8d5cb68764b43a8503a38424bc85af654e3/warp-drive-packages/legacy/src/compat/utils.ts#L53)
+Defined in: [warp-drive-packages/legacy/src/compat/utils.ts:53](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/legacy/src/compat/utils.ts#L53)
 
 Configure a function to be called when an id or type
 fails validation. This is useful for instrumenting

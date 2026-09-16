@@ -13,7 +13,7 @@ function signal<T, K>(
 ): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/reactivity/signal.ts:107](https://github.com/warp-drive-data/warp-drive/blob/998da8d5cb68764b43a8503a38424bc85af654e3/warp-drive-packages/core/src/signals/reactivity/signal.ts#L107)
+Defined in: [warp-drive-packages/core/src/signals/reactivity/signal.ts:107](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/signals/reactivity/signal.ts#L107)
 
 Decorator version of creating a signal.
 

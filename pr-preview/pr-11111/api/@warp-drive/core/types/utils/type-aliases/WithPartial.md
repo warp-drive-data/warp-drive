@@ -9,7 +9,7 @@ url: >-
 type WithPartial<T, K> = Omit<T, K> & Partial<Pick<T, K>>;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/utils.ts:10](https://github.com/warp-drive-data/warp-drive/blob/998da8d5cb68764b43a8503a38424bc85af654e3/warp-drive-packages/core/src/types/utils.ts#L10)
+Defined in: [warp-drive-packages/core/src/types/utils.ts:10](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/types/utils.ts#L10)
 
 Makes the properties named in `K` optional on `T`, leaving the rest as-is.
 

@@ -10,7 +10,7 @@ url: /warp-drive/pr-preview/pr-11111/api/@warp-drive/schema-dsl/functions/id.md
 function id(target, key): void;
 ```
 
-Defined in: [fields/id.ts:55](https://github.com/warp-drive-data/warp-drive/blob/998da8d5cb68764b43a8503a38424bc85af654e3/warp-drive-packages/schema-dsl/src/fields/id.ts#L55)
+Defined in: [fields/id.ts:55](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/schema-dsl/src/fields/id.ts#L55)
 
 **`Decorator`**
 
@@ -64,7 +64,7 @@ export class Post {
 function id(options): (target, key) => void;
 ```
 
-Defined in: [fields/id.ts:56](https://github.com/warp-drive-data/warp-drive/blob/998da8d5cb68764b43a8503a38424bc85af654e3/warp-drive-packages/schema-dsl/src/fields/id.ts#L56)
+Defined in: [fields/id.ts:56](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/schema-dsl/src/fields/id.ts#L56)
 
 **`Decorator`**
 

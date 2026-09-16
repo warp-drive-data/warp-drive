@@ -11,7 +11,7 @@ type ReactiveDocument<T, M, E, EM> =
 | ReactiveErrorDocument<T, EM, E, M>;
 ```
 
-Defined in: [warp-drive-packages/core/src/reactive/-private/document.ts:258](https://github.com/warp-drive-data/warp-drive/blob/998da8d5cb68764b43a8503a38424bc85af654e3/warp-drive-packages/core/src/reactive/-private/document.ts#L258)
+Defined in: [warp-drive-packages/core/src/reactive/-private/document.ts:258](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/reactive/-private/document.ts#L258)
 
 A Document is a class that wraps the response content from a request to the API
 returned by `Cache.put` or `Cache.peek`, converting ResourceKeys into

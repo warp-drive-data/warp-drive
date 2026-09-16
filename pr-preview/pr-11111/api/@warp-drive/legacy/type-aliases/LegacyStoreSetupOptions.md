@@ -14,7 +14,7 @@ type LegacyStoreSetupOptions<T> =
 | LegacyModelAndNetworkAndRequestStoreSetupOptions<T>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/index.ts:154](https://github.com/warp-drive-data/warp-drive/blob/998da8d5cb68764b43a8503a38424bc85af654e3/warp-drive-packages/legacy/src/index.ts#L154)
+Defined in: [warp-drive-packages/legacy/src/index.ts:154](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/legacy/src/index.ts#L154)
 
 The available options when setting up the legacy store,
 one of:
