@@ -99,5 +99,8 @@ jobs:
           source-dir: docs-viewer/docs.warp-drive.io/.vitepress/dist
           # matches the custom domain deploy.yml binds via its `cname` input, so the
           # sticky PR comment/QR code link to the URL that actually works, not the
-          # default <owner>.github.io/<repo>/ path (which BASE above doesn't target)
-          pages-base-url: https://canary.warp-drive.io
+          # default <owner>.github.io/<repo>/ path (which BASE above doesn't target).
+          # No scheme here -- the action's own preview_url output is literally
+          # "https://$pages_base_url/...", so including "https://" in this input
+          # doubles up into "https://https://..." in the posted comment/QR code.
+          pages-base-url: canary.warp-drive.io
