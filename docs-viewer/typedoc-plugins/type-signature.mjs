@@ -1,4 +1,4 @@
-import { ReflectionKind } from 'typedoc';
+import { ReflectionKind, ReflectionType } from 'typedoc';
 
 /**
  * typedoc-plugin-markdown's `someType` partial returns markdown (backticked type names, and
@@ -17,8 +17,53 @@ function toPlainTypeText(markdown) {
     .replace(/`/g, '');
 }
 
+/**
+ * A nested object-literal type (e.g. a property typed `{ a: string; [key: string]: unknown }`)
+ * is rendered as its own flat, single-line shape here rather than through typedoc-plugin-markdown's
+ * `someType`/`declarationType`, which — once `expandObjects` is on — indents an index signature
+ * differently than its sibling properties, producing broken indentation once that multi-line text
+ * is spliced into a line we build ourselves. Building it inline sidesteps that entirely and keeps
+ * every line of the code block we emit at a predictable, single-line-per-member indent.
+ */
+function objectTypeText(context, declaration) {
+  const parts = [];
+  for (const indexSignature of declaration.indexSignatures ?? []) {
+    const key = renderParameters(context, indexSignature.parameters).slice(1, -1);
+    parts.push(`[${key}]: ${renderReturnType(context, indexSignature)}`);
+  }
+  for (const member of declaration.children ?? []) {
+    const optional = member.flags?.isOptional ? '?' : '';
+    if (member.kind === ReflectionKind.Method) {
+      for (const signature of member.signatures ?? []) {
+        parts.push(
+          `${member.name}${optional}${renderParameters(context, signature.parameters)}: ${renderReturnType(context, signature)}`
+        );
+      }
+      continue;
+    }
+    const readonly = member.flags?.isReadonly ? 'readonly ' : '';
+    parts.push(`${readonly}${member.name}${optional}: ${someTypeText(context, member.type)}`);
+  }
+  for (const signature of declaration.signatures ?? []) {
+    parts.push(`${renderParameters(context, signature.parameters)}: ${renderReturnType(context, signature)}`);
+  }
+  return parts.length ? `{ ${parts.join('; ')} }` : '{}';
+}
+
 function someTypeText(context, type) {
-  return type ? toPlainTypeText(context.partials.someType(type)) : 'unknown';
+  if (!type) return 'unknown';
+  if (type instanceof ReflectionType) {
+    const declaration = type.declaration;
+    // A pure function type (e.g. a callback parameter's `(item: T) => boolean`) is one call
+    // signature and nothing else — render it as an arrow type, not as `{ (item: T): boolean }`,
+    // matching how typedoc-plugin-markdown's own `reflectionType` partial special-cases it.
+    if (declaration.signatures?.length === 1 && !declaration.children && !declaration.indexSignatures?.length) {
+      const signature = declaration.signatures[0];
+      return `${renderTypeParameters(context, signature.typeParameters)}${renderParameters(context, signature.parameters)} => ${renderReturnType(context, signature)}`;
+    }
+    return objectTypeText(context, declaration);
+  }
+  return toPlainTypeText(context.partials.someType(type));
 }
 
 function renderTypeParameters(context, typeParameters) {

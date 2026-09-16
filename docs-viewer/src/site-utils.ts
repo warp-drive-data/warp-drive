@@ -977,6 +977,44 @@ function consolidateOverloadSignatures(content: string): string {
   return result.join('\n');
 }
 
+/**
+ * typedoc-plugin-markdown's `declarationType` partial (used once `expandObjects` is on) indents
+ * every named property of a nested object type, but not an index signature sitting alongside
+ * them — so `{ [key: string]: Value; arrayExtensions?: string[] }` renders with its index
+ * signature line flush against the left margin while its sibling property is indented. This
+ * finds each ```ts code block's index-signature line left at column 0 that sits directly inside
+ * an object literal (its nearest preceding non-blank line ends in `{`) and indents it to match —
+ * a line genuinely meant to sit at column 0 (e.g. a standalone `#### Index Signature` block with
+ * nothing around it) never has such a preceding line, so it's left alone.
+ */
+function fixIndexSignatureIndent(content: string): string {
+  const lines = content.split('\n');
+  let inCodeBlock = false;
+  for (let i = 0; i < lines.length; i++) {
+    const trimmed = lines[i].trim();
+    if (trimmed === '```ts') {
+      inCodeBlock = true;
+      continue;
+    }
+    if (trimmed === '```') {
+      inCodeBlock = false;
+      continue;
+    }
+    if (!inCodeBlock || !lines[i].startsWith('[')) continue;
+
+    for (let p = i - 1; p >= 0; p--) {
+      const prevLine = lines[p];
+      if (prevLine.trim() === '') continue;
+      if (/\{$/.test(prevLine.trim())) {
+        const prevIndent = /^ */.exec(prevLine)![0].length;
+        lines[i] = ' '.repeat(prevIndent + 2) + lines[i];
+      }
+      break;
+    }
+  }
+  return lines.join('\n');
+}
+
 export async function postProcessApiDocs() {
   const dir = path.join(__dirname, '../tmp/api');
   const outDir = path.join(__dirname, '../docs.warp-drive.io/api');
@@ -1029,6 +1067,9 @@ export async function postProcessApiDocs() {
     // Consolidate an overloaded function's or method's per-overload signatures into one block
     // right under its own heading, before any other content below it is touched.
     newContent = consolidateOverloadSignatures(newContent);
+
+    // Fix an index signature's indentation wherever it's nested inside an expanded object type.
+    newContent = fixIndexSignatureIndent(newContent);
 
     // Replace the entire breadcrumb line with the badge (no subpath links)
     const importPath = fileToImportPath(file);
