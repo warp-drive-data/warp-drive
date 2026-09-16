@@ -940,7 +940,7 @@ export default class TestModel extends Model.extend(WorkstreamableMixin) {
          * >
          * > For those cases, you can create a more specific type that derives
          * > from this type to ensure that your type definitions stay consistent
-         * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+         * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
          *
          * See also {@link TestModel} for fields + legacy mode features
          */
@@ -1259,7 +1259,7 @@ export default class Translatable extends Model {
          * >
          * > For those cases, you can create a more specific type that derives
          * > from this type to ensure that your type definitions stay consistent
-         * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+         * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
          *
          * See also {@link TestModel} for fields + legacy mode features
          */

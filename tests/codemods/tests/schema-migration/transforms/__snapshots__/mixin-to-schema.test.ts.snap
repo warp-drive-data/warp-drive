@@ -434,7 +434,7 @@ import type { File } from 'test-app/data/resources/file.type';
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  */
 export interface CustomSourceTrait {
   name?: string | null;
@@ -526,7 +526,7 @@ import type { File } from 'test-app/data/resources/file.type';
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  */
 export interface RenamedMixedSourcesTrait {
   files?: HasMany<File>;
@@ -601,7 +601,7 @@ export default CliOptionTraitSchema;
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  */
 export interface CliOptionTrait {
   name?: string | null;
@@ -694,7 +694,7 @@ import type { User } from 'test-app/data/resources/user.type';
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  */
 export interface AliasedImportsTrait {
   name?: string | null;
@@ -749,7 +749,7 @@ export default UnsupportedSourceTraitSchema;
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  */
 export interface UnsupportedSourceTrait {
   name?: string | null;
@@ -854,7 +854,7 @@ import type { File } from 'test-app/data/resources/file.type';
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  */
 export interface DefaultSourceTrait {
   name?: string | null;
@@ -938,7 +938,7 @@ export default BelongsToTraitSchema;
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  */
 export interface BelongsToTrait {
   owner?: Promise<User>;
@@ -985,7 +985,7 @@ export default NoValidImportsTraitSchema;
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  */
 export interface NoValidImportsTrait {
 }
@@ -1081,7 +1081,7 @@ import type { File } from 'test-app/data/resources/file.type';
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  */
 export interface AuditboardSourceTrait {
   name?: string | null;

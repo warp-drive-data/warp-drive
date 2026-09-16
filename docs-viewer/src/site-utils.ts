@@ -547,13 +547,16 @@ outline:
 }
 const ApiDocumentation = `# API Docs\n\n`;
 
-const TYPE_DIRS = new Set(['classes', 'functions', 'interfaces', 'type-aliases', 'variables', 'enumerations']);
+// Interfaces and type-aliases share a `types/` output directory (see typedoc-plugins/types-
+// router.mjs) so their URLs stay stable across that implementation choice — the directory alone
+// can no longer tell them apart, so their `KindBadge` label comes from the `@badge` tag
+// typedoc-plugins/type-kind-badges.mjs synthesizes instead (see the kindOverride lookup below).
+const TYPE_DIRS = new Set(['classes', 'functions', 'types', 'variables', 'enumerations']);
 
 const KIND_LABELS: Record<string, string> = {
   classes: 'Class',
   functions: 'Function',
-  interfaces: 'Interface',
-  'type-aliases': 'Type Alias',
+  types: 'Type',
   variables: 'Variable',
   enumerations: 'Enumeration',
 };

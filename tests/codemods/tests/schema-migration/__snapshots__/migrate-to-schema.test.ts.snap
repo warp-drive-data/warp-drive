@@ -90,7 +90,7 @@ import type { TimestampableTrait } from 'test-app/data/traits/timestampable.type
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  *
  * See also {@link User} for fields + legacy mode features
  */
@@ -178,7 +178,7 @@ import type { DeleteableTrait } from 'test-app/data/traits/deleteable.type';
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  */
 export interface TimestampableTrait extends DeleteableTrait {
   createdAt?: Date | null;
@@ -223,7 +223,7 @@ import type { ConnectedTrait } from 'test-app/data/traits/connected.type';
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  *
  * See also {@link AdminModel} for fields + legacy mode features
  */
@@ -296,7 +296,7 @@ import type { WithLegacy } from '@warp-drive/legacy/model/migration-support';
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  *
  * See also {@link NestedModel} for fields + legacy mode features
  */
@@ -349,7 +349,7 @@ export default ConnectedTraitSchema;
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  */
 export interface ConnectedTrait {
   commonField?: string | null;
@@ -473,7 +473,7 @@ export default UserSchema;
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  *
  * See also {@link User} for fields + legacy mode features
  */
@@ -560,7 +560,7 @@ export default TimestampableTraitSchema;
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  */
 export interface TimestampableTrait extends DeleteableTrait {
   createdAt?: Date | null;
@@ -634,7 +634,7 @@ import type { AuditableTrait } from 'test-app/data/traits/auditable.type';
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  *
  * See also {@link AuditLog} for fields + legacy mode features
  */
@@ -696,7 +696,7 @@ import type { User } from 'test-app/data/resources/user.type';
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  *
  * See also {@link AuditedRecord} for fields + legacy mode features
  */
@@ -754,7 +754,7 @@ export default AuditableTraitSchema;
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  */
 export interface AuditableTrait {
   auditStatus?: string | null;
@@ -828,7 +828,7 @@ import type { WithLegacy } from '@warp-drive/legacy/model/migration-support';
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  *
  * See also {@link ActionPlan} for fields + legacy mode features
  */
@@ -882,7 +882,7 @@ import type { BelongsToReference, HasManyReference, Errors } from '@warp-drive/l
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  */
 export interface BaseModelTrait {
   id: string | null;
@@ -971,7 +971,7 @@ import type { WorkstreamableTrait } from 'test-app/data/traits/workstreamable.ty
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  *
  * See also {@link TestModel} for fields + legacy mode features
  */
@@ -1033,7 +1033,7 @@ import type { WithLegacy } from '@warp-drive/legacy/model/migration-support';
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  *
  * See also {@link User} for fields + legacy mode features
  */
@@ -1085,7 +1085,7 @@ export default WorkstreamableTraitSchema;
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  */
 export interface WorkstreamableTrait {
   workstreamType?: string | null;
@@ -1185,7 +1185,7 @@ import type { BaseModelTrait } from 'test-app/data/traits/-base-model.type';
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  *
  * See also {@link ApprovalRequest} for fields + legacy mode features
  */
@@ -1232,7 +1232,7 @@ import type { BelongsToReference, HasManyReference, Errors } from '@warp-drive/l
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  */
 export interface BaseModelTrait {
   id: string | null;
@@ -1279,7 +1279,7 @@ export default BaseModelTraitSchema;
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  */
 export interface BaseModelTrait {
 }
@@ -1365,7 +1365,7 @@ import type { User } from 'test-app/data/resources/user.type';
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  *
  * See also {@link Company} for fields + legacy mode features
  */
@@ -1424,7 +1424,7 @@ import type { WithLegacy } from '@warp-drive/legacy/model/migration-support';
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  *
  * See also {@link User} for fields + legacy mode features
  */
@@ -1528,7 +1528,7 @@ import type { Company } from 'test-app/data/resources/company.type';
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  *
  * See also {@link User} for fields + legacy mode features
  */
@@ -1609,7 +1609,7 @@ import type { LocalTrait } from 'test-app/data/traits/local.type';
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  *
  * See also {@link TestModel} for fields + legacy mode features
  */
@@ -1661,7 +1661,7 @@ export default ExternalMixinTraitSchema;
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  */
 export interface ExternalMixinTrait {
   externalField?: string | null;
@@ -1699,7 +1699,7 @@ export default LocalMixinTraitSchema;
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  */
 export interface LocalMixinTrait {
   localField?: string | null;
@@ -1781,7 +1781,7 @@ import type { JsTrait } from 'test-app/data/traits/js.type';
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  *
  * See also {@link JsModelWithMixin} for fields + legacy mode features
  */
@@ -1841,7 +1841,7 @@ import type { TsTrait } from 'test-app/data/traits/ts.type';
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  *
  * See also {@link TsModelWithMixin} for fields + legacy mode features
  */
@@ -1893,7 +1893,7 @@ export default JsMixinTraitSchema;
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  */
 export interface JsMixinTrait {
   createdAt?: Date | null;
@@ -1953,7 +1953,7 @@ export default TsMixinTraitSchema;
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  */
 export interface TsMixinTrait {
   isEnabled?: boolean | null;
@@ -2016,7 +2016,7 @@ import type { WorkstreamableTrait } from 'test-app/data/traits/workstreamable.ty
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  *
  * See also {@link TestModel} for fields + legacy mode features
  */
@@ -2078,7 +2078,7 @@ import type { WithLegacy } from '@warp-drive/legacy/model/migration-support';
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  *
  * See also {@link User} for fields + legacy mode features
  */
@@ -2130,7 +2130,7 @@ export default WorkstreamableTraitSchema;
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  */
 export interface WorkstreamableTrait {
   workstreamType?: string | null;
@@ -2196,7 +2196,7 @@ import type { WorkstreamableTrait } from 'test-app/data/traits/workstreamable.ty
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  *
  * See also {@link TestModel} for fields + legacy mode features
  */
@@ -2258,7 +2258,7 @@ import type { WithLegacy } from '@warp-drive/legacy/model/migration-support';
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  *
  * See also {@link User} for fields + legacy mode features
  */
@@ -2330,7 +2330,7 @@ export default WorkstreamableTraitSchema;
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  */
 export interface WorkstreamableTrait {
   workstreamType?: string | null;
@@ -2374,7 +2374,7 @@ import type { DataFieldModelTrait } from 'test-app/data/traits/data-field-model.
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  *
  * See also {@link AeCustomMultiselect8Option} for fields + legacy mode features
  */
@@ -2421,7 +2421,7 @@ import type { BelongsToReference, HasManyReference, Errors } from '@warp-drive/l
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  */
 export interface BaseModelTrait {
   id: string | null;
@@ -2470,7 +2470,7 @@ import type { BaseModelTrait } from 'test-app/data/traits/base-model.type';
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  */
 export interface DataFieldModelTrait extends BaseModelTrait {
   id: string | null;
@@ -2575,7 +2575,7 @@ import type { CommentableTrait } from 'test-app/data/traits/commentable.type';
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  *
  * See also {@link ActionPlan} for fields + legacy mode features
  */
@@ -2625,7 +2625,7 @@ import type { BelongsToReference, HasManyReference, Errors } from '@warp-drive/l
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  */
 export interface BaseModelTrait {
   id: string | null;
@@ -2663,7 +2663,7 @@ export default CommentableTraitSchema;
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  */
 export interface CommentableTrait {
   commentCount?: number | null;
@@ -2724,7 +2724,7 @@ import type { BaseModelWithMethodsTrait } from 'test-app/data/traits/base-model-
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  *
  * See also {@link RegularModel} for fields + legacy mode features
  */
@@ -2814,7 +2814,7 @@ import type { BelongsToReference, HasManyReference, Errors } from '@warp-drive/l
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  */
 export interface BaseModelWithMethodsTrait {
   id: string | null;
@@ -2871,7 +2871,7 @@ import type { DataFieldModelTrait } from 'test-app/data/traits/data-field-model.
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  *
  * See also {@link CustomSelectOption} for fields + legacy mode features
  */
@@ -2922,7 +2922,7 @@ import type { BelongsToReference, HasManyReference, Errors } from '@warp-drive/l
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  */
 export interface BaseModelTrait {
   id: string | null;
@@ -2971,7 +2971,7 @@ import type { BaseModelTrait } from 'test-app/data/traits/base-model.type';
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  */
 export interface DataFieldModelTrait extends BaseModelTrait {
   id: string | null;
@@ -3052,7 +3052,7 @@ import type { Tag } from 'test-app/data/resources/tag.type';
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  *
  * See also {@link Typed} for fields + legacy mode features
  */

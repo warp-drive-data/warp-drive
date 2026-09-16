@@ -15,7 +15,7 @@ This guide is primarily intended for apps that got ***"stuck"*** on either 4.6 (
 Note - it is not actually a requirement of 5.x to replace Models with Schemas (nor to replace adapters/serializers with requests). These things are deprecated *in* 5.x, but they still work.
 
 The reason to take the approach outlined in this guide is
-because we have used capabilities provided by the [@warp-drive/legacy package](/api/@warp-drive/legacy/) and by [LegacyMode](/guides/the-manual/schemas/resources/polaris-mode.md) schemas together with [Extensions](/api/@warp-drive/core/reactive/interfaces/CAUTION_MEGA_DANGER_ZONE_Extension) to mimic much of the removed API surface to allow apps to bridge the gap to 5.x more easily. 
+because we have used capabilities provided by the [@warp-drive/legacy package](/api/@warp-drive/legacy/) and by [LegacyMode](/guides/the-manual/schemas/resources/polaris-mode.md) schemas together with [Extensions](/api/@warp-drive/core/reactive/types/CAUTION_MEGA_DANGER_ZONE_Extension) to mimic much of the removed API surface to allow apps to bridge the gap to 5.x more easily. 
 
 ## Pre-Migration (update to Native Types)
 
@@ -418,9 +418,9 @@ export default useLegacyStore({
 **Additional Reading** (for when you have questions later)
 
 - [useLegacyStore](/api/@warp-drive/legacy/functions/useLegacyStore)
-  - [LinksMode setting](/api/@warp-drive/legacy/interfaces/LegacyModelAndNetworkAndRequestStoreSetupOptions#linksmode)
-  - [legacyRequests setting](/api/@warp-drive/legacy/interfaces/LegacyModelAndNetworkAndRequestStoreSetupOptions#legacyrequests)
-  - [modelFragments setting](/api/@warp-drive/legacy/interfaces/LegacyModelAndNetworkAndRequestStoreSetupOptions#modelfragments)
+  - [LinksMode setting](/api/@warp-drive/legacy/types/LegacyModelAndNetworkAndRequestStoreSetupOptions#linksmode)
+  - [legacyRequests setting](/api/@warp-drive/legacy/types/LegacyModelAndNetworkAndRequestStoreSetupOptions#legacyrequests)
+  - [modelFragments setting](/api/@warp-drive/legacy/types/LegacyModelAndNetworkAndRequestStoreSetupOptions#modelfragments)
   - About the [LinksMode feature](/guides/the-manual/misc/links-mode)
 - [Model Migration Support](/api/@warp-drive/legacy/model/migration-support/)
   - the legacy store uses the [DelegatingSchemaService](/api/@warp-drive/legacy/model/migration-support/classes/DelegatingSchemaService)
@@ -435,12 +435,12 @@ export default useLegacyStore({
 
 Key concepts:
 
-- [LegacyResourceSchema](/api/@warp-drive/core/types/schema/fields/interfaces/LegacyResourceSchema)
-- [LegacyModeFieldSchema](/api/@warp-drive/core/types/schema/fields/type-aliases/LegacyModeFieldSchema)
-- [registerTrait](/api/@warp-drive/core/types/schema/schema-service/interfaces/SchemaService#registertrait)
-- [LegacyTrait](/api/@warp-drive/core/types/schema/fields/interfaces/LegacyTrait)
-- [CAUTION_MEGA_DANGER_ZONE_registerExtension()](/api/@warp-drive/core/types/schema/schema-service/interfaces/SchemaService#caution-mega-danger-zone-registerextension)
-- [CAUTION_MEGA_DANGER_ZONE_Extension](/api/@warp-drive/core/reactive/interfaces/CAUTION_MEGA_DANGER_ZONE_Extension)
+- [LegacyResourceSchema](/api/@warp-drive/core/types/schema/fields/types/LegacyResourceSchema)
+- [LegacyModeFieldSchema](/api/@warp-drive/core/types/schema/fields/types/LegacyModeFieldSchema)
+- [registerTrait](/api/@warp-drive/core/types/schema/schema-service/types/SchemaService#registertrait)
+- [LegacyTrait](/api/@warp-drive/core/types/schema/fields/types/LegacyTrait)
+- [CAUTION_MEGA_DANGER_ZONE_registerExtension()](/api/@warp-drive/core/types/schema/schema-service/types/SchemaService#caution-mega-danger-zone-registerextension)
+- [CAUTION_MEGA_DANGER_ZONE_Extension](/api/@warp-drive/core/reactive/types/CAUTION_MEGA_DANGER_ZONE_Extension)
 
 ---
 
