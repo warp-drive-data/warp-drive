@@ -4,13 +4,7 @@ url: /pr-preview/pr-11117/api/@warp-drive/holodeck/classes/MockServerHandler.md
 
 # &#x20;MockServerHandler
 
-```ts
-class MockServerHandler implements Handler {
-  constructor(owner: object);
-}
-```
-
-Defined in: [index.ts:209](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/packages/holodeck/src/index.ts#L209)
+Defined in: [index.ts:209](https://github.com/warp-drive-data/warp-drive/blob/3e01a7f0373e29c82765d26c241a949bcf7d5b2d/packages/holodeck/src/index.ts#L209)
 
 A request handler that intercepts requests and routes them through
 the Holodeck mock server.
@@ -38,7 +32,7 @@ the test context object used to retrieve the test ID.
 new MockServerHandler(owner: object): MockServerHandler;
 ```
 
-Defined in: [index.ts:211](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/packages/holodeck/src/index.ts#L211)
+Defined in: [index.ts:211](https://github.com/warp-drive-data/warp-drive/blob/3e01a7f0373e29c82765d26c241a949bcf7d5b2d/packages/holodeck/src/index.ts#L211)
 
 #### Parameters
 
@@ -58,7 +52,7 @@ Defined in: [index.ts:211](https://github.com/warp-drive-data/warp-drive/blob/ef
 request<T>(context: RequestContext, next: NextFn<T>): Promise<StructuredDataDocument<T>>;
 ```
 
-Defined in: [index.ts:214](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/packages/holodeck/src/index.ts#L214)
+Defined in: [index.ts:214](https://github.com/warp-drive-data/warp-drive/blob/3e01a7f0373e29c82765d26c241a949bcf7d5b2d/packages/holodeck/src/index.ts#L214)
 
 Method to implement to handle requests. Receives the request
 context and a nextFn to call to pass-along the request to
@@ -98,4 +92,4 @@ Handler.request
 owner: object;
 ```
 
-Defined in: [index.ts:210](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/packages/holodeck/src/index.ts#L210)
+Defined in: [index.ts:210](https://github.com/warp-drive-data/warp-drive/blob/3e01a7f0373e29c82765d26c241a949bcf7d5b2d/packages/holodeck/src/index.ts#L210)

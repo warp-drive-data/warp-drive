@@ -11,7 +11,7 @@ type ResourceDataDocument<T = PersistedResourceKey> =
 | CollectionResourceDataDocument<T>;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/document.ts:94](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/types/spec/document.ts#L94)
+Defined in: [warp-drive-packages/core/src/types/spec/document.ts:94](https://github.com/warp-drive-data/warp-drive/blob/3e01a7f0373e29c82765d26c241a949bcf7d5b2d/warp-drive-packages/core/src/types/spec/document.ts#L94)
 
 A type useful for representing the raw {json:api} documents that
 the cache may use.

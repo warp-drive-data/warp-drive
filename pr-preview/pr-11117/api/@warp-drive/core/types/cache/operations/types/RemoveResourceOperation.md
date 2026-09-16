@@ -12,7 +12,7 @@ interface RemoveResourceOperation extends Op {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:76](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/types/cache/operations.ts#L76)
+Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:76](https://github.com/warp-drive-data/warp-drive/blob/3e01a7f0373e29c82765d26c241a949bcf7d5b2d/warp-drive-packages/core/src/types/cache/operations.ts#L76)
 
 Removes a resource from the cache. This is treated
 as if a remote deletion has occurred, and all references
@@ -30,7 +30,7 @@ to the resource should be eliminated.
 op: "remove";
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:77](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/types/cache/operations.ts#L77)
+Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:77](https://github.com/warp-drive-data/warp-drive/blob/3e01a7f0373e29c82765d26c241a949bcf7d5b2d/warp-drive-packages/core/src/types/cache/operations.ts#L77)
 
 The name of the [operation](Op.md)
 
@@ -46,6 +46,6 @@ The name of the [operation](Op.md)
 record: PersistedResourceKey;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:81](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/types/cache/operations.ts#L81)
+Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:81](https://github.com/warp-drive-data/warp-drive/blob/3e01a7f0373e29c82765d26c241a949bcf7d5b2d/warp-drive-packages/core/src/types/cache/operations.ts#L81)
 
 The cache key for the resource

@@ -7,13 +7,7 @@ url: >-
 
 # &#x20;ImageWorker
 
-```ts
-class ImageWorker {
-  constructor(options?: { persisted: boolean });
-}
-```
-
-Defined in: [image-worker/worker.ts:32](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/experiments/src/image-worker/worker.ts#L32)
+Defined in: [image-worker/worker.ts:32](https://github.com/warp-drive-data/warp-drive/blob/3e01a7f0373e29c82765d26c241a949bcf7d5b2d/warp-drive-packages/experiments/src/image-worker/worker.ts#L32)
 
 Runs inside a `Worker` or `SharedWorker` to fetch images on behalf of
 one or more [ImageFetch](../../image-fetch/classes/ImageFetch.md) instances running on the main thread(s)
@@ -41,7 +35,7 @@ new ImageWorker(options?: {
 }): ImageWorker;
 ```
 
-Defined in: [image-worker/worker.ts:42](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/experiments/src/image-worker/worker.ts#L42)
+Defined in: [image-worker/worker.ts:42](https://github.com/warp-drive-data/warp-drive/blob/3e01a7f0373e29c82765d26c241a949bcf7d5b2d/warp-drive-packages/experiments/src/image-worker/worker.ts#L42)
 
 #### Parameters
 

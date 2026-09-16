@@ -8,7 +8,7 @@ url: /pr-preview/pr-11117/api/@warp-drive/schema-dsl/functions/belongsTo.md
 function belongsTo(options: BelongsToOptions): (target: object, key: string) => void;
 ```
 
-Defined in: [fields/belongs-to.ts:98](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/schema-dsl/src/fields/belongs-to.ts#L98)
+Defined in: [fields/belongs-to.ts:98](https://github.com/warp-drive-data/warp-drive/blob/3e01a7f0373e29c82765d26c241a949bcf7d5b2d/warp-drive-packages/schema-dsl/src/fields/belongs-to.ts#L98)
 
 **`Decorator`**
 

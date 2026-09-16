@@ -18,7 +18,7 @@ type CacheCapabilitiesManager = {
 };
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-types/q/cache-capabilities-manager.ts:21](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/store/-types/q/cache-capabilities-manager.ts#L21)
+Defined in: [warp-drive-packages/core/src/store/-types/q/cache-capabilities-manager.ts:21](https://github.com/warp-drive-data/warp-drive/blob/3e01a7f0373e29c82765d26c241a949bcf7d5b2d/warp-drive-packages/core/src/store/-types/q/cache-capabilities-manager.ts#L21)
 
 CacheCapabilitiesManager provides encapsulated API access to the minimal
 subset of the Store's functionality that Cache implementations
@@ -36,7 +36,7 @@ This class cannot be directly instantiated.
 disconnectRecord(identifier: ResourceKey): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-types/q/cache-capabilities-manager.ts:78](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/store/-types/q/cache-capabilities-manager.ts#L78)
+Defined in: [warp-drive-packages/core/src/store/-types/q/cache-capabilities-manager.ts:78](https://github.com/warp-drive-data/warp-drive/blob/3e01a7f0373e29c82765d26c241a949bcf7d5b2d/warp-drive-packages/core/src/store/-types/q/cache-capabilities-manager.ts#L78)
 
 Signal to the store that the specified record may be considered fully
 removed from the cache. Generally this means that not only does no
@@ -61,7 +61,7 @@ point to it either.
 getSchemaDefinitionService(): SchemaService;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-types/q/cache-capabilities-manager.ts:48](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/store/-types/q/cache-capabilities-manager.ts#L48)
+Defined in: [warp-drive-packages/core/src/store/-types/q/cache-capabilities-manager.ts:48](https://github.com/warp-drive-data/warp-drive/blob/3e01a7f0373e29c82765d26c241a949bcf7d5b2d/warp-drive-packages/core/src/store/-types/q/cache-capabilities-manager.ts#L48)
 
 DEPRECATED - use the schema property
 
@@ -87,7 +87,7 @@ use [CacheCapabilitiesManager.schema](#schema)
 hasRecord(identifier: ResourceKey): boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-types/q/cache-capabilities-manager.ts:86](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/store/-types/q/cache-capabilities-manager.ts#L86)
+Defined in: [warp-drive-packages/core/src/store/-types/q/cache-capabilities-manager.ts:86](https://github.com/warp-drive-data/warp-drive/blob/3e01a7f0373e29c82765d26c241a949bcf7d5b2d/warp-drive-packages/core/src/store/-types/q/cache-capabilities-manager.ts#L86)
 
 Use this method to determine if the Store has an instantiated record associated
 with an identifier.
@@ -149,7 +149,7 @@ notifyChange(
 ): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-types/q/cache-capabilities-manager.ts:96](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/store/-types/q/cache-capabilities-manager.ts#L96)
+Defined in: [warp-drive-packages/core/src/store/-types/q/cache-capabilities-manager.ts:96](https://github.com/warp-drive-data/warp-drive/blob/3e01a7f0373e29c82765d26c241a949bcf7d5b2d/warp-drive-packages/core/src/store/-types/q/cache-capabilities-manager.ts#L96)
 
 Notify subscribers of the NotificationManager that cache state has changed.
 
@@ -184,7 +184,7 @@ notifyChange(
 ): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-types/q/cache-capabilities-manager.ts:104](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/store/-types/q/cache-capabilities-manager.ts#L104)
+Defined in: [warp-drive-packages/core/src/store/-types/q/cache-capabilities-manager.ts:104](https://github.com/warp-drive-data/warp-drive/blob/3e01a7f0373e29c82765d26c241a949bcf7d5b2d/warp-drive-packages/core/src/store/-types/q/cache-capabilities-manager.ts#L104)
 
 Notify subscribers that a request (as identified by a [RequestKey](../identifier/types/RequestKey.md))
 has been added, updated, or removed from the cache. `key` is always
@@ -219,7 +219,7 @@ notifyChange(
 ): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-types/q/cache-capabilities-manager.ts:126](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/store/-types/q/cache-capabilities-manager.ts#L126)
+Defined in: [warp-drive-packages/core/src/store/-types/q/cache-capabilities-manager.ts:126](https://github.com/warp-drive-data/warp-drive/blob/3e01a7f0373e29c82765d26c241a949bcf7d5b2d/warp-drive-packages/core/src/store/-types/q/cache-capabilities-manager.ts#L126)
 
 Notify subscribers that one or more attributes on a resource have
 changed. `key` may be a single attribute name, or - since 5.9.0 - a
@@ -271,7 +271,7 @@ notifyChange(
 ): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-types/q/cache-capabilities-manager.ts:153](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/store/-types/q/cache-capabilities-manager.ts#L153)
+Defined in: [warp-drive-packages/core/src/store/-types/q/cache-capabilities-manager.ts:153](https://github.com/warp-drive-data/warp-drive/blob/3e01a7f0373e29c82765d26c241a949bcf7d5b2d/warp-drive-packages/core/src/store/-types/q/cache-capabilities-manager.ts#L153)
 
 Notify subscribers of a change to a resource for any other
 [NotificationType](../NotificationType.md). `attributes` and `relationships` do not
@@ -326,7 +326,7 @@ notifyChange(
 ): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-types/q/cache-capabilities-manager.ts:165](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/store/-types/q/cache-capabilities-manager.ts#L165)
+Defined in: [warp-drive-packages/core/src/store/-types/q/cache-capabilities-manager.ts:165](https://github.com/warp-drive-data/warp-drive/blob/3e01a7f0373e29c82765d26c241a949bcf7d5b2d/warp-drive-packages/core/src/store/-types/q/cache-capabilities-manager.ts#L165)
 
 Implementation signature for [CacheCapabilitiesManager.notifyChange](#notifychange)
 covering all supported combinations of identifier, namespace, and key.
@@ -362,7 +362,7 @@ covering all supported combinations of identifier, namespace, and key.
 setRecordId(identifier: ResourceKey, id: string): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-types/q/cache-capabilities-manager.ts:68](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/store/-types/q/cache-capabilities-manager.ts#L68)
+Defined in: [warp-drive-packages/core/src/store/-types/q/cache-capabilities-manager.ts:68](https://github.com/warp-drive-data/warp-drive/blob/3e01a7f0373e29c82765d26c241a949bcf7d5b2d/warp-drive-packages/core/src/store/-types/q/cache-capabilities-manager.ts#L68)
 
 Update the `id` for the record corresponding to the identifier
 This operation can only be done for records whose `id` is `null`.
@@ -389,7 +389,7 @@ This operation can only be done for records whose `id` is `null`.
 cacheKeyManager: CacheKeyManager;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-types/q/cache-capabilities-manager.ts:31](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/store/-types/q/cache-capabilities-manager.ts#L31)
+Defined in: [warp-drive-packages/core/src/store/-types/q/cache-capabilities-manager.ts:31](https://github.com/warp-drive-data/warp-drive/blob/3e01a7f0373e29c82765d26c241a949bcf7d5b2d/warp-drive-packages/core/src/store/-types/q/cache-capabilities-manager.ts#L31)
 
 Provides access to the CacheKeyManager instance
 for this Store instance.
@@ -405,7 +405,7 @@ retrieve a stable unique identifier for any resource.
 identifierCache: CacheKeyManager;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-types/q/cache-capabilities-manager.ts:34](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/store/-types/q/cache-capabilities-manager.ts#L34)
+Defined in: [warp-drive-packages/core/src/store/-types/q/cache-capabilities-manager.ts:34](https://github.com/warp-drive-data/warp-drive/blob/3e01a7f0373e29c82765d26c241a949bcf7d5b2d/warp-drive-packages/core/src/store/-types/q/cache-capabilities-manager.ts#L34)
 
 #### Deprecated
 
@@ -419,7 +419,7 @@ use [CacheCapabilitiesManager.cacheKeyManager](#cachekeymanager)
 schema: SchemaService;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-types/q/cache-capabilities-manager.ts:60](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/store/-types/q/cache-capabilities-manager.ts#L60)
+Defined in: [warp-drive-packages/core/src/store/-types/q/cache-capabilities-manager.ts:60](https://github.com/warp-drive-data/warp-drive/blob/3e01a7f0373e29c82765d26c241a949bcf7d5b2d/warp-drive-packages/core/src/store/-types/q/cache-capabilities-manager.ts#L60)
 
 Provides access to the SchemaService instance
 for this Store instance.

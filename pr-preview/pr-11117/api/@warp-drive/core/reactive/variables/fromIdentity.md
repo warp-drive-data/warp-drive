@@ -8,7 +8,7 @@ url: /pr-preview/pr-11117/api/@warp-drive/core/reactive/variables/fromIdentity.m
 const fromIdentity: FromIdentityDerivation;
 ```
 
-Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:481](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/reactive/-private/schema.ts#L481)
+Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:481](https://github.com/warp-drive-data/warp-drive/blob/3e01a7f0373e29c82765d26c241a949bcf7d5b2d/warp-drive-packages/core/src/reactive/-private/schema.ts#L481)
 
 A derivation that computes its value from the
 record's identity.

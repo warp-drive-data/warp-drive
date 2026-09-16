@@ -8,7 +8,7 @@ url: /pr-preview/pr-11117/api/@warp-drive/schema-dsl/functions/schemaObject.md
 function schemaObject(options: SchemaObjectOptions): (target: object, key: string) => void;
 ```
 
-Defined in: [fields/schema-object.ts:112](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/schema-dsl/src/fields/schema-object.ts#L112)
+Defined in: [fields/schema-object.ts:112](https://github.com/warp-drive-data/warp-drive/blob/3e01a7f0373e29c82765d26c241a949bcf7d5b2d/warp-drive-packages/schema-dsl/src/fields/schema-object.ts#L112)
 
 **`Decorator`**
 

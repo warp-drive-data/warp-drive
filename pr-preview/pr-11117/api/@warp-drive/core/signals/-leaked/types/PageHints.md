@@ -8,7 +8,7 @@ url: /pr-preview/pr-11117/api/@warp-drive/core/signals/-leaked/types/PageHints.m
 interface PageHints {}
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-cache.ts:29](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/signals/pagination-cache.ts#L29)
+Defined in: [warp-drive-packages/core/src/signals/pagination-cache.ts:29](https://github.com/warp-drive-data/warp-drive/blob/3e01a7f0373e29c82765d26c241a949bcf7d5b2d/warp-drive-packages/core/src/signals/pagination-cache.ts#L29)
 
 A hint function for extracting the `currentPage` and `totalPages` from a loaded
 document, for when the response does not expose these values through the
@@ -31,7 +31,7 @@ PageHints(document: ReactiveDocument<unknown>): {
 };
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-cache.ts:30](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/signals/pagination-cache.ts#L30)
+Defined in: [warp-drive-packages/core/src/signals/pagination-cache.ts:30](https://github.com/warp-drive-data/warp-drive/blob/3e01a7f0373e29c82765d26c241a949bcf7d5b2d/warp-drive-packages/core/src/signals/pagination-cache.ts#L30)
 
 A hint function for extracting the `currentPage` and `totalPages` from a loaded
 document, for when the response does not expose these values through the

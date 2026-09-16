@@ -9,7 +9,7 @@ url: >-
 const MetaDocHandler: Handler;
 ```
 
-Defined in: [-private/handlers/meta-doc.ts:50](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/utilities/src/-private/handlers/meta-doc.ts#L50)
+Defined in: [-private/handlers/meta-doc.ts:50](https://github.com/warp-drive-data/warp-drive/blob/3e01a7f0373e29c82765d26c241a949bcf7d5b2d/warp-drive-packages/utilities/src/-private/handlers/meta-doc.ts#L50)
 
 MetaDocHandler processes requests that are marked as meta requests.
 

@@ -35,7 +35,7 @@ interface WarpDriveConfig {
 }
 ```
 
-Defined in: [index.ts:111](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/build-config/src/index.ts#L111)
+Defined in: [index.ts:111](https://github.com/warp-drive-data/warp-drive/blob/3e01a7f0373e29c82765d26c241a949bcf7d5b2d/warp-drive-packages/build-config/src/index.ts#L111)
 
 Build Configuration options for WarpDrive that
 allow adjusting logging, deprecations, canary features
@@ -49,7 +49,7 @@ and optional features.
 optional compatWith?: `${number}.${number}`;
 ```
 
-Defined in: [index.ts:166](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/build-config/src/index.ts#L166)
+Defined in: [index.ts:166](https://github.com/warp-drive-data/warp-drive/blob/3e01a7f0373e29c82765d26c241a949bcf7d5b2d/warp-drive-packages/build-config/src/index.ts#L166)
 
 The most recent version of the library from which all
 deprecations have been resolved.
@@ -76,7 +76,7 @@ See [deprecations](../../deprecations/index.md) for more details.
 optional debug?: Partial<debugging>;
 ```
 
-Defined in: [index.ts:125](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/build-config/src/index.ts#L125)
+Defined in: [index.ts:125](https://github.com/warp-drive-data/warp-drive/blob/3e01a7f0373e29c82765d26c241a949bcf7d5b2d/warp-drive-packages/build-config/src/index.ts#L125)
 
 An object of key/value pairs of logging flags
 
@@ -111,7 +111,7 @@ optional deprecations?: Partial<{
 }>;
 ```
 
-Defined in: [index.ts:181](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/build-config/src/index.ts#L181)
+Defined in: [index.ts:181](https://github.com/warp-drive-data/warp-drive/blob/3e01a7f0373e29c82765d26c241a949bcf7d5b2d/warp-drive-packages/build-config/src/index.ts#L181)
 
 An object of key/value pairs of logging flags
 
@@ -135,7 +135,7 @@ optional features?: Partial<{
 }>;
 ```
 
-Defined in: [index.ts:198](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/build-config/src/index.ts#L198)
+Defined in: [index.ts:198](https://github.com/warp-drive-data/warp-drive/blob/3e01a7f0373e29c82765d26c241a949bcf7d5b2d/warp-drive-packages/build-config/src/index.ts#L198)
 
 An object of key/value pairs of canary feature flags
 for use when testing new features gated behind a flag
@@ -157,7 +157,7 @@ see [features](../../canary-features/index.md) for the available flags.
 optional includeDataAdapterInProduction?: boolean;
 ```
 
-Defined in: [index.ts:146](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/build-config/src/index.ts#L146)
+Defined in: [index.ts:146](https://github.com/warp-drive-data/warp-drive/blob/3e01a7f0373e29c82765d26c241a949bcf7d5b2d/warp-drive-packages/build-config/src/index.ts#L146)
 
 By default, the integration required to support the ember-inspector
 browser extension is included in production builds only when using
@@ -174,7 +174,7 @@ enable/disable it in production builds.
 optional polyfillUUID?: boolean;
 ```
 
-Defined in: [index.ts:134](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/build-config/src/index.ts#L134)
+Defined in: [index.ts:134](https://github.com/warp-drive-data/warp-drive/blob/3e01a7f0373e29c82765d26c241a949bcf7d5b2d/warp-drive-packages/build-config/src/index.ts#L134)
 
 If you are using the library in an environment that does not
 support `window.crypto.randomUUID` you can enable a polyfill

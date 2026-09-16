@@ -16,7 +16,7 @@ function Trait(options: TraitOptions): (target: AnyConstructor) => void;
 function Trait(target: AnyConstructor): void;
 ```
 
-Defined in: [entities/trait.ts:71](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/schema-dsl/src/entities/trait.ts#L71)
+Defined in: [entities/trait.ts:71](https://github.com/warp-drive-data/warp-drive/blob/3e01a7f0373e29c82765d26c241a949bcf7d5b2d/warp-drive-packages/schema-dsl/src/entities/trait.ts#L71)
 
 **`Class Decorator`**
 
@@ -75,7 +75,7 @@ export class Timestamped {
 function Trait(name: string, options?: TraitOptions): (target: AnyConstructor) => void;
 ```
 
-Defined in: [entities/trait.ts:72](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/schema-dsl/src/entities/trait.ts#L72)
+Defined in: [entities/trait.ts:72](https://github.com/warp-drive-data/warp-drive/blob/3e01a7f0373e29c82765d26c241a949bcf7d5b2d/warp-drive-packages/schema-dsl/src/entities/trait.ts#L72)
 
 **`Class Decorator`**
 
@@ -138,7 +138,7 @@ export class Timestamped {
 function Trait(options: TraitOptions): (target: AnyConstructor) => void;
 ```
 
-Defined in: [entities/trait.ts:73](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/schema-dsl/src/entities/trait.ts#L73)
+Defined in: [entities/trait.ts:73](https://github.com/warp-drive-data/warp-drive/blob/3e01a7f0373e29c82765d26c241a949bcf7d5b2d/warp-drive-packages/schema-dsl/src/entities/trait.ts#L73)
 
 **`Class Decorator`**
 

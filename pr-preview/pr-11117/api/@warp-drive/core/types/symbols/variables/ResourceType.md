@@ -9,7 +9,7 @@ url: >-
 const ResourceType: "___(unique) Symbol($type)" = Type;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/symbols.ts:66](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/types/symbols.ts#L66)
+Defined in: [warp-drive-packages/core/src/types/symbols.ts:66](https://github.com/warp-drive-data/warp-drive/blob/3e01a7f0373e29c82765d26c241a949bcf7d5b2d/warp-drive-packages/core/src/types/symbols.ts#L66)
 
 Symbol for the type of a resource.
 

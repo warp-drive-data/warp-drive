@@ -17,7 +17,7 @@ interface FindManyUrlOptions {
 }
 ```
 
-Defined in: [index.ts:170](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/utilities/src/index.ts#L170)
+Defined in: [index.ts:170](https://github.com/warp-drive-data/warp-drive/blob/3e01a7f0373e29c82765d26c241a949bcf7d5b2d/warp-drive-packages/utilities/src/index.ts#L170)
 
 [buildBaseURL](../functions/buildBaseURL.md) options for a `findMany` request.
 
@@ -29,7 +29,7 @@ Defined in: [index.ts:170](https://github.com/warp-drive-data/warp-drive/blob/ef
 optional host?: string;
 ```
 
-Defined in: [index.ts:195](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/utilities/src/index.ts#L195)
+Defined in: [index.ts:195](https://github.com/warp-drive-data/warp-drive/blob/3e01a7f0373e29c82765d26c241a949bcf7d5b2d/warp-drive-packages/utilities/src/index.ts#L195)
 
 Overrides the globally configured host for this call only.
 
@@ -44,7 +44,7 @@ identifiers: {
 }[];
 ```
 
-Defined in: [index.ts:178](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/utilities/src/index.ts#L178)
+Defined in: [index.ts:178](https://github.com/warp-drive-data/warp-drive/blob/3e01a7f0373e29c82765d26c241a949bcf7d5b2d/warp-drive-packages/utilities/src/index.ts#L178)
 
 The type and id of each record to find.
 
@@ -72,7 +72,7 @@ The resource type.
 optional namespace?: string;
 ```
 
-Defined in: [index.ts:199](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/utilities/src/index.ts#L199)
+Defined in: [index.ts:199](https://github.com/warp-drive-data/warp-drive/blob/3e01a7f0373e29c82765d26c241a949bcf7d5b2d/warp-drive-packages/utilities/src/index.ts#L199)
 
 Overrides the globally configured namespace for this call only.
 
@@ -84,7 +84,7 @@ Overrides the globally configured namespace for this call only.
 op: "findMany";
 ```
 
-Defined in: [index.ts:174](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/utilities/src/index.ts#L174)
+Defined in: [index.ts:174](https://github.com/warp-drive-data/warp-drive/blob/3e01a7f0373e29c82765d26c241a949bcf7d5b2d/warp-drive-packages/utilities/src/index.ts#L174)
 
 The request operation this URL is for.
 
@@ -96,6 +96,6 @@ The request operation this URL is for.
 optional resourcePath?: string;
 ```
 
-Defined in: [index.ts:191](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/utilities/src/index.ts#L191)
+Defined in: [index.ts:191](https://github.com/warp-drive-data/warp-drive/blob/3e01a7f0373e29c82765d26c241a949bcf7d5b2d/warp-drive-packages/utilities/src/index.ts#L191)
 
 The path segment for the resource, defaults to the first identifier's `type` if not provided.

@@ -5,13 +5,7 @@ url: >-
 
 # &#x20;LifetimesService
 
-```ts
-class LifetimesService extends DefaultCachePolicy {
-  constructor(config: PolicyConfig);
-}
-```
-
-Defined in: [index.ts:53](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/packages/request-utils/src/index.ts#L53)
+Defined in: [index.ts:53](https://github.com/warp-drive-data/warp-drive/blob/3e01a7f0373e29c82765d26c241a949bcf7d5b2d/packages/request-utils/src/index.ts#L53)
 
 ## Extends
 
@@ -25,7 +19,7 @@ Defined in: [index.ts:53](https://github.com/warp-drive-data/warp-drive/blob/efe
 new LifetimesService(config: PolicyConfig): LifetimesService;
 ```
 
-Defined in: [index.ts:54](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/packages/request-utils/src/index.ts#L54)
+Defined in: [index.ts:54](https://github.com/warp-drive-data/warp-drive/blob/3e01a7f0373e29c82765d26c241a949bcf7d5b2d/packages/request-utils/src/index.ts#L54)
 
 #### Parameters
 

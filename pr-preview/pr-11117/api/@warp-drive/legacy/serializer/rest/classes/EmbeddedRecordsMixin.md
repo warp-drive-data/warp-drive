@@ -7,11 +7,7 @@ url: >-
 
 # &#x20;EmbeddedRecordsMixin
 
-```ts
-class EmbeddedRecordsMixin;
-```
-
-Defined in: [warp-drive-packages/legacy/src/serializer/-private/embedded-records-mixin.ts:102](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/legacy/src/serializer/-private/embedded-records-mixin.ts#L102)
+Defined in: [warp-drive-packages/legacy/src/serializer/-private/embedded-records-mixin.ts:102](https://github.com/warp-drive-data/warp-drive/blob/3e01a7f0373e29c82765d26c241a949bcf7d5b2d/warp-drive-packages/legacy/src/serializer/-private/embedded-records-mixin.ts#L102)
 
 ## Using Embedded Records
 

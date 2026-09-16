@@ -17,7 +17,7 @@ interface AttrOptions {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:10](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/types/schema/fields.ts#L10)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:10](https://github.com/warp-drive-data/warp-drive/blob/3e01a7f0373e29c82765d26c241a949bcf7d5b2d/warp-drive-packages/core/src/types/schema/fields.ts#L10)
 
 Options signature for Legacy Attributes.
 
@@ -40,6 +40,6 @@ optional defaultValue?:
   | (() => Value);
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:14](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/types/schema/fields.ts#L14)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:14](https://github.com/warp-drive-data/warp-drive/blob/3e01a7f0373e29c82765d26c241a949bcf7d5b2d/warp-drive-packages/core/src/types/schema/fields.ts#L14)
 
 A primitive value or a function which produces a value.

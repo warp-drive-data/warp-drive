@@ -22,7 +22,7 @@ interface StoreSetupOptions<T extends Cache = Cache> {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/index.ts:76](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/index.ts#L76)
+Defined in: [warp-drive-packages/core/src/index.ts:76](https://github.com/warp-drive-data/warp-drive/blob/3e01a7f0373e29c82765d26c241a949bcf7d5b2d/warp-drive-packages/core/src/index.ts#L76)
 
 Options for setting up a Store instance with `useRecommendedStore`.
 
@@ -40,7 +40,7 @@ Options for setting up a Store instance with `useRecommendedStore`.
 cache: (capabilities: CacheCapabilitiesManager) => T;
 ```
 
-Defined in: [warp-drive-packages/core/src/index.ts:81](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/index.ts#L81)
+Defined in: [warp-drive-packages/core/src/index.ts:81](https://github.com/warp-drive-data/warp-drive/blob/3e01a7f0373e29c82765d26c241a949bcf7d5b2d/warp-drive-packages/core/src/index.ts#L81)
 
 A constructor for the [Cache](cache/types/Cache.md) implementation to use, receiving the
 store's [CacheCapabilitiesManager](types/CacheCapabilitiesManager.md) when instantiated.
@@ -65,7 +65,7 @@ Constructs a new [Cache](cache/types/Cache.md) instance for the store.
 optional CAUTION_MEGA_DANGER_ZONE_extensions?: CAUTION_MEGA_DANGER_ZONE_Extension[];
 ```
 
-Defined in: [warp-drive-packages/core/src/index.ts:143](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/index.ts#L143)
+Defined in: [warp-drive-packages/core/src/index.ts:143](https://github.com/warp-drive-data/warp-drive/blob/3e01a7f0373e29c82765d26c241a949bcf7d5b2d/warp-drive-packages/core/src/index.ts#L143)
 
 [Extensions](../reactive/types/CAUTION_MEGA_DANGER_ZONE_Extension.md) to use with resources, objects and arrays
 to provide custom behaviors and capabilities that are not described by Schema.
@@ -81,7 +81,7 @@ schemas from existing Model and ModelFragments implementations.
 optional derivations?: Derivation[];
 ```
 
-Defined in: [warp-drive-packages/core/src/index.ts:127](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/index.ts#L127)
+Defined in: [warp-drive-packages/core/src/index.ts:127](https://github.com/warp-drive-data/warp-drive/blob/3e01a7f0373e29c82765d26c241a949bcf7d5b2d/warp-drive-packages/core/src/index.ts#L127)
 
 [Derivations](schema/concepts/types/Derivation.md) to use for derived fields.
 
@@ -95,7 +95,7 @@ optional handlers?:
   | ((store: Store) => Handler[]);
 ```
 
-Defined in: [warp-drive-packages/core/src/index.ts:113](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/index.ts#L113)
+Defined in: [warp-drive-packages/core/src/index.ts:113](https://github.com/warp-drive-data/warp-drive/blob/3e01a7f0373e29c82765d26c241a949bcf7d5b2d/warp-drive-packages/core/src/index.ts#L113)
 
 The request handlers to use. [Fetch](../variables/Fetch.md) will automatically
 be added to the end of the handler chain and [CacheHandler](../variables/CacheHandler.md)
@@ -122,7 +122,7 @@ access to an Ember service.
 optional hashFns?: HashFn[];
 ```
 
-Defined in: [warp-drive-packages/core/src/index.ts:135](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/index.ts#L135)
+Defined in: [warp-drive-packages/core/src/index.ts:135](https://github.com/warp-drive-data/warp-drive/blob/3e01a7f0373e29c82765d26c241a949bcf7d5b2d/warp-drive-packages/core/src/index.ts#L135)
 
 [Hash Functions](schema/concepts/types/HashFn.md) to use for embedded object identity and polymorphic type calculations
 
@@ -134,7 +134,7 @@ Defined in: [warp-drive-packages/core/src/index.ts:135](https://github.com/warp-
 optional policy?: CachePolicy;
 ```
 
-Defined in: [warp-drive-packages/core/src/index.ts:94](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/index.ts#L94)
+Defined in: [warp-drive-packages/core/src/index.ts:94](https://github.com/warp-drive-data/warp-drive/blob/3e01a7f0373e29c82765d26c241a949bcf7d5b2d/warp-drive-packages/core/src/index.ts#L94)
 
 The Cache policy to use.
 
@@ -152,7 +152,7 @@ optional schemas?: (
   | ObjectSchema)[];
 ```
 
-Defined in: [warp-drive-packages/core/src/index.ts:119](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/index.ts#L119)
+Defined in: [warp-drive-packages/core/src/index.ts:119](https://github.com/warp-drive-data/warp-drive/blob/3e01a7f0373e29c82765d26c241a949bcf7d5b2d/warp-drive-packages/core/src/index.ts#L119)
 
 Schemas describing the structure of your resource data.
 
@@ -166,7 +166,7 @@ See [,](schema/fields/types/PolarisResourceSchema.md) and [ObjectSchema](schema/
 optional traits?: Trait[];
 ```
 
-Defined in: [warp-drive-packages/core/src/index.ts:123](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/index.ts#L123)
+Defined in: [warp-drive-packages/core/src/index.ts:123](https://github.com/warp-drive-data/warp-drive/blob/3e01a7f0373e29c82765d26c241a949bcf7d5b2d/warp-drive-packages/core/src/index.ts#L123)
 
 [Traits](schema/fields/types/Trait.md) to use with [, | Resource Schemas](schema/fields/types/PolarisResourceSchema.md)
 
@@ -178,6 +178,6 @@ Defined in: [warp-drive-packages/core/src/index.ts:123](https://github.com/warp-
 optional transformations?: Transformation[];
 ```
 
-Defined in: [warp-drive-packages/core/src/index.ts:131](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/index.ts#L131)
+Defined in: [warp-drive-packages/core/src/index.ts:131](https://github.com/warp-drive-data/warp-drive/blob/3e01a7f0373e29c82765d26c241a949bcf7d5b2d/warp-drive-packages/core/src/index.ts#L131)
 
 [Transformations](schema/concepts/types/Transformation.md) to use for transforming fields.

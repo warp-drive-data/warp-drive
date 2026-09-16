@@ -7,13 +7,7 @@ url: >-
 
 # &#x20;BooleanTransform
 
-```ts
-class BooleanTransform {
-  constructor();
-}
-```
-
-Defined in: [warp-drive-packages/legacy/src/serializer/-private/transforms/boolean.ts:6](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/legacy/src/serializer/-private/transforms/boolean.ts#L6)
+Defined in: [warp-drive-packages/legacy/src/serializer/-private/transforms/boolean.ts:6](https://github.com/warp-drive-data/warp-drive/blob/3e01a7f0373e29c82765d26c241a949bcf7d5b2d/warp-drive-packages/legacy/src/serializer/-private/transforms/boolean.ts#L6)
 
 The `BooleanTransform` class is used to serialize and deserialize
 boolean attributes on Ember Data record objects. This transform is
@@ -68,7 +62,7 @@ deserialize(serialized: string | number | boolean | null, options?: {
 }): boolean | null;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/serializer/-private/transforms/boolean.ts:52](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/legacy/src/serializer/-private/transforms/boolean.ts#L52)
+Defined in: [warp-drive-packages/legacy/src/serializer/-private/transforms/boolean.ts:52](https://github.com/warp-drive-data/warp-drive/blob/3e01a7f0373e29c82765d26c241a949bcf7d5b2d/warp-drive-packages/legacy/src/serializer/-private/transforms/boolean.ts#L52)
 
 Converts a serialized (raw payload) value into a `boolean` (or `null`
 when `allowNull` is set and the value is nullish).
@@ -99,7 +93,7 @@ serialize(deserialized: boolean | null, options?: {
 }): boolean | null;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/serializer/-private/transforms/boolean.ts:71](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/legacy/src/serializer/-private/transforms/boolean.ts#L71)
+Defined in: [warp-drive-packages/legacy/src/serializer/-private/transforms/boolean.ts:71](https://github.com/warp-drive-data/warp-drive/blob/3e01a7f0373e29c82765d26c241a949bcf7d5b2d/warp-drive-packages/legacy/src/serializer/-private/transforms/boolean.ts#L71)
 
 Converts a `boolean` attribute value into its serialized (raw payload) form.
 
@@ -127,7 +121,7 @@ Converts a `boolean` attribute value into its serialized (raw payload) form.
 static create(): BooleanTransform;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/serializer/-private/transforms/boolean.ts:82](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/legacy/src/serializer/-private/transforms/boolean.ts#L82)
+Defined in: [warp-drive-packages/legacy/src/serializer/-private/transforms/boolean.ts:82](https://github.com/warp-drive-data/warp-drive/blob/3e01a7f0373e29c82765d26c241a949bcf7d5b2d/warp-drive-packages/legacy/src/serializer/-private/transforms/boolean.ts#L82)
 
 Creates a new instance of this transform.
 
@@ -143,6 +137,6 @@ Creates a new instance of this transform.
 ___(unique) Symbol($type): "boolean";
 ```
 
-Defined in: [warp-drive-packages/legacy/src/serializer/-private/transforms/boolean.ts:10](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/legacy/src/serializer/-private/transforms/boolean.ts#L10)
+Defined in: [warp-drive-packages/legacy/src/serializer/-private/transforms/boolean.ts:10](https://github.com/warp-drive-data/warp-drive/blob/3e01a7f0373e29c82765d26c241a949bcf7d5b2d/warp-drive-packages/legacy/src/serializer/-private/transforms/boolean.ts#L10)
 
 see [TransformName](../../../../core/types/symbols/variables/TransformName.md)
