@@ -50,13 +50,13 @@
     "@warp-drive/utilities": "workspace:*"
   },
   "devDependencies": {
-    "@babel/core": "^7.29.7",
-    "@babel/plugin-transform-typescript": "^7.29.7",
-    "@babel/preset-env": "^7.29.7",
-    "@babel/preset-typescript": "^7.29.7",
+    "@babel/core": "catalog:",
+    "@babel/plugin-transform-typescript": "catalog:",
+    "@babel/preset-env": "catalog:",
+    "@babel/preset-typescript": "catalog:",
     "@warp-drive/internal-config": "workspace:*",
-    "tsdown": "^0.23.0",
-    "typescript-7": "npm:typescript@7.1.0-dev.20260912.1"
+    "tsdown": "catalog:",
+    "typescript-7": "catalog:"
   },
   "ember": {
     "edition": "octane"

@@ -32,13 +32,13 @@
     "qunit": "*"
   },
   "dependencies": {
-    "fs-extra": "^11.4.0",
-    "testem": "^3.21.0"
+    "fs-extra": "catalog:",
+    "testem": "catalog:"
   },
   "devDependencies": {
     "@warp-drive/internal-config": "workspace:*",
-    "ember-qunit": "9.1.0",
+    "ember-qunit": "catalog:",
     "ember-source": "catalog:",
-    "qunit": "^2.26.0"
+    "qunit": "catalog:"
   }
 }

@@ -46,17 +46,17 @@
     "@warp-drive/core": "workspace:*"
   },
   "dependencies": {
-    "@babel/parser": "^7.29.8",
-    "@babel/traverse": "^7.29.8"
+    "@babel/parser": "catalog:",
+    "@babel/traverse": "catalog:"
   },
   "devDependencies": {
-    "@babel/core": "^7.29.7",
-    "@babel/plugin-transform-typescript": "^7.29.7",
-    "@babel/preset-typescript": "^7.29.7",
+    "@babel/core": "catalog:",
+    "@babel/plugin-transform-typescript": "catalog:",
+    "@babel/preset-typescript": "catalog:",
     "@warp-drive/internal-config": "workspace:*",
     "@warp-drive/core": "workspace:*",
-    "tsdown": "^0.23.0",
-    "typescript-7": "npm:typescript@7.1.0-dev.20260912.1"
+    "tsdown": "catalog:",
+    "typescript-7": "catalog:"
   },
   "packageManager": "pnpm@12.4.1"
 }

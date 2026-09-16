@@ -41,12 +41,12 @@
     "@warp-drive/utilities": "workspace:*"
   },
   "dependencies": {
-    "@embroider/macros": "^1.21.1"
+    "@embroider/macros": "catalog:"
   },
   "devDependencies": {
-    "@babel/core": "^7.29.7",
-    "@babel/plugin-transform-typescript": "^7.29.7",
-    "@babel/preset-typescript": "^7.29.7",
+    "@babel/core": "catalog:",
+    "@babel/plugin-transform-typescript": "catalog:",
+    "@babel/preset-typescript": "catalog:",
     "@warp-drive/core": "workspace:*",
     "@warp-drive/experiments": "workspace:*",
     "@warp-drive/diagnostic": "workspace:*",
@@ -54,9 +54,9 @@
     "@warp-drive/internal-config": "workspace:*",
     "@warp-drive/json-api": "workspace:*",
     "@warp-drive/utilities": "workspace:*",
-    "decorator-transforms": "^2.4.0",
-    "tsdown": "^0.23.0",
-    "typescript": "^6.0.3"
+    "decorator-transforms": "catalog:",
+    "tsdown": "catalog:",
+    "typescript": "catalog:"
   },
   "ember-addon": {
     "main": "addon-main.cjs",

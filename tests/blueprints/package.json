@@ -16,7 +16,7 @@
   },
   "devDependencies": {
     "@warp-drive/internal-config": "workspace:*",
-    "mocha": "^12.0.1",
+    "mocha": "catalog:",
     "warp-drive": "workspace:*"
   },
   "dependencies": {}

@@ -99,19 +99,19 @@
     }
   },
   "devDependencies": {
-    "@babel/core": "^7.29.7",
-    "@babel/plugin-transform-typescript": "^7.29.7",
-    "@babel/preset-env": "^7.29.7",
-    "@babel/preset-typescript": "^7.29.7",
-    "@ember/test-helpers": "5.4.3",
-    "@ember/test-waiters": "^4.1.2",
-    "@types/qunit": "2.19.14",
+    "@babel/core": "catalog:",
+    "@babel/plugin-transform-typescript": "catalog:",
+    "@babel/preset-env": "catalog:",
+    "@babel/preset-typescript": "catalog:",
+    "@ember/test-helpers": "catalog:",
+    "@ember/test-waiters": "catalog:",
+    "@types/qunit": "catalog:",
     "@warp-drive/internal-config": "workspace:*",
     "ember-source": "catalog:",
-    "eslint": "^10.10.0",
-    "qunit": "^2.26.0",
-    "tsdown": "^0.23.0",
-    "typescript": "^6.0.3"
+    "eslint": "catalog:",
+    "qunit": "catalog:",
+    "tsdown": "catalog:",
+    "typescript": "catalog:"
   },
   "ember": {
     "edition": "octane"

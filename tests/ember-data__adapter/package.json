@@ -25,9 +25,9 @@
     "test:start": "bun ./diagnostic.js --serve --no-launch"
   },
   "dependencies": {
-    "@babel/core": "^7.29.7",
-    "@babel/plugin-transform-typescript": "^7.29.7",
-    "@babel/runtime": "^7.29.7",
+    "@babel/core": "catalog:",
+    "@babel/plugin-transform-typescript": "catalog:",
+    "@babel/runtime": "catalog:",
     "@ember-data/debug": "workspace:*",
     "@ember-data/graph": "workspace:*",
     "@ember-data/json-api": "workspace:*",
@@ -38,13 +38,13 @@
     "@ember-data/serializer": "workspace:*",
     "@ember-data/store": "workspace:*",
     "@ember-data/unpublished-test-infra": "workspace:*",
-    "@ember/test-helpers": "5.4.3",
-    "@ember/test-waiters": "^4.1.2",
-    "@embroider/addon-shim": "^1.10.3",
-    "@embroider/core": "^4.6.7",
-    "@embroider/macros": "^1.21.1",
-    "@embroider/vite": "^1.7.13",
-    "@glimmer/component": "^2.1.1",
+    "@ember/test-helpers": "catalog:",
+    "@ember/test-waiters": "catalog:",
+    "@embroider/addon-shim": "catalog:",
+    "@embroider/core": "catalog:",
+    "@embroider/macros": "catalog:",
+    "@embroider/vite": "catalog:",
+    "@glimmer/component": "catalog:",
     "@warp-drive/core-types": "workspace:*",
     "@warp-drive/build-config": "workspace:*",
     "@warp-drive/internal-config": "workspace:*",
@@ -53,17 +53,17 @@
     "@warp-drive/core": "workspace:*",
     "@warp-drive/legacy": "workspace:*",
     "@warp-drive/utilities": "workspace:*",
-    "babel-plugin-ember-template-compilation": "^4.0.0",
-    "decorator-transforms": "^2.4.0",
+    "babel-plugin-ember-template-compilation": "catalog:",
+    "decorator-transforms": "catalog:",
     "ember-source": "catalog:",
-    "ember-strict-application-resolver": "^0.1.1",
-    "terser": "^5.51.2",
+    "ember-strict-application-resolver": "catalog:",
+    "terser": "catalog:",
     "vite": "catalog:"
   },
   "ember": {
     "edition": "octane"
   },
   "devDependencies": {
-    "typescript-7": "npm:typescript@7.1.0-dev.20260912.1"
+    "typescript-7": "catalog:"
   }
 }

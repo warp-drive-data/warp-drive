@@ -4,11 +4,11 @@
   "private": true,
   "type": "module",
   "dependencies": {
-    "semver": "^7.8.5",
-    "@types/semver": "^7.8.0",
-    "@types/bun": "^1.4.2",
-    "lerna-changelog": "^2.2.0",
-    "typescript": "^6.0.3",
-    "bun-types": "^1.4.2"
+    "semver": "catalog:",
+    "@types/semver": "catalog:",
+    "@types/bun": "catalog:",
+    "lerna-changelog": "catalog:",
+    "typescript": "catalog:",
+    "bun-types": "catalog:"
   }
 }

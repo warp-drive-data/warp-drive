@@ -29,17 +29,17 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "jscodeshift": "^17.4.0",
-    "prettier": "^3.9.6",
-    "typescript": "^6.0.3"
+    "jscodeshift": "catalog:",
+    "prettier": "catalog:",
+    "typescript": "catalog:"
   },
   "devDependencies": {
     "@ember-data/codemods": "workspace:*",
-    "@types/bun": "^1.4.2",
-    "@types/jscodeshift": "^17.3.0",
+    "@types/bun": "catalog:",
+    "@types/jscodeshift": "catalog:",
     "@warp-drive/internal-config": "workspace:*",
-    "eslint": "^10.10.0",
-    "qunit": "^2.26.0",
-    "vitest": "^4.1.11"
+    "eslint": "catalog:",
+    "qunit": "catalog:",
+    "vitest": "catalog:"
   }
 }

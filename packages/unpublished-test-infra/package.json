@@ -44,8 +44,8 @@
   "peerDependencies": {
     "@ember/test-helpers": "3.3.0 || ^4.0.4 || ^5.1.0",
     "@warp-drive/diagnostic": "workspace:*",
-    "qunit": "^2.26.0",
-    "testem": "^3.21.0"
+    "qunit": "catalog:",
+    "testem": "catalog:"
   },
   "peerDependenciesMeta": {
     "qunit": {
@@ -59,27 +59,27 @@
     }
   },
   "dependencies": {
-    "@embroider/macros": "^1.21.1",
+    "@embroider/macros": "catalog:",
     "@warp-drive/core": "workspace:*",
     "@warp-drive/utilities": "workspace:*",
-    "semver": "^7.8.5"
+    "semver": "catalog:"
   },
   "devDependencies": {
-    "@babel/core": "^7.29.7",
-    "@babel/plugin-transform-typescript": "^7.29.7",
-    "@babel/preset-env": "^7.29.7",
-    "@babel/preset-typescript": "^7.29.7",
-    "@ember/test-helpers": "5.4.3",
-    "@glimmer/component": "^2.1.1",
-    "@types/qunit": "2.19.14",
-    "@types/semver": "^7.8.0",
+    "@babel/core": "catalog:",
+    "@babel/plugin-transform-typescript": "catalog:",
+    "@babel/preset-env": "catalog:",
+    "@babel/preset-typescript": "catalog:",
+    "@ember/test-helpers": "catalog:",
+    "@glimmer/component": "catalog:",
+    "@types/qunit": "catalog:",
+    "@types/semver": "catalog:",
     "@warp-drive/diagnostic": "workspace:*",
     "@warp-drive/internal-config": "workspace:*",
     "ember-source": "catalog:",
-    "qunit": "^2.26.0",
-    "testem": "^3.21.0",
-    "tsdown": "^0.23.0",
-    "typescript-7": "npm:typescript@7.1.0-dev.20260912.1"
+    "qunit": "catalog:",
+    "testem": "catalog:",
+    "tsdown": "catalog:",
+    "typescript-7": "catalog:"
   },
   "ember": {
     "edition": "octane"
