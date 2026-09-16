@@ -8,7 +8,7 @@ url: /api/@warp-drive/react/install/functions/buildSignalConfig.md
 function buildSignalConfig(options): SignalHooks;
 ```
 
-Defined in: [install.ts:72](https://github.com/warp-drive-data/warp-drive/blob/cb1ab85858f637f156a9ff4e6ba8896c245d7a2c/warp-drive-packages/react/src/install.ts#L72)
+Defined in: [install.ts:72](https://github.com/warp-drive-data/warp-drive/blob/366068ebc56a664fb2411fcf7b3b351cc19cd54a/warp-drive-packages/react/src/install.ts#L72)
 
 Builds the [SignalHooks](../../../core/configure/interfaces/SignalHooks.md) implementation backed by the
 [Signal Polyfill](https://github.com/proposal-signals/signal-polyfill),

@@ -8,7 +8,7 @@ url: /api/@warp-drive/build-config/index/functions/babelPlugin.md
 function babelPlugin(options): object;
 ```
 
-Defined in: [index.ts:63](https://github.com/warp-drive-data/warp-drive/blob/cb1ab85858f637f156a9ff4e6ba8896c245d7a2c/warp-drive-packages/build-config/src/index.ts#L63)
+Defined in: [index.ts:63](https://github.com/warp-drive-data/warp-drive/blob/366068ebc56a664fb2411fcf7b3b351cc19cd54a/warp-drive-packages/build-config/src/index.ts#L63)
 
 Create the Babel plugin for WarpDrive
 

@@ -8,7 +8,7 @@ url: /api/@warp-drive/core/signals/-leaked/functions/getPaginationState.md
 function getPaginationState<RT, E>(request, pageHints?): PaginationState<RT, E>;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:641](https://github.com/warp-drive-data/warp-drive/blob/cb1ab85858f637f156a9ff4e6ba8896c245d7a2c/warp-drive-packages/core/src/signals/pagination-state.ts#L641)
+Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:641](https://github.com/warp-drive-data/warp-drive/blob/366068ebc56a664fb2411fcf7b3b351cc19cd54a/warp-drive-packages/core/src/signals/pagination-state.ts#L641)
 
 Get the [PaginationState](../interfaces/PaginationState.md) for a given request. Returns the same instance
 for the same request future, so that repeated calls (e.g. in a template, or

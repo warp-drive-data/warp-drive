@@ -12,7 +12,7 @@ url: /api/@warp-drive/legacy/compat/functions/adapterFor.md
 function adapterFor(this, modelName): MinimumAdapterInterface;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat.ts:99](https://github.com/warp-drive-data/warp-drive/blob/cb1ab85858f637f156a9ff4e6ba8896c245d7a2c/warp-drive-packages/legacy/src/compat.ts#L99)
+Defined in: [warp-drive-packages/legacy/src/compat.ts:99](https://github.com/warp-drive-data/warp-drive/blob/366068ebc56a664fb2411fcf7b3b351cc19cd54a/warp-drive-packages/legacy/src/compat.ts#L99)
 
 Returns an instance of the adapter for a given type. For
 example, `adapterFor('person')` will return an instance of
@@ -48,7 +48,7 @@ function adapterFor(
   | undefined;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat.ts:100](https://github.com/warp-drive-data/warp-drive/blob/cb1ab85858f637f156a9ff4e6ba8896c245d7a2c/warp-drive-packages/legacy/src/compat.ts#L100)
+Defined in: [warp-drive-packages/legacy/src/compat.ts:100](https://github.com/warp-drive-data/warp-drive/blob/366068ebc56a664fb2411fcf7b3b351cc19cd54a/warp-drive-packages/legacy/src/compat.ts#L100)
 
 Returns an instance of the adapter for a given type. For
 example, `adapterFor('person')` will return an instance of

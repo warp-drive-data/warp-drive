@@ -8,7 +8,7 @@ url: /api/@warp-drive/core/request/functions/getPromiseResult.md
 function getPromiseResult<T, E>(promise): CacheResult<T, E> | undefined;
 ```
 
-Defined in: [warp-drive-packages/core/src/request/-private/promise-cache.ts:67](https://github.com/warp-drive-data/warp-drive/blob/cb1ab85858f637f156a9ff4e6ba8896c245d7a2c/warp-drive-packages/core/src/request/-private/promise-cache.ts#L67)
+Defined in: [warp-drive-packages/core/src/request/-private/promise-cache.ts:67](https://github.com/warp-drive-data/warp-drive/blob/366068ebc56a664fb2411fcf7b3b351cc19cd54a/warp-drive-packages/core/src/request/-private/promise-cache.ts#L67)
 
 Synchronously read the settled result (or error) previously recorded for
 a promise-like value via [setPromiseResult](setPromiseResult.md), if any.

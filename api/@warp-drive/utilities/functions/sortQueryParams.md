@@ -8,7 +8,7 @@ url: /api/@warp-drive/utilities/functions/sortQueryParams.md
 function sortQueryParams(params, options?): URLSearchParams;
 ```
 
-Defined in: [index.ts:663](https://github.com/warp-drive-data/warp-drive/blob/cb1ab85858f637f156a9ff4e6ba8896c245d7a2c/warp-drive-packages/utilities/src/index.ts#L663)
+Defined in: [index.ts:663](https://github.com/warp-drive-data/warp-drive/blob/366068ebc56a664fb2411fcf7b3b351cc19cd54a/warp-drive-packages/utilities/src/index.ts#L663)
 
 Sorts query params by both key and value returning a new URLSearchParams
 object with the keys inserted in sorted order.

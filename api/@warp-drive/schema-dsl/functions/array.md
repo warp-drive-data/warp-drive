@@ -10,7 +10,7 @@ url: /api/@warp-drive/schema-dsl/functions/array.md
 function array(target, key): void;
 ```
 
-Defined in: [fields/array.ts:60](https://github.com/warp-drive-data/warp-drive/blob/cb1ab85858f637f156a9ff4e6ba8896c245d7a2c/warp-drive-packages/schema-dsl/src/fields/array.ts#L60)
+Defined in: [fields/array.ts:60](https://github.com/warp-drive-data/warp-drive/blob/366068ebc56a664fb2411fcf7b3b351cc19cd54a/warp-drive-packages/schema-dsl/src/fields/array.ts#L60)
 
 **`Decorator`**
 
@@ -59,7 +59,7 @@ export class Post {
 function array(options): (target, key) => void;
 ```
 
-Defined in: [fields/array.ts:61](https://github.com/warp-drive-data/warp-drive/blob/cb1ab85858f637f156a9ff4e6ba8896c245d7a2c/warp-drive-packages/schema-dsl/src/fields/array.ts#L61)
+Defined in: [fields/array.ts:61](https://github.com/warp-drive-data/warp-drive/blob/366068ebc56a664fb2411fcf7b3b351cc19cd54a/warp-drive-packages/schema-dsl/src/fields/array.ts#L61)
 
 **`Decorator`**
 

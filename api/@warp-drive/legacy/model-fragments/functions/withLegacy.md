@@ -10,7 +10,7 @@ url: /api/@warp-drive/legacy/model-fragments/functions/withLegacy.md
 function withLegacy(schema): ResourceSchema;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model-fragments/utilities/with-legacy.ts:14](https://github.com/warp-drive-data/warp-drive/blob/cb1ab85858f637f156a9ff4e6ba8896c245d7a2c/warp-drive-packages/legacy/src/model-fragments/utilities/with-legacy.ts#L14)
+Defined in: [warp-drive-packages/legacy/src/model-fragments/utilities/with-legacy.ts:14](https://github.com/warp-drive-data/warp-drive/blob/366068ebc56a664fb2411fcf7b3b351cc19cd54a/warp-drive-packages/legacy/src/model-fragments/utilities/with-legacy.ts#L14)
 
 Used as a helper to setup the relevant parts of a legacy resource schema
 migrated from `Model`, applying the `ember-object` and `fragment` object

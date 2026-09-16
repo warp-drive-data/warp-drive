@@ -12,7 +12,7 @@ function instantiateRecord(
 ): ReactiveResource;
 ```
 
-Defined in: [warp-drive-packages/core/src/reactive/-private/hooks.ts:21](https://github.com/warp-drive-data/warp-drive/blob/cb1ab85858f637f156a9ff4e6ba8896c245d7a2c/warp-drive-packages/core/src/reactive/-private/hooks.ts#L21)
+Defined in: [warp-drive-packages/core/src/reactive/-private/hooks.ts:21](https://github.com/warp-drive-data/warp-drive/blob/366068ebc56a664fb2411fcf7b3b351cc19cd54a/warp-drive-packages/core/src/reactive/-private/hooks.ts#L21)
 
 The store's default `instantiateRecord` hook implementation, which
 produces a [ReactiveResource](../interfaces/ReactiveResource.md) for `identifier` using the resource

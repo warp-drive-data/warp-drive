@@ -9,4 +9,4 @@ url: >-
 export=: RuleModule;
 ```
 
-Defined in: [rules/template-require-request-error-block.js:18](https://github.com/warp-drive-data/warp-drive/blob/cb1ab85858f637f156a9ff4e6ba8896c245d7a2c/packages/eslint-plugin-warp-drive/src/rules/template-require-request-error-block.js#L18)
+Defined in: [rules/template-require-request-error-block.js:18](https://github.com/warp-drive-data/warp-drive/blob/366068ebc56a664fb2411fcf7b3b351cc19cd54a/packages/eslint-plugin-warp-drive/src/rules/template-require-request-error-block.js#L18)

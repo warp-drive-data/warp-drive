@@ -10,7 +10,7 @@ url: /api/@warp-drive/utilities/json-api/functions/deleteRecord.md
 function deleteRecord<T>(record, options?): DeleteRequestOptions<T>;
 ```
 
-Defined in: [-private/json-api/save-record.ts:83](https://github.com/warp-drive-data/warp-drive/blob/cb1ab85858f637f156a9ff4e6ba8896c245d7a2c/warp-drive-packages/utilities/src/-private/json-api/save-record.ts#L83)
+Defined in: [-private/json-api/save-record.ts:83](https://github.com/warp-drive-data/warp-drive/blob/366068ebc56a664fb2411fcf7b3b351cc19cd54a/warp-drive-packages/utilities/src/-private/json-api/save-record.ts#L83)
 
 :::warning ⚠️ **These Mutation Builders DO NOT Set The Request Body**
 While this may come as a surprise, the app providing the body ensures that only
@@ -87,7 +87,7 @@ const data = await store.request(options);
 function deleteRecord(record, options?): DeleteRequestOptions;
 ```
 
-Defined in: [-private/json-api/save-record.ts:84](https://github.com/warp-drive-data/warp-drive/blob/cb1ab85858f637f156a9ff4e6ba8896c245d7a2c/warp-drive-packages/utilities/src/-private/json-api/save-record.ts#L84)
+Defined in: [-private/json-api/save-record.ts:84](https://github.com/warp-drive-data/warp-drive/blob/366068ebc56a664fb2411fcf7b3b351cc19cd54a/warp-drive-packages/utilities/src/-private/json-api/save-record.ts#L84)
 
 :::warning ⚠️ **These Mutation Builders DO NOT Set The Request Body**
 While this may come as a surprise, the app providing the body ensures that only

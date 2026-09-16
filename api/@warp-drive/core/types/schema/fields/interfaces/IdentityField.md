@@ -4,7 +4,7 @@ url: /api/@warp-drive/core/types/schema/fields/interfaces/IdentityField.md
 
 # &#x20;IdentityField
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:298](https://github.com/warp-drive-data/warp-drive/blob/cb1ab85858f637f156a9ff4e6ba8896c245d7a2c/warp-drive-packages/core/src/types/schema/fields.ts#L298)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:298](https://github.com/warp-drive-data/warp-drive/blob/366068ebc56a664fb2411fcf7b3b351cc19cd54a/warp-drive-packages/core/src/types/schema/fields.ts#L298)
 
 Represents a field whose value is the primary
 key of the resource.
@@ -25,7 +25,7 @@ primary key field instead of 'id'.
 kind: "@id";
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:304](https://github.com/warp-drive-data/warp-drive/blob/cb1ab85858f637f156a9ff4e6ba8896c245d7a2c/warp-drive-packages/core/src/types/schema/fields.ts#L304)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:304](https://github.com/warp-drive-data/warp-drive/blob/366068ebc56a664fb2411fcf7b3b351cc19cd54a/warp-drive-packages/core/src/types/schema/fields.ts#L304)
 
 The kind of field this is.
 
@@ -37,7 +37,7 @@ The kind of field this is.
 name: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:312](https://github.com/warp-drive-data/warp-drive/blob/cb1ab85858f637f156a9ff4e6ba8896c245d7a2c/warp-drive-packages/core/src/types/schema/fields.ts#L312)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:312](https://github.com/warp-drive-data/warp-drive/blob/366068ebc56a664fb2411fcf7b3b351cc19cd54a/warp-drive-packages/core/src/types/schema/fields.ts#L312)
 
 The name of the field that serves as the
 primary key for the resource.
@@ -50,7 +50,7 @@ primary key for the resource.
 optional sourceKey?: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:334](https://github.com/warp-drive-data/warp-drive/blob/cb1ab85858f637f156a9ff4e6ba8896c245d7a2c/warp-drive-packages/core/src/types/schema/fields.ts#L334)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:334](https://github.com/warp-drive-data/warp-drive/blob/366068ebc56a664fb2411fcf7b3b351cc19cd54a/warp-drive-packages/core/src/types/schema/fields.ts#L334)
 
 The name of the field as returned by the API
 and inserted into the [Cache](../../../cache/interfaces/Cache.md) if it differs

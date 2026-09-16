@@ -5,7 +5,7 @@ url: >-
 
 # &#x20;AddResourceOperation
 
-Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:87](https://github.com/warp-drive-data/warp-drive/blob/cb1ab85858f637f156a9ff4e6ba8896c245d7a2c/warp-drive-packages/core/src/types/cache/operations.ts#L87)
+Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:87](https://github.com/warp-drive-data/warp-drive/blob/366068ebc56a664fb2411fcf7b3b351cc19cd54a/warp-drive-packages/core/src/types/cache/operations.ts#L87)
 
 Adds a resource to the cache.
 
@@ -21,7 +21,7 @@ Adds a resource to the cache.
 op: "add";
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:88](https://github.com/warp-drive-data/warp-drive/blob/cb1ab85858f637f156a9ff4e6ba8896c245d7a2c/warp-drive-packages/core/src/types/cache/operations.ts#L88)
+Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:88](https://github.com/warp-drive-data/warp-drive/blob/366068ebc56a664fb2411fcf7b3b351cc19cd54a/warp-drive-packages/core/src/types/cache/operations.ts#L88)
 
 The name of the [operation](Op.md)
 
@@ -37,7 +37,7 @@ The name of the [operation](Op.md)
 record: PersistedResourceKey;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:92](https://github.com/warp-drive-data/warp-drive/blob/cb1ab85858f637f156a9ff4e6ba8896c245d7a2c/warp-drive-packages/core/src/types/cache/operations.ts#L92)
+Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:92](https://github.com/warp-drive-data/warp-drive/blob/366068ebc56a664fb2411fcf7b3b351cc19cd54a/warp-drive-packages/core/src/types/cache/operations.ts#L92)
 
 The cache key for the resource
 
@@ -49,6 +49,6 @@ The cache key for the resource
 value: ExistingResourceObject;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:96](https://github.com/warp-drive-data/warp-drive/blob/cb1ab85858f637f156a9ff4e6ba8896c245d7a2c/warp-drive-packages/core/src/types/cache/operations.ts#L96)
+Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:96](https://github.com/warp-drive-data/warp-drive/blob/366068ebc56a664fb2411fcf7b3b351cc19cd54a/warp-drive-packages/core/src/types/cache/operations.ts#L96)
 
 The data for the resource

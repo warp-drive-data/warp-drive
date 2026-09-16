@@ -6,7 +6,7 @@ url: /api/@warp-drive/legacy/model-fragments/classes/FragmentArray.md
 
 # &#x20;FragmentArray\<T>
 
-Defined in: [warp-drive-packages/legacy/src/model-fragments/extensions/fragment-array.ts:14](https://github.com/warp-drive-data/warp-drive/blob/cb1ab85858f637f156a9ff4e6ba8896c245d7a2c/warp-drive-packages/legacy/src/model-fragments/extensions/fragment-array.ts#L14)
+Defined in: [warp-drive-packages/legacy/src/model-fragments/extensions/fragment-array.ts:14](https://github.com/warp-drive-data/warp-drive/blob/366068ebc56a664fb2411fcf7b3b351cc19cd54a/warp-drive-packages/legacy/src/model-fragments/extensions/fragment-array.ts#L14)
 
 The features added to an array resource by [FragmentArrayExtension](../variables/FragmentArrayExtension.md), providing
 a subset of the legacy `ModelFragments` fragment-array API for migrated resources.
@@ -37,7 +37,7 @@ new FragmentArray<T>(): FragmentArray<T>;
 addFragment(fragment?): Fragment[] | undefined;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model-fragments/extensions/fragment-array.ts:46](https://github.com/warp-drive-data/warp-drive/blob/cb1ab85858f637f156a9ff4e6ba8896c245d7a2c/warp-drive-packages/legacy/src/model-fragments/extensions/fragment-array.ts#L46)
+Defined in: [warp-drive-packages/legacy/src/model-fragments/extensions/fragment-array.ts:46](https://github.com/warp-drive-data/warp-drive/blob/366068ebc56a664fb2411fcf7b3b351cc19cd54a/warp-drive-packages/legacy/src/model-fragments/extensions/fragment-array.ts#L46)
 
 Adds an existing fragment to this array, if one was given.
 
@@ -59,7 +59,7 @@ Adds an existing fragment to this array, if one was given.
 createFragment(fragment?): Fragment | undefined;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model-fragments/extensions/fragment-array.ts:57](https://github.com/warp-drive-data/warp-drive/blob/cb1ab85858f637f156a9ff4e6ba8896c245d7a2c/warp-drive-packages/legacy/src/model-fragments/extensions/fragment-array.ts#L57)
+Defined in: [warp-drive-packages/legacy/src/model-fragments/extensions/fragment-array.ts:57](https://github.com/warp-drive-data/warp-drive/blob/366068ebc56a664fb2411fcf7b3b351cc19cd54a/warp-drive-packages/legacy/src/model-fragments/extensions/fragment-array.ts#L57)
 
 Appends a new fragment to the end of this array, if one was given.
 
@@ -81,7 +81,7 @@ Appends a new fragment to the end of this array, if one was given.
 removeFragment(fragment?): void;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model-fragments/extensions/fragment-array.ts:68](https://github.com/warp-drive-data/warp-drive/blob/cb1ab85858f637f156a9ff4e6ba8896c245d7a2c/warp-drive-packages/legacy/src/model-fragments/extensions/fragment-array.ts#L68)
+Defined in: [warp-drive-packages/legacy/src/model-fragments/extensions/fragment-array.ts:68](https://github.com/warp-drive-data/warp-drive/blob/366068ebc56a664fb2411fcf7b3b351cc19cd54a/warp-drive-packages/legacy/src/model-fragments/extensions/fragment-array.ts#L68)
 
 Removes the given fragment from this array, if present.
 
@@ -103,7 +103,7 @@ Removes the given fragment from this array, if present.
 rollbackAttributes(): void;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model-fragments/extensions/fragment-array.ts:83](https://github.com/warp-drive-data/warp-drive/blob/cb1ab85858f637f156a9ff4e6ba8896c245d7a2c/warp-drive-packages/legacy/src/model-fragments/extensions/fragment-array.ts#L83)
+Defined in: [warp-drive-packages/legacy/src/model-fragments/extensions/fragment-array.ts:83](https://github.com/warp-drive-data/warp-drive/blob/366068ebc56a664fb2411fcf7b3b351cc19cd54a/warp-drive-packages/legacy/src/model-fragments/extensions/fragment-array.ts#L83)
 
 Reverts each member fragment's attribute back to its last known remote value.
 
@@ -119,7 +119,7 @@ Reverts each member fragment's attribute back to its last known remote value.
 isDestroyed: boolean = false;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model-fragments/extensions/fragment-array.ts:23](https://github.com/warp-drive-data/warp-drive/blob/cb1ab85858f637f156a9ff4e6ba8896c245d7a2c/warp-drive-packages/legacy/src/model-fragments/extensions/fragment-array.ts#L23)
+Defined in: [warp-drive-packages/legacy/src/model-fragments/extensions/fragment-array.ts:23](https://github.com/warp-drive-data/warp-drive/blob/366068ebc56a664fb2411fcf7b3b351cc19cd54a/warp-drive-packages/legacy/src/model-fragments/extensions/fragment-array.ts#L23)
 
 Whether this fragment array has been destroyed.
 
@@ -131,7 +131,7 @@ Whether this fragment array has been destroyed.
 isDestroying: boolean = false;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model-fragments/extensions/fragment-array.ts:19](https://github.com/warp-drive-data/warp-drive/blob/cb1ab85858f637f156a9ff4e6ba8896c245d7a2c/warp-drive-packages/legacy/src/model-fragments/extensions/fragment-array.ts#L19)
+Defined in: [warp-drive-packages/legacy/src/model-fragments/extensions/fragment-array.ts:19](https://github.com/warp-drive-data/warp-drive/blob/366068ebc56a664fb2411fcf7b3b351cc19cd54a/warp-drive-packages/legacy/src/model-fragments/extensions/fragment-array.ts#L19)
 
 Whether this fragment array is in the process of being destroyed.
 
@@ -143,7 +143,7 @@ Whether this fragment array is in the process of being destroyed.
 get hasDirtyAttributes(): boolean;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model-fragments/extensions/fragment-array.ts:29](https://github.com/warp-drive-data/warp-drive/blob/cb1ab85858f637f156a9ff4e6ba8896c245d7a2c/warp-drive-packages/legacy/src/model-fragments/extensions/fragment-array.ts#L29)
+Defined in: [warp-drive-packages/legacy/src/model-fragments/extensions/fragment-array.ts:29](https://github.com/warp-drive-data/warp-drive/blob/366068ebc56a664fb2411fcf7b3b351cc19cd54a/warp-drive-packages/legacy/src/model-fragments/extensions/fragment-array.ts#L29)
 
 Whether this fragment array (or any of its members) has uncommitted changes.
 
