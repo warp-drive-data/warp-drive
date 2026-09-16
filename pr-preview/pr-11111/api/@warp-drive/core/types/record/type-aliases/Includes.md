@@ -9,7 +9,7 @@ url: >-
 type Includes<T, MAX_DEPTH> = ExtractUnion<MAX_DEPTH, T, true>;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/record.ts:169](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/types/record.ts#L169)
+Defined in: [warp-drive-packages/core/src/types/record.ts:169](https://github.com/warp-drive-data/warp-drive/blob/35e6f11f90cd6cbcd7085d46039c7832ce1352f4/warp-drive-packages/core/src/types/record.ts#L169)
 
 A utility that provides the union type of all valid include paths for the given
 TypedRecordInstance.

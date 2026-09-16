@@ -4,7 +4,7 @@ url: /pr-preview/pr-11111/api/@warp-drive/core/types/graph/interfaces/Operation.
 
 # &#x20;Operation
 
-Defined in: [warp-drive-packages/core/src/types/graph.ts:18](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/types/graph.ts#L18)
+Defined in: [warp-drive-packages/core/src/types/graph.ts:18](https://github.com/warp-drive-data/warp-drive/blob/35e6f11f90cd6cbcd7085d46039c7832ce1352f4/warp-drive-packages/core/src/types/graph.ts#L18)
 
 All Graph operations are objects with at least one property,
 `op`, which contains a string with the name of the operation
@@ -18,6 +18,6 @@ to perform.
 op: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/graph.ts:22](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/types/graph.ts#L22)
+Defined in: [warp-drive-packages/core/src/types/graph.ts:22](https://github.com/warp-drive-data/warp-drive/blob/35e6f11f90cd6cbcd7085d46039c7832ce1352f4/warp-drive-packages/core/src/types/graph.ts#L22)
 
 The name of the operation

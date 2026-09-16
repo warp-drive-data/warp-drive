@@ -11,7 +11,7 @@ type QueryParamsSource =
   | URLSearchParams;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/params.ts:38](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/types/params.ts#L38)
+Defined in: [warp-drive-packages/core/src/types/params.ts:38](https://github.com/warp-drive-data/warp-drive/blob/35e6f11f90cd6cbcd7085d46039c7832ce1352f4/warp-drive-packages/core/src/types/params.ts#L38)
 
 The query parameters to serialize for a request: either a
 dictionary of [Serializable](Serializable.md) values (with an optional

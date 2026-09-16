@@ -9,7 +9,7 @@ url: >-
 function createPaginationSubscription<RT, E>(store, args): PaginationSubscription<RT, E>;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:409](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/signals/pagination-subscription.ts#L409)
+Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:409](https://github.com/warp-drive-data/warp-drive/blob/35e6f11f90cd6cbcd7085d46039c7832ce1352f4/warp-drive-packages/core/src/signals/pagination-subscription.ts#L409)
 
 Creates the [PaginationSubscription](../interfaces/PaginationSubscription.md) a `<Paginate />` component uses to
 manage its request lifecycle and pagination state. Pass the result back into

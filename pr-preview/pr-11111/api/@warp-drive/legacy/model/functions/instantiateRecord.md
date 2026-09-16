@@ -15,7 +15,7 @@ function instantiateRecord(
 ): Model;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/hooks.ts:21](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/legacy/src/model/-private/hooks.ts#L21)
+Defined in: [warp-drive-packages/legacy/src/model/-private/hooks.ts:21](https://github.com/warp-drive-data/warp-drive/blob/35e6f11f90cd6cbcd7085d46039c7832ce1352f4/warp-drive-packages/legacy/src/model/-private/hooks.ts#L21)
 
 The `instantiateRecord` hook implementation for use with `Model`. Pass
 this to your store's `instantiateRecord` method when configuring the

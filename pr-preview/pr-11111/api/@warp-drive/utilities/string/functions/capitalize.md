@@ -8,7 +8,7 @@ url: /pr-preview/pr-11111/api/@warp-drive/utilities/string/functions/capitalize.
 function capitalize(str): string;
 ```
 
-Defined in: [-private/string/transform.ts:99](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/utilities/src/-private/string/transform.ts#L99)
+Defined in: [-private/string/transform.ts:99](https://github.com/warp-drive-data/warp-drive/blob/35e6f11f90cd6cbcd7085d46039c7832ce1352f4/warp-drive-packages/utilities/src/-private/string/transform.ts#L99)
 
 Returns the Capitalized form of a string
 

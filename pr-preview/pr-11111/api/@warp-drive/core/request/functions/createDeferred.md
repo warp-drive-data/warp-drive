@@ -8,7 +8,7 @@ url: /pr-preview/pr-11111/api/@warp-drive/core/request/functions/createDeferred.
 function createDeferred<T>(): Deferred<T>;
 ```
 
-Defined in: [warp-drive-packages/core/src/request/-private/future.ts:19](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/request/-private/future.ts#L19)
+Defined in: [warp-drive-packages/core/src/request/-private/future.ts:19](https://github.com/warp-drive-data/warp-drive/blob/35e6f11f90cd6cbcd7085d46039c7832ce1352f4/warp-drive-packages/core/src/request/-private/future.ts#L19)
 
 Create a [Deferred](../type-aliases/Deferred.md): a promise along with the `resolve`/`reject`
 callbacks that settle it, so the promise can be handed out before the

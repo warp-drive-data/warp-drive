@@ -9,7 +9,7 @@ url: >-
 const DEPRECATE_NON_UNIQUE_PAYLOADS: boolean = true;
 ```
 
-Defined in: [deprecations.ts:245](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/build-config/src/deprecations.ts#L245)
+Defined in: [deprecations.ts:245](https://github.com/warp-drive-data/warp-drive/blob/35e6f11f90cd6cbcd7085d46039c7832ce1352f4/warp-drive-packages/build-config/src/deprecations.ts#L245)
 
 Deprecates when the data for a hasMany relationship contains
 duplicate identifiers.

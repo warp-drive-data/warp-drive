@@ -5,7 +5,7 @@ url: >-
 
 # &#x20;InfinitePaginationState\<RT, E>
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:58](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/signals/pagination-state.ts#L58)
+Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:58](https://github.com/warp-drive-data/warp-drive/blob/35e6f11f90cd6cbcd7085d46039c7832ce1352f4/warp-drive-packages/core/src/signals/pagination-state.ts#L58)
 
 The infinite (accumulated view) surface of a [PaginationState](PaginationState.md): render
 [data](PaginationState.md#data), grow it with
@@ -34,7 +34,7 @@ This is what the `<Paginate />` component yields in `'infinite'` mode.
 adoptPage(request): Promise<RT | null>;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:28](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/signals/pagination-state.ts#L28)
+Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:28](https://github.com/warp-drive-data/warp-drive/blob/35e6f11f90cd6cbcd7085d46039c7832ce1352f4/warp-drive-packages/core/src/signals/pagination-state.ts#L28)
 
 See [PaginationState.adoptPage](PaginationState.md#adoptpage).
 
@@ -60,7 +60,7 @@ See [PaginationState.adoptPage](PaginationState.md#adoptpage).
 readonly data: Iterable<ContentItem<RT>>;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:60](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/signals/pagination-state.ts#L60)
+Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:60](https://github.com/warp-drive-data/warp-drive/blob/35e6f11f90cd6cbcd7085d46039c7832ce1352f4/warp-drive-packages/core/src/signals/pagination-state.ts#L60)
 
 See [PaginationState.data](PaginationState.md#data).
 
@@ -72,7 +72,7 @@ See [PaginationState.data](PaginationState.md#data).
 readonly hasNext: boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:64](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/signals/pagination-state.ts#L64)
+Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:64](https://github.com/warp-drive-data/warp-drive/blob/35e6f11f90cd6cbcd7085d46039c7832ce1352f4/warp-drive-packages/core/src/signals/pagination-state.ts#L64)
 
 See [PaginationState.hasNext](PaginationState.md#hasnext).
 
@@ -84,7 +84,7 @@ See [PaginationState.hasNext](PaginationState.md#hasnext).
 readonly hasPrevious: boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:66](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/signals/pagination-state.ts#L66)
+Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:66](https://github.com/warp-drive-data/warp-drive/blob/35e6f11f90cd6cbcd7085d46039c7832ce1352f4/warp-drive-packages/core/src/signals/pagination-state.ts#L66)
 
 See [PaginationState.hasPrevious](PaginationState.md#hasprevious).
 
@@ -96,7 +96,7 @@ See [PaginationState.hasPrevious](PaginationState.md#hasprevious).
 loadNext: () => Promise<RT | null>;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:72](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/signals/pagination-state.ts#L72)
+Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:72](https://github.com/warp-drive-data/warp-drive/blob/35e6f11f90cd6cbcd7085d46039c7832ce1352f4/warp-drive-packages/core/src/signals/pagination-state.ts#L72)
 
 See [PaginationState.loadNext](PaginationState.md#loadnext).
 
@@ -112,7 +112,7 @@ See [PaginationState.loadNext](PaginationState.md#loadnext).
 loadPrev: () => Promise<RT | null>;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:74](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/signals/pagination-state.ts#L74)
+Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:74](https://github.com/warp-drive-data/warp-drive/blob/35e6f11f90cd6cbcd7085d46039c7832ce1352f4/warp-drive-packages/core/src/signals/pagination-state.ts#L74)
 
 See [PaginationState.loadPrev](PaginationState.md#loadprev).
 
@@ -128,7 +128,7 @@ See [PaginationState.loadPrev](PaginationState.md#loadprev).
 readonly nextRequest: Future<RT> | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:68](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/signals/pagination-state.ts#L68)
+Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:68](https://github.com/warp-drive-data/warp-drive/blob/35e6f11f90cd6cbcd7085d46039c7832ce1352f4/warp-drive-packages/core/src/signals/pagination-state.ts#L68)
 
 See [PaginationState.nextRequest](PaginationState.md#nextrequest).
 
@@ -140,7 +140,7 @@ See [PaginationState.nextRequest](PaginationState.md#nextrequest).
 readonly pages: Iterable<Readonly<PageCache<RT, E>>>;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:62](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/signals/pagination-state.ts#L62)
+Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:62](https://github.com/warp-drive-data/warp-drive/blob/35e6f11f90cd6cbcd7085d46039c7832ce1352f4/warp-drive-packages/core/src/signals/pagination-state.ts#L62)
 
 See [PaginationState.pages](PaginationState.md#pages).
 
@@ -152,7 +152,7 @@ See [PaginationState.pages](PaginationState.md#pages).
 readonly previousRequest: Future<RT> | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:70](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/signals/pagination-state.ts#L70)
+Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:70](https://github.com/warp-drive-data/warp-drive/blob/35e6f11f90cd6cbcd7085d46039c7832ce1352f4/warp-drive-packages/core/src/signals/pagination-state.ts#L70)
 
 See [PaginationState.previousRequest](PaginationState.md#previousrequest).
 
@@ -164,7 +164,7 @@ See [PaginationState.previousRequest](PaginationState.md#previousrequest).
 readonly totalPages: number;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:26](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/signals/pagination-state.ts#L26)
+Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:26](https://github.com/warp-drive-data/warp-drive/blob/35e6f11f90cd6cbcd7085d46039c7832ce1352f4/warp-drive-packages/core/src/signals/pagination-state.ts#L26)
 
 See [PaginationState.totalPages](PaginationState.md#totalpages).
 

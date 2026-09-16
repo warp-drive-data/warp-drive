@@ -9,4 +9,4 @@ url: >-
 export=: RuleModule;
 ```
 
-Defined in: [rules/no-create-record-rerender.js:25](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/packages/eslint-plugin-warp-drive/src/rules/no-create-record-rerender.js#L25)
+Defined in: [rules/no-create-record-rerender.js:25](https://github.com/warp-drive-data/warp-drive/blob/35e6f11f90cd6cbcd7085d46039c7832ce1352f4/packages/eslint-plugin-warp-drive/src/rules/no-create-record-rerender.js#L25)

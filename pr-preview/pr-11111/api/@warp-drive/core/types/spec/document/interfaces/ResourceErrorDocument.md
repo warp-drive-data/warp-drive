@@ -5,7 +5,7 @@ url: >-
 
 # &#x20;ResourceErrorDocument
 
-Defined in: [warp-drive-packages/core/src/types/spec/document.ts:104](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/types/spec/document.ts#L104)
+Defined in: [warp-drive-packages/core/src/types/spec/document.ts:104](https://github.com/warp-drive-data/warp-drive/blob/35e6f11f90cd6cbcd7085d46039c7832ce1352f4/warp-drive-packages/core/src/types/spec/document.ts#L104)
 
 A type useful for representing the raw {json:api} Error documents that
 the cache may use.
@@ -20,7 +20,7 @@ For the Reactive value returned by a request using the store, use [ReactiveError
 errors: ApiError[];
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/document.ts:120](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/types/spec/document.ts#L120)
+Defined in: [warp-drive-packages/core/src/types/spec/document.ts:120](https://github.com/warp-drive-data/warp-drive/blob/35e6f11f90cd6cbcd7085d46039c7832ce1352f4/warp-drive-packages/core/src/types/spec/document.ts#L120)
 
 the errors the document represents
 
@@ -32,7 +32,7 @@ the errors the document represents
 optional lid?: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/document.ts:108](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/types/spec/document.ts#L108)
+Defined in: [warp-drive-packages/core/src/types/spec/document.ts:108](https://github.com/warp-drive-data/warp-drive/blob/35e6f11f90cd6cbcd7085d46039c7832ce1352f4/warp-drive-packages/core/src/types/spec/document.ts#L108)
 
 the url or cache-key associated with the structured document
 
@@ -46,7 +46,7 @@ optional links?:
   | PaginationLinks;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/document.ts:112](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/types/spec/document.ts#L112)
+Defined in: [warp-drive-packages/core/src/types/spec/document.ts:112](https://github.com/warp-drive-data/warp-drive/blob/35e6f11f90cd6cbcd7085d46039c7832ce1352f4/warp-drive-packages/core/src/types/spec/document.ts#L112)
 
 links related to the document
 
@@ -58,6 +58,6 @@ links related to the document
 optional meta?: ObjectValue;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/document.ts:116](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/types/spec/document.ts#L116)
+Defined in: [warp-drive-packages/core/src/types/spec/document.ts:116](https://github.com/warp-drive-data/warp-drive/blob/35e6f11f90cd6cbcd7085d46039c7832ce1352f4/warp-drive-packages/core/src/types/spec/document.ts#L116)
 
 meta information about the document

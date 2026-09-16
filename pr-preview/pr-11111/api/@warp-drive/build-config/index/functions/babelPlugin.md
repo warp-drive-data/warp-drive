@@ -9,7 +9,7 @@ url: >-
 function babelPlugin(options): object;
 ```
 
-Defined in: [index.ts:63](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/build-config/src/index.ts#L63)
+Defined in: [index.ts:63](https://github.com/warp-drive-data/warp-drive/blob/35e6f11f90cd6cbcd7085d46039c7832ce1352f4/warp-drive-packages/build-config/src/index.ts#L63)
 
 Create the Babel plugin for WarpDrive
 

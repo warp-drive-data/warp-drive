@@ -11,7 +11,7 @@ url: >-
 function configureLocalStorage(options): void;
 ```
 
-Defined in: [storage/storage.ts:70](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/experiments/src/storage/storage.ts#L70)
+Defined in: [storage/storage.ts:70](https://github.com/warp-drive-data/warp-drive/blob/35e6f11f90cd6cbcd7085d46039c7832ce1352f4/warp-drive-packages/experiments/src/storage/storage.ts#L70)
 
 Configure options for the localStorage singleton.
 Must be called before getLocalStorage() is first invoked.

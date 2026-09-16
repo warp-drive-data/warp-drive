@@ -5,7 +5,7 @@ url: >-
 
 # &#x20;MergeOperation
 
-Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:45](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/types/cache/operations.ts#L45)
+Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:45](https://github.com/warp-drive-data/warp-drive/blob/35e6f11f90cd6cbcd7085d46039c7832ce1352f4/warp-drive-packages/core/src/types/cache/operations.ts#L45)
 
 Occasionally the Store discovers that two previously
 thought to be distinct resources refer to the same resource.
@@ -26,7 +26,7 @@ is made.
 op: "mergeIdentifiers";
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:46](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/types/cache/operations.ts#L46)
+Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:46](https://github.com/warp-drive-data/warp-drive/blob/35e6f11f90cd6cbcd7085d46039c7832ce1352f4/warp-drive-packages/core/src/types/cache/operations.ts#L46)
 
 The name of the [operation](Op.md)
 
@@ -42,7 +42,7 @@ The name of the [operation](Op.md)
 record: ResourceKey;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:51](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/types/cache/operations.ts#L51)
+Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:51](https://github.com/warp-drive-data/warp-drive/blob/35e6f11f90cd6cbcd7085d46039c7832ce1352f4/warp-drive-packages/core/src/types/cache/operations.ts#L51)
 
 The stale [ResourceKey](../../../identifier/type-aliases/ResourceKey.md) that
 the cache should eliminate in favor of [value](#value)
@@ -55,7 +55,7 @@ the cache should eliminate in favor of [value](#value)
 value: ResourceKey;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:56](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/types/cache/operations.ts#L56)
+Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:56](https://github.com/warp-drive-data/warp-drive/blob/35e6f11f90cd6cbcd7085d46039c7832ce1352f4/warp-drive-packages/core/src/types/cache/operations.ts#L56)
 
 The kept [ResourceKey](../../../identifier/type-aliases/ResourceKey.md) that
 the cache should also keep and merge [record](#record) into.

@@ -12,7 +12,7 @@ url: /pr-preview/pr-11111/api/@warp-drive/experiments/storage/functions/field.md
 function field(type): PropertyDecorator;
 ```
 
-Defined in: [storage/storage-resource.ts:105](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/experiments/src/storage/storage-resource.ts#L105)
+Defined in: [storage/storage-resource.ts:105](https://github.com/warp-drive-data/warp-drive/blob/35e6f11f90cd6cbcd7085d46039c7832ce1352f4/warp-drive-packages/experiments/src/storage/storage-resource.ts#L105)
 
 Decorator which marks a property as a field on
 a LocalResource or SessionResource
@@ -63,7 +63,7 @@ function field(
 ): void;
 ```
 
-Defined in: [storage/storage-resource.ts:106](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/experiments/src/storage/storage-resource.ts#L106)
+Defined in: [storage/storage-resource.ts:106](https://github.com/warp-drive-data/warp-drive/blob/35e6f11f90cd6cbcd7085d46039c7832ce1352f4/warp-drive-packages/experiments/src/storage/storage-resource.ts#L106)
 
 Decorator which marks a property as a field on
 a LocalResource or SessionResource
