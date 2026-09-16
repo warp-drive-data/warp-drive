@@ -15,7 +15,7 @@ exploration.
 
 Schemas are how ***Warp*Drive** understands the structure of your data, powering features like caching, relational data, and reactivity.
 
-Schemas are also how [ReactiveResource](/api/@warp-drive/core/reactive/interfaces/ReactiveResource) knows to transform data from its raw serialized form in the cache into richer forms for use by your app.
+Schemas are also how [ReactiveResource](/api/@warp-drive/core/reactive/types/ReactiveResource) knows to transform data from its raw serialized form in the cache into richer forms for use by your app.
 
 <br>
 <img class="dark-only" src="../../images/building-blocks-dark.png" alt="abstractly: stacks of cubes together creating a harmonious structure amidst chaos of crashing waves" width="100%">
@@ -23,7 +23,7 @@ Schemas are also how [ReactiveResource](/api/@warp-drive/core/reactive/interface
 
 ## ResourceSchema
 
-[ResourceSchemas](/api/@warp-drive/core/types/schema/fields/type-aliases/ResourceSchema) define the structure of the data for a specific `ResourceType`, for instance `'user'` and set its [Mode](#modes)
+[ResourceSchemas](/api/@warp-drive/core/types/schema/fields/types/ResourceSchema) define the structure of the data for a specific `ResourceType`, for instance `'user'` and set its [Mode](#modes)
 
 Take for instance the following resource data for a user.
 

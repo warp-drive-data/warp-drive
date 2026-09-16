@@ -17,7 +17,7 @@ a [Store](#quick-store-setup) to manage our data.
 
 ## Configure the Build Plugin
 
-***Warp*Drive** uses a [babel plugin](https://www.npmjs.com/package/@embroider/macros) to inject app-specific [configuration](/api/@warp-drive/core/build-config/interfaces/WarpDriveConfig) allowing us to provide advanced dev-mode debugging features, deprecation management, and canary feature toggles.
+***Warp*Drive** uses a [babel plugin](https://www.npmjs.com/package/@embroider/macros) to inject app-specific [configuration](/api/@warp-drive/core/build-config/types/WarpDriveConfig) allowing us to provide advanced dev-mode debugging features, deprecation management, and canary feature toggles.
 
 For most projects, the configuration is done inside of the project's babel configuration file.
 For ember apps that still have an `ember-cli-build` file, this plugin comes built-in to the

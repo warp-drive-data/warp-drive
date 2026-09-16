@@ -833,7 +833,7 @@ export default class TestModel extends BaseModel {
        * >
        * > For those cases, you can create a more specific type that derives
        * > from this type to ensure that your type definitions stay consistent
-       * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+       * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
        *
        * See also {@link Typed} for fields + legacy mode features
        */
@@ -943,7 +943,7 @@ export default class TestModel extends BaseModel {
        * >
        * > For those cases, you can create a more specific type that derives
        * > from this type to ensure that your type definitions stay consistent
-       * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+       * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
        *
        * See also {@link Typed} for fields + legacy mode features
        */
@@ -1120,7 +1120,7 @@ export default Mixin.create({
        * >
        * > For those cases, you can create a more specific type that derives
        * > from this type to ensure that your type definitions stay consistent
-       * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+       * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
        *
        * See also {@link Typed} for fields + legacy mode features
        */

@@ -105,7 +105,7 @@ describe('Basic model class transformation', function () {
          * >
          * > For those cases, you can create a more specific type that derives
          * > from this type to ensure that your type definitions stay consistent
-         * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+         * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
          *
          * See also {@link User} for fields + legacy mode features
          */
@@ -251,7 +251,7 @@ describe('Basic model class transformation', function () {
          * >
          * > For those cases, you can create a more specific type that derives
          * > from this type to ensure that your type definitions stay consistent
-         * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+         * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
          *
          * See also {@link User} for fields + legacy mode features
          */
@@ -498,7 +498,7 @@ describe('Basic model class transformation', function () {
          * >
          * > For those cases, you can create a more specific type that derives
          * > from this type to ensure that your type definitions stay consistent
-         * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+         * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
          *
          * See also {@link User} for fields + legacy mode features
          */
@@ -666,7 +666,7 @@ describe('Basic model class transformation', function () {
          * >
          * > For those cases, you can create a more specific type that derives
          * > from this type to ensure that your type definitions stay consistent
-         * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+         * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
          *
          * See also {@link User} for fields + legacy mode features
          */
@@ -786,7 +786,7 @@ describe('Basic model class transformation', function () {
          * >
          * > For those cases, you can create a more specific type that derives
          * > from this type to ensure that your type definitions stay consistent
-         * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+         * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
          *
          * See also {@link User} for fields + legacy mode features
          */

@@ -15,7 +15,7 @@ exports[`AST utilities > createTypeArtifact > creates extension-type artifact wi
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  *
  * See also {@link UserExtension} for fields + legacy mode features
  */
@@ -50,7 +50,7 @@ exports[`AST utilities > createTypeArtifact > creates resource-type artifact wit
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  *
  * See also {@link UserSchema} for fields + legacy mode features
  */
@@ -85,7 +85,7 @@ exports[`AST utilities > createTypeArtifact > creates trait-type artifact with c
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  *
  * See also {@link FileableTrait} for fields + legacy mode features
  */
@@ -122,7 +122,7 @@ exports[`AST utilities > createTypeArtifact > includes extends clause and import
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  *
  * See also {@link UserInterface} for fields + legacy mode features
  */
@@ -157,7 +157,7 @@ exports[`AST utilities > generateInterfaceCode > generates basic interface with 
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  *
  * See also {@link TestInterface} for fields + legacy mode features
  */
@@ -194,7 +194,7 @@ exports[`AST utilities > generateInterfaceCode > generates empty interface when 
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  *
  * See also {@link EmptyInterface} for fields + legacy mode features
  */
@@ -228,7 +228,7 @@ exports[`AST utilities > generateInterfaceCode > generates interface with commen
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  *
  * See also {@link TestInterface} for fields + legacy mode features
  */
@@ -272,7 +272,7 @@ exports[`AST utilities > generateInterfaceCode > generates interface with extend
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  *
  * See also {@link TestInterface} for fields + legacy mode features
  */
@@ -309,7 +309,7 @@ exports[`AST utilities > generateInterfaceCode > generates interface with import
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  *
  * See also {@link TestInterface} for fields + legacy mode features
  */
@@ -344,7 +344,7 @@ exports[`AST utilities > type mapping integration > applies custom type mappings
  * >
  * > For those cases, you can create a more specific type that derives
  * > from this type to ensure that your type definitions stay consistent
- * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/type-aliases/Mask | Masking}
+ * > with the schema. For more details read about {@link https://warp-drive.io/api/@warp-drive/core/types/record/types/Mask | Masking}
  *
  * See also {@link TestInterface} for fields + legacy mode features
  */

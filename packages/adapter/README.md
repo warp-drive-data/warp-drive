@@ -31,9 +31,9 @@
 > [!WARNING]
 > **⚠️ This is a legacy package** not recommended for new applications and **Adapters are a LEGACY feature** that is no longer encouraged.
 >
-> Use [Handlers](https://warp-drive.io/api/@warp-drive/core/request/interfaces/Handler) with [@warp-drive/core](https://warp-drive.io/api/@warp-drive/core/) instead.
+> Use [Handlers](https://warp-drive.io/api/@warp-drive/core/request/types/Handler) with [@warp-drive/core](https://warp-drive.io/api/@warp-drive/core/) instead.
 
-This package provides REST and [{json:api}](https://jsonapi.org) Implementations of the legacy <a href="https://warp-drive.io/api/@warp-drive/legacy/compat/interfaces/MinimumAdapterInterface">Adapter Interface</a> when using the older packages.
+This package provides REST and [{json:api}](https://jsonapi.org) Implementations of the legacy <a href="https://warp-drive.io/api/@warp-drive/legacy/compat/types/MinimumAdapterInterface">Adapter Interface</a> when using the older packages.
 
 For more recent installations, see [@warp-drive/legacy](https://www.npmjs.com/package/@warp-drive/legacy).
 
