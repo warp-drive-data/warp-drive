@@ -8,7 +8,7 @@ url: /api/@warp-drive/core/store/functions/parseCacheControl.md
 function parseCacheControl(header): CacheControlValue;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/default-cache-policy.ts:127](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/core/src/store/-private/default-cache-policy.ts#L127)
+Defined in: [warp-drive-packages/core/src/store/-private/default-cache-policy.ts:127](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/store/-private/default-cache-policy.ts#L127)
 
 Parses a string Cache-Control header value into an object with the following structure:
 
@@ -31,7 +31,7 @@ interface CacheControlValue {
 }
 ```
 
-See also [CacheControlValue](../interfaces/CacheControlValue.md) and [Response Directives](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Cache-Control#response_directives)
+See also [CacheControlValue](../types/CacheControlValue.md) and [Response Directives](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Cache-Control#response_directives)
 
 ## Parameters
 
@@ -41,4 +41,4 @@ See also [CacheControlValue](../interfaces/CacheControlValue.md) and [Response D
 
 ## Returns
 
-[`CacheControlValue`](../interfaces/CacheControlValue.md)
+[`CacheControlValue`](../types/CacheControlValue.md)

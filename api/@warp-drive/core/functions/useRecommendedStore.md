@@ -10,7 +10,7 @@ url: /api/@warp-drive/core/functions/useRecommendedStore.md
 function useRecommendedStore<T, Policy>(options, StoreKlass?): typeof ConfiguredStore;
 ```
 
-Defined in: [warp-drive-packages/core/src/index.ts:268](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/core/src/index.ts#L268)
+Defined in: [warp-drive-packages/core/src/index.ts:268](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/index.ts#L268)
 
 Creates a configured Store class with recommended defaults
 for schema handling, reactivity, caching, and request management.
@@ -27,7 +27,7 @@ export const Store = useRecommendedStore({
 
 ### Adding Stateful Handlers
 
-A request [Handler](../request/interfaces/Handler.md) is sometimes more than a plain object or class with
+A request [Handler](../request/types/Handler.md) is sometimes more than a plain object or class with
 a `request` method — it may need access to a stateful dependency such as an
 Ember service (an auth token, a feature-flags service, an i18n helper, etc.).
 
@@ -36,7 +36,7 @@ not work here on its own: the handler is never instantiated *through* Ember's
 container (it's just `new`'d up), so it has no owner and its `@service`
 injections would fail to resolve.
 
-Instead, give [handlers](../interfaces/StoreSetupOptions.md#handlers) a function. It
+Instead, give [handlers](../types/StoreSetupOptions.md#handlers) a function. It
 receives the [Store](../classes/Store.md) instance being configured, which by the time the
 function runs already has an owner assigned. Use `getOwner`/`setOwner` from
 `@ember/owner` to transfer that owner onto your handler instance before
@@ -84,7 +84,7 @@ simpler option that requires no DI/`setOwner` wiring at all.
 
 Every request issued via [store.request(...)](../classes/Store.md#request)
 automatically carries the originating store along as
-[context.request.store](../types/request/interfaces/RequestInfo.md#store). Any handler — a plain
+[context.request.store](../types/request/types/RequestInfo.md#store). Any handler — a plain
 object, a function-built handler, or a class — can read it directly,
 without needing the `handlers` callback form shown above:
 
@@ -122,17 +122,17 @@ explicitly, so a handler relying on it should treat it as optional (as
 
 #### T
 
-`T` *extends* [`Cache`](../types/cache/interfaces/Cache.md)
+`T` *extends* [`Cache`](../types/cache/types/Cache.md)
 
 #### Policy
 
-`Policy` *extends* [`CachePolicy`](../interfaces/CachePolicy.md)
+`Policy` *extends* [`CachePolicy`](../types/CachePolicy.md)
 
 ### Parameters
 
 #### options
 
-[`StoreSetupOptions`](../interfaces/StoreSetupOptions.md)<`T`> & `object`
+[`StoreSetupOptions`](../types/StoreSetupOptions.md)<`T`> & `object`
 
 #### StoreKlass?
 
@@ -148,7 +148,7 @@ explicitly, so a handler relying on it should treat it as optional (as
 function useRecommendedStore<T>(options, StoreKlass?): typeof ConfiguredStore;
 ```
 
-Defined in: [warp-drive-packages/core/src/index.ts:272](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/core/src/index.ts#L272)
+Defined in: [warp-drive-packages/core/src/index.ts:272](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/index.ts#L272)
 
 Creates a configured Store class with recommended defaults
 for schema handling, reactivity, caching, and request management.
@@ -165,7 +165,7 @@ export const Store = useRecommendedStore({
 
 ### Adding Stateful Handlers
 
-A request [Handler](../request/interfaces/Handler.md) is sometimes more than a plain object or class with
+A request [Handler](../request/types/Handler.md) is sometimes more than a plain object or class with
 a `request` method — it may need access to a stateful dependency such as an
 Ember service (an auth token, a feature-flags service, an i18n helper, etc.).
 
@@ -174,7 +174,7 @@ not work here on its own: the handler is never instantiated *through* Ember's
 container (it's just `new`'d up), so it has no owner and its `@service`
 injections would fail to resolve.
 
-Instead, give [handlers](../interfaces/StoreSetupOptions.md#handlers) a function. It
+Instead, give [handlers](../types/StoreSetupOptions.md#handlers) a function. It
 receives the [Store](../classes/Store.md) instance being configured, which by the time the
 function runs already has an owner assigned. Use `getOwner`/`setOwner` from
 `@ember/owner` to transfer that owner onto your handler instance before
@@ -222,7 +222,7 @@ simpler option that requires no DI/`setOwner` wiring at all.
 
 Every request issued via [store.request(...)](../classes/Store.md#request)
 automatically carries the originating store along as
-[context.request.store](../types/request/interfaces/RequestInfo.md#store). Any handler — a plain
+[context.request.store](../types/request/types/RequestInfo.md#store). Any handler — a plain
 object, a function-built handler, or a class — can read it directly,
 without needing the `handlers` callback form shown above:
 
@@ -260,13 +260,13 @@ explicitly, so a handler relying on it should treat it as optional (as
 
 #### T
 
-`T` *extends* [`Cache`](../types/cache/interfaces/Cache.md)
+`T` *extends* [`Cache`](../types/cache/types/Cache.md)
 
 ### Parameters
 
 #### options
 
-[`StoreSetupOptions`](../interfaces/StoreSetupOptions.md)<`T`> & `object`
+[`StoreSetupOptions`](../types/StoreSetupOptions.md)<`T`> & `object`
 
 #### StoreKlass?
 
@@ -282,7 +282,7 @@ explicitly, so a handler relying on it should treat it as optional (as
 function useRecommendedStore<T>(options, StoreKlass?): typeof ConfiguredStore;
 ```
 
-Defined in: [warp-drive-packages/core/src/index.ts:276](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/core/src/index.ts#L276)
+Defined in: [warp-drive-packages/core/src/index.ts:276](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/index.ts#L276)
 
 Creates a configured Store class with recommended defaults
 for schema handling, reactivity, caching, and request management.
@@ -299,7 +299,7 @@ export const Store = useRecommendedStore({
 
 ### Adding Stateful Handlers
 
-A request [Handler](../request/interfaces/Handler.md) is sometimes more than a plain object or class with
+A request [Handler](../request/types/Handler.md) is sometimes more than a plain object or class with
 a `request` method — it may need access to a stateful dependency such as an
 Ember service (an auth token, a feature-flags service, an i18n helper, etc.).
 
@@ -308,7 +308,7 @@ not work here on its own: the handler is never instantiated *through* Ember's
 container (it's just `new`'d up), so it has no owner and its `@service`
 injections would fail to resolve.
 
-Instead, give [handlers](../interfaces/StoreSetupOptions.md#handlers) a function. It
+Instead, give [handlers](../types/StoreSetupOptions.md#handlers) a function. It
 receives the [Store](../classes/Store.md) instance being configured, which by the time the
 function runs already has an owner assigned. Use `getOwner`/`setOwner` from
 `@ember/owner` to transfer that owner onto your handler instance before
@@ -356,7 +356,7 @@ simpler option that requires no DI/`setOwner` wiring at all.
 
 Every request issued via [store.request(...)](../classes/Store.md#request)
 automatically carries the originating store along as
-[context.request.store](../types/request/interfaces/RequestInfo.md#store). Any handler — a plain
+[context.request.store](../types/request/types/RequestInfo.md#store). Any handler — a plain
 object, a function-built handler, or a class — can read it directly,
 without needing the `handlers` callback form shown above:
 
@@ -394,13 +394,13 @@ explicitly, so a handler relying on it should treat it as optional (as
 
 #### T
 
-`T` *extends* [`Cache`](../types/cache/interfaces/Cache.md)
+`T` *extends* [`Cache`](../types/cache/types/Cache.md)
 
 ### Parameters
 
 #### options
 
-[`StoreSetupOptions`](../interfaces/StoreSetupOptions.md)<`T`>
+[`StoreSetupOptions`](../types/StoreSetupOptions.md)<`T`>
 
 #### StoreKlass?
 

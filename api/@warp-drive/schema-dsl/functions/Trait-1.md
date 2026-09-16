@@ -10,11 +10,11 @@ url: /api/@warp-drive/schema-dsl/functions/Trait-1.md
 function Trait(target): void;
 ```
 
-Defined in: [entities/trait.ts:71](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/schema-dsl/src/entities/trait.ts#L71)
+Defined in: [entities/trait.ts:71](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/schema-dsl/src/entities/trait.ts#L71)
 
 **`Class Decorator`**
 
-Marks a class as a [trait](../../core/types/schema/fields/type-aliases/Trait.md) — a reusable
+Marks a class as a [trait](../../core/types/schema/fields/types/Trait.md) — a reusable
 collection of fields that can be composed onto a [Resource](Resource.md) (or
 another Trait) via [trait](trait.md).
 
@@ -23,7 +23,7 @@ The trait's `name` is derived from the class name (dasherized) unless a
 
 Each decorated property on the class contributes one entry to the
 compiled `fields` array, in declaration order. Unlike [Resource](Resource.md),
-no `$type` or `constructor` [DerivedField](../../core/types/schema/fields/interfaces/DerivedField.md) is ever added, since a
+no `$type` or `constructor` [DerivedField](../../core/types/schema/fields/types/DerivedField.md) is ever added, since a
 trait's fields are merged into whichever resource composes it.
 
 ### Parameters
@@ -69,11 +69,11 @@ export class Timestamped {
 function Trait(name, options?): (target) => void;
 ```
 
-Defined in: [entities/trait.ts:72](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/schema-dsl/src/entities/trait.ts#L72)
+Defined in: [entities/trait.ts:72](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/schema-dsl/src/entities/trait.ts#L72)
 
 **`Class Decorator`**
 
-Marks a class as a [trait](../../core/types/schema/fields/type-aliases/Trait.md) — a reusable
+Marks a class as a [trait](../../core/types/schema/fields/types/Trait.md) — a reusable
 collection of fields that can be composed onto a [Resource](Resource.md) (or
 another Trait) via [trait](trait.md).
 
@@ -82,7 +82,7 @@ The trait's `name` is derived from the class name (dasherized) unless a
 
 Each decorated property on the class contributes one entry to the
 compiled `fields` array, in declaration order. Unlike [Resource](Resource.md),
-no `$type` or `constructor` [DerivedField](../../core/types/schema/fields/interfaces/DerivedField.md) is ever added, since a
+no `$type` or `constructor` [DerivedField](../../core/types/schema/fields/types/DerivedField.md) is ever added, since a
 trait's fields are merged into whichever resource composes it.
 
 ### Parameters
@@ -93,7 +93,7 @@ trait's fields are merged into whichever resource composes it.
 
 #### options?
 
-[`TraitOptions`](../interfaces/TraitOptions.md)
+[`TraitOptions`](../types/TraitOptions.md)
 
 ### Returns
 
@@ -132,11 +132,11 @@ export class Timestamped {
 function Trait(options): (target) => void;
 ```
 
-Defined in: [entities/trait.ts:73](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/schema-dsl/src/entities/trait.ts#L73)
+Defined in: [entities/trait.ts:73](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/schema-dsl/src/entities/trait.ts#L73)
 
 **`Class Decorator`**
 
-Marks a class as a [trait](../../core/types/schema/fields/type-aliases/Trait.md) — a reusable
+Marks a class as a [trait](../../core/types/schema/fields/types/Trait.md) — a reusable
 collection of fields that can be composed onto a [Resource](Resource.md) (or
 another Trait) via [trait](trait.md).
 
@@ -145,14 +145,14 @@ The trait's `name` is derived from the class name (dasherized) unless a
 
 Each decorated property on the class contributes one entry to the
 compiled `fields` array, in declaration order. Unlike [Resource](Resource.md),
-no `$type` or `constructor` [DerivedField](../../core/types/schema/fields/interfaces/DerivedField.md) is ever added, since a
+no `$type` or `constructor` [DerivedField](../../core/types/schema/fields/types/DerivedField.md) is ever added, since a
 trait's fields are merged into whichever resource composes it.
 
 ### Parameters
 
 #### options
 
-[`TraitOptions`](../interfaces/TraitOptions.md)
+[`TraitOptions`](../types/TraitOptions.md)
 
 ### Returns
 

@@ -8,7 +8,7 @@ url: /api/@warp-drive/core/functions/setIdentifierForgetMethod.md
 function setIdentifierForgetMethod(method): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts:252](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts#L252)
+Defined in: [warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts:252](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts#L252)
 
 Configure a callback for when the identifier cache is going to release an identifier.
 

@@ -37,7 +37,7 @@ Our policy is to always attempt to provide restoration of a deprecated feature v
 
 ## Types
 
-* [LegacyModelAndNetworkAndRequestStoreSetupOptions](interfaces/LegacyModelAndNetworkAndRequestStoreSetupOptions.md)
-* [LegacyModelAndNetworkStoreSetupOptions](interfaces/LegacyModelAndNetworkStoreSetupOptions.md)
-* [LegacyModelStoreSetupOptions](interfaces/LegacyModelStoreSetupOptions.md)
-* [LegacyStoreSetupOptions](type-aliases/LegacyStoreSetupOptions.md)
+* [LegacyModelAndNetworkAndRequestStoreSetupOptions](types/LegacyModelAndNetworkAndRequestStoreSetupOptions.md)
+* [LegacyModelAndNetworkStoreSetupOptions](types/LegacyModelAndNetworkStoreSetupOptions.md)
+* [LegacyModelStoreSetupOptions](types/LegacyModelStoreSetupOptions.md)
+* [LegacyStoreSetupOptions](types/LegacyStoreSetupOptions.md)

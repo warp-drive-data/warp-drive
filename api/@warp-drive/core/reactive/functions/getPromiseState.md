@@ -8,7 +8,7 @@ url: /api/@warp-drive/core/reactive/functions/getPromiseState.md
 function getPromiseState<T, E>(promise): Readonly<PromiseState<T, E>>;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/promise-state.ts:358](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/core/src/signals/promise-state.ts#L358)
+Defined in: [warp-drive-packages/core/src/signals/promise-state.ts:358](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/signals/promise-state.ts#L358)
 
 Returns a reactive state-machine for the provided promise or awaitable.
 
@@ -60,7 +60,7 @@ import { getPromiseState } from '@warp-drive/ember';
 
 If looking to use in a template, consider also the `<Await />` component.
 
-See also [PromiseState](../type-aliases/PromiseState.md)
+See also [PromiseState](../types/PromiseState.md)
 
 ## Type Parameters
 
@@ -77,8 +77,8 @@ See also [PromiseState](../type-aliases/PromiseState.md)
 ### promise
 
 | [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`T`>
-| [`Awaitable`](../../request/type-aliases/Awaitable.md)<`T`, `E`>
+| [`Awaitable`](../../request/types/Awaitable.md)<`T`, `E`>
 
 ## Returns
 
-[`Readonly`](https://www.typescriptlang.org/docs/handbook/utility-types.html#readonlytype)<[`PromiseState`](../type-aliases/PromiseState.md)<`T`, `E`>>
+[`Readonly`](https://www.typescriptlang.org/docs/handbook/utility-types.html#readonlytype)<[`PromiseState`](../types/PromiseState.md)<`T`, `E`>>

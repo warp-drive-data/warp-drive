@@ -14,7 +14,7 @@ function normalize(
 ): SingleResourceDocument;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat.ts:228](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/legacy/src/compat.ts#L228)
+Defined in: [warp-drive-packages/legacy/src/compat.ts:228](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/compat.ts#L228)
 
 **`Legacy`**
 
@@ -50,10 +50,10 @@ The name of the model type for this payload
 
 ### payload
 
-[`ObjectValue`](../../../core/types/json/raw/interfaces/ObjectValue.md)
+[`ObjectValue`](../../../core/types/json/raw/types/ObjectValue.md)
 
 ## Returns
 
-[`SingleResourceDocument`](../../../core/types/spec/json-api-raw/type-aliases/SingleResourceDocument.md)
+[`SingleResourceDocument`](../../../core/types/spec/json-api-raw/types/SingleResourceDocument.md)
 
 The normalized payload

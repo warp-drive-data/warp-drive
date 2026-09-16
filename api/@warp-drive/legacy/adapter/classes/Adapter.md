@@ -6,7 +6,7 @@ url: /api/@warp-drive/legacy/adapter/classes/Adapter.md
 
 # &#x20;Adapter
 
-Defined in: [warp-drive-packages/legacy/src/adapter.ts:257](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/legacy/src/adapter.ts#L257)
+Defined in: [warp-drive-packages/legacy/src/adapter.ts:257](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/adapter.ts#L257)
 
 An adapter is an object that receives requests from a store and
 translates them into the appropriate action to take against your
@@ -15,7 +15,7 @@ may be anything, such as the browser's local storage. Typically the
 adapter is not invoked directly instead its functionality is accessed
 through the `store`.
 
-> ⚠️ CAUTION you likely want the docs for [MinimumAdapterInterface](../../compat/interfaces/MinimumAdapterInterface.md)
+> ⚠️ CAUTION you likely want the docs for [MinimumAdapterInterface](../../compat/types/MinimumAdapterInterface.md)
 > as extending this abstract class is unnecessary.
 
 ### Creating an Adapter
@@ -66,7 +66,7 @@ included REST adapter.
 
 ## Implements
 
-* [`MinimumAdapterInterface`](../../compat/interfaces/MinimumAdapterInterface.md)
+* [`MinimumAdapterInterface`](../../compat/types/MinimumAdapterInterface.md)
 
 ## Constructors
 
@@ -76,7 +76,7 @@ included REST adapter.
 new Adapter(owner?): Adapter;
 ```
 
-Defined in: [node\_modules/.pnpm/ember-source@7.2.0/node\_modules/ember-source/types/stable/@ember/object/index.d.ts:28](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/node_modules/.pnpm/ember-source@7.2.0/node_modules/ember-source/types/stable/@ember/object/index.d.ts#L28)
+Defined in: [node\_modules/.pnpm/ember-source@7.2.0/node\_modules/ember-source/types/stable/@ember/object/index.d.ts:28](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/node_modules/.pnpm/ember-source@7.2.0/node_modules/ember-source/types/stable/@ember/object/index.d.ts#L28)
 
 #### Parameters
 
@@ -106,7 +106,7 @@ createRecord(
 ): Promise<AdapterPayload>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter.ts:510](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/legacy/src/adapter.ts#L510)
+Defined in: [warp-drive-packages/legacy/src/adapter.ts:510](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/adapter.ts#L510)
 
 Implement this method in a subclass to handle the creation of
 new records.
@@ -157,11 +157,11 @@ export default class ApplicationAdapter extends Adapter {
 
 #### Returns
 
-[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`AdapterPayload`](../../compat/type-aliases/AdapterPayload.md)>
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`AdapterPayload`](../../compat/types/AdapterPayload.md)>
 
 #### Implementation of
 
-[`MinimumAdapterInterface`](../../compat/interfaces/MinimumAdapterInterface.md).[`createRecord`](../../compat/interfaces/MinimumAdapterInterface.md#createrecord)
+[`MinimumAdapterInterface`](../../compat/types/MinimumAdapterInterface.md).[`createRecord`](../../compat/types/MinimumAdapterInterface.md#createrecord)
 
 ***
 
@@ -175,7 +175,7 @@ deleteRecord(
 ): Promise<AdapterPayload>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter.ts:614](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/legacy/src/adapter.ts#L614)
+Defined in: [warp-drive-packages/legacy/src/adapter.ts:614](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/adapter.ts#L614)
 
 Implement this method in a subclass to handle the deletion of
 a record.
@@ -229,13 +229,13 @@ the Model class of the record
 
 #### Returns
 
-[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`AdapterPayload`](../../compat/type-aliases/AdapterPayload.md)>
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`AdapterPayload`](../../compat/types/AdapterPayload.md)>
 
 promise
 
 #### Implementation of
 
-[`MinimumAdapterInterface`](../../compat/interfaces/MinimumAdapterInterface.md).[`deleteRecord`](../../compat/interfaces/MinimumAdapterInterface.md#deleterecord)
+[`MinimumAdapterInterface`](../../compat/types/MinimumAdapterInterface.md).[`deleteRecord`](../../compat/types/MinimumAdapterInterface.md#deleterecord)
 
 ***
 
@@ -250,7 +250,7 @@ findAll(
 ): Promise<AdapterPayload>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter.ts:330](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/legacy/src/adapter.ts#L330)
+Defined in: [warp-drive-packages/legacy/src/adapter.ts:330](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/adapter.ts#L330)
 
 The `findAll()` method is used to retrieve all records for a given type.
 
@@ -296,11 +296,11 @@ a value is never provided to this argument
 
 #### Returns
 
-[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`AdapterPayload`](../../compat/type-aliases/AdapterPayload.md)>
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`AdapterPayload`](../../compat/types/AdapterPayload.md)>
 
 #### Implementation of
 
-[`MinimumAdapterInterface`](../../compat/interfaces/MinimumAdapterInterface.md).[`findAll`](../../compat/interfaces/MinimumAdapterInterface.md#findall)
+[`MinimumAdapterInterface`](../../compat/types/MinimumAdapterInterface.md).[`findAll`](../../compat/types/MinimumAdapterInterface.md#findall)
 
 ***
 
@@ -315,7 +315,7 @@ findRecord(
 ): Promise<AdapterPayload>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter.ts:298](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/legacy/src/adapter.ts#L298)
+Defined in: [warp-drive-packages/legacy/src/adapter.ts:298](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/adapter.ts#L298)
 
 The `findRecord()` method is invoked when the store is asked for a record that
 has not previously been loaded. In response to `findRecord()` being called, you
@@ -363,11 +363,11 @@ export default class ApplicationAdapter extends Adapter {
 
 #### Returns
 
-[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`AdapterPayload`](../../compat/type-aliases/AdapterPayload.md)>
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`AdapterPayload`](../../compat/types/AdapterPayload.md)>
 
 #### Implementation of
 
-[`MinimumAdapterInterface`](../../compat/interfaces/MinimumAdapterInterface.md).[`findRecord`](../../compat/interfaces/MinimumAdapterInterface.md#findrecord)
+[`MinimumAdapterInterface`](../../compat/types/MinimumAdapterInterface.md).[`findRecord`](../../compat/types/MinimumAdapterInterface.md#findrecord)
 
 ***
 
@@ -377,7 +377,7 @@ export default class ApplicationAdapter extends Adapter {
 groupRecordsForFindMany(store, snapshots): Snapshot<unknown>[][];
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter.ts:694](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/legacy/src/adapter.ts#L694)
+Defined in: [warp-drive-packages/legacy/src/adapter.ts:694](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/adapter.ts#L694)
 
 Organize records into groups, each of which is to be passed to separate
 calls to `findMany`.
@@ -406,7 +406,7 @@ loaded separately by `findMany`.
 
 #### Implementation of
 
-[`MinimumAdapterInterface`](../../compat/interfaces/MinimumAdapterInterface.md).[`groupRecordsForFindMany`](../../compat/interfaces/MinimumAdapterInterface.md#grouprecordsforfindmany)
+[`MinimumAdapterInterface`](../../compat/types/MinimumAdapterInterface.md).[`groupRecordsForFindMany`](../../compat/types/MinimumAdapterInterface.md#grouprecordsforfindmany)
 
 ***
 
@@ -420,7 +420,7 @@ query(
 ): Promise<AdapterPayload>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter.ts:368](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/legacy/src/adapter.ts#L368)
+Defined in: [warp-drive-packages/legacy/src/adapter.ts:368](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/adapter.ts#L368)
 
 This method is called when you call `query` on the store.
 
@@ -460,11 +460,11 @@ export default class ApplicationAdapter extends Adapter {
 
 #### Returns
 
-[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`AdapterPayload`](../../compat/type-aliases/AdapterPayload.md)>
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`AdapterPayload`](../../compat/types/AdapterPayload.md)>
 
 #### Implementation of
 
-[`MinimumAdapterInterface`](../../compat/interfaces/MinimumAdapterInterface.md).[`query`](../../compat/interfaces/MinimumAdapterInterface.md#query)
+[`MinimumAdapterInterface`](../../compat/types/MinimumAdapterInterface.md).[`query`](../../compat/types/MinimumAdapterInterface.md#query)
 
 ***
 
@@ -479,7 +479,7 @@ queryRecord(
 ): Promise<AdapterPayload>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter.ts:399](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/legacy/src/adapter.ts#L399)
+Defined in: [warp-drive-packages/legacy/src/adapter.ts:399](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/adapter.ts#L399)
 
 The `queryRecord()` method is invoked when the store is asked for a single
 record through a query object.
@@ -523,11 +523,11 @@ export default class ApplicationAdapter extends Adapter.extend(BuildURLMixin) {
 
 #### Returns
 
-[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`AdapterPayload`](../../compat/type-aliases/AdapterPayload.md)>
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`AdapterPayload`](../../compat/types/AdapterPayload.md)>
 
 #### Implementation of
 
-[`MinimumAdapterInterface`](../../compat/interfaces/MinimumAdapterInterface.md).[`queryRecord`](../../compat/interfaces/MinimumAdapterInterface.md#queryrecord)
+[`MinimumAdapterInterface`](../../compat/types/MinimumAdapterInterface.md).[`queryRecord`](../../compat/types/MinimumAdapterInterface.md#queryrecord)
 
 ***
 
@@ -537,7 +537,7 @@ export default class ApplicationAdapter extends Adapter.extend(BuildURLMixin) {
 serialize(snapshot, options): Record<string, unknown>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter.ts:464](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/legacy/src/adapter.ts#L464)
+Defined in: [warp-drive-packages/legacy/src/adapter.ts:464](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/adapter.ts#L464)
 
 Proxies to the serializer's `serialize` method.
 
@@ -564,7 +564,7 @@ export default class ApplicationAdapter extends Adapter {
 
 ##### options
 
-[`SerializerOptions`](../../compat/type-aliases/SerializerOptions.md)
+[`SerializerOptions`](../../compat/types/SerializerOptions.md)
 
 #### Returns
 
@@ -578,7 +578,7 @@ export default class ApplicationAdapter extends Adapter {
 shouldBackgroundReloadAll(store, snapshotRecordArray): boolean;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter.ts:871](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/legacy/src/adapter.ts#L871)
+Defined in: [warp-drive-packages/legacy/src/adapter.ts:871](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/adapter.ts#L871)
 
 This method is used by the store to determine if the store should
 reload a record array after the `store.findAll` method resolves
@@ -621,7 +621,7 @@ should always be triggered.
 
 #### Implementation of
 
-[`MinimumAdapterInterface`](../../compat/interfaces/MinimumAdapterInterface.md).[`shouldBackgroundReloadAll`](../../compat/interfaces/MinimumAdapterInterface.md#shouldbackgroundreloadall)
+[`MinimumAdapterInterface`](../../compat/types/MinimumAdapterInterface.md).[`shouldBackgroundReloadAll`](../../compat/types/MinimumAdapterInterface.md#shouldbackgroundreloadall)
 
 ***
 
@@ -631,7 +631,7 @@ should always be triggered.
 shouldBackgroundReloadRecord(store, snapshot): boolean;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter.ts:835](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/legacy/src/adapter.ts#L835)
+Defined in: [warp-drive-packages/legacy/src/adapter.ts:835](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/adapter.ts#L835)
 
 This method is used by the store to determine if the store should
 reload a record after the `store.findRecord` method resolves a
@@ -674,7 +674,7 @@ in the background.
 
 #### Implementation of
 
-[`MinimumAdapterInterface`](../../compat/interfaces/MinimumAdapterInterface.md).[`shouldBackgroundReloadRecord`](../../compat/interfaces/MinimumAdapterInterface.md#shouldbackgroundreloadrecord)
+[`MinimumAdapterInterface`](../../compat/types/MinimumAdapterInterface.md).[`shouldBackgroundReloadRecord`](../../compat/types/MinimumAdapterInterface.md#shouldbackgroundreloadrecord)
 
 ***
 
@@ -684,7 +684,7 @@ in the background.
 shouldReloadAll(store, snapshotRecordArray): boolean;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter.ts:799](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/legacy/src/adapter.ts#L799)
+Defined in: [warp-drive-packages/legacy/src/adapter.ts:799](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/adapter.ts#L799)
 
 This method is used by the store to determine if the store should
 reload all records from the adapter when records are requested by
@@ -746,7 +746,7 @@ your use case.
 
 #### Implementation of
 
-[`MinimumAdapterInterface`](../../compat/interfaces/MinimumAdapterInterface.md).[`shouldReloadAll`](../../compat/interfaces/MinimumAdapterInterface.md#shouldreloadall)
+[`MinimumAdapterInterface`](../../compat/types/MinimumAdapterInterface.md).[`shouldReloadAll`](../../compat/types/MinimumAdapterInterface.md#shouldreloadall)
 
 ***
 
@@ -756,7 +756,7 @@ your use case.
 shouldReloadRecord(store, snapshot): boolean;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter.ts:744](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/legacy/src/adapter.ts#L744)
+Defined in: [warp-drive-packages/legacy/src/adapter.ts:744](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/adapter.ts#L744)
 
 This method is used by the store to determine if the store should
 reload a record from the adapter when a record is requested by
@@ -813,7 +813,7 @@ suit your use case.
 
 #### Implementation of
 
-[`MinimumAdapterInterface`](../../compat/interfaces/MinimumAdapterInterface.md).[`shouldReloadRecord`](../../compat/interfaces/MinimumAdapterInterface.md#shouldreloadrecord)
+[`MinimumAdapterInterface`](../../compat/types/MinimumAdapterInterface.md).[`shouldReloadRecord`](../../compat/types/MinimumAdapterInterface.md#shouldreloadrecord)
 
 ***
 
@@ -827,7 +827,7 @@ updateRecord(
 ): Promise<AdapterPayload>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter.ts:566](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/legacy/src/adapter.ts#L566)
+Defined in: [warp-drive-packages/legacy/src/adapter.ts:566](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/adapter.ts#L566)
 
 Implement this method in a subclass to handle the updating of
 a record.
@@ -889,13 +889,13 @@ the Model class of the record
 
 #### Returns
 
-[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`AdapterPayload`](../../compat/type-aliases/AdapterPayload.md)>
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`AdapterPayload`](../../compat/types/AdapterPayload.md)>
 
 promise
 
 #### Implementation of
 
-[`MinimumAdapterInterface`](../../compat/interfaces/MinimumAdapterInterface.md).[`updateRecord`](../../compat/interfaces/MinimumAdapterInterface.md#updaterecord)
+[`MinimumAdapterInterface`](../../compat/types/MinimumAdapterInterface.md).[`updateRecord`](../../compat/types/MinimumAdapterInterface.md#updaterecord)
 
 ## Properties
 
@@ -905,7 +905,7 @@ promise
 store: Store$1;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter.ts:261](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/legacy/src/adapter.ts#L261)
+Defined in: [warp-drive-packages/legacy/src/adapter.ts:261](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/adapter.ts#L261)
 
 The Store service instance that owns this Adapter.
 
@@ -917,7 +917,7 @@ The Store service instance that owns this Adapter.
 get coalesceFindRequests(): boolean;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter.ts:630](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/legacy/src/adapter.ts#L630)
+Defined in: [warp-drive-packages/legacy/src/adapter.ts:630](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/adapter.ts#L630)
 
 By default the store will try to coalesce all `findRecord` calls within the same runloop
 into as few requests as possible by calling groupRecordsForFindMany and passing it into a findMany call.
@@ -934,7 +934,7 @@ coalesceFindRequests to false.
 set coalesceFindRequests(value): void;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter.ts:638](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/legacy/src/adapter.ts#L638)
+Defined in: [warp-drive-packages/legacy/src/adapter.ts:638](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/adapter.ts#L638)
 
 **`Optional`**
 
@@ -974,4 +974,4 @@ more effective.
 
 #### Implementation of
 
-[`MinimumAdapterInterface`](../../compat/interfaces/MinimumAdapterInterface.md).[`coalesceFindRequests`](../../compat/interfaces/MinimumAdapterInterface.md#coalescefindrequests)
+[`MinimumAdapterInterface`](../../compat/types/MinimumAdapterInterface.md).[`coalesceFindRequests`](../../compat/types/MinimumAdapterInterface.md#coalescefindrequests)

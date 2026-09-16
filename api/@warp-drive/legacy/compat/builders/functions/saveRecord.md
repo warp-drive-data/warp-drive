@@ -10,7 +10,7 @@ url: /api/@warp-drive/legacy/compat/builders/functions/saveRecord.md
 function saveRecord<T>(record, options?): SaveRecordRequestInput<TypeFromInstance<T>, T>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat/builders/save-record.ts:46](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/legacy/src/compat/builders/save-record.ts#L46)
+Defined in: [warp-drive-packages/legacy/src/compat/builders/save-record.ts:46](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/compat/builders/save-record.ts#L46)
 
 This function builds a request config for saving the given record (e.g. creating, updating, or deleting the record).
 When passed to `store.request`, this config will result in the same behavior as a legacy `store.saveRecord` request.
@@ -24,7 +24,7 @@ To that end, these builders are deprecated and will be removed in a future versi
 
 ### T
 
-`T` *extends* [`TypedRecordInstance`](../../../../core/types/record/interfaces/TypedRecordInstance.md)
+`T` *extends* [`TypedRecordInstance`](../../../../core/types/record/types/TypedRecordInstance.md)
 
 ## Parameters
 
@@ -42,7 +42,7 @@ optional, may include `adapterOptions` hash which will be passed to adapter.save
 
 ## Returns
 
-`SaveRecordRequestInput`<[`TypeFromInstance`](../../../../core/types/record/type-aliases/TypeFromInstance.md)<`T`>, `T`>
+`SaveRecordRequestInput`<[`TypeFromInstance`](../../../../core/types/record/types/TypeFromInstance.md)<`T`>, `T`>
 
 request config
 

@@ -33,11 +33,11 @@ url: /api/@warp-drive/experiments/storage.md
 
 ## Types
 
-* [CacheStorageEvent](interfaces/CacheStorageEvent.md)
-* [InternalCacheStorageEvent](interfaces/InternalCacheStorageEvent.md)
-* [ParamConfig](interfaces/ParamConfig.md)
-* [ReactiveStorage](interfaces/ReactiveStorage.md)
-* [ReactiveStorageOptions](interfaces/ReactiveStorageOptions.md)
-* [ValueTransition](interfaces/ValueTransition.md)
-* [EffectStorageEvent](type-aliases/EffectStorageEvent.md)
-* [KeyFn](type-aliases/KeyFn.md)
+* [CacheStorageEvent](types/CacheStorageEvent.md)
+* [InternalCacheStorageEvent](types/InternalCacheStorageEvent.md)
+* [ParamConfig](types/ParamConfig.md)
+* [ReactiveStorage](types/ReactiveStorage.md)
+* [ReactiveStorageOptions](types/ReactiveStorageOptions.md)
+* [ValueTransition](types/ValueTransition.md)
+* [EffectStorageEvent](types/EffectStorageEvent.md)
+* [KeyFn](types/KeyFn.md)

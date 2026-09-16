@@ -8,15 +8,15 @@ url: /api/@warp-drive/core/configure/functions/setupSignals.md
 function setupSignals<T>(buildConfig): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/reactivity/configure.ts:164](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/core/src/signals/reactivity/configure.ts#L164)
+Defined in: [warp-drive-packages/core/src/signals/reactivity/configure.ts:164](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/signals/reactivity/configure.ts#L164)
 
 Configures the signals implementation to use. Supports multiple
 implementations simultaneously.
 
-See [HooksOptions](../interfaces/HooksOptions.md) for the options passed to the provided function
+See [HooksOptions](../types/HooksOptions.md) for the options passed to the provided function
 when called.
 
-See [SignalHooks](../interfaces/SignalHooks.md) for the implementation the callback function should
+See [SignalHooks](../types/SignalHooks.md) for the implementation the callback function should
 return.
 
 ## Type Parameters
@@ -29,7 +29,7 @@ return.
 
 ### buildConfig
 
-(`options`) => [`SignalHooks`](../interfaces/SignalHooks.md)<`T`>
+(`options`) => [`SignalHooks`](../types/SignalHooks.md)<`T`>
 
 a function that takes options and returns a configuration object
 

@@ -8,10 +8,10 @@ url: /api/@warp-drive/core/request/functions/withReactiveResponse.md
 function withReactiveResponse<T, M, E, EM>(obj): RequestInfo<ReactiveDataDocument<T, M, E, EM>> & object;
 ```
 
-Defined in: [warp-drive-packages/core/src/request.ts:74](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/core/src/request.ts#L74)
+Defined in: [warp-drive-packages/core/src/request.ts:74](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/request.ts#L74)
 
 Brands the supplied object with the supplied response type
-wrapped in [ReactiveDataDocument](../../reactive/type-aliases/ReactiveDataDocument.md). This is a convenience for
+wrapped in [ReactiveDataDocument](../../reactive/types/ReactiveDataDocument.md). This is a convenience for
 the common case of using [withResponseType](withResponseType.md) with `ReactiveDataDocument`.
 
 ```ts
@@ -45,11 +45,7 @@ result.content.meta?.total; // number | undefined
 
 ### M
 
-`M` *extends*
-| [`ObjectValue`](../../types/json/raw/interfaces/ObjectValue.md)
-| `undefined` =
-| [`ObjectValue`](../../types/json/raw/interfaces/ObjectValue.md)
-| `undefined`
+`M` *extends* [`ObjectValue`](../../types/json/raw/types/ObjectValue.md) | `undefined` = [`ObjectValue`](../../types/json/raw/types/ObjectValue.md) | `undefined`
 
 ### E
 
@@ -57,14 +53,12 @@ result.content.meta?.total; // number | undefined
 
 ### EM
 
-`EM` *extends*
-| [`ObjectValue`](../../types/json/raw/interfaces/ObjectValue.md)
-| `undefined` = `M`
+`EM` *extends* [`ObjectValue`](../../types/json/raw/types/ObjectValue.md) | `undefined` = `M`
 
 ## Parameters
 
 ### obj
 
-[`RequestInfo`](../../types/request/interfaces/RequestInfo.md)
+[`RequestInfo`](../../types/request/types/RequestInfo.md)
 
 ## Returns

@@ -55,7 +55,7 @@ export default <template>
 
 ## Typing Reactive Responses
 
-Requests that return reactive responses wrap the primary resource data in a [ReactiveDocument](/api/@warp-drive/core/reactive/type-aliases/ReactiveDocument). In the case of an error, this will be a [ReactiveErrorDocument](/api/@warp-drive/core/reactive/type-aliases/ReactiveErrorDocument) and in the case of success it will be a [ReactiveDataDocument](/api/@warp-drive/core/reactive/type-aliases/ReactiveDataDocument)
+Requests that return reactive responses wrap the primary resource data in a [ReactiveDocument](/api/@warp-drive/core/reactive/types/ReactiveDocument). In the case of an error, this will be a [ReactiveErrorDocument](/api/@warp-drive/core/reactive/types/ReactiveErrorDocument) and in the case of success it will be a [ReactiveDataDocument](/api/@warp-drive/core/reactive/types/ReactiveDataDocument)
 
 A conventient utility is available for [typing these reactive responses](/api/@warp-drive/core/request/functions/withReactiveResponse).
 
@@ -250,13 +250,13 @@ content.meta.total; // number
 
 ## Typing Errors
 
-The error variant of a document, [ReactiveErrorDocument](/api/@warp-drive/core/reactive/type-aliases/ReactiveErrorDocument),
+The error variant of a document, [ReactiveErrorDocument](/api/@warp-drive/core/reactive/types/ReactiveErrorDocument),
 exposes `errors`. The cache stores whatever the API sent without validating it, so by default the
 type promises no shape — `errors` is `object[]`.
 
 A third type param declares what the endpoint actually returns. The builders in
 `@warp-drive/utilities/json-api` default it to
-[ApiError](/api/@warp-drive/core/types/spec/error/interfaces/ApiError), the
+[ApiError](/api/@warp-drive/core/types/spec/error/types/ApiError), the
 [{json:api} error object](https://jsonapi.org/format/#error-objects):
 
 ```ts

@@ -10,7 +10,7 @@ url: /api/@warp-drive/build-config/index/functions/setConfig.md
 function setConfig(macros, config): void;
 ```
 
-Defined in: [index.ts:280](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/build-config/src/index.ts#L280)
+Defined in: [index.ts:280](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/build-config/src/index.ts#L280)
 
 Sets the build configuration for WarpDrive that ensures
 environment specific behaviors are activated/deactivated
@@ -69,7 +69,7 @@ export default {
 
 #### config
 
-[`WarpDriveConfig`](../interfaces/WarpDriveConfig.md)
+[`WarpDriveConfig`](../types/WarpDriveConfig.md)
 
 ### Returns
 
@@ -85,7 +85,7 @@ function setConfig(
 ): void;
 ```
 
-Defined in: [index.ts:281](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/build-config/src/index.ts#L281)
+Defined in: [index.ts:281](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/build-config/src/index.ts#L281)
 
 Sets the build configuration for WarpDrive that ensures
 environment specific behaviors are activated/deactivated
@@ -148,7 +148,7 @@ export default {
 
 #### config
 
-[`WarpDriveConfig`](../interfaces/WarpDriveConfig.md)
+[`WarpDriveConfig`](../types/WarpDriveConfig.md)
 
 ### Returns
 

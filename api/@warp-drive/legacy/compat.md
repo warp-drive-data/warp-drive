@@ -19,9 +19,9 @@ url: /api/@warp-drive/legacy/compat.md
 
 ## Types
 
-* [LegacyStoreCompat](interfaces/LegacyStoreCompat.md)
-* [MinimumAdapterInterface](interfaces/MinimumAdapterInterface.md)
-* [MinimumSerializerInterface](interfaces/MinimumSerializerInterface.md)
-* [AdapterPayload](type-aliases/AdapterPayload.md)
-* [~~CompatStore~~](type-aliases/CompatStore.md)
-* [SerializerOptions](type-aliases/SerializerOptions.md)
+* [LegacyStoreCompat](types/LegacyStoreCompat.md)
+* [MinimumAdapterInterface](types/MinimumAdapterInterface.md)
+* [MinimumSerializerInterface](types/MinimumSerializerInterface.md)
+* [AdapterPayload](types/AdapterPayload.md)
+* [~~CompatStore~~](types/CompatStore.md)
+* [SerializerOptions](types/SerializerOptions.md)

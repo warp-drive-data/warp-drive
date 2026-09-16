@@ -12,7 +12,7 @@ url: /api/@warp-drive/legacy/model/functions/attr.md
 function attr(): DataDecorator;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/attr.ts:293](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/legacy/src/model/-private/attr.ts#L293)
+Defined in: [warp-drive-packages/legacy/src/model/-private/attr.ts:293](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/model/-private/attr.ts#L293)
 
 `attr` defines an attribute on a [Model](../classes/Model.md).
 By default, attributes are passed through as-is, however you can specify an
@@ -105,7 +105,7 @@ export default class TextTransform {
 function attr<T>(type): DataDecorator;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/attr.ts:294](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/legacy/src/model/-private/attr.ts#L294)
+Defined in: [warp-drive-packages/legacy/src/model/-private/attr.ts:294](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/model/-private/attr.ts#L294)
 
 `attr` defines an attribute on a [Model](../classes/Model.md).
 By default, attributes are passed through as-is, however you can specify an
@@ -212,7 +212,7 @@ the attribute type
 function attr(type): DataDecorator;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/attr.ts:295](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/legacy/src/model/-private/attr.ts#L295)
+Defined in: [warp-drive-packages/legacy/src/model/-private/attr.ts:295](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/model/-private/attr.ts#L295)
 
 `attr` defines an attribute on a [Model](../classes/Model.md).
 By default, attributes are passed through as-is, however you can specify an
@@ -313,7 +313,7 @@ the attribute type
 function attr(options): DataDecorator;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/attr.ts:296](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/legacy/src/model/-private/attr.ts#L296)
+Defined in: [warp-drive-packages/legacy/src/model/-private/attr.ts:296](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/model/-private/attr.ts#L296)
 
 `attr` defines an attribute on a [Model](../classes/Model.md).
 By default, attributes are passed through as-is, however you can specify an
@@ -414,7 +414,7 @@ a hash of options
 function attr<T>(type, options?): DataDecorator;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/attr.ts:297](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/legacy/src/model/-private/attr.ts#L297)
+Defined in: [warp-drive-packages/legacy/src/model/-private/attr.ts:297](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/model/-private/attr.ts#L297)
 
 `attr` defines an attribute on a [Model](../classes/Model.md).
 By default, attributes are passed through as-is, however you can specify an
@@ -527,7 +527,7 @@ a hash of options
 function attr(type, options?): DataDecorator;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/attr.ts:298](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/legacy/src/model/-private/attr.ts#L298)
+Defined in: [warp-drive-packages/legacy/src/model/-private/attr.ts:298](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/model/-private/attr.ts#L298)
 
 `attr` defines an attribute on a [Model](../classes/Model.md).
 By default, attributes are passed through as-is, however you can specify an
@@ -623,7 +623,7 @@ the attribute type
 `AttrOptions`<
 | `object`
 | `unknown`\[]
-| [`PrimitiveValue`](../../../core/types/json/raw/type-aliases/PrimitiveValue.md)> & `object`
+| [`PrimitiveValue`](../../../core/types/json/raw/types/PrimitiveValue.md)> & `object`
 
 a hash of options
 
@@ -641,7 +641,7 @@ function attr(
 ): void;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/attr.ts:299](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/legacy/src/model/-private/attr.ts#L299)
+Defined in: [warp-drive-packages/legacy/src/model/-private/attr.ts:299](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/model/-private/attr.ts#L299)
 
 `attr` defines an attribute on a [Model](../classes/Model.md).
 By default, attributes are passed through as-is, however you can specify an

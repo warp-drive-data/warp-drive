@@ -14,7 +14,7 @@ function postQuery<T, M, E>(
 ): PostQueryRequestOptions<ReactiveDataDocument<T[], M, E>>;
 ```
 
-Defined in: [-private/json-api/query.ts:153](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/utilities/src/-private/json-api/query.ts#L153)
+Defined in: [-private/json-api/query.ts:153](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/utilities/src/-private/json-api/query.ts#L153)
 
 Builds request options to query for resources, usually by a primary
 type, configured for the url and header expectations of most JSON:API APIs.
@@ -63,26 +63,26 @@ const data = await store.request(options);
 #### M
 
 `M` *extends*
-| [`ObjectValue`](../../../core/types/json/raw/interfaces/ObjectValue.md)
+| [`ObjectValue`](../../../core/types/json/raw/types/ObjectValue.md)
 | `undefined` =
-| [`ObjectValue`](../../../core/types/json/raw/interfaces/ObjectValue.md)
+| [`ObjectValue`](../../../core/types/json/raw/types/ObjectValue.md)
 | `undefined`
 
 #### E
 
-`E` *extends* `object` = [`ApiError`](../../../core/types/spec/error/interfaces/ApiError.md)
+`E` *extends* `object` = [`ApiError`](../../../core/types/spec/error/types/ApiError.md)
 
 ### Parameters
 
 #### type
 
-[`TypeFromInstance`](../../../core/types/record/type-aliases/TypeFromInstance.md)<`T`>
+[`TypeFromInstance`](../../../core/types/record/types/TypeFromInstance.md)<`T`>
 
 the name of the resource type to query
 
 #### query?
 
-[`QueryParamsSource`](../../../core/types/params/type-aliases/QueryParamsSource.md)
+[`QueryParamsSource`](../../../core/types/params/types/QueryParamsSource.md)
 
 the query params to send with the request
 
@@ -106,7 +106,7 @@ function postQuery(
 ): PostQueryRequestOptions;
 ```
 
-Defined in: [-private/json-api/query.ts:158](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/utilities/src/-private/json-api/query.ts#L158)
+Defined in: [-private/json-api/query.ts:158](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/utilities/src/-private/json-api/query.ts#L158)
 
 Builds request options to query for resources, usually by a primary
 type, configured for the url and header expectations of most JSON:API APIs.
@@ -156,7 +156,7 @@ the name of the resource type to query
 
 #### query?
 
-[`QueryParamsSource`](../../../core/types/params/type-aliases/QueryParamsSource.md)
+[`QueryParamsSource`](../../../core/types/params/types/QueryParamsSource.md)
 
 the query params to send with the request
 

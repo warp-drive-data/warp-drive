@@ -10,7 +10,7 @@ url: /api/@warp-drive/utilities/json-api/functions/updateRecord.md
 function updateRecord<T, RT, M, E>(record, options?): UpdateRequestOptions<ReactiveDataDocument<RT, M, E>, T>;
 ```
 
-Defined in: [-private/json-api/save-record.ts:255](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/utilities/src/-private/json-api/save-record.ts#L255)
+Defined in: [-private/json-api/save-record.ts:255](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/utilities/src/-private/json-api/save-record.ts#L255)
 
 :::warning ⚠️ **These Mutation Builders DO NOT Set The Necessary Request Body**
 While this may come as a surprise, the app providing the body ensures that only
@@ -67,23 +67,23 @@ const data = await store.request(options);
 
 #### T
 
-`T` *extends* [`TypedRecordInstance`](../../../core/types/record/interfaces/TypedRecordInstance.md)
+`T` *extends* [`TypedRecordInstance`](../../../core/types/record/types/TypedRecordInstance.md)
 
 #### RT
 
-`RT` *extends* [`TypedRecordInstance`](../../../core/types/record/interfaces/TypedRecordInstance.md) = `T`
+`RT` *extends* [`TypedRecordInstance`](../../../core/types/record/types/TypedRecordInstance.md) = `T`
 
 #### M
 
 `M` *extends*
-| [`ObjectValue`](../../../core/types/json/raw/interfaces/ObjectValue.md)
+| [`ObjectValue`](../../../core/types/json/raw/types/ObjectValue.md)
 | `undefined` =
-| [`ObjectValue`](../../../core/types/json/raw/interfaces/ObjectValue.md)
+| [`ObjectValue`](../../../core/types/json/raw/types/ObjectValue.md)
 | `undefined`
 
 #### E
 
-`E` *extends* `object` = [`ApiError`](../../../core/types/spec/error/interfaces/ApiError.md)
+`E` *extends* `object` = [`ApiError`](../../../core/types/spec/error/types/ApiError.md)
 
 ### Parameters
 
@@ -105,7 +105,7 @@ const data = await store.request(options);
 function updateRecord(record, options?): UpdateRequestOptions;
 ```
 
-Defined in: [-private/json-api/save-record.ts:264](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/utilities/src/-private/json-api/save-record.ts#L264)
+Defined in: [-private/json-api/save-record.ts:264](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/utilities/src/-private/json-api/save-record.ts#L264)
 
 :::warning ⚠️ **These Mutation Builders DO NOT Set The Necessary Request Body**
 While this may come as a surprise, the app providing the body ensures that only

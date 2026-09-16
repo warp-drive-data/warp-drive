@@ -10,7 +10,7 @@ url: /api/@warp-drive/utilities/rest/functions/findRecord.md
 function findRecord<T, M, E>(identifier, options?): FindRecordRequestOptions<ReactiveDataDocument<T, M, E>, T>;
 ```
 
-Defined in: [-private/rest/find-record.ts:67](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/utilities/src/-private/rest/find-record.ts#L67)
+Defined in: [-private/rest/find-record.ts:67](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/utilities/src/-private/rest/find-record.ts#L67)
 
 Builds request options to fetch a single resource by a known id or identifier
 configured for the url and header expectations of most REST APIs.
@@ -71,9 +71,9 @@ const data = await store.request(options);
 #### M
 
 `M` *extends*
-| [`ObjectValue`](../../../core/types/json/raw/interfaces/ObjectValue.md)
+| [`ObjectValue`](../../../core/types/json/raw/types/ObjectValue.md)
 | `undefined` =
-| [`ObjectValue`](../../../core/types/json/raw/interfaces/ObjectValue.md)
+| [`ObjectValue`](../../../core/types/json/raw/types/ObjectValue.md)
 | `undefined`
 
 #### E
@@ -84,7 +84,7 @@ const data = await store.request(options);
 
 #### identifier
 
-`RemotelyAccessibleIdentifier`<[`TypeFromInstance`](../../../core/types/record/type-aliases/TypeFromInstance.md)<`T`>>
+`RemotelyAccessibleIdentifier`<[`TypeFromInstance`](../../../core/types/record/types/TypeFromInstance.md)<`T`>>
 
 #### options?
 
@@ -100,7 +100,7 @@ const data = await store.request(options);
 function findRecord(identifier, options?): FindRecordRequestOptions;
 ```
 
-Defined in: [-private/rest/find-record.ts:71](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/utilities/src/-private/rest/find-record.ts#L71)
+Defined in: [-private/rest/find-record.ts:71](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/utilities/src/-private/rest/find-record.ts#L71)
 
 Builds request options to fetch a single resource by a known id or identifier
 configured for the url and header expectations of most REST APIs.
@@ -176,7 +176,7 @@ function findRecord<T, M, E>(
 ): FindRecordRequestOptions<ReactiveDataDocument<T, M, E>, T>;
 ```
 
-Defined in: [-private/rest/find-record.ts:75](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/utilities/src/-private/rest/find-record.ts#L75)
+Defined in: [-private/rest/find-record.ts:75](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/utilities/src/-private/rest/find-record.ts#L75)
 
 Builds request options to fetch a single resource by a known id or identifier
 configured for the url and header expectations of most REST APIs.
@@ -237,9 +237,9 @@ const data = await store.request(options);
 #### M
 
 `M` *extends*
-| [`ObjectValue`](../../../core/types/json/raw/interfaces/ObjectValue.md)
+| [`ObjectValue`](../../../core/types/json/raw/types/ObjectValue.md)
 | `undefined` =
-| [`ObjectValue`](../../../core/types/json/raw/interfaces/ObjectValue.md)
+| [`ObjectValue`](../../../core/types/json/raw/types/ObjectValue.md)
 | `undefined`
 
 #### E
@@ -250,7 +250,7 @@ const data = await store.request(options);
 
 #### type
 
-[`TypeFromInstance`](../../../core/types/record/type-aliases/TypeFromInstance.md)<`T`>
+[`TypeFromInstance`](../../../core/types/record/types/TypeFromInstance.md)<`T`>
 
 #### id
 
@@ -274,7 +274,7 @@ function findRecord(
 ): FindRecordRequestOptions;
 ```
 
-Defined in: [-private/rest/find-record.ts:80](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/utilities/src/-private/rest/find-record.ts#L80)
+Defined in: [-private/rest/find-record.ts:80](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/utilities/src/-private/rest/find-record.ts#L80)
 
 Builds request options to fetch a single resource by a known id or identifier
 configured for the url and header expectations of most REST APIs.

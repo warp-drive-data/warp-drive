@@ -4,7 +4,7 @@ url: /api/@warp-drive/core/classes/RequestManager.md
 
 # &#x20;RequestManager
 
-Defined in: [warp-drive-packages/core/src/request/-private/manager.ts:103](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/core/src/request/-private/manager.ts#L103)
+Defined in: [warp-drive-packages/core/src/request/-private/manager.ts:103](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/request/-private/manager.ts#L103)
 
 ## Import
 
@@ -99,7 +99,7 @@ type StructuredDocument<T> = StructuredDataDocument<T> | StructuredErrorDocument
 new RequestManager(options?): RequestManager;
 ```
 
-Defined in: [warp-drive-packages/core/src/request/-private/manager.ts:120](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/core/src/request/-private/manager.ts#L120)
+Defined in: [warp-drive-packages/core/src/request/-private/manager.ts:120](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/request/-private/manager.ts#L120)
 
 #### Parameters
 
@@ -119,7 +119,7 @@ Defined in: [warp-drive-packages/core/src/request/-private/manager.ts:120](https
 request<RT>(request): Future<RT>;
 ```
 
-Defined in: [warp-drive-packages/core/src/request/-private/manager.ts:196](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/core/src/request/-private/manager.ts#L196)
+Defined in: [warp-drive-packages/core/src/request/-private/manager.ts:196](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/request/-private/manager.ts#L196)
 
 Issue a Request.
 
@@ -135,11 +135,11 @@ Returns a Future that fulfills with a StructuredDocument
 
 ##### request
 
-[`RequestInfo`](../types/request/interfaces/RequestInfo.md)<`RT`>
+[`RequestInfo`](../types/request/types/RequestInfo.md)<`RT`>
 
 #### Returns
 
-[`Future`](../request/interfaces/Future.md)<`RT`>
+[`Future`](../request/types/Future.md)<`RT`>
 
 ***
 
@@ -149,7 +149,7 @@ Returns a Future that fulfills with a StructuredDocument
 use(newHandlers): this;
 ```
 
-Defined in: [warp-drive-packages/core/src/request/-private/manager.ts:162](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/core/src/request/-private/manager.ts#L162)
+Defined in: [warp-drive-packages/core/src/request/-private/manager.ts:162](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/request/-private/manager.ts#L162)
 
 Register handler(s) to use when a request is issued.
 
@@ -161,7 +161,7 @@ curry the request, or pass along a modified request.
 
 ##### newHandlers
 
-[`Handler`](../request/interfaces/Handler.md)\[]
+[`Handler`](../request/types/Handler.md)\[]
 
 #### Returns
 
@@ -175,7 +175,7 @@ curry the request, or pass along a modified request.
 useCache(cacheHandler): this;
 ```
 
-Defined in: [warp-drive-packages/core/src/request/-private/manager.ts:136](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/core/src/request/-private/manager.ts#L136)
+Defined in: [warp-drive-packages/core/src/request/-private/manager.ts:136](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/request/-private/manager.ts#L136)
 
 Register a handler to use for primary cache intercept.
 
@@ -187,7 +187,7 @@ registers itself as a Cache handler.
 
 ##### cacheHandler
 
-[`CacheHandler`](../request/interfaces/CacheHandler.md) & `object`
+[`CacheHandler`](../request/types/CacheHandler.md) & `object`
 
 #### Returns
 

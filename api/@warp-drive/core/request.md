@@ -16,11 +16,11 @@ url: /api/@warp-drive/core/request.md
 
 ## Types
 
-* [CacheHandler](interfaces/CacheHandler.md)
-* [Context](interfaces/Context.md)
-* [Future](interfaces/Future.md)
-* [Handler](interfaces/Handler.md)
-* [Awaitable](type-aliases/Awaitable.md)
-* [Deferred](type-aliases/Deferred.md)
-* [ManagedRequestPriority](type-aliases/ManagedRequestPriority.md)
-* [NextFn](type-aliases/NextFn.md)
+* [CacheHandler](types/CacheHandler.md)
+* [Context](types/Context.md)
+* [Future](types/Future.md)
+* [Handler](types/Handler.md)
+* [Awaitable](types/Awaitable.md)
+* [Deferred](types/Deferred.md)
+* [ManagedRequestPriority](types/ManagedRequestPriority.md)
+* [NextFn](types/NextFn.md)

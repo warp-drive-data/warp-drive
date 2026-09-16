@@ -8,11 +8,11 @@ url: /api/@warp-drive/core/reactive/functions/checkout.md
 function checkout<T>(resource): Promise<T & ReactiveResource>;
 ```
 
-Defined in: [warp-drive-packages/core/src/reactive/-private/record.ts:755](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/core/src/reactive/-private/record.ts#L755)
+Defined in: [warp-drive-packages/core/src/reactive/-private/record.ts:755](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/reactive/-private/record.ts#L755)
 
 Checkout an immutable resource for editing.
 
-[ReactiveResources](../interfaces/ReactiveResource.md) are not editable by default. This method
+[ReactiveResources](../types/ReactiveResource.md) are not editable by default. This method
 creates an editable copy of the resource.
 
 This returns a promise which resolves with the editable
@@ -42,7 +42,7 @@ payload from the cache matches their existing value.
 
 ## Returns
 
-[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`T` & [`ReactiveResource`](../interfaces/ReactiveResource.md)>
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`T` & [`ReactiveResource`](../types/ReactiveResource.md)>
 
 a promise that resolves to the editable resource
 

@@ -10,7 +10,7 @@ url: /api/@warp-drive/legacy/adapter/rest.md
 
 ## Types
 
-* [FetchRequestInit](interfaces/FetchRequestInit.md)
-* [JQueryRequestInit](interfaces/JQueryRequestInit.md)
-* [QueryState](type-aliases/QueryState.md)
-* [RequestData](type-aliases/RequestData.md)
+* [FetchRequestInit](types/FetchRequestInit.md)
+* [JQueryRequestInit](types/JQueryRequestInit.md)
+* [QueryState](types/QueryState.md)
+* [RequestData](types/RequestData.md)

@@ -8,7 +8,7 @@ url: /api/@warp-drive/schema-dsl/functions/belongsTo.md
 function belongsTo(options): (target, key) => void;
 ```
 
-Defined in: [fields/belongs-to.ts:98](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/schema-dsl/src/fields/belongs-to.ts#L98)
+Defined in: [fields/belongs-to.ts:98](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/schema-dsl/src/fields/belongs-to.ts#L98)
 
 **`Decorator`**
 
@@ -16,14 +16,14 @@ Defined in: [fields/belongs-to.ts:98](https://github.com/warp-drive-data/warp-dr
 > This decorator is LEGACY, and only valid on resources decorated with
 > `@Resource({ legacy: true })`.
 
-Marks a property as a [LegacyBelongsToField](../../core/types/schema/fields/interfaces/LegacyBelongsToField.md) for use with
+Marks a property as a [LegacyBelongsToField](../../core/types/schema/fields/types/LegacyBelongsToField.md) for use with
 `@warp-drive/legacy/model`.
 
 ## Parameters
 
 ### options
 
-[`BelongsToOptions`](../interfaces/BelongsToOptions.md)
+[`BelongsToOptions`](../types/BelongsToOptions.md)
 
 ## Returns
 

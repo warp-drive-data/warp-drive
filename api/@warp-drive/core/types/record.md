@@ -8,12 +8,12 @@ url: /api/@warp-drive/core/types/record.md
 
 ## Types
 
-* [TypedRecordInstance](interfaces/TypedRecordInstance.md)
-* [ExtractSuggestedCacheTypes](type-aliases/ExtractSuggestedCacheTypes.md)
-* [Includes](type-aliases/Includes.md)
-* [Mask](type-aliases/Mask.md)
-* [OpaqueRecordInstance](type-aliases/OpaqueRecordInstance.md)
-* [StringSatisfiesIncludes](type-aliases/StringSatisfiesIncludes.md)
-* [TypeFromInstance](type-aliases/TypeFromInstance.md)
-* [TypeFromInstanceOrString](type-aliases/TypeFromInstanceOrString.md)
-* [Validate](type-aliases/Validate.md)
+* [TypedRecordInstance](types/TypedRecordInstance.md)
+* [ExtractSuggestedCacheTypes](types/ExtractSuggestedCacheTypes.md)
+* [Includes](types/Includes.md)
+* [Mask](types/Mask.md)
+* [OpaqueRecordInstance](types/OpaqueRecordInstance.md)
+* [StringSatisfiesIncludes](types/StringSatisfiesIncludes.md)
+* [TypeFromInstance](types/TypeFromInstance.md)
+* [TypeFromInstanceOrString](types/TypeFromInstanceOrString.md)
+* [Validate](types/Validate.md)

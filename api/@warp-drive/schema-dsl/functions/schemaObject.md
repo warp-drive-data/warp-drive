@@ -8,11 +8,11 @@ url: /api/@warp-drive/schema-dsl/functions/schemaObject.md
 function schemaObject(options): (target, key) => void;
 ```
 
-Defined in: [fields/schema-object.ts:112](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/schema-dsl/src/fields/schema-object.ts#L112)
+Defined in: [fields/schema-object.ts:112](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/schema-dsl/src/fields/schema-object.ts#L112)
 
 **`Decorator`**
 
-Marks a property as a [SchemaObjectField](../../core/types/schema/fields/interfaces/SchemaObjectField.md) — an embedded
+Marks a property as a [SchemaObjectField](../../core/types/schema/fields/types/SchemaObjectField.md) — an embedded
 object whose shape is described by an [ObjectSchema](ObjectSchema.md).
 
 This is not a relationship. `@belongsTo` / `ResourceField` point at
@@ -25,7 +25,7 @@ For a bag of primitives with no schema, use [object](object.md) instead.
 
 ### options
 
-[`SchemaObjectOptions`](../interfaces/SchemaObjectOptions.md)
+[`SchemaObjectOptions`](../types/SchemaObjectOptions.md)
 
 ## Returns
 

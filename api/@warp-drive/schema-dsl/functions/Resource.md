@@ -10,25 +10,25 @@ url: /api/@warp-drive/schema-dsl/functions/Resource.md
 function Resource(target): void;
 ```
 
-Defined in: [entities/resource.ts:120](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/schema-dsl/src/entities/resource.ts#L120)
+Defined in: [entities/resource.ts:120](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/schema-dsl/src/entities/resource.ts#L120)
 
 **`Class Decorator`**
 
 Marks a class as a resource schema — a primary resource with its own
-unique [identity](../../core/types/schema/fields/interfaces/IdentityField.md) — compiling it to a
-[PolarisResourceSchema](../../core/types/schema/fields/interfaces/PolarisResourceSchema.md), or a [LegacyResourceSchema](../../core/types/schema/fields/interfaces/LegacyResourceSchema.md) when
-[ResourceOptions.legacy](../interfaces/ResourceOptions.md#legacy) is set.
+unique [identity](../../core/types/schema/fields/types/IdentityField.md) — compiling it to a
+[PolarisResourceSchema](../../core/types/schema/fields/types/PolarisResourceSchema.md), or a [LegacyResourceSchema](../../core/types/schema/fields/types/LegacyResourceSchema.md) when
+[ResourceOptions.legacy](../types/ResourceOptions.md#legacy) is set.
 
 The resource's `type` is derived from the class name (dasherized, e.g.
 `UserProfile` compiles to `'user-profile'`) unless a `type` string is
 passed explicitly. Its identity defaults to `{ kind: '@id', name: 'id' }`
 unless a property is decorated with [id](id.md), or
-[ResourceOptions.identityField](../interfaces/ResourceOptions.md#identityfield) names a different property.
+[ResourceOptions.identityField](../types/ResourceOptions.md#identityfield) names a different property.
 
 Each decorated property on the class contributes one entry to the
 compiled `fields` array, in declaration order. Unless
-[ResourceOptions.legacy](../interfaces/ResourceOptions.md#legacy) is set, a `$type` and a `constructor`
-[DerivedField](../../core/types/schema/fields/interfaces/DerivedField.md) are appended automatically: the first before any
+[ResourceOptions.legacy](../types/ResourceOptions.md#legacy) is set, a `$type` and a `constructor`
+[DerivedField](../../core/types/schema/fields/types/DerivedField.md) are appended automatically: the first before any
 declared fields, the second after.
 
 ### Parameters
@@ -71,7 +71,7 @@ export class User {
 :::
 
 Passing a `type` overrides the derived name, and `{ legacy: true }`
-compiles to a [LegacyResourceSchema](../../core/types/schema/fields/interfaces/LegacyResourceSchema.md) instead:
+compiles to a [LegacyResourceSchema](../../core/types/schema/fields/types/LegacyResourceSchema.md) instead:
 
 ::: code-group
 
@@ -103,25 +103,25 @@ export class Post {
 function Resource(type, options?): (target) => void;
 ```
 
-Defined in: [entities/resource.ts:121](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/schema-dsl/src/entities/resource.ts#L121)
+Defined in: [entities/resource.ts:121](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/schema-dsl/src/entities/resource.ts#L121)
 
 **`Class Decorator`**
 
 Marks a class as a resource schema — a primary resource with its own
-unique [identity](../../core/types/schema/fields/interfaces/IdentityField.md) — compiling it to a
-[PolarisResourceSchema](../../core/types/schema/fields/interfaces/PolarisResourceSchema.md), or a [LegacyResourceSchema](../../core/types/schema/fields/interfaces/LegacyResourceSchema.md) when
-[ResourceOptions.legacy](../interfaces/ResourceOptions.md#legacy) is set.
+unique [identity](../../core/types/schema/fields/types/IdentityField.md) — compiling it to a
+[PolarisResourceSchema](../../core/types/schema/fields/types/PolarisResourceSchema.md), or a [LegacyResourceSchema](../../core/types/schema/fields/types/LegacyResourceSchema.md) when
+[ResourceOptions.legacy](../types/ResourceOptions.md#legacy) is set.
 
 The resource's `type` is derived from the class name (dasherized, e.g.
 `UserProfile` compiles to `'user-profile'`) unless a `type` string is
 passed explicitly. Its identity defaults to `{ kind: '@id', name: 'id' }`
 unless a property is decorated with [id](id.md), or
-[ResourceOptions.identityField](../interfaces/ResourceOptions.md#identityfield) names a different property.
+[ResourceOptions.identityField](../types/ResourceOptions.md#identityfield) names a different property.
 
 Each decorated property on the class contributes one entry to the
 compiled `fields` array, in declaration order. Unless
-[ResourceOptions.legacy](../interfaces/ResourceOptions.md#legacy) is set, a `$type` and a `constructor`
-[DerivedField](../../core/types/schema/fields/interfaces/DerivedField.md) are appended automatically: the first before any
+[ResourceOptions.legacy](../types/ResourceOptions.md#legacy) is set, a `$type` and a `constructor`
+[DerivedField](../../core/types/schema/fields/types/DerivedField.md) are appended automatically: the first before any
 declared fields, the second after.
 
 ### Parameters
@@ -132,7 +132,7 @@ declared fields, the second after.
 
 #### options?
 
-[`ResourceOptions`](../interfaces/ResourceOptions.md)
+[`ResourceOptions`](../types/ResourceOptions.md)
 
 ### Returns
 
@@ -168,7 +168,7 @@ export class User {
 :::
 
 Passing a `type` overrides the derived name, and `{ legacy: true }`
-compiles to a [LegacyResourceSchema](../../core/types/schema/fields/interfaces/LegacyResourceSchema.md) instead:
+compiles to a [LegacyResourceSchema](../../core/types/schema/fields/types/LegacyResourceSchema.md) instead:
 
 ::: code-group
 
@@ -200,32 +200,32 @@ export class Post {
 function Resource(options): (target) => void;
 ```
 
-Defined in: [entities/resource.ts:122](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/schema-dsl/src/entities/resource.ts#L122)
+Defined in: [entities/resource.ts:122](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/schema-dsl/src/entities/resource.ts#L122)
 
 **`Class Decorator`**
 
 Marks a class as a resource schema — a primary resource with its own
-unique [identity](../../core/types/schema/fields/interfaces/IdentityField.md) — compiling it to a
-[PolarisResourceSchema](../../core/types/schema/fields/interfaces/PolarisResourceSchema.md), or a [LegacyResourceSchema](../../core/types/schema/fields/interfaces/LegacyResourceSchema.md) when
-[ResourceOptions.legacy](../interfaces/ResourceOptions.md#legacy) is set.
+unique [identity](../../core/types/schema/fields/types/IdentityField.md) — compiling it to a
+[PolarisResourceSchema](../../core/types/schema/fields/types/PolarisResourceSchema.md), or a [LegacyResourceSchema](../../core/types/schema/fields/types/LegacyResourceSchema.md) when
+[ResourceOptions.legacy](../types/ResourceOptions.md#legacy) is set.
 
 The resource's `type` is derived from the class name (dasherized, e.g.
 `UserProfile` compiles to `'user-profile'`) unless a `type` string is
 passed explicitly. Its identity defaults to `{ kind: '@id', name: 'id' }`
 unless a property is decorated with [id](id.md), or
-[ResourceOptions.identityField](../interfaces/ResourceOptions.md#identityfield) names a different property.
+[ResourceOptions.identityField](../types/ResourceOptions.md#identityfield) names a different property.
 
 Each decorated property on the class contributes one entry to the
 compiled `fields` array, in declaration order. Unless
-[ResourceOptions.legacy](../interfaces/ResourceOptions.md#legacy) is set, a `$type` and a `constructor`
-[DerivedField](../../core/types/schema/fields/interfaces/DerivedField.md) are appended automatically: the first before any
+[ResourceOptions.legacy](../types/ResourceOptions.md#legacy) is set, a `$type` and a `constructor`
+[DerivedField](../../core/types/schema/fields/types/DerivedField.md) are appended automatically: the first before any
 declared fields, the second after.
 
 ### Parameters
 
 #### options
 
-[`ResourceOptions`](../interfaces/ResourceOptions.md)
+[`ResourceOptions`](../types/ResourceOptions.md)
 
 ### Returns
 
@@ -261,7 +261,7 @@ export class User {
 :::
 
 Passing a `type` overrides the derived name, and `{ legacy: true }`
-compiles to a [LegacyResourceSchema](../../core/types/schema/fields/interfaces/LegacyResourceSchema.md) instead:
+compiles to a [LegacyResourceSchema](../../core/types/schema/fields/types/LegacyResourceSchema.md) instead:
 
 ::: code-group
 

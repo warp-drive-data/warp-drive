@@ -9,7 +9,7 @@ url: >-
 const ENABLE_LEGACY_SCHEMA_SERVICE: boolean = true;
 ```
 
-Defined in: [deprecations.ts:443](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/build-config/src/deprecations.ts#L443)
+Defined in: [deprecations.ts:443](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/build-config/src/deprecations.ts#L443)
 
 When the flag is `true` (default), the legacy schema
 service features will be enabled on the store and

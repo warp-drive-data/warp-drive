@@ -12,7 +12,7 @@ function mock(
 ): Promise<void>;
 ```
 
-Defined in: [index.ts:351](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/packages/holodeck/src/index.ts#L351)
+Defined in: [index.ts:351](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/packages/holodeck/src/index.ts#L351)
 
 Mock a request by sending the scaffold to the mock server.
 
@@ -24,7 +24,7 @@ Mock a request by sending the scaffold to the mock server.
 
 ### generate
 
-[`ScaffoldGenerator`](../mock/type-aliases/ScaffoldGenerator.md)
+[`ScaffoldGenerator`](../mock/types/ScaffoldGenerator.md)
 
 ### isRecording?
 

@@ -58,4 +58,4 @@ Renames and re-exports [Model](classes/Model.md)
 
 ## Types
 
-* [AsyncHasMany](interfaces/AsyncHasMany.md)
+* [AsyncHasMany](types/AsyncHasMany.md)

@@ -8,7 +8,7 @@ url: /api/@warp-drive/core/reactive/functions/registerDerivations.md
 function registerDerivations(schema): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:508](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/core/src/reactive/-private/schema.ts#L508)
+Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:508](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/reactive/-private/schema.ts#L508)
 
 Registers the default derivations for records that want
 to use the PolarisMode defaults provided by
@@ -21,7 +21,7 @@ import { withDefaults } from '@warp-drive/schema-record';
 
 ### schema
 
-[`SchemaService`](../../types/schema/schema-service/interfaces/SchemaService.md)
+[`SchemaService`](../../types/schema/schema-service/types/SchemaService.md)
 
 ## Returns
 

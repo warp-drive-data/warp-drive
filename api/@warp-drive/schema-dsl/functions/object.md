@@ -10,11 +10,11 @@ url: /api/@warp-drive/schema-dsl/functions/object.md
 function object(target, key): void;
 ```
 
-Defined in: [fields/object.ts:62](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/schema-dsl/src/fields/object.ts#L62)
+Defined in: [fields/object.ts:62](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/schema-dsl/src/fields/object.ts#L62)
 
 **`Decorator`**
 
-Marks a property as an [ObjectField](../../core/types/schema/fields/interfaces/ObjectField.md) — an object whose keys
+Marks a property as an [ObjectField](../../core/types/schema/fields/types/ObjectField.md) — an object whose keys
 point to primitive values with no well-defined shape. For objects with a
 well-defined shape, use [schemaObject](schemaObject.md) with an
 [ObjectSchema](ObjectSchema.md) instead.
@@ -61,11 +61,11 @@ export class User {
 function object(options): (target, key) => void;
 ```
 
-Defined in: [fields/object.ts:63](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/schema-dsl/src/fields/object.ts#L63)
+Defined in: [fields/object.ts:63](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/schema-dsl/src/fields/object.ts#L63)
 
 **`Decorator`**
 
-Marks a property as an [ObjectField](../../core/types/schema/fields/interfaces/ObjectField.md) — an object whose keys
+Marks a property as an [ObjectField](../../core/types/schema/fields/types/ObjectField.md) — an object whose keys
 point to primitive values with no well-defined shape. For objects with a
 well-defined shape, use [schemaObject](schemaObject.md) with an
 [ObjectSchema](ObjectSchema.md) instead.
@@ -74,7 +74,7 @@ well-defined shape, use [schemaObject](schemaObject.md) with an
 
 #### options
 
-[`ObjectFieldOptions`](../interfaces/ObjectFieldOptions.md)
+[`ObjectFieldOptions`](../types/ObjectFieldOptions.md)
 
 ### Returns
 

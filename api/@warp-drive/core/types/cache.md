@@ -4,6 +4,6 @@ url: /api/@warp-drive/core/types/cache.md
 
 ## Types
 
-* [Cache](interfaces/Cache.md)
-* [ChangedAttributesHash](type-aliases/ChangedAttributesHash.md)
-* [RelationshipDiff](type-aliases/RelationshipDiff.md)
+* [Cache](types/Cache.md)
+* [ChangedAttributesHash](types/ChangedAttributesHash.md)
+* [RelationshipDiff](types/RelationshipDiff.md)

@@ -4,6 +4,6 @@ url: /api/@warp-drive/core/types/cache/relationship.md
 
 ## Types
 
-* [CollectionRelationship](interfaces/CollectionRelationship.md)
-* [ResourceRelationship](interfaces/ResourceRelationship.md)
-* [Relationship](type-aliases/Relationship.md)
+* [CollectionRelationship](types/CollectionRelationship.md)
+* [ResourceRelationship](types/ResourceRelationship.md)
+* [Relationship](types/Relationship.md)

@@ -41,7 +41,7 @@ throw the error.
 If the request was for a `createRecord` `updateRecord` or `deleteRecord` special rules
 apply to how this error will affect the state of the store and additional properties on
 the `Error` class may be used. See the documentation for these methods in
-[MinimumAdapterInterface](../compat/interfaces/MinimumAdapterInterface.md) for more information.
+[MinimumAdapterInterface](../compat/types/MinimumAdapterInterface.md) for more information.
 
 ### Implementing an Adapter
 
@@ -194,4 +194,4 @@ customization, and maintenance than attempting to override methods in these adap
 
 ## Types
 
-* [BuildURLMixin](interfaces/BuildURLMixin.md)
+* [BuildURLMixin](types/BuildURLMixin.md)

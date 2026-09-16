@@ -10,18 +10,18 @@ url: /api/@warp-drive/schema-dsl/functions/ObjectSchema.md
 function ObjectSchema(target): void;
 ```
 
-Defined in: [entities/object-schema.ts:67](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/schema-dsl/src/entities/object-schema.ts#L67)
+Defined in: [entities/object-schema.ts:67](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/schema-dsl/src/entities/object-schema.ts#L67)
 
 **`Class Decorator`**
 
-Marks a class as an [object schema](../../core/types/schema/fields/interfaces/ObjectSchema.md) — an
+Marks a class as an [object schema](../../core/types/schema/fields/types/ObjectSchema.md) — an
 embedded structure with no independent identity of its own, for use as
 the value of a [schemaObject](schemaObject.md) or [schemaArray](schemaArray.md) field.
 
 The object's `type` is derived from the class name (dasherized) unless a
 `type` string is passed explicitly. Its `identity` is `null` unless a
 property is decorated with [hash](hash.md), in which case that compiled
-[HashField](../../core/types/schema/fields/interfaces/HashField.md) becomes the identity.
+[HashField](../../core/types/schema/fields/types/HashField.md) becomes the identity.
 
 Each decorated property on the class contributes one entry to the
 compiled `fields` array, in declaration order.
@@ -69,18 +69,18 @@ export class Address {
 function ObjectSchema(type, options?): (target) => void;
 ```
 
-Defined in: [entities/object-schema.ts:68](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/schema-dsl/src/entities/object-schema.ts#L68)
+Defined in: [entities/object-schema.ts:68](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/schema-dsl/src/entities/object-schema.ts#L68)
 
 **`Class Decorator`**
 
-Marks a class as an [object schema](../../core/types/schema/fields/interfaces/ObjectSchema.md) — an
+Marks a class as an [object schema](../../core/types/schema/fields/types/ObjectSchema.md) — an
 embedded structure with no independent identity of its own, for use as
 the value of a [schemaObject](schemaObject.md) or [schemaArray](schemaArray.md) field.
 
 The object's `type` is derived from the class name (dasherized) unless a
 `type` string is passed explicitly. Its `identity` is `null` unless a
 property is decorated with [hash](hash.md), in which case that compiled
-[HashField](../../core/types/schema/fields/interfaces/HashField.md) becomes the identity.
+[HashField](../../core/types/schema/fields/types/HashField.md) becomes the identity.
 
 Each decorated property on the class contributes one entry to the
 compiled `fields` array, in declaration order.
@@ -93,7 +93,7 @@ compiled `fields` array, in declaration order.
 
 #### options?
 
-[`ObjectSchemaOptions`](../interfaces/ObjectSchemaOptions.md)
+[`ObjectSchemaOptions`](../types/ObjectSchemaOptions.md)
 
 ### Returns
 
@@ -132,18 +132,18 @@ export class Address {
 function ObjectSchema(options): (target) => void;
 ```
 
-Defined in: [entities/object-schema.ts:69](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/schema-dsl/src/entities/object-schema.ts#L69)
+Defined in: [entities/object-schema.ts:69](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/schema-dsl/src/entities/object-schema.ts#L69)
 
 **`Class Decorator`**
 
-Marks a class as an [object schema](../../core/types/schema/fields/interfaces/ObjectSchema.md) — an
+Marks a class as an [object schema](../../core/types/schema/fields/types/ObjectSchema.md) — an
 embedded structure with no independent identity of its own, for use as
 the value of a [schemaObject](schemaObject.md) or [schemaArray](schemaArray.md) field.
 
 The object's `type` is derived from the class name (dasherized) unless a
 `type` string is passed explicitly. Its `identity` is `null` unless a
 property is decorated with [hash](hash.md), in which case that compiled
-[HashField](../../core/types/schema/fields/interfaces/HashField.md) becomes the identity.
+[HashField](../../core/types/schema/fields/types/HashField.md) becomes the identity.
 
 Each decorated property on the class contributes one entry to the
 compiled `fields` array, in declaration order.
@@ -152,7 +152,7 @@ compiled `fields` array, in declaration order.
 
 #### options
 
-[`ObjectSchemaOptions`](../interfaces/ObjectSchemaOptions.md)
+[`ObjectSchemaOptions`](../types/ObjectSchemaOptions.md)
 
 ### Returns
 

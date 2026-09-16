@@ -34,9 +34,9 @@ Available settings include:
 * [debugging](../debugging/index.md)
 * [deprecations](../deprecations/index.md)
 * [features](../canary-features/index.md)
-* [polyfillUUID](interfaces/WarpDriveConfig.md#polyfilluuid)
-* [includeDataAdapterInProduction](interfaces/WarpDriveConfig.md#includedataadapterinproduction)
-* [compatWith](interfaces/WarpDriveConfig.md#compatwith)
+* [polyfillUUID](types/WarpDriveConfig.md#polyfilluuid)
+* [includeDataAdapterInProduction](types/WarpDriveConfig.md#includedataadapterinproduction)
+* [compatWith](types/WarpDriveConfig.md#compatwith)
 
 ## Functions
 
@@ -45,4 +45,4 @@ Available settings include:
 
 ## Types
 
-* [WarpDriveConfig](interfaces/WarpDriveConfig.md)
+* [WarpDriveConfig](types/WarpDriveConfig.md)

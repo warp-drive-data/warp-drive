@@ -16,7 +16,7 @@ function queryRecord<T>(
 ): QueryRecordRequestInput<TypeFromInstance<T>, T | null>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat/builders/query.ts:97](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/legacy/src/compat/builders/query.ts#L97)
+Defined in: [warp-drive-packages/legacy/src/compat/builders/query.ts:97](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/compat/builders/query.ts#L97)
 
 This function builds a request config for a given type and query object.
 When passed to `store.request`, this config will result in the same behavior as a `store.queryRecord` request.
@@ -30,13 +30,13 @@ To that end, these builders are deprecated and will be removed in a future versi
 
 #### T
 
-`T` *extends* [`TypedRecordInstance`](../../../../core/types/record/interfaces/TypedRecordInstance.md)
+`T` *extends* [`TypedRecordInstance`](../../../../core/types/record/types/TypedRecordInstance.md)
 
 ### Parameters
 
 #### type
 
-[`TypeFromInstance`](../../../../core/types/record/type-aliases/TypeFromInstance.md)<`T`>
+[`TypeFromInstance`](../../../../core/types/record/types/TypeFromInstance.md)<`T`>
 
 the name of the resource
 
@@ -54,7 +54,7 @@ optional, may include `adapterOptions` hash which will be passed to adapter.quer
 
 ### Returns
 
-`QueryRecordRequestInput`<[`TypeFromInstance`](../../../../core/types/record/type-aliases/TypeFromInstance.md)<`T`>, `T` | `null`>
+`QueryRecordRequestInput`<[`TypeFromInstance`](../../../../core/types/record/types/TypeFromInstance.md)<`T`>, `T` | `null`>
 
 request config
 
@@ -70,7 +70,7 @@ function queryRecord(
 ): QueryRecordRequestInput;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat/builders/query.ts:102](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/legacy/src/compat/builders/query.ts#L102)
+Defined in: [warp-drive-packages/legacy/src/compat/builders/query.ts:102](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/compat/builders/query.ts#L102)
 
 This function builds a request config for a given type and query object.
 When passed to `store.request`, this config will result in the same behavior as a `store.queryRecord` request.

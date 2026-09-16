@@ -13,13 +13,13 @@ function getOrCreateInternalSignal(
 ): WarpDriveSignal;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/reactivity/internal.ts:232](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/core/src/signals/reactivity/internal.ts#L232)
+Defined in: [warp-drive-packages/core/src/signals/reactivity/internal.ts:232](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/signals/reactivity/internal.ts#L232)
 
 ## Parameters
 
 ### signals
 
-[`SignalStore`](../type-aliases/SignalStore.md)
+[`SignalStore`](../types/SignalStore.md)
 
 ### obj
 

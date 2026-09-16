@@ -205,7 +205,7 @@ const NormalizeKeysHandler = {
 
 ## Completely Customizable {#customization}
 
-If using an app-specific cache format would work better for the demands of your API, the [cache](/api/@warp-drive/core/types/cache/interfaces/Cache) the store should use is customizable:
+If using an app-specific cache format would work better for the demands of your API, the [cache](/api/@warp-drive/core/types/cache/types/Cache) the store should use is customizable:
 
 ```ts
 import { Store } from '@warp-drive/core';
@@ -220,7 +220,7 @@ class AppStore extends Store {
 
 ## Ready for RealTime {#realtime}
 
-Realtime subscriptions are supported through an extensive list of [operations](/api/@warp-drive/core/types/cache/operations/) for surgically updating cache state, as well as by a comprehensive [notifications manager](/api/@warp-drive/core/store/interfaces/NotificationManager) which alerts us to when data has been added, updated or removed from the cache allowing subscriptions to dynamically adjust as needed.
+Realtime subscriptions are supported through an extensive list of [operations](/api/@warp-drive/core/types/cache/operations/) for surgically updating cache state, as well as by a comprehensive [notifications manager](/api/@warp-drive/core/store/types/NotificationManager) which alerts us to when data has been added, updated or removed from the cache allowing subscriptions to dynamically adjust as needed.
 
 ```ts
 store.cache.patch({

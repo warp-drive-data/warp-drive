@@ -10,7 +10,7 @@ url: /api/@warp-drive/legacy/adapter/error/variables/AdapterError.md
 AdapterError: AdapterRequestErrorConstructor<AdapterError>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/error.ts:74](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/legacy/src/adapter/error.ts#L74)
+Defined in: [warp-drive-packages/legacy/src/adapter/error.ts:74](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/adapter/error.ts#L74)
 
 :::danger
 ⚠️ **This is LEGACY documentation** for a feature that is no longer encouraged to be used.
@@ -73,7 +73,7 @@ export default class ApplicationRoute extends Route {
 ### Signaling an Error Without Extending `AdapterError`
 
 Extending `AdapterError` (or one of its subclasses) is a convenience, not
-a requirement. WarpDrive only inspects an error for the [AdapterRequestError](../interfaces/AdapterRequestError.md)
+a requirement. WarpDrive only inspects an error for the [AdapterRequestError](../types/AdapterRequestError.md)
 shape: an `isAdapterError` flag, a `code`, and an {json:api}-formatted
 `errors` array. Any object satisfying that shape — including a plain
 `Error` with those properties attached — will be handled identically to

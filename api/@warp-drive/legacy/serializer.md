@@ -31,7 +31,7 @@ another for serializing records via `Snapshots` into the expected
 server API format.
 
 To implement a serializer, export a class that conforms to the structure
-described by [MinimumSerializerInterface](../compat/interfaces/MinimumSerializerInterface.md)
+described by [MinimumSerializerInterface](../compat/types/MinimumSerializerInterface.md)
 from the `app/serializers/` directory. An example is below.
 
 ```ts

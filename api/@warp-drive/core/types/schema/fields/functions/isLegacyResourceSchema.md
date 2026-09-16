@@ -8,7 +8,7 @@ url: /api/@warp-drive/core/types/schema/fields/functions/isLegacyResourceSchema.
 function isLegacyResourceSchema(schema): schema is LegacyResourceSchema;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2542](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/core/src/types/schema/fields.ts#L2542)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2542](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/types/schema/fields.ts#L2542)
 
 A type utility to narrow a schema to LegacyResourceSchema
 
@@ -16,8 +16,8 @@ A type utility to narrow a schema to LegacyResourceSchema
 
 ### schema
 
-| [`ResourceSchema`](../type-aliases/ResourceSchema.md)
-| [`ObjectSchema`](../interfaces/ObjectSchema.md)
+| [`ResourceSchema`](../types/ResourceSchema.md)
+| [`ObjectSchema`](../types/ObjectSchema.md)
 
 ## Returns
 

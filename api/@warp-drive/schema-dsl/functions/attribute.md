@@ -10,7 +10,7 @@ url: /api/@warp-drive/schema-dsl/functions/attribute.md
 function attribute(target, key): void;
 ```
 
-Defined in: [fields/attribute.ts:60](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/schema-dsl/src/fields/attribute.ts#L60)
+Defined in: [fields/attribute.ts:60](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/schema-dsl/src/fields/attribute.ts#L60)
 
 **`Decorator`**
 
@@ -18,7 +18,7 @@ Defined in: [fields/attribute.ts:60](https://github.com/warp-drive-data/warp-dri
 > This decorator is LEGACY. Prefer [field](field.md) for new schemas; only use
 > this decorator on resources decorated with `@Resource({ legacy: true })`.
 
-Marks a property as a [LegacyAttributeField](../../core/types/schema/fields/interfaces/LegacyAttributeField.md) for use with
+Marks a property as a [LegacyAttributeField](../../core/types/schema/fields/types/LegacyAttributeField.md) for use with
 `@warp-drive/legacy/model`.
 
 ### Parameters
@@ -62,7 +62,7 @@ export class Comment {
 function attribute(options): (target, key) => void;
 ```
 
-Defined in: [fields/attribute.ts:61](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/schema-dsl/src/fields/attribute.ts#L61)
+Defined in: [fields/attribute.ts:61](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/schema-dsl/src/fields/attribute.ts#L61)
 
 **`Decorator`**
 
@@ -70,14 +70,14 @@ Defined in: [fields/attribute.ts:61](https://github.com/warp-drive-data/warp-dri
 > This decorator is LEGACY. Prefer [field](field.md) for new schemas; only use
 > this decorator on resources decorated with `@Resource({ legacy: true })`.
 
-Marks a property as a [LegacyAttributeField](../../core/types/schema/fields/interfaces/LegacyAttributeField.md) for use with
+Marks a property as a [LegacyAttributeField](../../core/types/schema/fields/types/LegacyAttributeField.md) for use with
 `@warp-drive/legacy/model`.
 
 ### Parameters
 
 #### options
 
-[`AttributeOptions`](../interfaces/AttributeOptions.md)
+[`AttributeOptions`](../types/AttributeOptions.md)
 
 ### Returns
 

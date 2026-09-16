@@ -9,10 +9,10 @@ url: >-
 function createPaginationLinksSubscription<RT, E>(args): PaginationLinksSubscription<RT, E>;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-links-subscription.ts:81](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/core/src/signals/pagination-links-subscription.ts#L81)
+Defined in: [warp-drive-packages/core/src/signals/pagination-links-subscription.ts:81](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/signals/pagination-links-subscription.ts#L81)
 
-Creates the [PaginationLinksSubscription](../interfaces/PaginationLinksSubscription.md) a links component (such as
-`<EachLink />`) uses to derive its links from a [PagedPaginationState](../interfaces/PagedPaginationState.md).
+Creates the [PaginationLinksSubscription](../types/PaginationLinksSubscription.md) a links component (such as
+`<EachLink />`) uses to derive its links from a [PagedPaginationState](../types/PagedPaginationState.md).
 
 ```ts
 const subscription = createPaginationLinksSubscription({ pages: paginationState });
@@ -39,4 +39,4 @@ subscription[DISPOSE](); // tear down when the owning component unmounts
 
 ## Returns
 
-[`PaginationLinksSubscription`](../interfaces/PaginationLinksSubscription.md)<`RT`, `E`>
+[`PaginationLinksSubscription`](../types/PaginationLinksSubscription.md)<`RT`, `E`>

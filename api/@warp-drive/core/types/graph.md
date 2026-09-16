@@ -4,12 +4,12 @@ url: /api/@warp-drive/core/types/graph.md
 
 ## Types
 
-* [DeleteRecordOperation](interfaces/DeleteRecordOperation.md)
-* [Operation](interfaces/Operation.md)
-* [ReplaceRelatedRecordOperation](interfaces/ReplaceRelatedRecordOperation.md)
-* [ReplaceRelatedRecordsOperation](interfaces/ReplaceRelatedRecordsOperation.md)
-* [SortRelatedRecords](interfaces/SortRelatedRecords.md)
-* [UnknownOperation](interfaces/UnknownOperation.md)
-* [UpdateRelationshipOperation](interfaces/UpdateRelationshipOperation.md)
-* [LocalRelationshipOperation](type-aliases/LocalRelationshipOperation.md)
-* [RemoteRelationshipOperation](type-aliases/RemoteRelationshipOperation.md)
+* [DeleteRecordOperation](types/DeleteRecordOperation.md)
+* [Operation](types/Operation.md)
+* [ReplaceRelatedRecordOperation](types/ReplaceRelatedRecordOperation.md)
+* [ReplaceRelatedRecordsOperation](types/ReplaceRelatedRecordsOperation.md)
+* [SortRelatedRecords](types/SortRelatedRecords.md)
+* [UnknownOperation](types/UnknownOperation.md)
+* [UpdateRelationshipOperation](types/UpdateRelationshipOperation.md)
+* [LocalRelationshipOperation](types/LocalRelationshipOperation.md)
+* [RemoteRelationshipOperation](types/RemoteRelationshipOperation.md)

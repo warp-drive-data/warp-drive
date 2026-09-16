@@ -9,14 +9,14 @@ and constants used across the WarpDrive ecosystem.
 
 ### SchemaService
 
-Re-exports [SchemaService](schema/schema-service/interfaces/SchemaService.md)
+Re-exports [SchemaService](schema/schema-service/types/SchemaService.md)
 
 ### ResourceKey
 
-Re-exports [ResourceKey](identifier/type-aliases/ResourceKey.md)
+Re-exports [ResourceKey](identifier/types/ResourceKey.md)
 
 ***
 
 ### StableRecordIdentifier
 
-Re-exports [StableRecordIdentifier](identifier/type-aliases/StableRecordIdentifier.md)
+Re-exports [StableRecordIdentifier](identifier/types/StableRecordIdentifier.md)

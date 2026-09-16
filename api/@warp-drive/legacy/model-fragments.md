@@ -25,5 +25,5 @@ url: /api/@warp-drive/legacy/model-fragments.md
 
 ## Types
 
-* [WithFragment](type-aliases/WithFragment.md)
-* [WithFragmentArray](type-aliases/WithFragmentArray.md)
+* [WithFragment](types/WithFragment.md)
+* [WithFragmentArray](types/WithFragmentArray.md)

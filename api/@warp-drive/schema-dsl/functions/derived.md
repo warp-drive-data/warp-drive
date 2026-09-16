@@ -8,11 +8,11 @@ url: /api/@warp-drive/schema-dsl/functions/derived.md
 function derived(options): (target, key) => void;
 ```
 
-Defined in: [fields/derived.ts:61](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/schema-dsl/src/fields/derived.ts#L61)
+Defined in: [fields/derived.ts:61](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/schema-dsl/src/fields/derived.ts#L61)
 
 **`Decorator`**
 
-Marks a property as a [DerivedField](../../core/types/schema/fields/interfaces/DerivedField.md) — a computed, read-only
+Marks a property as a [DerivedField](../../core/types/schema/fields/types/DerivedField.md) — a computed, read-only
 value derived from other fields. Derived fields are never stored in the
 cache and are never sent to the server.
 
@@ -20,7 +20,7 @@ cache and are never sent to the server.
 
 ### options
 
-[`DerivedOptions`](../interfaces/DerivedOptions.md)
+[`DerivedOptions`](../types/DerivedOptions.md)
 
 ## Returns
 

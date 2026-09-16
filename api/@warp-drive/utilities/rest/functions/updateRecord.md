@@ -10,7 +10,7 @@ url: /api/@warp-drive/utilities/rest/functions/updateRecord.md
 function updateRecord<T, RT, M, E>(record, options?): UpdateRequestOptions<ReactiveDataDocument<RT, M, E>, T>;
 ```
 
-Defined in: [-private/rest/save-record.ts:218](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/utilities/src/-private/rest/save-record.ts#L218)
+Defined in: [-private/rest/save-record.ts:218](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/utilities/src/-private/rest/save-record.ts#L218)
 
 Builds request options to update existing record for resources,
 configured for the url, method and header expectations of most REST APIs.
@@ -53,18 +53,18 @@ const data = await store.request(options);
 
 #### T
 
-`T` *extends* [`TypedRecordInstance`](../../../core/types/record/interfaces/TypedRecordInstance.md)
+`T` *extends* [`TypedRecordInstance`](../../../core/types/record/types/TypedRecordInstance.md)
 
 #### RT
 
-`RT` *extends* [`TypedRecordInstance`](../../../core/types/record/interfaces/TypedRecordInstance.md) = `T`
+`RT` *extends* [`TypedRecordInstance`](../../../core/types/record/types/TypedRecordInstance.md) = `T`
 
 #### M
 
 `M` *extends*
-| [`ObjectValue`](../../../core/types/json/raw/interfaces/ObjectValue.md)
+| [`ObjectValue`](../../../core/types/json/raw/types/ObjectValue.md)
 | `undefined` =
-| [`ObjectValue`](../../../core/types/json/raw/interfaces/ObjectValue.md)
+| [`ObjectValue`](../../../core/types/json/raw/types/ObjectValue.md)
 | `undefined`
 
 #### E
@@ -91,7 +91,7 @@ const data = await store.request(options);
 function updateRecord(record, options?): UpdateRequestOptions;
 ```
 
-Defined in: [-private/rest/save-record.ts:227](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/utilities/src/-private/rest/save-record.ts#L227)
+Defined in: [-private/rest/save-record.ts:227](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/utilities/src/-private/rest/save-record.ts#L227)
 
 Builds request options to update existing record for resources,
 configured for the url, method and header expectations of most REST APIs.

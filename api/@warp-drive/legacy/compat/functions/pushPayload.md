@@ -14,7 +14,7 @@ function pushPayload(
 ): void;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat.ts:305](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/legacy/src/compat.ts#L305)
+Defined in: [warp-drive-packages/legacy/src/compat.ts:305](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/compat.ts#L305)
 
 Push some raw data into the store.
 
@@ -80,7 +80,7 @@ Optionally, a model type used to determine which serializer will be used
 
 ### inputPayload
 
-[`ObjectValue`](../../../core/types/json/raw/interfaces/ObjectValue.md)
+[`ObjectValue`](../../../core/types/json/raw/types/ObjectValue.md)
 
 ## Returns
 

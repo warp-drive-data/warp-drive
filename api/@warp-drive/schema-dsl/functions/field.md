@@ -10,11 +10,11 @@ url: /api/@warp-drive/schema-dsl/functions/field.md
 function field(target, key): void;
 ```
 
-Defined in: [fields/field.ts:59](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/schema-dsl/src/fields/field.ts#L59)
+Defined in: [fields/field.ts:59](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/schema-dsl/src/fields/field.ts#L59)
 
 **`Decorator`**
 
-Marks a property as a [GenericField](../../core/types/schema/fields/interfaces/GenericField.md) — a plain field for
+Marks a property as a [GenericField](../../core/types/schema/fields/types/GenericField.md) — a plain field for
 primitive values (strings, numbers, booleans) — on a
 [Resource](Resource.md), [ObjectSchema](ObjectSchema.md), or [Trait](Trait-1.md).
 
@@ -61,11 +61,11 @@ export class User {
 function field(options): (target, key) => void;
 ```
 
-Defined in: [fields/field.ts:60](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/schema-dsl/src/fields/field.ts#L60)
+Defined in: [fields/field.ts:60](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/schema-dsl/src/fields/field.ts#L60)
 
 **`Decorator`**
 
-Marks a property as a [GenericField](../../core/types/schema/fields/interfaces/GenericField.md) — a plain field for
+Marks a property as a [GenericField](../../core/types/schema/fields/types/GenericField.md) — a plain field for
 primitive values (strings, numbers, booleans) — on a
 [Resource](Resource.md), [ObjectSchema](ObjectSchema.md), or [Trait](Trait-1.md).
 
@@ -73,7 +73,7 @@ primitive values (strings, numbers, booleans) — on a
 
 #### options
 
-[`FieldOptions`](../interfaces/FieldOptions.md)
+[`FieldOptions`](../types/FieldOptions.md)
 
 ### Returns
 

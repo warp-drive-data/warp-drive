@@ -13,6 +13,6 @@ url: /api/@warp-drive/holodeck/mock.md
 
 ## Types
 
-* [Scaffold](interfaces/Scaffold.md)
-* [ResponseGenerator](type-aliases/ResponseGenerator.md)
-* [ScaffoldGenerator](type-aliases/ScaffoldGenerator.md)
+* [Scaffold](types/Scaffold.md)
+* [ResponseGenerator](types/ResponseGenerator.md)
+* [ScaffoldGenerator](types/ScaffoldGenerator.md)

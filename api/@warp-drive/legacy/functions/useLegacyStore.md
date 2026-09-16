@@ -12,11 +12,11 @@ url: /api/@warp-drive/legacy/functions/useLegacyStore.md
 function useLegacyStore<T>(options, StoreKlass?): typeof ConfiguredStore;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/index.ts:285](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/legacy/src/index.ts#L285)
+Defined in: [warp-drive-packages/legacy/src/index.ts:285](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/index.ts#L285)
 
 Use the legacy store with the given options.
 
-See [LegacyStoreSetupOptions](../type-aliases/LegacyStoreSetupOptions.md) for details on the available options.
+See [LegacyStoreSetupOptions](../types/LegacyStoreSetupOptions.md) for details on the available options.
 
 ```ts
 import { useLegacyStore } from '@warp-drive/legacy';
@@ -137,7 +137,7 @@ explicitly, so a handler relying on it should treat it as optional (as
 
 #### options
 
-[`LegacyModelStoreSetupOptions`](../interfaces/LegacyModelStoreSetupOptions.md)<`T`>
+[`LegacyModelStoreSetupOptions`](../types/LegacyModelStoreSetupOptions.md)<`T`>
 
 #### StoreKlass?
 
@@ -153,11 +153,11 @@ explicitly, so a handler relying on it should treat it as optional (as
 function useLegacyStore<T>(options, StoreKlass?): typeof ConfiguredStore;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/index.ts:289](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/legacy/src/index.ts#L289)
+Defined in: [warp-drive-packages/legacy/src/index.ts:289](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/index.ts#L289)
 
 Use the legacy store with the given options.
 
-See [LegacyStoreSetupOptions](../type-aliases/LegacyStoreSetupOptions.md) for details on the available options.
+See [LegacyStoreSetupOptions](../types/LegacyStoreSetupOptions.md) for details on the available options.
 
 ```ts
 import { useLegacyStore } from '@warp-drive/legacy';
@@ -278,7 +278,7 @@ explicitly, so a handler relying on it should treat it as optional (as
 
 #### options
 
-[`LegacyModelAndNetworkStoreSetupOptions`](../interfaces/LegacyModelAndNetworkStoreSetupOptions.md)<`T`>
+[`LegacyModelAndNetworkStoreSetupOptions`](../types/LegacyModelAndNetworkStoreSetupOptions.md)<`T`>
 
 #### StoreKlass?
 
@@ -294,11 +294,11 @@ explicitly, so a handler relying on it should treat it as optional (as
 function useLegacyStore<T>(options, StoreKlass?): typeof ConfiguredStore;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/index.ts:293](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/legacy/src/index.ts#L293)
+Defined in: [warp-drive-packages/legacy/src/index.ts:293](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/index.ts#L293)
 
 Use the legacy store with the given options.
 
-See [LegacyStoreSetupOptions](../type-aliases/LegacyStoreSetupOptions.md) for details on the available options.
+See [LegacyStoreSetupOptions](../types/LegacyStoreSetupOptions.md) for details on the available options.
 
 ```ts
 import { useLegacyStore } from '@warp-drive/legacy';
@@ -419,7 +419,7 @@ explicitly, so a handler relying on it should treat it as optional (as
 
 #### options
 
-[`LegacyModelAndNetworkAndRequestStoreSetupOptions`](../interfaces/LegacyModelAndNetworkAndRequestStoreSetupOptions.md)<`T`>
+[`LegacyModelAndNetworkAndRequestStoreSetupOptions`](../types/LegacyModelAndNetworkAndRequestStoreSetupOptions.md)<`T`>
 
 #### StoreKlass?
 

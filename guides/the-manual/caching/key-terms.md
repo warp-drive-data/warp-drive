@@ -19,14 +19,14 @@ be successful: [Documents](#documents) and [Resources](#resources).
 
 ***Warp*Drive** calls a few *tightly related* concepts "documents".
 
-1. [StructuredDocument](/api/@warp-drive/core/types/request/type-aliases/StructuredDocument), which is the resolved result of making a request with
+1. [StructuredDocument](/api/@warp-drive/core/types/request/types/StructuredDocument), which is the resolved result of making a request with
    the `{ request, response, content }` signature.
 
-2. [ResourceDocument](/api/@warp-drive/core/types/spec/document/type-aliases/ResourceDocument), which is
+2. [ResourceDocument](/api/@warp-drive/core/types/spec/document/types/ResourceDocument), which is
    the `content` of a StructuredDocument typically produced by parsing the `body` of the response of a `fetch`
    request.
 
-3. [ReactiveDocument](/api/@warp-drive/core/reactive/type-aliases/ReactiveDocument), which is a reactive wrapper providing immutable access to the cache data for a ResourceDocument. Not all requests have a ReactiveDocument for their response.
+3. [ReactiveDocument](/api/@warp-drive/core/reactive/types/ReactiveDocument), which is a reactive wrapper providing immutable access to the cache data for a ResourceDocument. Not all requests have a ReactiveDocument for their response.
 
 What's the common thread? All three are representations of a request and its result each with a distinct purpose. For this reason when cacheable they share a CacheKey (the `RequestKey`).
 

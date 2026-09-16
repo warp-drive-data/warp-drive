@@ -8,7 +8,7 @@ url: /api/@warp-drive/build-config/debugging/variables/LOG_CACHE.md
 const LOG_CACHE: boolean = false;
 ```
 
-Defined in: [debugging.ts:21](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/build-config/src/debugging.ts#L21)
+Defined in: [debugging.ts:21](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/build-config/src/debugging.ts#L21)
 
 log cache updates for both local
 and remote state. Note in some older versions

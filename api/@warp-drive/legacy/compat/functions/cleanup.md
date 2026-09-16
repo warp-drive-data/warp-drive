@@ -10,7 +10,7 @@ url: /api/@warp-drive/legacy/compat/functions/cleanup.md
 function cleanup(this): void;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat.ts:342](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/legacy/src/compat.ts#L342)
+Defined in: [warp-drive-packages/legacy/src/compat.ts:342](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/legacy/src/compat.ts#L342)
 
 Destroys any adapters/serializers the legacy network layer has created
 for this store, invoked when the store itself is destroyed.

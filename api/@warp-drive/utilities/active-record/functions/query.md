@@ -14,7 +14,7 @@ function query<T, M, E>(
 ): QueryRequestOptions<ReactiveDataDocument<T[], M, E>>;
 ```
 
-Defined in: [-private/active-record/query.ts:58](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/utilities/src/-private/active-record/query.ts#L58)
+Defined in: [-private/active-record/query.ts:58](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/utilities/src/-private/active-record/query.ts#L58)
 
 Builds request options to query for resources, usually by a primary
 type, configured for the url and header expectations of most ActiveRecord APIs.
@@ -66,9 +66,9 @@ const data = await store.request(options);
 #### M
 
 `M` *extends*
-| [`ObjectValue`](../../../core/types/json/raw/interfaces/ObjectValue.md)
+| [`ObjectValue`](../../../core/types/json/raw/types/ObjectValue.md)
 | `undefined` =
-| [`ObjectValue`](../../../core/types/json/raw/interfaces/ObjectValue.md)
+| [`ObjectValue`](../../../core/types/json/raw/types/ObjectValue.md)
 | `undefined`
 
 #### E
@@ -79,11 +79,11 @@ const data = await store.request(options);
 
 #### type
 
-[`TypeFromInstance`](../../../core/types/record/type-aliases/TypeFromInstance.md)<`T`>
+[`TypeFromInstance`](../../../core/types/record/types/TypeFromInstance.md)<`T`>
 
 #### query?
 
-[`QueryParamsSource`](../../../core/types/params/type-aliases/QueryParamsSource.md)
+[`QueryParamsSource`](../../../core/types/params/types/QueryParamsSource.md)
 
 #### options?
 
@@ -103,7 +103,7 @@ function query(
 ): QueryRequestOptions;
 ```
 
-Defined in: [-private/active-record/query.ts:63](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/utilities/src/-private/active-record/query.ts#L63)
+Defined in: [-private/active-record/query.ts:63](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/utilities/src/-private/active-record/query.ts#L63)
 
 Builds request options to query for resources, usually by a primary
 type, configured for the url and header expectations of most ActiveRecord APIs.
@@ -154,7 +154,7 @@ const data = await store.request(options);
 
 #### query?
 
-[`QueryParamsSource`](../../../core/types/params/type-aliases/QueryParamsSource.md)
+[`QueryParamsSource`](../../../core/types/params/types/QueryParamsSource.md)
 
 #### options?
 

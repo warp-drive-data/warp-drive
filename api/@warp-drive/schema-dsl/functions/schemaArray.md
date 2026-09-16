@@ -8,11 +8,11 @@ url: /api/@warp-drive/schema-dsl/functions/schemaArray.md
 function schemaArray(options): (target, key) => void;
 ```
 
-Defined in: [fields/schema-array.ts:132](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/schema-dsl/src/fields/schema-array.ts#L132)
+Defined in: [fields/schema-array.ts:132](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/schema-dsl/src/fields/schema-array.ts#L132)
 
 **`Decorator`**
 
-Marks a property as a [SchemaArrayField](../../core/types/schema/fields/interfaces/SchemaArrayField.md) — an array of
+Marks a property as a [SchemaArrayField](../../core/types/schema/fields/types/SchemaArrayField.md) — an array of
 embedded objects whose shape is described by an [ObjectSchema](ObjectSchema.md).
 
 This is not a relationship. `@hasMany` / `CollectionField` point at
@@ -25,7 +25,7 @@ For an array of primitives with no schema, use [array](array.md) instead.
 
 ### options
 
-[`SchemaArrayOptions`](../interfaces/SchemaArrayOptions.md)
+[`SchemaArrayOptions`](../types/SchemaArrayOptions.md)
 
 ## Returns
 

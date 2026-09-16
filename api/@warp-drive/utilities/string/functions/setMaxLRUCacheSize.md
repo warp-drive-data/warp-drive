@@ -8,7 +8,7 @@ url: /api/@warp-drive/utilities/string/functions/setMaxLRUCacheSize.md
 function setMaxLRUCacheSize(size): void;
 ```
 
-Defined in: [-private/string/transform.ts:110](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/utilities/src/-private/string/transform.ts#L110)
+Defined in: [-private/string/transform.ts:110](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/utilities/src/-private/string/transform.ts#L110)
 
 Sets the maximum size of the LRUCache for all string transformation functions.
 The default size is 10,000.

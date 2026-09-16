@@ -8,4 +8,4 @@ url: /api/@warp-drive/ember/install.md
 
 ## Types
 
-* [Tag](type-aliases/Tag.md)
+* [Tag](types/Tag.md)

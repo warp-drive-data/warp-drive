@@ -12,10 +12,10 @@ function instantiateRecord(
 ): ReactiveResource;
 ```
 
-Defined in: [warp-drive-packages/core/src/reactive/-private/hooks.ts:21](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/core/src/reactive/-private/hooks.ts#L21)
+Defined in: [warp-drive-packages/core/src/reactive/-private/hooks.ts:21](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/reactive/-private/hooks.ts#L21)
 
 The store's default `instantiateRecord` hook implementation, which
-produces a [ReactiveResource](../interfaces/ReactiveResource.md) for `identifier` using the resource
+produces a [ReactiveResource](../types/ReactiveResource.md) for `identifier` using the resource
 schema registered for its type.
 
 `createArgs` are only applied (via `Object.assign`) when the resource's
@@ -30,7 +30,7 @@ properties when creating a new legacy record.
 
 ### identifier
 
-[`ResourceKey`](../../types/identifier/type-aliases/ResourceKey.md)
+[`ResourceKey`](../../types/identifier/types/ResourceKey.md)
 
 ### createArgs?
 
@@ -38,4 +38,4 @@ properties when creating a new legacy record.
 
 ## Returns
 
-[`ReactiveResource`](../interfaces/ReactiveResource.md)
+[`ReactiveResource`](../types/ReactiveResource.md)

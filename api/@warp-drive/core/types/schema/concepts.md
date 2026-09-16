@@ -4,6 +4,6 @@ url: /api/@warp-drive/core/types/schema/concepts.md
 
 ## Types
 
-* [Derivation](type-aliases/Derivation.md)
-* [HashFn](type-aliases/HashFn.md)
-* [Transformation](type-aliases/Transformation.md)
+* [Derivation](types/Derivation.md)
+* [HashFn](types/HashFn.md)
+* [Transformation](types/Transformation.md)

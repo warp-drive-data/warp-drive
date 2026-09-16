@@ -4,6 +4,6 @@ url: /api/@warp-drive/core/types/schema/schema-service.md
 
 ## Types
 
-* [SchemaService](interfaces/SchemaService.md)
-* [AttributesSchema](type-aliases/AttributesSchema.md)
-* [RelationshipsSchema](type-aliases/RelationshipsSchema.md)
+* [SchemaService](types/SchemaService.md)
+* [AttributesSchema](types/AttributesSchema.md)
+* [RelationshipsSchema](types/RelationshipsSchema.md)

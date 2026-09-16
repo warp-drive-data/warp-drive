@@ -8,9 +8,9 @@ url: /api/@warp-drive/core/signals/-leaked/functions/getPaginationState.md
 function getPaginationState<RT, E>(request, pageHints?): PaginationState<RT, E>;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:641](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/core/src/signals/pagination-state.ts#L641)
+Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:641](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/signals/pagination-state.ts#L641)
 
-Get the [PaginationState](../interfaces/PaginationState.md) for a given request. Returns the same instance
+Get the [PaginationState](../types/PaginationState.md) for a given request. Returns the same instance
 for the same request future, so that repeated calls (e.g. in a template, or
 alongside the `<Paginate />` component using the same request) share the same
 local pagination state. Keyed by request identity, just like
@@ -39,12 +39,12 @@ await pages.loadNext();
 
 ### request
 
-[`Future`](../../../request/interfaces/Future.md)<`RT`>
+[`Future`](../../../request/types/Future.md)<`RT`>
 
 ### pageHints?
 
-[`PageHints`](../interfaces/PageHints.md)
+[`PageHints`](../types/PageHints.md)
 
 ## Returns
 
-[`PaginationState`](../interfaces/PaginationState.md)<`RT`, `E`>
+[`PaginationState`](../types/PaginationState.md)<`RT`, `E`>

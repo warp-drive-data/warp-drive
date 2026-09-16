@@ -10,11 +10,11 @@ url: /api/@warp-drive/schema-dsl/functions/local.md
 function local(target, key): void;
 ```
 
-Defined in: [fields/local.ts:54](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/schema-dsl/src/fields/local.ts#L54)
+Defined in: [fields/local.ts:54](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/schema-dsl/src/fields/local.ts#L54)
 
 **`Decorator`**
 
-Marks a property as a [LocalField](../../core/types/schema/fields/interfaces/LocalField.md) — state that lives only on
+Marks a property as a [LocalField](../../core/types/schema/fields/types/LocalField.md) — state that lives only on
 the record instance, is never read from or written to the cache, and is
 never sent to the server.
 
@@ -62,11 +62,11 @@ export class User {
 function local(options): (target, key) => void;
 ```
 
-Defined in: [fields/local.ts:55](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/schema-dsl/src/fields/local.ts#L55)
+Defined in: [fields/local.ts:55](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/schema-dsl/src/fields/local.ts#L55)
 
 **`Decorator`**
 
-Marks a property as a [LocalField](../../core/types/schema/fields/interfaces/LocalField.md) — state that lives only on
+Marks a property as a [LocalField](../../core/types/schema/fields/types/LocalField.md) — state that lives only on
 the record instance, is never read from or written to the cache, and is
 never sent to the server.
 
@@ -74,7 +74,7 @@ never sent to the server.
 
 #### options
 
-[`LocalOptions`](../interfaces/LocalOptions.md)
+[`LocalOptions`](../types/LocalOptions.md)
 
 ### Returns
 

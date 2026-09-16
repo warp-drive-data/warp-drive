@@ -10,14 +10,14 @@ url: /api/@warp-drive/experiments/storage/functions/param.md
 function param(config): PropertyDecorator;
 ```
 
-Defined in: [storage/query-params.ts:112](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/experiments/src/storage/query-params.ts#L112)
+Defined in: [storage/query-params.ts:112](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/experiments/src/storage/query-params.ts#L112)
 
 Decorator which marks a field as a query parameter.
 
 This decorator only stores metadata - it does not change the property behavior.
 The field will operate as a normal `@field` until a router integration consumes it.
 
-The provided [ParamConfig](../interfaces/ParamConfig.md) is used to:
+The provided [ParamConfig](../types/ParamConfig.md) is used to:
 
 * Serialize values for the URL
 * Deserialize values from the URL
@@ -28,7 +28,7 @@ The provided [ParamConfig](../interfaces/ParamConfig.md) is used to:
 
 ### config
 
-[`ParamConfig`](../interfaces/ParamConfig.md)
+[`ParamConfig`](../types/ParamConfig.md)
 
 Configuration for URL serialization/deserialization
 

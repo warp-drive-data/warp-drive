@@ -8,13 +8,13 @@ url: /api/@warp-drive/schema-dsl/functions/alias.md
 function alias(options): (target, key) => void;
 ```
 
-Defined in: [fields/alias.ts:78](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/schema-dsl/src/fields/alias.ts#L78)
+Defined in: [fields/alias.ts:78](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/schema-dsl/src/fields/alias.ts#L78)
 
 **`Decorator`**
 
 Marks a property as an alias — compiling to a
-[LegacyAliasField](../../core/types/schema/fields/interfaces/LegacyAliasField.md), [PolarisAliasField](../../core/types/schema/fields/interfaces/PolarisAliasField.md), or
-[ObjectAliasField](../../core/types/schema/fields/interfaces/ObjectAliasField.md) depending on the schema it's declared on
+[LegacyAliasField](../../core/types/schema/fields/types/LegacyAliasField.md), [PolarisAliasField](../../core/types/schema/fields/types/PolarisAliasField.md), or
+[ObjectAliasField](../../core/types/schema/fields/types/ObjectAliasField.md) depending on the schema it's declared on
 — that points to another field already present in the schema.
 
 Unlike [derived](derived.md), an alias may write back to its source field when
@@ -24,7 +24,7 @@ the record is in an editable mode.
 
 ### options
 
-[`AliasOptions`](../interfaces/AliasOptions.md)
+[`AliasOptions`](../types/AliasOptions.md)
 
 ## Returns
 

@@ -12,6 +12,6 @@ url: /api/@warp-drive/core/store.md
 
 ## Types
 
-* [CacheControlValue](interfaces/CacheControlValue.md)
-* [NotificationManager](interfaces/NotificationManager.md)
-* [PolicyConfig](interfaces/PolicyConfig.md)
+* [CacheControlValue](types/CacheControlValue.md)
+* [NotificationManager](types/NotificationManager.md)
+* [PolicyConfig](types/PolicyConfig.md)

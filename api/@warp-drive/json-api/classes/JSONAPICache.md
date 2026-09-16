@@ -4,7 +4,7 @@ url: /api/@warp-drive/json-api/classes/JSONAPICache.md
 
 # &#x20;JSONAPICache
 
-Defined in: [-private/cache.ts:140](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/json-api/src/-private/cache.ts#L140)
+Defined in: [-private/cache.ts:140](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/json-api/src/-private/cache.ts#L140)
 
 ```ts
 import { JSONAPICache } from '@warp-drive/json-api';
@@ -24,7 +24,7 @@ A Cache implementation tuned for [{json:api}](https://jsonapi.org/)
 new JSONAPICache(capabilities): JSONAPICache;
 ```
 
-Defined in: [-private/cache.ts:159](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/json-api/src/-private/cache.ts#L159)
+Defined in: [-private/cache.ts:159](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/json-api/src/-private/cache.ts#L159)
 
 #### Parameters
 
@@ -46,7 +46,7 @@ APIs for primary cache management functionality
 mutate(mutation): void;
 ```
 
-Defined in: [-private/cache.ts:435](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/json-api/src/-private/cache.ts#L435)
+Defined in: [-private/cache.ts:435](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/json-api/src/-private/cache.ts#L435)
 
 Update the "local" or "current" (unpersisted) state of the Cache
 
@@ -54,7 +54,7 @@ Update the "local" or "current" (unpersisted) state of the Cache
 
 ##### mutation
 
-[`LocalRelationshipOperation`](../../core/types/graph/type-aliases/LocalRelationshipOperation.md)
+[`LocalRelationshipOperation`](../../core/types/graph/types/LocalRelationshipOperation.md)
 
 #### Returns
 
@@ -74,7 +74,7 @@ Cache.mutate
 patch(op): void;
 ```
 
-Defined in: [-private/cache.ts:407](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/json-api/src/-private/cache.ts#L407)
+Defined in: [-private/cache.ts:407](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/json-api/src/-private/cache.ts#L407)
 
 Update the "remote" or "canonical" (persisted) state of the Cache
 by merging new information into the existing state.
@@ -83,8 +83,8 @@ by merging new information into the existing state.
 
 ##### op
 
-| [`Operation`](../../core/types/cache/operations/type-aliases/Operation.md)
-| [`Operation`](../../core/types/cache/operations/type-aliases/Operation.md)\[]
+| [`Operation`](../../core/types/cache/operations/types/Operation.md)
+| [`Operation`](../../core/types/cache/operations/types/Operation.md)\[]
 
 the operation or list of operations to perform
 
@@ -110,7 +110,7 @@ peek(identifier):
   | null;
 ```
 
-Defined in: [-private/cache.ts:494](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/json-api/src/-private/cache.ts#L494)
+Defined in: [-private/cache.ts:494](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/json-api/src/-private/cache.ts#L494)
 
 Peek resource data from the Cache.
 
@@ -151,11 +151,11 @@ the various internal WarpDrive bookkeeping fields.
 
 ###### identifier
 
-[`ResourceKey`](../../core/types/identifier/type-aliases/ResourceKey.md)
+[`ResourceKey`](../../core/types/identifier/types/ResourceKey.md)
 
 ##### Returns
 
-| [`ResourceObject`](../../core/types/spec/json-api-raw/type-aliases/ResourceObject.md)
+| [`ResourceObject`](../../core/types/spec/json-api-raw/types/ResourceObject.md)
 | `null`
 
 ##### Implementation of
@@ -172,19 +172,19 @@ peek(identifier):
   | null;
 ```
 
-Defined in: [-private/cache.ts:495](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/json-api/src/-private/cache.ts#L495)
+Defined in: [-private/cache.ts:495](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/json-api/src/-private/cache.ts#L495)
 
-Peek the Cache for the [document](../../core/types/spec/document/type-aliases/ResourceDocument.md) associated with a request.
+Peek the Cache for the [document](../../core/types/spec/document/types/ResourceDocument.md) associated with a request.
 
 ##### Parameters
 
 ###### identifier
 
-[`RequestKey`](../../core/types/identifier/interfaces/RequestKey.md)
+[`RequestKey`](../../core/types/identifier/types/RequestKey.md)
 
 ##### Returns
 
-| [`ResourceDocument`](../../core/types/spec/document/type-aliases/ResourceDocument.md)
+| [`ResourceDocument`](../../core/types/spec/document/types/ResourceDocument.md)
 | `null`
 
 the known document data, if any
@@ -207,7 +207,7 @@ peekRemoteState(identifier):
   | null;
 ```
 
-Defined in: [-private/cache.ts:559](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/json-api/src/-private/cache.ts#L559)
+Defined in: [-private/cache.ts:559](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/json-api/src/-private/cache.ts#L559)
 
 Peek the remote resource data from the Cache.
 
@@ -215,11 +215,11 @@ Peek the remote resource data from the Cache.
 
 ###### identifier
 
-[`ResourceKey`](../../core/types/identifier/type-aliases/ResourceKey.md)
+[`ResourceKey`](../../core/types/identifier/types/ResourceKey.md)
 
 ##### Returns
 
-| [`ResourceObject`](../../core/types/spec/json-api-raw/type-aliases/ResourceObject.md)
+| [`ResourceObject`](../../core/types/spec/json-api-raw/types/ResourceObject.md)
 | `null`
 
 ##### Implementation of
@@ -236,9 +236,9 @@ peekRemoteState(identifier):
   | null;
 ```
 
-Defined in: [-private/cache.ts:560](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/json-api/src/-private/cache.ts#L560)
+Defined in: [-private/cache.ts:560](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/json-api/src/-private/cache.ts#L560)
 
-Peek remote [document](../../core/types/spec/document/type-aliases/ResourceDocument.md) data for a request from the Cache.
+Peek remote [document](../../core/types/spec/document/types/ResourceDocument.md) data for a request from the Cache.
 
 This will give the data provided from the server without any local changes.
 
@@ -246,11 +246,11 @@ This will give the data provided from the server without any local changes.
 
 ###### identifier
 
-[`RequestKey`](../../core/types/identifier/interfaces/RequestKey.md)
+[`RequestKey`](../../core/types/identifier/types/RequestKey.md)
 
 ##### Returns
 
-| [`ResourceDocument`](../../core/types/spec/document/type-aliases/ResourceDocument.md)
+| [`ResourceDocument`](../../core/types/spec/document/types/ResourceDocument.md)
 | `null`
 
 the known document data, if any
@@ -271,7 +271,7 @@ peekRequest(identifier):
   | null;
 ```
 
-Defined in: [-private/cache.ts:627](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/json-api/src/-private/cache.ts#L627)
+Defined in: [-private/cache.ts:627](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/json-api/src/-private/cache.ts#L627)
 
 Peek the Cache for the existing request data associated with
 a cacheable request.
@@ -284,11 +284,11 @@ whereas `peek` will return just the `content`.
 
 ##### identifier
 
-[`RequestKey`](../../core/types/identifier/interfaces/RequestKey.md)
+[`RequestKey`](../../core/types/identifier/types/RequestKey.md)
 
 #### Returns
 
-| `StructuredDocument`<[`ResourceDocument`](../../core/types/spec/document/type-aliases/ResourceDocument.md)>
+| `StructuredDocument`<[`ResourceDocument`](../../core/types/spec/document/types/ResourceDocument.md)>
 | `null`
 
 #### Implementation of
@@ -307,7 +307,7 @@ Cache.peekRequest
 put<T>(doc): SingleResourceDataDocument;
 ```
 
-Defined in: [-private/cache.ts:209](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/json-api/src/-private/cache.ts#L209)
+Defined in: [-private/cache.ts:209](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/json-api/src/-private/cache.ts#L209)
 
 Cache the response to a request
 
@@ -346,7 +346,7 @@ into the cache.
 
 ###### T
 
-`T` *extends* [`SingleResourceDocument`](../../core/types/spec/json-api-raw/type-aliases/SingleResourceDocument.md)
+`T` *extends* [`SingleResourceDocument`](../../core/types/spec/json-api-raw/types/SingleResourceDocument.md)
 
 ##### Parameters
 
@@ -356,7 +356,7 @@ into the cache.
 
 ##### Returns
 
-[`SingleResourceDataDocument`](../../core/types/spec/document/interfaces/SingleResourceDataDocument.md)
+[`SingleResourceDataDocument`](../../core/types/spec/document/types/SingleResourceDataDocument.md)
 
 ##### Implementation of
 
@@ -370,7 +370,7 @@ Cache.put
 put<T>(doc): CollectionResourceDataDocument;
 ```
 
-Defined in: [-private/cache.ts:210](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/json-api/src/-private/cache.ts#L210)
+Defined in: [-private/cache.ts:210](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/json-api/src/-private/cache.ts#L210)
 
 Cache the response to a request
 
@@ -409,7 +409,7 @@ into the cache.
 
 ###### T
 
-`T` *extends* [`CollectionResourceDocument`](../../core/types/spec/json-api-raw/type-aliases/CollectionResourceDocument.md)
+`T` *extends* [`CollectionResourceDocument`](../../core/types/spec/json-api-raw/types/CollectionResourceDocument.md)
 
 ##### Parameters
 
@@ -419,7 +419,7 @@ into the cache.
 
 ##### Returns
 
-[`CollectionResourceDataDocument`](../../core/types/spec/document/interfaces/CollectionResourceDataDocument.md)
+[`CollectionResourceDataDocument`](../../core/types/spec/document/types/CollectionResourceDataDocument.md)
 
 ##### Implementation of
 
@@ -433,7 +433,7 @@ Cache.put
 put<T>(doc): ResourceErrorDocument;
 ```
 
-Defined in: [-private/cache.ts:211](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/json-api/src/-private/cache.ts#L211)
+Defined in: [-private/cache.ts:211](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/json-api/src/-private/cache.ts#L211)
 
 Cache the response to a request
 
@@ -472,7 +472,7 @@ into the cache.
 
 ###### T
 
-`T` *extends* [`ResourceErrorDocument`](../../core/types/spec/document/interfaces/ResourceErrorDocument.md)
+`T` *extends* [`ResourceErrorDocument`](../../core/types/spec/document/types/ResourceErrorDocument.md)
 
 ##### Parameters
 
@@ -482,7 +482,7 @@ into the cache.
 
 ##### Returns
 
-[`ResourceErrorDocument`](../../core/types/spec/document/interfaces/ResourceErrorDocument.md)
+[`ResourceErrorDocument`](../../core/types/spec/document/types/ResourceErrorDocument.md)
 
 ##### Implementation of
 
@@ -496,7 +496,7 @@ Cache.put
 put<T>(doc): ResourceMetaDocument;
 ```
 
-Defined in: [-private/cache.ts:212](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/json-api/src/-private/cache.ts#L212)
+Defined in: [-private/cache.ts:212](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/json-api/src/-private/cache.ts#L212)
 
 Cache the response to a request
 
@@ -535,7 +535,7 @@ into the cache.
 
 ###### T
 
-`T` *extends* [`ResourceMetaDocument`](../../core/types/spec/document/interfaces/ResourceMetaDocument.md)
+`T` *extends* [`ResourceMetaDocument`](../../core/types/spec/document/types/ResourceMetaDocument.md)
 
 ##### Parameters
 
@@ -545,7 +545,7 @@ into the cache.
 
 ##### Returns
 
-[`ResourceMetaDocument`](../../core/types/spec/document/interfaces/ResourceMetaDocument.md)
+[`ResourceMetaDocument`](../../core/types/spec/document/types/ResourceMetaDocument.md)
 
 ##### Implementation of
 
@@ -565,7 +565,7 @@ upsert(
 ): void | string[];
 ```
 
-Defined in: [-private/cache.ts:638](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/json-api/src/-private/cache.ts#L638)
+Defined in: [-private/cache.ts:638](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/json-api/src/-private/cache.ts#L638)
 
 Push resource data from a remote source into the cache for this identifier
 
@@ -573,11 +573,11 @@ Push resource data from a remote source into the cache for this identifier
 
 ##### identifier
 
-[`ResourceKey`](../../core/types/identifier/type-aliases/ResourceKey.md)
+[`ResourceKey`](../../core/types/identifier/types/ResourceKey.md)
 
 ##### data
 
-[`ExistingResourceObject`](../../core/types/spec/json-api-raw/interfaces/ExistingResourceObject.md)
+[`ExistingResourceObject`](../../core/types/spec/json-api-raw/types/ExistingResourceObject.md)
 
 ##### calculateChanges?
 
@@ -605,7 +605,7 @@ APIs that support management of resource data
 clientDidCreate(identifier, options?): Record<string, unknown>;
 ```
 
-Defined in: [-private/cache.ts:770](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/json-api/src/-private/cache.ts#L770)
+Defined in: [-private/cache.ts:770](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/json-api/src/-private/cache.ts#L770)
 
 \[LIFECYCLE] Signal to the cache that a new record has been instantiated on the client
 
@@ -616,11 +616,11 @@ process. This return value behavior is deprecated.
 
 ##### identifier
 
-[`ResourceKey`](../../core/types/identifier/type-aliases/ResourceKey.md)
+[`ResourceKey`](../../core/types/identifier/types/ResourceKey.md)
 
 ##### options?
 
-[`Record`](https://www.typescriptlang.org/docs/handbook/utility-types.html#recordkeys-type)<`string`, [`Value`](../../core/types/json/raw/type-aliases/Value.md)>
+[`Record`](https://www.typescriptlang.org/docs/handbook/utility-types.html#recordkeys-type)<`string`, [`Value`](../../core/types/json/raw/types/Value.md)>
 
 #### Returns
 
@@ -640,7 +640,7 @@ Cache.clientDidCreate
 commitWasRejected(identifier, errors?): void;
 ```
 
-Defined in: [-private/cache.ts:949](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/json-api/src/-private/cache.ts#L949)
+Defined in: [-private/cache.ts:949](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/json-api/src/-private/cache.ts#L949)
 
 \[LIFECYCLE] Signals to the cache that a resource
 was update via a save transaction failed.
@@ -649,12 +649,12 @@ was update via a save transaction failed.
 
 ##### identifier
 
-| [`ResourceKey`](../../core/types/identifier/type-aliases/ResourceKey.md)
-| [`ResourceKey`](../../core/types/identifier/type-aliases/ResourceKey.md)\[]
+| [`ResourceKey`](../../core/types/identifier/types/ResourceKey.md)
+| [`ResourceKey`](../../core/types/identifier/types/ResourceKey.md)\[]
 
 ##### errors?
 
-[`ApiError`](../../core/types/spec/error/interfaces/ApiError.md)\[]
+[`ApiError`](../../core/types/spec/error/types/ApiError.md)\[]
 
 #### Returns
 
@@ -676,7 +676,7 @@ Cache.commitWasRejected
 didCommit(committedIdentifier, result): SingleResourceDataDocument;
 ```
 
-Defined in: [-private/cache.ts:865](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/json-api/src/-private/cache.ts#L865)
+Defined in: [-private/cache.ts:865](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/json-api/src/-private/cache.ts#L865)
 
 \[LIFECYCLE] Signals to the cache that a resource
 was successfully updated as part of a save transaction.
@@ -685,16 +685,16 @@ was successfully updated as part of a save transaction.
 
 ###### committedIdentifier
 
-[`ResourceKey`](../../core/types/identifier/type-aliases/ResourceKey.md)
+[`ResourceKey`](../../core/types/identifier/types/ResourceKey.md)
 
 ###### result
 
-| `StructuredDataDocument`<[`SingleResourceDataDocument`](../../core/types/spec/document/interfaces/SingleResourceDataDocument.md)<[`PersistedResourceKey`](../../core/types/identifier/interfaces/PersistedResourceKey.md)<`string`>, [`PersistedResourceKey`](../../core/types/identifier/interfaces/PersistedResourceKey.md)<`string`>>>
+| `StructuredDataDocument`<[`SingleResourceDataDocument`](../../core/types/spec/document/types/SingleResourceDataDocument.md)<[`PersistedResourceKey`](../../core/types/identifier/types/PersistedResourceKey.md)<`string`>, [`PersistedResourceKey`](../../core/types/identifier/types/PersistedResourceKey.md)<`string`>>>
 | `null`
 
 ##### Returns
 
-[`SingleResourceDataDocument`](../../core/types/spec/document/interfaces/SingleResourceDataDocument.md)
+[`SingleResourceDataDocument`](../../core/types/spec/document/types/SingleResourceDataDocument.md)
 
 ##### Implementation of
 
@@ -708,7 +708,7 @@ Cache.didCommit
 didCommit(committedIdentifier, result): SingleResourceDataDocument;
 ```
 
-Defined in: [-private/cache.ts:869](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/json-api/src/-private/cache.ts#L869)
+Defined in: [-private/cache.ts:869](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/json-api/src/-private/cache.ts#L869)
 
 \[LIFECYCLE] Signals to the cache that a set of resources
 was successfully updated as part of a save transaction that
@@ -718,18 +718,18 @@ resulted in a single resource being returned.
 
 ###### committedIdentifier
 
-[`ResourceKey`](../../core/types/identifier/type-aliases/ResourceKey.md)\[]
+[`ResourceKey`](../../core/types/identifier/types/ResourceKey.md)\[]
 
 ###### result
 
-| `StructuredDataDocument`<[`SingleResourceDataDocument`](../../core/types/spec/document/interfaces/SingleResourceDataDocument.md)<[`PersistedResourceKey`](../../core/types/identifier/interfaces/PersistedResourceKey.md)<`string`>, [`PersistedResourceKey`](../../core/types/identifier/interfaces/PersistedResourceKey.md)<`string`>>>
+| `StructuredDataDocument`<[`SingleResourceDataDocument`](../../core/types/spec/document/types/SingleResourceDataDocument.md)<[`PersistedResourceKey`](../../core/types/identifier/types/PersistedResourceKey.md)<`string`>, [`PersistedResourceKey`](../../core/types/identifier/types/PersistedResourceKey.md)<`string`>>>
 | `null`
 
 a document in the cache format containing any updated data
 
 ##### Returns
 
-[`SingleResourceDataDocument`](../../core/types/spec/document/interfaces/SingleResourceDataDocument.md)
+[`SingleResourceDataDocument`](../../core/types/spec/document/types/SingleResourceDataDocument.md)
 
 ##### Implementation of
 
@@ -743,7 +743,7 @@ Cache.didCommit
 didCommit(committedIdentifier, result): CollectionResourceDataDocument;
 ```
 
-Defined in: [-private/cache.ts:873](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/json-api/src/-private/cache.ts#L873)
+Defined in: [-private/cache.ts:873](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/json-api/src/-private/cache.ts#L873)
 
 \[LIFECYCLE] Signals to the cache that a set of resources
 was successfully updated as part of a save transaction that
@@ -753,18 +753,18 @@ resulted in a collection of resources being returned.
 
 ###### committedIdentifier
 
-[`ResourceKey`](../../core/types/identifier/type-aliases/ResourceKey.md)\[]
+[`ResourceKey`](../../core/types/identifier/types/ResourceKey.md)\[]
 
 ###### result
 
-| `StructuredDataDocument`<[`CollectionResourceDataDocument`](../../core/types/spec/document/interfaces/CollectionResourceDataDocument.md)<[`PersistedResourceKey`](../../core/types/identifier/interfaces/PersistedResourceKey.md)<`string`>>>
+| `StructuredDataDocument`<[`CollectionResourceDataDocument`](../../core/types/spec/document/types/CollectionResourceDataDocument.md)<[`PersistedResourceKey`](../../core/types/identifier/types/PersistedResourceKey.md)<`string`>>>
 | `null`
 
 a document in the cache format containing any updated data
 
 ##### Returns
 
-[`CollectionResourceDataDocument`](../../core/types/spec/document/interfaces/CollectionResourceDataDocument.md)
+[`CollectionResourceDataDocument`](../../core/types/spec/document/types/CollectionResourceDataDocument.md)
 
 ##### Implementation of
 
@@ -780,7 +780,7 @@ Cache.didCommit
 unloadRecord(identifier): void;
 ```
 
-Defined in: [-private/cache.ts:969](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/json-api/src/-private/cache.ts#L969)
+Defined in: [-private/cache.ts:969](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/json-api/src/-private/cache.ts#L969)
 
 \[LIFECYCLE] Signals to the cache that all data for a resource
 should be cleared.
@@ -791,7 +791,7 @@ This method is a candidate to become a mutation
 
 ##### identifier
 
-[`ResourceKey`](../../core/types/identifier/type-aliases/ResourceKey.md)
+[`ResourceKey`](../../core/types/identifier/types/ResourceKey.md)
 
 #### Returns
 
@@ -811,7 +811,7 @@ Cache.unloadRecord
 willCommit(identifier, _context): void;
 ```
 
-Defined in: [-private/cache.ts:848](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/json-api/src/-private/cache.ts#L848)
+Defined in: [-private/cache.ts:848](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/json-api/src/-private/cache.ts#L848)
 
 \[LIFECYCLE] Signals to the cache that a resource
 will be part of a save transaction.
@@ -820,8 +820,8 @@ will be part of a save transaction.
 
 ##### identifier
 
-| [`ResourceKey`](../../core/types/identifier/type-aliases/ResourceKey.md)
-| [`ResourceKey`](../../core/types/identifier/type-aliases/ResourceKey.md)\[]
+| [`ResourceKey`](../../core/types/identifier/types/ResourceKey.md)
+| [`ResourceKey`](../../core/types/identifier/types/ResourceKey.md)\[]
 
 ##### \_context
 
@@ -847,7 +847,7 @@ APIs that support granular field level management of resource data
 changedAttrs(identifier): ChangedAttributesHash;
 ```
 
-Defined in: [-private/cache.ts:1308](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/json-api/src/-private/cache.ts#L1308)
+Defined in: [-private/cache.ts:1308](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/json-api/src/-private/cache.ts#L1308)
 
 Query the cache for the changed attributes of a resource.
 
@@ -855,7 +855,7 @@ Query the cache for the changed attributes of a resource.
 
 ##### identifier
 
-[`ResourceKey`](../../core/types/identifier/type-aliases/ResourceKey.md)
+[`ResourceKey`](../../core/types/identifier/types/ResourceKey.md)
 
 #### Returns
 
@@ -877,7 +877,7 @@ Cache.changedAttrs
 changedRelationships(identifier): Map<string, RelationshipDiff>;
 ```
 
-Defined in: [-private/cache.ts:1422](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/json-api/src/-private/cache.ts#L1422)
+Defined in: [-private/cache.ts:1422](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/json-api/src/-private/cache.ts#L1422)
 
 Query the cache for the changes to relationships of a resource.
 
@@ -904,7 +904,7 @@ type RelationshipDiff =
 
 ##### identifier
 
-[`ResourceKey`](../../core/types/identifier/type-aliases/ResourceKey.md)
+[`ResourceKey`](../../core/types/identifier/types/ResourceKey.md)
 
 #### Returns
 
@@ -924,7 +924,7 @@ Cache.changedRelationships
 getAttr(identifier, attr): Value | undefined;
 ```
 
-Defined in: [-private/cache.ts:1051](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/json-api/src/-private/cache.ts#L1051)
+Defined in: [-private/cache.ts:1051](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/json-api/src/-private/cache.ts#L1051)
 
 Retrieve the data for an attribute from the cache
 with local mutations applied.
@@ -933,7 +933,7 @@ with local mutations applied.
 
 ##### identifier
 
-[`ResourceKey`](../../core/types/identifier/type-aliases/ResourceKey.md)
+[`ResourceKey`](../../core/types/identifier/types/ResourceKey.md)
 
 ##### attr
 
@@ -941,7 +941,7 @@ with local mutations applied.
 
 #### Returns
 
-[`Value`](../../core/types/json/raw/type-aliases/Value.md) | `undefined`
+[`Value`](../../core/types/json/raw/types/Value.md) | `undefined`
 
 #### Implementation of
 
@@ -959,7 +959,7 @@ getRelationship(identifier, field):
 | CollectionRelationship<ResourceKey>;
 ```
 
-Defined in: [-private/cache.ts:1464](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/json-api/src/-private/cache.ts#L1464)
+Defined in: [-private/cache.ts:1464](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/json-api/src/-private/cache.ts#L1464)
 
 Query the cache for the current state of a relationship property
 
@@ -967,7 +967,7 @@ Query the cache for the current state of a relationship property
 
 ##### identifier
 
-[`ResourceKey`](../../core/types/identifier/type-aliases/ResourceKey.md)
+[`ResourceKey`](../../core/types/identifier/types/ResourceKey.md)
 
 ##### field
 
@@ -975,8 +975,8 @@ Query the cache for the current state of a relationship property
 
 #### Returns
 
-| [`ResourceRelationship`](../../core/types/cache/relationship/interfaces/ResourceRelationship.md)<[`ResourceKey`](../../core/types/identifier/type-aliases/ResourceKey.md)>
-| [`CollectionRelationship`](../../core/types/cache/relationship/interfaces/CollectionRelationship.md)<[`ResourceKey`](../../core/types/identifier/type-aliases/ResourceKey.md)>
+| [`ResourceRelationship`](../../core/types/cache/relationship/types/ResourceRelationship.md)<[`ResourceKey`](../../core/types/identifier/types/ResourceKey.md)>
+| [`CollectionRelationship`](../../core/types/cache/relationship/types/CollectionRelationship.md)<[`ResourceKey`](../../core/types/identifier/types/ResourceKey.md)>
 
 resource relationship object
 
@@ -994,7 +994,7 @@ Cache.getRelationship
 getRemoteAttr(identifier, attr): Value | undefined;
 ```
 
-Defined in: [-private/cache.ts:1122](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/json-api/src/-private/cache.ts#L1122)
+Defined in: [-private/cache.ts:1122](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/json-api/src/-private/cache.ts#L1122)
 
 Retrieve the remote data for an attribute from the cache
 
@@ -1002,7 +1002,7 @@ Retrieve the remote data for an attribute from the cache
 
 ##### identifier
 
-[`ResourceKey`](../../core/types/identifier/type-aliases/ResourceKey.md)
+[`ResourceKey`](../../core/types/identifier/types/ResourceKey.md)
 
 ##### attr
 
@@ -1010,7 +1010,7 @@ Retrieve the remote data for an attribute from the cache
 
 #### Returns
 
-[`Value`](../../core/types/json/raw/type-aliases/Value.md) | `undefined`
+[`Value`](../../core/types/json/raw/types/Value.md) | `undefined`
 
 #### Implementation of
 
@@ -1028,7 +1028,7 @@ getRemoteRelationship(identifier, field):
 | CollectionRelationship<ResourceKey>;
 ```
 
-Defined in: [-private/cache.ts:1475](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/json-api/src/-private/cache.ts#L1475)
+Defined in: [-private/cache.ts:1475](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/json-api/src/-private/cache.ts#L1475)
 
 Query the cache for the remote state of a relationship property
 
@@ -1036,7 +1036,7 @@ Query the cache for the remote state of a relationship property
 
 ##### identifier
 
-[`ResourceKey`](../../core/types/identifier/type-aliases/ResourceKey.md)
+[`ResourceKey`](../../core/types/identifier/types/ResourceKey.md)
 
 ##### field
 
@@ -1044,8 +1044,8 @@ Query the cache for the remote state of a relationship property
 
 #### Returns
 
-| [`ResourceRelationship`](../../core/types/cache/relationship/interfaces/ResourceRelationship.md)<[`ResourceKey`](../../core/types/identifier/type-aliases/ResourceKey.md)>
-| [`CollectionRelationship`](../../core/types/cache/relationship/interfaces/CollectionRelationship.md)<[`ResourceKey`](../../core/types/identifier/type-aliases/ResourceKey.md)>
+| [`ResourceRelationship`](../../core/types/cache/relationship/types/ResourceRelationship.md)<[`ResourceKey`](../../core/types/identifier/types/ResourceKey.md)>
+| [`CollectionRelationship`](../../core/types/cache/relationship/types/CollectionRelationship.md)<[`ResourceKey`](../../core/types/identifier/types/ResourceKey.md)>
 
 resource relationship object
 
@@ -1063,7 +1063,7 @@ Cache.getRemoteRelationship
 hasChangedAttrs(identifier): boolean;
 ```
 
-Defined in: [-private/cache.ts:1331](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/json-api/src/-private/cache.ts#L1331)
+Defined in: [-private/cache.ts:1331](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/json-api/src/-private/cache.ts#L1331)
 
 Query the cache for whether any mutated attributes exist
 
@@ -1071,7 +1071,7 @@ Query the cache for whether any mutated attributes exist
 
 ##### identifier
 
-[`ResourceKey`](../../core/types/identifier/type-aliases/ResourceKey.md)
+[`ResourceKey`](../../core/types/identifier/types/ResourceKey.md)
 
 #### Returns
 
@@ -1091,7 +1091,7 @@ Cache.hasChangedAttrs
 hasChangedRelationships(identifier): boolean;
 ```
 
-Defined in: [-private/cache.ts:1432](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/json-api/src/-private/cache.ts#L1432)
+Defined in: [-private/cache.ts:1432](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/json-api/src/-private/cache.ts#L1432)
 
 Query the cache for whether any mutated relationships exist
 
@@ -1099,7 +1099,7 @@ Query the cache for whether any mutated relationships exist
 
 ##### identifier
 
-[`ResourceKey`](../../core/types/identifier/type-aliases/ResourceKey.md)
+[`ResourceKey`](../../core/types/identifier/types/ResourceKey.md)
 
 #### Returns
 
@@ -1119,7 +1119,7 @@ Cache.hasChangedRelationships
 rollbackAttrs(identifier): string[];
 ```
 
-Defined in: [-private/cache.ts:1359](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/json-api/src/-private/cache.ts#L1359)
+Defined in: [-private/cache.ts:1359](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/json-api/src/-private/cache.ts#L1359)
 
 Tell the cache to discard any uncommitted mutations to attributes
 
@@ -1129,7 +1129,7 @@ This method is a candidate to become a mutation
 
 ##### identifier
 
-[`ResourceKey`](../../core/types/identifier/type-aliases/ResourceKey.md)
+[`ResourceKey`](../../core/types/identifier/types/ResourceKey.md)
 
 #### Returns
 
@@ -1151,7 +1151,7 @@ Cache.rollbackAttrs
 rollbackRelationships(identifier): string[];
 ```
 
-Defined in: [-private/cache.ts:1447](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/json-api/src/-private/cache.ts#L1447)
+Defined in: [-private/cache.ts:1447](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/json-api/src/-private/cache.ts#L1447)
 
 Tell the cache to discard any uncommitted mutations to relationships.
 
@@ -1163,7 +1163,7 @@ This method is a candidate to become a mutation
 
 ##### identifier
 
-[`ResourceKey`](../../core/types/identifier/type-aliases/ResourceKey.md)
+[`ResourceKey`](../../core/types/identifier/types/ResourceKey.md)
 
 #### Returns
 
@@ -1189,7 +1189,7 @@ setAttr(
 ): void;
 ```
 
-Defined in: [-private/cache.ts:1189](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/json-api/src/-private/cache.ts#L1189)
+Defined in: [-private/cache.ts:1189](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/json-api/src/-private/cache.ts#L1189)
 
 Mutate the data for an attribute in the cache
 
@@ -1199,7 +1199,7 @@ This method is a candidate to become a mutation
 
 ##### identifier
 
-[`ResourceKey`](../../core/types/identifier/type-aliases/ResourceKey.md)
+[`ResourceKey`](../../core/types/identifier/types/ResourceKey.md)
 
 ##### attr
 
@@ -1207,7 +1207,7 @@ This method is a candidate to become a mutation
 
 ##### value
 
-[`Value`](../../core/types/json/raw/type-aliases/Value.md)
+[`Value`](../../core/types/json/raw/types/Value.md)
 
 #### Returns
 
@@ -1229,7 +1229,7 @@ APIs that support managing Resource states
 getErrors(identifier): ApiError[];
 ```
 
-Defined in: [-private/cache.ts:1505](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/json-api/src/-private/cache.ts#L1505)
+Defined in: [-private/cache.ts:1505](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/json-api/src/-private/cache.ts#L1505)
 
 Query the cache for any validation errors applicable to the given resource.
 
@@ -1237,11 +1237,11 @@ Query the cache for any validation errors applicable to the given resource.
 
 ##### identifier
 
-[`ResourceKey`](../../core/types/identifier/type-aliases/ResourceKey.md)
+[`ResourceKey`](../../core/types/identifier/types/ResourceKey.md)
 
 #### Returns
 
-[`ApiError`](../../core/types/spec/error/interfaces/ApiError.md)\[]
+[`ApiError`](../../core/types/spec/error/types/ApiError.md)\[]
 
 #### Implementation of
 
@@ -1257,7 +1257,7 @@ Cache.getErrors
 isDeleted(identifier): boolean;
 ```
 
-Defined in: [-private/cache.ts:1539](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/json-api/src/-private/cache.ts#L1539)
+Defined in: [-private/cache.ts:1539](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/json-api/src/-private/cache.ts#L1539)
 
 Query the cache for whether a given resource is marked as deleted (but not
 necessarily persisted yet).
@@ -1266,7 +1266,7 @@ necessarily persisted yet).
 
 ##### identifier
 
-[`ResourceKey`](../../core/types/identifier/type-aliases/ResourceKey.md)
+[`ResourceKey`](../../core/types/identifier/types/ResourceKey.md)
 
 #### Returns
 
@@ -1286,7 +1286,7 @@ Cache.isDeleted
 isDeletionCommitted(identifier): boolean;
 ```
 
-Defined in: [-private/cache.ts:1551](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/json-api/src/-private/cache.ts#L1551)
+Defined in: [-private/cache.ts:1551](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/json-api/src/-private/cache.ts#L1551)
 
 Query the cache for whether a given resource has been deleted and that deletion
 has also been persisted.
@@ -1295,7 +1295,7 @@ has also been persisted.
 
 ##### identifier
 
-[`ResourceKey`](../../core/types/identifier/type-aliases/ResourceKey.md)
+[`ResourceKey`](../../core/types/identifier/types/ResourceKey.md)
 
 #### Returns
 
@@ -1315,7 +1315,7 @@ Cache.isDeletionCommitted
 isEmpty(identifier): boolean;
 ```
 
-Defined in: [-private/cache.ts:1515](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/json-api/src/-private/cache.ts#L1515)
+Defined in: [-private/cache.ts:1515](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/json-api/src/-private/cache.ts#L1515)
 
 Query the cache for whether a given resource has any available data
 
@@ -1323,7 +1323,7 @@ Query the cache for whether a given resource has any available data
 
 ##### identifier
 
-[`ResourceKey`](../../core/types/identifier/type-aliases/ResourceKey.md)
+[`ResourceKey`](../../core/types/identifier/types/ResourceKey.md)
 
 #### Returns
 
@@ -1343,7 +1343,7 @@ Cache.isEmpty
 isNew(identifier): boolean;
 ```
 
-Defined in: [-private/cache.ts:1527](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/json-api/src/-private/cache.ts#L1527)
+Defined in: [-private/cache.ts:1527](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/json-api/src/-private/cache.ts#L1527)
 
 Query the cache for whether a given resource was created locally and not
 yet persisted.
@@ -1352,7 +1352,7 @@ yet persisted.
 
 ##### identifier
 
-[`ResourceKey`](../../core/types/identifier/type-aliases/ResourceKey.md)
+[`ResourceKey`](../../core/types/identifier/types/ResourceKey.md)
 
 #### Returns
 
@@ -1372,7 +1372,7 @@ Cache.isNew
 setIsDeleted(identifier, isDeleted): void;
 ```
 
-Defined in: [-private/cache.ts:1492](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/json-api/src/-private/cache.ts#L1492)
+Defined in: [-private/cache.ts:1492](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/json-api/src/-private/cache.ts#L1492)
 
 Update the cache state for the given resource to be marked
 as locally deleted, or remove such a mark.
@@ -1383,7 +1383,7 @@ This method is a candidate to become a mutation
 
 ##### identifier
 
-[`ResourceKey`](../../core/types/identifier/type-aliases/ResourceKey.md)
+[`ResourceKey`](../../core/types/identifier/types/ResourceKey.md)
 
 ##### isDeleted
 
@@ -1407,7 +1407,7 @@ Cache.setIsDeleted
 version: "2";
 ```
 
-Defined in: [-private/cache.ts:146](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/json-api/src/-private/cache.ts#L146)
+Defined in: [-private/cache.ts:146](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/json-api/src/-private/cache.ts#L146)
 
 The Cache Version that this implementation implements.
 

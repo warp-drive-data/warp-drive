@@ -32,5 +32,5 @@ to assist in more rapidly adopting modern WarpDrive features.
 
 ## Types
 
-* [WithLegacy](type-aliases/WithLegacy.md)
-* [WithLegacyDerivations](type-aliases/WithLegacyDerivations.md)
+* [WithLegacy](types/WithLegacy.md)
+* [WithLegacyDerivations](types/WithLegacyDerivations.md)

@@ -256,9 +256,9 @@ store.schema.registerResources([
 
 ### Resource Schemas
 
-* [PolarisResourceSchema](../types/schema/fields/interfaces/PolarisResourceSchema.md)
-* [LegacyResourceSchema](../types/schema/fields/interfaces/LegacyResourceSchema.md)
-* [ObjectSchema](../types/schema/fields/interfaces/ObjectSchema.md)
+* [PolarisResourceSchema](../types/schema/fields/types/PolarisResourceSchema.md)
+* [LegacyResourceSchema](../types/schema/fields/types/LegacyResourceSchema.md)
+* [ObjectSchema](../types/schema/fields/types/ObjectSchema.md)
 
 ### Resource Schema Type Utils
 
@@ -269,8 +269,8 @@ store.schema.registerResources([
 
 ### Field Schemas
 
-* [LegacyModeFieldSchema](../types/schema/fields/type-aliases/LegacyModeFieldSchema.md)
-* [PolarisModeFieldSchema](../types/schema/fields/type-aliases/PolarisModeFieldSchema.md)
+* [LegacyModeFieldSchema](../types/schema/fields/types/LegacyModeFieldSchema.md)
+* [PolarisModeFieldSchema](../types/schema/fields/types/PolarisModeFieldSchema.md)
 
 ## Classes
 
@@ -295,22 +295,22 @@ store.schema.registerResources([
 
 ## Types
 
-* [CAUTION\_MEGA\_DANGER\_ZONE\_Extension](interfaces/CAUTION_MEGA_DANGER_ZONE_Extension.md)
-* [LegacyLiveArray](interfaces/LegacyLiveArray.md)
-* [LegacyManyArray](interfaces/LegacyManyArray.md)
-* [LegacyQueryArray](interfaces/LegacyQueryArray.md)
-* [PendingPromise](interfaces/PendingPromise.md)
-* [ProcessedExtension](interfaces/ProcessedExtension.md)
-* [ReactiveResource](interfaces/ReactiveResource.md)
-* [ReactiveResourceArray](interfaces/ReactiveResourceArray.md)
-* [RejectedPromise](interfaces/RejectedPromise.md)
-* [RequestLoadingState](interfaces/RequestLoadingState.md)
-* [RequestSubscription](interfaces/RequestSubscription.md)
-* [ResolvedPromise](interfaces/ResolvedPromise.md)
-* [ExtensionDef](type-aliases/ExtensionDef.md)
-* [PromiseState](type-aliases/PromiseState.md)
-* [ReactiveDataDocument](type-aliases/ReactiveDataDocument.md)
-* [ReactiveDocument](type-aliases/ReactiveDocument.md)
-* [ReactiveErrorDocument](type-aliases/ReactiveErrorDocument.md)
-* [RequestState](type-aliases/RequestState.md)
-* [Transformation](type-aliases/Transformation.md)
+* [CAUTION\_MEGA\_DANGER\_ZONE\_Extension](types/CAUTION_MEGA_DANGER_ZONE_Extension.md)
+* [LegacyLiveArray](types/LegacyLiveArray.md)
+* [LegacyManyArray](types/LegacyManyArray.md)
+* [LegacyQueryArray](types/LegacyQueryArray.md)
+* [PendingPromise](types/PendingPromise.md)
+* [ProcessedExtension](types/ProcessedExtension.md)
+* [ReactiveResource](types/ReactiveResource.md)
+* [ReactiveResourceArray](types/ReactiveResourceArray.md)
+* [RejectedPromise](types/RejectedPromise.md)
+* [RequestLoadingState](types/RequestLoadingState.md)
+* [RequestSubscription](types/RequestSubscription.md)
+* [ResolvedPromise](types/ResolvedPromise.md)
+* [ExtensionDef](types/ExtensionDef.md)
+* [PromiseState](types/PromiseState.md)
+* [ReactiveDataDocument](types/ReactiveDataDocument.md)
+* [ReactiveDocument](types/ReactiveDocument.md)
+* [ReactiveErrorDocument](types/ReactiveErrorDocument.md)
+* [RequestState](types/RequestState.md)
+* [Transformation](types/Transformation.md)

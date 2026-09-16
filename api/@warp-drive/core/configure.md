@@ -11,5 +11,5 @@ that WarpDrive should use.
 
 ## Types
 
-* [HooksOptions](interfaces/HooksOptions.md)
-* [SignalHooks](interfaces/SignalHooks.md)
+* [HooksOptions](types/HooksOptions.md)
+* [SignalHooks](types/SignalHooks.md)

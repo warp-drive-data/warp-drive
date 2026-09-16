@@ -8,7 +8,7 @@ url: /api/@warp-drive/utilities/functions/filterEmpty.md
 function filterEmpty(source): Record<string, Serializable>;
 ```
 
-Defined in: [index.ts:628](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/utilities/src/index.ts#L628)
+Defined in: [index.ts:628](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/utilities/src/index.ts#L628)
 
 filter out keys of an object that have falsy values or point to empty arrays
 returning a new object with only those keys that have truthy values / non-empty arrays
@@ -17,12 +17,12 @@ returning a new object with only those keys that have truthy values / non-empty 
 
 ### source
 
-[`Record`](https://www.typescriptlang.org/docs/handbook/utility-types.html#recordkeys-type)<`string`, [`Serializable`](../../core/types/params/type-aliases/Serializable.md)>
+[`Record`](https://www.typescriptlang.org/docs/handbook/utility-types.html#recordkeys-type)<`string`, [`Serializable`](../../core/types/params/types/Serializable.md)>
 
 object to filter keys with empty values from
 
 ## Returns
 
-[`Record`](https://www.typescriptlang.org/docs/handbook/utility-types.html#recordkeys-type)<`string`, [`Serializable`](../../core/types/params/type-aliases/Serializable.md)>
+[`Record`](https://www.typescriptlang.org/docs/handbook/utility-types.html#recordkeys-type)<`string`, [`Serializable`](../../core/types/params/types/Serializable.md)>
 
 A new object with the keys that contained empty values removed

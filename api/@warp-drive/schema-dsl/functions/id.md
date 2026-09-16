@@ -10,11 +10,11 @@ url: /api/@warp-drive/schema-dsl/functions/id.md
 function id(target, key): void;
 ```
 
-Defined in: [fields/id.ts:55](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/schema-dsl/src/fields/id.ts#L55)
+Defined in: [fields/id.ts:55](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/schema-dsl/src/fields/id.ts#L55)
 
 **`Decorator`**
 
-Marks a property as the [identity field](../../core/types/schema/fields/interfaces/IdentityField.md) for a
+Marks a property as the [identity field](../../core/types/schema/fields/types/IdentityField.md) for a
 [Resource](Resource.md), overriding the default `{ kind: '@id', name: 'id' }`
 identity with `{ kind: '@id', name: <decorated property> }`.
 
@@ -64,11 +64,11 @@ export class Post {
 function id(options): (target, key) => void;
 ```
 
-Defined in: [fields/id.ts:56](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/schema-dsl/src/fields/id.ts#L56)
+Defined in: [fields/id.ts:56](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/schema-dsl/src/fields/id.ts#L56)
 
 **`Decorator`**
 
-Marks a property as the [identity field](../../core/types/schema/fields/interfaces/IdentityField.md) for a
+Marks a property as the [identity field](../../core/types/schema/fields/types/IdentityField.md) for a
 [Resource](Resource.md), overriding the default `{ kind: '@id', name: 'id' }`
 identity with `{ kind: '@id', name: <decorated property> }`.
 
@@ -79,7 +79,7 @@ resources can rely on [Resource](Resource.md)'s default identity instead.
 
 #### options
 
-[`IdOptions`](../interfaces/IdOptions.md)
+[`IdOptions`](../types/IdOptions.md)
 
 ### Returns
 

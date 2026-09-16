@@ -8,7 +8,7 @@ url: /api/@warp-drive/core/reactive/functions/getRequestState.md
 function getRequestState<RT, E>(future): Readonly<RequestState<RT, StructuredErrorDocument<E>>>;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-state.ts:825](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/core/src/signals/request-state.ts#L825)
+Defined in: [warp-drive-packages/core/src/signals/request-state.ts:825](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/core/src/signals/request-state.ts#L825)
 
 `getRequestState` can be used in both JavaScript and Template contexts.
 
@@ -72,8 +72,8 @@ which offers a number of additional capabilities for requests *beyond* what
 
 ### future
 
-[`Future`](../../request/interfaces/Future.md)<`RT`>
+[`Future`](../../request/types/Future.md)<`RT`>
 
 ## Returns
 
-[`Readonly`](https://www.typescriptlang.org/docs/handbook/utility-types.html#readonlytype)<[`RequestState`](../type-aliases/RequestState.md)<`RT`, [`StructuredErrorDocument`](../../types/request/interfaces/StructuredErrorDocument.md)<`E`>>>
+[`Readonly`](https://www.typescriptlang.org/docs/handbook/utility-types.html#readonlytype)<[`RequestState`](../types/RequestState.md)<`RT`, [`StructuredErrorDocument`](../../types/request/types/StructuredErrorDocument.md)<`E`>>>

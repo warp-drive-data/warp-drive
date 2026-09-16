@@ -8,11 +8,11 @@ url: /api/@warp-drive/schema-dsl/functions/hash.md
 function hash(options): (target, key) => void;
 ```
 
-Defined in: [fields/hash.ts:52](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/schema-dsl/src/fields/hash.ts#L52)
+Defined in: [fields/hash.ts:52](https://github.com/warp-drive-data/warp-drive/blob/3f489eba2a77cd849b03466a28c2ff1c9f5c97b6/warp-drive-packages/schema-dsl/src/fields/hash.ts#L52)
 
 **`Decorator`**
 
-Marks a property as the [HashField](../../core/types/schema/fields/interfaces/HashField.md) used to compute the identity of
+Marks a property as the [HashField](../../core/types/schema/fields/types/HashField.md) used to compute the identity of
 an [ObjectSchema](ObjectSchema.md). At most one property per object schema may use
 this decorator, and doing so becomes that schema's `identity`.
 
@@ -20,7 +20,7 @@ this decorator, and doing so becomes that schema's `identity`.
 
 ### options
 
-[`HashOptions`](../interfaces/HashOptions.md)
+[`HashOptions`](../types/HashOptions.md)
 
 ## Returns
 
