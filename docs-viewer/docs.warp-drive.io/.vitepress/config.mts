@@ -86,6 +86,16 @@ export default withPwa(
       workbox: {
         // default is 2MB but the search index is much larger
         maximumFileSizeToCacheInBytes: 6 * 1024 * 1024,
+        // This service worker is only ever built for production (see `disable`
+        // above), but it registers with scope '/' -- the whole origin -- so a
+        // browser that already has it installed from a prior visit to the production
+        // site still has it intercepting navigations to /pr-preview/pr-<n>/ too.
+        // Without this denylist, workbox's default SPA fallback serves *this*
+        // service worker's own (production) index.html for those navigations
+        // instead of hitting the network, and VitePress's router then renders a
+        // 404 for a path it doesn't recognize -- fixed by a hard refresh only
+        // because that bypasses the service worker for that one navigation.
+        navigateFallbackDenylist: [/^\/pr-preview\//],
       },
     },
 
