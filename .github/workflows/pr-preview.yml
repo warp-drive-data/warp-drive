@@ -62,6 +62,8 @@ jobs:
         env:
           BASE: /pr-preview/pr-${{ github.event.number }}/
           HOSTNAME: https://canary.warp-drive.io
+          # see the matching comment on `pwa` in config.mts
+          DISABLE_PWA: 'true'
           # see the matching comment in deploy.yml
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Deploy or remove preview
