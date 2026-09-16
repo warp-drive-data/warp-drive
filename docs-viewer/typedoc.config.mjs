@@ -87,7 +87,13 @@ const config = {
     import.meta.resolve('typedoc-plugin-mdn-links').slice(7),
     new URL('./typedoc-plugins/source-links.mjs', import.meta.url).pathname,
     new URL('./typedoc-plugins/decorator-groups.mjs', import.meta.url).pathname,
+    new URL('./typedoc-plugins/types-router.mjs', import.meta.url).pathname,
+    new URL('./typedoc-plugins/type-kind-badges.mjs', import.meta.url).pathname,
   ],
+  // Routes interfaces and type-aliases to a shared `types/` directory instead of typedoc's
+  // default `interfaces/` and `type-aliases/` split, so a symbol's URL is stable across that
+  // implementation choice (see types-router.mjs and #11084).
+  router: 'warp-drive-types',
   out: './tmp/api',
   sidebar: {
     pretty: true,
