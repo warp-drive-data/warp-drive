@@ -96,6 +96,21 @@ export default withPwa(
         // 404 for a path it doesn't recognize -- fixed by a hard refresh only
         // because that bypasses the service worker for that one navigation.
         navigateFallbackDenylist: [/^\/pr-preview\//],
+        // Without these, a new service worker build (like the denylist above)
+        // sits "installed but waiting" in already-open browsers indefinitely --
+        // this site's minimal registerSW.js never sends the SKIP_WAITING message
+        // workbox's default waiting behavior expects, and nothing else prompts a
+        // visitor to reload. The still-*active* old worker keeps controlling
+        // every normal navigation until every tab to the site is fully closed,
+        // which reproduces as: a hard refresh (the one navigation that bypasses
+        // the service worker) briefly shows the right content, then a normal
+        // refresh or link click goes through the old worker again and is back to
+        // 404ing. skipWaiting activates a new build the moment it installs, and
+        // clientsClaim hands it control of already-open tabs immediately, so a
+        // fix like the denylist above actually reaches visitors instead of
+        // waiting on them to close every tab first.
+        skipWaiting: true,
+        clientsClaim: true,
       },
     },
 
