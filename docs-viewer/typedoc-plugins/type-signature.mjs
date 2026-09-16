@@ -134,57 +134,26 @@ function interfaceSignature(context, model) {
 }
 
 /**
- * A class's declaration line (generics, `extends`, `implements`) plus its constructor
- * signature(s) — the part a consumer needs to instantiate it. Its methods and properties are
- * left to their own sections further down the page, which already document each in full.
- */
-function classSignature(context, model) {
-  const typeParameters = renderTypeParameters(context, model.typeParameters);
-  const abstract = model.flags?.isAbstract ? 'abstract ' : '';
-  const extendsClause = model.extendedTypes?.length ? ` extends ${someTypeText(context, model.extendedTypes[0])}` : '';
-  const implementsClause = model.implementedTypes?.length
-    ? ` implements ${model.implementedTypes.map((type) => someTypeText(context, type)).join(', ')}`
-    : '';
-  const header = `${abstract}class ${model.name}${typeParameters}${extendsClause}${implementsClause}`;
-  const constructor = (model.children ?? []).find((child) => child.kind === ReflectionKind.Constructor);
-  if (!constructor?.signatures?.length) return `${header};`;
-  const constructorLines = constructor.signatures.map(
-    (signature) => `  constructor${renderParameters(context, signature.parameters)};`
-  );
-  return `${header} {\n${constructorLines.join('\n')}\n}`;
-}
-
-function enumSignature(context, model) {
-  const lines = (model.children ?? []).map((member) => `  ${member.name} = ${someTypeText(context, member.type)},`);
-  const body = lines.length ? `\n${lines.join('\n')}\n` : '';
-  return `enum ${model.name} {${body}}`;
-}
-
-/**
- * Classes, Interfaces, and Enumerations are the three page kinds typedoc-plugin-markdown never
- * gives a leading type signature to — it renders them straight into their grouped member
- * sections (Constructors, Properties, Methods, ...) with nothing summarizing the shape as a
- * whole. Functions, Variables, and Type Aliases already get one for free from their own
- * `declarationTitle`/`signatureTitle` partials (see `expandObjects`/`expandParameters` in
- * typedoc.config.mjs for why those now show full types instead of placeholders); overloaded
- * Functions and methods get theirs consolidated in `postProcessApiDocs` in site-utils.ts
- * instead, since that already walks the rendered heading tree these three kinds don't use.
+ * Interfaces are the one page kind typedoc-plugin-markdown never gives a leading type signature
+ * to — it renders straight into grouped member sections (Properties, Methods, ...) with nothing
+ * summarizing the shape as a whole. Type Aliases already get one for free from their own
+ * `declarationTitle` partial (see `expandObjects`/`expandParameters` in typedoc.config.mjs for
+ * why it now shows the full type instead of a placeholder); this fills the same gap for
+ * Interfaces by hooking typedoc-plugin-markdown's `content.begin`, which fires right after a
+ * page's own H1 and before its body — exactly where the badges `postProcessApiDocs` later
+ * attaches to that H1 are visually "underneath".
  *
- * This fills that gap for the other three by hooking typedoc-plugin-markdown's `content.begin`,
- * which fires right after a page's own H1 and before its body — exactly where the badges
- * `postProcessApiDocs` later attaches to that H1 are visually "underneath".
+ * Classes, Functions, Variables, and Enumerations are implementations rather than types, so they
+ * don't get a synthesized signature block here (a class's methods/properties are already
+ * documented in full further down its page; a function's/variable's own leading code block is
+ * typedoc-plugin-markdown's native rendering, unrelated to this plugin). Overloaded functions and
+ * methods still get every signature consolidated into one block, in `postProcessApiDocs` in
+ * site-utils.ts.
  */
 export function load(app) {
   app.renderer.markdownHooks.on('content.begin', (context) => {
     const model = context.page.model;
-    let signature = null;
-    if (model.kind === ReflectionKind.Interface) {
-      signature = interfaceSignature(context, model);
-    } else if (model.kind === ReflectionKind.Class) {
-      signature = classSignature(context, model);
-    } else if (model.kind === ReflectionKind.Enum) {
-      signature = enumSignature(context, model);
-    }
-    return signature ? '```ts\n' + signature + '\n```' : '';
+    if (model.kind !== ReflectionKind.Interface) return '';
+    return '```ts\n' + interfaceSignature(context, model) + '\n```';
   });
 }
