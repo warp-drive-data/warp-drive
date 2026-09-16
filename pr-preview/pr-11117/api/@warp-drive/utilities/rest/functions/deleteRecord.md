@@ -15,7 +15,7 @@ function deleteRecord(record: unknown, options?: ConstrainedRequestOptions): Del
 function deleteRecord<T>(record: T, options?: ConstrainedRequestOptions): DeleteRequestOptions<T>;
 ```
 
-Defined in: [-private/rest/save-record.ts:76](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/utilities/src/-private/rest/save-record.ts#L76)
+Defined in: [-private/rest/save-record.ts:76](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/utilities/src/-private/rest/save-record.ts#L76)
 
 Builds request options to delete record for resources,
 configured for the url, method and header expectations of REST APIs.
@@ -87,7 +87,7 @@ const data = await store.request(options);
 function deleteRecord(record: unknown, options?: ConstrainedRequestOptions): DeleteRequestOptions;
 ```
 
-Defined in: [-private/rest/save-record.ts:77](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/utilities/src/-private/rest/save-record.ts#L77)
+Defined in: [-private/rest/save-record.ts:77](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/utilities/src/-private/rest/save-record.ts#L77)
 
 Builds request options to delete record for resources,
 configured for the url, method and header expectations of REST APIs.

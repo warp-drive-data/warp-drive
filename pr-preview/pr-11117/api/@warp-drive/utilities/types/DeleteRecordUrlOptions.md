@@ -7,17 +7,14 @@ url: /pr-preview/pr-11117/api/@warp-drive/utilities/types/DeleteRecordUrlOptions
 ```ts
 interface DeleteRecordUrlOptions {
   host?: string;
-  identifier: {
-  id: string;
-  type: string;
-};
+  identifier: { id: string; type: string };
   namespace?: string;
   op: "deleteRecord";
   resourcePath?: string;
 }
 ```
 
-Defined in: [index.ts:358](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/utilities/src/index.ts#L358)
+Defined in: [index.ts:358](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/utilities/src/index.ts#L358)
 
 [buildBaseURL](../functions/buildBaseURL.md) options for a `deleteRecord` request.
 
@@ -29,7 +26,7 @@ Defined in: [index.ts:358](https://github.com/warp-drive-data/warp-drive/blob/62
 optional host?: string;
 ```
 
-Defined in: [index.ts:383](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/utilities/src/index.ts#L383)
+Defined in: [index.ts:383](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/utilities/src/index.ts#L383)
 
 Overrides the globally configured host for this call only.
 
@@ -44,7 +41,7 @@ identifier: {
 };
 ```
 
-Defined in: [index.ts:366](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/utilities/src/index.ts#L366)
+Defined in: [index.ts:366](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/utilities/src/index.ts#L366)
 
 The type and id of the record being deleted.
 
@@ -72,7 +69,7 @@ The resource type.
 optional namespace?: string;
 ```
 
-Defined in: [index.ts:387](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/utilities/src/index.ts#L387)
+Defined in: [index.ts:387](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/utilities/src/index.ts#L387)
 
 Overrides the globally configured namespace for this call only.
 
@@ -84,7 +81,7 @@ Overrides the globally configured namespace for this call only.
 op: "deleteRecord";
 ```
 
-Defined in: [index.ts:362](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/utilities/src/index.ts#L362)
+Defined in: [index.ts:362](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/utilities/src/index.ts#L362)
 
 The request operation this URL is for.
 
@@ -96,6 +93,6 @@ The request operation this URL is for.
 optional resourcePath?: string;
 ```
 
-Defined in: [index.ts:379](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/utilities/src/index.ts#L379)
+Defined in: [index.ts:379](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/utilities/src/index.ts#L379)
 
 The path segment for the resource, defaults to `identifier.type` if not provided.

@@ -8,7 +8,7 @@ url: /pr-preview/pr-11117/api/@warp-drive/utilities/functions/buildQueryParams.m
 function buildQueryParams(params: QueryParamsSource, options?: QueryParamsSerializationOptions): string;
 ```
 
-Defined in: [index.ts:746](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/utilities/src/index.ts#L746)
+Defined in: [index.ts:746](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/utilities/src/index.ts#L746)
 
 Sorts query params by both key and value, returning a query params string
 

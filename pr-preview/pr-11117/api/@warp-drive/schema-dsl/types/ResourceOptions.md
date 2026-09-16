@@ -11,7 +11,7 @@ interface ResourceOptions {
 }
 ```
 
-Defined in: [entities/resource.ts:17](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/schema-dsl/src/entities/resource.ts#L17)
+Defined in: [entities/resource.ts:17](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/schema-dsl/src/entities/resource.ts#L17)
 
 Options accepted by the [Resource](../functions/Resource.md) decorator.
 
@@ -23,7 +23,7 @@ Options accepted by the [Resource](../functions/Resource.md) decorator.
 optional identityField?: string;
 ```
 
-Defined in: [entities/resource.ts:39](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/schema-dsl/src/entities/resource.ts#L39)
+Defined in: [entities/resource.ts:39](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/schema-dsl/src/entities/resource.ts#L39)
 
 The name of the property that serves as this resource's primary key,
 used only when no property on the class is decorated with [id](../functions/id.md).
@@ -40,7 +40,7 @@ omitted (and no [id](../functions/id.md) is present), the identity defaults to
 optional legacy?: boolean;
 ```
 
-Defined in: [entities/resource.ts:27](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/schema-dsl/src/entities/resource.ts#L27)
+Defined in: [entities/resource.ts:27](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/schema-dsl/src/entities/resource.ts#L27)
 
 Compiles the class to a [LegacyResourceSchema](../../core/types/schema/fields/types/LegacyResourceSchema.md) for use with
 `@warp-drive/legacy/model` instead of a [PolarisResourceSchema](../../core/types/schema/fields/types/PolarisResourceSchema.md).

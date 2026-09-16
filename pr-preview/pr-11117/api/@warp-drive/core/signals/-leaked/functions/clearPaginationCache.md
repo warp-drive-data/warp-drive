@@ -9,7 +9,7 @@ url: >-
 function clearPaginationCache(): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-cache.ts:265](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/core/src/signals/pagination-cache.ts#L265)
+Defined in: [warp-drive-packages/core/src/signals/pagination-cache.ts:265](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/signals/pagination-cache.ts#L265)
 
 Clears the module-level pagination cache used by [getPaginationCache](getPaginationCache.md).
 Primarily intended for test isolation, since the cache is keyed by url and

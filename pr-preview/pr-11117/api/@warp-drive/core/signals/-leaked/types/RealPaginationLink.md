@@ -17,7 +17,7 @@ interface RealPaginationLink {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-links.ts:29](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/core/src/signals/pagination-links.ts#L29)
+Defined in: [warp-drive-packages/core/src/signals/pagination-links.ts:29](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/signals/pagination-links.ts#L29)
 
 **`Hideconstructor`**
 
@@ -46,7 +46,7 @@ from the current page.
 setActive(): Promise<unknown>;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-links.ts:60](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/core/src/signals/pagination-links.ts#L60)
+Defined in: [warp-drive-packages/core/src/signals/pagination-links.ts:60](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/signals/pagination-links.ts#L60)
 
 Loads this link's page and makes it the active page on the associated
 [PaginationState](PaginationState.md). It is a stable reference, so it is safe to pass
@@ -68,7 +68,7 @@ around as an "action" or "event" handler:
 readonly distanceFromActiveIndex: number;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-links.ts:35](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/core/src/signals/pagination-links.ts#L35)
+Defined in: [warp-drive-packages/core/src/signals/pagination-links.ts:35](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/signals/pagination-links.ts#L35)
 
 ***
 
@@ -78,7 +78,7 @@ Defined in: [warp-drive-packages/core/src/signals/pagination-links.ts:35](https:
 readonly index: number;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-links.ts:33](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/core/src/signals/pagination-links.ts#L33)
+Defined in: [warp-drive-packages/core/src/signals/pagination-links.ts:33](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/signals/pagination-links.ts#L33)
 
 ***
 
@@ -88,7 +88,7 @@ Defined in: [warp-drive-packages/core/src/signals/pagination-links.ts:33](https:
 readonly isCurrent: boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-links.ts:34](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/core/src/signals/pagination-links.ts#L34)
+Defined in: [warp-drive-packages/core/src/signals/pagination-links.ts:34](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/signals/pagination-links.ts#L34)
 
 ***
 
@@ -98,7 +98,7 @@ Defined in: [warp-drive-packages/core/src/signals/pagination-links.ts:34](https:
 readonly isReal: true;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-links.ts:30](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/core/src/signals/pagination-links.ts#L30)
+Defined in: [warp-drive-packages/core/src/signals/pagination-links.ts:30](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/signals/pagination-links.ts#L30)
 
 ***
 
@@ -108,7 +108,7 @@ Defined in: [warp-drive-packages/core/src/signals/pagination-links.ts:30](https:
 readonly url: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-links.ts:32](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/core/src/signals/pagination-links.ts#L32)
+Defined in: [warp-drive-packages/core/src/signals/pagination-links.ts:32](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/signals/pagination-links.ts#L32)
 
 ### text
 
@@ -118,7 +118,7 @@ Defined in: [warp-drive-packages/core/src/signals/pagination-links.ts:32](https:
 get text(): string;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-links.ts:47](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/core/src/signals/pagination-links.ts#L47)
+Defined in: [warp-drive-packages/core/src/signals/pagination-links.ts:47](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/signals/pagination-links.ts#L47)
 
 ##### Returns
 

@@ -15,7 +15,7 @@ interface ResourceMetaDocument {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/document.ts:11](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/core/src/types/spec/document.ts#L11)
+Defined in: [warp-drive-packages/core/src/types/spec/document.ts:11](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/types/spec/document.ts#L11)
 
 This type represents a raw {json:api} document for a meta-only
 document returned by a request intended to be inserted into the cache.
@@ -28,7 +28,7 @@ document returned by a request intended to be inserted into the cache.
 optional lid?: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/document.ts:15](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/core/src/types/spec/document.ts#L15)
+Defined in: [warp-drive-packages/core/src/types/spec/document.ts:15](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/types/spec/document.ts#L15)
 
 the url or cache-key associated with the structured document
 
@@ -42,7 +42,7 @@ optional links?:
   | PaginationLinks;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/document.ts:23](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/core/src/types/spec/document.ts#L23)
+Defined in: [warp-drive-packages/core/src/types/spec/document.ts:23](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/types/spec/document.ts#L23)
 
 links related to the document
 
@@ -54,6 +54,6 @@ links related to the document
 meta: ObjectValue;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/document.ts:19](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/core/src/types/spec/document.ts#L19)
+Defined in: [warp-drive-packages/core/src/types/spec/document.ts:19](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/types/spec/document.ts#L19)
 
 meta information about the document

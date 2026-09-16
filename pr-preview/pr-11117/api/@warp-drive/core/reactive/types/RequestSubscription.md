@@ -26,7 +26,7 @@ interface RequestSubscription<RT, E> {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:191](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/core/src/signals/request-subscription.ts#L191)
+Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:191](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/signals/request-subscription.ts#L191)
 
 **`Hideconstructor`**
 
@@ -50,7 +50,7 @@ A reactive class
 (symbol) dispose(): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:196](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/core/src/signals/request-subscription.ts#L196)
+Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:196](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/signals/request-subscription.ts#L196)
 
 The method to call when the component this subscription is attached to
 unmounts.
@@ -67,7 +67,7 @@ unmounts.
 refresh(): Promise<void>;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:709](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/core/src/signals/request-subscription.ts#L709)
+Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:709](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/signals/request-subscription.ts#L709)
 
 Refresh the request, updating it in the background.
 
@@ -83,7 +83,7 @@ Refresh the request, updating it in the background.
 retry(): Promise<void>;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:701](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/core/src/signals/request-subscription.ts#L701)
+Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:701](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/signals/request-subscription.ts#L701)
 
 Retry the request, reloading it from the server.
 
@@ -99,7 +99,7 @@ Retry the request, reloading it from the server.
 isHidden: boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:213](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/core/src/signals/request-subscription.ts#L213)
+Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:213](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/signals/request-subscription.ts#L213)
 
 Whether the browser reports that the tab is hidden.
 
@@ -111,7 +111,7 @@ Whether the browser reports that the tab is hidden.
 isOnline: boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:208](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/core/src/signals/request-subscription.ts#L208)
+Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:208](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/signals/request-subscription.ts#L208)
 
 Whether the browser reports that the network is online.
 
@@ -123,7 +123,7 @@ Whether the browser reports that the network is online.
 isRefreshing: boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:218](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/core/src/signals/request-subscription.ts#L218)
+Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:218](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/signals/request-subscription.ts#L218)
 
 Whether the component is currently refreshing the request.
 
@@ -137,7 +137,7 @@ store:
   | RequestManager;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:300](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/core/src/signals/request-subscription.ts#L300)
+Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:300](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/signals/request-subscription.ts#L300)
 
 The Store this subscription subscribes to or the RequestManager
 which issues this request.
@@ -150,7 +150,7 @@ which issues this request.
 get autorefreshTypes(): Set<AutorefreshBehaviorType>;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:362](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/core/src/signals/request-subscription.ts#L362)
+Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:362](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/signals/request-subscription.ts#L362)
 
 The set of AutorefreshBehaviorTypes this subscription is
 configured to autorefresh for, derived from [SubscriptionArgs.autorefresh](../../signals/-leaked/types/SubscriptionArgs.md#autorefresh).
@@ -169,7 +169,7 @@ configured to autorefresh for, derived from [SubscriptionArgs.autorefresh](../..
 get contentFeatures(): ContentFeatures<RT>;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:730](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/core/src/signals/request-subscription.ts#L730)
+Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:730](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/signals/request-subscription.ts#L730)
 
 features to yield to the content slot of a component
 
@@ -187,7 +187,7 @@ features to yield to the content slot of a component
 get errorFeatures(): RecoveryFeatures;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:718](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/core/src/signals/request-subscription.ts#L718)
+Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:718](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/signals/request-subscription.ts#L718)
 
 features to yield to the error slot of a component
 
@@ -205,7 +205,7 @@ features to yield to the error slot of a component
 get isIdle(): boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:351](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/core/src/signals/request-subscription.ts#L351)
+Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:351](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/signals/request-subscription.ts#L351)
 
 Whether neither a `request` nor a `query` arg was provided, and so
 this subscription has nothing to fetch or monitor.
@@ -224,7 +224,7 @@ this subscription has nothing to fetch or monitor.
 get reqState(): RequestState<RT, StructuredErrorDocument<E>>;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:800](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/core/src/signals/request-subscription.ts#L800)
+Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:800](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/signals/request-subscription.ts#L800)
 
 The [RequestState](RequestState.md) for [request](#request).
 
@@ -242,7 +242,7 @@ The [RequestState](RequestState.md) for [request](#request).
 get request(): Future<RT>;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:779](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/core/src/signals/request-subscription.ts#L779)
+Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:779](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/signals/request-subscription.ts#L779)
 
 The [Future](../../request/types/Future.md) this subscription is currently monitoring, and
 (re-)subscribes to notifications for as a side effect of access.
@@ -261,7 +261,7 @@ The [Future](../../request/types/Future.md) this subscription is currently monit
 get result(): RT;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:807](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/core/src/signals/request-subscription.ts#L807)
+Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:807](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/signals/request-subscription.ts#L807)
 
 The resolved content of the request, once it has succeeded.
 

@@ -13,7 +13,7 @@ class NumberTransform {
 }
 ```
 
-Defined in: [warp-drive-packages/legacy/src/serializer/-private/transforms/number.ts:10](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/legacy/src/serializer/-private/transforms/number.ts#L10)
+Defined in: [warp-drive-packages/legacy/src/serializer/-private/transforms/number.ts:10](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/legacy/src/serializer/-private/transforms/number.ts#L10)
 
 The `NumberTransform` class is used to serialize and deserialize
 numeric attributes on Ember Data record objects. This transform is
@@ -52,7 +52,7 @@ new NumberTransform(): NumberTransform;
 deserialize(serialized: string | number | null | undefined, _options?: Record<string, unknown>): number | null;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/serializer/-private/transforms/number.ts:42](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/legacy/src/serializer/-private/transforms/number.ts#L42)
+Defined in: [warp-drive-packages/legacy/src/serializer/-private/transforms/number.ts:42](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/legacy/src/serializer/-private/transforms/number.ts#L42)
 
 Converts a serialized (raw payload) value into a `number`, or `null`
 if the value is empty, nullish, or not a valid number.
@@ -79,7 +79,7 @@ if the value is empty, nullish, or not a valid number.
 serialize(deserialized: string | number | null | undefined, _options?: Record<string, unknown>): number | null;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/serializer/-private/transforms/number.ts:55](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/legacy/src/serializer/-private/transforms/number.ts#L55)
+Defined in: [warp-drive-packages/legacy/src/serializer/-private/transforms/number.ts:55](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/legacy/src/serializer/-private/transforms/number.ts#L55)
 
 Converts a `number` attribute value into its serialized (raw payload) form.
 
@@ -105,7 +105,7 @@ Converts a `number` attribute value into its serialized (raw payload) form.
 static create(): NumberTransform;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/serializer/-private/transforms/number.ts:68](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/legacy/src/serializer/-private/transforms/number.ts#L68)
+Defined in: [warp-drive-packages/legacy/src/serializer/-private/transforms/number.ts:68](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/legacy/src/serializer/-private/transforms/number.ts#L68)
 
 Creates a new instance of this transform.
 
@@ -121,6 +121,6 @@ Creates a new instance of this transform.
 ___(unique) Symbol($type): "number";
 ```
 
-Defined in: [warp-drive-packages/legacy/src/serializer/-private/transforms/number.ts:14](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/legacy/src/serializer/-private/transforms/number.ts#L14)
+Defined in: [warp-drive-packages/legacy/src/serializer/-private/transforms/number.ts:14](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/legacy/src/serializer/-private/transforms/number.ts#L14)
 
 see [TransformName](../../../../core/types/symbols/variables/TransformName.md)

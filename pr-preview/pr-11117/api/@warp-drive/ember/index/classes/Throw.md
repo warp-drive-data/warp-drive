@@ -6,13 +6,11 @@ url: /pr-preview/pr-11117/api/@warp-drive/ember/index/classes/Throw.md
 
 ```ts
 class Throw<T> extends default<ThrowSignature<T>> {
-  constructor(owner: Owner, args: {
-  error: T;
-});
+  constructor(owner: Owner, args: { error: T });
 }
 ```
 
-Defined in: [warp-drive-packages/ember/dist/index.d.ts:321](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/ember/dist/index.d.ts#L321)
+Defined in: [warp-drive-packages/ember/dist/index.d.ts:321](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/ember/dist/index.d.ts#L321)
 
 The `<Throw />` component is used to throw an error in a template.
 
@@ -43,7 +41,7 @@ new Throw<T>(owner: Owner, args: {
 }): Throw<T>;
 ```
 
-Defined in: [warp-drive-packages/ember/dist/index.d.ts:322](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/ember/dist/index.d.ts#L322)
+Defined in: [warp-drive-packages/ember/dist/index.d.ts:322](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/ember/dist/index.d.ts#L322)
 
 #### Parameters
 

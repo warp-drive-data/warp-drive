@@ -19,7 +19,7 @@ function formattedId(id: string | number | null): string | null;
 function formattedId(id: string | number): string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat/utils.ts:144](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/legacy/src/compat/utils.ts#L144)
+Defined in: [warp-drive-packages/legacy/src/compat/utils.ts:144](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/legacy/src/compat/utils.ts#L144)
 
 Format an id to the format expected by the WarpDrive Cache.
 Currently this means that id should be `string | null`.
@@ -56,7 +56,7 @@ the normalized id
 function formattedId(id: null): null;
 ````
 
-Defined in: [warp-drive-packages/legacy/src/compat/utils.ts:145](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/legacy/src/compat/utils.ts#L145)
+Defined in: [warp-drive-packages/legacy/src/compat/utils.ts:145](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/legacy/src/compat/utils.ts#L145)
 
 Format an id to the format expected by the WarpDrive Cache.
 Currently this means that id should be `string | null`.
@@ -93,7 +93,7 @@ the normalized id
 function formattedId(id: string | number | null): string | null;
 ````
 
-Defined in: [warp-drive-packages/legacy/src/compat/utils.ts:146](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/legacy/src/compat/utils.ts#L146)
+Defined in: [warp-drive-packages/legacy/src/compat/utils.ts:146](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/legacy/src/compat/utils.ts#L146)
 
 Format an id to the format expected by the WarpDrive Cache.
 Currently this means that id should be `string | null`.

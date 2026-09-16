@@ -8,7 +8,7 @@ url: /pr-preview/pr-11117/api/@warp-drive/schema-dsl/functions/trait.md
 function trait(..._traits: AnyConstructor[]): (target: AnyConstructor) => void;
 ```
 
-Defined in: [entities/compose-trait.ts:46](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/schema-dsl/src/entities/compose-trait.ts#L46)
+Defined in: [entities/compose-trait.ts:46](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/schema-dsl/src/entities/compose-trait.ts#L46)
 
 **`Class Decorator`**
 

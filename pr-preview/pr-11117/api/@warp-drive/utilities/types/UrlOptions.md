@@ -17,7 +17,7 @@ type UrlOptions =
   | GenericUrlOptions;
 ```
 
-Defined in: [index.ts:426](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/utilities/src/index.ts#L426)
+Defined in: [index.ts:426](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/utilities/src/index.ts#L426)
 
 The union of all `op`-specific option shapes accepted by [buildBaseURL](../functions/buildBaseURL.md), one of:
 

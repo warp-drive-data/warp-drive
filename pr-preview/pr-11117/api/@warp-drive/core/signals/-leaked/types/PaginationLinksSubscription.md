@@ -12,7 +12,7 @@ interface PaginationLinksSubscription<RT, E> {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-links-subscription.ts:8](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/core/src/signals/pagination-links-subscription.ts#L8)
+Defined in: [warp-drive-packages/core/src/signals/pagination-links-subscription.ts:8](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/signals/pagination-links-subscription.ts#L8)
 
 **`Hideconstructor`**
 
@@ -47,7 +47,7 @@ page changes.
 (symbol) dispose(): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-links-subscription.ts:13](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/core/src/signals/pagination-links-subscription.ts#L13)
+Defined in: [warp-drive-packages/core/src/signals/pagination-links-subscription.ts:13](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/signals/pagination-links-subscription.ts#L13)
 
 The method to call when the component this subscription is attached to
 unmounts.
@@ -66,7 +66,7 @@ unmounts.
 get paginationLinks(): Readonly<PaginationLinks<RT, E>>;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-links-subscription.ts:62](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/core/src/signals/pagination-links-subscription.ts#L62)
+Defined in: [warp-drive-packages/core/src/signals/pagination-links-subscription.ts:62](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/signals/pagination-links-subscription.ts#L62)
 
 The [PaginationLinks](PaginationLinks.md) derived from the [PagedPaginationState](PagedPaginationState.md)
 passed as an arg — the surface a links component yields to its consumer:

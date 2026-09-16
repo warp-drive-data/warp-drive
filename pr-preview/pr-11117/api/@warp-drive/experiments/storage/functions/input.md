@@ -10,7 +10,7 @@ url: /pr-preview/pr-11117/api/@warp-drive/experiments/storage/functions/input.md
 function input(type: "number" | "boolean" | "float"): PropertyDecorator;
 ```
 
-Defined in: [storage/storage-resource.ts:122](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/experiments/src/storage/storage-resource.ts#L122)
+Defined in: [storage/storage-resource.ts:122](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/experiments/src/storage/storage-resource.ts#L122)
 
 ## Parameters
 

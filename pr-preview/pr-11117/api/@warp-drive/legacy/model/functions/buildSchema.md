@@ -10,7 +10,7 @@ url: /pr-preview/pr-11117/api/@warp-drive/legacy/model/functions/buildSchema.md
 function buildSchema(store: Store$1): SchemaService;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/schema-provider.ts:274](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/legacy/src/model/-private/schema-provider.ts#L274)
+Defined in: [warp-drive-packages/legacy/src/model/-private/schema-provider.ts:274](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/legacy/src/model/-private/schema-provider.ts#L274)
 
 The `createSchemaService` implementation for use with `Model`. Pass
 the result of this to your store's `createSchemaService` method when

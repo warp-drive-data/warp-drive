@@ -8,7 +8,7 @@ url: /pr-preview/pr-11117/api/@warp-drive/holodeck/mock/types/ScaffoldGenerator.
 type ScaffoldGenerator = () => Scaffold;
 ```
 
-Defined in: [mock.ts:19](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/packages/holodeck/src/mock.ts#L19)
+Defined in: [mock.ts:19](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/packages/holodeck/src/mock.ts#L19)
 
 ## Returns
 

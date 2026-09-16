@@ -15,7 +15,7 @@ function local(options: LocalOptions): (target: object, key: string) => void;
 function local(target: object, key: string): void;
 ```
 
-Defined in: [fields/local.ts:54](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/schema-dsl/src/fields/local.ts#L54)
+Defined in: [fields/local.ts:54](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/schema-dsl/src/fields/local.ts#L54)
 
 **`Decorator`**
 
@@ -67,7 +67,7 @@ export class User {
 function local(options: LocalOptions): (target: object, key: string) => void;
 ```
 
-Defined in: [fields/local.ts:55](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/schema-dsl/src/fields/local.ts#L55)
+Defined in: [fields/local.ts:55](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/schema-dsl/src/fields/local.ts#L55)
 
 **`Decorator`**
 

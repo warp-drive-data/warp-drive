@@ -13,7 +13,7 @@ class DelegatingSchemaService implements SchemaService {
 }
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/migration-support.ts:557](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/legacy/src/model/migration-support.ts#L557)
+Defined in: [warp-drive-packages/legacy/src/model/migration-support.ts:557](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/legacy/src/model/migration-support.ts#L557)
 
 See the class documentation above for usage.
 
@@ -29,7 +29,7 @@ See the class documentation above for usage.
 new DelegatingSchemaService(store: Store$1, schema: SchemaService): DelegatingSchemaService;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/migration-support.ts:583](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/legacy/src/model/migration-support.ts#L583)
+Defined in: [warp-drive-packages/legacy/src/model/migration-support.ts:583](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/legacy/src/model/migration-support.ts#L583)
 
 #### Parameters
 
@@ -57,7 +57,7 @@ optional attributesDefinitionFor(resource:
 }): AttributesSchema;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/migration-support.ts:562](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/legacy/src/model/migration-support.ts#L562)
+Defined in: [warp-drive-packages/legacy/src/model/migration-support.ts:562](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/legacy/src/model/migration-support.ts#L562)
 
 Delegates to whichever of the primary/fallback schema services has a
 schema for the resource, preferring the primary. See [isDelegated](#isdelegated).
@@ -97,7 +97,7 @@ optional cacheFields(resource: {
 | CollectionField>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/migration-support.ts:621](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/legacy/src/model/migration-support.ts#L621)
+Defined in: [warp-drive-packages/legacy/src/model/migration-support.ts:621](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/legacy/src/model/migration-support.ts#L621)
 
 Queries for the fields of a given resource type or resource identity.
 
@@ -137,7 +137,7 @@ CAUTION_MEGA_DANGER_ZONE_arrayExtensions(field: ExtensibleField):
   | null;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/migration-support.ts:682](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/legacy/src/model/migration-support.ts#L682)
+Defined in: [warp-drive-packages/legacy/src/model/migration-support.ts:682](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/legacy/src/model/migration-support.ts#L682)
 
 Retrieve the extension map for an array field
 
@@ -163,7 +163,7 @@ CAUTION_MEGA_DANGER_ZONE_hasExtension(ext: {
 }): boolean;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/migration-support.ts:661](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/legacy/src/model/migration-support.ts#L661)
+Defined in: [warp-drive-packages/legacy/src/model/migration-support.ts:661](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/legacy/src/model/migration-support.ts#L661)
 
 Check if a specific extension has been registered previously
 
@@ -193,7 +193,7 @@ CAUTION_MEGA_DANGER_ZONE_objectExtensions(field: ExtensibleField, resolvedType: 
   | null;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/migration-support.ts:675](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/legacy/src/model/migration-support.ts#L675)
+Defined in: [warp-drive-packages/legacy/src/model/migration-support.ts:675](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/legacy/src/model/migration-support.ts#L675)
 
 Retrieve the extension map for an object field
 
@@ -220,7 +220,7 @@ Retrieve the extension map for an object field
 CAUTION_MEGA_DANGER_ZONE_registerExtension(extension: CAUTION_MEGA_DANGER_ZONE_Extension): void;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/migration-support.ts:665](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/legacy/src/model/migration-support.ts#L665)
+Defined in: [warp-drive-packages/legacy/src/model/migration-support.ts:665](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/legacy/src/model/migration-support.ts#L665)
 
 Register an extension for either objects or arrays
 
@@ -250,7 +250,7 @@ CAUTION_MEGA_DANGER_ZONE_resourceExtensions(resource:
   | null;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/migration-support.ts:669](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/legacy/src/model/migration-support.ts#L669)
+Defined in: [warp-drive-packages/legacy/src/model/migration-support.ts:669](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/legacy/src/model/migration-support.ts#L669)
 
 Retrieve the extension map for a resource
 
@@ -280,7 +280,7 @@ derivation(field:
 }): Derivation;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/migration-support.ts:636](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/legacy/src/model/migration-support.ts#L636)
+Defined in: [warp-drive-packages/legacy/src/model/migration-support.ts:636](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/legacy/src/model/migration-support.ts#L636)
 
 Returns the derivation registered with the name provided
 by `field.type`. Validates that the field is a valid DerivedField.
@@ -306,7 +306,7 @@ by `field.type`. Validates that the field is a valid DerivedField.
 optional doesTypeExist(type: string): boolean;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/migration-support.ts:572](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/legacy/src/model/migration-support.ts#L572)
+Defined in: [warp-drive-packages/legacy/src/model/migration-support.ts:572](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/legacy/src/model/migration-support.ts#L572)
 
 Whether either the primary or fallback schema service has a schema
 for the given type.
@@ -333,7 +333,7 @@ fields(resource:
 }): Map<string, FieldSchema>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/migration-support.ts:615](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/legacy/src/model/migration-support.ts#L615)
+Defined in: [warp-drive-packages/legacy/src/model/migration-support.ts:615](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/legacy/src/model/migration-support.ts#L615)
 
 Queries for the fields of a given resource type or resource identity.
 
@@ -364,7 +364,7 @@ hashFn(field:
 }): HashFn;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/migration-support.ts:633](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/legacy/src/model/migration-support.ts#L633)
+Defined in: [warp-drive-packages/legacy/src/model/migration-support.ts:633](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/legacy/src/model/migration-support.ts#L633)
 
 Returns the hash function registered with the name provided
 by `field.type`. Validates that the field is a valid HashField.
@@ -394,7 +394,7 @@ hasResource(resource:
 }): boolean;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/migration-support.ts:600](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/legacy/src/model/migration-support.ts#L600)
+Defined in: [warp-drive-packages/legacy/src/model/migration-support.ts:600](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/legacy/src/model/migration-support.ts#L600)
 
 Queries whether the SchemaService recognizes `type` as a resource type
 
@@ -419,7 +419,7 @@ Queries whether the SchemaService recognizes `type` as a resource type
 hasTrait(type: string): boolean;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/migration-support.ts:603](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/legacy/src/model/migration-support.ts#L603)
+Defined in: [warp-drive-packages/legacy/src/model/migration-support.ts:603](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/legacy/src/model/migration-support.ts#L603)
 
 Queries whether the SchemaService recognizes `type` as a resource trait
 
@@ -445,7 +445,7 @@ isDelegated(resource:
 }): boolean;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/migration-support.ts:592](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/legacy/src/model/migration-support.ts#L592)
+Defined in: [warp-drive-packages/legacy/src/model/migration-support.ts:592](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/legacy/src/model/migration-support.ts#L592)
 
 Whether the given resource's schema is being served by the fallback
 (legacy Model-derived) schema service rather than the primary one.
@@ -473,7 +473,7 @@ registerDerivation<R, T, FM extends
   | null>(derivation: Derivation<R, T, FM>): void;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/migration-support.ts:654](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/legacy/src/model/migration-support.ts#L654)
+Defined in: [warp-drive-packages/legacy/src/model/migration-support.ts:654](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/legacy/src/model/migration-support.ts#L654)
 
 Enables registration of a derivation.
 
@@ -514,7 +514,7 @@ attached to it's `[Type]` property.
 registerHashFn(hashFn: HashFn): void;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/migration-support.ts:657](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/legacy/src/model/migration-support.ts#L657)
+Defined in: [warp-drive-packages/legacy/src/model/migration-support.ts:657](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/legacy/src/model/migration-support.ts#L657)
 
 Enables registration of a hashing function
 
@@ -541,7 +541,7 @@ registerResource(schema:
   | ObjectSchema): void;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/migration-support.ts:648](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/legacy/src/model/migration-support.ts#L648)
+Defined in: [warp-drive-packages/legacy/src/model/migration-support.ts:648](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/legacy/src/model/migration-support.ts#L648)
 
 Enables registration of a single Schema representing either
 a resource in PolarisMode or LegacyMode or an ObjectSchema
@@ -572,7 +572,7 @@ registerResources(schemas: (
   | ObjectSchema)[]): void;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/migration-support.ts:645](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/legacy/src/model/migration-support.ts#L645)
+Defined in: [warp-drive-packages/legacy/src/model/migration-support.ts:645](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/legacy/src/model/migration-support.ts#L645)
 
 Enables registration of multiple Schemas at once.
 
@@ -600,7 +600,7 @@ or other sources just-in-time.
 registerTransformation(transform: Transformation): void;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/migration-support.ts:651](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/legacy/src/model/migration-support.ts#L651)
+Defined in: [warp-drive-packages/legacy/src/model/migration-support.ts:651](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/legacy/src/model/migration-support.ts#L651)
 
 Enables registration of a transformation.
 
@@ -629,7 +629,7 @@ optional relationshipsDefinitionFor(resource:
 }): RelationshipsSchema;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/migration-support.ts:567](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/legacy/src/model/migration-support.ts#L567)
+Defined in: [warp-drive-packages/legacy/src/model/migration-support.ts:567](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/legacy/src/model/migration-support.ts#L567)
 
 Delegates to whichever of the primary/fallback schema services has a
 schema for the resource, preferring the primary. See [isDelegated](#isdelegated).
@@ -661,7 +661,7 @@ resource(resource:
   | ObjectSchema;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/migration-support.ts:639](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/legacy/src/model/migration-support.ts#L639)
+Defined in: [warp-drive-packages/legacy/src/model/migration-support.ts:639](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/legacy/src/model/migration-support.ts#L639)
 
 Returns the schema for the provided resource type.
 
@@ -691,7 +691,7 @@ resourceHasTrait(resource:
 }, trait: string): boolean;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/migration-support.ts:609](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/legacy/src/model/migration-support.ts#L609)
+Defined in: [warp-drive-packages/legacy/src/model/migration-support.ts:609](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/legacy/src/model/migration-support.ts#L609)
 
 Queries whether the given resource has the given trait
 
@@ -720,7 +720,7 @@ Queries whether the given resource has the given trait
 resourceTypes(): readonly string[];
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/migration-support.ts:596](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/legacy/src/model/migration-support.ts#L596)
+Defined in: [warp-drive-packages/legacy/src/model/migration-support.ts:596](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/legacy/src/model/migration-support.ts#L596)
 
 Returns all known resource types
 
@@ -742,7 +742,7 @@ transformation(field:
 }): Transformation;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/migration-support.ts:630](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/legacy/src/model/migration-support.ts#L630)
+Defined in: [warp-drive-packages/legacy/src/model/migration-support.ts:630](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/legacy/src/model/migration-support.ts#L630)
 
 Returns the transformation registered with the name provided
 by `field.type`. Validates that the field is a valid transformable.

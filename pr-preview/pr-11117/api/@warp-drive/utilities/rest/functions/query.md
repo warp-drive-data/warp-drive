@@ -35,7 +35,7 @@ function query<T, M extends
 ): QueryRequestOptions<ReactiveDataDocument<T[], M, E>>;
 ```
 
-Defined in: [-private/rest/query.ts:58](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/utilities/src/-private/rest/query.ts#L58)
+Defined in: [-private/rest/query.ts:58](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/utilities/src/-private/rest/query.ts#L58)
 
 Builds request options to query for resources, usually by a primary
 type, configured for the url and header expectations of most REST APIs.
@@ -124,7 +124,7 @@ function query(
 ): QueryRequestOptions;
 ```
 
-Defined in: [-private/rest/query.ts:63](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/utilities/src/-private/rest/query.ts#L63)
+Defined in: [-private/rest/query.ts:63](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/utilities/src/-private/rest/query.ts#L63)
 
 Builds request options to query for resources, usually by a primary
 type, configured for the url and header expectations of most REST APIs.

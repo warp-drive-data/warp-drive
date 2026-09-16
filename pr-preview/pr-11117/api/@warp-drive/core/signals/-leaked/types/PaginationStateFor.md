@@ -9,7 +9,7 @@ url: >-
 type PaginationStateFor<RT = unknown, E = unknown, M extends PaginateMode = "paged"> = M extends "infinite" ? InfinitePaginationState<RT, E> : PagedPaginationState<RT, E>;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:81](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/core/src/signals/pagination-state.ts#L81)
+Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:81](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/signals/pagination-state.ts#L81)
 
 Resolves a [PaginateMode](PaginateMode.md) to the surface it exposes, so a component
 generic over the mode can yield only that surface.

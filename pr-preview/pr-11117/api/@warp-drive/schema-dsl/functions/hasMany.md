@@ -8,7 +8,7 @@ url: /pr-preview/pr-11117/api/@warp-drive/schema-dsl/functions/hasMany.md
 function hasMany(options: HasManyOptions): (target: object, key: string) => void;
 ```
 
-Defined in: [fields/has-many.ts:98](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/schema-dsl/src/fields/has-many.ts#L98)
+Defined in: [fields/has-many.ts:98](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/schema-dsl/src/fields/has-many.ts#L98)
 
 **`Decorator`**
 

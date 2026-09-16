@@ -12,7 +12,7 @@ interface SharedPaginationState<RT = unknown, E = unknown> {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:24](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/core/src/signals/pagination-state.ts#L24)
+Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:24](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/signals/pagination-state.ts#L24)
 
 The part of a [PaginationState](PaginationState.md) available to both navigation surfaces.
 
@@ -39,7 +39,7 @@ The part of a [PaginationState](PaginationState.md) available to both navigation
 adoptPage(request: Future<RT>): Promise<RT | null>;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:28](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/core/src/signals/pagination-state.ts#L28)
+Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:28](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/signals/pagination-state.ts#L28)
 
 See [PaginationState.adoptPage](PaginationState.md#adoptpage).
 
@@ -61,6 +61,6 @@ See [PaginationState.adoptPage](PaginationState.md#adoptpage).
 readonly totalPages: number;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:26](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/core/src/signals/pagination-state.ts#L26)
+Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:26](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/signals/pagination-state.ts#L26)
 
 See [PaginationState.totalPages](PaginationState.md#totalpages).

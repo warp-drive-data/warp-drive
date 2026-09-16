@@ -11,7 +11,7 @@ url: >-
 AbortError: AdapterRequestErrorConstructor<AbortError>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/error.ts:307](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/legacy/src/adapter/error.ts#L307)
+Defined in: [warp-drive-packages/legacy/src/adapter/error.ts:307](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/legacy/src/adapter/error.ts#L307)
 
 An `AbortError` is used by an adapter to signal that a request to the
 external API was aborted. For example, this can occur if the user

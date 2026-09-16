@@ -9,14 +9,11 @@ url: >-
 
 ```ts
 class DataWorker {
-  constructor(UserStore: *typeof* Store$1, options?: {
-  persisted: boolean;
-  scope?: string;
-});
+  constructor(UserStore: *typeof* Store$1, options?: { persisted: boolean; scope?: string });
 }
 ```
 
-Defined in: [data-worker/worker.ts:10](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/experiments/src/data-worker/worker.ts#L10)
+Defined in: [data-worker/worker.ts:10](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/experiments/src/data-worker/worker.ts#L10)
 
 ## Constructors
 
@@ -29,7 +26,7 @@ new DataWorker(UserStore: typeof Store$1, options?: {
 }): DataWorker;
 ```
 
-Defined in: [data-worker/worker.ts:18](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/experiments/src/data-worker/worker.ts#L18)
+Defined in: [data-worker/worker.ts:18](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/experiments/src/data-worker/worker.ts#L18)
 
 #### Parameters
 
@@ -59,7 +56,7 @@ Defined in: [data-worker/worker.ts:18](https://github.com/warp-drive-data/warp-d
 abortRequest(event: AbortEventData): void;
 ```
 
-Defined in: [data-worker/worker.ts:86](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/experiments/src/data-worker/worker.ts#L86)
+Defined in: [data-worker/worker.ts:86](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/experiments/src/data-worker/worker.ts#L86)
 
 #### Parameters
 
@@ -79,7 +76,7 @@ Defined in: [data-worker/worker.ts:86](https://github.com/warp-drive-data/warp-d
 initialize(): void;
 ```
 
-Defined in: [data-worker/worker.ts:31](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/experiments/src/data-worker/worker.ts#L31)
+Defined in: [data-worker/worker.ts:31](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/experiments/src/data-worker/worker.ts#L31)
 
 #### Returns
 
@@ -93,7 +90,7 @@ Defined in: [data-worker/worker.ts:31](https://github.com/warp-drive-data/warp-d
 request(event: RequestEventData): Promise<void>;
 ```
 
-Defined in: [data-worker/worker.ts:96](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/experiments/src/data-worker/worker.ts#L96)
+Defined in: [data-worker/worker.ts:96](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/experiments/src/data-worker/worker.ts#L96)
 
 #### Parameters
 
@@ -113,7 +110,7 @@ Defined in: [data-worker/worker.ts:96](https://github.com/warp-drive-data/warp-d
 setupThread(thread: string, port: MessagePort): void;
 ```
 
-Defined in: [data-worker/worker.ts:65](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/experiments/src/data-worker/worker.ts#L65)
+Defined in: [data-worker/worker.ts:65](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/experiments/src/data-worker/worker.ts#L65)
 
 #### Parameters
 
@@ -137,7 +134,7 @@ Defined in: [data-worker/worker.ts:65](https://github.com/warp-drive-data/warp-d
 isSharedWorker: boolean;
 ```
 
-Defined in: [data-worker/worker.ts:14](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/experiments/src/data-worker/worker.ts#L14)
+Defined in: [data-worker/worker.ts:14](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/experiments/src/data-worker/worker.ts#L14)
 
 ***
 
@@ -150,7 +147,7 @@ options: {
 };
 ```
 
-Defined in: [data-worker/worker.ts:15](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/experiments/src/data-worker/worker.ts#L15)
+Defined in: [data-worker/worker.ts:15](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/experiments/src/data-worker/worker.ts#L15)
 
 #### persisted
 
@@ -172,7 +169,7 @@ optional scope?: string;
 pending: Map<string, Map<number, Future<unknown>>>;
 ```
 
-Defined in: [data-worker/worker.ts:13](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/experiments/src/data-worker/worker.ts#L13)
+Defined in: [data-worker/worker.ts:13](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/experiments/src/data-worker/worker.ts#L13)
 
 ***
 
@@ -182,7 +179,7 @@ Defined in: [data-worker/worker.ts:13](https://github.com/warp-drive-data/warp-d
 storage: DocumentStorage;
 ```
 
-Defined in: [data-worker/worker.ts:16](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/experiments/src/data-worker/worker.ts#L16)
+Defined in: [data-worker/worker.ts:16](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/experiments/src/data-worker/worker.ts#L16)
 
 ***
 
@@ -192,7 +189,7 @@ Defined in: [data-worker/worker.ts:16](https://github.com/warp-drive-data/warp-d
 store: Store$1;
 ```
 
-Defined in: [data-worker/worker.ts:11](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/experiments/src/data-worker/worker.ts#L11)
+Defined in: [data-worker/worker.ts:11](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/experiments/src/data-worker/worker.ts#L11)
 
 ***
 
@@ -202,4 +199,4 @@ Defined in: [data-worker/worker.ts:11](https://github.com/warp-drive-data/warp-d
 threads: Map<string, MessagePort>;
 ```
 
-Defined in: [data-worker/worker.ts:12](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/experiments/src/data-worker/worker.ts#L12)
+Defined in: [data-worker/worker.ts:12](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/experiments/src/data-worker/worker.ts#L12)

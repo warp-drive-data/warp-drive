@@ -11,7 +11,7 @@ url: >-
 function isEquivId(expected: string | number, actual: string | number | null): boolean;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat/utils.ts:245](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/legacy/src/compat/utils.ts#L245)
+Defined in: [warp-drive-packages/legacy/src/compat/utils.ts:245](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/legacy/src/compat/utils.ts#L245)
 
 Compares two IDs for strict equality, converting them to
 the format expected by the WarpDrive Cache to ensure

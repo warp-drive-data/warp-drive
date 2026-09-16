@@ -15,7 +15,7 @@ interface PlaceholderPaginationLink {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-links.ts:84](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/core/src/signals/pagination-links.ts#L84)
+Defined in: [warp-drive-packages/core/src/signals/pagination-links.ts:84](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/signals/pagination-links.ts#L84)
 
 **`Hideconstructor`**
 
@@ -41,7 +41,7 @@ single page and has no page to navigate to.
 indexRange: [number, number];
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-links.ts:91](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/core/src/signals/pagination-links.ts#L91)
+Defined in: [warp-drive-packages/core/src/signals/pagination-links.ts:91](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/signals/pagination-links.ts#L91)
 
 The inclusive `[start, end]` page-number range of not-yet-loaded pages this
 placeholder stands in for.
@@ -54,7 +54,7 @@ placeholder stands in for.
 readonly isReal: false;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-links.ts:85](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/core/src/signals/pagination-links.ts#L85)
+Defined in: [warp-drive-packages/core/src/signals/pagination-links.ts:85](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/signals/pagination-links.ts#L85)
 
 ***
 
@@ -64,7 +64,7 @@ Defined in: [warp-drive-packages/core/src/signals/pagination-links.ts:85](https:
 text: string = '.';
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-links.ts:95](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/core/src/signals/pagination-links.ts#L95)
+Defined in: [warp-drive-packages/core/src/signals/pagination-links.ts:95](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/signals/pagination-links.ts#L95)
 
 ### distanceFromActiveIndex
 
@@ -74,7 +74,7 @@ Defined in: [warp-drive-packages/core/src/signals/pagination-links.ts:95](https:
 get distanceFromActiveIndex(): number;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-links.ts:111](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/core/src/signals/pagination-links.ts#L111)
+Defined in: [warp-drive-packages/core/src/signals/pagination-links.ts:111](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/signals/pagination-links.ts#L111)
 
 The distance between the active page and the nearest edge of this
 placeholder's index range.
@@ -93,7 +93,7 @@ placeholder's index range.
 get rangeSize(): number;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-links.ts:103](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/core/src/signals/pagination-links.ts#L103)
+Defined in: [warp-drive-packages/core/src/signals/pagination-links.ts:103](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/signals/pagination-links.ts#L103)
 
 The number of pages this placeholder covers.
 

@@ -20,7 +20,7 @@ interface RequestArgs<RT, E> extends SubscriptionArgs<RT, E> {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:99](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/core/src/signals/request-subscription.ts#L99)
+Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:99](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/signals/request-subscription.ts#L99)
 
 The args accepted by the `<Request />` component.
 
@@ -46,7 +46,7 @@ The args accepted by the `<Request />` component.
 optional autorefresh?: AutorefreshBehaviorCombos;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:149](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/core/src/signals/request-subscription.ts#L149)
+Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:149](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/signals/request-subscription.ts#L149)
 
 The autorefresh behavior for the request. This can be a boolean, or any
 combination of the following values: `'online'`, `'interval'`, `'invalid'`.
@@ -71,7 +71,7 @@ Defaults to `false`.
 optional autorefreshBehavior?: "reload" | "refresh" | "policy";
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:175](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/core/src/signals/request-subscription.ts#L175)
+Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:175](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/signals/request-subscription.ts#L175)
 
 The behavior of the request initiated by autorefresh. This can be one of
 the following values:
@@ -95,7 +95,7 @@ Defaults to `'policy'`.
 optional autorefreshThreshold?: number;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:161](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/core/src/signals/request-subscription.ts#L161)
+Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:161](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/signals/request-subscription.ts#L161)
 
 The number of milliseconds to wait before refreshing the request when the
 browser comes back online or the network becomes available.
@@ -119,7 +119,7 @@ optional query?:
   | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:134](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/core/src/signals/request-subscription.ts#L134)
+Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:134](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/signals/request-subscription.ts#L134)
 
 A query to use for the request. This should be an object that can be
 passed to `store.request`. Use this in place of `@request` if you would
@@ -137,7 +137,7 @@ like the component to also initiate the request.
 optional request?: Future<RT> | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:126](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/core/src/signals/request-subscription.ts#L126)
+Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:126](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/signals/request-subscription.ts#L126)
 
 The request to monitor. This should be a `Future` instance returned
 by either the `store.request` or `store.requestManager.request` methods.
@@ -156,7 +156,7 @@ optional store?:
   | RequestManager;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:113](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/core/src/signals/request-subscription.ts#L113)
+Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:113](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/signals/request-subscription.ts#L113)
 
 The store instance to use for making requests. If contexts are available,
 the component will default to using the `store` on the context.
@@ -172,6 +172,6 @@ different from the store provided via context.
 optional subscription?: RequestSubscription<RT, E>;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:103](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/core/src/signals/request-subscription.ts#L103)
+Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:103](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/signals/request-subscription.ts#L103)
 
 The [RequestSubscription](../../../reactive/types/RequestSubscription.md) instance backing the component, if any.

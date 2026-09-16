@@ -16,7 +16,7 @@ interface ReplaceRelatedRecordsMutation {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/mutations.ts:97](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/core/src/types/cache/mutations.ts#L97)
+Defined in: [warp-drive-packages/core/src/types/cache/mutations.ts:97](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/types/cache/mutations.ts#L97)
 
 Replaces the local (uncommitted) state of a `to-many` relationship
 with a new set of values.
@@ -29,7 +29,7 @@ with a new set of values.
 field: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/mutations.ts:109](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/core/src/types/cache/mutations.ts#L109)
+Defined in: [warp-drive-packages/core/src/types/cache/mutations.ts:109](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/types/cache/mutations.ts#L109)
 
 The name of the relationship to replace
 
@@ -41,7 +41,7 @@ The name of the relationship to replace
 optional index?: number;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/mutations.ts:123](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/core/src/types/cache/mutations.ts#L123)
+Defined in: [warp-drive-packages/core/src/types/cache/mutations.ts:123](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/types/cache/mutations.ts#L123)
 
 If this is a "splice", the index to start from
 
@@ -53,7 +53,7 @@ If this is a "splice", the index to start from
 op: "replaceRelatedRecords";
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/mutations.ts:101](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/core/src/types/cache/mutations.ts#L101)
+Defined in: [warp-drive-packages/core/src/types/cache/mutations.ts:101](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/types/cache/mutations.ts#L101)
 
 The name of the mutation
 
@@ -65,7 +65,7 @@ The name of the mutation
 optional prior?: ResourceKey[];
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/mutations.ts:119](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/core/src/types/cache/mutations.ts#L119)
+Defined in: [warp-drive-packages/core/src/types/cache/mutations.ts:119](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/types/cache/mutations.ts#L119)
 
 If this is a "splice", the resources expected to be removed
 
@@ -77,7 +77,7 @@ If this is a "splice", the resources expected to be removed
 record: ResourceKey;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/mutations.ts:105](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/core/src/types/cache/mutations.ts#L105)
+Defined in: [warp-drive-packages/core/src/types/cache/mutations.ts:105](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/types/cache/mutations.ts#L105)
 
 The cache key for the resource whose relationship is being updated
 
@@ -89,7 +89,7 @@ The cache key for the resource whose relationship is being updated
 value: ResourceKey[];
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/mutations.ts:115](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/core/src/types/cache/mutations.ts#L115)
+Defined in: [warp-drive-packages/core/src/types/cache/mutations.ts:115](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/types/cache/mutations.ts#L115)
 
 The resources to add. If neither [prior](#prior)
 nor [index](#index) is specified, all

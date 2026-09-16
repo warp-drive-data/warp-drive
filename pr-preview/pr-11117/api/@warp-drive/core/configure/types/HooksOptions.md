@@ -6,13 +6,11 @@ url: /pr-preview/pr-11117/api/@warp-drive/core/configure/types/HooksOptions.md
 
 ```ts
 interface HooksOptions {
-  wellknown: {
-  Array: string | symbol;
-};
+  wellknown: { Array: string | symbol };
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/reactivity/configure.ts:133](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/core/src/signals/reactivity/configure.ts#L133)
+Defined in: [warp-drive-packages/core/src/signals/reactivity/configure.ts:133](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/signals/reactivity/configure.ts#L133)
 
 Contains information a [SignalHooks](SignalHooks.md) implementation may want
 to use, such as the specialized key used for the signal
@@ -36,7 +34,7 @@ wellknown: {
 };
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/reactivity/configure.ts:139](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/core/src/signals/reactivity/configure.ts#L139)
+Defined in: [warp-drive-packages/core/src/signals/reactivity/configure.ts:139](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/signals/reactivity/configure.ts#L139)
 
 A list of specialized symbols/strings
 used by WarpDrive to encapsulate key

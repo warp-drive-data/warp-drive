@@ -8,7 +8,7 @@ url: /pr-preview/pr-11117/api/@warp-drive/core/types/record/types/Validate.md
 type Validate<K extends object, T extends K> = T extends K ? K : never;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/record.ts:359](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/core/src/types/record.ts#L359)
+Defined in: [warp-drive-packages/core/src/types/record.ts:359](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/core/src/types/record.ts#L359)
 
 A utility that takes two types, K and T, and ensures that K is a valid subset of T.
 

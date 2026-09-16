@@ -11,7 +11,7 @@ url: >-
 function restoreDeprecatedModelRequestBehaviors(ModelKlass: typeof Model): void;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:1952](https://github.com/warp-drive-data/warp-drive/blob/623a258c52ac8495e1a82b91f595393c2bc553ec/warp-drive-packages/legacy/src/model/-private/model.ts#L1952)
+Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:1952](https://github.com/warp-drive-data/warp-drive/blob/efe23be24be92441a465081c00eff01e7e2cc0e8/warp-drive-packages/legacy/src/model/-private/model.ts#L1952)
 
 Restores the pre-`RequestManager` implementations of `save`,
 `destroyRecord`, and `reload` onto the given `Model` subclass, for
