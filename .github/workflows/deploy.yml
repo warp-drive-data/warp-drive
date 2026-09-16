@@ -55,7 +55,7 @@ jobs:
           # the whole GitHub Actions runner pool and fails intermittently under load
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@1ef5a1b1df4c63fe21a2242edbee6cac921ece01 # v4.1.0
+        uses: peaceiris/actions-gh-pages@84c30a85c19949d7eee79c4ff27748b70285e453 # v4.1.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: docs-viewer/docs.warp-drive.io/.vitepress/dist
