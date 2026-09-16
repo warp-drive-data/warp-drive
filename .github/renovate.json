@@ -1,7 +1,11 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:recommended"],
+  "extends": ["config:best-practices"],
   "labels": [":dependabot:", ":label: dependencies"],
+  "dependencyDashboardLabels": [":label: dependencies"],
+  "dependencyDashboardOSVVulnerabilitySummary": "unresolved",
+  "dependencyDashboardHeader": "### A note on \"Pending Status Checks\"\n\nAnything listed below under **Pending Status Checks** is not stuck or broken -- it's being intentionally held back by our `minimumReleaseAge` policy (currently `3 days`; see the top of this file), which delays proposing a version until it's been out long enough for the ecosystem to catch and pull a compromised release. Renovate will automatically open the branch/PR as soon as that window passes -- no action is needed here.\n\nSecurity-fix updates (`vulnerabilityAlerts` / OSV) bypass `minimumReleaseAge` entirely and are raised immediately, so anything held in Pending Status Checks is a routine version bump, never a security fix stuck waiting.",
+  "osvVulnerabilityAlerts": true,
   "packageRules": [
     {
       "matchPackageNames": [
@@ -69,6 +73,5 @@
     "automerge": false,
     "assignees": ["@runspired"],
     "enabled": true
-  },
-  "ignorePaths": ["node_modules/**", "**/node_modules/**"]
+  }
 }
