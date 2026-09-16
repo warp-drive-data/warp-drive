@@ -279,17 +279,17 @@ packages:
 ## wildcard peer, or a multi-version range peer), so folding them into the
 ## single catalog version would silently narrow what they accept.
 catalog:
-  "@babel/core": ^7.29.7
+  "@babel/core": ^8.0.5
   "@babel/eslint-parser": ^8.0.5
-  "@babel/parser": ^7.29.8
-  "@babel/plugin-proposal-decorators": 7.29.7
-  "@babel/plugin-transform-runtime": ^7.29.7
-  "@babel/plugin-transform-typescript": ^7.29.7
-  "@babel/preset-env": ^7.29.7
-  "@babel/preset-react": ^7.29.7
-  "@babel/preset-typescript": ^7.29.7
-  "@babel/runtime": ^7.29.7
-  "@babel/traverse": ^7.29.8
+  "@babel/parser": ^8.0.5
+  "@babel/plugin-proposal-decorators": 8.0.2
+  "@babel/plugin-transform-runtime": ^8.0.1
+  "@babel/plugin-transform-typescript": ^8.0.5
+  "@babel/preset-env": ^8.0.5
+  "@babel/preset-react": ^8.0.1
+  "@babel/preset-typescript": ^8.0.1
+  "@babel/runtime": ^8.0.5
+  "@babel/traverse": ^8.0.5
   "@ember/app-tsconfig": ^2.0.0
   "@ember/edition-utils": ^1.2.0
   "@ember/optional-features": ^3.0.0
@@ -470,9 +470,9 @@ overrides:
   lodash: ^4.18.1
   caniuse-lite: ^1.0.30001810
   rollup: ^4.63.2
-  "@babel/types": ^7.29.8
-  "@babel/parser": ^7.29.8
-  "@babel/traverse": ^7.29.8
+  "@babel/types": ^8.0.5
+  "@babel/parser": ^8.0.5
+  "@babel/traverse": ^8.0.5
   prettier: ^3.9.6
   "@types/node": "catalog:"
   "@vue/compiler-sfc": 3.5.42
