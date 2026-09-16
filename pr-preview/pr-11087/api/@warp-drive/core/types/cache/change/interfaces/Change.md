@@ -1,0 +1,68 @@
+---
+url: >-
+  /pr-preview/pr-11087/api/@warp-drive/core/types/cache/change/interfaces/Change.md
+---
+
+# &#x20;Change
+
+Defined in: [warp-drive-packages/core/src/types/cache/change.ts:18](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/core/src/types/cache/change.ts#L18)
+
+Describes a single mutation to a resource or document that occurred
+in the cache, as returned by [Cache.diff](../../interfaces/Cache.md#diff).
+
+## Example
+
+```ts
+const change: Change = {
+  identifier: resourceKey,
+  op: 'upsert',
+  patch: { name: 'Chris' },
+};
+```
+
+## Properties
+
+### identifier
+
+```ts
+identifier: 
+  | RequestKey
+  | ResourceKey;
+```
+
+Defined in: [warp-drive-packages/core/src/types/cache/change.ts:22](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/core/src/types/cache/change.ts#L22)
+
+the [ResourceKey](../../../identifier/type-aliases/ResourceKey.md) or [RequestKey](../../../identifier/interfaces/RequestKey.md) of the entity that changed
+
+***
+
+### op
+
+```ts
+op: "upsert" | "remove";
+```
+
+Defined in: [warp-drive-packages/core/src/types/cache/change.ts:27](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/core/src/types/cache/change.ts#L27)
+
+the type of change that occurred. If `'upsert'`, [patch](#patch)
+will be present with the data to merge into the cache for the entity.
+
+***
+
+### patch?
+
+```ts
+optional patch?: unknown;
+```
+
+Defined in: [warp-drive-packages/core/src/types/cache/change.ts:39](https://github.com/warp-drive-data/warp-drive/blob/53f90949527307caf1710da014dad97fc5e3ab13/warp-drive-packages/core/src/types/cache/change.ts#L39)
+
+When [op](#op) is `'upsert'`, the data to merge into the
+cache for the entity.
+
+This is opaque to the Store but should be understood by the Cache and
+may be utilized by an Adapter when generating data during a `save`
+operation.
+
+It is generally recommended that `patch` contain only the updated
+state, ignoring fields that are unchanged.
