@@ -8,7 +8,7 @@ url: /api/@warp-drive/core/request/functions/withReactiveResponse.md
 function withReactiveResponse<T, M, E, EM>(obj): RequestInfo<ReactiveDataDocument<T, M, E, EM>> & object;
 ```
 
-Defined in: [warp-drive-packages/core/src/request.ts:74](https://github.com/warp-drive-data/warp-drive/blob/366068ebc56a664fb2411fcf7b3b351cc19cd54a/warp-drive-packages/core/src/request.ts#L74)
+Defined in: [warp-drive-packages/core/src/request.ts:74](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/core/src/request.ts#L74)
 
 Brands the supplied object with the supplied response type
 wrapped in [ReactiveDataDocument](../../reactive/type-aliases/ReactiveDataDocument.md). This is a convenience for

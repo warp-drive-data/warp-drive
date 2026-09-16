@@ -9,7 +9,7 @@ url: >-
 const ENABLE_LEGACY_REQUEST_METHODS: boolean = true;
 ```
 
-Defined in: [deprecations.ts:527](https://github.com/warp-drive-data/warp-drive/blob/366068ebc56a664fb2411fcf7b3b351cc19cd54a/warp-drive-packages/build-config/src/deprecations.ts#L527)
+Defined in: [deprecations.ts:527](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/build-config/src/deprecations.ts#L527)
 
 Deprecates all the methods that lead to making requests that don't directly
 use `store.request()` or `manager.request()`.

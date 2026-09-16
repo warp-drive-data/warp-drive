@@ -4,7 +4,7 @@ url: /api/@warp-drive/core/signals/-leaked/interfaces/PaginateArgs.md
 
 # &#x20;PaginateArgs\<RT, E>
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:80](https://github.com/warp-drive-data/warp-drive/blob/366068ebc56a664fb2411fcf7b3b351cc19cd54a/warp-drive-packages/core/src/signals/pagination-subscription.ts#L80)
+Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:80](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/core/src/signals/pagination-subscription.ts#L80)
 
 ## Extends
 
@@ -28,7 +28,7 @@ Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:80]
 optional autorefresh?: AutorefreshBehaviorCombos;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:149](https://github.com/warp-drive-data/warp-drive/blob/366068ebc56a664fb2411fcf7b3b351cc19cd54a/warp-drive-packages/core/src/signals/request-subscription.ts#L149)
+Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:149](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/core/src/signals/request-subscription.ts#L149)
 
 The autorefresh behavior for the request. This can be a boolean, or any
 combination of the following values: `'online'`, `'interval'`, `'invalid'`.
@@ -55,7 +55,7 @@ PaginationSubscriptionArgs.autorefresh
 optional autorefreshBehavior?: "reload" | "refresh" | "policy";
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:175](https://github.com/warp-drive-data/warp-drive/blob/366068ebc56a664fb2411fcf7b3b351cc19cd54a/warp-drive-packages/core/src/signals/request-subscription.ts#L175)
+Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:175](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/core/src/signals/request-subscription.ts#L175)
 
 The behavior of the request initiated by autorefresh. This can be one of
 the following values:
@@ -81,7 +81,7 @@ PaginationSubscriptionArgs.autorefreshBehavior
 optional autorefreshThreshold?: number;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:161](https://github.com/warp-drive-data/warp-drive/blob/366068ebc56a664fb2411fcf7b3b351cc19cd54a/warp-drive-packages/core/src/signals/request-subscription.ts#L161)
+Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:161](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/core/src/signals/request-subscription.ts#L161)
 
 The number of milliseconds to wait before refreshing the request when the
 browser comes back online or the network becomes available.
@@ -105,7 +105,7 @@ PaginationSubscriptionArgs.autorefreshThreshold
 optional mode?: PaginateMode;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:86](https://github.com/warp-drive-data/warp-drive/blob/366068ebc56a664fb2411fcf7b3b351cc19cd54a/warp-drive-packages/core/src/signals/pagination-subscription.ts#L86)
+Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:86](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/core/src/signals/pagination-subscription.ts#L86)
 
 Which navigation surface the component yields: `'paged'` (the default) or
 `'infinite'`. Type-only — it narrows the yielded state and features so the
@@ -119,7 +119,7 @@ two surfaces cannot be mixed, and is never read at runtime.
 optional pageHints?: PageHints;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:77](https://github.com/warp-drive-data/warp-drive/blob/366068ebc56a664fb2411fcf7b3b351cc19cd54a/warp-drive-packages/core/src/signals/pagination-subscription.ts#L77)
+Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:77](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/core/src/signals/pagination-subscription.ts#L77)
 
 A function to extract the `currentPage` and `totalPages` from a loaded document
 when they are not available in the default `meta` locations. Must be the same
@@ -141,7 +141,7 @@ optional query?:
   | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:134](https://github.com/warp-drive-data/warp-drive/blob/366068ebc56a664fb2411fcf7b3b351cc19cd54a/warp-drive-packages/core/src/signals/request-subscription.ts#L134)
+Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:134](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/core/src/signals/request-subscription.ts#L134)
 
 A query to use for the request. This should be an object that can be
 passed to `store.request`. Use this in place of `@request` if you would
@@ -161,7 +161,7 @@ PaginationSubscriptionArgs.query
 optional request?: Future<RT> | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:126](https://github.com/warp-drive-data/warp-drive/blob/366068ebc56a664fb2411fcf7b3b351cc19cd54a/warp-drive-packages/core/src/signals/request-subscription.ts#L126)
+Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:126](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/core/src/signals/request-subscription.ts#L126)
 
 The request to monitor. This should be a `Future` instance returned
 by either the `store.request` or `store.requestManager.request` methods.
@@ -182,7 +182,7 @@ optional store?:
   | RequestManager;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:98](https://github.com/warp-drive-data/warp-drive/blob/366068ebc56a664fb2411fcf7b3b351cc19cd54a/warp-drive-packages/core/src/signals/pagination-subscription.ts#L98)
+Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:98](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/core/src/signals/pagination-subscription.ts#L98)
 
 The store instance to use for making requests. If contexts are available,
 the component will default to using the `store` on the context.
@@ -198,4 +198,4 @@ different from the store provided via context.
 optional subscription?: PaginationSubscription<RT, E>;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:88](https://github.com/warp-drive-data/warp-drive/blob/366068ebc56a664fb2411fcf7b3b351cc19cd54a/warp-drive-packages/core/src/signals/pagination-subscription.ts#L88)
+Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:88](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/core/src/signals/pagination-subscription.ts#L88)

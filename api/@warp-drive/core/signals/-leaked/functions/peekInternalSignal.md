@@ -8,7 +8,7 @@ url: /api/@warp-drive/core/signals/-leaked/functions/peekInternalSignal.md
 function peekInternalSignal(signals, key): WarpDriveSignal | undefined;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/reactivity/internal.ts:270](https://github.com/warp-drive-data/warp-drive/blob/366068ebc56a664fb2411fcf7b3b351cc19cd54a/warp-drive-packages/core/src/signals/reactivity/internal.ts#L270)
+Defined in: [warp-drive-packages/core/src/signals/reactivity/internal.ts:270](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/core/src/signals/reactivity/internal.ts#L270)
 
 Looks up the WarpDriveSignal stored for `key` in `signals`,
 if one has already been created, without creating or consuming it.

@@ -8,7 +8,7 @@ url: /api/@warp-drive/core/types/schema/fields/functions/objectSchema.md
 function objectSchema<T>(schema): T;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2524](https://github.com/warp-drive-data/warp-drive/blob/366068ebc56a664fb2411fcf7b3b351cc19cd54a/warp-drive-packages/core/src/types/schema/fields.ts#L2524)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2524](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/core/src/types/schema/fields.ts#L2524)
 
 A no-op type utility that enables type-checking object schema
 definitions.

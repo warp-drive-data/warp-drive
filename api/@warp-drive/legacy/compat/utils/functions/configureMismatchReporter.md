@@ -10,7 +10,7 @@ url: /api/@warp-drive/legacy/compat/utils/functions/configureMismatchReporter.md
 function configureMismatchReporter(fn): void;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat/utils.ts:41](https://github.com/warp-drive-data/warp-drive/blob/366068ebc56a664fb2411fcf7b3b351cc19cd54a/warp-drive-packages/legacy/src/compat/utils.ts#L41)
+Defined in: [warp-drive-packages/legacy/src/compat/utils.ts:41](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/legacy/src/compat/utils.ts#L41)
 
 Configure a function to be called when an id or type
 changes during normalization. This is useful for instrumenting

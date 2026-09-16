@@ -10,7 +10,7 @@ url: /api/@warp-drive/utilities/rest/functions/createRecord.md
 function createRecord<T>(record, options?): CreateRequestOptions<T>;
 ```
 
-Defined in: [-private/rest/save-record.ts:146](https://github.com/warp-drive-data/warp-drive/blob/366068ebc56a664fb2411fcf7b3b351cc19cd54a/warp-drive-packages/utilities/src/-private/rest/save-record.ts#L146)
+Defined in: [-private/rest/save-record.ts:146](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/utilities/src/-private/rest/save-record.ts#L146)
 
 Builds request options to create new record for resources,
 configured for the url, method and header expectations of most REST APIs.
@@ -72,7 +72,7 @@ const data = await store.request(options);
 function createRecord(record, options?): CreateRequestOptions;
 ```
 
-Defined in: [-private/rest/save-record.ts:147](https://github.com/warp-drive-data/warp-drive/blob/366068ebc56a664fb2411fcf7b3b351cc19cd54a/warp-drive-packages/utilities/src/-private/rest/save-record.ts#L147)
+Defined in: [-private/rest/save-record.ts:147](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/utilities/src/-private/rest/save-record.ts#L147)
 
 Builds request options to create new record for resources,
 configured for the url, method and header expectations of most REST APIs.

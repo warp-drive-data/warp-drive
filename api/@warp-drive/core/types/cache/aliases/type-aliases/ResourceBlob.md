@@ -8,7 +8,7 @@ url: /api/@warp-drive/core/types/cache/aliases/type-aliases/ResourceBlob.md
 type ResourceBlob = unknown;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/aliases.ts:20](https://github.com/warp-drive-data/warp-drive/blob/366068ebc56a664fb2411fcf7b3b351cc19cd54a/warp-drive-packages/core/src/types/cache/aliases.ts#L20)
+Defined in: [warp-drive-packages/core/src/types/cache/aliases.ts:20](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/core/src/types/cache/aliases.ts#L20)
 
 The `ResourceBlob` is an opaque type that must satisfy two constraints.
 

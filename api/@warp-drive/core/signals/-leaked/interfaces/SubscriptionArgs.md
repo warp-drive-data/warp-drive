@@ -4,7 +4,7 @@ url: /api/@warp-drive/core/signals/-leaked/interfaces/SubscriptionArgs.md
 
 # &#x20;SubscriptionArgs\<RT, E>
 
-Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:120](https://github.com/warp-drive-data/warp-drive/blob/366068ebc56a664fb2411fcf7b3b351cc19cd54a/warp-drive-packages/core/src/signals/request-subscription.ts#L120)
+Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:120](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/core/src/signals/request-subscription.ts#L120)
 
 The args accepted by a [RequestSubscription](../../../reactive/interfaces/RequestSubscription.md).
 
@@ -30,7 +30,7 @@ The args accepted by a [RequestSubscription](../../../reactive/interfaces/Reques
 optional autorefresh?: AutorefreshBehaviorCombos;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:149](https://github.com/warp-drive-data/warp-drive/blob/366068ebc56a664fb2411fcf7b3b351cc19cd54a/warp-drive-packages/core/src/signals/request-subscription.ts#L149)
+Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:149](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/core/src/signals/request-subscription.ts#L149)
 
 The autorefresh behavior for the request. This can be a boolean, or any
 combination of the following values: `'online'`, `'interval'`, `'invalid'`.
@@ -51,7 +51,7 @@ Defaults to `false`.
 optional autorefreshBehavior?: "reload" | "refresh" | "policy";
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:175](https://github.com/warp-drive-data/warp-drive/blob/366068ebc56a664fb2411fcf7b3b351cc19cd54a/warp-drive-packages/core/src/signals/request-subscription.ts#L175)
+Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:175](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/core/src/signals/request-subscription.ts#L175)
 
 The behavior of the request initiated by autorefresh. This can be one of
 the following values:
@@ -71,7 +71,7 @@ Defaults to `'policy'`.
 optional autorefreshThreshold?: number;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:161](https://github.com/warp-drive-data/warp-drive/blob/366068ebc56a664fb2411fcf7b3b351cc19cd54a/warp-drive-packages/core/src/signals/request-subscription.ts#L161)
+Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:161](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/core/src/signals/request-subscription.ts#L161)
 
 The number of milliseconds to wait before refreshing the request when the
 browser comes back online or the network becomes available.
@@ -91,7 +91,7 @@ optional query?:
   | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:134](https://github.com/warp-drive-data/warp-drive/blob/366068ebc56a664fb2411fcf7b3b351cc19cd54a/warp-drive-packages/core/src/signals/request-subscription.ts#L134)
+Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:134](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/core/src/signals/request-subscription.ts#L134)
 
 A query to use for the request. This should be an object that can be
 passed to `store.request`. Use this in place of `@request` if you would
@@ -105,7 +105,7 @@ like the component to also initiate the request.
 optional request?: Future<RT> | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:126](https://github.com/warp-drive-data/warp-drive/blob/366068ebc56a664fb2411fcf7b3b351cc19cd54a/warp-drive-packages/core/src/signals/request-subscription.ts#L126)
+Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:126](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/core/src/signals/request-subscription.ts#L126)
 
 The request to monitor. This should be a `Future` instance returned
 by either the `store.request` or `store.requestManager.request` methods.

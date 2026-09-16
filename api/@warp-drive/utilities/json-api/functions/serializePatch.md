@@ -8,7 +8,7 @@ url: /api/@warp-drive/utilities/json-api/functions/serializePatch.md
 function serializePatch(cache, identifier): object;
 ```
 
-Defined in: [-private/json-api/serialize.ts:157](https://github.com/warp-drive-data/warp-drive/blob/366068ebc56a664fb2411fcf7b3b351cc19cd54a/warp-drive-packages/utilities/src/-private/json-api/serialize.ts#L157)
+Defined in: [-private/json-api/serialize.ts:157](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/utilities/src/-private/json-api/serialize.ts#L157)
 
 :::warning ⚠️ **This util often won't produce the necessary body for a {json:api} request**
 

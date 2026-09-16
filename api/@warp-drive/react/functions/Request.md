@@ -8,7 +8,7 @@ url: /api/@warp-drive/react/functions/Request.md
 function Request<RT, E>($props): Element;
 ```
 
-Defined in: [-private/request.tsx:180](https://github.com/warp-drive-data/warp-drive/blob/366068ebc56a664fb2411fcf7b3b351cc19cd54a/warp-drive-packages/react/src/-private/request.tsx#L180)
+Defined in: [-private/request.tsx:180](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/react/src/-private/request.tsx#L180)
 
 The `<Request />` component is a powerful tool for managing data fetching and
 state in your React application. It provides a declarative approach to reactive

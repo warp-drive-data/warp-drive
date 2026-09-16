@@ -10,7 +10,7 @@ url: /api/@warp-drive/core/functions/useRecommendedStore.md
 function useRecommendedStore<T, Policy>(options, StoreKlass?): typeof ConfiguredStore;
 ```
 
-Defined in: [warp-drive-packages/core/src/index.ts:268](https://github.com/warp-drive-data/warp-drive/blob/366068ebc56a664fb2411fcf7b3b351cc19cd54a/warp-drive-packages/core/src/index.ts#L268)
+Defined in: [warp-drive-packages/core/src/index.ts:268](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/core/src/index.ts#L268)
 
 Creates a configured Store class with recommended defaults
 for schema handling, reactivity, caching, and request management.
@@ -148,7 +148,7 @@ explicitly, so a handler relying on it should treat it as optional (as
 function useRecommendedStore<T>(options, StoreKlass?): typeof ConfiguredStore;
 ```
 
-Defined in: [warp-drive-packages/core/src/index.ts:272](https://github.com/warp-drive-data/warp-drive/blob/366068ebc56a664fb2411fcf7b3b351cc19cd54a/warp-drive-packages/core/src/index.ts#L272)
+Defined in: [warp-drive-packages/core/src/index.ts:272](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/core/src/index.ts#L272)
 
 Creates a configured Store class with recommended defaults
 for schema handling, reactivity, caching, and request management.
@@ -282,7 +282,7 @@ explicitly, so a handler relying on it should treat it as optional (as
 function useRecommendedStore<T>(options, StoreKlass?): typeof ConfiguredStore;
 ```
 
-Defined in: [warp-drive-packages/core/src/index.ts:276](https://github.com/warp-drive-data/warp-drive/blob/366068ebc56a664fb2411fcf7b3b351cc19cd54a/warp-drive-packages/core/src/index.ts#L276)
+Defined in: [warp-drive-packages/core/src/index.ts:276](https://github.com/warp-drive-data/warp-drive/blob/35d5b9d62db1dc40d1d36c9cfc0536e7cab16c11/warp-drive-packages/core/src/index.ts#L276)
 
 Creates a configured Store class with recommended defaults
 for schema handling, reactivity, caching, and request management.
