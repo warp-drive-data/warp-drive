@@ -1,5 +1,5 @@
 ---
-url: /warp-drive/pr-preview/pr-11111/guides/the-manual/typescript/configuration.md
+url: /pr-preview/pr-11111/guides/the-manual/typescript/configuration.md
 ---
 # Configuration
 

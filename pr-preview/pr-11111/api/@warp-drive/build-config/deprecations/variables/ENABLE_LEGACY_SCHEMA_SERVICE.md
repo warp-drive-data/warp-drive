@@ -1,6 +1,6 @@
 ---
 url: >-
-  /warp-drive/pr-preview/pr-11111/api/@warp-drive/build-config/deprecations/variables/ENABLE_LEGACY_SCHEMA_SERVICE.md
+  /pr-preview/pr-11111/api/@warp-drive/build-config/deprecations/variables/ENABLE_LEGACY_SCHEMA_SERVICE.md
 ---
 
 # &#x20;ENABLE\_LEGACY\_SCHEMA\_SERVICE&#x20;
@@ -9,7 +9,7 @@ url: >-
 const ENABLE_LEGACY_SCHEMA_SERVICE: boolean = true;
 ```
 
-Defined in: [deprecations.ts:443](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/build-config/src/deprecations.ts#L443)
+Defined in: [deprecations.ts:443](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/build-config/src/deprecations.ts#L443)
 
 When the flag is `true` (default), the legacy schema
 service features will be enabled on the store and

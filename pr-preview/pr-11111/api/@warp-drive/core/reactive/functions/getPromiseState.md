@@ -1,6 +1,6 @@
 ---
 url: >-
-  /warp-drive/pr-preview/pr-11111/api/@warp-drive/core/reactive/functions/getPromiseState.md
+  /pr-preview/pr-11111/api/@warp-drive/core/reactive/functions/getPromiseState.md
 ---
 
 # &#x20;getPromiseState()
@@ -9,7 +9,7 @@ url: >-
 function getPromiseState<T, E>(promise): Readonly<PromiseState<T, E>>;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/promise-state.ts:358](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/signals/promise-state.ts#L358)
+Defined in: [warp-drive-packages/core/src/signals/promise-state.ts:358](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/signals/promise-state.ts#L358)
 
 Returns a reactive state-machine for the provided promise or awaitable.
 

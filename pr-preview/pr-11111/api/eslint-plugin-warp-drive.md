@@ -1,5 +1,5 @@
 ---
-url: /warp-drive/pr-preview/pr-11111/api/eslint-plugin-warp-drive.md
+url: /pr-preview/pr-11111/api/eslint-plugin-warp-drive.md
 ---
 
 Lint rules for helping to ensure best practices and hygiene when using ***Warp*Drive**.

@@ -1,5 +1,5 @@
 ---
-url: /warp-drive/pr-preview/pr-11111/llm-docs.md
+url: /pr-preview/pr-11111/llm-docs.md
 ---
 ## LLM Optimized Documentation
 

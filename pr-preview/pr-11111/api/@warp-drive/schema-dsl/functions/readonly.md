@@ -1,6 +1,5 @@
 ---
-url: >-
-  /warp-drive/pr-preview/pr-11111/api/@warp-drive/schema-dsl/functions/readonly.md
+url: /pr-preview/pr-11111/api/@warp-drive/schema-dsl/functions/readonly.md
 ---
 
 # &#x20;readonly()&#x20;
@@ -9,7 +8,7 @@ url: >-
 function readonly(target, key): void;
 ```
 
-Defined in: [fields/readonly.ts:12](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/schema-dsl/src/fields/readonly.ts#L12)
+Defined in: [fields/readonly.ts:12](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/schema-dsl/src/fields/readonly.ts#L12)
 
 **`Decorator`**
 

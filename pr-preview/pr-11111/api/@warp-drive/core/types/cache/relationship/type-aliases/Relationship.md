@@ -1,6 +1,6 @@
 ---
 url: >-
-  /warp-drive/pr-preview/pr-11111/api/@warp-drive/core/types/cache/relationship/type-aliases/Relationship.md
+  /pr-preview/pr-11111/api/@warp-drive/core/types/cache/relationship/type-aliases/Relationship.md
 ---
 
 # &#x20;Relationship\<T>
@@ -11,7 +11,7 @@ type Relationship<T> =
 | CollectionRelationship<T>;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/relationship.ts:72](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/types/cache/relationship.ts#L72)
+Defined in: [warp-drive-packages/core/src/types/cache/relationship.ts:72](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/types/cache/relationship.ts#L72)
 
 The stable-cache-key form of a relationship, whether `to-one` or `to-many`.
 

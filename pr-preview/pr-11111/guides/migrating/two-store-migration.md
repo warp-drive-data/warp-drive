@@ -1,5 +1,5 @@
 ---
-url: /warp-drive/pr-preview/pr-11111/guides/migrating/two-store-migration.md
+url: /pr-preview/pr-11111/guides/migrating/two-store-migration.md
 ---
 
 :::danger **We've moved!**

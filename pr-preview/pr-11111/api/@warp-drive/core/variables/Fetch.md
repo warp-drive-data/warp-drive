@@ -1,5 +1,5 @@
 ---
-url: /warp-drive/pr-preview/pr-11111/api/@warp-drive/core/variables/Fetch.md
+url: /pr-preview/pr-11111/api/@warp-drive/core/variables/Fetch.md
 ---
 
 # &#x20;Fetch
@@ -8,7 +8,7 @@ url: /warp-drive/pr-preview/pr-11111/api/@warp-drive/core/variables/Fetch.md
 const Fetch: object;
 ```
 
-Defined in: [warp-drive-packages/core/src/request/-private/fetch.ts:134](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/request/-private/fetch.ts#L134)
+Defined in: [warp-drive-packages/core/src/request/-private/fetch.ts:134](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/request/-private/fetch.ts#L134)
 
 ```ts
 import { Fetch } from '@warp-drive/core';

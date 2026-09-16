@@ -1,6 +1,6 @@
 ---
 url: >-
-  /warp-drive/pr-preview/pr-11111/api/@warp-drive/core/types/cache/mutations/type-aliases/Mutation.md
+  /pr-preview/pr-11111/api/@warp-drive/core/types/cache/mutations/type-aliases/Mutation.md
 ---
 
 # &#x20;Mutation
@@ -14,7 +14,7 @@ type Mutation =
   | SortRelatedRecordsMutation;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/mutations.ts:171](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/types/cache/mutations.ts#L171)
+Defined in: [warp-drive-packages/core/src/types/cache/mutations.ts:171](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/types/cache/mutations.ts#L171)
 
 A `Mutation` is an action that updates the local (uncommitted or "dirty")
 state of the [Cache](../../interfaces/Cache.md) in some manner.

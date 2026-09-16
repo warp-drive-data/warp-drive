@@ -1,6 +1,5 @@
 ---
-url: >-
-  /warp-drive/pr-preview/pr-11111/api/@warp-drive/core/types/schema/schema-service.md
+url: /pr-preview/pr-11111/api/@warp-drive/core/types/schema/schema-service.md
 ---
 
 ## Types

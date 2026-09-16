@@ -1,6 +1,6 @@
 ---
 url: >-
-  /warp-drive/pr-preview/pr-11111/guides/contributing/writing-documentation/writing-permanent-content.md
+  /pr-preview/pr-11111/guides/contributing/writing-documentation/writing-permanent-content.md
 ---
 
 # Writing Permanent Content

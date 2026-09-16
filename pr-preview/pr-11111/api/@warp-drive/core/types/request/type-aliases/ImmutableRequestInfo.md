@@ -1,6 +1,6 @@
 ---
 url: >-
-  /warp-drive/pr-preview/pr-11111/api/@warp-drive/core/types/request/type-aliases/ImmutableRequestInfo.md
+  /pr-preview/pr-11111/api/@warp-drive/core/types/request/type-aliases/ImmutableRequestInfo.md
 ---
 
 # &#x20;ImmutableRequestInfo\<RT>
@@ -9,7 +9,7 @@ url: >-
 type ImmutableRequestInfo<RT> = Readonly<Omit<RequestInfo<RT>, "controller">> & object;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:701](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/types/request.ts#L701)
+Defined in: [warp-drive-packages/core/src/types/request.ts:701](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/types/request.ts#L701)
 
 Immutable version of [RequestInfo](../interfaces/RequestInfo.md). This is what is passed to handlers.
 

@@ -1,6 +1,6 @@
 ---
 url: >-
-  /warp-drive/pr-preview/pr-11111/api/@warp-drive/core/reactive/functions/registerDerivations.md
+  /pr-preview/pr-11111/api/@warp-drive/core/reactive/functions/registerDerivations.md
 ---
 
 # &#x20;registerDerivations()
@@ -9,7 +9,7 @@ url: >-
 function registerDerivations(schema): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:508](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/reactive/-private/schema.ts#L508)
+Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:508](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/reactive/-private/schema.ts#L508)
 
 Registers the default derivations for records that want
 to use the PolarisMode defaults provided by

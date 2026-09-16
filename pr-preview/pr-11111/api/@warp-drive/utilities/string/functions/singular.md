@@ -1,6 +1,5 @@
 ---
-url: >-
-  /warp-drive/pr-preview/pr-11111/api/@warp-drive/utilities/string/functions/singular.md
+url: /pr-preview/pr-11111/api/@warp-drive/utilities/string/functions/singular.md
 ---
 
 # &#x20;singular()&#x20;
@@ -9,7 +8,7 @@ url: >-
 function singular(regex, string): void;
 ```
 
-Defined in: [-private/string/inflect.ts:182](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/utilities/src/-private/string/inflect.ts#L182)
+Defined in: [-private/string/inflect.ts:182](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/utilities/src/-private/string/inflect.ts#L182)
 
 Adds a singularization rule.
 

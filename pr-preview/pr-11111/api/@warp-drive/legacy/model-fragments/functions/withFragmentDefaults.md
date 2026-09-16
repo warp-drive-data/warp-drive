@@ -1,6 +1,6 @@
 ---
 url: >-
-  /warp-drive/pr-preview/pr-11111/api/@warp-drive/legacy/model-fragments/functions/withFragmentDefaults.md
+  /pr-preview/pr-11111/api/@warp-drive/legacy/model-fragments/functions/withFragmentDefaults.md
 ---
 
 &#x20;
@@ -11,7 +11,7 @@ url: >-
 function withFragmentDefaults<FragmentType, FragmentName>(fragmentType, fragmentName?): object;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model-fragments/utilities/with-fragment-defaults.ts:9](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/legacy/src/model-fragments/utilities/with-fragment-defaults.ts#L9)
+Defined in: [warp-drive-packages/legacy/src/model-fragments/utilities/with-fragment-defaults.ts:9](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/legacy/src/model-fragments/utilities/with-fragment-defaults.ts#L9)
 
 Used as a helper to setup the relevant parts of a fragment schema
 and add extensions etc.

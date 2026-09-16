@@ -1,6 +1,6 @@
 ---
 url: >-
-  /warp-drive/pr-preview/pr-11111/api/@warp-drive/build-config/deprecations/variables/DEPRECATE_TRACKING_PACKAGE.md
+  /pr-preview/pr-11111/api/@warp-drive/build-config/deprecations/variables/DEPRECATE_TRACKING_PACKAGE.md
 ---
 
 # &#x20;DEPRECATE\_TRACKING\_PACKAGE&#x20;
@@ -9,7 +9,7 @@ url: >-
 const DEPRECATE_TRACKING_PACKAGE: boolean = true;
 ```
 
-Defined in: [deprecations.ts:513](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/build-config/src/deprecations.ts#L513)
+Defined in: [deprecations.ts:513](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/build-config/src/deprecations.ts#L513)
 
 Deprecates the use of the @ember-data/tracking package which
 historically provided bindings into Ember's reactivity system.

@@ -1,5 +1,5 @@
 ---
-url: /warp-drive/pr-preview/pr-11111/api/@ember-data/model/index.md
+url: /pr-preview/pr-11111/api/@ember-data/model/index.md
 ---
 
 This package provides a Presentation Model for resource data in an EmberData Cache.

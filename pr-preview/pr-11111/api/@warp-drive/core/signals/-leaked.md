@@ -1,5 +1,5 @@
 ---
-url: /warp-drive/pr-preview/pr-11111/api/@warp-drive/core/signals/-leaked.md
+url: /pr-preview/pr-11111/api/@warp-drive/core/signals/-leaked.md
 ---
 
 ## Variables

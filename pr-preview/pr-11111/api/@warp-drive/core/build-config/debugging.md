@@ -1,5 +1,5 @@
 ---
-url: /warp-drive/pr-preview/pr-11111/api/@warp-drive/core/build-config/debugging.md
+url: /pr-preview/pr-11111/api/@warp-drive/core/build-config/debugging.md
 ---
 
 # Log Instrumentation&#x20;

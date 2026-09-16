@@ -1,5 +1,5 @@
 ---
-url: /warp-drive/pr-preview/pr-11111/guides/migrating/codemods.md
+url: /pr-preview/pr-11111/guides/migrating/codemods.md
 ---
 
 :::danger **We've moved!**

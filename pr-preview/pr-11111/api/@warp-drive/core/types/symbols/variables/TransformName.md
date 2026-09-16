@@ -1,6 +1,6 @@
 ---
 url: >-
-  /warp-drive/pr-preview/pr-11111/api/@warp-drive/core/types/symbols/variables/TransformName.md
+  /pr-preview/pr-11111/api/@warp-drive/core/types/symbols/variables/TransformName.md
 ---
 
 # &#x20;TransformName
@@ -9,7 +9,7 @@ url: >-
 const TransformName: "___(unique) Symbol($type)" = Type;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/symbols.ts:84](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/types/symbols.ts#L84)
+Defined in: [warp-drive-packages/core/src/types/symbols.ts:84](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/types/symbols.ts#L84)
 
 Symbol for the name of a transform.
 

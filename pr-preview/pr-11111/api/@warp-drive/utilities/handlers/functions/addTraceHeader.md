@@ -1,6 +1,6 @@
 ---
 url: >-
-  /warp-drive/pr-preview/pr-11111/api/@warp-drive/utilities/handlers/functions/addTraceHeader.md
+  /pr-preview/pr-11111/api/@warp-drive/utilities/handlers/functions/addTraceHeader.md
 ---
 
 # &#x20;addTraceHeader()
@@ -9,7 +9,7 @@ url: >-
 function addTraceHeader(headers): Headers;
 ```
 
-Defined in: [-private/handlers/utils.ts:55](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/utilities/src/-private/handlers/utils.ts#L55)
+Defined in: [-private/handlers/utils.ts:55](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/utilities/src/-private/handlers/utils.ts#L55)
 
 Adds the `X-Amzn-Trace-Id` header to support observability
 tooling around request routing.

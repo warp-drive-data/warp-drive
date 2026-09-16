@@ -1,6 +1,6 @@
 ---
 url: >-
-  /warp-drive/pr-preview/pr-11111/api/eslint-plugin-warp-drive/rules/template-always-use-request-content.md
+  /pr-preview/pr-11111/api/eslint-plugin-warp-drive/rules/template-always-use-request-content.md
 ---
 
 | Rule | 🏷️ | ✨ |

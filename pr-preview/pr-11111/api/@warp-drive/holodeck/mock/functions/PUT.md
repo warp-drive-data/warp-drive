@@ -1,5 +1,5 @@
 ---
-url: /warp-drive/pr-preview/pr-11111/api/@warp-drive/holodeck/mock/functions/PUT.md
+url: /pr-preview/pr-11111/api/@warp-drive/holodeck/mock/functions/PUT.md
 ---
 
 # &#x20;PUT()
@@ -13,7 +13,7 @@ function PUT(
 ): Promise<void>;
 ```
 
-Defined in: [mock.ts:160](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/packages/holodeck/src/mock.ts#L160)
+Defined in: [mock.ts:160](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/packages/holodeck/src/mock.ts#L160)
 
 mock a PUT request
 

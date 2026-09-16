@@ -1,6 +1,6 @@
 ---
 url: >-
-  /warp-drive/pr-preview/pr-11111/api/@warp-drive/core/build-config/debugging/namespaces/t.md
+  /pr-preview/pr-11111/api/@warp-drive/core/build-config/debugging/namespaces/t.md
 ---
 
 ## Variables

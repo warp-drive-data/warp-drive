@@ -1,6 +1,6 @@
 ---
 url: >-
-  /warp-drive/pr-preview/pr-11111/api/@warp-drive/core/functions/setIdentifierResetMethod.md
+  /pr-preview/pr-11111/api/@warp-drive/core/functions/setIdentifierResetMethod.md
 ---
 
 # &#x20;setIdentifierResetMethod()
@@ -9,7 +9,7 @@ url: >-
 function setIdentifierResetMethod(method): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts:272](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts#L272)
+Defined in: [warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts:272](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts#L272)
 
 Configure a callback for when the identifier cache is being torn down.
 

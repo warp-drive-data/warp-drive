@@ -1,0 +1,1 @@
+import{it as e,n as t,rt as n,vt as r}from"./chunks/framework.RzCcii2U.js";var i=JSON.parse(`{"title":"API Docs","description":"","frontmatter":{},"headers":[],"relativePath":"api/index.md","filePath":"api/index.md"}`),a={name:`api/index.md`};function o(t,i,a,o,s,c){return r(),n(`div`,null,[...i[0]||=[e("",9)]])}var s=t(a,[[`render`,o]]);export{i as __pageData,s as default};

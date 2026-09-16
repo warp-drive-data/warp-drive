@@ -1,6 +1,5 @@
 ---
-url: >-
-  /warp-drive/pr-preview/pr-11111/api/@warp-drive/holodeck/mock/functions/DELETE.md
+url: /pr-preview/pr-11111/api/@warp-drive/holodeck/mock/functions/DELETE.md
 ---
 
 # &#x20;DELETE()
@@ -14,7 +13,7 @@ function DELETE(
 ): Promise<void>;
 ```
 
-Defined in: [mock.ts:217](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/packages/holodeck/src/mock.ts#L217)
+Defined in: [mock.ts:217](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/packages/holodeck/src/mock.ts#L217)
 
 mock a DELETE request
 

@@ -1,5 +1,5 @@
 ---
-url: /warp-drive/pr-preview/pr-11111/api/@ember-data/request-utils/string.md
+url: /pr-preview/pr-11111/api/@ember-data/request-utils/string.md
 ---
 
 String utilties for transforming and inflecting strings useful for

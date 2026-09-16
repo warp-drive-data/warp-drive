@@ -1,5 +1,5 @@
 ---
-url: /warp-drive/pr-preview/pr-11111/guides/contributing/rfc-process.md
+url: /pr-preview/pr-11111/guides/contributing/rfc-process.md
 ---
 
 ### Requesting Features or Deprecations

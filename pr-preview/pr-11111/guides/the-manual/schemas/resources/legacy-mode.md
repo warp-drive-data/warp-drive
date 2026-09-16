@@ -1,6 +1,5 @@
 ---
-url: >-
-  /warp-drive/pr-preview/pr-11111/guides/the-manual/schemas/resources/legacy-mode.md
+url: /pr-preview/pr-11111/guides/the-manual/schemas/resources/legacy-mode.md
 ---
 # LegacyMode (recommended)
 

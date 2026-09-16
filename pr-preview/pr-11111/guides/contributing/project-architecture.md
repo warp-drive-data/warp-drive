@@ -1,5 +1,5 @@
 ---
-url: /warp-drive/pr-preview/pr-11111/guides/contributing/project-architecture.md
+url: /pr-preview/pr-11111/guides/contributing/project-architecture.md
 ---
 ## Architectural Diagram
 

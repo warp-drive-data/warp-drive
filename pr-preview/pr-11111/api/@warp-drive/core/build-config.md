@@ -1,5 +1,5 @@
 ---
-url: /warp-drive/pr-preview/pr-11111/api/@warp-drive/core/build-config.md
+url: /pr-preview/pr-11111/api/@warp-drive/core/build-config.md
 ---
 
 This module provides a build-plugin that enables configuration of deprecations,

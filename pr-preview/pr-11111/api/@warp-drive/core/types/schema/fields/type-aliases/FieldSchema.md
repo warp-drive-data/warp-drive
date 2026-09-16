@@ -1,6 +1,6 @@
 ---
 url: >-
-  /warp-drive/pr-preview/pr-11111/api/@warp-drive/core/types/schema/fields/type-aliases/FieldSchema.md
+  /pr-preview/pr-11111/api/@warp-drive/core/types/schema/fields/type-aliases/FieldSchema.md
 ---
 
 # &#x20;FieldSchema
@@ -25,7 +25,7 @@ type FieldSchema =
   | LinksModeHasManyField;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2120](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/types/schema/fields.ts#L2120)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2120](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/types/schema/fields.ts#L2120)
 
 A union of all possible LegacyMode and PolarisMode
 field schemas.

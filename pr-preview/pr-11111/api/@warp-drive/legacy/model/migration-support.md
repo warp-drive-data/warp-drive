@@ -1,6 +1,5 @@
 ---
-url: >-
-  /warp-drive/pr-preview/pr-11111/api/@warp-drive/legacy/model/migration-support.md
+url: /pr-preview/pr-11111/api/@warp-drive/legacy/model/migration-support.md
 ---
 
 &#x20;

@@ -1,6 +1,6 @@
 ---
 url: >-
-  /warp-drive/pr-preview/pr-11111/api/@warp-drive/core/types/spec/json-api-raw/type-aliases/SingleResourceDocument.md
+  /pr-preview/pr-11111/api/@warp-drive/core/types/spec/json-api-raw/type-aliases/SingleResourceDocument.md
 ---
 
 # &#x20;SingleResourceDocument\<T>
@@ -9,7 +9,7 @@ url: >-
 type SingleResourceDocument<T> = Document & object;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:372](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L372)
+Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:372](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L372)
 
 Represents a {json:api} document containing a single resource.
 

@@ -1,6 +1,6 @@
 ---
 url: >-
-  /warp-drive/pr-preview/pr-11111/api/@warp-drive/core/types/cache/operations/type-aliases/Operation.md
+  /pr-preview/pr-11111/api/@warp-drive/core/types/cache/operations/type-aliases/Operation.md
 ---
 
 # &#x20;Operation
@@ -19,7 +19,7 @@ type Operation =
   | RemoveFromDocumentOperation;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:266](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/types/cache/operations.ts#L266)
+Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:266](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/types/cache/operations.ts#L266)
 
 [Cache](../../interfaces/Cache.md) Operations perform updates to the
 Cache's "remote" (or clean) state to reflect external

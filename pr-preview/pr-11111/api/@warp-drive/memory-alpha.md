@@ -1,5 +1,5 @@
 ---
-url: /warp-drive/pr-preview/pr-11111/api/@warp-drive/memory-alpha.md
+url: /pr-preview/pr-11111/api/@warp-drive/memory-alpha.md
 ---
 
 WarpDrive knowledge packaged as plain markdown for AI coding agents — no exports, no code,

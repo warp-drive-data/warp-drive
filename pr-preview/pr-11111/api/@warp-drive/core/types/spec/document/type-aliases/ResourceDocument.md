@@ -1,6 +1,6 @@
 ---
 url: >-
-  /warp-drive/pr-preview/pr-11111/api/@warp-drive/core/types/spec/document/type-aliases/ResourceDocument.md
+  /pr-preview/pr-11111/api/@warp-drive/core/types/spec/document/type-aliases/ResourceDocument.md
 ---
 
 # &#x20;ResourceDocument\<T>
@@ -13,7 +13,7 @@ type ResourceDocument<T> =
   | ResourceErrorDocument;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/document.ts:135](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/types/spec/document.ts#L135)
+Defined in: [warp-drive-packages/core/src/types/spec/document.ts:135](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/types/spec/document.ts#L135)
 
 A type useful for representing the raw {json:api} documents that
 the cache may use.

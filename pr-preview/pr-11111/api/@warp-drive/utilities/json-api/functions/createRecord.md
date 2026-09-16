@@ -1,6 +1,6 @@
 ---
 url: >-
-  /warp-drive/pr-preview/pr-11111/api/@warp-drive/utilities/json-api/functions/createRecord.md
+  /pr-preview/pr-11111/api/@warp-drive/utilities/json-api/functions/createRecord.md
 ---
 
 # &#x20;createRecord()
@@ -11,7 +11,7 @@ url: >-
 function createRecord<T>(record, options?): CreateRequestOptions<T>;
 ```
 
-Defined in: [-private/json-api/save-record.ts:168](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/utilities/src/-private/json-api/save-record.ts#L168)
+Defined in: [-private/json-api/save-record.ts:168](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/utilities/src/-private/json-api/save-record.ts#L168)
 
 :::warning ⚠️ **These Mutation Builders DO NOT Set The Necessary Request Body**
 While this may come as a surprise, the app providing the body ensures that only
@@ -88,7 +88,7 @@ const data = await store.request(options);
 function createRecord(record, options?): CreateRequestOptions;
 ```
 
-Defined in: [-private/json-api/save-record.ts:169](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/utilities/src/-private/json-api/save-record.ts#L169)
+Defined in: [-private/json-api/save-record.ts:169](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/utilities/src/-private/json-api/save-record.ts#L169)
 
 :::warning ⚠️ **These Mutation Builders DO NOT Set The Necessary Request Body**
 While this may come as a surprise, the app providing the body ensures that only

@@ -1,13 +1,13 @@
 ---
 url: >-
-  /warp-drive/pr-preview/pr-11111/api/@warp-drive/legacy/serializer/rest/classes/EmbeddedRecordsMixin.md
+  /pr-preview/pr-11111/api/@warp-drive/legacy/serializer/rest/classes/EmbeddedRecordsMixin.md
 ---
 
 &#x20;
 
 # &#x20;EmbeddedRecordsMixin
 
-Defined in: [warp-drive-packages/legacy/src/serializer/-private/embedded-records-mixin.ts:102](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/legacy/src/serializer/-private/embedded-records-mixin.ts#L102)
+Defined in: [warp-drive-packages/legacy/src/serializer/-private/embedded-records-mixin.ts:102](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/legacy/src/serializer/-private/embedded-records-mixin.ts#L102)
 
 ## Using Embedded Records
 

@@ -1,6 +1,5 @@
 ---
-url: >-
-  /warp-drive/pr-preview/pr-11111/api/@warp-drive/holodeck/mock/functions/HEAD.md
+url: /pr-preview/pr-11111/api/@warp-drive/holodeck/mock/functions/HEAD.md
 ---
 
 # &#x20;HEAD()
@@ -14,7 +13,7 @@ function HEAD(
 ): Promise<void>;
 ```
 
-Defined in: [mock.ts:260](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/packages/holodeck/src/mock.ts#L260)
+Defined in: [mock.ts:260](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/packages/holodeck/src/mock.ts#L260)
 
 Sets up Mocking for a HEAD request on the mock server
 for the supplied url.

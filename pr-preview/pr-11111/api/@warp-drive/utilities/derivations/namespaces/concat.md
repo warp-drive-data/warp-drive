@@ -1,6 +1,6 @@
 ---
 url: >-
-  /warp-drive/pr-preview/pr-11111/api/@warp-drive/utilities/derivations/namespaces/concat.md
+  /pr-preview/pr-11111/api/@warp-drive/utilities/derivations/namespaces/concat.md
 ---
 
 A derivation for use by ReactiveResource that joins the given fields

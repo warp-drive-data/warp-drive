@@ -1,11 +1,10 @@
 ---
-url: >-
-  /warp-drive/pr-preview/pr-11111/api/@warp-drive/ember/experiments/classes/Paginate.md
+url: /pr-preview/pr-11111/api/@warp-drive/ember/experiments/classes/Paginate.md
 ---
 
 # &#x20;\<Paginate />&#x20;
 
-Defined in: [warp-drive-packages/ember/dist/experiments.d.ts:198](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/ember/dist/experiments.d.ts#L198)
+Defined in: [warp-drive-packages/ember/dist/experiments.d.ts:198](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/ember/dist/experiments.d.ts#L198)
 
 The `<Paginate />` component provides declarative, reactive control-flow for
 rendering a paginated collection: it monitors the request that loads the
@@ -161,7 +160,7 @@ component then uses it instead of creating and disposing its own.
 new Paginate<RT, E, M>(owner, args): Paginate<RT, E, M>;
 ```
 
-Defined in: [node\_modules/.pnpm/@glimmer+component@2.1.1/node\_modules/@glimmer/component/dist/index.d.ts:389](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/node_modules/.pnpm/@glimmer+component@2.1.1/node_modules/@glimmer/component/dist/index.d.ts#L389)
+Defined in: [node\_modules/.pnpm/@glimmer+component@2.1.1/node\_modules/@glimmer/component/dist/index.d.ts:389](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/node_modules/.pnpm/@glimmer+component@2.1.1/node_modules/@glimmer/component/dist/index.d.ts#L389)
 
 #### Parameters
 
@@ -191,7 +190,7 @@ Component<PaginateSignature<RT, E, M>>.constructor
 willDestroy(): void;
 ```
 
-Defined in: [warp-drive-packages/ember/dist/experiments.d.ts:234](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/ember/dist/experiments.d.ts#L234)
+Defined in: [warp-drive-packages/ember/dist/experiments.d.ts:234](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/ember/dist/experiments.d.ts#L234)
 
 Called before the component has been removed from the DOM.
 

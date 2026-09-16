@@ -1,5 +1,5 @@
 ---
-url: /warp-drive/pr-preview/pr-11111/api/@warp-drive/schema-dsl/functions/hash.md
+url: /pr-preview/pr-11111/api/@warp-drive/schema-dsl/functions/hash.md
 ---
 
 # &#x20;hash()&#x20;
@@ -8,7 +8,7 @@ url: /warp-drive/pr-preview/pr-11111/api/@warp-drive/schema-dsl/functions/hash.m
 function hash(options): (target, key) => void;
 ```
 
-Defined in: [fields/hash.ts:52](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/schema-dsl/src/fields/hash.ts#L52)
+Defined in: [fields/hash.ts:52](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/schema-dsl/src/fields/hash.ts#L52)
 
 **`Decorator`**
 

@@ -1,6 +1,5 @@
 ---
-url: >-
-  /warp-drive/pr-preview/pr-11111/api/eslint-plugin-warp-drive/rules/no-legacy-imports.md
+url: /pr-preview/pr-11111/api/eslint-plugin-warp-drive/rules/no-legacy-imports.md
 ---
 
 | Rule | 🏷️ | ✨ |

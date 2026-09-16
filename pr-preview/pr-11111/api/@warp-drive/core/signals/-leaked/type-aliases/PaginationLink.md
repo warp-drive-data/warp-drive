@@ -1,6 +1,6 @@
 ---
 url: >-
-  /warp-drive/pr-preview/pr-11111/api/@warp-drive/core/signals/-leaked/type-aliases/PaginationLink.md
+  /pr-preview/pr-11111/api/@warp-drive/core/signals/-leaked/type-aliases/PaginationLink.md
 ---
 
 # &#x20;PaginationLink
@@ -11,7 +11,7 @@ type PaginationLink =
   | PlaceholderPaginationLink;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-links.ts:202](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/signals/pagination-links.ts#L202)
+Defined in: [warp-drive-packages/core/src/signals/pagination-links.ts:202](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/signals/pagination-links.ts#L202)
 
 A member of [PaginationLinks.links](../interfaces/PaginationLinks.md#links): either a numbered
 [RealPaginationLink](../interfaces/RealPaginationLink.md) or a [PlaceholderPaginationLink](../interfaces/PlaceholderPaginationLink.md) standing in

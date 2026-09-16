@@ -1,6 +1,5 @@
 ---
-url: >-
-  /warp-drive/pr-preview/pr-11111/api/@warp-drive/core/configure/functions/setupSignals.md
+url: /pr-preview/pr-11111/api/@warp-drive/core/configure/functions/setupSignals.md
 ---
 
 # &#x20;setupSignals()
@@ -9,7 +8,7 @@ url: >-
 function setupSignals<T>(buildConfig): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/reactivity/configure.ts:164](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/signals/reactivity/configure.ts#L164)
+Defined in: [warp-drive-packages/core/src/signals/reactivity/configure.ts:164](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/signals/reactivity/configure.ts#L164)
 
 Configures the signals implementation to use. Supports multiple
 implementations simultaneously.

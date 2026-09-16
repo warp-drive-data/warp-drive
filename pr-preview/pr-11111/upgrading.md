@@ -1,5 +1,5 @@
 ---
-url: /warp-drive/pr-preview/pr-11111/upgrading.md
+url: /pr-preview/pr-11111/upgrading.md
 ---
 
 # Upgrading ***Warp*Drive**

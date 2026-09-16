@@ -1,5 +1,5 @@
 ---
-url: /warp-drive/pr-preview/pr-11111/api/@warp-drive/holodeck/mock/functions/GET.md
+url: /pr-preview/pr-11111/api/@warp-drive/holodeck/mock/functions/GET.md
 ---
 
 # &#x20;GET()
@@ -13,7 +13,7 @@ function GET(
 ): Promise<void>;
 ```
 
-Defined in: [mock.ts:43](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/packages/holodeck/src/mock.ts#L43)
+Defined in: [mock.ts:43](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/packages/holodeck/src/mock.ts#L43)
 
 Sets up Mocking for a GET request on the mock server
 for the supplied url.

@@ -1,6 +1,5 @@
 ---
-url: >-
-  /warp-drive/pr-preview/pr-11111/guides/the-manual/requests/using-the-response.md
+url: /pr-preview/pr-11111/guides/the-manual/requests/using-the-response.md
 ---
 # Using The Response
 

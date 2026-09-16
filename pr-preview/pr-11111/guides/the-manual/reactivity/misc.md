@@ -1,5 +1,5 @@
 ---
-url: /warp-drive/pr-preview/pr-11111/guides/the-manual/reactivity/misc.md
+url: /pr-preview/pr-11111/guides/the-manual/reactivity/misc.md
 ---
 
 In addition to request and cache management, WarpDrive provides a reactive access

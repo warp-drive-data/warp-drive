@@ -1,6 +1,6 @@
 ---
 url: >-
-  /warp-drive/pr-preview/pr-11111/api/@warp-drive/core/types/record/type-aliases/TypeFromInstance.md
+  /pr-preview/pr-11111/api/@warp-drive/core/types/record/type-aliases/TypeFromInstance.md
 ---
 
 # &#x20;TypeFromInstance\<T>
@@ -9,7 +9,7 @@ url: >-
 type TypeFromInstance<T> = T extends TypedRecordInstance ? T[typeof Type] : never;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/record.ts:38](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/types/record.ts#L38)
+Defined in: [warp-drive-packages/core/src/types/record.ts:38](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/types/record.ts#L38)
 
 A type utility that extracts the Type if available,
 otherwise it returns never.

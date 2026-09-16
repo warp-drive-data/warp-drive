@@ -1,6 +1,6 @@
 ---
 url: >-
-  /warp-drive/pr-preview/pr-11111/guides/configuration/legacy-package-setup/setup/universal.md
+  /pr-preview/pr-11111/guides/configuration/legacy-package-setup/setup/universal.md
 ---
 
 ::: tip Boilerplate Sucks 👎🏽

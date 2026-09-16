@@ -1,5 +1,5 @@
 ---
-url: /warp-drive/pr-preview/pr-11111/api/@ember-data/tracking/index.md
+url: /pr-preview/pr-11111/api/@ember-data/tracking/index.md
 ---
 
 # ~~@ember-data/tracking~~ &#x20;

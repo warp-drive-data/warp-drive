@@ -1,6 +1,6 @@
 ---
 url: >-
-  /warp-drive/pr-preview/pr-11111/guides/contributing/writing-documentation/writing-api-docs.md
+  /pr-preview/pr-11111/guides/contributing/writing-documentation/writing-api-docs.md
 ---
 
 # Writing Documentation

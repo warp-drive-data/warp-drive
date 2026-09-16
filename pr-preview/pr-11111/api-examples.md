@@ -1,5 +1,5 @@
 ---
-url: /warp-drive/pr-preview/pr-11111/api-examples.md
+url: /pr-preview/pr-11111/api-examples.md
 ---
 
 # Runtime API Examples

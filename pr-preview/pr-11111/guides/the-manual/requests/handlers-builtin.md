@@ -1,5 +1,5 @@
 ---
-url: /warp-drive/pr-preview/pr-11111/guides/the-manual/requests/handlers-builtin.md
+url: /pr-preview/pr-11111/guides/the-manual/requests/handlers-builtin.md
 ---
 
 ## What Is A Handler

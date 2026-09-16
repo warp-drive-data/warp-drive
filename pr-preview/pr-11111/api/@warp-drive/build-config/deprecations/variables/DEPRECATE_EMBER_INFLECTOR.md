@@ -1,6 +1,6 @@
 ---
 url: >-
-  /warp-drive/pr-preview/pr-11111/api/@warp-drive/build-config/deprecations/variables/DEPRECATE_EMBER_INFLECTOR.md
+  /pr-preview/pr-11111/api/@warp-drive/build-config/deprecations/variables/DEPRECATE_EMBER_INFLECTOR.md
 ---
 
 # &#x20;DEPRECATE\_EMBER\_INFLECTOR&#x20;
@@ -9,7 +9,7 @@ url: >-
 const DEPRECATE_EMBER_INFLECTOR: boolean = true;
 ```
 
-Defined in: [deprecations.ts:475](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/build-config/src/deprecations.ts#L475)
+Defined in: [deprecations.ts:475](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/build-config/src/deprecations.ts#L475)
 
 Deprecates the use of ember-inflector for pluralization and singularization in favor
 of the `@ember-data/request-utils` package.

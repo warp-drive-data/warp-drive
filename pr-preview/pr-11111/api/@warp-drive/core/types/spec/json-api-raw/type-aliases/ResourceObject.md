@@ -1,6 +1,6 @@
 ---
 url: >-
-  /warp-drive/pr-preview/pr-11111/api/@warp-drive/core/types/spec/json-api-raw/type-aliases/ResourceObject.md
+  /pr-preview/pr-11111/api/@warp-drive/core/types/spec/json-api-raw/type-aliases/ResourceObject.md
 ---
 
 # &#x20;ResourceObject\<T>
@@ -11,7 +11,7 @@ type ResourceObject<T> =
 | NewResourceObject<T>;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:334](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L334)
+Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:334](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L334)
 
 Represents a single {json:api} resource object, whether already
 persisted or newly created on the client.

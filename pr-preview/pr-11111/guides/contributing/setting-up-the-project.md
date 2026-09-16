@@ -1,5 +1,5 @@
 ---
-url: /warp-drive/pr-preview/pr-11111/guides/contributing/setting-up-the-project.md
+url: /pr-preview/pr-11111/guides/contributing/setting-up-the-project.md
 ---
 # Setting Up The Project
 

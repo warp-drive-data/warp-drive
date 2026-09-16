@@ -1,5 +1,5 @@
 ---
-url: /warp-drive/pr-preview/pr-11111/skills/schemas/define-a-resource-schema.md
+url: /pr-preview/pr-11111/skills/schemas/define-a-resource-schema.md
 ---
 # Define a Resource Schema
 

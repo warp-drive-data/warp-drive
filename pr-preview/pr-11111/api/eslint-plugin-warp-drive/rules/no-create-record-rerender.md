@@ -1,6 +1,6 @@
 ---
 url: >-
-  /warp-drive/pr-preview/pr-11111/api/eslint-plugin-warp-drive/rules/no-create-record-rerender.md
+  /pr-preview/pr-11111/api/eslint-plugin-warp-drive/rules/no-create-record-rerender.md
 ---
 
 | Rule | 🏷️ | ✨ |

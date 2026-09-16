@@ -1,6 +1,6 @@
 ---
 url: >-
-  /warp-drive/pr-preview/pr-11111/api/eslint-plugin-warp-drive/rules/no-invalid-relationships.md
+  /pr-preview/pr-11111/api/eslint-plugin-warp-drive/rules/no-invalid-relationships.md
 ---
 
 | Rule | 🏷️ | ✨ |

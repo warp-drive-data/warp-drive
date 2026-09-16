@@ -1,5 +1,5 @@
 ---
-url: /warp-drive/pr-preview/pr-11111/skills/contributors.md
+url: /pr-preview/pr-11111/skills/contributors.md
 ---
 # WarpDrive Contributor Skills
 

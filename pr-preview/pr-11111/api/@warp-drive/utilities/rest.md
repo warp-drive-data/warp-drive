@@ -1,5 +1,5 @@
 ---
-url: /warp-drive/pr-preview/pr-11111/api/@warp-drive/utilities/rest.md
+url: /pr-preview/pr-11111/api/@warp-drive/utilities/rest.md
 ---
 
 This module provides utilities for working with **REST**ful APIs with ***Warp*Drive**

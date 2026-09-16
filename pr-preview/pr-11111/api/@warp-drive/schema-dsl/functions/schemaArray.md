@@ -1,6 +1,5 @@
 ---
-url: >-
-  /warp-drive/pr-preview/pr-11111/api/@warp-drive/schema-dsl/functions/schemaArray.md
+url: /pr-preview/pr-11111/api/@warp-drive/schema-dsl/functions/schemaArray.md
 ---
 
 # &#x20;schemaArray()&#x20;
@@ -9,7 +8,7 @@ url: >-
 function schemaArray(options): (target, key) => void;
 ```
 
-Defined in: [fields/schema-array.ts:132](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/schema-dsl/src/fields/schema-array.ts#L132)
+Defined in: [fields/schema-array.ts:132](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/schema-dsl/src/fields/schema-array.ts#L132)
 
 **`Decorator`**
 

@@ -1,5 +1,5 @@
 ---
-url: /warp-drive/pr-preview/pr-11111/api/@warp-drive/utilities/json-api.md
+url: /pr-preview/pr-11111/api/@warp-drive/utilities/json-api.md
 ---
 
 This module provides utilities for working with [{json:api}](https://jsonapi.org) APIs with ***Warp*Drive**

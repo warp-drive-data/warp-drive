@@ -1,5 +1,5 @@
 ---
-url: /warp-drive/pr-preview/pr-11111/guides/contributing/become-a-contributor.md
+url: /pr-preview/pr-11111/guides/contributing/become-a-contributor.md
 ---
 # Become A Contributor
 

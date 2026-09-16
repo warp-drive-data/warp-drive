@@ -1,6 +1,6 @@
 ---
 url: >-
-  /warp-drive/pr-preview/pr-11111/api/@warp-drive/core/signals/-leaked/variables/defaultPageHints.md
+  /pr-preview/pr-11111/api/@warp-drive/core/signals/-leaked/variables/defaultPageHints.md
 ---
 
 # &#x20;defaultPageHints&#x20;
@@ -9,7 +9,7 @@ url: >-
 const defaultPageHints: PageHints;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-cache.ts:41](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/signals/pagination-cache.ts#L41)
+Defined in: [warp-drive-packages/core/src/signals/pagination-cache.ts:41](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/signals/pagination-cache.ts#L41)
 
 The default [PageHints](../interfaces/PageHints.md). Reads `currentPage`/`page` and `totalPages` from the
 document `meta`, matching the behavior used before `pageHints` was configurable.

@@ -1,5 +1,5 @@
 ---
-url: /warp-drive/pr-preview/pr-11111/api/@warp-drive/utilities/string.md
+url: /pr-preview/pr-11111/api/@warp-drive/utilities/string.md
 ---
 
 String utilities for transforming and inflecting strings useful for

@@ -1,5 +1,5 @@
 ---
-url: /warp-drive/pr-preview/pr-11111/api/@warp-drive/build-config/debugging.md
+url: /pr-preview/pr-11111/api/@warp-drive/build-config/debugging.md
 ---
 
 While build-config is its own package, it should always be

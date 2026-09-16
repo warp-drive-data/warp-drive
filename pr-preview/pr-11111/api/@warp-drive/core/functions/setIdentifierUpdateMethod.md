@@ -1,6 +1,6 @@
 ---
 url: >-
-  /warp-drive/pr-preview/pr-11111/api/@warp-drive/core/functions/setIdentifierUpdateMethod.md
+  /pr-preview/pr-11111/api/@warp-drive/core/functions/setIdentifierUpdateMethod.md
 ---
 
 # &#x20;setIdentifierUpdateMethod()
@@ -9,7 +9,7 @@ url: >-
 function setIdentifierUpdateMethod(method): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts:234](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts#L234)
+Defined in: [warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts:234](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts#L234)
 
 Configure a callback for when the identifier cache encounters new resource
 data for an existing resource.

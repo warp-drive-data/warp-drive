@@ -1,5 +1,5 @@
 ---
-url: /warp-drive/pr-preview/pr-11111/api/@warp-drive/holodeck/mock.md
+url: /pr-preview/pr-11111/api/@warp-drive/holodeck/mock.md
 ---
 
 ## Functions

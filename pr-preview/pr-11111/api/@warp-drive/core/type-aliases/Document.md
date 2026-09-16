@@ -1,5 +1,5 @@
 ---
-url: /warp-drive/pr-preview/pr-11111/api/@warp-drive/core/type-aliases/Document.md
+url: /pr-preview/pr-11111/api/@warp-drive/core/type-aliases/Document.md
 ---
 
 # &#x20;~~Document\<T, M, E, EM>~~&#x20;
@@ -8,7 +8,7 @@ url: /warp-drive/pr-preview/pr-11111/api/@warp-drive/core/type-aliases/Document.
 type Document<T, M, E, EM> = ReactiveDocument<T, M, E, EM>;
 ```
 
-Defined in: [warp-drive-packages/core/src/index.ts:50](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/index.ts#L50)
+Defined in: [warp-drive-packages/core/src/index.ts:50](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/index.ts#L50)
 
 ## Type Parameters
 

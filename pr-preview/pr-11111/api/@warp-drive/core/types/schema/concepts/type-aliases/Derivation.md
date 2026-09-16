@@ -1,6 +1,6 @@
 ---
 url: >-
-  /warp-drive/pr-preview/pr-11111/api/@warp-drive/core/types/schema/concepts/type-aliases/Derivation.md
+  /pr-preview/pr-11111/api/@warp-drive/core/types/schema/concepts/type-aliases/Derivation.md
 ---
 
 # &#x20;Derivation\<R, T, FM>
@@ -9,7 +9,7 @@ url: >-
 type Derivation<R, T, FM> = object & (record, options, prop) => T;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/concepts.ts:55](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/types/schema/concepts.ts#L55)
+Defined in: [warp-drive-packages/core/src/types/schema/concepts.ts:55](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/types/schema/concepts.ts#L55)
 
 A Derivation computes a read-only field value from other fields
 (and options) on a record.

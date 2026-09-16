@@ -1,6 +1,6 @@
 ---
 url: >-
-  /warp-drive/pr-preview/pr-11111/api/@ember-data/tracking/index/functions/buildSignalConfig.md
+  /pr-preview/pr-11111/api/@ember-data/tracking/index/functions/buildSignalConfig.md
 ---
 
 # &#x20;~~buildSignalConfig()~~&#x20;
@@ -9,7 +9,7 @@ url: >-
 function buildSignalConfig(options): object;
 ```
 
-Defined in: [index.ts:90](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/packages/tracking/src/index.ts#L90)
+Defined in: [index.ts:90](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/packages/tracking/src/index.ts#L90)
 
 Creates a signal configuration object for WarpDrive that integrates with Ember's
 reactivity system. This will be automatically imported and registered by

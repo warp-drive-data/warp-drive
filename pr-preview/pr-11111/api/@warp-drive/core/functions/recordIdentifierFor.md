@@ -1,6 +1,5 @@
 ---
-url: >-
-  /warp-drive/pr-preview/pr-11111/api/@warp-drive/core/functions/recordIdentifierFor.md
+url: /pr-preview/pr-11111/api/@warp-drive/core/functions/recordIdentifierFor.md
 ---
 
 # &#x20;recordIdentifierFor()
@@ -11,7 +10,7 @@ url: >-
 function recordIdentifierFor<T>(record): ResourceKey<TypeFromInstance<T>>;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/caches/instance-cache.ts:53](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/store/-private/caches/instance-cache.ts#L53)
+Defined in: [warp-drive-packages/core/src/store/-private/caches/instance-cache.ts:53](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/store/-private/caches/instance-cache.ts#L53)
 
 Retrieves the unique referentially-stable [ResourceKey](../types/identifier/type-aliases/ResourceKey.md)
 assigned to the given record instance.
@@ -50,7 +49,7 @@ a record instance previously obstained from the store.
 function recordIdentifierFor(record): ResourceKey;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/caches/instance-cache.ts:54](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/store/-private/caches/instance-cache.ts#L54)
+Defined in: [warp-drive-packages/core/src/store/-private/caches/instance-cache.ts:54](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/store/-private/caches/instance-cache.ts#L54)
 
 Retrieves the unique referentially-stable [ResourceKey](../types/identifier/type-aliases/ResourceKey.md)
 assigned to the given record instance.

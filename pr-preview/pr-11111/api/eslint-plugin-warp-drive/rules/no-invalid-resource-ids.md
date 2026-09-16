@@ -1,6 +1,6 @@
 ---
 url: >-
-  /warp-drive/pr-preview/pr-11111/api/eslint-plugin-warp-drive/rules/no-invalid-resource-ids.md
+  /pr-preview/pr-11111/api/eslint-plugin-warp-drive/rules/no-invalid-resource-ids.md
 ---
 
 | Rule | 🏷️ | ✨ |

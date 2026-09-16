@@ -1,6 +1,5 @@
 ---
-url: >-
-  /warp-drive/pr-preview/pr-11111/guides/the-manual/requests/handlers-advanced.md
+url: /pr-preview/pr-11111/guides/the-manual/requests/handlers-advanced.md
 ---
 
 `manager.request` returns a `Future`, which allows access to limited information about the request while it is still pending and fulfills with the final state when the request completes and the response has been read.

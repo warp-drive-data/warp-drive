@@ -1,13 +1,13 @@
 ---
 url: >-
-  /warp-drive/pr-preview/pr-11111/api/@warp-drive/legacy/serializer/rest/classes/RESTSerializer.md
+  /pr-preview/pr-11111/api/@warp-drive/legacy/serializer/rest/classes/RESTSerializer.md
 ---
 
 &#x20;
 
 # &#x20;RESTSerializer
 
-Defined in: [warp-drive-packages/legacy/src/serializer/rest.ts:77](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/legacy/src/serializer/rest.ts#L77)
+Defined in: [warp-drive-packages/legacy/src/serializer/rest.ts:77](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/legacy/src/serializer/rest.ts#L77)
 
 :::danger
 ⚠️ **This is LEGACY documentation** for a feature that is no longer encouraged to be used.

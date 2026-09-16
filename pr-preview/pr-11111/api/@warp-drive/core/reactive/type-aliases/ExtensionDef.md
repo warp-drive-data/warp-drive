@@ -1,6 +1,6 @@
 ---
 url: >-
-  /warp-drive/pr-preview/pr-11111/api/@warp-drive/core/reactive/type-aliases/ExtensionDef.md
+  /pr-preview/pr-11111/api/@warp-drive/core/reactive/type-aliases/ExtensionDef.md
 ---
 
 # &#x20;ExtensionDef
@@ -34,7 +34,7 @@ type ExtensionDef =
 };
 ```
 
-Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:190](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/reactive/-private/schema.ts#L190)
+Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:190](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/reactive/-private/schema.ts#L190)
 
 Describes one feature added to a resource by a schema extension, as
 classified by processExtension from the property descriptor it

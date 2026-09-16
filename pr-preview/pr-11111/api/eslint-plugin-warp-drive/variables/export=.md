@@ -1,6 +1,5 @@
 ---
-url: >-
-  /warp-drive/pr-preview/pr-11111/api/eslint-plugin-warp-drive/variables/export=.md
+url: /pr-preview/pr-11111/api/eslint-plugin-warp-drive/variables/export=.md
 ---
 
 # &#x20;export=
@@ -9,7 +8,7 @@ url: >-
 export=: object;
 ```
 
-Defined in: [index.js:10](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/packages/eslint-plugin-warp-drive/src/index.js#L10)
+Defined in: [index.js:10](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/packages/eslint-plugin-warp-drive/src/index.js#L10)
 
 ## Type Declaration
 

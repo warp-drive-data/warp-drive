@@ -1,6 +1,5 @@
 ---
-url: >-
-  /warp-drive/pr-preview/pr-11111/guides/the-manual/cookbook/incremental-adoption-guide.md
+url: /pr-preview/pr-11111/guides/the-manual/cookbook/incremental-adoption-guide.md
 ---
 # Incremental adoption guide for existing projects
 

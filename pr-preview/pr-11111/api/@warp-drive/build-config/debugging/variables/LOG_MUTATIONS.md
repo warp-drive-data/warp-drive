@@ -1,6 +1,6 @@
 ---
 url: >-
-  /warp-drive/pr-preview/pr-11111/api/@warp-drive/build-config/debugging/variables/LOG_MUTATIONS.md
+  /pr-preview/pr-11111/api/@warp-drive/build-config/debugging/variables/LOG_MUTATIONS.md
 ---
 
 # &#x20;~~LOG\_MUTATIONS~~&#x20;
@@ -9,7 +9,7 @@ url: >-
 const LOG_MUTATIONS: boolean = false;
 ```
 
-Defined in: [debugging.ts:57](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/build-config/src/debugging.ts#L57)
+Defined in: [debugging.ts:57](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/build-config/src/debugging.ts#L57)
 
 This flag no longer has any effect.
 

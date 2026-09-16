@@ -1,6 +1,6 @@
 ---
 url: >-
-  /warp-drive/pr-preview/pr-11111/api/@warp-drive/core/signals/-leaked/functions/getPaginationCache.md
+  /pr-preview/pr-11111/api/@warp-drive/core/signals/-leaked/functions/getPaginationCache.md
 ---
 
 # &#x20;getPaginationCache()&#x20;
@@ -9,7 +9,7 @@ url: >-
 function getPaginationCache<RT, E>(key): PaginationCache<RT, E>;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-cache.ts:246](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/signals/pagination-cache.ts#L246)
+Defined in: [warp-drive-packages/core/src/signals/pagination-cache.ts:246](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/signals/pagination-cache.ts#L246)
 
 Get the shared [PaginationCache](../interfaces/PaginationCache.md) for a given cache key (the collection's
 `first` or `self` link). Returns the same instance for the same key for the

@@ -1,11 +1,11 @@
 ---
 url: >-
-  /warp-drive/pr-preview/pr-11111/api/@warp-drive/core/signals/-leaked/interfaces/PagedPaginationState.md
+  /pr-preview/pr-11111/api/@warp-drive/core/signals/-leaked/interfaces/PagedPaginationState.md
 ---
 
 # &#x20;PagedPaginationState\<RT, E>
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:43](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/signals/pagination-state.ts#L43)
+Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:43](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/signals/pagination-state.ts#L43)
 
 The paged (single-page view) surface of a [PaginationState](PaginationState.md): render
 [activePageRequest](PaginationState.md#activepagerequest), navigate with
@@ -34,7 +34,7 @@ component yields in `'paged'` mode (the default).
 adoptPage(request): Promise<RT | null>;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:28](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/signals/pagination-state.ts#L28)
+Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:28](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/signals/pagination-state.ts#L28)
 
 See [PaginationState.adoptPage](PaginationState.md#adoptpage).
 
@@ -62,7 +62,7 @@ readonly activePage:
   | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:45](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/signals/pagination-state.ts#L45)
+Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:45](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/signals/pagination-state.ts#L45)
 
 See [PaginationState.activePage](PaginationState.md#activepage).
 
@@ -74,7 +74,7 @@ See [PaginationState.activePage](PaginationState.md#activepage).
 readonly activePageRequest: Future<RT> | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:47](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/signals/pagination-state.ts#L47)
+Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:47](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/signals/pagination-state.ts#L47)
 
 See [PaginationState.activePageRequest](PaginationState.md#activepagerequest).
 
@@ -86,7 +86,7 @@ See [PaginationState.activePageRequest](PaginationState.md#activepagerequest).
 loadPage: (url) => Promise<RT | null>;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:49](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/signals/pagination-state.ts#L49)
+Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:49](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/signals/pagination-state.ts#L49)
 
 See [PaginationState.loadPage](PaginationState.md#loadpage).
 
@@ -108,7 +108,7 @@ See [PaginationState.loadPage](PaginationState.md#loadpage).
 readonly totalPages: number;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:26](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/signals/pagination-state.ts#L26)
+Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:26](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/signals/pagination-state.ts#L26)
 
 See [PaginationState.totalPages](PaginationState.md#totalpages).
 

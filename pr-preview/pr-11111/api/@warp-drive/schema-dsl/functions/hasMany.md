@@ -1,6 +1,5 @@
 ---
-url: >-
-  /warp-drive/pr-preview/pr-11111/api/@warp-drive/schema-dsl/functions/hasMany.md
+url: /pr-preview/pr-11111/api/@warp-drive/schema-dsl/functions/hasMany.md
 ---
 
 # &#x20;hasMany()&#x20;
@@ -9,7 +8,7 @@ url: >-
 function hasMany(options): (target, key) => void;
 ```
 
-Defined in: [fields/has-many.ts:98](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/schema-dsl/src/fields/has-many.ts#L98)
+Defined in: [fields/has-many.ts:98](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/schema-dsl/src/fields/has-many.ts#L98)
 
 **`Decorator`**
 

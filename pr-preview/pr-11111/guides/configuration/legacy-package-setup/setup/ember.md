@@ -1,6 +1,5 @@
 ---
-url: >-
-  /warp-drive/pr-preview/pr-11111/guides/configuration/legacy-package-setup/setup/ember.md
+url: /pr-preview/pr-11111/guides/configuration/legacy-package-setup/setup/ember.md
 ---
 # Ember.js
 

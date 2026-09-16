@@ -1,5 +1,5 @@
 ---
-url: /warp-drive/pr-preview/pr-11111/blog/v5/introducing-upgrading-and-blog.md
+url: /pr-preview/pr-11111/blog/v5/introducing-upgrading-and-blog.md
 ---
 
 # Introducing Upgrading & Blog

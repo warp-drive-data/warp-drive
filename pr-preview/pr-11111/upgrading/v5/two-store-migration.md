@@ -1,5 +1,5 @@
 ---
-url: /warp-drive/pr-preview/pr-11111/upgrading/v5/two-store-migration.md
+url: /pr-preview/pr-11111/upgrading/v5/two-store-migration.md
 ---
 # Migrating Between Versions Using The Two Store Approach
 

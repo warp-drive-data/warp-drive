@@ -1,6 +1,5 @@
 ---
-url: >-
-  /warp-drive/pr-preview/pr-11111/api/@warp-drive/schema-dsl/functions/derived.md
+url: /pr-preview/pr-11111/api/@warp-drive/schema-dsl/functions/derived.md
 ---
 
 # &#x20;derived()&#x20;
@@ -9,7 +8,7 @@ url: >-
 function derived(options): (target, key) => void;
 ```
 
-Defined in: [fields/derived.ts:61](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/schema-dsl/src/fields/derived.ts#L61)
+Defined in: [fields/derived.ts:61](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/schema-dsl/src/fields/derived.ts#L61)
 
 **`Decorator`**
 

@@ -1,5 +1,5 @@
 ---
-url: /warp-drive/pr-preview/pr-11111/guides/configuration/advanced.md
+url: /pr-preview/pr-11111/guides/configuration/advanced.md
 ---
 
 # Advanced Store Configuration

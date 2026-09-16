@@ -1,5 +1,5 @@
 ---
-url: /warp-drive/pr-preview/pr-11111/api/@warp-drive/react.md
+url: /pr-preview/pr-11111/api/@warp-drive/react.md
 ---
 
 This package provides a React-specific reactivity integration,

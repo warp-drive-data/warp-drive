@@ -1,5 +1,5 @@
 ---
-url: /warp-drive/pr-preview/pr-11111/skills/contributors/fix-at-the-source.md
+url: /pr-preview/pr-11111/skills/contributors/fix-at-the-source.md
 ---
 # Fix at the Source
 

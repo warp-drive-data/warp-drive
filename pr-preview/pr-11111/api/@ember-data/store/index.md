@@ -1,5 +1,5 @@
 ---
-url: /warp-drive/pr-preview/pr-11111/api/@ember-data/store/index.md
+url: /pr-preview/pr-11111/api/@ember-data/store/index.md
 ---
 
 This package provides [*Ember***Data**](https://github.com/warp-drive-data/warp-drive/)'s `Store` class.

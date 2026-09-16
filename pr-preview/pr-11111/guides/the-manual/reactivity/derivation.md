@@ -1,5 +1,5 @@
 ---
-url: /warp-drive/pr-preview/pr-11111/guides/the-manual/reactivity/derivation.md
+url: /pr-preview/pr-11111/guides/the-manual/reactivity/derivation.md
 ---
 
 # Async as Reactive State

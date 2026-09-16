@@ -1,5 +1,5 @@
 ---
-url: /warp-drive/pr-preview/pr-11111/api/@ember-data/json-api/request.md
+url: /pr-preview/pr-11111/api/@ember-data/json-api/request.md
 ---
 
 This package provides utilities for working with [JSON:API](https://jsonapi.org) APIs with [*Ember***Data**](https://github.com/warp-drive-data/warp-drive/).

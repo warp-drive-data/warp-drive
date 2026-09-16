@@ -1,5 +1,5 @@
 ---
-url: /warp-drive/pr-preview/pr-11111/api/@warp-drive/legacy/compat/extensions.md
+url: /pr-preview/pr-11111/api/@warp-drive/legacy/compat/extensions.md
 ---
 
 &#x20;

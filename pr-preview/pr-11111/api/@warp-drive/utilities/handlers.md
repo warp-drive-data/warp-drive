@@ -1,5 +1,5 @@
 ---
-url: /warp-drive/pr-preview/pr-11111/api/@warp-drive/utilities/handlers.md
+url: /pr-preview/pr-11111/api/@warp-drive/utilities/handlers.md
 ---
 
 A selection of pre-built request handlers for handling common

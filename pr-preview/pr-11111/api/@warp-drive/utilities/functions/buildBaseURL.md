@@ -1,6 +1,5 @@
 ---
-url: >-
-  /warp-drive/pr-preview/pr-11111/api/@warp-drive/utilities/functions/buildBaseURL.md
+url: /pr-preview/pr-11111/api/@warp-drive/utilities/functions/buildBaseURL.md
 ---
 
 # &#x20;buildBaseURL()
@@ -9,7 +8,7 @@ url: >-
 function buildBaseURL(urlOptions): string;
 ```
 
-Defined in: [index.ts:504](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/utilities/src/index.ts#L504)
+Defined in: [index.ts:504](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/utilities/src/index.ts#L504)
 
 Builds a URL for a request based on the provided options.
 Does not include support for building query params (see `buildQueryParams`)

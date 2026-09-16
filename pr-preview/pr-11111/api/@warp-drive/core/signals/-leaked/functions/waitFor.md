@@ -1,6 +1,5 @@
 ---
-url: >-
-  /warp-drive/pr-preview/pr-11111/api/@warp-drive/core/signals/-leaked/functions/waitFor.md
+url: /pr-preview/pr-11111/api/@warp-drive/core/signals/-leaked/functions/waitFor.md
 ---
 
 # &#x20;waitFor()
@@ -9,7 +8,7 @@ url: >-
 function waitFor<K>(promise): Promise<K>;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/reactivity/configure.ts:228](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/signals/reactivity/configure.ts#L228)
+Defined in: [warp-drive-packages/core/src/signals/reactivity/configure.ts:228](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/signals/reactivity/configure.ts#L228)
 
 Wraps `promise` using the configured [SignalHooks.waitFor](../../../configure/interfaces/SignalHooks.md#waitfor), if any,
 for things like test-waiters. Returns `promise` unchanged if no

@@ -1,5 +1,5 @@
 ---
-url: /warp-drive/pr-preview/pr-11111/skills.md
+url: /pr-preview/pr-11111/skills.md
 ---
 # WarpDrive Agent Skills
 

@@ -1,5 +1,5 @@
 ---
-url: /warp-drive/pr-preview/pr-11111/api/@warp-drive/legacy/model-fragments.md
+url: /pr-preview/pr-11111/api/@warp-drive/legacy/model-fragments.md
 ---
 
 &#x20;

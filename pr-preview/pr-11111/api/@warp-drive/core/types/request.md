@@ -1,5 +1,5 @@
 ---
-url: /warp-drive/pr-preview/pr-11111/api/@warp-drive/core/types/request.md
+url: /pr-preview/pr-11111/api/@warp-drive/core/types/request.md
 ---
 
 ## Variables

@@ -1,6 +1,6 @@
 ---
 url: >-
-  /warp-drive/pr-preview/pr-11111/guides/the-manual/relational-data/configuration/many-to-none.md
+  /pr-preview/pr-11111/guides/the-manual/relational-data/configuration/many-to-none.md
 ---
 # Many To None Relationships
 

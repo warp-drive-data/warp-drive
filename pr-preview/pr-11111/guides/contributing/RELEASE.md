@@ -1,5 +1,5 @@
 ---
-url: /warp-drive/pr-preview/pr-11111/guides/contributing/RELEASE.md
+url: /pr-preview/pr-11111/guides/contributing/RELEASE.md
 ---
 
 # Release

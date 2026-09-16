@@ -1,5 +1,5 @@
 ---
-url: /warp-drive/pr-preview/pr-11111/api/@ember-data/request.md
+url: /pr-preview/pr-11111/api/@ember-data/request.md
 ---
 
 :::warning ⚠️ This package only exists for backwards compatibility

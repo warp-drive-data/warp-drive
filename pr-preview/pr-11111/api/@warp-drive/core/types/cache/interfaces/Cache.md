@@ -1,11 +1,10 @@
 ---
-url: >-
-  /warp-drive/pr-preview/pr-11111/api/@warp-drive/core/types/cache/interfaces/Cache.md
+url: /pr-preview/pr-11111/api/@warp-drive/core/types/cache/interfaces/Cache.md
 ---
 
 # &#x20;Cache
 
-Defined in: [warp-drive-packages/core/src/types/cache.ts:86](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/types/cache.ts#L86)
+Defined in: [warp-drive-packages/core/src/types/cache.ts:86](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/types/cache.ts#L86)
 
 The interface for WarpDrive Caches.
 
@@ -20,7 +19,7 @@ data.
 changedAttrs(cacheKey): ChangedAttributesHash;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache.ts:416](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/types/cache.ts#L416)
+Defined in: [warp-drive-packages/core/src/types/cache.ts:416](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/types/cache.ts#L416)
 
 Query the cache for the changed attributes of a resource.
 
@@ -48,7 +47,7 @@ Returns a map of field names to tuples of \[old, new] values
 changedRelationships(cacheKey): Map<string, RelationshipDiff>;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache.ts:442](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/types/cache.ts#L442)
+Defined in: [warp-drive-packages/core/src/types/cache.ts:442](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/types/cache.ts#L442)
 
 Query the cache for the changes to relationships of a resource.
 
@@ -72,7 +71,7 @@ Returns a map of relationship names to [RelationshipDiff](../type-aliases/Relati
 clientDidCreate(cacheKey, createArgs?): Record<string, unknown>;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache.ts:312](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/types/cache.ts#L312)
+Defined in: [warp-drive-packages/core/src/types/cache.ts:312](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/types/cache.ts#L312)
 
 \[LIFECYCLE] Signal to the cache that a new record has been instantiated on the client
 
@@ -101,7 +100,7 @@ process. This return value behavior is deprecated.
 commitWasRejected(cacheKey, errors?): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache.ts:367](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/types/cache.ts#L367)
+Defined in: [warp-drive-packages/core/src/types/cache.ts:367](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/types/cache.ts#L367)
 
 \[LIFECYCLE] Signals to the cache that a resource
 was update via a save transaction failed.
@@ -131,7 +130,7 @@ was update via a save transaction failed.
 didCommit(cacheKey, result): SingleResourceDataDocument;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache.ts:330](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/types/cache.ts#L330)
+Defined in: [warp-drive-packages/core/src/types/cache.ts:330](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/types/cache.ts#L330)
 
 \[LIFECYCLE] Signals to the cache that a resource
 was successfully updated as part of a save transaction.
@@ -161,7 +160,7 @@ a document in the cache format containing any updated data
 didCommit(cacheKey, result): SingleResourceDataDocument;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache.ts:343](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/types/cache.ts#L343)
+Defined in: [warp-drive-packages/core/src/types/cache.ts:343](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/types/cache.ts#L343)
 
 \[LIFECYCLE] Signals to the cache that a set of resources
 was successfully updated as part of a save transaction that
@@ -192,7 +191,7 @@ a document in the cache format containing any updated data
 didCommit(cacheKey, result): CollectionResourceDataDocument;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache.ts:356](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/types/cache.ts#L356)
+Defined in: [warp-drive-packages/core/src/types/cache.ts:356](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/types/cache.ts#L356)
 
 \[LIFECYCLE] Signals to the cache that a set of resources
 was successfully updated as part of a save transaction that
@@ -225,7 +224,7 @@ a document in the cache format containing any updated data
 diff(): Promise<Change[]>;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache.ts:270](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/types/cache.ts#L270)
+Defined in: [warp-drive-packages/core/src/types/cache.ts:270](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/types/cache.ts#L270)
 
 Generate the list of changes applied to all
 record in the store.
@@ -246,7 +245,7 @@ in the returned array.
 dump(): Promise<ReadableStream<unknown>>;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache.ts:283](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/types/cache.ts#L283)
+Defined in: [warp-drive-packages/core/src/types/cache.ts:283](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/types/cache.ts#L283)
 
 Serialize the entire contents of the Cache into a Stream
 which may be fed back into a new instance of the same Cache
@@ -264,7 +263,7 @@ via `cache.hydrate`.
 fork(): Promise<Cache>;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache.ts:248](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/types/cache.ts#L248)
+Defined in: [warp-drive-packages/core/src/types/cache.ts:248](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/types/cache.ts#L248)
 
 Create a fork of the cache from the current state.
 
@@ -284,7 +283,7 @@ utilize this method to fork the cache.
 getAttr(cacheKey, field): Value | undefined;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache.ts:387](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/types/cache.ts#L387)
+Defined in: [warp-drive-packages/core/src/types/cache.ts:387](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/types/cache.ts#L387)
 
 Retrieve the data for an attribute from the cache
 
@@ -310,7 +309,7 @@ Retrieve the data for an attribute from the cache
 getErrors(cacheKey): ApiError[];
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache.ts:505](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/types/cache.ts#L505)
+Defined in: [warp-drive-packages/core/src/types/cache.ts:505](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/types/cache.ts#L505)
 
 Query the cache for any validation errors applicable to the given resource.
 
@@ -338,7 +337,7 @@ getRelationship(
 | CollectionRelationship<ResourceKey>;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache.ts:469](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/types/cache.ts#L469)
+Defined in: [warp-drive-packages/core/src/types/cache.ts:469](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/types/cache.ts#L469)
 
 Query the cache for the current state of a relationship property
 
@@ -371,7 +370,7 @@ resource relationship object
 getRemoteAttr(cacheKey, field): Value | undefined;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache.ts:394](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/types/cache.ts#L394)
+Defined in: [warp-drive-packages/core/src/types/cache.ts:394](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/types/cache.ts#L394)
 
 Retrieve remote state without any local changes for a specific attribute
 
@@ -403,7 +402,7 @@ getRemoteRelationship(
 | CollectionRelationship<ResourceKey>;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache.ts:481](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/types/cache.ts#L481)
+Defined in: [warp-drive-packages/core/src/types/cache.ts:481](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/types/cache.ts#L481)
 
 Query the cache for the server state of a relationship property without any local changes
 
@@ -436,7 +435,7 @@ resource relationship object
 hasChangedAttrs(cacheKey): boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache.ts:423](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/types/cache.ts#L423)
+Defined in: [warp-drive-packages/core/src/types/cache.ts:423](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/types/cache.ts#L423)
 
 Query the cache for whether any mutated attributes exist
 
@@ -458,7 +457,7 @@ Query the cache for whether any mutated attributes exist
 hasChangedRelationships(cacheKey): boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache.ts:449](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/types/cache.ts#L449)
+Defined in: [warp-drive-packages/core/src/types/cache.ts:449](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/types/cache.ts#L449)
 
 Query the cache for whether any mutated attributes exist
 
@@ -480,7 +479,7 @@ Query the cache for whether any mutated attributes exist
 hydrate(stream): Promise<void>;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache.ts:299](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/types/cache.ts#L299)
+Defined in: [warp-drive-packages/core/src/types/cache.ts:299](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/types/cache.ts#L299)
 
 hydrate a Cache from a Stream with content previously serialized
 from another instance of the same Cache, resolving when hydration
@@ -511,7 +510,7 @@ via data-only SSR modes.
 isDeleted(cacheKey): boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache.ts:528](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/types/cache.ts#L528)
+Defined in: [warp-drive-packages/core/src/types/cache.ts:528](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/types/cache.ts#L528)
 
 Query the cache for whether a given resource is marked as deleted (but not
 necessarily persisted yet).
@@ -534,7 +533,7 @@ necessarily persisted yet).
 isDeletionCommitted(cacheKey): boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache.ts:536](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/types/cache.ts#L536)
+Defined in: [warp-drive-packages/core/src/types/cache.ts:536](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/types/cache.ts#L536)
 
 Query the cache for whether a given resource has been deleted and that deletion
 has also been persisted.
@@ -557,7 +556,7 @@ has also been persisted.
 isEmpty(cacheKey): boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache.ts:512](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/types/cache.ts#L512)
+Defined in: [warp-drive-packages/core/src/types/cache.ts:512](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/types/cache.ts#L512)
 
 Query the cache for whether a given resource has any available data
 
@@ -579,7 +578,7 @@ Query the cache for whether a given resource has any available data
 isNew(cacheKey): boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache.ts:520](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/types/cache.ts#L520)
+Defined in: [warp-drive-packages/core/src/types/cache.ts:520](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/types/cache.ts#L520)
 
 Query the cache for whether a given resource was created locally and not
 yet persisted.
@@ -602,7 +601,7 @@ yet persisted.
 merge(cache): Promise<void>;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache.ts:258](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/types/cache.ts#L258)
+Defined in: [warp-drive-packages/core/src/types/cache.ts:258](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/types/cache.ts#L258)
 
 Merge a fork back into a parent Cache.
 
@@ -628,7 +627,7 @@ utilize this method to merge the caches.
 mutate(mutation): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache.ts:132](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/types/cache.ts#L132)
+Defined in: [warp-drive-packages/core/src/types/cache.ts:132](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/types/cache.ts#L132)
 
 Update the "local" or "current" (unpersisted) state of the Cache
 
@@ -650,7 +649,7 @@ Update the "local" or "current" (unpersisted) state of the Cache
 patch(op): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache.ts:125](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/types/cache.ts#L125)
+Defined in: [warp-drive-packages/core/src/types/cache.ts:125](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/types/cache.ts#L125)
 
 Update the "remote" or "canonical" (persisted) state of the Cache
 by merging new information into the existing state.
@@ -678,7 +677,7 @@ the operation(s) to perform
 peek<T>(cacheKey): T | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache.ts:164](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/types/cache.ts#L164)
+Defined in: [warp-drive-packages/core/src/types/cache.ts:164](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/types/cache.ts#L164)
 
 Peek resource data from the Cache.
 
@@ -732,7 +731,7 @@ peek(cacheKey):
   | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache.ts:171](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/types/cache.ts#L171)
+Defined in: [warp-drive-packages/core/src/types/cache.ts:171](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/types/cache.ts#L171)
 
 Peek the Cache for the [document](../../spec/document/type-aliases/ResourceDocument.md) associated with a request.
 
@@ -759,7 +758,7 @@ the known document data, if any
 peekRemoteState<T>(cacheKey): T | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache.ts:205](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/types/cache.ts#L205)
+Defined in: [warp-drive-packages/core/src/types/cache.ts:205](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/types/cache.ts#L205)
 
 Peek remote resource data from the Cache.
 
@@ -815,7 +814,7 @@ peekRemoteState(cacheKey):
   | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache.ts:214](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/types/cache.ts#L214)
+Defined in: [warp-drive-packages/core/src/types/cache.ts:214](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/types/cache.ts#L214)
 
 Peek remote [document](../../spec/document/type-aliases/ResourceDocument.md) data for a request from the Cache.
 
@@ -844,7 +843,7 @@ peekRequest(cacheKey):
   | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache.ts:226](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/types/cache.ts#L226)
+Defined in: [warp-drive-packages/core/src/types/cache.ts:226](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/types/cache.ts#L226)
 
 Peek the Cache for the existing request data associated with
 a cacheable request
@@ -872,7 +871,7 @@ whereas `peek` will return just the `content`.
 put<T>(doc): ResourceDocument;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache.ts:116](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/types/cache.ts#L116)
+Defined in: [warp-drive-packages/core/src/types/cache.ts:116](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/types/cache.ts#L116)
 
 Cache the response to a request
 
@@ -917,7 +916,7 @@ of `request` and `response` on the document.
 rollbackAttrs(cacheKey): string[];
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache.ts:433](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/types/cache.ts#L433)
+Defined in: [warp-drive-packages/core/src/types/cache.ts:433](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/types/cache.ts#L433)
 
 Tell the cache to discard any uncommitted mutations to attributes
 
@@ -943,7 +942,7 @@ the names of fields that were restored
 rollbackRelationships(cacheKey): string[];
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache.ts:461](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/types/cache.ts#L461)
+Defined in: [warp-drive-packages/core/src/types/cache.ts:461](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/types/cache.ts#L461)
 
 Tell the cache to discard any uncommitted mutations to relationships.
 
@@ -975,7 +974,7 @@ setAttr(
 ): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache.ts:403](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/types/cache.ts#L403)
+Defined in: [warp-drive-packages/core/src/types/cache.ts:403](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/types/cache.ts#L403)
 
 Mutate the data for an attribute in the cache
 
@@ -1007,7 +1006,7 @@ This method is a candidate to become a mutation
 setIsDeleted(cacheKey, isDeleted): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache.ts:498](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/types/cache.ts#L498)
+Defined in: [warp-drive-packages/core/src/types/cache.ts:498](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/types/cache.ts#L498)
 
 Update the cache state for the given resource to be marked
 as locally deleted, or remove such a mark.
@@ -1036,7 +1035,7 @@ This method is a candidate to become a mutation
 unloadRecord(cacheKey): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache.ts:377](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/types/cache.ts#L377)
+Defined in: [warp-drive-packages/core/src/types/cache.ts:377](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/types/cache.ts#L377)
 
 \[LIFECYCLE] Signals to the cache that all data for a resource
 should be cleared.
@@ -1065,7 +1064,7 @@ upsert(
 ): void | string[];
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache.ts:234](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/types/cache.ts#L234)
+Defined in: [warp-drive-packages/core/src/types/cache.ts:234](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/types/cache.ts#L234)
 
 Push resource data from a remote source into the cache for this ResourceKey
 
@@ -1097,7 +1096,7 @@ if `hasRecord` is true then calculated key changes should be returned
 willCommit(cacheKey, context): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache.ts:320](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/types/cache.ts#L320)
+Defined in: [warp-drive-packages/core/src/types/cache.ts:320](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/types/cache.ts#L320)
 
 \[LIFECYCLE] Signals to the cache that a resource
 will be part of a save transaction.
@@ -1125,6 +1124,6 @@ will be part of a save transaction.
 version: "2";
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache.ts:92](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/types/cache.ts#L92)
+Defined in: [warp-drive-packages/core/src/types/cache.ts:92](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/types/cache.ts#L92)
 
 The Cache Version that this implementation implements.

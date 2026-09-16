@@ -1,6 +1,6 @@
 ---
 url: >-
-  /warp-drive/pr-preview/pr-11111/api/@warp-drive/build-config/index/functions/babelPlugin.md
+  /pr-preview/pr-11111/api/@warp-drive/build-config/index/functions/babelPlugin.md
 ---
 
 # &#x20;babelPlugin()
@@ -9,7 +9,7 @@ url: >-
 function babelPlugin(options): object;
 ```
 
-Defined in: [index.ts:63](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/build-config/src/index.ts#L63)
+Defined in: [index.ts:63](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/build-config/src/index.ts#L63)
 
 Create the Babel plugin for WarpDrive
 

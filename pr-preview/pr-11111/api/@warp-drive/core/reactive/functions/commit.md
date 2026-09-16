@@ -1,6 +1,5 @@
 ---
-url: >-
-  /warp-drive/pr-preview/pr-11111/api/@warp-drive/core/reactive/functions/commit.md
+url: /pr-preview/pr-11111/api/@warp-drive/core/reactive/functions/commit.md
 ---
 
 # &#x20;commit()
@@ -9,7 +8,7 @@ url: >-
 function commit(record): Promise<void>;
 ```
 
-Defined in: [warp-drive-packages/core/src/reactive/-private/record.ts:769](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/reactive/-private/record.ts#L769)
+Defined in: [warp-drive-packages/core/src/reactive/-private/record.ts:769](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/reactive/-private/record.ts#L769)
 
 Forcibly commit all local changes on an editable resource to
 the remote (immutable) version.

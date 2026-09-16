@@ -1,5 +1,5 @@
 ---
-url: /warp-drive/pr-preview/pr-11111/guides/installation/unpkg.md
+url: /pr-preview/pr-11111/guides/installation/unpkg.md
 ---
 
 # UNPKG

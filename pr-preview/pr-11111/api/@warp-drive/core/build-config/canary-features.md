@@ -1,6 +1,5 @@
 ---
-url: >-
-  /warp-drive/pr-preview/pr-11111/api/@warp-drive/core/build-config/canary-features.md
+url: /pr-preview/pr-11111/api/@warp-drive/core/build-config/canary-features.md
 ---
 
 ## Variables

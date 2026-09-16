@@ -1,6 +1,5 @@
 ---
-url: >-
-  /warp-drive/pr-preview/pr-11111/api/@warp-drive/schema-dsl/functions/createonly.md
+url: /pr-preview/pr-11111/api/@warp-drive/schema-dsl/functions/createonly.md
 ---
 
 # &#x20;createonly()&#x20;
@@ -9,7 +8,7 @@ url: >-
 function createonly(target, key): void;
 ```
 
-Defined in: [fields/createonly.ts:12](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/schema-dsl/src/fields/createonly.ts#L12)
+Defined in: [fields/createonly.ts:12](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/schema-dsl/src/fields/createonly.ts#L12)
 
 **`Decorator`**
 

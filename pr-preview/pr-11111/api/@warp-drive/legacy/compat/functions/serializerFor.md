@@ -1,6 +1,5 @@
 ---
-url: >-
-  /warp-drive/pr-preview/pr-11111/api/@warp-drive/legacy/compat/functions/serializerFor.md
+url: /pr-preview/pr-11111/api/@warp-drive/legacy/compat/functions/serializerFor.md
 ---
 
 &#x20;
@@ -13,7 +12,7 @@ function serializerFor(this, modelName):
   | null;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat.ts:161](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/legacy/src/compat.ts#L161)
+Defined in: [warp-drive-packages/legacy/src/compat.ts:161](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/legacy/src/compat.ts#L161)
 
 Returns an instance of the serializer for a given type. For
 example, `serializerFor('person')` will return an instance of

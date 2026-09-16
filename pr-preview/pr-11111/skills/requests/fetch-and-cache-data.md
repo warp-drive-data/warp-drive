@@ -1,5 +1,5 @@
 ---
-url: /warp-drive/pr-preview/pr-11111/skills/requests/fetch-and-cache-data.md
+url: /pr-preview/pr-11111/skills/requests/fetch-and-cache-data.md
 ---
 # Fetch and Cache Data
 

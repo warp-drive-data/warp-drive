@@ -1,6 +1,6 @@
 ---
 url: >-
-  /warp-drive/pr-preview/pr-11111/api/@warp-drive/experiments/storage/functions/onStorageEvent.md
+  /pr-preview/pr-11111/api/@warp-drive/experiments/storage/functions/onStorageEvent.md
 ---
 
 &#x20;
@@ -11,7 +11,7 @@ url: >-
 function onStorageEvent(listener): () => void;
 ```
 
-Defined in: [storage/storage.ts:128](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/experiments/src/storage/storage.ts#L128)
+Defined in: [storage/storage.ts:128](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/experiments/src/storage/storage.ts#L128)
 
 Subscribes to storage-change events, whether they originate from the
 native Storage API (a `StorageEvent`, fired cross-tab) or from

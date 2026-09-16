@@ -1,6 +1,5 @@
 ---
-url: >-
-  /warp-drive/pr-preview/pr-11111/api/@warp-drive/holodeck/functions/setIsRecording.md
+url: /pr-preview/pr-11111/api/@warp-drive/holodeck/functions/setIsRecording.md
 ---
 
 # &#x20;setIsRecording()
@@ -9,7 +8,7 @@ url: >-
 function setIsRecording(value): void;
 ```
 
-Defined in: [index.ts:187](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/packages/holodeck/src/index.ts#L187)
+Defined in: [index.ts:187](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/packages/holodeck/src/index.ts#L187)
 
 ## Parameters
 

@@ -1,6 +1,6 @@
 ---
 url: >-
-  /warp-drive/pr-preview/pr-11111/guides/contributing/writing-documentation/writing-guides.md
+  /pr-preview/pr-11111/guides/contributing/writing-documentation/writing-guides.md
 ---
 
 # Writing Effective Guides

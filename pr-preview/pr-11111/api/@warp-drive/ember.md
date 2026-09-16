@@ -1,5 +1,5 @@
 ---
-url: /warp-drive/pr-preview/pr-11111/api/@warp-drive/ember.md
+url: /pr-preview/pr-11111/api/@warp-drive/ember.md
 ---
 
 This library provides reactive utilities for working with promises

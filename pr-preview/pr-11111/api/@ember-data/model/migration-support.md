@@ -1,5 +1,5 @@
 ---
-url: /warp-drive/pr-preview/pr-11111/api/@ember-data/model/migration-support.md
+url: /pr-preview/pr-11111/api/@ember-data/model/migration-support.md
 ---
 
 This module provides support for migrating away from @ember-data/model

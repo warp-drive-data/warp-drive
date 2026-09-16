@@ -1,5 +1,5 @@
 ---
-url: /warp-drive/pr-preview/pr-11111/api/@ember-data/request/fetch.md
+url: /pr-preview/pr-11111/api/@ember-data/request/fetch.md
 ---
 
 A basic Fetch Handler which converts a request into a

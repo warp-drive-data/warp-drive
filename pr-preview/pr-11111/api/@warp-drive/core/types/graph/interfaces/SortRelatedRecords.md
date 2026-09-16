@@ -1,11 +1,11 @@
 ---
 url: >-
-  /warp-drive/pr-preview/pr-11111/api/@warp-drive/core/types/graph/interfaces/SortRelatedRecords.md
+  /pr-preview/pr-11111/api/@warp-drive/core/types/graph/interfaces/SortRelatedRecords.md
 ---
 
 # &#x20;SortRelatedRecords
 
-Defined in: [warp-drive-packages/core/src/types/graph.ts:119](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/types/graph.ts#L119)
+Defined in: [warp-drive-packages/core/src/types/graph.ts:119](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/types/graph.ts#L119)
 
 Reorders the state of a `to-many` relationship on the Graph.
 
@@ -17,7 +17,7 @@ Reorders the state of a `to-many` relationship on the Graph.
 field: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/graph.ts:131](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/types/graph.ts#L131)
+Defined in: [warp-drive-packages/core/src/types/graph.ts:131](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/types/graph.ts#L131)
 
 The name of the relationship to reorder
 
@@ -29,7 +29,7 @@ The name of the relationship to reorder
 op: "sortRelatedRecords";
 ```
 
-Defined in: [warp-drive-packages/core/src/types/graph.ts:123](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/types/graph.ts#L123)
+Defined in: [warp-drive-packages/core/src/types/graph.ts:123](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/types/graph.ts#L123)
 
 The name of the operation
 
@@ -41,7 +41,7 @@ The name of the operation
 record: ResourceKey;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/graph.ts:127](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/types/graph.ts#L127)
+Defined in: [warp-drive-packages/core/src/types/graph.ts:127](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/types/graph.ts#L127)
 
 The cache key for the resource whose relationship is being reordered
 
@@ -53,6 +53,6 @@ The cache key for the resource whose relationship is being reordered
 value: ResourceKey[];
 ```
 
-Defined in: [warp-drive-packages/core/src/types/graph.ts:135](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/types/graph.ts#L135)
+Defined in: [warp-drive-packages/core/src/types/graph.ts:135](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/types/graph.ts#L135)
 
 The relationship's members in their new order

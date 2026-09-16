@@ -1,5 +1,5 @@
 ---
-url: /warp-drive/pr-preview/pr-11111/upgrading/v5/codemods.md
+url: /pr-preview/pr-11111/upgrading/v5/codemods.md
 ---
 
 # Using Codemods

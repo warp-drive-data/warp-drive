@@ -1,5 +1,5 @@
 ---
-url: /warp-drive/pr-preview/pr-11111/guides/configuration.md
+url: /pr-preview/pr-11111/guides/configuration.md
 ---
 
 ::: warning 💡 Looking for the [Legacy Package Setup Guide?](./legacy-package-setup/setup/universal)

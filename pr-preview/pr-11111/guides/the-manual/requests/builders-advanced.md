@@ -1,6 +1,5 @@
 ---
-url: >-
-  /warp-drive/pr-preview/pr-11111/guides/the-manual/requests/builders-advanced.md
+url: /pr-preview/pr-11111/guides/the-manual/requests/builders-advanced.md
 ---
 
 ### Builders That Follow General API Patterns

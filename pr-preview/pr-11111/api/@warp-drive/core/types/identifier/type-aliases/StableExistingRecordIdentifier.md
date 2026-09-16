@@ -1,6 +1,6 @@
 ---
 url: >-
-  /warp-drive/pr-preview/pr-11111/api/@warp-drive/core/types/identifier/type-aliases/StableExistingRecordIdentifier.md
+  /pr-preview/pr-11111/api/@warp-drive/core/types/identifier/type-aliases/StableExistingRecordIdentifier.md
 ---
 
 # &#x20;~~StableExistingRecordIdentifier\<T>~~&#x20;
@@ -9,7 +9,7 @@ url: >-
 type StableExistingRecordIdentifier<T> = PersistedResourceKey<T>;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/identifier.ts:104](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/types/identifier.ts#L104)
+Defined in: [warp-drive-packages/core/src/types/identifier.ts:104](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/types/identifier.ts#L104)
 
 ## Type Parameters
 

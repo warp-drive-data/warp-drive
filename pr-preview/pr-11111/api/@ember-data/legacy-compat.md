@@ -1,5 +1,5 @@
 ---
-url: /warp-drive/pr-preview/pr-11111/api/@ember-data/legacy-compat.md
+url: /pr-preview/pr-11111/api/@ember-data/legacy-compat.md
 ---
 
 :::warning ⚠️ Legacy Compatibility Package

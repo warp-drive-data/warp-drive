@@ -1,6 +1,6 @@
 ---
 url: >-
-  /warp-drive/pr-preview/pr-11111/api/@warp-drive/core/types/spec/json-api-raw/type-aliases/InnerRelationshipDocument.md
+  /pr-preview/pr-11111/api/@warp-drive/core/types/spec/json-api-raw/type-aliases/InnerRelationshipDocument.md
 ---
 
 # &#x20;InnerRelationshipDocument\<T>
@@ -11,7 +11,7 @@ type InnerRelationshipDocument<T> =
 | CollectionResourceRelationship<T>;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:253](https://github.com/warp-drive-data/warp-drive/blob/b666081685917e201667ff79e86b876c0e12fb8c/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L253)
+Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:253](https://github.com/warp-drive-data/warp-drive/blob/f4874b11d917637fc69e13d92cdd6e92ce16baa8/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L253)
 
 Represents a single {json:api} relationship, whether `to-one` or `to-many`.
 
