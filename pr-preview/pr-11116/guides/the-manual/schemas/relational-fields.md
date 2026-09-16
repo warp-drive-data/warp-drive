@@ -1,0 +1,4 @@
+---
+url: /pr-preview/pr-11116/guides/the-manual/schemas/relational-fields.md
+---
+# Relational Fields
