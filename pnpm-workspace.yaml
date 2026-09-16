@@ -296,7 +296,7 @@ packageExtensions:
       "@glimmer/component": "*"
 
 overrides:
-  "@embroider/macros": ^1.20.7
+  "@embroider/macros": ^1.21.1
   ember-auto-import: ^2.13.1
   "@embroider/addon-shim>broccoli-funnel": "-"
   ember-cli-babel>broccoli-funnel: "-"

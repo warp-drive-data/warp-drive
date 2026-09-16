@@ -33,7 +33,7 @@
     }
   },
   "dependencies": {
-    "@embroider/macros": "^1.20.7",
+    "@embroider/macros": "^1.21.1",
     "@warp-drive/core": "workspace:*",
     "signal-polyfill": "0.2.2"
   },
