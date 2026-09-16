@@ -1,0 +1,91 @@
+---
+url: /api/@warp-drive/utilities/json-api/functions/serializeResources.md
+---
+
+# &#x20;serializeResources()
+
+## Call Signature
+
+```ts
+function serializeResources(cache, identifiers): object;
+```
+
+Defined in: [-private/json-api/serialize.ts:40](https://github.com/warp-drive-data/warp-drive/blob/b6590b8852e5d32b32e3eece336d0f892e8b02a5/warp-drive-packages/utilities/src/-private/json-api/serialize.ts#L40)
+
+:::warning ⚠️ **This util often won't produce the necessary body for a {json:api} request**
+
+While this may come as a surprise, they are intended to serialize cache state for more
+generalized usage. {json:api} has a large variance in acceptable shapes, and only your
+app can ensure that the body is correctly formatted and contains all necessary data.
+:::
+
+Serializes the current state of a resource or array of resources for use with POST or PUT requests.
+
+### Parameters
+
+#### cache
+
+`Cache`
+
+the cache to serialize the resource(s) from
+
+#### identifiers
+
+[`ResourceKey`](../../../core/types/identifier/type-aliases/ResourceKey.md)
+
+the resource(s) to serialize
+
+### Returns
+
+an object with a `data` property containing the serialized resource(s)
+
+#### data
+
+```ts
+data: ResourceObject;
+```
+
+The serialized resource.
+
+## Call Signature
+
+```ts
+function serializeResources(cache, identifiers): object;
+```
+
+Defined in: [-private/json-api/serialize.ts:49](https://github.com/warp-drive-data/warp-drive/blob/b6590b8852e5d32b32e3eece336d0f892e8b02a5/warp-drive-packages/utilities/src/-private/json-api/serialize.ts#L49)
+
+:::warning ⚠️ **This util often won't produce the necessary body for a {json:api} request**
+
+While this may come as a surprise, they are intended to serialize cache state for more
+generalized usage. {json:api} has a large variance in acceptable shapes, and only your
+app can ensure that the body is correctly formatted and contains all necessary data.
+:::
+
+Serializes the current state of a resource or array of resources for use with POST or PUT requests.
+
+### Parameters
+
+#### cache
+
+`Cache`
+
+the cache to serialize the resource(s) from
+
+#### identifiers
+
+[`ResourceKey`](../../../core/types/identifier/type-aliases/ResourceKey.md)\[]
+
+the resource(s) to serialize
+
+### Returns
+
+an object with a `data` property containing the serialized resource(s)
+
+#### data
+
+```ts
+data: ResourceObject[];
+```
+
+The serialized resources.

@@ -1,0 +1,46 @@
+---
+url: /api/@warp-drive/core/types/schema/concepts/type-aliases/Derivation.md
+---
+
+# &#x20;Derivation\<R, T, FM>
+
+```ts
+type Derivation<R, T, FM> = object & (record, options, prop) => T;
+```
+
+Defined in: [warp-drive-packages/core/src/types/schema/concepts.ts:55](https://github.com/warp-drive-data/warp-drive/blob/b6590b8852e5d32b32e3eece336d0f892e8b02a5/warp-drive-packages/core/src/types/schema/concepts.ts#L55)
+
+A Derivation computes a read-only field value from other fields
+(and options) on a record.
+
+Derivations back DerivedField. They are memoized and only
+recomputed when the fields they read change; derived values are never
+stored in the cache nor sent to the server.
+
+Derivations must be registered with the SchemaService via
+`schema.registerDerivation(derivation)` before use, keyed by the
+name assigned to their [Type](../../../symbols/variables/Type.md) property.
+
+## Type Declaration
+
+### \_\_\_(unique) Symbol($type)
+
+```ts
+___(unique) Symbol($type): string;
+```
+
+The unique name this derivation is registered under.
+
+## Type Parameters
+
+### R
+
+`R` = `unknown`
+
+### T
+
+`T` = `unknown`
+
+### FM
+
+`FM` *extends* [`ObjectValue`](../../../json/raw/interfaces/ObjectValue.md) | `null` = [`ObjectValue`](../../../json/raw/interfaces/ObjectValue.md) | `null`
