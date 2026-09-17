@@ -10,7 +10,7 @@ url: /api/@warp-drive/experiments/storage/functions/getLocalStorage.md
 function getLocalStorage(): ReactiveStorage;
 ```
 
-Defined in: [storage/storage.ts:40](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/experiments/src/storage/storage.ts#L40)
+Defined in: [storage/storage.ts:40](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/warp-drive-packages/experiments/src/storage/storage.ts#L40)
 
 Retrieves the singleton instance of the LocalStorage service.
 

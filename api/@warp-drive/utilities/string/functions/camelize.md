@@ -8,7 +8,7 @@ url: /api/@warp-drive/utilities/string/functions/camelize.md
 function camelize(str: string): string;
 ```
 
-Defined in: [-private/string/transform.ts:59](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/utilities/src/-private/string/transform.ts#L59)
+Defined in: [-private/string/transform.ts:59](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/warp-drive-packages/utilities/src/-private/string/transform.ts#L59)
 
 Returns the lowerCamelCase form of a string.
 

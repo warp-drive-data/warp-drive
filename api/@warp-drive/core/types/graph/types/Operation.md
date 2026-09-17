@@ -10,7 +10,7 @@ interface Operation {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/types/graph.ts:18](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/types/graph.ts#L18)
+Defined in: [warp-drive-packages/core/src/types/graph.ts:18](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/warp-drive-packages/core/src/types/graph.ts#L18)
 
 All Graph operations are objects with at least one property,
 `op`, which contains a string with the name of the operation
@@ -24,6 +24,6 @@ to perform.
 op: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/graph.ts:22](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/types/graph.ts#L22)
+Defined in: [warp-drive-packages/core/src/types/graph.ts:22](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/warp-drive-packages/core/src/types/graph.ts#L22)
 
 The name of the operation

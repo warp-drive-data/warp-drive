@@ -8,7 +8,7 @@ url: /api/@warp-drive/utilities/string/variables/dasherize.md
 const dasherize: (str: string) => string = internalDasherize;
 ```
 
-Defined in: [-private/string/transform.ts:40](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/utilities/src/-private/string/transform.ts#L40)
+Defined in: [-private/string/transform.ts:40](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/warp-drive-packages/utilities/src/-private/string/transform.ts#L40)
 
 Replaces underscores, spaces, or camelCase with dashes.
 

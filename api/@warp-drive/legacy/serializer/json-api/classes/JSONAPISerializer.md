@@ -6,7 +6,7 @@ url: /api/@warp-drive/legacy/serializer/json-api/classes/JSONAPISerializer.md
 
 # &#x20;JSONAPISerializer&#x20;
 
-Defined in: [warp-drive-packages/legacy/src/serializer/json-api.ts:142](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/serializer/json-api.ts#L142)
+Defined in: [warp-drive-packages/legacy/src/serializer/json-api.ts:142](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/warp-drive-packages/legacy/src/serializer/json-api.ts#L142)
 
 :::danger
 ⚠️ This is LEGACY documentation for a feature that is no longer encouraged to be used.

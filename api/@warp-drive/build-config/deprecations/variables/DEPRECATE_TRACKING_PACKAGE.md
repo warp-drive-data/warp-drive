@@ -9,7 +9,7 @@ url: >-
 const DEPRECATE_TRACKING_PACKAGE: boolean = true;
 ```
 
-Defined in: [deprecations.ts:513](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/build-config/src/deprecations.ts#L513)
+Defined in: [deprecations.ts:513](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/warp-drive-packages/build-config/src/deprecations.ts#L513)
 
 Deprecates the use of the @ember-data/tracking package which
 historically provided bindings into Ember's reactivity system.

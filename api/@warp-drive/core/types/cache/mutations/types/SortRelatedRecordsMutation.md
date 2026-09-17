@@ -14,7 +14,7 @@ interface SortRelatedRecordsMutation {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/mutations.ts:129](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/types/cache/mutations.ts#L129)
+Defined in: [warp-drive-packages/core/src/types/cache/mutations.ts:129](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/warp-drive-packages/core/src/types/cache/mutations.ts#L129)
 
 Reorders the local (uncommitted) state of a `to-many` relationship.
 
@@ -26,7 +26,7 @@ Reorders the local (uncommitted) state of a `to-many` relationship.
 field: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/mutations.ts:141](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/types/cache/mutations.ts#L141)
+Defined in: [warp-drive-packages/core/src/types/cache/mutations.ts:141](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/warp-drive-packages/core/src/types/cache/mutations.ts#L141)
 
 The name of the relationship to reorder
 
@@ -38,7 +38,7 @@ The name of the relationship to reorder
 op: "sortRelatedRecords";
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/mutations.ts:133](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/types/cache/mutations.ts#L133)
+Defined in: [warp-drive-packages/core/src/types/cache/mutations.ts:133](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/warp-drive-packages/core/src/types/cache/mutations.ts#L133)
 
 The name of the mutation
 
@@ -50,7 +50,7 @@ The name of the mutation
 record: ResourceKey;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/mutations.ts:137](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/types/cache/mutations.ts#L137)
+Defined in: [warp-drive-packages/core/src/types/cache/mutations.ts:137](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/warp-drive-packages/core/src/types/cache/mutations.ts#L137)
 
 The cache key for the resource whose relationship is being reordered
 
@@ -62,6 +62,6 @@ The cache key for the resource whose relationship is being reordered
 value: ResourceKey[];
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/mutations.ts:145](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/types/cache/mutations.ts#L145)
+Defined in: [warp-drive-packages/core/src/types/cache/mutations.ts:145](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/warp-drive-packages/core/src/types/cache/mutations.ts#L145)
 
 The relationship's members in their new order

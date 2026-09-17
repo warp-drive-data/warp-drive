@@ -10,7 +10,7 @@ function setPromiseResult(promise:
   | Promise<unknown>, result: CacheResult): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/request/-private/promise-cache.ts:57](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/request/-private/promise-cache.ts#L57)
+Defined in: [warp-drive-packages/core/src/request/-private/promise-cache.ts:57](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/warp-drive-packages/core/src/request/-private/promise-cache.ts#L57)
 
 Cache the settled result (or error) of a promise-like value so that its
 outcome can be synchronously read later via [getPromiseResult](getPromiseResult.md),

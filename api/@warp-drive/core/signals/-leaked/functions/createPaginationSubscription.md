@@ -11,7 +11,7 @@ function createPaginationSubscription<RT, E>(store:
 | RequestManager, args: PaginationSubscriptionArgs<RT, E>): PaginationSubscription<RT, E>;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:409](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/signals/pagination-subscription.ts#L409)
+Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:409](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/warp-drive-packages/core/src/signals/pagination-subscription.ts#L409)
 
 Creates the [PaginationSubscription](../types/PaginationSubscription.md) a `<Paginate />` component uses to
 manage its request lifecycle and pagination state. Pass the result back into

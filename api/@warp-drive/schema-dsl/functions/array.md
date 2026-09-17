@@ -15,7 +15,7 @@ function array(options: ArrayFieldOptions): (target: object, key: string) => voi
 function array(target: object, key: string): void;
 ```
 
-Defined in: [fields/array.ts:60](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/schema-dsl/src/fields/array.ts#L60)
+Defined in: [fields/array.ts:60](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/warp-drive-packages/schema-dsl/src/fields/array.ts#L60)
 
 **`Decorator`**
 
@@ -64,7 +64,7 @@ export class Post {
 function array(options: ArrayFieldOptions): (target: object, key: string) => void;
 ```
 
-Defined in: [fields/array.ts:61](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/schema-dsl/src/fields/array.ts#L61)
+Defined in: [fields/array.ts:61](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/warp-drive-packages/schema-dsl/src/fields/array.ts#L61)
 
 **`Decorator`**
 

@@ -8,7 +8,7 @@ url: /api/@warp-drive/build-config/debugging/variables/LOG_MUTATIONS.md
 const LOG_MUTATIONS: boolean = false;
 ```
 
-Defined in: [debugging.ts:57](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/build-config/src/debugging.ts#L57)
+Defined in: [debugging.ts:57](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/warp-drive-packages/build-config/src/debugging.ts#L57)
 
 This flag no longer has any effect.
 

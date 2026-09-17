@@ -8,7 +8,7 @@ url: /api/@warp-drive/core/types/utils/types/WithPartial.md
 type WithPartial<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/utils.ts:10](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/types/utils.ts#L10)
+Defined in: [warp-drive-packages/core/src/types/utils.ts:10](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/warp-drive-packages/core/src/types/utils.ts#L10)
 
 Makes the properties named in `K` optional on `T`, leaving the rest as-is.
 

@@ -22,7 +22,7 @@ interface ImmutableHeaders extends Headers {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:584](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/types/request.ts#L584)
+Defined in: [warp-drive-packages/core/src/types/request.ts:584](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/warp-drive-packages/core/src/types/request.ts#L584)
 
 A read-only [Headers](https://developer.mozilla.org/docs/Web/API/Headers) instance, as passed to [Handlers](../../../request/types/Handler.md)
 via [ImmutableRequestInfo.headers](FindRecordRequestOptions.md#headers).
@@ -39,7 +39,7 @@ via [ImmutableRequestInfo.headers](FindRecordRequestOptions.md#headers).
 iterator: HeadersIterator<[string, string]>;
 ```
 
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.dom.d.ts:44713](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.dom.d.ts#L44713)
+Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.dom.d.ts:44713](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.dom.d.ts#L44713)
 
 #### Returns
 
@@ -59,7 +59,7 @@ Headers.[iterator]
 append(name: string, value: string): void;
 ```
 
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.dom.d.ts:21830](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.dom.d.ts#L21830)
+Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.dom.d.ts:21830](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.dom.d.ts#L21830)
 
 The **`append()`** method of the Headers interface appends a new value onto an existing header inside a Headers object, or adds the header if it does not already exist.
 
@@ -93,7 +93,7 @@ Headers.append
 optional clone(): Headers;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:588](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/types/request.ts#L588)
+Defined in: [warp-drive-packages/core/src/types/request.ts:588](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/warp-drive-packages/core/src/types/request.ts#L588)
 
 Returns a mutable clone of these headers, if supported by the implementation.
 
@@ -109,7 +109,7 @@ Returns a mutable clone of these headers, if supported by the implementation.
 delete(name: string): void;
 ```
 
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.dom.d.ts:21836](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.dom.d.ts#L21836)
+Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.dom.d.ts:21836](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.dom.d.ts#L21836)
 
 The **`delete()`** method of the Headers interface deletes a header from the current Headers object.
 
@@ -139,7 +139,7 @@ Headers.delete
 entries(): HeadersIterator<[string, string]>;
 ```
 
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.dom.d.ts:44715](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.dom.d.ts#L44715)
+Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.dom.d.ts:44715](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.dom.d.ts#L44715)
 
 Returns an iterator allowing to go through all key/value pairs contained in this object.
 
@@ -161,7 +161,7 @@ Headers.entries
 forEach(callbackfn: (value: string, key: string, parent: Headers) => void, thisArg?: any): void;
 ```
 
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.dom.d.ts:21861](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.dom.d.ts#L21861)
+Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.dom.d.ts:21861](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.dom.d.ts#L21861)
 
 #### Parameters
 
@@ -191,7 +191,7 @@ Headers.forEach
 get(name: string): string | null;
 ```
 
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.dom.d.ts:21842](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.dom.d.ts#L21842)
+Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.dom.d.ts:21842](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.dom.d.ts#L21842)
 
 The **`get()`** method of the Headers interface returns a byte string of all the values of a header within a Headers object with a given name. If the requested header doesn't exist in the Headers object, it returns null.
 
@@ -221,7 +221,7 @@ Headers.get
 getSetCookie(): string[];
 ```
 
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.dom.d.ts:21848](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.dom.d.ts#L21848)
+Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.dom.d.ts:21848](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.dom.d.ts#L21848)
 
 The **`getSetCookie()`** method of the Headers interface returns an array containing the values of all Set-Cookie headers associated with a response. This allows Headers objects to handle having multiple Set-Cookie headers, which wasn't possible prior to its implementation.
 
@@ -245,7 +245,7 @@ Headers.getSetCookie
 has(name: string): boolean;
 ```
 
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.dom.d.ts:21854](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.dom.d.ts#L21854)
+Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.dom.d.ts:21854](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.dom.d.ts#L21854)
 
 The **`has()`** method of the Headers interface returns a boolean stating whether a Headers object contains a certain header.
 
@@ -275,7 +275,7 @@ Headers.has
 keys(): HeadersIterator<string>;
 ```
 
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.dom.d.ts:44717](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.dom.d.ts#L44717)
+Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.dom.d.ts:44717](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.dom.d.ts#L44717)
 
 Returns an iterator allowing to go through all keys of the key/value pairs contained in this object.
 
@@ -297,7 +297,7 @@ Headers.keys
 set(name: string, value: string): void;
 ```
 
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.dom.d.ts:21860](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.dom.d.ts#L21860)
+Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.dom.d.ts:21860](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.dom.d.ts#L21860)
 
 The **`set()`** method of the Headers interface sets a new value for an existing header inside a Headers object, or adds the header if it does not already exist.
 
@@ -331,7 +331,7 @@ Headers.set
 toJSON(): [string, string][];
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:592](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/types/request.ts#L592)
+Defined in: [warp-drive-packages/core/src/types/request.ts:592](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/warp-drive-packages/core/src/types/request.ts#L592)
 
 Returns the headers as an array of `[key, value]` pairs.
 
@@ -347,7 +347,7 @@ Returns the headers as an array of `[key, value]` pairs.
 values(): HeadersIterator<string>;
 ```
 
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.dom.d.ts:44719](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.dom.d.ts#L44719)
+Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.dom.d.ts:44719](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.dom.d.ts#L44719)
 
 Returns an iterator allowing to go through all values of the key/value pairs contained in this object.
 

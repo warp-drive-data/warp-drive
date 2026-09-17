@@ -8,7 +8,7 @@ url: /api/@warp-drive/core/functions/setIdentifierResetMethod.md
 function setIdentifierResetMethod(method: ResetMethod | null): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts:272](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts#L272)
+Defined in: [warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts:272](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts#L272)
 
 Configure a callback for when the identifier cache is being torn down.
 

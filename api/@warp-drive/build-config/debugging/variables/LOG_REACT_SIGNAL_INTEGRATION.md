@@ -9,6 +9,6 @@ url: >-
 const LOG_REACT_SIGNAL_INTEGRATION: boolean = false;
 ```
 
-Defined in: [debugging.ts:136](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/build-config/src/debugging.ts#L136)
+Defined in: [debugging.ts:136](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/warp-drive-packages/build-config/src/debugging.ts#L136)
 
 Helps when debugging React specific reactivity issues.

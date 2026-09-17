@@ -18,7 +18,7 @@ function withFragmentArrayDefaults<FragmentArrayType extends string, FragmentArr
 };
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model-fragments/utilities/with-fragment-array-defaults.ts:11](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/model-fragments/utilities/with-fragment-array-defaults.ts#L11)
+Defined in: [warp-drive-packages/legacy/src/model-fragments/utilities/with-fragment-array-defaults.ts:11](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/warp-drive-packages/legacy/src/model-fragments/utilities/with-fragment-array-defaults.ts#L11)
 
 Used as a helper to setup the relevant parts of a fragment-array
 schema and add extensions etc.

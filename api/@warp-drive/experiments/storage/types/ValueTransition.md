@@ -14,7 +14,7 @@ interface ValueTransition<T = unknown> {
 }
 ```
 
-Defined in: [storage/-private/storage-infra.ts:11](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/experiments/src/storage/-private/storage-infra.ts#L11)
+Defined in: [storage/-private/storage-infra.ts:11](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/warp-drive-packages/experiments/src/storage/-private/storage-infra.ts#L11)
 
 ## Type Parameters
 
@@ -30,7 +30,7 @@ Defined in: [storage/-private/storage-infra.ts:11](https://github.com/warp-drive
 from: T;
 ```
 
-Defined in: [storage/-private/storage-infra.ts:13](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/experiments/src/storage/-private/storage-infra.ts#L13)
+Defined in: [storage/-private/storage-infra.ts:13](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/warp-drive-packages/experiments/src/storage/-private/storage-infra.ts#L13)
 
 ***
 
@@ -40,7 +40,7 @@ Defined in: [storage/-private/storage-infra.ts:13](https://github.com/warp-drive
 key: string;
 ```
 
-Defined in: [storage/-private/storage-infra.ts:12](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/experiments/src/storage/-private/storage-infra.ts#L12)
+Defined in: [storage/-private/storage-infra.ts:12](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/warp-drive-packages/experiments/src/storage/-private/storage-infra.ts#L12)
 
 ***
 
@@ -50,4 +50,4 @@ Defined in: [storage/-private/storage-infra.ts:12](https://github.com/warp-drive
 to: T;
 ```
 
-Defined in: [storage/-private/storage-infra.ts:14](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/experiments/src/storage/-private/storage-infra.ts#L14)
+Defined in: [storage/-private/storage-infra.ts:14](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/warp-drive-packages/experiments/src/storage/-private/storage-infra.ts#L14)

@@ -10,7 +10,7 @@ function setConfig(__namedParameters: {
 }): void;
 ```
 
-Defined in: [index.ts:136](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/packages/holodeck/src/index.ts#L136)
+Defined in: [index.ts:136](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/packages/holodeck/src/index.ts#L136)
 
 ## Parameters
 

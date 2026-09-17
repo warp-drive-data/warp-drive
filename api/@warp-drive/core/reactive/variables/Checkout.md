@@ -8,7 +8,7 @@ url: /api/@warp-drive/core/reactive/variables/Checkout.md
 const Checkout: "___(unique) Symbol(Checkout)";
 ```
 
-Defined in: [warp-drive-packages/core/src/reactive/-private/symbols.ts:46](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/reactive/-private/symbols.ts#L46)
+Defined in: [warp-drive-packages/core/src/reactive/-private/symbols.ts:46](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/warp-drive-packages/core/src/reactive/-private/symbols.ts#L46)
 
 Symbol for the method used to request a mutable copy of an otherwise
 immutable [ReactiveResource](../types/ReactiveResource.md).

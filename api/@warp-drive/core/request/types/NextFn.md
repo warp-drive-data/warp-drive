@@ -8,7 +8,7 @@ url: /api/@warp-drive/core/request/types/NextFn.md
 type NextFn<P = unknown> = (req: RequestInfo) => Future<P>;
 ```
 
-Defined in: [warp-drive-packages/core/src/request/-private/types.ts:138](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/request/-private/types.ts#L138)
+Defined in: [warp-drive-packages/core/src/request/-private/types.ts:138](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/warp-drive-packages/core/src/request/-private/types.ts#L138)
 
 The `next` function passed to a [Handler](Handler.md) (or [CacheHandler](CacheHandler.md)),
 used to forward a request to the next handler in the chain. Resolves to a

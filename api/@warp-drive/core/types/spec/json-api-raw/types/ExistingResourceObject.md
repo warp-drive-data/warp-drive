@@ -16,7 +16,7 @@ interface ExistingResourceObject<T extends string = string> {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:271](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L271)
+Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:271](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L271)
 
 Contains the data for an existing resource in JSON:API format
 
@@ -34,7 +34,7 @@ Contains the data for an existing resource in JSON:API format
 optional attributes?: ObjectValue;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:279](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L279)
+Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:279](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L279)
 
 the resource's attributes
 
@@ -46,7 +46,7 @@ the resource's attributes
 id: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:98](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L98)
+Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:98](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L98)
 
 the resource's persisted id
 
@@ -64,7 +64,7 @@ ExistingResourceIdentifierObject.id
 optional lid?: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:121](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L121)
+Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:121](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L121)
 
 While not officially part of the `JSON:API` spec,
 `ember-data` allows the use of `lid` as a local
@@ -94,7 +94,7 @@ ExistingResourceIdentifierObject.lid
 optional links?: Links;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:287](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L287)
+Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:287](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L287)
 
 links related to the resource
 
@@ -106,7 +106,7 @@ links related to the resource
 optional meta?: ObjectValue;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:275](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L275)
+Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:275](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L275)
 
 meta information about the resource
 
@@ -124,7 +124,7 @@ ExistingResourceIdentifierObject.meta
 optional relationships?: ResourceRelationshipsObject<ExistingResourceIdentifierObject<string>>;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:283](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L283)
+Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:283](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L283)
 
 the resource's relationships to other resources
 
@@ -136,7 +136,7 @@ the resource's relationships to other resources
 type: T;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:103](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L103)
+Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:103](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L103)
 
 the resource's type
 

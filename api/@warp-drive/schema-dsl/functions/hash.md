@@ -8,7 +8,7 @@ url: /api/@warp-drive/schema-dsl/functions/hash.md
 function hash(options: HashOptions): (target: object, key: string) => void;
 ```
 
-Defined in: [fields/hash.ts:52](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/schema-dsl/src/fields/hash.ts#L52)
+Defined in: [fields/hash.ts:52](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/warp-drive-packages/schema-dsl/src/fields/hash.ts#L52)
 
 **`Decorator`**
 

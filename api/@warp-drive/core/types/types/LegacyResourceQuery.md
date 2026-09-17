@@ -11,7 +11,7 @@ type LegacyResourceQuery = {
 };
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-types/q/store.ts:81](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/store/-types/q/store.ts#L81)
+Defined in: [warp-drive-packages/core/src/store/-types/q/store.ts:81](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/warp-drive-packages/core/src/store/-types/q/store.ts#L81)
 
 An opaque query object for `store.query()` and `store.queryRecord()`
 that is passed as-is to the adapter, which is responsible for turning
@@ -31,7 +31,7 @@ it into request query parameters.
 optional include?: string | string[];
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-types/q/store.ts:87](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/store/-types/q/store.ts#L87)
+Defined in: [warp-drive-packages/core/src/store/-types/q/store.ts:87](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/warp-drive-packages/core/src/store/-types/q/store.ts#L87)
 
 The names of relationships to load along with this query, used to
 build the `include` query parameter for adapters (such as the

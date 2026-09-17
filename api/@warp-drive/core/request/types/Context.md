@@ -22,7 +22,7 @@ interface Context {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/request/-private/context.ts:167](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/request/-private/context.ts#L167)
+Defined in: [warp-drive-packages/core/src/request/-private/context.ts:167](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/warp-drive-packages/core/src/request/-private/context.ts#L167)
 
 The context object given to each [Handler](Handler.md) (or [CacheHandler](CacheHandler.md))
 as it processes a request. It exposes the (immutable, enhanced) request
@@ -38,7 +38,7 @@ StructuredDataDocument that will ultimately be returned by the
 setIdentifier(identifier: RequestKey): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/request/-private/context.ts:223](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/request/-private/context.ts#L223)
+Defined in: [warp-drive-packages/core/src/request/-private/context.ts:223](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/warp-drive-packages/core/src/request/-private/context.ts#L223)
 
 Associate a [RequestKey](../../types/identifier/types/RequestKey.md) with this request. May only be called
 synchronously from a [CacheHandler](CacheHandler.md).
@@ -64,7 +64,7 @@ setResponse(response:
   | null): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/request/-private/context.ts:213](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/request/-private/context.ts#L213)
+Defined in: [warp-drive-packages/core/src/request/-private/context.ts:213](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/warp-drive-packages/core/src/request/-private/context.ts#L213)
 
 Set the [ResponseInfo](../../types/request/types/ResponseInfo.md) (or raw `Response`) associated with this
 request. Used to populate the response information available on the
@@ -94,7 +94,7 @@ setStream(stream:
   | null>): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/request/-private/context.ts:203](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/request/-private/context.ts#L203)
+Defined in: [warp-drive-packages/core/src/request/-private/context.ts:203](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/warp-drive-packages/core/src/request/-private/context.ts#L203)
 
 Set the response stream for this request. May be called at most once,
 and may be called at any point up until the handler's `request` method
@@ -121,7 +121,7 @@ resolves.
 id: number;
 ```
 
-Defined in: [warp-drive-packages/core/src/request/-private/context.ts:183](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/request/-private/context.ts#L183)
+Defined in: [warp-drive-packages/core/src/request/-private/context.ts:183](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/warp-drive-packages/core/src/request/-private/context.ts#L183)
 
 The id of this request as assigned by the [RequestManager](../../classes/RequestManager.md). Not
 unique across manager instances.
@@ -134,7 +134,7 @@ unique across manager instances.
 request: ImmutableRequestInfo;
 ```
 
-Defined in: [warp-drive-packages/core/src/request/-private/context.ts:176](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/request/-private/context.ts#L176)
+Defined in: [warp-drive-packages/core/src/request/-private/context.ts:176](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/warp-drive-packages/core/src/request/-private/context.ts#L176)
 
 A readonly, immutable version of the request being handled, including
 any defaults or enhancements applied by the [RequestManager](../../classes/RequestManager.md).
@@ -147,7 +147,7 @@ any defaults or enhancements applied by the [RequestManager](../../classes/Reque
 get hasRequestedStream(): boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/request/-private/context.ts:238](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/request/-private/context.ts#L238)
+Defined in: [warp-drive-packages/core/src/request/-private/context.ts:238](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/warp-drive-packages/core/src/request/-private/context.ts#L238)
 
 Whether the application (or a downstream handler) has requested access
 to the response stream via [Future.getStream](Future.md#getstream). Handlers can use

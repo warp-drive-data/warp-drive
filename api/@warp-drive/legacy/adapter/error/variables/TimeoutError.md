@@ -10,7 +10,7 @@ url: /api/@warp-drive/legacy/adapter/error/variables/TimeoutError.md
 TimeoutError: AdapterRequestErrorConstructor<TimeoutError>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/error.ts:270](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/adapter/error.ts#L270)
+Defined in: [warp-drive-packages/legacy/src/adapter/error.ts:270](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/warp-drive-packages/legacy/src/adapter/error.ts#L270)
 
 A `TimeoutError` is used by an adapter to signal that a request to the
 external API has timed out, i.e. no response was received from the

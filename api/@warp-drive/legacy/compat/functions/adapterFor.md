@@ -23,7 +23,7 @@ function adapterFor(
 function adapterFor(this: Store$1, modelName: string): MinimumAdapterInterface;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat.ts:99](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/compat.ts#L99)
+Defined in: [warp-drive-packages/legacy/src/compat.ts:99](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/warp-drive-packages/legacy/src/compat.ts#L99)
 
 Returns an instance of the adapter for a given type. For
 example, `adapterFor('person')` will return an instance of
@@ -59,7 +59,7 @@ function adapterFor(
   | undefined;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat.ts:100](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/compat.ts#L100)
+Defined in: [warp-drive-packages/legacy/src/compat.ts:100](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/warp-drive-packages/legacy/src/compat.ts#L100)
 
 Returns an instance of the adapter for a given type. For
 example, `adapterFor('person')` will return an instance of

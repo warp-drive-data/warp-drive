@@ -10,7 +10,7 @@ interface TypedRecordInstance {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/types/record.ts:14](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/types/record.ts#L14)
+Defined in: [warp-drive-packages/core/src/types/record.ts:14](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/warp-drive-packages/core/src/types/record.ts#L14)
 
 Records may be anything, They don't even
 have to be objects.
@@ -30,7 +30,7 @@ TypedRecordInstance
 ___(unique) Symbol($type): string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/record.ts:30](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/core/src/types/record.ts#L30)
+Defined in: [warp-drive-packages/core/src/types/record.ts:30](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/warp-drive-packages/core/src/types/record.ts#L30)
 
 The type of the resource.
 

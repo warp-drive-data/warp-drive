@@ -14,7 +14,7 @@ function serializeRecord(
 ): unknown;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat.ts:328](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/legacy/src/compat.ts#L328)
+Defined in: [warp-drive-packages/legacy/src/compat.ts:328](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/warp-drive-packages/legacy/src/compat.ts#L328)
 
 Serializes a record using the store's legacy network layer, as with
 [store.serializeRecord](../types/LegacyStoreCompat.md#serializerecord).

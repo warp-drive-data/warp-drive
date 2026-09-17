@@ -29,7 +29,7 @@ function updateRecord<T extends TypedRecordInstance, RT extends TypedRecordInsta
 }): UpdateRequestOptions<ReactiveDataDocument<RT, M, E>, T>;
 ```
 
-Defined in: [-private/rest/save-record.ts:218](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/utilities/src/-private/rest/save-record.ts#L218)
+Defined in: [-private/rest/save-record.ts:218](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/warp-drive-packages/utilities/src/-private/rest/save-record.ts#L218)
 
 Builds request options to update existing record for resources,
 configured for the url, method and header expectations of most REST APIs.
@@ -114,7 +114,7 @@ function updateRecord(record: unknown, options?: ConstrainedRequestOptions & {
 }): UpdateRequestOptions;
 ```
 
-Defined in: [-private/rest/save-record.ts:227](https://github.com/warp-drive-data/warp-drive/blob/8469e17a196969acc93511c466120ba3296f8da7/warp-drive-packages/utilities/src/-private/rest/save-record.ts#L227)
+Defined in: [-private/rest/save-record.ts:227](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/warp-drive-packages/utilities/src/-private/rest/save-record.ts#L227)
 
 Builds request options to update existing record for resources,
 configured for the url, method and header expectations of most REST APIs.
