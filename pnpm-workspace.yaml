@@ -335,7 +335,7 @@ catalog:
   "@typescript-eslint/eslint-plugin": ^8.70.0
   "@typescript-eslint/parser": ^8.70.0
   "@vite-pwa/vitepress": ^1.1.0
-  "@vitejs/plugin-vue": ^6.0.8
+  "@vitejs/plugin-vue": ^6.0.9
   "@vue/babel-plugin-jsx": ^3.0.0
   babel-plugin-debug-macros: ^2.0.0
   babel-plugin-ember-template-compilation: ^4.0.0

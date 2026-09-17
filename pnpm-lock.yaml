@@ -314,8 +314,8 @@ catalogs:
       specifier: ^1.1.0
       version: 1.1.0
     '@vitejs/plugin-vue':
-      specifier: ^6.0.8
-      version: 6.0.8
+      specifier: ^6.0.9
+      version: 6.0.9
     '@vue/babel-plugin-jsx':
       specifier: ^3.0.0
       version: 3.0.0
@@ -2914,7 +2914,7 @@ importers:
         version: 1.21.1
       '@vitejs/plugin-vue':
         specifier: 'catalog:'
-        version: 6.0.8(384d85531cc9792c985afc54811a1392)
+        version: 6.0.9(384d85531cc9792c985afc54811a1392)
       '@vue/babel-plugin-jsx':
         specifier: 'catalog:'
         version: 3.0.0(@babel/core@7.29.7)
@@ -6952,6 +6952,13 @@ packages:
 
   '@vitejs/plugin-vue@6.0.8':
     resolution: {integrity: sha512-0ZjgOg7oO6farnNGup7yvoM/YXZV84OZxHAwtflItNa/6zzQyVb5LNxyea3FEKEX2XlagIKzrlH7wwxkKgtiew==}
+    engines: {node: ^20.19.0 || >=22.12.0}
+    peerDependencies:
+      vite: ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0
+      vue: ^3.2.25
+
+  '@vitejs/plugin-vue@6.0.9':
+    resolution: {integrity: sha512-rD/MORlhaZMlXWW0rEn4FB4wMinWC0z/D7Ye160S5+Rs1mC8ZDAdcDp4SjKfUhG5t8q1ktcPVw4xuTkPRlzrSA==}
     engines: {node: ^20.19.0 || >=22.12.0}
     peerDependencies:
       vite: ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0
@@ -15358,17 +15365,17 @@ snapshots:
     dependencies:
       vite-plugin-pwa: 1.3.0(vite@8.3.0)
 
-  '@vitejs/plugin-vue@6.0.8(384d85531cc9792c985afc54811a1392)':
-    dependencies:
-      '@rolldown/pluginutils': 1.0.1
-      vite: 8.3.0
-      vue: 3.5.42(typescript@7.1.0-dev.20260913.1)
-
   '@vitejs/plugin-vue@6.0.8(vite@8.3.0)(vue@3.5.42(typescript@6.0.3))':
     dependencies:
       '@rolldown/pluginutils': 1.0.1
       vite: 8.3.0
       vue: 3.5.42(typescript@6.0.3)
+
+  '@vitejs/plugin-vue@6.0.9(384d85531cc9792c985afc54811a1392)':
+    dependencies:
+      '@rolldown/pluginutils': 1.0.1
+      vite: 8.3.0
+      vue: 3.5.42(typescript@7.1.0-dev.20260913.1)
 
   '@vitest/mocker@5.0.0(vite@8.3.0)':
     dependencies:
