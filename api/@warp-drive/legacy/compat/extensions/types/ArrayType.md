@@ -10,7 +10,7 @@ url: /api/@warp-drive/legacy/compat/extensions/types/ArrayType.md
 type ArrayType<T> = T extends ReadonlyArray<infer U> ? U : never;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat/extensions.ts:376](https://github.com/warp-drive-data/warp-drive/blob/7afdd9818145634b9681a2bdd0f8c5cba16d9d9c/warp-drive-packages/legacy/src/compat/extensions.ts#L376)
+Defined in: [warp-drive-packages/legacy/src/compat/extensions.ts:376](https://github.com/warp-drive-data/warp-drive/blob/046b5e826d481c655eb9c1dd03a0fb171a65e0f3/warp-drive-packages/legacy/src/compat/extensions.ts#L376)
 
 Extracts the element type of an array type, or `never` if `T` is not an array.
 

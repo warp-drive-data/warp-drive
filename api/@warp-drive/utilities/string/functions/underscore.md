@@ -8,7 +8,7 @@ url: /api/@warp-drive/utilities/string/functions/underscore.md
 function underscore(str: string): string;
 ```
 
-Defined in: [-private/string/transform.ts:79](https://github.com/warp-drive-data/warp-drive/blob/7afdd9818145634b9681a2bdd0f8c5cba16d9d9c/warp-drive-packages/utilities/src/-private/string/transform.ts#L79)
+Defined in: [-private/string/transform.ts:79](https://github.com/warp-drive-data/warp-drive/blob/046b5e826d481c655eb9c1dd03a0fb171a65e0f3/warp-drive-packages/utilities/src/-private/string/transform.ts#L79)
 
 Returns the lower\_case\_and\_underscored form of a string.
 

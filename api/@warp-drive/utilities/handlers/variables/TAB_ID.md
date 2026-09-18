@@ -8,7 +8,7 @@ url: /api/@warp-drive/utilities/handlers/variables/TAB_ID.md
 const TAB_ID: string;
 ```
 
-Defined in: [-private/handlers/utils.ts:36](https://github.com/warp-drive-data/warp-drive/blob/7afdd9818145634b9681a2bdd0f8c5cba16d9d9c/warp-drive-packages/utilities/src/-private/handlers/utils.ts#L36)
+Defined in: [-private/handlers/utils.ts:36](https://github.com/warp-drive-data/warp-drive/blob/046b5e826d481c655eb9c1dd03a0fb171a65e0f3/warp-drive-packages/utilities/src/-private/handlers/utils.ts#L36)
 
 A unique identifier for the current browser tab
 useful for observability/tracing and deduping

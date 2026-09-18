@@ -14,7 +14,7 @@ interface UpdateResourceRelationshipOperation extends Op {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:133](https://github.com/warp-drive-data/warp-drive/blob/7afdd9818145634b9681a2bdd0f8c5cba16d9d9c/warp-drive-packages/core/src/types/cache/operations.ts#L133)
+Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:133](https://github.com/warp-drive-data/warp-drive/blob/046b5e826d481c655eb9c1dd03a0fb171a65e0f3/warp-drive-packages/core/src/types/cache/operations.ts#L133)
 
 Replaces the state of a relationship with a new state
 
@@ -30,7 +30,7 @@ Replaces the state of a relationship with a new state
 field: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:142](https://github.com/warp-drive-data/warp-drive/blob/7afdd9818145634b9681a2bdd0f8c5cba16d9d9c/warp-drive-packages/core/src/types/cache/operations.ts#L142)
+Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:142](https://github.com/warp-drive-data/warp-drive/blob/046b5e826d481c655eb9c1dd03a0fb171a65e0f3/warp-drive-packages/core/src/types/cache/operations.ts#L142)
 
 The name of the relationship to update
 
@@ -42,7 +42,7 @@ The name of the relationship to update
 op: "update";
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:134](https://github.com/warp-drive-data/warp-drive/blob/7afdd9818145634b9681a2bdd0f8c5cba16d9d9c/warp-drive-packages/core/src/types/cache/operations.ts#L134)
+Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:134](https://github.com/warp-drive-data/warp-drive/blob/046b5e826d481c655eb9c1dd03a0fb171a65e0f3/warp-drive-packages/core/src/types/cache/operations.ts#L134)
 
 The name of the [operation](Op.md)
 
@@ -58,7 +58,7 @@ The name of the [operation](Op.md)
 record: PersistedResourceKey;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:138](https://github.com/warp-drive-data/warp-drive/blob/7afdd9818145634b9681a2bdd0f8c5cba16d9d9c/warp-drive-packages/core/src/types/cache/operations.ts#L138)
+Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:138](https://github.com/warp-drive-data/warp-drive/blob/046b5e826d481c655eb9c1dd03a0fb171a65e0f3/warp-drive-packages/core/src/types/cache/operations.ts#L138)
 
 The cache key for the resource
 
@@ -70,6 +70,6 @@ The cache key for the resource
 value: Relationship<PersistedResourceKey<string>>;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:146](https://github.com/warp-drive-data/warp-drive/blob/7afdd9818145634b9681a2bdd0f8c5cba16d9d9c/warp-drive-packages/core/src/types/cache/operations.ts#L146)
+Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:146](https://github.com/warp-drive-data/warp-drive/blob/046b5e826d481c655eb9c1dd03a0fb171a65e0f3/warp-drive-packages/core/src/types/cache/operations.ts#L146)
 
 The new state for the relationship

@@ -24,7 +24,7 @@ interface PaginationState<RT = unknown, E = unknown> {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:111](https://github.com/warp-drive-data/warp-drive/blob/7afdd9818145634b9681a2bdd0f8c5cba16d9d9c/warp-drive-packages/core/src/signals/pagination-state.ts#L111)
+Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:111](https://github.com/warp-drive-data/warp-drive/blob/046b5e826d481c655eb9c1dd03a0fb171a65e0f3/warp-drive-packages/core/src/signals/pagination-state.ts#L111)
 
 **`Hideconstructor`**
 
@@ -72,7 +72,7 @@ component on your behalf), never constructed directly.
 adoptPage(request: Future<RT>): Promise<RT | null>;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:434](https://github.com/warp-drive-data/warp-drive/blob/7afdd9818145634b9681a2bdd0f8c5cba16d9d9c/warp-drive-packages/core/src/signals/pagination-state.ts#L434)
+Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:434](https://github.com/warp-drive-data/warp-drive/blob/046b5e826d481c655eb9c1dd03a0fb171a65e0f3/warp-drive-packages/core/src/signals/pagination-state.ts#L434)
 
 Adopts an externally-issued request into this pagination, making its page
 the [activePage](#activepage) — the programmatic entry point for route-driven
@@ -138,7 +138,7 @@ PagedPaginationState.adoptPage
 loadNext(): Promise<RT | null>;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:511](https://github.com/warp-drive-data/warp-drive/blob/7afdd9818145634b9681a2bdd0f8c5cba16d9d9c/warp-drive-packages/core/src/signals/pagination-state.ts#L511)
+Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:511](https://github.com/warp-drive-data/warp-drive/blob/046b5e826d481c655eb9c1dd03a0fb171a65e0f3/warp-drive-packages/core/src/signals/pagination-state.ts#L511)
 
 Extends the forward frontier by one page, appending it to [data](#data).
 Mirror of [loadPrev](#loadprev).
@@ -169,7 +169,7 @@ InfinitePaginationState.loadNext
 loadPage(url: string): Promise<RT | null>;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:583](https://github.com/warp-drive-data/warp-drive/blob/7afdd9818145634b9681a2bdd0f8c5cba16d9d9c/warp-drive-packages/core/src/signals/pagination-state.ts#L583)
+Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:583](https://github.com/warp-drive-data/warp-drive/blob/046b5e826d481c655eb9c1dd03a0fb171a65e0f3/warp-drive-packages/core/src/signals/pagination-state.ts#L583)
 
 Loads a specific page by its URL and makes it the [activePage](#activepage),
 requesting it first if it is not already loaded. This is the paged surface's
@@ -220,7 +220,7 @@ PagedPaginationState.loadPage
 loadPrev(): Promise<RT | null>;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:495](https://github.com/warp-drive-data/warp-drive/blob/7afdd9818145634b9681a2bdd0f8c5cba16d9d9c/warp-drive-packages/core/src/signals/pagination-state.ts#L495)
+Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:495](https://github.com/warp-drive-data/warp-drive/blob/046b5e826d481c655eb9c1dd03a0fb171a65e0f3/warp-drive-packages/core/src/signals/pagination-state.ts#L495)
 
 Extends the backward frontier by one page, prepending it to [data](#data).
 The frontier advances only once the page has loaded, so
@@ -259,7 +259,7 @@ activePage:
   | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:133](https://github.com/warp-drive-data/warp-drive/blob/7afdd9818145634b9681a2bdd0f8c5cba16d9d9c/warp-drive-packages/core/src/signals/pagination-state.ts#L133)
+Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:133](https://github.com/warp-drive-data/warp-drive/blob/046b5e826d481c655eb9c1dd03a0fb171a65e0f3/warp-drive-packages/core/src/signals/pagination-state.ts#L133)
 
 The page the paged surface is currently showing. Starts at the page this
 component first loaded and moves whenever [loadPage](#loadpage) runs (for
@@ -279,7 +279,7 @@ PagedPaginationState.activePage
 get activePageRequest(): Future<RT> | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:192](https://github.com/warp-drive-data/warp-drive/blob/7afdd9818145634b9681a2bdd0f8c5cba16d9d9c/warp-drive-packages/core/src/signals/pagination-state.ts#L192)
+Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:192](https://github.com/warp-drive-data/warp-drive/blob/046b5e826d481c655eb9c1dd03a0fb171a65e0f3/warp-drive-packages/core/src/signals/pagination-state.ts#L192)
 
 The request for the [activePage](#activepage), for the paged surface to render. This
 is what a single-page view wraps in a `<Request>` to show the active page's
@@ -317,7 +317,7 @@ PagedPaginationState.activePageRequest
 get data(): Iterable<ContentItem<RT>>;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:264](https://github.com/warp-drive-data/warp-drive/blob/7afdd9818145634b9681a2bdd0f8c5cba16d9d9c/warp-drive-packages/core/src/signals/pagination-state.ts#L264)
+Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:264](https://github.com/warp-drive-data/warp-drive/blob/046b5e826d481c655eb9c1dd03a0fb171a65e0f3/warp-drive-packages/core/src/signals/pagination-state.ts#L264)
 
 The accumulated items across the loaded run, from the backward frontier to
 the forward frontier inclusive — the single set an infinite collection renders.
@@ -360,7 +360,7 @@ InfinitePaginationState.data
 get hasNext(): boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:289](https://github.com/warp-drive-data/warp-drive/blob/7afdd9818145634b9681a2bdd0f8c5cba16d9d9c/warp-drive-packages/core/src/signals/pagination-state.ts#L289)
+Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:289](https://github.com/warp-drive-data/warp-drive/blob/046b5e826d481c655eb9c1dd03a0fb171a65e0f3/warp-drive-packages/core/src/signals/pagination-state.ts#L289)
 
 Whether a page exists after the forward frontier — i.e. there is more to load
 going forward. Use to hide the trailing load-more sentinel at end-of-list:
@@ -391,7 +391,7 @@ InfinitePaginationState.hasNext
 get hasPrevious(): boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:297](https://github.com/warp-drive-data/warp-drive/blob/7afdd9818145634b9681a2bdd0f8c5cba16d9d9c/warp-drive-packages/core/src/signals/pagination-state.ts#L297)
+Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:297](https://github.com/warp-drive-data/warp-drive/blob/046b5e826d481c655eb9c1dd03a0fb171a65e0f3/warp-drive-packages/core/src/signals/pagination-state.ts#L297)
 
 Whether a page exists before the backward frontier.
 
@@ -415,7 +415,7 @@ InfinitePaginationState.hasPrevious
 get nextRequest(): Future<RT> | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:317](https://github.com/warp-drive-data/warp-drive/blob/7afdd9818145634b9681a2bdd0f8c5cba16d9d9c/warp-drive-packages/core/src/signals/pagination-state.ts#L317)
+Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:317](https://github.com/warp-drive-data/warp-drive/blob/046b5e826d481c655eb9c1dd03a0fb171a65e0f3/warp-drive-packages/core/src/signals/pagination-state.ts#L317)
 
 The request for the page just after the forward frontier, for the infinite
 surface. `null` until [loadNext](#loadnext) fires it (so a `<Request>` wrapping it
@@ -451,7 +451,7 @@ InfinitePaginationState.nextRequest
 get pages(): Iterable<Readonly<PageCache<RT, E>>>;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:223](https://github.com/warp-drive-data/warp-drive/blob/7afdd9818145634b9681a2bdd0f8c5cba16d9d9c/warp-drive-packages/core/src/signals/pagination-state.ts#L223)
+Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:223](https://github.com/warp-drive-data/warp-drive/blob/046b5e826d481c655eb9c1dd03a0fb171a65e0f3/warp-drive-packages/core/src/signals/pagination-state.ts#L223)
 
 The pages of the run this component is viewing, from the backward frontier
 to the forward frontier inclusive, in order. Part of the infinite surface:
@@ -485,7 +485,7 @@ InfinitePaginationState.pages
 get previousRequest(): Future<RT> | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:330](https://github.com/warp-drive-data/warp-drive/blob/7afdd9818145634b9681a2bdd0f8c5cba16d9d9c/warp-drive-packages/core/src/signals/pagination-state.ts#L330)
+Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:330](https://github.com/warp-drive-data/warp-drive/blob/046b5e826d481c655eb9c1dd03a0fb171a65e0f3/warp-drive-packages/core/src/signals/pagination-state.ts#L330)
 
 The request for the page just before the backward frontier. Mirror of
 [nextRequest](#nextrequest) for [loadPrev](#loadprev).
@@ -510,7 +510,7 @@ InfinitePaginationState.previousRequest
 get totalPages(): number;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:205](https://github.com/warp-drive-data/warp-drive/blob/7afdd9818145634b9681a2bdd0f8c5cba16d9d9c/warp-drive-packages/core/src/signals/pagination-state.ts#L205)
+Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:205](https://github.com/warp-drive-data/warp-drive/blob/046b5e826d481c655eb9c1dd03a0fb171a65e0f3/warp-drive-packages/core/src/signals/pagination-state.ts#L205)
 
 The total number of pages in the collection, or `0` when it is unknown (for
 example a cursor-based collection that reports no total).

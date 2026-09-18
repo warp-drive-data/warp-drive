@@ -10,4 +10,4 @@ url: /api/@warp-drive/experiments/storage/variables/DEFAULT_CACHE_ID.md
 const DEFAULT_CACHE_ID: "reactive-cache" = 'reactive-cache';
 ```
 
-Defined in: [storage/cache.ts:3](https://github.com/warp-drive-data/warp-drive/blob/7afdd9818145634b9681a2bdd0f8c5cba16d9d9c/warp-drive-packages/experiments/src/storage/cache.ts#L3)
+Defined in: [storage/cache.ts:3](https://github.com/warp-drive-data/warp-drive/blob/046b5e826d481c655eb9c1dd03a0fb171a65e0f3/warp-drive-packages/experiments/src/storage/cache.ts#L3)

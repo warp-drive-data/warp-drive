@@ -10,7 +10,7 @@ url: /api/@warp-drive/experiments/storage/types/KeyFn.md
 type KeyFn = (obj: any) => string;
 ```
 
-Defined in: [storage/-private/storage-infra.ts:43](https://github.com/warp-drive-data/warp-drive/blob/7afdd9818145634b9681a2bdd0f8c5cba16d9d9c/warp-drive-packages/experiments/src/storage/-private/storage-infra.ts#L43)
+Defined in: [storage/-private/storage-infra.ts:43](https://github.com/warp-drive-data/warp-drive/blob/046b5e826d481c655eb9c1dd03a0fb171a65e0f3/warp-drive-packages/experiments/src/storage/-private/storage-infra.ts#L43)
 
 A function which generates a unique primary-key
 string for a given LocalResource or SessionResource

@@ -10,7 +10,7 @@ url: /api/@warp-drive/legacy/adapter/error/variables/ForbiddenError.md
 ForbiddenError: AdapterRequestErrorConstructor<ForbiddenError>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/error.ts:384](https://github.com/warp-drive-data/warp-drive/blob/7afdd9818145634b9681a2bdd0f8c5cba16d9d9c/warp-drive-packages/legacy/src/adapter/error.ts#L384)
+Defined in: [warp-drive-packages/legacy/src/adapter/error.ts:384](https://github.com/warp-drive-data/warp-drive/blob/046b5e826d481c655eb9c1dd03a0fb171a65e0f3/warp-drive-packages/legacy/src/adapter/error.ts#L384)
 
 A `ForbiddenError` equates to an HTTP `403 Forbidden` response status.
 It is used by an adapter to signal that a request to the external API was

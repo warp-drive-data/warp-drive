@@ -14,7 +14,7 @@ interface Change {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/change.ts:18](https://github.com/warp-drive-data/warp-drive/blob/7afdd9818145634b9681a2bdd0f8c5cba16d9d9c/warp-drive-packages/core/src/types/cache/change.ts#L18)
+Defined in: [warp-drive-packages/core/src/types/cache/change.ts:18](https://github.com/warp-drive-data/warp-drive/blob/046b5e826d481c655eb9c1dd03a0fb171a65e0f3/warp-drive-packages/core/src/types/cache/change.ts#L18)
 
 Describes a single mutation to a resource or document that occurred
 in the cache, as returned by [Cache.diff](../../types/Cache.md#diff).
@@ -39,7 +39,7 @@ identifier:
   | ResourceKey;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/change.ts:22](https://github.com/warp-drive-data/warp-drive/blob/7afdd9818145634b9681a2bdd0f8c5cba16d9d9c/warp-drive-packages/core/src/types/cache/change.ts#L22)
+Defined in: [warp-drive-packages/core/src/types/cache/change.ts:22](https://github.com/warp-drive-data/warp-drive/blob/046b5e826d481c655eb9c1dd03a0fb171a65e0f3/warp-drive-packages/core/src/types/cache/change.ts#L22)
 
 the [ResourceKey](../../../identifier/types/ResourceKey.md) or [RequestKey](../../../identifier/types/RequestKey.md) of the entity that changed
 
@@ -51,7 +51,7 @@ the [ResourceKey](../../../identifier/types/ResourceKey.md) or [RequestKey](../.
 op: "upsert" | "remove";
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/change.ts:27](https://github.com/warp-drive-data/warp-drive/blob/7afdd9818145634b9681a2bdd0f8c5cba16d9d9c/warp-drive-packages/core/src/types/cache/change.ts#L27)
+Defined in: [warp-drive-packages/core/src/types/cache/change.ts:27](https://github.com/warp-drive-data/warp-drive/blob/046b5e826d481c655eb9c1dd03a0fb171a65e0f3/warp-drive-packages/core/src/types/cache/change.ts#L27)
 
 the type of change that occurred. If `'upsert'`, [patch](#patch)
 will be present with the data to merge into the cache for the entity.
@@ -64,7 +64,7 @@ will be present with the data to merge into the cache for the entity.
 optional patch?: unknown;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/change.ts:39](https://github.com/warp-drive-data/warp-drive/blob/7afdd9818145634b9681a2bdd0f8c5cba16d9d9c/warp-drive-packages/core/src/types/cache/change.ts#L39)
+Defined in: [warp-drive-packages/core/src/types/cache/change.ts:39](https://github.com/warp-drive-data/warp-drive/blob/046b5e826d481c655eb9c1dd03a0fb171a65e0f3/warp-drive-packages/core/src/types/cache/change.ts#L39)
 
 When [op](#op) is `'upsert'`, the data to merge into the
 cache for the entity.
