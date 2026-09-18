@@ -14,7 +14,7 @@ function pushPayload(
 ): void;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat.ts:305](https://github.com/warp-drive-data/warp-drive/blob/315931ffedd7d94eeba0879ee531991fe4ca5179/warp-drive-packages/legacy/src/compat.ts#L305)
+Defined in: [warp-drive-packages/legacy/src/compat.ts:305](https://github.com/warp-drive-data/warp-drive/blob/7afdd9818145634b9681a2bdd0f8c5cba16d9d9c/warp-drive-packages/legacy/src/compat.ts#L305)
 
 Push some raw data into the store.
 

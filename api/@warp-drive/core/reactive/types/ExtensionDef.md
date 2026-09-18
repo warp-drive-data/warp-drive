@@ -33,7 +33,7 @@ type ExtensionDef =
 };
 ```
 
-Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:190](https://github.com/warp-drive-data/warp-drive/blob/315931ffedd7d94eeba0879ee531991fe4ca5179/warp-drive-packages/core/src/reactive/-private/schema.ts#L190)
+Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:190](https://github.com/warp-drive-data/warp-drive/blob/7afdd9818145634b9681a2bdd0f8c5cba16d9d9c/warp-drive-packages/core/src/reactive/-private/schema.ts#L190)
 
 Describes one feature added to a resource by a schema extension, as
 classified by processExtension from the property descriptor it

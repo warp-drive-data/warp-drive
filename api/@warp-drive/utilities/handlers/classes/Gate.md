@@ -4,7 +4,7 @@ url: /api/@warp-drive/utilities/handlers/classes/Gate.md
 
 # &#x20;Gate
 
-Defined in: [-private/handlers/gated.ts:15](https://github.com/warp-drive-data/warp-drive/blob/315931ffedd7d94eeba0879ee531991fe4ca5179/warp-drive-packages/utilities/src/-private/handlers/gated.ts#L15)
+Defined in: [-private/handlers/gated.ts:15](https://github.com/warp-drive-data/warp-drive/blob/7afdd9818145634b9681a2bdd0f8c5cba16d9d9c/warp-drive-packages/utilities/src/-private/handlers/gated.ts#L15)
 
 ## Implements
 
@@ -18,7 +18,7 @@ Defined in: [-private/handlers/gated.ts:15](https://github.com/warp-drive-data/w
 new Gate(handler: Handler, checkFn: CheckFn): Gate;
 ```
 
-Defined in: [-private/handlers/gated.ts:25](https://github.com/warp-drive-data/warp-drive/blob/315931ffedd7d94eeba0879ee531991fe4ca5179/warp-drive-packages/utilities/src/-private/handlers/gated.ts#L25)
+Defined in: [-private/handlers/gated.ts:25](https://github.com/warp-drive-data/warp-drive/blob/7afdd9818145634b9681a2bdd0f8c5cba16d9d9c/warp-drive-packages/utilities/src/-private/handlers/gated.ts#L25)
 
 #### Parameters
 
@@ -44,7 +44,7 @@ request<T = unknown>(context: RequestContext, next: NextFn<T>):
 | Future<T>;
 ```
 
-Defined in: [-private/handlers/gated.ts:30](https://github.com/warp-drive-data/warp-drive/blob/315931ffedd7d94eeba0879ee531991fe4ca5179/warp-drive-packages/utilities/src/-private/handlers/gated.ts#L30)
+Defined in: [-private/handlers/gated.ts:30](https://github.com/warp-drive-data/warp-drive/blob/7afdd9818145634b9681a2bdd0f8c5cba16d9d9c/warp-drive-packages/utilities/src/-private/handlers/gated.ts#L30)
 
 Method to implement to handle requests. Receives the request
 context and a nextFn to call to pass-along the request to
@@ -85,7 +85,7 @@ Handler.request
 checkFn: CheckFn;
 ```
 
-Defined in: [-private/handlers/gated.ts:23](https://github.com/warp-drive-data/warp-drive/blob/315931ffedd7d94eeba0879ee531991fe4ca5179/warp-drive-packages/utilities/src/-private/handlers/gated.ts#L23)
+Defined in: [-private/handlers/gated.ts:23](https://github.com/warp-drive-data/warp-drive/blob/7afdd9818145634b9681a2bdd0f8c5cba16d9d9c/warp-drive-packages/utilities/src/-private/handlers/gated.ts#L23)
 
 The predicate used to decide whether [handler](#handler) should run for a given request.
 
@@ -97,6 +97,6 @@ The predicate used to decide whether [handler](#handler) should run for a given 
 handler: Handler;
 ```
 
-Defined in: [-private/handlers/gated.ts:19](https://github.com/warp-drive-data/warp-drive/blob/315931ffedd7d94eeba0879ee531991fe4ca5179/warp-drive-packages/utilities/src/-private/handlers/gated.ts#L19)
+Defined in: [-private/handlers/gated.ts:19](https://github.com/warp-drive-data/warp-drive/blob/7afdd9818145634b9681a2bdd0f8c5cba16d9d9c/warp-drive-packages/utilities/src/-private/handlers/gated.ts#L19)
 
 The wrapped handler to invoke when [checkFn](#checkfn) returns `true`.

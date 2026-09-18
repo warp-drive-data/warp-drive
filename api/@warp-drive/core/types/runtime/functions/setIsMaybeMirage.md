@@ -8,7 +8,7 @@ url: /api/@warp-drive/core/types/runtime/functions/setIsMaybeMirage.md
 function setIsMaybeMirage(value: boolean): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/runtime.ts:82](https://github.com/warp-drive-data/warp-drive/blob/315931ffedd7d94eeba0879ee531991fe4ca5179/warp-drive-packages/core/src/types/runtime.ts#L82)
+Defined in: [warp-drive-packages/core/src/types/runtime.ts:82](https://github.com/warp-drive-data/warp-drive/blob/7afdd9818145634b9681a2bdd0f8c5cba16d9d9c/warp-drive-packages/core/src/types/runtime.ts#L82)
 
 Explicitly declares whether requests may be served by Mirage (or another
 Pretender-based fetch mock) instead of a native `fetch` implementation.

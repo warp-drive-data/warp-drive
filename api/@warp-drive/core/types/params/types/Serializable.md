@@ -10,7 +10,7 @@ type Serializable =
   | SerializablePrimitive[];
 ```
 
-Defined in: [warp-drive-packages/core/src/types/params.ts:14](https://github.com/warp-drive-data/warp-drive/blob/315931ffedd7d94eeba0879ee531991fe4ca5179/warp-drive-packages/core/src/types/params.ts#L14)
+Defined in: [warp-drive-packages/core/src/types/params.ts:14](https://github.com/warp-drive-data/warp-drive/blob/7afdd9818145634b9681a2bdd0f8c5cba16d9d9c/warp-drive-packages/core/src/types/params.ts#L14)
 
 A JSON-serializable value suitable for use as a query parameter value:
 either a [SerializablePrimitive](SerializablePrimitive.md) or an array of them.

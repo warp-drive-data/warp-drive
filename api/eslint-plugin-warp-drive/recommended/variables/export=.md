@@ -8,4 +8,4 @@ url: /api/eslint-plugin-warp-drive/recommended/variables/export=.md
 export=: Config<RulesConfig>[];
 ```
 
-Defined in: [recommended.js:4](https://github.com/warp-drive-data/warp-drive/blob/315931ffedd7d94eeba0879ee531991fe4ca5179/packages/eslint-plugin-warp-drive/src/recommended.js#L4)
+Defined in: [recommended.js:4](https://github.com/warp-drive-data/warp-drive/blob/7afdd9818145634b9681a2bdd0f8c5cba16d9d9c/packages/eslint-plugin-warp-drive/src/recommended.js#L4)

@@ -18,7 +18,7 @@ interface PagedPaginationContentFeatures<RT> extends SharedPaginationContentFeat
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:43](https://github.com/warp-drive-data/warp-drive/blob/315931ffedd7d94eeba0879ee531991fe4ca5179/warp-drive-packages/core/src/signals/pagination-subscription.ts#L43)
+Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:43](https://github.com/warp-drive-data/warp-drive/blob/7afdd9818145634b9681a2bdd0f8c5cba16d9d9c/warp-drive-packages/core/src/signals/pagination-subscription.ts#L43)
 
 The content features yielded in `'paged'` mode: navigation happens by
 loading a specific page.
@@ -41,7 +41,7 @@ loading a specific page.
 optional abort?: () => void;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:35](https://github.com/warp-drive-data/warp-drive/blob/315931ffedd7d94eeba0879ee531991fe4ca5179/warp-drive-packages/core/src/signals/pagination-subscription.ts#L35)
+Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:35](https://github.com/warp-drive-data/warp-drive/blob/7afdd9818145634b9681a2bdd0f8c5cba16d9d9c/warp-drive-packages/core/src/signals/pagination-subscription.ts#L35)
 
 #### Returns
 
@@ -59,7 +59,7 @@ Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:35]
 isHidden: boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:23](https://github.com/warp-drive-data/warp-drive/blob/315931ffedd7d94eeba0879ee531991fe4ca5179/warp-drive-packages/core/src/signals/pagination-subscription.ts#L23)
+Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:23](https://github.com/warp-drive-data/warp-drive/blob/7afdd9818145634b9681a2bdd0f8c5cba16d9d9c/warp-drive-packages/core/src/signals/pagination-subscription.ts#L23)
 
 #### Inherited from
 
@@ -73,7 +73,7 @@ Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:23]
 isNavigating: boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:32](https://github.com/warp-drive-data/warp-drive/blob/315931ffedd7d94eeba0879ee531991fe4ca5179/warp-drive-packages/core/src/signals/pagination-subscription.ts#L32)
+Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:32](https://github.com/warp-drive-data/warp-drive/blob/7afdd9818145634b9681a2bdd0f8c5cba16d9d9c/warp-drive-packages/core/src/signals/pagination-subscription.ts#L32)
 
 Whether a changed `@request` arg is currently resolving against the
 loaded collection — e.g. a route-driven navigation (browser back button).
@@ -93,7 +93,7 @@ the component resets to the new collection.
 isOnline: boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:22](https://github.com/warp-drive-data/warp-drive/blob/315931ffedd7d94eeba0879ee531991fe4ca5179/warp-drive-packages/core/src/signals/pagination-subscription.ts#L22)
+Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:22](https://github.com/warp-drive-data/warp-drive/blob/7afdd9818145634b9681a2bdd0f8c5cba16d9d9c/warp-drive-packages/core/src/signals/pagination-subscription.ts#L22)
 
 #### Inherited from
 
@@ -107,7 +107,7 @@ Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:22]
 isRefreshing: boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:24](https://github.com/warp-drive-data/warp-drive/blob/315931ffedd7d94eeba0879ee531991fe4ca5179/warp-drive-packages/core/src/signals/pagination-subscription.ts#L24)
+Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:24](https://github.com/warp-drive-data/warp-drive/blob/7afdd9818145634b9681a2bdd0f8c5cba16d9d9c/warp-drive-packages/core/src/signals/pagination-subscription.ts#L24)
 
 #### Inherited from
 
@@ -121,7 +121,7 @@ Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:24]
 optional latestRequest?: Future<RT>;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:36](https://github.com/warp-drive-data/warp-drive/blob/315931ffedd7d94eeba0879ee531991fe4ca5179/warp-drive-packages/core/src/signals/pagination-subscription.ts#L36)
+Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:36](https://github.com/warp-drive-data/warp-drive/blob/7afdd9818145634b9681a2bdd0f8c5cba16d9d9c/warp-drive-packages/core/src/signals/pagination-subscription.ts#L36)
 
 #### Inherited from
 
@@ -135,7 +135,7 @@ Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:36]
 loadPage: (url: string) => Promise<RT | null>;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:44](https://github.com/warp-drive-data/warp-drive/blob/315931ffedd7d94eeba0879ee531991fe4ca5179/warp-drive-packages/core/src/signals/pagination-subscription.ts#L44)
+Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:44](https://github.com/warp-drive-data/warp-drive/blob/7afdd9818145634b9681a2bdd0f8c5cba16d9d9c/warp-drive-packages/core/src/signals/pagination-subscription.ts#L44)
 
 #### Parameters
 
@@ -155,7 +155,7 @@ Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:44]
 refresh: () => Promise<void>;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:33](https://github.com/warp-drive-data/warp-drive/blob/315931ffedd7d94eeba0879ee531991fe4ca5179/warp-drive-packages/core/src/signals/pagination-subscription.ts#L33)
+Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:33](https://github.com/warp-drive-data/warp-drive/blob/7afdd9818145634b9681a2bdd0f8c5cba16d9d9c/warp-drive-packages/core/src/signals/pagination-subscription.ts#L33)
 
 #### Returns
 
@@ -173,7 +173,7 @@ Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:33]
 reload: () => Promise<void>;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:34](https://github.com/warp-drive-data/warp-drive/blob/315931ffedd7d94eeba0879ee531991fe4ca5179/warp-drive-packages/core/src/signals/pagination-subscription.ts#L34)
+Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:34](https://github.com/warp-drive-data/warp-drive/blob/7afdd9818145634b9681a2bdd0f8c5cba16d9d9c/warp-drive-packages/core/src/signals/pagination-subscription.ts#L34)
 
 #### Returns
 

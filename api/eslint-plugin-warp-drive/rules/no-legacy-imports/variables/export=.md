@@ -8,4 +8,4 @@ url: /api/eslint-plugin-warp-drive/rules/no-legacy-imports/variables/export=.md
 export=: RuleModule;
 ```
 
-Defined in: [rules/no-legacy-imports.js:217](https://github.com/warp-drive-data/warp-drive/blob/315931ffedd7d94eeba0879ee531991fe4ca5179/packages/eslint-plugin-warp-drive/src/rules/no-legacy-imports.js#L217)
+Defined in: [rules/no-legacy-imports.js:217](https://github.com/warp-drive-data/warp-drive/blob/7afdd9818145634b9681a2bdd0f8c5cba16d9d9c/packages/eslint-plugin-warp-drive/src/rules/no-legacy-imports.js#L217)

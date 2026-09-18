@@ -10,7 +10,7 @@ url: /api/@warp-drive/legacy/adapter/error/variables/ServerError.md
 ServerError: AdapterRequestErrorConstructor<ServerError>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/error.ts:503](https://github.com/warp-drive-data/warp-drive/blob/315931ffedd7d94eeba0879ee531991fe4ca5179/warp-drive-packages/legacy/src/adapter/error.ts#L503)
+Defined in: [warp-drive-packages/legacy/src/adapter/error.ts:503](https://github.com/warp-drive-data/warp-drive/blob/7afdd9818145634b9681a2bdd0f8c5cba16d9d9c/warp-drive-packages/legacy/src/adapter/error.ts#L503)
 
 A `ServerError` equates to an HTTP `500 Internal Server Error` response
 status. It is used by the adapter to indicate that a request has failed

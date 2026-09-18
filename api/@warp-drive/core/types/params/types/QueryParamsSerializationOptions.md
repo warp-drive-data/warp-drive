@@ -10,7 +10,7 @@ type QueryParamsSerializationOptions = {
 };
 ```
 
-Defined in: [warp-drive-packages/core/src/types/params.ts:20](https://github.com/warp-drive-data/warp-drive/blob/315931ffedd7d94eeba0879ee531991fe4ca5179/warp-drive-packages/core/src/types/params.ts#L20)
+Defined in: [warp-drive-packages/core/src/types/params.ts:20](https://github.com/warp-drive-data/warp-drive/blob/7afdd9818145634b9681a2bdd0f8c5cba16d9d9c/warp-drive-packages/core/src/types/params.ts#L20)
 
 Options for controlling how [QueryParamsSource](QueryParamsSource.md) values are
 serialized into a URL query string.
@@ -23,7 +23,7 @@ serialized into a URL query string.
 optional arrayFormat?: "bracket" | "indices" | "repeat" | "comma";
 ```
 
-Defined in: [warp-drive-packages/core/src/types/params.ts:29](https://github.com/warp-drive-data/warp-drive/blob/315931ffedd7d94eeba0879ee531991fe4ca5179/warp-drive-packages/core/src/types/params.ts#L29)
+Defined in: [warp-drive-packages/core/src/types/params.ts:29](https://github.com/warp-drive-data/warp-drive/blob/7afdd9818145634b9681a2bdd0f8c5cba16d9d9c/warp-drive-packages/core/src/types/params.ts#L29)
 
 How array values should be serialized:
 

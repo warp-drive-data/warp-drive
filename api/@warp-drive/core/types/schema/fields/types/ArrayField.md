@@ -14,7 +14,7 @@ interface ArrayField {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:687](https://github.com/warp-drive-data/warp-drive/blob/315931ffedd7d94eeba0879ee531991fe4ca5179/warp-drive-packages/core/src/types/schema/fields.ts#L687)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:687](https://github.com/warp-drive-data/warp-drive/blob/7afdd9818145634b9681a2bdd0f8c5cba16d9d9c/warp-drive-packages/core/src/types/schema/fields.ts#L687)
 
 Represents a field whose value is an array
 of primitive values.
@@ -30,7 +30,7 @@ values, use 'schema-array' instead.
 kind: "array";
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:693](https://github.com/warp-drive-data/warp-drive/blob/315931ffedd7d94eeba0879ee531991fe4ca5179/warp-drive-packages/core/src/types/schema/fields.ts#L693)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:693](https://github.com/warp-drive-data/warp-drive/blob/7afdd9818145634b9681a2bdd0f8c5cba16d9d9c/warp-drive-packages/core/src/types/schema/fields.ts#L693)
 
 The kind of field this is.
 
@@ -42,7 +42,7 @@ The kind of field this is.
 name: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:700](https://github.com/warp-drive-data/warp-drive/blob/315931ffedd7d94eeba0879ee531991fe4ca5179/warp-drive-packages/core/src/types/schema/fields.ts#L700)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:700](https://github.com/warp-drive-data/warp-drive/blob/7afdd9818145634b9681a2bdd0f8c5cba16d9d9c/warp-drive-packages/core/src/types/schema/fields.ts#L700)
 
 The name of the field.
 
@@ -57,7 +57,7 @@ optional options?: {
 };
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:743](https://github.com/warp-drive-data/warp-drive/blob/315931ffedd7d94eeba0879ee531991fe4ca5179/warp-drive-packages/core/src/types/schema/fields.ts#L743)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:743](https://github.com/warp-drive-data/warp-drive/blob/7afdd9818145634b9681a2bdd0f8c5cba16d9d9c/warp-drive-packages/core/src/types/schema/fields.ts#L743)
 
 Options to pass to the transform, if any
 
@@ -95,7 +95,7 @@ such as Ember's "ArrayLike" and FragmentArray from ember-data-model-fragments
 optional sourceKey?: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:724](https://github.com/warp-drive-data/warp-drive/blob/315931ffedd7d94eeba0879ee531991fe4ca5179/warp-drive-packages/core/src/types/schema/fields.ts#L724)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:724](https://github.com/warp-drive-data/warp-drive/blob/7afdd9818145634b9681a2bdd0f8c5cba16d9d9c/warp-drive-packages/core/src/types/schema/fields.ts#L724)
 
 The name of the field as returned by the API
 and inserted into the [Cache](../../../cache/types/Cache.md) if it differs
@@ -126,7 +126,7 @@ This option is only needed when the value differs from name.
 optional type?: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:733](https://github.com/warp-drive-data/warp-drive/blob/315931ffedd7d94eeba0879ee531991fe4ca5179/warp-drive-packages/core/src/types/schema/fields.ts#L733)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:733](https://github.com/warp-drive-data/warp-drive/blob/7afdd9818145634b9681a2bdd0f8c5cba16d9d9c/warp-drive-packages/core/src/types/schema/fields.ts#L733)
 
 The name of a transform to pass each item
 in the array through before displaying or

@@ -10,7 +10,7 @@ url: /api/@warp-drive/legacy/model/functions/teardownRecord.md
 function teardownRecord(record: Model): void;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/hooks.ts:56](https://github.com/warp-drive-data/warp-drive/blob/315931ffedd7d94eeba0879ee531991fe4ca5179/warp-drive-packages/legacy/src/model/-private/hooks.ts#L56)
+Defined in: [warp-drive-packages/legacy/src/model/-private/hooks.ts:56](https://github.com/warp-drive-data/warp-drive/blob/7afdd9818145634b9681a2bdd0f8c5cba16d9d9c/warp-drive-packages/legacy/src/model/-private/hooks.ts#L56)
 
 The `teardownRecord` hook implementation for use with `Model`. Pass this
 to your store's `teardownRecord` method when configuring the store to

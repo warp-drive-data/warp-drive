@@ -10,7 +10,7 @@ function withReactiveResponse<T, M extends ObjectValue | undefined = ObjectValue
 };
 ```
 
-Defined in: [warp-drive-packages/core/src/request.ts:74](https://github.com/warp-drive-data/warp-drive/blob/315931ffedd7d94eeba0879ee531991fe4ca5179/warp-drive-packages/core/src/request.ts#L74)
+Defined in: [warp-drive-packages/core/src/request.ts:74](https://github.com/warp-drive-data/warp-drive/blob/7afdd9818145634b9681a2bdd0f8c5cba16d9d9c/warp-drive-packages/core/src/request.ts#L74)
 
 Brands the supplied object with the supplied response type
 wrapped in [ReactiveDataDocument](../../reactive/types/ReactiveDataDocument.md). This is a convenience for

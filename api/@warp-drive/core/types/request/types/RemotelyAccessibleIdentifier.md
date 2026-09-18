@@ -12,7 +12,7 @@ type RemotelyAccessibleIdentifier<T extends string = string> = {
 };
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:378](https://github.com/warp-drive-data/warp-drive/blob/315931ffedd7d94eeba0879ee531991fe4ca5179/warp-drive-packages/core/src/types/request.ts#L378)
+Defined in: [warp-drive-packages/core/src/types/request.ts:378](https://github.com/warp-drive-data/warp-drive/blob/7afdd9818145634b9681a2bdd0f8c5cba16d9d9c/warp-drive-packages/core/src/types/request.ts#L378)
 
 A minimal reference to a resource sufficient to build a URL for it,
 as accepted by the request builders.
@@ -31,7 +31,7 @@ as accepted by the request builders.
 id: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:382](https://github.com/warp-drive-data/warp-drive/blob/315931ffedd7d94eeba0879ee531991fe4ca5179/warp-drive-packages/core/src/types/request.ts#L382)
+Defined in: [warp-drive-packages/core/src/types/request.ts:382](https://github.com/warp-drive-data/warp-drive/blob/7afdd9818145634b9681a2bdd0f8c5cba16d9d9c/warp-drive-packages/core/src/types/request.ts#L382)
 
 the resource's persisted id
 
@@ -43,7 +43,7 @@ the resource's persisted id
 optional lid?: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:390](https://github.com/warp-drive-data/warp-drive/blob/315931ffedd7d94eeba0879ee531991fe4ca5179/warp-drive-packages/core/src/types/request.ts#L390)
+Defined in: [warp-drive-packages/core/src/types/request.ts:390](https://github.com/warp-drive-data/warp-drive/blob/7afdd9818145634b9681a2bdd0f8c5cba16d9d9c/warp-drive-packages/core/src/types/request.ts#L390)
 
 the local identifier WarpDrive has assigned to the resource, if known
 
@@ -55,6 +55,6 @@ the local identifier WarpDrive has assigned to the resource, if known
 type: T;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:386](https://github.com/warp-drive-data/warp-drive/blob/315931ffedd7d94eeba0879ee531991fe4ca5179/warp-drive-packages/core/src/types/request.ts#L386)
+Defined in: [warp-drive-packages/core/src/types/request.ts:386](https://github.com/warp-drive-data/warp-drive/blob/7afdd9818145634b9681a2bdd0f8c5cba16d9d9c/warp-drive-packages/core/src/types/request.ts#L386)
 
 the resource's type

@@ -8,7 +8,7 @@ url: /api/@warp-drive/core/types/spec/json-api-raw/types/Link.md
 type Link = string | LinkObject;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:41](https://github.com/warp-drive-data/warp-drive/blob/315931ffedd7d94eeba0879ee531991fe4ca5179/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L41)
+Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:41](https://github.com/warp-drive-data/warp-drive/blob/7afdd9818145634b9681a2bdd0f8c5cba16d9d9c/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L41)
 
 A link is either a plain URI-reference string or a [LinkObject](LinkObject.md)
 carrying additional meta information.

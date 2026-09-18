@@ -29,7 +29,7 @@ function updateRecord<T extends TypedRecordInstance, RT extends TypedRecordInsta
 }): UpdateRequestOptions<ReactiveDataDocument<RT, M, E>, T>;
 ```
 
-Defined in: [-private/json-api/save-record.ts:255](https://github.com/warp-drive-data/warp-drive/blob/315931ffedd7d94eeba0879ee531991fe4ca5179/warp-drive-packages/utilities/src/-private/json-api/save-record.ts#L255)
+Defined in: [-private/json-api/save-record.ts:255](https://github.com/warp-drive-data/warp-drive/blob/7afdd9818145634b9681a2bdd0f8c5cba16d9d9c/warp-drive-packages/utilities/src/-private/json-api/save-record.ts#L255)
 
 :::warning ⚠️ **These Mutation Builders DO NOT Set The Necessary Request Body**
 While this may come as a surprise, the app providing the body ensures that only
@@ -128,7 +128,7 @@ function updateRecord(record: unknown, options?: ConstrainedRequestOptions & {
 }): UpdateRequestOptions;
 ```
 
-Defined in: [-private/json-api/save-record.ts:264](https://github.com/warp-drive-data/warp-drive/blob/315931ffedd7d94eeba0879ee531991fe4ca5179/warp-drive-packages/utilities/src/-private/json-api/save-record.ts#L264)
+Defined in: [-private/json-api/save-record.ts:264](https://github.com/warp-drive-data/warp-drive/blob/7afdd9818145634b9681a2bdd0f8c5cba16d9d9c/warp-drive-packages/utilities/src/-private/json-api/save-record.ts#L264)
 
 :::warning ⚠️ **These Mutation Builders DO NOT Set The Necessary Request Body**
 While this may come as a surprise, the app providing the body ensures that only

@@ -19,7 +19,7 @@ interface Scaffold {
 }
 ```
 
-Defined in: [mock.ts:6](https://github.com/warp-drive-data/warp-drive/blob/315931ffedd7d94eeba0879ee531991fe4ca5179/packages/holodeck/src/mock.ts#L6)
+Defined in: [mock.ts:6](https://github.com/warp-drive-data/warp-drive/blob/7afdd9818145634b9681a2bdd0f8c5cba16d9d9c/packages/holodeck/src/mock.ts#L6)
 
 ## Properties
 
@@ -32,7 +32,7 @@ body:
   | null;
 ```
 
-Defined in: [mock.ts:10](https://github.com/warp-drive-data/warp-drive/blob/315931ffedd7d94eeba0879ee531991fe4ca5179/packages/holodeck/src/mock.ts#L10)
+Defined in: [mock.ts:10](https://github.com/warp-drive-data/warp-drive/blob/7afdd9818145634b9681a2bdd0f8c5cba16d9d9c/packages/holodeck/src/mock.ts#L10)
 
 ***
 
@@ -42,7 +42,7 @@ Defined in: [mock.ts:10](https://github.com/warp-drive-data/warp-drive/blob/3159
 headers: Record<string, string>;
 ```
 
-Defined in: [mock.ts:9](https://github.com/warp-drive-data/warp-drive/blob/315931ffedd7d94eeba0879ee531991fe4ca5179/packages/holodeck/src/mock.ts#L9)
+Defined in: [mock.ts:9](https://github.com/warp-drive-data/warp-drive/blob/7afdd9818145634b9681a2bdd0f8c5cba16d9d9c/packages/holodeck/src/mock.ts#L9)
 
 ***
 
@@ -52,7 +52,7 @@ Defined in: [mock.ts:9](https://github.com/warp-drive-data/warp-drive/blob/31593
 method: string;
 ```
 
-Defined in: [mock.ts:11](https://github.com/warp-drive-data/warp-drive/blob/315931ffedd7d94eeba0879ee531991fe4ca5179/packages/holodeck/src/mock.ts#L11)
+Defined in: [mock.ts:11](https://github.com/warp-drive-data/warp-drive/blob/7afdd9818145634b9681a2bdd0f8c5cba16d9d9c/packages/holodeck/src/mock.ts#L11)
 
 ***
 
@@ -62,7 +62,7 @@ Defined in: [mock.ts:11](https://github.com/warp-drive-data/warp-drive/blob/3159
 response: Record<string, unknown>;
 ```
 
-Defined in: [mock.ts:13](https://github.com/warp-drive-data/warp-drive/blob/315931ffedd7d94eeba0879ee531991fe4ca5179/packages/holodeck/src/mock.ts#L13)
+Defined in: [mock.ts:13](https://github.com/warp-drive-data/warp-drive/blob/7afdd9818145634b9681a2bdd0f8c5cba16d9d9c/packages/holodeck/src/mock.ts#L13)
 
 ***
 
@@ -72,7 +72,7 @@ Defined in: [mock.ts:13](https://github.com/warp-drive-data/warp-drive/blob/3159
 status: number;
 ```
 
-Defined in: [mock.ts:7](https://github.com/warp-drive-data/warp-drive/blob/315931ffedd7d94eeba0879ee531991fe4ca5179/packages/holodeck/src/mock.ts#L7)
+Defined in: [mock.ts:7](https://github.com/warp-drive-data/warp-drive/blob/7afdd9818145634b9681a2bdd0f8c5cba16d9d9c/packages/holodeck/src/mock.ts#L7)
 
 ***
 
@@ -82,7 +82,7 @@ Defined in: [mock.ts:7](https://github.com/warp-drive-data/warp-drive/blob/31593
 optional statusText?: string;
 ```
 
-Defined in: [mock.ts:8](https://github.com/warp-drive-data/warp-drive/blob/315931ffedd7d94eeba0879ee531991fe4ca5179/packages/holodeck/src/mock.ts#L8)
+Defined in: [mock.ts:8](https://github.com/warp-drive-data/warp-drive/blob/7afdd9818145634b9681a2bdd0f8c5cba16d9d9c/packages/holodeck/src/mock.ts#L8)
 
 ***
 
@@ -92,4 +92,4 @@ Defined in: [mock.ts:8](https://github.com/warp-drive-data/warp-drive/blob/31593
 url: string;
 ```
 
-Defined in: [mock.ts:12](https://github.com/warp-drive-data/warp-drive/blob/315931ffedd7d94eeba0879ee531991fe4ca5179/packages/holodeck/src/mock.ts#L12)
+Defined in: [mock.ts:12](https://github.com/warp-drive-data/warp-drive/blob/7afdd9818145634b9681a2bdd0f8c5cba16d9d9c/packages/holodeck/src/mock.ts#L12)
