@@ -12,7 +12,7 @@ function resourceSchema<T extends
   | LegacyResourceSchema): T;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2510](https://github.com/warp-drive-data/warp-drive/blob/046b5e826d481c655eb9c1dd03a0fb171a65e0f3/warp-drive-packages/core/src/types/schema/fields.ts#L2510)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2510](https://github.com/warp-drive-data/warp-drive/blob/2147c43395d4507f6b19c72a4b94f1d81379737b/warp-drive-packages/core/src/types/schema/fields.ts#L2510)
 
 A no-op type utility that enables type-checking resource schema
 definitions.

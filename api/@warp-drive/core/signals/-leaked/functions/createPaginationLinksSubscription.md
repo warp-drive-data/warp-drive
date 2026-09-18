@@ -9,7 +9,7 @@ url: >-
 function createPaginationLinksSubscription<RT, E>(args: PaginationLinksSubscriptionArgs<RT, E>): PaginationLinksSubscription<RT, E>;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-links-subscription.ts:81](https://github.com/warp-drive-data/warp-drive/blob/046b5e826d481c655eb9c1dd03a0fb171a65e0f3/warp-drive-packages/core/src/signals/pagination-links-subscription.ts#L81)
+Defined in: [warp-drive-packages/core/src/signals/pagination-links-subscription.ts:81](https://github.com/warp-drive-data/warp-drive/blob/2147c43395d4507f6b19c72a4b94f1d81379737b/warp-drive-packages/core/src/signals/pagination-links-subscription.ts#L81)
 
 Creates the [PaginationLinksSubscription](../types/PaginationLinksSubscription.md) a links component (such as
 `<EachLink />`) uses to derive its links from a [PagedPaginationState](../types/PagedPaginationState.md).

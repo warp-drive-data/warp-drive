@@ -4,7 +4,7 @@ url: /api/@ember-data/request-utils/index/classes/LifetimesService.md
 
 # &#x20;LifetimesService
 
-Defined in: [index.ts:53](https://github.com/warp-drive-data/warp-drive/blob/046b5e826d481c655eb9c1dd03a0fb171a65e0f3/packages/request-utils/src/index.ts#L53)
+Defined in: [index.ts:53](https://github.com/warp-drive-data/warp-drive/blob/2147c43395d4507f6b19c72a4b94f1d81379737b/packages/request-utils/src/index.ts#L53)
 
 ## Extends
 
@@ -18,7 +18,7 @@ Defined in: [index.ts:53](https://github.com/warp-drive-data/warp-drive/blob/046
 new LifetimesService(config: PolicyConfig): LifetimesService;
 ```
 
-Defined in: [index.ts:54](https://github.com/warp-drive-data/warp-drive/blob/046b5e826d481c655eb9c1dd03a0fb171a65e0f3/packages/request-utils/src/index.ts#L54)
+Defined in: [index.ts:54](https://github.com/warp-drive-data/warp-drive/blob/2147c43395d4507f6b19c72a4b94f1d81379737b/packages/request-utils/src/index.ts#L54)
 
 #### Parameters
 

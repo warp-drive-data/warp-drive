@@ -10,7 +10,7 @@ url: /api/@warp-drive/experiments/data-worker/variables/CacheHandler.md
 const CacheHandler: CacheHandlerType;
 ```
 
-Defined in: [data-worker/cache-handler.ts:29](https://github.com/warp-drive-data/warp-drive/blob/046b5e826d481c655eb9c1dd03a0fb171a65e0f3/warp-drive-packages/experiments/src/data-worker/cache-handler.ts#L29)
+Defined in: [data-worker/cache-handler.ts:29](https://github.com/warp-drive-data/warp-drive/blob/2147c43395d4507f6b19c72a4b94f1d81379737b/warp-drive-packages/experiments/src/data-worker/cache-handler.ts#L29)
 
 A simplified CacheHandler that hydrates ResourceDataDocuments from the cache
 with their referenced resources.

@@ -16,7 +16,7 @@ interface ContentFeatures<RT> {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:65](https://github.com/warp-drive-data/warp-drive/blob/046b5e826d481c655eb9c1dd03a0fb171a65e0f3/warp-drive-packages/core/src/signals/request-subscription.ts#L65)
+Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:65](https://github.com/warp-drive-data/warp-drive/blob/2147c43395d4507f6b19c72a4b94f1d81379737b/warp-drive-packages/core/src/signals/request-subscription.ts#L65)
 
 Utilities for keeping the request fresh
 
@@ -34,7 +34,7 @@ Utilities for keeping the request fresh
 optional abort?: () => void;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:89](https://github.com/warp-drive-data/warp-drive/blob/046b5e826d481c655eb9c1dd03a0fb171a65e0f3/warp-drive-packages/core/src/signals/request-subscription.ts#L89)
+Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:89](https://github.com/warp-drive-data/warp-drive/blob/2147c43395d4507f6b19c72a4b94f1d81379737b/warp-drive-packages/core/src/signals/request-subscription.ts#L89)
 
 Aborts the in-flight refresh/reload request, if any.
 
@@ -50,7 +50,7 @@ Aborts the in-flight refresh/reload request, if any.
 isHidden: boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:73](https://github.com/warp-drive-data/warp-drive/blob/046b5e826d481c655eb9c1dd03a0fb171a65e0f3/warp-drive-packages/core/src/signals/request-subscription.ts#L73)
+Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:73](https://github.com/warp-drive-data/warp-drive/blob/2147c43395d4507f6b19c72a4b94f1d81379737b/warp-drive-packages/core/src/signals/request-subscription.ts#L73)
 
 Whether the browser reports that the tab is hidden.
 
@@ -62,7 +62,7 @@ Whether the browser reports that the tab is hidden.
 isOnline: boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:69](https://github.com/warp-drive-data/warp-drive/blob/046b5e826d481c655eb9c1dd03a0fb171a65e0f3/warp-drive-packages/core/src/signals/request-subscription.ts#L69)
+Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:69](https://github.com/warp-drive-data/warp-drive/blob/2147c43395d4507f6b19c72a4b94f1d81379737b/warp-drive-packages/core/src/signals/request-subscription.ts#L69)
 
 Whether the browser reports that the network is online.
 
@@ -74,7 +74,7 @@ Whether the browser reports that the network is online.
 isRefreshing: boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:77](https://github.com/warp-drive-data/warp-drive/blob/046b5e826d481c655eb9c1dd03a0fb171a65e0f3/warp-drive-packages/core/src/signals/request-subscription.ts#L77)
+Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:77](https://github.com/warp-drive-data/warp-drive/blob/2147c43395d4507f6b19c72a4b94f1d81379737b/warp-drive-packages/core/src/signals/request-subscription.ts#L77)
 
 Whether the subscription is currently refreshing the request.
 
@@ -86,7 +86,7 @@ Whether the subscription is currently refreshing the request.
 optional latestRequest?: Future<RT>;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:93](https://github.com/warp-drive-data/warp-drive/blob/046b5e826d481c655eb9c1dd03a0fb171a65e0f3/warp-drive-packages/core/src/signals/request-subscription.ts#L93)
+Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:93](https://github.com/warp-drive-data/warp-drive/blob/2147c43395d4507f6b19c72a4b94f1d81379737b/warp-drive-packages/core/src/signals/request-subscription.ts#L93)
 
 The most recent refresh/reload request that was made, if any.
 
@@ -98,7 +98,7 @@ The most recent refresh/reload request that was made, if any.
 refresh: () => Promise<void>;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:81](https://github.com/warp-drive-data/warp-drive/blob/046b5e826d481c655eb9c1dd03a0fb171a65e0f3/warp-drive-packages/core/src/signals/request-subscription.ts#L81)
+Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:81](https://github.com/warp-drive-data/warp-drive/blob/2147c43395d4507f6b19c72a4b94f1d81379737b/warp-drive-packages/core/src/signals/request-subscription.ts#L81)
 
 Refreshes the request, updating it in the background.
 
@@ -114,7 +114,7 @@ Refreshes the request, updating it in the background.
 reload: () => Promise<void>;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:85](https://github.com/warp-drive-data/warp-drive/blob/046b5e826d481c655eb9c1dd03a0fb171a65e0f3/warp-drive-packages/core/src/signals/request-subscription.ts#L85)
+Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:85](https://github.com/warp-drive-data/warp-drive/blob/2147c43395d4507f6b19c72a4b94f1d81379737b/warp-drive-packages/core/src/signals/request-subscription.ts#L85)
 
 Retries the request, reloading it from the server.
 

@@ -8,7 +8,7 @@ url: /api/@warp-drive/utilities/handlers/variables/MetaDocHandler.md
 const MetaDocHandler: Handler;
 ```
 
-Defined in: [-private/handlers/meta-doc.ts:50](https://github.com/warp-drive-data/warp-drive/blob/046b5e826d481c655eb9c1dd03a0fb171a65e0f3/warp-drive-packages/utilities/src/-private/handlers/meta-doc.ts#L50)
+Defined in: [-private/handlers/meta-doc.ts:50](https://github.com/warp-drive-data/warp-drive/blob/2147c43395d4507f6b19c72a4b94f1d81379737b/warp-drive-packages/utilities/src/-private/handlers/meta-doc.ts#L50)
 
 MetaDocHandler processes requests that are marked as meta requests.
 
