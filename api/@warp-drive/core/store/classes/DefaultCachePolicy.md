@@ -4,7 +4,7 @@ url: /api/@warp-drive/core/store/classes/DefaultCachePolicy.md
 
 # &#x20;DefaultCachePolicy
 
-Defined in: [warp-drive-packages/core/src/store/-private/default-cache-policy.ts:549](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/warp-drive-packages/core/src/store/-private/default-cache-policy.ts#L549)
+Defined in: [warp-drive-packages/core/src/store/-private/default-cache-policy.ts:549](https://github.com/warp-drive-data/warp-drive/blob/315931ffedd7d94eeba0879ee531991fe4ca5179/warp-drive-packages/core/src/store/-private/default-cache-policy.ts#L549)
 
 A basic [CachePolicy](../../types/CachePolicy.md) that can be added to the Store service.
 
@@ -98,7 +98,7 @@ in the policy config.
 new DefaultCachePolicy(config: PolicyConfig): DefaultCachePolicy;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/default-cache-policy.ts:574](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/warp-drive-packages/core/src/store/-private/default-cache-policy.ts#L574)
+Defined in: [warp-drive-packages/core/src/store/-private/default-cache-policy.ts:574](https://github.com/warp-drive-data/warp-drive/blob/315931ffedd7d94eeba0879ee531991fe4ca5179/warp-drive-packages/core/src/store/-private/default-cache-policy.ts#L574)
 
 #### Parameters
 
@@ -126,7 +126,7 @@ didRequest(
 ): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/default-cache-policy.ts:658](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/warp-drive-packages/core/src/store/-private/default-cache-policy.ts#L658)
+Defined in: [warp-drive-packages/core/src/store/-private/default-cache-policy.ts:658](https://github.com/warp-drive-data/warp-drive/blob/315931ffedd7d94eeba0879ee531991fe4ca5179/warp-drive-packages/core/src/store/-private/default-cache-policy.ts#L658)
 
 Invoked when a request has been fulfilled from the configured request handlers.
 This is invoked by the CacheHandler for both foreground and background requests
@@ -173,7 +173,7 @@ This method should not be invoked directly by consumers.
 invalidateRequest(cacheKey: RequestKey, store: Store): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/default-cache-policy.ts:610](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/warp-drive-packages/core/src/store/-private/default-cache-policy.ts#L610)
+Defined in: [warp-drive-packages/core/src/store/-private/default-cache-policy.ts:610](https://github.com/warp-drive-data/warp-drive/blob/315931ffedd7d94eeba0879ee531991fe4ca5179/warp-drive-packages/core/src/store/-private/default-cache-policy.ts#L610)
 
 Invalidate a request by its CacheKey for the given store instance.
 
@@ -207,7 +207,7 @@ store.lifetimes.invalidateRequest(store, cacheKey);
 invalidateRequestsForType(type: string, store: Store): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/default-cache-policy.ts:631](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/warp-drive-packages/core/src/store/-private/default-cache-policy.ts#L631)
+Defined in: [warp-drive-packages/core/src/store/-private/default-cache-policy.ts:631](https://github.com/warp-drive-data/warp-drive/blob/315931ffedd7d94eeba0879ee531991fe4ca5179/warp-drive-packages/core/src/store/-private/default-cache-policy.ts#L631)
 
 Invalidate all requests associated to a specific type
 for a given store instance.
@@ -245,7 +245,7 @@ store.lifetimes.invalidateRequestsForType(store, 'person');
 isHardExpired(cacheKey: RequestKey, store: Store): boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/default-cache-policy.ts:709](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/warp-drive-packages/core/src/store/-private/default-cache-policy.ts#L709)
+Defined in: [warp-drive-packages/core/src/store/-private/default-cache-policy.ts:709](https://github.com/warp-drive-data/warp-drive/blob/315931ffedd7d94eeba0879ee531991fe4ca5179/warp-drive-packages/core/src/store/-private/default-cache-policy.ts#L709)
 
 Invoked to determine if the request may be fulfilled from cache
 if possible.
@@ -285,7 +285,7 @@ true if the request is considered hard expired
 isSoftExpired(cacheKey: RequestKey, store: Store): boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/default-cache-policy.ts:742](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/warp-drive-packages/core/src/store/-private/default-cache-policy.ts#L742)
+Defined in: [warp-drive-packages/core/src/store/-private/default-cache-policy.ts:742](https://github.com/warp-drive-data/warp-drive/blob/315931ffedd7d94eeba0879ee531991fe4ca5179/warp-drive-packages/core/src/store/-private/default-cache-policy.ts#L742)
 
 Invoked if `isHardExpired` is false to determine if the request
 should be update behind the scenes if cache data is already available.

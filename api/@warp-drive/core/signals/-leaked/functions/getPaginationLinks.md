@@ -8,7 +8,7 @@ url: /api/@warp-drive/core/signals/-leaked/functions/getPaginationLinks.md
 function getPaginationLinks<RT, E>(state: PagedPaginationState<RT, E>): Readonly<PaginationLinks<RT, E>>;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-links.ts:372](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/warp-drive-packages/core/src/signals/pagination-links.ts#L372)
+Defined in: [warp-drive-packages/core/src/signals/pagination-links.ts:372](https://github.com/warp-drive-data/warp-drive/blob/315931ffedd7d94eeba0879ee531991fe4ca5179/warp-drive-packages/core/src/signals/pagination-links.ts#L372)
 
 Get the [PaginationLinks](../types/PaginationLinks.md) for a given [PaginationState](../types/PaginationState.md). Returns
 the same instance for the same state, so repeated calls (for example a

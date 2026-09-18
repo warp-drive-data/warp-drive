@@ -8,7 +8,7 @@ url: /api/@warp-drive/utilities/string/functions/loadIrregular.md
 function loadIrregular(irregularPairs: [string, string][]): void;
 ```
 
-Defined in: [-private/string/inflect.ts:72](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/warp-drive-packages/utilities/src/-private/string/inflect.ts#L72)
+Defined in: [-private/string/inflect.ts:72](https://github.com/warp-drive-data/warp-drive/blob/315931ffedd7d94eeba0879ee531991fe4ca5179/warp-drive-packages/utilities/src/-private/string/inflect.ts#L72)
 
 Marks a list of word pairs as irregular. Irregular words have unique
 pluralization and singularization rules.

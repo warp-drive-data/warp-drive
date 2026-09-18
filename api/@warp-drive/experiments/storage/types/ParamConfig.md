@@ -14,7 +14,7 @@ interface ParamConfig {
 }
 ```
 
-Defined in: [storage/query-params.ts:9](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/warp-drive-packages/experiments/src/storage/query-params.ts#L9)
+Defined in: [storage/query-params.ts:9](https://github.com/warp-drive-data/warp-drive/blob/315931ffedd7d94eeba0879ee531991fe4ca5179/warp-drive-packages/experiments/src/storage/query-params.ts#L9)
 
 Configuration options for fields that are also query parameters
 
@@ -26,7 +26,7 @@ Configuration options for fields that are also query parameters
 deserialize: (urlValue: string, instance: any) => unknown;
 ```
 
-Defined in: [storage/query-params.ts:19](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/warp-drive-packages/experiments/src/storage/query-params.ts#L19)
+Defined in: [storage/query-params.ts:19](https://github.com/warp-drive-data/warp-drive/blob/315931ffedd7d94eeba0879ee531991fe4ca5179/warp-drive-packages/experiments/src/storage/query-params.ts#L19)
 
 Convert a string value from the URL back into
 its original type
@@ -53,7 +53,7 @@ its original type
 optional getDefault?: (instance: any) => unknown;
 ```
 
-Defined in: [storage/query-params.ts:29](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/warp-drive-packages/experiments/src/storage/query-params.ts#L29)
+Defined in: [storage/query-params.ts:29](https://github.com/warp-drive-data/warp-drive/blob/315931ffedd7d94eeba0879ee531991fe4ca5179/warp-drive-packages/experiments/src/storage/query-params.ts#L29)
 
 Get the default value for this param from the given instance.
 
@@ -81,7 +81,7 @@ not the serialized URL form.
 serialize: (value: unknown, instance: any) => string | null;
 ```
 
-Defined in: [storage/query-params.ts:14](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/warp-drive-packages/experiments/src/storage/query-params.ts#L14)
+Defined in: [storage/query-params.ts:14](https://github.com/warp-drive-data/warp-drive/blob/315931ffedd7d94eeba0879ee531991fe4ca5179/warp-drive-packages/experiments/src/storage/query-params.ts#L14)
 
 Convert a value into a string for storage in the URL.
 `null` indicates the value should be omitted from the URL.

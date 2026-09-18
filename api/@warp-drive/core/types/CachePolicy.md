@@ -16,7 +16,7 @@ interface CachePolicy {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/cache-handler/types.ts:18](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/warp-drive-packages/core/src/store/-private/cache-handler/types.ts#L18)
+Defined in: [warp-drive-packages/core/src/store/-private/cache-handler/types.ts:18](https://github.com/warp-drive-data/warp-drive/blob/315931ffedd7d94eeba0879ee531991fe4ca5179/warp-drive-packages/core/src/store/-private/cache-handler/types.ts#L18)
 
 A service which an application may provide to the store via
 the store's `lifetimes` property to configure the behavior
@@ -44,7 +44,7 @@ optional didRequest(
 ): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/cache-handler/types.ts:86](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/warp-drive-packages/core/src/store/-private/cache-handler/types.ts#L86)
+Defined in: [warp-drive-packages/core/src/store/-private/cache-handler/types.ts:86](https://github.com/warp-drive-data/warp-drive/blob/315931ffedd7d94eeba0879ee531991fe4ca5179/warp-drive-packages/core/src/store/-private/cache-handler/types.ts#L86)
 
 Invoked when a request has been fulfilled from the configured request handlers.
 This is invoked for both foreground and background requests once the cache has
@@ -103,7 +103,7 @@ store.notifications.subscribe(identifier, (_, type) => {
 isHardExpired(identifier: RequestKey, store: Store): boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/cache-handler/types.ts:32](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/warp-drive-packages/core/src/store/-private/cache-handler/types.ts#L32)
+Defined in: [warp-drive-packages/core/src/store/-private/cache-handler/types.ts:32](https://github.com/warp-drive-data/warp-drive/blob/315931ffedd7d94eeba0879ee531991fe4ca5179/warp-drive-packages/core/src/store/-private/cache-handler/types.ts#L32)
 
 Invoked to determine if the request may be fulfilled from cache
 if possible.
@@ -138,7 +138,7 @@ true if the request is considered hard expired
 isSoftExpired(identifier: RequestKey, store: Store): boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/cache-handler/types.ts:45](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/warp-drive-packages/core/src/store/-private/cache-handler/types.ts#L45)
+Defined in: [warp-drive-packages/core/src/store/-private/cache-handler/types.ts:45](https://github.com/warp-drive-data/warp-drive/blob/315931ffedd7d94eeba0879ee531991fe4ca5179/warp-drive-packages/core/src/store/-private/cache-handler/types.ts#L45)
 
 Invoked if `isHardExpired` is false to determine if the request
 should be update behind the scenes if cache data is already available.
@@ -176,7 +176,7 @@ optional willRequest(
 ): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/cache-handler/types.ts:55](https://github.com/warp-drive-data/warp-drive/blob/331a6acae2c14f865cc913111e8f3f2d4f6d7e44/warp-drive-packages/core/src/store/-private/cache-handler/types.ts#L55)
+Defined in: [warp-drive-packages/core/src/store/-private/cache-handler/types.ts:55](https://github.com/warp-drive-data/warp-drive/blob/315931ffedd7d94eeba0879ee531991fe4ca5179/warp-drive-packages/core/src/store/-private/cache-handler/types.ts#L55)
 
 Invoked when a request will be sent to the configured request handlers.
 This is invoked for both foreground and background requests.
