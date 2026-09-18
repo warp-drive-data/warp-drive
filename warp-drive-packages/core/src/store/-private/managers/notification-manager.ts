@@ -294,6 +294,8 @@ export class NotificationManager {
   /** @internal */
   declare private _hasFlush: boolean;
   /** @internal */
+  declare private _hasTransactionFlush: boolean;
+  /** @internal */
   declare private _onFlushCB?: () => void;
 
   constructor(store: Store) {
@@ -301,6 +303,7 @@ export class NotificationManager {
     this.isDestroyed = false;
     this._buffered = new Map();
     this._hasFlush = false;
+    this._hasTransactionFlush = false;
     this._cache = new Map();
   }
 
@@ -467,7 +470,26 @@ export class NotificationManager {
         count(`notify ${'type' in cacheKey ? cacheKey.type : '<document>'} ${value} ${keyToString(key)}`);
       }
 
-      if (!this._scheduleNotify()) {
+      // relationship notifications that arrive while a store transaction
+      // (store._run / store._join) is active — e.g. while the graph is still
+      // syncing relationship state — are deferred into the transaction's
+      // notify phase rather than dispatched mid-mutation. The notify phase
+      // runs synchronously at the end of the transaction, so this never
+      // delays delivery past the current calling context. All other
+      // namespaces flush immediately (below): several consumers depend on
+      // e.g. `'state'` notifications being delivered before a subsequent
+      // teardown within the same transaction unsubscribes them.
+      let scheduled = false;
+      if (value === 'relationships' && this.store._cbs) {
+        if (!this._hasTransactionFlush) {
+          this._hasTransactionFlush = true;
+          this.store._schedule('notify', () => this._flushTransaction());
+        }
+      } else {
+        scheduled = this._scheduleNotify();
+      }
+
+      if (!scheduled) {
         if (LOG_NOTIFICATIONS) {
           log(
             'notify',
@@ -522,28 +544,66 @@ export class NotificationManager {
     return true;
   }
 
+  /**
+   * The deferred flush scheduled into a store transaction's notify phase
+   * when a `'relationships'` notification arrives mid-transaction (see
+   * {@link NotificationManager.notify}). Runs synchronously at the end of
+   * the transaction, once the graph has finished syncing.
+   *
+   * @internal
+   */
+  private _flushTransaction(): void {
+    this._hasTransactionFlush = false;
+    // a request/push window (_enableAsyncFlush) ends in an explicit
+    // _flush() of its own; leave delivery to it rather than flushing
+    // mid-window.
+    if (this.store._enableAsyncFlush && !willSyncFlushWatchers()) {
+      this._hasFlush = true;
+      return;
+    }
+    this._flush();
+  }
+
   /** @internal */
   _flush(): void {
     const buffered = this._buffered;
     if (buffered.size) {
-      this._buffered = new Map();
-      for (const [cacheKey, states] of buffered) {
-        // `states` iterates in the order each namespace first fired during
-        // this flush window (see `mergeIntoBuffer`).
-        for (const [value, bucket] of states) {
-          if (bucket === null) {
-            // @ts-expect-error overload doesn't narrow within body
-            _flushNotification(this._cache, cacheKey, value, null);
-          } else if (bucket instanceof Set) {
-            // wildcard: one notification, key `null`, filtered by the union
-            // of channels any of the coalesced keyless touches carried.
-            // @ts-expect-error overload doesn't narrow within body
-            _flushNotification(this._cache, cacheKey, value, null, bucket);
-          } else {
-            for (const [key, channels] of bucket) {
-              // @ts-expect-error overload doesn't narrow within body
-              _flushNotification(this._cache, cacheKey, value, key, channels);
+      if (this._hasTransactionFlush) {
+        // a transaction-deferred relationships flush is still pending (see
+        // `notify`): deliver everything else now but withhold relationship
+        // buckets — they are owed to the transaction's notify phase and must
+        // not be dispatched mid-mutation. Extract before delivering so that
+        // notifies triggered by subscriber callbacks merge into the buffer
+        // cleanly rather than into a collection being iterated.
+        const pending: Array<
+          [
+            RequestKey | ResourceKey,
+            NotificationType | DocumentCacheOperation,
+            Map<string, ChannelSet> | ChannelSet | null,
+          ]
+        > = [];
+        for (const [cacheKey, states] of buffered) {
+          for (const [value, bucket] of states) {
+            if (value === 'relationships') {
+              continue;
             }
+            pending.push([cacheKey, value, bucket]);
+            states.delete(value);
+          }
+          if (states.size === 0) {
+            buffered.delete(cacheKey);
+          }
+        }
+        for (const [cacheKey, value, bucket] of pending) {
+          this._deliver(cacheKey, value, bucket);
+        }
+      } else {
+        this._buffered = new Map();
+        for (const [cacheKey, states] of buffered) {
+          // `states` iterates in the order each namespace first fired during
+          // this flush window (see `mergeIntoBuffer`).
+          for (const [value, bucket] of states) {
+            this._deliver(cacheKey, value, bucket);
           }
         }
       }
@@ -552,6 +612,28 @@ export class NotificationManager {
     this._hasFlush = false;
     this._onFlushCB?.();
     this._onFlushCB = undefined;
+  }
+
+  /** @internal */
+  private _deliver(
+    cacheKey: RequestKey | ResourceKey,
+    value: NotificationType | DocumentCacheOperation,
+    bucket: Map<string, ChannelSet> | ChannelSet | null
+  ): void {
+    if (bucket === null) {
+      // @ts-expect-error overload doesn't narrow within body
+      _flushNotification(this._cache, cacheKey, value, null);
+    } else if (bucket instanceof Set) {
+      // wildcard: one notification, key `null`, filtered by the union
+      // of channels any of the coalesced keyless touches carried.
+      // @ts-expect-error overload doesn't narrow within body
+      _flushNotification(this._cache, cacheKey, value, null, bucket);
+    } else {
+      for (const [key, channels] of bucket) {
+        // @ts-expect-error overload doesn't narrow within body
+        _flushNotification(this._cache, cacheKey, value, key, channels);
+      }
+    }
   }
 
   /** @internal */
