@@ -377,7 +377,7 @@ catalog:
   morgan: ^1.12.1
   oxfmt: ^0.68.0
   oxlint: ^1.83.0
-  oxlint-tsgolint: ^7.0.2001
+  oxlint-tsgolint: ^7.0.2002
   pretender: ^3.4.7
   prettier: ^3.9.6
   prettier-plugin-ember-template-tag: ^2.1.8
