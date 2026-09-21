@@ -24,19 +24,19 @@ section.
 > what we need in a broader scope long before we dive into the 
 > specifics.
 
-- [Editions](#-editions)
-  - [Polaris](#-polaris)
-- [Releases](#-releases)
-  - [5.x Series](#-5x-series)
+- [Editions](#editions)
+  - [Polaris](#polaris)
+- [Releases](#releases)
+  - [5.x Series](#5x-series)
 
 --------------
 
-## 💜 Editions
+## 💜 Editions {#editions}
 
 Each Edition encompasses a set of main themes that together we feel presents a distinct holistic
 picture for how to think about and utilize WarpDrive.
 
-### 🔸 Polaris
+### 🔸 Polaris {#polaris}
 
 Polaris is an upcoming edition of Ember and related projects (embroider, WarpDrive, EmberCLI).
 
@@ -192,9 +192,9 @@ const MyRoute = <template>
 
 --------------
 
-## 💜 Releases
+## 💜 Releases {#releases}
 
-### 🔸 5.x Series
+### 🔸 5.x Series {#5x-series}
 
 Features (non-exhaustive):
 

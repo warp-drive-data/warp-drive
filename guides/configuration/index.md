@@ -10,7 +10,7 @@ outline:
 # Setup
 
 Before we start working with our data we need to configure ***Warp*Drive**'s [build plugin](#configure-the-build-plugin) and
-a [Store](#quick-store-setup) to manage our data.
+a [Store](#configure-the-store) to manage our data.
 
 <img class="dark-only" src="../images/configuration-dark.png" alt="interchangeable components talk with each other" width="100%">
 <img class="light-only" src="../images/configuration-light.png" alt="interchangeable components talk with each other" width="100%">

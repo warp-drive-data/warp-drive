@@ -15,7 +15,7 @@ Often `ManyToNone` is used for exactly this sort of case, where conceptually the
 
 Here's how we can define such a relationship via various mechanisms.
 
-- [Using @warp-drive/legacy/model](#using-warp-drivelegacymodel)
+- [Using @warp-drive/legacy/model](#using-warp-drive-legacy-model)
 - [Using json schemas](#using-json-schemas)
 - [🚧 Using @warp-drive/schema-record](#using-warp-driveschema-record-🚧-coming-soon)
   - [Legacy Compat Mode](#legacycompat-mode)

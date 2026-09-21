@@ -59,7 +59,7 @@ Second, it may be the case that runner is able to share the activity data with a
 
 Head over to [many-to-none](./many-to-none.md) and [one-to-none](./one-to-none.md) if this is the setup that is best for you. Else, here's how we can define such a relationship via various mechanisms.
 
-- [Using @warp-drive/legacy/model](#using-warp-drivelegacymodel)
+- [Using @warp-drive/legacy/model](#using-warp-drive-legacy-model)
 - [Using json schemas](#using-json-schemas)
 - [🚧 Using @warp-drive/schema-record](#using-warp-driveschema-record-🚧-coming-soon)
   - [Legacy Compat Mode](#legacycompat-mode)

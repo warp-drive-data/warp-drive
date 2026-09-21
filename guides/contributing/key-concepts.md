@@ -1,10 +1,10 @@
 # Key Concepts
 
-- [Identity](#-identity)
+- [Identity](#identity)
 
 -------------
 
-## 🔸 Identity
+## 🔸 Identity {#identity}
 
 ### Working with Identifiers and TypeScript
 

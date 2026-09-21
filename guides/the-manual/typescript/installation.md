@@ -43,7 +43,7 @@ below guide.
 
 There are currently two ways to gain access to EmberData's native types.
 
-1) [Use A Version That Has Types](#using-native-types)
+1) [Use A Version That Has Types](#using-versions-that-supply-types)
 
 2) [Use Official Types Packages](#using-types-packages)
 with releases `>= 4.12.*`
