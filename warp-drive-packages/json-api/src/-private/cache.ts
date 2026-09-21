@@ -1827,23 +1827,12 @@ function getDefaultValue(
 }
 
 /**
- * Narrow `subset` to the members that survived {@link patchLocalAttributes}' pruning. Only called
- * when that pruning actually removed something, so the allocation is skipped on the common path
- * where a resource has no local edits at all.
- */
-function retainSurviving(subset: Set<string> | undefined, survivors: Set<string>): Set<string> | undefined {
-  if (!subset?.size) return subset;
-  const result = new Set<string>();
-  for (const key of subset) {
-    if (survivors.has(key)) result.add(key);
-  }
-  return result.size ? result : undefined;
-}
-
-/**
  * Which projection each changed key moved, so the caller can notify on the matching channel:
- * `localOnly` and `remoteOnly` on theirs, `both` unscoped. `remoteChanged` is the union
- * {@link patchLocalAttributes} reconciles against.
+ * `localOnly` and `remoteOnly` on theirs, `both` unscoped. `remoteChanged` is the union of
+ * `remoteOnly` and `both`.
+ *
+ * Every set is final as returned. Keys whose local edit the incoming state confirms are left out
+ * during the partition itself, so no caller has to walk these sets again to re-filter them.
  *
  * `undefined` rather than empty Sets: this runs on every `upsert`, and a resource where nothing
  * moved should cost no allocation.
@@ -1898,13 +1887,21 @@ function candidateKeys(
  * describing: `prevRemote` is the remote state as it stands *before* `promoted` and `updates` are
  * applied, and the two callers merge different things. Reading them off `cached` would make the
  * result depend on whether the caller had already mutated it.
+ *
+ * `pendingRemote` is the same baseline {@link patchLocalAttributes} will compare local edits
+ * against when the caller runs it, for the keys it holds -- the merged remote value elsewhere. It
+ * is what the caller's `cached.inflightAttrs` will be *at that point*, which is `null` for a
+ * commit (the promotion has been consumed by then) and the still-in-flight attrs for an upsert.
+ * Keeping the two baselines identical is what lets the partition below decide, on its own, which
+ * keys that pass is going to drop.
  */
 function calculateChangedKeys(
   prevRemote: Record<string, unknown> | null,
   localAttrs: Record<string, unknown> | null,
   updates: ExistingResourceObject['attributes'],
   promoted: Record<string, unknown> | null,
-  fields: ReturnType<Store['schema']['fields']>
+  fields: ReturnType<Store['schema']['fields']>,
+  pendingRemote: Record<string, unknown> | null
 ): ProjectionChanges {
   const keys = candidateKeys(updates, promoted);
   if (keys === null) return NO_PROJECTION_CHANGES;
@@ -1946,13 +1943,30 @@ function calculateChangedKeys(
     const localMoved = wasLocal !== nowLocal;
 
     if (remoteMoved) {
-      (remoteChanged ??= new Set<string>()).add(key);
-      if (localMoved) {
-        (both ??= new Set<string>()).add(key);
-      } else {
-        (remoteOnly ??= new Set<string>()).add(key);
+      // A local edit the incoming state has caught up to is one `patchLocalAttributes` is about
+      // to drop, and dropping it moves nothing: the local projection was already reading this
+      // value. Deciding it here costs one comparison on a key already in hand, where deciding it
+      // afterwards meant re-walking `both` and `remoteOnly` and rebuilding them -- sets sized by
+      // the payload rather than by the edit.
+      //
+      // Only reachable when the remote moved, so an unchanged key never pays for the lookup, and
+      // `isEdited` short-circuits the `in` for every edit that is not to `undefined`.
+      const hasLocalEntry = isEdited || (localAttrs !== null && key in localAttrs);
+      const confirmed =
+        hasLocalEntry &&
+        localEdit === (pendingRemote !== null && key in pendingRemote ? pendingRemote[key] : nowRemote);
+
+      if (!confirmed) {
+        (remoteChanged ??= new Set<string>()).add(key);
+        if (localMoved) {
+          (both ??= new Set<string>()).add(key);
+        } else {
+          (remoteOnly ??= new Set<string>()).add(key);
+        }
       }
     } else if (localMoved) {
+      // `localOnly` needs no such filter: a confirmed edit cannot move the local projection, so
+      // nothing that lands here came from one.
       (localOnly ??= new Set<string>()).add(key);
     }
   }
@@ -2042,7 +2056,7 @@ function isRelationship(field: FieldSchema): field is LegacyRelationshipField | 
   return kind === 'hasMany' || kind === 'belongsTo' || kind === 'resource' || kind === 'collection';
 }
 
-function patchLocalAttributes(cached: CachedResource, changedRemoteKeys?: Set<string>): boolean {
+function patchLocalAttributes(cached: CachedResource): boolean {
   const { localAttrs, remoteAttrs, inflightAttrs, defaultAttrs, changes } = cached;
   if (!localAttrs) {
     cached.changes = null;
@@ -2063,10 +2077,8 @@ function patchLocalAttributes(cached: CachedResource, changedRemoteKeys?: Set<st
     if (existing === localAttrs[attr]) {
       hasAppliedPatch = true;
 
-      // if the local change is committed, then
-      // the remoteKeyChange is no longer relevant
-      changedRemoteKeys?.delete(attr);
-
+      // the matching key is already absent from the partition `calculateChangedKeys` returned --
+      // it uses this same baseline, so it knows which edits this pass confirms
       delete localAttrs[attr];
       delete changes![attr];
     }
@@ -2279,12 +2291,15 @@ function cacheUpsert(
     // upsert merges only `updates`, so nothing is promoted and the notify stays unscoped.
     // NOTE: this does not skip locally-edited keys. An edit that still diverges from the
     // incoming value is reported; one that matches is dropped by patchLocalAttributes.
+    // an upsert does not consume `inflightAttrs`, so a save still in flight is the baseline
+    // `patchLocalAttributes` will reconcile against below and the partition has to use it too
     changedKeys = calculateChangedKeys(
       cached.remoteAttrs,
       cached.localAttrs,
       data.attributes,
       null,
-      fields
+      fields,
+      cached.inflightAttrs
     ).remoteChanged;
   }
 
@@ -2294,7 +2309,7 @@ function cacheUpsert(
   );
 
   if (cached.localAttrs) {
-    if (patchLocalAttributes(cached, changedKeys)) {
+    if (patchLocalAttributes(cached)) {
       cache._capabilities.notifyChange(identifier, 'state', null);
     }
   }
@@ -2591,13 +2606,16 @@ function didCommit(
     newCanonicalAttributes = data.attributes;
   }
   // partitioned before the merge below, which overwrites the pre-commit remote values the
-  // comparison depends on
+  // comparison depends on. `null` as the pending baseline because `inflightAttrs` is consumed by
+  // that merge: by the time `patchLocalAttributes` runs there is nothing left in flight and it
+  // reconciles against the merged remote alone.
   const changes = calculateChangedKeys(
     cached.remoteAttrs,
     cached.localAttrs,
     newCanonicalAttributes,
     cached.inflightAttrs,
-    fields
+    fields,
+    null
   );
 
   cached.remoteAttrs = Object.assign(
@@ -2606,21 +2624,17 @@ function didCommit(
     newCanonicalAttributes
   );
   cached.inflightAttrs = null;
-  // prunes keys whose local edit the server has now confirmed, so they are not announced twice
-  const pruned = patchLocalAttributes(cached, changes.remoteChanged);
+  // drops the local edits the server just confirmed, so they are not announced twice
+  patchLocalAttributes(cached);
 
   if (cached.errors) {
     cached.errors = null;
     cache._capabilities.notifyChange(identifier, 'errors', null);
   }
 
-  // each bucket goes out on the channel it actually moved. Pruning only happens for a resource
-  // that had local edits the server confirmed, and `patchLocalAttributes` reports whether it
-  // removed anything -- so the re-filter is skipped entirely on the common path.
-  const { remoteChanged, localOnly } = changes;
-  const reprune = pruned && remoteChanged !== undefined;
-  const both = reprune ? retainSurviving(changes.both, remoteChanged) : changes.both;
-  const remoteOnly = reprune ? retainSurviving(changes.remoteOnly, remoteChanged) : changes.remoteOnly;
+  // each bucket goes out on the channel it actually moved. The partition already excluded the
+  // keys the reconcile above dropped, so these sets go out as-is.
+  const { both, remoteOnly, localOnly } = changes;
 
   if (both?.size) cache._capabilities.notifyChange(identifier, 'attributes', both);
   if (remoteOnly?.size) cache._capabilities.notifyChange(identifier, 'attributes', remoteOnly, 'remote');
