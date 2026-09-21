@@ -109,11 +109,12 @@ directionality or ownership over their inverse.
 
 ## Using ReactiveResource Schemas
 
-[ReactiveResource](../../schemas/index.md) reads the same field definitions from a
-[ResourceSchema](../../schemas/resources/index.md). In
-[LegacyMode](../../schemas/resources/legacy-mode.md), which is the current recommendation,
-`withDefaults` marks the schema as legacy and adds the derived and local fields that emulate
-`Model`. The relationship field goes into the schema's `fields` array exactly as shown above.
+[ReactiveResource](../../schemas/index.md) reads these same field definitions from a
+[ResourceSchema](../../schemas/resources/index.md). Define one in
+[LegacyMode](../../schemas/resources/legacy-mode.md), the recommended mode today. Its
+`withDefaults` helper sets `legacy: true`, adds the `id` identity field, and appends the
+derived and local fields that emulate `Model`. The relationship field is the JSON above,
+unchanged.
 
 🌲 *TrailRunner*
 
@@ -133,10 +134,11 @@ export const TrailRunnerSchema = withDefaults({
 });
 ```
 
-Unless the store was created with `useLegacyStore`, register the legacy derivations once, as
-shown in [Configuration](../../schemas/resources/legacy-mode.md#configuration). See
+If you did not create the store with `useLegacyStore`, call `registerDerivations` once on the
+schema service, as shown in
+[Configuration](../../schemas/resources/legacy-mode.md#configuration).
 [Defining Legacy Schemas](../../schemas/resources/legacy-mode.md#defining-legacy-schemas)
-for how to type the records these schemas produce.
+shows how to type the records these schemas produce.
 
 ---
 
