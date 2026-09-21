@@ -373,6 +373,7 @@ catalog:
   ignore: ^7.0.9
   jscodeshift: ^17.4.0
   lerna-changelog: ^2.2.0
+  mermaid: ^11.17.2
   mocha: ^12.0.2
   morgan: ^1.12.1
   oxfmt: ^0.68.0
@@ -411,6 +412,7 @@ catalog:
   vite-plugin-pwa: ^1.3.0
   vitepress: ^2.0.0-alpha.20
   vitepress-plugin-group-icons: ^1.7.6
+  vitepress-plugin-mermaid: ^2.0.17
   vitepress-plugin-llms: ^1.14.0
   vitepress-plugin-tabs: ^0.9.1
   vitest: ^5.0.1
@@ -421,6 +423,11 @@ catalog:
 ## The following settings previously lived under the root package.json's
 ## "pnpm" field. pnpm 11 no longer reads that field -- these all moved here.
 packageExtensions:
+  ## Mermaid.vue imports vue but the package declares no dependency on it, so pnpm links
+  ## nothing and the production build fails to resolve it.
+  vitepress-plugin-mermaid:
+    peerDependencies:
+      vue: "*"
   vitepress-plugin-group-icons:
     peerDependencies:
       vite: "*"
@@ -486,6 +493,12 @@ peerDependencyRules:
     - search-insights
     - "@pnpm/logger"
     - "@algolia/client-search"
+  allowedVersions:
+    ## vitepress-plugin-mermaid's published peer range predates VitePress 2. Its code needs
+    ## no changes for 2.x (the maintained fork is byte-identical apart from the range), so
+    ## accept the version this workspace actually installs.
+    "vitepress-plugin-mermaid>vitepress": ">=2.0.0-alpha"
+
   allowAny:
     - ember-source
     - "@glimmer/component"

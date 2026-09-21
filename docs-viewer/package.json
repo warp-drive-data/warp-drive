@@ -18,6 +18,8 @@
   },
   "dependencies": {
     "vitepress": "catalog:",
+    "vitepress-plugin-mermaid": "catalog:",
+    "mermaid": "catalog:",
     "@types/bun": "catalog:",
     "typescript": "catalog:",
     "debug": "catalog:",
