@@ -21,9 +21,6 @@ const eslintTester = new RuleTester({
 const msg = 'warp-drive.no-legacy-imports';
 const unmappedMsg = 'warp-drive.no-legacy-imports.unmapped-export';
 
-// Note: These tests depend on the monorepo having a mapping entry for the given module/export.
-// We select cases present in public-exports-mapping-5.5.enriched.json.
-
 eslintTester.run('no-legacy-imports', rule, {
   valid: [
     // Unknown module, should not report
@@ -41,6 +38,10 @@ eslintTester.run('no-legacy-imports', rule, {
     // Named re-exports should be ignored (no report)
     {
       code: `export { findRecord } from '@ember-data/rest/request';`,
+    },
+    // A module whose name survived the move is not a legacy import
+    {
+      code: `import { DEBUG } from '@warp-drive/build-config/env';`,
     },
   ],
   invalid: [
@@ -109,6 +110,30 @@ eslintTester.run('no-legacy-imports', rule, {
     // (regression for #10394 — "we don't error ... we should").
     {
       code: `import { TotallyMadeUpExportName } from '@ember-data/request';`,
+      errors: [{ messageId: unmappedMsg }],
+    },
+    // The default export of '@ember-data/request' is the RequestManager class
+    {
+      code: `import RequestManager from '@ember-data/request';`,
+      output: `import { RequestManager } from '@warp-drive/core';`,
+      errors: [{ messageId: msg }],
+    },
+    // The value export CachePolicy was renamed; it must not be confused with the type of the same name
+    {
+      code: `import { CachePolicy } from '@ember-data/request-utils';`,
+      output: `import { DefaultCachePolicy as CachePolicy } from '@warp-drive/core/store';`,
+      errors: [{ messageId: msg }],
+    },
+    // A token the legacy package no longer exposes is reported, not routed through the module fallback
+    {
+      code: `import { defineSignal } from '@ember-data/store/-private';`,
+      output: null,
+      errors: [{ messageId: unmappedMsg }],
+    },
+    // A token the legacy package defines itself has nowhere to be rewritten to
+    {
+      code: `import Store from 'ember-data/store';`,
+      output: null,
       errors: [{ messageId: unmappedMsg }],
     },
   ],

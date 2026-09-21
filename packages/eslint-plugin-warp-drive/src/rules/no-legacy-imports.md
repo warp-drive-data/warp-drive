@@ -8,9 +8,10 @@
 > diffs for these splits.
 
 > [!NOTE]
-> Rewrites legacy EmberData import module specifiers to their
-> modern replacements using the enriched public exports mapping embedded from
-> `public-exports-mapping-5.5.enriched.json`.
+> Rewrites legacy EmberData import module specifiers to their modern replacements using
+> `legacy-import-mapping.json`, which lists every token EmberData 5.5 exported and where the
+> current legacy package re-exports it from. The monorepo derives that file from the package
+> sources.
 
 This rule updates module paths only; it does not rename imported identifiers.
 
@@ -40,8 +41,12 @@ import { findRecord } from '@warp-drive/utilities/rest';
 
 ## Unmapped exports
 
-The embedded mapping is a point-in-time snapshot; it doesn't automatically pick up exports
-added afterward. Rather than silently leaving such an import untouched:
+A token the mapping lists with no replacement is reported without an autofix. Either the
+legacy package no longer exposes it, or the legacy package defined it itself and nothing in the
+current packages stands in for it.
+
+The mapping describes the 5.5 exports; it doesn't automatically pick up exports added
+afterward. Rather than silently leaving such an import untouched:
 
 - If every export we've ever tracked for a legacy module funnels into the same replacement
   module, an untracked token from that module is routed there too (same export name, no
