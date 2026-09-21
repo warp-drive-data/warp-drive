@@ -396,7 +396,7 @@ catalog:
   tsdown: ^0.23.0
   turbo: ^2.10.13
   typedoc: ^0.28.20
-  typedoc-plugin-markdown: ^4.13.0
+  typedoc-plugin-markdown: ^4.13.1
   typedoc-plugin-mdn-links: ^5.1.1
   typedoc-plugin-no-inherit: ^1.6.1
   typedoc-vitepress-theme: ^1.1.4
