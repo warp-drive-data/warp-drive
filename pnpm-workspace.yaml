@@ -310,7 +310,7 @@ catalog:
   "@hono/node-ws": ^1.2.0
   "@html-next/vertical-collection": ^5.0.5
   "@mdit/plugin-footnote": ^1.1.1
-  "@nullvoxpopuli/ember-rolldown": ^2.8.0
+  "@nullvoxpopuli/ember-rolldown": ^2.8.1
   "@pnpm/find-workspace-dir": 1000.1.5
   "@pnpm/find-workspace-packages": 6.0.9
   "@pnpm/logger": 1100.0.0
