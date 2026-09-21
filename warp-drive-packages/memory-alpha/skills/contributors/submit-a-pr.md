@@ -2,7 +2,7 @@
 
 Use this skill when a change is ready to leave your worktree and become a pull request against
 WarpDrive. It encodes [Submitting PRs](/guides/contributing/submitting-prs.md) plus the label
-checks CI runs on every PR, so a PR opened this way passes those checks on the first run.
+checks CI runs on every PR, so a PR opened this way carries everything those checks look for.
 
 ## Steps
 
@@ -28,12 +28,20 @@ checks CI runs on every PR, so a PR opened this way passes those checks on the f
 5. Title the PR in Conventional Commits form, `type(scope): subject`, in the imperative and
    without a trailing period. The title becomes the squash commit and the changelog line, so it
    must say what changed for a reader who never opens the PR.
-6. Label the PR, or name the labels in the PR body. CI on `main` blocks a PR until it carries
-   both a changelog label and a target label; the exact lists live in
-   `.github/workflows/enforce-pr-labels-canary.yml`, and the changelog mapping in the root
-   `package.json` under `changelog.labels`. Only maintainers can apply labels. If you cannot,
-   write the two labels you expect in the PR body so a maintainer can apply them without
-   re-reading the diff.
+6. Get a changelog label and a target label onto the PR. CI on `main` blocks a PR until it
+   carries both; the exact lists live in `.github/workflows/enforce-pr-labels-canary.yml`, and
+   the changelog mapping in the root `package.json` under `changelog.labels`. Which path you
+   take depends on your access to the repository.
+
+   **If you are a maintainer**, apply both labels yourself when you open the PR.
+
+   **If you are not**, you cannot apply them at all. Labeling needs write or triage access on
+   the repository, which opening a PR does not grant, so the control is absent from your own
+   PR. Name the two labels you expect in the PR body instead, so a maintainer can apply them
+   without re-reading the diff. Both label checks stay red until one does, and that is the
+   expected state of your PR rather than something to fix. Pushing another commit will not
+   clear them. The workflow triggers only on `labeled`, `unlabeled`, `opened`, and `reopened`,
+   so nothing re-evaluates the PR until a maintainer labels it.
 
    Pick exactly one changelog label:
 
@@ -59,8 +67,9 @@ checks CI runs on every PR, so a PR opened this way passes those checks on the f
    `:label: feat` also trigger a live docs preview, linked in a PR comment.
 7. For the backport PR itself, cherry-pick onto the release branch and open the PR against that
    branch. CI adds the matching `backport-beta`, `backport-release`, `backport-lts`, or
-   `backport-lts-prev` label. For an older non-LTS release branch, add `backport-old-release`
-   yourself. Those PRs need a changelog label too, and CI bans the `:dart:` labels on them.
+   `backport-lts-prev` label. For an older non-LTS release branch no job does, so a maintainer
+   applies `backport-old-release` by hand under the same access rule as step 6. Those PRs need
+   a changelog label too, and CI bans the `:dart:` labels on them.
 8. Discuss first when the change adds or alters public API. Open the conversation with the
    [team](https://emberjs.com/team/) before the implementation goes deep, and for anything
    larger than a fix follow the [RFC process](/guides/contributing/rfc-process.md).
