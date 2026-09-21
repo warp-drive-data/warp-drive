@@ -1,134 +1,103 @@
 #!/usr/bin/env node
 /**
- * generate-public-exports-mapping.mjs
- *
- * Purpose:
- *   Produce a JSON array describing the exported tokens for ONLY the files explicitly
- *   listed (or matched via glob patterns) in each package's `entryPoints` array found
- *   in `packages/* /vite.config.mjs`.
- *
- *   We DO NOT traverse any other files; we do NOT follow transitive re-exports other
- *   than recording the re-export statement itself (example: export * from '...' is
- *   treated as a single "*" export token for that module). This aligns with:
- *
- *     "only look for exports from files inside of `entryPoints`"
- *
- * Output:
- *   Writes (overwrites) `public-exports-mapping-wd.json` next to this script, an array of objects:
- *     {
- *       "filePath": "<relative path from repo root to source file>",
- *       "module": "<packageName or packageName/subpath>",
- *       "export": "default" | "*" | "<identifier>",
- *       "typeOnly": boolean,
- *       "replacement": {}
- *     }
- *
- * Rules:
- *   - A module specifier corresponds exactly to an entry point file:
- *       * If the file's relative path (from src/) is `index.(js|ts|mjs|cjs)` then
- *         the module is the bare package name (e.g. "@ember-data/store").
- *       * Otherwise the module is "@ember-data/store/<relative-no-extension>".
- *   - Exclude any package whose directory name starts with `unpublished`.
- *   - Skip any matched file path containing `/test-support/`.
- *   - Only scan files that were reached via the entryPoints expansion (no extras).
- *   - No attempt to interpret package.json "exports" field; we ONLY trust vite configs.
- *
- * Limitations:
- *   - Naive export detector relying on regex; good for typical patterns in this repo.
- *   - Does not parse complex multi-line declarations with unusual formatting or
- *     conditional compilation wrappers.
- *   - Does not resolve star exports into concrete names.
- *
- * Node Version: >= 18 (per repository engines)
+ * Lists the exported tokens of every entry point file of every published package under a
+ * packages directory, as `{ filePath, module, export, typeOnly, replacement: {} }` records.
  */
 
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
 import url from 'node:url';
-
-const DATA_DIR = path.dirname(url.fileURLToPath(import.meta.url));
-const REPO_ROOT = path.resolve(DATA_DIR, '..', '..');
-const PACKAGES_DIR = path.join(REPO_ROOT, 'warp-drive-packages');
-const OUTPUT_FILE = path.join(DATA_DIR, 'public-exports-mapping-wd.json');
+import { parseArgs } from 'node:util';
 
 const STAR = '*';
+const REPO_ROOT = path.resolve(path.dirname(url.fileURLToPath(import.meta.url)), '..', '..');
+const LAYOUTS = {
+  tsdown: { configName: 'tsdown.config.mjs', packages: 'warp-drive-packages' },
+  vite: { configName: 'vite.config.mjs', packages: 'packages' },
+};
 
-/**
- * Entry point
- */
-(async function main() {
-  try {
-    const viteConfigs = await findViteConfigs();
-    const allRecords = [];
+export async function scan({ root, packagesDir, configName }) {
+  const configs = await findConfigs(packagesDir, configName);
+  const records = [];
 
-    for (const configPath of viteConfigs) {
-      const pkgRoot = path.dirname(configPath);
-      const pkgDirName = path.basename(pkgRoot);
+  for (const configPath of configs) {
+    const pkgRoot = path.dirname(configPath);
+    const pkgJson = await readPackageJson(pkgRoot);
+    if (!pkgJson?.name || pkgJson.private) continue;
 
-      const pkgJson = await readPackageJson(pkgRoot);
+    const configSource = await safeReadFile(configPath);
+    if (!configSource) continue;
 
-      if (!pkgJson?.name) continue;
-      if (pkgJson?.private) continue;
+    const entryPointPatterns = extractEntryPoints(configSource);
+    if (entryPointPatterns.length === 0) continue;
 
-      const packageName = pkgJson.name;
+    const concreteFiles = await expandEntryPointPatterns(entryPointPatterns, pkgRoot);
 
-      const viteSource = await safeReadFile(configPath);
-      if (!viteSource) continue;
+    for (const absFile of concreteFiles) {
+      if (!/\.(mjs|cjs|js|ts)$/.test(absFile)) continue;
+      if (absFile.includes(`${path.sep}test-support${path.sep}`)) continue;
 
-      const entryPointPatterns = extractEntryPoints(viteSource);
-      if (entryPointPatterns.length === 0) continue;
+      const relFromSrc = relativeFromSrc(absFile, pkgRoot);
+      if (!relFromSrc) continue;
 
-      // Resolve each entry point pattern relative to the package root
-      const concreteFiles = await expandEntryPointPatterns(entryPointPatterns, pkgRoot);
+      const moduleSpecifier = buildModuleSpecifier(pkgJson.name, relFromSrc);
 
-      for (const absFile of concreteFiles) {
-        if (!/\.(mjs|cjs|js|ts)$/.test(absFile)) continue;
-        if (absFile.includes(`${path.sep}test-support${path.sep}`)) continue; // skip test-support
+      const source = await safeReadFile(absFile);
+      if (!source) continue;
 
-        const relFromSrc = relativeFromSrc(absFile, pkgRoot);
-        if (!relFromSrc) continue; // must be inside src/
-
-        const moduleSpecifier = buildModuleSpecifier(packageName, relFromSrc);
-
-        const source = await safeReadFile(absFile);
-        if (!source) continue;
-
-        const exports = extractExports(source);
-
-        for (const exp of exports) {
-          allRecords.push({
-            filePath: path.relative(REPO_ROOT, absFile).replace(/\\/g, '/'),
-            module: moduleSpecifier,
-            export: exp.name,
-            typeOnly: exp.typeOnly,
-            replacement: {},
-          });
-        }
+      for (const exp of extractExports(source)) {
+        records.push({
+          filePath: path.relative(root, absFile).replace(/\\/g, '/'),
+          module: moduleSpecifier,
+          export: exp.name,
+          typeOnly: exp.typeOnly,
+          replacement: {},
+        });
       }
     }
-
-    const final = dedupeAndSort(allRecords);
-
-    if (final.length === 0) {
-      throw new Error(
-        `Found no exports under ${path.relative(REPO_ROOT, PACKAGES_DIR)}. ` +
-          `Refusing to overwrite ${path.relative(REPO_ROOT, OUTPUT_FILE)} with an empty mapping.`
-      );
-    }
-
-    await fs.writeFile(OUTPUT_FILE, JSON.stringify(final, null, 2) + '\n', 'utf8');
-    process.stdout.write(`Generated ${final.length} export records -> ${path.relative(REPO_ROOT, OUTPUT_FILE)}\n`);
-  } catch (err) {
-    console.error('Failed to generate public exports mapping:', err);
-    process.exit(1);
   }
-})();
+
+  return dedupeAndSort(records);
+}
+
+async function main() {
+  const { values } = parseArgs({
+    options: {
+      root: { type: 'string', default: REPO_ROOT },
+      packages: { type: 'string' },
+      config: { type: 'string', default: 'tsdown' },
+      out: { type: 'string' },
+    },
+  });
+  const layout = LAYOUTS[values.config];
+  if (!layout) throw new Error(`--config must be one of ${Object.keys(LAYOUTS).join(', ')}`);
+  if (!values.out) throw new Error('--out <file> is required');
+
+  const root = path.resolve(values.root);
+  const packagesDir = path.join(root, values.packages ?? layout.packages);
+  const outFile = path.resolve(values.out);
+
+  const records = await scan({ root, packagesDir, configName: layout.configName });
+  if (records.length === 0) {
+    throw new Error(`Found no exports under ${packagesDir}. Refusing to write an empty mapping to ${outFile}.`);
+  }
+
+  await fs.writeFile(outFile, JSON.stringify(records, null, 2) + '\n', 'utf8');
+  process.stdout.write(`Generated ${records.length} export records -> ${outFile}\n`);
+}
+
+if (process.argv[1] && path.resolve(process.argv[1]) === url.fileURLToPath(import.meta.url)) {
+  main().catch((err) => {
+    console.error('Failed to generate public exports mapping:', err.message);
+    process.exit(1);
+  });
+}
 
 /* ------------------------------------------------------------------------------------------------
  * Discovery
  * ------------------------------------------------------------------------------------------------ */
 
-async function findViteConfigs() {
+async function findConfigs(packagesDir, configName) {
   const configs = [];
   async function walk(dir) {
     let entries;
@@ -141,12 +110,12 @@ async function findViteConfigs() {
       const full = path.join(dir, ent.name);
       if (ent.isDirectory()) {
         await walk(full);
-      } else if (ent.name === 'vite.config.mjs') {
+      } else if (ent.name === configName) {
         configs.push(full);
       }
     }
   }
-  await walk(PACKAGES_DIR);
+  await walk(packagesDir);
   return configs;
 }
 
@@ -398,11 +367,11 @@ function extractExports(source) {
   }
 
   // star re-exports
-  {
-    const starRegex = /export\s+\*\s+from\s+['"][^'"]+['"]/g;
-    if (starRegex.test(stripped)) {
-      add(STAR, false);
-    }
+  if (/export\s+\*\s+from\s+['"][^'"]+['"]/.test(stripped)) {
+    add(STAR, false);
+  }
+  if (/export\s+type\s+\*\s+from\s+['"][^'"]+['"]/.test(stripped)) {
+    add(STAR, true);
   }
 
   // named grouped exports
@@ -497,11 +466,8 @@ function dedupeAndSort(records) {
     const rb = rank(b.export);
     if (ra !== rb) return ra - rb;
     if (a.export !== b.export) return a.export < b.export ? -1 : 1;
-    // type-only after value exports if same name (shouldn't happen realistically)
     if (a.typeOnly !== b.typeOnly) return a.typeOnly ? 1 : -1;
     return 0;
   });
   return arr;
 }
-
-// End of generate-public-exports-mapping.mjs
