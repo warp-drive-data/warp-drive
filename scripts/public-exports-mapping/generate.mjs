@@ -14,7 +14,7 @@
  *     "only look for exports from files inside of `entryPoints`"
  *
  * Output:
- *   Writes (overwrites) `data/public-exports-mapping.json` with an array of objects:
+ *   Writes (overwrites) `public-exports-mapping-wd.json` next to this script, an array of objects:
  *     {
  *       "filePath": "<relative path from repo root to source file>",
  *       "module": "<packageName or packageName/subpath>",
@@ -46,12 +46,10 @@ import { promises as fs } from 'node:fs';
 import path from 'node:path';
 import url from 'node:url';
 
-const REPO_ROOT = path.resolve(path.dirname(url.fileURLToPath(import.meta.url)), '..'); // data/
-// const PACKAGES_DIR = path.join(REPO_ROOT, 'packages');
+const DATA_DIR = path.dirname(url.fileURLToPath(import.meta.url));
+const REPO_ROOT = path.resolve(DATA_DIR, '..', '..');
 const PACKAGES_DIR = path.join(REPO_ROOT, 'warp-drive-packages');
-// const OUTPUT_FILE = path.join(REPO_ROOT, 'public-exports-mapping-5.5.json');
-// const OUTPUT_FILE = path.join(REPO_ROOT, 'public-exports-mapping-main.json');
-const OUTPUT_FILE = path.join(REPO_ROOT, 'public-exports-mapping-wd.json');
+const OUTPUT_FILE = path.join(DATA_DIR, 'public-exports-mapping-wd.json');
 
 const STAR = '*';
 
@@ -110,6 +108,13 @@ const STAR = '*';
     }
 
     const final = dedupeAndSort(allRecords);
+
+    if (final.length === 0) {
+      throw new Error(
+        `Found no exports under ${path.relative(REPO_ROOT, PACKAGES_DIR)}. ` +
+          `Refusing to overwrite ${path.relative(REPO_ROOT, OUTPUT_FILE)} with an empty mapping.`
+      );
+    }
 
     await fs.writeFile(OUTPUT_FILE, JSON.stringify(final, null, 2) + '\n', 'utf8');
     process.stdout.write(`Generated ${final.length} export records -> ${path.relative(REPO_ROOT, OUTPUT_FILE)}\n`);

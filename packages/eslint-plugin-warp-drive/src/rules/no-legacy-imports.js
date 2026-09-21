@@ -9,25 +9,14 @@ const path = require('path');
 const RULE_ID = 'warp-drive.no-legacy-imports';
 const UNMAPPED_EXPORT_ID = 'warp-drive.no-legacy-imports.unmapped-export';
 
-// TODO: determine where this thing should live long-term
 function buildMapping() {
-  // Attempt to load the enriched mapping JSON from the repo root.
-  // In this monorepo, this file lives at: <repoRoot>/public-exports-mapping-5.5.enriched.json
-  const candidates = [
-    // from this file at packages/eslint-plugin-warp-drive/src/rules/, walk up to repo root
-    path.join(__dirname, '../public-exports-mapping-5.5.enriched.json'),
-    // from package root (if tests change CWD)
-    path.join(process.cwd(), 'public-exports-mapping-5.5.enriched.json'),
-  ];
-
+  // Shipped with this package via its `files` entry. Regenerate it from
+  // scripts/public-exports-mapping/ in the monorepo; see that directory's README.
   let mappingArray = null;
-  for (const candidate of candidates) {
-    try {
-      mappingArray = require(candidate);
-      break;
-    } catch (_e) {
-      // continue
-    }
+  try {
+    mappingArray = require(path.join(__dirname, '../public-exports-mapping-5.5.enriched.json'));
+  } catch (_e) {
+    // an unusable mapping disables the rule rather than breaking the whole lint run
   }
 
   /**

@@ -1,6 +1,6 @@
 #!/usr/bin/env bun
 /**
- * Enrich `public-exports-mapping.json` with replacement information from
+ * Enrich `public-exports-mapping-5.5.json` with replacement information from
  * the `warp-drive-packages` source tree (run with Bun or Node).
  *
  * Added: Interactive Mode
@@ -54,10 +54,10 @@
  *  - Small penalty for extra unmatched segments in candidate.
  *
  * Usage:
- *   bun scripts/enrich-public-exports-mapping.ts
- *     --in data/public-exports-mapping.json
- *     --out data/public-exports-mapping.enriched.json
- *     [--interactive] [--debug]
+ *   bun scripts/public-exports-mapping/enrich.ts [--interactive] [--debug]
+ *
+ *   Defaults read and write the JSON files next to this script; `--in`, `--wd` and
+ *   `--out` override them.
  */
 
 import { readFileSync, writeFileSync, readdirSync, statSync } from 'node:fs';
@@ -95,8 +95,9 @@ interface CliOptions {
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const DEFAULT_INPUT = resolve(__dirname, '..', 'public-exports-mapping-5.5.json');
-const DEFAULT_WD = resolve(__dirname, '..', 'public-exports-mapping-wd.json');
+const REPO_ROOT = resolve(__dirname, '..', '..');
+const DEFAULT_INPUT = resolve(__dirname, 'public-exports-mapping-5.5.json');
+const DEFAULT_WD = resolve(__dirname, 'public-exports-mapping-wd.json');
 
 // Scoring constants
 const SCORE_SEGMENT_MATCH = 3;
@@ -798,7 +799,6 @@ async function processEntry(
 /* -------------------------------- Entry Point -------------------------------- */
 async function main() {
   const { in: inFile, wd: wdFile, out, debug, interactive, showSnippets } = parseArgs();
-  const repoRoot = resolve(__dirname, '..');
 
   const entries: MappingEntry[] = readJsonFile(inFile);
 
@@ -810,7 +810,7 @@ async function main() {
   if (interactive && !process.stdin.isTTY) {
     console.warn('Interactive mode requested but stdin is not a TTY. Proceeding non-interactively.');
   }
-  const enriched = await enrich(entries, repoRoot, exportIndex, {
+  const enriched = await enrich(entries, REPO_ROOT, exportIndex, {
     debug,
     interactive: interactive && process.stdin.isTTY,
     showSnippets: !!showSnippets,
