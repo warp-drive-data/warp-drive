@@ -1,3 +1,5 @@
+> The task spec for this directory, from [#10382](https://github.com/warp-drive-data/warp-drive/pull/10382). Read [README.md](./README.md) for how the scripts work.
+
 old packages are still in the `packages/` directory
 new packages are in the `warp-drive-packages/` directory
 
