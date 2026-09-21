@@ -9,7 +9,7 @@ graph LR;
     A(ActivityData) -. runner ..-> B(TrailRunner)
 ```
 
-While the Trail Runner has many such activies.
+While the Trail Runner has many such activities.
 
 ```mermaid
 graph LR;

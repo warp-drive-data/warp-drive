@@ -7,7 +7,7 @@ draft: true
 
 # Schema DSL
 
-***Warp*Drive** offers a TypeScript based compile-time DSL for producing `JSON` resource schemas. Using `JSON` for the output ensures flexibility, composability, and interopability, while using `TypeScript` for authoring syntax provides a conveninent DX.
+***Warp*Drive** offers a TypeScript based compile-time DSL for producing `JSON` resource schemas. Using `JSON` for the output ensures flexibility, composability, and interopability, while using `TypeScript` for authoring syntax provides a convenient DX.
 
 ::: info 💡Read More
 This blog post ([In Defense of Machine Formats](https://runspired.com/2025/05/25/in-defense-of-machine-formats.html)) covers the motivations behind using JSON in more depth.

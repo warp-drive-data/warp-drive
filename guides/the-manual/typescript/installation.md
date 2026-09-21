@@ -16,7 +16,7 @@ The cli will
 The cli may also be used to update to the latest canary versions of the types by
 simply running the command again.
 
-For additional documentation or to manuall install and configure, continue reading the
+For additional documentation or to manually install and configure, continue reading the
 below guide.
 
 

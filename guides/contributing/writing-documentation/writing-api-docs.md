@@ -19,7 +19,7 @@ Great documentation requires both guides and docs. We encourage updating any ass
 API Documentation is generated from [TSDoc](https://tsdoc.org/) comments in the source code
 compiled with [TypeDoc](https://typedoc.org/) and transformed for [Vitepress](https://vitepress.dev/) using [typedoc-plugin-markdown](https://www.typedoc-plugin-markdown.org/plugins/vitepress)
 
-TSDoc syntax is similar to YUIDoc and JSDoc but there are occassional nuances where it becomes best to know the underlying grammar is TSDoc
+TSDoc syntax is similar to YUIDoc and JSDoc but there are occasional nuances where it becomes best to know the underlying grammar is TSDoc
 and parser is TypeDoc.
 
 TypeDoc is configured to follow our public package entrypoints to

@@ -10,7 +10,7 @@ title: UNPKG
 
 ---
 
-Begining in `5.8`, prebuilt versions of ***Warp*Drive** packages can be used via [UNPKG](https://unpkg.com/).
+Beginning in `5.8`, prebuilt versions of ***Warp*Drive** packages can be used via [UNPKG](https://unpkg.com/).
 
 Four builds are provided for each package via the following
 [export conditions](https://nodejs.org/api/packages.html#conditional-exports). These builds are unminified [JavaScript Modules (ESM)](https://unpkg.com/#nobuild-apps) and retain source code documentation comments.
