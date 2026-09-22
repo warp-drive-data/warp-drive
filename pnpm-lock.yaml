@@ -467,8 +467,8 @@ catalogs:
       specifier: ^1.1.1
       version: 1.1.1
     svelte:
-      specifier: ^5.57.0
-      version: 5.57.0
+      specifier: ^5.57.1
+      version: 5.57.1
     svgo:
       specifier: ^4.1.0
       version: 4.1.0
@@ -2878,7 +2878,7 @@ importers:
         version: file:warp-drive-packages/json-api(4ded94bf05a058c4d301833388abca58)
       '@warp-drive/svelte':
         specifier: workspace:*
-        version: file:warp-drive-packages/svelte(@babel/core@7.29.7)(svelte@5.57.0)
+        version: file:warp-drive-packages/svelte(@babel/core@7.29.7)(svelte@5.57.1)
       '@warp-drive/utilities':
         specifier: workspace:*
         version: file:warp-drive-packages/utilities(4ded94bf05a058c4d301833388abca58)
@@ -2890,7 +2890,7 @@ importers:
         version: 2.4.0(@babel/core@7.29.7)
       svelte:
         specifier: 'catalog:'
-        version: 5.57.0
+        version: 5.57.1
       typescript-7:
         specifier: 'catalog:'
         version: typescript@7.1.0-dev.20260918.1
@@ -3821,19 +3821,19 @@ importers:
     devDependencies:
       '@sveltejs/kit':
         specifier: 'catalog:'
-        version: 2.70.3(ab06c489757ba54ad49fadd215ed85b6)
+        version: 2.70.3(a7fa2a7174d844d1caae1b3ed072d076)
       '@sveltejs/package':
         specifier: 'catalog:'
-        version: 2.5.8(svelte@5.57.0)(typescript@6.0.3)
+        version: 2.5.8(svelte@5.57.1)(typescript@6.0.3)
       '@sveltejs/vite-plugin-svelte':
         specifier: 'catalog:'
-        version: 7.3.0(svelte@5.57.0)(vite@8.3.0)
+        version: 7.3.0(svelte@5.57.1)(vite@8.3.0)
       '@warp-drive/internal-config':
         specifier: workspace:*
         version: file:tools/internal-config(vite@8.3.0)
       svelte:
         specifier: 'catalog:'
-        version: 5.57.0
+        version: 5.57.1
       typescript:
         specifier: 6.0.3
         version: 6.0.3
@@ -7101,7 +7101,7 @@ packages:
   '@warp-drive/svelte@file:warp-drive-packages/svelte':
     resolution: {directory: warp-drive-packages/svelte, type: directory}
     peerDependencies:
-      svelte: ^5.57.0
+      svelte: ^5.57.1
 
   '@warp-drive/tc39-proposal-signals@file:warp-drive-packages/tc39-proposal-signals':
     resolution: {directory: warp-drive-packages/tc39-proposal-signals, type: directory}
@@ -10628,8 +10628,8 @@ packages:
       svelte: ^3.55 || ^4.0.0-next.0 || ^4.0 || ^5.0.0-next.0
       typescript: 6.0.3
 
-  svelte@5.57.0:
-    resolution: {integrity: sha512-NdbDn7fl4be1ViUG0oq/lvG6OZy3oENolV2ONjiqqsfVoeAfzaQAKUcEX3MrQod/Bebv1PgwET9rfXhgn9s4Kg==}
+  svelte@5.57.1:
+    resolution: {integrity: sha512-Uqj49lWKB+iSSnneuwiYYJ7MZgkB+eXr0LXBhv4uDuAkXqnWmq65Sxflfvp0Lc6MdKjMUxGaeOKWJqz5SNiVIA==}
     engines: {node: '>=18'}
 
   svg-tags@1.0.0:
@@ -14497,11 +14497,11 @@ snapshots:
     dependencies:
       acorn: 8.18.0
 
-  '@sveltejs/kit@2.70.3(ab06c489757ba54ad49fadd215ed85b6)':
+  '@sveltejs/kit@2.70.3(a7fa2a7174d844d1caae1b3ed072d076)':
     dependencies:
       '@standard-schema/spec': 1.1.0
       '@sveltejs/acorn-typescript': 1.0.13(acorn@8.18.0)
-      '@sveltejs/vite-plugin-svelte': 7.3.0(svelte@5.57.0)(vite@8.3.0)
+      '@sveltejs/vite-plugin-svelte': 7.3.0(svelte@5.57.1)(vite@8.3.0)
       '@types/cookie': 0.6.0
       acorn: 8.18.0
       cookie: 0.6.0
@@ -14512,28 +14512,28 @@ snapshots:
       mrmime: 2.0.1
       set-cookie-parser: 3.1.2
       sirv: 3.0.2
-      svelte: 5.57.0
+      svelte: 5.57.1
       vite: 8.3.0
     optionalDependencies:
       typescript: 6.0.3
 
-  '@sveltejs/package@2.5.8(svelte@5.57.0)(typescript@6.0.3)':
+  '@sveltejs/package@2.5.8(svelte@5.57.1)(typescript@6.0.3)':
     dependencies:
       chokidar: 5.0.0
       kleur: 4.1.5
       sade: 1.8.1
       semver: 7.8.5
-      svelte: 5.57.0
-      svelte2tsx: 0.7.61(svelte@5.57.0)(typescript@6.0.3)
+      svelte: 5.57.1
+      svelte2tsx: 0.7.61(svelte@5.57.1)(typescript@6.0.3)
     transitivePeerDependencies:
       - typescript
 
-  '@sveltejs/vite-plugin-svelte@7.3.0(svelte@5.57.0)(vite@8.3.0)':
+  '@sveltejs/vite-plugin-svelte@7.3.0(svelte@5.57.1)(vite@8.3.0)':
     dependencies:
       deepmerge: 4.3.1
       magic-string: 1.4.1
       obug: 2.2.1
-      svelte: 5.57.0
+      svelte: 5.57.1
       vite: 8.3.0
       vitefu: 1.1.3(vite@8.3.0)
 
@@ -16289,10 +16289,10 @@ snapshots:
       - '@glint/template'
       - supports-color
 
-  '@warp-drive/svelte@file:warp-drive-packages/svelte(@babel/core@7.29.7)(svelte@5.57.0)':
+  '@warp-drive/svelte@file:warp-drive-packages/svelte(@babel/core@7.29.7)(svelte@5.57.1)':
     dependencies:
       '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.29.7)
-      svelte: 5.57.0
+      svelte: 5.57.1
     transitivePeerDependencies:
       - '@babel/core'
       - '@glint/template'
@@ -20090,14 +20090,14 @@ snapshots:
 
   supports-preserve-symlinks-flag@1.0.0: {}
 
-  svelte2tsx@0.7.61(svelte@5.57.0)(typescript@6.0.3):
+  svelte2tsx@0.7.61(svelte@5.57.1)(typescript@6.0.3):
     dependencies:
       dedent-js: 1.0.1
       scule: 1.3.0
-      svelte: 5.57.0
+      svelte: 5.57.1
       typescript: 6.0.3
 
-  svelte@5.57.0:
+  svelte@5.57.1:
     dependencies:
       '@jridgewell/remapping': 2.3.5
       '@jridgewell/sourcemap-codec': 1.6.0
