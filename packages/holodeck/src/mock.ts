@@ -19,6 +19,20 @@ export interface Scaffold {
 export type ScaffoldGenerator = () => Scaffold;
 
 /**
+ * A mock whose method and url are known up front, with the rest of the
+ * scaffold built only when holodeck is recording. This is what the mock
+ * helpers pass, so that in replay mode a test's response generators never
+ * run.
+ *
+ * @public
+ */
+export interface LazyScaffold {
+  method: string;
+  url: string;
+  scaffold: () => Scaffold;
+}
+
+/**
  * @public
  */
 export type ResponseGenerator = () => Record<string, unknown>;
@@ -45,15 +59,19 @@ export function GET(
   response: ResponseGenerator,
   options?: Partial<Omit<Scaffold, 'response' | 'url' | 'method'>>
 ): Promise<void> {
-  return mock(owner, () => ({
-    status: options?.status ?? 200,
-    statusText: options?.statusText ?? 'OK',
-    headers: options?.headers ?? {},
-    body: options?.body ?? null,
+  return mock(owner, {
     method: 'GET',
     url,
-    response: response(),
-  }));
+    scaffold: () => ({
+      status: options?.status ?? 200,
+      statusText: options?.statusText ?? 'OK',
+      headers: options?.headers ?? {},
+      body: options?.body ?? null,
+      method: 'GET',
+      url,
+      response: response(),
+    }),
+  });
 }
 
 const STATUS_TEXT_FOR = new Map([
@@ -129,19 +147,23 @@ export function POST(
   response: ResponseGenerator,
   options?: Partial<Omit<Scaffold, 'response' | 'url' | 'method'>>
 ): Promise<void> {
-  return mock(owner, () => {
-    const body = response();
-    const status = options?.status ?? (body ? 201 : 204);
+  return mock(owner, {
+    method: 'POST',
+    url,
+    scaffold: () => {
+      const body = response();
+      const status = options?.status ?? (body ? 201 : 204);
 
-    return {
-      status: status,
-      statusText: options?.statusText ?? STATUS_TEXT_FOR.get(status) ?? '',
-      headers: options?.headers ?? {},
-      body: options?.body ?? null,
-      method: 'POST',
-      url,
-      response: body,
-    };
+      return {
+        status: status,
+        statusText: options?.statusText ?? STATUS_TEXT_FOR.get(status) ?? '',
+        headers: options?.headers ?? {},
+        body: options?.body ?? null,
+        method: 'POST',
+        url,
+        response: body,
+      };
+    },
   });
 }
 
@@ -154,19 +176,23 @@ export function PUT(
   response: ResponseGenerator,
   options?: Partial<Omit<Scaffold, 'response' | 'url' | 'method'>>
 ): Promise<void> {
-  return mock(owner, () => {
-    const body = response();
-    const status = options?.status ?? (body ? 200 : 204);
+  return mock(owner, {
+    method: 'PUT',
+    url,
+    scaffold: () => {
+      const body = response();
+      const status = options?.status ?? (body ? 200 : 204);
 
-    return {
-      status: status,
-      statusText: options?.statusText ?? STATUS_TEXT_FOR.get(status) ?? '',
-      headers: options?.headers ?? {},
-      body: options?.body ?? null,
-      method: 'PUT',
-      url,
-      response: body,
-    };
+      return {
+        status: status,
+        statusText: options?.statusText ?? STATUS_TEXT_FOR.get(status) ?? '',
+        headers: options?.headers ?? {},
+        body: options?.body ?? null,
+        method: 'PUT',
+        url,
+        response: body,
+      };
+    },
   });
 }
 /**
@@ -179,19 +205,23 @@ export function PATCH(
   response: ResponseGenerator,
   options?: Partial<Omit<Scaffold, 'response' | 'url' | 'method'>>
 ): Promise<void> {
-  return mock(owner, () => {
-    const body = response();
-    const status = options?.status ?? (body ? 200 : 204);
+  return mock(owner, {
+    method: 'PATCH',
+    url,
+    scaffold: () => {
+      const body = response();
+      const status = options?.status ?? (body ? 200 : 204);
 
-    return {
-      status: status,
-      statusText: options?.statusText ?? STATUS_TEXT_FOR.get(status) ?? '',
-      headers: options?.headers ?? {},
-      body: options?.body ?? null,
-      method: 'PATCH',
-      url,
-      response: body,
-    };
+      return {
+        status: status,
+        statusText: options?.statusText ?? STATUS_TEXT_FOR.get(status) ?? '',
+        headers: options?.headers ?? {},
+        body: options?.body ?? null,
+        method: 'PATCH',
+        url,
+        response: body,
+      };
+    },
   });
 }
 /**
@@ -203,19 +233,23 @@ export function DELETE(
   response: ResponseGenerator,
   options?: Partial<Omit<Scaffold, 'response' | 'url' | 'method'>>
 ): Promise<void> {
-  return mock(owner, () => {
-    const body = response();
-    const status = options?.status ?? (body ? 200 : 204);
+  return mock(owner, {
+    method: 'DELETE',
+    url,
+    scaffold: () => {
+      const body = response();
+      const status = options?.status ?? (body ? 200 : 204);
 
-    return {
-      status: status,
-      statusText: options?.statusText ?? STATUS_TEXT_FOR.get(status) ?? '',
-      headers: options?.headers ?? {},
-      body: options?.body ?? null,
-      method: 'DELETE',
-      url,
-      response: body,
-    };
+      return {
+        status: status,
+        statusText: options?.statusText ?? STATUS_TEXT_FOR.get(status) ?? '',
+        headers: options?.headers ?? {},
+        body: options?.body ?? null,
+        method: 'DELETE',
+        url,
+        response: body,
+      };
+    },
   });
 }
 
@@ -244,13 +278,17 @@ export function HEAD(
   // From MDN: Warning: If a response to a HEAD request has a body, the response body must be ignored.
   options?: Partial<Omit<Scaffold, 'response' | 'url' | 'method'>>
 ): Promise<void> {
-  return mock(owner, () => ({
-    status: options?.status ?? 200,
-    statusText: options?.statusText ?? 'OK',
-    headers: options?.headers ?? {},
-    body: options?.body ?? null,
+  return mock(owner, {
     method: 'HEAD',
     url,
-    response: response(),
-  }));
+    scaffold: () => ({
+      status: options?.status ?? 200,
+      statusText: options?.statusText ?? 'OK',
+      headers: options?.headers ?? {},
+      body: options?.body ?? null,
+      method: 'HEAD',
+      url,
+      response: response(),
+    }),
+  });
 }

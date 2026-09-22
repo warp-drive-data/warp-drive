@@ -8,7 +8,7 @@ import type { HTTPMethod, RequestContext, RequestInfo, StructuredDataDocument } 
 import type { MinimumAdapterInterface } from '@warp-drive/legacy/compat';
 import type { Store } from '@warp-drive/legacy/store';
 
-import type { ScaffoldGenerator } from './mock';
+import type { LazyScaffold, Scaffold, ScaffoldGenerator } from './mock';
 
 const TEST_IDS = new WeakMap<
   object,
@@ -449,17 +449,30 @@ export function installAdapterFor(owner: object, store: Store): void {
  *
  * @public
  */
-export async function mock(owner: object, generate: ScaffoldGenerator): Promise<void> {
+export async function mock(owner: object, generate: ScaffoldGenerator | LazyScaffold): Promise<void> {
   const test = TEST_IDS.get(owner);
   if (!test) {
     throw new Error(`Cannot call "mock" before configuring a testId. Use setTestId to set the testId for each test`);
   }
-  const requestToMock = generate();
-  const { url: mockUrl, method } = requestToMock;
+
+  // A LazyScaffold carries its identity, so its body is built only when
+  // recording. A bare generator is the only source of its own identity, so it
+  // has to run either way; the helpers in ./mock never pass one.
+  let method: string;
+  let mockUrl: string;
+  let buildScaffold: () => Scaffold;
+  if (typeof generate === 'function') {
+    const scaffold = generate();
+    ({ method, url: mockUrl } = scaffold);
+    buildScaffold = () => scaffold;
+  } else {
+    ({ method, url: mockUrl } = generate);
+    buildScaffold = generate.scaffold;
+  }
   if (!mockUrl || !method) {
     throw new Error(`MockError: Cannot mock a request without providing a URL and Method`);
   }
-  const mockMethod = (method?.toUpperCase() ?? 'GET') as HTTPMethod;
+  const mockMethod = (method.toUpperCase() ?? 'GET') as HTTPMethod;
 
   // enable custom methods
   if (!test.mock[mockMethod]) {
@@ -478,6 +491,7 @@ export async function mock(owner: object, generate: ScaffoldGenerator): Promise<
     return;
   }
 
+  const requestToMock = buildScaffold();
   const url = `${HOST}__record?__xTestId=${test.id}&__xTestRequestNumber=${testMockNum}`;
   const response = await fetch(url, {
     method: 'POST',

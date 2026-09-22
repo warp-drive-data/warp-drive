@@ -1,6 +1,7 @@
 import RequestManager from '@ember-data/request';
 import { buildBaseURL } from '@ember-data/request-utils';
 import Fetch from '@ember-data/request/fetch';
+import { SHOULD_RECORD } from '@warp-drive/core/build-config/env';
 import { module, test } from '@warp-drive/diagnostic';
 import { mock, MockServerHandler, setTestId } from '@warp-drive/holodeck';
 import { GET, HEAD } from '@warp-drive/holodeck/mock';
@@ -216,6 +217,30 @@ module('RequestManager | Fetch Handler', function (hooks) {
         'The error.errors is present'
       );
     }
+  });
+
+  test('It runs the response generator only while recording', async function (assert) {
+    const manager = new RequestManager();
+    manager.use([new MockServerHandler(this), Fetch]);
+    let generatorRuns = 0;
+
+    await GET(this, 'users/lazy', () => {
+      generatorRuns++;
+      return { data: { id: 'lazy', type: 'user', attributes: { name: 'Lazy' } } };
+    });
+
+    const doc = await manager.request<{ data: { id: string } }>({
+      url: buildBaseURL({ resourcePath: 'users/lazy' }),
+    });
+
+    assert.equal(doc.content.data.id, 'lazy', 'The request is served either way');
+    assert.equal(
+      generatorRuns,
+      SHOULD_RECORD ? 1 : 0,
+      SHOULD_RECORD
+        ? 'While recording, the generator ran once to produce the fixture'
+        : 'In replay, the generator never ran; the fixture came from disk'
+    );
   });
 
   test('It explains a missing mock', async function (assert) {
