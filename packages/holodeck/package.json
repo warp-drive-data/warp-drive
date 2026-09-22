@@ -23,7 +23,6 @@
   },
   "type": "module",
   "files": [
-    "bin",
     "dist",
     "README.md",
     "LICENSE.md",
