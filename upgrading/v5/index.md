@@ -1,5 +1,5 @@
 ---
-title: V3/V4 to V5
+title: Migrating 4.x to 5.x
 outline:
   level: 2,3
 ---
@@ -15,7 +15,7 @@ This guide is primarily intended for apps that got ***"stuck"*** on either 4.6 (
 Note - it is not actually a requirement of 5.x to replace Models with Schemas (nor to replace adapters/serializers with requests). These things are deprecated *in* 5.x, but they still work.
 
 The reason to take the approach outlined in this guide is
-because we have used capabilities provided by the [@warp-drive/legacy package](/api/@warp-drive/legacy/) and by [LegacyMode](/guides/the-manual/schemas/resources/polaris-mode.md) schemas together with [Extensions](/api/@warp-drive/core/reactive/types/CAUTION_MEGA_DANGER_ZONE_Extension) to mimic much of the removed API surface to allow apps to bridge the gap to 5.x more easily. 
+because we have used capabilities provided by the [@warp-drive/legacy package](/api/@warp-drive/legacy/) and by [LegacyMode](/guides/the-manual/schemas/resources/legacy-mode.md) schemas together with [Extensions](/api/@warp-drive/core/reactive/types/CAUTION_MEGA_DANGER_ZONE_Extension) to mimic much of the removed API surface to allow apps to bridge the gap to 5.x more easily. 
 
 ## Pre-Migration (update to Native Types)
 
@@ -110,7 +110,7 @@ npm add -E ember-data-types@latest \
   @ember-data-types/request-utils@latest \
   @ember-data-types/serializer@latest \
   @ember-data-types/store@latest \
-  @warp-drive-types/core-types@latest
+  @warp-drive-types/core-types@latest \
   @warp-drive/core@latest \
   @warp-drive/json-api@latest \
   @warp-drive/legacy@latest \
@@ -128,7 +128,7 @@ yarn add -E ember-data-types@latest \
   @ember-data-types/request-utils@latest \
   @ember-data-types/serializer@latest \
   @ember-data-types/store@latest \
-  @warp-drive-types/core-types@latest
+  @warp-drive-types/core-types@latest \
   @warp-drive/core@latest \
   @warp-drive/json-api@latest \
   @warp-drive/legacy@latest \
@@ -146,7 +146,7 @@ bun add --exact ember-data-types@latest \
   @ember-data-types/request-utils@latest \
   @ember-data-types/serializer@latest \
   @ember-data-types/store@latest \
-  @warp-drive-types/core-types@latest
+  @warp-drive-types/core-types@latest \
   @warp-drive/core@latest \
   @warp-drive/json-api@latest \
   @warp-drive/legacy@latest \
@@ -173,7 +173,7 @@ This will install the following at the latest release
     "@ember-data-types/store": "latest",
     "@warp-drive-types/core-types": "latest",
     "@warp-drive/core": "latest",
-    "@warp-drive/json-api": "latest"
+    "@warp-drive/json-api": "latest",
     "@warp-drive/legacy": "latest",
     "@warp-drive/utilities": "latest",
   }
@@ -288,7 +288,7 @@ This will install the following at the latest release
   "dependencies": {
     "@warp-drive-mirror/core": "latest",  // [!code ++:5]
     "@warp-drive-mirror/ember": "latest",
-    "@warp-drive-mirror/json-api": "latest"
+    "@warp-drive-mirror/json-api": "latest",
     "@warp-drive-mirror/legacy": "latest",
     "@warp-drive-mirror/utilities": "latest",
   }
@@ -444,20 +444,20 @@ Key concepts:
 
 ---
 
-Migrating away from Model involves decomposing the various responsibilities it
-may have taken on in your codebase into the correct corresponding primitive.
+A Model does four jobs at once: it is a TypeScript type, a schema, a reactive object, and a
+namespace for methods and computed properties. Migrating away from Model means handing each of
+those jobs to whichever new piece owns it.
 
-Below is a complete example of migrating a Model with a Mixin. After showing the
-full breakdown, we'll walk through decomposing the Model and Mixin files in discrete
-steps in order to teach you about each part of the change.
+We don't expect you to do this by hand. The [migrate-to-schema codemod](./codemods.md) generates
+these files for you. The walkthrough below explains the output it generates.
 
-We don't expect you to do this migration manually, but instead to use the provided
-codemod.
-
+Here is a Model with a Mixin, and the files that replace it.
 
 :::tabs key:model-migration
 
 == Before
+
+:::code-group
 
 ```ts [app/models/user.ts]
 import Model, { attr, belongsTo, hasMany, type AsyncHasMany } from '@ember-data/model';
@@ -494,6 +494,31 @@ export default class User extends Model.extend(Timestamped) {
 }
 ```
 
+```ts [app/mixins/timestamped.ts]
+import Mixin from '@ember/object/mixin';
+import { attr } from '@ember-data/model';
+
+export default Mixin.create({
+  createdAt: attr(),
+  deletedAt: attr(),
+  updatedAt: attr(),
+
+  async softDelete(): Promise<void> {
+    const result = await fetch(`/api/${this.constructor.modelName}/${this.id}`, { method: 'DELETE' });
+    const newTimestamps = await result.json();
+    this.store.push({
+      data: {
+        type: this.constructor.modelName,
+        id: this.id,
+        attributes: newTimestamps
+      }
+    });
+  }
+});
+```
+
+:::
+
 == After
 
 :::code-group
@@ -506,7 +531,7 @@ export const UserSchema = withDefaults({
   fields: [
     { kind: 'attribute', name: 'firstName' },
     { kind: 'attribute', name: 'lastName' },
-    { 
+    {
       kind: 'belongsTo',
       name: 'bestFriend',
       type: 'user',
@@ -525,19 +550,19 @@ export const UserSchema = withDefaults({
 ```
 
 ```ts [app/data/user/type.ts]
-import { WithLegacy } from '@warp-drive-mirror/legacy/model/migration-support';
-import { type AsyncHasMany } from '@warp-drive-mirror/legacy/model';
+import type { WithLegacy } from '@warp-drive-mirror/legacy/model/migration-support';
+import type { AsyncHasMany } from '@warp-drive-mirror/legacy/model';
 import type { Type } from '@warp-drive-mirror/core/types/symbols';
-import type { Timestamped } from '../timstamped/type.ts';
-import type { TimestampedExtension } from '../timestamped/ext.ts';
+import type { Timestamped } from '../traits/timestamped/type.ts';
+import type { TimestampedExtension } from '../traits/timestamped/ext.ts';
 
 export interface User extends Timestamped {
   [Type]: 'user';
   firstName: string;
   lastName: string;
-  user: User | null;
+  bestFriend: User | null;
   friends: AsyncHasMany<User>;
-};
+}
 
 export interface LegacyUser extends WithLegacy<User>, TimestampedExtension {}
 ```
@@ -545,7 +570,7 @@ export interface LegacyUser extends WithLegacy<User>, TimestampedExtension {}
 ```ts [app/data/user/ext.ts]
 import { cached } from '@glimmer/tracking';
 import { computed } from '@ember/object';
-import { LegacyUser } from './type.ts';
+import type { LegacyUser } from './type.ts';
 
 export interface UserExtension extends LegacyUser {}
 export class UserExtension {
@@ -571,41 +596,8 @@ export const UserExtensionSchema = {
 }
 ```
 
-:::
-
-:::tabs key:model-migration
-
-== Before
-
-```ts [app/mixins/timestamped.ts]
-import Mixin from '@ember/object/mixin';
-import { attr } from '@ember-data/model';
-
-export default Mixin.create({
-  createdAt: attr(),
-  deletedAt: attr(),
-  updatedAt: attr(),
-
-  async softDelete(): Promise<void> {
-    const result = await fetch(`/api/${this.constructor.modelName}/${this.id}`, { method: 'DELETE' });
-    const newTimestamps = await result.json();
-    this.store.push({
-      data: {
-        type: this.constructor.modelName,
-        id: this.id,
-        attributes: newTimestamps
-      }
-    });
-  }
-});
-```
-
-== After
-
-:::code-group
-
 ```ts [app/data/traits/timestamped/schema.ts]
-export const TimetampedTrait = {
+export const TimestampedTrait = {
   name: 'timestamped',
   mode: 'legacy',
   fields: [
@@ -625,12 +617,10 @@ export interface Timestamped {
 ```
 
 ```ts [app/data/traits/timestamped/ext.ts]
-import Mixin from '@ember/object/mixin';
-import { attr } from '@ember-data/model';
-import { Timestamped } from './type.ts';
+import type { Timestamped } from './type.ts';
 
 export interface TimestampedExtension extends Timestamped {}
-export const TimestampedExtension = {
+export class TimestampedExtension {
   async softDelete(): Promise<void> {
     const result = await fetch(`/api/${this.constructor.modelName}/${this.id}`, { method: 'DELETE' });
     const newTimestamps = await result.json();
@@ -647,11 +637,13 @@ export const TimestampedExtension = {
 export const TimestampedExtensionSchema = {
   kind: 'object',
   name: 'timestamped-extension',
-  features: TimestampedExtension
-});
+  features: TimestampedExtension,
+}
 ```
 
 :::
+
+Step by step, this is how the Model decomposes into those files.
 
 1. The file-path based convention for defining the ResourceType is replaced with specifying a ResourceType on a ResourceSchema. File paths are now purely organizational and discretionary.
 
@@ -664,7 +656,7 @@ const UserSchema = {
 }
 ```
 
-2. We differentiate between schemas for embedded objects (which have no identity of their own) and 
+2. We differentiate between schemas for embedded objects (which have no identity of their own) and
 schemas for resources (which do have their own identity) by specifying a primaryKey. On `Model` this
 was `id` (this is also added by `withDefaults` which we'll see next).
 
@@ -720,7 +712,7 @@ const UserSchema = withDefaults({
   fields: [ // [!code ++:16]
     { kind: 'attribute', name: 'firstName' },
     { kind: 'attribute', name: 'lastName' },
-    { 
+    {
       kind: 'belongsTo',
       name: 'bestFriend',
       type: 'user',
@@ -736,279 +728,28 @@ const UserSchema = withDefaults({
 })
 ```
 
-6. Mixins get converted to traits.
-
-Because Model functioned as a `type`, a `ResourceSchema`, a reactive object, and 
-
-We migrate models with ResourceSchemas and extensions.
-
-:::tabs
-
-== Before
-
-```ts [app/models/user.ts]
-import Model, { attr, belongsTo, hasMany, type AsyncHasMany } from '@ember-data/model';
-import type { Type } from '@warp-drive/core-types/symbols';
-import { cached } from '@glimmer/tracking';
-import { computed } from '@ember/object';
-
-export default class User extends Model {
-  declare [Type]: 'user';
-
-  @attr firstName;
-  @attr lastName;
-
-  @belongsTo('user', { async: false, inverse: null })
-  declare bestFriend: User | null;
-
-  @hasMany('user', { async: true, inverse: null })
-  declare friends: AsyncHasMany<User>;
-
-  @cached
-  get fullName() {
-    return this.firstName + ' ' + this.lastName;
-  }
-
-  @computed('firstName')
-  get greeting() {
-    return 'Hello ' + this.firstName + '!';
-  }
-
-  sayHi() {
-    alert(this.greeting);
-  }
-}
-```
-
-== After
-
-:::code-group
+6. The Mixin's `attr` fields become a trait, and the ResourceSchema lists that trait by name. A trait is a reusable set of fields that any ResourceSchema can pull in.
 
 ```ts [app/data/user/schema.ts]
-import { withDefaults } from '@warp-drive-mirror/legacy/model/migration-support';
-
-export const UserSchema = withDefaults({
+const UserSchema = withDefaults({
   type: 'user',
-  fields: [
-    { kind: 'attribute', name: 'firstName' },
-    { kind: 'attribute', name: 'lastName' },
-    { 
-      kind: 'belongsTo',
-      name: 'bestFriend',
-      type: 'user',
-      options: { async: false, inverse: null }
-    },
-    {
-      kind: 'hasMany',
-      name: 'friends',
-      type: 'user',
-      options: { async: true, inverse: null }
-    },
-  ],
-  objectExtensions: ['user-extension'],
-});
+  fields: [ /* ... */ ],
+  traits: ['timestamped'], // [!code ++]
+})
 ```
 
-```ts [app/data/user/type.ts]
-import { WithLegacy } from '@warp-drive-mirror/legacy/model/migration-support';
-import { type AsyncHasMany } from '@warp-drive-mirror/legacy/model';
-import type { Type } from '@warp-drive-mirror/core/types/symbols';
-
-export type User = WithLegacy<{
-  [Type]: 'user';
-  firstName: string;
-  lastName: string;
-  user: User | null;
-  friends: AsyncHasMany<User>;
-}>;
-```
-
-```ts [app/data/user/ext.ts]
-import { cached } from '@glimmer/tracking';
-import { computed } from '@ember/object';
-import { User } from './type.ts';
-
-export interface UserExtension extends User {}
-export class UserExtension {
-  @cached
-  get fullName() {
-    return this.firstName + ' ' + this.lastName;
-  }
-
-  @computed('firstName')
-  get greeting() {
-    return 'Hello ' + this.firstName + '!';
-  }
-
-  sayHi() {
-    alert(this.greeting);
-  }
-}
-
-export const UserExtensionSchema = {
-  name: 'user-extension',
-  kind: 'object',
-  features: UserExtension,
-}
-```
-
-:::
-
-#### A Model with Mixins
-
-We can migrate mixins with traits and extensions.
-
-:::tabs
-
-== Before
-
-:::code-group
-
-```ts [app/models/user.ts]
-import Model, { attr } from '@ember-data/model';
-import type { Type } from '@warp-drive/core-types/symbols';
-import Timestamped from '../mixins/timestamped';
-
-export default class User extends Model.extend(Timestamped) {
-  declare [Type]: 'user';
-
-  @attr firstName;
-  @attr lastName;
-}
-```
-
-```ts [app/mixins/timestamped.ts]
-import Mixin from '@ember/object/mixin';
-import { attr } from '@ember-data/model';
-
-export default Mixin.create({
-  createdAt: attr(),
-  deletedAt: attr(),
-  updatedAt: attr(),
-
-  async softDelete() {
-    const result = await fetch(`/api/${this.constructor.modelName}/${this.id}`, { method: 'DELETE' });
-    const newTimestamps = await result.json();
-    this.store.push({
-      data: {
-        type: this.constructor.modelName,
-        id: this.id,
-        attributes: newTimestamps
-      }
-    });
-  }
-});
-```
-
-== After
-
-:::code-group
+7. Everything left on the Model or Mixin that is not schema (computed properties, methods) moves to an object extension, and the ResourceSchema lists those by name too. An extension adds methods and getters to a LegacyMode record.
 
 ```ts [app/data/user/schema.ts]
-import { withDefaults } from '@warp-drive-mirror/legacy/model/migration-support';
-
-export const UserSchema = withDefaults({
+const UserSchema = withDefaults({
   type: 'user',
-  fields: [
-    { kind: 'attribute', name: 'firstName' },
-    { kind: 'attribute', name: 'lastName' },
-  ],
+  fields: [ /* ... */ ],
   traits: ['timestamped'],
-  objectExtensions: ['timestamped-extension']
-});
+  objectExtensions: ['timestamped-extension', 'user-extension'], // [!code ++]
+})
 ```
 
-```ts [app/data/user/type.ts]
-import { WithLegacy } from '@warp-drive-mirror/legacy/model/migration-support';
-import { type AsyncHasMany } from '@warp-drive-mirror/legacy/model';
-import type { Type } from '@warp-drive-mirror/core/types/symbols';
-import type { Timestamped } from '../timstamped/type.ts';
-
-export interface User extends Timestamped {
-  [Type]: 'user';
-  firstName: string;
-  lastName: string;
-  user: User | null;
-  friends: AsyncHasMany<User>;
-};
-
-export type LegacyUser = WithLegacy<User>;
-```
-
-```ts [app/data/timestamped/schema.ts]
-export const TimetampedTrait = {
-  name: 'timestamped',
-  mode: 'legacy',
-  fields: [
-    { kind: 'attribute', name: 'createdAt' },
-    { kind: 'attribute', name: 'deletedAt' },
-    { kind: 'attribute', name: 'updatedAt' },
-  ],
-}
-```
-
-```ts [app/data/timestamped/type.ts]
-export interface Timestamped {
-  createdAt: number;
-  deletedAt: number | null;
-  updatedAt: number;
-
-  softDelete: Promise<void>;
-}
-```
-
-```ts [app/data/timestamped/ext.ts]
-import Mixin from '@ember/object/mixin';
-import { attr } from '@ember-data/model';
-
-export const TimestampedExtension = {
-  kind: 'object',
-  name: 'timestamped-extension',
-  features: {
-    async softDelete() {
-      const result = await fetch(`/api/${this.constructor.modelName}/${this.id}`, { method: 'DELETE' });
-      const newTimestamps = await result.json();
-      this.store.push({
-        data: {
-          type: this.constructor.modelName,
-          id: this.id,
-          attributes: newTimestamps
-        }
-      });
-    }
-  }
-});
-```
-
-:::
-
-#### A Model with Fragments
-
-:::tabs
-
-== Before
-
-```ts
-TBD
-```
-
-== After
-
-:::code-group
-
-```ts [app/data/user/schema.ts]
-TBD
-```
-
-```ts [app/data/user/type.ts]
-TBD
-```
-
-```ts [app/data/user/ext.ts]
-TBD
-```
-
-:::
+8. The Model's TypeScript shape becomes a plain interface, wrapped in `WithLegacy` to pick up the fields `withDefaults` added and intersected with any extension interfaces so `user.fullName` still type-checks.
 
 ## Post Migration
 

@@ -328,7 +328,7 @@ export const UserSchema = withDefaults({
 
 ### Caveats
 
-- **Parent / base classes require manual migration.** The codemod does not reliably migrate abstract base classes such as `BaseModel` or `DataFieldModel`. If your app has intermediate classes between `Model` and your concrete models, you should migrate those by hand first and then use `importSubstitutes` or `intermediateModelPaths` in your [configuration](#configuration-example) to tell the codemod how to reference them.
+- **Parent / base classes require manual migration.** The codemod does not reliably migrate abstract base classes such as `BaseModel` or `DataFieldModel`. If your app has intermediate classes between `Model` and your concrete models, you should migrate those by hand first and then use `importSubstitutes` or `intermediateModelPaths` in your [configuration](#configuration) to tell the codemod how to reference them.
 
 - **Re-exported models from libraries are not migrated.** The codemod tries its best to follow imports and locate source files, but models that are re-exported from external packages (e.g., `import MyModel from '@my-org/shared-models/my-model'`) cannot have their source analyzed. These will be skipped. Use `additionalModelSources` to point the codemod at the on-disk location of library code, or migrate those models manually.
 
