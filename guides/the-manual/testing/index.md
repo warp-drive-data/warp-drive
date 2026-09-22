@@ -11,7 +11,7 @@ that.
 
 :::danger 🛑 CANARY ONLY 🛑
 Holodeck is still experimental and publishes to the `canary` channel only. Install it with an
-exact version, as [Setting up holodeck](./setup.md) shows.
+exact version, as [Server setup](./server-setup.md) shows.
 :::
 
 ## Holodeck runs a real server
@@ -29,8 +29,13 @@ That choice buys you three things a page-level interceptor cannot give you.
   than in a stub.
 
 It also costs you two things, and both are setup rather than test code. The server needs a locally
-trusted TLS certificate, and it needs a port of its own. [Setting up holodeck](./setup.md) covers
+trusted TLS certificate, and it needs a port of its own. [Server setup](./server-setup.md) covers
 both.
+
+Running the mock inside ***Warp*Drive** rather than beside it is the other half of the argument.
+***Warp*Drive** already knows your schemas and your request builders, so a mock library that shares
+them can scope every request to a test, skip work in replay, and keep using the same builders your
+application code uses. [HoloPrograms](./holo-programs.md) is where that idea is heading next.
 
 ## Record once, replay forever
 
@@ -81,6 +86,10 @@ constructs no fixtures. You paid that cost once, when you wrote the test.
 The `.mock-cache` directory belongs in version control. It is not build output, and nothing
 regenerates it in CI.
 
+Committing them is what makes the cache work. Git manages it, so switching branches switches the
+fixtures with the tests they belong to, and a rebase or a CI run skips recording entirely because
+the files are already there.
+
 This catches people out because a local run always passes. Recording is on locally, so a test with
 no committed fixture records one and goes green. The same test fails in CI, where replay is
 enforced and the file is missing.
@@ -90,7 +99,10 @@ the one command that reproduces CI's behavior before you push.
 
 ## Where to go next
 
-- [Setting up holodeck](./setup.md) installs the package, the certificate, and the wiring.
+- [Server setup](./server-setup.md) installs the package, the certificate, and the server.
+- [Client setup](./client-setup.md) puts the handler in your request chain.
+- [Test framework integration](./test-framework-integration.md) wires the test id and the host.
 - [Writing mocks](./writing-mocks.md) covers the mock helpers and the rules for matching a request.
 - [Recording and replaying](./record-and-replay.md) covers the modes, the fixtures, and CI.
 - [Troubleshooting](./troubleshooting.md) is indexed by the error text you see.
+- [HoloPrograms](./holo-programs.md) is the design the package is being built toward.

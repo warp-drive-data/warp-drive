@@ -68,5 +68,7 @@ two configuration calls before any mock works.
 
 ## Related
 
-- Full guide: [Setting Up Holodeck](/guides/the-manual/testing/setup.md)
+- Full guide: [Server Setup](/guides/the-manual/testing/server-setup.md),
+  [Client Setup](/guides/the-manual/testing/client-setup.md), and
+  [Test Framework Integration](/guides/the-manual/testing/test-framework-integration.md)
 - Related skill: [Mock HTTP Requests in Tests](/skills/testing/mock-http-requests-in-tests)
