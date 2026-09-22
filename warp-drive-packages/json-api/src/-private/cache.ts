@@ -155,17 +155,17 @@ interface CachedResource {
   defaultAttrs: AttrHash | null;
 
   /**
-   * A `[before, after]` pair per dirty field, in the shape
+   * The unsaved mutations, as a `[before, after]` pair per field, in the shape
    * {@link JSONAPICache.changedAttrs | changedAttrs} returns. Maintained
-   * incrementally at each edit rather than derived on read, because the
-   * consumers that need it read it far more often than it changes.
+   * incrementally at each edit, so reading it is a property access.
    *
-   * `before` is the edit baseline at the moment of the most recent `setAttr`
-   * for the field: the in-flight value if a save is carrying one, else remote.
-   * An edit made while a save is in flight therefore records the in-flight
-   * value as `before`, so the pair describes what the *next* save would
-   * change. Reverting such an edit to the in-flight value restores the pair to
-   * `[remote, inflight]`, since that save is still changing the field.
+   * `before` is the value the mutation replaces, which is not always the
+   * persisted one: a mutation a save is carrying replaces remote, while an edit
+   * made during that save replaces the in-flight value. This is therefore not
+   * "the diff" against persisted state; it is what saving from here would
+   * change, which is what `serializePatch` and the legacy `Snapshot` consume.
+   * Reverting a mid-flight edit back to the in-flight value restores the pair
+   * to `[remote, inflight]`, since that save is still changing the field.
    *
    * Outlives `localAttrs` across a save: starting one empties `localAttrs`
    * without clearing these, so
@@ -173,6 +173,9 @@ interface CachedResource {
    * being saved while the request is in flight. Completing or rejecting the
    * save reconciles the two again, and any time remote moves underneath a
    * still-diverging edit, `before` is refreshed to the new remote value.
+   *
+   * Dirtiness is not read from here: `hasChangedAttrs` checks `localAttrs` and
+   * `inflightAttrs` directly.
    */
   changes: Record<string, [Value | undefined, Value]> | null;
 
