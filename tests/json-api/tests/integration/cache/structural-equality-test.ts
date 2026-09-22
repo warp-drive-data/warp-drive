@@ -2,7 +2,7 @@ import type { NotificationType, Store } from '@warp-drive/core';
 import { recordIdentifierFor, useRecommendedStore } from '@warp-drive/core';
 import { checkout, withDefaults } from '@warp-drive/core/reactive';
 import type { ResourceKey } from '@warp-drive/core/types/identifier';
-import type { Value } from '@warp-drive/core/types/json/raw';
+import type { ObjectValue, Value } from '@warp-drive/core/types/json/raw';
 import type { Type } from '@warp-drive/core/types/symbols';
 import { module, test } from '@warp-drive/diagnostic';
 import type { TestContext } from '@warp-drive/diagnostic/-types';
@@ -28,6 +28,7 @@ interface ExistingUser {
   lastName: string;
   messages: Message[];
   settings: Record<string, unknown> | null;
+  nickname: string;
 }
 
 interface CustomContext extends TestContext {
@@ -74,6 +75,8 @@ module<CustomContext>('Integration | <JSONAPICache> structural equality of attri
             { name: 'lastName', kind: 'field' },
             { name: 'messages', kind: 'schema-array', type: 'message' },
             { name: 'settings', kind: 'object' },
+            // a legacy `defaultValue()` function is the one kind of default the cache memoizes
+            { name: 'nickname', kind: 'field', options: { defaultValue: () => 'anon' } as unknown as ObjectValue },
           ],
         }),
         {
@@ -241,5 +244,39 @@ module<CustomContext>('Integration | <JSONAPICache> structural equality of attri
     assert.deepEqual(localAfterEdit, [], 'the re-push did not wake the local channel');
     assert.equal(editable.messages[0].state, 'executed', 'the diverging local edit survives the equal-content re-push');
     assert.true(store.cache.hasChangedAttrs(lid), 'the local edit is still dirty');
+  });
+
+  test<CustomContext>('a push carrying the value a memoized default already supplies does not notify', function (assert) {
+    const { store } = this;
+    const user = pushUser(store);
+    // reading the field memoizes the default, so both projections now resolve it through defaultAttrs
+    assert.equal(user.nickname, 'anon', 'the remote projection reads the default');
+    const remote = watch(store, user, 'remote');
+    const local = watch(store, user, 'local');
+
+    store.push({
+      data: {
+        type: 'user',
+        id: '1',
+        attributes: { firstName: 'Chris', lastName: 'Thoburn', messages: [], nickname: 'anon' },
+      },
+    });
+    flush(store);
+
+    assert.deepEqual(remote, [], 'remote read anon before and after, so it heard nothing');
+    assert.deepEqual(local, [], 'local read anon before and after, so it heard nothing');
+    assert.equal(user.nickname, 'anon', 'the persisted value now backs the read');
+
+    store.push({
+      data: {
+        type: 'user',
+        id: '1',
+        attributes: { firstName: 'Chris', lastName: 'Thoburn', messages: [], nickname: 'bob' },
+      },
+    });
+    flush(store);
+
+    assert.deepEqual(remote, ['nickname'], 'a value that differs from the default still notifies');
+    assert.equal(user.nickname, 'bob', 'and is what the remote projection reads');
   });
 });

@@ -229,17 +229,19 @@ const RESOLUTION_ORDER_EDIT_BASELINE = ['inflightAttrs', 'remoteAttrs'] as const
 /** What an editable copy reads. */
 const RESOLUTION_ORDER_LOCAL_STATE = ['localAttrs', ...RESOLUTION_ORDER_EDIT_BASELINE, 'defaultAttrs'] as const;
 
-// Merge orders: each projection before and after the merge. `partitionChangedKeys` compares them
-// to tell which projection moved; `mergeIntoRemote` applies the after order. `defaultAttrs` is left
-// out on purpose: a memoized default giving way to a real value is a move.
-const RESOLUTION_ORDER_REMOTE_BEFORE_MERGE = ['remoteAttrs'] as const;
-const RESOLUTION_ORDER_LOCAL_BEFORE_MERGE = ['localAttrs', ...RESOLUTION_ORDER_EDIT_BASELINE] as const;
-// The `REMOTE_AFTER_*` orders are also what `mergeIntoRemote` applies: every layer above
+// After-merge orders: what each projection will read once a merge lands. `partitionChangedKeys`
+// compares them against `REMOTE_STATE` / `LOCAL_STATE` (what each projection reads now) to tell
+// which projection moved, so the two sides of that comparison must resolve through the same
+// layers, `defaultAttrs` included. `mergeIntoRemote` applies the same orders: every layer above
 // `remoteAttrs` is folded into it, lowest precedence first, and a resource layer that was folded
 // in is cleared. A commit consumes in-flight values; an upsert leaves them where they are.
-const RESOLUTION_ORDER_REMOTE_AFTER_COMMIT = ['incomingAttrs', 'inflightAttrs', 'remoteAttrs'] as const;
+const RESOLUTION_ORDER_REMOTE_AFTER_COMMIT = [
+  'incomingAttrs',
+  'inflightAttrs',
+  ...RESOLUTION_ORDER_REMOTE_STATE,
+] as const;
 const RESOLUTION_ORDER_LOCAL_AFTER_COMMIT = ['localAttrs', ...RESOLUTION_ORDER_REMOTE_AFTER_COMMIT] as const;
-const RESOLUTION_ORDER_REMOTE_AFTER_UPSERT = ['incomingAttrs', 'remoteAttrs'] as const;
+const RESOLUTION_ORDER_REMOTE_AFTER_UPSERT = ['incomingAttrs', ...RESOLUTION_ORDER_REMOTE_STATE] as const;
 const RESOLUTION_ORDER_LOCAL_AFTER_UPSERT = [
   'localAttrs',
   'inflightAttrs',
@@ -2189,6 +2191,7 @@ function layersForMerge(cached: CachedResource, incomingAttrs: AttrHash | null):
     localAttrs: cached.localAttrs,
     inflightAttrs: cached.inflightAttrs,
     remoteAttrs: cached.remoteAttrs,
+    defaultAttrs: cached.defaultAttrs,
     incomingAttrs,
   };
 }
@@ -2201,7 +2204,8 @@ function candidateKeys(layers: Layered, remoteAfterOrder: readonly (AttrLayer | 
   let keys: string[] | null = null;
   for (let i = 0; i < remoteAfterOrder.length; i++) {
     const layer = remoteAfterOrder[i];
-    const hash = layer === 'remoteAttrs' ? null : layers[layer];
+    if (layer === 'remoteAttrs') break;
+    const hash = layers[layer];
     if (!hash) continue;
     const layerKeys = Object.keys(hash);
     if (!layerKeys.length) continue;
@@ -2222,11 +2226,10 @@ function candidateKeys(layers: Layered, remoteAfterOrder: readonly (AttrLayer | 
  * {@link partitionChangedKeys} used to predict the result, so the two cannot disagree.
  */
 function mergeIntoRemote(cached: CachedResource, layers: Layered, kind: MergeKind): void {
-  const order = MERGE_RESOLUTION[kind].remoteAfter;
+  const order: readonly (AttrLayer | MergeLayer)[] = MERGE_RESOLUTION[kind].remoteAfter;
   const target = cached.remoteAttrs || (Object.create(null) as AttrHash);
-  for (let i = order.length - 1; i >= 0; i--) {
+  for (let i = order.indexOf('remoteAttrs') - 1; i >= 0; i--) {
     const layer = order[i];
-    if (layer === 'remoteAttrs') continue;
     Object.assign(target, layers[layer]);
     if (layer !== 'incomingAttrs') cached[layer] = null;
   }
@@ -2258,9 +2261,9 @@ function partitionChangedKeys(
     const field = fields.get(key);
     if (!field || isRelationship(field)) continue;
 
-    const remoteBefore = resolveAttr(key, layers, RESOLUTION_ORDER_REMOTE_BEFORE_MERGE);
+    const remoteBefore = resolveAttr(key, layers, RESOLUTION_ORDER_REMOTE_STATE);
     const remoteAfter = resolveAttr(key, layers, remoteAfterOrder);
-    const localBefore = resolveAttr(key, layers, RESOLUTION_ORDER_LOCAL_BEFORE_MERGE);
+    const localBefore = resolveAttr(key, layers, RESOLUTION_ORDER_LOCAL_STATE);
     const localAfter = resolveAttr(key, layers, localAfterOrder);
 
     const remoteMoved = !valuesEqual(remoteBefore, remoteAfter);
