@@ -80,25 +80,30 @@ const EMPTY_ITERATOR = {
   },
 };
 
+/** One attributes hash on a {@link CachedResource}: a **layer** a projection is read through. */
+type AttrHash = Record<string, Value | undefined>;
+
 /**
  * The cache's entry for a single resource: its id, its attribute values split
- * across four buckets, and the flags tracking where it sits in the
+ * across four **layers**, and the flags tracking where it sits in the
  * create/update/delete lifecycle.
  *
- * A resource has two "projections" — views into "what is this field's value":
+ * A **projection** answers "what is this field's value" by reading a stack of
+ * layers top-down; the first layer holding the field wins. The two projections,
+ * with their resolution orders:
  *
- * - **remote state** is what the _immutable_ record reads, resolving:
- *     - {@link CachedResource.remoteAttrs | remoteAttrs}, then
- *     - {@link CachedResource.defaultAttrs | defaultAttrs}
- * - **local state** — remote state overlaid by the diff — is what an _editable_
- *   copy reads, resolving:
- *     - {@link CachedResource.localAttrs | localAttrs}, then
- *     - {@link CachedResource.inflightAttrs | inflightAttrs}, then
- *     - {@link CachedResource.remoteAttrs | remoteAttrs}, then
- *     - {@link CachedResource.defaultAttrs | defaultAttrs}
+ * - **remote state**, what the _immutable_ record reads:
+ *   {@link RESOLUTION_ORDER_REMOTE_STATE}
+ * - **local state**, what an _editable_ copy reads:
+ *   {@link RESOLUTION_ORDER_LOCAL_STATE}
  *
- * A field is **dirty** while it has an entry in `localAttrs` or `inflightAttrs`.
- * The mutation is **committed** once remote state holds the same value — a save
+ * Local state is remote state with the uncommitted mutations laid over it. The
+ * guides call those mutations "the diff"; here they are simply the top layers of
+ * local state, {@link CachedResource.localAttrs | localAttrs} and
+ * {@link CachedResource.inflightAttrs | inflightAttrs}.
+ *
+ * A field is **dirty** while `localAttrs` or `inflightAttrs` holds it. The
+ * mutation is **committed** once remote state holds the same value — a save
  * response landing, or a push that happens to agree — at which point the entry
  * is discarded. Equality is structural, so an array or object with equal content
  * counts.
@@ -112,47 +117,45 @@ interface CachedResource {
   /** The resource's id, once one is known. */
   id: string | null;
 
-  /** The basis of the remote state. The last known persisted attributes hash. */
-  remoteAttrs: Record<string, Value | undefined> | null;
+  /** The bottom data layer of both projections: the last known persisted values. */
+  remoteAttrs: AttrHash | null;
 
   /**
-   * The basis of the local state.
-   *
-   * The diff: mutations held separate from the remote state. Any field with an
-   * entry here is dirty.
+   * The top layer of local state: uncommitted mutations, held apart from remote
+   * state. Any field with an entry here is dirty. (With `inflightAttrs`, this is
+   * what the guides call "the diff".)
    *
    * Starting a save moves these into `inflightAttrs`, so any further
-   * mutation accumulates in a fresh diff without disturbing the request already
+   * mutation accumulates here afresh without disturbing the request already
    * in flight.
    */
-  localAttrs: Record<string, Value | undefined> | null;
+  localAttrs: AttrHash | null;
 
   /**
-   * Memoized results of legacy `defaultValue()` *functions*, for fields that
-   * have no value in remote state or the diff. Primitive and transform defaults
-   * are recomputed on every read and never land here. Read for both local and
-   * remote state; never committed; an entry is dropped once the field gets a
-   * real value.
+   * The bottom layer of both projections. Memoized results of legacy
+   * `defaultValue()` *functions*, for fields no other layer holds. Primitive and
+   * transform defaults are recomputed on every read and never land here. Never
+   * committed; an entry is dropped once the field gets a real value.
    */
-  defaultAttrs: Record<string, Value | undefined> | null;
+  defaultAttrs: AttrHash | null;
 
   /**
-   * The portion of the diff an in-progress save is saving. Read as part of the
-   * local state.
+   * The middle layer of local state: the mutations an in-progress save is
+   * carrying.
    *
    * Completing a save merges these into
-   * {@link CachedResource.remoteAttrs | remote state} and clears this —
+   * {@link CachedResource.remoteAttrs | remoteAttrs} and clears this —
    * committing them. A rejected save moves them back into `localAttrs`
    * instead, without overwriting any newer edit made while it was in flight.
    */
-  inflightAttrs: Record<string, Value | undefined> | null;
+  inflightAttrs: AttrHash | null;
 
   /**
-   * A `[before, after]` pair per entry in the
-   * {@link CachedResource.localAttrs | diff}, in the shape
+   * A `[before, after]` pair per entry in
+   * {@link CachedResource.localAttrs | localAttrs}, in the shape
    * {@link JSONAPICache.changedAttrs | changedAttrs} returns.
    *
-   * Tracked alongside the diff but outliving it across a save: starting one
+   * Tracked alongside `localAttrs` but outliving it across a save: starting one
    * empties `localAttrs` without clearing these, so
    * {@link JSONAPICache.changedAttrs | changedAttrs} still reports what is
    * being saved while the request is in flight. Completing or rejecting the
@@ -203,6 +206,50 @@ interface CachedResource {
    */
   inflightRelationships?: Record<string, unknown> | null;
 }
+
+/** A layer name on a {@link CachedResource}. */
+type AttrLayer = 'localAttrs' | 'inflightAttrs' | 'remoteAttrs' | 'defaultAttrs';
+
+/**
+ * A layer that exists only while modelling a merge: the incoming payload's
+ * attributes, which {@link partitionChangedKeys} reads as if they were already
+ * on the resource.
+ */
+type MergeLayer = 'updates';
+
+/** Anything a projection can be read through: a {@link CachedResource}, or a merge model built around one. */
+type Layered = Partial<Record<AttrLayer | MergeLayer, AttrHash | null>>;
+
+/** What the immutable record reads. */
+const RESOLUTION_ORDER_REMOTE_STATE = ['remoteAttrs', 'defaultAttrs'] as const;
+
+/** What a local edit is measured against: the value local state would read if the edit were not there. */
+const RESOLUTION_ORDER_EDIT_BASELINE = ['inflightAttrs', 'remoteAttrs'] as const;
+
+/** What an editable copy reads. */
+const RESOLUTION_ORDER_LOCAL_STATE = ['localAttrs', ...RESOLUTION_ORDER_EDIT_BASELINE, 'defaultAttrs'] as const;
+
+// Merge modelling: each projection before and after the merge, so `partitionChangedKeys` can tell
+// which one moved. `defaultAttrs` is left out on purpose: a memoized default giving way to a real
+// value is a move.
+const RESOLUTION_ORDER_REMOTE_BEFORE_MERGE = ['remoteAttrs'] as const;
+const RESOLUTION_ORDER_LOCAL_BEFORE_MERGE = ['localAttrs', ...RESOLUTION_ORDER_EDIT_BASELINE] as const;
+// a commit folds in-flight values into remote: Object.assign(remoteAttrs, inflightAttrs, updates)
+const RESOLUTION_ORDER_REMOTE_AFTER_COMMIT = ['updates', 'inflightAttrs', 'remoteAttrs'] as const;
+const RESOLUTION_ORDER_LOCAL_AFTER_COMMIT = ['localAttrs', ...RESOLUTION_ORDER_REMOTE_AFTER_COMMIT] as const;
+// an upsert leaves in-flight values where they are: Object.assign(remoteAttrs, updates)
+const RESOLUTION_ORDER_REMOTE_AFTER_UPSERT = ['updates', 'remoteAttrs'] as const;
+const RESOLUTION_ORDER_LOCAL_AFTER_UPSERT = [
+  'localAttrs',
+  'inflightAttrs',
+  ...RESOLUTION_ORDER_REMOTE_AFTER_UPSERT,
+] as const;
+
+const MERGE_RESOLUTION = {
+  commit: { remoteAfter: RESOLUTION_ORDER_REMOTE_AFTER_COMMIT, localAfter: RESOLUTION_ORDER_LOCAL_AFTER_COMMIT },
+  upsert: { remoteAfter: RESOLUTION_ORDER_REMOTE_AFTER_UPSERT, localAfter: RESOLUTION_ORDER_LOCAL_AFTER_UPSERT },
+} as const;
+type MergeKind = keyof typeof MERGE_RESOLUTION;
 
 function makeCache(): CachedResource {
   return {
@@ -1249,15 +1296,9 @@ export class JSONAPICache implements Cache {
         return undefined;
       }
 
-      const bucket = bucketHolding(
-        attribute,
-        cached.localAttrs,
-        cached.inflightAttrs,
-        cached.remoteAttrs,
-        cached.defaultAttrs
-      );
-      if (bucket) {
-        return bucket[attribute];
+      const layer = layerHolding(attribute, cached, RESOLUTION_ORDER_LOCAL_STATE);
+      if (layer) {
+        return layer[attribute];
       }
       const attrSchema = getCacheFields(this, identifier).get(attribute);
 
@@ -1275,8 +1316,7 @@ export class JSONAPICache implements Cache {
     const path: string[] = attr as string[];
     const cached = this.__peek(identifier, true);
     const basePath = path[0];
-    const bucket = bucketHolding(basePath, cached.localAttrs, cached.inflightAttrs, cached.remoteAttrs);
-    return bucket ? readPath(bucket[basePath], path) : undefined;
+    return readPath(resolveAttr(basePath, cached, RESOLUTION_ORDER_LOCAL_STATE), path);
   }
 
   /**
@@ -1310,10 +1350,9 @@ export class JSONAPICache implements Cache {
         return undefined;
       }
 
-      // defaultValues still apply to a remote read
-      const bucket = bucketHolding(attribute, cached.remoteAttrs, cached.defaultAttrs);
-      if (bucket) {
-        return bucket[attribute];
+      const layer = layerHolding(attribute, cached, RESOLUTION_ORDER_REMOTE_STATE);
+      if (layer) {
+        return layer[attribute];
       }
       const attrSchema = getCacheFields(this, identifier).get(attribute);
 
@@ -1331,8 +1370,7 @@ export class JSONAPICache implements Cache {
     const path: string[] = attr as string[];
     const cached = this.__peek(identifier, true);
     const basePath = path[0];
-    const bucket = bucketHolding(basePath, cached.remoteAttrs);
-    return bucket ? readPath(bucket[basePath], path) : undefined;
+    return readPath(resolveAttr(basePath, cached, RESOLUTION_ORDER_REMOTE_STATE), path);
   }
 
   /**
@@ -1360,7 +1398,7 @@ export class JSONAPICache implements Cache {
     if (isSimplePath) {
       const cached = this.__peek(identifier, false);
       const currentAttr = attr as string;
-      const baseline = editBaseline(cached, currentAttr);
+      const baseline = resolveAttr(currentAttr, cached, RESOLUTION_ORDER_EDIT_BASELINE);
 
       if (baseline !== value) {
         cached.localAttrs = cached.localAttrs || (Object.create(null) as Record<string, Value>);
@@ -1387,7 +1425,7 @@ export class JSONAPICache implements Cache {
     const cached = this.__peek(identifier, false);
 
     const basePath = path[0];
-    const baseline = editBaseline(cached, basePath);
+    const baseline = resolveAttr(basePath, cached, RESOLUTION_ORDER_EDIT_BASELINE);
     const baselineAtPath = baseline ? readPath(baseline, path) : undefined;
 
     if (baselineAtPath !== value) {
@@ -2046,35 +2084,22 @@ function getDefaultValue(
   }
 }
 
-type AttrBucket = Record<string, Value | undefined> | null;
-
 /**
- * The first bucket, in precedence order, that holds `key`. Presence is `in`, so a value
+ * The first layer, in the given resolution order, that holds `key`. Presence is `in`, so a value
  * explicitly set to `undefined` counts as present.
  */
-function bucketHolding(
-  key: string,
-  a: AttrBucket,
-  b: AttrBucket = null,
-  c: AttrBucket = null,
-  d: AttrBucket = null,
-  e: AttrBucket = null
-): AttrBucket {
-  if (a && key in a) return a;
-  if (b && key in b) return b;
-  if (c && key in c) return c;
-  if (d && key in d) return d;
-  if (e && key in e) return e;
+function layerHolding(key: string, layers: Layered, order: readonly (AttrLayer | MergeLayer)[]): AttrHash | null {
+  for (let i = 0; i < order.length; i++) {
+    const layer = layers[order[i]];
+    if (layer && key in layer) return layer;
+  }
   return null;
 }
 
-function valueIn(bucket: AttrBucket, key: string): Value | undefined {
-  return bucket ? bucket[key] : undefined;
-}
-
-/** The value a local edit is measured against: in flight if a save is carrying one, else remote. */
-function editBaseline(cached: CachedResource, key: string): Value | undefined {
-  return valueIn(bucketHolding(key, cached.inflightAttrs, cached.remoteAttrs), key);
+/** What the projection with the given resolution order reads for `key`. */
+function resolveAttr(key: string, layers: Layered, order: readonly (AttrLayer | MergeLayer)[]): Value | undefined {
+  const layer = layerHolding(key, layers, order);
+  return layer ? layer[key] : undefined;
 }
 
 /** Follows `path[1..]` into `value`, or `undefined` as soon as a link is missing. */
@@ -2141,7 +2166,7 @@ const NO_PROJECTION_CHANGES: ProjectionChanges = Object.freeze({
  * Every key a merge could move: the payload's keys plus any merged in-flight key the payload did not
  * mention. `null` when there is nothing to examine.
  */
-function candidateKeys(updates: AttrBucket, merged: AttrBucket): string[] | null {
+function candidateKeys(updates: AttrHash | null, merged: AttrHash | null): string[] | null {
   const updateKeys = updates ? Object.keys(updates) : null;
   const mergedKeys = merged ? Object.keys(merged) : null;
 
@@ -2156,23 +2181,25 @@ function candidateKeys(updates: AttrBucket, merged: AttrBucket): string[] | null
 
 /**
  * Partition the keys a merge touches by which projection each one moves in. Must run *before* the
- * merge: it reads the pre-merge buckets off `cached` and models the merge itself.
- *
- * A commit folds `inflightAttrs` into `remoteAttrs` (`mergesInflight`); an upsert leaves them in
- * flight, where the local projection keeps reading them.
+ * merge: it reads the pre-merge layers off `cached` and models the merge with the
+ * `RESOLUTION_ORDER_*_AFTER_*` orders for `kind`.
  */
 function partitionChangedKeys(
   cached: CachedResource,
-  updates: AttrBucket,
+  updates: AttrHash | null,
   fields: ReturnType<Store['schema']['fields']>,
-  mergesInflight: boolean
+  kind: MergeKind
 ): ProjectionChanges {
-  const { remoteAttrs, localAttrs, inflightAttrs } = cached;
-  const inflightMerged = mergesInflight ? inflightAttrs : null;
-  const inflightKept = mergesInflight ? null : inflightAttrs;
-
-  const keys = candidateKeys(updates, inflightMerged);
+  const { remoteAfter: remoteAfterOrder, localAfter: localAfterOrder } = MERGE_RESOLUTION[kind];
+  const keys = candidateKeys(updates, kind === 'commit' ? cached.inflightAttrs : null);
   if (keys === null) return NO_PROJECTION_CHANGES;
+
+  const merge: Layered = {
+    localAttrs: cached.localAttrs,
+    inflightAttrs: cached.inflightAttrs,
+    remoteAttrs: cached.remoteAttrs,
+    updates,
+  };
 
   let localOnly: Set<string> | undefined;
   let remoteOnly: Set<string> | undefined;
@@ -2185,10 +2212,10 @@ function partitionChangedKeys(
     const field = fields.get(key);
     if (!field || isRelationship(field)) continue;
 
-    const remoteBefore = valueIn(bucketHolding(key, remoteAttrs), key);
-    const remoteAfter = valueIn(bucketHolding(key, updates, inflightMerged, remoteAttrs), key);
-    const localBefore = valueIn(bucketHolding(key, localAttrs, inflightAttrs, remoteAttrs), key);
-    const localAfter = valueIn(bucketHolding(key, localAttrs, inflightKept, updates, inflightMerged, remoteAttrs), key);
+    const remoteBefore = resolveAttr(key, merge, RESOLUTION_ORDER_REMOTE_BEFORE_MERGE);
+    const remoteAfter = resolveAttr(key, merge, remoteAfterOrder);
+    const localBefore = resolveAttr(key, merge, RESOLUTION_ORDER_LOCAL_BEFORE_MERGE);
+    const localAfter = resolveAttr(key, merge, localAfterOrder);
 
     const remoteMoved = !valuesEqual(remoteBefore, remoteAfter);
     const localMoved = !valuesEqual(localBefore, localAfter);
@@ -2210,7 +2237,7 @@ function notifyProjectionChanges(
   identifier: ResourceKey,
   { both, remoteOnly, localOnly }: ProjectionChanges
 ): void {
-  // one notify per bucket rather than per key: a document push runs this once per resource
+  // one notify per set rather than per key: a document push runs this once per resource
   if (both?.size) cache._capabilities.notifyChange(identifier, 'attributes', both);
   if (remoteOnly?.size) cache._capabilities.notifyChange(identifier, 'attributes', remoteOnly, 'remote');
   if (localOnly?.size) cache._capabilities.notifyChange(identifier, 'attributes', localOnly, 'local');
@@ -2313,7 +2340,7 @@ function reconcileLocalEdits(cached: CachedResource): boolean {
 
   for (let i = 0; i < editedKeys.length; i++) {
     const key = editedKeys[i];
-    const baseline = editBaseline(cached, key);
+    const baseline = resolveAttr(key, cached, RESOLUTION_ORDER_EDIT_BASELINE);
     const edit = localAttrs[key];
 
     if (valuesEqual(baseline, edit)) {
@@ -2530,7 +2557,7 @@ function cacheUpsert(
   // and thus we do not need to notify changes to any properties.
   if (calculateChanges && existed && data.attributes) {
     // before the merge below, which overwrites the values the comparison reads
-    changes = partitionChangedKeys(cached, data.attributes, fields, false);
+    changes = partitionChangedKeys(cached, data.attributes, fields, 'upsert');
   }
 
   cached.remoteAttrs = Object.assign(
@@ -2793,7 +2820,7 @@ function didCommit(
 
   const fields = getCacheFields(cache, identifier);
   cached.isNew = false;
-  let responseAttrs: AttrBucket = null;
+  let responseAttrs: AttrHash | null = null;
   if (data) {
     if (data.id && !cached.id) {
       cached.id = data.id;
@@ -2842,7 +2869,7 @@ function didCommit(
     responseAttrs = data.attributes ?? null;
   }
   // before the merge below, which overwrites the values the comparison reads
-  const changes = partitionChangedKeys(cached, responseAttrs, fields, true);
+  const changes = partitionChangedKeys(cached, responseAttrs, fields, 'commit');
 
   cached.remoteAttrs = Object.assign(
     cached.remoteAttrs || (Object.create(null) as Record<string, unknown>),
