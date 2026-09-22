@@ -59,18 +59,30 @@ successfully (no CI failures, no partial syncing).
 
 ## Adopting an RFC that predates the bot
 
-RFC 1 and RFC 2 in this repo (`rfcs/0001-*.md`, `rfcs/0002-*.md`) were mirrored to `emberjs/rfcs`
-by hand before this bot existed, from a fork the bot doesn't control. Their `emberjs-branch`
-frontmatter field is intentionally left blank. Once the bot's fork exists, a maintainer needs to
-either:
+RFC 1 and RFC 2 in this repo (`rfcs/0001-*.md`, `rfcs/0002-*.md`) were originally mirrored to
+`emberjs/rfcs#1232` and `#1233` by hand before this bot existed, from a fork the bot doesn't
+control. Their `emberjs-rfc`/`emberjs-pr`/`emberjs-branch`/`sync-hash` frontmatter fields have been
+cleared so the next outbound run treats them as brand-new RFCs and opens fresh PRs for them from
+the bot's fork. Once those new PRs exist, close `emberjs/rfcs#1232` and `#1233`, linking each to
+its replacement for history.
 
-- transfer/re-point those PRs' branches to live in the bot's fork (if the original author is
-  willing), and fill in `emberjs-branch` accordingly, or
-- let the outbound sync open fresh PRs for them (as if they were new), and close the original
-  hand-opened PRs in favor of the bot-opened ones, linking between them for history.
+More generally, `push-outbound.mjs` logs a warning and skips any file with `emberjs-rfc` set but
+`emberjs-branch` blank, rather than guessing -- that combination means an earlier sync (or a
+hand-edit) recorded an upstream RFC number without a fork branch the bot can push to.
 
-`push-outbound.mjs` logs a warning and skips any file with `emberjs-rfc` set but `emberjs-branch`
-blank, rather than guessing.
+### Dry run before the first real sync
+
+Nothing in this bot has been exercised against a real GitHub repo yet. Before trusting it against
+the genuine `emberjs/rfcs`, run the outbound workflow manually once against a disposable test repo:
+
+1. Create a throwaway public repo (e.g. under the bot account) with a `main` branch and an empty
+   `text/` directory, standing in for `emberjs/rfcs`.
+2. Actions → **RFC sync (outbound)** → Run workflow, filling in `upstream_override` with that
+   repo's `owner/repo`.
+3. Confirm it opens a PR there with the expected content and commit author, then delete the
+   throwaway repo.
+4. Run it for real by leaving `upstream_override` blank (or by merging a change to `rfcs/**` on
+   `main`, which is how it runs going forward).
 
 ## Known limitations
 

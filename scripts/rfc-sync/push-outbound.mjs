@@ -27,7 +27,10 @@ const TOKEN = process.env.EMBERJS_RFCS_SYNC_TOKEN;
 const FORK = process.env.EMBERJS_RFCS_SYNC_FORK; // e.g. "warpdrive-bot/emberjs-rfcs"
 const GIT_NAME = process.env.EMBERJS_RFCS_SYNC_NAME;
 const GIT_EMAIL = process.env.EMBERJS_RFCS_SYNC_EMAIL;
-const UPSTREAM = 'emberjs/rfcs';
+// Overridable so the first real run of this script can be a dry run against a disposable test
+// repo instead of the genuine emberjs/rfcs -- see the workflow_dispatch input on
+// rfc-sync-outbound.yml and the "Dry run" section of README.md.
+const UPSTREAM = process.env.EMBERJS_RFCS_SYNC_UPSTREAM || 'emberjs/rfcs';
 const RFCS_DIR = join(process.cwd(), 'rfcs');
 
 if (!TOKEN || !FORK || !GIT_NAME || !GIT_EMAIL) {

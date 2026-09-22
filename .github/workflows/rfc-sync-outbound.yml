@@ -8,6 +8,14 @@ on:
     branches: [main]
     paths:
       - 'rfcs/**.md'
+  workflow_dispatch:
+    inputs:
+      upstream_override:
+        description: >-
+          Owner/repo to sync against instead of emberjs/rfcs -- use a disposable test repo to
+          dry-run this bot before trusting it against the real upstream. Leave blank for a real
+          run against emberjs/rfcs.
+        required: false
 
 concurrency:
   group: rfc-sync-outbound
@@ -32,3 +40,4 @@ jobs:
           EMBERJS_RFCS_SYNC_FORK: ${{ vars.EMBERJS_RFCS_SYNC_FORK }}
           EMBERJS_RFCS_SYNC_NAME: ${{ vars.EMBERJS_RFCS_SYNC_NAME }}
           EMBERJS_RFCS_SYNC_EMAIL: ${{ vars.EMBERJS_RFCS_SYNC_EMAIL }}
+          EMBERJS_RFCS_SYNC_UPSTREAM: ${{ inputs.upstream_override }}

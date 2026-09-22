@@ -1,12 +1,12 @@
 ---
 title: A Framework-Agnostic Build Plugin for WarpDrive
 warp-drive-rfc: 2
-emberjs-rfc: 1233
-emberjs-pr: https://github.com/emberjs/rfcs/pull/1233
-# Branch on the sync bot's emberjs/rfcs fork that backs the PR above. This RFC predates the
-# sync bot (see rfcs/index.md and scripts/rfc-sync/README.md) -- a maintainer needs to point
-# the bot at the real fork branch (or open a fresh PR under the bot's fork) before outbound
-# sync can adopt it. Leave unset until then.
+# emberjs-rfc/emberjs-pr/emberjs-branch/sync-hash are intentionally blank: this RFC was
+# originally mirrored to emberjs/rfcs#1233 by hand, before the sync bot existed. That PR is
+# being closed in favor of a fresh one the bot opens for this file -- see
+# scripts/rfc-sync/README.md.
+emberjs-rfc:
+emberjs-pr:
 emberjs-branch:
 sync-hash:
 stage: proposed
@@ -16,7 +16,7 @@ release-versions:
 teams:
   - data
 prs:
-  accepted: https://github.com/emberjs/rfcs/pull/1233
+  accepted:
 project-link:
 suite:
 ---
