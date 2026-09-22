@@ -33,12 +33,6 @@ that is generated: everything is compiled from comments alone.
 The below guide will walk through best practices for writing doc comments, important
 nuances and syntaxes to know, as well as how to test and preview the doc comments.
 
-<br>
-
----
-
-<br>
-
 ## Documentation Syntax
 
 <br>
@@ -512,12 +506,6 @@ be used to give a meaningful description only.
 function add(a: number, b: number): number {}
 ```
 
-<br>
-
----
-
-<br>
-
 ## Content Standards
 
 <br>
@@ -811,12 +799,6 @@ with `@alpha`/`@beta`/`@internal`/`@public`) is unrelated to the
 currently renders as nothing more than an unstyled
 ``**`Experimental`**`` flag, same as `@legacy` above.
 
-<br>
-
----
-
-<br>
-
 ## Documentation Hygiene
 
 <br>
@@ -841,3 +823,7 @@ From inside the `docs-viewer` directory, run `pnpm start`. It builds the API doc
 package sources and content directories for changes, and serves the site with hot reload. See the
 [Docs Viewer README](https://github.com/warp-drive-data/warp-drive/blob/main/docs-viewer/README.md)
 for the static build and preview commands.
+
+Once your change is in a pull request, add the `:label: doc` label to get a deployed preview of
+the whole site at `https://canary.warp-drive.io/pr-preview/pr-<number>/`, linked from a comment
+on the PR.

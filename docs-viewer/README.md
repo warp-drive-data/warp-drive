@@ -29,6 +29,14 @@ pnpm build
 pnpm preview
 ```
 
+### PR Preview
+
+Pull requests labeled `:label: doc`, `:label: feat`, or `:label: rfc` get a full build of the
+site deployed to `https://canary.warp-drive.io/pr-preview/pr-<number>/`, linked from a sticky
+comment on the PR. The preview deploys as soon as one of those labels is added, redeploys on each
+push, and is removed when the label is removed or the PR closes. See
+[`.github/workflows/pr-preview.yml`](../.github/workflows/pr-preview.yml).
+
 ### Deploying
 
 The latest commit on main can be deployed to [docs.warp-drive.io](https://docs.warp-drive.io)

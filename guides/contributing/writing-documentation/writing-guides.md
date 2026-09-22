@@ -50,7 +50,9 @@ keep a single page to a single type.
 A tutorial walks the reader through building something specific or completing a task, step by
 step. It must state its prerequisites up front, show complete code at each step, and end with the
 result the reader should see. Use it when the reader needs to do something, such as setting up a
-project or wiring up their first request.
+project or wiring up their first request. Tutorials live in their own top-level
+[Tutorials](/guides/tutorials/) section (`guides/tutorials/`), above The Manual, so a reader can
+find them without knowing which concept they cover.
 
 ### Concept
 

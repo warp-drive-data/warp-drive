@@ -10,7 +10,8 @@ title: Overview
   the source next to the symbol, plus each package's `src/index.md`. Published at [/api](/api/).
   See [Documenting APIs](./writing-api-docs.md).
 - **Teaching a concept or how to accomplish a task?** Write a **Guide** under `guides/`: the
-  manual, compiled from markdown and published at [/guides](../../index.md). See
+  manual, compiled from markdown and published at [/guides](../../index.md). Step-by-step
+  walkthroughs go in the [Tutorials](/guides/tutorials/) section (`guides/tutorials/`). See
   [Writing Guides](./writing-guides.md).
 - **A version-specific upgrade path, deprecation walkthrough, or announcement?** Write
   **Upgrading or Blog** content under `upgrading/` or `blog/`: point-in-time pages whose URLs are a
@@ -54,3 +55,6 @@ as you make it, and write new guides when appropriate.
 
 Preview any of these locally by following the
 [Docs Viewer README](https://github.com/warp-drive-data/warp-drive/blob/main/docs-viewer/README.md).
+Once the change is in a pull request, add the `:label: doc` label and a preview of the whole site
+is deployed to `https://canary.warp-drive.io/pr-preview/pr-<number>/` and linked from a comment
+on the PR.
