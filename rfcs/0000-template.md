@@ -1,5 +1,11 @@
 ---
-title: # Replace with your RFC's title
+# draft: true hides this template from the RFCs sidebar nav (see getRfcsStructure in
+# docs-viewer/src/site-utils.ts) without removing its page -- it's still directly linkable from
+# rfcs/index.md. Do not set this on an actual RFC copied from this template.
+draft: true
+title: # Replace with your RFC's title -- do not start it with "WarpDrive" (the sync bot adds a
+  # "WarpDrive: " prefix automatically for the emberjs/rfcs copy and PR title; a local title
+  # that already starts with "WarpDrive" would end up doubled there)
 warp-drive-rfc: # Fill in with the next available number in this repo (also use it as the file's 000N- prefix)
 emberjs-rfc: # Leave blank -- filled in by the sync bot once this RFC is first mirrored to emberjs/rfcs
 emberjs-pr: # Leave blank -- filled in by the sync bot

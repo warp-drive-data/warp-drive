@@ -1,5 +1,5 @@
 ---
-title: 'WarpDrive: Transactional Notification Delivery and Reactive Request State'
+title: 'Transactional Notification Delivery and Reactive Request State'
 warp-drive-rfc: 1
 # emberjs-rfc/emberjs-pr/emberjs-branch/sync-hash are intentionally blank: this RFC was
 # originally mirrored to emberjs/rfcs#1232 by hand, before the sync bot existed. That PR is
@@ -21,7 +21,7 @@ project-link:
 suite:
 ---
 
-# WarpDrive: Transactional Notification Delivery and Reactive Request State
+# Transactional Notification Delivery and Reactive Request State
 
 ## Summary
 

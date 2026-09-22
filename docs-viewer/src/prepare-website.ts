@@ -10,7 +10,7 @@ import { existsSync, rmSync } from 'fs';
 */
 import { join } from 'path';
 
-import { finalizeSyncedContent } from './site-utils';
+import { finalizeSyncedContent, injectRfcStatusBadges } from './site-utils';
 
 function sync(sourcePath: string, destPath: string) {
   if (existsSync(destPath)) {
@@ -35,7 +35,9 @@ export async function main() {
   // so it is intentionally not passed through finalizeSyncedContent below.
   sync(join(__dirname, '../../upgrading'), join(__dirname, '../docs.warp-drive.io/upgrading'));
   sync(join(__dirname, '../../blog'), join(__dirname, '../docs.warp-drive.io/blog'));
-  sync(join(__dirname, '../../rfcs'), join(__dirname, '../docs.warp-drive.io/rfcs'));
+  const rfcsDestPath = join(__dirname, '../docs.warp-drive.io/rfcs');
+  sync(join(__dirname, '../../rfcs'), rfcsDestPath);
+  injectRfcStatusBadges(rfcsDestPath);
 
   const skillsDestPath = join(__dirname, '../docs.warp-drive.io/skills');
   sync(join(__dirname, '../../warp-drive-packages/memory-alpha/skills'), skillsDestPath);
