@@ -146,9 +146,30 @@ runs:
           turbo-local-cache-${{ github.sha }}-
           turbo-local-cache-
 
+    # `continue-on-error` here is about this action's *post* step, not its main
+    # one. That post step uploads this run's new cache entries as GitHub
+    # artifacts, and felixmosh's src/post.ts ends in
+    # `post().catch((error) => setFailed(error))` -- so any transient failure
+    # from the artifacts service (we've seen both `403 Forbidden` on
+    # FinalizeArtifact and `ETIMEDOUT` on CreateArtifact, hitting several
+    # unrelated PRs inside the same few minutes) fails the whole job during
+    # cleanup, after every test in it has already passed. Populating a cache is
+    # best-effort by definition: the next run just rebuilds what didn't get
+    # saved. It must never be able to turn a green test run red.
+    #
+    # A step's `continue-on-error` does reach its post step: the runner builds
+    # the post step's ActionRunner with `actionRunner.Action = Action` (the same
+    # step object, see ActionRunner.cs), `ContinueOnError` reads straight off
+    # that shared object, and StepsRunner calls `ApplyContinueOnError` for every
+    # step it runs, post steps included.
+    #
+    # The tradeoff: a *persistently* broken cache upload now degrades silently
+    # into slower builds rather than a red X. The "Server logs:" output this
+    # action prints during cleanup is where that shows up.
     - name: 'Setup local TurboRepo server'
       if: ${{ inputs.repo-token && inputs.DISABLE_TURBO_CACHE != 'true' }}
       uses: felixmosh/turborepo-gh-artifacts@118f869397261f74bc39cb8565f2d02c0ed4209f # v4.1.1
+      continue-on-error: true
       with:
         repo-token: ${{ inputs.repo-token }}
 
