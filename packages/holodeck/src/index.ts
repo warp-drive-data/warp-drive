@@ -127,6 +127,12 @@ const TEST_IDS = new WeakMap<
   }
 >();
 
+/**
+ * The shape `setTestId` stores per test context, named so the report below can
+ * take one as an argument.
+ */
+type TestEntry = NonNullable<ReturnType<(typeof TEST_IDS)['get']>>;
+
 let HOST = '/';
 
 /**
@@ -174,7 +180,64 @@ export function setTestId(context: object, str: string | null): void {
       },
     });
   } else {
+    const test = TEST_IDS.get(context);
     TEST_IDS.delete(context);
+
+    if (test) {
+      reportUnrequestedMocks(test);
+    }
+  }
+}
+
+/**
+ * A mock is declared relative to the mock server (`users/1`) while the request
+ * carries the absolute url the code under test built
+ * (`https://localhost:7358/users/1`). The mock server reconciles the two by
+ * keying a fixture on the request's path, so compare them the same way.
+ */
+function normalizeUrlKey(url: string): string {
+  const withoutOrigin = url.replace(/^[a-z][a-z0-9+.-]*:\/\/[^/]+/i, '');
+  return withoutOrigin.startsWith('/') ? withoutOrigin.slice(1) : withoutOrigin;
+}
+
+/**
+ * A mock the test never requested proves nothing: the test passes whether or
+ * not the code under test would have made that request. Nothing compared the
+ * two counters holodeck already keeps, so report the difference here, from the
+ * `afterEach` every suite runs, which fails the test that leaked.
+ *
+ * The original assertions are not masked by this: a framework reports an
+ * `afterEach` throw alongside the results the test body already recorded
+ * rather than in place of them.
+ */
+function reportUnrequestedMocks(test: TestEntry): void {
+  const unrequested: string[] = [];
+
+  for (const method of Object.keys(test.mock) as HTTPMethod[]) {
+    const mocked = test.mock[method];
+    const requested = test.request[method] ?? {};
+    const requestCounts = new Map<string, number>();
+
+    for (const url of Object.keys(requested)) {
+      const key = normalizeUrlKey(url);
+      requestCounts.set(key, (requestCounts.get(key) ?? 0) + requested[url]);
+    }
+
+    for (const url of Object.keys(mocked)) {
+      const mockCount = mocked[url];
+      const requestCount = requestCounts.get(normalizeUrlKey(url)) ?? 0;
+
+      if (mockCount > requestCount) {
+        unrequested.push(`\t${method} ${url} (mocked ${mockCount}, requested ${requestCount})`);
+      }
+    }
+  }
+
+  if (unrequested.length) {
+    throw new Error(
+      `Holodeck: this test declared mocks it never requested.\n\n${unrequested.join('\n')}\n\n` +
+        `A mock that is never requested proves nothing. Remove it, or make the request it describes.`
+    );
   }
 }
 
@@ -387,42 +450,47 @@ export function installAdapterFor(owner: object, store: Store): void {
  * @public
  */
 export async function mock(owner: object, generate: ScaffoldGenerator): Promise<void> {
-  if (getIsRecording()) {
-    const test = TEST_IDS.get(owner);
-    if (!test) {
-      throw new Error(`Cannot call "mock" before configuring a testId. Use setTestId to set the testId for each test`);
-    }
-    const requestToMock = generate();
-    const { url: mockUrl, method } = requestToMock;
-    if (!mockUrl || !method) {
-      throw new Error(`MockError: Cannot mock a request without providing a URL and Method`);
-    }
-    const mockMethod = (method?.toUpperCase() ?? 'GET') as HTTPMethod;
+  const test = TEST_IDS.get(owner);
+  if (!test) {
+    throw new Error(`Cannot call "mock" before configuring a testId. Use setTestId to set the testId for each test`);
+  }
+  const requestToMock = generate();
+  const { url: mockUrl, method } = requestToMock;
+  if (!mockUrl || !method) {
+    throw new Error(`MockError: Cannot mock a request without providing a URL and Method`);
+  }
+  const mockMethod = (method?.toUpperCase() ?? 'GET') as HTTPMethod;
 
-    // enable custom methods
-    if (!test.mock[mockMethod]) {
-      // oxlint-disable-next-line no-console
-      console.log(`⚠️ Using custom HTTP method ${mockMethod} for response to request ${mockUrl}`);
-      test.mock[mockMethod] = {};
-    }
-    if (!(mockUrl in test.mock[mockMethod])) {
-      test.mock[mockMethod][mockUrl] = 0;
-    }
-    const testMockNum = test.mock[mockMethod][mockUrl]++;
-    const url = `${HOST}__record?__xTestId=${test.id}&__xTestRequestNumber=${testMockNum}`;
-    const response = await fetch(url, {
-      method: 'POST',
-      body: JSON.stringify(requestToMock),
-      mode: 'cors',
-      credentials: 'omit',
-      referrerPolicy: '',
-    });
+  // enable custom methods
+  if (!test.mock[mockMethod]) {
+    // oxlint-disable-next-line no-console
+    console.log(`⚠️ Using custom HTTP method ${mockMethod} for response to request ${mockUrl}`);
+    test.mock[mockMethod] = {};
+  }
+  if (!(mockUrl in test.mock[mockMethod])) {
+    test.mock[mockMethod][mockUrl] = 0;
+  }
+  // counted whether or not we are recording, so that a mock the test never
+  // requests is reported in replay runs too, not only while recording.
+  const testMockNum = test.mock[mockMethod][mockUrl]++;
 
-    if (!response.ok) {
-      throw new Error(
-        `MockError: Holodeck failed to record ${mockMethod} ${mockUrl} (${response.status} ${response.statusText}). ${await getRecordFailureDetail(response)}`
-      );
-    }
+  if (!getIsRecording()) {
+    return;
+  }
+
+  const url = `${HOST}__record?__xTestId=${test.id}&__xTestRequestNumber=${testMockNum}`;
+  const response = await fetch(url, {
+    method: 'POST',
+    body: JSON.stringify(requestToMock),
+    mode: 'cors',
+    credentials: 'omit',
+    referrerPolicy: '',
+  });
+
+  if (!response.ok) {
+    throw new Error(
+      `MockError: Holodeck failed to record ${mockMethod} ${mockUrl} (${response.status} ${response.statusText}). ${await getRecordFailureDetail(response)}`
+    );
   }
 }
 

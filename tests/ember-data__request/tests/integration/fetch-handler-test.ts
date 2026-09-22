@@ -2,7 +2,7 @@ import RequestManager from '@ember-data/request';
 import { buildBaseURL } from '@ember-data/request-utils';
 import Fetch from '@ember-data/request/fetch';
 import { module, test } from '@warp-drive/diagnostic';
-import { mock, MockServerHandler } from '@warp-drive/holodeck';
+import { mock, MockServerHandler, setTestId } from '@warp-drive/holodeck';
 import { GET, HEAD } from '@warp-drive/holodeck/mock';
 
 function isNetworkError(e: unknown): asserts e is Error & {
@@ -237,6 +237,35 @@ module('RequestManager | Fetch Handler', function (hooks) {
       );
       assert.true(e.message.includes('.mock-cache'), 'The error message names the cacheKey it looked for');
       assert.false(e.message.includes('__xTestId'), 'The internal test query is stripped from the message');
+    }
+  });
+
+  test('It reports a mock the test never requested', async function (assert) {
+    // deliberately declared and never requested
+    await GET(this, 'users/declared-but-never-requested', () => ({
+      data: {
+        id: '1',
+        type: 'user',
+        attributes: {
+          name: 'Chris Thoburn',
+        },
+      },
+    }));
+
+    // `setTestId(context, null)` is what every suite calls from `afterEach`, and
+    // where the check lives. Drive it here so this test asserts on the report
+    // instead of being failed by it.
+    try {
+      setTestId(this, null);
+      assert.ok(false, 'setTestId should have reported the unrequested mock');
+    } catch (e) {
+      assert.true(e instanceof Error, 'an Error is thrown');
+      assert.equal(
+        (e as Error).message,
+        'Holodeck: this test declared mocks it never requested.\n\n\tGET users/declared-but-never-requested (mocked 1, requested 0)\n\n' +
+          'A mock that is never requested proves nothing. Remove it, or make the request it describes.',
+        'The error names the method, the url, and both counts'
+      );
     }
   });
 
