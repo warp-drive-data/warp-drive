@@ -80,20 +80,114 @@ const EMPTY_ITERATOR = {
   },
 };
 
+/**
+ * The cache's entry for a single resource: its id, its attribute values split
+ * across four buckets, and the flags tracking where it sits in the
+ * create/update/delete lifecycle.
+ *
+ * A resource has two "projections" — views into "what is this field's value":
+ *
+ * - **remote state** is what the _immutable_ record reads, resolving:
+ *     - {@link CachedResource.remoteAttrs | remoteAttrs}, then
+ *     - {@link CachedResource.defaultAttrs | defaultAttrs}
+ * - **local state** — remote state overlaid by the diff — is what an _editable_
+ *   copy reads, resolving:
+ *     - {@link CachedResource.localAttrs | localAttrs}, then
+ *     - {@link CachedResource.inflightAttrs | inflightAttrs}, then
+ *     - {@link CachedResource.remoteAttrs | remoteAttrs}, then
+ *     - {@link CachedResource.defaultAttrs | defaultAttrs}
+ *
+ * A field is **dirty** while it has an entry in the diff, and that mutation is
+ * **committed** once remote state catches up to the same value — at which point
+ * the entry is discarded.
+ *
+ * Thus, a dirty field reads as mutated for local readers only, and goes on doing
+ * so while its save is in flight.
+ *
+ * @internal
+ */
 interface CachedResource {
+  /** The resource's id, once one is known. */
   id: string | null;
+
+  /** The basis of the remote state. The last known persisted attributes hash. */
   remoteAttrs: Record<string, Value | undefined> | null;
+
+  /**
+   * The basis of the local state.
+   *
+   * The diff: mutations held separate from the remote state. Any field with an
+   * entry here is dirty.
+   *
+   * Starting a save moves these into `inflightAttrs`, so any further
+   * mutation accumulates in a fresh diff without disturbing the request already
+   * in flight.
+   */
   localAttrs: Record<string, Value | undefined> | null;
-  defaultAttrs: Record<string, Value | undefined> | null;
+
+  /**
+   * The portion of the diff an in-progress save is saving. Read as part of the
+   * local state.
+   *
+   * Completing a save merges these into
+   * {@link CachedResource.remoteAttrs | remote state} and clears this —
+   * committing them.
+   */
   inflightAttrs: Record<string, Value | undefined> | null;
+
+  /**
+   * Schema-supplied default fallback attributes for fields that have no value
+   * from remote state or the diff. Never committed. Read for both local and
+   * remote state.
+   */
+  defaultAttrs: Record<string, Value | undefined> | null;
+
+  /**
+   * A `[before, after]` pair per entry in the
+   * {@link CachedResource.localAttrs | diff}, in the shape
+   * `changedAttributes()` returns.
+   *
+   * Tracked alongside the diff, but deliberately outliving it across a save:
+   * starting one empties `localAttrs` without clearing these, so
+   * `changedAttributes()` still reports what is being saved while the request
+   * is in flight. Completing or rejecting the save reconciles the two again.
+   */
   changes: Record<string, [Value | undefined, Value]> | null;
+
+  /**
+   * Errors from the most recent rejected save. A successful commit clears
+   * them.
+   */
   errors: ApiError[] | null;
+
+  /**
+   * Whether this record was created locally and has never been persisted.
+   *
+   * A payload arriving for it (or a successful commit) clears the flag.
+   */
   isNew: boolean;
+
+  /**
+   * Whether this record is marked for deletion. Records the intent only;
+   * see {@link CachedResource.isDeletionCommitted | isDeletionCommitted} for
+   * whether the server has acted on it.
+   */
   isDeleted: boolean;
+
+  /**
+   * Whether a deletion has been acknowledged by the server.
+   *
+   * Tracked separately from {@link CachedResource.isDeleted | isDeleted}
+   * because the two imply different cleanup: a *committed* deletion has already
+   * been announced as removed, so unloading the record must not announce it a
+   * second time.
+   */
   isDeletionCommitted: boolean;
 
   /**
-   * debugging only
+   * The relationship state a save is carrying, retained so `DEBUG` builds can
+   * assert the response agrees with what was sent. Never populated in
+   * production builds.
    *
    * @internal
    */
@@ -1826,25 +1920,17 @@ function getDefaultValue(
   }
 }
 
-/**
- * Which projection each changed key moved, so the caller can notify on the matching channel:
- * `localOnly` and `remoteOnly` on theirs, `both` unscoped. `remoteChanged` is the union of
- * `remoteOnly` and `both`.
- *
- * Every set is final as returned. Keys whose local edit the incoming state confirms are left out
- * during the partition itself, so no caller has to walk these sets again to re-filter them.
- *
- * `undefined` rather than empty Sets: this runs on every `upsert`, and a resource where nothing
- * moved should cost no allocation.
- */
+/** Which projection each changed key updates, so the caller can notify on the matching channel. */
+// NOTE: This runs on every `upsert`, if nothing changed, use `undefined` instead of empty
+// `Set` to avoid unnecessary allocations.
 interface ProjectionChanges {
-  /** only the local projection's value moved */
+  /** Keys for which *only* the local projection's value changed. */
   localOnly: Set<string> | undefined;
-  /** only the remote projection's value moved */
+  /** Keys for which *only* the remote projection's value changed. */
   remoteOnly: Set<string> | undefined;
-  /** both projections moved */
+  /** Keys for which *both* projections changed. */
   both: Set<string> | undefined;
-  /** every key whose persisted value moved: the union of `remoteOnly` and `both` */
+  /** Keys for which the remote projection's value changed. (The union of `remoteOnly` and `both`.) */
   remoteChanged: Set<string> | undefined;
 }
 
@@ -1856,12 +1942,12 @@ const NO_PROJECTION_CHANGES: ProjectionChanges = Object.freeze({
 });
 
 /**
- * The keys a merge could move: everything the payload carries, plus anything being promoted that
- * the payload did not mention. `null` when there is nothing to examine.
+ * The keys a merge _may_ have changed. `null` if neither source has keys.
  *
- * `upsert` promotes nothing, so it gets the `Object.keys` array back unchanged. Only a commit
- * carrying both a payload and promoted attrs pays for a copy, and that is once per save rather
- * than once per resource in a document.
+ * Sources:
+ *
+ * @param updates - The attributes included in the incoming payload.
+ * @param promoted - The attributes being promoted, even if not included in the payload (e.g. via `commit`).
  */
 function candidateKeys(
   updates: ExistingResourceObject['attributes'],
@@ -1873,27 +1959,23 @@ function candidateKeys(
   if (!promotedKeys?.length) return updateKeys?.length ? updateKeys : null;
   if (!updateKeys?.length) return promotedKeys;
 
-  const keys = updateKeys.slice();
   for (let i = 0; i < promotedKeys.length; i++) {
-    if (!(promotedKeys[i] in updates!)) keys.push(promotedKeys[i]);
+    const key = promotedKeys[i];
+    if (!(key in updates!)) updateKeys.push(key);
   }
-  return keys;
+  return updateKeys;
 }
 
 /**
- * Partition the keys an incoming payload touches by which projection each one moves.
+ * Partition the keys touched by an incoming payload by which projection each one changes.
  *
- * Takes the values rather than the `CachedResource` so it cannot observe the merge it is
- * describing: `prevRemote` is the remote state as it stands *before* `promoted` and `updates` are
- * applied, and the two callers merge different things. Reading them off `cached` would make the
- * result depend on whether the caller had already mutated it.
- *
- * `pendingRemote` is the same baseline {@link patchLocalAttributes} will compare local edits
- * against when the caller runs it, for the keys it holds -- the merged remote value elsewhere. It
- * is what the caller's `cached.inflightAttrs` will be *at that point*, which is `null` for a
- * commit (the promotion has been consumed by then) and the still-in-flight attrs for an upsert.
- * Keeping the two baselines identical is what lets the partition below decide, on its own, which
- * keys that pass is going to drop.
+ * @param prevRemote - The remote (persisted) state of the attributes *before* this merge.
+ * @param localAttrs - The diff of uncommitted mutations. A key with an entry here is dirty, so local state reads it instead of remote state.
+ * @param updates - The attributes included in the incoming payload.
+ * @param promoted - The attributes this merge will move into remote state. `null` for an upsert, which promotes nothing.
+ * @param fields - The resource's cache fields. A key with no field, or with a relationship field, is skipped.
+ * @param pendingRemote - What `cached.inflightAttrs` *will* be once the caller reaches
+ * {@link patchLocalAttributes}: `null` for a commit, the still-in-flight attrs for an upsert.
  */
 function calculateChangedKeys(
   prevRemote: Record<string, unknown> | null,
@@ -1914,33 +1996,24 @@ function calculateChangedKeys(
   for (let i = 0; i < keys.length; i++) {
     const key = keys[i];
 
-    // `updates` is always `data.attributes` and these keys dispatch under the `attributes`
-    // notification bucket, so membership in the cache-field set is not enough: relationship
-    // fields are cache fields too, and a payload that puts a relationship name inside
-    // `attributes` would otherwise be announced as an attribute change for a key whose data
-    // lives in the graph and is never read back out of `remoteAttrs`.
     const field = fields.get(key);
     if (!field || isRelationship(field)) continue;
 
-    // `in` rather than a truthy check throughout: a field explicitly set to `undefined` is
+    // `in` rather than a truthy check for these two: a field explicitly set to `undefined` is
     // present, and treating it as absent would read the wrong value as the baseline.
     const isPromoted = promoted !== null && key in promoted;
     const isUpdated = updates !== undefined && key in updates;
 
-    // what the remote projection reads, before and after. Mirrors the
-    // `Object.assign(remoteAttrs, promoted, updates)` below it, so `updates` wins.
-    const wasRemote = prevRemote ? prevRemote[key] : undefined;
-    const nowRemote = isUpdated ? updates[key] : isPromoted ? promoted[key] : wasRemote;
+    const oldRemote = prevRemote ? prevRemote[key] : undefined;
+    const newRemote = isUpdated ? updates[key] : isPromoted ? promoted[key] : oldRemote;
 
-    // and what the local projection reads. An uncommitted local edit shadows the key in that
-    // projection, so its value is the same before and after.
-    const localEdit = localAttrs ? localAttrs[key] : undefined;
-    const isEdited = localEdit !== undefined;
-    const wasLocal = isEdited ? localEdit : isPromoted ? promoted[key] : wasRemote;
-    const nowLocal = isEdited ? localEdit : nowRemote;
+    const hasLocalEdit = localAttrs !== null && key in localAttrs;
+    const localEdit = hasLocalEdit ? localAttrs[key] : undefined;
+    const oldLocal = hasLocalEdit ? localEdit : isPromoted ? promoted[key] : oldRemote;
+    const newLocal = hasLocalEdit ? localEdit : newRemote;
 
-    const remoteMoved = wasRemote !== nowRemote;
-    const localMoved = wasLocal !== nowLocal;
+    const remoteMoved = oldRemote !== newRemote;
+    const localMoved = oldLocal !== newLocal;
 
     if (remoteMoved) {
       // A local edit the incoming state has caught up to is one `patchLocalAttributes` is about
@@ -1949,12 +2022,10 @@ function calculateChangedKeys(
       // afterwards meant re-walking `both` and `remoteOnly` and rebuilding them -- sets sized by
       // the payload rather than by the edit.
       //
-      // Only reachable when the remote moved, so an unchanged key never pays for the lookup, and
-      // `isEdited` short-circuits the `in` for every edit that is not to `undefined`.
-      const hasLocalEntry = isEdited || (localAttrs !== null && key in localAttrs);
+      // Only reachable when the remote moved, so a key whose persisted value held still never
+      // pays for the comparison.
       const confirmed =
-        hasLocalEntry &&
-        localEdit === (pendingRemote !== null && key in pendingRemote ? pendingRemote[key] : nowRemote);
+        hasLocalEdit && localEdit === (pendingRemote !== null && key in pendingRemote ? pendingRemote[key] : newRemote);
 
       if (!confirmed) {
         (remoteChanged ??= new Set<string>()).add(key);
