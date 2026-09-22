@@ -215,8 +215,13 @@ const RESOLUTION_ORDER_REMOTE_STATE = ['remoteAttrs', 'defaultAttrs'] as const;
 
 /**
  * What a new local edit replaces: the in-flight value if a save is carrying one, else the
- * persisted value. This is local state beneath `localAttrs`, less `defaultAttrs`: an edit equal to
- * a schema default is still an edit, since nothing persisted holds that value.
+ * persisted value. Put another way, what the record will read once the in-flight save lands,
+ * assuming the server agrees. This is local state beneath `localAttrs`, less `defaultAttrs`: an
+ * edit equal to a schema default is still an edit, since nothing persisted holds that value.
+ *
+ * Saving does not use this baseline. {@link JSONAPICache.changedAttrs | changedAttrs} still lists
+ * in-flight values as unsaved, so a second save re-sends them rather than assuming the first one
+ * will succeed.
  */
 const RESOLUTION_ORDER_EDIT_BASELINE = ['inflightAttrs', 'remoteAttrs'] as const;
 
