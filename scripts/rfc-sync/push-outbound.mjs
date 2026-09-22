@@ -88,7 +88,25 @@ function openWarpDriveFollowupPr(file, branchSuffix, title, body) {
   sh('git', ['checkout', '-']);
 }
 
+let hadFailure = false;
+
 for (const file of listChangedRfcs()) {
+  try {
+    syncOne(file);
+  } catch (error) {
+    // One RFC's failure (e.g. a transient API error, or the follow-up PR being rejected for a
+    // reason specific to that file) shouldn't stop every other RFC in this push from syncing --
+    // report it and move on, but still fail the job overall so it's visible.
+    hadFailure = true;
+    console.error(`rfc-sync: failed to sync ${file}:`, error.message ?? error);
+  }
+}
+
+if (hadFailure) {
+  process.exitCode = 1;
+}
+
+function syncOne(file) {
   const raw = readFileSync(file, 'utf8');
   const { lines, body } = splitFrontmatter(raw);
 
@@ -101,7 +119,7 @@ for (const file of listChangedRfcs()) {
   const storedHash = getScalar(lines, 'sync-hash');
 
   if (currentHash === storedHash) {
-    continue; // nothing changed since the last sync in either direction
+    return; // nothing changed since the last sync in either direction
   }
 
   const author = lastCommitAuthor(file);
@@ -164,7 +182,7 @@ for (const file of listChangedRfcs()) {
     const existing = readdirSync(join(forkDir, 'text')).find((f) => f.startsWith(`${emberjsRfc}-`));
     if (!existing) {
       console.warn(`rfc-sync: could not find text/${emberjsRfc}-*.md on ${FORK}#${emberjsBranch}; skipping ${file}`);
-      continue;
+      return;
     }
     const existingPath = join(forkDir, 'text', existing);
     // The prose is ours; stage/release-date/release-versions/prs are the upstream process's own

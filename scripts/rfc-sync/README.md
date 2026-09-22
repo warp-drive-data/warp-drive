@@ -55,9 +55,19 @@ for how this looks from a contributor's side, and
      identity (same pattern as `GH_DEPLOY_NAME`/`GH_DEPLOY_EMAIL` in `release.yml`); use the bot
      account's GitHub-provided `@users.noreply.github.com` address for the email so a real inbox
      never appears in public commit history
+5. In `warp-drive-data/warp-drive`'s repo settings, under Settings → Actions → General →
+   Workflow permissions, check **"Allow GitHub Actions to create and approve pull requests"**.
+   Without this, the outbound sync can push its bookkeeping branch back into this repo (that only
+   needs the `contents: write` permission already granted in the workflow file) but fails to open
+   the actual PR for it, with `GitHub Actions is not permitted to create or approve pull requests`
+   -- discovered the hard way on the first real run (see the recovery in
+   [#11166](https://github.com/warp-drive-data/warp-drive/pull/11166)). This setting only affects
+   PR *creation*, not merging -- nothing here ever auto-merges regardless.
 
 Until these are set, both workflows detect the missing configuration, log it, and exit
-successfully (no CI failures, no partial syncing).
+successfully (no CI failures, no partial syncing) -- except step 5, whose absence surfaces as the
+job failing on the follow-up PR rather than a clean no-op, since by that point the emberjs/rfcs
+side has already succeeded.
 
 ## Adopting an RFC that predates the bot
 
