@@ -26,6 +26,7 @@ const createParentPayload = require('./create-parent-payload');
 const { createCarsPayload, deleteHalfTheColors } = require('./create-cars-payload.ts');
 const createParentRecords = require('./create-parent-records');
 const { createComplexPayload: createComplexRecordsPayload } = require('./create-complex-payload.ts');
+const { createJsonRecordsPayload, incrementCounts } = require('./create-json-records-payload.ts');
 
 async function main() {
   // const initialChildrenPayload = createParentPayload(19600);
@@ -47,8 +48,12 @@ async function main() {
   // write('basic-record-materialization', createParentRecords(10000, 2, 3));
   // write('complex-record-materialization', await createComplexRecordsPayload(400));
 
-  const initialBigM2M = createCarsPayload(100, 100);
-  write('big-many-to-many', initialBigM2M);
-  write('big-many-to-many-with-removal', deleteHalfTheColors(initialBigM2M));
+  // const initialBigM2M = createCarsPayload(100, 100);
+  // write('big-many-to-many', initialBigM2M);
+  // write('big-many-to-many-with-removal', deleteHalfTheColors(initialBigM2M));
+
+  const initialJsonRecords = createJsonRecordsPayload(10000);
+  write('json-records', initialJsonRecords);
+  write('json-records-changed', incrementCounts(initialJsonRecords));
 }
 main();

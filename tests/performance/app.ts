@@ -25,6 +25,8 @@ Router.map(function () {
   this.route('unused-relationships');
   this.route('update-with-same-state');
   this.route('update-with-same-state-m2m');
+  this.route('update-json-attrs-same-state');
+  this.route('update-json-attrs-changed');
 });
 
 class App extends Application {
