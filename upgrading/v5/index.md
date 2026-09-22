@@ -19,7 +19,7 @@ because we have used capabilities provided by the [@warp-drive/legacy package](/
 
 ## Pre-Migration (update to Native Types)
 
-If you use Typescript, before migrating, you should update your types to use the native types provided by both `ember-source` and WarpDrive.
+If you use TypeScript, before migrating, you should update your types to use the native types provided by both `ember-source` and WarpDrive.
 
 You can do this even if you are on an older version (pre-5.x) that
 didn't ship it's own types by using the "types" packages we specially publish for this purpose.

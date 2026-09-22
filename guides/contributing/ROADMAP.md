@@ -224,7 +224,7 @@ Deprecations:
 - <:idle> state for requests
 - @ember/string and ember-inflector removal
 - Vite support / setConfig
-- Typescript Support
+- TypeScript Support
 - Improved CachePolicy
 
 

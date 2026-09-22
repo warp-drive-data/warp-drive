@@ -22,7 +22,7 @@ const result = await store.request(
 result.content.data.firstName; // will have type string
 ```
 
-When using the component API, if the templating syntax does not allow typescript
+When using the component API, if the templating syntax does not allow TypeScript
 generics, create a [builder](./builders.md) function.
 
 ```glimmer-ts

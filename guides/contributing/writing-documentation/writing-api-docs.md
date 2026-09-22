@@ -18,7 +18,7 @@ and parser is TypeDoc.
 
 TypeDoc is configured to follow our public package entrypoints to
 auto-discover documentation. It documents everything reachable, public or private including properties and methods that have no associated
-code docs. It uses typescript to understand the source-code and builds documentation from the combination of Type signatures and TSDoc comments.
+code docs. It uses TypeScript to understand the source-code and builds documentation from the combination of Type signatures and TSDoc comments.
 
 This is great, but it means that its very easy to leak private APIs
 into the docs.
@@ -498,7 +498,7 @@ class ReactiveResource {}
 
 ### Don't document types in @param and @return
 
-Because types are parsed from the typescript, `@param` and `@return` should
+Because types are parsed from the TypeScript, `@param` and `@return` should
 be used to give a meaningful description only.
 
 ```ts
