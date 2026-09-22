@@ -1,10 +1,16 @@
 {
   "title": "Contributors",
-  "items": ["start-in-a-fresh-worktree", "fix-at-the-source", "writing-and-implementing-rfcs"],
+  "items": [
+    "start-in-a-fresh-worktree",
+    "keep-commits-human-authored",
+    "fix-at-the-source",
+    "writing-and-implementing-rfcs"
+  ],
   "webIndex": "overview",
   "files": {
     "index": { "draft": true },
     "start-in-a-fresh-worktree": { "title": "Start in a Fresh Worktree" },
+    "keep-commits-human-authored": { "title": "Keep Commits Human-Authored" },
     "fix-at-the-source": { "title": "Fix at the Source" },
     "writing-and-implementing-rfcs": { "title": "Writing and Implementing RFCs" }
   }
