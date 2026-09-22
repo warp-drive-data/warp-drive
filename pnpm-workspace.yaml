@@ -394,7 +394,7 @@ catalog:
   terser: ^5.51.2
   testem: ^3.21.0
   tsdown: ^0.23.0
-  turbo: ^2.10.13
+  turbo: ^2.11.2
   typedoc: ^0.28.20
   typedoc-plugin-markdown: ^4.13.1
   typedoc-plugin-mdn-links: ^5.1.1
