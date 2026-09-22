@@ -1,7 +1,6 @@
 import { assert } from '@warp-drive/build-config/macros';
 
 import { entangleSignal } from '../../../signals/-private';
-import { fieldValueIdentity } from '../../../store/-private/managers/cache-key-manager.ts';
 import type { ObjectValue, Value } from '../../../types/json/raw';
 import type { SchemaObjectField } from '../../../types/schema/fields';
 import type { KindContext } from '../default-mode';
@@ -39,7 +38,11 @@ export function getSchemaObjectField(context: KindContext<SchemaObjectField>): u
     return null;
   }
 
-  const resolved = fieldValueIdentity(store.schema, field, rawValue);
+  assert(
+    `The SchemaService must implement fieldValueIdentity to support schema-object fields`,
+    typeof store.schema.fieldValueIdentity === 'function'
+  );
+  const resolved = store.schema.fieldValueIdentity(field, rawValue);
   assert(`Expected a schema-object value to resolve to a schema-object identity`, resolved !== null);
   const { type: objectType, hash } = resolved;
   const identity = hash ?? field.name;

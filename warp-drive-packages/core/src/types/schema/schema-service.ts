@@ -19,6 +19,18 @@ import type {
 } from './fields.ts';
 
 /**
+ * The concrete schema-object type a raw value resolves to, and the identity
+ * hash its {@link ObjectSchema} declares for that value, or `null` when the
+ * schema declares `identity: null`.
+ *
+ * @public
+ */
+export interface SchemaObjectIdentity {
+  type: string;
+  hash: string | null;
+}
+
+/**
  * A dictionary of {@link LegacyAttributeField} definitions keyed by
  * attribute name, as returned by the deprecated
  * {@link SchemaService.attributesDefinitionFor | attributesDefinitionFor} hook.
@@ -156,6 +168,27 @@ export interface SchemaService {
    * @public
    */
   hashFn(field: HashField | ObjectWithStringTypeProperty): HashFn;
+
+  /**
+   * The identity of `value` as a value of `field`, when the field kind has one.
+   *
+   * A `schema-object` value, or one element of a `schema-array`, resolves to
+   * its concrete schema-object type and the identity hash that type's
+   * {@link ObjectSchema} declares (`null` when the schema declares
+   * `identity: null`). A non-polymorphic field names the type directly; a
+   * polymorphic field reads it off the value at `options.type` (default
+   * `'type'`), or computes it with the hash function named by `field.type`
+   * when `options.type` is `'@hash'`.
+   *
+   * Every other field kind, and any non-object value, has no identity and
+   * returns `null`.
+   *
+   * Optional: a SchemaService with no `@hash` support may omit it, and
+   * consumers then treat every value as having no identity.
+   *
+   * @public
+   */
+  fieldValueIdentity?(field: FieldSchema, value: unknown): SchemaObjectIdentity | null;
 
   /**
    * Returns the derivation registered with the name provided
