@@ -1,0 +1,67 @@
+# Mock HTTP Requests in Tests
+
+Use this skill when a test needs the server to answer a request with a known response, and
+`@warp-drive/holodeck` is already wired into the suite. Holodeck records the response on the first
+run and replays it from disk afterwards, so what you write is a declaration rather than a stub.
+
+## Steps
+
+1. Import the helper for the method you need from `@warp-drive/holodeck/mock`. `GET`, `POST`,
+   `PUT`, `PATCH`, `DELETE`, and `HEAD` all take the same arguments.
+2. Declare the mock before the code under test makes the request, passing the test context as the
+   first argument.
+
+   ```ts
+   await GET(this, 'users/1', () => ({
+     data: { id: '1', type: 'user', attributes: { name: 'Chris Thoburn' } },
+   }));
+   ```
+3. Write the URL relative to the mock host, without a leading slash, and exactly as the browser
+   will send it. The server reads the query string through `URLSearchParams`, so percent-encode
+   anything outside the unreserved set. `users?filter[name]=Chris` has to be written
+   `users?filter%5Bname%5D=Chris`.
+4. Pass `status` in the options object for anything other than a success.
+
+   ```ts
+   await GET(this, 'users/1', () => ({ errors: [{ status: '404' }] }), { status: 404 });
+   ```
+
+   `statusText` is derived from the status code, and `Content-Type` defaults to
+   `application/vnd.api+json`.
+5. For a request with a body, build the serialized body once and pass the same string to both the
+   mock and the request.
+
+   ```ts
+   const reqBody = JSON.stringify({ data: { type: 'user', attributes: { firstName: 'Chris' } } });
+   await POST(this, 'users', () => ({ data: { id: '1', type: 'user' } }), { body: reqBody });
+   await store.request({ url, method: 'POST', body: reqBody });
+   ```
+6. Run the suite locally to record the fixture, then commit the `.mock-cache` files it writes.
+7. Prove the test replays what you committed. Record-versus-replay is decided when the test bundle
+   is built, not when it runs, so set `CI=1` on the build as well as the run. A `CI=1` that reuses
+   an already-built bundle silently records instead.
+
+   ```sh
+   CI=1 pnpm build:tests && CI=1 pnpm test
+   ```
+
+## Matching rules
+
+- Holodeck matches on the test id, the method, the URL string, the request body, and a per-URL
+  request counter. A mismatch in any of them is reported as a 400, not as a missing mock.
+- The body is matched by hashing. An object and the JSON string of that object hash differently,
+  so a `body` option that is not the exact request string never matches.
+- Mocks for the same method and URL are consumed in declaration order. Declare them in the order
+  the requests happen.
+
+## Notes
+
+- The response function runs only while recording. Do not put assertions or side effects in it.
+- Leave the `RECORD: true` option out. It is combined with the global flag rather than replacing
+  it, so it re-records in CI and that request stops being verified.
+- Legacy adapters bypass the request handler. Call `installAdapterFor(this, store)` for those.
+
+## Related
+
+- Full guide: [Writing Mocks](/guides/the-manual/testing/writing-mocks.md)
+- Related skill: [Set Up Holodeck](/skills/testing/set-up-holodeck)

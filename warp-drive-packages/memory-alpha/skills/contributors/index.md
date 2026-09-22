@@ -9,6 +9,7 @@ packages as a dependency in an app). Find the single row below that matches your
 | Begin any session or task in this repo — get a working copy to make changes in | `start-in-a-fresh-worktree.md` |
 | You're about to write a commit message or open a pull request | `keep-commits-human-authored.md` |
 | You're fixing a bug, adding a guard, or adding a fallback in WarpDrive's internals (`Store`, cache, graph, reactive signals, record arrays) | `fix-at-the-source.md` |
+| You added or changed a test that mocks HTTP, and you're about to commit | `commit-mock-cache-fixtures.md` |
 | You're writing a new RFC, or implementing one that's already been accepted | `writing-and-implementing-rfcs.md` |
 | You're writing or changing documentation — a doc comment (TSDoc), a guide, an `upgrading/` or `blog/` page, a package README or `src/index.md`, or an agent skill (RFCs have their own row above) | `write-documentation.md` |
 | You're about to run, or are about to reach for, any local test/lint/build command — even mid-task, even if you already read this table once this session for a different reason | `use-ci-as-the-source-of-truth.md` |

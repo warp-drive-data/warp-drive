@@ -79,7 +79,7 @@ even in this simple form.
 
 - [AbortController](https://developer.mozilla.org/en-US/docs/Web/API/AbortController) is wired in
 - The double await goes away (ie no `response = await fetch(); data = await response.json()` )
-- Its simpler to mock for our tests and can even help us provide [advanced parallel and concurrent test mocking](https://github.com/warp-drive-data/warp-drive/tree/main/packages/holodeck#readme)
+- Its simpler to mock for our tests and can even help us provide [advanced parallel and concurrent test mocking](/guides/the-manual/testing/index.md)
 - It automatically adds test waiters we can use to guard against leaky tests!
 - It gives us a unified interface for managing requests everywhere in our app, not just for this request!
 
