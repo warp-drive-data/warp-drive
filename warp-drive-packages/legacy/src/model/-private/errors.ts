@@ -22,7 +22,13 @@ interface ArrayProxyWithCustomOverrides<T> extends Omit<ArrayProxy<T>, 'clear' |
 // we force the type here to our own construct because mixin and extend patterns
 // lose generic signatures. We also do this because we need to Omit `clear` from
 // the type of ArrayProxy as we override it's signature.
-const ArrayProxyWithCustomOverrides = ArrayProxy as unknown as new <T>() => ArrayProxyWithCustomOverrides<T>;
+//
+// `create` is EmberObject's classic factory; without redeclaring it here the
+// cast drops every static, so `Errors.create()` would not type-check.
+const ArrayProxyWithCustomOverrides = ArrayProxy as unknown as {
+  new <T>(): ArrayProxyWithCustomOverrides<T>;
+  create<C extends abstract new () => unknown>(this: C, props?: Partial<InstanceType<C>>): InstanceType<C>;
+};
 
 /**
   Holds validation errors for a given record, organized by attribute names.
