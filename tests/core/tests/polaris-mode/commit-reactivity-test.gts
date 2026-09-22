@@ -3,7 +3,7 @@ import Component from '@glimmer/component';
 
 import { recordIdentifierFor, useRecommendedStore } from '@warp-drive/core';
 import { checkout, commit, withDefaults } from '@warp-drive/core/reactive';
-import type { Type } from '@warp-drive/core/types/symbols';
+import { Type } from '@warp-drive/core/types/symbols';
 import type { RenderingTestContext } from '@warp-drive/diagnostic/ember';
 import { module, setupRenderingTest, test } from '@warp-drive/diagnostic/ember';
 import { JSONAPICache } from '@warp-drive/json-api';
@@ -63,6 +63,12 @@ class NestedRow extends Component<{ Args: { saved: User; edits: EditableUser } }
 
 let rowRenderCount = 0;
 
+function hashMessage(data: object): string {
+  const { id, state } = data as Message;
+  return `${id}:${state}`;
+}
+hashMessage[Type] = 'message-hash';
+
 /** Counts constructions via a field initializer so no custom constructor/`Owner` typing is needed. */
 class Row extends Component<{ Args: { message: Message } }> {
   rendered = rowRenderCount++;
@@ -94,9 +100,12 @@ module('Reactivity | committing updates a rendered immutable record', function (
         ],
       })
     );
+    // the identity hash is what lets the cache tell an equal-content re-push from a real change;
+    // without one, schema-objects compare by reference and every refetch notifies
+    store.schema.registerHashFn(hashMessage);
     store.schema.registerResource({
       type: 'message',
-      identity: null,
+      identity: { kind: '@hash', name: null, type: 'message-hash' },
       fields: [
         { name: 'id', kind: 'field' },
         { name: 'state', kind: 'field' },

@@ -5,7 +5,14 @@ import { DEBUG } from '@warp-drive/core/build-config/env';
 import { assert } from '@warp-drive/core/build-config/macros';
 import type { CollectionEdge, Graph, GraphEdge, ImplicitEdge, ResourceEdge } from '@warp-drive/core/graph/-private';
 import { graphFor, isBelongsTo, peekGraph } from '@warp-drive/core/graph/-private';
-import { assertPrivateCapabilities, isRequestKey, isResourceKey, logGroup } from '@warp-drive/core/store/-private';
+import {
+  assertPrivateCapabilities,
+  isRequestKey,
+  isResourceKey,
+  logGroup,
+  resolveSchemaObjectType,
+  schemaObjectHash,
+} from '@warp-drive/core/store/-private';
 import type { CacheCapabilitiesManager } from '@warp-drive/core/types';
 import type { Cache, ChangedAttributesHash, RelationshipDiff } from '@warp-drive/core/types/cache';
 import type { Change } from '@warp-drive/core/types/cache/change';
@@ -42,7 +49,10 @@ import type {
   LegacyHasManyField,
   LegacyRelationshipField,
   ResourceField,
+  SchemaArrayField,
+  SchemaObjectField,
 } from '@warp-drive/core/types/schema/fields';
+import type { SchemaService } from '@warp-drive/core/types/schema/schema-service';
 import type {
   CollectionResourceDataDocument,
   ResourceDataDocument,
@@ -106,8 +116,9 @@ type AttrHash = Record<string, Value | undefined>;
  * **commits** the mutation: `didCommit` merges the in-flight values into
  * `remoteAttrs` and removes them from `inflightAttrs`. A push carrying the same
  * value as a pending edit in `localAttrs` has the same effect on that edit: the
- * server already holds it, so it is removed from `localAttrs` and `changes`.
- * "Same value" is structural, so an array or object with equal content counts.
+ * server already holds it, so it is removed from `localAttrs`. "Same value" is
+ * decided by the field's schema: a schema-object with an identity hash compares
+ * by that hash, everything else by reference.
  *
  * Thus, a dirty field reads as mutated for local readers only, and goes on doing
  * so while its save is in flight.
@@ -2134,36 +2145,45 @@ function resolveAttr(
   return current;
 }
 
-function isPlainObject(value: object): value is Record<string, unknown> {
-  const proto = Object.getPrototypeOf(value) as unknown;
-  return proto === null || proto === Object.prototype;
-}
-
 /**
- * Same content, not same reference. Arrays and plain objects are walked; anything else (Date,
- * Map, class instances) only compares equal by reference, so a value the cache cannot reason about
- * is reported as changed rather than silently treated as equal.
+ * Whether two values of `field` count as the same value for change detection.
+ *
+ * A `schema-object`, and each element of a `schema-array`, compares by the identity hash its
+ * `ObjectSchema` declares (`identity: { kind: '@hash', ... }`), so the schema decides what "same"
+ * means for it. With no hash declared, and for every other field kind, only the same reference
+ * counts. That knowingly over-notifies for equal-content objects: content equality is the schema's
+ * to define, not the cache's to guess.
  */
-function valuesEqual(a: unknown, b: unknown): boolean {
+function attrValuesEqual(
+  schema: SchemaService,
+  field: FieldSchema,
+  a: Value | undefined,
+  b: Value | undefined
+): boolean {
   if (a === b) return true;
-  if (typeof a !== 'object' || typeof b !== 'object' || a === null || b === null) return false;
-
-  if (Array.isArray(a)) {
-    if (!Array.isArray(b) || a.length !== b.length) return false;
+  if (field.kind === 'schema-object') return schemaObjectsEqual(schema, field, a, b);
+  if (field.kind === 'schema-array') {
+    if (!Array.isArray(a) || !Array.isArray(b) || a.length !== b.length) return false;
     for (let i = 0; i < a.length; i++) {
-      if (!valuesEqual(a[i], b[i])) return false;
+      if (!schemaObjectsEqual(schema, field, a[i], b[i])) return false;
     }
     return true;
   }
-  if (Array.isArray(b) || !isPlainObject(a) || !isPlainObject(b)) return false;
+  return false;
+}
 
-  const keys = Object.keys(a);
-  if (keys.length !== Object.keys(b).length) return false;
-  for (let i = 0; i < keys.length; i++) {
-    const key = keys[i];
-    if (!Object.hasOwn(b, key) || !valuesEqual(a[key], b[key])) return false;
-  }
-  return true;
+function schemaObjectsEqual(
+  schema: SchemaService,
+  field: SchemaObjectField | SchemaArrayField,
+  a: unknown,
+  b: unknown
+): boolean {
+  if (a === b) return true;
+  if (!a || !b || typeof a !== 'object' || typeof b !== 'object') return false;
+  const type = resolveSchemaObjectType(schema, field, a);
+  if (type !== resolveSchemaObjectType(schema, field, b)) return false;
+  const hash = schemaObjectHash(schema, type, a);
+  return hash !== null && hash === schemaObjectHash(schema, type, b);
 }
 
 /**
@@ -2242,6 +2262,7 @@ function mergeIntoRemote(cached: CachedResource, layers: Layered, kind: MergeKin
  * the same `RESOLUTION_ORDER_*_AFTER_*` orders `mergeIntoRemote` applies.
  */
 function partitionChangedKeys(
+  schema: SchemaService,
   layers: Layered,
   fields: ReturnType<Store['schema']['fields']>,
   kind: MergeKind
@@ -2266,8 +2287,8 @@ function partitionChangedKeys(
     const localBefore = resolveAttr(key, layers, RESOLUTION_ORDER_LOCAL_STATE);
     const localAfter = resolveAttr(key, layers, localAfterOrder);
 
-    const remoteMoved = !valuesEqual(remoteBefore, remoteAfter);
-    const localMoved = !valuesEqual(localBefore, localAfter);
+    const remoteMoved = !attrValuesEqual(schema, field, remoteBefore, remoteAfter);
+    const localMoved = !attrValuesEqual(schema, field, localBefore, localAfter);
 
     if (remoteMoved && localMoved) {
       (both ??= new Set<string>()).add(key);
@@ -2375,10 +2396,14 @@ function isRelationship(field: FieldSchema): field is LegacyRelationshipField | 
 }
 
 /**
- * After a merge: drop every local edit the new baseline agrees with. Returns whether any edit
- * was dropped.
+ * After a merge: drop every local edit the new baseline agrees with, by the same equality
+ * {@link partitionChangedKeys} uses. Returns whether any edit was dropped.
  */
-function reconcileLocalEdits(cached: CachedResource): boolean {
+function reconcileLocalEdits(
+  schema: SchemaService,
+  cached: CachedResource,
+  fields: ReturnType<Store['schema']['fields']>
+): boolean {
   const { localAttrs, defaultAttrs } = cached;
   if (!localAttrs) {
     return false;
@@ -2388,8 +2413,10 @@ function reconcileLocalEdits(cached: CachedResource): boolean {
 
   for (let i = 0; i < editedKeys.length; i++) {
     const key = editedKeys[i];
+    const field = fields.get(key);
+    const baseline = resolveAttr(key, cached, RESOLUTION_ORDER_EDIT_BASELINE);
 
-    if (valuesEqual(resolveAttr(key, cached, RESOLUTION_ORDER_EDIT_BASELINE), localAttrs[key])) {
+    if (field ? attrValuesEqual(schema, field, baseline, localAttrs[key]) : baseline === localAttrs[key]) {
       droppedAnEdit = true;
       delete localAttrs[key];
     }
@@ -2601,12 +2628,12 @@ function cacheUpsert(
   const layers = layersForMerge(cached, data.attributes ?? null);
   if (calculateChanges && existed && data.attributes) {
     // before the merge below, which overwrites the values the comparison reads
-    changes = partitionChangedKeys(layers, fields, 'upsert');
+    changes = partitionChangedKeys(cache._capabilities.schema, layers, fields, 'upsert');
   }
   mergeIntoRemote(cached, layers, 'upsert');
 
   if (cached.localAttrs) {
-    if (reconcileLocalEdits(cached)) {
+    if (reconcileLocalEdits(cache._capabilities.schema, cached, fields)) {
       cache._capabilities.notifyChange(identifier, 'state', null);
     }
   }
@@ -2809,7 +2836,7 @@ function commitDidError(cache: JSONAPICache, identifier: ResourceKey, errors: Ap
     cached.inflightAttrs = null;
   }
   // the failed save's values are local edits again: drop any that now match remote
-  if (reconcileLocalEdits(cached)) {
+  if (reconcileLocalEdits(cache._capabilities.schema, cached, getCacheFields(cache, identifier))) {
     cache._capabilities.notifyChange(identifier, 'state', null);
   }
   if (errors) {
@@ -2914,9 +2941,9 @@ function didCommit(
   }
   // before the merge below, which overwrites the values the comparison reads
   const layers = layersForMerge(cached, responseAttrs);
-  const changes = partitionChangedKeys(layers, fields, 'commit');
+  const changes = partitionChangedKeys(cache._capabilities.schema, layers, fields, 'commit');
   mergeIntoRemote(cached, layers, 'commit');
-  reconcileLocalEdits(cached);
+  reconcileLocalEdits(cache._capabilities.schema, cached, fields);
 
   if (cached.errors) {
     cached.errors = null;
