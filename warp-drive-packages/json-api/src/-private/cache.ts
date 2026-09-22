@@ -201,13 +201,13 @@ interface CachedResource {
 type AttrLayer = 'localAttrs' | 'inflightAttrs' | 'remoteAttrs' | 'defaultAttrs';
 
 /**
- * A layer that exists only while modelling a merge: the attributes arriving from the
+ * A layer that exists only while predicting a merge: the attributes arriving from the
  * server in a save response or a push, which {@link partitionChangedKeys} reads as if
  * they were already on the resource. Never part of a reader's resolution order.
  */
 type MergeLayer = 'incomingAttrs';
 
-/** Anything a projection can be read through: a {@link CachedResource}, or a merge model built around one. */
+/** Anything a projection can be read through: a {@link CachedResource}, or the layers a merge reads, built around one. */
 type Layered = Partial<Record<AttrLayer | MergeLayer, AttrHash | null>>;
 
 /** What the immutable record reads. */
@@ -228,7 +228,7 @@ const RESOLUTION_ORDER_EDIT_BASELINE = ['inflightAttrs', 'remoteAttrs'] as const
 /** What an editable copy reads. */
 const RESOLUTION_ORDER_LOCAL_STATE = ['localAttrs', ...RESOLUTION_ORDER_EDIT_BASELINE, 'defaultAttrs'] as const;
 
-// Merge modelling: each projection before and after the merge, so `partitionChangedKeys` can tell
+// Merge prediction: each projection before and after the merge, so `partitionChangedKeys` can tell
 // which one moved. `defaultAttrs` is left out on purpose: a memoized default giving way to a real
 // value is a move.
 const RESOLUTION_ORDER_REMOTE_BEFORE_MERGE = ['remoteAttrs'] as const;
@@ -2183,7 +2183,7 @@ const NO_PROJECTION_CHANGES: ProjectionChanges = Object.freeze({
 });
 
 /** The layers a merge reads: the resource's own, plus the attributes arriving from the server. */
-function mergeModel(cached: CachedResource, incomingAttrs: AttrHash | null): Layered {
+function layersForMerge(cached: CachedResource, incomingAttrs: AttrHash | null): Layered {
   return {
     localAttrs: cached.localAttrs,
     inflightAttrs: cached.inflightAttrs,
@@ -2196,11 +2196,11 @@ function mergeModel(cached: CachedResource, incomingAttrs: AttrHash | null): Lay
  * Every key a merge could move: every key in every layer the after-merge order folds into
  * `remoteAttrs`. `null` when there is nothing to examine.
  */
-function candidateKeys(model: Layered, remoteAfterOrder: readonly (AttrLayer | MergeLayer)[]): string[] | null {
+function candidateKeys(layers: Layered, remoteAfterOrder: readonly (AttrLayer | MergeLayer)[]): string[] | null {
   let keys: string[] | null = null;
   for (let i = 0; i < remoteAfterOrder.length; i++) {
     const layer = remoteAfterOrder[i];
-    const hash = layer === 'remoteAttrs' ? null : model[layer];
+    const hash = layer === 'remoteAttrs' ? null : layers[layer];
     if (!hash) continue;
     const layerKeys = Object.keys(hash);
     if (!layerKeys.length) continue;
@@ -2220,13 +2220,13 @@ function candidateKeys(model: Layered, remoteAfterOrder: readonly (AttrLayer | M
  * lowest precedence first, and clear each resource layer that was folded in. The same order
  * {@link partitionChangedKeys} used to predict the result, so the two cannot disagree.
  */
-function mergeIntoRemote(cached: CachedResource, model: Layered, kind: MergeKind): void {
+function mergeIntoRemote(cached: CachedResource, layers: Layered, kind: MergeKind): void {
   const order = MERGE_RESOLUTION[kind].remoteAfter;
   const target = cached.remoteAttrs || (Object.create(null) as AttrHash);
   for (let i = order.length - 1; i >= 0; i--) {
     const layer = order[i];
     if (layer === 'remoteAttrs') continue;
-    Object.assign(target, model[layer]);
+    Object.assign(target, layers[layer]);
     if (layer !== 'incomingAttrs') cached[layer] = null;
   }
   cached.remoteAttrs = target;
@@ -2234,16 +2234,16 @@ function mergeIntoRemote(cached: CachedResource, model: Layered, kind: MergeKind
 
 /**
  * Partition the keys a merge touches by which projection each one moves in. Must run *before*
- * {@link mergeIntoRemote}: it reads the pre-merge layers from `model` and predicts the merge with
+ * {@link mergeIntoRemote}: it reads the pre-merge layers from `layers` and predicts the merge with
  * the same `RESOLUTION_ORDER_*_AFTER_*` orders `mergeIntoRemote` applies.
  */
 function partitionChangedKeys(
-  model: Layered,
+  layers: Layered,
   fields: ReturnType<Store['schema']['fields']>,
   kind: MergeKind
 ): ProjectionChanges {
   const { remoteAfter: remoteAfterOrder, localAfter: localAfterOrder } = MERGE_RESOLUTION[kind];
-  const keys = candidateKeys(model, remoteAfterOrder);
+  const keys = candidateKeys(layers, remoteAfterOrder);
   if (keys === null) return NO_PROJECTION_CHANGES;
 
   let localOnly: Set<string> | undefined;
@@ -2257,10 +2257,10 @@ function partitionChangedKeys(
     const field = fields.get(key);
     if (!field || isRelationship(field)) continue;
 
-    const remoteBefore = resolveAttr(key, model, RESOLUTION_ORDER_REMOTE_BEFORE_MERGE);
-    const remoteAfter = resolveAttr(key, model, remoteAfterOrder);
-    const localBefore = resolveAttr(key, model, RESOLUTION_ORDER_LOCAL_BEFORE_MERGE);
-    const localAfter = resolveAttr(key, model, localAfterOrder);
+    const remoteBefore = resolveAttr(key, layers, RESOLUTION_ORDER_REMOTE_BEFORE_MERGE);
+    const remoteAfter = resolveAttr(key, layers, remoteAfterOrder);
+    const localBefore = resolveAttr(key, layers, RESOLUTION_ORDER_LOCAL_BEFORE_MERGE);
+    const localAfter = resolveAttr(key, layers, localAfterOrder);
 
     const remoteMoved = !valuesEqual(remoteBefore, remoteAfter);
     const localMoved = !valuesEqual(localBefore, localAfter);
@@ -2594,12 +2594,12 @@ function cacheUpsert(
 
   // if no cache entry existed, no record exists / property has been accessed
   // and thus we do not need to notify changes to any properties.
-  const model = mergeModel(cached, data.attributes ?? null);
+  const layers = layersForMerge(cached, data.attributes ?? null);
   if (calculateChanges && existed && data.attributes) {
     // before the merge below, which overwrites the values the comparison reads
-    changes = partitionChangedKeys(model, fields, 'upsert');
+    changes = partitionChangedKeys(layers, fields, 'upsert');
   }
-  mergeIntoRemote(cached, model, 'upsert');
+  mergeIntoRemote(cached, layers, 'upsert');
 
   if (cached.localAttrs) {
     if (reconcileLocalEdits(cached)) {
@@ -2909,9 +2909,9 @@ function didCommit(
     responseAttrs = data.attributes ?? null;
   }
   // before the merge below, which overwrites the values the comparison reads
-  const model = mergeModel(cached, responseAttrs);
-  const changes = partitionChangedKeys(model, fields, 'commit');
-  mergeIntoRemote(cached, model, 'commit');
+  const layers = layersForMerge(cached, responseAttrs);
+  const changes = partitionChangedKeys(layers, fields, 'commit');
+  mergeIntoRemote(cached, layers, 'commit');
   reconcileLocalEdits(cached);
 
   if (cached.errors) {
