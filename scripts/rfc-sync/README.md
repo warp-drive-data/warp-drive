@@ -24,21 +24,35 @@ for how this looks from a contributor's side, and
 
 ## One-time setup (not doable from an agent session -- needs a human with org access)
 
-1. Create a dedicated bot GitHub account (e.g. `warpdrive-rfc-bot`) -- don't reuse a personal or
+1. Create a dedicated bot GitHub account (e.g. `warpdrive-bot`) -- don't reuse a personal or
    existing deploy account, so its access stays scoped to exactly this.
-2. Have that account fork `emberjs/rfcs` (`gh repo fork emberjs/rfcs --org <bot-account> --remote=false`,
-   run as the bot account, or via the GitHub UI).
-3. Generate a fine-grained personal access token for the bot account, scoped to exactly two
-   repositories:
-   - its own fork (Contents: Read & write, Pull requests: Read & write -- needed to push branches
-     and it's the bot's own repo anyway)
-   - `emberjs/rfcs` (Pull requests: Read & write, Contents: **read only** -- deliberately no write
-     access here, so the token can never push to `emberjs/rfcs` directly even if it leaked)
+2. Have that account fork `emberjs/rfcs` (`gh repo fork emberjs/rfcs --remote=false`, run as the
+   bot account, or via the GitHub UI). The fork can be renamed freely (nothing here assumes it's
+   still called `rfcs`) -- only the `owner/repo` value matters, recorded in step 4.
+3. Generate a **classic** personal access token for the bot account, scoped to **`public_repo`**
+   only (not full `repo`, and no other scopes).
+
+   A **fine-grained** token cannot be used for the `emberjs/rfcs` side of this: fine-grained
+   tokens can only be scoped to repositories the token's own account already has some access to
+   (owns, collaborates on, or belongs to via an org) -- a bot account with no relationship to the
+   `emberjs` org will never be able to select `emberjs/rfcs` in that picker, no matter what
+   permission level you ask for. `public_repo` is the standard workaround every bot that opens
+   PRs against a third-party public repo it doesn't collaborate on has to use. It's broader than
+   the fine-grained, read-only-on-contents scoping this was originally written around -- the
+   token *can* technically act on any public repo, not just `emberjs/rfcs` and the bot's own fork
+   -- but it still can never touch a private repo, and its blast radius is capped at "open PRs /
+   push to repos this account could already interact with anyway." If `emberjs/rfcs`'s
+   maintainers are ever willing to install a purpose-built GitHub App scoped to just that repo
+   (Pull requests: read/write, Contents: read), that would be a strict improvement over this
+   token and worth switching to -- but that requires their cooperation, not just ours.
 4. In `warp-drive-data/warp-drive`'s repo settings, add:
    - Secret `EMBERJS_RFCS_SYNC_TOKEN` -- the token from step 3
-   - Secret or variable `EMBERJS_RFCS_SYNC_FORK` -- `<bot-account>/rfcs`
+   - Secret or variable `EMBERJS_RFCS_SYNC_FORK` -- the fork's `owner/repo`, e.g.
+     `warpdrive-bot/emberjs-rfcs`
    - Secret or variable `EMBERJS_RFCS_SYNC_NAME` / `EMBERJS_RFCS_SYNC_EMAIL` -- the bot's git
-     identity (same pattern as `GH_DEPLOY_NAME`/`GH_DEPLOY_EMAIL` in `release.yml`)
+     identity (same pattern as `GH_DEPLOY_NAME`/`GH_DEPLOY_EMAIL` in `release.yml`); use the bot
+     account's GitHub-provided `@users.noreply.github.com` address for the email so a real inbox
+     never appears in public commit history
 
 Until these are set, both workflows detect the missing configuration, log it, and exit
 successfully (no CI failures, no partial syncing).

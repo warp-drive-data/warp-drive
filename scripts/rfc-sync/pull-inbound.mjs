@@ -24,7 +24,7 @@ import {
 } from './common.mjs';
 
 const TOKEN = process.env.EMBERJS_RFCS_SYNC_TOKEN;
-const FORK = process.env.EMBERJS_RFCS_SYNC_FORK; // e.g. "warpdrive-rfc-bot/rfcs"
+const FORK = process.env.EMBERJS_RFCS_SYNC_FORK; // e.g. "warpdrive-bot/emberjs-rfcs"
 const GIT_NAME = process.env.EMBERJS_RFCS_SYNC_NAME;
 const GIT_EMAIL = process.env.EMBERJS_RFCS_SYNC_EMAIL;
 const RFCS_DIR = join(process.cwd(), 'rfcs');
