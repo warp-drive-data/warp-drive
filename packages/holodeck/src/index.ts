@@ -386,8 +386,8 @@ export function installAdapterFor(owner: object, store: Store): void {
  *
  * @public
  */
-export async function mock(owner: object, generate: ScaffoldGenerator, isRecording?: boolean): Promise<void> {
-  if (getIsRecording() || isRecording) {
+export async function mock(owner: object, generate: ScaffoldGenerator): Promise<void> {
+  if (getIsRecording()) {
     const test = TEST_IDS.get(owner);
     if (!test) {
       throw new Error(`Cannot call "mock" before configuring a testId. Use setTestId to set the testId for each test`);

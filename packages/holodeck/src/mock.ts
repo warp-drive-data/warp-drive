@@ -1,4 +1,4 @@
-import { getIsRecording, mock } from '.';
+import { mock } from '.';
 
 /**
  * @public
@@ -33,32 +33,27 @@ export type ResponseGenerator = () => Record<string, unknown>;
  * - status: the status code to return (default: 200)
  * - headers: the headers to return (default: {})
  * - body: the body to match against for the request (default: null)
- * - RECORD: whether to record the request (default: false)
  *
  * @param url the url to mock, relative to the mock server host (e.g. `users/1`)
  * @param response a function which generates the response to return
- * @param options status, headers for the response, body to match against for the request, and whether to record the request
+ * @param options status, headers for the response, and body to match against for the request
  * @return
  */
 export function GET(
   owner: object,
   url: string,
   response: ResponseGenerator,
-  options?: Partial<Omit<Scaffold, 'response' | 'url' | 'method'>> & { RECORD?: boolean }
+  options?: Partial<Omit<Scaffold, 'response' | 'url' | 'method'>>
 ): Promise<void> {
-  return mock(
-    owner,
-    () => ({
-      status: options?.status ?? 200,
-      statusText: options?.statusText ?? 'OK',
-      headers: options?.headers ?? {},
-      body: options?.body ?? null,
-      method: 'GET',
-      url,
-      response: response(),
-    }),
-    getIsRecording() || (options?.RECORD ?? false)
-  );
+  return mock(owner, () => ({
+    status: options?.status ?? 200,
+    statusText: options?.statusText ?? 'OK',
+    headers: options?.headers ?? {},
+    body: options?.body ?? null,
+    method: 'GET',
+    url,
+    response: response(),
+  }));
 }
 
 const STATUS_TEXT_FOR = new Map([
@@ -132,26 +127,22 @@ export function POST(
   owner: object,
   url: string,
   response: ResponseGenerator,
-  options?: Partial<Omit<Scaffold, 'response' | 'url' | 'method'>> & { RECORD?: boolean }
+  options?: Partial<Omit<Scaffold, 'response' | 'url' | 'method'>>
 ): Promise<void> {
-  return mock(
-    owner,
-    () => {
-      const body = response();
-      const status = options?.status ?? (body ? 201 : 204);
+  return mock(owner, () => {
+    const body = response();
+    const status = options?.status ?? (body ? 201 : 204);
 
-      return {
-        status: status,
-        statusText: options?.statusText ?? STATUS_TEXT_FOR.get(status) ?? '',
-        headers: options?.headers ?? {},
-        body: options?.body ?? null,
-        method: 'POST',
-        url,
-        response: body,
-      };
-    },
-    getIsRecording() || (options?.RECORD ?? false)
-  );
+    return {
+      status: status,
+      statusText: options?.statusText ?? STATUS_TEXT_FOR.get(status) ?? '',
+      headers: options?.headers ?? {},
+      body: options?.body ?? null,
+      method: 'POST',
+      url,
+      response: body,
+    };
+  });
 }
 
 /**
@@ -161,26 +152,22 @@ export function PUT(
   owner: object,
   url: string,
   response: ResponseGenerator,
-  options?: Partial<Omit<Scaffold, 'response' | 'url' | 'method'>> & { RECORD?: boolean }
+  options?: Partial<Omit<Scaffold, 'response' | 'url' | 'method'>>
 ): Promise<void> {
-  return mock(
-    owner,
-    () => {
-      const body = response();
-      const status = options?.status ?? (body ? 200 : 204);
+  return mock(owner, () => {
+    const body = response();
+    const status = options?.status ?? (body ? 200 : 204);
 
-      return {
-        status: status,
-        statusText: options?.statusText ?? STATUS_TEXT_FOR.get(status) ?? '',
-        headers: options?.headers ?? {},
-        body: options?.body ?? null,
-        method: 'PUT',
-        url,
-        response: body,
-      };
-    },
-    getIsRecording() || (options?.RECORD ?? false)
-  );
+    return {
+      status: status,
+      statusText: options?.statusText ?? STATUS_TEXT_FOR.get(status) ?? '',
+      headers: options?.headers ?? {},
+      body: options?.body ?? null,
+      method: 'PUT',
+      url,
+      response: body,
+    };
+  });
 }
 /**
  * mock a PATCH request
@@ -190,26 +177,22 @@ export function PATCH(
   owner: object,
   url: string,
   response: ResponseGenerator,
-  options?: Partial<Omit<Scaffold, 'response' | 'url' | 'method'>> & { RECORD?: boolean }
+  options?: Partial<Omit<Scaffold, 'response' | 'url' | 'method'>>
 ): Promise<void> {
-  return mock(
-    owner,
-    () => {
-      const body = response();
-      const status = options?.status ?? (body ? 200 : 204);
+  return mock(owner, () => {
+    const body = response();
+    const status = options?.status ?? (body ? 200 : 204);
 
-      return {
-        status: status,
-        statusText: options?.statusText ?? STATUS_TEXT_FOR.get(status) ?? '',
-        headers: options?.headers ?? {},
-        body: options?.body ?? null,
-        method: 'PATCH',
-        url,
-        response: body,
-      };
-    },
-    getIsRecording() || (options?.RECORD ?? false)
-  );
+    return {
+      status: status,
+      statusText: options?.statusText ?? STATUS_TEXT_FOR.get(status) ?? '',
+      headers: options?.headers ?? {},
+      body: options?.body ?? null,
+      method: 'PATCH',
+      url,
+      response: body,
+    };
+  });
 }
 /**
  * mock a DELETE request
@@ -218,26 +201,22 @@ export function DELETE(
   owner: object,
   url: string,
   response: ResponseGenerator,
-  options?: Partial<Omit<Scaffold, 'response' | 'url' | 'method'>> & { RECORD?: boolean }
+  options?: Partial<Omit<Scaffold, 'response' | 'url' | 'method'>>
 ): Promise<void> {
-  return mock(
-    owner,
-    () => {
-      const body = response();
-      const status = options?.status ?? (body ? 200 : 204);
+  return mock(owner, () => {
+    const body = response();
+    const status = options?.status ?? (body ? 200 : 204);
 
-      return {
-        status: status,
-        statusText: options?.statusText ?? STATUS_TEXT_FOR.get(status) ?? '',
-        headers: options?.headers ?? {},
-        body: options?.body ?? null,
-        method: 'DELETE',
-        url,
-        response: body,
-      };
-    },
-    getIsRecording() || (options?.RECORD ?? false)
-  );
+    return {
+      status: status,
+      statusText: options?.statusText ?? STATUS_TEXT_FOR.get(status) ?? '',
+      headers: options?.headers ?? {},
+      body: options?.body ?? null,
+      method: 'DELETE',
+      url,
+      response: body,
+    };
+  });
 }
 
 /**
@@ -250,11 +229,10 @@ export function DELETE(
  * - status: the status code to return (default: 200)
  * - headers: the headers to return (default: {})
  * - body: the body to match against for the request (default: null)
- * - RECORD: whether to record the request (default: false)
  *
  * @param url the url to mock, relative to the mock server host (e.g. `users/1`)
  * @param response a function which generates the response to return
- * @param options status, headers for the response, body to match against for the request, and whether to record the request
+ * @param options status, headers for the response, and body to match against for the request
  * @return
  */
 export function HEAD(
@@ -264,19 +242,15 @@ export function HEAD(
   // TODO: should we omit the `body` as well?
   // It does _seem_ possible for HEAD requests to have a body, but it should be ignored.
   // From MDN: Warning: If a response to a HEAD request has a body, the response body must be ignored.
-  options?: Partial<Omit<Scaffold, 'response' | 'url' | 'method'>> & { RECORD?: boolean }
+  options?: Partial<Omit<Scaffold, 'response' | 'url' | 'method'>>
 ): Promise<void> {
-  return mock(
-    owner,
-    () => ({
-      status: options?.status ?? 200,
-      statusText: options?.statusText ?? 'OK',
-      headers: options?.headers ?? {},
-      body: options?.body ?? null,
-      method: 'HEAD',
-      url,
-      response: response(),
-    }),
-    getIsRecording() || (options?.RECORD ?? false)
-  );
+  return mock(owner, () => ({
+    status: options?.status ?? 200,
+    statusText: options?.statusText ?? 'OK',
+    headers: options?.headers ?? {},
+    body: options?.body ?? null,
+    method: 'HEAD',
+    url,
+    response: response(),
+  }));
 }
