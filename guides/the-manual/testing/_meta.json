@@ -1,4 +1,12 @@
 {
   "title": "Testing",
-  "items": ["setup", "writing-mocks", "record-and-replay", "troubleshooting"]
+  "items": [
+    "server-setup",
+    "client-setup",
+    "test-framework-integration",
+    "writing-mocks",
+    "record-and-replay",
+    "troubleshooting",
+    "holo-programs"
+  ]
 }

@@ -75,6 +75,10 @@ forbids `?` in a path, so fixtures for those URLs cannot be checked out on Windo
 
 `.mock-cache` is source code. Commit it in the same change as the test that records it.
 
+Committing them is what makes the cache useful. Git manages it, so a branch switch swaps fixtures
+and tests together, and a rebase or a CI run does no recording work at all because the files are
+already in the tree.
+
 Nothing enforces this. No lint rule looks for it, and no CI check fails when a fixture is missing.
 The failure arrives later, as a broken test in the first environment that enforces replay.
 

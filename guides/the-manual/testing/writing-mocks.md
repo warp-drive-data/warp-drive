@@ -28,7 +28,8 @@ test('it renders a user', async function (assert) {
 The first argument is the test context. Pass `this` from inside a `function` test body, never an
 arrow function, because holodeck looks the test up by object identity. The same object has to reach
 `setTestId`, the `MockServerHandler` constructor, and every mock helper. See
-[Setting up holodeck](./setup.md) for where the first two happen.
+[Test framework integration](./test-framework-integration.md) and
+[Client setup](./client-setup.md) for where the first two happen.
 
 The second argument is the URL to match, relative to the mock host and without a leading slash.
 
@@ -120,19 +121,11 @@ await GET(this, 'users?filter%5Bname%5D=Chris', () => ({ data: [] }));
 
 Parameter order matters too. `users?a=1&b=2` and `users?b=2&a=1` are two different mocks.
 
-## Mock a request the store makes through a legacy adapter
+## Mock a request that goes through a legacy adapter
 
-Tests that still go through `@warp-drive/legacy` adapters do not run through the request handler, so
-the mock helpers alone are not enough. Call `installAdapterFor` once the store exists, and pass it
-the same test context.
-
-```ts
-import { installAdapterFor } from '@warp-drive/holodeck';
-
-installAdapterFor(this, store);
-```
-
-Every adapter the store builds from then on routes its fetches through holodeck.
+The mock helpers work the same way, but the request needs a route into holodeck first, because
+legacy adapters bypass the request chain. See
+[Client setup](./client-setup.md#with-legacy-adapters).
 
 ## Build a scaffold by hand
 

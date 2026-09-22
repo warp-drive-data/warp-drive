@@ -112,7 +112,7 @@ error: SSL certificate or key not found, you may need to run `pnpm dlx @warp-dri
 Both `@warp-drive/diagnostic` and holodeck serve over TLS, and both read the same certificate.
 Diagnostic starts first, so this is usually the first thing a machine without a certificate hits,
 and holodeck's banner never prints. Run the certificate step from
-[Setting up holodeck](./setup.md#trust-a-local-certificate).
+[Server setup](./server-setup.md#trust-a-local-certificate).
 
 Holodeck looks for `HOLODECK_SSL_CERT_PATH` and `HOLODECK_SSL_KEY_PATH`, and falls back to
 `$HOME/holodeck-localhost.pem` and `$HOME/holodeck-localhost-key.pem` when they are unset. The
@@ -187,5 +187,5 @@ there too. Start the test runner from the test app's own directory.
 
 ## Related
 
-- [Setting up holodeck](./setup.md)
+- [Server setup](./server-setup.md)
 - [Recording and replaying](./record-and-replay.md)
