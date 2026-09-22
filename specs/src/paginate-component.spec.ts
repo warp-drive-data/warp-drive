@@ -194,7 +194,8 @@ export interface PaginateSpecSignature extends Record<string, SpecTest<LocalTest
       store: RequestManager;
       requestA: CollectionRequest;
       requestB: CollectionRequest;
-      countFor: (result: unknown) => number;
+      countForA: (result: unknown) => number;
+      countForB: (result: unknown) => number;
     }
   >;
   'it derives pageNumber and totalPages from a custom pageHints fn': SpecTest<
@@ -883,7 +884,8 @@ export const PaginateSpec: SuiteBuilder<LocalTestContext, PaginateSpecSignature>
     store: RequestManager;
     requestA: CollectionRequest;
     requestB: CollectionRequest;
-    countFor: (result: unknown) => number;
+    countForA: (result: unknown) => number;
+    countForB: (result: unknown) => number;
   }>(async function (assert) {
     const urls = [
       buildBaseURL({ resourcePath: 'users/1' }),
@@ -999,19 +1001,29 @@ export const PaginateSpec: SuiteBuilder<LocalTestContext, PaginateSpecSignature>
     const paginationCache = getPaginationCache(urls[0]);
     const paginationLinksA = getPaginationLinks(paginationStateA);
 
-    let counter = 0;
-    function countFor(_result: unknown) {
-      return ++counter;
+    // One counter per component, never a shared one. A shared counter makes
+    // every expected value a function of the order the two components happen
+    // to render in, so an unrelated scheduling difference fails an assertion
+    // whose message claims something else entirely.
+    let counterA = 0;
+    let counterB = 0;
+    function countForA(_result: unknown) {
+      return ++counterA;
+    }
+    function countForB(_result: unknown) {
+      return ++counterB;
     }
 
     await this.render({
       store: this.manager,
       requestA,
       requestB,
-      countFor,
+      countForA,
+      countForB,
     });
 
-    assert.equal(counter, 2);
+    assert.equal(counterA, 1, 'A rendered once');
+    assert.equal(counterB, 1, 'B rendered once');
     assert.equal(this.element.querySelector('[data-test-pending]')?.textContent.trim(), 'PendingCount: 1');
     assert.equal(Array.from(paginationStateA.data).length, 0, 'No data initially');
     assert.equal(Array.from(paginationCache.pages).length, 0, 'No pages in the graph initially');
@@ -1036,10 +1048,11 @@ export const PaginateSpec: SuiteBuilder<LocalTestContext, PaginateSpecSignature>
       ['1', '2', '3', '4', '5', '6'],
       'Link names'
     );
-    assert.equal(counter, 4);
+    assert.equal(counterA, 2, 'A rendered its page');
+    assert.equal(counterB, 2, 'B rendered its page');
     assert.equal(
       this.element.querySelector('[data-test-pagination="a"] [data-test-user-name]')?.textContent.trim(),
-      'Leo EuclidesCount: 3'
+      'Leo EuclidesCount: 2'
     );
     assert.equal(
       this.element.querySelectorAll('[data-test-pagination="a"] [data-test-user-name]').length,
@@ -1048,7 +1061,7 @@ export const PaginateSpec: SuiteBuilder<LocalTestContext, PaginateSpecSignature>
     );
     assert.equal(
       this.element.querySelector('[data-test-pagination="b"] [data-test-user-name]')?.textContent.trim(),
-      'Jane PortmanCount: 4'
+      'Jane PortmanCount: 2'
     );
     assert.equal(
       this.element.querySelectorAll('[data-test-pagination="b"] [data-test-user-name]').length,
@@ -1063,14 +1076,15 @@ export const PaginateSpec: SuiteBuilder<LocalTestContext, PaginateSpecSignature>
     assert.deepEqual(activePageA?.data, [users[0]], 'Page data');
     assert.deepEqual(activePageA?.pageNumber, 1, 'Page number');
     assert.deepEqual(paginationLinksA.links.length, 6, '6 links');
-    assert.equal(counter, 6);
+    assert.equal(counterA, 4, 'A re-rendered for its own navigation');
+    assert.equal(counterB, 2, 'Component B did not re-render');
     assert.equal(
       this.element.querySelector('[data-test-pagination="a"] [data-test-user-name]')?.textContent.trim(),
-      'Chris ThoburnCount: 6'
+      'Chris ThoburnCount: 4'
     );
     assert.equal(
       this.element.querySelector('[data-test-pagination="b"] [data-test-user-name]')?.textContent.trim(),
-      'Jane PortmanCount: 4',
+      'Jane PortmanCount: 2',
       'Component B did not re-render'
     );
 
@@ -1081,15 +1095,16 @@ export const PaginateSpec: SuiteBuilder<LocalTestContext, PaginateSpecSignature>
     assert.deepEqual(activePageB?.data, [users[5]], 'Page data');
     assert.deepEqual(activePageB?.pageNumber, 6, 'Page number');
     assert.deepEqual(paginationLinksA.links.length, 6, '6 links');
-    assert.equal(counter, 8);
+    assert.equal(counterA, 4, 'Component A did not re-render');
+    assert.equal(counterB, 4, 'B re-rendered for its own navigation');
     assert.equal(
       this.element.querySelector('[data-test-pagination="a"] [data-test-user-name]')?.textContent.trim(),
-      'Chris ThoburnCount: 6',
+      'Chris ThoburnCount: 4',
       'Component A did not re-render'
     );
     assert.equal(
       this.element.querySelector('[data-test-pagination="b"] [data-test-user-name]')?.textContent.trim(),
-      'Mia SinekCount: 8'
+      'Mia SinekCount: 4'
     );
 
     await this.h.click('[data-test-paginate="a"] [data-test-load-page="4"]');
@@ -1100,14 +1115,15 @@ export const PaginateSpec: SuiteBuilder<LocalTestContext, PaginateSpecSignature>
     assert.equal(Array.from(paginationCache.pages).length, 6, 'Whole graph still holds all 6 pages');
     assert.deepEqual(activePageA?.pageNumber, 4, 'Page number');
     assert.deepEqual(paginationLinksA.links.length, 6, '6 links');
-    assert.equal(counter, 10);
+    assert.equal(counterA, 6, 'A re-rendered for its own navigation');
+    assert.equal(counterB, 4, 'Component B did not re-render');
     assert.equal(
       this.element.querySelector('[data-test-pagination="a"] [data-test-user-name]')?.textContent.trim(),
-      'Benedikt DeickeCount: 10'
+      'Benedikt DeickeCount: 6'
     );
     assert.equal(
       this.element.querySelector('[data-test-pagination="b"] [data-test-user-name]')?.textContent.trim(),
-      'Mia SinekCount: 8',
+      'Mia SinekCount: 4',
       'Component B did not re-render'
     );
 
@@ -1118,15 +1134,16 @@ export const PaginateSpec: SuiteBuilder<LocalTestContext, PaginateSpecSignature>
     assert.deepEqual(activePageB?.data, [users[2]], 'Page data');
     assert.deepEqual(activePageB?.pageNumber, 3, 'Page number');
     assert.deepEqual(paginationLinksA.links.length, 6, '6 links');
-    assert.equal(counter, 12);
+    assert.equal(counterA, 6, 'Component A did not re-render');
+    assert.equal(counterB, 6, 'B re-rendered for its own navigation');
     assert.equal(
       this.element.querySelector('[data-test-pagination="a"] [data-test-user-name]')?.textContent.trim(),
-      'Benedikt DeickeCount: 10',
+      'Benedikt DeickeCount: 6',
       'Component A did not re-render'
     );
     assert.equal(
       this.element.querySelector('[data-test-pagination="b"] [data-test-user-name]')?.textContent.trim(),
-      'Mehul ChaudhariCount: 12'
+      'Mehul ChaudhariCount: 6'
     );
   })
 

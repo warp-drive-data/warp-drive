@@ -107,13 +107,13 @@ PaginateSpec.use(useEmber(), function (b) {
     })
 
     .test('multiple paginate components have individual rendering states while sharing cached pages', function (props) {
-      const { requestA, requestB, store, countFor } = props;
+      const { requestA, requestB, store, countForA, countForB } = props;
 
       return <template>
         <div data-test-paginate="a">
           <Paginate @request={{requestA}} @store={{store}}>
             <:loading>
-              <span data-test-pending>Pending<br />Count: {{countFor requestA}}</span>
+              <span data-test-pending>Pending<br />Count: {{countForA requestA}}</span>
             </:loading>
             <:content as |pages features|>
               <Request @request={{pages.activePageRequest}} @store={{store}}>
@@ -121,11 +121,11 @@ PaginateSpec.use(useEmber(), function (b) {
                 <:content as |content|>
                   <div data-test-pagination="a">
                     {{#each content.data as |user|}}
-                      <span data-test-user-name>{{user.attributes.name}}<br />Count: {{countFor user}}</span>
+                      <span data-test-user-name>{{user.attributes.name}}<br />Count: {{countForA user}}</span>
                     {{/each}}
                   </div>
                 </:content>
-                <:loading><span data-test-loading-page>Pending<br />Count: {{countFor requestA}}</span></:loading>
+                <:loading><span data-test-loading-page>Pending<br />Count: {{countForA requestA}}</span></:loading>
               </Request>
 
               <EachLink @pages={{pages}} as |state|>
@@ -142,14 +142,14 @@ PaginateSpec.use(useEmber(), function (b) {
                 {{/each}}
               </EachLink>
             </:content>
-            <:error as |error|>{{error.message}}<br />Count: {{countFor error}}</:error>
+            <:error as |error|>{{error.message}}<br />Count: {{countForA error}}</:error>
           </Paginate>
         </div>
 
         <div data-test-paginate="b">
           <Paginate @request={{requestB}} @store={{store}}>
             <:loading>
-              <span data-test-pending>Pending<br />Count: {{countFor requestB}}</span>
+              <span data-test-pending>Pending<br />Count: {{countForB requestB}}</span>
             </:loading>
             <:content as |pages features|>
               <Request @request={{pages.activePageRequest}} @store={{store}}>
@@ -157,11 +157,11 @@ PaginateSpec.use(useEmber(), function (b) {
                 <:content as |content|>
                   <div data-test-pagination="b">
                     {{#each content.data as |user|}}
-                      <span data-test-user-name>{{user.attributes.name}}<br />Count: {{countFor user}}</span>
+                      <span data-test-user-name>{{user.attributes.name}}<br />Count: {{countForB user}}</span>
                     {{/each}}
                   </div>
                 </:content>
-                <:loading><span data-test-loading-page>Pending<br />Count: {{countFor requestB}}</span></:loading>
+                <:loading><span data-test-loading-page>Pending<br />Count: {{countForB requestB}}</span></:loading>
               </Request>
 
               <EachLink @pages={{pages}} as |state|>
@@ -178,7 +178,7 @@ PaginateSpec.use(useEmber(), function (b) {
                 {{/each}}
               </EachLink>
             </:content>
-            <:error as |error|>{{error.message}}<br />Count: {{countFor error}}</:error>
+            <:error as |error|>{{error.message}}<br />Count: {{countForB error}}</:error>
           </Paginate>
         </div>
       </template>;
