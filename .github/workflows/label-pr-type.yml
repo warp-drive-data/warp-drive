@@ -1,0 +1,77 @@
+# Applies a `:label: <type>` changelog label automatically when a newly-opened PR's title
+# spells its type out in a recognizable convention -- `<type>: title`, `<type> | title`, or
+# `[type] title` -- and no changelog label has been applied yet. This exists because only
+# maintainers can apply labels, which otherwise leaves every non-maintainer PR waiting on one
+# to hand-label it before enforce-pr-labels-*.yml's `enforce-changelog-label` job can pass.
+#
+# Runs as `pull_request_target`, not `pull_request`, so the write below also works for PRs
+# opened from forks -- the default GITHUB_TOKEN is read-only for `pull_request` when the PR
+# comes from a fork, regardless of the `permissions:` block here. This is still safe against
+# untrusted input because the job never checks out or executes the PR's code -- it only reads
+# `github.event.pull_request.title` from the trusted event payload and calls the Labels API.
+name: label PR type from title
+
+on:
+  pull_request_target:
+    types: [opened]
+
+concurrency:
+  group: label-pr-type-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+permissions:
+  pull-requests: write
+
+jobs:
+  label-type:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Detect type from title and label if none is set yet
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        with:
+          script: |
+            // Keep in sync with the `:label: *` changelog labels in the root package.json
+            // `changelog.labels` config and the REQUIRED_LABELS_ANY lists in
+            // enforce-pr-labels-*.yml -- this only maps the shorthand a title might use onto
+            // those exact label names, it doesn't invent new ones.
+            const TYPE_TO_LABEL = {
+              breaking: ':label: breaking',
+              feat: ':label: feat',
+              feature: ':label: feat',
+              bug: ':label: bug',
+              fix: ':label: bug',
+              bugfix: ':label: bug',
+              perf: ':label: perf',
+              performance: ':label: perf',
+              cleanup: ':label: cleanup',
+              deprecation: ':label: deprecation',
+              deprecate: ':label: deprecation',
+              doc: ':label: doc',
+              docs: ':label: doc',
+              test: ':label: test',
+              tests: ':label: test',
+              chore: ':label: chore',
+              rfc: ':label: rfc',
+              rfcs: ':label: rfc',
+              dependencies: ':label: dependencies',
+              deps: ':label: dependencies',
+            };
+
+            const pr = context.payload.pull_request;
+            const alreadyLabeled = pr.labels.some((label) =>
+              Object.values(TYPE_TO_LABEL).includes(label.name),
+            );
+            if (alreadyLabeled) return;
+
+            const match =
+              pr.title.match(/^\s*\[([a-zA-Z]+)\]/) ||
+              pr.title.match(/^\s*([a-zA-Z]+)\s*[:|]/);
+            const label = match && TYPE_TO_LABEL[match[1].toLowerCase()];
+            if (!label) return;
+
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: pr.number,
+              labels: [label],
+            });

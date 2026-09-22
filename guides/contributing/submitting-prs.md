@@ -42,9 +42,20 @@ PRs should be meaningfully titled to give context into the change for the change
 
 ### Pull Request Labeling
 
-All PRs should be labeled. PR labeling for changelog and backporting is enforced in CI,
-but labels may only be applied by project maintainers. PRs from non-maintainers will be
-labeled by maintainers prior to a PR being accepted and merged.
+All PRs should be labeled. PR labeling for changelog and backporting is enforced in CI, but
+labels may only be applied by project maintainers -- with one exception: if your PR title
+follows one of the conventions below, a bot applies the matching changelog label for you when
+the PR is opened, so most contributors never need to wait on a maintainer for that part.
+
+- `<type>: title`, e.g. `feat: add support for widgets`
+- `<type> | title`, e.g. `feat | add support for widgets`
+- `[type] title`, e.g. `[feat] add support for widgets`
+
+`<type>` must match one of the changelog labels below (or a close variant, such as `fix` for
+`:label: bug` or `docs` for `:label: doc`) and the bot only acts if the PR has no changelog
+label yet, so it never overrides a label a maintainer already applied. For anything else --
+backporting labels, or a changelog label your title doesn't spell out -- a maintainer will
+label the PR for you prior to it being accepted and merged.
 
 #### Changelog Labels
 
@@ -68,9 +79,10 @@ These labels are prefixed with `changelog:` and currently the options are:
 
 We use one set of labels to indicate that a PR needs to be backported and where it needs to be backported to, and a second set of labels to indicate that a PR **is** the backport PR.
 
-To indicate that a PR should be backported, the following labels, all prefixed with `target:` are available:
+A PR targeting `main` with none of the labels below is presumed to need no backporting -- there
+is no label to apply for that case. Add a target label, all prefixed with `target:`, only when
+the PR _does_ need to be backported:
 
-- `:dart: canary` indicates that a PR will not require backporting.
 - `:dart: beta` indicates the PR requires being backported to the current beta release.
 - `:dart: release` indicates the PR requires being backported to the current active release.
 - `:dart: lts` indicates that a PR requires being backported to the most current LTS release.
