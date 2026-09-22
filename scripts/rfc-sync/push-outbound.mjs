@@ -77,14 +77,24 @@ function commitAndPush(branch, message, author) {
 
 /** Opens (or reopens a branch for) a follow-up PR into warp-drive-data/warp-drive that records
  * the sync bot's own bookkeeping (emberjs-rfc/emberjs-pr/emberjs-branch/sync-hash) -- this never
- * pushes straight to `main`, so a human still reviews what the bot recorded. */
+ * pushes straight to `main`, so a human still reviews what the bot recorded.
+ *
+ * The PR is opened with the bot's own EMBERJS_RFCS_SYNC_TOKEN, not the workflow's default
+ * GITHUB_TOKEN. Opening a PR against a public repo (unlike pushing to one, or merging one)
+ * doesn't require collaborator access on GitHub -- any authenticated account can do it, which is
+ * also why the bot can open PRs against emberjs/rfcs despite not being a collaborator there
+ * either. Using its own token here means this workflow never needs "Allow GitHub Actions to
+ * create and approve pull requests" turned on repo-wide -- a much bigger grant (every workflow's
+ * default token, not just this script's own credential) than this one feature should require. */
 function openWarpDriveFollowupPr(file, branchSuffix, title, body) {
   const branch = `rfc-sync/${branchSuffix}`;
   sh('git', ['checkout', '-b', branch]);
   sh('git', ['add', file]);
   sh('git', ['-c', `user.name=${GIT_NAME}`, '-c', `user.email=${GIT_EMAIL}`, 'commit', '-m', title]);
   sh('git', ['push', '--quiet', '-u', 'origin', branch]);
-  sh('gh', ['pr', 'create', '--title', title, '--body', body, '--label', ':label: rfc', '--head', branch]);
+  sh('gh', ['pr', 'create', '--title', title, '--body', body, '--label', ':label: rfc', '--head', branch], {
+    env: { ...process.env, GH_TOKEN: TOKEN },
+  });
   sh('git', ['checkout', '-']);
 }
 

@@ -108,18 +108,24 @@ for (const file of listTrackedRfcs()) {
     `rfcs: pull in emberjs/rfcs#${emberjsRfc} changes from ${commitAuthor.name}`,
   ]);
   sh('git', ['push', '--quiet', '-u', 'origin', branch]);
-  sh('gh', [
-    'pr',
-    'create',
-    '--title',
-    `rfcs: sync RFC ${warpDriveRfc} from emberjs/rfcs#${emberjsRfc}`,
-    '--body',
-    `Pulled in from https://github.com/${FORK}/tree/${emberjsBranch} (emberjs/rfcs#${emberjsRfc}), authored by ${commitAuthor.name}.`,
-    '--label',
-    ':label: rfc',
-    '--head',
-    branch,
-  ]);
+  // Opened with the bot's own token, not the workflow's default GITHUB_TOKEN -- see the comment
+  // on openWarpDriveFollowupPr in push-outbound.mjs for why.
+  sh(
+    'gh',
+    [
+      'pr',
+      'create',
+      '--title',
+      `rfcs: sync RFC ${warpDriveRfc} from emberjs/rfcs#${emberjsRfc}`,
+      '--body',
+      `Pulled in from https://github.com/${FORK}/tree/${emberjsBranch} (emberjs/rfcs#${emberjsRfc}), authored by ${commitAuthor.name}.`,
+      '--label',
+      ':label: rfc',
+      '--head',
+      branch,
+    ],
+    { env: { ...process.env, GH_TOKEN: TOKEN } }
+  );
   sh('git', ['checkout', '-']);
   openedAny = true;
 }
