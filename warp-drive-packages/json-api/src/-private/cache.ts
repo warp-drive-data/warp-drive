@@ -2162,14 +2162,20 @@ function attrValuesEqual(
 ): boolean {
   if (a === b) return true;
   if (field.kind === 'schema-object') return schemaObjectsEqual(schema, field, a, b);
-  if (field.kind === 'schema-array') {
-    if (!Array.isArray(a) || !Array.isArray(b) || a.length !== b.length) return false;
-    for (let i = 0; i < a.length; i++) {
-      if (!schemaObjectsEqual(schema, field, a[i], b[i])) return false;
-    }
-    return true;
-  }
+  if (field.kind === 'schema-array') return schemaArraysEqual(schema, field, a, b);
   return false;
+}
+
+/**
+ * A schema-array has no hash of its own: two arrays are the same when they have the same length
+ * and every element compares equal as a schema-object of the element type.
+ */
+function schemaArraysEqual(schema: SchemaService, field: SchemaArrayField, a: unknown, b: unknown): boolean {
+  if (!Array.isArray(a) || !Array.isArray(b) || a.length !== b.length) return false;
+  for (let i = 0; i < a.length; i++) {
+    if (!schemaObjectsEqual(schema, field, a[i], b[i])) return false;
+  }
+  return true;
 }
 
 function schemaObjectsEqual(
