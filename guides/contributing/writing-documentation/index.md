@@ -33,7 +33,8 @@ New public API:
 
 - TSDoc with `@since` and a usage example.
 - A guide showing usage, if it is a concept users need to learn.
-- A mention in the package README and `src/index.md`, if it changes the package's headline story.
+- A mention in the package README and `src/index.md`, only if it changes the package's headline
+  story.
 
 Breaking change or deprecation:
 
