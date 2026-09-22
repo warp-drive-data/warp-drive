@@ -213,7 +213,11 @@ type Layered = Partial<Record<AttrLayer | MergeLayer, AttrHash | null>>;
 /** What the immutable record reads. */
 const RESOLUTION_ORDER_REMOTE_STATE = ['remoteAttrs', 'defaultAttrs'] as const;
 
-/** What a local edit is measured against: the value local state would read if the edit were not there. */
+/**
+ * What a new local edit replaces: the in-flight value if a save is carrying one, else the
+ * persisted value. This is local state beneath `localAttrs`, less `defaultAttrs`: an edit equal to
+ * a schema default is still an edit, since nothing persisted holds that value.
+ */
 const RESOLUTION_ORDER_EDIT_BASELINE = ['inflightAttrs', 'remoteAttrs'] as const;
 
 /** What an editable copy reads. */
