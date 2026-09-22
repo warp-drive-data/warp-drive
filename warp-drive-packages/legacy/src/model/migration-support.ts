@@ -241,6 +241,8 @@ function legacySupport(record: MinimalLegacyRecord, options: ObjectValue | null,
       return record.currentState.dirtyType;
     case 'errors':
       // FIXME should be deprecated too?
+      // @ts-expect-error
+      // oxlint-disable-next-line typescript/no-unsafe-call
       return (state.errors = state.errors || Errors.create({ __record: record }));
     case 'hasDirtyAttributes':
       return record.currentState.isDirty;

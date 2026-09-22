@@ -938,7 +938,7 @@ class Model extends EmberObject implements MinimalLegacyRecord {
   */
   @computeOnce
   get errors(): Errors {
-    const errors = Errors.create({ __record: this });
+    const errors = (Errors as unknown as { create(obj: object): Errors }).create({ __record: this });
     this.currentState.updateInvalidErrors(errors);
     return errors;
   }

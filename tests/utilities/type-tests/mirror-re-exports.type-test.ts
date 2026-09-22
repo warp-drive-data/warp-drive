@@ -195,8 +195,6 @@ function assertValues(..._values: unknown[]): void {}
 
 // @ember-data/model/-private
 assertValues(Errors, LEGACY_SUPPORT, lookupLegacySupport, PromiseBelongsTo, PromiseManyArray);
-// the classic factory must survive the ArrayProxy cast in errors.ts
-export const createdErrors: Errors = Errors.create();
 export type ModelPrivateTypes = [
   ManyArray,
   MaybeBelongsToFields<TypedRecordInstance>,
