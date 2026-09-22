@@ -254,3 +254,4 @@ import { hasMany } from '@warp-drive/schema/legacy';
 export class TrailRunner {
   @hasMany(TrailRunner) friends;
 }
+```
