@@ -113,4 +113,22 @@ module<CustomContext>('Integration | <JSONAPICache>.changedAttrs around an in-fl
     assert.false(store.cache.hasChangedAttrs(lid), 'nothing differs from remote once the failed save is unwound');
     assert.equal(store.cache.changedAttrs(lid).firstName, undefined, 'changedAttrs has no entry for the field');
   });
+
+  test<CustomContext>('a rejected save does not overwrite a mid-flight edit to undefined', async function (assert) {
+    const { store } = this;
+    const { lid, editable } = await editThenStartSave(store);
+
+    // `undefined` is a real edit for `getAttr`, and must be one for the rejection path too
+    (editable as unknown as Record<string, unknown>).firstName = undefined;
+    store.cache.commitWasRejected(lid, []);
+
+    assert.equal(
+      store.cache.getAttr(lid, 'firstName'),
+      undefined,
+      'the rejection does not resurrect the failed in-flight value over the newer edit'
+    );
+    const [before, after] = store.cache.changedAttrs(lid).firstName;
+    assert.equal(before, 'Chris', 'before is the persisted value');
+    assert.equal(after, undefined, 'after is the edit');
+  });
 });

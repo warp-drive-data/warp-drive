@@ -319,6 +319,7 @@ module<CustomContext>('Integration | <JSONAPICache>.didCommit notifications', fu
     assert.deepEqual(localAll, ['firstName', 'firstName'], 'local heard the edit and then the save');
   });
 
+  // the nested-field counterpart, which needs structural equality to hold, is in structural-equality-test.ts
   test<CustomContext>('a remote push that confirms an uncommitted local edit notifies the remote channel only', async function (assert) {
     const { store } = this;
     const user = pushUser(store);
@@ -452,29 +453,5 @@ module<CustomContext>('Integration | <JSONAPICache>.didCommit notifications', fu
     assert.deepEqual(remote, ['firstName', 'firstName'], 'remote heard the commit resolve Chris3 into Christopher');
     assert.deepEqual(localAll, ['firstName'], 'the only local notification came from the initial edit');
     assert.equal(user.firstName, 'Christopher', 'the immutable record reads the committed value');
-  });
-
-  test<CustomContext>('a rejected save does not overwrite a local edit to undefined made while in flight', async function (assert) {
-    const { store } = this;
-    const user = pushUser(store);
-    const lid = recordIdentifierFor(user);
-
-    const editable = await checkout<ExistingUser>(user);
-    editable.firstName = 'Christopher';
-    flush(store);
-
-    store.cache.willCommit(lid, null);
-    // lands after willCommit moved localAttrs into inflightAttrs
-    (editable as unknown as Record<string, unknown>).firstName = undefined;
-    flush(store);
-
-    store.cache.commitWasRejected(lid, []);
-    flush(store);
-
-    assert.equal(
-      store.cache.getAttr(lid, 'firstName'),
-      undefined,
-      'the rejection does not resurrect the stale in-flight value over the newer local edit'
-    );
   });
 });

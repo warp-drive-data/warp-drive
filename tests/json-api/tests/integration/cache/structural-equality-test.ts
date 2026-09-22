@@ -190,6 +190,7 @@ module<CustomContext>('Integration | <JSONAPICache> structural equality of attri
     assert.true(remote.includes('settings'), `remote heard the non-plain-object fallback (saw ${remote.join()})`);
   });
 
+  // the scalar counterpart, which holds by reference equality alone, is in did-commit-notification-test.ts
   test<CustomContext>('a nested local edit confirmed by an equal-content push is dropped', async function (assert) {
     const { store } = this;
     const user = pushUser(store, [{ id: 'm1', state: 'pending' }]);
