@@ -201,11 +201,11 @@ interface CachedResource {
 type AttrLayer = 'localAttrs' | 'inflightAttrs' | 'remoteAttrs' | 'defaultAttrs';
 
 /**
- * A layer that exists only while modelling a merge: the incoming payload's
- * attributes, which {@link partitionChangedKeys} reads as if they were already
- * on the resource.
+ * A layer that exists only while modelling a merge: the attributes arriving from the
+ * server in a save response or a push, which {@link partitionChangedKeys} reads as if
+ * they were already on the resource. Never part of a reader's resolution order.
  */
-type MergeLayer = 'updates';
+type MergeLayer = 'incomingAttrs';
 
 /** Anything a projection can be read through: a {@link CachedResource}, or a merge model built around one. */
 type Layered = Partial<Record<AttrLayer | MergeLayer, AttrHash | null>>;
@@ -224,11 +224,11 @@ const RESOLUTION_ORDER_LOCAL_STATE = ['localAttrs', ...RESOLUTION_ORDER_EDIT_BAS
 // value is a move.
 const RESOLUTION_ORDER_REMOTE_BEFORE_MERGE = ['remoteAttrs'] as const;
 const RESOLUTION_ORDER_LOCAL_BEFORE_MERGE = ['localAttrs', ...RESOLUTION_ORDER_EDIT_BASELINE] as const;
-// a commit folds in-flight values into remote: Object.assign(remoteAttrs, inflightAttrs, updates)
-const RESOLUTION_ORDER_REMOTE_AFTER_COMMIT = ['updates', 'inflightAttrs', 'remoteAttrs'] as const;
+// a commit folds in-flight values into remote: Object.assign(remoteAttrs, inflightAttrs, incomingAttrs)
+const RESOLUTION_ORDER_REMOTE_AFTER_COMMIT = ['incomingAttrs', 'inflightAttrs', 'remoteAttrs'] as const;
 const RESOLUTION_ORDER_LOCAL_AFTER_COMMIT = ['localAttrs', ...RESOLUTION_ORDER_REMOTE_AFTER_COMMIT] as const;
-// an upsert leaves in-flight values where they are: Object.assign(remoteAttrs, updates)
-const RESOLUTION_ORDER_REMOTE_AFTER_UPSERT = ['updates', 'remoteAttrs'] as const;
+// an upsert leaves in-flight values where they are: Object.assign(remoteAttrs, incomingAttrs)
+const RESOLUTION_ORDER_REMOTE_AFTER_UPSERT = ['incomingAttrs', 'remoteAttrs'] as const;
 const RESOLUTION_ORDER_LOCAL_AFTER_UPSERT = [
   'localAttrs',
   'inflightAttrs',
@@ -2169,20 +2169,20 @@ const NO_PROJECTION_CHANGES: ProjectionChanges = Object.freeze({
 });
 
 /**
- * Every key a merge could move: the payload's keys plus any merged in-flight key the payload did not
+ * Every key a merge could move: the incoming keys plus any merged in-flight key the server did not
  * mention. `null` when there is nothing to examine.
  */
-function candidateKeys(updates: AttrHash | null, merged: AttrHash | null): string[] | null {
-  const updateKeys = updates ? Object.keys(updates) : null;
+function candidateKeys(incomingAttrs: AttrHash | null, merged: AttrHash | null): string[] | null {
+  const incomingKeys = incomingAttrs ? Object.keys(incomingAttrs) : null;
   const mergedKeys = merged ? Object.keys(merged) : null;
 
-  if (!mergedKeys?.length) return updateKeys?.length ? updateKeys : null;
-  if (!updates || !updateKeys?.length) return mergedKeys;
+  if (!mergedKeys?.length) return incomingKeys?.length ? incomingKeys : null;
+  if (!incomingAttrs || !incomingKeys?.length) return mergedKeys;
 
   for (let i = 0; i < mergedKeys.length; i++) {
-    if (!(mergedKeys[i] in updates)) updateKeys.push(mergedKeys[i]);
+    if (!(mergedKeys[i] in incomingAttrs)) incomingKeys.push(mergedKeys[i]);
   }
-  return updateKeys;
+  return incomingKeys;
 }
 
 /**
@@ -2192,19 +2192,19 @@ function candidateKeys(updates: AttrHash | null, merged: AttrHash | null): strin
  */
 function partitionChangedKeys(
   cached: CachedResource,
-  updates: AttrHash | null,
+  incomingAttrs: AttrHash | null,
   fields: ReturnType<Store['schema']['fields']>,
   kind: MergeKind
 ): ProjectionChanges {
   const { remoteAfter: remoteAfterOrder, localAfter: localAfterOrder } = MERGE_RESOLUTION[kind];
-  const keys = candidateKeys(updates, kind === 'commit' ? cached.inflightAttrs : null);
+  const keys = candidateKeys(incomingAttrs, kind === 'commit' ? cached.inflightAttrs : null);
   if (keys === null) return NO_PROJECTION_CHANGES;
 
   const merge: Layered = {
     localAttrs: cached.localAttrs,
     inflightAttrs: cached.inflightAttrs,
     remoteAttrs: cached.remoteAttrs,
-    updates,
+    incomingAttrs,
   };
 
   let localOnly: Set<string> | undefined;
