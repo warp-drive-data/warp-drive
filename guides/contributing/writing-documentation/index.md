@@ -17,7 +17,7 @@ title: Overview
 - **Agent skills** (`warp-drive-packages/memory-alpha/skills/`): plain markdown routed by an
   index, published at [/skills](/skills/). See the
   [memory-alpha README](https://github.com/warp-drive-data/warp-drive/blob/main/warp-drive-packages/memory-alpha/README.md).
-- **Package READMEs**: shown on GitHub and npm only. There is no guide for these yet.
+- **Package READMEs**: shown on GitHub and npm only.
 
 ## Which Surface Do I Need?
 
