@@ -3,6 +3,9 @@ import { recordIdentifierFor, useRecommendedStore } from '@warp-drive/core';
 import { checkout, commit, withDefaults } from '@warp-drive/core/reactive';
 import { withReactiveResponse } from '@warp-drive/core/request';
 import type { ResourceKey } from '@warp-drive/core/types/identifier';
+import type { StructuredDataDocument } from '@warp-drive/core/types/request';
+import type { SingleResourceDataDocument } from '@warp-drive/core/types/spec/document';
+import type { ExistingResourceObject } from '@warp-drive/core/types/spec/json-api-raw';
 import type { Type } from '@warp-drive/core/types/symbols';
 import { module, test } from '@warp-drive/diagnostic';
 import type { TestContext } from '@warp-drive/diagnostic/-types';
@@ -53,6 +56,19 @@ function watch(store: Store, record: unknown, channel: 'local' | 'remote'): stri
     channel
   );
   return keys;
+}
+
+/**
+ * A save response to hand straight to `cache.didCommit`. The `Cache` interface types the result's
+ * `content.data` as a `PersistedResourceKey`, but `JSONAPICache.didCommit` reads it as the raw
+ * resource object, which is what this builds; the cast bridges that gap in one place.
+ */
+function saveResponse(data: ExistingResourceObject): StructuredDataDocument<SingleResourceDataDocument> {
+  return {
+    request: {},
+    response: null,
+    content: { data },
+  } as unknown as StructuredDataDocument<SingleResourceDataDocument>;
 }
 
 function pushUser(store: Store, messages: Message[] = []): ExistingUser {
@@ -400,12 +416,7 @@ module<CustomContext>('Integration | <JSONAPICache>.didCommit notifications', fu
     flush(store);
 
     const localAfterEdit = watch(store, user, 'local');
-    // @ts-expect-error TODO: fix this type error
-    store.cache.didCommit(lid, {
-      request: {},
-      response: new Response(),
-      content: { data: { type: 'user', id: '1', attributes: { firstName: 'Chris2' } } },
-    });
+    store.cache.didCommit(lid, saveResponse({ type: 'user', id: '1', attributes: { firstName: 'Chris2' } }));
     flush(store);
 
     assert.deepEqual(remote, ['firstName'], 'remote heard the save land on the value the in-flight edit predicted');
@@ -442,12 +453,7 @@ module<CustomContext>('Integration | <JSONAPICache>.didCommit notifications', fu
     assert.deepEqual(localAfterWillCommit, [], 'the push did not wake the local channel');
     assert.equal(editable.firstName, 'Christopher', 'local still reads the in-flight value, not the push');
 
-    // @ts-expect-error TODO: fix this type error
-    store.cache.didCommit(lid, {
-      request: {},
-      response: new Response(),
-      content: { data: { type: 'user', id: '1', attributes: { firstName: 'Christopher' } } },
-    });
+    store.cache.didCommit(lid, saveResponse({ type: 'user', id: '1', attributes: { firstName: 'Christopher' } }));
     flush(store);
 
     assert.deepEqual(remote, ['firstName', 'firstName'], 'remote heard the commit resolve Chris3 into Christopher');
