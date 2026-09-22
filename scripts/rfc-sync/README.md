@@ -55,9 +55,23 @@ for how this looks from a contributor's side, and
      identity (same pattern as `GH_DEPLOY_NAME`/`GH_DEPLOY_EMAIL` in `release.yml`); use the bot
      account's GitHub-provided `@users.noreply.github.com` address for the email so a real inbox
      never appears in public commit history
-
 Until these are set, both workflows detect the missing configuration, log it, and exit
 successfully (no CI failures, no partial syncing).
+
+**Note on PR creation and `GITHUB_TOKEN`**: the first real run discovered that opening the
+follow-up bookkeeping PR into `warp-drive-data/warp-drive` failed with `GitHub Actions is not
+permitted to create or approve pull requests` (see the recovery in
+[#11166](https://github.com/warp-drive-data/warp-drive/pull/11166)) -- a repo setting
+(Settings → Actions → General → Workflow permissions → "Allow GitHub Actions to create and
+approve pull requests") that gates the default `GITHUB_TOKEN` specifically, separate from the
+`contents: write` permission that already let the branch push through fine. Rather than turning
+that setting on repo-wide -- a much bigger grant than this one bot needs, since it would apply to
+every workflow's default token, not just this one -- both `push-outbound.mjs` and
+`pull-inbound.mjs` open every PR (against `emberjs/rfcs` and against this repo alike) using the
+bot's own `EMBERJS_RFCS_SYNC_TOKEN`. Opening a PR against a public repo doesn't require
+collaborator access on GitHub (only pushing new commits to it or merging it does), so the bot's
+token works for this repo exactly the way it already does for `emberjs/rfcs`, and neither
+workflow declares `pull-requests: write` or needs that repo setting at all.
 
 ## Adopting an RFC that predates the bot
 
