@@ -2,24 +2,18 @@
 title: Documenting APIs
 ---
 
-# Writing Documentation
+# Writing API Documentation
 
-There are two sources of documentation in this repository:
-
-- [Guides](../../index.md) - markdown files that are compiled into the manual for the website
-- inline code comments and types - from which the API Docs are compiled
-
-Both are previewable by following the instructions in the [Docs Viewer](https://github.com/warp-drive-data/warp-drive/blob/main/docs-viewer/README.md)
-
-Great documentation requires both guides and docs. We encourage updating any associated guides affected by code changes as you make them, and writing new guides when appropriate.
-
+Our [API Docs](/api/) are compiled from TSDoc comments in the source code and from each
+package's `src/index.md`. For where API docs fit alongside guides and other documentation, see the
+[Writing Documentation overview](./index.md).
 
 ## API Documentation Infra Overview
 
 API Documentation is generated from [TSDoc](https://tsdoc.org/) comments in the source code
 compiled with [TypeDoc](https://typedoc.org/) and transformed for [Vitepress](https://vitepress.dev/) using [typedoc-plugin-markdown](https://www.typedoc-plugin-markdown.org/plugins/vitepress)
 
-TSDoc syntax is similar to YUIDoc and JSDoc but there are occasional nuances where it becomes best to know the underlying grammar is TSDoc
+TSDoc syntax is similar to YUIDoc and JSDoc but there are occasional nuances where it becomes best to know that the underlying grammar is TSDoc
 and parser is TypeDoc.
 
 TypeDoc is configured to follow our public package entrypoints to
@@ -27,8 +21,11 @@ auto-discover documentation. It documents everything reachable, public or privat
 code docs. It uses typescript to understand the source-code and builds documentation from the combination of Type signatures and TSDoc comments.
 
 This is great, but it means that its very easy to leak private APIs
-into the docs. Use `/** @internal */` on things that should not be
-put into the public docs.
+into the docs.
+
+::: warning Avoid leaking private APIs into the public docs
+Use `/** @internal */` on anything that should not appear in the public docs.
+:::
 
 While API Documentation lives with the source-code, the code itself plays no part in the documentation
 that is generated: everything is compiled from comments alone.
@@ -102,7 +99,7 @@ type Foo = {
    * Documents the key
    */
   bar: string;
-}
+};
 
 /**
  * Documents the variable
@@ -128,7 +125,7 @@ for fellow developers that shouldn't be exposed to end consumers.
 /**
  * This is a private utility for updating the state
  * of a relationship.
- * 
+ *
  * @internal
  */
 function somethingInside() {}
@@ -154,42 +151,42 @@ and can utilize code-highlighting via language prefix on a code block comment.
 
 For instance
 
-```ts
+````ts
 /**
  * ## Overview
- * 
+ *
  * Some details
- * 
+ *
  * ### An Example
- * 
+ *
  * ```ts
  * new Store();
  * ```
- * 
+ *
  * @public
  */
-```
+````
 
 Additionally, the markdown parser in use by our docs understands documentation groups,
 and [many other features](https://vitepress.dev/guide/markdown).
 
 This means we can do code examples that toggle between files or formats.
 
-```ts
+````ts
 /**
  * ::: code-group
- * 
+ *
  * ```ts [example.ts]
  * export function numberFromStrong(str: string): number {}
  * ```
- * 
+ *
  * ```js [example.js]
  * export function numberFromStrong(str) {}
  * ```
- * 
+ *
  * :::
  */
-```
+````
 
 Highlighting, focus management and code groups are three features that combine
 to enable crafting powerful examples in the documentation.
@@ -206,27 +203,27 @@ and some documentation may be unexpectedly truncated.
 
 **Good**
 
-```ts
+````ts
 /**
  * ## Overview
- * 
+ *
  * Some details
- * 
+ *
  * ### An Example
- * 
+ *
  * ```ts
  * class User extends Model {
  *   @attr name;
  * }
  * ```
- * 
+ *
  * @public
  */
-```
+````
 
 **Bad**
 
-```ts
+````ts
 /**
  ## Overview
  
@@ -242,7 +239,7 @@ and some documentation may be unexpectedly truncated.
  
  @public
 */
-```
+````
 
 ### Documenting Packages and Subpackages
 
@@ -255,7 +252,7 @@ we would do the following in `packages/core-types/src/index.ts`
 /**
  * This package provides essential types and symbols used
  * by all the other WarpDrive packages.
- * 
+ *
  * @module
  */
 ```
@@ -275,7 +272,7 @@ right next to that page's own name:
 /**
  * @since 1.13.0
  * @public
-*/
+ */
 ```
 
 On a package's `@module` doc comment, it shows up next to that
@@ -383,7 +380,7 @@ class RequestManager {
 useful when several different kinds of things (a property, a function,
 a class) together make up one logical feature and should be presented
 as a unit regardless of their TypeScript kind. The tradeoff:
-`@category` is all-or-nothing per page. The moment *any* symbol on a
+`@category` is all-or-nothing per page. The moment _any_ symbol on a
 page has a `@category`, every symbol without one falls into a generic
 `"Other"` bucket instead — there's no partial opt-in.
 
@@ -459,7 +456,7 @@ Each tag fills in two defaults, as long as the symbol doesn't already
 set its own:
 
 - `@group` — `"Field Decorators"` for `@decorator`, `"Class
-  Decorators"` for `@classDecorator` — so decorators get their own
+Decorators"` for `@classDecorator` — so decorators get their own
   section on the module's index page instead of a flat list mixed in
   with everything else. This is `@group` rather than `@category` on
   purpose (see [above](#organizing-a-page-with-group-and-category)):
@@ -499,9 +496,6 @@ export function Resource(target: AnyConstructor): void;
 class ReactiveResource {}
 ```
 
-Methods are documented with `@method` and attach to the most recent class the parser has
-seen.
-
 ### Don't document types in @param and @return
 
 Because types are parsed from the typescript, `@param` and `@return` should
@@ -510,7 +504,7 @@ be used to give a meaningful description only.
 ```ts
 /**
  * Adds two numbers
- * 
+ *
  * @param a - the first number to add
  * @param b - the second number to add
  * @return the sum of the two numbers
@@ -534,7 +528,7 @@ Even a minimal example dramatically shortens the time it takes for a
 consumer to understand how to use an API. Every doc comment for a
 `@public` export should include at least one.
 
-```ts
+````ts
 /**
  * Adds two numbers
  *
@@ -549,7 +543,7 @@ consumer to understand how to use an API. Every doc comment for a
  * @public
  */
 function add(a: number, b: number): number {}
-```
+````
 
 ### Link the First Mention of Other Public APIs
 
@@ -581,10 +575,8 @@ relevant to them.
  * - {@link RejectedRequest}
  * - {@link CancelledRequest}
  */
-export type RequestState<
-  RT = unknown,
-  E extends Error = Error,
-> = PendingRequest | ResolvedRequest<RT> | RejectedRequest<RT, E> | CancelledRequest<RT, E>;
+export type RequestState<RT = unknown, E extends Error = Error> =
+  PendingRequest | ResolvedRequest<RT> | RejectedRequest<RT, E> | CancelledRequest<RT, E>;
 ```
 
 ### Cross-Link Within a Class, Interface, or Object
@@ -797,9 +789,9 @@ of whatever the tag describes.
 
 `@legacy` is a repo-specific modifier tag for symbols that predate the
 current architecture but aren't (yet) `@deprecated` — it renders as a
-plain, unstyled `` **`Legacy`** `` flag before the summary, the same
+plain, unstyled ``**`Legacy`**`` flag before the summary, the same
 way any other modifier tag without special handling does (see
-`@discouraged`/`@recommended` above for tags that *do* get special
+`@discouraged`/`@recommended` above for tags that _do_ get special
 handling).
 
 Separate from that tag, every page under the `@warp-drive/legacy`
@@ -817,7 +809,7 @@ with `@alpha`/`@beta`/`@internal`/`@public`) is unrelated to the
 `@warp-drive/experiments` badge above — tagging a symbol
 `@experimental` elsewhere in the codebase does not add that badge, and
 currently renders as nothing more than an unstyled
-`` **`Experimental`** `` flag, same as `@legacy` above.
+``**`Experimental`**`` flag, same as `@legacy` above.
 
 <br>
 
@@ -845,8 +837,7 @@ have confirmed the docs preview server is running (and has not crashed)
 
 #### For `docs.warp-drive.io`
 
-From inside the `docs-viewer` directory
-
-- start sync for guides with `bun ./src/start-guides-sync.ts`
-- build/rebuild the API docs with `pnpm typedoc` (rerun as needed)
-- start the server with `pnpm dev`, visit the site url
+From inside the `docs-viewer` directory, run `pnpm start`. It builds the API docs, watches the
+package sources and content directories for changes, and serves the site with hot reload. See the
+[Docs Viewer README](https://github.com/warp-drive-data/warp-drive/blob/main/docs-viewer/README.md)
+for the static build and preview commands.

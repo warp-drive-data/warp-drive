@@ -10,9 +10,10 @@ index. Do not start at the top-level skills index — that one routes apps consu
 Before starting any task in this repo:
 
 1. Read [`warp-drive-packages/memory-alpha/skills/contributors/index.md`](./warp-drive-packages/memory-alpha/skills/contributors/index.md).
-   Its first row applies to every session whatever the task — read that skill before you touch
-   anything else.
-2. Find the single row that matches your task and read **only** that file.
+   The rows it marks as applying to every session come first — read those skills before you
+   touch anything else.
+2. Find the single row that matches your task and read **only** that file, in addition to the
+   every-session skills above.
 3. If your task is about *using* WarpDrive's public API rather than changing its internals — a
    test app, a docs example, a guide snippet — the consumer index at
    [`warp-drive-packages/memory-alpha/skills/index.md`](./warp-drive-packages/memory-alpha/skills/index.md)

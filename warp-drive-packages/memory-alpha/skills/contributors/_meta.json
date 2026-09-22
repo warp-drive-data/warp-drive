@@ -5,6 +5,7 @@
     "keep-commits-human-authored",
     "fix-at-the-source",
     "writing-and-implementing-rfcs",
+    "write-documentation",
     "use-ci-as-the-source-of-truth"
   ],
   "webIndex": "overview",
@@ -14,6 +15,7 @@
     "keep-commits-human-authored": { "title": "Keep Commits Human-Authored" },
     "fix-at-the-source": { "title": "Fix at the Source" },
     "writing-and-implementing-rfcs": { "title": "Writing and Implementing RFCs" },
+    "write-documentation": { "title": "Write Documentation" },
     "use-ci-as-the-source-of-truth": { "title": "Use CI as the Source of Truth" }
   }
 }

@@ -31,8 +31,9 @@ factually wrong, etc.), don't delete or move it. Instead:
 
 2. Set `draft: true` in its frontmatter. This hides the page from the sidebar and nav (so it
    doesn't clutter navigation for current readers) while leaving the page itself published at its
-   original URL &mdash; unlike the rest of the guides, content here is **not** removed by the
-   sync step just because it's marked `draft`.
+   original URL. `draft` behaves the same way for `guides/`; only the synced agent skills under
+   `warp-drive-packages/memory-alpha/skills/` have their `draft` pages removed from the site
+   entirely.
 
 ## Every page is dated and versioned
 

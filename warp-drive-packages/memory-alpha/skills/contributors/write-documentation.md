@@ -1,0 +1,71 @@
+# Write Documentation
+
+Use this skill whenever you're writing or changing documentation in this repo: a TSDoc comment,
+a guide, an `upgrading/` or `blog/` page, a package README or `src/index.md`, or one of these
+agent skills. The human contributor guides under
+[Writing Documentation](/guides/contributing/writing-documentation/index.md) are the source of
+truth for *what* good documentation looks like here; this skill is only about *how* to produce it
+with the person you're working with, and it links to those guides rather than restating them.
+
+## Steps
+
+1. Pick the surface first. A request like "document X" rarely means one file. Use
+   [Which Surface Do I Need?](/guides/contributing/writing-documentation/index.md#which-surface-do-i-need)
+   to decide whether X needs TSDoc, a guide, a permanent-URL page, a README, or several of those,
+   and confirm that split with the user before drafting anything.
+2. Read the guide for that surface before you write a word, and treat it as binding:
+
+   | Surface | Read |
+   | --- | --- |
+   | TSDoc comments, `src/index.md` package pages | [Documenting APIs](/guides/contributing/writing-documentation/writing-api-docs.md) |
+   | Pages under `guides/` | [Writing Guides](/guides/contributing/writing-documentation/writing-guides.md) |
+   | Pages under `upgrading/` or `blog/` | [Writing Permanent Content](/guides/contributing/writing-documentation/writing-permanent-content.md) |
+   | Files under `warp-drive-packages/memory-alpha/skills/` | the package [README](https://github.com/warp-drive-data/warp-drive/blob/main/warp-drive-packages/memory-alpha/README.md), plus the existing files in the same directory as a model |
+
+   Those pages own the rules on tags (`@since`, `@internal`, `@deprecated`, `@group`), link and
+   example requirements, audiences, nav metadata, and permanent-URL constraints. Don't paraphrase
+   them from memory; if a rule matters to your task, go read the sentence.
+3. Gather context before drafting. The person asking knows things the source can't tell you.
+   Ask, in a few short rounds rather than one wall of questions:
+   - Who is this for? Use the audience list in
+     [Writing Guides](/guides/contributing/writing-documentation/writing-guides.md) as the menu;
+     the default reader is someone who doesn't use WarpDrive yet.
+   - What should the reader be able to do after reading it that they couldn't before?
+   - Which version does it apply to? Both Documenting APIs and Writing Permanent Content require
+     one, in different forms.
+   - Is this the recommended way, a legacy way, or a deprecated way? That decides whether the
+     page or symbol needs `@recommended`/`@discouraged`/`@deprecated` and where it sits in nav.
+   - What already exists? Search `guides/`, `upgrading/`, and the relevant `src/` for the concept
+     before writing a competing explanation; extend or link the existing one instead.
+4. Draft one section at a time, not the whole thing at once. Agree on the headings first (for
+   TSDoc, on which symbols get a summary, an example, and links), scaffold them with placeholders,
+   then fill each section and stop for feedback before moving to the next. Make edits surgically
+   in place rather than reprinting the document. Ask the user to describe what to change instead
+   of editing the draft themselves, so their preferences carry into the sections you haven't
+   written yet.
+5. Reader-test before you call it done. Hand the finished text, and only the text, to a fresh
+   agent instance that has none of your conversation, along with three to five questions a real
+   reader would bring to it, and fix whatever it gets wrong or has to guess at. For API docs the
+   question is always some form of "how do I use this?"; if the answer requires opening the source,
+   the doc is missing an example or a link. For a guide, ask what prior knowledge it assumes and
+   whether that matches the audience you chose in step 3.
+6. Run the checks the guides define, then preview:
+   - For API docs, every item in
+     [Content Standards](/guides/contributing/writing-documentation/writing-api-docs.md#content-standards),
+     plus the `@internal` check from the same page's infra overview.
+   - Every other surface a change touches is updated too: see the
+     [Cross-Documentation Checklist](/guides/contributing/writing-documentation/index.md#cross-documentation-checklist).
+   - Run `pnpm lint:docs` from the repo root; it fails on any guide link whose target page or
+     `#anchor` doesn't exist. Then build the site from `docs-viewer/` (`pnpm start` for a live
+     dev server, `pnpm build` for what CI runs) and open the affected pages. Leaked private
+     symbols and markdown that VitePress can't compile (a bare `<angle-bracket>` in prose, for
+     one) show up here and nowhere earlier.
+
+## Why the link-don't-restate rule matters
+
+The rules move. The content standards section of Documenting APIs, the `@since` badge, the
+`@decorator` grouping, and the `@recommended`/`@discouraged` badges were all added to the guides
+in August 2026, and the guide-level nav moved from frontmatter to `_meta.json` before that. A copy
+of a rule inside a skill goes stale silently and then gets followed confidently. A link goes stale
+loudly, when the docs build fails, which is the failure mode we want. The same rule applies to the
+documentation you write: link the guide or symbol that owns a concept instead of re-explaining it.
