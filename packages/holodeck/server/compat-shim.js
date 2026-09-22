@@ -1,5 +1,6 @@
 import path from 'path';
 import { stripVTControlCharacters } from 'util';
+
 const HOST_LOG_MESSAGE = `Serving Holodeck HTTP Mocks from`;
 const WORKER_DONE_LOG_MESSAGE = `worker booted`;
 const HTTPS_EXTRACT_MATCH = /https:\/\/([^:]+):(\d+)/;
@@ -68,6 +69,9 @@ async function reprintErrors(server) {
 export async function launchProgram(config = {}) {
   const CURRENT_FILE = new URL(import.meta.url).pathname;
   const START_FILE = path.join(CURRENT_FILE, '../node-compat-start.js');
+  // this file is only ever imported from bun, where `Bun` is a global; the server
+  // directory is type-checked against @types/node, which does not declare it.
+  // @ts-expect-error
   const server = Bun.spawn(['node', START_FILE, JSON.stringify(config)], {
     env: Object.assign({}, process.env, { FORCE_COLOR: 1 }),
     cwd: process.cwd(),

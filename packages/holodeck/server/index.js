@@ -1,14 +1,16 @@
-/* global Bun */
-import path from 'path';
-const isBun = typeof Bun !== 'undefined';
+import path from 'node:path';
+import { pathToFileURL } from 'node:url';
+
+const isBun = 'Bun' in globalThis;
 let closeHandler = () => {};
 
 export default {
   async launchProgram(config = {}) {
     const projectRoot = process.cwd();
-    const name = await import(path.join(projectRoot, 'package.json'), { with: { type: 'json' } }).then(
-      (pkg) => pkg.name
-    );
+    const pkg = await import(pathToFileURL(path.join(projectRoot, 'package.json')).href, {
+      with: { type: 'json' },
+    });
+    const { name } = pkg.default ?? pkg;
     const options = { name, projectRoot, ...config };
 
     // the server only runs on node, so under bun we spawn it in a child process

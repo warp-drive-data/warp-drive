@@ -2,10 +2,10 @@ import { serve } from '@hono/node-server';
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { HTTPException } from 'hono/http-exception';
-import { logger } from 'hono/logger';
 import fs from 'node:fs';
 import { createSecureServer } from 'node:http2';
 import { Readable } from 'node:stream';
+import { pathToFileURL } from 'node:url';
 import { styleText } from 'node:util';
 import { Worker, threadId, parentPort } from 'node:worker_threads';
 import path from 'path';
@@ -25,7 +25,7 @@ async function replayRequest(context, cacheKey) {
   let metaJson;
   try {
     metaJson = JSON.parse(fs.readFileSync(`${cacheKey}.meta.json`, 'utf8'));
-  } catch (e) {
+  } catch {
     context.header('Content-Type', 'application/vnd.api+json');
     context.status(400);
     return context.body(
@@ -56,7 +56,7 @@ async function replayRequest(context, cacheKey) {
       metaJson.status !== 204 && metaJson.status < 500 ? Readable.toWeb(fs.createReadStream(bodyPath)) : '';
 
     const headers = new Headers(metaJson.headers || {});
-    const response = new Response(bodyInit, {
+    const response = new Response(/** @type {BodyInit} */ (bodyInit), {
       status: metaJson.status,
       statusText: metaJson.statusText,
       headers,
@@ -295,7 +295,6 @@ async function createServer(options) {
 async function _createServer(options) {
   const { CERT, KEY } = await getCertInfo();
   const app = new Hono();
-  // app.use(logger());
 
   app.use(
     cors({
@@ -369,7 +368,7 @@ async function _createServer(options) {
 
 export async function launchProgram(config = {}) {
   const projectRoot = process.cwd();
-  const pkg = await import(path.join(projectRoot, 'package.json'), { with: { type: 'json' } });
+  const pkg = await import(pathToFileURL(path.join(projectRoot, 'package.json')).href, { with: { type: 'json' } });
   const { name } = pkg.default ?? pkg;
   if (!name) {
     throw new Error(`Package name not found in package.json`);
@@ -377,14 +376,14 @@ export async function launchProgram(config = {}) {
   const options = { name, projectRoot, ...config };
   console.log(
     styleText(
-      'grey',
+      'gray',
       `\n\t@${styleText('greenBright', 'warp-drive')}/${styleText(
         'magentaBright',
         'holodeck'
       )} 🌅\n\t=================================\n`
     ) +
       styleText(
-        'grey',
+        'gray',
         `\n\tHolodeck Access Granted\n\t\tprogram: ${styleText('magenta', name)}\n\t\tsettings: ${styleText(
           'green',
           JSON.stringify(config).split('\n').join(' ')
@@ -394,14 +393,14 @@ export async function launchProgram(config = {}) {
         )}@${styleText('yellow', process.version)}\n`
       )
   );
-  console.log(styleText('grey', `\n\tStarting Holodeck Subroutines`));
+  console.log(styleText('gray', `\n\tStarting Holodeck Subroutines`));
 
   const project = await createServer(options);
 
   async function shutdown() {
-    console.log(styleText('grey', `\n\tEnding Holodeck Subroutines`));
+    console.log(styleText('gray', `\n\tEnding Holodeck Subroutines`));
     project.server.close();
-    console.log(styleText('grey', `\n\tHolodeck program ended`));
+    console.log(styleText('gray', `\n\tHolodeck program ended`));
   }
 
   const endProgram = createCloseHandler(shutdown);

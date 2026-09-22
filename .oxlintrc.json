@@ -1160,14 +1160,26 @@
       }
     },
     {
-      // Every tsconfig.json in this monorepo sets "checkJs": false (the one exception,
-      // packages/holodeck/server, isn't in scoped-dirs.txt), meaning real tsc never type-checks
-      // the bodies of plain .js files even where "allowJs" lets them into the program — it only
-      // uses them for module-shape inference from .ts importers. tsgolint doesn't honor that: it
-      // type-checks .js file bodies the same as .ts regardless of checkJs, so every implicitly-
-      // `any` parameter and property in untyped JS gets flagged as "unsafe". That's not a real
-      // finding, just noise from applying strict-TS assumptions to code that was never meant to
-      // be type-checked. Disable the type-aware rules there to match checkJs's actual behavior.
+      // holodeck's server is a CLI process whose stdout *is* its interface: `compat-shim.js`
+      // parses the "Serving Holodeck HTTP Mocks from" banner out of the child process's stdout
+      // to learn the port, and `ensure-cert.js` exists to print instructions. Console output is
+      // the product here, not a stray debug statement.
+      "files": ["packages/holodeck/server/**"],
+      "rules": {
+        "no-console": "off"
+      }
+    },
+    {
+      // Every tsconfig.json in this monorepo sets "checkJs": false, meaning real tsc never
+      // type-checks the bodies of plain .js files even where "allowJs" lets them into the
+      // program — it only uses them for module-shape inference from .ts importers. tsgolint
+      // doesn't honor that: it type-checks .js file bodies the same as .ts regardless of
+      // checkJs, so every implicitly-`any` parameter and property in untyped JS gets flagged as
+      // "unsafe". That's not a real finding, just noise from applying strict-TS assumptions to
+      // code that was never meant to be type-checked. Disable the type-aware rules there to
+      // match checkJs's actual behavior. The one directory that does set "checkJs": true,
+      // packages/holodeck/server, is type-checked by its own `tsc --noEmit -p server` run in
+      // that package's check:types script, so nothing is lost by exempting it here too.
       "files": ["**/*.js"],
       "rules": {
         "typescript/consistent-type-exports": "off",

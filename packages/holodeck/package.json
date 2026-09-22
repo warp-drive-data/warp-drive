@@ -34,7 +34,7 @@
     "ensure-cert": "./server/ensure-cert.js"
   },
   "scripts": {
-    "check:types": "node ./node_modules/typescript-7/bin/tsc --noEmit",
+    "check:types": "node ./node_modules/typescript-7/bin/tsc --noEmit && node ./node_modules/typescript-7/bin/tsc --noEmit -p server",
     "build:pkg": "node node_modules/tsdown/dist/run.mjs",
     "prepack": "pnpm run build:pkg",
     "sync": "echo \"syncing\"",
@@ -63,6 +63,7 @@
     "@warp-drive/legacy": "workspace:*",
     "@warp-drive/core": "workspace:*",
     "@warp-drive/internal-config": "workspace:*",
+    "@types/node": "catalog:",
     "tsdown": "catalog:",
     "typescript-7": "catalog:"
   },
