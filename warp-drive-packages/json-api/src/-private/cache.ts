@@ -1303,10 +1303,8 @@ export class JSONAPICache implements Cache {
 
     // TODO @runspired consider whether we need a defaultValue cache in ReactiveResource
     // like we do for the simple case above.
-    const path: string[] = attr as string[];
     const cached = this.__peek(identifier, true);
-    const basePath = path[0];
-    return readPath(resolveAttr(basePath, cached, RESOLUTION_ORDER_LOCAL_STATE), path);
+    return resolveAttr(attr, cached, RESOLUTION_ORDER_LOCAL_STATE);
   }
 
   /**
@@ -1357,10 +1355,8 @@ export class JSONAPICache implements Cache {
 
     // TODO @runspired consider whether we need a defaultValue cache in ReactiveResource
     // like we do for the simple case above.
-    const path: string[] = attr as string[];
     const cached = this.__peek(identifier, true);
-    const basePath = path[0];
-    return readPath(resolveAttr(basePath, cached, RESOLUTION_ORDER_REMOTE_STATE), path);
+    return resolveAttr(attr, cached, RESOLUTION_ORDER_REMOTE_STATE);
   }
 
   /**
@@ -1413,7 +1409,7 @@ export class JSONAPICache implements Cache {
 
     const basePath = path[0];
     const baseline = resolveAttr(basePath, cached, RESOLUTION_ORDER_EDIT_BASELINE);
-    const baselineAtPath = baseline ? readPath(baseline, path) : undefined;
+    const baselineAtPath = resolveAttr(path, cached, RESOLUTION_ORDER_EDIT_BASELINE);
 
     if (baselineAtPath !== value) {
       cached.localAttrs = cached.localAttrs || (Object.create(null) as Record<string, Value>);
@@ -2103,17 +2099,25 @@ function layerHolding(key: string, layers: Layered, order: readonly (AttrLayer |
   return null;
 }
 
-/** What the projection with the given resolution order reads for `key`. */
-function resolveAttr(key: string, layers: Layered, order: readonly (AttrLayer | MergeLayer)[]): Value | undefined {
+/**
+ * What the projection with the given resolution order reads for `attr`. A path resolves its first
+ * segment through the layers and follows the rest into the value, stopping with `undefined` at the
+ * first missing link.
+ */
+function resolveAttr(
+  attr: string | string[],
+  layers: Layered,
+  order: readonly (AttrLayer | MergeLayer)[]
+): Value | undefined {
+  const key = typeof attr === 'string' ? attr : attr[0];
   const layer = layerHolding(key, layers, order);
-  return layer ? layer[key] : undefined;
-}
+  if (!layer) return undefined;
 
-/** Follows `path[1..]` into `value`, or `undefined` as soon as a link is missing. */
-function readPath(value: Value | undefined, path: string[]): Value | undefined {
-  let current = value;
-  for (let i = 1; i < path.length && current !== undefined; i++) {
-    current = (current as ObjectValue)[path[i]];
+  let current = layer[key];
+  if (typeof attr !== 'string') {
+    for (let i = 1; i < attr.length && current !== undefined; i++) {
+      current = (current as ObjectValue)[attr[i]];
+    }
   }
   return current;
 }
