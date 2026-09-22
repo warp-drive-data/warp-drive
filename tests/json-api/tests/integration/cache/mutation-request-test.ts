@@ -1,7 +1,8 @@
-import type { Store } from '@warp-drive/core';
+import type { NotificationType, Store } from '@warp-drive/core';
 import { recordIdentifierFor, useRecommendedStore } from '@warp-drive/core';
 import { checkout, withDefaults } from '@warp-drive/core/reactive';
 import { withReactiveResponse } from '@warp-drive/core/request';
+import type { ResourceKey } from '@warp-drive/core/types/identifier';
 import type { Type } from '@warp-drive/core/types/symbols';
 import { module, test, todo } from '@warp-drive/diagnostic';
 import type { TestContext } from '@warp-drive/diagnostic/-types';
@@ -34,6 +35,10 @@ interface ExistingPet {
 
 interface CustomContext extends TestContext {
   store: Store;
+}
+
+function flush(store: Store): void {
+  (store.notifications as unknown as { _flush: () => void })._flush();
 }
 
 module<CustomContext>('mutation-request', function (hooks) {
@@ -326,6 +331,15 @@ module<CustomContext>('mutation-request', function (hooks) {
     assert.equal(editable.firstName, 'Christopher', 'the editable copy shows the local edit');
     assert.equal(user?.firstName, 'Chris', 'the default reader is unaffected by the local-only edit');
 
+    const remote: string[] = [];
+    store.notifications.subscribe(
+      lid,
+      (_cacheKey: ResourceKey, type: NotificationType, key?: string | null) => {
+        if (type === 'attributes') remote.push(String(key));
+      },
+      'remote'
+    );
+
     const reqBody = JSON.stringify({
       data: {
         type: 'user',
@@ -366,6 +380,9 @@ module<CustomContext>('mutation-request', function (hooks) {
     // remote-only reader must be told about that even though a matching local edit
     // already existed and so `changedKeys` (the local channel) never saw a difference.
     assert.equal(user?.firstName, 'Christopher', 'the default reader is updated to reflect the new remote value');
+
+    flush(store);
+    assert.true(remote.includes('firstName'), `the remote channel heard the save (saw ${remote.join()})`);
   });
 
   todo('bulk delete', function (assert) {});

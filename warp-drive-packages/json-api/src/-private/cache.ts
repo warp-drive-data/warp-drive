@@ -5,13 +5,7 @@ import { DEBUG } from '@warp-drive/core/build-config/env';
 import { assert } from '@warp-drive/core/build-config/macros';
 import type { CollectionEdge, Graph, GraphEdge, ImplicitEdge, ResourceEdge } from '@warp-drive/core/graph/-private';
 import { graphFor, isBelongsTo, peekGraph } from '@warp-drive/core/graph/-private';
-import {
-  assertPrivateCapabilities,
-  fieldValueIdentity,
-  isRequestKey,
-  isResourceKey,
-  logGroup,
-} from '@warp-drive/core/store/-private';
+import { assertPrivateCapabilities, isRequestKey, isResourceKey, logGroup } from '@warp-drive/core/store/-private';
 import type { CacheCapabilitiesManager } from '@warp-drive/core/types';
 import type { Cache, ChangedAttributesHash, RelationshipDiff } from '@warp-drive/core/types/cache';
 import type { Change } from '@warp-drive/core/types/cache/change';
@@ -48,10 +42,7 @@ import type {
   LegacyHasManyField,
   LegacyRelationshipField,
   ResourceField,
-  SchemaArrayField,
-  SchemaObjectField,
 } from '@warp-drive/core/types/schema/fields';
-import type { SchemaService } from '@warp-drive/core/types/schema/schema-service';
 import type {
   CollectionResourceDataDocument,
   ResourceDataDocument,
@@ -1077,25 +1068,25 @@ export class JSONAPICache implements Cache {
         return undefined;
       }
 
-      if (cached.localAttrs && attribute in cached.localAttrs) {
-        return cached.localAttrs[attribute];
-      } else if (cached.inflightAttrs && attribute in cached.inflightAttrs) {
-        return cached.inflightAttrs[attribute];
-      } else if (cached.remoteAttrs && attribute in cached.remoteAttrs) {
-        return cached.remoteAttrs[attribute];
-      } else if (cached.defaultAttrs && attribute in cached.defaultAttrs) {
-        return cached.defaultAttrs[attribute];
-      } else {
-        const attrSchema = getCacheFields(this, identifier).get(attribute);
-
-        assertPrivateCapabilities(this._capabilities);
-        const defaultValue = getDefaultValue(attrSchema, identifier, this._capabilities._store);
-        if (schemaHasLegacyDefaultValueFn(attrSchema)) {
-          cached.defaultAttrs = cached.defaultAttrs || (Object.create(null) as Record<string, Value>);
-          cached.defaultAttrs[attribute] = defaultValue;
-        }
-        return defaultValue;
+      const bucket = bucketHolding(
+        attribute,
+        cached.localAttrs,
+        cached.inflightAttrs,
+        cached.remoteAttrs,
+        cached.defaultAttrs
+      );
+      if (bucket) {
+        return bucket[attribute];
       }
+      const attrSchema = getCacheFields(this, identifier).get(attribute);
+
+      assertPrivateCapabilities(this._capabilities);
+      const defaultValue = getDefaultValue(attrSchema, identifier, this._capabilities._store);
+      if (schemaHasLegacyDefaultValueFn(attrSchema)) {
+        cached.defaultAttrs = cached.defaultAttrs || (Object.create(null) as Record<string, Value>);
+        cached.defaultAttrs[attribute] = defaultValue;
+      }
+      return defaultValue;
     }
 
     // TODO @runspired consider whether we need a defaultValue cache in ReactiveResource
@@ -1103,23 +1094,8 @@ export class JSONAPICache implements Cache {
     const path: string[] = attr as string[];
     const cached = this.__peek(identifier, true);
     const basePath = path[0];
-    let current = cached.localAttrs && basePath in cached.localAttrs ? cached.localAttrs[basePath] : undefined;
-    if (current === undefined) {
-      current = cached.inflightAttrs && basePath in cached.inflightAttrs ? cached.inflightAttrs[basePath] : undefined;
-    }
-    if (current === undefined) {
-      current = cached.remoteAttrs && basePath in cached.remoteAttrs ? cached.remoteAttrs[basePath] : undefined;
-    }
-    if (current === undefined) {
-      return undefined;
-    }
-    for (let i = 1; i < path.length; i++) {
-      current = (current as ObjectValue)[path[i]];
-      if (current === undefined) {
-        return undefined;
-      }
-    }
-    return current;
+    const bucket = bucketHolding(basePath, cached.localAttrs, cached.inflightAttrs, cached.remoteAttrs);
+    return bucket ? readPath(bucket[basePath], path) : undefined;
   }
 
   /**
@@ -1148,23 +1124,20 @@ export class JSONAPICache implements Cache {
         return undefined;
       }
 
-      if (cached.remoteAttrs && attribute in cached.remoteAttrs) {
-        return cached.remoteAttrs[attribute];
-
-        // we still show defaultValues in the case of a remoteAttr access
-      } else if (cached.defaultAttrs && attribute in cached.defaultAttrs) {
-        return cached.defaultAttrs[attribute];
-      } else {
-        const attrSchema = getCacheFields(this, identifier).get(attribute);
-
-        assertPrivateCapabilities(this._capabilities);
-        const defaultValue = getDefaultValue(attrSchema, identifier, this._capabilities._store);
-        if (schemaHasLegacyDefaultValueFn(attrSchema)) {
-          cached.defaultAttrs = cached.defaultAttrs || (Object.create(null) as Record<string, Value>);
-          cached.defaultAttrs[attribute] = defaultValue;
-        }
-        return defaultValue;
+      // defaultValues still apply to a remote read
+      const bucket = bucketHolding(attribute, cached.remoteAttrs, cached.defaultAttrs);
+      if (bucket) {
+        return bucket[attribute];
       }
+      const attrSchema = getCacheFields(this, identifier).get(attribute);
+
+      assertPrivateCapabilities(this._capabilities);
+      const defaultValue = getDefaultValue(attrSchema, identifier, this._capabilities._store);
+      if (schemaHasLegacyDefaultValueFn(attrSchema)) {
+        cached.defaultAttrs = cached.defaultAttrs || (Object.create(null) as Record<string, Value>);
+        cached.defaultAttrs[attribute] = defaultValue;
+      }
+      return defaultValue;
     }
 
     // TODO @runspired consider whether we need a defaultValue cache in ReactiveResource
@@ -1172,19 +1145,8 @@ export class JSONAPICache implements Cache {
     const path: string[] = attr as string[];
     const cached = this.__peek(identifier, true);
     const basePath = path[0];
-    let current = cached.remoteAttrs && basePath in cached.remoteAttrs ? cached.remoteAttrs[basePath] : undefined;
-
-    if (current === undefined) {
-      return undefined;
-    }
-
-    for (let i = 1; i < path.length; i++) {
-      current = (current as ObjectValue)[path[i]];
-      if (current === undefined) {
-        return undefined;
-      }
-    }
-    return current;
+    const bucket = bucketHolding(basePath, cached.remoteAttrs);
+    return bucket ? readPath(bucket[basePath], path) : undefined;
   }
 
   /**
@@ -1207,18 +1169,13 @@ export class JSONAPICache implements Cache {
     if (isSimplePath) {
       const cached = this.__peek(identifier, false);
       const currentAttr = attr as string;
-      const existing =
-        cached.inflightAttrs && currentAttr in cached.inflightAttrs
-          ? cached.inflightAttrs[currentAttr]
-          : cached.remoteAttrs && currentAttr in cached.remoteAttrs
-            ? cached.remoteAttrs[currentAttr]
-            : undefined;
+      const baseline = editBaseline(cached, currentAttr);
 
-      if (existing !== value) {
+      if (baseline !== value) {
         cached.localAttrs = cached.localAttrs || (Object.create(null) as Record<string, Value>);
         cached.localAttrs[currentAttr] = value;
         cached.changes = cached.changes || (Object.create(null) as Record<string, [Value, Value]>);
-        cached.changes[currentAttr] = [existing, value];
+        cached.changes[currentAttr] = [baseline, value];
       } else if (cached.localAttrs) {
         delete cached.localAttrs[currentAttr];
         delete cached.changes![currentAttr];
@@ -1233,39 +1190,18 @@ export class JSONAPICache implements Cache {
       return;
     }
 
-    // get current value from local else inflight else remote
-    // structuredClone current if not local (or always?)
-    // traverse path, update value at path
-    // notify change at first link in path.
-    // second pass optimization is change notifyChange signature to take an array path
-
     // guaranteed that we have path of at least 2 in length
     const path: string[] = attr as string[];
 
     const cached = this.__peek(identifier, false);
 
-    // get existing cache record for base path
     const basePath = path[0];
-    const existing =
-      cached.inflightAttrs && basePath in cached.inflightAttrs
-        ? cached.inflightAttrs[basePath]
-        : cached.remoteAttrs && basePath in cached.remoteAttrs
-          ? cached.remoteAttrs[basePath]
-          : undefined;
+    const baseline = editBaseline(cached, basePath);
+    const baselineAtPath = baseline ? readPath(baseline, path) : undefined;
 
-    let existingAttr;
-    if (existing) {
-      existingAttr = (existing as ObjectValue)[path[1]];
-
-      for (let i = 2; i < path.length; i++) {
-        // the specific change we're making is at path[length - 1]
-        existingAttr = (existingAttr as ObjectValue)[path[i]];
-      }
-    }
-
-    if (existingAttr !== value) {
+    if (baselineAtPath !== value) {
       cached.localAttrs = cached.localAttrs || (Object.create(null) as Record<string, Value>);
-      cached.localAttrs[basePath] = cached.localAttrs[basePath] || structuredClone(existing);
+      cached.localAttrs[basePath] = cached.localAttrs[basePath] || structuredClone(baseline);
       cached.changes = cached.changes || (Object.create(null) as Record<string, [Value, Value]>);
       let currentLocal = cached.localAttrs[basePath] as ObjectValue;
       let nextLink = 1;
@@ -1275,7 +1211,7 @@ export class JSONAPICache implements Cache {
       }
       currentLocal[path[nextLink]] = value;
 
-      cached.changes[basePath] = [existing, cached.localAttrs[basePath] as ObjectValue];
+      cached.changes[basePath] = [baseline, cached.localAttrs[basePath] as ObjectValue];
 
       // since we initiaize the value as basePath as a clone of the value at the remote basePath
       // then in theory we can use JSON.stringify to compare the two values as key insertion order
@@ -1288,10 +1224,10 @@ export class JSONAPICache implements Cache {
       // to make their cache data less stateful.
     } else if (cached.localAttrs) {
       try {
-        if (!existing) {
+        if (!baseline) {
           return;
         }
-        const existingStr = JSON.stringify(existing);
+        const existingStr = JSON.stringify(baseline);
         const newStr = JSON.stringify(cached.localAttrs[basePath]);
 
         if (existingStr !== newStr) {
@@ -1835,180 +1771,174 @@ function getDefaultValue(
   }
 }
 
+type AttrBucket = Record<string, Value | undefined> | null;
+
 /**
- * Narrow `subset` to the members that survived {@link patchLocalAttributes}' pruning. Only called
- * when that pruning actually removed something, so the allocation is skipped on the common path
- * where a resource has no local edits at all.
+ * The first bucket, in precedence order, that holds `key`. Presence is `in`, so a value
+ * explicitly set to `undefined` counts as present.
  */
-function retainSurviving(subset: Set<string> | undefined, survivors: Set<string>): Set<string> | undefined {
-  if (!subset?.size) return subset;
-  const result = new Set<string>();
-  for (const key of subset) {
-    if (survivors.has(key)) result.add(key);
+function bucketHolding(
+  key: string,
+  a: AttrBucket,
+  b: AttrBucket = null,
+  c: AttrBucket = null,
+  d: AttrBucket = null,
+  e: AttrBucket = null
+): AttrBucket {
+  if (a && key in a) return a;
+  if (b && key in b) return b;
+  if (c && key in c) return c;
+  if (d && key in d) return d;
+  if (e && key in e) return e;
+  return null;
+}
+
+function valueIn(bucket: AttrBucket, key: string): Value | undefined {
+  return bucket ? bucket[key] : undefined;
+}
+
+/** The value a local edit is measured against: in flight if a save is carrying one, else remote. */
+function editBaseline(cached: CachedResource, key: string): Value | undefined {
+  return valueIn(bucketHolding(key, cached.inflightAttrs, cached.remoteAttrs), key);
+}
+
+/** Follows `path[1..]` into `value`, or `undefined` as soon as a link is missing. */
+function readPath(value: Value | undefined, path: string[]): Value | undefined {
+  let current = value;
+  for (let i = 1; i < path.length && current !== undefined; i++) {
+    current = (current as ObjectValue)[path[i]];
   }
-  return result.size ? result : undefined;
+  return current;
+}
+
+function isPlainObject(value: object): value is Record<string, unknown> {
+  const proto = Object.getPrototypeOf(value) as unknown;
+  return proto === null || proto === Object.prototype;
 }
 
 /**
- * Which projection each changed key moved, so the caller can notify on the matching channel:
- * `localOnly` and `remoteOnly` on theirs, `both` unscoped. `remoteChanged` is the union
- * {@link patchLocalAttributes} reconciles against.
+ * Same content, not same reference. Arrays and plain objects are walked; anything else (Date,
+ * Map, class instances) only compares equal by reference, so a value the cache cannot reason about
+ * is reported as changed rather than silently treated as equal.
+ */
+function valuesEqual(a: unknown, b: unknown): boolean {
+  if (a === b) return true;
+  if (typeof a !== 'object' || typeof b !== 'object' || a === null || b === null) return false;
+
+  if (Array.isArray(a)) {
+    if (!Array.isArray(b) || a.length !== b.length) return false;
+    for (let i = 0; i < a.length; i++) {
+      if (!valuesEqual(a[i], b[i])) return false;
+    }
+    return true;
+  }
+  if (Array.isArray(b) || !isPlainObject(a) || !isPlainObject(b)) return false;
+
+  const keys = Object.keys(a);
+  if (keys.length !== Object.keys(b).length) return false;
+  for (let i = 0; i < keys.length; i++) {
+    const key = keys[i];
+    if (!Object.hasOwn(b, key) || !valuesEqual(a[key], b[key])) return false;
+  }
+  return true;
+}
+
+/**
+ * Which projection each changed key moved in, so the caller can notify on the matching channel:
+ * `localOnly` and `remoteOnly` on theirs, `both` unscoped.
  *
  * `undefined` rather than empty Sets: this runs on every `upsert`, and a resource where nothing
  * moved should cost no allocation.
  */
 interface ProjectionChanges {
-  /** only the local projection's value moved */
   localOnly: Set<string> | undefined;
-  /** only the remote projection's value moved */
   remoteOnly: Set<string> | undefined;
-  /** both projections moved */
   both: Set<string> | undefined;
-  /** every key whose persisted value moved: the union of `remoteOnly` and `both` */
-  remoteChanged: Set<string> | undefined;
 }
 
 const NO_PROJECTION_CHANGES: ProjectionChanges = Object.freeze({
   localOnly: undefined,
   remoteOnly: undefined,
   both: undefined,
-  remoteChanged: undefined,
 });
 
 /**
- * The keys a merge could move: everything the payload carries, plus anything being promoted that
- * the payload did not mention. `null` when there is nothing to examine.
- *
- * `upsert` promotes nothing, so it gets the `Object.keys` array back unchanged. Only a commit
- * carrying both a payload and promoted attrs pays for a copy, and that is once per save rather
- * than once per resource in a document.
+ * Every key a merge could move: the payload's keys plus any merged in-flight key the payload did not
+ * mention. `null` when there is nothing to examine.
  */
-function candidateKeys(
-  updates: ExistingResourceObject['attributes'],
-  promoted: Record<string, unknown> | null
-): string[] | null {
+function candidateKeys(updates: AttrBucket, merged: AttrBucket): string[] | null {
   const updateKeys = updates ? Object.keys(updates) : null;
-  const promotedKeys = promoted ? Object.keys(promoted) : null;
+  const mergedKeys = merged ? Object.keys(merged) : null;
 
-  if (!promotedKeys?.length) return updateKeys?.length ? updateKeys : null;
-  if (!updateKeys?.length) return promotedKeys;
+  if (!mergedKeys?.length) return updateKeys?.length ? updateKeys : null;
+  if (!updates || !updateKeys?.length) return mergedKeys;
 
-  const keys = updateKeys.slice();
-  for (let i = 0; i < promotedKeys.length; i++) {
-    if (!(promotedKeys[i] in updates!)) keys.push(promotedKeys[i]);
+  for (let i = 0; i < mergedKeys.length; i++) {
+    if (!(mergedKeys[i] in updates)) updateKeys.push(mergedKeys[i]);
   }
-  return keys;
+  return updateKeys;
 }
 
 /**
- * Whether two values of `field` count as the same value for change detection.
+ * Partition the keys a merge touches by which projection each one moves in. Must run *before* the
+ * merge: it reads the pre-merge buckets off `cached` and models the merge itself.
  *
- * A `schema-object`, and each element of a `schema-array`, compares by the identity hash its
- * `ObjectSchema` declares (`identity: { kind: '@hash', ... }`), so the schema decides what "same"
- * means for it. With no hash declared, and for every other field kind, only the same reference
- * counts. That knowingly over-notifies for equal-content objects: content equality is the schema's
- * to define, not the cache's to guess.
+ * A commit folds `inflightAttrs` into `remoteAttrs` (`mergesInflight`); an upsert leaves them in
+ * flight, where the local projection keeps reading them.
  */
-function attrValuesEqual(schema: SchemaService, field: FieldSchema, a: unknown, b: unknown): boolean {
-  if (a === b) return true;
-  if (field.kind === 'schema-object') return schemaObjectsEqual(schema, field, a, b);
-  if (field.kind === 'schema-array') return schemaArraysEqual(schema, field, a, b);
-  return false;
-}
-
-/**
- * A schema-array has no hash of its own: two arrays are the same when they have the same length
- * and every element compares equal as a schema-object of the element type.
- */
-function schemaArraysEqual(schema: SchemaService, field: SchemaArrayField, a: unknown, b: unknown): boolean {
-  if (!Array.isArray(a) || !Array.isArray(b) || a.length !== b.length) return false;
-  for (let i = 0; i < a.length; i++) {
-    if (!schemaObjectsEqual(schema, field, a[i], b[i])) return false;
-  }
-  return true;
-}
-
-function schemaObjectsEqual(
-  schema: SchemaService,
-  field: SchemaObjectField | SchemaArrayField,
-  a: unknown,
-  b: unknown
-): boolean {
-  if (a === b) return true;
-  if (!a || !b || typeof a !== 'object' || typeof b !== 'object') return false;
-  const ia = fieldValueIdentity(schema, field, a);
-  const ib = fieldValueIdentity(schema, field, b);
-  return ia !== null && ib !== null && ia.type === ib.type && ia.hash !== null && ia.hash === ib.hash;
-}
-
-/**
- * Partition the keys an incoming payload touches by which projection each one moves.
- *
- * Takes the values rather than the `CachedResource` so it cannot observe the merge it is
- * describing: `prevRemote` is the remote state as it stands *before* `promoted` and `updates` are
- * applied, and the two callers merge different things. Reading them off `cached` would make the
- * result depend on whether the caller had already mutated it.
- */
-function calculateChangedKeys(
-  schema: SchemaService,
-  prevRemote: Record<string, unknown> | null,
-  localAttrs: Record<string, unknown> | null,
-  updates: ExistingResourceObject['attributes'],
-  promoted: Record<string, unknown> | null,
-  fields: ReturnType<Store['schema']['fields']>
+function partitionChangedKeys(
+  cached: CachedResource,
+  updates: AttrBucket,
+  fields: ReturnType<Store['schema']['fields']>,
+  mergesInflight: boolean
 ): ProjectionChanges {
-  const keys = candidateKeys(updates, promoted);
+  const { remoteAttrs, localAttrs, inflightAttrs } = cached;
+  const inflightMerged = mergesInflight ? inflightAttrs : null;
+  const inflightKept = mergesInflight ? null : inflightAttrs;
+
+  const keys = candidateKeys(updates, inflightMerged);
   if (keys === null) return NO_PROJECTION_CHANGES;
 
   let localOnly: Set<string> | undefined;
   let remoteOnly: Set<string> | undefined;
   let both: Set<string> | undefined;
-  let remoteChanged: Set<string> | undefined;
 
   for (let i = 0; i < keys.length; i++) {
     const key = keys[i];
 
-    // `updates` is always `data.attributes` and these keys dispatch under the `attributes`
-    // notification bucket, so membership in the cache-field set is not enough: relationship
-    // fields are cache fields too, and a payload that puts a relationship name inside
-    // `attributes` would otherwise be announced as an attribute change for a key whose data
-    // lives in the graph and is never read back out of `remoteAttrs`.
+    // relationship data that arrives inside `attributes` lives in the graph, not in `remoteAttrs`
     const field = fields.get(key);
     if (!field || isRelationship(field)) continue;
 
-    // `in` rather than a truthy check throughout: a field explicitly set to `undefined` is
-    // present, and treating it as absent would read the wrong value as the baseline.
-    const isPromoted = promoted !== null && key in promoted;
-    const isUpdated = updates !== undefined && key in updates;
+    const remoteBefore = valueIn(bucketHolding(key, remoteAttrs), key);
+    const remoteAfter = valueIn(bucketHolding(key, updates, inflightMerged, remoteAttrs), key);
+    const localBefore = valueIn(bucketHolding(key, localAttrs, inflightAttrs, remoteAttrs), key);
+    const localAfter = valueIn(bucketHolding(key, localAttrs, inflightKept, updates, inflightMerged, remoteAttrs), key);
 
-    // what the remote projection reads, before and after. Mirrors the
-    // `Object.assign(remoteAttrs, promoted, updates)` below it, so `updates` wins.
-    const wasRemote = prevRemote ? prevRemote[key] : undefined;
-    const nowRemote = isUpdated ? updates[key] : isPromoted ? promoted[key] : wasRemote;
+    const remoteMoved = !valuesEqual(remoteBefore, remoteAfter);
+    const localMoved = !valuesEqual(localBefore, localAfter);
 
-    // and what the local projection reads. An uncommitted local edit shadows the key in that
-    // projection, so its value is the same before and after.
-    const localEdit = localAttrs ? localAttrs[key] : undefined;
-    const isEdited = localEdit !== undefined;
-    const wasLocal = isEdited ? localEdit : isPromoted ? promoted[key] : wasRemote;
-    const nowLocal = isEdited ? localEdit : nowRemote;
-
-    const remoteMoved = !attrValuesEqual(schema, field, wasRemote, nowRemote);
-    const localMoved = !attrValuesEqual(schema, field, wasLocal, nowLocal);
-
-    if (remoteMoved) {
-      (remoteChanged ??= new Set<string>()).add(key);
-      if (localMoved) {
-        (both ??= new Set<string>()).add(key);
-      } else {
-        (remoteOnly ??= new Set<string>()).add(key);
-      }
+    if (remoteMoved && localMoved) {
+      (both ??= new Set<string>()).add(key);
+    } else if (remoteMoved) {
+      (remoteOnly ??= new Set<string>()).add(key);
     } else if (localMoved) {
       (localOnly ??= new Set<string>()).add(key);
     }
   }
 
-  return remoteChanged || localOnly ? { localOnly, remoteOnly, both, remoteChanged } : NO_PROJECTION_CHANGES;
+  return both || remoteOnly || localOnly ? { localOnly, remoteOnly, both } : NO_PROJECTION_CHANGES;
+}
+
+function notifyProjectionChanges(
+  cache: JSONAPICache,
+  identifier: ResourceKey,
+  { both, remoteOnly, localOnly }: ProjectionChanges
+): void {
+  // one notify per bucket rather than per key: a document push runs this once per resource
+  if (both?.size) cache._capabilities.notifyChange(identifier, 'attributes', both);
+  if (remoteOnly?.size) cache._capabilities.notifyChange(identifier, 'attributes', remoteOnly, 'remote');
+  if (localOnly?.size) cache._capabilities.notifyChange(identifier, 'attributes', localOnly, 'local');
 }
 
 function cacheIsEmpty(cached: CachedResource | undefined): boolean {
@@ -2093,47 +2023,37 @@ function isRelationship(field: FieldSchema): field is LegacyRelationshipField | 
   return kind === 'hasMany' || kind === 'belongsTo' || kind === 'resource' || kind === 'collection';
 }
 
-function patchLocalAttributes(
-  schema: SchemaService,
-  fields: ReturnType<Store['schema']['fields']>,
-  cached: CachedResource,
-  changedRemoteKeys?: Set<string>
-): boolean {
-  const { localAttrs, remoteAttrs, inflightAttrs, defaultAttrs, changes } = cached;
+/**
+ * After a merge: drop every local edit the new baseline agrees with, and re-anchor the
+ * `changedAttrs()` tuple of every edit it does not. Returns whether any edit was dropped.
+ */
+function reconcileLocalEdits(cached: CachedResource): boolean {
+  const { localAttrs, defaultAttrs, changes } = cached;
   if (!localAttrs) {
     cached.changes = null;
     return false;
   }
-  let hasAppliedPatch = false;
-  const mutatedKeys = Object.keys(localAttrs);
+  let droppedAnEdit = false;
+  const editedKeys = Object.keys(localAttrs);
 
-  for (let i = 0, length = mutatedKeys.length; i < length; i++) {
-    const attr = mutatedKeys[i];
-    const existing =
-      inflightAttrs && attr in inflightAttrs
-        ? inflightAttrs[attr]
-        : remoteAttrs && attr in remoteAttrs
-          ? remoteAttrs[attr]
-          : undefined;
-    const field = fields.get(attr);
+  for (let i = 0; i < editedKeys.length; i++) {
+    const key = editedKeys[i];
+    const baseline = editBaseline(cached, key);
+    const edit = localAttrs[key];
 
-    // the same equality `calculateChangedKeys` uses, so a confirmed edit is recognized the same way
-    if (field ? attrValuesEqual(schema, field, existing, localAttrs[attr]) : existing === localAttrs[attr]) {
-      hasAppliedPatch = true;
-
-      // if the local change is committed, then
-      // the remoteKeyChange is no longer relevant
-      changedRemoteKeys?.delete(attr);
-
-      delete localAttrs[attr];
-      delete changes![attr];
+    if (valuesEqual(baseline, edit)) {
+      droppedAnEdit = true;
+      delete localAttrs[key];
+      delete changes![key];
+    } else if (changes && key in changes && !valuesEqual(changes[key][0], baseline)) {
+      changes[key] = [baseline, edit as Value];
     }
 
-    if (defaultAttrs && attr in defaultAttrs) {
-      delete defaultAttrs[attr];
+    if (defaultAttrs && key in defaultAttrs) {
+      delete defaultAttrs[key];
     }
   }
-  return hasAppliedPatch;
+  return droppedAnEdit;
 }
 
 function asDoc<T extends ResourceDocument>(doc: unknown): asserts doc is T {}
@@ -2295,7 +2215,7 @@ function cacheUpsert(
   data: ExistingResourceObject,
   calculateChanges?: boolean
 ) {
-  let changedKeys: Set<string> | undefined;
+  let changes: ProjectionChanges = NO_PROJECTION_CHANGES;
   const peeked = cache.__safePeek(identifier, false);
   const existed = !!peeked;
   const cached = peeked || cache._createCache(identifier);
@@ -2334,17 +2254,8 @@ function cacheUpsert(
   // if no cache entry existed, no record exists / property has been accessed
   // and thus we do not need to notify changes to any properties.
   if (calculateChanges && existed && data.attributes) {
-    // upsert merges only `updates`, so nothing is promoted and the notify stays unscoped.
-    // NOTE: this does not skip locally-edited keys. An edit that still diverges from the
-    // incoming value is reported; one that matches is dropped by patchLocalAttributes.
-    changedKeys = calculateChangedKeys(
-      cache._capabilities.schema,
-      cached.remoteAttrs,
-      cached.localAttrs,
-      data.attributes,
-      null,
-      fields
-    ).remoteChanged;
+    // before the merge below, which overwrites the values the comparison reads
+    changes = partitionChangedKeys(cached, data.attributes, fields, false);
   }
 
   cached.remoteAttrs = Object.assign(
@@ -2353,7 +2264,7 @@ function cacheUpsert(
   );
 
   if (cached.localAttrs) {
-    if (patchLocalAttributes(cache._capabilities.schema, fields, cached, changedKeys)) {
+    if (reconcileLocalEdits(cached)) {
       cache._capabilities.notifyChange(identifier, 'state', null);
     }
   }
@@ -2370,20 +2281,26 @@ function cacheUpsert(
     setupRelationships(cache.__graph, fields, identifier, data);
   }
 
-  if (changedKeys?.size) {
-    // deliver the whole record's changed keys as one `notifyChange` batch
-    // instead of one call per key: this path runs once per resource during a
-    // push/upsert, so with N records each having M changed attributes the
-    // per-key approach costs O(N*M) in per-call overhead alone.
-    cache._capabilities.notifyChange(identifier, 'attributes', changedKeys);
-  }
+  assert(
+    'An upsert merges nothing into remote state, so no key can move in the local projection alone',
+    !changes.localOnly?.size
+  );
+  notifyProjectionChanges(cache, identifier, changes);
 
   if (LOG_CACHE) {
     // oxlint-disable-next-line no-console
     console.groupEnd();
   }
 
-  return changedKeys?.size ? Array.from(changedKeys) : undefined;
+  return remoteChangedKeys(changes);
+}
+
+/** Every key whose remote value moved, as the `upsert` return value. */
+function remoteChangedKeys({ both, remoteOnly }: ProjectionChanges): string[] | undefined {
+  if (!both?.size) return remoteOnly?.size ? Array.from(remoteOnly) : undefined;
+  const keys = Array.from(both);
+  if (remoteOnly?.size) keys.push(...remoteOnly);
+  return keys;
 }
 
 function patchCache(Cache: JSONAPICache, op: Operation): void {
@@ -2542,7 +2459,7 @@ function commitDidError(cache: JSONAPICache, identifier: ResourceKey, errors: Ap
       const attrs = (cached.localAttrs =
         cached.localAttrs || (Object.create(null) as Record<string, Value | undefined>));
       for (let i = 0; i < keys.length; i++) {
-        if (attrs[keys[i]] === undefined) {
+        if (!(keys[i] in attrs)) {
           attrs[keys[i]] = cached.inflightAttrs[keys[i]];
         }
       }
@@ -2601,7 +2518,7 @@ function didCommit(
 
   const fields = getCacheFields(cache, identifier);
   cached.isNew = false;
-  let newCanonicalAttributes: ExistingResourceObject['attributes'];
+  let responseAttrs: AttrBucket = null;
   if (data) {
     if (data.id && !cached.id) {
       cached.id = data.id;
@@ -2647,44 +2564,25 @@ function didCommit(
       }
       setupRelationships(cache.__graph, fields, identifier, data);
     }
-    newCanonicalAttributes = data.attributes;
+    responseAttrs = data.attributes ?? null;
   }
-  // partitioned before the merge below, which overwrites the pre-commit remote values the
-  // comparison depends on
-  const changes = calculateChangedKeys(
-    cache._capabilities.schema,
-    cached.remoteAttrs,
-    cached.localAttrs,
-    newCanonicalAttributes,
-    cached.inflightAttrs,
-    fields
-  );
+  // before the merge below, which overwrites the values the comparison reads
+  const changes = partitionChangedKeys(cached, responseAttrs, fields, true);
 
   cached.remoteAttrs = Object.assign(
     cached.remoteAttrs || (Object.create(null) as Record<string, unknown>),
     cached.inflightAttrs,
-    newCanonicalAttributes
+    responseAttrs
   );
   cached.inflightAttrs = null;
-  // prunes keys whose local edit the server has now confirmed, so they are not announced twice
-  const pruned = patchLocalAttributes(cache._capabilities.schema, fields, cached, changes.remoteChanged);
+  reconcileLocalEdits(cached);
 
   if (cached.errors) {
     cached.errors = null;
     cache._capabilities.notifyChange(identifier, 'errors', null);
   }
 
-  // each bucket goes out on the channel it actually moved. Pruning only happens for a resource
-  // that had local edits the server confirmed, and `patchLocalAttributes` reports whether it
-  // removed anything -- so the re-filter is skipped entirely on the common path.
-  const { remoteChanged, localOnly } = changes;
-  const reprune = pruned && remoteChanged !== undefined;
-  const both = reprune ? retainSurviving(changes.both, remoteChanged) : changes.both;
-  const remoteOnly = reprune ? retainSurviving(changes.remoteOnly, remoteChanged) : changes.remoteOnly;
-
-  if (both?.size) cache._capabilities.notifyChange(identifier, 'attributes', both);
-  if (remoteOnly?.size) cache._capabilities.notifyChange(identifier, 'attributes', remoteOnly, 'remote');
-  if (localOnly?.size) cache._capabilities.notifyChange(identifier, 'attributes', localOnly, 'local');
+  notifyProjectionChanges(cache, identifier, changes);
   cache._capabilities.notifyChange(identifier, 'state', null);
 }
 

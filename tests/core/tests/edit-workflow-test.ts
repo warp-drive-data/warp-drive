@@ -1,5 +1,7 @@
+import type { NotificationType } from '@warp-drive/core';
 import { recordIdentifierFor } from '@warp-drive/core';
 import { checkout, commit } from '@warp-drive/core/reactive';
+import type { ResourceKey } from '@warp-drive/core/types/identifier';
 import { module, setupTest, test } from '@warp-drive/diagnostic/ember';
 import { serializePatch, serializeResources, updateRecord } from '@warp-drive/utilities/json-api';
 
@@ -39,6 +41,15 @@ module('WarpDrive | ReactiveResource | Edit Workflow', function (hooks) {
     assert.equal(identifier.id, '1', 'id is accessible');
     assert.equal(identifier.type, 'user', 'type is accessible');
 
+    const seen: string[] = [];
+    store.notifications.subscribe(
+      recordIdentifierFor(user),
+      (_key: ResourceKey, type: NotificationType, field?: string | null) => {
+        if (type === 'attributes') seen.push(String(field));
+      },
+      'remote'
+    );
+
     // ensure save works as expected
     const saveInit = updateRecord(editableUser);
     const patch = serializePatch(store.cache, recordIdentifierFor(editableUser));
@@ -48,6 +59,7 @@ module('WarpDrive | ReactiveResource | Edit Workflow', function (hooks) {
     assert.deepEqual(saveResult.content.data, user, 'we get the immutable version back from the request');
     assert.verifySteps(['PUT /users/1']);
     assert.equal(user.name, 'Rey Skywalker', 'name is updated in the cache and shows in the immutable record');
+    assert.true(seen.includes('name'), `the remote channel heard the save (saw ${seen.join()})`);
   });
 
   test('we can serialize an editable record', async function (assert) {
@@ -80,6 +92,15 @@ module('WarpDrive | ReactiveResource | Edit Workflow', function (hooks) {
     assert.equal(identifier.id, '1', 'id is accessible');
     assert.equal(identifier.type, 'user', 'type is accessible');
 
+    const seen: string[] = [];
+    store.notifications.subscribe(
+      recordIdentifierFor(user),
+      (_key: ResourceKey, type: NotificationType, field?: string | null) => {
+        if (type === 'attributes') seen.push(String(field));
+      },
+      'remote'
+    );
+
     // ensure save works as expected
     const saveInit = updateRecord(editableUser);
     const body = serializeResources(store.cache, saveInit.data.record);
@@ -89,6 +110,7 @@ module('WarpDrive | ReactiveResource | Edit Workflow', function (hooks) {
     assert.deepEqual(saveResult.content.data, user, 'we get the immutable version back from the request');
     assert.verifySteps(['PUT /users/1']);
     assert.equal(user.name, 'Rey Skywalker', 'name is updated in the cache and shows in the immutable record');
+    assert.true(seen.includes('name'), `the remote channel heard the save (saw ${seen.join()})`);
   });
 
   test('serializing the immutable record serializes the edits', async function (assert) {
