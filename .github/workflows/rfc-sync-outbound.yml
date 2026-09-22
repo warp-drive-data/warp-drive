@@ -1,0 +1,34 @@
+# Mirrors WarpDrive RFCs into emberjs/rfcs whenever one changes on `main`. See
+# scripts/rfc-sync/README.md for the full design and the one-time setup this requires -- until
+# that setup is done, this workflow no-ops (see push-outbound.mjs).
+name: RFC sync (outbound)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'rfcs/**.md'
+
+concurrency:
+  group: rfc-sync-outbound
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
+      - name: Run outbound sync
+        run: node scripts/rfc-sync/push-outbound.mjs
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          EMBERJS_RFCS_SYNC_TOKEN: ${{ secrets.EMBERJS_RFCS_SYNC_TOKEN }}
+          EMBERJS_RFCS_SYNC_FORK: ${{ vars.EMBERJS_RFCS_SYNC_FORK }}
+          EMBERJS_RFCS_SYNC_NAME: ${{ vars.EMBERJS_RFCS_SYNC_NAME }}
+          EMBERJS_RFCS_SYNC_EMAIL: ${{ vars.EMBERJS_RFCS_SYNC_EMAIL }}

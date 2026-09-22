@@ -10,6 +10,7 @@ import { postProcessApiDocs } from './site-utils';
 const guidesPath = join(__dirname, '../../guides');
 const upgradingPath = join(__dirname, '../../upgrading');
 const blogPath = join(__dirname, '../../blog');
+const rfcsPath = join(__dirname, '../../rfcs');
 const skillsPath = join(__dirname, '../../warp-drive-packages/memory-alpha/skills');
 const apiDocsPath = join(__dirname, '../tmp/api');
 const oldPackages = join(__dirname, '../../packages');
@@ -85,6 +86,8 @@ if (!build) {
   watch(upgradingPath, { recursive: true }, onContentChange);
   // @ts-expect-error missing from Bun types
   watch(blogPath, { recursive: true }, onContentChange);
+  // @ts-expect-error missing from Bun types
+  watch(rfcsPath, { recursive: true }, onContentChange);
   // @ts-expect-error missing from Bun types
   watch(skillsPath, { recursive: true }, onContentChange);
 }

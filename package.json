@@ -92,7 +92,8 @@
       ":label: deprecation": ":evergreen_tree: New Deprecation",
       ":label: doc": ":memo: Documentation",
       ":label: test": ":goal_net: Test",
-      ":label: chore": ":house: Internal"
+      ":label: chore": ":house: Internal",
+      ":label: rfc": ":page_facing_up: RFC"
     },
     "ignoreCommitters": [
       "[bot]",

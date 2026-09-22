@@ -62,6 +62,7 @@ These labels are prefixed with `changelog:` and currently the options are:
 - `:label: test` which should be used to signify addition of new tests or refactoring of existing tests
 - `:label: chore` which should be used to signify refactoring of internal code that should not have an affect on public APIs or behaviors but which we may want to call out for potentially unintended consequences.
 - `:label: dependencies` which should be used when bumping dependencies on `main`. Bumps on other branches should use other labels as this implies a more substantive change.
+- `:label: rfc` which should be used for PRs that draft, update, or advance a WarpDrive RFC in [`rfcs/`](/rfcs/index.md). This label also triggers a docs-site PR preview — see [The RFC Process](./rfc-process.md).
 
 #### Backporting Labels
 

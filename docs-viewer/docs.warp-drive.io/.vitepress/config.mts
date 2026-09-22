@@ -8,6 +8,7 @@ import { tabsMarkdownPlugin } from 'vitepress-plugin-tabs';
 import {
   getBlogStructure,
   getGuidesStructure,
+  getRfcsStructure,
   getSkillsStructure,
   getUpgradingStructure,
   postProcessApiDocs,
@@ -25,6 +26,7 @@ const GuidesStructure = await getGuidesStructure();
 const SkillsStructure = await getSkillsStructure();
 const UpgradingStructure = await getUpgradingStructure();
 const BlogStructure = await getBlogStructure();
+const RfcsStructure = await getRfcsStructure();
 
 // insert the Skills section right below "The Manual" in the guides sidebar
 const sidebarItems = [...GuidesStructure.paths];
@@ -34,6 +36,16 @@ sidebarItems.splice(theManualIndex + 1, 0, {
   link: '/skills/index.md',
   collapsed: true,
   items: SkillsStructure.paths,
+});
+// RFCs sits right below Contributing, its own top-level sidebar group (see guides/_meta.json's
+// root `items` order) -- WarpDrive-specific RFCs are drafted and tracked in this repo (see
+// rfcs/index.md) rather than only in emberjs/rfcs.
+const contributingIndex = sidebarItems.findIndex((item) => item.text === 'Contributing');
+sidebarItems.splice(contributingIndex + 1, 0, {
+  text: 'RFCs',
+  link: '/rfcs/index.md',
+  collapsed: true,
+  items: RfcsStructure.paths,
 });
 // Upgrading and Blog are top-level, permanent-URL sections (see /upgrading and /blog) — kept
 // as their own sidebar groups alongside "The Manual" rather than nested underneath it.
@@ -266,6 +278,7 @@ export default withPwa(
           { text: 'Blog', link: '/blog' },
           { text: 'Skills', link: '/skills' },
           { text: 'Contributing', link: '/guides/contributing/become-a-contributor' },
+          { text: 'RFCs', link: '/rfcs' },
         ],
 
         sidebar: [

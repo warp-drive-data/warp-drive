@@ -7,7 +7,7 @@ If this PR updates API docs, preview them by:
 - run `pnpm install` in the root (if needed)
 - run `pnpm preview` in the root
 
-If this PR is not from a fork and is labeled `:label: doc` or `:label: feat`, a live preview is also deployed automatically and linked in a comment on this PR -- no local setup required. (Fork PRs don't support automatic previews yet.)
+If this PR is not from a fork and is labeled `:label: doc`, `:label: feat`, or `:label: rfc`, a live preview is also deployed automatically and linked in a comment on this PR -- no local setup required. (Fork PRs don't support automatic previews yet.)
 
 ---
 

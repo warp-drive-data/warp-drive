@@ -1,10 +1,11 @@
 {
   "title": "Contributors",
-  "items": ["start-in-a-fresh-worktree", "fix-at-the-source"],
+  "items": ["start-in-a-fresh-worktree", "fix-at-the-source", "writing-and-implementing-rfcs"],
   "webIndex": "overview",
   "files": {
     "index": { "draft": true },
     "start-in-a-fresh-worktree": { "title": "Start in a Fresh Worktree" },
-    "fix-at-the-source": { "title": "Fix at the Source" }
+    "fix-at-the-source": { "title": "Fix at the Source" },
+    "writing-and-implementing-rfcs": { "title": "Writing and Implementing RFCs" }
   }
 }
