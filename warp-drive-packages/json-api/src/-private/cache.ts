@@ -80,16 +80,84 @@ const EMPTY_ITERATOR = {
   },
 };
 
+/**
+ * Per-resource bookkeeping record held by {@link JSONAPICache}'s internal
+ * `__cache` and `__destroyedCache` maps, one per {@link ResourceKey}.
+ *
+ * Attribute state is tracked across three overlapping projections —
+ * `localAttrs`, `inflightAttrs`, and `remoteAttrs` — read in that priority
+ * order by {@link JSONAPICache.getAttr | getAttr} so that an uncommitted
+ * local edit always wins over a save in flight, which in turn wins over
+ * the last known persisted value.
+ *
+ * @internal
+ */
 interface CachedResource {
+  /**
+   * The resource's `id`, or `null` for a client-created resource that has
+   * not yet been assigned one by the server.
+   */
   id: string | null;
+
+  /**
+   * The last known persisted ("remote" or "canonical") attribute values,
+   * as merged in by {@link JSONAPICache.upsert | upsert} or a commit.
+   */
   remoteAttrs: Record<string, Value | undefined> | null;
+
+  /**
+   * Uncommitted local edits made via {@link JSONAPICache.setAttr | setAttr},
+   * not yet included in a save request.
+   */
   localAttrs: Record<string, Value | undefined> | null;
+
+  /**
+   * Lazily computed schema default values. Only populated when the
+   * schema's `defaultValue` is the legacy function form, so that function
+   * is invoked once per attribute per resource rather than on every read.
+   */
   defaultAttrs: Record<string, Value | undefined> | null;
+
+  /**
+   * The attribute values included in a save request that has been sent to
+   * the server via {@link JSONAPICache.willCommit | willCommit} but not
+   * yet committed or rejected.
+   */
   inflightAttrs: Record<string, Value | undefined> | null;
+
+  /**
+   * The old/new value pair for each attribute with an uncommitted local
+   * edit, keyed by attribute name. Mirrors the keys of `localAttrs` and is
+   * what {@link JSONAPICache.changedAttrs | changedAttrs} returns.
+   */
   changes: Record<string, [Value | undefined, Value]> | null;
+
+  /**
+   * Validation errors from the most recent failed commit, exposed via
+   * {@link JSONAPICache.getErrors | getErrors} and cleared on the next
+   * successful commit or {@link JSONAPICache.rollbackAttrs | rollbackAttrs}.
+   */
   errors: ApiError[] | null;
+
+  /**
+   * Whether this resource was created on the client via
+   * {@link JSONAPICache.clientDidCreate | clientDidCreate} and has not yet
+   * been persisted. Exposed via {@link JSONAPICache.isNew | isNew}.
+   */
   isNew: boolean;
+
+  /**
+   * Whether this resource is marked as deleted, locally or remotely,
+   * regardless of whether that deletion has been persisted. Exposed via
+   * {@link JSONAPICache.isDeleted | isDeleted}.
+   */
   isDeleted: boolean;
+
+  /**
+   * Whether a deletion of this resource has been persisted to the server.
+   * Exposed via
+   * {@link JSONAPICache.isDeletionCommitted | isDeletionCommitted}.
+   */
   isDeletionCommitted: boolean;
 
   /**
@@ -172,9 +240,9 @@ export class JSONAPICache implements Cache {
   /**
    * Cache the response to a request
    *
-   * Implements `Cache.put`.
+   * Implements {@link Cache.put | Cache.put}.
    *
-   * Expects a StructuredDocument whose `content` member is a JsonApiDocument.
+   * Expects a {@link StructuredDocument} whose `content` member is a JsonApiDocument.
    *
    * ```js
    * cache.put({
@@ -400,6 +468,16 @@ export class JSONAPICache implements Cache {
    * Update the "remote" or "canonical" (persisted) state of the Cache
    * by merging new information into the existing state.
    *
+   * @example
+   * ```ts
+   * cache.patch({
+   *   op: 'update',
+   *   record: identifier,
+   *   field: 'name',
+   *   value: 'Chris',
+   * });
+   * ```
+   *
    * @category Cache Management
    * @public
    * @param op the operation or list of operations to perform
@@ -428,6 +506,16 @@ export class JSONAPICache implements Cache {
 
   /**
    * Update the "local" or "current" (unpersisted) state of the Cache
+   *
+   * @example
+   * ```ts
+   * cache.mutate({
+   *   op: 'replaceRelatedRecord',
+   *   record: identifier,
+   *   field: 'author',
+   *   value: authorIdentifier,
+   * });
+   * ```
    *
    * @category Cache Management
    * @public
@@ -472,8 +560,8 @@ export class JSONAPICache implements Cache {
    * not require retainining connections to the Store
    * and Cache to present data on a per-field basis.
    *
-   * This generally takes the place of `getAttr` as
-   * an API and may even take the place of `getRelationship`
+   * This generally takes the place of {@link JSONAPICache.getAttr | getAttr} as
+   * an API and may even take the place of {@link JSONAPICache.getRelationship | getRelationship}
    * depending on implementation specifics, though this
    * latter usage is less recommended due to the advantages
    * of the Graph handling necessary entanglements and
@@ -487,6 +575,12 @@ export class JSONAPICache implements Cache {
    * by the {json:api} API implementation such as `lid` and
    * the various internal WarpDrive bookkeeping fields.
    * :::
+   *
+   * @example
+   * ```ts
+   * const resource = cache.peek(identifier);
+   * const document = cache.peek(requestKey);
+   * ```
    *
    * @category Cache Management
    * @public
@@ -553,6 +647,12 @@ export class JSONAPICache implements Cache {
   /**
    * Peek the remote resource data from the Cache.
    *
+   * @example
+   * ```ts
+   * const resource = cache.peekRemoteState(identifier);
+   * const document = cache.peekRemoteState(requestKey);
+   * ```
+   *
    * @category Cache Management
    * @public
    */
@@ -617,9 +717,14 @@ export class JSONAPICache implements Cache {
    * Peek the Cache for the existing request data associated with
    * a cacheable request.
    *
-   * This is effectively the reverse of `put` for a request in
+   * This is effectively the reverse of {@link JSONAPICache.put | put} for a request in
    * that it will return the the request, response, and content
-   * whereas `peek` will return just the `content`.
+   * whereas {@link JSONAPICache.peek | peek} will return just the `content`.
+   *
+   * @example
+   * ```ts
+   * const doc = cache.peekRequest(requestKey);
+   * ```
    *
    * @category Cache Management
    * @public
@@ -630,6 +735,15 @@ export class JSONAPICache implements Cache {
 
   /**
    * Push resource data from a remote source into the cache for this identifier
+   *
+   * @example
+   * ```ts
+   * cache.upsert(identifier, {
+   *   type: 'user',
+   *   id: '1',
+   *   attributes: { name: 'Chris' },
+   * });
+   * ```
    *
    * @category Cache Management
    * @public
@@ -688,7 +802,7 @@ export class JSONAPICache implements Cache {
    *
    * Each individual resource or document that has
    * been mutated should be described as an individual
-   * `Change` entry in the returned array.
+   * {@link Change} entry in the returned array.
    *
    * A `Change` is described by an object containing up to
    * three properties: (1) the `identifier` of the entity that
@@ -763,6 +877,11 @@ export class JSONAPICache implements Cache {
    *
    * It returns properties from options that should be set on the record during the create
    * process. This return value behavior is deprecated.
+   *
+   * @example
+   * ```ts
+   * cache.clientDidCreate(identifier, { name: 'Chris' });
+   * ```
    *
    * @category Resource Lifecycle
    * @public
@@ -842,6 +961,11 @@ export class JSONAPICache implements Cache {
    * [LIFECYCLE] Signals to the cache that a resource
    * will be part of a save transaction.
    *
+   * @example
+   * ```ts
+   * cache.willCommit(identifier, context);
+   * ```
+   *
    * @category Resource Lifecycle
    * @public
    */
@@ -858,6 +982,11 @@ export class JSONAPICache implements Cache {
   /**
    * [LIFECYCLE] Signals to the cache that a resource
    * was successfully updated as part of a save transaction.
+   *
+   * @example
+   * ```ts
+   * cache.didCommit(identifier, result);
+   * ```
    *
    * @category Resource Lifecycle
    * @public
@@ -943,6 +1072,11 @@ export class JSONAPICache implements Cache {
    * [LIFECYCLE] Signals to the cache that a resource
    * was update via a save transaction failed.
    *
+   * @example
+   * ```ts
+   * cache.commitWasRejected(identifier, errors);
+   * ```
+   *
    * @category Resource Lifecycle
    * @public
    */
@@ -962,6 +1096,11 @@ export class JSONAPICache implements Cache {
    * should be cleared.
    *
    * This method is a candidate to become a mutation
+   *
+   * @example
+   * ```ts
+   * cache.unloadRecord(identifier);
+   * ```
    *
    * @category Resource Lifecycle
    * @public
@@ -1045,6 +1184,12 @@ export class JSONAPICache implements Cache {
    * Retrieve the data for an attribute from the cache
    * with local mutations applied.
    *
+   * @example
+   * ```ts
+   * const name = cache.getAttr(identifier, 'name');
+   * const zip = cache.getAttr(identifier, ['address', 'zip']);
+   * ```
+   *
    * @category Resource Data
    * @public
    */
@@ -1101,6 +1246,11 @@ export class JSONAPICache implements Cache {
   /**
    * Retrieve the remote data for an attribute from the cache
    *
+   * @example
+   * ```ts
+   * const name = cache.getRemoteAttr(identifier, 'name');
+   * ```
+   *
    * @category Resource Data
    * @public
    */
@@ -1153,6 +1303,11 @@ export class JSONAPICache implements Cache {
    * Mutate the data for an attribute in the cache
    *
    * This method is a candidate to become a mutation
+   *
+   * @example
+   * ```ts
+   * cache.setAttr(identifier, 'name', 'Chris');
+   * ```
    *
    * @category Resource Data
    * @public
@@ -1246,6 +1401,12 @@ export class JSONAPICache implements Cache {
   /**
    * Query the cache for the changed attributes of a resource.
    *
+   * @example
+   * ```ts
+   * const changes = cache.changedAttrs(identifier);
+   * // { name: ['Igor', 'Chris'] }
+   * ```
+   *
    * @category Resource Data
    * @public
    * @return `{ '<field>': ['<old>', '<new>'] }`
@@ -1269,6 +1430,13 @@ export class JSONAPICache implements Cache {
 
   /**
    * Query the cache for whether any mutated attributes exist
+   *
+   * @example
+   * ```ts
+   * if (cache.hasChangedAttrs(identifier)) {
+   *   // ...
+   * }
+   * ```
    *
    * @category Resource Data
    * @public
@@ -1296,6 +1464,11 @@ export class JSONAPICache implements Cache {
    * Tell the cache to discard any uncommitted mutations to attributes
    *
    * This method is a candidate to become a mutation
+   *
+   * @example
+   * ```ts
+   * const restoredKeys = cache.rollbackAttrs(identifier);
+   * ```
    *
    * @category Resource Data
    * @public
@@ -1342,7 +1515,7 @@ export class JSONAPICache implements Cache {
   /**
    * Query the cache for the changes to relationships of a resource.
    *
-   * Returns a map of relationship names to RelationshipDiff objects.
+   * Returns a map of relationship names to {@link RelationshipDiff} objects.
    *
    * ```ts
    * type RelationshipDiff =
@@ -1361,6 +1534,12 @@ export class JSONAPICache implements Cache {
       };
       ```
    *
+   * @example
+   * ```ts
+   * const diffs = cache.changedRelationships(identifier);
+   * const comments = diffs.get('comments');
+   * ```
+   *
    * @category Resource Data
    * @public
    */
@@ -1370,6 +1549,13 @@ export class JSONAPICache implements Cache {
 
   /**
    * Query the cache for whether any mutated relationships exist
+   *
+   * @example
+   * ```ts
+   * if (cache.hasChangedRelationships(identifier)) {
+   *   // ...
+   * }
+   * ```
    *
    * @category Resource Data
    * @public
@@ -1384,6 +1570,11 @@ export class JSONAPICache implements Cache {
    * This will also discard the change on any appropriate inverses.
    *
    * This method is a candidate to become a mutation
+   *
+   * @example
+   * ```ts
+   * const restoredFields = cache.rollbackRelationships(identifier);
+   * ```
    *
    * @category Resource Data
    * @public
@@ -1402,6 +1593,11 @@ export class JSONAPICache implements Cache {
   /**
    * Query the cache for the current state of a relationship property
    *
+   * @example
+   * ```ts
+   * const relationship = cache.getRelationship(identifier, 'comments');
+   * ```
+   *
    * @category Resource Data
    * @public
    * @return resource relationship object
@@ -1412,6 +1608,11 @@ export class JSONAPICache implements Cache {
 
   /**
    * Query the cache for the remote state of a relationship property
+   *
+   * @example
+   * ```ts
+   * const relationship = cache.getRemoteRelationship(identifier, 'comments');
+   * ```
    *
    * @category Resource Data
    * @public
@@ -1431,6 +1632,11 @@ export class JSONAPICache implements Cache {
    *
    * This method is a candidate to become a mutation
    *
+   * @example
+   * ```ts
+   * cache.setIsDeleted(identifier, true);
+   * ```
+   *
    * @category Resource State
    * @public
    */
@@ -1444,6 +1650,11 @@ export class JSONAPICache implements Cache {
   /**
    * Query the cache for any validation errors applicable to the given resource.
    *
+   * @example
+   * ```ts
+   * const errors = cache.getErrors(identifier);
+   * ```
+   *
    * @category Resource State
    * @public
    */
@@ -1453,6 +1664,13 @@ export class JSONAPICache implements Cache {
 
   /**
    * Query the cache for whether a given resource has any available data
+   *
+   * @example
+   * ```ts
+   * if (cache.isEmpty(identifier)) {
+   *   // ...
+   * }
+   * ```
    *
    * @category Resource State
    * @public
@@ -1466,6 +1684,13 @@ export class JSONAPICache implements Cache {
    * Query the cache for whether a given resource was created locally and not
    * yet persisted.
    *
+   * @example
+   * ```ts
+   * if (cache.isNew(identifier)) {
+   *   // ...
+   * }
+   * ```
+   *
    * @category Resource State
    * @public
    */
@@ -1478,6 +1703,13 @@ export class JSONAPICache implements Cache {
    * Query the cache for whether a given resource is marked as deleted (but not
    * necessarily persisted yet).
    *
+   * @example
+   * ```ts
+   * if (cache.isDeleted(identifier)) {
+   *   // ...
+   * }
+   * ```
+   *
    * @category Resource State
    * @public
    */
@@ -1489,6 +1721,13 @@ export class JSONAPICache implements Cache {
   /**
    * Query the cache for whether a given resource has been deleted and that deletion
    * has also been persisted.
+   *
+   * @example
+   * ```ts
+   * if (cache.isDeletionCommitted(identifier)) {
+   *   // ...
+   * }
+   * ```
    *
    * @category Resource State
    * @public
