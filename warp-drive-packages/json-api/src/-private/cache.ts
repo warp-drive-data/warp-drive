@@ -201,9 +201,10 @@ interface CachedResource {
 type AttrLayer = 'localAttrs' | 'inflightAttrs' | 'remoteAttrs' | 'defaultAttrs';
 
 /**
- * A layer that exists only while predicting a merge: the attributes arriving from the
- * server in a save response or a push, which {@link partitionChangedKeys} reads as if
- * they were already on the resource. Never part of a reader's resolution order.
+ * A layer that exists only for the duration of a merge: the attributes arriving from the
+ * server in a save response or a push. {@link partitionChangedKeys} reads it as if it were
+ * already on the resource; {@link mergeIntoRemote} then folds it in. Never part of a
+ * reader's resolution order.
  */
 type MergeLayer = 'incomingAttrs';
 
@@ -228,9 +229,9 @@ const RESOLUTION_ORDER_EDIT_BASELINE = ['inflightAttrs', 'remoteAttrs'] as const
 /** What an editable copy reads. */
 const RESOLUTION_ORDER_LOCAL_STATE = ['localAttrs', ...RESOLUTION_ORDER_EDIT_BASELINE, 'defaultAttrs'] as const;
 
-// Merge prediction: each projection before and after the merge, so `partitionChangedKeys` can tell
-// which one moved. `defaultAttrs` is left out on purpose: a memoized default giving way to a real
-// value is a move.
+// Merge orders: each projection before and after the merge. `partitionChangedKeys` compares them
+// to tell which projection moved; `mergeIntoRemote` applies the after order. `defaultAttrs` is left
+// out on purpose: a memoized default giving way to a real value is a move.
 const RESOLUTION_ORDER_REMOTE_BEFORE_MERGE = ['remoteAttrs'] as const;
 const RESOLUTION_ORDER_LOCAL_BEFORE_MERGE = ['localAttrs', ...RESOLUTION_ORDER_EDIT_BASELINE] as const;
 // The `REMOTE_AFTER_*` orders are also what `mergeIntoRemote` applies: every layer above
