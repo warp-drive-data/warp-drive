@@ -1,5 +1,12 @@
 {
-  "include": ["tests/**/*", "services/**/*", "models/**/*", "start.ts", "../../@types/ember-data-qunit-asserts"],
+  "include": [
+    "tests/**/*",
+    "type-tests/**/*",
+    "services/**/*",
+    "models/**/*",
+    "start.ts",
+    "../../@types/ember-data-qunit-asserts"
+  ],
   "compilerOptions": {
     "lib": ["DOM", "ESNext"],
     "module": "esnext",
