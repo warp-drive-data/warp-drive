@@ -52,4 +52,6 @@ In fact, it is likely that if you want TypeScript for the v2 store that you are 
 
 4. Record instances created by one store may not be used by another store, this primarily means they cannot be set as values of relationships. The records (and data) of each store is a wholly distinct context. You may find [ember-provide-consume-context](https://github.com/customerio/ember-provide-consume-context) useful for helping to manage this. Migrating "leaf first" or well-encapsulated parts of your app will generally lead to the pit-of-success.
 
+For the application-side patterns that go with this setup, see [Migrating with two stores](/guides/the-manual/cookbook/migrating-with-two-stores.md).
+
 
