@@ -155,16 +155,24 @@ interface CachedResource {
   defaultAttrs: AttrHash | null;
 
   /**
-   * A `[before, after]` pair per entry in
-   * {@link CachedResource.localAttrs | localAttrs}, in the shape
-   * {@link JSONAPICache.changedAttrs | changedAttrs} returns.
+   * A `[before, after]` pair per dirty field, in the shape
+   * {@link JSONAPICache.changedAttrs | changedAttrs} returns. Maintained
+   * incrementally at each edit rather than derived on read, because the
+   * consumers that need it read it far more often than it changes.
    *
-   * Tracked alongside `localAttrs` but outliving it across a save: starting one
-   * empties `localAttrs` without clearing these, so
+   * `before` is the edit baseline at the moment of the most recent `setAttr`
+   * for the field: the in-flight value if a save is carrying one, else remote.
+   * An edit made while a save is in flight therefore records the in-flight
+   * value as `before`, so the pair describes what the *next* save would
+   * change. Reverting such an edit to the in-flight value restores the pair to
+   * `[remote, inflight]`, since that save is still changing the field.
+   *
+   * Outlives `localAttrs` across a save: starting one empties `localAttrs`
+   * without clearing these, so
    * {@link JSONAPICache.changedAttrs | changedAttrs} still reports what is
    * being saved while the request is in flight. Completing or rejecting the
-   * save reconciles the two again, and a remote value moving underneath a
-   * still-diverging edit refreshes `before` to the new baseline.
+   * save reconciles the two again, and any time remote moves underneath a
+   * still-diverging edit, `before` is refreshed to the new remote value.
    */
   changes: Record<string, [Value | undefined, Value]> | null;
 
@@ -1411,7 +1419,16 @@ export class JSONAPICache implements Cache {
         cached.changes[currentAttr] = [baseline, value];
       } else if (cached.localAttrs) {
         delete cached.localAttrs[currentAttr];
-        delete cached.changes![currentAttr];
+        if (cached.inflightAttrs && currentAttr in cached.inflightAttrs) {
+          // the save in flight is still changing this field, so `changedAttrs` keeps reporting it
+          cached.changes = cached.changes || (Object.create(null) as Record<string, [Value, Value]>);
+          cached.changes[currentAttr] = [
+            resolveAttr(currentAttr, cached, RESOLUTION_ORDER_REMOTE_BEFORE_MERGE),
+            cached.inflightAttrs[currentAttr] as Value,
+          ];
+        } else {
+          delete cached.changes![currentAttr];
+        }
       }
 
       if (cached.defaultAttrs && currentAttr in cached.defaultAttrs) {
@@ -2771,6 +2788,11 @@ function commitDidError(cache: JSONAPICache, identifier: ResourceKey, errors: Ap
       }
     }
     cached.inflightAttrs = null;
+  }
+  // the failed save's values are local edits again: drop any that now match remote, and re-anchor
+  // `changes` to remote rather than to the in-flight values that no longer exist
+  if (reconcileLocalEdits(cached)) {
+    cache._capabilities.notifyChange(identifier, 'state', null);
   }
   if (errors) {
     cached.errors = errors;
