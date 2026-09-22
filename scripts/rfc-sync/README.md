@@ -45,11 +45,13 @@ for how this looks from a contributor's side, and
    maintainers are ever willing to install a purpose-built GitHub App scoped to just that repo
    (Pull requests: read/write, Contents: read), that would be a strict improvement over this
    token and worth switching to -- but that requires their cooperation, not just ours.
-4. In `warp-drive-data/warp-drive`'s repo settings, add:
+4. In `warp-drive-data/warp-drive`'s repo settings (Settings → Secrets and variables → Actions →
+   **Secrets** tab -- not the Variables tab; both workflows read all four of these via
+   `secrets.*`, so anything added as a Variable instead is invisible to them), add:
    - Secret `EMBERJS_RFCS_SYNC_TOKEN` -- the token from step 3
-   - Secret or variable `EMBERJS_RFCS_SYNC_FORK` -- the fork's `owner/repo`, e.g.
+   - Secret `EMBERJS_RFCS_SYNC_FORK` -- the fork's `owner/repo`, e.g.
      `warpdrive-bot/emberjs-rfcs`
-   - Secret or variable `EMBERJS_RFCS_SYNC_NAME` / `EMBERJS_RFCS_SYNC_EMAIL` -- the bot's git
+   - Secret `EMBERJS_RFCS_SYNC_NAME` / `EMBERJS_RFCS_SYNC_EMAIL` -- the bot's git
      identity (same pattern as `GH_DEPLOY_NAME`/`GH_DEPLOY_EMAIL` in `release.yml`); use the bot
      account's GitHub-provided `@users.noreply.github.com` address for the email so a real inbox
      never appears in public commit history

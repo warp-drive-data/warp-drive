@@ -29,6 +29,6 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           EMBERJS_RFCS_SYNC_TOKEN: ${{ secrets.EMBERJS_RFCS_SYNC_TOKEN }}
-          EMBERJS_RFCS_SYNC_FORK: ${{ vars.EMBERJS_RFCS_SYNC_FORK }}
-          EMBERJS_RFCS_SYNC_NAME: ${{ vars.EMBERJS_RFCS_SYNC_NAME }}
-          EMBERJS_RFCS_SYNC_EMAIL: ${{ vars.EMBERJS_RFCS_SYNC_EMAIL }}
+          EMBERJS_RFCS_SYNC_FORK: ${{ secrets.EMBERJS_RFCS_SYNC_FORK }}
+          EMBERJS_RFCS_SYNC_NAME: ${{ secrets.EMBERJS_RFCS_SYNC_NAME }}
+          EMBERJS_RFCS_SYNC_EMAIL: ${{ secrets.EMBERJS_RFCS_SYNC_EMAIL }}
