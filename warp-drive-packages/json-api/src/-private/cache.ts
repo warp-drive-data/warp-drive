@@ -155,31 +155,6 @@ interface CachedResource {
   defaultAttrs: AttrHash | null;
 
   /**
-   * The unsaved mutations, as a `[before, after]` pair per field, in the shape
-   * {@link JSONAPICache.changedAttrs | changedAttrs} returns. Maintained
-   * incrementally at each edit, so reading it is a property access.
-   *
-   * `before` is the value the mutation replaces, which is not always the
-   * persisted one: a mutation a save is carrying replaces remote, while an edit
-   * made during that save replaces the in-flight value. This is therefore not
-   * "the diff" against persisted state; it is what saving from here would
-   * change, which is what `serializePatch` and the legacy `Snapshot` consume.
-   * Reverting a mid-flight edit back to the in-flight value restores the pair
-   * to `[remote, inflight]`, since that save is still changing the field.
-   *
-   * Outlives `localAttrs` across a save: starting one empties `localAttrs`
-   * without clearing these, so
-   * {@link JSONAPICache.changedAttrs | changedAttrs} still reports what is
-   * being saved while the request is in flight. Completing or rejecting the
-   * save reconciles the two again, and any time remote moves underneath a
-   * still-diverging edit, `before` is refreshed to the new remote value.
-   *
-   * Dirtiness is not read from here: `hasChangedAttrs` checks `localAttrs` and
-   * `inflightAttrs` directly.
-   */
-  changes: Record<string, [Value | undefined, Value]> | null;
-
-  /**
    * Errors from the most recent rejected save. A successful commit clears
    * them.
    */
@@ -273,7 +248,6 @@ function makeCache(): CachedResource {
     inflightAttrs: null,
     remoteAttrs: null,
     defaultAttrs: null,
-    changes: null,
     errors: null,
     isNew: false,
     isDeleted: false,
@@ -1418,20 +1392,8 @@ export class JSONAPICache implements Cache {
       if (baseline !== value) {
         cached.localAttrs = cached.localAttrs || (Object.create(null) as Record<string, Value>);
         cached.localAttrs[currentAttr] = value;
-        cached.changes = cached.changes || (Object.create(null) as Record<string, [Value, Value]>);
-        cached.changes[currentAttr] = [baseline, value];
       } else if (cached.localAttrs) {
         delete cached.localAttrs[currentAttr];
-        if (cached.inflightAttrs && currentAttr in cached.inflightAttrs) {
-          // the save in flight is still changing this field, so `changedAttrs` keeps reporting it
-          cached.changes = cached.changes || (Object.create(null) as Record<string, [Value, Value]>);
-          cached.changes[currentAttr] = [
-            resolveAttr(currentAttr, cached, RESOLUTION_ORDER_REMOTE_BEFORE_MERGE),
-            cached.inflightAttrs[currentAttr] as Value,
-          ];
-        } else {
-          delete cached.changes![currentAttr];
-        }
       }
 
       if (cached.defaultAttrs && currentAttr in cached.defaultAttrs) {
@@ -1455,7 +1417,6 @@ export class JSONAPICache implements Cache {
     if (baselineAtPath !== value) {
       cached.localAttrs = cached.localAttrs || (Object.create(null) as Record<string, Value>);
       cached.localAttrs[basePath] = cached.localAttrs[basePath] || structuredClone(baseline);
-      cached.changes = cached.changes || (Object.create(null) as Record<string, [Value, Value]>);
       let currentLocal = cached.localAttrs[basePath] as ObjectValue;
       let nextLink = 1;
 
@@ -1463,8 +1424,6 @@ export class JSONAPICache implements Cache {
         currentLocal = currentLocal[path[nextLink++]] as ObjectValue;
       }
       currentLocal[path[nextLink]] = value;
-
-      cached.changes[basePath] = [baseline, cached.localAttrs[basePath] as ObjectValue];
 
       // since we initiaize the value as basePath as a clone of the value at the remote basePath
       // then in theory we can use JSON.stringify to compare the two values as key insertion order
@@ -1485,7 +1444,6 @@ export class JSONAPICache implements Cache {
 
         if (existingStr !== newStr) {
           delete cached.localAttrs[basePath];
-          delete cached.changes![basePath];
         }
       } catch {
         // noop
@@ -1497,7 +1455,19 @@ export class JSONAPICache implements Cache {
   }
 
   /**
-   * Query the cache for the changed attributes of a resource.
+   * Query the cache for the changed attributes of a resource: every unsaved
+   * mutation, as a `[before, after]` pair per field.
+   *
+   * `before` is the value the mutation replaces, which is not always the
+   * persisted one. A mutation a save is carrying replaces remote state; an edit
+   * made while that save is in flight replaces the in-flight value. So this is
+   * what saving from here would change, which is what `serializePatch` and the
+   * legacy `Snapshot` consume, rather than a diff against persisted state.
+   *
+   * Derived from the layers on each call, so it is always consistent with
+   * {@link JSONAPICache.getAttr | getAttr} and
+   * {@link JSONAPICache.rollbackAttrs | rollbackAttrs}. Dirtiness does not go
+   * through here; see {@link JSONAPICache.hasChangedAttrs | hasChangedAttrs}.
    *
    * @example
    * ```ts
@@ -1516,14 +1486,27 @@ export class JSONAPICache implements Cache {
       cached
     );
 
+    const changes = Object.create(null) as ChangedAttributesHash;
     // in Prod we try to recover when accessing something that
     // doesn't exist
     if (!cached) {
-      return Object.create(null) as ChangedAttributesHash;
+      return changes;
     }
 
-    // TODO freeze in dev
-    return cached.changes || (Object.create(null) as ChangedAttributesHash);
+    const { localAttrs, inflightAttrs, remoteAttrs } = cached;
+    if (inflightAttrs) {
+      const keys = Object.keys(inflightAttrs);
+      for (let i = 0; i < keys.length; i++) {
+        changes[keys[i]] = [remoteAttrs ? remoteAttrs[keys[i]] : undefined, inflightAttrs[keys[i]] as Value];
+      }
+    }
+    if (localAttrs) {
+      const keys = Object.keys(localAttrs);
+      for (let i = 0; i < keys.length; i++) {
+        changes[keys[i]] = [resolveAttr(keys[i], cached, RESOLUTION_ORDER_EDIT_BASELINE), localAttrs[keys[i]] as Value];
+      }
+    }
+    return changes;
   }
 
   /**
@@ -1580,7 +1563,6 @@ export class JSONAPICache implements Cache {
     if (cached.localAttrs !== null) {
       dirtyKeys = Object.keys(cached.localAttrs);
       cached.localAttrs = null;
-      cached.changes = null;
     }
 
     if (cached.isNew) {
@@ -2350,13 +2332,12 @@ function isRelationship(field: FieldSchema): field is LegacyRelationshipField | 
 }
 
 /**
- * After a merge: drop every local edit the new baseline agrees with, and re-anchor the
- * `changedAttrs()` tuple of every edit it does not. Returns whether any edit was dropped.
+ * After a merge: drop every local edit the new baseline agrees with. Returns whether any edit
+ * was dropped.
  */
 function reconcileLocalEdits(cached: CachedResource): boolean {
-  const { localAttrs, defaultAttrs, changes } = cached;
+  const { localAttrs, defaultAttrs } = cached;
   if (!localAttrs) {
-    cached.changes = null;
     return false;
   }
   let droppedAnEdit = false;
@@ -2364,15 +2345,10 @@ function reconcileLocalEdits(cached: CachedResource): boolean {
 
   for (let i = 0; i < editedKeys.length; i++) {
     const key = editedKeys[i];
-    const baseline = resolveAttr(key, cached, RESOLUTION_ORDER_EDIT_BASELINE);
-    const edit = localAttrs[key];
 
-    if (valuesEqual(baseline, edit)) {
+    if (valuesEqual(resolveAttr(key, cached, RESOLUTION_ORDER_EDIT_BASELINE), localAttrs[key])) {
       droppedAnEdit = true;
       delete localAttrs[key];
-      delete changes![key];
-    } else if (changes && key in changes && !valuesEqual(changes[key][0], baseline)) {
-      changes[key] = [baseline, edit as Value];
     }
 
     if (defaultAttrs && key in defaultAttrs) {
@@ -2792,8 +2768,7 @@ function commitDidError(cache: JSONAPICache, identifier: ResourceKey, errors: Ap
     }
     cached.inflightAttrs = null;
   }
-  // the failed save's values are local edits again: drop any that now match remote, and re-anchor
-  // `changes` to remote rather than to the in-flight values that no longer exist
+  // the failed save's values are local edits again: drop any that now match remote
   if (reconcileLocalEdits(cached)) {
     cache._capabilities.notifyChange(identifier, 'state', null);
   }

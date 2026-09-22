@@ -7,9 +7,9 @@ import type { TestContext } from '@warp-drive/diagnostic/-types';
 import { JSONAPICache } from '@warp-drive/json-api';
 
 /**
- * `changedAttrs()` is maintained incrementally, so each lifecycle event has to leave it
- * describing the right pair. These pin down what it reports around a save that is still in
- * flight when further edits arrive, and after that save is rejected.
+ * `changedAttrs()` reports every unsaved mutation as `[the value it replaces, the new value]`.
+ * These pin down what that means around a save that is still in flight when further edits
+ * arrive, and after that save is rejected.
  */
 
 interface ExistingUser {
