@@ -102,11 +102,12 @@ type AttrHash = Record<string, Value | undefined>;
  * local state, {@link CachedResource.localAttrs | localAttrs} and
  * {@link CachedResource.inflightAttrs | inflightAttrs}.
  *
- * A field is **dirty** while `localAttrs` or `inflightAttrs` holds it. The
- * mutation is **committed** once remote state holds the same value — a save
- * response landing, or a push that happens to agree — at which point the entry
- * is discarded. Equality is structural, so an array or object with equal content
- * counts.
+ * A field is **dirty** while `localAttrs` or `inflightAttrs` holds it. A save
+ * **commits** the mutation: `didCommit` merges the in-flight values into
+ * `remoteAttrs` and removes them from `inflightAttrs`. A push carrying the same
+ * value as a pending edit in `localAttrs` has the same effect on that edit: the
+ * server already holds it, so it is removed from `localAttrs` and `changes`.
+ * "Same value" is structural, so an array or object with equal content counts.
  *
  * Thus, a dirty field reads as mutated for local readers only, and goes on doing
  * so while its save is in flight.
@@ -117,12 +118,10 @@ interface CachedResource {
   /** The resource's id, once one is known. */
   id: string | null;
 
-  // The four layers, top-down in local-state resolution order. Remote state skips the first two.
-
   /**
    * The top layer of local state: uncommitted mutations, held apart from remote
-   * state. Any field with an entry here is dirty. (With `inflightAttrs`, this is
-   * what the guides call "the diff".)
+   * state. Any field with an entry here is dirty. Along with `inflightAttrs`,
+   * this is what the guides call "the diff".
    *
    * Starting a save moves these into `inflightAttrs`, so any further
    * mutation accumulates here afresh without disturbing the request already
@@ -145,14 +144,15 @@ interface CachedResource {
   remoteAttrs: AttrHash | null;
 
   /**
-   * The bottom layer of both projections. Memoized results of legacy
-   * `defaultValue()` *functions*, for fields no other layer holds. Primitive and
-   * transform defaults are recomputed on every read and never land here. Never
-   * committed; an entry is dropped once the field gets a real value.
+   * The bottom layer of both projections, consulted for fields no other layer
+   * holds. Only one kind of schema default is stored here: the result of a
+   * legacy `defaultValue()` *function*, memoized because the function returns a
+   * fresh value per call and the record must keep reading the same one. A
+   * primitive `options.defaultValue` or a transformation's `defaultValue()` is
+   * recomputed on every read instead. Never committed; an entry is dropped once
+   * the field gets a real value.
    */
   defaultAttrs: AttrHash | null;
-
-  // Bookkeeping for the mutations in the layers above.
 
   /**
    * A `[before, after]` pair per entry in
@@ -173,8 +173,6 @@ interface CachedResource {
    * them.
    */
   errors: ApiError[] | null;
-
-  // Where the resource sits in the create/update/delete lifecycle.
 
   /**
    * Whether this record was created locally and has never been persisted.
