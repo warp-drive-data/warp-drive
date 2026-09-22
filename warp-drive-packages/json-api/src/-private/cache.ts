@@ -117,8 +117,7 @@ interface CachedResource {
   /** The resource's id, once one is known. */
   id: string | null;
 
-  /** The bottom data layer of both projections: the last known persisted values. */
-  remoteAttrs: AttrHash | null;
+  // The four layers, top-down in local-state resolution order. Remote state skips the first two.
 
   /**
    * The top layer of local state: uncommitted mutations, held apart from remote
@@ -132,14 +131,6 @@ interface CachedResource {
   localAttrs: AttrHash | null;
 
   /**
-   * The bottom layer of both projections. Memoized results of legacy
-   * `defaultValue()` *functions*, for fields no other layer holds. Primitive and
-   * transform defaults are recomputed on every read and never land here. Never
-   * committed; an entry is dropped once the field gets a real value.
-   */
-  defaultAttrs: AttrHash | null;
-
-  /**
    * The middle layer of local state: the mutations an in-progress save is
    * carrying.
    *
@@ -149,6 +140,19 @@ interface CachedResource {
    * instead, without overwriting any newer edit made while it was in flight.
    */
   inflightAttrs: AttrHash | null;
+
+  /** The top layer of remote state and the data layer beneath local state: the last known persisted values. */
+  remoteAttrs: AttrHash | null;
+
+  /**
+   * The bottom layer of both projections. Memoized results of legacy
+   * `defaultValue()` *functions*, for fields no other layer holds. Primitive and
+   * transform defaults are recomputed on every read and never land here. Never
+   * committed; an entry is dropped once the field gets a real value.
+   */
+  defaultAttrs: AttrHash | null;
+
+  // Bookkeeping for the mutations in the layers above.
 
   /**
    * A `[before, after]` pair per entry in
@@ -169,6 +173,8 @@ interface CachedResource {
    * them.
    */
   errors: ApiError[] | null;
+
+  // Where the resource sits in the create/update/delete lifecycle.
 
   /**
    * Whether this record was created locally and has never been persisted.
@@ -254,10 +260,10 @@ type MergeKind = keyof typeof MERGE_RESOLUTION;
 function makeCache(): CachedResource {
   return {
     id: null,
-    remoteAttrs: null,
     localAttrs: null,
-    defaultAttrs: null,
     inflightAttrs: null,
+    remoteAttrs: null,
+    defaultAttrs: null,
     changes: null,
     errors: null,
     isNew: false,
