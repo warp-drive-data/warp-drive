@@ -7,7 +7,12 @@ export { recordIdentifierFor } from './-private/caches/instance-cache.ts';
 export { CacheHandler, type StoreRequestContext } from './-private/cache-handler/handler.ts';
 export { type CachePolicy } from './-private/cache-handler/types.ts';
 
-export { isResourceKey, isRequestKey } from './-private/managers/cache-key-manager.ts';
+export {
+  isResourceKey,
+  isRequestKey,
+  fieldValueIdentity,
+  type FieldValueIdentity,
+} from './-private/managers/cache-key-manager.ts';
 
 export { constructResource } from './-private/utils/construct-resource.ts';
 export type { InstanceCache } from './-private/caches/instance-cache.ts';
