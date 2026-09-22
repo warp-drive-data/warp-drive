@@ -13,13 +13,6 @@ import { configureWarningHandler, WarningConfig } from './assert-warning';
 
 declare module '@warp-drive/diagnostic/-types' {
   export interface Diagnostic {
-    /**
-     * Compat with QUnit assert interface
-     */
-    test: {
-      expected: number;
-    };
-
     expectDeprecation(options: DeprecationConfig, label?: string): void;
     expectDeprecation(
       callback: () => void | Promise<void>,

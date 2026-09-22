@@ -119,6 +119,16 @@ export interface Diagnostic {
    * item in the expected array.
    */
   arrayEquals<T>(actual: T[], expected: T[], message: string): void;
+
+  /**
+   * Compat with the QUnit `assert.test` private API. `testId` is the id of the
+   * test that is currently running, which test-framework integrations (e.g.
+   * holodeck's `setTestId`) use to scope per-test state.
+   */
+  test: {
+    readonly testId: string;
+    expected: number | null;
+  };
 }
 
 // oxlint-disable-next-line typescript/no-empty-object-type

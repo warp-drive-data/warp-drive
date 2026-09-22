@@ -38,7 +38,7 @@ setupGlobalHooks((hooks) => {
   configureAsserts(hooks, { assertAllDeprecations: false });
 
   hooks.beforeEach(function (assert) {
-    setTestId(this, (assert as unknown as { test: { testId: string } }).test.testId);
+    setTestId(this, assert.test.testId);
   });
   hooks.afterEach(function () {
     setTestId(this, null);
