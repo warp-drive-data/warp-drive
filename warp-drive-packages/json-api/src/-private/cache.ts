@@ -42,7 +42,10 @@ import type {
   LegacyHasManyField,
   LegacyRelationshipField,
   ResourceField,
+  SchemaArrayField,
+  SchemaObjectField,
 } from '@warp-drive/core/types/schema/fields';
+import type { SchemaService } from '@warp-drive/core/types/schema/schema-service';
 import type {
   CollectionResourceDataDocument,
   ResourceDataDocument,
@@ -1892,6 +1895,49 @@ function candidateKeys(
 }
 
 /**
+ * Whether two values of `field` count as the same value for change detection.
+ *
+ * A `schema-object`, and each element of a `schema-array`, compares by the identity hash its
+ * `ObjectSchema` declares (`identity: { kind: '@hash', ... }`), so the schema decides what "same"
+ * means for it. With no hash declared, and for every other field kind, only the same reference
+ * counts. That knowingly over-notifies for equal-content objects: content equality is the schema's
+ * to define, not the cache's to guess.
+ */
+function attrValuesEqual(schema: SchemaService, field: FieldSchema, a: unknown, b: unknown): boolean {
+  if (a === b) return true;
+  if (field.kind === 'schema-object') return schemaObjectsEqual(schema, field, a, b);
+  if (field.kind === 'schema-array') return schemaArraysEqual(schema, field, a, b);
+  return false;
+}
+
+/**
+ * A schema-array has no hash of its own: two arrays are the same when they have the same length
+ * and every element compares equal as a schema-object of the element type.
+ */
+function schemaArraysEqual(schema: SchemaService, field: SchemaArrayField, a: unknown, b: unknown): boolean {
+  if (!Array.isArray(a) || !Array.isArray(b) || a.length !== b.length) return false;
+  for (let i = 0; i < a.length; i++) {
+    if (!schemaObjectsEqual(schema, field, a[i], b[i])) return false;
+  }
+  return true;
+}
+
+function schemaObjectsEqual(
+  schema: SchemaService,
+  field: SchemaObjectField | SchemaArrayField,
+  a: unknown,
+  b: unknown
+): boolean {
+  if (a === b) return true;
+  if (!a || !b || typeof a !== 'object' || typeof b !== 'object') return false;
+  // a SchemaService without `@hash` support omits this, and its schema-objects compare by reference
+  if (!schema.fieldValueIdentity) return false;
+  const ia = schema.fieldValueIdentity(field, a);
+  const ib = schema.fieldValueIdentity(field, b);
+  return ia !== null && ib !== null && ia.type === ib.type && ia.hash !== null && ia.hash === ib.hash;
+}
+
+/**
  * Partition the keys an incoming payload touches by which projection each one moves.
  *
  * Takes the values rather than the `CachedResource` so it cannot observe the merge it is
@@ -1900,6 +1946,7 @@ function candidateKeys(
  * result depend on whether the caller had already mutated it.
  */
 function calculateChangedKeys(
+  schema: SchemaService,
   prevRemote: Record<string, unknown> | null,
   localAttrs: Record<string, unknown> | null,
   updates: ExistingResourceObject['attributes'],
@@ -1942,8 +1989,8 @@ function calculateChangedKeys(
     const wasLocal = isEdited ? localEdit : isPromoted ? promoted[key] : wasRemote;
     const nowLocal = isEdited ? localEdit : nowRemote;
 
-    const remoteMoved = wasRemote !== nowRemote;
-    const localMoved = wasLocal !== nowLocal;
+    const remoteMoved = !attrValuesEqual(schema, field, wasRemote, nowRemote);
+    const localMoved = !attrValuesEqual(schema, field, wasLocal, nowLocal);
 
     if (remoteMoved) {
       (remoteChanged ??= new Set<string>()).add(key);
@@ -2042,7 +2089,12 @@ function isRelationship(field: FieldSchema): field is LegacyRelationshipField | 
   return kind === 'hasMany' || kind === 'belongsTo' || kind === 'resource' || kind === 'collection';
 }
 
-function patchLocalAttributes(cached: CachedResource, changedRemoteKeys?: Set<string>): boolean {
+function patchLocalAttributes(
+  schema: SchemaService,
+  fields: ReturnType<Store['schema']['fields']>,
+  cached: CachedResource,
+  changedRemoteKeys?: Set<string>
+): boolean {
   const { localAttrs, remoteAttrs, inflightAttrs, defaultAttrs, changes } = cached;
   if (!localAttrs) {
     cached.changes = null;
@@ -2059,8 +2111,10 @@ function patchLocalAttributes(cached: CachedResource, changedRemoteKeys?: Set<st
         : remoteAttrs && attr in remoteAttrs
           ? remoteAttrs[attr]
           : undefined;
+    const field = fields.get(attr);
 
-    if (existing === localAttrs[attr]) {
+    // the same equality `calculateChangedKeys` uses, so a confirmed edit is recognized the same way
+    if (field ? attrValuesEqual(schema, field, existing, localAttrs[attr]) : existing === localAttrs[attr]) {
       hasAppliedPatch = true;
 
       // if the local change is committed, then
@@ -2280,6 +2334,7 @@ function cacheUpsert(
     // NOTE: this does not skip locally-edited keys. An edit that still diverges from the
     // incoming value is reported; one that matches is dropped by patchLocalAttributes.
     changedKeys = calculateChangedKeys(
+      cache._capabilities.schema,
       cached.remoteAttrs,
       cached.localAttrs,
       data.attributes,
@@ -2294,7 +2349,7 @@ function cacheUpsert(
   );
 
   if (cached.localAttrs) {
-    if (patchLocalAttributes(cached, changedKeys)) {
+    if (patchLocalAttributes(cache._capabilities.schema, fields, cached, changedKeys)) {
       cache._capabilities.notifyChange(identifier, 'state', null);
     }
   }
@@ -2593,6 +2648,7 @@ function didCommit(
   // partitioned before the merge below, which overwrites the pre-commit remote values the
   // comparison depends on
   const changes = calculateChangedKeys(
+    cache._capabilities.schema,
     cached.remoteAttrs,
     cached.localAttrs,
     newCanonicalAttributes,
@@ -2607,7 +2663,7 @@ function didCommit(
   );
   cached.inflightAttrs = null;
   // prunes keys whose local edit the server has now confirmed, so they are not announced twice
-  const pruned = patchLocalAttributes(cached, changes.remoteChanged);
+  const pruned = patchLocalAttributes(cache._capabilities.schema, fields, cached, changes.remoteChanged);
 
   if (cached.errors) {
     cached.errors = null;

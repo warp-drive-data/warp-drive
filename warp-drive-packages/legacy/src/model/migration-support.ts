@@ -51,6 +51,7 @@ import type {
   ObjectSchema,
   ResourceSchema,
 } from '@warp-drive/core/types/schema/fields';
+import type { FieldValueIdentity } from '@warp-drive/core/types/schema/schema-service';
 import { Type } from '@warp-drive/core/types/symbols';
 import type { WithPartial } from '@warp-drive/core/types/utils';
 
@@ -632,6 +633,14 @@ export class DelegatingSchemaService implements SchemaService {
   }
   hashFn(field: HashField | { type: string }): HashFn {
     return this._preferred.hashFn(field);
+  }
+  fieldValueIdentity(field: FieldSchema, value: unknown): FieldValueIdentity | null {
+    const service = typeof this._preferred.fieldValueIdentity === 'function' ? this._preferred : this._secondary;
+    assert(
+      `The SchemaService must implement fieldValueIdentity to support schema-object fields`,
+      typeof service.fieldValueIdentity === 'function'
+    );
+    return service.fieldValueIdentity(field, value);
   }
   derivation(field: DerivedField | { type: string }): Derivation {
     return this._preferred.derivation(field);

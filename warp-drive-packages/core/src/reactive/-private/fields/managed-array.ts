@@ -8,7 +8,7 @@ import { ARRAY_SIGNAL, consumeInternalSignal, entangleSignal, withSignalStore } 
 import type { ResourceKey } from '../../../types/identifier.ts';
 import type { ArrayValue, ObjectValue, Value } from '../../../types/json/raw.ts';
 import type { OpaqueRecordInstance } from '../../../types/record.ts';
-import type { ArrayField, HashField, SchemaArrayField } from '../../../types/schema/fields.ts';
+import type { ArrayField, SchemaArrayField } from '../../../types/schema/fields.ts';
 import type { KindContext, ObjectContext } from '../default-mode.ts';
 import { ReactiveResource } from '../record.ts';
 import type { SchemaService } from '../schema.ts';
@@ -189,34 +189,11 @@ export class ManagedArray {
             return rawValue;
           }
 
-          /**
-           * When the array is polymorphic, we need to determine the real type
-           * in order to apply the correct identity as schema-object identity
-           * is only required to be unique by type
-           */
-          let objectType: string;
-          if (field.options?.polymorphic) {
-            const typePath = (field.options.type as string) ?? 'type';
-            // if we are polymorphic, then context.field.options.type will
-            // either specify a path on the rawValue to use as the type, defaulting to "type" or
-            // the special string "@hash" which tells us to treat field.type as a hashFn name with which
-            // to calc the type.
-            if (typePath === '@hash') {
-              assert(`Expected the field to define a hashFn as its type`, field.type);
-              const hashFn = schema.hashFn({ type: field.type });
-              // TODO consider if there are better options and name args we could provide.
-              objectType = hashFn(rawValue as object, null, null);
-            } else {
-              objectType = (rawValue as ObjectValue)[typePath] as string;
-              assert(
-                `Expected the type path for the field to be a value on the raw object`,
-                typePath && objectType && typeof objectType === 'string'
-              );
-            }
-          } else {
-            assert(`A non-polymorphic SchemaArrayField must provide a SchemaObject type in its definition`, field.type);
-            objectType = field.type;
-          }
+          // schema-object identity is only required to be unique by type, so a polymorphic array
+          // resolves the concrete type first
+          const identity = schema.fieldValueIdentity(field, rawValue);
+          assert(`Expected a schema-array element to resolve to a schema-object identity`, identity !== null);
+          const { type: objectType, hash } = identity;
 
           /**
            * When KeyMode=@hash the ReactiveResource is keyed into
@@ -227,9 +204,8 @@ export class ManagedArray {
            */
           let schemaObjectKeyValue: string | number | object;
           if (KeyMode === '@hash') {
-            const hashField = schema.resource({ type: objectType! }).identity as HashField;
-            const hashFn = schema.hashFn(hashField);
-            schemaObjectKeyValue = hashFn(rawValue as object, hashField.options ?? null, hashField.name);
+            assert(`Expected the '${objectType}' schema to declare an identity hash for key: '@hash'`, hash !== null);
+            schemaObjectKeyValue = hash;
           } else {
             // if mode is not @identity or @index, then access the key path.
             // we should assert that `mode` is a string
@@ -241,7 +217,7 @@ export class ManagedArray {
               const isPathKeyMode = KeyMode !== '@identity' && KeyMode !== '@index';
               if (isPathKeyMode) {
                 assert('mode must be a string', typeof KeyMode === 'string' && KeyMode !== '');
-                const modeField = schema.fields({ type: objectType! }).get(KeyMode);
+                const modeField = schema.fields({ type: objectType }).get(KeyMode);
                 assert('field must exist in schema', modeField);
                 assert(
                   'field must be a GenericField or LegacyAttributeField',
