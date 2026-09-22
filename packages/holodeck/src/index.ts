@@ -410,12 +410,33 @@ export async function mock(owner: object, generate: ScaffoldGenerator, isRecordi
     }
     const testMockNum = test.mock[mockMethod][mockUrl]++;
     const url = `${HOST}__record?__xTestId=${test.id}&__xTestRequestNumber=${testMockNum}`;
-    await fetch(url, {
+    const response = await fetch(url, {
       method: 'POST',
       body: JSON.stringify(requestToMock),
       mode: 'cors',
       credentials: 'omit',
       referrerPolicy: '',
     });
+
+    if (!response.ok) {
+      throw new Error(
+        `MockError: Holodeck failed to record ${mockMethod} ${mockUrl} (${response.status} ${response.statusText}). ${await getRecordFailureDetail(response)}`
+      );
+    }
+  }
+}
+
+/**
+ * A failed recording is otherwise invisible until the next replay run fails
+ * with a missing fixture, so report what the server said at the point of
+ * failure.
+ */
+async function getRecordFailureDetail(response: Response): Promise<string> {
+  try {
+    const body = (await response.json()) as { errors?: { detail?: string }[] };
+    const detail = body.errors?.[0]?.detail;
+    return detail ?? 'The mock server gave no explanation.';
+  } catch {
+    return 'The mock server gave no explanation.';
   }
 }
