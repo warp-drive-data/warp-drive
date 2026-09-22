@@ -69,4 +69,4 @@ In the near future, WarpDrive will switch the default story for presenting data 
 
 Brands solve the various issues mentioned above, and a bit more!
 
-Over time, they should enable us to curate a great experience for working with partials, actions, contrained edit signatures, query syntaxes like GraphQL and more.
+Over time, they should enable us to curate a great experience for working with partials, actions, constrained edit signatures, query syntaxes like GraphQL and more.

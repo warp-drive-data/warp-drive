@@ -21,9 +21,10 @@ the ability to efficiently disassociate the record from relationships when it is
 
 Here's how we can define such a relationship via various mechanisms.
 
-- [Using @warp-drive/legacy/model](#using-warp-drivelegacymodel)
+- [Using @warp-drive/legacy/model](#using-warp-drive-legacy-model)
 - [Using json schemas](#using-json-schemas)
-- [🚧 Using @warp-drive/schema-record](#using-warp-driveschema-record-🚧-coming-soon)
+- [Using ReactiveResource schemas](#using-reactiveresource-schemas)
+- [🚧 Using @warp-drive/schema-record](#using-warp-drive-schema-record-🚧-coming-soon)
   - [Legacy Compat Mode](#legacycompat-mode)
 
 ---
@@ -90,10 +91,10 @@ Here, we show how the above trail runner relationship is described by a field de
 Because we deprecated implicit option values in 4.x, we are now able to change defaults.
 
 This means that the next iteration of Schema will be able to reliably use
-the The lack of an option like "async" or "inverse" as a false-y value.
+the lack of an option like "async" or "inverse" as a false-y value.
 
 We also are shifting the value for "kind" from "belongsTo" to "resource"
-to make it more readil clear that relationships do not (by default) have
+to make it more readily clear that relationships do not (by default) have
 directionality or ownership over their inverse.
 
 ```json
@@ -106,10 +107,45 @@ directionality or ownership over their inverse.
 
 ---
 
+## Using ReactiveResource Schemas
+
+[ReactiveResource](../../schemas/index.md) reads these same field definitions from a
+[ResourceSchema](../../schemas/resources/index.md). Define one in
+[LegacyMode](../../schemas/resources/legacy-mode.md), the recommended mode today. Its
+`withDefaults` helper sets `legacy: true`, adds the `id` identity field, and appends the
+derived and local fields that emulate `Model`. The relationship field is the JSON above,
+unchanged.
+
+🌲 *TrailRunner*
+
+```ts
+import { withDefaults } from '@warp-drive/legacy/model/migration-support';
+
+export const TrailRunnerSchema = withDefaults({
+  type: 'trail-runner',
+  fields: [
+    {
+      kind: 'belongsTo',
+      name: 'favoriteTrail',
+      options: { async: false, inverse: null },
+      type: 'trail',
+    },
+  ],
+});
+```
+
+If you did not create the store with `useLegacyStore`, call `registerDerivations` once on the
+schema service, as shown in
+[Configuration](../../schemas/resources/legacy-mode.md#configuration).
+[Defining Legacy Schemas](../../schemas/resources/legacy-mode.md#defining-legacy-schemas)
+shows how to type the records these schemas produce.
+
+---
+
 ## Using `@warp-drive/schema-record` (🚧 Coming Soon)
 
 Working with schemas in a raw json format is far more flexible, lightweight and
-performant than working with bulky classes that need to be shipped across the wire,parsed, and instantiated. Even relatively small apps can quickly find themselves shipping large quantities of JS just to describe their data.
+performant than working with bulky classes that need to be shipped across the wire, parsed, and instantiated. Even relatively small apps can quickly find themselves shipping large quantities of JS just to describe their data.
 
 No one wants to author schemas in raw JSON though (we hope 😬), and the ergonomics of typed data and editor autocomplete based on your schemas are vital to productivity and
 code quality. For this, we offer a way to express schemas as typescript using types, classes and decorators which are then compiled into json schemas and typescript interfaces for use by your project.

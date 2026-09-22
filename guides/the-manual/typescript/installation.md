@@ -16,7 +16,7 @@ The cli will
 The cli may also be used to update to the latest canary versions of the types by
 simply running the command again.
 
-For additional documentation or to manuall install and configure, continue reading the
+For additional documentation or to manually install and configure, continue reading the
 below guide.
 
 
@@ -43,7 +43,7 @@ below guide.
 
 There are currently two ways to gain access to EmberData's native types.
 
-1) [Use A Version That Has Types](#using-native-types)
+1) [Use A Version That Has Types](#using-versions-that-supply-types)
 
 2) [Use Official Types Packages](#using-types-packages)
 with releases `>= 4.12.*`

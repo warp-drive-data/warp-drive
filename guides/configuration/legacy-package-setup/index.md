@@ -18,8 +18,8 @@ interface-driven boundaries between each other and brought together by configura
 Below, we detail the installation for the most common configurations.
 
 <br>
-<img class="dark-only" src="../../images/configuration-dark.png" alt="interchangable components talk with each other" width="100%">
-<img class="light-only" src="../../images/configuration-light.png" alt="interchangable components talk with each other" width="100%">
+<img class="dark-only" src="../../images/configuration-dark.png" alt="interchangeable components talk with each other" width="100%">
+<img class="light-only" src="../../images/configuration-light.png" alt="interchangeable components talk with each other" width="100%">
 
 ::: warning ⚠️ Caution
 WarpDrive packages follow lockstep: dependencies and peer-dependencies between WarpDrive packages are version-locked at the time of publish.

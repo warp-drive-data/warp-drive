@@ -18,6 +18,7 @@
     "sync:specs": "pnpm --filter './specs' run sync",
     "sync:core": "pnpm --filter @warp-drive/build-config run sync",
     "preview": "cd docs-viewer && pnpm start",
+    "lint:docs": "cd docs-viewer && pnpm check:links",
     "lint:tests": "turbo --log-order=stream lint --filter=./tests/* --continue --concurrency=$(./bin/calculate-jobs)",
     "lint:pkg": "turbo --log-order=stream lint --filter=./packages/* --continue --concurrency=$(./bin/calculate-jobs)",
     "lint": "turbo --log-order=stream lint --continue --concurrency=$(./bin/calculate-jobs)",

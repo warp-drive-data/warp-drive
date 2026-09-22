@@ -85,8 +85,8 @@ To indicate that a PR **is** the backport PR, the following labels, all prefixed
 - `backport-beta` for PRs to the beta branch
 - `backport-release` for PRs to the current active release branch
 - `backport-old-release` for PRs to previous release branches that are not LTS branches
-- `backport-lts` for PRs targetting the current active LTS branch
-- `backport-lts-prev` for PRs targetting the second most current LTS branch
+- `backport-lts` for PRs targeting the current active LTS branch
+- `backport-lts-prev` for PRs targeting the second most current LTS branch
 
 Note, we automatically add this label to any PR opened to a beta/release/lts branch, but for non-current non-lts backports
 it will need to be added manually.

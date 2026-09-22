@@ -14,6 +14,7 @@
   "scripts": {
     "start": "bun ./src/sync-guides.ts",
     "build": "bun ./src/sync-guides.ts --build --force",
+    "check:links": "bun ./src/check-content-links.ts",
     "preview": "vitepress preview docs.warp-drive.io"
   },
   "dependencies": {
