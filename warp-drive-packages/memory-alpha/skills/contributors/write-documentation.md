@@ -9,13 +9,13 @@ with the person you're working with, and it links to those guides rather than re
 
 ## Steps
 
-1. Pick the surface first. A request like "document X" rarely means one file. Use
-   [Which Surface Do I Need?](/guides/contributing/writing-documentation/index.md#which-surface-do-i-need)
+1. Pick the type of doc first. A request like "document X" rarely means one file. Use
+   [Which Type of Doc Should I Write?](/guides/contributing/writing-documentation/index.md#which-type-of-doc-should-i-write)
    to decide whether X needs TSDoc, a guide, a permanent-URL page, a README, or several of those,
    and confirm that split with the user before drafting anything.
-2. Read the guide for that surface before you write a word, and treat it as binding:
+2. Read the guide for that type of doc before you write a word, and treat it as binding:
 
-   | Surface | Read |
+   | Type of doc | Read |
    | --- | --- |
    | TSDoc comments, `src/index.md` package pages | [Documenting APIs](/guides/contributing/writing-documentation/writing-api-docs.md) |
    | Pages under `guides/` | [Writing Guides](/guides/contributing/writing-documentation/writing-guides.md) |
@@ -53,7 +53,7 @@ with the person you're working with, and it links to those guides rather than re
    - For API docs, every item in
      [Content Standards](/guides/contributing/writing-documentation/writing-api-docs.md#content-standards),
      plus the `@internal` check from the same page's infra overview.
-   - Every other surface a change touches is updated too: see the
+   - Every other type of doc a change touches is updated too: see the
      [Cross-Documentation Checklist](/guides/contributing/writing-documentation/index.md#cross-documentation-checklist).
    - Run `pnpm lint:docs` from the repo root; it fails on any guide link whose target page or
      `#anchor` doesn't exist. Then build the site from `docs-viewer/` (`pnpm start` for a live
