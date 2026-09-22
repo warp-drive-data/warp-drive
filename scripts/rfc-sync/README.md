@@ -16,6 +16,14 @@ for how this looks from a contributor's side, and
   `push-outbound.mjs` opens a new PR for a brand-new RFC, or pushes an update to the fork branch
   backing an already-open PR. Either way the commit's author is set to whoever actually wrote the
   change in this repo (via `git commit --author`) -- the bot only ever appears as committer.
+- A brand-new PR's body is emberjs/rfcs' own PR template (a local snapshot at
+  `emberjs-pr-template.md`; update it if upstream changes theirs), filled in rather than replaced,
+  so Ember reviewers see the same stage checklists and process notes a hand-authored RFC PR would
+  have. Two things are added: an `Upstream:` link at the top to the warp-drive PR that's the
+  actual source of truth for the RFC's content, and a `Rendered` link pointed at that RFC's page
+  on the production docs site if the upstream warp-drive PR has merged (the normal case, since
+  this script only ever runs against commits already on `main`) or at that PR's own docs preview
+  otherwise.
 - **Inbound** (`.github/workflows/rfc-sync-inbound.yml`, scheduled): `pull-inbound.mjs` polls each
   mirrored RFC's fork branch for commits the bot didn't make itself (e.g. a reviewer's applied
   suggestion), and opens a PR back into `warp-drive-data/warp-drive` with that change, crediting
