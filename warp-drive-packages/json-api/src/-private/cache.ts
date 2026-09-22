@@ -81,87 +81,114 @@ const EMPTY_ITERATOR = {
 };
 
 /**
- * Per-resource bookkeeping record held by {@link JSONAPICache}'s internal
- * `__cache` and `__destroyedCache` maps, one per {@link ResourceKey}.
+ * The cache's entry for a single resource: its id, its attribute values split
+ * across four buckets, and the flags tracking where it sits in the
+ * create/update/delete lifecycle.
  *
- * Attribute state is tracked across three overlapping projections —
- * `localAttrs`, `inflightAttrs`, and `remoteAttrs` — read in that priority
- * order by {@link JSONAPICache.getAttr | getAttr} so that an uncommitted
- * local edit always wins over a save in flight, which in turn wins over
- * the last known persisted value.
+ * A resource has two "projections" — views into "what is this field's value":
+ *
+ * - **remote state** is what the _immutable_ record reads, resolving:
+ *     - {@link CachedResource.remoteAttrs | remoteAttrs}, then
+ *     - {@link CachedResource.defaultAttrs | defaultAttrs}
+ * - **local state** — remote state overlaid by the diff — is what an _editable_
+ *   copy reads, resolving:
+ *     - {@link CachedResource.localAttrs | localAttrs}, then
+ *     - {@link CachedResource.inflightAttrs | inflightAttrs}, then
+ *     - {@link CachedResource.remoteAttrs | remoteAttrs}, then
+ *     - {@link CachedResource.defaultAttrs | defaultAttrs}
+ *
+ * A field is **dirty** while it has an entry in the diff, and that mutation is
+ * **committed** once remote state catches up to the same value — at which point
+ * the entry is discarded.
+ *
+ * Thus, a dirty field reads as mutated for local readers only, and goes on doing
+ * so while its save is in flight.
  *
  * @internal
  */
 interface CachedResource {
-  /**
-   * The resource's `id`, or `null` for a client-created resource that has
-   * not yet been assigned one by the server.
-   */
+  /** The resource's id, once one is known. */
   id: string | null;
 
-  /**
-   * The last known persisted ("remote" or "canonical") attribute values,
-   * as merged in by {@link JSONAPICache.upsert | upsert} or a commit.
-   */
+  /** The basis of the remote state. The last known persisted attributes hash. */
   remoteAttrs: Record<string, Value | undefined> | null;
 
   /**
-   * Uncommitted local edits made via {@link JSONAPICache.setAttr | setAttr},
-   * not yet included in a save request.
+   * The basis of the local state.
+   *
+   * The diff: mutations held separate from the remote state. Any field with an
+   * entry here is dirty.
+   *
+   * Starting a save moves these into `inflightAttrs`, so any further
+   * mutation accumulates in a fresh diff without disturbing the request already
+   * in flight.
    */
   localAttrs: Record<string, Value | undefined> | null;
 
   /**
-   * Lazily computed schema default values. Only populated when the
-   * schema's `defaultValue` is the legacy function form, so that function
-   * is invoked once per attribute per resource rather than on every read.
+   * Schema-supplied default fallback attributes for fields that have no value
+   * from remote state or the diff. Never committed. Read for both local and
+   * remote state.
    */
   defaultAttrs: Record<string, Value | undefined> | null;
 
   /**
-   * The attribute values included in a save request that has been sent to
-   * the server via {@link JSONAPICache.willCommit | willCommit} but not
-   * yet committed or rejected.
+   * The portion of the diff an in-progress save is saving. Read as part of the
+   * local state.
+   *
+   * Completing a save merges these into
+   * {@link CachedResource.remoteAttrs | remote state} and clears this —
+   * committing them.
    */
   inflightAttrs: Record<string, Value | undefined> | null;
 
   /**
-   * The old/new value pair for each attribute with an uncommitted local
-   * edit, keyed by attribute name. Mirrors the keys of `localAttrs` and is
-   * what {@link JSONAPICache.changedAttrs | changedAttrs} returns.
+   * A `[before, after]` pair per entry in the
+   * {@link CachedResource.localAttrs | diff}, in the shape
+   * {@link JSONAPICache.changedAttrs | changedAttrs} returns.
+   *
+   * Tracked alongside the diff, but deliberately outliving it across a save:
+   * starting one empties `localAttrs` without clearing these, so
+   * {@link JSONAPICache.changedAttrs | changedAttrs} still reports what is
+   * being saved while the request is in flight. Completing or rejecting the
+   * save reconciles the two again.
    */
   changes: Record<string, [Value | undefined, Value]> | null;
 
   /**
-   * Validation errors from the most recent failed commit, exposed via
-   * {@link JSONAPICache.getErrors | getErrors} and cleared on the next
-   * successful commit or {@link JSONAPICache.rollbackAttrs | rollbackAttrs}.
+   * Errors from the most recent rejected save. A successful commit clears
+   * them.
    */
   errors: ApiError[] | null;
 
   /**
-   * Whether this resource was created on the client via
-   * {@link JSONAPICache.clientDidCreate | clientDidCreate} and has not yet
-   * been persisted. Exposed via {@link JSONAPICache.isNew | isNew}.
+   * Whether this record was created locally and has never been persisted.
+   *
+   * A payload arriving for it (or a successful commit) clears the flag.
    */
   isNew: boolean;
 
   /**
-   * Whether this resource is marked as deleted, locally or remotely,
-   * regardless of whether that deletion has been persisted. Exposed via
-   * {@link JSONAPICache.isDeleted | isDeleted}.
+   * Whether this record is marked for deletion. Records the intent only;
+   * see {@link CachedResource.isDeletionCommitted | isDeletionCommitted} for
+   * whether the server has acted on it.
    */
   isDeleted: boolean;
 
   /**
-   * Whether a deletion of this resource has been persisted to the server.
-   * Exposed via
-   * {@link JSONAPICache.isDeletionCommitted | isDeletionCommitted}.
+   * Whether a deletion has been acknowledged by the server.
+   *
+   * Tracked separately from {@link CachedResource.isDeleted | isDeleted}
+   * because the two imply different cleanup: a *committed* deletion has already
+   * been announced as removed, so unloading the record must not announce it a
+   * second time.
    */
   isDeletionCommitted: boolean;
 
   /**
-   * debugging only
+   * The relationship state a save is carrying, retained so `DEBUG` builds can
+   * assert the response agrees with what was sent. Never populated in
+   * production builds.
    *
    * @internal
    */
