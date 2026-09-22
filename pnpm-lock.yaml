@@ -179,8 +179,8 @@ catalogs:
       specifier: ^7.29.7
       version: 7.29.7
     '@babel/plugin-transform-typescript':
-      specifier: ^7.29.7
-      version: 7.29.7
+      specifier: ^7.29.9
+      version: 7.29.9
     '@babel/preset-env':
       specifier: ^7.29.7
       version: 7.29.7
@@ -584,7 +584,7 @@ overrides:
   caniuse-lite: ^1.0.30001810
   rollup: ^4.63.3
   '@babel/types': ^7.29.8
-  '@babel/parser': ^7.29.8
+  '@babel/parser': ^7.29.9
   '@babel/traverse': ^7.29.8
   prettier: ^3.9.8
   '@types/node': ^26.6.2
@@ -826,7 +826,7 @@ importers:
         version: 7.29.7
       '@babel/plugin-transform-typescript':
         specifier: 'catalog:'
-        version: 7.29.7(@babel/core@7.29.7)
+        version: 7.29.9(@babel/core@7.29.7)
       '@babel/preset-env':
         specifier: 'catalog:'
         version: 7.29.7(@babel/core@7.29.7)
@@ -890,7 +890,7 @@ importers:
         version: 7.29.7
       '@babel/plugin-transform-typescript':
         specifier: 'catalog:'
-        version: 7.29.7(@babel/core@7.29.7)
+        version: 7.29.9(@babel/core@7.29.7)
       '@babel/preset-typescript':
         specifier: 'catalog:'
         version: 7.29.7(@babel/core@7.29.7)
@@ -930,7 +930,7 @@ importers:
         version: 7.29.7
       '@babel/plugin-transform-typescript':
         specifier: 'catalog:'
-        version: 7.29.7(@babel/core@7.29.7)
+        version: 7.29.9(@babel/core@7.29.7)
       '@babel/preset-typescript':
         specifier: 'catalog:'
         version: 7.29.7(@babel/core@7.29.7)
@@ -967,7 +967,7 @@ importers:
         version: 7.29.7
       '@babel/plugin-transform-typescript':
         specifier: 'catalog:'
-        version: 7.29.7(@babel/core@7.29.7)
+        version: 7.29.9(@babel/core@7.29.7)
       '@babel/preset-typescript':
         specifier: 'catalog:'
         version: 7.29.7(@babel/core@7.29.7)
@@ -1032,7 +1032,7 @@ importers:
         version: 7.29.7
       '@babel/plugin-transform-typescript':
         specifier: 'catalog:'
-        version: 7.29.7(@babel/core@7.29.7)
+        version: 7.29.9(@babel/core@7.29.7)
       '@babel/preset-typescript':
         specifier: 'catalog:'
         version: 7.29.7(@babel/core@7.29.7)
@@ -1066,7 +1066,7 @@ importers:
         version: 7.29.7
       '@babel/plugin-transform-typescript':
         specifier: 'catalog:'
-        version: 7.29.7(@babel/core@7.29.7)
+        version: 7.29.9(@babel/core@7.29.7)
       '@babel/preset-env':
         specifier: 'catalog:'
         version: 7.29.7(@babel/core@7.29.7)
@@ -1124,7 +1124,7 @@ importers:
         version: 7.29.7
       '@babel/plugin-transform-typescript':
         specifier: 'catalog:'
-        version: 7.29.7(@babel/core@7.29.7)
+        version: 7.29.9(@babel/core@7.29.7)
       '@babel/preset-env':
         specifier: 'catalog:'
         version: 7.29.7(@babel/core@7.29.7)
@@ -1213,7 +1213,7 @@ importers:
         version: 7.29.7
       '@babel/plugin-transform-typescript':
         specifier: 'catalog:'
-        version: 7.29.7(@babel/core@7.29.7)
+        version: 7.29.9(@babel/core@7.29.7)
       '@babel/preset-env':
         specifier: 'catalog:'
         version: 7.29.7(@babel/core@7.29.7)
@@ -1244,7 +1244,7 @@ importers:
         version: 7.29.7
       '@babel/plugin-transform-typescript':
         specifier: 'catalog:'
-        version: 7.29.7(@babel/core@7.29.7)
+        version: 7.29.9(@babel/core@7.29.7)
       '@babel/preset-env':
         specifier: 'catalog:'
         version: 7.29.7(@babel/core@7.29.7)
@@ -1315,7 +1315,7 @@ importers:
         version: 7.29.7
       '@babel/plugin-transform-typescript':
         specifier: 'catalog:'
-        version: 7.29.7(@babel/core@7.29.7)
+        version: 7.29.9(@babel/core@7.29.7)
       '@babel/preset-env':
         specifier: 'catalog:'
         version: 7.29.7(@babel/core@7.29.7)
@@ -1355,7 +1355,7 @@ importers:
         version: 7.29.7
       '@babel/plugin-transform-typescript':
         specifier: 'catalog:'
-        version: 7.29.7(@babel/core@7.29.7)
+        version: 7.29.9(@babel/core@7.29.7)
       '@babel/preset-env':
         specifier: 'catalog:'
         version: 7.29.7(@babel/core@7.29.7)
@@ -1395,7 +1395,7 @@ importers:
         version: 7.29.7
       '@babel/plugin-transform-typescript':
         specifier: 'catalog:'
-        version: 7.29.7(@babel/core@7.29.7)
+        version: 7.29.9(@babel/core@7.29.7)
       '@babel/preset-env':
         specifier: 'catalog:'
         version: 7.29.7(@babel/core@7.29.7)
@@ -1429,7 +1429,7 @@ importers:
         version: 7.29.7
       '@babel/plugin-transform-typescript':
         specifier: 'catalog:'
-        version: 7.29.7(@babel/core@7.29.7)
+        version: 7.29.9(@babel/core@7.29.7)
       '@babel/preset-env':
         specifier: 'catalog:'
         version: 7.29.7(@babel/core@7.29.7)
@@ -1463,7 +1463,7 @@ importers:
         version: 7.29.7
       '@babel/plugin-transform-typescript':
         specifier: 'catalog:'
-        version: 7.29.7(@babel/core@7.29.7)
+        version: 7.29.9(@babel/core@7.29.7)
       '@babel/preset-env':
         specifier: 'catalog:'
         version: 7.29.7(@babel/core@7.29.7)
@@ -1503,7 +1503,7 @@ importers:
         version: 7.29.7
       '@babel/plugin-transform-typescript':
         specifier: 'catalog:'
-        version: 7.29.7(@babel/core@7.29.7)
+        version: 7.29.9(@babel/core@7.29.7)
       '@babel/preset-env':
         specifier: 'catalog:'
         version: 7.29.7(@babel/core@7.29.7)
@@ -1540,7 +1540,7 @@ importers:
         version: 7.29.7
       '@babel/plugin-transform-typescript':
         specifier: 'catalog:'
-        version: 7.29.7(@babel/core@7.29.7)
+        version: 7.29.9(@babel/core@7.29.7)
       '@babel/preset-env':
         specifier: 'catalog:'
         version: 7.29.7(@babel/core@7.29.7)
@@ -1580,7 +1580,7 @@ importers:
         version: 7.29.7
       '@babel/plugin-transform-typescript':
         specifier: 'catalog:'
-        version: 7.29.7(@babel/core@7.29.7)
+        version: 7.29.9(@babel/core@7.29.7)
       '@babel/preset-env':
         specifier: 'catalog:'
         version: 7.29.7(@babel/core@7.29.7)
@@ -1611,7 +1611,7 @@ importers:
         version: 7.29.7
       '@babel/plugin-transform-typescript':
         specifier: 'catalog:'
-        version: 7.29.7(@babel/core@7.29.7)
+        version: 7.29.9(@babel/core@7.29.7)
       '@babel/preset-env':
         specifier: 'catalog:'
         version: 7.29.7(@babel/core@7.29.7)
@@ -1651,7 +1651,7 @@ importers:
         version: 7.29.7
       '@babel/plugin-transform-typescript':
         specifier: 'catalog:'
-        version: 7.29.7(@babel/core@7.29.7)
+        version: 7.29.9(@babel/core@7.29.7)
       '@babel/preset-env':
         specifier: 'catalog:'
         version: 7.29.7(@babel/core@7.29.7)
@@ -1696,7 +1696,7 @@ importers:
         version: 7.29.7
       '@babel/plugin-transform-typescript':
         specifier: 'catalog:'
-        version: 7.29.7(@babel/core@7.29.7)
+        version: 7.29.9(@babel/core@7.29.7)
       '@babel/preset-env':
         specifier: 'catalog:'
         version: 7.29.7(@babel/core@7.29.7)
@@ -1748,7 +1748,7 @@ importers:
         version: 7.29.7
       '@babel/plugin-transform-typescript':
         specifier: 'catalog:'
-        version: 7.29.7(@babel/core@7.29.7)
+        version: 7.29.9(@babel/core@7.29.7)
       '@babel/preset-typescript':
         specifier: 'catalog:'
         version: 7.29.7(@babel/core@7.29.7)
@@ -1839,7 +1839,7 @@ importers:
         version: 7.29.7
       '@babel/plugin-transform-typescript':
         specifier: 'catalog:'
-        version: 7.29.7(@babel/core@7.29.7)
+        version: 7.29.9(@babel/core@7.29.7)
       '@babel/runtime':
         specifier: 'catalog:'
         version: 7.29.7
@@ -1938,7 +1938,7 @@ importers:
         version: 7.29.7(@babel/core@7.29.7)
       '@babel/plugin-transform-typescript':
         specifier: 'catalog:'
-        version: 7.29.7(@babel/core@7.29.7)
+        version: 7.29.9(@babel/core@7.29.7)
       '@babel/runtime':
         specifier: 'catalog:'
         version: 7.29.7
@@ -2109,7 +2109,7 @@ importers:
         version: 7.29.7
       '@babel/plugin-transform-typescript':
         specifier: 'catalog:'
-        version: 7.29.7(@babel/core@7.29.7)
+        version: 7.29.9(@babel/core@7.29.7)
       '@babel/runtime':
         specifier: 'catalog:'
         version: 7.29.7
@@ -2218,7 +2218,7 @@ importers:
         version: 7.29.7
       '@babel/plugin-transform-typescript':
         specifier: 'catalog:'
-        version: 7.29.7(@babel/core@7.29.7)
+        version: 7.29.9(@babel/core@7.29.7)
       '@babel/runtime':
         specifier: 'catalog:'
         version: 7.29.7
@@ -2296,7 +2296,7 @@ importers:
         version: 7.29.7
       '@babel/plugin-transform-typescript':
         specifier: 'catalog:'
-        version: 7.29.7(@babel/core@7.29.7)
+        version: 7.29.9(@babel/core@7.29.7)
       '@babel/runtime':
         specifier: 'catalog:'
         version: 7.29.7
@@ -2392,7 +2392,7 @@ importers:
         version: 7.29.7
       '@babel/plugin-transform-typescript':
         specifier: 'catalog:'
-        version: 7.29.7(@babel/core@7.29.7)
+        version: 7.29.9(@babel/core@7.29.7)
       '@babel/runtime':
         specifier: 'catalog:'
         version: 7.29.7
@@ -2476,7 +2476,7 @@ importers:
         version: 7.29.7(@babel/core@7.29.7)
       '@babel/plugin-transform-typescript':
         specifier: 'catalog:'
-        version: 7.29.7(@babel/core@7.29.7)
+        version: 7.29.9(@babel/core@7.29.7)
       '@babel/runtime':
         specifier: 'catalog:'
         version: 7.29.7
@@ -2587,7 +2587,7 @@ importers:
         version: 7.29.7
       '@babel/plugin-transform-typescript':
         specifier: 'catalog:'
-        version: 7.29.7(@babel/core@7.29.7)
+        version: 7.29.9(@babel/core@7.29.7)
       '@babel/runtime':
         specifier: 'catalog:'
         version: 7.29.7
@@ -2704,7 +2704,7 @@ importers:
         version: 7.29.7
       '@babel/plugin-transform-typescript':
         specifier: 'catalog:'
-        version: 7.29.7(@babel/core@7.29.7)
+        version: 7.29.9(@babel/core@7.29.7)
       '@babel/runtime':
         specifier: 'catalog:'
         version: 7.29.7
@@ -2797,7 +2797,7 @@ importers:
         version: 7.29.7
       '@babel/plugin-transform-typescript':
         specifier: 'catalog:'
-        version: 7.29.7(@babel/core@7.29.7)
+        version: 7.29.9(@babel/core@7.29.7)
       '@babel/preset-react':
         specifier: 'catalog:'
         version: 7.29.7(@babel/core@7.29.7)
@@ -2863,7 +2863,7 @@ importers:
         version: 7.29.7
       '@babel/plugin-transform-typescript':
         specifier: 'catalog:'
-        version: 7.29.7(@babel/core@7.29.7)
+        version: 7.29.9(@babel/core@7.29.7)
       '@babel/runtime':
         specifier: 'catalog:'
         version: 7.29.7
@@ -2917,7 +2917,7 @@ importers:
         version: 7.29.7
       '@babel/plugin-transform-typescript':
         specifier: 'catalog:'
-        version: 7.29.7(@babel/core@7.29.7)
+        version: 7.29.9(@babel/core@7.29.7)
       '@babel/runtime':
         specifier: 'catalog:'
         version: 7.29.7
@@ -2980,7 +2980,7 @@ importers:
         version: 7.29.7
       '@babel/plugin-transform-typescript':
         specifier: 'catalog:'
-        version: 7.29.7(@babel/core@7.29.7)
+        version: 7.29.9(@babel/core@7.29.7)
       '@babel/runtime':
         specifier: 'catalog:'
         version: 7.29.7
@@ -3064,7 +3064,7 @@ importers:
         version: 7.29.7
       '@babel/plugin-transform-typescript':
         specifier: 'catalog:'
-        version: 7.29.7(@babel/core@7.29.7)
+        version: 7.29.9(@babel/core@7.29.7)
       '@babel/runtime':
         specifier: 'catalog:'
         version: 7.29.7
@@ -3163,7 +3163,7 @@ importers:
         version: 7.29.7(@babel/core@7.29.7)
       '@babel/plugin-transform-typescript':
         specifier: 'catalog:'
-        version: 7.29.7(@babel/core@7.29.7)
+        version: 7.29.9(@babel/core@7.29.7)
       '@babel/runtime':
         specifier: 'catalog:'
         version: 7.29.7
@@ -3238,7 +3238,7 @@ importers:
         version: 7.29.7
       '@babel/plugin-transform-typescript':
         specifier: 'catalog:'
-        version: 7.29.7(@babel/core@7.29.7)
+        version: 7.29.9(@babel/core@7.29.7)
       '@babel/runtime':
         specifier: 'catalog:'
         version: 7.29.7
@@ -3413,8 +3413,8 @@ importers:
   tools/internal-tooling:
     dependencies:
       '@babel/parser':
-        specifier: ^7.29.8
-        version: 7.29.8
+        specifier: ^7.29.9
+        version: 7.29.9
       '@babel/traverse':
         specifier: ^7.29.8
         version: 7.29.8
@@ -3487,7 +3487,7 @@ importers:
         version: 7.29.7
       '@babel/plugin-transform-typescript':
         specifier: 'catalog:'
-        version: 7.29.7(@babel/core@7.29.7)
+        version: 7.29.9(@babel/core@7.29.7)
       '@babel/preset-typescript':
         specifier: 'catalog:'
         version: 7.29.7(@babel/core@7.29.7)
@@ -3524,7 +3524,7 @@ importers:
         version: 7.29.7
       '@babel/plugin-transform-typescript':
         specifier: 'catalog:'
-        version: 7.29.7(@babel/core@7.29.7)
+        version: 7.29.9(@babel/core@7.29.7)
       '@babel/preset-typescript':
         specifier: 'catalog:'
         version: 7.29.7(@babel/core@7.29.7)
@@ -3561,7 +3561,7 @@ importers:
         version: 7.29.7
       '@babel/plugin-transform-typescript':
         specifier: 'catalog:'
-        version: 7.29.7(@babel/core@7.29.7)
+        version: 7.29.9(@babel/core@7.29.7)
       '@babel/preset-env':
         specifier: 'catalog:'
         version: 7.29.7(@babel/core@7.29.7)
@@ -3628,7 +3628,7 @@ importers:
         version: 7.29.7
       '@babel/plugin-transform-typescript':
         specifier: 'catalog:'
-        version: 7.29.7(@babel/core@7.29.7)
+        version: 7.29.9(@babel/core@7.29.7)
       '@babel/preset-env':
         specifier: 'catalog:'
         version: 7.29.7(@babel/core@7.29.7)
@@ -3668,7 +3668,7 @@ importers:
         version: 7.29.7
       '@babel/plugin-transform-typescript':
         specifier: 'catalog:'
-        version: 7.29.7(@babel/core@7.29.7)
+        version: 7.29.9(@babel/core@7.29.7)
       '@babel/preset-typescript':
         specifier: 'catalog:'
         version: 7.29.7(@babel/core@7.29.7)
@@ -3708,7 +3708,7 @@ importers:
         version: 7.29.7
       '@babel/plugin-transform-typescript':
         specifier: 'catalog:'
-        version: 7.29.7(@babel/core@7.29.7)
+        version: 7.29.9(@babel/core@7.29.7)
       '@babel/preset-typescript':
         specifier: 'catalog:'
         version: 7.29.7(@babel/core@7.29.7)
@@ -3765,7 +3765,7 @@ importers:
         version: 7.29.7
       '@babel/plugin-transform-typescript':
         specifier: 'catalog:'
-        version: 7.29.7(@babel/core@7.29.7)
+        version: 7.29.9(@babel/core@7.29.7)
       '@babel/preset-env':
         specifier: 'catalog:'
         version: 7.29.7(@babel/core@7.29.7)
@@ -3797,8 +3797,8 @@ importers:
   warp-drive-packages/schema-dsl:
     dependencies:
       '@babel/parser':
-        specifier: ^7.29.8
-        version: 7.29.8
+        specifier: ^7.29.9
+        version: 7.29.9
       '@babel/traverse':
         specifier: ^7.29.8
         version: 7.29.8
@@ -3808,7 +3808,7 @@ importers:
         version: 7.29.7
       '@babel/plugin-transform-typescript':
         specifier: 'catalog:'
-        version: 7.29.7(@babel/core@7.29.7)
+        version: 7.29.9(@babel/core@7.29.7)
       '@babel/preset-typescript':
         specifier: 'catalog:'
         version: 7.29.7(@babel/core@7.29.7)
@@ -3873,7 +3873,7 @@ importers:
         version: 7.29.7
       '@babel/plugin-transform-typescript':
         specifier: 'catalog:'
-        version: 7.29.7(@babel/core@7.29.7)
+        version: 7.29.9(@babel/core@7.29.7)
       '@babel/preset-env':
         specifier: 'catalog:'
         version: 7.29.7(@babel/core@7.29.7)
@@ -3904,7 +3904,7 @@ importers:
         version: 7.29.7
       '@babel/plugin-transform-typescript':
         specifier: 'catalog:'
-        version: 7.29.7(@babel/core@7.29.7)
+        version: 7.29.9(@babel/core@7.29.7)
       '@babel/preset-typescript':
         specifier: 'catalog:'
         version: 7.29.7(@babel/core@7.29.7)
@@ -3941,7 +3941,7 @@ importers:
         version: 7.29.7
       '@babel/plugin-transform-typescript':
         specifier: 'catalog:'
-        version: 7.29.7(@babel/core@7.29.7)
+        version: 7.29.9(@babel/core@7.29.7)
       '@babel/preset-env':
         specifier: 'catalog:'
         version: 7.29.7(@babel/core@7.29.7)
@@ -4181,8 +4181,8 @@ packages:
     resolution: {integrity: sha512-1k2lAGRMfHTcwuNYcCNUmaUffmQv8KWMfh2iJUUeRlwlwH4FdNG7mfPI10NPfLHJFThE4Tyr4mv7kTNZOiPuBg==}
     engines: {node: '>=6.9.0'}
 
-  '@babel/parser@7.29.8':
-    resolution: {integrity: sha512-E8lTAYNB1KW+FH+VGJuZM1ioAx2E6oVlvQFRrf5P8ZZmsiJXYAD9vTFV7yyEURNzgh1dFqMZuO6tUwcARbqFCA==}
+  '@babel/parser@7.29.9':
+    resolution: {integrity: sha512-CjXrNHTnvqBVqHgdBysY3vk2T8tpJHb5/RMeHJBTyVa9xgugCB0CJTx/3oO8RV2QRQP391RWpB7D6hLjm8V9uA==}
     engines: {node: '>=6.0.0'}
     hasBin: true
 
@@ -4602,6 +4602,12 @@ packages:
 
   '@babel/plugin-transform-typescript@7.29.7':
     resolution: {integrity: sha512-jK52h8LaLc7JarhQV2ofeFMts4H7vnOXnqZNA6fYglBTZewRBE51KWt3BUltW1P+KoPsYkHoJeXePuz4zo2LMw==}
+    engines: {node: '>=6.9.0'}
+    peerDependencies:
+      '@babel/core': ^7.0.0-0
+
+  '@babel/plugin-transform-typescript@7.29.9':
+    resolution: {integrity: sha512-FFwIwzU+7SCOuxxV4YtJql6T9981ZVTm+FHO5GhVsRqCTdy0WwrEZh3l42ARpXruJUDGOptdduHW6Zr7pNPLNg==}
     engines: {node: '>=6.9.0'}
     peerDependencies:
       '@babel/core': ^7.0.0-0
@@ -12012,7 +12018,7 @@ snapshots:
       '@babel/helper-compilation-targets': 7.29.7
       '@babel/helper-module-transforms': 7.29.7(@babel/core@7.29.7)
       '@babel/helpers': 7.29.7
-      '@babel/parser': 7.29.8
+      '@babel/parser': 7.29.9
       '@babel/template': 7.29.7
       '@babel/traverse': 7.29.8
       '@babel/types': 7.29.8
@@ -12035,7 +12041,7 @@ snapshots:
 
   '@babel/generator@7.29.8':
     dependencies:
-      '@babel/parser': 7.29.8
+      '@babel/parser': 7.29.9
       '@babel/types': 7.29.8
       '@jridgewell/gen-mapping': 0.3.13
       '@jridgewell/trace-mapping': 0.3.31
@@ -12172,7 +12178,7 @@ snapshots:
       '@babel/template': 7.29.7
       '@babel/types': 7.29.8
 
-  '@babel/parser@7.29.8':
+  '@babel/parser@7.29.9':
     dependencies:
       '@babel/types': 7.29.8
 
@@ -12641,6 +12647,17 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  '@babel/plugin-transform-typescript@7.29.9(@babel/core@7.29.7)':
+    dependencies:
+      '@babel/core': 7.29.7
+      '@babel/helper-annotate-as-pure': 7.29.7
+      '@babel/helper-create-class-features-plugin': 7.29.7(@babel/core@7.29.7)
+      '@babel/helper-plugin-utils': 7.29.7
+      '@babel/helper-skip-transparent-expression-wrappers': 7.29.7
+      '@babel/plugin-syntax-typescript': 7.29.7(@babel/core@7.29.7)
+    transitivePeerDependencies:
+      - supports-color
+
   '@babel/plugin-transform-unicode-escapes@7.29.7(@babel/core@7.29.7)':
     dependencies:
       '@babel/core': 7.29.7
@@ -12774,7 +12791,7 @@ snapshots:
       '@babel/helper-validator-option': 7.29.7
       '@babel/plugin-syntax-jsx': 7.29.7(@babel/core@7.29.7)
       '@babel/plugin-transform-modules-commonjs': 7.29.7(@babel/core@7.29.7)
-      '@babel/plugin-transform-typescript': 7.29.7(@babel/core@7.29.7)
+      '@babel/plugin-transform-typescript': 7.29.9(@babel/core@7.29.7)
     transitivePeerDependencies:
       - supports-color
 
@@ -12792,13 +12809,13 @@ snapshots:
   '@babel/template@7.29.7':
     dependencies:
       '@babel/code-frame': 7.29.7
-      '@babel/parser': 7.29.8
+      '@babel/parser': 7.29.9
       '@babel/types': 7.29.8
 
   '@babel/template@8.0.0':
     dependencies:
       '@babel/code-frame': 8.0.0
-      '@babel/parser': 7.29.8
+      '@babel/parser': 7.29.9
       '@babel/types': 7.29.8
 
   '@babel/traverse@7.29.8':
@@ -12806,7 +12823,7 @@ snapshots:
       '@babel/code-frame': 7.29.7
       '@babel/generator': 7.29.8
       '@babel/helper-globals': 7.29.7
-      '@babel/parser': 7.29.8
+      '@babel/parser': 7.29.9
       '@babel/template': 7.29.7
       '@babel/types': 7.29.8
       debug: 4.4.3
@@ -13288,7 +13305,7 @@ snapshots:
   '@embroider/core@4.6.7':
     dependencies:
       '@babel/core': 7.29.7
-      '@babel/parser': 7.29.8
+      '@babel/parser': 7.29.9
       '@babel/traverse': 7.29.8
       '@embroider/macros': 1.21.1
       '@embroider/reverse-exports': 0.2.0
@@ -13324,7 +13341,7 @@ snapshots:
   '@embroider/core@4.6.7(@glint/template@1.9.0)':
     dependencies:
       '@babel/core': 7.29.7
-      '@babel/parser': 7.29.8
+      '@babel/parser': 7.29.9
       '@babel/traverse': 7.29.8
       '@embroider/macros': 1.21.1(@glint/template@1.9.0)
       '@embroider/reverse-exports': 0.2.0
@@ -14976,7 +14993,7 @@ snapshots:
 
   '@types/babel__core@7.20.5':
     dependencies:
-      '@babel/parser': 7.29.8
+      '@babel/parser': 7.29.9
       '@babel/types': 7.29.8
       '@types/babel__generator': 7.27.0
       '@types/babel__template': 7.4.4
@@ -14988,7 +15005,7 @@ snapshots:
 
   '@types/babel__template@7.4.4':
     dependencies:
-      '@babel/parser': 7.29.8
+      '@babel/parser': 7.29.9
       '@babel/types': 7.29.8
 
   '@types/babel__traverse@7.28.0':
@@ -15558,14 +15575,14 @@ snapshots:
       '@babel/core': 7.29.7
       '@babel/helper-module-imports': 8.0.0
       '@babel/helper-plugin-utils': 8.0.1(@babel/core@7.29.7)
-      '@babel/parser': 7.29.8
+      '@babel/parser': 7.29.9
       '@vue/compiler-sfc': 3.5.43
     transitivePeerDependencies:
       - supports-color
 
   '@vue/compiler-core@3.5.43':
     dependencies:
-      '@babel/parser': 7.29.8
+      '@babel/parser': 7.29.9
       '@vue/shared': 3.5.43
       entities: 7.0.1
       estree-walker: 2.0.2
@@ -15578,7 +15595,7 @@ snapshots:
 
   '@vue/compiler-sfc@3.5.43':
     dependencies:
-      '@babel/parser': 7.29.8
+      '@babel/parser': 7.29.9
       '@vue/compiler-core': 3.5.43
       '@vue/compiler-dom': 3.5.43
       '@vue/compiler-ssr': 3.5.43
@@ -16724,7 +16741,7 @@ snapshots:
 
   '@warp-drive/internal-tooling@file:tools/internal-tooling':
     dependencies:
-      '@babel/parser': 7.29.8
+      '@babel/parser': 7.29.9
       '@babel/traverse': 7.29.8
       '@pnpm/find-workspace-dir': 1000.1.5
       '@pnpm/find-workspace-packages': 6.0.9(@pnpm/logger@1100.0.0)
@@ -16805,7 +16822,7 @@ snapshots:
 
   '@warp-drive/schema-dsl@file:warp-drive-packages/schema-dsl(38b966cdb5bf397f85e324d9ec4badc5)':
     dependencies:
-      '@babel/parser': 7.29.8
+      '@babel/parser': 7.29.9
       '@babel/traverse': 7.29.8
       '@warp-drive/core': file:warp-drive-packages/core(e0ff4349d3585fabae29421d7a4b80a6)
     transitivePeerDependencies:
@@ -18102,7 +18119,7 @@ snapshots:
 
   ember-router-generator@2.0.0:
     dependencies:
-      '@babel/parser': 7.29.8
+      '@babel/parser': 7.29.9
       '@babel/traverse': 7.29.8
       recast: 0.18.10
     transitivePeerDependencies:
@@ -19130,7 +19147,7 @@ snapshots:
   jscodeshift@17.4.0:
     dependencies:
       '@babel/core': 7.29.7
-      '@babel/parser': 7.29.8
+      '@babel/parser': 7.29.9
       '@babel/plugin-transform-class-properties': 7.29.7(@babel/core@7.29.7)
       '@babel/plugin-transform-modules-commonjs': 7.29.7(@babel/core@7.29.7)
       '@babel/plugin-transform-nullish-coalescing-operator': 7.29.7(@babel/core@7.29.7)

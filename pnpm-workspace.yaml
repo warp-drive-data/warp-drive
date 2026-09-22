@@ -281,10 +281,10 @@ packages:
 catalog:
   "@babel/core": ^7.29.7
   "@babel/eslint-parser": ^8.0.6
-  "@babel/parser": ^7.29.8
+  "@babel/parser": ^7.29.9
   "@babel/plugin-proposal-decorators": 7.29.7
   "@babel/plugin-transform-runtime": ^7.29.7
-  "@babel/plugin-transform-typescript": ^7.29.7
+  "@babel/plugin-transform-typescript": ^7.29.9
   "@babel/preset-env": ^7.29.7
   "@babel/preset-react": ^7.29.7
   "@babel/preset-typescript": ^7.29.7
@@ -478,7 +478,7 @@ overrides:
   caniuse-lite: ^1.0.30001810
   rollup: ^4.63.3
   "@babel/types": ^7.29.8
-  "@babel/parser": ^7.29.8
+  "@babel/parser": ^7.29.9
   "@babel/traverse": ^7.29.8
   prettier: ^3.9.8
   "@types/node": "catalog:"
