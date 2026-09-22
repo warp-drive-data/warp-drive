@@ -18,4 +18,3 @@
  * @module
  */
 export * from '@warp-drive/legacy/model/migration-support';
-export type * from '@warp-drive/legacy/model/migration-support';
