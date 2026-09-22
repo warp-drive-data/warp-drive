@@ -99,6 +99,22 @@ export function toUpstreamContent(lines, body) {
   return joinFrontmatter(kept, body);
 }
 
+/**
+ * Local titles are required (see rfcs/0000-template.md) not to start with "WarpDrive" -- this
+ * adds that prefix back for the emberjs/rfcs copy and its PR title, so it's clear at a glance in
+ * a repo covering all of Ember, not just WarpDrive, which RFCs are ours. Guarded rather than
+ * unconditional in case a title is ever hand-edited to already include it.
+ */
+export function upstreamTitle(title) {
+  return /^warpdrive\b[:-]?\s/i.test(title) ? title : `WarpDrive: ${title}`;
+}
+
+/** Replaces a markdown body's first H1 with `# <title>` -- used to keep the emberjs/rfcs copy's
+ * heading in sync with its (prefixed) title without touching anything else in the body. */
+export function withH1(body, title) {
+  return body.replace(/^# .*$/m, `# ${title}`);
+}
+
 export function slugify(title) {
   return title
     .toLowerCase()

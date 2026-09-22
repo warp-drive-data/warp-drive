@@ -118,6 +118,80 @@ export function finalizeSyncedContent(contentDirPath: string) {
   }
 }
 
+interface RfcFrontMatter {
+  title?: string;
+  draft?: boolean;
+  'warp-drive-rfc'?: number | string;
+  stage?: string;
+  // the YAML parser front-matter uses auto-converts an ISO-looking scalar (e.g.
+  // "2026-09-02T00:00:00.000Z") into a real Date, not a string -- accept either.
+  'start-date'?: string | Date;
+}
+
+/** Formats an RFC's `start-date` frontmatter (a string or an auto-parsed Date, see above) as a
+ * plain `YYYY-MM-DD`, or null if unset. */
+function formatRfcDate(startDate: string | Date | undefined): string | null {
+  if (!startDate) return null;
+  const iso = startDate instanceof Date ? startDate.toISOString() : startDate;
+  return iso.slice(0, 10);
+}
+
+/**
+ * Mirrors emberjs/rfcs' own stages (https://github.com/emberjs/rfcs#stages), plus `proposed` for
+ * an RFC that hasn't been mirrored upstream yet. `variant` matches a CSS class on `StatusBadge`;
+ * `emoji` is a plain-text stand-in for a colorized badge in the sidebar nav, which (unlike the
+ * rendered RFC page) can't render an actual Vue component -- see StatusBadge.vue.
+ */
+const RFC_STAGE_BADGES: Record<string, { emoji: string; label: string; variant: string }> = {
+  proposed: { emoji: '⚪', label: 'Proposed', variant: 'proposed' },
+  exploring: { emoji: '🟡', label: 'Exploring', variant: 'exploring' },
+  accepted: { emoji: '🟢', label: 'Accepted', variant: 'accepted' },
+  'ready-for-release': { emoji: '🔵', label: 'Ready for Release', variant: 'ready-for-release' },
+  released: { emoji: '🟣', label: 'Released', variant: 'released' },
+  recommended: { emoji: '⭐', label: 'Recommended', variant: 'recommended' },
+  closed: { emoji: '🔴', label: 'Closed', variant: 'closed' },
+  discontinued: { emoji: '🔴', label: 'Discontinued', variant: 'closed' },
+};
+
+function rfcStageBadge(stage: string | undefined) {
+  return RFC_STAGE_BADGES[stage ?? ''] ?? RFC_STAGE_BADGES.proposed;
+}
+
+/**
+ * Splits a markdown file's raw text right after its closing frontmatter `---` line, without
+ * touching anything inside the frontmatter block itself (which may contain its own `# `-prefixed
+ * YAML comments that would otherwise be mistaken for the page's H1).
+ */
+function splitAfterFrontmatter(raw: string): { head: string; body: string } {
+  const closeIdx = raw.indexOf('\n---', 3);
+  if (closeIdx === -1) return { head: '', body: raw };
+  const lineEnd = raw.indexOf('\n', closeIdx + 1) + 1;
+  return { head: raw.slice(0, lineEnd), body: raw.slice(lineEnd) };
+}
+
+/**
+ * Splices a `<StatusBadge>` for the RFC's `stage` right onto the end of its H1, for every
+ * non-draft file in a synced `rfcs/` copy -- mirrors how `postProcessApiDocs` inline-injects the
+ * same component into generated API docs. Only touches content after the frontmatter block, so
+ * frontmatter is never reformatted.
+ */
+export function injectRfcStatusBadges(contentDirPath: string) {
+  for (const file of globSync('*.md', { cwd: contentDirPath })) {
+    if (file === 'index.md') continue;
+    const fullPath = path.join(contentDirPath, file);
+    const raw = readFileSync(fullPath, 'utf-8');
+    const { attributes } = fm<RfcFrontMatter>(raw);
+    if (attributes.draft) continue;
+
+    const badge = rfcStageBadge(attributes.stage);
+    const { head, body } = splitAfterFrontmatter(raw);
+    const newBody = body.replace(/^(# .+)$/m, `$1 <StatusBadge variant="${badge.variant}" text="${badge.label}" />`);
+    if (newBody !== body) {
+      writeFileSync(fullPath, head + newBody, 'utf-8');
+    }
+  }
+}
+
 interface GuideGroup {
   text: string;
   path: string;
@@ -339,8 +413,43 @@ export async function getBlogStructure() {
   return getContentStructure({ dirName: 'blog' });
 }
 
+/**
+ * RFCs get their own sidebar builder rather than sharing `getContentStructure`: their ordering is
+ * always numeric by RFC number (never alphabetical by title, and never hand-maintained via a
+ * `_meta.json` `items` list -- a new RFC file is picked up automatically), and their sidebar label
+ * carries the RFC number, a stage badge, and its start date, none of which any other content type
+ * needs.
+ */
 export async function getRfcsStructure() {
-  return getContentStructure({ dirName: 'rfcs' });
+  const dirName = 'rfcs';
+  const ContentDirectoryPath = path.join(__dirname, `../docs.warp-drive.io/${dirName}`);
+
+  const entries: { number: number; item: { text: string; link: string } }[] = [];
+
+  for (const file of globSync('*.md', { cwd: ContentDirectoryPath })) {
+    if (file === 'index.md') continue;
+
+    const text = readFileSync(path.join(ContentDirectoryPath, file), 'utf-8');
+    const { attributes } = fm<RfcFrontMatter>(text);
+    if (attributes.draft) continue;
+
+    const number = Number(attributes['warp-drive-rfc']);
+    const title = attributes.title ?? segmentToTitle(file, null);
+    const date = formatRfcDate(attributes['start-date']);
+    const badge = rfcStageBadge(attributes.stage);
+
+    entries.push({
+      number,
+      item: {
+        text: `${badge.emoji} #${number} - ${title}${date ? ` (${date})` : ''}`,
+        link: `/${dirName}/${file}`,
+      },
+    });
+  }
+
+  entries.sort((a, b) => a.number - b.number);
+
+  return { paths: entries.map((e) => e.item) };
 }
 
 function deepConvert(obj: Record<string, any>, orderedItems?: string[]) {

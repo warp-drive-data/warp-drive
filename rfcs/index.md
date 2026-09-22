@@ -23,10 +23,12 @@ frontmatter records both numbers once the upstream copy exists:
 
 ## Starting a new RFC
 
-Copy [`0000-template.md`](/rfcs/0000-template.md) to the next available `000N-your-title.md`,
-add its filename (without `.md`) to the `items` list in this directory's `_meta.json`, and
+Copy [`0000-template.md`](/rfcs/0000-template.md) to the next available `000N-your-title.md` and
 open a PR labeled `:label: rfc`. See the process and skill docs linked above for what happens
 next.
 
-The `_meta.json` step matters: the docs site sorts RFCs by title text unless `items` gives it an
-explicit order, so a new RFC left out of that list won't sort where its number suggests.
+The sidebar nav is generated automatically from the `warp-drive-rfc`, `title`, `stage`, and
+`start-date` frontmatter on every non-draft file in this directory, ordered by RFC number — there's
+no list to keep in sync by hand. Don't start a title with "WarpDrive" (see the template's
+frontmatter comments for why), and don't set `draft: true` on an actual RFC — that's reserved for
+this template itself, which is why it doesn't show up in the sidebar.

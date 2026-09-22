@@ -21,6 +21,8 @@ import {
   slugify,
   splitFrontmatter,
   toUpstreamContent,
+  upstreamTitle,
+  withH1,
 } from './common.mjs';
 
 const TOKEN = process.env.EMBERJS_RFCS_SYNC_TOKEN;
@@ -93,7 +95,8 @@ for (const file of listChangedRfcs()) {
   const warpDriveRfc = getScalar(lines, 'warp-drive-rfc');
   const emberjsRfc = getScalar(lines, 'emberjs-rfc');
   const emberjsBranch = getScalar(lines, 'emberjs-branch');
-  const title = getScalar(lines, 'title') ?? `WarpDrive RFC ${warpDriveRfc}`;
+  const title = getScalar(lines, 'title') ?? `RFC ${warpDriveRfc}`;
+  const upstreamRfcTitle = upstreamTitle(title);
   const currentHash = sha256(body);
   const storedHash = getScalar(lines, 'sync-hash');
 
@@ -102,7 +105,7 @@ for (const file of listChangedRfcs()) {
   }
 
   const author = lastCommitAuthor(file);
-  const upstreamContent = toUpstreamContent(lines, body);
+  const upstreamContent = toUpstreamContent(lines, withH1(body, upstreamRfcTitle));
 
   if (!emberjsRfc) {
     // --- New RFC: open a fresh PR against emberjs/rfcs from the bot's fork ---
@@ -111,13 +114,13 @@ for (const file of listChangedRfcs()) {
     sh('git', ['-C', forkDir, 'checkout', '-b', branch, 'upstream/main']);
     const placeholderPath = join(forkDir, 'text', `0000-${slug}.md`);
     writeFileSync(placeholderPath, upstreamContent, 'utf8');
-    commitAndPush(branch, `Add RFC: ${title}`, author);
+    commitAndPush(branch, `Add RFC: ${upstreamRfcTitle}`, author);
 
     const prJson = JSON.parse(
       ghApi([
         `repos/${UPSTREAM}/pulls`,
         '-f',
-        `title=${title}`,
+        `title=${upstreamRfcTitle}`,
         '-f',
         `head=${FORK.split('/')[0]}:${branch}`,
         '-f',
@@ -168,7 +171,7 @@ for (const file of listChangedRfcs()) {
     // fields (advanced by maintainers via emberjs/rfcs PRs) -- keep them as fetched, only
     // replace the body.
     const upstreamLines = splitFrontmatter(readFileSync(existingPath, 'utf8')).lines;
-    writeFileSync(existingPath, joinFrontmatter(upstreamLines, body), 'utf8');
+    writeFileSync(existingPath, joinFrontmatter(upstreamLines, withH1(body, upstreamRfcTitle)), 'utf8');
     commitAndPush(emberjsBranch, `Update RFC #${emberjsRfc} from warp-drive-data/warp-drive`, author);
 
     setScalar(lines, 'sync-hash', currentHash);

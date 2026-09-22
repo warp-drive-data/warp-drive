@@ -19,16 +19,17 @@ of any `emberjs/rfcs` number:
 
 1. Copy `rfcs/0000-template.md` to `rfcs/000N-your-title.md`, where `N` is the next unused number
    (check the existing files in `rfcs/` — don't reuse or skip numbers).
-2. Add the new file's name (without `.md`) to the `items` list in `rfcs/_meta.json`. The docs site
-   sorts by title text unless `items` gives it an explicit order, so skipping this step leaves the
-   sidebar in the wrong order even though the filename prefix looks right.
-3. Fill in the template's frontmatter and body. Leave `emberjs-rfc`, `emberjs-pr`,
-   `emberjs-branch`, and `sync-hash` blank — the sync bot fills these in once the RFC is first
-   mirrored upstream; hand-editing them just gets overwritten and can desync the two copies.
-4. Open a PR to `warp-drive-data/warp-drive` labeled `:label: rfc`. This label also triggers a
+2. Fill in the template's frontmatter and body. The sidebar nav is generated automatically from
+   `warp-drive-rfc`/`title`/`stage`/`start-date`, ordered by RFC number — there's no separate list
+   to update. Leave `emberjs-rfc`, `emberjs-pr`, `emberjs-branch`, and `sync-hash` blank — the sync
+   bot fills these in once the RFC is first mirrored upstream; hand-editing them just gets
+   overwritten and can desync the two copies. Don't start `title` with "WarpDrive" — the sync bot
+   adds that prefix automatically for the `emberjs/rfcs` copy and its PR title, so a local title
+   that already has it would end up doubled there.
+3. Open a PR to `warp-drive-data/warp-drive` labeled `:label: rfc`. This label also triggers a
    docs-site PR preview (same as `:label: doc`/`:label: feat`) so reviewers can read the rendered
    RFC, not just the raw markdown diff.
-5. Iterate on the PR like any other design discussion. Once there is team consensus to move
+4. Iterate on the PR like any other design discussion. Once there is team consensus to move
    forward, merging the PR is what publishes the RFC — see the next section for what that
    triggers.
 
