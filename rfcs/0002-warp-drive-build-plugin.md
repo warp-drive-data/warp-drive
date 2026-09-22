@@ -5,10 +5,10 @@ warp-drive-rfc: 2
 # originally mirrored to emberjs/rfcs#1233 by hand, before the sync bot existed. That PR is
 # being closed in favor of a fresh one the bot opens for this file -- see
 # scripts/rfc-sync/README.md.
-emberjs-rfc:
-emberjs-pr:
-emberjs-branch:
-sync-hash:
+emberjs-rfc: 1237
+emberjs-pr: https://github.com/emberjs/rfcs/pull/1237
+emberjs-branch: rfc-2-a-framework-agnostic-build-plugin-for-warpdrive
+sync-hash: 74f1fc6fc3da664dc6f258fcb18a8a61d4d8a27d85eae883b8bded12fe06b7b4
 stage: proposed
 start-date: 2026-09-02T00:00:00.000Z
 release-date:
