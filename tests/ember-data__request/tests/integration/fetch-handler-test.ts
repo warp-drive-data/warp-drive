@@ -218,6 +218,28 @@ module('RequestManager | Fetch Handler', function (hooks) {
     }
   });
 
+  test('It explains a missing mock', async function (assert) {
+    const manager = new RequestManager();
+    manager.use([new MockServerHandler(this), Fetch]);
+
+    try {
+      await manager.request({ url: buildBaseURL({ resourcePath: 'users/never-mocked' }) });
+      assert.ok(false, 'Should have thrown');
+    } catch (e) {
+      isNetworkError(e);
+      assert.true(
+        e.message.includes('No meta was found for'),
+        `The error message says the mock is missing. Got: ${e.message}`
+      );
+      assert.true(
+        e.message.includes('You may need to record a mock for this request'),
+        'The error message says how to fix it'
+      );
+      assert.true(e.message.includes('.mock-cache'), 'The error message names the cacheKey it looked for');
+      assert.false(e.message.includes('__xTestId'), 'The internal test query is stripped from the message');
+    }
+  });
+
   test('It provides useful error during abort', async function (assert) {
     const manager = new RequestManager();
     manager.use([new MockServerHandler(this), Fetch]);
