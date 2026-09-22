@@ -101,10 +101,10 @@ function createTestHandler(projectRoot) {
               {
                 status: '400',
                 code: 'MISSING_X_TEST_ID_HEADER',
-                title: 'Request to the http mock server is missing the `X-Test-Id` header',
+                title: 'Request to the http mock server is missing the `__xTestId` query parameter',
                 detail:
-                  "The `X-Test-Id` header is used to identify the test that is making the request to the mock server. This is used to ensure that the mock server is only used for the test that is currently running. If using @ember-data/request add import { MockServerHandler } from '@warp-drive/holodeck'; to your request handlers.",
-                source: { header: 'X-Test-Id' },
+                  'The `__xTestId` query parameter identifies the test making the request, so that the mock server only replays fixtures belonging to the test that is currently running. MockServerHandler adds it. Add `new MockServerHandler(this)` to your RequestManager chain ahead of Fetch, and check that the code under test issues its request through that chain rather than calling fetch directly.',
+                source: { parameter: '__xTestId' },
               },
             ],
           })
@@ -120,10 +120,10 @@ function createTestHandler(projectRoot) {
               {
                 status: '400',
                 code: 'MISSING_X_TEST_REQUEST_NUMBER_HEADER',
-                title: 'Request to the http mock server is missing the `X-Test-Request-Number` header',
+                title: 'Request to the http mock server is missing the `__xTestRequestNumber` query parameter',
                 detail:
-                  "The `X-Test-Request-Number` header is used to identify the request number for the current test. This is used to ensure that the mock server response is deterministic for the test that is currently running. If using @ember-data/request add import { MockServerHandler } from '@warp-drive/holodeck'; to your request handlers.",
-                source: { header: 'X-Test-Request-Number' },
+                  'The `__xTestRequestNumber` query parameter counts requests to the same method and url within a test, so that repeated requests replay their own fixtures in order. MockServerHandler adds it. Add `new MockServerHandler(this)` to your RequestManager chain ahead of Fetch, and check that the code under test issues its request through that chain rather than calling fetch directly.',
+                source: { parameter: '__xTestRequestNumber' },
               },
             ],
           })
