@@ -97,9 +97,11 @@ const EMPTY_ITERATOR = {
  *     - {@link CachedResource.remoteAttrs | remoteAttrs}, then
  *     - {@link CachedResource.defaultAttrs | defaultAttrs}
  *
- * A field is **dirty** while it has an entry in the diff, and that mutation is
- * **committed** once remote state catches up to the same value — at which point
- * the entry is discarded.
+ * A field is **dirty** while it has an entry in `localAttrs` or `inflightAttrs`.
+ * The mutation is **committed** once remote state holds the same value — a save
+ * response landing, or a push that happens to agree — at which point the entry
+ * is discarded. Equality is structural, so an array or object with equal content
+ * counts.
  *
  * Thus, a dirty field reads as mutated for local readers only, and goes on doing
  * so while its save is in flight.
@@ -126,9 +128,11 @@ interface CachedResource {
   localAttrs: Record<string, Value | undefined> | null;
 
   /**
-   * Schema-supplied default fallback attributes for fields that have no value
-   * from remote state or the diff. Never committed. Read for both local and
-   * remote state.
+   * Memoized results of legacy `defaultValue()` *functions*, for fields that
+   * have no value in remote state or the diff. Primitive and transform defaults
+   * are recomputed on every read and never land here. Read for both local and
+   * remote state; never committed; an entry is dropped once the field gets a
+   * real value.
    */
   defaultAttrs: Record<string, Value | undefined> | null;
 
@@ -138,7 +142,8 @@ interface CachedResource {
    *
    * Completing a save merges these into
    * {@link CachedResource.remoteAttrs | remote state} and clears this —
-   * committing them.
+   * committing them. A rejected save moves them back into `localAttrs`
+   * instead, without overwriting any newer edit made while it was in flight.
    */
   inflightAttrs: Record<string, Value | undefined> | null;
 
@@ -147,11 +152,12 @@ interface CachedResource {
    * {@link CachedResource.localAttrs | diff}, in the shape
    * {@link JSONAPICache.changedAttrs | changedAttrs} returns.
    *
-   * Tracked alongside the diff, but deliberately outliving it across a save:
-   * starting one empties `localAttrs` without clearing these, so
+   * Tracked alongside the diff but outliving it across a save: starting one
+   * empties `localAttrs` without clearing these, so
    * {@link JSONAPICache.changedAttrs | changedAttrs} still reports what is
    * being saved while the request is in flight. Completing or rejecting the
-   * save reconciles the two again.
+   * save reconciles the two again, and a remote value moving underneath a
+   * still-diverging edit refreshes `before` to the new baseline.
    */
   changes: Record<string, [Value | undefined, Value]> | null;
 
@@ -176,7 +182,8 @@ interface CachedResource {
   isDeleted: boolean;
 
   /**
-   * Whether a deletion has been acknowledged by the server.
+   * Whether the deletion is final: the server acknowledged it, or the record
+   * was never persisted and has been rolled back.
    *
    * Tracked separately from {@link CachedResource.isDeleted | isDeleted}
    * because the two imply different cleanup: a *committed* deletion has already
@@ -187,8 +194,10 @@ interface CachedResource {
 
   /**
    * The relationship state a save is carrying, retained so `DEBUG` builds can
-   * assert the response agrees with what was sent. Never populated in
-   * production builds.
+   * assert the response agrees with what was sent. Only populated in `DEBUG`
+   * builds, and only while the
+   * `DEPRECATE_RELATIONSHIP_REMOTE_UPDATE_CLEARING_LOCAL_STATE` deprecation is
+   * resolved.
    *
    * @internal
    */
