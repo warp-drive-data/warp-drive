@@ -40,7 +40,7 @@ Breaking change or deprecation:
 
 - Update the affected TSDoc, marking `@deprecated` with a link to the replacement.
 - Add or update the `upgrading/` guide.
-- Fix README examples that use the old API.
+- Fix Guides and README examples that use the old API.
 
 Bug fix:
 
