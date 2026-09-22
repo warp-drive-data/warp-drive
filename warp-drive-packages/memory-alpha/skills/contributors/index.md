@@ -8,6 +8,7 @@ packages as a dependency in an app). Find the single row below that matches your
 | --- | --- |
 | Begin any session or task in this repo — get a working copy to make changes in | `start-in-a-fresh-worktree.md` |
 | You're fixing a bug, adding a guard, or adding a fallback in WarpDrive's internals (`Store`, cache, graph, reactive signals, record arrays) | `fix-at-the-source.md` |
+| You're writing a new RFC, or implementing one that's already been accepted | `writing-and-implementing-rfcs.md` |
 
 The first row applies to **every** session, whatever the task — read it before anything else,
 then read the row matching your actual task.

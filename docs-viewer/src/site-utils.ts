@@ -339,6 +339,10 @@ export async function getBlogStructure() {
   return getContentStructure({ dirName: 'blog' });
 }
 
+export async function getRfcsStructure() {
+  return getContentStructure({ dirName: 'rfcs' });
+}
+
 function deepConvert(obj: Record<string, any>, orderedItems?: string[]) {
   const groups = Array.from(Object.values(obj));
 

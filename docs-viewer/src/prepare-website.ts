@@ -5,6 +5,7 @@ import { existsSync, rmSync } from 'fs';
   - the repo-root guides/ folder -> docs.warp-drive.io/guides
   - the repo-root upgrading/ folder -> docs.warp-drive.io/upgrading
   - the repo-root blog/ folder -> docs.warp-drive.io/blog
+  - the repo-root rfcs/ folder -> docs.warp-drive.io/rfcs
   - the @warp-drive/memory-alpha package's skills/ -> docs.warp-drive.io/skills
 */
 import { join } from 'path';
@@ -34,6 +35,7 @@ export async function main() {
   // so it is intentionally not passed through finalizeSyncedContent below.
   sync(join(__dirname, '../../upgrading'), join(__dirname, '../docs.warp-drive.io/upgrading'));
   sync(join(__dirname, '../../blog'), join(__dirname, '../docs.warp-drive.io/blog'));
+  sync(join(__dirname, '../../rfcs'), join(__dirname, '../docs.warp-drive.io/rfcs'));
 
   const skillsDestPath = join(__dirname, '../docs.warp-drive.io/skills');
   sync(join(__dirname, '../../warp-drive-packages/memory-alpha/skills'), skillsDestPath);
