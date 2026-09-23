@@ -13,7 +13,10 @@ Before starting any task in this repo:
    The rows it marks as applying to every session come first — read those skills before you
    touch anything else.
 2. Find the single row that matches your task and read **only** that file, in addition to the
-   every-session skills above.
+   every-session skills above. This routing isn't a one-time lookup: if what you're doing shifts
+   mid-session — e.g. a docs or skill-writing task grows a code change you need to verify —
+   re-open this table and check it against the new row, rather than relying on the pass you did
+   at the start.
 3. If your task is about *using* WarpDrive's public API rather than changing its internals — a
    test app, a docs example, a guide snippet — the consumer index at
    [`warp-drive-packages/memory-alpha/skills/index.md`](./warp-drive-packages/memory-alpha/skills/index.md)
