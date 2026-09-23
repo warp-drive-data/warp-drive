@@ -32,15 +32,13 @@ into the docs.
 Use `/** @internal */` on anything that should not appear in the public docs.
 :::
 
-While API Documentation lives with the source-code, the code itself plays no part in the documentation
-that is generated: everything is compiled from comments alone.
+While API Documentation lives with the source-code, the code's behavior plays no part in the
+documentation that is generated: everything is compiled from type signatures and comments.
 
 The below guide will walk through best practices for writing doc comments, important
-nuances and syntaxes to know, as well as how to test and preview the doc comments.
+nuances and syntaxes to know, as well as how to preview the doc comments.
 
 ## Documentation Syntax
-
-<br>
 
 ### What are Doc Comments
 
@@ -52,7 +50,7 @@ Only `**` comments are compiled as potential documentation, e.g.
  */
 ```
 
-Where as single star comment blocks are not considered documentation
+Whereas single star comment blocks are not considered documentation
 
 ```ts
 /*
@@ -140,8 +138,9 @@ it is exported from. Because it knows our entrypoints and our types, we don't ne
 to tell it much! It already knows when something is an interface vs a class, when
 it extends something else, or that it implements a specific signature.
 
-This means you no longer need to add redundant tags like `@module` `@class` `@method`
-`@static` and `@property`.
+This means you no longer need to add redundant tags like `@class` `@method` `@static` and
+`@property`. The one structural tag still in use is `@module`, for package and subpackage
+overviews (see below).
 
 ### Doc Comments can be Markdown
 
@@ -184,11 +183,11 @@ This means we can do code examples that toggle between files or formats.
  * ::: code-group
  *
  * ```ts [example.ts]
- * export function numberFromStrong(str: string): number {}
+ * export function numberFromString(str: string): number {}
  * ```
  *
  * ```js [example.js]
- * export function numberFromStrong(str) {}
+ * export function numberFromString(str) {}
  * ```
  *
  * :::
@@ -233,17 +232,17 @@ and some documentation may be unexpectedly truncated.
 ````ts
 /**
  ## Overview
- 
+
  Some details
- 
+
  ### An Example
- 
- \```ts
+
+ ```ts
  class User extends Model {
    @attr name;
  }
- \```
- 
+ ```
+
  @public
 */
 ````
@@ -321,7 +320,7 @@ conceptual label:
 
 ```ts
 /**
- * The `<Await />` component allow you to utilize reactive control flow
+ * The `<Await />` component allows you to utilize reactive control flow
  * for asynchronous states in your application.
  *
  * @badge Component
@@ -520,8 +519,6 @@ function add(a: number, b: number): number {}
 ```
 
 ## Content Standards
-
-<br>
 
 ### Every Public API Should Have a Usage Example
 
@@ -814,8 +811,6 @@ currently renders as nothing more than an unstyled
 
 ## Documentation Hygiene
 
-<br>
-
 ### Troubleshooting
 
 If you have added docs but are not seeing them when previewing locally, and if you
@@ -829,8 +824,6 @@ have confirmed the docs preview server is running (and has not crashed)
 <br>
 
 ### Previewing Documentation
-
-#### For `docs.warp-drive.io`
 
 From inside the `docs-viewer` directory, run `pnpm start`. It builds the API docs, watches the
 package sources and content directories for changes, and serves the site with hot reload. See the

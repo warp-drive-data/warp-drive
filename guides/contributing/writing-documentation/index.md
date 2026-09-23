@@ -19,7 +19,7 @@ title: Overview
   or need to know how to upgrade from one version to the next.
 
 Default to assuming the reader either does not use ***Warp*Drive** yet or is just getting started.
-Each type of doc below narrows that default to its own readers, but a few guidelines apply
+The guide for each type of doc narrows that default to its own readers, but a few guidelines apply
 everywhere:
 
 - Landing pages and introductions should entice decision makers and technical evaluators, and
@@ -29,36 +29,31 @@ everywhere:
 - Cross-link concepts whenever possible, especially when first introducing one.
 - Content for existing users, such as upgrade guides and legacy setup, can presume some knowledge
   of older concepts but should never presume knowledge of newer ones, and should be kept separate
-  from everything else so it does not muddy the path for new readers.
-
-Two examples of that separation: [Upgrading](/upgrading/) is a top-level section so existing
-users find it fast, and explicitly named legacy pages such as
-[Setup - Legacy (Ember)](/guides/configuration/ember) keep legacy instructions out of everyone
-else's way. That clarity also helps decision makers, who like to see that when the time for
-change comes there are well-marked resources to help, without needing to know about them yet.
+  from everything else so it does not muddy the path for new readers. [Upgrading](/upgrading/) is
+  its own top-level section and legacy pages are explicitly named, such as
+  [Setup - Legacy (Ember)](/guides/configuration/ember), for exactly this reason.
 
 ## Iterate, A Lot
 
-Making great documentation requires a lot of iteration. A great way to iterate is to write
-documentation that someone needs, ask them to use it, and use the feedback from where they
-stumble to improve the documentation for the next person. The more iteration that happens, the
-more the docs become a source of information that works well for everyone.
+Write the documentation someone needs, ask them to use it, and fix the places where they stumble
+before the next person reads it. Every round of that makes the docs work for a wider audience.
 
 ## Which Type of Doc Should I Write?
 
-- **Documenting a function, class, type, or its params?** Write **API Docs**: TSDoc comments in
-  the source next to the symbol, plus each package's `src/index.md`. Published at [/api](/api/).
-  See [Documenting APIs](./writing-api-docs.md).
-- **Teaching a concept or how to accomplish a task?** Write a **Guide** under `guides/`: the
-  manual, compiled from markdown and published at [/guides](../../index.md). Step-by-step
-  walkthroughs go in the [Tutorials](/guides/tutorials/) section (`guides/tutorials/`). See
+- **Documenting a function, class, type, or its params?** Write **API Docs**:
+  [TSDoc](https://tsdoc.org/) comments in the source next to the symbol. Published at
+  [/api](/api/). See [Documenting APIs](./writing-api-docs.md).
+- **Introducing a package as a whole?** Write its **README**, shown on GitHub and npm, and its
+  `src/index.md`, which is the package's landing page in the API docs.
+- **Teaching a concept or how to accomplish a task?** Write a **Guide** under `guides/`, compiled
+  from markdown and published at [/guides](/guides/). Step-by-step walkthroughs go in the
+  [Tutorials](/guides/tutorials/) section (`guides/tutorials/`). See
   [Writing Guides](./writing-guides.md).
-- **A version-specific upgrade path, deprecation walkthrough, or announcement?** Write
-  **Upgrading or Blog** content under `upgrading/` or `blog/`: point-in-time pages whose URLs are a
-  permanent contract with readers, published at [/upgrading](/upgrading/) and [/blog](/blog/). See
+- **Walking existing users through an upgrade or a deprecation?** Write an **Upgrading** page
+  under `upgrading/`, published at [/upgrading](/upgrading/).
+- **Announcing something as of a point in time?** Write a **Blog** post under `blog/`, published
+  at [/blog](/blog/). Upgrading and Blog pages both have permanent URLs; see
   [Writing Permanent Content](./writing-permanent-content.md).
-- **A package overview or quick start?** Write the **Package README**, shown on GitHub and npm
-  only, and its `src/index.md`.
 - **Instructions a coding agent should follow?** Write an **Agent skill** under
   `warp-drive-packages/memory-alpha/skills/`: plain markdown routed by an index, published at
   [/skills](/skills/). See the
@@ -72,7 +67,7 @@ without an upgrade path.
 
 New public API:
 
-- TSDoc with `@since` and a usage example.
+- TSDoc with `@since` set to the version it ships in, and a usage example.
 - A guide showing usage, if it is a concept users need to learn.
 - A mention in the package README and `src/index.md`, only if it changes the package's headline
   story.
@@ -80,7 +75,7 @@ New public API:
 Breaking change or deprecation:
 
 - Update the affected TSDoc, marking `@deprecated` with a link to the replacement.
-- Add or update the `upgrading/` guide.
+- Add or update the `upgrading/` guide for the version the change ships in.
 - Fix Guides and README examples that use the old API.
 
 Bug fix:
@@ -88,13 +83,10 @@ Bug fix:
 - Update TSDoc only if documented behavior changed.
 - Update a guide only if recommended usage changed.
 
-::: tip
-Great documentation requires both guides and API docs. Update any guides affected by a code change
-as you make it, and write new guides when appropriate.
-:::
+## Previewing Your Changes
 
-Preview any of these locally by following the
+Preview any type of doc locally by following the
 [Docs Viewer README](https://github.com/warp-drive-data/warp-drive/blob/main/docs-viewer/README.md).
-Once the change is in a pull request, add the `:label: doc` label and a preview of the whole site
-is deployed to `https://canary.warp-drive.io/pr-preview/pr-<number>/` and linked from a comment
-on the PR.
+Once the change is in a pull request, add the `:label: doc` label (the label's name literally
+contains `:label:`) and a preview of the whole site, API docs included, is deployed to
+`https://canary.warp-drive.io/pr-preview/pr-<number>/` and linked from a comment on the PR.
