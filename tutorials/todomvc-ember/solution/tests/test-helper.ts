@@ -17,6 +17,10 @@ export async function start() {
   setApplication(Application.create(config.APP));
   setup(QUnit.assert);
   setupEmberOnerrorValidation();
+  // WarpDrive skips autorefresh while the tab is hidden, and headless Chrome
+  // sometimes reports the test page as hidden. Keep it visible so refetches
+  // after an invalidation run deterministically.
+  Object.defineProperty(document, 'visibilityState', { configurable: true, get: () => 'visible' });
   // Paginate caches pages by URL for the life of the page, across app instances.
   QUnit.hooks.beforeEach(() => clearPaginationCache());
   qunitStart();
