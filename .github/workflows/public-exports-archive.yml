@@ -1,0 +1,40 @@
+name: Public Exports Archive
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/public-exports-mapping/**'
+      - '.github/workflows/public-exports-archive.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'scripts/public-exports-mapping/**'
+      - '.github/workflows/public-exports-archive.yml'
+  schedule:
+    - cron: '0 6 * * 1'
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: public-exports-archive-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
+jobs:
+  archive:
+    name: Check public exports archive
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+      - uses: ./.github/actions/setup
+        with:
+          install: true
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Check public exports archive
+        run: node scripts/public-exports-mapping/cli.mjs archive --check
