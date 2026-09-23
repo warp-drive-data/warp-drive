@@ -8,6 +8,11 @@ Our [API Docs](/api/) are compiled from TSDoc comments in the source code and fr
 package's `src/index.md`. For where API docs fit alongside guides and other documentation, see the
 [Writing Documentation overview](./index.md).
 
+Of the [audiences](./index.md#know-your-audience) our documentation serves, API docs are read by
+existing users who already know what they want and need the details, and by readers who followed
+a link from a guide. Assume they use ***Warp*Drive**; do not assume they know the concept behind
+the symbol, so link the guide that teaches it on first mention.
+
 ## API Documentation Infra Overview
 
 API Documentation is generated from [TSDoc](https://tsdoc.org/) comments in the source code

@@ -8,6 +8,10 @@ title: Writing Permanent Content
 point-in-time content whose URLs are a permanent contract with readers, not just the current
 best explanation of a concept. Follow these rules when adding to either section.
 
+Of the [audiences](./index.md#know-your-audience) our documentation serves, these pages are for
+existing users. An upgrade guide may presume knowledge of the concepts being replaced but never of
+the ones replacing them. A blog post should say near the top who it is for.
+
 ## URLs are never renamed or unpublished
 
 Once a page under `upgrading/` or `blog/` is published, its path doesn't change and the page is

@@ -27,9 +27,10 @@ with the person you're working with, and it links to those guides rather than re
    them from memory; if a rule matters to your task, go read the sentence.
 3. Gather context before drafting. The person asking knows things the source can't tell you.
    Ask, in a few short rounds rather than one wall of questions:
-   - Who is this for? Use the audience list in
-     [Writing Guides](/guides/contributing/writing-documentation/writing-guides.md) as the menu;
-     the default reader is someone who doesn't use WarpDrive yet.
+   - Who is this for? Use
+     [Know Your Audience](/guides/contributing/writing-documentation/index.md#know-your-audience)
+     as the menu; each type's guide narrows it further, and the default reader is someone who
+     doesn't use WarpDrive yet.
    - What should the reader be able to do after reading it that they couldn't before?
    - Which version does it apply to? Both Documenting APIs and Writing Permanent Content require
      one, in different forms.
