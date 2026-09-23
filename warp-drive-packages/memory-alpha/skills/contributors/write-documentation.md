@@ -73,11 +73,10 @@ last two bullets: the checks and the label.
 
 ## Gotchas
 
-- The docs dev server builds the sidebar once, when VitePress loads its config. A page you add
-  while `pnpm start` is running won't appear in the sidebar until you restart it, even though the
-  page itself is served.
-- `pnpm lint:docs` checks links in `guides/`, `upgrading/`, `blog/`, `rfcs/`, and the agent
-  skills. It does not check package READMEs; open those on GitHub to verify their links.
-- VitePress compiles markdown to Vue, so a bare `<thing>` in prose is parsed as an element and
-  fails the build. Put angle brackets in code spans. `pnpm lint:docs` does not catch this; only
-  the build does.
+All three are explained in the
+[Docs Viewer README](https://github.com/warp-drive-data/warp-drive/blob/main/docs-viewer/README.md).
+
+- A page added while `pnpm start` is running is served but missing from the sidebar until you
+  restart the server.
+- `pnpm lint:docs` does not check package READMEs; open those on GitHub.
+- A bare `<thing>` in prose fails the build, and `lint:docs` won't warn you. Use code spans.

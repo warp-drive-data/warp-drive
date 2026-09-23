@@ -75,3 +75,7 @@ All [VitePress markdown features](https://vitepress.dev/guide/markdown) are avai
 custom containers (`::: tip`, `::: warning`) and
 [code groups](https://vitepress.dev/guide/markdown#code-groups), which render several code blocks
 as tabs.
+
+One consequence of VitePress compiling markdown to Vue: a bare `<thing>` in prose is parsed as an
+element and fails the build, and `pnpm lint:docs` will not warn you first. Put angle brackets in
+code spans.
