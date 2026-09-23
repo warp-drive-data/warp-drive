@@ -21,6 +21,9 @@
     },
     "./recommended-react": {
       "default": "./src/recommended-react.js"
+    },
+    "./recommended-internal": {
+      "default": "./src/recommended-internal.js"
     }
   },
   "dependencies": {

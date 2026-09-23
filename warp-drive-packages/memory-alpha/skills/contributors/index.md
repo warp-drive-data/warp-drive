@@ -12,6 +12,7 @@ packages as a dependency in an app). Find the single row below that matches your
 | You're writing a new RFC, or implementing one that's already been accepted | `writing-and-implementing-rfcs.md` |
 | You're writing or changing documentation — a doc comment (TSDoc), a guide, an `upgrading/` or `blog/` page, a package README or `src/index.md`, or an agent skill (RFCs have their own row above) | `write-documentation.md` |
 | You're ready to test a change — about to run checks locally, or decide whether a PR is ready for review | `use-ci-as-the-source-of-truth.md` |
+| You're writing or reviewing a test and about to share setup/teardown across more than one `test()` in a module | `extract-test-setup-into-functions.md` |
 
 The first two rows apply to **every** session, whatever the task — read them before anything
 else, then read the row matching your actual task.

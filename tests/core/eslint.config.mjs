@@ -1,4 +1,5 @@
 import WarpDrive from 'eslint-plugin-warp-drive/recommended';
+import WarpDriveInternal from 'eslint-plugin-warp-drive/recommended-internal';
 
 import * as diagnostic from '@warp-drive/internal-config/eslint/diagnostic.js';
 import * as gts from '@warp-drive/internal-config/eslint/gts.js';
@@ -41,6 +42,10 @@ export default [
       'warp-drive/no-legacy-request-patterns': ['error', { allowPeekRecord: true }],
     },
   },
+
+  // Internal rules encode test-suite conventions (e.g. extracted setup functions over
+  // `hooks.beforeEach`/`hooks.afterEach`) rather than public-API best practices.
+  ...WarpDriveInternal,
 
   // Test Support (`.gts`/`.gjs` only — oxlint's `qunit` jsPlugin covers plain `.ts`/`.js`)
   ...[

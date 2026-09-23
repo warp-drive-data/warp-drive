@@ -11,5 +11,6 @@ as a dependency in an app.
 | Write a new RFC, or implement one that's already been accepted | [Writing and Implementing RFCs](/skills/contributors/writing-and-implementing-rfcs.md) |
 | Write or change documentation — a doc comment (TSDoc), a guide, an `upgrading/` or `blog/` page, a package README or `src/index.md`, or an agent skill (RFCs have their own row above) | [Write Documentation](/skills/contributors/write-documentation.md) |
 | Test a change — decide whether to run checks locally or push and let CI verify it | [Use CI as the Source of Truth](/skills/contributors/use-ci-as-the-source-of-truth.md) |
+| Share setup/teardown across more than one test in a module | [Extract Test Setup Into Functions](/skills/contributors/extract-test-setup-into-functions.md) |
 
 If nothing above matches, the skill you need doesn't exist yet in this category.
