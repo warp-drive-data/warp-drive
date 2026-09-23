@@ -1411,6 +1411,8 @@ export class JSONAPICache implements Cache {
   setAttr(identifier: ResourceKey, attr: string | string[], value: Value): void {
     // this assert works to ensure we have a non-empty string and/or a non-empty array
     assert('setAttr must receive at least one attribute path', attr.length > 0);
+    // a one-segment path replaces the field's whole value; a longer path patches one leaf into a
+    // clone of the baseline object, so nested edits accumulate and the object is never rebuilt
     const isSimplePath = !Array.isArray(attr) || attr.length === 1;
 
     if (Array.isArray(attr) && attr.length === 1) {
