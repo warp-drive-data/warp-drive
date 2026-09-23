@@ -50,12 +50,15 @@ last two bullets: the checks and the label.
    of editing the draft themselves, so their preferences carry into the sections you haven't
    written yet. Link the guide or symbol that owns a concept instead of re-explaining it.
 5. Reader-test before you call it done. Hand the finished text, and only the text (for TSDoc, the
-   comment together with the signature it documents), to a fresh agent instance that has none of
-   your conversation, and fix whatever that reader gets wrong or has to guess at. If you can't
-   spawn one, ask the user to paste the whole prompt, text included, into a fresh session and
-   relay the answers. The prompt has three parts, and the first is the one that is easy to skip:
-   - Tell the agent who it is. Name the audience you chose in step 3 using one of the bold labels
-     in [Know Your Audience](/guides/contributing/writing-documentation/index.md#know-your-audience),
+   comment together with the signature it documents), to one fresh agent instance per audience
+   the guide for this type of doc names, each with none of your conversation, run in parallel.
+   The guide's first-named audience is the primary one: fix whatever that reader gets wrong or
+   has to guess at, and fix a secondary reader's gap only when the fix is cheap, usually a link,
+   so the page does not drift toward nobody. If you can't spawn agents, ask the user to paste each
+   whole prompt, text included, into a fresh session and relay the answers. Each prompt has three
+   parts, and the first is the one that is easy to skip:
+   - Tell the agent who it is. Name its audience using one of the bold labels in
+     [Know Your Audience](/guides/contributing/writing-documentation/index.md#know-your-audience),
      and say what that reader already knows and does not: an existing user reading API docs knows
      the project's vocabulary but not the concept behind the thing this page documents; a hobbyist
      reading a tutorial knows their own stack and nothing about ***Warp*Drive**. Without this the
