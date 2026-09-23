@@ -326,7 +326,7 @@ module('Integration | <JSONAPICache>.didCommit notifications', function () {
     assert.notified(lid, 'attributes', 'firstName', 1, 'and that was the only notification for the key');
   });
 
-  // the nested-field counterpart, which needs hash equality to hold, is in structural-equality-test.ts
+  // the nested-field counterpart, which needs hash equality to hold, is in hash-equality-test.ts
   test('a remote push that confirms an uncommitted local edit notifies the remote channel only', async function (assert) {
     const store = setupStore(this);
     const user = pushUser(store);
