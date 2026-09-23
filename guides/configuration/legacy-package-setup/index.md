@@ -304,7 +304,7 @@ bun add --exact @warp-drive/experiments@latest
 
 The `ember-data` package declares the core and ember.js packages including all legacy packages as its dependencies. It configures and automatically provides a store service configured for the maximal legacy experience, 
 
-This auto-bundled experience sounds useful, however, this approach works poorly with vite, typescript and peer dependency grouping.
+This auto-bundled experience sounds useful, however, this approach works poorly with vite, TypeScript and peer dependency grouping.
 
 If you're curious, the exact list of packages to replicate `ember-data` including all deprecations is:
 

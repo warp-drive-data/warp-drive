@@ -1,540 +1,92 @@
 ---
-title: Documenting APIs
+title: Writing API Docs
 ---
 
-# Writing Documentation
+# Writing API Docs
 
-There are two sources of documentation in this repository:
+Our [API Docs](/api/) are compiled from TSDoc comments in the source code and from each
+package's `src/index.md`. For where API docs fit alongside guides and other documentation, see the
+[Writing Documentation overview](./index.md).
 
-- [Guides](../../index.md) - markdown files that are compiled into the manual for the website
-- inline code comments and types - from which the API Docs are compiled
-
-Both are previewable by following the instructions in the [Docs Viewer](https://github.com/warp-drive-data/warp-drive/blob/main/docs-viewer/README.md)
-
-Great documentation requires both guides and docs. We encourage updating any associated guides affected by code changes as you make them, and writing new guides when appropriate.
-
+Of the [audiences](./index.md#know-your-audience) our documentation serves, API docs are read by
+existing users who already know what they want and need the details, and by readers who followed
+a link from a guide. Assume they use ***Warp*Drive**; do not assume they know the concept behind
+the symbol, so link the guide that teaches it on first mention. LLMs and coding agents are the
+third reader, and they usually read the comment in the source rather than the rendered page, where
+the status badges and automatic MDN links described below do not exist. Write so the words alone
+carry the meaning: a `@deprecated` comment names its replacement in text, not only by badge.
 
 ## API Documentation Infra Overview
 
 API Documentation is generated from [TSDoc](https://tsdoc.org/) comments in the source code
-compiled with [TypeDoc](https://typedoc.org/) and transformed for [Vitepress](https://vitepress.dev/) using [typedoc-plugin-markdown](https://www.typedoc-plugin-markdown.org/plugins/vitepress)
+compiled with [TypeDoc](https://typedoc.org/) and transformed for [Vitepress](https://vitepress.dev/) using [typedoc-plugin-markdown](https://www.typedoc-plugin-markdown.org/plugins/vitepress).
 
-TSDoc syntax is similar to YUIDoc and JSDoc but there are occasional nuances where it becomes best to know the underlying grammar is TSDoc
-and parser is TypeDoc.
+TSDoc looks like JSDoc, but the grammar is TSDoc and the parser is TypeDoc, and the differences
+matter: types come from the TypeScript signature rather than from `{type}` annotations in tags,
+and TypeDoc adds tags JSDoc does not have (`@since`, `@internal`, `@group`, `@category`, and the
+repo-specific ones described below).
 
-TypeDoc is configured to follow our public package entrypoints to
-auto-discover documentation. It documents everything reachable, public or private including properties and methods that have no associated
-code docs. It uses typescript to understand the source-code and builds documentation from the combination of Type signatures and TSDoc comments.
+TypeDoc is configured to follow our public package entrypoints (the `exports` in each package's
+`package.json`) to auto-discover documentation. It documents everything reachable, public or
+private, including properties and methods that have no associated code docs. It uses TypeScript to understand the source-code and builds documentation from the combination of Type signatures and TSDoc comments.
 
 This is great, but it means that its very easy to leak private APIs
-into the docs. Use `/** @internal */` on things that should not be
-put into the public docs.
+into the docs.
 
-While API Documentation lives with the source-code, the code itself plays no part in the documentation
-that is generated: everything is compiled from comments alone.
+::: warning Avoid leaking private APIs into the public docs
+Use `/** @internal */` on anything that should not appear in the public docs.
+:::
+
+While API Documentation lives with the source-code, the code's behavior plays no part in the
+documentation that is generated: everything is compiled from type signatures and comments.
 
 The below guide will walk through best practices for writing doc comments, important
-nuances and syntaxes to know, as well as how to test and preview the doc comments.
+nuances and syntaxes to know, as well as how to preview the doc comments.
 
-<br>
+## A Complete Doc Comment
 
----
+Everything the rest of this page asks for, on one public function:
 
-<br>
-
-## Documentation Syntax
-
-<br>
-
-### What are Doc Comments
-
-Only `**` comments are compiled as potential documentation, e.g.
-
-```ts
+````ts
 /**
- * This is a potential documentation block
- */
-```
-
-Where as single star comment blocks are not considered documentation
-
-```ts
-/*
- * This is not a potential documentation block
- */
-```
-
-### Where to put Doc Comments
-
-Documentation comments should be placed directly above the symbol they are documenting.
-
-```ts
-/**
- * Documents the class
- */
-class Foo {
-  /**
-   * Documents the method
-   */
-  bar() {}
-
-  /**
-   * Documents the property
-   */
-  bar = '1';
-}
-
-/**
- * Documents the interface
- */
-interface Foo {
-  /**
-   * Documents the key
-   */
-  bar: string;
-}
-
-/**
- * Documents the type
- */
-type Foo = {
-  /**
-   * Documents the key
-   */
-  bar: string;
-}
-
-/**
- * Documents the variable
- */
-const Foo = '1';
-
-/**
- * Documents the function
- */
-function foo() {}
-```
-
-<br>
-
-### Ignored Doc Comments
-
-When compiling the API documentation, comments using the `@internal` tag will be ignored:
-
-For example, the below doc comment would be ignored. This is useful for documenting code
-for fellow developers that shouldn't be exposed to end consumers.
-
-```ts
-/**
- * This is a private utility for updating the state
- * of a relationship.
- * 
- * @internal
- */
-function somethingInside() {}
-```
-
-<br>
-
-### Auto Association
-
-TSDoc and TypeDoc will automatically place the documentation for a method inside
-the class it is on, the class inside the package it is in and at the export path
-it is exported from. Because it knows our entrypoints and our types, we don't need
-to tell it much! It already knows when something is an interface vs a class, when
-it extends something else, or that it implements a specific signature.
-
-This means you no longer need to add redundant tags like `@module` `@class` `@method`
-`@static` and `@property`.
-
-### Doc Comments can be Markdown
-
-Doc comments can contain most any valid markdown syntax, most markdown-valid html,
-and can utilize code-highlighting via language prefix on a code block comment.
-
-For instance
-
-```ts
-/**
- * ## Overview
- * 
- * Some details
- * 
- * ### An Example
- * 
+ * Adds two numbers.
+ *
+ * @example
  * ```ts
- * new Store();
+ * add(1, 2); // 3
  * ```
- * 
- * @public
- */
-```
-
-Additionally, the markdown parser in use by our docs understands documentation groups,
-and [many other features](https://vitepress.dev/guide/markdown).
-
-This means we can do code examples that toggle between files or formats.
-
-```ts
-/**
- * ::: code-group
- * 
- * ```ts [example.ts]
- * export function numberFromStrong(str: string): number {}
- * ```
- * 
- * ```js [example.js]
- * export function numberFromStrong(str) {}
- * ```
- * 
- * :::
- */
-```
-
-Highlighting, focus management and code groups are three features that combine
-to enable crafting powerful examples in the documentation.
-
-<br>
-
-### Doc Comments should start every line with a `*`
-
-While technically doc comments only need to start with `/**`, providing a `*` for
-every line with matching indentation ensures correct parsing of all tags and documentation.
-
-Without this, some decorators in code examples may be incorrectly parsed as documentation tags,
-and some documentation may be unexpectedly truncated.
-
-**Good**
-
-```ts
-/**
- * ## Overview
- * 
- * Some details
- * 
- * ### An Example
- * 
- * ```ts
- * class User extends Model {
- *   @attr name;
- * }
- * ```
- * 
- * @public
- */
-```
-
-**Bad**
-
-```ts
-/**
- ## Overview
- 
- Some details
- 
- ### An Example
- 
- \```ts
- class User extends Model {
-   @attr name;
- }
- \```
- 
- @public
-*/
-```
-
-### Documenting Packages and Subpackages
-
-To create an overview for a module path e.g. `@warp-drive/core-types` or `@warp-drive/core-types/symbol` all that is needed is a doc comment at the top of the file with the tag `@module`.
-
-For instance, to write documentation giving an overview of `@warp-drive/core-types`,
-we would do the following in `packages/core-types/src/index.ts`
-
-```ts
-/**
- * This package provides essential types and symbols used
- * by all the other WarpDrive packages.
- * 
- * @module
- */
-```
-
-<br>
-
-### Always specify `@since` on non-type public APIs
-
-`@since` renders as a small badge rather than a body section, so it's
-always visible next to the name of the thing it describes without
-taking up page space.
-
-On a function, class, interface, variable, or type alias, it shows up
-right next to that page's own name:
-
-```ts
-/**
- * @since 1.13.0
- * @public
-*/
-```
-
-On a package's `@module` doc comment, it shows up next to that
-package's `<ModuleBadge>` on the module's index page instead:
-
-```ts
-/**
- * This package provides essential types and symbols used
- * by all the other WarpDrive packages.
  *
- * @module
- * @since 5.9.0
- */
-```
-
-> [!NOTE]
-> Module-level `@since` is currently only picked up from a package's
-> own root entry file (e.g. `packages/core-types/src/index.ts`), not
-> from a subpackage's own `@module` comment (e.g.
-> `core-types/src/cache.ts`). Put `@since` on a subpackage's exported
-> members instead until this is extended.
-
-On a class's own member (a method, property, etc.), `@since` shows up
-on its own line directly below the member's heading instead of next
-to it — a nested heading is much narrower than a page's own title, so
-crowding it with an inline badge reads worse much sooner.
-
-### Overriding the displayed kind and name with `@badge` and `@title`
-
-Every function, class, interface, variable, type alias, and enumeration
-gets its own page whose heading shows its TypeScript kind (`Function`,
-`Class`, `Interface`, `Variable`, `Type Alias`, `Enumeration`) as a
-badge next to its name. That default is accurate but not always the
-most useful label for a reader — a class can be a component, a plain
-object can be a request handler, a function can be a request builder.
-
-Use `@badge <Label>` to override the kind badge with a more meaningful
-conceptual label:
-
-```ts
-/**
- * The `<Await />` component allow you to utilize reactive control flow
- * for asynchronous states in your application.
- *
- * @badge Component
- */
-export class Await<T, E> extends Component<AwaitSignature<T, E>> {}
-```
-
-```ts
-/**
- * A basic Fetch Handler which converts a request into a
- * `fetch` call presuming the response to be `json`.
- *
- * @badge Handler
- */
-const Fetch = { ... };
-```
-
-Use `@title <Text>` to override the name shown in the page heading
-itself, when the raw name (or its generic signature) isn't the most
-legible way to present it — for instance showing a component by its
-usage syntax instead of its class signature:
-
-```ts
-/**
- * @badge Component
- * @title <Await />
- */
-export class Await<T, E> extends Component<AwaitSignature<T, E>> {}
-```
-
-renders as **`<Await />`** instead of **`Await<T, E>`**. Write the
-title exactly as it should be read — no escaping needed, even for
-angle brackets.
-
-Both tags only affect the page's own top-level symbol; they have no
-effect when used on a nested class member, since only the page's own
-heading shows these badges.
-
-### Organizing a page with `@group` and `@category`
-
-TypeDoc supports two independent, standard (not repo-specific) tags
-for organizing the children listed on a class's or module's own page.
-They look similar but behave very differently — pick whichever fits
-what you're organizing.
-
-**`@group <Name>` re-buckets what "kind" a symbol counts as.** Every
-symbol already has a default group — the plural of its TypeScript kind
-(`Functions`, `Classes`, `Properties`, etc.) — so tagging a symbol with
-`@group <Name>` just moves it into a different, named bucket instead.
-Nothing else on the page is affected: every other symbol keeps
-whatever group it already had, explicit or default.
-
-```ts
-class RequestManager {
-  /**
-   * @group Handlers
-   */
-  use(handlers: Handler[]): void {}
-}
-```
-
-**`@category <Name>` arranges children by topic instead of by kind** —
-useful when several different kinds of things (a property, a function,
-a class) together make up one logical feature and should be presented
-as a unit regardless of their TypeScript kind. The tradeoff:
-`@category` is all-or-nothing per page. The moment *any* symbol on a
-page has a `@category`, every symbol without one falls into a generic
-`"Other"` bucket instead — there's no partial opt-in.
-
-Given that tradeoff, **default to `@group`**, and reach for `@category`
-only when the grouping you want genuinely cuts across kinds, and
-you're prepared to categorize everything relevant on that page rather
-than just a few symbols. Never mix the two for symbols that need to
-render together in the same page — see [`@decorator` and
-`@classDecorator`](#marking-decorators-with-decorator-and-classdecorator)
-below for a concrete example of this exact tradeoff.
-
-Tag each member with the category it belongs to:
-
-```ts
-class JSONAPICache {
-  /**
-   * @category Cache Management
-   */
-  mutate(mutation: Mutation): void {}
-
-  /**
-   * @category Cache Forking
-   */
-  fork(): Promise<JSONAPICache> {}
-}
-```
-
-which renders as `## Cache Management` and `## Cache Forking` sections
-on `JSONAPICache`'s page, each listing the members tagged into it.
-Optionally add `@categoryDescription <Name>` to the containing class,
-interface, or module's own doc comment to show a short blurb under
-that section's heading:
-
-```ts
-/**
- * @categoryDescription Cache Management
- * APIs for primary cache management functionality
- */
-class JSONAPICache {}
-```
-
-Keep category names short, human-scannable topic phrases consistent
-with existing ones in the same package (e.g. `Resource Data`,
-`Resource Lifecycle`, `Cache Management`) rather than inventing a new
-one-off name per symbol.
-
-### Marking decorators with `@decorator` and `@classDecorator`
-
-`@decorator` and `@classDecorator` are repo-specific modifier tags
-(implemented by `docs-viewer/typedoc-plugins/decorator-groups.mjs`) for
-functions used as a property/field decorator or a class decorator,
-respectively:
-
-```ts
-/**
- * @since 5.9.0
- * @public
- * @decorator
- */
-export function attribute(target: object, key: string): void;
-```
-
-```ts
-/**
- * @since 5.9.0
- * @public
- * @classDecorator
- */
-export function Resource(target: AnyConstructor): void;
-```
-
-Each tag fills in two defaults, as long as the symbol doesn't already
-set its own:
-
-- `@group` — `"Field Decorators"` for `@decorator`, `"Class
-  Decorators"` for `@classDecorator` — so decorators get their own
-  section on the module's index page instead of a flat list mixed in
-  with everything else. This is `@group` rather than `@category` on
-  purpose (see [above](#organizing-a-page-with-group-and-category)):
-  decorators live in modules (like `schema-dsl`) that don't otherwise
-  use `@category`, so `@group` avoids ever tripping the "one
-  `@category` recategorizes the whole page" rule. If a decorator's
-  module later needs `@category` for something else, either give the
-  decorators an explicit `@category` too, or keep `@category` out of
-  that module entirely — don't let the two mix silently.
-- `@badge` — `"Decorator"` / `"Class Decorator"` — shown as the kind
-  badge on the symbol's own page instead of the default `"Function"`.
-
-A symbol can still set its own `@group` to opt out of the default
-bucket, same as any other `@group` usage — this is how `schema-dsl`'s
-entity-level decorators (`Resource`, `Trait`, `ObjectSchema`, `trait`)
-end up grouped under their own `Entity Decorators` section instead of
-`Class Decorators`:
-
-```ts
-/**
- * @since 5.9.0
- * @public
- * @classDecorator
- * @group Entity Decorators
- */
-export function Resource(target: AnyConstructor): void;
-```
-
-### Use `@hideconstructor` for classes that aren't directly instantiated by users
-
-[@hideconstructor](https://typedoc.org/documents/Tags._hideconstructor.html#hideconstructor)
-
-```ts
-/**
- * @hideconstructor
- */
-class ReactiveResource {}
-```
-
-Methods are documented with `@method` and attach to the most recent class the parser has
-seen.
-
-### Don't document types in @param and @return
-
-Because types are parsed from the typescript, `@param` and `@return` should
-be used to give a meaningful description only.
-
-```ts
-/**
- * Adds two numbers
- * 
  * @param a - the first number to add
  * @param b - the second number to add
  * @return the sum of the two numbers
+ * @since 5.10.0
+ * @public
  */
-function add(a: number, b: number): number {}
-```
+export function add(a: number, b: number): number {}
+````
 
-<br>
-
----
-
-<br>
+- The `/**` opener and the `*` on every line: [Documentation Syntax](#documentation-syntax).
+- The summary sentence, the `@example`, and `{@link}` on first mention of other public symbols:
+  [Content Standards](#content-standards), next.
+- `@param` and `@return` with descriptions only: [Don't document types in @param and @return](#don-t-document-types-in-param-and-return).
+- `@since` with the full version: [Always specify `@since`](#always-specify-since-on-non-type-public-apis).
+- `@public`, or `@internal` to keep it out of the docs:
+  [Mark public exports with `@public`](#mark-public-exports-with-public).
 
 ## Content Standards
-
-<br>
 
 ### Every Public API Should Have a Usage Example
 
 Even a minimal example dramatically shortens the time it takes for a
 consumer to understand how to use an API. Every doc comment for a
-`@public` export should include at least one.
+[`@public`](#mark-public-exports-with-public) export should include at least one, under the
+`@example` tag. Headings inside a comment body are fine for other structure, as the markdown
+examples later on this page show, but the usage example itself goes under `@example`, which is
+the convention in this repo. This applies to the exported symbol itself: a class, function, or
+variable. A class member needs its own example only when using it is not obvious from the class
+example, such as a method with several call patterns.
 
-```ts
+````ts
 /**
  * Adds two numbers
  *
@@ -549,13 +101,16 @@ consumer to understand how to use an API. Every doc comment for a
  * @public
  */
 function add(a: number, b: number): number {}
-```
+````
 
 ### Link the First Mention of Other Public APIs
 
 The first time a doc comment mentions another documented, public token,
 that mention should be a `{@link}` to it. This turns our docs into a
 web that's easy to navigate instead of a pile of disconnected pages.
+Write `{@link Symbol}` to show the symbol's own name, or
+`{@link Symbol | other text}` to show other text; the `|` separates the
+target from the label.
 
 ```ts
 /**
@@ -581,17 +136,18 @@ relevant to them.
  * - {@link RejectedRequest}
  * - {@link CancelledRequest}
  */
-export type RequestState<
-  RT = unknown,
-  E extends Error = Error,
-> = PendingRequest | ResolvedRequest<RT> | RejectedRequest<RT, E> | CancelledRequest<RT, E>;
+export type RequestState<RT = unknown, E extends Error = Error> =
+  PendingRequest | ResolvedRequest<RT> | RejectedRequest<RT, E> | CancelledRequest<RT, E>;
 ```
 
 ### Cross-Link Within a Class, Interface, or Object
 
 Cross-linking between the members of the same class, interface, or
 object is highly encouraged. This makes it fast and easy to navigate
-around the documentation for that class/object/interface.
+around the documentation for that class/object/interface. The
+`@privateRemarks` blocks in the example below are notes for people
+reading the source; TypeDoc excludes that tag from the rendered docs by
+default.
 
 ```ts
 /**
@@ -742,20 +298,19 @@ interface AbortController {
 }
 ```
 
-<br>
-
 ### The `@deprecated` Tag
 
-`@deprecated` is a standard TSDoc tag. The description below is an
-add-on to, not a replacement for, its standard meaning: it signals
-that consumers should stop using the tagged function, component, or
-object because it is actively being removed.
+`@deprecated` is a standard TSDoc tag. In this repo it carries one extra
+meaning on top of the standard one: the tagged function, component, or
+object is actively being removed, not merely out of favor (that is
+[`@discouraged`](#the-discouraged-tag), below).
 
-- Whenever possible, link the `@recommended` replacement.
+- Whenever possible, link the replacement, and tag that replacement
+  [`@recommended`](#the-recommended-tag).
 - If the deprecation is tracked by [the deprecations guide](/api/@warp-drive/build-config/deprecations/)
   (i.e. it has a deprecation id like `ember-data:deprecate-store-extends-ember-object`
-  and a corresponding `DEPRECATE_*` flag), link both the guide and the
-  specific deprecation id using `@id`.
+  and a corresponding `DEPRECATE_*` flag), link the guide and name the
+  deprecation id so readers can find its entry there.
 
 ```ts
 /**
@@ -797,9 +352,9 @@ of whatever the tag describes.
 
 `@legacy` is a repo-specific modifier tag for symbols that predate the
 current architecture but aren't (yet) `@deprecated` — it renders as a
-plain, unstyled `` **`Legacy`** `` flag before the summary, the same
+plain, unstyled ``**`Legacy`**`` flag before the summary, the same
 way any other modifier tag without special handling does (see
-`@discouraged`/`@recommended` above for tags that *do* get special
+`@discouraged`/`@recommended` above for tags that _do_ get special
 handling).
 
 Separate from that tag, every page under the `@warp-drive/legacy`
@@ -817,36 +372,602 @@ with `@alpha`/`@beta`/`@internal`/`@public`) is unrelated to the
 `@warp-drive/experiments` badge above — tagging a symbol
 `@experimental` elsewhere in the codebase does not add that badge, and
 currently renders as nothing more than an unstyled
-`` **`Experimental`** `` flag, same as `@legacy` above.
+``**`Experimental`**`` flag, same as `@legacy` above.
 
-<br>
+## Documentation Syntax
 
----
+### What are Doc Comments
 
-<br>
+Only `/**` comments are compiled as potential documentation, e.g.
 
-## Documentation Hygiene
+```ts
+/**
+ * This is a potential documentation block
+ */
+```
 
-<br>
+Whereas single star comment blocks are not considered documentation
+
+```ts
+/*
+ * This is not a potential documentation block
+ */
+```
+
+### Where to put Doc Comments
+
+Documentation comments should be placed directly above the symbol they are documenting.
+
+```ts
+/**
+ * Documents the class
+ */
+class Foo {
+  /**
+   * Documents the method
+   */
+  bar() {}
+
+  /**
+   * Documents the property
+   */
+  bar = '1';
+}
+
+/**
+ * Documents the interface
+ */
+interface Foo {
+  /**
+   * Documents the key
+   */
+  bar: string;
+}
+
+/**
+ * Documents the type
+ */
+type Foo = {
+  /**
+   * Documents the key
+   */
+  bar: string;
+};
+
+/**
+ * Documents the variable
+ */
+const Foo = '1';
+
+/**
+ * Documents the function
+ */
+function foo() {}
+```
+
+### Ignored Doc Comments
+
+When compiling the API documentation, any symbol whose doc comment carries the `@internal` tag is
+left out of the published docs entirely, along with everything nested under it (TypeDoc runs with
+`excludeInternal`). This is how to document code for fellow developers without exposing it to end
+consumers. For example, the function below would not appear in the docs:
+
+```ts
+/**
+ * This is a private utility for updating the state
+ * of a relationship.
+ *
+ * @internal
+ */
+function somethingInside() {}
+```
+
+### Auto Association
+
+TSDoc and TypeDoc will automatically place the documentation for a method inside
+the class it is on, the class inside the package it is in and at the export path
+it is exported from. Because it knows our entrypoints and our types, we don't need
+to tell it much! It already knows when something is an interface vs a class, when
+it extends something else, or that it implements a specific signature.
+
+This means you no longer need to add redundant tags like `@class` `@method` `@static` and
+`@property`. The one structural tag still in use is `@module`, for package and subpackage
+overviews (see below).
+
+### Doc Comments can be Markdown
+
+Doc comments can contain most any valid markdown syntax, most markdown-valid html,
+and can utilize code-highlighting via language prefix on a code block comment.
+
+For instance
+
+````ts
+/**
+ * ## Overview
+ *
+ * Some details
+ *
+ * ### An Example
+ *
+ * ```ts
+ * new Store();
+ * ```
+ *
+ * @public
+ */
+````
+
+> [!TIP]
+> The fence around the example above uses four backticks (` ```` `) instead of three so the
+> nested ` ```ts ` block doesn't close it early — a closing fence must be at least as long as the
+> opening one, per the [CommonMark rule for fenced code blocks](https://spec.commonmark.org/current/#fenced-code-blocks).
+> This is plain markdown, not a TSDoc feature: our docs render through VitePress's `markdown-it`,
+> which implements the same rule. Use the same trick any time an example needs a code block inside
+> another code block.
+
+Additionally, the markdown parser in use by our docs understands
+[code groups](https://vitepress.dev/guide/markdown#code-groups), and
+[many other features](https://vitepress.dev/guide/markdown).
+
+This means we can do code examples that toggle between files or formats.
+
+````ts
+/**
+ * ::: code-group
+ *
+ * ```ts [example.ts]
+ * export function numberFromString(str: string): number {}
+ * ```
+ *
+ * ```js [example.js]
+ * export function numberFromString(str) {}
+ * ```
+ *
+ * :::
+ */
+````
+
+[Line highlighting](https://vitepress.dev/guide/markdown#line-highlighting-in-code-blocks),
+[focus](https://vitepress.dev/guide/markdown#focus-in-code-blocks), and code groups are three
+VitePress features that combine to enable crafting powerful examples in the documentation.
+
+### Doc Comments should start every line with a `*`
+
+While technically doc comments only need to start with `/**`, providing a `*` for
+every line with matching indentation ensures correct parsing of all tags and documentation.
+
+Without this, some decorators in code examples may be incorrectly parsed as documentation tags,
+and some documentation may be unexpectedly truncated.
+
+**Good**
+
+````ts
+/**
+ * ## Overview
+ *
+ * Some details
+ *
+ * ### An Example
+ *
+ * ```ts
+ * class User extends Model {
+ *   @attr name;
+ * }
+ * ```
+ *
+ * @public
+ */
+````
+
+**Bad**
+
+````ts
+/**
+ ## Overview
+
+ Some details
+
+ ### An Example
+
+ ```ts
+ class User extends Model {
+   @attr name;
+ }
+ ```
+
+ @public
+*/
+````
+
+### Documenting Packages and Subpackages
+
+To create an overview for a module path e.g. `@warp-drive/core-types` or `@warp-drive/core-types/symbol` all that is needed is a doc comment at the top of the file with the tag `@module`.
+
+For instance, to write documentation giving an overview of `@warp-drive/core-types`,
+we would do the following in `packages/core-types/src/index.ts`
+
+```ts
+/**
+ * This package provides essential types and symbols used
+ * by all the other WarpDrive packages.
+ *
+ * @module
+ */
+```
+
+This is separate from the package's `src/index.md`, which TypeDoc renders
+as the landing page above the module's member listing (see
+[READMEs and `src/index.md`](#readmes-and-src-index-md)). The `@module` comment supplies
+the module's one-paragraph summary and is where module-level `@since`
+goes; `src/index.md` holds the longer landing-page prose.
+
+### Mark public exports with `@public`
+
+TSDoc's release tags say who a symbol is for. In this repo every export intended for consumers
+carries `@public`, and everything else that is reachable from a package entrypoint carries
+`@internal` (see [Ignored Doc Comments](#ignored-doc-comments)); `@alpha` and `@beta` are not
+used. A reachable export with neither tag is published as if it were public, so tag it one way or
+the other. Members of a `@public` class or interface inherit its visibility and do not need their
+own `@public`; use `@internal` on a member to hide just that member. The
+[Content Standards](#content-standards) above apply to anything public.
+
+### Always specify `@since` on non-type public APIs
+
+`@since` names the release the API first shipped in, using the full
+stable version (`5.9.0`, not `5.9` and not a prerelease tag). For an API
+you are adding now, that is the next stable release. It renders as a small badge rather than a
+body section, so it's always visible next to the name of the thing it
+describes without taking up page space. The other examples on this page
+leave it out to stay short; real public APIs must not.
+
+On a function, class, or variable it shows up right next to that page's
+own name (an interface or type alias renders it the same way if you add
+one, but types don't require it):
+
+```ts
+/**
+ * @since 1.13.0
+ * @public
+ */
+```
+
+On a package's `@module` doc comment, it shows up next to that
+package's `<ModuleBadge>` (the pill showing the module path at the top
+of the module's index page) instead:
+
+```ts
+/**
+ * This package provides essential types and symbols used
+ * by all the other WarpDrive packages.
+ *
+ * @module
+ * @since 5.9.0
+ */
+```
+
+> [!NOTE]
+> Module-level `@since` is currently only picked up from a package's
+> own root entry file (e.g. `packages/core-types/src/index.ts`), not
+> from a subpackage's own `@module` comment (e.g.
+> `core-types/src/cache.ts`). Put `@since` on a subpackage's exported
+> members instead until this is extended.
+
+On a class's own member (a method, property, etc.), `@since` shows up
+on its own line directly below the member's heading instead of next
+to it — a nested heading is much narrower than a page's own title, so
+crowding it with an inline badge reads worse much sooner.
+
+### Overriding the displayed kind and name with `@badge` and `@title`
+
+Every function, class, interface, variable, type alias, and enumeration
+gets its own page whose heading shows its TypeScript kind (`Function`,
+`Class`, `Interface`, `Variable`, `Type Alias`, `Enumeration`) as a
+badge next to its name. That default is accurate but not always the
+most useful label for a reader — a class can be a component, a plain
+object can be a request handler, a function can be a request builder.
+
+`@badge` and `@title` are repo-specific tags, implemented in
+`docs-viewer/src/site-utils.ts`. Use `@badge <Label>` to override the
+kind badge with a more meaningful conceptual label:
+
+```ts
+/**
+ * The `<Await />` component allows you to utilize reactive control flow
+ * for asynchronous states in your application.
+ *
+ * @badge Component
+ */
+export class Await<T, E> extends Component<AwaitSignature<T, E>> {}
+```
+
+```ts
+/**
+ * A basic Fetch Handler which converts a request into a
+ * `fetch` call presuming the response to be `json`.
+ *
+ * @badge Handler
+ */
+const Fetch = { ... };
+```
+
+Use `@title <Text>` to override the name shown in the page heading
+itself, when the raw name (or its generic signature) isn't the most
+legible way to present it — for instance showing a component by its
+usage syntax instead of its class signature:
+
+```ts
+/**
+ * @badge Component
+ * @title <Await />
+ */
+export class Await<T, E> extends Component<AwaitSignature<T, E>> {}
+```
+
+renders as **`<Await />`** instead of **`Await<T, E>`**. Write the
+title exactly as it should be read — no escaping needed, even for
+angle brackets.
+
+Both tags only affect the page's own top-level symbol; they have no
+effect when used on a nested class member, since only the page's own
+heading shows these badges.
+
+### Organizing a page with `@group` and `@category`
+
+TypeDoc supports two independent, standard (not repo-specific) tags
+for organizing the children listed on a class's or module's own page.
+They look similar but behave very differently — pick whichever fits
+what you're organizing.
+
+**`@group <Name>` re-buckets what "kind" a symbol counts as.** Every
+symbol already has a default group — the plural of its TypeScript kind
+(`Functions`, `Classes`, `Properties`, etc.) — so tagging a symbol with
+`@group <Name>` just moves it into a different, named bucket instead.
+Nothing else on the page is affected: every other symbol keeps
+whatever group it already had, explicit or default.
+
+```ts
+class RequestManager {
+  /**
+   * @group Handlers
+   */
+  use(handlers: Handler[]): void {}
+}
+```
+
+**`@category <Name>` arranges children by topic instead of by kind** —
+useful when several different kinds of things (a property, a function,
+a class) together make up one logical feature and should be presented
+as a unit regardless of their TypeScript kind. The tradeoff:
+`@category` is all-or-nothing per page. The moment _any_ symbol on a
+page has a `@category`, every symbol without one falls into a generic
+`"Other"` bucket instead — there's no partial opt-in.
+
+Given that tradeoff, **default to `@group`**, and reach for `@category`
+only when the grouping you want genuinely cuts across kinds, and
+you're prepared to categorize everything relevant on that page rather
+than just a few symbols. Once any symbol on a page has a `@category`,
+give every symbol on that page one; they may keep a `@group` as well,
+since the two tags answer different questions — see [`@decorator` and
+`@classDecorator`](#marking-decorators-with-decorator-and-classdecorator)
+below for a concrete example of this exact tradeoff.
+
+Tag each member with the category it belongs to:
+
+```ts
+class JSONAPICache {
+  /**
+   * @category Cache Management
+   */
+  mutate(mutation: Mutation): void {}
+
+  /**
+   * @category Cache Forking
+   */
+  fork(): Promise<JSONAPICache> {}
+}
+```
+
+which renders as `## Cache Management` and `## Cache Forking` sections
+on `JSONAPICache`'s page, each listing the members tagged into it.
+Optionally add `@categoryDescription <Name>` to the containing class,
+interface, or module's own doc comment to show a short blurb under
+that section's heading:
+
+```ts
+/**
+ * @categoryDescription Cache Management
+ * APIs for primary cache management functionality
+ */
+class JSONAPICache {}
+```
+
+Keep category names short, human-scannable topic phrases consistent
+with existing ones in the same package (e.g. `Resource Data`,
+`Resource Lifecycle`, `Cache Management`) rather than inventing a new
+one-off name per symbol.
+
+### Marking decorators with `@decorator` and `@classDecorator`
+
+`@decorator` and `@classDecorator` are repo-specific modifier tags
+(implemented by `docs-viewer/typedoc-plugins/decorator-groups.mjs`) for
+functions used as a property/field decorator or a class decorator,
+respectively:
+
+```ts
+/**
+ * @since 5.9.0
+ * @public
+ * @decorator
+ */
+export function attribute(target: object, key: string): void;
+```
+
+```ts
+/**
+ * @since 5.9.0
+ * @public
+ * @classDecorator
+ */
+export function Resource(target: AnyConstructor): void;
+```
+
+Each tag fills in two defaults, as long as the symbol doesn't already
+set its own:
+
+- `@group` — `"Field Decorators"` for `@decorator`, `"Class
+Decorators"` for `@classDecorator` — so decorators get their own
+  section on the module's index page instead of a flat list mixed in
+  with everything else. This is `@group` rather than `@category` on
+  purpose (see [above](#organizing-a-page-with-group-and-category)):
+  decorators live in modules (like `schema-dsl`) that don't otherwise
+  use `@category`, so `@group` avoids ever tripping the "one
+  `@category` recategorizes the whole page" rule. If a decorator's
+  module later needs `@category` for something else, either give the
+  decorators an explicit `@category` too, or keep `@category` out of
+  that module entirely — don't let the two mix silently.
+- `@badge` — `"Decorator"` / `"Class Decorator"` — shown as the kind
+  badge on the symbol's own page instead of the default `"Function"`.
+
+A symbol can still set its own `@group` to opt out of the default
+bucket, same as any other `@group` usage — this is how `schema-dsl`'s
+entity-level decorators (`Resource`, `Trait`, `ObjectSchema`, `trait`)
+end up grouped under their own `Entity Decorators` section instead of
+`Class Decorators`:
+
+```ts
+/**
+ * @since 5.9.0
+ * @public
+ * @classDecorator
+ * @group Entity Decorators
+ */
+export function Resource(target: AnyConstructor): void;
+```
+
+### Use `@hideconstructor` for classes that aren't directly instantiated by users
+
+[@hideconstructor](https://typedoc.org/documents/Tags._hideconstructor.html#hideconstructor)
+removes the constructor from the class's page. Use it on classes the
+`Store` or a manager creates for the user, so the docs don't suggest
+calling `new` on them:
+
+```ts
+/**
+ * @hideconstructor
+ */
+class ReactiveResource {}
+```
+
+### Don't document types in @param and @return
+
+Because types are parsed from the TypeScript, `@param` and `@return` should
+be used to give a meaningful description only. This repo uses `@return`;
+TypeDoc also accepts TSDoc's standard `@returns`.
+
+```ts
+/**
+ * Adds two numbers
+ *
+ * @param a - the first number to add
+ * @param b - the second number to add
+ * @return the sum of the two numbers
+ */
+function add(a: number, b: number): number {}
+```
+
+## READMEs and `src/index.md`
+
+Every published package has a `README.md` next to its `package.json`. It is the first thing a
+reader sees on the package's GitHub directory and on its npm page, and `package.json` lists it in
+`files` so it ships in the tarball. Its job is to say what the package is, whether the reader
+wants it, and where the real documentation lives. It is not the place to teach the package.
+
+Of the [audiences](./index.md#know-your-audience) our documentation serves, a README is for two
+readers: a technical evaluator or hobbyist on npm or GitHub deciding whether to install this
+package at all, and someone who just installed it and needs to know the first thing to do.
+Neither is reading the docs site yet, so the README has to stand on its own, and neither wants
+depth, so it has to hand them off quickly.
+
+### README structure
+
+A package README has these sections, in this order. The packages named in parentheses are the
+ones the shape is taken from; copy from them.
+
+- **Logo block.** A centered `<img>` of `./logos/logo-yellow-slab.svg` with `class="project-logo"`.
+  The package's `logos/` directory is a synced copy of the repo-root `logos/synced/` (see the
+  notice in `logos/synced/README.md`), so never edit it inside a package.
+- **Badges.** Five badges from shields.io: npm version, npm downloads, license, and the EmberJS
+  and ***Warp*Drive** Discord servers. Copy the block verbatim from another package, including its
+  `ember-data` targets for the version and download counts; do not retarget it per package. If the
+  package wants its own release badges, add a **Tagged Releases** list between the H1 and the
+  description (`@warp-drive/ember` has one).
+- **Package name as the H1**, `# @warp-drive/json-api`. `@warp-drive/core` is the exception: it
+  is the project's front door and uses the ***Warp*Drive** tagline instead.
+- **One paragraph on what it is and who should use it.** `@warp-drive/json-api` says it is a
+  `{json:api}` cache implementation and that most apps should use it. If the package is
+  deprecated, say so here in a GitHub alert (`> [!WARNING]`), as `@warp-drive/legacy` does.
+- **Install and first step, only when the docs link below cannot be the first step.** That is
+  the case when the package is used in a way the guides do not cover: `@warp-drive/memory-alpha`
+  is read from `node_modules` rather than imported, so its `## Usage` shows `npm install` and a
+  code sample. A library package installed and imported the normal way needs neither.
+- **`## Documentation`** with the same single line every package uses, a *Get Started* link to
+  the Guides as an absolute URL. The README is rendered by GitHub and npm, so the root-relative
+  `/guides/` links the rest of the docs use do not resolve here.
+- **`## Code of Conduct` and `### License`**, linking the repo's `CODE_OF_CONDUCT.md` on GitHub
+  and the package's own `LICENSE.md`, which ships in `files` alongside the README.
+
+A few older READMEs (`@warp-drive/ember`, `@ember-data/request`) predate this shape and carry a
+full manual. Do not copy that: their API detail has to be kept in sync by hand, and the link
+checker does not cover READMEs (see [Checking Links](./index.md#checking-links)).
+
+### README vs `src/index.md`
+
+Each package's `typedoc.config.mjs` sets `readme`. Where it is `'src/index.md'` (as in
+`warp-drive-packages/core`, `json-api`, `ember`, `legacy`, and `utilities`), TypeDoc renders that
+file as the package's landing page in the [API docs](/api/) at `/api/<package-name>/`, above the
+generated member listing. Where it is `'none'`, the package has no landing prose.
+
+The split follows from where each file renders:
+
+- `README.md` is GitHub-flavored markdown for GitHub and npm. Use `> [!WARNING]` alerts and
+  absolute URLs. It answers "should I install this?".
+- `src/index.md` is VitePress markdown for the docs site. It can use `:::tip` and `:::warning`
+  containers, `::: code-group`, root-relative links like `/api/@warp-drive/core/`, and TSDoc
+  `{@link}` references, as `packages/request/src/index.md` does. It starts with the package name
+  as an H1 and answers "I am on the API docs for this package, where do I start?", so this is the
+  place for the setup snippet, as `warp-drive-packages/json-api/src/index.md` shows.
+
+Some packages still duplicate paragraphs between the two, or leave `src/index.md` empty. When you
+touch one, read the other and move each sentence to the file that answers its question.
+
+### Keep READMEs short
+
+A README links to the [Guides](/guides/) and the [API docs](/api/) instead of restating them.
+Concepts live in a guide (see [Writing Guides](./writing-guides.md)); signatures, options, and
+per-member behavior live in TSDoc, as the rest of this page describes. If a README sentence
+explains how something works, it belongs in one of those and the README should link there.
+
+When code changes, follow the
+[Cross-Documentation Checklist](./index.md#cross-documentation-checklist): a new public API
+gets a README or `src/index.md` mention only if it changes the package's headline story, and a
+breaking change means fixing any README example that uses the old API. Preview README changes by
+viewing the file on your branch on GitHub.
+
+## Previewing and Troubleshooting
+
+### Previewing Documentation
+
+Run `pnpm start` from `docs-viewer/`; it rebuilds the API docs when package sources change. The
+static build and the pull-request preview are covered in
+[Previewing Your Changes](./index.md#previewing-your-changes).
 
 ### Troubleshooting
 
 If you have added docs but are not seeing them when previewing locally, and if you
-have confirmed the docs preview server is running (and has not crashed)
+have confirmed the docs preview server is running (and has not crashed):
 
 - The docs may have been excluded due to using an [ignored doc comment](#ignored-doc-comments)
 - The docs may have been excluded due to not using the right [comment syntax](#what-are-doc-comments)
-- The documented thing may not be accessible via any public API entrypoint
-- TypeDoc may be configured to ignore it (extremely rare)
-
-<br>
-
-### Previewing Documentation
-
-#### For `docs.warp-drive.io`
-
-From inside the `docs-viewer` directory
-
-- start sync for guides with `bun ./src/start-guides-sync.ts`
-- build/rebuild the API docs with `pnpm typedoc` (rerun as needed)
-- start the server with `pnpm dev`, visit the site url
+- The documented thing may not be accessible via any public API entrypoint (the `exports` in the
+  package's `package.json`)
+- TypeDoc may be configured to ignore it (extremely rare; see `docs-viewer/typedoc.config.mjs`)
