@@ -1,6 +1,7 @@
 # Applies a `:label: <type>` changelog label automatically when a newly-opened PR's title
-# spells its type out in a recognizable convention -- `<type>: title`, `<type> | title`, or
-# `[type] title` -- and no changelog label has been applied yet. This exists because only
+# spells its type out in a recognizable convention -- `<type>: title`, `<type>(scope): title`
+# (Conventional Commits form), `<type> | title`, or `[type] title` -- and no changelog label
+# has been applied yet. This exists because only
 # maintainers can apply labels, which otherwise leaves every non-maintainer PR waiting on one
 # to hand-label it before enforce-pr-labels-*.yml's `enforce-changelog-label` job can pass.
 #
@@ -65,7 +66,7 @@ jobs:
 
             const match =
               pr.title.match(/^\s*\[([a-zA-Z]+)\]/) ||
-              pr.title.match(/^\s*([a-zA-Z]+)\s*[:|]/);
+              pr.title.match(/^\s*([a-zA-Z]+)(?:\([^)]*\))?\s*[:|]/);
             const label = match && TYPE_TO_LABEL[match[1].toLowerCase()];
             if (!label) return;
 

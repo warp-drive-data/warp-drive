@@ -37,12 +37,10 @@ checks CI runs on every PR, so a PR opened this way carries everything those che
    of the `:dart:` labels below is presumed to need no backport; there is no longer a
    `:dart: canary` label for that case.
 
-   **If your title matches one of `type: title`, `type | title`, or `[type] title`** (aliases
-   like `fix` → `:label: bug` or `docs` → `:label: doc` included) **and the PR has no changelog
-   label yet**, a bot applies the matching label for you when the PR is opened
-   (`.github/workflows/label-pr-type.yml`). It does not recognize the `type(scope): subject` form
-   step 5 asks for — the scope's parentheses break the match — so a scoped title still needs a
-   maintainer, or you, to label it by hand.
+   **If your title matches one of `type: title`, `type(scope): title` (the form step 5 asks
+   for), `type | title`, or `[type] title`** (aliases like `fix` → `:label: bug` or `docs` →
+   `:label: doc` included) **and the PR has no changelog label yet**, a bot applies the matching
+   label for you when the PR is opened (`.github/workflows/label-pr-type.yml`).
 
    **If you are a maintainer**, apply the changelog label yourself when you open the PR, plus any
    target label the change needs.
@@ -56,19 +54,19 @@ checks CI runs on every PR, so a PR opened this way carries everything those che
 
    Pick exactly one changelog label:
 
-   | Label | Use for |
-   | --- | --- |
-   | `:label: breaking` | a breaking change |
-   | `:label: feat` | a new public feature or behavior |
-   | `:label: bug` | a fix for a reported issue |
-   | `:label: perf` | a meaningful performance improvement |
-   | `:label: cleanup` | removal of a deprecated feature, or a deprecation that became an assertion |
-   | `:label: deprecation` | a new deprecation |
-   | `:label: doc` | a fix or improvement to guides or API docs |
-   | `:label: test` | new tests, or a refactor of existing tests |
-   | `:label: chore` | internal refactoring with no public API change worth calling out |
-   | `:label: rfc` | a new RFC, or a change to one; see [Writing and Implementing RFCs](./writing-and-implementing-rfcs.md) |
-   | `:label: dependencies` | a dependency bump on `main` |
+   | Label                  | Use for                                                                                                |
+   | ---------------------- | ------------------------------------------------------------------------------------------------------ |
+   | `:label: breaking`     | a breaking change                                                                                      |
+   | `:label: feat`         | a new public feature or behavior                                                                       |
+   | `:label: bug`          | a fix for a reported issue                                                                             |
+   | `:label: perf`         | a meaningful performance improvement                                                                   |
+   | `:label: cleanup`      | removal of a deprecated feature, or a deprecation that became an assertion                             |
+   | `:label: deprecation`  | a new deprecation                                                                                      |
+   | `:label: doc`          | a fix or improvement to guides or API docs                                                             |
+   | `:label: test`         | new tests, or a refactor of existing tests                                                             |
+   | `:label: chore`        | internal refactoring with no public API change worth calling out                                       |
+   | `:label: rfc`          | a new RFC, or a change to one; see [Writing and Implementing RFCs](./writing-and-implementing-rfcs.md) |
+   | `:label: dependencies` | a dependency bump on `main`                                                                            |
 
    Add a target label only when the change needs to be backported: one `:dart:` label per
    release channel — `:dart: beta`, `:dart: release`, `:dart: lts`, `:dart: lts-prev`.
@@ -76,6 +74,7 @@ checks CI runs on every PR, so a PR opened this way carries everything those che
 
    Never add a `backport-*` label to a `main` PR; CI bans them there. `:label: doc`,
    `:label: feat`, and `:label: rfc` also trigger a live docs preview, linked in a PR comment.
+
 7. For the backport PR itself, cherry-pick onto the release branch and open the PR against that
    branch. CI adds the matching `backport-beta`, `backport-release`, `backport-lts`, or
    `backport-lts-prev` label. For an older non-LTS release branch no job does, so a maintainer
@@ -89,14 +88,10 @@ checks CI runs on every PR, so a PR opened this way carries everything those che
 ## Example
 
 [#11146](https://github.com/warp-drive-data/warp-drive/pull/11146) titled itself
-`docs: dedupe the v5 upgrade guide and codemod READMEs` — the unscoped `type: title` form. Opened
-today, that title would let the step 6 bot apply `:label: doc` automatically, and no target label
-would be needed at all, since a `main` PR carrying none is presumed to need no backport. At the
-time it actually opened, before either capability existed, only `:label: doc` came in with the
-PR, the `enforce-target-label` check failed for want of `:dart: canary`, and it took a maintainer
-adding that label by hand before CI went green.
-
-A title in the `type(scope): subject` form step 5 asks for, such as
-`docs(upgrading): dedupe the v5 upgrade guide`, still isn't matched by the bot today — the
-scope's parentheses break it — so its changelog label check would stay red the same way, waiting
-on a maintainer (or the author, if they have label access) rather than CI.
+`docs: dedupe the v5 upgrade guide and codemod READMEs`. Opened today, that title — or the scoped
+`docs(upgrading): dedupe the v5 upgrade guide and codemod READMEs` form step 5 asks for — would
+let the step 6 bot apply `:label: doc` automatically, and no target label would be needed at all,
+since a `main` PR carrying none is presumed to need no backport. At the time it actually opened,
+before either capability existed, only `:label: doc` came in with the PR, the
+`enforce-target-label` check failed for want of `:dart: canary`, and it took a maintainer adding
+that label by hand before CI went green.
