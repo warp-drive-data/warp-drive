@@ -4,7 +4,10 @@ import { service } from '@ember/service';
 import Component from '@glimmer/component';
 
 import type Store from '#app/data/store.ts';
+// #remove-region-from-starter
+// #region import-create
 import { createTodo } from '#app/data/builders/create.ts';
+// #endregion import-create
 import type { TodoAttributes } from '#app/data/schemas/todo.ts';
 
 import { reportError } from '#app/helpers/error.ts';
@@ -49,7 +52,10 @@ export class CreateTodo extends Component {
     const { attributes, form } = processSubmitEvent(event);
 
     try {
+      // #replace-region-in-starter TODO (chapter 4): send the create request
+      // #region create-todo
       await this.store.request(createTodo(attributes));
+      // #endregion create-todo
 
       form.reset();
     } catch (e) {

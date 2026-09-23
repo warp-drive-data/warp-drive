@@ -1,3 +1,4 @@
+// #omit-file-from-starter
 import type { ReactiveDataDocument } from '@warp-drive/core/reactive';
 import { withReactiveResponse } from '@warp-drive/core/request';
 import type { RequestInfo } from '@warp-drive/core/types/request';

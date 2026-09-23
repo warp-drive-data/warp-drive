@@ -44,4 +44,4 @@ export const TodoApp = <template>
     </:footer>
 
   </TodoAppState>
-</template> satisfies TOC<{ Args: { todoFuture: Future<TodosDocument> } }>;
+</template> satisfies TOC<{ Args: { todoFuture?: Future<TodosDocument> } }>;

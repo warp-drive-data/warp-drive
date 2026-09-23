@@ -10,7 +10,7 @@ import type AppState from '#app/services/app-state.ts';
 
 interface Signature {
   Args: {
-    todoFuture: Future<TodosDocument>;
+    todoFuture?: Future<TodosDocument>;
   };
   Blocks: {
     toggle: [todos: Todo[]];
@@ -20,6 +20,8 @@ interface Signature {
 
 export class TodoProvider extends Component<Signature> {
   <template>
+    {{! #replace-region-in-starter TODO (chapter 1): render @todoFuture with <Request> }}
+    <!-- #region todos-request -->
     <Request @request={{@todoFuture}} @autorefresh={{true}} @autorefreshBehavior="refresh">
 
       <:loading><LoadingSpinner /></:loading>
@@ -34,6 +36,7 @@ export class TodoProvider extends Component<Signature> {
       <:error as |error|>{{this.appState.onUnrecoverableError error}}</:error>
 
     </Request>
+    <!-- #endregion todos-request -->
   </template>
 
   @service declare private readonly appState: AppState;

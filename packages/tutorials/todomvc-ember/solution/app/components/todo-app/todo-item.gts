@@ -6,8 +6,14 @@ import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 
 import type Store from '#app/data/store.ts';
+// #remove-region-from-starter
+// #region import-delete
 import { deleteTodo } from '#app/data/builders/delete.ts';
+// #endregion import-delete
+// #remove-region-from-starter
+// #region import-update
 import { patchCacheTodoActivated, patchCacheTodoCompleted, patchTodo } from '#app/data/builders/update.ts';
+// #endregion import-update
 import type { EditableTodo, Todo } from '#app/data/schemas/todo.ts';
 
 import { Form } from '#app/components/design-system/form.gts';
@@ -185,6 +191,8 @@ class CompletedForm extends Component<{
 
     try {
       todo.completed = completed;
+      // #replace-region-in-starter TODO (chapter 6): save the toggle and move the todo between lists
+      // #region toggle
       await this.store.request(patchTodo(todo, { completed }));
 
       if (completed) {
@@ -192,6 +200,7 @@ class CompletedForm extends Component<{
       } else {
         patchCacheTodoActivated(this.store, todo);
       }
+      // #endregion toggle
     } catch (e) {
       reportError(new Error('Could not update todo completion state', { cause: e }), { toast: true });
       todo.completed = wasCompleted;
@@ -228,7 +237,10 @@ class DestroyForm extends Component<{
     this.args.onSaveStart();
 
     try {
+      // #replace-region-in-starter TODO (chapter 7): delete the todo
+      // #region delete-todo
       await this.store.request(deleteTodo(todo));
+      // #endregion delete-todo
     } catch (e) {
       reportError(new Error('Could not delete todo', { cause: e }), { toast: true });
     }
@@ -296,7 +308,10 @@ class TitleForm extends Component<{
 
   private readonly deleteTodo = async (todo: EditableTodo) => {
     try {
+      // #replace-region-in-starter TODO (chapter 7): delete the todo
+      // #region delete-empty-title
       await this.store.request(deleteTodo(todo));
+      // #endregion delete-empty-title
     } catch (e) {
       reportError(new Error('Could not delete todo', { cause: e }), { toast: true });
     }
@@ -304,7 +319,10 @@ class TitleForm extends Component<{
 
   private readonly patchTodoTitle = async (todo: Todo, title: string) => {
     try {
+      // #replace-region-in-starter TODO (chapter 5): save the new title
+      // #region save-title
       await this.store.request(patchTodo(todo, { title }));
+      // #endregion save-title
     } catch (e) {
       reportError(new Error('Could not update todo title', { cause: e }), { toast: true });
     }

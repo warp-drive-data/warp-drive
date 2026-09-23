@@ -1,3 +1,4 @@
+// #omit-file-from-starter
 import { withReactiveResponse } from '@warp-drive/core/request';
 import type { RequestInfo } from '@warp-drive/core/types/request';
 import { buildBaseURL, buildQueryParams } from '@warp-drive/utilities';

@@ -1,3 +1,4 @@
+// #omit-file-from-starter
 import { blur, click, currentURL, doubleClick, fillIn, triggerKeyEvent, visit } from '@ember/test-helpers';
 
 import { module, test } from 'qunit';
