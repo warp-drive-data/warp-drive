@@ -958,9 +958,6 @@ importers:
       '@warp-drive/utilities':
         specifier: workspace:*
         version: file:warp-drive-packages/utilities(4ded94bf05a058c4d301833388abca58)
-      warp-drive:
-        specifier: workspace:*
-        version: file:packages/-warp-drive(@babel/core@7.29.7)
     devDependencies:
       '@babel/core':
         specifier: 'catalog:'
@@ -1395,9 +1392,6 @@ importers:
       '@warp-drive/utilities':
         specifier: workspace:*
         version: file:warp-drive-packages/utilities(4ded94bf05a058c4d301833388abca58)
-      warp-drive:
-        specifier: workspace:*
-        version: file:packages/-warp-drive(@babel/core@7.29.7)
     devDependencies:
       '@babel/core':
         specifier: 'catalog:'
@@ -1580,9 +1574,6 @@ importers:
       '@warp-drive/utilities':
         specifier: workspace:*
         version: file:warp-drive-packages/utilities(4ded94bf05a058c4d301833388abca58)
-      warp-drive:
-        specifier: workspace:*
-        version: file:packages/-warp-drive(@babel/core@7.29.7)
     devDependencies:
       '@babel/core':
         specifier: 'catalog:'
@@ -12945,7 +12936,6 @@ snapshots:
       '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.29.7)
       '@warp-drive/legacy': file:warp-drive-packages/legacy(94de59094025d5e22b6fda78a9f09d3b)
       '@warp-drive/utilities': file:warp-drive-packages/utilities(4ded94bf05a058c4d301833388abca58)
-      warp-drive: file:packages/-warp-drive(@babel/core@7.29.7)
     transitivePeerDependencies:
       - '@babel/core'
       - '@glint/template'
@@ -12957,7 +12947,6 @@ snapshots:
       '@warp-drive/core': file:warp-drive-packages/core(e0ff4349d3585fabae29421d7a4b80a6)
       '@warp-drive/legacy': file:warp-drive-packages/legacy(9d4e5bc7c94b1858caf362f212aa8853)
       '@warp-drive/utilities': file:warp-drive-packages/utilities(edee9e53a6af44fd6387ab28cd9cc109)
-      warp-drive: file:packages/-warp-drive(e0ff4349d3585fabae29421d7a4b80a6)
     transitivePeerDependencies:
       - '@babel/core'
       - '@glint/template'
@@ -13057,7 +13046,6 @@ snapshots:
       '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.29.7)
       '@warp-drive/legacy': file:warp-drive-packages/legacy(94de59094025d5e22b6fda78a9f09d3b)
       '@warp-drive/utilities': file:warp-drive-packages/utilities(4ded94bf05a058c4d301833388abca58)
-      warp-drive: file:packages/-warp-drive(@babel/core@7.29.7)
     transitivePeerDependencies:
       - '@babel/core'
       - '@glint/template'
@@ -13069,7 +13057,6 @@ snapshots:
       '@warp-drive/core': file:warp-drive-packages/core(e0ff4349d3585fabae29421d7a4b80a6)
       '@warp-drive/legacy': file:warp-drive-packages/legacy(9d4e5bc7c94b1858caf362f212aa8853)
       '@warp-drive/utilities': file:warp-drive-packages/utilities(edee9e53a6af44fd6387ab28cd9cc109)
-      warp-drive: file:packages/-warp-drive(e0ff4349d3585fabae29421d7a4b80a6)
     transitivePeerDependencies:
       - '@babel/core'
       - '@glint/template'
@@ -13153,7 +13140,6 @@ snapshots:
       '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.29.7)
       '@warp-drive/legacy': file:warp-drive-packages/legacy(94de59094025d5e22b6fda78a9f09d3b)
       '@warp-drive/utilities': file:warp-drive-packages/utilities(4ded94bf05a058c4d301833388abca58)
-      warp-drive: file:packages/-warp-drive(@babel/core@7.29.7)
     transitivePeerDependencies:
       - '@babel/core'
       - '@glint/template'
@@ -13165,7 +13151,6 @@ snapshots:
       '@warp-drive/core': file:warp-drive-packages/core(e0ff4349d3585fabae29421d7a4b80a6)
       '@warp-drive/legacy': file:warp-drive-packages/legacy(9d4e5bc7c94b1858caf362f212aa8853)
       '@warp-drive/utilities': file:warp-drive-packages/utilities(edee9e53a6af44fd6387ab28cd9cc109)
-      warp-drive: file:packages/-warp-drive(e0ff4349d3585fabae29421d7a4b80a6)
     transitivePeerDependencies:
       - '@babel/core'
       - '@glint/template'

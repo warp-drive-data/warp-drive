@@ -1,12 +1,2 @@
-module.exports = {
-  description: 'Generates an ember-data Transform.',
-  root: __dirname,
-
-  async locals(options) {
-    const { generateTransformSource } = await import('warp-drive/generators/transform');
-
-    return {
-      content: generateTransformSource(options.entity.name),
-    };
-  },
-};
+// ember-cli only discovers blueprints in installed addons, so this package re-exports the @warp-drive/legacy blueprint.
+module.exports = require('@warp-drive/legacy/blueprints/transform/index');

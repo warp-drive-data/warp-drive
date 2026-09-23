@@ -1,21 +1,2 @@
-module.exports = {
-  description: 'Generates an ember-data Serializer.',
-
-  availableOptions: [{ name: 'base-class', type: String }],
-
-  root: __dirname,
-
-  async locals(options) {
-    const { generateSerializerSource } = await import('warp-drive/generators/serializer');
-
-    const isAddon = options.inRepoAddon || options.project.isEmberCLIAddon();
-
-    return {
-      content: generateSerializerSource(options.entity.name, {
-        cwd: options.project.root,
-        isAddon,
-        baseClass: options.baseClass,
-      }),
-    };
-  },
-};
+// ember-cli only discovers blueprints in installed addons, so this package re-exports the @warp-drive/legacy blueprint with its own import path.
+module.exports = { ...require('@warp-drive/legacy/blueprints/serializer/index'), packageName: '@ember-data/serializer', importStyle: 'default' };
