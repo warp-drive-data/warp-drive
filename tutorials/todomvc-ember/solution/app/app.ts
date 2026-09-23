@@ -24,6 +24,7 @@ export default class App extends Application {
   modules = {
     './router': Router,
     './services/page-title': PageTitle,
+    ...import.meta.glob('./controllers/*', { eager: true }),
     ...import.meta.glob('./routes/*', { eager: true }),
     ...import.meta.glob('./services/*', { eager: true }),
     ...import.meta.glob('./templates/*', { eager: true }),

@@ -3,15 +3,15 @@ import type { TOC } from '@ember/component/template-only';
 import { Request } from '@warp-drive/ember';
 
 import { HandleError } from '#app/components/design-system/error.gts';
-import { getAllTodos } from '#app/data/builders/query.ts';
+import { getAllTodosCount } from '#app/data/builders/count.ts';
 
 /** Ensures all Todos are loaded before displaying the footer elements. */
 export const MaybeFooter = <template>
-  <Request @query={{(getAllTodos)}} @autorefresh={{true}} @autorefreshBehavior="refresh">
+  <Request @query={{(getAllTodosCount)}} @autorefresh={{true}} @autorefreshBehavior="refresh">
 
     {{! On success, render the footer content }}
     <:content as |content|>
-      {{#if content.data.length}}
+      {{#if content.meta.count}}
         <footer class="footer">
           {{yield}}
         </footer>

@@ -12,8 +12,8 @@ export function createTodo(attributes: TodoAttributes): RequestInfo<ReactiveData
     url: buildBaseURL({ resourcePath: 'todo' }),
     body: JSON.stringify({ data: { type: 'todo', attributes } }),
 
-    // Invalidates every cached 'todo' query, so lists refetch with the new todo.
+    // Invalidates every cached 'todo' query and count, so they refetch with the new todo.
     op: 'createRecord',
-    cacheOptions: { types: ['todo'] },
+    cacheOptions: { types: ['todo', 'todo-count'] },
   });
 }

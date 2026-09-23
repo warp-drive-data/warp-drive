@@ -3,7 +3,8 @@ import { service } from '@ember/service';
 import Component from '@glimmer/component';
 import { cached } from '@glimmer/tracking';
 
-import { bulkPatchCacheTodos, bulkPatchTodos } from '#app/data/builders/bulk.ts';
+import { bulkPatchAllTodosToActive, bulkPatchAllTodosToCompleted } from '#app/data/builders/bulk.ts';
+import { invalidateAllTodoQueries } from '#app/data/builders/query.ts';
 import type { Todo } from '#app/data/schemas/todo.ts';
 import type Store from '#app/data/store.ts';
 import { reportError } from '#app/helpers/error.ts';
@@ -35,15 +36,17 @@ export class ToggleAllTodos extends Component<{
   }
 
   private readonly toggleAll = async () => {
-    const completed = !this.areViewableCompleted;
-    const changed = this.args.todos.filter((todo) => todo.completed !== completed);
-    if (changed.length === 0) return;
-
     this.appState.onSaveStart();
+    const shouldCompleteAllActive = !this.areViewableCompleted;
 
     try {
-      await this.store.request(bulkPatchTodos({ completed }));
-      bulkPatchCacheTodos(this.store, changed, completed);
+      if (shouldCompleteAllActive) {
+        await this.store.request(bulkPatchAllTodosToCompleted());
+      } else {
+        await this.store.request(bulkPatchAllTodosToActive());
+      }
+
+      invalidateAllTodoQueries(this.store);
     } catch (e) {
       reportError(new Error('Could not toggle all todos', { cause: e }), { toast: true });
     }

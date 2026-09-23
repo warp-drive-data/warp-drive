@@ -117,6 +117,15 @@ module('Acceptance | TodoMVC', function (hooks) {
       assert.dom('.todo-count').hasText('2 items left');
     });
 
+    test('deleting an active todo updates the count', async function (assert) {
+      await visit('/');
+      await waitForTitles(['one', 'two', 'three']);
+
+      await click('.todo-list li:nth-child(1) .destroy');
+      await waitForTitles(['two', 'three']);
+      assert.dom('.todo-count').hasText('1 item left');
+    });
+
     module('editing', function () {
       test('double-clicking a label enters edit mode', async function (assert) {
         await visit('/');
@@ -257,11 +266,26 @@ module('Acceptance | TodoMVC', function (hooks) {
         await click('.todo-list li:nth-child(1) .toggle');
         await waitForTitles([]);
 
+        // The active list wasn't loaded yet, so it's fetched fresh, in server order.
+        await visit('/active');
+        await waitForTitles(['one', 'two', 'three']);
+      });
+
+      test('reactivating a todo patches an already-loaded active list', async function (assert) {
+        await visit('/active');
+        await waitForTitles(['one', 'three']);
+
+        await visit('/completed');
+        await waitForTitles(['two']);
+        await click('.todo-list li:nth-child(1) .toggle');
+        await waitForTitles([]);
+
+        // Served from the cache, where patchCacheTodoActivated added it at the top.
         await visit('/active');
         await waitForTitles(['two', 'one', 'three']);
       });
 
-      test('toggle-all keeps the moved todos in order', async function (assert) {
+      test('toggle-all refreshes an already-loaded list in server order', async function (assert) {
         await visit('/completed');
         await waitForTitles(['two']);
 
@@ -269,9 +293,86 @@ module('Acceptance | TodoMVC', function (hooks) {
         await waitForTitles(['one', 'three']);
         await click('.toggle-all');
 
+        // Toggle-all marks every list stale, so the completed list refetches.
         await visit('/completed');
-        await waitForTitles(['one', 'three', 'two']);
+        await waitForTitles(['one', 'two', 'three']);
       });
+    });
+  });
+
+  module('pagination', function (hooks) {
+    const titles = Array.from({ length: 12 }, (_, i) => `todo ${i + 1}`);
+
+    hooks.beforeEach(async function () {
+      // Odd-numbered todos are completed.
+      await resetTodos(titles.map((title, i) => ({ title, completed: i % 2 === 0 })));
+    });
+
+    test('shows 5 todos per page on the All view', async function (assert) {
+      await visit('/');
+      await waitForTitles(titles.slice(0, 5));
+      assert.dom('.pagination-controls').exists();
+      assert.dom('.pagination-button.prev').doesNotExist();
+      assert.dom('.pagination-button.next').exists();
+      assert.dom('.pagination-button-active').hasText('1');
+    });
+
+    test('next and previous move between pages and update the URL', async function (assert) {
+      await visit('/');
+      await waitForTitles(titles.slice(0, 5));
+
+      await click('.pagination-button.next');
+      await waitForTitles(titles.slice(5, 10));
+      assert.strictEqual(currentURL(), '/?page=2');
+      assert.dom('.pagination-button-active').hasText('2');
+
+      await click('.pagination-button.prev');
+      await waitForTitles(titles.slice(0, 5));
+      assert.strictEqual(currentURL(), '/');
+    });
+
+    test('a page number jumps to that page', async function (assert) {
+      await visit('/');
+      await waitForTitles(titles.slice(0, 5));
+
+      await click('.pagination-real-button:nth-of-type(3)');
+      await waitForTitles(titles.slice(10));
+      assert.strictEqual(currentURL(), '/?page=3');
+      assert.dom('.pagination-button.next').doesNotExist();
+    });
+
+    test('loading a page URL directly shows that page', async function (assert) {
+      await visit('/?page=3');
+      await waitForTitles(titles.slice(10));
+    });
+
+    test('filtered views page 10 at a time and count across pages', async function (assert) {
+      await visit('/active');
+      await waitForTitles(titles.filter((_, i) => i % 2 === 1));
+      assert.dom('.pagination-controls').doesNotExist();
+      assert.dom('.todo-count').hasText('6 items left');
+    });
+
+    test('mark all as complete reaches todos on other pages', async function (assert) {
+      await visit('/');
+      await waitForTitles(titles.slice(0, 5));
+
+      await click('.toggle-all');
+      assert.dom('.todo-count').hasText('0 items left');
+
+      await click('.pagination-button.next');
+      await waitForTitles(titles.slice(5, 10));
+      assert.dom('.todo-list li.completed').exists({ count: 5 });
+    });
+
+    test('clear completed removes completed todos on every page', async function (assert) {
+      await visit('/');
+      await waitForTitles(titles.slice(0, 5));
+
+      await click('.clear-completed');
+      await waitForTitles(titles.filter((_, i) => i % 2 === 1).slice(0, 5));
+      assert.dom('.todo-count').hasText('6 items left');
+      assert.dom('.clear-completed').doesNotExist();
     });
   });
 });

@@ -3542,6 +3542,9 @@ importers:
       '@warp-drive/ember':
         specifier: workspace:*
         version: file:warp-drive-packages/ember(c3b811ac8aadeb1fb26c7cc7a16e4531)
+      '@warp-drive/experiments':
+        specifier: workspace:*
+        version: file:warp-drive-packages/experiments(edee9e53a6af44fd6387ab28cd9cc109)
       '@warp-drive/json-api':
         specifier: workspace:*
         version: file:warp-drive-packages/json-api(edee9e53a6af44fd6387ab28cd9cc109)

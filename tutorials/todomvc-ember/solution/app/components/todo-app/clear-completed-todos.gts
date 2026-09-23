@@ -5,9 +5,9 @@ import Component from '@glimmer/component';
 import { Request } from '@warp-drive/ember';
 
 import { HandleError } from '#app/components/design-system/error.gts';
-import { bulkDeleteTodos } from '#app/data/builders/bulk.ts';
-import { getCompletedTodos } from '#app/data/builders/query.ts';
-import type { Todo } from '#app/data/schemas/todo.ts';
+import { bulkDeleteCompletedTodos } from '#app/data/builders/bulk.ts';
+import { getCompletedTodosCount } from '#app/data/builders/count.ts';
+import { invalidateAllTodoQueries } from '#app/data/builders/query.ts';
 import type Store from '#app/data/store.ts';
 import { reportError } from '#app/helpers/error.ts';
 import type AppState from '#app/services/app-state.ts';
@@ -18,9 +18,9 @@ import type AppState from '#app/services/app-state.ts';
  * If there are no completed todos, nothing is rendered.
  */
 export const ClearCompletedTodos = <template>
-  <Request @query={{(getCompletedTodos)}} @autorefresh={{true}} @autorefreshBehavior="refresh">
+  <Request @query={{(getCompletedTodosCount)}} @autorefresh={{true}} @autorefreshBehavior="refresh">
     <:content as |content|>
-      <ClearCompleted @completed={{content.data}} />
+      <ClearCompleted @completed={{content.meta.count}} />
     </:content>
     <:error as |error|>
       <HandleError @error={{error}} @toast="Could not get completed todos for 'Clear Completed'." />
@@ -29,10 +29,10 @@ export const ClearCompletedTodos = <template>
 </template>;
 
 class ClearCompleted extends Component<{
-  Args: { completed: Todo[] };
+  Args: { completed: number };
 }> {
   <template>
-    {{#if @completed.length}}
+    {{#if @completed}}
       <button class="clear-completed" type="button" {{on "click" this.clearCompleted}}>
         Clear completed
       </button>
@@ -46,7 +46,8 @@ class ClearCompleted extends Component<{
     this.appState.onSaveStart();
 
     try {
-      await this.store.request(bulkDeleteTodos(this.args.completed));
+      await this.store.request(bulkDeleteCompletedTodos());
+      invalidateAllTodoQueries(this.store);
     } catch (e) {
       reportError(new Error('Could not clear completed todos', { cause: e }), { toast: true });
     }

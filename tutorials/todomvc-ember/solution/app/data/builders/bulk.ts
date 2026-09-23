@@ -1,24 +1,23 @@
-import type { ReactiveDataDocument } from '@warp-drive/core/reactive';
-import { withReactiveResponse, withResponseType } from '@warp-drive/core/request';
+import { withResponseType } from '@warp-drive/core/request';
 import type { RequestInfo } from '@warp-drive/core/types/request';
 import { buildBaseURL, buildQueryParams } from '@warp-drive/utilities';
 
-import type { Todo } from '../schemas/todo.ts';
-import type Store from '../store.ts';
-import { patchCacheTodoActivated, patchCacheTodoCompleted } from './update.ts';
-import { keyForSavedResource } from './utils.ts';
+import type { TodoAttributes } from '../schemas/todo.ts';
 
 interface EmptyDocument {
   data: null;
 }
 
-/**
- * PATCH /api/todo/ops.bulk.patchAll — used by "toggle all". Sets `completed`
- * on every todo that doesn't already have it.
- */
-export function bulkPatchTodos(attributes: { completed: boolean }): RequestInfo<EmptyDocument> {
+// These act on every matching todo on the server, including ones on pages the
+// app hasn't loaded. The cache can't know which todos changed, so callers
+// invalidate the cached lists afterwards (see invalidateAllTodoQueries).
+
+function patchAllTodos(
+  filter: { completed: boolean },
+  attributes: Partial<TodoAttributes>
+): RequestInfo<EmptyDocument> {
   const url = buildBaseURL({ resourcePath: 'todo' });
-  const queryString = buildQueryParams({ 'filter[completed]': !attributes.completed });
+  const queryString = buildQueryParams({ 'filter[completed]': filter.completed });
 
   return withResponseType<EmptyDocument>({
     method: 'PATCH',
@@ -27,35 +26,23 @@ export function bulkPatchTodos(attributes: { completed: boolean }): RequestInfo<
   });
 }
 
-/**
- * Applies a "toggle all" to the cache. The server replies with no todos, so
- * we set `completed` on each changed todo ourselves and move it into the
- * matching cached list. Pass only the todos that actually changed.
- */
-export function bulkPatchCacheTodos(store: Store, changed: Todo[], completed: boolean): void {
-  // Each todo is added to the top of its new list, so go in reverse to keep
-  // them in their original order.
-  for (const todo of changed.toReversed()) {
-    store.cache.patch({ record: keyForSavedResource(todo), op: 'update', field: 'completed', value: completed });
-    if (completed) patchCacheTodoCompleted(store, todo);
-    else patchCacheTodoActivated(store, todo);
-  }
+/** PATCH /api/todo/ops.bulk.patchAll?filter[completed]=true — "toggle all" off. */
+export function bulkPatchAllTodosToActive(): RequestInfo<EmptyDocument> {
+  return patchAllTodos({ completed: true }, { completed: false });
 }
 
-/**
- * DELETE /api/todo/ops.bulk.deleteAll — used by "clear completed". Deletes
- * every completed todo; pass the completed todos so the cache can drop them.
- */
-export function bulkDeleteTodos(todos: Todo[]): RequestInfo<ReactiveDataDocument<null>> {
+/** PATCH /api/todo/ops.bulk.patchAll?filter[completed]=false — "toggle all" on. */
+export function bulkPatchAllTodosToCompleted(): RequestInfo<EmptyDocument> {
+  return patchAllTodos({ completed: false }, { completed: true });
+}
+
+/** DELETE /api/todo/ops.bulk.deleteAll?filter[completed]=true — "clear completed". */
+export function bulkDeleteCompletedTodos(): RequestInfo<EmptyDocument> {
   const url = buildBaseURL({ resourcePath: 'todo' });
   const queryString = buildQueryParams({ 'filter[completed]': true });
 
-  return withReactiveResponse<null>({
+  return withResponseType<EmptyDocument>({
     method: 'DELETE',
     url: `${url}/ops.bulk.deleteAll?${queryString}`,
-
-    // Removes each todo from every cached list once the request succeeds.
-    op: 'deleteRecord',
-    records: todos.map(keyForSavedResource),
   });
 }

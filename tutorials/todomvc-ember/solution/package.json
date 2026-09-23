@@ -39,6 +39,7 @@
     "@types/qunit": "catalog:",
     "@warp-drive/core": "workspace:*",
     "@warp-drive/ember": "workspace:*",
+    "@warp-drive/experiments": "workspace:*",
     "@warp-drive/json-api": "workspace:*",
     "@warp-drive/utilities": "workspace:*",
     "babel-plugin-ember-template-compilation": "catalog:",

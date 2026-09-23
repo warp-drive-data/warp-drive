@@ -5,6 +5,7 @@ import { buildBaseURL } from '@warp-drive/utilities';
 
 import type { Todo, TodoAttributes } from '../schemas/todo.ts';
 import type Store from '../store.ts';
+import { invalidateTodoCounts } from './count.ts';
 import { getActiveTodos, getCompletedTodos } from './query.ts';
 import { keyForRequest, keyForSavedResource } from './utils.ts';
 
@@ -30,6 +31,8 @@ export function patchTodo(todo: Todo, attributes: Partial<TodoAttributes>): Requ
  * it, but it can't move a todo between lists: a list only tracks the records
  * it returned, not the ones it didn't. So when a todo's completion changes we
  * patch the two list documents ourselves instead of refetching them.
+ *
+ * Only the first page of each list is patched; the counts are refetched.
  */
 export function patchCacheTodoCompleted(store: Store, todo: Todo): void {
   moveBetweenLists(store, todo, { from: getActiveTodos(), to: getCompletedTodos() });
@@ -57,4 +60,6 @@ function moveBetweenLists(
   if (store.cache.peekRequest(from)) {
     store.cache.patch({ record: from, op: 'remove', field: 'data', value });
   }
+
+  invalidateTodoCounts(store);
 }
