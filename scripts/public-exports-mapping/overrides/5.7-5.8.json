@@ -1,0 +1,38 @@
+{
+  "schema": 1,
+  "kind": "overrides",
+  "from": "5.7",
+  "to": "5.8",
+  "entries": [
+    {
+      "module": "@warp-drive/core/store/-private",
+      "export": "getPromiseState",
+      "to": { "module": "@warp-drive/ember", "export": "getPromiseState" },
+      "note": "Landed in both @warp-drive/core/reactive and @warp-drive/ember in 5.8; ember is the target because older Ember apps are the lint's audience."
+    },
+    {
+      "module": "@warp-drive/core/store/-private",
+      "export": "getRequestState",
+      "to": { "module": "@warp-drive/ember", "export": "getRequestState" },
+      "note": "Landed in both @warp-drive/core/reactive and @warp-drive/ember in 5.8; ember is the target because older Ember apps are the lint's audience."
+    },
+    {
+      "module": "@warp-drive/core/store/-private",
+      "export": "PromiseState",
+      "to": { "module": "@warp-drive/ember", "export": "PromiseState" },
+      "note": "Landed in both @warp-drive/core/reactive and @warp-drive/ember in 5.8; ember is the target because older Ember apps are the lint's audience."
+    },
+    {
+      "module": "@warp-drive/core/store/-private",
+      "export": "RequestLoadingState",
+      "to": { "module": "@warp-drive/ember", "export": "RequestLoadingState" },
+      "note": "Landed in both @warp-drive/core/reactive and @warp-drive/ember in 5.8; ember is the target because older Ember apps are the lint's audience."
+    },
+    {
+      "module": "@warp-drive/core/store/-private",
+      "export": "RequestState",
+      "to": { "module": "@warp-drive/ember", "export": "RequestState" },
+      "note": "Landed in both @warp-drive/core/reactive and @warp-drive/ember in 5.8; ember is the target because older Ember apps are the lint's audience."
+    }
+  ]
+}

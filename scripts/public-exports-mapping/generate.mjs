@@ -1,21 +1,15 @@
 #!/usr/bin/env node
-/**
- * Lists the exported tokens of every entry point file of every published package under a
- * packages directory, as `{ filePath, module, export, typeOnly, replacement: {} }` records.
- */
 
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
-import url from 'node:url';
-import { parseArgs } from 'node:util';
 
 const STAR = '*';
-const REPO_ROOT = path.resolve(path.dirname(url.fileURLToPath(import.meta.url)), '..', '..');
-const LAYOUTS = {
-  tsdown: { configName: 'tsdown.config.mjs', packages: 'warp-drive-packages' },
-  vite: { configName: 'vite.config.mjs', packages: 'packages' },
-};
 
+/**
+ * @param {{ root: string, packagesDir: string, configName: 'tsdown.config.mjs' | 'vite.config.mjs' }} opts
+ * @returns {Promise<{ filePath: string, module: string, export: string, typeOnly: boolean }[]>}
+ * @throws when a public package's config declares no entry points the scanner understands
+ */
 export async function scan({ root, packagesDir, configName }) {
   const configs = await findConfigs(packagesDir, configName);
   const records = [];
@@ -29,7 +23,9 @@ export async function scan({ root, packagesDir, configName }) {
     if (!configSource) continue;
 
     const entryPointPatterns = extractEntryPoints(configSource);
-    if (entryPointPatterns.length === 0) continue;
+    if (entryPointPatterns.length === 0) {
+      throw new Error(`${path.relative(root, configPath)} declares no entry points the scanner understands`);
+    }
 
     const concreteFiles = await expandEntryPointPatterns(entryPointPatterns, pkgRoot);
 
@@ -51,46 +47,12 @@ export async function scan({ root, packagesDir, configName }) {
           module: moduleSpecifier,
           export: exp.name,
           typeOnly: exp.typeOnly,
-          replacement: {},
         });
       }
     }
   }
 
   return dedupeAndSort(records);
-}
-
-async function main() {
-  const { values } = parseArgs({
-    options: {
-      root: { type: 'string', default: REPO_ROOT },
-      packages: { type: 'string' },
-      config: { type: 'string', default: 'tsdown' },
-      out: { type: 'string' },
-    },
-  });
-  const layout = LAYOUTS[values.config];
-  if (!layout) throw new Error(`--config must be one of ${Object.keys(LAYOUTS).join(', ')}`);
-  if (!values.out) throw new Error('--out <file> is required');
-
-  const root = path.resolve(values.root);
-  const packagesDir = path.join(root, values.packages ?? layout.packages);
-  const outFile = path.resolve(values.out);
-
-  const records = await scan({ root, packagesDir, configName: layout.configName });
-  if (records.length === 0) {
-    throw new Error(`Found no exports under ${packagesDir}. Refusing to write an empty mapping to ${outFile}.`);
-  }
-
-  await fs.writeFile(outFile, JSON.stringify(records, null, 2) + '\n', 'utf8');
-  process.stdout.write(`Generated ${records.length} export records -> ${outFile}\n`);
-}
-
-if (process.argv[1] && path.resolve(process.argv[1]) === url.fileURLToPath(import.meta.url)) {
-  main().catch((err) => {
-    console.error('Failed to generate public exports mapping:', err.message);
-    process.exit(1);
-  });
 }
 
 /* ------------------------------------------------------------------------------------------------
@@ -132,36 +94,32 @@ async function readPackageJson(pkgRoot) {
  * entryPoints Extraction
  * ------------------------------------------------------------------------------------------------ */
 
-/**
- * Extract array elements from any `entryPoints = [ ... ]` or `export const entryPoints = [ ... ]`
- * occurrences in the vite config. We do a quick regex scan and attempt to parse string literals
- * only (we skip anything interpolated with ${}).
- */
 function extractEntryPoints(source) {
   const results = [];
   const seen = new Set();
-  const regex = /(?:^|\b)entryPoints\s*=\s*\[([\s\S]*?)\]\s*;?|export\s+const\s+entryPoints\s*=\s*\[([\s\S]*?)\]\s*;?/g;
+  const add = (val) => {
+    if (val.includes('${') || seen.has(val)) return;
+    seen.add(val);
+    results.push(val);
+  };
+  const literal = /^['"`]([^'"`]+)['"`]$/;
+  const regex =
+    /\bentryPoints\s*=\s*\[([\s\S]*?)\]|\bentry\s*:\s*(?:\[([\s\S]*?)\]|\{([\s\S]*?)\}|(['"`][^'"`]+['"`]))/g;
 
   let match;
   while ((match = regex.exec(source))) {
-    const body = match[1] || match[2] || '';
-    // Split crudely on commas/newlines
-    body
-      .split(/[\r\n,]/)
-      .map((s) => s.trim())
-      .filter(Boolean)
-      .forEach((item) => {
-        if (item.startsWith('//')) return;
-        // Extract raw string literal
-        const strMatch = /^['"`]([^'"`]+)['"`]$/.exec(item);
-        if (!strMatch) return;
-        const val = strMatch[1];
-        if (val.includes('${')) return; // skip interpolations
-        if (!seen.has(val)) {
-          seen.add(val);
-          results.push(val);
-        }
-      });
+    if (match[4]) {
+      add(match[4].slice(1, -1));
+      continue;
+    }
+    const body = match[1] ?? match[2] ?? match[3] ?? '';
+    for (const item of body.split(/[\r\n,]/)) {
+      const trimmed = item.trim();
+      if (!trimmed || trimmed.startsWith('//')) continue;
+      const value = match[3] ? trimmed.slice(trimmed.indexOf(':') + 1).trim() : trimmed;
+      const str = literal.exec(value);
+      if (str) add(str[1]);
+    }
   }
   return results;
 }
@@ -349,6 +307,8 @@ function buildModuleSpecifier(packageName, relFromSrc) {
  *   export * from '...'
  *   export { a, b as c, type X, default as Y } from '...'
  *   export { a, b as c, type X }
+ *   export type { a, b as c } from '...'
+ *   export type { a, b as c }
  *   export class|function|async function|const|let|var|enum Name ...
  *   export interface Name ...
  *   export type Name ...
@@ -376,16 +336,17 @@ function extractExports(source) {
 
   // named grouped exports
   {
-    const groupRegex = /export\s+\{([^}]+)\}(\s+from\s+['"][^'"]+['"])?/g;
+    const groupRegex = /export\s+(type\s+)?\{([^}]+)\}(\s+from\s+['"][^'"]+['"])?/g;
     let m;
     while ((m = groupRegex.exec(stripped))) {
-      const body = m[1];
+      const groupTypeOnly = Boolean(m[1]);
+      const body = m[2];
       body
         .split(',')
         .map((s) => s.trim())
         .filter(Boolean)
         .forEach((item) => {
-          let typeOnly = false;
+          let typeOnly = groupTypeOnly;
           let token = item;
 
           if (token.startsWith('type ')) {
@@ -395,7 +356,7 @@ function extractExports(source) {
 
           if (/^default\s+as\s+/.test(token)) {
             const target = token.split(/\s+as\s+/)[1];
-            if (target) add(target.trim(), false);
+            if (target) add(target.trim(), typeOnly);
             return;
           }
 
