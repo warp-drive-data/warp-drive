@@ -17,6 +17,10 @@ title: Overview
   uses.
 - **Existing users** who want to find the documentation for something, learn the project deeper,
   or need to know how to upgrade from one version to the next.
+- **LLMs and coding agents** answering questions about ***Warp*Drive** or writing code against
+  it, whether from the published site, the TSDoc in the source, or the agent skills. They read
+  one page at a time with no memory of the rest, and they will present whatever pattern they find
+  as current unless the page says otherwise.
 
 Default to assuming the reader either does not use ***Warp*Drive** yet or is just getting started.
 The guide for each type of doc narrows that default to its own readers, but a few guidelines apply
@@ -27,6 +31,11 @@ everywhere:
 - Anything that teaches should start from the assumption that the reader has no context on the
   project's history.
 - Cross-link concepts whenever possible, especially when first introducing one.
+- Use one name per concept and use it everywhere. Mark recommended, legacy, and deprecated
+  approaches explicitly where they appear, with the `@recommended`, `@discouraged`, and
+  `@deprecated` tags in API docs and "Legacy" in page titles, so a reader or model landing on an
+  older pattern cannot mistake it for the current one. Make each page answer its own question
+  without depending on the reader having seen a neighbor.
 - Content for existing users, such as upgrade guides and legacy setup, can presume some knowledge
   of older concepts but should never presume knowledge of newer ones, and should be kept separate
   from everything else so it does not muddy the path for new readers. [Upgrading](/upgrading/) is
