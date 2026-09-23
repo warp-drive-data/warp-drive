@@ -1,4 +1,4 @@
-import type { CacheOperation, DocumentCacheOperation, NotifyKeys } from '@warp-drive/core';
+import type { CacheOperation, DocumentCacheOperation, NotificationType, NotifyKeys } from '@warp-drive/core';
 import { Store } from '@warp-drive/core';
 import { instantiateRecord, registerDerivations, teardownRecord, withDefaults } from '@warp-drive/core/reactive';
 import type { CacheCapabilitiesManager } from '@warp-drive/core/types';
