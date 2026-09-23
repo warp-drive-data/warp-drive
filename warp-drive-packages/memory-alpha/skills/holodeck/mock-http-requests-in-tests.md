@@ -23,10 +23,11 @@ run and replays it from disk afterwards, so what you write is a declaration rath
 4. Pass `status` in the options object for anything other than a success.
 
    ```ts
-   await GET(this, 'users/1', () => ({ errors: [{ status: '404' }] }), { status: 404 });
+   await GET(this, 'users/1', () => ({ errors: [{ status: '404' }] }), { status: 404, statusText: 'Not Found' });
    ```
 
-   `statusText` is derived from the status code, and `Content-Type` defaults to
+   The mutation helpers derive `statusText` from the status code. `GET` and `HEAD` always send
+   `OK`, so set it yourself on an error mock. `Content-Type` defaults to
    `application/vnd.api+json`.
 5. For a request with a body, build the serialized body once and pass the same string to both the
    mock and the request.
@@ -48,7 +49,9 @@ run and replays it from disk afterwards, so what you write is a declaration rath
 ## Matching rules
 
 - Holodeck matches on the test id, the method, the URL string, the request body, and a per-URL
-  request counter. A mismatch in any of them is reported as a 400, not as a missing mock.
+  request counter. A mismatch in method, URL, or body is a `MOCK_NOT_FOUND` 400 naming the
+  fixture it looked for. A request counter that is off serves a different recorded response
+  with no error at all.
 - The body is matched by hashing. An object and the JSON string of that object hash differently,
   so a `body` option that is not the exact request string never matches.
 - Mocks for the same method and URL are consumed in declaration order. Declare them in the order
