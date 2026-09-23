@@ -17,8 +17,8 @@ exact version, as [Server setup](./server-setup.md) shows.
 ## Holodeck runs a real server
 
 Most browser mocking libraries answer `fetch` inside the page. Mirage, MSW, and Pretender all
-work that way. Holodeck does not. It runs a Hono server over TLS and HTTP/2 in a separate
-process, on its own port, and your tests make real cross-origin requests to it.
+work that way. Holodeck does not. It runs a Hono server over TLS and HTTP/2 on its own port, in a
+worker thread next to your test server, and your tests make real cross-origin requests to it.
 
 That choice buys you three things a page-level interceptor cannot give you.
 

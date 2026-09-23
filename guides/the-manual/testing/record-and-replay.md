@@ -102,18 +102,23 @@ There is no separate command.
 Delete the test's directory under `.mock-cache/` first when you want to be sure nothing stale
 survives. Run locally to record it fresh, then run in replay mode to confirm the result.
 
-## Leave `RECORD: true` out
+## Use `RECORD` locally, never in a committed test
 
-Every mock helper takes a `RECORD` option, and the option is combined with the global flag rather
-than checked instead of it.
+Every mock helper takes a `RECORD` option, and `mock` takes the same flag as its third argument. It
+is a per-request override. That one request records even while the rest of the suite replays.
 
 ```ts
 await GET(this, 'users/1', () => ({ data: null }), { RECORD: true });
 ```
 
-A mock written that way records in every environment, CI included. The request it covers is never
-replayed, so it no longer proves anything about the committed fixture. Delete the option once the
-mock is recorded, or leave it out from the start.
+Reach for it when a single fixture needs refreshing during a `CI=1` run, then delete it before you
+commit the test. A committed `RECORD: true` records in every environment, CI included, so the
+request it covers is never compared against its fixture again and a stale fixture goes unnoticed.
+[Use RECORD in Holodeck Mocks](/skills/holodeck/using-record.md) walks through the refresh and
+what to look for in review.
+
+Replay never calls a mock's response function, which is what makes a replayed suite cheap. A mock
+with `RECORD` is the one exception, because it is recorded rather than replayed.
 
 ## Related
 

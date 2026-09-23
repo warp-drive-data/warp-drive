@@ -6,50 +6,44 @@ title: Troubleshooting
 
 Each section starts with what holodeck prints. Search this page for the text you have.
 
-## A mocked request failed and the log does not say why
+## A mocked request failed with a 400
 
-A missing or mismatched fixture produces one of two shapes in the terminal, and which one you get
-depends on the test rather than on holodeck.
+A missing or mismatched fixture is a `400` from the mock server, and what the terminal shows
+depends on whether the test lets that error escape.
 
-A test that lets the request error escape prints the request.
+A test that lets it escape prints the request and, under it, the server's explanation.
 
 ```
 💥 Fail Unexpected Test Failure: [400 Bad Request] POST (cors) - https://localhost:7358/api/user/ops/bulk.create
+
+No meta was found for POST https://localhost:7358/api/user/ops/bulk.create. The expected cacheKey was /path/to/tests/json-api/.mock-cache/36ff0af3/POST::api_user_ops_bulk.create::0/f6c45fa65d57493c31a4f1b85eddcf6f. You may need to record a mock for this request.
 ```
 
-A test that catches the error and asserts against it prints only the assertions that failed.
+The second paragraph is the `detail` of the server's `MOCK_NOT_FOUND` response. `MockServerHandler`
+lifts it into the thrown error, with holodeck's own `__xTestId` query stripped out of the URL, so it
+reaches the terminal and the CI log. Searching a failed run for `No meta was found` finds it.
+
+A test that catches the error and asserts against it prints only the assertions that failed. The
+explanation is still on the caught error, as `error.content`, but nothing prints it.
 
 ```
-💥 Failed: 0ms #56 Integration | json-api Cache.put(<ErrorDocument>):Useful errors are propagated
+💥 Failed: 0ms Integration | @ember-data/json-api Cach.put(<ErrorDocument>):Useful errors are propagated by the CacheHandler
 	✅ Pass The error is an AggregateError
 	💥 Fail The error message is correct
 	💥 Fail The error status is correct
 ```
 
-:::warning The useful message never reaches the terminal
-Holodeck answers a missing fixture with a `MOCK_NOT_FOUND` payload naming the exact file it looked
-for. That payload is an HTTP response body. It does not appear in the terminal, and it does not
-appear in CI logs. Searching a failed CI run for `MOCK_NOT_FOUND` finds nothing.
-:::
-
-Use the test id instead. Diagnostic prints it with every failure.
+Diagnostic prints the test id with every failure, whichever shape you get.
 
 ```
 open test locally: https://localhost:7357?testId=546c9e3a
 ```
 
 That id is the fixture directory. Look in `.mock-cache/546c9e3a/` and you are in the right place.
-Open the printed URL to run the one test in a browser, then read the failed request in the network
-panel to get the full explanation.
+Open the printed URL to run the one test in a browser and read the failed request in the network
+panel, where the same `MOCK_NOT_FOUND` payload is the response body.
 
-```
-{"errors":[{"status":"400","code":"MOCK_NOT_FOUND","title":"Mock not found",
-"detail":"No meta was found for GET https://localhost:7358/users/999?__xTestId=deadbeef&__xTestRequestNumber=0.
-The expected cacheKey was /path/to/tests/json-api/.mock-cache/deadbeef/GET::users_999::0/res.
-You may need to record a mock for this request."}]}
-```
-
-Compare the `cacheKey` in that message against what is on disk. The part that differs tells you
+Compare the `cacheKey` in the message against what is on disk. The part that differs tells you
 which half of the mock is wrong.
 
 - The directory is missing entirely. The fixture was never committed, or you are running in replay
@@ -63,6 +57,44 @@ which half of the mock is wrong.
   the real request body are not the same string. Open the recorded `.meta.json` and look at
   `requestBody`. A correctly recorded body-matched mock stores an escaped JSON **string**. An
   object there means someone passed an object literal to the mock.
+
+## The test declared a mock it never requested
+
+```
+💥 Fail Unexpected Test Failure in afterEach: Holodeck: this test declared mocks it never requested.
+
+	GET users/never-requested (mocked 1, requested 0)
+
+A mock that is never requested proves nothing. Remove it, or make the request it describes.
+```
+
+When `setTestId(this, null)` runs from `afterEach`, holodeck compares the mocks the test declared
+against the requests it made, per method and URL, and fails the test over any mock left over. The
+report is added alongside the body's own assertions rather than in place of them, so a test whose
+body already failed shows both. It fires in record and replay alike.
+
+Read the two counts. `mocked 1, requested 0` is a mock the code under test never asked for. Delete
+it, or fix the test so the request happens. `mocked 2, requested 1` is one declaration too many
+for a URL the test does hit. See
+[Mock the same URL more than once](./writing-mocks.md#mock-the-same-url-more-than-once).
+
+An error earlier in the test body, including a failed recording, also leaves its mock unrequested,
+so this report often follows another failure. Fix the first one and this one goes with it.
+
+## Holodeck failed to record
+
+```
+💥 Fail Unexpected Test Failure: MockError: Holodeck failed to record GET users/1 (500 ). Cannot read properties of undefined (reading 'Content-Type')
+```
+
+While recording, each mock helper posts its scaffold to the server, and throws when the server
+rejects it. The message carries the status and then the server's own explanation. The status text
+is blank because the server speaks HTTP/2, which has none.
+
+In the example the scaffold was built by hand with `mock` and left out `headers`, which the six
+helpers always supply. A fixture the server cannot write, because `.mock-cache` is not writable or
+the disk is full, reports the filesystem error in the same place. Replay posts nothing, so this
+only appears in a recording run.
 
 ## The test id is missing
 
@@ -95,18 +127,17 @@ call is the usual reason.
 MISSING_X_TEST_ID_HEADER
 ```
 
-The server received a request carrying no test id, which means the request did not go through
-`MockServerHandler`.
-
-The message names a header. Holodeck sends the test id as the `__xTestId` query parameter instead,
-so adding a header does not help. Put the handler in the chain ahead of `Fetch`, and check that the
-code under test goes through that `RequestManager` rather than calling `fetch` directly.
+The server received a request carrying no `__xTestId` query parameter, which means the request did
+not go through `MockServerHandler`. The code keeps its historical name, but the message names the
+query parameter and says what to do. Put the handler in the chain ahead of `Fetch`, and check that
+the code under test goes through that `RequestManager` rather than calling `fetch` directly.
 
 ## The certificate is missing
 
 ```
-error: SSL certificate or key not found, you may need to run `pnpm dlx @warp-drive/holodeck ensure-cert`
-      at getCertInfo (.../@warp-drive/diagnostic/server/index.js:41:17)
+Error: SSL certificate or key not found, you may need to run `pnpm dlx @warp-drive/holodeck ensure-cert`
+    at getCertInfo (.../@warp-drive/diagnostic/dist-server/index.js:1254:67)
+    at launch (.../@warp-drive/diagnostic/dist-server/index.js:1336:27)
 ```
 
 Both `@warp-drive/diagnostic` and holodeck serve over TLS, and both read the same certificate.
@@ -126,46 +157,41 @@ A run that prints those two lines and then serves normally is fine. Set the vari
 the certificate lives somewhere other than your home directory.
 
 ```
-Unable to determine configuration file for shell: /usr/bin/zsh. Manual SSL Cert Setup Required for Holodeck.
+Could not determine a startup file for shell: /usr/bin/nu.
+Holodeck falls back to /Users/you/holodeck-localhost.pem when the environment variables
+are unset, so the certificate above already works as it is.
 ```
 
-`ensure-cert` writes its variables into a shell profile, and it recognises `bash`, `zsh`, and
-`fish` at a fixed set of paths only. Anything else stops here, including a Homebrew shell, most
-Linux shell paths, and Windows. Do the same work by hand.
+This is information, not an error. `ensure-cert` issues the certificate before it looks at your
+shell, and it exits normally on a shell it cannot write a profile for. It goes on to print the two
+`export` lines in case you want them, but the certificate is already where holodeck looks.
 
-```sh
-mkcert -install
-mkcert -key-file "$HOME/holodeck-localhost-key.pem" -cert-file "$HOME/holodeck-localhost.pem" localhost
+```
+mkcert was not found on your PATH. Holodeck serves over TLS and uses mkcert to
+issue a certificate for localhost.
 ```
 
-Because holodeck falls back to those two paths, writing the pair there is enough on its own. Export
-the variables only if you put the files elsewhere.
-
-A failure from `mkcert` itself, rather than from holodeck, means `mkcert` is not installed.
-`ensure-cert` does not check for it first.
+`ensure-cert` checks for `mkcert` before it does anything else and exits with the install commands
+for each platform. Install it and run the command again.
 
 ## The suite starts and then times out
 
 ```
-ENOENT: no such file or directory, open '/path/to/tests/json-api/dist-test/index.html'
-⚠️  Diagnostic Watchdog: No browser reported in within 45s of launch. Assuming a hung browser and exiting.
+⚠️  Diagnostic Watchdog: No browser reported in within 90s of launch. Assuming a hung browser and exiting.
+
+   connections: 2 tcp, 1 tls handshakes
+   requests served: 2
+   websocket connections: 0
+   server events: 870ms tlsClientError: socket hang up
+   browsers: chrome#42 pid=90709 running
 ```
 
-The test bundle was never built. The watchdog message arrives 45 seconds later and describes a
-symptom, so read upward for the `ENOENT` line. Run the suite through the command that builds
-first, which at this repository's root is `pnpm test`.
-
-## The server did not start
-
-```
-Holodeck server failed to start
-Could not determine Holodeck server port
-```
-
-Under Bun, holodeck starts the Node server as a child process and reads the port back out of that
-child's output. Both messages mean the child never printed the line carrying it. Run again with the
-child's output visible. A crash on startup, a certificate error, or an occupied port all surface
-there.
+Nothing before this names a cause. Holodeck's banner prints, the browser launches, and 90 seconds
+later the watchdog gives up and prints what the server saw in the meantime. A browser that fetched
+a page or two and never opened a websocket, as above, has usually been served a test bundle that
+does not exist. Check that `dist-test/index.html` is there, and run the suite through the command
+that builds first, which at this repository's root is `pnpm test`. The wait is
+`browserStartTimeout` in the launch config, 90 seconds by default.
 
 ## The port was taken
 
