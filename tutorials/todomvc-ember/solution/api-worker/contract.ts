@@ -107,8 +107,12 @@ export const ROUTES = {
   delete: { method: 'DELETE', path: `${API_ROOT}/todo/:id`, status: 204 },
   /** Filterable. Applies the same attributes to every matching todo. */
   patchAll: { method: 'PATCH', path: `${API_ROOT}/todo/ops.bulk.patchAll`, status: 200 },
-  /** Filterable. Deletes every matching todo. */
-  deleteAll: { method: 'DELETE', path: `${API_ROOT}/todo/ops.bulk.deleteAll`, status: 204 },
+  /**
+   * Filterable. Deletes every matching todo. Unlike the single delete, this
+   * returns an empty document rather than a 204, so a client cache has a
+   * document to store.
+   */
+  deleteAll: { method: 'DELETE', path: `${API_ROOT}/todo/ops.bulk.deleteAll`, status: 200 },
 } as const;
 
 /** Response body for each route. `null` means no body (204). */
@@ -120,7 +124,7 @@ export interface RouteResponses {
   update: TodoDocument;
   delete: null;
   patchAll: EmptyDocument;
-  deleteAll: null;
+  deleteAll: EmptyDocument;
 }
 
 /** Seeded on first load so the first request in the tutorial shows data. */

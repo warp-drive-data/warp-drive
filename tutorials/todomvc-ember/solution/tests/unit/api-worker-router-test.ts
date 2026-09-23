@@ -253,7 +253,8 @@ module('Unit | api-worker | router', function (hooks) {
 
   test('DELETE ops.bulk.deleteAll deletes every matching todo', async function (assert) {
     const response = await router(request('DELETE', '/api/todo/ops.bulk.deleteAll?filter[completed]=true'));
-    assert.strictEqual(response.status, 204);
+    assert.strictEqual(response.status, 200);
+    assert.deepEqual(await response.json(), { data: null });
     const list = await read<TodoCollectionDocument>(router(request('GET', '/api/todo')));
     assert.deepEqual(
       list.data.map((todo) => todo.id),

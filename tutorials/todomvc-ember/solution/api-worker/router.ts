@@ -200,7 +200,7 @@ export function createRouter(db: TodoDb): Router {
       const todos = await db.read();
       const matching = new Set(applyFilter(todos, searchParams));
       await db.write(todos.filter((todo) => !matching.has(todo)));
-      return document(204, null);
+      return document(200, { data: null });
     }
 
     if (pathname.startsWith(`${TODO_PATH}/`)) {
