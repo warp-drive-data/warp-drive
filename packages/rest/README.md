@@ -11,10 +11,8 @@
 ![NPM Stable Version](https://img.shields.io/npm/v/ember-data/latest?label=version&style=flat&color=fdb155)
 ![NPM Downloads](https://img.shields.io/npm/dm/ember-data.svg?style=flat&color=fdb155)
 ![License](https://img.shields.io/github/license/warp-drive-data/warp-drive.svg?style=flat&color=fdb155)
-[![EmberJS Discord Community Server](https://img.shields.io/badge/EmberJS-grey?logo=discord&logoColor=fdb155)](https://discord.gg/zT3asNS
-)
-[![WarpDrive Discord Server](https://img.shields.io/badge/WarpDrive-grey?logo=discord&logoColor=fdb155)](https://discord.gg/PHBbnWJx5S
-)
+[![EmberJS Discord Community Server](https://img.shields.io/badge/EmberJS-grey?logo=discord&logoColor=fdb155)](https://discord.gg/zT3asNS)
+[![WarpDrive Discord Server](https://img.shields.io/badge/WarpDrive-grey?logo=discord&logoColor=fdb155)](https://discord.gg/PHBbnWJx5S)
 
 <p align="center">
   <br>
@@ -72,10 +70,11 @@ const options = findRecord('ember-developer', '1', { include: ['pets', 'friends'
 
 /*
   => {
+    // host and namespace come from setBuildURLConfig
     url: 'https://api.example.com/v1/emberDevelopers/1?include=friends,pets',
     method: 'GET',
     headers: <Headers>, // 'Content-Type': 'application/json;charset=utf-8'
-    op: 'findRecord';
+    op: 'findRecord',
     records: [{ type: 'ember-developer', id: '1' }]
   }
 */
@@ -88,10 +87,24 @@ the query or values in an array changes.
 
 URLs follow the most common REST format (camelCase pluralized resource types).
 
-### Available Builders
+The available builders are `createRecord`, `deleteRecord`, `findRecord`, `query` and `updateRecord`; see the [API docs](https://warp-drive.io/api/@ember-data/rest/request/) for each.
 
-- [createRecord]()
-- [deleteRecord]()
-- [findRecord]()
-- [query]()
-- [updateRecord]()
+<br>
+
+## Documentation
+
+*Get Started* → [Guides](https://warp-drive.io/guides/)
+
+API docs for this package → [@ember-data/rest](https://warp-drive.io/api/@ember-data/rest/)
+
+<br>
+
+## Code of Conduct
+
+Refer to the [Code of Conduct](https://github.com/warp-drive-data/warp-drive/blob/main/CODE_OF_CONDUCT.md) for community guidelines and inclusivity.
+
+<br>
+
+### License
+
+This project is licensed under the [MIT License](LICENSE.md).

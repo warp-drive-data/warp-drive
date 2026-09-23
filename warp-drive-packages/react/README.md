@@ -8,13 +8,11 @@
     />
 </p>
 
-![NPM Stable Version](https://img.shields.io/npm/v/ember-data/latest?label=version&style=flat&color=fdb155)
-![NPM Downloads](https://img.shields.io/npm/dm/ember-data.svg?style=flat&color=fdb155)
+![NPM Stable Version](https://img.shields.io/npm/v/%40warp-drive%2Freact/latest?label=version&style=flat&color=fdb155)
+![NPM Downloads](https://img.shields.io/npm/dm/%40warp-drive%2Freact.svg?style=flat&color=fdb155)
 ![License](https://img.shields.io/github/license/warp-drive-data/warp-drive.svg?style=flat&color=fdb155)
-[![EmberJS Discord Community Server](https://img.shields.io/badge/EmberJS-grey?logo=discord&logoColor=fdb155)](https://discord.gg/zT3asNS
-)
-[![WarpDrive Discord Server](https://img.shields.io/badge/WarpDrive-grey?logo=discord&logoColor=fdb155)](https://discord.gg/PHBbnWJx5S
-)
+[![EmberJS Discord Community Server](https://img.shields.io/badge/EmberJS-grey?logo=discord&logoColor=fdb155)](https://discord.gg/zT3asNS)
+[![WarpDrive Discord Server](https://img.shields.io/badge/WarpDrive-grey?logo=discord&logoColor=fdb155)](https://discord.gg/PHBbnWJx5S)
 
 <h3 align="center">Signals Integration and Component API for using <em>Warp</em><strong>Drive</strong> with <strong style="color: lightblue">React</strong></h3>
 
@@ -45,16 +43,51 @@ rich applications &mdash; letting you ship better experiences more quickly witho
 **Tagged Releases**
 
 - ![NPM Canary Version](https://img.shields.io/npm/v/%40warp-drive%2Freact/canary?label=@canary&color=FFBF00)
-- ![NPM Beta Version](https://img.shields.io/npm/v/%40warp-drive%2Freact/bet?label=@beta&color=ff00ff)
+- ![NPM Beta Version](https://img.shields.io/npm/v/%40warp-drive%2Freact/beta?label=@beta&color=ff00ff)
 - ![NPM Stable Version](https://img.shields.io/npm/v/%40warp-drive%2Freact/latest?label=@latest&color=90EE90)
 - ![NPM LTS Version](https://img.shields.io/npm/v/%40warp-drive%2Freact/lts?label=@lts&color=0096FF)
 - ![NPM LTS-4-12 Version](https://img.shields.io/npm/v/%40warp-drive%2Freact/lts-4-12?label=@lts-4-12&color=bbbbbb)
 
 ## About
 
-This library provides reactive utilities for working with promises and requests, building over these primitives to provide functions and components that enable you to build robust performant apps with elegant control flow
+This library provides reactive utilities for working with promises and requests, building over these primitives to provide functions and components that enable you to build robust performant apps with elegant control flow.
 
----
+## Usage
+
+Wrap your app in a `StoreProvider`, passing the Store class from your store file (the `@warp-drive/core` README shows it), and the hooks and components below it can reach the Store:
+
+```tsx
+import { StoreProvider } from '@warp-drive/react';
+import { AppStore } from './store.ts';
+
+export function App() {
+  return (
+    <StoreProvider Store={AppStore}>
+      <h1>Hello React!</h1>
+    </StoreProvider>
+  );
+}
+```
+
+<br>
+
+## Documentation
+
+*Get Started* → [Guides](https://warp-drive.io/guides/)
+
+API docs for this package → [@warp-drive/react](https://warp-drive.io/api/@warp-drive/react/)
+
+<br>
+
+## Code of Conduct
+
+Refer to the [Code of Conduct](https://github.com/warp-drive-data/warp-drive/blob/main/CODE_OF_CONDUCT.md) for community guidelines and inclusivity.
+
+<br>
+
+### License
+
+This project is licensed under the [MIT License](LICENSE.md).
 
 ### ♥️ Credits
 

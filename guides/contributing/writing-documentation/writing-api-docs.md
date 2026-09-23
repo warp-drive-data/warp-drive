@@ -591,25 +591,71 @@ and some documentation may be unexpectedly truncated.
 
 ### Documenting Packages and Subpackages
 
-To create an overview for a module path e.g. `@warp-drive/core-types` or `@warp-drive/core-types/symbol` all that is needed is a doc comment at the top of the file with the tag `@module`.
+A package's documentation has three entry points, each its own file with its own purpose and
+audience:
 
-For instance, to write documentation giving an overview of `@warp-drive/core-types`,
-we would do the following in `packages/core-types/src/index.ts`
+- **The README** is what npm and GitHub show. It is for someone deciding whether to install the
+  package, and someone who just did and wants the first thing to type. Its rules are under
+  [READMEs and `src/index.md`](#readmes-and-src-index-md) below.
+- **The package landing page**, `src/index.md`, renders at `/api/<package>/` in the API docs. It
+  is for an existing user who landed on the package and wants to know where to start, so it
+  holds the setup and the map of the package's code entry points.
+- **Subpath entry points** such as `@warp-drive/core/request` render at `/api/<package>/<path>/`,
+  one page per entry file the package's `exports` map points at (`src/request.ts` for that one).
+  They are for an existing user who already knows which part of the package they need.
+
+The README and the landing page share an elevator-pitch snippet on purpose; everything else
+belongs to exactly one of the three. The rest of this section covers the two in the API docs.
+
+**Subpath entry points** such as `@warp-drive/core/request` or `@warp-drive/utilities/string` get
+their overview from a doc comment at the top of the entry file with the tag `@module`. The prose
+in that comment renders at the top of the subpath's page, above its member listing:
 
 ```ts
 /**
- * This package provides essential types and symbols used
- * by all the other WarpDrive packages.
+ * Utilities for building request URLs and query strings.
  *
  * @module
  */
 ```
 
-This is separate from the package's `src/index.md`, which TypeDoc renders
-as the landing page above the module's member listing (see
-[READMEs and `src/index.md`](#readmes-and-src-index-md)). The `@module` comment supplies
-the module's one-paragraph summary and is where module-level `@since`
-goes; `src/index.md` holds the longer landing-page prose.
+**The package root** `src/index.ts` is different. Its doc comment carries no prose, only tags:
+these two, plus a module-level `@since` where one applies (see the end of this section). Every
+package has this comment. `<project>` is typed literally; it is TypeDoc's name for the package
+root:
+
+```ts
+/**
+ * @module
+ * @mergeModuleWith <project>
+ */
+```
+
+The landing prose for the package lives in `src/index.md` instead, and the package's
+`typedoc.config.mjs` names it with `readme: 'src/index.md'` (see
+[README vs `src/index.md`](#readme-vs-src-index-md)).
+
+The reason is how TypeDoc's `packages` entry point strategy treats a package with more than one
+entry point: `src/index.ts` becomes a sub-module named `index`, with its own page at
+`/api/<package>/index/`. The package's landing page at `/api/<package>/` then has no intro at all,
+and whatever prose the `@module` comment held is reachable only from that sub-page.
+`@mergeModuleWith <project>` folds the `index` module's exports into the package root and removes
+the `index` module, its comment included, which is why the prose cannot live there. TypeDoc
+renders the `readme` file at the top of the package's landing page, so that is where the prose
+goes. A package with little to say still carries both; its `src/index.md` holds at least the
+package name as an H1 and one sentence on what the package is, so that adding more later is a
+one-file change.
+
+A package whose `typedoc.config.mjs` points TypeDoc at `dist/*.d.ts` rather than `src` (because
+its source has files TypeDoc cannot parse, such as the `.gts` components in `@warp-drive/ember`)
+loses the `@module` / `@mergeModuleWith` comment when the d.ts files are bundled. Re-add it to
+the root `index.d.ts` with the `banner` option in the package's `tsdown.config.mjs`;
+`warp-drive-packages/ember/tsdown.config.mjs` shows how. `readme: 'src/index.md'` works unchanged
+for such a package.
+
+The one tag that may join the two above is a module-level `@since`, when the package as a whole
+first shipped in a known version. `docs-viewer/src/typedoc-since-plugin.mjs` reads it from that
+comment and renders it as a badge on the landing page.
 
 ### Mark public exports with `@public`
 
@@ -909,24 +955,46 @@ ones the shape is taken from; copy from them.
   The package's `logos/` directory is a synced copy of the repo-root `logos/synced/` (see the
   notice in `logos/synced/README.md`), so never edit it inside a package.
 - **Badges.** Five badges from shields.io: npm version, npm downloads, license, and the EmberJS
-  and ***Warp*Drive** Discord servers. Copy the block verbatim from another package, including its
-  `ember-data` targets for the version and download counts; do not retarget it per package. If the
-  package wants its own release badges, add a **Tagged Releases** list between the H1 and the
+  and ***Warp*Drive** Discord servers. Copy the block from another package of the same kind. A
+  modern package's version and download badges name the package itself, URL-encoded
+  (`%40warp-drive%2Fcore`), as `@warp-drive/core` does: non-Ember apps install it directly, and
+  some modern packages version independently of the rest (`@warp-drive/holodeck`, `warp-drive`),
+  so an `ember-data` version badge would be wrong for them. A legacy package keeps the
+  `ember-data` targets, as `@ember-data/store` does: most of them ship as dependencies of the
+  `ember-data` meta package and share its version, and the meta package's numbers describe the
+  ecosystem they belong to better than their own would. An unpublished package keeps the
+  `ember-data` targets too, since a badge for a name npm does not know renders as "not found". If
+  the package wants its own release badges, add a **Tagged Releases** list between the H1 and the
   description (`@warp-drive/ember` has one).
 - **Package name as the H1**, `# @warp-drive/json-api`. `@warp-drive/core` is the exception: it
   is the project's front door and uses the ***Warp*Drive** tagline instead.
-- **One paragraph on what it is and who should use it.** `@warp-drive/json-api` says it is a
-  `{json:api}` cache implementation and that most apps should use it. If the package is
-  deprecated, say so here in a GitHub alert (`> [!WARNING]`), as `@warp-drive/legacy` does.
-- **Install and first step, only when the docs link below cannot be the first step.** That is
-  the case when the package is used in a way the guides do not cover: `@warp-drive/memory-alpha`
-  is read from `node_modules` rather than imported, so its `## Usage` shows `npm install` and a
-  code sample. A library package installed and imported the normal way needs neither.
-- **`## Documentation`** with the same single line every package uses, a *Get Started* link to
-  the Guides as an absolute URL. The README is rendered by GitHub and npm, so the root-relative
-  `/guides/` links the rest of the docs use do not resolve here.
+- **The introduction: what it is, who should use it, and why.** One paragraph is enough for a
+  small package; `@warp-drive/json-api` says it is a `{json:api}` cache implementation and that
+  most apps should use it. A few paragraphs and a diagram are fine when they help an evaluator
+  decide, as the two architecture diagrams in `@ember-data/store` do. A legacy or deprecated
+  package opens this section with a GitHub alert (`> [!WARNING]`) that says so and names the
+  replacement, as `@ember-data/store` does; the alert is not optional, since npm and GitHub
+  readers never see the landing page's warning container.
+- **Install and the elevator-pitch snippet.** A `pnpm add` line and the smallest code sample that
+  shows the package in use: a developer skimming npm decides whether to keep reading from that
+  sample, not from prose. The landing page shows the same thing in more depth, and that overlap
+  is intended; it is the one piece of duplication a README carries on purpose. Keep the sample to
+  what fits on one screen and link the landing page for the rest. `@warp-drive/memory-alpha` is
+  read from `node_modules` rather than imported, so its sample is the install and a file path.
+- **`## Documentation`** with the same *Get Started* link to the Guides every package uses,
+  followed by a link to the package's own landing page in the [API docs](/api/) when the docs
+  build publishes the package (`@ember-data/store` has both; `@ember-data/debug` is not in the
+  build and has only the first). Both are absolute URLs: the README is rendered by GitHub and
+  npm, so the root-relative `/guides/` links the rest of the docs use do not resolve here.
 - **`## Code of Conduct` and `### License`**, linking the repo's `CODE_OF_CONDUCT.md` on GitHub
   and the package's own `LICENSE.md`, which ships in `files` alongside the README.
+
+Two branding blocks sit outside that order. Several READMEs open with a centered tagline `<p>`
+right under the H1. Every `@warp-drive/*` README closes, after the License section, with the
+collapsible `### ♥️ Credits` block and the `<style>` tag inside it; copy the block from
+`@warp-drive/vue` byte for byte, since a few older copies have drifted. Legacy `@ember-data/*`
+READMEs keep whatever branding they already have. These blocks are wanted: keep them when editing
+a README and copy them when creating one.
 
 A few older READMEs (`@warp-drive/ember`, `@ember-data/request`) predate this shape and carry a
 full manual. Do not copy that: their API detail has to be kept in sync by hand, and the link
@@ -934,10 +1002,13 @@ checker does not cover READMEs (see [Checking Links](./index.md#checking-links))
 
 ### README vs `src/index.md`
 
-Each package's `typedoc.config.mjs` sets `readme`. Where it is `'src/index.md'` (as in
-`warp-drive-packages/core`, `json-api`, `ember`, `legacy`, and `utilities`), TypeDoc renders that
-file as the package's landing page in the [API docs](/api/) at `/api/<package-name>/`, above the
-generated member listing. Where it is `'none'`, the package has no landing prose.
+Each package's `typedoc.config.mjs` sets `readme: 'src/index.md'`, and TypeDoc renders that file
+as the package's landing page in the [API docs](/api/) at `/api/<package-name>/`, above the
+generated member listing. It pairs with the bare `@module` / `@mergeModuleWith <project>` comment
+at the top of `src/index.ts`; [Documenting Packages and Subpackages](#documenting-packages-and-subpackages)
+explains why both are needed. A package whose config still says `readme: 'none'` has a landing
+page that silently does not render; the fix is to set `readme: 'src/index.md'` and create that
+file, not to put the prose somewhere else.
 
 The split follows from where each file renders:
 
@@ -947,10 +1018,16 @@ The split follows from where each file renders:
   containers, `::: code-group`, root-relative links like `/api/@warp-drive/core/`, and TSDoc
   `{@link}` references, as `packages/request/src/index.md` does. It starts with the package name
   as an H1 and answers "I am on the API docs for this package, where do I start?", so this is the
-  place for the setup snippet, as `warp-drive-packages/json-api/src/index.md` shows.
+  place for the setup snippet, as `warp-drive-packages/json-api/src/index.md` shows. A
+  `{@link}` here resolves against every package in the docs build, not against the imports of
+  `src/index.ts`, so name the package: `{@link @warp-drive/core!Store | Store}`, where the `!`
+  separates the package from the symbol. For a symbol under a subpath entry point, use a
+  root-relative URL instead, `[Cache](/api/@warp-drive/core/types/cache/types/Cache)`; copy the
+  path from the symbol's rendered page. A bare `{@link Store}` renders as plain text with a
+  `Failed to resolve link` warning in the build log.
 
-Some packages still duplicate paragraphs between the two, or leave `src/index.md` empty. When you
-touch one, read the other and move each sentence to the file that answers its question.
+Some packages still duplicate paragraphs between the two. When you touch one, read the other and
+move each sentence to the file that answers its question.
 
 ### Keep READMEs short
 
@@ -958,6 +1035,12 @@ A README links to the [Guides](/guides/) and the [API docs](/api/) instead of re
 Concepts live in a guide (see [Writing Guides](./writing-guides.md)); signatures, options, and
 per-member behavior live in TSDoc, as the rest of this page describes. If a README sentence
 explains how something works, it belongs in one of those and the README should link there.
+
+Short means without the manual, not without the introduction or the elevator-pitch snippet. When
+a landing page or guide now owns a section, remove that section from the README and link there.
+Everything in [README structure](#readme-structure) stays: the introduction and its legacy alert,
+the install line and the one snippet, and every branding block. A README cut down to badges and
+links fails the evaluator it exists for.
 
 When code changes, follow the
 [Cross-Documentation Checklist](./index.md#cross-documentation-checklist): a new public API

@@ -3,7 +3,7 @@
 :::warning ⚠️ Legacy Package
 **Adapters are a LEGACY feature** that is no longer encouraged for new applications.
 
-**For new projects:** Use {@link @warp-drive/core!RequestManager | Handlers} with the {@link @warp-drive/core!RequestManager | RequestManager} instead.
+**For new projects:** Use [Handlers](/api/@warp-drive/core/request/types/Handler) with the {@link @warp-drive/core!RequestManager | RequestManager} instead.
 :::
 
 This package provides REST and [{json:api}](https://jsonapi.org) Implementations of the legacy Adapter Interface when using the older packages.

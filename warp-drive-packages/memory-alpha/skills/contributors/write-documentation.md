@@ -50,15 +50,29 @@ last two bullets: the checks and the label.
    of editing the draft themselves, so their preferences carry into the sections you haven't
    written yet. Link the guide or symbol that owns a concept instead of re-explaining it.
 5. Reader-test before you call it done. Hand the finished text, and only the text (for TSDoc, the
-   comment together with the signature it documents), to a fresh agent instance that has none of
-   your conversation, along with three to five questions a real
-   reader would bring to it, and fix whatever it gets wrong or has to guess at. If you can't spawn
-   one, ask the user to paste the text into a fresh session and relay the answers. For API docs
-   the question is always some form of "how do I use this?"; if the answer requires opening the
-   source, the doc is missing an example or a link. For a guide, ask what prior knowledge it
-   assumes and whether that matches the audience you chose in step 3. For an `upgrading/` or
-   `blog/` page, ask which version the page is written for and whether a reader on a different
-   version can tell.
+   comment together with the signature it documents), to one fresh agent instance per audience
+   the guide for this type of doc names, each with none of your conversation, run in parallel.
+   The guide's first-named audience is the primary one: fix whatever that reader gets wrong or
+   has to guess at, and fix a secondary reader's gap only when the fix is cheap, usually a link,
+   so the page does not drift toward nobody. If you can't spawn agents, ask the user to paste each
+   whole prompt, text included, into a fresh session and relay the answers. Each prompt has three
+   parts, and the first is the one that is easy to skip:
+   - Tell the agent who it is. Name its audience using one of the bold labels in
+     [Know Your Audience](/guides/contributing/writing-documentation/index.md#know-your-audience),
+     and say what that reader already knows and does not: an existing user reading API docs knows
+     the project's vocabulary but not the concept behind the thing this page documents; a hobbyist
+     reading a tutorial knows their own stack and nothing about ***Warp*Drive**. Without this the
+     agent judges every unexplained term as a gap, or none of them, and either answer is noise.
+   - Give it three to five questions that reader would bring to the text. For API docs, a
+     package's `src/index.md` landing page included, the question is always some form of "how do
+     I use this?"; if the answer requires opening the source, the doc is missing an example or a
+     link. For a README, ask whether the reader would install the package and what they would type
+     first. For a guide, ask what prior knowledge it assumes and whether that matches the audience
+     you named. For an `upgrading/` or `blog/` page, ask which version the page is written for and
+     whether a reader on a different version can tell.
+   - Ask it to say, for each answer, whether it came from the text, needed a guess, or could not
+     be answered, and to list the terms it did not know. Judge that list against the audience you
+     named, not against zero knowledge; a term the audience is assumed to know is not a gap.
 6. Check, preview, then hand off:
    - For API docs, every item in
      [Content Standards](/guides/contributing/writing-documentation/writing-api-docs.md#content-standards),
@@ -69,6 +83,15 @@ last two bullets: the checks and the label.
      different fix.
    - Every other type of doc a change touches is updated too: see the
      [Cross-Documentation Checklist](/guides/contributing/writing-documentation/index.md#cross-documentation-checklist).
+     When that means moving prose out of a README, remove only the sections the other page now
+     owns. The README keeps everything
+     [README structure](/guides/contributing/writing-documentation/writing-api-docs.md#readme-structure)
+     lists: its introduction and, for a legacy package, the alert naming the replacement; the
+     install line and one elevator-pitch snippet, which the landing page is meant to repeat in
+     more depth; and every branding block, the tagline and the `♥️ Credits` block with its style
+     tag.
+     [Keep READMEs short](/guides/contributing/writing-documentation/writing-api-docs.md#keep-readmes-short)
+     says why.
    - Run `pnpm lint:docs` from the repo root, then build and open the affected pages as described
      in [Previewing Your Changes](/guides/contributing/writing-documentation/index.md#previewing-your-changes).
    - Label the pull request `:label: doc` (see
@@ -77,7 +100,7 @@ last two bullets: the checks and the label.
 
 ## Gotchas
 
-All three are explained in the
+The first three are explained in the
 [Docs Viewer README](https://github.com/warp-drive-data/warp-drive/blob/main/docs-viewer/README.md).
 
 - A page added while `pnpm start` is running is served but missing from the sidebar until you
