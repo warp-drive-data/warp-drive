@@ -33,9 +33,8 @@
 >
 > Use schema objects from [@warp-drive/core](https://warp-drive.io/api/@warp-drive/core/) instead.
 
-Runtime classes for use as a source of ResourceSchema and as a ReactiveResource for older "legacy" EmberData/WarpDrive configurations.
-
-If using more recent versions of WarpDrive, install this via [@warp-drive/legacy](https://www.npmjs.com/package/@warp-drive/legacy) instead.
+Runtime `Model` classes for use as a source of ResourceSchema and as a ReactiveResource for older "legacy" EmberData/WarpDrive
+configurations. On recent WarpDrive versions, install this via [@warp-drive/legacy](https://www.npmjs.com/package/@warp-drive/legacy) instead.
 
 **Tagged Releases**
 
@@ -45,41 +44,22 @@ If using more recent versions of WarpDrive, install this via [@warp-drive/legacy
 - ![NPM LTS Version](https://img.shields.io/npm/v/%40ember-data/model/lts?label=%40lts&color=0096FF)
 - ![NPM LTS 4.12 Version](https://img.shields.io/npm/v/%40ember-data/model/lts-4-12?label=%40lts-4-12&color=bbbbbb)
 
-## About
+<br>
 
-This package implements the EmberData Store's `instantiateRecord` and `teardownRecord` hooks
-as well as configures an associated `SchemaService` implementation.
+## Documentation
 
-Models are defined as classes extending from `import Model from '@ember-data/model';` and the
-attributes and relationships on these classes are parsed at runtime to supply static "schema"
-to EmberData's SchemaService.
+*Get Started* → [Guides](https://warp-drive.io/guides/)
 
-Resource data for individual resources fetched from your API is presented to the UI via instances
-of the `Model`s you define. An instantiated `Model` is referred to as a `record`.
+API docs for this package → [@ember-data/model](https://warp-drive.io/api/@ember-data/model/)
 
-When we refer to the `ModelClass` as opposed to a `Model` or `Record` we are referring
-specifically to the class definition and the static schema methods present on it.
+<br>
 
-When we refer to a `record` we refer to a specific class instance presenting
-the resource data for a given `type` and `id`.
+## Code of Conduct
 
-### Defining a Model
+Refer to the [Code of Conduct](https://github.com/warp-drive-data/warp-drive/blob/main/CODE_OF_CONDUCT.md) for community guidelines and inclusivity.
 
-*app/models/person.js*
-```ts
-import Model, { attr, belongsTo, hasMany } from '@ember-data/model';
+<br>
 
-export default class PersonModel extends Model {
-  @attr name;
+### License
 
-  @belongsTo('pet', { inverse: 'owners', async: false }) dog;
-
-  @hasMany('person', { inverse: 'friends', async: true }) friends;
-}
-```
-
-### modelName convention
-
-By convention, the name of a given model (its `type`) matches the name
- of the file in the `app/models` folder and should be lowercase, singular
- and dasherized.
+This project is licensed under the [MIT License](LICENSE.md).

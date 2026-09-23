@@ -4,6 +4,8 @@
 **Model classes are a LEGACY feature** that is no longer encouraged for new applications.
 
 **For new projects:** Use **schema objects** from {@link @warp-drive/core! | @warp-drive/core} instead.
+
+**On recent ***Warp*Drive** versions:** install this via {@link @warp-drive/legacy! | @warp-drive/legacy} instead of directly.
 :::
 
 This package provides runtime classes for use as a source of ResourceSchema and as a ReactiveResource for older "legacy" EmberData/WarpDrive configurations.
@@ -31,7 +33,8 @@ For guidance on migrating from Model classes to schema objects, see the [Schema 
 
 ## Legacy Models
 
-This package provides a Presentation Model for resource data in an EmberData Cache.
+This package provides a Presentation Model for resource data in an EmberData Cache. It implements the
+Store's `instantiateRecord` and `teardownRecord` hooks and configures an associated `SchemaService`.
 
 Models are defined as classes extending from `import Model from '@ember-data/model';` and the
 attributes and relationships on these classes are parsed at runtime to supply static "schema"
