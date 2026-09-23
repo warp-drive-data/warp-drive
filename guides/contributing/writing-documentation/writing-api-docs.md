@@ -953,9 +953,11 @@ ones the shape is taken from; copy from them.
   the case when the package is used in a way the guides do not cover: `@warp-drive/memory-alpha`
   is read from `node_modules` rather than imported, so its `## Usage` shows `npm install` and a
   code sample. A library package installed and imported the normal way needs neither.
-- **`## Documentation`** with the same single line every package uses, a *Get Started* link to
-  the Guides as an absolute URL. The README is rendered by GitHub and npm, so the root-relative
-  `/guides/` links the rest of the docs use do not resolve here.
+- **`## Documentation`** with the same *Get Started* link to the Guides every package uses,
+  followed by a link to the package's own landing page in the [API docs](/api/) when the docs
+  build publishes the package (`@ember-data/store` has both; `@ember-data/debug` is not in the
+  build and has only the first). Both are absolute URLs: the README is rendered by GitHub and
+  npm, so the root-relative `/guides/` links the rest of the docs use do not resolve here.
 - **`## Code of Conduct` and `### License`**, linking the repo's `CODE_OF_CONDUCT.md` on GitHub
   and the package's own `LICENSE.md`, which ships in `files` alongside the README.
 
