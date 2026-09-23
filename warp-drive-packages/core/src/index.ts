@@ -134,6 +134,15 @@ export interface StoreSetupOptions<T extends Cache = Cache> {
    */
   hashFns?: HashFn[];
   /**
+   * An optional upper bound on the number of related resources a single
+   * `collection` relationship payload may contain before an error is
+   * thrown asynchronously to flag that the list should be loaded with a
+   * top-level (paginated) request instead.
+   *
+   * See {@link Store.maxCollectionRelationshipSize}.
+   */
+  maxCollectionRelationshipSize?: number;
+  /**
    * {@link CAUTION_MEGA_DANGER_ZONE_Extension | Extensions} to use with resources, objects and arrays
    * to provide custom behaviors and capabilities that are not described by Schema.
    *
@@ -305,6 +314,8 @@ export function useRecommendedStore<T extends Cache>(
         },
       });
     }
+
+    maxCollectionRelationshipSize = options.maxCollectionRelationshipSize ?? null;
 
     lifetimes =
       options.policy ??
