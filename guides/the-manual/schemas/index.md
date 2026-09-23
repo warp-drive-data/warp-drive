@@ -63,8 +63,8 @@ interface User {
   firstName: string;
   lastName: string;
   lastSeen: ImmutableDateTime;
-  bestFriend: User;
-  pets: Pet[];
+  bestFriend: ReactiveRelationshipDocument<User | null>;
+  pets: ReactiveRelationshipDocument<Pet[]>;
 }
 ```
 
@@ -84,12 +84,14 @@ store.schema.registerResource({
     {
       kind: 'resource',
       name: 'bestFriend',
+      type: 'user',
       sourceKey: 'best-friend',
       options: { async: false, inverse: null }
     },
     {
       kind: 'collection',
       name: 'pets',
+      type: 'pet',
       options: { async: false, inverse: null, polymorphic: true }
     },
   ]

@@ -17,6 +17,6 @@ In PolarisMode:
 - The mode removes the API cruft Model had accumulated (references, state props, currentState, methods etc)
 - ~~The mode enables deep reactivity for fields~~ (we have now enabled this for LegacyMode)
 - ~~enables advanced derivations, aliasing and transformations~~ (we have now enabled this for LegacyMode)
-- **[preview limitation]** it has very limited support for relationships (see [LinksMode](../../misc/links-mode.md) for additional context)
+- Relationships use the `resource` and `collection` field kinds, whose values are [relationship documents](../../relational-data/features/resource-relationships.md) (`data`/`links`/`meta`) that are mutated via `data` on a checked-out record. The legacy `belongsTo`/`hasMany` kinds are supported only in [LinksMode](../../misc/links-mode.md).
 - **[preview limitation]** it has no access to reactive properties describing the resource state (such as `isNew` or `isDirty`) or utilities for working with local state like `rollback`
 - Async relationships are not wrapped in promise proxies, and there is no autofetch.
