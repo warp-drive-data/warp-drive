@@ -628,6 +628,11 @@ removes the stray page, and `readme` is what puts prose back on the landing page
 has nothing to say yet still carries both, with an empty `src/index.md`, so that adding prose later
 is a one-file change; `warp-drive-packages/core` is in that state today.
 
+A package whose `typedoc.config.mjs` points TypeDoc at `dist/*.d.ts` rather than `src` (because
+its source has files TypeDoc cannot parse, such as the `.gts` components in `@warp-drive/ember`)
+loses that comment in the d.ts bundle. Re-add it to the root chunk with the `banner` option in
+the package's `tsdown.config.mjs`; `warp-drive-packages/ember/tsdown.config.mjs` shows how.
+
 Module-level `@since` still goes in the root `@module` comment. `docs-viewer/src/typedoc-since-plugin.mjs`
 reads it from there and renders it as a badge on the landing page.
 
