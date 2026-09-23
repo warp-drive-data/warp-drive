@@ -40,106 +40,107 @@ class TestStore extends Store {
   }
 }
 
-module('Integration | @ember-data/json-api/request', function (hooks) {
-  let store: TestStore;
-  hooks.beforeEach(function () {
-    store = new TestStore();
-    store.schema.registerResource({
-      legacy: true,
-      identity: { kind: '@id', name: 'id' },
-      type: 'user',
-      fields: [
-        { kind: 'attribute', name: 'firstName', type: null },
-        { kind: 'attribute', name: 'lastName', type: null },
-        {
-          kind: 'belongsTo',
-          type: 'user',
-          name: 'bestFriend',
-          options: {
-            async: false,
-            inverse: 'bestFriend',
-          },
-        },
-        {
-          kind: 'belongsTo',
-          type: 'user',
-          name: 'worstEnemy',
-          options: {
-            async: false,
-            inverse: null,
-          },
-        },
-        {
-          kind: 'hasMany',
-          type: 'user',
-          name: 'friends',
-          options: {
-            async: false,
-            inverse: 'friends',
-          },
-        },
-      ],
-    });
-
-    store.push({
-      data: {
+function setupStore(): TestStore {
+  const store = new TestStore();
+  store.schema.registerResource({
+    legacy: true,
+    identity: { kind: '@id', name: 'id' },
+    type: 'user',
+    fields: [
+      { kind: 'attribute', name: 'firstName', type: null },
+      { kind: 'attribute', name: 'lastName', type: null },
+      {
+        kind: 'belongsTo',
         type: 'user',
-        id: '1',
-        attributes: { firstName: 'Chris', lastName: 'Thoburn' },
+        name: 'bestFriend',
+        options: {
+          async: false,
+          inverse: 'bestFriend',
+        },
+      },
+      {
+        kind: 'belongsTo',
+        type: 'user',
+        name: 'worstEnemy',
+        options: {
+          async: false,
+          inverse: null,
+        },
+      },
+      {
+        kind: 'hasMany',
+        type: 'user',
+        name: 'friends',
+        options: {
+          async: false,
+          inverse: 'friends',
+        },
+      },
+    ],
+  });
+
+  store.push({
+    data: {
+      type: 'user',
+      id: '1',
+      attributes: { firstName: 'Chris', lastName: 'Thoburn' },
+      relationships: {
+        bestFriend: {
+          data: { type: 'user', id: '2' },
+        },
+        worstEnemy: {
+          data: { type: 'user', id: '3' },
+        },
+        friends: {
+          data: [
+            { type: 'user', id: '2' },
+            { type: 'user', id: '3' },
+          ],
+        },
+      },
+    },
+    included: [
+      {
+        type: 'user',
+        id: '2',
+        attributes: { firstName: 'Wesley', lastName: 'Thoburn' },
         relationships: {
           bestFriend: {
-            data: { type: 'user', id: '2' },
-          },
-          worstEnemy: {
-            data: { type: 'user', id: '3' },
+            data: { type: 'user', id: '1' },
           },
           friends: {
             data: [
-              { type: 'user', id: '2' },
+              { type: 'user', id: '1' },
               { type: 'user', id: '3' },
             ],
           },
         },
       },
-      included: [
-        {
-          type: 'user',
-          id: '2',
-          attributes: { firstName: 'Wesley', lastName: 'Thoburn' },
-          relationships: {
-            bestFriend: {
-              data: { type: 'user', id: '1' },
-            },
-            friends: {
-              data: [
-                { type: 'user', id: '1' },
-                { type: 'user', id: '3' },
-              ],
-            },
+      {
+        type: 'user',
+        id: '3',
+        attributes: { firstName: 'Rey', lastName: 'Skybarker' },
+        relationships: {
+          bestFriend: {
+            data: null,
+          },
+          friends: {
+            data: [
+              { type: 'user', id: '1' },
+              { type: 'user', id: '2' },
+            ],
           },
         },
-        {
-          type: 'user',
-          id: '3',
-          attributes: { firstName: 'Rey', lastName: 'Skybarker' },
-          relationships: {
-            bestFriend: {
-              data: null,
-            },
-            friends: {
-              data: [
-                { type: 'user', id: '1' },
-                { type: 'user', id: '2' },
-              ],
-            },
-          },
-        },
-      ],
-    });
+      },
+    ],
   });
+  return store;
+}
 
+module('Integration | @ember-data/json-api/request', function () {
   module('serializePatch', function () {
     test('Correctly serializes only changed attributes and relationships', function (assert) {
+      const store = setupStore();
       const user1Identifier = store.cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '1' });
       store.cache.setAttr(user1Identifier, 'firstName', 'Christopher');
 
@@ -289,6 +290,7 @@ module('Integration | @ember-data/json-api/request', function (hooks) {
 
   module('serializeResources', function () {
     test('Correctly serializes single resources', function (assert) {
+      const store = setupStore();
       const payload = serializeResources(
         store.cache,
         store.cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '1' })
@@ -319,6 +321,7 @@ module('Integration | @ember-data/json-api/request', function (hooks) {
       });
     });
     test('Correctly serializes multiple resources', function (assert) {
+      const store = setupStore();
       const payload = serializeResources(store.cache, [
         store.cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '1' }),
         store.cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '2' }),
