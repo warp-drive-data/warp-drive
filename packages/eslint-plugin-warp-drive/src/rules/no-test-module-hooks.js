@@ -13,7 +13,8 @@ module.exports = {
   meta: {
     type: 'suggestion',
     docs: {
-      description: "Disallow `hooks.beforeEach`/`hooks.afterEach` in favor of setup functions each test calls explicitly",
+      description:
+        'Disallow `hooks.beforeEach`/`hooks.afterEach` in favor of setup functions each test calls explicitly',
       category: 'Possible Performance Issues',
       recommended: false,
       url: 'https://github.com/warp-drive-data/warp-drive/tree/main/packages/eslint-plugin-warp-drive/docs/no-test-module-hooks.md',
