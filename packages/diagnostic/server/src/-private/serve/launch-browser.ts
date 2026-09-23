@@ -2,9 +2,9 @@
 import { spawn } from 'node:child_process';
 import { styleText } from 'node:util';
 
-import type { LaunchState } from '../../index.ts';
+import type { BrowserEntry, LaunchState } from '../../index.ts';
 import type { LaunchConfig } from '../default-setup.ts';
-import { info, print } from '../utils/debug.ts';
+import { error, info, print } from '../utils/debug.ts';
 
 export async function launchBrowsers(config: LaunchConfig, state: LaunchState) {
   const launcherNames = Object.keys(config.launchers ?? {}) as Array<keyof typeof config.launchers>;
@@ -41,11 +41,16 @@ export async function launchBrowsers(config: LaunchConfig, state: LaunchState) {
     const browser = spawn(launcher.command, args, {
       env: process.env,
       cwd: process.cwd(),
-      stdio: 'inherit',
+      stdio: ['ignore', 'inherit', 'inherit'],
     });
-    state.browsers.set(String(bId), {
-      launcher: launcherName,
-      proc: browser,
+    const entry: BrowserEntry = { launcher: launcherName, proc: browser };
+    state.browsers.set(String(bId), entry);
+    browser.on('exit', (code, signal) => {
+      entry.exit = { code, signal };
+      info(`${launcherName} (pid ${browser.pid}) exited with code ${code} signal ${signal}`);
+    });
+    browser.on('error', (err) => {
+      error(`${launcherName} failed to spawn: ${err.message}`);
     });
     info(`${launcherName} spawned with pid ${browser.pid}`);
     print(styleText('magenta', `⚛️  Launched ${launcherName}`));

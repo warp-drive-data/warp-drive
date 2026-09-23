@@ -8,6 +8,7 @@ import type { ReportMessage } from '../reporters/default.ts';
 import { debug, info } from '../utils/debug.ts';
 import { sinceStart } from '../utils/time.ts';
 import { watchAssets } from './watch.ts';
+import { describeState } from './watchdog.ts';
 
 export function buildHandler(config: LaunchConfig, state: LaunchState): (c: Context) => WSEvents {
   const Connections = new Set<WSContext>();
@@ -23,6 +24,7 @@ export function buildHandler(config: LaunchConfig, state: LaunchState): (c: Cont
     return {
       onOpen(_evt, ws) {
         Connections.add(ws);
+        state.sockets++;
         debug(`WebSocket opened`);
       },
 
@@ -70,6 +72,9 @@ export function buildHandler(config: LaunchConfig, state: LaunchState): (c: Cont
             if (state.completed === state.expected) {
               const exitCode = config.reporter.onRunFinish(msg);
               debug(`${styleText('green', '✅ [All Complete]')} ${styleText('yellow', '@' + sinceStart())}`);
+              // printed for passing runs too, so a CI log can compare a run
+              // that never reported in against the ones that did.
+              console.log(`\nDiagnostic server saw:\n${describeState(state)}\n`);
 
               if (!config.serve) {
                 await state.safeCleanup();

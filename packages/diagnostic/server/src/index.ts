@@ -21,8 +21,9 @@ import { launchBrowsers } from './-private/serve/launch-browser.ts';
 import { buildHandler } from './-private/serve/socket-handler.ts';
 import { addCloseHandler } from './-private/serve/watch.ts';
 import { startWatchdog } from './-private/serve/watchdog.ts';
-import { debug, error, loggingIsEnabled, print } from './-private/utils/debug.ts';
+import { debug, error, info, loggingIsEnabled, print } from './-private/utils/debug.ts';
 import { getPort } from './-private/utils/port.ts';
+import { sinceStart } from './-private/utils/time.ts';
 
 async function getCertInfo() {
   let CERT_PATH = process.env.HOLODECK_SSL_CERT_PATH;
@@ -60,6 +61,12 @@ async function getCertInfo() {
   };
 }
 
+export interface BrowserEntry {
+  launcher: string;
+  proc: ChildProcess;
+  exit?: { code: number | null; signal: NodeJS.Signals | null };
+}
+
 export interface LaunchState {
   browserId: number;
   lastBrowserId: number | null;
@@ -69,13 +76,15 @@ export interface LaunchState {
   hostname: string;
   protocol: string;
   started: boolean;
-  browsers: Map<
-    string,
-    {
-      launcher: string;
-      proc: ChildProcess;
-    }
-  >;
+  browsers: Map<string, BrowserEntry>;
+  // counters the watchdog reports when a browser never checks in, so a
+  // failure log says whether the page was ever requested, whether the
+  // websocket ever opened, and what the server saw from the connection.
+  connections: number;
+  handshakes: number;
+  requests: number;
+  sockets: number;
+  serverEvents: string[];
   completed: number;
   expected: number;
   closeHandlers: Array<() => void | Promise<void>>;
@@ -156,6 +165,11 @@ export async function launch(config: Partial<LaunchConfig>) {
     safeCleanup: () => Promise.resolve(),
     server: null as unknown as ServerType,
     lastMessageAt: null,
+    connections: 0,
+    handshakes: 0,
+    requests: 0,
+    sockets: 0,
+    serverEvents: [],
   } as LaunchState;
 
   async function runCloseHandler(handler: () => void | Promise<void>) {
@@ -199,12 +213,12 @@ export async function launch(config: Partial<LaunchConfig>) {
 
   if (protocol === 'https') {
     if (!resolvedConfig.key && !resolvedConfig.cert) {
-      const info = await getCertInfo();
-      resolvedConfig.key = info.KEY_PATH;
-      resolvedConfig.cert = info.CERT_PATH;
+      const certInfo = await getCertInfo();
+      resolvedConfig.key = certInfo.KEY_PATH;
+      resolvedConfig.cert = certInfo.CERT_PATH;
       serveOptions.tls = {
-        key: info.KEY,
-        cert: info.CERT,
+        key: certInfo.KEY,
+        cert: certInfo.CERT,
       };
     } else {
       serveOptions.tls = {
@@ -311,6 +325,14 @@ export async function launch(config: Partial<LaunchConfig>) {
     injectWebSocket(server);
 
     state.server = server;
+
+    server.on('connection', () => state.connections++);
+    server.on('secureConnection', () => state.handshakes++);
+    server.on('tlsClientError', (err: Error) => {
+      const summary = `${sinceStart()} tlsClientError: ${err.message}`;
+      if (state.serverEvents.length < 25) state.serverEvents.push(summary);
+      info(`server ${summary}`);
+    });
 
     addCloseHandler(state, async () => {
       debug(`Diagnostic Shutting Down`);

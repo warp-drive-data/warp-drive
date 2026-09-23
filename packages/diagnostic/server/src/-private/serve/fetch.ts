@@ -51,6 +51,7 @@ const FORBIDDEN_HEADERS = new Set([
 
 export async function handleFetch(config: LaunchConfig, state: LaunchState, c: Context): Promise<Response> {
   const url = new URL(c.req.url);
+  state.requests++;
 
   // handle proxy requests if they match settings.
   if (config.proxy) {

@@ -36,6 +36,7 @@ export function startWatchdog(config: LaunchConfig, state: LaunchState): () => v
       // the DEBUG env var isn't set, since the debug()/error() helpers are
       // silent unless their namespace is explicitly enabled.
       console.error(`\n\n⚠️  Diagnostic Watchdog: ${reason}. Assuming a hung browser and exiting.\n`);
+      console.error(describeState(state));
       error(reason);
 
       void state.safeCleanup().finally(() => {
@@ -51,4 +52,22 @@ export function startWatchdog(config: LaunchConfig, state: LaunchState): () => v
   }
 
   return stop;
+}
+
+export function describeState(state: LaunchState): string {
+  const browsers = [...state.browsers.entries()].map(([id, b]) => {
+    const status = b.exit
+      ? `exited code=${b.exit.code} signal=${b.exit.signal}`
+      : b.proc.exitCode === null && b.proc.signalCode === null
+        ? 'running'
+        : `exited code=${b.proc.exitCode} signal=${b.proc.signalCode}`;
+    return `${b.launcher}#${id} pid=${b.proc.pid} ${status}`;
+  });
+  return [
+    `   connections: ${state.connections} tcp, ${state.handshakes} tls handshakes`,
+    `   requests served: ${state.requests}`,
+    `   websocket connections: ${state.sockets}`,
+    `   server events: ${state.serverEvents.length ? state.serverEvents.join('; ') : 'none'}`,
+    `   browsers: ${browsers.join('; ') || 'none'}`,
+  ].join('\n');
 }
