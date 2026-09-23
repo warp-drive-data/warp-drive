@@ -202,7 +202,7 @@ module('Integration | NotificationManager batch notifications', function () {
     store.notifications.unsubscribe(token);
   });
 
-  test('relationship changes on the same identifier are flushed to `notify` as a single batch', function (assert) {
+  test('relationship changes on the same identifier are delivered exactly once per changed relationship', function (assert) {
     const store = new RelationshipTestStore();
 
     const doc = store.cache.put(
@@ -237,35 +237,14 @@ module('Integration | NotificationManager batch notifications', function () {
       }
     );
 
-    // spy on the underlying NotificationManager#notify to count how many times
-    // it is actually invoked for this identifier's 'relationships' namespace.
-    // Before this change, `CacheCapabilitiesManager#_flushNotifications` called
-    // `notify` once per pending relationship key; now it should call it once
-    // per identifier, carrying every pending key for that identifier at once.
-    // Also confirm the pending keys `Set<string>` collected by
-    // `CacheCapabilitiesManager#_pendingNotifies` is passed to `notify` as a
-    // `Set`, not converted to an array first (the relationships flush path
-    // already had a `Set` on hand, so there is no reason to convert it).
-    let notifyCallCount = 0;
-    let batchKeyWasSet = false;
-    const originalNotify = store.notifications.notify.bind(store.notifications);
-    store.notifications.notify = (
-      cacheKey: ResourceKey | RequestKey,
-      type: NotificationType | CacheOperation | DocumentCacheOperation,
-      key?: string | NotifyKeys | null
-    ) => {
-      if (cacheKey === identifier && type === 'relationships') {
-        notifyCallCount++;
-        if (key instanceof Set) {
-          batchKeyWasSet = true;
-        }
-      }
-      return (originalNotify as (cacheKey: unknown, type: unknown, key: unknown) => boolean)(cacheKey, type, key);
-    };
-
     // a single upsert that changes two different relationships on the same
     // record at once, simulating the N*M hot-path (here N=1 record, M=2
-    // changed relationships) called out in https://github.com/emberjs/data/issues/9667
+    // changed relationships) called out in https://github.com/emberjs/data/issues/9667.
+    // The per-key `notifyChange` calls the graph emits for this pass through
+    // `CacheCapabilitiesManager` straight into `NotificationManager`, whose
+    // buffer coalesces them into a single flush deferred to the end of the
+    // store transaction — subscribers must still see exactly one notification
+    // per changed relationship, delivered synchronously before upsert returns.
     store.cache.upsert(
       identifier,
       {
@@ -285,21 +264,10 @@ module('Integration | NotificationManager batch notifications', function () {
       true
     );
 
-    store.notifications.notify = originalNotify;
-
     assert.deepEqual(
       seenKeys.sort(),
       ['bestFriend', 'friends'].sort(),
       'we were notified exactly once for each relationship that actually changed'
-    );
-    assert.equal(
-      notifyCallCount,
-      1,
-      'both relationship keys were flushed to notify() in a single batched call, not once per key'
-    );
-    assert.true(
-      batchKeyWasSet,
-      'the pending-keys Set collected for this identifier was passed to notify() as a Set, without being converted to an array first'
     );
 
     store.notifications.unsubscribe(token);
