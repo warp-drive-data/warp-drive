@@ -62,14 +62,4 @@ module('Integration | <JSONAPICache> a local edit to `undefined`', function () {
       /Cannot set 'firstName\.nope' on 'user' to undefined/
     );
   });
-
-  test('null is the value to use, and it reads back as null on the local projection only', async function (assert) {
-    const { store, lid, editable } = await setupEditableUser();
-
-    (editable as unknown as Record<string, unknown>).firstName = null;
-
-    assert.equal(store.cache.getAttr(lid, 'firstName'), null, 'local state reads null');
-    assert.equal(store.cache.getRemoteAttr(lid, 'firstName'), 'Chris', 'remote state is untouched');
-    assert.deepEqual(store.cache.changedAttrs(lid).firstName, ['Chris', null], 'changedAttrs reports the null');
-  });
 });

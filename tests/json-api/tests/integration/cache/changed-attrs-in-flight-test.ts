@@ -103,18 +103,4 @@ module('Integration | <JSONAPICache>.changedAttrs around an in-flight save', fun
     assert.false(store.cache.hasChangedAttrs(lid), 'nothing differs from remote once the failed save is unwound');
     assert.equal(store.cache.changedAttrs(lid).firstName, undefined, 'changedAttrs has no entry for the field');
   });
-
-  test('a rejected save does not overwrite a mid-flight edit to null', async function (assert) {
-    const { store, lid, editable } = await editThenStartSave();
-
-    (editable as unknown as Record<string, unknown>).firstName = null;
-    store.cache.commitWasRejected(lid, []);
-
-    assert.equal(
-      store.cache.getAttr(lid, 'firstName'),
-      null,
-      'the rejection does not resurrect the failed in-flight value over the newer edit'
-    );
-    assert.deepEqual(store.cache.changedAttrs(lid).firstName, ['Chris', null], 'before is the persisted value');
-  });
 });

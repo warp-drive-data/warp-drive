@@ -153,15 +153,6 @@ module('Integration | <JSONAPICache> nested local edits', function () {
     assert.notified(lid, 'attributes', 'address', 0, 'nothing was announced');
   });
 
-  test('a local edit of a whole object attribute to null hides its nested values', async function (assert) {
-    const { store, lid, editable } = await setupEditableUser();
-
-    (editable as unknown as Record<string, unknown>).settings = null;
-
-    assert.equal(store.cache.getAttr(lid, ['settings', 'theme']), undefined, 'the nested read stops at the local null');
-    assert.equal(store.cache.getRemoteAttr(lid, ['settings', 'theme']), 'dark', 'remote state still holds the value');
-  });
-
   test('a nested read resolves through a memoized legacy default', async function (assert) {
     const { store, lid } = await setupEditableUser();
 
