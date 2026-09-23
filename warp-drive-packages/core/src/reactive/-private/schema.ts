@@ -37,7 +37,6 @@ import {
   type SchemaObjectField,
   type Trait,
 } from '../../types/schema/fields.ts';
-import type { SchemaObjectIdentity } from '../../types/schema/schema-service.ts';
 import { Type } from '../../types/symbols.ts';
 import type { WithPartial } from '../../types/utils.ts';
 import { getFieldCacheKeyStrict, isNonIdentityCacheableField } from './fields/get-field-key.ts';
@@ -811,36 +810,6 @@ export class SchemaService implements SchemaServiceInterface {
       this._hashFns.has(field.type)
     );
     return this._hashFns.get(field.type)!;
-  }
-  fieldValueIdentity(field: FieldSchema, value: unknown): SchemaObjectIdentity | null {
-    if (field.kind !== 'schema-object' && field.kind !== 'schema-array') return null;
-    if (!value || typeof value !== 'object') return null;
-    const rawValue = value;
-
-    let type: string;
-    if (field.options?.polymorphic) {
-      const typePath = field.options.type ?? 'type';
-      if (typePath === '@hash') {
-        assert(`Expected the field to define a hashFn as its type`, field.type);
-        type = this.hashFn({ type: field.type })(rawValue, null, null);
-      } else {
-        type = (rawValue as ObjectValue)[typePath] as string;
-        assert(
-          `Expected the type path for the field to be a value on the raw object`,
-          typePath && type && typeof type === 'string'
-        );
-      }
-    } else {
-      assert(`A non-polymorphic ${field.kind} field must provide a SchemaObject type in its definition`, field.type);
-      type = field.type;
-    }
-
-    const hashField = (this.resource({ type }) as ObjectSchema).identity;
-    const hash =
-      hashField && hashField.kind === '@hash'
-        ? this.hashFn(hashField)(rawValue, hashField.options ?? null, hashField.name)
-        : null;
-    return { type, hash };
   }
   resource(resource: ResourceKey | { type: string }): ResourceSchema | ObjectSchema {
     assert(`No resource registered with name '${resource.type}'`, this._schemas.has(resource.type));

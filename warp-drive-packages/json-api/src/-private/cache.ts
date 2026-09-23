@@ -5,7 +5,13 @@ import { DEBUG } from '@warp-drive/core/build-config/env';
 import { assert } from '@warp-drive/core/build-config/macros';
 import type { CollectionEdge, Graph, GraphEdge, ImplicitEdge, ResourceEdge } from '@warp-drive/core/graph/-private';
 import { graphFor, isBelongsTo, peekGraph } from '@warp-drive/core/graph/-private';
-import { assertPrivateCapabilities, isRequestKey, isResourceKey, logGroup } from '@warp-drive/core/store/-private';
+import {
+  assertPrivateCapabilities,
+  fieldValueIdentity,
+  isRequestKey,
+  isResourceKey,
+  logGroup,
+} from '@warp-drive/core/store/-private';
 import type { CacheCapabilitiesManager } from '@warp-drive/core/types';
 import type { Cache, ChangedAttributesHash, RelationshipDiff } from '@warp-drive/core/types/cache';
 import type { Change } from '@warp-drive/core/types/cache/change';
@@ -2179,10 +2185,8 @@ function schemaObjectsEqual(
 ): boolean {
   if (a === b) return true;
   if (!a || !b || typeof a !== 'object' || typeof b !== 'object') return false;
-  // a SchemaService without `@hash` support omits this, and its schema-objects compare by reference
-  if (!schema.fieldValueIdentity) return false;
-  const ia = schema.fieldValueIdentity(field, a);
-  const ib = schema.fieldValueIdentity(field, b);
+  const ia = fieldValueIdentity(schema, field, a);
+  const ib = fieldValueIdentity(schema, field, b);
   return ia !== null && ib !== null && ia.type === ib.type && ia.hash !== null && ia.hash === ib.hash;
 }
 

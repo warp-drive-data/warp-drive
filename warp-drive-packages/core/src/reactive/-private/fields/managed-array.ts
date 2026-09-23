@@ -5,6 +5,7 @@ import { assert } from '@warp-drive/core/build-config/macros';
 import type { Store } from '../../../index.ts';
 import type { WarpDriveSignal } from '../../../signals/-private.ts';
 import { ARRAY_SIGNAL, consumeInternalSignal, entangleSignal, withSignalStore } from '../../../signals/-private.ts';
+import { fieldValueIdentity } from '../../../store/-private/managers/cache-key-manager.ts';
 import type { ResourceKey } from '../../../types/identifier.ts';
 import type { ArrayValue, ObjectValue, Value } from '../../../types/json/raw.ts';
 import type { OpaqueRecordInstance } from '../../../types/record.ts';
@@ -191,7 +192,7 @@ export class ManagedArray {
 
           // schema-object identity is only required to be unique by type, so a polymorphic array
           // resolves the concrete type first
-          const identity = schema.fieldValueIdentity(field, rawValue);
+          const identity = fieldValueIdentity(schema, field, rawValue);
           assert(`Expected a schema-array element to resolve to a schema-object identity`, identity !== null);
           const { type: objectType, hash } = identity;
 

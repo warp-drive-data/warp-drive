@@ -108,11 +108,7 @@ export interface FieldValueIdentity {
  * Every other field kind, and any non-object value, has no identity and
  * returns `null`.
  */
-export function fieldValueIdentity(
-  schema: SchemaService,
-  field: FieldSchema,
-  value: unknown
-): FieldValueIdentity | null {
+export function fieldValueIdentity(schema: SchemaService, field: FieldSchema, value: unknown): FieldValueIdentity | null {
   if (field.kind !== 'schema-object' && field.kind !== 'schema-array') return null;
   if (!value || typeof value !== 'object') return null;
   const rawValue = value;

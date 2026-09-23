@@ -11,7 +11,6 @@ import type { Derivation, HashFn, Transformation } from '@warp-drive/core/types/
 import type {
   ArrayField,
   CacheableFieldSchema,
-  FieldSchema,
   DerivedField,
   GenericField,
   HashField,
@@ -23,7 +22,6 @@ import type {
   ObjectSchema,
   ResourceSchema,
 } from '@warp-drive/core/types/schema/fields';
-import type { SchemaObjectIdentity } from '@warp-drive/core/types/schema/schema-service';
 
 import _modelForMixin from './model-for-mixin.ts';
 import type { FactoryCache, ModelFactory, ModelStore } from './model.ts';
@@ -81,9 +79,6 @@ export class ModelSchemaProvider implements SchemaService {
   }
   hashFn(field: HashField | { type: string }): HashFn {
     assert(`hashFn is not available with @warp-drive/legacy/model's SchemaService`);
-  }
-  fieldValueIdentity(field: FieldSchema, value: unknown): SchemaObjectIdentity | null {
-    assert(`fieldValueIdentity is not available with @warp-drive/legacy/model's SchemaService`);
   }
   resource(resource: ResourceKey | { type: string }): ResourceSchema | ObjectSchema {
     const type = normalizeModelName(resource.type);
