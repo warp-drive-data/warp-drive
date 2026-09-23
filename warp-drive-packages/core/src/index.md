@@ -1,0 +1,50 @@
+# @warp-drive/core
+
+***Warp*Drive** is the lightweight data library for web apps: universal, typed, reactive, and
+ready to scale. This package is its core: the {@link @warp-drive/core!Store | Store} that holds
+your data, the {@link @warp-drive/core!RequestManager | RequestManager} that fetches it, the
+[Cache](/api/@warp-drive/core/types/cache/types/Cache) interface a cache implementation fills in,
+and the reactive resources and documents your UI renders.
+
+:::tip New here?
+Start with the [Installation](/guides/installation/) and [Setup](/guides/configuration/) guides.
+The API docs assume that context.
+:::
+
+## Setup
+
+{@link @warp-drive/core!useRecommendedStore | useRecommendedStore} produces a Store class with the
+recommended defaults for schemas, reactivity, caching, and request management. Pair it with a
+cache implementation; most apps should use {@link @warp-drive/json-api! | @warp-drive/json-api}.
+
+```ts
+import { useRecommendedStore } from '@warp-drive/core';
+import { JSONAPICache } from '@warp-drive/json-api';
+
+export const AppStore = useRecommendedStore({
+  cache: JSONAPICache,
+  schemas: [
+    // ... your schemas here
+  ],
+});
+```
+
+The [Setup guide](/guides/configuration/) covers the build plugin this package also needs, and
+the framework-specific pieces.
+
+## Entry Points
+
+- `@warp-drive/core`: the Store, RequestManager, the `Fetch` and `CacheHandler` handlers, and
+  `useRecommendedStore`.
+- [`@warp-drive/core/request`](/api/@warp-drive/core/request/): request and handler primitives,
+  such as `withResponseType`.
+- [`@warp-drive/core/reactive`](/api/@warp-drive/core/reactive/): the reactive objects a Store
+  uses to present requests, resources, and relationships from the cache.
+- [`@warp-drive/core/store`](/api/@warp-drive/core/store/): the pieces for customizing a Store
+  beyond the recommended defaults, such as cache policies.
+- [`@warp-drive/core/types`](/api/@warp-drive/core/types/): the types, type utilities, symbols and
+  constants shared across the ***Warp*Drive** ecosystem.
+- [`@warp-drive/core/build-config`](/api/@warp-drive/core/build-config/): the build plugin that
+  configures deprecations, optional features, and debug logging.
+- [`@warp-drive/core/configure`](/api/@warp-drive/core/configure/): the API for telling
+  ***Warp*Drive** which reactivity system to use.
