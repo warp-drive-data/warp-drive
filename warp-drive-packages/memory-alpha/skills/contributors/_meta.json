@@ -4,7 +4,8 @@
     "start-in-a-fresh-worktree",
     "keep-commits-human-authored",
     "fix-at-the-source",
-    "writing-and-implementing-rfcs"
+    "writing-and-implementing-rfcs",
+    "use-ci-as-the-source-of-truth"
   ],
   "webIndex": "overview",
   "files": {
@@ -12,6 +13,7 @@
     "start-in-a-fresh-worktree": { "title": "Start in a Fresh Worktree" },
     "keep-commits-human-authored": { "title": "Keep Commits Human-Authored" },
     "fix-at-the-source": { "title": "Fix at the Source" },
-    "writing-and-implementing-rfcs": { "title": "Writing and Implementing RFCs" }
+    "writing-and-implementing-rfcs": { "title": "Writing and Implementing RFCs" },
+    "use-ci-as-the-source-of-truth": { "title": "Use CI as the Source of Truth" }
   }
 }

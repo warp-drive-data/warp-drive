@@ -9,5 +9,6 @@ as a dependency in an app.
 | Write a commit message or open a pull request | [Keep Commits Human-Authored](/skills/contributors/keep-commits-human-authored.md) |
 | Fix a bug, add a guard, or add a fallback in WarpDrive's internals (`Store`, cache, graph, reactive signals, record arrays) | [Fix at the Source](/skills/contributors/fix-at-the-source.md) |
 | Write a new RFC, or implement one that's already been accepted | [Writing and Implementing RFCs](/skills/contributors/writing-and-implementing-rfcs.md) |
+| Test a change — decide whether to run checks locally or push and let CI verify it | [Use CI as the Source of Truth](/skills/contributors/use-ci-as-the-source-of-truth.md) |
 
 If nothing above matches, the skill you need doesn't exist yet in this category.
