@@ -33,9 +33,45 @@
 >
 > Use [@warp-drive/core](https://warp-drive.io/api/@warp-drive/core/) instead.
 
-This package provides [*Ember***Data**](https://github.com/warp-drive-data/warp-drive/)'s `Store` class. The Store coordinates
-interaction between your application, a cache, and the sources of data (your API or a local persistence layer) reached
-through a `RequestManager`. Apps on the `ember-data` meta package get a configured Store for free.
+<p align="center">⚡️ The lightweight reactive data library for JavaScript applications</p>
+
+This package provides [*Ember***Data**](https://github.com/warp-drive-data/warp-drive/)'s `Store` class.
+
+The `Store` coordinates interaction between your application, a [Cache](https://api.emberjs.com/ember-data/release/classes/%3CInterface%3E%20Cache),
+and sources of data (such as your API or a local persistence layer) accessed via a [RequestManager](https://github.com/warp-drive-data/warp-drive/tree/main/packages/request).
+
+```mermaid
+flowchart LR
+    A[fa:fa-terminal App] ===> D{fa:fa-code-fork Store}
+    B{{fa:fa-sitemap RequestManager}} <--> C[(fa:fa-database Source)]
+    D <--> E[(fa:fa-archive Cache)]
+    D <--> B
+    click B href "https://github.com/warp-drive-data/warp-drive/tree/main/packages/request" "Go to @ember-data/request" _blank
+    click E href "https://github.com/warp-drive-data/warp-drive/tree/main/packages/json-api" "Go to @ember-data/json-api" _blank
+    style B color:#58a6ff;
+    style E color:#58a6ff;
+```
+
+Optionally, the Store can be configured to hydrate the response data into rich presentation classes.
+
+```mermaid
+flowchart LR
+    A[fa:fa-terminal App] --- B(Model)
+    A === C{fa:fa-code-fork Store}
+    B --- C
+    click B href "https://github.com/warp-drive-data/warp-drive/tree/main/packages/model" "Go to @ember-data/model" _blank
+    style B color:#58a6ff;
+```
+
+## Installation
+
+Install using your javascript package manager of choice. For instance with [pnpm](https://pnpm.io/)
+
+```
+pnpm add @ember-data/store
+```
+
+After installing you will want to configure your first `Store`: add a cache, add a request handler, and tell the store how to present records. The [API docs landing page](https://warp-drive.io/api/@ember-data/store/) walks through each step.
 
 **Tagged Releases**
 

@@ -28,12 +28,25 @@
 
 # @ember-data/request-utils
 
+<p align="center">Utilities for Requests</p>
+
 > [!WARNING]
 > **⚠️ This package only exists for backwards compatibility**
 >
 > Newer apps should use [@warp-drive/utilities](https://warp-drive.io/api/@warp-drive/utilities/)
 
-Utilities for URL building, query params, and other common request operations, for apps still on the `@ember-data/*` packages.
+
+This package provides Simple utility function to assist in url building, query params, and other common request operations.
+
+It's built for [*Ember***Data**](https://github.com/warp-drive-data/warp-drive/) but useful more broadly if you're looking for lightweight functions to assist in working with urls and query params.
+
+## Installation
+
+Install using your javascript package manager of choice. For instance with [pnpm](https://pnpm.io/)
+
+```sh
+pnpm add @ember-data/request-utils
+```
 
 **Tagged Releases**
 
@@ -42,6 +55,34 @@ Utilities for URL building, query params, and other common request operations, f
 - ![NPM Stable Version](https://img.shields.io/npm/v/%40ember-data/request-utils/latest?label=%40latest&color=90EE90)
 - ![NPM LTS Version](https://img.shields.io/npm/v/%40ember-data/request-utils/lts?label=%40lts&color=0096FF)
 - ![NPM LTS 4.12 Version](https://img.shields.io/npm/v/%40ember-data/request-utils/lts-4-12?label=%40lts-4-12&color=bbbbbb)
+
+
+## Utils
+
+- `buildBaseUrl`
+- `sortQueryParams`
+- `buildQueryParams`
+- `filterEmpty`
+
+### As a Library Primitive
+
+These primitives may be used directly or composed by request builders to provide a consistent interface for building requests.
+
+For instance:
+
+```ts
+import { buildBaseURL, buildQueryParams } from '@ember-data/request-utils';
+
+const baseURL = buildBaseURL({
+  host: 'https://api.example.com',
+  namespace: 'api/v1',
+  resourcePath: 'emberDevelopers',
+  op: 'query',
+  identifier: { type: 'ember-developer' }
+});
+const url = `${baseURL}?${buildQueryParams({ name: 'Chris', include:['pets'] })}`;
+// => 'https://api.example.com/api/v1/emberDevelopers?include=pets&name=Chris'
+```
 
 <br>
 
