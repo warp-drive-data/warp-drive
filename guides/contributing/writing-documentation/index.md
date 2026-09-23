@@ -31,6 +31,9 @@ everywhere:
 - Anything that teaches should start from the assumption that the reader has no context on the
   project's history.
 - Cross-link concepts whenever possible, especially when first introducing one.
+- Title pages and sections in the words a reader would search for or scan past. A plain noun
+  phrase or a question beats a clever heading: it is what search engines index, what a model
+  routes by, and what a skimming human stops on.
 - Use one name per concept and use it everywhere. Mark recommended, legacy, and deprecated
   approaches explicitly where they appear, with the `@recommended`, `@discouraged`, and
   `@deprecated` tags in API docs and "Legacy" in page titles, so a reader or model landing on an
