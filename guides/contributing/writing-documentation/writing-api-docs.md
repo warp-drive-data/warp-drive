@@ -946,13 +946,21 @@ ones the shape is taken from; copy from them.
   description (`@warp-drive/ember` has one).
 - **Package name as the H1**, `# @warp-drive/json-api`. `@warp-drive/core` is the exception: it
   is the project's front door and uses the ***Warp*Drive** tagline instead.
-- **One paragraph on what it is and who should use it.** `@warp-drive/json-api` says it is a
-  `{json:api}` cache implementation and that most apps should use it. If the package is
+- **The introduction: what it is, who should use it, and why.** One paragraph is enough for a
+  small package; `@warp-drive/json-api` says it is a `{json:api}` cache implementation and that
+  most apps should use it. A few paragraphs and a diagram are fine when they help an evaluator
+  decide, as the two architecture diagrams in `@ember-data/store` do. If the package is
   deprecated, say so here in a GitHub alert (`> [!WARNING]`), as `@warp-drive/legacy` does.
-- **Install and first step, only when the docs link below cannot be the first step.** That is
-  the case when the package is used in a way the guides do not cover: `@warp-drive/memory-alpha`
-  is read from `node_modules` rather than imported, so its `## Usage` shows `npm install` and a
-  code sample. A library package installed and imported the normal way needs neither.
+- **Install and first step, when the docs link below cannot be the first step.** That is the
+  case when the package is used in a way the guides do not cover: `@warp-drive/memory-alpha` is
+  read from `node_modules` rather than imported, so its `## Usage` shows `npm install` and a code
+  sample. It is also the case for a legacy package, whose first step the Guides do not teach;
+  `@ember-data/serializer` keeps its `## Setup` for that reason. A modern library package
+  installed and imported the normal way needs neither.
+- **Branding blocks.** Several READMEs open with a centered tagline `<p>` under the H1 and close
+  with a collapsible `### ♥️ Credits` block that carries its own `<style>` tag
+  (`@warp-drive/vue`, `@warp-drive/build-config`, `@warp-drive/tc39-proposal-signals`). These
+  are wanted. Keep them when editing a README and copy them when creating one.
 - **`## Documentation`** with the same *Get Started* link to the Guides every package uses,
   followed by a link to the package's own landing page in the [API docs](/api/) when the docs
   build publishes the package (`@ember-data/store` has both; `@ember-data/debug` is not in the
@@ -999,6 +1007,12 @@ A README links to the [Guides](/guides/) and the [API docs](/api/) instead of re
 Concepts live in a guide (see [Writing Guides](./writing-guides.md)); signatures, options, and
 per-member behavior live in TSDoc, as the rest of this page describes. If a README sentence
 explains how something works, it belongs in one of those and the README should link there.
+
+Short means without the manual, not without the introduction. When a landing page or guide now
+owns a section, remove that section from the README and link there. Everything in
+[README structure](#readme-structure) stays: the introduction, the install line and first step
+where the package needs them, and every branding block. A README cut down to badges and links
+fails the evaluator it exists for.
 
 When code changes, follow the
 [Cross-Documentation Checklist](./index.md#cross-documentation-checklist): a new public API

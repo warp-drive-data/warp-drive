@@ -82,6 +82,12 @@ last two bullets: the checks and the label.
      different fix.
    - Every other type of doc a change touches is updated too: see the
      [Cross-Documentation Checklist](/guides/contributing/writing-documentation/index.md#cross-documentation-checklist).
+     When that means moving prose out of a README, remove only the sections the other page now
+     owns. The README keeps its introduction, its install line and first step where
+     [README structure](/guides/contributing/writing-documentation/writing-api-docs.md#readme-structure)
+     calls for them, and every branding block: the tagline, Tagged Releases, and the
+     `♥️ Credits` block with its style tag. [Keep READMEs short](/guides/contributing/writing-documentation/writing-api-docs.md#keep-readmes-short)
+     says why.
    - Run `pnpm lint:docs` from the repo root, then build and open the affected pages as described
      in [Previewing Your Changes](/guides/contributing/writing-documentation/index.md#previewing-your-changes).
    - Label the pull request `:label: doc` (see
