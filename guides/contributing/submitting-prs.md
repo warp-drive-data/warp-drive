@@ -77,7 +77,7 @@ These labels are prefixed with `changelog:` and currently the options are:
 - `:label: deprecation` which should be used to signify addition of a new deprecation
 - `:label: doc` which should be used to signify a fix or improvement to documentation: guides, API docs, upgrade and blog pages, or agent skills. This label also triggers a docs-site PR preview — see [Writing Documentation](./writing-documentation/index.md#previewing-your-changes).
 - `:label: test` which should be used to signify addition of new tests or refactoring of existing tests
-- `:label: chore` which should be used to signify refactoring of internal code that should not have an affect on public APIs or behaviors but which we may want to call out for potentially unintended consequences.
+- `:label: chore` which should be used to signify refactoring of internal code that should not have an affect on public APIs or behaviors but which we may want to call out for potentially unintended consequences. This also covers a fix scoped only to build tooling, lint/CI config, or other dev-experience-only code: if the PR doesn't touch anything a consumer of the published packages could hit, it's a chore, not a bug, even though it "fixes" something. Title such PRs `chore: ...` rather than `fix: ...`, since a `fix:`-typed title auto-labels as `:label: bug` (see the type-to-label mapping above).
 - `:label: dependencies` which should be used when bumping dependencies on `main`. Bumps on other branches should use other labels as this implies a more substantive change.
 - `:label: rfc` which should be used for PRs that draft, update, or advance a WarpDrive RFC in [`rfcs/`](/rfcs/index.md). This label also triggers a docs-site PR preview — see [The RFC Process](./rfc-process.md).
 
