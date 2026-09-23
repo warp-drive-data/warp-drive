@@ -159,9 +159,9 @@ interface CachedResource {
    * legacy `defaultValue()` *function*, memoized because the function returns a
    * fresh value per call and the record must keep reading the same one. A
    * primitive `options.defaultValue` or a transformation's `defaultValue()` is
-   * recomputed on every read instead. Never committed. A local edit to the field
-   * drops its entry; a push that supplies a real value leaves the entry in place,
-   * shadowed by `remoteAttrs`.
+   * recomputed on every read instead. Never committed; an entry is dropped once
+   * the field gets a real value, whether from a local edit or from a merge into
+   * `remoteAttrs`.
    */
   defaultAttrs: AttrHash | null;
 
@@ -214,8 +214,8 @@ type AttrLayer = 'localAttrs' | 'inflightAttrs' | 'remoteAttrs' | 'defaultAttrs'
 /**
  * A layer that exists only for the duration of a merge: the attributes arriving from the
  * server in a save response or a push. {@link partitionChangedKeys} reads it as if it were
- * already on the resource; {@link mergeIntoRemote} then folds it in. Never part of a
- * reader's resolution order.
+ * already on the resource; {@link mergeIntoRemote} then folds the same attributes in, handed
+ * to it directly. Never part of a reader's resolution order.
  */
 type MergeLayer = 'incomingAttrs';
 
@@ -2271,14 +2271,21 @@ function mergeIntoRemote(cached: CachedResource, incomingAttrs: AttrHash | null,
   const target = cached.remoteAttrs || (Object.create(null) as AttrHash);
   for (let i = 0; i < folded.length; i++) {
     const layer = folded[i];
-    if (layer === 'incomingAttrs') {
-      if (incomingAttrs) Object.assign(target, incomingAttrs);
-    } else if (cached[layer]) {
-      Object.assign(target, cached[layer]);
-      cached[layer] = null;
-    }
+    const hash = layer === 'incomingAttrs' ? incomingAttrs : cached[layer];
+    if (!hash) continue;
+    Object.assign(target, hash);
+    if (layer !== 'incomingAttrs') cached[layer] = null;
+    // a field that now has a persisted value no longer needs its memoized default
+    if (cached.defaultAttrs) dropMemoizedDefaults(cached.defaultAttrs, hash);
   }
   cached.remoteAttrs = target;
+}
+
+function dropMemoizedDefaults(defaultAttrs: AttrHash, replacedBy: AttrHash): void {
+  const keys = Object.keys(replacedBy);
+  for (let i = 0; i < keys.length; i++) {
+    if (keys[i] in defaultAttrs) delete defaultAttrs[keys[i]];
+  }
 }
 
 /**
