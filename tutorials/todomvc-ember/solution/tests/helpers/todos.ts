@@ -2,7 +2,6 @@ import { find, settled, waitUntil } from '@ember/test-helpers';
 
 import * as QUnit from 'qunit';
 
-import type { TodoCollectionDocument, TodoResource } from '#api-worker/contract.ts';
 import { CACHE_NAME } from '#api-worker/db.ts';
 
 const JSON_API = 'application/vnd.api+json';
@@ -11,14 +10,7 @@ const JSON_API = 'application/vnd.api+json';
 export async function resetTodos(todos: { title: string; completed?: boolean }[] = []): Promise<void> {
   await caches.delete(CACHE_NAME);
 
-  const list = (await (await fetch('/api/todo')).json()) as TodoCollectionDocument;
-  if (list.data.length) {
-    await fetch('/api/todo/ops.bulk.delete', {
-      method: 'DELETE',
-      headers: { 'Content-Type': JSON_API },
-      body: JSON.stringify({ data: list.data.map(({ type, id }: TodoResource) => ({ type, id })) }),
-    });
-  }
+  await fetch('/api/todo/ops.bulk.deleteAll', { method: 'DELETE' });
 
   for (const { title, completed = false } of todos) {
     await fetch('/api/todo', {

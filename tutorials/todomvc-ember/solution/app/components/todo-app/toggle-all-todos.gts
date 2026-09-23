@@ -42,7 +42,7 @@ export class ToggleAllTodos extends Component<{
     this.appState.onSaveStart();
 
     try {
-      await this.store.request(bulkPatchTodos(changed, { completed }));
+      await this.store.request(bulkPatchTodos({ completed }));
       bulkPatchCacheTodos(this.store, changed, completed);
     } catch (e) {
       reportError(new Error('Could not toggle all todos', { cause: e }), { toast: true });
