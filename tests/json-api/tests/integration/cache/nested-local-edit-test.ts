@@ -25,6 +25,7 @@ interface ExistingUser {
   messages: Message[];
   settings: { theme: string } | null;
   prefs: { locale: string };
+  bio: { text: string } | undefined;
 }
 
 function hashMessage(data: object): string {
@@ -44,6 +45,8 @@ const TestStore = useRecommendedStore({
         { name: 'settings', kind: 'field' },
         // a legacy `defaultValue()` function is the one kind of default the cache memoizes
         { name: 'prefs', kind: 'field', options: { defaultValue: () => ({ locale: 'en' }) } as unknown as ObjectValue },
+        // never pushed and no default: a nested write has nothing to write into
+        { name: 'bio', kind: 'field' },
       ],
     }),
     {
@@ -167,5 +170,39 @@ module('Integration | <JSONAPICache> nested local edits', function () {
     assert.deepEqual(store.cache.getAttr(lid, 'prefs'), { locale: 'en' }, 'the default is read');
     assert.equal(store.cache.getAttr(lid, ['prefs', 'locale']), 'en', 'local state reads the nested default');
     assert.equal(store.cache.getRemoteAttr(lid, ['prefs', 'locale']), 'en', 'remote state reads it too');
+  });
+
+  test('a nested write onto a memoized legacy default edits a clone of the default', async function (assert) {
+    const { store, lid } = await setupEditableUser();
+    assert.equal(store.cache.getAttr(lid, 'prefs'), store.cache.getAttr(lid, 'prefs'), 'the default is memoized');
+
+    store.cache.setAttr(lid, ['prefs', 'locale'], 'fr');
+
+    assert.equal(store.cache.getAttr(lid, ['prefs', 'locale']), 'fr', 'local state reads the edit');
+    // the edit dropped the memo, as a simple-path edit would; remote state recomputes the default
+    assert.deepEqual(store.cache.getRemoteAttr(lid, 'prefs'), { locale: 'en' }, 'remote state still reads the default');
+    assert.true(store.cache.hasChangedAttrs(lid), 'an edit over a default is still an edit');
+    assert.deepEqual(
+      store.cache.changedAttrs(lid).prefs,
+      [undefined, { locale: 'fr' }],
+      'nothing persisted holds the value it replaces'
+    );
+  });
+
+  test('a nested write onto a field with no object value asserts instead of throwing a TypeError', async function (assert) {
+    const { store, lid } = await setupEditableUser();
+
+    await assert.expectAssertion(
+      () => store.cache.setAttr(lid, ['bio', 'text'], 'hi'),
+      /Cannot set 'bio.text' on 'user': 'bio' holds no object to write into/
+    );
+  });
+
+  test('a nested read under a null value is undefined rather than a TypeError', async function (assert) {
+    const { store, lid } = await setupEditableUser();
+    store.push({ data: { type: 'user', id: '1', attributes: { settings: null } } });
+
+    assert.equal(store.cache.getAttr(lid, ['settings', 'theme']), undefined, 'local state stops at the null');
+    assert.equal(store.cache.getRemoteAttr(lid, ['settings', 'theme']), undefined, 'remote state stops at the null');
   });
 });

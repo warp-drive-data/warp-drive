@@ -1450,7 +1450,7 @@ export class JSONAPICache implements Cache {
 
     const basePath = path[0];
     const baseline = resolveAttr(basePath, cached, RESOLUTION_ORDER_EDIT_BASELINE);
-    const isRevert = resolveAttr(path, cached, RESOLUTION_ORDER_EDIT_BASELINE) === value;
+    const isRevert = valueAtPath(baseline, path) === value;
     const hasLocalClone = !!cached.localAttrs && basePath in cached.localAttrs;
 
     // writing the baseline value into an unedited field changes nothing
@@ -1458,10 +1458,17 @@ export class JSONAPICache implements Cache {
       return;
     }
 
-    // every nested edit lands in a clone of the baseline object, so sibling edits survive one another
+    // every nested edit lands in a clone of the object the record currently reads, so sibling edits
+    // survive one another. With nothing persisted that object is the memoized default, if any; the
+    // edit still counts as an edit, since no persisted value holds it.
     cached.localAttrs = cached.localAttrs || (Object.create(null) as Record<string, Value>);
     if (!hasLocalClone) {
-      cached.localAttrs[basePath] = structuredClone(baseline);
+      const seed = baseline ?? (cached.defaultAttrs ? cached.defaultAttrs[basePath] : undefined);
+      assert(
+        `Cannot set '${path.join('.')}' on '${identifier.type}': '${basePath}' holds no object to write into`,
+        !!seed && typeof seed === 'object'
+      );
+      cached.localAttrs[basePath] = structuredClone(seed);
     }
     let currentLocal = cached.localAttrs[basePath] as ObjectValue;
     let nextLink = 1;
@@ -2151,11 +2158,15 @@ function resolveAttr(
   const layer = layerHolding(key, layers, order);
   if (!layer) return undefined;
 
-  let current = layer[key];
-  if (typeof attr !== 'string') {
-    for (let i = 1; i < attr.length && current !== undefined; i++) {
-      current = (current as ObjectValue)[attr[i]];
-    }
+  return typeof attr === 'string' ? layer[key] : valueAtPath(layer[key], attr);
+}
+
+/** Follow `path` (from its second segment) into `base`, stopping with `undefined` at the first missing link or `null`. */
+function valueAtPath(base: Value | undefined, path: string[]): Value | undefined {
+  let current = base;
+  for (let i = 1; i < path.length; i++) {
+    if (current === undefined || current === null) return undefined;
+    current = (current as ObjectValue)[path[i]];
   }
   return current;
 }
