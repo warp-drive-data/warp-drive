@@ -36,18 +36,19 @@ acceptance would unblock.
 
 ### Where this came from
 
-In 2023, [PR #9073](https://github.com/warp-drive-data/warp-drive/pull/9073) ("spec: JSON:API
-Graphs") proposed three things together: a "complex relationships" profile for linkage nested
-inside `attributes`, the `QUERY` extension AQL compiles to, and AQL itself as a terse authoring
-syntax for it. It stalled, unfinished, for two years: the parser silently dropped `filter`/`page`
-output (only `data` ever made it into the compiled query), had no string-escape handling, lost
-track of open contexts on certain inputs, and had no real test coverage. Its VS Code extension's
-grammar only ever highlighted `#` comments, and the embedded-template injection grammar had a
-scope-name mismatch that made it a silent no-op.
+[PR #9073](https://github.com/warp-drive-data/warp-drive/pull/9073) ("spec: JSON:API Graphs")
+proposed three things together: a "complex relationships" profile for linkage nested inside
+`attributes`, the `QUERY` extension AQL compiles to, and AQL itself as a terse authoring syntax for
+it.
 
-A follow-up effort ([PR #11087](https://github.com/warp-drive-data/warp-drive/pull/11087))
-revisited that stalled parser to finish it, and in doing so, surfaced that the *language* itself,
-not just its implementation, was underspecified: the original `filter{}` only ever expressed
+A follow-up exploration ([PR #11087](https://github.com/warp-drive-data/warp-drive/pull/11087))
+picked up that original parser to finish it, and found it incomplete in more than just what was
+left unbuilt: it silently dropped `filter`/`page` output (only `data` ever made it into the
+compiled query), had no string-escape handling, lost track of open contexts on certain inputs, and
+had no real test coverage. Its VS Code extension's grammar only ever highlighted `#` comments, and
+the embedded-template injection grammar had a scope-name mismatch that made it a silent no-op.
+Working through those bugs surfaced that the *language* itself, not just its implementation, was
+underspecified: the original `filter{}` only ever expressed
 equality; there was no way to declare request headers a persisted query needs; there was no way to
 batch independent queries; and there was no guidance at all for the overwhelmingly common case of
 a backend that doesn't conform to the `QUERY` extension exactly as written. This RFC is the design
