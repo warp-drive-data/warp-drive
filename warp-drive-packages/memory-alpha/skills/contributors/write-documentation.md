@@ -66,7 +66,8 @@ last two bullets: the checks and the label.
    - Give it three to five questions that reader would bring to the text. For API docs, a
      package's `src/index.md` landing page included, the question is always some form of "how do
      I use this?"; if the answer requires opening the source, the doc is missing an example or a
-     link. For a guide, ask what prior knowledge it assumes and whether that matches the audience
+     link. For a README, ask whether the reader would install the package and what they would type
+     first. For a guide, ask what prior knowledge it assumes and whether that matches the audience
      you named. For an `upgrading/` or `blog/` page, ask which version the page is written for and
      whether a reader on a different version can tell.
    - Ask it to say, for each answer, whether it came from the text, needed a guess, or could not
@@ -87,8 +88,8 @@ last two bullets: the checks and the label.
      [README structure](/guides/contributing/writing-documentation/writing-api-docs.md#readme-structure)
      lists: its introduction and, for a legacy package, the alert naming the replacement; the
      install line and one elevator-pitch snippet, which the landing page is meant to repeat in
-     more depth; and every branding block, the tagline, Tagged Releases, and the `♥️ Credits`
-     block with its style tag.
+     more depth; and every branding block, the tagline and the `♥️ Credits` block with its style
+     tag.
      [Keep READMEs short](/guides/contributing/writing-documentation/writing-api-docs.md#keep-readmes-short)
      says why.
    - Run `pnpm lint:docs` from the repo root, then build and open the affected pages as described
@@ -99,7 +100,7 @@ last two bullets: the checks and the label.
 
 ## Gotchas
 
-All three are explained in the
+The first three are explained in the
 [Docs Viewer README](https://github.com/warp-drive-data/warp-drive/blob/main/docs-viewer/README.md).
 
 - A page added while `pnpm start` is running is served but missing from the sidebar until you

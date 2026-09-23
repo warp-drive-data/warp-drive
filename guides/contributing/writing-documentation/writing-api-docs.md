@@ -600,7 +600,8 @@ audience:
 - **The package landing page**, `src/index.md`, renders at `/api/<package>/` in the API docs. It
   is for an existing user who landed on the package and wants to know where to start, so it
   holds the setup and the map of the package's code entry points.
-- **Subpath entry points** such as `@warp-drive/core/request` render at `/api/<package>/<path>/`.
+- **Subpath entry points** such as `@warp-drive/core/request` render at `/api/<package>/<path>/`,
+  one page per entry file the package's `exports` map points at (`src/request.ts` for that one).
   They are for an existing user who already knows which part of the package they need.
 
 The README and the landing page share an elevator-pitch snippet on purpose; everything else
@@ -618,9 +619,10 @@ in that comment renders at the top of the subpath's page, above its member listi
  */
 ```
 
-**The package root** `src/index.ts` is different. Its doc comment carries no prose, only these
-two tags, and every package has it. `<project>` is typed literally; it is TypeDoc's name for the
-package root:
+**The package root** `src/index.ts` is different. Its doc comment carries no prose, only tags:
+these two, plus a module-level `@since` where one applies (see the end of this section). Every
+package has this comment. `<project>` is typed literally; it is TypeDoc's name for the package
+root:
 
 ```ts
 /**
@@ -972,10 +974,6 @@ ones the shape is taken from; copy from them.
   is intended; it is the one piece of duplication a README carries on purpose. Keep the sample to
   what fits on one screen and link the landing page for the rest. `@warp-drive/memory-alpha` is
   read from `node_modules` rather than imported, so its sample is the install and a file path.
-- **Branding blocks.** Every `@warp-drive/*` README closes with the collapsible `### ♥️ Credits`
-  block and the `<style>` tag inside it; copy the block from `@warp-drive/vue` byte for byte, since
-  a few older copies have drifted. Several READMEs also open with a centered tagline `<p>` under
-  the H1. These are wanted. Keep them when editing a README and copy them when creating one.
 - **`## Documentation`** with the same *Get Started* link to the Guides every package uses,
   followed by a link to the package's own landing page in the [API docs](/api/) when the docs
   build publishes the package (`@ember-data/store` has both; `@ember-data/debug` is not in the
@@ -983,6 +981,13 @@ ones the shape is taken from; copy from them.
   npm, so the root-relative `/guides/` links the rest of the docs use do not resolve here.
 - **`## Code of Conduct` and `### License`**, linking the repo's `CODE_OF_CONDUCT.md` on GitHub
   and the package's own `LICENSE.md`, which ships in `files` alongside the README.
+
+Two branding blocks sit outside that order. Several READMEs open with a centered tagline `<p>`
+right under the H1. Every `@warp-drive/*` README closes, after the License section, with the
+collapsible `### ♥️ Credits` block and the `<style>` tag inside it; copy the block from
+`@warp-drive/vue` byte for byte, since a few older copies have drifted. Legacy `@ember-data/*`
+READMEs keep whatever branding they already have. These blocks are wanted: keep them when editing
+a README and copy them when creating one.
 
 A few older READMEs (`@warp-drive/ember`, `@ember-data/request`) predate this shape and carry a
 full manual. Do not copy that: their API detail has to be kept in sync by hand, and the link
@@ -994,8 +999,9 @@ Each package's `typedoc.config.mjs` sets `readme: 'src/index.md'`, and TypeDoc r
 as the package's landing page in the [API docs](/api/) at `/api/<package-name>/`, above the
 generated member listing. It pairs with the bare `@module` / `@mergeModuleWith <project>` comment
 at the top of `src/index.ts`; [Documenting Packages and Subpackages](#documenting-packages-and-subpackages)
-explains why both are needed. A `readme: 'none'` in a package config is a package whose landing
-page silently does not render; fix the config rather than working around it.
+explains why both are needed. A package whose config still says `readme: 'none'` has a landing
+page that silently does not render; the fix is to set `readme: 'src/index.md'` and create that
+file, not to put the prose somewhere else.
 
 The split follows from where each file renders:
 
