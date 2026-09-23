@@ -1,10 +1,10 @@
-import type { NotificationType } from '@warp-drive/core';
 import { Store } from '@warp-drive/core';
 import { registerDerivations, SchemaService, withDefaults } from '@warp-drive/core/reactive';
 import type { CacheCapabilitiesManager } from '@warp-drive/core/types';
-import type { ResourceKey } from '@warp-drive/core/types/identifier';
 import { module, test } from '@warp-drive/diagnostic';
 import { JSONAPICache as Cache } from '@warp-drive/json-api';
+
+import { recordDeliveries } from '../../utils/notifications';
 
 /**
  * Uses the real `SchemaService` rather than the test app's `TestSchema`
@@ -46,11 +46,6 @@ class TestStore extends Store {
   }
 }
 
-// subscriber callbacks are typed as `key?: string`, but a keyless/wildcard
-// dispatch passes `null` through at runtime (see `_flushNotification`), so
-// the tuple type here must allow for it.
-type Call = [type: NotificationType, key: string | null | undefined];
-
 module('Integration | JSONAPICache | changed keys are filtered by field kind', function () {
   test('a relationship carrying data in both `attributes` and `relationships` is not announced as an attributes change', function (assert) {
     const store = new TestStore();
@@ -73,13 +68,7 @@ module('Integration | JSONAPICache | changed keys are filtered by field kind', f
       false
     );
 
-    const calls: Call[] = [];
-    const token = store.notifications.subscribe(
-      identifier,
-      (_key: ResourceKey, type: NotificationType, key?: string | null) => {
-        calls.push([type, key]);
-      }
-    );
+    const calls = recordDeliveries(store, identifier);
 
     // {json:api} requires a resource's fields to share one namespace, so a
     // name cannot appear as both an attribute and a relationship:
@@ -113,8 +102,6 @@ module('Integration | JSONAPICache | changed keys are filtered by field kind', f
       true
     );
 
-    store.notifications.unsubscribe(token);
-
     // Assert on the notifications rather than on a property read: outside a
     // tracking frame a getter re-reads the cache every time, and `bestFriend`
     // resolves through the graph regardless, so a value assertion passes with
@@ -146,13 +133,7 @@ module('Integration | JSONAPICache | changed keys are filtered by field kind', f
       false
     );
 
-    const calls: Call[] = [];
-    const token = store.notifications.subscribe(
-      identifier,
-      (_key: ResourceKey, type: NotificationType, key?: string | null) => {
-        calls.push([type, key]);
-      }
-    );
+    const calls = recordDeliveries(store, identifier);
 
     // the same namespace violation, but with no `relationships` member at all,
     // so `setupRelationships` never runs and the graph never sees this data.
@@ -168,8 +149,6 @@ module('Integration | JSONAPICache | changed keys are filtered by field kind', f
       },
       true
     );
-
-    store.notifications.unsubscribe(token);
 
     assert.deepEqual(
       calls,
