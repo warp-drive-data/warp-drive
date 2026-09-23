@@ -955,10 +955,14 @@ ones the shape is taken from; copy from them.
   The package's `logos/` directory is a synced copy of the repo-root `logos/synced/` (see the
   notice in `logos/synced/README.md`), so never edit it inside a package.
 - **Badges.** Five badges from shields.io: npm version, npm downloads, license, and the EmberJS
-  and ***Warp*Drive** Discord servers. Copy the block verbatim from another package, including its
-  `ember-data` targets for the version and download counts; do not retarget it per package. If the
-  package wants its own release badges, add a **Tagged Releases** list between the H1 and the
-  description (`@warp-drive/ember` has one).
+  and ***Warp*Drive** Discord servers. Copy the block from another package of the same kind. A
+  modern package is installed on its own, so its version and download badges name the package
+  itself, URL-encoded (`%40warp-drive%2Fcore`), as `@warp-drive/core` does. A legacy
+  `@ember-data/*` package mostly arrives as a dependency of `ember-data`, so its badges keep the
+  `ember-data` targets, as `@ember-data/store` does. An unpublished package keeps the `ember-data`
+  targets too, since a badge for a name npm does not know renders as "not found". If the package
+  wants its own release badges, add a **Tagged Releases** list between the H1 and the description
+  (`@warp-drive/ember` has one).
 - **Package name as the H1**, `# @warp-drive/json-api`. `@warp-drive/core` is the exception: it
   is the project's front door and uses the ***Warp*Drive** tagline instead.
 - **The introduction: what it is, who should use it, and why.** One paragraph is enough for a
