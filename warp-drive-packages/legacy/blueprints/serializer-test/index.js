@@ -6,8 +6,6 @@ module.exports = {
     return false;
   },
 
-  root: __dirname,
-
   fileMapTokens() {
     return {
       __root__() {

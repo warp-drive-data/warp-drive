@@ -15,7 +15,13 @@
     "test:blueprints": "mocha tests"
   },
   "devDependencies": {
+    "@ember-data/adapter": "workspace:*",
+    "@ember-data/model": "workspace:*",
+    "@ember-data/serializer": "workspace:*",
+    "@ember-tooling/blueprint-model": "^0.7.1",
     "@warp-drive/internal-config": "workspace:*",
+    "@warp-drive/legacy": "workspace:*",
+    "ember-data": "workspace:*",
     "mocha": "catalog:",
     "warp-drive": "workspace:*"
   },

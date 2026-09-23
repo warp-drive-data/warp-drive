@@ -1,9 +1,9 @@
+const path = require('path');
+
 module.exports = {
   description: 'Generates an ember-data Serializer.',
 
   availableOptions: [{ name: 'base-class', type: String }],
-
-  root: __dirname,
 
   async locals(options) {
     const { generateSerializerSource } = await import('warp-drive/generators/serializer');
@@ -15,9 +15,13 @@ module.exports = {
         cwd: options.project.root,
         isAddon,
         baseClass: options.baseClass,
-        packageName: '@warp-drive/legacy/serializer',
-        importStyle: 'named',
+        packageName: this.packageName ?? '@warp-drive/legacy/serializer',
+        importStyle: this.importStyle ?? 'named',
       }),
     };
+  },
+
+  filesPath() {
+    return path.join(__dirname, 'files');
   },
 };
