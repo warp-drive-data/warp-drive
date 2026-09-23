@@ -1,7 +1,11 @@
 # Use CI as the Source of Truth
 
 Use this skill whenever you're ready to test a change in this repo — the moment you'd otherwise
-reach for a local test run, lint, or build to check your work.
+reach for a local test run, lint, or build to check your work. Check this every single time that
+moment arrives, not just once per session: it's easy to read this table at the start of a task
+that looked like docs-only or config-only, then reach for `mocha`/`oxlint`/`eslint`/`pnpm test`
+later without circling back, because nothing prompts you to re-check once you're mid-task and
+already running commands.
 
 ## Steps
 

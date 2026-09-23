@@ -56,6 +56,17 @@ Lint rules for helping to ensure best practices and hygiene when using ***Warp*D
 | [no-invalid-resource-ids](./docs/no-invalid-resource-ids.md) | Ensures resource ids are strings when used in common APIs | 🏆 | ✅🛠️ |
 | [no-legacy-imports](./docs/no-legacy-imports.md) | Ensures imports use paths specified by the Package Unification RFC | 🏆 | ✅🛠️ |
 
+## Internal Rules
+
+Internal rules encode conventions for developing a large, performance-sensitive test suite like
+WarpDrive's own, rather than for consuming WarpDrive's public API. They aren't part of
+`recommended` since they don't apply to typical app code, but are available as their own flat
+config for any consumer whose test suite could benefit from the same conventions.
+
+| Rule | Description | 🏷️ | ✨ |
+| ---- | ----------- | -- | -- |
+| [no-test-module-hooks](./docs/no-test-module-hooks.md) | Disallow `hooks.beforeEach`/`hooks.afterEach` in favor of setup functions each test calls explicitly | ⚡️ | |
+
 ## Template Rules
 
 Template rules operate on the Glimmer template AST rather than the JS/TS AST. They require
@@ -127,5 +138,19 @@ const WarpDriveReactRecommended = require('eslint-plugin-warp-drive/recommended-
 module.exports = [
   ...WarpDriveRecommended,
   ...WarpDriveReactRecommended,
+];
+```
+
+Internal rules are also available as a separate flat config, since they encode conventions for a
+test suite's own internals rather than for consuming code:
+
+```ts
+// eslint.config.js (flat config)
+const WarpDriveRecommended = require('eslint-plugin-warp-drive/recommended');
+const WarpDriveInternalRecommended = require('eslint-plugin-warp-drive/recommended-internal');
+
+module.exports = [
+  ...WarpDriveRecommended,
+  ...WarpDriveInternalRecommended,
 ];
 ```

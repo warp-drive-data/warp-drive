@@ -1,4 +1,5 @@
 import WarpDrive from 'eslint-plugin-warp-drive/recommended';
+import WarpDriveInternal from 'eslint-plugin-warp-drive/recommended-internal';
 
 import * as diagnostic from '@warp-drive/internal-config/eslint/diagnostic.js';
 import * as gts from '@warp-drive/internal-config/eslint/gts.js';
@@ -64,6 +65,18 @@ export default [
   {
     rules: {
       'warp-drive/no-legacy-request-patterns': ['error', { allowPeekRecord: true }],
+    },
+  },
+
+  // Internal rules encode test-suite conventions (e.g. extracted setup functions over
+  // `hooks.beforeEach`/`hooks.afterEach`) rather than public-API best practices. This package
+  // still has pre-existing module-level hooks that haven't been migrated, so "warn" here (same
+  // as the .oxlintrc.json override covering this package's plain `.ts`/`.js` files) rather than
+  // this ruleset's default "error".
+  ...WarpDriveInternal,
+  {
+    rules: {
+      'warp-drive/no-test-module-hooks': 'warn',
     },
   },
 

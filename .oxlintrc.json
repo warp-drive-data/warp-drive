@@ -1,12 +1,16 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
   "plugins": ["typescript", "import"],
-  // JS plugins wrap the same ESLint plugin packages tools/internal-config/eslint/{qunit,mocha}.js
-  // use — see their `disabledRules()`/override handoff for the ESLint side of this. Alpha oxlint
+  // `qunit`/`mocha` wrap the same ESLint plugin packages tools/internal-config/eslint/{qunit,mocha}.js
+  // use — see their `disabledRules()`/override handoff for the ESLint side of this. `warp-drive`
+  // loads all of eslint-plugin-warp-drive, but only `no-test-module-hooks` is turned on below (see
+  // the override further down) — every other eslint-plugin-warp-drive rule still has no oxlint
+  // equivalent and keeps running via each package's own `eslint.config.mjs` instead. Alpha oxlint
   // feature (https://oxc.rs/docs/guide/usage/linter/js-plugins.html), not yet subject to semver.
   "jsPlugins": [
     { "name": "qunit", "specifier": "eslint-plugin-qunit" },
-    { "name": "mocha", "specifier": "eslint-plugin-mocha" }
+    { "name": "mocha", "specifier": "eslint-plugin-mocha" },
+    { "name": "warp-drive", "specifier": "eslint-plugin-warp-drive" }
   ],
   "categories": {},
   // Needed for `no-undef` (see the `rules` map below). ESLint splits these into
@@ -1301,7 +1305,13 @@
         "qunit/no-throws-string": "error",
         "qunit/require-expect": "off",
         "qunit/require-object-in-propequal": "error",
-        "qunit/resolve-async": "error"
+        "qunit/resolve-async": "error",
+        // "warn", not "error": a good number of these packages still have pre-existing
+        // module-level `hooks.beforeEach`/`hooks.afterEach` usage (tests/legacy and
+        // tests/dont-write-new-tests-here especially) that hasn't been migrated to extracted
+        // setup functions yet. See packages/eslint-plugin-warp-drive's `no-test-module-hooks`
+        // doc for why the migration is worth doing incrementally rather than all at once.
+        "warp-drive/no-test-module-hooks": "warn"
       }
     },
     {

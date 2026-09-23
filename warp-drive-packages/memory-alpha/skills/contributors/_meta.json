@@ -6,7 +6,8 @@
     "fix-at-the-source",
     "writing-and-implementing-rfcs",
     "write-documentation",
-    "use-ci-as-the-source-of-truth"
+    "use-ci-as-the-source-of-truth",
+    "extract-test-setup-into-functions"
   ],
   "webIndex": "overview",
   "files": {
@@ -16,6 +17,7 @@
     "fix-at-the-source": { "title": "Fix at the Source" },
     "writing-and-implementing-rfcs": { "title": "Writing and Implementing RFCs" },
     "write-documentation": { "title": "Write Documentation" },
-    "use-ci-as-the-source-of-truth": { "title": "Use CI as the Source of Truth" }
+    "use-ci-as-the-source-of-truth": { "title": "Use CI as the Source of Truth" },
+    "extract-test-setup-into-functions": { "title": "Extract Test Setup Into Functions" }
   }
 }
