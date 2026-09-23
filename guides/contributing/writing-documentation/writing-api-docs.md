@@ -18,8 +18,10 @@ the symbol, so link the guide that teaches it on first mention.
 API Documentation is generated from [TSDoc](https://tsdoc.org/) comments in the source code
 compiled with [TypeDoc](https://typedoc.org/) and transformed for [Vitepress](https://vitepress.dev/) using [typedoc-plugin-markdown](https://www.typedoc-plugin-markdown.org/plugins/vitepress).
 
-TSDoc syntax is similar to YUIDoc and JSDoc but there are occasional nuances where it becomes best to know that the underlying grammar is TSDoc
-and parser is TypeDoc.
+TSDoc looks like JSDoc, but the grammar is TSDoc and the parser is TypeDoc, and the differences
+matter: types come from the TypeScript signature rather than from `{type}` annotations in tags,
+and TypeDoc adds tags JSDoc does not have (`@since`, `@internal`, `@group`, `@category`, and the
+repo-specific ones described below).
 
 TypeDoc is configured to follow our public package entrypoints (the `exports` in each package's
 `package.json`) to auto-discover documentation. It documents everything reachable, public or
@@ -45,9 +47,10 @@ nuances and syntaxes to know, as well as how to preview the doc comments.
 Even a minimal example dramatically shortens the time it takes for a
 consumer to understand how to use an API. Every doc comment for a
 [`@public`](#mark-public-exports-with-public) export should include at least one, under the
-`@example` tag.
-(An `### Example` heading in the comment body also renders, but
-`@example` is the convention in this repo.)
+`@example` tag. (An `### Example` heading in the comment body also renders, but `@example` is the
+convention in this repo.) This applies to the exported symbol itself: a class, function, or
+variable. A class member needs its own example only when using it is not obvious from the class
+example, such as a method with several call patterns.
 
 ````ts
 /**
@@ -454,7 +457,7 @@ For instance
 ````
 
 > [!TIP]
-> The fence around the example above uses four backticks (`` ```` ``) instead of three so the
+> The fence around the example above uses four backticks (` ```` `) instead of three so the
 > nested ` ```ts ` block doesn't close it early — a closing fence must be at least as long as the
 > opening one, per the [CommonMark rule for fenced code blocks](https://spec.commonmark.org/current/#fenced-code-blocks).
 > This is plain markdown, not a TSDoc feature: our docs render through VitePress's `markdown-it`,
@@ -560,10 +563,11 @@ The content standards later on this page apply to anything tagged `@public`.
 
 ### Always specify `@since` on non-type public APIs
 
-`@since` renders as a small badge rather than a body section, so it's
-always visible next to the name of the thing it describes without
-taking up page space. The other examples on this page leave it out to
-stay short; real public APIs must not.
+`@since` names the release the API first shipped in, using the full
+version (`5.9.0`, not `5.9`). It renders as a small badge rather than a
+body section, so it's always visible next to the name of the thing it
+describes without taking up page space. The other examples on this page
+leave it out to stay short; real public APIs must not.
 
 On a function, class, or variable it shows up right next to that page's
 own name (an interface or type alias renders it the same way if you add
