@@ -812,7 +812,11 @@
       "module": "@ember-data/model/-private",
       "export": "*",
       "typeOnly": false,
-      "to": null
+      "to": {
+        "module": "@warp-drive/legacy/model/-private",
+        "export": "*",
+        "typeOnly": false
+      }
     },
     {
       "module": "@ember-data/model/hooks",
@@ -864,7 +868,11 @@
       "module": "@ember-data/model/migration-support",
       "export": "*",
       "typeOnly": false,
-      "to": null
+      "to": {
+        "module": "@warp-drive/legacy/model/migration-support",
+        "export": "*",
+        "typeOnly": false
+      }
     },
     {
       "module": "@ember-data/request",
