@@ -89,8 +89,6 @@ export function isRequestKey(identifier: unknown): identifier is RequestKey {
  * a `schema-array`) have one: the concrete schema-object type the value
  * resolves to, and the identity hash that type's `ObjectSchema` declares for
  * it, or `null` when the schema declares `identity: null`.
- *
- * @internal
  */
 export interface FieldValueIdentity {
   type: string;
@@ -109,8 +107,6 @@ export interface FieldValueIdentity {
  *
  * Every other field kind, and any non-object value, has no identity and
  * returns `null`.
- *
- * @internal
  */
 export function fieldValueIdentity(
   schema: SchemaService,
