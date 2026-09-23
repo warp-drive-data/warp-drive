@@ -17,9 +17,8 @@ on rather than re-explaining them.
 
 ## Guide Types
 
-First check that what you are writing is a guide at all. Upgrade and migration walkthroughs are
-not; they live in the repo-root `upgrading/` directory and follow
-[Writing Permanent Content](./writing-permanent-content.md).
+Upgrade and migration walkthroughs are not guides; they live in the repo-root `upgrading/`
+directory and follow [Writing Permanent Content](./writing-permanent-content.md).
 
 Guides fall into three types. Keep a single page to a single type; a page that seems to need two
 is usually two pages.
@@ -30,9 +29,10 @@ A tutorial walks the reader through building something specific or completing a 
 state its prerequisites up front, show complete code at each step, and end with the result the
 reader should see. Use it when the reader needs to do something, such as setting up a project or
 wiring up their first request. Of the guide audiences, tutorials narrow to hobbyists and new
-engineers who have a working project and little else, so every step has to be runnable as
-written. Tutorials live in their own top-level [Tutorials](/guides/tutorials/) section
-(`guides/tutorials/`), above The Manual section of the guides, so a reader can find them without
+engineers, who know their own stack but little about ***Warp*Drive**, so every step has to be
+runnable as written. Concept and reference guides keep the full guide audience. Tutorials live in
+their own top-level [Tutorials](/guides/tutorials/) section (`guides/tutorials/`), above The
+Manual, the section holding the concept and reference guides, so a reader can find them without
 knowing which concept they cover.
 
 ### Concept
@@ -61,8 +61,9 @@ directory appears in the sidebar:
   to `items` where it belongs.
 - `files` holds per-file metadata keyed by filename without `.md`, such as a `title` or `draft`. A
   page's own frontmatter `title` wins over a `files` entry when both are set.
-- `draft` on the directory, on a `files` entry, or in a page's own frontmatter hides that content
-  from the sidebar. The page is still built and reachable at its URL.
+- `draft` on a `files` entry or in a page's own frontmatter hides that page from the sidebar; on
+  the directory it hides every page in it. Hidden pages are still built and reachable at their
+  URLs.
 - `collapsed` controls whether the directory's sidebar group starts collapsed.
 
 `docs-viewer/src/prepare-website.ts` copies `guides/` into the [VitePress](https://vitepress.dev/)
@@ -77,5 +78,6 @@ custom containers (`::: tip`, `::: warning`) and
 as tabs.
 
 One consequence of VitePress compiling markdown to Vue: a bare `<thing>` in prose is parsed as an
-element and fails the build, and `pnpm lint:docs` will not warn you first. Put angle brackets in
-code spans.
+element and fails the build, and the link checker (`pnpm lint:docs`, described in the
+[Docs Viewer README](https://github.com/warp-drive-data/warp-drive/blob/main/docs-viewer/README.md))
+will not warn you first. Wrap angle brackets in single backticks, as this paragraph does.

@@ -15,8 +15,9 @@ Of the [audiences](./index.md#know-your-audience) our documentation serves, a sk
 coding agent that will follow it, and the human who opens the published copy to see what agents
 are being told. Write for the agent. It has the repo in front of it and no conversation history,
 so give it the rule, the reason, and the exact place to look, and nothing it can read for itself.
-Assume it uses ***Warp*Drive** if the skill is in `skills/contributors/`, and assume it does not
-if the skill is in a consumer directory such as `skills/schemas/` or `skills/requests/`.
+If the skill is in `skills/contributors/`, assume the agent is working inside this repo and knows
+its layout. If it is in a consumer directory such as `skills/schemas/` or `skills/requests/`,
+assume the agent is in an app that depends on ***Warp*Drive** and knows only the public API.
 
 ## How agents reach a skill
 
@@ -30,14 +31,19 @@ routing table and read only the row that matches its task:
 A skill that is not in the right table does not exist as far as agents are concerned. Adding a
 skill therefore always means touching four files in its directory: the skill itself, `index.md`
 (the agent-facing table), `overview.md` (the same table with links, published in place of
-`index.md` on the website), and `_meta.json` (sidebar title and order for the website).
+`index.md` on the website), and `_meta.json` (sidebar title and order for the website). Miss the
+`overview.md` row and the website's table lacks the skill; miss the `_meta.json` entry and it
+sorts last with a title generated from its filename. Nothing checks that `index.md` and
+`overview.md` agree, so compare them by eye. If the content outgrows the skill, a fifth file, a
+human guide under `guides/`, holds the detail and the skill links it.
 
 ## Writing the skill file
 
 - **No YAML frontmatter.** The package README explains why: downstream tooling adapts these files
   into tool-specific formats (Claude skills, Cursor rules, Copilot instructions) and adds its own
   frontmatter, so ours would collide. Title and ordering live in `_meta.json` instead.
-- **Open with the trigger.** The first sentence is "Use this skill whenever..." followed by the
+- **Open with an H1 and the trigger.** The file starts with an H1 matching the title you give it
+  in `_meta.json`. The first sentence under it is "Use this skill whenever..." followed by the
   situation, so an agent that landed here from the table can confirm it is in the right place.
 - **Then `## Steps`**, numbered, each one an action the agent can take. Put the reason for a rule
   in the step that states it. Existing skills such as
@@ -50,20 +56,21 @@ skill therefore always means touching four files in its directory: the skill its
   product's tool or command. The skill is read by several agents.
 - **Put angle brackets in code spans.** VitePress compiles markdown to Vue, so a bare `<thing>`
   in prose is parsed as an element and fails the docs build.
-- **Link paths.** Sibling skills are linked relatively (`./other-skill.md`); guides are linked by
-  site path (`/guides/contributing/...md`); anchors must match a real heading.
-- **Keep it short.** Reviewers push back on long skills. If a skill needs more than about 100
-  lines, some of it belongs in a human guide that the skill links.
+- **Link paths.** Other skills are linked relatively (`./other-skill.md`, or
+  `../schemas/other-skill.md` across directories); guides are linked by site path
+  (`/guides/contributing/...md`); anchors must match a real heading.
+- **Keep it short.** If a skill needs more than about 100 lines, some of it belongs in a human
+  guide that the skill links.
 
 ## Wiring it in
 
 In the skill's directory:
 
-1. Add a row to `index.md`: the situation in the first column, the bare filename in the second.
-   Rows that apply to every session are listed first and called out below the table; put a
-   task-specific skill after them.
-2. Add the matching row to `overview.md`, with the second column as a link:
-   `[Title](/skills/contributors/your-skill.md)`.
+1. Add a row to `index.md`: the situation in the first column, the filename with its `.md`
+   extension in the second. Rows that apply to every session are listed first and called out
+   below the table; put a task-specific skill after them.
+2. Add the matching row to `overview.md`, same first column, with the second column as a link:
+   `[Title](/skills/<directory>/your-skill.md)`.
 3. In `_meta.json`, add the slug to `items` where it should sit in the sidebar, and add
    `"your-skill": { "title": "Your Title" }` under `files`.
 
@@ -73,7 +80,9 @@ In the skill's directory:
 website on every build. Unlike guides, this copy is passed through `finalizeSyncedContent`, so a
 page marked `draft` in `_meta.json` is removed from the site entirely rather than merely hidden
 from the sidebar. That is how each directory's agent-facing `index.md` stays out of the website
-while `overview.md` is published in its place (`"webIndex": "overview"` in `_meta.json`).
+while `overview.md` is published in its place: the directory's `_meta.json` carries both
+`"files": { "index": { "draft": true } }` and `"webIndex": "overview"`. Agents read from disk, so
+`draft` has no effect on them.
 
 ## Checking your work
 
@@ -81,5 +90,6 @@ while `overview.md` is published in its place (`"webIndex": "overview"` in `_met
   with the guides.
 - Build the site as the [Docs Viewer README](https://github.com/warp-drive-data/warp-drive/blob/main/docs-viewer/README.md)
   describes and open `/skills/contributors/` to see the sidebar entry and rendered page.
-- Hand the skill, and only the skill, to a fresh agent instance with a task it should cover, and
-  check that it lands on the right guide and does not name a tool specific to one product.
+- Hand the skill file alone, not the index or the repo, to a fresh agent instance with a task it
+  should cover, and check that it follows the steps to the right place and does not name a tool
+  specific to one product.

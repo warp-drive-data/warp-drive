@@ -43,6 +43,36 @@ documentation that is generated: everything is compiled from type signatures and
 The below guide will walk through best practices for writing doc comments, important
 nuances and syntaxes to know, as well as how to preview the doc comments.
 
+## A Complete Doc Comment
+
+Everything the rest of this page asks for, on one public function:
+
+````ts
+/**
+ * Adds two numbers.
+ *
+ * @example
+ * ```ts
+ * add(1, 2); // 3
+ * ```
+ *
+ * @param a - the first number to add
+ * @param b - the second number to add
+ * @return the sum of the two numbers
+ * @since 5.10.0
+ * @public
+ */
+export function add(a: number, b: number): number {}
+````
+
+- The `/**` opener and the `*` on every line: [Documentation Syntax](#documentation-syntax).
+- The summary sentence, the `@example`, and `{@link}` on first mention of other public symbols:
+  [Content Standards](#content-standards), next.
+- `@param` and `@return` with descriptions only: [Don't document types in @param and @return](#don-t-document-types-in-param-and-return).
+- `@since` with the full version: [Always specify `@since`](#always-specify-since-on-non-type-public-apis).
+- `@public`, or `@internal` to keep it out of the docs:
+  [Mark public exports with `@public`](#mark-public-exports-with-public).
+
 ## Content Standards
 
 ### Every Public API Should Have a Usage Example
@@ -50,8 +80,9 @@ nuances and syntaxes to know, as well as how to preview the doc comments.
 Even a minimal example dramatically shortens the time it takes for a
 consumer to understand how to use an API. Every doc comment for a
 [`@public`](#mark-public-exports-with-public) export should include at least one, under the
-`@example` tag. (An `### Example` heading in the comment body also renders, but `@example` is the
-convention in this repo.) This applies to the exported symbol itself: a class, function, or
+`@example` tag. Headings inside a comment body are fine for other structure, as the markdown
+examples later on this page show, but the usage example itself goes under `@example`, which is
+the convention in this repo. This applies to the exported symbol itself: a class, function, or
 variable. A class member needs its own example only when using it is not obvious from the class
 example, such as a method with several call patterns.
 
@@ -77,6 +108,9 @@ function add(a: number, b: number): number {}
 The first time a doc comment mentions another documented, public token,
 that mention should be a `{@link}` to it. This turns our docs into a
 web that's easy to navigate instead of a pile of disconnected pages.
+Write `{@link Symbol}` to show the symbol's own name, or
+`{@link Symbol | other text}` to show other text; the `|` separates the
+target from the label.
 
 ```ts
 /**
@@ -110,7 +144,10 @@ export type RequestState<RT = unknown, E extends Error = Error> =
 
 Cross-linking between the members of the same class, interface, or
 object is highly encouraged. This makes it fast and easy to navigate
-around the documentation for that class/object/interface.
+around the documentation for that class/object/interface. The
+`@privateRemarks` blocks in the example below are notes for people
+reading the source; TypeDoc excludes that tag from the rendered docs by
+default.
 
 ```ts
 /**
@@ -268,7 +305,8 @@ meaning on top of the standard one: the tagged function, component, or
 object is actively being removed, not merely out of favor (that is
 [`@discouraged`](#the-discouraged-tag), below).
 
-- Whenever possible, link the `@recommended` replacement.
+- Whenever possible, link the replacement, and tag that replacement
+  [`@recommended`](#the-recommended-tag).
 - If the deprecation is tracked by [the deprecations guide](/api/@warp-drive/build-config/deprecations/)
   (i.e. it has a deprecation id like `ember-data:deprecate-store-extends-ember-object`
   and a corresponding `DEPRECATE_*` flag), link the guide and name the
@@ -557,17 +595,27 @@ we would do the following in `packages/core-types/src/index.ts`
  */
 ```
 
+This is separate from the package's `src/index.md`, which TypeDoc renders
+as the landing page above the module's member listing (see
+[Writing READMEs](./writing-readmes.md)). The `@module` comment supplies
+the module's one-paragraph summary and is where module-level `@since`
+goes; `src/index.md` holds the longer landing-page prose.
+
 ### Mark public exports with `@public`
 
-TSDoc's release tags (`@public`, `@alpha`, `@beta`, `@internal`) say who a symbol is for. In this
-repo every export intended for consumers carries `@public`, and everything else that is reachable
-from a package entrypoint carries `@internal` (see [Ignored Doc Comments](#ignored-doc-comments)).
-The content standards later on this page apply to anything tagged `@public`.
+TSDoc's release tags say who a symbol is for. In this repo every export intended for consumers
+carries `@public`, and everything else that is reachable from a package entrypoint carries
+`@internal` (see [Ignored Doc Comments](#ignored-doc-comments)); `@alpha` and `@beta` are not
+used. A reachable export with neither tag is published as if it were public, so tag it one way or
+the other. Members of a `@public` class or interface inherit its visibility and do not need their
+own `@public`; use `@internal` on a member to hide just that member. The
+[Content Standards](#content-standards) above apply to anything public.
 
 ### Always specify `@since` on non-type public APIs
 
 `@since` names the release the API first shipped in, using the full
-version (`5.9.0`, not `5.9`). It renders as a small badge rather than a
+stable version (`5.9.0`, not `5.9` and not a prerelease tag). For an API
+you are adding now, that is the next stable release. It renders as a small badge rather than a
 body section, so it's always visible next to the name of the thing it
 describes without taking up page space. The other examples on this page
 leave it out to stay short; real public APIs must not.
@@ -618,8 +666,9 @@ badge next to its name. That default is accurate but not always the
 most useful label for a reader — a class can be a component, a plain
 object can be a request handler, a function can be a request builder.
 
-Use `@badge <Label>` to override the kind badge with a more meaningful
-conceptual label:
+`@badge` and `@title` are repo-specific tags, implemented in
+`docs-viewer/src/site-utils.ts`. Use `@badge <Label>` to override the
+kind badge with a more meaningful conceptual label:
 
 ```ts
 /**
@@ -696,9 +745,9 @@ page has a `@category`, every symbol without one falls into a generic
 Given that tradeoff, **default to `@group`**, and reach for `@category`
 only when the grouping you want genuinely cuts across kinds, and
 you're prepared to categorize everything relevant on that page rather
-than just a few symbols. Never mix the two across the symbols on one
-page: once any symbol there has a `@category`, give every symbol on that
-page one — see [`@decorator` and
+than just a few symbols. Once any symbol on a page has a `@category`,
+give every symbol on that page one; they may keep a `@group` as well,
+since the two tags answer different questions — see [`@decorator` and
 `@classDecorator`](#marking-decorators-with-decorator-and-classdecorator)
 below for a concrete example of this exact tradeoff.
 
@@ -798,6 +847,9 @@ export function Resource(target: AnyConstructor): void;
 ### Use `@hideconstructor` for classes that aren't directly instantiated by users
 
 [@hideconstructor](https://typedoc.org/documents/Tags._hideconstructor.html#hideconstructor)
+removes the constructor from the class's page. Use it on classes the
+`Store` or a manager creates for the user, so the docs don't suggest
+calling `new` on them:
 
 ```ts
 /**

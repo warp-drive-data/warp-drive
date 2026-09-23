@@ -19,8 +19,8 @@ title: Overview
   or need to know how to upgrade from one version to the next.
 - **LLMs and coding agents** answering questions about ***Warp*Drive** or writing code against
   it, whether from the published site, the TSDoc in the source, or the agent skills. They read
-  one page at a time with no memory of the rest, and they will present whatever pattern they find
-  as current unless the page says otherwise.
+  one page at a time with no memory of the rest. The heading, naming, and self-contained-page
+  guidelines below exist for them as much as for anyone.
 
 Default to assuming the reader either does not use ***Warp*Drive** yet or is just getting started.
 The guide for each type of doc narrows that default to its own readers, but a few guidelines apply
@@ -59,8 +59,8 @@ before the next person reads it. Every round of that makes the docs work for a w
   [TSDoc](https://tsdoc.org/) comments in the source next to the symbol. Published at
   [/api](/api/). See [Documenting APIs](./writing-api-docs.md).
 - **Introducing a package as a whole?** Write its **README**, shown on GitHub and npm, and its
-  `src/index.md`, which is the package's landing page in the API docs. See
-  [Writing READMEs](./writing-readmes.md).
+  `src/index.md` (for example `warp-drive-packages/core/src/index.md`), which is the package's
+  landing page in the API docs. See [Writing READMEs](./writing-readmes.md).
 - **Teaching a concept or how to accomplish a task?** Write a **Guide** under `guides/`, compiled
   from markdown and published at [/guides](/guides/). Step-by-step walkthroughs go in the
   [Tutorials](/guides/tutorials/) section (`guides/tutorials/`). See
@@ -90,6 +90,7 @@ New public API:
 
 Breaking change or deprecation:
 
+- An accepted RFC. See [The RFC Process](../rfc-process.md).
 - Update the affected TSDoc, marking `@deprecated` with a link to the replacement.
 - Add or update the `upgrading/` guide for the version the change ships in.
 - Fix Guides and README examples that use the old API.
@@ -103,6 +104,7 @@ Bug fix:
 
 Preview any type of doc locally by following the
 [Docs Viewer README](https://github.com/warp-drive-data/warp-drive/blob/main/docs-viewer/README.md).
-Once the change is in a pull request, add the `:label: doc` label (the label's name literally
-contains `:label:`) and a preview of the whole site, API docs included, is deployed to
+Once the change is in a pull request, add the existing `:label: doc` label (its name literally
+contains `:label:`), or ask a maintainer to if you cannot edit labels on the repo, and a preview of
+the whole site, API docs included, is deployed to
 `https://canary.warp-drive.io/pr-preview/pr-<number>/` and linked from a comment on the PR.
