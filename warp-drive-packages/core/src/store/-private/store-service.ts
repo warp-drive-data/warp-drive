@@ -22,6 +22,7 @@ import type { Graph } from '../../graph/-private.ts';
 import { ReactiveResource } from '../../reactive.ts';
 // oxlint-disable-next-line no-unused-vars
 import type { ReactiveDocument } from '../../reactive/-private/document.ts';
+import type { ReactiveRelationshipDocument } from '../../reactive/-private/fields/relationship-document.ts';
 // oxlint-disable-next-line no-unused-vars
 import type { CacheHandler as CacheHandlerInterface, Future } from '../../request.ts';
 // oxlint-disable-next-line no-unused-vars
@@ -270,7 +271,10 @@ type CompatStore = Store & {
 function upgradeStore(store: Store): asserts store is CompatStore {}
 
 type DownlevelArrays<T> = T extends Array<infer U> ? U[] : T;
-type AwaitedKeys<T> = { [K in keyof T & string]: DownlevelArrays<Awaited<T[K]>> };
+// `resource` and `collection` fields present as relationship documents on the
+// record, but are created from the related record(s) directly.
+type UnwrapRelationshipDocument<T> = T extends ReactiveRelationshipDocument<infer R> ? R : T;
+type AwaitedKeys<T> = { [K in keyof T & string]: DownlevelArrays<Awaited<UnwrapRelationshipDocument<T[K]>>> };
 
 // `AwaitedKeys` is needed here to resolve any promise types like `PromiseBelongsTo`.
 type FilteredKeys<T> = AwaitedKeys<Omit<T, typeof Type | EmberObjectKey | DSModelKeys | 'constructor'>>;
