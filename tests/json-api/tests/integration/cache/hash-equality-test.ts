@@ -1,6 +1,7 @@
 import type { Store } from '@warp-drive/core';
 import { recordIdentifierFor, useRecommendedStore } from '@warp-drive/core';
 import { checkout, withDefaults } from '@warp-drive/core/reactive';
+import type { ObjectValue } from '@warp-drive/core/types/json/raw';
 import { Type } from '@warp-drive/core/types/symbols';
 import { module, test } from '@warp-drive/diagnostic';
 import { JSONAPICache } from '@warp-drive/json-api';
@@ -32,6 +33,7 @@ interface ExistingUser {
   attachments: Array<Sticker | Reaction>;
   unhashedProfile: { bio: string } | null;
   settings: Record<string, unknown> | null;
+  nickname: string;
 }
 
 // only `id` and `state` participate, so a change to `note` alone is not a change
@@ -69,6 +71,8 @@ const TestStore = useRecommendedStore({
         },
         { name: 'unhashedProfile', kind: 'schema-object', type: 'profile' },
         { name: 'settings', kind: 'object' },
+        // a legacy `defaultValue()` function is the one kind of default the cache memoizes
+        { name: 'nickname', kind: 'field', options: { defaultValue: () => 'anon' } as unknown as ObjectValue },
       ],
     }),
     {
@@ -213,12 +217,20 @@ module('Integration | <JSONAPICache> hash equality of schema-object values', fun
     const editable = await checkout<ExistingUser>(user);
     editable.messages[0].state = 'executed';
     assert.notifiedOn('local', lid, 'attributes', 'messages', 1, 'the nested edit notified the local channel');
+    assert.notifiedOn(
+      'remote',
+      lid,
+      'attributes',
+      'messages',
+      0,
+      'the nested edit alone does not reach the remote channel'
+    );
     assert.clearNotifications();
 
     pushUser(store, { messages: [{ id: 'm1', state: 'executed' }] });
 
     assert.false(store.cache.hasChangedAttrs(lid), 'the confirmed nested edit is no longer dirty');
-    // which channels hear a confirming push is #11159's concern; here only the dirty state matters
+    assert.notifiedOn('remote', lid, 'attributes', 'messages', 1, 'remote heard the confirming push');
     assert.notifiedOn(
       'local',
       lid,
@@ -227,6 +239,7 @@ module('Integration | <JSONAPICache> hash equality of schema-object values', fun
       0,
       'the confirming push emitted nothing on the local channel'
     );
+    assert.notifiedOn('unscoped', lid, 'attributes', 'messages', 0, 'the confirming push announced nothing unscoped');
   });
 
   test('re-pushing an equal-hash array under a diverging nested local edit does not notify', async function (assert) {
@@ -253,5 +266,30 @@ module('Integration | <JSONAPICache> hash equality of schema-object values', fun
     assert.notified(lid, 'attributes', 'messages', 0, 'the re-push matches the existing remote state exactly');
     assert.equal(editable.messages[0].state, 'executed', 'the diverging local edit survives the equal-hash re-push');
     assert.true(store.cache.hasChangedAttrs(lid), 'the local edit is still dirty');
+  });
+
+  test('a push carrying the value a memoized default already supplies does not notify', function (assert) {
+    const store = setupStore();
+    const user = pushUser(store);
+    const lid = recordIdentifierFor(user);
+    // reading the field memoizes the default, so both projections now resolve it through defaultAttrs
+    assert.equal(user.nickname, 'anon', 'the remote projection reads the default');
+    assert.watchNotifications(store);
+
+    pushUser(store, { nickname: 'anon' });
+
+    assert.notified(
+      lid,
+      'attributes',
+      'nickname',
+      0,
+      'both projections read anon before and after, so nothing was notified'
+    );
+    assert.equal(user.nickname, 'anon', 'the persisted value now backs the read');
+
+    pushUser(store, { nickname: 'bob' });
+
+    assert.notified(lid, 'attributes', 'nickname', 1, 'a value that differs from the default still notifies');
+    assert.equal(user.nickname, 'bob', 'and is what the remote projection reads');
   });
 });

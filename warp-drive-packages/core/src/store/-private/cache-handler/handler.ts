@@ -19,7 +19,7 @@ import type {
   SingleResourceDataDocument,
 } from '../../../types/spec/document.ts';
 import type { ApiError } from '../../../types/spec/error.ts';
-import type { ResourceIdentifierObject } from '../../../types/spec/json-api-raw.ts';
+import type { ExistingResourceObject, ResourceIdentifierObject } from '../../../types/spec/json-api-raw.ts';
 import type { RequestSignature } from '../../../types/symbols.ts';
 import { log } from '../debug/utils.ts';
 import type { Store } from '../store-service.ts';
@@ -264,13 +264,13 @@ function updateCacheForSuccess<T>(
     if (Array.isArray(request.records)) {
       response = store.cache.didCommit(
         request.records,
-        document as StructuredDataDocument<CollectionResourceDataDocument>
+        document as StructuredDataDocument<CollectionResourceDataDocument<ExistingResourceObject>>
       );
     } else if (request.data?.record) {
       // legacy fallback, the data option should no longer be used for this
       response = store.cache.didCommit(
         request.data.record,
-        document as StructuredDataDocument<SingleResourceDataDocument>
+        document as StructuredDataDocument<SingleResourceDataDocument<ExistingResourceObject, ExistingResourceObject>>
       );
 
       // a mutation combined with a 204 has no cache impact when no known records were involved

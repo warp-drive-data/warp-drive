@@ -12,6 +12,7 @@ import type {
   SingleResourceDataDocument,
 } from '../../../types/spec/document.ts';
 import type { ApiError } from '../../../types/spec/error.ts';
+import type { ExistingResourceObject } from '../../../types/spec/json-api-raw.ts';
 import type { StoreRequestContext } from '../cache-handler/handler.ts';
 
 /**
@@ -144,7 +145,8 @@ export class CacheManager implements Cache {
    * Push resource data from a remote source into the cache for this ResourceKey
    *
    * @public
-   * @return if `hasRecord` is true then calculated key changes should be returned
+   * @return when `hasRecord` is true, the names of the attributes whose persisted value
+   *   this push changed, or `undefined` when none did. Otherwise `void`.
    */
   upsert(key: ResourceKey, data: unknown, hasRecord: boolean): void | string[] {
     return this.___cache.upsert(key, data, hasRecord);
@@ -284,19 +286,22 @@ export class CacheManager implements Cache {
    */
   didCommit(
     key: ResourceKey,
-    result: StructuredDataDocument<SingleResourceDataDocument> | null
+    result: StructuredDataDocument<SingleResourceDataDocument<ExistingResourceObject, ExistingResourceObject>> | null
   ): SingleResourceDataDocument;
   didCommit(
     key: ResourceKey[],
-    result: StructuredDataDocument<SingleResourceDataDocument> | null
+    result: StructuredDataDocument<SingleResourceDataDocument<ExistingResourceObject, ExistingResourceObject>> | null
   ): SingleResourceDataDocument;
   didCommit(
     key: ResourceKey[],
-    result: StructuredDataDocument<CollectionResourceDataDocument> | null
+    result: StructuredDataDocument<CollectionResourceDataDocument<ExistingResourceObject>> | null
   ): CollectionResourceDataDocument;
   didCommit(
     key: ResourceKey | ResourceKey[],
-    result: StructuredDataDocument<SingleResourceDataDocument | CollectionResourceDataDocument> | null
+    result: StructuredDataDocument<
+      | SingleResourceDataDocument<ExistingResourceObject, ExistingResourceObject>
+      | CollectionResourceDataDocument<ExistingResourceObject>
+    > | null
   ): CollectionResourceDataDocument | SingleResourceDataDocument {
     // @ts-expect-error TS doesn't enable proxying overload calls
     return this.___cache.didCommit(key, result);

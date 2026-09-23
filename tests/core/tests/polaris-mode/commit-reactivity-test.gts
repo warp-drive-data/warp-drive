@@ -256,6 +256,32 @@ module('Reactivity | committing updates a rendered immutable record', function (
     assert.dom('[data-test-edits]').hasText('Christopher', 'edits renders the saved value');
   });
 
+  test('a remote push that confirms an uncommitted local edit updates the rendered immutable record', async function (this: RenderingTestContext, assert) {
+    const store = setup();
+    const user = pushUser(store);
+    const editable = await checkout<EditableUser>(user);
+
+    await this.render(
+      <template>
+        <div data-test-saved>{{user.firstName}}</div>
+        <div data-test-edits>{{editable.firstName}}</div>
+      </template>
+    );
+
+    editable.firstName = 'Christopher';
+    await settled();
+    assert.dom('[data-test-saved]').hasText('Chris', 'saved still renders the persisted value before the push');
+    assert.dom('[data-test-edits]').hasText('Christopher', 'edits renders the local edit');
+
+    store.push({ data: { type: 'user', id: '1', attributes: { firstName: 'Christopher', messages: [] } } });
+    await settled();
+
+    assert.equal(user.firstName, 'Christopher', 'remote now holds the confirmed value');
+    assert.equal(editable.firstName, 'Christopher', 'local still holds the confirmed value');
+    assert.dom('[data-test-saved]').hasText('Christopher', 'saved renders the confirming push');
+    assert.dom('[data-test-edits]').hasText('Christopher', 'edits still renders the now-confirmed local edit');
+  });
+
   test('a remote push with equal-hash messages does not rebuild the rendered rows', async function (this: RenderingTestContext, assert) {
     rowRenderCount = 0;
     const store = setup();
