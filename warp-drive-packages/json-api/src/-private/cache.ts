@@ -1102,19 +1102,22 @@ export class JSONAPICache implements Cache {
    */
   didCommit(
     committedIdentifier: ResourceKey,
-    result: StructuredDataDocument<SingleResourceDataDocument> | null
+    result: StructuredDataDocument<SingleResourceDataDocument<ExistingResourceObject, ExistingResourceObject>> | null
   ): SingleResourceDataDocument;
   didCommit(
     committedIdentifier: ResourceKey[],
-    result: StructuredDataDocument<SingleResourceDataDocument> | null
+    result: StructuredDataDocument<SingleResourceDataDocument<ExistingResourceObject, ExistingResourceObject>> | null
   ): SingleResourceDataDocument;
   didCommit(
     committedIdentifier: ResourceKey[],
-    result: StructuredDataDocument<CollectionResourceDataDocument> | null
+    result: StructuredDataDocument<CollectionResourceDataDocument<ExistingResourceObject>> | null
   ): CollectionResourceDataDocument;
   didCommit(
     committedIdentifier: ResourceKey | ResourceKey[],
-    result: StructuredDataDocument<SingleResourceDataDocument | CollectionResourceDataDocument> | null
+    result: StructuredDataDocument<
+      | SingleResourceDataDocument<ExistingResourceObject, ExistingResourceObject>
+      | CollectionResourceDataDocument<ExistingResourceObject>
+    > | null
   ): CollectionResourceDataDocument | SingleResourceDataDocument {
     const payload = result ? result.content : null;
     const operation = result?.request?.op ?? null;
@@ -1529,13 +1532,13 @@ export class JSONAPICache implements Cache {
     if (inflightAttrs) {
       const keys = Object.keys(inflightAttrs);
       for (let i = 0; i < keys.length; i++) {
-        changes[keys[i]] = [remoteAttrs ? remoteAttrs[keys[i]] : undefined, inflightAttrs[keys[i]] as Value];
+        changes[keys[i]] = [remoteAttrs ? remoteAttrs[keys[i]] : undefined, inflightAttrs[keys[i]]];
       }
     }
     if (localAttrs) {
       const keys = Object.keys(localAttrs);
       for (let i = 0; i < keys.length; i++) {
-        changes[keys[i]] = [resolveAttr(keys[i], cached, RESOLUTION_ORDER_EDIT_BASELINE), localAttrs[keys[i]] as Value];
+        changes[keys[i]] = [resolveAttr(keys[i], cached, RESOLUTION_ORDER_EDIT_BASELINE), localAttrs[keys[i]]];
       }
     }
     return changes;

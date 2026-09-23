@@ -9,13 +9,15 @@ import type { TypeFromInstanceOrString } from './record.ts';
 import type { RequestContext, StructuredDataDocument, StructuredDocument } from './request.ts';
 import type { CollectionResourceDataDocument, ResourceDocument, SingleResourceDataDocument } from './spec/document.ts';
 import type { ApiError } from './spec/error.ts';
+import type { ExistingResourceObject } from './spec/json-api-raw.ts';
 
 /**
  * A hash of changed attributes with the key being the attribute name and the value being an
- * array of `[oldValue, newValue]`.
+ * array of `[oldValue, newValue]`. Either side may be `undefined`: the old value when the field
+ * had no persisted value, the new value when the field was explicitly set to `undefined`.
  *
  */
-export type ChangedAttributesHash = Record<string, [Value | undefined, Value]>;
+export type ChangedAttributesHash = Record<string, [Value | undefined, Value | undefined]>;
 
 /**
  * Describes the local (uncommitted) changes to a single relationship,
@@ -329,7 +331,7 @@ export interface Cache {
    */
   didCommit(
     cacheKey: ResourceKey,
-    result: StructuredDataDocument<SingleResourceDataDocument> | null
+    result: StructuredDataDocument<SingleResourceDataDocument<ExistingResourceObject, ExistingResourceObject>> | null
   ): SingleResourceDataDocument;
   /**
    * [LIFECYCLE] Signals to the cache that a set of resources
@@ -342,7 +344,7 @@ export interface Cache {
    */
   didCommit(
     cacheKey: ResourceKey[],
-    result: StructuredDataDocument<SingleResourceDataDocument> | null
+    result: StructuredDataDocument<SingleResourceDataDocument<ExistingResourceObject, ExistingResourceObject>> | null
   ): SingleResourceDataDocument;
   /**
    * [LIFECYCLE] Signals to the cache that a set of resources
@@ -355,7 +357,7 @@ export interface Cache {
    */
   didCommit(
     cacheKey: ResourceKey[],
-    result: StructuredDataDocument<CollectionResourceDataDocument> | null
+    result: StructuredDataDocument<CollectionResourceDataDocument<ExistingResourceObject>> | null
   ): CollectionResourceDataDocument;
 
   /**

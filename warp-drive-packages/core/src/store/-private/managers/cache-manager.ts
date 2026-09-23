@@ -12,6 +12,7 @@ import type {
   SingleResourceDataDocument,
 } from '../../../types/spec/document.ts';
 import type { ApiError } from '../../../types/spec/error.ts';
+import type { ExistingResourceObject } from '../../../types/spec/json-api-raw.ts';
 import type { StoreRequestContext } from '../cache-handler/handler.ts';
 
 /**
@@ -284,19 +285,22 @@ export class CacheManager implements Cache {
    */
   didCommit(
     key: ResourceKey,
-    result: StructuredDataDocument<SingleResourceDataDocument> | null
+    result: StructuredDataDocument<SingleResourceDataDocument<ExistingResourceObject, ExistingResourceObject>> | null
   ): SingleResourceDataDocument;
   didCommit(
     key: ResourceKey[],
-    result: StructuredDataDocument<SingleResourceDataDocument> | null
+    result: StructuredDataDocument<SingleResourceDataDocument<ExistingResourceObject, ExistingResourceObject>> | null
   ): SingleResourceDataDocument;
   didCommit(
     key: ResourceKey[],
-    result: StructuredDataDocument<CollectionResourceDataDocument> | null
+    result: StructuredDataDocument<CollectionResourceDataDocument<ExistingResourceObject>> | null
   ): CollectionResourceDataDocument;
   didCommit(
     key: ResourceKey | ResourceKey[],
-    result: StructuredDataDocument<SingleResourceDataDocument | CollectionResourceDataDocument> | null
+    result: StructuredDataDocument<
+      | SingleResourceDataDocument<ExistingResourceObject, ExistingResourceObject>
+      | CollectionResourceDataDocument<ExistingResourceObject>
+    > | null
   ): CollectionResourceDataDocument | SingleResourceDataDocument {
     // @ts-expect-error TS doesn't enable proxying overload calls
     return this.___cache.didCommit(key, result);

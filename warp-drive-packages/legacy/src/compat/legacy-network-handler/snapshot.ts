@@ -241,7 +241,7 @@ export class Snapshot<R = unknown> {
 
     for (let i = 0, length = changedAttributeKeys.length; i < length; i++) {
       const key = changedAttributeKeys[i];
-      changedAttributes[key] = this._changedAttributes[key].slice() as [Value | undefined, Value];
+      changedAttributes[key] = this._changedAttributes[key].slice() as [Value | undefined, Value | undefined];
     }
 
     return changedAttributes;

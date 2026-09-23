@@ -62,17 +62,11 @@ function setupStore(context: TestContext): Store {
   return new TestStore();
 }
 
-/**
- * A save response to hand straight to `cache.didCommit`. The `Cache` interface types the result's
- * `content.data` as a `PersistedResourceKey`, but `JSONAPICache.didCommit` reads it as the raw
- * resource object, which is what this builds; the cast bridges that gap in one place.
- */
-function saveResponse(data: ExistingResourceObject): StructuredDataDocument<SingleResourceDataDocument> {
-  return {
-    request: {},
-    response: null,
-    content: { data },
-  } as unknown as StructuredDataDocument<SingleResourceDataDocument>;
+/** A save response to hand straight to `cache.didCommit`: the raw resource object the server returned. */
+function saveResponse(
+  data: ExistingResourceObject
+): StructuredDataDocument<SingleResourceDataDocument<ExistingResourceObject, ExistingResourceObject>> {
+  return { request: {}, response: null, content: { data } };
 }
 
 function pushUser(store: Store, messages: Message[] = []): ExistingUser {
