@@ -1,4 +1,4 @@
-import type { CacheOperation, DocumentCacheOperation, NotificationType, NotifyKeys } from '@warp-drive/core';
+import type { CacheOperation, DocumentCacheOperation, NotifyKeys } from '@warp-drive/core';
 import { Store } from '@warp-drive/core';
 import { instantiateRecord, registerDerivations, teardownRecord, withDefaults } from '@warp-drive/core/reactive';
 import type { CacheCapabilitiesManager } from '@warp-drive/core/types';
@@ -7,6 +7,7 @@ import type { StructuredDataDocument } from '@warp-drive/core/types/request';
 import { module, test } from '@warp-drive/diagnostic';
 import { JSONAPICache as Cache } from '@warp-drive/json-api';
 
+import { recordDeliveries } from '../../utils/notifications';
 import { TestSchema } from '../../utils/schema';
 
 interface User {
@@ -83,8 +84,6 @@ function asStructuredDocument<T>(doc: {
   return doc as unknown as StructuredDataDocument<T>;
 }
 
-type Call = [type: NotificationType, key: string | undefined];
-
 module('Integration | NotificationManager batch notifications', function () {
   test('notify(identifier, "attributes", keys: Set<string>) delivers the same sequence of notifications as calling notify once per key', function (assert) {
     const store = new TestStore();
@@ -92,21 +91,8 @@ module('Integration | NotificationManager batch notifications', function () {
     const identifierBatch = store.cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '1' });
     const identifierIndividual = store.cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '2' });
 
-    const batchCalls: Call[] = [];
-    const individualCalls: Call[] = [];
-
-    const tokenBatch = store.notifications.subscribe(
-      identifierBatch,
-      (_key: ResourceKey, type: NotificationType, key?: string) => {
-        batchCalls.push([type, key]);
-      }
-    );
-    const tokenIndividual = store.notifications.subscribe(
-      identifierIndividual,
-      (_key: ResourceKey, type: NotificationType, key?: string) => {
-        individualCalls.push([type, key]);
-      }
-    );
+    const batchCalls = recordDeliveries(store, identifierBatch);
+    const individualCalls = recordDeliveries(store, identifierIndividual);
 
     // the new batch calling convention: a single notify() call carrying a Set of keys
     store.notifications.notify(identifierBatch, 'attributes', new Set(['name', 'username', 'age']));
@@ -130,9 +116,6 @@ module('Integration | NotificationManager batch notifications', function () {
       individualCalls,
       'the batch call produced the exact same subscriber notifications as the equivalent individual calls'
     );
-
-    store.notifications.unsubscribe(tokenBatch);
-    store.notifications.unsubscribe(tokenIndividual);
   });
 
   test('cache upsert with multiple changed attributes notifies once per changed attribute', function (assert) {
@@ -147,15 +130,7 @@ module('Integration | NotificationManager batch notifications', function () {
     );
     const identifier = responseDocument.data as ResourceKey;
 
-    const seenKeys: string[] = [];
-    const token = store.notifications.subscribe(
-      identifier,
-      (_key: ResourceKey, type: NotificationType, key?: string) => {
-        if (type === 'attributes' && key) {
-          seenKeys.push(key);
-        }
-      }
-    );
+    const deliveries = recordDeliveries(store, identifier);
 
     // spy on the underlying `notify` to confirm the batch of changed keys
     // computed internally by the cache (a `Set<string>` from
@@ -189,6 +164,7 @@ module('Integration | NotificationManager batch notifications', function () {
 
     store.notifications.notify = originalNotify;
 
+    const seenKeys = deliveries.filter(([type, key]) => type === 'attributes' && key).map(([, key]) => key);
     assert.deepEqual(
       seenKeys.sort(),
       ['age', 'name'].sort(),
@@ -198,8 +174,6 @@ module('Integration | NotificationManager batch notifications', function () {
       batchKeyWasSet,
       'the changed-keys Set computed by the cache was passed to notify() as a Set, without being converted to an array first'
     );
-
-    store.notifications.unsubscribe(token);
   });
 
   test('relationship changes on the same identifier are flushed to `notify` as a single batch', function (assert) {
@@ -227,15 +201,7 @@ module('Integration | NotificationManager batch notifications', function () {
     assert.equal(record?.bestFriend, null, 'bestFriend starts out empty');
     assert.equal(record?.friends?.length, 0, 'friends starts out empty');
 
-    const seenKeys: string[] = [];
-    const token = store.notifications.subscribe(
-      identifier,
-      (_key: ResourceKey, type: NotificationType, key?: string) => {
-        if (type === 'relationships' && key) {
-          seenKeys.push(key);
-        }
-      }
-    );
+    const deliveries = recordDeliveries(store, identifier);
 
     // spy on the underlying NotificationManager#notify to count how many times
     // it is actually invoked for this identifier's 'relationships' namespace.
@@ -287,6 +253,7 @@ module('Integration | NotificationManager batch notifications', function () {
 
     store.notifications.notify = originalNotify;
 
+    const seenKeys = deliveries.filter(([type, key]) => type === 'relationships' && key).map(([, key]) => key);
     assert.deepEqual(
       seenKeys.sort(),
       ['bestFriend', 'friends'].sort(),
@@ -301,7 +268,5 @@ module('Integration | NotificationManager batch notifications', function () {
       batchKeyWasSet,
       'the pending-keys Set collected for this identifier was passed to notify() as a Set, without being converted to an array first'
     );
-
-    store.notifications.unsubscribe(token);
   });
 });
