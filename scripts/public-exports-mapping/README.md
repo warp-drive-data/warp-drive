@@ -5,6 +5,9 @@ WarpDrive release to the modules that hold those tokens in this release. It read
 supported older release, `packages/eslint-plugin-warp-drive/src/legacy-import-mapping/<from>.json`,
 through the reader in that directory. This directory derives those files.
 
+Read [INTENTION.md](./INTENTION.md) for why this directory exists and which properties every
+change to it has to keep.
+
 ## How it fits together
 
 A snapshot is what a release exports. `snapshots/5.7.json` lists every public token of
