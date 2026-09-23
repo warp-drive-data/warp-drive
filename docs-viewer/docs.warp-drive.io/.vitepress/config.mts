@@ -286,20 +286,22 @@ export default withPwa(
           {
             text: 'API Docs',
             collapsed: true,
-            // link: '/api/',
+            // Makes this group active and expanded when landing on /api/ or any page under it
+            link: '/api/',
             items: [
-              { text: 'Universal' },
+              { text: 'Universal Packages' },
               ...TypeDocSidebar.corePackages.items,
-              { text: 'Frameworks' },
+              { text: 'Framework Packages' },
               ...TypeDocSidebar.frameworkPackages.items,
-              { text: 'Tooling' },
+              { text: 'Tooling Packages' },
               ...TypeDocSidebar.toolingPackages.items,
             ],
           },
           {
-            text: 'Legacy Packages',
+            text: 'Legacy API Docs',
             collapsed: true,
-            // link: '/api/',
+            // Deliberately no link: sharing '/api/' with the group above would make both
+            // groups activate together
             items: TypeDocSidebar.oldPackages,
           },
         ],

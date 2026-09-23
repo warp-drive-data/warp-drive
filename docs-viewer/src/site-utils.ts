@@ -1161,7 +1161,7 @@ export async function postProcessApiDocs() {
   }
 
   // generate the API documentation
-  const apiDocumentation = `${ApiDocumentation}\n\n## Main Packages\n\n${MainPackages.join('\n')}\n\n## Framework Packages\n\n${FrameworkPackages.join('\n')}\n\n## Tooling Packages\n\n${ToolingPackages.join('\n')}\n\n## Legacy Packages\n\n${OldPackages.join('\n')}\n\n`;
+  const apiDocumentation = `${ApiDocumentation}\n\n## Universal Packages\n\n${MainPackages.join('\n')}\n\n## Framework Packages\n\n${FrameworkPackages.join('\n')}\n\n## Tooling Packages\n\n${ToolingPackages.join('\n')}\n\n## Legacy Packages\n\n${OldPackages.join('\n')}\n\n`;
 
   // copy the rest of the files
   const files = globSync('**/*.md', { cwd: dir, nodir: true });
