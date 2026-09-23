@@ -9,7 +9,7 @@
 #     tooling packages whose active rule set differs from the browser-context
 #     rules oxlintrc.json encodes; see packages/*/eslint.config.mjs for the
 #     `node.cjs()`/`node.esm()` split)
-#   - docs-viewer, tools/, scripts/, packages/schema, packages/unpublished-eslint-rules
+#   - docs-viewer, tools/, scripts/, packages/schema
 #     (none of these are covered by an eslint.config.mjs today either)
 #
 # Every entry below is a real, existing directory — verify with `find` before adding one;
