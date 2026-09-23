@@ -1,6 +1,7 @@
 import type { Store } from '@warp-drive/core';
 import { recordIdentifierFor, useRecommendedStore } from '@warp-drive/core';
 import { checkout, withDefaults } from '@warp-drive/core/reactive';
+import type { ObjectValue } from '@warp-drive/core/types/json/raw';
 import { Type } from '@warp-drive/core/types/symbols';
 import { module, test } from '@warp-drive/diagnostic';
 import { JSONAPICache } from '@warp-drive/json-api';
@@ -22,6 +23,8 @@ interface ExistingUser {
   id: string;
   address: Address;
   messages: Message[];
+  settings: { theme: string } | null;
+  prefs: { locale: string };
 }
 
 function hashMessage(data: object): string {
@@ -38,6 +41,9 @@ const TestStore = useRecommendedStore({
       fields: [
         { name: 'address', kind: 'schema-object', type: 'address' },
         { name: 'messages', kind: 'schema-array', type: 'message' },
+        { name: 'settings', kind: 'field' },
+        // a legacy `defaultValue()` function is the one kind of default the cache memoizes
+        { name: 'prefs', kind: 'field', options: { defaultValue: () => ({ locale: 'en' }) } as unknown as ObjectValue },
       ],
     }),
     {
@@ -68,6 +74,7 @@ async function setupEditableUser() {
       id: '1',
       attributes: {
         address: { street: '1 Main St', city: 'Portland' },
+        settings: { theme: 'dark' },
         messages: [
           { id: 'm1', state: 'pending' },
           { id: 'm2', state: 'pending' },
@@ -141,5 +148,24 @@ module('Integration | <JSONAPICache> nested local edits', function () {
 
     assert.false(store.cache.hasChangedAttrs(lid), 'nothing was edited');
     assert.notified(lid, 'attributes', 'address', 0, 'nothing was announced');
+  });
+
+  test('a local edit of a whole object attribute to undefined hides its nested values', async function (assert) {
+    const { store, lid, editable } = await setupEditableUser();
+
+    // `undefined` is a real edit for `getAttr`; the field type does not allow it, so bypass it
+    (editable as unknown as Record<string, unknown>).settings = undefined;
+
+    assert.equal(store.cache.getAttr(lid, ['settings', 'theme']), undefined, 'the nested read honors the edit');
+    assert.equal(store.cache.getRemoteAttr(lid, ['settings', 'theme']), 'dark', 'remote state still holds the value');
+  });
+
+  test('a nested read resolves through a memoized legacy default', async function (assert) {
+    const { store, lid } = await setupEditableUser();
+
+    // reading the field memoizes the default; the nested path resolves through the same layer
+    assert.deepEqual(store.cache.getAttr(lid, 'prefs'), { locale: 'en' }, 'the default is read');
+    assert.equal(store.cache.getAttr(lid, ['prefs', 'locale']), 'en', 'local state reads the nested default');
+    assert.equal(store.cache.getRemoteAttr(lid, ['prefs', 'locale']), 'en', 'remote state reads it too');
   });
 });
