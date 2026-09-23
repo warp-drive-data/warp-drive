@@ -29,7 +29,7 @@
     "lint:oxlint:fix": "bash tools/internal-config/oxlint/run.sh --fix",
     "lint:prettier": "prettier --check --cache --cache-location=.prettier-cache --log-level=warn '**/*.{gjs,gts}'",
     "lint:prettier:fix": "prettier --write --cache --cache-location=.prettier-cache --log-level=warn '**/*.{gjs,gts}'",
-    "lint:public-exports": "node scripts/public-exports-mapping/resolve.mjs --check",
+    "lint:public-exports": "node scripts/public-exports-mapping/cli.mjs update --check",
     "lint:tutorials": "node packages/tutorials/scripts/make-starter.mjs --check",
     "preinstall": "npx only-allow pnpm",
     "check:types": "turbo --log-order=stream check:types --continue --concurrency=$(./bin/calculate-jobs)",
