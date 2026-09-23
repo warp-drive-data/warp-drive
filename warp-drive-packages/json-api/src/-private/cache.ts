@@ -159,8 +159,9 @@ interface CachedResource {
    * legacy `defaultValue()` *function*, memoized because the function returns a
    * fresh value per call and the record must keep reading the same one. A
    * primitive `options.defaultValue` or a transformation's `defaultValue()` is
-   * recomputed on every read instead. Never committed; an entry is dropped once
-   * the field gets a real value.
+   * recomputed on every read instead. Never committed. A local edit to the field
+   * drops its entry; a push that supplies a real value leaves the entry in place,
+   * shadowed by `remoteAttrs`.
    */
   defaultAttrs: AttrHash | null;
 
