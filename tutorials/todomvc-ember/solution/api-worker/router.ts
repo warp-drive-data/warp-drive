@@ -100,12 +100,26 @@ function requireAll(todos: TodoResource[], identifiers: TodoIdentifier[]): Set<s
 
 export function createRouter(db: TodoDb): Router {
   async function handle(request: Request): Promise<Response> {
-    const { pathname } = new URL(request.url);
+    const { pathname, searchParams } = new URL(request.url);
     const { method } = request;
 
     if (pathname === TODO_PATH) {
       if (method === 'GET') {
-        return document(200, { data: await db.read() });
+        const todos = await db.read();
+        const completed = searchParams.get('filter[completed]');
+        if (completed === null) return document(200, { data: todos });
+        if (completed !== 'true' && completed !== 'false') {
+          throw new HttpError(400, [
+            {
+              status: '400',
+              title: 'Invalid Query Parameter',
+              detail: 'filter[completed] must be true or false',
+              source: { parameter: 'filter[completed]' },
+            },
+          ]);
+        }
+        const wanted = completed === 'true';
+        return document(200, { data: todos.filter((todo) => todo.attributes.completed === wanted) });
       }
       if (method === 'POST') {
         const body = await readBody(request);

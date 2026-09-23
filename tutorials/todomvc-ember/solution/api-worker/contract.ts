@@ -41,7 +41,7 @@ export interface ErrorObject {
   status: string;
   title: string;
   detail?: string;
-  source?: { pointer: string };
+  source?: { pointer: string } | { parameter: string };
 }
 
 export interface ErrorDocument {
@@ -74,6 +74,7 @@ export interface BulkDeleteBody {
  * 422 with an `ErrorDocument`, unknown ids return 404 with an `ErrorDocument`.
  */
 export const ROUTES = {
+  /** Optional `?filter[completed]=true|false` narrows the list. */
   list: { method: 'GET', path: `${API_ROOT}/todo`, status: 200 },
   get: { method: 'GET', path: `${API_ROOT}/todo/:id`, status: 200 },
   create: { method: 'POST', path: `${API_ROOT}/todo`, status: 201 },

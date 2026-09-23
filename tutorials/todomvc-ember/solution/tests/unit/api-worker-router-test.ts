@@ -29,6 +29,27 @@ module('Unit | api-worker | router', function (hooks) {
     assert.deepEqual(doc.data, SEED_TODOS);
   });
 
+  test('GET /api/todo filters by completed', async function (assert) {
+    const completed = (await (
+      await router(request('GET', '/api/todo?filter[completed]=true'))
+    ).json()) as TodoCollectionDocument;
+    assert.deepEqual(
+      completed.data.map((todo) => todo.id),
+      ['1']
+    );
+
+    const active = (await (
+      await router(request('GET', '/api/todo?filter[completed]=false'))
+    ).json()) as TodoCollectionDocument;
+    assert.deepEqual(
+      active.data.map((todo) => todo.id),
+      ['2', '3']
+    );
+
+    const invalid = await router(request('GET', '/api/todo?filter[completed]=maybe'));
+    assert.strictEqual(invalid.status, 400);
+  });
+
   test('POST /api/todo creates a todo with a trimmed title', async function (assert) {
     const response = await router(
       request('POST', '/api/todo', { data: { type: 'todo', attributes: { title: '  Buy milk  ' } } })
