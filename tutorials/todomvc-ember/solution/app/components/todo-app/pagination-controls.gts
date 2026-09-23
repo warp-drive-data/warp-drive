@@ -67,10 +67,11 @@ class PageButton extends Component<{
 
   @service declare router: RouterService;
 
-  setActive = async () => {
-    const { link } = this.args;
-    this.router.transitionTo({ queryParams: { page: link.index } });
-    await link.setActive();
+  // Navigate through the route rather than `link.setActive()`. The route's
+  // request builder tags the page with the 'todo' type so invalidating todo
+  // queries reaches it; a link loads the page with a bare GET that isn't tagged.
+  setActive = () => {
+    this.router.transitionTo({ queryParams: { page: this.args.link.index } });
   };
 }
 
@@ -95,10 +96,9 @@ class NavButton extends Component<{
     return this.args.link.rel === 'prev';
   }
 
-  setActive = async () => {
-    const { link, page } = this.args;
-    this.router.transitionTo({ queryParams: { page } });
-    await link.setActive();
+  // See PageButton for why this goes through the route.
+  setActive = () => {
+    this.router.transitionTo({ queryParams: { page: this.args.page } });
   };
 }
 

@@ -14,6 +14,6 @@ export function createTodo(attributes: TodoAttributes): RequestInfo<ReactiveData
 
     // Invalidates every cached 'todo' query and count, so they refetch with the new todo.
     op: 'createRecord',
-    cacheOptions: { types: ['todo', 'todo-count'] },
+    cacheOptions: { types: ['todo'] },
   });
 }

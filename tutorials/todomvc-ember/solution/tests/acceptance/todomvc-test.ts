@@ -1,4 +1,4 @@
-import { blur, click, currentURL, doubleClick, fillIn, triggerKeyEvent, visit } from '@ember/test-helpers';
+import { blur, click, currentURL, doubleClick, fillIn, findAll, triggerKeyEvent, visit } from '@ember/test-helpers';
 
 import { module, test } from 'qunit';
 
@@ -271,7 +271,7 @@ module('Acceptance | TodoMVC', function (hooks) {
         await waitForTitles(['one', 'two', 'three']);
       });
 
-      test('reactivating a todo patches an already-loaded active list', async function (assert) {
+      test('reactivating a todo refreshes an already-loaded active list', async function (assert) {
         await visit('/active');
         await waitForTitles(['one', 'three']);
 
@@ -280,9 +280,10 @@ module('Acceptance | TodoMVC', function (hooks) {
         await click('.todo-list li:nth-child(1) .toggle');
         await waitForTitles([]);
 
-        // Served from the cache, where patchCacheTodoActivated added it at the top.
+        // patchCacheTodoActivated added it to the cached list and marked the list
+        // stale, so showing it again refetches in the server's order.
         await visit('/active');
-        await waitForTitles(['two', 'one', 'three']);
+        await waitForTitles(['one', 'two', 'three']);
       });
 
       test('toggle-all refreshes an already-loaded list in server order', async function (assert) {
@@ -351,6 +352,29 @@ module('Acceptance | TodoMVC', function (hooks) {
       await waitForTitles(titles.filter((_, i) => i % 2 === 1));
       assert.dom('.pagination-controls').doesNotExist();
       assert.dom('.todo-count').hasText('6 items left');
+    });
+
+    test('deleting a todo pulls the next one up from the following page', async function (assert) {
+      await visit('/');
+      const pageSize = findAll('.todo-list li').length;
+      assert.ok(pageSize < titles.length, 'the list spans more than one page');
+
+      await click('.todo-list li:nth-child(1) .destroy');
+      await waitForTitles(titles.slice(1, pageSize + 1));
+    });
+
+    test('a page visited before a delete shows fresh todos when revisited', async function (assert) {
+      await visit('/');
+      await click('.pagination-button.next');
+      await waitForTitles(titles.slice(5, 10));
+      await click('.pagination-button.prev');
+      await waitForTitles(titles.slice(0, 5));
+
+      await click('.todo-list li:nth-child(1) .destroy');
+      await waitForTitles(titles.slice(1, 6));
+
+      await click('.pagination-button.next');
+      await waitForTitles(titles.slice(6, 11));
     });
 
     test('mark all as complete reaches todos on other pages', async function (assert) {
