@@ -69,6 +69,7 @@ tests/performance/services
 tests/utilities/models
 tests/utilities/services
 tests/utilities/tests
+tutorials/todomvc-ember/solution/api-worker
 tutorials/todomvc-ember/solution/app
 tutorials/todomvc-ember/solution/tests
 warp-drive-packages/core/src
