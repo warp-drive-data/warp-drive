@@ -14,17 +14,15 @@ behind.
 3. Leave unrelated `.mock-cache` churn alone. Fixtures that changed only because you ran an
    existing suite are pre-existing drift, not yours to fold into this pull request. Say so in the
    pull request instead of committing the noise.
-4. Prove the fixtures actually satisfy replay before you push. Run this from the repository root,
-   where `pnpm test` goes through turbo.
-
-   ```sh
-   CI=1 pnpm test
-   ```
-
-   A run without `CI` set records whatever it needs and passes regardless, so it proves nothing.
-5. Do not run that command from inside a test app's directory. `CI` is compiled into the test
-   bundle by `build:tests`, and turbo is what notices the change and rebuilds. Run it in the app
-   directory and it reuses the bundle already built in record mode, passes, and re-records the
+4. Push, and let CI prove the fixtures replay, per
+   [Use CI as the Source of Truth](./use-ci-as-the-source-of-truth.md). CI builds with `CI` set,
+   so every test replays from `.mock-cache`, and a fixture you forgot to commit fails there as a
+   missing mock. A local run without `CI` records whatever it needs and passes regardless, so it
+   is not evidence that the fixtures are committed.
+5. If you do check replay locally, run `CI=1 pnpm test` from the repository root, where `pnpm test`
+   goes through turbo. Never run it from inside a test app's directory. `CI` is compiled into the
+   test bundle by `build:tests`, and turbo is what notices the change and rebuilds. Run it in the
+   app directory and it reuses the bundle already built in record mode, passes, and re-records the
    fixture you were trying to verify.
 
 ## Why a local pass means nothing here
