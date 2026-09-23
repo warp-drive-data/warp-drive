@@ -57,8 +57,11 @@ run and replays it from disk afterwards, so what you write is a declaration rath
 ## Notes
 
 - The response function runs only while recording. Do not put assertions or side effects in it.
-- Leave the `RECORD: true` option out. It is combined with the global flag rather than replacing
-  it, so it re-records in CI and that request stops being verified.
+- A mock the test never requests fails the test from `afterEach`, in record and replay alike.
+  Remove it or make the request.
+- `RECORD: true` is a per-request override that records even while the suite replays. Use it
+  locally to refresh one fixture and delete it before committing. See
+  [Use RECORD in Holodeck Mocks](/skills/holodeck/using-record).
 - Legacy adapters bypass the request handler. Call `installAdapterFor(this, store)` for those.
 
 ## Related

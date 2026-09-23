@@ -20,10 +20,11 @@ two configuration calls before any mock works.
    pnpm dlx @warp-drive/holodeck ensure-cert
    ```
 
-   The command writes `HOLODECK_SSL_CERT_PATH` and `HOLODECK_SSL_KEY_PATH` into a shell profile.
-   It only recognises `bash`, `zsh`, and `fish` at fixed paths. On any other shell it fails with
-   `Manual SSL Cert Setup Required for Holodeck`, and the fix is to run `mkcert -install`, issue
-   the pair by hand, and export those two variables yourself. Holodeck reads nothing else.
+   The command stops with install instructions if `mkcert` is missing. Otherwise it issues the
+   certificate into the home directory, then writes `HOLODECK_SSL_CERT_PATH` and
+   `HOLODECK_SSL_KEY_PATH` into the profile of the shell named by `$SHELL` (`bash`, `zsh`, or
+   `fish`). On any other shell it prints the two lines to add yourself and exits normally. The
+   home-directory paths are also holodeck's defaults, so the certificate works without them.
 3. Start the server from the script that starts the test server, on the test server's port plus
    one. Run that script from the test app's own directory, because `launchProgram` reads
    `package.json` from the working directory and writes `.mock-cache` there.

@@ -82,10 +82,11 @@ Those two paths are also the defaults. Holodeck finds the certificate without th
 as the files are in your home directory, and announces the fallback when it starts. Set the
 variables only when you keep the certificate somewhere else.
 
-`ensure-cert` recognises `bash`, `zsh`, and `fish` at a fixed set of paths. On any other shell it
-stops with `Manual SSL Cert Setup Required for Holodeck`, and
-[Troubleshooting](./troubleshooting.md#the-certificate-is-missing) gives the two commands to run
-instead.
+`ensure-cert` checks for `mkcert` first and stops with install instructions when it is missing. It
+then issues the certificate whatever your shell is, and only after that writes the two variables
+to `.zshrc`, `.bashrc`, or fish's `config.fish`, going by the shell named in `$SHELL`. On any other
+shell it prints the lines to add yourself and exits normally, because the certificate at the
+default paths already works without them.
 
 If you also use `@warp-drive/diagnostic` to serve your tests, it reads the same certificate. A
 machine without one fails there first, before holodeck starts at all.

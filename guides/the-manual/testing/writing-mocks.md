@@ -36,7 +36,10 @@ The second argument is the URL to match, relative to the mock host and without a
 The third argument is a function returning the response payload. Holodeck calls it only while
 recording.
 
-The fourth argument is optional and holds everything else the server should send back.
+The fourth argument is optional and holds everything else the server should send back. It also
+takes `RECORD`, a per-request override that records this one mock even while the suite replays.
+That is a local tool for refreshing a single fixture, never something to commit. See
+[Use RECORD in Holodeck Mocks](/skills/holodeck/using-record.md).
 
 ## Set the status and headers
 
@@ -102,6 +105,15 @@ the first `GET users/1` the test makes, the second answers the second, and so on
 
 Declare the mocks in the order the requests happen. Two mocks for one URL in the wrong order
 produce two mismatched responses, not an error.
+
+## Every mock has to be requested
+
+Holodeck compares the mocks a test declared against the requests it made when the test ends. A mock
+the test never requested fails the test from `afterEach`, in record and replay alike, naming the
+method, the URL, and both counts.
+[Troubleshooting](./troubleshooting.md#the-test-declared-a-mock-it-never-requested) shows the
+report. Remove the mock, or make the request it describes. A mock declared just in case proves
+nothing and is no longer free.
 
 ## Write the URL the way the server will see it
 
