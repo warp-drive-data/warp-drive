@@ -158,10 +158,6 @@ it. The proxy is transparent, so `/api/v1` routes to `https://localhost:7373/api
 
 ***Warp*Drive**'s own test apps use Diagnostic, so that is the path with test coverage behind it.
 
-This config only runs when testem does, so a dev server serving `/tests` has no holodeck behind
-it. To run the suite from the dev server too, see
-[Holodeck in dev mode](/guides/the-manual/cookbook/holodeck-in-dev-mode.md).
-
 ## The port convention
 
 The `+ 1` above is a convention, not a default, and [client setup](./client-setup.md) repeats it on

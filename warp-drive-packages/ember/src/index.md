@@ -36,6 +36,13 @@ They build on the framework-agnostic primitives published from
 [`@warp-drive/experiments/pagination`](/api/@warp-drive/experiments/pagination/), such as
 `getPaginationState`, which is equally usable directly in JavaScript.
 
+## Testing
+
+Mock requests in tests with [holodeck](https://warp-drive.io/guides/the-manual/testing/).
+Testem launches it only when it runs the suite, so running your tests from the dev server at
+`/tests` needs holodeck started separately. See
+[Holodeck in dev mode](https://warp-drive.io/guides/the-manual/cookbook/holodeck-in-dev-mode).
+
 ## Using in .hbs files
 
 The components and reactive utilities this library exports are intended
