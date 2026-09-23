@@ -31,9 +31,9 @@ other skill files, do not list or read whole directories — this table is enoug
 | --- | --- |
 | Define a resource's shape — fields, relationships, identity — for the `Store` | `skills/schemas/define-a-resource-schema.md` |
 | Fetch or query remote data through the `Store` so it's cached and reactive | `skills/requests/fetch-and-cache-data.md` |
+| Set up HTTP mocking for a test suite with `@warp-drive/holodeck` | `skills/holodeck/set-up-holodeck.md` |
+| Mock a request in a test, or fix a mock that stopped matching | `skills/holodeck/mock-http-requests-in-tests.md` |
 | Re-record one holodeck mock, or review a test that sets `RECORD` | `skills/holodeck/using-record.md` |
-| Set up HTTP mocking for a test suite with `@warp-drive/holodeck` | `skills/testing/set-up-holodeck.md` |
-| Mock a request in a test, or fix a mock that stopped matching | `skills/testing/mock-http-requests-in-tests.md` |
 | You're contributing to WarpDrive itself, not just consuming it as a dependency | `skills/contributors/index.md` |
 
 This table is kept in sync with [`skills/index.md`](./skills/index.md), which is the same

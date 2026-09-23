@@ -67,4 +67,5 @@ run and replays it from disk afterwards, so what you write is a declaration rath
 ## Related
 
 - Full guide: [Writing Mocks](/guides/the-manual/testing/writing-mocks.md)
-- Related skill: [Set Up Holodeck](/skills/testing/set-up-holodeck)
+- Related skills: [Set Up Holodeck](/skills/holodeck/set-up-holodeck) if nothing is wired up yet,
+  and [Use RECORD in Holodeck Mocks](/skills/holodeck/using-record) to refresh one fixture
