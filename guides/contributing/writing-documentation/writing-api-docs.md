@@ -591,7 +591,7 @@ and some documentation may be unexpectedly truncated.
 
 ### Documenting Packages and Subpackages
 
-A reader arrives at a package through one of three doors, each with its own file, purpose, and
+A package's documentation has three entry points, each its own file with its own purpose and
 audience:
 
 - **The README** is what npm and GitHub show. It is for someone deciding whether to install the
@@ -599,12 +599,12 @@ audience:
   [READMEs and `src/index.md`](#readmes-and-src-index-md) below.
 - **The package landing page**, `src/index.md`, renders at `/api/<package>/` in the API docs. It
   is for an existing user who landed on the package and wants to know where to start, so it
-  holds the setup and the map of entry points.
+  holds the setup and the map of the package's code entry points.
 - **Subpath entry points** such as `@warp-drive/core/request` render at `/api/<package>/<path>/`.
   They are for an existing user who already knows which part of the package they need.
 
 The README and the landing page share an elevator-pitch snippet on purpose; everything else
-belongs to exactly one door. The rest of this section covers the two API-docs doors.
+belongs to exactly one of the three. The rest of this section covers the two in the API docs.
 
 **Subpath entry points** such as `@warp-drive/core/request` or `@warp-drive/utilities/string` get
 their overview from a doc comment at the top of the entry file with the tag `@module`. The prose
