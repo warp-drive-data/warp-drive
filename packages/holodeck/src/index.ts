@@ -220,11 +220,49 @@ export class MockServerHandler implements Handler {
       return await future;
     } catch (e) {
       if (e instanceof Error && !(e instanceof DOMException)) {
-        e.message = e.message.replace(queryForTest, '');
+        const explanation = getHolodeckExplanation(e);
+        if (explanation) {
+          e.message = `${e.message}\n\n${explanation}`;
+        }
+        e.message = e.message.split(queryForTest).join('');
       }
       throw e;
     }
   }
+}
+
+const HOLODECK_ERROR_CODES = new Set([
+  'MOCK_NOT_FOUND',
+  'MISSING_X_TEST_ID_HEADER',
+  'MISSING_X_TEST_REQUEST_NUMBER_HEADER',
+]);
+
+/**
+ * The mock server explains itself in the response body, which the thrown
+ * error only carries as data. Lift that explanation into the message so it
+ * reaches a terminal and a CI log.
+ */
+function getHolodeckExplanation(e: Error): string | null {
+  const { content } = e as Error & { content?: unknown };
+  if (!content || typeof content !== 'object') {
+    return null;
+  }
+  const { errors } = content as { errors?: unknown };
+  if (!Array.isArray(errors)) {
+    return null;
+  }
+
+  return (
+    errors
+      .filter((error): error is { code: string; detail?: string } => {
+        return (
+          !!error && typeof error === 'object' && HOLODECK_ERROR_CODES.has((error as { code?: unknown }).code as string)
+        );
+      })
+      .map((error) => error.detail)
+      .filter((detail): detail is string => typeof detail === 'string')
+      .join('\n\n') || null
+  );
 }
 
 function setupHolodeckFetch(owner: object, request: RequestInfo): { request: RequestInfo; queryForTest: string } {
@@ -372,12 +410,33 @@ export async function mock(owner: object, generate: ScaffoldGenerator, isRecordi
     }
     const testMockNum = test.mock[mockMethod][mockUrl]++;
     const url = `${HOST}__record?__xTestId=${test.id}&__xTestRequestNumber=${testMockNum}`;
-    await fetch(url, {
+    const response = await fetch(url, {
       method: 'POST',
       body: JSON.stringify(requestToMock),
       mode: 'cors',
       credentials: 'omit',
       referrerPolicy: '',
     });
+
+    if (!response.ok) {
+      throw new Error(
+        `MockError: Holodeck failed to record ${mockMethod} ${mockUrl} (${response.status} ${response.statusText}). ${await getRecordFailureDetail(response)}`
+      );
+    }
+  }
+}
+
+/**
+ * A failed recording is otherwise invisible until the next replay run fails
+ * with a missing fixture, so report what the server said at the point of
+ * failure.
+ */
+async function getRecordFailureDetail(response: Response): Promise<string> {
+  try {
+    const body = (await response.json()) as { errors?: { detail?: string }[] };
+    const detail = body.errors?.[0]?.detail;
+    return detail ?? 'The mock server gave no explanation.';
+  } catch {
+    return 'The mock server gave no explanation.';
   }
 }
