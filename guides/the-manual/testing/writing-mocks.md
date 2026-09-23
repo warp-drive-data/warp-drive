@@ -48,12 +48,12 @@ Pass `status`, `statusText`, and `headers` in the options object to control the 
 ```ts
 await GET(this, 'users/1', () => ({
   errors: [{ status: '404', title: 'Not Found' }],
-}), { status: 404, statusText: 'Not Found' });
+}), { status: 404 });
 ```
 
-`POST`, `PUT`, `PATCH`, and `DELETE` fill `statusText` in from the status code when you leave it
-out. `GET` and `HEAD` send `OK` whatever the status, so pass `statusText` yourself when a `GET`
-mock returns an error and the code under test reads it.
+Leave `statusText` out. It is stored in the fixture but never reaches the browser, because HTTP/2
+has no reason phrase, and `Fetch` fills an error's `statusText` in from its status code. A
+`status: 404` mock produces an error whose `statusText` is `Not Found` either way.
 
 `Content-Type` defaults to `application/vnd.api+json`. Override it through `headers` when you mock
 something that is not JSON:API.

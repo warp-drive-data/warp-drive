@@ -23,12 +23,12 @@ run and replays it from disk afterwards, so what you write is a declaration rath
 4. Pass `status` in the options object for anything other than a success.
 
    ```ts
-   await GET(this, 'users/1', () => ({ errors: [{ status: '404' }] }), { status: 404, statusText: 'Not Found' });
+   await GET(this, 'users/1', () => ({ errors: [{ status: '404' }] }), { status: 404 });
    ```
 
-   The mutation helpers derive `statusText` from the status code. `GET` and `HEAD` always send
-   `OK`, so set it yourself on an error mock. `Content-Type` defaults to
-   `application/vnd.api+json`.
+   Leave `statusText` out. HTTP/2 carries no reason phrase, so the browser never sees the stored
+   value, and `Fetch` derives an error's `statusText` from the status code. `Content-Type`
+   defaults to `application/vnd.api+json`.
 5. For a request with a body, build the serialized body once and pass the same string to both the
    mock and the request.
 
