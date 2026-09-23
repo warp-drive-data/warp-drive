@@ -758,6 +758,47 @@ PaginateSpec.use(useEmber(), function (b) {
       </template>;
     })
 
+    .test('re-requesting a loaded page updates the page graph with its new links and total', function (props) {
+      const { request, store } = props;
+
+      return <template>
+        <Paginate @request={{request}} @store={{store}}>
+          <:loading>
+            <span data-test-pending>Pending</span>
+          </:loading>
+          <:content as |pages features|>
+            <Request @request={{pages.activePageRequest}} @store={{store}}>
+              <:content as |content|>
+                {{#each content.data as |user|}}
+                  <span data-test-user-name>{{user.attributes.name}}</span>
+                {{/each}}
+              </:content>
+              <:loading><span data-test-loading-page>Loading page</span></:loading>
+            </Request>
+
+            <EachLink @pages={{pages}} as |state|>
+              {{#each state.links as |link|}}
+                {{#if link.isReal}}
+                  <button
+                    {{on "click" (fn features.loadPage link.url)}}
+                    data-test-load-page={{link.index}}
+                  >{{link.text}}</button>
+                {{else}}
+                  <button>.</button>
+                {{/if}}
+              {{/each}}
+              {{#if state.next}}
+                <button {{on "click" state.next.setActive}} data-test-next>{{state.next.text}}</button>
+              {{/if}}
+            </EachLink>
+          </:content>
+          <:error as |error|>
+            <span data-test-error>{{error.message}}</span>
+          </:error>
+        </Paginate>
+      </template>;
+    })
+
     // @ts-expect-error need to figure out how to do this for "compiled" versions of this type
     // If there's a typeerror here, we are missing a test.
     .never(null);

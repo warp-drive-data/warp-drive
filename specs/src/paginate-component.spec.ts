@@ -341,6 +341,13 @@ export interface PaginateSpecSignature extends Record<string, SpecTest<LocalTest
       request: CollectionRequest;
     }
   >;
+  're-requesting a loaded page updates the page graph with its new links and total': SpecTest<
+    LocalTestContext,
+    {
+      store: RequestManager;
+      request: CollectionRequest;
+    }
+  >;
 }
 
 export const PaginateSpec: SuiteBuilder<LocalTestContext, PaginateSpecSignature> = spec<LocalTestContext>(
@@ -2498,5 +2505,90 @@ export const PaginateSpec: SuiteBuilder<LocalTestContext, PaginateSpecSignature>
 
     await this.h.rerender();
     assert.dom('[data-test-user-name]').hasText('Mehul Chaudhari', 'the adopted page renders');
+  })
+
+  .for('re-requesting a loaded page updates the page graph with its new links and total')
+  .use<{ store: RequestManager; request: CollectionRequest }>(async function (assert) {
+    const urls = [
+      buildBaseURL({ resourcePath: 'users/1' }),
+      buildBaseURL({ resourcePath: 'users/2' }),
+      buildBaseURL({ resourcePath: 'users/3' }),
+    ];
+    // the collection before and after it shrinks from 3 pages to 2
+    const page = (index: number, totalPages: number) => ({
+      data: [users[index]],
+      links: {
+        first: urls[0],
+        prev: index === 0 ? null : urls[index - 1],
+        self: urls[index],
+        next: index === totalPages - 1 ? null : urls[index + 1],
+        last: urls[totalPages - 1],
+      },
+      meta: {
+        currentPage: index + 1,
+        totalPages,
+      },
+    });
+
+    // repeated requests to the same url replay these in order
+    await GET(this, 'users/1', () => page(0, 3));
+    await GET(this, 'users/2', () => page(1, 3));
+    await GET(this, 'users/3', () => page(2, 3));
+    await GET(this, 'users/1', () => page(0, 2));
+    await GET(this, 'users/2', () => page(1, 2));
+
+    const request = this.manager.request<CollectionResourceDataDocument<UserResource>>({
+      url: urls[0],
+      method: 'GET',
+    });
+    const paginationState = getPaginationState(request);
+    const paginationLinks = getPaginationLinks(paginationState);
+    const numbered = () => paginationLinks.links.map((link) => (link.isReal ? `${link.index}` : '.'));
+
+    await this.render({ store: this.manager, request });
+    await request;
+    await this.h.rerender();
+
+    // visit every page, then return to the first
+    await paginationState.loadPage(urls[1]);
+    await paginationState.loadPage(urls[2]);
+    await paginationState.loadPage(urls[0]);
+    await this.h.rerender();
+
+    assert.equal(paginationState.totalPages, 3, 'the collection starts with 3 pages');
+    assert.deepEqual(numbered(), ['1', '2', '3'], 'all 3 pages are linked');
+
+    // the collection shrinks to 2 pages; the first page is re-requested
+    const refreshedFirst = this.manager.request<CollectionResourceDataDocument<UserResource>>({
+      url: urls[0],
+      method: 'GET',
+      cacheOptions: { reload: true },
+    });
+    assert.equal((await refreshedFirst).content.meta?.totalPages, 2, 'the server now reports 2 pages');
+    await paginationState.adoptPage(refreshedFirst);
+    await this.h.rerender();
+
+    assert.equal(paginationState.totalPages, 2, 'the total reflects the re-requested document');
+    assert.equal(paginationState.activePage?.lastLink, urls[1], 'the last link reflects the re-requested document');
+    assert.deepEqual(numbered(), ['1', '2'], 'the page after the new last page is no longer linked');
+    assert.equal(paginationState.activePageRequest, refreshedFirst, 'the re-requested page tracks its new request');
+
+    // the second page is re-requested and is now the end of the collection
+    const refreshedSecond = this.manager.request<CollectionResourceDataDocument<UserResource>>({
+      url: urls[1],
+      method: 'GET',
+      cacheOptions: { reload: true },
+    });
+    await paginationState.adoptPage(refreshedSecond);
+    await this.h.rerender();
+
+    assert.equal(paginationState.activePage?.pageNumber, 2, 'the re-requested page is active');
+    assert.equal(paginationState.activePage?.nextLink, null, 'the next link reflects the re-requested document');
+    assert.equal(paginationLinks.next, null, 'there is no next link');
+    assert.equal(paginationState.totalPages, 2, 'the total is still 2');
+    assert.deepEqual(numbered(), ['1', '2'], 'only 2 pages are linked');
+    assert.equal(this.element.querySelectorAll('[data-test-load-page]').length, 2, '2 numbered link buttons');
+    assert.dom('[data-test-next]').doesNotExist('no next button renders');
+    assert.equal(paginationState.activePageRequest, refreshedSecond, 'the re-requested page tracks its new request');
   })
   .build();
