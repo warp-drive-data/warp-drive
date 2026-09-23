@@ -28,23 +28,12 @@
 
 # @ember-data/rest
 
-<p align="center">Elegantly composable. Made for <strong>REST</strong>ful APIs</p>
-
 > [!WARNING]
 > **⚠️ This package only exists for backwards compatibility**
 >
-> Newer apps should use [@warp-drive/utilities](https://warp-drive.io/api/@warp-drive/utilities/)
+> Newer apps should use [@warp-drive/utilities/rest](https://warp-drive.io/api/@warp-drive/utilities/rest/)
 
-
-This package provides utilities for working with **REST**ful APIs with [*Ember***Data**](https://github.com/warp-drive-data/warp-drive/).
-
-## Installation
-
-Install using your javascript package manager of choice. For instance with [pnpm](https://pnpm.io/)
-
-```sh
-pnpm add @ember-data/rest
-```
+Request builders for **REST**ful APIs, for apps still on the `@ember-data/*` packages.
 
 **Tagged Releases**
 
@@ -54,44 +43,22 @@ pnpm add @ember-data/rest
 - ![NPM LTS Version](https://img.shields.io/npm/v/%40ember-data/rest/lts?label=%40lts&color=0096FF)
 - ![NPM LTS 4.12 Version](https://img.shields.io/npm/v/%40ember-data/rest/lts-4-12?label=%40lts-4-12&color=bbbbbb)
 
+<br>
 
-## Getting Started
+## Documentation
 
-If this package is how you are first learning about EmberData, we recommend starting with learning about the [Store](https://github.com/warp-drive-data/warp-drive/blob/main/packages/store/README.md) and [Requests](https://github.com/warp-drive-data/warp-drive/blob/main/packages/request/README.md)
+*Get Started* → [Guides](https://warp-drive.io/guides/)
 
-## Request Builders
+API docs for this package → [@ember-data/rest](https://warp-drive.io/api/@ember-data/rest/)
 
-Request builders are functions that produce [Fetch Options](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API). They take a few contextual inputs about the request you want to make, abstracting away the gnarlier details.
+<br>
 
-For instance, to fetch a resource from your API
+## Code of Conduct
 
-```ts
-import { findRecord } from '@ember-data/rest/request';
+Refer to the [Code of Conduct](https://github.com/warp-drive-data/warp-drive/blob/main/CODE_OF_CONDUCT.md) for community guidelines and inclusivity.
 
-const options = findRecord('ember-developer', '1', { include: ['pets', 'friends'] });
+<br>
 
-/*
-  => {
-    url: 'https://api.example.com/v1/emberDevelopers/1?include=friends,pets',
-    method: 'GET',
-    headers: <Headers>, // 'Content-Type': 'application/json;charset=utf-8'
-    op: 'findRecord';
-    records: [{ type: 'ember-developer', id: '1' }]
-  }
-*/
-```
+### License
 
-Request builder output may be used with either `requestManager.request` or `store.request`.
-
-URLs are stable. The same query will produce the same URL every time, even if the order of keys in
-the query or values in an array changes.
-
-URLs follow the most common REST format (camelCase pluralized resource types).
-
-### Available Builders
-
-- [createRecord]()
-- [deleteRecord]()
-- [findRecord]()
-- [query]()
-- [updateRecord]()
+This project is licensed under the [MIT License](LICENSE.md).
