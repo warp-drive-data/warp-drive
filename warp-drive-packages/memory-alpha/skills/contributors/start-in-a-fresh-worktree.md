@@ -5,6 +5,11 @@ code or making any change. Each session gets its own `git worktree` branched fro
 fetched `origin/main` — never the shared primary checkout, and never whatever commit that
 checkout's `HEAD` happens to be parked on.
 
+The repo's session-start hook (`scripts/session-worktree.sh`) handles the common case: if the
+session started in the primary checkout, it creates `../warp-drive-session-<timestamp>` from
+`origin/main` and tells you where it is; if the session started inside a worktree already, it
+tells you to use that one. Read its message before doing any of the steps below by hand.
+
 ## Steps
 
 1. Don't work in the primary checkout, even for a "quick" one-file change. `pnpm install` in this
@@ -67,6 +72,10 @@ checkout's `HEAD` happens to be parked on.
    git worktree remove ../warp-drive-<topic>
    git worktree prune
    ```
+
+   The hook does this for you only for `warp-drive-session-*` worktrees that are over an hour
+   old, still on their auto-created branch, and have no changes or commits of their own. A
+   worktree you renamed, committed to, or left files in is yours to remove.
 
 ## Why "fresh" and "off main" are separate requirements
 
