@@ -32,6 +32,14 @@ function invalid(detail: string, pointer: string): HttpError {
   return new HttpError(422, [{ status: '422', title: 'Invalid Attribute', detail, source: { pointer } }]);
 }
 
+function conflict(detail: string, pointer: string): HttpError {
+  return new HttpError(409, [{ status: '409', title: 'Conflict', detail, source: { pointer } }]);
+}
+
+function forbidden(detail: string, pointer: string): HttpError {
+  return new HttpError(403, [{ status: '403', title: 'Forbidden', detail, source: { pointer } }]);
+}
+
 function notFound(detail: string): HttpError {
   return new HttpError(404, [{ status: '404', title: 'Not Found', detail }]);
 }
@@ -163,7 +171,9 @@ export function createRouter(db: TodoDb): Router {
       if (method === 'POST') {
         const body = await readBody(request);
         const data = body.data;
-        if (!isRecord(data) || data.type !== TODO_TYPE) throw invalid(`data.type must be '${TODO_TYPE}'`, '/data/type');
+        if (!isRecord(data)) throw invalid('data must be a resource object', '/data');
+        if (data.type !== TODO_TYPE) throw conflict(`data.type must be '${TODO_TYPE}'`, '/data/type');
+        if ('id' in data) throw forbidden('Client-generated ids are not supported', '/data/id');
         const attributes = parseAttributes(data.attributes, '/data/attributes');
         if (attributes.title === undefined) throw invalid('title is required', '/data/attributes/title');
 
@@ -214,9 +224,9 @@ export function createRouter(db: TodoDb): Router {
       if (method === 'PATCH') {
         const body = await readBody(request);
         const data = body.data;
-        if (!isRecord(data) || data.type !== TODO_TYPE || data.id !== id) {
-          throw invalid(`data must identify todo '${id}'`, '/data');
-        }
+        if (!isRecord(data)) throw invalid('data must be a resource object', '/data');
+        if (data.type !== TODO_TYPE) throw conflict(`data.type must be '${TODO_TYPE}'`, '/data/type');
+        if (data.id !== id) throw conflict(`data.id must be '${id}'`, '/data/id');
         const attributes = parseAttributes(data.attributes, '/data/attributes');
         const todo = todos[index];
         const patched: TodoResource = { ...todo, attributes: { ...todo.attributes, ...attributes } };

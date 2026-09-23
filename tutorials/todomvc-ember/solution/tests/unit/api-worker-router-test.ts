@@ -89,6 +89,22 @@ module('Unit | api-worker | router', function (hooks) {
     assert.strictEqual(doc.errors[0]?.source.pointer, '/data/attributes/title');
   });
 
+  test('POST /api/todo rejects the wrong type with 409', async function (assert) {
+    const response = await router(
+      request('POST', '/api/todo', { data: { type: 'person', attributes: { title: 'x' } } })
+    );
+    assert.strictEqual(response.status, 409);
+  });
+
+  test('POST /api/todo rejects a client-generated id with 403', async function (assert) {
+    const response = await router(
+      request('POST', '/api/todo', { data: { type: 'todo', id: 'abc', attributes: { title: 'x' } } })
+    );
+    assert.strictEqual(response.status, 403);
+    const list = await read<TodoCollectionDocument>(router(request('GET', '/api/todo')));
+    assert.strictEqual(list.data.length, SEED_TODOS.length);
+  });
+
   test('GET /api/todo/:id returns one todo or 404', async function (assert) {
     const found = await router(request('GET', '/api/todo/1'));
     assert.strictEqual(found.status, 200);
@@ -108,11 +124,16 @@ module('Unit | api-worker | router', function (hooks) {
     assert.strictEqual(data.attributes.title, SEED_TODOS[1]?.attributes.title);
   });
 
-  test('PATCH /api/todo/:id rejects a mismatched id', async function (assert) {
-    const response = await router(
+  test('PATCH /api/todo/:id rejects a mismatched type or id with 409', async function (assert) {
+    const wrongId = await router(
       request('PATCH', '/api/todo/2', { data: { type: 'todo', id: '3', attributes: { completed: true } } })
     );
-    assert.strictEqual(response.status, 422);
+    assert.strictEqual(wrongId.status, 409);
+
+    const wrongType = await router(
+      request('PATCH', '/api/todo/2', { data: { type: 'person', id: '2', attributes: { completed: true } } })
+    );
+    assert.strictEqual(wrongType.status, 409);
   });
 
   test('DELETE /api/todo/:id removes the todo', async function (assert) {
