@@ -145,7 +145,8 @@ export class CacheManager implements Cache {
    * Push resource data from a remote source into the cache for this ResourceKey
    *
    * @public
-   * @return if `hasRecord` is true then calculated key changes should be returned
+   * @return when `hasRecord` is true, the names of the attributes whose persisted value
+   *   this push changed, or `undefined` when none did. Otherwise `void`.
    */
   upsert(key: ResourceKey, data: unknown, hasRecord: boolean): void | string[] {
     return this.___cache.upsert(key, data, hasRecord);

@@ -231,7 +231,11 @@ export interface Cache {
    * Push resource data from a remote source into the cache for this ResourceKey
    *
    * @public
-   * @return if `hasRecord` is true then calculated key changes should be returned
+   * @return when `hasRecord` is true, the names of the attributes whose persisted value
+   *   this push changed, or `undefined` when none did. A key counts as changed when the
+   *   value the cache holds for it moved, whether or not a local edit already held the new
+   *   value; a value the schema considers equal (for instance, a schema-object with a
+   *   matching identity hash) does not count. Otherwise `void`.
    */
   upsert(cacheKey: ResourceKey, data: ResourceBlob, hasRecord: boolean): void | string[];
 

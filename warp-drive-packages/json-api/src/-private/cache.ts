@@ -856,7 +856,9 @@ export class JSONAPICache implements Cache {
    *
    * @category Cache Management
    * @public
-   * @return if `calculateChanges` is true then calculated key changes should be returned
+   * @return when `calculateChanges` is true, the names of the attributes whose persisted value
+   *   this push changed (the same keys the `'remote'` channel is notified with), or `undefined`
+   *   when none did. Otherwise `void`.
    */
   upsert(identifier: ResourceKey, data: ExistingResourceObject, calculateChanges?: boolean): void | string[] {
     assertPrivateCapabilities(this._capabilities);
