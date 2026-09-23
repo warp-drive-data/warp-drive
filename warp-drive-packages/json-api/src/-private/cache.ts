@@ -1035,6 +1035,7 @@ export class JSONAPICache implements Cache {
             createOptions[name] = propertyValue;
             break;
           case 'belongsTo':
+          case 'resource':
             this.mutate({
               op: 'replaceRelatedRecord',
               field: name,
@@ -1046,6 +1047,7 @@ export class JSONAPICache implements Cache {
             relationship.state.isEmpty = false;
             break;
           case 'hasMany':
+          case 'collection':
             this.mutate({
               op: 'replaceRelatedRecords',
               field: name,
@@ -2997,7 +2999,7 @@ function didCommit(
           // assert against bad API behavior where a belongsTo relationship
           // is saved but the return payload indicates a different final state.
           fields.forEach((field, name) => {
-            if (field.kind === 'belongsTo') {
+            if (field.kind === 'belongsTo' || field.kind === 'resource') {
               const relationshipData = data.relationships![name]?.data;
               if (relationshipData !== undefined) {
                 const inFlightData = cached.inflightRelationships?.[name] as SingleResourceRelationship;
@@ -3085,7 +3087,7 @@ function willCommit(cache: JSONAPICache, identifier: ResourceKey): void {
       // save off info about saved relationships
       const fields = getCacheFields(cache, identifier);
       fields.forEach((schema, name) => {
-        if (schema.kind === 'belongsTo') {
+        if (schema.kind === 'belongsTo' || schema.kind === 'resource') {
           if (cache.__graph._isDirty(identifier, name)) {
             const relationshipData = cache.__graph.getData(identifier, name);
             const inFlight = (cached.inflightRelationships =

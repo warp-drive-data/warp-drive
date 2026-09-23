@@ -2536,12 +2536,12 @@ function normalizeProperties(
 
         if (!field) continue;
 
-        if (field.kind === 'hasMany') {
+        if (field.kind === 'hasMany' || field.kind === 'collection') {
           if (DEBUG) {
             assertRecordsPassedToHasMany(properties[prop] as OpaqueRecordInstance[]);
           }
           properties[prop] = extractIdentifiersFromRecords(properties[prop] as OpaqueRecordInstance[]);
-        } else if (field.kind === 'belongsTo') {
+        } else if (field.kind === 'belongsTo' || field.kind === 'resource') {
           properties[prop] = extractIdentifierFromRecord(properties[prop]);
         }
       }

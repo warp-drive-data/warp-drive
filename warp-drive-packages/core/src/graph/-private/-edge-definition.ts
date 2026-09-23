@@ -106,6 +106,13 @@ export function temporaryConvertToLegacy(
 export interface UpgradedMeta {
   kind: 'implicit' | RelationshipFieldKind;
   /**
+   * The kind of the schema field this edge was derived from. `resource`
+   * and `collection` fields are handled by the graph as `belongsTo` and
+   * `hasMany` respectively (see `kind`), but some behaviors (e.g. the
+   * collection size guard) apply only to the newer kinds.
+   */
+  fieldKind: 'implicit' | RelationshipFieldKind;
+  /**
    * The field sourceKey on `this` record,
    * name if sourceKey is not set.
    */
@@ -207,12 +214,14 @@ function syncMeta(definition: UpgradedMeta, inverseDefinition: UpgradedMeta) {
 }
 
 function upgradeMeta(meta: RelationshipField): UpgradedMeta {
+  const fieldKind = meta.kind;
   if (!isLegacyField(meta)) {
     meta = temporaryConvertToLegacy(meta);
   }
   const niceMeta: UpgradedMeta = {} as UpgradedMeta;
   const options = meta.options;
   niceMeta.kind = meta.kind;
+  niceMeta.fieldKind = fieldKind;
   niceMeta.key = meta.sourceKey ?? meta.name;
   niceMeta.name = meta.name;
   niceMeta.type = meta.type;
