@@ -66,6 +66,9 @@ export async function reactiveContext<T>(record: T, resource: ResourceSchema | O
           return record[field.name as keyof T] as unknown;
         } else if (field.kind === 'resource') {
           return (record[field.name as keyof T] as ResourceRelationship).data?.id;
+        } else if (field.kind === 'collection') {
+          const doc = record[field.name as keyof T] as { data?: Array<{ id: string }> };
+          return doc.data ? doc.data.map((v) => v.id).join(',') : 'undefined';
         } else if (field.kind === 'belongsTo') {
           if (template && field.name in template) {
             const key = template[field.name as keyof T & string]!;
