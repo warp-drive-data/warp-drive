@@ -1,7 +1,6 @@
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 
-const isBun = 'Bun' in globalThis;
 let closeHandler = () => {};
 
 export default {
@@ -12,14 +11,6 @@ export default {
     });
     const { name } = pkg.default ?? pkg;
     const options = { name, projectRoot, ...config };
-
-    // the server only runs on node, so under bun we spawn it in a child process
-    if (isBun) {
-      const compatImpl = await import('./compat-shim.js');
-      const program = await compatImpl.launchProgram(options);
-      closeHandler = program.endProgram;
-      return program.config;
-    }
 
     // @ts-expect-error
     options.useWorker = config.useWorker ?? true;

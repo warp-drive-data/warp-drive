@@ -1160,10 +1160,10 @@
       }
     },
     {
-      // holodeck's server is a CLI process whose stdout *is* its interface: `compat-shim.js`
-      // parses the "Serving Holodeck HTTP Mocks from" banner out of the child process's stdout
-      // to learn the port, and `ensure-cert.js` exists to print instructions. Console output is
-      // the product here, not a stray debug statement.
+      // holodeck's server is a CLI process whose console output is its interface: the startup
+      // banner tells the developer which port the mocks are served from, and `ensure-cert.js`
+      // exists to print instructions. Console output is the product here, not a stray debug
+      // statement.
       "files": ["packages/holodeck/server/**"],
       "rules": {
         "no-console": "off"
