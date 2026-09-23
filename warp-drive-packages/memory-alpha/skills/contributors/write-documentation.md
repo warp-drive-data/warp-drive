@@ -17,7 +17,8 @@ with the person you're working with, and it links to those guides rather than re
 
    | Type of doc | Read |
    | --- | --- |
-   | TSDoc comments, `src/index.md` package pages | [Documenting APIs](/guides/contributing/writing-documentation/writing-api-docs.md) |
+   | TSDoc comments | [Documenting APIs](/guides/contributing/writing-documentation/writing-api-docs.md) |
+   | A package `README.md` or its `src/index.md` landing page | [Writing READMEs](/guides/contributing/writing-documentation/writing-readmes.md) |
    | Pages under `guides/`, including tutorials in `guides/tutorials/` | [Writing Guides](/guides/contributing/writing-documentation/writing-guides.md) |
    | Pages under `upgrading/` or `blog/` | [Writing Permanent Content](/guides/contributing/writing-documentation/writing-permanent-content.md) |
    | Files under `warp-drive-packages/memory-alpha/skills/` | [Writing Agent Skills](/guides/contributing/writing-documentation/writing-agent-skills.md) |

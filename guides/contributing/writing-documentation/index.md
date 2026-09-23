@@ -44,7 +44,8 @@ before the next person reads it. Every round of that makes the docs work for a w
   [TSDoc](https://tsdoc.org/) comments in the source next to the symbol. Published at
   [/api](/api/). See [Documenting APIs](./writing-api-docs.md).
 - **Introducing a package as a whole?** Write its **README**, shown on GitHub and npm, and its
-  `src/index.md`, which is the package's landing page in the API docs.
+  `src/index.md`, which is the package's landing page in the API docs. See
+  [Writing READMEs](./writing-readmes.md).
 - **Teaching a concept or how to accomplish a task?** Write a **Guide** under `guides/`, compiled
   from markdown and published at [/guides](/guides/). Step-by-step walkthroughs go in the
   [Tutorials](/guides/tutorials/) section (`guides/tutorials/`). See
