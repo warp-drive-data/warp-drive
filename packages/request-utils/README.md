@@ -28,25 +28,12 @@
 
 # @ember-data/request-utils
 
-<p align="center">Utilities for Requests</p>
-
 > [!WARNING]
 > **⚠️ This package only exists for backwards compatibility**
 >
 > Newer apps should use [@warp-drive/utilities](https://warp-drive.io/api/@warp-drive/utilities/)
 
-
-This package provides Simple utility function to assist in url building, query params, and other common request operations.
-
-It's built for [*Ember***Data**](https://github.com/warp-drive-data/warp-drive/) but useful more broadly if you're looking for lightweight functions to assist in working with urls and query params.
-
-## Installation
-
-Install using your javascript package manager of choice. For instance with [pnpm](https://pnpm.io/)
-
-```sh
-pnpm add @ember-data/request-utils
-```
+Utilities for URL building, query params, and other common request operations, for apps still on the `@ember-data/*` packages.
 
 **Tagged Releases**
 
@@ -56,40 +43,22 @@ pnpm add @ember-data/request-utils
 - ![NPM LTS Version](https://img.shields.io/npm/v/%40ember-data/request-utils/lts?label=%40lts&color=0096FF)
 - ![NPM LTS 4.12 Version](https://img.shields.io/npm/v/%40ember-data/request-utils/lts-4-12?label=%40lts-4-12&color=bbbbbb)
 
+<br>
 
-## Utils
+## Documentation
 
-- [buildBaseUrl]()
-- [sortQueryParams]()
-- [buildQueryParams]()
-- [filterEmpty]()
+*Get Started* → [Guides](https://warp-drive.io/guides/)
 
-### As a Library Primitive
+API docs for this package → [@ember-data/request-utils](https://warp-drive.io/api/@ember-data/request-utils/)
 
-These primitives may be used directly or composed by request builders to provide a consistent interface for building requests.
+<br>
 
-For instance:
+## Code of Conduct
 
-```ts
-import { buildBaseURL, buildQueryParams } from '@ember-data/request-utils';
+Refer to the [Code of Conduct](https://github.com/warp-drive-data/warp-drive/blob/main/CODE_OF_CONDUCT.md) for community guidelines and inclusivity.
 
-const baseURL = buildBaseURL({
-  host: 'https://api.example.com',
-  namespace: 'api/v1',
-  resourcePath: 'emberDevelopers',
-  op: 'query',
-  identifier: { type: 'ember-developer' }
-});
-const url = `${baseURL}?${buildQueryParams({ name: 'Chris', include:['pets'] })}`;
-// => 'https://api.example.com/api/v1/emberDevelopers?include=pets&name=Chris'
-```
+<br>
 
-This is useful, but not as useful as the REST request builder for query which is sugar over this (and more!):
+### License
 
-```ts
-import { query } from '@ember-data/rest/request';
-
-const options = query('ember-developer', { name: 'Chris', include:['pets'] });
-// => { url: 'https://api.example.com/api/v1/emberDevelopers?include=pets&name=Chris' }
-// Note: options will also include other request options like headers, method, etc.
-```
+This project is licensed under the [MIT License](LICENSE.md).
