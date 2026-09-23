@@ -46,6 +46,27 @@ Data received from an API response is **normalized** into
 by EmberData), while data sent to an API is **serialized**
 into the format the API expects.
 
+### Setup
+
+If you use the `ember-data` package, no setup is needed. Otherwise, legacy serializers require the
+`LegacyNetworkHandler` from {@link @ember-data/legacy-compat! | @ember-data/legacy-compat}:
+
+```sh
+pnpm add @ember-data/legacy-compat
+```
+
+```ts
+import Store, { CacheHandler } from '@ember-data/store';
+import RequestManager from '@ember-data/request';
+import { LegacyNetworkHandler } from '@ember-data/legacy-compat';
+
+export default class extends Store {
+  requestManager = new RequestManager()
+    .use([LegacyNetworkHandler])
+    .useCache(CacheHandler);
+}
+```
+
 ### Implementing a Serializer
 
 There are only two required serializer methods, one for
