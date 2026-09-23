@@ -5,8 +5,7 @@ import type { Future } from '@warp-drive/core/request';
 import { Request } from '@warp-drive/ember';
 
 import { LoadingSpinner } from '#app/components/design-system/loading.gts';
-import type { TodosDocument } from '#app/data/builders/query.ts';
-import type { Todo } from '#app/data/schemas/todo.ts';
+import type { Todo, TodosDocument } from '#app/data/schemas/todo.ts';
 import type AppState from '#app/services/app-state.ts';
 
 interface Signature {

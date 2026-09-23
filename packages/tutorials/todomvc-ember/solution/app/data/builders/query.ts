@@ -1,11 +1,8 @@
-import type { ReactiveDataDocument } from '@warp-drive/core/reactive';
 import { withReactiveResponse } from '@warp-drive/core/request';
 import type { RequestInfo } from '@warp-drive/core/types/request';
 import { buildBaseURL, buildQueryParams } from '@warp-drive/utilities';
 
-import type { Todo } from '../schemas/todo.ts';
-
-export type TodosDocument = ReactiveDataDocument<Todo[]>;
+import type { Todo, TodosDocument } from '../schemas/todo.ts';
 
 function queryTodos(filter?: { completed: boolean }): RequestInfo<TodosDocument> {
   const url = buildBaseURL({ resourcePath: 'todo' });

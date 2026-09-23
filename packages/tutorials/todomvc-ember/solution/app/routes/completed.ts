@@ -3,7 +3,8 @@ import { service } from '@ember/service';
 
 import type { Future } from '@warp-drive/core/request';
 
-import { getCompletedTodos, type TodosDocument } from '#app/data/builders/query.ts';
+import { getCompletedTodos } from '#app/data/builders/query.ts';
+import type { TodosDocument } from '#app/data/schemas/todo.ts';
 import type Store from '#app/data/store.ts';
 
 export default class CompletedTodos extends Route {

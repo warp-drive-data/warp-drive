@@ -1,4 +1,4 @@
-import { withDefaults } from '@warp-drive/core/reactive';
+import { type ReactiveDataDocument, withDefaults } from '@warp-drive/core/reactive';
 import type { Type } from '@warp-drive/core/types/symbols';
 
 export const TodoSchema = withDefaults({
@@ -34,3 +34,6 @@ export interface EditableTodo extends BaseTodo {
   title: string;
   completed: boolean;
 }
+
+/** The response to a request for a list of todos */
+export type TodosDocument = ReactiveDataDocument<Todo[]>;

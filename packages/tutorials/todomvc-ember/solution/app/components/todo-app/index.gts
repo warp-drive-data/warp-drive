@@ -9,7 +9,7 @@ import { TodoCount } from '#app/components/todo-app/todo-count.gts';
 import { TodoList } from '#app/components/todo-app/todo-list.gts';
 import { TodoProvider } from '#app/components/todo-app/todo-provider.gts';
 import { ToggleAllTodos } from '#app/components/todo-app/toggle-all-todos.gts';
-import type { TodosDocument } from '#app/data/builders/query.ts';
+import type { TodosDocument } from '#app/data/schemas/todo.ts';
 import type { TOC } from '@ember/component/template-only';
 
 export const TodoApp = <template>
