@@ -28,6 +28,7 @@ packages/debug/src
 packages/diagnostic/client/src
 packages/diagnostic/server/src
 packages/graph/src
+packages/holodeck/server
 packages/holodeck/src
 packages/json-api/src
 packages/legacy-compat/src
