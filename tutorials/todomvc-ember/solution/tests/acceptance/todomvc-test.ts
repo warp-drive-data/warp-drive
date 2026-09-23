@@ -260,6 +260,18 @@ module('Acceptance | TodoMVC', function (hooks) {
         await visit('/active');
         await waitForTitles(['two', 'one', 'three']);
       });
+
+      test('toggle-all keeps the moved todos in order', async function (assert) {
+        await visit('/completed');
+        await waitForTitles(['two']);
+
+        await visit('/active');
+        await waitForTitles(['one', 'three']);
+        await click('.toggle-all');
+
+        await visit('/completed');
+        await waitForTitles(['one', 'three', 'two']);
+      });
     });
   });
 });
