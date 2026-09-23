@@ -605,8 +605,9 @@ in that comment renders at the top of the subpath's page, above its member listi
  */
 ```
 
-**The package root** `src/index.ts` is different. Its doc comment carries no prose. It is always
-exactly this, and every package has it:
+**The package root** `src/index.ts` is different. Its doc comment carries no prose, only these
+two tags, and every package has it. `<project>` is typed literally; it is TypeDoc's name for the
+package root:
 
 ```ts
 /**
@@ -617,24 +618,29 @@ exactly this, and every package has it:
 
 The landing prose for the package lives in `src/index.md` instead, and the package's
 `typedoc.config.mjs` names it with `readme: 'src/index.md'` (see
-[READMEs and `src/index.md`](#readmes-and-src-index-md)).
+[README vs `src/index.md`](#readme-vs-src-index-md)).
 
 The reason is how TypeDoc's `packages` entry point strategy treats a package with more than one
 entry point: `src/index.ts` becomes a sub-module named `index`, with its own page at
 `/api/<package>/index/`. The package's landing page at `/api/<package>/` then has no intro at all,
 and whatever prose the `@module` comment held is reachable only from that sub-page.
-`@mergeModuleWith <project>` folds the `index` module's exports into the package root, which
-removes the stray page, and `readme` is what puts prose back on the landing page. A package that
-has nothing to say yet still carries both, with an empty `src/index.md`, so that adding prose later
-is a one-file change; `warp-drive-packages/core` is in that state today.
+`@mergeModuleWith <project>` folds the `index` module's exports into the package root and removes
+the `index` module, its comment included, which is why the prose cannot live there. TypeDoc
+renders the `readme` file at the top of the package's landing page, so that is where the prose
+goes. A package with little to say still carries both; its `src/index.md` holds at least the
+package name as an H1 and one sentence on what the package is, so that adding more later is a
+one-file change.
 
 A package whose `typedoc.config.mjs` points TypeDoc at `dist/*.d.ts` rather than `src` (because
 its source has files TypeDoc cannot parse, such as the `.gts` components in `@warp-drive/ember`)
-loses that comment in the d.ts bundle. Re-add it to the root chunk with the `banner` option in
-the package's `tsdown.config.mjs`; `warp-drive-packages/ember/tsdown.config.mjs` shows how.
+loses the `@module` / `@mergeModuleWith` comment when the d.ts files are bundled. Re-add it to
+the root `index.d.ts` with the `banner` option in the package's `tsdown.config.mjs`;
+`warp-drive-packages/ember/tsdown.config.mjs` shows how. `readme: 'src/index.md'` works unchanged
+for such a package.
 
-Module-level `@since` still goes in the root `@module` comment. `docs-viewer/src/typedoc-since-plugin.mjs`
-reads it from there and renders it as a badge on the landing page.
+The one tag that may join the two above is a module-level `@since`, when the package as a whole
+first shipped in a known version. `docs-viewer/src/typedoc-since-plugin.mjs` reads it from that
+comment and renders it as a badge on the landing page.
 
 ### Mark public exports with `@public`
 
@@ -975,14 +981,15 @@ The split follows from where each file renders:
   `{@link}` references, as `packages/request/src/index.md` does. It starts with the package name
   as an H1 and answers "I am on the API docs for this package, where do I start?", so this is the
   place for the setup snippet, as `warp-drive-packages/json-api/src/index.md` shows. A
-  `{@link}` here resolves against the whole docs build, not against the imports of
-  `src/index.ts`, so qualify root exports with the package, `{@link @warp-drive/core!Store | Store}`,
-  and link symbols under a subpath entry point with a root-relative URL,
-  `[Cache](/api/@warp-drive/core/types/cache/types/Cache)`. A bare `{@link Store}` renders as
-  plain text with a `Failed to resolve link` warning in the build log.
+  `{@link}` here resolves against every package in the docs build, not against the imports of
+  `src/index.ts`, so name the package: `{@link @warp-drive/core!Store | Store}`, where the `!`
+  separates the package from the symbol. For a symbol under a subpath entry point, use a
+  root-relative URL instead, `[Cache](/api/@warp-drive/core/types/cache/types/Cache)`; copy the
+  path from the symbol's rendered page. A bare `{@link Store}` renders as plain text with a
+  `Failed to resolve link` warning in the build log.
 
-Some packages still duplicate paragraphs between the two, or leave `src/index.md` empty. When you
-touch one, read the other and move each sentence to the file that answers its question.
+Some packages still duplicate paragraphs between the two. When you touch one, read the other and
+move each sentence to the file that answers its question.
 
 ### Keep READMEs short
 

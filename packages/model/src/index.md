@@ -3,7 +3,7 @@
 :::warning ⚠️ Legacy Package
 **Model classes are a LEGACY feature** that is no longer encouraged for new applications.
 
-**For new projects:** Use **schema objects**` from {@link @warp-drive/core! | @warp-drive/core} instead.
+**For new projects:** Use **schema objects** from {@link @warp-drive/core! | @warp-drive/core} instead.
 :::
 
 This package provides runtime classes for use as a source of ResourceSchema and as a ReactiveResource for older "legacy" EmberData/WarpDrive configurations.
@@ -17,7 +17,7 @@ This package provides runtime classes for use as a source of ResourceSchema and 
 - Lacks static type safety (TypeScript types don't match runtime schema)
 - Requires inheritance chains that increase bundle size and complexity
 
-**Modern alternative:** Use **schema objects**`from`@warp-drive/core`. Modern WarpDrive:
+**Modern alternative:** Use **schema objects** from `@warp-drive/core`. Modern WarpDrive:
 
 - Defines schemas as static objects that can be tree-shaken and validated at build time
 - Uses plain JavaScript objects for records, dramatically reducing memory overhead

@@ -1,13 +1,14 @@
 # @ember-data/rest
 
 :::warning ⚠️ This package only exists for backwards compatibility
-Newer apps should use {@link @warp-drive/utilities! | @warp-drive/utilities} instead.
+It is for apps still on the `@ember-data/*` packages. Newer apps should use the same builders
+from [`@warp-drive/utilities/rest`](/api/@warp-drive/utilities/rest/) instead.
 :::
 
-This package provides request builders for working with **REST**ful APIs when using the older
-EmberData package setup.
+Request builders for **REST**ful APIs.
 
-Request builders are functions that produce [Fetch Options](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API).
-They take a few contextual inputs about the request you want to make, abstracting away the
-gnarlier details. The builders live in the [`@ember-data/rest/request`](/api/@ember-data/rest/request/)
-entry point.
+A request builder is a function that takes the few things that vary about a request, such as
+the resource type, an id, or query params, and returns the request options object you pass to
+`store.request()`: the `url`, `method`, and `headers`, plus the ***Warp*Drive**-specific fields
+such as `op` that let the cache understand the request. The builders live in the
+[`@ember-data/rest/request`](/api/@ember-data/rest/request/) entry point.

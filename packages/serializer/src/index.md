@@ -3,7 +3,7 @@
 :::warning ⚠️ Legacy Package
 **Serializers are a LEGACY feature** that is no longer encouraged for new applications.
 
-**For new projects:** Use {@link @warp-drive/core!RequestManager | Handlers} with the {@link @warp-drive/core!RequestManager | RequestManager} instead.
+**For new projects:** Use [Handlers](/api/@warp-drive/core/request/types/Handler) with the {@link @warp-drive/core!RequestManager | RequestManager} instead.
 :::
 
 This package provides JSON, REST and JSON:API Implementations of the legacy Serializer Interface.
@@ -28,8 +28,6 @@ This package provides JSON, REST and JSON:API Implementations of the legacy Seri
 For an alternative modern pattern to Serializers, see the [Request Handlers Guide](/guides/the-manual/requests/handlers).
 
 ## Legacy Serializers
-
-## Overview
 
 :::danger
 ⚠️ **This is LEGACY documentation** for a feature that is no longer encouraged to be used.

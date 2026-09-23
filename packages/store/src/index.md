@@ -13,7 +13,7 @@ Optionally, a Store can be configured to hydrate the response data into rich pre
 
 ## Creating A Store
 
-To use a `Store` we will need to do few things: add a [Cache](/api/@warp-drive/core/types/cache/types/Cache)
+To use a `Store` we will need to do a few things: add a [Cache](/api/@warp-drive/core/types/cache/types/Cache)
 to store data **in-memory**, add a [Handler](/api/@warp-drive/core/request/types/Handler) to fetch data from a source,
 and implement `instantiateRecord` to tell the store how to display the data for individual resources.
 
@@ -35,7 +35,7 @@ After installing it, we can configure the store to use this cache.
 import Store from '@ember-data/store';
 import Cache from '@ember-data/json-api';
 
-class extends Store {
+export default class extends Store {
   createCache(storeWrapper) {
     return new Cache(storeWrapper);
   }
@@ -79,6 +79,7 @@ Alternatively if you have configured the `RequestManager` to be a service you ma
 ```ts
 import RequestManager from '@ember-data/request';
 import Fetch from '@ember-data/request/fetch';
+import { CacheHandler } from '@ember-data/store';
 
 export default {
   create() {
@@ -113,10 +114,10 @@ Below is an example of using the hooks `instantiateRecord` and a `teardownRecord
 to provide minimal read-only reactive state for simple resources.
 
 ```ts
-import Store, { recordIdentifierFor } from '@ember-data/store';
+import Store from '@ember-data/store';
 import { TrackedObject } from 'tracked-built-ins';
 
-class extends Store {
+export default class extends Store {
   instantiateRecord(identifier) {
     const { cache, notifications } = this;
 
