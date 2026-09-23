@@ -1,12 +1,8 @@
-# ~~@ember-data/tracking~~ <Badge type="warning" text="deprecated v5.5" />
+# @ember-data/tracking
 
-::: warning
-The use of the package **@ember-data/tracking** is now deprecated. It
-historically provided the bindings into Ember's reactivity system.
-
-This package is no longer needed as the configuration is now
-provided by the package {@link @warp-drive/ember! | @warp-drive/ember}.
-
+:::warning ⚠️ Deprecated in 5.5
+This package historically provided the bindings into Ember's reactivity system. It is no longer
+needed: that configuration now comes from {@link @warp-drive/ember! | @warp-drive/ember}.
 :::
 
 Historically, this package configured ***Warp*Drive** to use EmberJS's reactivity system.
