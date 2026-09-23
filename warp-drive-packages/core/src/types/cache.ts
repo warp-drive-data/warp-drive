@@ -13,11 +13,10 @@ import type { ExistingResourceObject } from './spec/json-api-raw.ts';
 
 /**
  * A hash of changed attributes with the key being the attribute name and the value being an
- * array of `[oldValue, newValue]`. Either side may be `undefined`: the old value when the field
- * had no persisted value, the new value when the field was explicitly set to `undefined`.
+ * array of `[oldValue, newValue]`.
  *
  */
-export type ChangedAttributesHash = Record<string, [Value | undefined, Value | undefined]>;
+export type ChangedAttributesHash = Record<string, [Value | undefined, Value]>;
 
 /**
  * Describes the local (uncommitted) changes to a single relationship,

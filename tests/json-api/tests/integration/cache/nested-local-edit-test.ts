@@ -153,13 +153,12 @@ module('Integration | <JSONAPICache> nested local edits', function () {
     assert.notified(lid, 'attributes', 'address', 0, 'nothing was announced');
   });
 
-  test('a local edit of a whole object attribute to undefined hides its nested values', async function (assert) {
+  test('a local edit of a whole object attribute to null hides its nested values', async function (assert) {
     const { store, lid, editable } = await setupEditableUser();
 
-    // `undefined` is a real edit for `getAttr`; the field type does not allow it, so bypass it
-    (editable as unknown as Record<string, unknown>).settings = undefined;
+    (editable as unknown as Record<string, unknown>).settings = null;
 
-    assert.equal(store.cache.getAttr(lid, ['settings', 'theme']), undefined, 'the nested read honors the edit');
+    assert.equal(store.cache.getAttr(lid, ['settings', 'theme']), undefined, 'the nested read stops at the local null');
     assert.equal(store.cache.getRemoteAttr(lid, ['settings', 'theme']), 'dark', 'remote state still holds the value');
   });
 

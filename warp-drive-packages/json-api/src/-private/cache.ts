@@ -1416,6 +1416,17 @@ export class JSONAPICache implements Cache {
   setAttr(identifier: ResourceKey, attr: string | string[], value: Value): void {
     // this assert works to ensure we have a non-empty string and/or a non-empty array
     assert('setAttr must receive at least one attribute path', attr.length > 0);
+    // `undefined` is not a JSON value: the cache could hold it but never serialize it faithfully
+    // (the legacy serializer dropped the key, `serializePatch` sent `null`). Refuse it in dev and
+    // store `null` in prod. If this assertion fires in your app, open an issue and ping @runspired,
+    // who asked for it.
+    assert(
+      `Cannot set '${Array.isArray(attr) ? attr.join('.') : attr}' on '${identifier.type}' to undefined: undefined is not a JSON value. Use null instead. If your app relied on this, open an issue and ping @runspired.`,
+      (value as Value | undefined) !== undefined
+    );
+    if ((value as Value | undefined) === undefined) {
+      value = null;
+    }
     // a one-segment path replaces the field's whole value; a longer path patches one leaf into a
     // clone of the baseline object, so nested edits accumulate and the object is never rebuilt
     const isSimplePath = !Array.isArray(attr) || attr.length === 1;
@@ -1541,13 +1552,14 @@ export class JSONAPICache implements Cache {
     if (inflightAttrs) {
       const keys = Object.keys(inflightAttrs);
       for (let i = 0; i < keys.length; i++) {
-        changes[keys[i]] = [remoteAttrs ? remoteAttrs[keys[i]] : undefined, inflightAttrs[keys[i]]];
+        // a stored value is never `undefined`: `setAttr` refuses it
+        changes[keys[i]] = [remoteAttrs ? remoteAttrs[keys[i]] : undefined, inflightAttrs[keys[i]] as Value];
       }
     }
     if (localAttrs) {
       const keys = Object.keys(localAttrs);
       for (let i = 0; i < keys.length; i++) {
-        changes[keys[i]] = [resolveAttr(keys[i], cached, RESOLUTION_ORDER_EDIT_BASELINE), localAttrs[keys[i]]];
+        changes[keys[i]] = [resolveAttr(keys[i], cached, RESOLUTION_ORDER_EDIT_BASELINE), localAttrs[keys[i]] as Value];
       }
     }
     return changes;
