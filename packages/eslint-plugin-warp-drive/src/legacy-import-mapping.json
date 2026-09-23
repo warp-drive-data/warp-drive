@@ -828,8 +828,11 @@
     "module": "@ember-data/model/-private",
     "export": "ManyArray",
     "typeOnly": false,
-    "replacement": null,
-    "reason": "lost"
+    "replacement": {
+      "module": "@warp-drive/legacy/model/-private",
+      "export": "ManyArray",
+      "typeOnly": true
+    }
   },
   {
     "module": "@ember-data/model/-private",
@@ -4479,8 +4482,11 @@
     "module": "ember-data/-private/index",
     "export": "ManyArray",
     "typeOnly": false,
-    "replacement": null,
-    "reason": "lost"
+    "replacement": {
+      "module": "@warp-drive/legacy/model/-private",
+      "export": "ManyArray",
+      "typeOnly": true
+    }
   },
   {
     "module": "ember-data/-private/index",

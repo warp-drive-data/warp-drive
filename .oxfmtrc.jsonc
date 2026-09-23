@@ -79,5 +79,8 @@
     "tmp/",
     "docs-viewer/docs.warp-drive.io/api/",
     "docs-viewer/docs.warp-drive.io/guides/",
+    "scripts/public-exports-mapping/snapshots/",
+    "scripts/public-exports-mapping/steps/",
+    "packages/eslint-plugin-warp-drive/src/legacy-import-mapping/*.json",
   ],
 }
