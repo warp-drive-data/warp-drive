@@ -1,3 +1,6 @@
+import { dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
 import { babelPlugin } from '@warp-drive/core/build-config';
 
 const macros = babelPlugin({
@@ -24,14 +27,14 @@ export default {
       'module:decorator-transforms',
       {
         runtime: {
-          import: import.meta.resolve('decorator-transforms/runtime-esm'),
+          import: fileURLToPath(import.meta.resolve('decorator-transforms/runtime-esm')),
         },
       },
     ],
     [
       '@babel/plugin-transform-runtime',
       {
-        absoluteRuntime: import.meta.dirname,
+        absoluteRuntime: dirname(fileURLToPath(import.meta.url)),
         useESModules: true,
         regenerator: false,
       },
