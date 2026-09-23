@@ -52,6 +52,9 @@ before the next person reads it. Every round of that makes the docs work for a w
 
 ## Which Type of Doc Should I Write?
 
+- **Proposing a new public API, a behavior change, or a deprecation?** Write an **RFC** under
+  `rfcs/`, published at [/rfcs](/rfcs/). It comes before any of the docs below. See
+  [The RFC Process](../rfc-process.md).
 - **Documenting a function, class, type, or its params?** Write **API Docs**:
   [TSDoc](https://tsdoc.org/) comments in the source next to the symbol. Published at
   [/api](/api/). See [Documenting APIs](./writing-api-docs.md).
@@ -79,6 +82,7 @@ without an upgrade path.
 
 New public API:
 
+- An accepted RFC, if the API is new or changes behavior. See [The RFC Process](../rfc-process.md).
 - TSDoc with `@since` set to the version it ships in, and a usage example.
 - A guide showing usage, if it is a concept users need to learn.
 - A mention in the package README and `src/index.md`, only if it changes the package's headline

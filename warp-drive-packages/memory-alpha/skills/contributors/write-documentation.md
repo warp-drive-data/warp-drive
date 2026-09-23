@@ -16,7 +16,8 @@ For a one-line fix (a typo, a dead link, a wrong version number), skip to step 6
 1. Pick the type of doc first. A request like "document X" rarely means one file. Use
    [Which Type of Doc Should I Write?](/guides/contributing/writing-documentation/index.md#which-type-of-doc-should-i-write)
    to decide whether X needs TSDoc, a guide, a permanent-URL page, a README, or several of those,
-   and confirm that split with the user before drafting anything.
+   and confirm that split with the user before drafting anything. If the answer is an RFC, this
+   isn't the skill for it: switch to [Writing and Implementing RFCs](./writing-and-implementing-rfcs.md).
 2. Read the guide for that type of doc before you write a word, and treat it as binding:
 
    | Type of doc | Read |
