@@ -4,7 +4,9 @@ title: Writing Guides
 
 # Writing Guides
 
-How to write and maintain the [Guides](/guides/), the markdown pages under `guides/`.
+How to write and maintain the [Guides](/guides/), the markdown pages under `guides/`, and the two
+sections that share their tooling but not their rules: [Upgrading](/upgrading/) and
+[Blog](/blog/).
 
 ## Audience
 
@@ -18,7 +20,7 @@ on rather than re-explaining them.
 ## Guide Types
 
 Upgrade and migration walkthroughs are not guides; they live in the repo-root `upgrading/`
-directory and follow [Writing Permanent Content](./writing-permanent-content.md).
+directory and follow [Upgrading and Blog Pages](#upgrading-and-blog-pages) below.
 
 Guides fall into three types. Keep a single page to a single type; a page that seems to need two
 is usually two pages.
@@ -50,34 +52,66 @@ It leaves signatures and per-member details to the generated [API Docs](/api/) a
 rather than restating them. Use it when the reader already knows what they want and needs the
 details.
 
-## Where Files Live and How the Sidebar Is Built
+## Where Files Live
 
-Guides are markdown files under `guides/`. Each directory's `_meta.json` controls how that
-directory appears in the sidebar:
+Guides are markdown files under `guides/`. Add a new page's slug to the `items` list in its
+directory's `_meta.json` so it sorts where you intend; the keys, `draft` behavior, sidebar, and
+preview are covered in [How the Docs Site Is Built](./index.md#how-the-docs-site-is-built).
 
-- `title` sets the sidebar label for the directory.
-- `items` is the ordered list of child slugs (filenames without `.md`, or subdirectory names).
-  Unlisted items sort alphabetically after the listed ones, so when you add a page, add its slug
-  to `items` where it belongs.
-- `files` holds per-file metadata keyed by filename without `.md`, such as a `title` or `draft`. A
-  page's own frontmatter `title` wins over a `files` entry when both are set.
-- `draft` on a `files` entry or in a page's own frontmatter hides that page from the sidebar; on
-  the directory it hides every page in it. Hidden pages are still built and reachable at their
-  URLs.
-- `collapsed` controls whether the directory's sidebar group starts collapsed.
+## Upgrading and Blog Pages
 
-`docs-viewer/src/prepare-website.ts` copies `guides/` into the [VitePress](https://vitepress.dev/)
-site at build time. To see the result, follow the
-[Docs Viewer README](https://github.com/warp-drive-data/warp-drive/blob/main/docs-viewer/README.md).
+[Upgrading](/upgrading/) and [Blog](/blog/) are different from the rest of the guides: they hold
+point-in-time content whose URLs are a permanent contract with readers, not just the current
+best explanation of a concept. Follow these rules when adding to either section.
 
-## Markdown Features
+These pages are for existing users. An upgrade guide may presume knowledge of the concepts being
+replaced but never of the ones replacing them. A blog post should say near the top who it is for.
+LLMs and coding agents also land on these pages, years later and out of order, and will present
+whatever they find as current unless the page's version and date say otherwise; that is the
+reason for the dating rule below.
 
-All [VitePress markdown features](https://vitepress.dev/guide/markdown) are available, including
-custom containers (`::: tip`, `::: warning`) and
-[code groups](https://vitepress.dev/guide/markdown#code-groups), which render several code blocks
-as tabs.
+### URLs are never renamed or unpublished
 
-One consequence of VitePress compiling markdown to Vue: a bare `<thing>` in prose is parsed as an
-element and fails the build, and the link checker (`pnpm lint:docs`, described in the
-[Docs Viewer README](https://github.com/warp-drive-data/warp-drive/blob/main/docs-viewer/README.md))
-will not warn you first. Wrap angle brackets in single backticks, as this paragraph does.
+Once a page under `upgrading/` or `blog/` is published, its path doesn't change and the page is
+never deleted, even after its content is out of date.
+
+If a page's content is fully superseded (a newer major-version guide replaces it, a post is
+factually wrong, etc.), don't delete or move it. Instead:
+
+1. Replace its body with a short pointer to the replacement, wrapped in a `:::danger` callout.
+   Keep the frontmatter `title` and the `<SinceBadge>` line so the page still says what it was:
+
+   ```md
+   :::danger **We've moved!**
+   This guide has [moved](/upgrading/v6/index.md)
+   :::
+   ```
+
+2. Add `draft: true` to its frontmatter. This hides the page from the sidebar and nav while
+   leaving it published at its original URL (see
+   [Sidebar and `_meta.json`](./index.md#sidebar-and-meta-json)).
+
+### Every page is dated and versioned
+
+Record the ***Warp*Drive*** version and the date a page was written for near the top of the page,
+as a `<SinceBadge>` followed by the date (`YYYY-MM-DD`) it was authored or last meaningfully
+revised:
+
+```md
+<SinceBadge version="5.0.0" /> &nbsp; authored 2023-06-10
+```
+
+This lets a reader who lands on an old search result or bookmark know immediately whether the
+page still applies to the version they're using.
+
+### Organize by major version
+
+Each section is sub-divided by major version (`upgrading/v5/`, `blog/v5/`, `upgrading/v6/`, ...).
+Within a major version's directory:
+
+- `upgrading/<major>/` holds that version's upgrade guide plus any deprecation or
+  feature-specific migration guides written against it.
+- `blog/<major>/` holds posts published while that major version was current.
+
+Add new major-version directories to the section's root `_meta.json` `items` list so they sort
+in release order rather than alphabetically.

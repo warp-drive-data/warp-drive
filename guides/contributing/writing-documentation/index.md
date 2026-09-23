@@ -57,10 +57,11 @@ before the next person reads it. Every round of that makes the docs work for a w
   [The RFC Process](../rfc-process.md).
 - **Documenting a function, class, type, or its params?** Write **API Docs**:
   [TSDoc](https://tsdoc.org/) comments in the source next to the symbol. Published at
-  [/api](/api/). See [Documenting APIs](./writing-api-docs.md).
+  [/api](/api/). See [Writing API Docs](./writing-api-docs.md).
 - **Introducing a package as a whole?** Write its **README**, shown on GitHub and npm, and its
   `src/index.md` (for example `warp-drive-packages/core/src/index.md`), which is the package's
-  landing page in the API docs. See [Writing READMEs](./writing-readmes.md).
+  landing page in the API docs. See
+  [READMEs and `src/index.md`](./writing-api-docs.md#readmes-and-src-index-md).
 - **Teaching a concept or how to accomplish a task?** Write a **Guide** under `guides/`, compiled
   from markdown and published at [/guides](/guides/). Step-by-step walkthroughs go in the
   [Tutorials](/guides/tutorials/) section (`guides/tutorials/`). See
@@ -69,7 +70,7 @@ before the next person reads it. Every round of that makes the docs work for a w
   under `upgrading/`, published at [/upgrading](/upgrading/).
 - **Announcing something as of a point in time?** Write a **Blog** post under `blog/`, published
   at [/blog](/blog/). Upgrading and Blog pages both have permanent URLs; see
-  [Writing Permanent Content](./writing-permanent-content.md).
+  [Upgrading and Blog Pages](./writing-guides.md#upgrading-and-blog-pages).
 - **Instructions a coding agent should follow?** Write an **Agent skill** under
   `warp-drive-packages/memory-alpha/skills/`: plain markdown routed by an index, published at
   [/skills](/skills/). See [Writing Agent Skills](./writing-agent-skills.md).
@@ -100,9 +101,51 @@ Bug fix:
 - Update TSDoc only if documented behavior changed.
 - Update a guide only if recommended usage changed.
 
-## Previewing Your Changes
+## How the Docs Site Is Built
 
-Preview any type of doc locally by following the
+Everything on the site except the API docs is markdown copied from the repo by
+`docs-viewer/src/prepare-website.ts` on each build: `guides/` to `/guides`, `upgrading/` to
+`/upgrading`, `blog/` to `/blog`, `rfcs/` to `/rfcs`, and `warp-drive-packages/memory-alpha/skills/`
+to `/skills`. The API docs are generated from the source by TypeDoc into `/api`. Package READMEs
+are not on the site; GitHub and npm render them.
+
+### Sidebar and `_meta.json`
+
+Each content directory's `_meta.json` controls how it appears in the sidebar:
+
+- `title` sets the sidebar label for the directory.
+- `items` is the ordered list of child slugs (filenames without `.md`, or subdirectory names).
+  Unlisted items sort alphabetically after the listed ones, so when you add a page, add its slug
+  to `items` where it belongs.
+- `files` holds per-file metadata keyed by filename without `.md`, such as a `title` or `draft`. A
+  page's own frontmatter `title` wins over a `files` entry when both are set.
+- `draft` on a `files` entry or in a page's own frontmatter hides that page from the sidebar; on
+  the directory it hides every page in it. In `guides/`, `upgrading/`, and `blog/` a hidden page
+  is still built and reachable at its URL. In the agent skills a `draft` page is removed from the
+  site entirely.
+- `collapsed` controls whether the directory's sidebar group starts collapsed.
+
+The sidebar is computed once, when VitePress loads its config. A page added while the dev server
+is running is served at its URL but does not appear in the sidebar until you restart the server.
+
+### Markdown
+
+All [VitePress markdown features](https://vitepress.dev/guide/markdown) are available, including
+custom containers (`::: tip`, `::: warning`) and
+[code groups](https://vitepress.dev/guide/markdown#code-groups). One consequence of VitePress
+compiling markdown to Vue: a bare `<thing>` in prose is parsed as an element and fails the build,
+and the link checker will not warn you first. Wrap angle brackets in single backticks.
+
+### Checking Links
+
+`pnpm lint:docs` from the repo root renders every page in the content roots above and fails on
+any link whose target page or `#anchor` does not exist. CI runs it. It does not cover package
+READMEs, and it does not catch markdown that fails to compile; only the build does.
+
+### Previewing Your Changes
+
+Run `pnpm start` from `docs-viewer/` for a dev server with hot reload, or `pnpm build` then
+`pnpm preview` for the production build; details in the
 [Docs Viewer README](https://github.com/warp-drive-data/warp-drive/blob/main/docs-viewer/README.md).
 Once the change is in a pull request, add the existing `:label: doc` label (its name literally
 contains `:label:`), or ask a maintainer to if you cannot edit labels on the repo, and a preview of

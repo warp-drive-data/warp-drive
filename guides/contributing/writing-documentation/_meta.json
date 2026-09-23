@@ -1,10 +1,4 @@
 {
   "title": "Writing Documentation",
-  "items": [
-    "writing-guides",
-    "writing-api-docs",
-    "writing-readmes",
-    "writing-permanent-content",
-    "writing-agent-skills"
-  ]
+  "items": ["writing-guides", "writing-api-docs", "writing-agent-skills"]
 }

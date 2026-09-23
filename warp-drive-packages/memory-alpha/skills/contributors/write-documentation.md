@@ -23,10 +23,10 @@ last two bullets: the checks and the label.
 
    | Type of doc | Read |
    | --- | --- |
-   | TSDoc comments | [Documenting APIs](/guides/contributing/writing-documentation/writing-api-docs.md) |
-   | A package `README.md` or its `src/index.md` landing page | [Writing READMEs](/guides/contributing/writing-documentation/writing-readmes.md) |
+   | TSDoc comments | [Writing API Docs](/guides/contributing/writing-documentation/writing-api-docs.md) |
+   | A package `README.md` or its `src/index.md` landing page | [READMEs and `src/index.md`](/guides/contributing/writing-documentation/writing-api-docs.md#readmes-and-src-index-md) |
    | Pages under `guides/`, including tutorials in `guides/tutorials/` | [Writing Guides](/guides/contributing/writing-documentation/writing-guides.md) |
-   | Pages under `upgrading/` or `blog/` | [Writing Permanent Content](/guides/contributing/writing-documentation/writing-permanent-content.md) |
+   | Pages under `upgrading/` or `blog/` | [Upgrading and Blog Pages](/guides/contributing/writing-documentation/writing-guides.md#upgrading-and-blog-pages) |
    | Files under `warp-drive-packages/memory-alpha/skills/` | [Writing Agent Skills](/guides/contributing/writing-documentation/writing-agent-skills.md) |
 
    Those pages own the rules on tags, links and examples, audiences, nav metadata, and permanent
@@ -38,7 +38,7 @@ last two bullets: the checks and the label.
      [Know Your Audience](/guides/contributing/writing-documentation/index.md#know-your-audience)
      as the menu; the guide for this type of doc narrows it further.
    - What should the reader be able to do after reading it that they couldn't before?
-   - Which version does it apply to? The guide for this type of doc says where that goes.
+   - Which version does it apply to? The guide section for this type of doc says where that goes.
    - Is this the recommended way, a legacy way, or a deprecated way? The guide for this type of
      doc says how to mark each.
    - What already exists? Search `guides/`, `upgrading/`, and the relevant `src/` for the concept

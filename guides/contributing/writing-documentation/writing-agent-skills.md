@@ -76,20 +76,19 @@ In the skill's directory:
 
 ## Publishing and drafts
 
-`docs-viewer/src/prepare-website.ts` copies the package's `skills/` directory to `/skills` on the
-website on every build. Unlike guides, this copy is passed through `finalizeSyncedContent`, so a
-page marked `draft` in `_meta.json` is removed from the site entirely rather than merely hidden
-from the sidebar. That is how each directory's agent-facing `index.md` stays out of the website
-while `overview.md` is published in its place: the directory's `_meta.json` carries both
-`"files": { "index": { "draft": true } }` and `"webIndex": "overview"`. Agents read from disk, so
-`draft` has no effect on them.
+The skills directory is synced to `/skills` on the website like the other content roots (see
+[How the Docs Site Is Built](./index.md#how-the-docs-site-is-built)), with one difference: a page
+marked `draft` is removed from the site entirely rather than hidden from the sidebar. That is how
+each directory's agent-facing `index.md` stays off the website while `overview.md` is published
+in its place: the directory's `_meta.json` carries both `"files": { "index": { "draft": true } }`
+and `"webIndex": "overview"`. Agents read from disk, so `draft` has no effect on them.
 
 ## Checking your work
 
 - `pnpm lint:docs` from the repo root checks every link and heading anchor in `skills/` along
-  with the guides.
-- Build the site as the [Docs Viewer README](https://github.com/warp-drive-data/warp-drive/blob/main/docs-viewer/README.md)
-  describes and open `/skills/contributors/` to see the sidebar entry and rendered page.
+  with the guides (see [Checking Links](./index.md#checking-links)).
+- Build the site as [Previewing Your Changes](./index.md#previewing-your-changes) describes and
+  open `/skills/contributors/` to see the sidebar entry and rendered page.
 - Hand the skill file alone, not the index or the repo, to a fresh agent instance with a task it
   should cover, and check that it follows the steps to the right place and does not name a tool
   specific to one product.

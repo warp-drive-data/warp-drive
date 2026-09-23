@@ -12,7 +12,7 @@ Like [Upgrading](/upgrading/), posts here have permanent URLs: a post's URL is n
 never unpublished, and every post is tagged with the version and date it was written for. Posts
 are organized into sub-sections by major version.
 
-See [Writing Permanent Content](/guides/contributing/writing-documentation/writing-permanent-content.md)
+See [Upgrading and Blog Pages](/guides/contributing/writing-documentation/writing-guides.md#upgrading-and-blog-pages)
 for the authoring rules that keep these guarantees true.
 
 ## Major Versions

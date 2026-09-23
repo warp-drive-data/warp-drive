@@ -22,7 +22,7 @@ whoever finds them years from now.
   [4.x → 5.x](/upgrading/v5/)) containing that version's upgrade guide plus any deprecation or
   feature-specific migration guides written for it.
 
-See [Writing Permanent Content](/guides/contributing/writing-documentation/writing-permanent-content.md)
+See [Upgrading and Blog Pages](/guides/contributing/writing-documentation/writing-guides.md#upgrading-and-blog-pages)
 for the authoring rules that keep these guarantees true.
 
 ## Major Versions
