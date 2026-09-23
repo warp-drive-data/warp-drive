@@ -1418,10 +1418,10 @@ export class JSONAPICache implements Cache {
     assert('setAttr must receive at least one attribute path', attr.length > 0);
     // `undefined` is not a JSON value: the cache could hold it but never serialize it faithfully
     // (the legacy serializer dropped the key, `serializePatch` sent `null`). Refuse it in dev and
-    // store `null` in prod. If this assertion fires in your app, open an issue and ping @runspired,
-    // who asked for it.
+    // store `null` in prod. If this assertion fires in your app and you feel like this behavior is
+    // incorrect, open an issue and ping @runspired, who asked for it.
     assert(
-      `Cannot set '${Array.isArray(attr) ? attr.join('.') : attr}' on '${identifier.type}' to undefined: undefined is not a JSON value. Use null instead. If your app relied on this, open an issue and ping @runspired.`,
+      `Cannot set '${Array.isArray(attr) ? attr.join('.') : attr}' on '${identifier.type}' to undefined: undefined is not a JSON value. Use null instead. If you feel like this behavior is incorrect, open an issue and ping @runspired.`,
       (value as Value | undefined) !== undefined
     );
     if ((value as Value | undefined) === undefined) {
