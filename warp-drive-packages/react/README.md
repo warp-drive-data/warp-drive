@@ -54,7 +54,46 @@ rich applications &mdash; letting you ship better experiences more quickly witho
 
 This library provides reactive utilities for working with promises and requests, building over these primitives to provide functions and components that enable you to build robust performant apps with elegant control flow
 
----
+## Usage
+
+Wrap your app in a `StoreProvider` and the hooks and components below it can reach the Store:
+
+```tsx
+import { StoreProvider } from '@warp-drive/react';
+import { Store } from './store.ts';
+import { UserList } from './user-list.tsx';
+
+export function App(props) {
+  return (
+    <div className='App'>
+      <StoreProvider Store={Store}>
+        <h1>Hello React!</h1>
+        <UserList />
+      </StoreProvider>
+    </div>
+  );
+}
+```
+
+<br>
+
+## Documentation
+
+*Get Started* → [Guides](https://warp-drive.io/guides/)
+
+API docs for this package → [@warp-drive/react](https://warp-drive.io/api/@warp-drive/react/)
+
+<br>
+
+## Code of Conduct
+
+Refer to the [Code of Conduct](https://github.com/warp-drive-data/warp-drive/blob/main/CODE_OF_CONDUCT.md) for community guidelines and inclusivity.
+
+<br>
+
+### License
+
+This project is licensed under the [MIT License](LICENSE.md).
 
 ### ♥️ Credits
 
