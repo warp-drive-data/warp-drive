@@ -4,7 +4,7 @@ import {
   type ErrorObject,
   TODO_TYPE,
   type TodoAttributes,
-  type TodoIdentifier,
+  type TodoPageDocument,
   type TodoResource,
 } from './contract.ts';
 import type { TodoDb } from './db.ts';
@@ -76,14 +76,70 @@ function parseAttributes(value: unknown, pointer: string): Partial<TodoAttribute
   return attributes;
 }
 
-function parseIdentifiers(value: unknown): TodoIdentifier[] {
-  if (!Array.isArray(value)) throw invalid('data must be an array of identifiers', '/data');
-  return value.map((item: unknown, index) => {
-    if (!isRecord(item) || item.type !== TODO_TYPE || typeof item.id !== 'string') {
-      throw invalid(`data[${index}] must be a todo identifier`, `/data/${index}`);
-    }
-    return { type: TODO_TYPE, id: item.id };
-  });
+function badParameter(parameter: string, detail: string): HttpError {
+  return new HttpError(400, [{ status: '400', title: 'Invalid Query Parameter', detail, source: { parameter } }]);
+}
+
+/** Applies `?filter[completed]=true|false`, if given. */
+function applyFilter(todos: TodoResource[], params: URLSearchParams): TodoResource[] {
+  const completed = params.get('filter[completed]');
+  if (completed === null) return todos;
+  if (completed !== 'true' && completed !== 'false') {
+    throw badParameter('filter[completed]', 'filter[completed] must be true or false');
+  }
+  const wanted = completed === 'true';
+  return todos.filter((todo) => todo.attributes.completed === wanted);
+}
+
+function parseInteger(params: URLSearchParams, name: string, min: number, max: number): number | null {
+  const raw = params.get(name);
+  if (raw === null) return null;
+  const value = Number(raw);
+  if (!Number.isInteger(value) || value < min || value > max) {
+    throw badParameter(name, `${name} must be an integer from ${min} to ${max}`);
+  }
+  return value;
+}
+
+/** Reads `page[limit]` and `page[offset]`; returns null when neither is given. */
+function parsePage(params: URLSearchParams): { limit: number; offset: number } | null {
+  const limit = parseInteger(params, 'page[limit]', 1, 100);
+  const offset = parseInteger(params, 'page[offset]', 0, Number.MAX_SAFE_INTEGER);
+  if (limit === null && offset === null) return null;
+  return { limit: limit ?? 25, offset: offset ?? 0 };
+}
+
+/**
+ * One page of todos, with links to its neighbours. Links keep the request's
+ * other query parameters (such as the filter) so every page lists the same set.
+ */
+function paginate(
+  url: URL,
+  todos: TodoResource[],
+  { limit, offset }: { limit: number; offset: number }
+): TodoPageDocument {
+  const total = todos.length;
+  const totalPages = Math.ceil(total / limit);
+  const lastOffset = Math.max(0, (totalPages - 1) * limit);
+
+  const link = (pageOffset: number) => {
+    const params = new URLSearchParams(url.search);
+    params.set('page[limit]', String(limit));
+    params.set('page[offset]', String(pageOffset));
+    return `${url.pathname}?${params}`;
+  };
+
+  return {
+    data: todos.slice(offset, offset + limit),
+    links: {
+      self: `${url.pathname}${url.search}`,
+      first: link(0),
+      last: link(lastOffset),
+      ...(offset > 0 && { prev: link(Math.min(Math.max(0, offset - limit), lastOffset)) }),
+      ...(offset + limit < total && { next: link(Math.min(offset + limit, lastOffset)) }),
+    },
+    meta: { currentPage: Math.floor(offset / limit) + 1, totalPages },
+  };
 }
 
 function findIndex(todos: TodoResource[], id: string): number {
@@ -92,34 +148,17 @@ function findIndex(todos: TodoResource[], id: string): number {
   return index;
 }
 
-function requireAll(todos: TodoResource[], identifiers: TodoIdentifier[]): Set<string> {
-  const ids = new Set(identifiers.map((identifier) => identifier.id));
-  for (const id of ids) findIndex(todos, id);
-  return ids;
-}
-
 export function createRouter(db: TodoDb): Router {
   async function handle(request: Request): Promise<Response> {
-    const { pathname, searchParams } = new URL(request.url);
+    const url = new URL(request.url);
+    const { pathname, searchParams } = url;
     const { method } = request;
 
     if (pathname === TODO_PATH) {
       if (method === 'GET') {
-        const todos = await db.read();
-        const completed = searchParams.get('filter[completed]');
-        if (completed === null) return document(200, { data: todos });
-        if (completed !== 'true' && completed !== 'false') {
-          throw new HttpError(400, [
-            {
-              status: '400',
-              title: 'Invalid Query Parameter',
-              detail: 'filter[completed] must be true or false',
-              source: { parameter: 'filter[completed]' },
-            },
-          ]);
-        }
-        const wanted = completed === 'true';
-        return document(200, { data: todos.filter((todo) => todo.attributes.completed === wanted) });
+        const todos = applyFilter(await db.read(), searchParams);
+        const page = parsePage(searchParams);
+        return document(200, page ? paginate(url, todos, page) : { data: todos });
       }
       if (method === 'POST') {
         const body = await readBody(request);
@@ -139,28 +178,28 @@ export function createRouter(db: TodoDb): Router {
       }
     }
 
-    if (pathname === `${TODO_PATH}/ops.bulk.patch` && method === 'PATCH') {
+    if (pathname === `${TODO_PATH}/ops.count` && method === 'GET') {
+      const todos = applyFilter(await db.read(), searchParams);
+      return document(200, { meta: { count: todos.length } });
+    }
+
+    if (pathname === `${TODO_PATH}/ops.bulk.patchAll` && method === 'PATCH') {
       const body = await readBody(request);
       const attributes = parseAttributes(body.attributes, '/attributes');
       const todos = await db.read();
-      const ids = requireAll(todos, parseIdentifiers(body.data));
-
-      const updated: TodoResource[] = [];
-      const next = todos.map((todo) => {
-        if (!ids.has(todo.id)) return todo;
-        const patched = { ...todo, attributes: { ...todo.attributes, ...attributes } };
-        updated.push(patched);
-        return patched;
-      });
-      await db.write(next);
-      return document(200, { data: updated });
+      const matching = new Set(applyFilter(todos, searchParams));
+      await db.write(
+        todos.map((todo) =>
+          matching.has(todo) ? { ...todo, attributes: { ...todo.attributes, ...attributes } } : todo
+        )
+      );
+      return document(200, { data: null });
     }
 
-    if (pathname === `${TODO_PATH}/ops.bulk.delete` && method === 'DELETE') {
-      const body = await readBody(request);
+    if (pathname === `${TODO_PATH}/ops.bulk.deleteAll` && method === 'DELETE') {
       const todos = await db.read();
-      const ids = requireAll(todos, parseIdentifiers(body.data));
-      await db.write(todos.filter((todo) => !ids.has(todo.id)));
+      const matching = new Set(applyFilter(todos, searchParams));
+      await db.write(todos.filter((todo) => !matching.has(todo)));
       return document(204, null);
     }
 

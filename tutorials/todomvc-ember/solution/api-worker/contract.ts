@@ -37,6 +37,29 @@ export interface TodoCollectionDocument {
   data: TodoResource[];
 }
 
+/** Returned by the list route when `page[limit]` or `page[offset]` is given. */
+export interface TodoPageDocument extends TodoCollectionDocument {
+  links: {
+    self: string;
+    first: string;
+    last: string;
+    prev?: string;
+    next?: string;
+  };
+  meta: {
+    currentPage: number;
+    totalPages: number;
+  };
+}
+
+export interface CountDocument {
+  meta: { count: number };
+}
+
+export interface EmptyDocument {
+  data: null;
+}
+
 export interface ErrorObject {
   status: string;
   title: string;
@@ -58,41 +81,46 @@ export interface UpdateTodoBody {
   data: TodoIdentifier & { attributes: Partial<TodoAttributes> };
 }
 
-/** PATCH /api/todo/ops.bulk.patch — toggle-all */
-export interface BulkPatchBody {
-  data: TodoIdentifier[];
+/** PATCH /api/todo/ops.bulk.patchAll — toggle-all */
+export interface PatchAllBody {
   attributes: Partial<TodoAttributes>;
-}
-
-/** DELETE /api/todo/ops.bulk.delete — clear-completed */
-export interface BulkDeleteBody {
-  data: TodoIdentifier[];
 }
 
 /**
  * Route table. Status codes are the success case; validation failures return
- * 422 with an `ErrorDocument`, unknown ids return 404 with an `ErrorDocument`.
+ * 422 with an `ErrorDocument`, unknown ids return 404 with an `ErrorDocument`,
+ * and bad query parameters return 400 with an `ErrorDocument`.
+ *
+ * Routes marked "filterable" accept `?filter[completed]=true|false`.
  */
 export const ROUTES = {
-  /** Optional `?filter[completed]=true|false` narrows the list. */
+  /**
+   * Filterable. Returns every matching todo, or one page of them when given
+   * `page[limit]` (1–100, default 25) and/or `page[offset]` (default 0).
+   */
   list: { method: 'GET', path: `${API_ROOT}/todo`, status: 200 },
+  /** Filterable. Counts matching todos without returning them. */
+  count: { method: 'GET', path: `${API_ROOT}/todo/ops.count`, status: 200 },
   get: { method: 'GET', path: `${API_ROOT}/todo/:id`, status: 200 },
   create: { method: 'POST', path: `${API_ROOT}/todo`, status: 201 },
   update: { method: 'PATCH', path: `${API_ROOT}/todo/:id`, status: 200 },
   delete: { method: 'DELETE', path: `${API_ROOT}/todo/:id`, status: 204 },
-  bulkPatch: { method: 'PATCH', path: `${API_ROOT}/todo/ops.bulk.patch`, status: 200 },
-  bulkDelete: { method: 'DELETE', path: `${API_ROOT}/todo/ops.bulk.delete`, status: 204 },
+  /** Filterable. Applies the same attributes to every matching todo. */
+  patchAll: { method: 'PATCH', path: `${API_ROOT}/todo/ops.bulk.patchAll`, status: 200 },
+  /** Filterable. Deletes every matching todo. */
+  deleteAll: { method: 'DELETE', path: `${API_ROOT}/todo/ops.bulk.deleteAll`, status: 204 },
 } as const;
 
 /** Response body for each route. `null` means no body (204). */
 export interface RouteResponses {
-  list: TodoCollectionDocument;
+  list: TodoCollectionDocument | TodoPageDocument;
+  count: CountDocument;
   get: TodoDocument;
   create: TodoDocument;
   update: TodoDocument;
   delete: null;
-  bulkPatch: TodoCollectionDocument;
-  bulkDelete: null;
+  patchAll: EmptyDocument;
+  deleteAll: null;
 }
 
 /** Seeded on first load so the first request in the tutorial shows data. */
