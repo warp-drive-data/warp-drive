@@ -45,32 +45,28 @@ rich applications &mdash; letting you ship better experiences more quickly witho
 **Tagged Releases**
 
 - ![NPM Canary Version](https://img.shields.io/npm/v/%40warp-drive%2Freact/canary?label=@canary&color=FFBF00)
-- ![NPM Beta Version](https://img.shields.io/npm/v/%40warp-drive%2Freact/bet?label=@beta&color=ff00ff)
+- ![NPM Beta Version](https://img.shields.io/npm/v/%40warp-drive%2Freact/beta?label=@beta&color=ff00ff)
 - ![NPM Stable Version](https://img.shields.io/npm/v/%40warp-drive%2Freact/latest?label=@latest&color=90EE90)
 - ![NPM LTS Version](https://img.shields.io/npm/v/%40warp-drive%2Freact/lts?label=@lts&color=0096FF)
 - ![NPM LTS-4-12 Version](https://img.shields.io/npm/v/%40warp-drive%2Freact/lts-4-12?label=@lts-4-12&color=bbbbbb)
 
 ## About
 
-This library provides reactive utilities for working with promises and requests, building over these primitives to provide functions and components that enable you to build robust performant apps with elegant control flow
+This library provides reactive utilities for working with promises and requests, building over these primitives to provide functions and components that enable you to build robust performant apps with elegant control flow.
 
 ## Usage
 
-Wrap your app in a `StoreProvider` and the hooks and components below it can reach the Store:
+Wrap your app in a `StoreProvider`, passing the Store class from your store file (the `@warp-drive/core` README shows it), and the hooks and components below it can reach the Store:
 
 ```tsx
 import { StoreProvider } from '@warp-drive/react';
-import { Store } from './store.ts';
-import { UserList } from './user-list.tsx';
+import { AppStore } from './store.ts';
 
-export function App(props) {
+export function App() {
   return (
-    <div className='App'>
-      <StoreProvider Store={Store}>
-        <h1>Hello React!</h1>
-        <UserList />
-      </StoreProvider>
-    </div>
+    <StoreProvider Store={AppStore}>
+      <h1>Hello React!</h1>
+    </StoreProvider>
   );
 }
 ```

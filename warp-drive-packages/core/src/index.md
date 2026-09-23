@@ -3,8 +3,9 @@
 ***Warp*Drive** is the lightweight data library for web apps: universal, typed, reactive, and
 ready to scale. This package is its core: the {@link @warp-drive/core!Store | Store} that holds
 your data, the {@link @warp-drive/core!RequestManager | RequestManager} that fetches it through a
-chain of handlers, the [Cache](/api/@warp-drive/core/types/cache/types/Cache) interface a cache
-implementation fills in, and the reactive objects that present cached data to your UI.
+chain of handlers (each a function or object that can fulfill, modify, or pass along a request),
+the [Cache](/api/@warp-drive/core/types/cache/types/Cache) interface a cache implementation
+fills in, and the reactive objects that present cached data to your UI.
 
 :::tip New here?
 Start with the [Installation](/guides/installation/) and [Setup](/guides/configuration/) guides.
@@ -14,7 +15,8 @@ The API docs assume that context.
 ## Setup
 
 {@link @warp-drive/core!useRecommendedStore | useRecommendedStore} produces a Store class with the
-recommended defaults for schemas, reactivity, caching, and request management. Pair it with a
+recommended defaults for schema handling, reactivity, caching, and request management, including a
+RequestManager already wired with `Fetch` and `CacheHandler`. Pair it with a
 cache implementation; most apps should use {@link @warp-drive/json-api! | @warp-drive/json-api}.
 
 ```ts
@@ -24,7 +26,7 @@ import { JSONAPICache } from '@warp-drive/json-api';
 export const AppStore = useRecommendedStore({
   cache: JSONAPICache,
   schemas: [
-    // resource schemas, see /guides/the-manual/schemas/
+    // one schema per resource type, see /guides/the-manual/schemas/
   ],
 });
 ```

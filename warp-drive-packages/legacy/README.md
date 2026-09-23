@@ -28,7 +28,7 @@ Decommissioned Features from <em>Warp</em><strong>Drive</strong> that your App m
 
 > [!WARNING]
 > This package provides support for older ***Warp*Drive** features that have been
-> deprecated and removed from [@warp-drive/core](https://canary.warp-drive.io/api/@warp-drive/core/).
+> deprecated and removed from [@warp-drive/core](https://warp-drive.io/api/@warp-drive/core/).
 >
 > **Projects using these features should refactor away from them with urgency**
 
@@ -41,7 +41,9 @@ import { useLegacyStore } from '@warp-drive/legacy';
 import { JSONAPICache } from '@warp-drive/json-api';
 
 export default useLegacyStore({
+  // false: relationships still resolve via adapters, not links
   linksMode: false,
+  // true: keep the legacy request methods and adapter/serializer infrastructure
   legacyRequests: true,
   cache: JSONAPICache,
   schemas: [],
@@ -50,7 +52,7 @@ export default useLegacyStore({
 
 ## Documentation
 
-*Get Started* → [Guides](https://docs.warp-drive.io)
+*Get Started* → [Guides](https://warp-drive.io/guides/)
 
 
 <br>

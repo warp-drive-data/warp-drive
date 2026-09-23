@@ -14,7 +14,7 @@ To resolve this deprecation, follow these steps:
 ### 1. Remove @ember-data/tracking
 
 - Remove `@ember-data/tracking` from package.json (if using `ember-data` this may not be present)
-- Remove type imports for `@ember-data/tracking` from tsconfig.json
+- Remove the `@ember-data/tracking` entry from the `types` array in tsconfig.json, if present
 - If using `untracked`, change to using `untrack` from `@glimmer/validator`
 
 ### 2. Add @warp-drive/ember
@@ -27,7 +27,10 @@ To resolve this deprecation, follow these steps:
 
 Once the above steps are complete, the deprecation can be silenced and the automatic fallback
 registration of reactivity from `@ember-data/tracking` can be removed by updating your
-{@link @warp-drive/build-config! | WarpDrive Build Config}  in your `ember-cli-build` file.
+{@link @warp-drive/build-config! | WarpDrive Build Config} in your `ember-cli-build` file. On current
+versions `setConfig` is exported from `@warp-drive/core/build-config`; `@warp-drive/build-config` is its
+older home and still works. Set `compatWith` to the most recent `major.minor` your app has fully resolved
+deprecations for, not to the `4.12` shown.
 
 ```js [ember-cli-build.js]
 'use strict';

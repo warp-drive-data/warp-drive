@@ -44,7 +44,7 @@ export const AppStore = useRecommendedStore({
 
 ## Documentation
 
-*Get Started* → [Guides](https://warp-drive.io)
+*Get Started* → [Guides](https://warp-drive.io/guides/)
 
 
 <br>

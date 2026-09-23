@@ -47,7 +47,7 @@ const url = `${baseURL}?${buildQueryParams({ name: 'Chris', include:['pets'] })}
 
 ## Documentation
 
-*Get Started* → [Guides](https://docs.warp-drive.io)
+*Get Started* → [Guides](https://warp-drive.io/guides/)
 
 
 <br>

@@ -51,8 +51,8 @@ import Store from '@ember-data/store';
 import Cache from '@ember-data/json-api';
 
 export default class extends Store {
-  createCache(storeWrapper) {
-    return new Cache(storeWrapper);
+  createCache(capabilities) {
+    return new Cache(capabilities);
   }
 }
 ```
@@ -72,7 +72,7 @@ When *Ember***Data** needs to fetch or save data it will pass that request to yo
 To start, let's install the `RequestManager` from `@ember-data/request` and the basic `Fetch` handler from `@ember-data/request/fetch`.
 
 :::tip Note
-If your app uses `GraphQL`, `REST` or different conventions for `JSON:API` than your cache expects, other handlers may better fit your data. You can author your own handler by creating one that conforms to the [handler interface](https://github.com/warp-drive-data/warp-drive/tree/main/packages/request#handling-requests).
+If your app uses `GraphQL`, `REST` or different conventions for `JSON:API` than your cache expects, other handlers may better fit your data. You can author your own handler by creating one that conforms to the [handler interface](/api/@warp-drive/core/request/types/Handler).
 :::
 
 ```ts
@@ -82,11 +82,12 @@ import Fetch from '@ember-data/request/fetch';
 
 export default class extends Store {
   requestManager = new RequestManager()
-   .use([Fetch]);
+    .use([Fetch])
+    .useCache(CacheHandler);
 }
 ```
 
-**Using RequestManager as a Service**
+### Using RequestManager as a Service
 
 Alternatively if you have configured the `RequestManager` to be a service you may re-use it.
 
@@ -141,13 +142,18 @@ export default class extends Store {
     record.type = identifier.type;
     record.id = identifier.id;
 
-    notifications.subscribe(identifier, (_, change) => {
+    const token = notifications.subscribe(identifier, (_, change) => {
       if (change === 'attributes') {
         Object.assign(record, cache.peek(identifier));
       }
     });
 
+    record.destroy = () => notifications.unsubscribe(token);
     return record;
+  }
+
+  teardownRecord(record) {
+    record.destroy();
   }
 }
 ```

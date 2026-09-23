@@ -58,6 +58,8 @@ export const AppStore = useRecommendedStore({
 });
 ```
 
+This package is framework-agnostic; the bindings live in `@warp-drive/ember`, `@warp-drive/react` and `@warp-drive/vue`. Schemas describe the shape of your resources; the [Schemas guide](https://warp-drive.io/guides/the-manual/schemas/) covers writing them, and the [Setup guide](https://warp-drive.io/guides/configuration/) shows how each framework provides the Store to components.
+
 <br>
 
 ---

@@ -35,7 +35,7 @@
 
 Runtime classes for use as a source of ResourceSchema and as a ReactiveResource for older "legacy" EmberData/WarpDrive configurations.
 
-If using more recent versions of WarpDrive, install this via [@warp-drive/legacy](https://www.npmjs.com/package/@warp-drive/legacy) instead.
+If you must keep using Models on a recent WarpDrive version, install them via [@warp-drive/legacy](https://www.npmjs.com/package/@warp-drive/legacy) rather than this package.
 
 **Tagged Releases**
 

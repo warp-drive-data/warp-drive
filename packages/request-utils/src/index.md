@@ -3,7 +3,7 @@
 :::warning ⚠️ This package has been merged into {@link @warp-drive/utilities! | @warp-drive/utilities} and is not recommended for new applications
 :::
 
-Simple utility function to assist in url building,
+Simple utility functions to assist in url building,
 query params, and other common request operations.
 
 These primitives may be used directly or composed

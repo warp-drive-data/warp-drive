@@ -83,7 +83,7 @@ After installing you will want to configure your first `Store`: add a cache, add
 
 ## Usage
 
-Give the Store a cache and a way to fetch:
+Give the Store a cache and a way to fetch. The sample also uses `@ember-data/request` and `@ember-data/json-api`, so install those alongside this package:
 
 ```ts
 import Store, { CacheHandler } from '@ember-data/store';

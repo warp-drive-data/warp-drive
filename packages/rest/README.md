@@ -72,10 +72,11 @@ const options = findRecord('ember-developer', '1', { include: ['pets', 'friends'
 
 /*
   => {
+    // host and namespace come from setBuildURLConfig
     url: 'https://api.example.com/v1/emberDevelopers/1?include=friends,pets',
     method: 'GET',
     headers: <Headers>, // 'Content-Type': 'application/json;charset=utf-8'
-    op: 'findRecord';
+    op: 'findRecord',
     records: [{ type: 'ember-developer', id: '1' }]
   }
 */

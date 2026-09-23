@@ -34,7 +34,6 @@
 > **⚠️ This is a legacy package** not recommended for new applications.
 >
 > **This is LEGACY documentation** for a feature that is no longer encouraged to be used.
-
 > If starting a new app or thinking of implementing a new serializer, consider writing a [Handler](https://warp-drive.io/api/@warp-drive/core/request/types/Handler)
 > instead to be used with the [RequestManager](https://warp-drive.io/api/@warp-drive/core/classes/RequestManager)
 
@@ -59,13 +58,13 @@ pnpm add @ember-data/serializer
 
 ## 🚀 Setup
 
-If using `ember-data` no additional setup is necesssary.
+If using `ember-data` no additional setup is necessary.
 
 > **Note**
 > When using [ember-data](https://github.com/warp-drive-data/warp-drive/blob/main/packages/-ember-data) the below
 > configuration is handled for you automatically.
 
-To use legacy serializers you will need to have installed and configured the LegacyNetworkHandler from [@ember-data/legacy-compat](https://github.com/warp-drive-data/warp-drive/blob/main/packages/-ember-data)
+To use legacy serializers you will need to have installed and configured the LegacyNetworkHandler from [@ember-data/legacy-compat](https://github.com/warp-drive-data/warp-drive/blob/main/packages/legacy-compat)
 
 ```sh
 pnpm add @ember-data/legacy-compat
@@ -82,6 +81,8 @@ export default class extends Store {
     .useCache(CacheHandler);
 }
 ```
+
+The store also needs a cache; the [@ember-data/store](https://github.com/warp-drive-data/warp-drive/blob/main/packages/store/README.md) README shows adding one.
 
 <br>
 

@@ -36,7 +36,7 @@
 > Newer apps should use [@warp-drive/utilities](https://warp-drive.io/api/@warp-drive/utilities/)
 
 
-This package provides Simple utility function to assist in url building, query params, and other common request operations.
+This package provides simple utility functions to assist in url building, query params, and other common request operations.
 
 It's built for [*Ember***Data**](https://github.com/warp-drive-data/warp-drive/) but useful more broadly if you're looking for lightweight functions to assist in working with urls and query params.
 
@@ -59,7 +59,7 @@ pnpm add @ember-data/request-utils
 
 ## Utils
 
-- `buildBaseUrl`
+- `buildBaseURL`
 - `sortQueryParams`
 - `buildQueryParams`
 - `filterEmpty`
