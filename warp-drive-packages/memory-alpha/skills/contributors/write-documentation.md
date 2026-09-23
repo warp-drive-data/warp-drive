@@ -1,13 +1,17 @@
 # Write Documentation
 
-Use this skill whenever you're writing or changing documentation in this repo: a TSDoc comment,
-a guide, an `upgrading/` or `blog/` page, a package README or `src/index.md`, or one of these
-agent skills. The human contributor guides under
+Use this skill whenever you're writing or changing documentation in this repo: a doc comment
+(TSDoc), a guide, an `upgrading/` or `blog/` page, a package README or `src/index.md`, or one of
+these agent skills. The human contributor guides under
 [Writing Documentation](/guides/contributing/writing-documentation/index.md) are the source of
 truth for *what* good documentation looks like here; this skill is only about *how* to produce it
-with the person you're working with, and it links to those guides rather than restating them.
+with the person you're working with. It links to those guides rather than restating them, because
+a copied rule goes stale silently and gets followed confidently, while a link that goes stale
+fails the link checker and gets fixed.
 
 ## Steps
+
+For a one-line fix (a typo, a dead link, a wrong version number), skip to step 6.
 
 1. Pick the type of doc first. A request like "document X" rarely means one file. Use
    [Which Type of Doc Should I Write?](/guides/contributing/writing-documentation/index.md#which-type-of-doc-should-i-write)
@@ -23,12 +27,11 @@ with the person you're working with, and it links to those guides rather than re
    | Pages under `upgrading/` or `blog/` | [Writing Permanent Content](/guides/contributing/writing-documentation/writing-permanent-content.md) |
    | Files under `warp-drive-packages/memory-alpha/skills/` | [Writing Agent Skills](/guides/contributing/writing-documentation/writing-agent-skills.md) |
 
-   Those pages own the rules on tags (`@since`, `@internal`, `@deprecated`, `@group`), link and
-   example requirements, audiences, nav metadata, and permanent-URL constraints. Don't paraphrase
-   them from memory; if a rule matters to your task, go read the sentence.
+   Those pages own the rules on tags, links and examples, audiences, nav metadata, and permanent
+   URLs. Don't paraphrase them from memory; if a rule matters to your task, go read the sentence.
 3. Gather context before drafting. The person asking knows things the source can't tell you.
    Ask, in a few short rounds rather than one wall of questions, and skip anything the type of
-   doc makes moot:
+   doc makes moot. Steps 1 and 3 can be a single round.
    - Who is this for? Use
      [Know Your Audience](/guides/contributing/writing-documentation/index.md#know-your-audience)
      as the menu; the guide for this type of doc narrows it further.
@@ -46,11 +49,13 @@ with the person you're working with, and it links to those guides rather than re
    written yet. Link the guide or symbol that owns a concept instead of re-explaining it.
 5. Reader-test before you call it done. Hand the finished text, and only the text, to a fresh
    agent instance that has none of your conversation, along with three to five questions a real
-   reader would bring to it, and fix whatever it gets wrong or has to guess at. For API docs the
-   question is always some form of "how do I use this?"; if the answer requires opening the source,
-   the doc is missing an example or a link. For a guide, ask what prior knowledge it assumes and
-   whether that matches the audience you chose in step 3. For an `upgrading/` or `blog/` page, ask
-   which version the page is written for and whether a reader on a different version can tell.
+   reader would bring to it, and fix whatever it gets wrong or has to guess at. If you can't spawn
+   one, ask the user to paste the text into a fresh session and relay the answers. For API docs
+   the question is always some form of "how do I use this?"; if the answer requires opening the
+   source, the doc is missing an example or a link. For a guide, ask what prior knowledge it
+   assumes and whether that matches the audience you chose in step 3. For an `upgrading/` or
+   `blog/` page, ask which version the page is written for and whether a reader on a different
+   version can tell.
 6. Check, preview, then hand off:
    - For API docs, every item in
      [Content Standards](/guides/contributing/writing-documentation/writing-api-docs.md#content-standards),
@@ -59,13 +64,15 @@ with the person you're working with, and it links to those guides rather than re
      [Cross-Documentation Checklist](/guides/contributing/writing-documentation/index.md#cross-documentation-checklist).
    - Run `pnpm lint:docs` from the repo root, then build and open the affected pages as described
      in [Previewing Your Changes](/guides/contributing/writing-documentation/index.md#previewing-your-changes).
-     Leaked private symbols and markdown that VitePress can't compile (a bare `<angle-bracket>` in
-     prose, for one) show up here and nowhere earlier.
-   - Label the pull request as that same section describes so reviewers get a deployed preview.
+   - Label the pull request `:label: doc`; that same section says what the label deploys.
 
-## Why the link-don't-restate rule matters
+## Gotchas
 
-Rules move. A copy of a rule inside a skill goes stale silently and then gets followed
-confidently. A link goes stale loudly, when the link checker or the docs build fails, which is the
-failure mode we want — and it lets whoever's reading lazily gather full context from the guide
-itself rather than a partial restatement.
+- The docs dev server builds the sidebar once, when VitePress loads its config. A page you add
+  while `pnpm start` is running won't appear in the sidebar until you restart it, even though the
+  page itself is served.
+- `pnpm lint:docs` checks links in `guides/`, `upgrading/`, `blog/`, `rfcs/`, and the agent
+  skills. It does not check package READMEs; open those on GitHub to verify their links.
+- VitePress compiles markdown to Vue, so a bare `<thing>` in prose is parsed as an element and
+  fails the build. Put angle brackets in code spans. `pnpm lint:docs` does not catch this; only
+  the build does.
