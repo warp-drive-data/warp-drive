@@ -20,20 +20,16 @@ never deleted, even after its content is out of date.
 If a page's content is fully superseded (a newer major-version guide replaces it, a post is
 factually wrong, etc.), don't delete or move it. Instead:
 
-1. Replace its body with a short pointer to the replacement, wrapped in a `:::danger` callout,
-   e.g.:
+1. Replace its body with a short pointer to the replacement, wrapped in a `:::danger` callout.
+   Keep the frontmatter `title` and the `<SinceBadge>` line so the page still says what it was:
 
    ```md
-   ---
-   draft: true
-   ---
-
    :::danger **We've moved!**
    This guide has [moved](/upgrading/v6/index.md)
    :::
    ```
 
-2. Set `draft: true` in its frontmatter. This hides the page from the sidebar and nav (so it
+2. Add `draft: true` to its frontmatter. This hides the page from the sidebar and nav (so it
    doesn't clutter navigation for current readers) while leaving the page itself published at its
    original URL. `draft` behaves the same way for `guides/`; only the synced agent skills under
    `warp-drive-packages/memory-alpha/skills/` have their `draft` pages removed from the site
@@ -41,10 +37,16 @@ factually wrong, etc.), don't delete or move it. Instead:
 
 ## Every page is dated and versioned
 
-Record the ***Warp*Drive*** version (and the date) a page was written for, usually as a
-`<SinceBadge version="X.Y.Z" />` near the top of the page next to the date it was authored or
-last meaningfully revised. This lets a reader who lands on an old search result or bookmark know
-immediately whether the page still applies to the version they're using.
+Record the ***Warp*Drive*** version and the date a page was written for near the top of the page,
+as a `<SinceBadge>` followed by the date (`YYYY-MM-DD`) it was authored or last meaningfully
+revised:
+
+```md
+<SinceBadge version="5.0.0" /> &nbsp; authored 2023-06-10
+```
+
+This lets a reader who lands on an old search result or bookmark know immediately whether the
+page still applies to the version they're using.
 
 ## Organize by major version
 

@@ -16,14 +16,14 @@ the symbol, so link the guide that teaches it on first mention.
 ## API Documentation Infra Overview
 
 API Documentation is generated from [TSDoc](https://tsdoc.org/) comments in the source code
-compiled with [TypeDoc](https://typedoc.org/) and transformed for [Vitepress](https://vitepress.dev/) using [typedoc-plugin-markdown](https://www.typedoc-plugin-markdown.org/plugins/vitepress)
+compiled with [TypeDoc](https://typedoc.org/) and transformed for [Vitepress](https://vitepress.dev/) using [typedoc-plugin-markdown](https://www.typedoc-plugin-markdown.org/plugins/vitepress).
 
 TSDoc syntax is similar to YUIDoc and JSDoc but there are occasional nuances where it becomes best to know that the underlying grammar is TSDoc
 and parser is TypeDoc.
 
-TypeDoc is configured to follow our public package entrypoints to
-auto-discover documentation. It documents everything reachable, public or private including properties and methods that have no associated
-code docs. It uses TypeScript to understand the source-code and builds documentation from the combination of Type signatures and TSDoc comments.
+TypeDoc is configured to follow our public package entrypoints (the `exports` in each package's
+`package.json`) to auto-discover documentation. It documents everything reachable, public or
+private, including properties and methods that have no associated code docs. It uses TypeScript to understand the source-code and builds documentation from the combination of Type signatures and TSDoc comments.
 
 This is great, but it means that its very easy to leak private APIs
 into the docs.
@@ -42,7 +42,7 @@ nuances and syntaxes to know, as well as how to preview the doc comments.
 
 ### What are Doc Comments
 
-Only `**` comments are compiled as potential documentation, e.g.
+Only `/**` comments are compiled as potential documentation, e.g.
 
 ```ts
 /**
@@ -109,14 +109,12 @@ const Foo = '1';
 function foo() {}
 ```
 
-<br>
-
 ### Ignored Doc Comments
 
-When compiling the API documentation, comments using the `@internal` tag will be ignored:
-
-For example, the below doc comment would be ignored. This is useful for documenting code
-for fellow developers that shouldn't be exposed to end consumers.
+When compiling the API documentation, any symbol whose doc comment carries the `@internal` tag is
+left out of the published docs entirely, along with everything nested under it (TypeDoc runs with
+`excludeInternal`). This is how to document code for fellow developers without exposing it to end
+consumers. For example, the function below would not appear in the docs:
 
 ```ts
 /**
@@ -127,8 +125,6 @@ for fellow developers that shouldn't be exposed to end consumers.
  */
 function somethingInside() {}
 ```
-
-<br>
 
 ### Auto Association
 
@@ -173,8 +169,9 @@ For instance
 > which implements the same rule. Use the same trick any time an example needs a code block inside
 > another code block.
 
-Additionally, the markdown parser in use by our docs understands documentation groups,
-and [many other features](https://vitepress.dev/guide/markdown).
+Additionally, the markdown parser in use by our docs understands
+[code groups](https://vitepress.dev/guide/markdown#code-groups), and
+[many other features](https://vitepress.dev/guide/markdown).
 
 This means we can do code examples that toggle between files or formats.
 
@@ -194,10 +191,9 @@ This means we can do code examples that toggle between files or formats.
  */
 ````
 
-Highlighting, focus management and code groups are three features that combine
-to enable crafting powerful examples in the documentation.
-
-<br>
+[Line highlighting](https://vitepress.dev/guide/markdown#line-highlighting-in-code-blocks),
+[focus](https://vitepress.dev/guide/markdown#focus-in-code-blocks), and code groups are three
+VitePress features that combine to enable crafting powerful examples in the documentation.
 
 ### Doc Comments should start every line with a `*`
 
@@ -263,16 +259,23 @@ we would do the following in `packages/core-types/src/index.ts`
  */
 ```
 
-<br>
+### Mark public exports with `@public`
+
+TSDoc's release tags (`@public`, `@alpha`, `@beta`, `@internal`) say who a symbol is for. In this
+repo every export intended for consumers carries `@public`, and everything else that is reachable
+from a package entrypoint carries `@internal` (see [Ignored Doc Comments](#ignored-doc-comments)).
+The content standards later on this page apply to anything tagged `@public`.
 
 ### Always specify `@since` on non-type public APIs
 
 `@since` renders as a small badge rather than a body section, so it's
 always visible next to the name of the thing it describes without
-taking up page space.
+taking up page space. The other examples on this page leave it out to
+stay short; real public APIs must not.
 
-On a function, class, interface, variable, or type alias, it shows up
-right next to that page's own name:
+On a function, class, or variable it shows up right next to that page's
+own name (an interface or type alias renders it the same way if you add
+one, but types don't require it):
 
 ```ts
 /**
@@ -282,7 +285,8 @@ right next to that page's own name:
 ```
 
 On a package's `@module` doc comment, it shows up next to that
-package's `<ModuleBadge>` on the module's index page instead:
+package's `<ModuleBadge>` (the pill showing the module path at the top
+of the module's index page) instead:
 
 ```ts
 /**
@@ -393,8 +397,9 @@ page has a `@category`, every symbol without one falls into a generic
 Given that tradeoff, **default to `@group`**, and reach for `@category`
 only when the grouping you want genuinely cuts across kinds, and
 you're prepared to categorize everything relevant on that page rather
-than just a few symbols. Never mix the two for symbols that need to
-render together in the same page — see [`@decorator` and
+than just a few symbols. Never mix the two across the symbols on one
+page: once any symbol there has a `@category`, give every symbol on that
+page one — see [`@decorator` and
 `@classDecorator`](#marking-decorators-with-decorator-and-classdecorator)
 below for a concrete example of this exact tradeoff.
 
@@ -505,7 +510,8 @@ class ReactiveResource {}
 ### Don't document types in @param and @return
 
 Because types are parsed from the TypeScript, `@param` and `@return` should
-be used to give a meaningful description only.
+be used to give a meaningful description only. This repo uses `@return`;
+TypeDoc also accepts TSDoc's standard `@returns`.
 
 ```ts
 /**
@@ -524,7 +530,9 @@ function add(a: number, b: number): number {}
 
 Even a minimal example dramatically shortens the time it takes for a
 consumer to understand how to use an API. Every doc comment for a
-`@public` export should include at least one.
+`@public` export should include at least one, under the `@example` tag.
+(An `### Example` heading in the comment body also renders, but
+`@example` is the convention in this repo.)
 
 ````ts
 /**
@@ -732,20 +740,18 @@ interface AbortController {
 }
 ```
 
-<br>
-
 ### The `@deprecated` Tag
 
-`@deprecated` is a standard TSDoc tag. The description below is an
-add-on to, not a replacement for, its standard meaning: it signals
-that consumers should stop using the tagged function, component, or
-object because it is actively being removed.
+`@deprecated` is a standard TSDoc tag. In this repo it carries one extra
+meaning on top of the standard one: the tagged function, component, or
+object is actively being removed, not merely out of favor (that is
+[`@discouraged`](#the-discouraged-tag), below).
 
 - Whenever possible, link the `@recommended` replacement.
 - If the deprecation is tracked by [the deprecations guide](/api/@warp-drive/build-config/deprecations/)
   (i.e. it has a deprecation id like `ember-data:deprecate-store-extends-ember-object`
-  and a corresponding `DEPRECATE_*` flag), link both the guide and the
-  specific deprecation id using `@id`.
+  and a corresponding `DEPRECATE_*` flag), link the guide and name the
+  deprecation id so readers can find its entry there.
 
 ```ts
 /**
@@ -811,18 +817,6 @@ currently renders as nothing more than an unstyled
 
 ## Documentation Hygiene
 
-### Troubleshooting
-
-If you have added docs but are not seeing them when previewing locally, and if you
-have confirmed the docs preview server is running (and has not crashed)
-
-- The docs may have been excluded due to using an [ignored doc comment](#ignored-doc-comments)
-- The docs may have been excluded due to not using the right [comment syntax](#what-are-doc-comments)
-- The documented thing may not be accessible via any public API entrypoint
-- TypeDoc may be configured to ignore it (extremely rare)
-
-<br>
-
 ### Previewing Documentation
 
 From inside the `docs-viewer` directory, run `pnpm start`. It builds the API docs, watches the
@@ -830,6 +824,17 @@ package sources and content directories for changes, and serves the site with ho
 [Docs Viewer README](https://github.com/warp-drive-data/warp-drive/blob/main/docs-viewer/README.md)
 for the static build and preview commands.
 
-Once your change is in a pull request, add the `:label: doc` label to get a deployed preview of
-the whole site at `https://canary.warp-drive.io/pr-preview/pr-<number>/`, linked from a comment
-on the PR.
+Once your change is in a pull request, add the `:label: doc` label (the label's name literally
+contains `:label:`) to get a deployed preview of the whole site at
+`https://canary.warp-drive.io/pr-preview/pr-<number>/`, linked from a comment on the PR.
+
+### Troubleshooting
+
+If you have added docs but are not seeing them when previewing locally, and if you
+have confirmed the docs preview server is running (and has not crashed):
+
+- The docs may have been excluded due to using an [ignored doc comment](#ignored-doc-comments)
+- The docs may have been excluded due to not using the right [comment syntax](#what-are-doc-comments)
+- The documented thing may not be accessible via any public API entrypoint (the `exports` in the
+  package's `package.json`)
+- TypeDoc may be configured to ignore it (extremely rare; see `docs-viewer/typedoc.config.mjs`)
