@@ -54,21 +54,38 @@ jobs:
           # 60/hour per-IP anonymous limit, which is shared with unrelated jobs across
           # the whole GitHub Actions runner pool and fails intermittently under load
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Deploy to GitHub Pages
-        # pr-preview.yml pushes to this same gh-pages branch from its own workflow, with
-        # its own concurrency group, so its push can land between this step's fetch of
-        # gh-pages and its own push, rejecting ours as a non-fast-forward. Retrying re-runs
-        # peaceiris/actions-gh-pages from scratch, which re-fetches gh-pages fresh each
-        # attempt, so a retry succeeds once the branch stops moving.
-        uses: Wandalen/wretry.action@e68c23e6309f2871ca8ae4763e7629b9c258e1ea # v3.8.0
-        with:
-          action: peaceiris/actions-gh-pages@84c30a85c19949d7eee79c4ff27748b70285e453 # v4.1.0
-          attempt_limit: 5
-          attempt_delay: 5000
+      # pr-preview.yml pushes to this same gh-pages branch from its own workflow, with its
+      # own concurrency group, so its push can land between one of these steps' fetch of
+      # gh-pages and its own push, rejecting ours as a non-fast-forward. peaceiris/actions-gh-pages
+      # re-fetches gh-pages fresh on every invocation, so retrying the whole step (rather than
+      # just the underlying `git push`) succeeds once the branch stops moving. This repeats the
+      # same pinned step instead of reaching for a third-party retry-wrapper action, since those
+      # tend to invoke their own dependencies by tag internally and so can't be pinned to a SHA
+      # themselves, which this org's Actions policy requires.
+      - name: Deploy to GitHub Pages (attempt 1)
+        id: deploy-1
+        continue-on-error: true
+        uses: peaceiris/actions-gh-pages@84c30a85c19949d7eee79c4ff27748b70285e453 # v4.1.0
+        with: &gh-pages-deploy-inputs
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: docs-viewer/docs.warp-drive.io/.vitepress/dist
+          cname: canary.warp-drive.io
           # keep_files stops this production deploy from wiping out the pr-preview/
           # folders that pr-preview.yml keeps on this same gh-pages branch.
-          with: |
-            github_token: ${{ secrets.GITHUB_TOKEN }}
-            publish_dir: docs-viewer/docs.warp-drive.io/.vitepress/dist
-            cname: canary.warp-drive.io
-            keep_files: true
+          keep_files: true
+      - name: Wait before deploy attempt 2
+        if: steps.deploy-1.outcome == 'failure'
+        run: sleep 5
+      - name: Deploy to GitHub Pages (attempt 2)
+        id: deploy-2
+        if: steps.deploy-1.outcome == 'failure'
+        continue-on-error: true
+        uses: peaceiris/actions-gh-pages@84c30a85c19949d7eee79c4ff27748b70285e453 # v4.1.0
+        with: *gh-pages-deploy-inputs
+      - name: Wait before deploy attempt 3
+        if: steps.deploy-1.outcome == 'failure' && steps.deploy-2.outcome == 'failure'
+        run: sleep 10
+      - name: Deploy to GitHub Pages (attempt 3)
+        if: steps.deploy-1.outcome == 'failure' && steps.deploy-2.outcome == 'failure'
+        uses: peaceiris/actions-gh-pages@84c30a85c19949d7eee79c4ff27748b70285e453 # v4.1.0
+        with: *gh-pages-deploy-inputs
