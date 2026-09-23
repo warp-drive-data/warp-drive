@@ -1,6 +1,7 @@
 // oxfmt-ignore
 import '@warp-drive/ember/install';
 
+import configureAsserts from '@ember-data/unpublished-test-infra/test-support/asserts/index';
 import { setupGlobalHooks } from '@warp-drive/diagnostic';
 import { configure } from '@warp-drive/diagnostic/ember';
 import { start } from '@warp-drive/diagnostic/runners/dom';
@@ -16,6 +17,10 @@ setBuildURLConfig({
 });
 setConfig({ host: MockHost });
 setupGlobalHooks((hooks) => {
+  // the deprecation sweep adds a passing assertion to every test, which turns this app's empty
+  // `todo` placeholders into failures; the notification asserts are what json-api needs
+  configureAsserts(hooks, { assertAllDeprecations: false });
+
   hooks.beforeEach(function (assert) {
     setTestId(this, (assert as unknown as { test: { testId: string } }).test.testId);
   });

@@ -1,8 +1,9 @@
 import { assert } from '@warp-drive/build-config/macros';
 
 import { entangleSignal } from '../../../signals/-private';
+import { fieldValueIdentity } from '../../../store/-private/managers/cache-key-manager.ts';
 import type { ObjectValue, Value } from '../../../types/json/raw';
-import type { ObjectSchema, SchemaObjectField } from '../../../types/schema/fields';
+import type { SchemaObjectField } from '../../../types/schema/fields';
 import type { KindContext } from '../default-mode';
 import { ManagedObjectMap } from '../fields/managed-object';
 import { ReactiveResource } from '../record';
@@ -38,36 +39,10 @@ export function getSchemaObjectField(context: KindContext<SchemaObjectField>): u
     return null;
   }
 
-  const { schema } = store;
-  let objectType: string;
-
-  if (field.options?.polymorphic) {
-    const typePath = field.options.type ?? 'type';
-    // if we are polymorphic, then context.field.options.type will
-    // either specify a path on the rawValue to use as the type, defaulting to "type" or
-    // the special string "@hash" which tells us to treat field.type as a hashFn name with which
-    // to calc the type.
-    if (typePath === '@hash') {
-      assert(`Expected the field to define a hashFn as its type`, field.type);
-      const hashFn = schema.hashFn({ type: field.type });
-      // TODO consider if there are better options and name args we could provide.
-      objectType = hashFn(rawValue, null, null);
-    } else {
-      objectType = (rawValue as ObjectValue)[typePath] as string;
-      assert(
-        `Expected the type path for the field to be a value on the raw object`,
-        typePath && objectType && typeof objectType === 'string'
-      );
-    }
-  } else {
-    assert(`A non-polymorphic SchemaObjectField must provide a SchemaObject type in its definition`, field.type);
-    objectType = field.type;
-  }
-
-  const hashField = (schema.resource({ type: objectType }) as ObjectSchema).identity;
-  const identity = hashField
-    ? schema.hashFn(hashField)(rawValue, hashField.options ?? null, hashField.name)
-    : field.name;
+  const resolved = fieldValueIdentity(store.schema, field, rawValue);
+  assert(`Expected a schema-object value to resolve to a schema-object identity`, resolved !== null);
+  const { type: objectType, hash } = resolved;
+  const identity = hash ?? field.name;
 
   const cachedSchemaObject = signal.value as MemoizedSchemaObject | null;
   if (cachedSchemaObject) {

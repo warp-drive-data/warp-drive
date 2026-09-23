@@ -25,7 +25,10 @@ import {
   type RequestKey,
   type ResourceKey,
 } from '../../../types/identifier.ts';
+import type { ObjectValue } from '../../../types/json/raw.ts';
 import type { ImmutableRequestInfo, RequestInfo } from '../../../types/request.ts';
+import type { FieldSchema, ObjectSchema } from '../../../types/schema/fields.ts';
+import type { SchemaService } from '../../../types/schema/schema-service.ts';
 import type {
   ExistingResourceIdentifierObject,
   ExistingResourceObject,
@@ -78,6 +81,66 @@ export function isRequestKey(identifier: unknown): identifier is RequestKey {
   } else {
     return (identifier as RequestKey).type === '@document' && (identifier as RequestKey)[CACHE_OWNER] !== undefined;
   }
+}
+
+/**
+ * The identity of a field's value, as returned by {@link fieldValueIdentity}.
+ * Today only schema-object values (a `schema-object` field, or one element of
+ * a `schema-array`) have one: the concrete schema-object type the value
+ * resolves to, and the identity hash that type's `ObjectSchema` declares for
+ * it, or `null` when the schema declares `identity: null`.
+ */
+export interface FieldValueIdentity {
+  type: string;
+  hash: string | null;
+}
+
+/**
+ * The identity of `value` as a value of `field`, when the field kind has one.
+ *
+ * A `schema-object` value, or one element of a `schema-array`, resolves to its
+ * concrete schema-object type and the identity hash that type's `ObjectSchema`
+ * declares (`null` when the schema declares `identity: null`). A
+ * non-polymorphic field names the type directly; a polymorphic field reads it
+ * off the value at `options.type` (default `'type'`), or computes it with the
+ * hash function named by `field.type` when `options.type` is `'@hash'`.
+ *
+ * Every other field kind, and any non-object value, has no identity and
+ * returns `null`.
+ */
+export function fieldValueIdentity(
+  schema: SchemaService,
+  field: FieldSchema,
+  value: unknown
+): FieldValueIdentity | null {
+  if (field.kind !== 'schema-object' && field.kind !== 'schema-array') return null;
+  if (!value || typeof value !== 'object') return null;
+  const rawValue = value;
+
+  let type: string;
+  if (field.options?.polymorphic) {
+    const typePath = field.options.type ?? 'type';
+    if (typePath === '@hash') {
+      assert(`Expected the field to define a hashFn as its type`, field.type);
+      type = schema.hashFn({ type: field.type })(rawValue, null, null);
+    } else {
+      type = (rawValue as ObjectValue)[typePath] as string;
+      assert(
+        `Expected the type path for the field to be a value on the raw object`,
+        typePath && type && typeof type === 'string'
+      );
+    }
+  } else {
+    assert(`A non-polymorphic ${field.kind} field must provide a SchemaObject type in its definition`, field.type);
+    type = field.type;
+  }
+
+  const hashField = (schema.resource({ type }) as ObjectSchema).identity;
+  const hash =
+    hashField && hashField.kind === '@hash'
+      ? schema.hashFn(hashField)(rawValue, hashField.options ?? null, hashField.name)
+      : null;
+  return { type, hash };
 }
 
 const isFastBoot = typeof FastBoot !== 'undefined';

@@ -3,7 +3,7 @@ import Component from '@glimmer/component';
 
 import { recordIdentifierFor, useRecommendedStore } from '@warp-drive/core';
 import { checkout, commit, withDefaults } from '@warp-drive/core/reactive';
-import type { Type } from '@warp-drive/core/types/symbols';
+import { Type } from '@warp-drive/core/types/symbols';
 import type { RenderingTestContext } from '@warp-drive/diagnostic/ember';
 import { module, setupRenderingTest, test } from '@warp-drive/diagnostic/ember';
 import { JSONAPICache } from '@warp-drive/json-api';
@@ -61,6 +61,20 @@ class NestedRow extends Component<{ Args: { saved: User; edits: EditableUser } }
   </template>
 }
 
+let rowRenderCount = 0;
+
+function hashMessage(data: object): string {
+  const { id, state } = data as Message;
+  return `${id}:${state}`;
+}
+hashMessage[Type] = 'message-hash';
+
+/** Counts constructions via a field initializer so no custom constructor/`Owner` typing is needed. */
+class Row extends Component<{ Args: { message: Message } }> {
+  rendered = rowRenderCount++;
+  <template>{{@message.state}}</template>
+}
+
 module('Reactivity | committing updates a rendered immutable record', function (hooks) {
   setupRenderingTest(hooks);
 
@@ -86,9 +100,12 @@ module('Reactivity | committing updates a rendered immutable record', function (
         ],
       })
     );
+    // the identity hash is what lets the cache tell an equal-content re-push from a real change;
+    // without one, schema-objects compare by reference and every refetch notifies
+    store.schema.registerHashFn(hashMessage);
     store.schema.registerResource({
       type: 'message',
-      identity: null,
+      identity: { kind: '@hash', name: null, type: 'message-hash' },
       fields: [
         { name: 'id', kind: 'field' },
         { name: 'state', kind: 'field' },
@@ -237,5 +254,48 @@ module('Reactivity | committing updates a rendered immutable record', function (
     assert.equal(user.firstName, 'Christopher', 'remote holds the saved value');
     assert.dom('[data-test-saved]').hasText('Christopher', 'saved renders the saved value');
     assert.dom('[data-test-edits]').hasText('Christopher', 'edits renders the saved value');
+  });
+
+  test('a remote push with equal-hash messages does not rebuild the rendered rows', async function (this: RenderingTestContext, assert) {
+    rowRenderCount = 0;
+    const store = setup();
+    const user = pushUser(store, [
+      { id: 'm1', state: 'pending' },
+      { id: 'm2', state: 'pending' },
+    ]);
+
+    await this.render(
+      <template>
+        <div data-test-rows>
+          {{#each user.messages as |m|}}
+            <Row @message={{m}} />
+          {{/each}}
+        </div>
+      </template>
+    );
+
+    assert.equal(rowRenderCount, 2, 'both rows rendered once');
+    assert.dom('[data-test-rows]').hasText('pending pending', 'both rows render pending');
+    const first = user.messages[0];
+
+    // fresh array/object literals with the same content, not the same references
+    store.push({
+      data: {
+        type: 'user',
+        id: '1',
+        attributes: {
+          firstName: 'Chris',
+          messages: [
+            { id: 'm1', state: 'pending' },
+            { id: 'm2', state: 'pending' },
+          ],
+        },
+      },
+    });
+    await settled();
+
+    assert.equal(rowRenderCount, 2, 'an equal-hash push does not construct new rows');
+    assert.equal(user.messages[0], first, 'the array element is still the same ReactiveResource instance');
+    assert.dom('[data-test-rows]').hasText('pending pending', 'the rendered rows are unchanged');
   });
 });

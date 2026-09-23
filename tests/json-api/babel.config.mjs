@@ -1,7 +1,10 @@
 import { buildMacros } from '@embroider/macros/babel';
+import { readFileSync } from 'node:fs';
 
 import { setConfig } from '@warp-drive/core/build-config';
 import { macros } from '@warp-drive/core/build-config/babel-macros';
+
+const pkg = JSON.parse(readFileSync(new URL('./package.json', import.meta.url), 'utf-8'));
 
 const Macros = buildMacros({
   configure: (config) => {
@@ -11,6 +14,12 @@ const Macros = buildMacros({
         DEPRECATE_STORE_EXTENDS_EMBER_OBJECT: false,
       },
     });
+  },
+  setConfig: {
+    '@ember-data/unpublished-test-infra': {
+      VERSION: pkg.version,
+      ASSERT_ALL_DEPRECATIONS: Boolean(process.env.ASSERT_ALL_DEPRECATIONS),
+    },
   },
 });
 
