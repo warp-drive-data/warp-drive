@@ -1183,20 +1183,6 @@ export const PaginateSpec: SuiteBuilder<LocalTestContext, PaginateSpecSignature>
       },
     }));
 
-    await GET(this, 'users/3', () => ({
-      data: [users[2]],
-      links: {
-        first: urls[0],
-        prev: urls[1],
-        self: urls[2],
-        next: urls[3],
-        last: urls[2],
-      },
-      meta: {
-        pageInfo: { index: 3, count: 3 },
-      },
-    }));
-
     const pageHints: PageHints = (result) => {
       const meta = result.meta as { pageInfo?: { index: number; count: number } } | undefined;
       return { currentPage: meta?.pageInfo?.index ?? 0, totalPages: meta?.pageInfo?.count ?? 0 };

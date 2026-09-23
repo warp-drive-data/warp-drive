@@ -18,6 +18,7 @@ Find the row below that matches what you're doing, or browse the categories in t
 | --- | --- |
 | Define a resource's shape — fields, relationships, identity — for the `Store` | [Define a Resource Schema](/skills/schemas/define-a-resource-schema.md) |
 | Fetch or query remote data through the `Store` so it's cached and reactive | [Fetch and Cache Data](/skills/requests/fetch-and-cache-data.md) |
+| Re-record one holodeck mock, or review a test that sets `RECORD` | [Use RECORD in Holodeck Mocks](/skills/holodeck/using-record.md) |
 | You're contributing to WarpDrive itself, not just consuming it as a dependency | [Contributor Skills](/skills/contributors/index.md) |
 
 This is the same routing table an AI agent uses to find a skill — it just links out to readable

@@ -1,4 +1,4 @@
-import { getIsRecording, mock } from '.';
+import { mock } from '.';
 
 /**
  * @public
@@ -19,6 +19,20 @@ export interface Scaffold {
 export type ScaffoldGenerator = () => Scaffold;
 
 /**
+ * A mock whose method and url are known up front, with the rest of the
+ * scaffold built only when holodeck is recording. This is what the mock
+ * helpers pass, so that in replay mode a test's response generators never
+ * run.
+ *
+ * @public
+ */
+export interface LazyScaffold {
+  method: string;
+  url: string;
+  scaffold: () => Scaffold;
+}
+
+/**
  * @public
  */
 export type ResponseGenerator = () => Record<string, unknown>;
@@ -33,11 +47,13 @@ export type ResponseGenerator = () => Record<string, unknown>;
  * - status: the status code to return (default: 200)
  * - headers: the headers to return (default: {})
  * - body: the body to match against for the request (default: null)
- * - RECORD: whether to record the request (default: false)
+ * - RECORD: record this request even when the suite is replaying, such as under CI (default: false).
+ *   A local override for re-recording one request. Do not commit it; a committed RECORD means
+ *   that request is never replayed against its fixture.
  *
  * @param url the url to mock, relative to the mock server host (e.g. `users/1`)
  * @param response a function which generates the response to return
- * @param options status, headers for the response, body to match against for the request, and whether to record the request
+ * @param options status, headers for the response, body to match against for the request, and whether to force recording
  * @return
  */
 export function GET(
@@ -48,16 +64,20 @@ export function GET(
 ): Promise<void> {
   return mock(
     owner,
-    () => ({
-      status: options?.status ?? 200,
-      statusText: options?.statusText ?? 'OK',
-      headers: options?.headers ?? {},
-      body: options?.body ?? null,
+    {
       method: 'GET',
       url,
-      response: response(),
-    }),
-    getIsRecording() || (options?.RECORD ?? false)
+      scaffold: () => ({
+        status: options?.status ?? 200,
+        statusText: options?.statusText ?? 'OK',
+        headers: options?.headers ?? {},
+        body: options?.body ?? null,
+        method: 'GET',
+        url,
+        response: response(),
+      }),
+    },
+    options?.RECORD
   );
 }
 
@@ -136,21 +156,25 @@ export function POST(
 ): Promise<void> {
   return mock(
     owner,
-    () => {
-      const body = response();
-      const status = options?.status ?? (body ? 201 : 204);
+    {
+      method: 'POST',
+      url,
+      scaffold: () => {
+        const body = response();
+        const status = options?.status ?? (body ? 201 : 204);
 
-      return {
-        status: status,
-        statusText: options?.statusText ?? STATUS_TEXT_FOR.get(status) ?? '',
-        headers: options?.headers ?? {},
-        body: options?.body ?? null,
-        method: 'POST',
-        url,
-        response: body,
-      };
+        return {
+          status: status,
+          statusText: options?.statusText ?? STATUS_TEXT_FOR.get(status) ?? '',
+          headers: options?.headers ?? {},
+          body: options?.body ?? null,
+          method: 'POST',
+          url,
+          response: body,
+        };
+      },
     },
-    getIsRecording() || (options?.RECORD ?? false)
+    options?.RECORD
   );
 }
 
@@ -165,21 +189,25 @@ export function PUT(
 ): Promise<void> {
   return mock(
     owner,
-    () => {
-      const body = response();
-      const status = options?.status ?? (body ? 200 : 204);
+    {
+      method: 'PUT',
+      url,
+      scaffold: () => {
+        const body = response();
+        const status = options?.status ?? (body ? 200 : 204);
 
-      return {
-        status: status,
-        statusText: options?.statusText ?? STATUS_TEXT_FOR.get(status) ?? '',
-        headers: options?.headers ?? {},
-        body: options?.body ?? null,
-        method: 'PUT',
-        url,
-        response: body,
-      };
+        return {
+          status: status,
+          statusText: options?.statusText ?? STATUS_TEXT_FOR.get(status) ?? '',
+          headers: options?.headers ?? {},
+          body: options?.body ?? null,
+          method: 'PUT',
+          url,
+          response: body,
+        };
+      },
     },
-    getIsRecording() || (options?.RECORD ?? false)
+    options?.RECORD
   );
 }
 /**
@@ -194,21 +222,25 @@ export function PATCH(
 ): Promise<void> {
   return mock(
     owner,
-    () => {
-      const body = response();
-      const status = options?.status ?? (body ? 200 : 204);
+    {
+      method: 'PATCH',
+      url,
+      scaffold: () => {
+        const body = response();
+        const status = options?.status ?? (body ? 200 : 204);
 
-      return {
-        status: status,
-        statusText: options?.statusText ?? STATUS_TEXT_FOR.get(status) ?? '',
-        headers: options?.headers ?? {},
-        body: options?.body ?? null,
-        method: 'PATCH',
-        url,
-        response: body,
-      };
+        return {
+          status: status,
+          statusText: options?.statusText ?? STATUS_TEXT_FOR.get(status) ?? '',
+          headers: options?.headers ?? {},
+          body: options?.body ?? null,
+          method: 'PATCH',
+          url,
+          response: body,
+        };
+      },
     },
-    getIsRecording() || (options?.RECORD ?? false)
+    options?.RECORD
   );
 }
 /**
@@ -222,21 +254,25 @@ export function DELETE(
 ): Promise<void> {
   return mock(
     owner,
-    () => {
-      const body = response();
-      const status = options?.status ?? (body ? 200 : 204);
+    {
+      method: 'DELETE',
+      url,
+      scaffold: () => {
+        const body = response();
+        const status = options?.status ?? (body ? 200 : 204);
 
-      return {
-        status: status,
-        statusText: options?.statusText ?? STATUS_TEXT_FOR.get(status) ?? '',
-        headers: options?.headers ?? {},
-        body: options?.body ?? null,
-        method: 'DELETE',
-        url,
-        response: body,
-      };
+        return {
+          status: status,
+          statusText: options?.statusText ?? STATUS_TEXT_FOR.get(status) ?? '',
+          headers: options?.headers ?? {},
+          body: options?.body ?? null,
+          method: 'DELETE',
+          url,
+          response: body,
+        };
+      },
     },
-    getIsRecording() || (options?.RECORD ?? false)
+    options?.RECORD
   );
 }
 
@@ -250,11 +286,13 @@ export function DELETE(
  * - status: the status code to return (default: 200)
  * - headers: the headers to return (default: {})
  * - body: the body to match against for the request (default: null)
- * - RECORD: whether to record the request (default: false)
+ * - RECORD: record this request even when the suite is replaying, such as under CI (default: false).
+ *   A local override for re-recording one request. Do not commit it; a committed RECORD means
+ *   that request is never replayed against its fixture.
  *
  * @param url the url to mock, relative to the mock server host (e.g. `users/1`)
  * @param response a function which generates the response to return
- * @param options status, headers for the response, body to match against for the request, and whether to record the request
+ * @param options status, headers for the response, body to match against for the request, and whether to force recording
  * @return
  */
 export function HEAD(
@@ -268,15 +306,19 @@ export function HEAD(
 ): Promise<void> {
   return mock(
     owner,
-    () => ({
-      status: options?.status ?? 200,
-      statusText: options?.statusText ?? 'OK',
-      headers: options?.headers ?? {},
-      body: options?.body ?? null,
+    {
       method: 'HEAD',
       url,
-      response: response(),
-    }),
-    getIsRecording() || (options?.RECORD ?? false)
+      scaffold: () => ({
+        status: options?.status ?? 200,
+        statusText: options?.statusText ?? 'OK',
+        headers: options?.headers ?? {},
+        body: options?.body ?? null,
+        method: 'HEAD',
+        url,
+        response: response(),
+      }),
+    },
+    options?.RECORD
   );
 }
