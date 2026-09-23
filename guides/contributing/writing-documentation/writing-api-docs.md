@@ -11,7 +11,10 @@ package's `src/index.md`. For where API docs fit alongside guides and other docu
 Of the [audiences](./index.md#know-your-audience) our documentation serves, API docs are read by
 existing users who already know what they want and need the details, and by readers who followed
 a link from a guide. Assume they use ***Warp*Drive**; do not assume they know the concept behind
-the symbol, so link the guide that teaches it on first mention.
+the symbol, so link the guide that teaches it on first mention. LLMs and coding agents are the
+third reader, and they usually read the comment in the source rather than the rendered page, where
+the status badges and automatic MDN links described below do not exist. Write so the words alone
+carry the meaning: a `@deprecated` comment names its replacement in text, not only by badge.
 
 ## API Documentation Infra Overview
 

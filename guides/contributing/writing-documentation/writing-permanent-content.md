@@ -10,7 +10,9 @@ best explanation of a concept. Follow these rules when adding to either section.
 
 Of the [audiences](./index.md#know-your-audience) our documentation serves, these pages are for
 existing users. An upgrade guide may presume knowledge of the concepts being replaced but never of
-the ones replacing them. A blog post should say near the top who it is for.
+the ones replacing them. A blog post should say near the top who it is for. LLMs and coding agents
+also land on these pages, years later and out of order, and will present whatever they find as
+current unless the page's version and date say otherwise; that is the reason for the rule below.
 
 ## URLs are never renamed or unpublished
 
