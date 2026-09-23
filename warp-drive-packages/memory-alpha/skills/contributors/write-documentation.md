@@ -64,12 +64,16 @@ last two bullets: the checks and the label.
      [Content Standards](/guides/contributing/writing-documentation/writing-api-docs.md#content-standards),
      and nothing private left in the published docs per
      [Ignored Doc Comments](/guides/contributing/writing-documentation/writing-api-docs.md#ignored-doc-comments).
+     If you added `@internal` to an exported symbol, build that package (`pnpm --filter <pkg>
+     build:pkg`); a `MISSING_EXPORT` error means another package imports it and it needs a
+     different fix.
    - Every other type of doc a change touches is updated too: see the
      [Cross-Documentation Checklist](/guides/contributing/writing-documentation/index.md#cross-documentation-checklist).
    - Run `pnpm lint:docs` from the repo root, then build and open the affected pages as described
      in [Previewing Your Changes](/guides/contributing/writing-documentation/index.md#previewing-your-changes).
-   - Label the pull request `:label: doc` (the label's name literally contains `:label:`);
-     Previewing Your Changes says what that deploys.
+   - Label the pull request `:label: doc` (see
+     [Changelog Labels](/guides/contributing/submitting-prs.md#changelog-labels)); Previewing
+     Your Changes says what that label deploys.
 
 ## Gotchas
 
@@ -80,3 +84,6 @@ All three are explained in the
   restart the server.
 - `pnpm lint:docs` does not check package READMEs; open those on GitHub.
 - A bare `<thing>` in prose fails the build, and `lint:docs` won't warn you. Use code spans.
+- `@internal` also strips the declaration from the package's `.d.ts`, so it breaks any other
+  package that imports the symbol. See
+  [Ignored Doc Comments](/guides/contributing/writing-documentation/writing-api-docs.md#ignored-doc-comments).

@@ -12,6 +12,8 @@ If this PR is not from a fork and is labeled `:label: doc`, `:label: feat`, or `
 ---
 
 - Read the full [contributing documentation](https://canary.warp-drive.io/guides/contributing/become-a-contributor)
+- Check the [cross-documentation checklist](https://canary.warp-drive.io/guides/contributing/writing-documentation/#cross-documentation-checklist)
+  for any guide, API doc, or upgrade page your change affects, and update it in this PR
 - A changelog label (e.g. `:label: feat`) is applied automatically if your title starts with
   `feat:`, `feat |`, or `[feat]` (and similarly for the other [changelog labels](https://canary.warp-drive.io/guides/contributing/submitting-prs#changelog-labels)) and no changelog label exists yet. If you do not have
   permission to add labels or run the test-suite in CI, a team member will do the rest for you.

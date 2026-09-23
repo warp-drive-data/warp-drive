@@ -26,9 +26,10 @@ of any `emberjs/rfcs` number:
    overwritten and can desync the two copies. Don't start `title` with "WarpDrive" — the sync bot
    adds that prefix automatically for the `emberjs/rfcs` copy and its PR title, so a local title
    that already has it would end up doubled there.
-3. Open a PR to `warp-drive-data/warp-drive` labeled `:label: rfc`. This label also triggers a
-   docs-site PR preview (same as `:label: doc`/`:label: feat`) so reviewers can read the rendered
-   RFC, not just the raw markdown diff.
+3. Open a PR labeled `:label: rfc` (see
+   [Pull Request Labeling](/guides/contributing/submitting-prs.md#pull-request-labeling) for the
+   PR mechanics). That label also triggers a docs-site PR preview so reviewers can read the
+   rendered RFC, not just the raw markdown diff.
 4. Iterate on the PR like any other design discussion. Once there is team consensus to move
    forward, merging the PR is what publishes the RFC — see the next section for what that
    triggers.
@@ -67,6 +68,10 @@ lets it open a fresh PR — ask in `#dev-ember-data` if you hit this.
   `rfcs/0003-...`"), so reviewers and future readers can find the design discussion.
 - Land the implementation behind the same phased/deprecation approach the RFC describes, if it
   describes one — don't skip straight to the end state an RFC called out as a later phase.
+- Ship the documentation with the implementation. An accepted RFC is the first item in the
+  [Cross-Documentation Checklist](/guides/contributing/writing-documentation/index.md#cross-documentation-checklist)
+  for a new public API or a deprecation; the TSDoc, guide, and upgrade page it lists come next.
+  Follow [Write Documentation](./write-documentation.md) for those.
 - Once landed, `stage` in the RFC's frontmatter (both here and, via the sync bot, upstream)
   advances the same way `emberjs/rfcs` advancement PRs do today — this repo does not add a
   separate advancement mechanism.

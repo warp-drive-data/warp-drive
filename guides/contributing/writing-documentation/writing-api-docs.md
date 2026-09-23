@@ -452,6 +452,16 @@ left out of the published docs entirely, along with everything nested under it (
 `excludeInternal`). This is how to document code for fellow developers without exposing it to end
 consumers. For example, the function below would not appear in the docs:
 
+::: warning `@internal` also removes the declaration from the package's types
+`@warp-drive/core` compiles with `stripInternal`, so TypeScript drops every `@internal` declaration
+from the emitted `.d.ts` as well. Tagging a symbol that another workspace package imports, which
+includes anything exported from a `-private.ts` barrel, breaks that package's declaration build
+with a `MISSING_EXPORT` error. Use `@internal` on class members and on symbols nothing else
+imports. For a symbol that must stay importable but out of the docs, leave it in a `-private`
+module: each package's `typedoc.config.mjs` excludes `-private` entry points, so nothing there is
+documented unless a public entry re-exports it.
+:::
+
 ```ts
 /**
  * This is a private utility for updating the state
@@ -604,11 +614,13 @@ goes; `src/index.md` holds the longer landing-page prose.
 ### Mark public exports with `@public`
 
 TSDoc's release tags say who a symbol is for. In this repo every export intended for consumers
-carries `@public`, and everything else that is reachable from a package entrypoint carries
-`@internal` (see [Ignored Doc Comments](#ignored-doc-comments)); `@alpha` and `@beta` are not
-used. A reachable export with neither tag is published as if it were public, so tag it one way or
-the other. Members of a `@public` class or interface inherit its visibility and do not need their
-own `@public`; use `@internal` on a member to hide just that member. The
+carries `@public`; `@alpha` and `@beta` are not used. The rule applies to symbols reachable from
+a public entry point: an export reachable from one with no tag is published as if it were public,
+so give it `@public` or move it out of the public surface. Symbols exported only from `-private`
+modules need no tag, because TypeDoc never sees those entry points, and must not get `@internal`
+if another package imports them (see [Ignored Doc Comments](#ignored-doc-comments) for why).
+Members of a `@public` class or interface inherit its visibility and do not need their own
+`@public`; use `@internal` on a member to hide just that member. The
 [Content Standards](#content-standards) above apply to anything public.
 
 ### Always specify `@since` on non-type public APIs

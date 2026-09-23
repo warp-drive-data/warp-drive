@@ -11,6 +11,8 @@ already running commands.
 
 1. Before running any checks locally, make sure your change is on an open PR. If there isn't one
    yet, commit and push your branch and open one first.
+   [Submitting PRs](/guides/contributing/submitting-prs.md#making-a-pr) covers the target
+   branch, draft state, the pull request template, and labels.
 2. Commit and push to that PR before checking whether the change works. Push first, verify second
    — don't spend a round of local iteration and then push once everything already looks green
    locally.
@@ -23,7 +25,10 @@ already running commands.
    you what's broken — mark the PR as a draft. A draft PR is still the right place to push
    intermediate commits and read CI feedback from; it just signals to reviewers that it isn't
    ready for their attention yet. Mark it ready for review only once CI is green and you consider
-   the change complete.
+   the change complete — which includes any documentation the change affects; run through the
+   [Cross-Documentation Checklist](/guides/contributing/writing-documentation/index.md#cross-documentation-checklist)
+   and, if anything is due, follow [Write Documentation](./write-documentation.md) before you
+   flip the PR out of draft.
 
 ## Why push first
 
