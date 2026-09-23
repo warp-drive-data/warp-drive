@@ -449,7 +449,11 @@ export function installAdapterFor(owner: object, store: Store): void {
  *
  * @public
  */
-export async function mock(owner: object, generate: ScaffoldGenerator | LazyScaffold): Promise<void> {
+export async function mock(
+  owner: object,
+  generate: ScaffoldGenerator | LazyScaffold,
+  isRecording?: boolean
+): Promise<void> {
   const test = TEST_IDS.get(owner);
   if (!test) {
     throw new Error(`Cannot call "mock" before configuring a testId. Use setTestId to set the testId for each test`);
@@ -487,7 +491,9 @@ export async function mock(owner: object, generate: ScaffoldGenerator | LazyScaf
   // requests is reported in replay runs too, not only while recording.
   const testMockNum = test.mock[mockMethod][mockUrl]++;
 
-  if (!getIsRecording()) {
+  // `isRecording` is the per-request RECORD override, which records even when
+  // the suite as a whole is replaying.
+  if (!getIsRecording() && !isRecording) {
     return;
   }
 

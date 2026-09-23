@@ -243,6 +243,31 @@ module('RequestManager | Fetch Handler', function (hooks) {
     );
   });
 
+  test('RECORD records a single request even while the suite replays', async function (assert) {
+    const manager = new RequestManager();
+    manager.use([new MockServerHandler(this), Fetch]);
+    let generatorRuns = 0;
+
+    // The one committed RECORD in the repo: this test exists to prove the
+    // per-request override. Tests that are not about RECORD should never set it.
+    await GET(
+      this,
+      'users/forced',
+      () => {
+        generatorRuns++;
+        return { data: { id: 'forced', type: 'user', attributes: { name: 'Forced' } } };
+      },
+      { RECORD: true }
+    );
+
+    const doc = await manager.request<{ data: { id: string } }>({
+      url: buildBaseURL({ resourcePath: 'users/forced' }),
+    });
+
+    assert.equal(doc.content.data.id, 'forced', 'The request is served');
+    assert.equal(generatorRuns, 1, 'The generator ran in both modes, because RECORD forced a recording');
+  });
+
   test('It explains a missing mock', async function (assert) {
     const manager = new RequestManager();
     manager.use([new MockServerHandler(this), Fetch]);
