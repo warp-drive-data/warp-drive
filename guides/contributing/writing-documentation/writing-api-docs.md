@@ -972,10 +972,10 @@ ones the shape is taken from; copy from them.
   is intended; it is the one piece of duplication a README carries on purpose. Keep the sample to
   what fits on one screen and link the landing page for the rest. `@warp-drive/memory-alpha` is
   read from `node_modules` rather than imported, so its sample is the install and a file path.
-- **Branding blocks.** Several READMEs open with a centered tagline `<p>` under the H1 and close
-  with a collapsible `### ♥️ Credits` block that carries its own `<style>` tag
-  (`@warp-drive/vue`, `@warp-drive/build-config`, `@warp-drive/tc39-proposal-signals`). These
-  are wanted. Keep them when editing a README and copy them when creating one.
+- **Branding blocks.** Every `@warp-drive/*` README closes with the collapsible `### ♥️ Credits`
+  block and the `<style>` tag inside it; copy the block from `@warp-drive/vue` byte for byte, since
+  a few older copies have drifted. Several READMEs also open with a centered tagline `<p>` under
+  the H1. These are wanted. Keep them when editing a README and copy them when creating one.
 - **`## Documentation`** with the same *Get Started* link to the Guides every package uses,
   followed by a link to the package's own landing page in the [API docs](/api/) when the docs
   build publishes the package (`@ember-data/store` has both; `@ember-data/debug` is not in the

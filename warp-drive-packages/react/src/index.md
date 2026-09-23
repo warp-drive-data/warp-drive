@@ -18,7 +18,7 @@ import { UserList } from './user-list.tsx';
 export function App(props) {
   return (
     <div className='App'>
-      <StoreProvider @Store={Store}>
+      <StoreProvider Store={Store}>
         <h1>Hello React!</h1>
         <UserList />
       </StoreProvider>
