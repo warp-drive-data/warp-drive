@@ -56,27 +56,23 @@ pnpm install -E @warp-drive/vue@latest
 - ![NPM LTS Version](https://img.shields.io/npm/v/%40warp-drive%2Fvue/lts?label=@lts&color=0096FF)
 - ![NPM LTS-4-12 Version](https://img.shields.io/npm/v/%40warp-drive%2Fvue/lts-4-12?label=@lts-4-12&color=bbbbbb)
 
-## About
+<br>
 
-This library provides reactive utilities that enable you to build robust performant apps with elegant control flow.
+## Documentation
 
-```ts
-<script>
-  import { Request } from '@warp-drive/vue';
-  import { store } from './app/store';
-</script>
+*Get Started* → [Guides](https://warp-drive.io/guides/)
 
-<Request>
-  
-</Request>
+<br>
 
+## Code of Conduct
 
-```
+Refer to the [Code of Conduct](https://github.com/warp-drive-data/warp-drive/blob/main/CODE_OF_CONDUCT.md) for community guidelines and inclusivity.
 
+<br>
 
+### License
 
----
-
+This project is licensed under the [MIT License](LICENSE.md).
 
 ### ♥️ Credits
 
