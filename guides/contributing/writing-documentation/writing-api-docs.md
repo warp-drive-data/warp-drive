@@ -949,14 +949,16 @@ ones the shape is taken from; copy from them.
 - **The introduction: what it is, who should use it, and why.** One paragraph is enough for a
   small package; `@warp-drive/json-api` says it is a `{json:api}` cache implementation and that
   most apps should use it. A few paragraphs and a diagram are fine when they help an evaluator
-  decide, as the two architecture diagrams in `@ember-data/store` do. If the package is
-  deprecated, say so here in a GitHub alert (`> [!WARNING]`), as `@warp-drive/legacy` does.
-- **Install and first step, when the docs link below cannot be the first step.** That is the
-  case when the package is used in a way the guides do not cover: `@warp-drive/memory-alpha` is
-  read from `node_modules` rather than imported, so its `## Usage` shows `npm install` and a code
-  sample. It is also the case for a legacy package, whose first step the Guides do not teach;
-  `@ember-data/serializer` keeps its `## Setup` for that reason. A modern library package
-  installed and imported the normal way needs neither.
+  decide, as the two architecture diagrams in `@ember-data/store` do. A legacy or deprecated
+  package opens this section with a GitHub alert (`> [!WARNING]`) that says so and names the
+  replacement, as `@ember-data/store` does; the alert is not optional, since npm and GitHub
+  readers never see the landing page's warning container.
+- **Install and the elevator-pitch snippet.** A `pnpm add` line and the smallest code sample that
+  shows the package in use: a developer skimming npm decides whether to keep reading from that
+  sample, not from prose. The landing page shows the same thing in more depth, and that overlap
+  is intended; it is the one piece of duplication a README carries on purpose. Keep the sample to
+  what fits on one screen and link the landing page for the rest. `@warp-drive/memory-alpha` is
+  read from `node_modules` rather than imported, so its sample is the install and a file path.
 - **Branding blocks.** Several READMEs open with a centered tagline `<p>` under the H1 and close
   with a collapsible `### ♥️ Credits` block that carries its own `<style>` tag
   (`@warp-drive/vue`, `@warp-drive/build-config`, `@warp-drive/tc39-proposal-signals`). These
@@ -1008,11 +1010,11 @@ Concepts live in a guide (see [Writing Guides](./writing-guides.md)); signatures
 per-member behavior live in TSDoc, as the rest of this page describes. If a README sentence
 explains how something works, it belongs in one of those and the README should link there.
 
-Short means without the manual, not without the introduction. When a landing page or guide now
-owns a section, remove that section from the README and link there. Everything in
-[README structure](#readme-structure) stays: the introduction, the install line and first step
-where the package needs them, and every branding block. A README cut down to badges and links
-fails the evaluator it exists for.
+Short means without the manual, not without the introduction or the elevator-pitch snippet. When
+a landing page or guide now owns a section, remove that section from the README and link there.
+Everything in [README structure](#readme-structure) stays: the introduction and its legacy alert,
+the install line and the one snippet, and every branding block. A README cut down to badges and
+links fails the evaluator it exists for.
 
 When code changes, follow the
 [Cross-Documentation Checklist](./index.md#cross-documentation-checklist): a new public API
