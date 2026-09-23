@@ -161,6 +161,13 @@ For instance
  */
 ````
 
+> [!TIP]
+> The fence around the example above uses four backticks (`` ```` ``) instead of three. A
+> doc comment's own code block is written as a `*`-prefixed comment line, so it doesn't need
+> escaping — but wrapping it in a longer fence than the ` ```ts ` block nested inside it keeps
+> markdown from treating that inner triple-backtick as the closing fence. Use the same trick
+> any time an example needs a code block inside another code block.
+
 Additionally, the markdown parser in use by our docs understands documentation groups,
 and [many other features](https://vitepress.dev/guide/markdown).
 

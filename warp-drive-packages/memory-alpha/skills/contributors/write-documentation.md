@@ -65,9 +65,8 @@ with the person you're working with, and it links to those guides rather than re
 
 ## Why the link-don't-restate rule matters
 
-The rules move. The content standards section of Documenting APIs, the `@since` badge, the
-`@decorator` grouping, and the `@recommended`/`@discouraged` badges were all added to the guides
-in August 2026, and the guide-level nav moved from frontmatter to `_meta.json` before that. A copy
-of a rule inside a skill goes stale silently and then gets followed confidently. A link goes stale
-loudly, when the docs build fails, which is the failure mode we want. The same rule applies to the
-documentation you write: link the guide or symbol that owns a concept instead of re-explaining it.
+Rules move. A copy of a rule inside a skill goes stale silently and then gets followed
+confidently. A link goes stale loudly, when the docs build fails, which is the failure mode we
+want — and it lets whoever's reading lazily gather full context from the guide itself rather than
+a partial restatement. The same rule applies to the documentation you write: link the guide or
+symbol that owns a concept instead of re-explaining it.
