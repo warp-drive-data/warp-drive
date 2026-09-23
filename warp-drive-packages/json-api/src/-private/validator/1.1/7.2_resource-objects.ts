@@ -1,6 +1,8 @@
+import type { CollectionField, FieldSchema, ResourceField } from '@warp-drive/core/types/schema/fields';
 import type { ResourceDocument } from '@warp-drive/core/types/spec/document';
 
 import {
+  checkResourcePresent,
   getRemoteField,
   getSourceKeyMismatch,
   inspectType,
@@ -361,6 +363,8 @@ function validateResourceRelationships(
         [...path, key],
         `Expected the "${key}" field to be in "attributes" as it has kind "${field.kind}", but received data for it in "relationships".`
       );
+    } else if (field && isStrictRelationshipField(field)) {
+      validateStrictRelationshipPayload(reporter, type, field, resource[key], [...path, key]);
     }
   }
 
@@ -368,4 +372,120 @@ function validateResourceRelationships(
   // TODO @runspired we should validate linksMode requirements for both Polaris and Legacy modes
   // TODO @runspired we should warn if the discovered resource-type in a relationship is the abstract
   //   type instead of the concrete type.
+}
+
+/**
+ * `resource` and `collection` relationships carry constraints that the legacy
+ * `belongsTo`/`hasMany` kinds do not. See the Relationship Specification in
+ * the manual (guides/the-manual/relational-data/spec.md).
+ */
+export function isStrictRelationshipField(field: FieldSchema): field is ResourceField | CollectionField {
+  return field.kind === 'resource' || field.kind === 'collection';
+}
+
+function hasRelatedLink(links: unknown): boolean {
+  if (!isSimpleObject(links) || !('related' in links)) {
+    return false;
+  }
+  const related = links.related;
+  if (typeof related === 'string') {
+    return related.length > 0;
+  }
+  return isSimpleObject(related) && typeof related.href === 'string' && related.href.length > 0;
+}
+
+/**
+ * Validates the payload of a `resource` or `collection` relationship against
+ * the rules that distinguish them from `belongsTo`/`hasMany`:
+ *
+ * - every resource referenced in `data` MUST be present in the document
+ * - `async: true` relationships MUST carry a `links.related` link
+ * - `async: false` relationships MUST carry `data` whenever present and
+ *   SHOULD NOT carry `links` (warning, configurable via
+ *   `strict.syncRelationshipLinks`)
+ */
+function validateStrictRelationshipPayload(
+  reporter: Reporter,
+  resourceType: string,
+  field: ResourceField | CollectionField,
+  rel: unknown,
+  path: PathLike
+) {
+  const label = `${field.kind} relationship "${field.name}" on "${resourceType}"`;
+
+  if (!isSimpleObject(rel)) {
+    reporter.error(
+      path,
+      `Expected the ${label} to be an object with "data", "links" and/or "meta" members, but received ${inspectType(rel)}`,
+      'value'
+    );
+    return;
+  }
+
+  const isAsync = field.options?.async === true;
+  const hasData = 'data' in rel;
+
+  if (isAsync) {
+    if (!hasRelatedLink(rel.links)) {
+      reporter.error(
+        'links' in rel ? [...path, 'links'] : path,
+        `The ${label} is async (async: true) and MUST provide a "links" object with a "related" link so that the related data can be fetched. Add the link, or mark the relationship as async: false and include its data.`,
+        'links' in rel ? 'key' : 'key'
+      );
+    }
+  } else {
+    if ('links' in rel) {
+      const method = reporter.strict.syncRelationshipLinks ? 'error' : 'warn';
+      reporter[method](
+        [...path, 'links'],
+        `The ${label} is sync (async: false) and SHOULD NOT provide "links". Sync relationships are fully included in the payload that references them, so the links will never be used. Remove the links, or mark the relationship as async: true if the related data is meant to be fetched separately.`
+      );
+    }
+    if (!hasData) {
+      reporter.error(
+        path,
+        `The ${label} is sync (async: false) and MUST provide its "data" member whenever the relationship is present in a payload. Links-only or meta-only payloads are not valid for sync relationships; include the related resource identifiers in "data" (or omit the relationship entirely).`
+      );
+    }
+  }
+
+  if (!hasData) {
+    return;
+  }
+
+  const data = rel.data;
+  if (field.kind === 'resource') {
+    if (data !== null && !isSimpleObject(data)) {
+      reporter.error(
+        [...path, 'data'],
+        `Expected the "data" of the ${label} to be a ResourceIdentifierObject or null, but received ${inspectType(data)}`,
+        'value'
+      );
+      return;
+    }
+  } else if (!Array.isArray(data)) {
+    reporter.error(
+      [...path, 'data'],
+      `Expected the "data" of the ${label} to be an array of ResourceIdentifierObjects, but received ${inspectType(data)}`,
+      'value'
+    );
+    return;
+  }
+
+  // full linkage is mandatory for these kinds: every referenced resource must
+  // be present in this document.
+  const linkages = Array.isArray(data) ? data : data ? [data] : [];
+  for (let i = 0; i < linkages.length; i++) {
+    const linkage = linkages[i] as unknown;
+    if (!isSimpleObject(linkage) || typeof linkage.type !== 'string' || typeof linkage.id !== 'string') {
+      continue; // shape is reported by the generic resource identifier validation
+    }
+    if (!checkResourcePresent(reporter.presence, linkage as { type: string; id: string })) {
+      reporter.error(
+        Array.isArray(data) ? [...path, 'data', i] : [...path, 'data'],
+        `The related resource '${linkage.type}:${linkage.id}' referenced by the ${label} is not present in this payload. Every resource referenced in the "data" of a resource or collection relationship MUST be included in the document's "data" or "included" so that it can be materialized.`,
+        'value'
+      );
+    }
+  }
 }
