@@ -1445,42 +1445,39 @@ export class JSONAPICache implements Cache {
 
     const basePath = path[0];
     const baseline = resolveAttr(basePath, cached, RESOLUTION_ORDER_EDIT_BASELINE);
-    const baselineAtPath = resolveAttr(path, cached, RESOLUTION_ORDER_EDIT_BASELINE);
+    const isRevert = resolveAttr(path, cached, RESOLUTION_ORDER_EDIT_BASELINE) === value;
+    const hasLocalClone = !!cached.localAttrs && basePath in cached.localAttrs;
 
-    if (baselineAtPath !== value) {
-      cached.localAttrs = cached.localAttrs || (Object.create(null) as Record<string, Value>);
-      cached.localAttrs[basePath] = cached.localAttrs[basePath] || structuredClone(baseline);
-      let currentLocal = cached.localAttrs[basePath] as ObjectValue;
-      let nextLink = 1;
+    // writing the baseline value into an unedited field changes nothing
+    if (isRevert && !hasLocalClone) {
+      return;
+    }
 
-      while (nextLink < path.length - 1) {
-        currentLocal = currentLocal[path[nextLink++]] as ObjectValue;
+    // every nested edit lands in a clone of the baseline object, so sibling edits survive one another
+    cached.localAttrs = cached.localAttrs || (Object.create(null) as Record<string, Value>);
+    if (!hasLocalClone) {
+      cached.localAttrs[basePath] = structuredClone(baseline);
+    }
+    let currentLocal = cached.localAttrs[basePath] as ObjectValue;
+    let nextLink = 1;
+    while (nextLink < path.length - 1) {
+      currentLocal = currentLocal[path[nextLink++]] as ObjectValue;
+    }
+    if (currentLocal[path[nextLink]] === value) {
+      return;
+    }
+    currentLocal[path[nextLink]] = value;
+
+    // a revert can bring the whole clone back to the baseline, which ends the edit
+    if (isRevert) {
+      const field = getCacheFields(this, identifier).get(basePath);
+      if (localCloneMatchesBaseline(this._capabilities.schema, field, baseline, cached.localAttrs[basePath])) {
+        delete cached.localAttrs[basePath];
       }
-      currentLocal[path[nextLink]] = value;
+    }
 
-      // since we initiaize the value as basePath as a clone of the value at the remote basePath
-      // then in theory we can use JSON.stringify to compare the two values as key insertion order
-      // ought to be consistent.
-      // we try/catch this because users have a habit of doing "Bad Things"TM wherein the cache contains
-      // stateful values that are not JSON serializable correctly such as Dates.
-      // in the case that we error, we fallback to not removing the local value
-      // so that any changes we don't understand are preserved. Thse objects would then sometimes
-      // appear to be dirty unnecessarily, and for folks that open an issue we can guide them
-      // to make their cache data less stateful.
-    } else if (cached.localAttrs) {
-      try {
-        if (!baseline) {
-          return;
-        }
-        const existingStr = JSON.stringify(baseline);
-        const newStr = JSON.stringify(cached.localAttrs[basePath]);
-
-        if (existingStr !== newStr) {
-          delete cached.localAttrs[basePath];
-        }
-      } catch {
-        // noop
-      }
+    if (cached.defaultAttrs && basePath in cached.defaultAttrs) {
+      delete cached.defaultAttrs[basePath];
     }
 
     // a local edit has no remote implication; remote-only readers can't see it anyway.
@@ -2202,6 +2199,29 @@ function schemaObjectsEqual(
   const ia = fieldValueIdentity(schema, field, a);
   const ib = fieldValueIdentity(schema, field, b);
   return ia !== null && ib !== null && ia.type === ib.type && ia.hash !== null && ia.hash === ib.hash;
+}
+
+/**
+ * Whether a nested edit's local clone is back to the baseline, so the edit can end. The schema
+ * decides first, through {@link attrValuesEqual}: a schema-object with an identity hash matches
+ * when its hash does. A value with no schema-defined equality falls back to comparing serialized
+ * content, as this path always has: the clone began as a copy of the baseline, so key order
+ * agrees while edits only replace existing keys. Anything that cannot serialize counts as still
+ * edited, so no edit the cache cannot understand is thrown away.
+ */
+function localCloneMatchesBaseline(
+  schema: SchemaService,
+  field: FieldSchema | undefined,
+  baseline: Value | undefined,
+  clone: Value | undefined
+): boolean {
+  if (field && attrValuesEqual(schema, field, baseline, clone)) return true;
+  if (!baseline || !clone) return false;
+  try {
+    return JSON.stringify(baseline) === JSON.stringify(clone);
+  } catch {
+    return false;
+  }
 }
 
 /**
