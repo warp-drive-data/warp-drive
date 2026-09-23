@@ -50,7 +50,7 @@ export default {
       {
         name: 'Leo Euclides',
         username: 'leoeuclids',
-        title: 'Core Team',
+        title: 'Core Team | Senior Frontend Engineer @Userlist',
         avatar: 'https://avatars.githubusercontent.com/u/9011117?v=4',
         links: [{ icon: 'github', link: 'https://github.com/leoeuclids' }],
       },
