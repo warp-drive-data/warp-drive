@@ -3,12 +3,13 @@ import { find, settled, waitUntil } from '@ember/test-helpers';
 import * as QUnit from 'qunit';
 
 import type { TodoCollectionDocument, TodoResource } from '#api-worker/contract.ts';
+import { CACHE_NAME } from '#api-worker/db.ts';
 
 const JSON_API = 'application/vnd.api+json';
 
 /** Resets the API worker's storage to an empty list, or to the given titles. */
 export async function resetTodos(todos: { title: string; completed?: boolean }[] = []): Promise<void> {
-  await caches.delete('todomvc-api');
+  await caches.delete(CACHE_NAME);
 
   const list = (await (await fetch('/api/todo')).json()) as TodoCollectionDocument;
   if (list.data.length) {

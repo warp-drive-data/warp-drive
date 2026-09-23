@@ -28,7 +28,7 @@ export function memoryDb(initial: TodoResource[] = seed()): TodoDb {
   };
 }
 
-const CACHE_NAME = 'todomvc-api';
+export const CACHE_NAME = 'todomvc-api';
 const RECORD_URL = '/__todomvc-api/todos.json';
 
 export function cacheDb(): TodoDb {
