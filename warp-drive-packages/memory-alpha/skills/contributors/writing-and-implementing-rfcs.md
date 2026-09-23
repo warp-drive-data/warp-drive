@@ -26,9 +26,10 @@ of any `emberjs/rfcs` number:
    overwritten and can desync the two copies. Don't start `title` with "WarpDrive" — the sync bot
    adds that prefix automatically for the `emberjs/rfcs` copy and its PR title, so a local title
    that already has it would end up doubled there.
-3. Open a PR to `warp-drive-data/warp-drive` labeled `:label: rfc`. This label also triggers a
-   docs-site PR preview (same as `:label: doc`/`:label: feat`) so reviewers can read the rendered
-   RFC, not just the raw markdown diff.
+3. Open a PR labeled `:label: rfc` (see
+   [Pull Request Labeling](/guides/contributing/submitting-prs.md#pull-request-labeling) for the
+   PR mechanics). That label also triggers a docs-site PR preview so reviewers can read the
+   rendered RFC, not just the raw markdown diff.
 4. Iterate on the PR like any other design discussion. Once there is team consensus to move
    forward, merging the PR is what publishes the RFC — see the next section for what that
    triggers.

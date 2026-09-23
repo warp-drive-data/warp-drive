@@ -6,9 +6,9 @@ reach for a local test run, lint, or build to check your work.
 ## Steps
 
 1. Before running any checks locally, make sure your change is on an open PR. If there isn't one
-   yet, commit and push your branch and open one first, as a draft, with a description that
-   follows `.github/PULL_REQUEST_TEMPLATE.md`. GitHub inserts that template only in its web form;
-   passing a body from the command line skips it, so read the file and fill it in yourself.
+   yet, commit and push your branch and open one first.
+   [Submitting PRs](/guides/contributing/submitting-prs.md#making-a-pr) covers the target
+   branch, draft state, the pull request template, and labels.
 2. Commit and push to that PR before checking whether the change works. Push first, verify second
    — don't spend a round of local iteration and then push once everything already looks green
    locally.

@@ -68,8 +68,9 @@ last two bullets: the checks and the label.
      [Cross-Documentation Checklist](/guides/contributing/writing-documentation/index.md#cross-documentation-checklist).
    - Run `pnpm lint:docs` from the repo root, then build and open the affected pages as described
      in [Previewing Your Changes](/guides/contributing/writing-documentation/index.md#previewing-your-changes).
-   - Label the pull request `:label: doc` (the label's name literally contains `:label:`);
-     Previewing Your Changes says what that deploys.
+   - Label the pull request `:label: doc` (see
+     [Changelog Labels](/guides/contributing/submitting-prs.md#changelog-labels)); Previewing
+     Your Changes says what that label deploys.
 
 ## Gotchas
 

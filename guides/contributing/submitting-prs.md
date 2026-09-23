@@ -47,8 +47,9 @@ PRs should be meaningfully titled to give context into the change for the change
 
 ### Pull Request Labeling
 
-All PRs should be labeled. PR labeling for changelog and backporting is enforced in CI, but
-labels may only be applied by project maintainers -- with one exception: if your PR title
+All PRs should be labeled. The label names below are literal, `:label:` included. PR labeling
+for changelog and backporting is enforced in CI, but labels may only be applied by project
+maintainers -- with one exception: if your PR title
 follows one of the conventions below, a bot applies the matching changelog label for you when
 the PR is opened, so most contributors never need to wait on a maintainer for that part.
 
@@ -69,7 +70,7 @@ Labels used for the changelog include any labels listed in the changelog config 
 These labels are prefixed with `changelog:` and currently the options are:
 
 - `:label: breaking` which should be used to signify a breaking change
-- `:label: feat` which should be used to signify an addition of a new public feature or behavior
+- `:label: feat` which should be used to signify an addition of a new public feature or behavior. Like `:label: doc` and `:label: rfc`, this label triggers a docs-site PR preview.
 - `:label: bug` which should be used to signify a fix for a reported issue
 - `:label: perf` which should be used to signify that the commit will improve performance characteristics in a meaningful way
 - `:label: cleanup` which should be used to signify removal of deprecated features or that a deprecation has become an assertion.
