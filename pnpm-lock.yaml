@@ -3480,6 +3480,96 @@ importers:
         specifier: 6.0.3
         version: 6.0.3
 
+  tutorials/todomvc-ember/solution:
+    devDependencies:
+      '@babel/core':
+        specifier: 'catalog:'
+        version: 7.29.7
+      '@babel/plugin-transform-runtime':
+        specifier: 'catalog:'
+        version: 7.29.7(@babel/core@7.29.7)
+      '@babel/plugin-transform-typescript':
+        specifier: 'catalog:'
+        version: 7.29.9(@babel/core@7.29.7)
+      '@babel/runtime':
+        specifier: 'catalog:'
+        version: 7.29.7
+      '@ember/test-helpers':
+        specifier: 'catalog:'
+        version: 5.4.3(patch_hash=86f2f8b3084fb3708a58dfcf3bad3e5afe71bdead6f4f6ce10b8964db8e5de99)(@babel/core@7.29.7)
+      '@ember/test-waiters':
+        specifier: 'catalog:'
+        version: 4.1.2
+      '@embroider/core':
+        specifier: 'catalog:'
+        version: 4.6.7(@glint/template@1.9.0)
+      '@embroider/macros':
+        specifier: ^1.21.1
+        version: 1.21.1(@glint/template@1.9.0)
+      '@embroider/vite':
+        specifier: 'catalog:'
+        version: 1.7.13(f0e8df2b232eface3d9cf304eb4e2161)
+      '@glimmer/component':
+        specifier: 'catalog:'
+        version: 2.1.1
+      '@glint/ember-tsc':
+        specifier: 1.11.4
+        version: 1.11.4(a20dad104a003bf74fe42e2b03efc367)
+      '@glint/template':
+        specifier: 1.9.0
+        version: 1.9.0
+      '@rollup/plugin-babel':
+        specifier: 'catalog:'
+        version: 7.1.0(@babel/core@7.29.7)
+      '@types/qunit':
+        specifier: 'catalog:'
+        version: 2.19.14
+      '@warp-drive/core':
+        specifier: workspace:*
+        version: file:warp-drive-packages/core(e0ff4349d3585fabae29421d7a4b80a6)
+      '@warp-drive/ember':
+        specifier: workspace:*
+        version: file:warp-drive-packages/ember(c3b811ac8aadeb1fb26c7cc7a16e4531)
+      '@warp-drive/json-api':
+        specifier: workspace:*
+        version: file:warp-drive-packages/json-api(edee9e53a6af44fd6387ab28cd9cc109)
+      '@warp-drive/utilities':
+        specifier: workspace:*
+        version: file:warp-drive-packages/utilities(edee9e53a6af44fd6387ab28cd9cc109)
+      babel-plugin-ember-template-compilation:
+        specifier: 'catalog:'
+        version: 4.0.0
+      decorator-transforms:
+        specifier: 'catalog:'
+        version: 2.4.0(@babel/core@7.29.7)
+      ember-content-mapper:
+        specifier: 'catalog:'
+        version: 0.3.1(a20dad104a003bf74fe42e2b03efc367)
+      ember-qunit:
+        specifier: 'catalog:'
+        version: 9.1.0(30de2af0219ff80cd0c2cfde12ce49e3)
+      ember-source:
+        specifier: 'catalog:'
+        version: 7.3.0(@glimmer/component@2.1.1)
+      ember-strict-application-resolver:
+        specifier: 'catalog:'
+        version: 0.1.1(@babel/core@7.29.7)
+      qunit:
+        specifier: 2.26.0
+        version: 2.26.0
+      qunit-dom:
+        specifier: 'catalog:'
+        version: 3.6.0
+      testem:
+        specifier: ~3.21.0
+        version: 3.21.0(@babel/core@7.29.7)
+      typescript-7:
+        specifier: 'catalog:'
+        version: typescript@7.1.0-dev.20260919.1
+      vite:
+        specifier: 'catalog:'
+        version: 8.3.0
+
   warp-drive-packages/build-config:
     dependencies:
       '@embroider/addon-shim':
