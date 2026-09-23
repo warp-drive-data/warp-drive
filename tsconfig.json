@@ -9,6 +9,7 @@
     { "path": "./packages/core-types" },
     { "path": "./packages/debug" },
     { "path": "./packages/diagnostic" },
+    { "path": "./packages/diagnostic/server" },
     { "path": "./packages/graph" },
     { "path": "./packages/holodeck" },
     { "path": "./packages/json-api" },

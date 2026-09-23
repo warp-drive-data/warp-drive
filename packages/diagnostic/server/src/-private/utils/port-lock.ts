@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 
-import { debug } from './debug.js';
+import { debug } from './debug.ts';
 
 // Every test app's client-side test-helper derives holodeck's URL as
 // `window.location.port + 1` (see e.g. tests/*/tests/test-helper.{js,ts}),
@@ -21,11 +21,11 @@ import { debug } from './debug.js';
 // concurrent processes can ever be handed overlapping port pairs.
 const LOCK_DIR = path.join(os.tmpdir(), 'warp-drive-diagnostic-port-locks');
 
-function lockPathFor(port) {
+function lockPathFor(port: number): string {
   return path.join(LOCK_DIR, `${port}.lock`);
 }
 
-function isPidAlive(pid) {
+function isPidAlive(pid: number): boolean {
   if (!Number.isInteger(pid)) return false;
   try {
     // signal 0 does not kill the process, it just probes whether it exists
@@ -37,8 +37,8 @@ function isPidAlive(pid) {
 }
 
 /** Reclaim a lock file left behind by a process that died without cleanup. */
-function clearIfStale(lockPath) {
-  let heldBy;
+function clearIfStale(lockPath: string): boolean {
+  let heldBy: number;
   try {
     heldBy = Number(fs.readFileSync(lockPath, 'utf8').trim());
   } catch {
@@ -57,7 +57,7 @@ function clearIfStale(lockPath) {
   }
 }
 
-function tryAcquireOne(port) {
+function tryAcquireOne(port: number): boolean {
   fs.mkdirSync(LOCK_DIR, { recursive: true });
   const lockPath = lockPathFor(port);
 
@@ -68,7 +68,7 @@ function tryAcquireOne(port) {
       fs.closeSync(fd);
       return true;
     } catch (e) {
-      if (e.code !== 'EEXIST') throw e;
+      if ((e as NodeJS.ErrnoException).code !== 'EEXIST') throw e;
       if (attempt === 0 && clearIfStale(lockPath)) {
         continue; // stale lock cleared, try to claim it once more
       }
@@ -78,7 +78,7 @@ function tryAcquireOne(port) {
   return false;
 }
 
-function releaseOne(port) {
+function releaseOne(port: number): void {
   const lockPath = lockPathFor(port);
   try {
     const heldBy = Number(fs.readFileSync(lockPath, 'utf8').trim());
@@ -96,7 +96,7 @@ function releaseOne(port) {
  * process), releases any partial reservation and returns false so the caller
  * can move on to the next candidate port.
  */
-export function acquirePortPair(port) {
+export function acquirePortPair(port: number): boolean {
   if (!tryAcquireOne(port)) {
     return false;
   }
@@ -107,7 +107,7 @@ export function acquirePortPair(port) {
   return true;
 }
 
-export function releasePortPair(port) {
+export function releasePortPair(port: number): void {
   releaseOne(port);
   releaseOne(port + 1);
 }

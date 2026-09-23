@@ -172,6 +172,34 @@
       "outputLogs": "new-only",
       "env": ["IS_UNPKG_BUILD"]
     },
+
+    // @warp-drive/diagnostic builds two separate source trees under one
+    // `build:pkg` script (client/src -> dist/, server/src -> dist-server/,
+    // see its package.json and tsdown.config{,-server}.mjs) instead of the
+    // generic V2-addon `src/** -> dist/**` convention above, so it needs its
+    // own input/output globs rather than the shared definition -- otherwise
+    // dist-server/** is neither hashed as an input change nor captured as a
+    // cached output, and a cache hit silently restores a build missing it
+    // entirely (surfaces downstream as an ERR_MODULE_NOT_FOUND for
+    // dist-server/index.js in any consumer).
+    "@warp-drive/diagnostic#build:pkg": {
+      "inputs": [
+        "client/src/**",
+        "server/src/**",
+        "addon-main.*",
+        "tsconfig.json",
+        "server/tsconfig.json",
+        "package.json",
+        "babel.*",
+        "tsdown.config.*",
+        "tsdown.config-server.mjs",
+        "../../config/**"
+      ],
+      "outputs": ["dist/**", "dist-server/**", "tsconfig.tsbuildinfo"],
+      "dependsOn": ["@warp-drive/core#build:pkg", "//#sync"],
+      "outputLogs": "new-only",
+      "env": ["IS_UNPKG_BUILD"]
+    },
     "@warp-drive/schema-dsl#build:pkg": {
       "inputs": ["src/**", "addon-main.*", "tsconfig.json", "package.json", "babel.*", "tsdown.config.*"],
       "outputs": ["addon-test-support/**", "dist/**", "cjs-dist/**", "tsconfig.tsbuildinfo"],

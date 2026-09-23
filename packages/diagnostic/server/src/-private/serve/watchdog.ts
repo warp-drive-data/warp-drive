@@ -1,7 +1,9 @@
-import { error } from '../utils/debug.js';
+import type { LaunchState } from '../../index.ts';
+import type { LaunchConfig } from '../default-setup.ts';
+import { error } from '../utils/debug.ts';
 
 // individual tests are only considered "hung" by the reporter after this long
-// (see DEFAULT_TEST_TIMEOUT in reporters/default.js), so the disconnect watchdog
+// (see DEFAULT_TEST_TIMEOUT in reporters/default.ts), so the disconnect watchdog
 // must stay well above it or it will kill legitimately slow (not hung) tests.
 const MIN_DISCONNECT_TIMEOUT_MS = 63_000;
 
@@ -14,9 +16,9 @@ const MIN_DISCONNECT_TIMEOUT_MS = 63_000;
  *
  * Returns a function that stops the watchdog once no longer needed.
  */
-export function startWatchdog(config, state) {
-  const startTimeoutMs = (config.browserStartTimeout ?? 15) * 1000;
-  const disconnectTimeoutMs = Math.max((config.browserDisconnectTimeout ?? 15) * 1000, MIN_DISCONNECT_TIMEOUT_MS);
+export function startWatchdog(config: LaunchConfig, state: LaunchState): () => void {
+  const startTimeoutMs = config.browserStartTimeout * 1000;
+  const disconnectTimeoutMs = Math.max(config.browserDisconnectTimeout * 1000, MIN_DISCONNECT_TIMEOUT_MS);
   const launchedAt = Date.now();
 
   const timer = setInterval(() => {

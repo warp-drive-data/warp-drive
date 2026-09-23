@@ -26,6 +26,7 @@ packages/codemods/utils
 packages/core-types/src
 packages/debug/src
 packages/diagnostic/client/src
+packages/diagnostic/server/src
 packages/graph/src
 packages/holodeck/src
 packages/json-api/src

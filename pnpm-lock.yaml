@@ -1143,6 +1143,12 @@ importers:
       '@glimmer/component':
         specifier: 'catalog:'
         version: 2.1.1
+      '@types/debug':
+        specifier: 'catalog:'
+        version: 4.1.13
+      '@types/node':
+        specifier: ^26.6.2
+        version: 26.6.2
       '@types/react':
         specifier: 'catalog:'
         version: 19.3.0
