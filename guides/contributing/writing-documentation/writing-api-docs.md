@@ -591,25 +591,45 @@ and some documentation may be unexpectedly truncated.
 
 ### Documenting Packages and Subpackages
 
-To create an overview for a module path e.g. `@warp-drive/core-types` or `@warp-drive/core-types/symbol` all that is needed is a doc comment at the top of the file with the tag `@module`.
+A package has two kinds of entry point, and they are documented differently.
 
-For instance, to write documentation giving an overview of `@warp-drive/core-types`,
-we would do the following in `packages/core-types/src/index.ts`
+**Subpath entry points** such as `@warp-drive/core/request` or `@warp-drive/utilities/string` get
+their overview from a doc comment at the top of the entry file with the tag `@module`. The prose
+in that comment renders at the top of the subpath's page, above its member listing:
 
 ```ts
 /**
- * This package provides essential types and symbols used
- * by all the other WarpDrive packages.
+ * Utilities for building request URLs and query strings.
  *
  * @module
  */
 ```
 
-This is separate from the package's `src/index.md`, which TypeDoc renders
-as the landing page above the module's member listing (see
-[READMEs and `src/index.md`](#readmes-and-src-index-md)). The `@module` comment supplies
-the module's one-paragraph summary and is where module-level `@since`
-goes; `src/index.md` holds the longer landing-page prose.
+**The package root** `src/index.ts` is different. Its doc comment carries no prose. It is always
+exactly this, and every package has it:
+
+```ts
+/**
+ * @module
+ * @mergeModuleWith <project>
+ */
+```
+
+The landing prose for the package lives in `src/index.md` instead, and the package's
+`typedoc.config.mjs` names it with `readme: 'src/index.md'` (see
+[READMEs and `src/index.md`](#readmes-and-src-index-md)).
+
+The reason is how TypeDoc's `packages` entry point strategy treats a package with more than one
+entry point: `src/index.ts` becomes a sub-module named `index`, with its own page at
+`/api/<package>/index/`. The package's landing page at `/api/<package>/` then has no intro at all,
+and whatever prose the `@module` comment held is reachable only from that sub-page.
+`@mergeModuleWith <project>` folds the `index` module's exports into the package root, which
+removes the stray page, and `readme` is what puts prose back on the landing page. A package that
+has nothing to say yet still carries both, with an empty `src/index.md`, so that adding prose later
+is a one-file change; `warp-drive-packages/core` is in that state today.
+
+Module-level `@since` still goes in the root `@module` comment. `docs-viewer/src/typedoc-since-plugin.mjs`
+reads it from there and renders it as a badge on the landing page.
 
 ### Mark public exports with `@public`
 
@@ -934,10 +954,12 @@ checker does not cover READMEs (see [Checking Links](./index.md#checking-links))
 
 ### README vs `src/index.md`
 
-Each package's `typedoc.config.mjs` sets `readme`. Where it is `'src/index.md'` (as in
-`warp-drive-packages/core`, `json-api`, `ember`, `legacy`, and `utilities`), TypeDoc renders that
-file as the package's landing page in the [API docs](/api/) at `/api/<package-name>/`, above the
-generated member listing. Where it is `'none'`, the package has no landing prose.
+Each package's `typedoc.config.mjs` sets `readme: 'src/index.md'`, and TypeDoc renders that file
+as the package's landing page in the [API docs](/api/) at `/api/<package-name>/`, above the
+generated member listing. It pairs with the bare `@module` / `@mergeModuleWith <project>` comment
+at the top of `src/index.ts`; [Documenting Packages and Subpackages](#documenting-packages-and-subpackages)
+explains why both are needed. A `readme: 'none'` in a package config is a package whose landing
+page silently does not render; fix the config rather than working around it.
 
 The split follows from where each file renders:
 
@@ -947,7 +969,12 @@ The split follows from where each file renders:
   containers, `::: code-group`, root-relative links like `/api/@warp-drive/core/`, and TSDoc
   `{@link}` references, as `packages/request/src/index.md` does. It starts with the package name
   as an H1 and answers "I am on the API docs for this package, where do I start?", so this is the
-  place for the setup snippet, as `warp-drive-packages/json-api/src/index.md` shows.
+  place for the setup snippet, as `warp-drive-packages/json-api/src/index.md` shows. A
+  `{@link}` here resolves against the whole docs build, not against the imports of
+  `src/index.ts`, so qualify root exports with the package, `{@link @warp-drive/core!Store | Store}`,
+  and link symbols under a subpath entry point with a root-relative URL,
+  `[Cache](/api/@warp-drive/core/types/cache/types/Cache)`. A bare `{@link Store}` renders as
+  plain text with a `Failed to resolve link` warning in the build log.
 
 Some packages still duplicate paragraphs between the two, or leave `src/index.md` empty. When you
 touch one, read the other and move each sentence to the file that answers its question.
