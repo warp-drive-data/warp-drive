@@ -32,48 +32,44 @@ interface ExistingPet {
   owner: ExistingUser | null;
 }
 
-interface CustomContext extends TestContext {
-  store: Store;
+function setupStore(context: TestContext): Store {
+  const TestStore = useRecommendedStore({
+    handlers: [new MockServerHandler(context)],
+    cache: JSONAPICache,
+    schemas: [
+      withDefaults({
+        type: 'user',
+        fields: [
+          { name: 'firstName', kind: 'field' },
+          { name: 'lastName', kind: 'field' },
+          {
+            name: 'pets',
+            kind: 'hasMany',
+            type: 'pet',
+            options: { inverse: 'owner', async: false, linksMode: true },
+          },
+        ],
+      }),
+      withDefaults({
+        type: 'pet',
+        fields: [
+          { name: 'name', kind: 'field' },
+          {
+            name: 'owner',
+            kind: 'belongsTo',
+            type: 'user',
+            options: { inverse: 'pets', async: false, linksMode: true },
+          },
+        ],
+      }),
+    ],
+  });
+  return new TestStore();
 }
 
-module<CustomContext>('mutation-request', function (hooks) {
-  hooks.beforeEach(function () {
-    const TestStore = useRecommendedStore({
-      handlers: [new MockServerHandler(this)],
-      cache: JSONAPICache,
-      schemas: [
-        withDefaults({
-          type: 'user',
-          fields: [
-            { name: 'firstName', kind: 'field' },
-            { name: 'lastName', kind: 'field' },
-            {
-              name: 'pets',
-              kind: 'hasMany',
-              type: 'pet',
-              options: { inverse: 'owner', async: false, linksMode: true },
-            },
-          ],
-        }),
-        withDefaults({
-          type: 'pet',
-          fields: [
-            { name: 'name', kind: 'field' },
-            {
-              name: 'owner',
-              kind: 'belongsTo',
-              type: 'user',
-              options: { inverse: 'pets', async: false, linksMode: true },
-            },
-          ],
-        }),
-      ],
-    });
-    this.store = new TestStore();
-  });
-
-  test<CustomContext>('bulk create', async function (assert) {
-    const { store } = this;
+module('mutation-request', function () {
+  test('bulk create', async function (assert) {
+    const store = setupStore(this);
     const reqBody = JSON.stringify({
       data: [
         { type: 'user', attributes: { firstName: 'Chris' } },
@@ -102,7 +98,7 @@ module<CustomContext>('mutation-request', function (hooks) {
     const lid2 = recordIdentifierFor(user2);
 
     const url = buildBaseURL({ resourcePath: 'api/user/ops/bulk.create' });
-    const records = await this.store.request(
+    const records = await store.request(
       withReactiveResponse<ExistingUser[]>({
         op: 'createRecord',
         url,
@@ -134,8 +130,8 @@ module<CustomContext>('mutation-request', function (hooks) {
     assert.equal(user2?.id, 'id2', 'second record has correct id');
   });
 
-  test<CustomContext>('update hasMany with repeated patch', async function (assert) {
-    const { store } = this;
+  test('update hasMany with repeated patch', async function (assert) {
+    const store = setupStore(this);
     const url = buildBaseURL({ resourcePath: 'api/user/1' });
 
     store.push({
@@ -247,7 +243,7 @@ module<CustomContext>('mutation-request', function (hooks) {
         }
       );
 
-      await this.store.request(
+      await store.request(
         withReactiveResponse<ExistingUser>({
           op: 'updateRecord',
           url,
@@ -302,8 +298,8 @@ module<CustomContext>('mutation-request', function (hooks) {
     );
   });
 
-  test<CustomContext>('a local edit matching the persisted server response still notifies the remote channel', async function (assert) {
-    const { store } = this;
+  test('a local edit matching the persisted server response still notifies the remote channel', async function (assert) {
+    const store = setupStore(this);
     const url = buildBaseURL({ resourcePath: 'api/user/1' });
 
     store.push({
@@ -350,7 +346,7 @@ module<CustomContext>('mutation-request', function (hooks) {
       { body: reqBody }
     );
 
-    await this.store.request(
+    await store.request(
       withReactiveResponse<ExistingUser>({
         op: 'updateRecord',
         url,

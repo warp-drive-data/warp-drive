@@ -47,6 +47,13 @@ export default {
         avatar: 'https://avatars.githubusercontent.com/u/1690675?v=4',
         links: [{ icon: 'github', link: 'https://github.com/Baltazore' }],
       },
+      {
+        name: 'Leo Euclides',
+        username: 'leoeuclids',
+        title: 'Core Team | Senior Frontend Engineer @Userlist',
+        avatar: 'https://avatars.githubusercontent.com/u/9011117?v=4',
+        links: [{ icon: 'github', link: 'https://github.com/leoeuclids' }],
+      },
     ];
   },
 };
