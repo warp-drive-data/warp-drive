@@ -956,13 +956,16 @@ ones the shape is taken from; copy from them.
   notice in `logos/synced/README.md`), so never edit it inside a package.
 - **Badges.** Five badges from shields.io: npm version, npm downloads, license, and the EmberJS
   and ***Warp*Drive** Discord servers. Copy the block from another package of the same kind. A
-  modern package is installed on its own, so its version and download badges name the package
-  itself, URL-encoded (`%40warp-drive%2Fcore`), as `@warp-drive/core` does. A legacy
-  `@ember-data/*` package mostly arrives as a dependency of `ember-data`, so its badges keep the
-  `ember-data` targets, as `@ember-data/store` does. An unpublished package keeps the `ember-data`
-  targets too, since a badge for a name npm does not know renders as "not found". If the package
-  wants its own release badges, add a **Tagged Releases** list between the H1 and the description
-  (`@warp-drive/ember` has one).
+  modern package's version and download badges name the package itself, URL-encoded
+  (`%40warp-drive%2Fcore`), as `@warp-drive/core` does: non-Ember apps install it directly, and
+  some modern packages version independently of the rest (`@warp-drive/holodeck`, `warp-drive`),
+  so an `ember-data` version badge would be wrong for them. A legacy package keeps the
+  `ember-data` targets, as `@ember-data/store` does: most of them ship as dependencies of the
+  `ember-data` meta package and share its version, and the meta package's numbers describe the
+  ecosystem they belong to better than their own would. An unpublished package keeps the
+  `ember-data` targets too, since a badge for a name npm does not know renders as "not found". If
+  the package wants its own release badges, add a **Tagged Releases** list between the H1 and the
+  description (`@warp-drive/ember` has one).
 - **Package name as the H1**, `# @warp-drive/json-api`. `@warp-drive/core` is the exception: it
   is the project's front door and uses the ***Warp*Drive** tagline instead.
 - **The introduction: what it is, who should use it, and why.** One paragraph is enough for a
