@@ -3,6 +3,9 @@
  * VitePress's build fails on a link to a missing page but never checks the `#anchor` part
  * (its dead-link check strips `[?#].*` before recording the link), so a renamed heading
  * silently breaks every link to it.
+ *
+ * Checks every content root that prepare-website.ts syncs into the site (see `siteRoots`),
+ * including the memory-alpha skills, whose links otherwise go unverified.
  */
 import { existsSync, globSync, readFileSync } from 'node:fs';
 import { dirname, join, relative, resolve } from 'node:path';
@@ -75,7 +78,7 @@ async function loadPages(): Promise<Map<string, Page>> {
   // shiki warns about every code fence whose language it does not know; that noise is not a link problem
   const md = await createMarkdownRenderer(siteDir, undefined, undefined, { warn() {} });
   const pages = new Map<string, Page>();
-  for (const root of ['guides', 'upgrading', 'blog']) {
+  for (const root of Object.values(siteRoots)) {
     for (const file of globSync('**/*.md', { cwd: join(repoRoot, root) })) {
       const path = join(root, file);
       const source = readFileSync(join(repoRoot, path), 'utf8');
