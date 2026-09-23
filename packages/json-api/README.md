@@ -52,3 +52,38 @@ Because most API responses can be quickly transformed into the `{json:api}` form
 - ![NPM Stable Version](https://img.shields.io/npm/v/%40ember-data/json-api/latest?label=%40latest&color=90EE90)
 - ![NPM LTS Version](https://img.shields.io/npm/v/%40ember-data/json-api/lts?label=%40lts&color=0096FF)
 - ![NPM LTS 4.12 Version](https://img.shields.io/npm/v/%40ember-data/json-api/lts-4-12?label=%40lts-4-12&color=bbbbbb)
+
+## Usage
+
+```ts
+import Store from '@ember-data/store';
+import Cache from '@ember-data/json-api';
+
+export default class extends Store {
+  createCache(capabilities) {
+    return new Cache(capabilities);
+  }
+}
+```
+
+Apps on the `ember-data` meta package get this configuration for free.
+
+<br>
+
+## Documentation
+
+*Get Started* → [Guides](https://warp-drive.io/guides/)
+
+API docs for this package → [@ember-data/json-api](https://warp-drive.io/api/@ember-data/json-api/)
+
+<br>
+
+## Code of Conduct
+
+Refer to the [Code of Conduct](https://github.com/warp-drive-data/warp-drive/blob/main/CODE_OF_CONDUCT.md) for community guidelines and inclusivity.
+
+<br>
+
+### License
+
+This project is licensed under the [MIT License](LICENSE.md).

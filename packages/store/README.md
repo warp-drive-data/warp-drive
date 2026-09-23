@@ -81,6 +81,28 @@ After installing you will want to configure your first `Store`: add a cache, add
 - ![NPM LTS Version](https://img.shields.io/npm/v/%40ember-data/store/lts?label=%40lts&color=0096FF)
 - ![NPM LTS 4.12 Version](https://img.shields.io/npm/v/%40ember-data/store/lts-4-12?label=%40lts-4-12&color=bbbbbb)
 
+## Usage
+
+Give the Store a cache and a way to fetch:
+
+```ts
+import Store, { CacheHandler } from '@ember-data/store';
+import RequestManager from '@ember-data/request';
+import Fetch from '@ember-data/request/fetch';
+import Cache from '@ember-data/json-api';
+
+export default class extends Store {
+  requestManager = new RequestManager().use([Fetch]).useCache(CacheHandler);
+
+  createCache(capabilities) {
+    return new Cache(capabilities);
+  }
+}
+```
+
+Apps on the `ember-data` meta package get this configuration for free. The
+[API docs](https://warp-drive.io/api/@ember-data/store/) walk through each piece and how records are presented.
+
 <br>
 
 ## Documentation

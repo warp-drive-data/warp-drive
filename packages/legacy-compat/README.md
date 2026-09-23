@@ -42,3 +42,39 @@ This package provides **compatibility shims** to bridge legacy EmberData pattern
 - ![NPM Stable Version](https://img.shields.io/npm/v/%40ember-data/legacy-compat/latest?label=%40latest&color=90EE90)
 - ![NPM LTS Version](https://img.shields.io/npm/v/%40ember-data/legacy-compat/lts?label=%40lts&color=0096FF)
 - ![NPM LTS 4.12 Version](https://img.shields.io/npm/v/%40ember-data/legacy-compat/lts-4-12?label=%40lts-4-12&color=bbbbbb)
+
+## Usage
+
+Install the `LegacyNetworkHandler` so Adapters and Serializers keep working behind the `RequestManager`:
+
+```ts
+import Store, { CacheHandler } from '@ember-data/store';
+import RequestManager from '@ember-data/request';
+import { LegacyNetworkHandler } from '@ember-data/legacy-compat';
+
+export default class extends Store {
+  requestManager = new RequestManager()
+    .use([LegacyNetworkHandler])
+    .useCache(CacheHandler);
+}
+```
+
+<br>
+
+## Documentation
+
+*Get Started* → [Guides](https://warp-drive.io/guides/)
+
+API docs for this package → [@ember-data/legacy-compat](https://warp-drive.io/api/@ember-data/legacy-compat/)
+
+<br>
+
+## Code of Conduct
+
+Refer to the [Code of Conduct](https://github.com/warp-drive-data/warp-drive/blob/main/CODE_OF_CONDUCT.md) for community guidelines and inclusivity.
+
+<br>
+
+### License
+
+This project is licensed under the [MIT License](LICENSE.md).

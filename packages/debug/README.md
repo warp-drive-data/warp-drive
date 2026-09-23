@@ -28,6 +28,9 @@
 
 # @ember-data/debug
 
+> [!WARNING]
+> **⚠️ This is a legacy package** for apps still on the `@ember-data/*` packages.
+
 Provides ember-inspector support for Ember apps built with EmberData and using the older ember-data packages.
 
 **Tagged Releases**
