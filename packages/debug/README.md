@@ -28,7 +28,8 @@
 
 # @ember-data/debug
 
-Provides ember-inspector support for Ember apps built with EmberData and using the older ember-data packages.
+Provides the `DataAdapter` that the [Ember Inspector](https://github.com/emberjs/ember-inspector) uses for its `data` tab, for
+Ember apps on the older `@ember-data/*` packages.
 
 **Tagged Releases**
 
@@ -38,23 +39,20 @@ Provides ember-inspector support for Ember apps built with EmberData and using t
 - ![NPM LTS Version](https://img.shields.io/npm/v/%40ember-data/debug/lts?label=%40lts&color=0096FF)
 - ![NPM LTS 4.12 Version](https://img.shields.io/npm/v/%40ember-data/debug/lts-4-12?label=%40lts-4-12&color=bbbbbb)
 
+<br>
 
+## Documentation
 
-## Usage
+*Get Started* → [Guides](https://warp-drive.io/guides/)
 
-### removing inspector support in production
+<br>
 
-If you do not want to ship inspector support in your production application, you can specify
-that all support for it should be stripped from the build.
+## Code of Conduct
 
-```ts
-let app = new EmberApp(defaults, {
-  emberData: {
-    includeDataAdapterInProduction: false,
-  },
-});
-```
+Refer to the [Code of Conduct](https://github.com/warp-drive-data/warp-drive/blob/main/CODE_OF_CONDUCT.md) for community guidelines and inclusivity.
 
-## License
+<br>
+
+### License
 
 This project is licensed under the [MIT License](LICENSE.md).
