@@ -9,6 +9,7 @@ complete a task.
 | --- | --- |
 | Define a resource's shape — fields, relationships, identity — for the `Store` | `schemas/define-a-resource-schema.md` |
 | Fetch or query remote data through the `Store` so it's cached and reactive | `requests/fetch-and-cache-data.md` |
+| Re-record one holodeck mock, or review a test that sets `RECORD` | `holodeck/using-record.md` |
 | You're contributing to WarpDrive itself, not just consuming it as a dependency | `contributors/index.md` |
 
 Each skill file is self-contained for its task and links out to any other skill file it
