@@ -33,6 +33,9 @@
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
     },
+    "./blueprints/*": {
+      "default": "./blueprints/*.js"
+    },
     "./*": {
       "types": "./dist/*.d.ts",
       "default": "./dist/*.js"

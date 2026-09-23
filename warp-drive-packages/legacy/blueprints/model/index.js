@@ -1,9 +1,9 @@
+const path = require('path');
+
 module.exports = {
   description: 'Generates an ember-data Model.',
 
   anonymousOptions: ['name', 'attr:type'],
-
-  root: __dirname,
 
   async locals(options) {
     const { generateModelSource } = await import('warp-drive/generators/model');
@@ -15,7 +15,13 @@ module.exports = {
     });
 
     return {
-      content: generateModelSource(options.entity.name, rawAttrs, { packageName: '@warp-drive/legacy/model' }),
+      content: generateModelSource(options.entity.name, rawAttrs, {
+        packageName: this.packageName ?? '@warp-drive/legacy/model',
+      }),
     };
+  },
+
+  filesPath() {
+    return path.join(__dirname, 'files');
   },
 };

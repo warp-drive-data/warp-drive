@@ -1,9 +1,9 @@
+const path = require('path');
+
 module.exports = {
   description: 'Generates an ember-data Adapter.',
 
   availableOptions: [{ name: 'base-class', type: String }],
-
-  root: __dirname,
 
   async locals(options) {
     const { generateAdapterSource } = await import('warp-drive/generators/adapter');
@@ -15,9 +15,13 @@ module.exports = {
         cwd: options.project.root,
         isAddon,
         baseClass: options.baseClass,
-        packageName: '@warp-drive/legacy/adapter',
-        importStyle: 'named',
+        packageName: this.packageName ?? '@warp-drive/legacy/adapter',
+        importStyle: this.importStyle ?? 'named',
       }),
     };
+  },
+
+  filesPath() {
+    return path.join(__dirname, 'files');
   },
 };
