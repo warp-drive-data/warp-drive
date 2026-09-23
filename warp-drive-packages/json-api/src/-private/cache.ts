@@ -258,9 +258,22 @@ const RESOLUTION_ORDER_LOCAL_AFTER_UPSERT = [
   ...RESOLUTION_ORDER_REMOTE_AFTER_UPSERT,
 ] as const;
 
+/** The layers an after-merge order folds into `remoteAttrs`, lowest precedence first. */
+function layersFoldedIntoRemote(order: readonly (AttrLayer | MergeLayer)[]): readonly (AttrLayer | MergeLayer)[] {
+  return order.slice(0, order.indexOf('remoteAttrs')).reverse();
+}
+
 const MERGE_RESOLUTION = {
-  commit: { remoteAfter: RESOLUTION_ORDER_REMOTE_AFTER_COMMIT, localAfter: RESOLUTION_ORDER_LOCAL_AFTER_COMMIT },
-  upsert: { remoteAfter: RESOLUTION_ORDER_REMOTE_AFTER_UPSERT, localAfter: RESOLUTION_ORDER_LOCAL_AFTER_UPSERT },
+  commit: {
+    remoteAfter: RESOLUTION_ORDER_REMOTE_AFTER_COMMIT,
+    localAfter: RESOLUTION_ORDER_LOCAL_AFTER_COMMIT,
+    folded: layersFoldedIntoRemote(RESOLUTION_ORDER_REMOTE_AFTER_COMMIT),
+  },
+  upsert: {
+    remoteAfter: RESOLUTION_ORDER_REMOTE_AFTER_UPSERT,
+    localAfter: RESOLUTION_ORDER_LOCAL_AFTER_UPSERT,
+    folded: layersFoldedIntoRemote(RESOLUTION_ORDER_REMOTE_AFTER_UPSERT),
+  },
 } as const;
 type MergeKind = keyof typeof MERGE_RESOLUTION;
 
@@ -2248,14 +2261,21 @@ function candidateKeys(layers: Layered, remoteAfterOrder: readonly (AttrLayer | 
  * Fold every layer above `remoteAttrs` in the after-merge order for `kind` into `remoteAttrs`,
  * lowest precedence first, and clear each resource layer that was folded in. The same order
  * {@link partitionChangedKeys} used to predict the result, so the two cannot disagree.
+ *
+ * Reads the resource layers off `cached` rather than taking a {@link Layered}, so an upsert that
+ * is not calculating changes allocates nothing beyond the merge itself.
  */
-function mergeIntoRemote(cached: CachedResource, layers: Layered, kind: MergeKind): void {
-  const order: readonly (AttrLayer | MergeLayer)[] = MERGE_RESOLUTION[kind].remoteAfter;
+function mergeIntoRemote(cached: CachedResource, incomingAttrs: AttrHash | null, kind: MergeKind): void {
+  const folded = MERGE_RESOLUTION[kind].folded;
   const target = cached.remoteAttrs || (Object.create(null) as AttrHash);
-  for (let i = order.indexOf('remoteAttrs') - 1; i >= 0; i--) {
-    const layer = order[i];
-    Object.assign(target, layers[layer]);
-    if (layer !== 'incomingAttrs') cached[layer] = null;
+  for (let i = 0; i < folded.length; i++) {
+    const layer = folded[i];
+    if (layer === 'incomingAttrs') {
+      if (incomingAttrs) Object.assign(target, incomingAttrs);
+    } else if (cached[layer]) {
+      Object.assign(target, cached[layer]);
+      cached[layer] = null;
+    }
   }
   cached.remoteAttrs = target;
 }
@@ -2629,12 +2649,16 @@ function cacheUpsert(
 
   // if no cache entry existed, no record exists / property has been accessed
   // and thus we do not need to notify changes to any properties.
-  const layers = layersForMerge(cached, data.attributes ?? null);
   if (calculateChanges && existed && data.attributes) {
     // before the merge below, which overwrites the values the comparison reads
-    changes = partitionChangedKeys(cache._capabilities.schema, layers, fields, 'upsert');
+    changes = partitionChangedKeys(
+      cache._capabilities.schema,
+      layersForMerge(cached, data.attributes),
+      fields,
+      'upsert'
+    );
   }
-  mergeIntoRemote(cached, layers, 'upsert');
+  mergeIntoRemote(cached, data.attributes ?? null, 'upsert');
 
   if (cached.localAttrs) {
     if (reconcileLocalEdits(cache._capabilities.schema, cached, fields)) {
@@ -2944,9 +2968,13 @@ function didCommit(
     responseAttrs = data.attributes ?? null;
   }
   // before the merge below, which overwrites the values the comparison reads
-  const layers = layersForMerge(cached, responseAttrs);
-  const changes = partitionChangedKeys(cache._capabilities.schema, layers, fields, 'commit');
-  mergeIntoRemote(cached, layers, 'commit');
+  const changes = partitionChangedKeys(
+    cache._capabilities.schema,
+    layersForMerge(cached, responseAttrs),
+    fields,
+    'commit'
+  );
+  mergeIntoRemote(cached, responseAttrs, 'commit');
   reconcileLocalEdits(cache._capabilities.schema, cached, fields);
 
   if (cached.errors) {
