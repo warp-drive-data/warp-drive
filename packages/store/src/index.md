@@ -9,7 +9,22 @@ This package provides [*Ember***Data**](https://github.com/warp-drive-data/warp-
 A {@link @warp-drive/core!Store | Store} coordinates interaction between your application, a [Cache](/api/@warp-drive/core/types/cache/types/Cache),
 and sources of data (such as your API or a local persistence layer) accessed via a {@link @warp-drive/core!RequestManager | RequestManager}.
 
+```mermaid
+flowchart LR
+    A[fa:fa-terminal App] ===> D{fa:fa-code-fork Store}
+    B{{fa:fa-sitemap RequestManager}} <--> C[(fa:fa-database Source)]
+    D <--> E[(fa:fa-archive Cache)]
+    D <--> B
+```
+
 Optionally, a Store can be configured to hydrate the response data into rich presentation classes.
+
+```mermaid
+flowchart LR
+    A[fa:fa-terminal App] --- B(Model)
+    A === C{fa:fa-code-fork Store}
+    B --- C
+```
 
 ## Creating A Store
 
