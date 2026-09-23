@@ -13,6 +13,7 @@ packages as a dependency in an app). Find the single row below that matches your
 | You're writing or changing documentation — a doc comment (TSDoc), a guide, an `upgrading/` or `blog/` page, a package README or `src/index.md`, or an agent skill (RFCs have their own row above) | `write-documentation.md` |
 | You're about to run, or are about to reach for, any local test/lint/build command — even mid-task, even if you already read this table once this session for a different reason | `use-ci-as-the-source-of-truth.md` |
 | You're writing or reviewing a test and about to share setup/teardown across more than one `test()` in a module | `extract-test-setup-into-functions.md` |
+| Your change is finished and you're turning it into a pull request — title, labels CI enforces, and backports | `submit-a-pr.md` |
 
 The first two rows apply to **every** session, whatever the task — read them before anything
 else, then read the row matching your actual task.
