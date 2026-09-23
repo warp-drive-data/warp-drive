@@ -34,28 +34,6 @@ acceptance would unblock.
 
 ## Motivation
 
-### Where this came from
-
-[PR #9073](https://github.com/warp-drive-data/warp-drive/pull/9073) ("spec: JSON:API Graphs")
-proposed three things together: a "complex relationships" profile for linkage nested inside
-`attributes`, the `QUERY` extension AQL compiles to, and AQL itself as a terse authoring syntax for
-it.
-
-A follow-up exploration ([PR #11087](https://github.com/warp-drive-data/warp-drive/pull/11087))
-picked up that original parser to finish it, and found it incomplete in more than just what was
-left unbuilt: it silently dropped `filter`/`page` output (only `data` ever made it into the
-compiled query), had no string-escape handling, lost track of open contexts on certain inputs, and
-had no real test coverage. Its VS Code extension's grammar only ever highlighted `#` comments, and
-the embedded-template injection grammar had a scope-name mismatch that made it a silent no-op.
-Working through those bugs surfaced that the *language* itself, not just its implementation, was
-underspecified: the original `filter{}` only ever expressed
-equality; there was no way to declare request headers a persisted query needs; there was no way to
-batch independent queries; and there was no guidance at all for the overwhelmingly common case of
-a backend that doesn't conform to the `QUERY` extension exactly as written. This RFC is the design
-that exploration produced, written up and proposed on its own, ahead of landing any implementation
-against it — see [Tooling](#tooling) for the parser, editor, and linting work this RFC's
-acceptance would unblock.
-
 ### The problem
 
 1. **Hand-authoring JSON:API query bodies is verbose and typo-prone.** Sparse fieldsets and
@@ -348,12 +326,18 @@ compiled envelope itself never changes to accommodate it.
 
 ### Current implementation status
 
-Nothing in this RFC is implemented anywhere in WarpDrive today. An earlier exploration (see
-[Where this came from](#where-this-came-from)) prototyped a parser covering `data`/`page`/`@arg`
-and a VS Code syntax highlighter, which is what surfaced the design gaps this RFC resolves — but
-that prototype covered only flat equality for `filter` (`q:search.filter.key = value`, no
-operator) and had no `headers` or multi-entry support at all. None of it is proposed for merge
-alongside this RFC. If this RFC is accepted, [Tooling](#tooling) below is the implementation plan.
+Nothing in this RFC is implemented anywhere in WarpDrive today.
+[PR #9073](https://github.com/warp-drive-data/warp-drive/pull/9073) ("spec: JSON:API Graphs")
+first proposed the `QUERY` extension and an early version of AQL as its authoring syntax, alongside
+an unrelated "complex relationships" profile for linkage nested inside `attributes`. A later
+exploration ([PR #11087](https://github.com/warp-drive-data/warp-drive/pull/11087)) prototyped a
+parser covering `data`/`page`/`@arg` and a VS Code syntax highlighter; that prototype silently
+dropped `filter`/`page` output in places, had no string-escape handling, and lost track of open
+contexts on certain inputs. Working through those bugs is what surfaced the design gaps this RFC
+resolves — the prototype's `filter` covered only flat equality (`q:search.filter.key = value`, no
+operator), and it had no `headers` or multi-entry support at all. None of that prototype is
+proposed for merge alongside this RFC. If this RFC is accepted, [Tooling](#tooling) below is the
+implementation plan.
 
 ## How we teach this
 
@@ -494,9 +478,10 @@ deliverable — a thin wrapper over the reference parser, buildable as soon as t
   fundamentally different filter philosophy gain nothing from the vocabulary matching theirs and
   still need a full adapter, same as any other non-conforming backend.
 - This entire RFC is specified ahead of any implementation — `data`/`filter`/`page`/`@arg` were at
-  least prototyped during design exploration (see [Where this came from](#where-this-came-from));
-  `headers` and multi-entry never were. Shipping a spec this far ahead of code risks it drifting
-  from whatever an eventual implementation actually needs, or the gap simply never getting closed.
+  least prototyped during design exploration (see [Current implementation
+  status](#current-implementation-status)); `headers` and multi-entry never were. Shipping a spec
+  this far ahead of code risks it drifting from whatever an eventual implementation actually needs,
+  or the gap simply never getting closed.
 - `@arg` living inline inside `filter`/`page`/`headers` values, rather than in one centralized
   declarations block, scatters a persisted query's variable declarations through the document —
   arguably harder to see "what does this query need at call time" at a glance than a Relay-style
