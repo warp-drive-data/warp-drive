@@ -56,8 +56,7 @@ before the next person reads it. Every round of that makes the docs work for a w
   [Writing Permanent Content](./writing-permanent-content.md).
 - **Instructions a coding agent should follow?** Write an **Agent skill** under
   `warp-drive-packages/memory-alpha/skills/`: plain markdown routed by an index, published at
-  [/skills](/skills/). See the
-  [memory-alpha README](https://github.com/warp-drive-data/warp-drive/blob/main/warp-drive-packages/memory-alpha/README.md).
+  [/skills](/skills/). See [Writing Agent Skills](./writing-agent-skills.md).
 
 ## Cross-Documentation Checklist
 

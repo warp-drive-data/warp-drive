@@ -20,7 +20,7 @@ with the person you're working with, and it links to those guides rather than re
    | TSDoc comments, `src/index.md` package pages | [Documenting APIs](/guides/contributing/writing-documentation/writing-api-docs.md) |
    | Pages under `guides/`, including tutorials in `guides/tutorials/` | [Writing Guides](/guides/contributing/writing-documentation/writing-guides.md) |
    | Pages under `upgrading/` or `blog/` | [Writing Permanent Content](/guides/contributing/writing-documentation/writing-permanent-content.md) |
-   | Files under `warp-drive-packages/memory-alpha/skills/` | the package [README](https://github.com/warp-drive-data/warp-drive/blob/main/warp-drive-packages/memory-alpha/README.md), plus the existing files in the same directory as a model |
+   | Files under `warp-drive-packages/memory-alpha/skills/` | [Writing Agent Skills](/guides/contributing/writing-documentation/writing-agent-skills.md) |
 
    Those pages own the rules on tags (`@since`, `@internal`, `@deprecated`, `@group`), link and
    example requirements, audiences, nav metadata, and permanent-URL constraints. Don't paraphrase
