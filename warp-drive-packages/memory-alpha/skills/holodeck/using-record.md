@@ -55,4 +55,6 @@ one exception easy to miss in review.
 
 ## Related
 
-- Related skill: [Fetch and Cache Data](/skills/requests/fetch-and-cache-data)
+- Full guide: [Recording and Replaying](/guides/the-manual/testing/record-and-replay.md)
+- Related skills: [Mock HTTP Requests in Tests](/skills/holodeck/mock-http-requests-in-tests) for the
+  helpers that take this option, and [Fetch and Cache Data](/skills/requests/fetch-and-cache-data)

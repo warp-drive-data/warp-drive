@@ -1,7 +1,9 @@
 {
   "title": "Holodeck",
-  "items": ["using-record"],
+  "items": ["set-up-holodeck", "mock-http-requests-in-tests", "using-record"],
   "files": {
+    "set-up-holodeck": { "title": "Set Up Holodeck" },
+    "mock-http-requests-in-tests": { "title": "Mock HTTP Requests in Tests" },
     "using-record": { "title": "Use RECORD in Holodeck Mocks" }
   }
 }

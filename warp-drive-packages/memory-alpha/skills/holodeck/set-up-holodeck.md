@@ -72,4 +72,5 @@ two configuration calls before any mock works.
 - Full guide: [Server Setup](/guides/the-manual/testing/server-setup.md),
   [Client Setup](/guides/the-manual/testing/client-setup.md), and
   [Test Framework Integration](/guides/the-manual/testing/test-framework-integration.md)
-- Related skill: [Mock HTTP Requests in Tests](/skills/testing/mock-http-requests-in-tests)
+- Related skills: [Mock HTTP Requests in Tests](/skills/holodeck/mock-http-requests-in-tests) for
+  declaring mocks once the server runs

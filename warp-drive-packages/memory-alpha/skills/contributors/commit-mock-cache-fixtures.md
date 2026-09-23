@@ -58,4 +58,4 @@ ship a test that only works on the machine that wrote it.
 ## Related
 
 - Full guide: [Recording and Replaying](/guides/the-manual/testing/record-and-replay.md)
-- Related skill: [Mock HTTP Requests in Tests](/skills/testing/mock-http-requests-in-tests)
+- Related skill: [Mock HTTP Requests in Tests](/skills/holodeck/mock-http-requests-in-tests)
