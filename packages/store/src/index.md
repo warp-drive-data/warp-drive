@@ -6,15 +6,15 @@ Use {@link @warp-drive/core! | @warp-drive/core} instead.
 
 This package provides [*Ember***Data**](https://github.com/warp-drive-data/warp-drive/)'s `Store` class.
 
-A {@link Store} coordinates interaction between your application, a {@link Cache},
-and sources of data (such as your API or a local persistence layer) accessed via a {@link RequestManager}.
+A {@link @warp-drive/core!Store | Store} coordinates interaction between your application, a [Cache](/api/@warp-drive/core/types/cache/types/Cache),
+and sources of data (such as your API or a local persistence layer) accessed via a {@link @warp-drive/core!RequestManager | RequestManager}.
 
 Optionally, a Store can be configured to hydrate the response data into rich presentation classes.
 
 ## Creating A Store
 
-To use a `Store` we will need to do few things: add a {@link Cache}
-to store data **in-memory**, add a {@link Handler} to fetch data from a source,
+To use a `Store` we will need to do few things: add a [Cache](/api/@warp-drive/core/types/cache/types/Cache)
+to store data **in-memory**, add a [Handler](/api/@warp-drive/core/request/types/Handler) to fetch data from a source,
 and implement `instantiateRecord` to tell the store how to display the data for individual resources.
 
 :::tip Note
@@ -26,7 +26,7 @@ and `instantiateRecord` are configured for you by default.
 
 To start, let's install a [{json:api}](https://jsonapi.org/) cache. If your app uses `GraphQL` or `REST` other
 caches may better fit your data. You can author your own cache by creating one that
-conforms to the {@link Cache | spec}.
+conforms to the [spec](/api/@warp-drive/core/types/cache/types/Cache).
 
 The package `@ember-data/json-api` provides a [{json:api}](https://jsonapi.org/) cache we can use.
 After installing it, we can configure the store to use this cache.
@@ -102,7 +102,7 @@ export default class extends Store {
 ### Presenting Data from the Cache
 
 Now that we have a source and a cache for our data, we need to configure how
-the Store delivers that data back to our application. We do this via the {@link Store.instantiateRecord | instantiateRecord hook}
+the Store delivers that data back to our application. We do this via the {@link @warp-drive/core!Store.instantiateRecord | instantiateRecord hook}
 which allows us to transform the data for a resource before handing it to the application.
 
 A naive way to present the data would be to return it as JSON. Typically instead

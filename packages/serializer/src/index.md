@@ -34,7 +34,7 @@ For an alternative modern pattern to Serializers, see the [Request Handlers Guid
 :::danger
 ⚠️ **This is LEGACY documentation** for a feature that is no longer encouraged to be used.
 If starting a new app or thinking of implementing a new serializer, consider writing a
-{@link Handler} instead to be used with the {@link RequestManager}.
+[Handler](/api/@warp-drive/core/request/types/Handler) instead to be used with the {@link @warp-drive/core!RequestManager | RequestManager}.
 :::
 
 In order to properly manage and present your data, EmberData
@@ -56,7 +56,7 @@ another for serializing records via `Snapshots` into the expected
 server API format.
 
 To implement a serializer, export a class that conforms to the structure
-described by {@link MinimumSerializerInterface}
+described by [MinimumSerializerInterface](/api/@warp-drive/legacy/compat/types/MinimumSerializerInterface)
 from the `app/serializers/` directory. An example is below.
 
 ```ts

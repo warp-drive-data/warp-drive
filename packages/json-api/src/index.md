@@ -8,7 +8,7 @@
 
 ## Overview
 
-This package provides an in-memory [{json:api}](https://jsonapi.org/) document and resource {@link @warp-drive/core-types!cache.Cache | Cache} implementation for use with the older EmberData package setup.
+This package provides an in-memory [{json:api}](https://jsonapi.org/) document and resource [Cache](/api/@warp-drive/core/types/cache/types/Cache) implementation for use with the older EmberData package setup.
 
 **Why it's legacy:** This package was created when EmberData and WarpDrive were tightly coupled. Modern WarpDrive has:
 - Moved the cache implementation to {@link @warp-drive/json-api! | @warp-drive/json-api}
@@ -89,4 +89,4 @@ class extends Store {
 }
 ```
 
-For the full list of APIs, see the documentation for {@link Cache}.
+For the full list of APIs, see the documentation for [Cache](/api/@warp-drive/core/types/cache/types/Cache).
