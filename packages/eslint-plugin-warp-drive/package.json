@@ -24,6 +24,10 @@
     },
     "./recommended-internal": {
       "default": "./src/recommended-internal.js"
+    },
+    "./legacy-import-mapping": {
+      "types": "./src/legacy-import-mapping/index.d.ts",
+      "default": "./src/legacy-import-mapping/index.js"
     }
   },
   "dependencies": {
@@ -42,7 +46,6 @@
   },
   "files": [
     "src",
-    "docs",
     "CHANGELOG.md",
     "README.md",
     "logos",

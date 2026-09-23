@@ -20,6 +20,7 @@ const eslintTester = new RuleTester({
 
 const msg = 'warp-drive.no-legacy-imports';
 const unmappedMsg = 'warp-drive.no-legacy-imports.unmapped-export';
+const legacyHomeMsg = 'warp-drive.no-legacy-imports.legacy-home';
 
 eslintTester.run('no-legacy-imports', rule, {
   valid: [
@@ -27,7 +28,6 @@ eslintTester.run('no-legacy-imports', rule, {
     {
       code: `import { something } from 'not-in-mapping';`,
     },
-    // Namespace import skipped in v1
     {
       code: `import * as REST from '@ember-data/rest/request';`,
     },
@@ -57,13 +57,11 @@ eslintTester.run('no-legacy-imports', rule, {
       output: `import Model from '@warp-drive/legacy/model';`,
       errors: [{ messageId: msg }],
     },
-    // A token with no per-export mapping entry ("Unknown") is still routed to
-    // '@warp-drive/legacy/model' via the module-level fallback (regression for #10394),
-    // since every other known export of '@ember-data/model' funnels there too.
     {
+      name: 'a name the explicit-list shim never had is reported, the known names are rewritten',
       code: `import Model, { hasMany, Unknown } from '@ember-data/model';`,
-      output: `import Model, { hasMany, Unknown } from '@warp-drive/legacy/model';`,
-      errors: [{ messageId: msg }],
+      output: `import Model, { hasMany } from '@warp-drive/legacy/model';\nimport { Unknown } from '@ember-data/model';`,
+      errors: [{ messageId: msg }, { messageId: unmappedMsg }],
     },
     // Default import whose replacement is a named export must be rewritten to a
     // named import, not just have its module string swapped (regression for #10525)
@@ -96,21 +94,16 @@ eslintTester.run('no-legacy-imports', rule, {
       output: `import { CachePolicy } from '@warp-drive/core';`,
       errors: [{ messageId: msg }],
     },
-    // A token never individually recorded in the mapping is routed via the module-level
-    // fallback, since every known export of '@ember-data/store' funnels into
-    // '@warp-drive/core' (regression for #10394).
     {
+      name: 'a module without export * forwards no unrecorded name (regression for #10394)',
       code: `import { TotallyMadeUpExportName } from '@ember-data/store';`,
-      output: `import { TotallyMadeUpExportName } from '@warp-drive/core';`,
-      errors: [{ messageId: msg }],
-    },
-    // '@ember-data/request' legitimately splits across two replacement modules
-    // (RequestManager -> '@warp-drive/core', others -> '@warp-drive/ember'), so an
-    // unrecognized token from it has no safe fallback and is flagged instead of guessed
-    // (regression for #10394 — "we don't error ... we should").
-    {
-      code: `import { TotallyMadeUpExportName } from '@ember-data/request';`,
       errors: [{ messageId: unmappedMsg }],
+    },
+    {
+      name: 'an unrecorded name rides the single export * of its module',
+      code: `import { TotallyMadeUpExportName } from '@ember-data/request';`,
+      output: `import { TotallyMadeUpExportName } from '@warp-drive/core/request';`,
+      errors: [{ messageId: msg }],
     },
     // The default export of '@ember-data/request' is the RequestManager class
     {
@@ -132,11 +125,46 @@ eslintTester.run('no-legacy-imports', rule, {
     },
     // A token the legacy package defines itself has nowhere to be rewritten to
     {
+      name: 'a token the legacy package declares itself is reported as a legacy home',
       code: `import Store from 'ember-data/store';`,
       output: null,
-      errors: [{ messageId: unmappedMsg }],
+      errors: [{ messageId: legacyHomeMsg }],
+    },
+    {
+      name: 'a token that still lives in a legacy package is reported without a fix',
+      code: `import VERSION from 'ember-data/version';`,
+      output: null,
+      errors: [{ messageId: legacyHomeMsg }],
+    },
+    {
+      name: 'a namespace import follows the module move',
+      code: `import * as compat from '@ember-data/legacy-compat';`,
+      output: `import * as compat from '@warp-drive/legacy/compat';`,
+      errors: [{ messageId: msg }],
+    },
+    {
+      name: 'from selects the map; the 5.7-5.8 override picks @warp-drive/ember',
+      code: `import { getRequestState } from '@warp-drive/core/store/-private';`,
+      output: `import { getRequestState } from '@warp-drive/ember';`,
+      options: [{ from: '5.7' }],
+      errors: [{ messageId: msg }],
     },
   ],
+});
+
+describe('no-legacy-imports (options)', () => {
+  it('rejects a from-version the plugin does not ship', () => {
+    const { Linter } = require('eslint');
+    const linter = new Linter();
+    const config = {
+      plugins: { 'warp-drive': { rules: { 'no-legacy-imports': rule } } },
+      rules: { 'warp-drive/no-legacy-imports': ['error', { from: '4.12' }] },
+    };
+    require('assert').throws(
+      () => linter.verify(`import Model from '@ember-data/model';`, config),
+      /"4.12" should be equal to one of the allowed values/
+    );
+  });
 });
 
 // `import type` is TypeScript-only syntax; @babel/eslint-parser above doesn't parse it,
@@ -178,6 +206,12 @@ tsTester.run('no-legacy-imports (type-only imports)', rule, {
     {
       code: `import type { CachePolicy } from '@ember-data/store';`,
       output: `import type { CachePolicy } from '@warp-drive/core';`,
+      errors: [{ messageId: msg }],
+    },
+    {
+      name: 'a type re-exported through an export type list is rewritten to its new home',
+      code: `import type { ManyArray } from '@ember-data/model';`,
+      output: `import type { ManyArray } from '@warp-drive/legacy/model';`,
       errors: [{ messageId: msg }],
     },
   ],
