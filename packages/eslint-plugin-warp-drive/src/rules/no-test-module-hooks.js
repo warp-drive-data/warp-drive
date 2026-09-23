@@ -29,6 +29,13 @@ module.exports = {
 
   create(context) {
     return {
+      /**
+       * `hookCallSelector` matches only `hooks.beforeEach(...)` and
+       * `hooks.afterEach(...)`, so `callee` is always a `MemberExpression` whose
+       * property is the method `Identifier`. `Rule.Node` is a union over every
+       * node type and can't express that, hence the intersection.
+       * @param {import('eslint').Rule.Node & { callee: { property: { name: string } } }} node
+       */
       [hookCallSelector](node) {
         context.report({
           node,
