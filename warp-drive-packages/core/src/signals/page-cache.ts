@@ -217,77 +217,151 @@ export class PageCache<RT = unknown, E = unknown> {
       this.state = getRequestState<RT, E>(this.request);
       const value = await this.request;
       const content = value.content as ReactiveDocument<unknown>;
-
-      const self = getHref(content?.links?.self);
-      const first = getHref(content?.links?.first);
-      const last = getHref(content?.links?.last);
-      const next = getHref(content?.links?.next);
-      const prev = getHref(content?.links?.prev);
-
-      assert('Expected the page to have a self link', self);
-
-      // The page number is a hint. When the response exposes it, rely on it. When
-      // absent (`0`, e.g. cursor pagination), keep whatever relative number a
-      // neighbor already assigned via `setPageNumber` rather than clobbering it.
-      const pageNumber = this.getPageNumber(content);
-      if (pageNumber) {
-        this.pageNumber = pageNumber;
-      }
-
-      const firstPage = first ? this.manager.getPageCache(first) : null;
-      const lastPage = last ? this.manager.getPageCache(last) : null;
-      const prevPage = prev ? this.manager.getPageCache(prev) : null;
-      const nextPage = next ? this.manager.getPageCache(next) : null;
-
-      if (firstPage) {
-        this.firstLink = first;
-        firstPage.setPageNumber(1);
-        if (!firstPage.after) {
-          firstPage.updateLinkage({ after: this });
-        }
-      }
-
-      if (lastPage) {
-        this.lastLink = last;
-        lastPage.setPageNumber(this.manager.totalPages);
-        if (!lastPage.before) {
-          lastPage.updateLinkage({ before: this });
-        }
-      }
-
-      if (nextPage) {
-        this.nextLink = next;
-        nextPage.setPageNumber(this.pageNumber + 1);
-        nextPage.updateLinks({ prev: self });
-      }
-
-      if (prevPage) {
-        this.prevLink = prev;
-        prevPage.setPageNumber(this.pageNumber - 1);
-        prevPage.updateLinks({ next: self });
-      }
-
-      if (this.isLinked) {
-        if (prevPage) prevPage.updateLinkage({ after: this });
-        if (nextPage) nextPage.updateLinkage({ before: this });
-      } else if (prevPage?.isLinked) {
-        this.updateLinkage({ before: prevPage });
-        if (nextPage) nextPage.updateLinkage({ before: this });
-      } else if (nextPage?.isLinked) {
-        this.updateLinkage({ after: nextPage });
-        if (prevPage) prevPage.updateLinkage({ after: this });
-      } else if ((prevPage || nextPage) && (firstPage || lastPage)) {
-        this.lookupLinkage(firstPage, lastPage);
-      } else if (prevPage || nextPage) {
-        this.updateLinkage({ before: prevPage, after: nextPage });
-      }
-
+      this.applyDocument(content, false);
       return content;
     } catch {
       // no-op
     }
 
     return null;
+  }
+
+  /**
+   * Re-applies an already-loaded page from a newer request for the same page
+   * (a reload, or a route-driven navigation back to it). The newer document is
+   * authoritative: its links and page hints replace the ones recorded from
+   * the earlier load, and the collection total is updated from it. The page
+   * keeps its current request until the newer one resolves, so a page on
+   * screen does not flash a loading state; a rejected request leaves the
+   * page untouched.
+   *
+   * @internal
+   */
+  async update(request: Future<RT>): Promise<ReactiveDocument<unknown> | null> {
+    const state = getRequestState<RT, E>(request);
+    let content: ReactiveDocument<unknown>;
+    try {
+      content = (await request).content as ReactiveDocument<unknown>;
+    } catch {
+      return null;
+    }
+
+    this.request = request;
+    this.state = state;
+    this.manager.totalPages = this.manager.getTotalPages(content);
+    this.applyDocument(content, true);
+    return content;
+  }
+
+  /**
+   * Records a loaded document's links and page number, and links this page
+   * into the shared page graph.
+   *
+   * When `isUpdate` is true, the document replaces what an earlier load of
+   * this page recorded: a link the document states explicitly (including an
+   * explicit `null`) overwrites the recorded one.
+   *
+   * @internal
+   */
+  applyDocument(content: ReactiveDocument<unknown>, isUpdate: boolean): void {
+    const links = (content?.links ?? {}) as Record<string, unknown>;
+    const self = getHref(content?.links?.self);
+    const first = getHref(content?.links?.first);
+    const last = getHref(content?.links?.last);
+    const next = getHref(content?.links?.next);
+    const prev = getHref(content?.links?.prev);
+
+    assert('Expected the page to have a self link', self);
+
+    // The page number is a hint. When the response exposes it, rely on it. When
+    // absent (`0`, e.g. cursor pagination), keep whatever relative number a
+    // neighbor already assigned via `setPageNumber` rather than clobbering it.
+    const pageNumber = this.getPageNumber(content);
+    if (pageNumber) {
+      this.pageNumber = pageNumber;
+    }
+
+    const firstPage = first ? this.manager.getPageCache(first) : null;
+    const lastPage = last ? this.manager.getPageCache(last) : null;
+    const prevPage = prev ? this.manager.getPageCache(prev) : null;
+    const nextPage = next ? this.manager.getPageCache(next) : null;
+
+    if (isUpdate) {
+      if ('first' in links) this.firstLink = first;
+      if ('last' in links) this.lastLink = last;
+      if ('next' in links) this.nextLink = next;
+      if ('prev' in links) this.prevLink = prev;
+    }
+
+    // An explicit `null` next/prev link, or a first/last link, marks an end
+    // of the collection: nothing in the graph may extend past it. Detaching
+    // drops pages that no longer exist (e.g. the collection shrank) from the
+    // chain; they stay cached and relink if a later document reaches them.
+    if ('next' in links && !next) this.detachAfter();
+    if ('prev' in links && !prev) this.detachBefore();
+    if (lastPage) lastPage.detachAfter();
+    if (firstPage) firstPage.detachBefore();
+
+    if (firstPage) {
+      this.firstLink = first;
+      firstPage.setPageNumber(1);
+      if (!firstPage.after) {
+        firstPage.updateLinkage({ after: this });
+      }
+    }
+
+    if (lastPage) {
+      this.lastLink = last;
+      lastPage.setPageNumber(this.manager.totalPages);
+      if (!lastPage.before) {
+        lastPage.updateLinkage({ before: this });
+      }
+    }
+
+    if (nextPage) {
+      this.nextLink = next;
+      nextPage.setPageNumber(this.pageNumber + 1);
+      nextPage.updateLinks({ prev: self });
+    }
+
+    if (prevPage) {
+      this.prevLink = prev;
+      prevPage.setPageNumber(this.pageNumber - 1);
+      prevPage.updateLinks({ next: self });
+    }
+
+    if (this.isLinked) {
+      if (prevPage) prevPage.updateLinkage({ after: this });
+      if (nextPage) nextPage.updateLinkage({ before: this });
+    } else if (prevPage?.isLinked) {
+      this.updateLinkage({ before: prevPage });
+      if (nextPage) nextPage.updateLinkage({ before: this });
+    } else if (nextPage?.isLinked) {
+      this.updateLinkage({ after: nextPage });
+      if (prevPage) prevPage.updateLinkage({ after: this });
+    } else if ((prevPage || nextPage) && (firstPage || lastPage)) {
+      this.lookupLinkage(firstPage, lastPage);
+    } else if (prevPage || nextPage) {
+      this.updateLinkage({ before: prevPage, after: nextPage });
+    }
+  }
+
+  /** @internal */
+  detachAfter(): void {
+    const after = this.after;
+    if (after) {
+      if (after.before === this) after.setBefore(null);
+      this.setAfter(null);
+    }
+  }
+
+  /** @internal */
+  detachBefore(): void {
+    const before = this.before;
+    if (before) {
+      if (before.after === this) before.setAfter(null);
+      this.setBefore(null);
+    }
   }
 
   /** @internal */

@@ -162,6 +162,15 @@ export class PaginationCache<RT = unknown, E = unknown> {
           this.totalPages = this.getTotalPages(document);
         }
       });
+    } else if (request && page.isSuccess && request !== page.request) {
+      // a newer request for an already-loaded page (a reload, or navigating
+      // back to it): its document is authoritative for the page's links and
+      // the collection total, which may have changed since the first load.
+      void page.update(request).then((document) => {
+        if (document) {
+          this.updateFirstPage(page);
+        }
+      });
     }
     return page;
   }
