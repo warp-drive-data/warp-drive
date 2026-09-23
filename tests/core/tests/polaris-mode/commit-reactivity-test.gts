@@ -282,7 +282,7 @@ module('Reactivity | committing updates a rendered immutable record', function (
     assert.dom('[data-test-edits]').hasText('Christopher', 'edits still renders the now-confirmed local edit');
   });
 
-  test('a remote push with equal-content messages does not rebuild the rendered rows', async function (this: RenderingTestContext, assert) {
+  test('a remote push with equal-hash messages does not rebuild the rendered rows', async function (this: RenderingTestContext, assert) {
     rowRenderCount = 0;
     const store = setup();
     const user = pushUser(store, [
@@ -320,7 +320,7 @@ module('Reactivity | committing updates a rendered immutable record', function (
     });
     await settled();
 
-    assert.equal(rowRenderCount, 2, 'an equal-content push does not construct new rows');
+    assert.equal(rowRenderCount, 2, 'an equal-hash push does not construct new rows');
     assert.equal(user.messages[0], first, 'the array element is still the same ReactiveResource instance');
     assert.dom('[data-test-rows]').hasText('pending pending', 'the rendered rows are unchanged');
   });
