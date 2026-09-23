@@ -9,6 +9,7 @@ import type { TypeFromInstanceOrString } from './record.ts';
 import type { RequestContext, StructuredDataDocument, StructuredDocument } from './request.ts';
 import type { CollectionResourceDataDocument, ResourceDocument, SingleResourceDataDocument } from './spec/document.ts';
 import type { ApiError } from './spec/error.ts';
+import type { ExistingResourceObject } from './spec/json-api-raw.ts';
 
 /**
  * A hash of changed attributes with the key being the attribute name and the value being an
@@ -229,7 +230,11 @@ export interface Cache {
    * Push resource data from a remote source into the cache for this ResourceKey
    *
    * @public
-   * @return if `hasRecord` is true then calculated key changes should be returned
+   * @return when `hasRecord` is true, the names of the attributes whose persisted value
+   *   this push changed, or `undefined` when none did. A key counts as changed when the
+   *   value the cache holds for it moved, whether or not a local edit already held the new
+   *   value; a value the schema considers equal (for instance, a schema-object with a
+   *   matching identity hash) does not count. Otherwise `void`.
    */
   upsert(cacheKey: ResourceKey, data: ResourceBlob, hasRecord: boolean): void | string[];
 
@@ -329,7 +334,7 @@ export interface Cache {
    */
   didCommit(
     cacheKey: ResourceKey,
-    result: StructuredDataDocument<SingleResourceDataDocument> | null
+    result: StructuredDataDocument<SingleResourceDataDocument<ExistingResourceObject, ExistingResourceObject>> | null
   ): SingleResourceDataDocument;
   /**
    * [LIFECYCLE] Signals to the cache that a set of resources
@@ -342,7 +347,7 @@ export interface Cache {
    */
   didCommit(
     cacheKey: ResourceKey[],
-    result: StructuredDataDocument<SingleResourceDataDocument> | null
+    result: StructuredDataDocument<SingleResourceDataDocument<ExistingResourceObject, ExistingResourceObject>> | null
   ): SingleResourceDataDocument;
   /**
    * [LIFECYCLE] Signals to the cache that a set of resources
@@ -355,7 +360,7 @@ export interface Cache {
    */
   didCommit(
     cacheKey: ResourceKey[],
-    result: StructuredDataDocument<CollectionResourceDataDocument> | null
+    result: StructuredDataDocument<CollectionResourceDataDocument<ExistingResourceObject>> | null
   ): CollectionResourceDataDocument;
 
   /**
