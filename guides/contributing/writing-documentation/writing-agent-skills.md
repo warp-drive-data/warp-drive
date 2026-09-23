@@ -56,6 +56,11 @@ human guide under `guides/`, holds the detail and the skill links it.
   product's tool or command. The skill is read by several agents.
 - **Put angle brackets in code spans.** VitePress compiles markdown to Vue, so a bare `<thing>`
   in prose is parsed as an element and fails the docs build.
+- **Cross-reference other skills at the moment their case arises.** The index routes one row per
+  task, so a link from inside a skill is the only way an agent discovers a second skill mid-task:
+  a bug-fix skill that ends "if this changed documented behavior, follow Write Documentation"
+  reaches agents the documentation row never will. Link at the step where the other skill becomes
+  relevant, don't summarize it, and add the reciprocal link when the dependency runs both ways.
 - **Link paths.** Other skills are linked relatively (`./other-skill.md`, or
   `../schemas/other-skill.md` across directories); guides are linked by site path
   (`/guides/contributing/...md`); anchors must match a real heading.

@@ -11,7 +11,10 @@ space and the proposed changes before diving too deep into the implementation.
 
 ## Making a PR
 
-Submissions should be made as PRs against the `main` branch.
+Submissions should be made as PRs against the `main` branch. Open the PR as a draft until CI is
+green and you consider it complete, and fill in the pull request template for the description;
+GitHub inserts it in the web form, but a PR opened from the command line with a body of its own
+skips it, so copy from `.github/PULL_REQUEST_TEMPLATE.md` in that case.
 
 If a bugfix for an existing release is needed, that work should be cherry-picked to
 secondary PRs targeting the appropriate release branches after being accepted to the
@@ -25,7 +28,9 @@ the issue being fixed and test that the solution works.
 - We do write tests for our deprecations and assertion messages, using the `assert.expectAssertion()` and `assert.expectDeprecation()` helpers.
 - Because we run tests in both development and `production` environments, assertions, deprecations and warnings may be stripped out. To avoid tests of debug behaviors failing for your PR in production environments, use the `testInDebug` function instead of `qunit` `test` to skip them in production when appropriate.
   - alternatively wrap specific assertions in `if (DEBUG)` or `if (PRODUCTION)`
-- Update the documentation, examples, and guides when affected by your contribution
+- Update the documentation, examples, and guides when affected by your contribution. The
+  [Cross-Documentation Checklist](./writing-documentation/index.md#cross-documentation-checklist)
+  lists what each kind of change touches.
 
 ### Running Tests
 
@@ -69,7 +74,7 @@ These labels are prefixed with `changelog:` and currently the options are:
 - `:label: perf` which should be used to signify that the commit will improve performance characteristics in a meaningful way
 - `:label: cleanup` which should be used to signify removal of deprecated features or that a deprecation has become an assertion.
 - `:label: deprecation` which should be used to signify addition of a new deprecation
-- `:label: doc` which should be used to signify a fix or improvement to documentation generated for api.emberjs.com
+- `:label: doc` which should be used to signify a fix or improvement to documentation: guides, API docs, upgrade and blog pages, or agent skills. This label also triggers a docs-site PR preview — see [Writing Documentation](./writing-documentation/index.md#previewing-your-changes).
 - `:label: test` which should be used to signify addition of new tests or refactoring of existing tests
 - `:label: chore` which should be used to signify refactoring of internal code that should not have an affect on public APIs or behaviors but which we may want to call out for potentially unintended consequences.
 - `:label: dependencies` which should be used when bumping dependencies on `main`. Bumps on other branches should use other labels as this implies a more substantive change.

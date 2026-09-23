@@ -6,7 +6,9 @@ reach for a local test run, lint, or build to check your work.
 ## Steps
 
 1. Before running any checks locally, make sure your change is on an open PR. If there isn't one
-   yet, commit and push your branch and open one first.
+   yet, commit and push your branch and open one first, as a draft, with a description that
+   follows `.github/PULL_REQUEST_TEMPLATE.md`. GitHub inserts that template only in its web form;
+   passing a body from the command line skips it, so read the file and fill it in yourself.
 2. Commit and push to that PR before checking whether the change works. Push first, verify second
    — don't spend a round of local iteration and then push once everything already looks green
    locally.
@@ -19,7 +21,10 @@ reach for a local test run, lint, or build to check your work.
    you what's broken — mark the PR as a draft. A draft PR is still the right place to push
    intermediate commits and read CI feedback from; it just signals to reviewers that it isn't
    ready for their attention yet. Mark it ready for review only once CI is green and you consider
-   the change complete.
+   the change complete — which includes any documentation the change affects; run through the
+   [Cross-Documentation Checklist](/guides/contributing/writing-documentation/index.md#cross-documentation-checklist)
+   and, if anything is due, follow [Write Documentation](./write-documentation.md) before you
+   flip the PR out of draft.
 
 ## Why push first
 
