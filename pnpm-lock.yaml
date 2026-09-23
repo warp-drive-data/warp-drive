@@ -1674,8 +1674,6 @@ importers:
         specifier: 'catalog:'
         version: typescript@7.1.0-dev.20260919.1
 
-  packages/unpublished-eslint-rules: {}
-
   packages/unpublished-test-infra:
     dependencies:
       '@embroider/macros':
