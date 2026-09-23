@@ -20,31 +20,38 @@ checkout's `HEAD` happens to be parked on.
 
    ```sh
    git fetch origin main
-   git worktree add -b <branch-name> ../warp-drive-<topic> origin/main
+   git worktree add -b <branch-name> ../warp-drive-worktrees/<topic> origin/main
    ```
-3. Always make the worktree a **sibling** of the repo (`../warp-drive-<topic>`), never a directory
-   nested inside it. This is not a tidiness preference — Node's resolution algorithm searches
-   *upward* for `node_modules`, so a worktree at `<repo>/anything/my-worktree` silently resolves
-   any dependency or `bin` its own install hasn't provided from `<repo>/node_modules` — the
-   primary checkout's tree. Three properties of this repo turn that into a wrong answer rather
-   than an error: `pnpm-workspace.yaml` sets `hoist: false` and uses injected workspace packages
-   specifically to keep each test app's dep tree isolated, `pnpm install` hardlinks built output
-   into consumers' `node_modules`, and the packages lean on branded types. So a nested worktree
-   gets the other checkout's `dist`, mismatched versions, duplicate modules in a bundle, and
-   private-brand type errors that point nowhere near the cause. A sibling has no shared ancestor
-   holding a `node_modules`, so resolution can't cross over.
+3. Always make the worktree a **sibling** of the repo, under `../warp-drive-worktrees/<topic>`,
+   never a directory nested inside it. This is not a tidiness preference — Node's resolution
+   algorithm searches *upward* for `node_modules`, so a worktree at `<repo>/anything/my-worktree`
+   silently resolves any dependency or `bin` its own install hasn't provided from
+   `<repo>/node_modules` — the primary checkout's tree. Three properties of this repo turn that
+   into a wrong answer rather than an error: `pnpm-workspace.yaml` sets `hoist: false` and uses
+   injected workspace packages specifically to keep each test app's dep tree isolated, `pnpm
+   install` hardlinks built output into consumers' `node_modules`, and the packages lean on
+   branded types. So a nested worktree gets the other checkout's `dist`, mismatched versions,
+   duplicate modules in a bundle, and private-brand type errors that point nowhere near the
+   cause. A sibling has no shared ancestor holding a `node_modules`, so resolution can't cross
+   over. Keeping every worktree under the one `../warp-drive-worktrees/` directory, rather than
+   scattered siblings named after each topic, is also what lets the pruning in the next step tell
+   its own worktrees apart from a checkout you created some other way.
 
    Nesting is also the *default* for Claude Code's own worktree mechanisms — `--worktree`,
-   `EnterWorktree`, and `Agent` with `isolation: "worktree"` all create under
-   `<repo>/.claude/worktrees/` and currently offer no way to relocate that. In this repo, don't use
-   them: create the sibling yourself with `git worktree add` as above. `.gitignore` covers
-   `.claude/worktrees/` so a nested one that slips in doesn't pollute `git status`, but that entry
-   is damage control, not permission.
+   `EnterWorktree`, and `Agent` with `isolation: "worktree"`. This repo replaces that default with
+   a `WorktreeCreate` hook (`.claude/settings.json`, `scripts/worktree-create.sh`) that lands every
+   worktree those mechanisms create at `../warp-drive-worktrees/<name>` instead, branched from a
+   freshly fetched `origin/main` — the same place and the same base as the command above. So
+   `--worktree <topic>`, asking Claude mid-session to work in a worktree, and subagent
+   `isolation: "worktree"` are all safe to use directly here instead of running `git worktree add`
+   by hand; use whichever is more convenient. `.gitignore` still ignores `.claude/worktrees/` as a
+   backstop for a nested one that shows up anyway — a different repo, a session where the hook
+   didn't run — but that entry is damage control, not the expected path.
 4. Install from the new worktree's root. `node_modules` is not shared between worktrees, so a
    fresh worktree has no dependencies and no built packages at all until you install:
 
    ```sh
-   cd ../warp-drive-<topic>
+   cd ../warp-drive-worktrees/<topic>
    pnpm install
    ```
 
@@ -64,9 +71,14 @@ checkout's `HEAD` happens to be parked on.
 7. Clean up once the PR merges, so the next session's `git worktree list` stays readable:
 
    ```sh
-   git worktree remove ../warp-drive-<topic>
+   git worktree remove ../warp-drive-worktrees/<topic>
    git worktree prune
    ```
+
+   A worktree a session created for itself automatically, rather than one you named for a topic,
+   doesn't need this: a `SessionStart` hook (`scripts/session-worktree.sh`) prunes those on a
+   later session's startup once they're clean and their commits are merged into `main` or pushed
+   to a branch elsewhere, so nothing is deleted while it's the only copy of unpushed work.
 
 ## Why "fresh" and "off main" are separate requirements
 
