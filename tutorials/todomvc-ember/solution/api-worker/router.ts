@@ -195,7 +195,7 @@ export function createRouter(db: TodoDb): Router {
     throw notFound(`No route for ${method} ${pathname}`);
   }
 
-  return async (request) => {
+  async function respond(request: Request): Promise<Response> {
     try {
       return await handle(request);
     } catch (error) {
@@ -208,5 +208,13 @@ export function createRouter(db: TodoDb): Router {
       };
       return document(500, body);
     }
+  }
+
+  // Writes replace the whole list, so run requests one at a time to avoid lost updates.
+  let queue: Promise<unknown> = Promise.resolve();
+  return (request) => {
+    const response = queue.then(() => respond(request));
+    queue = response;
+    return response;
   };
 }

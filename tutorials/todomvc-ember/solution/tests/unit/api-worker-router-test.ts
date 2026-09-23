@@ -152,4 +152,25 @@ module('Unit | api-worker | router', function (hooks) {
     assert.strictEqual(response.status, 404);
     assert.strictEqual(response.headers.get('Content-Type'), JSON_API);
   });
+
+  test('concurrent writes do not overwrite each other', async function (assert) {
+    const complete = (id: string) =>
+      router(request('PATCH', `/api/todo/${id}`, { data: { type: 'todo', id, attributes: { completed: true } } }));
+    const create = (title: string) =>
+      router(request('POST', '/api/todo', { data: { type: 'todo', attributes: { title } } }));
+
+    await Promise.all([complete('2'), complete('3'), create('a'), create('b')]);
+
+    const list = (await (await router(request('GET', '/api/todo'))).json()) as TodoCollectionDocument;
+    assert.deepEqual(
+      list.data.map((todo) => [todo.attributes.title, todo.attributes.completed]),
+      [
+        [SEED_TODOS[0].attributes.title, true],
+        [SEED_TODOS[1].attributes.title, true],
+        [SEED_TODOS[2].attributes.title, true],
+        ['a', false],
+        ['b', false],
+      ]
+    );
+  });
 });
