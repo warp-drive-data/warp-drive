@@ -1,8 +1,7 @@
-import type { NotificationType, Store } from '@warp-drive/core';
+import type { Store } from '@warp-drive/core';
 import { recordIdentifierFor, useRecommendedStore } from '@warp-drive/core';
 import { checkout, commit, withDefaults } from '@warp-drive/core/reactive';
 import { withReactiveResponse } from '@warp-drive/core/request';
-import type { ResourceKey } from '@warp-drive/core/types/identifier';
 import type { StructuredDataDocument } from '@warp-drive/core/types/request';
 import type { SingleResourceDataDocument } from '@warp-drive/core/types/spec/document';
 import type { ExistingResourceObject } from '@warp-drive/core/types/spec/json-api-raw';
@@ -15,10 +14,10 @@ import { JSONAPICache } from '@warp-drive/json-api';
 import { buildBaseURL } from '@warp-drive/utilities';
 
 /**
- * Each test watches three subscribers so the whole delivery matrix is visible rather than half
- * of it: the remote channel, the local channel from the start (which also sees the `setAttr` from
- * the edit), and the local channel subscribed after the edit (which sees only what the commit or
- * save itself emits).
+ * Each test asserts the whole delivery matrix for a key with `assert.notifiedOn`: what the remote
+ * channel heard, what the local channel heard, and what was announced unscoped (which reaches
+ * both). Where a test edits first, it asserts the edit's own local notification and then clears
+ * the counts, so the numbers after the commit, save, or push describe only that step.
  *
  * Assert on notifications here, never on a subsequent property read: outside a tracking frame a
  * getter re-reads the cache every time, so reading the value back passes whether or not anything
@@ -37,25 +36,30 @@ interface ExistingUser {
   messages: Message[];
 }
 
-interface CustomContext extends TestContext {
-  store: Store;
-}
-
-function flush(store: Store): void {
-  (store.notifications as unknown as { _flush: () => void })._flush();
-}
-
-/** Records the `attributes` keys delivered to a subscriber on the given channel. */
-function watch(store: Store, record: unknown, channel: 'local' | 'remote'): string[] {
-  const keys: string[] = [];
-  store.notifications.subscribe(
-    recordIdentifierFor(record as object),
-    (_cacheKey: ResourceKey, type: NotificationType, key?: string | null) => {
-      if (type === 'attributes') keys.push(String(key));
-    },
-    channel
-  );
-  return keys;
+function setupStore(context: TestContext): Store {
+  const TestStore = useRecommendedStore({
+    handlers: [new MockServerHandler(context)],
+    cache: JSONAPICache,
+    schemas: [
+      withDefaults({
+        type: 'user',
+        fields: [
+          { name: 'firstName', kind: 'field' },
+          { name: 'lastName', kind: 'field' },
+          { name: 'messages', kind: 'schema-array', type: 'message' },
+        ],
+      }),
+      {
+        type: 'message',
+        identity: null,
+        fields: [
+          { name: 'id', kind: 'field' },
+          { name: 'state', kind: 'field' },
+        ],
+      },
+    ],
+  });
+  return new TestStore();
 }
 
 /**
@@ -82,135 +86,122 @@ function pushUser(store: Store, messages: Message[] = []): ExistingUser {
   return store.peekRecord<ExistingUser>('user', '1')!;
 }
 
-module<CustomContext>('Integration | <JSONAPICache>.didCommit notifications', function (hooks) {
-  hooks.beforeEach(function () {
-    const TestStore = useRecommendedStore({
-      handlers: [new MockServerHandler(this)],
-      cache: JSONAPICache,
-      schemas: [
-        withDefaults({
-          type: 'user',
-          fields: [
-            { name: 'firstName', kind: 'field' },
-            { name: 'lastName', kind: 'field' },
-            { name: 'messages', kind: 'schema-array', type: 'message' },
-          ],
-        }),
-        {
-          type: 'message',
-          identity: null,
-          fields: [
-            { name: 'id', kind: 'field' },
-            { name: 'state', kind: 'field' },
-          ],
-        },
-      ],
-    });
-    this.store = new TestStore();
+function pushFirstName(store: Store, firstName: string): void {
+  store.push({
+    data: { type: 'user', id: '1', attributes: { firstName, lastName: 'Thoburn', messages: [] } },
+  });
+}
+
+module('Integration | <JSONAPICache>.didCommit notifications', function () {
+  test('control: a remote push reaches both channels', function (assert) {
+    const store = setupStore(this);
+    const user = pushUser(store);
+    const lid = recordIdentifierFor(user);
+    assert.watchNotifications(store);
+
+    pushFirstName(store, 'Christopher');
+
+    // with no local edit both projections moved, so the key is announced once, unscoped
+    assert.notifiedOn('unscoped', lid, 'attributes', 'firstName', 1, 'the push was announced unscoped');
+    assert.notified(lid, 'attributes', 'firstName', 1, 'and that was the only notification for the key');
   });
 
-  test<CustomContext>('control: a remote push reaches a remote subscriber', function (assert) {
-    const { store } = this;
+  test('control: a local edit reaches the local channel and not the remote one', async function (assert) {
+    const store = setupStore(this);
     const user = pushUser(store);
-    const remote = watch(store, user, 'remote');
-
-    store.push({
-      data: {
-        type: 'user',
-        id: '1',
-        attributes: { firstName: 'Christopher', lastName: 'Thoburn', messages: [] },
-      },
-    });
-    flush(store);
-
-    assert.true(remote.includes('firstName'), `remote heard the push (saw ${remote.join()})`);
-  });
-
-  test<CustomContext>('control: a local edit reaches a local subscriber and not a remote one', async function (assert) {
-    const { store } = this;
-    const user = pushUser(store);
-    const remote = watch(store, user, 'remote');
-    const local = watch(store, user, 'local');
+    const lid = recordIdentifierFor(user);
+    assert.watchNotifications(store);
 
     const editable = await checkout<ExistingUser>(user);
     editable.firstName = 'Christopher';
-    flush(store);
 
-    assert.deepEqual(local, ['firstName'], 'local heard the edit');
-    assert.deepEqual(remote, [], 'remote did not hear the edit');
+    assert.notifiedOn('local', lid, 'attributes', 'firstName', 1, 'local heard the edit');
+    assert.notifiedOn('remote', lid, 'attributes', 'firstName', 0, 'remote did not hear the edit');
+    assert.notifiedOn('unscoped', lid, 'attributes', 'firstName', 0, 'the edit was not announced unscoped');
   });
 
-  test<CustomContext>('commit() notifies the remote channel for a promoted top-level field', async function (assert) {
-    const { store } = this;
+  test('commit() notifies the remote channel for a promoted top-level field', async function (assert) {
+    const store = setupStore(this);
     const user = pushUser(store);
-    const remote = watch(store, user, 'remote');
-    const localAll = watch(store, user, 'local');
+    const lid = recordIdentifierFor(user);
+    assert.watchNotifications(store);
 
     const editable = await checkout<ExistingUser>(user);
     editable.firstName = 'Christopher';
-    flush(store);
-    assert.deepEqual(remote, [], 'the local edit alone does not reach the remote channel');
+    assert.notifiedOn(
+      'remote',
+      lid,
+      'attributes',
+      'firstName',
+      0,
+      'the local edit alone does not reach the remote channel'
+    );
+    assert.notifiedOn('local', lid, 'attributes', 'firstName', 1, 'the edit notified the local channel');
+    assert.clearNotifications();
 
-    const localAfterEdit = watch(store, user, 'local');
     await commit(editable);
-    flush(store);
 
-    assert.deepEqual(remote, ['firstName'], 'commit notified remote for the promoted key');
+    assert.notifiedOn('remote', lid, 'attributes', 'firstName', 1, 'commit notified remote for the promoted key');
     // the local projection read this value out of localAttrs before the commit and out of
     // remoteAttrs after it -- same value either way -- so the commit must not invalidate it
-    assert.deepEqual(localAfterEdit, [], 'commit emitted nothing on the local channel');
-    assert.deepEqual(localAll, ['firstName'], 'the only local notification came from the edit');
+    assert.notifiedOn('local', lid, 'attributes', 'firstName', 0, 'commit emitted nothing on the local channel');
+    assert.notifiedOn('unscoped', lid, 'attributes', 'firstName', 0, 'commit announced nothing unscoped');
   });
 
-  test<CustomContext>('commit() notifies the remote channel for a promoted schema-array field', async function (assert) {
-    const { store } = this;
+  test('commit() notifies the remote channel for a promoted schema-array field', async function (assert) {
+    const store = setupStore(this);
     const user = pushUser(store, [{ id: 'm1', state: 'pending' }]);
-    const remote = watch(store, user, 'remote');
-    const localAll = watch(store, user, 'local');
+    const lid = recordIdentifierFor(user);
+    assert.watchNotifications(store);
 
     const editable = await checkout<ExistingUser>(user);
     editable.messages[0].state = 'executed';
-    flush(store);
-    assert.deepEqual(remote, [], 'the nested local edit alone does not reach the remote channel');
-
-    const localAfterEdit = watch(store, user, 'local');
-    await commit(editable);
-    flush(store);
-
+    assert.notifiedOn(
+      'remote',
+      lid,
+      'attributes',
+      'messages',
+      0,
+      'the nested local edit alone does not reach the remote channel'
+    );
     // a nested write is notified under its top-level cache key
-    assert.deepEqual(remote, ['messages'], 'commit notified remote for the promoted nested key');
-    assert.deepEqual(localAfterEdit, [], 'commit emitted nothing on the local channel');
-    assert.deepEqual(localAll, ['messages'], 'the only local notification came from the edit');
+    assert.notifiedOn('local', lid, 'attributes', 'messages', 1, 'the nested edit notified the local channel');
+    assert.clearNotifications();
+
+    await commit(editable);
+
+    assert.notifiedOn('remote', lid, 'attributes', 'messages', 1, 'commit notified remote for the promoted nested key');
+    assert.notifiedOn('local', lid, 'attributes', 'messages', 0, 'commit emitted nothing on the local channel');
+    assert.notifiedOn('unscoped', lid, 'attributes', 'messages', 0, 'commit announced nothing unscoped');
   });
 
-  test<CustomContext>('commit() does not notify for a value that did not actually change', async function (assert) {
-    const { store } = this;
+  test('commit() does not notify for a value that did not actually change', async function (assert) {
+    const store = setupStore(this);
     const user = pushUser(store);
-    const remote = watch(store, user, 'remote');
+    const lid = recordIdentifierFor(user);
+    assert.watchNotifications(store);
 
     const editable = await checkout<ExistingUser>(user);
     // assign the value the remote projection already holds
     editable.firstName = 'Chris';
-    const localAfterEdit = watch(store, user, 'local');
-    await commit(editable);
-    flush(store);
+    assert.clearNotifications();
 
-    assert.deepEqual(remote, [], 'a no-op commit stays silent on the remote channel');
-    assert.deepEqual(localAfterEdit, [], 'a no-op commit stays silent on the local channel');
+    await commit(editable);
+
+    assert.notified(lid, 'attributes', 'firstName', 0, 'a no-op commit stays silent on every channel');
   });
 
-  test<CustomContext>('a save with a 204 response notifies the remote channel', async function (assert) {
-    const { store } = this;
+  test('a save with a 204 response notifies the remote channel', async function (assert) {
+    const store = setupStore(this);
     const url = buildBaseURL({ resourcePath: 'api/user/1' });
     const user = pushUser(store);
     const lid = recordIdentifierFor(user);
-    const remote = watch(store, user, 'remote');
-    const localAll = watch(store, user, 'local');
+    assert.watchNotifications(store);
 
     const editable = await checkout<ExistingUser>(user);
     editable.firstName = 'Christopher';
-    flush(store);
-    const localAfterEdit = watch(store, user, 'local');
+    assert.notifiedOn('local', lid, 'attributes', 'firstName', 1, 'the edit notified the local channel');
+    assert.clearNotifications();
 
     const body = JSON.stringify({
       data: { type: 'user', id: '1', attributes: { firstName: 'Christopher' } },
@@ -220,24 +211,29 @@ module<CustomContext>('Integration | <JSONAPICache>.didCommit notifications', fu
     await store.request(
       withReactiveResponse<ExistingUser>({ op: 'updateRecord', url, method: 'PATCH', body, records: [lid] })
     );
-    flush(store);
 
-    assert.deepEqual(remote, ['firstName'], 'remote heard the saved key despite an empty response');
-    assert.deepEqual(localAfterEdit, [], 'the save emitted nothing on the local channel');
-    assert.deepEqual(localAll, ['firstName'], 'the only local notification came from the edit');
+    assert.notifiedOn(
+      'remote',
+      lid,
+      'attributes',
+      'firstName',
+      1,
+      'remote heard the saved key despite an empty response'
+    );
+    assert.notifiedOn('local', lid, 'attributes', 'firstName', 0, 'the save emitted nothing on the local channel');
+    assert.notifiedOn('unscoped', lid, 'attributes', 'firstName', 0, 'the save announced nothing unscoped');
   });
 
-  test<CustomContext>('a save whose response echoes the saved value verbatim notifies the remote channel', async function (assert) {
-    const { store } = this;
+  test('a save whose response echoes the saved value verbatim notifies the remote channel', async function (assert) {
+    const store = setupStore(this);
     const url = buildBaseURL({ resourcePath: 'api/user/1' });
     const user = pushUser(store);
     const lid = recordIdentifierFor(user);
-    const remote = watch(store, user, 'remote');
+    assert.watchNotifications(store);
 
     const editable = await checkout<ExistingUser>(user);
     editable.firstName = 'Christopher';
-    flush(store);
-    const localAfterEdit = watch(store, user, 'local');
+    assert.clearNotifications();
 
     const body = JSON.stringify({
       data: { type: 'user', id: '1', attributes: { firstName: 'Christopher' } },
@@ -252,26 +248,25 @@ module<CustomContext>('Integration | <JSONAPICache>.didCommit notifications', fu
     await store.request(
       withReactiveResponse<ExistingUser>({ op: 'updateRecord', url, method: 'PATCH', body, records: [lid] })
     );
-    flush(store);
 
     // `changedKeys` is empty here -- the server agreed with what we sent -- but the remote
     // projection still moved from 'Chris' to 'Christopher'
-    assert.true(remote.includes('firstName'), `remote heard the saved key (saw ${remote.join()})`);
-    assert.deepEqual(localAfterEdit, [], 'the save emitted nothing on the local channel');
+    assert.notifiedOn('remote', lid, 'attributes', 'firstName', 1, 'remote heard the saved key');
+    assert.notifiedOn('local', lid, 'attributes', 'firstName', 0, 'the save emitted nothing on the local channel');
+    assert.notifiedOn('unscoped', lid, 'attributes', 'firstName', 0, 'the save announced nothing unscoped');
   });
 
-  test<CustomContext>('a save with a sparse response notifies the remote channel for the omitted keys', async function (assert) {
-    const { store } = this;
+  test('a save with a sparse response notifies the remote channel for the omitted keys', async function (assert) {
+    const store = setupStore(this);
     const url = buildBaseURL({ resourcePath: 'api/user/1' });
     const user = pushUser(store);
     const lid = recordIdentifierFor(user);
-    const remote = watch(store, user, 'remote');
+    assert.watchNotifications(store);
 
     const editable = await checkout<ExistingUser>(user);
     editable.firstName = 'Christopher';
     editable.lastName = 'Thoburn-Smith';
-    flush(store);
-    const localAfterEdit = watch(store, user, 'local');
+    assert.clearNotifications();
 
     const body = JSON.stringify({
       data: {
@@ -291,25 +286,24 @@ module<CustomContext>('Integration | <JSONAPICache>.didCommit notifications', fu
     await store.request(
       withReactiveResponse<ExistingUser>({ op: 'updateRecord', url, method: 'PATCH', body, records: [lid] })
     );
-    flush(store);
 
-    assert.true(remote.includes('firstName'), `remote heard the echoed key (saw ${remote.join()})`);
-    assert.true(remote.includes('lastName'), `remote heard the omitted-but-saved key (saw ${remote.join()})`);
-    assert.deepEqual(localAfterEdit, [], 'the save emitted nothing on the local channel');
+    assert.notifiedOn('remote', lid, 'attributes', 'firstName', 1, 'remote heard the echoed key');
+    assert.notifiedOn('remote', lid, 'attributes', 'lastName', 1, 'remote heard the omitted-but-saved key');
+    assert.notifiedOn('local', lid, 'attributes', 'firstName', 0, 'the save emitted nothing local for the echoed key');
+    assert.notifiedOn('local', lid, 'attributes', 'lastName', 0, 'the save emitted nothing local for the omitted key');
   });
 
-  test<CustomContext>('a save whose response differs from what was sent notifies unscoped, and only once', async function (assert) {
-    const { store } = this;
+  test('a save whose response differs from what was sent notifies unscoped, and only once', async function (assert) {
+    const store = setupStore(this);
     const url = buildBaseURL({ resourcePath: 'api/user/1' });
     const user = pushUser(store);
     const lid = recordIdentifierFor(user);
-    const remote = watch(store, user, 'remote');
-    const localAll = watch(store, user, 'local');
+    assert.watchNotifications(store);
 
     const editable = await checkout<ExistingUser>(user);
     editable.firstName = 'Christopher';
-    flush(store);
-    const localAfterEdit = watch(store, user, 'local');
+    assert.notifiedOn('local', lid, 'attributes', 'firstName', 1, 'the edit notified the local channel');
+    assert.clearNotifications();
 
     const body = JSON.stringify({
       data: { type: 'user', id: '1', attributes: { firstName: 'Christopher' } },
@@ -325,72 +319,60 @@ module<CustomContext>('Integration | <JSONAPICache>.didCommit notifications', fu
     await store.request(
       withReactiveResponse<ExistingUser>({ op: 'updateRecord', url, method: 'PATCH', body, records: [lid] })
     );
-    flush(store);
 
-    // a server-driven difference lands in `changedKeys` and notifies unscoped, since both
-    // projections changed. One delivery per channel -- the notification buffer coalesces by key
-    // within a flush window, so this holds however many notifies fired for that key.
-    assert.deepEqual(remote, ['firstName'], 'remote heard it exactly once');
-    assert.deepEqual(localAfterEdit, ['firstName'], 'local heard the save exactly once');
-    assert.deepEqual(localAll, ['firstName', 'firstName'], 'local heard the edit and then the save');
+    // a server-driven difference moves both projections, so it is announced once, unscoped,
+    // rather than once per channel
+    assert.notifiedOn('unscoped', lid, 'attributes', 'firstName', 1, 'the save was announced unscoped');
+    assert.notified(lid, 'attributes', 'firstName', 1, 'and that was the only notification for the key');
   });
 
-  // the nested-field counterpart, which needs structural equality to hold, is in structural-equality-test.ts
-  test<CustomContext>('a remote push that confirms an uncommitted local edit notifies the remote channel only', async function (assert) {
-    const { store } = this;
+  // the nested-field counterpart, which needs hash equality to hold, is in structural-equality-test.ts
+  test('a remote push that confirms an uncommitted local edit notifies the remote channel only', async function (assert) {
+    const store = setupStore(this);
     const user = pushUser(store);
     const lid = recordIdentifierFor(user);
-    const remote = watch(store, user, 'remote');
-    const localAll = watch(store, user, 'local');
+    assert.watchNotifications(store);
 
     const editable = await checkout<ExistingUser>(user);
     editable.firstName = 'Christopher';
-    flush(store);
-    assert.deepEqual(remote, [], 'the local edit alone does not reach the remote channel');
+    assert.notifiedOn(
+      'remote',
+      lid,
+      'attributes',
+      'firstName',
+      0,
+      'the local edit alone does not reach the remote channel'
+    );
+    assert.notifiedOn('local', lid, 'attributes', 'firstName', 1, 'the edit notified the local channel');
+    assert.clearNotifications();
 
     // the push landing exactly on the edit's value is what previously pruned the notification
-    const localAfterEdit = watch(store, user, 'local');
-    store.push({
-      data: {
-        type: 'user',
-        id: '1',
-        attributes: { firstName: 'Christopher', lastName: 'Thoburn', messages: [] },
-      },
-    });
-    flush(store);
+    pushFirstName(store, 'Christopher');
 
-    assert.deepEqual(remote, ['firstName'], 'remote heard the confirming push');
-    assert.deepEqual(localAfterEdit, [], 'the push emitted nothing on the local channel');
-    assert.deepEqual(localAll, ['firstName'], 'the only local notification came from the edit');
+    assert.notifiedOn('remote', lid, 'attributes', 'firstName', 1, 'remote heard the confirming push');
+    assert.notifiedOn('local', lid, 'attributes', 'firstName', 0, 'the push emitted nothing on the local channel');
+    assert.notifiedOn('unscoped', lid, 'attributes', 'firstName', 0, 'the push announced nothing unscoped');
     assert.false(store.cache.hasChangedAttrs(lid), 'the confirmed edit is no longer dirty');
     assert.equal(editable.firstName, 'Christopher', 'the editable copy reads the confirmed value');
     assert.equal(user.firstName, 'Christopher', 'the immutable record reads the confirmed value');
   });
 
-  test<CustomContext>('a remote push that lands under a diverging local edit notifies the remote channel only and refreshes changedAttrs', async function (assert) {
-    const { store } = this;
+  test('a remote push that lands under a diverging local edit notifies the remote channel only and refreshes changedAttrs', async function (assert) {
+    const store = setupStore(this);
     const user = pushUser(store);
     const lid = recordIdentifierFor(user);
-    const remote = watch(store, user, 'remote');
-    const localAll = watch(store, user, 'local');
+    assert.watchNotifications(store);
 
     const editable = await checkout<ExistingUser>(user);
     editable.firstName = 'Christopher';
-    flush(store);
+    assert.notifiedOn('local', lid, 'attributes', 'firstName', 1, 'the edit notified the local channel');
+    assert.clearNotifications();
 
-    const localAfterEdit = watch(store, user, 'local');
-    store.push({
-      data: {
-        type: 'user',
-        id: '1',
-        attributes: { firstName: 'Chris3', lastName: 'Thoburn', messages: [] },
-      },
-    });
-    flush(store);
+    pushFirstName(store, 'Chris3');
 
-    assert.deepEqual(remote, ['firstName'], 'remote heard the diverging push');
-    assert.deepEqual(localAfterEdit, [], 'the diverging push did not wake the local channel');
-    assert.deepEqual(localAll, ['firstName'], 'the only local notification came from the edit');
+    assert.notifiedOn('remote', lid, 'attributes', 'firstName', 1, 'remote heard the diverging push');
+    assert.notifiedOn('local', lid, 'attributes', 'firstName', 0, 'the diverging push did not wake the local channel');
+    assert.notifiedOn('unscoped', lid, 'attributes', 'firstName', 0, 'the push announced nothing unscoped');
     assert.equal(editable.firstName, 'Christopher', 'the local edit survives the diverging push');
     assert.deepEqual(
       store.cache.changedAttrs(lid).firstName,
@@ -399,65 +381,75 @@ module<CustomContext>('Integration | <JSONAPICache>.didCommit notifications', fu
     );
   });
 
-  test<CustomContext>('a save whose response matches an edit made while the request was in flight notifies the remote channel', async function (assert) {
-    const { store } = this;
+  test('a save whose response matches an edit made while the request was in flight notifies the remote channel', async function (assert) {
+    const store = setupStore(this);
     const user = pushUser(store);
     const lid = recordIdentifierFor(user);
-    const remote = watch(store, user, 'remote');
-    const localAll = watch(store, user, 'local');
+    assert.watchNotifications(store);
 
     const editable = await checkout<ExistingUser>(user);
     editable.firstName = 'Christopher';
-    flush(store);
 
     store.cache.willCommit(lid, null);
     // a second local edit made while the first is in flight
     editable.firstName = 'Chris2';
-    flush(store);
+    assert.notifiedOn('local', lid, 'attributes', 'firstName', 2, 'local heard the two edits');
+    assert.clearNotifications();
 
-    const localAfterEdit = watch(store, user, 'local');
     store.cache.didCommit(lid, saveResponse({ type: 'user', id: '1', attributes: { firstName: 'Chris2' } }));
-    flush(store);
 
-    assert.deepEqual(remote, ['firstName'], 'remote heard the save land on the value the in-flight edit predicted');
-    assert.deepEqual(localAfterEdit, [], 'the commit emitted nothing on the local channel');
-    assert.true(localAll.includes('firstName'), `local heard the two edits (saw ${localAll.join()})`);
+    assert.notifiedOn(
+      'remote',
+      lid,
+      'attributes',
+      'firstName',
+      1,
+      'remote heard the save land on the value the in-flight edit predicted'
+    );
+    assert.notifiedOn('local', lid, 'attributes', 'firstName', 0, 'the commit emitted nothing on the local channel');
+    assert.notifiedOn('unscoped', lid, 'attributes', 'firstName', 0, 'the commit announced nothing unscoped');
     assert.equal(editable.firstName, 'Chris2', 'the editable copy reads the committed value');
     assert.equal(user.firstName, 'Chris2', 'the immutable record reads the committed value');
   });
 
-  test<CustomContext>('a remote push that lands under an in-flight save does not wake the local channel', async function (assert) {
-    const { store } = this;
+  test('a remote push that lands under an in-flight save does not wake the local channel', async function (assert) {
+    const store = setupStore(this);
     const user = pushUser(store);
     const lid = recordIdentifierFor(user);
-    const remote = watch(store, user, 'remote');
-    const localAll = watch(store, user, 'local');
+    assert.watchNotifications(store);
 
     const editable = await checkout<ExistingUser>(user);
     editable.firstName = 'Christopher';
-    flush(store);
+    assert.notifiedOn('local', lid, 'attributes', 'firstName', 1, 'the edit notified the local channel');
+    assert.clearNotifications();
 
     store.cache.willCommit(lid, null);
 
-    const localAfterWillCommit = watch(store, user, 'local');
-    store.push({
-      data: {
-        type: 'user',
-        id: '1',
-        attributes: { firstName: 'Chris3', lastName: 'Thoburn', messages: [] },
-      },
-    });
-    flush(store);
+    pushFirstName(store, 'Chris3');
 
-    assert.deepEqual(remote, ['firstName'], 'remote heard the push land under the in-flight save');
-    assert.deepEqual(localAfterWillCommit, [], 'the push did not wake the local channel');
+    assert.notifiedOn(
+      'remote',
+      lid,
+      'attributes',
+      'firstName',
+      1,
+      'remote heard the push land under the in-flight save'
+    );
+    assert.notifiedOn('local', lid, 'attributes', 'firstName', 0, 'the push did not wake the local channel');
     assert.equal(editable.firstName, 'Christopher', 'local still reads the in-flight value, not the push');
 
     store.cache.didCommit(lid, saveResponse({ type: 'user', id: '1', attributes: { firstName: 'Christopher' } }));
-    flush(store);
 
-    assert.deepEqual(remote, ['firstName', 'firstName'], 'remote heard the commit resolve Chris3 into Christopher');
-    assert.deepEqual(localAll, ['firstName'], 'the only local notification came from the initial edit');
+    assert.notifiedOn(
+      'remote',
+      lid,
+      'attributes',
+      'firstName',
+      2,
+      'remote heard the commit resolve Chris3 into Christopher'
+    );
+    assert.notifiedOn('local', lid, 'attributes', 'firstName', 0, 'the commit did not wake the local channel either');
+    assert.notifiedOn('unscoped', lid, 'attributes', 'firstName', 0, 'nothing since the edit was announced unscoped');
     assert.equal(user.firstName, 'Christopher', 'the immutable record reads the committed value');
   });
 });

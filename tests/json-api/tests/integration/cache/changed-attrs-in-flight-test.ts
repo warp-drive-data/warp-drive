@@ -3,7 +3,6 @@ import { recordIdentifierFor, useRecommendedStore } from '@warp-drive/core';
 import { checkout, withDefaults } from '@warp-drive/core/reactive';
 import type { Type } from '@warp-drive/core/types/symbols';
 import { module, test } from '@warp-drive/diagnostic';
-import type { TestContext } from '@warp-drive/diagnostic/-types';
 import { JSONAPICache } from '@warp-drive/json-api';
 
 /**
@@ -19,42 +18,36 @@ interface ExistingUser {
   lastName: string;
 }
 
-interface CustomContext extends TestContext {
-  store: Store;
+const TestStore = useRecommendedStore({
+  cache: JSONAPICache,
+  schemas: [
+    withDefaults({
+      type: 'user',
+      fields: [
+        { name: 'firstName', kind: 'field' },
+        { name: 'lastName', kind: 'field' },
+      ],
+    }),
+  ],
+});
+
+/** Pushes a user, edits it, and starts (but does not finish) a save of that edit. */
+async function editThenStartSave() {
+  const store: Store = new TestStore();
+  store.push({
+    data: { type: 'user', id: '1', attributes: { firstName: 'Chris', lastName: 'Thoburn' } },
+  });
+  const user = store.peekRecord<ExistingUser>('user', '1')!;
+  const lid = recordIdentifierFor(user);
+  const editable = await checkout<ExistingUser>(user);
+  editable.firstName = 'Christopher';
+  store.cache.willCommit(lid, null);
+  return { store, user, lid, editable };
 }
 
-module<CustomContext>('Integration | <JSONAPICache>.changedAttrs around an in-flight save', function (hooks) {
-  hooks.beforeEach(function () {
-    const TestStore = useRecommendedStore({
-      cache: JSONAPICache,
-      schemas: [
-        withDefaults({
-          type: 'user',
-          fields: [
-            { name: 'firstName', kind: 'field' },
-            { name: 'lastName', kind: 'field' },
-          ],
-        }),
-      ],
-    });
-    this.store = new TestStore();
-  });
-
-  async function editThenStartSave(store: Store) {
-    store.push({
-      data: { type: 'user', id: '1', attributes: { firstName: 'Chris', lastName: 'Thoburn' } },
-    });
-    const user = store.peekRecord<ExistingUser>('user', '1')!;
-    const lid = recordIdentifierFor(user);
-    const editable = await checkout<ExistingUser>(user);
-    editable.firstName = 'Christopher';
-    store.cache.willCommit(lid, null);
-    return { user, lid, editable };
-  }
-
-  test<CustomContext>('an edit made while a save is in flight is described against the in-flight value', async function (assert) {
-    const { store } = this;
-    const { lid, editable } = await editThenStartSave(store);
+module('Integration | <JSONAPICache>.changedAttrs around an in-flight save', function () {
+  test('an edit made while a save is in flight is described against the in-flight value', async function (assert) {
+    const { store, lid, editable } = await editThenStartSave();
     assert.deepEqual(
       store.cache.changedAttrs(lid).firstName,
       ['Chris', 'Christopher'],
@@ -70,9 +63,8 @@ module<CustomContext>('Integration | <JSONAPICache>.changedAttrs around an in-fl
     );
   });
 
-  test<CustomContext>('reverting a mid-flight edit to the in-flight value keeps reporting the in-flight change', async function (assert) {
-    const { store } = this;
-    const { lid, editable } = await editThenStartSave(store);
+  test('reverting a mid-flight edit to the in-flight value keeps reporting the in-flight change', async function (assert) {
+    const { store, lid, editable } = await editThenStartSave();
 
     editable.firstName = 'Chris2';
     editable.firstName = 'Christopher';
@@ -85,9 +77,8 @@ module<CustomContext>('Integration | <JSONAPICache>.changedAttrs around an in-fl
     );
   });
 
-  test<CustomContext>('a rejected save re-anchors a diverging mid-flight edit to the remote value', async function (assert) {
-    const { store } = this;
-    const { lid, editable } = await editThenStartSave(store);
+  test('a rejected save re-anchors a diverging mid-flight edit to the remote value', async function (assert) {
+    const { store, lid, editable } = await editThenStartSave();
 
     editable.firstName = 'Chris2';
     store.cache.commitWasRejected(lid, []);
@@ -103,9 +94,8 @@ module<CustomContext>('Integration | <JSONAPICache>.changedAttrs around an in-fl
     assert.equal(store.cache.getAttr(lid, 'firstName'), 'Chris', 'rollback restores what changedAttrs called before');
   });
 
-  test<CustomContext>('a rejected save drops a mid-flight edit that matches the remote value', async function (assert) {
-    const { store } = this;
-    const { lid, editable } = await editThenStartSave(store);
+  test('a rejected save drops a mid-flight edit that matches the remote value', async function (assert) {
+    const { store, lid, editable } = await editThenStartSave();
 
     editable.firstName = 'Chris';
     store.cache.commitWasRejected(lid, []);
@@ -114,9 +104,8 @@ module<CustomContext>('Integration | <JSONAPICache>.changedAttrs around an in-fl
     assert.equal(store.cache.changedAttrs(lid).firstName, undefined, 'changedAttrs has no entry for the field');
   });
 
-  test<CustomContext>('a rejected save does not overwrite a mid-flight edit to undefined', async function (assert) {
-    const { store } = this;
-    const { lid, editable } = await editThenStartSave(store);
+  test('a rejected save does not overwrite a mid-flight edit to undefined', async function (assert) {
+    const { store, lid, editable } = await editThenStartSave();
 
     // `undefined` is a real edit for `getAttr`, and must be one for the rejection path too
     (editable as unknown as Record<string, unknown>).firstName = undefined;
