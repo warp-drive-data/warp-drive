@@ -39,7 +39,7 @@ module('RequestManager | Response', function () {
           // ['last-modified', 'Tue, 22 Nov 2022 04:55:48 GMT'],
         ],
         status: 200,
-        statusText: '',
+        statusText: 'OK',
         type: 'basic',
       },
       'The response is processed correctly'

@@ -9,7 +9,7 @@ import { logger } from 'hono/logger';
 import type { ChildProcess } from 'node:child_process';
 import fs from 'node:fs';
 import { createServer as createHttpServer } from 'node:http';
-import { createSecureServer } from 'node:http2';
+import { createServer as createHttpsServer } from 'node:https';
 import { homedir } from 'node:os';
 import path from 'node:path';
 import { styleText } from 'node:util';
@@ -269,7 +269,7 @@ export async function launch(config: Partial<LaunchConfig>) {
     // up, rather than crashing on the first collision.
     //
     // Unlike Bun.serve() (which throws synchronously on EADDRINUSE),
-    // @hono/node-server's serve() wraps node's http(2) server, whose
+    // @hono/node-server's serve() wraps node's http/https server, whose
     // .listen() reports a bind failure asynchronously via an 'error' event,
     // so the retry loop has to await that event rather than a thrown error.
     function bindServer(bindPort: number, bindHostname: string): Promise<ServerType> {
@@ -282,10 +282,8 @@ export async function launch(config: Partial<LaunchConfig>) {
                   fetch: app.fetch,
                   serverOptions: {
                     ...serveOptions.tls,
-                    // Allow HTTP/1.1 fallback for ALPN negotiation
-                    allowHTTP1: true,
                   },
-                  createServer: createSecureServer,
+                  createServer: createHttpsServer,
                   port: bindPort,
                   hostname: bindHostname,
                 },
