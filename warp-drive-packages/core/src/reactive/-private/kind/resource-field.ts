@@ -1,97 +1,31 @@
-import { DEBUG } from '@warp-drive/build-config/env';
 import { assert } from '@warp-drive/build-config/macros';
 
-import type { Future } from '../../../request';
-import { defineSignal, entangleSignal } from '../../../signals/-private';
-import type { StoreRequestInput } from '../../../store/-private';
+import { entangleSignal } from '../../../signals/-private';
 import type { ResourceField } from '../../../types/schema/fields';
-import type { Link, Links, SingleResourceRelationship } from '../../../types/spec/json-api-raw';
 import type { KindContext } from '../default-mode';
-import { getFieldCacheKeyStrict } from '../fields/get-field-key';
-import type { ReactiveResource } from '../record';
-import { Context } from '../symbols';
-
-interface ResourceRelationship<T extends ReactiveResource = ReactiveResource> {
-  lid: string;
-  name: string;
-  [Context]: KindContext<ResourceField>;
-
-  data: T | null;
-  links: Links;
-  meta: Record<string, unknown>;
-}
-
-// TODO probably this should just be a Document
-// but its separate until we work out the lid situation
-class ResourceRelationship<T extends ReactiveResource = ReactiveResource> {
-  constructor(context: KindContext<ResourceField>) {
-    const { store, resourceKey } = context;
-    const { cache } = store;
-    const name = getFieldCacheKeyStrict(context.field);
-    const rawValue = (
-      context.editable ? cache.getRelationship(resourceKey, name) : cache.getRemoteRelationship(resourceKey, name)
-    ) as SingleResourceRelationship;
-
-    // TODO setup true lids for relationship documents
-    // @ts-expect-error we need to give relationship documents a lid
-    // oxlint-disable-next-line typescript/no-unsafe-assignment
-    this.lid = rawValue.lid ?? rawValue.links?.self ?? `relationship:${resourceKey.lid}.${name}`;
-    this.data = rawValue.data ? (store.peekRecord(rawValue.data) as T) : null;
-    this.name = name;
-
-    if (DEBUG) {
-      this.links = Object.freeze(Object.assign({}, rawValue.links));
-      this.meta = Object.freeze(Object.assign({}, rawValue.meta));
-    } else {
-      this.links = rawValue.links ?? {};
-      this.meta = rawValue.meta ?? {};
-    }
-
-    this[Context] = context;
-  }
-
-  fetch(options?: StoreRequestInput<T>): Future<T> {
-    const url = options?.url ?? getHref(this.links.related) ?? getHref(this.links.self) ?? null;
-
-    if (!url) {
-      throw new Error(
-        `Cannot ${options?.method ?? 'fetch'} ${this[Context].resourceKey.type}.${String(
-          this.name
-        )} because it has no related link`
-      );
-    }
-    const request = Object.assign(
-      {
-        url,
-        method: 'GET',
-      },
-      options
-    );
-
-    return this[Context].store.request<T>(request);
-  }
-}
-
-defineSignal(ResourceRelationship.prototype, 'data', null);
-defineSignal(ResourceRelationship.prototype, 'links', null);
-defineSignal(ResourceRelationship.prototype, 'meta', null);
-
-function getHref(link?: Link | null): string | null {
-  if (!link) {
-    return null;
-  }
-  if (typeof link === 'string') {
-    return link;
-  }
-  return link.href;
-}
+import { createRelationshipDocument, type ReactiveRelationshipDocument } from '../fields/relationship-document.ts';
 
 export function getResourceField(context: KindContext<ResourceField>): unknown {
-  entangleSignal(context.signals, context.record, context.path.at(-1)!, null);
-  return new ResourceRelationship(context);
+  const signal = entangleSignal(context.signals, context.record, context.path.at(-1)!, null);
+  const cached = signal.value as ReactiveRelationshipDocument<unknown> | null;
+  if (cached) {
+    return cached;
+  }
+
+  const doc = createRelationshipDocument({
+    store: context.store,
+    resourceKey: context.resourceKey,
+    path: context.path,
+    field: context.field,
+    editable: context.editable,
+  });
+  signal.value = doc;
+  return doc;
 }
 
 export function setResourceField(context: KindContext<ResourceField>): boolean {
-  assert(`setting resource relationships is not yet supported`);
+  assert(
+    `Cannot set ${context.resourceKey.type}.${context.field.name} directly. Set \`data\` on the relationship document instead: \`record.${context.field.name}.data = value\``
+  );
   return false;
 }
