@@ -7,10 +7,12 @@
   </head>
   <body>
     <script type="module">
+      import { startApiWorker } from '#api-worker/register.ts';
       import Application from '#app/app.ts';
       import config from '#config';
       import '#app/styles/app.css';
 
+      await startApiWorker();
       Application.create(config.APP);
     </script>
   </body>

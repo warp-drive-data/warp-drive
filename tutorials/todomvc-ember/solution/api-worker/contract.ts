@@ -8,6 +8,9 @@
  */
 
 export const API_ROOT = '/api';
+
+/** Sent from the page to ask an already-active worker to take control (see register.ts). */
+export const CLAIM_MESSAGE = 'todomvc-api:claim';
 export const TODO_TYPE = 'todo';
 
 export interface TodoAttributes {
