@@ -1,7 +1,7 @@
 import { DEBUG } from '@warp-drive/core/build-config/env';
 import { assert } from '@warp-drive/core/build-config/macros';
 
-import type { NotificationType } from '../../index.ts';
+import type { NotificationChannel, NotificationType } from '../../index.ts';
 import {
   ARRAY_SIGNAL,
   entangleSignal,
@@ -24,6 +24,7 @@ import { isExtensionProp, performExtensionSet, performObjectExtensionGet } from 
 import { getFieldCacheKey } from './fields/get-field-key.ts';
 import type { ManagedArray } from './fields/managed-array.ts';
 import { peekManagedObject } from './fields/managed-object.ts';
+import { notifyRelationshipDocument, type ReactiveRelationshipDocument } from './fields/relationship-document.ts';
 import type { SchemaService } from './schema.ts';
 import { Checkout, Commit, Context, Destroy } from './symbols.ts';
 
@@ -153,7 +154,7 @@ export class ReactiveResource {
     const signals = withSignalStore(this);
     this.___notifications = context.store.notifications.subscribe(
       resourceKey,
-      (_: ResourceKey, type: NotificationType, key?: string | string[]) => {
+      (_: ResourceKey, type: NotificationType, key?: string | string[], channel?: NotificationChannel) => {
         switch (type) {
           case 'identity': {
             if (isEmbedded || !identityField) return; // base paths never apply to embedded records
@@ -231,9 +232,13 @@ export class ReactiveResource {
                   if (signal) {
                     notifyInternalSignal(signal);
                   }
-                  // FIXME
                 } else if (field.kind === 'resource') {
-                  // FIXME
+                  // the document instance is stable; only its reactive
+                  // properties go stale.
+                  const doc = signals.get(key)?.value as ReactiveRelationshipDocument<unknown> | undefined;
+                  if (doc) {
+                    notifyRelationshipDocument(doc, channel);
+                  }
                 } else if (field.kind === 'hasMany') {
                   if (field.options.linksMode) {
                     const signal = signals.get(key);
@@ -311,7 +316,10 @@ export class ReactiveResource {
         }
 
         switch (schemaForField.kind) {
+          // relationship documents are mutated via their `data`, never by
+          // assigning the field
           case 'derived':
+          case 'resource':
             return {
               writable: false,
               enumerable: true,
@@ -338,7 +346,6 @@ export class ReactiveResource {
           case '@local':
           case 'field':
           case 'attribute':
-          case 'resource':
           case 'alias':
           case 'belongsTo':
           case 'hasMany':
