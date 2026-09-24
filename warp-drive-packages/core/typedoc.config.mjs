@@ -3,7 +3,9 @@ import { entryPoints } from './tsdown.config.mjs';
 /** @type {Partial<import("typedoc").TypeDocOptions>} */
 const config = {
   $schema: 'https://typedoc.org/schema.json',
-  entryPoints: entryPoints.filter((entry) => !entry.includes('-private')),
+  // -leaked entry points hand internals to sibling @warp-drive/* packages; each
+  // sibling documents what it publishes from them, so they get no page here.
+  entryPoints: entryPoints.filter((entry) => !entry.includes('-private') && !entry.includes('-leaked')),
   out: 'doc',
   readme: 'src/index.md',
   // build-config.ts re-exports types (e.g. WarpDriveConfig) that are declared
