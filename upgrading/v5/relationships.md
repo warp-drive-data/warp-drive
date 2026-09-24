@@ -19,6 +19,11 @@ If your app still uses `Model`, migrate to `ReactiveResource` in LegacyMode firs
 [Migration](/guides/the-manual/schemas/resources/legacy-mode.md#migration)); `resource` and
 `collection` are schema field kinds and have no decorator form.
 
+If the relationships are consumed implicitly today, through `{{#each}}` over an async
+relationship, `.content`, or getters that read through one, read
+[Migrating Async Relationship Usage](./relationship-usage.md) alongside this page; it covers the
+code, this page covers the fields.
+
 `belongsTo` and `hasMany` are not deprecated by this guide and continue to work. Migrate one
 relationship at a time, in whatever order suits the app. A field and its inverse migrate together:
 a `resource` or `collection` field cannot declare a `belongsTo` or `hasMany` as its inverse, or the

@@ -1,0 +1,8 @@
+{
+  "title": "Relationships",
+  "items": ["migrate-relationship-fields", "migrate-async-relationship-usage"],
+  "files": {
+    "migrate-relationship-fields": { "title": "Migrate belongsTo and hasMany Fields to resource and collection" },
+    "migrate-async-relationship-usage": { "title": "Migrate Async Relationship Usage" }
+  }
+}
