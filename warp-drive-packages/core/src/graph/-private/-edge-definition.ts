@@ -10,6 +10,7 @@ import type {
   LegacyHasManyField,
   ResourceField,
 } from '../../types/schema/fields.ts';
+import { isRelationshipKind } from '../../types/schema/fields.ts';
 import { expandingGet, expandingSet, getStore } from './-utils.ts';
 import { assertInheritedSchema } from './debug/assert-polymorphic-type.ts';
 import type { Graph } from './graph.ts';
@@ -27,7 +28,7 @@ export function isLegacyField(field: FieldSchema): field is LegacyBelongsToField
 }
 
 export function isRelationshipField(field: FieldSchema): field is RelationshipField {
-  return RELATIONSHIP_KINDS.includes(field.kind);
+  return isRelationshipKind(field.kind);
 }
 
 export function temporaryConvertToLegacy(
