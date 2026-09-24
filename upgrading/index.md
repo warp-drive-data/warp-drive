@@ -30,14 +30,15 @@ for the authoring rules that keep these guarantees true.
 
 ## Which Guide Do I Need?
 
-Check whether your app already depends on any `@warp-drive/*` package.
+Check which `ember-data` version your app is on.
 
-- **No, only `ember-data` or `@ember-data/*` packages** (any release up to 4.12): start at
+- **4.12 or earlier.** These releases publish only `ember-data` and `@ember-data/*` packages. Start at
   [ember-data → WarpDrive](/upgrading/ember-data/). It runs the latest WarpDrive beside your
   current `ember-data` and moves one route at a time. To stay on 4.12 and adopt the new request
   APIs in the store you already have, see
   [Adopting the Request APIs on 4.12](/upgrading/ember-data/incremental-adoption.md).
-- **Yes** (4.13 and later, including 5.x): start at [4.x → 5.x](/upgrading/v5/), which uses
+- **4.13 or any 5.x.** These releases already depend on `@warp-drive/*` packages. Start at
+  [4.x → 5.x](/upgrading/v5/), which uses
   [mirror packages](/upgrading/v5/two-store-migration.md#mirror-versions) to run both versions side by side.
 
 ## Deprecations
