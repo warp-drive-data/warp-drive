@@ -107,7 +107,10 @@ Everything on the site except the API docs is markdown copied from the repo by
 `docs-viewer/src/prepare-website.ts` on each build: `guides/` to `/guides`, `upgrading/` to
 `/upgrading`, `blog/` to `/blog`, `rfcs/` to `/rfcs`, and `warp-drive-packages/memory-alpha/skills/`
 to `/skills`. The API docs are generated from the source by TypeDoc into `/api`. Package READMEs
-are not on the site; GitHub and npm render them.
+are not on the site; GitHub and npm render them. Every page is also emitted as a plain-Markdown
+twin at its URL plus `.md`, and indexed in `llms.txt`, for coding agents; see
+[LLM Optimized Documentation](https://warp-drive.io/llm-docs) for the rules those agents follow,
+and keep in mind that your `:::tip` boxes and `:::tabs` reach them raw.
 
 ### Sidebar and `_meta.json`
 

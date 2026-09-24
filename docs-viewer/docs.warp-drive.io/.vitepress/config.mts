@@ -179,6 +179,11 @@ export default withPwa(
           // Writes llms.txt, llms-full.txt, and an LLM-friendly `.md` twin of every page next to
           // its `.html`, which the "Copy page" button (theme/CopyPageButton.vue) fetches.
           llmstxt({
+            // Without this the links in llms.txt and the `url:` frontmatter of every `.md` twin
+            // are root-relative (`/guides/installation.md`), which an agent that fetched the
+            // file has no origin to resolve against. Same env var and fallback the sitemap uses,
+            // so canary, PR previews, and production each get their own absolute URLs.
+            domain: process.env.HOSTNAME || 'https://canary.warp-drive.io',
             // The plugin's default ignores `blog/*` and `blog.md`. That is the plugin author's
             // preference, not ours: the writing guides say LLMs land on these pages too, and the
             // posts under blog/<version>/ already get through because the pattern is one level deep.
