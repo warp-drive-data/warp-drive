@@ -58,3 +58,4 @@ The exact rules every relationship kind follows are collected in the
 # Misc
 
 - [Terminology](../misc/terminology.md#relationships)
+- [Migrating from `belongsTo`/`hasMany`](/upgrading/v5/relationships.md)
