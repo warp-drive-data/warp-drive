@@ -13,3 +13,10 @@ warp-drive-packages/core/types
 blueprints/
 vendor/
 !tests/blueprints/
+
+# Markdown is deliberately unformatted: oxfmt ignores *.md (.oxfmtrc.jsonc) and
+# lint:prettier only covers gjs/gts. Without this line the VS Code Prettier
+# extension, which .vscode/settings.json makes the format-on-save default for
+# every language, rewrites guides on save (*x* -> _x_, quotes and semicolons
+# inside fenced code blocks) with changes no lint check asked for.
+*.md
