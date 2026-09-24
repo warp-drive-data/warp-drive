@@ -116,7 +116,15 @@ export default withPwa(
           // instead of hitting the network, and VitePress's router then renders a
           // 404 for a path it doesn't recognize -- fixed by a hard refresh only
           // because that bypasses the service worker for that one navigation.
-          navigateFallbackDenylist: [/^\/pr-preview\//],
+          //
+          // The same fallback also swallows a navigation to any URL the precache does not
+          // know about, and the precache glob is `**/*.{js,wasm,css,html}`. So in a browser
+          // that has this worker installed, typing `/guides/foo.md` into the address bar (or
+          // the "View as Markdown" button doing the equivalent) got this worker's index.html
+          // and a VitePress 404 instead of the Markdown twin vitepress-plugin-llms wrote,
+          // while curl and a fresh browser profile got the file. Same for /llms.txt and
+          // /llms-full.txt. Let those navigations through to the network.
+          navigateFallbackDenylist: [/^\/pr-preview\//, /\.md$/, /\.txt$/],
           // Without these, a new service worker build (like the denylist above)
           // sits "installed but waiting" in already-open browsers indefinitely --
           // this site's minimal registerSW.js never sends the SKIP_WAITING message
