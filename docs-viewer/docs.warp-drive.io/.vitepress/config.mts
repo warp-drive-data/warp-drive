@@ -155,7 +155,14 @@ export default withPwa(
           include: ['mermaid'],
         },
         plugins: [
-          llmstxt(),
+          // Writes llms.txt, llms-full.txt, and an LLM-friendly `.md` twin of every page next to
+          // its `.html`, which the "Copy page" button (theme/CopyPageButton.vue) fetches.
+          llmstxt({
+            // The plugin's default ignores `blog/*` and `blog.md`. That is the plugin author's
+            // preference, not ours: the writing guides say LLMs land on these pages too, and the
+            // posts under blog/<version>/ already get through because the pattern is one level deep.
+            excludeBlog: false,
+          }),
           plugin,
           ViteImageOptimizer({
             // // Configure optimization options for different image formats
