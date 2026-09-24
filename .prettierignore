@@ -14,9 +14,13 @@ blueprints/
 vendor/
 !tests/blueprints/
 
-# Markdown is deliberately unformatted: oxfmt ignores *.md (.oxfmtrc.jsonc) and
-# lint:prettier only covers gjs/gts. Without this line the VS Code Prettier
-# extension, which .vscode/settings.json makes the format-on-save default for
-# every language, rewrites guides on save (*x* -> _x_, quotes and semicolons
-# inside fenced code blocks) with changes no lint check asked for.
+# Deliberately unformatted file types: oxfmt ignores these (.oxfmtrc.jsonc) and
+# lint:prettier only covers gjs/gts, so no CI check formats them. Listing them
+# here keeps the Prettier CLI and the VS Code Prettier extension from producing
+# diffs no lint check asked for (e.g. *x* -> _x_ and requoted fenced code in
+# guides), whatever an editor's default formatter is set to.
 *.md
+*.hbs
+*.html
+*.yml
+*.yaml
