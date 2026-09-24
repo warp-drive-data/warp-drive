@@ -19,10 +19,7 @@ export const entryPoints = [
   // core-types
   './src/types/cache/**.ts',
   './src/types/json/**.ts',
-  // listed explicitly so the sibling fields.type-test.ts is not built or published
-  './src/types/schema/concepts.ts',
-  './src/types/schema/fields.ts',
-  './src/types/schema/schema-service.ts',
+  './src/types/schema/**.ts',
   './src/types/spec/**.ts',
   './src/types/cache.ts',
   './src/types/graph.ts',
