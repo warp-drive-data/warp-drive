@@ -2582,6 +2582,35 @@ export function objectSchema<T extends ObjectSchema>(schema: T): T {
  *
  * @public
  */
+/**
+ * Whether a field kind is a to-many relationship: the legacy `hasMany` or the
+ * `collection` kind.
+ *
+ * @public
+ */
+export function isManyKind(kind: string): kind is 'hasMany' | 'collection' {
+  return kind === 'hasMany' || kind === 'collection';
+}
+
+/**
+ * Whether a field kind is a to-one relationship: the legacy `belongsTo` or the
+ * `resource` kind.
+ *
+ * @public
+ */
+export function isSingleKind(kind: string): kind is 'belongsTo' | 'resource' {
+  return kind === 'belongsTo' || kind === 'resource';
+}
+
+/**
+ * Whether a field kind is any relationship kind, legacy or not.
+ *
+ * @public
+ */
+export function isRelationshipKind(kind: string): kind is 'belongsTo' | 'hasMany' | 'resource' | 'collection' {
+  return isManyKind(kind) || isSingleKind(kind);
+}
+
 export function isResourceSchema(schema: ResourceSchema | ObjectSchema): schema is ResourceSchema {
   return schema?.identity?.kind === '@id';
 }

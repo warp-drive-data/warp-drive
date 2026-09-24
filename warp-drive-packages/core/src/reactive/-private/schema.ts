@@ -38,6 +38,7 @@ import {
   type SchemaArrayField,
   type SchemaObjectField,
   type Trait,
+  isRelationshipKind,
 } from '../../types/schema/fields.ts';
 import { Type } from '../../types/symbols.ts';
 import type { WithPartial } from '../../types/utils.ts';
@@ -525,9 +526,7 @@ type AbstractTypeImplementerField =
   | CollectionField;
 
 function isAbstractTypeImplementerField(field: FieldSchema): field is AbstractTypeImplementerField {
-  return (
-    field.kind === 'belongsTo' || field.kind === 'hasMany' || field.kind === 'resource' || field.kind === 'collection'
-  );
+  return isRelationshipKind(field.kind);
 }
 
 function isLegacyRelationshipField(field: FieldSchema): field is LegacyRelationshipField {
