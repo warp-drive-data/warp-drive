@@ -1,0 +1,47 @@
+{
+  "name": "@warp-drive/internal-docs-viewer",
+  "version": "5.10.0-alpha.11",
+  "description": "API Docs Viewer for the WarpDrive Project Monorepo | Unpublished",
+  "private": true,
+  "type": "module",
+  "files": [
+    "src"
+  ],
+  "bin": {
+    "sync-guides": "./src/sync-guides.ts",
+    "_tsc": "./src/tsc.ts"
+  },
+  "scripts": {
+    "start": "bun ./src/sync-guides.ts",
+    "build": "bun ./src/sync-guides.ts --build --force",
+    "check:links": "bun ./src/check-content-links.ts",
+    "preview": "vitepress preview docs.warp-drive.io"
+  },
+  "dependencies": {
+    "vitepress": "catalog:",
+    "vitepress-plugin-mermaid": "catalog:",
+    "mermaid": "catalog:",
+    "@types/bun": "catalog:",
+    "typescript": "catalog:",
+    "debug": "catalog:",
+    "@mdit/plugin-footnote": "catalog:",
+    "@pnpm/find-workspace-dir": "catalog:",
+    "@types/debug": "catalog:",
+    "@vite-pwa/vitepress": "catalog:",
+    "front-matter": "catalog:",
+    "sharp": "catalog:",
+    "svgo": "catalog:",
+    "typedoc": "catalog:",
+    "typedoc-plugin-markdown": "catalog:",
+    "typedoc-plugin-no-inherit": "catalog:",
+    "typedoc-plugin-mdn-links": "catalog:",
+    "typedoc-vitepress-theme": "catalog:",
+    "vitepress-plugin-llms": "catalog:",
+    "vitepress-plugin-group-icons": "catalog:",
+    "vitepress-plugin-tabs": "catalog:",
+    "vite-plugin-image-optimizer": "catalog:",
+    "vite-plugin-pwa": "catalog:",
+    "vue": "catalog:",
+    "vite": "catalog:"
+  }
+}

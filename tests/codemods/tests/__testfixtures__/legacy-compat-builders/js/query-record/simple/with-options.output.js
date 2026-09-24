@@ -1,4 +1,4 @@
-import { queryRecord } from '@ember-data/legacy-compat/builders';
+import { queryRecord } from '@warp-drive/legacy/compat/builders';
 const { content: post } = await store.request(
   queryRecord(
     'post',

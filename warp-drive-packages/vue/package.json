@@ -1,0 +1,68 @@
+{
+  "name": "@warp-drive/vue",
+  "description": "Data bindings and utilities for vuejs applications using WarpDrive",
+  "version": "5.10.0-alpha.11",
+  "license": "MIT",
+  "author": "Chris Thoburn <runspired@users.noreply.github.com>",
+  "type": "module",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com:warp-drive-data/warp-drive.git",
+    "directory": "warp-drive-packages/vue"
+  },
+  "homepage": "https://github.com/warp-drive-data/warp-drive",
+  "bugs": "https://github.com/warp-drive-data/warp-drive/issues",
+  "keywords": [
+    "nuxt",
+    "vuejs",
+    "warpdrive"
+  ],
+  "scripts": {
+    "build:pkg": "node node_modules/tsdown/dist/run.mjs",
+    "prepack": "pnpm run build:pkg",
+    "sync": "echo \"syncing\"",
+    "check:types": "node ./node_modules/typescript-7/bin/tsc --noEmit",
+    "start": "node node_modules/tsdown/dist/run.mjs --watch"
+  },
+  "files": [
+    "addon-main.cjs",
+    "dist",
+    "README.md",
+    "LICENSE.md",
+    "logos"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./*": {
+      "types": "./dist/*.d.ts",
+      "default": "./dist/*.js"
+    }
+  },
+  "peerDependencies": {
+    "vue": "catalog:"
+  },
+  "dependencies": {
+    "@embroider/macros": "catalog:",
+    "@warp-drive/core": "workspace:*"
+  },
+  "peerDependenciesMeta": {},
+  "devDependencies": {
+    "@babel/core": "catalog:",
+    "@babel/plugin-transform-typescript": "catalog:",
+    "@babel/preset-env": "catalog:",
+    "@babel/preset-typescript": "catalog:",
+    "@babel/runtime": "catalog:",
+    "@warp-drive/core": "workspace:*",
+    "@warp-drive/internal-config": "workspace:*",
+    "decorator-transforms": "catalog:",
+    "tsdown": "catalog:",
+    "typescript-7": "catalog:",
+    "unplugin-vue": "catalog:",
+    "vue": "catalog:",
+    "vue-tsc": "catalog:"
+  }
+}

@@ -1,9 +1,9 @@
-import { DEBUG } from '@warp-drive/build-config/env';
+import { getOwnConfig } from '@embroider/macros';
+
+import { DEBUG } from '@warp-drive/core/build-config/env';
 
 import type { ExpandedHooks } from '.';
 import { FoundDeprecation } from './assert-deprecation';
-
-import { getOwnConfig } from '@embroider/macros';
 
 const { ASSERT_ALL_DEPRECATIONS } = getOwnConfig<{ ASSERT_ALL_DEPRECATIONS?: boolean }>();
 
@@ -19,7 +19,7 @@ function pushDeprecation(deprecation: string) {
 
 type Socket = { emit(type: string, name: string, data: unknown): void };
 
-export function configureAssertAllDeprecations(hooks: ExpandedHooks) {
+export function configureAssertAllDeprecations(hooks: ExpandedHooks): void {
   if (DEBUG) {
     // @ts-expect-error Testem not typed
     if (window.Testem) {
@@ -51,6 +51,7 @@ export function configureAssertAllDeprecations(hooks: ExpandedHooks) {
             id.includes('ds.') ||
             id.includes('emberdata') ||
             id.includes('ember-data') ||
+            id.includes('warp-drive') ||
             id.includes('mismatched-inverse-relationship-data-from-payload');
 
           if (!isEmberDataDeprecation) {

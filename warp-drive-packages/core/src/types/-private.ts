@@ -1,0 +1,260 @@
+// in testing mode, we utilize globals to ensure only one copy exists of
+// these maps, due to bugs in ember-auto-import
+import { DEBUG, TESTING } from '@warp-drive/core/build-config/env';
+
+// Substituted at build time (see `tools/internal-config/tsdown/config.js`)
+// with this package's own `name`/`version` from its `package.json`. Reading
+// it via a static import instead would get inlined by tsdown as a synthetic
+// sourcemap source with empty `sourcesContent`, which points outside the
+// published package once the built chunk is re-bundled by a consumer.
+declare const __WARP_DRIVE_PACKAGE_NAME__: string;
+declare const __WARP_DRIVE_PACKAGE_VERSION__: string;
+const name = __WARP_DRIVE_PACKAGE_NAME__;
+const version = __WARP_DRIVE_PACKAGE_VERSION__;
+
+type UniversalTransientKey =
+  // @warp-drive/core/request
+  'REQ_ID';
+
+type UniversalKey =
+  | `(transient) ${UniversalTransientKey}`
+  // @warp-drive/core/request
+  | 'RequestMap'
+  | 'PromiseCache'
+  | 'RequestCache'
+  // @warp-drive/core-types/request
+  | 'SkipCache'
+  | 'EnableHydration'
+  // @warp-drive/core-types/runtime
+  | 'WarpDriveRuntimeConfig';
+
+type TransientKey =
+  // @warp-drive/core/graph
+  | 'transactionRef'
+  // @warp-drive/core/store
+  | 'configuredGenerationMethod'
+  | 'configuredUpdateMethod'
+  | 'configuredForgetMethod'
+  | 'configuredResetMethod'
+  | 'configuredKeyInfoMethod'
+  | 'signalHooks';
+
+type GlobalKey =
+  | `(transient) ${TransientKey}`
+  // @warp-drive/legacy/adapter
+  | 'AdapterError'
+  | 'InvalidError'
+  | 'TimeoutError'
+  | 'AbortError'
+  | 'UnauthorizedError'
+  | 'ForbiddenError'
+  | 'NotFoundError'
+  | 'ConflictError'
+  | 'ServerError'
+  // @warp-drive/core/store/reactivity
+  | '#{}'
+  | '#[]'
+  | 'Signals'
+  // @warp-drive/legacy LegacySupport
+  | 'AvailableShims'
+  // @warp-drive/core RecordArrayManager
+  | 'FAKE_ARR'
+  // @warp-drive/core ReactiveArray
+  | '#source'
+  | '#update'
+  | '#notify'
+  | 'IS_COLLECTION'
+  // @warp-drive/core RequestCache
+  | 'Touching'
+  | 'RequestPromise'
+  // @warp-drive/legacy/compat FetchManager
+  | 'SaveOp'
+  // @warp-drive/legacy Model
+  | 'LEGACY_SUPPORT'
+  | 'LegacySupport'
+  // @warp-drive/core/graph
+  | 'Graphs'
+  // @warp-drive/core/request
+  | 'IS_FROZEN'
+  | 'IS_CACHE_HANDLER'
+  // @warp-drive/utilities
+  | 'CONFIG'
+  // @warp-drive/core CacheKeyManager
+  | 'DEBUG_MAP'
+  | 'IDENTIFIERS'
+  | 'DOCUMENTS'
+  // @warp-drive/core InstanceCache
+  | 'RecordCache'
+  | 'StoreMap'
+  // @warp-drive/core/types/symbols
+  | 'Store'
+  | '$type'
+  | 'TransformName'
+  | 'RequestSignature'
+  // @warp-drive/core/types/request
+  | 'IS_FUTURE'
+  | 'DOC'
+  // @warp-drive/core NotificationManager
+  | 'UnscopedChannel'
+  // @warp-drive/core/reactive
+  | 'ManagedArrayMap'
+  | 'ManagedObjectMap'
+  | 'Support'
+  | 'SOURCE'
+  | 'Destroy'
+  | 'Checkout'
+  | 'Commit'
+  | 'Context';
+
+type ModuleScopedCaches = Record<GlobalKey, unknown>;
+
+const GlobalRef = globalThis as unknown as Record<
+  string,
+  {
+    __warpDrive_ModuleScopedCaches?: ModuleScopedCaches;
+    __warpDrive_hasOtherCopy?: boolean;
+    __version: string;
+  }
+> & {
+  __warpDrive_universalCache: Record<UniversalKey, unknown>;
+};
+const UniversalCache = (GlobalRef.__warpDrive_universalCache =
+  GlobalRef.__warpDrive_universalCache ?? ({} as Record<UniversalKey, unknown>));
+
+// in order to support mirror packages, we ensure that each
+// unique package name has its own global cache
+GlobalRef[name] = GlobalRef[name] ?? { __version: version };
+const GlobalSink = GlobalRef[name];
+
+if (DEBUG) {
+  if (GlobalSink.__version !== version) {
+    throw new Error('Multiple versions of WarpDrive detected, the application will malfunction.');
+  }
+}
+
+const ModuleScopedCaches = GlobalSink.__warpDrive_ModuleScopedCaches ?? ({} as ModuleScopedCaches);
+if (TESTING) {
+  if (!GlobalSink.__warpDrive_ModuleScopedCaches) {
+    GlobalSink.__warpDrive_ModuleScopedCaches = ModuleScopedCaches;
+  } else {
+    // oxlint-disable-next-line no-console
+    console.warn(`
+Multiple copies of WarpDrive have been detected. This may be due to a bug in ember-auto-import
+  in which test assets get their own copy of some v2-addons. This can cause the application to
+  malfunction as each copy will maintain its own separate state.`);
+  }
+} else {
+  if (GlobalSink.__warpDrive_hasOtherCopy) {
+    throw new Error('Multiple copies of WarpDrive detected, the application will malfunction.');
+  }
+  GlobalSink.__warpDrive_hasOtherCopy = true;
+}
+
+type UniqueSymbol<T extends string> = `___(unique) Symbol(${T})`;
+type UniqueSymbolOr<T, K extends string> = T extends symbol ? UniqueSymbol<K> : T;
+
+/**
+ * Coordinates creation of a singleton `value` (e.g. a symbol, WeakMap, or
+ * error class) for `key` so that duplicate copies of this package loaded
+ * into the same process observe the same instance instead of each creating
+ * their own.
+ *
+ * In `TESTING` builds this stores/reads `value` from a cache namespaced to
+ * this package's name on `globalThis` (see the file-level comments above for
+ * why this is necessary). Outside of `TESTING`, only one copy of the package
+ * is expected to exist, so this is a no-op that always returns `value`
+ * unchanged.
+ *
+ * The return type lies about symbols being unique to work around the d.ts
+ * rollup issue described in `reactive/-private/symbols.ts`.
+ *
+ * @private
+ */
+export function getOrSetGlobal<T, K extends GlobalKey>(key: K, value: T): UniqueSymbolOr<T, K> {
+  if (TESTING) {
+    const existing = ModuleScopedCaches[key];
+    if (existing === undefined) {
+      return (ModuleScopedCaches[key] = value) as UniqueSymbolOr<T, K>;
+    } else {
+      return existing as UniqueSymbolOr<T, K>;
+    }
+  } else {
+    return value as UniqueSymbolOr<T, K>;
+  }
+}
+
+/**
+ * Reads back the current value stored for `key` by {@link setTransient}, or
+ * `null` if nothing has been stored yet.
+ *
+ * Unlike {@link getOrSetGlobal}, this always reads through the same
+ * package-namespaced cache regardless of the `TESTING` flag, since this is
+ * used for genuinely mutable state (not just singleton values) that must
+ * stay in sync across any duplicate copies of this package.
+ *
+ * @private
+ */
+export function peekTransient<T>(key: TransientKey): T | null {
+  const globalKey: `(transient) ${TransientKey}` = `(transient) ${key}`;
+  return (ModuleScopedCaches[globalKey] as T) ?? null;
+}
+
+/**
+ * Stores `value` for `key`, overwriting whatever was previously stored, so
+ * that it can later be read back via {@link peekTransient}.
+ *
+ * See {@link peekTransient} for details on when/why this cache is shared.
+ *
+ * @private
+ */
+export function setTransient<T>(key: TransientKey, value: T): T {
+  const globalKey: `(transient) ${TransientKey}` = `(transient) ${key}`;
+  return (ModuleScopedCaches[globalKey] = value);
+}
+
+/**
+ * Like {@link getOrSetGlobal}, but reads/writes a cache that is shared across
+ * *all* copies of WarpDrive on `globalThis`, regardless of package name.
+ *
+ * This is used for keys (e.g. request/promise caches) that must be
+ * coordinated even across "mirror" packages published under different
+ * names, rather than only across duplicate copies of the same package name.
+ *
+ * @private
+ */
+export function getOrSetUniversal<T, K extends UniversalKey>(key: K, value: T): UniqueSymbolOr<T, K> {
+  if (TESTING) {
+    const existing = UniversalCache[key];
+    if (existing === undefined) {
+      return (UniversalCache[key] = value) as UniqueSymbolOr<T, K>;
+    } else {
+      return existing as UniqueSymbolOr<T, K>;
+    }
+  } else {
+    return value as UniqueSymbolOr<T, K>;
+  }
+}
+
+/**
+ * Like {@link peekTransient}, but reads from the package-name-independent
+ * cache used by {@link getOrSetUniversal}. Always reads through this shared
+ * cache regardless of the `TESTING` flag.
+ *
+ * @private
+ */
+export function peekUniversalTransient<T>(key: UniversalTransientKey): T | null {
+  const globalKey: `(transient) ${UniversalTransientKey}` = `(transient) ${key}`;
+  return (UniversalCache[globalKey] as T) ?? null;
+}
+
+/**
+ * Like {@link setTransient}, but writes to the package-name-independent
+ * cache used by {@link getOrSetUniversal}, so it can later be read via
+ * {@link peekUniversalTransient}.
+ *
+ * @private
+ */
+export function setUniversalTransient<T>(key: UniversalTransientKey, value: T): T {
+  const globalKey: `(transient) ${UniversalTransientKey}` = `(transient) ${key}`;
+  return (UniversalCache[globalKey] = value);
+}

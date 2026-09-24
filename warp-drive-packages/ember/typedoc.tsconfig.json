@@ -1,0 +1,57 @@
+{
+  "include": ["./dist/**/*", "./src/**/*.md"],
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "skipLibCheck": true,
+    "disableSourceOfProjectReferenceRedirect": false,
+    "declarationDir": "none",
+    "emitDeclarationOnly": true,
+    "allowJs": false,
+    "checkJs": false,
+    "alwaysStrict": true,
+    "strict": true,
+    "pretty": true,
+    "exactOptionalPropertyTypes": false,
+    "allowSyntheticDefaultImports": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "strictBindCallApply": true,
+    "strictFunctionTypes": true,
+    "strictPropertyInitialization": true,
+    "allowUnreachableCode": false,
+    "allowUnusedLabels": false,
+    "noEmitOnError": false,
+    "strictNullChecks": true,
+    "noErrorTruncation": true,
+    "experimentalDecorators": true,
+    "composite": false,
+    "incremental": false,
+    "rootDir": "dist",
+    "declaration": true,
+    "declarationMap": true,
+    "inlineSourceMap": true,
+    "inlineSources": true,
+    // TypeScript 6.0 deprecated `baseUrl` (removal planned for 7.0); this repo's `typescript`
+    // override is pinned to the classic 6.x line, so silence the deprecation until the `paths`
+    // entry below (which needs `baseUrl` to resolve) is migrated off it.
+    "ignoreDeprecations": "6.0",
+    "baseUrl": ".",
+    "types": ["@glint/ember-tsc/types", "ember-source/types"],
+    "allowImportingTsExtensions": true,
+    "paths": {
+      "@glimmer/validator": ["../../@types/@glimmer/validator.d.ts"]
+    },
+    "erasableSyntaxOnly": true,
+    "isolatedDeclarations": true,
+    "isolatedModules": true,
+    "lib": ["ESNext", "DOM"],
+    "moduleDetection": "force"
+  },
+  "references": [
+    {
+      "path": "../core"
+    }
+  ]
+}

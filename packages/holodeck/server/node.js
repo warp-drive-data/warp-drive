@@ -1,0 +1,418 @@
+import { serve } from '@hono/node-server';
+import { Hono } from 'hono';
+import { cors } from 'hono/cors';
+import { HTTPException } from 'hono/http-exception';
+import fs from 'node:fs';
+import { createSecureServer } from 'node:http2';
+import { Readable } from 'node:stream';
+import { pathToFileURL } from 'node:url';
+import { styleText } from 'node:util';
+import { Worker, threadId, parentPort } from 'node:worker_threads';
+import path from 'path';
+
+import {
+  bindWithRetry,
+  compress,
+  createCloseHandler,
+  DEFAULT_PORT,
+  generateFileDir,
+  generateFilepath,
+  getCertInfo,
+  getNiceUrl,
+} from './utils.js';
+
+async function replayRequest(context, cacheKey) {
+  let metaJson;
+  try {
+    metaJson = JSON.parse(fs.readFileSync(`${cacheKey}.meta.json`, 'utf8'));
+  } catch {
+    context.header('Content-Type', 'application/vnd.api+json');
+    context.status(400);
+    return context.body(
+      JSON.stringify({
+        errors: [
+          {
+            status: '400',
+            code: 'MOCK_NOT_FOUND',
+            title: 'Mock not found',
+            detail: `No meta was found for ${context.req.method} ${context.req.url}. The expected cacheKey was ${cacheKey}. You may need to record a mock for this request.`,
+          },
+        ],
+      })
+    );
+  }
+
+  try {
+    const bodyPath = `${cacheKey}.body.br`;
+    // Hand `new Response()` a web stream explicitly. Undici treats a Node
+    // `Readable` as an async iterable and adapts it into a byte stream whose
+    // controller it closes from a queued microtask, so a client that aborts
+    // mid-response closes that controller first and the queued `close()` then
+    // throws `ERR_INVALID_STATE`. It throws synchronously inside a microtask,
+    // so it is an `uncaughtException` -- unreachable by `.catch()` or an
+    // `unhandledRejection` handler, and fatal to this process. Do not "fix" a
+    // recurrence by installing one; keep the body a real `ReadableStream`.
+    const bodyInit =
+      metaJson.status !== 204 && metaJson.status < 500 ? Readable.toWeb(fs.createReadStream(bodyPath)) : '';
+
+    const headers = new Headers(metaJson.headers || {});
+    const response = new Response(/** @type {BodyInit} */ (bodyInit), {
+      status: metaJson.status,
+      statusText: metaJson.statusText,
+      headers,
+    });
+
+    if (metaJson.status > 400) {
+      throw new HTTPException(metaJson.status, { res: response, message: metaJson.statusText });
+    }
+
+    return response;
+  } catch (e) {
+    if (e instanceof HTTPException) {
+      throw e;
+    }
+    context.header('Content-Type', 'application/vnd.api+json');
+    context.status(500);
+    return context.body(
+      JSON.stringify({
+        errors: [
+          {
+            status: '500',
+            code: 'MOCK_SERVER_ERROR',
+            title: 'Mock Replay Failed',
+            detail: `Failed to create the response for ${context.req.method} ${context.req.url}.\n\n\n${e.message}\n${e.stack}`,
+          },
+        ],
+      })
+    );
+  }
+}
+
+function createTestHandler(projectRoot) {
+  const TestHandler = async (context) => {
+    try {
+      const { req } = context;
+
+      const testId = req.query('__xTestId');
+      const testRequestNumber = req.query('__xTestRequestNumber');
+      const niceUrl = getNiceUrl(req.url);
+
+      if (!testId) {
+        context.header('Content-Type', 'application/vnd.api+json');
+        context.status(400);
+        return context.body(
+          JSON.stringify({
+            errors: [
+              {
+                status: '400',
+                code: 'MISSING_X_TEST_ID_HEADER',
+                title: 'Request to the http mock server is missing the `__xTestId` query parameter',
+                detail:
+                  'The `__xTestId` query parameter identifies the test making the request, so that the mock server only replays fixtures belonging to the test that is currently running. MockServerHandler adds it. Add `new MockServerHandler(this)` to your RequestManager chain ahead of Fetch, and check that the code under test issues its request through that chain rather than calling fetch directly.',
+                source: { parameter: '__xTestId' },
+              },
+            ],
+          })
+        );
+      }
+
+      if (!testRequestNumber) {
+        context.header('Content-Type', 'application/vnd.api+json');
+        context.status(400);
+        return context.body(
+          JSON.stringify({
+            errors: [
+              {
+                status: '400',
+                code: 'MISSING_X_TEST_REQUEST_NUMBER_HEADER',
+                title: 'Request to the http mock server is missing the `__xTestRequestNumber` query parameter',
+                detail:
+                  'The `__xTestRequestNumber` query parameter counts requests to the same method and url within a test, so that repeated requests replay their own fixtures in order. MockServerHandler adds it. Add `new MockServerHandler(this)` to your RequestManager chain ahead of Fetch, and check that the code under test issues its request through that chain rather than calling fetch directly.',
+                source: { parameter: '__xTestRequestNumber' },
+              },
+            ],
+          })
+        );
+      }
+
+      if (req.method === 'POST' && niceUrl === '__record') {
+        const payload = await req.json();
+        const { url, headers, method, status, statusText, body, response } = payload;
+        const cacheKey = generateFilepath({
+          projectRoot,
+          testId,
+          url,
+          method,
+          body,
+          testRequestNumber,
+        });
+        const compressedResponse = compress(JSON.stringify(response));
+        // allow Content-Type to be overridden
+        headers['Content-Type'] = headers['Content-Type'] || 'application/vnd.api+json';
+        // We always compress and chunk the response
+        headers['Content-Encoding'] = 'br';
+        // we don't cache since tests will often reuse similar urls for different payload
+        headers['Cache-Control'] = 'no-store';
+        // streaming requires Content-Length
+        headers['Content-Length'] = compressedResponse.length;
+
+        const cacheDir = generateFileDir({
+          projectRoot,
+          testId,
+          url,
+          method,
+          testRequestNumber,
+        });
+
+        fs.mkdirSync(cacheDir, { recursive: true });
+
+        fs.writeFileSync(
+          `${cacheKey}.meta.json`,
+          JSON.stringify({ url, status, statusText, headers, method, requestBody: body })
+        );
+        fs.writeFileSync(`${cacheKey}.body.br`, compressedResponse);
+
+        context.status(201);
+        return context.body(
+          JSON.stringify({
+            message: `Recorded ${method} ${url} for test ${testId} request #${testRequestNumber}`,
+            cacheKey,
+            cacheDir,
+          })
+        );
+      } else {
+        const body = req.raw.body ? await req.text() : null;
+        const cacheKey = generateFilepath({
+          projectRoot,
+          testId,
+          url: niceUrl,
+          method: req.method,
+          body: body ? body : null,
+          testRequestNumber,
+        });
+
+        // console.log(
+        //   `Replaying mock for ${req.method} ${niceUrl} (test: ${testId} request #${testRequestNumber}) from '${cacheKey}' if available`
+        // );
+        return replayRequest(context, cacheKey);
+      }
+    } catch (e) {
+      if (e instanceof HTTPException) {
+        console.log(`HTTPException Encountered`);
+        console.error(e);
+        throw e;
+      }
+      console.log(`500 MOCK_SERVER_ERROR Encountered`);
+      console.error(e);
+      context.header('Content-Type', 'application/vnd.api+json');
+      context.status(500);
+      return context.body(
+        JSON.stringify({
+          errors: [
+            {
+              status: '500',
+              code: 'MOCK_SERVER_ERROR',
+              title: 'Mock Server Error during Request',
+              detail: e.message,
+            },
+          ],
+        })
+      );
+    }
+  };
+
+  return TestHandler;
+}
+
+export async function startWorker() {
+  let close;
+  parentPort.postMessage('ready');
+  // listen for launch message
+  parentPort.on('message', async (event) => {
+    // console.log('worker message received', event);
+    if (typeof event === 'object' && event?.type === 'launch') {
+      // console.log('worker launching');
+      const { options } = event;
+      const result = await _createServer(options);
+      parentPort.postMessage({
+        type: 'launched',
+        protocol: 'https',
+        hostname: result.location.hostname,
+        port: result.location.port,
+      });
+      close = result.close;
+    }
+
+    if (event === 'end') {
+      // console.log('worker shutting down');
+      close();
+    }
+  });
+}
+
+/*
+{ port?: number, projectRoot: string }
+*/
+async function createServer(options) {
+  if (options.useWorker) {
+    // console.log('starting holodeck worker');
+    const worker = new Worker(new URL('./node-worker.js', import.meta.url));
+
+    const started = new Promise((resolve) => {
+      worker.on('message', (v) => {
+        // console.log('worker message received', v);
+        if (v === 'ready') {
+          worker.postMessage({
+            type: 'launch',
+            options,
+          });
+        } else if (v.type === 'launched') {
+          // @ts-expect-error
+          worker.location = v;
+          resolve(worker);
+        }
+      });
+    });
+
+    await started;
+    console.log('\tworker booted');
+    return {
+      worker,
+      server: {
+        close() {
+          worker.postMessage('end');
+          worker.terminate();
+        },
+      },
+      // @ts-expect-error
+      location: worker.location,
+    };
+  }
+
+  return _createServer(options);
+}
+
+async function _createServer(options) {
+  const { CERT, KEY } = await getCertInfo();
+  const app = new Hono();
+
+  app.use(
+    cors({
+      origin: (origin, context) => {
+        // console.log(context.req.raw.headers);
+        const result = origin.startsWith('http://localhost:') || origin.startsWith('https://localhost:') ? origin : '*';
+        // console.log(`CORS Origin: ${origin} => ${result}`);
+        return result;
+      },
+      allowHeaders: ['Accept', 'Content-Type'],
+      allowMethods: ['GET', 'HEAD', 'PUT', 'POST', 'DELETE', 'PATCH'],
+      exposeHeaders: ['Content-Length', 'Content-Type'],
+      maxAge: 60_000,
+      credentials: false,
+    })
+  );
+  app.all('*', createTestHandler(options.projectRoot));
+
+  const location = {
+    port: options.port ?? DEFAULT_PORT,
+    hostname: options.hostname ?? 'localhost',
+  };
+
+  const server = await bindWithRetry(() =>
+    serve({
+      overrideGlobalObjects: true,
+      fetch: app.fetch,
+      serverOptions: {
+        key: KEY,
+        cert: CERT,
+        // rejectUnauthorized: false,
+        // enableTrace: true,
+        // Allow HTTP/1.1 fallback for ALPN negotiation
+        // allowHTTP1: true,
+        // ALPNProtocols: ['h2', 'http/1.1', 'http/1.0'],
+        // origins: ['*'],
+      },
+      createServer: createSecureServer,
+      port: location.port,
+      hostname: location.hostname,
+    })
+  );
+
+  console.log(
+    `\tServing Holodeck HTTP Mocks from ${styleText('yellow', 'https://') + styleText('magenta', location.hostname + ':') + styleText('yellow', String(location.port))}\n`
+  );
+
+  if (typeof threadId === 'number' && threadId !== 0) {
+    parentPort.postMessage({
+      type: 'launched',
+      protocol: 'https',
+      hostname: location.hostname,
+      port: location.port,
+    });
+  }
+
+  if (typeof threadId === 'number' && threadId !== 0) {
+    const close = createCloseHandler(() => {
+      server.close();
+    });
+
+    return { app, server, location, close };
+  }
+
+  return {
+    app,
+    server,
+    location,
+  };
+}
+
+export async function launchProgram(config = {}) {
+  const projectRoot = process.cwd();
+  const pkg = await import(pathToFileURL(path.join(projectRoot, 'package.json')).href, { with: { type: 'json' } });
+  const { name } = pkg.default ?? pkg;
+  if (!name) {
+    throw new Error(`Package name not found in package.json`);
+  }
+  const options = { name, projectRoot, ...config };
+  console.log(
+    styleText(
+      'gray',
+      `\n\t@${styleText('greenBright', 'warp-drive')}/${styleText(
+        'magentaBright',
+        'holodeck'
+      )} 🌅\n\t=================================\n`
+    ) +
+      styleText(
+        'gray',
+        `\n\tHolodeck Access Granted\n\t\tprogram: ${styleText('magenta', name)}\n\t\tsettings: ${styleText(
+          'green',
+          JSON.stringify(config).split('\n').join(' ')
+        )}\n\t\tdirectory: ${styleText('cyan', projectRoot)}\n\t\tengine: ${styleText(
+          'cyan',
+          'node'
+        )}@${styleText('yellow', process.version)}\n`
+      )
+  );
+  console.log(styleText('gray', `\n\tStarting Holodeck Subroutines`));
+
+  const project = await createServer(options);
+
+  async function shutdown() {
+    console.log(styleText('gray', `\n\tEnding Holodeck Subroutines`));
+    project.server.close();
+    console.log(styleText('gray', `\n\tHolodeck program ended`));
+  }
+
+  const endProgram = createCloseHandler(shutdown);
+
+  return {
+    config: {
+      location: `https://${project.location.hostname}:${project.location.port}`,
+      port: project.location.port,
+      hostname: project.location.hostname,
+      protocol: 'https',
+      recordingPath: `/__record`,
+    },
+    endProgram,
+  };
+}

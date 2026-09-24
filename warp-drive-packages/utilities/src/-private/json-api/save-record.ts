@@ -1,0 +1,351 @@
+import { recordIdentifierFor } from '@warp-drive/core';
+import { assert } from '@warp-drive/core/build-config/macros';
+import type { ReactiveDataDocument } from '@warp-drive/core/reactive';
+import type { PersistedResourceKey, ResourceKey } from '@warp-drive/core/types/identifier';
+import type { TypedRecordInstance } from '@warp-drive/core/types/record';
+import type {
+  ConstrainedRequestOptions,
+  CreateRequestOptions,
+  DeleteRequestOptions,
+  UpdateRequestOptions,
+} from '@warp-drive/core/types/request';
+import type { ApiError } from '@warp-drive/core/types/spec/error';
+import type { Meta } from '@warp-drive/core/types/spec/json-api-raw';
+
+import {
+  buildBaseURL,
+  type CreateRecordUrlOptions,
+  type DeleteRecordUrlOptions,
+  type UpdateRecordUrlOptions,
+} from '../../index.ts';
+import { pluralize } from '../../string.ts';
+import { copyForwardUrlOptions } from '../builder-utils.ts';
+import { ACCEPT_HEADER_VALUE } from './-utils.ts';
+
+function isExisting(identifier: ResourceKey): identifier is PersistedResourceKey {
+  return 'id' in identifier && identifier.id !== null && 'type' in identifier && identifier.type !== null;
+}
+
+/**
+ * :::warning ⚠️ **These Mutation Builders DO NOT Set The Request Body**
+ * While this may come as a surprise, the app providing the body ensures that only
+ * desired and correctly formatted data is sent with the request.
+ * :::
+ *
+ * Builds request options to delete record for resources,
+ * configured for the url, method and header expectations of most JSON:API APIs.
+ *
+ * **Basic Usage**
+ *
+ * ```ts
+ * import { deleteRecord } from '@warp-drive/utilities/json-api';
+ *
+ * const person = store.peekRecord('person', '1');
+ *
+ * // mark record as deleted
+ * store.deleteRecord(person);
+ *
+ * // persist deletion
+ * const data = await store.request(deleteRecord(person));
+ * ```
+ *
+ * **Supplying Options to Modify the Request Behavior**
+ *
+ * The following options are supported:
+ *
+ * - `host` - The host to use for the request, defaults to the `host` configured with `setBuildURLConfig`.
+ * - `namespace` - The namespace to use for the request, defaults to the `namespace` configured with `setBuildURLConfig`.
+ * - `resourcePath` - The resource path to use for the request, defaults to pluralizing the supplied type
+ * - `reload` - Whether to forcibly reload the request if it is already in the store, not supplying this
+ *      option will delegate to the store's CachePolicy, defaulting to `false` if none is configured.
+ * - `backgroundReload` - Whether to reload the request if it is already in the store, but to also resolve the
+ *      promise with the cached value, not supplying this option will delegate to the store's CachePolicy,
+ *      defaulting to `false` if none is configured.
+ * - `urlParamsSetting` - an object containing options for how to serialize the query params (see `buildQueryParams`)
+ *
+ * ```ts
+ * import { deleteRecord } from '@warp-drive/utilities/json-api';
+ *
+ * const person = store.peekRecord('person', '1');
+ *
+ * // mark record as deleted
+ * store.deleteRecord(person);
+ *
+ * // persist deletion
+ * const options = deleteRecord(person, { namespace: 'api/v1' });
+ * const data = await store.request(options);
+ * ```
+ *
+ * @public
+ * @param record
+ * @param options
+ */
+export function deleteRecord<T>(record: T, options?: ConstrainedRequestOptions): DeleteRequestOptions<T>;
+export function deleteRecord(record: unknown, options?: ConstrainedRequestOptions): DeleteRequestOptions;
+export function deleteRecord(record: unknown, options: ConstrainedRequestOptions = {}): DeleteRequestOptions {
+  const identifier = recordIdentifierFor(record);
+  assert(`Expected to be given a record instance`, identifier);
+  assert(`Cannot delete a record that does not have an associated type and id.`, isExisting(identifier));
+
+  const urlOptions: DeleteRecordUrlOptions = {
+    identifier: identifier,
+    op: 'deleteRecord',
+    resourcePath: pluralize(identifier.type),
+  };
+
+  copyForwardUrlOptions(urlOptions, options);
+
+  const url = buildBaseURL(urlOptions);
+  const headers = new Headers();
+  headers.append('Accept', ACCEPT_HEADER_VALUE);
+
+  return {
+    url,
+    method: 'DELETE',
+    headers,
+    op: 'deleteRecord',
+    data: {
+      record: identifier,
+    },
+    records: [identifier],
+  };
+}
+
+/**
+ * :::warning ⚠️ **These Mutation Builders DO NOT Set The Necessary Request Body**
+ * While this may come as a surprise, the app providing the body ensures that only
+ * desired and correctly formatted data is sent with the request.
+ * :::
+ *
+ * Builds request options to create new record for resources,
+ * configured for the url, method and header expectations of most JSON:API APIs.
+ *
+ * **Basic Usage**
+ *
+ * ```ts
+ * import { cacheKeyFor } from '@warp-drive/core';
+ * import { createRecord } from '@warp-drive/utilities/json-api';
+ * import type { Person } from '#/data/types';
+ *
+ * const person = store.createRecord<Person>('person', { name: 'Ted' });
+ * const init = createRecord(person);
+ * init.body = JSON.stringify(
+ *  {
+ *    // it's likely you will want to transform this data
+ *    // somewhat
+ *    data: store.cache.peek(cacheKeyFor(person))
+ *  }
+ * );
+ * const data = await store.request(init);
+ * ```
+ *
+ * **Supplying Options to Modify the Request Behavior**
+ *
+ * The following options are supported:
+ *
+ * - `host` - The host to use for the request, defaults to the `host` configured with `setBuildURLConfig`.
+ * - `namespace` - The namespace to use for the request, defaults to the `namespace` configured with `setBuildURLConfig`.
+ * - `resourcePath` - The resource path to use for the request, defaults to pluralizing the supplied type
+ * - `reload` - Whether to forcibly reload the request if it is already in the store, not supplying this
+ *      option will delegate to the store's CachePolicy, defaulting to `false` if none is configured.
+ * - `backgroundReload` - Whether to reload the request if it is already in the store, but to also resolve the
+ *      promise with the cached value, not supplying this option will delegate to the store's CachePolicy,
+ *      defaulting to `false` if none is configured.
+ * - `urlParamsSetting` - an object containing options for how to serialize the query params (see `buildQueryParams`)
+ *
+ * ```ts
+ * import { createRecord } from '@warp-drive/utilities/json-api';
+ *
+ * const person = store.createRecord('person', { name: 'Ted' });
+ * const options = createRecord(person, { namespace: 'api/v1' });
+ * const data = await store.request(options);
+ * ```
+ *
+ * @public
+ * @param record
+ * @param options
+ */
+export function createRecord<T>(record: T, options?: ConstrainedRequestOptions): CreateRequestOptions<T>;
+export function createRecord(record: unknown, options?: ConstrainedRequestOptions): CreateRequestOptions;
+export function createRecord(record: unknown, options: ConstrainedRequestOptions = {}): CreateRequestOptions {
+  const identifier = recordIdentifierFor(record);
+  assert(`Expected to be given a record instance`, identifier);
+
+  const urlOptions: CreateRecordUrlOptions = {
+    identifier: identifier,
+    op: 'createRecord',
+    resourcePath: pluralize(identifier.type),
+  };
+
+  copyForwardUrlOptions(urlOptions, options);
+
+  const url = buildBaseURL(urlOptions);
+  const headers = new Headers();
+  headers.append('Accept', ACCEPT_HEADER_VALUE);
+
+  return {
+    url,
+    method: 'POST',
+    headers,
+    op: 'createRecord',
+    data: {
+      record: identifier,
+    },
+    records: [identifier],
+  };
+}
+
+/**
+ * :::warning ⚠️ **These Mutation Builders DO NOT Set The Necessary Request Body**
+ * While this may come as a surprise, the app providing the body ensures that only
+ * desired and correctly formatted data is sent with the request.
+ * :::
+ *
+ * Builds request options to update existing record for resources,
+ * configured for the url, method and header expectations of most JSON:API APIs.
+ *
+ * **Example Usage**
+ *
+ * ```ts
+ * import { cacheKeyFor } from '@warp-drive/core';
+ * import { updateRecord } from '@warp-drive/utilities/json-api';
+ * import type { EditablePerson } from '#/data/types';
+ *
+ * const mutable = await checkout<EditablePerson>(person);
+ * mutable.name = 'Chris';
+ * const init = updateRecord(mutable);
+ *
+ * init.body = JSON.stringify(
+ *  // it's likely you will want to transform this data
+ *  // somewhat, or serialize only specific properties instead
+ *  serializePatch(store.cache, cacheKeyFor(mutable))
+ * );
+ * const data = await store.request(init);
+ * ```
+ *
+ *
+ * **Supplying Options to Modify the Request Behavior**
+ *
+ * The following options are supported:
+ *
+ * - `patch` - Allows caller to specify whether to use a PATCH request instead of a PUT request, defaults to `false`.
+ * - `host` - The host to use for the request, defaults to the `host` configured with `setBuildURLConfig`.
+ * - `namespace` - The namespace to use for the request, defaults to the `namespace` configured with `setBuildURLConfig`.
+ * - `resourcePath` - The resource path to use for the request, defaults to pluralizing the supplied type
+ * - `reload` - Whether to forcibly reload the request if it is already in the store, not supplying this
+ *      option will delegate to the store's CachePolicy, defaulting to `false` if none is configured.
+ * - `backgroundReload` - Whether to reload the request if it is already in the store, but to also resolve the
+ *      promise with the cached value, not supplying this option will delegate to the store's CachePolicy,
+ *      defaulting to `false` if none is configured.
+ * - `urlParamsSetting` - an object containing options for how to serialize the query params (see `buildQueryParams`)
+ *
+ * ```ts
+ * import { updateRecord } from '@warp-drive/utilities/json-api';
+ *
+ * const person = store.peekRecord('person', '1');
+ * person.name = 'Chris';
+ * const options = updateRecord(person, { patch: true });
+ * const data = await store.request(options);
+ * ```
+ *
+ * @public
+ * @param record
+ * @param options
+ */
+export function updateRecord<
+  T extends TypedRecordInstance,
+  RT extends TypedRecordInstance = T,
+  M extends Meta | undefined = Meta | undefined,
+  E extends object = ApiError,
+>(
+  record: T,
+  options?: ConstrainedRequestOptions & { patch?: boolean }
+): UpdateRequestOptions<ReactiveDataDocument<RT, M, E>, T>;
+export function updateRecord(
+  record: unknown,
+  options?: ConstrainedRequestOptions & { patch?: boolean }
+): UpdateRequestOptions;
+export function updateRecord(
+  record: unknown,
+  options: ConstrainedRequestOptions & { patch?: boolean } = {}
+): UpdateRequestOptions {
+  const identifier = recordIdentifierFor(record);
+  assert(`Expected to be given a record instance`, identifier);
+  assert(`Cannot update a record that does not have an associated type and id.`, isExisting(identifier));
+
+  const urlOptions: UpdateRecordUrlOptions = {
+    identifier: identifier,
+    op: 'updateRecord',
+    resourcePath: pluralize(identifier.type),
+  };
+
+  copyForwardUrlOptions(urlOptions, options);
+
+  const url = buildBaseURL(urlOptions);
+  const headers = new Headers();
+  headers.append('Accept', ACCEPT_HEADER_VALUE);
+
+  return {
+    url,
+    method: options.patch ? 'PATCH' : 'PUT',
+    headers,
+    op: 'updateRecord',
+    data: {
+      record: identifier,
+    },
+    records: [identifier],
+  };
+}
+
+/**
+ * Builds request options to update existing record for resources,
+ * configured for the url and header expectations of most JSON:API APIs
+ * for a PATCH request.
+ *
+ * Note: This is a convenience method that calls `updateRecord` with the
+ * supplied request with the `patch` option set to `true`.
+ *
+ * **Basic Usage**
+ *
+ * ```ts
+ * import { patchRecord } from '@warp-drive/utilities/json-api';
+ *
+ * const person = store.peekRecord('person', '1');
+ * person.name = 'Chris';
+ * const data = await store.request(patchRecord(person));
+ * ```
+ *
+ * **Supplying Options to Modify the Request Behavior**
+ *
+ * The following options are supported:
+ *
+ * - `host` - The host to use for the request, defaults to the `host` configured with `setBuildURLConfig`.
+ * - `namespace` - The namespace to use for the request, defaults to the `namespace` configured with `setBuildURLConfig`.
+ * - `resourcePath` - The resource path to use for the request, defaults to pluralizing the supplied type
+ * - `reload` - Whether to forcibly reload the request if it is already in the store, not supplying this
+ *      option will delegate to the store's CachePolicy, defaulting to `false` if none is configured.
+ * - `backgroundReload` - Whether to reload the request if it is already in the store, but to also resolve the
+ *      promise with the cached value, not supplying this option will delegate to the store's CachePolicy,
+ *      defaulting to `false` if none is configured.
+ * - `urlParamsSetting` - an object containing options for how to serialize the query params (see `buildQueryParams`)
+ *
+ * ```ts
+ * import { patchRecord } from '@warp-drive/utilities/json-api';
+ *
+ * const person = store.peekRecord('person', '1');
+ * person.name = 'Chris';
+ * const options = patchRecord(person);
+ * const data = await store.request(options);
+ * ```
+ *
+ * @public
+ * @param record
+ * @param options
+ */
+export function patchRecord<T>(record: T, options?: ConstrainedRequestOptions): UpdateRequestOptions<T>;
+export function patchRecord(record: unknown, options?: ConstrainedRequestOptions): UpdateRequestOptions;
+export function patchRecord(record: unknown, options: ConstrainedRequestOptions = {}): UpdateRequestOptions {
+  const opts = options as ConstrainedRequestOptions & { patch: true };
+  opts.patch = true;
+  return updateRecord(record, opts);
+}

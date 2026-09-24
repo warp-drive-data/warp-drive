@@ -1,5 +1,5 @@
-import chalk from 'chalk';
 import fs from 'fs';
+import { styleText } from 'node:util';
 import path from 'path';
 
 import type { SEMVER_VERSION } from './channel';
@@ -62,7 +62,7 @@ export function getCharLength(str: string | undefined): number {
   return count;
 }
 
-export function adjustForWords(str: string, max_length: number) {
+export function adjustForWords(str: string, max_length: number): number {
   // The string iterator that is used here iterates over characters,
   // not mere code units
   let count = 0;
@@ -104,7 +104,7 @@ export function adjustForWords(str: string, max_length: number) {
   return len;
 }
 
-export function indent(str: string, depth = 1) {
+export function indent(str: string, depth = 1): string {
   const indentStr = getPadding(depth);
   return str
     .split('\n')
@@ -114,11 +114,11 @@ export function indent(str: string, depth = 1) {
     .join('\n');
 }
 
-export function getPadding(depth: number, filler = '\t') {
+export function getPadding(depth: number, filler = '\t'): string {
   return new Array(depth).fill(filler).join('');
 }
 
-export function getNumTabs(str: string) {
+export function getNumTabs(str: string): number {
   let len = Math.max(4, str.length);
   len = Math.min(len, 8);
   return 3 - Math.round(len / 4);
@@ -131,7 +131,7 @@ export function isKeyOf<T extends object>(key: string, obj: T): key is keyof T &
 /**
  * colorizes a string based on color<<>> syntax
  * where color is one of the following:
- * - gr (grey)
+ * - gr (gray)
  * - bg (brightGreen)
  * - bm (brightMagenta)
  * - cy (cyan)
@@ -139,11 +139,11 @@ export function isKeyOf<T extends object>(key: string, obj: T): key is keyof T &
  *
  * e.g.
  *
- * color`This is gr<<grey>> and this is bg<<bright green>> and this is bm<<bright magenta>> and this is cy<<cyan>> and this is ye<<yellow>>`
+ * color`This is gr<<gray>> and this is bg<<bright green>> and this is bm<<bright magenta>> and this is cy<<cyan>> and this is ye<<yellow>>`
  */
-export function color(str: string) {
+export function color(str: string): string {
   const colors = {
-    gr: 'grey',
+    gr: 'gray',
     gb: 'greenBright',
     mb: 'magentaBright',
     cy: 'cyan',
@@ -156,7 +156,8 @@ export function color(str: string) {
       throw new Error(`Unknown color ${possibleColor}`);
     }
 
-    return chalk[c](text);
+    // oxlint-disable-next-line typescript/no-unsafe-argument
+    return styleText(c, text);
   });
 
   return colorized;
@@ -181,18 +182,18 @@ export function rebalanceLines(str: string, max_length = 75): string {
       continue;
     }
     if (line.trim() === '---') {
-      lines[i] = chalk.grey(getPadding(max_length, '-'));
+      lines[i] = styleText('gray', getPadding(max_length, '-'));
       inContext = false;
       continue;
     }
     if (line.trim() === '===') {
-      lines[i] = chalk.grey(getPadding(max_length, '='));
+      lines[i] = styleText('gray', getPadding(max_length, '='));
       inContext = false;
       continue;
     }
 
     const indentMatch = line.match(/^\s+/);
-    // eslint-disable-next-line no-useless-escape
+    // oxlint-disable-next-line no-useless-escape
     const hasBullet = line.match(/^\s*[-\*]\s+/) || line.match(/^\s*\d+\)?\.\s+/);
     const bulletIndent = hasBullet ? hasBullet[0] : '';
     let strIndent = '';
@@ -234,7 +235,7 @@ export function rebalanceLines(str: string, max_length = 75): string {
       // we are a new context
       contextIndex = i;
       inContext = true;
-      contextIndent = (strIndent as unknown as string) || '';
+      contextIndent = strIndent || '';
       contextHasBullet = false;
       contextBulletIndent = '';
       continue;
@@ -245,7 +246,7 @@ export function rebalanceLines(str: string, max_length = 75): string {
 }
 
 export function write(out: string): void {
-  // eslint-disable-next-line no-console
+  // oxlint-disable-next-line no-console
   console.log(out);
 }
 
@@ -278,18 +279,18 @@ export type PACKAGEJSON = {
   };
 };
 
-export function getPkgJson() {
+export function getPkgJson(): PACKAGEJSON {
   const file = fs.readFileSync(path.join(process.cwd(), 'package.json'), { encoding: 'utf-8' });
   const json = JSON.parse(file) as PACKAGEJSON;
   return json;
 }
 
-export function writePkgJson(json: PACKAGEJSON) {
+export function writePkgJson(json: PACKAGEJSON): void {
   fs.writeFileSync(path.join(process.cwd(), 'package.json'), JSON.stringify(json, null, 2) + '\n');
 }
 
 const pkgJsonCache: Record<string, PACKAGEJSON> = {};
-export function getLocalPkgJson(name: string, version: string) {
+export function getLocalPkgJson(name: string, version: string): PACKAGEJSON | null {
   if (pkgJsonCache[`${name}@${version}`]) {
     return pkgJsonCache[`${name}@${version}`];
   }
@@ -305,7 +306,7 @@ export function getLocalPkgJson(name: string, version: string) {
   return null;
 }
 
-export async function getRemotePkgJson(name: string, version: string) {
+export async function getRemotePkgJson(name: string, version: string): Promise<PACKAGEJSON> {
   if (pkgJsonCache[`${name}@${version}`]) {
     return pkgJsonCache[`${name}@${version}`];
   }
@@ -330,7 +331,7 @@ export async function getRemotePkgJson(name: string, version: string) {
   return json;
 }
 
-export async function getPkgJsonFor(name: string, version: string) {
+export async function getPkgJsonFor(name: string, version: string): Promise<PACKAGEJSON> {
   try {
     const pkg = getLocalPkgJson(name, version);
     if (pkg) {
@@ -343,7 +344,10 @@ export async function getPkgJsonFor(name: string, version: string) {
   return getRemotePkgJson(name, version);
 }
 
-export async function getTypePathFor(name: string, version: string) {
+export async function getTypePathFor(
+  name: string,
+  version: string
+): Promise<'unstable-preview-types' | 'preview-types' | 'types' | null> {
   const pkg = await getPkgJsonFor(name, version);
   const isAlpha = pkg.files?.includes('unstable-preview-types');
   const isBeta = pkg.files?.includes('preview-types');

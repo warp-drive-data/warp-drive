@@ -18,7 +18,7 @@ module('RequestManager | Response Currying', function () {
       async request<T>(context: RequestContext, next: NextFn<T>) {
         const response = await fetch(context.request.url!, context.request);
         context.setResponse(response);
-        return response.json();
+        return response.json() as Promise<T>;
       },
     };
     manager.use([handler1, handler2]);
@@ -39,7 +39,7 @@ module('RequestManager | Response Currying', function () {
         ok: true,
         redirected: false,
         headers: [
-          ['content-type', 'application/json;charset=utf-8'],
+          ['content-type', 'application/json'],
           // ['date', 'Wed, 23 Nov 2022 05:17:11 GMT'],
           // ['etag', 'W/"39-1849db13af9"'],
           // ['last-modified', 'Tue, 22 Nov 2022 04:55:48 GMT'],
@@ -65,7 +65,7 @@ module('RequestManager | Response Currying', function () {
       async request<T>(context: RequestContext, next: NextFn<T>) {
         const response = await fetch(context.request.url!, context.request);
         context.setResponse(response);
-        return response.json();
+        return response.json() as Promise<T>;
       },
     };
     manager.use([handler1, handler2]);
@@ -86,7 +86,7 @@ module('RequestManager | Response Currying', function () {
       async request<T>(context: RequestContext, next: NextFn<T>) {
         const response = await fetch(context.request.url!, context.request);
         context.setResponse(response);
-        return response.json();
+        return response.json() as Promise<T>;
       },
     };
     manager.use([handler1, handler2]);
@@ -107,7 +107,7 @@ module('RequestManager | Response Currying', function () {
         ok: true,
         redirected: false,
         headers: [
-          ['content-type', 'application/json;charset=utf-8'],
+          ['content-type', 'application/json'],
           // ['date', 'Wed, 23 Nov 2022 05:17:11 GMT'],
           // ['etag', 'W/"39-1849db13af9"'],
           // ['last-modified', 'Tue, 22 Nov 2022 04:55:48 GMT'],
@@ -136,7 +136,7 @@ module('RequestManager | Response Currying', function () {
       async request<T>(context: RequestContext, next: NextFn<T>) {
         const response = await fetch(context.request.url!, context.request);
         context.setResponse(response);
-        return response.json();
+        return response.json() as Promise<T>;
       },
     };
     manager.use([handler1, handler2]);
@@ -157,7 +157,7 @@ module('RequestManager | Response Currying', function () {
         ok: false,
         redirected: false,
         headers: [
-          ['content-type', 'application/json;charset=utf-8'],
+          ['content-type', 'application/json'],
           // ['date', 'Wed, 23 Nov 2022 05:17:11 GMT'],
           // ['etag', 'W/"39-1849db13af9"'],
           // ['last-modified', 'Tue, 22 Nov 2022 04:55:48 GMT'],
@@ -181,14 +181,14 @@ module('RequestManager | Response Currying', function () {
           // @ts-expect-error
           doc.response!.ok = false;
           assert.ok(false, 'we should be immutable');
-        } catch (e) {
+        } catch {
           assert.ok(true, 'we are immutable');
         }
 
         try {
           doc.response!.headers.append('foo', 'bar');
           assert.ok(false, 'we should be immutable');
-        } catch (e) {
+        } catch {
           assert.ok(true, 'we are immutable');
         }
 
@@ -199,7 +199,7 @@ module('RequestManager | Response Currying', function () {
       async request<T>(context: RequestContext, next: NextFn<T>) {
         const response = await fetch(context.request.url!, context.request);
         context.setResponse(response);
-        return response.json();
+        return response.json() as Promise<T>;
       },
     };
     manager.use([handler1, handler2]);
@@ -220,7 +220,7 @@ module('RequestManager | Response Currying', function () {
         ok: true,
         redirected: false,
         headers: [
-          ['content-type', 'application/json;charset=utf-8'],
+          ['content-type', 'application/json'],
           // ['date', 'Wed, 23 Nov 2022 05:17:11 GMT'],
           // ['etag', 'W/"39-1849db13af9"'],
           // ['last-modified', 'Tue, 22 Nov 2022 04:55:48 GMT'],
@@ -248,7 +248,7 @@ module('RequestManager | Response Currying', function () {
       async request<T>(context: RequestContext, next: NextFn<T>) {
         const response = await fetch(context.request.url!, context.request);
         context.setResponse(response);
-        return response.json();
+        return response.json() as Promise<T>;
       },
     };
     manager.use([handler1, handler2]);

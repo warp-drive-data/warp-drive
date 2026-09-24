@@ -1,0 +1,77 @@
+{
+  "name": "example-app-ember",
+  "version": "5.10.0-alpha.11",
+  "private": true,
+  "type": "module",
+  "description": "Demos the incremental adoption of new EmberData for JSON:API",
+  "keywords": [],
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com:warp-drive-data/warp-drive.git",
+    "directory": "tests/example-app-ember"
+  },
+  "imports": {
+    "#app/*": "./app/*",
+    "#config": "./app/config.ts",
+    "#components/*": "./app/components/*"
+  },
+  "exports": {
+    "./tests/*": "./tests/*",
+    "./*": "./app/*"
+  },
+  "license": "MIT",
+  "author": "",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "sync": "echo \"syncing\"",
+    "build": "vite build",
+    "start": "vite",
+    "start:server": "node serve.js",
+    "check:types": "node ./node_modules/typescript-7/bin/tsc --noEmit --runExternalCode",
+    "test:examples": "vite build --mode development && testem ci"
+  },
+  "devDependencies": {
+    "@babel/core": "catalog:",
+    "@babel/plugin-transform-runtime": "catalog:",
+    "@babel/plugin-transform-typescript": "catalog:",
+    "@babel/runtime": "catalog:",
+    "@ember/edition-utils": "catalog:",
+    "@ember/optional-features": "catalog:",
+    "@ember/test-helpers": "catalog:",
+    "@ember/test-waiters": "catalog:",
+    "@embroider/core": "catalog:",
+    "@embroider/macros": "catalog:",
+    "@embroider/vite": "catalog:",
+    "@glimmer/component": "catalog:",
+    "@glint/ember-tsc": "catalog:",
+    "@glint/template": "catalog:",
+    "@html-next/vertical-collection": "catalog:",
+    "@types/morgan": "catalog:",
+    "@warp-drive/core": "workspace:*",
+    "@warp-drive/ember": "workspace:*",
+    "@warp-drive/internal-config": "workspace:*",
+    "@warp-drive/json-api": "workspace:*",
+    "@warp-drive/legacy": "workspace:*",
+    "@warp-drive/utilities": "workspace:*",
+    "babel-plugin-ember-template-compilation": "catalog:",
+    "decorator-transforms": "catalog:",
+    "ember-content-mapper": "catalog:",
+    "ember-page-title": "catalog:",
+    "ember-qunit": "catalog:",
+    "ember-source": "catalog:",
+    "ember-strict-application-resolver": "catalog:",
+    "express": "catalog:",
+    "morgan": "catalog:",
+    "qunit": "catalog:",
+    "qunit-console-grouper": "catalog:",
+    "qunit-dom": "catalog:",
+    "testem": "catalog:",
+    "typescript-7": "catalog:",
+    "vite": "catalog:"
+  },
+  "ember": {
+    "edition": "octane"
+  }
+}

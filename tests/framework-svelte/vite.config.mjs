@@ -1,0 +1,19 @@
+import { defineConfig } from 'vite';
+
+import { maybeBabel } from '@warp-drive/internal-config/vite/babel.js';
+
+export default defineConfig({
+  // esbuild attempts to transform tsx/ts files to js files in a non-spec
+  // compliant way, so we cannot use it.
+  // unfortunately this also means we have to enable all the JSX/TSX stuff ourselves
+  esbuild: false,
+  logLevel: 'error',
+  reportCompressedSize: false,
+  plugins: [
+    maybeBabel({
+      configFile: './babel.config.mjs',
+      babelHelpers: 'bundled',
+      extensions: ['.js', '.ts', '.jsx', '.tsx'],
+    }),
+  ],
+});

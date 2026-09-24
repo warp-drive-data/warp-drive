@@ -1,17 +1,30 @@
 <p align="center">
   <img
     class="project-logo"
-    src="./NCC-1701-a-blue.svg#gh-light-mode-only"
+    src="./logos/logo-yellow-slab.svg"
     alt="WarpDrive"
-    width="120px"
-    title="WarpDrive" />
-  <img
-    class="project-logo"
-    src="./NCC-1701-a.svg#gh-dark-mode-only"
-    alt="WarpDrive"
-    width="120px"
-    title="WarpDrive" />
+    width="180px"
+    title="WarpDrive"
+    />
 </p>
+
+![NPM Stable Version](https://img.shields.io/npm/v/%40warp-drive%2Fholodeck/latest?label=version&style=flat&color=fdb155)
+![NPM Downloads](https://img.shields.io/npm/dm/%40warp-drive%2Fholodeck.svg?style=flat&color=fdb155)
+![License](https://img.shields.io/github/license/warp-drive-data/warp-drive.svg?style=flat&color=fdb155)
+[![EmberJS Discord Community Server](https://img.shields.io/badge/EmberJS-grey?logo=discord&logoColor=fdb155)](https://discord.gg/zT3asNS)
+[![WarpDrive Discord Server](https://img.shields.io/badge/WarpDrive-grey?logo=discord&logoColor=fdb155)](https://discord.gg/PHBbnWJx5S)
+
+<p align="center">
+  <br>
+  <a href="https://warp-drive.io">WarpDrive</a> is the lightweight data library for web apps &mdash;
+  <br>
+  universal, typed, reactive, and ready to scale.
+  <br/><br/>
+</p>
+
+---
+
+# @warp-drive/holodeck
 
 <h3 align="center">⚡️ Simple, Fast HTTP Mocking</h3>
 <p align="center">Ideal for Test Suites</p>
@@ -94,6 +107,152 @@ and `brotli` minification in a way that can be replayed over and over again.
 
 Basically, pay the cost when you write the test. Forever after skip the cost until you need to edit the test again.
 
+## Setup
+
+### Use with WarpDrive
+
+First, you will need to add the holodeck handler to the request manager chain prior to `Fetch` (or any equivalent handler that proceeds to network).
+
+For instance:
+
+```ts
+import RequestManager from '@ember-data/request';
+import Fetch from '@ember-data/request/fetch';
+import { MockServerHandler } from '@warp-drive/holodeck';
+
+const manager = new RequestManager()
+  .use([new MockServerHandler(testContext), Fetch]);
+```
+
+From within a test this might look like:
+
+```ts
+import RequestManager from '@ember-data/request';
+import Fetch from '@ember-data/request/fetch';
+import { MockServerHandler } from '@warp-drive/holodeck';
+import { module, test } from 'qunit';
+
+module('my module', function() {
+  test('my test', async function() {
+    const manager = new RequestManager()
+      .use([new MockServerHandler(this), Fetch]);
+  });
+});
+```
+
+Next, you will need to configure holodeck to understand your tests contexts. For qunit and diagnostic
+in a project using Ember this is typically done in `tests/test-helper.js`
+
+#### With Diagnostic
+
+```ts
+import { setupGlobalHooks } from '@warp-drive/diagnostic';
+import { setConfig, setTestId } from '@warp-drive/holodeck';
+
+// if not proxying the port / set port to the correct value here
+const MockHost = `https://${window.location.hostname}:${Number(window.location.port) + 1}`;
+
+setConfig({ host: MockHost });
+
+setupGlobalHooks((hooks) => {
+  hooks.beforeEach(function (assert) {
+    setTestId(this, assert.test.testId);
+  });
+  hooks.afterEach(function () {
+    setTestId(this, null);
+  });
+});
+```
+
+#### With QUnit
+
+```ts
+import * as QUnit from 'qunit';
+import { setConfig, setTestId } from '@warp-drive/holodeck';
+
+// if not proxying the port / set port to the correct value here
+const MockHost = `https://${window.location.hostname}:${Number(window.location.port) + 1}`;
+
+setConfig({ host: MockHost });
+
+QUnit.hooks.beforeEach(function (assert) {
+  setTestId(this, assert.test.testId);
+});
+QUnit.hooks.afterEach(function (assert) {
+  setTestId(this, null);
+});
+```
+
+### Testem
+
+You can integrate holodeck with Testem using testem's [async config capability](https://github.com/testem/testem/blob/master/docs/config_file.md#returning-a-promise-from-testemjs):
+
+```ts
+module.exports = async function () {
+  const holodeck = (await import('@warp-drive/holodeck')).default;
+  await holodeck.launchProgram({
+    port: 7373,
+  });
+
+  process.on('beforeExit', async () => {
+    await holodeck.endProgram();
+  });
+
+  return {
+    // ... testem config
+  };
+};
+```
+
+If you need the API mock to run on the same port as the test suite, you can use Testem's [API Proxy](https://github.com/testem/testem/tree/master?tab=readme-ov-file#api-proxy)
+
+```ts
+module.exports = async function () {
+  const holodeck = (await import('@warp-drive/holodeck')).default;
+  await holodeck.launchProgram({
+    port: 7373,
+  });
+
+  process.on('beforeExit', async () => {
+    await holodeck.endProgram();
+  });
+
+  return {
+    "proxies": {
+      "/api": {
+        // holodeck always runs on https
+        // the proxy is transparent so this means /api/v1 will route to https://localhost:7373/api/v1
+        "target": "https://localhost:7373",
+        // "onlyContentTypes": ["xml", "json"],
+        // if test suite is on http, set this to false
+        // "secure": false,
+      },
+    }
+  };
+};
+```
+
+### Diagnostic
+
+holodeck can be launched and cleaned up using the lifecycle hooks in the launch config
+for diagnostic in `diagnostic.js`:
+
+```ts
+import { launch } from '@warp-drive/diagnostic/server';
+import holodeck from '@warp-drive/holodeck';
+
+await launch({
+  async setup(options) {
+    await holodeck.launchProgram({
+      port: options.port + 1,
+    });
+  },
+  async cleanup() {
+    await holodeck.endProgram();
+  },
+});
+```
+
 ### ♥️ Credits
 
  <details>
@@ -103,7 +262,7 @@ Basically, pay the cost when you write the test. Forever after skip the cost unt
     img.project-logo {
        padding: 0 5em 1em 5em;
        width: 100px;
-       border-bottom: 2px solid #0969da;
+       border-bottom: 2px solid #bbb;
        margin: 0 auto;
        display: block;
      }
@@ -119,7 +278,7 @@ Basically, pay the cost when you write the test. Forever after skip the cost unt
       display: inline-block;
       padding: .2rem 0;
       color: #000;
-      border-bottom: 3px solid #0969da;
+      border-bottom: 3px solid #bbb;
     }
 
     details > details {

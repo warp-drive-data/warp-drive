@@ -1,0 +1,159 @@
+import { assert } from '@warp-drive/core/build-config/macros';
+
+import { isBelongsTo, isHasMany, notifyChange } from '../-utils.ts';
+import type { Store } from '../../../index.ts';
+import type { ResourceKey } from '../../../types.ts';
+import type { UpdateResourceRelationshipOperation } from '../../../types/cache/operations.ts';
+import type { UpdateRelationshipOperation } from '../../../types/graph.ts';
+import type {
+  ExistingResourceIdentifierObject,
+  NewResourceIdentifierObject,
+} from '../../../types/spec/json-api-raw.ts';
+import type { Graph } from '../graph.ts';
+import _normalizeLink from '../normalize-link.ts';
+
+type CacheKeyManager = Store['cacheKeyManager'];
+
+/*
+    Updates the "canonical" or "remote" state of a relationship, replacing any existing
+    state and blowing away any local changes (excepting new records).
+*/
+export default function updateRelationshipOperation(
+  graph: Graph,
+  op: UpdateRelationshipOperation | UpdateResourceRelationshipOperation
+): void {
+  const relationship = graph.get(op.record, op.field);
+  assert(`Cannot update an implicit relationship`, isHasMany(relationship) || isBelongsTo(relationship));
+  const { definition, identifier } = relationship;
+  const { isCollection } = definition;
+
+  const payload = op.value;
+
+  let hasRelationshipDataProperty = false;
+  let hasUpdatedLink = false;
+
+  if (payload.meta) {
+    relationship.meta = payload.meta;
+  }
+
+  if (payload.data !== undefined) {
+    hasRelationshipDataProperty = true;
+    if (isCollection) {
+      // TODO deprecate this case. We
+      // have tests saying we support it.
+      if (payload.data === null) {
+        payload.data = [];
+      }
+      assert(`Expected an array`, Array.isArray(payload.data));
+      const cache = graph.store.cacheKeyManager;
+      graph.update(
+        {
+          op: 'replaceRelatedRecords',
+          record: identifier,
+          field: op.field,
+          value: upgradeIdentifiers(payload.data, cache),
+        },
+        true
+      );
+    } else {
+      graph.update(
+        {
+          op: 'replaceRelatedRecord',
+          record: identifier,
+          field: op.field,
+          value: payload.data
+            ? graph.store.cacheKeyManager.upgradeIdentifier(payload.data as ExistingResourceIdentifierObject)
+            : null,
+        },
+        true
+      );
+    }
+  }
+
+  if (payload.links) {
+    const originalLinks = relationship.links;
+    relationship.links = payload.links;
+    if (payload.links.related) {
+      const relatedLink = _normalizeLink(payload.links.related);
+      const currentLink = originalLinks && originalLinks.related ? _normalizeLink(originalLinks.related) : null;
+      const currentLinkHref = currentLink ? currentLink.href : null;
+
+      if (relatedLink && relatedLink.href && relatedLink.href !== currentLinkHref) {
+        // Note: the equivalent warning for this case is issued eagerly (and with a more
+        // complete condition, since it also accounts for `payload.data` being present) by
+        // `assertValidRelationshipPayload` in `-utils.ts`, which always runs immediately
+        // before this operation in DEBUG builds. Warning here too would double-warn.
+        assert(
+          `You have pushed a record of type '${identifier.type}' with '${definition.key}' as a link, but the value of that link is not a string.`,
+          typeof relatedLink.href === 'string' || relatedLink.href === null
+        );
+        hasUpdatedLink = true;
+      }
+    }
+  }
+
+  /*
+       Data being pushed into the relationship might contain only data or links,
+       or a combination of both.
+
+       IF contains only data
+       IF contains both links and data
+        state.isEmpty -> true if is empty array (has-many) or is null (belongs-to)
+        state.hasReceivedData -> true
+        hasDematerializedInverse -> false
+        state.isStale -> false
+        allInverseRecordsAreLoaded -> run-check-to-determine
+
+       IF contains only links
+        state.isStale -> true
+       */
+  relationship.state.hasFailedLoadAttempt = false;
+  if (hasRelationshipDataProperty) {
+    const relationshipIsEmpty = payload.data === null || (Array.isArray(payload.data) && payload.data.length === 0);
+
+    // we don't need to notify here as the update op we pushed in above will notify once
+    // membership is in the correct state.
+    relationship.state.hasReceivedData = true;
+    relationship.state.hasReceivedRemoteData = true;
+    relationship.state.isStale = false;
+    relationship.state.hasDematerializedInverse = false;
+    relationship.state.isEmpty = relationshipIsEmpty;
+  } else if (hasUpdatedLink) {
+    // only notify stale if we have not previously received membership data.
+    // within this same transaction
+    // this prevents refetching when only one side of the relationship in the
+    // payload contains the info while the other side contains just a link
+    // this only works when the side with just a link is a belongsTo, as we
+    // don't know if a hasMany has full information or not.
+    // see #7049 for context.
+    if (
+      isCollection ||
+      !relationship.state.hasReceivedData ||
+      isStaleTransaction(relationship.transactionRef, graph._transaction)
+    ) {
+      relationship.state.isStale = true;
+
+      notifyChange(graph, relationship);
+    } else {
+      relationship.state.isStale = false;
+    }
+  }
+}
+
+function isStaleTransaction(relationshipTransactionId: number, graphTransactionId: number | null) {
+  return (
+    relationshipTransactionId === 0 || // relationship has never notified
+    graphTransactionId === null || // we are not in a transaction
+    relationshipTransactionId < graphTransactionId // we are not part of the current transaction
+  );
+}
+
+export function upgradeIdentifiers(
+  arr: (ExistingResourceIdentifierObject | NewResourceIdentifierObject | ResourceKey)[],
+  cache: CacheKeyManager
+): ResourceKey[] {
+  for (let i = 0; i < arr.length; i++) {
+    arr[i] = cache.upgradeIdentifier(arr[i]);
+  }
+  return arr as ResourceKey[];
+}

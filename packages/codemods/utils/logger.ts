@@ -1,10 +1,10 @@
-import chalk from 'chalk';
+import assert from 'assert';
 import type { Options, SourceLocation } from 'jscodeshift';
-import stripAnsi from 'strip-ansi';
+import { inspect, stripVTControlCharacters as stripAnsi, styleText } from 'node:util';
 import type { Logform, Logger as WinstonLogger } from 'winston';
 import { createLogger as createWinstonLogger, format as winstonFormat, transports as winstonTransports } from 'winston';
 
-import { isRecord } from './types.js';
+import { isRecord } from './types.ts';
 
 export interface LoggerOptions extends Options {
   verbose?: '0' | '1' | '2';
@@ -60,22 +60,32 @@ function formatMessage(raw: unknown, sanitize = (message: string) => message): s
     }
     if (message.length) {
       if (Object.entries(raw).length) {
-        message += `\n${Bun.inspect(raw)}`;
+        message += `\n${inspect(raw)}`;
       }
       return message;
     }
   }
-  return Bun.inspect(raw);
+  return inspect(raw);
 }
 
-const formatForConsole = winstonFormat.printf((info: Logform.TransformableInfo) => {
-  const { level, label, timestamp } = info as PrintInfo;
-  return `${chalk.gray(timestamp)} [${label}] ${level}: ${formatMessage(info)}`;
+function createFormatter(options: {
+  formatTimestamp: (timestamp: string) => string;
+  sanitize?: (message: string) => string;
+}) {
+  return winstonFormat.printf((info: Logform.TransformableInfo) => {
+    const { level, label, timestamp } = info as PrintInfo;
+    assert(typeof timestamp === 'string', `Expected timestamp value to be a string. Instead was ${typeof timestamp}`);
+    return `${options.formatTimestamp(timestamp)} [${label}] ${level}: ${formatMessage(info, options.sanitize)}`;
+  });
+}
+
+const formatForConsole = createFormatter({
+  formatTimestamp: (timestamp) => styleText('gray', timestamp),
 });
 
-const formatForFile = winstonFormat.printf((info: Logform.TransformableInfo) => {
-  const { level, label, timestamp } = info as PrintInfo;
-  return `${timestamp} [${label}] ${level}: ${formatMessage(info, stripAnsi)}`;
+const formatForFile = createFormatter({
+  formatTimestamp: (timestamp) => timestamp,
+  sanitize: stripAnsi,
 });
 
 /**
@@ -88,6 +98,7 @@ const formatForFile = winstonFormat.printf((info: Logform.TransformableInfo) => 
 class Logger {
   private static options: LoggerOptions = {};
   private static loggers = new Map<string, Logger>();
+  public name: string;
 
   static config(options: LoggerOptions): void {
     this.options = options;
@@ -103,10 +114,11 @@ class Logger {
   /** Can't be private because we stub this in tests. Grimace face emoji. */
   _logger: WinstonLogger;
 
-  constructor(public name: string) {
+  constructor(name: string) {
+    this.name = name;
     if (Logger.options.logFile) {
       const filename = typeof Logger.options.logFile === 'string' ? Logger.options.logFile : 'ember-data-codemods.log';
-      // eslint-disable-next-line no-console
+      // oxlint-disable-next-line no-console
       console.log('Logging to', filename);
       this._logger = createWinstonLogger({
         format: winstonFormat.combine(winstonFormat.label({ label: name }), winstonFormat.timestamp(), formatForFile),
@@ -150,4 +162,5 @@ class Logger {
   }
 }
 
+export type InstanciatedLogger = InstanceType<typeof Logger>;
 export const logger = Logger;

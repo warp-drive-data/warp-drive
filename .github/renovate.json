@@ -1,43 +1,12 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:base"],
+  "extends": ["config:best-practices"],
   "labels": [":dependabot:", ":label: dependencies"],
+  "dependencyDashboardLabels": [":label: dependencies"],
+  "dependencyDashboardOSVVulnerabilitySummary": "unresolved",
+  "dependencyDashboardHeader": "### A note on \"Pending Status Checks\"\n\nAnything listed below under **Pending Status Checks** is not stuck or broken -- it's being intentionally held back by our `minimumReleaseAge` policy (currently `3 days`; see the top of this file), which delays proposing a version until it's been out long enough for the ecosystem to catch and pull a compromised release. Renovate will automatically open the branch/PR as soon as that window passes -- no action is needed here.\n\nSecurity-fix updates (`vulnerabilityAlerts` / OSV) bypass `minimumReleaseAge` entirely and are raised immediately, so anything held in Pending Status Checks is a routine version bump, never a security fix stuck waiting.",
+  "osvVulnerabilityAlerts": true,
   "packageRules": [
-    {
-      "matchPackagePatterns": [
-        "@types",
-        "eslint-config-prettier",
-        "eslint",
-        "glint",
-        "lint",
-        "prettier",
-        "stylelint",
-        "typescript"
-      ],
-      "groupName": "code-quality"
-    },
-    {
-      "matchPackageNames": [
-        "webpack",
-        "npm-run-all",
-        "ember-cli",
-        "ember-cli-dotenv",
-        "ember-auto-import",
-        "broccoli-asset-rev",
-        "broccoli-debug",
-        "broccoli-funnel",
-        "broccoli-merge-trees",
-        "ember-cli-build-notifications",
-        "ember-cli-content-security-policy",
-        "ember-cli-dependency-checker",
-        "ember-cli-inject-live-reload",
-        "emner-cli-inline-content",
-        "ember-cli-sri",
-        "ember-css-modules"
-      ],
-      "matchPackagePatterns": ["@embroider", "postcss"],
-      "groupName": "build-tools"
-    },
     {
       "matchPackageNames": [
         "ember-source",
@@ -47,53 +16,62 @@
         "ember-cached-decorator",
         "ember-modifier",
         "ember-page-title",
-        "tracked-built-ins"
+        "tracked-built-ins",
+        "/glimmer/",
+        "/polyfill/"
       ],
-      "matchPackagePatterns": ["glimmer", "polyfill"],
       "groupName": "ember-core"
     },
     {
-      "matchPackageNames": ["ember-cli-babel", "ember-cli-htmlbars", "@embroider/macros", "ember-cli-terser"],
-      "matchPackagePatterns": ["babel", "postcss"],
-      "groupName": "asset-compilation"
+      "matchPackageNames": ["/@types\/ember/"],
+      "groupName": "legacy-ember-types"
+    },
+    {
+      "matchPackageNames": ["bun", "bun-types", "@types/bun", "node", "@types/node"],
+      "groupName": "dev-engines"
+    },
+    {
+      "matchPackageNames": ["typescript", "globals"],
+      "groupName": "typescript"
+    },
+    {
+      "matchPackageNames": ["/qunit/"],
+      "groupName": "qunit"
+    },
+    {
+      "matchPackageNames": ["/eslint/"],
+      "groupName": "eslint"
+    },
+    {
+      "matchPackageNames": ["/vite/", "/rollup/", "/rolldown/", "/tsdown/", "/unplugin/"],
+      "groupName": "build-tools"
     },
     {
       "matchPackageNames": [
-        "chai",
-        "qunit-dom",
-        "sinon",
-        "ember-exam",
-        "testem",
-        "ember-cli-mirage",
-        "ember-qunit",
-        "qunit",
-        "ember-cli-deprecation-workflow",
-        "ember-a11y-testing",
-        "@ember/test-helpers",
-        "@ember/test-waiters"
+        "/typedoc/",
+        "/vitepress/",
+        "vite-plugin-pwa",
+        "@mdit/plugin-footnote",
+        "vite-plugin-image-optimizer",
+        "svgo",
+        "sharp",
+        "front-matter"
       ],
-      "matchPackagePatterns": ["percy", "quality", "test"],
-      "groupName": "testing"
-    },
-    {
-      "matchPackageNames": ["ember-promise-helpers"],
-      "groupName": "data-utils"
+      "groupName": "docs"
     },
     {
       "matchManagers": ["github-actions"],
       "groupName": "github-actions"
     }
   ],
-  "npm": {
-    "stabilityDays": 3
-  },
+  "minimumReleaseAge": "3 days",
   "rangeStrategy": "bump",
   "prHourlyLimit": 10,
+  "branchConcurrentLimit": 12,
   "vulnerabilityAlerts": {
     "labels": [":label: security"],
     "automerge": false,
     "assignees": ["@runspired"],
     "enabled": true
-  },
-  "ignorePaths": ["node_modules/**", "**/node_modules/**"]
+  }
 }

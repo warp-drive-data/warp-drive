@@ -1,0 +1,50 @@
+{
+  "include": ["src/**/**/**/**/*", "../../@types/**/*"],
+  "compilerOptions": {
+    "lib": ["DOM", "ESNext"],
+    "module": "ESNext",
+    "target": "ESNext",
+    "moduleResolution": "bundler",
+    "moduleDetection": "force",
+    "strict": true,
+    "pretty": true,
+    "alwaysStrict": true,
+    "skipLibCheck": true,
+    "disableSourceOfProjectReferenceRedirect": false,
+    "allowSyntheticDefaultImports": true,
+    "allowImportingTsExtensions": true,
+    "forceConsistentCasingInFileNames": true,
+    "experimentalDecorators": true,
+    "emitDeclarationOnly": true,
+    "noImplicitAny": true,
+    "noImplicitOverride": false,
+    "noImplicitThis": true,
+    "strictBindCallApply": true,
+    "strictFunctionTypes": true,
+    "strictPropertyInitialization": true,
+    "allowUnreachableCode": true,
+    "allowUnusedLabels": false,
+    "noEmitOnError": false,
+    "strictNullChecks": true,
+    "noErrorTruncation": true,
+    "composite": true,
+    "incremental": true,
+    "rootDir": "src",
+    "declaration": true,
+    "declarationMap": true,
+    "inlineSourceMap": true,
+    "inlineSources": true,
+    "erasableSyntaxOnly": true,
+    "isolatedDeclarations": true,
+    "isolatedModules": true,
+    "stripInternal": true,
+    "types": ["ember-source/types"],
+    "checkJs": false
+    // "allowJs": false
+  },
+  "references": [
+    {
+      "path": "../build-config"
+    }
+  ]
+}

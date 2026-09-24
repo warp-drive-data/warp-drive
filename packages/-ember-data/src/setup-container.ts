@@ -6,7 +6,7 @@ function initializeStore(application: Application) {
   application.registerOptionsForType('adapter', { singleton: false });
 }
 
-export default function setupContainer(application: Application) {
+export default function setupContainer(application: Application): void {
   initializeStore(application);
 }
 
@@ -16,6 +16,6 @@ deprecate('Importing from `ember-data/setup-container` is deprecated without rep
   until: '6.0',
   since: {
     enabled: '5.2',
-    available: '5.2',
+    available: '4.13',
   },
 });

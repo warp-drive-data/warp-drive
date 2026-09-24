@@ -1,26 +1,35 @@
 <p align="center">
   <img
     class="project-logo"
-    src="./NCC-1701-a-blue.svg#gh-light-mode-only"
+    src="./logos/logo-yellow-slab.svg"
     alt="WarpDrive"
-    width="120px"
-    title="WarpDrive" />
-  <img
-    class="project-logo"
-    src="./NCC-1701-a.svg#gh-dark-mode-only"
-    alt="WarpDrive"
-    width="120px"
-    title="WarpDrive" />
+    width="180px"
+    title="WarpDrive"
+    />
 </p>
 
-<h3 align="center">🛸 @warp-drive/core-types</h3>
-<p align="center">Provides core types, type utils and constants for WarpDrive and EmberData</p>
+![NPM Stable Version](https://img.shields.io/npm/v/ember-data/latest?label=version&style=flat&color=fdb155)
+![NPM Downloads](https://img.shields.io/npm/dm/ember-data.svg?style=flat&color=fdb155)
+![License](https://img.shields.io/github/license/warp-drive-data/warp-drive.svg?style=flat&color=fdb155)
+[![EmberJS Discord Community Server](https://img.shields.io/badge/EmberJS-grey?logo=discord&logoColor=fdb155)](https://discord.gg/zT3asNS)
+[![WarpDrive Discord Server](https://img.shields.io/badge/WarpDrive-grey?logo=discord&logoColor=fdb155)](https://discord.gg/PHBbnWJx5S)
 
-## Installation
+<p align="center">
+  <br>
+  <a href="https://warp-drive.io">WarpDrive</a> is the lightweight data library for web apps &mdash;
+  <br>
+  universal, typed, reactive, and ready to scale.
+  <br/><br/>
+</p>
 
-```cli
-pnpm install @warp-drive/core-types
-```
+---
+
+# @warp-drive/core-types
+
+This package provides types, type utils and symbols for apps still installing the older ember-data packages.
+
+> [!WARNING]
+> **⚠️ This package** has been merged into [@warp-drive/core](https://warp-drive.io/api/@warp-drive/core/) and is not recommended for new applications.
 
 **Tagged Releases**
 
@@ -30,6 +39,33 @@ pnpm install @warp-drive/core-types
 - ![NPM LTS Version](https://img.shields.io/npm/v/%40warp-drive/core-types/lts?label=%40lts&color=0096FF)
 - ![NPM LTS 4.12 Version](https://img.shields.io/npm/v/%40warp-drive/core-types/lts-4-12?label=%40lts-4-12&color=bbbbbb)
 
+## Usage
+
+```ts
+import type { ResourceKey } from '@warp-drive/core-types';
+```
+
+Every type here is re-exported from [@warp-drive/core/types](https://warp-drive.io/api/@warp-drive/core/types/), which is where new code should import it from.
+
+<br>
+
+## Documentation
+
+*Get Started* → [Guides](https://warp-drive.io/guides/)
+
+API docs for this package → [@warp-drive/core-types](https://warp-drive.io/api/@warp-drive/core-types/)
+
+<br>
+
+## Code of Conduct
+
+Refer to the [Code of Conduct](https://github.com/warp-drive-data/warp-drive/blob/main/CODE_OF_CONDUCT.md) for community guidelines and inclusivity.
+
+<br>
+
+### License
+
+This project is licensed under the [MIT License](LICENSE.md).
 
 ### ♥️ Credits
 
@@ -56,7 +92,7 @@ pnpm install @warp-drive/core-types
       display: inline-block;
       padding: .2rem 0;
       color: #000;
-      border-bottom: 3px solid #0969da;
+      border-bottom: 3px solid #bbb;
     }
 
     details > details {

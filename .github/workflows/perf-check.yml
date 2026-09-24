@@ -4,6 +4,7 @@ on:
   pull_request:
     branches:
       - main
+      - v4-main
     types:
       - labeled
       - synchronize
@@ -24,7 +25,7 @@ jobs:
     name: 'Performance Checks'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           fetch-depth: 3
       - run: git fetch origin main --depth=1
@@ -38,26 +39,45 @@ jobs:
           originSha=$(git rev-parse HEAD^2)
           echo $originSha > tmp/sha-for-commit.txt
           git show --format=short --no-patch $originSha
-      - uses: pnpm/action-setup@fe02b34f77f8bc703788d5817da081398fad5dd2 # v4.0.0
-      - uses: actions/setup-node@v4
+      # Reads Node and Bun versions from `devEngines.runtime` in package.json,
+      # installing both in place of actions/setup-node + oven-sh/setup-bun.
+      - uses: pnpm/setup@fbda4c85fc2e1e08721cd8763afea8f48d60f024 # v3.0.0
         with:
-          node-version: 19.x
-          cache: 'pnpm'
-      - uses: tracerbench/tracerbench-compare-action@master
+          install: false
+          cache: true
+      - name: Get Browser Flags
+        id: browser-flags
+        run: |
+          BROWSER_FLAGS=$(node ./scripts/perf-tracking/browser-flags.mjs)
+          echo "BROWSER_FLAGS=$BROWSER_FLAGS" >> $GITHUB_OUTPUT
+        #env:
+        #  DEBUG: true
+      - uses: tracerbench/tracerbench-compare-action@6b56fb774f78e4a85cf02396412b0164870cdab3
         with:
-          experiment-build-command: pnpm install && pnpm --filter performance-test-app exec ember build -e production --output-path dist-experiment --suppress-sizes
-          experiment-serve-command: pnpm --filter performance-test-app exec ember s --path dist-experiment --port 4201
-          control-build-command: pnpm install && pnpm --filter performance-test-app exec ember build -e production --output-path dist-control --suppress-sizes
-          control-serve-command: pnpm --filter performance-test-app exec ember s --path dist-control
+          experiment-build-command: pnpm --filter performance-test-app build --outDir dist-experiment
+          experiment-serve-command: pnpm --filter performance-test-app start dist-experiment -p 4201
+          control-build-command: pnpm --filter performance-test-app build --outDir dist-control
+          control-serve-command: pnpm --filter performance-test-app start dist-control -p 4200
           control-sha: origin/main
           sample-timeout: 60
           use-pnpm: true
+          browser-args: ${{ steps.browser-flags.outputs.BROWSER_FLAGS }}
           scenarios: |
             {
               "basic-record-materialization": {
                 "control": "http://localhost:4200/basic-record-materialization",
                 "experiment": "http://localhost:4201/basic-record-materialization",
                 "markers": "start-data-generation,start-push-payload,start-peek-records,start-record-materialization,end-record-materialization"
+              },
+              "complex-record-materialization": {
+                "control": "http://localhost:4200/complex-record-materialization",
+                "experiment": "http://localhost:4201/complex-record-materialization",
+                "markers": "start-data-generation,start-push-payload,start-peek-records,start-record-materialization,end-record-materialization"
+              },
+              "complex-record-materialization-with-relationship-materialization": {
+                "control": "http://localhost:4200/complex-record-materialization-with-relationship-materialization",
+                "experiment": "http://localhost:4201/complex-record-materialization-with-relationship-materialization",
+                "markers": "start-data-generation,start-push-payload,start-flush-notifications,start-peek-records,start-record-materialization,start-field-access,start-relationship-access,end-relationship-access"
               },
               "relationship-materialization-simple": {
                 "control": "http://localhost:4200/relationship-materialization-simple",
@@ -67,7 +87,7 @@ jobs:
               "relationship-materialization-complex": {
                 "control": "http://localhost:4200/relationship-materialization-complex",
                 "experiment": "http://localhost:4201/relationship-materialization-complex",
-                "markers": "start-data-generation,start-push-payload,start-peek-records,start-record-materialization,start-relationship-materialization,end-relationship-materialization"
+                "markers": "start-data-generation,start-push-payload,start-peek-records,start-record-materialization,start-relationship-materialization,start-push-payload2,start-relationship-materialization2,end-relationship-materialization2"
               },
               "unload": {
                 "control": "http://localhost:4200/unload",
@@ -93,11 +113,30 @@ jobs:
                 "control": "http://localhost:4200/unused-relationships",
                 "experiment": "http://localhost:4201/unused-relationships",
                 "markers": "start-push-payload,end-push-payload"
+              },
+              "update-with-same-state": {
+                "control": "http://localhost:4200/update-with-same-state",
+                "experiment": "http://localhost:4201/update-with-same-state",
+                "markers": "start-data-generation,start-push-initial-payload,start-peek-records,start-record-materialization,start-relationship-materialization,start-local-removal,start-push-minus-one-payload,start-local-addition,start-push-plus-one-payload,end-push-plus-one-payload"
+              },
+              "update-with-same-state-m2m": {
+                "control": "http://localhost:4200/update-with-same-state-m2m",
+                "experiment": "http://localhost:4201/update-with-same-state-m2m",
+                "markers": "start-data-generation,start-push-initial-payload,start-peek-records,start-record-materialization,start-relationship-materialization,start-local-removal,start-push-minus-one-payload,start-local-addition,start-push-plus-one-payload,end-push-plus-one-payload"
               }
             }
           fidelity: 60
           upload-traces: true
           upload-results: true
+        # env:
+        #   DEBUG: '*,-babel*,-vite*,-rollup*,-ember*,-broccoli*,-pnpm*,-embroider*,-tree-sync*,-fs-tree-diff*'
+      # - name: Upload Assets
+      #   if: failure() || success()
+      #   uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+      #   with:
+      #     name: built-files
+      #     path: 'tests/performance/dist-*'
+      #     retention-days: 1
       - name: Report TracerBench Results
         if: failure() || success()
         env:

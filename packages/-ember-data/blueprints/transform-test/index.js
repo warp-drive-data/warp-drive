@@ -1,4 +1,2 @@
-// Re-exporting the blueprints from the top level `ember-data` package
-// because blueprint discovery in ember-cli (as of 3.12) is only done
-// for top level packages.
-module.exports = require('@ember-data/serializer/blueprints/transform-test/index');
+// ember-cli only discovers blueprints in installed addons, so this package re-exports the @warp-drive/legacy blueprint.
+module.exports = require('@warp-drive/legacy/blueprints/transform-test/index');

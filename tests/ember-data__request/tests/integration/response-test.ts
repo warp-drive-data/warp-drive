@@ -12,7 +12,7 @@ module('RequestManager | Response', function () {
       async request<T>(context: RequestContext, next: NextFn<T>) {
         const response = await fetch(context.request.url!, context.request);
         context.setResponse(response);
-        return response.json();
+        return response.json() as Promise<T>;
       },
     };
     manager.use([handler]);
@@ -33,7 +33,7 @@ module('RequestManager | Response', function () {
         ok: true,
         redirected: false,
         headers: [
-          ['content-type', 'application/json;charset=utf-8'],
+          ['content-type', 'application/json'],
           // ['date', 'Wed, 23 Nov 2022 05:17:11 GMT'],
           // ['etag', 'W/"39-1849db13af9"'],
           // ['last-modified', 'Tue, 22 Nov 2022 04:55:48 GMT'],

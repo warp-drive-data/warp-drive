@@ -1,0 +1,91 @@
+# Sample workflow for building and deploying a VitePress site to GitHub Pages
+#
+name: canary.warp-drive.io deployment
+
+on:
+  # Runs on pushes targeting the `main` branch. Change this to `master` if you're
+  # using the `master` branch as the default branch.
+  push:
+    branches: [main]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to the gh-pages branch
+# (see .github/workflows/pr-preview.yml, which pushes to the same branch for PR
+# previews -- the "GitHub Actions" build type's single-artifact-per-run model can't
+# host those alongside this deploy, so both workflows target the branch instead)
+permissions:
+  contents: write
+
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+# However, do ~~NOT~~ cancel in-progress runs as we want to allow these production deployments to complete.
+concurrency:
+  group: pages-production
+  cancel-in-progress: true
+
+env:
+  TURBO_API: http://127.0.0.1:9080
+  TURBO_TOKEN: this-is-not-a-secret
+  TURBO_TEAM: myself
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 1 # 0 is needed if lastUpdated is enabled
+      - uses: ./.github/actions/setup
+        with:
+          install: true
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          ACTIONS_RUNNER_DEBUG: ${{ secrets.ACTIONS_RUNNER_DEBUG == 'true' }}
+          DISABLE_TURBO_CACHE: ${{ secrets.ACTIONS_RUNNER_DEBUG == 'true' }}
+      - name: Build docs
+        run: pnpm run build
+        working-directory: docs-viewer
+        env:
+          BASE: ''
+          HOSTNAME: 'https://canary.warp-drive.io'
+          # authenticates the docs build's calls to api.github.com (contributor list +
+          # profile lookups) so they get the 5,000/hour per-token limit instead of the
+          # 60/hour per-IP anonymous limit, which is shared with unrelated jobs across
+          # the whole GitHub Actions runner pool and fails intermittently under load
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # pr-preview.yml pushes to this same gh-pages branch from its own workflow, with its
+      # own concurrency group, so its push can land between one of these steps' fetch of
+      # gh-pages and its own push, rejecting ours as a non-fast-forward. peaceiris/actions-gh-pages
+      # re-fetches gh-pages fresh on every invocation, so retrying the whole step (rather than
+      # just the underlying `git push`) succeeds once the branch stops moving. This repeats the
+      # same pinned step instead of reaching for a third-party retry-wrapper action, since those
+      # tend to invoke their own dependencies by tag internally and so can't be pinned to a SHA
+      # themselves, which this org's Actions policy requires.
+      - name: Deploy to GitHub Pages (attempt 1)
+        id: deploy-1
+        continue-on-error: true
+        uses: peaceiris/actions-gh-pages@84c30a85c19949d7eee79c4ff27748b70285e453 # v4.1.0
+        with: &gh-pages-deploy-inputs
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: docs-viewer/docs.warp-drive.io/.vitepress/dist
+          cname: canary.warp-drive.io
+          # keep_files stops this production deploy from wiping out the pr-preview/
+          # folders that pr-preview.yml keeps on this same gh-pages branch.
+          keep_files: true
+      - name: Wait before deploy attempt 2
+        if: steps.deploy-1.outcome == 'failure'
+        run: sleep 5
+      - name: Deploy to GitHub Pages (attempt 2)
+        id: deploy-2
+        if: steps.deploy-1.outcome == 'failure'
+        continue-on-error: true
+        uses: peaceiris/actions-gh-pages@84c30a85c19949d7eee79c4ff27748b70285e453 # v4.1.0
+        with: *gh-pages-deploy-inputs
+      - name: Wait before deploy attempt 3
+        if: steps.deploy-1.outcome == 'failure' && steps.deploy-2.outcome == 'failure'
+        run: sleep 10
+      - name: Deploy to GitHub Pages (attempt 3)
+        if: steps.deploy-1.outcome == 'failure' && steps.deploy-2.outcome == 'failure'
+        uses: peaceiris/actions-gh-pages@84c30a85c19949d7eee79c4ff27748b70285e453 # v4.1.0
+        with: *gh-pages-deploy-inputs

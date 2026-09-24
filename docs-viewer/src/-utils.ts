@@ -1,0 +1,85 @@
+import { findWorkspaceDir } from '@pnpm/find-workspace-dir';
+import fs from 'fs';
+import { styleText } from 'node:util';
+import path from 'path';
+
+const workspaceRoot = (await findWorkspaceDir(process.cwd())) as string;
+
+if (!workspaceRoot) {
+  throw new Error('Could not find workspace root');
+}
+
+const docsViewerRoot = path.join(workspaceRoot, 'docs-viewer');
+const projectRoot = path.join(docsViewerRoot, './projects');
+
+export { workspaceRoot, docsViewerRoot, projectRoot };
+
+export function log(message: string) {
+  console.log(styleText('grey', `[docs-viewer]\t${message}`));
+}
+
+export function determinePackageManager(dir: string) {
+  if (fs.existsSync(path.join(dir, 'pnpm-lock.yaml'))) {
+    return 'pnpm';
+  }
+  if (fs.existsSync(path.join(dir, 'package-lock.json'))) {
+    return 'npm';
+  }
+  if (fs.existsSync(path.join(dir, 'yarn.lock'))) {
+    return 'yarn';
+  }
+
+  return 'npm';
+}
+
+export async function generateDocs() {
+  const currentVersion = require(path.join(workspaceRoot, 'package.json')).version;
+  const absoluteVersion = currentVersion.split('-')[0];
+  const command = ['bun', 'gen', '--skip-install', '--project', 'ember-data', '--version', absoluteVersion];
+  const proc = Bun.spawn(command, {
+    cwd: path.join(projectRoot, 'ember-jsonapi-docs'),
+    env: Object.assign({}, process.env, { COREPACK_INTEGRITY_KEYS: 0 }),
+    stdio: ['inherit', 'inherit', 'inherit'],
+  });
+  await proc.exited;
+
+  const command2 = ['bun', 'fix:files'];
+  const proc2 = Bun.spawn(command2, {
+    cwd: path.join(projectRoot, 'ember-api-docs-data'),
+    env: process.env,
+    stdio: ['inherit', 'inherit', 'inherit'],
+  });
+  await proc2.exited;
+}
+
+export function repoDetails(gitUrl: string) {
+  const repoPath = gitUrl.replace('.git', '').replace('git@github.com:', '');
+  const [org, name] = repoPath.split('/');
+  const installPathFromRoot = path.join('./projects', name);
+  const location = path.join(docsViewerRoot, installPathFromRoot);
+
+  return {
+    org,
+    name,
+    repoPath,
+    gitUrl,
+    installPathFromRoot,
+    location,
+    relativePath: path.relative(__dirname, path.join(docsViewerRoot, installPathFromRoot)),
+    httpsUrl: `https://github.com/${repoPath}.git`,
+  };
+}
+
+export async function installDeps(packageManager: 'pnpm' | 'npm' | 'yarn', details: ReturnType<typeof repoDetails>) {
+  const proc = Bun.spawn(
+    [packageManager, 'install', packageManager === 'pnpm' ? '--ignore-workspace' : '', '--no-frozen-lockfile'].filter(
+      Boolean
+    ),
+    {
+      cwd: details.location,
+      env: process.env,
+      stdio: ['inherit', 'inherit', 'inherit'],
+    }
+  );
+  await proc.exited;
+}

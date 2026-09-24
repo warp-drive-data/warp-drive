@@ -1,13 +1,13 @@
 {
   "name": "ember-data",
-  "version": "5.4.0-alpha.91",
-  "description": "The lightweight reactive data library for JavaScript applications",
+  "version": "5.10.0-alpha.11",
+  "description": "(Legacy) The lightweight reactive data library for Ember applications",
   "keywords": [
     "ember-addon"
   ],
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com:emberjs/data.git",
+    "url": "git+ssh://git@github.com:warp-drive-data/warp-drive.git",
     "directory": "packages/-ember-data"
   },
   "directories": {
@@ -15,10 +15,10 @@
     "test": "tests"
   },
   "scripts": {
-    "lint": "eslint . --quiet --cache --cache-strategy=content --report-unused-disable-directives",
-    "build:pkg": "vite build;",
-    "prepack": "bun run build:pkg",
-    "sync-hardlinks": "bun run sync-dependencies-meta-injected"
+    "build:pkg": "node node_modules/tsdown/dist/run.mjs",
+    "prepack": "pnpm run build:pkg",
+    "sync": "echo \"syncing\"",
+    "start": "node node_modules/tsdown/dist/run.mjs --watch"
   },
   "ember-addon": {
     "main": "addon-main.cjs",
@@ -34,23 +34,21 @@
     }
   },
   "files": [
-    "ember-data-logo-dark.svg",
-    "ember-data-logo-light.svg",
     "LICENSE.md",
     "README.md",
     "addon-main.cjs",
     "dist",
     "app",
     "blueprints",
-    "unstable-preview-types"
+    "logos"
   ],
   "exports": {
     ".": {
-      "types": "./unstable-preview-types/index.d.ts",
+      "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
     },
     "./test-support": {
-      "types": "./unstable-preview-types/test-support/index.d.ts",
+      "types": "./dist/test-support/index.d.ts",
       "default": "./dist/test-support/index.js"
     },
     "./app/*": {
@@ -60,80 +58,40 @@
       "default": "./blueprints/*.js"
     },
     "./*": {
-      "types": "./unstable-preview-types/*.d.ts",
+      "types": "./dist/*.d.ts",
       "default": "./dist/*.js"
     }
   },
   "author": "",
   "license": "MIT",
-  "dependenciesMeta": {
-    "@ember-data/adapter": {
-      "injected": true
-    },
-    "@ember-data/graph": {
-      "injected": true
-    },
-    "@ember-data/debug": {
-      "injected": true
-    },
-    "@ember-data/model": {
-      "injected": true
-    },
-    "@ember-data/json-api": {
-      "injected": true
-    },
-    "@ember-data/request": {
-      "injected": true
-    },
-    "@ember-data/request-utils": {
-      "injected": true
-    },
-    "@ember-data/legacy-compat": {
-      "injected": true
-    },
-    "@ember-data/serializer": {
-      "injected": true
-    },
-    "@ember-data/store": {
-      "injected": true
-    },
-    "@ember-data/tracking": {
-      "injected": true
-    },
-    "@warp-drive/core-types": {
-      "injected": true
-    },
-    "@warp-drive/build-config": {
-      "injected": true
-    }
-  },
   "dependencies": {
-    "@ember-data/adapter": "workspace:5.4.0-alpha.91",
-    "@ember-data/debug": "workspace:5.4.0-alpha.91",
-    "@ember-data/graph": "workspace:5.4.0-alpha.91",
-    "@ember-data/json-api": "workspace:5.4.0-alpha.91",
-    "@ember-data/legacy-compat": "workspace:5.4.0-alpha.91",
-    "@ember-data/model": "workspace:5.4.0-alpha.91",
-    "@ember-data/request": "workspace:5.4.0-alpha.91",
-    "@ember-data/request-utils": "workspace:5.4.0-alpha.91",
-    "@ember-data/serializer": "workspace:5.4.0-alpha.91",
-    "@ember-data/store": "workspace:5.4.0-alpha.91",
-    "@ember-data/tracking": "workspace:5.4.0-alpha.91",
+    "@ember-data/adapter": "workspace:*",
+    "@ember-data/debug": "workspace:*",
+    "@ember-data/graph": "workspace:*",
+    "@ember-data/json-api": "workspace:*",
+    "@ember-data/legacy-compat": "workspace:*",
+    "@ember-data/model": "workspace:*",
+    "@ember-data/request": "workspace:*",
+    "@ember-data/request-utils": "workspace:*",
+    "@ember-data/serializer": "workspace:*",
+    "@ember-data/store": "workspace:*",
+    "@ember-data/tracking": "workspace:*",
     "@ember/edition-utils": "^1.2.0",
-    "@embroider/macros": "^1.16.1",
-    "@warp-drive/core-types": "workspace:0.0.0-alpha.77",
-    "@warp-drive/build-config": "workspace:0.0.0-alpha.28"
+    "@embroider/macros": "^1.21.1",
+    "@warp-drive/core": "workspace:*",
+    "@warp-drive/core-types": "workspace:*",
+    "@warp-drive/ember": "workspace:*",
+    "@warp-drive/json-api": "workspace:*",
+    "@warp-drive/legacy": "workspace:*",
+    "@warp-drive/utilities": "workspace:*"
   },
   "peerDependencies": {
-    "@ember/test-helpers": "^3.3.0",
-    "@ember/test-waiters": "^3.1.0",
-    "qunit": "^2.18.0"
+    "@ember/test-helpers": "^3.3.0 || ^4.0.4 || ^5.1.0",
+    "@ember/test-waiters": "^3.1.0 || ^4.0.0",
+    "qunit": "^2.26.0"
   },
   "peerDependenciesMeta": {
     "@ember/test-helpers": {
-      "optional": true
-    },
-    "@ember/test-waiters": {
       "optional": true
     },
     "qunit": {
@@ -141,31 +99,21 @@
     }
   },
   "devDependencies": {
-    "@babel/core": "^7.24.5",
-    "@babel/plugin-transform-typescript": "^7.24.5",
-    "@babel/preset-env": "^7.24.5",
-    "@babel/preset-typescript": "^7.24.1",
-    "@ember/test-waiters": "^3.1.0",
-    "@glimmer/component": "^1.1.2",
-    "@glimmer/tracking": "^1.1.2",
-    "@types/qunit": "^2.19.10",
-    "@ember/test-helpers": "^3.3.0",
-    "@warp-drive/internal-config": "workspace:5.4.0-alpha.91",
-    "ember-source": "~5.8.0",
-    "eslint": "^8.57.0",
-    "pnpm-sync-dependencies-meta-injected": "0.0.14",
-    "vite": "^5.2.11",
-    "typescript": "^5.4.5",
-    "qunit": "^2.18.0"
-  },
-  "engines": {
-    "node": ">= 18.20.3"
+    "@babel/core": "catalog:",
+    "@babel/plugin-transform-typescript": "catalog:",
+    "@babel/preset-env": "catalog:",
+    "@babel/preset-typescript": "catalog:",
+    "@ember/test-helpers": "catalog:",
+    "@ember/test-waiters": "catalog:",
+    "@types/qunit": "catalog:",
+    "@warp-drive/internal-config": "workspace:*",
+    "ember-source": "catalog:",
+    "eslint": "catalog:",
+    "qunit": "catalog:",
+    "tsdown": "catalog:",
+    "typescript": "catalog:"
   },
   "ember": {
     "edition": "octane"
-  },
-  "volta": {
-    "extends": "../../package.json"
-  },
-  "packageManager": "pnpm@8.15.8"
+  }
 }

@@ -1,0 +1,5 @@
+/**
+ * @module
+ * @mergeModuleWith <project>
+ */
+export {};

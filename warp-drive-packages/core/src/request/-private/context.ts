@@ -1,0 +1,247 @@
+import { DEBUG } from '@warp-drive/core/build-config/env';
+import { assert } from '@warp-drive/core/build-config/macros';
+
+import type { RequestKey } from '../../types/identifier';
+import type { ImmutableHeaders, ImmutableRequestInfo, RequestInfo, ResponseInfo } from '../../types/request';
+import { SkipCache } from '../../types/request';
+import { deepFreeze } from './debug';
+import { createDeferred } from './future';
+import type { DeferredStream, GodContext } from './types';
+
+export function upgradeHeaders(headers: Headers | ImmutableHeaders): ImmutableHeaders {
+  (headers as ImmutableHeaders).clone = () => {
+    return new Headers(headers);
+  };
+  (headers as ImmutableHeaders).toJSON = () => {
+    return Array.from(headers as unknown as Iterable<[string, string]>);
+  };
+  return headers as ImmutableHeaders;
+}
+
+export function cloneResponseProperties(response: Response): ResponseInfo {
+  const { headers, ok, redirected, status, statusText, type, url } = response;
+  upgradeHeaders(headers);
+  return {
+    headers: headers as ImmutableHeaders,
+    ok,
+    redirected,
+    status,
+    statusText,
+    type,
+    url,
+  };
+}
+
+export class ContextOwner {
+  hasSetStream = false;
+  hasSetResponse = false;
+  hasSubscribers = false;
+  stream: DeferredStream = createDeferred<ReadableStream | null>();
+  response: ResponseInfo | null = null;
+  declare request: ImmutableRequestInfo;
+  declare enhancedRequest: ImmutableRequestInfo;
+  nextCalled = 0;
+  declare god: GodContext;
+  declare controller: AbortController;
+  declare requestId: number;
+  declare isRoot: boolean;
+
+  constructor(request: RequestInfo, god: GodContext, isRoot = false) {
+    this.isRoot = isRoot;
+    this.requestId = god.id;
+    this.controller = request.controller || god.controller;
+    this.stream.promise.sizeHint = 0;
+
+    if (request.controller) {
+      if (request.controller !== god.controller) {
+        god.controller.signal.addEventListener('abort', () => {
+          this.controller.abort(god.controller.signal.reason);
+        });
+      }
+      delete request.controller;
+    }
+    let enhancedRequest: ImmutableRequestInfo = Object.assign(
+      { signal: this.controller.signal },
+      request
+    ) as ImmutableRequestInfo;
+    if (DEBUG) {
+      if (!request?.cacheOptions?.[SkipCache]) {
+        request = deepFreeze(request);
+        enhancedRequest = deepFreeze(enhancedRequest);
+      }
+    } else {
+      if (request.headers) {
+        upgradeHeaders(request.headers);
+      }
+    }
+    this.enhancedRequest = enhancedRequest;
+    this.request = request as ImmutableRequestInfo;
+    this.god = god;
+    this.stream.promise = this.stream.promise.then((stream: ReadableStream | null) => {
+      if (this.god.stream === stream && this.hasSubscribers) {
+        this.god.stream = null;
+      }
+      return stream;
+    });
+  }
+
+  get hasRequestedStream(): boolean {
+    return this.god.hasRequestedStream;
+  }
+
+  getResponse(): ResponseInfo | null {
+    if (this.hasSetResponse) {
+      return this.response;
+    }
+    if (this.nextCalled === 1) {
+      return this.god.response;
+    }
+    return null;
+  }
+  getStream(): Promise<ReadableStream | null> {
+    if (this.isRoot) {
+      this.god.hasRequestedStream = true;
+    }
+    if (!this.hasSetResponse) {
+      const hint = this.god.response?.headers?.get('content-length');
+      this.stream.promise.sizeHint = hint ? parseInt(hint, 10) : 0;
+    }
+    this.hasSubscribers = true;
+    return this.stream.promise;
+  }
+  abort(reason: DOMException): void {
+    this.controller.abort(reason);
+  }
+
+  setStream(stream: ReadableStream | Promise<ReadableStream | null> | null): void {
+    if (!this.hasSetStream) {
+      this.hasSetStream = true;
+
+      if (!(stream instanceof Promise)) {
+        this.god.stream = stream;
+      }
+      // @ts-expect-error
+      this.stream.resolve(stream);
+    }
+  }
+
+  resolveStream(): void {
+    this.setStream(this.nextCalled === 1 ? this.god.stream : null);
+  }
+
+  setResponse(response: ResponseInfo | Response | null): void {
+    if (this.hasSetResponse) {
+      if (DEBUG) {
+        throw new Error(`Cannot setResponse when a response has already been set`);
+      }
+      return;
+    }
+    this.hasSetResponse = true;
+    if (response instanceof Response) {
+      // TODO potentially avoid cloning in prod
+      let responseData = cloneResponseProperties(response);
+
+      if (DEBUG) {
+        responseData = deepFreeze(responseData);
+      }
+      this.response = responseData;
+      this.god.response = responseData;
+      const sizeHint = response.headers?.get('content-length');
+      this.stream.promise.sizeHint = sizeHint ? parseInt(sizeHint, 10) : 0;
+    } else {
+      this.response = response;
+      this.god.response = response;
+    }
+  }
+}
+
+/**
+ * The context object given to each {@link Handler} (or {@link CacheHandler})
+ * as it processes a request. It exposes the (immutable, enhanced) request
+ * along with the methods a handler uses to build up the {@link Future} and
+ * {@link StructuredDataDocument} that will ultimately be returned by the
+ * {@link RequestManager}.
+ *
+ * @public
+ */
+export class Context {
+  /** @internal */
+  declare private ___owner: ContextOwner;
+  /**
+   * A readonly, immutable version of the request being handled, including
+   * any defaults or enhancements applied by the {@link RequestManager}.
+   *
+   * @public
+   */
+  declare request: ImmutableRequestInfo;
+  /**
+   * The id of this request as assigned by the {@link RequestManager}. Not
+   * unique across manager instances.
+   *
+   * @public
+   */
+  declare id: number;
+  /** @internal */
+  declare private _isCacheHandler: boolean;
+  /** @internal */
+  declare private _finalized: boolean;
+
+  constructor(owner: ContextOwner, isCacheHandler: boolean) {
+    this.id = owner.requestId;
+    this.___owner = owner;
+    this.request = owner.enhancedRequest;
+    this._isCacheHandler = isCacheHandler;
+    this._finalized = false;
+  }
+  /**
+   * Set the response stream for this request. May be called at most once,
+   * and may be called at any point up until the handler's `request` method
+   * resolves.
+   *
+   * @public
+   */
+  setStream(stream: ReadableStream | Promise<ReadableStream | null>): void {
+    this.___owner.setStream(stream);
+  }
+  /**
+   * Set the {@link ResponseInfo} (or raw `Response`) associated with this
+   * request. Used to populate the response information available on the
+   * resulting {@link StructuredDataDocument}.
+   *
+   * @public
+   */
+  setResponse(response: ResponseInfo | Response | null): void {
+    this.___owner.setResponse(response);
+  }
+
+  /**
+   * Associate a {@link RequestKey} with this request. May only be called
+   * synchronously from a {@link CacheHandler}.
+   *
+   * @public
+   */
+  setIdentifier(identifier: RequestKey): void {
+    assert(
+      `setIdentifier may only be used synchronously from a CacheHandler`,
+      identifier && this._isCacheHandler && !this._finalized
+    );
+    this.___owner.god.identifier = identifier;
+  }
+
+  /**
+   * Whether the application (or a downstream handler) has requested access
+   * to the response stream via {@link Future.getStream}. Handlers can use
+   * this to avoid the cost of streaming when nothing will consume it.
+   *
+   * @public
+   */
+  get hasRequestedStream(): boolean {
+    return this.___owner.hasRequestedStream;
+  }
+
+  /** @private */
+  _finalize(): void {
+    this._finalized = true;
+  }
+}
+export type HandlerRequestContext = Context;

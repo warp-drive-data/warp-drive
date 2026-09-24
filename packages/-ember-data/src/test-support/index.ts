@@ -3,9 +3,9 @@ import { render as renderTemplate, settled } from '@ember/test-helpers';
 
 import * as QUnit from 'qunit';
 
-import type Store from '@ember-data/store';
-import { PRODUCTION } from '@warp-drive/build-config/env';
-import { assert } from '@warp-drive/build-config/macros';
+import { PRODUCTION } from '@warp-drive/core/build-config/env';
+import { assert } from '@warp-drive/core/build-config/macros';
+import { isPrivateStore } from '@warp-drive/core/store/-private';
 
 /*
   Temporary replacement for the render test helper
@@ -13,11 +13,12 @@ import { assert } from '@warp-drive/build-config/macros';
   an app to incrementally migrate to tests that render async
   relationships in stages with potential for tests in between.
 */
-export async function render(template: object) {
+export async function render(template: object): Promise<void> {
   await renderTemplate(template);
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+  // oxlint-disable-next-line typescript/no-unsafe-member-access
   const owner = QUnit.config.current.testEnvironment.owner as Owner;
-  const pending = (owner.lookup('service:store') as Store)._getAllPending();
+  const store = isPrivateStore(owner.lookup('service:store'));
+  const pending = store._getAllPending();
 
   // this should only be necessary in production tests
   // where @ember/test-waiters is deactivated :()

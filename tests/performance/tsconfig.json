@@ -1,0 +1,50 @@
+{
+  "include": ["models/**/*", "mixins/**/*", "routes/**/*", "services/**/*", "app.ts"],
+  "compilerOptions": {
+    "lib": ["DOM", "ESNext"],
+    "module": "esnext",
+    "target": "esnext",
+    "moduleResolution": "bundler",
+    "moduleDetection": "force",
+    "strict": true,
+    "pretty": true,
+    "exactOptionalPropertyTypes": false,
+    "skipLibCheck": true,
+    "disableSourceOfProjectReferenceRedirect": false,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "allowJs": true,
+    "noImplicitOverride": false,
+    "experimentalDecorators": true,
+    "incremental": true,
+    "declaration": true,
+    "types": ["ember-source/types", "vite/client"],
+    "allowImportingTsExtensions": true,
+    "composite": true,
+    "declarationDir": "unstable-preview-types",
+    "declarationMap": true,
+    "emitDeclarationOnly": true,
+    "erasableSyntaxOnly": true,
+    "inlineSourceMap": true,
+    "inlineSources": true,
+    "rootDir": ".",
+    "checkJs": false
+  },
+  "references": [
+    {
+      "path": "../../warp-drive-packages/ember"
+    },
+    {
+      "path": "../../warp-drive-packages/core"
+    },
+    {
+      "path": "../../warp-drive-packages/json-api"
+    },
+    {
+      "path": "../../warp-drive-packages/utilities"
+    },
+    {
+      "path": "../../warp-drive-packages/legacy"
+    }
+  ]
+}

@@ -1,4 +1,4 @@
-import { findAll } from '@ember-data/legacy-compat/builders';
+import { findAll } from '@warp-drive/legacy/compat/builders';
 class MyOutdatedComponent {
   *myOldEmberConcurrencyTask() {
     yield this.store.request(findAll('post'));

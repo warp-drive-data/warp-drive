@@ -1,0 +1,684 @@
+import { Glob } from 'bun';
+import fs from 'fs';
+import { execFileSync } from 'node:child_process';
+import { readFileSync } from 'node:fs';
+import { styleText } from 'node:util';
+import path from 'path';
+
+import { exec } from '../../../utils/cmd.ts';
+import { APPLIED_STRATEGY, Package } from '../../../utils/package.ts';
+import { amendFilesForUnpkg } from './amend-for-unpkg.ts';
+
+export const PROJECT_ROOT = process.cwd();
+export const TARBALL_DIR = path.join(PROJECT_ROOT, 'tmp/tarballs');
+
+export function toTarballName(name: string) {
+  return name.replace('@', '').replace('/', '-');
+}
+
+/**
+ * Returns the bin entries of the packed manifest whose target file is absent
+ * from the tarball. npm creates no bin link for a missing target and emits no
+ * warning at install time (bin-links skips it), so the only place this can
+ * fail loudly is here. (@ember-data/codemods shipped that way for months —
+ * see issue #10539.)
+ */
+function findMissingBinFiles(tarballPath: string): string[] {
+  const listing = new Set(execFileSync('tar', ['-tzf', tarballPath], { encoding: 'utf8' }).split('\n').filter(Boolean));
+  const manifest = JSON.parse(
+    execFileSync('tar', ['-xzOf', tarballPath, 'package/package.json'], { encoding: 'utf8' })
+  );
+  const bin: Record<string, string> =
+    typeof manifest.bin === 'string' ? { [manifest.name.split('/').pop()]: manifest.bin } : (manifest.bin ?? {});
+
+  const missing: string[] = [];
+  for (const [name, target] of Object.entries(bin)) {
+    if (!listing.has(path.posix.join('package', target))) {
+      missing.push(`"${name}" -> ${target}`);
+    }
+  }
+  return missing;
+}
+
+export async function verifyTarballs(
+  config: Map<string, string | number | boolean | null>,
+  packages: Map<string, Package>,
+  strategy: Map<string, APPLIED_STRATEGY>
+) {
+  const tarballDir = path.join(TARBALL_DIR, packages.get('root')!.pkgData.version);
+  const actualTarballsList = fs.readdirSync(tarballDir);
+  console.log(`Tarballs in ${tarballDir}:`);
+  actualTarballsList.forEach((tarball) => {
+    console.log(`\t- ${tarball}`);
+  });
+  console.log(`\nVerifying tarballs...`);
+
+  let hasErrors = false;
+  const results = [];
+  for (const [, pkgStrategy] of strategy) {
+    const pkg = packages.get(pkgStrategy.name)!;
+    const { tarballPath, typesTarballPath, mirrorTarballPath } = pkg;
+    const tarballExists = fs.existsSync(tarballPath);
+    const typesTarballExists = typesTarballPath ? fs.existsSync(typesTarballPath) : false;
+    const mirrorTarballExists = mirrorTarballPath ? fs.existsSync(mirrorTarballPath) : false;
+
+    if (tarballExists) {
+      results.push(styleText('gray', `\t✅ Tarball exists for package ${styleText('green', pkg.pkgData.name)}`));
+      const missingBinFiles = findMissingBinFiles(tarballPath);
+      if (missingBinFiles.length > 0) {
+        results.push(
+          styleText(
+            'gray',
+            `\t❌ Bin entries of ${styleText('red', pkg.pkgData.name)} point at files missing from its tarball: ${missingBinFiles.join(', ')}`
+          )
+        );
+        hasErrors = true;
+      }
+    } else {
+      results.push(
+        styleText(
+          'gray',
+          `\t❌ Tarball ${tarballPath} does not exist for package ${styleText('red', pkg.pkgData.name)}`
+        )
+      );
+      hasErrors = true;
+    }
+
+    if (!typesTarballPath) {
+      results.push(
+        styleText('gray', `\t✖️ Types tarball path is missing for package ${styleText('yellow', pkg.pkgData.name)}`)
+      );
+    } else if (typesTarballExists) {
+      results.push(styleText('gray', `\t✅ Types tarball exists for package ${styleText('green', pkg.pkgData.name)}`));
+    } else {
+      results.push(
+        styleText(
+          'gray',
+          `\t❌ Types tarball ${typesTarballPath} does not exist for package ${styleText('red', pkg.pkgData.name)}`
+        )
+      );
+      hasErrors = true;
+    }
+
+    if (!mirrorTarballPath) {
+      results.push(
+        styleText('gray', `\t✖️ Mirror tarball path is missing for package ${styleText('yellow', pkg.pkgData.name)}`)
+      );
+    } else if (mirrorTarballExists) {
+      results.push(styleText('gray', `\t✅ Mirror tarball exists for package ${styleText('green', pkg.pkgData.name)}`));
+    } else {
+      results.push(
+        styleText(
+          'gray',
+          `\t❌ Mirror tarball ${mirrorTarballPath} does not exist for package ${styleText('red', pkg.pkgData.name)}`
+        )
+      );
+      hasErrors = true;
+    }
+  }
+
+  results.forEach((result) => {
+    console.log(result);
+  });
+  if (hasErrors) {
+    throw new Error(`Tarball verification failed. Please check the logs for more details.`);
+  }
+}
+
+export async function printDirtyFiles(label: string, pkg: string) {
+  const { execSync } = await import('node:child_process');
+  const dirtyFiles = execSync('git ls-files -m').toString().trim();
+  if (dirtyFiles && dirtyFiles.length > 0) {
+    console.log(`The following files were modified in ${label}: \n${dirtyFiles}`);
+  } else {
+    console.log('No files were modified.');
+  }
+
+  // check the specific dist file we are having issues with
+  // warp-drive-packages/utilities/dist/index.js
+  const filePath = 'warp-drive-packages/utilities/dist/index.js';
+  const fullPath = `${process.cwd()}/${filePath}`;
+  const fileContents = readFileSync(fullPath, 'utf-8');
+
+  console.log(`\n\n\nChecking file: ${fullPath}\n\n\n`);
+  if (!fileContents) {
+    throw new Error(`File ${filePath} is empty after ${label}.`);
+  }
+
+  // check if we are accidentally in cjs format
+  if (isCjsModule(fileContents)) {
+    throw new Error(`Detected CommonJS module format in ${filePath} after ${label}. Expected ES Module format.`);
+  } else {
+    console.log(`File ${filePath} is in correct ES Module format after ${label}.`);
+  }
+
+  if (pkg === '@warp-drive/utilities') {
+    console.log(`File contents:\n\n=============\n\n${fileContents}\n\n=============\n\nEnd of file contents.\n\n`);
+  }
+}
+
+const CjsModulePattern = `Object.defineProperty(exports, Symbol.toStringTag, {`;
+
+function isCjsModule(fileContents: string): boolean {
+  return fileContents.includes(CjsModulePattern);
+}
+
+/**
+ * Iterates the public packages declared in the strategy and
+ * generates tarballs in the tmp/tarballs/<root-version> directory.
+ *
+ * @internal
+ */
+export async function generatePackageTarballs(
+  config: Map<string, string | number | boolean | null>,
+  packages: Map<string, Package>,
+  strategy: Map<string, APPLIED_STRATEGY>
+) {
+  // ensure tarball directory exists
+  const tarballDir = path.join(TARBALL_DIR, packages.get('root')!.pkgData.version);
+  fs.mkdirSync(tarballDir, { recursive: true });
+
+  // first loop executes build steps for each package so that entangled
+  // builds always have access to everything they need
+  for (const [, pkgStrategy] of strategy) {
+    const pkg = packages.get(pkgStrategy.name)!;
+    if (pkg.pkgData.private) {
+      throw new Error(`Unexpected attempt to publish private package ${pkg.pkgData.name}`);
+    }
+
+    if (!Array.isArray(pkg.pkgData.files) || pkg.pkgData.files.length === 0) {
+      throw new Error(`Unexpected attempt to publish package ${pkg.pkgData.name} with no files`);
+    }
+
+    await printDirtyFiles(`Initial: ${pkg.pkgData.name}`, pkg.pkgData.name);
+
+    try {
+      if (pkg.pkgData.scripts?.['prepack']) {
+        await exec({ cwd: path.join(PROJECT_ROOT, path.dirname(pkg.filePath)), cmd: `bun run prepack` });
+        await printDirtyFiles(`After Prepack: ${pkg.pkgData.name}`, pkg.pkgData.name);
+      }
+    } catch (e) {
+      console.log(
+        `🔴 ${styleText('redBright', 'failed to execute prepack script for')} ${styleText('yellow', pkg.pkgData.name)}`
+      );
+      throw e;
+    }
+  }
+
+  // second loop cleans up and packs each package
+  for (const [, pkgStrategy] of strategy) {
+    const pkg = packages.get(pkgStrategy.name)!;
+
+    try {
+      await fixVersionsInPackageJson(pkg);
+      await printDirtyFiles(`After Fixing Versions: ${pkg.pkgData.name}`, pkg.pkgData.name);
+      await amendFilesForTypesStrategy(pkg, pkgStrategy);
+      await printDirtyFiles(`After Types Strategy Amend: ${pkg.pkgData.name}`, pkg.pkgData.name);
+    } catch (e) {
+      console.log(
+        `🔴 ${styleText('redBright', 'failed to amend files to pack for')} ${styleText('yellow', pkg.pkgData.name)}`
+      );
+      throw e;
+    }
+
+    if (pkgStrategy.unpkgPublish) {
+      try {
+        await amendFilesForUnpkg(pkg);
+        await printDirtyFiles(`After Unpkg Amend: ${pkg.pkgData.name}`, pkg.pkgData.name);
+      } catch (e) {
+        console.log(
+          `🔴 ${styleText('redBright', 'failed to modify package for unpkgPublish for')} ${styleText('yellow', pkg.pkgData.name)}`
+        );
+        throw e;
+      }
+    }
+
+    await printDirtyFiles(`Before Pack: ${pkg.pkgData.name}`, pkg.pkgData.name);
+
+    try {
+      const pkgDir = path.join(PROJECT_ROOT, path.dirname(pkg.filePath));
+      const tarballPath = path.join(tarballDir, `${toTarballName(pkg.pkgData.name)}-${pkg.pkgData.version}.tgz`);
+      pkg.tarballPath = tarballPath;
+      const result = await exec({
+        cwd: pkgDir,
+        cmd: `pnpm pack --pack-gzip-level=9 --pack-destination=${tarballDir}`,
+        condense: false,
+      });
+      console.log(result);
+    } catch (e) {
+      console.log(
+        `🔴 ${styleText('redBright', 'failed to generate tarball for')} ${styleText('yellow', pkg.pkgData.name)}`
+      );
+      throw e;
+    } finally {
+      // restore state from before amending for types strategy
+      await restoreTypesStrategyChanges(pkg, pkgStrategy);
+    }
+  }
+
+  console.log(
+    `✅ ` +
+      styleText(
+        'cyan',
+        `created ${styleText('greenBright', String(strategy.size))} 📦 tarballs in ${path.relative(PROJECT_ROOT, tarballDir)}`
+      )
+  );
+}
+
+async function fixVersionsInPackageJson(pkg: Package) {
+  if (pkg.pkgData.dependencies) {
+    Object.keys(pkg.pkgData.dependencies).forEach((dep) => {
+      const version = pkg.pkgData.dependencies![dep];
+      if (version.startsWith('workspace:')) {
+        pkg.pkgData.dependencies![dep] = version.replace('workspace:', '');
+      }
+    });
+  }
+
+  if (pkg.pkgData.devDependencies) {
+    Object.keys(pkg.pkgData.devDependencies).forEach((dep) => {
+      const version = pkg.pkgData.devDependencies![dep];
+      if (version.startsWith('workspace:')) {
+        pkg.pkgData.devDependencies![dep] = version.replace('workspace:', '');
+      }
+    });
+  }
+
+  if (pkg.pkgData.peerDependencies) {
+    Object.keys(pkg.pkgData.peerDependencies).forEach((dep) => {
+      const version = pkg.pkgData.peerDependencies![dep];
+      if (version.startsWith('workspace:')) {
+        pkg.pkgData.peerDependencies![dep] = version.replace('workspace:', '');
+      }
+    });
+  }
+
+  await pkg.file.write(true);
+}
+
+const PotentialTypesDirectories = new Set([
+  'unstable-preview-types', // alpha
+  'preview-types', // beta
+  'types', // stable
+]);
+
+function isAddon(pkg: Package) {
+  return pkg.pkgData.keywords?.includes('ember-addon') || 'ember-addon' in pkg.pkgData;
+}
+
+/**
+ * scrub the package.json of any types fields in exports
+ * to support private/alpha/beta types strategies
+ *
+ * @internal
+ */
+function scrubTypesFromExports(pkg: Package) {
+  // when addon is still V1, we completely remove the exports field
+  // to avoid issues with embroider, auto-import and v1 addons
+  if (isAddon(pkg) && pkg.pkgData['ember-addon']?.version !== 2) {
+    throw new Error(`Unexpected attempt to publish package ${pkg.pkgData.name} without specifying addon version=2`);
+  }
+
+  // scrub the package.json of any types fields in exports
+  if (pkg.pkgData.exports) {
+    // level 1
+    for (const [key, value] of Object.entries(pkg.pkgData.exports)) {
+      if (key === 'types') {
+        delete pkg.pkgData.exports[key];
+      } else if (typeof value === 'object') {
+        // level 2
+        delete value.types;
+
+        for (const [k, v] of Object.entries(value)) {
+          if (typeof v === 'object') {
+            // level 3
+            delete v.types;
+          }
+        }
+      }
+    }
+  }
+}
+
+async function makeTypesPrivate(pkg: Package) {
+  scrubTypesFromExports(pkg);
+
+  // deactivate build types command
+  if (pkg.pkgData.scripts?.['build:types']) {
+    pkg.pkgData.scripts['build:types'] = 'echo "Types are private" && exit 0';
+  }
+
+  // and remove any types files from the published package artifacts
+  pkg.pkgData.files = pkg.pkgData.files?.filter((f) => {
+    return !PotentialTypesDirectories.has(f);
+  });
+}
+
+// convert each file to a module
+// and write it back to the file system
+// e.g.
+// ```
+// declare module '@ember-data/model' {
+//   export default class Model {}
+// }
+// ```
+//
+// instead of
+// ```
+// export default class Model {}
+// ```
+//
+// additionally, rewrite each relative import
+// to an absolute import
+// e.g. if the types for @ember-data/model contain a file with
+// the following import statement in the types directory
+//
+// ```
+// import attr from './attr';
+// ```
+//
+// then it becomes
+//
+// ```
+// import attr from '@ember-data/model/attr';
+// ```
+async function convertFileToModule(fileData: string, relativePath: string, pkgName: string): Promise<string> {
+  const lines = fileData.split('\n');
+  const maybeModuleName = pkgName + '/' + relativePath.replace(/\.d\.ts$/, '');
+  const moduleDir = pkgName + '/' + path.dirname(relativePath);
+  const moduleName = maybeModuleName.endsWith('/index') ? maybeModuleName.slice(0, -6) : maybeModuleName;
+
+  for (let i = 0; i < lines.length; i++) {
+    lines[i] = lines[i].replace(/^declare /, '').replaceAll(' declare ', ' ');
+    const line = lines[i];
+
+    const isDynamicDoubleQuote = line.includes(`import(".`);
+    const isDynamicSingleQuote = line.includes(`import('.`);
+    if (isDynamicDoubleQuote || isDynamicSingleQuote) {
+      const matcher = isDynamicDoubleQuote ? /import\("([^"]+)"\)/ : /import\('([^']+)'\)/;
+      const importPath = line.match(matcher)![1];
+      const newImportPath = path.join(moduleDir, importPath);
+      lines[i] = line.replace(importPath, newImportPath);
+    } else if (line.startsWith('import ')) {
+      if (!line.includes(`'`) && !line.includes(`"`)) {
+        throw new Error(`Unhandled Import in ${relativePath}`);
+      }
+      if (line.includes(`'.`) || line.includes(`".`)) {
+        const importPath = line.match(/['"]([^'"]+)['"]/)![1];
+        const newImportPath = path.join(moduleDir, importPath);
+        lines[i] = line.replace(importPath, newImportPath);
+      }
+      if (line.includes('.gts')) {
+        lines[i] = line.replace(/\.gts/, '');
+      }
+    }
+
+    // fix re-exports
+    else if (line.startsWith('export {') || line.startsWith('export type {')) {
+      if (!line.includes('}')) {
+        throw new Error(`Unhandled Re-export in ${relativePath}`);
+      }
+      if (line.includes(`'.`) || line.includes(`".`)) {
+        const importPath = line.match(/['"]([^'"]+)['"]/)![1];
+        const newImportPath = path.join(moduleDir, importPath);
+        lines[i] = line.replace(importPath, newImportPath);
+      }
+      if (line.includes('.gts')) {
+        lines[i] = line.replace(/\.gts/, '');
+      }
+    }
+
+    // fix * re-exports
+    else if (line.startsWith('export * from')) {
+      if (!line.includes(`'`) && !line.includes(`"`)) {
+        throw new Error(`Unhandled Re-export in ${relativePath}`);
+      }
+      if (line.includes(`'.`) || line.includes(`".`)) {
+        const importPath = line.match(/['"]([^'"]+)['"]/)![1];
+        const newImportPath = path.join(moduleDir, importPath);
+        lines[i] = line.replace(importPath, newImportPath);
+      }
+    }
+
+    // insert 2 spaces at the beginning of each line
+    // to account for module wrapper
+    if (!lines[i].startsWith('//# sourceMappingURL=')) lines[i] = '  ' + lines[i];
+  }
+
+  lines.unshift(`declare module '${moduleName}' {`);
+  const srcMapLine = lines.at(-1)!;
+  if (!srcMapLine.startsWith('//# sourceMappingURL=')) {
+    lines.push('}');
+  } else {
+    lines.splice(-1, 0, '}');
+  }
+
+  const updatedFileData = lines.join('\n');
+
+  return updatedFileData;
+}
+
+/**
+ * alpha/beta types strategies publish a directory of ambient-module-wrapped
+ * `.d.ts` files (see `convertTypesToModules`) as an explicit opt-in subpath,
+ * kept separate from the package's normal `exports.types` (which
+ * `scrubTypesFromExports` removes for these strategies). Declarations now
+ * emit directly into `dist/` alongside the JS, co-located with no separate
+ * build-time output directory, so that directory has to be synthesized here
+ * at pack time instead of relying on one already existing on disk.
+ *
+ * @internal
+ */
+async function synthesizeTypesDirectoryFromDist(pkg: Package, subdir: 'unstable-preview-types' | 'preview-types') {
+  const pkgDir = path.join(PROJECT_ROOT, path.dirname(pkg.filePath));
+  const distDir = path.join(pkgDir, 'dist');
+  const targetDir = path.join(pkgDir, subdir);
+
+  // clear out anything stale from a previous run
+  fs.rmSync(targetDir, { recursive: true, force: true });
+
+  const glob = new Glob('**/*.d.ts');
+  let count = 0;
+  for await (const filePath of glob.scan(distDir)) {
+    const src = path.join(distDir, filePath);
+    const dest = path.join(targetDir, filePath);
+    fs.mkdirSync(path.dirname(dest), { recursive: true });
+    fs.copyFileSync(src, dest);
+    count++;
+  }
+
+  if (count === 0) {
+    throw new Error(
+      `No .d.ts files found in dist/ for ${pkg.pkgData.name} while synthesizing ${subdir} for its types strategy.`
+    );
+  }
+}
+
+async function convertTypesToModules(pkg: Package, subdir: 'unstable-preview-types' | 'preview-types' | 'types') {
+  const typesDir = path.join(path.dirname(pkg.filePath), subdir);
+  const glob = new Glob('**/*.d.ts');
+
+  // we will insert a reference to each file in the index.d.ts
+  // so that all modules are available to consumers
+  // as soon as the tsconfig sources the types directory
+  const references = new Set<string>();
+
+  // convert each file to a module
+  for await (const filePath of glob.scan(typesDir)) {
+    const fullPath = path.join(typesDir, filePath);
+    const file = Bun.file(fullPath);
+    const fileData = await file.text();
+    const updatedFileData = await convertFileToModule(fileData, filePath, pkg.pkgData.name);
+
+    if (filePath !== 'index.d.ts') {
+      references.add(`/// <reference path="./${filePath}" />`);
+    }
+
+    await Bun.write(file, updatedFileData);
+  }
+
+  // write the references into the index.d.ts
+  const indexFile = Bun.file(path.join(typesDir, 'index.d.ts'));
+  const exists = await indexFile.exists();
+  if (!exists) {
+    await Bun.write(indexFile, Array.from(references).join('\n'));
+  } else {
+    const fileData = await indexFile.text();
+    const updatedFileData = Array.from(references).join('\n') + '\n' + fileData;
+    await Bun.write(indexFile, updatedFileData);
+  }
+}
+
+function exposeTypes(pkg: Package, subdir: 'unstable-preview-types' | 'preview-types' | 'types') {
+  if (pkg.pkgData.exports) {
+    /**
+     * Allows tsconfig.json#compilerOptions#types to use import paths,
+     * rather than file paths (there are no file path guarantees for any given package manager)
+     */
+    pkg.pkgData.exports[`./${subdir}`] = {
+      /**
+       * No default, import, or require here, because there are no actual modules to import.
+       */
+      types: `./${subdir}/index.d.ts`,
+    };
+
+    /**
+     * For older tsconfig.json settings
+     */
+    pkg.pkgData.typesVersions = {
+      // very loose TS version
+      '*': {
+        [subdir]: [`./${subdir}`],
+      },
+    };
+  }
+}
+
+async function makeTypesAlpha(pkg: Package) {
+  scrubTypesFromExports(pkg);
+  exposeTypes(pkg, 'unstable-preview-types');
+  await synthesizeTypesDirectoryFromDist(pkg, 'unstable-preview-types');
+
+  // the directory is synthesized above rather than developer-declared, so
+  // just ensure it's listed for packing rather than requiring it upfront
+  const present = new Set(pkg.pkgData.files);
+  if (!present.has('unstable-preview-types')) {
+    pkg.pkgData.files!.push('unstable-preview-types');
+  }
+  if (present.has('preview-types')) {
+    throw new Error(
+      `Unexpected preview-types directory in published files for ${pkg.pkgData.name}. This package is using an alpha types strategy, and should thus publish an unstable-preview-types directory.`
+    );
+  }
+  if (present.has('types')) {
+    throw new Error(
+      `Unexpected types directory in published files for ${pkg.pkgData.name}. This package is using an alpha types strategy, and should thus publish an unstable-preview-types directory.`
+    );
+  }
+
+  await convertTypesToModules(pkg, 'unstable-preview-types');
+
+  // TODO we should probably scan our dist/addon directories for ts/.d.ts files and throw if found.
+}
+
+async function makeTypesBeta(pkg: Package) {
+  scrubTypesFromExports(pkg);
+  exposeTypes(pkg, 'preview-types');
+  await synthesizeTypesDirectoryFromDist(pkg, 'preview-types');
+
+  // the directory is synthesized above rather than developer-declared, so
+  // just ensure it's listed for packing rather than requiring it upfront
+  const present = new Set(pkg.pkgData.files);
+  if (!present.has('preview-types')) {
+    pkg.pkgData.files!.push('preview-types');
+  }
+  if (present.has('unstable-preview-types')) {
+    throw new Error(
+      `Unexpected unstable-preview-types directory in published files for ${pkg.pkgData.name}. This package is using a beta types strategy, and should thus publish a preview-types directory.`
+    );
+  }
+  if (present.has('types')) {
+    throw new Error(
+      `Unexpected types directory in published files for ${pkg.pkgData.name}. This package is using a beta types strategy, and should thus publish a preview-types directory.`
+    );
+  }
+
+  // TODO we should probably scan our dist/addon directories for ts/.d.ts files and throw if found.
+}
+async function makeTypesStable(pkg: Package) {
+  // for stable, we expect that the types are automatically included
+  // so we check to ensure that types are in exports
+  if (!pkg.pkgData.exports) {
+    throw new Error(
+      `Missing exports field in package.json for ${pkg.pkgData.name}. This package is using a stable types strategy, and should thus include a types field in its exports.`
+    );
+  }
+  const value = JSON.stringify(pkg.pkgData.exports);
+  if (!value.includes('types')) {
+    throw new Error(
+      `Missing types field in exports in package.json for ${pkg.pkgData.name}. This package is using a stable types strategy, and should thus include a types field in its exports.`
+    );
+  }
+
+  // co-located types live under dist/ now -- any "types" condition pointing
+  // into dist/ (literal ".", named subpath, or wildcard subpath) counts
+  const hasInlineTypes = /"types":"\.\/dist\//.test(value);
+
+  // enforce that the correct types directory is present
+  const present = new Set(pkg.pkgData.files);
+  if (!present.has('declarations') && !hasInlineTypes) {
+    throw new Error(
+      `Missing declarations directory from published files for ${pkg.pkgData.name}. This package is using a stable types strategy, and should thus publish a declarations directory.`
+    );
+  }
+  if (present.has('unstable-preview-types')) {
+    throw new Error(
+      `Unexpected unstable-preview-types directory in published files for ${pkg.pkgData.name}. This package is using a stable types strategy, and should thus publish a types directory.`
+    );
+  }
+  if (present.has('preview-types')) {
+    throw new Error(
+      `Unexpected preview-types directory in published files for ${pkg.pkgData.name}. This package is using a stable types strategy, and should thus publish a types directory.`
+    );
+  }
+}
+
+async function amendFilesForTypesStrategy(pkg: Package, strategy: APPLIED_STRATEGY) {
+  if (pkg.pkgData.scripts?.['prepack']) {
+    delete pkg.pkgData.scripts['prepack'];
+  }
+  switch (strategy.types) {
+    case 'private':
+      await makeTypesPrivate(pkg);
+      break;
+    case 'alpha':
+      await makeTypesAlpha(pkg);
+      break;
+    case 'beta':
+      await makeTypesBeta(pkg);
+      break;
+    case 'stable':
+      await makeTypesStable(pkg);
+      break;
+  }
+  await pkg.file.write(true);
+}
+
+async function restoreTypesStrategyChanges(pkg: Package, _strategy: APPLIED_STRATEGY) {
+  // restore the package.json to its original state
+  // const result = await exec({ cmd: `git diff` });
+  // console.log(result);
+  await exec({ cmd: `git checkout HEAD -- ${pkg.filePath}`, silent: true });
+  const version = pkg.pkgData.version;
+  await pkg.refresh();
+  if (pkg.pkgData.version !== version) {
+    throw new Error(`Unexpected version change for ${pkg.pkgData.name}`);
+  }
+  process.stdout.write(
+    `\t\t♻️ ` +
+      styleText(
+        'gray',
+        `Successfully Restored Assets Modified for Types Strategy During Publish in ${styleText('cyan', pkg.pkgData.name)}\n`
+      )
+  );
+}

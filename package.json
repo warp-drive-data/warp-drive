@@ -1,80 +1,89 @@
 {
   "name": "root",
-  "version": "5.4.0-alpha.91",
+  "version": "5.10.0-alpha.11",
   "private": true,
+  "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com:emberjs/data.git"
+    "url": "git+ssh://git@github.com:warp-drive-data/warp-drive.git"
   },
   "scripts": {
     "takeoff": "FORCE_COLOR=2 pnpm install --prefer-offline --reporter=append-only",
-    "prepare": "turbo run build:infra; pnpm --filter './packages/*' run --parallel --if-present sync-hardlinks; turbo run build:pkg; pnpm run prepare:types; pnpm run _task:sync-hardlinks;",
-    "prepare:types": "tsc --build --force; turbo run build:glint;",
-    "release": "./release/index.ts",
-    "build": "turbo _build --log-order=stream --filter=./packages/* --concurrency=10;",
-    "_task:sync-hardlinks": "pnpm run -r --parallel --if-present sync-hardlinks;",
-    "build:docs": "mkdir -p packages/-ember-data/dist && cd ./docs-generator && node ./compile-docs.js",
-    "lint:tests": "turbo --log-order=stream lint --filter=./tests/* --continue --concurrency=10",
-    "lint:pkg": "turbo --log-order=stream lint --filter=./packages/* --continue --concurrency=10",
-    "lint": "pnpm run _task:sync-hardlinks; turbo --log-order=stream lint --continue --concurrency=10",
-    "lint:fix": "pnpm run _task:sync-hardlinks; turbo --log-order=stream lint --continue --concurrency=10 -- --fix",
-    "lint:prettier": "prettier --check --cache --cache-location=.prettier-cache --log-level=warn .",
-    "lint:prettier:fix": "prettier --write --cache --cache-location=.prettier-cache --log-level=warn .",
+    "prepare": "turbo run build:pkg --log-order=stream --concurrency=$(./bin/calculate-jobs);",
+    "release": "./tools/release/index.ts",
+    "build": "turbo run build:pkg --log-order=stream --concurrency=$(./bin/calculate-jobs);",
+    "sync": "pnpm --filter './packages/*' --filter './warp-drive-packages/*' --filter './tests/*' --filter './specs' run --parallel --if-present sync",
+    "start": "turbo run start --filter=./packages/* --concurrency=23",
+    "start:specs": "turbo run start --filter=./specs",
+    "sync:specs": "pnpm --filter './specs' run sync",
+    "sync:core": "pnpm --filter @warp-drive/build-config run sync",
+    "preview": "cd docs-viewer && pnpm start",
+    "lint:docs": "cd docs-viewer && pnpm check:links",
+    "lint:tests": "turbo --log-order=stream lint --filter=./tests/* --continue --concurrency=$(./bin/calculate-jobs)",
+    "lint:pkg": "turbo --log-order=stream lint --filter=./packages/* --continue --concurrency=$(./bin/calculate-jobs)",
+    "lint": "turbo --log-order=stream lint --continue --concurrency=$(./bin/calculate-jobs)",
+    "lint:fix": "turbo --log-order=stream lint --continue --concurrency=$(./bin/calculate-jobs) -- --fix",
+    "lint:oxfmt": "oxfmt --check .",
+    "lint:oxfmt:fix": "oxfmt --write .",
+    "lint:oxlint": "bash tools/internal-config/oxlint/run.sh",
+    "lint:oxlint:fix": "bash tools/internal-config/oxlint/run.sh --fix",
+    "lint:prettier": "prettier --check --cache --cache-location=.prettier-cache --log-level=warn '**/*.{gjs,gts}'",
+    "lint:prettier:fix": "prettier --write --cache --cache-location=.prettier-cache --log-level=warn '**/*.{gjs,gts}'",
     "preinstall": "npx only-allow pnpm",
-    "check:test-types": "turbo --log-order=stream check:types --filter=./{tests,config}/* --continue --concurrency=10",
-    "check:types": "pnpm run _task:sync-hardlinks; bun run check:test-types",
-    "test": "pnpm run _task:sync-hardlinks; pnpm turbo test --concurrency=1",
-    "test:production": "pnpm run _task:sync-hardlinks; pnpm turbo test:production --concurrency=1",
-    "test:try-one": "pnpm --filter main-test-app run test:try-one",
-    "test:docs": "FORCE_COLOR=2  pnpm build:docs && pnpm run -r --workspace-concurrency=-1 --if-present test:docs",
-    "test:blueprints": "pnpm run -r --workspace-concurrency=-1 --if-present test:blueprints",
-    "test:fastboot": "pnpm run -r --workspace-concurrency=-1 --if-present test:fastboot",
-    "test:embroider": "pnpm run -r ---workspace-concurrency=-1 --if-present test:embroider"
+    "check:types": "turbo --log-order=stream check:types --continue --concurrency=$(./bin/calculate-jobs)",
+    "test": "pnpm turbo test --concurrency=1 --log-order=stream",
+    "test:production": "pnpm turbo test:production --concurrency=1 --log-order=stream",
+    "test:blueprints": "pnpm run -r --workspace-concurrency=-1 --if-present test:blueprints"
   },
   "devDependencies": {
-    "@babel/core": "^7.24.5",
-    "@glint/core": "^1.4.0",
-    "@glint/environment-ember-loose": "^1.4.0",
-    "@glint/environment-ember-template-imports": "^1.4.0",
-    "@glint/template": "^1.4.0",
-    "@glimmer/component": "^1.1.2",
-    "@types/semver": "^7.5.8",
-    "bun-types": "^1.1.8",
-    "chalk": "^4.1.2",
-    "co": "^4.6.0",
-    "command-line-args": "^5.2.1",
-    "common-tags": "^1.8.2",
-    "debug": "^4.3.4",
-    "execa": "^9.1.0",
-    "comment-json": "^4.2.3",
-    "git-repo-version": "^1.0.2",
-    "globby": "^14.0.1",
-    "lerna-changelog": "^2.2.0",
-    "prettier": "^3.3.2",
-    "prettier-plugin-ember-template-tag": "^2.0.2",
-    "rimraf": "^5.0.6",
-    "semver": "^7.6.2",
-    "silent-error": "^1.1.1",
-    "typescript": "^5.4.5",
-    "url": "^0.11.3",
-    "yuidocjs": "^0.10.2",
-    "zlib": "1.0.5"
+    "@babel/core": "catalog:",
+    "@glimmer/component": "catalog:",
+    "@glint/ember-tsc": "catalog:",
+    "@glint/template": "catalog:",
+    "@warp-drive/internal-docs-viewer": "workspace:*",
+    "@warp-drive/internal-tooling": "workspace:*",
+    "badge-maker": "catalog:",
+    "bun-types": "catalog:",
+    "comment-json": "catalog:",
+    "debug": "catalog:",
+    "ember-source": "catalog:",
+    "execa": "catalog:",
+    "git-repo-version": "catalog:",
+    "lerna-changelog": "catalog:",
+    "oxfmt": "catalog:",
+    "oxlint": "catalog:",
+    "oxlint-tsgolint": "catalog:",
+    "prettier": "catalog:",
+    "prettier-plugin-ember-template-tag": "catalog:",
+    "semver": "catalog:",
+    "silent-error": "catalog:",
+    "typedoc": "catalog:",
+    "typescript": "catalog:"
   },
   "dependencies": {
-    "turbo": "^1.13.3"
+    "turbo": "catalog:"
   },
   "engines": {
-    "node": ">= 18.20.3",
+    "node": ">= 26.10.0",
     "yarn": "use pnpm",
     "npm": "use pnpm",
-    "pnpm": "8.15.8"
+    "pnpm": "12.5.1"
   },
-  "volta": {
-    "node": "22.3.0",
-    "pnpm": "8.15.8"
+  "packageManager": "pnpm@12.5.1",
+  "devEngines": {
+    "runtime": [
+      {
+        "name": "node",
+        "version": "26.8.1"
+      },
+      {
+        "name": "bun",
+        "version": "1.4.0"
+      }
+    ]
   },
-  "packageManager": "pnpm@8.15.8",
   "changelog": {
+    "cacheDir": ".changelog-cache",
     "labels": {
       ":label: breaking": ":boom: Breaking Change",
       ":label: feat": ":rocket: Enhancement",
@@ -84,80 +93,15 @@
       ":label: deprecation": ":evergreen_tree: New Deprecation",
       ":label: doc": ":memo: Documentation",
       ":label: test": ":goal_net: Test",
-      ":label: chore": ":house: Internal"
-    }
-  },
-  "pnpm": {
-    "packageExtensions": {
-      "@glimmer/syntax": {
-        "dependencies": {
-          "@glimmer/env": "^0.1.7"
-        }
-      },
-      "ember-cli-blueprint-test-helpers": {
-        "peerDependencies": {
-          "ember-cli": "*"
-        }
-      },
-      "ember-cli-fastboot": {
-        "peerDependencies": {
-          "ember-cli": "*",
-          "ember-source": "*"
-        }
-      },
-      "ember-cli-fastboot-testing": {
-        "peerDependencies": {
-          "ember-cli": "*",
-          "ember-cli-fastboot": "*",
-          "ember-source": "*",
-          "@ember/test-helpers": "*"
-        }
-      },
-      "ember-auto-import": {
-        "dependencies": {
-          "webpack": "*"
-        }
-      },
-      "ember-source": {
-        "dependencies": {
-          "webpack": "*"
-        }
-      },
-      "@ember/test-helpers": {
-        "dependencies": {
-          "webpack": "*"
-        }
-      }
+      ":label: chore": ":house: Internal",
+      ":label: rfc": ":page_facing_up: RFC"
     },
-    "overrides": {
-      "ember-auto-import": "^2.7.3",
-      "@embroider/macros": "^1.16.1",
-      "broccoli-funnel": "^3.0.8",
-      "broccoli-merge-trees": "^4.2.0",
-      "@glimmer/validator": "^0.92.0",
-      "@glint/template": "^1.4.0",
-      "@ember/test-helpers": "3.3.0",
-      "ember-cli-babel": "^8.2.0",
-      "ember-cli-htmlbars": "^6.3.0",
-      "ember-cli-typescript": "^5.3.0",
-      "webpack": "5.92.0",
-      "qunit": "2.19.4",
-      "ember-compatibility-helpers": "^1.2.7",
-      "testem": "~3.11.0"
-    },
-    "peerDependencyRules": {
-      "ignoreMissing": [
-        "rsvp"
-      ],
-      "allowAny": [
-        "ember-source",
-        "typescript"
-      ]
-    },
-    "patchedDependencies": {
-      "qunit@2.19.4": "patches/qunit@2.19.4.patch",
-      "testem@3.11.0": "patches/testem@3.11.0.patch",
-      "@ember/test-helpers@3.3.0": "patches/@ember__test-helpers@3.3.0.patch"
-    }
+    "ignoreCommitters": [
+      "[bot]",
+      "dependabot-bot",
+      "greenkeeperio-bot",
+      "renovate-bot",
+      "Copilot"
+    ]
   }
 }

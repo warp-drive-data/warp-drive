@@ -1,23 +1,39 @@
 <p align="center">
   <img
     class="project-logo"
-    src="./ember-data-logo-dark.svg#gh-dark-mode-only"
-    alt="EmberData RequestManager"
-    width="240px"
-    title="EmberData RequestManager"
-    />
-  <img
-    class="project-logo"
-    src="./ember-data-logo-light.svg#gh-light-mode-only"
-    alt="EmberData RequestManager"
-    width="240px"
-    title="EmberData RequestManager"
+    src="./logos/logo-yellow-slab.svg"
+    alt="WarpDrive"
+    width="180px"
+    title="WarpDrive"
     />
 </p>
 
+![NPM Stable Version](https://img.shields.io/npm/v/ember-data/latest?label=version&style=flat&color=fdb155)
+![NPM Downloads](https://img.shields.io/npm/dm/ember-data.svg?style=flat&color=fdb155)
+![License](https://img.shields.io/github/license/warp-drive-data/warp-drive.svg?style=flat&color=fdb155)
+[![EmberJS Discord Community Server](https://img.shields.io/badge/EmberJS-grey?logo=discord&logoColor=fdb155)](https://discord.gg/zT3asNS)
+[![WarpDrive Discord Server](https://img.shields.io/badge/WarpDrive-grey?logo=discord&logoColor=fdb155)](https://discord.gg/PHBbnWJx5S)
+
+<p align="center">
+  <br>
+  <a href="https://warp-drive.io">WarpDrive</a> is the lightweight data library for web apps &mdash;
+  <br>
+  universal, typed, reactive, and ready to scale.
+  <br/><br/>
+</p>
+
+---
+
+# @ember-data/request
+
+> [!WARNING]
+> **⚠️ This package only exists for backwards compatibility**
+>
+> Newer apps should use [@warp-drive/core](https://warp-drive.io/api/@warp-drive/core/)
+
 <p align="center">⚡️ a simple abstraction over fetch to enable easy management of request/response flows</p>
 
-This package provides [*Ember***Data**](https://github.com/emberjs/data/)'s `RequestManager`, a framework agnostic library that can be integrated with any Javascript application to make [fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) happen.
+This package provides [*Ember***Data**](https://github.com/warp-drive-data/warp-drive/)'s `RequestManager`, a framework agnostic library that can be integrated with any Javascript application to make [fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) happen.
 
 - [Installation](#installation)
 - [Basic Usage](#🚀-basic-usage)
@@ -38,7 +54,7 @@ This package provides [*Ember***Data**](https://github.com/emberjs/data/)'s `Req
 
 Install using your javascript package manager of choice. For instance with [pnpm](https://pnpm.io/)
 
-```no-highlight
+```sh
 pnpm add @ember-data/request
 ```
 
@@ -63,8 +79,8 @@ import Fetch from '@ember-data/request/fetch';
 import { apiUrl } from './config';
 
 // ... create manager and add our Fetch handler
-const manager = new RequestManager();
-manager.use([Fetch]);
+const manager = new RequestManager()
+  .use([Fetch]);
 
 // ... execute a request
 const response = await manager.request({
@@ -96,7 +112,7 @@ flowchart LR
     F <--> H[(fa:fa-database Source)]
 ```
 
-The same or a separate instance of a `RequestManager` may also be used to fulfill requests issued by [*Ember***Data**{Store}](https://github.com/emberjs/data/tree/main/packages/store)
+The same or a separate instance of a `RequestManager` may also be used to fulfill requests issued by [*Ember***Data**{Store}](https://github.com/warp-drive-data/warp-drive/tree/main/packages/store)
 
 ```mermaid
 flowchart LR
@@ -104,8 +120,8 @@ flowchart LR
     B{{fa:fa-sitemap RequestManager}} <--> C[(fa:fa-database Source)]
     D <--> E[(fa:fa-archive Cache)]
     D <--> B
-    click D href "https://github.com/emberjs/data/tree/main/packages/store" "Go to @ember-data/store" _blank
-    click E href "https://github.com/emberjs/data/tree/main/packages/json-api" "Go to @ember-data/json-api" _blank
+    click D href "https://github.com/warp-drive-data/warp-drive/tree/main/packages/store" "Go to @ember-data/store" _blank
+    click E href "https://github.com/warp-drive-data/warp-drive/tree/main/packages/json-api" "Go to @ember-data/json-api" _blank
     style D color:#58a6ff;
     style E color:#58a6ff;
 ```
@@ -121,8 +137,8 @@ flowchart LR
     A <--> D{fa:fa-code-fork Store}
     D <--> E[(fa:fa-archive Cache)]
     D <--> B
-    click D href "https://github.com/emberjs/data/tree/main/packages/store" "Go to @ember-data/store" _blank
-    click E href "https://github.com/emberjs/data/tree/main/packages/json-api" "Go to @ember-data/json-api" _blank
+    click D href "https://github.com/warp-drive-data/warp-drive/tree/main/packages/store" "Go to @ember-data/store" _blank
+    click E href "https://github.com/warp-drive-data/warp-drive/tree/main/packages/json-api" "Go to @ember-data/json-api" _blank
     style D color:#58a6ff;
     style E color:#58a6ff;
 ```
@@ -411,26 +427,6 @@ In the case of the `Future` being returned, `Stream` proxying is automatic and i
 
 ---
 
-### Using as a Service
-
-Most applications will desire to have a single `RequestManager` instance, which can be achieved using module-state patterns for singletons, or for [Ember](https://emberjs.com) applications by exporting the manager as a [service](https://guides.emberjs.com/release/services/).
-
-*services/request.ts*
-```ts
-import RequestManager from '@ember-data/request';
-import Fetch from '@ember-data/request/fetch';
-import Auth from 'app/services/auth-handler';
-
-export default class extends RequestManager {
-  constructor(createArgs) {
-    super(createArgs);
-    this.use([Auth, Fetch]);
-  }
-}
-```
-
----
-
 #### Using with `@ember-data/store`
 
 To have a request service unique to a Store:
@@ -441,12 +437,30 @@ import RequestManager from '@ember-data/request';
 import Fetch from '@ember-data/request/fetch';
 
 class extends Store {
-  requestManager = new RequestManager();
+  requestManager = new RequestManager()
+    .use([Fetch])
+    .useCache(CacheHandler);
+}
+```
 
-  constructor(args) {
-    super(args);
-    this.requestManager.use([Fetch]);
-    this.requestManager.useCache(CacheHandler);
+---
+
+### Using as a Service
+
+Some applications will desire to have direct service-level access to the `RequestManager`, which can be achieved using module-state patterns for singletons, or for [Ember](https://emberjs.com) applications by exporting the manager as a [service](https://guides.emberjs.com/release/services/).
+
+*services/request.ts*
+```ts
+import { CacheHandler } from '@ember-data/store';
+import RequestManager from '@ember-data/request';
+import Fetch from '@ember-data/request/fetch';
+import Auth from 'app/services/ember-data-handler';
+
+export default {
+  create() {
+    return new RequestManager()
+      .use([Auth, Fetch]) 
+      .useCache(CacheHandler);
   }
 }
 ```
@@ -455,27 +469,24 @@ class extends Store {
 
 #### Using with `ember-data`
 
-If using the package [ember-data](https://github.com/emberjs/data/tree/main/packages/-ember-data),
+If using the package [ember-data](https://github.com/warp-drive-data/warp-drive/tree/main/packages/-ember-data),
 the following configuration will automatically be done in order to preserve the
-legacy [Adapter](https://github.com/emberjs/data/tree/main/packages/adapter) and
-[Serializer](https://github.com/emberjs/data/tree/main/packages/serializer) behavior.
+legacy [Adapter](https://github.com/warp-drive-data/warp-drive/tree/main/packages/adapter) and
+[Serializer](https://github.com/warp-drive-data/warp-drive/tree/main/packages/serializer) behavior.
 Additional handlers or a service injection like the above would need to be done by the
 consuming application in order to make broader use of `RequestManager`.
 
 ```ts
-import Store, { CacheHandler } from 'ember-data/store';
+import Store from 'ember-data/store';
+import { CacheHandler } from '@ember-data/store';
 import RequestManager from '@ember-data/request';
 import Fetch from '@ember-data/request/fetch';
 import { LegacyNetworkHandler } from '@ember-data/legacy-compat';
 
 export default class extends Store {
-  requestManager = new RequestManager();
-
-  constructor(args) {
-    super(args);
-    this.requestManager.use([LegacyNetworkHandler, Fetch]);
-    this.requestManager.useCache(CacheHandler);
-  }
+  requestManager = new RequestManager()
+    .use([LegacyNetworkHandler, Fetch])
+    .useCache(CacheHandler);
 }
 ```
 

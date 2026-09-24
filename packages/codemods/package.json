@@ -1,57 +1,56 @@
 {
   "name": "@ember-data/codemods",
-  "version": "5.4.0-alpha.91",
-  "description": "Codemods for EmberData paradigms",
+  "version": "5.10.0-alpha.11",
+  "description": "Codemods for WarpDrive/EmberData paradigms",
   "keywords": [],
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com:emberjs/data.git",
+    "url": "git+ssh://git@github.com:warp-drive-data/warp-drive.git",
     "directory": "packages/codemods"
   },
   "type": "module",
   "bin": {
-    "codemods": "codemods"
+    "codemods": "./dist/index.js"
+  },
+  "engines": {
+    "node": ">=24.21.0"
   },
   "scripts": {
-    "build:cli": "bun build bin/codemods.ts --compile --target node --outfile codemods --sourcemap",
-    "lint": "eslint . --quiet --cache --cache-strategy=content --report-unused-disable-directives",
-    "_syncPnpm": "bun run sync-dependencies-meta-injected"
+    "sync": "echo \"syncing\"",
+    "build:pkg": "node node_modules/tsdown/dist/run.mjs",
+    "prepack": "pnpm run build:pkg",
+    "check:types": "node ./node_modules/typescript-7/bin/tsc --noEmit"
   },
   "exports": {
     ".": {
       "default": "./src/index.ts"
+    },
+    "./schema-migration/*": {
+      "default": "./src/schema-migration/*"
     }
   },
   "files": [
-    "bin",
+    "dist/index.js",
     "src",
     "utils",
-    "codemods"
+    "LICENSE.md",
+    "logos"
   ],
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "chalk": "^5.3.0",
-    "commander": "^12.0.0",
-    "ignore": "^5.3.1",
-    "jscodeshift": "^0.15.2",
-    "strip-ansi": "^7.1.0",
-    "typescript": "^5.4.5",
-    "winston": "^3.13.0"
+    "@ast-grep/napi": "^0.45.3"
   },
   "devDependencies": {
-    "@types/bun": "^1.1.4",
-    "@types/jscodeshift": "0.11.11",
-    "@warp-drive/internal-config": "workspace:5.4.0-alpha.91",
-    "eslint": "^8.57.0",
-    "pnpm-sync-dependencies-meta-injected": "0.0.14",
-    "qunit": "^2.20.1"
-  },
-  "engines": {
-    "node": ">= 18.20.3"
-  },
-  "volta": {
-    "extends": "../../package.json"
-  },
-  "packageManager": "pnpm@8.15.8"
+    "@types/jscodeshift": "catalog:",
+    "@types/node": "catalog:",
+    "@warp-drive/internal-config": "workspace:*",
+    "commander": "catalog:",
+    "eslint": "catalog:",
+    "ignore": "catalog:",
+    "jscodeshift": "catalog:",
+    "tsdown": "catalog:",
+    "typescript-7": "catalog:",
+    "winston": "catalog:"
+  }
 }

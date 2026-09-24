@@ -1,46 +1,9 @@
-import type { StableExistingRecordIdentifier } from '../identifier';
-import type { ApiError } from './error';
-import type { Links, Meta, PaginationLinks } from './json-api-raw';
-
-export interface ResourceMetaDocument {
-  // the url or cache-key associated with the structured document
-  lid?: string;
-  meta: Meta;
-  links?: Links | PaginationLinks;
-}
-
-export interface SingleResourceDataDocument<T = StableExistingRecordIdentifier> {
-  // the url or cache-key associated with the structured document
-  lid?: string;
-  links?: Links | PaginationLinks;
-  meta?: Meta;
-  data: T | null;
-  included?: T[];
-}
-
-export interface CollectionResourceDataDocument<T = StableExistingRecordIdentifier> {
-  // the url or cache-key associated with the structured document
-  lid?: string;
-  links?: Links | PaginationLinks;
-  meta?: Meta;
-  data: T[];
-  included?: T[];
-}
-
-export type ResourceDataDocument<T = StableExistingRecordIdentifier> =
-  | SingleResourceDataDocument<T>
-  | CollectionResourceDataDocument<T>;
-
-export interface ResourceErrorDocument {
-  // the url or cache-key associated with the structured document
-  lid?: string;
-  links?: Links | PaginationLinks;
-  meta?: Meta;
-  errors: ApiError[];
-}
-
-export type ResourceDocument<T = StableExistingRecordIdentifier> =
-  | ResourceMetaDocument
-  | SingleResourceDataDocument<T>
-  | CollectionResourceDataDocument<T>
-  | ResourceErrorDocument;
+/**
+ * Legacy alias of {@link @warp-drive/core!types/spec/document | @warp-drive/core/types/spec/document}.
+ * This entry re-exports that module unchanged so existing
+ * `@warp-drive/core-types/spec/document` imports keep working; new code should import
+ * from `@warp-drive/core/types/spec/document` directly.
+ *
+ * @module
+ */
+export type * from '@warp-drive/core/types/spec/document';

@@ -1,0 +1,205 @@
+import { assert } from '@warp-drive/core/build-config/macros';
+import type { Cache } from '@warp-drive/core/types/cache';
+import type { Relationship } from '@warp-drive/core/types/cache/relationship';
+import type { ResourceKey } from '@warp-drive/core/types/identifier';
+import type { Value } from '@warp-drive/core/types/json/raw';
+import type { InnerRelationshipDocument, ResourceObject } from '@warp-drive/core/types/spec/json-api-raw';
+
+type ChangedRelationshipData = InnerRelationshipDocument;
+
+export type JsonApiResourcePatch =
+  | {
+      type: string;
+      id: string;
+      attributes?: Record<string, Value>;
+      relationships?: Record<string, ChangedRelationshipData>;
+    }
+  | {
+      type: string;
+      id: null;
+      lid: string;
+      attributes?: Record<string, Value>;
+      relationships?: Record<string, ChangedRelationshipData>;
+    };
+
+/**
+ * :::warning ⚠️ **This util often won't produce the necessary body for a {json:api} request**
+ *
+ * While this may come as a surprise, they are intended to serialize cache state for more
+ * generalized usage. {json:api} has a large variance in acceptable shapes, and only your
+ * app can ensure that the body is correctly formatted and contains all necessary data.
+ * :::
+ *
+ * Serializes the current state of a resource or array of resources for use with POST or PUT requests.
+ *
+ * @public
+ * @param cache - the cache to serialize the resource(s) from
+ * @param identifiers - the resource(s) to serialize
+ * @return an object with a `data` property containing the serialized resource(s)
+ */
+export function serializeResources(
+  cache: Cache,
+  identifiers: ResourceKey
+): {
+  /**
+   * The serialized resource.
+   */
+  data: ResourceObject;
+};
+export function serializeResources(
+  cache: Cache,
+  identifiers: ResourceKey[]
+): {
+  /**
+   * The serialized resources.
+   */
+  data: ResourceObject[];
+};
+export function serializeResources(
+  cache: Cache,
+  identifiers: ResourceKey | ResourceKey[]
+): { data: ResourceObject | ResourceObject[] } {
+  return {
+    data: Array.isArray(identifiers)
+      ? identifiers.map((identifier) => _serializeResource(cache, identifier))
+      : _serializeResource(cache, identifiers),
+  };
+}
+
+type SerializedRef =
+  | {
+      id: string;
+      type: string;
+    }
+  | { id: null; lid: string; type: string };
+
+function fixRef({
+  id,
+  lid,
+  type,
+}: { id: string; lid?: string; type: string } | { id: null; lid: string; type: string }): SerializedRef {
+  if (id !== null) {
+    return { id, type };
+  }
+  return { id, lid, type };
+}
+
+function fixRelData(
+  rel: Relationship['data'] | InnerRelationshipDocument['data']
+): SerializedRef | SerializedRef[] | null {
+  if (Array.isArray(rel)) {
+    return rel.map((ref) => fixRef(ref));
+  } else if (typeof rel === 'object' && rel !== null) {
+    return fixRef(rel);
+  }
+  return null;
+}
+
+function _serializeResource(cache: Cache, identifier: ResourceKey): ResourceObject {
+  const { id, lid, type } = identifier;
+  // peek gives us everything we want, but since its referentially the same data
+  // as is in the cache we clone it to avoid any accidental mutations
+  const record = structuredClone(cache.peek(identifier)) as ResourceObject;
+  assert(
+    `A record with id ${String(id)} and type ${type} for lid ${lid} was not found not in the supplied Cache.`,
+    record
+  );
+
+  // remove lid from anything that has an ID and slice any relationship arrays
+  if (record.id !== null) {
+    delete record.lid;
+  }
+
+  if (record.relationships) {
+    for (const key of Object.keys(record.relationships)) {
+      const relationship = record.relationships[key];
+      if (Array.isArray(relationship.data)) {
+        relationship.data = relationship.data.map((ref) => fixRef(ref));
+      } else if (typeof relationship.data === 'object' && relationship.data !== null) {
+        relationship.data = fixRef(relationship.data);
+      } else if (Object.keys(relationship ?? {}).length === 0) {
+        delete record.relationships[key];
+      }
+    }
+  }
+
+  return record;
+}
+
+/**
+ * :::warning ⚠️ **This util often won't produce the necessary body for a {json:api} request**
+ *
+ * While this may come as a surprise, they are intended to serialize cache state for more
+ * generalized usage. {json:api} has a large variance in acceptable shapes, and only your
+ * app can ensure that the body is correctly formatted and contains all necessary data.
+ * :::
+ *
+ * Serializes changes to a resource. Useful for use with building bodies for PATCH requests.
+ *
+ * Only attributes which are changed are serialized.
+ * Only relationships which are changed are serialized.
+ *
+ * Collection relationships serialize the collection as a whole.
+ *
+ * If you would like to serialize updates to a collection more granularly
+ * (for instance, as operations) request the diff from the store and
+ * serialize as desired:
+ *
+ * ```ts
+ * const relationshipDiffMap = cache.changedRelationships(identifier);
+ * ```
+ *
+ * @public
+ * @param cache - the cache to serialize the resource's changes from
+ * @param identifier - the resource whose changes should be serialized
+ * @return an object with a `data` property containing the serialized resource patch
+ */
+export function serializePatch(
+  cache: Cache,
+  identifier: ResourceKey
+  // options: { include?: string[] } = {}
+): {
+  /**
+   * The serialized resource patch.
+   */
+  data: JsonApiResourcePatch;
+} {
+  const { id, lid, type } = identifier;
+  assert(
+    `A record with id ${String(id)} and type ${type} for lid ${lid} was not found not in the supplied Cache.`,
+    cache.peek(identifier)
+  );
+
+  const data: JsonApiResourcePatch =
+    id === null
+      ? { type, lid, id }
+      : {
+          type,
+          id,
+        };
+
+  if (cache.hasChangedAttrs(identifier)) {
+    const attrsChanges = cache.changedAttrs(identifier);
+    const attributes: ResourceObject['attributes'] = {};
+
+    Object.keys(attrsChanges).forEach((key) => {
+      const change = attrsChanges[key];
+      const newVal = change[1];
+      attributes[key] = newVal === undefined ? null : structuredClone(newVal);
+    });
+
+    data.attributes = attributes;
+  }
+
+  const changedRelationships = cache.changedRelationships(identifier);
+  if (changedRelationships.size) {
+    const relationships: Record<string, ChangedRelationshipData> = {};
+    changedRelationships.forEach((diff, key) => {
+      relationships[key] = { data: fixRelData(diff.localState) } as ChangedRelationshipData;
+    });
+
+    data.relationships = relationships;
+  }
+
+  return { data };
+}

@@ -1,6 +1,6 @@
 {
   "name": "@warp-drive/schema",
-  "version": "0.0.0-alpha.77",
+  "version": "0.0.3-alpha.173",
   "private": true,
   "description": "Parse Declarative Typescript into JSON Schemas",
   "keywords": [
@@ -15,7 +15,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com:emberjs/data.git",
+    "url": "git+ssh://git@github.com:warp-drive-data/warp-drive.git",
     "directory": "packages/schema"
   },
   "license": "MIT",
@@ -28,8 +28,7 @@
   "files": [
     "README.md",
     "LICENSE.md",
-    "NCC-1701-a.svg",
-    "NCC-1701-a-blue.svg"
+    "unstable-preview-types"
   ],
   "bin": {
     "parse": "./parse",
@@ -39,13 +38,6 @@
   "peerDependencies": {},
   "dependencies": {},
   "devDependencies": {
-    "bun-types": "1.1.8"
-  },
-  "engines": {
-    "node": ">= 18.20.3"
-  },
-  "volta": {
-    "extends": "../../package.json"
-  },
-  "packageManager": "pnpm@8.15.8"
+    "bun-types": "catalog:"
+  }
 }

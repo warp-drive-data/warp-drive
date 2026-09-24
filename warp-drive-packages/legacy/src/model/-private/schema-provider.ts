@@ -1,0 +1,312 @@
+import { getOwner } from '@ember/application';
+import { deprecate } from '@ember/debug';
+
+import type { Store } from '@warp-drive/core';
+import { ENABLE_LEGACY_SCHEMA_SERVICE } from '@warp-drive/core/build-config/deprecations';
+import { assert } from '@warp-drive/core/build-config/macros';
+import type { SchemaService } from '@warp-drive/core/types';
+import type { ResourceKey } from '@warp-drive/core/types/identifier';
+import type { ObjectValue } from '@warp-drive/core/types/json/raw';
+import type { Derivation, HashFn, Transformation } from '@warp-drive/core/types/schema/concepts';
+import type {
+  ArrayField,
+  CacheableFieldSchema,
+  DerivedField,
+  GenericField,
+  HashField,
+  IdentityField,
+  LegacyAttributeField,
+  LegacyField,
+  LegacyRelationshipField,
+  ObjectField,
+  ObjectSchema,
+  ResourceSchema,
+} from '@warp-drive/core/types/schema/fields';
+
+import _modelForMixin from './model-for-mixin.ts';
+import type { FactoryCache, ModelFactory, ModelStore } from './model.ts';
+import { normalizeModelName } from './util.ts';
+
+type AttributesSchema = ReturnType<Exclude<SchemaService['attributesDefinitionFor'], undefined>>;
+type RelationshipsSchema = ReturnType<Exclude<SchemaService['relationshipsDefinitionFor'], undefined>>;
+
+type InternalSchema = {
+  schema: ResourceSchema;
+  fields: Map<string, LegacyAttributeField | LegacyRelationshipField>;
+  cacheFields: Map<string, Exclude<CacheableFieldSchema, IdentityField>>;
+  attributes: Record<string, LegacyAttributeField>;
+  relationships: Record<string, LegacyRelationshipField>;
+};
+
+export interface ModelSchemaProvider {
+  attributesDefinitionFor(resource: ResourceKey | { type: string }): AttributesSchema;
+
+  relationshipsDefinitionFor(resource: ResourceKey | { type: string }): RelationshipsSchema;
+
+  doesTypeExist(type: string): boolean;
+}
+export class ModelSchemaProvider implements SchemaService {
+  /** @internal */
+  declare private store: ModelStore;
+  /** @internal */
+  declare private _schemas: Map<string, InternalSchema>;
+  /** @internal */
+  declare private _typeMisses: Set<string>;
+
+  constructor(store: ModelStore) {
+    this.store = store;
+    this._schemas = new Map();
+    this._typeMisses = new Set();
+  }
+
+  resourceTypes(): Readonly<string[]> {
+    return Array.from(this._schemas.keys());
+  }
+
+  hasTrait(type: string): boolean {
+    assert(`hasTrait is not available with @warp-drive/legacy/model's SchemaService`);
+    return false;
+  }
+  resourceHasTrait(resource: ResourceKey | { type: string }, trait: string): boolean {
+    assert(`resourceHasTrait is not available with @warp-drive/legacy/model's SchemaService`);
+    return false;
+  }
+  transformation(field: GenericField | ObjectField | ArrayField | { type: string }): Transformation {
+    assert(`transformation is not available with @warp-drive/legacy/model's SchemaService`);
+  }
+  derivation(field: DerivedField | { type: string }): Derivation {
+    assert(`derivation is not available with @warp-drive/legacy/model's SchemaService`);
+  }
+  hashFn(field: HashField | { type: string }): HashFn {
+    assert(`hashFn is not available with @warp-drive/legacy/model's SchemaService`);
+  }
+  resource(resource: ResourceKey | { type: string }): ResourceSchema | ObjectSchema {
+    const type = normalizeModelName(resource.type);
+
+    if (!this._schemas.has(type)) {
+      this._loadModelSchema(type);
+    }
+
+    return this._schemas.get(type)!.schema;
+  }
+  registerResources(schemas: Array<ResourceSchema | ObjectSchema>): void {
+    assert(`registerResources is not available with @warp-drive/legacy/model's SchemaService`);
+  }
+  registerResource(schema: ResourceSchema | ObjectSchema): void {
+    assert(`registerResource is not available with @warp-drive/legacy/model's SchemaService`);
+  }
+  registerTransformation(transform: Transformation): void {
+    assert(`registerTransformation is not available with @warp-drive/legacy/model's SchemaService`);
+  }
+  registerDerivation<R, T, FM extends ObjectValue | null>(derivation: Derivation<R, T, FM>): void {
+    assert(`registerDerivation is not available with @warp-drive/legacy/model's SchemaService`);
+  }
+  registerHashFn(hashFn: HashFn): void {
+    assert(`registerHashFn is not available with @warp-drive/legacy/model's SchemaService`);
+  }
+  /** @internal */
+  private _loadModelSchema(type: string): InternalSchema {
+    const factory = getModelFactory(this.store, type);
+
+    if (!factory) {
+      throw new Error(`No model was found for '${type}'`);
+    }
+
+    const modelClass = factory.class;
+    const attributeMap = modelClass.attributes;
+
+    const attributes = Object.create(null) as AttributesSchema;
+    attributeMap.forEach((meta, name) => (attributes[name] = meta));
+    const relationships = modelClass.relationshipsObject || null;
+    const fields = new Map<string, LegacyAttributeField | LegacyRelationshipField>();
+
+    for (const attr of Object.values(attributes)) {
+      fields.set(attr.name, attr);
+    }
+
+    for (const rel of Object.values(relationships)) {
+      fields.set(rel.name, rel);
+    }
+
+    const schema: ResourceSchema = {
+      legacy: true,
+      identity: { name: 'id', kind: '@id' },
+      type,
+      fields: Array.from(fields.values()),
+    };
+
+    const cacheFields = new Map<string, Exclude<CacheableFieldSchema, IdentityField>>();
+    for (const field of fields.values()) {
+      const cacheKey = field.sourceKey ?? field.name;
+      assert(
+        `The sourceKey '${field.sourceKey}' for the field '${field.name}' on '${type}' is invalid because it matches the name of an existing field`,
+        !field.sourceKey || field.sourceKey === field.name || !fields.has(field.sourceKey)
+      );
+      cacheFields.set(cacheKey, field);
+    }
+
+    const internalSchema: InternalSchema = {
+      schema,
+      attributes,
+      relationships,
+      fields,
+      cacheFields,
+    };
+
+    this._schemas.set(type, internalSchema);
+
+    return internalSchema;
+  }
+
+  fields(resource: ResourceKey | { type: string }): Map<string, LegacyField> {
+    const type = normalizeModelName(resource.type);
+
+    if (!this._schemas.has(type)) {
+      this._loadModelSchema(type);
+    }
+
+    return this._schemas.get(type)!.fields;
+  }
+
+  cacheFields(resource: ResourceKey | { type: string }): Map<string, Exclude<CacheableFieldSchema, IdentityField>> {
+    const type = normalizeModelName(resource.type);
+
+    if (!this._schemas.has(type)) {
+      this._loadModelSchema(type);
+    }
+
+    return this._schemas.get(type)!.cacheFields;
+  }
+
+  hasResource(resource: { type: string }): boolean {
+    const type = normalizeModelName(resource.type);
+
+    if (this._schemas.has(type)) {
+      return true;
+    }
+
+    if (this._typeMisses.has(type)) {
+      return false;
+    }
+
+    const factory = getModelFactory(this.store, type);
+    const exists = factory !== null;
+
+    if (!exists) {
+      this._typeMisses.add(type);
+      return false;
+    }
+
+    return true;
+  }
+}
+
+if (ENABLE_LEGACY_SCHEMA_SERVICE) {
+  ModelSchemaProvider.prototype.doesTypeExist = function (type: string): boolean {
+    deprecate(`Use \`schema.hasResource({ type })\` instead of \`schema.doesTypeExist(type)\``, false, {
+      id: 'ember-data:schema-service-updates',
+      until: '6.0',
+      for: 'ember-data',
+      since: {
+        available: '4.13',
+        enabled: '5.4',
+      },
+    });
+    return this.hasResource({ type });
+  };
+
+  ModelSchemaProvider.prototype.attributesDefinitionFor = function (
+    resource: ResourceKey | { type: string }
+  ): AttributesSchema {
+    deprecate(`Use \`schema.fields({ type })\` instead of \`schema.attributesDefinitionFor({ type })\``, false, {
+      id: 'ember-data:schema-service-updates',
+      until: '6.0',
+      for: 'ember-data',
+      since: {
+        available: '4.13',
+        enabled: '5.4',
+      },
+    });
+    const type = normalizeModelName(resource.type);
+
+    // @ts-expect-error intentional use of internal API
+    if (!this._schemas.has(type)) {
+      // @ts-expect-error intentional use of internal API
+      this._loadModelSchema(type);
+    }
+
+    // @ts-expect-error intentional use of internal API
+    return this._schemas.get(type)!.attributes;
+  };
+
+  ModelSchemaProvider.prototype.relationshipsDefinitionFor = function (
+    resource: ResourceKey | { type: string }
+  ): RelationshipsSchema {
+    deprecate(`Use \`schema.fields({ type })\` instead of \`schema.relationshipsDefinitionFor({ type })\``, false, {
+      id: 'ember-data:schema-service-updates',
+      until: '6.0',
+      for: 'ember-data',
+      since: {
+        available: '4.13',
+        enabled: '5.4',
+      },
+    });
+    const type = normalizeModelName(resource.type);
+
+    // @ts-expect-error intentional use of internal API
+    if (!this._schemas.has(type)) {
+      // @ts-expect-error intentional use of internal API
+      this._loadModelSchema(type);
+    }
+
+    // @ts-expect-error intentional use of internal API
+    return this._schemas.get(type)!.relationships;
+  };
+}
+
+/**
+ * The `createSchemaService` implementation for use with `Model`. Pass
+ * the result of this to your store's `createSchemaService` method when
+ * configuring the store to use `Model` for schema information.
+ *
+ * @public
+ */
+export function buildSchema(store: Store): SchemaService {
+  return new ModelSchemaProvider(store as ModelStore);
+}
+
+export function getModelFactory(store: ModelStore, type: string): ModelFactory | null {
+  if (!store._modelFactoryCache) {
+    store._modelFactoryCache = Object.create(null) as FactoryCache;
+  }
+  const cache = store._modelFactoryCache;
+  let factory: ModelFactory | undefined = cache[type];
+
+  if (!factory) {
+    const owner = getOwner(store)!;
+    factory = owner.factoryFor(`model:${type}`) as ModelFactory | undefined;
+
+    if (!factory) {
+      //Support looking up mixins as base types for polymorphic relationships
+      factory = _modelForMixin(store, type);
+    }
+
+    if (!factory) {
+      // we don't cache misses in case someone wants to register a missing model
+      return null;
+    }
+
+    const klass = factory.class;
+
+    if (klass.isModel) {
+      const hasOwnModelNameSet = klass.modelName && Object.prototype.hasOwnProperty.call(klass, 'modelName');
+      if (!hasOwnModelNameSet) {
+        Object.defineProperty(klass, 'modelName', { value: type });
+      }
+    }
+
+    cache[type] = factory;
+  }
+
+  return factory;
+}

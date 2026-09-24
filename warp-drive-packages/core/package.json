@@ -1,0 +1,67 @@
+{
+  "name": "@warp-drive/core",
+  "version": "5.10.0-alpha.11",
+  "description": "Core package for WarpDrive | All the Universal Basics",
+  "keywords": [
+    "ember-addon"
+  ],
+  "license": "MIT",
+  "author": "Chris Thoburn <runspired@users.noreply.github.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com:warp-drive-data/warp-drive.git",
+    "directory": "warp-drive-packages/core"
+  },
+  "scripts": {
+    "build:pkg": "node node_modules/tsdown/dist/run.mjs",
+    "prepack": "pnpm run build:pkg",
+    "check:types": "node ./node_modules/typescript-7/bin/tsc --noEmit",
+    "sync": "echo \"syncing\"",
+    "start": "node node_modules/tsdown/dist/run.mjs --watch"
+  },
+  "files": [
+    "dist",
+    "cjs-dist",
+    "addon-main.cjs",
+    "CHANGELOG.md",
+    "README.md",
+    "LICENSE.md",
+    "logos"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./*.cjs": {
+      "default": "./cjs-dist/*.cjs"
+    },
+    "./*": {
+      "types": "./dist/*.d.ts",
+      "default": "./dist/*.js"
+    }
+  },
+  "dependencies": {
+    "@embroider/macros": "^1.21.1",
+    "@warp-drive/build-config": "workspace:*"
+  },
+  "devDependencies": {
+    "@babel/core": "catalog:",
+    "@babel/plugin-transform-typescript": "catalog:",
+    "@babel/preset-typescript": "catalog:",
+    "@warp-drive/internal-config": "workspace:*",
+    "decorator-transforms": "catalog:",
+    "ember-source": "catalog:",
+    "expect-type": "catalog:",
+    "tsdown": "catalog:",
+    "typescript-7": "catalog:"
+  },
+  "ember-addon": {
+    "main": "addon-main.cjs",
+    "type": "addon",
+    "version": 2
+  },
+  "ember": {
+    "edition": "octane"
+  }
+}

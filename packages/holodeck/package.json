@@ -1,66 +1,70 @@
 {
   "name": "@warp-drive/holodeck",
   "description": "⚡️ Simple, Fast HTTP Mocking for Tests",
-  "version": "0.0.0-alpha.77",
+  "version": "0.1.0-alpha.87",
   "license": "MIT",
   "author": "Chris Thoburn <runspired@users.noreply.github.com>",
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com:emberjs/data.git",
+    "url": "git+ssh://git@github.com:warp-drive-data/warp-drive.git",
     "directory": "packages/holodeck"
   },
-  "homepage": "https://github.com/emberjs/data",
-  "bugs": "https://github.com/emberjs/data/issues",
+  "homepage": "https://github.com/warp-drive-data/warp-drive",
+  "bugs": "https://github.com/warp-drive-data/warp-drive/issues",
   "engines": {
-    "node": ">= 18.20.3"
+    "node": ">= 24.21.0"
   },
   "keywords": [
     "http-mock"
   ],
-  "volta": {
-    "extends": "../../package.json"
-  },
   "dependencies": {
-    "@hono/node-server": "^1.11.1",
-    "chalk": "^5.3.0",
-    "hono": "^4.3.6"
+    "hono": "^4.13.8",
+    "@hono/node-server": "^2.1.1"
   },
   "type": "module",
   "files": [
-    "bin",
     "dist",
     "README.md",
     "LICENSE.md",
     "server",
-    "unstable-preview-types",
-    "NCC-1701-a.svg",
-    "NCC-1701-a-blue.svg"
+    "logos"
   ],
   "bin": {
     "ensure-cert": "./server/ensure-cert.js"
   },
   "scripts": {
-    "check:pkg-types": "tsc --noEmit",
-    "build:pkg": "vite build;",
-    "prepack": "bun run build:pkg",
-    "sync-hardlinks": "bun run sync-dependencies-meta-injected"
+    "check:types": "node ./node_modules/typescript-7/bin/tsc --noEmit && node ./node_modules/typescript-7/bin/tsc --noEmit -p server",
+    "build:pkg": "node node_modules/tsdown/dist/run.mjs",
+    "prepack": "pnpm run build:pkg",
+    "sync": "echo \"syncing\"",
+    "start": "node node_modules/tsdown/dist/run.mjs --watch"
   },
   "peerDependencies": {
-    "@ember-data/request": "workspace:5.4.0-alpha.91",
-    "@warp-drive/core-types": "workspace:0.0.0-alpha.77"
+    "@warp-drive/utilities": "workspace:*",
+    "@warp-drive/legacy": "workspace:*",
+    "@warp-drive/core": "workspace:*"
+  },
+  "peerDependenciesMeta": {
+    "@warp-drive/utilities": {
+      "optional": true
+    },
+    "@warp-drive/legacy": {
+      "optional": true
+    }
   },
   "devDependencies": {
-    "@babel/core": "^7.24.5",
-    "@babel/plugin-transform-typescript": "^7.24.5",
-    "@babel/preset-env": "^7.24.5",
-    "@babel/preset-typescript": "^7.24.1",
-    "@babel/runtime": "^7.24.5",
-    "@ember-data/request": "workspace:5.4.0-alpha.91",
-    "@warp-drive/core-types": "workspace:0.0.0-alpha.77",
-    "@warp-drive/internal-config": "workspace:5.4.0-alpha.91",
-    "pnpm-sync-dependencies-meta-injected": "0.0.14",
-    "typescript": "^5.4.5",
-    "vite": "^5.2.11"
+    "@babel/core": "catalog:",
+    "@babel/plugin-transform-typescript": "catalog:",
+    "@babel/preset-env": "catalog:",
+    "@babel/preset-typescript": "catalog:",
+    "@babel/runtime": "catalog:",
+    "@warp-drive/utilities": "workspace:*",
+    "@warp-drive/legacy": "workspace:*",
+    "@warp-drive/core": "workspace:*",
+    "@warp-drive/internal-config": "workspace:*",
+    "@types/node": "catalog:",
+    "tsdown": "catalog:",
+    "typescript-7": "catalog:"
   },
   "exports": {
     ".": {
@@ -68,26 +72,18 @@
       "bun": "./server/index.js",
       "deno": "./server/index.js",
       "browser": {
-        "types": "./unstable-preview-types/index.d.ts",
+        "types": "./dist/index.d.ts",
         "default": "./dist/index.js"
       },
       "import": {
-        "types": "./unstable-preview-types/index.d.ts",
+        "types": "./dist/index.d.ts",
         "default": "./dist/index.js"
       },
       "default": "./server/index.js"
     },
     "./mock": {
-      "types": "./unstable-preview-types/mock.d.ts",
+      "types": "./dist/mock.d.ts",
       "default": "./dist/mock.js"
-    }
-  },
-  "dependenciesMeta": {
-    "@ember-data/request": {
-      "injected": true
-    },
-    "@warp-drive/core-types": {
-      "injected": true
     }
   }
 }

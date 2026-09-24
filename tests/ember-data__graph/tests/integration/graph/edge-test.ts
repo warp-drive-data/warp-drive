@@ -1,37 +1,35 @@
-import type { Graph } from '@ember-data/graph/-private';
-import { graphFor } from '@ember-data/graph/-private';
-import Model, { attr, belongsTo, hasMany } from '@ember-data/model';
-import type Store from '@ember-data/store';
-import { recordIdentifierFor } from '@ember-data/store';
-import { peekCache } from '@ember-data/store/-private';
-import { Type } from '@warp-drive/core-types/symbols';
-import { module, test } from '@warp-drive/diagnostic';
-import { setupTest } from '@warp-drive/diagnostic/ember';
+import { recordIdentifierFor } from '@warp-drive/core';
+import type { Graph } from '@warp-drive/core/graph/-private';
+import { graphFor } from '@warp-drive/core/graph/-private';
+import type { PrivateStore } from '@warp-drive/core/store/-private';
+import { Type } from '@warp-drive/core/types/symbols';
+import { module, setupTest, test } from '@warp-drive/diagnostic/ember';
+import Model, { attr, belongsTo, hasMany } from '@warp-drive/legacy/model';
 
 import { stateOf } from './edge-removal/setup';
 
 module('Integration | Graph | Edges', function (hooks) {
   setupTest(hooks);
 
-  let store: Store;
+  let store: PrivateStore;
   let graph: Graph;
   hooks.beforeEach(function () {
     const { owner } = this;
-    store = owner.lookup('service:store') as Store;
+    store = owner.lookup('service:store') as PrivateStore;
     graph = graphFor(store);
   });
 
-  module('Lazy instantiation of RecordData', function () {
+  module('Lazy Instantiation of Cache Entry', function () {
     /**
      * Tests in this module affirm that the relationship graph does not
-     * unnecessarily force materialization of RecordData instances. This
+     * unnecessarily force materialization of cache entries. This
      * allows for us to manage the state of a relationship purely from
      * knowledge derived from it's inverses.
      */
 
     test('accessing the relationships for an identifier does not instantiate record-data for that identifier', function (assert) {
       const { owner } = this;
-      const { identifierCache } = store;
+      const { cacheKeyManager } = store;
       class User extends Model {
         @attr declare name: string;
         @belongsTo('user', { async: false, inverse: 'bestFriend' }) declare bestFriend: User;
@@ -39,12 +37,12 @@ module('Integration | Graph | Edges', function (hooks) {
       }
       owner.register('model:user', User);
 
-      const identifier = identifierCache.getOrCreateRecordIdentifier({ type: 'user', id: '1' });
-      const identifier2 = identifierCache.getOrCreateRecordIdentifier({ type: 'user', id: '2' });
+      const identifier = cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '1' } as const);
+      const identifier2 = cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '2' });
       const bestFriend = graph.get(identifier, 'bestFriend');
 
       assert.equal(
-        peekCache(identifier),
+        store.cache.peek(identifier),
         null,
         'We have no record data instance afer accessing the relationships for this identifier'
       );
@@ -52,7 +50,7 @@ module('Integration | Graph | Edges', function (hooks) {
       assert.ok(bestFriend, 'We can access a specific relationship');
 
       assert.equal(
-        peekCache(identifier),
+        store.cache.peek(identifier),
         null,
         'We still have no record data instance after accessing a named relationship'
       );
@@ -67,7 +65,7 @@ module('Integration | Graph | Edges', function (hooks) {
       });
 
       assert.equal(
-        peekCache(identifier),
+        store.cache.peek(identifier),
         null,
         'We still have no record data instance after push of only an identifier within a relationship'
       );
@@ -85,7 +83,7 @@ module('Integration | Graph | Edges', function (hooks) {
       });
 
       assert.equal(
-        peekCache(identifier)?.getAttr(identifier, 'name'),
+        store.cache?.getAttr(identifier, 'name'),
         'Chris',
         'We lazily associate the correct record data instance'
       );
@@ -95,15 +93,15 @@ module('Integration | Graph | Edges', function (hooks) {
 
     test('working with a sync belongsTo relationship for an identifier does not instantiate record-data for that identifier', function (assert) {
       const { owner } = this;
-      const { identifierCache } = store;
+      const { cacheKeyManager } = store;
       class User extends Model {
         @attr declare name: string;
         @belongsTo('user', { async: false, inverse: 'bestFriend' }) declare bestFriend: User;
       }
       owner.register('model:user', User);
 
-      const identifier = identifierCache.getOrCreateRecordIdentifier({ type: 'user', id: '1' });
-      const identifier2 = identifierCache.getOrCreateRecordIdentifier({ type: 'user', id: '2' });
+      const identifier = cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '1' });
+      const identifier2 = cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '2' });
       const bestFriend = graph.get(identifier, 'bestFriend');
 
       store.push({
@@ -116,7 +114,7 @@ module('Integration | Graph | Edges', function (hooks) {
       });
 
       assert.equal(
-        peekCache(identifier),
+        store.cache.peek(identifier),
         null,
         'We have no record data instance after push of only an identifier within a relationship'
       );
@@ -125,7 +123,7 @@ module('Integration | Graph | Edges', function (hooks) {
       assert.deepEqual(state.remote, [identifier2], 'Our initial canonical state is correct');
       assert.deepEqual(state.local, [identifier2], 'Our initial current state is correct');
 
-      const identifier3 = identifierCache.getOrCreateRecordIdentifier({ type: 'user', id: '3' });
+      const identifier3 = cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '3' });
       store._join(() => {
         graph.push({
           op: 'replaceRelatedRecord',
@@ -140,7 +138,7 @@ module('Integration | Graph | Edges', function (hooks) {
       assert.deepEqual(state.local, [identifier3], 'Our current state is correct after canonical update');
 
       assert.equal(
-        peekCache(identifier),
+        store.cache.peek(identifier),
         null,
         'We still have no record data instance after updating the canonical state'
       );
@@ -158,7 +156,11 @@ module('Integration | Graph | Edges', function (hooks) {
       assert.deepEqual(state.remote, [identifier3], 'Our canonical state is correct after local update');
       assert.deepEqual(state.local, [identifier2], 'Our current state is correct after local update');
 
-      assert.equal(peekCache(identifier), null, 'We still have no record data instance after updating the local state');
+      assert.equal(
+        store.cache.peek(identifier),
+        null,
+        'We still have no record data instance after updating the local state'
+      );
 
       store.push({
         data: {
@@ -169,7 +171,7 @@ module('Integration | Graph | Edges', function (hooks) {
       });
 
       assert.equal(
-        peekCache(identifier)?.getAttr(identifier, 'name'),
+        store.cache?.getAttr(identifier, 'name'),
         'Chris',
         'We lazily associate the correct record data instance'
       );
@@ -177,15 +179,15 @@ module('Integration | Graph | Edges', function (hooks) {
 
     test('working with an async belongsTo relationship for an identifier does not instantiate record-data for that identifier', function (assert) {
       const { owner } = this;
-      const { identifierCache } = store;
+      const { cacheKeyManager } = store;
       class User extends Model {
         @attr declare name: string;
         @belongsTo('user', { async: true, inverse: 'bestFriend' }) declare bestFriend: Promise<User>;
       }
       owner.register('model:user', User);
 
-      const identifier = identifierCache.getOrCreateRecordIdentifier({ type: 'user', id: '1' });
-      const identifier2 = identifierCache.getOrCreateRecordIdentifier({ type: 'user', id: '2' });
+      const identifier = cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '1' });
+      const identifier2 = cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '2' });
       const bestFriend = graph.get(identifier, 'bestFriend');
 
       store.push({
@@ -198,7 +200,7 @@ module('Integration | Graph | Edges', function (hooks) {
       });
 
       assert.equal(
-        peekCache(identifier),
+        store.cache.peek(identifier),
         null,
         'We have no record data instance after push of only an identifier within a relationship'
       );
@@ -207,7 +209,7 @@ module('Integration | Graph | Edges', function (hooks) {
       assert.deepEqual(state.remote, [identifier2], 'Our initial canonical state is correct');
       assert.deepEqual(state.local, [identifier2], 'Our initial current state is correct');
 
-      const identifier3 = identifierCache.getOrCreateRecordIdentifier({ type: 'user', id: '3' });
+      const identifier3 = cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '3' });
       store._join(() => {
         graph.push({
           op: 'replaceRelatedRecord',
@@ -222,7 +224,7 @@ module('Integration | Graph | Edges', function (hooks) {
       assert.deepEqual(state.local, [identifier3], 'Our current state is correct after canonical update');
 
       assert.equal(
-        peekCache(identifier),
+        store.cache.peek(identifier),
         null,
         'We still have no record data instance after updating the canonical state'
       );
@@ -240,7 +242,11 @@ module('Integration | Graph | Edges', function (hooks) {
       assert.deepEqual(state.remote, [identifier3], 'Our canonical state is correct after local update');
       assert.deepEqual(state.local, [identifier2], 'Our current state is correct after local update');
 
-      assert.equal(peekCache(identifier), null, 'We still have no record data instance after updating the local state');
+      assert.equal(
+        store.cache.peek(identifier),
+        null,
+        'We still have no record data instance after updating the local state'
+      );
 
       store.push({
         data: {
@@ -251,7 +257,7 @@ module('Integration | Graph | Edges', function (hooks) {
       });
 
       assert.equal(
-        peekCache(identifier)?.getAttr(identifier, 'name'),
+        store.cache?.getAttr(identifier, 'name'),
         'Chris',
         'We lazily associate the correct record data instance'
       );
@@ -259,16 +265,16 @@ module('Integration | Graph | Edges', function (hooks) {
 
     test('working with a sync hasMany relationship for an identifier does not instantiate record-data for that identifier', function (assert) {
       const { owner } = this;
-      const { identifierCache } = store;
+      const { cacheKeyManager } = store;
       class User extends Model {
         @attr declare name: string;
         @hasMany('user', { async: false, inverse: 'bestFriends' }) declare bestFriends: User[];
       }
       owner.register('model:user', User);
 
-      const identifier = identifierCache.getOrCreateRecordIdentifier({ type: 'user', id: '1' });
-      const identifier2 = identifierCache.getOrCreateRecordIdentifier({ type: 'user', id: '2' });
-      const identifier3 = identifierCache.getOrCreateRecordIdentifier({ type: 'user', id: '3' });
+      const identifier = cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '1' });
+      const identifier2 = cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '2' });
+      const identifier3 = cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '3' });
       const bestFriends = graph.get(identifier, 'bestFriends');
 
       store.push({
@@ -285,7 +291,7 @@ module('Integration | Graph | Edges', function (hooks) {
       });
 
       assert.equal(
-        peekCache(identifier),
+        store.cache.peek(identifier),
         null,
         'We have no record data instance after push of only an identifier within a relationship'
       );
@@ -312,15 +318,15 @@ module('Integration | Graph | Edges', function (hooks) {
       assert.deepEqual(state.local, [identifier2, identifier3], 'Our current state is correct after canonical update');
 
       assert.equal(
-        peekCache(identifier),
+        store.cache.peek(identifier),
         null,
         'We still have no record data instance after updating the canonical state'
       );
-      const identifier4 = identifierCache.getOrCreateRecordIdentifier({ type: 'user', id: '4' });
+      const identifier4 = cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '4' });
 
       store._join(() => {
         graph.update({
-          op: 'addToRelatedRecords',
+          op: 'add',
           record: identifier,
           field: 'bestFriends',
           value: identifier4,
@@ -335,7 +341,11 @@ module('Integration | Graph | Edges', function (hooks) {
         'Our current state is correct after local update'
       );
 
-      assert.equal(peekCache(identifier), null, 'We still have no record data instance after updating the local state');
+      assert.equal(
+        store.cache.peek(identifier),
+        null,
+        'We still have no record data instance after updating the local state'
+      );
 
       store.push({
         data: {
@@ -346,7 +356,7 @@ module('Integration | Graph | Edges', function (hooks) {
       });
 
       assert.equal(
-        peekCache(identifier)?.getAttr(identifier, 'name'),
+        store.cache?.getAttr(identifier, 'name'),
         'Chris',
         'We lazily associate the correct record data instance'
       );
@@ -354,16 +364,16 @@ module('Integration | Graph | Edges', function (hooks) {
 
     test('working with an async hasMany relationship for an identifier does not instantiate record-data for that identifier', function (assert) {
       const { owner } = this;
-      const { identifierCache } = store;
+      const { cacheKeyManager } = store;
       class User extends Model {
         @attr declare name: string;
         @hasMany('user', { async: true, inverse: 'bestFriends' }) declare bestFriends: Promise<User[]>;
       }
       owner.register('model:user', User);
 
-      const identifier = identifierCache.getOrCreateRecordIdentifier({ type: 'user', id: '1' });
-      const identifier2 = identifierCache.getOrCreateRecordIdentifier({ type: 'user', id: '2' });
-      const identifier3 = identifierCache.getOrCreateRecordIdentifier({ type: 'user', id: '3' });
+      const identifier = cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '1' });
+      const identifier2 = cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '2' });
+      const identifier3 = cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '3' });
       const bestFriends = graph.get(identifier, 'bestFriends');
 
       store.push({
@@ -380,7 +390,7 @@ module('Integration | Graph | Edges', function (hooks) {
       });
 
       assert.equal(
-        peekCache(identifier),
+        store.cache.peek(identifier),
         null,
         'We have no record data instance after push of only an identifier within a relationship'
       );
@@ -407,15 +417,15 @@ module('Integration | Graph | Edges', function (hooks) {
       assert.deepEqual(state.local, [identifier2, identifier3], 'Our current state is correct after canonical update');
 
       assert.equal(
-        peekCache(identifier),
+        store.cache.peek(identifier),
         null,
         'We still have no record data instance after updating the canonical state'
       );
-      const identifier4 = identifierCache.getOrCreateRecordIdentifier({ type: 'user', id: '4' });
+      const identifier4 = cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '4' });
 
       store._join(() => {
         graph.update({
-          op: 'addToRelatedRecords',
+          op: 'add',
           record: identifier,
           field: 'bestFriends',
           value: identifier4,
@@ -430,7 +440,11 @@ module('Integration | Graph | Edges', function (hooks) {
         'Our current state is correct after local update'
       );
 
-      assert.equal(peekCache(identifier), null, 'We still have no record data instance after updating the local state');
+      assert.equal(
+        store.cache.peek(identifier),
+        null,
+        'We still have no record data instance after updating the local state'
+      );
 
       store.push({
         data: {
@@ -441,7 +455,7 @@ module('Integration | Graph | Edges', function (hooks) {
       });
 
       assert.equal(
-        peekCache(identifier)?.getAttr(identifier, 'name'),
+        store.cache?.getAttr(identifier, 'name'),
         'Chris',
         'We lazily associate the correct record data instance'
       );

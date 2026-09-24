@@ -1,0 +1,4 @@
+/**
+ * @module
+ * @mergeModuleWith <project>
+ */

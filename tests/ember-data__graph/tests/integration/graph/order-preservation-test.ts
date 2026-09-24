@@ -1,8 +1,7 @@
-import { graphFor } from '@ember-data/graph/-private';
-import Model, { attr, belongsTo, hasMany } from '@ember-data/model';
-import type Store from '@ember-data/store';
-import { module, test } from '@warp-drive/diagnostic';
-import { setupTest } from '@warp-drive/diagnostic/ember';
+import { graphFor } from '@warp-drive/core/graph/-private';
+import { isPrivateStore } from '@warp-drive/core/store/-private';
+import { module, setupTest, test } from '@warp-drive/diagnostic/ember';
+import Model, { attr, belongsTo, hasMany } from '@warp-drive/legacy/model';
 
 class App extends Model {
   @attr declare name: string;
@@ -42,11 +41,11 @@ module('Graph | Order Preservation', function (hooks) {
     innerHooks.beforeEach(function (assert) {
       const { owner } = this;
 
-      const store = owner.lookup('service:store') as Store;
+      const store = isPrivateStore(owner.lookup('service:store'));
       const graph = graphFor(store);
 
-      const appIdentifier = store.identifierCache.getOrCreateRecordIdentifier({ type: 'app', id: '1' });
-      const clusterIdentifier = store.identifierCache.getOrCreateRecordIdentifier({ type: 'cluster', id: '1' });
+      const appIdentifier = store.cacheKeyManager.getOrCreateRecordIdentifier({ type: 'app', id: '1' });
+      const clusterIdentifier = store.cacheKeyManager.getOrCreateRecordIdentifier({ type: 'cluster', id: '1' });
 
       // setup initial state
       // app 1 has configs 1, 2, 3
@@ -100,7 +99,7 @@ module('Graph | Order Preservation', function (hooks) {
           },
         });
         ['1', '2', '3'].forEach((id) => {
-          const groupIdentifier = store.identifierCache.getOrCreateRecordIdentifier({ type: 'group', id });
+          const groupIdentifier = store.cacheKeyManager.getOrCreateRecordIdentifier({ type: 'group', id });
           graph.push({
             op: 'updateRelationship',
             field: 'apps',
@@ -122,7 +121,7 @@ module('Graph | Order Preservation', function (hooks) {
       graph.getData(clusterIdentifier, 'apps');
       graph.getData(appIdentifier, 'groups');
       ['1', '2', '3'].forEach((id) => {
-        const groupIdentifier = store.identifierCache.getOrCreateRecordIdentifier({ type: 'group', id });
+        const groupIdentifier = store.cacheKeyManager.getOrCreateRecordIdentifier({ type: 'group', id });
         graph.getData(groupIdentifier, 'apps');
       });
 
@@ -131,11 +130,11 @@ module('Graph | Order Preservation', function (hooks) {
 
     test('order is preserved when doing a full replace of a hasMany', function (assert) {
       const { owner } = this;
-      const store = owner.lookup('service:store') as Store;
+      const store = isPrivateStore(owner.lookup('service:store'));
       const graph = graphFor(store);
 
       function identifier(type: string, id: string) {
-        return store.identifierCache.getOrCreateRecordIdentifier({ type, id });
+        return store.cacheKeyManager.getOrCreateRecordIdentifier({ type, id });
       }
 
       const appIdentifier = identifier('app', '1');
@@ -201,11 +200,11 @@ module('Graph | Order Preservation', function (hooks) {
 
     test('order is preserved when adding to a hasMany', function (assert) {
       const { owner } = this;
-      const store = owner.lookup('service:store') as Store;
+      const store = isPrivateStore(owner.lookup('service:store'));
       const graph = graphFor(store);
 
       function identifier(type: string, id: string) {
-        return store.identifierCache.getOrCreateRecordIdentifier({ type, id });
+        return store.cacheKeyManager.getOrCreateRecordIdentifier({ type, id });
       }
 
       const appIdentifier = identifier('app', '1');
@@ -213,7 +212,7 @@ module('Graph | Order Preservation', function (hooks) {
       // add a new config '4' without an index
       store._join(() => {
         graph.update({
-          op: 'addToRelatedRecords',
+          op: 'add',
           field: 'configs',
           record: appIdentifier,
           value: identifier('config', '4'),
@@ -221,7 +220,9 @@ module('Graph | Order Preservation', function (hooks) {
       });
 
       assert.notified(appIdentifier, 'relationships', 'configs', 1);
-      assert.notified(identifier('config', '4'), 'relationships', 'app', 1);
+
+      // config has never had "getData" called and so we do not notify
+      assert.notified(identifier('config', '4'), 'relationships', 'app', 0);
 
       let configState = graph.getData(appIdentifier, 'configs');
       assert.arrayStrictEquals(
@@ -233,7 +234,7 @@ module('Graph | Order Preservation', function (hooks) {
       // add a new config '5' with an index
       store._join(() => {
         graph.update({
-          op: 'addToRelatedRecords',
+          op: 'add',
           field: 'configs',
           record: appIdentifier,
           value: identifier('config', '5'),
@@ -242,7 +243,9 @@ module('Graph | Order Preservation', function (hooks) {
       });
 
       assert.notified(appIdentifier, 'relationships', 'configs', 1);
-      assert.notified(identifier('config', '5'), 'relationships', 'app', 1);
+
+      // config has never had "getData" called and so we do not notify
+      assert.notified(identifier('config', '5'), 'relationships', 'app', 0);
 
       configState = graph.getData(appIdentifier, 'configs');
       assert.arrayStrictEquals(
@@ -269,7 +272,8 @@ module('Graph | Order Preservation', function (hooks) {
         });
       });
 
-      assert.notified(identifier('group', '4'), 'relationships', 'apps', 1);
+      // group4 has never had "getData" called and so we do not notify
+      assert.notified(identifier('group', '4'), 'relationships', 'apps', 0);
 
       // assert starting state
       let appsState = graph.getData(identifier('group', '4'), 'apps');
@@ -302,7 +306,7 @@ module('Graph | Order Preservation', function (hooks) {
       // add a group '4' to app '1'
       store._join(() => {
         graph.update({
-          op: 'addToRelatedRecords',
+          op: 'add',
           field: 'groups',
           record: appIdentifier,
           value: identifier('group', '4'),
@@ -331,11 +335,11 @@ module('Graph | Order Preservation', function (hooks) {
 
     test('order is preserved when removing from a hasMany', function (assert) {
       const { owner } = this;
-      const store = owner.lookup('service:store') as Store;
+      const store = isPrivateStore(owner.lookup('service:store'));
       const graph = graphFor(store);
 
       function identifier(type: string, id: string) {
-        return store.identifierCache.getOrCreateRecordIdentifier({ type, id });
+        return store.cacheKeyManager.getOrCreateRecordIdentifier({ type, id });
       }
 
       const appIdentifier = identifier('app', '1');
@@ -343,7 +347,7 @@ module('Graph | Order Preservation', function (hooks) {
       // remove config '2'
       store._join(() => {
         graph.update({
-          op: 'removeFromRelatedRecords',
+          op: 'remove',
           field: 'configs',
           record: appIdentifier,
           value: identifier('config', '2'),
@@ -351,7 +355,9 @@ module('Graph | Order Preservation', function (hooks) {
       });
 
       assert.notified(appIdentifier, 'relationships', 'configs', 1);
-      assert.notified(identifier('config', '2'), 'relationships', 'app', 1);
+
+      // config has never had "getData" called and so we do not notify
+      assert.notified(identifier('config', '2'), 'relationships', 'app', 0);
 
       let configState = graph.getData(appIdentifier, 'configs');
       assert.arrayStrictEquals(
@@ -363,7 +369,7 @@ module('Graph | Order Preservation', function (hooks) {
       // add config '2' back to the end
       store._join(() => {
         graph.update({
-          op: 'addToRelatedRecords',
+          op: 'add',
           field: 'configs',
           record: appIdentifier,
           value: identifier('config', '2'),
@@ -371,7 +377,8 @@ module('Graph | Order Preservation', function (hooks) {
       });
 
       assert.notified(appIdentifier, 'relationships', 'configs', 1);
-      assert.notified(identifier('config', '2'), 'relationships', 'app', 1);
+      // config has never had "getData" called and so we do not notify
+      assert.notified(identifier('config', '2'), 'relationships', 'app', 0);
 
       configState = graph.getData(appIdentifier, 'configs');
       assert.arrayStrictEquals(
@@ -383,7 +390,7 @@ module('Graph | Order Preservation', function (hooks) {
       // remove config '3' with an index
       store._join(() => {
         graph.update({
-          op: 'removeFromRelatedRecords',
+          op: 'remove',
           field: 'configs',
           record: appIdentifier,
           value: identifier('config', '3'),
@@ -392,7 +399,8 @@ module('Graph | Order Preservation', function (hooks) {
       });
 
       assert.notified(appIdentifier, 'relationships', 'configs', 1);
-      assert.notified(identifier('config', '3'), 'relationships', 'app', 1);
+      // config has never had "getData" called and so we do not notify
+      assert.notified(identifier('config', '3'), 'relationships', 'app', 0);
 
       configState = graph.getData(appIdentifier, 'configs');
       assert.arrayStrictEquals(
@@ -404,11 +412,11 @@ module('Graph | Order Preservation', function (hooks) {
 
     test('order is preserved when adding via the inverse hasMany of a hasMany', function (assert) {
       const { owner } = this;
-      const store = owner.lookup('service:store') as Store;
+      const store = isPrivateStore(owner.lookup('service:store'));
       const graph = graphFor(store);
 
       function identifier(type: string, id: string) {
-        return store.identifierCache.getOrCreateRecordIdentifier({ type, id });
+        return store.cacheKeyManager.getOrCreateRecordIdentifier({ type, id });
       }
 
       const appIdentifier = identifier('app', '1');
@@ -425,10 +433,11 @@ module('Graph | Order Preservation', function (hooks) {
         });
       });
 
-      assert.notified(identifier('group', '4'), 'relationships', 'apps', 1);
-      assert.notified(identifier('app', '2'), 'relationships', 'groups', 1);
-      assert.notified(identifier('app', '3'), 'relationships', 'groups', 1);
-      assert.notified(identifier('app', '4'), 'relationships', 'groups', 1);
+      // these relationships have never had "getData" called and so we do not notify
+      assert.notified(identifier('group', '4'), 'relationships', 'apps', 0);
+      assert.notified(identifier('app', '2'), 'relationships', 'groups', 0);
+      assert.notified(identifier('app', '3'), 'relationships', 'groups', 0);
+      assert.notified(identifier('app', '4'), 'relationships', 'groups', 0);
 
       // assert starting state
       let appsState = graph.getData(identifier('group', '4'), 'apps');
@@ -464,7 +473,7 @@ module('Graph | Order Preservation', function (hooks) {
       // add a group '4' to app '1'
       store._join(() => {
         graph.update({
-          op: 'addToRelatedRecords',
+          op: 'add',
           field: 'groups',
           record: appIdentifier,
           value: identifier('group', '4'),
@@ -493,11 +502,11 @@ module('Graph | Order Preservation', function (hooks) {
 
     test('order is preserved when removing via the inverse hasMany of a hasMany', function (assert) {
       const { owner } = this;
-      const store = owner.lookup('service:store') as Store;
+      const store = isPrivateStore(owner.lookup('service:store'));
       const graph = graphFor(store);
 
       function identifier(type: string, id: string) {
-        return store.identifierCache.getOrCreateRecordIdentifier({ type, id });
+        return store.cacheKeyManager.getOrCreateRecordIdentifier({ type, id });
       }
 
       const appIdentifier = identifier('app', '1');
@@ -519,7 +528,8 @@ module('Graph | Order Preservation', function (hooks) {
       assert.notified(appIdentifier, 'relationships', 'groups', 0);
       assert.notified(identifier('app', '2'), 'relationships', 'groups', 0);
       assert.notified(identifier('app', '3'), 'relationships', 'groups', 0);
-      assert.notified(identifier('app', '4'), 'relationships', 'groups', 1);
+      // relationship has never had "getData" called and so we do not notify
+      assert.notified(identifier('app', '4'), 'relationships', 'groups', 0);
 
       // assert starting state
       let appsState = graph.getData(groupIdentifier, 'apps');
@@ -556,7 +566,7 @@ module('Graph | Order Preservation', function (hooks) {
       // now, remove group 3 from app 1
       store._join(() => {
         graph.update({
-          op: 'removeFromRelatedRecords',
+          op: 'remove',
           field: 'groups',
           record: appIdentifier,
           value: groupIdentifier,
@@ -585,11 +595,11 @@ module('Graph | Order Preservation', function (hooks) {
 
     test('order is preserved when adding via the inverse belongsTo of a hasMany', function (assert) {
       const { owner } = this;
-      const store = owner.lookup('service:store') as Store;
+      const store = isPrivateStore(owner.lookup('service:store'));
       const graph = graphFor(store);
 
       function identifier(type: string, id: string) {
-        return store.identifierCache.getOrCreateRecordIdentifier({ type, id });
+        return store.cacheKeyManager.getOrCreateRecordIdentifier({ type, id });
       }
 
       const appIdentifier = identifier('app', '1');
@@ -629,7 +639,8 @@ module('Graph | Order Preservation', function (hooks) {
       });
 
       assert.notified(appIdentifier, 'relationships', 'configs', 1);
-      assert.notified(identifier('config', '4'), 'relationships', 'app', 1);
+      // relationship has never had "getData" called and so we do not notify
+      assert.notified(identifier('config', '4'), 'relationships', 'app', 0);
 
       // assert mutated state
       const config4State = graph.getData(identifier('config', '4'), 'app');
@@ -645,14 +656,19 @@ module('Graph | Order Preservation', function (hooks) {
 
     test('order is preserved when removing via the inverse belongsTo of a hasMany', function (assert) {
       const { owner } = this;
-      const store = owner.lookup('service:store') as Store;
+      const store = isPrivateStore(owner.lookup('service:store'));
       const graph = graphFor(store);
 
       function identifier(type: string, id: string) {
-        return store.identifierCache.getOrCreateRecordIdentifier({ type, id });
+        return store.cacheKeyManager.getOrCreateRecordIdentifier({ type, id });
       }
 
       const appIdentifier = identifier('app', '1');
+
+      // subscribe to the app relationships
+      ['1', '2', '3'].forEach((id) => {
+        graph.getData(identifier('config', id), 'app');
+      });
 
       // change the order of configs
       // from '1', '2', '3'

@@ -1,0 +1,458 @@
+name: 0. Release
+
+concurrency:
+  group: ci-publish-release
+  # only one job at a time, job must complete before another can run
+
+permissions:
+  id-token: write  # Required for OIDC
+  contents: read
+
+on:
+  workflow_dispatch:
+    inputs:
+      # we are only allowed to use 10 inputs
+      # so a few are overloaded
+      channel: #1
+        name: Channel
+        description: '[All]: The Release Channel / NPM Distribution Tag'
+        required: true
+        default: 'canary'
+        type: choice
+        options:
+        - canary
+        - beta
+        - stable
+        - lts # current LTS
+        - lts-prev # prior LTS, e.g. `lts-4-8`
+        - promote-lts # promote an existing version to an LTS tag
+      train: #2
+        name: Train
+        description: '[All]: If not the current primary release train, the prior major version for which to perform a new release'
+        required: false
+        default: ''
+        type: choice
+        options:
+        - ''
+        - v4
+      increment: #3
+        name: Increment
+        description: '[Canary/Stable]: Type of Version Bump To Perform. Only used by the canary and stable release jobs. When used for stable, this determines the type of version bump to perform when upversioning or downversioning'
+        required: true
+        default: 'patch'
+        type: choice
+        options:
+        - patch
+        - minor
+        - major
+      # This input is used to determine whether to start/continue a beta-cycle vs mirror from canary.
+      #
+      # A beta-cycle "forks" from canary. It starts by updating the beta branch to the current state
+      # of main (canary). Thereafter any updates to the beta branch are cherry-picked from main or PR'd
+      # to the beta branch.
+      #
+      # The (default) mirror approach instead directly copies the canary release to the beta branch
+      # each time. This is useful when the changes in canary are relatively minor or safe to release
+      # and
+      # and then publishing a beta release. A mirror is a direct copy of the canary release.
+      beta_kind: #4
+        description: '[Beta]: Whether to start/continue a beta-cycle vs mirror from canary'
+        required: true
+        default: 'mirror'
+        type: choice
+        options:
+        - beta-cycle  # start or continue a beta-cycle.
+        - mirror      # mirror code from canary. This is the default.
+      # At cycle start we must always reset the release branch to beta for stable, or main for beta.
+      is-cycle-start: #5
+        description: '[Beta/Stable]: Whether this is the start of a new release cycle (only used by beta and stable release jobs)'
+        required: true
+        default: false
+        type: boolean
+      stable_source-branch: #6
+        description: '[Stable]: If starting a new cycle, or reversioning, the source branch to update the release branch from'
+        required: false
+        default: 'beta'
+        type: choice
+        options:
+        - beta      # promotes beta to stable
+        - main      # promotes canary to stable
+        - release   # re-releases a stable version
+      # downversion e.g. 5.4.1-alpha.1 => 5.3.1 happens when we use a canary, beta or later release to hotfix a stable
+      # upversion e.g. 5.3.1 => 5.4.0 happens when we re-release an existing stable as a new minor/major
+      # examples:
+      #   Upversion: 5.3.1 => 5.4.0
+      #     from-version: 5.3.1
+      #     increment: minor
+      #   Downversion: 5.4.1-alpha.1 => 5.3.1
+      #     from-version: 5.3.0
+      #     increment: patch
+      from-version: #7
+        description: '[Stable]: When upversioning or downversioning, the version from which to increment to get the version number for the release. [Promote]: the existing version to promote (e.g. `4.0.0`)'
+        type: string
+      lts_branch_or_promote_channel: #8
+        description: '[LTS]: The branch to publish from, e.g. `lts-4-12`. Do not use just "lts" for lts mode. [Promote]: The NPM Distribution Tag to promote to (e.g. `lts` or `lts-4-8`)'
+        required: true
+        default: lts
+        type: string
+      promote_update-branch: #9
+        description: '[Promote]: Whether to update the associated LTS branch to the same commit as the tag'
+        default: true
+        type: boolean
+      dryRun: #10
+        name: Dry Run
+        description: '[All]: Whether to perform a dry run'
+        required: true
+        default: false
+        type: boolean
+      skipPublish:
+        name: Skip Publish
+        description: '[All]: Whether to skip publishing to NPM'
+        required: false
+        default: false
+        type: boolean
+  schedule:
+    - cron: '0 20 * * 2' # weekly (Tuesday) 12 PM PST
+    - cron: '0 20 * * 5' # weekly (Friday) 12 PM PST
+
+env:
+  TURBO_API: http://127.0.0.1:9080
+  TURBO_TOKEN: this-is-not-a-secret
+  TURBO_TEAM: myself
+
+jobs:
+  canary:
+    if: github.event.inputs.channel == 'canary' || github.event_name == 'schedule'
+    name: Publish Canary ${{ github.event.inputs.train }}
+    runs-on: ubuntu-latest
+    environment: deployment
+    steps:
+      - name: Enforce Branch
+        # Note: we always checkout main in actions/checkout, but this enforces
+        # good hygiene.
+        if: github.ref != 'refs/heads/main'
+        run: |
+          echo "Releases may only be performed from the main branch."
+          exit 1
+      - name: Desired Branch
+        id: desired-branch
+        env:
+          TRAIN: ${{ github.event.inputs.train }}
+        run: |
+          if [[ $TRAIN != "" ]]; then
+            echo "DESIRED_BRANCH=${{github.event.inputs.train}}-main" >> "$GITHUB_OUTPUT"
+          else
+            echo "DESIRED_BRANCH=main" >> "$GITHUB_OUTPUT"
+          fi
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 1
+          fetch-tags: true
+          show-progress: false
+          token: ${{ secrets.GH_DEPLOY_TOKEN }}
+          ref: ${{ steps.desired-branch.outputs.DESIRED_BRANCH }}
+      - name: Check should run if HEAD is untagged
+        run: |
+          echo "HEAD is $(git name-rev --tags --name-only $(git rev-parse HEAD))"
+          if [[ "$(git name-rev --tags --name-only $(git rev-parse HEAD))" != "undefined" ]]; then
+            exit 1
+          fi
+      - uses: ./.github/actions/setup
+        with:
+          install: true
+          DISABLE_TURBO_CACHE: true
+      - name: Make sure git user is setup
+        run: |
+          git config --local user.email ${{ secrets.GH_DEPLOY_EMAIL }}
+          git config --local user.name ${{ secrets.GH_DEPLOY_NAME }}
+      - name: Publish with script
+        run: bun release exec canary --publish=${{ github.event.inputs.skipPublish != 'true' }} --train=${{ github.event.inputs.train }} --increment=${{ github.event.inputs.increment || 'patch' }} --dry-run=${{ github.event.inputs.dryRun }}
+        env:
+          FORCE_COLOR: 2
+          CI: true
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: tarballs
+          path: tmp/tarballs/**/*.tgz
+
+  beta:
+    if: github.event.inputs.channel == 'beta'
+    name: Publish Beta ${{ github.event.inputs.train }}
+    runs-on: ubuntu-latest
+    environment: deployment
+    steps:
+      - name: Enforce Branch
+        # Note: we always checkout beta in actions/checkout, but this enforces
+        # good hygiene.
+        if: github.ref != 'refs/heads/main'
+        run: |
+          echo "Releases may only be performed from the main branch."
+          exit 1
+      - name: Desired Branch
+        id: desired-branch
+        env:
+          TRAIN: ${{ github.event.inputs.train }}
+        run: |
+          if [[ $TRAIN != "" ]]; then
+            echo "DESIRED_BRANCH=${{github.event.inputs.train}}-beta" >> "$GITHUB_OUTPUT"
+          else
+            echo "DESIRED_BRANCH=beta" >> "$GITHUB_OUTPUT"
+          fi
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-tags: true
+          show-progress: false
+          token: ${{ secrets.GH_DEPLOY_TOKEN }}
+          fetch-depth: 3
+          ref: ${{ steps.desired-branch.outputs.DESIRED_BRANCH }}
+      - run: git fetch origin main --depth=1
+      # scoped to `refs/tags/*` on purpose: `--tags --depth=1` would also match the
+      # remote's default refspec and re-shallow every branch to a single commit
+      - run: git fetch origin --depth=1 "+refs/tags/*:refs/tags/*"
+      - name: Make sure git user is setup
+        run: |
+          git config --local user.email ${{ secrets.GH_DEPLOY_EMAIL }}
+          git config --local user.name ${{ secrets.GH_DEPLOY_NAME }}
+      - name: Reset the Beta Branch
+        if: github.event.inputs.beta_kind == 'mirror' || github.event.inputs.is-cycle-start == 'true'
+        run: git reset --hard origin/main && git push origin beta -f
+      - uses: ./.github/actions/setup
+        with:
+          install: true
+          DISABLE_TURBO_CACHE: true
+      - name: Get most recent beta version
+        id: version
+        if: github.event.inputs.beta_kind == 'mirror'
+        run: echo "value=$(bun --silent release latest beta)" >> $GITHUB_OUTPUT
+      - name: Publish New Release
+        # For beta-cycle we always increment from the branch state
+        # For mirror we increment from the last beta version, unless it's start of a new cycle.
+        if: github.event.inputs.beta_kind == 'beta-cycle' || github.event.inputs.is-cycle-start == 'true'
+        run: bun release exec publish beta --publish=${{ github.event.inputs.skipPublish != 'true' }} --train=${{ github.event.inputs.train }} --dry-run=${{ github.event.inputs.dryRun }}
+        env:
+          FORCE_COLOR: 2
+          CI: true
+      - name: Publish New Mirror Release
+        if: github.event.inputs.beta_kind == 'mirror'
+        run: bun release exec publish beta --publish=${{ github.event.inputs.skipPublish != 'true' }} --train=${{ github.event.inputs.train }} --from=${{ steps.version.outputs.value }} --dry-run=${{ github.event.inputs.dryRun }}
+        env:
+          FORCE_COLOR: 2
+          CI: true
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: tarballs
+          path: tmp/tarballs/**/*.tgz
+
+  stable:
+    if: github.event.inputs.channel == 'stable'
+    name: Publish Stable ${{ github.event.inputs.train }}
+    runs-on: ubuntu-latest
+    environment: deployment
+    steps:
+      - name: Enforce Branch
+        # Note: we always checkout release in actions/checkout, but this enforces
+        # good hygiene.
+        if: github.ref != 'refs/heads/main'
+        run: |
+          echo "Releases may only be performed from the main branch."
+          exit 1
+      - name: Desired Branch
+        id: desired-branch
+        env:
+          TRAIN: ${{ github.event.inputs.train }}
+        run: |
+          if [[ $TRAIN != "" ]]; then
+            echo "DESIRED_BRANCH=${{github.event.inputs.train}}-release" >> "$GITHUB_OUTPUT"
+            echo "MAIN_BRANCH=${{github.event.inputs.train}}-main" >> "$GITHUB_OUTPUT"
+            echo "BETA_BRANCH=${{github.event.inputs.train}}-beta" >> "$GITHUB_OUTPUT"
+          else
+            echo "DESIRED_BRANCH=release" >> "$GITHUB_OUTPUT"
+            echo "MAIN_BRANCH=main" >> "$GITHUB_OUTPUT"
+            echo "BETA_BRANCH=beta" >> "$GITHUB_OUTPUT"
+          fi
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-tags: true
+          show-progress: false
+          token: ${{ secrets.GH_DEPLOY_TOKEN }}
+          # release notes are generated from `git log <last-stable-tag>..HEAD`, so we need
+          # the full history *and* the full history behind every tag. `--depth` is not an
+          # option here: it applies to every ref in the fetch, so any shallow fetch after
+          # this point re-truncates the branch we just checked out (see the tag fetches in
+          # the other jobs below).
+          fetch-depth: 0
+          ref: ${{ steps.desired-branch.outputs.DESIRED_BRANCH }}
+      ## Ensure we have a full copy of the source branch
+      - run: git fetch origin ${{ github.event.inputs.stable_source-branch }}
+      - name: Make sure git user is setup
+        run: |
+          git config --local user.email ${{ secrets.GH_DEPLOY_EMAIL }}
+          git config --local user.name ${{ secrets.GH_DEPLOY_NAME }}
+      - name: Reset the Release Branch
+        if: github.event.inputs.stable_source-branch != 'release' && (github.event.inputs.is-cycle-start == 'true' || github.event.inputs.from-version != null)
+        run: git reset --hard origin/${{ github.event.inputs.stable_source-branch }} && git push origin release -f
+      - uses: ./.github/actions/setup
+        with:
+          install: true
+          DISABLE_TURBO_CACHE: true
+      # Recorded before the release script commits anything, so the changelog lookup below
+      # can be limited to the commits this run actually created.
+      - name: Record pre-release HEAD
+        id: pre-release
+        run: echo "sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
+      - name: Publish New Release
+        # If we are not reversioning
+        # Then we do the default patch increment from the current branch state.
+        # This handles both start-of-cycle and bugfix releases.
+        if: github.event.inputs.from-version == null
+        run: bun release publish release --publish=${{ github.event.inputs.skipPublish != 'true' }} --train=${{ github.event.inputs.train }} --dry-run=${{ github.event.inputs.dryRun }}
+        env:
+          FORCE_COLOR: 2
+          CI: true
+          GITHUB_AUTH: ${{ secrets.GITHUB_TOKEN }}
+      - name: Publish New Release (Reversion)
+        # If we are reversioning
+        # Then we increment from the branch with the supplied increment
+        # This handles both upversioning and downversioning
+        if: github.event.inputs.from-version != null
+        run: bun release publish release --publish=${{ github.event.inputs.skipPublish != 'true' }} --train=${{ github.event.inputs.train }} --from=${{ github.event.inputs.from-version }} --increment=${{ github.event.inputs.increment }} --dry-run=${{ github.event.inputs.dryRun }}
+        env:
+          FORCE_COLOR: 2
+          CI: true
+          GITHUB_AUTH: ${{ secrets.GITHUB_TOKEN }}
+      - name: Get changelog commit SHA
+        id: changelog-commit
+        if: github.event.inputs.dryRun != 'true'
+        run: |
+          # Scoped to the commits this run created. A release with no changelog-worthy
+          # changes makes no changelog commit, and an unscoped search would then find the
+          # *previous* release's commit and cherry-pick it a second time. No match leaves
+          # SHA empty, which already skips the cherry-pick steps below.
+          SHA=$(git log --format='%H' -n 1 --grep="chore: update changelogs" ${{ steps.pre-release.outputs.sha }}..HEAD)
+          echo "sha=${SHA}" >> $GITHUB_OUTPUT
+      - name: Cherry-pick changelog to main
+        if: github.event.inputs.dryRun != 'true' && steps.changelog-commit.outputs.sha != ''
+        env:
+          GH_TOKEN: ${{ secrets.GH_DEPLOY_TOKEN }}
+          SHA: ${{ steps.changelog-commit.outputs.sha }}
+          TARGET: ${{ steps.desired-branch.outputs.MAIN_BRANCH }}
+        run: |
+          git checkout -- .
+          git fetch origin $TARGET
+          git checkout -B $TARGET origin/$TARGET
+          if git cherry-pick $SHA; then
+            git push origin $TARGET
+          else
+            git cherry-pick --abort
+            PR_BRANCH="changelog/cherry-pick-to-${TARGET}-$(git rev-parse --short $SHA)"
+            git checkout -b $PR_BRANCH
+            git cherry-pick -X theirs $SHA
+            git push origin $PR_BRANCH
+            gh pr create \
+              --title "chore: cherry-pick changelog to ${TARGET}" \
+              --body "Changelog commit ${SHA} could not be cleanly cherry-picked to \`${TARGET}\`. Resolved with \`-X theirs\` — please verify no entries from \`${TARGET}\` were lost." \
+              --base $TARGET \
+              --head $PR_BRANCH
+          fi
+      - name: Cherry-pick changelog to beta
+        if: github.event.inputs.dryRun != 'true' && steps.changelog-commit.outputs.sha != ''
+        env:
+          GH_TOKEN: ${{ secrets.GH_DEPLOY_TOKEN }}
+          SHA: ${{ steps.changelog-commit.outputs.sha }}
+          TARGET: ${{ steps.desired-branch.outputs.BETA_BRANCH }}
+        run: |
+          git checkout -- .
+          git fetch origin $TARGET
+          git checkout -B $TARGET origin/$TARGET
+          if git cherry-pick $SHA; then
+            git push origin $TARGET
+          else
+            git cherry-pick --abort
+            PR_BRANCH="changelog/cherry-pick-to-${TARGET}-$(git rev-parse --short $SHA)"
+            git checkout -b $PR_BRANCH
+            git cherry-pick -X theirs $SHA
+            git push origin $PR_BRANCH
+            gh pr create \
+              --title "chore: cherry-pick changelog to ${TARGET}" \
+              --body "Changelog commit ${SHA} could not be cleanly cherry-picked to \`${TARGET}\`. Resolved with \`-X theirs\` — please verify no entries from \`${TARGET}\` were lost." \
+              --base $TARGET \
+              --head $PR_BRANCH
+          fi
+
+  lts:
+    if: github.event.inputs.channel == 'lts' || github.event.inputs.channel == 'lts-prev'
+    name: Publish ${{ github.event.inputs.channel }} ${{ github.event.inputs.train }}
+    runs-on: ubuntu-latest
+    environment: deployment
+    steps:
+      - name: Enforce Branch
+        # Note: we always checkout the correct lts branch in actions/checkout, but this enforces
+        # good hygiene.
+        if: github.ref != 'refs/heads/main'
+        run: |
+          echo "Releases may only be performed from the main branch."
+          exit 1
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-tags: true
+          show-progress: false
+          token: ${{ secrets.GH_DEPLOY_TOKEN }}
+          # as with the stable job, release notes need full history behind the branch and
+          # behind the tag we diff against
+          fetch-depth: 0
+          ref: ${{ github.event.inputs.lts_branch_or_promote_channel }}
+      - name: Make sure git user is setup
+        run: |
+          git config --local user.email ${{ secrets.GH_DEPLOY_EMAIL }}
+          git config --local user.name ${{ secrets.GH_DEPLOY_NAME }}
+      - uses: ./.github/actions/setup
+        with:
+          install: true
+          DISABLE_TURBO_CACHE: true
+      - name: Publish New LTS Release
+        # We always increment from the branch state
+        run: bun release publish ${{ github.event.inputs.channel }} --publish=${{ github.event.inputs.skipPublish != 'true' }} --dry-run=${{ github.event.inputs.dryRun }}
+        env:
+          FORCE_COLOR: 2
+          CI: true
+          GITHUB_AUTH: ${{ secrets.GH_DEPLOY_TOKEN }}
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: tarballs
+          path: tmp/tarballs/**/*.tgz
+
+  promote:
+    if: github.event.inputs.channel == 'promote-lts'
+    name: Promote LTS
+    runs-on: ubuntu-latest
+    environment: deployment
+    steps:
+      - name: Enforce Branch
+        # Note: we always checkout main in actions/checkout, but this enforces
+        # good hygiene.
+        if: github.ref != 'refs/heads/main'
+        run: |
+          echo "Releases may only be performed from the main branch."
+          exit 1
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 1
+          fetch-tags: true
+          show-progress: false
+          token: ${{ secrets.GH_DEPLOY_TOKEN }}
+      # scoped to `refs/tags/*` on purpose: `--tags --depth=1` would also match the
+      # remote's default refspec and re-shallow every branch to a single commit
+      - run: git fetch origin --depth=1 "+refs/tags/*:refs/tags/*"
+      - uses: ./.github/actions/setup
+        with:
+          install: true
+          DISABLE_TURBO_CACHE: true
+      - name: Make sure git user is setup
+        run: |
+          git config --local user.email ${{ secrets.GH_DEPLOY_EMAIL }}
+          git config --local user.name ${{ secrets.GH_DEPLOY_NAME }}
+      - name: Publish with script
+        run: bun release exec promote --v=${{ github.event.inputs.from-version }} --t=${{ github.event.inputs.lts_branch_or_promote_channel }} --u=${{ github.event.inputs.promote_update-branch }} --dry-run=${{ github.event.inputs.dryRun }}
+        env:
+          FORCE_COLOR: 2
+          CI: true

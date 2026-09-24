@@ -1,6 +1,7 @@
 {
   "name": "@warp-drive/diagnostic",
-  "version": "0.0.0-alpha.77",
+  "version": "0.0.3-alpha.172",
+  "private": true,
   "description": "⚡️ A Lightweight Modern Test Runner",
   "keywords": [
     "test",
@@ -18,114 +19,106 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com:emberjs/data.git",
+    "url": "git+ssh://git@github.com:warp-drive-data/warp-drive.git",
     "directory": "packages/diagnostic"
   },
   "license": "MIT",
   "author": "Chris Thoburn <runspired@users.noreply.github.com>",
   "files": [
-    "unstable-preview-types",
     "addon-main.cjs",
     "dist/",
-    "server/",
+    "dist-server/",
     "README.md",
     "LICENSE.md",
-    "NCC-1701-a.svg",
-    "NCC-1701-a-blue.svg"
+    "logos"
   ],
   "exports": {
+    "./server": {
+      "node": "./dist-server/index.js",
+      "bun": "./dist-server/index.js",
+      "deno": "./dist-server/index.js",
+      "default": "./dist-server/index.js"
+    },
     ".": {
-      "node": "./server/index.js",
-      "bun": "./server/index.js",
-      "deno": "./server/index.js",
-      "browser": {
-        "types": "./unstable-preview-types/index.d.ts",
-        "default": "./dist/index.js"
-      },
-      "import": {
-        "types": "./unstable-preview-types/index.d.ts",
-        "default": "./dist/index.js"
-      },
-      "default": "./server/index.js"
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
     },
     "./*.css": {
       "default": "./dist/*.css"
     },
     "./server/*": {
-      "node": "./server/*.js",
-      "bun": "./server/*.js",
-      "deno": "./server/*.js"
+      "node": "./dist-server/*.js",
+      "bun": "./dist-server/*.js",
+      "deno": "./dist-server/*.js"
     },
     "./ember": {
-      "types": "./unstable-preview-types/ember.d.ts",
+      "types": "./dist/ember.d.ts",
       "default": "./dist/ember.js"
     },
     "./*": {
-      "types": "./unstable-preview-types/*.d.ts",
+      "types": "./dist/*.d.ts",
       "default": "./dist/*.js"
     }
   },
   "scripts": {
-    "lint": "eslint . --quiet --cache --cache-strategy=content --report-unused-disable-directives",
     "build:tests": "rm -rf dist-test && cp -R test dist-test && mkdir -p dist-test/@warp-drive && cp -R dist dist-test/@warp-drive/diagnostic",
-    "build:pkg": "vite build;",
-    "prepack": "bun run build:pkg",
-    "sync-hardlinks": "bun run sync-dependencies-meta-injected"
+    "build:pkg": "NODE_ENV=production node node_modules/tsdown/dist/run.mjs && NODE_ENV=production node node_modules/tsdown/dist/run.mjs -c ./tsdown.config-server.mjs",
+    "prepack": "pnpm run build:pkg",
+    "sync": "echo \"syncing\"",
+    "start": "node node_modules/tsdown/dist/run.mjs --watch"
   },
   "peerDependencies": {
-    "@ember/test-helpers": "^3.3.0",
-    "ember-cli-test-loader": ">= 3.1.0"
+    "@ember/test-helpers": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:"
   },
   "peerDependenciesMeta": {
     "@ember/test-helpers": {
       "optional": true
     },
-    "ember-cli-test-loader": {
+    "react": {
+      "optional": true
+    },
+    "react-dom": {
       "optional": true
     }
   },
   "dependencies": {
-    "chalk": "^5.3.0",
-    "debug": "^4.3.4",
-    "ember-cli-htmlbars": "^6.3.0",
-    "tmp": "^0.2.3",
-    "@warp-drive/build-config": "workspace:0.0.0-alpha.28"
+    "@embroider/macros": "catalog:",
+    "@warp-drive/core": "workspace:*",
+    "@warp-drive/react": "workspace:*",
+    "debug": "catalog:",
+    "dom-element-descriptors": "catalog:",
+    "hono": "catalog:",
+    "@hono/node-server": "catalog:",
+    "@hono/node-ws": "catalog:",
+    "qunit-dom": "catalog:"
   },
   "devDependencies": {
-    "@babel/core": "^7.24.5",
-    "@babel/plugin-transform-typescript": "^7.24.5",
-    "@babel/preset-env": "^7.24.5",
-    "@babel/preset-typescript": "^7.24.1",
-    "@babel/runtime": "^7.24.5",
-    "@warp-drive/internal-config": "workspace:5.4.0-alpha.91",
-    "bun-types": "^1.1.8",
-    "@ember/test-helpers": "^3.3.0",
-    "ember-source": "~5.8.0",
-    "@glimmer/component": "^1.1.2",
-    "ember-cli-test-loader": "^3.1.0",
-    "pnpm-sync-dependencies-meta-injected": "0.0.14",
-    "typescript": "^5.4.5",
-    "vite": "^5.2.11"
+    "@babel/core": "catalog:",
+    "@babel/plugin-transform-typescript": "catalog:",
+    "@babel/preset-env": "catalog:",
+    "@babel/preset-react": "catalog:",
+    "@babel/preset-typescript": "catalog:",
+    "@babel/runtime": "catalog:",
+    "@ember/test-helpers": "catalog:",
+    "@glimmer/component": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "@warp-drive/internal-config": "workspace:*",
+    "@types/debug": "catalog:",
+    "@types/node": "catalog:",
+    "bun-types": "catalog:",
+    "ember-source": "catalog:",
+    "tsdown": "catalog:",
+    "typescript": "catalog:"
   },
-  "engines": {
-    "node": ">= 18.20.3"
-  },
-  "volta": {
-    "extends": "../../package.json"
-  },
-  "packageManager": "pnpm@8.15.8",
   "ember-addon": {
     "main": "addon-main.cjs",
     "type": "addon",
-    "version": 2,
-    "preventDownleveling": true
+    "version": 2
   },
   "ember": {
     "edition": "octane"
-  },
-  "dependenciesMeta": {
-    "@warp-drive/build-config": {
-      "injected": true
-    }
   }
 }

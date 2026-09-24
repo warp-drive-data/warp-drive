@@ -1,0 +1,30 @@
+{
+  "name": "@warp-drive/internal-config",
+  "private": true,
+  "version": "5.10.0-alpha.11",
+  "type": "module",
+  "dependencies": {
+    "@babel/core": "catalog:",
+    "@babel/eslint-parser": "catalog:",
+    "@nullvoxpopuli/ember-rolldown": "catalog:",
+    "@rolldown/plugin-babel": "catalog:",
+    "@rollup/plugin-babel": "catalog:",
+    "@typescript-eslint/eslint-plugin": "catalog:",
+    "@typescript-eslint/parser": "catalog:",
+    "@types/debug": "catalog:",
+    "typescript-eslint": "catalog:",
+    "@eslint/js": "catalog:",
+    "comment-json": "catalog:",
+    "debug": "catalog:",
+    "globals": "catalog:",
+    "ember-eslint-parser": "catalog:",
+    "eslint": "catalog:",
+    "eslint-config-prettier": "catalog:",
+    "eslint-plugin-import-x": "catalog:",
+    "eslint-plugin-mocha": "catalog:",
+    "eslint-plugin-n": "catalog:",
+    "eslint-plugin-qunit": "catalog:",
+    "tsdown": "catalog:",
+    "typescript": "catalog:"
+  }
+}

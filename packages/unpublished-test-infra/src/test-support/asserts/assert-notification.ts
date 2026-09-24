@@ -1,23 +1,28 @@
 import { TestContext } from '@ember/test-helpers';
 
-import type { StableRecordIdentifier } from '@warp-drive/core-types';
-
 import type Assert from 'ember-data-qunit-asserts';
 
-import type Store from '@ember-data/store';
-import type { CacheOperation, NotificationType } from '@ember-data/store';
-import type { StableDocumentIdentifier } from '@warp-drive/core-types/identifier';
+import type { Store, DocumentCacheOperation, NotificationType } from '@warp-drive/core';
+import type { ResourceKey, RequestKey } from '@warp-drive/core/types/identifier';
 
-type Counter = { count: number };
+// 'unscoped' counts notify() calls that carried no channel; such calls are
+// delivered to every subscriber. See NotificationChannel in @warp-drive/core.
+type CountableChannel = 'local' | 'remote' | 'unscoped';
+type ChannelCounts = Record<CountableChannel, number>;
+type Counter = { count: number; delivered: number; ignored: number; channels: ChannelCounts };
 type NotificationStorage = Map<
-  StableDocumentIdentifier | StableRecordIdentifier | 'document' | 'resource',
-  Map<NotificationType | CacheOperation, Counter | Map<string | symbol, Counter>>
+  RequestKey | ResourceKey | 'document' | 'resource',
+  Map<NotificationType | DocumentCacheOperation, Counter | Map<string | symbol, Counter>>
 >;
+
+function makeCounter(): Counter {
+  return { count: 0, delivered: 0, ignored: 0, channels: { local: 0, remote: 0, unscoped: 0 } };
+}
 
 function getCounter(
   context: TestContext,
-  identifier: StableRecordIdentifier | StableDocumentIdentifier,
-  bucket: NotificationType | CacheOperation,
+  cacheKey: ResourceKey | RequestKey,
+  bucket: NotificationType | DocumentCacheOperation,
   key: string | null
 ) {
   const storage = (context as unknown as { _notifications: NotificationStorage })._notifications;
@@ -25,16 +30,16 @@ function getCounter(
     throw new Error(`setupNotifications must be called before calling notified`);
   }
 
-  let identifierStorage = storage.get(identifier);
+  let identifierStorage = storage.get(cacheKey);
   if (!identifierStorage) {
     identifierStorage = new Map();
-    storage.set(identifier, identifierStorage);
+    storage.set(cacheKey, identifierStorage);
   }
 
   let bucketStorage = identifierStorage.get(bucket);
   if (!bucketStorage) {
     if (bucket === 'added' || bucket === 'removed' || bucket === 'updated' || bucket === 'state') {
-      bucketStorage = { count: 0 };
+      bucketStorage = makeCounter();
     } else {
       bucketStorage = new Map();
     }
@@ -46,7 +51,7 @@ function getCounter(
     const _key = key || Symbol.for(bucket);
     counter = bucketStorage.get(_key)!;
     if (!counter) {
-      counter = { count: 0 };
+      counter = makeCounter();
       bucketStorage.set(_key, counter);
     }
   } else {
@@ -71,47 +76,89 @@ function setupNotifications(context: TestContext, store: Store) {
   // eslint-disable-next-line @typescript-eslint/unbound-method
   const originalNotify = notifications.notify;
   notifications.notify = function (
-    identifier: StableRecordIdentifier | StableDocumentIdentifier,
-    bucket: NotificationType | CacheOperation,
-    key?: string
+    cacheKey: ResourceKey | RequestKey,
+    bucket: NotificationType | DocumentCacheOperation,
+    key?: string | Set<string> | null,
+    channel?: 'local' | 'remote'
   ) {
-    const counter = getCounter(context, identifier, bucket, key ?? null);
-    counter.count++;
+    // `key` may be a `Set<string>` when many keys for the same cacheKey+bucket
+    // are delivered in a single batched `notify` call (see NotificationManager
+    // and CacheCapabilitiesManager's relationship/attribute flush paths). Each
+    // key in that batch still results in one individually-delivered
+    // notification to subscribers, so for counting purposes we attribute the
+    // batch to each of its keys individually, exactly as if `notify` had been
+    // called once per key.
+    const keys = key instanceof Set ? Array.from(key) : [key ?? null];
 
     // @ts-expect-error TS is bad at curried overloads
-    return originalNotify.apply(notifications, [identifier, bucket, key]);
+    const scheduled = originalNotify.apply(notifications, [cacheKey, bucket, key, channel]);
+
+    for (const singleKey of keys) {
+      const counter = getCounter(context, cacheKey, bucket, singleKey);
+      counter.count++;
+      counter.channels[channel ?? 'unscoped']++;
+
+      if (scheduled) {
+        counter.delivered++;
+      } else {
+        counter.ignored++;
+      }
+    }
+
+    return scheduled;
   };
 }
 
-export function configureNotificationsAssert(this: TestContext, assert: Assert) {
+export function configureNotificationsAssert(this: TestContext, assert: unknown): void {
   // eslint-disable-next-line @typescript-eslint/no-this-alias
   const context = this;
 
-  assert.watchNotifications = function (store?: Store) {
+  (assert as Assert).watchNotifications = function (store?: Store) {
     store = store ?? (context.owner.lookup('service:store') as unknown as Store);
     setupNotifications(context, store);
   };
 
-  assert.notified = function (
+  (assert as Assert).notified = function (
     this: Assert,
-    identifier: StableRecordIdentifier | StableDocumentIdentifier,
-    bucket: NotificationType | CacheOperation,
+    cacheKey: ResourceKey | RequestKey,
+    bucket: NotificationType | DocumentCacheOperation,
     key: string | null,
-    count: number
+    count: number,
+    message?: string
   ) {
-    const counter = getCounter(context, identifier, bucket, key);
+    const counter = getCounter(context, cacheKey, bucket, key);
 
     this.pushResult({
       result: counter.count === count,
       actual: counter.count,
       expected: count,
-      message: `Expected ${count} ${bucket} notifications for ${identifier.lid} ${key || ''}, got ${counter.count}`,
+      message: `${message ? message + ' | ' : ''}Expected ${count} ${bucket} notifications for ${cacheKey.lid} ${key || ''}, got ${counter.count}`,
     });
 
     counter.count = 0;
+    counter.channels = { local: 0, remote: 0, unscoped: 0 };
   };
 
-  assert.clearNotifications = function () {
+  (assert as Assert).notifiedOn = function (
+    this: Assert,
+    channel: CountableChannel,
+    cacheKey: ResourceKey | RequestKey,
+    bucket: NotificationType | DocumentCacheOperation,
+    key: string | null,
+    count: number,
+    message?: string
+  ) {
+    const counter = getCounter(context, cacheKey, bucket, key);
+
+    this.pushResult({
+      result: counter.channels[channel] === count,
+      actual: counter.channels[channel],
+      expected: count,
+      message: `${message ? message + ' | ' : ''}Expected ${count} ${channel}-channel ${bucket} notifications for ${cacheKey.lid} ${key || ''}, got ${counter.channels[channel]}`,
+    });
+  };
+
+  (assert as Assert).clearNotifications = function () {
     clearNotifications(context);
   };
 }

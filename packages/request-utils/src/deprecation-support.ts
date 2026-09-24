@@ -2,23 +2,23 @@ import { deprecate } from '@ember/debug';
 
 import { dependencySatisfies, importSync, macroCondition } from '@embroider/macros';
 
-import { DEPRECATE_EMBER_INFLECTOR } from '@warp-drive/build-config/deprecations';
+import { DEPRECATE_EMBER_INFLECTOR } from '@warp-drive/core/build-config/deprecations';
+import { InflectionRuleDefaults } from '@warp-drive/utilities/-private';
 
-import { defaultRules as WarpDriveDefaults } from './-private/string/inflections';
-import { irregular, plural, singular, uncountable } from './string';
+import { irregular, plural, singular, uncountable } from './string.ts';
 
 if (DEPRECATE_EMBER_INFLECTOR) {
   if (macroCondition(dependencySatisfies('ember-inflector', '*'))) {
     const Inflector = (importSync('ember-inflector') as { default: typeof import('ember-inflector').default }).default;
     const { inflector } = Inflector;
 
-    // eslint-disable-next-line @typescript-eslint/unbound-method
+    // oxlint-disable-next-line typescript/unbound-method
     const originalPlural = inflector.plural;
-    // eslint-disable-next-line @typescript-eslint/unbound-method
+    // oxlint-disable-next-line typescript/unbound-method
     const originalSingular = inflector.singular;
-    // eslint-disable-next-line @typescript-eslint/unbound-method
+    // oxlint-disable-next-line typescript/unbound-method
     const originalIrregular = inflector.irregular;
-    // eslint-disable-next-line @typescript-eslint/unbound-method
+    // oxlint-disable-next-line typescript/unbound-method
     const originalUncountable = inflector.uncountable;
 
     // copy over any already registered rules
@@ -51,10 +51,10 @@ if (DEPRECATE_EMBER_INFLECTOR) {
     // is default via our own list.
     const defaultPluralKeys = new Set<string>();
     const defaultSingularKeys = new Set<string>();
-    WarpDriveDefaults.plurals.forEach(([regex]) => {
+    InflectionRuleDefaults.plurals.forEach(([regex]) => {
       defaultPluralKeys.add(regex.toString());
     });
-    WarpDriveDefaults.singular.forEach(([regex]) => {
+    InflectionRuleDefaults.singular.forEach(([regex]) => {
       defaultSingularKeys.add(regex.toString());
     });
 
@@ -92,7 +92,7 @@ if (DEPRECATE_EMBER_INFLECTOR) {
           for: 'warp-drive',
           since: {
             enabled: '5.3.4',
-            available: '5.3.4',
+            available: '4.13',
           },
           url: 'https://deprecations.emberjs.com/id/warp-drive.ember-inflector',
         }
@@ -116,7 +116,7 @@ if (DEPRECATE_EMBER_INFLECTOR) {
           for: 'warp-drive',
           since: {
             enabled: '5.3.4',
-            available: '5.3.4',
+            available: '4.13',
           },
           url: 'https://deprecations.emberjs.com/id/warp-drive.ember-inflector',
         }
@@ -148,7 +148,7 @@ if (DEPRECATE_EMBER_INFLECTOR) {
           for: 'warp-drive',
           since: {
             enabled: '5.3.4',
-            available: '5.3.4',
+            available: '4.13',
           },
           url: 'https://deprecations.emberjs.com/id/warp-drive.ember-inflector',
         }
@@ -172,7 +172,7 @@ if (DEPRECATE_EMBER_INFLECTOR) {
           for: 'warp-drive',
           since: {
             enabled: '5.3.4',
-            available: '5.3.4',
+            available: '4.13',
           },
           url: 'https://deprecations.emberjs.com/id/warp-drive.ember-inflector',
         }
@@ -191,7 +191,7 @@ if (DEPRECATE_EMBER_INFLECTOR) {
           for: 'warp-drive',
           since: {
             enabled: '5.3.4',
-            available: '5.3.4',
+            available: '4.13',
           },
           url: 'https://deprecations.emberjs.com/id/warp-drive.ember-inflector',
         }
@@ -212,7 +212,7 @@ if (DEPRECATE_EMBER_INFLECTOR) {
           for: 'warp-drive',
           since: {
             enabled: '5.3.4',
-            available: '5.3.4',
+            available: '4.13',
           },
           url: 'https://deprecations.emberjs.com/id/warp-drive.ember-inflector',
         }
@@ -233,7 +233,7 @@ if (DEPRECATE_EMBER_INFLECTOR) {
           for: 'warp-drive',
           since: {
             enabled: '5.3.4',
-            available: '5.3.4',
+            available: '4.13',
           },
           url: 'https://deprecations.emberjs.com/id/warp-drive.ember-inflector',
         }
@@ -254,7 +254,7 @@ if (DEPRECATE_EMBER_INFLECTOR) {
           for: 'warp-drive',
           since: {
             enabled: '5.3.4',
-            available: '5.3.4',
+            available: '4.13',
           },
           url: 'https://deprecations.emberjs.com/id/warp-drive.ember-inflector',
         }

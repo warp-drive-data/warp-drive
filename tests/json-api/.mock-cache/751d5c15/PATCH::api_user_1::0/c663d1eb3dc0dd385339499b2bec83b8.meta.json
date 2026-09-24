@@ -1,0 +1,1 @@
+{"url":"/api/user/1","status":200,"statusText":"OK","headers":{"Content-Type":"application/vnd.api+json","Content-Encoding":"br","Cache-Control":"no-store","Content-Length":134},"method":"PATCH","requestBody":"{\"data\":{\"type\":\"user\",\"id\":\"1\",\"relationships\":{\"pets\":{\"data\":[{\"type\":\"pet\",\"id\":\"1\"},{\"type\":\"pet\",\"id\":\"2\"}]}}}}"}

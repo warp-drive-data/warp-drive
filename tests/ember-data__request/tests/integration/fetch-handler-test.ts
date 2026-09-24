@@ -1,11 +1,10 @@
 import RequestManager from '@ember-data/request';
-import Fetch from '@ember-data/request/fetch';
 import { buildBaseURL } from '@ember-data/request-utils';
+import Fetch from '@ember-data/request/fetch';
+import { SHOULD_RECORD } from '@warp-drive/core/build-config/env';
 import { module, test } from '@warp-drive/diagnostic';
-import { mock, MockServerHandler } from '@warp-drive/holodeck';
-import { GET } from '@warp-drive/holodeck/mock';
-
-const RECORD = false;
+import { mock, MockServerHandler, setTestId } from '@warp-drive/holodeck';
+import { GET, HEAD } from '@warp-drive/holodeck/mock';
 
 function isNetworkError(e: unknown): asserts e is Error & {
   status: number;
@@ -26,25 +25,20 @@ module('RequestManager | Fetch Handler', function (hooks) {
     const manager = new RequestManager();
     manager.use([new MockServerHandler(this), Fetch]);
 
-    await GET(
-      this,
-      'users/1',
-      () => ({
-        data: {
-          id: '1',
-          type: 'user',
-          attributes: {
-            name: 'Chris Thoburn',
-          },
+    await GET(this, 'users/1', () => ({
+      data: {
+        id: '1',
+        type: 'user',
+        attributes: {
+          name: 'Chris Thoburn',
         },
-      }),
-      { RECORD }
-    );
+      },
+    }));
 
     const doc = await manager.request({ url: buildBaseURL({ resourcePath: 'users/1' }) });
     const serialized = JSON.parse(JSON.stringify(doc)) as unknown;
     // @ts-expect-error
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    // oxlint-disable-next-line typescript/no-unsafe-member-access
     serialized.response.headers = (serialized.response.headers as [string, string][]).filter((v) => {
       // don't test headers that change every time
       return !['content-length', 'date', 'etag', 'last-modified'].includes(v[0]);
@@ -82,31 +76,101 @@ module('RequestManager | Fetch Handler', function (hooks) {
     );
   });
 
+  test('Supports GET requests with search params', async function (assert) {
+    const manager = new RequestManager();
+    manager.use([new MockServerHandler(this), Fetch]);
+
+    await GET(this, 'users?name=Chris', () => ({
+      data: [
+        {
+          id: '1',
+          type: 'user',
+          attributes: {
+            name: 'Chris Thoburn',
+          },
+        },
+      ],
+    }));
+
+    const doc = await manager.request({ url: buildBaseURL({ resourcePath: 'users' }) + '?name=Chris' });
+    assert.deepEqual(
+      doc.content,
+      {
+        data: [
+          {
+            id: '1',
+            type: 'user',
+            attributes: {
+              name: 'Chris Thoburn',
+            },
+          },
+        ],
+      },
+      'The response is processed correctly'
+    );
+  });
+
+  test('Supports HEAD requests', async function (assert) {
+    const manager = new RequestManager();
+    manager.use([new MockServerHandler(this), Fetch]);
+
+    await HEAD(this, 'users/1', () => ({}));
+
+    const doc = await manager.request({ url: buildBaseURL({ resourcePath: 'users/1' }), method: 'HEAD' });
+    const serialized = JSON.parse(JSON.stringify(doc)) as unknown;
+    // @ts-expect-error
+    // oxlint-disable-next-line typescript/no-unsafe-member-access
+    serialized.response.headers = (serialized.response.headers as [string, string][]).filter((v) => {
+      // don't test headers that change every time
+      return !['content-length', 'date', 'etag', 'last-modified'].includes(v[0]);
+    });
+
+    assert.deepEqual(
+      serialized,
+      {
+        content: null,
+        request: {
+          url: buildBaseURL({ resourcePath: 'users/1' }),
+          method: 'HEAD',
+        },
+        response: {
+          headers: [
+            ['cache-control', 'no-store'],
+            ['content-type', 'application/vnd.api+json'],
+          ],
+          ok: true,
+          redirected: false,
+          status: 200,
+          statusText: '',
+          type: 'default',
+          url: '',
+        },
+      },
+      'The response is processed correctly'
+    );
+  });
+
   test('It provides useful errors', async function (assert) {
     const manager = new RequestManager();
     manager.use([new MockServerHandler(this), Fetch]);
 
-    await mock(
-      this,
-      () => ({
-        url: 'users/1',
-        status: 404,
-        headers: {},
-        method: 'GET',
-        statusText: 'Not Found',
-        body: null,
-        response: {
-          errors: [
-            {
-              status: '404',
-              title: 'Not Found',
-              detail: 'The resource does not exist.',
-            },
-          ],
-        },
-      }),
-      RECORD
-    );
+    await mock(this, () => ({
+      url: 'users/1',
+      status: 404,
+      headers: {},
+      method: 'GET',
+      statusText: 'Not Found',
+      body: null,
+      response: {
+        errors: [
+          {
+            status: '404',
+            title: 'Not Found',
+            detail: 'The resource does not exist.',
+          },
+        ],
+      },
+    }));
 
     try {
       await manager.request({ url: buildBaseURL({ resourcePath: 'users/1' }) });
@@ -155,24 +219,119 @@ module('RequestManager | Fetch Handler', function (hooks) {
     }
   });
 
+  test('It runs the response generator only while recording', async function (assert) {
+    const manager = new RequestManager();
+    manager.use([new MockServerHandler(this), Fetch]);
+    let generatorRuns = 0;
+
+    await GET(this, 'users/lazy', () => {
+      generatorRuns++;
+      return { data: { id: 'lazy', type: 'user', attributes: { name: 'Lazy' } } };
+    });
+
+    const doc = await manager.request<{ data: { id: string } }>({
+      url: buildBaseURL({ resourcePath: 'users/lazy' }),
+    });
+
+    assert.equal(doc.content.data.id, 'lazy', 'The request is served either way');
+    assert.equal(
+      generatorRuns,
+      SHOULD_RECORD ? 1 : 0,
+      SHOULD_RECORD
+        ? 'While recording, the generator ran once to produce the fixture'
+        : 'In replay, the generator never ran; the fixture came from disk'
+    );
+  });
+
+  test('RECORD records a single request even while the suite replays', async function (assert) {
+    const manager = new RequestManager();
+    manager.use([new MockServerHandler(this), Fetch]);
+    let generatorRuns = 0;
+
+    // The one committed RECORD in the repo: this test exists to prove the
+    // per-request override. Tests that are not about RECORD should never set it.
+    await GET(
+      this,
+      'users/forced',
+      () => {
+        generatorRuns++;
+        return { data: { id: 'forced', type: 'user', attributes: { name: 'Forced' } } };
+      },
+      { RECORD: true }
+    );
+
+    const doc = await manager.request<{ data: { id: string } }>({
+      url: buildBaseURL({ resourcePath: 'users/forced' }),
+    });
+
+    assert.equal(doc.content.data.id, 'forced', 'The request is served');
+    assert.equal(generatorRuns, 1, 'The generator ran in both modes, because RECORD forced a recording');
+  });
+
+  test('It explains a missing mock', async function (assert) {
+    const manager = new RequestManager();
+    manager.use([new MockServerHandler(this), Fetch]);
+
+    try {
+      await manager.request({ url: buildBaseURL({ resourcePath: 'users/never-mocked' }) });
+      assert.ok(false, 'Should have thrown');
+    } catch (e) {
+      isNetworkError(e);
+      assert.true(
+        e.message.includes('No meta was found for'),
+        `The error message says the mock is missing. Got: ${e.message}`
+      );
+      assert.true(
+        e.message.includes('You may need to record a mock for this request'),
+        'The error message says how to fix it'
+      );
+      assert.true(e.message.includes('.mock-cache'), 'The error message names the cacheKey it looked for');
+      assert.false(e.message.includes('__xTestId'), 'The internal test query is stripped from the message');
+    }
+  });
+
+  test('It reports a mock the test never requested', async function (assert) {
+    // deliberately declared and never requested
+    await GET(this, 'users/declared-but-never-requested', () => ({
+      data: {
+        id: '1',
+        type: 'user',
+        attributes: {
+          name: 'Chris Thoburn',
+        },
+      },
+    }));
+
+    // `setTestId(context, null)` is what every suite calls from `afterEach`, and
+    // where the check lives. Drive it here so this test asserts on the report
+    // instead of being failed by it.
+    try {
+      setTestId(this, null);
+      assert.ok(false, 'setTestId should have reported the unrequested mock');
+    } catch (e) {
+      assert.true(e instanceof Error, 'an Error is thrown');
+      assert.equal(
+        (e as Error).message,
+        'Holodeck: this test declared mocks it never requested.\n\n\tGET users/declared-but-never-requested (mocked 1, requested 0)\n\n' +
+          'A mock that is never requested proves nothing. Remove it, or make the request it describes.',
+        'The error names the method, the url, and both counts'
+      );
+    }
+  });
+
   test('It provides useful error during abort', async function (assert) {
     const manager = new RequestManager();
     manager.use([new MockServerHandler(this), Fetch]);
 
-    await GET(
-      this,
-      'users/1',
-      () => ({
-        data: {
-          id: '1',
-          type: 'user',
-          attributes: {
-            name: 'Chris Thoburn',
-          },
+    await GET(this, 'users/1', () => ({
+      data: {
+        id: '1',
+        type: 'user',
+        attributes: {
+          name: 'Chris Thoburn',
         },
-      }),
-      { RECORD }
-    );
+      },
+    }));
 
     try {
       const future = manager.request({ url: buildBaseURL({ resourcePath: 'users/1' }) });

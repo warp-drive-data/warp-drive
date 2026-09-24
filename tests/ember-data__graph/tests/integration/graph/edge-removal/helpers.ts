@@ -1,9 +1,10 @@
 // Remove this disable once @belongsTo is typed
-import Model, { attr, belongsTo, hasMany } from '@ember-data/model';
-import { recordIdentifierFor } from '@ember-data/store';
-import type { StableRecordIdentifier } from '@warp-drive/core-types';
-import type { CollectionResourceDocument } from '@warp-drive/core-types/spec/json-api-raw';
+import { recordIdentifierFor } from '@warp-drive/core';
+import { assertPrivateStore } from '@warp-drive/core/store/-private';
+import type { ResourceKey } from '@warp-drive/core/types';
+import type { CollectionResourceDocument } from '@warp-drive/core/types/spec/json-api-raw';
 import type { Diagnostic } from '@warp-drive/diagnostic/-types';
+import Model, { attr, belongsTo, hasMany } from '@warp-drive/legacy/model';
 
 import type { Context, UserRecord } from './setup';
 import { stateOf } from './setup';
@@ -67,8 +68,8 @@ interface ExpectedTestOutcomes {
 interface TestState {
   chris: UserRecord;
   john: UserRecord;
-  chrisIdentifier: StableRecordIdentifier;
-  johnIdentifier: StableRecordIdentifier;
+  chrisIdentifier: ResourceKey;
+  johnIdentifier: ResourceKey;
   chrisInverseKey: string;
   johnInverseKey: string;
 }
@@ -91,7 +92,8 @@ function makeRel(id: string | null, isMany: boolean): BestFriendRel<UserRef | Us
 
 export async function setInitialState(context: Context, config: TestConfig, assert: Diagnostic): Promise<TestState> {
   const { owner, store, graph } = context;
-  const { identifierCache } = store;
+  assertPrivateStore(store);
+  const { cacheKeyManager } = store;
   const isMany = config.relType === 'hasMany';
 
   const relFn = isMany ? hasMany : belongsTo;
@@ -106,7 +108,7 @@ export async function setInitialState(context: Context, config: TestConfig, asse
   }
   owner.register('model:user', User);
 
-  let chris: UserRecord, john: UserRecord, johnIdentifier: StableRecordIdentifier;
+  let chris: UserRecord, john: UserRecord, johnIdentifier: ResourceKey;
   if (!config.useCreate) {
     const data: CollectionResourceDocument<'user'> = {
       data: [
@@ -126,7 +128,7 @@ export async function setInitialState(context: Context, config: TestConfig, asse
     };
 
     [chris, john] = store.push<UserRecord>(data);
-    johnIdentifier = identifierCache.getOrCreateRecordIdentifier({ type: 'user', id: '2' });
+    johnIdentifier = cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '2' });
   } else {
     chris = store.push<UserRecord>({
       data: {
@@ -159,7 +161,7 @@ export async function setInitialState(context: Context, config: TestConfig, asse
   // give ourselves a tick in case there was async work
   await Promise.resolve();
 
-  const chrisIdentifier = identifierCache.getOrCreateRecordIdentifier({ type: 'user', id: '1' });
+  const chrisIdentifier = cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '1' });
   const chrisBestFriend = graph.get(chrisIdentifier, 'bestFriends');
   const johnBestFriend = graph.get(johnIdentifier, 'bestFriends');
 
@@ -169,9 +171,7 @@ export async function setInitialState(context: Context, config: TestConfig, asse
   assert.false(chris.isDeleted, 'PreCond: Chris is not deleted');
   assert.false(john.isDeleted, 'PreCond: John is not deleted');
 
-  // @ts-expect-error TODO: Graph type is not assignable to private Graph type
   const chrisState = stateOf(store._graph!, chrisBestFriend);
-  // @ts-expect-error TODO: Graph type is not assignable to private Graph type
   const johnState = stateOf(store._graph!, johnBestFriend);
 
   assert.deepEqual(
@@ -208,7 +208,6 @@ export async function setInitialState(context: Context, config: TestConfig, asse
 
     assert.ok(chrisImplicitFriend, 'PreCond: Chris has an implicit best friend');
 
-    // @ts-expect-error TODO: Graph type is not assignable to private Graph type
     const chrisImplicitState = stateOf(store._graph!, chrisImplicitFriend);
 
     assert.deepEqual(
@@ -232,7 +231,6 @@ export async function setInitialState(context: Context, config: TestConfig, asse
     } else {
       assert.equal(Object.keys(johnImplicits).length, 1, 'PreCond: John has one implicit relationship');
       assert.ok(johnImplicitFriend, 'PreCond: John has no implicit best friend');
-      // @ts-expect-error TODO: Graph type is not assignable to private Graph type
       const johnImplicitState = stateOf(store._graph!, johnImplicitFriend);
       assert.deepEqual(
         johnImplicitState.remote,
@@ -273,9 +271,9 @@ export function testFinalState(
 ) {
   const { graph, store } = context;
   const { chrisIdentifier, johnIdentifier } = testState;
+  assertPrivateStore(store);
 
   const chrisBestFriend = graph.get(chrisIdentifier, 'bestFriends');
-  // @ts-expect-error TODO: Graph type is not assignable to private Graph type
   const chrisState = stateOf(store._graph!, chrisBestFriend);
 
   // this specific case gets it's own WAT
@@ -343,7 +341,6 @@ export function testFinalState(
     assert.false(graph.identifiers.has(johnIdentifier), 'Result: Relationships for John were cleared from the cache');
   } else {
     const johnBestFriend = graph.get(johnIdentifier, 'bestFriends');
-    // @ts-expect-error TODO: Graph type is not assignable to private Graph type
     const johnState = stateOf(store._graph!, johnBestFriend);
 
     assert.deepEqual(
@@ -370,7 +367,6 @@ export function testFinalState(
     const chrisImplicitFriend = chrisImplicits[testState.chrisInverseKey];
 
     assert.ok(chrisImplicitFriend, 'Result: Chris has an implicit relationship for best friend');
-    // @ts-expect-error TODO: Graph type is not assignable to private Graph type
     const chrisImplicitState = stateOf(store._graph!, chrisImplicitFriend);
 
     assert.deepEqual(
@@ -395,7 +391,6 @@ export function testFinalState(
       const johnImplicitFriend = johnImplicits[testState.johnInverseKey];
       assert.equal(Object.keys(johnImplicits).length, 1, 'Result: John has one implicit relationship in the cache');
       assert.ok(johnImplicitFriend, 'Result: John has an implicit key for best friend');
-      // @ts-expect-error TODO: Graph type is not assignable to private Graph type
       const johnImplicitState = stateOf(store._graph!, johnImplicitFriend);
 
       assert.deepEqual(

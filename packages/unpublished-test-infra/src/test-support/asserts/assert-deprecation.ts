@@ -5,7 +5,7 @@ import semver from 'semver';
 
 import type Assert from 'ember-data-qunit-asserts';
 
-import { DEBUG } from '@warp-drive/build-config/env';
+import { DEBUG } from '@warp-drive/core/build-config/env';
 
 import { checkMatcher } from './check-matcher';
 import isThenable from './utils/is-thenable';
@@ -30,6 +30,7 @@ export interface DeprecationConfig {
   url?: string;
   stacktrace?: string;
   when?: Record<string, string>;
+  logTraces?: boolean;
 }
 export interface FoundDeprecation {
   message: string;
@@ -86,6 +87,12 @@ function verifyDeprecation(config: DeprecationConfig, label?: string): AssertSom
   //@ts-expect-error TS having trouble realizing expectedCount can be 'ALL'
   let passed = expectedCount === 'ALL' ? true : matchedDeprecations.length === expectedCount;
 
+  if (config.logTraces) {
+    matchedDeprecations.forEach((deprecation) => {
+      console.log(deprecation.options.stacktrace);
+    });
+  }
+
   return {
     result: passed,
     actual: { id: config.id, count: matchedDeprecations.length },
@@ -130,7 +137,7 @@ function verifyNoDeprecation(filter?: (deprecation: FoundDeprecation) => boolean
   };
 }
 
-export function configureDeprecationHandler(assert: Assert) {
+export function configureDeprecationHandler(assert: unknown): void {
   if (!HAS_REGISTERED) {
     registerDeprecationHandler(function (message, options /*, next*/) {
       if (DEPRECATIONS_FOR_TEST && options) {
@@ -152,8 +159,8 @@ export function configureDeprecationHandler(assert: Assert) {
   DEPRECATIONS_FOR_TEST = [];
   HANDLED_DEPRECATIONS_FOR_TEST = [];
 
-  assert.expectDeprecation = expectDeprecation;
-  assert.expectNoDeprecation = expectNoDeprecation;
+  (assert as Assert).expectDeprecation = expectDeprecation;
+  (assert as Assert).expectNoDeprecation = expectNoDeprecation;
 }
 
 async function expectDeprecation(

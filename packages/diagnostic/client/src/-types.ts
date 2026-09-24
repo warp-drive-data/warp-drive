@@ -1,0 +1,176 @@
+import type { Assert } from 'qunit-dom';
+
+import type { SuiteReport } from './-types/report';
+
+export type CompatTestReport = {
+  id: number;
+  name: string;
+  items: { passed: boolean; message: string }[];
+  failed: number;
+  passed: number;
+  total: number;
+  runDuration: number | null;
+  skipped: boolean;
+  todo: boolean;
+  testId: string;
+};
+
+export interface Emitter {
+  emit(name: 'suite-start' | 'suite-finish', data: SuiteReport): void;
+  emit(name: 'test-start' | 'test-finish', data: CompatTestReport): void;
+}
+
+export type ParamConfig =
+  | {
+      id: string;
+      label: string;
+      value: boolean;
+      defaultValue: boolean;
+      reload?: boolean;
+    }
+  | {
+      id: string;
+      label: string;
+      value: string;
+      defaultValue: string;
+      reload?: boolean;
+    };
+
+export type GlobalHooksStorage<TC extends TestContext> = {
+  onSuiteStart: GlobalCallback[];
+  onSuiteFinish: GlobalCallback[];
+  beforeModule: GlobalCallback[];
+  afterModule: GlobalCallback[];
+  beforeEach: HooksCallback<TC>[];
+  afterEach: HooksCallback<TC>[];
+};
+
+export type GlobalConfig<TC extends TestContext = TestContext> = {
+  name: {
+    org: string;
+    package: string;
+  };
+  params: {
+    [
+      key in
+        | 'search'
+        | 'useConcurrency'
+        | 'noTryCatch'
+        | 'instrument'
+        | 'hideReport'
+        | 'memory'
+        | 'groupLogs'
+        | 'debug'
+        | 'hidecontainer'
+        | 'timeline'
+    ]: ParamConfig;
+  };
+  tests: Set<string>;
+  modules: Set<string>;
+  _current: SuiteReport | null;
+  useTestem: boolean;
+  useDiagnostic: boolean;
+  testTimeoutMs: number;
+  concurrency: number;
+  globalHooks: GlobalHooksStorage<TC>;
+  totals: {
+    tests: number;
+    primaryModules: number;
+    modules: number;
+    skipped: number;
+    todo: number;
+  };
+};
+
+export interface Diagnostic {
+  /**
+   * DOM assertion helpers from `qunit-dom`. Declared here (rather than via
+   * per-entry-point `declare module` augmentation, as `ember.ts`/`react.tsx`/
+   * `spec.ts` each used to do identically) because rolldown-plugin-dts's
+   * entry-based declaration bundling doesn't reliably preserve relative-path
+   * `declare module` augmentations once the augmented module is shared across
+   * 2+ curated entry points.
+   */
+  dom: Assert['dom'];
+  equal<T>(actual: T, expected: T, message?: string): void;
+  notEqual<T>(actual: T, expected: T, message?: string): void;
+  deepEqual<T>(actual: T, expected: T, message?: string): void;
+  notDeepEqual<T>(actual: T, expected: T, message?: string): void;
+  // oxlint-disable-next-line typescript/no-explicit-any
+  throws(fn: () => Promise<any>, expected?: string | RegExp, message?: string): Promise<void>;
+  throws(fn: () => void, expected?: string | RegExp, message?: string): void;
+  doesNotThrow(fn: () => Promise<void>, expected?: string | RegExp, message?: string): Promise<void>;
+  doesNotThrow(fn: () => void, expected?: string | RegExp, message?: string): void;
+  true(actual: boolean, message?: string): void;
+  false(actual: boolean, message?: string): void;
+  ok(actual: unknown, message?: string): void;
+  notOk(actual: unknown, message?: string): void;
+  expect(count: number): void;
+  step(name: string): void;
+  verifySteps(steps: string[], message?: string): void;
+  /**
+   * Asserts that the actual value has at least the properties of the expected value.
+   * If additional properties are present on the actual value, they are ignored.
+   */
+  satisfies<T extends object>(actual: unknown, expected: Partial<T>, message?: string): void;
+
+  /**
+   * Asserts that every item in the actual array is strictly equal (===) to the corresponding
+   * item in the expected array.
+   */
+  arrayEquals<T>(actual: T[], expected: T[], message: string): void;
+}
+
+// oxlint-disable-next-line typescript/no-empty-object-type
+export interface TestContext {}
+
+export type GlobalCallback = () => void | Promise<void>;
+
+export interface Hooks<TC extends TestContext = TestContext> {
+  beforeEach: (cb: HooksCallback<TC>) => void;
+  afterEach: (cb: HooksCallback<TC>) => void;
+  beforeModule: (cb: GlobalCallback) => void;
+  afterModule: (cb: GlobalCallback) => void;
+}
+export interface GlobalHooks<TC extends TestContext> extends Hooks<TC> {
+  onSuiteStart: (cb: GlobalCallback) => void;
+  onSuiteFinish: (cb: GlobalCallback) => void;
+}
+
+export type HooksCallback<TC extends TestContext> = (this: TC, assert: Diagnostic) => void | Promise<void>;
+export type ModuleCallback<TC extends TestContext> = ((hooks: Hooks<TC>) => void) | (() => void);
+export type TestCallback<TC extends TestContext> = (this: TC, assert: Diagnostic) => void | Promise<void>;
+
+export interface TestInfo<TC extends TestContext> {
+  /* A unique id for the test based on the hash of the full testName */
+  id: string;
+  /* The name of the test, not including moduleName */
+  name: string;
+  /* The full name of the test including moduleName */
+  testName: string;
+  cb: TestCallback<TC>;
+  skip: boolean;
+  todo: boolean;
+  module: ModuleInfo<TC>;
+}
+
+export interface OrderedMap<T> {
+  byName: Map<string, T>;
+  byOrder: T[];
+}
+
+export interface ModuleInfo<TC extends TestContext> {
+  id: string;
+  skipped: boolean | null;
+  moduleName: string;
+  name: string;
+  cb: ModuleCallback<TC>;
+  config: {
+    beforeEach: HooksCallback<TC>[];
+    afterEach: HooksCallback<TC>[];
+    beforeModule: GlobalCallback[];
+    afterModule: GlobalCallback[];
+  };
+  tests: OrderedMap<TestInfo<TC>>;
+  modules: OrderedMap<ModuleInfo<TC>>;
+}

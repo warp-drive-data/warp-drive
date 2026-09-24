@@ -1,0 +1,18 @@
+import { createConfig } from '@warp-drive/internal-config/tsdown/config.js';
+
+export const externals = [
+  '@glimmer/validator',
+  '@ember/-internals/metal',
+  '@glimmer/tracking/primitives/cache',
+  '@ember/object/compat',
+  '@ember/runloop',
+];
+export const entryPoints = ['src/index.ts'];
+
+export default createConfig(
+  {
+    entryPoints,
+    externals,
+  },
+  import.meta.resolve
+);

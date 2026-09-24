@@ -5,6 +5,7 @@
     "module": "ESNext",
     "moduleResolution": "bundler",
     "skipLibCheck": true,
+    "disableSourceOfProjectReferenceRedirect": false,
     "emitDeclarationOnly": true,
     "allowJs": false,
     "checkJs": false,
@@ -23,8 +24,10 @@
     "noEmitOnError": false,
     "strictNullChecks": true,
     "noErrorTruncation": true,
-    "preserveConstEnums": false,
     "experimentalDecorators": true,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitOverride": false,
+
     // Enable faster builds
     // but causes us to not rebuild properly
     "composite": true,
@@ -34,18 +37,18 @@
     // maps in your `ember-cli-babel` config and/or `babel.config.js`.
     "declaration": true,
     "declarationMap": true,
-    "declarationDir": "unstable-preview-types",
     "inlineSourceMap": true,
     "inlineSources": true,
-    "baseUrl": ".",
-    "paths": {
-      "@warp-drive/build-config": ["../build-config/unstable-preview-types"],
-      "@warp-drive/build-config/*": ["../build-config/unstable-preview-types/*"]
-    }
+    "allowImportingTsExtensions": true,
+    "erasableSyntaxOnly": true,
+    "isolatedDeclarations": true,
+    "isolatedModules": true,
+    "lib": ["ESNext", "DOM"],
+    "moduleDetection": "force"
   },
   "references": [
     {
-      "path": "../build-config"
+      "path": "../../warp-drive-packages/core"
     }
   ]
 }

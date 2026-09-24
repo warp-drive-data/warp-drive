@@ -1,8 +1,6 @@
 {
   "include": ["tests"],
   "exclude": ["tests/__testfixtures__"],
-  "baseUrl": ".",
-
   "compilerOptions": {
     "lib": ["ESNext"],
     "module": "NodeNext",
@@ -11,20 +9,37 @@
     "moduleDetection": "force",
     "strict": true,
     "pretty": true,
-    "downlevelIteration": true,
     "skipLibCheck": true,
+    "disableSourceOfProjectReferenceRedirect": false,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "allowJs": true,
     "noImplicitOverride": true,
-
     // Enable faster builds
     // but causes us to not rebuild properly
     // "incremental": true,
     "rootDir": "tests",
-
     "inlineSourceMap": true,
     "inlineSources": true,
-    "types": ["bun"]
-  }
+    "types": ["bun"],
+    "allowImportingTsExtensions": true,
+    "composite": true,
+    "declaration": true,
+    "declarationDir": "unstable-preview-types",
+    "declarationMap": true,
+    "emitDeclarationOnly": true,
+    "erasableSyntaxOnly": true,
+    "experimentalDecorators": true,
+    "incremental": true,
+    "paths": {
+      "@ember-data/codemods": ["../../packages/codemods/unstable-preview-types/src/index"],
+      "@ember-data/codemods/*": ["../../packages/codemods/unstable-preview-types/src/*"]
+    },
+    "checkJs": false
+  },
+  "references": [
+    {
+      "path": "../../packages/codemods"
+    }
+  ]
 }

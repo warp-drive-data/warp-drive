@@ -1,0 +1,65 @@
+{
+  "name": "core-tests",
+  "version": "5.10.0-alpha.11",
+  "description": "Provides tests for @warp-drive/core",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com:warp-drive-data/warp-drive.git",
+    "directory": "tests/core"
+  },
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  },
+  "scripts": {
+    "sync": "echo \"syncing\"",
+    "build:tests": "export IS_TESTING=true; export NODE_ENV=development; vite build -m development --outDir dist-test",
+    "build:production": "export IS_TESTING=true; export NODE_ENV=production; vite build --outDir dist-test",
+    "lint": "eslint . --quiet --cache --cache-strategy=content",
+    "check:types": "node ./node_modules/typescript-7/bin/tsc --noEmit --runExternalCode",
+    "start": "export IS_TESTING=true; export NODE_ENV=development; vite build -m development --watch --outDir dist-test",
+    "test": "export IS_TESTING=true; export NODE_ENV=development; node ./diagnostic.js",
+    "test:production": "export IS_TESTING=true; export NODE_ENV=production; node ./diagnostic.js",
+    "test:start": "node ./diagnostic.js --serve --no-launch"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/core": "catalog:",
+    "@babel/plugin-transform-typescript": "catalog:",
+    "@babel/runtime": "catalog:",
+    "@ember-data/unpublished-test-infra": "workspace:*",
+    "@ember/test-helpers": "catalog:",
+    "@ember/test-waiters": "catalog:",
+    "@embroider/core": "catalog:",
+    "@embroider/macros": "catalog:",
+    "@embroider/vite": "catalog:",
+    "@glimmer/component": "catalog:",
+    "@glint/ember-tsc": "catalog:",
+    "@glint/template": "catalog:",
+    "@warp-drive-internal/specs": "workspace:*",
+    "@warp-drive/core": "workspace:*",
+    "@warp-drive/diagnostic": "workspace:*",
+    "@warp-drive/ember": "workspace:*",
+    "@warp-drive/holodeck": "workspace:*",
+    "@warp-drive/internal-config": "workspace:*",
+    "@warp-drive/json-api": "workspace:*",
+    "@warp-drive/schema-dsl": "workspace:*",
+    "@warp-drive/utilities": "workspace:*",
+    "babel-plugin-ember-template-compilation": "catalog:",
+    "decorator-transforms": "catalog:",
+    "ember-content-mapper": "catalog:",
+    "ember-source": "catalog:",
+    "ember-strict-application-resolver": "catalog:",
+    "eslint-plugin-warp-drive": "workspace:*",
+    "terser": "catalog:",
+    "typescript": "catalog:",
+    "typescript-7": "catalog:",
+    "vite": "catalog:"
+  },
+  "ember": {
+    "edition": "octane"
+  },
+  "packageManager": "pnpm@12.4.1"
+}

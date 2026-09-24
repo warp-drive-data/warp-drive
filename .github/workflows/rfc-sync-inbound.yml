@@ -1,0 +1,37 @@
+# Polls each WarpDrive RFC's emberjs/rfcs fork branch for upstream-originated changes (e.g. a
+# reviewer's applied suggestion) and opens a PR back into this repo when it finds one. See
+# scripts/rfc-sync/README.md for the full design and the one-time setup this requires -- until
+# that setup is done, this workflow no-ops (see pull-inbound.mjs).
+name: RFC sync (inbound)
+
+on:
+  schedule:
+    - cron: '17 */6 * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: rfc-sync-inbound
+  cancel-in-progress: false
+
+# Only contents:write is needed -- pushing the bookkeeping branch this workflow creates. The
+# follow-up PR into this repo authenticates as the bot via EMBERJS_RFCS_SYNC_TOKEN below, not the
+# default GITHUB_TOKEN, so this never needs pull-requests:write or the repo's "Allow GitHub
+# Actions to create and approve pull requests" setting -- see the comment on
+# openWarpDriveFollowupPr in push-outbound.mjs.
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
+      - name: Run inbound sync
+        run: node scripts/rfc-sync/pull-inbound.mjs
+        env:
+          EMBERJS_RFCS_SYNC_TOKEN: ${{ secrets.EMBERJS_RFCS_SYNC_TOKEN }}
+          EMBERJS_RFCS_SYNC_FORK: ${{ secrets.EMBERJS_RFCS_SYNC_FORK }}
+          EMBERJS_RFCS_SYNC_NAME: ${{ secrets.EMBERJS_RFCS_SYNC_NAME }}
+          EMBERJS_RFCS_SYNC_EMAIL: ${{ secrets.EMBERJS_RFCS_SYNC_EMAIL }}

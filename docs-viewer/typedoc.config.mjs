@@ -1,0 +1,130 @@
+import { OptionDefaults } from 'typedoc';
+
+/** @type {Partial<import("typedoc").TypeDocOptions>} */
+const config = {
+  $schema: 'https://typedoc.org/schema.json',
+  entryPointStrategy: 'packages',
+  docsRoot: './tmp',
+  entryPoints: [
+    // '../packages/*'
+    '../packages/active-record',
+    '../packages/adapter',
+    '../warp-drive-packages/build-config',
+    '../packages/core-types',
+    '../packages/graph',
+    '../packages/json-api',
+    '../packages/legacy-compat',
+    '../packages/holodeck',
+    '../packages/model',
+    '../packages/request',
+    '../packages/request-utils',
+    '../packages/rest',
+    '../packages/schema-record',
+    '../packages/serializer',
+    '../packages/store',
+    '../packages/tracking',
+    '../packages/eslint-plugin-warp-drive',
+    '../warp-drive-packages/core',
+    '../warp-drive-packages/legacy',
+    '../warp-drive-packages/utilities',
+    '../warp-drive-packages/ember',
+    '../warp-drive-packages/react',
+    '../warp-drive-packages/json-api',
+    '../warp-drive-packages/experiments',
+    '../warp-drive-packages/schema-dsl',
+    '../warp-drive-packages/memory-alpha',
+  ],
+  entryFileName: 'index',
+  packageOptions: {
+    entryFileName: 'index',
+    readme: 'none',
+    // Package tsdown configs share their entry-point globs with TypeDoc. A glob can
+    // match a *.type-test.ts file (compile-time assertions, no exports); the build
+    // side drops those in tools/internal-config/rollup/external.js, this drops them
+    // here so they never get an empty API page.
+    exclude: ['**/*.type-test.ts'],
+    excludePrivate: true,
+    projectDocuments: [],
+    excludeProtected: true,
+    excludeInternal: true,
+    excludeExternals: true,
+    // inheritNone: true,
+    useCodeBlocks: true,
+    // Show full type/parameter text instead of truncated placeholders (e.g. an object type
+    // alias's shape instead of `object`, a parameter's type instead of just its name) — needed
+    // so the type-signature block inserted by typedoc-plugins/type-signature.mjs (and the
+    // default per-signature title typedoc-plugin-markdown already renders) shows the real type.
+    expandObjects: true,
+    expandParameters: true,
+    hidePageTitle: false,
+    // Drop the "{kind}: " prefix (e.g. "Function: ") from member page H1s — the kind is shown
+    // as a <KindBadge> next to the name instead (see postProcessApiDocs in site-utils.ts).
+    pageTitleTemplates: { member: '{keyword} {name}' },
+    groupReferencesByType: true,
+    alwaysCreateEntryPointModule: true,
+    groupOrder: [
+      '*', // we put unknown specialized groups first
+      'Classes',
+      'Methods',
+      'Properties',
+      'Accessors',
+      'Constants',
+      'Variables',
+      'Utility Functions',
+      'Functions',
+      'Interfaces',
+      'Type Aliases',
+      'Modules',
+    ],
+    blockTags: [...OptionDefaults.blockTags, '@deprecated', '@until', '@since', '@id', '@badge', '@title'],
+    modifierTags: [
+      ...OptionDefaults.modifierTags,
+      '@noInheritDoc',
+      '@required',
+      '@optional',
+      '@recommended',
+      '@discouraged',
+      '@legacy',
+      '@polaris',
+      '@decorator',
+      '@classDecorator',
+    ],
+  },
+  plugin: [
+    import.meta.resolve('./src/typedoc-since-plugin.mjs').slice(7),
+    import.meta.resolve('typedoc-plugin-no-inherit').slice(7),
+    import.meta.resolve('typedoc-plugin-markdown').slice(7),
+    import.meta.resolve('typedoc-vitepress-theme').slice(7),
+    import.meta.resolve('typedoc-plugin-mdn-links').slice(7),
+    new URL('./typedoc-plugins/source-links.mjs', import.meta.url).pathname,
+    new URL('./typedoc-plugins/decorator-groups.mjs', import.meta.url).pathname,
+    new URL('./typedoc-plugins/types-router.mjs', import.meta.url).pathname,
+    new URL('./typedoc-plugins/type-kind-badges.mjs', import.meta.url).pathname,
+    new URL('./typedoc-plugins/type-signature.mjs', import.meta.url).pathname,
+  ],
+  // Routes interfaces and type-aliases to a shared `types/` directory instead of typedoc's
+  // default `interfaces/` and `type-aliases/` split, so a symbol's URL is stable across that
+  // implementation choice (see types-router.mjs and #11084).
+  router: 'warp-drive-types',
+  out: './tmp/api',
+  sidebar: {
+    pretty: true,
+  },
+  readme: 'none',
+  tsconfig: '../tsconfig.json',
+  alwaysCreateEntryPointModule: true,
+  projectDocuments: [],
+  excludePrivate: true,
+  excludeProtected: true,
+  excludeInternal: true,
+  excludeExternals: true,
+  useCodeBlocks: true,
+  expandObjects: true,
+  expandParameters: true,
+  hidePageTitle: false,
+  pageTitleTemplates: { member: '{keyword} {name}' },
+  // typeAliasPropertiesFormat: 'htmlTable',
+  // inheritNone: true,
+};
+
+export default config;

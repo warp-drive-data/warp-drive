@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>EmberData Graph Test App</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+    <script>
+			// see tests/index.html for why this can't be set from within a module script.
+			// Keep in sync with config/environment.js and config/optional-features.json.
+			window.EmberENV = {
+				RAISE_ON_DEPRECATION: false,
+				_APPLICATION_TEMPLATE_WRAPPER: false,
+				_TEMPLATE_ONLY_GLIMMER_COMPONENTS: true,
+				_JQUERY_INTEGRATION: false,
+			};
+    </script>
+    <script type="module">
+      import Application from './app/app';
+      import environment from './app/config/environment';
+      import './app/styles/app.css';
+
+      Application.create(environment.APP);
+    </script>
+  </body>
+</html>

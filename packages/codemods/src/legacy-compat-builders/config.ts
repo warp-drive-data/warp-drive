@@ -1,8 +1,8 @@
-import type { ImportInfo } from '../utils/imports.js';
-import type { Config } from './legacy-store-method.js';
-import { singularTypeParam, validateForFindRecord } from './legacy-store-method.js';
+import type { ImportInfo } from '../utils/imports.ts';
+import type { Config } from './legacy-store-method.ts';
+import { singularTypeParam, validateForFindRecord } from './legacy-store-method.ts';
 
-const LegacyCompatBuildersSourceValue = '@ember-data/legacy-compat/builders';
+const LegacyCompatBuildersSourceValue = '@warp-drive/legacy/compat/builders';
 export const IMPORT_INFOS = [
   {
     importedName: 'findAll' as const,

@@ -19,8 +19,7 @@ type NpmInfo = {
 
 const InfoCache: Record<string, NpmInfo> = {};
 
-// eslint-disable-next-line @typescript-eslint/require-await
-export async function exec(cmd: string, args?: Parameters<typeof execSync>[1]) {
+export async function exec(cmd: string, args?: Parameters<typeof execSync>[1]): Promise<string | Buffer> {
   debug(`exec: ${cmd}`);
   return execSync(cmd, { ...args });
 }
@@ -31,7 +30,8 @@ export async function getTags(project: string): Promise<Set<string>> {
     const info = await exec(`npm view ${project} --json`);
     const end = performance.now();
     debug(`Fetched info for ${project} in ${end - start}ms`);
-    InfoCache[project] = JSON.parse(String(info)) as unknown as NpmInfo;
+    // oxlint-disable-next-line typescript/no-unsafe-assignment
+    InfoCache[project] = JSON.parse(String(info));
   }
 
   const keys = Object.keys(InfoCache[project]['dist-tags']);
@@ -44,7 +44,8 @@ export async function getInfo(project: string): Promise<NpmInfo> {
     const info = await exec(`npm view ${project} --json`);
     const end = performance.now();
     debug(`Fetched info for ${project} in ${end - start}ms`);
-    InfoCache[project] = JSON.parse(String(info)) as unknown as NpmInfo;
+    // oxlint-disable-next-line typescript/no-unsafe-assignment
+    InfoCache[project] = JSON.parse(String(info));
   }
 
   return InfoCache[project];

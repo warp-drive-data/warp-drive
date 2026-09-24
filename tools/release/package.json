@@ -1,0 +1,14 @@
+{
+  "name": "@warp-drive/internal-release",
+  "version": "5.10.0-alpha.11",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "semver": "catalog:",
+    "@types/semver": "catalog:",
+    "@types/bun": "catalog:",
+    "lerna-changelog": "catalog:",
+    "typescript": "catalog:",
+    "bun-types": "catalog:"
+  }
+}

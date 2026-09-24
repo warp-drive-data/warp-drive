@@ -1,0 +1,63 @@
+{
+  "name": "@warp-drive/build-config",
+  "version": "5.10.0-alpha.11",
+  "description": "(Legacy) Build Configuration for projects using WarpDrive",
+  "keywords": [
+    "ember-data",
+    "warp-drive"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com:warp-drive-data/warp-drive.git",
+    "directory": "warp-drive-packages/build-config"
+  },
+  "license": "MIT",
+  "author": "Chris Thoburn <runspired@users.noreply.github.com>",
+  "scripts": {
+    "build:pkg": "node node_modules/tsdown/dist/run.mjs && node node_modules/tsdown/dist/run.mjs -c ./tsdown.config-cjs.mjs",
+    "prepack": "pnpm run build:pkg",
+    "sync": "echo \"syncing\"",
+    "_temporarily_deactivated_lint": "eslint . --quiet --cache --cache-strategy=content",
+    "start": "node node_modules/tsdown/dist/run.mjs --watch",
+    "check:types": "node ./node_modules/typescript-7/bin/tsc --noEmit"
+  },
+  "type": "module",
+  "files": [
+    "dist",
+    "CHANGELOG.md",
+    "README.md",
+    "LICENSE.md",
+    "logos"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./*.cjs": {
+      "default": "./dist/*.cjs"
+    },
+    "./*": {
+      "types": "./dist/*.d.ts",
+      "default": "./dist/*.js"
+    }
+  },
+  "dependencies": {
+    "@embroider/addon-shim": "^1.10.3",
+    "@embroider/macros": "^1.21.1",
+    "babel-import-util": "^3.0.1",
+    "babel-plugin-debug-macros": "^2.0.0",
+    "semver": "^7.8.5"
+  },
+  "devDependencies": {
+    "@babel/core": "catalog:",
+    "@babel/plugin-transform-typescript": "catalog:",
+    "@babel/preset-typescript": "catalog:",
+    "@types/babel__core": "catalog:",
+    "@types/node": "catalog:",
+    "@types/semver": "catalog:",
+    "@warp-drive/internal-config": "workspace:*",
+    "tsdown": "catalog:",
+    "typescript-7": "catalog:"
+  }
+}

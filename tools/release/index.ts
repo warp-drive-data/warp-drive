@@ -1,0 +1,78 @@
+#!/usr/bin/env bun
+import { styleText } from 'node:util';
+
+import { backfillReleaseNotes } from './core/backfill-release-notes/index.ts';
+import { bootstrapNewPackages } from './core/bootstrap/index.ts';
+import { latestFor } from './core/latest-for/index.ts';
+import { promoteToLTS } from './core/promote/index.ts';
+import { executePublish } from './core/publish/index.ts';
+import { executeReleaseNoteGeneration } from './core/release-notes/index.ts';
+import { printHelpDocs } from './help/docs.ts';
+import { printAbout } from './help/sections/about.ts';
+import { getCommands } from './utils/flags-config.ts';
+import { normalizeFlag } from './utils/parse-args.ts';
+import { write } from './utils/write.ts';
+
+const COMMANDS = {
+  help: printHelpDocs,
+  about: printAbout,
+  release_notes: executeReleaseNoteGeneration,
+  backfill_release_notes: backfillReleaseNotes,
+  bootstrap: bootstrapNewPackages,
+  publish: executePublish,
+  latest_for: latestFor,
+  promote: promoteToLTS,
+  default: executePublish,
+  exec: async (args: string[]) => {
+    const cmd = args.shift();
+
+    if (!cmd) {
+      throw new Error('No command provided to exec');
+    }
+
+    const commands = getCommands();
+    const cmdString = (commands.get(normalizeFlag(cmd)) as keyof typeof COMMANDS) || 'default';
+
+    const command = COMMANDS[cmdString];
+    if (command) {
+      await command(
+        args.filter((arg) => {
+          return !arg.endsWith('=');
+        })
+      );
+    } else {
+      throw new Error(`Command not found: ${cmd}`);
+    }
+  },
+};
+
+async function main() {
+  const args = Bun.argv.slice(2);
+
+  const commandArg = args.length === 0 ? 'help' : normalizeFlag(args[0]);
+  const commands = getCommands();
+  const cmdString = (commands.get(commandArg) as keyof typeof COMMANDS) || 'default';
+  const cmd = COMMANDS[cmdString];
+
+  // we silence output for the latest_for command
+  if (cmdString !== 'latest_for') {
+    write(
+      styleText(
+        'gray',
+        `\n\t${styleText(
+          'bold',
+          styleText('greenBright', 'Warp') + styleText('magentaBright', 'Drive')
+        )} | Automated Release\n\t==============================`
+      ) + styleText('gray', `\n\tengine: ${styleText('cyan', 'bun@' + Bun.version)}\n`)
+    );
+  }
+
+  if (args.length && commands.has(commandArg)) {
+    args.shift();
+  }
+
+  await cmd(args);
+  process.exit(0);
+}
+
+await main();

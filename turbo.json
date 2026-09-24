@@ -2,9 +2,33 @@
   // Additive to package.json and turbo.json
   //
   // https://turbo.build/repo/docs/core-concepts/caching/file-inputs#specifying-additional-inputs
-  "globalDependencies": ["pnpm-lock.yaml", "patches/*", ".github/*"],
+  "globalDependencies": [
+    // turbo.json itself is not implicitly hashed by turborepo: without this,
+    // changes to a task's `outputs` (e.g. adding a previously-missing output
+    // glob) don't invalidate existing remote-cache entries, so already-cached
+    // "complete" artifacts keep being restored missing the newly-tracked files.
+    "turbo.json",
+    "tsconfig.json",
+    "pnpm-lock.yaml",
+    ".npmrc",
+    ".pnpmfile.cjs",
+    ".pnpm-workspace.yaml",
+    "patches/*",
+    ".github/**",
+    "./tools/internal-config/**"
+    // NOTE: tools/release/** is intentionally NOT a global dependency.
+    // No package's build/test code imports anything from it, so it had no
+    // business invalidating every task's cache in the entire monorepo --
+    // it just meant any PR touching release tooling forced a full,
+    // unrelated rebuild for everyone. Release correctness against stale
+    // caches is instead guaranteed at the source: the release publish
+    // flow's own install step now sets TURBO_FORCE=true explicitly
+    // (see tools/release/core/publish/steps/bump-versions.ts).
+  ],
 
-  "pipeline": {
+  "envMode": "loose",
+
+  "tasks": {
     /////////////////////////////////////////////////
     /////////////////////////////////////////////////
     //
@@ -12,43 +36,71 @@
     //
     /////////////////////////////////////////////////
     /////////////////////////////////////////////////
-    "build:infra": {
-      "inputs": [
-        // + V2-Addon convention
-        "src/**",
-        "cjs-src/**",
-        "addon-main.*",
-        "tsconfig.json",
-        "babel.*",
-        "vite.config-cjs.*",
-        "vite.config.*",
-        "../../config/**"
-      ],
-      "outputs": [
-        // V1-Addon convention
-        "addon-test-support/**",
-        // V2-Addon convention
-        "dist/**",
-        "unstable-preview-types/**",
-        "tsconfig.tsbuildinfo"
-      ],
-      "dependsOn": [],
-      // https://turbo.build/repo/docs/reference/configuration#outputmode
-      "outputMode": "new-only"
+
+    // pnpm's sync-injected-deps-after-scripts hook (see .npmrc) only fires
+    // when pnpm itself runs a package's script -- it never fires for a
+    // turbo-orchestrated run, whether turbo actually executes the underlying
+    // command or restores it from cache. That's fine when every build:pkg in
+    // the run is a cache miss (each one still goes through a real pnpm script
+    // invocation as turbo executes it) or when every one is a cache hit (the
+    // last real run already synced everything correctly). It breaks when the
+    // run is a *mix*: if @warp-drive/core#build:pkg is a cache hit (skipped
+    // entirely, no script execution, no hook) while a consumer like
+    // @warp-drive/diagnostic is a cache miss (forced to actually build), the
+    // consumer's injected copy of @warp-drive/core's dist/ was never
+    // refreshed, and its build:pkg -- which imports real runtime code from it
+    // via babel.config.mjs, not just types -- fails with a missing-module
+    // error. `cache: false` forces this task to always execute regardless of
+    // upstream cache state, which closes that gap; it does not force
+    // downstream build:pkg tasks to also miss cache, since turbo hashes a
+    // dependency task by its declared inputs, not by whether it actually ran.
+    "//#sync": {
+      "cache": false,
+      "dependsOn": ["@warp-drive/build-config#build:pkg", "@warp-drive/core#build:pkg"]
+    },
+
+    // Mirrors //#sync above, but for the opposite direction: @warp-drive/core's
+    // own build:pkg needs build-config's *freshly built* output synced into
+    // core's injected copy before core's babel.config.mjs requires it -- //#sync
+    // can't cover this because it depends on core's build:pkg too (using it here
+    // would be a cycle), so it only runs after core has already (possibly
+    // wrongly) built. These are two separate sync points for two separate races;
+    // do not merge them or make either conditional/cached.
+    //
+    // Named for *who* needs the sync (core), but its underlying script
+    // (sync:core, see root package.json) runs @warp-drive/build-config's own
+    // "sync" script, not core's. sync-injected-deps-after-scripts pushes a
+    // package's freshly-built output out to consumers when *that package's
+    // own* script runs -- running core's own sync script (core is the
+    // consumer here) does not pull build-config's output in, no matter how
+    // or when it's invoked; confirmed directly against a live repro.
+    "//#sync:core": {
+      "cache": false,
+      "dependsOn": ["@warp-drive/build-config#build:pkg"]
     },
 
     // run build in all library packages
     // these do not require any associated packages
     // to have been built to build other than
-    // the build:infra packages
+    // the build-config package (and, transitively,
+    // @warp-drive/core, which itself needs build-config
+    // built first). Isolated declarations mean every
+    // other package builds independently of its
+    // workspace dependencies, so most packages default
+    // to depending only on @warp-drive/core#build:pkg;
+    // the exceptions are overridden by name below.
     "build:pkg": {
       "inputs": [
         // + V2-Addon convention
         "src/**",
+        "cjs-src/**", // build-config package
         "addon-main.*",
         "tsconfig.json",
+        "package.json",
         "babel.*",
+        "vite.config-cjs.*", // build-config package
         "vite.config.*",
+        "tsdown.config.*",
         "../../config/**"
       ],
       "outputs": [
@@ -56,47 +108,131 @@
         "addon-test-support/**",
         // V2-Addon convention
         "dist/**",
-        "unstable-preview-types/**",
+        // secondary CJS build for packages exposing `.cjs` subpath exports
+        "cjs-dist/**",
         "tsconfig.tsbuildinfo"
       ],
-      "dependsOn": ["^build:infra", "^build:pkg"],
-      // https://turbo.build/repo/docs/reference/configuration#outputmode
-      "outputMode": "new-only"
+      "dependsOn": ["@warp-drive/core#build:pkg", "//#sync"],
+      // https://turbo.build/repo/docs/reference/configuration#outputLogs
+      "outputLogs": "new-only",
+      // NODE_ENV, EMBER_DATA_FULL_COMPAT, and BABEL_DISABLE_CACHE are only read by
+      // the turbo-bypassing unpkg release script (tools/release/core/publish/steps/
+      // amend-for-unpkg.ts), which invokes tsdown directly rather than via `pnpm run
+      // build:pkg`, so they never affect a normal turbo-orchestrated build:pkg run.
+      // Hashing them here only busts the cache for env values (e.g. the ambient
+      // NODE_ENV set by the consuming test app) that don't change this task's output.
+      // IS_UNPKG_BUILD is kept because tsdown.config.mjs reads it unconditionally
+      // (`compileTypes: process.env.IS_UNPKG_BUILD !== 'true'`) and it genuinely
+      // changes build:pkg's output even outside the unpkg release path.
+      "env": ["IS_UNPKG_BUILD"]
     },
 
-    // run build in all library packages
-    // that ship gts files
-    // these do not require any associated packages
-    // to have been built to build other than
-    // the build:infra packages
-    "build:glint": {
+    // Turbo does not merge package-specific task overrides with the
+    // general "build:pkg" definition above -- each override below is a
+    // full standalone definition, so inputs/outputs/outputLogs/env are
+    // repeated verbatim from "build:pkg" and only dependsOn differs.
+
+    // @warp-drive/core is the one package that isn't a leaf: its own
+    // babel.config.mjs executes @warp-drive/build-config's macros at
+    // build time, so build-config must be built first.
+    "@warp-drive/core#build:pkg": {
       "inputs": [
-        // + V2-Addon convention
         "src/**",
         "addon-main.*",
         "tsconfig.json",
+        "package.json",
         "babel.*",
         "vite.config.*",
-        "../../config/**",
-        "tsconfig.tsbuildinfo"
+        "tsdown.config.*",
+        "../../config/**"
       ],
-      "outputs": [
-        // V1-Addon convention
-        "addon-test-support/**",
-        // V2-Addon convention
-        "dist/**",
-        "unstable-preview-types/**"
-      ],
-      "dependsOn": [],
-      "cache": false,
-      // https://turbo.build/repo/docs/reference/configuration#outputmode
-      "outputMode": "new-only"
+      "outputs": ["addon-test-support/**", "dist/**", "cjs-dist/**", "tsconfig.tsbuildinfo"],
+      "dependsOn": ["@warp-drive/build-config#build:pkg", "//#sync:core"],
+      "outputLogs": "new-only",
+      "env": ["IS_UNPKG_BUILD"]
     },
 
-    // virtual task
-    "crawl-graph": {
-      "dependsOn": ["^crawl-graph"],
-      "cache": false
+    // Packages with no build-time dependency on @warp-drive/core's
+    // build-config macros -- these are true leaves and build fully
+    // in parallel with everything else.
+    "@warp-drive/build-config#build:pkg": {
+      "inputs": [
+        "src/**",
+        "cjs-src/**",
+        "addon-main.*",
+        "tsconfig.json",
+        "package.json",
+        "babel.*",
+        "vite.config-cjs.*",
+        "tsdown.config.*",
+        "../../config/**"
+      ],
+      "outputs": ["addon-test-support/**", "dist/**", "cjs-dist/**", "tsconfig.tsbuildinfo"],
+      "dependsOn": [],
+      "outputLogs": "new-only",
+      "env": ["IS_UNPKG_BUILD"]
+    },
+
+    // @warp-drive/diagnostic builds two separate source trees under one
+    // `build:pkg` script (client/src -> dist/, server/src -> dist-server/,
+    // see its package.json and tsdown.config{,-server}.mjs) instead of the
+    // generic V2-addon `src/** -> dist/**` convention above, so it needs its
+    // own input/output globs rather than the shared definition -- otherwise
+    // dist-server/** is neither hashed as an input change nor captured as a
+    // cached output, and a cache hit silently restores a build missing it
+    // entirely (surfaces downstream as an ERR_MODULE_NOT_FOUND for
+    // dist-server/index.js in any consumer).
+    "@warp-drive/diagnostic#build:pkg": {
+      "inputs": [
+        "client/src/**",
+        "server/src/**",
+        "addon-main.*",
+        "tsconfig.json",
+        "server/tsconfig.json",
+        "package.json",
+        "babel.*",
+        "tsdown.config.*",
+        "tsdown.config-server.mjs",
+        "../../config/**"
+      ],
+      "outputs": ["dist/**", "dist-server/**", "tsconfig.tsbuildinfo"],
+      "dependsOn": ["@warp-drive/core#build:pkg", "//#sync"],
+      "outputLogs": "new-only",
+      "env": ["IS_UNPKG_BUILD"]
+    },
+    "@warp-drive/schema-dsl#build:pkg": {
+      "inputs": ["src/**", "addon-main.*", "tsconfig.json", "package.json", "babel.*", "tsdown.config.*"],
+      "outputs": ["addon-test-support/**", "dist/**", "cjs-dist/**", "tsconfig.tsbuildinfo"],
+      "dependsOn": [],
+      "outputLogs": "new-only",
+      "env": ["IS_UNPKG_BUILD"]
+    },
+    "@ember-data/codemods#build:pkg": {
+      "inputs": ["src/**", "utils/**", "tsdown.config.mjs", "tsconfig.json", "package.json"],
+      "outputs": ["dist/**"],
+      "dependsOn": [],
+      "outputLogs": "new-only",
+      "env": ["IS_UNPKG_BUILD"]
+    },
+    "@warp-drive/svelte#build:pkg": {
+      "inputs": ["src/**", "addon-main.*", "tsconfig.json", "package.json"],
+      "outputs": ["addon-test-support/**", "dist/**", "tsconfig.tsbuildinfo"],
+      "dependsOn": [],
+      "outputLogs": "new-only",
+      "env": ["IS_UNPKG_BUILD"]
+    },
+    "@warp-drive/internal-tooling#build:pkg": {
+      // This task's real work (`sync-logos.ts`) reads the monorepo-root `logos/` directory and
+      // writes into every other package's own `logos/` dir plus the docs site's
+      // `public/logos` -- none of which live under this package, so without these, turbo's
+      // cache key is blind to logo changes and (worse) a cache hit restores nothing, silently
+      // skipping the copy. Per-package `logos/` copies are committed to git, so a skipped run
+      // leaves them correct regardless; `public/logos` is gitignored (see .gitignore) and is
+      // the one output that actually depends on this cache entry being accurate.
+      "inputs": ["src/**", "tsconfig.json", "package.json", "../../logos/**"],
+      "outputs": ["../../docs-viewer/docs.warp-drive.io/public/logos/**"],
+      "dependsOn": [],
+      "outputLogs": "new-only"
     },
 
     /////////////////////////////////////////////////
@@ -107,10 +243,10 @@
     /////////////////////////////////////////////////
     /////////////////////////////////////////////////
     "start": {
-      // "dependsOn": ["_task:sync-hardlinks", "^_build"],
+      "dependsOn": ["^build:pkg"],
       // "outputs": [],
-      // "cache": false,
-      // "persistent": true
+      "cache": false,
+      "persistent": true
     },
 
     /////////////////////////////////////////////////
@@ -122,17 +258,35 @@
     /////////////////////////////////////////////////
 
     "lint": {
-      "inputs": ["eslint.*", "tsconfig.json", "tsconfig.tsbuildinfo"],
-      "dependsOn": ["^build:pkg"],
-      // https://turbo.build/repo/docs/reference/configuration#outputmode
-      "outputMode": "new-only"
+      // $TURBO_DEFAULT$ is required here or these `inputs` REPLACE (rather
+      // than add to) turbo's default file-hashing, which is every git-tracked
+      // file in the package. Without it, this task's hash was blind to any
+      // actual source-file edits (only eslint config / tsconfig / tsbuildinfo
+      // could bust the cache), so a cached "lint passed" could be served for
+      // code that was never actually linted.
+      "inputs": ["$TURBO_DEFAULT$", "tsconfig.tsbuildinfo"],
+      // `^build:pkg` only waits for *upstream* workspace deps' builds. Several
+      // packages (e.g. @warp-drive/core) self-import from their own published
+      // subpath exports (e.g. '@warp-drive/core/build-config/debugging') to
+      // exercise the same macro-transform path consumers use, which resolves
+      // through node_modules to this package's *own* dist output. Without the
+      // unprefixed "build:pkg" here too, lint could start type-checking those
+      // self-imports before this package's own build:pkg finished -- normally
+      // masked because a cache hit restores near-instantly, but a real
+      // multi-second build (cache miss, or cache disabled) exposed it as
+      // `@typescript-eslint/no-unsafe-call` errors on values TS couldn't
+      // resolve a type for yet.
+      "dependsOn": ["^build:pkg", "build:pkg"],
+      // https://turbo.build/repo/docs/reference/configuration#outputLogs
+      "outputLogs": "new-only"
     },
 
     "check:types": {
-      "inputs": ["tsconfig.json", "tsconfig.tsbuildinfo"],
-      "dependsOn": ["^build:pkg"],
-      // https://turbo.build/repo/docs/reference/configuration#outputmode
-      "outputMode": "new-only"
+      // See the $TURBO_DEFAULT$ and self-import notes on `lint` above — same bugs applied here.
+      "inputs": ["$TURBO_DEFAULT$", "tsconfig.tsbuildinfo"],
+      "dependsOn": ["^build:pkg", "build:pkg"],
+      // https://turbo.build/repo/docs/reference/configuration#outputLogs
+      "outputLogs": "new-only"
     },
 
     "build:tests": {
@@ -140,8 +294,13 @@
         // + V2-Addon convention
         "src/**",
         "tests/**",
+        "app/**",
+        "config/**",
+        "public/**",
+        "ember-cli-build.js",
         "addon-main.*",
         "tsconfig.json",
+        "package.json",
         "babel.*",
         "vite.config.*"
       ],
@@ -151,19 +310,34 @@
         "addon-test-support/**",
         // V2-Addon convention
         "dist/**",
-        "dist-test/**",
-        "declarations/**",
-        "unstable-preview-types/**"
+        "dist-test/**"
       ],
-      "dependsOn": ["^build:pkg"]
+      "dependsOn": ["^build:pkg"],
+      "env": [
+        "WARP_DRIVE_FEATURE_OVERRIDE",
+        "NODE_ENV",
+        "EMBER_DATA_FULL_COMPAT",
+        "IS_UNPKG_BUILD",
+        "CI",
+        "EMBER_ENV",
+        "IS_TESTING",
+        "EMBER_CLI_TEST_COMMAND",
+        "IS_RECORDING",
+        "ASSERT_ALL_DEPRECATIONS"
+      ]
     },
     "build:production": {
       "inputs": [
         // + V2-Addon convention
         "src/**",
         "tests/**",
+        "app/**",
+        "config/**",
+        "public/**",
         "ember-cli-build.js",
         "addon-main.*",
+        "tsconfig.json",
+        "package.json",
         "babel.*",
         "vite.config.*"
       ],
@@ -173,18 +347,35 @@
         "addon-test-support/**",
         // V2-Addon convention
         "dist/**",
-        "dist-test/**",
-        "declarations/**"
+        "dist-test/**"
       ],
-      "dependsOn": ["^build:pkg"]
+      "dependsOn": ["^build:pkg"],
+      "env": [
+        "WARP_DRIVE_FEATURE_OVERRIDE",
+        "NODE_ENV",
+        "CI",
+        "EMBER_ENV",
+        "IS_TESTING",
+        "EMBER_CLI_TEST_COMMAND",
+        "IS_RECORDING",
+        "ASSERT_ALL_DEPRECATIONS",
+        "EMBER_DATA_FULL_COMPAT"
+      ]
     },
 
+    // outputs are the artifacts main.yml's browser-tests job uploads after
+    // this task runs (ember-exam/testem, only produced by main-test-app; a
+    // no-op glob match for every other package's test task). Declaring them
+    // means a cache hit restores the same files a real run would have
+    // produced, instead of leaving them stale/missing for those upload steps.
     "test": {
-      "outputs": [],
+      "inputs": ["../../packages/diagnostic/server/**", "../../packages/holodeck/**", ".mock-cache/**"],
+      "outputs": ["testem.log", "test-execution-*.json"],
       "dependsOn": ["build:tests"]
     },
     "test:production": {
-      "outputs": [],
+      "inputs": ["../../packages/diagnostic/server/**", "../../packages/holodeck/**", ".mock-cache/**"],
+      "outputs": ["testem.log", "test-execution-*.json"],
       "dependsOn": ["build:production"]
     }
   }

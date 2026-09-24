@@ -1,7 +1,33 @@
-import type { ASTPath, Collection, FileInfo, ImportDeclaration, ImportSpecifier, JSCodeshift } from 'jscodeshift';
+import type {
+  ASTPath,
+  Collection,
+  FileInfo,
+  Identifier,
+  ImportDeclaration,
+  ImportSpecifier,
+  JSCodeshift,
+  JSXIdentifier,
+  TSTypeParameter,
+} from 'jscodeshift';
 
-import { log } from '../legacy-compat-builders/log.js';
-import { TransformError } from './error.js';
+import { log } from '../legacy-compat-builders/log.ts';
+import { TransformError } from './error.ts';
+
+type IdentifierLike = Identifier | JSXIdentifier | TSTypeParameter;
+
+/**
+ * Extracts a string name from an identifier-like node, handling both
+ * string names and nested name objects.
+ */
+function getIdentifierName(node: IdentifierLike | null | undefined): string {
+  if (!node) return '';
+  if (typeof node.name === 'string') {
+    return node.name;
+  }
+  // Handle cases where name is an object with a name property
+  const nameObj = node.name as { name?: string } | undefined;
+  return String(nameObj?.name || node.name || '');
+}
 
 /**
  * Information about an import you are tracking for your codemod.
@@ -46,14 +72,15 @@ export function parseExistingImports(
     path.value.specifiers?.forEach((specifier) => {
       switch (specifier.type) {
         case 'ImportSpecifier': {
-          knownSpecifierNames.add(specifier.local?.name ?? specifier.imported.name);
+          const localName = getIdentifierName(specifier.local);
+          const importedName = getIdentifierName(specifier.imported);
+          knownSpecifierNames.add(localName || importedName);
           break;
         }
         case 'ImportDefaultSpecifier':
         case 'ImportNamespaceSpecifier': {
-          if (specifier.local) {
-            knownSpecifierNames.add(specifier.local?.name);
-          }
+          const localName = getIdentifierName(specifier.local);
+          if (localName) knownSpecifierNames.add(localName);
           break;
         }
       }
@@ -96,7 +123,7 @@ function parseImport(path: ASTPath<ImportDeclaration>, importInfo: ImportInfo): 
 
   return match
     ? {
-        localName: match.local?.name ?? match.imported.name,
+        localName: getIdentifierName(match.local) || getIdentifierName(match.imported),
         specifier: match,
         path,
       }
@@ -140,11 +167,11 @@ export function addImport(
     const lastImportCollection = root.find(j.ImportDeclaration).at(-1);
     if (lastImportCollection.length === 0) {
       // YOLO
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+      // oxlint-disable-next-line typescript/no-unsafe-call
       root
         .find(j.Program)
         .get('body', 0)
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        // oxlint-disable-next-line typescript/no-unsafe-member-access
         .insertBefore(j.importDeclaration([specifier], j.literal(sourceValue)));
     } else {
       lastImportCollection.insertAfter(j.importDeclaration([specifier], j.literal(sourceValue)));
@@ -164,7 +191,7 @@ export function addImport(
  * if removing the last specifier.
  */
 export function removeImport(j: JSCodeshift, { specifier: specifierToRemove, path }: ExistingImport): void {
-  log.debug(`removing ${specifierToRemove.imported.name} import`);
+  log.debug(`removing ${String(specifierToRemove.imported.name)} import`);
 
   const importDeclaration = path.value;
   const { specifiers } = importDeclaration;

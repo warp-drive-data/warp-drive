@@ -1,10 +1,10 @@
 import EmberObject from '@ember/object';
 
-import Store from 'ember-data__adapter/services/store';
-
 import Model, { attr } from '@ember-data/model';
 import { module, test } from '@warp-drive/diagnostic';
 import { setupTest } from '@warp-drive/diagnostic/ember';
+
+import Store from '../../services/store';
 
 class MinimalSerializer extends EmberObject {
   normalizeResponse(_, __, data) {
@@ -106,7 +106,7 @@ module('integration/queries - Queries Tests', function (hooks) {
     const { owner } = this;
     const store = owner.lookup('service:store');
 
-    // This code is a workaround for issue https://github.com/emberjs/data/issues/6758
+    // This code is a workaround for issue https://github.com/warp-drive-data/warp-drive/issues/6758
     // expectedResult is mutated during store.findRecord
     // to add the lid
     const expectedResultCopy = structuredClone(expectedResult);
@@ -157,7 +157,7 @@ module('integration/queries - Queries Tests', function (hooks) {
       ],
     };
 
-    // This code is a workaround for issue https://github.com/emberjs/data/issues/6758
+    // This code is a workaround for issue https://github.com/warp-drive-data/warp-drive/issues/6758
     // expectedResult is mutated during store.findRecord
     // to add the lid
     const expectedResultCopy = structuredClone(expectedResult);

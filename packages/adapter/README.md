@@ -1,35 +1,39 @@
 <p align="center">
   <img
     class="project-logo"
-    src="./ember-data-logo-dark.svg#gh-dark-mode-only"
-    alt="EmberData Adapter"
-    width="240px"
-    title="EmberData Adapter"
-    />
-  <img
-    class="project-logo"
-    src="./ember-data-logo-light.svg#gh-light-mode-only"
-    alt="EmberData Adapter"
-    width="240px"
-    title="EmberData Adapter"
+    src="./logos/logo-yellow-slab.svg"
+    alt="WarpDrive"
+    width="180px"
+    title="WarpDrive"
     />
 </p>
 
-<p align="center">Provides REST and JSON:API Implementations of the legacy <a href="https://api.emberjs.com/ember-data/release/classes/%3CInterface%3E%20Adapter">Adapter Interface</a></p>
+![NPM Stable Version](https://img.shields.io/npm/v/ember-data/latest?label=version&style=flat&color=fdb155)
+![NPM Downloads](https://img.shields.io/npm/dm/ember-data.svg?style=flat&color=fdb155)
+![License](https://img.shields.io/github/license/warp-drive-data/warp-drive.svg?style=flat&color=fdb155)
+[![EmberJS Discord Community Server](https://img.shields.io/badge/EmberJS-grey?logo=discord&logoColor=fdb155)](https://discord.gg/zT3asNS)
+[![WarpDrive Discord Server](https://img.shields.io/badge/WarpDrive-grey?logo=discord&logoColor=fdb155)](https://discord.gg/PHBbnWJx5S)
 
-> **Caution** ⚠️ **This is LEGACY documentation** for a feature that is no longer encouraged to be used.
-> If starting a new app or thinking of implementing a new adapter, consider writing a [Handler](https://api.emberjs.com/ember-data/release/classes/%3CInterface%3E%20Handler)
-> instead to be used with the [RequestManager](https://github.com/emberjs/data/tree/main/packages/request#readme)
+<p align="center">
+  <br>
+  <a href="https://warp-drive.io">WarpDrive</a> is the lightweight data library for web apps &mdash;
+  <br>
+  universal, typed, reactive, and ready to scale.
+  <br/><br/>
+</p>
 
-## Installation
+---
 
-This package is currently installed when installing `ember-data`.
+# @ember-data/adapter
 
-If installing `@ember-data/` packages individually install using your javascript package manager of choice. For instance with [pnpm](https://pnpm.io/)
+> [!WARNING]
+> **⚠️ This is a legacy package** not recommended for new applications and **Adapters are a LEGACY feature** that is no longer encouraged.
+>
+> Use [Handlers](https://warp-drive.io/api/@warp-drive/core/request/types/Handler) with [@warp-drive/core](https://warp-drive.io/api/@warp-drive/core/) instead.
 
-```no-highlight
-pnpm add @ember-data/adapter
-```
+This package provides REST and [{json:api}](https://jsonapi.org) Implementations of the legacy <a href="https://warp-drive.io/api/@warp-drive/legacy/compat/types/MinimumAdapterInterface">Adapter Interface</a> when using the older packages.
+
+For more recent installations, see [@warp-drive/legacy](https://www.npmjs.com/package/@warp-drive/legacy).
 
 **Tagged Releases**
 
@@ -39,69 +43,31 @@ pnpm add @ember-data/adapter
 - ![NPM LTS Version](https://img.shields.io/npm/v/%40ember-data/adapter/lts?label=%40lts&color=0096FF)
 - ![NPM LTS 4.12 Version](https://img.shields.io/npm/v/%40ember-data/adapter/lts-4-12?label=%40lts-4-12&color=bbbbbb)
 
-
-## 🚀 Setup
-
-If using `ember-data` no additional setup is necesssary.
-
-> **Note**
-> When using [ember-data](https://github.com/emberjs/data/blob/main/packages/-ember-data) the below
-> configuration is handled for you automatically.
-
-To use legacy adapters you will need to have installed and configured the LegacyNetworkHandler from [@ember-data/legacy-compat](https://github.com/emberjs/data/blob/main/packages/-ember-data)
-
-```no-highlight
-pnpm add @ember-data/legacy-compat
-```
-
-```ts
-import Store, { CacheHandler } from '@ember-data/store';
-import RequestManager from '@ember-data/request';
-import { LegacyNetworkHandler } from '@ember-data/legacy-compat';
-
-export default class extends Store {
-  requestManager = new RequestManager();
-
-  constructor(args) {
-    super(args);
-    this.requestManager.use([LegacyNetworkHandler]);
-    this.requestManager.useCache(CacheHandler);
-  }
-}
-```
-
-
 ## Usage
 
-To use as either a per-type or application adapter, export one of the
-implementations within the `adapters/` directory of your app as appropriate.
+Export one of the provided adapters from your app's `adapters/` directory:
 
-For instance, to configure an application adapter to use `JSON:API`
-
-
-*app/adapters/application.ts*
 ```ts
+// app/adapters/application.ts
 export { default } from '@ember-data/adapter/json-api';
 ```
 
-By default adapters are resolved by looking for an adapter with the same name in the adapters folder as the `type` given to `store.adapterFor(<type>)`, falling back to looking for an adapter named `application`.
+<br>
 
-**Overriding Resolution**
+## Documentation
 
-If you would like to avoid using resolver semantics and your application has only one or a few adapters, you may ovveride the `adapterFor` hook on the store.
+*Get Started* → [Guides](https://warp-drive.io/guides/)
 
-```ts
-import Store from '@ember-data/store';
-import Adapter from '@ember-data/adapter/json-api';
+API docs for this package → [@ember-data/adapter](https://warp-drive.io/api/@ember-data/adapter/)
 
-class extends Store {
-  #adapter = new Adapter();
+<br>
 
-  adapterFor() {
-    return this.#adapter;
-  }
-}
-```
+## Code of Conduct
 
+Refer to the [Code of Conduct](https://github.com/warp-drive-data/warp-drive/blob/main/CODE_OF_CONDUCT.md) for community guidelines and inclusivity.
 
-For the full list of APIs available read the code documentation for [@ember-data/adapter](https://api.emberjs.com/ember-data/release/modules/@ember-data%2Fadapter). You may also be interested in learning more about *Ember***Data**'s [Adapter Interface](https://api.emberjs.com/ember-data/release/classes/%3CInterface%3E%20Adapter).
+<br>
+
+### License
+
+This project is licensed under the [MIT License](LICENSE.md).

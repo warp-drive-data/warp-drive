@@ -1,0 +1,75 @@
+{
+  "name": "@warp-drive/react",
+  "description": "Data bindings and utilities for React applications using WarpDrive",
+  "version": "5.10.0-alpha.11",
+  "license": "MIT",
+  "author": "Chris Thoburn <runspired@users.noreply.github.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com:warp-drive-data/warp-drive.git",
+    "directory": "warp-drive-packages/react"
+  },
+  "homepage": "https://github.com/warp-drive-data/warp-drive",
+  "bugs": "https://github.com/warp-drive-data/warp-drive/issues",
+  "keywords": [
+    "ember-addon",
+    "react",
+    "signals",
+    "warp-drive"
+  ],
+  "scripts": {
+    "build:pkg": "NODE_ENV=production node node_modules/tsdown/dist/run.mjs",
+    "prepack": "pnpm run build:pkg",
+    "sync": "echo \"syncing\"",
+    "check:types": "node ./node_modules/typescript-7/bin/tsc --noEmit",
+    "start": "node node_modules/tsdown/dist/run.mjs --watch"
+  },
+  "files": [
+    "addon-main.cjs",
+    "dist",
+    "README.md",
+    "LICENSE.md",
+    "logos"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./*": {
+      "types": "./dist/*.d.ts",
+      "default": "./dist/*.js"
+    }
+  },
+  "dependencies": {
+    "@embroider/macros": "^1.21.1",
+    "@warp-drive/core": "workspace:*",
+    "@warp-drive/tc39-proposal-signals": "workspace:*",
+    "react": "^19.3.0",
+    "signal-polyfill": "^0.2.2"
+  },
+  "peerDependenciesMeta": {},
+  "devDependencies": {
+    "@babel/core": "catalog:",
+    "@babel/plugin-transform-typescript": "catalog:",
+    "@babel/preset-env": "catalog:",
+    "@babel/preset-react": "catalog:",
+    "@babel/preset-typescript": "catalog:",
+    "@babel/runtime": "catalog:",
+    "@types/react": "catalog:",
+    "@warp-drive/core": "workspace:*",
+    "@warp-drive/internal-config": "workspace:*",
+    "decorator-transforms": "catalog:",
+    "react": "catalog:",
+    "tsdown": "catalog:",
+    "typescript-7": "catalog:"
+  },
+  "ember-addon": {
+    "main": "addon-main.cjs",
+    "type": "addon",
+    "version": 2
+  },
+  "ember": {
+    "edition": "octane"
+  }
+}

@@ -1,3 +1,7 @@
+# No target-channel label is required here -- a PR targeting main/v4-main with none of the
+# `:dart: *` labels is presumed to need no backport (what `:dart: canary` used to spell out
+# explicitly). Add a `:dart: beta`/`release`/`lts`/`lts-prev` label only when this change does
+# need to be backported to that channel.
 name: PR
 
 on:
@@ -5,6 +9,7 @@ on:
     types: [labeled, unlabeled, opened, reopened]
     branches:
       - main
+      - v4-main
 
 concurrency:
   group: pr-labels-canary-${{ github.head_ref || github.ref_name }}
@@ -14,21 +19,14 @@ jobs:
   enforce-changelog-label:
     runs-on: ubuntu-latest
     steps:
-      - uses: yogevbd/enforce-label-action@2.2.2
+      - uses: yogevbd/enforce-label-action@a3c219da6b8fa73f6ba62b68ff09c469b3a1c024 # 2.2.2
         with:
-          REQUIRED_LABELS_ANY: ':label: breaking,:label: feat,:label: bug,:label: perf,:label: cleanup,:label: deprecation,:label: doc,:label: test,:label: chore,:label: dependencies'
-          REQUIRED_LABELS_ANY_DESCRIPTION: "Select at least one label for changelog generation. [':label: breaking', ':label: feat', ':label: bug', ':label: perf', ':label: cleanup', ':label: deprecation', ':label: doc', ':label: test', ':label: chore', ':label: dependencies']"
-  enforce-target-label:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: yogevbd/enforce-label-action@2.2.2
-        with:
-          REQUIRED_LABELS_ANY: ':dart: canary,:dart: beta,:dart: release,:dart: lts,:dart: lts-prev,:label: dependencies'
-          REQUIRED_LABELS_ANY_DESCRIPTION: "Select at least one label for what release channels to target. Use the labels `:dart: canary` or `:label: dependencies` and none of the others in the list if this PR should not be backported. [':dart: canary', ':dart: beta', ':dart: release', ':dart: lts', ':dart: lts-prev']"
+          REQUIRED_LABELS_ANY: ':label: breaking,:label: feat,:label: bug,:label: perf,:label: cleanup,:label: deprecation,:label: doc,:label: test,:label: chore,:label: dependencies,:label: rfc'
+          REQUIRED_LABELS_ANY_DESCRIPTION: "Select at least one label for changelog generation. [':label: breaking', ':label: feat', ':label: bug', ':label: perf', ':label: cleanup', ':label: deprecation', ':label: doc', ':label: test', ':label: chore', ':label: dependencies', ':label: rfc']"
   ban-release-branch-labels:
     runs-on: ubuntu-latest
     steps:
-      - uses: yogevbd/enforce-label-action@2.2.2
+      - uses: yogevbd/enforce-label-action@a3c219da6b8fa73f6ba62b68ff09c469b3a1c024 # 2.2.2
         with:
           BANNED_LABELS: 'backport-beta,backport-release,backport-lts,backport-lts-prev,backport-old-release'
           BANNED_LABELS_DESCRIPTION: "The following labels should only be applied to PRs targeting release channel branches that backport a change already on the main branch, remove them.['backport-beta', 'backport-release', 'backport-lts', 'backport-lts-prev', 'backport-old-release']"

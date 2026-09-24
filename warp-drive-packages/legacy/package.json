@@ -1,0 +1,74 @@
+{
+  "name": "@warp-drive/legacy",
+  "version": "5.10.0-alpha.11",
+  "description": "Decommissioned Packages for WarpDrive | Things your app might still want to maintain use of for a little longer.",
+  "keywords": [
+    "ember-addon"
+  ],
+  "license": "MIT",
+  "author": "Chris Thoburn <runspired@users.noreply.github.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com:warp-drive-data/warp-drive.git",
+    "directory": "warp-drive-packages/legacy"
+  },
+  "scripts": {
+    "build:pkg": "node node_modules/tsdown/dist/run.mjs",
+    "prepack": "pnpm run build:pkg",
+    "check:types": "node ./node_modules/typescript-7/bin/tsc --noEmit",
+    "sync": "echo \"syncing\"",
+    "start": "node node_modules/tsdown/dist/run.mjs --watch"
+  },
+  "files": [
+    "blueprints",
+    "dist",
+    "addon-main.cjs",
+    "CHANGELOG.md",
+    "README.md",
+    "LICENSE.md",
+    "logos"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./blueprints/*": {
+      "default": "./blueprints/*.js"
+    },
+    "./*": {
+      "types": "./dist/*.d.ts",
+      "default": "./dist/*.js"
+    }
+  },
+  "peerDependencies": {
+    "@warp-drive/core": "workspace:*",
+    "@warp-drive/utilities": "workspace:*"
+  },
+  "dependencies": {
+    "@embroider/macros": "^1.21.1",
+    "warp-drive": "workspace:*"
+  },
+  "devDependencies": {
+    "@babel/core": "catalog:",
+    "@babel/plugin-transform-typescript": "catalog:",
+    "@babel/preset-typescript": "catalog:",
+    "@types/jquery": "catalog:",
+    "@warp-drive/core": "workspace:*",
+    "@warp-drive/internal-config": "workspace:*",
+    "@warp-drive/utilities": "workspace:*",
+    "decorator-transforms": "catalog:",
+    "ember-source": "catalog:",
+    "expect-type": "catalog:",
+    "tsdown": "catalog:",
+    "typescript-7": "catalog:"
+  },
+  "ember-addon": {
+    "main": "addon-main.cjs",
+    "type": "addon",
+    "version": 2
+  },
+  "ember": {
+    "edition": "octane"
+  }
+}

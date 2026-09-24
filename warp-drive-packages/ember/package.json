@@ -1,0 +1,86 @@
+{
+  "name": "@warp-drive/ember",
+  "description": "Data bindings and utilities for Ember applications using WarpDrive",
+  "version": "5.10.0-alpha.11",
+  "license": "MIT",
+  "author": "Chris Thoburn <runspired@users.noreply.github.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com:warp-drive-data/warp-drive.git",
+    "directory": "warp-drive-packages/ember"
+  },
+  "homepage": "https://github.com/warp-drive-data/warp-drive",
+  "bugs": "https://github.com/warp-drive-data/warp-drive/issues",
+  "keywords": [
+    "ember-addon"
+  ],
+  "scripts": {
+    "build:pkg": "node node_modules/tsdown/dist/run.mjs",
+    "prepack": "pnpm run build:pkg",
+    "sync": "echo \"syncing\"",
+    "_temporarily_deactivated_lint": "eslint . --quiet --cache --cache-strategy=content",
+    "start": "node node_modules/tsdown/dist/run.mjs --watch",
+    "check:types": "node ./node_modules/typescript-7/bin/tsc --noEmit --runExternalCode"
+  },
+  "files": [
+    "addon-main.cjs",
+    "dist",
+    "README.md",
+    "LICENSE.md",
+    "logos"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./*": {
+      "types": "./dist/*.d.ts",
+      "default": "./dist/*.js"
+    }
+  },
+  "peerDependencies": {
+    "@ember/test-waiters": "^3.1.0 || ^4.0.0",
+    "ember-provide-consume-context": "^0.10.0"
+  },
+  "dependencies": {
+    "@embroider/macros": "^1.21.1",
+    "@warp-drive/core": "workspace:*"
+  },
+  "peerDependenciesMeta": {
+    "ember-provide-consume-context": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@babel/core": "catalog:",
+    "@babel/plugin-transform-typescript": "catalog:",
+    "@babel/preset-env": "catalog:",
+    "@babel/preset-typescript": "catalog:",
+    "@babel/runtime": "catalog:",
+    "@ember/test-helpers": "catalog:",
+    "@ember/test-waiters": "catalog:",
+    "@embroider/addon-dev": "catalog:",
+    "@glimmer/component": "catalog:",
+    "@glint/ember-tsc": "catalog:",
+    "@glint/template": "catalog:",
+    "@warp-drive/core": "workspace:*",
+    "@warp-drive/internal-config": "workspace:*",
+    "babel-plugin-ember-template-compilation": "catalog:",
+    "decorator-transforms": "catalog:",
+    "ember-content-mapper": "catalog:",
+    "ember-provide-consume-context": "catalog:",
+    "ember-source": "catalog:",
+    "tsdown": "catalog:",
+    "typescript": "catalog:",
+    "typescript-7": "catalog:"
+  },
+  "ember-addon": {
+    "main": "addon-main.cjs",
+    "type": "addon",
+    "version": 2
+  },
+  "ember": {
+    "edition": "octane"
+  }
+}

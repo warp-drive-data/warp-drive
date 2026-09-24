@@ -1,234 +1,86 @@
 'use strict';
 
-const { describe, it, beforeEach, afterEach } = require('mocha');
-const blueprintHelpers = require('ember-cli-blueprint-test-helpers/helpers');
-const chai = require('ember-cli-blueprint-test-helpers/chai');
-const SilentError = require('silent-error');
+const assert = require('node:assert/strict');
+const { describe, it, afterEach } = require('mocha');
 
-const path = require('path');
-const file = require('ember-cli-blueprint-test-helpers/chai').file;
+const { generateSerializerSource } = require('warp-drive/generators/serializer');
+const { generateUnitTestSource } = require('warp-drive/generators/tests');
 
-function fixture(directory, filePath) {
-  return file(path.join(directory, '../fixtures', filePath));
-}
+const fixture = require('./helpers/fixture.js');
+const { makeTmpProject, withApplicationEntity, cleanup } = require('./helpers/tmp-project.js');
 
-const emberNew = blueprintHelpers.emberNew;
-const emberGenerate = blueprintHelpers.emberGenerate;
-const emberGenerateDestroy = blueprintHelpers.emberGenerateDestroy;
-const modifyPackages = blueprintHelpers.modifyPackages;
-const expect = chai.expect;
-const { setEdition, clearEdition } = require('@ember/edition-utils');
+describe('generate: serializer', function () {
+  let cwd;
 
-function enableOctane(hooks) {
-  hooks.beforeEach(function () {
-    setEdition('octane');
+  afterEach(function () {
+    if (cwd) {
+      cleanup(cwd);
+      cwd = undefined;
+    }
   });
 
-  hooks.afterEach(function () {
-    clearEdition();
-  });
-}
+  it('serializer', function () {
+    cwd = makeTmpProject();
+    const source = generateSerializerSource('foo', { cwd, isAddon: false });
 
-function enableClassic(hooks) {
-  hooks.beforeEach(function () {
-    setEdition('classic');
+    assert.match(source, /import JSONAPISerializer from '@ember-data\/serializer\/json-api';/);
+    assert.match(source, /export default class FooSerializer extends JSONAPISerializer \{/);
   });
 
-  hooks.afterEach(function () {
-    clearEdition();
-  });
-}
+  it('serializer extends application serializer if it exists', function () {
+    cwd = makeTmpProject();
+    withApplicationEntity(cwd, 'serializer');
+    const source = generateSerializerSource('foo', { cwd, isAddon: false });
 
-function setupTestHooks(context) {
-  // context.timeout = function () {};
-  blueprintHelpers.setupTestHooks(context);
-}
-
-describe('Acceptance: generate and destroy serializer blueprints', function () {
-  setupTestHooks(this);
-
-  describe('classic', function () {
-    enableClassic({ beforeEach, afterEach });
-
-    beforeEach(async function () {
-      await emberNew();
-      await modifyPackages([{ name: '@ember-data/serializer', dev: true }]);
-    });
-
-    it('serializer', function () {
-      const args = ['serializer', 'foo'];
-
-      return emberGenerateDestroy(args, (_file) => {
-        expect(_file('app/serializers/foo.js'))
-          .to.contain(`import JSONAPISerializer from '@ember-data/serializer/json-api';`)
-          .to.contain('export default JSONAPISerializer.extend(');
-
-        expect(_file('tests/unit/serializers/foo-test.js')).to.equal(
-          fixture(__dirname, 'serializer-test/foo-default.js')
-        );
-      });
-    });
-
-    it('serializer extends application serializer if it exists', function () {
-      const args = ['serializer', 'foo'];
-
-      return emberGenerate(['serializer', 'application']).then(() =>
-        emberGenerateDestroy(args, (_file) => {
-          expect(_file('app/serializers/foo.js'))
-            .to.contain("import ApplicationSerializer from './application';")
-            .to.contain('export default ApplicationSerializer.extend({');
-
-          expect(_file('tests/unit/serializers/foo-test.js')).to.equal(
-            fixture(__dirname, 'serializer-test/foo-default.js')
-          );
-        })
-      );
-    });
-
-    it('serializer with --base-class', function () {
-      const args = ['serializer', 'foo', '--base-class=bar'];
-
-      return emberGenerateDestroy(args, (_file) => {
-        expect(_file('app/serializers/foo.js'))
-          .to.contain("import BarSerializer from './bar';")
-          .to.contain('export default BarSerializer.extend({');
-
-        expect(_file('tests/unit/serializers/foo-test.js')).to.equal(
-          fixture(__dirname, 'serializer-test/foo-default.js')
-        );
-      });
-    });
-
-    // eslint-disable-next-line mocha/no-skipped-tests
-    xit('serializer throws when --base-class is same as name', function () {
-      const args = ['serializer', 'foo', '--base-class=foo'];
-
-      return expect(emberGenerate(args)).to.be.rejectedWith(SilentError, /Serializers cannot extend from themself/);
-    });
-
-    it('serializer when is named "application"', function () {
-      const args = ['serializer', 'application'];
-
-      return emberGenerateDestroy(args, (_file) => {
-        expect(_file('app/serializers/application.js'))
-          .to.contain(`import JSONAPISerializer from '@ember-data/serializer/json-api';`)
-          .to.contain('export default JSONAPISerializer.extend({');
-
-        expect(_file('tests/unit/serializers/application-test.js')).to.equal(
-          fixture(__dirname, 'serializer-test/application-default.js')
-        );
-      });
-    });
-
-    it('serializer-test', function () {
-      const args = ['serializer-test', 'foo'];
-
-      return emberGenerateDestroy(args, (_file) => {
-        expect(_file('tests/unit/serializers/foo-test.js')).to.equal(
-          fixture(__dirname, 'serializer-test/foo-default.js')
-        );
-      });
-    });
+    assert.match(source, /import ApplicationSerializer from '\.\/application';/);
+    assert.match(source, /export default class FooSerializer extends ApplicationSerializer \{/);
   });
 
-  describe('octane', function () {
-    enableOctane({ beforeEach, afterEach });
+  it('addon serializers do not auto-extend from an application serializer', function () {
+    cwd = makeTmpProject();
+    withApplicationEntity(cwd, 'serializer');
+    const source = generateSerializerSource('foo', { cwd, isAddon: true });
 
-    beforeEach(async function () {
-      await emberNew();
-      await modifyPackages([{ name: '@ember-data/serializer', dev: true }]);
-    });
-
-    it('serializer', function () {
-      const args = ['serializer', 'foo'];
-
-      return emberGenerateDestroy(args, (_file) => {
-        expect(_file('app/serializers/foo.js'))
-          .to.contain(`import JSONAPISerializer from '@ember-data/serializer/json-api';`)
-          .to.contain('export default class FooSerializer extends JSONAPISerializer {');
-
-        expect(_file('tests/unit/serializers/foo-test.js')).to.equal(
-          fixture(__dirname, 'serializer-test/foo-default.js')
-        );
-      });
-    });
-
-    it('serializer extends application serializer if it exists', function () {
-      const args = ['serializer', 'foo'];
-
-      return emberGenerate(['serializer', 'application']).then(() =>
-        emberGenerateDestroy(args, (_file) => {
-          expect(_file('app/serializers/foo.js'))
-            .to.contain("import ApplicationSerializer from './application';")
-            .to.contain('export default class FooSerializer extends ApplicationSerializer {');
-
-          expect(_file('tests/unit/serializers/foo-test.js')).to.equal(
-            fixture(__dirname, 'serializer-test/foo-default.js')
-          );
-        })
-      );
-    });
-
-    it('serializer with --base-class', function () {
-      const args = ['serializer', 'foo', '--base-class=bar'];
-
-      return emberGenerateDestroy(args, (_file) => {
-        expect(_file('app/serializers/foo.js'))
-          .to.contain("import BarSerializer from './bar';")
-          .to.contain('export default class FooSerializer extends BarSerializer');
-
-        expect(_file('tests/unit/serializers/foo-test.js')).to.equal(
-          fixture(__dirname, 'serializer-test/foo-default.js')
-        );
-      });
-    });
-
-    // eslint-disable-next-line mocha/no-skipped-tests
-    xit('serializer throws when --base-class is same as name', function () {
-      const args = ['serializer', 'foo', '--base-class=foo'];
-
-      return expect(emberGenerate(args)).to.be.rejectedWith(SilentError, /Serializers cannot extend from themself/);
-    });
-
-    it('serializer when is named "application"', function () {
-      const args = ['serializer', 'application'];
-
-      return emberGenerateDestroy(args, (_file) => {
-        expect(_file('app/serializers/application.js'))
-          .to.contain(`import JSONAPISerializer from '@ember-data/serializer/json-api';`)
-          .to.contain('export default class ApplicationSerializer extends JSONAPISerializer {');
-
-        expect(_file('tests/unit/serializers/application-test.js')).to.equal(
-          fixture(__dirname, 'serializer-test/application-default.js')
-        );
-      });
-    });
-
-    it('serializer-test', function () {
-      const args = ['serializer-test', 'foo'];
-
-      return emberGenerateDestroy(args, (_file) => {
-        expect(_file('tests/unit/serializers/foo-test.js')).to.equal(
-          fixture(__dirname, 'serializer-test/foo-default.js')
-        );
-      });
-    });
+    assert.match(source, /import JSONAPISerializer from '@ember-data\/serializer\/json-api';/);
+    assert.match(source, /export default class FooSerializer extends JSONAPISerializer \{/);
   });
 
-  describe('in addon', function () {
-    beforeEach(async function () {
-      await emberNew({ target: 'addon' });
-      await modifyPackages([{ name: '@ember-data/serializer', dev: true }]);
-    });
+  it('serializer with --base-class', function () {
+    cwd = makeTmpProject();
+    const source = generateSerializerSource('foo', { cwd, isAddon: false, baseClass: 'bar' });
 
-    describe('with ember-qunit (default)', function () {
-      it('serializer-test foo', function () {
-        return emberGenerateDestroy(['serializer-test', 'foo'], (_file) => {
-          expect(_file('tests/unit/serializers/foo-test.js')).to.equal(
-            fixture(__dirname, 'serializer-test/addon-default.js')
-          );
-        });
-      });
-    });
+    assert.match(source, /import BarSerializer from '\.\/bar';/);
+    assert.match(source, /export default class FooSerializer extends BarSerializer \{/);
+  });
+
+  it('serializer throws when --base-class is the same as the entity name', function () {
+    cwd = makeTmpProject();
+    assert.throws(
+      () => generateSerializerSource('foo', { cwd, isAddon: false, baseClass: 'foo' }),
+      /Serializers cannot extend from themself/
+    );
+  });
+
+  it('serializer when named "application"', function () {
+    cwd = makeTmpProject();
+    const source = generateSerializerSource('application', { cwd, isAddon: false });
+
+    assert.match(source, /import JSONAPISerializer from '@ember-data\/serializer\/json-api';/);
+    assert.match(source, /export default class ApplicationSerializer extends JSONAPISerializer \{/);
+  });
+
+  it('serializer-test', function () {
+    const source = generateUnitTestSource('Serializer', 'foo', 'my-app');
+    assert.equal(source, fixture('serializer-test/foo-default.js'));
+  });
+
+  it('serializer-test for application', function () {
+    const source = generateUnitTestSource('Serializer', 'application', 'my-app');
+    assert.equal(source, fixture('serializer-test/application-default.js'));
+  });
+
+  it('serializer-test in addon', function () {
+    const source = generateUnitTestSource('Serializer', 'foo', 'dummy');
+    assert.equal(source, fixture('serializer-test/addon-default.js'));
   });
 });

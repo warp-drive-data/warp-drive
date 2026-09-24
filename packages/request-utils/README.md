@@ -1,31 +1,48 @@
- <p align="center">
+<p align="center">
   <img
     class="project-logo"
-    src="./ember-data-logo-dark.svg#gh-dark-mode-only"
-    alt="EmberData RequestUtils"
-    width="240px"
-    title="EmberData RequestUtils"
-    />
-  <img
-    class="project-logo"
-    src="./ember-data-logo-light.svg#gh-light-mode-only"
-    alt="EmberData RequestUtils"
-    width="240px"
-    title="EmberData RequestUtils"
+    src="./logos/logo-yellow-slab.svg"
+    alt="WarpDrive"
+    width="180px"
+    title="WarpDrive"
     />
 </p>
 
+![NPM Stable Version](https://img.shields.io/npm/v/ember-data/latest?label=version&style=flat&color=fdb155)
+![NPM Downloads](https://img.shields.io/npm/dm/ember-data.svg?style=flat&color=fdb155)
+![License](https://img.shields.io/github/license/warp-drive-data/warp-drive.svg?style=flat&color=fdb155)
+[![EmberJS Discord Community Server](https://img.shields.io/badge/EmberJS-grey?logo=discord&logoColor=fdb155)](https://discord.gg/zT3asNS)
+[![WarpDrive Discord Server](https://img.shields.io/badge/WarpDrive-grey?logo=discord&logoColor=fdb155)](https://discord.gg/PHBbnWJx5S)
+
+<p align="center">
+  <br>
+  <a href="https://warp-drive.io">WarpDrive</a> is the lightweight data library for web apps &mdash;
+  <br>
+  universal, typed, reactive, and ready to scale.
+  <br/><br/>
+</p>
+
+---
+
+# @ember-data/request-utils
+
 <p align="center">Utilities for Requests</p>
 
-This package provides Simple utility function to assist in url building, query params, and other common request operations.
+> [!WARNING]
+> **⚠️ This package only exists for backwards compatibility**
+>
+> Newer apps should use [@warp-drive/utilities](https://warp-drive.io/api/@warp-drive/utilities/)
 
-It's built for [*Ember***Data**](https://github.com/emberjs/data/) but useful more broadly if you're looking for lightweight functions to assist in working with urls and query params.
+
+This package provides simple utility functions to assist in url building, query params, and other common request operations.
+
+It's built for [*Ember***Data**](https://github.com/warp-drive-data/warp-drive/) but useful more broadly if you're looking for lightweight functions to assist in working with urls and query params.
 
 ## Installation
 
 Install using your javascript package manager of choice. For instance with [pnpm](https://pnpm.io/)
 
-```no-highlight
+```sh
 pnpm add @ember-data/request-utils
 ```
 
@@ -40,10 +57,10 @@ pnpm add @ember-data/request-utils
 
 ## Utils
 
-- [buildBaseUrl]()
-- [sortQueryParams]()
-- [buildQueryParams]()
-- [filterEmpty]()
+- `buildBaseURL`
+- `sortQueryParams`
+- `buildQueryParams`
+- `filterEmpty`
 
 ### As a Library Primitive
 
@@ -65,12 +82,22 @@ const url = `${baseURL}?${buildQueryParams({ name: 'Chris', include:['pets'] })}
 // => 'https://api.example.com/api/v1/emberDevelopers?include=pets&name=Chris'
 ```
 
-This is useful, but not as useful as the REST request builder for query which is sugar over this (and more!):
+<br>
 
-```ts
-import { query } from '@ember-data/rest/request';
+## Documentation
 
-const options = query('ember-developer', { name: 'Chris', include:['pets'] });
-// => { url: 'https://api.example.com/api/v1/emberDevelopers?include=pets&name=Chris' }
-// Note: options will also include other request options like headers, method, etc.
-```
+*Get Started* → [Guides](https://warp-drive.io/guides/)
+
+API docs for this package → [@ember-data/request-utils](https://warp-drive.io/api/@ember-data/request-utils/)
+
+<br>
+
+## Code of Conduct
+
+Refer to the [Code of Conduct](https://github.com/warp-drive-data/warp-drive/blob/main/CODE_OF_CONDUCT.md) for community guidelines and inclusivity.
+
+<br>
+
+### License
+
+This project is licensed under the [MIT License](LICENSE.md).

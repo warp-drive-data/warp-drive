@@ -1,15 +1,15 @@
 <p align="center">
   <img
     class="project-logo"
-    src="./NCC-1701-a-blue.svg#gh-light-mode-only"
+    src="../../logos/warp-drive-logo-dark.svg#gh-light-mode-only"
     alt="WarpDrive"
-    width="120px"
+    width="200px"
     title="WarpDrive" />
   <img
     class="project-logo"
-    src="./NCC-1701-a.svg#gh-dark-mode-only"
+    src="../../logos/warp-drive-logo-gold.svg#gh-dark-mode-only"
     alt="WarpDrive"
-    width="120px"
+    width="200px"
     title="WarpDrive" />
 </p>
 
@@ -32,7 +32,7 @@ Its like GraphQL, RPC, or Protobuf... but for anything!
 
 ## Installation
 
-```cli
+```sh
 pnpm install @warp-drive/schema
 ```
 
@@ -48,13 +48,13 @@ pnpm install @warp-drive/schema
 
 Scaffold the schema for a `User` resource
 
-```no-highlight
+```sh
 npx -p @warp-drive/schema resource user
 ```
 
 Parse Schemas
 
-```no-highlight
+```sh
 npx -p @warp-drive/schema parse <path/to/schema.json>
 ```
 

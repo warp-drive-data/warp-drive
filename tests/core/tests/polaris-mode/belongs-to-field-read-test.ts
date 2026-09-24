@@ -1,0 +1,619 @@
+import { useRecommendedStore } from '@warp-drive/core';
+import { withDefaults } from '@warp-drive/core/reactive';
+import type { Type } from '@warp-drive/core/types/symbols';
+import { module, setupTest, test } from '@warp-drive/diagnostic/ember';
+import { JSONAPICache } from '@warp-drive/json-api';
+
+const Store = useRecommendedStore({
+  cache: JSONAPICache,
+});
+
+type User = {
+  id: string | null;
+  $type: 'user';
+  name: string;
+  bestFriend: User | null;
+  [Type]: 'user';
+};
+
+module('Reads | belongsTo in linksMode', function (hooks) {
+  setupTest(hooks);
+
+  test('we can use sync belongsTo in linksMode', function (assert) {
+    const store = new Store();
+    const { schema } = store;
+
+    schema.registerResource(
+      withDefaults({
+        type: 'user',
+        fields: [
+          {
+            name: 'name',
+            kind: 'field',
+          },
+          {
+            name: 'bestFriend',
+            type: 'user',
+            kind: 'belongsTo',
+            options: { inverse: 'bestFriend', async: false, linksMode: true },
+          },
+        ],
+      })
+    );
+
+    const record = store.push<User>({
+      data: {
+        type: 'user',
+        id: '1',
+        attributes: {
+          name: 'Chris',
+        },
+        relationships: {
+          bestFriend: {
+            links: { related: '/user/1/bestFriend' },
+            data: { type: 'user', id: '2' },
+          },
+        },
+      },
+      included: [
+        {
+          type: 'user',
+          id: '2',
+          attributes: {
+            name: 'Rey',
+          },
+          relationships: {
+            bestFriend: {
+              links: { related: '/user/2/bestFriend' },
+              data: { type: 'user', id: '1' },
+            },
+          },
+        },
+      ],
+    });
+
+    assert.equal(record.id, '1', 'id is accessible');
+    assert.equal(record.$type, 'user', '$type is accessible');
+    assert.equal(record.name, 'Chris', 'name is accessible');
+    assert.equal(record.bestFriend?.id, '2', 'bestFriend.id is accessible');
+    assert.equal(record.bestFriend?.$type, 'user', 'bestFriend.user is accessible');
+    assert.equal(record.bestFriend?.name, 'Rey', 'bestFriend.name is accessible');
+    assert.equal(record.bestFriend?.bestFriend?.id, record.id, 'bestFriend is reciprocal');
+  });
+
+  test('we can update sync belongsTo in linksMode', function (assert) {
+    const store = new Store();
+    const { schema } = store;
+
+    schema.registerResource(
+      withDefaults({
+        type: 'user',
+        fields: [
+          {
+            name: 'name',
+            kind: 'field',
+          },
+          {
+            name: 'bestFriend',
+            type: 'user',
+            kind: 'belongsTo',
+            options: { inverse: 'bestFriend', async: false, linksMode: true },
+          },
+        ],
+      })
+    );
+
+    const record = store.push<User>({
+      data: {
+        type: 'user',
+        id: '1',
+        attributes: {
+          name: 'Chris',
+        },
+        relationships: {
+          bestFriend: {
+            links: { related: '/user/1/bestFriend' },
+            data: { type: 'user', id: '2' },
+          },
+        },
+      },
+      included: [
+        {
+          type: 'user',
+          id: '2',
+          attributes: {
+            name: 'Rey',
+          },
+          relationships: {
+            bestFriend: {
+              links: { related: '/user/2/bestFriend' },
+              data: { type: 'user', id: '1' },
+            },
+          },
+        },
+      ],
+    });
+
+    assert.equal(record.id, '1', 'id is accessible');
+    assert.equal(record.name, 'Chris', 'name is accessible');
+    assert.equal(record.bestFriend?.id, '2', 'bestFriend.id is accessible');
+    assert.equal(record.bestFriend?.name, 'Rey', 'bestFriend.name is accessible');
+
+    store.push<User>({
+      data: {
+        type: 'user',
+        id: '1',
+        attributes: {
+          name: 'Chris',
+        },
+        relationships: {
+          bestFriend: {
+            links: { related: '/user/1/bestFriend' },
+            data: { type: 'user', id: '3' },
+          },
+        },
+      },
+      included: [
+        {
+          type: 'user',
+          id: '3',
+          attributes: {
+            name: 'Ray',
+          },
+          relationships: {
+            bestFriend: {
+              links: { related: '/user/3/bestFriend' },
+              data: { type: 'user', id: '1' },
+            },
+          },
+        },
+      ],
+    });
+
+    assert.equal(record.id, '1', 'id is accessible');
+    assert.equal(record.name, 'Chris', 'name is accessible');
+    assert.equal(record.bestFriend?.id, '3', 'bestFriend.id is accessible');
+    assert.equal(record.bestFriend?.name, 'Ray', 'bestFriend.name is accessible');
+  });
+
+  test('(sync) we error in linksMode if the relationship does not include a link or data', async function (assert) {
+    const store = new Store();
+    const { schema } = store;
+
+    schema.registerResource(
+      withDefaults({
+        type: 'user',
+        fields: [
+          {
+            name: 'name',
+            kind: 'field',
+          },
+          {
+            name: 'bestFriend',
+            type: 'user',
+            kind: 'belongsTo',
+            options: { inverse: 'bestFriend', async: false, linksMode: true },
+          },
+        ],
+      })
+    );
+
+    await assert.expectAssertion(
+      () =>
+        store.push<User>({
+          data: {
+            type: 'user',
+            id: '1',
+            attributes: {
+              name: 'Chris',
+            },
+            relationships: {
+              bestFriend: {
+                // oops we forgot links and data
+              },
+            },
+          },
+          included: [
+            {
+              type: 'user',
+              id: '2',
+              attributes: {
+                name: 'Rey',
+              },
+              relationships: {
+                bestFriend: {
+                  links: { related: '/user/2/bestFriend' },
+                  data: { type: 'user', id: '1' },
+                },
+              },
+            },
+          ],
+        }),
+      'Cannot fetch user.bestFriend because the field is in linksMode but the relationship data is undefined and no link is present'
+    );
+  });
+
+  test('(sync) we error in linksMode if an included resource relationship does not include a link or data', async function (assert) {
+    const store = new Store();
+    const { schema } = store;
+
+    schema.registerResource(
+      withDefaults({
+        type: 'user',
+        fields: [
+          {
+            name: 'name',
+            kind: 'field',
+          },
+          {
+            name: 'bestFriend',
+            type: 'user',
+            kind: 'belongsTo',
+            options: { inverse: 'bestFriend', async: false, linksMode: true },
+          },
+        ],
+      })
+    );
+
+    await assert.expectAssertion(
+      () =>
+        store.push<User>({
+          data: {
+            type: 'user',
+            id: '1',
+            attributes: {
+              name: 'Chris',
+            },
+            relationships: {
+              bestFriend: {
+                links: { related: '/user/1/bestFriend' },
+                data: { type: 'user', id: '2' },
+              },
+            },
+          },
+          included: [
+            {
+              type: 'user',
+              id: '2',
+              attributes: {
+                name: 'Rey',
+              },
+              relationships: {
+                bestFriend: {
+                  // oops we forgot links and data
+                },
+              },
+            },
+          ],
+        }),
+      'Cannot fetch user.bestFriend because the field is in linksMode but the relationship data is undefined and no link is present'
+    );
+  });
+
+  test('(sync) we do not error in linksMode if the related resource is not included when we have a link', function (assert) {
+    const store = new Store();
+    const { schema } = store;
+
+    schema.registerResource(
+      withDefaults({
+        type: 'user',
+        fields: [
+          {
+            name: 'name',
+            kind: 'field',
+          },
+          {
+            name: 'bestFriend',
+            type: 'user',
+            kind: 'belongsTo',
+            options: { inverse: 'bestFriend', async: false, linksMode: true },
+          },
+        ],
+      })
+    );
+
+    const record = store.push<User>({
+      data: {
+        type: 'user',
+        id: '1',
+        attributes: {
+          name: 'Chris',
+        },
+        relationships: {
+          bestFriend: {
+            links: { related: '/user/1/bestFriend' },
+            data: { type: 'user', id: '2' },
+          },
+        },
+      },
+      included: [],
+    });
+
+    assert.equal(record.id, '1', 'id is accessible');
+    assert.equal(record.name, 'Chris', 'name is accessible');
+  });
+
+  test('(sync) we error in linksMode if the related resource is not included (no link)', async function (assert) {
+    const store = new Store();
+    const { schema } = store;
+
+    schema.registerResource(
+      withDefaults({
+        type: 'user',
+        fields: [
+          {
+            name: 'name',
+            kind: 'field',
+          },
+          {
+            name: 'bestFriend',
+            type: 'user',
+            kind: 'belongsTo',
+            options: { inverse: 'bestFriend', async: false, linksMode: true },
+          },
+        ],
+      })
+    );
+
+    await assert.expectAssertion(
+      () =>
+        store.push<User>({
+          data: {
+            type: 'user',
+            id: '1',
+            attributes: {
+              name: 'Chris',
+            },
+            relationships: {
+              bestFriend: {
+                data: { type: 'user', id: '2' },
+              },
+            },
+          },
+          included: [],
+        }),
+      'Cannot fetch user.bestFriend because the field is in linksMode but the related data is not included'
+    );
+  });
+
+  test('(sync) we do not error in linksMode if the related resource is included (no link)', function (assert) {
+    const store = new Store();
+    const { schema } = store;
+
+    schema.registerResource(
+      withDefaults({
+        type: 'user',
+        fields: [
+          {
+            name: 'name',
+            kind: 'field',
+          },
+          {
+            name: 'bestFriend',
+            type: 'user',
+            kind: 'belongsTo',
+            options: { inverse: 'bestFriend', async: false, linksMode: true },
+          },
+        ],
+      })
+    );
+
+    const user = store.push<User>({
+      data: {
+        type: 'user',
+        id: '1',
+        attributes: {
+          name: 'Chris',
+        },
+        relationships: {
+          bestFriend: {
+            data: { type: 'user', id: '2' },
+          },
+        },
+      },
+      included: [
+        {
+          type: 'user',
+          id: '2',
+          attributes: {
+            name: 'James',
+          },
+        },
+      ],
+    });
+
+    assert.equal(user.id, '1', 'id is accessible');
+    assert.equal(user.name, 'Chris', 'name is accessible');
+    assert.equal(user.bestFriend?.id, '2', 'bestFriend.id is accessible');
+    assert.equal(user.bestFriend?.name, 'James', 'bestFriend.name is accessible');
+  });
+
+  test('(sync) we do not error in linksMode if the relationship data is null', function (assert) {
+    const store = new Store();
+    const { schema } = store;
+
+    schema.registerResource(
+      withDefaults({
+        type: 'user',
+        fields: [
+          {
+            name: 'name',
+            kind: 'field',
+          },
+          {
+            name: 'bestFriend',
+            type: 'user',
+            kind: 'belongsTo',
+            options: { inverse: 'bestFriend', async: false, linksMode: true },
+          },
+        ],
+      })
+    );
+
+    const record = store.push<User>({
+      data: {
+        type: 'user',
+        id: '1',
+        attributes: {
+          name: 'Chris',
+        },
+        relationships: {
+          bestFriend: {
+            links: { related: '/user/1/bestFriend' },
+            data: null,
+          },
+        },
+      },
+      included: [],
+    });
+
+    const record2 = store.push<User>({
+      data: {
+        type: 'user',
+        id: '2',
+        attributes: {
+          name: 'Leo',
+        },
+        relationships: {
+          bestFriend: {
+            data: null,
+          },
+        },
+      },
+      included: [],
+    });
+
+    assert.equal(record.id, '1', 'id is accessible');
+    assert.equal(record.$type, 'user', '$type is accessible');
+    assert.equal(record.name, 'Chris', 'name is accessible');
+    assert.equal(record.bestFriend, null, 'bestFriend is null');
+
+    assert.equal(record2.id, '2', 'id is accessible');
+    assert.equal(record2.$type, 'user', '$type is accessible');
+    assert.equal(record2.name, 'Leo', 'name is accessible');
+    assert.equal(record2.bestFriend, null, 'bestFriend is null');
+  });
+
+  test('(sync) we error in linksMode if data is missing or undefined and no link is present', async function (assert) {
+    const store = new Store();
+    const { schema } = store;
+
+    schema.registerResource(
+      withDefaults({
+        type: 'user',
+        fields: [
+          {
+            name: 'name',
+            kind: 'field',
+          },
+          {
+            name: 'bestFriend',
+            type: 'user',
+            kind: 'belongsTo',
+            options: { inverse: 'bestFriend', async: false, linksMode: true },
+          },
+        ],
+      })
+    );
+
+    await assert.expectAssertion(
+      () =>
+        store.push<User>({
+          data: {
+            type: 'user',
+            id: '1',
+            attributes: {
+              name: 'Chris',
+            },
+            relationships: {
+              bestFriend: {
+                data: undefined,
+              },
+            },
+          },
+          included: [],
+        }),
+      'Cannot fetch user.bestFriend because the field is in linksMode but the relationship data is undefined and no link is present'
+    );
+
+    await assert.expectAssertion(
+      () =>
+        store.push<User>({
+          data: {
+            type: 'user',
+            id: '1',
+            attributes: {
+              name: 'Chris',
+            },
+            relationships: {
+              bestFriend: {
+                meta: {},
+              },
+            },
+          },
+          included: [],
+        }),
+      'Cannot fetch user.bestFriend because the field is in linksMode but the relationship data is undefined and no link is present'
+    );
+  });
+
+  test('we error for async belongsTo access in linksMode because we are not implemented yet', async function (assert) {
+    const store = new Store();
+    const { schema } = store;
+
+    schema.registerResource(
+      withDefaults({
+        type: 'user',
+        fields: [
+          {
+            name: 'name',
+            kind: 'field',
+          },
+          // @ts-expect-error not implemented yet
+          {
+            name: 'bestFriend',
+            type: 'user',
+            kind: 'belongsTo',
+            options: { inverse: 'bestFriend', async: true, linksMode: true },
+          },
+        ],
+      })
+    );
+
+    await assert.expectAssertion(
+      () =>
+        store.push<User>({
+          data: {
+            type: 'user',
+            id: '1',
+            attributes: {
+              name: 'Chris',
+            },
+            relationships: {
+              bestFriend: {
+                links: { related: '/user/1/bestFriend' },
+                data: { type: 'user', id: '2' },
+              },
+            },
+          },
+          included: [
+            // NOTE: If this is included, we can assume the link is pre-fetched
+            {
+              type: 'user',
+              id: '2',
+              attributes: {
+                name: 'Rey',
+              },
+              relationships: {
+                bestFriend: {
+                  links: { related: '/user/2/bestFriend' },
+                  data: { type: 'user', id: '1' },
+                },
+              },
+            },
+          ],
+        }),
+      'Cannot fetch user.bestFriend because the field is in linksMode but async is not yet supported'
+    );
+  });
+});

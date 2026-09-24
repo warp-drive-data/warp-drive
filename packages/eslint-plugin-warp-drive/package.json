@@ -1,0 +1,57 @@
+{
+  "name": "eslint-plugin-warp-drive",
+  "description": "ESLint rules for Applications using WarpDrive or EmberData",
+  "main": "./src/index.js",
+  "version": "5.10.0-alpha.11",
+  "private": false,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/warp-drive-data/warp-drive.git",
+    "directory": "packages/eslint-plugin-warp-drive"
+  },
+  "exports": {
+    ".": {
+      "default": "./src/index.js"
+    },
+    "./recommended": {
+      "default": "./src/recommended.js"
+    },
+    "./recommended-templates": {
+      "default": "./src/recommended-templates.js"
+    },
+    "./recommended-react": {
+      "default": "./src/recommended-react.js"
+    },
+    "./recommended-internal": {
+      "default": "./src/recommended-internal.js"
+    }
+  },
+  "dependencies": {
+    "requireindex": "^1.2.0",
+    "ember-eslint-parser": "^0.14.6",
+    "@warp-drive/core": "workspace:*",
+    "@warp-drive/utilities": "workspace:*"
+  },
+  "devDependencies": {
+    "@warp-drive/internal-config": "workspace:*",
+    "@babel/eslint-parser": "catalog:",
+    "@babel/plugin-proposal-decorators": "catalog:",
+    "@babel/core": "catalog:",
+    "eslint": "catalog:",
+    "mocha": "catalog:"
+  },
+  "files": [
+    "src",
+    "docs",
+    "CHANGELOG.md",
+    "README.md",
+    "logos",
+    "LICENSE.md"
+  ],
+  "scripts": {
+    "sync": "echo \"syncing\"",
+    "skip:test": "mocha tests",
+    "lint": "eslint . --quiet --cache --cache-strategy=content"
+  },
+  "license": "MIT"
+}

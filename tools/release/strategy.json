@@ -1,0 +1,157 @@
+{
+  "config": {
+    "packageRoots": ["packages/*", "tests/*", "tools/*", "internal-tooling", "warp-drive-packages/*", "docs-viewer"],
+    "changelogRoots": ["packages/*", "warp-drive-packages/*"],
+    "changelog": {
+      "labelOrder": [
+        ":boom: Breaking Change",
+        ":evergreen_tree: New Deprecation",
+        ":memo: Documentation",
+        ":rocket: Enhancement",
+        ":bug: Bug Fix",
+        ":zap: Performance",
+        ":house: Internal"
+      ],
+      "collapseLabels": {
+        "labels": [":shower: Deprecation Removal", ":goal_net: Test", ":house: Internal"],
+        "title": ":house: Internal"
+      },
+      "mappings": {
+        "eslint-plugin-ember-data": "eslint-plugin-warp-drive",
+        "mock-server": "@warp-drive/diagnostic",
+        "Other": null
+      }
+    }
+  },
+  "defaults": {
+    "stage": "stable",
+    "types": "alpha",
+    "mirrorPublish": true,
+    "typesPublish": true,
+    "unpkgPublish": false
+  },
+  "rules": {
+    "@ember-data/codemods": {
+      "stage": "stable",
+      "types": "private",
+      "typesPublish": false,
+      "mirrorPublish": false
+    },
+    "@ember-data/debug": {
+      "stage": "stable",
+      "types": "private",
+      "typesPublish": false
+    },
+    "warp-drive": {
+      "stage": "alpha",
+      "types": "private",
+      "typesPublish": false,
+      "mirrorPublish": false
+    },
+    "@warp-drive/holodeck": {
+      "stage": "alpha",
+      "types": "stable",
+      "typesPublish": false,
+      "mirrorPublish": false
+    },
+    "@warp-drive/diagnostic": {
+      "stage": "alpha",
+      "types": "private",
+      "typesPublish": false,
+      "mirrorPublish": false
+    },
+    "eslint-plugin-ember-data": {
+      "stage": "alpha",
+      "types": "private",
+      "typesPublish": false,
+      "mirrorPublish": false
+    },
+    "eslint-plugin-warp-drive": {
+      "stage": "stable",
+      "types": "private",
+      "typesPublish": false,
+      "mirrorPublish": false
+    },
+    "@warp-drive/schema": {
+      "stage": "alpha",
+      "types": "private",
+      "typesPublish": false,
+      "mirrorPublish": false
+    },
+    "@warp-drive/schema-record": {
+      "stage": "stable",
+      "types": "alpha",
+      "typesPublish": false,
+      "mirrorPublish": true
+    },
+    "@warp-drive/build-config": {
+      "stage": "stable",
+      "types": "stable",
+      "typesPublish": false,
+      "mirrorPublish": true
+    },
+    "@warp-drive/ember": {
+      "stage": "stable",
+      "types": "stable",
+      "typesPublish": false,
+      "mirrorPublish": true,
+      "unpkgPublish": true
+    },
+    "@warp-drive/json-api": {
+      "stage": "stable",
+      "types": "stable",
+      "typesPublish": false,
+      "mirrorPublish": true,
+      "unpkgPublish": true
+    },
+    "@warp-drive/experiments": {
+      "stage": "stable",
+      "types": "stable",
+      "typesPublish": false,
+      "mirrorPublish": true,
+      "unpkgPublish": true
+    },
+    "@warp-drive/core": {
+      "stage": "stable",
+      "types": "stable",
+      "typesPublish": false,
+      "mirrorPublish": true,
+      "unpkgPublish": true
+    },
+    "@warp-drive/utilities": {
+      "stage": "stable",
+      "types": "stable",
+      "typesPublish": false,
+      "mirrorPublish": true,
+      "unpkgPublish": true
+    },
+    "@warp-drive/legacy": {
+      "stage": "stable",
+      "types": "stable",
+      "typesPublish": false,
+      "mirrorPublish": true,
+      "unpkgPublish": true
+    },
+    "@warp-drive/react": {
+      "stage": "stable",
+      "types": "stable",
+      "typesPublish": false,
+      "mirrorPublish": true,
+      "unpkgPublish": true
+    },
+    "@warp-drive/tc39-proposal-signals": {
+      "stage": "stable",
+      "types": "stable",
+      "typesPublish": false,
+      "mirrorPublish": true,
+      "unpkgPublish": true
+    },
+    "@warp-drive/memory-alpha": {
+      "stage": "stable",
+      "types": "private",
+      "typesPublish": false,
+      "mirrorPublish": false,
+      "unpkgPublish": false
+    }
+  }
+}

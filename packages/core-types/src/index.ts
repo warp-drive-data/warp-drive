@@ -1,1 +1,5 @@
-export type { StableRecordIdentifier } from './identifier';
+/**
+ * @module
+ * @mergeModuleWith <project>
+ */
+export type * from '@warp-drive/core/types';

@@ -1,7 +1,7 @@
-import chalk from 'chalk';
-import path from 'path';
-import { globby } from 'globby';
 import fs from 'fs';
+import { glob } from 'node:fs/promises';
+import { styleText } from 'node:util';
+import path from 'path';
 
 /** @type {import('bun-types')} */
 
@@ -41,23 +41,26 @@ async function main() {
   const relativeOutputPath = path.relative(process.cwd(), outputPath);
 
   console.log(
-    chalk.grey(
-      chalk.bold(
-        `\nCopying ${chalk.cyan('**/*.d.ts')} files\n\tfrom: ${chalk.yellow(relativeInputPath)}\n\tto: ${chalk.yellow(
+    styleText(
+      'grey',
+      styleText(
+        'bold',
+        `\nCopying ${styleText('cyan', '**/*.d.ts')} files\n\tfrom: ${styleText('yellow', relativeInputPath)}\n\tto: ${styleText(
+          'yellow',
           relativeOutputPath
         )}`
       )
     )
   );
 
-  const files = await globby([`${inputPath}/**/*.d.ts`]);
+  const files = await Array.fromAsync(glob(`${inputPath}/**/*.d.ts`));
 
   if (files.length === 0) {
-    console.log(chalk.red(`\nNo **/*.d.ts files found in ${chalk.white(relativeInputPath)}\n`));
+    console.log(styleText('red', `\nNo **/*.d.ts files found in ${styleText('white', relativeInputPath)}\n`));
     process.exitCode = 1;
   }
 
-  console.log(chalk.grey(`\nFound ${chalk.cyan(files.length)} files\n`));
+  console.log(styleText('grey', `\nFound ${styleText('cyan', String(files.length))} files\n`));
 
   for (const file of files) {
     const relativeFile = path.relative(process.cwd(), file);
@@ -65,7 +68,7 @@ async function main() {
     const outputFile = path.resolve(outputPath, innerPath);
     const relativeOutFile = path.relative(process.cwd(), outputFile);
 
-    console.log(chalk.grey(`\t${chalk.cyan(relativeFile)} => ${chalk.green(relativeOutFile)}`));
+    console.log(styleText('grey', `\t${styleText('cyan', relativeFile)} => ${styleText('green', relativeOutFile)}`));
 
     // ensure the output directory exists
     const outDir = path.dirname(outputFile);
@@ -76,7 +79,7 @@ async function main() {
     await Bun.write(outFile, inFile);
   }
 
-  console.log(chalk.grey(chalk.bold(`\n✅ Copied ${chalk.cyan(files.length)} files\n`)));
+  console.log(styleText('grey', styleText('bold', `\n✅ Copied ${styleText('cyan', String(files.length))} files\n`)));
 }
 
 await main();

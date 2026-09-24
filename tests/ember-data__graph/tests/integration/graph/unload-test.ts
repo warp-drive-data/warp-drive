@@ -1,26 +1,20 @@
-import type { Graph, ResourceEdge } from '@ember-data/graph/-private';
-import { graphFor } from '@ember-data/graph/-private';
-import Model, { attr, belongsTo } from '@ember-data/model';
-import type Store from '@ember-data/store';
-import type { StableRecordIdentifier } from '@warp-drive/core-types';
-import { module, test } from '@warp-drive/diagnostic';
-import { setupTest } from '@warp-drive/diagnostic/ember';
+import type { CollectionEdge, ResourceEdge } from '@warp-drive/core/graph/-private';
+import { graphFor } from '@warp-drive/core/graph/-private';
+import { isPrivateStore } from '@warp-drive/core/store/-private';
+import type { CollectionRelationship } from '@warp-drive/core/types/cache/relationship';
+import type { ResourceKey } from '@warp-drive/core/types/identifier';
+import { module, setupTest, test } from '@warp-drive/diagnostic/ember';
+import Model, { attr, belongsTo, hasMany } from '@warp-drive/legacy/model';
 
 module('Integration | Graph | Unload', function (hooks) {
   setupTest(hooks);
 
-  let store: Store;
-  let graph: Graph;
-  hooks.beforeEach(function () {
-    const { owner } = this;
-    store = owner.lookup('service:store') as Store;
-    graph = graphFor(store);
-  });
-
   module('Randomized Chaos', function () {
     test('(sync relationships) can separately safely unload related identifiers from the graph', function (assert) {
+      const store = isPrivateStore(this.owner.lookup('service:store'));
+      const graph = graphFor(store);
       const { owner } = this;
-      const { identifierCache } = store;
+      const { cacheKeyManager } = store;
       class User extends Model {
         @attr declare name: string;
         @belongsTo('user', { async: false, inverse: 'bestFriend' }) declare bestFriend: User | null;
@@ -28,11 +22,11 @@ module('Integration | Graph | Unload', function (hooks) {
       }
       owner.register('model:user', User);
 
-      const identifier = identifierCache.getOrCreateRecordIdentifier({ type: 'user', id: '1' });
-      const identifier2 = identifierCache.getOrCreateRecordIdentifier({ type: 'user', id: '2' });
-      const identifier3 = identifierCache.getOrCreateRecordIdentifier({ type: 'user', id: '3' });
+      const identifier = cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '1' });
+      const identifier2 = cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '2' });
+      const identifier3 = cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '3' });
 
-      function permutation(order: StableRecordIdentifier[], unloadTogether: boolean) {
+      function permutation(order: ResourceKey[], unloadTogether: boolean) {
         store._join(() => {
           graph.push({
             op: 'updateRelationship',
@@ -93,8 +87,10 @@ module('Integration | Graph | Unload', function (hooks) {
     });
 
     test('(sync relationships) can separately safely unload related identifiers from the graph following a delete', function (assert) {
+      const store = isPrivateStore(this.owner.lookup('service:store'));
+      const graph = graphFor(store);
       const { owner } = this;
-      const { identifierCache } = store;
+      const { cacheKeyManager } = store;
       class User extends Model {
         @attr declare name: string;
         @belongsTo('user', { async: false, inverse: 'bestFriend' }) declare bestFriend: User | null;
@@ -102,11 +98,11 @@ module('Integration | Graph | Unload', function (hooks) {
       }
       owner.register('model:user', User);
 
-      const identifier = identifierCache.getOrCreateRecordIdentifier({ type: 'user', id: '1' });
-      const identifier2 = identifierCache.getOrCreateRecordIdentifier({ type: 'user', id: '2' });
-      const identifier3 = identifierCache.getOrCreateRecordIdentifier({ type: 'user', id: '3' });
+      const identifier = cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '1' });
+      const identifier2 = cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '2' });
+      const identifier3 = cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '3' });
 
-      function permutation(order: StableRecordIdentifier[], unloadTogether: boolean) {
+      function permutation(order: ResourceKey[], unloadTogether: boolean) {
         store._join(() => {
           graph.push({
             op: 'updateRelationship',
@@ -181,8 +177,10 @@ module('Integration | Graph | Unload', function (hooks) {
     });
 
     test('(sync relationships) can separately safely unload related identifiers from the graph multiple times', function (assert) {
+      const store = isPrivateStore(this.owner.lookup('service:store'));
+      const graph = graphFor(store);
       const { owner } = this;
-      const { identifierCache } = store;
+      const { cacheKeyManager } = store;
       class User extends Model {
         @attr declare name: string;
         @belongsTo('user', { async: false, inverse: 'bestFriend' }) declare bestFriend: User | null;
@@ -190,11 +188,11 @@ module('Integration | Graph | Unload', function (hooks) {
       }
       owner.register('model:user', User);
 
-      const identifier = identifierCache.getOrCreateRecordIdentifier({ type: 'user', id: '1' });
-      const identifier2 = identifierCache.getOrCreateRecordIdentifier({ type: 'user', id: '2' });
-      const identifier3 = identifierCache.getOrCreateRecordIdentifier({ type: 'user', id: '3' });
+      const identifier = cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '1' });
+      const identifier2 = cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '2' });
+      const identifier3 = cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '3' });
 
-      function permutation(order: StableRecordIdentifier[], unloadTogether: boolean) {
+      function permutation(order: ResourceKey[], unloadTogether: boolean) {
         store._join(() => {
           graph.push({
             op: 'updateRelationship',
@@ -261,8 +259,10 @@ module('Integration | Graph | Unload', function (hooks) {
     });
 
     test('(sync relationships) can separately safely unload related identifiers from the graph following a delete multiple times', function (assert) {
+      const store = isPrivateStore(this.owner.lookup('service:store'));
+      const graph = graphFor(store);
       const { owner } = this;
-      const { identifierCache } = store;
+      const { cacheKeyManager } = store;
       class User extends Model {
         @attr declare name: string;
         @belongsTo('user', { async: false, inverse: 'bestFriend' }) declare bestFriend: User | null;
@@ -270,11 +270,11 @@ module('Integration | Graph | Unload', function (hooks) {
       }
       owner.register('model:user', User);
 
-      const identifier = identifierCache.getOrCreateRecordIdentifier({ type: 'user', id: '1' });
-      const identifier2 = identifierCache.getOrCreateRecordIdentifier({ type: 'user', id: '2' });
-      const identifier3 = identifierCache.getOrCreateRecordIdentifier({ type: 'user', id: '3' });
+      const identifier = cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '1' });
+      const identifier2 = cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '2' });
+      const identifier3 = cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '3' });
 
-      function permutation(order: StableRecordIdentifier[], unloadTogether: boolean) {
+      function permutation(order: ResourceKey[], unloadTogether: boolean) {
         store._join(() => {
           graph.push({
             op: 'updateRelationship',
@@ -355,8 +355,10 @@ module('Integration | Graph | Unload', function (hooks) {
     });
 
     test('(Async relationships) can separately safely unload related identifiers from the graph', function (assert) {
+      const store = isPrivateStore(this.owner.lookup('service:store'));
+      const graph = graphFor(store);
       const { owner } = this;
-      const { identifierCache } = store;
+      const { cacheKeyManager } = store;
       class User extends Model {
         @attr declare name: string;
         @belongsTo('user', { async: true, inverse: 'bestFriend' }) declare bestFriend: User | null;
@@ -364,11 +366,11 @@ module('Integration | Graph | Unload', function (hooks) {
       }
       owner.register('model:user', User);
 
-      const identifier = identifierCache.getOrCreateRecordIdentifier({ type: 'user', id: '1' });
-      const identifier2 = identifierCache.getOrCreateRecordIdentifier({ type: 'user', id: '2' });
-      const identifier3 = identifierCache.getOrCreateRecordIdentifier({ type: 'user', id: '3' });
+      const identifier = cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '1' });
+      const identifier2 = cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '2' });
+      const identifier3 = cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '3' });
 
-      function permutation(order: StableRecordIdentifier[], unloadTogether: boolean) {
+      function permutation(order: ResourceKey[], unloadTogether: boolean) {
         store._join(() => {
           graph.push({
             op: 'updateRelationship',
@@ -429,8 +431,10 @@ module('Integration | Graph | Unload', function (hooks) {
     });
 
     test('(Async relationships) can separately safely unload related identifiers from the graph following a delete', function (assert) {
+      const store = isPrivateStore(this.owner.lookup('service:store'));
+      const graph = graphFor(store);
       const { owner } = this;
-      const { identifierCache } = store;
+      const { cacheKeyManager } = store;
       class User extends Model {
         @attr declare name: string;
         @belongsTo('user', { async: true, inverse: 'bestFriend' }) declare bestFriend: User | null;
@@ -438,11 +442,11 @@ module('Integration | Graph | Unload', function (hooks) {
       }
       owner.register('model:user', User);
 
-      const identifier = identifierCache.getOrCreateRecordIdentifier({ type: 'user', id: '1' });
-      const identifier2 = identifierCache.getOrCreateRecordIdentifier({ type: 'user', id: '2' });
-      const identifier3 = identifierCache.getOrCreateRecordIdentifier({ type: 'user', id: '3' });
+      const identifier = cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '1' });
+      const identifier2 = cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '2' });
+      const identifier3 = cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '3' });
 
-      function permutation(order: StableRecordIdentifier[], unloadTogether: boolean) {
+      function permutation(order: ResourceKey[], unloadTogether: boolean) {
         store._join(() => {
           graph.push({
             op: 'updateRelationship',
@@ -517,8 +521,10 @@ module('Integration | Graph | Unload', function (hooks) {
     });
 
     test('(Async relationships) can separately safely unload related identifiers from the graph multiple times', function (assert) {
+      const store = isPrivateStore(this.owner.lookup('service:store'));
+      const graph = graphFor(store);
       const { owner } = this;
-      const { identifierCache } = store;
+      const { cacheKeyManager } = store;
       class User extends Model {
         @attr declare name: string;
         @belongsTo('user', { async: true, inverse: 'bestFriend' }) declare bestFriend: User | null;
@@ -526,11 +532,11 @@ module('Integration | Graph | Unload', function (hooks) {
       }
       owner.register('model:user', User);
 
-      const identifier = identifierCache.getOrCreateRecordIdentifier({ type: 'user', id: '1' });
-      const identifier2 = identifierCache.getOrCreateRecordIdentifier({ type: 'user', id: '2' });
-      const identifier3 = identifierCache.getOrCreateRecordIdentifier({ type: 'user', id: '3' });
+      const identifier = cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '1' });
+      const identifier2 = cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '2' });
+      const identifier3 = cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '3' });
 
-      function permutation(order: StableRecordIdentifier[], unloadTogether: boolean) {
+      function permutation(order: ResourceKey[], unloadTogether: boolean) {
         store._join(() => {
           graph.push({
             op: 'updateRelationship',
@@ -597,8 +603,10 @@ module('Integration | Graph | Unload', function (hooks) {
     });
 
     test('(Async relationships) can separately safely unload related identifiers from the graph following a delete multiple times', function (assert) {
+      const store = isPrivateStore(this.owner.lookup('service:store'));
+      const graph = graphFor(store);
       const { owner } = this;
-      const { identifierCache } = store;
+      const { cacheKeyManager } = store;
       class User extends Model {
         @attr declare name: string;
         @belongsTo('user', { async: true, inverse: 'bestFriend' }) declare bestFriend: User | null;
@@ -606,11 +614,11 @@ module('Integration | Graph | Unload', function (hooks) {
       }
       owner.register('model:user', User);
 
-      const identifier = identifierCache.getOrCreateRecordIdentifier({ type: 'user', id: '1' });
-      const identifier2 = identifierCache.getOrCreateRecordIdentifier({ type: 'user', id: '2' });
-      const identifier3 = identifierCache.getOrCreateRecordIdentifier({ type: 'user', id: '3' });
+      const identifier = cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '1' });
+      const identifier2 = cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '2' });
+      const identifier3 = cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '3' });
 
-      function permutation(order: StableRecordIdentifier[], unloadTogether: boolean) {
+      function permutation(order: ResourceKey[], unloadTogether: boolean) {
         store._join(() => {
           graph.push({
             op: 'updateRelationship',
@@ -691,8 +699,10 @@ module('Integration | Graph | Unload', function (hooks) {
     });
 
     test('(Mixed relationships) can separately safely unload related identifiers from the graph', function (assert) {
+      const store = isPrivateStore(this.owner.lookup('service:store'));
+      const graph = graphFor(store);
       const { owner } = this;
-      const { identifierCache } = store;
+      const { cacheKeyManager } = store;
       class User extends Model {
         @attr declare name: string;
         @belongsTo('user', { async: false, inverse: 'bestFriend' }) declare bestFriend: User | null;
@@ -700,11 +710,11 @@ module('Integration | Graph | Unload', function (hooks) {
       }
       owner.register('model:user', User);
 
-      const identifier = identifierCache.getOrCreateRecordIdentifier({ type: 'user', id: '1' });
-      const identifier2 = identifierCache.getOrCreateRecordIdentifier({ type: 'user', id: '2' });
-      const identifier3 = identifierCache.getOrCreateRecordIdentifier({ type: 'user', id: '3' });
+      const identifier = cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '1' });
+      const identifier2 = cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '2' });
+      const identifier3 = cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '3' });
 
-      function permutation(order: StableRecordIdentifier[], unloadTogether: boolean) {
+      function permutation(order: ResourceKey[], unloadTogether: boolean) {
         store._join(() => {
           graph.push({
             op: 'updateRelationship',
@@ -765,8 +775,10 @@ module('Integration | Graph | Unload', function (hooks) {
     });
 
     test('(Mixed relationships) can separately safely unload related identifiers from the graph following a delete', function (assert) {
+      const store = isPrivateStore(this.owner.lookup('service:store'));
+      const graph = graphFor(store);
       const { owner } = this;
-      const { identifierCache } = store;
+      const { cacheKeyManager } = store;
       class User extends Model {
         @attr declare name: string;
         @belongsTo('user', { async: false, inverse: 'bestFriend' }) declare bestFriend: User | null;
@@ -774,11 +786,11 @@ module('Integration | Graph | Unload', function (hooks) {
       }
       owner.register('model:user', User);
 
-      const identifier = identifierCache.getOrCreateRecordIdentifier({ type: 'user', id: '1' });
-      const identifier2 = identifierCache.getOrCreateRecordIdentifier({ type: 'user', id: '2' });
-      const identifier3 = identifierCache.getOrCreateRecordIdentifier({ type: 'user', id: '3' });
+      const identifier = cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '1' });
+      const identifier2 = cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '2' });
+      const identifier3 = cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '3' });
 
-      function permutation(order: StableRecordIdentifier[], unloadTogether: boolean) {
+      function permutation(order: ResourceKey[], unloadTogether: boolean) {
         store._join(() => {
           graph.push({
             op: 'updateRelationship',
@@ -853,8 +865,10 @@ module('Integration | Graph | Unload', function (hooks) {
     });
 
     test('(Mixed relationships) can separately safely unload related identifiers from the graph multiple times', function (assert) {
+      const store = isPrivateStore(this.owner.lookup('service:store'));
+      const graph = graphFor(store);
       const { owner } = this;
-      const { identifierCache } = store;
+      const { cacheKeyManager } = store;
       class User extends Model {
         @attr declare name: string;
         @belongsTo('user', { async: false, inverse: 'bestFriend' }) declare bestFriend: User | null;
@@ -862,11 +876,11 @@ module('Integration | Graph | Unload', function (hooks) {
       }
       owner.register('model:user', User);
 
-      const identifier = identifierCache.getOrCreateRecordIdentifier({ type: 'user', id: '1' });
-      const identifier2 = identifierCache.getOrCreateRecordIdentifier({ type: 'user', id: '2' });
-      const identifier3 = identifierCache.getOrCreateRecordIdentifier({ type: 'user', id: '3' });
+      const identifier = cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '1' });
+      const identifier2 = cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '2' });
+      const identifier3 = cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '3' });
 
-      function permutation(order: StableRecordIdentifier[], unloadTogether: boolean) {
+      function permutation(order: ResourceKey[], unloadTogether: boolean) {
         store._join(() => {
           graph.push({
             op: 'updateRelationship',
@@ -933,8 +947,10 @@ module('Integration | Graph | Unload', function (hooks) {
     });
 
     test('(Mixed relationships) can separately safely unload related identifiers from the graph following a delete multiple times', function (assert) {
+      const store = isPrivateStore(this.owner.lookup('service:store'));
+      const graph = graphFor(store);
       const { owner } = this;
-      const { identifierCache } = store;
+      const { cacheKeyManager } = store;
       class User extends Model {
         @attr declare name: string;
         @belongsTo('user', { async: false, inverse: 'bestFriend' }) declare bestFriend: User | null;
@@ -942,11 +958,11 @@ module('Integration | Graph | Unload', function (hooks) {
       }
       owner.register('model:user', User);
 
-      const identifier = identifierCache.getOrCreateRecordIdentifier({ type: 'user', id: '1' });
-      const identifier2 = identifierCache.getOrCreateRecordIdentifier({ type: 'user', id: '2' });
-      const identifier3 = identifierCache.getOrCreateRecordIdentifier({ type: 'user', id: '3' });
+      const identifier = cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '1' });
+      const identifier2 = cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '2' });
+      const identifier3 = cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '3' });
 
-      function permutation(order: StableRecordIdentifier[], unloadTogether: boolean) {
+      function permutation(order: ResourceKey[], unloadTogether: boolean) {
         store._join(() => {
           graph.push({
             op: 'updateRelationship',
@@ -1029,8 +1045,10 @@ module('Integration | Graph | Unload', function (hooks) {
 
   module('Specific Scenarios', function () {
     test('Unload of a record with a deleted implicitly related record', function (assert) {
+      const store = isPrivateStore(this.owner.lookup('service:store'));
+      const graph = graphFor(store);
       const { owner } = this;
-      const { identifierCache } = store;
+      const { cacheKeyManager } = store;
       class User extends Model {
         @attr declare name: string;
         @belongsTo('user', { async: false, inverse: null }) declare bestFriend: User | null;
@@ -1038,9 +1056,9 @@ module('Integration | Graph | Unload', function (hooks) {
       }
       owner.register('model:user', User);
 
-      const identifier = identifierCache.getOrCreateRecordIdentifier({ type: 'user', id: '1' });
-      const identifier2 = identifierCache.getOrCreateRecordIdentifier({ type: 'user', id: '2' });
-      const identifier3 = identifierCache.getOrCreateRecordIdentifier({ type: 'user', id: '3' });
+      const identifier = cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '1' });
+      const identifier2 = cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '2' });
+      const identifier3 = cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '3' });
 
       store._join(() => {
         graph.push({
@@ -1086,6 +1104,67 @@ module('Integration | Graph | Unload', function (hooks) {
       });
 
       assert.ok(true, 'did not throw when unloading identifier');
+    });
+  });
+
+  module('hasMany localState recovery (issue #10532)', function () {
+    test('reading a sync hasMany after the record is unloaded does not throw', function (assert) {
+      const store = isPrivateStore(this.owner.lookup('service:store'));
+      const graph = graphFor(store);
+      const { owner } = this;
+      const { cacheKeyManager } = store;
+
+      class User extends Model {
+        @attr declare name: string;
+        @hasMany('user', { async: false, inverse: 'friends' }) declare friends: User[];
+      }
+      owner.register('model:user', User);
+
+      const user1 = cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '1' });
+      const user2 = cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '2' });
+      const user3 = cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '3' });
+
+      store._join(() => {
+        graph.push({
+          op: 'updateRelationship',
+          record: user1,
+          field: 'friends',
+          value: { data: [user2, user3] },
+        });
+      });
+
+      const friends = graph.get(user1, 'friends') as CollectionEdge;
+      assert.true(friends.state.hasReceivedData, 'precond - friends has received data');
+
+      // Materialize localState first so the edge is clean (isDirty: false). This
+      // mirrors a relationship that has already been read once.
+      graph.getData(user1, 'friends');
+      assert.false(friends.isDirty, 'precond - edge is clean after first read');
+      assert.deepEqual(friends.localState, [user2, user3], 'precond - localState materialized');
+
+      // Unloading the record dematerializes its edges but retains the nodes for
+      // rematerialization. For a sync-inverse hasMany this clears localState to
+      // null and remoteState to [] without touching isDirty -- leaving the
+      // inconsistent state ({ isDirty: false, localState: null }) with
+      // hasReceivedData still true. Reading the edge then previously threw
+      // "Expected localState to be present" (e.g. via dirty-state rollback).
+      store._join(() => {
+        graph.unload(user1);
+      });
+
+      assert.equal(friends.localState, null, 'precond - localState was cleared');
+      assert.false(friends.isDirty, 'precond - edge is not dirty');
+      assert.true(friends.state.hasReceivedData, 'precond - edge still reports received data');
+
+      let data: CollectionRelationship | undefined;
+      try {
+        data = graph.getData(user1, 'friends') as CollectionRelationship;
+        assert.ok(true, 'reading the relationship did not throw');
+      } catch (e) {
+        assert.ok(false, `reading the relationship should not throw, received ${(e as Error).message}`);
+      }
+
+      assert.deepEqual(data?.data, [], 'the relationship reads back as empty');
     });
   });
 });

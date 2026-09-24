@@ -1,8 +1,9 @@
 import { type TestContext } from '@ember/test-helpers';
 
-import { DEBUG } from '@warp-drive/build-config/env';
-import VERSION, { COMPAT_VERSION } from './version';
+import { DEBUG } from '@warp-drive/core/build-config/env';
+
 import { DeprecationConfig } from './asserts/assert-deprecation';
+import VERSION, { COMPAT_VERSION } from './version';
 
 // small comparison function for major and minor semver values
 function gte(EDVersion: string, DeprecationVersion: string): boolean {
@@ -43,7 +44,7 @@ export function createDeprecatedTestFn<TC extends TestContext, T extends Limited
       refactor?: boolean;
     },
     testCallback: (this: TC, assert: T) => void | Promise<void>
-  ) {
+  ): void {
     // '4.0'
     if (typeof deprecation.until !== 'string' || deprecation.until.length < 3) {
       throw new Error(`deprecatedTest expects { until } to be a version.`);

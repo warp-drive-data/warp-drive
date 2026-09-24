@@ -1,7 +1,8 @@
-import { graphFor } from '@ember-data/graph/-private';
-import Store from '@ember-data/store';
-import { module, test } from '@warp-drive/diagnostic';
-import { setupTest } from '@warp-drive/diagnostic/ember';
+import { Store } from '@warp-drive/core';
+import { graphFor } from '@warp-drive/core/graph/-private';
+import type { PrivateStore } from '@warp-drive/core/store/-private';
+import { isPrivateStore } from '@warp-drive/core/store/-private';
+import { module, setupTest, test } from '@warp-drive/diagnostic/ember';
 
 module('Integration | Graph | Configuration', function (hooks) {
   setupTest(hooks);
@@ -10,11 +11,11 @@ module('Integration | Graph | Configuration', function (hooks) {
     isGraphStore = true;
   }
 
-  let store: MyStore;
+  let store: PrivateStore;
   hooks.beforeEach(function (assert) {
     const { owner } = this;
     owner.register('service:store', MyStore);
-    store = owner.lookup('service:store') as MyStore;
+    store = isPrivateStore(owner.lookup('service:store'));
     assert.equal(store.isGraphStore, true, 'pre-cond, store registered correctly');
   });
 
@@ -35,8 +36,8 @@ module('Integration | Graph | Configuration', function (hooks) {
     owner.register('service:store2', MyStore);
     owner.register('service:store3', MyStore);
 
-    const store2 = owner.lookup('service:store2') as unknown as Store;
-    const store3 = owner.lookup('service:store3') as unknown as Store;
+    const store2 = isPrivateStore(owner.lookup('service:store2'));
+    const store3 = isPrivateStore(owner.lookup('service:store3'));
     const wrapper2 = store2._instanceCache._storeWrapper;
     const wrapper3 = store3._instanceCache._storeWrapper;
 
@@ -83,7 +84,7 @@ module('Integration | Graph | Configuration', function (hooks) {
     const graph2 = graphFor(store);
 
     owner.register('service:store2', MyStore);
-    const store2 = owner.lookup('service:store2') as unknown as Store;
+    const store2 = isPrivateStore(owner.lookup('service:store2'));
     const wrapper2 = store2._instanceCache._storeWrapper;
     // lookup the store first
     const graph3 = graphFor(store2);

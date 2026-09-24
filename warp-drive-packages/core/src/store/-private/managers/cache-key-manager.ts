@@ -1,0 +1,1094 @@
+import { warn } from '@ember/debug';
+
+import { getGlobalConfig, macroCondition } from '@embroider/macros';
+
+import { LOG_IDENTIFIERS } from '@warp-drive/core/build-config/debugging';
+import { DEBUG } from '@warp-drive/core/build-config/env';
+import { assert } from '@warp-drive/core/build-config/macros';
+
+import type {
+  ForgetMethod,
+  GenerationMethod,
+  KeyInfo,
+  KeyInfoMethod,
+  ResetMethod,
+  UpdateMethod,
+} from '../../-types/q/identifier.ts';
+import { getOrSetGlobal, peekTransient, setTransient } from '../../../types/-private.ts';
+import {
+  CACHE_OWNER,
+  type CacheKeyType,
+  DEBUG_CLIENT_ORIGINATED,
+  DEBUG_KEY_TYPE,
+  DEBUG_STALE_CACHE_OWNER,
+  type PersistedResourceKey,
+  type RequestKey,
+  type ResourceKey,
+} from '../../../types/identifier.ts';
+import type { ObjectValue } from '../../../types/json/raw.ts';
+import type { ImmutableRequestInfo, RequestInfo } from '../../../types/request.ts';
+import type { FieldSchema, ObjectSchema } from '../../../types/schema/fields.ts';
+import type { SchemaService } from '../../../types/schema/schema-service.ts';
+import type {
+  ExistingResourceIdentifierObject,
+  ExistingResourceObject,
+  ResourceIdentifierObject,
+} from '../../../types/spec/json-api-raw.ts';
+import { hasId, hasLid, hasType } from '../caches/resource-utils.ts';
+import { coerceId } from '../utils/coerce-id.ts';
+import { normalizeModelName } from '../utils/normalize-model-name.ts';
+import installPolyfill from '../utils/uuid-polyfill.ts';
+
+type TypeFromIdentifier<T> = T extends { type: infer U } ? U : string;
+
+type NarrowIdentifierIfPossible<T> = T extends ExistingResourceIdentifierObject
+  ? PersistedResourceKey<TypeFromIdentifier<T>>
+  : ResourceKey;
+
+/**
+ * Type-guard that returns `true` if the given value is a stable {@link ResourceKey}
+ * (as opposed to a {@link RequestKey} or arbitrary, not-yet-stabilized resource data).
+ */
+export function isResourceKey(identifier: unknown): identifier is ResourceKey {
+  if (DEBUG) {
+    return (
+      !!identifier &&
+      typeof identifier === 'object' &&
+      'type' in identifier &&
+      'id' in identifier &&
+      identifier.type !== '@document' &&
+      (identifier as ResourceKey)[CACHE_OWNER] !== undefined
+    );
+  } else {
+    return (identifier as RequestKey).type !== '@document' && (identifier as RequestKey)[CACHE_OWNER] !== undefined;
+  }
+}
+
+/**
+ * Type-guard that returns `true` if the given value is a stable {@link RequestKey}
+ * (as opposed to a {@link ResourceKey} or arbitrary, not-yet-stabilized data).
+ */
+export function isRequestKey(identifier: unknown): identifier is RequestKey {
+  if (DEBUG) {
+    return (
+      !!identifier &&
+      typeof identifier === 'object' &&
+      'type' in identifier &&
+      !('id' in identifier) &&
+      identifier.type === '@document' &&
+      (identifier as ResourceKey)[CACHE_OWNER] !== undefined
+    );
+  } else {
+    return (identifier as RequestKey).type === '@document' && (identifier as RequestKey)[CACHE_OWNER] !== undefined;
+  }
+}
+
+/**
+ * The identity of a field's value, as returned by {@link fieldValueIdentity}.
+ * Today only schema-object values (a `schema-object` field, or one element of
+ * a `schema-array`) have one: the concrete schema-object type the value
+ * resolves to, and the identity hash that type's `ObjectSchema` declares for
+ * it, or `null` when the schema declares `identity: null`.
+ */
+export interface FieldValueIdentity {
+  type: string;
+  hash: string | null;
+}
+
+/**
+ * The identity of `value` as a value of `field`, when the field kind has one.
+ *
+ * A `schema-object` value, or one element of a `schema-array`, resolves to its
+ * concrete schema-object type and the identity hash that type's `ObjectSchema`
+ * declares (`null` when the schema declares `identity: null`). A
+ * non-polymorphic field names the type directly; a polymorphic field reads it
+ * off the value at `options.type` (default `'type'`), or computes it with the
+ * hash function named by `field.type` when `options.type` is `'@hash'`.
+ *
+ * Every other field kind, and any non-object value, has no identity and
+ * returns `null`.
+ */
+export function fieldValueIdentity(
+  schema: SchemaService,
+  field: FieldSchema,
+  value: unknown
+): FieldValueIdentity | null {
+  if (field.kind !== 'schema-object' && field.kind !== 'schema-array') return null;
+  if (!value || typeof value !== 'object') return null;
+  const rawValue = value;
+
+  let type: string;
+  if (field.options?.polymorphic) {
+    const typePath = field.options.type ?? 'type';
+    if (typePath === '@hash') {
+      assert(`Expected the field to define a hashFn as its type`, field.type);
+      type = schema.hashFn({ type: field.type })(rawValue, null, null);
+    } else {
+      type = (rawValue as ObjectValue)[typePath] as string;
+      assert(
+        `Expected the type path for the field to be a value on the raw object`,
+        typePath && type && typeof type === 'string'
+      );
+    }
+  } else {
+    assert(`A non-polymorphic ${field.kind} field must provide a SchemaObject type in its definition`, field.type);
+    type = field.type;
+  }
+
+  const hashField = (schema.resource({ type }) as ObjectSchema).identity;
+  const hash =
+    hashField && hashField.kind === '@hash'
+      ? schema.hashFn(hashField)(rawValue, hashField.options ?? null, hashField.name)
+      : null;
+  return { type, hash };
+}
+
+const isFastBoot = typeof FastBoot !== 'undefined';
+const _crypto: Crypto = isFastBoot ? (FastBoot.require('crypto') as Crypto) : globalThis.crypto;
+
+if (macroCondition(getGlobalConfig<{ WarpDrive: { polyfillUUID: boolean } }>().WarpDrive.polyfillUUID)) {
+  installPolyfill();
+}
+
+function uuidv4(): string {
+  assert(
+    'crypto.randomUUID needs to be avaliable. Some browsers incorrectly disallow it in insecure contexts. You maybe want to enable the polyfill: https://github.com/warp-drive-data/warp-drive#randomuuid-polyfill',
+    typeof _crypto.randomUUID === 'function'
+  );
+  return _crypto.randomUUID();
+}
+
+function freeze<T>(obj: T): T {
+  if (typeof Object.freeze === 'function') {
+    return Object.freeze(obj);
+  }
+  return obj;
+}
+
+interface KeyOptions {
+  lid: IdentifierMap;
+  id: IdentifierMap;
+}
+type TypeMap = { [key: string]: KeyOptions };
+
+// type IdentifierTypeLookup = { all: Set<ResourceKey>; id: Map<string, ResourceKey> };
+// type IdentifiersByType = Map<string, IdentifierTypeLookup>;
+type IdentifierMap = Map<string, ResourceKey>;
+
+type StableCache = {
+  resources: IdentifierMap;
+  documents: Map<string, RequestKey>;
+  resourcesByType: TypeMap;
+  polymorphicLidBackMap: Map<string, string[]>;
+};
+
+export type MergeMethod = (
+  targetIdentifier: ResourceKey,
+  matchedIdentifier: ResourceKey,
+  resourceData: unknown
+) => ResourceKey;
+
+/**
+  Configures how unique identifier lid strings are generated by @ember-data/store.
+
+  This configuration MUST occur prior to the store instance being created.
+
+  Takes a method which can expect to receive various data as its first argument
+  and the name of a bucket as its second argument.
+
+  Currently there are two buckets, 'record' and 'document'.
+
+  ### Resource (`Record`) Identity
+
+  If the bucket is `record` the method must return a unique (to at-least
+  the given bucket) string identifier for the given data as a string to be
+  used as the `lid` of an `Identifier` token.
+
+  This method will only be called by either `getOrCreateRecordIdentifier` or
+  `createIdentifierForNewRecord` when an identifier for the supplied data
+  is not already known via `lid` or `type + id` combo and one needs to be
+  generated or retrieved from a proprietary cache.
+
+  `data` will be the same data argument provided to `getOrCreateRecordIdentifier`
+  and in the `createIdentifierForNewRecord` case will be an object with
+  only `type` as a key.
+
+  ```ts
+  import { setIdentifierGenerationMethod } from '@warp-drive/core';
+
+  export function initialize(applicationInstance) {
+    // note how `count` here is now scoped to the application instance
+    // for our generation method by being inside the closure provided
+    // by the initialize function
+    let count = 0;
+
+    setIdentifierGenerationMethod((resource, bucket) => {
+      return resource.lid || `my-key-${count++}`;
+    });
+  }
+
+  export default {
+    name: 'configure-ember-data-identifiers',
+    initialize
+  };
+  ```
+
+  ### Document Identity
+
+  If the bucket is `document` the method will receive the associated
+  immutable `request` passed to `store.request` as its first argument
+  and should return a unique string for the given request if the document
+  should be cached, and `null` if it should not be cached.
+
+  Note, the request result will still be passed to the cache via `Cache.put`,
+  but caches should take this as a signal that the document should not itself
+  be cached, while its contents may still be used to update other cache state.
+
+  The presence of `cacheOptions.key` on the request will take precedence
+  for the document cache key, and this method will not be called if it is
+  present.
+
+  The default method implementation for this bucket is to return `null`
+  for all requests whose method is not `GET`, and to return the `url` for
+  those where it is.
+
+  This means that queries via `POST` MUST provide `cacheOptions.key` or
+  implement this hook.
+
+  ⚠️ Caution: Requests that do not have a `method` assigned are assumed to be `GET`
+
+  @public
+*/
+export function setIdentifierGenerationMethod(method: GenerationMethod | null): void {
+  setTransient('configuredGenerationMethod', method);
+}
+
+/**
+ Configure a callback for when the identifier cache encounters new resource
+ data for an existing resource.
+
+ This configuration MUST occur prior to the store instance being created.
+
+ ```js
+ import { setIdentifierUpdateMethod } from '@warp-drive/core';
+ ```
+
+ Takes a method which can expect to receive an existing `Identifier` alongside
+ some new data to consider as a second argument. This is an opportunity
+ for secondary lookup tables and caches associated with the identifier
+ to be amended.
+
+ This method is called everytime `updateRecordIdentifier` is called and
+  with the same arguments. It provides the opportunity to update secondary
+  lookup tables for existing identifiers.
+
+ It will always be called after an identifier created with `createIdentifierForNewRecord`
+  has been committed, or after an update to the `record` a `RecordIdentifier`
+  is assigned to has been committed. Committed here meaning that the server
+  has acknowledged the update (for instance after a call to `.save()`)
+
+ If `id` has not previously existed, it will be assigned to the `Identifier`
+  prior to this `UpdateMethod` being called; however, calls to the parent method
+  `updateRecordIdentifier` that attempt to change the `id` or calling update
+  without providing an `id` when one is missing will throw an error.
+
+  @public
+*/
+export function setIdentifierUpdateMethod(method: UpdateMethod | null): void {
+  setTransient('configuredUpdateMethod', method);
+}
+
+/**
+ Configure a callback for when the identifier cache is going to release an identifier.
+
+ This configuration MUST occur prior to the store instance being created.
+
+ ```js
+ import { setIdentifierForgetMethod } from '@warp-drive/core';
+ ```
+
+ Takes method which can expect to receive an existing `Identifier` that should be eliminated
+ from any secondary lookup tables or caches that the user has populated for it.
+
+  @public
+*/
+export function setIdentifierForgetMethod(method: ForgetMethod | null): void {
+  setTransient('configuredForgetMethod', method);
+}
+
+/**
+ Configure a callback for when the identifier cache is being torn down.
+
+ This configuration MUST occur prior to the store instance being created.
+
+ ```js
+ import { setIdentifierResetMethod } from '@warp-drive/core';
+ ```
+
+ Takes a method which can expect to be called when the parent application is destroyed.
+
+ If you have properly used a WeakMap to encapsulate the state of your customization
+ to the application instance, you may not need to implement the `resetMethod`.
+
+  @public
+*/
+export function setIdentifierResetMethod(method: ResetMethod | null): void {
+  setTransient('configuredResetMethod', method);
+}
+
+/**
+ Configure a callback for when the identifier cache is generating a new
+ ResourceKey for a resource.
+
+ This method controls the `type` and `id` that will be assigned to the
+ `ResourceKey` that is created.
+
+ This configuration MUST occur prior to the store instance being created.
+
+ ```js
+ import { setKeyInfoForResource } from '@warp-drive/core';
+ ```
+
+  @public
+ */
+export function setKeyInfoForResource(method: KeyInfoMethod | null): void {
+  setTransient('configuredKeyInfoMethod', method);
+}
+
+function assertIsRequest(request: unknown): asserts request is ImmutableRequestInfo {
+  return;
+}
+
+// Map<type, Map<id, lid>>
+type TypeIdMap = Map<string, Map<string, string>>;
+// TODO can we just delete this?
+const NEW_IDENTIFIERS: TypeIdMap = new Map();
+// TODO @runspired maybe needs peekTransient ?
+let IDENTIFIER_CACHE_ID = 0;
+
+function updateTypeIdMapping(typeMap: TypeIdMap, identifier: ResourceKey, id: string): void {
+  let idMap = typeMap.get(identifier.type);
+  if (!idMap) {
+    idMap = new Map();
+    typeMap.set(identifier.type, idMap);
+  }
+  idMap.set(id, identifier.lid);
+}
+
+function defaultUpdateMethod(identifier: ResourceKey, data: unknown, bucket: 'record'): void;
+function defaultUpdateMethod(identifier: RequestKey, data: unknown, bucket: 'document'): void;
+function defaultUpdateMethod(identifier: { lid: string }, newData: unknown, bucket: never): void;
+function defaultUpdateMethod(
+  identifier: RequestKey | ResourceKey | { lid: string },
+  data: unknown,
+  bucket: 'record' | 'document'
+): void {
+  if (bucket === 'record') {
+    assert(`Expected identifier to be a ResourceKey`, isResourceKey(identifier));
+    if (!identifier.id && hasId(data)) {
+      updateTypeIdMapping(NEW_IDENTIFIERS, identifier, data.id);
+    }
+  }
+}
+
+function defaultKeyInfoMethod(resource: unknown, known: ResourceKey | null): KeyInfo {
+  // TODO RFC something to make this configurable
+  const id = hasId(resource) ? coerceId(resource.id) : null;
+  const type = hasType(resource) ? normalizeModelName(resource.type) : known ? known.type : null;
+
+  assert(`Expected keyInfoForResource to provide a type for the resource`, type);
+
+  return { type, id };
+}
+
+function defaultGenerationMethod(data: unknown, bucket: CacheKeyType): string | null {
+  if (bucket === 'record') {
+    if (hasLid(data)) {
+      return data.lid;
+    }
+
+    assert(`Cannot generate an identifier for a resource without a type`, hasType(data));
+
+    if (hasId(data)) {
+      const type = normalizeModelName(data.type);
+      const lid = NEW_IDENTIFIERS.get(type)?.get(data.id);
+
+      return lid || `@lid:${type}-${data.id}`;
+    }
+
+    return uuidv4();
+  } else if (bucket === 'document') {
+    assertIsRequest(data);
+    if (!data.url) {
+      return null;
+    }
+    if (!data.method || data.method.toUpperCase() === 'GET') {
+      return data.url;
+    }
+    return null;
+  }
+  assert(`Unknown bucket ${bucket as string}`, false);
+}
+
+function defaultEmptyCallback(...args: unknown[]): void {}
+function defaultMergeMethod(a: ResourceKey, _b: ResourceKey, _c: unknown): ResourceKey {
+  return a;
+}
+
+let DEBUG_MAP: WeakMap<ResourceKey, ResourceKey>;
+if (DEBUG) {
+  DEBUG_MAP = getOrSetGlobal('DEBUG_MAP', new WeakMap<ResourceKey, ResourceKey>());
+}
+
+/**
+ * Each instance of {@link Store} receives a unique instance of a CacheKeyManager.
+ *
+ * This cache is responsible for assigning or retrieving the unique identify
+ * for arbitrary resource data encountered by the store. Data representing
+ * a unique resource or record should always be represented by the same
+ * identifier.
+ *
+ * It can be configured by consuming applications.
+ *
+ * @hideconstructor
+ * @public
+ */
+export class CacheKeyManager {
+  /** @internal */
+  _cache: StableCache;
+  /** @internal */
+  declare private _generate: GenerationMethod;
+  /** @internal */
+  declare private _update: UpdateMethod;
+  /** @internal */
+  declare private _forget: ForgetMethod;
+  /** @internal */
+  declare private _reset: ResetMethod;
+  /** @internal */
+  declare private _merge: MergeMethod;
+  /** @internal */
+  declare private _keyInfoForResource: KeyInfoMethod;
+  /** @internal */
+  declare private _id: number;
+
+  constructor() {
+    // we cache the user configuredGenerationMethod at init because it must
+    // be configured prior and is not allowed to be changed
+    this._generate =
+      peekTransient<GenerationMethod>('configuredGenerationMethod') || (defaultGenerationMethod as GenerationMethod);
+    this._update = peekTransient<UpdateMethod>('configuredUpdateMethod') || defaultUpdateMethod;
+    this._forget = peekTransient<ForgetMethod>('configuredForgetMethod') || defaultEmptyCallback;
+    this._reset = peekTransient<ResetMethod>('configuredResetMethod') || defaultEmptyCallback;
+    this._merge = defaultMergeMethod;
+    this._keyInfoForResource = peekTransient<KeyInfoMethod>('configuredKeyInfoMethod') || defaultKeyInfoMethod;
+    this._id = IDENTIFIER_CACHE_ID++;
+
+    this._cache = {
+      resources: new Map<string, ResourceKey>(),
+      resourcesByType: Object.create(null) as TypeMap,
+      documents: new Map<string, RequestKey>(),
+      polymorphicLidBackMap: new Map<string, string[]>(),
+    };
+  }
+
+  /**
+   * Internal hook to allow management of merge conflicts with identifiers.
+   *
+   * we allow late binding of this private internal merge so that
+   * the cache can insert itself here to handle elimination of duplicates
+   *
+   * @internal
+   */
+  __configureMerge(method: MergeMethod | null): void {
+    this._merge = method || defaultMergeMethod;
+  }
+
+  /** @internal */
+  upgradeIdentifier(resource: { type: string; id: string | null; lid?: string }): ResourceKey {
+    return this._getRecordIdentifier(resource, 2);
+  }
+
+  /** @internal */
+  private _getRecordIdentifier(
+    resource: { type: string; id: string | null; lid?: string },
+    shouldGenerate: 2
+  ): ResourceKey;
+  /** @internal */
+  private _getRecordIdentifier(resource: unknown, shouldGenerate: 1): ResourceKey;
+  /** @internal */
+  private _getRecordIdentifier(resource: unknown, shouldGenerate: 0): ResourceKey | undefined;
+  /** @internal */
+  private _getRecordIdentifier(resource: unknown, shouldGenerate: 0 | 1 | 2): ResourceKey | undefined {
+    if (LOG_IDENTIFIERS) {
+      // oxlint-disable-next-line no-console
+      console.groupCollapsed(`Identifiers: ${shouldGenerate ? 'Generating' : 'Peeking'} Identifier`, resource);
+    }
+    // short circuit if we're already the stable version
+    if (isResourceKey(resource)) {
+      if (DEBUG) {
+        // TODO should we instead just treat this case as a new generation skipping the short circuit?
+        if (!this._cache.resources.has(resource.lid) || this._cache.resources.get(resource.lid) !== resource) {
+          throw new Error(`The supplied identifier ${JSON.stringify(resource)} does not belong to this store instance`);
+        }
+      }
+      if (LOG_IDENTIFIERS) {
+        // oxlint-disable-next-line no-console
+        console.log(`Identifiers: cache HIT - Stable ${resource.lid}`);
+        // oxlint-disable-next-line no-console
+        console.groupEnd();
+      }
+      return resource;
+    }
+
+    // the resource is unknown, ask the application to identify this data for us
+    const lid = this._generate(resource, 'record');
+    if (LOG_IDENTIFIERS) {
+      // oxlint-disable-next-line no-console
+      console.log(`Identifiers: ${lid ? 'no ' : ''}lid ${lid ? lid + ' ' : ''}determined for resource`, resource);
+    }
+
+    let identifier: ResourceKey | null = /*#__NOINLINE__*/ getIdentifierFromLid(this._cache, lid, resource);
+    if (identifier !== null) {
+      if (LOG_IDENTIFIERS) {
+        // oxlint-disable-next-line no-console
+        console.groupEnd();
+      }
+      return identifier;
+    }
+
+    if (shouldGenerate === 0) {
+      if (LOG_IDENTIFIERS) {
+        // oxlint-disable-next-line no-console
+        console.groupEnd();
+      }
+      return;
+    }
+
+    // if we still don't have an identifier, time to generate one
+    if (shouldGenerate === 2) {
+      (resource as ResourceKey).lid = lid;
+      (resource as ResourceKey)[CACHE_OWNER] = this._id;
+      identifier = /*#__NOINLINE__*/ makeResourceKey(resource as ResourceKey, 'record', false);
+    } else {
+      // we lie a bit here as a memory optimization
+      const keyInfo = this._keyInfoForResource(resource, null) as ResourceKey;
+      keyInfo.lid = lid;
+      keyInfo[CACHE_OWNER] = this._id;
+      identifier = /*#__NOINLINE__*/ makeResourceKey(keyInfo, 'record', false);
+    }
+
+    addResourceToCache(this._cache, identifier);
+
+    if (LOG_IDENTIFIERS) {
+      // oxlint-disable-next-line no-console
+      console.groupEnd();
+    }
+
+    return identifier;
+  }
+
+  /**
+   * allows us to peek without generating when needed
+   * useful for the "create" case when we need to see if
+   * we are accidentally overwritting something
+   *
+   * @private
+   */
+  peekResourceKey(resource: ResourceIdentifierObject): ResourceKey | undefined {
+    return this._getRecordIdentifier(resource, 0);
+  }
+
+  /**
+   * Peeks the {@link RequestKey} for the given {@link RequestInfo}, but will not
+   * create one if none has been previously generated.
+   *
+   * @public
+   */
+  peekRequestKey(request: RequestInfo): RequestKey | null {
+    let cacheKey: string | null | undefined = request.cacheOptions?.key;
+
+    if (!cacheKey) {
+      cacheKey = this._generate(request, 'document');
+    }
+
+    if (!cacheKey) {
+      return null;
+    }
+
+    const identifier = this._cache.documents.get(cacheKey);
+    return identifier ?? null;
+  }
+
+  /**
+   * Returns the {@link RequestKey} for the given {@link RequestInfo} if the request is
+   * considered cacheable. For cacheable requests, this method will create
+   * a RequestKey if none is found.
+   *
+   * A `null` response indicates the request cannot/will not be cached,
+   * generally this means either
+   *
+   * - {@link RequestInfo.cacheOptions.key} is not present on the `RequestInfo`
+   * - the request's method is `GET` but it has no `url`
+   *
+   * Generally you should not seek to cache requests that are not idempotent
+   * or have side effects, such as mutations that create, update or delete
+   * a resource.
+   *
+   * @public
+   */
+  getOrCreateDocumentIdentifier(request: RequestInfo): RequestKey | null {
+    let cacheKey: string | null | undefined = request.cacheOptions?.key;
+
+    if (!cacheKey) {
+      cacheKey = this._generate(request, 'document');
+    }
+
+    if (!cacheKey) {
+      return null;
+    }
+
+    let identifier = this._cache.documents.get(cacheKey);
+
+    if (identifier === undefined) {
+      identifier = { lid: cacheKey, type: '@document', [CACHE_OWNER]: this._id };
+      if (DEBUG) {
+        Object.freeze(identifier);
+      }
+      this._cache.documents.set(cacheKey, identifier);
+    }
+
+    return identifier;
+  }
+
+  /**
+    Returns the {@link ResourceKey} for the given Resource, creates one if it does not yet exist.
+
+    Specifically this means that we:
+
+    - validate the `id` `type` and `lid` combo against known identifiers
+    - return an object with an `lid` that is stable (repeated calls with the same
+      `id` + `type` or `lid` will return the same `lid` value)
+    - this referential stability of the object itself is guaranteed
+
+    @public
+  */
+  getOrCreateRecordIdentifier<T>(resource: T): NarrowIdentifierIfPossible<T> {
+    return this._getRecordIdentifier(resource as unknown, 1) as NarrowIdentifierIfPossible<T>;
+  }
+
+  /**
+   Returns a new Identifier for the supplied data. Call this method to generate
+   an identifier when a new resource is being created local to the client and
+   potentially does not have an `id`.
+
+   Delegates generation to the user supplied `GenerateMethod` if one has been provided
+   with the signature `generateMethod({ type }, 'record')`.
+
+   @public
+  */
+  createIdentifierForNewRecord(data: { type: string; id?: string | null; lid?: string }): ResourceKey {
+    const newLid = this._generate(data, 'record');
+    const identifier = /*#__NOINLINE__*/ makeResourceKey(
+      { id: data.id || null, type: data.type, lid: newLid, [CACHE_OWNER]: this._id },
+      'record',
+      true
+    );
+
+    // populate our unique table
+    if (DEBUG) {
+      if (this._cache.resources.has(identifier.lid)) {
+        throw new Error(`The lid generated for the new record is not unique as it matches an existing identifier`);
+      }
+    }
+
+    /*#__NOINLINE__*/ addResourceToCache(this._cache, identifier);
+
+    if (LOG_IDENTIFIERS) {
+      // oxlint-disable-next-line no-console
+      console.log(`Identifiers: created identifier ${String(identifier)} for newly generated resource`, data);
+    }
+
+    return identifier;
+  }
+
+  /**
+   Provides the opportunity to update secondary lookup tables for existing identifiers
+   Called after an identifier created with `createIdentifierForNewRecord` has been
+   committed.
+
+   Assigned `id` to an `Identifier` if `id` has not previously existed; however,
+   attempting to change the `id` or calling update without providing an `id` when
+   one is missing will throw an error.
+
+    - sets `id` (if `id` was previously `null`)
+    - `lid` and `type` MUST NOT be altered post creation
+
+    If a merge occurs, it is possible the returned identifier does not match the originally
+    provided identifier. In this case the abandoned identifier will go through the usual
+    `forgetRecordIdentifier` codepaths.
+
+    @public
+  */
+  // FIXME audit usage
+  updateRecordIdentifier(identifierObject: ResourceKey, data: unknown): ResourceKey {
+    let identifier = this.getOrCreateRecordIdentifier(identifierObject);
+
+    const keyInfo = this._keyInfoForResource(data, identifier);
+    let existingIdentifier = /*#__NOINLINE__*/ detectMerge(this._cache, keyInfo, identifier, data);
+    const hadLid = hasLid(data);
+
+    if (!existingIdentifier) {
+      // If the incoming type does not match the identifier type, we need to create an identifier for the incoming
+      // data so we can merge the incoming data with the existing identifier, see #7325 and #7363
+      if (identifier.type !== keyInfo.type) {
+        if (hadLid) {
+          // Strip the lid to ensure we force a new identifier creation
+          delete (data as { lid?: string }).lid;
+        }
+        existingIdentifier = this.getOrCreateRecordIdentifier(data);
+      }
+    }
+
+    if (existingIdentifier) {
+      const generatedIdentifier = identifier;
+      identifier = this._mergeRecordIdentifiers(keyInfo, generatedIdentifier, existingIdentifier, data);
+
+      // make sure that the `lid` on the data we are processing matches the lid we kept
+      if (hadLid) {
+        data.lid = identifier.lid;
+      }
+
+      if (LOG_IDENTIFIERS) {
+        // oxlint-disable-next-line no-console
+        console.log(
+          `Identifiers: merged identifiers ${generatedIdentifier.lid} and ${existingIdentifier.lid} for resource into ${identifier.lid}`,
+          data
+        );
+      }
+    }
+
+    const id = identifier.id;
+    /*#__NOINLINE__*/ performRecordIdentifierUpdate(identifier, keyInfo, data, this._update);
+    const newId = identifier.id;
+
+    // add to our own secondary lookup table
+    if (id !== newId && newId !== null) {
+      if (LOG_IDENTIFIERS) {
+        // oxlint-disable-next-line no-console
+        console.log(
+          `Identifiers: updated id for identifier ${identifier.lid} from '${String(id)}' to '${String(
+            newId
+          )}' for resource`,
+          data
+        );
+      }
+
+      const typeSet = this._cache.resourcesByType[identifier.type];
+      assert(`Expected to find a typeSet for ${identifier.type}`, typeSet);
+      typeSet.id.set(newId, identifier);
+
+      if (id !== null) {
+        typeSet.id.delete(id);
+      }
+    } else if (LOG_IDENTIFIERS) {
+      // oxlint-disable-next-line no-console
+      console.log(`Identifiers: updated identifier ${identifier.lid} resource`, data);
+    }
+
+    return identifier;
+  }
+
+  /**
+   * @internal
+   */
+  _mergeRecordIdentifiers(
+    keyInfo: KeyInfo,
+    identifier: ResourceKey,
+    existingIdentifier: ResourceKey,
+    data: unknown
+  ): ResourceKey {
+    assert(`Expected keyInfo to contain an id`, hasId(keyInfo));
+    // delegate determining which identifier to keep to the configured MergeMethod
+    const kept = this._merge(identifier, existingIdentifier, data);
+    const abandoned = kept === identifier ? existingIdentifier : identifier;
+
+    // get any backreferences before forgetting this identifier, as it will be removed from the cache
+    // and we will no longer be able to find them
+    const abandonedBackReferences = this._cache.polymorphicLidBackMap.get(abandoned.lid);
+    // delete the backreferences for the abandoned identifier so that forgetRecordIdentifier
+    // does not try to remove them.
+    if (abandonedBackReferences) this._cache.polymorphicLidBackMap.delete(abandoned.lid);
+
+    // cleanup the identifier we no longer need
+    this.forgetRecordIdentifier(abandoned);
+
+    // ensure a secondary cache entry for the original lid for the abandoned identifier
+    this._cache.resources.set(abandoned.lid, kept);
+
+    // backReferences let us know which other identifiers are pointing at this identifier
+    // so we can delete them later if we forget this identifier
+    const keptBackReferences = this._cache.polymorphicLidBackMap.get(kept.lid) ?? [];
+    keptBackReferences.push(abandoned.lid);
+
+    // update the backreferences from the abandoned identifier to be for the kept identifier
+    if (abandonedBackReferences) {
+      abandonedBackReferences.forEach((lid) => {
+        keptBackReferences.push(lid);
+        this._cache.resources.set(lid, kept);
+      });
+    }
+
+    this._cache.polymorphicLidBackMap.set(kept.lid, keptBackReferences);
+    return kept;
+  }
+
+  /**
+   Provides the opportunity to eliminate an identifier from secondary lookup tables
+   as well as eliminates it from ember-data's own lookup tables and book keeping.
+
+   Useful when a record has been deleted and the deletion has been persisted and
+   we do not care about the record anymore. Especially useful when an `id` of a
+   deleted record might be reused later for a new record.
+
+   @public
+  */
+  // FIXME audit usage
+  forgetRecordIdentifier(identifierObject: ResourceKey): void {
+    const identifier = this.getOrCreateRecordIdentifier(identifierObject);
+    const typeSet = this._cache.resourcesByType[identifier.type];
+    assert(`Expected to find a typeSet for ${identifier.type}`, typeSet);
+
+    if (identifier.id !== null) {
+      typeSet.id.delete(identifier.id);
+    }
+    this._cache.resources.delete(identifier.lid);
+    typeSet.lid.delete(identifier.lid);
+
+    const backReferences = this._cache.polymorphicLidBackMap.get(identifier.lid);
+    if (backReferences) {
+      backReferences.forEach((lid) => {
+        this._cache.resources.delete(lid);
+      });
+      this._cache.polymorphicLidBackMap.delete(identifier.lid);
+    }
+
+    if (DEBUG) {
+      identifier[DEBUG_STALE_CACHE_OWNER] = identifier[CACHE_OWNER];
+    }
+    identifier[CACHE_OWNER] = undefined;
+    this._forget(identifier, 'record');
+    if (LOG_IDENTIFIERS) {
+      // oxlint-disable-next-line no-console
+      console.log(`Identifiers: released identifier ${identifierObject.lid}`);
+    }
+  }
+
+  /** @internal */
+  destroy(): void {
+    NEW_IDENTIFIERS.clear();
+    this._reset();
+  }
+}
+
+/**
+ * This type exists for internal use only for
+ * where intimate contracts still exist either for
+ * the Test Suite or for Legacy code.
+ *
+ * @private
+ */
+export interface PrivateCacheKeyManager extends CacheKeyManager {
+  _cache: StableCache;
+  /**
+   * Internal hook to allow management of merge conflicts with identifiers.
+   *
+   * we allow late binding of this private internal merge so that
+   * the cache can insert itself here to handle elimination of duplicates
+   */
+  __configureMerge(method: MergeMethod | null): void;
+  _mergeRecordIdentifiers(
+    keyInfo: KeyInfo,
+    identifier: ResourceKey,
+    existingIdentifier: ResourceKey,
+    data: unknown
+  ): ResourceKey;
+  destroy(): void;
+}
+
+function makeResourceKey(
+  recordIdentifier: {
+    type: string;
+    id: string | null;
+    lid: string;
+    [CACHE_OWNER]: number | undefined;
+  },
+  bucket: CacheKeyType,
+  clientOriginated: boolean
+): ResourceKey {
+  if (DEBUG) {
+    // we enforce immutability in dev
+    //  but preserve our ability to do controlled updates to the reference
+    let wrapper = {
+      type: recordIdentifier.type,
+      lid: recordIdentifier.lid,
+      get id() {
+        return recordIdentifier.id;
+      },
+    } as ResourceKey;
+    const proto = {
+      get [CACHE_OWNER](): number | undefined {
+        return recordIdentifier[CACHE_OWNER];
+      },
+      set [CACHE_OWNER](value: number) {
+        recordIdentifier[CACHE_OWNER] = value;
+      },
+      get [DEBUG_STALE_CACHE_OWNER](): number | undefined {
+        return (recordIdentifier as ResourceKey)[DEBUG_STALE_CACHE_OWNER];
+      },
+      set [DEBUG_STALE_CACHE_OWNER](value: number | undefined) {
+        (recordIdentifier as ResourceKey)[DEBUG_STALE_CACHE_OWNER] = value;
+      },
+      get [DEBUG_CLIENT_ORIGINATED]() {
+        return clientOriginated;
+      },
+      get [DEBUG_KEY_TYPE]() {
+        return bucket;
+      },
+    };
+    Object.defineProperty(proto, 'toString', {
+      enumerable: false,
+      value: () => {
+        const { type, id, lid } = recordIdentifier;
+        return `${clientOriginated ? '[CLIENT_ORIGINATED] ' : ''}${String(type)}:${String(id)} (${lid})`;
+      },
+    });
+    Object.defineProperty(proto, 'toJSON', {
+      enumerable: false,
+      value: () => {
+        const { type, id, lid } = recordIdentifier;
+        return { type, id, lid };
+      },
+    });
+    Object.setPrototypeOf(wrapper, proto);
+    DEBUG_MAP.set(wrapper, recordIdentifier);
+    wrapper = freeze(wrapper);
+    return wrapper;
+  }
+
+  return recordIdentifier;
+}
+
+function performRecordIdentifierUpdate(
+  identifier: ResourceKey,
+  keyInfo: KeyInfo,
+  data: unknown,
+  updateFn: UpdateMethod
+) {
+  if (DEBUG) {
+    const { id, type } = keyInfo;
+
+    // get the mutable instance behind our proxy wrapper
+    const wrapper = identifier;
+    identifier = DEBUG_MAP.get(wrapper)!;
+
+    if (hasLid(data)) {
+      const lid = data.lid;
+      if (lid !== identifier.lid) {
+        throw new Error(
+          `The 'lid' for a ResourceKey cannot be updated once it has been created. Attempted to set lid for '${wrapper.lid}' to '${lid}'.`
+        );
+      }
+    }
+
+    if (id && identifier.id !== null && identifier.id !== id) {
+      // here we warn and ignore, as this may be a mistake, but we allow the user
+      // to have multiple cache-keys pointing at a single lid so we cannot error
+      warn(
+        `The 'id' for a ResourceKey should not be updated once it has been set. Attempted to set id for '${wrapper.lid}' to '${id}'.`,
+        false,
+        { id: 'ember-data:multiple-ids-for-identifier' }
+      );
+    }
+
+    // TODO consider just ignoring here to allow flexible polymorphic support
+    if (type && type !== identifier.type) {
+      throw new Error(
+        `The 'type' for a ResourceKey cannot be updated once it has been set. Attempted to set type for '${wrapper.lid}' to '${type}'.`
+      );
+    }
+
+    updateFn(wrapper, data, 'record');
+  } else {
+    updateFn(identifier, data, 'record');
+  }
+
+  // upgrade the ID, this is a "one time only" ability
+  // for the multiple-cache-key scenario we "could"
+  // use a heuristic to guess the best id for display
+  // (usually when `data.id` is available and `data.attributes` is not)
+  if ((data as ExistingResourceObject).id !== undefined) {
+    identifier.id = coerceId((data as ExistingResourceObject).id);
+  }
+}
+
+function detectMerge(
+  cache: StableCache,
+  keyInfo: KeyInfo,
+  identifier: ResourceKey,
+  data: unknown
+): ResourceKey | false {
+  const newId = keyInfo.id;
+  const { id, type, lid } = identifier;
+  const typeSet = cache.resourcesByType[identifier.type];
+
+  // if the IDs are present but do not match
+  // then check if we have an existing identifier
+  // for the newer ID.
+  if (id !== null && id !== newId && newId !== null) {
+    const existingIdentifier = typeSet && typeSet.id.get(newId);
+
+    return existingIdentifier !== undefined ? existingIdentifier : false;
+  } else {
+    const newType = keyInfo.type;
+
+    // If the ids and type are the same but lid is not the same, we should trigger a merge of the identifiers
+    // we trigger a merge of the identifiers
+    // though probably we should just throw an error here
+    if (id !== null && id === newId && newType === type && hasLid(data) && data.lid !== lid) {
+      return getIdentifierFromLid(cache, data.lid, data) || false;
+
+      // If the lids are the same, and ids are the same, but types are different we should trigger a merge of the identifiers
+    } else if (id !== null && id === newId && newType && newType !== type && hasLid(data) && data.lid === lid) {
+      const newTypeSet = cache.resourcesByType[newType];
+      const existingIdentifier = newTypeSet && newTypeSet.id.get(newId);
+
+      return existingIdentifier !== undefined ? existingIdentifier : false;
+    }
+  }
+
+  return false;
+}
+
+function getIdentifierFromLid(cache: StableCache, lid: string, resource: unknown): ResourceKey | null {
+  const identifier = cache.resources.get(lid);
+  if (LOG_IDENTIFIERS) {
+    // oxlint-disable-next-line no-console
+    console.log(`Identifiers: cache ${identifier ? 'HIT' : 'MISS'} - Non-Stable ${lid}`, resource);
+  }
+  return identifier || null;
+}
+
+function addResourceToCache(cache: StableCache, identifier: ResourceKey): void {
+  cache.resources.set(identifier.lid, identifier);
+  let typeSet = cache.resourcesByType[identifier.type];
+
+  if (!typeSet) {
+    typeSet = { lid: new Map(), id: new Map() };
+    cache.resourcesByType[identifier.type] = typeSet;
+  }
+
+  typeSet.lid.set(identifier.lid, identifier);
+  if (identifier.id) {
+    typeSet.id.set(identifier.id, identifier);
+  }
+}

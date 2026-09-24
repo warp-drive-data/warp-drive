@@ -1,0 +1,57 @@
+{
+  "name": "@warp-drive/svelte",
+  "description": "Data bindings and utilities for Svelte",
+  "version": "5.10.0-alpha.11",
+  "private": true,
+  "license": "MIT",
+  "author": "Chris Thoburn <runspired@users.noreply.github.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com:warp-drive-data/warp-drive.git",
+    "directory": "warp-drive-packages/svelte"
+  },
+  "homepage": "https://github.com/warp-drive-data/warp-drive",
+  "bugs": "https://github.com/warp-drive-data/warp-drive/issues",
+  "keywords": [],
+  "scripts": {
+    "build:pkg": "svelte-package",
+    "prepack": "svelte-package",
+    "sync": "echo \"syncing\"",
+    "check:types": "node ./node_modules/typescript-7/bin/tsc --noEmit",
+    "start": "vite"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE.md",
+    "logos"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./install": {
+      "types": "./dist/install.svelte.d.ts",
+      "default": "./dist/install.svelte.js"
+    }
+  },
+  "peerDependencies": {
+    "svelte": "catalog:"
+  },
+  "dependencies": {
+    "@warp-drive/core": "workspace:*"
+  },
+  "peerDependenciesMeta": {},
+  "devDependencies": {
+    "@sveltejs/kit": "catalog:",
+    "@sveltejs/package": "catalog:",
+    "@sveltejs/vite-plugin-svelte": "catalog:",
+    "@warp-drive/internal-config": "workspace:*",
+    "@warp-drive/core": "workspace:*",
+    "svelte": "catalog:",
+    "typescript": "catalog:",
+    "typescript-7": "catalog:",
+    "vite": "catalog:"
+  }
+}

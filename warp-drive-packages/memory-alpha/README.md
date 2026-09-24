@@ -1,0 +1,174 @@
+<p align="center">
+  <img
+    class="project-logo"
+    src="./logos/logo-yellow-slab.svg"
+    alt="WarpDrive"
+    width="180px"
+    title="WarpDrive"
+    />
+</p>
+
+![NPM Stable Version](https://img.shields.io/npm/v/%40warp-drive%2Fmemory-alpha/latest?label=version&style=flat&color=fdb155)
+![NPM Downloads](https://img.shields.io/npm/dm/%40warp-drive%2Fmemory-alpha.svg?style=flat&color=fdb155)
+![License](https://img.shields.io/github/license/warp-drive-data/warp-drive.svg?style=flat&color=fdb155)
+[![EmberJS Discord Community Server](https://img.shields.io/badge/EmberJS-grey?logo=discord&logoColor=fdb155)](https://discord.gg/zT3asNS)
+[![WarpDrive Discord Server](https://img.shields.io/badge/WarpDrive-grey?logo=discord&logoColor=fdb155)](https://discord.gg/PHBbnWJx5S)
+
+# @warp-drive/memory-alpha
+
+Named after the Federation's central archive of all recorded knowledge, this package is WarpDrive's
+own Memory Alpha for coding agents: a database of everything they need to know, packaged as plain
+markdown, minus the away-team incident that torched the original.
+
+## For Agents
+
+Find the single row below that matches your task and read **only** that file. Do not read
+other skill files, do not list or read whole directories — this table is enough to route you.
+
+| If you need to... | Read exactly |
+| --- | --- |
+| Define a resource's shape — fields, relationships, identity — for the `Store` | `skills/schemas/define-a-resource-schema.md` |
+| Fetch or query remote data through the `Store` so it's cached and reactive | `skills/requests/fetch-and-cache-data.md` |
+| Re-record one holodeck mock, or review a test that sets `RECORD` | `skills/holodeck/using-record.md` |
+| Look up a guide, upgrade note, or API reference page that no row above covers — a concept, an option, a signature | `skills/docs/read-the-docs-as-markdown.md` |
+| You're contributing to WarpDrive itself, not just consuming it as a dependency | `skills/contributors/index.md` |
+
+This table is kept in sync with [`skills/index.md`](./skills/index.md), which is the same
+routing table published inside the package itself for tooling that lands directly in `skills/`
+without reading this README first.
+
+## Editor & Agent Setup
+
+This repo wires the routing table above into every agent surface it develops against, and each
+one just points back to [`skills/index.md`](./skills/index.md) so there's a single place to
+update:
+
+| Agent | File |
+| --- | --- |
+| Claude Code | [`/CLAUDE.md`](../../CLAUDE.md) |
+| Codex, Grok, Cursor, and other tools following the open [AGENTS.md](https://agents.md) convention | [`/AGENTS.md`](../../AGENTS.md) |
+| Gemini CLI | [`/GEMINI.md`](../../GEMINI.md) |
+| GitHub Copilot | [`/.github/copilot-instructions.md`](../../.github/copilot-instructions.md) |
+| Cursor (project rule, in addition to its AGENTS.md support) | [`/.cursor/rules/memory-alpha.mdc`](../../.cursor/rules/memory-alpha.mdc) |
+
+Consuming this package from an app instead of contributing to WarpDrive itself? Copy whichever
+of those files matches your agent into your own repo and swap the path for
+`node_modules/@warp-drive/memory-alpha/skills/index.md`.
+
+## Structure
+
+This package has no code and no dependencies — it is a directory of markdown files, organized
+by topic, meant to be read directly (by an MCP server, a build script, a human) rather than
+imported. Every file under [`skills`](./skills) is plain markdown with **no YAML frontmatter**
+of its own, so that downstream tooling adapting this content into tool-specific formats (Claude
+Skills, Cursor rules, Copilot instructions, etc.) is free to add whatever frontmatter shape that
+tool expects without colliding with WarpDrive's own doc-site metadata.
+
+Structure and per-file metadata instead live in a single `_meta.json` per directory:
+
+- `title` / `collapsed` / `draft` — metadata for the directory itself. Directories without a
+  `_meta.json` are ordered alphabetically with an auto-generated title.
+- `items` — ordered list of child slugs (filenames without `.md`, or subdirectory names).
+  Unlisted items sort alphabetically after listed ones.
+- `files` — per-file metadata, keyed by filename without `.md` (e.g. `"title"`/`"draft"` for
+  that file).
+- `webIndex` — (root directory only, currently) the filename (without `.md`) to publish as
+  `index.md` on the docs website in place of the real one. `skills/index.md` is the agent
+  routing table above and is marked `draft` so it's excluded from the website entirely;
+  [`skills/overview.md`](./skills/overview.md) is the human-facing landing page and is what
+  `webIndex: "overview"` publishes at [warp-drive.io/skills](https://warp-drive.io/skills)
+  instead. Only the docs site's synced copy is affected — the npm package always ships both files.
+
+```json
+{
+  "title": "Schemas",
+  "items": ["define-a-resource-schema"],
+  "files": {
+    "define-a-resource-schema": { "title": "Define a Resource Schema" }
+  }
+}
+```
+
+This same `skills` directory is synced into [the WarpDrive docs site](https://warp-drive.io/skills)
+under the "Skills" section, using the same markdown-plus-JSON compilation tooling as the
+[Guides](https://warp-drive.io/guides) section.
+
+## Usage
+
+Install the package and read markdown files directly from `node_modules`:
+
+```sh
+npm install @warp-drive/memory-alpha
+```
+
+```ts
+import { readFileSync } from 'node:fs';
+import { createRequire } from 'node:module';
+
+const require = createRequire(import.meta.url);
+const pkgPath = require.resolve('@warp-drive/memory-alpha/package.json');
+const skill = readFileSync(pkgPath.replace('package.json', 'skills/schemas/define-a-resource-schema.md'), 'utf-8');
+```
+
+Or point an MCP filesystem/docs server, a Claude Code skill, or any other agent tooling at the
+installed package's `skills` directory.
+
+### ♥️ Credits
+
+ <details>
+   <summary>Brought to you with ♥️ love by <a href="https://emberjs.com" title="EmberJS">🐹 Ember</a></summary>
+
+  <style type="text/css">
+    img.project-logo {
+       padding: 0 5em 1em 5em;
+       width: 100px;
+       border-bottom: 2px solid #bbb;
+       margin: 0 auto;
+       display: block;
+     }
+    details > summary {
+      font-size: 1.1rem;
+      line-height: 1rem;
+      margin-bottom: 1rem;
+    }
+    details {
+      font-size: 1rem;
+    }
+    details > summary strong {
+      display: inline-block;
+      padding: .2rem 0;
+      color: #000;
+      border-bottom: 3px solid #bbb;
+    }
+
+    details > details {
+      margin-left: 2rem;
+    }
+    details > details > summary {
+      font-size: 1rem;
+      line-height: 1rem;
+      margin-bottom: 1rem;
+    }
+    details > details > summary strong {
+      display: inline-block;
+      padding: .2rem 0;
+      color: #555;
+      border-bottom: 2px solid #555;
+    }
+    details > details {
+      font-size: .85rem;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      details > summary strong {
+        color: #fff;
+      }
+    }
+    @media (prefers-color-scheme: dark) {
+      details > details > summary strong {
+        color: #afaba0;
+      border-bottom: 2px solid #afaba0;
+      }
+    }
+  </style>
+</details>

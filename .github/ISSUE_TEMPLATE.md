@@ -4,7 +4,7 @@ Hopefully, this issue template will help you provide us with enough information 
 
 If you haven't already browsed recent issues (or less recent issues if this is for a past release), please do
 so first to see if your issue already has a ticket created for it. It is usually best to first ask about the
-issue you are observing in the `#ember-data` channel on [Discord](https://discord.gg/zT3asNS), doing so may
+issue you are observing on [Discord](https://discord.gg/PHBbnWJx5S), doing so may
 help you discover existing issues or provide a clearer reproduction.
 
 ### Reproduction
@@ -25,7 +25,7 @@ If a previous version of `ember-data` worked as `expected`, which was the most r
 
 Run the following command and paste the output below: `pnpm list ember-source && pnpm list ember-cli && pnpm list "*ember-data*"`.
 
-```cli
+```sh
 [Replace this line with the output]
 ```
 

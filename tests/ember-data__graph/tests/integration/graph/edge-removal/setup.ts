@@ -1,23 +1,28 @@
-import type { CollectionEdge, Graph, GraphEdge, ImplicitEdge, ResourceEdge } from '@ember-data/graph/-private';
-import { graphFor } from '@ember-data/graph/-private';
-import type Model from '@ember-data/model';
-import type Store from '@ember-data/store';
-import type { ModelSchema } from '@ember-data/store/types';
-import type { StableRecordIdentifier } from '@warp-drive/core-types';
-import type { CollectionRelationship } from '@warp-drive/core-types/cache/relationship';
-import type { Type } from '@warp-drive/core-types/symbols';
+import type { Store } from '@warp-drive/core';
+import type { CollectionEdge, Graph, GraphEdge, ImplicitEdge, ResourceEdge } from '@warp-drive/core/graph/-private';
+import { graphFor } from '@warp-drive/core/graph/-private';
+import type { ModelSchema } from '@warp-drive/core/types';
+import type { CollectionRelationship } from '@warp-drive/core/types/cache/relationship';
+import type { ResourceKey } from '@warp-drive/core/types/identifier';
+import type { Type } from '@warp-drive/core/types/symbols';
 import type { Hooks } from '@warp-drive/diagnostic/-types';
 import type { RenderingTestContext } from '@warp-drive/diagnostic/ember';
 import { setupTest } from '@warp-drive/diagnostic/ember';
+import type Model from '@warp-drive/legacy/model';
 
 class AbstractMap {
+  declare private store: Store;
+  declare private isImplicit: boolean;
   constructor(
-    private store: Store,
-    // eslint-disable-next-line @typescript-eslint/no-shadow
-    private isImplicit: boolean
-  ) {}
+    store: Store,
+    // oxlint-disable-next-line no-shadow
+    isImplicit: boolean
+  ) {
+    this.store = store;
+    this.isImplicit = isImplicit;
+  }
 
-  has(identifier: StableRecordIdentifier) {
+  has(identifier: ResourceKey) {
     const graph = graphFor(this.store);
     return graph.identifiers.has(identifier);
   }
@@ -25,9 +30,11 @@ class AbstractMap {
 
 class AbstractGraph {
   public identifiers: AbstractMap;
-  public implicit: { has(identifier: StableRecordIdentifier): boolean };
+  public implicit: { has(identifier: ResourceKey): boolean };
+  declare private store: Store;
 
-  constructor(private store: Store) {
+  constructor(store: Store) {
+    this.store = store;
     this.identifiers = new AbstractMap(store, false);
     this.implicit = {
       has: (identifier) => {
@@ -36,11 +43,11 @@ class AbstractGraph {
     };
   }
 
-  get(identifier: StableRecordIdentifier, propertyName: string): GraphEdge {
+  get(identifier: ResourceKey, propertyName: string): GraphEdge {
     return graphFor(this.store).get(identifier, propertyName);
   }
 
-  getImplicit(identifier: StableRecordIdentifier): Record<string, ImplicitEdge> {
+  getImplicit(identifier: ResourceKey): Record<string, ImplicitEdge> {
     const rels = graphFor(this.store).identifiers.get(identifier);
     const implicits = Object.create(null) as Record<string, ImplicitEdge>;
     if (rels) {
@@ -79,11 +86,11 @@ export function stateOf(
   graph: Graph,
   rel: GraphEdge
 ): {
-  remote: StableRecordIdentifier[];
-  local: StableRecordIdentifier[];
+  remote: ResourceKey[];
+  local: ResourceKey[];
 } {
-  let local: StableRecordIdentifier[];
-  let remote: StableRecordIdentifier[];
+  let local: ResourceKey[];
+  let remote: ResourceKey[];
 
   if (isBelongsTo(rel)) {
     // we cast these to array form to make the tests more legible
@@ -95,8 +102,8 @@ export function stateOf(
     local = data.data || [];
     remote = rel.remoteState;
   } else {
-    local = setToArray<StableRecordIdentifier>(rel.localMembers);
-    remote = setToArray<StableRecordIdentifier>(rel.remoteMembers);
+    local = setToArray<ResourceKey>(rel.localMembers);
+    remote = setToArray<ResourceKey>(rel.remoteMembers);
   }
   return {
     local,

@@ -1,11 +1,11 @@
 import EmberObject from '@ember/object';
 
-import Store from 'ember-data__adapter/services/store';
-
 import Model, { attr } from '@ember-data/model';
 import { recordIdentifierFor } from '@ember-data/store';
 import { module, test } from '@warp-drive/diagnostic';
 import { setupTest } from '@warp-drive/diagnostic/ember';
+
+import Store from '../../services/store';
 
 class MinimalSerializer extends EmberObject {
   normalizeResponse(_, __, data) {
@@ -69,7 +69,7 @@ module('integration/coalescing - Coalescing Tests', function (hooks) {
     const { owner } = this;
     const store = owner.lookup('service:store');
 
-    // This code is a workaround for issue https://github.com/emberjs/data/issues/6758
+    // This code is a workaround for issue https://github.com/warp-drive-data/warp-drive/issues/6758
     // expectedResult is mutated during store.findRecord
     // to add the lid
     const expectedResultsCopy = structuredClone(expectedResults);
@@ -131,7 +131,7 @@ module('integration/coalescing - Coalescing Tests', function (hooks) {
     const { owner } = this;
     const store = owner.lookup('service:store');
 
-    // This code is a workaround for issue https://github.com/emberjs/data/issues/6758
+    // This code is a workaround for issue https://github.com/warp-drive-data/warp-drive/issues/6758
     // expectedResult is mutated during store.findRecord
     // to add the lid
     const expectedResultsCopy = structuredClone(expectedResults);
@@ -225,8 +225,8 @@ module('integration/coalescing - Coalescing Tests', function (hooks) {
 
     owner.register('adapter:application', TestFindRecordAdapter);
 
-    const person1 = store.identifierCache.getOrCreateRecordIdentifier({ type: 'person', id: '1' });
-    const person2 = store.identifierCache.getOrCreateRecordIdentifier({ type: 'person', id: '2' });
+    const person1 = store.cacheKeyManager.getOrCreateRecordIdentifier({ type: 'person', id: '1' });
+    const person2 = store.cacheKeyManager.getOrCreateRecordIdentifier({ type: 'person', id: '2' });
     const promises = [
       store.findRecord('person', '1'), // creates request (1)
       store.findRecord('person', '1', { include: '' }), // de-duped
@@ -358,10 +358,10 @@ module('integration/coalescing - Coalescing Tests', function (hooks) {
 
     owner.register('adapter:application', TestFindRecordAdapter);
 
-    const person1 = store.identifierCache.getOrCreateRecordIdentifier({ type: 'person', id: '1' });
-    const person2 = store.identifierCache.getOrCreateRecordIdentifier({ type: 'person', id: '2' });
-    const person3 = store.identifierCache.getOrCreateRecordIdentifier({ type: 'person', id: '3' });
-    const person4 = store.identifierCache.getOrCreateRecordIdentifier({ type: 'person', id: '4' });
+    const person1 = store.cacheKeyManager.getOrCreateRecordIdentifier({ type: 'person', id: '1' });
+    const person2 = store.cacheKeyManager.getOrCreateRecordIdentifier({ type: 'person', id: '2' });
+    const person3 = store.cacheKeyManager.getOrCreateRecordIdentifier({ type: 'person', id: '3' });
+    const person4 = store.cacheKeyManager.getOrCreateRecordIdentifier({ type: 'person', id: '4' });
     const promises = [
       store.findRecord('person', '1'),
       store.findRecord('person', '2', { include: 'users' }),
@@ -486,7 +486,7 @@ module('integration/coalescing - Coalescing Tests', function (hooks) {
     const { owner } = this;
     const store = owner.lookup('service:store');
 
-    // This code is a workaround for issue https://github.com/emberjs/data/issues/6758
+    // This code is a workaround for issue https://github.com/warp-drive-data/warp-drive/issues/6758
     // expectedResult is mutated during store.findRecord
     // to add the lid
     const expectedResultsCopy = structuredClone(expectedResults);

@@ -1,0 +1,410 @@
+import {
+  type default as EmberObject,
+  get,
+  getProperties,
+  notifyPropertyChange,
+  set,
+  setProperties,
+} from '@ember/object';
+import { addObserver, removeObserver } from '@ember/object/observers';
+import { compare } from '@ember/utils';
+
+import { assert } from '@warp-drive/core/build-config/macros';
+import type { CAUTION_MEGA_DANGER_ZONE_Extension } from '@warp-drive/core/reactive';
+
+const EmberObjectFeatures = {};
+const EmberObjectMethods = [
+  'addObserver',
+  'cacheFor',
+  'decrementProperty',
+  'get',
+  'getProperties',
+  'incrementProperty',
+  'notifyPropertyChange',
+  'removeObserver',
+  'set',
+  'setProperties',
+  'toggleProperty',
+] as const;
+EmberObjectMethods.forEach((method) => {
+  EmberObjectFeatures[method] = function delegatedMethod(...args: unknown[]): unknown {
+    switch (method) {
+      case 'addObserver':
+        return (addObserver as (...args: unknown[]) => unknown)(this, ...args);
+      case 'cacheFor':
+        throw new Error('cacheFor has been removed and will not be replaced');
+      case 'decrementProperty': {
+        const keyName = args[0] as string;
+        const decrement = (args[1] as number) ?? 1;
+        assert(
+          'Must pass a numeric value to decrementProperty',
+          (typeof decrement === 'number' || !isNaN(parseFloat(decrement))) && isFinite(decrement)
+        );
+        return set(this, keyName, ((get(this, keyName) as number) || 0) - decrement);
+      }
+      case 'get':
+        // the cast is required: without it, TS resolves `get` to an overload whose
+        // parameter list isn't a rest/tuple, and the spread below fails to typecheck
+        // oxlint-disable-next-line typescript/no-unnecessary-type-assertion
+        return (get as (...args: unknown[]) => unknown)(this, ...args);
+      case 'getProperties':
+        return (getProperties as (...args: unknown[]) => unknown)(this, ...args);
+      case 'incrementProperty': {
+        const keyName = args[0] as string;
+        const increment = (args[1] as number) ?? 1;
+        assert(
+          'Must pass a numeric value to incrementProperty',
+          !isNaN(parseFloat(String(increment))) && isFinite(increment)
+        );
+        return set(this, keyName, (parseFloat(get(this, keyName) as string) || 0) + increment);
+      }
+      case 'notifyPropertyChange':
+        return (notifyPropertyChange as (...args: unknown[]) => unknown)(this, ...args);
+      case 'removeObserver':
+        return (removeObserver as (...args: unknown[]) => unknown)(this, ...args);
+      case 'set':
+        return (set as (...args: unknown[]) => unknown)(this, ...args);
+      case 'setProperties':
+        return (setProperties as (...args: unknown[]) => unknown)(this, ...args);
+      case 'toggleProperty': {
+        const key = args[0] as string;
+        return set(this, key, !get(this, key));
+      }
+    }
+  };
+});
+/**
+ * A schema extension that adds the classic `EmberObject` API (`get`, `set`,
+ * `getProperties`, `setProperties`, `incrementProperty`, `decrementProperty`,
+ * `toggleProperty`, `notifyPropertyChange`, `addObserver`, `removeObserver`)
+ * to reactive array resources.
+ */
+export const EmberObjectArrayExtension: CAUTION_MEGA_DANGER_ZONE_Extension = {
+  kind: 'array',
+  name: 'ember-object' as const,
+  features: EmberObjectFeatures,
+};
+/**
+ * A schema extension that adds the classic `EmberObject` API (`get`, `set`,
+ * `getProperties`, `setProperties`, `incrementProperty`, `decrementProperty`,
+ * `toggleProperty`, `notifyPropertyChange`, `addObserver`, `removeObserver`)
+ * to reactive object resources.
+ */
+export const EmberObjectExtension: CAUTION_MEGA_DANGER_ZONE_Extension = {
+  kind: 'object',
+  name: 'ember-object' as const,
+  features: EmberObjectFeatures,
+};
+
+const EmberArrayLikeFeatures = {
+  addObject<T>(this: T[], obj: T): T[] {
+    const index = this.indexOf(obj);
+    if (index === -1) {
+      this.push(obj);
+    }
+    return this;
+  },
+
+  addObjects<T>(this: T[], objs: T[]): T[] {
+    objs.forEach((obj: T) => {
+      const index = this.indexOf(obj);
+      if (index === -1) {
+        this.push(obj);
+      }
+    });
+    return this;
+  },
+
+  popObject<T>(this: T[]): T | undefined {
+    return this.pop();
+  },
+
+  pushObject<T>(this: T[], obj: T): T {
+    this.push(obj);
+    return obj;
+  },
+
+  pushObjects<T>(this: T[], objs: T[]): T[] {
+    this.push(...objs);
+    return this;
+  },
+
+  shiftObject<T>(this: T[]): NonNullable<T> {
+    return this.shift()!;
+  },
+
+  unshiftObject<T>(this: T[], obj: T): T {
+    this.unshift(obj);
+    return obj;
+  },
+
+  unshiftObjects<T>(this: T[], objs: T[]): T[] {
+    this.unshift(...objs);
+    return this;
+  },
+
+  objectAt<T>(this: T[], index: number): T {
+    //For negative index values go back from the end of the array
+    const arrIndex = Math.sign(index) === -1 ? this.length + index : index;
+
+    return this[arrIndex];
+  },
+
+  objectsAt<T>(this: T[], indices: number[]): T[] {
+    // @ts-expect-error adding MutableArray method
+    // oxlint-disable-next-line typescript/no-unsafe-return, typescript/no-unsafe-call
+    return indices.map((index) => this.objectAt(index)!);
+  },
+
+  removeAt<T>(this: T[], index: number): T[] {
+    this.splice(index, 1);
+    return this;
+  },
+
+  insertAt<T>(this: T[], index: number, obj: T): T[] {
+    this.splice(index, 0, obj);
+    return this;
+  },
+
+  removeObject<T>(this: T[], obj: T): T[] {
+    const index = this.indexOf(obj);
+    if (index !== -1) {
+      this.splice(index, 1);
+    }
+    return this;
+  },
+
+  removeObjects<T>(this: T[], objs: T[]): T[] {
+    objs.forEach((obj) => {
+      const index = this.indexOf(obj);
+      if (index !== -1) {
+        this.splice(index, 1);
+      }
+    });
+    return this;
+  },
+
+  toArray<T>(this: T[]): T[] {
+    return this.slice();
+  },
+
+  replace<T>(this: T[], idx: number, amt: number, objects?: T[]): void {
+    if (objects) {
+      this.splice(idx, amt, ...objects);
+    } else {
+      this.splice(idx, amt);
+    }
+  },
+
+  clear<T>(this: T[]): T[] {
+    this.splice(0, this.length);
+    return this;
+  },
+
+  setObjects<T>(this: T[], objects: T[]): T[] {
+    assert(`setObjects expects to receive an array as its argument`, Array.isArray(objects));
+    this.splice(0, this.length);
+    this.push(...objects);
+    return this;
+  },
+
+  reverseObjects<T>(this: T[]): T[] {
+    this.reverse();
+    return this;
+  },
+
+  compact<T>(this: T[]): (T & {})[] {
+    return this.filter((v) => v !== null && v !== undefined);
+  },
+
+  any<T>(this: T[], callback: Parameters<Array<T>['some']>[0], target?: unknown): boolean {
+    return this.some(callback, target);
+  },
+
+  isAny<T>(this: T[], prop: string, value: unknown): boolean {
+    const hasValue = arguments.length === 2;
+    return (this as unknown as Array<Record<string, unknown>>).some((v) =>
+      hasValue ? v[prop] === value : v[prop] === true
+    );
+  },
+
+  isEvery<T>(this: T[], prop: string, value: unknown): boolean {
+    const hasValue = arguments.length === 2;
+    return (this as unknown as Array<Record<string, unknown>>).every((v) =>
+      hasValue ? v[prop] === value : v[prop] === true
+    );
+  },
+
+  getEach<T>(this: T[], key: string): unknown[] {
+    return this.map((value) => get(value, key));
+  },
+
+  mapBy<T>(this: T[], key: string): unknown[] {
+    return this.map((value) => get(value, key));
+  },
+
+  findBy<T>(this: T[], key: string, value?: unknown): T | undefined {
+    if (arguments.length === 2) {
+      return this.find((val) => {
+        return get(val, key) === value;
+      });
+    } else {
+      return this.find((val) => Boolean(get(val, key)));
+    }
+  },
+
+  filterBy<T>(this: T[], key: string, value?: unknown): T[] {
+    if (arguments.length === 2) {
+      return this.filter((record) => {
+        return get(record, key) === value;
+      });
+    }
+
+    return this.filter((record) => {
+      return Boolean(get(record, key));
+    });
+  },
+
+  sortBy<T>(this: T[], ...sortKeys: string[]): T[] {
+    return this.slice().sort((a, b) => {
+      for (let i = 0; i < sortKeys.length; i++) {
+        const key = sortKeys[i];
+
+        const propA = get(a, key);
+
+        const propB = get(b, key);
+        // return 1 or -1 else continue to the next sortKey
+        const compareValue = compare(propA, propB);
+
+        if (compareValue) {
+          return compareValue;
+        }
+      }
+      return 0;
+    });
+  },
+
+  invoke<T>(this: T[], key: string, ...args: unknown[]): unknown[] {
+    return (this as unknown as Array<Record<string, unknown>>).map((value) =>
+      (value[key] as (...args: unknown[]) => unknown)(...args)
+    );
+  },
+
+  addArrayObserver<T>(this: T[]): void {},
+
+  removeArrayObserver<T>(this: T[]): void {},
+
+  arrayContentWillChange<T>(this: T[]): void {},
+
+  arrayContentDidChange<T>(this: T[]): void {},
+
+  reject<T>(this: T[], callback: Parameters<Array<T>['filter']>[0], target?: unknown): T[] {
+    assert('`reject` expects a function as first argument.', typeof callback === 'function');
+
+    return this.filter((...args) => {
+      return !callback.apply(target, args);
+    });
+  },
+
+  rejectBy<T>(this: T[], key: string, value?: unknown): T[] {
+    if (arguments.length === 2) {
+      return this.filter((record) => {
+        return get(record, key) !== value;
+      });
+    }
+
+    return this.filter((record) => {
+      return !get(record, key);
+    });
+  },
+
+  setEach<T>(this: T[], key: string, value: unknown): void {
+    (this as unknown as Array<Record<string, unknown>>).forEach((item) => set(item, key, value));
+  },
+
+  uniq<T>(this: T[]): T[] {
+    return Array.from(new Set(this));
+  },
+
+  uniqBy<T>(this: T[], key: string): T[] {
+    const seen = new Set();
+    const result: T[] = [];
+    this.forEach((item) => {
+      const value = get(item, key);
+      if (seen.has(value)) {
+        return;
+      }
+      seen.add(value);
+      result.push(item);
+    });
+    return result;
+  },
+
+  without<T>(this: T[], value: T): T[] {
+    const newArr = this.slice();
+    const index = this.indexOf(value);
+    if (index !== -1) {
+      newArr.splice(index, 1);
+    }
+
+    return newArr;
+  },
+
+  get firstObject(): unknown {
+    return (this as unknown as unknown[]).at(0);
+  },
+
+  get lastObject(): unknown {
+    return (this as unknown as unknown[]).at(-1);
+  },
+};
+
+/**
+ * A schema extension that adds Ember's classic `MutableArray`/`Enumerable`
+ * style methods (`pushObject`, `removeObject`, `mapBy`, `filterBy`,
+ * `sortBy`, `firstObject`, `lastObject`, etc.) to reactive array resources.
+ */
+export const EmberArrayLikeExtension: CAUTION_MEGA_DANGER_ZONE_Extension = {
+  kind: 'array',
+  name: 'ember-array-like' as const,
+  features: EmberArrayLikeFeatures,
+};
+
+/**
+ * Extracts the element type of an array type, or `never` if `T` is not an array.
+ */
+export type ArrayType<T> = T extends ReadonlyArray<infer U> ? U : never;
+/**
+ * Adds the classic `EmberObject` API (as registered by {@link EmberObjectExtension}/
+ * {@link EmberObjectArrayExtension}) to the type of a reactive resource.
+ */
+export type WithEmberObject<T> = T & Pick<T & EmberObject, ArrayType<typeof EmberObjectMethods>>;
+
+/**
+ * Adds Ember's classic array-like API (as registered by {@link EmberArrayLikeExtension})
+ * to the type of a reactive array resource.
+ */
+export type WithArrayLike<T> =
+  T extends Array<infer U>
+    ? U &
+        Omit<typeof EmberArrayLikeFeatures, 'firstObject' | 'lastObject'> & {
+          /**
+           * the first member of the array, or `undefined` if the array is empty
+           */
+          firstObject: T | undefined;
+          /**
+           * the last member of the array, or `undefined` if the array is empty
+           */
+          lastObject: T | undefined;
+        }
+    : T[] &
+        Omit<typeof EmberArrayLikeFeatures, 'firstObject' | 'lastObject'> & {
+          /**
+           * the first member of the array, or `undefined` if the array is empty
+           */
+          firstObject: T | undefined;
+          /**
+           * the last member of the array, or `undefined` if the array is empty
+           */
+          lastObject: T | undefined;
+        };

@@ -1,11 +1,11 @@
 {
-  "include": ["src/**/*", "../../@types/fastboot"],
+  "include": ["src/**/*"],
   "compilerOptions": {
     "target": "ESNext",
     "module": "ESNext",
     "moduleResolution": "bundler",
     "skipLibCheck": true,
-    "declarationDir": "unstable-preview-types",
+    "disableSourceOfProjectReferenceRedirect": false,
     "emitDeclarationOnly": true,
     "allowJs": false,
     "checkJs": false,
@@ -24,7 +24,6 @@
     "noEmitOnError": false,
     "strictNullChecks": true,
     "noErrorTruncation": true,
-    "preserveConstEnums": false,
     "experimentalDecorators": true,
     "composite": true,
     "incremental": true,
@@ -33,20 +32,17 @@
     "declarationMap": true,
     "inlineSourceMap": true,
     "inlineSources": true,
-    "baseUrl": ".",
-    "paths": {
-      "@warp-drive/core-types": ["../core-types/unstable-preview-types"],
-      "@warp-drive/core-types/*": ["../core-types/unstable-preview-types/*"],
-      "@warp-drive/build-config": ["../build-config/unstable-preview-types"],
-      "@warp-drive/build-config/*": ["../build-config/unstable-preview-types/*"]
-    }
+    "allowImportingTsExtensions": true,
+    "erasableSyntaxOnly": true,
+    "isolatedDeclarations": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+    "lib": ["ESNext", "DOM"],
+    "moduleDetection": "force"
   },
   "references": [
     {
-      "path": "../core-types"
-    },
-    {
-      "path": "../build-config"
+      "path": "../../warp-drive-packages/core"
     }
   ]
 }

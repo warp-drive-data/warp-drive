@@ -1,0 +1,198 @@
+// oxlint (see ../oxlint/scoped-dirs.txt and the root `.oxlintrc.json`) already runs as a
+// fast, additive pass over plain `.ts`/`.tsx`/`.js` sources and enforces the rules below.
+// oxlint's parser doesn't support template-tag syntax, so it never scans `.gts`/`.gjs` files
+// (see `.oxlintrc.json`'s `ignorePatterns`) — ESLint stays the sole enforcer of these rules
+// there, and this list must only be applied to plain `.ts`/`.tsx`/`.js` configs.
+//
+// This deliberately excludes every rule that requires type information (no-unsafe-*,
+// no-floating-promises, require-await, restrict-template-expressions, unbound-method, etc.):
+// those need `oxlint --type-aware`, a separate, additive pass `tools/internal-config/oxlint/run.sh`
+// also runs — see `TYPE_AWARE_OXLINT_RULES`/`disabledTypeAwareRules()` below for the ESLint-side
+// handoff for those.
+//
+// Keep this in sync with the enabled ("error"), non-type-aware rules in `.oxlintrc.json`'s
+// `rules` map.
+//
+// `no-redeclare`/`no-undef` are the one exception: oxlint only enables them for plain `.js`
+// (see `.oxlintrc.json`'s first `overrides` entry) since neither understands TypeScript
+// declaration merging or ambient `declare global` blocks and both false-positive on `.ts`/`.tsx`
+// as a result — `tsc` (via `check:types`) already catches the real bugs there with full
+// type/ambient-declaration awareness. Listing them here regardless is still correct: ESLint's own
+// typescript-eslint presets already turn both off for `.ts`/`.tsx` (no change there), and this
+// turns them off for `.js` where oxlint now owns them.
+export const OXLINT_OWNED_RULES = [
+  // eslint core
+  'constructor-super',
+  'eqeqeq',
+  'for-direction',
+  'getter-return',
+  'new-cap',
+  'no-array-constructor',
+  'no-async-promise-executor',
+  'no-caller',
+  'no-case-declarations',
+  'no-class-assign',
+  'no-compare-neg-zero',
+  'no-cond-assign',
+  'no-console',
+  'no-const-assign',
+  'no-constant-binary-expression',
+  'no-constant-condition',
+  'no-control-regex',
+  'no-debugger',
+  'no-delete-var',
+  'no-dupe-args',
+  'no-dupe-class-members',
+  'no-dupe-else-if',
+  'no-dupe-keys',
+  'no-duplicate-case',
+  'no-empty',
+  'no-empty-character-class',
+  'no-empty-pattern',
+  'no-empty-static-block',
+  'no-eq-null',
+  'no-eval',
+  'no-ex-assign',
+  'no-extra-boolean-cast',
+  'no-fallthrough',
+  'no-func-assign',
+  'no-global-assign',
+  'no-import-assign',
+  'no-invalid-regexp',
+  'no-irregular-whitespace',
+  'no-loss-of-precision',
+  'no-misleading-character-class',
+  'no-new-native-nonconstructor',
+  'no-nonoctal-decimal-escape',
+  'no-obj-calls',
+  'no-prototype-builtins',
+  'no-redeclare',
+  'no-regex-spaces',
+  'no-restricted-globals',
+  'no-restricted-imports',
+  'no-self-assign',
+  'no-setter-return',
+  'no-shadow-restricted-names',
+  'no-sparse-arrays',
+  'no-this-before-super',
+  'no-unassigned-vars',
+  'no-undef',
+  'no-unreachable',
+  'no-unsafe-finally',
+  'no-unsafe-negation',
+  'no-unsafe-optional-chaining',
+  'no-unused-labels',
+  'no-unused-private-class-members',
+  'no-useless-assignment',
+  'no-useless-backreference',
+  'no-useless-catch',
+  'no-useless-escape',
+  'no-var',
+  'no-with',
+  'prefer-const',
+  'prefer-spread',
+  'preserve-caught-error',
+  'require-yield',
+  'use-isnan',
+  'valid-typeof',
+
+  // import (eslint-plugin-import-x rule ids; oxlint's `import` plugin covers the same three)
+  'import/first',
+  'import/newline-after-import',
+  'import/no-duplicates',
+
+  // base rules this config replaces with a TS-aware `@typescript-eslint/*` version below —
+  // oxlint enforces the generic version across both `.ts` and `.js`
+  'no-loop-func',
+  'no-shadow',
+  'no-unused-expressions',
+  'no-unused-vars',
+  'no-useless-constructor',
+
+  // @typescript-eslint (oxlint's `typescript` plugin subset, plus the recommended/strict
+  // presets `typescript.js`'s `rules()` pulls in by default) — syntactic rules only; see the
+  // note above about excluding anything that needs type information.
+  '@typescript-eslint/adjacent-overload-signatures',
+  '@typescript-eslint/consistent-type-imports',
+  '@typescript-eslint/no-array-constructor',
+  '@typescript-eslint/no-duplicate-enum-values',
+  '@typescript-eslint/no-empty-object-type',
+  '@typescript-eslint/no-explicit-any',
+  '@typescript-eslint/no-extra-non-null-assertion',
+  '@typescript-eslint/no-extraneous-class',
+  '@typescript-eslint/no-import-type-side-effects',
+  '@typescript-eslint/no-inferrable-types',
+  '@typescript-eslint/no-loop-func',
+  '@typescript-eslint/no-misused-new',
+  '@typescript-eslint/no-namespace',
+  '@typescript-eslint/no-non-null-asserted-nullish-coalescing',
+  '@typescript-eslint/no-non-null-asserted-optional-chain',
+  '@typescript-eslint/no-require-imports',
+  '@typescript-eslint/no-shadow',
+  '@typescript-eslint/no-this-alias',
+  '@typescript-eslint/no-unnecessary-type-constraint',
+  '@typescript-eslint/no-unsafe-function-type',
+  '@typescript-eslint/no-unused-expressions',
+  '@typescript-eslint/no-unused-vars',
+  '@typescript-eslint/no-useless-constructor',
+  '@typescript-eslint/no-wrapper-object-types',
+  '@typescript-eslint/prefer-as-const',
+  '@typescript-eslint/prefer-literal-enum-member',
+  '@typescript-eslint/prefer-namespace-keyword',
+  '@typescript-eslint/prefer-ts-expect-error',
+  '@typescript-eslint/triple-slash-reference',
+];
+
+/** @return {import('eslint').Linter.RulesRecord} */
+export function disabledRules() {
+  return Object.fromEntries(OXLINT_OWNED_RULES.map((rule) => [rule, 'off']));
+}
+
+// The type-aware rules excluded from OXLINT_OWNED_RULES above. oxlint only checks these
+// with `--type-aware`, which `tools/internal-config/oxlint/run.sh` runs over every directory
+// listed in `tools/internal-config/oxlint/type-aware-scoped-dirs.txt` (currently identical to
+// `scoped-dirs.txt` in full). Disable the matching ESLint rules per-package, applied to every
+// package whose sources fall under that list — packages entirely outside oxlint's scope
+// (see `scoped-dirs.txt`'s own header comment, e.g. `packages/eslint-plugin-warp-drive`,
+// `packages/internal-exam`) get no oxlint coverage at all, type-aware or not, so ESLint must
+// keep enforcing these there.
+export const TYPE_AWARE_OXLINT_RULES = [
+  '@typescript-eslint/consistent-type-exports',
+  '@typescript-eslint/no-array-delete',
+  '@typescript-eslint/no-duplicate-type-constituents',
+  '@typescript-eslint/no-floating-promises',
+  '@typescript-eslint/no-for-in-array',
+  '@typescript-eslint/no-implied-eval',
+  '@typescript-eslint/no-meaningless-void-operator',
+  '@typescript-eslint/no-unnecessary-type-arguments',
+  '@typescript-eslint/no-unnecessary-type-assertion',
+  '@typescript-eslint/no-unsafe-argument',
+  '@typescript-eslint/no-unsafe-assignment',
+  '@typescript-eslint/no-unsafe-call',
+  '@typescript-eslint/no-unsafe-enum-comparison',
+  '@typescript-eslint/no-unsafe-member-access',
+  '@typescript-eslint/no-unsafe-return',
+  '@typescript-eslint/no-unsafe-unary-minus',
+  '@typescript-eslint/only-throw-error',
+  '@typescript-eslint/prefer-includes',
+  '@typescript-eslint/prefer-promise-reject-errors',
+  '@typescript-eslint/prefer-reduce-type-parameter',
+  '@typescript-eslint/prefer-return-this-type',
+  '@typescript-eslint/require-await',
+  '@typescript-eslint/restrict-plus-operands',
+  '@typescript-eslint/restrict-template-expressions',
+  '@typescript-eslint/unbound-method',
+];
+
+/** @return {import('eslint').Linter.RulesRecord} */
+export function disabledTypeAwareRules() {
+  return Object.fromEntries(TYPE_AWARE_OXLINT_RULES.map((rule) => [rule, 'off']));
+}
+
+// For a `typescript.browser()`/`typescript.node()` block whose only remaining purpose is
+// providing the TS parser for a rule oxlint can't cover (e.g. a custom eslint-plugin-warp-drive
+// rule) — every oxlint-owned rule, syntactic and type-aware alike, off in one call.
+/** @return {import('eslint').Linter.RulesRecord} */
+export function disabledAllRules() {
+  return Object.assign({}, disabledRules(), disabledTypeAwareRules());
+}

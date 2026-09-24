@@ -1,6 +1,13 @@
-export { RequestManager as default } from './-private/manager';
-export { createDeferred } from './-private/future';
-export type { Future, Handler, CacheHandler, NextFn } from './-private/types';
+/**
+ * @module
+ * @mergeModuleWith <project>
+ */
+
+// oxlint-disable-next-line no-unused-vars
+import type { RequestManager, Store } from '@warp-drive/core';
+
+export * from '@warp-drive/core/request';
+export { RequestManager as default } from '@warp-drive/core';
 export type {
   RequestContext,
   ImmutableRequestInfo,
@@ -9,6 +16,4 @@ export type {
   StructuredDocument,
   StructuredErrorDocument,
   StructuredDataDocument,
-} from '@warp-drive/core-types/request';
-export { setPromiseResult, getPromiseResult } from './-private/promise-cache';
-export type { Awaitable } from './-private/promise-cache';
+} from '@warp-drive/core/types/request';

@@ -6,9 +6,16 @@
 concat-stats-for
 dist
 dist-*
-tmp
+cjs-dist
+# transient release-packaging output synthesized from dist/ for alpha/beta
+# types-strategy packages (see tools/release/core/publish/steps/generate-tarballs.ts)
 unstable-preview-types
+preview-types
+tmp
 packages/*/addon
+.svelte-kit/
+docs-viewer/docs.warp-drive.io/.vitepress/cache
+
 
 # dependencies
 bower_components
@@ -19,6 +26,7 @@ scripts/asset-size-tracking/current-data.json
 .turbo/
 .env*
 .pnp*
+!.pnpmfile.cjs
 .prettier-cache
 .sass-cache
 .eslintcache
@@ -56,3 +64,30 @@ benchmarks/results/*.json
 !.vscode/
 .idea/
 *.iml
+
+# Ignore generated output for the docs website
+docs-viewer/docs.warp-drive.io/.vitepress/dist
+docs-viewer/docs.warp-drive.io/.vitepress/cache
+docs-viewer/docs.warp-drive.io/guides
+docs-viewer/docs.warp-drive.io/upgrading
+docs-viewer/docs.warp-drive.io/blog
+docs-viewer/docs.warp-drive.io/api
+docs-viewer/docs.warp-drive.io/skills
+docs-viewer/docs.warp-drive.io/rfcs
+docs-viewer/docs.warp-drive.io/public/logos
+
+vite.config.mjs.timestamp-*
+
+node-compile-cache
+.changelog-cache
+
+# Claude Code local files
+.claude/*.local.*
+
+# Backstop for Claude Code's built-in worktree mechanisms (--worktree, EnterWorktree, agent
+# isolation): a WorktreeCreate hook redirects these to a ../warp-drive-worktrees/ sibling
+# instead (see skills/contributors/start-in-a-fresh-worktree.md), but if that hook doesn't run --
+# a different repo, a misconfigured session -- Node resolves node_modules upward, so a worktree
+# nested here would pick up the outer checkout's dependencies. Ignored so that one arriving
+# anyway doesn't show up as a repo's worth of untracked files.
+.claude/worktrees/

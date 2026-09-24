@@ -9,6 +9,7 @@ import {
   Resource,
 } from '@warp-drive/schema-decorators';
 import { Luxon } from '@warp-drive/schema-transforms';
+
 import { Comment } from './comment';
 import { User } from './user';
 

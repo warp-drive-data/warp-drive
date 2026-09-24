@@ -1,5 +1,5 @@
 {
-  "include": ["src/**/*", "../../@types/**/*"],
+  "include": ["src/**/*"],
   "compilerOptions": {
     "lib": ["DOM", "ESNext"],
     "module": "esnext",
@@ -9,13 +9,12 @@
     "strict": true,
     "pretty": true,
     "exactOptionalPropertyTypes": false,
-    "downlevelIteration": true,
     "skipLibCheck": true,
+    "disableSourceOfProjectReferenceRedirect": false,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "experimentalDecorators": true,
     "noImplicitAny": false,
-    "allowJs": true,
     "emitDeclarationOnly": true,
     "noImplicitOverride": false,
     // Enable faster builds
@@ -23,61 +22,23 @@
     "composite": true,
     "incremental": true,
     "rootDir": "src",
-    "baseUrl": ".",
     "declaration": true,
     "declarationMap": true,
-    "declarationDir": "unstable-preview-types",
     "inlineSourceMap": true,
     "inlineSources": true,
-    "types": ["ember-source/types", "@types/jquery"],
-    "paths": {
-      "@ember-data/graph": ["../graph/unstable-preview-types"],
-      "@ember-data/graph/*": ["../graph/unstable-preview-types/*"],
-      "@ember-data/json-api": ["../json-api/unstable-preview-types"],
-      "@ember-data/json-api/*": ["../json-api/unstable-preview-types/*"],
-      "@ember-data/legacy-compat": ["../legacy-compat/unstable-preview-types"],
-      "@ember-data/legacy-compat/*": ["../legacy-compat/unstable-preview-types/*"],
-      "@ember-data/request": ["../request/unstable-preview-types"],
-      "@ember-data/request/*": ["../request/unstable-preview-types/*"],
-      "@ember-data/request-utils": ["../request-utils/unstable-preview-types"],
-      "@ember-data/request-utils/*": ["../request-utils/unstable-preview-types/*"],
-      "@ember-data/store": ["../store/unstable-preview-types"],
-      "@ember-data/store/*": ["../store/unstable-preview-types/*"],
-      "@ember-data/tracking": ["../tracking/unstable-preview-types"],
-      "@ember-data/tracking/*": ["../tracking/unstable-preview-types/*"],
-      "@warp-drive/core-types": ["../core-types/unstable-preview-types"],
-      "@warp-drive/core-types/*": ["../core-types/unstable-preview-types/*"],
-      "@warp-drive/build-config": ["../build-config/unstable-preview-types"],
-      "@warp-drive/build-config/*": ["../build-config/unstable-preview-types/*"]
-    }
+    "types": ["@glint/ember-tsc/types", "ember-source/types"],
+    "allowImportingTsExtensions": true,
+    "erasableSyntaxOnly": true,
+    "isolatedDeclarations": true,
+    "isolatedModules": true,
+    "checkJs": false
   },
   "references": [
     {
-      "path": "../graph"
+      "path": "../../warp-drive-packages/core"
     },
     {
-      "path": "../json-api"
-    },
-    {
-      "path": "../legacy-compat"
-    },
-    {
-      "path": "../request"
-    },
-    {
-      "path": "../request-utils"
-    },
-    {
-      "path": "../store"
-    },
-    {
-      "path": "../tracking"
-    },
-    {
-      "path": "../core-types"
-    },
-    {
-      "path": "../build-config"
+      "path": "../../warp-drive-packages/legacy"
     }
   ]
 }

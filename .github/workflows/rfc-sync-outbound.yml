@@ -1,0 +1,46 @@
+# Mirrors WarpDrive RFCs into emberjs/rfcs whenever one changes on `main`. See
+# scripts/rfc-sync/README.md for the full design and the one-time setup this requires -- until
+# that setup is done, this workflow no-ops (see push-outbound.mjs).
+name: RFC sync (outbound)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'rfcs/**.md'
+  workflow_dispatch:
+    inputs:
+      upstream_override:
+        description: >-
+          Owner/repo to sync against instead of emberjs/rfcs -- use a disposable test repo to
+          dry-run this bot before trusting it against the real upstream. Leave blank for a real
+          run against emberjs/rfcs.
+        required: false
+
+concurrency:
+  group: rfc-sync-outbound
+  cancel-in-progress: false
+
+# Only contents:write is needed -- pushing the bookkeeping branch this workflow creates. PR
+# creation (both against emberjs/rfcs and the follow-up into this repo) authenticates as the
+# bot via EMBERJS_RFCS_SYNC_TOKEN below, not the default GITHUB_TOKEN, so this never needs
+# pull-requests:write or the repo's "Allow GitHub Actions to create and approve pull requests"
+# setting -- see the comment on openWarpDriveFollowupPr in push-outbound.mjs.
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
+      - name: Run outbound sync
+        run: node scripts/rfc-sync/push-outbound.mjs
+        env:
+          EMBERJS_RFCS_SYNC_TOKEN: ${{ secrets.EMBERJS_RFCS_SYNC_TOKEN }}
+          EMBERJS_RFCS_SYNC_FORK: ${{ secrets.EMBERJS_RFCS_SYNC_FORK }}
+          EMBERJS_RFCS_SYNC_NAME: ${{ secrets.EMBERJS_RFCS_SYNC_NAME }}
+          EMBERJS_RFCS_SYNC_EMAIL: ${{ secrets.EMBERJS_RFCS_SYNC_EMAIL }}
+          EMBERJS_RFCS_SYNC_UPSTREAM: ${{ inputs.upstream_override }}

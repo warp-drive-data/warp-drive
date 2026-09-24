@@ -1,0 +1,26 @@
+{
+  "$schema": "./config-schema.json",
+  "version": "1.0.0",
+  "description": "Example configuration for warp-drive-codemod",
+  "dryRun": false,
+  "verbose": false,
+  "debug": false,
+  "mirror": false,
+  "emberDataImportSource": "@ember-data/model",
+  "importSubstitutes": [
+    {
+      "import": "my-app/core/base-model",
+      "trait": "base-model-trait",
+      "extension": "base-model-extension"
+    }
+  ],
+  "modelImportSource": "my-app/models",
+  "resourcesImport": "my-app/data/resources",
+  "traitsDir": "./generated/traits",
+  "resourcesDir": "./generated/schemas",
+  "typeMapping": {
+    "uuid": "string",
+    "currency": "number",
+    "json": "unknown"
+  }
+}

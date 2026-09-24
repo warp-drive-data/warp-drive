@@ -1,0 +1,66 @@
+{
+  "include": ["tests/**/*"],
+  "contentMappers": [{ "package": "ember-content-mapper", "extensions": [".gts", ".gjs"] }],
+  "compilerOptions": {
+    "lib": ["DOM", "ESNext"],
+    "module": "esnext",
+    "target": "esnext",
+    "moduleResolution": "bundler",
+    "moduleDetection": "force",
+    "strict": true,
+    "pretty": true,
+    "exactOptionalPropertyTypes": false,
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "allowJs": true,
+    "noImplicitOverride": false,
+    "noImplicitAny": false,
+    "experimentalDecorators": true,
+    "incremental": true,
+    "declaration": true,
+    "types": [
+      "@glint/ember-tsc/types",
+      "ember-source/types",
+      "vite/client",
+      "@warp-drive/schema-dsl/virtual",
+      "@ember-data/unpublished-test-infra/test-support/asserts/index"
+    ],
+    "allowImportingTsExtensions": true,
+    "composite": true,
+    "declarationDir": "unstable-preview-types",
+    "declarationMap": true,
+    "emitDeclarationOnly": true,
+    "erasableSyntaxOnly": true,
+    "inlineSourceMap": true,
+    "inlineSources": true,
+    "rootDir": ".",
+    "checkJs": false
+  },
+  "references": [
+    {
+      "path": "../../packages/holodeck"
+    },
+    {
+      "path": "../../packages/diagnostic"
+    },
+    {
+      "path": "../../warp-drive-packages/ember"
+    },
+    {
+      "path": "../../warp-drive-packages/core"
+    },
+    {
+      "path": "../../warp-drive-packages/json-api"
+    },
+    {
+      "path": "../../warp-drive-packages/utilities"
+    },
+    {
+      "path": "../../warp-drive-packages/schema-dsl"
+    },
+    {
+      "path": "../../packages/unpublished-test-infra"
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "name": "framework-vue",
+  "version": "5.10.0-alpha.11",
+  "description": "Provides tests for @warp-drive/vue",
+  "private": true,
+  "keywords": [],
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com:warp-drive-data/warp-drive.git",
+    "directory": "tests/framework-vue"
+  },
+  "license": "MIT",
+  "author": "",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "sync": "echo \"syncing\"",
+    "build:tests": "export IS_TESTING=true; export NODE_ENV=development; vite build -m development --outDir dist-test",
+    "build:production": "export IS_TESTING=true; export NODE_ENV=production; vite build --outDir dist-test",
+    "check:types": "node ./node_modules/typescript-7/bin/tsc --noEmit",
+    "start": "export IS_TESTING=true; export NODE_ENV=development; vite build -m development --watch --outDir dist-test",
+    "test": "export IS_TESTING=true; export NODE_ENV=development; node ./diagnostic.js",
+    "test:production": "export IS_TESTING=true; export NODE_ENV=production; node ./diagnostic.js",
+    "test:start": "node ./diagnostic.js --serve --no-launch"
+  },
+  "devDependencies": {
+    "@babel/core": "catalog:",
+    "@babel/plugin-transform-typescript": "catalog:",
+    "@babel/runtime": "catalog:",
+    "@embroider/macros": "catalog:",
+    "@vitejs/plugin-vue": "catalog:",
+    "@vue/babel-plugin-jsx": "catalog:",
+    "@warp-drive-internal/specs": "workspace:*",
+    "@warp-drive/core": "workspace:*",
+    "@warp-drive/diagnostic": "workspace:*",
+    "@warp-drive/holodeck": "workspace:*",
+    "@warp-drive/internal-config": "workspace:*",
+    "@warp-drive/json-api": "workspace:*",
+    "@warp-drive/utilities": "workspace:*",
+    "@warp-drive/vue": "workspace:*",
+    "babel-plugin-debug-macros": "catalog:",
+    "decorator-transforms": "catalog:",
+    "typescript-7": "catalog:",
+    "vite": "catalog:",
+    "vue": "catalog:",
+    "vue-tsc": "catalog:"
+  }
+}

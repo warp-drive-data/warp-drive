@@ -1,5 +1,8 @@
-import { getIsRecording, mock } from '.';
+import { mock } from '.';
 
+/**
+ * @public
+ */
 export interface Scaffold {
   status: number;
   statusText?: string;
@@ -10,7 +13,28 @@ export interface Scaffold {
   response: Record<string, unknown>;
 }
 
+/**
+ * @public
+ */
 export type ScaffoldGenerator = () => Scaffold;
+
+/**
+ * A mock whose method and url are known up front, with the rest of the
+ * scaffold built only when holodeck is recording. This is what the mock
+ * helpers pass, so that in replay mode a test's response generators never
+ * run.
+ *
+ * @public
+ */
+export interface LazyScaffold {
+  method: string;
+  url: string;
+  scaffold: () => Scaffold;
+}
+
+/**
+ * @public
+ */
 export type ResponseGenerator = () => Record<string, unknown>;
 
 /**
@@ -23,11 +47,13 @@ export type ResponseGenerator = () => Record<string, unknown>;
  * - status: the status code to return (default: 200)
  * - headers: the headers to return (default: {})
  * - body: the body to match against for the request (default: null)
- * - RECORD: whether to record the request (default: false)
+ * - RECORD: record this request even when the suite is replaying, such as under CI (default: false).
+ *   A local override for re-recording one request. Do not commit it; a committed RECORD means
+ *   that request is never replayed against its fixture.
  *
  * @param url the url to mock, relative to the mock server host (e.g. `users/1`)
  * @param response a function which generates the response to return
- * @param options status, headers for the response, body to match against for the request, and whether to record the request
+ * @param options status, headers for the response, body to match against for the request, and whether to force recording
  * @return
  */
 export function GET(
@@ -38,20 +64,261 @@ export function GET(
 ): Promise<void> {
   return mock(
     owner,
-    () => ({
-      status: options?.status ?? 200,
-      statusText: options?.statusText ?? 'OK',
-      headers: options?.headers ?? {},
-      body: options?.body ?? null,
+    {
       method: 'GET',
       url,
-      response: response(),
-    }),
-    getIsRecording() || (options?.RECORD ?? false)
+      scaffold: () => ({
+        status: options?.status ?? 200,
+        statusText: options?.statusText ?? 'OK',
+        headers: options?.headers ?? {},
+        body: options?.body ?? null,
+        method: 'GET',
+        url,
+        response: response(),
+      }),
+    },
+    options?.RECORD
   );
 }
-export function POST() {}
-export function PUT() {}
-export function PATCH() {}
-export function DELETE() {}
-export function QUERY() {}
+
+const STATUS_TEXT_FOR = new Map([
+  [200, 'OK'],
+  [201, 'Created'],
+  [202, 'Accepted'],
+  [203, 'Non-Authoritative Information'],
+  [204, 'No Content'],
+  [205, 'Reset Content'],
+  [206, 'Partial Content'],
+  [207, 'Multi-Status'],
+  [208, 'Already Reported'],
+  [226, 'IM Used'],
+  [300, 'Multiple Choices'],
+  [301, 'Moved Permanently'],
+  [302, 'Found'],
+  [303, 'See Other'],
+  [304, 'Not Modified'],
+  [307, 'Temporary Redirect'],
+  [308, 'Permanent Redirect'],
+  [400, 'Bad Request'],
+  [401, 'Unauthorized'],
+  [402, 'Payment Required'],
+  [403, 'Forbidden'],
+  [404, 'Not Found'],
+  [405, 'Method Not Allowed'],
+  [406, 'Not Acceptable'],
+  [407, 'Proxy Authentication Required'],
+  [408, 'Request Timeout'],
+  [409, 'Conflict'],
+  [410, 'Gone'],
+  [411, 'Length Required'],
+  [412, 'Precondition Failed'],
+  [413, 'Payload Too Large'],
+  [414, 'URI Too Long'],
+  [415, 'Unsupported Media Type'],
+  [416, 'Range Not Satisfiable'],
+  [417, 'Expectation Failed'],
+  [419, 'Page Expired'],
+  [420, 'Enhance Your Calm'],
+  [421, 'Misdirected Request'],
+  [422, 'Unprocessable Entity'],
+  [423, 'Locked'],
+  [424, 'Failed Dependency'],
+  [425, 'Too Early'],
+  [426, 'Upgrade Required'],
+  [428, 'Precondition Required'],
+  [429, 'Too Many Requests'],
+  [430, 'Request Header Fields Too Large'],
+  [431, 'Request Header Fields Too Large'],
+  [450, 'Blocked By Windows Parental Controls'],
+  [451, 'Unavailable For Legal Reasons'],
+  [500, 'Internal Server Error'],
+  [501, 'Not Implemented'],
+  [502, 'Bad Gateway'],
+  [503, 'Service Unavailable'],
+  [504, 'Gateway Timeout'],
+  [505, 'HTTP Version Not Supported'],
+  [506, 'Variant Also Negotiates'],
+  [507, 'Insufficient Storage'],
+  [508, 'Loop Detected'],
+  [509, 'Bandwidth Limit Exceeded'],
+  [510, 'Not Extended'],
+  [511, 'Network Authentication Required'],
+]);
+
+/**
+ * Mock a POST request
+ */
+export function POST(
+  owner: object,
+  url: string,
+  response: ResponseGenerator,
+  options?: Partial<Omit<Scaffold, 'response' | 'url' | 'method'>> & { RECORD?: boolean }
+): Promise<void> {
+  return mock(
+    owner,
+    {
+      method: 'POST',
+      url,
+      scaffold: () => {
+        const body = response();
+        const status = options?.status ?? (body ? 201 : 204);
+
+        return {
+          status: status,
+          statusText: options?.statusText ?? STATUS_TEXT_FOR.get(status) ?? '',
+          headers: options?.headers ?? {},
+          body: options?.body ?? null,
+          method: 'POST',
+          url,
+          response: body,
+        };
+      },
+    },
+    options?.RECORD
+  );
+}
+
+/**
+ * mock a PUT request
+ */
+export function PUT(
+  owner: object,
+  url: string,
+  response: ResponseGenerator,
+  options?: Partial<Omit<Scaffold, 'response' | 'url' | 'method'>> & { RECORD?: boolean }
+): Promise<void> {
+  return mock(
+    owner,
+    {
+      method: 'PUT',
+      url,
+      scaffold: () => {
+        const body = response();
+        const status = options?.status ?? (body ? 200 : 204);
+
+        return {
+          status: status,
+          statusText: options?.statusText ?? STATUS_TEXT_FOR.get(status) ?? '',
+          headers: options?.headers ?? {},
+          body: options?.body ?? null,
+          method: 'PUT',
+          url,
+          response: body,
+        };
+      },
+    },
+    options?.RECORD
+  );
+}
+/**
+ * mock a PATCH request
+ *
+ */
+export function PATCH(
+  owner: object,
+  url: string,
+  response: ResponseGenerator,
+  options?: Partial<Omit<Scaffold, 'response' | 'url' | 'method'>> & { RECORD?: boolean }
+): Promise<void> {
+  return mock(
+    owner,
+    {
+      method: 'PATCH',
+      url,
+      scaffold: () => {
+        const body = response();
+        const status = options?.status ?? (body ? 200 : 204);
+
+        return {
+          status: status,
+          statusText: options?.statusText ?? STATUS_TEXT_FOR.get(status) ?? '',
+          headers: options?.headers ?? {},
+          body: options?.body ?? null,
+          method: 'PATCH',
+          url,
+          response: body,
+        };
+      },
+    },
+    options?.RECORD
+  );
+}
+/**
+ * mock a DELETE request
+ */
+export function DELETE(
+  owner: object,
+  url: string,
+  response: ResponseGenerator,
+  options?: Partial<Omit<Scaffold, 'response' | 'url' | 'method'>> & { RECORD?: boolean }
+): Promise<void> {
+  return mock(
+    owner,
+    {
+      method: 'DELETE',
+      url,
+      scaffold: () => {
+        const body = response();
+        const status = options?.status ?? (body ? 200 : 204);
+
+        return {
+          status: status,
+          statusText: options?.statusText ?? STATUS_TEXT_FOR.get(status) ?? '',
+          headers: options?.headers ?? {},
+          body: options?.body ?? null,
+          method: 'DELETE',
+          url,
+          response: body,
+        };
+      },
+    },
+    options?.RECORD
+  );
+}
+
+/**
+ * Sets up Mocking for a HEAD request on the mock server
+ * for the supplied url.
+ *
+ * The response body is generated by the supplied response function.
+ *
+ * Available options:
+ * - status: the status code to return (default: 200)
+ * - headers: the headers to return (default: {})
+ * - body: the body to match against for the request (default: null)
+ * - RECORD: record this request even when the suite is replaying, such as under CI (default: false).
+ *   A local override for re-recording one request. Do not commit it; a committed RECORD means
+ *   that request is never replayed against its fixture.
+ *
+ * @param url the url to mock, relative to the mock server host (e.g. `users/1`)
+ * @param response a function which generates the response to return
+ * @param options status, headers for the response, body to match against for the request, and whether to force recording
+ * @return
+ */
+export function HEAD(
+  owner: object,
+  url: string,
+  response: ResponseGenerator,
+  // TODO: should we omit the `body` as well?
+  // It does _seem_ possible for HEAD requests to have a body, but it should be ignored.
+  // From MDN: Warning: If a response to a HEAD request has a body, the response body must be ignored.
+  options?: Partial<Omit<Scaffold, 'response' | 'url' | 'method'>> & { RECORD?: boolean }
+): Promise<void> {
+  return mock(
+    owner,
+    {
+      method: 'HEAD',
+      url,
+      scaffold: () => ({
+        status: options?.status ?? 200,
+        statusText: options?.statusText ?? 'OK',
+        headers: options?.headers ?? {},
+        body: options?.body ?? null,
+        method: 'HEAD',
+        url,
+        response: response(),
+      }),
+    },
+    options?.RECORD
+  );
+}

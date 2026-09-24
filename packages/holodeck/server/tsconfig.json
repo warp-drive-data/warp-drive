@@ -1,0 +1,13 @@
+{
+  "include": ["."],
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "types": ["node"],
+    "strict": false,
+    "allowJs": true,
+    "checkJs": true,
+    "noEmit": true
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "include": ["src/**/*"],
+  "compilerOptions": {
+    "module": "esnext",
+    "target": "esnext",
+    "moduleResolution": "bundler",
+    "moduleDetection": "force",
+    "strict": true,
+    "pretty": true,
+    "noImplicitAny": true,
+    "exactOptionalPropertyTypes": false,
+    "skipLibCheck": true,
+    "disableSourceOfProjectReferenceRedirect": false,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "allowJs": false,
+    "emitDeclarationOnly": true,
+    "noImplicitOverride": false,
+    // Enable faster builds
+    // but causes us to not rebuild properly
+    "composite": true,
+    "incremental": true,
+    "rootDir": "src",
+    "declaration": true,
+    "declarationMap": true,
+    "inlineSourceMap": true,
+    "inlineSources": true,
+    "types": [],
+    "allowImportingTsExtensions": true,
+    "erasableSyntaxOnly": true,
+    "isolatedDeclarations": true,
+    "isolatedModules": true,
+    "experimentalDecorators": true,
+    "lib": ["ESNext", "DOM"],
+    "checkJs": false
+  },
+  "references": [
+    {
+      "path": "../core"
+    }
+  ]
+}

@@ -14,13 +14,13 @@ import type {
   YieldExpression,
 } from 'jscodeshift';
 
-import { isRecord } from '../../utils/types.js';
-import { TransformError } from '../utils/error.js';
-import type { ParsedImportInfo } from '../utils/imports.js';
-import type { LegacyStoreMethod } from './config.js';
-import { log } from './log.js';
-import type { Options } from './options.js';
-import { TransformResult } from './result.js';
+import { isRecord } from '../../utils/types.ts';
+import { TransformError } from '../utils/error.ts';
+import type { ParsedImportInfo } from '../utils/imports.ts';
+import type { LegacyStoreMethod } from './config.ts';
+import { log } from './log.ts';
+import type { Options } from './options.ts';
+import { TransformResult } from './result.ts';
 
 interface LegacyStoreMethodCallExpression extends CallExpression {
   callee: MemberExpression & {

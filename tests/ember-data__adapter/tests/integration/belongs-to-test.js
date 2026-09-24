@@ -1,11 +1,11 @@
 import EmberObject from '@ember/object';
 
-import Store from 'ember-data__adapter/services/store';
-
 import Model, { attr, belongsTo, hasMany } from '@ember-data/model';
-import testInDebug from '@ember-data/unpublished-test-infra/test-support/test-in-debug';
 import { module, test } from '@warp-drive/diagnostic';
 import { setupTest } from '@warp-drive/diagnostic/ember';
+
+import testInDebug from '../-utils/test-in-debug';
+import Store from '../../services/store';
 
 class MinimalSerializer extends EmberObject {
   normalizeResponse(_, __, data) {
@@ -74,7 +74,7 @@ class Post extends Model {
   @attr
   text;
 
-  @hasMany('comments', { async: true, inverse: 'post' })
+  @hasMany('comment', { async: true, inverse: 'post' })
   comments;
 }
 
@@ -140,7 +140,7 @@ module('integration/belongs-to - Belongs To Tests', function (hooks) {
     const { owner } = this;
     const store = owner.lookup('service:store');
 
-    // This code is a workaround for issue https://github.com/emberjs/data/issues/6758
+    // This code is a workaround for issue https://github.com/warp-drive-data/warp-drive/issues/6758
     // expectedResult is mutated during store.findRecord
     // to add the lid
     const expectedResultCopy = structuredClone(expectedResult);
@@ -257,7 +257,7 @@ module('integration/belongs-to - Belongs To Tests', function (hooks) {
     const { owner } = this;
     const store = owner.lookup('service:store');
 
-    // This code is a workaround for issue https://github.com/emberjs/data/issues/6758
+    // This code is a workaround for issue https://github.com/warp-drive-data/warp-drive/issues/6758
     // expectedResult is mutated during store.findRecord
     // to add the lid
     const expectedResultCopy = structuredClone(expectedResult);
@@ -336,7 +336,7 @@ module('integration/belongs-to - Belongs To Tests', function (hooks) {
     const { owner } = this;
     const store = owner.lookup('service:store');
 
-    // This code is a workaround for issue https://github.com/emberjs/data/issues/6758
+    // This code is a workaround for issue https://github.com/warp-drive-data/warp-drive/issues/6758
     // expectedResult is mutated during store.findRecord
     // to add the lid
     const expectedResultCopy = structuredClone(expectedResult);
@@ -414,7 +414,7 @@ module('integration/belongs-to - Belongs To Tests', function (hooks) {
     const { owner } = this;
     const store = owner.lookup('service:store');
 
-    // This code is a workaround for issue https://github.com/emberjs/data/issues/6758
+    // This code is a workaround for issue https://github.com/warp-drive-data/warp-drive/issues/6758
     // expectedResult is mutated during store.findRecord
     // to add the lid
     const expectedResultCopy = structuredClone(expectedResult);
@@ -495,7 +495,7 @@ module('integration/belongs-to - Belongs To Tests', function (hooks) {
     const { owner } = this;
     const store = owner.lookup('service:store');
 
-    // This code is a workaround for issue https://github.com/emberjs/data/issues/6758
+    // This code is a workaround for issue https://github.com/warp-drive-data/warp-drive/issues/6758
     // expectedResult is mutated during store.findRecord
     // to add the lid
     const expectedResultCopy = structuredClone(expectedResult);

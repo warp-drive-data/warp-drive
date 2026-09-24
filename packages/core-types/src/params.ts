@@ -1,13 +1,9 @@
-import type { Includes, TypedRecordInstance } from './record';
-
-export type SerializablePrimitive = string | number | boolean | null;
-export type Serializable = SerializablePrimitive | SerializablePrimitive[];
-export type QueryParamsSerializationOptions = {
-  arrayFormat?: 'bracket' | 'indices' | 'repeat' | 'comma';
-};
-export type QueryParamsSource<T = unknown> =
-  | ({ include?: T extends TypedRecordInstance ? Includes<T>[] : string | string[] } & Record<
-      Exclude<string, 'include'>,
-      Serializable
-    >)
-  | URLSearchParams;
+/**
+ * Legacy alias of {@link @warp-drive/core!types/params | @warp-drive/core/types/params}.
+ * This entry re-exports that module unchanged so existing
+ * `@warp-drive/core-types/params` imports keep working; new code should import
+ * from `@warp-drive/core/types/params` directly.
+ *
+ * @module
+ */
+export type * from '@warp-drive/core/types/params';

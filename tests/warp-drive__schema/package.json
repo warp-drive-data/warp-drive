@@ -1,27 +1,16 @@
 {
   "name": "warp-drive__schema",
-  "version": "5.4.0-alpha.91",
+  "version": "5.10.0-alpha.11",
   "private": true,
   "description": "Tests for the @warp-drive/schema package",
   "keywords": [],
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com:emberjs/data.git",
+    "url": "git+ssh://git@github.com:warp-drive-data/warp-drive.git",
     "directory": "tests/warp-drive__schema"
   },
   "license": "MIT",
   "author": "",
-  "devDependencies": {
-    "pnpm-sync-dependencies-meta-injected": "0.0.14"
-  },
-  "scripts": {
-    "sync-hardlinks": "bun run sync-dependencies-meta-injected"
-  },
-  "engines": {
-    "node": ">= 18.20.3"
-  },
-  "volta": {
-    "extends": "../../package.json"
-  },
-  "packageManager": "pnpm@8.15.8"
+  "devDependencies": {},
+  "scripts": {}
 }

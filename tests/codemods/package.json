@@ -1,12 +1,12 @@
 {
   "name": "codemods-tests",
   "private": true,
-  "version": "5.4.0-alpha.91",
+  "version": "5.10.0-alpha.11",
   "description": "Codemods for EmberData paradigms",
   "keywords": [],
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com:emberjs/data.git",
+    "url": "git+ssh://git@github.com:warp-drive-data/warp-drive.git",
     "directory": "packages/codemods"
   },
   "directories": {
@@ -14,10 +14,12 @@
   },
   "type": "module",
   "scripts": {
+    "sync": "echo \"syncing\"",
     "check:types": "",
-    "lint": "eslint . --quiet --cache --cache-strategy=content --report-unused-disable-directives",
-    "test": "tsx --test tests/index.spec.ts",
-    "fixme": "tsx --test tests/index.spec.ts",
+    "test": "pnpm test:fixtures && pnpm test:unit",
+    "test:fixtures": "node --test tests/index.spec.ts",
+    "test:unit": "vitest run tests/",
+    "fixme": "node --test tests/index.spec.ts",
     "_syncPnpm": "bun run sync-dependencies-meta-injected"
   },
   "files": [
@@ -27,30 +29,18 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "jscodeshift": "^0.15.2",
-    "prettier": "^3.3.2",
-    "typescript": "^5.4.5"
+    "jscodeshift": "catalog:",
+    "prettier": "catalog:",
+    "typescript": "catalog:"
   },
   "devDependencies": {
-    "@ember-data/codemods": "workspace:5.4.0-alpha.91",
-    "@types/bun": "^1.1.4",
-    "@types/jscodeshift": "0.11.11",
-    "@warp-drive/internal-config": "workspace:5.4.0-alpha.91",
-    "eslint": "^8.57.0",
-    "pnpm-sync-dependencies-meta-injected": "0.0.14",
-    "qunit": "^2.20.1",
-    "tsx": "^4.10.4"
-  },
-  "engines": {
-    "node": ">= 18.20.3"
-  },
-  "volta": {
-    "extends": "../../package.json"
-  },
-  "packageManager": "pnpm@8.15.8",
-  "dependenciesMeta": {
-    "@ember-data/codemods": {
-      "injected": true
-    }
+    "@ember-data/codemods": "workspace:*",
+    "@types/bun": "catalog:",
+    "@types/jscodeshift": "catalog:",
+    "@warp-drive/internal-config": "workspace:*",
+    "eslint": "catalog:",
+    "qunit": "catalog:",
+    "vite": "catalog:",
+    "vitest": "catalog:"
   }
 }

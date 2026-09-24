@@ -5,8 +5,8 @@
     "module": "ESNext",
     "moduleResolution": "bundler",
     "skipLibCheck": true,
+    "disableSourceOfProjectReferenceRedirect": false,
     "emitDeclarationOnly": true,
-    "allowJs": false,
     "checkJs": false,
     "alwaysStrict": true,
     "strict": true,
@@ -23,7 +23,6 @@
     "noEmitOnError": false,
     "strictNullChecks": true,
     "noErrorTruncation": true,
-    "preserveConstEnums": false,
     "experimentalDecorators": true,
     "composite": true,
     "incremental": true,
@@ -32,23 +31,24 @@
     // maps in your `ember-cli-babel` config and/or `babel.config.js`.
     "declaration": true,
     "declarationMap": true,
-    "declarationDir": "unstable-preview-types",
     "inlineSourceMap": true,
     "inlineSources": true,
-    "baseUrl": ".",
-    "paths": {
-      "@ember-data/request": ["../request/unstable-preview-types"],
-      "@ember-data/request/*": ["../request/unstable-preview-types/*"],
-      "@warp-drive/core-types": ["../core-types/unstable-preview-types"],
-      "@warp-drive/core-types/*": ["../core-types/unstable-preview-types/*"]
-    }
+    "allowImportingTsExtensions": true,
+    "erasableSyntaxOnly": true,
+    "isolatedDeclarations": true,
+    "isolatedModules": true,
+    "lib": ["ESNext", "DOM"],
+    "moduleDetection": "force"
   },
   "references": [
     {
-      "path": "../request"
+      "path": "../../warp-drive-packages/core"
     },
     {
-      "path": "../core-types"
+      "path": "../../warp-drive-packages/legacy"
+    },
+    {
+      "path": "../../warp-drive-packages/utilities"
     }
   ]
 }

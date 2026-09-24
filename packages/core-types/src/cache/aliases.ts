@@ -1,12 +1,9 @@
-// The ResourceBlob is an opaque type that must
-// satisfy two constraints.
-// (1) it should be possible for the IdentifierCache
-// to be able to generate a RecordIdentifier for it
-// whether by default or due to configuration.
-// (2) it should be in a format expected by the Cache.
-// This format is Cache declared.
-//
-// this Opaqueness allows arbitrary storage of any
-// serializable / transferable state including such things
-// as Buffers and Strings.
-export type ResourceBlob = unknown;
+/**
+ * Legacy alias of {@link @warp-drive/core!types/cache/aliases | @warp-drive/core/types/cache/aliases}.
+ * This entry re-exports that module unchanged so existing
+ * `@warp-drive/core-types/cache/aliases` imports keep working; new code should import
+ * from `@warp-drive/core/types/cache/aliases` directly.
+ *
+ * @module
+ */
+export type * from '@warp-drive/core/types/cache/aliases';

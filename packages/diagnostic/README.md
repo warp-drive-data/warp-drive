@@ -1,26 +1,33 @@
 <p align="center">
   <img
     class="project-logo"
-    src="./NCC-1701-a-blue.svg#gh-light-mode-only"
+    src="./logos/logo-yellow-slab.svg"
     alt="WarpDrive"
-    width="120px"
-    title="WarpDrive" />
-  <img
-    class="project-logo"
-    src="./NCC-1701-a.svg#gh-dark-mode-only"
-    alt="WarpDrive"
-    width="120px"
-    title="WarpDrive" />
+    width="180px"
+    title="WarpDrive"
+    />
 </p>
+
+![NPM Stable Version](https://img.shields.io/npm/v/ember-data/latest?label=version&style=flat&color=fdb155)
+![NPM Downloads](https://img.shields.io/npm/dm/ember-data.svg?style=flat&color=fdb155)
+![License](https://img.shields.io/github/license/warp-drive-data/warp-drive.svg?style=flat&color=fdb155)
+[![EmberJS Discord Community Server](https://img.shields.io/badge/EmberJS-grey?logo=discord&logoColor=fdb155)](https://discord.gg/zT3asNS)
+[![WarpDrive Discord Server](https://img.shields.io/badge/WarpDrive-grey?logo=discord&logoColor=fdb155)](https://discord.gg/PHBbnWJx5S)
+
+<p align="center">
+  <br>
+  <a href="https://warp-drive.io">WarpDrive</a> is the lightweight data library for web apps &mdash;
+  <br>
+  universal, typed, reactive, and ready to scale.
+  <br/><br/>
+</p>
+
+---
+
+# @warp-drive/diagnostic
 
 <h3 align="center">⚡️ A Lightweight Modern Test Runner</h3>
 <p align="center">QUnit Compatible (mostly! 🙈)</p>
-
-## Installation
-
-```cli
-pnpm install @warp-drive/diagnostic
-```
 
 **Tagged Releases**
 
@@ -264,7 +271,7 @@ If our build assets are located in `<dir>/dist-test/*` and the entry point for t
 
 *\<dir>/diagnostic.js*
 ```ts
-import launch from '@warp-drive/diagnostic/server/default-setup.js';
+import { launch } from '@warp-drive/diagnostic/server';
 
 await launch();
 ```
@@ -292,8 +299,8 @@ For github-actions, [use the official bun action](https://github.com/oven-sh/set
 
 Finally, give your tests a run to make sure they still work as expected.
 
-```cli
-bun ./diagnostic.js
+```sh
+node ./diagnostic.js
 ```
 
 And update any necessary scripts in `package.json`
@@ -301,9 +308,9 @@ And update any necessary scripts in `package.json`
 ```diff
 {
   "scripts": {
-     "build" "ember build",
+     "build" "vite build",
 -    "test": "ember test"
-+    "test": "bun run build && bun ./diagnostic.js"
++    "test": "bun run build && node ./diagnostic.js"
   }
 }
 ```
@@ -452,8 +459,7 @@ module('My Module', function(hooks) {
 1. Add the following peer-deps to your app:
 
 ```diff
-+    "@ember/test-helpers": ">= 3.3.0",
-+    "ember-cli-test-loader": ">= 3.1.0",
++    "@ember/test-helpers": "^3.3.0 || ^4.0.4 || ^5.1.0",
 +    "@embroider/addon-shim": ">= 1.8.6"
 ```
 
@@ -487,7 +493,7 @@ module('My Module', function (hooks) {
     img.project-logo {
        padding: 0 5em 1em 5em;
        width: 100px;
-       border-bottom: 2px solid #0969da;
+       border-bottom: 2px solid #bbb;
        margin: 0 auto;
        display: block;
      }
@@ -503,7 +509,7 @@ module('My Module', function (hooks) {
       display: inline-block;
       padding: .2rem 0;
       color: #000;
-      border-bottom: 3px solid #0969da;
+      border-bottom: 3px solid #bbb;
     }
 
     details > details {

@@ -1,5 +1,6 @@
-import chalk from 'chalk';
+import { styleText } from 'node:util';
 import path from 'path';
+
 import { write } from '../utils/utils';
 
 export type SchemaConfig = Awaited<ReturnType<typeof getSchemaConfig>>;
@@ -9,11 +10,11 @@ export async function getSchemaConfig() {
   const [schemaPath] = args;
 
   write(
-    `\n\t ${chalk.yellow('$')} ${chalk.bold(chalk.greenBright('@warp-drive/') + chalk.magentaBright('schema'))} ${chalk.cyan(chalk.bold('parse'))} ${schemaPath ?? chalk.red('<missing path>')}`
+    `\n\t ${styleText('yellow', '$')} ${styleText('bold', styleText('greenBright', '@warp-drive/') + styleText('magentaBright', 'schema'))} ${styleText('cyan', styleText('bold', 'parse'))} ${schemaPath ?? styleText('red', '<missing path>')}`
   );
 
   if (!schemaPath) {
-    write(`\n\t${chalk.bold('💥 Error')} Please supply a path to the schema file to parse!\n`);
+    write(`\n\t${styleText('bold', '💥 Error')} Please supply a path to the schema file to parse!\n`);
     process.exit(1);
   }
 
@@ -21,7 +22,7 @@ export async function getSchemaConfig() {
   const schemaFileExists = await schemaFile.exists();
 
   if (!schemaFileExists) {
-    write(`\n\t${chalk.bold('💥 Error')} ${chalk.white(schemaPath)} does not exist!`);
+    write(`\n\t${styleText('bold', '💥 Error')} ${styleText('white', schemaPath)} does not exist!`);
     process.exit(1);
   }
 

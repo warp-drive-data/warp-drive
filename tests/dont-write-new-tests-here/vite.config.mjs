@@ -1,0 +1,21 @@
+import { extensions, ember, hbs } from '@embroider/vite';
+import { defineConfig } from 'vite';
+
+import { maybeBabel } from '@warp-drive/internal-config/vite/babel.js';
+
+export default defineConfig({
+  build: {
+    outDir: 'dist-test',
+    sourcemap: false,
+    // @embroider/vite's `ember()` plugin defaults `build.minify` to `'terser'`
+    // for production builds. main-test-app is never published/shipped, so skip
+    // minification entirely rather than paying for it.
+    minify: false,
+  },
+  plugins: [
+    hbs(),
+    ember(),
+    // extra plugins here
+    maybeBabel({ extensions, babelHelpers: 'runtime' }),
+  ],
+});

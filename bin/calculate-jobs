@@ -1,0 +1,19 @@
+#!/bin/bash
+# Picks how many concurrent jobs turbo should run for a CPU-bound task
+# (build:pkg, lint, check:types).
+#
+# CI sets $JOBS explicitly (see the "Configure Parallel Builds" step in
+# .github/actions/setup/action.yml, which defaults to matching the runner's
+# core count) so it never over-subscribes the runner. Locally, there's no
+# reason to inherit that same conservative number -- a contributor's machine
+# usually has far more cores than CI's runners, so fall back to the actual
+# local core count instead of leaving that parallelism unused.
+if [ -z "$JOBS" ]; then
+	if command -v nproc >/dev/null 2>&1; then
+		JOBS=$(nproc)
+	else
+		JOBS=$(sysctl -n hw.ncpu)
+	fi
+fi
+
+echo "$JOBS"

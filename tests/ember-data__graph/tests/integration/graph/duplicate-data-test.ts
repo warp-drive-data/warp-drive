@@ -1,10 +1,9 @@
-import { graphFor } from '@ember-data/graph/-private';
-import Model, { attr, hasMany } from '@ember-data/model';
-import type Store from '@ember-data/store';
-import { DEPRECATE_NON_UNIQUE_PAYLOADS } from '@warp-drive/build-config/deprecations';
-import { DEBUG } from '@warp-drive/build-config/env';
-import { module, test } from '@warp-drive/diagnostic';
-import { setupTest } from '@warp-drive/diagnostic/ember';
+import { DEPRECATE_NON_UNIQUE_PAYLOADS } from '@warp-drive/core/build-config/deprecations';
+import { DEBUG } from '@warp-drive/core/build-config/env';
+import { graphFor } from '@warp-drive/core/graph/-private';
+import { isPrivateStore } from '@warp-drive/core/store/-private';
+import { module, setupTest, test } from '@warp-drive/diagnostic/ember';
+import Model, { attr, hasMany } from '@warp-drive/legacy/model';
 
 import { deprecatedTest } from '../../setup-test';
 
@@ -32,9 +31,13 @@ module('Integration | Graph | Duplicate Data', function (hooks) {
 
       owner.register('model:app', App);
       owner.register('model:config', Config);
-      const store = owner.lookup('service:store') as unknown as Store;
+      const store = isPrivateStore(owner.lookup('service:store'));
       const graph = graphFor(store);
-      const appIdentifier = store.identifierCache.getOrCreateRecordIdentifier({ type: 'app', id: '1' });
+      const identifier = (obj: { type: string; id: string | null; lid?: string }) => {
+        return store.cacheKeyManager.getOrCreateRecordIdentifier(obj);
+      };
+
+      const appIdentifier = identifier({ type: 'app', id: '1' });
 
       store._join(() => {
         graph.push({
@@ -59,10 +62,10 @@ module('Integration | Graph | Duplicate Data', function (hooks) {
         JSON.parse(JSON.stringify(data)),
         {
           data: [
-            { type: 'config', id: '1', lid: '@lid:config-1' },
-            { type: 'config', id: '2', lid: '@lid:config-2' },
-            { type: 'config', id: '3', lid: '@lid:config-3' },
-            { type: 'config', id: '4', lid: '@lid:config-4' },
+            identifier({ type: 'config', id: '1' }),
+            identifier({ type: 'config', id: '2' }),
+            identifier({ type: 'config', id: '3' }),
+            identifier({ type: 'config', id: '4' }),
           ],
         },
         'we have the expected data'
@@ -91,13 +94,16 @@ module('Integration | Graph | Duplicate Data', function (hooks) {
 
       owner.register('model:app', App);
       owner.register('model:config', Config);
-      const store = owner.lookup('service:store') as unknown as Store;
+      const store = isPrivateStore(owner.lookup('service:store'));
       const graph = graphFor(store);
-      const appIdentifier = store.identifierCache.getOrCreateRecordIdentifier({ type: 'app', id: '1' });
-      const configIdentifier1 = store.identifierCache.getOrCreateRecordIdentifier({ type: 'config', id: '1' });
-      const configIdentifier2 = store.identifierCache.getOrCreateRecordIdentifier({ type: 'config', id: '2' });
-      const configIdentifier3 = store.identifierCache.getOrCreateRecordIdentifier({ type: 'config', id: '3' });
-      const configIdentifier4 = store.identifierCache.getOrCreateRecordIdentifier({ type: 'config', id: '4' });
+      const identifier = (obj: { type: string; id: string | null; lid?: string }) => {
+        return store.cacheKeyManager.getOrCreateRecordIdentifier(obj);
+      };
+      const appIdentifier = identifier({ type: 'app', id: '1' });
+      const configIdentifier1 = identifier({ type: 'config', id: '1' });
+      const configIdentifier2 = identifier({ type: 'config', id: '2' });
+      const configIdentifier3 = identifier({ type: 'config', id: '3' });
+      const configIdentifier4 = identifier({ type: 'config', id: '4' });
 
       store._join(() => {
         graph.update({
@@ -120,10 +126,10 @@ module('Integration | Graph | Duplicate Data', function (hooks) {
         JSON.parse(JSON.stringify(data)),
         {
           data: [
-            { type: 'config', id: '1', lid: '@lid:config-1' },
-            { type: 'config', id: '2', lid: '@lid:config-2' },
-            { type: 'config', id: '3', lid: '@lid:config-3' },
-            { type: 'config', id: '4', lid: '@lid:config-4' },
+            identifier({ type: 'config', id: '1' }),
+            identifier({ type: 'config', id: '2' }),
+            identifier({ type: 'config', id: '3' }),
+            identifier({ type: 'config', id: '4' }),
           ],
         },
         'we have the expected data'
@@ -147,9 +153,9 @@ module('Integration | Graph | Duplicate Data', function (hooks) {
 
         owner.register('model:app', App);
         owner.register('model:config', Config);
-        const store = owner.lookup('service:store') as unknown as Store;
+        const store = isPrivateStore(owner.lookup('service:store'));
         const graph = graphFor(store);
-        const appIdentifier = store.identifierCache.getOrCreateRecordIdentifier({ type: 'app', id: '1' });
+        const appIdentifier = store.cacheKeyManager.getOrCreateRecordIdentifier({ type: 'app', id: '1' });
 
         try {
           store._join(() => {
@@ -193,13 +199,13 @@ module('Integration | Graph | Duplicate Data', function (hooks) {
 
         owner.register('model:app', App);
         owner.register('model:config', Config);
-        const store = owner.lookup('service:store') as unknown as Store;
+        const store = isPrivateStore(owner.lookup('service:store'));
         const graph = graphFor(store);
-        const appIdentifier = store.identifierCache.getOrCreateRecordIdentifier({ type: 'app', id: '1' });
-        const configIdentifier1 = store.identifierCache.getOrCreateRecordIdentifier({ type: 'config', id: '1' });
-        const configIdentifier2 = store.identifierCache.getOrCreateRecordIdentifier({ type: 'config', id: '2' });
-        const configIdentifier3 = store.identifierCache.getOrCreateRecordIdentifier({ type: 'config', id: '3' });
-        const configIdentifier4 = store.identifierCache.getOrCreateRecordIdentifier({ type: 'config', id: '4' });
+        const appIdentifier = store.cacheKeyManager.getOrCreateRecordIdentifier({ type: 'app', id: '1' });
+        const configIdentifier1 = store.cacheKeyManager.getOrCreateRecordIdentifier({ type: 'config', id: '1' });
+        const configIdentifier2 = store.cacheKeyManager.getOrCreateRecordIdentifier({ type: 'config', id: '2' });
+        const configIdentifier3 = store.cacheKeyManager.getOrCreateRecordIdentifier({ type: 'config', id: '3' });
+        const configIdentifier4 = store.cacheKeyManager.getOrCreateRecordIdentifier({ type: 'config', id: '4' });
 
         try {
           store._join(() => {

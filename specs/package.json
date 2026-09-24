@@ -1,0 +1,69 @@
+{
+  "name": "@warp-drive-internal/specs",
+  "version": "5.7.0-alpha.26",
+  "description": "Provides Specs for Framework Integrations",
+  "private": true,
+  "keywords": [],
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com:warp-drive-data/warp-drive.git",
+    "directory": "specs"
+  },
+  "license": "MIT",
+  "author": "",
+  "scripts": {
+    "build:pkg": "node node_modules/tsdown/dist/run.mjs",
+    "prepack": "pnpm run build:pkg",
+    "lint": "eslint . --quiet --cache --cache-strategy=content",
+    "sync": "echo \"syncing\"",
+    "start": "node node_modules/tsdown/dist/run.mjs --watch"
+  },
+  "files": [
+    "dist",
+    "addon-main.cjs"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./*": {
+      "types": "./dist/*.d.ts",
+      "default": "./dist/*.js"
+    }
+  },
+  "peerDependencies": {
+    "@warp-drive/core": "workspace:*",
+    "@warp-drive/experiments": "workspace:*",
+    "@warp-drive/diagnostic": "workspace:*",
+    "@warp-drive/holodeck": "workspace:*",
+    "@warp-drive/json-api": "workspace:*",
+    "@warp-drive/utilities": "workspace:*"
+  },
+  "dependencies": {
+    "@embroider/macros": "catalog:"
+  },
+  "devDependencies": {
+    "@babel/core": "catalog:",
+    "@babel/plugin-transform-typescript": "catalog:",
+    "@babel/preset-typescript": "catalog:",
+    "@warp-drive/core": "workspace:*",
+    "@warp-drive/experiments": "workspace:*",
+    "@warp-drive/diagnostic": "workspace:*",
+    "@warp-drive/holodeck": "workspace:*",
+    "@warp-drive/internal-config": "workspace:*",
+    "@warp-drive/json-api": "workspace:*",
+    "@warp-drive/utilities": "workspace:*",
+    "decorator-transforms": "catalog:",
+    "tsdown": "catalog:",
+    "typescript": "catalog:"
+  },
+  "ember-addon": {
+    "main": "addon-main.cjs",
+    "type": "addon",
+    "version": 2
+  },
+  "ember": {
+    "edition": "octane"
+  }
+}

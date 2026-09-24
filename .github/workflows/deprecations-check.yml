@@ -12,14 +12,11 @@ jobs:
   test-all-deprecations:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
-      - uses: pnpm/action-setup@fe02b34f77f8bc703788d5817da081398fad5dd2 # v4.0.0
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: pnpm/setup@fbda4c85fc2e1e08721cd8763afea8f48d60f024 # v3.0.0
         with:
-          node-version: 19.x
-          cache: 'pnpm'
-      - name: Install dependencies for main
-        run: pnpm install
+          runtime: node@26.10.0
+          cache: true
       - name: Basic Tests
         env:
           CI: true
@@ -33,14 +30,11 @@ jobs:
         scenario: [ember-beta, ember-canary]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
-      - uses: pnpm/action-setup@fe02b34f77f8bc703788d5817da081398fad5dd2 # v4.0.0
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: pnpm/setup@fbda4c85fc2e1e08721cd8763afea8f48d60f024 # v3.0.0
         with:
-          node-version: 19.x
-          cache: 'pnpm'
-      - name: Install dependencies for ${{ matrix.scenario }}
-        run: pnpm install
+          runtime: node@26.10.0
+          cache: true
       - name: Basic Tests
         env:
           CI: true

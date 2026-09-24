@@ -1,0 +1,25 @@
+{
+  "title": "Contributors",
+  "items": [
+    "start-in-a-fresh-worktree",
+    "keep-commits-human-authored",
+    "fix-at-the-source",
+    "writing-and-implementing-rfcs",
+    "write-documentation",
+    "use-ci-as-the-source-of-truth",
+    "extract-test-setup-into-functions",
+    "submit-a-pr"
+  ],
+  "webIndex": "overview",
+  "files": {
+    "index": { "draft": true },
+    "start-in-a-fresh-worktree": { "title": "Start in a Fresh Worktree" },
+    "keep-commits-human-authored": { "title": "Keep Commits Human-Authored" },
+    "fix-at-the-source": { "title": "Fix at the Source" },
+    "writing-and-implementing-rfcs": { "title": "Writing and Implementing RFCs" },
+    "write-documentation": { "title": "Write Documentation" },
+    "use-ci-as-the-source-of-truth": { "title": "Use CI as the Source of Truth" },
+    "extract-test-setup-into-functions": { "title": "Extract Test Setup Into Functions" },
+    "submit-a-pr": { "title": "Submit a PR" }
+  }
+}

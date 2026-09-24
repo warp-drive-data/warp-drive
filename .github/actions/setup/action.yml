@@ -2,18 +2,18 @@ name: Setup Test Environment
 description: Composable Action for ensuring speedy test setup
 
 inputs:
+  ## Disables TurboCache
+  DISABLE_TURBO_CACHE:
+    description: Whether to disable TurboCache
+    required: false
+    default: false
+  ACTIONS_RUNNER_DEBUG:
+    description: Whether to enable debug mode
+    required: false
+    default: false
   ## Speeds Up Lint by enabling reuse
   restore-lint-caches:
     description: Whether to restore lint caches
-    required: false
-    default: false
-  ## Speeds Up Build of bigger apps by enabling reuse
-  restore-broccoli-cache:
-    description: Whether to restore broccoli
-    required: false
-    default: false
-  use-production-caches:
-    description: Whether to restore from production caches
     required: false
     default: false
   install:
@@ -37,7 +37,7 @@ inputs:
   jobs:
     description: How many Build Jobs to Run
     required: false
-    default: 2
+    default: 4
   ref:
     description: Ref to Setup
     required: false
@@ -50,39 +50,154 @@ inputs:
     description: Whether to setup an SSL Cert
     required: false
     default: false
+  cache-key-suffix:
+    description: |
+      Identifies this job (and matrix leg, if any) for the local turbo build
+      cache -- see the note on 'Restore Turbo Local Build Cache' below.
+    required: false
+    default: 'install'
 
 runs:
   using: composite
   steps:
-    - uses: pnpm/action-setup@fe02b34f77f8bc703788d5817da081398fad5dd2 # v4.0.0
-    - uses: actions/setup-node@v4
+    # Reads Node and Bun versions from `devEngines.runtime` in package.json,
+    # installing both in place of actions/setup-node + oven-sh/setup-bun.
+    - uses: pnpm/setup@fbda4c85fc2e1e08721cd8763afea8f48d60f024 # v3.0.0
       with:
-        registry-url: 'https://registry.npmjs.org'
-        node-version-file: 'package.json'
-        cache: 'pnpm'
+        install: false
+        cache: true
 
-    - uses: oven-sh/setup-bun@v1
+    - name: DEBUG STATUS
+      shell: bash
+      run:
+        echo "DISABLE_TURBO_CACHE = ${{ inputs.DISABLE_TURBO_CACHE }}"
+        echo "ACTIONS_RUNNER_DEBUG = ${{ inputs.ACTIONS_RUNNER_DEBUG }}"
+        echo "restore-lint-caches = ${{ inputs.restore-lint-caches }}"
+
+    # felixmosh/turborepo-gh-artifacts' local proxy server (below) serves a
+    # GET for artifact <id> straight from ${RUNNER_TEMP}/turbo-cache/<id>.gz
+    # on disk with zero network calls when that file already exists --  it
+    # only falls back to querying the GitHub Artifacts API when it's missing
+    # locally (see felixmosh/turborepo-gh-artifacts's turboServer.ts). That
+    # API-based fallback path is the one that's proven unreliable across
+    # separate jobs/workflow runs (see the note on `permissions` in
+    # .github/workflows/main.yml). Pre-seeding this directory from a shared
+    # actions/cache entry means most GETs hit the instant, reliable local
+    # path instead, for jobs both within this workflow run and in later ones.
+    #
+    # This must be placed *before* the felixmosh step: composite/JS action
+    # "post" cleanup steps run in the *reverse* order their main steps were
+    # registered, and felixmosh's own post step is what moves this run's
+    # newly-built artifacts from turbo-cache/new-artifacts/ into the flat
+    # turbo-cache/<id>.gz layout the GET handler reads from (see
+    # felixmosh/turborepo-gh-artifacts's uploadArtifacts.ts). Registering our
+    # restore first means our save (its own post step) runs *after*
+    # felixmosh's, capturing that final, fully-populated state rather than
+    # a snapshot from before this run's artifacts were moved into place.
+    #
+    # The key is unique per run (so a save always has something new to
+    # write -- actions/cache entries are immutable once created, an
+    # already-existing key is silently skipped) with a prefix-matched
+    # restore-key so every run still starts from the most recently saved
+    # state regardless of which prior run wrote it.
+    - name: 'Restore Turbo Remote-Cache Proxy Disk Cache'
+      if: ${{ inputs.repo-token && inputs.DISABLE_TURBO_CACHE != 'true' }}
+      uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
       with:
-        bun-version: latest
+        path: ${{ runner.temp }}/turbo-cache
+        key: turbo-remote-cache-${{ github.run_id }}
+        restore-keys: |
+          turbo-remote-cache-
 
+    # felixmosh's server process appends its stdout/stderr to this file
+    # (open(..., 'a'), never truncated) for the whole job, and its post step
+    # unconditionally cats the file as "Server logs:" during cleanup. Since
+    # the restore above carries turbo-cache/ forward from whichever prior run
+    # last saved it, a crash logged by one run would otherwise keep
+    # reappearing in every later run's cleanup output forever. Clearing it
+    # here means each run only ever sees its own server's logs.
+    - name: 'Reset Turbo Remote-Cache Proxy Server Log'
+      if: ${{ inputs.repo-token && inputs.DISABLE_TURBO_CACHE != 'true' }}
+      shell: bash
+      run: rm -f "${{ runner.temp }}/turbo-cache/out.log"
+
+    # Turborepo always checks its local on-disk cache (`.turbo/cache`) before
+    # the remote (felixmosh) cache, and every turbo task's hash is purely a
+    # function of file contents, so sharing that directory here -- keyed by
+    # commit, not by run -- lets a later job/workflow skip a rebuild another
+    # one already did for the same commit, without any remote-cache traffic.
+    #
+    # actions/cache keys are immutable: whichever job finishes first wins a
+    # given key, and every later job's save under that *same* key is silently
+    # a no-op. `cache-key-suffix` gives each job (and matrix leg) its own key,
+    # so e.g. browser-tests' own build:tests/test entries actually get saved
+    # instead of losing a race to whichever job saves under a shared key
+    # first (in practice, always `install`, since nothing else starts
+    # sooner). The `${{ github.sha }}-` restore-key still lets every job
+    # start by restoring *some* same-commit save -- typically install's,
+    # since it finishes first -- before adding its own entries on top.
+    - name: 'Restore Turbo Local Build Cache'
+      if: ${{ inputs.install == 'true' && inputs.DISABLE_TURBO_CACHE != 'true' }}
+      uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+      with:
+        path: .turbo/cache
+        key: turbo-local-cache-${{ github.sha }}-${{ inputs.cache-key-suffix }}
+        restore-keys: |
+          turbo-local-cache-${{ github.sha }}-
+          turbo-local-cache-
+
+    # `continue-on-error` here is about this action's *post* step, not its main
+    # one. That post step uploads this run's new cache entries as GitHub
+    # artifacts, and felixmosh's src/post.ts ends in
+    # `post().catch((error) => setFailed(error))` -- so any transient failure
+    # from the artifacts service (we've seen both `403 Forbidden` on
+    # FinalizeArtifact and `ETIMEDOUT` on CreateArtifact, hitting several
+    # unrelated PRs inside the same few minutes) fails the whole job during
+    # cleanup, after every test in it has already passed. Populating a cache is
+    # best-effort by definition: the next run just rebuilds what didn't get
+    # saved. It must never be able to turn a green test run red.
+    #
+    # A step's `continue-on-error` does reach its post step: the runner builds
+    # the post step's ActionRunner with `actionRunner.Action = Action` (the same
+    # step object, see ActionRunner.cs), `ContinueOnError` reads straight off
+    # that shared object, and StepsRunner calls `ApplyContinueOnError` for every
+    # step it runs, post steps included.
+    #
+    # The tradeoff: a *persistently* broken cache upload now degrades silently
+    # into slower builds rather than a red X. The "Server logs:" output this
+    # action prints during cleanup is where that shows up.
     - name: 'Setup local TurboRepo server'
-      if: ${{ inputs.repo-token }}
-      uses: felixmosh/turborepo-gh-artifacts@v3
+      if: ${{ inputs.repo-token && inputs.DISABLE_TURBO_CACHE != 'true' }}
+      uses: felixmosh/turborepo-gh-artifacts@118f869397261f74bc39cb8565f2d02c0ed4209f # v4.1.1
+      continue-on-error: true
       with:
         repo-token: ${{ inputs.repo-token }}
 
-    - name: Set Up Homebrew
-      if: ${{ inputs.with-cert }}
-      id: set-up-homebrew
-      uses: Homebrew/actions/setup-homebrew@master
-
     - name: 'Setup SSL Cert Infra'
-      if: ${{ inputs.with-cert }}
+      if: ${{ inputs.with-cert == 'true' }}
       shell: bash
+      # We only need the mkcert binary itself, so we install it directly from
+      # its GitHub release instead of via Homebrew. The runner image ships
+      # Homebrew preinstalled, but the setup-homebrew action still ran a full
+      # `brew update` (git-fetching Homebrew/brew + refreshing the formula
+      # index) before `brew install mkcert` could run, costing ~20s per job
+      # for a stable, rarely-updated formula. Pinning the version + verifying
+      # its checksum keeps this at least as trustworthy as the Homebrew path.
       run: |
         sudo apt-get -y update
-        sudo apt install libnss3-tools
-        brew install mkcert
+        sudo apt-get -y install libnss3-tools
+
+        MKCERT_VERSION=v1.4.4
+        MKCERT_SHA256=6d31c65b03972c6dc4a14ab429f2928300518b26503f58723e532d1b0a3bbb52
+        curl -fsSL -o /tmp/mkcert "https://github.com/FiloSottile/mkcert/releases/download/${MKCERT_VERSION}/mkcert-${MKCERT_VERSION}-linux-amd64"
+        echo "${MKCERT_SHA256}  /tmp/mkcert" | sha256sum -c -
+        chmod +x /tmp/mkcert
+        sudo mv /tmp/mkcert /usr/local/bin/mkcert
+
+    - name: 'Setup DBus for Chrome'
+      shell: bash
+      run: |
+        echo "DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus" >> $GITHUB_ENV
 
     - name: Configure Parallel Builds
       if: ${{ inputs.parallel-build == 'true' }}
@@ -97,6 +212,7 @@ runs:
       run: pnpm install --prefer-offline $ADTL_ARGS
       env:
         ADTL_ARGS: ${{ inputs.adtl-install-args }}
+        TURBO_FORCE: ${{ inputs.DISABLE_TURBO_CACHE == 'true' }}
 
     - name: Install Dependencies w/o Addon Builds
       if: ${{ inputs.install == 'true' && inputs.skip-addon-build == 'true' }}
@@ -105,42 +221,55 @@ runs:
       env:
         ADTL_ARGS: ${{ inputs.adtl-install-args }}
 
+    # pnpm's sync-injected-deps-after-scripts=[build:pkg] hook (see .npmrc)
+    # only fires for per-package script runs, not for build:pkg run at the
+    # monorepo root (as `pnpm install`'s `prepare` script does above), so
+    # injected copies of workspace packages (e.g. @warp-drive/core's dist/ as
+    # seen by its consumers) are never refreshed without this. `sync` fans out
+    # to a --if-present "sync" script in every workspace member with injected
+    # deps, re-triggering pnpm's hook per package.
+    - name: 'Sync Injected Workspace Dependencies'
+      if: ${{ inputs.install == 'true' && inputs.skip-addon-build == 'false' }}
+      shell: bash
+      run: pnpm run sync
+
     - name: 'Generate SSL Cert'
-      if: ${{ inputs.with-cert }}
+      if: ${{ inputs.with-cert == 'true' }}
       shell: bash
       # Generates the cert if needed, using our local copy of @warp-drive/holodeck
       run: |
         node ./packages/holodeck/server/ensure-cert.js
 
-    - name: Setup Broccoli Caching
-      if: ${{ inputs.restore-broccoli-cache == 'true' }}
-      shell: bash
-      run: |
-        echo "FORCE_PERSISTENCE_IN_CI=true" >> $GITHUB_ENV
-        echo "BROCCOLI_PERSISTENT_FILTER_CACHE_ROOT=${{ github.workspace }}/.broccoli-cache" >> $GITHUB_ENV
-
-    - name: Restore Broccoli Cache
-      if: ${{ inputs.restore-broccoli-cache == 'true' }}
-      uses: actions/cache@v4
-      with:
-        path: |
-          ${{ github.workspace }}/.broccoli-cache
-          node_modules/.cache
-          tests/main/node_modules/.cache
-        key: broccoli${{inputs.use-production-caches == 'true' && '-production-' || '-'}}${{ github.head_ref }}-${{inputs.ref }}
-        restore-keys: |
-          broccoli${{inputs.use-production-caches == 'true' && '-production-' || '-'}}${{ github.head_ref }}
-          broccoli${{inputs.use-production-caches == 'true' && '-production-' || '-'}}${{ github.base_ref }}
-          broccoli${{inputs.use-production-caches == 'true' && '-production-' || '-'}}main
-
     - name: Restore Lint Caches
       if: ${{ inputs.restore-lint-caches == 'true' }}
-      uses: actions/cache@v4
+      uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
       with:
+        # Type-check (tsconfig.tsbuildinfo) and lint (.eslintcache) artifacts are
+        # produced per-package by turbo rather than at the repo root, so these
+        # paths must cover every workspace package. This used to be a `**` glob,
+        # but @actions/glob's walk for that isn't scoped to skip node_modules,
+        # so it was walking this repo's entire (thousands-of-directories) tree
+        # on every save -- most of this step's ~30s. Enumerating the real
+        # workspace roots (matching pnpm-workspace.yaml's `packages` list) skips
+        # that walk entirely. oxlint/oxfmt have no cache of their own to add
+        # here (neither tool has a `--cache` flag as of this writing). Prettier
+        # still runs once from the repo root (see `lint:prettier`), so
+        # `.prettier-cache` stays un-globbed -- if that ever changes to a
+        # per-package invocation, glob it the same way as the paths below.
+        #
+        # Update this list when a new package gains a `check:types`/`lint`
+        # script -- an outdated entry here just means a colder cache for that
+        # one package, not an error.
         path: |
-          .eslintcache
           .prettier-cache
-          tsconfig.tsbuildinfo
+          packages/*/.eslintcache
+          packages/*/tsconfig.tsbuildinfo
+          warp-drive-packages/*/.eslintcache
+          warp-drive-packages/*/tsconfig.tsbuildinfo
+          tests/*/.eslintcache
+          tests/*/tsconfig.tsbuildinfo
+          specs/.eslintcache
+          specs/tsconfig.tsbuildinfo
         key: lint-${{ github.head_ref }}-${{ inputs.ref }}
         restore-keys: |
           lint-${{ github.head_ref }}
