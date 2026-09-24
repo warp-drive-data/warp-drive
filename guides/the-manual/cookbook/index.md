@@ -8,5 +8,5 @@ description: Start here for task-focused WarpDrive recipes, including the increm
 - [Basic Usage Example](./basic-usage.md)
 - [Auth Handler](./auth-handlers.md)
 - [Incremental Adoption Guide](./incremental-adoption-guide.md)
-- [Migrating with two stores](./migrating-with-two-stores.md)
+- [Migrating route by route](./migrating-route-by-route.md)
 - [Naming Conventions: Should resource types be singular or plural? What to choose? Why is that?](./naming-conventions.md)
