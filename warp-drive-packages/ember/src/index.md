@@ -93,9 +93,17 @@ export { EachLink as default } from '@warp-drive/ember/experiments';
 
 **Usage**
 
-```hbs [app/templates/users.hbs]
+::: code-group
+
+```hbs [Paged with links]
 <Paginate @request={{this.usersRequest}}>
   <:content as |pages|>
+    <Request @request={{pages.activePageRequest}}>
+      <:content as |result|>
+        {{#each result.data as |user|}}<UserRow @user={{user}} />{{/each}}
+      </:content>
+    </Request>
+
     <EachLink @pages={{pages}} as |state|>
       {{#each state.links as |link|}}
         <button {{on "click" link.setActive}}>{{link.text}}</button>
@@ -104,6 +112,20 @@ export { EachLink as default } from '@warp-drive/ember/experiments';
   </:content>
 </Paginate>
 ```
+
+```hbs [Infinite scroll]
+<Paginate @request={{this.usersRequest}} @mode="infinite">
+  <:content as |pages features|>
+    {{#each pages.data as |user|}}<UserRow @user={{user}} />{{/each}}
+
+    {{#if pages.hasNext}}
+      <button {{on "click" features.loadNext}}>Load more</button>
+    {{/if}}
+  </:content>
+</Paginate>
+```
+
+:::
 
 :::
 
