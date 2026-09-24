@@ -1,5 +1,6 @@
 {
-  "include": ["app/**/*", "tests/**/*"],
+  "include": ["app/**/*", "tests/**/*", "api-worker/**/*"],
+  "exclude": ["api-worker/sw.ts"],
   "contentMappers": [{ "package": "ember-content-mapper", "extensions": [".gts", ".gjs"] }],
   "compilerOptions": {
     "lib": ["DOM", "ESNext"],

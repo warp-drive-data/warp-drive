@@ -11,6 +11,7 @@
   },
   "license": "MIT",
   "imports": {
+    "#api-worker/*": "./api-worker/*",
     "#app/*": "./app/*",
     "#config": "./app/config.ts"
   },
@@ -19,7 +20,7 @@
     "build": "vite build",
     "build:tests": "vite build --mode development --outDir dist-test",
     "build:production": "vite build --outDir dist-test",
-    "check:types": "node ./node_modules/typescript-7/bin/tsc --noEmit --runExternalCode",
+    "check:types": "node ./node_modules/typescript-7/bin/tsc --noEmit --runExternalCode && node ./node_modules/typescript-7/bin/tsc --noEmit --runExternalCode -p api-worker",
     "test": "testem ci --file testem.cjs",
     "test:production": "testem ci --file testem.cjs"
   },

@@ -5,10 +5,12 @@ import { setup } from 'qunit-dom';
 
 import { setupEmberOnerrorValidation, start as qunitStart } from 'ember-qunit';
 
+import { startApiWorker } from '#api-worker/register.ts';
 import Application from '#app/app.ts';
 import config, { enterTestMode } from '#config';
 
-export function start() {
+export async function start() {
+  await startApiWorker();
   enterTestMode();
   setApplication(Application.create(config.APP));
   setup(QUnit.assert);
