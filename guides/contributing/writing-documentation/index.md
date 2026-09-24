@@ -1,5 +1,6 @@
 ---
 title: Overview
+description: Which type of doc to write for a change, who each type is for, how the docs site is built from the repo, and the checks to run before opening the PR.
 ---
 
 # Writing Documentation
@@ -109,8 +110,8 @@ Everything on the site except the API docs is markdown copied from the repo by
 to `/skills`. The API docs are generated from the source by TypeDoc into `/api`. Package READMEs
 are not on the site; GitHub and npm render them. Every page is also emitted as a plain-Markdown
 twin at its URL plus `.md`, and indexed in `llms.txt`, for coding agents; see
-[LLM Optimized Documentation](https://warp-drive.io/llm-docs) for the rules those agents follow,
-and keep in mind that your `:::tip` boxes and `:::tabs` reach them raw.
+[Frontmatter and Agent-Only Content](./writing-guides.md#frontmatter-and-agent-only-content) for
+what in a page's source shapes that output.
 
 ### Sidebar and `_meta.json`
 

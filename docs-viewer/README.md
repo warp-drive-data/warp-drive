@@ -64,6 +64,13 @@ button on every page (`.vitepress/theme/CopyPageButton.vue`) fetches the twin fo
 The human-facing summary is [`llm-docs.md`](./docs.warp-drive.io/llm-docs.md); agents get the same
 rules from the `docs/read-the-docs-as-markdown` skill in `@warp-drive/memory-alpha`.
 
+A page's frontmatter `description` becomes the text after its link in `llms.txt`, and content
+wrapped in `<llm-only>` or `<llm-exclude>` tags is kept for or dropped from the Markdown outputs
+respectively (and the reverse for the HTML site); see
+[Writing Guides](../guides/contributing/writing-documentation/writing-guides.md#frontmatter-and-agent-only-content).
+To validate a deployment, `npx llms-txt-check https://warp-drive.io` fetches the served `llms.txt`
+and every URL it lists, and exits nonzero if any stopped serving.
+
 Three things to know when testing this locally:
 
 - Only `pnpm build` produces the twins and `llms*.txt`. The `pnpm start` dev server does not.

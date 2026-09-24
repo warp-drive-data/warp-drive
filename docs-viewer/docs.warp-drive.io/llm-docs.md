@@ -1,3 +1,8 @@
+---
+title: LLM Optimized Documentation
+description: Where to find llms.txt, llms-full.txt, and the plain-Markdown twin of every page, and how the Copy page button uses them.
+---
+
 ## LLM Optimized Documentation
 
 Every page on this site is also published as plain Markdown, for coding agents and for anyone who
