@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useCopyOrDownloadAsMarkdownButtons } from "vitepress-plugin-llms/vitepress-components";
 /**
  * "Copy page" split button rendered above every doc page's title (see Layout.vue).
  *
@@ -12,11 +13,10 @@
  * a download button as well. This component uses the same composable with only the items we want.
  * The icons are inlined because the plugin's `icons/*.svg` files are not in its package exports.
  */
-import { onMounted, onUnmounted, ref } from 'vue';
-import { useCopyOrDownloadAsMarkdownButtons } from 'vitepress-plugin-llms/vitepress-components';
+import { onMounted, onUnmounted, ref } from "vue";
 
 const { aiProviders, copied, copyAsMarkdown, openInAI, viewAsMarkdown } = useCopyOrDownloadAsMarkdownButtons({
-  aiProviders: [{ name: 'Claude', url: 'https://claude.ai/new?q=' }],
+  aiProviders: [{ name: "Claude", url: "https://claude.ai/new?q=" }],
 });
 
 const isOpen = ref(false);
@@ -52,18 +52,18 @@ function handleClickOutside(event: MouseEvent): void {
 }
 
 function handleEscape(event: KeyboardEvent): void {
-  if (event.key === 'Escape') {
+  if (event.key === "Escape") {
     closeMenu();
   }
 }
 
 onMounted(() => {
-  document.addEventListener('click', handleClickOutside);
-  document.addEventListener('keydown', handleEscape);
+  document.addEventListener("click", handleClickOutside);
+  document.addEventListener("keydown", handleEscape);
 });
 onUnmounted(() => {
-  document.removeEventListener('click', handleClickOutside);
-  document.removeEventListener('keydown', handleEscape);
+  document.removeEventListener("click", handleClickOutside);
+  document.removeEventListener("keydown", handleEscape);
 });
 </script>
 
@@ -71,7 +71,12 @@ onUnmounted(() => {
   <div class="copy-page">
     <div ref="container" class="copy-page-group">
       <div class="copy-page-trigger">
-        <button type="button" class="copy-page-main" :title="copied ? 'Copied' : 'Copy page as Markdown for LLMs'" @click="handleCopy">
+        <button
+          type="button"
+          class="copy-page-main"
+          :title="copied ? 'Copied' : 'Copy page as Markdown for LLMs'"
+          @click="handleCopy"
+        >
           <svg v-if="copied" class="icon" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M20 6 9 17l-5-5" />
           </svg>
@@ -79,7 +84,7 @@ onUnmounted(() => {
             <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
             <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
           </svg>
-          <span>{{ copied ? 'Copied' : 'Copy page' }}</span>
+          <span>{{ copied ? "Copied" : "Copy page" }}</span>
         </button>
         <span class="copy-page-divider" aria-hidden="true"></span>
         <button
@@ -116,7 +121,9 @@ onUnmounted(() => {
             />
           </svg>
           <span class="copy-page-item-text">
-            <span class="copy-page-item-title">View as Markdown <span class="external" aria-hidden="true">↗</span></span>
+            <span class="copy-page-item-title"
+              >View as Markdown <span class="external" aria-hidden="true">↗</span></span
+            >
             <span class="copy-page-item-desc">View this page as plain text</span>
           </span>
         </button>
@@ -125,7 +132,9 @@ onUnmounted(() => {
             <path d="m96.138 40.515 3.5 2v1.5l-1 3.5-42.5 10-3.996-9.93zm0 0" />
             <path d="m80.626 11.495 4.894 1.027 1.299 1.6 1.239 3.837-.514 2.447-28.521 39-9.5-9.5 26.3-34.514zm0 0" />
             <path d="m56.537 5.537 3-2 2.5 1 2.5 3.5-6.849 41.162-4.65-3.162-2-5.5 3.5-31zm0 0" />
-            <path d="m25.058 6.102 3.082-3.937 2.01-.46 3.99.584 1.968 1.54 14.345 31.804 5.19 15.11-6.071 3.376-23.139-41.987zm0 0" />
+            <path
+              d="m25.058 6.102 3.082-3.937 2.01-.46 3.99.584 1.968 1.54 14.345 31.804 5.19 15.11-6.071 3.376-23.139-41.987zm0 0"
+            />
             <path d="m10.766 27.61-1-4.003 3-3.5 3.5.5h1l21 15.5 6.5 5 9 7-5 8.5-4.5-3.5-3-3-29-20.5zm0 0" />
             <path d="m4.856 53-2.263-2.5v-2.224l2.263-.776 25.5 1.5 25 2-.812 4.978L6.856 53.5zm0 0" />
             <path d="M19.428 78.51h-5l-1.988-2.29v-2.737l8.488-6 34.508-21.966 3.492 5.966zm0 0" />

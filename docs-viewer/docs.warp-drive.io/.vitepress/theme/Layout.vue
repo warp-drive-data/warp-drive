@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import DefaultTheme from 'vitepress/theme';
+import DefaultTheme from "vitepress/theme";
 
-import CopyPageButton from './CopyPageButton.vue';
+import CopyPageButton from "./CopyPageButton.vue";
 </script>
 
 <template>

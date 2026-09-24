@@ -144,6 +144,19 @@ export default withPwa(
           alias: {
             'vitepress-plugin-mermaid/Mermaid.vue': require.resolve('vitepress-plugin-mermaid/Mermaid.vue'),
           },
+          // vitepress-plugin-llms's client composable (used by theme/CopyPageButton.vue) imports
+          // `vue`, which is not among the plugin's own dependencies, so under `hoist: false` it is
+          // not resolvable from the plugin's directory. Resolve it from this package instead.
+          dedupe: ['vue'],
+        },
+
+        ssr: {
+          // theme/CopyPageButton.vue imports the plugin's client composable, which itself imports
+          // `vue`. VitePress externalizes node_modules during the SSR render and lets Node resolve
+          // them, and under this workspace's `hoist: false` layout Node cannot find `vue` from the
+          // plugin's directory (it is not one of the plugin's dependencies). Bundling the plugin's
+          // client entry lets Vite resolve `vue` from this package instead.
+          noExternal: ['vitepress-plugin-llms'],
         },
 
         optimizeDeps: {
