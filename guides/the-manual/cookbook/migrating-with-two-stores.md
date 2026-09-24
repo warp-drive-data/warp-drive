@@ -1,7 +1,5 @@
 # Migrating with two stores
 
-- ⮐ [Cookbook](./index.md)
-
 An app can run more than one store at once. Each store owns its own cache, its own schemas, and
 its own request pipeline, so a second store is a place to put the setup you are moving toward
 while the first one keeps serving the code you have not touched yet. You migrate a region at a
@@ -225,7 +223,3 @@ Once the last slice moves, delete the old store service and the packages only it
 Because each store is configured independently, the second store is also where you drop what you
 no longer want. Adapters, serializers, and `Model` can stay in the old store and never be installed
 in the new one.
-
----
-
-- ⮐ [Cookbook](./index.md)
