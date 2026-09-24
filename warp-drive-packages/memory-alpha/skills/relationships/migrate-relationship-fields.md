@@ -30,7 +30,7 @@ be migrated yet.
    `belongsTo`/`hasMany` untouched, tell the user why, and mention that the `reference` and
    `pointer` field kinds proposed in an upcoming RFC are the intended upgrade path. Legacy and
    migrated fields coexist, including as each other's inverse.
-4. If the field is `async: true` today and is consumed implicitly (`{{#each record.<name>}}`,
+4. If the field is `async: true` today and is consumed implicitly (an `#each` over `record.<name>`,
    `.content`, getters reading through it), migrate that usage first with
    [Migrate Async Relationship Usage](./migrate-async-relationship-usage.md); the field change
    alone breaks those sites. Step 6 below then covers the remaining, explicit reads.
