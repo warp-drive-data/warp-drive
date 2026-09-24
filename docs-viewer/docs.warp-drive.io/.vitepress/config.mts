@@ -116,7 +116,15 @@ export default withPwa(
           // instead of hitting the network, and VitePress's router then renders a
           // 404 for a path it doesn't recognize -- fixed by a hard refresh only
           // because that bypasses the service worker for that one navigation.
-          navigateFallbackDenylist: [/^\/pr-preview\//],
+          //
+          // The same fallback also swallows a navigation to any URL the precache does not
+          // know about, and the precache glob is `**/*.{js,wasm,css,html}`. So in a browser
+          // that has this worker installed, typing `/guides/foo.md` into the address bar (or
+          // the "View as Markdown" button doing the equivalent) got this worker's index.html
+          // and a VitePress 404 instead of the Markdown twin vitepress-plugin-llms wrote,
+          // while curl and a fresh browser profile got the file. Same for /llms.txt and
+          // /llms-full.txt. Let those navigations through to the network.
+          navigateFallbackDenylist: [/^\/pr-preview\//, /\.md$/, /\.txt$/],
           // Without these, a new service worker build (like the denylist above)
           // sits "installed but waiting" in already-open browsers indefinitely --
           // this site's minimal registerSW.js never sends the SKIP_WAITING message
@@ -144,6 +152,19 @@ export default withPwa(
           alias: {
             'vitepress-plugin-mermaid/Mermaid.vue': require.resolve('vitepress-plugin-mermaid/Mermaid.vue'),
           },
+          // vitepress-plugin-llms's client composable (used by theme/CopyPageButton.vue) imports
+          // `vue`, which is not among the plugin's own dependencies, so under `hoist: false` it is
+          // not resolvable from the plugin's directory. Resolve it from this package instead.
+          dedupe: ['vue'],
+        },
+
+        ssr: {
+          // theme/CopyPageButton.vue imports the plugin's client composable, which itself imports
+          // `vue`. VitePress externalizes node_modules during the SSR render and lets Node resolve
+          // them, and under this workspace's `hoist: false` layout Node cannot find `vue` from the
+          // plugin's directory (it is not one of the plugin's dependencies). Bundling the plugin's
+          // client entry lets Vite resolve `vue` from this package instead.
+          noExternal: ['vitepress-plugin-llms'],
         },
 
         optimizeDeps: {
@@ -155,7 +176,19 @@ export default withPwa(
           include: ['mermaid'],
         },
         plugins: [
-          llmstxt(),
+          // Writes llms.txt, llms-full.txt, and an LLM-friendly `.md` twin of every page next to
+          // its `.html`, which the "Copy page" button (theme/CopyPageButton.vue) fetches.
+          llmstxt({
+            // Without this the links in llms.txt and the `url:` frontmatter of every `.md` twin
+            // are root-relative (`/guides/installation.md`), which an agent that fetched the
+            // file has no origin to resolve against. Same env var and fallback the sitemap uses,
+            // so canary, PR previews, and production each get their own absolute URLs.
+            domain: process.env.HOSTNAME || 'https://canary.warp-drive.io',
+            // The plugin's default ignores `blog/*` and `blog.md`. That is the plugin author's
+            // preference, not ours: the writing guides say LLMs land on these pages too, and the
+            // posts under blog/<version>/ already get through because the pattern is one level deep.
+            excludeBlog: false,
+          }),
           plugin,
           ViteImageOptimizer({
             // // Configure optimization options for different image formats
