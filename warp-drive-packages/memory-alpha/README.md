@@ -32,7 +32,7 @@ other skill files, do not list or read whole directories — this table is enoug
 | Set up HTTP mocking for a test suite with `@warp-drive/holodeck` | `skills/holodeck/set-up-holodeck.md` |
 | Mock a request in a test, or fix a mock that stopped matching | `skills/holodeck/mock-http-requests-in-tests.md` |
 | Change a schema's `belongsTo`/`hasMany` field to `resource`/`collection` | `skills/relationships/migrate-relationship-fields.md` |
-| Move code that consumes an async `belongsTo`/`hasMany` implicitly (`{{#each}}`, `.content`, getters reading through it) toward requests and `resource`/`collection` | `skills/relationships/migrate-async-relationship-usage.md` |
+| Move code that consumes an async `belongsTo`/`hasMany` implicitly (`#each` blocks, `.content`, getters reading through it) toward requests and `resource`/`collection` | `skills/relationships/migrate-async-relationship-usage.md` |
 | Re-record one holodeck mock, or review a test that sets `RECORD` | `skills/holodeck/using-record.md` |
 | Look up a guide, upgrade note, or API reference page that no row above covers — a concept, an option, a signature | `skills/docs/read-the-docs-as-markdown.md` |
 | You're contributing to WarpDrive itself, not just consuming it as a dependency | `skills/contributors/index.md` |

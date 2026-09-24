@@ -2,7 +2,7 @@
 
 Use this skill whenever code consumes an `async: true` `belongsTo` or `hasMany` relationship
 implicitly and needs to move toward requests and the `resource`/`collection` kinds: a
-`{{#each record.<name>}}` over the relationship, reads of `record.<name>.content`, getters or
+an `#each` over `record.<name>`, reads of `record.<name>.content`, getters or
 computed properties that reach through a relationship (often several levels deep), or
 `await record.<name>`. The human guide
 [Migrating Async Relationship Usage](/upgrading/v5/relationship-usage.md) explains each phase;
@@ -10,7 +10,7 @@ this skill is the order of operations and the rules for choosing between them.
 
 ## Steps
 
-1. Inventory the sites before changing anything. Search templates for `{{#each` over a
+1. Inventory the sites before changing anything. Search templates for `#each` blocks over a
    relationship property and for relationship properties rendered directly; search JavaScript for
    `.content` on a relationship, `await record.<name>`, `@computed` dependent keys that cross a
    relationship (`'post.author.company.name'`), and `.belongsTo(`/`.hasMany(` reference calls. For
