@@ -21,6 +21,17 @@ The API is published from two entry points:
 - [`@warp-drive/ember/experiments`](/api/@warp-drive/ember/experiments/) holds the Ember
   components that build on them: `<Paginate />` and `<EachLink />`.
 
+Install whichever your app does not already have:
+
+```sh
+pnpm add @warp-drive/experiments @warp-drive/ember
+```
+
+Nothing else needs configuring. The primitives work with any store whose cache preserves a
+document's `links` and `meta`, which the [`@warp-drive/json-api`](/api/@warp-drive/json-api/)
+cache does. An app on the `ember-data` meta package already has that cache, a `RequestManager`
+and the legacy network handler set up (see [`@ember-data/store`](/api/@ember-data/store/)).
+
 :::warning ⚠️ Experimental
 Like everything under [Experiments](./index.md), this API has not been through an RFC and may
 change or be removed in a minor release.
@@ -128,11 +139,53 @@ surfaces and you use whichever fits. The `<Paginate />` component's `@mode` arg 
 default, or `'infinite'`) narrows what it yields to one surface so the two cannot be mixed by
 accident. The mode is type-only and is never read at runtime.
 
+## Coming from Legacy Queries
+
+The legacy `store.query` and `store.findAll` methods resolve to an array of records. The
+pagination primitives need the request itself, because the request's document is where the
+`links` and `meta` live. Replace the call with `store.request` and a
+[request builder](../requests/builders.md), and keep the page parameters in the query:
+
+::: code-group
+
+```ts [Before]
+export default class PostsRoute extends Route {
+  @service declare store: Store;
+
+  model() {
+    return this.store.query('post', { page: { number: 1, size: 25 } });
+  }
+}
+```
+
+```ts [After]
+import { query } from '@warp-drive/utilities/json-api';
+
+export default class PostsRoute extends Route {
+  @service declare store: Store;
+
+  model() {
+    // Return the request inside an object. A Future is a promise, so returning it
+    // directly would make the route wait for the response and hand the template
+    // the resolved document instead of the request `<Paginate />` needs.
+    return { request: this.store.request(query('post', { 'page[number]': 1, 'page[size]': 25 })) };
+  }
+}
+```
+
+:::
+
+The template then passes `@model.request` to `<Paginate />`. If the request is created in the
+same component that renders it, pass the builder's result as `@query` instead and skip
+`store.request` altogether.
+
 ## Using the Component API
 
 `<Paginate />` is declarative control flow in the style of
 [`<Request />`](/api/@warp-drive/ember/classes/Request). It renders no markup of its own. Give it
-the request that loads the first page and it yields the pagination state to one of its blocks:
+the request that loads the first page, either as `@request`, a `Future` your code already issued
+with `store.request`, or as `@query`, a request object such as a builder's return value that the
+component issues for you. It yields the pagination state to one of its blocks:
 
 - `idle`, `loading`, `cancelled` and `error` describe the **initial request only**. Later page
   loads never re-enter `loading`; they surface through the individual page requests instead.
@@ -156,8 +209,10 @@ navigation entry point: `loadPage` in
 ### Paged: Render the Active Page and Its Links
 
 In paged mode, `pages.activePageRequest` is a plain request, so wrap it in `<Request />` for the
-active page's own loading and error states. `<EachLink />` yields the navigation links derived
-from the same state; you decide which to render and how.
+active page's own loading and error states. Its `result.data` holds the same record instances the
+store hands out everywhere else, so in a legacy app they are your Model instances and their
+relationships work as usual. `<EachLink />` yields the navigation links derived from the same
+state; you decide which to render and how.
 
 ```glimmer-ts [Ember]
 import { Request } from '@warp-drive/ember';
@@ -331,6 +386,12 @@ export const pageHints: PageHints = (document) => {
 
 Pass it as the second argument of `getPaginationState`, or as `@pageHints` on `<Paginate />`.
 
+Write your own hints whenever `meta.page` is anything other than the current page number. A
+`{json:api}` API that reports `meta: { page: { total: 10 } }` is the common case: the default
+hints would read that object as the page number. Return `0` for a value the response does not
+expose; `0` means "unknown", and the state falls back to `prev` and `next` navigation for whatever
+it cannot number.
+
 Page hints attach to the shared cache, so they belong to the collection rather than to any one
 component. Every consumer of a collection must pass the **same function reference**: define it
 once at module scope and import it everywhere, as above. The first hint a collection receives is
@@ -348,6 +409,39 @@ when that happens. The existing content stays rendered with `features.isNavigati
 `true` while the new request resolves. A request that resolves to a page of the same collection
 becomes the active page; one that resolves to a different collection resets the state as if it
 were a fresh start. The browser back button therefore works without any extra code.
+
+In this setup the route owns the page number, so the page links should change the URL rather than
+call `setActive`, which loads a page without touching the URL. A numbered link's `index` is its
+page number:
+
+```glimmer-ts [Ember]
+import { LinkTo } from '@ember/routing';
+import { Request } from '@warp-drive/ember';
+import { EachLink, Paginate } from '@warp-drive/ember/experiments';
+
+<template>
+  <Paginate @request={{@model.request}}>
+    <:content as |pages|>
+      <Request @request={{pages.activePageRequest}}>
+        <:content as |result|>
+          {{#each result.data as |post|}}<PostRow @post={{post}} />{{/each}}
+        </:content>
+      </Request>
+
+      <EachLink @pages={{pages}} as |state|>
+        {{#each state.links as |link|}}
+          {{#if link.isReal}}
+            <LinkTo @route="posts" @query={{hash page=link.index}}>{{link.text}}</LinkTo>
+          {{/if}}
+        {{/each}}
+      </EachLink>
+    </:content>
+  </Paginate>
+</template>
+```
+
+with the route declaring `queryParams = { page: { refreshModel: true } }` and building the request
+from `page` as shown in [Coming from Legacy Queries](#coming-from-legacy-queries).
 
 ## API Reference
 
