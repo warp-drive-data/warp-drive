@@ -436,6 +436,11 @@ export function useLegacyStore<T extends Cache>(
     adapterFor(this: Store, modelName: string): MinimumAdapterInterface;
     adapterFor(this: Store, modelName: string, _allowMissing: true): MinimumAdapterInterface | undefined;
     adapterFor(this: Store, modelName: string, _allowMissing?: true): MinimumAdapterInterface | undefined {
+      // createRecord asks for an adapter with _allowMissing to offer id generation;
+      // linksMode has no adapters, so that soft lookup finds none.
+      if (options.linksMode && _allowMissing) {
+        return undefined;
+      }
       assert(
         `useLegacyStore was setup in linksMode. linksMode assumes that all requests have been migrated away from adapters and serializers.`,
         !options.linksMode
