@@ -1,4 +1,4 @@
 {
   "title": "4.x → 5.x",
-  "items": ["index", "two-store-migration", "codemods", "relationships"]
+  "items": ["index", "two-store-migration", "codemods", "relationships", "relationship-usage"]
 }

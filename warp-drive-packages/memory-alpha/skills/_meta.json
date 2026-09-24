@@ -1,8 +1,16 @@
 {
   "title": "Skills",
-  "items": ["schemas", "requests", "holodeck", "contributors"],
+  "items": [
+    "schemas",
+    "requests",
+    "relationships",
+    "holodeck",
+    "contributors"
+  ],
   "webIndex": "overview",
   "files": {
-    "index": { "draft": true }
+    "index": {
+      "draft": true
+    }
   }
 }

@@ -18,6 +18,8 @@ Find the row below that matches what you're doing, or browse the categories in t
 | --- | --- |
 | Define a resource's shape — fields, relationships, identity — for the `Store` | [Define a Resource Schema](/skills/schemas/define-a-resource-schema.md) |
 | Fetch or query remote data through the `Store` so it's cached and reactive | [Fetch and Cache Data](/skills/requests/fetch-and-cache-data.md) |
+| Change a schema's `belongsTo`/`hasMany` field to `resource`/`collection` | [Migrate belongsTo and hasMany Fields to resource and collection](/skills/relationships/migrate-relationship-fields.md) |
+| Move code that consumes an async `belongsTo`/`hasMany` implicitly (`{{#each}}`, `.content`, getters reading through it) toward requests and `resource`/`collection` | [Migrate Async Relationship Usage](/skills/relationships/migrate-async-relationship-usage.md) |
 | Re-record one holodeck mock, or review a test that sets `RECORD` | [Use RECORD in Holodeck Mocks](/skills/holodeck/using-record.md) |
 | You're contributing to WarpDrive itself, not just consuming it as a dependency | [Contributor Skills](/skills/contributors/index.md) |
 
