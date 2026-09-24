@@ -1,11 +1,10 @@
 ---
-title: Index
-description: Start here for task-focused WarpDrive recipes, including the incremental adoption guide for legacy apps and guidance on singular versus plural resource types.
+title: Overview
+description: Start here for short, self-contained WarpDrive recipes, such as basic request usage, auth handlers, and choosing singular or plural resource types, and find where the upgrade guides live.
 ---
 
 # Cookbook
 
-- [Basic Usage Example](./basic-usage.md)
-- [Auth Handler](./auth-handlers.md)
-- [Incremental Adoption Guide](./incremental-adoption-guide.md)
-- [Naming Conventions: Should resource types be singular or plural? What to choose? Why is that?](./naming-conventions.md)
+Short recipes for common tasks, each one self-contained. Pick one from the sidebar.
+
+Guides for moving an existing app onto ***Warp*Drive** live under [Upgrading](/upgrading/).
