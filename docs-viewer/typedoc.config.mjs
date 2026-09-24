@@ -11,6 +11,7 @@ const config = {
     '../packages/adapter',
     '../warp-drive-packages/build-config',
     '../packages/core-types',
+    '../packages/graph',
     '../packages/json-api',
     '../packages/legacy-compat',
     '../packages/holodeck',
