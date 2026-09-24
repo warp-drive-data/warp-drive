@@ -107,7 +107,7 @@ Configure the default host and namespace once, as the app boots. `app/app.js` is
  import Application from '@ember/application';
  import Resolver from 'ember-resolver';
  import loadInitializers from 'ember-load-initializers';
- import config from './config/environment';
+ import config from 'my-app/config/environment';
 +import { setBuildURLConfig } from '@ember-data/request-utils';
 +
 +setBuildURLConfig({
@@ -145,6 +145,9 @@ Now you can move code to the new APIs one call at a time. `findAll` is the easie
 To filter the list, add query params with `buildQueryParams`. In 4.12 it serializes strings, numbers, booleans and arrays but not nested objects, so write a JSON:API filter as a flat bracketed key:
 
 ```js
+import { buildBaseURL, buildQueryParams } from '@ember-data/request-utils';
+
+const url = buildBaseURL({ op: 'query', identifier: { type: 'project' }, resourcePath: 'projects' });
 const query = buildQueryParams({ 'filter[status]': 'active', include: ['owner'] });
 const { content } = await this.store.request({ url: `${url}?${query}`, method: 'GET' });
 ```
