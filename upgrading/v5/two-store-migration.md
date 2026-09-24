@@ -34,16 +34,8 @@ For convenience, some types, constants and symbols that are safe to interop betw
 
 Mirror packages are available for versions `^4.13.0 | >=5.3.8`.
 
-### Coming from ember-data 4.12 or earlier
-
-An app on any `ember-data` release from 1.x through 4.12 can use the two-store approach to move straight to the latest WarpDrive, without stopping at the versions in between.
-
-Those older releases publish only `ember-data` and `@ember-data/*` packages. The latest WarpDrive publishes `@warp-drive/*` packages. No package name appears on both sides, so the two versions install side by side and the second store uses `@warp-drive/*` directly. You don't need the mirror packages.
-
-Set up the second store with the [Migration](./index.md#migration) steps of the 4.x → 5.x guide. That guide is written for mirror packages, so wherever it names a `@warp-drive-mirror/*` package, in an install command, an import, or the build config, use the matching `@warp-drive/*` package instead. Read the mirror package names in the sections below the same way. The existing `ember-data` install keeps providing the `store` service, and the new store is the `v2-store` service you configure yourself.
-
-::: warning ⚠️ 4.13 is the exception
-`ember-data` 4.13 shipped only as canary and alpha releases, so this only affects an app that installed one of those. Unlike 4.12, it already depends on `@warp-drive/core-types` and `@warp-drive/build-config`, and those names collide with the latest WarpDrive. An app on 4.13 gives the second store the `@warp-drive-mirror/*` packages, exactly as the 4.x → 5.x guide shows.
+::: tip On ember-data 4.12 or earlier?
+Its packages never overlap with `@warp-drive/*`, so you don't need the mirror packages. See [Migrating 1.x – 4.x to 5.x](/upgrading/v1-v4/index.md).
 :::
 
 ## TypeScript
@@ -64,6 +56,6 @@ In fact, it is likely that if you want TypeScript for the v2 store that you are 
 
 4. Record instances created by one store may not be used by another store, this primarily means they cannot be set as values of relationships. The records (and data) of each store is a wholly distinct context. You may find [ember-provide-consume-context](https://github.com/customerio/ember-provide-consume-context) useful for helping to manage this. Migrating "leaf first" or well-encapsulated parts of your app will generally lead to the pit-of-success.
 
-For the application-side patterns that go with this setup, see [Migrating route by route](/guides/the-manual/cookbook/migrating-route-by-route.md).
+For the application-side patterns that go with this setup, moving one route at a time, see [Migrating 1.x – 4.x to 5.x](/upgrading/v1-v4/index.md#keep-each-screen-on-one-store). They apply the same way with mirror packages.
 
 

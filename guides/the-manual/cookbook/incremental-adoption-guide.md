@@ -8,8 +8,8 @@ description: Move an existing 4.12 EmberData app still on adapters and serialize
 
 This guide is for existing projects that want to adopt the new APIs of the WarpDrive incrementally.
 
-To move to a new major version, or to a store configuration you want to start clean, one part of
-the app at a time, see [Migrating route by route](./migrating-route-by-route.md) instead.
+To move to the latest WarpDrive one route at a time instead, running it beside your current
+`ember-data`, see [Migrating 1.x – 4.x to 5.x](/upgrading/v1-v4/index.md).
 
 ## Step 1: Upgrade to WarpDrive 4.12.x
 
