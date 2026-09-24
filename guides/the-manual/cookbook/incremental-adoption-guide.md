@@ -4,8 +4,6 @@ description: Move an existing 4.12 EmberData app still on adapters and serialize
 
 # Incremental adoption guide for existing projects
 
-- ⮐ [Cookbook](./index.md)
-
 This guide is for existing projects that want to adopt the new APIs of the WarpDrive incrementally.
 
 To move to the latest WarpDrive one route at a time instead, running it beside your current
@@ -150,7 +148,3 @@ export default class App extends Application {
 
 loadInitializers(App, config.modulePrefix);
 ```
-
----
-
-- ⮐ [Cookbook](./index.md)
