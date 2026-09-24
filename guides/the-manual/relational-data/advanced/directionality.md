@@ -6,8 +6,24 @@ Whether the *other* side knows about it is decided by `options.inverse`.
 ## Unidirectional
 
 ```ts
-{ name: 'author', kind: 'resource', type: 'user', options: { inverse: null, async: false } }
+{
+  name: 'author',
+  kind: 'resource',
+  type: 'user',
+  options: {
+    inverse: null, // [!code highlight]
+    async: false,
+  },
+}
 ```
+
+::: tip `inverse: null` is the declaration
+`inverse: null` is what makes a relationship one-way. For `resource` and `collection` fields it is
+also the default when `inverse` is omitted, but declare it explicitly anyway: it tells readers of
+the schema that the missing reverse field is intentional, and it matches the legacy `belongsTo`
+and `hasMany` kinds, which infer an inverse when the option is omitted and only stay one-way when
+it is `null`.
+:::
 
 With `inverse: null` WarpDrive treats the relationship as one-way. Setting `post.author.data`
 changes only `post`; the `user` has no field that reflects it. Internally the graph still tracks an
