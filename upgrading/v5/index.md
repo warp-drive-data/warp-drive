@@ -11,7 +11,7 @@ outline:
 
 This guide will *likely* work for apps on 3.28 that have resolved EmberData deprecations from the 3.x series.
 
-This guide is primarily intended for apps that got ***"stuck"*** on either 4.6 (due to ModelFragments) or 4.12 (typically due to the ArrayLike deprecation)
+This guide is primarily intended for apps that got ***"stuck"*** on either 4.6 (due to ModelFragments) or 4.12 (typically due to the ArrayLike deprecation). If you are still on `ember-data` 4.12, start at [Migrating from ember-data](/upgrading/ember-data/index.md), which sends you back here for the setup steps.
 
 Note - it is not actually a requirement of 5.x to replace Models with Schemas (nor to replace adapters/serializers with requests). These things are deprecated *in* 5.x, but they still work.
 

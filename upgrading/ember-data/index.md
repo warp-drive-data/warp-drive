@@ -12,7 +12,7 @@ This guide is for apps on any `ember-data` release from 1.x through 4.12 that wa
 to the latest WarpDrive, without stopping at the versions in between.
 
 ::: tip On 4.13?
-`ember-data` 4.13 already shares package names with WarpDrive, so follow
+`ember-data` 4.13, published only as `v4-canary` alphas, already shares package names with WarpDrive, so follow
 [Migrating 4.x to 5.x](/upgrading/v5/index.md) with its mirror packages instead.
 :::
 
@@ -83,9 +83,9 @@ this. Provide `store` once at the top of the slice and let descendants consume i
 so the descendants never encode which store they are on. Kevin Kucharczyk's EmberConf 2024 talk
 [Contextualizing State](https://www.youtube.com/watch?v=ptCNK4ICxJ0) covers the pattern in depth.
 
-Install `ember-provide-consume-context@^0.10.0` or later. Earlier releases depend on
-`@glimmer/component` 1.x directly, which collides with the 2.x an Ember 6.4 or later app uses and
-fails the build.
+Install `ember-provide-consume-context@^0.10.0`, the range `@warp-drive/ember` declares as an
+optional peer dependency. Its `<Request>` and `<Paginate>` components read the store from the same
+`store` context, so providing it once serves them too.
 
 ```js
 // app/components/logs-section.js
@@ -159,7 +159,7 @@ import Component from '@glimmer/component';
 import { service } from '@ember/service';
 import { cacheKeyFor } from '@warp-drive/core';
 import { consume } from 'ember-provide-consume-context';
-import { createRecord, findRecord } from '@warp-drive/utilities/json-api';
+import { createRecord } from '@warp-drive/utilities/json-api';
 
 export default class StatefulButtonComponent extends Component {
   @service('store') v1Store;
@@ -177,8 +177,7 @@ export default class StatefulButtonComponent extends Component {
   async createEntry(params) {
     const record = this.store.createRecord('log-entry', params);
 
-    // the mutation builders set the url and method but leave the body to the app,
-    // so that only the data you intend to send goes over the wire
+    // the mutation builders set the url, method and headers but leave the body to the app
     const init = createRecord(record);
     init.body = JSON.stringify({ data: this.store.cache.peek(cacheKeyFor(record)) });
     await this.store.request(init);
@@ -187,8 +186,7 @@ export default class StatefulButtonComponent extends Component {
 
     if (this.needsV1Record) {
       // `onCreate` belongs to unmigrated code, which only understands v1 records
-      const { content } = await this.v1Store.request(findRecord('log-entry', record.id));
-      result = content.data;
+      result = await this.v1Store.findRecord('log-entry', record.id, { reload: true });
     }
 
     await this.args.onCreate(result);
