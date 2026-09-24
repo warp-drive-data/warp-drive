@@ -1,5 +1,6 @@
 ---
 title: Index
+description: Start here for task-focused WarpDrive recipes, including the incremental adoption guide for legacy apps and guidance on singular versus plural resource types.
 ---
 
 # Cookbook

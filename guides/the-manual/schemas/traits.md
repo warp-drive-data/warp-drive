@@ -1,3 +1,7 @@
+---
+description: Group reusable fields such as timestamps into a Trait, register it with `registerTrait`, and merge it into any ResourceSchema by listing its name in the `traits` array.
+---
+
 # Traits
 
 Traits are reusable groups of fields that you can include in multiple ResourceSchemas.  

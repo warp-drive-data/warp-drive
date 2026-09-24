@@ -1,5 +1,6 @@
 ---
 title: Writing Agent Skills
+description: How to add or change a skill in @warp-drive/memory-alpha so coding agents find and follow it, including the routing tables, file rules, and checks.
 ---
 
 # Writing Agent Skills
@@ -45,6 +46,8 @@ human guide under `guides/`, holds the detail and the skill links it.
 - **Open with an H1 and the trigger.** The file starts with an H1 matching the title you give it
   in `_meta.json`. The first sentence under it is "Use this skill whenever..." followed by the
   situation, so an agent that landed here from the table can confirm it is in the right place.
+  Because a skill has no frontmatter, its entry in the docs site's `llms.txt` is the H1 alone,
+  with no description, so the H1 must say what the skill does.
 - **Then `## Steps`**, numbered, each one an action the agent can take. Put the reason for a rule
   in the step that states it. Existing skills such as
   [Start in a Fresh Worktree](/skills/contributors/start-in-a-fresh-worktree.md) and

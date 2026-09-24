@@ -1,5 +1,6 @@
 ---
 title: Writing API Docs
+description: How to write the TSDoc comments that become the API reference, including which tags to use, what a first sentence and example must do, and what stays out of the published docs.
 ---
 
 # Writing API Docs
@@ -74,6 +75,16 @@ export function add(a: number, b: number): number {}
   [Mark public exports with `@public`](#mark-public-exports-with-public).
 
 ## Content Standards
+
+### The First Sentence Stands Alone
+
+The docs site lifts the first sentence of a symbol's doc comment out of the page and uses it as
+the symbol's one-line entry in `llms.txt`, the index coding agents read to decide which page to
+fetch (see [Frontmatter and Agent-Only Content](./writing-guides.md#frontmatter-and-agent-only-content)).
+Open every comment with one plain sentence that says what the symbol does or is for, naming the
+symbol's purpose rather than restating its name, and that makes sense with nothing after it. Put
+caveats, history, and links in the sentences that follow. A comment that opens with a heading,
+a code block, or a callout gives the index nothing to show.
 
 ### Every Public API Should Have a Usage Example
 
