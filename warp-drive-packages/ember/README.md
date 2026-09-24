@@ -8,13 +8,11 @@
     />
 </p>
 
-![NPM Stable Version](https://img.shields.io/npm/v/ember-data/latest?label=version&style=flat&color=fdb155)
-![NPM Downloads](https://img.shields.io/npm/dm/ember-data.svg?style=flat&color=fdb155)
+![NPM Stable Version](https://img.shields.io/npm/v/%40warp-drive%2Fember/latest?label=version&style=flat&color=fdb155)
+![NPM Downloads](https://img.shields.io/npm/dm/%40warp-drive%2Fember.svg?style=flat&color=fdb155)
 ![License](https://img.shields.io/github/license/warp-drive-data/warp-drive.svg?style=flat&color=fdb155)
-[![EmberJS Discord Community Server](https://img.shields.io/badge/EmberJS-grey?logo=discord&logoColor=fdb155)](https://discord.gg/zT3asNS
-)
-[![WarpDrive Discord Server](https://img.shields.io/badge/WarpDrive-grey?logo=discord&logoColor=fdb155)](https://discord.gg/PHBbnWJx5S
-)
+[![EmberJS Discord Community Server](https://img.shields.io/badge/EmberJS-grey?logo=discord&logoColor=fdb155)](https://discord.gg/zT3asNS)
+[![WarpDrive Discord Server](https://img.shields.io/badge/WarpDrive-grey?logo=discord&logoColor=fdb155)](https://discord.gg/PHBbnWJx5S)
 
 <h3 align="center">Signals Integration and Component API for using <em>Warp</em><strong>Drive</strong> with 🐹 <em style="color: orange">Ember.js</em></h3>
 

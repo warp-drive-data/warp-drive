@@ -11,10 +11,8 @@
 ![NPM Stable Version](https://img.shields.io/npm/v/ember-data/latest?label=version&style=flat&color=fdb155)
 ![NPM Downloads](https://img.shields.io/npm/dm/ember-data.svg?style=flat&color=fdb155)
 ![License](https://img.shields.io/github/license/warp-drive-data/warp-drive.svg?style=flat&color=fdb155)
-[![EmberJS Discord Community Server](https://img.shields.io/badge/EmberJS-grey?logo=discord&logoColor=fdb155)](https://discord.gg/zT3asNS
-)
-[![WarpDrive Discord Server](https://img.shields.io/badge/WarpDrive-grey?logo=discord&logoColor=fdb155)](https://discord.gg/PHBbnWJx5S
-)
+[![EmberJS Discord Community Server](https://img.shields.io/badge/EmberJS-grey?logo=discord&logoColor=fdb155)](https://discord.gg/zT3asNS)
+[![WarpDrive Discord Server](https://img.shields.io/badge/WarpDrive-grey?logo=discord&logoColor=fdb155)](https://discord.gg/PHBbnWJx5S)
 
 <p align="center">
   <br>
@@ -70,6 +68,26 @@ module.exports = async function (defaults) {
 };
 
 ```
+
+<br>
+
+## Documentation
+
+*Get Started* → [Guides](https://warp-drive.io/guides/)
+
+API docs for this package → [@warp-drive/build-config](https://warp-drive.io/api/@warp-drive/build-config/)
+
+<br>
+
+## Code of Conduct
+
+Refer to the [Code of Conduct](https://github.com/warp-drive-data/warp-drive/blob/main/CODE_OF_CONDUCT.md) for community guidelines and inclusivity.
+
+<br>
+
+### License
+
+This project is licensed under the [MIT License](LICENSE.md).
 
 ### ♥️ Credits
 

@@ -64,9 +64,16 @@ checks CI runs on every PR, so a PR opened this way carries everything those che
    | `:label: deprecation`  | a new deprecation                                                                                      |
    | `:label: doc`          | a fix or improvement to guides or API docs                                                             |
    | `:label: test`         | new tests, or a refactor of existing tests                                                             |
-   | `:label: chore`        | internal refactoring with no public API change worth calling out                                       |
+   | `:label: chore`        | internal refactoring, or a fix scoped only to build tooling, lint/CI config, or other dev-experience-only code, with no public API or runtime-behavior change worth calling out |
    | `:label: rfc`          | a new RFC, or a change to one; see [Writing and Implementing RFCs](./writing-and-implementing-rfcs.md) |
    | `:label: dependencies` | a dependency bump on `main`                                                                            |
+
+   `:label: bug` is for a fix a consumer of the published packages could actually hit — a runtime
+   behavior change. A PR that only touches build/lint/infra/DX surfaces (a broken `turbo` task, a
+   flaky CI workflow, an eslint rule, a codemod script) is `:label: chore` even though you're
+   "fixing" something, because nothing in the published packages changes. Title that PR
+   `chore(scope): subject`, not `fix(scope): subject` — the bot in step 5 maps a `fix:`-typed
+   title straight to `:label: bug`, which would misfile it.
 
    Add a target label only when the change needs to be backported: one `:dart:` label per
    release channel — `:dart: beta`, `:dart: release`, `:dart: lts`, `:dart: lts-prev`.

@@ -11,10 +11,8 @@
 ![NPM Stable Version](https://img.shields.io/npm/v/ember-data/latest?label=version&style=flat&color=fdb155)
 ![NPM Downloads](https://img.shields.io/npm/dm/ember-data.svg?style=flat&color=fdb155)
 ![License](https://img.shields.io/github/license/warp-drive-data/warp-drive.svg?style=flat&color=fdb155)
-[![EmberJS Discord Community Server](https://img.shields.io/badge/EmberJS-grey?logo=discord&logoColor=fdb155)](https://discord.gg/zT3asNS
-)
-[![WarpDrive Discord Server](https://img.shields.io/badge/WarpDrive-grey?logo=discord&logoColor=fdb155)](https://discord.gg/PHBbnWJx5S
-)
+[![EmberJS Discord Community Server](https://img.shields.io/badge/EmberJS-grey?logo=discord&logoColor=fdb155)](https://discord.gg/zT3asNS)
+[![WarpDrive Discord Server](https://img.shields.io/badge/WarpDrive-grey?logo=discord&logoColor=fdb155)](https://discord.gg/PHBbnWJx5S)
 
 <p align="center">
   <br>
@@ -41,6 +39,33 @@ This package provides types, type utils and symbols for apps still installing th
 - ![NPM LTS Version](https://img.shields.io/npm/v/%40warp-drive/core-types/lts?label=%40lts&color=0096FF)
 - ![NPM LTS 4.12 Version](https://img.shields.io/npm/v/%40warp-drive/core-types/lts-4-12?label=%40lts-4-12&color=bbbbbb)
 
+## Usage
+
+```ts
+import type { ResourceKey } from '@warp-drive/core-types';
+```
+
+Every type here is re-exported from [@warp-drive/core/types](https://warp-drive.io/api/@warp-drive/core/types/), which is where new code should import it from.
+
+<br>
+
+## Documentation
+
+*Get Started* → [Guides](https://warp-drive.io/guides/)
+
+API docs for this package → [@warp-drive/core-types](https://warp-drive.io/api/@warp-drive/core-types/)
+
+<br>
+
+## Code of Conduct
+
+Refer to the [Code of Conduct](https://github.com/warp-drive-data/warp-drive/blob/main/CODE_OF_CONDUCT.md) for community guidelines and inclusivity.
+
+<br>
+
+### License
+
+This project is licensed under the [MIT License](LICENSE.md).
 
 ### ♥️ Credits
 

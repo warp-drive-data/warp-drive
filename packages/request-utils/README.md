@@ -11,10 +11,8 @@
 ![NPM Stable Version](https://img.shields.io/npm/v/ember-data/latest?label=version&style=flat&color=fdb155)
 ![NPM Downloads](https://img.shields.io/npm/dm/ember-data.svg?style=flat&color=fdb155)
 ![License](https://img.shields.io/github/license/warp-drive-data/warp-drive.svg?style=flat&color=fdb155)
-[![EmberJS Discord Community Server](https://img.shields.io/badge/EmberJS-grey?logo=discord&logoColor=fdb155)](https://discord.gg/zT3asNS
-)
-[![WarpDrive Discord Server](https://img.shields.io/badge/WarpDrive-grey?logo=discord&logoColor=fdb155)](https://discord.gg/PHBbnWJx5S
-)
+[![EmberJS Discord Community Server](https://img.shields.io/badge/EmberJS-grey?logo=discord&logoColor=fdb155)](https://discord.gg/zT3asNS)
+[![WarpDrive Discord Server](https://img.shields.io/badge/WarpDrive-grey?logo=discord&logoColor=fdb155)](https://discord.gg/PHBbnWJx5S)
 
 <p align="center">
   <br>
@@ -36,7 +34,7 @@
 > Newer apps should use [@warp-drive/utilities](https://warp-drive.io/api/@warp-drive/utilities/)
 
 
-This package provides Simple utility function to assist in url building, query params, and other common request operations.
+This package provides simple utility functions to assist in url building, query params, and other common request operations.
 
 It's built for [*Ember***Data**](https://github.com/warp-drive-data/warp-drive/) but useful more broadly if you're looking for lightweight functions to assist in working with urls and query params.
 
@@ -59,10 +57,10 @@ pnpm add @ember-data/request-utils
 
 ## Utils
 
-- [buildBaseUrl]()
-- [sortQueryParams]()
-- [buildQueryParams]()
-- [filterEmpty]()
+- `buildBaseURL`
+- `sortQueryParams`
+- `buildQueryParams`
+- `filterEmpty`
 
 ### As a Library Primitive
 
@@ -84,12 +82,22 @@ const url = `${baseURL}?${buildQueryParams({ name: 'Chris', include:['pets'] })}
 // => 'https://api.example.com/api/v1/emberDevelopers?include=pets&name=Chris'
 ```
 
-This is useful, but not as useful as the REST request builder for query which is sugar over this (and more!):
+<br>
 
-```ts
-import { query } from '@ember-data/rest/request';
+## Documentation
 
-const options = query('ember-developer', { name: 'Chris', include:['pets'] });
-// => { url: 'https://api.example.com/api/v1/emberDevelopers?include=pets&name=Chris' }
-// Note: options will also include other request options like headers, method, etc.
-```
+*Get Started* → [Guides](https://warp-drive.io/guides/)
+
+API docs for this package → [@ember-data/request-utils](https://warp-drive.io/api/@ember-data/request-utils/)
+
+<br>
+
+## Code of Conduct
+
+Refer to the [Code of Conduct](https://github.com/warp-drive-data/warp-drive/blob/main/CODE_OF_CONDUCT.md) for community guidelines and inclusivity.
+
+<br>
+
+### License
+
+This project is licensed under the [MIT License](LICENSE.md).

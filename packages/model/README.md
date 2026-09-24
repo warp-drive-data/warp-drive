@@ -11,10 +11,8 @@
 ![NPM Stable Version](https://img.shields.io/npm/v/ember-data/latest?label=version&style=flat&color=fdb155)
 ![NPM Downloads](https://img.shields.io/npm/dm/ember-data.svg?style=flat&color=fdb155)
 ![License](https://img.shields.io/github/license/warp-drive-data/warp-drive.svg?style=flat&color=fdb155)
-[![EmberJS Discord Community Server](https://img.shields.io/badge/EmberJS-grey?logo=discord&logoColor=fdb155)](https://discord.gg/zT3asNS
-)
-[![WarpDrive Discord Server](https://img.shields.io/badge/WarpDrive-grey?logo=discord&logoColor=fdb155)](https://discord.gg/PHBbnWJx5S
-)
+[![EmberJS Discord Community Server](https://img.shields.io/badge/EmberJS-grey?logo=discord&logoColor=fdb155)](https://discord.gg/zT3asNS)
+[![WarpDrive Discord Server](https://img.shields.io/badge/WarpDrive-grey?logo=discord&logoColor=fdb155)](https://discord.gg/PHBbnWJx5S)
 
 <p align="center">
   <br>
@@ -35,7 +33,7 @@
 
 Runtime classes for use as a source of ResourceSchema and as a ReactiveResource for older "legacy" EmberData/WarpDrive configurations.
 
-If using more recent versions of WarpDrive, install this via [@warp-drive/legacy](https://www.npmjs.com/package/@warp-drive/legacy) instead.
+If you must keep using Models on a recent WarpDrive version, install them via [@warp-drive/legacy](https://www.npmjs.com/package/@warp-drive/legacy) rather than this package.
 
 **Tagged Releases**
 
@@ -78,8 +76,22 @@ export default class PersonModel extends Model {
 }
 ```
 
-### modelName convention
+<br>
 
-By convention, the name of a given model (its `type`) matches the name
- of the file in the `app/models` folder and should be lowercase, singular
- and dasherized.
+## Documentation
+
+*Get Started* → [Guides](https://warp-drive.io/guides/)
+
+API docs for this package → [@ember-data/model](https://warp-drive.io/api/@ember-data/model/)
+
+<br>
+
+## Code of Conduct
+
+Refer to the [Code of Conduct](https://github.com/warp-drive-data/warp-drive/blob/main/CODE_OF_CONDUCT.md) for community guidelines and inclusivity.
+
+<br>
+
+### License
+
+This project is licensed under the [MIT License](LICENSE.md).

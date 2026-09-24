@@ -11,10 +11,8 @@
 ![NPM Stable Version](https://img.shields.io/npm/v/ember-data/latest?label=version&style=flat&color=fdb155)
 ![NPM Downloads](https://img.shields.io/npm/dm/ember-data.svg?style=flat&color=fdb155)
 ![License](https://img.shields.io/github/license/warp-drive-data/warp-drive.svg?style=flat&color=fdb155)
-[![EmberJS Discord Community Server](https://img.shields.io/badge/EmberJS-grey?logo=discord&logoColor=fdb155)](https://discord.gg/zT3asNS
-)
-[![WarpDrive Discord Server](https://img.shields.io/badge/WarpDrive-grey?logo=discord&logoColor=fdb155)](https://discord.gg/PHBbnWJx5S
-)
+[![EmberJS Discord Community Server](https://img.shields.io/badge/EmberJS-grey?logo=discord&logoColor=fdb155)](https://discord.gg/zT3asNS)
+[![WarpDrive Discord Server](https://img.shields.io/badge/WarpDrive-grey?logo=discord&logoColor=fdb155)](https://discord.gg/PHBbnWJx5S)
 
 <p align="center">
   <br>
@@ -34,7 +32,6 @@
 > **⚠️ This is a legacy package** not recommended for new applications.
 >
 > **This is LEGACY documentation** for a feature that is no longer encouraged to be used.
-
 > If starting a new app or thinking of implementing a new serializer, consider writing a [Handler](https://warp-drive.io/api/@warp-drive/core/request/types/Handler)
 > instead to be used with the [RequestManager](https://warp-drive.io/api/@warp-drive/core/classes/RequestManager)
 
@@ -59,13 +56,13 @@ pnpm add @ember-data/serializer
 
 ## 🚀 Setup
 
-If using `ember-data` no additional setup is necesssary.
+If using `ember-data` no additional setup is necessary.
 
 > **Note**
 > When using [ember-data](https://github.com/warp-drive-data/warp-drive/blob/main/packages/-ember-data) the below
 > configuration is handled for you automatically.
 
-To use legacy serializers you will need to have installed and configured the LegacyNetworkHandler from [@ember-data/legacy-compat](https://github.com/warp-drive-data/warp-drive/blob/main/packages/-ember-data)
+To use legacy serializers you will need to have installed and configured the LegacyNetworkHandler from [@ember-data/legacy-compat](https://github.com/warp-drive-data/warp-drive/blob/main/packages/legacy-compat)
 
 ```sh
 pnpm add @ember-data/legacy-compat
@@ -83,38 +80,24 @@ export default class extends Store {
 }
 ```
 
+The store also needs a cache; the [@ember-data/store](https://github.com/warp-drive-data/warp-drive/blob/main/packages/store/README.md) README shows adding one.
 
-## Usage
+<br>
 
-To use as either a per-type or application serializer, export one of the
-implementations within the `serializers/` directory of your app as appropriate.
+## Documentation
 
-For instance, to configure an application serializer to use `JSON:API`
+*Get Started* → [Guides](https://warp-drive.io/guides/)
 
+API docs for this package → [@ember-data/serializer](https://warp-drive.io/api/@ember-data/serializer/)
 
-*app/serializers/application.ts*
-```ts
-export { default } from '@ember-data/serializer/json-api';
-```
+<br>
 
-By default serializers are resolved by looking for a serializer with the same name in the `serializers/` folder as the `type` given to `store.serializerFor(<type>)`, falling back to looking for a serializer named `application`.
+## Code of Conduct
 
-**Overriding Resolution**
+Refer to the [Code of Conduct](https://github.com/warp-drive-data/warp-drive/blob/main/CODE_OF_CONDUCT.md) for community guidelines and inclusivity.
 
-If you would like to avoid using resolver semantics and your application has only one or a few serializers, you may ovveride the `serializerFor` hook on the store.
+<br>
 
-```ts
-import Store from '@ember-data/store';
-import Serializer from '@ember-data/serializer/json-api';
+### License
 
-class extends Store {
-  #serializer = new Serializer();
-
-  serializerFor() {
-    return this.#serializer;
-  }
-}
-```
-
-
-For the full list of APIs available read the code documentation for [@ember-data/serializer](https://api.emberjs.com/ember-data/release/modules/@ember-data%2Fserializer). You may also be interested in learning more about *Ember***Data**'s [Serializer Interface](https://api.emberjs.com/ember-data/release/classes/%3CInterface%3E%20Serializer).
+This project is licensed under the [MIT License](LICENSE.md).
