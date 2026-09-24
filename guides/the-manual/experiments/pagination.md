@@ -139,46 +139,6 @@ surfaces and you use whichever fits. The `<Paginate />` component's `@mode` arg 
 default, or `'infinite'`) narrows what it yields to one surface so the two cannot be mixed by
 accident. The mode is type-only and is never read at runtime.
 
-## Coming from Legacy Queries
-
-The legacy `store.query` and `store.findAll` methods resolve to an array of records. The
-pagination primitives need the request itself, because the request's document is where the
-`links` and `meta` live. Replace the call with `store.request` and a
-[request builder](../requests/builders.md), and keep the page parameters in the query:
-
-::: code-group
-
-```ts [Before]
-export default class PostsRoute extends Route {
-  @service declare store: Store;
-
-  model() {
-    return this.store.query('post', { page: { number: 1, size: 25 } });
-  }
-}
-```
-
-```ts [After]
-import { query } from '@warp-drive/utilities/json-api';
-
-export default class PostsRoute extends Route {
-  @service declare store: Store;
-
-  model() {
-    // Return the request inside an object. A Future is a promise, so returning it
-    // directly would make the route wait for the response and hand the template
-    // the resolved document instead of the request `<Paginate />` needs.
-    return { request: this.store.request(query('post', { 'page[number]': 1, 'page[size]': 25 })) };
-  }
-}
-```
-
-:::
-
-The template then passes `@model.request` to `<Paginate />`. If the request is created in the
-same component that renders it, pass the builder's result as `@query` instead and skip
-`store.request` altogether.
-
 ## Using the Component API
 
 `<Paginate />` is declarative control flow in the style of
@@ -442,6 +402,46 @@ import { EachLink, Paginate } from '@warp-drive/ember/experiments';
 
 with the route declaring `queryParams = { page: { refreshModel: true } }` and building the request
 from `page` as shown in [Coming from Legacy Queries](#coming-from-legacy-queries).
+
+## Coming from Legacy Queries
+
+The legacy `store.query` and `store.findAll` methods resolve to an array of records. The
+pagination primitives need the request itself, because the request's document is where the
+`links` and `meta` live. Replace the call with `store.request` and a
+[request builder](../requests/builders.md), and keep the page parameters in the query:
+
+::: code-group
+
+```ts [Before]
+export default class PostsRoute extends Route {
+  @service declare store: Store;
+
+  model() {
+    return this.store.query('post', { page: { number: 1, size: 25 } });
+  }
+}
+```
+
+```ts [After]
+import { query } from '@warp-drive/utilities/json-api';
+
+export default class PostsRoute extends Route {
+  @service declare store: Store;
+
+  model() {
+    // Return the request inside an object. A Future is a promise, so returning it
+    // directly would make the route wait for the response and hand the template
+    // the resolved document instead of the request `<Paginate />` needs.
+    return { request: this.store.request(query('post', { 'page[number]': 1, 'page[size]': 25 })) };
+  }
+}
+```
+
+:::
+
+The template then passes `@model.request` to `<Paginate />`. If the request is created in the
+same component that renders it, pass the builder's result as `@query` instead and skip
+`store.request` altogether.
 
 ## API Reference
 
