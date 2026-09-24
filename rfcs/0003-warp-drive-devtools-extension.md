@@ -1,10 +1,10 @@
 ---
 title: 'A Browser Devtools Extension'
 warp-drive-rfc: 3
-emberjs-rfc:
-emberjs-pr:
-emberjs-branch:
-sync-hash:
+emberjs-rfc: 1238
+emberjs-pr: https://github.com/emberjs/rfcs/pull/1238
+emberjs-branch: rfc-3-a-browser-devtools-extension
+sync-hash: f335375b734b1feacc4fbf481d19c3830f12686247cace02554eacb4fadffe1a
 stage: proposed
 start-date: 2026-09-23T00:00:00.000Z
 release-date:
