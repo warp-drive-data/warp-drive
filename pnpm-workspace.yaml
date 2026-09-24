@@ -263,7 +263,7 @@ packages:
   - "docs-viewer"
   - "!docs-viewer/projects/*"
   - "tests/*"
-  - "tutorials/*/*"
+  - "packages/tutorials/*/*"
   - "specs"
 
 ## Single source of truth for dependency versions that are duplicated across
