@@ -9,7 +9,9 @@ outline:
 <SinceBadge version="5.9.0" /> &nbsp; authored 2026-09-24
 
 This guide is for apps on any `ember-data` release from 1.x through 4.12 that want to move straight
-to the latest WarpDrive, without stopping at the versions in between.
+to the latest WarpDrive, without stopping at the versions in between. The app itself must run
+`ember-source` 3.28.12 or later, the lowest version the latest WarpDrive supports (see the
+[compatibility table](https://github.com/warp-drive-data/warp-drive/blob/main/README.md#ember-compatibility)).
 
 ::: tip On 4.13?
 `ember-data` 4.13, published only as `v4-canary` alphas, already shares package names with WarpDrive, so follow
