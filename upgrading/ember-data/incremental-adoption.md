@@ -12,9 +12,9 @@ inside the store they already have, while staying on 4.12.
 To move to the latest WarpDrive one route at a time instead, running it beside your current
 `ember-data`, see [Migrating from ember-data](/upgrading/ember-data/index.md).
 
-## Step 1: Upgrade to ember-data 4.12.x
+## Step 1: Upgrade to WarpDrive 4.12.x
 
-This version of `ember-data` is the first version that supports the new APIs. It is also an LTS version, so you can stay on it for a while. You can refer the [WarpDrive Compatibility table](https://github.com/warp-drive-data/warp-drive/blob/main/README.md#ember-compatibility) to see which version is compatible with your Ember version.
+This version of WarpDrive, published as the `ember-data` package, is the first version that supports the new APIs. It is also an LTS version, so you can stay on it for a while. You can refer the [WarpDrive Compatibility table](https://github.com/warp-drive-data/warp-drive/blob/main/README.md#ember-compatibility) to see which version of WarpDrive is compatible with your Ember version.
 
 ## Step 2: Add `Store` service to your application
 
