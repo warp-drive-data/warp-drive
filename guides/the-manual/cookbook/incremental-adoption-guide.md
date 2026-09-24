@@ -1,7 +1,5 @@
 # Incremental adoption guide for existing projects
 
-- ⮐ [Cookbook](./index.md)
-
 This guide is for existing projects that want to adopt the new APIs of the WarpDrive incrementally.
 
 ## Step 1: Upgrade to WarpDrive 4.12.x
@@ -143,7 +141,3 @@ export default class App extends Application {
 
 loadInitializers(App, config.modulePrefix);
 ```
-
----
-
-- ⮐ [Cookbook](./index.md)
