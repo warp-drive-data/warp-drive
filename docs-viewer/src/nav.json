@@ -76,10 +76,6 @@
           "description": "(Legacy) EmberData Store service which coordinates the cache with the network and presentation layers."
         },
         {
-          "name": "@ember-data/graph",
-          "description": "(Internal) Normalized graph for managing relationships between WarpDrive resources"
-        },
-        {
           "name": "@ember-data/request",
           "description": "(Legacy) A simple, small and fast framework-agnostic library to make `fetch` happen"
         },
