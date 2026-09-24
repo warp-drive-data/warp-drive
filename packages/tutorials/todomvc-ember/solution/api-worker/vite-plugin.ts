@@ -23,7 +23,7 @@ async function bundleWorker(root: string): Promise<string> {
       write: false,
       minify: false,
       emptyOutDir: false,
-      lib: { entry: `${root}/${ENTRY}`, formats: ['iife'], name: 'TodoMvcApi', fileName: () => FILE_NAME },
+      lib: { entry: `${root}/${ENTRY}`, formats: ['iife'], name: 'TutorialApi', fileName: () => FILE_NAME },
     },
   })) as Rolldown.RolldownOutput | Rolldown.RolldownOutput[];
   const [output] = Array.isArray(result) ? result : [result];
@@ -35,7 +35,7 @@ async function bundleWorker(root: string): Promise<string> {
 export function apiWorker(): Plugin {
   let root = '';
   return {
-    name: 'todomvc-api-worker',
+    name: 'tutorial-api-worker',
     configResolved(config) {
       root = config.root;
     },
