@@ -9,7 +9,7 @@ outline:
 <SinceBadge version="5.10.0" /> &nbsp; authored 2026-09-24
 
 This guide is for apps whose `async: true` `belongsTo` and `hasMany` relationships are consumed
-*implicitly*: iterated with `{{#each}}`, read through `.content`, or walked by getters and computed
+*implicitly*: iterated with an `#each` block, read through `.content`, or walked by getters and computed
 properties, often several levels deep (`post.author.company.name`). Those sites depend on two
 legacy behaviors, fetch-on-access and promise proxies, that the `resource` and `collection` field
 kinds do not have.
@@ -23,7 +23,7 @@ own and leaves the app working; you can stop between them.
 
 With the legacy kinds, reading an async relationship is a side effect: the first access starts a
 request (fetch-on-access, or "autofetch"), and the value is a proxy that fills in later. A `PromiseManyArray` iterates as empty until
-its contents arrive, so `{{#each post.comments}}` renders nothing, then everything. A
+its contents arrive, so an `#each` over `post.comments` renders nothing, then everything. A
 `PromiseBelongsTo` proxies the record, so `post.author.content` (or `post.author` in a template)
 reads as `null` and later as the author. Getters and computed properties built on these chains
 "work" because each level re-computes when the level above resolves.
@@ -258,7 +258,7 @@ the API to that contract, and remove the loading branches that guarded it.
 
 | Site today | Phase 1 | Phase 2 | Phase 3 |
 | --- | --- | --- | --- |
-| `{{#each post.comments}}` | `<Await @promise={{post.comments}}>` | rendered inside the parent's `<Request>`, which includes `comments`; shim deleted once the field is `async: false` | `{{#each post.comments.data}}` |
+| `#each` over `post.comments` | `<Await>` over `post.comments` | rendered inside the parent's `<Request>`, which includes `comments`; shim deleted once the field is `async: false` | `#each` over `post.comments.data` |
 | `post.author.content.name` in a getter | `getPromiseState(post.author).value?.name` | resolved synchronously; deleted once the field is `async: false` | `post.author.data?.name` |
 | chain three levels deep | one `getPromiseState` or child `<Await>` per level | one `include` path covering the chain | plain `.data` reads |
 | sync utility reading `post.comments` | `post.hasMany('comments').value()` plus an explicit `load()` | `value()` always returns the value; `post.comments` itself once `async: false` | `post.comments.data` |

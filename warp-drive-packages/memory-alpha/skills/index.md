@@ -10,7 +10,7 @@ complete a task.
 | Define a resource's shape — fields, relationships, identity — for the `Store` | `schemas/define-a-resource-schema.md` |
 | Fetch or query remote data through the `Store` so it's cached and reactive | `requests/fetch-and-cache-data.md` |
 | Change a schema's `belongsTo`/`hasMany` field to `resource`/`collection` | `relationships/migrate-relationship-fields.md` |
-| Move code that consumes an async `belongsTo`/`hasMany` implicitly (`{{#each}}`, `.content`, getters reading through it) toward requests and `resource`/`collection` | `relationships/migrate-async-relationship-usage.md` |
+| Move code that consumes an async `belongsTo`/`hasMany` implicitly (`#each` blocks, `.content`, getters reading through it) toward requests and `resource`/`collection` | `relationships/migrate-async-relationship-usage.md` |
 | Re-record one holodeck mock, or review a test that sets `RECORD` | `holodeck/using-record.md` |
 | You're contributing to WarpDrive itself, not just consuming it as a dependency | `contributors/index.md` |
 
