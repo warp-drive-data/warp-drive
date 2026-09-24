@@ -24,9 +24,9 @@
  * {
  *   url: 'https://api.example.com/v1/ember-developers/1?include=friends,pets',
  *   method: 'GET',
-     headers: <Headers>,
-      // => 'Accept': 'application/vnd.api+json'
-      // => 'Content-Type': 'application/vnd.api+json'
+ *   headers: <Headers>,
+ *     // => 'Accept': 'application/vnd.api+json'
+ *     // => 'Content-Type': 'application/vnd.api+json'
  *   op: 'findRecord';
  *   records: [{ type: 'ember-developer', id: '1' }]
  * }
