@@ -21,15 +21,22 @@ whoever finds them years from now.
   near the top of the page.
 - **Content is organized by major version.** Each major version gets its own sub-section (e.g.
   [4.x → 5.x](/upgrading/v5/)) containing that version's upgrade guide plus any deprecation or
-  feature-specific migration guides written for it.
+  feature-specific migration guides written for it. The one exception is
+  [ember-data → WarpDrive](/upgrading/ember-data/), for apps that start from `ember-data` packages
+  alone.
 
 See [Upgrading and Blog Pages](/guides/contributing/writing-documentation/writing-guides.md#upgrading-and-blog-pages)
 for the authoring rules that keep these guarantees true.
 
-## Major Versions
+## Which Guide Do I Need?
 
-- [1.x – 4.x → 5.x](/upgrading/v1-v4/)
-- [4.x → 5.x](/upgrading/v5/)
+Check whether your app already depends on any `@warp-drive/*` package.
+
+- **No, only `ember-data` or `@ember-data/*` packages** (any release up to 4.12): start at
+  [ember-data → WarpDrive](/upgrading/ember-data/). It runs the latest WarpDrive beside your
+  current `ember-data` and moves one route at a time.
+- **Yes** (4.13 and later, including 5.x): start at [4.x → 5.x](/upgrading/v5/), which uses
+  mirror packages to run both versions side by side.
 
 ## Deprecations
 

@@ -35,7 +35,7 @@ For convenience, some types, constants and symbols that are safe to interop betw
 Mirror packages are available for versions `^4.13.0 | >=5.3.8`.
 
 ::: tip On ember-data 4.12 or earlier?
-Its packages never overlap with `@warp-drive/*`, so you don't need the mirror packages. See [Migrating 1.x – 4.x to 5.x](/upgrading/v1-v4/index.md).
+Its packages never overlap with `@warp-drive/*`, so you don't need the mirror packages. See [Migrating from ember-data](/upgrading/ember-data/index.md).
 :::
 
 ## TypeScript
@@ -56,6 +56,6 @@ In fact, it is likely that if you want TypeScript for the v2 store that you are 
 
 4. Record instances created by one store may not be used by another store, this primarily means they cannot be set as values of relationships. The records (and data) of each store is a wholly distinct context. You may find [ember-provide-consume-context](https://github.com/customerio/ember-provide-consume-context) useful for helping to manage this. Migrating "leaf first" or well-encapsulated parts of your app will generally lead to the pit-of-success.
 
-For the application-side patterns that go with this setup, moving one route at a time, see [Migrating 1.x – 4.x to 5.x](/upgrading/v1-v4/index.md#keep-each-screen-on-one-store). They apply the same way with mirror packages.
+For the application-side patterns that go with this setup, moving one route at a time, see [Migrating from ember-data](/upgrading/ember-data/index.md#keep-each-screen-on-one-store). They apply the same way with mirror packages.
 
 

@@ -1,10 +1,10 @@
 ---
-title: Migrating 1.x – 4.x to 5.x
+title: Migrating from ember-data
 outline:
   level: 2,3
 ---
 
-# Migrating 1.x – 4.x to 5.x
+# Migrating from ember-data
 
 <SinceBadge version="5.9.0" /> &nbsp; authored 2026-09-24
 
@@ -21,8 +21,8 @@ its own request pipeline, so a second store is a place to put the setup you are 
 while the first one keeps serving the code you have not touched yet. You migrate one route at a
 time instead of landing one enormous change.
 
-To adopt newer APIs inside the store you already have, without a second one, see the
-[Incremental adoption guide](/guides/the-manual/cookbook/incremental-adoption-guide.md) instead.
+To adopt newer APIs inside the store you already have, without a second one, see
+[Adopting the Request APIs on 4.12](/upgrading/ember-data/incremental-adoption.md) instead.
 
 ## Set up the second store
 
