@@ -380,7 +380,7 @@ catalog:
   mocha: ^12.0.2
   morgan: ^1.12.1
   oxfmt: ^0.68.0
-  oxlint: ^1.83.0
+  oxlint: ^1.85.0
   oxlint-tsgolint: ^7.0.2002
   pretender: ^3.4.7
   prettier: ^3.9.8
