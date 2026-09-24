@@ -649,14 +649,174 @@ const EDIT_SOURCE_OVERRIDES: Record<string, string> = {
   '@warp-drive/memory-alpha/index.md': 'warp-drive-packages/memory-alpha/skills/index.md',
 };
 
-function buildFrontmatter(content: string, file: string): string {
+/**
+ * Frontmatter for a generated API page. `title` and `description` exist for the `llms.txt`
+ * index vitepress-plugin-llms writes: each page becomes `- [title](url): description`, where
+ * `title` defaults to the page's H1 (a raw generic signature full of nested links for e.g.
+ * `ConfiguredStore<T extends { cache: Cache }, ...>`) and `description` is omitted unless set.
+ * Both are emitted as JSON strings, which are valid YAML double-quoted scalars, so colons,
+ * quotes and backslashes in a summary can't break the block.
+ */
+function buildFrontmatter(content: string, file: string, meta: { title?: string; description?: string }): string {
   const match = DEFINED_IN_PATTERN.exec(content);
   const editSource = EDIT_SOURCE_OVERRIDES[file] ?? match?.[1] ?? match?.[2];
+  const title = meta.title ? `title: ${JSON.stringify(meta.title)}\n` : '';
+  const description = meta.description ? `description: ${JSON.stringify(meta.description)}\n` : '';
   return `---
-outline:
+${title}${description}outline:
   level: [2, 3]${editSource ? `\neditSource: ${editSource}` : ''}
 ---
 `;
+}
+
+// Sections consolidateOverloadSignatures leaves in place; an overloaded function's summary
+// lives under its first `## Call Signature` rather than directly under the H1. The heading may
+// carry a `<StatusBadge>` when that overload is deprecated.
+const OVERLOAD_HEADING_RE = /^#{2,6} (?:Call|Get|Set) Signature(?:\s*<[A-Z]\w*\b[^>]*\/>)*$/;
+// A line made only of self-closing Vue components (`<ModuleBadge ... />`, `<KindBadge ... />`,
+// `<SinceBadge ... />`, `<StatusBadge ... />`, `<Badge ... />`, ...), possibly several per line.
+const COMPONENT_ONLY_LINE_RE = /^(?:<[A-Z]\w*\b[^>]*\/>\s*)+$/;
+// How typedoc-plugin-markdown renders a modifier tag (`@hideconstructor`, `@decorator`, ...)
+// that has no `<StatusBadge>` treatment: a lone bold code span such as **`Hideconstructor`** or
+// **`Class Decorator`**.
+const MODIFIER_FLAG_LINE_RE = /^\*\*`[A-Z][\w ]*`\*\*$/;
+// The few HTML entities TSDoc summaries in this repo actually use.
+const HTML_ENTITIES: Record<string, string> = {
+  '&mdash;': '—',
+  '&ndash;': '–',
+  '&amp;': '&',
+  '&lt;': '<',
+  '&gt;': '>',
+  '&quot;': '"',
+  '&#x20;': ' ',
+  '&nbsp;': ' ',
+};
+const SUMMARY_MAX_LENGTH = 200;
+// Abbreviations whose trailing period must not be read as the end of a sentence.
+const ABBREVIATION_RE = /(?:^|\s|\()(?:e\.g|i\.e|etc|vs|cf|approx)$/i;
+
+/**
+ * Strips markdown down to plain text for a one-line summary: links become their text, emphasis
+ * markers and backslash escapes go, code spans stay intact.
+ */
+function markdownToPlainText(text: string): string {
+  let plain = text
+    // images first so their `![alt](src)` doesn't survive as `!alt`
+    .replace(/!\[[^\]]*\]\([^)]*\)/g, '')
+    // `[text](url)` → text (the text may itself hold a code span, e.g. [`Cache`](../Cache.md))
+    .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')
+    .replace(/^>\s?/, '');
+  // Remove emphasis markers outside code spans, leaving the code spans untouched.
+  plain = plain
+    .split(/(`[^`]*`)/)
+    .map((segment, i) => {
+      if (i % 2 === 1) return segment;
+      return segment
+        .replace(/\*+/g, '')
+        .replace(/(^|[\s(])_(\S(?:[^_]*?\S)?)_(?=[\s.,;:!?)]|$)/g, '$1$2')
+        .replace(/\\([<>_*{}|[\]#`\\])/g, '$1')
+        .replace(/&[a-z]+;|&#x20;/g, (entity) => HTML_ENTITIES[entity] ?? entity);
+    })
+    .join('');
+  return plain.replace(/\s+/g, ' ').trim();
+}
+
+/** Cuts `text` at the first sentence end: a `.` outside a code span followed by whitespace and an
+ * uppercase letter or a code span, or ending the text. Returns `text` unchanged if none is found. */
+function firstSentence(text: string): string {
+  let inCode = false;
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i];
+    if (ch === '`') {
+      inCode = !inCode;
+      continue;
+    }
+    if (inCode || ch !== '.') continue;
+    if (ABBREVIATION_RE.test(text.slice(0, i))) continue;
+    const rest = text.slice(i + 1);
+    if (rest === '' || /^\s+(?:[A-Z]|`)/.test(rest)) return text.slice(0, i + 1);
+  }
+  return text;
+}
+
+/**
+ * The first sentence of a generated API page's TSDoc summary, as plain text, for the
+ * `description` frontmatter that vitepress-plugin-llms appends to the page's `llms.txt` entry.
+ * Walks the post-processed page (H1 already rewritten, module H1 already stripped) from the top,
+ * skipping the H1, blank lines, `Defined in:` lines, fenced code blocks, `:::` containers,
+ * badge/component-only lines and the `## Call Signature` wrapper an overloaded function's summary
+ * sits under, and stops at the first other heading. Returns `undefined` when the page has no
+ * summary before its first section (e.g. an interface whose page opens with `## Properties`).
+ */
+function extractApiSummary(content: string): string | undefined {
+  const lines = content.split('\n');
+  const paragraph: string[] = [];
+  let inFence = false;
+  let inContainer = false;
+
+  for (const rawLine of lines) {
+    const line = rawLine.trimEnd();
+    const trimmed = line.trim();
+
+    if (inFence) {
+      if (/^```/.test(trimmed)) inFence = false;
+      continue;
+    }
+    if (inContainer) {
+      if (/^:::\s*$/.test(trimmed)) inContainer = false;
+      continue;
+    }
+
+    if (trimmed === '') {
+      if (paragraph.length) break;
+      continue;
+    }
+    if (/^```/.test(trimmed)) {
+      if (paragraph.length) break;
+      inFence = true;
+      continue;
+    }
+    if (/^:::/.test(trimmed)) {
+      if (paragraph.length) break;
+      inContainer = true;
+      continue;
+    }
+    if (/^#{1,6} /.test(trimmed)) {
+      if (paragraph.length) break;
+      if (trimmed.startsWith('# ') || OVERLOAD_HEADING_RE.test(trimmed)) continue;
+      break;
+    }
+    if (paragraph.length === 0) {
+      if (trimmed.startsWith('Defined in:')) continue;
+      if (trimmed.startsWith('[Documentation](')) continue;
+      if (COMPONENT_ONLY_LINE_RE.test(trimmed)) continue;
+      if (MODIFIER_FLAG_LINE_RE.test(trimmed)) continue;
+      if (/^[#|<-]/.test(trimmed)) return undefined;
+    }
+    paragraph.push(trimmed);
+  }
+
+  if (paragraph.length === 0) return undefined;
+  let summary = firstSentence(markdownToPlainText(paragraph.join(' ')));
+  if (summary.length > SUMMARY_MAX_LENGTH) {
+    const cut = summary.lastIndexOf(' ', SUMMARY_MAX_LENGTH);
+    summary = `${summary.slice(0, cut > 0 ? cut : SUMMARY_MAX_LENGTH).replace(/[\s,;:]+$/, '')}…`;
+  }
+  return summary || undefined;
+}
+
+/**
+ * The bare symbol name for a member page's `title` frontmatter, so its `llms.txt` entry (and
+ * `<title>`) reads `ConfiguredStore` rather than TypeDoc's full H1 of `ConfiguredStore\<T
+ * *extends* \{ `cache`: [`Cache`](../types/cache/types/Cache.md); ... \}\>`: drops `~~`
+ * deprecation strike-through, everything from the generic parameter list on, and the backslash
+ * escapes TypeDoc adds to heading text (`DEPRECATE\_FOO` → `DEPRECATE_FOO`). A `@title` override
+ * that is itself a tag (e.g. `<Await />`) has nothing before its `<`, so it's kept whole.
+ */
+function apiTitleFromDisplayTitle(displayTitle: string): string {
+  const unstruck = displayTitle.replace(/~~/g, '');
+  const bare = unstruck.replace(/\\?<[\s\S]*$/, '').trim() || unstruck.trim();
+  return bare.replace(/\\([<>_*{}|[\]#`\\])/g, '$1');
 }
 const ApiDocumentation = `# API Docs\n\n`;
 
@@ -1194,6 +1354,8 @@ export async function postProcessApiDocs() {
     // conceptually a "Component", a variable that's a "Handler"). A `@title <Text>` tag overrides
     // the name itself (e.g. showing a component's name as `<Await />`).
     const defaultKind = fileKindLabel(file);
+    // Frontmatter `title`: the bare symbol name on a member page, the module path on a module page.
+    let apiTitle = importPath;
     if (defaultKind) {
       const kindOverride = extractTopLevelTagValue(newContent, 'Badge');
       newContent = kindOverride.content;
@@ -1202,6 +1364,7 @@ export async function postProcessApiDocs() {
       const kind = kindOverride.value ?? defaultKind;
       newContent = newContent.replace(/^# ([^\n]+)$/m, (_match, title: string) => {
         const displayTitle = titleOverride.value ? escapeHeadingText(titleOverride.value) : title;
+        apiTitle = apiTitleFromDisplayTitle(displayTitle);
         return `# ${kindBadgeMarkup(kind)} ${displayTitle}`;
       });
     }
@@ -1240,7 +1403,8 @@ export async function postProcessApiDocs() {
     }
 
     // insert frontmatter
-    newContent = buildFrontmatter(newContent, file) + newContent;
+    newContent =
+      buildFrontmatter(newContent, file, { title: apiTitle, description: extractApiSummary(newContent) }) + newContent;
 
     // if the content has a modules list, we remove it
     if (newContent.includes('## Modules')) {
