@@ -9,9 +9,11 @@ time instead of landing one enormous change.
 
 Two migrations fit this shape.
 
-- **A new major version of WarpDrive.** The second store runs the
-  [mirror packages](/upgrading/v5/two-store-migration.md), which let two versions of the library
-  live in one app.
+- **A new major version of WarpDrive.** When both versions publish packages under the same names,
+  the second store runs the [mirror packages](/upgrading/v5/two-store-migration.md), which let two
+  versions of the library live in one app. Coming from `ember-data` 4.12 or earlier, the names
+  don't overlap and you skip the mirrors, as
+  [Coming from ember-data 4.12 or earlier](#coming-from-ember-data-4-12-or-earlier) explains.
 - **A new version of your API, or a store configuration you want to start clean.** Both stores run
   the same WarpDrive version with different handlers, schemas, or caches.
 
@@ -23,8 +25,8 @@ path. Reach for two stores when you also want to change versions or drop adapter
 ## Before you start
 
 Configure the second store first. Mirror packages only matter when the two stores run different
-versions, but a second store always needs a full configuration of its own, covering presentation
-hooks, schemas, the request manager, and the cache.
+versions of the same packages, but a second store always needs a full configuration of its own,
+covering presentation hooks, schemas, the request manager, and the cache.
 [Step 4 of the upgrade guide](/upgrading/v5/index.md#step-4-configure-the-store) shows that
 configuration, and applies to the same-version case too.
 [Migrating Between Versions Using The Two Store Approach](/upgrading/v5/two-store-migration.md)
@@ -42,6 +44,30 @@ of the constraints.
 
 That constraint is what decides the order of the work. Move a vertical slice at a time, such as one
 route and everything below it, so every record in a single render comes from one store.
+
+## Coming from ember-data 4.12 or earlier
+
+An app on any `ember-data` release from 1.x through 4.12 can move straight to the latest WarpDrive
+this way, without stopping at the versions in between. WarpDrive is what EmberData is called from
+5.x on, and 5.x is the current major version.
+
+Those older releases publish only `ember-data` and `@ember-data/*` packages. The latest WarpDrive
+publishes `@warp-drive/*` packages. No package name appears on both sides, so the two versions
+install side by side and the second store uses `@warp-drive/*` directly. You don't need the mirror
+packages.
+
+Set up the second store with the [Migration](/upgrading/v5/index.md#migration) steps of the 4.x
+to 5.x upgrade guide. That guide is written for mirror packages, so wherever it names a
+`@warp-drive-mirror/*` package, in an install command, an import, or the build config, use the
+matching `@warp-drive/*` package instead. The existing `ember-data` install keeps providing the
+`store` service, and the new store is the `v2-store` service you configure yourself.
+
+::: warning ⚠️ 4.13 is the exception
+`ember-data` 4.13 shipped only as canary and alpha releases, so this only affects an app that
+installed one of those. Unlike 4.12, it already depends on `@warp-drive/core-types` and
+`@warp-drive/build-config`, and those names collide with the latest WarpDrive. An app on 4.13 gives
+the second store the `@warp-drive-mirror/*` packages, exactly as the upgrade guide shows.
+:::
 
 ## Move one route at a time
 
