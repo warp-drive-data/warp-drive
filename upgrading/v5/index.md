@@ -262,7 +262,7 @@ ArrayLike API usage is likely to give you the most issues here, if anything does
 ### Step 1 - Install the Mirror Packages
 
 ::: tip On ember-data 4.12 or earlier?
-You can skip the mirror packages. See [Migrating 1.x – 4.x to 5.x](/upgrading/v1-v4/index.md).
+You can skip the mirror packages. See [Migrating from ember-data](/upgrading/ember-data/index.md).
 :::
 
 ::: code-group

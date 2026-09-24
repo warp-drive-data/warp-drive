@@ -134,5 +134,9 @@ Within a major version's directory:
   feature-specific migration guides written against it.
 - `blog/<major>/` holds posts published while that major version was current.
 
+The one exception is `upgrading/ember-data/`, which holds guides for apps that depend only on
+`ember-data` and `@ember-data/*` packages (releases up to 4.12). Those apps can install the latest
+`@warp-drive/*` packages directly, so their guides aren't tied to a single target major version.
+
 Add new major-version directories to the section's root `_meta.json` `items` list so they sort
 in release order rather than alphabetically.
