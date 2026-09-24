@@ -1,9 +1,18 @@
 import { entryPoints } from './tsdown.config.mjs';
 
-// Entry points listed under "non-public" in tsdown.config.mjs that do not carry a
-// -private segment in their path. They exist for sibling @warp-drive/* packages and
-// get no page here.
-const nonPublicEntryPoints = ['./src/types/runtime.ts', './src/utils/string.ts'];
+// Entry points that would render an empty page and so get none here:
+// - types/runtime and utils/string are listed under "non-public" in
+//   tsdown.config.mjs without a -private segment in their path; they exist for
+//   sibling @warp-drive/* packages.
+// - build-config/env and build-config/macros re-export modules that
+//   @warp-drive/build-config marks @hidden with every member @private, so
+//   TypeDoc drops all of their members and only an empty shell would remain.
+const nonPublicEntryPoints = [
+  './src/types/runtime.ts',
+  './src/utils/string.ts',
+  './src/build-config/env.ts',
+  './src/build-config/macros.ts',
+];
 
 /** @type {Partial<import("typedoc").TypeDocOptions>} */
 const config = {

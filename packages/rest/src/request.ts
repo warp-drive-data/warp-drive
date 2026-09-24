@@ -1,5 +1,3 @@
-// oxlint-disable-next-line no-unused-vars
-import type { RequestManager, Store } from '@warp-drive/core';
 /**
 This package provides utilities for working with **REST**ful APIs with [*Ember***Data**](https://github.com/warp-drive-data/warp-drive/).
 
@@ -26,8 +24,8 @@ const options = findRecord('ember-developer', '1', { include: ['pets', 'friends'
 * /
 ```
 
-Request builder output is ready to go for use with {@link Store.request | store.request},
-{@link RequestManager.request | manager.request} and most conventional REST APIs.
+Request builder output is ready to go for use with {@link @warp-drive/core!Store.request | store.request},
+{@link @warp-drive/core!RequestManager.request | manager.request} and most conventional REST APIs.
 
 Resource types are pluralized and camelized for the url.
 
@@ -36,6 +34,11 @@ the query or values in an array changes.
 
 URLs follow the most common REST format (camelCase pluralized resource types).
 
+These builders are re-exported from {@link @warp-drive/utilities!rest | @warp-drive/utilities/rest}; new code should import from there.
+
  * @module
  */
+// oxlint-disable-next-line no-unused-vars
+import type { RequestManager, Store } from '@warp-drive/core';
+
 export { findRecord, query, deleteRecord, createRecord, updateRecord } from '@warp-drive/utilities/rest';
