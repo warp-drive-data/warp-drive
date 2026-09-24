@@ -19,6 +19,7 @@ const TypeDocSidebar = await postProcessApiDocs();
 import { ViteImageOptimizer } from 'vite-plugin-image-optimizer';
 import { groupIconMdPlugin, groupIconVitePlugin } from 'vitepress-plugin-group-icons';
 import llmstxt from 'vitepress-plugin-llms';
+import { warpDriveLLMDocs } from '../../src/plugin-llm-docs.ts';
 
 const require = createRequire(import.meta.url);
 
@@ -156,6 +157,7 @@ export default withPwa(
         },
         plugins: [
           llmstxt(),
+          warpDriveLLMDocs(),
           plugin,
           ViteImageOptimizer({
             // // Configure optimization options for different image formats

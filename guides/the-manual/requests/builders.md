@@ -1,3 +1,12 @@
+---
+llm:
+  status: recommended
+  context: >
+    Builders are pure functions that produce a typed RequestInfo object.
+    This is the recommended way to construct requests in WarpDrive v5+.
+    Prefer builders over constructing request objects inline.
+---
+
 # Builders
 
 Builders are simple functions that produce a json [request object](/api/@warp-drive/core/types/request/types/RequestInfo). Builders help you to write organized, reusable requests.
