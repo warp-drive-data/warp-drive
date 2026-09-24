@@ -327,6 +327,7 @@ export {
   type ContentFeatures,
   type RecoveryFeatures,
   type AutorefreshBehaviorCombos,
+  type AutorefreshBehaviorType,
 } from './signals/-private';
 
 export {
