@@ -75,30 +75,34 @@ export { Request as default } from '@warp-drive/ember';
 
 ==<Paginate />
 
+`<EachLink />` is only ever used inside a `<Paginate />` content block, so re-export both.
+
 **Definition**
+
+::: code-group
 
 ```ts [app/components/paginate.ts]
 export { Paginate as default } from '@warp-drive/ember/experiments';
 ```
 
-**Usage**
-
-```hbs [app/templates/users.hbs]
-<Paginate @request={{this.usersRequest}}></Paginate>
-```
-
-==<EachLink />
-
-**Definition**
-
 ```ts [app/components/each-link.ts]
 export { EachLink as default } from '@warp-drive/ember/experiments';
 ```
 
+:::
+
 **Usage**
 
 ```hbs [app/templates/users.hbs]
-<EachLink @pages={{pages}}></EachLink>
+<Paginate @request={{this.usersRequest}}>
+  <:content as |pages|>
+    <EachLink @pages={{pages}} as |state|>
+      {{#each state.links as |link|}}
+        <button {{on "click" link.setActive}}>{{link.text}}</button>
+      {{/each}}
+    </EachLink>
+  </:content>
+</Paginate>
 ```
 
 :::
