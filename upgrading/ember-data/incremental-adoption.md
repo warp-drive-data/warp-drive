@@ -14,128 +14,100 @@ To move to the latest WarpDrive one route at a time instead, running it beside y
 
 ## Step 1: Upgrade to WarpDrive 4.12.x
 
-This version of WarpDrive, published as the `ember-data` package, is the first version that supports the new APIs. It is also an LTS version, so you can stay on it for a while. You can refer the [WarpDrive Compatibility table](https://github.com/warp-drive-data/warp-drive/blob/main/README.md#ember-compatibility) to see which version of WarpDrive is compatible with your Ember version.
+This version of WarpDrive, published as the `ember-data` package, is the first version that supports the new APIs. It is also an LTS version, so you can stay on it for a while. See the [compatibility table](https://github.com/warp-drive-data/warp-drive/blob/main/README.md#ember-compatibility) for the Ember versions each WarpDrive release supports.
 
-## Step 2: Add `Store` service to your application
+Everything below is written against 4.12.8, the last 4.12 release. The request builders (`findRecord`, `query` and the rest) and the `@ember-data/rest` and `@ember-data/active-record` packages arrived in 5.3, so on 4.12 you build each request yourself.
 
-You will need to create your own store service. Before, a store service was automatically injected by 'ember-data'.
-Here is how you do it:
+## Step 2: Add a `Store` service to your application
 
-```js
+Create your own store service. Until now `ember-data` provided one for you:
+
+```js [app/services/store.js]
 // eslint-disable-next-line ember/use-ember-data-rfc-395-imports
 import Store from 'ember-data/store';
 
 export default class AppStore extends Store {}
-
 ```
 
-Notice we still want to import the `Store` class from `ember-data/store` package. You might have a lint rule that says don't do it. You can disable it for this import. The reason we want to import it from `ember-data/store` is because we want to use WarpDrive models, serializers, adapters, etc. while alongside we want to start utilizing new APIs.
+Import the `Store` class from `ember-data/store`, even if a lint rule tells you not to, and disable the rule for this import. That class keeps your models, adapters and serializers working while you start using the new APIs beside them.
 
-> Note: You can also use `@ember-data/store` package, but you will need to configure a lot more to make things work to use old APIs. We recommend using `ember-data/store` package to avoid confusion.
+> Note: You can extend `@ember-data/store` instead, but then you have to configure the legacy APIs yourself. `ember-data/store` does it for you.
 
-> Note: Because we are extending `ember-data/store`, it is still v1 addon, so things might not work for you if you are using typescript. We recommend to have `store.js` file for now.
+> Note: `ember-data/store` is a v1 addon and 4.12 ships no types for it, so keep this file as `store.js` even in a TypeScript app.
 
-## Step 3: Add `RequestManager` to your application
+## Step 3: Add your own handlers to the `RequestManager`
 
-Now let's configure a `RequestManager` for our store. The RequestManager is responsible for sending requests to the server. It fulfills requests using a chain-of-responsibility pipeline, which means you can add your own request handlers to it.
+The store sends requests through a `RequestManager`, which fulfills them with a chain-of-responsibility pipeline of handlers. The store from `ember-data/store` already sets one up with `LegacyNetworkHandler`, `Fetch` and `CacheHandler`. To add handlers of your own, you replace it with one that lists yours too.
 
-First you need to install [`@ember-data/request`](https://github.com/warp-drive-data/warp-drive/tree/main/packages/request) and [`@ember-data/legacy-compat`](https://github.com/warp-drive-data/warp-drive/tree/main/packages/legacy-compat) packages. The first contains the `RequestManager` service and a few request handlers, while the second has `LegacyNetworkHandler` that will handle all old-style `this.store.*` calls.
+`ember-data` already depends on `@ember-data/request`, `@ember-data/legacy-compat` and `@ember-data/store`. Add them to your app's own `package.json`, at the same version as `ember-data`, so that your app can import from them:
 
-Here is how your own `RequestManager` service may look like:
+```sh
+pnpm add @ember-data/request@4.12.8 @ember-data/legacy-compat@4.12.8 @ember-data/store@4.12.8
+```
 
-```ts
+Then set up the `RequestManager` in the store's constructor:
+
+```js [app/services/store.js]
 // eslint-disable-next-line ember/use-ember-data-rfc-395-imports
 import Store from 'ember-data/store';
-
 import { CacheHandler } from '@ember-data/store';
 import { LegacyNetworkHandler } from '@ember-data/legacy-compat';
-import type { Handler, NextFn, RequestContext } from '@ember-data/request';
 import RequestManager from '@ember-data/request';
 import Fetch from '@ember-data/request/fetch';
 
 /* eslint-disable no-console */
-const TestHandler: Handler = {
-  async request<T>(context: RequestContext, next: NextFn<T>) {
-    console.log('TestHandler.request', context.request);
-    const result = await next(Object.assign({}, context.request));
-    console.log('TestHandler.response after fetch', result.response);
+const LogHandler = {
+  async request(context, next) {
+    console.log('LogHandler.request', context.request);
+    const result = await next(context.request);
+    console.log('LogHandler.response', result.response);
     return result;
   },
 };
 
 export default class AppStore extends Store {
-  requestManager = new RequestManager()
-    .use([LegacyNetworkHandler, TestHandler, Fetch])
-    .useCache(CacheHandler);
-}
-
-```
-
-Let's go over the code above:
-
-1. `LegacyNetworkHandler` is the handler that is responsible for sending requests to the server using the old APIs. It will interrupt handlers chain if it detects request using old APIs. It will process it as it used to be doing with Adapters/Fetch/Serializers workflow.
-
-2. Next is `TestHandler`. It is a handler that is responsible for logging requests. It is a quick example of how you can add your own handlers to the request manager. We will take a look at more useful examples later.
-
-3. Lastly `Fetch`. It is a handler that sends requests to the server using the `fetch` API. It expects responses to be JSON and when in use it should be the last handler you put in the chain. After finishing each request it will convert the response into json and pass it back to the handlers chain in reverse order as the request context's response. So `TestHandler` will receive `response` property first, and so on if we would have any.
-
-The CacheHandler is a special handler that enables requests to fulfill from and update the cache associated to this store.
-
-You can read more about request manager in the [request manager guide](/guides/the-manual/requests/index.md).
-
-## Step 4: Install `@ember-data/json-api`, `@ember-data/request-utils` packages
-
-If you were using JSON:API adapter/serializer for your backend communication, you can use `@ember-data/json-api` package. It is a package that contains predefined builders for JSON:API requests. You can read more about it in the [`@ember-data/json-api`](https://github.com/warp-drive-data/warp-drive/tree/main/packages/json-api).
-
-If you have different backend format - WarpDrive provides you with builders for `REST`([`@ember-data/rest`](https://github.com/warp-drive-data/warp-drive/tree/main/packages/rest)) and `ActiveRecord`([`@ember-data/active-record`](https://github.com/warp-drive-data/warp-drive/tree/main/packages/active-record)).
-
-`@ember-data/request-utils` package contains a lot of useful utilities for building requests. You can read more about it in its [Readme](https://github.com/warp-drive-data/warp-drive/tree/main/packages/request-utils#readme). It has request builders for all type of requests.
-
-## Step 5: Off you go! Start using new APIs
-
-Now you can start refactoring old code to use new APIs. You can start with the `findAll` method. It is the easiest one to refactor. Here is how you do it:
-
-```diff app/components/projects/list.ts
-+ import { query } from '@ember-data/json-api/request';
-
-  loadProjects: Task<void, []> = task(async () => {
--    const projects = await this.store.findAll('project');
--    this.projects = [...projects];
-+    const { content } = await this.store.request(query('project', {}, { host: config.api.host }));
-+    this.projects = content.data;
-  });
-```
-
-You most likely would need to add Auth Handler to your request manager to add `accessToken` to your requests.
-Let's say you have your `accessToken` in the `session` service. Here is how you can add it to the request manager:
-
-```js
-import { service } from '@ember/service';
-
-export default class AuthHandler {
-  @service session;
-
-  request({ request }, next) {
-    const headers = new Headers(request.headers);
-    headers.append(
-      'Authorization',
-      `Bearer ${this.session.accessToken}`,
-    );
-
-    return next(Object.assign({}, request, { headers }));
+  constructor(args) {
+    super(args);
+    this.requestManager = new RequestManager();
+    this.requestManager.use([LegacyNetworkHandler, LogHandler, Fetch]);
+    this.requestManager.useCache(CacheHandler);
   }
 }
 ```
 
-You can read more about auth topic [here](/guides/the-manual/cookbook/auth-handlers.md).
+In 4.12, `use()` and `useCache()` return nothing, so call each one on its own line rather than chaining them.
 
-Another good thing to do is to configure default host and namespace for your requests. There is an utility for that out of the box of `@ember-data/request-utils` called [`setBuildURLConfig`](https://github.com/warp-drive-data/warp-drive/blob/main/packages/request-utils/src/index.ts#L67). You can do it anywhere in your app theoretically, but we recommend doing it in the `app/app.js` file. Here is how you can do it:
+Here is what each handler does:
 
-```diff app/app.js
-import Application from '@ember/application';
-import Resolver from 'ember-resolver';
-import loadInitializers from 'ember-load-initializers';
-import config from 'base-ember-typescript-app/config/environment';
+1. `LegacyNetworkHandler` handles requests that come from the old APIs, like `store.findAll` or `record.save()`. It fulfills them through your adapters and serializers, as before, and stops the chain there. Any other request goes on to the next handler.
+2. `LogHandler` logs each request and its response. It shows how to write a handler of your own; the auth handler in Step 5 is a more useful one.
+3. `Fetch` sends the request with the `fetch` API and parses the response as JSON. It must be the last handler in the chain. Its result travels back through the handlers in reverse order, so `LogHandler` sees the response after `Fetch` returns it.
+
+`CacheHandler` sits in front of the chain. It fulfills requests from the store's cache when it can, and it puts every response it receives into that cache. In 4.12 the store's cache is the JSON:API cache, so a response must be a JSON:API document by the time it reaches `CacheHandler`. If your API uses another format, add a handler that converts the response.
+
+To learn more about the `RequestManager`, see [Making Requests](/guides/the-manual/requests/index.md). That guide describes the current release, so some APIs in it are newer than 4.12.
+
+## Step 4: Install `@ember-data/request-utils`
+
+`@ember-data/request-utils` is not a dependency of `ember-data` 4.12, so install it yourself:
+
+```sh
+pnpm add @ember-data/request-utils@4.12.8
+```
+
+In 4.12 it provides the building blocks for URLs:
+
+- `setBuildURLConfig` sets the default `host` and `namespace`.
+- `buildBaseURL` builds the URL for an operation on a resource type.
+- `buildQueryParams` serializes query params in a stable order, so that the same query always produces the same URL and the same cache key.
+
+Configure the default host and namespace once, as the app boots. `app/app.js` is a good place:
+
+```diff [app/app.js]
+ import Application from '@ember/application';
+ import Resolver from 'ember-resolver';
+ import loadInitializers from 'ember-load-initializers';
+ import config from './config/environment';
 +import { setBuildURLConfig } from '@ember-data/request-utils';
 +
 +setBuildURLConfig({
@@ -143,11 +115,70 @@ import config from 'base-ember-typescript-app/config/environment';
 +  namespace: 'v1',
 +});
 
-export default class App extends Application {
-  modulePrefix = config.modulePrefix;
-  podModulePrefix = config.podModulePrefix;
-  Resolver = Resolver;
+ export default class App extends Application {
+   modulePrefix = config.modulePrefix;
+   podModulePrefix = config.podModulePrefix;
+   Resolver = Resolver;
+ }
+
+ loadInitializers(App, config.modulePrefix);
+```
+
+## Step 5: Start using the new APIs
+
+Now you can move code to the new APIs one call at a time. `findAll` is the easiest to start with:
+
+```diff [app/components/projects/list.js]
++import { buildBaseURL } from '@ember-data/request-utils';
+
+   async loadProjects() {
+-    const projects = await this.store.findAll('project');
+-    this.projects = [...projects];
++    const url = buildBaseURL({ op: 'query', identifier: { type: 'project' }, resourcePath: 'projects' });
++    const { content } = await this.store.request({ url, method: 'GET' });
++    this.projects = content.data;
+   }
+```
+
+`buildBaseURL` uses the type as the path unless you pass `resourcePath`, and it doesn't pluralize, so pass `resourcePath` when your API's paths differ from your type names. `content.data` holds the records, the same ones `findAll` would return.
+
+To filter the list, add query params with `buildQueryParams`. In 4.12 it serializes strings, numbers, booleans and arrays but not nested objects, so write a JSON:API filter as a flat bracketed key:
+
+```js
+const query = buildQueryParams({ 'filter[status]': 'active', include: ['owner'] });
+const { content } = await this.store.request({ url: `${url}?${query}`, method: 'GET' });
+```
+
+Your API most likely needs an access token on each request. Say the token lives on a `session` service. A handler can add it:
+
+```js [app/services/store.js]
+// eslint-disable-next-line ember/use-ember-data-rfc-395-imports
+import Store from 'ember-data/store';
+import { getOwner } from '@ember/application';
+import { CacheHandler } from '@ember-data/store';
+import { LegacyNetworkHandler } from '@ember-data/legacy-compat';
+import RequestManager from '@ember-data/request';
+import Fetch from '@ember-data/request/fetch';
+
+function authHandler(owner) {
+  return {
+    request({ request }, next) {
+      const session = owner.lookup('service:session');
+      const headers = new Headers(request.headers);
+      headers.append('Authorization', `Bearer ${session.accessToken}`);
+      return next(Object.assign({}, request, { headers }));
+    },
+  };
 }
 
-loadInitializers(App, config.modulePrefix);
+export default class AppStore extends Store {
+  constructor(args) {
+    super(args);
+    this.requestManager = new RequestManager();
+    this.requestManager.use([LegacyNetworkHandler, authHandler(getOwner(this)), Fetch]);
+    this.requestManager.useCache(CacheHandler);
+  }
+}
 ```
+
+`LegacyNetworkHandler` comes first, so requests from the old APIs never reach `authHandler`. Your adapters keep adding their own headers for those. For more patterns, see [Auth Handlers](/guides/the-manual/cookbook/auth-handlers.md).
