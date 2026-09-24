@@ -441,3 +441,9 @@ This architecture allows us to quickly integrate any kind of pre- or post- proce
 - [Gate](/api/@warp-drive/utilities/handlers/classes/Gate) - quickly activate/deactivate a handler per-request or more broadly
 
 As well as a suite of useful [utilities](/api/@warp-drive/utilities/handlers/) for handlers.
+
+:::tip Paginated collections
+A request that loads one page of a collection can drive a whole pager or infinite list. The
+experimental [Pagination](../experiments/pagination.md) primitives and the `<Paginate />` component
+build on the requests described here.
+:::
