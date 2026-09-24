@@ -4,8 +4,6 @@ description: Decide whether resource types should be singular or plural and dash
 
 # Model Name: singular or plural? What to choose? Why is that?
 
-- ⮐ [Cookbook](./index.md)
-
 ## Resource Type (model name) conventions – or, why it was singular
 
 If you have been working with WarpDrive (or EmberData) for a while, you might remember a convention about singular-dasherized resource types (or modelNames). It was a convention that model names should be singular. But why is that? Why not plural? And why dasherized?
@@ -53,7 +51,3 @@ It's pretty simple, JSON:API spec agnostic about the `type` field convention. He
 > Note: This spec is agnostic about inflection rules, so the value of type can be either plural or singular. However, the same value should be used consistently throughout an implementation.
 
 You can read more about it in the [JSON:API spec](https://jsonapi.org/format/#document-resource-object-identification).
-
----
-
-- ⮐ [Cookbook](./index.md)
