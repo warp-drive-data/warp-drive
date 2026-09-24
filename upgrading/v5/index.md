@@ -7,7 +7,7 @@ outline:
 
 # Migrating 4.x to 5.x
 
-<SinceBadge version="5.0.0" /> &nbsp; authored 2023-06-10
+<SinceBadge version="5.0.0" /> &nbsp; authored 2023-06-10, revised 2026-09-24
 
 This guide will *likely* work for apps on 3.28 that have resolved EmberData deprecations from the 3.x series.
 
@@ -260,6 +260,10 @@ ArrayLike API usage is likely to give you the most issues here, if anything does
 ## Migration
 
 ### Step 1 - Install the Mirror Packages
+
+::: tip On ember-data 4.12 or earlier?
+Install the `@warp-drive/*` packages instead of `@warp-drive-mirror/*`, here and in every later step. See [Coming from ember-data 4.12 or earlier](./two-store-migration.md#coming-from-ember-data-4-12-or-earlier).
+:::
 
 ::: code-group
 
