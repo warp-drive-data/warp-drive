@@ -8,21 +8,25 @@ They take a few contextual inputs about the request you want to make, abstractin
 
 For instance, to fetch a resource from your API
 
-```ts
+::: code-group
+
+```ts [input.ts]
 import { findRecord } from '@ember-data/rest/request';
 
 const options = findRecord('ember-developer', '1', { include: ['pets', 'friends'] });
-
-/*
-  => {
-    url: 'https://api.example.com/v1/emberDevelopers/1?include=friends,pets',
-    method: 'GET',
-    headers: <Headers>, // 'Content-Type': 'application/json;charset=utf-8'
-    op: 'findRecord';
-    records: [{ type: 'ember-developer', id: '1' }]
-  }
-* /
 ```
+
+```ts [output.ts]
+{
+  url: 'https://api.example.com/v1/emberDevelopers/1?include=friends,pets',
+  method: 'GET',
+  headers: <Headers>, // 'Content-Type': 'application/json;charset=utf-8'
+  op: 'findRecord';
+  records: [{ type: 'ember-developer', id: '1' }]
+}
+```
+
+:::
 
 Request builder output is ready to go for use with {@link @warp-drive/core!Store.request | store.request},
 {@link @warp-drive/core!RequestManager.request | manager.request} and most conventional REST APIs.
