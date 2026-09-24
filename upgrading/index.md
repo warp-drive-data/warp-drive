@@ -28,6 +28,7 @@ for the authoring rules that keep these guarantees true.
 
 ## Major Versions
 
+- [1.x – 4.x → 5.x](/upgrading/v1-v4/)
 - [4.x → 5.x](/upgrading/v5/)
 
 ## Deprecations

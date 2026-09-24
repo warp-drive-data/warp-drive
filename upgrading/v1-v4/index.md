@@ -1,43 +1,47 @@
-# Migrating route by route
+---
+title: Migrating 1.x – 4.x to 5.x
+outline:
+  level: 2,3
+---
+
+# Migrating 1.x – 4.x to 5.x
+
+<SinceBadge version="5.9.0" /> &nbsp; authored 2026-09-24
+
+This guide is for apps on any `ember-data` release from 1.x through 4.12 that want to move straight
+to the latest WarpDrive, without stopping at the versions in between.
+
+::: tip On 4.13?
+`ember-data` 4.13 already shares package names with WarpDrive, so follow
+[Migrating 4.x to 5.x](/upgrading/v5/index.md) with its mirror packages instead.
+:::
 
 An app can run more than one store at once. Each store owns its own cache, its own schemas, and
 its own request pipeline, so a second store is a place to put the setup you are moving toward
-while the first one keeps serving the code you have not touched yet. You migrate a region at a
+while the first one keeps serving the code you have not touched yet. You migrate one route at a
 time instead of landing one enormous change.
 
 To adopt newer APIs inside the store you already have, without a second one, see the
-[Incremental adoption guide](./incremental-adoption-guide.md) instead.
-
-## When a second store fits
-
-Two migrations fit this shape.
-
-- **A new major version.** Moving from an older `ember-data` to the latest WarpDrive, the second
-  store runs the new version beside the old one.
-- **A new version of your API, or a store configuration you want to start clean.** Both stores run
-  the same WarpDrive version with different handlers, schemas, or caches.
-
-Moving from `Model` to `ReactiveResource` does not need a second store on its own.
-`useLegacyStore`'s `schemas` option lets both live in one store, and
-[LegacyMode](/guides/the-manual/schemas/resources/legacy-mode.md#migration) is the recommended
-path. Reach for two stores when you also want to change versions or drop adapters and serializers.
+[Incremental adoption guide](/guides/the-manual/cookbook/incremental-adoption-guide.md) instead.
 
 ## Set up the second store
 
-Configure the second store first. It always needs a full configuration of its own, covering
-presentation hooks, schemas, the request manager, and the cache.
-[Step 4 of the upgrade guide](/upgrading/v5/index.md#step-4-configure-the-store) shows that
-configuration, and applies to the same-version case too.
+Releases up to 4.12 publish only `ember-data` and `@ember-data/*` packages, and the latest
+WarpDrive publishes `@warp-drive/*` packages. No package name appears on both sides, so the two
+versions install side by side, and the second store uses `@warp-drive/core`,
+`@warp-drive/json-api`, `@warp-drive/ember`, `@warp-drive/legacy` and `@warp-drive/utilities`
+directly. You don't need the mirror packages.
 
-When the two stores run different major versions, which packages the new one installs depends on
-the version you are leaving. Most apps need the mirror packages, which let two versions of the
-library live in one app. An app on `ember-data` 4.12 or earlier doesn't, because its package names
-never overlap with the latest WarpDrive's.
-[Migrating Between Versions Using The Two Store Approach](/upgrading/v5/two-store-migration.md)
-covers both cases and what running two copies of the library costs you.
+Configure the second store first. It needs a full configuration of its own, covering presentation
+hooks, schemas, the request manager, and the cache. The [Migration](/upgrading/v5/index.md#migration)
+steps of the 4.x to 5.x guide install, build-configure and set up that store. They are written for
+mirror packages, so wherever they name a `@warp-drive-mirror/*` package, in an install command, an
+import, or the build config, use the matching `@warp-drive/*` package instead.
 
-The rest of this guide assumes two registered services. `store` is your existing setup and
-`v2-store` is the new one, matching the naming the upgrade guide uses.
+The existing `ember-data` install keeps providing the `store` service. The rest of this guide
+calls the new one `v2-store`, matching the naming the 4.x to 5.x guide uses.
+[The Two Store Approach](/upgrading/v5/two-store-migration.md) covers TypeScript setup and what
+running two copies of the library costs you. Read its mirror package names the same way.
 
 ## Keep each screen on one store
 
@@ -198,9 +202,11 @@ hatch, and prefer reshaping the slice so the whole interaction lands in one stor
 
 ## Finishing the migration
 
-Once the last slice moves, delete the old store service and the packages only it used, then rename
-`v2-store` to `store` so injections and providers collapse back to the default.
-[Post Migration](/upgrading/v5/index.md#post-migration) covers the version-upgrade case.
+Once the last slice moves, remove `ember-data` and the `@ember-data/*` packages along with their
+build config, delete the old store service, then rename `v2-store` to `store` so injections and
+providers collapse back to the default. That is the
+[Post Migration](/upgrading/v5/index.md#post-migration) checklist of the 4.x to 5.x guide minus
+its last step, because your imports are already `@warp-drive/*`.
 
 Because each store is configured independently, the second store is also where you drop what you
 no longer want. Adapters, serializers, and `Model` can stay in the old store and never be installed

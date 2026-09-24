@@ -262,7 +262,7 @@ ArrayLike API usage is likely to give you the most issues here, if anything does
 ### Step 1 - Install the Mirror Packages
 
 ::: tip On ember-data 4.12 or earlier?
-Install the `@warp-drive/*` packages instead of `@warp-drive-mirror/*`, here and in every later step. See [Coming from ember-data 4.12 or earlier](./two-store-migration.md#coming-from-ember-data-4-12-or-earlier).
+You can skip the mirror packages. See [Migrating 1.x – 4.x to 5.x](/upgrading/v1-v4/index.md).
 :::
 
 ::: code-group
