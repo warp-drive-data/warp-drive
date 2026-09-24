@@ -18,11 +18,9 @@
   "scripts": {
     "start": "vite",
     "build": "vite build",
-    "build:tests": "vite build --mode development --outDir dist-test",
-    "build:production": "vite build --outDir dist-test",
+    "build:tests": "IS_TESTING=true NODE_ENV=development vite build --mode development --outDir dist-test",
     "check:types": "node ./node_modules/typescript-7/bin/tsc --noEmit --runExternalCode && node ./node_modules/typescript-7/bin/tsc --noEmit --runExternalCode -p api-worker",
-    "test": "testem ci --file testem.cjs",
-    "test:production": "testem ci --file testem.cjs"
+    "test": "testem ci --file testem.cjs"
   },
   "devDependencies": {
     "@babel/core": "catalog:",
@@ -46,13 +44,18 @@
     "babel-plugin-ember-template-compilation": "catalog:",
     "decorator-transforms": "catalog:",
     "ember-content-mapper": "catalog:",
+    "ember-modifier": "catalog:",
+    "ember-page-title": "catalog:",
     "ember-qunit": "catalog:",
     "ember-source": "catalog:",
     "ember-strict-application-resolver": "catalog:",
     "qunit": "catalog:",
     "qunit-dom": "catalog:",
     "testem": "catalog:",
+    "todomvc-app-css": "catalog:",
+    "todomvc-common": "catalog:",
     "typescript-7": "catalog:",
+    "typescript-toastify": "catalog:",
     "vite": "catalog:"
   }
 }

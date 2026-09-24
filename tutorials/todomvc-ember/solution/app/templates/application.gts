@@ -1,7 +1,11 @@
+import { pageTitle } from 'ember-page-title';
+
+import { Layout } from '#app/components/layout.gts';
+
 <template>
-  <section class="todoapp">
-    <header class="header">
-      <h1>todos</h1>
-    </header>
-  </section>
+  {{pageTitle "TodoMVC"}}
+
+  <Layout>
+    {{outlet}}
+  </Layout>
 </template>

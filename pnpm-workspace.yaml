@@ -350,6 +350,8 @@ catalog:
   ember-content-mapper: ^0.3.1
   ember-eslint-parser: ^0.14.6
   ember-inflector: ^7.0.0
+  # 4.3.0 was published without npm provenance (4.2.x had it), which trustPolicy rejects.
+  ember-modifier: ~4.2.2
   ember-page-title: ^9.0.3
   ember-provide-consume-context: ^0.10.0
   ember-qunit: 9.1.0
@@ -395,6 +397,8 @@ catalog:
   svgo: ^4.1.0
   terser: ^5.51.2
   testem: ^3.21.0
+  todomvc-app-css: ^2.4.3
+  todomvc-common: ^1.0.5
   tsdown: ^0.23.0
   turbo: ^2.11.2
   typedoc: ^0.28.20
@@ -405,6 +409,7 @@ catalog:
   typescript: ^6.0.3
   typescript-7: "npm:typescript@7.1.0-dev.20260920.1"
   typescript-eslint: ^8.70.0
+  typescript-toastify: ^1.0.4
   unplugin-vue: ^8.0.0
   vite: ^8.3.0
   vite-bundle-analyzer: ^1.3.9
@@ -424,6 +429,16 @@ catalog:
 ## The following settings previously lived under the root package.json's
 ## "pnpm" field. pnpm 11 no longer reads that field -- these all moved here.
 packageExtensions:
+  ## @glint/ember-tsc augments ember-modifier's types via `import 'ember-modifier'` without
+  ## declaring it, so with `hoist: false` the augmentation silently fails to resolve and
+  ## function modifiers stop type-checking. Declaring it as an optional peer links it only
+  ## where the consuming package already depends on ember-modifier.
+  "@glint/ember-tsc":
+    peerDependencies:
+      ember-modifier: "*"
+    peerDependenciesMeta:
+      ember-modifier:
+        optional: true
   ## Mermaid.vue imports vue but the package declares no dependency on it, so pnpm links
   ## nothing and the production build fails to resolve it.
   vitepress-plugin-mermaid:

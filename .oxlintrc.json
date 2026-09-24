@@ -1241,7 +1241,8 @@
         "tests/framework-vue/tests/**",
         "tests/json-api/tests/**",
         "tests/legacy/tests/**",
-        "tests/utilities/tests/**"
+        "tests/utilities/tests/**",
+        "tutorials/*/*/tests/**"
       ],
       "rules": {
         // Nested QUnit `module()`/`test()` callbacks are each a fresh scope, and reusing
