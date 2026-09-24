@@ -15,7 +15,7 @@ const TIMEOUT_MS = 10_000;
 export async function startApiWorker(url = '/sw.js'): Promise<void> {
   if (!('serviceWorker' in navigator)) {
     throw new Error(
-      'The TodoMVC API runs in a service worker, which this page cannot use. Open the app from localhost or over https.'
+      'The tutorial API runs in a service worker, which this page cannot use. Open the app from localhost or over https.'
     );
   }
   const { serviceWorker } = navigator;
