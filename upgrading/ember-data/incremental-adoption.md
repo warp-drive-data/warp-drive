@@ -1,5 +1,6 @@
 ---
 title: Adopting the Request APIs on 4.12
+description: Stay on ember-data 4.12 and adopt its request APIs in the store you already have, adding a store service, your own request handlers, and `@ember-data/request-utils` one call at a time.
 ---
 
 # Adopting the Request APIs on 4.12
