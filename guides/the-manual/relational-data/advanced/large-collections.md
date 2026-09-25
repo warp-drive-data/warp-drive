@@ -1,7 +1,3 @@
----
-description: Why large lists should not be loaded through a collection relationship, how the store's maxCollectionRelationshipSize option flags oversized payloads, and how to move them to paginated requests.
----
-
 # Large Collections
 
 A `collection` relationship holds the complete membership of a relationship and materializes a

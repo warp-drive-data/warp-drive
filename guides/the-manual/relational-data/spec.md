@@ -1,7 +1,3 @@
----
-description: "Normative reference for WarpDrive relationship payloads: the shape of data, links, and meta, what async and sync resource and collection fields require of the API, and how the validator and graph enforce it."
----
-
 # Relationship Specification
 
 This page is the normative reference for how WarpDrive relationships behave: what a relationship

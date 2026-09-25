@@ -1,7 +1,3 @@
----
-description: How a relationship payload describes related data through links, through identifiers in data, or both, and what each combination means for what the relationship document exposes.
----
-
 # Links vs Identifiers
 
 A relationship payload can describe the related data in two complementary ways:

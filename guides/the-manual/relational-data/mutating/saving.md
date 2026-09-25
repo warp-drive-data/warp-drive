@@ -1,7 +1,3 @@
----
-description: Persist relationship edits with a request builder such as updateRecord, commit them without a request when another channel saved them, save related records together, and see how legacy belongsTo and hasMany saves differ.
----
-
 # Saving
 
 Relationship edits live in the cache as local state until they are persisted. How you persist them
