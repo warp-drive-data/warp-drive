@@ -1,5 +1,5 @@
 ---
-description: How to persist relationship edits with a request or by committing without one, and how saving related records works for resource, collection, and legacy fields.
+description: How to persist relationship edits with a request, why edits the response leaves out stay local, and how saving related records works for resource, collection, and legacy fields.
 ---
 
 # Saving
