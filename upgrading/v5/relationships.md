@@ -1,5 +1,6 @@
 ---
 title: Migrating Relationships to resource and collection
+description: How to migrate belongsTo and hasMany fields to the resource and collection relationship kinds, which work the same in LegacyMode and PolarisMode, one field at a time.
 outline:
   level: 2,3
 ---
@@ -102,8 +103,10 @@ For every `belongsTo`/`hasMany` field, look at what the API actually sends for i
 | references in `data` but not the resources | nothing yet | See [Patterns Without a Migration Path](#patterns-without-a-migration-path). |
 | a large, pageable or filterable list | a top-level request, not a relationship | See [Large Collections](/guides/the-manual/relational-data/advanced/large-collections.md). |
 
-Fields declared `linksMode: true` fall in the first two rows depending on whether the API sends a
-link; `linksMode` itself has no meaning for the new kinds and is dropped.
+Fields declared `linksMode: true` (the [LinksMode](/guides/the-manual/misc/links-mode.md) option
+that loads a legacy relationship through `store.request` instead of an adapter) fall in the first
+two rows depending on whether the API sends a link; `linksMode` itself has no meaning for the new
+kinds and is dropped.
 
 ## Step 2: Convert the Field
 
@@ -124,7 +127,11 @@ Drop `linksMode` and `resetOnRemoteUpdate`. The new kinds always load through re
 remote update never discards unsaved local changes (the behavior `resetOnRemoteUpdate: false`
 opted into), so neither option has a meaning for them. If the field is
 typed, change `author: User` to `author: ReactiveRelationshipDocument<User | null>` and
-`comments: Comment[]` to `comments: ReactiveRelationshipDocument<Comment[]>`.
+`comments: Comment[]` to `comments: ReactiveRelationshipDocument<Comment[]>`:
+
+```ts
+import type { ReactiveRelationshipDocument } from '@warp-drive/core/reactive';
+```
 
 Field-level details are in [Relational Fields](/guides/the-manual/schemas/relational-fields.md).
 

@@ -1,5 +1,5 @@
 ---
-description: Set linksMode on a belongsTo or hasMany so it fetches through the request pipeline instead of the legacy adapter, on Model, LegacyMode, or PolarisMode schemas.
+description: How LinksMode lets a legacy belongsTo or hasMany relationship load through store.request instead of an adapter, and the constraints it carries in LegacyMode and PolarisMode.
 draft: true
 ---
 

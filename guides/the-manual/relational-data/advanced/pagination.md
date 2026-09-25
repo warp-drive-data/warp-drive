@@ -1,3 +1,7 @@
+---
+description: Why relationships are never paginated in WarpDrive, and how to page through related records with top-level requests, including through the relationship's own link.
+---
+
 # Pagination
 
 Relationships in WarpDrive are **not paginated**. A `collection` relationship (or `hasMany`) holds

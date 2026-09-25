@@ -1,5 +1,5 @@
 ---
-description: Placeholder for the guide to relational fields such as `resource`, `collection`, `belongsTo`, and `hasMany` on a ResourceSchema; no content yet.
+description: How to declare the resource and collection relationship fields in a schema, what value they produce on a record in LegacyMode and PolarisMode, and how they differ from the legacy belongsTo and hasMany kinds.
 ---
 
 # Relational Fields
@@ -90,8 +90,9 @@ interface User {
 
 ## Mutation
 
-Relationships are changed through the document's `data` on an editable record (any LegacyMode
-record, or a checked-out PolarisMode record). Assigning the field itself asserts.
+Relationships are changed through the document's `data` on an editable record. Every LegacyMode
+record is editable; a PolarisMode record is immutable, so first get an editable copy with
+[`checkout()`](../relational-data/mutating/adding-removing.md). Assigning the field itself asserts.
 
 ```ts
 editable.bestFriend.data = otherUser;
