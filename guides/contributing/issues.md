@@ -1,5 +1,6 @@
 ---
 title: Reporting Issues
+description: Report a WarpDrive bug through GitHub issues using the repo's issue template, and know to ask on Discord first when unsure whether something is a bug.
 ---
 
 ### Reporting Bugs

@@ -1,5 +1,6 @@
 ---
 title: 'Setup'
+description: Set up WarpDrive's babel build plugin with compatWith and create a store with useRecommendedStore or useLegacyStore, the two steps required before making any request.
 outline:
   level: 2,3
 ---

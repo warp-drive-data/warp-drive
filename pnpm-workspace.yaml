@@ -379,7 +379,7 @@ catalog:
   mermaid: ^12.0.0
   mocha: ^12.0.2
   morgan: ^1.12.1
-  oxfmt: ^0.68.0
+  oxfmt: ^0.70.0
   oxlint: ^1.85.0
   oxlint-tsgolint: ^7.0.2002
   pretender: ^3.4.7
@@ -407,7 +407,7 @@ catalog:
   typedoc-plugin-no-inherit: ^1.6.1
   typedoc-vitepress-theme: ^1.1.4
   typescript: ^6.0.3
-  typescript-7: "npm:typescript@7.1.0-dev.20260921.1"
+  typescript-7: "npm:typescript@7.1.0-dev.20260922.1"
   typescript-eslint: ^8.70.1
   typescript-toastify: ^1.0.4
   unplugin-vue: ^8.0.0

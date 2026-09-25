@@ -1,5 +1,6 @@
 ---
 title: Making Requests
+description: Start here to make requests with store.request, the <Request /> component, and getRequestState, then set RequestInfo options and chain handlers in a RequestManager.
 outline:
   level: 2,3
 ---
