@@ -76,27 +76,13 @@ export function add(a: number, b: number): number {}
 
 ## Content Standards
 
-### The First Sentence Stands Alone
+### Summarize Every Public Symbol With `@summary`
 
-The docs site lifts one sentence out of each symbol's doc comment and uses it as the symbol's
-entry in `llms.txt`, the index coding agents read to decide which page to fetch (see
+Give every public symbol's doc comment a `@summary` tag: one sentence saying what the symbol
+does or is for. The docs site uses it, exactly as written, as the symbol's entry in `llms.txt`,
+the index coding agents read to decide which page to fetch (see
 [Frontmatter and Agent-Only Content](./writing-guides.md#frontmatter-and-agent-only-content)).
-That sentence is the first sentence of the comment's first prose paragraph. Code blocks, `:::`
-callouts, `> [!CAUTION]` alerts, headings, and component lines such as `<Badge />` are skipped
-over to find it, so an `## Import` example or a legacy warning at the top is fine.
-
-Make that paragraph open with one plain sentence that says what the symbol does or is for,
-naming its purpose rather than restating its name, and that makes sense with nothing after it.
-Put caveats, history, and links in the sentences that follow. "For the full guide, see the
-Requests documentation." and "This package used to provide the RequestManager." are what the
-index shows today for symbols that skip this.
-
-#### Overriding it with `@summary`
-
-When the first prose sentence can't stand alone, because it has to lead into an example or is
-a pointer to a guide, write the index entry yourself with TypeDoc's `@summary` tag. It is used as
-written, is not trimmed to one sentence, and is not rendered on the page, so it doesn't repeat
-the prose readers see.
+A symbol without `@summary` is listed by name only; nothing is guessed from the comment's prose.
 
 ````ts
 /**
@@ -113,10 +99,17 @@ the prose readers see.
  */
 ````
 
-Keep it to one line and one sentence, under about 200 characters. `@summary` works on any doc
-comment TypeDoc renders as its own page. A package landing page has no doc comment; its entry
-is the first prose paragraph of the package's `src/index.md` (see
-[README vs `src/index.md`](#readme-vs-src-index-md)), so put the sentence first there instead.
+- Write it for a reader who sees nothing else: name the symbol's purpose rather than restating
+  its name, and don't lean on the prose around it.
+- Keep it to one sentence, under about 200 characters. A multi-line `@summary` is joined into
+  one line.
+- Inline code and `{@link}` are fine; `{@link Store}` contributes its link text. Avoid other
+  markdown and HTML entities, which reach `llms.txt` as literal characters.
+- `@summary` is not rendered on the page, so it doesn't repeat the prose readers see. It is a
+  TypeDoc tag, not a TSDoc one; TSDoc treats everything before `@remarks` as the summary and has
+  no `@summary`.
+- For an overloaded function, put it on the implementation's comment or the first overload's.
+- A package landing page (`src/index.md`) has no doc comment, so it gets no description.
 
 ### Every Public API Should Have a Usage Example
 

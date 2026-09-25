@@ -76,9 +76,9 @@ last two bullets: the checks and the label.
 6. Check, preview, then hand off:
    - For API docs, every item in
      [Content Standards](/guides/contributing/writing-documentation/writing-api-docs.md#content-standards),
-     including a first prose sentence that stands alone as the symbol's `llms.txt` entry, or an
-     `@summary` tag where it can't, per
-     [The First Sentence Stands Alone](/guides/contributing/writing-documentation/writing-api-docs.md#the-first-sentence-stands-alone),
+     including a `@summary` tag on every public symbol you add or touch, since it is the symbol's
+     only `llms.txt` description, per
+     [Summarize Every Public Symbol With `@summary`](/guides/contributing/writing-documentation/writing-api-docs.md#summarize-every-public-symbol-with-summary),
      and nothing private left in the published docs per
      [Ignored Doc Comments](/guides/contributing/writing-documentation/writing-api-docs.md#ignored-doc-comments).
      If you added `@internal` to an exported symbol, build that package (`pnpm --filter <pkg>
