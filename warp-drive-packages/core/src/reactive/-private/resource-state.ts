@@ -200,10 +200,18 @@ class ResourceState {
     };
     // Dirtiness can change on either projection: a local edit changes the local
     // view, while a remote update that matches the local value changes only
-    // the remote one. So we listen to both channels.
+    // the remote one. So we also listen to the remote channel. Channels only
+    // filter attributes and relationships; every other notification already
+    // reaches the local subscription. The manager rejects subscribing the same
+    // callback twice, so the remote subscription gets its own.
+    const onRemoteNotification = (_key: ResourceKey, type: NotificationType) => {
+      if (type === 'attributes' || type === 'relationships') {
+        notify(self, 'isDirty');
+      }
+    };
     self.handlers = [
       store.notifications.subscribe(key, onNotification, 'local'),
-      store.notifications.subscribe(key, onNotification, 'remote'),
+      store.notifications.subscribe(key, onRemoteNotification, 'remote'),
     ];
   }
 
