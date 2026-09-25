@@ -632,16 +632,18 @@ export function upgradeDefinition(
 }
 
 /**
- * The `name` of the field on the related type that `definition` declares as its inverse,
+ * The `name` of the field on the related type that `field` declares as its inverse,
  * or `null` when it declares no inverse.
  *
  * `options.inverse` always names the inverse by its `name`, never by its `sourceKey`.
+ * `resource` and `collection` fields may omit it, in which case they are unidirectional;
+ * the legacy kinds must state it explicitly.
  */
-function inverseNameFor(definition: RelationshipField): string | null {
+function inverseNameFor(field: RelationshipField): string | null {
+  const { options } = isLegacyField(field) ? field : temporaryConvertToLegacy(field);
   assert(
     `Expected the relationship defintion to specify the inverse type or null.`,
-    definition.options?.inverse === null ||
-      (typeof definition.options?.inverse === 'string' && definition.options.inverse.length > 0)
+    options?.inverse === null || (typeof options?.inverse === 'string' && options.inverse.length > 0)
   );
-  return definition.options.inverse;
+  return options.inverse;
 }
