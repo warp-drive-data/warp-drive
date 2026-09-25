@@ -1,3 +1,7 @@
+---
+description: Convert one field between its cache shape and app shape by writing a Transformation with `hydrate`, `serialize`, and `defaultValue`, then register it via `useRecommendedStore`.
+---
+
 # Transformations
 
 Transformations define how a single field's value is converted between its raw form in cache and the value your app reads or writes. When you read a transformed field, `hydrate` runs to produce the app value. When you write to it, `serialize` runs to produce the value stored in cache.

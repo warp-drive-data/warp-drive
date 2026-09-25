@@ -1,3 +1,7 @@
+---
+description: Placeholder for the guide to relational fields such as `resource`, `collection`, `belongsTo`, and `hasMany` on a ResourceSchema; no content yet.
+---
+
 # Relational Fields
 
 Relational fields connect a resource to other resources. WarpDrive provides two field kinds for

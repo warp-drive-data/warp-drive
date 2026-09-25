@@ -1,4 +1,5 @@
 ---
+description: Understand why WarpDrive exists, what it manages beyond fetch (dedupe, caching, cross-tab reactivity), and how it evolved from SproutCore and EmberData.
 draft: true
 ---
 

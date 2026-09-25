@@ -1,6 +1,7 @@
 ---
 draft: true
 title: Overview
+description: Placeholder for the Realtime section of the manual, which will cover streaming and live-updating data; still under construction, with no content yet.
 ---
 
 # Realtime
