@@ -5,6 +5,7 @@ description: Start here for task-focused WarpDrive recipes, including the increm
 
 # Cookbook
 
+- [Holodeck Behind a Reverse Proxy](./holodeck-behind-a-reverse-proxy.md)
 - [Holodeck in Dev Mode](./holodeck-in-dev-mode.md)
 - [Incremental Adoption Guide](./incremental-adoption-guide.md)
 - [Naming Conventions: Should resource types be singular or plural? What to choose? Why is that?](./naming-conventions.md)
