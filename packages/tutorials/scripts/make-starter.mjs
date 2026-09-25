@@ -21,8 +21,12 @@
  * - `// #omit-file-from-starter` as a file's first line leaves the file out.
  * - Every text file is transformed, and binary files are copied as they are.
  *   Line endings are written as LF.
- * - The starter's package.json swaps `solution` for `starter` in its name and
- *   `repository.directory`, and `Completed` for `Starter` in its description.
+ * - A block's removal doesn't leave two blank lines in a row.
+ * - `#omit-file-from-starter` only parses as a `//` comment, so files without `//`
+ *   comments (CSS, HTML, YAML) can't be omitted.
+ * - The starter's package.json swaps a trailing `-solution` for `-starter` in its name,
+ *   a trailing `/solution` for `/starter` in `repository.directory`, and a leading
+ *   `Completed` for `Starter` in its description.
  */
 import { execFileSync } from 'node:child_process';
 import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
@@ -61,12 +65,17 @@ function transform(file, source) {
   const out = [];
   // The block being cut: its directive and the line it started on.
   let open = null;
+  // Set when a block closes, so a blank line after it isn't kept next to a blank line before it.
+  let closed = false;
   for (const [i, line] of source.split('\n').entries()) {
     const where = `${file}:${i + 1}`;
+    const collapse = closed && line.trim() === '' && (out.length === 0 || out.at(-1).trim() === '');
+    closed = false;
+    if (collapse) continue;
     const marker = MARKER_LINE.exec(line);
     const name = marker && (marker[2] ?? marker[4]);
     const text = marker && (marker[3] ?? marker[5]);
-    if (name in BLOCKS) {
+    if (Object.hasOwn(BLOCKS, name)) {
       if (open)
         throw new Error(`${where}: #${name} inside the #${open.name} block from line ${open.line}; blocks can't nest`);
       if ((name === 'replace-in-starter') !== (text !== undefined))
@@ -80,6 +89,7 @@ function transform(file, source) {
       if (BLOCKS[open.name] !== name)
         throw new Error(`${where}: #${name} can't close the #${open.name} block from line ${open.line}`);
       open = null;
+      closed = true;
       continue;
     }
     if (OMIT.test(line)) throw new Error(`${where}: #omit-file-from-starter must be the file's first line`);
@@ -94,13 +104,16 @@ function transform(file, source) {
 function starterPackageJson(source) {
   const pkg = JSON.parse(source);
   const swaps = [
-    ['name', pkg.name, 'solution', 'starter'],
-    ['description', pkg.description, 'Completed', 'Starter'],
-    ['repository.directory', pkg.repository?.directory, 'solution', 'starter'],
+    ['name', 'name', pkg.name, /-solution$/, '-starter'],
+    ['description', 'description', pkg.description, /^Completed\b/, 'Starter'],
+    ['repository.directory', 'directory', pkg.repository?.directory, /\/solution$/, '/starter'],
   ];
-  for (const [field, value, from, to] of swaps) {
-    if (!value?.includes(from)) throw new Error(`solution/package.json: ${field} must contain "${from}"`);
-    source = source.replace(JSON.stringify(value), JSON.stringify(value.replace(from, to)));
+  for (const [field, key, value, from, to] of swaps) {
+    if (typeof value !== 'string' || !from.test(value))
+      throw new Error(`solution/package.json: ${field} must match ${from}`);
+    const entry = new RegExp(`("${key}"\\s*:\\s*)${JSON.stringify(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`);
+    // A replacer function, so a `$` in the value isn't read as a replacement pattern.
+    source = source.replace(entry, (_, prefix) => prefix + JSON.stringify(value.replace(from, to)));
   }
   return source;
 }
