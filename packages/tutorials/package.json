@@ -1,0 +1,19 @@
+{
+  "name": "@warp-drive/tutorials",
+  "description": "Starter and solution apps for the WarpDrive tutorials",
+  "version": "5.10.0-alpha.11",
+  "license": "MIT",
+  "type": "module",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com:warp-drive-data/warp-drive.git",
+    "directory": "packages/tutorials"
+  },
+  "homepage": "https://github.com/warp-drive-data/warp-drive",
+  "bugs": "https://github.com/warp-drive-data/warp-drive/issues",
+  "keywords": [
+    "tutorial",
+    "warpdrive"
+  ]
+}

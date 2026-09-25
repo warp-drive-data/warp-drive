@@ -3,7 +3,12 @@
  *
  * The implementation lives in `@warp-drive/core` alongside the other
  * signal-based subscriptions, but the API is still experimental and is
- * only published from this package.
+ * only published from this package. The Ember components that build on
+ * it, `<Paginate />` and `<EachLink />`, are published from
+ * `@warp-drive/ember/experiments`.
+ *
+ * See the [Pagination guide](/guides/the-manual/experiments/pagination) for
+ * an introduction.
  *
  * @module
  */

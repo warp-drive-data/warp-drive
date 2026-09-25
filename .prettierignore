@@ -13,3 +13,14 @@ warp-drive-packages/core/types
 blueprints/
 vendor/
 !tests/blueprints/
+
+# Deliberately unformatted file types: oxfmt ignores these (.oxfmtrc.jsonc) and
+# lint:prettier only covers gjs/gts, so no CI check formats them. Listing them
+# here keeps the Prettier CLI and the VS Code Prettier extension from producing
+# diffs no lint check asked for (e.g. *x* -> _x_ and requoted fenced code in
+# guides), whatever an editor's default formatter is set to.
+*.md
+*.hbs
+*.html
+*.yml
+*.yaml

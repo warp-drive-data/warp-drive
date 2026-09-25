@@ -8,6 +8,8 @@ title: Overview
 - [Inverses](./features/inverses.md)
 - [LinksMode](../misc/links-mode.md)
 - [Polymorphism](./features/polymorphism.md)
+- [Pagination](../experiments/pagination.md) (experimental): load a large collection page by page as its own
+  request instead of through a relationship
 
 <!--
 - [Resource Relationships]()
