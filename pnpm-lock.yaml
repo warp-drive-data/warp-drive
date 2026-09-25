@@ -407,8 +407,8 @@ catalogs:
       specifier: ^4.0.2
       version: 4.0.2
     fs-extra:
-      specifier: ^11.4.0
-      version: 11.4.0
+      specifier: ^11.4.1
+      version: 11.4.1
     git-repo-version:
       specifier: ^1.0.2
       version: 1.0.2
@@ -1295,7 +1295,7 @@ importers:
     dependencies:
       fs-extra:
         specifier: 'catalog:'
-        version: 11.4.0
+        version: 11.4.1
       testem:
         specifier: ~3.21.0
         version: 3.21.0
@@ -9161,6 +9161,10 @@ packages:
 
   fs-extra@11.4.0:
     resolution: {integrity: sha512-EQsFzMUJkCKGr1ePqlYADkIUmHW1s3ZXr5Yqy6wbGrfUCphpl2maM/kyOIRA2HpP3AaFQTZXD4ldjek+nccddA==}
+    engines: {node: '>=14.14'}
+
+  fs-extra@11.4.1:
+    resolution: {integrity: sha512-KYAb4c9BJQI6QqGKthV68OHe0badztdXJWKo0WtBA9IuCFPTKvE5ZdUBglP833aMjhaSPNO4A5j/EkzZtGlKjA==}
     engines: {node: '>=14.14'}
 
   fs-extra@5.0.0:
@@ -17123,7 +17127,7 @@ snapshots:
     dependencies:
       ember-qunit: 9.1.0(30de2af0219ff80cd0c2cfde12ce49e3)
       ember-source: 7.3.0(@glimmer/component@2.1.1)
-      fs-extra: 11.4.0
+      fs-extra: 11.4.1
       qunit: 2.26.0
       testem: 3.21.0(@babel/core@7.29.7)
     transitivePeerDependencies:
@@ -19230,6 +19234,12 @@ snapshots:
       universalify: 2.0.1
 
   fs-extra@11.4.0:
+    dependencies:
+      graceful-fs: 4.2.11
+      jsonfile: 6.2.1
+      universalify: 2.0.1
+
+  fs-extra@11.4.1:
     dependencies:
       graceful-fs: 4.2.11
       jsonfile: 6.2.1
