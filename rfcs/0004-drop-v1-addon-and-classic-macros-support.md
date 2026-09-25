@@ -31,8 +31,10 @@ macros configuration surface (`setConfig(app, __dirname, config)` called from
 `babel.config.mjs`, and the accompanying `babel-plugin-debug-macros` entry). After 6.0, every
 consumer configures WarpDrive exclusively through the bundler plugin introduced in
 [RFC 0002](/rfcs/0002-warp-drive-build-plugin), and every WarpDrive package ships as a
-V2-only addon with no V1 fallback. Non-embroider classic Ember builds — those without
-`@embroider/compat`'s `compatBuild` in `ember-cli-build.js` — are no longer supported.
+V2-only addon with no V1 fallback. A non-embroider classic Ember build — one without
+`@embroider/compat`'s `compatBuild` in `ember-cli-build.js` — can no longer resolve WarpDrive
+as an ember-cli addon; it can still depend on WarpDrive as a plain npm package via
+`ember-auto-import`, with the tradeoffs that entails (see "Ecosystem implications").
 
 ## Motivation
 
@@ -45,15 +47,23 @@ app running a fully classic (non-embroider) build could still resolve them. Both
 compatibility paths carry real, ongoing cost, and neither is doing what it was built for
 anymore:
 
-**1. The V1 shim is for a build that no longer exists in this ecosystem's supported range.**
-`addonV1Shim` exists so a package written against the V2 addon spec can still be resolved by
-an app that hasn't adopted embroider at all — no `ember-auto-import`-free static imports, no
-`app-js`/`public-assets` conventions understood natively, broccoli trees instead. WarpDrive's
+**1. The V1 shim keeps a resolution path alive that WarpDrive's own tooling already assumes is
+absent.** Apps that haven't adopted embroider at all are still a real, supported part of the
+Ember ecosystem — this RFC does not claim otherwise, and does not remove WarpDrive's
+consumability by them outright. What the shim specifically buys such an app is resolving
+WarpDrive **as an ember-cli addon** — package discovery, `app-js`/`public-assets` merging,
+the `included` hook — without embroider's V2 addon support to interpret those conventions. A
+classic app could, before and after this RFC, still bring WarpDrive in some other way (for
+example via `ember-auto-import` treating it as an external npm dependency — see "Ecosystem
+implications" below for what that path does and doesn't get you). What goes away at 6.0 is
+only the addon-resolution path, not consumability in general. That's still worth removing:
+WarpDrive's
 own minimum-supported Ember versions already require embroider for anything but the most
 trivial app (Vite, TypeScript, and strict-mode templates all assume it), so the shim spends
 real weight — `@embroider/addon-shim` as a dependency of every published package, plus the
-`ember-addon.version === 1` branch in every `addon-main.cjs` deleting `treeForApp` — keeping a
-code path alive for a build target the rest of WarpDrive's tooling already assumes is absent.
+`ember-addon.version === 1` branch in every `addon-main.cjs` deleting `treeForApp` — keeping
+the *addon-resolution* path alive for a build shape the rest of WarpDrive's tooling already
+assumes is absent.
 
 **2. The classic macros path is the thing RFC 0002 was written to replace.** Its own
 motivation section lists the failure modes directly: a babel pipeline is a hard requirement
@@ -111,11 +121,14 @@ At 6.0:
 - `addon-main.cjs` is replaced by a plain V2 addon manifest with no shim, no `included`
   hook, and no runtime branch on `ember-addon.version`.
 - `@embroider/addon-shim` is removed from every WarpDrive package's dependencies.
-- Consuming a WarpDrive package requires an embroider-compatible resolution (V2 addon
-  support), whether that's a Vite build via `@embroider/vite`, or `compatBuild` from
-  `@embroider/compat` in a still-broccoli-based `ember-cli-build.js`. A fully classic build —
-  no embroider anywhere in the pipeline — cannot resolve WarpDrive packages at all, the same
-  way it already cannot resolve any other V2-only addon in the ecosystem.
+- Resolving a WarpDrive package **as an ember-cli addon** requires an embroider-compatible
+  resolution (V2 addon support), whether that's a Vite build via `@embroider/vite`, or
+  `compatBuild` from `@embroider/compat` in a still-broccoli-based `ember-cli-build.js`. A
+  fully classic build — no embroider anywhere in the pipeline — cannot resolve WarpDrive
+  packages *as addons* at 6.0, the same way it already cannot resolve any other V2-only addon
+  in the ecosystem today.
+- This is narrower than "cannot use WarpDrive at all" — see "Ecosystem implications" below for
+  the `ember-auto-import` fallback a fully classic app still has, and what it costs.
 
 ### What "classic ember-cli macros config" means here, precisely
 
@@ -132,12 +145,26 @@ Three call shapes, all accepted by `setConfig` today
    `_MacrosConfig.for(context, appRoot)` to look up (or create) the app's embroider macros
    config by side effect, rather than receiving one directly.
 
-2. **The `___legacy_support` reconciliation branch**, reached only through the V1 shim's
-   `included` hook, which calls `setConfig(app, dirname, { ...app.options?.emberData,
+2. **The `emberData` key on an app's own options object**, passed straight to the `EmberApp`
+   constructor with no `setConfig` import at all:
+
+   ```js
+   // ember-cli-build.js
+   const app = new EmberApp(defaults, {
+     emberData: { compatWith: '4.12', deprecations: { /* ... */ } },
+   });
+   ```
+
+   This is the oldest of the three shapes and, unlike the other two, isn't reached by
+   calling `setConfig` yourself — it's read by the V1 shim's `included` hook (see previous
+   section), which calls `setConfig(app, dirname, { ...app.options?.emberData,
    ___legacy_support: true })` on every app regardless of whether that app configured
-   WarpDrive at all. This exists purely to support option (1) via the older
-   `app.options.emberData` key and to throw a clear error if both that key and a direct
-   `setConfig` call are present at once.
+   WarpDrive any other way. `setConfig`'s implementation already throws if this key and a
+   direct `setConfig` call are both present, and carries a console-warning message for this
+   exact key — written but deliberately never enabled (`warp-drive-packages/build-config/src/index.ts`,
+   commented out pending a package rearrangement) — that this RFC's immediate deprecation
+   (see "Deprecating now, removing in 6.0") supersedes and finally ships, as a proper
+   `expectDeprecation()`-testable deprecation rather than a plain `console.warn`.
 
 3. **The 2-argument advanced form** aimed at a hand-rolled `buildMacros()` instance:
 
@@ -193,13 +220,19 @@ notice — and both are removed outright at 6.0, with no bridge and no flag in e
 
 1. **Next 5.x minor:** the plugin ships, and both deprecations below fire immediately.
    - `warp-drive.legacy-babel-config` — fires on every hit of `setConfig`'s
-     `isEmberClassicUsage` (3-arg) branch, and on every use of `buildMacros()` +
-     `setConfig(macrosConfig, config)`. Supersedes RFC 0002's plan of a silent notice
+     `isEmberClassicUsage` (3-arg) branch (covering both the direct
+     `setConfig(app, __dirname, config)` call and the `app.options.emberData` key, which
+     reaches the same branch through the V1 shim's `included` hook), and on every use of
+     `buildMacros()` + `setConfig(macrosConfig, config)`. This is orthogonal to which addon
+     resolution the app uses — an embroider app that still configures WarpDrive this way
+     gets this deprecation, not the next one. Supersedes RFC 0002's plan of a silent notice
      followed by a formal deprecation two minors later; the notice and the deprecation
-     collapse into one.
-   - `warp-drive.v1-addon-support` — fires on every hit of the V1 shim's `included` hook
-     `___legacy_support` branch, i.e. whenever an app resolves WarpDrive through anything
-     other than embroider's V2 addon support.
+     collapse into one, and this RFC also finally ships the `emberData`-key warning that
+     already exists in source but has stayed commented out (see "classic ember-cli macros
+     config" above).
+   - `warp-drive.v1-addon-support` — fires when WarpDrive is resolved without embroider's V2
+     addon support at all, independent of which of the three config shapes the app uses.
+     Pinning down that detection precisely is open — see "Unresolved questions."
 
    Both are ordinary WarpDrive deprecations, not build notices: listed alongside the other
    entries in `@warp-drive/build-config/deprecations`, testable with
@@ -208,7 +241,8 @@ notice — and both are removed outright at 6.0, with no bridge and no flag in e
 2. **6.0:** both are removed, per the "Detailed design" section above. There is no bridge and
    no flag; an app that has not migrated by 6.0's release fails at build configuration time
    with the error message shown above, and (if it is on a fully classic, non-embroider build)
-   fails to resolve WarpDrive's packages at all.
+   can no longer resolve WarpDrive's packages as addons (see "Ecosystem implications" for its
+   remaining `ember-auto-import` fallback).
 
 Starting the warning immediately, rather than in the final 5.x minor as RFC 0002 planned,
 gives every app the entire remaining 5.x release cycle to migrate instead of just its last
@@ -217,6 +251,14 @@ schedule.
 
 ### Ecosystem implications
 
+- **A fully classic (non-embroider) app is not left with zero options**, only without addon
+  resolution. It can still adopt `ember-auto-import` and depend on WarpDrive as a plain npm
+  package, the same way it would depend on any non-Ember JS library. That path gets
+  WarpDrive's compiled output as an opaque external module: none of the build plugin's
+  transforms run over it, so there is no deprecation stripping, no canary feature toggling,
+  and no app-side flag imports — the app gets an unoptimized, always-development-shaped
+  build (or has to fall back to a CDN/unpkg copy). It is a real fallback, not a supported,
+  equivalent replacement for addon resolution.
 - **Addons that depend on WarpDrive** and use the classic `setConfig(app, __dirname, ...)`
   form in their own `index.js` `included` hook (a pattern several community addons copied
   from WarpDrive's own guides before the plugin existed) break at 6.0 the same way an app
