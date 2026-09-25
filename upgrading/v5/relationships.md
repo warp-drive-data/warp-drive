@@ -9,6 +9,10 @@ outline:
 
 <SinceBadge version="5.10.0" /> &nbsp; authored 2026-09-24
 
+::: tip Using a coding agent?
+`@warp-drive/memory-alpha` ships a skill for this migration: [Migrate belongsTo and hasMany Fields to resource and collection](/skills/relationships/migrate-relationship-fields). Install the package and point your agent at `node_modules/@warp-drive/memory-alpha/skills/index.md`, which routes it to the right skill.
+:::
+
 This guide is for apps whose schemas use the legacy `belongsTo` and `hasMany` field kinds, whether
 declared with decorators on a `Model` or as fields on a `ReactiveResource` schema in
 [LegacyMode](/guides/the-manual/schemas/resources/legacy-mode.md) or
