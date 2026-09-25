@@ -305,7 +305,7 @@ This will install the following at the latest release
 
 ::: tabs key:paradigm
 
-== Classic Config
+== Ember CLI + Embroider
 
 ```ts [ember-cli-build.js]
 'use strict';
@@ -328,6 +328,32 @@ module.exports = async function (defaults) {
   });
 
   return compatBuild(app, buildOnce);
+};
+```
+
+== Classic Broccoli Build
+
+```ts [ember-cli-build.js]
+'use strict';
+const EmberApp = require('ember-cli/lib/broccoli/ember-app');
+
+module.exports = async function (defaults) {
+  const { setConfig } = await import('@warp-drive-mirror/core/build-config'); // [!code focus]
+  const app = new EmberApp(defaults, {});
+
+  setConfig(app, __dirname, { // [!code focus:9]
+    // this should be the most recent <major>.<minor> version for
+    // which all deprecations have been fully resolved
+    // and should be updated when that changes
+    compatWith: '4.12',
+    deprecations: {
+      // ... list individual deprecations that have been resolved here
+    }
+  });
+
+  // setConfig needs no Embroider. It registers the build-time
+  // flags through @embroider/macros, which classic builds run too.
+  return app.toTree();
 };
 ```
 
