@@ -1,6 +1,6 @@
 ---
 title: Writing API Docs
-description: How to write the TSDoc comments that become the API reference, including which tags to use, what a first sentence and example must do, and what stays out of the published docs.
+description: How to write the TSDoc comments that become the API reference, including which tags to use, the @summary each API page needs, usage examples, and what stays out of the published docs.
 ---
 
 # Writing API Docs
