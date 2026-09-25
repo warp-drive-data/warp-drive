@@ -32,9 +32,6 @@ alongside the record, if loaded. All four are synchronous, have no inverse, and 
 relationship graph with one difference from other sync relationships: a committed delete of a
 related resource removes it from the relationship, but `unloadRecord` does not.
 
-This is one piece of [#10408](https://github.com/warp-drive-data/warp-drive/issues/10408). It
-does not cover `resource`/`collection`, paginated collections, or inverses.
-
 ## Motivation
 
 PolarisMode relationships are strict about what their shape promises: a sync relationship must
