@@ -40,6 +40,9 @@ packages/schema-record/src
 packages/serializer/src
 packages/store/src
 packages/tracking/src
+packages/tutorials/todomvc-ember/solution/api-worker
+packages/tutorials/todomvc-ember/solution/app
+packages/tutorials/todomvc-ember/solution/tests
 specs/src
 tests/blueprints/fixtures
 tests/blueprints/tests

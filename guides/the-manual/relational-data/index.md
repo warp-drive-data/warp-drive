@@ -32,6 +32,8 @@ The exact rules every relationship kind follows are collected in the
 - [Inverses](./features/inverses.md)
 - [Polymorphism](./features/polymorphism.md)
 - [LinksMode](../misc/links-mode.md) (for `belongsTo` and `hasMany`)
+- [Pagination](../experiments/pagination.md) (experimental): load a large collection page by page as its own
+  request instead of through a relationship
 
 ## Configuration
 - [One To None](./configuration/one-to-none.md) (1:0)

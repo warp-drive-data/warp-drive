@@ -38,6 +38,11 @@ const config = {
   packageOptions: {
     entryFileName: 'index',
     readme: 'none',
+    // Package tsdown configs share their entry-point globs with TypeDoc. A glob can
+    // match a *.type-test.ts file (compile-time assertions, no exports); the build
+    // side drops those in tools/internal-config/rollup/external.js, this drops them
+    // here so they never get an empty API page.
+    exclude: ['**/*.type-test.ts'],
     excludePrivate: true,
     projectDocuments: [],
     excludeProtected: true,

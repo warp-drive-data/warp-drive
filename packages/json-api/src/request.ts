@@ -26,23 +26,27 @@ They take a few contextual inputs about the request you want to make, abstractin
 
 For instance, to fetch a resource from your API
 
-```ts
+::: code-group
+
+```ts [input.ts]
 import { findRecord } from '@ember-data/json-api/request';
 
 const options = findRecord('ember-developer', '1', { include: ['pets', 'friends'] });
-
-/*
-  {
-    url: 'https://api.example.com/v1/ember-developers/1?include=friends,pets',
-    method: 'GET',
-    headers: <Headers>,
-      // => 'Accept': 'application/vnd.api+json'
-      // => 'Content-Type': 'application/vnd.api+json'
-    op: 'findRecord';
-    records: [{ type: 'ember-developer', id: '1' }]
-  }
-*\
 ```
+
+```ts [output.ts]
+{
+  url: 'https://api.example.com/v1/ember-developers/1?include=friends,pets',
+  method: 'GET',
+  headers: <Headers>,
+    // => 'Accept': 'application/vnd.api+json'
+    // => 'Content-Type': 'application/vnd.api+json'
+  op: 'findRecord';
+  records: [{ type: 'ember-developer', id: '1' }]
+}
+```
+
+:::
 
 Request builder output may be used with either `requestManager.request` or `store.request`.
 

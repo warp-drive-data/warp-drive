@@ -53,6 +53,13 @@ function addUnpkgExportConditions(pkg: Package) {
       throw new Error(`Unexpected export format for key ${key} in package ${pkg.pkgData.name}`);
     }
 
+    // ignore exports that don't point at a built `dist/` artifact (e.g. static files
+    // shipped as-is, like @warp-drive/legacy's "./blueprints/*") since there's no
+    // corresponding unpkg build to add conditions for.
+    if (!value.default.startsWith('./dist/')) {
+      continue;
+    }
+
     const newPathValue = extractValuePath(value.default);
     // key order matters here so do not change this without great care.
 
