@@ -28,7 +28,7 @@ code, this page covers the fields.
 `belongsTo` and `hasMany` are not deprecated by this guide and continue to work. Migrate one
 relationship at a time, in whatever order suits the app. A field and its inverse migrate together:
 a `resource` or `collection` field cannot declare a `belongsTo` or `hasMany` as its inverse, or the
-reverse (see [Directionality](/guides/the-manual/relational-data/advanced/directionality.md)).
+reverse (see [Inverses and Directionality](/guides/the-manual/relational-data/features/inverses.md)).
 
 ## What Changed
 
