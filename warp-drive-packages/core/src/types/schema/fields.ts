@@ -1799,7 +1799,10 @@ export interface LegacyHasManyField {
      * and that the cache data for this field will
      * contain the full list of pointers.
      *
-     * hasMany relationships do not support pagination.
+     * hasMany relationships do not support pagination. To page through a
+     * large collection, request it as its own document and use the
+     * experimental pagination primitives; see the
+     * [Pagination guide](/guides/the-manual/experiments/pagination).
      *
      * @public
      */
@@ -1992,7 +1995,10 @@ export interface LinksModeHasManyField {
      * and that the cache data for this field will
      * contain the full list of pointers.
      *
-     * hasMany relationships do not support pagination.
+     * hasMany relationships do not support pagination. To page through a
+     * large collection, request it as its own document and use the
+     * experimental pagination primitives; see the
+     * [Pagination guide](/guides/the-manual/experiments/pagination).
      *
      * @public
      */

@@ -1,0 +1,19 @@
+{
+  "include": ["app/**/*", "tests/**/*", "api-worker/**/*"],
+  "exclude": ["api-worker/sw.ts"],
+  "contentMappers": [{ "package": "ember-content-mapper", "extensions": [".gts", ".gjs"] }],
+  "compilerOptions": {
+    "lib": ["DOM", "ESNext"],
+    "module": "esnext",
+    "target": "esnext",
+    "moduleResolution": "bundler",
+    "moduleDetection": "force",
+    "strict": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "experimentalDecorators": true,
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+    "types": ["@glint/ember-tsc/types", "ember-source/types", "vite/client"]
+  }
+}
