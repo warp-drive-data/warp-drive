@@ -1,10 +1,10 @@
 ---
 title: 'Dropping V1 Addon and Classic ember-cli Macros Support in 6.0'
 warp-drive-rfc: 4
-emberjs-rfc:
-emberjs-pr:
-emberjs-branch:
-sync-hash:
+emberjs-rfc: 1239
+emberjs-pr: https://github.com/emberjs/rfcs/pull/1239
+emberjs-branch: rfc-4-dropping-v1-addon-and-classic-ember-cli-macros-support-in-6-0
+sync-hash: 4bda458f7ca7ce77ef7d27282e4c3854c5b4ab24da4a1e099f0a35b76864c054
 stage: proposed
 start-date: 2026-09-25T00:00:00.000Z
 release-date:
