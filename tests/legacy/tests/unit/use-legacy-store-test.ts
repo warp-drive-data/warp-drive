@@ -1,8 +1,10 @@
 import { getOwner, setOwner } from '@ember/owner';
 
+import { DEBUG } from '@warp-drive/core/build-config/env';
 import { module, setupTest, test } from '@warp-drive/diagnostic/ember';
 import { JSONAPICache } from '@warp-drive/json-api';
 import { useLegacyStore } from '@warp-drive/legacy';
+import { withRestoredDeprecatedModelRequestBehaviors as withLegacy } from '@warp-drive/legacy/model/migration-support';
 
 module('WarpDrive | useLegacyStore | handlers callback', function (hooks) {
   setupTest(hooks);
@@ -86,4 +88,44 @@ module('WarpDrive | useLegacyStore | handlers callback', function (hooks) {
 
     assert.ok(store.requestManager, 'requestManager is created from a plain array');
   });
+});
+
+module('WarpDrive | useLegacyStore | linksMode', function (hooks) {
+  setupTest(hooks);
+
+  test('createRecord works when linksMode is on', function (assert) {
+    const AppStore = useLegacyStore({
+      linksMode: true,
+      cache: JSONAPICache,
+      schemas: [
+        withLegacy({
+          type: 'user',
+          fields: [{ name: 'name', type: null, kind: 'attribute' }],
+        }),
+      ],
+    });
+    const store = new AppStore();
+    setOwner(store, this.owner);
+
+    const record = store.createRecord('user', { name: 'Rey Skybarker' }) as { id: string | null; name: string };
+
+    assert.equal(record.id, null, 'no adapter generated an id');
+    assert.equal(record.name, 'Rey Skybarker', 'the record was created');
+  });
+
+  if (DEBUG) {
+    test('calling adapterFor directly still asserts when linksMode is on', async function (assert) {
+      const AppStore = useLegacyStore({
+        linksMode: true,
+        cache: JSONAPICache,
+      });
+      const store = new AppStore();
+      setOwner(store, this.owner);
+
+      await assert.expectAssertion(() => {
+        // eslint-disable-next-line warp-drive/no-legacy-request-patterns
+        store.adapterFor('user');
+      }, /useLegacyStore was setup in linksMode/);
+    });
+  }
 });

@@ -22,7 +22,9 @@
     "dbaeumer.vscode-eslint",
     "EditorConfig.EditorConfig",
     "esbenp.prettier-vscode",
-    "stylelint.vscode-stylelint"
+    "stylelint.vscode-stylelint",
+    // oxfmt formatter and oxlint; .vscode/settings.json makes it the default formatter
+    "oxc.oxc-vscode"
 
     // Warns if any of the below are present
     // Disabled because it doesn't work.
