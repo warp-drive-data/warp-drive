@@ -42,6 +42,8 @@ await this.store.request(createTodo(attributes));
 | `// #omit-file-from-starter` as a file's first line | The file is left out, because the learner writes it |
 
 Blocks can't nest. The generator reads every text file in `solution/`, and copies binary files unchanged.
+`#omit-file-from-starter` only parses as a `//` comment, so a file without `//` comments,
+such as CSS, HTML or YAML, can't be omitted.
 
 The guides write their code inline, so they don't update when `solution/` does.
 
@@ -59,8 +61,11 @@ If you changed code in a block the starter replaces, update that chapter of the 
 ### Deliberate difference
 
 The routes' `model()` return `todos?:`, and `TodoProvider` takes `todoFuture?:`, so the
-starter type-checks before the learner writes chapter 1's request. `<Request>` accepts an
-undefined request, so the types are accurate.
+starter type-checks before the learner writes chapter 1's request. `<Request>`'s types accept
+an undefined request, but at runtime it throws when there's no request and no `<:idle>`
+block. The finished app always passes a request, but once
+the learner writes chapter 1's `<Request>`, `/active` and `/completed` throw until they
+write chapter 3's requests.
 
 ### What CI checks
 
@@ -70,4 +75,5 @@ undefined request, so the types are accurate.
 | `blocks can't nest`, `never closed`, `without a block to close`, `can't close` | A block's start and end markers don't pair up. Each start needs its matching end. |
 | `malformed tutorial starter directive` | A directive is misspelled or outdated, `#replace-in-starter` has no text, or another directive has text. |
 | `#omit-file-from-starter must be the file's first line` | Move the directive to line 1. |
+| `lint:oxfmt` or `lint:prettier` fails on `starter/` | The generator produced code the formatters reject. Change `solution/` so the generated code is formatted, such as by moving a block, rather than editing `starter/`. |
 | Solution or starter tests fail | The app is broken. Both apps are type-checked and tested. |
