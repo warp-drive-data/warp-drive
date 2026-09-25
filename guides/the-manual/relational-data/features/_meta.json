@@ -5,6 +5,7 @@
     "links-vs-identifiers",
     "sync-vs-async",
     "inverses",
-    "polymorphism"
+    "polymorphism",
+    "links-mode"
   ]
 }

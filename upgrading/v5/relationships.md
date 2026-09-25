@@ -103,7 +103,7 @@ For every `belongsTo`/`hasMany` field, look at what the API actually sends for i
 | references in `data` but not the resources | nothing yet | See [Patterns Without a Migration Path](#patterns-without-a-migration-path). |
 | a large, pageable or filterable list | a top-level request, not a relationship | See [Large Collections](/guides/the-manual/relational-data/advanced/large-collections.md). |
 
-Fields declared `linksMode: true` (the [LinksMode](/guides/the-manual/misc/links-mode.md) option
+Fields declared `linksMode: true` (the [LinksMode](/guides/the-manual/relational-data/features/links-mode.md) option
 that loads a legacy relationship through `store.request` instead of an adapter) fall in the first
 two rows depending on whether the API sends a link; `linksMode` itself has no meaning for the new
 kinds and is dropped.

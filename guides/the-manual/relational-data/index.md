@@ -33,7 +33,7 @@ The exact rules every relationship kind follows are collected in the
 - [Sync vs Async](./features/sync-vs-async.md)
 - [Inverses and Directionality](./features/inverses.md)
 - [Polymorphism](./features/polymorphism.md)
-- [LinksMode](../misc/links-mode.md) (for `belongsTo` and `hasMany`)
+- [LinksMode](./features/links-mode.md) (for `belongsTo` and `hasMany`)
 - [Pagination](../experiments/pagination.md) (experimental): load a large collection page by page as its own
   request instead of through a relationship
 
