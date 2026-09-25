@@ -1,5 +1,5 @@
 ---
-description: Define a bidirectional one-to-one relationship with belongsTo on both sides and managed inverses, or split it into two one-to-none relationships, via Model or schema.
+description: Define a bidirectional one-to-one relationship with a resource field on each side and managed inverses, with the legacy belongsTo forms at the end.
 ---
 
 # One To One Relationships
@@ -60,130 +60,61 @@ graph LR;
 ```
 
 
-Head over to [one-to-none](./one-to-none.md) if this is the setup that is best for you. Else, here's how we can define such a relationship via various mechanisms.
+Head over to [one-to-none](./one-to-none.md) if this is the setup that is best for you.
 
-- [Using @warp-drive/legacy/model](#using-warp-drive-legacy-model)
-- [Using json schemas](#using-json-schemas)
-- [Using ReactiveResource schemas](#using-reactiveresource-schemas)
-- [🚧 Using @warp-drive/schema-record](#using-warp-drive-schema-record-🚧-coming-soon)
-  - [Legacy Compat Mode](#legacycompat-mode)
+- [Defining the Relationship](#defining-the-relationship)
+- [Using the Schema DSL (draft)](#using-the-schema-dsl-draft)
+- [Legacy `belongsTo` and `hasMany`](#legacy-belongsto-and-hasmany)
 
 ---
 
-## Using `@warp-drive/legacy/model`
+## Defining the Relationship
 
-> **Note** Models are currently the primary way that users of WarpDrive define "schema".
->
-> Models are not the only way to define schema today, but they
-> are the most immediately available ergonomic way to do so.
-
-When using Models, WarpDrive parses schema from them at runtime,
-converting static information defined on the class into the json
-schema format needed by the rest of the system.
-
-This is handled by the implementation of the [SchemaService](/api/@warp-drive/core/types/schema/schema-service/types/SchemaService) provided
-by the `@warp-drive/legacy/model` package. The service converts the class
-definitions into the json definitions described in the next section.
+Declare a `resource` field on each side, each naming the other as its `inverse`. These field kinds behave the same in LegacyMode and PolarisMode; [ResourceSchemas](../../schemas/resources/index.md) shows how to register the schemas they belong to, and [Inverses and Directionality](../features/inverses.md) explains `inverse`.
 
 📸 *InstagramAccount*
 
 ```ts
-import Model, { belongsTo } from '@warp-drive/legacy/model';
-
-export default class InstagramAccount extends Model {
-  @belongsTo('trail-runner', { inverse: 'instagram', async: false })
-  runner;
+{
+  kind: 'resource',
+  name: 'runner',
+  type: 'trail-runner',
+  options: { async: false, inverse: 'instagram' },
 }
 ```
 
 🌲 *TrailRunner*
 
 ```ts
-import Model, { belongsTo } from '@warp-drive/legacy/model';
-
-export default class TrailRunner extends Model {
-  @belongsTo('instagram-account', { inverse: 'runner', async: false })
-  instagram;
+{
+  kind: 'resource',
+  name: 'instagram',
+  type: 'instagram-account',
+  options: { async: false, inverse: 'runner' },
 }
 ```
 
 ---
 
-## Using JSON Schemas
+## Using the Schema DSL (draft)
 
-WarpDrive doesn't care where your schemas come from, how they are authored,
-or how you load them into the system so long as when it asks the [SchemaService](/api/@warp-drive/core/types/schema/schema-service/types/SchemaService)
-for information it gets back field definitions in the right json shape.
+Working with schemas in a raw json format is far more flexible, lightweight and
+performant than working with bulky classes that need to be shipped across the wire, parsed, and instantiated. Even relatively small apps can quickly find themselves shipping large quantities of JS just to describe their data.
 
-Here, we show how the above trail runner relationship is described by a field definition.
+No one wants to author schemas in raw JSON though (we hope 😬), and the ergonomics of typed data and editor autocomplete based on your schemas are vital to productivity and
+code quality. For this, we offer a way to express schemas as TypeScript using types, classes and decorators which are then compiled into json schemas and TypeScript interfaces for use by your project.
 
-**Current**
-
-📸 *InstagramAccount*
-
-```json
-{
-  "kind": "belongsTo",
-  "name": "runner",
-  "options": { "async": false, "inverse": "instagram" },
-  "type": "trail-runner",
-}
-```
-
-🌲 *TrailRunner*
-
-```json
-{
-  "kind": "belongsTo",
-  "name": "instagram",
-  "options": { "async": false, "inverse": "runner" },
-  "type": "instagram-account",
-}
-```
-
-**🚧 Coming Soon**
-
-Because we deprecated implicit option values in 4.x, we are now able to change defaults.
-
-This means that the next iteration of Schema will be able to reliably use
-the lack of an option like "async" or "inverse" as a false-y value.
-
-We also are shifting the value for "kind" from "belongsTo" to "resource"
-to make it more readily clear that relationships do not (by default) have
-directionality or ownership over their inverse.
-
-📸 *InstagramAccount*
-
-```json
-{
-  "kind": "resource",
-  "name": "runner",
-  "options": { "inverse": "instagram" },
-  "type": "trail-runner",
-}
-```
-
-🌲 *TrailRunner*
-
-```json
-{
-  "kind": "resource",
-  "name": "instagram",
-  "options": { "inverse": "runner" },
-  "type": "instagram-account",
-}
-```
+The [Schema DSL](../../schemas/dsl/index.md) (`@warp-drive/schema-dsl`) provides this. Decorators for `resource` and `collection` fields are planned; until they land, the DSL can declare this relationship only with its legacy decorators, shown in [Schema DSL (legacy)](#schema-dsl-legacy) below.
 
 ---
 
-## Using ReactiveResource Schemas
+## Legacy `belongsTo` and `hasMany`
 
-[ReactiveResource](../../schemas/index.md) reads these same field definitions from a
-[ResourceSchema](../../schemas/resources/index.md). Define one in
-[LegacyMode](../../schemas/resources/legacy-mode.md), the recommended mode today. Its
-`withDefaults` helper sets `legacy: true`, adds the `id` identity field, and appends the
-derived and local fields that emulate `Model`. The relationship field is the JSON above,
-unchanged.
+The legacy kinds are kept for apps migrating from `@warp-drive/legacy/model`. To move them to the fields above, see [Migrating Relationships to resource and collection](/upgrading/v5/relationships.md).
+
+### Schema Fields
+
+In a [LegacyMode](../../schemas/resources/legacy-mode.md) `ResourceSchema`, where `withDefaults` sets `legacy: true`, adds the `id` identity field, and appends the derived and local fields that emulate `Model`:
 
 📸 *InstagramAccount*
 
@@ -196,8 +127,8 @@ export const InstagramAccountSchema = withDefaults({
     {
       kind: 'belongsTo',
       name: 'runner',
-      options: { async: false, inverse: 'instagram' },
       type: 'trail-runner',
+      options: { async: false, inverse: 'instagram' },
     },
   ],
 });
@@ -214,64 +145,26 @@ export const TrailRunnerSchema = withDefaults({
     {
       kind: 'belongsTo',
       name: 'instagram',
-      options: { async: false, inverse: 'runner' },
       type: 'instagram-account',
+      options: { async: false, inverse: 'runner' },
     },
   ],
 });
 ```
 
-If you did not create the store with `useLegacyStore`, call `registerDerivations` once on the
-schema service, as shown in
-[Configuration](../../schemas/resources/legacy-mode.md#configuration).
-[Defining Legacy Schemas](../../schemas/resources/legacy-mode.md#defining-legacy-schemas)
-shows how to type the records these schemas produce.
+If you did not create the store with `useLegacyStore`, call `registerDerivations` once on the schema service, as shown in [Configuration](../../schemas/resources/legacy-mode.md#configuration). [Defining Legacy Schemas](../../schemas/resources/legacy-mode.md#defining-legacy-schemas) shows how to type the records these schemas produce.
 
----
+### `@warp-drive/legacy/model`
 
-## Using `@warp-drive/schema-record` (🚧 Coming Soon)
-
-Working with schemas in a raw json format is far more flexible, lightweight and
-performant than working with bulky classes that need to be shipped across the wire, parsed, and instantiated. Even relatively small apps can quickly find themselves shipping large quantities of JS just to describe their data.
-
-No one wants to author schemas in raw JSON though (we hope 😬), and the ergonomics of typed data and editor autocomplete based on your schemas are vital to productivity and
-code quality. For this, we offer a way to express schemas as TypeScript using types, classes and decorators which are then compiled into json schemas and TypeScript interfaces for use by your project.
+With `Model` classes, the `SchemaService` provided by `@warp-drive/legacy/model` converts the decorators into the schema fields above at runtime.
 
 📸 *InstagramAccount*
 
 ```ts
-import { resource } from '@warp-drive/schema';
-import { TrailRunner } from './trail-runner';
+import Model, { belongsTo } from '@warp-drive/legacy/model';
 
-export class InstagramAccount {
-  @resource(TrailRunner) runner;
-}
-```
-
-🌲 *TrailRunner*
-
-```ts
-import { resource } from '@warp-drive/schema';
-import { InstagramAccount } from './instagram-account';
-
-export class TrailRunner {
-  @resource(InstagramAccount) instagram;
-}
-```
-
-### LegacyCompat Mode
-
-Support for migrating from `@warp-drive/legacy/model` on a more granular basis is provided by decorators that preserve the semantics of the quirks of that class. This allows you to begin eliminating models
-and adopting other features of schemas sooner.
-
-📸 *InstagramAccount*
-
-```ts
-import { belongsTo } from '@warp-drive/schema/legacy';
-import { TrailRunner } from './trail-runner';
-
-export class InstagramAccount {
-  @belongsTo(TrailRunner, { inverse: "instagram" })
+export default class InstagramAccount extends Model {
+  @belongsTo('trail-runner', { async: false, inverse: 'instagram' })
   runner;
 }
 ```
@@ -279,11 +172,38 @@ export class InstagramAccount {
 🌲 *TrailRunner*
 
 ```ts
-import { belongsTo } from '@warp-drive/schema/legacy';
-import { InstagramAccount } from './instagram-account';
+import Model, { belongsTo } from '@warp-drive/legacy/model';
 
-export class TrailRunner {
-  @belongsTo(InstagramAccount, { inverse: "runner" })
+export default class TrailRunner extends Model {
+  @belongsTo('instagram-account', { async: false, inverse: 'runner' })
   instagram;
+}
+```
+
+### Schema DSL (legacy) {#schema-dsl-legacy}
+
+The Schema DSL's `@belongsTo` and `@hasMany` compile to the schema fields above and are only valid on resources decorated with `@Resource({ legacy: true })`.
+
+📸 *InstagramAccount*
+
+```ts
+import { Resource, belongsTo } from '@warp-drive/schema-dsl';
+
+@Resource('instagram-account', { legacy: true })
+export class InstagramAccount {
+  @belongsTo({ type: 'trail-runner', inverse: 'instagram', async: false })
+  declare runner: unknown;
+}
+```
+
+🌲 *TrailRunner*
+
+```ts
+import { Resource, belongsTo } from '@warp-drive/schema-dsl';
+
+@Resource('trail-runner', { legacy: true })
+export class TrailRunner {
+  @belongsTo({ type: 'instagram-account', inverse: 'runner', async: false })
+  declare instagram: unknown;
 }
 ```

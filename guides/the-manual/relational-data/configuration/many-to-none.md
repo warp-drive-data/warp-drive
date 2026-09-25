@@ -1,5 +1,5 @@
 ---
-description: Define a unidirectional many-to-none hasMany relationship with inverse null, for collections whose other side is too large to track, via Model, JSON schema, or LegacyMode.
+description: Define a one-way many-to-none relationship with a collection field and inverse null, with the legacy hasMany forms at the end.
 ---
 
 # Many To None Relationships
@@ -17,106 +17,52 @@ graph LR;
 
 Often `ManyToNone` is used for exactly this sort of case, where conceptually the relationship is [many-to-many](./many-to-many.md) in nature, but one side would be so large that modeling it as such is prohibitive.
 
-Here's how we can define such a relationship via various mechanisms.
-
-- [Using @warp-drive/legacy/model](#using-warp-drive-legacy-model)
-- [Using json schemas](#using-json-schemas)
-- [Using ReactiveResource schemas](#using-reactiveresource-schemas)
-- [🚧 Using @warp-drive/schema-record](#using-warp-drive-schema-record-🚧-coming-soon)
-  - [Legacy Compat Mode](#legacycompat-mode)
+- [Defining the Relationship](#defining-the-relationship)
+- [Using the Schema DSL (draft)](#using-the-schema-dsl-draft)
+- [Legacy `belongsTo` and `hasMany`](#legacy-belongsto-and-hasmany)
 
 ---
 
-## Using `@warp-drive/legacy/model`
+## Defining the Relationship
 
-> **Note** Models are currently the primary way that users of WarpDrive define "schema".
->
-> Models are not the only way to define schema today, but they
-> are the most immediately available ergonomic way to do so.
-
-When using Models, WarpDrive parses schema from them at runtime,
-converting static information defined on the class into the json
-schema format needed by the rest of the system.
-
-This is handled by the implementation of the [SchemaService](/api/@warp-drive/core/types/schema/schema-service/types/SchemaService) provided
-by the `@warp-drive/legacy/model` package. The service converts the class
-definitions into the json definitions described in the next section.
-
-🏷️ *Hashtag*
-
-```ts
-import Model, { attr } from '@warp-drive/legacy/model';
-
-export default class Hashtag extends Model {
-  @attr name;
-}
-```
+Declare a `collection` field on the side that points at the others, with `inverse: null`. These field kinds behave the same in LegacyMode and PolarisMode; [ResourceSchemas](../../schemas/resources/index.md) shows how to register the schemas they belong to, and [Inverses and Directionality](../features/inverses.md) explains `inverse`.
 
 🏃🏾‍♀️ *ActivityData*
 
 ```ts
-import Model, { hasMany } from '@warp-drive/legacy/model';
-
-export default class ActivityData extends Model {
-  @hasMany('hashtag', { async: false, inverse: null })
-  tags;
+{
+  kind: 'collection',
+  name: 'tags',
+  type: 'hashtag',
+  options: { async: false, inverse: null },
 }
 ```
+
+::: warning Keep the "many" side small
+A `collection` field always holds the complete list. If the list could grow large, or users would page, sort or filter it, load it with a top-level request instead; see [Large Collections](../advanced/large-collections.md).
+:::
 
 ---
 
-## Using JSON Schemas
+## Using the Schema DSL (draft)
 
-WarpDrive doesn't care where your schemas come from, how they are authored,
-or how you load them into the system so long as when it asks the [SchemaService](/api/@warp-drive/core/types/schema/schema-service/types/SchemaService)
-for information it gets back field definitions in the right json shape.
+Working with schemas in a raw json format is far more flexible, lightweight and
+performant than working with bulky classes that need to be shipped across the wire, parsed, and instantiated. Even relatively small apps can quickly find themselves shipping large quantities of JS just to describe their data.
 
-Here, we show how the above trail runner relationship is described by a field definition.
+No one wants to author schemas in raw JSON though (we hope 😬), and the ergonomics of typed data and editor autocomplete based on your schemas are vital to productivity and
+code quality. For this, we offer a way to express schemas as TypeScript using types, classes and decorators which are then compiled into json schemas and TypeScript interfaces for use by your project.
 
-**Current**
-
-🏃🏾‍♀️ *ActivityData*
-
-```json
-{
-  "kind": "hasMany",
-  "name": "tags",
-  "options": { "async": false, "inverse": null },
-  "type": "hashtag",
-}
-```
-
-**🚧 Coming Soon**
-
-Because we deprecated implicit option values in 4.x, we are now able to change defaults.
-
-This means that the next iteration of Schema will be able to reliably use
-the lack of an option like "async" or "inverse" as a false-y value.
-
-We also are shifting the value for "kind" from "belongsTo" to "resource"
-to make it more readily clear that relationships do not (by default) have
-directionality or ownership over their inverse.
-
-🏃🏾‍♀️ *ActivityData*
-
-```json
-{
-  "kind": "collection",
-  "name": "tags",
-  "type": "hashtag",
-}
-```
+The [Schema DSL](../../schemas/dsl/index.md) (`@warp-drive/schema-dsl`) provides this. Decorators for `resource` and `collection` fields are planned; until they land, the DSL can declare this relationship only with its legacy decorators, shown in [Schema DSL (legacy)](#schema-dsl-legacy) below.
 
 ---
 
-## Using ReactiveResource Schemas
+## Legacy `belongsTo` and `hasMany`
 
-[ReactiveResource](../../schemas/index.md) reads these same field definitions from a
-[ResourceSchema](../../schemas/resources/index.md). Define one in
-[LegacyMode](../../schemas/resources/legacy-mode.md), the recommended mode today. Its
-`withDefaults` helper sets `legacy: true`, adds the `id` identity field, and appends the
-derived and local fields that emulate `Model`. The relationship field is the JSON above,
-unchanged.
+The legacy kinds are kept for apps migrating from `@warp-drive/legacy/model`. To move them to the fields above, see [Migrating Relationships to resource and collection](/upgrading/v5/relationships.md).
+
+### Schema Fields
+
+In a [LegacyMode](../../schemas/resources/legacy-mode.md) `ResourceSchema`, where `withDefaults` sets `legacy: true`, adds the `id` identity field, and appends the derived and local fields that emulate `Model`:
 
 🏃🏾‍♀️ *ActivityData*
 
@@ -129,72 +75,61 @@ export const ActivityDataSchema = withDefaults({
     {
       kind: 'hasMany',
       name: 'tags',
-      options: { async: false, inverse: null },
       type: 'hashtag',
+      options: { async: false, inverse: null },
     },
   ],
 });
 ```
 
-If you did not create the store with `useLegacyStore`, call `registerDerivations` once on the
-schema service, as shown in
-[Configuration](../../schemas/resources/legacy-mode.md#configuration).
-[Defining Legacy Schemas](../../schemas/resources/legacy-mode.md#defining-legacy-schemas)
-shows how to type the records these schemas produce.
-
----
-
-## Using `@warp-drive/schema-record` (🚧 Coming Soon)
-
-Working with schemas in a raw json format is far more flexible, lightweight and
-performant than working with bulky classes that need to be shipped across the wire, parsed, and instantiated. Even relatively small apps can quickly find themselves shipping large quantities of JS just to describe their data.
-
-No one wants to author schemas in raw JSON though (we hope 😬), and the ergonomics of typed data and editor autocomplete based on your schemas are vital to productivity and
-code quality. For this, we offer a way to express schemas as TypeScript using types, classes and decorators which are then compiled into json schemas and TypeScript interfaces for use by your project.
-
 🏷️ *Hashtag*
 
 ```ts
-import { field } from '@warp-drive/schema';
+import { withDefaults } from '@warp-drive/legacy/model/migration-support';
 
-export class Hashtag extends Model {
-  @field name: string;
-}
+export const HashtagSchema = withDefaults({
+  type: 'hashtag',
+  fields: [],
+});
 ```
+
+If you did not create the store with `useLegacyStore`, call `registerDerivations` once on the schema service, as shown in [Configuration](../../schemas/resources/legacy-mode.md#configuration). [Defining Legacy Schemas](../../schemas/resources/legacy-mode.md#defining-legacy-schemas) shows how to type the records these schemas produce.
+
+### `@warp-drive/legacy/model`
+
+With `Model` classes, the `SchemaService` provided by `@warp-drive/legacy/model` converts the decorators into the schema fields above at runtime.
 
 🏃🏾‍♀️ *ActivityData*
 
 ```ts
-import { collection } from '@warp-drive/schema';
-import { Hashtag } from './hashtag';
+import Model, { hasMany } from '@warp-drive/legacy/model';
 
-export class ActivityData extends Model {
-  @collection(Hashtag) tags;
+export default class ActivityData extends Model {
+  @hasMany('hashtag', { async: false, inverse: null })
+  tags;
 }
 ```
-
-### LegacyCompat Mode
-
-Support for migrating from `@warp-drive/legacy/model` on a more granular basis is provided by decorators that preserve the semantics of the quirks of that class. This allows you to begin eliminating models
-and adopting other features of schemas sooner.
 
 🏷️ *Hashtag*
 
 ```ts
-import { attr } from '@warp-drive/schema/legacy';
+import Model from '@warp-drive/legacy/model';
 
-export class Hashtag extends Model {
-  @attr name: string;
-}
+export default class Hashtag extends Model {}
 ```
+
+### Schema DSL (legacy) {#schema-dsl-legacy}
+
+The Schema DSL's `@belongsTo` and `@hasMany` compile to the schema fields above and are only valid on resources decorated with `@Resource({ legacy: true })`.
 
 🏃🏾‍♀️ *ActivityData*
 
 ```ts
-import { hasMany } from '@warp-drive/schema/legacy';
-import { Hashtag } from './hashtag';
+import { Resource, hasMany } from '@warp-drive/schema-dsl';
 
-export class ActivityData extends Model {
-  @hasMany(Hashtag) tags;
+@Resource('activity-data', { legacy: true })
+export class ActivityData {
+  @hasMany({ type: 'hashtag', inverse: null, async: false })
+  declare tags: unknown;
 }
 ```
