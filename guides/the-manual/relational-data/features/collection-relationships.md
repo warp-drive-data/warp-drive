@@ -130,11 +130,11 @@ A record may only appear once in a collection: adding a record that is already a
 Which records are editable depends on the schema's mode, not on the field kind. In
 [LegacyMode](../../schemas/resources/legacy-mode.md) every record is editable. In
 [PolarisMode](../../schemas/resources/polaris-mode.md) mutate the copy returned by
-[checkout](../mutating/adding-removing.md); the immutable record and its array keep
+[checkout](../mutating/adding-and-removing.md); the immutable record and its array keep
 showing the remote membership until the change is saved or committed. Inverses follow the same
 rule.
 
-See [Adding & Removing](../mutating/adding-removing.md) and [Saving](../mutating/saving.md).
+See [Adding & Removing](../mutating/adding-and-removing.md) and [Saving](../mutating/saving.md).
 
 ## Creating Records
 

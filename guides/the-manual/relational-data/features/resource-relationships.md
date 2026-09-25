@@ -128,7 +128,7 @@ editable.bestFriend = otherUser;      // ❌ asserts
 Which records are editable depends on the schema's mode, not on the field kind. In
 [LegacyMode](../../schemas/resources/legacy-mode.md) every record is editable. In
 [PolarisMode](../../schemas/resources/polaris-mode.md) a record is immutable until it is
-[checked out](../mutating/adding-removing.md) for editing; the immutable record keeps
+[checked out](../mutating/adding-and-removing.md) for editing; the immutable record keeps
 showing the last state received from the API while the checked-out copy shows local changes.
 
 ```ts
@@ -145,7 +145,7 @@ Setting `data` updates the [inverse](./inverses.md) as well, following the same 
 split: the inverse's immutable record is unchanged until the change is saved or committed, while a
 checked-out inverse reflects it immediately.
 
-See [Adding & Removing](../mutating/adding-removing.md) and [Saving](../mutating/saving.md).
+See [Adding & Removing](../mutating/adding-and-removing.md) and [Saving](../mutating/saving.md).
 
 ## Creating Records
 

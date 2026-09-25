@@ -174,7 +174,7 @@ and [Collection Relationships](/guides/the-manual/relational-data/features/colle
 In PolarisMode all of these require the
 [checked-out copy](/guides/the-manual/schemas/resources/polaris-mode.md) of the record; on the
 immutable record they assert. Saving is unchanged: serialize the identifiers in `data`, never `links` or `meta`. See
-[Adding & Removing](/guides/the-manual/relational-data/mutating/adding-removing.md) and
+[Adding & Removing](/guides/the-manual/relational-data/mutating/adding-and-removing.md) and
 [Saving](/guides/the-manual/relational-data/mutating/saving.md).
 
 ## Step 5: Load Async Relationships
