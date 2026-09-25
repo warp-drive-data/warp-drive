@@ -1,4 +1,5 @@
 ---
+title: Links vs Identifiers
 description: The difference between links and resource identifiers in a relationship payload, which one your API should send, and why links are never followed automatically.
 ---
 

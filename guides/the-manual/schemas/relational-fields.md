@@ -92,7 +92,7 @@ interface User {
 
 Relationships are changed through the document's `data` on an editable record. Every LegacyMode
 record is editable; a PolarisMode record is immutable, so first get an editable copy with
-[`checkout()`](../relational-data/mutating/adding-removing.md). Assigning the field itself asserts.
+[`checkout()`](../relational-data/mutating/adding-and-removing.md). Assigning the field itself asserts.
 
 ```ts
 editable.bestFriend.data = otherUser;
@@ -100,7 +100,7 @@ editable.pets.data.push(rex);
 editable.pets.data = [rex, shen];
 ```
 
-See [Adding & Removing](../relational-data/mutating/adding-removing.md).
+See [Adding & Removing](../relational-data/mutating/adding-and-removing.md).
 
 ## Collections Are Not Paginated
 

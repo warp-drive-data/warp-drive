@@ -46,9 +46,9 @@ The exact rules every relationship kind follows are collected in the
 - [Many To Many](./configuration/many-to-many.md) (N:N)
 
 ## Mutating Relationships
-- [Adding & Removing](./mutating/adding-removing.md)
+- [Adding & Removing](./mutating/adding-and-removing.md)
 - [Saving](./mutating/saving.md)
-- [Sorting & Filtering](./mutating/sorting-filtering.md)
+- [Sorting & Filtering](./mutating/sorting-and-filtering.md)
 
 ## Reference
 - [Relationship Specification](./spec.md)
