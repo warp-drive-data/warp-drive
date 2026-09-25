@@ -29,8 +29,13 @@ describes. The recipe also builds on
 next to Vite with a `test:dev` script. Set that up first. The examples use fixed ports: `4200` for
 Vite, `7358` for holodeck, and `8443` for Caddy.
 
-Install Caddy from https://caddyserver.com/docs/install. Its reverse proxy quick start is at
-https://caddyserver.com/docs/quick-starts/reverse-proxy.
+Install Caddy from https://caddyserver.com/docs/install, then run `caddy upgrade`. Holodeck
+accepts only HTTP/2, and not every Caddy build negotiates it with an HTTPS upstream. The Homebrew
+bottle of Caddy 2.11.4, built with Go 1.27.1, speaks HTTP/1.1 to every HTTPS upstream, and holodeck
+rejects that. `caddy upgrade` replaces the binary with the build from https://caddyserver.com/download,
+which is built with Go 1.26.4 and negotiates HTTP/2. `caddy build-info` prints the `go` line, and
+[Run it](#run-it) below shows how to confirm the protocol once Caddy is up. Caddy's reverse proxy
+quick start is at https://caddyserver.com/docs/quick-starts/reverse-proxy.
 
 The recipe changes the lines in `tests/test-helper.js` that point requests at the mock server:
 
@@ -52,11 +57,8 @@ Save this as `Caddyfile` in the app's root, next to `testem.js`.
 https://localhost:8443 {
 	tls {$HOME}/holodeck-localhost.pem {$HOME}/holodeck-localhost-key.pem
 
-	handle /api/* {
-		reverse_proxy https://localhost:7358
-	}
-
-	handle /__record* {
+	@holodeck path /api/* /__record*
+	handle @holodeck {
 		reverse_proxy https://localhost:7358
 	}
 
@@ -72,19 +74,20 @@ here instead. `ensure-cert` installed its certificate authority with `mkcert -in
 browser already trusts the proxy. Caddy trusts the same authority, so it reaches holodeck without
 being told to skip certificate checks.
 
-`handle /api/*` sends the app's requests to holodeck. `/api` is the `namespace` from
-`setBuildURLConfig`, so if yours differs, change the path here. `handle /__record*` sends holodeck
-the request each mock helper posts to record a fixture. Without that block, Vite answers
-`/__record` with a 404, and every test that records fails with
+The `@holodeck` matcher names the two paths that go to holodeck. `/api` is the `namespace` from
+`setBuildURLConfig`, so if yours differs, change it here. `/__record` is where each mock helper
+posts the fixture it records. Without it, Vite answers `/__record` with a 404, and every test that
+records fails with
 `MockError: Holodeck failed to record GET api/comments/1 (404 ). The mock server gave no explanation.`
 The last `handle` sends everything else to Vite.
 
 The blocks use `handle` rather than `handle_path` because `handle` keeps the `/api` prefix, and
 fixture names include it, for example `GET::api_users::0`.
 
-Holodeck accepts only HTTP/2. Caddy speaks HTTP/2 to it with no extra configuration. A proxy that
-speaks HTTP/1.1 to its upstream, such as Vite's `server.proxy` or testem's `proxies` option, gets a
-`403 Forbidden` from holodeck on every request. The body starts with
+A Caddy build that negotiates HTTP/2 needs no transport settings here. A build that cannot is not
+fixed by `transport http { versions 2 }` either, so check the build, as [Before you start](#before-you-start)
+says. Any proxy that speaks HTTP/1.1 to holodeck, such as Vite's `server.proxy` or testem's
+`proxies` option, gets a `403 Forbidden` on every request. The body starts with
 ``Missing ALPN Protocol, expected `h2` to be available.``
 
 ## Point the tests at the page's origin
@@ -115,7 +118,18 @@ it here too.
    caddy run
    ```
 
-3. Open `https://localhost:8443/tests`.
+3. Confirm that Caddy reached holodeck over HTTP/2. Holodeck answers this probe with a 400, which
+   is fine. The `via` header is what matters.
+
+   ```sh
+   curl -s -D - -o /dev/null 'https://localhost:8443/api/users?__xTestId=probe&__xTestRequestNumber=0' | grep -i via
+   ```
+
+   `via: 2.0 Caddy` means HTTP/2. `via: 1.1 Caddy` means this build speaks HTTP/1.1 to the
+   upstream, and the suite will fail with `Holodeck failed to record GET api/users (403 )`. Run
+   `caddy upgrade`, restart Caddy, and probe again.
+
+4. Open `https://localhost:8443/tests`.
 
 The suite passes. In the browser's network panel, every request goes to `https://localhost:8443`,
 and there is no `OPTIONS` request. In a test app with 17 tests and one `DELETE`, the direct page
