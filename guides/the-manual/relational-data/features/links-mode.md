@@ -1,61 +1,49 @@
 ---
 title: LinksMode (legacy belongsTo and hasMany)
-description: How LinksMode lets a legacy belongsTo or hasMany relationship load through store.request instead of an adapter, and the constraints it carries in LegacyMode and PolarisMode.
+description: How LinksMode lets a legacy belongsTo or hasMany relationship load through store.request instead of an adapter, when to use it before moving to resource and collection, and how it differs between Model, LegacyMode and PolarisMode.
 ---
 
 # LinksMode
 
----
+**LinksMode** is an option for the legacy `belongsTo` and `hasMany` field kinds. With
+`linksMode: true`, the relationship is fetched through the store's request pipeline, using the
+relationship's `related` link, instead of through the legacy `adapter` interface.
 
-**LinksMode** is a special feature that can be activated for any `belongsTo` or `hasMany` relationship.
+::: tip Writing a new relationship? Use `resource` or `collection`
+The [`resource`](./resource-relationships.md) and [`collection`](./collection-relationships.md)
+field kinds replace `belongsTo` and `hasMany`. They always load through requests, the way LinksMode
+makes the legacy kinds load, so `linksMode` has no meaning for them. LinksMode is for relationships
+that still use the legacy kinds.
+:::
 
-It allows that relationship to be fetched using the standard `request` experience instead of via the legacy `adapter` interface.
+## When To Use It
 
-LinksMode behaves *slightly* differently depending on whether
-you are using Model (including via [LegacyMode](../../schemas/resources/legacy-mode.md)) or [PolarisMode](../../schemas/resources/polaris-mode.md). We'll explain this nuance below.
+Use LinksMode on a `belongsTo` or `hasMany` field you are not ready to convert yet, once the app
+fetches that relationship through requests rather than adapters. It is often the step just before
+converting the field:
+[Migrating Async Relationship Usage](/upgrading/v5/relationship-usage.md#phase-2-load-through-requests)
+turns it on in Phase 2, and
+[Migrating Relationships to `resource` and `collection`](/upgrading/v5/relationships.md) then
+converts the field and drops the option.
 
-> [!TIP]
-> The next-generation of reactive data which replaces Model is ReactiveResource.
-> ReactiveResource has two modes, Legacy - which emulates all of Model's
-> behaviors and APIs, and Polaris - a new experience which we intend
-> to make default in Version 6.
+## What The API Must Send
 
-## How Does It Work?
+Relationships are stored with the same top-level structure as resource documents, adopted from the
+[JSON:API](https://jsonapi.org) specification: `data` holds the membership, and `links` and `meta`
+are optional.
 
-### Related Link Becomes Required (Unless Fully Linked)
-
-Relationships in WarpDrive are stored using the same top-level structure as resource documents, a structure
-adopted from the [JSON:API](https://jsonapi.org) specification.
-
-- **data**: the membership (state of) the relationship
-- **links** *(optional)*: an object containing various links for fetching and managing the relationship
-- **meta** *(optional)*: an object of arbitrary extra information about the relationship
-
-This is roughly described by the interface below:
-
-```ts
-interface Relationship {
-  meta?: Record<string, Value>;
-  links?: Links;
-}
-
-interface ResourceRelationship extends Relationship {
-  data: { type: string; id: string | null; lid: string } | null;
-}
-
-interface CollectionRelationship extends Relationship {
-  data: { type: string; id: string | null; lid: string }[]
-}
-```
-
-For a `belongsTo` or `hasMany` in `linksMode` (today this means `async: false`, the only combination currently supported), every push to the cache must satisfy one of the following:
+For a field in LinksMode, every payload for the relationship must satisfy one of the following:
 
 - the relationship has a `links.related` link, **or**
-- the relationship is "fully linked": for `belongsTo`, `data` is `null`, or `data` points to a resource that is present in the document's `included` array; for `hasMany`, `data` is `[]`, or every resource identifier in `data` is present in `included`
+- the relationship is "fully linked": for `belongsTo`, `data` is `null` or points to a resource
+  that is present in the document's `included` array; for `hasMany`, `data` is `[]` or every
+  resource identifier in `data` is present in `included`.
 
-In other words, a related link lets you omit the related resource(s) from `included`; without a link, the relationship must either be empty (`data: null` for `belongsTo`, `data: []` for `hasMany`) or the related resource(s) must be sideloaded.
-
-A relationship whose `data` key is missing entirely, or explicitly `undefined`, is never valid on its own — WarpDrive cannot distinguish "no data was returned" from "the relationship is genuinely empty" without either a `links.related` link or an explicit empty value (`null` / `[]`).
+In other words, a `related` link lets you leave the related resources out of `included`; without a
+link, the relationship must either be empty or have its related resources sideloaded. A
+relationship whose `data` key is missing entirely is never valid on its own: without a link or an
+explicit empty value, WarpDrive cannot tell "no data was returned" from "the relationship is
+empty".
 
 ```ts
 interface LinksModeRelationship {
@@ -67,25 +55,20 @@ interface LinksModeRelationship {
     related: string | { href: string };
 
     // other links as desired
-  }
+  };
 }
 ```
 
-<br>
+If your API does not provide `related` links, a [request handler](/api/@warp-drive/core/request/types/Handler)
+can add them to responses, provided your handlers (or your API) understand those links. This works
+even if your API needs a `POST` to fetch a relationship;
+[this blog post](https://runspired.com/2025/02/26/exploring-advanced-handlers.html) shows the same
+technique applied to pagination.
 
-### Related Links May Be Provided by Handlers
+## The Request It Issues
 
-This means that, in order to use links mode, a relationship payload given to the cache MUST contain this related link. 
-
-If your API does not provide this link, a [request handler](/api/@warp-drive/core/request/types/Handler) could be utilized to decorate an API response to add them provided that your handlers (or your API) are able to understand that link.
-
-Note that this approach can even work if your API requires you to send a POST request to fetch the relationship. [This blog post](https://runspired.com/2025/02/26/exploring-advanced-handlers.html) contains an overview of advanced request handling to achieve a similar aim for pagination.
-
-<br>
-
-### When a Relationship Is Fetched, the Related Link Is Used
-
-Fetching a relationship via any of `relationship.reload`, `reference.reload`, `reference.load` or `await record.relationship` will issue a request to your handler chain. That request will look like the following:
+Fetching the relationship, via `relationship.reload`, `reference.reload`, `reference.load` or
+`await record.relationship`, sends a request through your handler chain that looks like this:
 
 ```ts
 interface FetchRelationshipRequest {
@@ -104,54 +87,42 @@ interface FetchRelationshipRequest {
 
   // tells the store to not automatically convert the response into something reactive
   // since the reactive relationship class itself will do that
-  [EnableHydration]: false; 
+  [EnableHydration]: false;
 }
 ```
 
 The three most important things in this request are:
 
-- the `op` code: this is how the cache will know to use the response to update the state of a relationship
-- `data.field`: this is how the cache will know which field it should update
-- `data.record`: this is how the cache will know which record to associate the response to.
+- the `op` code: this is how the cache knows to use the response to update the state of a
+  relationship
+- `data.field`: this is how the cache knows which field to update
+- `data.record`: this is how the cache knows which record the response belongs to
 
-The normalized API response (what your handler must return either directly from your API or with some normalization on the client) that should be passed to the JSON:API cache should be a standard JSON:API document.
+Your handler should return a standard JSON:API document, straight from your API or normalized on
+the client. The resources in its `data` are inserted into the cache and become the membership of
+the relationship; its `meta` and `links` become the relationship's `meta` and `links`. Included
+resources are allowed.
 
-The contents of `data` will be inserted into the resource cache and the list of records contained therein will be used to update the state of the relationship. The `meta` and `links` of the response will become the `meta` and `links` available for the
-relationship as well.
+## Turning It On
 
-Sideloads (included records) are valid to include in these responses.
+Add `linksMode: true` to the relationship's options. It only changes the field it is set on: in the
+examples below, `homeAddress` is fetched in LinksMode while `<Address>.residents` may still use the
+adapter.
 
-<br>
-
-
-## Activating LinksMode
-
-LinksMode is activated by adding `linksMode: true` to the relationship's options.
-
-Read on below for examples and nuances specific to Model vs ReactiveResource
-
-<br>
-
-### For a Relationship on a Model
+### On a Model
 
 ```ts
-import Model, { belongsTo, hasMany } from '@warp-drive/legacy/model';
+import Model, { belongsTo } from '@warp-drive/legacy/model';
 
 export default class User extends Model {
-  @belongsTo('address', {
-    async: false,
-    inverse: 'residents',
-    linksMode: true
-  })
+  @belongsTo('address', { async: false, inverse: 'residents', linksMode: true })
   homeAddress;
 }
 ```
 
-This works for both `async` and `non-async` relationships and only changes the fetching behavior of the field it is defined on. For instance, in the example above, `homeAddress` is fetched in links mode while `<Address>.residents` might still be using the legacy adapter experience.
+On a `Model`, LinksMode changes how the relationship is fetched whether it is `async` or not.
 
-<br>
-
-### For a ReactiveResource in LegacyMode
+### On a ReactiveResource In LegacyMode
 
 ```ts
 import type { ResourceSchema } from '@warp-drive/core/types/schema/fields';
@@ -164,77 +135,35 @@ const UserSchema = {
     {
       kind: 'belongsTo',
       name: 'homeAddress',
-      options: {
-        async: false,
-        inverse: 'residents',
-        linksMode: true
-      }
-    }
-  ]
+      type: 'address',
+      options: { async: false, inverse: 'residents', linksMode: true },
+    },
+  ],
 } satisfies ResourceSchema;
 ```
 
-The behavior of a relationship for a ReactiveResource in LegacyMode is always identical to that of a the same
-relationship defined on a Model.
+On a ReactiveResource, a field in LinksMode is always read synchronously: a `belongsTo` returns the
+related record (or `null`) and a `hasMany` returns its array, with no promise proxy even when
+`async: true`. Declare these fields `async: false`.
 
-<br>
+### On a ReactiveResource In PolarisMode
 
-### For a ReactiveResource in PolarisMode
+The schema is the same without `legacy: true`. PolarisMode only supports the legacy kinds in
+LinksMode, and adds constraints:
 
-```ts
-import type { ResourceSchema } from '@warp-drive/core/types/schema/fields';
+1. They must use `linksMode: true`; without it, reading the field asserts.
+2. They must be `async: false`. Async legacy relationships will not be supported in PolarisMode.
+3. There is no autofetch, because the relationships are sync.
 
-const UserSchema = {
-  type: 'user',
-  fields: [
-    {
-      kind: 'belongsTo',
-      name: 'homeAddress',
-      options: {
-        async: false,
-        inverse: 'residents',
-        linksMode: true
-      }
-    }
-  ]
-} satisfies ResourceSchema;
-```
+Loading a legacy relationship's link is also harder in PolarisMode, because references and their
+utility methods are not available:
 
-The only difference here is that we don't mark the resource schemas as `legacy`. This puts us in the standard/default mode (`polaris`);
+- a `belongsTo` exposes neither its links nor a `reload` method; working around that takes the
+  cache API or a derivation.
+- a `hasMany` can be reloaded through its link with `reload`, e.g. `user.friends.reload()`, and its
+  links are available as `user.friends.links`.
 
-When using PolarisMode, `hasMany` and `belongsTo` relationships have additional constraints:
-
-- 1. They MUST use linksMode. Nothing except linksMode is supported.
-- 2. They MUST be `async: false`. Async relationships will never be supported in PolarisMode (read more on this below)
-- 3. There is no `autofetch` behavior (because relationships are `async: false`)
-
-You can load this link to fetch the relationship, though it is less easy to because the utility methods and links are
-not as readily exposed via references as they are with Model.
-
-For `belongsTo` this is a particularly large drawback. `belongsTo` has no mechanism by which to expose its links or a reload method. There are work arounds via the cache API / via derivations if needed, but cumbersome.
-
-For `hasMany`, this restriction is not too difficult as it can be loaded via its link by calling `reload`, e.g. `user.friends.reload()`. As with hasMany in LegacyMode, its links are also available via `user.friends.links`.
-
-This makes the legacy kinds intentionally limited in PolarisMode. They are kept this way so that
-apps can experiment with the polaris experience on existing schemas; new relationships, and
-relationships that need links or async loading in PolarisMode, should use the replacement kinds
-described below.
-
-<br>
-
----
-
-#### The Replacement: `resource` And `collection`
-
-`belongsTo` and `hasMany` are superseded by the `resource` and `collection` field kinds, which
-behave identically in LegacyMode and PolarisMode. They have no `autofetch` behavior and no async
-proxy: the value of the field is a
-[relationship document](/api/@warp-drive/core/reactive/types/ReactiveRelationshipDocument) whose
-`data`, `links` and `meta` mirror the relationship payload, and `async` describes what the API
-sends rather than whether access triggers a request. `linksMode` has no meaning for them, because
-they always behave the way LinksMode makes the legacy kinds behave.
-
-See [Relational Fields](/guides/the-manual/schemas/relational-fields.md) for the fields,
-[Sync vs Async](/guides/the-manual/relational-data/features/sync-vs-async.md) for what `async`
-now means, and [Migrating Relationships to `resource` and `collection`](/upgrading/v5/relationships.md)
-for moving existing fields over.
+The legacy kinds are limited in PolarisMode on purpose, so apps can try it on existing schemas.
+Relationships that need links or async loading in PolarisMode should use
+[`resource` and `collection`](/guides/the-manual/schemas/relational-fields.md) instead; see
+[Sync vs Async](./sync-vs-async.md) for what `async` means for them.
