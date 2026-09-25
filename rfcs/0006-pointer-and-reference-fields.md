@@ -1,7 +1,7 @@
 ---
 title: Pointer and Reference Fields
 description: Proposes four PolarisMode relationship field kinds (pointer, pointer-array, reference, reference-array) for relationships whose related resources arrive via a separate request, where pointers assert the related resource is loaded and references tolerate its absence.
-warp-drive-rfc: 4
+warp-drive-rfc: 6
 emberjs-rfc:
 emberjs-pr:
 emberjs-branch:
