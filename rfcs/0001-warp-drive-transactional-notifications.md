@@ -1,5 +1,6 @@
 ---
 title: 'Transactional Notification Delivery and Reactive Request State'
+description: Proposes delivering all WarpDrive cache notifications in one synchronous batch at transaction close and rebuilding request state as signals-backed data.
 warp-drive-rfc: 1
 # emberjs-rfc/emberjs-pr/emberjs-branch/sync-hash are intentionally blank: this RFC was
 # originally mirrored to emberjs/rfcs#1232 by hand, before the sync bot existed. That PR is

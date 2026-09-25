@@ -1,5 +1,6 @@
 ---
 title: Setup - Legacy (Ember)
+description: Restore legacy Adapter, Serializer, Model, and EmberObject features through @warp-drive/legacy in an Ember app, and decide when LegacyNetworkHandler is still needed.
 ---
 
 :::warning caution

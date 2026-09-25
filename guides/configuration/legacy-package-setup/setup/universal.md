@@ -1,4 +1,5 @@
 ---
+description: Configure the legacy multi-package setup with setConfig in ember-cli-build, unstable-preview-types in tsconfig, and a hand-built Store using RequestManager and JSONAPICache.
 outline:
   level: 2,3
 ---

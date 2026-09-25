@@ -1,5 +1,6 @@
 ---
 title: Using Codemods
+description: Run the `@ember-data/codemods` migrate-to-schema and legacy-compat-builders codemods to convert 4.x Models and mixins into 5.x schemas and store.request builders.
 outline:
   level: 2,3
 ---

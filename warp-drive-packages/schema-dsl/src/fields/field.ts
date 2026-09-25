@@ -26,8 +26,8 @@ export interface FieldOptions {
 }
 
 /**
- * Marks a property as a {@link GenericField} &mdash; a plain field for
- * primitive values (strings, numbers, booleans) &mdash; on a
+ * Marks a property as a {@link GenericField} — a plain field for
+ * primitive values (strings, numbers, booleans) — on a
  * {@link Resource}, {@link ObjectSchema}, or {@link Trait}.
  *
  * @example

@@ -2,6 +2,7 @@
 outline:
   level: 2,3
 title: Overview
+description: Understand how the CacheHandler resolves a RequestKey, applies CachePolicy for staleness, and stores responses, resources, fields, and relationships by replace or upsert.
 ---
 
 # Caching

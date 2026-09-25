@@ -1,5 +1,6 @@
 ---
 title: Submitting PRs
+description: 'Open a PR against WarpDrive main with the right tests, a title like `feat: ...` that auto-applies its `:label:` changelog label, and `target:` labels for any backports.'
 ---
 
 # Submitting Work
