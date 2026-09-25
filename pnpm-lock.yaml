@@ -509,8 +509,8 @@ catalogs:
       specifier: ^1.1.4
       version: 1.1.4
     typescript-7:
-      specifier: npm:typescript@7.1.0-dev.20260921.1
-      version: 7.1.0-dev.20260921.1
+      specifier: npm:typescript@7.1.0-dev.20260922.1
+      version: 7.1.0-dev.20260922.1
     typescript-eslint:
       specifier: ^8.70.1
       version: 8.70.1
@@ -920,10 +920,10 @@ importers:
         version: file:tools/internal-config
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.0(typescript@7.1.0-dev.20260921.1)
+        version: 0.23.0(typescript@7.1.0-dev.20260922.1)
       typescript-7:
         specifier: 'catalog:'
-        version: typescript@7.1.0-dev.20260921.1
+        version: typescript@7.1.0-dev.20260922.1
 
   packages/active-record:
     dependencies:
@@ -951,10 +951,10 @@ importers:
         version: file:tools/internal-config
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.0(typescript@7.1.0-dev.20260921.1)
+        version: 0.23.0(typescript@7.1.0-dev.20260922.1)
       typescript-7:
         specifier: 'catalog:'
-        version: typescript@7.1.0-dev.20260921.1
+        version: typescript@7.1.0-dev.20260922.1
 
   packages/adapter:
     dependencies:
@@ -985,10 +985,10 @@ importers:
         version: file:tools/internal-config
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.0(typescript@7.1.0-dev.20260921.1)
+        version: 0.23.0(typescript@7.1.0-dev.20260922.1)
       typescript-7:
         specifier: 'catalog:'
-        version: typescript@7.1.0-dev.20260921.1
+        version: typescript@7.1.0-dev.20260922.1
 
   packages/codemods:
     dependencies:
@@ -1019,10 +1019,10 @@ importers:
         version: 17.4.0
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.0(typescript@7.1.0-dev.20260921.1)
+        version: 0.23.0(typescript@7.1.0-dev.20260922.1)
       typescript-7:
         specifier: 'catalog:'
-        version: typescript@7.1.0-dev.20260921.1
+        version: typescript@7.1.0-dev.20260922.1
       winston:
         specifier: 'catalog:'
         version: 3.19.0
@@ -1050,10 +1050,10 @@ importers:
         version: file:tools/internal-config
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.0(typescript@7.1.0-dev.20260921.1)
+        version: 0.23.0(typescript@7.1.0-dev.20260922.1)
       typescript-7:
         specifier: 'catalog:'
-        version: typescript@7.1.0-dev.20260921.1
+        version: typescript@7.1.0-dev.20260922.1
 
   packages/debug:
     dependencies:
@@ -1093,10 +1093,10 @@ importers:
         version: 7.3.0
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.0(typescript@7.1.0-dev.20260921.1)
+        version: 0.23.0(typescript@7.1.0-dev.20260922.1)
       typescript-7:
         specifier: 'catalog:'
-        version: typescript@7.1.0-dev.20260921.1
+        version: typescript@7.1.0-dev.20260922.1
 
   packages/diagnostic:
     dependencies:
@@ -1240,10 +1240,10 @@ importers:
         version: file:tools/internal-config
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.0(typescript@7.1.0-dev.20260921.1)
+        version: 0.23.0(typescript@7.1.0-dev.20260922.1)
       typescript-7:
         specifier: 'catalog:'
-        version: typescript@7.1.0-dev.20260921.1
+        version: typescript@7.1.0-dev.20260922.1
 
   packages/holodeck:
     dependencies:
@@ -1286,10 +1286,10 @@ importers:
         version: file:warp-drive-packages/utilities(4ded94bf05a058c4d301833388abca58)
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.0(typescript@7.1.0-dev.20260921.1)
+        version: 0.23.0(typescript@7.1.0-dev.20260922.1)
       typescript-7:
         specifier: 'catalog:'
-        version: typescript@7.1.0-dev.20260921.1
+        version: typescript@7.1.0-dev.20260922.1
 
   packages/internal-exam:
     dependencies:
@@ -1348,10 +1348,10 @@ importers:
         version: 1.4.0
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.0(typescript@7.1.0-dev.20260921.1)
+        version: 0.23.0(typescript@7.1.0-dev.20260922.1)
       typescript-7:
         specifier: 'catalog:'
-        version: typescript@7.1.0-dev.20260921.1
+        version: typescript@7.1.0-dev.20260922.1
 
   packages/legacy-compat:
     dependencies:
@@ -1385,10 +1385,10 @@ importers:
         version: file:tools/internal-config
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.0(typescript@7.1.0-dev.20260921.1)
+        version: 0.23.0(typescript@7.1.0-dev.20260922.1)
       typescript-7:
         specifier: 'catalog:'
-        version: typescript@7.1.0-dev.20260921.1
+        version: typescript@7.1.0-dev.20260922.1
 
   packages/model:
     dependencies:
@@ -1425,10 +1425,10 @@ importers:
         version: 1.4.0
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.0(typescript@7.1.0-dev.20260921.1)
+        version: 0.23.0(typescript@7.1.0-dev.20260922.1)
       typescript-7:
         specifier: 'catalog:'
-        version: typescript@7.1.0-dev.20260921.1
+        version: typescript@7.1.0-dev.20260922.1
 
   packages/request:
     dependencies:
@@ -1456,10 +1456,10 @@ importers:
         version: file:tools/internal-config
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.0(typescript@7.1.0-dev.20260921.1)
+        version: 0.23.0(typescript@7.1.0-dev.20260922.1)
       typescript-7:
         specifier: 'catalog:'
-        version: typescript@7.1.0-dev.20260921.1
+        version: typescript@7.1.0-dev.20260922.1
 
   packages/request-utils:
     dependencies:
@@ -1496,10 +1496,10 @@ importers:
         version: 7.3.0
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.0(typescript@7.1.0-dev.20260921.1)
+        version: 0.23.0(typescript@7.1.0-dev.20260922.1)
       typescript-7:
         specifier: 'catalog:'
-        version: typescript@7.1.0-dev.20260921.1
+        version: typescript@7.1.0-dev.20260922.1
 
   packages/rest:
     dependencies:
@@ -1530,10 +1530,10 @@ importers:
         version: file:tools/internal-config
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.0(typescript@7.1.0-dev.20260921.1)
+        version: 0.23.0(typescript@7.1.0-dev.20260922.1)
       typescript-7:
         specifier: 'catalog:'
-        version: typescript@7.1.0-dev.20260921.1
+        version: typescript@7.1.0-dev.20260922.1
 
   packages/schema:
     devDependencies:
@@ -1567,10 +1567,10 @@ importers:
         version: file:tools/internal-config
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.0(typescript@7.1.0-dev.20260921.1)
+        version: 0.23.0(typescript@7.1.0-dev.20260922.1)
       typescript-7:
         specifier: 'catalog:'
-        version: typescript@7.1.0-dev.20260921.1
+        version: typescript@7.1.0-dev.20260922.1
 
   packages/serializer:
     dependencies:
@@ -1604,10 +1604,10 @@ importers:
         version: file:tools/internal-config
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.0(typescript@7.1.0-dev.20260921.1)
+        version: 0.23.0(typescript@7.1.0-dev.20260922.1)
       typescript-7:
         specifier: 'catalog:'
-        version: typescript@7.1.0-dev.20260921.1
+        version: typescript@7.1.0-dev.20260922.1
 
   packages/store:
     dependencies:
@@ -1644,10 +1644,10 @@ importers:
         version: 7.3.0
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.0(typescript@7.1.0-dev.20260921.1)
+        version: 0.23.0(typescript@7.1.0-dev.20260922.1)
       typescript-7:
         specifier: 'catalog:'
-        version: typescript@7.1.0-dev.20260921.1
+        version: typescript@7.1.0-dev.20260922.1
 
   packages/tracking:
     dependencies:
@@ -1681,10 +1681,10 @@ importers:
         version: 7.3.0
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.0(typescript@7.1.0-dev.20260921.1)
+        version: 0.23.0(typescript@7.1.0-dev.20260922.1)
       typescript-7:
         specifier: 'catalog:'
-        version: typescript@7.1.0-dev.20260921.1
+        version: typescript@7.1.0-dev.20260922.1
 
   packages/tutorials: {}
 
@@ -1722,7 +1722,7 @@ importers:
         version: 2.1.1
       '@glint/ember-tsc':
         specifier: 1.11.4
-        version: 1.11.4(5bfe23c4efc53781674dc6a764ab0274)
+        version: 1.11.4(e8ab1df54c5021329b231ea4f303cd77)
       '@glint/template':
         specifier: 1.9.0
         version: 1.9.0
@@ -1752,7 +1752,7 @@ importers:
         version: 2.4.0(@babel/core@7.29.7)
       ember-content-mapper:
         specifier: 'catalog:'
-        version: 0.3.1(5bfe23c4efc53781674dc6a764ab0274)
+        version: 0.3.1(e8ab1df54c5021329b231ea4f303cd77)
       ember-modifier:
         specifier: 'catalog:'
         version: 4.2.2(@babel/core@7.29.7)
@@ -1785,7 +1785,7 @@ importers:
         version: 1.0.5
       typescript-7:
         specifier: 'catalog:'
-        version: typescript@7.1.0-dev.20260921.1
+        version: typescript@7.1.0-dev.20260922.1
       typescript-toastify:
         specifier: 'catalog:'
         version: 1.0.4
@@ -1849,10 +1849,10 @@ importers:
         version: 3.21.0(@babel/core@7.29.7)
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.0(typescript@7.1.0-dev.20260921.1)
+        version: 0.23.0(typescript@7.1.0-dev.20260922.1)
       typescript-7:
         specifier: 'catalog:'
-        version: typescript@7.1.0-dev.20260921.1
+        version: typescript@7.1.0-dev.20260922.1
 
   specs:
     dependencies:
@@ -2058,7 +2058,7 @@ importers:
         version: 6.0.3
       typescript-7:
         specifier: 'catalog:'
-        version: typescript@7.1.0-dev.20260921.1
+        version: typescript@7.1.0-dev.20260922.1
       vite:
         specifier: 'catalog:'
         version: 8.3.0(terser@5.51.2)
@@ -2232,7 +2232,7 @@ importers:
         version: 6.0.3
       typescript-7:
         specifier: 'catalog:'
-        version: typescript@7.1.0-dev.20260921.1
+        version: typescript@7.1.0-dev.20260922.1
       vite:
         specifier: 'catalog:'
         version: 8.3.0
@@ -2344,7 +2344,7 @@ importers:
     devDependencies:
       typescript-7:
         specifier: 'catalog:'
-        version: typescript@7.1.0-dev.20260921.1
+        version: typescript@7.1.0-dev.20260922.1
 
   tests/ember-data__graph:
     devDependencies:
@@ -2419,7 +2419,7 @@ importers:
         version: 5.51.2
       typescript-7:
         specifier: 'catalog:'
-        version: typescript@7.1.0-dev.20260921.1
+        version: typescript@7.1.0-dev.20260922.1
       vite:
         specifier: 'catalog:'
         version: 8.3.0(terser@5.51.2)
@@ -2515,7 +2515,7 @@ importers:
         version: 5.51.2
       typescript-7:
         specifier: 'catalog:'
-        version: typescript@7.1.0-dev.20260921.1
+        version: typescript@7.1.0-dev.20260922.1
       vite:
         specifier: 'catalog:'
         version: 8.3.0(terser@5.51.2)
@@ -2596,7 +2596,7 @@ importers:
         version: 5.51.2
       typescript-7:
         specifier: 'catalog:'
-        version: typescript@7.1.0-dev.20260921.1
+        version: typescript@7.1.0-dev.20260922.1
       vite:
         specifier: 'catalog:'
         version: 8.3.0(terser@5.51.2)
@@ -2641,7 +2641,7 @@ importers:
         version: 2.1.1
       '@glint/ember-tsc':
         specifier: 1.11.4
-        version: 1.11.4(21a252101c4c3475d21fe8097dc1cea2)
+        version: 1.11.4(181a7691ad554af75514c3171a8f2203)
       '@glint/template':
         specifier: 1.9.0
         version: 1.9.0
@@ -2677,7 +2677,7 @@ importers:
         version: 2.4.0(@babel/core@7.29.7)
       ember-content-mapper:
         specifier: 'catalog:'
-        version: 0.3.1(21a252101c4c3475d21fe8097dc1cea2)
+        version: 0.3.1(181a7691ad554af75514c3171a8f2203)
       ember-page-title:
         specifier: 'catalog:'
         version: 9.0.3(d288926beed7c17909b8497cf18e0738)
@@ -2710,7 +2710,7 @@ importers:
         version: 3.21.0(@babel/core@7.29.7)
       typescript-7:
         specifier: 'catalog:'
-        version: typescript@7.1.0-dev.20260921.1
+        version: typescript@7.1.0-dev.20260922.1
       vite:
         specifier: 'catalog:'
         version: 8.3.0
@@ -2773,7 +2773,7 @@ importers:
         version: 2.1.1
       '@glint/ember-tsc':
         specifier: 1.11.4
-        version: 1.11.4(21a252101c4c3475d21fe8097dc1cea2)
+        version: 1.11.4(181a7691ad554af75514c3171a8f2203)
       '@glint/template':
         specifier: 1.9.0
         version: 1.9.0
@@ -2827,7 +2827,7 @@ importers:
         version: 5.51.2
       typescript-7:
         specifier: 'catalog:'
-        version: typescript@7.1.0-dev.20260921.1
+        version: typescript@7.1.0-dev.20260922.1
       vite:
         specifier: 'catalog:'
         version: 8.3.0(terser@5.51.2)
@@ -2920,7 +2920,7 @@ importers:
         version: 6.0.3
       typescript-7:
         specifier: 'catalog:'
-        version: typescript@7.1.0-dev.20260921.1
+        version: typescript@7.1.0-dev.20260922.1
       vite:
         specifier: 'catalog:'
         version: 8.3.0(terser@5.51.2)
@@ -2986,7 +2986,7 @@ importers:
         version: 19.3.0(react@19.3.0)
       typescript-7:
         specifier: 'catalog:'
-        version: typescript@7.1.0-dev.20260921.1
+        version: typescript@7.1.0-dev.20260922.1
       vite:
         specifier: 'catalog:'
         version: 8.3.0
@@ -3040,7 +3040,7 @@ importers:
         version: 5.57.1
       typescript-7:
         specifier: 'catalog:'
-        version: typescript@7.1.0-dev.20260921.1
+        version: typescript@7.1.0-dev.20260922.1
       vite:
         specifier: 'catalog:'
         version: 8.3.0
@@ -3061,7 +3061,7 @@ importers:
         version: 1.21.1
       '@vitejs/plugin-vue':
         specifier: 'catalog:'
-        version: 6.0.9(ce65d50a6c58dbd9fda565f0932f9125)
+        version: 6.0.9(7b6dcaa36db20e576a11a189366d3e6d)
       '@vue/babel-plugin-jsx':
         specifier: 'catalog:'
         version: 3.0.0(@babel/core@7.29.7)
@@ -3079,7 +3079,7 @@ importers:
         version: file:packages/holodeck(a510bc545ed25bc6a53fefeb5da03d5b)
       '@warp-drive/internal-config':
         specifier: workspace:*
-        version: file:tools/internal-config(1548dfc7f4be36838cdac7cce6432d97)
+        version: file:tools/internal-config(1224bbb48c8196e2dde5bd955a2e9c79)
       '@warp-drive/json-api':
         specifier: workspace:*
         version: file:warp-drive-packages/json-api(4ded94bf05a058c4d301833388abca58)
@@ -3088,7 +3088,7 @@ importers:
         version: file:warp-drive-packages/utilities(4ded94bf05a058c4d301833388abca58)
       '@warp-drive/vue':
         specifier: workspace:*
-        version: file:warp-drive-packages/vue(4a52efe2d115fbaec3961427d09cb339)
+        version: file:warp-drive-packages/vue(f510ab2c8739c901dd3f89e0d545dfff)
       babel-plugin-debug-macros:
         specifier: 'catalog:'
         version: 2.0.0(@babel/core@7.29.7)
@@ -3097,16 +3097,16 @@ importers:
         version: 2.4.0(@babel/core@7.29.7)
       typescript-7:
         specifier: 'catalog:'
-        version: typescript@7.1.0-dev.20260921.1
+        version: typescript@7.1.0-dev.20260922.1
       vite:
         specifier: 'catalog:'
         version: 8.3.0
       vue:
         specifier: 'catalog:'
-        version: 3.5.43(typescript@7.1.0-dev.20260921.1)
+        version: 3.5.43(typescript@7.1.0-dev.20260922.1)
       vue-tsc:
         specifier: 'catalog:'
-        version: 3.3.11(typescript@7.1.0-dev.20260921.1)
+        version: 3.3.11(typescript@7.1.0-dev.20260922.1)
 
   tests/json-api:
     devDependencies:
@@ -3187,7 +3187,7 @@ importers:
         version: 5.51.2
       typescript-7:
         specifier: 'catalog:'
-        version: typescript@7.1.0-dev.20260921.1
+        version: typescript@7.1.0-dev.20260922.1
       vite:
         specifier: 'catalog:'
         version: 8.3.0(terser@5.51.2)
@@ -3283,7 +3283,7 @@ importers:
         version: 6.0.3
       typescript-7:
         specifier: 'catalog:'
-        version: typescript@7.1.0-dev.20260921.1
+        version: typescript@7.1.0-dev.20260922.1
       vite:
         specifier: 'catalog:'
         version: 8.3.0(terser@5.51.2)
@@ -3469,7 +3469,7 @@ importers:
         version: 5.51.2
       typescript-7:
         specifier: 'catalog:'
-        version: typescript@7.1.0-dev.20260921.1
+        version: typescript@7.1.0-dev.20260922.1
       vite:
         specifier: 'catalog:'
         version: 8.3.0(terser@5.51.2)
@@ -3640,10 +3640,10 @@ importers:
         version: file:tools/internal-config(@types/babel__core@7.20.5)
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.0(typescript@7.1.0-dev.20260921.1)
+        version: 0.23.0(typescript@7.1.0-dev.20260922.1)
       typescript-7:
         specifier: 'catalog:'
-        version: typescript@7.1.0-dev.20260921.1
+        version: typescript@7.1.0-dev.20260922.1
 
   warp-drive-packages/core:
     dependencies:
@@ -3677,10 +3677,10 @@ importers:
         version: 1.4.0
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.0(typescript@7.1.0-dev.20260921.1)
+        version: 0.23.0(typescript@7.1.0-dev.20260922.1)
       typescript-7:
         specifier: 'catalog:'
-        version: typescript@7.1.0-dev.20260921.1
+        version: typescript@7.1.0-dev.20260922.1
 
   warp-drive-packages/ember:
     dependencies:
@@ -3750,7 +3750,7 @@ importers:
         version: 6.0.3
       typescript-7:
         specifier: 'catalog:'
-        version: typescript@7.1.0-dev.20260921.1
+        version: typescript@7.1.0-dev.20260922.1
 
   warp-drive-packages/experiments:
     dependencies:
@@ -3781,10 +3781,10 @@ importers:
         version: file:tools/internal-config
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.0(typescript@7.1.0-dev.20260921.1)
+        version: 0.23.0(typescript@7.1.0-dev.20260922.1)
       typescript-7:
         specifier: 'catalog:'
-        version: typescript@7.1.0-dev.20260921.1
+        version: typescript@7.1.0-dev.20260922.1
 
   warp-drive-packages/json-api:
     dependencies:
@@ -3824,10 +3824,10 @@ importers:
         version: 1.4.0
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.0(typescript@7.1.0-dev.20260921.1)
+        version: 0.23.0(typescript@7.1.0-dev.20260922.1)
       typescript-7:
         specifier: 'catalog:'
-        version: typescript@7.1.0-dev.20260921.1
+        version: typescript@7.1.0-dev.20260922.1
 
   warp-drive-packages/legacy:
     dependencies:
@@ -3870,10 +3870,10 @@ importers:
         version: 1.4.0
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.0(typescript@7.1.0-dev.20260921.1)
+        version: 0.23.0(typescript@7.1.0-dev.20260922.1)
       typescript-7:
         specifier: 'catalog:'
-        version: typescript@7.1.0-dev.20260921.1
+        version: typescript@7.1.0-dev.20260922.1
 
   warp-drive-packages/memory-alpha: {}
 
@@ -3924,10 +3924,10 @@ importers:
         version: 2.4.0(@babel/core@7.29.7)
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.0(typescript@7.1.0-dev.20260921.1)
+        version: 0.23.0(typescript@7.1.0-dev.20260922.1)
       typescript-7:
         specifier: 'catalog:'
-        version: typescript@7.1.0-dev.20260921.1
+        version: typescript@7.1.0-dev.20260922.1
 
   warp-drive-packages/schema-dsl:
     dependencies:
@@ -3955,10 +3955,10 @@ importers:
         version: file:tools/internal-config
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.0(typescript@7.1.0-dev.20260921.1)
+        version: 0.23.0(typescript@7.1.0-dev.20260922.1)
       typescript-7:
         specifier: 'catalog:'
-        version: typescript@7.1.0-dev.20260921.1
+        version: typescript@7.1.0-dev.20260922.1
 
   warp-drive-packages/svelte:
     dependencies:
@@ -3986,7 +3986,7 @@ importers:
         version: 6.0.3
       typescript-7:
         specifier: 'catalog:'
-        version: typescript@7.1.0-dev.20260921.1
+        version: typescript@7.1.0-dev.20260922.1
       vite:
         specifier: 'catalog:'
         version: 8.3.0
@@ -4023,10 +4023,10 @@ importers:
         version: file:tools/internal-config(@babel/runtime@7.29.7)
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.0(typescript@7.1.0-dev.20260921.1)
+        version: 0.23.0(typescript@7.1.0-dev.20260922.1)
       typescript-7:
         specifier: 'catalog:'
-        version: typescript@7.1.0-dev.20260921.1
+        version: typescript@7.1.0-dev.20260922.1
 
   warp-drive-packages/utilities:
     dependencies:
@@ -4057,10 +4057,10 @@ importers:
         version: 1.4.0
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.0(typescript@7.1.0-dev.20260921.1)
+        version: 0.23.0(typescript@7.1.0-dev.20260922.1)
       typescript-7:
         specifier: 'catalog:'
-        version: typescript@7.1.0-dev.20260921.1
+        version: typescript@7.1.0-dev.20260922.1
 
   warp-drive-packages/vue:
     dependencies:
@@ -4088,25 +4088,25 @@ importers:
         version: 7.29.7
       '@warp-drive/internal-config':
         specifier: workspace:*
-        version: file:tools/internal-config(e85ae252439ee52b76f80d9aea55a841)
+        version: file:tools/internal-config(da83c87702a32fa80d63db7459f67ba5)
       decorator-transforms:
         specifier: 'catalog:'
         version: 2.4.0(@babel/core@7.29.7)
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.0(349e03869578406e175d4084b9de1384)
+        version: 0.23.0(b8aad91c8e962647205ad889bfd803e8)
       typescript-7:
         specifier: 'catalog:'
-        version: typescript@7.1.0-dev.20260921.1
+        version: typescript@7.1.0-dev.20260922.1
       unplugin-vue:
         specifier: 'catalog:'
-        version: 8.0.0(9fe0cfbda7f85ed88132ab1e6de1f0f6)
+        version: 8.0.0(bd91aca8f27c5461e1c20ced45702ef6)
       vue:
         specifier: 'catalog:'
-        version: 3.5.43(typescript@7.1.0-dev.20260921.1)
+        version: 3.5.43(typescript@7.1.0-dev.20260922.1)
       vue-tsc:
         specifier: 'catalog:'
-        version: 3.3.11(typescript@7.1.0-dev.20260921.1)
+        version: 3.3.11(typescript@7.1.0-dev.20260922.1)
 
 packages:
 
@@ -6937,44 +6937,44 @@ packages:
     resolution: {integrity: sha512-Vwj9lUIW5Xq3wQ9w6gv3R86g1hMK8f2zNOdGTAgeXUMMXFK78G9ruCjjqutHMNJc0+CH7LYRnHeUB9IT8wFmcw==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
-  '@typescript/typescript-darwin-arm64@7.1.0-dev.20260921.1':
-    resolution: {integrity: sha512-NZpvf4gg/6Ob8+yjxNUmuci5aCZ7Z02T8gqV+zgXHug7f2l00rE0/8Qd3j7iSq6gtev3SJQimnilhgE3iTM6Nw==}
+  '@typescript/typescript-darwin-arm64@7.1.0-dev.20260922.1':
+    resolution: {integrity: sha512-Yp+LWe9FJBnOmTo4ImaWwwRQqfyTMyq1jDu5EH4IWRAVxdm982LRB4j30bCBycre4ReFzA+Is5Uc+i6jvem0Dg==}
     engines: {node: '>=16.20.0'}
     cpu: [arm64]
     os: [darwin]
 
-  '@typescript/typescript-darwin-x64@7.1.0-dev.20260921.1':
-    resolution: {integrity: sha512-ajJLfx7wJxrbJJ7CYTzIqOd4sTGuQLw2tepZWDaO0/bGKbhZszryA6Jbby7TuAkf2Tnw5IZ1fKWRN/6uWo32ow==}
+  '@typescript/typescript-darwin-x64@7.1.0-dev.20260922.1':
+    resolution: {integrity: sha512-G8iU8StWDoUOu+n1INfCI46iS/0Tu/rUw0bWCJxCv5TjDzlzR9v2riA+BeDcKSwGgzYnFSCc9HRu4rnrCwFtag==}
     engines: {node: '>=16.20.0'}
     cpu: [x64]
     os: [darwin]
 
-  '@typescript/typescript-linux-arm64@7.1.0-dev.20260921.1':
-    resolution: {integrity: sha512-eKN8MtdfqD/pHDFZGeWOjE6VIG2qGzSbyKR9Ts2w/W32sW8Svu/S9YqUHhcmrExyBLgSFvkOImXWQMDMxpyDbQ==}
+  '@typescript/typescript-linux-arm64@7.1.0-dev.20260922.1':
+    resolution: {integrity: sha512-6+dj4AsWeserJ5/5f3DgI+ibzJBr3l7pXEGxMUuv+lwoQ6QDVZ1tOGaJdsZy4Hg5atMZi/m7iuDFJPvWbYYMxQ==}
     engines: {node: '>=16.20.0'}
     cpu: [arm64]
     os: [linux]
 
-  '@typescript/typescript-linux-arm@7.1.0-dev.20260921.1':
-    resolution: {integrity: sha512-octXBEYJralA2GfkkB4ITJ/hbbH6LVxuEAOaSI6ZzjSY4TwqOltifef1YrqpTE9M26LQ6xUWLjODzFI1c5KhgQ==}
+  '@typescript/typescript-linux-arm@7.1.0-dev.20260922.1':
+    resolution: {integrity: sha512-4w+Ztlff1U5INtBEeYnNBvBkDkAjH+lwQspxBEmVKxcvDDigYYIH6JpRx7zt3znxsR9Z3Fk5JQAgW5U8ve1tZg==}
     engines: {node: '>=16.20.0'}
     cpu: [arm]
     os: [linux]
 
-  '@typescript/typescript-linux-x64@7.1.0-dev.20260921.1':
-    resolution: {integrity: sha512-I0u+dm4oBasM0htyBlwQRqbc6jM6hTANlOpC/Q3o0APF2XdmOtZDybssJdnkgrELs/25lt0SOJKxkRPeAPWvtQ==}
+  '@typescript/typescript-linux-x64@7.1.0-dev.20260922.1':
+    resolution: {integrity: sha512-E4/JVTP1bJFk99cdsIG+AjLAuQEPpRDlwyhUExb6n6tqCPBeI4QlQa9bHZwv3xAMwRpYx5yHyYde2G5Isou7Dg==}
     engines: {node: '>=16.20.0'}
     cpu: [x64]
     os: [linux]
 
-  '@typescript/typescript-win32-arm64@7.1.0-dev.20260921.1':
-    resolution: {integrity: sha512-BWmq1dNSLSrixiN2/SFXis2wtz05TiVM0q75BTJNoCMfNwE3nhoPB43N+37BvZanOjL6UBUKNUyWtNsYSDBbQQ==}
+  '@typescript/typescript-win32-arm64@7.1.0-dev.20260922.1':
+    resolution: {integrity: sha512-0LE0ikOpuZN2RGqGfOJHjtHFGVsQ0QWUcLxqaA02kpHhs95wuPjbgSJTp1bTCw86CMsTR3RLj/N1NGtw0IC6tw==}
     engines: {node: '>=16.20.0'}
     cpu: [arm64]
     os: [win32]
 
-  '@typescript/typescript-win32-x64@7.1.0-dev.20260921.1':
-    resolution: {integrity: sha512-wT0Xy70PnypQ61rF0soOLhVZV26yB56vF96a7+5qi3fukPYCZT/oF6vkjdYMvByVmKQ+TizbnSpInTBfz750Gw==}
+  '@typescript/typescript-win32-x64@7.1.0-dev.20260922.1':
+    resolution: {integrity: sha512-EysfoTSY19NBoG9RAdTz6/YT0HisIFzBak359KEvjeGMEggawBgWrjCfxjsWFuMd3fTt13USQ7W5aPH6+VrZpA==}
     engines: {node: '>=16.20.0'}
     cpu: [x64]
     os: [win32]
@@ -11534,8 +11534,8 @@ packages:
     engines: {node: '>=14.17'}
     hasBin: true
 
-  typescript@7.1.0-dev.20260921.1:
-    resolution: {integrity: sha512-U+I/NIJnDWUlToh94QMKdYG0D8kO1zOS4doC6oW0OCmaYvsX27UM45zD6Qiy1Qw8CK4MLYpU8HWVzSUyYOY+IQ==}
+  typescript@7.1.0-dev.20260922.1:
+    resolution: {integrity: sha512-m8MHrUEVO3XMp+5fsI15IiSCFVKLIVQxltwRYiI3VVpLIgjKZYy6Ec5JnzoQ6i9vC9B7FfCU3cmOj0uZP4HU/g==}
     engines: {node: '>=16.20.0'}
     hasBin: true
 
@@ -13985,53 +13985,27 @@ snapshots:
     dependencies:
       '@glimmer/interfaces': 0.94.6
 
-  '@glint/ember-tsc@1.11.4(21a252101c4c3475d21fe8097dc1cea2)':
+  '@glint/ember-tsc@1.11.4(181a7691ad554af75514c3171a8f2203)':
     dependencies:
       '@glimmer/syntax': 0.95.0
       '@glint/template': 1.9.0
-      '@volar/kit': 2.4.28(typescript@7.1.0-dev.20260921.1)
+      '@volar/kit': 2.4.28(typescript@7.1.0-dev.20260922.1)
       '@volar/language-core': 2.4.28
-      '@volar/language-server': 2.4.28(typescript@7.1.0-dev.20260921.1)
-      '@volar/language-service': 2.4.28(typescript@7.1.0-dev.20260921.1)
+      '@volar/language-server': 2.4.28(typescript@7.1.0-dev.20260922.1)
+      '@volar/language-service': 2.4.28(typescript@7.1.0-dev.20260922.1)
       '@volar/source-map': 2.4.28
-      '@volar/test-utils': 2.4.28(typescript@7.1.0-dev.20260921.1)
-      '@volar/typescript': 2.4.28(typescript@7.1.0-dev.20260921.1)
+      '@volar/test-utils': 2.4.28(typescript@7.1.0-dev.20260922.1)
+      '@volar/typescript': 2.4.28(typescript@7.1.0-dev.20260922.1)
       content-tag: 4.2.0
       ember-estree: 0.8.1
       silent-error: 1.1.1
-      typescript: 7.1.0-dev.20260921.1
-      volar-service-html: 0.0.71(6721c556b6440435198687a41c8cef6f)
-      volar-service-typescript: 0.0.71(996f5f2ece4e821aaec818e222b53469)
+      typescript: 7.1.0-dev.20260922.1
+      volar-service-html: 0.0.71(411f52ee8ad478f583a1a1757bba2639)
+      volar-service-typescript: 0.0.71(54ef3f7695690f26f6633bf350dc51de)
       vscode-languageserver-protocol: 3.18.3
       vscode-languageserver-textdocument: 1.0.14
       vscode-uri: 3.2.0
     optionalDependencies:
-      ember-source: 7.3.0(@glimmer/component@2.1.1)
-    transitivePeerDependencies:
-      - supports-color
-
-  '@glint/ember-tsc@1.11.4(5bfe23c4efc53781674dc6a764ab0274)':
-    dependencies:
-      '@glimmer/syntax': 0.95.0
-      '@glint/template': 1.9.0
-      '@volar/kit': 2.4.28(typescript@7.1.0-dev.20260921.1)
-      '@volar/language-core': 2.4.28
-      '@volar/language-server': 2.4.28(typescript@7.1.0-dev.20260921.1)
-      '@volar/language-service': 2.4.28(typescript@7.1.0-dev.20260921.1)
-      '@volar/source-map': 2.4.28
-      '@volar/test-utils': 2.4.28(typescript@7.1.0-dev.20260921.1)
-      '@volar/typescript': 2.4.28(typescript@7.1.0-dev.20260921.1)
-      content-tag: 4.2.0
-      ember-estree: 0.8.1
-      silent-error: 1.1.1
-      typescript: 7.1.0-dev.20260921.1
-      volar-service-html: 0.0.71(6721c556b6440435198687a41c8cef6f)
-      volar-service-typescript: 0.0.71(996f5f2ece4e821aaec818e222b53469)
-      vscode-languageserver-protocol: 3.18.3
-      vscode-languageserver-textdocument: 1.0.14
-      vscode-uri: 3.2.0
-    optionalDependencies:
-      ember-modifier: 4.2.2(@babel/core@7.29.7)
       ember-source: 7.3.0(@glimmer/component@2.1.1)
     transitivePeerDependencies:
       - supports-color
@@ -14057,6 +14031,32 @@ snapshots:
       vscode-languageserver-textdocument: 1.0.14
       vscode-uri: 3.2.0
     optionalDependencies:
+      ember-source: 7.3.0(@glimmer/component@2.1.1)
+    transitivePeerDependencies:
+      - supports-color
+
+  '@glint/ember-tsc@1.11.4(e8ab1df54c5021329b231ea4f303cd77)':
+    dependencies:
+      '@glimmer/syntax': 0.95.0
+      '@glint/template': 1.9.0
+      '@volar/kit': 2.4.28(typescript@7.1.0-dev.20260922.1)
+      '@volar/language-core': 2.4.28
+      '@volar/language-server': 2.4.28(typescript@7.1.0-dev.20260922.1)
+      '@volar/language-service': 2.4.28(typescript@7.1.0-dev.20260922.1)
+      '@volar/source-map': 2.4.28
+      '@volar/test-utils': 2.4.28(typescript@7.1.0-dev.20260922.1)
+      '@volar/typescript': 2.4.28(typescript@7.1.0-dev.20260922.1)
+      content-tag: 4.2.0
+      ember-estree: 0.8.1
+      silent-error: 1.1.1
+      typescript: 7.1.0-dev.20260922.1
+      volar-service-html: 0.0.71(411f52ee8ad478f583a1a1757bba2639)
+      volar-service-typescript: 0.0.71(54ef3f7695690f26f6633bf350dc51de)
+      vscode-languageserver-protocol: 3.18.3
+      vscode-languageserver-textdocument: 1.0.14
+      vscode-uri: 3.2.0
+    optionalDependencies:
+      ember-modifier: 4.2.2(@babel/core@7.29.7)
       ember-source: 7.3.0(@glimmer/component@2.1.1)
     transitivePeerDependencies:
       - supports-color
@@ -14467,27 +14467,6 @@ snapshots:
       - rollup
       - supports-color
 
-  '@nullvoxpopuli/ember-rolldown@2.8.1(2812f6ea7dc754ba6b3e795ed770d7e1)':
-    dependencies:
-      '@babel/core': 7.29.7
-      '@babel/plugin-transform-typescript': 7.29.7(@babel/core@7.29.7)
-      '@embroider/core': 4.6.7
-      '@nullvoxpopuli/ember-build-tooling-utils': 1.1.1
-      babel-plugin-ember-template-compilation: 4.0.0
-      content-tag: 4.2.0
-      decorator-transforms: 2.4.0(@babel/core@7.29.7)
-    optionalDependencies:
-      tsdown: 0.23.0(d4e07e26ff05f8f0daab9abfff7bd209)
-      typescript: 6.0.3
-    transitivePeerDependencies:
-      - '@glint/template'
-      - '@types/babel__core'
-      - bufferutil
-      - canvas
-      - rollup
-      - supports-color
-      - utf-8-validate
-
   '@nullvoxpopuli/ember-rolldown@2.8.1(3e5691921da8db4b990c95acff33329d)':
     dependencies:
       '@babel/core': 7.29.7
@@ -14499,6 +14478,27 @@ snapshots:
       decorator-transforms: 2.4.0(@babel/core@7.29.7)
     optionalDependencies:
       tsdown: 0.23.0(typescript@6.0.3)
+      typescript: 6.0.3
+    transitivePeerDependencies:
+      - '@glint/template'
+      - '@types/babel__core'
+      - bufferutil
+      - canvas
+      - rollup
+      - supports-color
+      - utf-8-validate
+
+  '@nullvoxpopuli/ember-rolldown@2.8.1(93f26d40007f92b54417a9e6fadddb5f)':
+    dependencies:
+      '@babel/core': 7.29.7
+      '@babel/plugin-transform-typescript': 7.29.7(@babel/core@7.29.7)
+      '@embroider/core': 4.6.7
+      '@nullvoxpopuli/ember-build-tooling-utils': 1.1.1
+      babel-plugin-ember-template-compilation: 4.0.0
+      content-tag: 4.2.0
+      decorator-transforms: 2.4.0(@babel/core@7.29.7)
+    optionalDependencies:
+      tsdown: 0.23.0(6eb5cff8cebbcb0250d57e5162b159ab)
       typescript: 6.0.3
     transitivePeerDependencies:
       - '@glint/template'
@@ -15741,25 +15741,25 @@ snapshots:
       '@typescript-eslint/types': 8.70.1
       eslint-visitor-keys: 5.0.1
 
-  '@typescript/typescript-darwin-arm64@7.1.0-dev.20260921.1':
+  '@typescript/typescript-darwin-arm64@7.1.0-dev.20260922.1':
     optional: true
 
-  '@typescript/typescript-darwin-x64@7.1.0-dev.20260921.1':
+  '@typescript/typescript-darwin-x64@7.1.0-dev.20260922.1':
     optional: true
 
-  '@typescript/typescript-linux-arm64@7.1.0-dev.20260921.1':
+  '@typescript/typescript-linux-arm64@7.1.0-dev.20260922.1':
     optional: true
 
-  '@typescript/typescript-linux-arm@7.1.0-dev.20260921.1':
+  '@typescript/typescript-linux-arm@7.1.0-dev.20260922.1':
     optional: true
 
-  '@typescript/typescript-linux-x64@7.1.0-dev.20260921.1':
+  '@typescript/typescript-linux-x64@7.1.0-dev.20260922.1':
     optional: true
 
-  '@typescript/typescript-win32-arm64@7.1.0-dev.20260921.1':
+  '@typescript/typescript-win32-arm64@7.1.0-dev.20260922.1':
     optional: true
 
-  '@typescript/typescript-win32-x64@7.1.0-dev.20260921.1':
+  '@typescript/typescript-win32-x64@7.1.0-dev.20260922.1':
     optional: true
 
   '@ungap/structured-clone@1.4.0': {}
@@ -15843,11 +15843,11 @@ snapshots:
     dependencies:
       vite-plugin-pwa: 1.3.0(vite@8.3.0)
 
-  '@vitejs/plugin-vue@6.0.9(ce65d50a6c58dbd9fda565f0932f9125)':
+  '@vitejs/plugin-vue@6.0.9(7b6dcaa36db20e576a11a189366d3e6d)':
     dependencies:
       '@rolldown/pluginutils': 1.0.1
       vite: 8.3.0
-      vue: 3.5.43(typescript@7.1.0-dev.20260921.1)
+      vue: 3.5.43(typescript@7.1.0-dev.20260922.1)
 
   '@vitejs/plugin-vue@6.0.9(vite@8.3.0)(vue@3.5.43(typescript@6.0.3))':
     dependencies:
@@ -15875,12 +15875,12 @@ snapshots:
       vscode-languageserver-textdocument: 1.0.14
       vscode-uri: 3.2.0
 
-  '@volar/kit@2.4.28(typescript@7.1.0-dev.20260921.1)':
+  '@volar/kit@2.4.28(typescript@7.1.0-dev.20260922.1)':
     dependencies:
-      '@volar/language-service': 2.4.28(typescript@7.1.0-dev.20260921.1)
-      '@volar/typescript': 2.4.28(typescript@7.1.0-dev.20260921.1)
+      '@volar/language-service': 2.4.28(typescript@7.1.0-dev.20260922.1)
+      '@volar/typescript': 2.4.28(typescript@7.1.0-dev.20260922.1)
       typesafe-path: 0.2.2
-      typescript: 7.1.0-dev.20260921.1
+      typescript: 7.1.0-dev.20260922.1
       vscode-languageserver-textdocument: 1.0.14
       vscode-uri: 3.2.0
 
@@ -15902,11 +15902,11 @@ snapshots:
     optionalDependencies:
       typescript: 6.0.3
 
-  '@volar/language-server@2.4.28(typescript@7.1.0-dev.20260921.1)':
+  '@volar/language-server@2.4.28(typescript@7.1.0-dev.20260922.1)':
     dependencies:
       '@volar/language-core': 2.4.28
-      '@volar/language-service': 2.4.28(typescript@7.1.0-dev.20260921.1)
-      '@volar/typescript': 2.4.28(typescript@7.1.0-dev.20260921.1)
+      '@volar/language-service': 2.4.28(typescript@7.1.0-dev.20260922.1)
+      '@volar/typescript': 2.4.28(typescript@7.1.0-dev.20260922.1)
       path-browserify: 1.0.1
       request-light: 0.7.0
       vscode-languageserver: 9.0.1
@@ -15914,7 +15914,7 @@ snapshots:
       vscode-languageserver-textdocument: 1.0.14
       vscode-uri: 3.2.0
     optionalDependencies:
-      typescript: 7.1.0-dev.20260921.1
+      typescript: 7.1.0-dev.20260922.1
 
   '@volar/language-service@2.4.28(typescript@6.0.3)':
     dependencies:
@@ -15925,14 +15925,14 @@ snapshots:
     optionalDependencies:
       typescript: 6.0.3
 
-  '@volar/language-service@2.4.28(typescript@7.1.0-dev.20260921.1)':
+  '@volar/language-service@2.4.28(typescript@7.1.0-dev.20260922.1)':
     dependencies:
       '@volar/language-core': 2.4.28
       vscode-languageserver-protocol: 3.18.3
       vscode-languageserver-textdocument: 1.0.14
       vscode-uri: 3.2.0
     optionalDependencies:
-      typescript: 7.1.0-dev.20260921.1
+      typescript: 7.1.0-dev.20260922.1
 
   '@volar/source-map@2.4.28': {}
 
@@ -15945,10 +15945,10 @@ snapshots:
     transitivePeerDependencies:
       - typescript
 
-  '@volar/test-utils@2.4.28(typescript@7.1.0-dev.20260921.1)':
+  '@volar/test-utils@2.4.28(typescript@7.1.0-dev.20260922.1)':
     dependencies:
       '@volar/language-core': 2.4.28
-      '@volar/language-server': 2.4.28(typescript@7.1.0-dev.20260921.1)
+      '@volar/language-server': 2.4.28(typescript@7.1.0-dev.20260922.1)
       vscode-languageserver-textdocument: 1.0.14
       vscode-uri: 3.2.0
     transitivePeerDependencies:
@@ -15962,13 +15962,13 @@ snapshots:
     optionalDependencies:
       typescript: 6.0.3
 
-  '@volar/typescript@2.4.28(typescript@7.1.0-dev.20260921.1)':
+  '@volar/typescript@2.4.28(typescript@7.1.0-dev.20260922.1)':
     dependencies:
       '@volar/language-core': 2.4.28
       path-browserify: 1.0.1
       vscode-uri: 3.2.0
     optionalDependencies:
-      typescript: 7.1.0-dev.20260921.1
+      typescript: 7.1.0-dev.20260922.1
 
   '@vscode/l10n@0.0.18': {}
 
@@ -16467,12 +16467,12 @@ snapshots:
       - vite
       - vue-tsc
 
-  '@warp-drive/internal-config@file:tools/internal-config(1548dfc7f4be36838cdac7cce6432d97)':
+  '@warp-drive/internal-config@file:tools/internal-config(1224bbb48c8196e2dde5bd955a2e9c79)':
     dependencies:
       '@babel/core': 7.29.7
       '@babel/eslint-parser': 8.0.6(@babel/core@7.29.7)(eslint@10.11.0)
       '@eslint/js': 10.0.1(eslint@10.11.0)
-      '@nullvoxpopuli/ember-rolldown': 2.8.1(2812f6ea7dc754ba6b3e795ed770d7e1)
+      '@nullvoxpopuli/ember-rolldown': 2.8.1(93f26d40007f92b54417a9e6fadddb5f)
       '@rolldown/plugin-babel': 0.2.4(2499bed78c6fddfb007a23bc228d3603)
       '@rollup/plugin-babel': 7.1.0(@babel/core@7.29.7)
       '@types/debug': 4.1.13
@@ -16488,7 +16488,7 @@ snapshots:
       eslint-plugin-n: 18.3.0(eslint@10.11.0)(typescript@6.0.3)
       eslint-plugin-qunit: 8.2.6(eslint@10.11.0)
       globals: 17.12.0
-      tsdown: 0.23.0(d4e07e26ff05f8f0daab9abfff7bd209)
+      tsdown: 0.23.0(6eb5cff8cebbcb0250d57e5162b159ab)
       typescript: 6.0.3
       typescript-eslint: 8.70.1(eslint@10.11.0)(typescript@6.0.3)
     transitivePeerDependencies:
@@ -16899,12 +16899,12 @@ snapshots:
       - vite
       - vue-tsc
 
-  '@warp-drive/internal-config@file:tools/internal-config(e85ae252439ee52b76f80d9aea55a841)':
+  '@warp-drive/internal-config@file:tools/internal-config(da83c87702a32fa80d63db7459f67ba5)':
     dependencies:
       '@babel/core': 7.29.7
       '@babel/eslint-parser': 8.0.6(@babel/core@7.29.7)(eslint@10.11.0)
       '@eslint/js': 10.0.1(eslint@10.11.0)
-      '@nullvoxpopuli/ember-rolldown': 2.8.1(2812f6ea7dc754ba6b3e795ed770d7e1)
+      '@nullvoxpopuli/ember-rolldown': 2.8.1(93f26d40007f92b54417a9e6fadddb5f)
       '@rolldown/plugin-babel': 0.2.4(02d9a2513d9ed1d532b075ffd9c2b5e7)
       '@rollup/plugin-babel': 7.1.0(@babel/core@7.29.7)
       '@types/debug': 4.1.13
@@ -16920,7 +16920,7 @@ snapshots:
       eslint-plugin-n: 18.3.0(eslint@10.11.0)(typescript@6.0.3)
       eslint-plugin-qunit: 8.2.6(eslint@10.11.0)
       globals: 17.12.0
-      tsdown: 0.23.0(d4e07e26ff05f8f0daab9abfff7bd209)
+      tsdown: 0.23.0(6eb5cff8cebbcb0250d57e5162b159ab)
       typescript: 6.0.3
       typescript-eslint: 8.70.1(eslint@10.11.0)(typescript@6.0.3)
     transitivePeerDependencies:
@@ -17358,11 +17358,11 @@ snapshots:
       - '@glint/template'
       - supports-color
 
-  '@warp-drive/vue@file:warp-drive-packages/vue(4a52efe2d115fbaec3961427d09cb339)':
+  '@warp-drive/vue@file:warp-drive-packages/vue(f510ab2c8739c901dd3f89e0d545dfff)':
     dependencies:
       '@embroider/macros': 1.21.1
       '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.29.7)
-      vue: 3.5.43(typescript@7.1.0-dev.20260921.1)
+      vue: 3.5.43(typescript@7.1.0-dev.20260922.1)
     transitivePeerDependencies:
       - '@babel/core'
       - '@glint/template'
@@ -18470,20 +18470,9 @@ snapshots:
 
   ember-cli-string-utils@1.1.0: {}
 
-  ember-content-mapper@0.3.1(21a252101c4c3475d21fe8097dc1cea2):
+  ember-content-mapper@0.3.1(181a7691ad554af75514c3171a8f2203):
     dependencies:
-      '@glint/ember-tsc': 1.11.4(21a252101c4c3475d21fe8097dc1cea2)
-      tinypool: 2.1.2
-      vscode-jsonrpc: 9.0.2
-    transitivePeerDependencies:
-      - ember-modifier
-      - ember-source
-      - supports-color
-      - typescript
-
-  ember-content-mapper@0.3.1(5bfe23c4efc53781674dc6a764ab0274):
-    dependencies:
-      '@glint/ember-tsc': 1.11.4(5bfe23c4efc53781674dc6a764ab0274)
+      '@glint/ember-tsc': 1.11.4(181a7691ad554af75514c3171a8f2203)
       tinypool: 2.1.2
       vscode-jsonrpc: 9.0.2
     transitivePeerDependencies:
@@ -18495,6 +18484,17 @@ snapshots:
   ember-content-mapper@0.3.1(d81154f88b4fb747cbb93ddef4e52610):
     dependencies:
       '@glint/ember-tsc': 1.11.4(d81154f88b4fb747cbb93ddef4e52610)
+      tinypool: 2.1.2
+      vscode-jsonrpc: 9.0.2
+    transitivePeerDependencies:
+      - ember-modifier
+      - ember-source
+      - supports-color
+      - typescript
+
+  ember-content-mapper@0.3.1(e8ab1df54c5021329b231ea4f303cd77):
+    dependencies:
+      '@glint/ember-tsc': 1.11.4(e8ab1df54c5021329b231ea4f303cd77)
       tinypool: 2.1.2
       vscode-jsonrpc: 9.0.2
     transitivePeerDependencies:
@@ -21009,7 +21009,7 @@ snapshots:
 
   robust-predicates@3.0.3: {}
 
-  rolldown-plugin-dts@0.28.6(4af30c029e4c51f0e8dde3c5c90e8837):
+  rolldown-plugin-dts@0.28.6(36499a62acea9718d192d261a070d97a):
     dependencies:
       dts-resolver: 3.0.0
       get-tsconfig: 5.0.0-beta.6
@@ -21019,26 +21019,11 @@ snapshots:
       yuku-codegen: 0.10.2
       yuku-parser: 0.10.2
     optionalDependencies:
-      typescript: 7.1.0-dev.20260921.1
+      typescript: 7.1.0-dev.20260922.1
     transitivePeerDependencies:
       - oxc-resolver
 
-  rolldown-plugin-dts@0.28.6(a77216ef0485a9492cdbabcbf4e08002):
-    dependencies:
-      dts-resolver: 3.0.0
-      get-tsconfig: 5.0.0-beta.6
-      obug: 3.0.0
-      rolldown: 1.2.9
-      yuku-ast: 0.10.2
-      yuku-codegen: 0.10.2
-      yuku-parser: 0.10.2
-    optionalDependencies:
-      typescript: 7.1.0-dev.20260921.1
-      vue-tsc: 3.3.11(typescript@7.1.0-dev.20260921.1)
-    transitivePeerDependencies:
-      - oxc-resolver
-
-  rolldown-plugin-dts@0.28.6(b6eb85e49f97b0c4002b82d418f9d443):
+  rolldown-plugin-dts@0.28.6(c8930692727cfa39516842fb62bc773c):
     dependencies:
       dts-resolver: 3.0.0
       get-tsconfig: 5.0.0-beta.6
@@ -21049,7 +21034,22 @@ snapshots:
       yuku-parser: 0.10.2
     optionalDependencies:
       typescript: 6.0.3
-      vue-tsc: 3.3.11(typescript@7.1.0-dev.20260921.1)
+      vue-tsc: 3.3.11(typescript@7.1.0-dev.20260922.1)
+    transitivePeerDependencies:
+      - oxc-resolver
+
+  rolldown-plugin-dts@0.28.6(ec17fb1e030f1b0590d52e1479701c4d):
+    dependencies:
+      dts-resolver: 3.0.0
+      get-tsconfig: 5.0.0-beta.6
+      obug: 3.0.0
+      rolldown: 1.2.9
+      yuku-ast: 0.10.2
+      yuku-codegen: 0.10.2
+      yuku-parser: 0.10.2
+    optionalDependencies:
+      typescript: 7.1.0-dev.20260922.1
+      vue-tsc: 3.3.11(typescript@7.1.0-dev.20260922.1)
     transitivePeerDependencies:
       - oxc-resolver
 
@@ -21845,7 +21845,7 @@ snapshots:
 
   ts-dedent@2.3.0: {}
 
-  tsdown@0.23.0(349e03869578406e175d4084b9de1384):
+  tsdown@0.23.0(6eb5cff8cebbcb0250d57e5162b159ab):
     dependencies:
       cac: 7.0.0
       defu: 6.1.7
@@ -21855,32 +21855,7 @@ snapshots:
       obug: 2.2.1
       picomatch: 4.0.7
       rolldown: 1.2.9
-      rolldown-plugin-dts: 0.28.6(a77216ef0485a9492cdbabcbf4e08002)
-      tinyexec: 1.3.1
-      tinyglobby: 0.2.17
-      tree-kill: 1.2.2
-      unconfig-core: 7.5.0
-      verkit: 0.4.0
-    optionalDependencies:
-      typescript: 7.1.0-dev.20260921.1
-    transitivePeerDependencies:
-      - '@typescript/native-preview'
-      - '@volar/typescript'
-      - '@vue/language-core'
-      - oxc-resolver
-      - vue-tsc
-
-  tsdown@0.23.0(d4e07e26ff05f8f0daab9abfff7bd209):
-    dependencies:
-      cac: 7.0.0
-      defu: 6.1.7
-      empathic: 2.0.1
-      hookable: 6.1.2
-      import-without-cache: 0.4.1
-      obug: 2.2.1
-      picomatch: 4.0.7
-      rolldown: 1.2.9
-      rolldown-plugin-dts: 0.28.6(b6eb85e49f97b0c4002b82d418f9d443)
+      rolldown-plugin-dts: 0.28.6(c8930692727cfa39516842fb62bc773c)
       tinyexec: 1.3.1
       tinyglobby: 0.2.17
       tree-kill: 1.2.2
@@ -21888,6 +21863,31 @@ snapshots:
       verkit: 0.4.0
     optionalDependencies:
       typescript: 6.0.3
+    transitivePeerDependencies:
+      - '@typescript/native-preview'
+      - '@volar/typescript'
+      - '@vue/language-core'
+      - oxc-resolver
+      - vue-tsc
+
+  tsdown@0.23.0(b8aad91c8e962647205ad889bfd803e8):
+    dependencies:
+      cac: 7.0.0
+      defu: 6.1.7
+      empathic: 2.0.1
+      hookable: 6.1.2
+      import-without-cache: 0.4.1
+      obug: 2.2.1
+      picomatch: 4.0.7
+      rolldown: 1.2.9
+      rolldown-plugin-dts: 0.28.6(ec17fb1e030f1b0590d52e1479701c4d)
+      tinyexec: 1.3.1
+      tinyglobby: 0.2.17
+      tree-kill: 1.2.2
+      unconfig-core: 7.5.0
+      verkit: 0.4.0
+    optionalDependencies:
+      typescript: 7.1.0-dev.20260922.1
     transitivePeerDependencies:
       - '@typescript/native-preview'
       - '@volar/typescript'
@@ -21920,7 +21920,7 @@ snapshots:
       - oxc-resolver
       - vue-tsc
 
-  tsdown@0.23.0(typescript@7.1.0-dev.20260921.1):
+  tsdown@0.23.0(typescript@7.1.0-dev.20260922.1):
     dependencies:
       cac: 7.0.0
       defu: 6.1.7
@@ -21930,14 +21930,14 @@ snapshots:
       obug: 2.2.1
       picomatch: 4.0.7
       rolldown: 1.2.9
-      rolldown-plugin-dts: 0.28.6(4af30c029e4c51f0e8dde3c5c90e8837)
+      rolldown-plugin-dts: 0.28.6(36499a62acea9718d192d261a070d97a)
       tinyexec: 1.3.1
       tinyglobby: 0.2.17
       tree-kill: 1.2.2
       unconfig-core: 7.5.0
       verkit: 0.4.0
     optionalDependencies:
-      typescript: 7.1.0-dev.20260921.1
+      typescript: 7.1.0-dev.20260922.1
     transitivePeerDependencies:
       - '@typescript/native-preview'
       - '@volar/typescript'
@@ -22027,15 +22027,15 @@ snapshots:
 
   typescript@6.0.3: {}
 
-  typescript@7.1.0-dev.20260921.1:
+  typescript@7.1.0-dev.20260922.1:
     optionalDependencies:
-      '@typescript/typescript-darwin-arm64': 7.1.0-dev.20260921.1
-      '@typescript/typescript-darwin-x64': 7.1.0-dev.20260921.1
-      '@typescript/typescript-linux-arm': 7.1.0-dev.20260921.1
-      '@typescript/typescript-linux-arm64': 7.1.0-dev.20260921.1
-      '@typescript/typescript-linux-x64': 7.1.0-dev.20260921.1
-      '@typescript/typescript-win32-arm64': 7.1.0-dev.20260921.1
-      '@typescript/typescript-win32-x64': 7.1.0-dev.20260921.1
+      '@typescript/typescript-darwin-arm64': 7.1.0-dev.20260922.1
+      '@typescript/typescript-darwin-x64': 7.1.0-dev.20260922.1
+      '@typescript/typescript-linux-arm': 7.1.0-dev.20260922.1
+      '@typescript/typescript-linux-arm64': 7.1.0-dev.20260922.1
+      '@typescript/typescript-linux-x64': 7.1.0-dev.20260922.1
+      '@typescript/typescript-win32-arm64': 7.1.0-dev.20260922.1
+      '@typescript/typescript-win32-x64': 7.1.0-dev.20260922.1
 
   uc.micro@2.1.0: {}
 
@@ -22126,7 +22126,7 @@ snapshots:
 
   unpipe@1.0.0: {}
 
-  unplugin-vue@8.0.0(9fe0cfbda7f85ed88132ab1e6de1f0f6):
+  unplugin-vue@8.0.0(bd91aca8f27c5461e1c20ced45702ef6):
     dependencies:
       '@jridgewell/gen-mapping': 0.3.13
       '@jridgewell/trace-mapping': 0.3.31
@@ -22134,7 +22134,7 @@ snapshots:
       obug: 3.0.0
       unplugin: 3.4.0(vite@8.3.0)
       vite: 8.3.0
-      vue: 3.5.43(typescript@7.1.0-dev.20260921.1)
+      vue: 3.5.43(typescript@7.1.0-dev.20260922.1)
     transitivePeerDependencies:
       - '@farmfe/core'
       - '@rsbuild/core'
@@ -22392,13 +22392,13 @@ snapshots:
     optionalDependencies:
       '@volar/language-service': 2.4.28(typescript@6.0.3)
 
-  volar-service-html@0.0.71(6721c556b6440435198687a41c8cef6f):
+  volar-service-html@0.0.71(411f52ee8ad478f583a1a1757bba2639):
     dependencies:
       vscode-html-languageservice: 5.6.2
       vscode-languageserver-textdocument: 1.0.14
       vscode-uri: 3.2.0
     optionalDependencies:
-      '@volar/language-service': 2.4.28(typescript@7.1.0-dev.20260921.1)
+      '@volar/language-service': 2.4.28(typescript@7.1.0-dev.20260922.1)
 
   volar-service-typescript@0.0.71(0f561008a89a59d88d0a5d5371141855):
     dependencies:
@@ -22412,7 +22412,7 @@ snapshots:
       '@volar/language-service': 2.4.28(typescript@6.0.3)
       typescript: 6.0.3
 
-  volar-service-typescript@0.0.71(996f5f2ece4e821aaec818e222b53469):
+  volar-service-typescript@0.0.71(54ef3f7695690f26f6633bf350dc51de):
     dependencies:
       path-browserify: 1.0.1
       semver: 7.8.5
@@ -22421,8 +22421,8 @@ snapshots:
       vscode-nls: 5.2.0
       vscode-uri: 3.2.0
     optionalDependencies:
-      '@volar/language-service': 2.4.28(typescript@7.1.0-dev.20260921.1)
-      typescript: 7.1.0-dev.20260921.1
+      '@volar/language-service': 2.4.28(typescript@7.1.0-dev.20260922.1)
+      typescript: 7.1.0-dev.20260922.1
 
   vscode-html-languageservice@5.6.2:
     dependencies:
@@ -22459,11 +22459,11 @@ snapshots:
 
   vscode-uri@3.2.0: {}
 
-  vue-tsc@3.3.11(typescript@7.1.0-dev.20260921.1):
+  vue-tsc@3.3.11(typescript@7.1.0-dev.20260922.1):
     dependencies:
-      '@volar/typescript': 2.4.28(typescript@7.1.0-dev.20260921.1)
+      '@volar/typescript': 2.4.28(typescript@7.1.0-dev.20260922.1)
       '@vue/language-core': 3.3.11
-      typescript: 7.1.0-dev.20260921.1
+      typescript: 7.1.0-dev.20260922.1
 
   vue@3.5.43(typescript@6.0.3):
     dependencies:
@@ -22475,7 +22475,7 @@ snapshots:
     optionalDependencies:
       typescript: 6.0.3
 
-  vue@3.5.43(typescript@7.1.0-dev.20260921.1):
+  vue@3.5.43(typescript@7.1.0-dev.20260922.1):
     dependencies:
       '@vue/compiler-dom': 3.5.43
       '@vue/compiler-sfc': 3.5.43
@@ -22483,7 +22483,7 @@ snapshots:
       '@vue/server-renderer': 3.5.43
       '@vue/shared': 3.5.43
     optionalDependencies:
-      typescript: 7.1.0-dev.20260921.1
+      typescript: 7.1.0-dev.20260922.1
 
   w3c-xmlserializer@5.0.0:
     dependencies:
