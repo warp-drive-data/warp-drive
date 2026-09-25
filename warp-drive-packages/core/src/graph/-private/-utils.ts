@@ -51,7 +51,18 @@ export function assertValidRelationshipPayload(
   const { definition, identifier, state } = relationship;
   const { type } = identifier;
   const { field } = op;
-  const { isAsync, kind } = definition;
+  const { isAsync, kind, fieldKind } = definition;
+
+  if (fieldKind === 'resource' || fieldKind === 'collection') {
+    // see guides/the-manual/relational-data/spec.md
+    if (isAsync) {
+      const related = payload.links?.related ?? relationship.links?.related;
+      assert(
+        `The ${fieldKind} relationship '${type}.${field}' is async (async: true) and must have a 'links.related' link, but the payload pushed for '${type}:${String(identifier.id)}' provided none. Async resource and collection relationships are fetched through their related link; add the link to the payload or mark the relationship async: false and include its data.`,
+        !!related
+      );
+    }
+  }
 
   if (payload.links) {
     // once JSON_API_CACHE_VALIDATION_ERRORS is active, this warning is instead

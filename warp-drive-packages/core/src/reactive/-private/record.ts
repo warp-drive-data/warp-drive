@@ -1,7 +1,7 @@
 import { DEBUG } from '@warp-drive/core/build-config/env';
 import { assert } from '@warp-drive/core/build-config/macros';
 
-import type { NotificationType } from '../../index.ts';
+import type { NotificationChannel, NotificationType } from '../../index.ts';
 import {
   ARRAY_SIGNAL,
   entangleSignal,
@@ -13,7 +13,9 @@ import {
 import type { LegacyManyArray, Store } from '../../store/-private.ts';
 import { recordIdentifierFor, setRecordIdentifier } from '../../store/-private.ts';
 import { removeRecordIdentifier } from '../../store/-private/caches/instance-cache.ts';
-import type { ResourceKey } from '../../types/identifier.ts';
+import type { UpdateResourceRelationshipOperation } from '../../types/cache/operations.ts';
+import type { Relationship } from '../../types/cache/relationship.ts';
+import type { PersistedResourceKey, ResourceKey } from '../../types/identifier.ts';
 import { STRUCTURED } from '../../types/request.ts';
 import type { FieldSchema, GenericField, IdentityField } from '../../types/schema/fields.ts';
 import { RecordStore } from '../../types/symbols.ts';
@@ -24,6 +26,7 @@ import { isExtensionProp, performExtensionSet, performObjectExtensionGet } from 
 import { getFieldCacheKey } from './fields/get-field-key.ts';
 import type { ManagedArray } from './fields/managed-array.ts';
 import { peekManagedObject } from './fields/managed-object.ts';
+import { notifyRelationshipDocument, type ReactiveRelationshipDocument } from './fields/relationship-document.ts';
 import type { SchemaService } from './schema.ts';
 import { Checkout, Commit, Context, Destroy } from './symbols.ts';
 
@@ -149,7 +152,7 @@ export class ReactiveResource {
     const signals = withSignalStore(this);
     this.___notifications = context.store.notifications.subscribe(
       resourceKey,
-      (_: ResourceKey, type: NotificationType, key?: string | string[]) => {
+      (_: ResourceKey, type: NotificationType, key?: string | string[], channel?: NotificationChannel) => {
         switch (type) {
           case 'identity': {
             if (isEmbedded || !identityField) return; // base paths never apply to embedded records
@@ -227,9 +230,13 @@ export class ReactiveResource {
                   if (signal) {
                     notifyInternalSignal(signal);
                   }
-                  // FIXME
                 } else if (field.kind === 'resource') {
-                  // FIXME
+                  // the document instance is stable; only its reactive
+                  // properties go stale.
+                  const doc = signals.get(key)?.value as ReactiveRelationshipDocument<unknown> | undefined;
+                  if (doc) {
+                    notifyRelationshipDocument(doc, channel);
+                  }
                 } else if (field.kind === 'hasMany') {
                   if (field.options.linksMode) {
                     const signal = signals.get(key);
@@ -307,7 +314,10 @@ export class ReactiveResource {
         }
 
         switch (schemaForField.kind) {
+          // relationship documents are mutated via their `data`, never by
+          // assigning the field
           case 'derived':
+          case 'resource':
             return {
               writable: false,
               enumerable: true,
@@ -334,7 +344,6 @@ export class ReactiveResource {
           case '@local':
           case 'field':
           case 'attribute':
-          case 'resource':
           case 'alias':
           case 'belongsTo':
           case 'hasMany':
@@ -663,9 +672,29 @@ export class ReactiveResource {
 
 async function _COMMIT(record: ReactiveResource): Promise<void> {
   await Promise.resolve();
-  const context = record[Context];
-  context.store.cache.willCommit(context.resourceKey, null);
-  context.store.cache.didCommit(context.resourceKey, null);
+  const { store, resourceKey } = record[Context];
+  const { cache } = store;
+
+  // the cache's commit bookkeeping covers attributes only: relationship state is expected to
+  // arrive with the response to a save request. There is no response here, so the local
+  // relationship state is what gets promoted to remote state.
+  const relationships = cache.changedRelationships(resourceKey);
+
+  cache.willCommit(resourceKey, null);
+  cache.didCommit(resourceKey, null);
+
+  if (relationships.size) {
+    const ops: UpdateResourceRelationshipOperation[] = [];
+    relationships.forEach((diff, field) => {
+      ops.push({
+        op: 'update',
+        record: resourceKey as PersistedResourceKey,
+        field,
+        value: { data: diff.localState } as Relationship<PersistedResourceKey>,
+      });
+    });
+    cache.patch(ops);
+  }
 }
 
 export function _CHECKOUT(record: ReactiveResource): ReactiveResource {
@@ -759,6 +788,10 @@ export function checkout<T>(resource: unknown): Promise<T & ReactiveResource> {
 /**
  * Forcibly commit all local changes on an editable resource to
  * the remote (immutable) version.
+ *
+ * This covers both fields and relationships: the local state of
+ * every relationship with uncommitted changes becomes its remote
+ * state, and the inverses are updated to match.
  *
  * This API should only be used cautiously. Typically a better
  * approach is for either the API or a Handler to reflect saved

@@ -258,6 +258,7 @@ export interface RemoveFromDocumentOperation extends Op {
  * - {@link AddResourceOperation}
  * - {@link UpdateResourceOperation}
  * - {@link UpdateResourceFieldOperation}
+ * - {@link UpdateResourceRelationshipOperation}
  * - {@link AddToResourceRelationshipOperation}
  * - {@link RemoveFromResourceRelationshipOperation}
  * - {@link AddToDocumentOperation}
@@ -270,6 +271,7 @@ export type Operation =
   | AddResourceOperation
   | UpdateResourceOperation
   | UpdateResourceFieldOperation
+  | UpdateResourceRelationshipOperation
   | AddToResourceRelationshipOperation
   | RemoveFromResourceRelationshipOperation
   | AddToDocumentOperation

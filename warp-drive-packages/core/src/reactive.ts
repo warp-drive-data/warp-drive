@@ -316,6 +316,7 @@ export {
   type ReactiveDataDocument,
   type ReactiveErrorDocument,
 } from './reactive/-private/document';
+export { type ReactiveRelationshipDocument } from './reactive/-private/fields/relationship-document.ts';
 export {
   createRequestSubscription,
   getRequestState,
