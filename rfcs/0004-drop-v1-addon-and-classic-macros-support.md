@@ -180,39 +180,40 @@ Migration guide: https://docs.warp-drive.io/guides/build-plugin-migration
 are removed from `@warp-drive/core/build-config`'s exports entirely; importing them is a
 module-resolution error, not a runtime warning.
 
-### Relationship to RFC 0002's deprecation schedule
+### Deprecating now, removing in 6.0
 
-RFC 0002 proposed:
+RFC 0002 proposed a staged rollout: the plugin ships silently alongside the classic path,
+then a build notice one minor later, then a formal deprecation only in the last 5.x minor
+before 6.0 — with removal itself deferred to 7.0, behind an automatically-injected babel
+bridge gated by a flag for the full 6.0 beta cycle.
 
-> 3. **Next major (6.0):** the babel path issues a formal build-time deprecation ... 4.
->    **Following major (7.0):** the babel path is removed. A babel *bridge* plugin ... remains
->    available indefinitely.
+This RFC collapses that timeline instead of extending it: both deprecations below ship in the
+very next 5.x minor, alongside the plugin itself, rather than waiting for an interim build
+notice — and both are removed outright at 6.0, with no bridge and no flag in either major.
 
-and left as an unresolved question whether the classic ember-cli story at 6.0 could rely on
-an automatically-injected babel bridge, gated behind a flag for the full 6.0 beta cycle.
+1. **Next 5.x minor:** the plugin ships, and both deprecations below fire immediately.
+   - `warp-drive.legacy-babel-config` — fires on every hit of `setConfig`'s
+     `isEmberClassicUsage` (3-arg) branch, and on every use of `buildMacros()` +
+     `setConfig(macrosConfig, config)`. Supersedes RFC 0002's plan of a silent notice
+     followed by a formal deprecation two minors later; the notice and the deprecation
+     collapse into one.
+   - `warp-drive.v1-addon-support` — fires on every hit of the V1 shim's `included` hook
+     `___legacy_support` branch, i.e. whenever an app resolves WarpDrive through anything
+     other than embroider's V2 addon support.
 
-This RFC supersedes that part of RFC 0002's schedule: there is no babel bridge, at 6.0 or
-later, and no flag gating a fallback — the classic path and the V1 shim are removed in the
-same major that introduced the plugin's deprecation notice, rather than one major later. The
-rest of RFC 0002 — the plugin's design, its per-bundler adapters, the config-registry
-conflict detection, and the plain-flag published-output format — is unaffected and remains
-this RFC's dependency. Concretely, this RFC turns RFC 0002's step 3 into a hard break instead
-of a warning:
-
-1. **Next 5.x minor:** unchanged from RFC 0002 — plugin ships, fully supported alongside the
-   classic path, which prints nothing yet.
-2. **Following 5.x minor:** unchanged from RFC 0002 — the classic path prints a one-time
-   build notice.
-3. **Last 5.x minor before 6.0:** the classic path's notice is upgraded to a formal
-   deprecation (`warp-drive.legacy-babel-config`, as specified in RFC 0002), and a second,
-   separate deprecation (`warp-drive.v1-addon-support`) is added for the V1 shim path,
-   triggered whenever the `included` hook's `___legacy_support` branch actually runs (i.e.
-   whenever an app is resolving WarpDrive through anything other than embroider's V2 addon
-   support).
-4. **6.0:** both are removed, per the "Detailed design" section above. There is no bridge and
+   Both are ordinary WarpDrive deprecations, not build notices: listed alongside the other
+   entries in `@warp-drive/build-config/deprecations`, testable with
+   `assert.expectDeprecation()`, and silenceable via the same `deprecations: { ... }` config
+   option as any other — silencing the warning does not change the removal date.
+2. **6.0:** both are removed, per the "Detailed design" section above. There is no bridge and
    no flag; an app that has not migrated by 6.0's release fails at build configuration time
    with the error message shown above, and (if it is on a fully classic, non-embroider build)
    fails to resolve WarpDrive's packages at all.
+
+Starting the warning immediately, rather than in the final 5.x minor as RFC 0002 planned,
+gives every app the entire remaining 5.x release cycle to migrate instead of just its last
+minor — even though the removal target (6.0, not 7.0) is sooner than RFC 0002's original
+schedule.
 
 ### Ecosystem implications
 
@@ -245,23 +246,29 @@ order: (1) confirm the app builds through embroider (Vite or `compatBuild`) rath
 fully classic pipeline — a prerequisite independent of WarpDrive; (2) replace any
 `setConfig(app, __dirname, ...)` / `buildMacros()` wiring with the plugin call shown above;
 (3) delete the now-unused `@embroider/macros`, `babel-plugin-debug-macros`, and
-`babel.config.mjs` entries that existed only for WarpDrive. Because the 5.x deprecation
-schedule in the previous section gives both deprecation IDs (`warp-drive.legacy-babel-config`
-and `warp-drive.v1-addon-support`) real build-time messages before 6.0 ships, most apps
-should reach 6.0 having already completed this migration rather than discovering it as a
-breaking change.
+`babel.config.mjs` entries that existed only for WarpDrive. Because both deprecation IDs
+(`warp-drive.legacy-babel-config` and `warp-drive.v1-addon-support`) fire starting in the
+very next 5.x minor rather than only in the last one before 6.0, most apps should reach 6.0
+having already completed this migration, with the entire remaining 5.x cycle to do it in,
+rather than discovering it as a breaking change.
 
 ## Drawbacks
 
-- **Faster break than RFC 0002 originally proposed.** RFC 0002 explicitly kept a bridge
-  through 6.0 to avoid forcing classic-build apps to adopt embroider in the same release that
-  introduces the plugin. This RFC accepts that a small number of apps genuinely still running
-  a fully classic (non-embroider) build will need to adopt embroider *and* migrate their
-  WarpDrive config in the same major, rather than two separate majors apart.
-- **No escape hatch.** Unlike the 7.0 "babel bridge remains available indefinitely" promise
-  in RFC 0002, this RFC leaves no supported way to configure WarpDrive without the bundler
-  plugin, and no supported way to resolve WarpDrive packages without embroider's V2 addon
-  support, once 6.0 ships.
+- **Shorter overall support window than RFC 0002 originally proposed.** RFC 0002 kept the
+  classic path and the V1 shim fully supported through 6.0 and promised an indefinite babel
+  bridge after that. This RFC removes both at 6.0 with no bridge at all — real apps that would
+  have had until 7.0 now have only until 6.0. The immediate deprecation partly offsets this:
+  the warning starts the moment this RFC lands rather than in 6.0's final beta, so affected
+  apps get the whole current major's release cycle to react, not just its last minor — but the
+  net window is still shorter than RFC 0002 promised.
+- **Immediate, ecosystem-wide deprecation noise.** Every app still on the classic path or
+  relying on V1 addon resolution starts seeing both warnings on its very next upgrade, rather
+  than easing in via a silent-then-notice-then-deprecation ramp. This is deliberate — see
+  Motivation — but it is a real, immediate cost for apps that have not yet started migrating.
+- **No escape hatch after 6.0.** Unlike the 7.0 "babel bridge remains available indefinitely"
+  promise in RFC 0002, this RFC leaves no supported way to configure WarpDrive without the
+  bundler plugin, and no supported way to resolve WarpDrive packages without embroider's V2
+  addon support, once 6.0 ships.
 - **Community addons that copied the classic recipe** from WarpDrive's own older guides (the
   "Advanced Config" tab) inherit this break even if they never touch WarpDrive's plugin
   themselves, since their own `included` hooks call the same removed `setConfig` shape.
@@ -272,6 +279,12 @@ breaking change.
   babel bridge). Rejected here because it keeps every problem in the Motivation section
   reachable for one more full major, and keeps `@embroider/macros` and `@embroider/addon-shim`
   in WarpDrive's dependency tree that much longer.
+- **Keep RFC 0002's staged ramp (silent → build notice → formal deprecation) but still remove
+  at 6.0 instead of 7.0.** Considered as a middle ground. Rejected: the ramp's only purpose is
+  easing apps into a warning that will eventually fire regardless, and shortening the removal
+  target to 6.0 without also starting the warning immediately would leave apps with less
+  total notice than today's plan, not more — the ramp made sense paired with a 7.0 removal,
+  not a 6.0 one.
 - **Drop only the classic macros config, keep the V1 shim.** Rejected: the V1 shim's
   `included` hook is what feeds `app.options.emberData` into the classic `setConfig` path in
   the first place, so removing one without the other leaves a live entry point into code this
