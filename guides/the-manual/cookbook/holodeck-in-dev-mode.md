@@ -119,3 +119,6 @@ it doesn't need the holodeck certificate.
   [Trust a local certificate](/guides/the-manual/testing/server-setup.md#trust-a-local-certificate).
 - Apps that serve their tests with `@warp-drive/diagnostic` don't hit this. Its `launch()` starts
   holodeck from its `setup` hook every time the suite runs.
+- The page on `4200` still reaches holodeck on `7358`, so every mocked request is cross-origin.
+  [Holodeck behind a reverse proxy](/guides/the-manual/cookbook/holodeck-behind-a-reverse-proxy.md)
+  serves both from one HTTPS origin, with no preflight `OPTIONS` requests.

@@ -139,22 +139,12 @@ module.exports = async function () {
 };
 ```
 
-To serve the mock on the same port as the test suite, put testem's
-[API proxy](https://github.com/testem/testem/tree/master?tab=readme-ov-file#api-proxy) in front of
-it. The proxy is transparent, so `/api/v1` routes to `https://localhost:7373/api/v1`.
-
-```js
-  return {
-    proxies: {
-      '/api': {
-        // holodeck always runs on https
-        target: 'https://localhost:7373',
-        // if the test suite is on http, set this to false
-        // secure: false,
-      },
-    },
-  };
-```
+Holodeck accepts only HTTP/2. Testem's `proxies` option and Vite's `server.proxy` speak HTTP/1.1
+to their upstream, and holodeck answers each request through them with a `403 Forbidden` whose body
+starts with ``Missing ALPN Protocol, expected `h2` to be available.`` To serve the mock from the
+test page's own origin, put a proxy that speaks HTTP/2 in front of both servers, as
+[Holodeck behind a reverse proxy](/guides/the-manual/cookbook/holodeck-behind-a-reverse-proxy.md)
+shows.
 
 ***Warp*Drive**'s own test apps use Diagnostic, so that is the path with test coverage behind it.
 
