@@ -115,7 +115,8 @@ would otherwise try to decode the plain body a second time.
 
 ## Point the tests at the page's origin
 
-Change the top of `tests/test-helper.js`. The two `set*Config` calls stay as they are.
+Change the top of `tests/test-helper.js`. The `setBuildURLConfig` and `setConfig` calls stay as
+they are.
 
 ```js
 const MOCK_HOST = import.meta.hot ? '' : 'https://localhost:7358';

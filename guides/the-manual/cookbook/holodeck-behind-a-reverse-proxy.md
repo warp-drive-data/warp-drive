@@ -31,13 +31,10 @@ describes. The recipe also builds on
 next to Vite with a `test:dev` script. Set that up first. The examples use fixed ports: `4200` for
 Vite, `7358` for holodeck, and `8443` for Caddy.
 
-Install Caddy from https://caddyserver.com/docs/install, then run `caddy upgrade`. Holodeck
-accepts only HTTP/2, and not every Caddy build negotiates it with an HTTPS upstream. The Homebrew
-bottle of Caddy 2.11.4, built with Go 1.27.1, speaks HTTP/1.1 to every HTTPS upstream, and holodeck
-rejects that. `caddy upgrade` replaces the binary with the build from https://caddyserver.com/download,
-which is built with Go 1.26.4 and negotiates HTTP/2. `caddy build-info` prints the `go` line, and
-[Run it](#run-it) below shows how to confirm the protocol once Caddy is up. Caddy's reverse proxy
-quick start is at https://caddyserver.com/docs/quick-starts/reverse-proxy.
+Install a [Caddy](https://caddyserver.com/docs/install) build that speaks HTTP/2 to its
+upstreams. Holodeck accepts nothing else, and [Run it](#run-it) shows how to confirm it once
+Caddy is up. Caddy's reverse proxy quick start is at
+https://caddyserver.com/docs/quick-starts/reverse-proxy.
 
 The recipe changes the lines in `tests/test-helper.js` that point requests at the mock server:
 
@@ -86,15 +83,15 @@ The last `handle` sends everything else to Vite.
 The blocks use `handle` rather than `handle_path` because `handle` keeps the `/api` prefix, and
 fixture names include it, for example `GET::api_users::0`.
 
-A Caddy build that negotiates HTTP/2 needs no transport settings here. A build that cannot is not
-fixed by `transport http { versions 2 }` either, so check the build, as [Before you start](#before-you-start)
-says. Any proxy that speaks HTTP/1.1 to holodeck, such as Vite's `server.proxy` or testem's
-`proxies` option, gets a `403 Forbidden` on every request. The body starts with
-``Missing ALPN Protocol, expected `h2` to be available.``
+A Caddy build that negotiates HTTP/2 needs no transport settings here, and a build that cannot is
+not fixed by `transport http { versions 2 }` either. Any proxy that speaks HTTP/1.1 to holodeck,
+such as Vite's `server.proxy` or testem's `proxies` option, gets a `403 Forbidden` on every
+request. The body starts with ``Missing ALPN Protocol, expected `h2` to be available.``
 
 ## Point the tests at the page's origin
 
-Change the top of `tests/test-helper.js`. The two `set*Config` calls stay as they are.
+Change the top of `tests/test-helper.js`. The `setBuildURLConfig` and `setConfig` calls stay as
+they are.
 
 ```js
 const THROUGH_PROXY = window.location.port === '8443';
@@ -128,8 +125,8 @@ it here too.
    ```
 
    `via: 2.0 Caddy` means HTTP/2. `via: 1.1 Caddy` means this build speaks HTTP/1.1 to the
-   upstream, and the suite will fail with `Holodeck failed to record GET api/users (403 )`. Run
-   `caddy upgrade`, restart Caddy, and probe again.
+   upstream, and the suite will fail with `Holodeck failed to record GET api/users (403 )`.
+   Install a build that speaks HTTP/2, restart Caddy, and probe again.
 
 4. Open `https://localhost:8443/tests`.
 
