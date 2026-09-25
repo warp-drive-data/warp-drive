@@ -1,16 +1,15 @@
 import { recordIdentifierFor, useRecommendedStore } from '@warp-drive/core';
 import type { ReactiveRelationshipDocument } from '@warp-drive/core/reactive';
-import { checkout, commit, withDefaults } from '@warp-drive/core/reactive';
+import { checkout, withDefaults } from '@warp-drive/core/reactive';
 import type { Type } from '@warp-drive/core/types/symbols';
-import { module, setupTest, skip, test } from '@warp-drive/diagnostic/ember';
+import { module, setupTest, test } from '@warp-drive/diagnostic/ember';
 import { JSONAPICache } from '@warp-drive/json-api';
 
 /**
  * The relational-data guide (Mutating > Saving) documents that a save only updates the
  * relationships its response includes: a relationship the response leaves out keeps its edits as
- * local state and stays dirty. It also documents that `commit()` promotes an editable record's local
- * state to remote state. These tests pin that behavior down for the `resource` and `collection`
- * kinds.
+ * local state and stays dirty. These tests pin that behavior down for the `resource` and
+ * `collection` kinds.
  */
 
 interface User {
@@ -118,32 +117,5 @@ module('Saving | resource and collection edits', function (hooks) {
     assert.deepEqual(ids(rey.friends), ['2'], 'the immutable record still shows the remote membership');
     assert.deepEqual(ids(editable.friends), ['2', '3'], 'the editable record still shows the local edit');
     assert.true(editable.friends.isDirty, 'the relationship is still dirty');
-  });
-
-  // commit() is expected to promote relationship edits, but does not yet: it only promotes attributes.
-  skip('commit() promotes a local resource relationship edit (not implemented yet)', async function (assert) {
-    const { rey, matt, wes } = setup();
-    const editable = await checkout<User>(rey);
-
-    editable.bestFriend.data = wes;
-    assert.equal(rey.bestFriend.data, matt, 'the immutable record shows the remote value before committing');
-
-    await commit(editable);
-
-    assert.equal(rey.bestFriend.data, wes, 'the immutable record shows the committed value');
-    assert.false(editable.bestFriend.isDirty, 'the relationship is no longer dirty');
-  });
-
-  skip('commit() promotes a local collection relationship edit (not implemented yet)', async function (assert) {
-    const { rey, wes } = setup();
-    const editable = await checkout<User>(rey);
-
-    editable.friends.data!.push(wes);
-    assert.deepEqual(ids(rey.friends), ['2'], 'the immutable record shows the remote membership before committing');
-
-    await commit(editable);
-
-    assert.deepEqual(ids(rey.friends), ['2', '3'], 'the immutable record shows the committed membership');
-    assert.false(editable.friends.isDirty, 'the relationship is no longer dirty');
   });
 });
