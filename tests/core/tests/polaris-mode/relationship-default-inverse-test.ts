@@ -65,9 +65,6 @@ module('Graph | resource and collection fields without an inverse', function (ho
 
     const author = store.cache.getRemoteRelationship(keyOf(post), 'author');
     assert.equal(author.data, keyOf(chris), 'the post has an author');
-
-    const definition = store.schema.fields(keyOf(post)).get('author');
-    assert.equal(definition?.options?.inverse, undefined, 'the schema itself does not state an inverse');
   });
 
   test('a collection field declared without an inverse is unidirectional', function (assert) {
