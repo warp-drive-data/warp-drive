@@ -27,8 +27,8 @@ PolarisMode gains four relationship field kinds: `pointer`, `pointer-array`, `re
 relationship itself and whose delivery it does not validate: the related resources may be
 sideloaded with the parent, arrive by some other request, or never arrive. A **pointer** promises
 the related resource is loaded whenever the field is read, and WarpDrive asserts that in
-development builds. A **reference** allows it to be missing and exposes the related identity
-alongside the record, if loaded. All four are synchronous, have no inverse, and live in the
+development builds. A **reference** allows it to be missing: the field still yields the related
+resource, with only its identity (`$type`, `id`) available until it loads. All four are synchronous, have no inverse, and live in the
 relationship graph with one difference from other sync relationships: a committed delete of a
 related resource removes it from the relationship, but `unloadRecord` does not.
 
@@ -71,8 +71,8 @@ with it, there are four kinds.
 
 - The contract is visible where the schema is read, to people and to the schema DSL's type
   generation, without consulting option semantics.
-- The value types differ: a pointer yields `T | null`, a reference yields a wrapper carrying the
-  identity. Separate kinds let the types say so.
+- The read contract differs: a pointer asserts presence, a reference hands back a resource that
+  may not be loaded. Separate kinds keep that visible in the schema, the docs, and the DSL.
 - `resource` and `collection` stay strict, with no option that weakens them.
 
 ## Detailed design
@@ -82,7 +82,7 @@ with it, there are four kinds.
 - **Pointer**: a relationship whose related resources are promised to be loaded whenever the
   field is read.
 - **Reference**: a relationship whose related resources may or may not be loaded; the field
-  exposes their identities regardless.
+  yields them regardless, populated with at least their identities.
 - **Related identity**: the `{ type, id }` the API delivered for an entry, exposed at runtime as
   a `ResourceKey`.
 
@@ -94,12 +94,12 @@ with it, there are four kinds.
 
 The array forms follow the existing `schema-object`/`schema-array` convention.
 
-| Kind              | Cardinality | Value on read                     | Related resource not in the cache                   |
-| ----------------- | ----------- | --------------------------------- | --------------------------------------------------- |
-| `pointer`         | to-one      | `T \| null`                       | Assertion in development; `null` in production      |
-| `pointer-array`   | to-many     | `readonly T[]`                    | Assertion in development; entry omitted in production |
-| `reference`       | to-one      | `ReactiveReference<T> \| null`    | `data` is `null`; `key` is available                |
-| `reference-array` | to-many     | `readonly ReactiveReference<T>[]` | That entry's `data` is `null`; its `key` is available |
+| Kind              | Cardinality | Value on read  | Related resource not in the cache                       |
+| ----------------- | ----------- | -------------- | ------------------------------------------------------- |
+| `pointer`         | to-one      | `T \| null`    | Assertion in development; `null` in production          |
+| `pointer-array`   | to-many     | `readonly T[]` | Assertion in development; entry omitted in production   |
+| `reference`       | to-one      | `T \| null`    | The resource, with only `$type` and `id` available      |
+| `reference-array` | to-many     | `readonly T[]` | That entry has only `$type` and `id` available          |
 
 All four share one schema shape:
 
@@ -148,44 +148,29 @@ document, makes it a pointer or a reference.
 ```ts
 const post = (await store.request(findRecord('post', '1'))).data;
 
-post.author;                 // User — asserts in DEBUG if user:7 is not loaded
-post.tags;                   // readonly Tag[] — asserts in DEBUG if any tag is missing
-post.featuredProduct;        // ReactiveReference<Product> | null
-post.featuredProduct?.key;   // ResourceKey { type: 'product', id: 'sku-9', lid }
-post.featuredProduct?.data;  // Product | null — null until the product is loaded
-post.suggestedReads.map((ref) => ref.data ?? ref.key.id);
+post.author;               // User — asserts in DEBUG if user:7 is not loaded
+post.tags;                 // readonly Tag[] — asserts in DEBUG if any tag is missing
+post.featuredProduct;      // Product | null — `$type` and `id` available; other fields once loaded
+post.featuredProduct?.id;  // 'sku-9'
+post.suggestedReads.map((read) => read.title ?? read.id);
 
 // loading a missing reference is an ordinary request
-const ref = post.featuredProduct;
-if (ref && !ref.data) {
-  await store.request(findRecord(ref.key.type, ref.key.id));
+const product = post.featuredProduct;
+if (product && product.name === undefined) {
+  await store.request(findRecord(product.$type, product.id));
 }
 ```
 
-### `ReactiveReference`
+### Unloaded references
 
-```ts
-interface ReactiveReference<T> {
-  /**
-   * The identity the API delivered. Always present: an empty to-one
-   * reference is `null`, and an empty to-many reference has no entry.
-   */
-  readonly key: ResourceKey;
-
-  /**
-   * The related record, if and only if `key` is currently loaded.
-   * Reactive: non-null once the resource loads, null again if it is
-   * unloaded. A committed delete removes the entry from the
-   * relationship instead, so a reference never outlives its target.
-   */
-  readonly data: T | null;
-}
-```
-
-A `ReactiveReference` is created lazily on first read and is the same instance on every read of
-that field, so it can be held and rendered. Its shape is the "not loaded" half of the shape the
-LinksMode guide describes for a future async `resource` field (`links`, `meta`, and `data` only
-if loaded): a reference is an async relationship with nothing to fetch it by.
+A reference always yields the reactive resource for its identity, whether or not that resource
+is loaded. Until it loads, the resource exposes `$type` and `id` and its other fields have no
+value; when it loads, the same instance's fields become available reactively, so anything
+holding or rendering it updates in place. This RFC adds no loaded-state property. Apps can check
+a field they expect to be present, or wait for the reactive state properties that
+[#10408](https://github.com/warp-drive-data/warp-drive/issues/10408) plans to add to
+PolarisMode's defaults. Loading the resource is an ordinary request against its `$type` and
+`id`.
 
 ### Graph semantics
 
@@ -200,7 +185,7 @@ sync relationship cannot refetch it. Pointers and references make no promise tha
 relationship can deliver the resource, so an unload is an eviction, not a statement about the
 relationship: the identity stays in the relationship, the way it does today for async inverses.
 An unloaded pointer target therefore asserts on the next read instead of silently disappearing,
-and an unloaded reference target keeps its `key` available to fetch with.
+and an unloaded reference target keeps its identity available to fetch with.
 
 Because they are graph-backed, the existing relationship `Cache` APIs apply unchanged:
 `getRelationship`, the related-records mutation operations, `changedRelationships`,
@@ -212,7 +197,7 @@ Mutation on an editable record accepts:
 - for a `pointer`, a record instance or `null`; for a `pointer-array`, record instances. A pointer
   can only be set to something loaded, because a record instance is proof of loading;
 - for a `reference` or `reference-array`, a record instance, a bare identity (`{ type, id }` or a
-  `ResourceKey`), or `null`, so an app can record an identity it has not loaded.
+  `ResourceKey`), or `null`; a bare identity reads back as the resource for that identity.
 
 ### Validation
 
@@ -239,8 +224,8 @@ carries it. References have no read-time assertion.
 ### Reactivity
 
 Pointers and pointer arrays react to membership changes exactly as the current linksMode
-`belongsTo` and `hasMany` do. A `ReactiveReference` additionally reacts to its own target loading
-or unloading. Immutable and editable record instances render remote and local relationship state
+`belongsTo` and `hasMany` do. An unloaded reference's resource is itself reactive and populates
+in place when its data arrives. Immutable and editable record instances render remote and local relationship state
 respectively, as for every other field.
 
 ### Availability in LegacyMode
@@ -271,15 +256,15 @@ export class Post {
   declare tags: readonly Tag[];
 
   @reference({ type: 'product' })
-  declare featuredProduct: ReactiveReference<Product> | null;
+  declare featuredProduct: Product | null;
 
   @referenceArray({ type: 'readable', polymorphic: true })
-  declare suggestedReads: readonly ReactiveReference<Readable>[];
+  declare suggestedReads: readonly Readable[];
 }
 ```
 
 The generated read, create, and edit types follow the value table; the edit view of a reference
-also accepts a bare identity.
+also accepts a bare identity on assignment.
 
 ### Out of scope
 
@@ -300,7 +285,7 @@ kind guarantees:
 - **It may or may not be loaded; here is who it would be**: `reference` / `reference-array`.
 
 The mnemonic: *a pointer is a promise, a reference is a hint.* The page shows each kind's failure
-mode, notes that a sync `resource` and a `pointer` overlap on purpose, and states that a
+mode (the pointer assertion, a reference rendering a placeholder from its `id`), notes that a sync `resource` and a `pointer` overlap on purpose, and states that a
 PolarisMode `reference` field is a kind of relationship, not LegacyMode's References API for
 inspecting and fetching one. The LinksMode guide's "What To Expect" section places pointers and
 references next to the planned `resource`/`collection` shapes, and the resource-schema agent
@@ -310,8 +295,9 @@ flags `async: false, inverse: null` legacy relationships as candidates is out of
 ## Drawbacks
 
 - **Four more field kinds**, though they map onto two concepts and an existing array convention.
-- **Two value shapes.** A pointer yields the record; a reference yields a wrapper. The type
-  system makes the difference visible.
+- **An unloaded reference looks like a record.** Nothing on it says whether it is loaded until
+  PolarisMode's reactive state properties exist; until then apps infer it from a field they
+  expect to be present.
 - **"Reference" is overloaded** while LegacyMode's References API exists.
 - **Pointer failures surface at read time**, later than PolarisMode's other relationship checks.
   A pointer that is never read never fails, and one read only on an untested path fails silently
@@ -327,8 +313,12 @@ flags `async: false, inverse: null` legacy relationships as candidates is out of
   depend on an option.
 - **Reusing `belongsTo`/`hasMany` with a `strict` flag.** Rejected: it perpetuates fields
   PolarisMode is moving away from and reduces the pointer/reference distinction to a boolean.
-- **References return `T | null` with no wrapper.** Simpler, but it discards the identity in
-  exactly the case where the identity is all the app has. Left open below.
+- **A `{ key, data }` wrapper for references**, with `data` null until loaded. Rejected: it adds
+  a second value shape and a `.data` hop on every read, when the resource itself already carries
+  its identity and populates in place.
+- **A union of bare identity and record** that switches shape on load. Rejected: holders and
+  keyed renderers see a different object once the resource loads, and every read needs a
+  discriminant.
 - **Cardinality as an option** (`options: { many: true }`). Rejected: every other field kind
   encodes cardinality in the kind.
 - **Storing outside the graph.** Considered first, since these fields need no inverse and no
@@ -348,9 +338,10 @@ resolve at read time, but do not distinguish promised from optional presence in 
 
 ## Unresolved questions
 
-- **The `reference` value shape.** `ReactiveReference<T> | null` with `key` and `data`, versus a
-  plain `T | null`, versus a richer object exposing the relationship's `meta`. Whether the array
-  kinds expose `meta` and `links` as `ManyArray` does is part of the same question.
+- **Unloaded reference semantics.** What an unloaded resource's non-identity fields read as, and
+  how its record relates to `peekRecord`, which returns `null` for an identity without data
+  today.
+- **Whether the array kinds expose `meta` and `links`**, as `ManyArray` does today.
 - **Kind names.** `-array` suffixes versus plurals, or a different base word for either concept.
 - **A missing pointer target in a production `pointer-array`.** Omit the entry (proposed) or leave
   a `null` hole so the length reflects membership.
