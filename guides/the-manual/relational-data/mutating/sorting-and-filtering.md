@@ -1,4 +1,5 @@
 ---
+title: Sorting & Filtering
 description: Why relationships are not sorted or filtered in place, and how to sort or filter related records for display or on the server instead.
 ---
 
