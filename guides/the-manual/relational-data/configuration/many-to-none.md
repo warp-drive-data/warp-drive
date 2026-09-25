@@ -27,14 +27,16 @@ Often `ManyToNone` is used for exactly this sort of case, where conceptually the
 
 Declare a `collection` field on the side that points at the others, with `inverse: null`. These field kinds behave the same in LegacyMode and PolarisMode; [ResourceSchemas](../../schemas/resources/index.md) shows how to register the schemas they belong to, and [Inverses and Directionality](../features/inverses.md) explains `inverse`.
 
+Schemas are JSON. WarpDrive doesn't care where your schemas come from, how they are authored, or how you load them into the system, so long as when it asks the [SchemaService](/api/@warp-drive/core/types/schema/schema-service/types/SchemaService) for information it gets back field definitions in this shape. Here is how the relationship above is described by field definitions.
+
 🏃🏾‍♀️ *ActivityData*
 
-```ts
+```json
 {
-  kind: 'collection',
-  name: 'tags',
-  type: 'hashtag',
-  options: { async: false, inverse: null },
+  "kind": "collection",
+  "name": "tags",
+  "type": "hashtag",
+  "options": { "async": false, "inverse": null }
 }
 ```
 
@@ -52,7 +54,7 @@ performant than working with bulky classes that need to be shipped across the wi
 No one wants to author schemas in raw JSON though (we hope 😬), and the ergonomics of typed data and editor autocomplete based on your schemas are vital to productivity and
 code quality. For this, we offer a way to express schemas as TypeScript using types, classes and decorators which are then compiled into json schemas and TypeScript interfaces for use by your project.
 
-The [Schema DSL](../../schemas/dsl/index.md) (`@warp-drive/schema-dsl`) provides this. Decorators for `resource` and `collection` fields are planned; until they land, the DSL can declare this relationship only with its legacy decorators, shown in [Schema DSL (legacy)](#schema-dsl-legacy) below.
+The [Schema DSL](../../schemas/dsl/index.md) (`@warp-drive/schema-dsl`) provides this. Decorators for `resource` and `collection` fields are planned; until they land, the DSL can declare this relationship only with its legacy `@belongsTo` and `@hasMany` decorators, shown [below](#schema-dsl-belongsto-and-hasmany).
 
 ---
 
@@ -118,7 +120,7 @@ import Model from '@warp-drive/legacy/model';
 export default class Hashtag extends Model {}
 ```
 
-### Schema DSL (legacy) {#schema-dsl-legacy}
+### Schema DSL `@belongsTo` and `@hasMany` {#schema-dsl-belongsto-and-hasmany}
 
 The Schema DSL's `@belongsTo` and `@hasMany` compile to the schema fields above and are only valid on resources decorated with `@Resource({ legacy: true })`.
 
