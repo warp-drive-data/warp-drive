@@ -1,5 +1,6 @@
 ---
 title: Overview
+description: Start here to opt in to WarpDrive's alpha-stage TypeScript types, then follow the installation, configuration, brands, model typing, and includes typing pages in order.
 ---
 
 # 💚 TypeScript Guide

@@ -1,5 +1,6 @@
 ---
 title: 'Storage Resources'
+description: Persist reactive class fields to localStorage or sessionStorage with the experimental `LocalResource`, `SessionResource`, `field`, `effect`, and `param` decorators.
 categoryOrder: 1
 outline:
   level: 2,3

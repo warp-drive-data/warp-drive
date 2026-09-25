@@ -1,5 +1,6 @@
 ---
 title: Schema DSL
+description: Author resource, object, and trait schemas as TypeScript classes with `@Resource`, `@Object`, `@Trait`, and field decorators that compile to JSON schemas (draft reference).
 order: 0
 categoryOrder: 0
 draft: true

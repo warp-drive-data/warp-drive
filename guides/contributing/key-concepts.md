@@ -1,3 +1,7 @@
+---
+description: 'Choose the right identity type in WarpDrive internals: ResourceIdentifier, RecordIdentifier, or ResourceKey, based on whether lid is required and must be stable.'
+---
+
 # Key Concepts
 
 - [Identity](#identity)

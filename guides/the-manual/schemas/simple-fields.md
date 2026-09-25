@@ -1,3 +1,7 @@
+---
+description: Declare primitive string, number, boolean, or date attributes on a ResourceSchema or ObjectSchema as `field` kinds and attach a `type` to route them through a Transformation.
+---
+
 # SimpleFields
 
 SimpleFields represent primitive values on a ResourceSchema or ObjectSchema. They are the most common type of field and map directly to the values your API sends and receives.

@@ -1,5 +1,6 @@
 ---
 title: BuiltIn Handlers
+description: Learn when to reach for a Handler, how to compose and type handlers, and which handlers WarpDrive ships built in; this page is a draft outline.
 draft: true
 ---
 

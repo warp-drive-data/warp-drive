@@ -1,5 +1,6 @@
 ---
 title: 'Pagination'
+description: Paginate a collection with the experimental `getPaginationState` primitives and the `<Paginate />` and `<EachLink />` Ember components in paged or infinite mode.
 categoryOrder: 2
 outline:
   level: 2,3

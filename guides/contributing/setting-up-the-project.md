@@ -1,3 +1,7 @@
+---
+description: 'Set up a WarpDrive contributor checkout: install mise, pnpm, and mkcert, run `pnpm install`, create holodeck certs, and use `pnpm start` plus `pnpm sync` while developing.'
+---
+
 # Setting Up The Project
 
 ## Setup mise

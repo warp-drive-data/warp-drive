@@ -76,6 +76,10 @@ last two bullets: the checks and the label.
 6. Check, preview, then hand off:
    - For API docs, every item in
      [Content Standards](/guides/contributing/writing-documentation/writing-api-docs.md#content-standards),
+     including a `@summary` on each exported symbol or `@module` comment you add or touch that
+     owns an API page (not on class members), since it is that page's only `llms.txt`
+     description, per
+     [Give Each API Page a `@summary`](/guides/contributing/writing-documentation/writing-api-docs.md#give-each-api-page-a-summary),
      and nothing private left in the published docs per
      [Ignored Doc Comments](/guides/contributing/writing-documentation/writing-api-docs.md#ignored-doc-comments).
      If you added `@internal` to an exported symbol, build that package (`pnpm --filter <pkg>
