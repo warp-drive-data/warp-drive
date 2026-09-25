@@ -1,3 +1,7 @@
+---
+description: Why relationships are not sorted or filtered in place, and how to sort or filter related records for display or on the server instead.
+---
+
 # Sorting & Filtering
 
 A relationship represents **which** resources are related — not how a particular screen wants to
