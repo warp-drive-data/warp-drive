@@ -27,6 +27,14 @@ export const UserSchema = withDefaults({
 The options are the same as for [resource relationships](./resource-relationships.md): `type`,
 `options.inverse`, `options.async`, `options.polymorphic`/`options.as` and `sourceKey`.
 
+::: warning Only for small, bounded lists
+A collection relationship always holds the **complete** list and never pages, sorts or filters it.
+Use one for lists that stay small and belong to the parent, such as a post's tags or an order's
+line items. For anything a user would page through, search or sort (a post's comments, an
+activity feed), load it with a top-level request instead; see
+[Large Collections](../advanced/large-collections.md).
+:::
+
 ## The Value Is A Document
 
 The value of a `collection` field is a [ReactiveRelationshipDocument](/api/@warp-drive/core/reactive/types/ReactiveRelationshipDocument)
@@ -45,7 +53,7 @@ user.friends.meta;         // { count: 2 } | undefined
 | --- | --- |
 | `[{ type, id }, ...]` | a reactive array of the related records |
 | `[]` | an empty array — the relationship is known to be empty |
-| absent | `undefined` — membership is unknown, use `doc.fetch()` (only valid when `async: true`) |
+| absent | `undefined` — membership is unknown (only valid when `async: true`); see [Fetching](#fetching) |
 
 Every referenced resource **must** be included in the payload; reading `data` when a member was
 never loaded throws. A sync (`async: false`) relationship must carry `data` whenever it appears in a
@@ -121,6 +129,15 @@ const { data: friends } = await user.friends.fetch();
 
 As with resource relationships, the response is cached and reactive but is not written back into
 the relationship's `data`.
+
+::: warning `fetch()` is not a way to load large lists
+`fetch()` makes one request to the relationship's `related` link. It does not page through the
+result, and it does not add what it loads to `data`. Reach for it only when the list is small
+enough to load in full. If the list could grow large, or users would page, sort or filter it, make
+it a top-level request instead of fetching the relationship:
+[Large Collections](../advanced/large-collections.md) explains how, and
+[Pagination](../advanced/pagination.md) shows loading it a page at a time.
+:::
 
 ## Mutating
 
