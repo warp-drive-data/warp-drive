@@ -6,10 +6,11 @@ import { module, setupTest, test } from '@warp-drive/diagnostic/ember';
 import { JSONAPICache } from '@warp-drive/json-api';
 
 /**
- * The relational-data guide (Mutating > Saving) documents that relationship edits are committed
- * when a save's response does not echo the relationship back, and that `commit()` promotes an
- * editable record's local state to remote state. These tests pin that behavior down for the
- * `resource` and `collection` kinds.
+ * The relational-data guide (Mutating > Saving) documents that a save only updates the
+ * relationships its response includes: a relationship the response leaves out keeps its edits as
+ * local state and stays dirty. It also documents that `commit()` promotes an editable record's local
+ * state to remote state. These tests pin that behavior down for the `resource` and `collection`
+ * kinds.
  */
 
 interface User {
@@ -86,10 +87,10 @@ function ids(doc: ReactiveRelationshipDocument<User[]>): string[] {
   return doc.data!.map((user) => user.id!);
 }
 
-module('Saving | resource and collection edits without an echoed relationship', function (hooks) {
+module('Saving | resource and collection edits', function (hooks) {
   setupTest(hooks);
 
-  test('a save whose response omits a resource relationship commits the local edit', async function (assert) {
+  test('a save whose response omits a resource relationship leaves the edit local', async function (assert) {
     const { store, rey, matt, wes } = setup();
     const editable = await checkout<User>(rey);
 
@@ -99,12 +100,12 @@ module('Saving | resource and collection edits without an echoed relationship', 
 
     await store.request(saveRequest(editable));
 
-    assert.equal(rey.bestFriend.data, wes, 'the immutable record shows the saved value');
-    assert.equal(editable.bestFriend.data, wes, 'the editable record still shows the saved value');
-    assert.false(editable.bestFriend.isDirty, 'the relationship is no longer dirty');
+    assert.equal(rey.bestFriend.data, matt, 'the immutable record still shows the remote value');
+    assert.equal(editable.bestFriend.data, wes, 'the editable record still shows the local edit');
+    assert.true(editable.bestFriend.isDirty, 'the relationship is still dirty');
   });
 
-  test('a save whose response omits a collection relationship commits the local edit', async function (assert) {
+  test('a save whose response omits a collection relationship leaves the edit local', async function (assert) {
     const { store, rey, wes } = setup();
     const editable = await checkout<User>(rey);
 
@@ -114,9 +115,9 @@ module('Saving | resource and collection edits without an echoed relationship', 
 
     await store.request(saveRequest(editable));
 
-    assert.deepEqual(ids(rey.friends), ['2', '3'], 'the immutable record shows the saved membership');
-    assert.deepEqual(ids(editable.friends), ['2', '3'], 'the editable record still shows the saved membership');
-    assert.false(editable.friends.isDirty, 'the relationship is no longer dirty');
+    assert.deepEqual(ids(rey.friends), ['2'], 'the immutable record still shows the remote membership');
+    assert.deepEqual(ids(editable.friends), ['2', '3'], 'the editable record still shows the local edit');
+    assert.true(editable.friends.isDirty, 'the relationship is still dirty');
   });
 
   test('commit() promotes a local resource relationship edit', async function (assert) {
