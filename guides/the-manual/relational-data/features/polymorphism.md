@@ -15,7 +15,7 @@ interface Human {
 }
 ```
 
-That furry friend may be a cat, a zebra, a monkey or best a dog! Each furry friend comes with
+That furry friend may be a cat, a zebra, a monkey, or best of all, a dog! Each furry friend comes with
 their own unique characteristics and personalities, but they have one thing in common: YOU.
 
 ```ts
