@@ -1,3 +1,7 @@
+---
+description: Define memoized read-only `derived` fields, register the derivation function by its `Type` key on the store, and spot when relational or optional data makes it the wrong tool.
+---
+
 # Derivations
 
 Derivations are computed, read-only fields on a resource. When a derived field is accessed, the runtime looks up a registered function by name and calls it with the ReactiveResource and any configured options. The result is memoized — subsequent reads return the cached value without recomputation until one of the reactive fields the derivation read has changed.

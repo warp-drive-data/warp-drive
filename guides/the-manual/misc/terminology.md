@@ -1,4 +1,5 @@
 ---
+description: Look up the meaning of resource, resource type, abstract versus concrete type, and relationship terms such as inverse, reflexive, circular, and polymorphic.
 draft: true
 ---
 

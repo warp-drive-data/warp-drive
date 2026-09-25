@@ -1,3 +1,7 @@
+---
+description: Type relationship-path include strings with the `Includes` and `StringSatisfiesIncludes` utils and `createIncludeValidator` so typos in includes fail at compile time.
+---
+
 # Typing Includes
 
 Many APIs offer the concept of "sideloading" or "including related resources". For instance,

@@ -1,5 +1,6 @@
 ---
 title: 'A Browser Devtools Extension'
+description: Proposes a Chrome and Firefox devtools extension for inspecting WarpDrive requests, cache, and schemas, attached via a production-strippable hook in @warp-drive/core.
 warp-drive-rfc: 3
 emberjs-rfc:
 emberjs-pr:

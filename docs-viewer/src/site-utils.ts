@@ -649,15 +649,29 @@ const EDIT_SOURCE_OVERRIDES: Record<string, string> = {
   '@warp-drive/memory-alpha/index.md': 'warp-drive-packages/memory-alpha/skills/index.md',
 };
 
-function buildFrontmatter(content: string, file: string): string {
+/** Per-page `title` and `description`, read from each reflection by typedoc-plugins/page-meta.mjs. */
+type PageMeta = { title?: string; description?: string };
+
+/**
+ * Frontmatter for a generated API page. `title` and `description` exist for the `llms.txt`
+ * index vitepress-plugin-llms writes: each page becomes `- [title](url): description`, where
+ * `title` would otherwise default to the page's H1 (a raw generic signature full of nested links
+ * for e.g. `ConfiguredStore<T extends { cache: Cache }, ...>`) and `description` is omitted
+ * unless set. Both are emitted as JSON strings, which are valid YAML double-quoted scalars, so
+ * colons, quotes and backslashes in a summary can't break the block.
+ */
+function buildFrontmatter(content: string, file: string, meta: PageMeta): string {
   const match = DEFINED_IN_PATTERN.exec(content);
   const editSource = EDIT_SOURCE_OVERRIDES[file] ?? match?.[1] ?? match?.[2];
+  const title = meta.title ? `title: ${JSON.stringify(meta.title)}\n` : '';
+  const description = meta.description ? `description: ${JSON.stringify(meta.description)}\n` : '';
   return `---
-outline:
+${title}${description}outline:
   level: [2, 3]${editSource ? `\neditSource: ${editSource}` : ''}
 ---
 `;
 }
+
 const ApiDocumentation = `# API Docs\n\n`;
 
 // Interfaces and type-aliases share a `types/` output directory (see typedoc-plugins/types-
@@ -1136,6 +1150,12 @@ export async function postProcessApiDocs() {
   // remove the `_media` directory that typedoc generates
   rmSync(path.join(dir, '_media'), { recursive: true, force: true });
 
+  // per-page title and description, keyed by the page's path relative to `dir`
+  const metaPath = path.join(dir, '_page-meta.json');
+  const pageMeta: Record<string, PageMeta> = existsSync(metaPath)
+    ? (JSON.parse(readFileSync(metaPath, 'utf-8')) as Record<string, PageMeta>)
+    : {};
+
   // cleanup and prepare the sidebar items
   const sidebarPath = path.join(outDir, 'typedoc-sidebar.json');
   const navStructure = JSON.parse(readFileSync(path.join(dir, 'typedoc-sidebar.json'), 'utf-8')) as SidebarItem[];
@@ -1240,7 +1260,9 @@ export async function postProcessApiDocs() {
     }
 
     // insert frontmatter
-    newContent = buildFrontmatter(newContent, file) + newContent;
+    // a page the plugin produced no title for falls back to its import path
+    const meta = pageMeta[file] ?? {};
+    newContent = buildFrontmatter(newContent, file, { ...meta, title: meta.title ?? importPath }) + newContent;
 
     // if the content has a modules list, we remove it
     if (newContent.includes('## Modules')) {

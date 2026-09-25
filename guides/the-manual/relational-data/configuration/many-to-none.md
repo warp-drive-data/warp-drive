@@ -1,3 +1,7 @@
+---
+description: Define a unidirectional many-to-none hasMany relationship with inverse null, for collections whose other side is too large to track, via Model, JSON schema, or LegacyMode.
+---
+
 # Many To None Relationships
 
 Imagine our social network for trail runners 🏃🏃🏾‍♀️ allows runners to tag their activities. [#runday](https://www.instagram.com/explore/tags/runday/?hl=en) [#justdoit](https://www.instagram.com/explore/tags/justdoit/?hl=en)
