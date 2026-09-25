@@ -89,7 +89,7 @@ export interface SchemaArrayOptions {
 }
 
 /**
- * Marks a property as a {@link SchemaArrayField} &mdash; an array of
+ * Marks a property as a {@link SchemaArrayField} — an array of
  * embedded objects whose shape is described by an {@link ObjectSchema}.
  *
  * This is not a relationship. `@hasMany` / `CollectionField` point at

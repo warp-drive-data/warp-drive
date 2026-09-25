@@ -28,7 +28,7 @@ export interface DerivedOptions {
 }
 
 /**
- * Marks a property as a {@link DerivedField} &mdash; a computed, read-only
+ * Marks a property as a {@link DerivedField} — a computed, read-only
  * value derived from other fields. Derived fields are never stored in the
  * cache and are never sent to the server.
  *

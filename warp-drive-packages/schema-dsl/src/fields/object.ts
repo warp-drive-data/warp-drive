@@ -29,7 +29,7 @@ export interface ObjectFieldOptions {
 }
 
 /**
- * Marks a property as an {@link ObjectField} &mdash; an object whose keys
+ * Marks a property as an {@link ObjectField} — an object whose keys
  * point to primitive values with no well-defined shape. For objects with a
  * well-defined shape, use {@link schemaObject} with an
  * {@link ObjectSchema} instead.
