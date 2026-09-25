@@ -31,9 +31,11 @@ re-export shim over a `@warp-drive/*` package introduced by the package-unificat
 ([emberjs/rfcs#1075](https://rfcs.emberjs.com/id/1075-warp-drive-package-unification/)) —
 `@warp-drive/core`, `@warp-drive/legacy`, `@warp-drive/utilities`, `@warp-drive/json-api`, and
 `@warp-drive/ember`. This RFC does not move any logic; it formalizes the deprecation of the old
-import paths that RFC 1075 already implied, with concrete deprecation flags/ids, a codemod, and
-documentation updates, landing now, on the same `since <5.x>` / `until 6.0` timeline every other
-active deprecation in `deprecations.ts` already uses.
+import paths that RFC 1075 already implied, with concrete deprecation flags/ids and documentation
+updates, landing now, on the same `since <5.x>` / `until 6.0` timeline every other active
+deprecation in `deprecations.ts` already uses. The mechanical rewrite itself needs no new
+tooling: `eslint-plugin-warp-drive`'s `no-legacy-imports` rule already autofixes exactly this
+import rename, and already ships enabled in its `recommended` config.
 
 ## Motivation
 
@@ -73,9 +75,9 @@ paths to the same code indefinitely means:
 
 The expected outcome: starting in the next 5.x minor, every consumer importing from a legacy
 package sees a clear, actionable deprecation pointing at the exact `@warp-drive/*` replacement
-import, with a codemod that performs the rewrite mechanically; at 6.0, WarpDrive stops
-publishing new versions of the legacy packages, and the legacy setup guide is replaced entirely
-by the unified one.
+import, with `eslint --fix` performing the rewrite mechanically via the already-shipping
+`no-legacy-imports` rule; at 6.0, WarpDrive stops publishing new versions of the legacy packages,
+and the legacy setup guide is replaced entirely by the unified one.
 
 ## Detailed design
 
@@ -100,7 +102,7 @@ Every legacy package's current re-export target, confirmed by reading its `src/i
 | `@ember-data/active-record` | Yes | `@warp-drive/utilities/active-record` |
 | `@ember-data/tracking` | Already deprecated (`DEPRECATE_TRACKING_PACKAGE`, since 5.5, until 6.0) | `@warp-drive/ember/install` |
 | `@ember-data/debug` | No — see "Packages without a home" (keeps publishing past 6.0) | none yet |
-| `@ember-data/codemods` | No — see "Packages without a home" (keeps publishing past 6.0) | n/a (becomes the delivery vehicle for the codemod below) |
+| `@ember-data/codemods` | No — see "Packages without a home" (keeps publishing past 6.0) | n/a (unrelated to this rename — see "Automated migration") |
 
 `@ember-data/tracking` already has a resolved deprecation story under `DISABLE_7X_DEPRECATIONS`'s
 sibling flags and is unaffected by this RFC beyond being folded into the same messaging pass.
@@ -156,8 +158,8 @@ following the same shape as `packages/store/src/index.ts`'s existing
 if (DEPRECATE_EMBER_DATA_PACKAGES) {
   deprecate(
     `Importing from '@ember-data/model' is deprecated. Import from '@warp-drive/legacy/model' ` +
-      `instead. Run \`npx @ember-data/codemods legacy-imports\` to update your imports ` +
-      `automatically.`,
+      `instead. Enable eslint-plugin-warp-drive's recommended config and run \`eslint --fix\` ` +
+      `to update your imports automatically.`,
     false,
     {
       id: 'warp-drive.deprecate-ember-data-packages',
@@ -187,17 +189,24 @@ is metadata only — `npm install` continues to work unchanged for every version
 the last 5.x release; the notice surfaces immediately in `npm install` output and on the
 npmjs.com package page, well ahead of the 6.0 removal.
 
-### The codemod
+### Automated migration
 
-`@ember-data/codemods` already exists as WarpDrive's home for mechanical migrations. It gains a
-new codemod, `legacy-imports`, that rewrites the import specifiers in the left column of the
-table above to the ones in the right column, verbatim — this is a pure module-path rename for
-every export; no export is renamed or restructured as part of this RFC. The `rest` and
-`active-record` split (a single legacy package's exports now come from two `@warp-drive/*`
-packages) is the one case the codemod must special-case per-export rather than per-module. The
-codemod ships in the same 5.x minor as the deprecation warning, not held back until 6.0 — with
-removal itself only one major away, the codemod is the primary way most apps will actually
-migrate in time.
+No new tooling needs to be built for the mechanical rewrite. `eslint-plugin-warp-drive` already
+ships `no-legacy-imports` (`warp-drive/no-legacy-imports`), an autofixable rule enabled by
+default in its `recommended` config, driven by a generated, export-level mapping table
+(`public-exports-mapping-5.5.enriched.json`) that already covers every package in the table
+above — including the `rest`/`active-record` split, since the mapping is per-export, not
+per-module (e.g. `import { findRecord } from '@ember-data/rest/request'` already rewrites to
+`import { findRecord } from '@warp-drive/utilities/rest'`). Running `eslint --fix` with
+`recommended` enabled is the actual migration path this RFC relies on.
+
+The one gap: the rule only rewrites static `import` declarations. Namespace imports,
+`export * from` re-exports, CommonJS `require`, and dynamic `import()` are flagged without an
+autofix and need manual migration — worth stating plainly in the migration guide rather than
+implying `eslint --fix` alone finishes the job for every app. The other prerequisite is that an
+app must already have `eslint-plugin-warp-drive`'s `recommended` config enabled to get the
+autofix at all; the migration guide should call out enabling it as step one for apps that
+haven't adopted it yet.
 
 ### Packages without a home
 
@@ -210,20 +219,21 @@ not deprecate or stop publishing them at 6.0:
   for `@ember-data/debug`'s own deprecation, tracked as follow-up work with its own timeline
   rather than folded into this RFC. Until that lands, `@ember-data/debug` remains fully
   supported and keeps publishing past 6.0.
-- **`@ember-data/codemods`** is dev-tooling invoked once during migration, not a runtime
-  dependency an app ships — and this RFC makes it the delivery vehicle for the `legacy-imports`
-  codemod above, so deprecating it now would work against the RFC's own migration path. Its
-  disposition is deferred to whenever the migration window this RFC opens eventually closes, and
-  it also keeps publishing past 6.0.
+- **`@ember-data/codemods`** hosts schema-migration codemods unrelated to this import rename —
+  the rewrite itself is handled by `eslint-plugin-warp-drive`'s `no-legacy-imports` rule (see
+  "Automated migration"), not by this package. It has no existing `@warp-drive/*` successor;
+  this RFC leaves its disposition to a separate, future decision and it keeps publishing past
+  6.0 regardless.
 
 ### Timeline
 
-1. **Next 5.x minor:** both flags ship (default `true`); the runtime warning, npm deprecation
-   metadata, and `legacy-imports` codemod all ship together. `ember-data`, every `@ember-data/*`
-   package (except `debug` and `codemods`), and `@warp-drive/core-types` show a deprecation on
-   install and on first import.
-2. **Remaining 5.x betas/minors:** the warning and codemod are the primary support surface; no
-   further behavior change. This is the entire migration window — it ends at the next major.
+1. **Next 5.x minor:** both flags ship (default `true`); the runtime warning and npm deprecation
+   metadata ship together (the `eslint-plugin-warp-drive` autofix already exists today).
+   `ember-data`, every `@ember-data/*` package (except `debug` and `codemods`), and
+   `@warp-drive/core-types` show a deprecation on install and on first import.
+2. **Remaining 5.x betas/minors:** the warning and the `eslint --fix` autofix are the primary
+   support surface; no further behavior change. This is the entire migration window — it ends at
+   the next major.
 3. **6.0:** WarpDrive stops publishing new versions of the deprecated packages. Versions already
    published through the last 5.x release remain installable indefinitely (npm does not support
    retracting published versions), so apps that never migrate are not broken outright — they
@@ -246,9 +256,10 @@ keeps shipping. The "removal" is that the legacy packages' own releases stop.
   and with a date once one is set) and its package-list code blocks get inline notes next to
   each deprecated package naming its replacement.
 - A new `upgrading/v6/` page (alongside the existing `upgrading/v5/`) documents the full mapping
-  table from "Detailed design" as the canonical migration reference, plus the codemod command.
+  table from "Detailed design" as the canonical migration reference, plus how to enable
+  `eslint-plugin-warp-drive`'s `recommended` config and run `eslint --fix`.
 - The runtime deprecation message itself (see "Runtime warning") is the primary channel most
-  developers see this through — it names the exact replacement import and the exact codemod
+  developers see this through — it names the exact replacement import and the exact autofix
   command, no lookup required.
 - This is taught as "finishing package unification," not as a new idea: RFC 1075 is where users
   already learned that `@warp-drive/core` is the way forward. This RFC's messaging should link
@@ -261,8 +272,10 @@ keeps shipping. The "removal" is that the legacy packages' own releases stop.
   beta/minor cycles. Every other flag in `deprecations.ts` gets that same window in principle
   (`since 5.x` / `until 6.0`), but most of them were introduced earlier in the 5.x line than this
   RFC lands — apps adopting this deprecation late in 5.x genuinely have less time than apps that
-  picked up, say, `DEPRECATE_TRACKING_PACKAGE` at 5.5. The codemod is not optional polish here; it
-  is load-bearing for apps to make this window.
+  picked up, say, `DEPRECATE_TRACKING_PACKAGE` at 5.5. The existing `eslint-plugin-warp-drive`
+  autofix is not optional polish here; it is load-bearing for apps to make this window — and it
+  only helps apps that have already adopted the plugin's `recommended` config, which not every
+  app has.
 - **Two coarse flags instead of fourteen fine-grained ones** means an app can't resolve the
   deprecation for, say, just `@ember-data/model` while keeping the warning active for
   `@ember-data/rest` — it resolves the whole `ember-data` family at once. This trades precision
@@ -304,6 +317,11 @@ keeps shipping. The "removal" is that the legacy packages' own releases stop.
 - **Per-package deprecation flags (fourteen flags instead of two).** Considered and rejected for
   this RFC in favor of the coarser grouping described in "Deprecation flags" — see "Drawbacks"
   for the trade-off this gives up.
+- **Build a dedicated `legacy-imports` codemod in `@ember-data/codemods`.** Considered, and
+  rejected as redundant once `eslint-plugin-warp-drive`'s `no-legacy-imports` rule was found to
+  already perform the identical autofixable rewrite off a generated, export-level mapping table.
+  Building a second tool would mean maintaining two mapping tables for the same rename instead
+  of one.
 
 ## Unresolved questions
 
@@ -311,8 +329,12 @@ keeps shipping. The "removal" is that the legacy packages' own releases stop.
   (auto-registered vs. opt-in import), and whether that needs its own RFC before it can be
   folded into this one's timeline on a later major.
 - Whether the remaining 5.x window before 6.0 is long enough for apps to migrate given the
-  codemod, or whether this RFC's landing should be gated on 6.0 being at least a certain number
-  of 5.x minors away at the time it merges.
+  existing `eslint-plugin-warp-drive` autofix, or whether this RFC's landing should be gated on
+  6.0 being at least a certain number of 5.x minors away at the time it merges.
+- Whether the `no-legacy-imports` mapping table (currently named/versioned as
+  `public-exports-mapping-5.5.enriched.json`) needs a refresh or rename as part of this RFC, and
+  what should extend it to cover namespace imports, re-exports, and `require`/dynamic `import()`
+  given those are the one gap in the otherwise-automatic migration path.
 - Whether `npm deprecate` notices should be applied to already-published pre-deprecation
   versions retroactively, or only to versions published at/after the flags ship.
 - Final wording and placement of the `upgrading/v6/` migration page relative to the existing
