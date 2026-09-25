@@ -43,6 +43,8 @@ await this.store.request(createTodo(attributes));
 | `// #omit-file-from-starter` as a file's first line | The file is left out, because the learner writes it |
 | A `#region` with neither directive above it | The code is kept and the markers are dropped |
 
+The generator reads every text file in `solution/`, and copies binary files unchanged.
+
 Regions are named for the code they hold, not the chapter, so the guides can
 include them by name: `<<< @/../../packages/tutorials/todomvc-ember/solution/app/components/todo-app/create-todo.gts#create-todo`.
 Include finished code from `solution/`, and the starter's `TODO` stubs from
@@ -55,10 +57,21 @@ Include finished code from `solution/`, and the starter's `TODO` stubs from
 | Fix a bug, or update for a WarpDrive API change | Edit `solution/`, then regenerate |
 | Change what a learner sees at a `TODO` | Edit the `#replace-region-in-starter` line, then regenerate |
 | Move taught code to another chapter | Change the chapter number in its `#replace-region-in-starter` line, then regenerate |
-| Add a dependency | Add it to `solution/package.json`, then regenerate |
+| Add a dependency | Add it to `solution/package.json`, run `pnpm install`, then regenerate. Commit `pnpm-lock.yaml` too. |
 
 If you changed code in a region the starter replaces, reread that chapter of the guide. The
 snippets update themselves, but the prose around them doesn't.
+
+### Deliberate differences
+
+Two things in `solution/` look odd, and exist for the starter or the guides:
+
+- **Optional types.** The routes' `model()` return `todos?:`, and `TodoProvider` takes
+  `todoFuture?:`, so the starter type-checks before the learner writes chapter 1's
+  request. `<Request>` accepts an undefined request, so the types are accurate.
+- **Comment nodes in the DOM.** Glimmer keeps HTML comments, so `<!-- #region … -->`
+  markers in a `<template>` render as comment nodes in the solution app. The guides need
+  that form, because VitePress doesn't read `{{! }}` region markers. The starter has none.
 
 ### What CI checks
 
@@ -67,5 +80,6 @@ snippets update themselves, but the prose around them doesn't.
 | `starter is out of date` | `starter/` doesn't match the generator's output. Regenerate, or move a direct edit into `solution/`. |
 | `… must be directly above a #region` | A replace or remove directive was separated from its region, or its region was removed. |
 | `malformed tutorial starter directive` | A directive is misspelled, or `#replace-region-in-starter` has no text. |
+| `malformed region marker` | A `#region` or `#endregion` the generator can't read, such as a name with a space. Region names are one word, as in VitePress. |
 | `#omit-file-from-starter must be the file's first line` | Move the directive to line 1. |
 | Solution or starter tests fail | The app is broken. Both apps are type-checked and tested. |
