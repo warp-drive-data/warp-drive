@@ -1,6 +1,6 @@
 import { recordIdentifierFor, useRecommendedStore } from '@warp-drive/core';
 import type { ReactiveRelationshipDocument } from '@warp-drive/core/reactive';
-import { checkout, withDefaults } from '@warp-drive/core/reactive';
+import { checkout, commit, withDefaults } from '@warp-drive/core/reactive';
 import type { Type } from '@warp-drive/core/types/symbols';
 import { module, setupTest, test } from '@warp-drive/diagnostic/ember';
 import { JSONAPICache } from '@warp-drive/json-api';
@@ -137,6 +137,26 @@ module('Writes | resource', function (hooks) {
     assert.false(editableRey.bestFriend.isDirty, 'the relationship is no longer dirty');
     assert.equal(Wes.bestFriend.data, Rey, 'the immutable inverse reflects the confirmed state');
     assert.equal(Matt.bestFriend.data, null, 'the immutable prior inverse reflects the confirmed state');
+  });
+
+  test('commit() promotes a local change to the immutable document', async function (assert) {
+    const store = new Store();
+    registerUser(store);
+    const [Rey, Matt, Wes] = pushUsers(store);
+
+    const editableRey = await checkout<User>(Rey);
+    editableRey.bestFriend.data = Wes;
+    assert.true(editableRey.bestFriend.isDirty, 'the relationship is dirty');
+    assert.equal(Rey.bestFriend.data, Matt, 'the immutable document still reflects the remote state');
+
+    await commit(editableRey);
+
+    assert.equal(Rey.bestFriend.data, Wes, 'the immutable document reflects the committed state');
+    assert.equal(editableRey.bestFriend.data, Wes, 'the editable document reflects the committed state');
+    assert.equal(editableRey.bestFriend.remoteData, Wes, 'remoteData reflects the committed state');
+    assert.false(editableRey.bestFriend.isDirty, 'the relationship is no longer dirty');
+    assert.equal(Wes.bestFriend.data, Rey, 'the immutable inverse reflects the committed state');
+    assert.equal(Matt.bestFriend.data, null, 'the immutable prior inverse reflects the committed state');
   });
 
   test('assigning the field itself is not allowed even when editable', async function (assert) {
