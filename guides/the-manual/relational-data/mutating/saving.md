@@ -28,8 +28,10 @@ await store.request(init);
 ```
 
 When the response arrives the cache applies the returned payload as the new **remote** state: the
-relationship's membership becomes what the API said it is, and immutable records update. If the API
-does not echo relationships back, the in-flight local changes are committed as-is.
+relationship's membership becomes what the API said it is, and immutable records update. A
+relationship the response leaves out is **not** updated: its edits stay local, the document stays
+`isDirty`, and immutable records keep showing the old membership. Have the API return every
+relationship it saved, or push a payload that includes them once the save succeeds.
 
 ::: tip
 Relationship payloads use replace semantics: the `data` array in the response becomes the entire
@@ -73,12 +75,19 @@ output. `doc.toJSON()` is a description of the document for debugging, not a req
 ## Committing Without A Request
 
 Occasionally an app knows a change has been persisted through some other channel. `commit()`
-promotes an editable record's local state to remote state:
+promotes an editable record's local **attribute** changes to remote state, but it does not promote
+relationship changes: those stay local until a payload includes them.
+
+To confirm a relationship change without a request, push the saved state instead:
 
 ```ts
-import { commit } from '@warp-drive/core/reactive';
-
-await commit(editable);
+store.push({
+  data: {
+    type: 'user',
+    id: '1',
+    relationships: { bestFriend: { data: { type: 'user', id: '3' } } },
+  },
+});
 ```
 
 Use this sparingly; letting the API response drive the cache keeps client and server in agreement.
