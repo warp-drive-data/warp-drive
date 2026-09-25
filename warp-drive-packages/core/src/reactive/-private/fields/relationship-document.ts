@@ -4,18 +4,24 @@ import { assert } from '@warp-drive/build-config/macros';
 import type { Store } from '../../../index.ts';
 import { withBrand } from '../../../request.ts';
 import { defineGate, notifyInternalSignal, peekInternalSignal, withSignalStore } from '../../../signals/-private.ts';
-import { recordIdentifierFor } from '../../../store/-private.ts';
-import type { NotificationChannel } from '../../../store/-private/managers/notification-manager.ts';
-import type { ResourceRelationship } from '../../../types/cache/relationship.ts';
+import { createRelatedCollection, recordIdentifierFor } from '../../../store/-private.ts';
+import type {
+  NotificationChannel,
+  NotificationType,
+  UnsubscribeToken,
+} from '../../../store/-private/managers/notification-manager.ts';
+import type { ReactiveResourceArray } from '../../../store/-private/record-arrays/resource-array.ts';
+import type { CollectionRelationship, ResourceRelationship } from '../../../types/cache/relationship.ts';
 import type { ResourceKey } from '../../../types/identifier.ts';
 import type { RequestInfo } from '../../../types/request.ts';
-import type { ResourceField } from '../../../types/schema/fields.ts';
+import type { CollectionField, ResourceField } from '../../../types/schema/fields.ts';
 import type { Link, Links, Meta, PaginationLinks } from '../../../types/spec/json-api-raw.ts';
 import { Context } from '../symbols.ts';
+import { assertRelatedIsLoaded, RelatedCollectionManager } from './related-collection-manager.ts';
 
 /**
- * The reactive document produced for a `resource` relationship field on a
- * {@link ReactiveResource}.
+ * The reactive document produced for a `resource` or `collection`
+ * relationship field on a {@link ReactiveResource}.
  *
  * ```ts
  * const user = store.peekRecord<User>('user', '1');
@@ -23,6 +29,8 @@ import { Context } from '../symbols.ts';
  * user.bestFriend.data;  // User | null | undefined
  * user.bestFriend.links; // { related: '/users/1/best-friend' }
  * user.bestFriend.meta;  // { ... }
+ *
+ * user.friends.data;     // User[] | undefined
  * ```
  *
  * `data` is a reactive view of the relationship's membership in the cache.
@@ -33,25 +41,30 @@ import { Context } from '../symbols.ts';
  * `links` and `meta` are server-owned and **always** reflect the last
  * payload received from the API, on editable and immutable resources alike.
  * They are never changed by local mutations, so `meta` derived from
- * membership becomes stale while the relationship has unsaved changes. Use
- * {@link ReactiveRelationshipDocument.isDirty | isDirty} and
- * {@link ReactiveRelationshipDocument.remoteData | remoteData} to detect and
- * reason about that drift.
+ * membership (e.g. a `count`) becomes stale while the relationship has
+ * unsaved changes. Use {@link ReactiveRelationshipDocument.isDirty | isDirty}
+ * and {@link ReactiveRelationshipDocument.remoteData | remoteData} to
+ * detect and reason about that drift.
  *
  * `data` is `undefined` when the relationship payload did not include a
  * `data` member (e.g. a links-only payload for an async relationship);
- * `null` means the relationship is known to be empty. Use
- * {@link ReactiveRelationshipDocument.fetch | fetch} to load the related
- * data via the relationship's `related` link.
+ * `null` (resource) or an empty array (collection) mean the relationship
+ * is known to be empty. Use {@link ReactiveRelationshipDocument.fetch | fetch}
+ * to load the related data via the relationship's `related` link.
  *
  * When the owning resource is editable the relationship may be mutated
  * through `data`:
  *
  * ```ts
  * editableUser.bestFriend.data = otherUser; // or null
+ * editableUser.friends.data.push(otherUser);
+ * editableUser.friends.data = [a, b];
  * ```
  *
  * Assigning to the field itself (`user.bestFriend = x`) is never allowed.
+ *
+ * Collection relationships are not paginated: pagination links present on
+ * the relationship are surfaced on `links` but never merged into `data`.
  *
  * When serializing a relationship for a request, send only the identifiers
  * of `data`; `links` and `meta` describe the server's view and must not be
@@ -74,8 +87,8 @@ export interface ReactiveRelationshipDocument<T> {
    * The related resource(s) as last confirmed by the API, ignoring any
    * unsaved local changes. On an immutable resource this is the same as
    * `data`; on an editable resource it lets you compare the local
-   * membership against the remote one while the relationship is being
-   * edited.
+   * membership against the remote one (e.g. to render "3 of 100" from
+   * `meta.count` honestly while the relationship is being edited).
    *
    * `undefined` when the relationship has not received membership data.
    *
@@ -107,7 +120,7 @@ export interface ReactiveRelationshipDocument<T> {
    *
    * Server-owned: always reflects the last payload received from the API
    * and is never affected by local mutations. Values derived from membership
-   * are stale while `isDirty` is `true`.
+   * (such as a `count`) are stale while `isDirty` is `true`.
    *
    * @public
    */
@@ -152,8 +165,26 @@ interface RelationshipSource {
    * The cache path to the field; the last segment is the field's cache key.
    */
   path: string[];
-  field: ResourceField;
+  field: ResourceField | CollectionField;
   editable: boolean;
+  /**
+   * The reactive array backing `data` for collection fields, created lazily
+   * the first time membership data is available.
+   */
+  collection: ReactiveResourceArray | null;
+  /**
+   * The (read-only) reactive array backing `remoteData` for collection
+   * fields on an editable resource, created lazily. Immutable resources
+   * reuse `collection`, since their `data` already renders remote state.
+   */
+  remoteCollection: ReactiveResourceArray | null;
+  /**
+   * An editable resource only subscribes to `'local'` relationship
+   * notifications, but its document also renders remote state (`remoteData`,
+   * `isDirty`, `links`, `meta`). This subscription delivers the `'remote'`
+   * notifications those need, e.g. a payload that confirms a local change.
+   */
+  remoteSubscription: UnsubscribeToken | null;
 }
 
 interface PrivateRelationshipDocument extends ReactiveRelationshipDocument<unknown> {
@@ -163,33 +194,10 @@ interface PrivateRelationshipDocument extends ReactiveRelationshipDocument<unkno
 
 function upgradeThis(doc: unknown): asserts doc is PrivateRelationshipDocument {}
 
-/**
- * `resource` relationships require every resource referenced in their `data`
- * to have been included in the payload that referenced it. Materializing a
- * member that was never loaded is therefore an error rather than an empty
- * record.
- *
- * @private
- */
-export function assertRelatedIsLoaded(
-  store: Store,
-  resourceKey: ResourceKey,
-  field: ResourceField,
-  related: ResourceKey
-): void {
-  if (!store._instanceCache.recordIsLoaded(related)) {
-    throw new Error(
-      `Cannot materialize the ${field.kind} relationship ${resourceKey.type}.${field.name} on '${resourceKey.type}:${String(resourceKey.id)}': the related resource '${related.type}:${String(related.id)}' has no data in the cache. Every resource referenced in the data of a resource relationship must be included in the payload that references it.`
-    );
-  }
-}
-
-function getRelationship(source: RelationshipSource): ResourceRelationship {
+function getRelationship(source: RelationshipSource): ResourceRelationship | CollectionRelationship {
   const { store, resourceKey, path, editable } = source;
   const key = path[path.length - 1];
-  return (
-    editable ? store.cache.getRelationship(resourceKey, key) : store.cache.getRemoteRelationship(resourceKey, key)
-  ) as ResourceRelationship;
+  return editable ? store.cache.getRelationship(resourceKey, key) : store.cache.getRemoteRelationship(resourceKey, key);
 }
 
 function urlFromLink(link: Link): string {
@@ -264,17 +272,36 @@ defineGate(RelationshipDocumentProto, 'remoteData', {
 
     const { store, resourceKey, path } = source;
     const key = path[path.length - 1];
-    const rel = store.cache.getRemoteRelationship(resourceKey, key) as ResourceRelationship;
+    const rel = store.cache.getRemoteRelationship(resourceKey, key);
 
     if (rel.data === undefined) {
       return undefined;
     }
-    if (!rel.data) {
-      return null;
+
+    if (source.field.kind === 'resource') {
+      if (!rel.data) {
+        return null;
+      }
+      assertRelatedIsLoaded(store, resourceKey, source.field, rel.data as ResourceKey);
+      const record: unknown = store.peekRecord(rel.data as ResourceKey);
+      return record;
     }
-    assertRelatedIsLoaded(store, resourceKey, source.field, rel.data);
-    const record: unknown = store.peekRecord(rel.data);
-    return record;
+
+    if (!source.remoteCollection) {
+      const keys = (rel.data as ResourceKey[]).slice();
+      for (let i = 0; i < keys.length; i++) {
+        assertRelatedIsLoaded(store, resourceKey, source.field, keys[i]);
+      }
+      source.remoteCollection = createRelatedCollection({
+        store,
+        manager: new RelatedCollectionManager(store, resourceKey, source.field, key, false),
+        source: keys,
+        editable: false,
+        extensions: null,
+        options: { resourceKey, path, field: source.field },
+      });
+    }
+    return source.remoteCollection;
   },
 });
 
@@ -295,12 +322,32 @@ defineGate(RelationshipDocumentProto, 'data', {
     if (rel.data === undefined) {
       return undefined;
     }
-    if (!rel.data) {
-      return null;
+
+    if (source.field.kind === 'resource') {
+      if (!rel.data) {
+        return null;
+      }
+      assertRelatedIsLoaded(source.store, source.resourceKey, source.field, rel.data as ResourceKey);
+      const record: unknown = source.store.peekRecord(rel.data as ResourceKey);
+      return record;
     }
-    assertRelatedIsLoaded(source.store, source.resourceKey, source.field, rel.data);
-    const record: unknown = source.store.peekRecord(rel.data);
-    return record;
+
+    if (!source.collection) {
+      const { store, resourceKey, path, editable } = source;
+      const keys = (rel.data as ResourceKey[]).slice();
+      for (let i = 0; i < keys.length; i++) {
+        assertRelatedIsLoaded(store, resourceKey, source.field, keys[i]);
+      }
+      source.collection = createRelatedCollection({
+        store,
+        manager: new RelatedCollectionManager(store, resourceKey, source.field, path[path.length - 1], editable),
+        source: keys,
+        editable,
+        extensions: null,
+        options: { resourceKey, path, field: source.field },
+      });
+    }
+    return source.collection;
   },
   set(this: ReactiveRelationshipDocument<unknown>, value: unknown) {
     upgradeThis(this);
@@ -315,16 +362,53 @@ defineGate(RelationshipDocumentProto, 'data', {
       return;
     }
 
+    if (field.kind === 'resource') {
+      assert(
+        `Expected a resource or null to be set as the data of ${resourceKey.type}.${field.name}`,
+        value === null || (typeof value === 'object' && value !== null && isRecord(value))
+      );
+      store.cache.mutate({
+        op: 'replaceRelatedRecord',
+        record: resourceKey,
+        field: key,
+        value: value === null ? null : recordIdentifierFor(value),
+      });
+      return;
+    }
+
     assert(
-      `Expected a resource or null to be set as the data of ${resourceKey.type}.${field.name}`,
-      value === null || (typeof value === 'object' && value !== null && isRecord(value))
+      `Expected an array of resources to be set as the data of ${resourceKey.type}.${field.name}`,
+      Array.isArray(value)
     );
+    const keys = value.map((record: unknown) => {
+      assert(
+        `Expected every element set as the data of ${resourceKey.type}.${field.name} to be a resource`,
+        isRecord(record)
+      );
+      return recordIdentifierFor(record as object);
+    });
+    if (keys.length !== new Set(keys).size) {
+      const duplicates = keys.filter((currentValue, currentIndex) => keys.indexOf(currentValue) !== currentIndex);
+      throw new Error(
+        `Cannot replace a collection relationship's state with a new state that contains duplicates. Found duplicates for the following records within the new state provided to \`<${
+          resourceKey.type
+        }:${resourceKey.id || resourceKey.lid}>.${field.name}\`\n\t- ${Array.from(new Set(duplicates))
+          .map((r) => r.lid)
+          .sort((a, b) => a.localeCompare(b))
+          .join('\n\t- ')}`
+      );
+    }
     store.cache.mutate({
-      op: 'replaceRelatedRecord',
+      op: 'replaceRelatedRecords',
       record: resourceKey,
       field: key,
-      value: value === null ? null : recordIdentifierFor(value),
+      value: keys,
     });
+    // local collection ops are flushed by the store on a schedule; make the
+    // array re-sync immediately so reads following the set are consistent.
+    if (source.collection) {
+      notifyInternalSignal(source.collection[Context].signal);
+    }
   },
 });
 
@@ -340,18 +424,40 @@ function isRecord(value: unknown): boolean {
 /**
  * @private
  */
-export function createRelationshipDocument<T>(source: RelationshipSource): ReactiveRelationshipDocument<T> {
+export function createRelationshipDocument<T>(
+  source: Omit<RelationshipSource, 'collection' | 'remoteCollection' | 'remoteSubscription'>
+): ReactiveRelationshipDocument<T> {
   const doc = Object.create(RelationshipDocumentProto) as PrivateRelationshipDocument;
   doc._store = source.store;
-  doc[Context] = Object.assign({}, source);
+  const context: RelationshipSource = Object.assign(
+    { collection: null, remoteCollection: null, remoteSubscription: null },
+    source
+  );
+  doc[Context] = context;
   // @ts-expect-error we are initializing it here
   doc.identifier = null;
   withSignalStore(doc);
+
+  if (source.editable) {
+    const { store, resourceKey, path } = source;
+    const key = path[path.length - 1];
+    context.remoteSubscription = store.notifications.subscribe(
+      resourceKey,
+      (_key: ResourceKey, type: NotificationType, field?: string | string[]) => {
+        if (type === 'relationships' && field === key) {
+          notifyRemoteProjection(doc);
+        }
+      },
+      'remote'
+    );
+  }
+
   return doc as unknown as ReactiveRelationshipDocument<T>;
 }
 
 /**
- * Marks a relationship document's reactive properties as stale so they
+ * Marks a relationship document's reactive properties (and the arrays
+ * backing a collection's `data` and `remoteData`) as stale so they
  * recompute from the cache on next access.
  *
  * `channel` is the channel the relationship notification was tagged with.
@@ -368,15 +474,60 @@ export function notifyRelationshipDocument(
 ): void {
   upgradeThis(doc);
   const signals = withSignalStore(doc);
+  const source = doc[Context];
 
   notifyInternalSignal(peekInternalSignal(signals, 'data'));
   notifyInternalSignal(peekInternalSignal(signals, 'isDirty'));
+  if (source.collection) {
+    notifyInternalSignal(source.collection[Context].signal);
+  }
 
   if (channel === 'local') {
     return;
   }
 
+  notifyRemoteProjection(doc);
+}
+
+/**
+ * Marks the server-owned properties of a relationship document (`links`,
+ * `meta`, `remoteData`) and `isDirty` as stale. `data` is left alone: a
+ * purely remote change never alters the local projection.
+ *
+ * @private
+ */
+function notifyRemoteProjection(doc: ReactiveRelationshipDocument<unknown>): void {
+  upgradeThis(doc);
+  const signals = withSignalStore(doc);
+  const source = doc[Context];
+
+  notifyInternalSignal(peekInternalSignal(signals, 'isDirty'));
   notifyInternalSignal(peekInternalSignal(signals, 'links'));
   notifyInternalSignal(peekInternalSignal(signals, 'meta'));
   notifyInternalSignal(peekInternalSignal(signals, 'remoteData'));
+  if (source.remoteCollection) {
+    notifyInternalSignal(source.remoteCollection[Context].signal);
+  }
+}
+
+/**
+ * Tears down the array backing a collection relationship document, if one
+ * was materialized.
+ *
+ * @private
+ */
+export function destroyRelationshipDocument(doc: ReactiveRelationshipDocument<unknown>): void {
+  upgradeThis(doc);
+  const context = doc[Context];
+  const { collection, remoteCollection } = context;
+  if (context.remoteSubscription) {
+    context.store.notifications.unsubscribe(context.remoteSubscription);
+    context.remoteSubscription = null;
+  }
+  if (collection && !collection.isDestroyed) {
+    collection.destroy(false);
+  }
+  if (remoteCollection && !remoteCollection.isDestroyed) {
+    remoteCollection.destroy(false);
+  }
 }

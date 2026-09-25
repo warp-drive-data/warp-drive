@@ -23,7 +23,6 @@ import {
 import { getOrSetGlobal } from '../../../types/-private.ts';
 import type { RequestKey, ResourceKey } from '../../../types/identifier.ts';
 import type { ObjectValue, Value } from '../../../types/json/raw.ts';
-import type { CollectionField } from '../../../types/schema/fields.ts';
 import { recordIdentifierFor } from '../caches/instance-cache.ts';
 import { isResourceKey } from '../managers/cache-key-manager.ts';
 import type { Store } from '../store-service.ts';
@@ -557,38 +556,6 @@ export function createRequestCollection(config: ReactiveRequestCollectionCreateA
     data: null,
     features: null,
     extensions: null,
-    options: config.options,
-    destroy: null,
-    mutate: null,
-  });
-}
-
-export interface ReactiveRelatedCollectionCreateArgs {
-  // passed in
-  store: Store;
-  manager: MinimumManager;
-  source: ResourceKey[];
-
-  // not-accessible except by the context
-  options: {
-    resourceKey: ResourceKey;
-    path: string[];
-    field: CollectionField;
-  };
-
-  editable: boolean;
-  extensions: Map<string | symbol, ExtensionDef> | null;
-}
-
-export function createRelatedCollection(config: ReactiveRelatedCollectionCreateArgs): ReactiveResourceArray {
-  return createReactiveResourceArray({
-    store: config.store,
-    manager: config.manager,
-    editable: config.editable,
-    source: config.source,
-    data: null,
-    features: null,
-    extensions: config.extensions,
     options: config.options,
     destroy: null,
     mutate: null,

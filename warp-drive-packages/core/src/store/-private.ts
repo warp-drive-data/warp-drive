@@ -67,5 +67,10 @@ export {
   type LegacyManyArray as RelatedCollection,
   createLegacyManyArray,
 } from './-private/record-arrays/legacy-many-array.ts';
+export {
+  createRelatedCollection,
+  type RelatedCollectionOptions,
+  type ReactiveRelatedCollectionCreateArgs,
+} from './-private/record-arrays/related-collection.ts';
 
 export { log, logGroup } from './-private/debug/utils.ts';
