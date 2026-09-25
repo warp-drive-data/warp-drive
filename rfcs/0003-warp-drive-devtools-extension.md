@@ -276,9 +276,13 @@ guides gain a new page describing what each panel shows and how the quick action
 existing `Store`/`RequestManager` concepts (so "invalidate" is taught as "the same as calling
 your request again with `reload: true`," not as new vocabulary). Existing debug-log
 documentation gains a note that the same toggles are reachable from the extension's UI.
-`@ember-data/debug`'s docs get a note that it remains the ember-inspector integration for
-`Model`-based apps, while the new extension is the general-purpose tool going forward,
-including for `SchemaRecord`-based apps.
+`@ember-data/debug`'s docs get a note that it is deprecated in favor of this extension
+([RFC 0005](/rfcs/0005-deprecate-legacy-packages.md)) — not merely "the `Model`-based option
+while the extension is the general-purpose one." The request inspector, cache explorer, and
+debug-log toggles described above are all `Store`/`RequestManager`/`Cache`-level, not
+`Model`-specific, so the extension covers `Model`-based apps' inspection needs too; there is no
+capability gap that would justify keeping `@ember-data/debug` around as a permanent parallel
+tool for them.
 
 ## Drawbacks
 
@@ -288,9 +292,13 @@ including for `SchemaRecord`-based apps.
 - **Bundle-size and surface cost of the hook.** Even minimal, the hook is code that ships in
   every development and test build by default. It is fully stripped in production by default,
   but it is a new tripwire to keep honest as the codebase changes.
-- **Two inspection tools.** Apps still on `@ember-data/debug`'s ember-inspector integration and
-  the new extension can disagree or overlap in scope for a while; the docs note above is meant
-  to reduce confusion but won't eliminate it immediately.
+- **Two inspection tools during the migration window.** Apps still on `@ember-data/debug`'s
+  ember-inspector integration and the new extension can disagree or overlap in scope until
+  `@ember-data/debug` is removed at 6.0 per [RFC 0005](/rfcs/0005-deprecate-legacy-packages.md);
+  the docs note above is meant to reduce confusion during that bounded window, not indefinitely.
+  This also means `@ember-data/debug`'s own deprecation is gated on this RFC actually shipping
+  with parity for the ember-inspector workflows apps rely on today — if this extension slips,
+  so does that deprecation.
 - **Some features are approximations until Cache v3 lands.** Active-resource tracking in Phase 3
   is explicitly a stopgap; it can give a wrong answer for "in use" in cases a real capability
   would not, which is part of why the destructive "eject" action is deferred rather than shipped
@@ -335,3 +343,7 @@ including for `SchemaRecord`-based apps.
   framework-agnostic build plugin described in [RFC 2](/rfcs/0002-warp-drive-build-plugin.md) —
   ideally this RFC's flag is just another `WarpDriveConfig` option handled by the same
   mechanism, but that RFC was still `proposed` at the time of writing.
+- What counts as "parity" with `@ember-data/debug` for `Model`-based apps before
+  [RFC 0005](/rfcs/0005-deprecate-legacy-packages.md)'s deprecation of that package actually
+  takes effect — this RFC and RFC 0005 should stay in sync on that bar rather than each assuming
+  the other has defined it.
