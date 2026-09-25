@@ -66,6 +66,6 @@ snippets update themselves, but the prose around them doesn't.
 | --- | --- |
 | `starter is out of date` | `starter/` doesn't match the generator's output. Regenerate, or move a direct edit into `solution/`. |
 | `… must be directly above a #region` | A replace or remove directive was separated from its region, or its region was removed. |
-| `malformed starter directive` | A directive is misspelled, or `#replace-region-in-starter` has no text. |
+| `malformed tutorial starter directive` | A directive is misspelled, or `#replace-region-in-starter` has no text. |
 | `#omit-file-from-starter must be the file's first line` | Move the directive to line 1. |
 | Solution or starter tests fail | The app is broken. Both apps are type-checked and tested. |

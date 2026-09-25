@@ -79,7 +79,7 @@ function transform(file, source) {
       continue;
     }
     if (OMIT.test(line)) throw new Error(`${where}: #omit-file-from-starter must be the file's first line`);
-    if (DIRECTIVE.test(line)) throw new Error(`${where}: malformed starter directive: ${line.trim()}`);
+    if (DIRECTIVE.test(line)) throw new Error(`${where}: malformed tutorial starter directive: ${line.trim()}`);
     const start = REGION_START.exec(line);
     if (start) {
       open.push(start[1]);
