@@ -39,7 +39,15 @@ Configure the second store first. It needs a full configuration of its own, cove
 hooks, schemas, the request manager, and the cache. The [Migration](/upgrading/v5/index.md#migration)
 steps of the 4.x to 5.x guide install, build-configure and set up that store. They are written for
 mirror packages, so wherever they name a `@warp-drive-mirror/*` package, in an install command, an
-import, or the build config, use the matching `@warp-drive/*` package instead.
+import, or the build config, use the matching `@warp-drive/*` package instead. The five packages
+above are the whole install. `@warp-drive/build-config` arrives as a dependency of `@warp-drive/core`.
+
+Use the "Coming from 4.12" shape of Step 4, with `legacyRequests: true`, for the migrating store.
+Leave `linksMode` off for now. A store set up with `linksMode: true` fails `store.createRecord`
+with the assertion `useLegacyStore was setup in linksMode`, because `createRecord` asks
+`adapterFor` whether an adapter wants to assign an id, and that lookup trips the assertion
+([#11230](https://github.com/warp-drive-data/warp-drive/pull/11230) fixes it). Turn `linksMode` on
+once that release is what you install.
 
 The existing `ember-data` install keeps providing the `store` service. The rest of this guide
 calls the new one `v2-store`, matching the naming the 4.x to 5.x guide uses.
@@ -173,12 +181,25 @@ export default class StatefulButtonComponent extends Component {
     return this.contextStore ?? this.v1Store;
   }
 
-  get needsV1Record() {
+  get isMigrated() {
     return this.store === this.v2Store;
+  }
+
+  get needsV1Record() {
+    // true while the code that receives `onCreate` still lives on the old store;
+    // the template that renders this leaf knows, so it passes that in
+    return this.args.callerOnV1 === true;
   }
 
   async createEntry(params) {
     const record = this.store.createRecord('log-entry', params);
+
+    if (!this.isMigrated) {
+      // the unmigrated side saves through ember-data's own adapter
+      await record.save();
+      await this.args.onCreate(record);
+      return;
+    }
 
     // the mutation builders set the url, method and headers but leave the body to the app
     const init = createRecord(record);
@@ -197,9 +218,22 @@ export default class StatefulButtonComponent extends Component {
 }
 ```
 
-That second request fetches data you already hold. It is the cost of translating across the
-boundary, which is the argument for moving the boundary instead. Treat this pattern as an escape
-hatch, and prefer reshaping the slice so the whole interaction lands in one store.
+The branch on `isMigrated` comes first because `cacheKeyFor`, the mutation builders, and every
+other `@warp-drive/*` helper accept only records the WarpDrive store created. Handing them a record
+from the `ember-data` store throws `is not a ReactiveResource or Model known to WarpDrive`. The
+unmigrated side keeps saving the way it always did.
+
+`cache.peek` returns the resource with each relationship as a `{ type, id, lid }` identifier, so
+the body is safe to serialize even when the record has an inverse. For a new record it carries
+`id: null` and the client-side `lid`. Most servers ignore members they don't know. If yours rejects
+them, build `data` by hand from the attributes and relationship identifiers you mean to send.
+
+The re-fetch through `v1Store` applies only when the caller is itself unmigrated. A route whose
+controller and components have all moved receives `v2-store` records from this leaf and needs no
+translation, so a shared leaf often needs only the fallback. When the re-fetch does apply, that
+second request fetches data you already hold. It is the cost of translating across the boundary,
+which is the argument for moving the boundary instead. Treat this pattern as an escape hatch, and
+prefer reshaping the slice so the whole interaction lands in one store.
 
 ## Finishing the migration
 
@@ -212,3 +246,8 @@ its last step, because your imports are already `@warp-drive/*`.
 Because each store is configured independently, the second store is also where you drop what you
 no longer want. Adapters, serializers, and `Model` can stay in the old store and never be installed
 in the new one.
+
+Tests written for the migration itself go with it. A test that asserts the two stores resolve as
+distinct services, or that a record cannot cross from one to the other, describes a state that no
+longer exists once the second store is the only one. Delete those tests in the same change that
+deletes the old store, and keep the tests that cover the behavior each slice has on its own.
