@@ -1,6 +1,6 @@
 ---
 title: HoloPrograms
-warp-drive-rfc: 5
+warp-drive-rfc: 6
 emberjs-rfc:
 emberjs-pr:
 emberjs-branch:
@@ -11,6 +11,7 @@ release-date:
 release-versions:
 teams:
   - data
+  # DECISION: also list "learning"? This RFC changes guide pages and adds an agent skill.
 prs:
   accepted:
 project-link:
@@ -18,24 +19,28 @@ suite:
 ---
 
 <!--
-The number 5 is provisional. Open PRs #11087 (rfcs/0003-warp-drive-aql.md) and #11154
-(rfcs/0003-cache-layouts.md) both claim 0003, so 0003 and 0004 are treated as spoken for.
-Re-check rfcs/ at merge time and renumber to the next unused number if either closes unmerged.
+The number 6 is provisional. 0003 merged as rfcs/0003-warp-drive-devtools-extension.md (#11213).
+Open PRs #11087 (rfcs/0003-warp-drive-aql.md) and #11154 (rfcs/0003-cache-layouts.md) still
+claim 0003, so they are expected to move to 0004 and 0005. Re-check rfcs/ at merge time and
+renumber to the next unused number if either closes unmerged.
 -->
 
 # HoloPrograms
 
 ## Summary
 
-A HoloProgram is a reusable API scenario for `@warp-drive/holodeck` tests. It pairs a seed, which
-is the starting server state, with a router of route handlers that every program shares, plus
-optional per-route behaviors such as a delay or an error. A test opts in with
-`startProgram(this, program)`. While the suite records, the program answers each request from a
-per-test WarpDrive store and writes the answer to `.mock-cache` through the existing
-`POST /__record` endpoint. **A replayed suite never boots a program.** Replay reads the same
-fixtures it reads today, so CI cost and the fixture format do not change. The design comes from
-the vision PR #9616 by runspired (2024-12-07). This RFC carries it forward, corrected against
-`main`, and supersedes that PR as the design of record.
+A HoloProgram is a reusable API scenario for `@warp-drive/holodeck` tests. Today a test declares
+one mock per request and restates each response and request body by hand. A program pairs a
+seed, which is the starting server state, with a router of route handlers that every program
+shares, plus optional per-route behaviors such as a delay or an error. A test opts in with
+`startProgram(this, program)`. While the suite records, which is what a local run does, the
+program answers each request from a per-test WarpDrive store and writes the answer to
+`.mock-cache`, the committed fixture directory, through the existing `POST /__record` endpoint.
+**A replayed suite, which is what CI runs, never boots a program.** Replay reads the same fixtures
+it reads today. Every committed fixture reproduces byte for byte, and the only changes to replay
+are two Phase 0 fixes that also help suites without programs: honoring a recorded delay and
+serving 5xx fixtures. The design comes from the vision PR #9616 by runspired (2024-12-07). This
+RFC carries it forward, corrected against `main`, and supersedes that PR as the design of record.
 
 Recording against a real API is out of scope. Safety protocols (validation and sanitization) and
 the static and dynamic relay modes move to a follow-up RFC, "Recording Holodeck Mocks Against a Real
@@ -46,20 +51,20 @@ them early. [One RFC instead of two](#one-rfc-instead-of-two) explains the split
 
 ### One mock per request
 
-Today a test states every response it needs, one mock at a time (#11169,
+Today a test states every response it needs, one mock at a time (the testing guide on #11169,
 `guides/the-manual/testing/holo-programs.md:13`). Each mock restates data the test already set up,
 and each mutation mock carries the exact request body string so the fixture key matches (#11169,
 `guides/the-manual/testing/writing-mocks.md:68-99`).
 
 The test `update hasMany with repeated patch`
-(`tests/json-api/tests/integration/cache/mutation-request-test.ts:137`) shows the cost. It pushes
-two users and two pets into the client store (`:141`). Its `patchUser1` helper (`:211`) builds a
+(`tests/json-api/tests/integration/cache/mutation-request-test.ts:133`) shows the cost. It pushes
+two users and two pets into the client store (`:137`). Its `patchUser1` helper (`:207`) builds a
 body string, declares a `PATCH` mock for `/api/user/1` with that string, and writes the response by
 hand, including the `firstName`, `lastName`, and relationship `links` the push already holds
-(`:224-249`). The test calls the helper twice (`:274`, `:289`), so it declares two responses that a
+(`:220-245`). The test calls the helper twice (`:270`, `:285`), so it declares two responses that a
 server would compute from its own state. That file and `did-commit-notification-test.ts` declare
-seven mocks (`:83`, `:224`, `:338`, and `:203`, `:235`, `:273`, `:306`). All seven answer requests
-for one `user` resource, and each one repeats it by hand.
+seven mocks (`:79`, `:220`, `:334`, and `:203`, `:235`, `:273`, `:306`). All seven answer requests
+for `user` resources, and each one repeats them by hand.
 
 ### What a program changes for a test author
 
@@ -85,7 +90,8 @@ The next test that needs "user 1 after a pet transfer" starts the same program.
   replays.
 - The fixtures. Programs write through `POST /__record` (`packages/holodeck/server/node.js:138-182`),
   the only code that writes fixtures, and replay reads them through `replayRequest`
-  (`server/node.js:24-89`) unchanged.
+  (`server/node.js:24-89`). [Phase 0](#phased-delivery) changes that function only to wait for a
+  recorded `delay` and to serve 5xx fixtures; every committed fixture reproduces byte for byte.
 - Per-test scoping. Program state lives on the test's `TEST_IDS` entry
   (`packages/holodeck/src/index.ts:13`) and goes away with `setTestId(this, null)`
   (`src/index.ts:182-189`).
@@ -98,10 +104,10 @@ A generic mock library does not know the application's data. Mirage keeps a seco
 that exists only inside Mirage ([models](https://miragejs.com/docs/main-concepts/models/)), and
 `@msw/data` asks for collection schemas written again in a validation library
 ([mswjs/data](https://github.com/mswjs/data)). A program's store is a real WarpDrive `Store` with
-the application's own schemas. Seeds are built with `createRecord`, and in DEBUG builds the cache
-checks every write against those schemas
-(`warp-drive-packages/json-api/src/-private/cache.ts:390-407`). The application's request builders
-produce the URLs the router matches.
+the application's own schemas. Seeds are JSON:API resource objects, hand-written until Phase 3 adds
+`serializeCache` to build them with `createRecord`, and in DEBUG builds the cache checks every
+write against those schemas (`warp-drive-packages/json-api/src/-private/cache.ts:390-407`). The
+application's request builders produce the URLs the router matches.
 
 Issue #9627 asked what holodeck offers that MSW does not, and whether WarpDrive has the resources to
 compete with MSW. Nobody answered in writing. The answer is that holodeck does not compete with
@@ -125,6 +131,8 @@ parallel model. [MSW and @msw/data](#msw-and-msw-data) gives the full comparison
   says "adjustment" and "augmentation". This RFC says "behavior" only.
 - **Override**. A mock declared with the existing helpers in a test that started a program. It
   answers one request in place of the program.
+- **Phase 0**. The server and counter fixes in [Phased delivery](#phased-delivery) that programs
+  depend on. Each one also helps suites that use no program.
 
 "Program" already means something in holodeck. The server's default export has `launchProgram` and
 `endProgram` (`packages/holodeck/server/index.js:7,22`), and the startup banner prints `program:`
@@ -147,7 +155,7 @@ state and no endpoint.
 | Route handlers, `after` | Browser | Each program-served request, while recording |
 | `updateProgram` callback | Browser | The call, while recording. Never in replay. |
 | Fixture write | Holodeck server worker | `POST /__record`, as today |
-| Replay | Holodeck server worker | Every request, in both modes, as today |
+| Serving a fixture from disk | Holodeck server worker | Every request, in both modes, as today |
 
 Three facts decide this. Only the client knows the mode, through `getIsRecording()`
 (`src/index.ts:244-259`), while the server routes by path (`server/node.js:138`). Seeds and
@@ -158,9 +166,11 @@ so it cannot receive functions. [Server-side programs](#server-side-programs) ha
 The record branch goes into `MockServerHandler.request` (`src/index.ts:277-294`) and the legacy
 `installAdapterFor` wrapper (`src/index.ts:431-438`), after `setupHolodeckFetch` assigns the
 request number (`src/index.ts:348-352`). The program answers, posts the scaffold to `/__record` at
-that request number, and lets the request continue to the server, which replays the fixture it
-just wrote. Record and replay take the same server path. The diagram extends the guide's record
-and replay diagram (#11169, `guides/the-manual/testing/index.md:68-79`).
+that request number, awaits that response as `mock()` does today and fails the request if the
+server refused the fixture (`src/index.ts:502-514`), then lets the request continue to the server,
+which serves the fixture it just wrote from disk. The forwarded request takes the same server path
+in both modes. In this RFC, "replay" names the mode CI runs in, not that server step. The diagram
+extends the guide's record and replay diagram (#11169, `guides/the-manual/testing/index.md:68-79`).
 
 ```
 record run                                   replay run
@@ -202,11 +212,13 @@ export interface SeedResource {
   id: string;
   attributes?: ObjectValue;
   relationships?: Record<string, { data?: SeedIdentifier | SeedIdentifier[] | null; links?: ObjectValue; meta?: ObjectValue }>;
+  links?: ObjectValue;
   meta?: ObjectValue;
 }
 
 export type Seed = SeedResource[];
 
+// Phase 2, for updateProgram
 export interface SeedDocument { data: SeedResource | SeedResource[] | null; included?: SeedResource[] }
 
 export interface ProgramDefinition {
@@ -214,10 +226,10 @@ export interface ProgramDefinition {
   store: () => Store;
   seed: () => Seed | Promise<Seed>;
   router: Router;
-  behaviors?: (r: BehaviorMap) => void;
+  behaviors?: (r: BehaviorMap) => void; // Phase 2
 }
 
-export interface Program { readonly name: string | null }
+export interface Program { readonly name: string | null } // opaque, see below
 
 export function createProgram(definition: ProgramDefinition): Program;
 ```
@@ -225,8 +237,11 @@ export function createProgram(definition: ProgramDefinition): Program;
 A seed is JSON:API resource objects with ids and no lids, which `store._push({ data })` and
 `cache.put` both accept in the prototype. `seed` is a thunk that runs only when a test boots the
 program while recording, so a seed loaded with `import()` costs nothing in replay. `store` returns a
-fresh `Store` with the application's schemas. `name` is optional and appears only in errors and
-fixture metadata. `createProgram` is synchronous and registers nothing.
+fresh `Store` with the application's schemas; `TestStore` in the examples stands for the test
+app's store class. `name` is optional and appears only in errors and fixture metadata.
+`createProgram` is synchronous and registers nothing. `Program` is opaque: holodeck reads the
+definition back through a private `WeakMap`, so nothing in a test file can reach the seed or the
+router through the object.
 
 ```ts
 // tests/json-api/programs/users-and-pets.ts
@@ -253,8 +268,8 @@ lazy because its seed, store factory, and handlers are thunks.
 
 `startProgram` stores the program on the test's `TEST_IDS` entry and boots nothing, in either mode.
 It is synchronous, so a missing `await` cannot race the first request. It throws when the context
-has no test id, when the test already started a program, and when the test already issued a
-request.
+has no test id, when the entry already holds a program, and when the test already issued a
+request, which any nonzero `test.request` counter shows.
 
 `updateProgram` upserts resources into the program store for the current test. Like a mock's
 response function, its callback runs only while recording. It boots the program store first if
@@ -270,10 +285,12 @@ await updateProgram(this, () => ({ data: { type: 'pet', id: '3', attributes: { n
 - `startProgram` adds a `program` field to the entry, whose type is a literal object shape today
   (`src/index.ts:13-128`).
 - The first program-served request of a recording test boots the program. Boot calls the store
-  factory, awaits the seed, pushes it in one `_join`, runs the `behaviors` callback, and runs the
-  router's `define` callback if no earlier test has. Concurrent first requests await one boot.
+  factory, awaits the seed, pushes it in one `_join`, runs the router's `define` callback if no
+  earlier test has, and then runs the `behaviors` callback, which validates its patterns against
+  the routes. Concurrent first requests await one boot.
 - `setTestId(this, null)` removes the entry and runs `reportUnrequestedMocks`
-  (`src/index.ts:183-188`, added in #11177). The program store goes with the entry.
+  (`src/index.ts:183-188`, added by #11177, the unused-mock check). The program store goes with
+  the entry.
   [Override precedence](#override-precedence-and-the-counters) keeps that check correct.
 
 ### Router and route handlers
@@ -298,14 +315,14 @@ export interface ProgramContext {
   readonly query: URLSearchParams;
   readonly body: unknown;
   readonly route: string;
-  readonly routeRequestNumber: number;
+  readonly routeRequestNumber: number; // Phase 2
   find(type: string, id: string): SeedResource | null;
   findAll(type: string): SeedResource[];
   push(resources: SeedResource | Seed): void;
   remove(type: string, id: string): void;
-  desiredId(): string | null;
-  desiredPatch(): Seed | null;
-  commitDesiredPatch(): void;
+  desiredId(): string | null; // Phase 2
+  desiredPatch(): Seed | null; // Phase 2
+  commitDesiredPatch(): void; // Phase 2
 }
 
 export interface HandlerResult {
@@ -337,11 +354,20 @@ export const PATCH: RouteHandler = {
 `params` holds the pattern's named groups. `query` holds the search params without `__xTestId` and
 `__xTestRequestNumber`. `body` is `JSON.parse` of the request text, or `null`. `route` is the
 matched pattern and `routeRequestNumber` is the per-route counter behaviors use. `find`, `findAll`,
-`push`, and `remove` work in seed shape, without lids. Holodeck keeps its own index of what it
-pushed, because core has no public way to list every resource in a cache (see
+`push`, and `remove` work in seed shape, without lids. `push` upserts through the cache, so
+attributes and relationships merge into an existing resource the way `store._push` merges them.
+`find` returns `cache.peek` for the key with its `lid` stripped. `remove` unloads the record and
+does not touch relationships that pointed at it. Holodeck keeps its own index of what it pushed,
+because core has no public way to list every resource in a cache (see
 [`serializeCache`](#serializecache)). A handler that writes through `ctx.store` directly bypasses
 that index, and `findAll` does not see those records. `desiredId`, `desiredPatch`, and
 `commitDesiredPatch` expose the `id` and `patch` behaviors.
+
+<!--
+DECISION: the push, find, and remove semantics above are a proposed default the prototype did not
+settle. Each choice changes fixture bytes: merge or replace on push, peek or a private map on find,
+and whether remove also clears inbound relationship references. Confirm or change them.
+-->
 
 A handler may be sync or async. It returns one explicit `HandlerResult` shape, not a `Response` or
 a bare document, so holodeck never guesses which one it got. Bodies are JSON only, because the
@@ -352,7 +378,7 @@ server stores `JSON.stringify(response)` (`server/node.js:149`).
 The program converts each result to the existing `Scaffold` (`src/mock.ts:6-14`):
 
 - `method` is the request method. `url` is the request URL without origin and without holodeck's
-  two query params. Phase 0 makes the server normalize it the way replay does.
+  two query params. [Phase 0](#phased-delivery) makes the server normalize it the way replay does.
 - `body` is the exact request text, or `null`. A non-string request body fails while recording,
   because only a string produces a matching key (`server/utils.js:78`).
 - `status` defaults the way the mock helpers default (`src/mock.ts:59-324`). `GET`, `HEAD`, and
@@ -368,6 +394,13 @@ The program converts each result to the existing `Scaffold` (`src/mock.ts:6-14`)
   always sets `Content-Encoding`, `Cache-Control`, and `Content-Length` (`server/node.js:150-157`).
 - `response` is the result's `body`, or `{}` when it is `null`.
 
+<!--
+DECISION: a bodiless mock helper records whatever its response function returned, not `{}`
+(`src/mock.ts:163-173`), so this default breaks the "matches a hand-written mock" claim for empty
+bodies, and a 204 fixture would carry a `{}` body. Options: record `null` and have the server write
+an empty body for it, or keep `{}` and drop the byte-for-byte claim for 204s.
+-->
+
 ### URL matching
 
 Route patterns are `URLPattern` pathname patterns, native in current browsers, matched against the
@@ -380,9 +413,9 @@ because it records the URL the request carried.
 ### The per-test store, isolation, and concurrency
 
 Each test that boots a program gets its own program store on its `TEST_IDS` entry, keyed by the
-test context object (`src/index.ts:13`). Diagnostic runs tests concurrently in one tab and isolates
-them by that object (`packages/diagnostic/README.md:96-98`), so program stores never meet. Separate
-tabs run separate bundles. The prototype booted a seed store plus a program store in about 3 ms.
+test context object (`src/index.ts:13`). Diagnostic runs tests concurrently and isolates them by
+that object (`packages/diagnostic/README.md:94-98`), so program stores never meet. The prototype
+booted two stores, one to build a seed and one program store, in about 3 ms.
 
 Within one test, handlers run one at a time. Without behaviors they run in the order the test
 issued the requests. Request numbers are assigned synchronously (`src/index.ts:348-352`), so
@@ -391,6 +424,10 @@ A request with a `requestDelay` joins the queue when its delay ends. The fixed o
 mutations, and therefore fixtures, stable across recordings.
 
 ### Override precedence and the counters
+
+The rule a test author needs is short. A mock answers the next request with its method and URL
+that no earlier mock owns, and the program answers every other request. The rest of this section
+is the mechanics that make that hold in both modes.
 
 Holodeck counts per test today. `test.mock` counts declared mocks per method and the URL string the
 test wrote (`src/index.ts:487-492`). `test.request` counts issued requests per method and absolute
@@ -405,10 +442,13 @@ overwrote the program's fixture, and request #1 replayed `400 MOCK_NOT_FOUND`. F
    handler does not run, the store does not change, and the per-route counter does not advance.
    This is the vision's "this particular request [will] NOT update any HoloProgram state" (#9616,
    `holo-programs.md:68-73`).
-3. Otherwise the program serves request *n* and sets
+3. Otherwise the program owns request *n* and sets
    `test.mock[method][key] = max(test.mock[method][key], n + 1)`. An override declared afterwards
    lands on the next request.
-4. Rules 2 and 3 run in both modes. In replay the program does not run, but holodeck still assigns
+4. Rules 2 and 3 run synchronously, at the moment `setupHolodeckFetch` assigns the request number,
+   before any `requestDelay` or queueing. A mock declared while a delayed or async request is
+   still in flight therefore lands after it, instead of claiming the slot that request already
+   holds. They run in both modes. In replay the program does not run, but holodeck still assigns
    owners and advances the counter, so the counters come out the same in record and replay.
 
 ```ts
@@ -456,8 +496,9 @@ router does not define for that method, or if an `error` status is below 400.
   that lands during the wait is visible to the handler.
 - `responseDelay` waits after the handler, before the response.
 - The fixture stores `delay = requestDelay + responseDelay` in `meta.json`, and Phase 0 makes
-  `replayRequest` wait that long. The forwarded request of a recording run takes the replay path
-  too, so recording spends `requestDelay` twice. Replay latency matches the behavior.
+  `replayRequest` wait that long. The forwarded request of a recording run is served from disk
+  too, so a recording run sleeps both delays in the browser and then waits for their sum again on
+  the server. Replay latency matches the behavior.
 - `error` replaces the response and skips the handler. `statusText` defaults from
   `STATUS_TEXT_FOR`. The fixture is an ordinary scaffold with that status. Phase 0 fixes 5xx
   fixtures with a body, which break replay today.
@@ -471,6 +512,14 @@ router does not define for that method, or if an `error` status is below 400.
 
 The vision's examples use a `{ delay: 50 }` shorthand (#9616, `holo-programs.md:277,285`) that its
 type does not declare (`:306,311`). This RFC keeps the two named fields and drops the shorthand.
+
+<!--
+DECISION: recording spends every delay twice as written. Options: (a) accept it, delays are small;
+(b) skip the browser-side sleeps while recording and let the server wait stand in for both, which
+stops `requestDelay` from ordering mutations during recording; (c) send a query param on the
+forwarded request that tells the server to skip the wait, which adds API. Pick one and update
+unresolved item 28 to match.
+-->
 
 ### `serializeCache`
 
@@ -524,8 +573,9 @@ A changed seed, handler, or behavior does not invalidate fixtures. Programs neve
 and the cache key comes from the request. Local runs record everything, so a test run locally after
 the change rewrites its fixtures. The risk is a test nobody ran. Its old fixtures still replay and
 pass in CI. The recommended practice after changing a seed or a shared handler is to run the whole
-suite locally, commit the `.mock-cache` diff with the change, and run `CI=1 pnpm test` to confirm
-replay. The `program` field tells a reviewer which fixtures to expect in the diff.
+suite locally with `pnpm test`, commit the `.mock-cache` diff with the change, and run
+`CI=1 pnpm test` to confirm replay. The `program` field tells a reviewer which fixtures to expect
+in the diff.
 
 ### Error messages
 
@@ -561,8 +611,9 @@ This RFC reserves the following and defines nothing else about them:
 
 - The optional `protocols`, `requestProtocol`, and `responseProtocol` members of `RouteHandler`.
   They are typed `never`, so TypeScript rejects them. At runtime a handler that declares one throws
-  while recording. A validation step that silently does nothing is worse than none, because the
-  author believes the fixture was checked.
+  while recording. Replay never imports a handler, so the type error is the only guard CI has. A
+  validation step that silently does nothing is worse than none, because the author believes the
+  fixture was checked.
 - The name `SafetyProtocols.sanitize`, for the relay-only sanitizing function.
 - The server route `/__relay`. Relay will return upstream responses to the browser, which records
   them through `/__record`, so `/__record` stays the only writer of fixtures.
@@ -586,13 +637,14 @@ Each place this RFC departs from #9616:
 - Behaviors drop the `delay` shorthand. `error.body` is JSON, not a string. `id` is a string.
 - Safety protocols and relay move to RFC B, and Valibot as a dependency gives way to Standard
   Schema, decided there.
-- Local runs record by default and `RECORD` is a local-only override (#11177). The vision replayed
-  by default and used `RECORD` to author.
+- Local runs record by default, and the per-mock `RECORD` option, which records one request even
+  while the suite replays, is a local-only override (#11177). The vision replayed by default and
+  used `RECORD` to author.
 
 ### Phased delivery
 
 Each phase ships on its own and ends in a named gate, as in RFC 0001 §6
-(`rfcs/0001-warp-drive-transactional-notifications.md:249-274`).
+(`rfcs/0001-warp-drive-transactional-notifications.md:250-275`).
 
 **Phase 0. Server and counter prerequisites.** These fix defects in holodeck today and help
 suites without programs.
@@ -606,21 +658,39 @@ suites without programs.
   failed with `ERR_HTTP2_STREAM_ERROR`. Keep the body, or drop both headers.
 - (c) Add an optional `delay` to `Scaffold`, write it to `meta.json`, and wait for it in
   `replayRequest`. The helpers take `Partial<Omit<Scaffold, ...>>`, so each gains a `delay` option.
-- (d) Key `test.mock` and `test.request` by one normalized URL (rule 1).
+- (d) Key `test.mock` and `test.request` by one normalized URL (rule 1). This reaches suites
+  without programs in one case: a test that requests one path from two origins gets one counter
+  instead of two. Its fixtures already share a directory (`server/utils.js:58-64`), so the change
+  renumbers what already collided (unresolved item 29).
 - (e) `mock()` throws `MockError: request #n for <METHOD> <url> was already served` instead of
   recording over a slot a request already used. It compares the two client counters, in both
-  modes, so the server stays stateless.
+  modes, so the server stays stateless. A test that declares a mock after the request it was
+  meant for already fails today, because that request ran with no fixture and the late fixture
+  lands in a slot no later request reads, so no passing test is expected to change.
 
 Gate: record, then replay under `CI=1`, a `GET` with an unencoded comma and brackets in its query,
 a `503` with a JSON:API errors body, and a `GET` with `delay: 50` that takes at least 50 ms in
 replay. A mock declared after its request fails with the new error. Re-recording every suite leaves
-`.mock-cache` unchanged.
+`.mock-cache` unchanged, apart from any directory (d) renumbers.
+
+<!--
+DECISION: the last gate sentence is a prediction. Once Phase 0 (d) and (e) exist, re-record the 27
+mock declarations under tests/ and replace it with the observed result, naming any renumbered
+directory.
+-->
 
 **Phase 1. Programs from a JSON seed.** `createProgram`, `startProgram`, `Router`, `RouteHandler`,
 `ProgramContext`, scaffold conversion, the per-test store and queue, the record branch in
 `MockServerHandler` and `installAdapterFor`, the reserved members, the error messages, the
 `program` field, and the banner label. A test that started a program may not declare mocks yet.
-`mock()` throws and names Phase 2.
+`mock()` throws and names Phase 2. The type blocks above ship whole in Phase 1, with the members
+marked `Phase 2` present but inert.
+
+<!--
+DECISION: "present but inert" is one option. The others are to omit the Phase 2 members from the
+Phase 1 types, a type change when Phase 2 lands, or to throw when a program passes `behaviors`
+before Phase 2, which is louder but stops a program from being authored ahead of time. Pick one.
+-->
 
 Gate: a program-served request records and replays under `CI=1` without importing the handler
 module (a module-level flag stays unset). Two tests recording concurrently with different programs
@@ -689,14 +759,15 @@ implemented" banner goes, and its safety-protocol and VCR sections move to RFC B
 > a mock.
 >
 > Write the router once and share it across programs. Import each handler lazily so replay never
-> loads it. Give each program a seed, built with your store and `createRecord`, then
-> `serializeCache`. Add behaviors for what a handler should not know, such as a slow endpoint.
+> loads it. Give each program a seed, a JSON file of resource objects with ids. Add behaviors for
+> what a handler should not know, such as a slow endpoint.
 >
 > **Override one request with the mock helpers.** A `PATCH(this, ...)` in a program test answers
 > the next matching request, and that request leaves the program's store untouched.
 >
 > **Re-record after changing a program.** Fixtures do not know which seed or handler produced
-> them. Run the suite locally, commit the `.mock-cache` diff, and run `CI=1 pnpm test`.
+> them. Run the suite locally with `pnpm test`, commit the `.mock-cache` diff, and run
+> `CI=1 pnpm test`.
 
 ### Pages that change
 
@@ -711,6 +782,8 @@ These pages exist only on #11169 today, so this section assumes it merges first.
 - Server setup gains the `launchProgram` sentence above.
 - Each export of `@warp-drive/holodeck/program` gets TSDoc with an example, and the package README
   links the guide page.
+- Phase 3 adds a "Build a seed with `createRecord`" section to the HoloPrograms page, covering
+  `serializeCache` and `mintId`.
 
 ### Agent skill
 
@@ -722,6 +795,14 @@ handler, overriding a request, and re-recording after a change.
 
 - Invalidation is manual. After a seed or handler change, fixtures of tests nobody ran locally
   stay stale and CI replays them. The `program` field reduces this but does not remove it.
+- Program code never runs in CI. Handlers, seeds, behaviors, `after`, and the reserved-member
+  check run only while recording, so a handler that throws or a seed that fails DEBUG validation
+  passes CI for as long as its stale fixtures exist. Only a local run catches it.
+- Recorded delays add to CI time. Replay waits for every fixture's `delay`, so a suite's replay
+  grows by the sum of the delays its behaviors recorded.
+- Phase 0 (d) and (e) reach suites without programs. (d) renumbers fixtures a test recorded from
+  two origins, and (e) turns a late mock into an error. Both are called out under
+  [Phased delivery](#phased-delivery).
 - Bundle cost in record mode. Program objects and the router module are in the test bundle.
   Handlers and JSON seeds load through `import()`, so replay never fetches them, but the build
   still compiles them.
@@ -734,8 +815,8 @@ handler, overriding a request, and re-recording after a change.
   still hit it.
 - Windows paths. A query string puts `?` in a fixture directory name, which Windows cannot check
   out (`server/utils.js:93`). JSON:API URLs often carry `include`, so programs produce more of them.
-- Dead fixtures. Nothing prunes or reports orphaned fixture directories (#11170). A program that
-  changes which requests a screen makes leaves more behind.
+- Dead fixtures. Nothing prunes or reports orphaned fixture directories (issue #11170, the holodeck
+  adoption blockers). A program that changes which requests a screen makes leaves more behind.
 - Drift from the real API. Shared handlers imitate a server, and until RFC B nothing checks them
   against the real API. DEBUG cache validation checks resource shape, not endpoint behavior.
 
@@ -875,8 +956,9 @@ during the Exploring stage with the Data team.
 25. Open, for core. Whether `JSONAPICache.dump()` also emits documents, which seeds do not need.
 26. Open. Matching on origin, which this RFC ignores because fixtures ignore it.
 27. Open. Streaming or non-JSON handler bodies, which the server cannot store today.
-28. `requestDelay` while recording. This RFC sleeps before the handler and spends it twice. The
-    alternative, a query param telling the server to skip it on the forwarded request, adds API.
+28. Delays while recording. This RFC sleeps both delays in the browser, and the server waits for
+    their sum again on the forwarded request, so a recording run spends every delay twice. The
+    alternatives are in the decision note under [Behaviors](#behaviors).
 29. Keying `test.request` by normalized URL (Phase 0 d). Picked here. Two origins with one path
     share a fixture directory today but get two counters. Such tests renumber on re-record.
 30. A per-program or per-test `RECORD`. Programs follow `getIsRecording()` only. Open.
