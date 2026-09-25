@@ -1,6 +1,18 @@
 # pr-preview.yml removes a preview on the PR's `closed` event, but GitHub does not
 # run pull_request workflows for a PR with a merge conflict, so a docs PR that is
-# closed while conflicting keeps its preview forever.
+# closed while conflicting keeps its preview forever. This job removes those too,
+# then -- regardless of whether anything needed removing -- compacts gh-pages down
+# to a single orphan commit.
+#
+# gh-pages otherwise grows without bound: deploy.yml (production, on every push to
+# main) and pr-preview.yml (per PR) both intentionally layer their writes onto
+# whatever is already on the branch (`keep_files`/incremental commits), since each
+# only owns its own slice of the tree -- the site root vs. one pr-preview/
+# subfolder -- and must leave the other alone. Neither can safely reset history
+# itself. Rebuilding gh-pages as one fresh commit here, on a schedule, bounds how
+# much of that layering survives to the next run instead of accumulating forever.
+# Both of the other workflows re-fetch gh-pages fresh on every push, so rewriting
+# it out from under them between their runs is safe.
 name: docs PR preview sweep
 
 on:
@@ -25,44 +37,54 @@ jobs:
         with:
           ref: gh-pages
           fetch-depth: 1
-      - name: Remove previews of closed PRs
+      - name: Remove previews of closed PRs, then compact gh-pages history
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
 
-          removed=()
-          for dir in pr-preview/pr-*/; do
-            dir="${dir%/}"
-            [ -d "$dir" ] || continue
-            number="${dir#pr-preview/pr-}"
-            if ! state="$(gh pr view "$number" --json state -q .state)"; then
-              echo "could not look up PR #$number; keeping $dir"
-              continue
-            fi
-            if [ "$state" != "OPEN" ]; then
-              git rm -r -q "$dir"
-              removed+=("$number")
-            fi
-          done
-
-          if [ "${#removed[@]}" -eq 0 ]; then
-            echo "no previews to remove"
-            exit 0
-          fi
-
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git commit -q -m 'Remove previews for closed PRs' -m "$(printf '#%s\n' "${removed[@]}")"
 
           for attempt in 1 2 3; do
             if [ "$attempt" -gt 1 ]; then
-              git fetch origin gh-pages
-              git rebase origin/gh-pages
+              git fetch -q origin gh-pages
             fi
-            if git push origin HEAD:gh-pages; then
+            base_sha="$(git rev-parse origin/gh-pages)"
+            # --orphan's working tree/index start out identical to <start-point> (here
+            # origin/gh-pages), so this has to run before the removals below, not after --
+            # doing it the other way round would have the checkout wipe out the removals.
+            git checkout -q --orphan "squash-$attempt" origin/gh-pages
+
+            removed=()
+            for dir in pr-preview/pr-*/; do
+              dir="${dir%/}"
+              [ -d "$dir" ] || continue
+              number="${dir#pr-preview/pr-}"
+              if ! state="$(gh pr view "$number" --json state -q .state)"; then
+                echo "could not look up PR #$number; keeping $dir"
+                continue
+              fi
+              if [ "$state" != "OPEN" ]; then
+                rm -rf "$dir"
+                removed+=("$number")
+              fi
+            done
+
+            git add -A
+            message='Compact gh-pages history'
+            if [ "${#removed[@]}" -gt 0 ]; then
+              message="$message
+
+Also removes previews for closed PRs:
+$(printf '#%s\n' "${removed[@]}")"
+            fi
+            git commit -q -m "$message"
+
+            if git push --force-with-lease="gh-pages:$base_sha" origin "squash-$attempt:gh-pages"; then
               exit 0
             fi
+            echo "gh-pages moved during sweep (attempt $attempt); retrying" >&2
           done
           echo "push to gh-pages failed after 3 attempts" >&2
           exit 1
