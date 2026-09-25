@@ -1,6 +1,6 @@
 ---
 title: Pointer and Reference Fields
-description: Proposes four PolarisMode relationship field kinds (pointer, pointer-array, reference, reference-array) for relationships whose related resources arrive via a separate request, where pointers assert the related resource is loaded and references tolerate its absence.
+description: Proposes four PolarisMode relationship field kinds (pointer, pointer-array, reference, reference-array) for relationships WarpDrive never fetches or validates for delivery, where pointers assert the related resource is loaded and references tolerate its absence.
 warp-drive-rfc: 6
 emberjs-rfc:
 emberjs-pr:
@@ -24,9 +24,10 @@ suite:
 
 PolarisMode gains four new relationship field kinds — `pointer`, `pointer-array`, `reference`,
 and `reference-array` — for a category of relationship that LegacyMode apps use constantly but
-that WarpDrive has never had a name for: a relationship whose related resource(s) are **not**
-delivered alongside the parent resource and are **not** fetchable through the relationship, but
-are instead expected to have been loaded by some other request. A **pointer** declares that the
+that WarpDrive has never had a name for: a relationship that is **never fetched through the
+relationship itself** and whose delivery WarpDrive does **not** validate. The related resource(s)
+may arrive sideloaded in the same document as the parent, through some other request, or never;
+the schema makes no claim about which. A **pointer** declares that the
 related resource *must* already be in the cache when the field is read; WarpDrive asserts this
 in development builds. A **reference** declares that the related resource *may* be missing; the
 field exposes the related identity together with the record if (and only if) it is loaded. All
@@ -69,6 +70,10 @@ nothing else existed. They show up for several recurring reasons:
   up front.
 - **The References API.** Apps used `belongsToReference()`/`hasManyReference()` to read *only the
   id* out of a relationship and avoid loading anything until explicitly desired.
+- **Strong parent ownership.** The related resources always arrive in the parent's document and
+  have no endpoint of their own, so a sync relationship is the right shape, but the developer
+  wants the parent to own them outright: no inverse, no fetching, and no expectation that
+  anything but the parent's own request will ever refresh them.
 - **APIs that cannot do better.** A second, non-integrated system — increasingly an AI
   recommendation or suggestion service — streams in something that *names* a resource (a type
   and an id) but cannot give its representation or even a link to it.
@@ -86,6 +91,12 @@ The two families differ in exactly one way, and the difference is the whole poin
 - A **reference** allows the related resource to be *missing*. Its absence is a normal state the
   app renders around, and the identity is still valuable on its own (to key a placeholder, to
   issue a fetch, to compare against something else).
+
+Both overlap with the sync `resource`/`collection` fields by design. A sync `resource` whose
+related resource is always sideloaded and a `pointer` to that same resource behave identically
+while the data is present; they differ in what WarpDrive enforces (full linkage at push time
+versus presence at read time) and in what the app is promising. Apps choose whichever contract
+fits the relationship.
 
 Any of LegacyMode's six sync/async × inverse/no-inverse `belongsTo`/`hasMany` permutations could
 have been a pointer or a reference in disguise, which would be eighteen permutations to support.
@@ -341,8 +352,8 @@ resource that is the target of a *synchronous* relationship is treated as a clie
 the graph prunes the unloaded identity from the sync relationship, on the reasoning that a sync
 relationship has no way to refetch it. Asynchronous relationships get the opposite treatment: the
 identity is kept, the edge is flagged as having a dematerialized inverse, and the target's node
-is retained so it can be rematerialized. Pointers and references are synchronous, but their whole
-premise is that the related resource arrives through some *other* request, so an unload is
+is retained so it can be rematerialized. Pointers and references are synchronous, but they make
+no promise that the relationship itself can ever deliver the related resource, so an unload is
 merely an eviction, not a statement about the relationship. They therefore take the asynchronous
 branch on unload:
 
@@ -394,7 +405,8 @@ document validation (`validate-document-fields.ts`), which today enforces full l
 relationship object must carry a `data` key. `null` and `[]` are valid empty values; a missing
 or `undefined` `data` is rejected with the same reasoning as for linksMode — WarpDrive cannot
 distinguish "nothing was returned" from "the relationship is empty". Full linkage is *not*
-checked, because not being linked is the definition of these fields.
+checked: these fields make no claim about whether the related resources are in this document, in
+another, or nowhere yet.
 
 Read-time validation is where pointers get their teeth. Reading a `pointer` whose identity is
 not loaded, or a `pointer-array` any of whose identities is not loaded, fails a DEBUG assertion
@@ -402,17 +414,16 @@ naming the owning resource, the field, and each missing identity:
 
 ```
 Assertion Failed: post:1 declares `author` as a pointer to user:7, but user:7 is not
-loaded. A pointer promises its related resource was loaded by a separate request
-before the field is read. Load user:7 first, or declare `author` as a `reference`
+loaded. A pointer promises its related resource is already loaded whenever the
+field is read. Load user:7 first, or declare `author` as a `reference`
 if it may legitimately be absent.
 ```
 
 Assertions are stripped from production builds. There, a missing pointer target resolves to
 `null` (to-one) or is omitted from the array (to-many) — the same degraded behaviour a sync
 `linksMode` `belongsTo` exhibits today when its sideload is missing, and no worse. The assertion
-is read-time rather than push-time on purpose: the separate request that satisfies a pointer may
-land *after* the document that carries it, and only the read establishes that the promise has
-come due.
+is read-time rather than push-time on purpose: whatever satisfies a pointer may land *after* the
+document that carries it, and only the read establishes that the promise has come due.
 
 References have no read-time assertion. An unloaded reference is a valid, expected state.
 
@@ -496,15 +507,17 @@ a reference additionally accepts a bare identity on assignment).
 ## How we teach this
 
 The vocabulary is the lesson. The manual's schema section gains a page on PolarisMode
-relationships that presents them as a question about *where the related data comes from*, with
+relationships that presents them as a question about *what the relationship guarantees*, with
 one answer per kind:
 
-- **It comes with the parent, or through a link on the relationship** → `resource` /
-  `collection` (strict: sideloaded when sync, linked when async).
-- **It comes from some other request, and I promise that request has happened** → `pointer` /
-  `pointer-array`.
-- **It comes from some other request, or maybe never; here is who it would be** → `reference` /
-  `reference-array`.
+- **WarpDrive delivers it: sideloaded with the parent when sync, fetched through the
+  relationship's link when async** → `resource` / `collection` (strict about both).
+- **I guarantee it is loaded, however it got here** → `pointer` / `pointer-array`.
+- **It may or may not be loaded; here is who it would be** → `reference` / `reference-array`.
+
+The guide is explicit that a sync `resource` and a `pointer` overlap on purpose: when the related
+resource is always sideloaded, either works, and the choice is about which contract the app
+wants enforced.
 
 The one-line mnemonic: *a pointer is a promise, a reference is a hint.* The guide shows each
 kind's failure mode on purpose — the pointer assertion's message, a reference rendering a
