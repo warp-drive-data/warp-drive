@@ -1,0 +1,61 @@
+{
+  "name": "tutorial-todomvc-ember-starter",
+  "version": "0.0.0",
+  "description": "Starter app for the WarpDrive TodoMVC tutorial (Ember)",
+  "private": true,
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com:warp-drive-data/warp-drive.git",
+    "directory": "packages/tutorials/todomvc-ember/starter"
+  },
+  "license": "MIT",
+  "imports": {
+    "#api-worker/*": "./api-worker/*",
+    "#app/*": "./app/*",
+    "#config": "./app/config.ts"
+  },
+  "scripts": {
+    "start": "vite",
+    "build": "vite build",
+    "build:tests": "IS_TESTING=true NODE_ENV=development vite build --mode development --outDir dist-test",
+    "check:types": "node ./node_modules/typescript-7/bin/tsc --noEmit --runExternalCode && node ./node_modules/typescript-7/bin/tsc --noEmit --runExternalCode -p api-worker",
+    "test": "testem ci --file testem.cjs"
+  },
+  "devDependencies": {
+    "@babel/core": "catalog:",
+    "@babel/plugin-transform-runtime": "catalog:",
+    "@babel/plugin-transform-typescript": "catalog:",
+    "@babel/runtime": "catalog:",
+    "@ember/test-helpers": "catalog:",
+    "@ember/test-waiters": "catalog:",
+    "@embroider/core": "catalog:",
+    "@embroider/macros": "catalog:",
+    "@embroider/vite": "catalog:",
+    "@glimmer/component": "catalog:",
+    "@glint/ember-tsc": "catalog:",
+    "@glint/template": "catalog:",
+    "@rollup/plugin-babel": "catalog:",
+    "@types/qunit": "catalog:",
+    "@warp-drive/core": "workspace:*",
+    "@warp-drive/ember": "workspace:*",
+    "@warp-drive/json-api": "workspace:*",
+    "@warp-drive/utilities": "workspace:*",
+    "babel-plugin-ember-template-compilation": "catalog:",
+    "decorator-transforms": "catalog:",
+    "ember-content-mapper": "catalog:",
+    "ember-modifier": "catalog:",
+    "ember-page-title": "catalog:",
+    "ember-qunit": "catalog:",
+    "ember-source": "catalog:",
+    "ember-strict-application-resolver": "catalog:",
+    "qunit": "catalog:",
+    "qunit-dom": "catalog:",
+    "testem": "catalog:",
+    "todomvc-app-css": "catalog:",
+    "todomvc-common": "catalog:",
+    "typescript-7": "catalog:",
+    "typescript-toastify": "catalog:",
+    "vite": "catalog:"
+  }
+}

@@ -5,13 +5,12 @@ import type { Future } from '@warp-drive/core/request';
 import { Request } from '@warp-drive/ember';
 
 import { LoadingSpinner } from '#app/components/design-system/loading.gts';
-import type { TodosDocument } from '#app/data/builders/query.ts';
-import type { Todo } from '#app/data/schemas/todo.ts';
+import type { Todo, TodosDocument } from '#app/data/schemas/todo.ts';
 import type AppState from '#app/services/app-state.ts';
 
 interface Signature {
   Args: {
-    todoFuture: Future<TodosDocument>;
+    todoFuture?: Future<TodosDocument>;
   };
   Blocks: {
     toggle: [todos: Todo[]];
@@ -21,6 +20,7 @@ interface Signature {
 
 export class TodoProvider extends Component<Signature> {
   <template>
+    {{! #replace-in-starter TODO (chapter 1): render @todoFuture with <Request> }}
     <Request @request={{@todoFuture}} @autorefresh={{true}} @autorefreshBehavior="refresh">
 
       <:loading><LoadingSpinner /></:loading>
@@ -35,6 +35,7 @@ export class TodoProvider extends Component<Signature> {
       <:error as |error|>{{this.appState.onUnrecoverableError error}}</:error>
 
     </Request>
+    {{! #end-replace-in-starter }}
   </template>
 
   @service declare private readonly appState: AppState;

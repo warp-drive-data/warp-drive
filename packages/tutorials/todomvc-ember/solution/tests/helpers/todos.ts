@@ -1,3 +1,4 @@
+// #omit-file-from-starter
 import { find, settled, waitUntil } from '@ember/test-helpers';
 
 import * as QUnit from 'qunit';

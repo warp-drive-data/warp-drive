@@ -4,7 +4,9 @@ import { service } from '@ember/service';
 import Component from '@glimmer/component';
 
 import type Store from '#app/data/store.ts';
+// #remove-from-starter
 import { createTodo } from '#app/data/builders/create.ts';
+// #end-remove-from-starter
 import type { TodoAttributes } from '#app/data/schemas/todo.ts';
 
 import { reportError } from '#app/helpers/error.ts';
@@ -49,7 +51,9 @@ export class CreateTodo extends Component {
     const { attributes, form } = processSubmitEvent(event);
 
     try {
+      // #replace-in-starter TODO (chapter 4): send the create request
       await this.store.request(createTodo(attributes));
+      // #end-replace-in-starter
 
       form.reset();
     } catch (e) {

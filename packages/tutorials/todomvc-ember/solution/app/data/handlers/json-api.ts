@@ -1,3 +1,4 @@
+// #omit-file-from-starter
 import type { Future, Handler, NextFn } from '@warp-drive/core/request';
 import type { RequestContext } from '@warp-drive/core/types/request';
 

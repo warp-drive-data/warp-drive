@@ -84,6 +84,8 @@ jobs:
           TURBO_FORCE: ${{ secrets.ACTIONS_RUNNER_DEBUG == 'true' }}
       - name: Oxlint
         run: pnpm lint:oxlint
+      - name: Tutorial starters match their solutions
+        run: pnpm lint:tutorials
       - name: Guide links and anchors
         run: pnpm lint:docs
       - name: Lint

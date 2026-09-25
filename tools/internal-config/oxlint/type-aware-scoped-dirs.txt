@@ -43,6 +43,9 @@ packages/tracking/src
 packages/tutorials/todomvc-ember/solution/api-worker
 packages/tutorials/todomvc-ember/solution/app
 packages/tutorials/todomvc-ember/solution/tests
+packages/tutorials/todomvc-ember/starter/api-worker
+packages/tutorials/todomvc-ember/starter/app
+packages/tutorials/todomvc-ember/starter/tests
 specs/src
 tests/blueprints/fixtures
 tests/blueprints/tests

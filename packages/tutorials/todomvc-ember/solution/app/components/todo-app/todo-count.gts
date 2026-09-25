@@ -3,7 +3,9 @@ import type { TOC } from '@ember/component/template-only';
 import { Request } from '@warp-drive/ember';
 
 import { HandleError } from '#app/components/design-system/error.gts';
+// #remove-from-starter
 import { getActiveTodos } from '#app/data/builders/query.ts';
+// #end-remove-from-starter
 
 /**
  * Displays the count of active (not completed) todos.
@@ -15,6 +17,7 @@ import { getActiveTodos } from '#app/data/builders/query.ts';
  */
 export const TodoCount = <template>
   <span class="todo-count">
+    {{! #replace-in-starter TODO (chapter 3): count the active todos }}
     <Request @query={{(getActiveTodos)}} @autorefresh={{true}} @autorefreshBehavior="refresh">
       <:content as |content|>
         <Remaining @remaining={{content.data.length}} />
@@ -23,6 +26,7 @@ export const TodoCount = <template>
         <HandleError @error={{error}} @toast="Could not get active todos for Todo Remaining Count." />
       </:error>
     </Request>
+    {{! #end-replace-in-starter }}
   </span>
 </template>;
 

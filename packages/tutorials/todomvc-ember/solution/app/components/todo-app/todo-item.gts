@@ -6,8 +6,10 @@ import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 
 import type Store from '#app/data/store.ts';
+// #remove-from-starter
 import { deleteTodo } from '#app/data/builders/delete.ts';
 import { patchCacheTodoActivated, patchCacheTodoCompleted, patchTodo } from '#app/data/builders/update.ts';
+// #end-remove-from-starter
 import type { EditableTodo, Todo } from '#app/data/schemas/todo.ts';
 
 import { Form } from '#app/components/design-system/form.gts';
@@ -185,6 +187,7 @@ class CompletedForm extends Component<{
 
     try {
       todo.completed = completed;
+      // #replace-in-starter TODO (chapter 6): save the toggle and move the todo between lists
       await this.store.request(patchTodo(todo, { completed }));
 
       if (completed) {
@@ -192,6 +195,7 @@ class CompletedForm extends Component<{
       } else {
         patchCacheTodoActivated(this.store, todo);
       }
+      // #end-replace-in-starter
     } catch (e) {
       reportError(new Error('Could not update todo completion state', { cause: e }), { toast: true });
       todo.completed = wasCompleted;
@@ -228,7 +232,9 @@ class DestroyForm extends Component<{
     this.args.onSaveStart();
 
     try {
+      // #replace-in-starter TODO (chapter 7): delete the todo
       await this.store.request(deleteTodo(todo));
+      // #end-replace-in-starter
     } catch (e) {
       reportError(new Error('Could not delete todo', { cause: e }), { toast: true });
     }
@@ -296,7 +302,9 @@ class TitleForm extends Component<{
 
   private readonly deleteTodo = async (todo: EditableTodo) => {
     try {
+      // #replace-in-starter TODO (chapter 7): delete the todo
       await this.store.request(deleteTodo(todo));
+      // #end-replace-in-starter
     } catch (e) {
       reportError(new Error('Could not delete todo', { cause: e }), { toast: true });
     }
@@ -304,7 +312,9 @@ class TitleForm extends Component<{
 
   private readonly patchTodoTitle = async (todo: Todo, title: string) => {
     try {
+      // #replace-in-starter TODO (chapter 5): save the new title
       await this.store.request(patchTodo(todo, { title }));
+      // #end-replace-in-starter
     } catch (e) {
       reportError(new Error('Could not update todo title', { cause: e }), { toast: true });
     }
