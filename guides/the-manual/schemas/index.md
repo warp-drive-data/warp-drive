@@ -1,6 +1,6 @@
 ---
 title: Overview
-description: What schemas are in WarpDrive, how a ResourceSchema turns raw API data into records, and which schema mode, LegacyMode or PolarisMode, to choose.
+description: Start here for the schemas section to see how a ResourceSchema maps raw cached fields to camelCase reactive properties and relationships, then pick LegacyMode or PolarisMode.
 ---
 
 :::warning **🚧 Pardon Our Stardust!**

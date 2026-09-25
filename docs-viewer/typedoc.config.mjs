@@ -101,6 +101,7 @@ const config = {
     new URL('./typedoc-plugins/types-router.mjs', import.meta.url).pathname,
     new URL('./typedoc-plugins/type-kind-badges.mjs', import.meta.url).pathname,
     new URL('./typedoc-plugins/type-signature.mjs', import.meta.url).pathname,
+    new URL('./typedoc-plugins/page-meta.mjs', import.meta.url).pathname,
   ],
   // Routes interfaces and type-aliases to a shared `types/` directory instead of typedoc's
   // default `interfaces/` and `type-aliases/` split, so a symbol's URL is stable across that

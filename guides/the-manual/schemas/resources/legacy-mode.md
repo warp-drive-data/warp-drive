@@ -1,5 +1,5 @@
 ---
-description: What LegacyMode is, why it is the current recommendation for most apps, its drawbacks for non-Ember apps, and how to migrate from Model to it.
+description: Emulate Model with ReactiveResource in LegacyMode using `attribute`, `belongsTo`, and `hasMany` fields, `registerDerivations` from `@warp-drive/legacy`, and `WithLegacy` types.
 ---
 
 # LegacyMode (recommended)

@@ -1,3 +1,7 @@
+---
+description: Define a bidirectional one-to-many relationship pairing belongsTo with hasMany and managed inverses, or split it into one-to-none plus many-to-none, via Model or schema.
+---
+
 # One To Many Relationships
 
 Imagine our social network for trail runners 🏃🏃🏾‍♀️ allows runners to upload their runs as activities.

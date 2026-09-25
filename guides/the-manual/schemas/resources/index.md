@@ -1,6 +1,6 @@
 ---
 title: ResourceSchemas
-description: What a ResourceSchema is, how to create and register one, and the common field kinds it declares, including the resource and collection relationship fields.
+description: Create a top-level ResourceSchema with `withDefaults`, choose `field`, `resource`, `collection`, or `schema-object` kinds, register it, and pick LegacyMode or PolarisMode.
 ---
 
 # ResourceSchemas

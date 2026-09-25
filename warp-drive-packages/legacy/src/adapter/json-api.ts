@@ -21,7 +21,7 @@ import { RESTAdapter } from './rest.ts';
     {@link Handler} instead to be used with the {@link RequestManager}
   :::
 
-  The `JSONAPIAdapter` is an adapter whichtransforms the store's
+  The `JSONAPIAdapter` is an adapter which transforms the store's
   requests into HTTP requests that follow the [JSON API format](http://jsonapi.org/format/).
 
   ## JSON API Conventions

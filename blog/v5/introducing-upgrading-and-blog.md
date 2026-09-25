@@ -1,5 +1,6 @@
 ---
 title: Introducing Upgrading & Blog
+description: Learn why WarpDrive 5.10 added the permanent Upgrading and Blog sections to warp-drive.io and where the former /guides/migrating/ pages now live.
 outline:
   level: 2,3
 ---

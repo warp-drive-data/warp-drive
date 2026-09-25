@@ -1,6 +1,6 @@
 ---
 title: Migrating 4.x to 5.x
-description: How to upgrade an EmberData 4.x app to WarpDrive 5.x by moving to native types, migrating with a second store, and converting Models to schemas.
+description: Migrate an EmberData 4.6 or 4.12 app to WarpDrive 5.x step by step, using native types, mirror packages, useLegacyStore, and schemas in place of Models.
 outline:
   level: 2,3
 ---

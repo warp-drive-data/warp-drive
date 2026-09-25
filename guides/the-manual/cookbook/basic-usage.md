@@ -1,3 +1,7 @@
+---
+description: Build a `RequestManager` with the `Fetch` handler, configure `setBuildURLConfig`, issue a JSON:API `query` request, page through results, and handle errors.
+---
+
 # Requests
 
 ## Basic Usage Example
