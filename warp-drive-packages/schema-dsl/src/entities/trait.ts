@@ -25,7 +25,7 @@ export interface TraitOptions {
 }
 
 /**
- * Marks a class as a {@link TraitRecord | trait} &mdash; a reusable
+ * Marks a class as a {@link TraitRecord | trait} — a reusable
  * collection of fields that can be composed onto a {@link Resource} (or
  * another {@link Trait}) via {@link trait}.
  *

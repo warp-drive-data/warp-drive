@@ -1,5 +1,6 @@
 ---
 title: Overview
+description: Enable WarpDrive's regionalized debug logging with `setWarpDriveLogging` at runtime or via build config, using flags such as LOG_REQUESTS, LOG_CACHE, and LOG_GRAPH.
 ---
 
 # Debugging

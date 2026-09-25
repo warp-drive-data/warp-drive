@@ -21,7 +21,7 @@ export interface ObjectSchemaOptions {
 }
 
 /**
- * Marks a class as an {@link ObjectSchemaRecord | object schema} &mdash; an
+ * Marks a class as an {@link ObjectSchemaRecord | object schema} — an
  * embedded structure with no independent identity of its own, for use as
  * the value of a {@link schemaObject} or {@link schemaArray} field.
  *

@@ -29,7 +29,7 @@ export interface ArrayFieldOptions {
 }
 
 /**
- * Marks a property as an {@link ArrayField} &mdash; an array of primitive
+ * Marks a property as an {@link ArrayField} — an array of primitive
  * values. For arrays of well-defined objects, use {@link schemaArray}.
  *
  * @example

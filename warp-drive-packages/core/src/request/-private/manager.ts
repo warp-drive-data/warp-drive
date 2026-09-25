@@ -98,6 +98,7 @@ import { executeNextHandler, IS_CACHE_HANDLER } from './utils';
  * type StructuredDocument<T> = StructuredDataDocument<T> | StructuredErrorDocument;
  * ```
  *
+ * @summary Runs each request through a chain of handlers that can fulfill, modify, or pass it along, and returns a `Future` for the response.
  * @public
  */
 export class RequestManager {

@@ -1,3 +1,7 @@
+---
+description: 'Start contributing to WarpDrive itself: find the issue tracker, RFC label, and Discord, then follow links to project setup, architecture, docs, and the RFC process.'
+---
+
 # Become A Contributor
 
 Anyone can contribute to WarpDrive. Contributing can be as simple as opening an issue or helping to track down the cause of one. Or as involved as contributing a fix, helping with routine maintenance, or implementing a big new feature. Even small PRs to fix or improve documentation are hugely beneficial, and our policy is to always work to review and merge PRs as quickly as possible. 

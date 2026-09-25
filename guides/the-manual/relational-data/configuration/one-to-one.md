@@ -1,3 +1,7 @@
+---
+description: Define a bidirectional one-to-one relationship with belongsTo on both sides and managed inverses, or split it into two one-to-none relationships, via Model or schema.
+---
+
 # One To One Relationships
 
 Imagine our social network for trail runners 🏃🏃🏾‍♀️ allows runners to add their other social accounts. For instance, the TrailRunner [@runspired](https://github.com/runspired) might add their Instagram account.

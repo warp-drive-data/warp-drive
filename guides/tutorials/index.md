@@ -1,5 +1,6 @@
 ---
 title: Overview
+description: Placeholder for WarpDrive's step-by-step tutorials, which are still under construction with no walkthroughs published yet; use the manual instead for now.
 ---
 
 # Tutorials

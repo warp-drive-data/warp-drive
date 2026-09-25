@@ -1,5 +1,6 @@
 ---
 title: Resources
+description: Define a resource schema as a class with `@Resource`, `@field`, and `@id`, wire the `@warp-drive/schema-dsl` Vite plugin, and register the compiled output with the store (draft).
 order: 1
 draft: true
 ---

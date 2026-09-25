@@ -1,3 +1,7 @@
+---
+description: Write pure builder functions that return typed RequestInfo objects, and produce stable RequestKeys with sortQueryParams, buildQueryParams, and filterEmpty.
+---
+
 # Builders
 
 Builders are simple functions that produce a json [request object](/api/@warp-drive/core/types/request/types/RequestInfo). Builders help you to write organized, reusable requests.

@@ -1,3 +1,7 @@
+---
+description: Configure a many-to-one relationship, which WarpDrive treats as the one-to-many configuration viewed from the belongsTo side; this stub redirects to that page.
+---
+
 # Many To One Relationships
 
 Many To One Relationships are the same as [One to Many relationships](./one-to-many.md). Just flip the order in
