@@ -39,6 +39,10 @@ Use one-way relationships when the reverse list would be large or meaningless (a
 should not imply a user's list of every comment ever written) — see
 [Large Collections](../advanced/large-collections.md).
 
+The [one-to-none](../configuration/one-to-none.md) and
+[many-to-none](../configuration/many-to-none.md) guides show a one-way relationship of each
+cardinality.
+
 ## Two-Way Relationships
 
 ```ts
@@ -50,8 +54,10 @@ should not imply a user's list of every comment ever written) — see
 
 With inverses declared on both sides, a change to either side updates the other. Pushing a
 `comment` whose `post` is `1` adds it to `post:1.comments`; removing it from `post.comments.data`
-clears `comment.post.data`. The [configuration guides](../index.md#configuration) walk through
-each cardinality.
+clears `comment.post.data`. The configuration guides show a two-way relationship of each
+cardinality: [one-to-one](../configuration/one-to-one.md),
+[one-to-many](../configuration/one-to-many.md) and
+[many-to-many](../configuration/many-to-many.md).
 
 Inverses may pair any relationship kinds: `collection` ↔ `resource`, `collection` ↔ `collection`,
 `resource` ↔ `resource`, and each of these with the legacy `hasMany`/`belongsTo` kinds.
