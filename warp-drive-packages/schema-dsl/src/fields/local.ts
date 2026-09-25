@@ -20,7 +20,7 @@ export interface LocalOptions {
 }
 
 /**
- * Marks a property as a {@link LocalField} &mdash; state that lives only on
+ * Marks a property as a {@link LocalField} — state that lives only on
  * the record instance, is never read from or written to the cache, and is
  * never sent to the server.
  *

@@ -1,5 +1,6 @@
 ---
 title: Using "Just Fetch"
+description: Use a standalone RequestManager with the Fetch handler and no Store, register Handler objects with use, and read the Future and StructuredDocument it returns; draft page.
 draft: true
 ---
 

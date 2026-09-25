@@ -40,8 +40,8 @@ export interface ResourceOptions {
 }
 
 /**
- * Marks a class as a resource schema &mdash; a primary resource with its own
- * unique {@link IdentityField | identity} &mdash; compiling it to a
+ * Marks a class as a resource schema — a primary resource with its own
+ * unique {@link IdentityField | identity} — compiling it to a
  * {@link PolarisResourceSchema}, or a {@link LegacyResourceSchema} when
  * {@link ResourceOptions.legacy} is set.
  *

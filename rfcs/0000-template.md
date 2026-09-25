@@ -6,6 +6,8 @@ draft: true
 title: # Replace with your RFC's title -- do not start it with "WarpDrive" (the sync bot adds a
   # "WarpDrive: " prefix automatically for the emberjs/rfcs copy and PR title; a local title
   # that already starts with "WarpDrive" would end up doubled there)
+description: # One sentence saying what this RFC proposes. It becomes the page's entry in the docs
+  # site's llms.txt and is stripped from the emberjs/rfcs copy. Do not mention the stage.
 warp-drive-rfc: # Fill in with the next available number in this repo (also use it as the file's 000N- prefix)
 emberjs-rfc: # Leave blank -- filled in by the sync bot once this RFC is first mirrored to emberjs/rfcs
 emberjs-pr: # Leave blank -- filled in by the sync bot

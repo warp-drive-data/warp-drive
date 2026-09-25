@@ -83,6 +83,8 @@ export function sha256(text) {
 /** Our sync-tracking keys, layered on top of the fields emberjs/rfcs' own template uses -- stripped before content is pushed upstream, since they're meaningless there. */
 export const WARP_DRIVE_ONLY_KEYS = [
   'title',
+  // one-line summary for the docs site's llms.txt entry; emberjs/rfcs has no use for it
+  'description',
   'warp-drive-rfc',
   'emberjs-rfc',
   'emberjs-pr',

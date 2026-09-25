@@ -1,3 +1,7 @@
+---
+description: Type request responses with withResponseType and withReactiveResponse, including the ReactiveDataDocument meta, errors, and error-meta type params.
+---
+
 # Typing Requests
 
 Use [withResponseType](/api/@warp-drive/core/request/functions/withResponseType) to supply the response type.
