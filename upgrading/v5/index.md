@@ -422,7 +422,7 @@ export default useLegacyStore({
   - [LinksMode setting](/api/@warp-drive/legacy/types/LegacyModelAndNetworkAndRequestStoreSetupOptions#linksmode)
   - [legacyRequests setting](/api/@warp-drive/legacy/types/LegacyModelAndNetworkAndRequestStoreSetupOptions#legacyrequests)
   - [modelFragments setting](/api/@warp-drive/legacy/types/LegacyModelAndNetworkAndRequestStoreSetupOptions#modelfragments)
-  - About the [LinksMode feature](/guides/the-manual/misc/links-mode)
+  - About the [LinksMode feature](/guides/the-manual/relational-data/features/links-mode)
 - [Model Migration Support](/api/@warp-drive/legacy/model/migration-support/)
   - the legacy store uses the [DelegatingSchemaService](/api/@warp-drive/legacy/model/migration-support/classes/DelegatingSchemaService)
   - [withDefaults](/api/@warp-drive/legacy/model/migration-support/functions/withDefaults)

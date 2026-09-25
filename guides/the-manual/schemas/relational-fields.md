@@ -112,7 +112,7 @@ be alerted when a relationship payload grows past a chosen size.
 ## Legacy `belongsTo` And `hasMany`
 
 The legacy kinds are documented in the [LegacyMode](./resources/legacy-mode.md) guide and in
-[LinksMode](../misc/links-mode.md). They require `options.async` and `options.inverse` to be set
+[LinksMode](../relational-data/features/links-mode.md). They require `options.async` and `options.inverse` to be set
 explicitly and additionally accept `options.linksMode` and `options.resetOnRemoteUpdate`.
 
 To move a legacy field to `resource` or `collection`, follow

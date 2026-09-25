@@ -68,7 +68,7 @@ for `Adapters` and `Serializers`.
 Reasons to configure this legacy support include:
 
 - You have an existing application that has not migrated all requests away from this pattern
-- You are creating a new application and [LinksMode](../../../the-manual/misc/links-mode.md) is not sufficient
+- You are creating a new application and [LinksMode](../../../the-manual/relational-data/features/links-mode.md) is not sufficient
 
 1. Ensure `@ember-data/legacy-compat` is [installed](../index.md#installation) with the proper version
 2. Add desired hooks to the store. The below example builds from the `Model` example in the prior guide.

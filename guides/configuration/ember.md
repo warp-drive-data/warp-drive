@@ -51,7 +51,7 @@ Some example APIs you may still be using that are reasons to configure this lega
 - You still fetch data with the Legacy builders
 - You still use `model.save` or `model.destroyRecord`
 
-You may also find you want to use Legacy Requests if you are creating a new application and [LinksMode](../the-manual/misc/links-mode.md) is not sufficient
+You may also find you want to use Legacy Requests if you are creating a new application and [LinksMode](../the-manual/relational-data/features/links-mode.md) is not sufficient
 
 - add the LegacyNetworkHandler
 - add the Legacy Request APIs back
