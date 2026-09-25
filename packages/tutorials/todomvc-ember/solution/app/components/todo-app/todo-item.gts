@@ -8,8 +8,6 @@ import { tracked } from '@glimmer/tracking';
 import type Store from '#app/data/store.ts';
 // #remove-from-starter
 import { deleteTodo } from '#app/data/builders/delete.ts';
-// #end-remove-from-starter
-// #remove-from-starter
 import { patchCacheTodoActivated, patchCacheTodoCompleted, patchTodo } from '#app/data/builders/update.ts';
 // #end-remove-from-starter
 import type { EditableTodo, Todo } from '#app/data/schemas/todo.ts';

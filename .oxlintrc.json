@@ -609,7 +609,7 @@
     {
       // A starter's TODO stubs leave imports and locals unused until the learner
       // fills them in. The imports stay so each chapter has what it needs in scope.
-      "files": ["packages/tutorials/*/starter/**"],
+      "files": ["packages/tutorials/*/starter/app/**"],
       "rules": {
         "no-unused-vars": "off"
       }

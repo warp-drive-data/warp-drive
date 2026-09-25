@@ -7,8 +7,6 @@ import { Request } from '@warp-drive/ember';
 import { HandleError } from '#app/components/design-system/error.gts';
 // #remove-from-starter
 import { bulkDeleteTodos } from '#app/data/builders/bulk.ts';
-// #end-remove-from-starter
-// #remove-from-starter
 import { getCompletedTodos } from '#app/data/builders/query.ts';
 // #end-remove-from-starter
 import type { Todo } from '#app/data/schemas/todo.ts';
