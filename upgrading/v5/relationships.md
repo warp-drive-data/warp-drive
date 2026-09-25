@@ -1,6 +1,5 @@
 ---
 title: Migrating Relationships to resource and collection
-description: Convert legacy belongsTo and hasMany fields to the resource and collection kinds, classify each relationship, update reads to doc.data and writes to the document, and load async relationships with fetch.
 outline:
   level: 2,3
 ---
