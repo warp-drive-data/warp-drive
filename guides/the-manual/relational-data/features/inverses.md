@@ -24,12 +24,11 @@ field is its **inverse**.
 }
 ```
 
-::: tip `inverse: null` is the declaration
-`inverse: null` is what makes a relationship one-way. For `resource` and `collection` fields it is
-also the default when `inverse` is omitted, but declare it explicitly anyway: it tells readers of
-the schema that the missing reverse field is intentional, and it matches the legacy `belongsTo`
-and `hasMany` kinds, which infer an inverse when the option is omitted and only stay one-way when
-it is `null`.
+::: tip Always declare `inverse`
+Set `inverse` on every relationship field, to `null` or to a field name. WarpDrive never infers an
+inverse: the legacy `belongsTo` and `hasMany` kinds require the option and assert when it is
+missing. An explicit `null` also tells readers of the schema that the missing reverse field is
+intentional.
 :::
 
 With `inverse: null` WarpDrive treats the relationship as one-way. Setting `post.author.data`
@@ -56,6 +55,20 @@ each cardinality.
 
 Inverses may pair any relationship kinds: `collection` ↔ `resource`, `collection` ↔ `collection`,
 `resource` ↔ `resource`, and each of these with the legacy `hasMany`/`belongsTo` kinds.
+
+### How The Two Sides Are Matched
+
+- `inverse` is the **`name`** of the field on the related type, not its `sourceKey`, and that
+  field must exist and be a relationship field; WarpDrive asserts otherwise.
+- Each field may be the inverse of only one relationship. If two fields on the same type both
+  declare `inverse: 'owner'`, WarpDrive asserts; give one of them a different inverse or
+  `inverse: null`, or introduce a join resource.
+- A field may be its own inverse on a self-referential type, such as a `user` whose `friends`
+  declares `inverse: 'friends'`.
+- When the related `type` is an abstract type shared by several resources, mark the field
+  `polymorphic: true`, and have each implementing resource declare `as` with that abstract type
+  on its inverse field. [Polymorphism](./polymorphism.md) covers the setup; `as` together with
+  `inverse: null` is an error, because with no inverse there is nothing to conform to.
 
 ## Which Records See An Edit
 
