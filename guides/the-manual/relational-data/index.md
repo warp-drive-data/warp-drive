@@ -48,7 +48,6 @@ The exact rules every relationship kind follows are collected in the
 ## Mutating Relationships
 - [Adding & Removing](./mutating/adding-and-removing.md)
 - [Saving](./mutating/saving.md)
-- [Sorting & Filtering](./mutating/sorting-and-filtering.md)
 
 ## Reference
 - [Relationship Specification](./spec.md)
