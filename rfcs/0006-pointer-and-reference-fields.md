@@ -2,10 +2,10 @@
 title: Pointer and Reference Fields
 description: Proposes four PolarisMode relationship field kinds (pointer, pointer-array, reference, reference-array) for relationships WarpDrive never fetches or validates for delivery, where pointers assert the related resource is loaded and references tolerate its absence.
 warp-drive-rfc: 6
-emberjs-rfc:
-emberjs-pr:
-emberjs-branch:
-sync-hash:
+emberjs-rfc: 1241
+emberjs-pr: https://github.com/emberjs/rfcs/pull/1241
+emberjs-branch: rfc-6-pointer-and-reference-fields
+sync-hash: 516cdeadc6eafdcbaacb03f77f7d7d8b3fc3ec9c7df1ac8563dab495018ae302
 stage: proposed
 start-date: 2026-09-25T00:00:00.000Z
 release-date:
