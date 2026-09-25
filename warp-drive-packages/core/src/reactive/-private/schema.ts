@@ -16,6 +16,7 @@ import type { Derivation, HashFn } from '../../types/schema/concepts.ts';
 import {
   type ArrayField,
   type CacheableFieldSchema,
+  type CollectionField,
   type DerivedField,
   type FieldSchema,
   type GenericField,
@@ -32,10 +33,12 @@ import {
   type ObjectField,
   type ObjectSchema,
   type PolarisResourceSchema,
+  type ResourceField,
   type ResourceSchema,
   type SchemaArrayField,
   type SchemaObjectField,
   type Trait,
+  isRelationshipKind,
 } from '../../types/schema/fields.ts';
 import { Type } from '../../types/symbols.ts';
 import type { WithPartial } from '../../types/utils.ts';
@@ -518,7 +521,17 @@ type AbstractTypeImplementerField =
   | LegacyBelongsToField
   | LegacyHasManyField
   | LinksModeBelongsToField
-  | LinksModeHasManyField;
+  | LinksModeHasManyField
+  | ResourceField
+  | CollectionField;
+
+function isAbstractTypeImplementerField(field: FieldSchema): field is AbstractTypeImplementerField {
+  return isRelationshipKind(field.kind);
+}
+
+function isLegacyRelationshipField(field: FieldSchema): field is LegacyRelationshipField {
+  return field.kind === 'belongsTo' || field.kind === 'hasMany';
+}
 
 /**
  * A relationship field contributed to an abstract type's schema, along with
@@ -835,8 +848,12 @@ export class SchemaService implements SchemaServiceInterface {
       fields.set(field.name, field);
       if (field.kind === 'attribute') {
         attributes[field.name] = field;
-      } else if (field.kind === 'belongsTo' || field.kind === 'hasMany') {
-        relationships[field.name] = field;
+      } else if (isAbstractTypeImplementerField(field)) {
+        // the `relationships` map is the legacy (Model-era) view of the schema
+        // and only ever contains belongsTo/hasMany fields.
+        if (isLegacyRelationshipField(field)) {
+          relationships[field.name] = field;
+        }
         if (field.options?.as) {
           abstractImplementations.push(field);
         }
@@ -855,7 +872,9 @@ export class SchemaService implements SchemaServiceInterface {
         const ownField = fields.get(name);
         if (!ownField) {
           fields.set(name, contribution.field);
-          relationships[name] = contribution.field;
+          if (isLegacyRelationshipField(contribution.field)) {
+            relationships[name] = contribution.field;
+          }
         } else if (DEBUG) {
           assertConsistentAbstractFieldShape(schema.type, name, contribution, { field: ownField, source: schema.type });
         }
@@ -898,7 +917,7 @@ export class SchemaService implements SchemaServiceInterface {
 
   /** @internal */
   private _registerAbstractTypeImplementation(field: AbstractTypeImplementerField, implementer: string): void {
-    const abstractType = field.options.as!;
+    const abstractType = field.options!.as!;
 
     let implementerFields = this._abstractImplementerFields.get(abstractType);
     if (!implementerFields) {
@@ -965,7 +984,9 @@ export class SchemaService implements SchemaServiceInterface {
     }
 
     abstractSchema.fields.set(field.name, abstractField);
-    abstractSchema.relationships[field.name] = abstractField;
+    if (isLegacyRelationshipField(abstractField)) {
+      abstractSchema.relationships[field.name] = abstractField;
+    }
 
     // If the schema is mid-finalization (traits pending), finalizeResource
     // will recompute cacheFields from the current `fields` map anyway; avoid
