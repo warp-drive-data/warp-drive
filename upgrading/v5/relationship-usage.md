@@ -1,6 +1,5 @@
 ---
 title: Migrating Async Relationship Usage
-description: Move implicit async relationship usage in each blocks, getters, and computed properties to Await and getPromiseState, then to requests, then to resource and collection fields.
 outline:
   level: 2,3
 ---
