@@ -1,3 +1,7 @@
+---
+description: How the Graph stores one edge per resource and relationship field, keeps inverses in sync, tracks local versus remote state, and applies remote pushes and local mutations.
+---
+
 # Understanding "the Graph"
 
 Relationship state is not stored on records. It lives in **the Graph**, a relational map owned by

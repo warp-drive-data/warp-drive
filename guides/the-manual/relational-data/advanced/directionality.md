@@ -1,3 +1,7 @@
+---
+description: "Choose between unidirectional and bidirectional relationships with options.inverse, including inverse: null (the default for resource and collection) and how inverses stay consistent."
+---
+
 # Directionality
 
 Every relationship has a direction: it is declared on one resource type and points at another.

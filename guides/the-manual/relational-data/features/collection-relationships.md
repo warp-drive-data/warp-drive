@@ -1,3 +1,7 @@
+---
+description: "Declare a collection relationship (kind: 'collection') that points at a set of related records, read its reactive document's data, links, and meta, and mutate the membership array."
+---
+
 # Collection Relationships
 
 A **collection relationship** points at a set of related resources. In a schema it is a field with

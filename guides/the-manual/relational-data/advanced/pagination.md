@@ -1,3 +1,7 @@
+---
+description: Relationships are not paginated; load paginated lists with top-level requests that carry page, sort, and filter parameters and follow their next and prev links.
+---
+
 # Pagination
 
 Relationships in WarpDrive are **not paginated**. A `collection` relationship (or `hasMany`) holds

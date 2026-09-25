@@ -1,3 +1,7 @@
+---
+description: Sort and filter related records by deriving a new array for display or by issuing a top-level query request; relationships hold membership only and are never sorted or filtered in place.
+---
+
 # Sorting & Filtering
 
 A relationship represents **which** resources are related — not how a particular screen wants to

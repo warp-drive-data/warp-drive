@@ -1,3 +1,7 @@
+---
+description: "What options.async means on resource and collection fields: async requires a related link and may omit data, sync requires data, and every referenced resource must be included in the payload."
+---
+
 # Sync vs Async
 
 Every relationship field declares `options.async`. For `resource` and `collection` fields the flag

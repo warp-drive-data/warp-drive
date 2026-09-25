@@ -1,3 +1,7 @@
+---
+description: Add, remove, replace, and reorder related records through a relationship document's data on an editable record, in LegacyMode directly or in PolarisMode on a checked-out copy.
+---
+
 # Adding & Removing
 
 Relationships are edited through the value of the field on an **editable** record. Which records

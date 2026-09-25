@@ -1,3 +1,7 @@
+---
+description: "Declare a resource relationship (kind: 'resource') that points at a single related record, read its reactive document's data, links, and meta, and edit it through the document's data."
+---
+
 # Resource Relationships
 
 A **resource relationship** points at a single related resource. In a schema it is a field with
