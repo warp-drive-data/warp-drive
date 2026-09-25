@@ -5,7 +5,11 @@ import type { Store } from '../../../index.ts';
 import { withBrand } from '../../../request.ts';
 import { defineGate, notifyInternalSignal, peekInternalSignal, withSignalStore } from '../../../signals/-private.ts';
 import { createRelatedCollection, recordIdentifierFor } from '../../../store/-private.ts';
-import type { NotificationChannel } from '../../../store/-private/managers/notification-manager.ts';
+import type {
+  NotificationChannel,
+  NotificationType,
+  UnsubscribeToken,
+} from '../../../store/-private/managers/notification-manager.ts';
 import type { ReactiveResourceArray } from '../../../store/-private/record-arrays/resource-array.ts';
 import type { CollectionRelationship, ResourceRelationship } from '../../../types/cache/relationship.ts';
 import type { ResourceKey } from '../../../types/identifier.ts';
@@ -174,6 +178,13 @@ interface RelationshipSource {
    * reuse `collection`, since their `data` already renders remote state.
    */
   remoteCollection: ReactiveResourceArray | null;
+  /**
+   * An editable resource only subscribes to `'local'` relationship
+   * notifications, but its document also renders remote state (`remoteData`,
+   * `isDirty`, `links`, `meta`). This subscription delivers the `'remote'`
+   * notifications those need, e.g. a payload that confirms a local change.
+   */
+  remoteSubscription: UnsubscribeToken | null;
 }
 
 interface PrivateRelationshipDocument extends ReactiveRelationshipDocument<unknown> {
@@ -414,14 +425,33 @@ function isRecord(value: unknown): boolean {
  * @private
  */
 export function createRelationshipDocument<T>(
-  source: Omit<RelationshipSource, 'collection' | 'remoteCollection'>
+  source: Omit<RelationshipSource, 'collection' | 'remoteCollection' | 'remoteSubscription'>
 ): ReactiveRelationshipDocument<T> {
   const doc = Object.create(RelationshipDocumentProto) as PrivateRelationshipDocument;
   doc._store = source.store;
-  doc[Context] = Object.assign({ collection: null, remoteCollection: null }, source);
+  const context: RelationshipSource = Object.assign(
+    { collection: null, remoteCollection: null, remoteSubscription: null },
+    source
+  );
+  doc[Context] = context;
   // @ts-expect-error we are initializing it here
   doc.identifier = null;
   withSignalStore(doc);
+
+  if (source.editable) {
+    const { store, resourceKey, path } = source;
+    const key = path[path.length - 1];
+    context.remoteSubscription = store.notifications.subscribe(
+      resourceKey,
+      (_key: ResourceKey, type: NotificationType, field?: string | string[]) => {
+        if (type === 'relationships' && field === key) {
+          notifyRemoteProjection(doc);
+        }
+      },
+      'remote'
+    );
+  }
+
   return doc as unknown as ReactiveRelationshipDocument<T>;
 }
 
@@ -456,6 +486,22 @@ export function notifyRelationshipDocument(
     return;
   }
 
+  notifyRemoteProjection(doc);
+}
+
+/**
+ * Marks the server-owned properties of a relationship document (`links`,
+ * `meta`, `remoteData`) and `isDirty` as stale. `data` is left alone: a
+ * purely remote change never alters the local projection.
+ *
+ * @private
+ */
+function notifyRemoteProjection(doc: ReactiveRelationshipDocument<unknown>): void {
+  upgradeThis(doc);
+  const signals = withSignalStore(doc);
+  const source = doc[Context];
+
+  notifyInternalSignal(peekInternalSignal(signals, 'isDirty'));
   notifyInternalSignal(peekInternalSignal(signals, 'links'));
   notifyInternalSignal(peekInternalSignal(signals, 'meta'));
   notifyInternalSignal(peekInternalSignal(signals, 'remoteData'));
@@ -472,7 +518,12 @@ export function notifyRelationshipDocument(
  */
 export function destroyRelationshipDocument(doc: ReactiveRelationshipDocument<unknown>): void {
   upgradeThis(doc);
-  const { collection, remoteCollection } = doc[Context];
+  const context = doc[Context];
+  const { collection, remoteCollection } = context;
+  if (context.remoteSubscription) {
+    context.store.notifications.unsubscribe(context.remoteSubscription);
+    context.remoteSubscription = null;
+  }
   if (collection && !collection.isDestroyed) {
     collection.destroy(false);
   }
