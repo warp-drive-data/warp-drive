@@ -79,7 +79,9 @@ are marked with ⚠️. Those we'd love to see more polishing work on are also m
 
 Our stretch goals for Polaris are:
 
-- Pagination Primitives (components, state utils, and upgrade to RecordArrays/document storage)
+- Pagination Primitives (components, state utils, and upgrade to RecordArrays/document storage);
+  the components and state utils have shipped as an experiment, see
+  [Pagination](../the-manual/experiments/pagination.md)
 - Paginated Relationships (collection field schema impl)
 - Tree/LinkedList Utilities
 - Custom Field Schemas

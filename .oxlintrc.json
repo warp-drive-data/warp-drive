@@ -598,6 +598,15 @@
       }
     },
     {
+      // Tutorial apps are copied out to learners as ordinary Ember apps, so they use the
+      // standard app imports (ember-qunit, @ember/test-helpers, …) rather than this repo's
+      // internal test infrastructure.
+      "files": ["packages/tutorials/**"],
+      "rules": {
+        "no-restricted-imports": "off"
+      }
+    },
+    {
       "files": [
         "packages/graph/**",
         "packages/request-utils/**",
@@ -1216,6 +1225,7 @@
     {
       "files": [
         "packages/-ember-data/src/test-support/**",
+        "packages/tutorials/*/*/tests/**",
         "tests/blueprints/tests/**",
         "tests/codemods/tests/**",
         "tests/core/tests/**",
