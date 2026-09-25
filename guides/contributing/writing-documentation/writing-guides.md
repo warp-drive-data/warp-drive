@@ -1,5 +1,6 @@
 ---
 title: Writing Guides
+description: How to write a tutorial, concept, or reference guide for the docs site, where the files live, and what frontmatter and tags shape the Markdown that coding agents read.
 ---
 
 # Writing Guides
@@ -57,6 +58,26 @@ details.
 Guides are markdown files under `guides/`. Add a new page's slug to the `items` list in its
 directory's `_meta.json` so it sorts where you intend; the keys, `draft` behavior, sidebar, and
 preview are covered in [How the Docs Site Is Built](./index.md#how-the-docs-site-is-built).
+
+## Frontmatter and Agent-Only Content
+
+Every page is also published as plain Markdown for coding agents and indexed in `llms.txt` (see
+[LLM Optimized Documentation](https://warp-drive.io/llm-docs)). Two things in the source affect
+what those agents get:
+
+- **`description` in the frontmatter.** The `llms.txt` entry for a page is its title alone unless
+  the frontmatter sets `description`, in which case the entry reads
+  `- [Title](url): description`. An agent choosing which of 900 pages to fetch has only that line
+  to go on, so give every new page a one-sentence `description` that says what a reader can do
+  after reading it, and add one to any page you touch that lacks it.
+- **`<llm-only>` and `<llm-exclude>` tags.** Content wrapped in `<llm-only>` appears only in the
+  Markdown outputs, never on the website; `<llm-exclude>` is the reverse. Use `<llm-only>` for an
+  instruction that only makes sense to an agent ("always pair this with the schema from the
+  previous section") and `<llm-exclude>` for a screenshot walkthrough or a "click here" aside. Both
+  are rare; a page that reads well to a human usually reads well to an agent.
+
+Callouts (`:::tip`) and `:::tabs` reach agents in their raw form, so write the tab labels and
+callout titles as if they will be read as plain text.
 
 ## Upgrading and Blog Pages
 

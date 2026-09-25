@@ -18,9 +18,13 @@ function srcDirForEntryPoint(entryPoint, resolve, options) {
 export function entryPoints(globs, resolve, options) {
   const files = [];
 
-  // expand all globs
+  // expand all globs. `*.type-test.ts` files hold compile-time assertions only
+  // and export nothing, so a glob must never turn one into a build entry (it
+  // would ship in dist and get an empty API docs page).
   globs.forEach((glob) => {
-    glob.includes('*') || glob.includes('{') ? files.push(...fs.globSync(glob)) : files.push(glob);
+    glob.includes('*') || glob.includes('{')
+      ? files.push(...fs.globSync(glob).filter((file) => !file.endsWith('.type-test.ts')))
+      : files.push(glob);
   });
 
   // resolve all files to full paths
