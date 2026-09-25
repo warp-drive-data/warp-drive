@@ -72,12 +72,13 @@ jobs:
             done
 
             git add -A
+            # Every line of this script must stay indented at least as far as its first
+            # line: a less-indented line ends the YAML block scalar and leaves the rest of
+            # the script to be parsed as workflow keys, which makes the whole file invalid.
             message='Compact gh-pages history'
             if [ "${#removed[@]}" -gt 0 ]; then
-              message="$message
-
-Also removes previews for closed PRs:
-$(printf '#%s\n' "${removed[@]}")"
+              message+=$'\n\nAlso removes previews for closed PRs:\n'
+              message+="$(printf '#%s\n' "${removed[@]}")"
             fi
             git commit -q -m "$message"
 
