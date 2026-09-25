@@ -16,7 +16,9 @@ The browser sends no preflight, and the app itself runs over HTTPS with holodeck
 instead of plain HTTP.
 
 Caddy is the worked example. Any reverse proxy that speaks HTTP/2 to its upstream can do the same
-job.
+job. If you only want one origin and not HTTPS,
+[Holodeck through the Vite dev server](/guides/the-manual/cookbook/holodeck-through-the-vite-dev-server.md)
+does it from `vite.config.mjs` with nothing to install.
 
 ## Before you start
 
@@ -150,6 +152,8 @@ preflight.
 
 ## Related
 
+- [Holodeck through the Vite dev server](/guides/the-manual/cookbook/holodeck-through-the-vite-dev-server.md)
+  forwards the same requests from Vite with `fetch`, on plain HTTP.
 - [Holodeck in dev mode](/guides/the-manual/cookbook/holodeck-in-dev-mode.md) runs the suite from
   the dev server.
 - [Server setup](/guides/the-manual/testing/server-setup.md) installs holodeck.
