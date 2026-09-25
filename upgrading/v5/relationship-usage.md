@@ -1,6 +1,6 @@
 ---
 title: Migrating Async Relationship Usage
-description: How to migrate templates, getters, and computed properties that read async belongsTo and hasMany relationships implicitly, in three phases ending on the resource and collection kinds.
+description: Move implicit async relationship usage in each blocks, getters, and computed properties to Await and getPromiseState, then to requests, then to resource and collection fields.
 outline:
   level: 2,3
 ---
