@@ -30,8 +30,10 @@ are instead expected to have been loaded by some other request. A **pointer** de
 related resource *must* already be in the cache when the field is read; WarpDrive asserts this
 in development builds. A **reference** declares that the related resource *may* be missing; the
 field exposes the related identity together with the record if (and only if) it is loaded. All
-four kinds are synchronous, unidirectional (no inverse), never fetch, and never participate in
-the relationship graph. This RFC is one of the pieces of
+four kinds are synchronous, unidirectional (no inverse), and never fetch. They live in the
+relationship graph like every other relationship, with one deliberate difference: a committed
+delete of a related resource removes it from a pointer or reference, but a plain `unloadRecord`
+does not. This RFC is one of the pieces of
 [#10408, "The Road to PolarisMode"](https://github.com/warp-drive-data/warp-drive/issues/10408);
 it does not cover the `resource`/`collection` fields, paginated collections, or inverses.
 
@@ -301,9 +303,10 @@ interface ReactiveReference<T> {
 
   /**
    * The related record, if and only if the resource identified by
-   * `key` is currently in the cache and not deleted. Reactive: it
-   * becomes non-null when the resource is loaded and null again if
-   * it is unloaded or its deletion is committed.
+   * `key` is currently in the cache. Reactive: it becomes non-null
+   * when the resource is loaded and null again if it is unloaded. A
+   * committed delete removes the entry from the relationship instead
+   * (see Storage below), so a reference never outlives its target.
    */
   readonly data: T | null;
 }
@@ -311,51 +314,77 @@ interface ReactiveReference<T> {
 
 `data` is signal-backed. A `ReactiveReference` subscribes to the store's `NotificationManager`
 for its `key` and re-resolves via the same "is this resource loaded" check `store.peekRecord`
-uses (`cache.isEmpty` and `cache.isDeletionCommitted`), so it observes the resource arriving,
-being unloaded, or being deleted without the reference having any relationship to the graph. A
-`ReactiveReference` is created lazily on first read and cached per field on the owning record,
-so repeated reads and renders share one instance.
+uses (`cache.isEmpty`), so it observes the resource arriving or being unloaded. A committed
+delete is the graph's job (see [Storage](#storage-in-the-graph-with-unload-tolerant-inverses)):
+it removes the entry from the relationship outright rather than leaving behind a reference whose
+`data` can never load. A `ReactiveReference` is created lazily on first read and cached per field
+on the owning record, so repeated reads and renders share one instance.
 
 This shape is intentionally the "not loaded" half of the shape the LinksMode guide already
 describes for a future async `resource` field (`links`, `meta`, and `data` only-if-loaded), minus
 the parts a reference cannot have. A reference is what an async relationship looks like when
 there is nothing to fetch it with.
 
-### Cache storage: alongside attributes, outside the graph
+### Storage: in the graph, with unload-tolerant inverses
 
-Pointers and references do not participate in the relationship graph. The graph exists to
-maintain bidirectional consistency (inverses, including the implicit inverse it creates for
-`inverse: null` relationships) and to reconcile remote and local membership under mutation.
-Pointers and references have no inverse by definition, and their membership is exactly what the
-API delivered: a unidirectional list of identities that no other resource's mutation should
-rewrite. Routing them through the graph would give them behaviour they are defined not to have —
-for instance, unloading a `tag` would silently remove it from every `post.tags`, converting a
-broken promise into an invisible one.
+Pointers and references live in the relationship graph like every other relationship kind. The
+graph is what gives WarpDrive a single answer to "who references this resource," and that answer
+is exactly what these fields need when a related resource is *deleted*: the graph already creates
+an implicit inverse edge for every unidirectional relationship, and on a committed delete (or the
+discard of a never-persisted record) it walks that implicit edge to remove the deleted identity
+from every relationship that held it. Pointers and references want that. A deleted `tag` should
+vanish from `post.tags`, and a deleted `product` should turn `post.featuredProduct` into `null`
+rather than into a reference whose `data` can never load.
 
-Instead, a `Cache` implementation stores a pointer or reference field's `data` in its
-per-resource storage alongside attributes, as stable `ResourceKey`s (so a locally-created related
-record keeps its identity through save), and stores the relationship's `meta` next to it. For the
-JSON:API cache this means `upsert` reads the field out of `relationships` — where the payload
-carries it — and writes it into resource-local storage rather than calling into the graph.
-`links`, if an API happens to send them, are preserved with `meta` but never used.
+What they do **not** want is the graph's current treatment of `unloadRecord`. Today, unloading a
+resource that is the target of a *synchronous* relationship is treated as a client-side delete:
+the graph prunes the unloaded identity from the sync relationship, on the reasoning that a sync
+relationship has no way to refetch it. Asynchronous relationships get the opposite treatment: the
+identity is kept, the edge is flagged as having a dematerialized inverse, and the target's node
+is retained so it can be rematerialized. Pointers and references are synchronous, but their whole
+premise is that the related resource arrives through some *other* request, so an unload is
+merely an eviction, not a statement about the relationship. They therefore take the asynchronous
+branch on unload:
 
-Local changes follow the attribute path. Setting a pointer or reference on an editable record
-(a new record, or a copy obtained via `checkout()`) records a local value; `hasChangedAttrs`,
-`changedAttrs`, `rollbackAttrs`, and the commit flow treat it like any other changed field, and
-the JSON:API serialization utilities emit it under `relationships` with `data` holding the
-identities. The exact `Cache` interface extension is called out in
-[Unresolved questions](#unresolved-questions): either `getAttr`/`setAttr` widen to accept
-identity-shaped values for these kinds, or the interface gains a dedicated pair of methods.
+- On `unloadRecord` of a related resource (the garbage-collection case: the resource is not new
+  and not deleted), the pointer or reference keeps that identity in its membership, and the
+  implicit inverse edge on the unloaded resource is retained rather than discarded, so that a
+  later committed delete can still find and prune the pointing sides. The graph's releasability
+  rule (`isReleasable`), which today keeps a resource's node alive while an async inverse still
+  references it, extends to cover pointer and reference inverses.
+- On a committed delete of a related resource, or the discard of a new one, the graph removes the
+  identity from every pointer and reference that held it, exactly as it does for every other
+  relationship today.
+
+This is the one behavioural difference between these kinds and the existing sync relationships,
+and it is what makes the read-time contracts hold: an unloaded pointer target stays in the
+relationship, so the next read asserts instead of silently returning a shorter array, and an
+unloaded reference target stays in the relationship, so its `key` remains available to fetch
+with.
+
+Because they are graph-backed, the existing relationship-shaped `Cache` APIs apply without
+extension. `getRelationship` and `getRemoteRelationship` return the membership; local changes on
+an editable record go through the existing `replaceRelatedRecord`, `replaceRelatedRecords`,
+`addToRelatedRecords`, and `removeFromRelatedRecords` operations; `hasChangedRelationships`,
+`changedRelationships`, and `rollbackRelationships` report and revert them; and the JSON:API
+cache's `upsert` and the serialization utilities handle them under `relationships` as they do
+any other relationship. The edge definition maps a `pointer`/`reference` to a to-one edge and a
+`pointer-array`/`reference-array` to a to-many edge, the same way `resource` and `collection`
+already map, with `inverse: null` and `async: false` fixed by the kind. `meta` and any `links` on
+the relationship object are stored on the edge as for any relationship; nothing fetches with the
+links.
 
 The values a mutation accepts follow the same contract as reads:
 
 - A `pointer` accepts a record instance or `null`. A `pointer-array` on an editable record is a
-  managed array of record instances (the same mechanics as `schema-array`'s managed array), and
-  accepts a whole-array replacement of record instances. A pointer can only ever be set to
-  something that is loaded, because a record instance is proof of loading.
+  managed array backed by the graph (the same mechanics as today's linksMode `hasMany` array on
+  an editable record), and accepts a whole-array replacement of record instances. A pointer can
+  only ever be set to something that is loaded, because a record instance is proof of loading.
 - A `reference` accepts a record instance, a bare identity (`{ type, id }` or a `ResourceKey`),
-  or `null`. A `reference-array` accepts the same per entry. Accepting bare identities is what
-  lets an app record "the suggestion service said `product:sku-9`" without first loading it.
+  or `null`. A `reference-array` accepts the same per entry. A bare identity is normalized to a
+  stable `ResourceKey` through the store's cache key manager before it reaches the graph, which
+  is what lets an app record "the suggestion service said `product:sku-9`" without first loading
+  it.
 
 ### Validation
 
@@ -393,9 +422,10 @@ applies to all four kinds exactly as it does to the existing relationship kinds.
 ### Reactivity
 
 - A `pointer` and a `pointer-array` are entangled with the owning record's field signal and
-  re-resolve when the cache notifies the field, exactly as the current linksMode `belongsTo`
-  and `hasMany` do. Because their targets are promised present, they do not additionally watch
-  each target's lifecycle; if a target is unloaded, the next read asserts.
+  re-resolve when the graph notifies the field, exactly as the current linksMode `belongsTo`
+  and `hasMany` do; removal on a committed delete arrives the same way. Because their targets
+  are promised present, they do not additionally watch each target's load state; if a target is
+  unloaded, its identity stays in the relationship and the next read asserts.
 - A `ReactiveReference` watches its own `key` as described above. A `reference-array` is
   entangled with the field signal for membership changes, and each entry watches its own key
   for load state.
@@ -517,13 +547,15 @@ relationships as pointer/reference candidates would be useful for migration but 
   read on a code path a test does not exercise fails only in production, silently. This is
   inherent — the promise cannot be checked before it comes due — but it is weaker than the
   guarantee the strict kinds offer.
-- **No automatic cleanup on unload.** Every other relationship kind is rewritten by the graph
-  when a related resource is unloaded or deleted; these are not. This is the intended semantics
-  (the field reports what the API said), but it is a behavioural difference a developer coming
-  from `belongsTo`/`hasMany` will not expect until told.
-- **A Cache interface change.** Storing identities alongside attributes needs either a widening
-  of `getAttr`/`setAttr` or new methods, and third-party `Cache` implementations have to add
-  support for four kinds before schemas using them work against that cache.
+- **Unload and delete diverge.** Every existing sync relationship treats `unloadRecord` of a
+  related record as a client-side delete and prunes it. Pointers and references keep the identity
+  on unload and prune only on a committed delete. This is the intended semantics, but it is a new
+  distinction developers have to learn, and it is the one place these kinds behave differently
+  from the graph's sync defaults.
+- **A graph internals change.** The implicit-inverse handling has to distinguish unload from
+  delete for these kinds, and retain the implicit edge and the target's node across an unload.
+  `Cache` implementations that share `@warp-drive/core`'s graph get this for free; one that
+  manages relationships on its own has to implement the same rule.
 
 ## Alternatives
 
@@ -546,10 +578,17 @@ relationships as pointer/reference candidates would be useful for migration but 
   type would again depend on an option.
 - **Plural kind names** (`pointers`, `references`) instead of `-array`. Purely a naming choice;
   the `-array` suffix follows `schema-array` and is harder to misread. Open for bikeshedding.
-- **Routing pointers and references through the graph as implicit edges.** Rejected because the
-  graph's job — inverse maintenance and mutation reconciliation — is what these fields are
-  defined not to need, and its unload-time membership rewriting would mask exactly the broken
-  promises pointers exist to expose.
+- **Storing pointers and references alongside attributes, outside the graph.** Considered
+  first: with no inverse and no fetching, the graph's machinery looked unnecessary, and the
+  attribute path gives change tracking for free. Rejected because it forfeits the one thing the
+  graph should do here, removing a deleted resource from everything that referenced it via the
+  implicit inverse, and because it would split relationship storage in two, leaving pointers
+  invisible to `getRelationship`, `changedRelationships`, the relationship notification channel,
+  and the graph explorer in [RFC 3](/rfcs/0003-warp-drive-devtools-extension.md).
+- **Treating unload as a client-side delete, as every sync relationship does today.** Rejected
+  because it masks exactly the broken promises pointers exist to expose, and discards the
+  identity references exist to preserve. An unloaded resource is still a real resource on the
+  server; a deleted one is not.
 - **Doing nothing**, and requiring apps to sideload or link every relationship before adopting
   PolarisMode. This is the status quo, and it is the reason relationships are the blocking item
   in #10408: a large class of real apps cannot get there from here without an API change.
@@ -570,9 +609,10 @@ this RFC adopts, but do not distinguish promised from optional presence at the s
   same question.
 - **Kind names.** `pointer`/`pointer-array`/`reference`/`reference-array` versus plural forms,
   or a different base word for either concept.
-- **The `Cache` interface extension.** Widen `getAttr`/`setAttr`/`changedAttrs` to carry
-  identity-shaped values for these kinds, or add dedicated methods (e.g. `getPointer`/
-  `setPointer`) so the attribute methods keep their `Value` typing.
+- **How the graph marks unload-tolerant inverses.** Today `isReleasable` and the
+  dematerialized-inverse handling key off `inverseIsAsync`. Pointers and references need the same
+  retention without being async; whether that reuses the async branch behind a broader predicate
+  or gets its own flag on the edge definition is an implementation choice this RFC leaves open.
 - **Production behaviour for a missing pointer target in a `pointer-array`.** Omit the entry
   (proposed, matches today's linksMode behaviour) versus preserve a `null` hole so the array's
   length still reflects the relationship's membership.
