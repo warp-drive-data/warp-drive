@@ -18,6 +18,8 @@ import * as CURRENT_FEATURES from './canary-features.ts';
  * ***Warp*Drive**. This is useful when managing migrations for canary features
  * and deprecations.
  *
+ * @summary Babel plugins that let addons and apps strip WarpDrive deprecation, feature-flag, debug-logging, and env
+ * code at build time the same way WarpDrive does.
  * @module
  */
 import * as LOGGING from './debugging.ts';
@@ -42,6 +44,8 @@ const config = {
 type BabelPlugin = [string, Record<string, unknown>, string];
 
 /**
+ * @summary Returns the Babel plugin entries that turn WarpDrive deprecation, canary-feature, debug-logging, env, and
+ * assert imports into build-time code-stripping macros.
  * @returns an array of Babel plugins that can be used for code-stripping
  *   based on the configuration supplied to `setConfig` and the current ENV.
  *

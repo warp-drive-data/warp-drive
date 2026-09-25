@@ -1,5 +1,8 @@
 /**
  * {@include ./no-invalid-resource-types.md}
+ *
+ * @summary Lint rule, with autofix, that enforces a configurable naming convention for resource types, defaulting to
+ * singular dasherized.
  * @module
  */
 'use strict';
@@ -75,7 +78,11 @@ function mergeConfig(userConfigs = []) {
   };
 }
 
-/** @type {import('eslint').Rule.RuleModule} */
+/**
+ * @summary ESLint rule object that reports and autofixes resource types passed to store methods and request builders
+ * that break the naming convention.
+ * @type {import('eslint').Rule.RuleModule}
+ */
 module.exports = {
   meta: {
     type: 'problem',

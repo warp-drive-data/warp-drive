@@ -5,6 +5,8 @@ import type { LegacyAttributeField } from '@warp-drive/core/types/schema/fields'
 /**
  * Options accepted by the {@link attribute} decorator.
  *
+ * @summary Options for the legacy `@attribute` decorator that set the compiled attribute field's `sourceKey` and legacy
+ * transform `type`.
  * @public
  */
 export interface AttributeOptions {
@@ -33,6 +35,8 @@ export interface AttributeOptions {
  * Marks a property as a {@link LegacyAttributeField} for use with
  * `@warp-drive/legacy/model`.
  *
+ * @summary LEGACY property decorator that compiles to an attribute field for `@warp-drive/legacy/model` resources;
+ * prefer `field` for new schemas.
  * @example
  * ::: code-group
  *

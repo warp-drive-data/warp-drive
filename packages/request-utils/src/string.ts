@@ -7,6 +7,8 @@
  * recomputing the same value multiple times. The cache size can be set
  * using the `setMaxLRUCacheSize` function. The default size is 10,000.
  *
+ * @summary Re-exports LRU-cached string inflection and case helpers (`pluralize`, `singularize`, `camelize`,
+ * `dasherize`, and others) from `@warp-drive/utilities/string`.
  * @module
  */
 export * from '@warp-drive/utilities/string';

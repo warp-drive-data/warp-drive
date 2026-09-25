@@ -1,4 +1,6 @@
 /**
+ * @summary Legacy entry re-exporting the base `Serializer` class from `@warp-drive/legacy/serializer`, which normalizes
+ * and serializes payloads for the adapter/serializer request path.
  * @module
  * @mergeModuleWith <project>
  */

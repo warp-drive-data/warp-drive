@@ -8,6 +8,8 @@ export type CacheResult<T = unknown, E = unknown> = { isError: true; result: E }
  * (and by `getPromiseState`). Anything that is at least `then`/`catch`/`finally`
  * "shaped" (including a real `Promise` or {@link Future}) satisfies this.
  *
+ * @summary Any promise-like value with `then`, `catch`, and `finally`, as accepted by the promise-result
+ * cache and `getPromiseState`.
  * @public
  */
 export type Awaitable<T = unknown, E = unknown> = {
@@ -52,6 +54,8 @@ export function getRequestResult(requestId: number): CacheResult | undefined {
  * outcome can be synchronously read later via {@link getPromiseResult},
  * without needing to await it again.
  *
+ * @summary Records a promise's settled value or error so it can later be read synchronously with
+ * `getPromiseResult`.
  * @public
  */
 export function setPromiseResult(promise: Promise<unknown> | Awaitable, result: CacheResult): void {
@@ -62,6 +66,8 @@ export function setPromiseResult(promise: Promise<unknown> | Awaitable, result: 
  * Synchronously read the settled result (or error) previously recorded for
  * a promise-like value via {@link setPromiseResult}, if any.
  *
+ * @summary Synchronously returns the settled value or error previously recorded for a promise, or
+ * `undefined` if none was recorded.
  * @public
  */
 export function getPromiseResult<T, E>(promise: Promise<T> | Awaitable<T, E>): CacheResult<T, E> | undefined {

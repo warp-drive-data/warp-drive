@@ -162,6 +162,8 @@ export class ContextOwner {
  * {@link StructuredDataDocument} that will ultimately be returned by the
  * {@link RequestManager}.
  *
+ * @summary The per-request object passed to each handler, exposing the immutable request plus methods to
+ * set the response, stream, and request key.
  * @public
  */
 export class Context {

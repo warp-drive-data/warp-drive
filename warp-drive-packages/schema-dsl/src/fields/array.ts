@@ -6,6 +6,8 @@ import type { ArrayField } from '@warp-drive/core/types/schema/fields';
 /**
  * Options accepted by the {@link array} decorator.
  *
+ * @summary Options for the `@array` decorator that set the compiled array field's `sourceKey` and the transformation
+ * applied to each item.
  * @public
  */
 export interface ArrayFieldOptions {
@@ -32,6 +34,8 @@ export interface ArrayFieldOptions {
  * Marks a property as an {@link ArrayField} — an array of primitive
  * values. For arrays of well-defined objects, use {@link schemaArray}.
  *
+ * @summary Property decorator that compiles to an array field holding primitive values; use `schemaArray` for arrays of
+ * structured objects.
  * @example
  * ::: code-group
  *

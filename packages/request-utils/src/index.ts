@@ -1,4 +1,6 @@
 /**
+ * @summary Legacy entry re-exporting URL and query-param builders from `@warp-drive/utilities` and the default
+ * `CachePolicy`, plus a deprecated `LifetimesService` alias.
  * @module
  * @mergeModuleWith <project>
  */

@@ -5,6 +5,8 @@ import type { LegacyBelongsToField } from '@warp-drive/core/types/schema/fields'
 /**
  * Options accepted by the {@link belongsTo} decorator.
  *
+ * @summary Options for the legacy `@belongsTo` decorator that describe the related type, inverse, async and polymorphic
+ * behavior, and `sourceKey`.
  * @public
  */
 export interface BelongsToOptions {
@@ -65,6 +67,8 @@ export interface BelongsToOptions {
  * Marks a property as a {@link LegacyBelongsToField} for use with
  * `@warp-drive/legacy/model`.
  *
+ * @summary LEGACY property decorator that compiles to a belongsTo relationship field, valid only on resources declared
+ * with `@Resource({ legacy: true })`.
  * @example
  * ::: code-group
  *

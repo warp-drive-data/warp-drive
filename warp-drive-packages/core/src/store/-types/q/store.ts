@@ -4,6 +4,9 @@ import type { Value } from '../../../types/json/raw';
  * Options shared by {@link FindRecordOptions} and {@link FindAllOptions}
  * for controlling reload behavior and adapter/serializer specific
  * configuration when using the legacy Adapter/Serializer network layer.
+ *
+ * @summary Legacy reload, background-reload, include, and adapterOptions settings shared by `store.findRecord` and
+ * `store.findAll`.
  */
 export interface BaseFinderOptions {
   /**
@@ -38,6 +41,9 @@ export interface BaseFinderOptions {
 }
 /**
  * Options for `store.findRecord()`.
+ *
+ * @summary Legacy options for `store.findRecord`, adding a discouraged `preload` of field values to the shared
+ * reload and adapter settings.
  */
 export interface FindRecordOptions extends BaseFinderOptions {
   /**
@@ -63,6 +69,9 @@ export interface FindRecordOptions extends BaseFinderOptions {
  * {@link LegacyResourceQuery}, these options are not sent to the server;
  * only `adapterOptions` is recognized by the store, and it is passed
  * through to `adapter.query`/`adapter.queryRecord` via the request snapshot.
+ *
+ * @summary Legacy options for `store.query` and `store.queryRecord`, of which only `adapterOptions` is used, passed
+ * to the adapter rather than the server.
  */
 export type QueryOptions = {
   [K in string | 'adapterOptions']?: K extends 'adapterOptions' ? Record<string, unknown> : unknown;
@@ -70,6 +79,8 @@ export type QueryOptions = {
 
 /**
  * Options for `store.findAll()`.
+ *
+ * @summary Legacy reload, background-reload, include, and adapterOptions settings for `store.findAll`.
  */
 export type FindAllOptions = BaseFinderOptions;
 
@@ -77,6 +88,9 @@ export type FindAllOptions = BaseFinderOptions;
  * An opaque query object for `store.query()` and `store.queryRecord()`
  * that is passed as-is to the adapter, which is responsible for turning
  * it into request query parameters.
+ *
+ * @summary Legacy query object for `store.query` and `store.queryRecord` that the adapter turns into request query
+ * params, with an optional `include`.
  */
 export type LegacyResourceQuery = {
   /**

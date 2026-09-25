@@ -1,4 +1,6 @@
 /**
+ * @summary Ember components (`Request`, `Await`, `Throw`) and reactive request and promise state utilities for
+ * declarative loading, error, and content handling in templates.
  * @module
  * @mergeModuleWith <project>
  */

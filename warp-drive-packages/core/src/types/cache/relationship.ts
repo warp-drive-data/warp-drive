@@ -15,6 +15,8 @@ import type {
  * Unlike {@link SingleResourceRelationship}, `data` is always in the
  * stable {@link ResourceKey} form rather than a raw resource identifier.
  *
+ * @summary Cache-side state of a to-one relationship, with `data` as a `ResourceKey` or `null` plus optional meta
+ * and links.
  * @example
  * ```ts
  * const relationship: ResourceRelationship = { data: resourceKey };
@@ -42,6 +44,8 @@ export interface ResourceRelationship<T = ResourceKey> {
  * always in the stable {@link ResourceKey} form rather than a raw resource
  * identifier.
  *
+ * @summary Cache-side state of a to-many relationship, with `data` as an array of `ResourceKey`s plus optional
+ * meta and pagination links.
  * @example
  * ```ts
  * const relationship: CollectionRelationship = { data: [resourceKey] };
@@ -68,5 +72,8 @@ export interface CollectionRelationship<T = ResourceKey> {
  * See also:
  * - {@link ResourceRelationship}
  * - {@link CollectionRelationship}
+ *
+ * @summary Cache-side state of a to-one or to-many relationship, with related resources as `ResourceKey`s, as
+ * returned by `cache.getRelationship`.
  */
 export type Relationship<T = ResourceKey> = ResourceRelationship<T> | CollectionRelationship<T>;

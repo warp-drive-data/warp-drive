@@ -6,6 +6,8 @@ import type { RequestKey, ResourceKey } from '../identifier.ts';
  * Describes a single mutation to a resource or document that occurred
  * in the cache, as returned by {@link Cache.diff}.
  *
+ * @summary One upsert or removal of a resource or document recorded by the cache, with an optional patch, as
+ * returned by `cache.diff`.
  * @example
  * ```ts
  * const change: Change = {

@@ -7,6 +7,8 @@ import type { LegacyAliasField, ObjectAliasField, PolarisAliasField } from '@war
  * Options accepted by the {@link alias} decorator, describing the field
  * being aliased.
  *
+ * @summary Options for the `@alias` decorator that identify the existing field (its kind, name, transformation type,
+ * and sourceKey) the alias points to.
  * @public
  */
 export interface AliasOptions {
@@ -49,6 +51,8 @@ export interface AliasOptions {
  * Unlike {@link derived}, an alias may write back to its source field when
  * the record is in an editable mode.
  *
+ * @summary Property decorator that compiles to an alias field, which reads from another field in the same schema and
+ * can write back to it in editable modes.
  * @example
  * ::: code-group
  *

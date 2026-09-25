@@ -7,6 +7,8 @@
  * recomputing the same value multiple times. The cache size can be set
  * using the `setMaxLRUCacheSize` function. The default size is 10,000.
  *
+ * @summary Cached case-conversion and English pluralization helpers, with configurable inflection rules, for mapping
+ * server names.
  * @module
  * @public
  */

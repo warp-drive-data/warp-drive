@@ -36,6 +36,9 @@ let sessionStorageOptions: ReactiveStorageOptions = {};
  * Retrieves the singleton instance of the LocalStorage service.
  *
  * If the instance does not already exist, it is created.
+ *
+ * @summary Experimental function that returns the shared reactive wrapper around localStorage, creating it on first
+ * call.
  */
 export function getLocalStorage(): ReactiveStorage {
   if (!localStorageInstance) {
@@ -66,6 +69,9 @@ export function getCacheStorage(namespace: string | null = null): ReactiveStorag
 /**
  * Configure options for the localStorage singleton.
  * Must be called before getLocalStorage() is first invoked.
+ *
+ * @summary Experimental function that sets fallback and quota-handling options for the reactive localStorage singleton
+ * before its first use.
  */
 export function configureLocalStorage(options: ReactiveStorageOptions): void {
   localStorageOptions = options;
@@ -74,6 +80,9 @@ export function configureLocalStorage(options: ReactiveStorageOptions): void {
 /**
  * Configure options for the sessionStorage singleton.
  * Must be called before getSessionStorage() is first invoked.
+ *
+ * @summary Experimental function that sets fallback and quota-handling options for the reactive sessionStorage
+ * singleton before its first use.
  */
 export function configureSessionStorage(options: ReactiveStorageOptions): void {
   sessionStorageOptions = options;
@@ -124,6 +133,9 @@ export type EffectStorageEvent = CacheStorageEvent | StorageEvent;
  *
  * Route storage-event subscribers through this helper instead of calling
  * `window.addEventListener('storage', ...)` directly.
+ *
+ * @summary Experimental helper that subscribes to storage changes from both native `StorageEvent`s and `CacheStorage`
+ * notifications, returning an unsubscribe function.
  */
 export function onStorageEvent(listener: (event: EffectStorageEvent) => void): () => void {
   const handler = (event: StorageEvent | CustomEvent<CacheStorageEvent>): void => {
@@ -139,6 +151,9 @@ export function onStorageEvent(listener: (event: EffectStorageEvent) => void): (
  * that provides signal-based access to storage items and length.
  *
  * Will automatically update when storage events occur in other tabs/windows.
+ *
+ * @summary Experimental signal-backed wrapper around a `Storage` area that makes reads reactive and updates on changes
+ * from other tabs.
  */
 class ReactiveStorage implements Storage {
   private _storage: Storage;

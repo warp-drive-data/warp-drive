@@ -27,6 +27,8 @@ const isServerEnv = typeof FastBoot !== 'undefined';
  * A plain `Worker` is only accepted when running in a `TESTING` build;
  * production usage requires a `SharedWorker`.
  *
+ * @summary Experimental main-thread client that asks an `ImageWorker` to load image urls and resolves with cached
+ * object urls.
  * @public
  */
 export class ImageFetch {

@@ -28,6 +28,8 @@ type QueryBuilderOptions = QueryOptions;
   This is useful for quickly upgrading an entire app to a unified syntax while a longer incremental migration is made to shift off of adapters and serializers.
   To that end, these builders are deprecated and will be removed in a future version of WarpDrive.
 
+  @summary Deprecated legacy builder for a `store.request` config that behaves like `store.query`, returning the
+  records matching a query object.
   @deprecated
   @public
   @param type the name of the resource
@@ -87,6 +89,8 @@ type QueryRecordRequestInput<T extends string = string, RT = unknown> = StoreReq
   This is useful for quickly upgrading an entire app to a unified syntax while a longer incremental migration is made to shift off of adapters and serializers.
   To that end, these builders are deprecated and will be removed in a future version of WarpDrive.
 
+  @summary Deprecated legacy builder for a `store.request` config that behaves like `store.queryRecord`, returning
+  a single record or `null` for a query object.
   @deprecated
   @public
   @param type the name of the resource

@@ -32,6 +32,8 @@ export type JsonApiResourcePatch =
  *
  * Serializes the current state of a resource or array of resources for use with POST or PUT requests.
  *
+ * @summary Copies the cached state of one or more resources into a JSON:API-style `{ data }` object, a starting point
+ * for request bodies.
  * @public
  * @param cache - the cache to serialize the resource(s) from
  * @param identifiers - the resource(s) to serialize
@@ -149,6 +151,8 @@ function _serializeResource(cache: Cache, identifier: ResourceKey): ResourceObje
  * const relationshipDiffMap = cache.changedRelationships(identifier);
  * ```
  *
+ * @summary Serializes only a resource's changed attributes and relationships from the cache into a JSON:API-style
+ * `{ data }` patch.
  * @public
  * @param cache - the cache to serialize the resource's changes from
  * @param identifier - the resource whose changes should be serialized

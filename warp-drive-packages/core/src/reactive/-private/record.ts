@@ -747,6 +747,8 @@ function assertNeverField(identifier: ResourceKey, field: never, path: string | 
  * Edits to editable resources will be automatically committed if a new
  * payload from the cache matches their existing value.
  *
+ * @summary Resolves with an editable copy of an immutable `ReactiveResource` so its fields can be
+ * changed locally.
  * @public
  *
  * @returns a promise that resolves to the editable resource
@@ -764,6 +766,8 @@ export function checkout<T>(resource: unknown): Promise<T & ReactiveResource> {
  * approach is for either the API or a Handler to reflect saved
  * changes back to update the cache.
  *
+ * @summary Forcibly makes an editable resource's local changes its new remote (immutable) state,
+ * bypassing a save round-trip.
  * @public
  */
 export function commit(record: ReactiveResource): Promise<void> {

@@ -6,6 +6,7 @@ import type { GenericField } from '@warp-drive/core/types/schema/fields';
 /**
  * Options accepted by the {@link field} decorator.
  *
+ * @summary Options for the `@field` decorator that set the compiled field's transformation `type` and `sourceKey`.
  * @public
  */
 export interface FieldOptions {
@@ -30,6 +31,8 @@ export interface FieldOptions {
  * primitive values (strings, numbers, booleans) — on a
  * {@link Resource}, {@link ObjectSchema}, or {@link Trait}.
  *
+ * @summary Property decorator that compiles to a generic field holding a primitive value, usable on resources, object
+ * schemas, and traits.
  * @example
  * ::: code-group
  *

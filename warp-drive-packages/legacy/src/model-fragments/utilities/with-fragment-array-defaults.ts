@@ -4,6 +4,8 @@ import { pluralize, singularize } from '@warp-drive/utilities/string';
  * Used as a helper to setup the relevant parts of a fragment-array
  * schema and add extensions etc.
  *
+ * @summary Legacy ModelFragments migration helper that builds a `schema-array` field of `fragment:` items,
+ * defaulting to an empty array, with Ember and fragment-array extensions.
  * @param fragmentArrayType The type of the fragment-array
  * @param fragmentArrayName The name of the fragment-array
  * @returns The schema for a fragment-array

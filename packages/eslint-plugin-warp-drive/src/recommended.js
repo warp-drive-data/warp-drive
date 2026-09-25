@@ -1,6 +1,10 @@
 const warpdrive = require('./index');
 
-/** @type {import('eslint').Linter.Config[]} */
+/**
+ * @summary Flat ESLint config array that registers the `warp-drive` plugin and turns on its recommended set of rules as
+ * errors.
+ * @type {import('eslint').Linter.Config[]}
+ */
 module.exports = [
   {
     plugins: {

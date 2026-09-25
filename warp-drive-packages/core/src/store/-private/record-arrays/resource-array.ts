@@ -117,6 +117,8 @@ interface ReactiveResourceArrayContext extends ReactiveResourceArrayCreateOption
  * both report `true`. The array stays in sync with the cache, updating
  * reactively as the underlying {@link ResourceKey}s change.
  *
+ * @summary Native-Array-compatible reactive list of records backed by cache keys, returned for collection responses
+ * and underlying relationship and legacy record arrays.
  * @public
  */
 export interface ReactiveResourceArray<T = unknown> extends Omit<Array<T>, '[]'> {

@@ -135,6 +135,8 @@ export function fragmentsModelFor<T extends TypedRecordInstance>(
  * type when ModelFragments support is enabled and no real `Model` subclass
  * is registered for that type.
  *
+ * @summary Legacy `store.modelFor` fallback that returns a schema-backed `ShimModelClass` for a type when
+ * ModelFragments support is on and no `Model` class exists.
  * @public
  */
 export const modelFor: typeof fragmentsModelFor = fragmentsModelFor;

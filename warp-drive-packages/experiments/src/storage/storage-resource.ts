@@ -25,6 +25,9 @@ import {
  *
  * The function will be called once per instance during
  * initialization to determine the unique ID for that instance.
+ *
+ * @summary Experimental class decorator that turns a class into a reactive resource whose fields persist in
+ * localStorage.
  */
 export function LocalResource(id: string | KeyFn): ClassDecorator {
   return _createStorageResource(id, 'local-resource', null);
@@ -43,6 +46,9 @@ export function LocalResource(id: string | KeyFn): ClassDecorator {
  *
  * The function will be called once per instance during
  * initialization to determine the unique ID for that instance.
+ *
+ * @summary Experimental class decorator that turns a class into a reactive resource whose fields persist in
+ * sessionStorage.
  */
 export function SessionResource(id: string | KeyFn): ClassDecorator {
   return _createStorageResource(id, 'session-resource', null);
@@ -66,6 +72,9 @@ export function SessionResource(id: string | KeyFn): ClassDecorator {
  * All object cached in the same `namespace` share the namespace's storage context,
  * so partitioning can be achieved by using different namespaces for different groups
  * of data.
+ *
+ * @summary Experimental class decorator that turns a class into a reactive resource whose fields persist via the Cache
+ * API and are shared across tabs.
  */
 export function CacheResource(id: string | KeyFn, namespace: string | null = null): ClassDecorator {
   return _createStorageResource(id, 'cache-resource', namespace);
@@ -101,6 +110,8 @@ export function CacheResource(id: string | KeyFn, namespace: string | null = nul
  * }
  * ```
  *
+ * @summary Experimental decorator that makes a storage resource property a reactive field persisted to local, session,
+ * or cache storage.
  */
 export function field(type: 'local' | 'session' | 'cache'): PropertyDecorator;
 export function field(target: object, key: string, descriptor?: PropertyDescriptor): void;
@@ -202,6 +213,9 @@ export function input(type: 'number' | 'boolean' | 'float'): PropertyDecorator {
  *   }
  * }
  * ```
+ *
+ * @summary Experimental field decorator for storage resources that runs a callback when the stored value changes in
+ * another tab or window.
  */
 export function effect(fn: <K>(update: ValueTransition<K>) => void, type?: 'local' | 'session'): PropertyDecorator {
   const overrideType = type === 'local' ? 'local-storage' : type === 'session' ? 'session-storage' : null;

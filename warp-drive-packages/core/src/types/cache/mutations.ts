@@ -7,6 +7,9 @@ import type { Operation } from './operations.ts';
 /**
  * Adds the specified {@link ResourceKey | ResourceKeys} to a relationship's
  * local (uncommitted) state.
+ *
+ * @summary Cache mutation passed to `cache.mutate` that adds one or more resources to a relationship's local
+ * state, optionally at an index.
  */
 export interface AddToResourceRelationshipMutation {
   /**
@@ -34,6 +37,9 @@ export interface AddToResourceRelationshipMutation {
 /**
  * Removes the specified {@link ResourceKey | ResourceKeys} from a relationship's
  * local (uncommitted) state.
+ *
+ * @summary Cache mutation passed to `cache.mutate` that removes one or more resources from a relationship's local
+ * state.
  */
 export interface RemoveFromResourceRelationshipMutation {
   /**
@@ -61,6 +67,9 @@ export interface RemoveFromResourceRelationshipMutation {
 /**
  * Replaces the local (uncommitted) state of a `to-one` relationship
  * with a new value.
+ *
+ * @summary Cache mutation passed to `cache.mutate` that sets a to-one relationship's local value, or swaps a
+ * single member of a to-many.
  */
 export interface ReplaceRelatedRecordMutation {
   /**
@@ -93,6 +102,9 @@ export interface ReplaceRelatedRecordMutation {
 /**
  * Replaces the local (uncommitted) state of a `to-many` relationship
  * with a new set of values.
+ *
+ * @summary Cache mutation passed to `cache.mutate` that replaces or splices a to-many relationship's local
+ * members.
  */
 export interface ReplaceRelatedRecordsMutation {
   /**
@@ -125,6 +137,8 @@ export interface ReplaceRelatedRecordsMutation {
 
 /**
  * Reorders the local (uncommitted) state of a `to-many` relationship.
+ *
+ * @summary Cache mutation passed to `cache.mutate` that reorders a to-many relationship's local members.
  */
 export interface SortRelatedRecordsMutation {
   /**
@@ -162,6 +176,8 @@ export interface SortRelatedRecordsMutation {
  * - {@link AddToResourceRelationshipMutation}
  * - {@link SortRelatedRecordsMutation}
  *
+ * @summary Union of the relationship changes `cache.mutate` applies to local (uncommitted) state rather than
+ * remote state.
  * @privateRemarks
  * Note: this RFC does not publicly surface any of the mutations listed
  * here as "operations", though the (private) Graph already expects and

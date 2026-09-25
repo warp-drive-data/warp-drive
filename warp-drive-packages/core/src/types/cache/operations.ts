@@ -13,6 +13,8 @@
  * See also {@link Mutation}, which applies analogous updates to the
  * Cache's "local" (or dirty) state.
  *
+ * @summary Types for the operations passed to `cache.patch` to update the cache's remote (clean) state, such as
+ * from WebSocket or server-sent event messages.
  * @module
  */
 // oxlint-disable-next-line no-unused-vars
@@ -26,6 +28,8 @@ import type { Relationship } from './relationship.ts';
  * All operations are objects with at least one property,
  * `op` which contains a string with the name of the operation
  * to perform.
+ *
+ * @summary Base shape of every cache operation, carrying the operation's name in `op`.
  */
 export interface Op {
   /**
@@ -41,6 +45,9 @@ export interface Op {
  * This operation will be performed, giving the Cache the chance
  * to cleanup and merge internal state as desired when this discovery
  * is made.
+ *
+ * @summary Cache operation telling the Cache that two resource keys refer to the same resource, so it can merge the
+ * stale one into the kept one.
  */
 export interface MergeOperation extends Op {
   op: 'mergeIdentifiers';
@@ -59,6 +66,8 @@ export interface MergeOperation extends Op {
 /**
  * Removes a document and its associated request from
  * the cache.
+ *
+ * @summary Cache operation passed to `cache.patch` that removes a request's document from the cache.
  */
 export interface RemoveDocumentOperation extends Op {
   op: 'remove';
@@ -72,6 +81,9 @@ export interface RemoveDocumentOperation extends Op {
  * Removes a resource from the cache. This is treated
  * as if a remote deletion has occurred, and all references
  * to the resource should be eliminated.
+ *
+ * @summary Cache operation passed to `cache.patch` that removes a resource as if deleted remotely, eliminating all
+ * references to it.
  */
 export interface RemoveResourceOperation extends Op {
   op: 'remove';
@@ -83,6 +95,9 @@ export interface RemoveResourceOperation extends Op {
 
 /**
  * Adds a resource to the cache.
+ *
+ * @summary Cache operation passed to `cache.patch` that adds a persisted resource's data to the cache's remote
+ * state.
  */
 export interface AddResourceOperation extends Op {
   op: 'add';
@@ -97,6 +112,8 @@ export interface AddResourceOperation extends Op {
 }
 /**
  * Upserts (merges) new state for a resource
+ *
+ * @summary Cache operation passed to `cache.patch` that merges new remote state into a persisted resource.
  */
 export interface UpdateResourceOperation extends Op {
   op: 'update';
@@ -111,6 +128,9 @@ export interface UpdateResourceOperation extends Op {
 }
 /**
  * Replaces the state of a field with a new state
+ *
+ * @summary Cache operation passed to `cache.patch` that replaces the remote value of a single field on a persisted
+ * resource.
  */
 export interface UpdateResourceFieldOperation extends Op {
   op: 'update';
@@ -129,6 +149,8 @@ export interface UpdateResourceFieldOperation extends Op {
 }
 /**
  * Replaces the state of a relationship with a new state
+ *
+ * @summary Cache operation that replaces the remote state of one relationship on a persisted resource.
  */
 export interface UpdateResourceRelationshipOperation extends Op {
   op: 'update';
@@ -150,6 +172,9 @@ export interface UpdateResourceRelationshipOperation extends Op {
  * Adds a resource to a request document, optionally
  * at a specific index. This can be used to update the
  * result of a request.
+ *
+ * @summary Cache operation passed to `cache.patch` that adds resources to a request document's `data` or
+ * `included`, optionally at an index.
  */
 export interface AddToDocumentOperation extends Op {
   op: 'add';
@@ -172,6 +197,9 @@ export interface AddToDocumentOperation extends Op {
 }
 /**
  * Adds the specified ResourceKeys to a relationship
+ *
+ * @summary Cache operation passed to `cache.patch` that adds resources to a relationship's remote state,
+ * optionally at an index.
  */
 export interface AddToResourceRelationshipOperation extends Op {
   op: 'add';
@@ -194,6 +222,8 @@ export interface AddToResourceRelationshipOperation extends Op {
 }
 /**
  * Removes the specified ResourceKeys from a relationship
+ *
+ * @summary Cache operation passed to `cache.patch` that removes resources from a relationship's remote state.
  */
 export interface RemoveFromResourceRelationshipOperation extends Op {
   op: 'remove';
@@ -218,6 +248,9 @@ export interface RemoveFromResourceRelationshipOperation extends Op {
  * Removes a resource from a request document, optionally
  * at a specific index. This can be used to update the
  * result of a request.
+ *
+ * @summary Cache operation passed to `cache.patch` that removes resources from a request document's `data` or
+ * `included`.
  */
 export interface RemoveFromDocumentOperation extends Op {
   op: 'remove';
@@ -262,6 +295,9 @@ export interface RemoveFromDocumentOperation extends Op {
  * - {@link RemoveFromResourceRelationshipOperation}
  * - {@link AddToDocumentOperation}
  * - {@link RemoveFromDocumentOperation}
+ *
+ * @summary Union of the updates `cache.patch` applies to the cache's remote (clean) state, typically from server
+ * pushes such as WebSocket or SSE messages.
  */
 export type Operation =
   | MergeOperation

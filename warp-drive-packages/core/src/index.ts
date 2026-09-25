@@ -1,4 +1,6 @@
 /**
+ * @summary Main entry point for WarpDrive: the `Store`, `RequestManager`, `Fetch` handler, `CacheHandler`, and
+ * `useRecommendedStore` for building a configured store.
  * @module
  * @mergeModuleWith <project>
  */
@@ -45,6 +47,7 @@ export { Store, CacheHandler, type CachePolicy };
 export { type StoreRequestContext, type StoreRequestInput, storeFor } from './store/-private.ts';
 
 /**
+ * @summary Deprecated alias for `ReactiveDocument`, the reactive wrapper around a request's response document.
  * @deprecated use {@link ReactiveDocument} instead
  */
 export type Document<
@@ -72,6 +75,9 @@ export {
 
 /**
  * Options for setting up a Store instance with `useRecommendedStore`.
+ *
+ * @summary Configures the cache, cache policy, request handlers, schemas, and schema extensions that
+ * `useRecommendedStore` wires into a Store class.
  */
 export interface StoreSetupOptions<T extends Cache = Cache> {
   /**
@@ -264,6 +270,9 @@ export declare class ConfiguredStore<
  * {@link RequestManager} won't have it set unless the caller supplies it
  * explicitly, so a handler relying on it should treat it as optional (as
  * `LoggingHandler` does above).
+ *
+ * @summary Builds a Store subclass preconfigured with the given cache, schemas, and handlers, plus
+ * `Fetch`, `CacheHandler`, and a default cache policy.
  */
 export function useRecommendedStore<T extends Cache, Policy extends CachePolicy>(
   options: StoreSetupOptions<T> & { policy: Policy },

@@ -6,6 +6,9 @@ import type { ArrayValue, ObjectValue } from '../json/raw.ts';
  * meta-information.
  *
  * [{json:api} Spec](https://jsonapi.org/format/#document-meta)
+ *
+ * @summary A JSON object of non-standard information found in the `meta` member of a {json:api} document,
+ * resource, relationship, or link.
  */
 export type Meta = ObjectValue;
 
@@ -14,6 +17,8 @@ export type Meta = ObjectValue;
  * additional {@link Meta | meta} information alongside its `href`.
  *
  * [{json:api} Spec](https://jsonapi.org/format/#document-links)
+ *
+ * @summary The object form of a {json:api} link: an `href` URI-reference plus optional `meta`.
  */
 export type LinkObject = {
   /**
@@ -32,6 +37,8 @@ export type LinkObject = {
  *
  * [{json:api} Spec](https://jsonapi.org/format/#document-links)
  *
+ * @summary A {json:api} link value, either a plain URI-reference string or an object with `href` and optional
+ * `meta`.
  * @example
  * ```ts
  * const simple: Link = '/articles/1/comments';
@@ -44,6 +51,9 @@ export type Link = string | LinkObject;
  * The `links` member of a {json:api} resource or document.
  *
  * [{json:api} Spec](https://jsonapi.org/format/#document-links)
+ *
+ * @summary The `links` member of a {json:api} resource, relationship, or document, with optional `self` and
+ * `related` links.
  */
 export interface Links {
   /**
@@ -60,6 +70,9 @@ export interface Links {
  * The `links` member of a {json:api} document that supports pagination.
  *
  * [{json:api} Spec](https://jsonapi.org/format/#fetching-pagination)
+ *
+ * @summary A {json:api} `links` member that adds `first`, `last`, `prev`, and `next` pagination links to `self`
+ * and `related`.
  */
 export interface PaginationLinks extends Links {
   /**
@@ -165,6 +178,9 @@ export interface NewResourceIdentifierObject<T extends string = string> {
  * This is not part of the {json:api} spec, but is accepted by WarpDrive's
  * cache as a lightweight alternative to {@link ExistingResourceIdentifierObject}
  * once a resource's identity is already known to the cache.
+ *
+ * @summary A reference to a resource by its WarpDrive-assigned `lid` alone, accepted by the cache once the
+ * resource's identity is known.
  */
 export interface ResourceIdentifier {
   /**
@@ -182,6 +198,9 @@ export interface ResourceIdentifier {
  * - {@link NewResourceIdentifierObject}
  *
  * [{json:api} Spec](https://jsonapi.org/format/#document-resource-identifier-objects)
+ *
+ * @summary A reference to a resource in any form the cache accepts: `lid` only, `type` plus `id`, or a new
+ * resource's `type` plus `lid`.
  */
 export type ResourceIdentifierObject<T extends string = string> =
   | ResourceIdentifier
@@ -194,6 +213,8 @@ export type ResourceIdentifierObject<T extends string = string> =
  *
  * [{json:api} Spec](https://jsonapi.org/format/#document-resource-object-relationships)
  *
+ * @summary A to-one {json:api} relationship object whose `data` is a single resource identifier or `null`, with
+ * optional `meta` and `links`.
  * @example
  * ```json
  * {
@@ -221,6 +242,8 @@ export interface SingleResourceRelationship<T = ExistingResourceIdentifierObject
  *
  * [{json:api} Spec](https://jsonapi.org/format/#document-resource-object-relationships)
  *
+ * @summary A to-many {json:api} relationship object whose `data` is an array of resource identifiers, with
+ * optional `meta` and pagination `links`.
  * @example
  * ```json
  * {
@@ -249,6 +272,9 @@ export interface CollectionResourceRelationship<T = ExistingResourceIdentifierOb
  * See also:
  * - {@link SingleResourceRelationship}
  * - {@link CollectionResourceRelationship}
+ *
+ * @summary A single {json:api} relationship object, either to-one or to-many, as found in a resource's
+ * `relationships` member.
  */
 export type InnerRelationshipDocument<T = ExistingResourceIdentifierObject | NewResourceIdentifierObject> =
   | SingleResourceRelationship<T>
@@ -259,6 +285,9 @@ export type InnerRelationshipDocument<T = ExistingResourceIdentifierObject | New
  * by relationship name.
  *
  * [{json:api} Spec](https://jsonapi.org/format/#document-resource-object-relationships)
+ *
+ * @summary The `relationships` member of a {json:api} resource object: to-one or to-many relationship objects
+ * keyed by relationship name.
  */
 export type ResourceRelationshipsObject<T = ExistingResourceIdentifierObject | NewResourceIdentifierObject> = Record<
   string,
@@ -267,6 +296,9 @@ export type ResourceRelationshipsObject<T = ExistingResourceIdentifierObject | N
 
 /**
  * Contains the data for an existing resource in JSON:API format
+ *
+ * @summary A raw {json:api} resource object for a persisted resource: `type` and `id` plus optional `lid`,
+ * `attributes`, `relationships`, `links`, and `meta`.
  */
 export interface ExistingResourceObject<T extends string = string> extends ExistingResourceIdentifierObject<T> {
   /**
@@ -291,6 +323,8 @@ export interface ExistingResourceObject<T extends string = string> extends Exist
  * Represents a new resource that has not yet been persisted, as it would
  * appear in a {json:api} document (for instance, the body of a `POST` request).
  *
+ * @summary A raw {json:api} resource object for a client-created resource not yet persisted, identified by `type`
+ * and `lid` with an `id` that may be `null`.
  * @example
  * ```json
  * {
@@ -330,6 +364,9 @@ export type NewResourceObject<T extends string = string> = NewResourceIdentifier
  * - {@link NewResourceObject}
  *
  * [{json:api} Spec](https://jsonapi.org/format/#document-resource-objects)
+ *
+ * @summary A raw {json:api} resource object, either for a persisted resource or for a new one created on the
+ * client.
  */
 export type ResourceObject<T extends string = string> = ExistingResourceObject<T> | NewResourceObject<T>;
 
@@ -347,6 +384,7 @@ type Document = {
  * instance the response to a `DELETE` request or a `to-one`
  * relationship pointing at nothing.
  *
+ * @summary A raw {json:api} document whose `data` is `null`, such as the response to a `DELETE` request.
  * @example
  * ```json
  * { "data": null }
@@ -362,6 +400,8 @@ export type EmptyResourceDocument = Document & {
 /**
  * Represents a {json:api} document containing a single resource.
  *
+ * @summary A raw {json:api} document whose `data` is one existing resource object, with optional `included`,
+ * `meta`, and `links`.
  * @example
  * ```json
  * {
@@ -379,6 +419,8 @@ export type SingleResourceDocument<T extends string = string> = Document & {
 /**
  * Represents a {json:api} document containing a collection of resources.
  *
+ * @summary A raw {json:api} document whose `data` is an array of existing resource objects, with optional
+ * `included`, `meta`, and `links`.
  * @example
  * ```json
  * {

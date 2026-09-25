@@ -1,5 +1,8 @@
 /**
  * {@include ./template-always-use-request-content.md}
+ *
+ * @summary Lint rule that requires a `<Request>` component's `:content` block to capture and use the yielded request
+ * result.
  * @module
  */
 'use strict';
@@ -23,7 +26,11 @@ const messages = {
     'or remove the :content block if the result is genuinely not needed.',
 };
 
-/** @type {import('eslint').Rule.RuleModule} */
+/**
+ * @summary ESLint rule object that reports `<Request>` components whose `:content` block is missing or never uses the
+ * yielded result.
+ * @type {import('eslint').Rule.RuleModule}
+ */
 module.exports = {
   meta: {
     type: 'problem',

@@ -51,6 +51,8 @@
  * logging flags. Any logging flag that is not set in the build config
  * will default to `false`.
  *
+ * @summary Debug-only logging flags, such as `LOG_CACHE` and `LOG_REQUESTS`, set in build config or at runtime
+ * via `setWarpDriveLogging`.
  * @module
  */
 export * from '@warp-drive/build-config/debugging';

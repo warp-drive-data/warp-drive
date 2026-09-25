@@ -1,4 +1,6 @@
 /**
+ * @summary Decorators for authoring WarpDrive resource, trait, and object schemas as TypeScript classes, compiled to
+ * JSON schemas at build time by a Vite plugin.
  * @module
  * @mergeModuleWith <project>
  * @since 5.9.0

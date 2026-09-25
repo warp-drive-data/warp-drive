@@ -12,6 +12,8 @@ import type { AnyConstructor } from '../-private/types.ts';
 /**
  * Options accepted by the {@link Trait} decorator.
  *
+ * @summary Options for the `Trait` class decorator that select whether it compiles to a polaris-mode or a legacy-mode
+ * trait.
  * @public
  */
 export interface TraitOptions {
@@ -37,6 +39,8 @@ export interface TraitOptions {
  * no `$type` or `constructor` {@link DerivedField} is ever added, since a
  * trait's fields are merged into whichever resource composes it.
  *
+ * @summary Class decorator that compiles a class into a trait, a reusable set of fields that resources and other traits
+ * can compose via `@trait`.
  * @example
  * ::: code-group
  *

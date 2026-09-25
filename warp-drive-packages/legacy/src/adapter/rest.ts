@@ -46,6 +46,9 @@ type Payload = Error | Record<string, unknown> | unknown[] | string | undefined;
 /**
  * The query params built by {@link RESTAdapter.buildQuery | buildQuery} for a
  * `findAll`/`findRecord` request.
+ *
+ * @summary Query params the legacy `RESTAdapter.buildQuery` adds to `findRecord` and `findAll` URLs, such as the
+ * `include` paths to sideload.
  */
 export type QueryState = {
   /**
@@ -60,6 +63,9 @@ export type QueryState = {
 
 /**
  * The options passed to the native `fetch` API by {@link RESTAdapter._fetchRequest | _fetchRequest}.
+ *
+ * @summary `fetch` options plus `url`, `method`, and `type` that the legacy `RESTAdapter` builds for a request sent
+ * with the native `fetch` API.
  */
 export interface FetchRequestInit extends RequestInit {
   /**
@@ -78,6 +84,9 @@ export interface FetchRequestInit extends RequestInit {
 
 /**
  * The options passed to jQuery's `$.ajax` by {@link RESTAdapter._ajaxRequest | _ajaxRequest}.
+ *
+ * @summary jQuery `$.ajax` settings plus `url`, `method`, and `type` that the legacy `RESTAdapter` builds when it
+ * sends a request through jQuery.
  */
 export interface JQueryRequestInit extends JQueryAjaxSettings {
   /**
@@ -97,6 +106,9 @@ export interface JQueryRequestInit extends JQueryAjaxSettings {
 /**
  * A minimal description of an in-flight request, used for building
  * error messages when a request fails.
+ *
+ * @summary The url and HTTP method of a legacy `RESTAdapter` request, used to build error messages when that request
+ * fails.
  */
 export type RequestData = {
   /**
@@ -342,6 +354,8 @@ const AdapterWithBuildURLMixin: Readonly<typeof Adapter> & (new (owner?: Owner) 
   }
   ```
 
+  @summary Legacy adapter that exchanges conventional REST-style JSON with an HTTP server, building URLs from model
+  names and ids.
   @public
 */
 class RESTAdapter extends AdapterWithBuildURLMixin {

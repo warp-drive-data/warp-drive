@@ -149,6 +149,8 @@ export function useWatcher(): { watcher: Signal.subtle.Watcher } | null {
 }
 
 /**
+ * @summary React context holding the signal watcher that the nearest `ReactiveContext` uses to track which WarpDrive
+ * signals its children read.
  * @category Contexts
  */
 export const WatcherContext: Context<{
@@ -162,6 +164,8 @@ export const WatcherContext: Context<{
 
 /**
  *
+ * @summary Component that re-renders its children when WarpDrive signals they read change, by providing a signal
+ * watcher through `WatcherContext`.
  * @category Components
  */
 export function ReactiveContext({ children }: { children: ReactNode }): JSX.Element {

@@ -14,6 +14,8 @@ import type { CollectionResourceRelationship, SingleResourceRelationship } from 
  * All Graph operations are objects with at least one property,
  * `op`, which contains a string with the name of the operation
  * to perform.
+ *
+ * @summary Base shape of every relationship Graph operation, carrying the operation's name in `op`.
  */
 export interface Operation {
   /**
@@ -24,6 +26,8 @@ export interface Operation {
 
 /**
  * Replaces the state of a relationship on the Graph with a new state.
+ *
+ * @summary Graph operation that replaces a relationship's remote state with a raw JSON:API relationship object.
  */
 export interface UpdateRelationshipOperation {
   /**
@@ -47,6 +51,9 @@ export interface UpdateRelationshipOperation {
 /**
  * Signals to the Graph that a resource has been deleted, so that
  * it can be removed from any relationships that reference it.
+ *
+ * @summary Graph operation signaling that a resource was deleted so it is removed from every relationship that
+ * references it.
  */
 export interface DeleteRecordOperation {
   /**
@@ -66,6 +73,9 @@ export interface DeleteRecordOperation {
 /**
  * A placeholder operation for a relationship whose kind (`to-one` vs
  * `to-many`) is not yet known to the Graph.
+ *
+ * @summary Placeholder Graph operation, with `op: 'never'`, for a relationship whose to-one or to-many kind is not
+ * yet known.
  */
 export interface UnknownOperation {
   /**
@@ -84,6 +94,8 @@ export interface UnknownOperation {
 
 /**
  * Replaces the state of a `to-one` relationship on the Graph with a new value.
+ *
+ * @summary Graph operation that sets a to-one relationship's value, or swaps a single member of a to-many.
  */
 export interface ReplaceRelatedRecordOperation {
   /**
@@ -115,6 +127,8 @@ export interface ReplaceRelatedRecordOperation {
 
 /**
  * Reorders the state of a `to-many` relationship on the Graph.
+ *
+ * @summary Graph operation that reorders the members of a to-many relationship.
  */
 export interface SortRelatedRecords {
   /**
@@ -138,6 +152,8 @@ export interface SortRelatedRecords {
 /**
  * Replaces the state of a `to-many` relationship on the Graph with a
  * new set of values.
+ *
+ * @summary Graph operation that replaces or splices the members of a to-many relationship.
  */
 export interface ReplaceRelatedRecordsOperation {
   /**
@@ -181,6 +197,8 @@ export interface ReplaceRelatedRecordsOperation {
  * - {@link AddResourceOperation}
  * - {@link DeleteRecordOperation}
  * - {@link SortRelatedRecords}
+ *
+ * @summary Union of the Graph operations that update a relationship's remote (persisted) state.
  */
 export type RemoteRelationshipOperation =
   | UpdateResourceRelationshipOperation
@@ -202,6 +220,8 @@ export type RemoteRelationshipOperation =
  * - {@link AddResourceMutation}
  * - {@link RemoveResourceMutation}
  * - {@link SortRelatedRecords}
+ *
+ * @summary Union of the Graph operations that update a relationship's local (uncommitted) state.
  */
 export type LocalRelationshipOperation =
   | ReplaceRelatedRecordsOperation

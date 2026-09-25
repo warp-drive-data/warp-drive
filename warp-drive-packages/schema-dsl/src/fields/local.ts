@@ -7,6 +7,7 @@ import type { PrimitiveValue } from '../-private/types.ts';
 /**
  * Options accepted by the {@link local} decorator.
  *
+ * @summary Options for the `@local` decorator that set the local field's value before it is first set.
  * @public
  */
 export interface LocalOptions {
@@ -24,6 +25,8 @@ export interface LocalOptions {
  * the record instance, is never read from or written to the cache, and is
  * never sent to the server.
  *
+ * @summary Property decorator that compiles to a local field, instance-only state that is never read from or written to
+ * the cache or sent to the server.
  * @example
  * ::: code-group
  *

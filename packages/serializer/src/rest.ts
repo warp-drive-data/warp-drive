@@ -4,6 +4,8 @@
  * `@ember-data/serializer/rest` imports keep working; new code should import
  * from `@warp-drive/legacy/serializer/rest` directly.
  *
+ * @summary Legacy alias that re-exports `RESTSerializer` and `EmbeddedRecordsMixin` from
+ * `@warp-drive/legacy/serializer/rest` so `@ember-data/serializer/rest` imports keep working.
  * @module
  */
 export { RESTSerializer as default, EmbeddedRecordsMixin } from '@warp-drive/legacy/serializer/rest';

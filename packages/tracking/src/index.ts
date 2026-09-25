@@ -1,4 +1,6 @@
 /**
+ * @summary Deprecated package providing the Ember-tag signal configuration for WarpDrive reactivity; use
+ * `@warp-drive/ember` instead.
  * @module
  * @mergeModuleWith <project>
  */
@@ -26,6 +28,8 @@ const emberDirtyTag = dirtyTag as unknown as (tag: Tag) => void;
  * and this package is deprecated entirely. Use {@link @warp-drive/ember! | @warp-drive/ember}
  * instead.
  *
+ * @summary Deprecated: builds signal hooks that back WarpDrive reactivity with Ember tags; `@ember-data/store`
+ * registers it automatically, and `@warp-drive/ember` replaces it.
  * @deprecated
  * @public
  */

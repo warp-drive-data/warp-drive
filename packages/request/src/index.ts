@@ -1,4 +1,6 @@
 /**
+ * @summary Legacy entry re-exporting `RequestManager` as its default, plus the request pipeline utilities and
+ * request/response types from `@warp-drive/core/request`.
  * @module
  * @mergeModuleWith <project>
  */

@@ -62,6 +62,7 @@ import { createReactiveResourceArray, destroy, type ReactiveResourceArray } from
   We call the record to which a relationship belongs-to the
   relationship's _owner_.
 
+  @summary Legacy mutable reactive array holding the related records of a legacy or linksMode has-many relationship.
   @public
 */
 export interface LegacyManyArray<T = unknown> extends ReactiveResourceArray<T> {

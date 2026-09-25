@@ -23,6 +23,8 @@ import type {
  * attribute name, as returned by the deprecated
  * {@link SchemaService.attributesDefinitionFor | attributesDefinitionFor} hook.
  *
+ * @summary Legacy attribute field definitions keyed by attribute name, returned by the deprecated
+ * `attributesDefinitionFor` schema hook.
  * @public
  */
 export type AttributesSchema = Record<string, LegacyAttributeField>;
@@ -32,6 +34,8 @@ export type AttributesSchema = Record<string, LegacyAttributeField>;
  * relationship name, as returned by the deprecated
  * {@link SchemaService.relationshipsDefinitionFor | relationshipsDefinitionFor} hook.
  *
+ * @summary Legacy relationship field definitions keyed by relationship name, returned by the deprecated
+ * `relationshipsDefinitionFor` schema hook.
  * @public
  */
 export type RelationshipsSchema = Record<string, LegacyRelationshipField>;
@@ -87,6 +91,8 @@ interface ObjectWithStringTypeProperty {
  * }
  * ```
  *
+ * @summary The contract a store's schema service implements to answer which resource types, traits, fields,
+ * transformations, and derivations exist.
  * @public
  */
 export interface SchemaService {

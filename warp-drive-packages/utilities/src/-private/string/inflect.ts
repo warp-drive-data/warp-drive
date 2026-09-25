@@ -25,6 +25,7 @@ const PLURAL_RULES = new Map(defaultRules.plurals.reverse());
  * Marks a word as uncountable. Uncountable words are not pluralized
  * or singularized.
  *
+ * @summary Registers a word that `pluralize` and `singularize` should always return unchanged.
  * @public
  * @since 4.13.0
  */
@@ -36,6 +37,7 @@ export function uncountable(word: string): void {
  * Marks a list of words as uncountable. Uncountable words are not pluralized
  * or singularized.
  *
+ * @summary Registers a list of words that `pluralize` and `singularize` should always return unchanged.
  * @public
  * @since 4.13.0
  */
@@ -49,6 +51,8 @@ export function loadUncountable(uncountables: string[]): void {
  * Marks a word as irregular. Irregular words have unique
  * pluralization and singularization rules.
  *
+ * @summary Registers a singular and plural word pair that `pluralize` and `singularize` map directly instead of
+ * applying rules.
  * @public
  * @since 4.13.0
  */
@@ -66,6 +70,7 @@ export function irregular(single: string, plur: string): void {
  * Marks a list of word pairs as irregular. Irregular words have unique
  * pluralization and singularization rules.
  *
+ * @summary Registers a list of singular and plural word pairs that `pluralize` and `singularize` map directly.
  * @public
  * @since 4.13.0
  */
@@ -85,6 +90,7 @@ loadIrregular(defaultRules.irregularPairs);
 /**
  * Clears the caches for singularize and pluralize.
  *
+ * @summary Empties the cached results of `singularize` and `pluralize` while keeping all inflection rules.
  * @public
  * @since 4.13.0
  */
@@ -96,6 +102,7 @@ export function clear(): void {
 /**
  * Resets the inflection rules to the defaults.
  *
+ * @summary Discards all custom inflection rules and caches, then restores the built-in default rules.
  * @public
  * @since 4.13.0
  */
@@ -111,6 +118,7 @@ export function resetToDefaults(): void {
  * Clears all inflection rules
  * and resets the caches for singularize and pluralize.
  *
+ * @summary Removes every inflection rule, including the defaults, and empties the `singularize` and `pluralize` caches.
  * @public
  * @since 4.13.0
  */
@@ -127,6 +135,7 @@ export function clearRules(): void {
 /**
  * Singularizes a word.
  *
+ * @summary Returns the singular form of an English word using the registered inflection rules, with cached results.
  * @public
  * @since 4.13.0
  */
@@ -139,6 +148,7 @@ export function singularize(word: string): string {
 /**
  * Pluralizes a word.
  *
+ * @summary Returns the plural form of an English word using the registered inflection rules, with cached results.
  * @public
  * @since 4.13.0
  */
@@ -160,6 +170,7 @@ function unshiftMap<K, V>(v: [K, V], map: Map<K, V>) {
 /**
  * Adds a pluralization rule.
  *
+ * @summary Adds a regex and replacement rule that `pluralize` checks before all existing plural rules.
  * @public
  * @since 4.13.0
  */
@@ -176,6 +187,7 @@ export function plural(regex: RegExp, string: string): void {
 /**
  * Adds a singularization rule.
  *
+ * @summary Adds a regex and replacement rule that `singularize` checks before all existing singular rules.
  * @public
  * @since 4.13.0
  */

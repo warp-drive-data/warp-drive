@@ -6,6 +6,8 @@ import type { HashField } from '@warp-drive/core/types/schema/fields';
 /**
  * Options accepted by the {@link hash} decorator.
  *
+ * @summary Options for the `@hash` decorator that name the registered hash function used to compute an object schema's
+ * identity.
  * @public
  */
 export interface HashOptions {
@@ -23,6 +25,8 @@ export interface HashOptions {
  * an {@link ObjectSchema}. At most one property per object schema may use
  * this decorator, and doing so becomes that schema's `identity`.
  *
+ * @summary Property decorator that compiles to the hash field an object schema uses as its identity, computed by a
+ * registered hash function.
  * @example
  * ::: code-group
  *

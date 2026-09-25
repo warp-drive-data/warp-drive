@@ -43,6 +43,9 @@ export type LooseStoreRequestInfo<RT = unknown> = Omit<
 /**
  * The request shape accepted by {@link Store.request}, either a fully-formed
  * {@link ImmutableRequestInfo} or the looser {@link LooseStoreRequestInfo}.
+ *
+ * @summary The request object `store.request` accepts, either a full immutable request info or a looser
+ * form with plain `records` and `headers`.
  */
 export type StoreRequestInput<RT = unknown> = ImmutableRequestInfo<RT> | LooseStoreRequestInfo<RT>;
 
@@ -92,6 +95,8 @@ export interface StoreRequestContext extends RequestContext {
  *   [EnableHydration]: true
  * });
  *
+ * @summary The RequestManager cache handler that serves, dedupes, and caches store requests and returns
+ * reactive documents when hydration is enabled.
  */
 export const CacheHandler: CacheHandlerType = {
   request<T>(

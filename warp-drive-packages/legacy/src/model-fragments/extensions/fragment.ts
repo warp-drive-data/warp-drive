@@ -10,6 +10,9 @@ import type Model from '../../model.ts';
 /**
  * The features added to an object resource by {@link FragmentExtension}, providing
  * a subset of the legacy `ModelFragments` fragment API for migrated resources.
+ *
+ * @summary Legacy `ModelFragments`-compatible object API, such as `hasDirtyAttributes`, `isFragment`, and
+ * `rollbackAttributes`, for reactive objects migrated off fragments.
  */
 export class Fragment {
   // We might want to check the parent values once we move this code to warp-drive.
@@ -69,6 +72,9 @@ export class Fragment {
 /**
  * A schema extension that adds the {@link Fragment} API to migrated
  * `ModelFragments` object resources.
+ *
+ * @summary Legacy schema extension named `fragment` that adds the `Fragment` API to reactive objects migrated from
+ * `ModelFragments`.
  */
 export const FragmentExtension: {
   /**

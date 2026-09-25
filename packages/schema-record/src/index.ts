@@ -1,4 +1,6 @@
 /**
+ * @summary Legacy entry re-exporting `SchemaService`, `withDefaults`, `registerDerivations`, `Checkout`, and the
+ * schema-driven record hooks from `@warp-drive/core/reactive`.
  * @module
  * @mergeModuleWith <project>
  */

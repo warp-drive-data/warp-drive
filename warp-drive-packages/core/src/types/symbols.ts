@@ -6,6 +6,7 @@ import { getOrSetGlobal } from './-private.ts';
  * Symbol used internally to stash a reference to the owning
  * {@link Store} on a record instance.
  *
+ * @summary Internal symbol key under which a record instance keeps a reference to the store that owns it.
  * @type {Symbol}
  */
 export const RecordStore: '___(unique) Symbol(Store)' = getOrSetGlobal('Store', Symbol('Store'));
@@ -46,6 +47,8 @@ export const RecordStore: '___(unique) Symbol(Store)' = getOrSetGlobal('Store', 
  * If used, `attr<Transform>('name')` will enforce
  * that the name is the same as the transform name.
  *
+ * @summary Symbol key that brands a record with its resource type for TypeScript, and names a derivation or
+ * transformation when it is registered.
  * @type {Symbol}
  */
 export const Type: '___(unique) Symbol($type)' = getOrSetGlobal('$type', Symbol('$type'));
@@ -61,6 +64,8 @@ export const Type: '___(unique) Symbol($type)' = getOrSetGlobal('$type', Symbol(
  * take advantage of this to provide better type
  * safety and intellisense.
  *
+ * @summary Alias of the `Type` symbol that a record type can declare to tell WarpDrive APIs its resource type for
+ * better type inference.
  * @type {Symbol}
  */
 export const ResourceType: '___(unique) Symbol($type)' = Type;
@@ -79,6 +84,8 @@ export const ResourceType: '___(unique) Symbol($type)' = Type;
  * If used, `attr<Transform>('name')` will enforce
  * that the name is the same as the transform name.
  *
+ * @summary Alias of the `Type` symbol that a legacy transform can declare so `attr<Transform>('name')` checks the
+ * transform name at the type level.
  * @type {Symbol}
  */
 export const TransformName: '___(unique) Symbol($type)' = Type;
@@ -87,6 +94,8 @@ export const TransformName: '___(unique) Symbol($type)' = Type;
  * Symbol for use by builders to indicate the return type
  * generic to use for store.request()
  *
+ * @summary Type-only symbol key that request builders set on the request they return so `store.request()` can
+ * infer the response type.
  * @type {Symbol}
  */
 export const RequestSignature: '___(unique) Symbol(RequestSignature)' = getOrSetGlobal(

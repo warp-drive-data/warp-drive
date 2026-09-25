@@ -15,6 +15,8 @@
  * additions. LegacyMode is not intended to be a long-term solution, but rather a stepping stone
  * to assist in more rapidly adopting modern WarpDrive features.
  *
+ * @summary Legacy helpers for migrating from `Model` to `ReactiveResource`: LegacyMode schema defaults, derivations,
+ * types, and a schema service that serves both at once.
  * @module
  */
 import { deprecate } from '@ember/debug';
@@ -83,6 +85,9 @@ import type { _MaybeBelongsToFields, MaybeHasManyFields } from './-private/type-
  * Adds the `Model`-style `belongsTo`/`hasMany` reference methods to a
  * {@link TypedRecordInstance}, for use when migrating a resource from
  * `Model` to a schema-based record while preserving these APIs.
+ *
+ * @summary Legacy type that adds the `Model`-style `belongsTo` and `hasMany` reference methods to a typed record
+ * migrating from `Model` to a schema-based record.
  */
 export type WithLegacyDerivations<T extends TypedRecordInstance> = T &
   MinimalLegacyRecord & {
@@ -201,6 +206,8 @@ const LegacyFields = [
  * }>
  * ```
  *
+ * @summary Legacy type that adds the `Model`-style state flags and methods (`save`, `isNew`, `errors`, etc.) that
+ * `withDefaults` provides to a LegacyMode record type.
  */
 export type WithLegacy<T extends TypedRecordInstance> = T & LegacyModeRecord<T>;
 
@@ -331,6 +338,8 @@ legacySupport[Type] = '@legacy';
  * registerDerivations(schema);
  * ```
  *
+ * @summary Legacy helper that marks a resource schema as LegacyMode and adds the fields that give its records
+ * `Model`-like state and methods.
  * @param schema The schema to add legacy support to.
  * @return The schema with legacy support added.
  * @public
@@ -387,6 +396,9 @@ export function withDefaults(schema: WithPartial<LegacyResourceSchema, 'legacy' 
  *   ]
  * });
  * ```
+ *
+ * @summary Legacy alternative to `withDefaults` that makes a LegacyMode schema whose `save`, `reload`, and
+ * `destroyRecord` run without deprecation warnings.
  */
 export function withRestoredDeprecatedModelRequestBehaviors(
   schema: WithPartial<LegacyResourceSchema, 'legacy' | 'identity'>
@@ -430,6 +442,8 @@ export function withRestoredDeprecatedModelRequestBehaviors(
  * This must be called in order to use the fields added by {@link withDefaults} or
  * {@link withRestoredDeprecatedModelRequestBehaviors}.
  *
+ * @summary Legacy setup that registers the derivation, relationship behaviors, and extension a schema service needs to
+ * support LegacyMode records.
  * @param schema The schema service to register the derivations with.
  * @public
  */
@@ -551,6 +565,8 @@ export function registerDerivations(schema: SchemaService): void {
  * All calls to register resources, derivations, transformations, hash functions
  * etc. will be delegated to the primary schema service.
  *
+ * @summary Legacy schema service that serves a resource's schema from the primary service when it has one, and
+ * otherwise from its `Model` class, for incremental migration.
  * @class DelegatingSchemaService
  * @public
  */

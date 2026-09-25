@@ -4,6 +4,8 @@
  * `@ember-data/serializer/json` imports keep working; new code should import
  * from `@warp-drive/legacy/serializer/json` directly.
  *
+ * @summary Legacy alias that re-exports `JSONSerializer` from `@warp-drive/legacy/serializer/json` so
+ * `@ember-data/serializer/json` imports keep working.
  * @module
  */
 export { JSONSerializer as default } from '@warp-drive/legacy/serializer/json';

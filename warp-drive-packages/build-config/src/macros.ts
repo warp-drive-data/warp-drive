@@ -2,6 +2,8 @@
  * Internal functions for instrumenting the library's code with behaviors
  * that are removed from production builds.
  *
+ * @summary Internal build-time helpers, like `assert`, that instrument WarpDrive code with checks removed from
+ * production builds.
  * @hidden
  * @module
  */

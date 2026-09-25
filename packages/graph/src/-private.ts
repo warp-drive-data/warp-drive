@@ -23,6 +23,8 @@ Install using your javascript package manager of choice. For instance with [pnpm
 pnpm add @ember-data/graph
 ```
 
+  @summary Legacy re-export of the private relationship graph from `@warp-drive/core/graph/-private`; its APIs are
+  experimental and not meant for direct app use.
   @module
 */
 export * from '@warp-drive/core/graph/-private';

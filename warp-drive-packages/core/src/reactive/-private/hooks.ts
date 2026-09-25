@@ -16,6 +16,8 @@ import { Destroy } from './symbols.ts';
  * schema is `legacy`, matching the historical behavior of assigning initial
  * properties when creating a new legacy record.
  *
+ * @summary Default store `instantiateRecord` hook that creates a `ReactiveResource` for a resource key
+ * from its registered schema.
  * @public
  */
 export function instantiateRecord(
@@ -55,6 +57,8 @@ function assertReactiveResource(record: unknown): asserts record is ReactiveReso
  * that `record` is a {@link ReactiveResource} and invokes its `Destroy`
  * behavior.
  *
+ * @summary Default store `teardownRecord` hook that destroys a `ReactiveResource` when the store
+ * releases it.
  * @public
  */
 export function teardownRecord(record: unknown): void {

@@ -86,6 +86,7 @@ import { ACCEPT_HEADER_VALUE } from './-utils.ts';
  * );
  * ```
  *
+ * @summary Builds a JSON:API `GET` request for one resource by type and id, with optional `include`.
  * @public
  */
 export function findRecord<T, M extends Meta | undefined = Meta | undefined, E extends object = ApiError>(

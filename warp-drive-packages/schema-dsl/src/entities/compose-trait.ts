@@ -13,6 +13,8 @@ import type { AnyConstructor } from '../-private/types.ts';
  * Has no effect when stacked on an {@link ObjectSchema}-decorated class:
  * object schemas do not compile a `traits` array.
  *
+ * @summary Class decorator that records which traits a schema-dsl resource or trait composes, compiling their names
+ * into its `traits` array without merging their fields.
  * @example
  * ::: code-group
  *

@@ -1,5 +1,8 @@
 /**
  * {@include ./install.md}
+ *
+ * @summary Side-effect import that configures WarpDrive to use Signal polyfill based reactivity so its data updates
+ * re-render React components.
  * @module
  */
 
@@ -45,6 +48,8 @@ let pending: Promise<unknown>[];
  * integration have settled. Only tracks requests while `TESTING` is enabled;
  * a no-op otherwise.
  *
+ * @summary Resolves once all requests tracked by the React signal integration have settled, for use in tests; a no-op
+ * unless `TESTING` is enabled.
  * @public
  */
 export async function settled(): Promise<void> {
@@ -67,6 +72,8 @@ export async function settled(): Promise<void> {
  * [Signal Polyfill](https://github.com/proposal-signals/signal-polyfill),
  * used to wire WarpDrive's reactivity primitives into React.
  *
+ * @summary Builds the signal hooks, backed by the Signal polyfill, that connect WarpDrive reactivity to React rendering
+ * and test waiters.
  * @public
  */
 export function buildSignalConfig(options: HooksOptions): SignalHooks {

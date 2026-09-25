@@ -27,6 +27,8 @@ async function loadImage(url: string): Promise<string> {
  * Only intended for use inside a Worker context: constructing an
  * `ImageWorker` on the main thread is a no-op.
  *
+ * @summary Experimental worker-side image loader that fetches images for connected `ImageFetch` clients and returns
+ * deduped, cached object urls.
  * @public
  */
 export class ImageWorker {

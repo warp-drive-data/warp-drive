@@ -6,6 +6,8 @@ import type { ObjectField } from '@warp-drive/core/types/schema/fields';
 /**
  * Options accepted by the {@link object} decorator.
  *
+ * @summary Options for the `@object` decorator that set the compiled object field's `sourceKey` and the transformation
+ * applied to the whole object.
  * @public
  */
 export interface ObjectFieldOptions {
@@ -34,6 +36,8 @@ export interface ObjectFieldOptions {
  * well-defined shape, use {@link schemaObject} with an
  * {@link ObjectSchema} instead.
  *
+ * @summary Property decorator that compiles to an object field, a map of primitive values with no defined shape; use
+ * `schemaObject` for shaped objects.
  * @example
  * ::: code-group
  *

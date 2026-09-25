@@ -24,6 +24,8 @@ export type { MinimumAdapterInterface, MinimumSerializerInterface, SerializerOpt
  * Extends the signature of {@link Store} with additional
  * methods available when using the legacy network layer.
  *
+ * @summary Legacy `Store` type extended with `adapterFor`, `serializerFor`, `normalize`, `pushPayload`, and
+ * `serializeRecord` from the adapter and serializer network layer.
  * @public
  * @noInheritDoc
  * @legacy
@@ -80,6 +82,8 @@ export interface LegacyStoreCompat extends Store {
 }
 
 /**
+ * @summary Deprecated alias of `LegacyStoreCompat`, the `Store` type extended with legacy adapter and serializer
+ * methods.
  * @deprecated - use {@link LegacyStoreCompat} instead
  */
 export type CompatStore = LegacyStoreCompat;
@@ -93,6 +97,8 @@ export type CompatStore = LegacyStoreCompat;
   for an `application` adapter (the default adapter for
   your entire application).
 
+  @summary Legacy store method that returns the cached adapter for a model type, falling back to the `application`
+  adapter.
   @public
   @param modelName
 */
@@ -155,6 +161,8 @@ export function adapterFor(this: Store, modelName: string, _allowMissing?: true)
   If a serializer cannot be found on the adapter, it will fall back
   to an instance of `JSONSerializer`.
 
+  @summary Legacy store method that returns the cached serializer for a model type, falling back to the
+  `application` serializer, or `null` if neither exists.
   @public
   @param modelName the record to serialize
   */
@@ -338,6 +346,8 @@ export function serializeRecord(this: Store, record: unknown, options?: Serializ
 /**
  * Destroys any adapters/serializers the legacy network layer has created
  * for this store, invoked when the store itself is destroyed.
+ *
+ * @summary Legacy store teardown hook that destroys every adapter and serializer instance the store has cached.
  */
 export function cleanup(this: Store): void {
   upgradeStore(this);

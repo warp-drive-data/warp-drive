@@ -14,6 +14,8 @@ export function isFuture<T>(maybe: unknown): maybe is Future<T> {
  * callbacks that settle it, so the promise can be handed out before the
  * work that will settle it has started.
  *
+ * @summary Creates a promise together with its `resolve` and `reject` callbacks so it can be handed out
+ * before it is settled.
  * @public
  */
 export function createDeferred<T>(): Deferred<T> {

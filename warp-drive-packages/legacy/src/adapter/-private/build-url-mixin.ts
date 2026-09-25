@@ -22,6 +22,9 @@ import type { RESTAdapter } from '../rest.ts';
  *
  * See also {@link MixtBuildURLMixin}, the interface used to type `this`
  * within these methods.
+ *
+ * @summary Legacy adapter mixin providing `buildURL` and the `urlFor*` hooks that turn a model name, id, snapshot, and
+ * request type into a request URL.
  */
 export interface BuildURLMixin {
   /**

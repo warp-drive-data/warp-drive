@@ -1,5 +1,8 @@
 /**
  * {@include ./template-require-request-error-block.md}
+ *
+ * @summary Lint rule that requires `<Request>` and `<Await>` components to provide an `:error` block so rejections do
+ * not crash the app.
  * @module
  */
 'use strict';
@@ -14,7 +17,10 @@ const messages = {
     'failure case explicitly.',
 };
 
-/** @type {import('eslint').Rule.RuleModule} */
+/**
+ * @summary ESLint rule object that reports `<Request>` and `<Await>` components used without an `:error` block.
+ * @type {import('eslint').Rule.RuleModule}
+ */
 module.exports = {
   meta: {
     type: 'problem',

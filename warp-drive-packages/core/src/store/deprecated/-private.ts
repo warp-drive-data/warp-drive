@@ -135,6 +135,8 @@ export type KeyOrString<T> = keyof T & string extends never ? string : keyof T &
  * for @warp-drive/legacy/model or when wrapping schema for legacy
  * Adapters/Serializers.
  *
+ * @summary Legacy shape of a Model class's static schema API (fields, attributes, relationships, iterators) used
+ * by the legacy schema service and Adapters/Serializers.
  */
 export interface ModelSchema<T = unknown> {
   /**

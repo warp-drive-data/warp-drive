@@ -14,6 +14,9 @@ import type { Type } from '../symbols.ts';
  * Transformations must be registered with the SchemaService via
  * `schema.registerTransformation(transform)` before use, keyed by the
  * name assigned to their {@link Type} property.
+ *
+ * @summary A registered pair of `serialize` and `hydrate` functions that convert a field's raw cached value to and from
+ * the value exposed on a record.
  */
 export type Transformation<T extends Value = Value, PT = unknown> = {
   /**
@@ -51,6 +54,9 @@ export type Transformation<T extends Value = Value, PT = unknown> = {
  * Derivations must be registered with the SchemaService via
  * `schema.registerDerivation(derivation)` before use, keyed by the
  * name assigned to their {@link Type} property.
+ *
+ * @summary A registered function that computes a memoized, read-only field value from a record's other fields, backing
+ * `derived` fields.
  */
 export type Derivation<R = unknown, T = unknown, FM extends ObjectValue | null = ObjectValue | null> = {
   /**
@@ -70,6 +76,9 @@ export type Derivation<R = unknown, T = unknown, FM extends ObjectValue | null =
  * HashFns must be registered with the SchemaService via
  * `schema.registerHashFn(hashFn)` before use, keyed by the name
  * assigned to their {@link Type} property.
+ *
+ * @summary A registered function that computes a stable string identity from an object's cache data, used for `@hash`
+ * fields and polymorphic schema-object types.
  */
 export type HashFn<T extends object = object> = {
   /**

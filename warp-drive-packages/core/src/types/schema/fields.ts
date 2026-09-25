@@ -6,6 +6,9 @@ import type { ObjectValue, PrimitiveValue, Value } from '../json/raw.ts';
 
 /**
  * Options signature for Legacy Attributes.
+ *
+ * @summary Options object on a legacy `attribute` field schema, holding a `defaultValue` (a primitive or a function
+ * producing one) plus any transform-specific options.
  */
 export interface AttrOptions {
   /**
@@ -29,6 +32,8 @@ export interface AttrOptions {
  * "type" points to a new-style transform on "field"
  * that a record implmentation *must* use.
  *
+ * @summary Field schema of kind `field` for a primitive value, optionally converted by a registered `Transformation`;
+ * objects and arrays in it are not deep-tracked.
  * @public
  */
 export interface GenericField {
@@ -114,6 +119,8 @@ export interface GenericField {
  * an AliasField could be used to expose both a string and a Date version of the
  * same field, with both being capable of being written to.
  *
+ * @summary Field schema of kind `alias` for LegacyMode resources that exposes another field's cache value, including
+ * legacy attributes and relationships, under a new name.
  * @public
  */
 export interface LegacyAliasField {
@@ -182,6 +189,8 @@ export interface LegacyAliasField {
  * an AliasField could be used to expose both a string and a Date version of the
  * same field, with both being capable of being written to.
  *
+ * @summary Field schema of kind `alias` for PolarisMode resources that exposes another field's cache value, including
+ * LinksMode relationships, under a new name.
  * @public
  */
 export interface PolarisAliasField {
@@ -249,6 +258,8 @@ export interface PolarisAliasField {
  * an AliasField could be used to expose both a string and a Date version of the
  * same field, with both being capable of being written to.
  *
+ * @summary Field schema of kind `alias` for object schemas that exposes another non-relationship field's cache value
+ * under a new name.
  * @public
  */
 export interface ObjectAliasField {
@@ -293,6 +304,8 @@ export interface ObjectAliasField {
  * 'uuid', 'urn' or 'entityUrn' or 'primaryKey' as their
  * primary key field instead of 'id'.
  *
+ * @summary Field schema of kind `@id` naming which field holds a resource's primary key, with an optional `sourceKey`
+ * when the API uses another name like `uuid`.
  * @public
  */
 export interface IdentityField {
@@ -355,6 +368,8 @@ export interface IdentityField {
  * it should be placed in the `ResourceSchema`'s `@id` field
  * in place of an `IdentityField`.
  *
+ * @summary Field schema of kind `@hash` that computes a schema-object's identity from its cache data using a registered
+ * hash function.
  * @public
  */
 export interface HashField {
@@ -421,6 +436,8 @@ export interface HashField {
  *
  * Don't make us regret this decision.
  *
+ * @summary Field schema of kind `@local` for memoized, writable per-record state that is never cached or sent to the
+ * server; currently private to built-in fields.
  * @public
  */
 export interface LocalField {
@@ -468,6 +485,8 @@ export interface LocalField {
  * if the key/value pairs have well-defined shape,
  * use 'schema-object' instead.
  *
+ * @summary Field schema of kind `object` for a plain object of primitive values, optionally passed as a whole through a
+ * registered transformation.
  * @public
  */
 export interface ObjectField {
@@ -555,6 +574,8 @@ export interface ObjectField {
  *
  * By default, a SchemaObject within
  *
+ * @summary Field schema of kind `schema-object` for a nested object whose shape is described by an `ObjectSchema`, with
+ * optional polymorphism.
  * @public
  */
 export interface SchemaObjectField {
@@ -682,6 +703,8 @@ export interface SchemaObjectField {
  * If the array's elements are not primitive
  * values, use 'schema-array' instead.
  *
+ * @summary Field schema of kind `array` for an array of primitive values, each optionally passed through a registered
+ * transformation.
  * @public
  */
 export interface ArrayField {
@@ -767,6 +790,8 @@ export interface ArrayField {
  * If the array's elements are not well-defined,
  * use 'array' instead.
  *
+ * @summary Field schema of kind `schema-array` for an array of objects described by an `ObjectSchema`, with options for
+ * member identity keys and polymorphism.
  * @public
  */
 export interface SchemaArrayField {
@@ -953,6 +978,8 @@ export interface SchemaArrayField {
  * or that require access to related resources
  * that may not be loaded should be avoided.
  *
+ * @summary Field schema of kind `derived` for a read-only, memoized value computed by a registered derivation and never
+ * cached or sent to the server.
  * @public
  */
 export interface DerivedField {
@@ -1009,6 +1036,8 @@ export interface DerivedField {
  * SUPPORT FOR THIS FEATURE IS NOT YET IMPLEMENTED
  * BY ReactiveResource
  *
+ * @summary Field schema of kind `resource` for a reference to another resource; not yet implemented by
+ * `ReactiveResource`.
  * @public
  */
 export interface ResourceField {
@@ -1122,6 +1151,8 @@ export interface ResourceField {
  * SUPPORT FOR THIS FEATURE IS NOT YET IMPLEMENTED
  * BY ReactiveResource
  *
+ * @summary Field schema of kind `collection` for a possibly paginated reference to other resources; not yet implemented
+ * by `ReactiveResource`.
  * @public
  */
 export interface CollectionField {
@@ -1253,6 +1284,8 @@ export interface CollectionField {
  * that a serializer *might* use, but their usage
  * is not guaranteed.
  *
+ * @summary Legacy field schema of kind `attribute` for a primitive value whose `type` names a legacy transform a
+ * serializer may apply; LegacyMode only.
  * @public
  */
 export interface LegacyAttributeField {
@@ -1320,6 +1353,8 @@ export interface LegacyAttributeField {
  *
  * This is the legacy version of the `ResourceField`.
  *
+ * @summary Legacy field schema of kind `belongsTo` for a reference to one related resource, with required `async` and
+ * `inverse` options and optional `linksMode`.
  * @public
  */
 export interface LegacyBelongsToField {
@@ -1494,6 +1529,8 @@ export interface LegacyBelongsToField {
  *
  * This is the legacy version of the `ResourceField`.
  *
+ * @summary Legacy field schema of kind `belongsTo` in LinksMode: a sync reference to one related resource, loaded via
+ * links without adapters, usable in PolarisMode.
  * @public
  */
 export interface LinksModeBelongsToField {
@@ -1661,6 +1698,8 @@ export interface LinksModeBelongsToField {
  *
  * This is the legacy version of the `CollectionField`.
  *
+ * @summary Legacy field schema of kind `hasMany` for a reference to many related resources, with required `async` and
+ * `inverse` options and optional `linksMode`.
  * @public
  */
 export interface LegacyHasManyField {
@@ -1856,6 +1895,8 @@ export interface LegacyHasManyField {
  *
  * This is the legacy version of the `CollectionField`.
  *
+ * @summary Legacy field schema of kind `hasMany` in LinksMode: a sync reference to many related resources, loaded via
+ * links without adapters, usable in PolarisMode.
  * @public
  */
 export interface LinksModeHasManyField {
@@ -2061,6 +2102,8 @@ export interface LinksModeHasManyField {
  * - {@link LegacyBelongsToField}
  * - {@link LegacyHasManyField}
  *
+ * @summary Union of every field schema allowed on a LegacyMode resource schema, including legacy attribute, belongsTo,
+ * and hasMany fields.
  * @public
  */
 export type LegacyModeFieldSchema =
@@ -2096,6 +2139,8 @@ export type LegacyModeFieldSchema =
  * - {@link LinksModeBelongsToField}
  * - {@link LinksModeHasManyField}
  *
+ * @summary Union of every field schema allowed on a PolarisMode resource schema, with relationships limited to their
+ * LinksMode forms.
  * @public
  */
 export type PolarisModeFieldSchema =
@@ -2121,6 +2166,8 @@ export type PolarisModeFieldSchema =
  * as appropriate as they are more specific and will
  * provide better guidance around what is valid.
  *
+ * @summary Union of every LegacyMode and PolarisMode field schema; prefer the mode-specific unions for more precise
+ * type-checking.
  * @public
  */
 export type FieldSchema =
@@ -2149,6 +2196,7 @@ export type FieldSchema =
  * In other words this will not include types like alias
  * fields, local fields, or derived fields.
  *
+ * @summary Union of the field schemas whose values live in the cache, excluding alias, local, and derived fields.
  * @public
  */
 export type CacheableFieldSchema =
@@ -2170,6 +2218,7 @@ export type CacheableFieldSchema =
  * A union of all possible field schemas that can be
  * used in an ObjectSchema.
  *
+ * @summary Union of the field schemas allowed in an `ObjectSchema`, which excludes identity and relationship fields.
  * @public
  */
 export type ObjectFieldSchema =
@@ -2190,6 +2239,8 @@ export type ObjectFieldSchema =
  * own which may allow them to appear in relationships, or in multiple
  * response documents.
  *
+ * @summary Schema describing a PolarisMode resource type: its `@id` identity field, its fields, and the traits it
+ * implements.
  * @public
  */
 export interface PolarisResourceSchema {
@@ -2259,6 +2310,8 @@ export interface PolarisResourceSchema {
  * own which may allow them to appear in relationships, or in multiple
  * response documents.
  *
+ * @summary Schema describing a LegacyMode resource type, marked `legacy: true`, with its identity field, fields,
+ * traits, and optional extensions.
  * @public
  */
 export interface LegacyResourceSchema {
@@ -2344,6 +2397,8 @@ export interface LegacyResourceSchema {
  * by the SchemaService which provides fields as a Map
  * instead of as an Array.
  *
+ * @summary Union of the PolarisMode and LegacyMode schema definitions for a primary resource type, as registered with
+ * the schema service.
  * @public
  */
 export type ResourceSchema = PolarisResourceSchema | LegacyResourceSchema;
@@ -2354,6 +2409,8 @@ export type ResourceSchema = PolarisResourceSchema | LegacyResourceSchema;
  *
  * ObjectSchemas may not currently contain relationships.
  *
+ * @summary Schema describing an embedded object that has no identity of its own, used by `schema-object` and
+ * `schema-array` fields.
  * @public
  */
 export interface ObjectSchema {
@@ -2412,6 +2469,8 @@ export interface ObjectSchema {
  * A union of {@link ResourceSchema} and {@link ObjectSchema} representing
  * any schema that can be registered with or returned by the SchemaService.
  *
+ * @summary Union of resource and object schemas, covering any schema that can be registered with or returned by the
+ * schema service.
  * @public
  */
 export type Schema = ResourceSchema | ObjectSchema;
@@ -2422,6 +2481,9 @@ export type Schema = ResourceSchema | ObjectSchema;
  * Traits are reusable collections of fields that can be composed onto a
  * resource schema, often to describe a polymorphic capability shared by
  * multiple resource types.
+ *
+ * @summary A named, reusable set of PolarisMode fields that resource schemas compose in via their `traits`, often to
+ * model polymorphic capabilities.
  */
 export interface PolarisTrait {
   /**
@@ -2461,6 +2523,9 @@ export interface PolarisTrait {
  * Traits are reusable collections of fields that can be composed onto a
  * resource schema, often to describe a polymorphic capability shared by
  * multiple resource types.
+ *
+ * @summary A named, reusable set of LegacyMode fields that resource schemas compose in via their `traits`, often to
+ * model polymorphic capabilities.
  */
 export interface LegacyTrait {
   /**
@@ -2498,6 +2563,8 @@ export interface LegacyTrait {
  * A union of
  * - {@link LegacyTrait}
  * - {@link PolarisTrait}
+ *
+ * @summary Union of the LegacyMode and PolarisMode trait definitions that can be registered with the schema service.
  */
 export type Trait = LegacyTrait | PolarisTrait;
 
@@ -2511,6 +2578,8 @@ export type Trait = LegacyTrait | PolarisTrait;
  * as doing so would require a full schema graph to be passed in
  * and no cycles in the graph to be present.
  *
+ * @summary Returns the given resource schema unchanged, typed so its definition is type-checked; relationship inverses
+ * and related types are not validated.
  * @public
  */
 export function resourceSchema<T extends LegacyResourceSchema | PolarisResourceSchema>(
@@ -2525,6 +2594,7 @@ export function resourceSchema<T extends LegacyResourceSchema | PolarisResourceS
  *
  * Will return the passed in schema.
  *
+ * @summary Returns the given object schema unchanged, typed so its definition is type-checked.
  * @public
  */
 export function objectSchema<T extends ObjectSchema>(schema: T): T {
@@ -2534,6 +2604,8 @@ export function objectSchema<T extends ObjectSchema>(schema: T): T {
 /**
  * A type utility to narrow a schema to a ResourceSchema
  *
+ * @summary Type guard that returns true when a schema is a resource schema, meaning its identity field is of kind
+ * `@id`.
  * @public
  */
 export function isResourceSchema(schema: ResourceSchema | ObjectSchema): schema is ResourceSchema {
@@ -2543,6 +2615,8 @@ export function isResourceSchema(schema: ResourceSchema | ObjectSchema): schema 
 /**
  * A type utility to narrow a schema to LegacyResourceSchema
  *
+ * @summary Type guard that returns true when a schema is a LegacyMode resource schema, meaning it is a resource schema
+ * with `legacy: true`.
  * @public
  */
 export function isLegacyResourceSchema(schema: ResourceSchema | ObjectSchema): schema is LegacyResourceSchema {
@@ -2562,6 +2636,8 @@ export function isLegacyResourceSchema(schema: ResourceSchema | ObjectSchema): s
  * - {@link LinksModeBelongsToField}
  * - {@link LinksModeHasManyField}
  *
+ * @summary Union of the legacy attribute, belongsTo, and hasMany field schemas, including the LinksMode relationship
+ * variants.
  * @public
  */
 export type LegacyField =
@@ -2582,6 +2658,7 @@ export type LegacyField =
  * - {@link LinksModeBelongsToField}
  * - {@link LinksModeHasManyField}
  *
+ * @summary Union of the legacy belongsTo and hasMany field schemas, including their LinksMode variants.
  * @public
  */
 export type LegacyRelationshipField =

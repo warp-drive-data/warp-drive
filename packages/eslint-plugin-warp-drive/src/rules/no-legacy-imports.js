@@ -1,5 +1,8 @@
 /**
  * {@include ./no-legacy-imports.md}
+ *
+ * @summary Lint rule, with autofix, that rewrites imports from legacy EmberData module paths to their modern
+ * replacements.
  * @module
  */
 'use strict';
@@ -213,7 +216,10 @@ function createHelpers(context) {
   };
 }
 
-/** @type {import('eslint').Rule.RuleModule} */
+/**
+ * @summary ESLint rule object that autofixes imports from legacy EmberData module paths to their modern replacements.
+ * @type {import('eslint').Rule.RuleModule}
+ */
 module.exports = {
   meta: {
     type: 'suggestion',

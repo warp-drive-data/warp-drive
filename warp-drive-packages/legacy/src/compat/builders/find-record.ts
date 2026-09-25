@@ -47,6 +47,8 @@ type FindRecordBuilderOptions = Omit<FindRecordOptions, 'preload'>;
   This is useful for quickly upgrading an entire app to a unified syntax while a longer incremental migration is made to shift off of adapters and serializers.
   To that end, these builders are deprecated and will be removed in a future version of Warp Drive.
 
+  @summary Deprecated legacy builder for a `store.request` config that behaves like `store.findRecord`, taking a
+  type and id or a resource identifier.
   @deprecated
   @public
   @param resource - either a string representing the name of the resource or a ResourceIdentifier object containing both the type (a string) and the id (a string) for the record or an lid (a string) of an existing record

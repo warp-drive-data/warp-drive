@@ -246,6 +246,8 @@ function _hasMany<T, Async extends boolean>(
   must be declared as polymorphic, and the `as` option must be used to declare the abstract
   type each record satisfies on both sides.
 
+  @summary Legacy `Model` decorator that declares a to-many relationship to another resource type, configured with
+  required `async` and `inverse` options.
   @public
   @param type the name of the related resource
   @param options a hash of options

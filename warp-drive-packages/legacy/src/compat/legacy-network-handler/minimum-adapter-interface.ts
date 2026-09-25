@@ -20,6 +20,9 @@ type Group = Snapshot[];
 /**
  * The raw payload shape returned by a legacy adapter's request methods,
  * prior to being normalized by a {@link MinimumSerializerInterface}.
+ *
+ * @summary Raw object or array payload a legacy adapter resolves with, before a serializer normalizes it into a
+ * JSON:API document.
  */
 export type AdapterPayload = Record<string, unknown> | unknown[];
 
@@ -36,6 +39,8 @@ export type AdapterPayload = Record<string, unknown> | unknown[];
 
   Methods that are not required are marked as **optional**.
 
+  @summary Legacy contract for adapters: the `findRecord`, `query`, `createRecord`, and other methods the store
+  calls to load and save data, and which are optional.
   @class (Interface) Adapter
   @public
 */

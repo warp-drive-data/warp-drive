@@ -34,6 +34,7 @@ const CAPITALIZE_CACHE = new LRUCache<string, string>((str: string) =>
  * dasherize('privateDocs/ownerInvoice';  // 'private-docs/owner-invoice'
  * ```
  *
+ * @summary Converts camelCase, underscored, or spaced strings to dasherized form, such as `innerHTML` to `inner-html`.
  * @public
  * @since 4.13.0
  */
@@ -53,6 +54,8 @@ export const dasherize: (str: string) => string = internalDasherize;
  * camelize('private-docs/owner-invoice');  // 'privateDocs/ownerInvoice'
  * ```
  *
+ * @summary Converts dashed, underscored, dotted, or spaced strings to lowerCamelCase, such as `action_name` to
+ * `actionName`.
  * @public
  * @since 4.13.0
  */
@@ -73,6 +76,7 @@ export function camelize(str: string): string {
  * underscore('privateDocs/ownerInvoice');  // 'private_docs/owner_invoice'
  * ```
  *
+ * @summary Converts camelCase, dashed, or spaced strings to lowercase snake_case, such as `innerHTML` to `inner_html`.
  * @public
  * @since 4.13.0
  */
@@ -93,6 +97,7 @@ export function underscore(str: string): string {
  * capitalize('privateDocs/ownerInvoice'); // 'PrivateDocs/ownerInvoice'
  * ```
  *
+ * @summary Uppercases the first letter of a string, and of each `/`-separated path segment, leaving the rest unchanged.
  * @public
  * @since 4.13.0
  */
@@ -104,6 +109,8 @@ export function capitalize(str: string): string {
  * Sets the maximum size of the LRUCache for all string transformation functions.
  * The default size is 10,000.
  *
+ * @summary Sets how many results the `camelize`, `underscore`, `capitalize`, and `dasherize` caches each keep (default
+ * 10,000).
  * @public
  * @since 4.13.0
  */

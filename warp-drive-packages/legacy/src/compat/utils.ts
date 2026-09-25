@@ -2,6 +2,8 @@
   Utilities for helping to migrate to stricter
   and more consistent use of IDs and types.
 
+  @summary Legacy helpers that normalize, compare, and report mismatched resource ids and types while migrating to
+  stricter formats.
   @module
 */
 import { assert } from '@warp-drive/core/build-config/macros';
@@ -35,6 +37,8 @@ let NormalizedType: Normalizer = (str: string) => {
  * changes during normalization. This is useful for instrumenting
  * to discover places where usage in the app is not consistent.
  *
+ * @summary Legacy migration helper that registers a callback invoked whenever `formattedId` or `formattedType`
+ * has to change the id or type it was given.
  * @param fn - a function which takes a mismatch-type ('formatted-id' | 'formatted-type'), actual, and expected value
  * @public
  */
@@ -47,6 +51,8 @@ export function configureMismatchReporter(fn: Reporter): void {
  * fails validation. This is useful for instrumenting
  * to discover places where usage in the app is not consistent.
  *
+ * @summary Legacy migration helper that registers a callback invoked when an id or type passed to these utilities
+ * fails validation.
  * @param fn - a function which takes a message and a condition
  * @public
  */
@@ -64,6 +70,8 @@ export function configureAssertFn(fn: (message: string, condition: unknown) => v
  * the configured mismatch reporter and assert functions will
  * be called.
  *
+ * @summary Legacy migration helper that replaces the singularize-and-dasherize function `formattedType` and
+ * `isEquivType` use to normalize resource types.
  * @param fn - a function which takes a string and returns a string
  * @public
  */
@@ -98,6 +106,8 @@ const NORMALIZED_TYPES = new Map<string, string>();
  * formattedType('PostComment'); // => 'post-comment'
  * ```
  *
+ * @summary Legacy migration helper that normalizes a resource type to the singular dasherized form the cache
+ * expects, such as `'PostComments'` to `'post-comment'`.
  * @param type the potentially un-normalized type
  * @return the normalized type
  * @public
@@ -137,6 +147,8 @@ export function formattedType<T extends string>(type: T | string): T {
  * formattedId(null); // => null
  *	```
  *
+ * @summary Legacy migration helper that normalizes a resource id to the `string` or `null` the cache expects,
+ * asserting on invalid ids such as `''` or `0`.
  * @param id the potentially un-normalized id
  * @return the normalized id
  * @public
@@ -167,6 +179,8 @@ export function formattedId(id: string | number | null): string | null {
  * Like {@link formattedId}, but asserts that `id` is not `null` rather
  * than allowing and passing through `null`.
  *
+ * @summary Legacy migration helper that normalizes a resource id to a string like `formattedId`, but asserts that
+ * it is not `null`.
  * @public
  */
 export function expectId(id: string | number): string;
@@ -202,6 +216,8 @@ export function expectId(id: string | number | null): string {
  * isEquivType('posts', null); // false
  * ```
  *
+ * @summary Legacy migration helper that reports whether two resource types match after normalization, so
+ * `'posts'` and `'post'` are equivalent.
  * @param expected a potentially unnormalized type to match against
  * @param actual a potentially unnormalized type to match against
  * @return true if the types are equivalent
@@ -237,6 +253,8 @@ export function isEquivType(expected: string, actual: string): boolean {
  * isEquivId(1, null); // false
  * ```
  *
+ * @summary Legacy migration helper that reports whether two resource ids match after normalization, so `1` and
+ * `'1'` are equivalent.
  * @param expected a potentially un-normalized id to match against
  * @param actual a potentially un-normalized id to match against
  * @return true if the ids are equivalent

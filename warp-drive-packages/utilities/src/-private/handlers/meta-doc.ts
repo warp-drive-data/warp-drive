@@ -45,6 +45,7 @@ import type { StructuredDataDocument } from '@warp-drive/core/types/request';
  * Errors are not processed by this handler, so if the request fails and the error response
  * is not in {json:api} format additional processing may be needed.
  *
+ * @summary Request handler that wraps the whole response body in `meta` for requests with `options.isMetaRequest` set.
  * @group Handlers
  */
 export const MetaDocHandler: Handler = {

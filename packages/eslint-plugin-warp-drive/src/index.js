@@ -1,4 +1,6 @@
 /**
+ * @summary ESLint plugin with rules that catch WarpDrive anti-patterns such as legacy request methods and imports,
+ * invalid IDs and types, and unhandled request errors.
  * @module
  * @mergeModuleWith <project>
  */

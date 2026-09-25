@@ -62,6 +62,7 @@ import { copyForwardUrlOptions, extractCacheOptions } from '../builder-utils.ts'
  * const data = await store.request(options);
  * ```
  *
+ * @summary Builds a `GET` request for one resource by type and id, using REST-style pluralized, camelCased URLs.
  * @public
  */
 export function findRecord<T, M extends Meta | undefined = Meta | undefined, E extends object = object>(

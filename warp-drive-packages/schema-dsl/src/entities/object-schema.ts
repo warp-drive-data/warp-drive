@@ -7,6 +7,8 @@ import type { AnyConstructor } from '../-private/types.ts';
 /**
  * Options accepted by the {@link ObjectSchema} decorator.
  *
+ * @summary Options for the `ObjectSchema` class decorator; currently only a reserved `hash` flag that has no effect on
+ * the compiled object schema.
  * @public
  */
 export interface ObjectSchemaOptions {
@@ -33,6 +35,8 @@ export interface ObjectSchemaOptions {
  * Each decorated property on the class contributes one entry to the
  * compiled `fields` array, in declaration order.
  *
+ * @summary Class decorator that compiles a class into an object schema for embedded, identity-less data used as the
+ * value of `schemaObject` and `schemaArray` fields.
  * @example
  * ::: code-group
  *

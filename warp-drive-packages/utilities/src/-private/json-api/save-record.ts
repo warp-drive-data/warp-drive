@@ -76,6 +76,7 @@ function isExisting(identifier: ResourceKey): identifier is PersistedResourceKey
  * const data = await store.request(options);
  * ```
  *
+ * @summary Builds a JSON:API `DELETE` request that persists deletion of an existing record.
  * @public
  * @param record
  * @param options
@@ -161,6 +162,7 @@ export function deleteRecord(record: unknown, options: ConstrainedRequestOptions
  * const data = await store.request(options);
  * ```
  *
+ * @summary Builds a JSON:API `POST` request for saving a new record; the app must set the request body itself.
  * @public
  * @param record
  * @param options
@@ -248,6 +250,8 @@ export function createRecord(record: unknown, options: ConstrainedRequestOptions
  * const data = await store.request(options);
  * ```
  *
+ * @summary Builds a JSON:API `PUT` (or `PATCH`) request for saving an existing record; the app must set the request
+ * body itself.
  * @public
  * @param record
  * @param options

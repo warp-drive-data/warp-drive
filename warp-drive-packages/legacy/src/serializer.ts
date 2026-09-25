@@ -101,6 +101,8 @@
   It is recommended that apps write their own serializer to best suit the needs of their API and
   application.
 
+  @summary Legacy serializer layer that converts data between an API's format and JSON:API for the adapter-based
+  request flow.
   @module
 */
 import EmberObject from '@ember/object';
@@ -137,6 +139,8 @@ const service = s.service ?? s.inject;
 
   For an example implementation, see the included {@link JSONSerializer}.
 
+  @summary Legacy abstract base class for serializers that normalize API responses into JSON:API and serialize
+  records into the API's request format.
   @class Serializer
   @public
 */

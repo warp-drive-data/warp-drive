@@ -5,6 +5,8 @@ import type { Link, Meta } from './json-api-raw.ts';
  *
  * [{json:api} Spec](https://jsonapi.org/format/#error-objects)
  *
+ * @summary One {json:api} error object, with optional `status`, `code`, `title`, `detail`, `source`, `links`, and
+ * `meta`, found in a document's `errors` array.
  * @example
  * ```json
  * {

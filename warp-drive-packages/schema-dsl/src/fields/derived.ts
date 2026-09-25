@@ -6,6 +6,8 @@ import type { DerivedField } from '@warp-drive/core/types/schema/fields';
 /**
  * Options accepted by the {@link derived} decorator.
  *
+ * @summary Options for the `@derived` decorator that name the registered derivation that computes the field and the
+ * options passed to it.
  * @public
  */
 export interface DerivedOptions {
@@ -32,6 +34,8 @@ export interface DerivedOptions {
  * value derived from other fields. Derived fields are never stored in the
  * cache and are never sent to the server.
  *
+ * @summary Property decorator that compiles to a derived field, a read-only value computed by a registered derivation
+ * and never cached or sent to the server.
  * @example
  * ::: code-group
  *

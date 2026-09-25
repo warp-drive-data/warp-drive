@@ -10,6 +10,9 @@ import type { Fragment } from './fragment.ts';
 /**
  * The features added to an array resource by {@link FragmentArrayExtension}, providing
  * a subset of the legacy `ModelFragments` fragment-array API for migrated resources.
+ *
+ * @summary Legacy `ModelFragments`-compatible array API, such as `addFragment`, `removeFragment`, and
+ * `rollbackAttributes`, for reactive arrays migrated off fragments.
  */
 export class FragmentArray<T extends Fragment> {
   // We might want to check the parent values once we move this code to warp-drive.
@@ -91,6 +94,9 @@ export class FragmentArray<T extends Fragment> {
 /**
  * A schema extension that adds the {@link FragmentArray} API to migrated
  * `ModelFragments` array resources.
+ *
+ * @summary Legacy schema extension named `fragment-array` that adds the `FragmentArray` API to reactive arrays
+ * migrated from `ModelFragments`.
  */
 export const FragmentArrayExtension: {
   /**

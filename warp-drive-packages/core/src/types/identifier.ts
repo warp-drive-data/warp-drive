@@ -28,6 +28,8 @@ export const CACHE_OWNER: '__$co' = ProdSymbol('__$co', 'CACHE_OWNER');
  * Identifies which "bucket" of the cache a key belongs to: resources
  * (`'record'`, see {@link ResourceKey}) or request documents
  * (`'document'`, see {@link RequestKey}).
+ *
+ * @summary Which cache bucket a key belongs to: `'record'` for resource keys or `'document'` for request keys.
  */
 export type CacheKeyType = 'record' | 'document';
 
@@ -38,6 +40,8 @@ export type CacheKeyType = 'record' | 'document';
  * Only requests that are assigned a RequestKey are retrievable/replayable from
  * the cache, though requests without RequestKeys may still update cache state.
  *
+ * @summary Stable object with a unique `lid` that references a cached request document, letting that request's
+ * result be retrieved or replayed.
  * @public
  */
 export interface RequestKey {
@@ -53,7 +57,10 @@ export interface RequestKey {
   [CACHE_OWNER]: number | undefined;
 }
 
-/** @deprecated use {@link RequestKey} */
+/**
+ * @summary Deprecated alias for `RequestKey`, the stable cache reference to a request document.
+ * @deprecated use {@link RequestKey}
+ */
 export type StableDocumentIdentifier = RequestKey;
 
 /**
@@ -90,6 +97,8 @@ interface ResourceKeyBase<T extends string = string> {
  * Distinguishing between this ResourceKey and one for a client created
  * resource that was created with an ID is generally speaking not possible
  * at runtime, so anything with an ID typically narrows to this.
+ *
+ * @summary Resource key whose `id` is a known string, the form keys for server-loaded resources take.
  */
 export interface PersistedResourceKey<T extends string = string> extends ResourceKeyBase<T> {
   /**
@@ -100,7 +109,10 @@ export interface PersistedResourceKey<T extends string = string> extends Resourc
   id: string;
 }
 
-/** @deprecated use {@link PersistedResourceKey} */
+/**
+ * @summary Deprecated alias for `PersistedResourceKey`, a resource key whose `id` is known.
+ * @deprecated use {@link PersistedResourceKey}
+ */
 export type StableExistingRecordIdentifier<T extends string = string> = PersistedResourceKey<T>;
 
 /**
@@ -111,6 +123,8 @@ export type StableExistingRecordIdentifier<T extends string = string> = Persiste
  * that is not for a new record but does not have an ID. This would
  * happen if a user intentionally created one for use with a secondary-index
  * prior to the record having been fully loaded.
+ *
+ * @summary Resource key for a record created locally with `store.createRecord`, whose `id` may still be `null`.
  */
 export interface NewResourceKey<T extends string = string> extends ResourceKeyBase<T> {
   /**
@@ -129,9 +143,14 @@ export interface NewResourceKey<T extends string = string> extends ResourceKeyBa
  * Every resource has a unique ResourceKey, and ResourceKeys may refer
  * to data that has never been loaded (for instance, in an async relationship).
  *
+ * @summary Stable object with a unique `lid` plus `type` and `id` that uniquely references one resource's data in
+ * the cache, loaded or not.
  * @public
  */
 export type ResourceKey<T extends string = string> = PersistedResourceKey<T> | NewResourceKey<T>;
 
-/** @deprecated use {@link ResourceKey} */
+/**
+ * @summary Deprecated alias for `ResourceKey`, the stable cache reference to a single resource.
+ * @deprecated use {@link ResourceKey}
+ */
 export type StableRecordIdentifier<T extends string = string> = ResourceKey<T>;

@@ -31,6 +31,8 @@ export type { Context } from './request/-private/context.ts';
  * result.content.data; // will have type User
  * ```
  *
+ * @summary Types a request object with the response type that `store.request` or `RequestManager.request`
+ * should resolve with; no runtime effect.
  */
 export function withResponseType<T>(obj: RequestInfo): RequestInfo<T> & {
   /** The branded response type. Present only at the type level; carries no runtime value. */
@@ -69,6 +71,8 @@ export function withResponseType<T>(obj: RequestInfo): RequestInfo<T> & {
  * result.content.meta?.total; // number | undefined
  * ```
  *
+ * @summary Types a request object so its response resolves as a `ReactiveDataDocument` of the given
+ * data and meta types; no runtime effect.
  * @public
  */
 export function withReactiveResponse<
@@ -88,6 +92,8 @@ export function withReactiveResponse<
 }
 
 /**
+ * @summary Deprecated alias for `withResponseType`, which types a request object with its expected
+ * response type.
  * @deprecated use {@link withResponseType} instead
  */
 export const withBrand: typeof withResponseType = withResponseType;
