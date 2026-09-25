@@ -73,25 +73,27 @@ Head over to [many-to-none](./many-to-none.md) and [one-to-none](./one-to-none.m
 
 Declare a `resource` field on the "one" side and a `collection` field on the "many" side, each naming the other as its `inverse`. These field kinds behave the same in LegacyMode and PolarisMode; [ResourceSchemas](../../schemas/resources/index.md) shows how to register the schemas they belong to, and [Inverses and Directionality](../features/inverses.md) explains `inverse`.
 
+Schemas are JSON. WarpDrive doesn't care where your schemas come from, how they are authored, or how you load them into the system, so long as when it asks the [SchemaService](/api/@warp-drive/core/types/schema/schema-service/types/SchemaService) for information it gets back field definitions in this shape. Here is how the relationship above is described by field definitions.
+
 🏃🏾‍♀️ *ActivityData*
 
-```ts
+```json
 {
-  kind: 'resource',
-  name: 'runner',
-  type: 'trail-runner',
-  options: { async: false, inverse: 'activities' },
+  "kind": "resource",
+  "name": "runner",
+  "type": "trail-runner",
+  "options": { "async": false, "inverse": "activities" }
 }
 ```
 
 🌲 *TrailRunner*
 
-```ts
+```json
 {
-  kind: 'collection',
-  name: 'activities',
-  type: 'activity-data',
-  options: { async: false, inverse: 'runner' },
+  "kind": "collection",
+  "name": "activities",
+  "type": "activity-data",
+  "options": { "async": false, "inverse": "runner" }
 }
 ```
 
@@ -109,7 +111,7 @@ performant than working with bulky classes that need to be shipped across the wi
 No one wants to author schemas in raw JSON though (we hope 😬), and the ergonomics of typed data and editor autocomplete based on your schemas are vital to productivity and
 code quality. For this, we offer a way to express schemas as TypeScript using types, classes and decorators which are then compiled into json schemas and TypeScript interfaces for use by your project.
 
-The [Schema DSL](../../schemas/dsl/index.md) (`@warp-drive/schema-dsl`) provides this. Decorators for `resource` and `collection` fields are planned; until they land, the DSL can declare this relationship only with its legacy decorators, shown in [Schema DSL (legacy)](#schema-dsl-legacy) below.
+The [Schema DSL](../../schemas/dsl/index.md) (`@warp-drive/schema-dsl`) provides this. Decorators for `resource` and `collection` fields are planned; until they land, the DSL can declare this relationship only with its legacy `@belongsTo` and `@hasMany` decorators, shown [below](#schema-dsl-belongsto-and-hasmany).
 
 ---
 
@@ -185,7 +187,7 @@ export default class TrailRunner extends Model {
 }
 ```
 
-### Schema DSL (legacy) {#schema-dsl-legacy}
+### Schema DSL `@belongsTo` and `@hasMany` {#schema-dsl-belongsto-and-hasmany}
 
 The Schema DSL's `@belongsTo` and `@hasMany` compile to the schema fields above and are only valid on resources decorated with `@Resource({ legacy: true })`.
 
