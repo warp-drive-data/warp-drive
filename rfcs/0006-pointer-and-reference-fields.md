@@ -22,185 +22,96 @@ suite:
 
 ## Summary
 
-PolarisMode gains four new relationship field kinds — `pointer`, `pointer-array`, `reference`,
-and `reference-array` — for a category of relationship that LegacyMode apps use constantly but
-that WarpDrive has never had a name for: a relationship that is **never fetched through the
-relationship itself** and whose delivery WarpDrive does **not** validate. The related resource(s)
-may arrive sideloaded in the same document as the parent, through some other request, or never;
-the schema makes no claim about which. A **pointer** declares that the
-related resource *must* already be in the cache when the field is read; WarpDrive asserts this
-in development builds. A **reference** declares that the related resource *may* be missing; the
-field exposes the related identity together with the record if (and only if) it is loaded. All
-four kinds are synchronous, unidirectional (no inverse), and never fetch. They live in the
-relationship graph like every other relationship, with one deliberate difference: a committed
-delete of a related resource removes it from a pointer or reference, but a plain `unloadRecord`
-does not. This RFC is one of the pieces of
-[#10408, "The Road to PolarisMode"](https://github.com/warp-drive-data/warp-drive/issues/10408);
-it does not cover the `resource`/`collection` fields, paginated collections, or inverses.
+PolarisMode gains four relationship field kinds: `pointer`, `pointer-array`, `reference`, and
+`reference-array`. They describe a relationship that WarpDrive never fetches through the
+relationship itself and whose delivery it does not validate: the related resources may be
+sideloaded with the parent, arrive by some other request, or never arrive. A **pointer** promises
+the related resource is loaded whenever the field is read, and WarpDrive asserts that in
+development builds. A **reference** allows it to be missing and exposes the related identity
+alongside the record, if loaded. All four are synchronous, have no inverse, and live in the
+relationship graph with one difference from other sync relationships: a committed delete of a
+related resource removes it from the relationship, but `unloadRecord` does not.
+
+This is one piece of [#10408](https://github.com/warp-drive-data/warp-drive/issues/10408). It
+does not cover `resource`/`collection`, paginated collections, or inverses.
 
 ## Motivation
 
-### The strictness PolarisMode wants
+PolarisMode relationships are strict about what their shape promises: a sync relationship must
+carry its related resources in the same document, and an async one must carry a link that can
+fetch them (see [LinksMode](/guides/the-manual/misc/links-mode.md)). That rule cannot express a
+relationship the developer knows will not be satisfied by the delivering document and does not
+want WarpDrive to fetch either.
 
-PolarisMode's relationship story is intended to be strict about what a relationship's shape
-promises. A synchronous relationship whose payload carries the related identity must carry the
-related resource in the same document (sideloaded via `included`), and an asynchronous one must
-carry a link that can fetch it. Today's `linksMode` validation in the JSON:API cache already
-enforces the first half of this for the sync `belongsTo`/`hasMany` fields PolarisMode currently
-supports: a relationship must either be "fully linked" or carry a `links.related`
-(see [LinksMode](/guides/the-manual/misc/links-mode.md)). The planned `resource` and `collection`
-fields keep that rule.
+LegacyMode apps declare such relationships as `belongsTo`/`hasMany` with `async: false` because
+nothing else exists. They arise when:
 
-That rule has a gap. It has no way to express a relationship the developer *knows* will not be
-satisfied by the document that delivers it, and that the developer does not want WarpDrive to
-fetch either.
+- a prior or concurrent request is known to deliver the related records;
+- the related resources only ever arrive with the parent and have no endpoint of their own, and
+  the parent should own them outright with no inverse and no fetching;
+- the app wants only the id, as the legacy References API allowed; or
+- a separate system, such as a recommendation service, can name a resource by type and id but
+  cannot deliver it or link to it.
 
-### The two relationships LegacyMode has been hiding
+Today these degrade silently: a sync relationship returns `null` or a partial array with no
+signal that anything is wrong, and the schema gives WarpDrive no way to tell "sideload expected
+but missing" from "sideload never expected". The two cases differ in one way, and that difference
+is the point:
 
-Auditing real apps (the discussion on
-[#10408](https://github.com/warp-drive-data/warp-drive/issues/10408)) surfaced two families of
-relationship that were only ever declared as `@belongsTo`/`@hasMany` with `async: false` because
-nothing else existed. They show up for several recurring reasons:
+- A **pointer** presumes the related resource is loaded. Its absence is a programming error.
+- A **reference** allows the related resource to be missing. Its absence is a normal state, and
+  the identity is useful on its own: to key a placeholder, to fetch, or to compare.
 
-- **Systemic knowledge.** The developer knows a prior or concurrent request delivers the related
-  records — a route's parent model hook loaded every `user`, so `comment.author` "just works" as
-  a sync relationship with no sideload.
-- **The storefront pattern.** [ember-data-storefront](https://embermap.github.io/ember-data-storefront/)
-  taught apps to mark relationships synchronous that were in fact asynchronous, and to load them
-  up front.
-- **The References API.** Apps used `belongsToReference()`/`hasManyReference()` to read *only the
-  id* out of a relationship and avoid loading anything until explicitly desired.
-- **Strong parent ownership.** The related resources always arrive in the parent's document and
-  have no endpoint of their own, so a sync relationship is the right shape, but the developer
-  wants the parent to own them outright: no inverse, no fetching, and no expectation that
-  anything but the parent's own request will ever refresh them.
-- **APIs that cannot do better.** A second, non-integrated system — increasingly an AI
-  recommendation or suggestion service — streams in something that *names* a resource (a type
-  and an id) but cannot give its representation or even a link to it.
+Both overlap with sync `resource`/`collection` by design. While the data is present they behave
+identically; they differ in what WarpDrive enforces (full linkage at push time versus presence
+at read time) and in what the app promises. Apps choose the contract that fits.
 
-In LegacyMode these worked, badly. `async: true` would autofetch and eventually settle, with
-tearing along the way. `async: false` would return `null` or a partial array with no signal that
-anything was wrong. Neither behaviour is something PolarisMode can validate, because from the
-schema alone it cannot tell "sideload expected but missing" (a bug) apart from "sideload never
-expected" (by design).
+Pointers and references are always synchronous and never have an inverse. Without that rule
+every sync/async and inverse/no-inverse permutation would need a pointer and reference variant;
+with it, there are four kinds.
 
-The two families differ in exactly one way, and the difference is the whole point:
+### Why distinct kinds rather than an option
 
-- A **pointer** presumes the related resource *must* have been loaded. Its absence is a
-  programming error — the developer promised presence and the promise was broken.
-- A **reference** allows the related resource to be *missing*. Its absence is a normal state the
-  app renders around, and the identity is still valuable on its own (to key a placeholder, to
-  issue a fetch, to compare against something else).
-
-Both overlap with the sync `resource`/`collection` fields by design. A sync `resource` whose
-related resource is always sideloaded and a `pointer` to that same resource behave identically
-while the data is present; they differ in what WarpDrive enforces (full linkage at push time
-versus presence at read time) and in what the app is promising. Apps choose whichever contract
-fits the relationship.
-
-Any of LegacyMode's six sync/async × inverse/no-inverse `belongsTo`/`hasMany` permutations could
-have been a pointer or a reference in disguise, which would be eighteen permutations to support.
-This RFC deliberately does not do that. Pointers and references are **always synchronous** and
-**always without an inverse**, which collapses them to four kinds: pointer and reference, each
-to-one and to-many.
-
-### Why distinct field kinds rather than an option
-
-Making these distinct kinds rather than an `options` flag on `resource`/`collection` (or on the
-existing `belongsTo`/`hasMany`) is a deliberate choice:
-
-- **The contract is visible where the schema is read.** `kind: 'pointer'` tells a reader, a
-  reviewer, and the schema DSL's type generation what the field promises without cross-referencing
-  option semantics.
-- **The validation can be precise.** Because the schema says "this must be loaded", WarpDrive can
-  assert exactly that, with a message naming the field and the missing identity, instead of the
-  generic "relationship data is undefined and no link is present" error that today's linksMode
-  validator produces for a shape it cannot interpret.
-- **The types can be precise.** A pointer's value is `T | null`; a reference's value carries the
-  identity. Those are different TypeScript shapes, and separate kinds let the DSL and the schema
-  types say so.
-- **It keeps `resource` and `collection` strict.** Those fields get to keep the rule that sync
-  means sideloaded and async means linked, with no escape hatch that silently weakens it.
-
-### Expected outcome
-
-- PolarisMode can express every sync relationship shape LegacyMode apps actually use, so
-  migrating an app no longer requires first restructuring its API to sideload or link everything.
-- WarpDrive can validate all of them: the strict `resource`/`collection` rule for the sideloaded
-  and linked cases, a read-time presence assertion for pointers, and no assertion at all for
-  references, which are correct by construction.
-- Apps integrating a secondary system that can only name resources have a first-class field for
-  it, with reactive resolution when the named resource later arrives.
+- The contract is visible where the schema is read, to people and to the schema DSL's type
+  generation, without consulting option semantics.
+- The value types differ: a pointer yields `T | null`, a reference yields a wrapper carrying the
+  identity. Separate kinds let the types say so.
+- `resource` and `collection` stay strict, with no option that weakens them.
 
 ## Detailed design
 
 ### Terminology
 
-- **Pointer**: a relationship whose related resource(s) are promised to be present in the cache
-  whenever the field is read. WarpDrive never fetches them.
-- **Reference**: a relationship whose related resource(s) may or may not be present in the cache.
-  WarpDrive never fetches them, and exposes the related identity regardless.
-- **Related identity**: the `{ type, id }` (and stable `lid`) the API delivered for a
-  relationship entry, represented at runtime as a `ResourceKey`.
+- **Pointer**: a relationship whose related resources are promised to be loaded whenever the
+  field is read.
+- **Reference**: a relationship whose related resources may or may not be loaded; the field
+  exposes their identities regardless.
+- **Related identity**: the `{ type, id }` the API delivered for an entry, exposed at runtime as
+  a `ResourceKey`.
 
-Both terms are new to PolarisMode. "Reference" collides with LegacyMode's References API
-(`belongsToReference()` / `hasManyReference()`); that API is one of the pieces of `Model` cruft
-PolarisMode removes, so the term is free to be reclaimed there. See
-[How we teach this](#how-we-teach-this) for how the overlap is addressed.
+"Reference" collides with LegacyMode's References API (`belongsToReference()`,
+`hasManyReference()`). PolarisMode removes that API, so the term is free there; see
+[How we teach this](#how-we-teach-this).
 
 ### The four field kinds
 
-The four kinds follow the existing naming convention for a base kind and its array form
-(`object`/`array`, `schema-object`/`schema-array`):
+The array forms follow the existing `schema-object`/`schema-array` convention.
 
-| Kind              | Cardinality | Value on read                          | When a related resource is not in the cache                     |
-| ----------------- | ----------- | -------------------------------------- | --------------------------------------------------------------- |
-| `pointer`         | to-one      | `T \| null`                            | Assertion in development builds; `null` in production           |
-| `pointer-array`   | to-many     | `readonly T[]`                         | Assertion in development builds; the entry is omitted in production |
-| `reference`       | to-one      | `ReactiveReference<T> \| null`         | `reference.data` is `null`; `reference.key` is still available  |
-| `reference-array` | to-many     | `readonly ReactiveReference<T>[]`      | That entry's `data` is `null`; its `key` is still available     |
+| Kind              | Cardinality | Value on read                     | Related resource not in the cache                   |
+| ----------------- | ----------- | --------------------------------- | --------------------------------------------------- |
+| `pointer`         | to-one      | `T \| null`                       | Assertion in development; `null` in production      |
+| `pointer-array`   | to-many     | `readonly T[]`                    | Assertion in development; entry omitted in production |
+| `reference`       | to-one      | `ReactiveReference<T> \| null`    | `data` is `null`; `key` is available                |
+| `reference-array` | to-many     | `readonly ReactiveReference<T>[]` | That entry's `data` is `null`; its `key` is available |
 
-The schema for each:
+All four share one schema shape:
 
 ```ts
-interface PointerField {
-  kind: 'pointer';
+interface PointerOrReferenceField {
+  kind: 'pointer' | 'pointer-array' | 'reference' | 'reference-array';
   name: string;
   sourceKey?: string;
-  /**
-   * The type of the related resource. When `polymorphic` is
-   * true, the trait or abstract type the related resource must implement.
-   */
-  type: string;
-  options?: {
-    polymorphic?: boolean;
-  };
-}
-
-interface PointerArrayField {
-  kind: 'pointer-array';
-  name: string;
-  sourceKey?: string;
-  type: string;
-  options?: {
-    polymorphic?: boolean;
-  };
-}
-
-interface ReferenceField {
-  kind: 'reference';
-  name: string;
-  sourceKey?: string;
-  type: string;
-  options?: {
-    polymorphic?: boolean;
-  };
-}
-
-interface ReferenceArrayField {
-  kind: 'reference-array';
-  name: string;
-  sourceKey?: string;
+  /** The related resource type, or the trait/abstract type when polymorphic. */
   type: string;
   options?: {
     polymorphic?: boolean;
@@ -208,33 +119,14 @@ interface ReferenceArrayField {
 }
 ```
 
-Three things are deliberately absent from these options, because the field kind already fixes
-them:
+There is no `async`, `inverse`, `as`, or `linksMode` option: the kind fixes all of them. A schema
+that supplies one is rejected by DEBUG-time schema validation. `polymorphic` behaves as it does
+for every other relationship kind.
 
-- **No `async`.** Pointers and references are synchronous by definition. They never fetch and
-  never yield a promise or a document.
-- **No `inverse`.** Pointers and references are unidirectional by definition. There is no
-  `inverse: null` to write because there is no inverse to disclaim, and there is no `as` because
-  nothing on the other side can point back through this field.
-- **No `linksMode`.** These fields never use a link, so the flag has nothing to control.
-
-A schema that supplies any of these keys on one of the four kinds is rejected by the schema
-service's DEBUG-time schema validation, with a message pointing at the strict kind (`resource`,
-`collection`) that supports the option. `polymorphic` is the one relationship option that
-survives: a reference to "whatever the suggestion service returned" is exactly the polymorphic
-case, and both a `type`'s trait/abstract-type semantics and the existing DEBUG check that a
-delivered identity's `type` implements it carry over unchanged.
-
-All four kinds are added to `PolarisModeFieldSchema` and to `CacheableFieldSchema`. They are also
-added to `LegacyModeFieldSchema` (see [Availability in LegacyMode](#availability-in-legacymode)).
-They are not valid in an `ObjectSchema`: like every relationship kind, they are fields of a
-resource with its own identity.
+The kinds are added to `PolarisModeFieldSchema`, `LegacyModeFieldSchema`, and
+`CacheableFieldSchema`. They are not valid in an `ObjectSchema`.
 
 ### Example
-
-A `post` resource whose author and tags are loaded by the route before any post is, whose
-featured product comes from a commerce system, and whose "suggested reads" arrive from a
-recommendation service that only knows ids:
 
 ```ts
 store.schema.registerResource({
@@ -245,7 +137,7 @@ store.schema.registerResource({
     // the route loads every user and tag before it loads posts
     { kind: 'pointer', name: 'author', type: 'user' },
     { kind: 'pointer-array', name: 'tags', type: 'tag' },
-    // a separate commerce API; the product may or may not be in the cache yet
+    // a separate commerce API; the product may not be in the cache yet
     { kind: 'reference', name: 'featuredProduct', type: 'product' },
     // a recommendation service that returns ids of things implementing `readable`
     { kind: 'reference-array', name: 'suggestedReads', type: 'readable', options: { polymorphic: true } },
@@ -253,50 +145,23 @@ store.schema.registerResource({
 });
 ```
 
-The JSON:API payload for a post looks exactly like the payload for any other relationship. The
-schema, not the document, is what makes these pointers and references:
-
-```json
-{
-  "data": {
-    "type": "post",
-    "id": "1",
-    "attributes": { "title": "Hello" },
-    "relationships": {
-      "author": { "data": { "type": "user", "id": "7" } },
-      "tags": { "data": [{ "type": "tag", "id": "a" }, { "type": "tag", "id": "b" }] },
-      "featuredProduct": { "data": { "type": "product", "id": "sku-9" } },
-      "suggestedReads": {
-        "data": [
-          { "type": "article", "id": "42" },
-          { "type": "post", "id": "3" }
-        ]
-      }
-    }
-  }
-}
-```
-
-Reading the fields:
+The payload is an ordinary JSON:API relationship object with `data`; the schema, not the
+document, makes it a pointer or a reference.
 
 ```ts
-const post = await store.request(findRecord('post', '1'));
+const post = (await store.request(findRecord('post', '1'))).data;
 
-post.data.author;          // User — asserts in DEBUG if user:7 is not in the cache
-post.data.tags;            // readonly Tag[] — asserts in DEBUG if any tag is missing
-post.data.featuredProduct; // ReactiveReference<Product> | null
-post.data.featuredProduct?.key;  // ResourceKey { type: 'product', id: 'sku-9', lid }
-post.data.featuredProduct?.data; // Product | null — null until the product is loaded
-post.data.suggestedReads.map((ref) => ref.data ?? ref.key.id);
-```
+post.author;                 // User — asserts in DEBUG if user:7 is not loaded
+post.tags;                   // readonly Tag[] — asserts in DEBUG if any tag is missing
+post.featuredProduct;        // ReactiveReference<Product> | null
+post.featuredProduct?.key;   // ResourceKey { type: 'product', id: 'sku-9', lid }
+post.featuredProduct?.data;  // Product | null — null until the product is loaded
+post.suggestedReads.map((ref) => ref.data ?? ref.key.id);
 
-Loading a missing reference is an ordinary request, because a reference *is* an identity:
-
-```ts
-const ref = post.data.featuredProduct;
+// loading a missing reference is an ordinary request
+const ref = post.featuredProduct;
 if (ref && !ref.data) {
   await store.request(findRecord(ref.key.type, ref.key.id));
-  // ref.data is now the Product; anything rendering it updated reactively
 }
 ```
 
@@ -305,112 +170,62 @@ if (ref && !ref.data) {
 ```ts
 interface ReactiveReference<T> {
   /**
-   * The identity the API delivered for this relationship entry.
-   * Always present: a reference with no identity is represented as
-   * `null` (to-one) or is simply absent from the array (to-many),
-   * never as a ReactiveReference with a null key.
+   * The identity the API delivered. Always present: an empty to-one
+   * reference is `null`, and an empty to-many reference has no entry.
    */
   readonly key: ResourceKey;
 
   /**
-   * The related record, if and only if the resource identified by
-   * `key` is currently in the cache. Reactive: it becomes non-null
-   * when the resource is loaded and null again if it is unloaded. A
-   * committed delete removes the entry from the relationship instead
-   * (see Storage below), so a reference never outlives its target.
+   * The related record, if and only if `key` is currently loaded.
+   * Reactive: non-null once the resource loads, null again if it is
+   * unloaded. A committed delete removes the entry from the
+   * relationship instead, so a reference never outlives its target.
    */
   readonly data: T | null;
 }
 ```
 
-`data` is signal-backed. A `ReactiveReference` subscribes to the store's `NotificationManager`
-for its `key` and re-resolves via the same "is this resource loaded" check `store.peekRecord`
-uses (`cache.isEmpty`), so it observes the resource arriving or being unloaded. A committed
-delete is the graph's job (see [Storage](#storage-in-the-graph-with-unload-tolerant-inverses)):
-it removes the entry from the relationship outright rather than leaving behind a reference whose
-`data` can never load. A `ReactiveReference` is created lazily on first read and cached per field
-on the owning record, so repeated reads and renders share one instance.
+A `ReactiveReference` is created lazily on first read and is the same instance on every read of
+that field, so it can be held and rendered. Its shape is the "not loaded" half of the shape the
+LinksMode guide describes for a future async `resource` field (`links`, `meta`, and `data` only
+if loaded): a reference is an async relationship with nothing to fetch it by.
 
-This shape is intentionally the "not loaded" half of the shape the LinksMode guide already
-describes for a future async `resource` field (`links`, `meta`, and `data` only-if-loaded), minus
-the parts a reference cannot have. A reference is what an async relationship looks like when
-there is nothing to fetch it with.
+### Graph semantics
 
-### Storage: in the graph, with unload-tolerant inverses
+Pointers and references are ordinary graph relationships with implicit inverses, so the graph
+prunes a related resource from every pointer and reference that held it when its deletion is
+committed, or when a never-persisted record is discarded. A deleted `tag` vanishes from
+`post.tags`; a deleted `product` turns `post.featuredProduct` into `null`.
 
-Pointers and references live in the relationship graph like every other relationship kind. The
-graph is what gives WarpDrive a single answer to "who references this resource," and that answer
-is exactly what these fields need when a related resource is *deleted*: the graph already creates
-an implicit inverse edge for every unidirectional relationship, and on a committed delete (or the
-discard of a never-persisted record) it walks that implicit edge to remove the deleted identity
-from every relationship that held it. Pointers and references want that. A deleted `tag` should
-vanish from `post.tags`, and a deleted `product` should turn `post.featuredProduct` into `null`
-rather than into a reference whose `data` can never load.
+They differ from every other sync relationship in one way. Today, unloading a resource that a
+sync relationship holds is treated as a client-side delete and the resource is pruned, since a
+sync relationship cannot refetch it. Pointers and references make no promise that the
+relationship can deliver the resource, so an unload is an eviction, not a statement about the
+relationship: the identity stays in the relationship, the way it does today for async inverses.
+An unloaded pointer target therefore asserts on the next read instead of silently disappearing,
+and an unloaded reference target keeps its `key` available to fetch with.
 
-What they do **not** want is the graph's current treatment of `unloadRecord`. Today, unloading a
-resource that is the target of a *synchronous* relationship is treated as a client-side delete:
-the graph prunes the unloaded identity from the sync relationship, on the reasoning that a sync
-relationship has no way to refetch it. Asynchronous relationships get the opposite treatment: the
-identity is kept, the edge is flagged as having a dematerialized inverse, and the target's node
-is retained so it can be rematerialized. Pointers and references are synchronous, but they make
-no promise that the relationship itself can ever deliver the related resource, so an unload is
-merely an eviction, not a statement about the relationship. They therefore take the asynchronous
-branch on unload:
+Because they are graph-backed, the existing relationship `Cache` APIs apply unchanged:
+`getRelationship`, the related-records mutation operations, `changedRelationships`,
+`rollbackRelationships`, and JSON:API serialization under `relationships`. `meta` and `links` on
+the relationship object are preserved but never used to fetch.
 
-- On `unloadRecord` of a related resource (the garbage-collection case: the resource is not new
-  and not deleted), the pointer or reference keeps that identity in its membership, and the
-  implicit inverse edge on the unloaded resource is retained rather than discarded, so that a
-  later committed delete can still find and prune the pointing sides. The graph's releasability
-  rule (`isReleasable`), which today keeps a resource's node alive while an async inverse still
-  references it, extends to cover pointer and reference inverses.
-- On a committed delete of a related resource, or the discard of a new one, the graph removes the
-  identity from every pointer and reference that held it, exactly as it does for every other
-  relationship today.
+Mutation on an editable record accepts:
 
-This is the one behavioural difference between these kinds and the existing sync relationships,
-and it is what makes the read-time contracts hold: an unloaded pointer target stays in the
-relationship, so the next read asserts instead of silently returning a shorter array, and an
-unloaded reference target stays in the relationship, so its `key` remains available to fetch
-with.
-
-Because they are graph-backed, the existing relationship-shaped `Cache` APIs apply without
-extension. `getRelationship` and `getRemoteRelationship` return the membership; local changes on
-an editable record go through the existing `replaceRelatedRecord`, `replaceRelatedRecords`,
-`addToRelatedRecords`, and `removeFromRelatedRecords` operations; `hasChangedRelationships`,
-`changedRelationships`, and `rollbackRelationships` report and revert them; and the JSON:API
-cache's `upsert` and the serialization utilities handle them under `relationships` as they do
-any other relationship. The edge definition maps a `pointer`/`reference` to a to-one edge and a
-`pointer-array`/`reference-array` to a to-many edge, the same way `resource` and `collection`
-already map, with `inverse: null` and `async: false` fixed by the kind. `meta` and any `links` on
-the relationship object are stored on the edge as for any relationship; nothing fetches with the
-links.
-
-The values a mutation accepts follow the same contract as reads:
-
-- A `pointer` accepts a record instance or `null`. A `pointer-array` on an editable record is a
-  managed array backed by the graph (the same mechanics as today's linksMode `hasMany` array on
-  an editable record), and accepts a whole-array replacement of record instances. A pointer can
-  only ever be set to something that is loaded, because a record instance is proof of loading.
-- A `reference` accepts a record instance, a bare identity (`{ type, id }` or a `ResourceKey`),
-  or `null`. A `reference-array` accepts the same per entry. A bare identity is normalized to a
-  stable `ResourceKey` through the store's cache key manager before it reaches the graph, which
-  is what lets an app record "the suggestion service said `product:sku-9`" without first loading
-  it.
+- for a `pointer`, a record instance or `null`; for a `pointer-array`, record instances. A pointer
+  can only be set to something loaded, because a record instance is proof of loading;
+- for a `reference` or `reference-array`, a record instance, a bare identity (`{ type, id }` or a
+  `ResourceKey`), or `null`, so an app can record an identity it has not loaded.
 
 ### Validation
 
-Push-time validation for these kinds is minimal, and deliberately so. The JSON:API cache's
-document validation (`validate-document-fields.ts`), which today enforces full linkage for
-`linksMode` relationships, checks only one thing for a pointer or reference field: the
-relationship object must carry a `data` key. `null` and `[]` are valid empty values; a missing
-or `undefined` `data` is rejected with the same reasoning as for linksMode — WarpDrive cannot
-distinguish "nothing was returned" from "the relationship is empty". Full linkage is *not*
-checked: these fields make no claim about whether the related resources are in this document, in
-another, or nowhere yet.
+At push time the only check is that the relationship object carries a `data` key; `null` and `[]`
+are valid empty values, and a missing or `undefined` `data` is rejected, as it is for linksMode
+relationships. Full linkage is not checked. The polymorphic type check applies as for every
+relationship kind.
 
-Read-time validation is where pointers get their teeth. Reading a `pointer` whose identity is
-not loaded, or a `pointer-array` any of whose identities is not loaded, fails a DEBUG assertion
-naming the owning resource, the field, and each missing identity:
+At read time, a `pointer` or `pointer-array` with an unloaded identity fails a DEBUG assertion
+naming the resource, the field, and each missing identity:
 
 ```
 Assertion Failed: post:1 declares `author` as a pointer to user:7, but user:7 is not
@@ -419,54 +234,31 @@ field is read. Load user:7 first, or declare `author` as a `reference`
 if it may legitimately be absent.
 ```
 
-Assertions are stripped from production builds. There, a missing pointer target resolves to
-`null` (to-one) or is omitted from the array (to-many) — the same degraded behaviour a sync
-`linksMode` `belongsTo` exhibits today when its sideload is missing, and no worse. The assertion
-is read-time rather than push-time on purpose: whatever satisfies a pointer may land *after* the
-document that carries it, and only the read establishes that the promise has come due.
-
-References have no read-time assertion. An unloaded reference is a valid, expected state.
-
-The polymorphic DEBUG check (a delivered identity's `type` must implement the field's `type`)
-applies to all four kinds exactly as it does to the existing relationship kinds.
+In production, where assertions are stripped, a missing pointer target resolves to `null` or is
+omitted from the array, the same degraded behaviour a sync `linksMode` `belongsTo` has today. The
+check is read-time by design: whatever satisfies a pointer may land after the document that
+carries it. References have no read-time assertion.
 
 ### Reactivity
 
-- A `pointer` and a `pointer-array` are entangled with the owning record's field signal and
-  re-resolve when the graph notifies the field, exactly as the current linksMode `belongsTo`
-  and `hasMany` do; removal on a committed delete arrives the same way. Because their targets
-  are promised present, they do not additionally watch each target's load state; if a target is
-  unloaded, its identity stays in the relationship and the next read asserts.
-- A `ReactiveReference` watches its own `key` as described above. A `reference-array` is
-  entangled with the field signal for membership changes, and each entry watches its own key
-  for load state.
-- On PolarisMode's immutable record instance, all four kinds render remote state and subscribe
-  on the `'remote'` channel; on an editable copy they render reconciled local state and
-  subscribe on `'local'`, mirroring the existing split for every other field.
+Pointers and pointer arrays react to membership changes exactly as the current linksMode
+`belongsTo` and `hasMany` do. A `ReactiveReference` additionally reacts to its own target loading
+or unloading. Immutable and editable record instances render remote and local relationship state
+respectively, as for every other field.
 
 ### Availability in LegacyMode
 
-The four kinds are added to `LegacyModeFieldSchema` as well as `PolarisModeFieldSchema`. They are
-mode-independent in the same way `schema-array` is: nothing about them depends on `Model`
-emulation, and the same reactive kind handlers serve both modes.
-
-This is what turns the discovery in
-[#10408](https://github.com/warp-drive-data/warp-drive/issues/10408) into a migration path. An
-app can re-declare a `@hasMany('tag', { async: false, inverse: null })` that was always really a
-pointer as `{ kind: 'pointer-array', name: 'tags', type: 'tag' }` while still in LegacyMode, get
-the presence assertion immediately, discover which of its "sync" relationships were actually
-references, and fix each one before flipping the resource to PolarisMode. Without LegacyMode
-availability, every one of those relationships would have to be sorted out in the same change as
-the mode switch.
-
-`Model` itself (`@warp-drive/legacy/model`) gains no decorator for these kinds. They are
-ReactiveResource fields; a `Model`-based app adopts them by moving the resource to a
-`legacy: true` schema first.
+The kinds are mode-independent, like `schema-array`, and are valid in `legacy: true` schemas.
+This gives a migration path: an app can re-declare a `@hasMany('tag', { async: false, inverse:
+null })` that was really a pointer as `{ kind: 'pointer-array', name: 'tags', type: 'tag' }`
+while still in LegacyMode, get the presence assertion immediately, and sort its sync
+relationships into pointers and references before switching modes. `Model` gains no decorator for
+them; a `Model`-based app adopts them by moving the resource to a `legacy: true` schema.
 
 ### Schema DSL
 
-`@warp-drive/schema-dsl` gains four decorators, one per kind, alongside the existing
-`@belongsTo`/`@hasMany`:
+`@warp-drive/schema-dsl` gains `@pointer`, `@pointerArray`, `@reference`, and `@referenceArray`,
+each accepting `type`, `polymorphic`, and `sourceKey`:
 
 ```ts
 import { Resource, field, pointer, pointerArray, reference, referenceArray } from '@warp-drive/schema-dsl';
@@ -489,149 +281,83 @@ export class Post {
 }
 ```
 
-Each decorator accepts `type`, `polymorphic`, and `sourceKey`, and nothing else; the generated
-TypeScript for the read, create, and edit views follows the value table above (the edit view of
-a reference additionally accepts a bare identity on assignment).
+The generated read, create, and edit types follow the value table; the edit view of a reference
+also accepts a bare identity.
 
-### What this RFC does not cover
+### Out of scope
 
-- The `resource` and `collection` fields, sync or async, with or without inverses — the "base
-  six" of #10408. Pointers and references are independent of them and can land before, after, or
-  alongside; nothing here changes their design.
+- The `resource` and `collection` fields. Pointers and references are independent of them and
+  can land in either order.
 - Paginated collections.
-- Any fetching behaviour. A pointer or reference that needs loading is loaded with an ordinary
-  request against the identity it exposes.
-- Removing or deprecating the existing sync `linksMode` `belongsTo`/`hasMany` support in
-  PolarisMode. That is the `resource`/`collection` RFC's concern.
+- Any fetching behaviour.
+- Deprecating the existing sync `linksMode` `belongsTo`/`hasMany` support in PolarisMode.
 
 ## How we teach this
 
-The vocabulary is the lesson. The manual's schema section gains a page on PolarisMode
-relationships that presents them as a question about *what the relationship guarantees*, with
-one answer per kind:
+The manual's schema section gains a page on PolarisMode relationships framed around what each
+kind guarantees:
 
-- **WarpDrive delivers it: sideloaded with the parent when sync, fetched through the
-  relationship's link when async** → `resource` / `collection` (strict about both).
-- **I guarantee it is loaded, however it got here** → `pointer` / `pointer-array`.
-- **It may or may not be loaded; here is who it would be** → `reference` / `reference-array`.
+- **WarpDrive delivers it**, sideloaded when sync or fetched by link when async: `resource` /
+  `collection`.
+- **I guarantee it is loaded, however it got here**: `pointer` / `pointer-array`.
+- **It may or may not be loaded; here is who it would be**: `reference` / `reference-array`.
 
-The guide is explicit that a sync `resource` and a `pointer` overlap on purpose: when the related
-resource is always sideloaded, either works, and the choice is about which contract the app
-wants enforced.
-
-The one-line mnemonic: *a pointer is a promise, a reference is a hint.* The guide shows each
-kind's failure mode on purpose — the pointer assertion's message, a reference rendering a
-placeholder from `key` — because the failure modes are the reason the kinds exist.
-
-The page also confronts the name collision directly. LegacyMode's References API
-(`belongsToReference()`, `hasManyReference()`, `reference.load()`, `reference.reload()`) is a
-way to *inspect and fetch* an existing `belongsTo`/`hasMany`; a PolarisMode `reference` field is
-a *kind of relationship*. The [LegacyMode](/guides/the-manual/schemas/resources/legacy-mode.md)
-and [PolarisMode](/guides/the-manual/schemas/resources/polaris-mode.md) pages each get a
-cross-reference note, and the PolarisMode page's "very limited support for relationships"
-preview limitation is updated as the kinds ship.
-
-The [LinksMode](/guides/the-manual/misc/links-mode.md) guide's "What To Expect from PolarisMode
-Relationships in the Future" section gains a paragraph placing pointers and references next to
-the planned `resource`/`collection` shapes, so a reader who arrives via linksMode learns the
-whole picture at once.
-
-The consumer-facing agent skill for defining a resource schema
-(`@warp-drive/memory-alpha`'s `schemas/define-a-resource-schema.md`) gains the four kinds in its
-field-kind list, with the same one-line contract for each.
-
-API docs for the four field interfaces and `ReactiveReference` ship with the implementation, per
-the cross-documentation checklist. No lint rule changes are proposed; a future
-`eslint-plugin-warp-drive` rule or codemod that flags `async: false, inverse: null` legacy
-relationships as pointer/reference candidates would be useful for migration but is out of scope.
+The mnemonic: *a pointer is a promise, a reference is a hint.* The page shows each kind's failure
+mode, notes that a sync `resource` and a `pointer` overlap on purpose, and states that a
+PolarisMode `reference` field is a kind of relationship, not LegacyMode's References API for
+inspecting and fetching one. The LinksMode guide's "What To Expect" section places pointers and
+references next to the planned `resource`/`collection` shapes, and the resource-schema agent
+skill lists the four kinds. API docs ship with the implementation. A lint rule or codemod that
+flags `async: false, inverse: null` legacy relationships as candidates is out of scope.
 
 ## Drawbacks
 
-- **Four more field kinds.** The field-kind vocabulary grows from an already long list. The
-  counter-argument is that the four map onto two concepts with an existing array-form convention,
-  and each replaces a pattern apps were already using with no name at all.
-- **Two value shapes.** A pointer yields the record; a reference yields a wrapper. A developer
-  has to know which they declared to know what they get. This is the cost of exposing the
-  identity for references, and the type system makes the difference visible at every use site.
-- **"Reference" is overloaded** across the two modes for as long as LegacyMode's References API
-  exists. The teaching section mitigates this; it cannot eliminate it.
-- **Pointer failures surface at read time**, later than every other PolarisMode relationship
-  validation, which happens at push time. A pointer that is never read never fails, and a pointer
-  read on a code path a test does not exercise fails only in production, silently. This is
-  inherent — the promise cannot be checked before it comes due — but it is weaker than the
-  guarantee the strict kinds offer.
-- **Unload and delete diverge.** Every existing sync relationship treats `unloadRecord` of a
-  related record as a client-side delete and prunes it. Pointers and references keep the identity
-  on unload and prune only on a committed delete. This is the intended semantics, but it is a new
-  distinction developers have to learn, and it is the one place these kinds behave differently
-  from the graph's sync defaults.
-- **A graph internals change.** The implicit-inverse handling has to distinguish unload from
-  delete for these kinds, and retain the implicit edge and the target's node across an unload.
-  `Cache` implementations that share `@warp-drive/core`'s graph get this for free; one that
-  manages relationships on its own has to implement the same rule.
+- **Four more field kinds**, though they map onto two concepts and an existing array convention.
+- **Two value shapes.** A pointer yields the record; a reference yields a wrapper. The type
+  system makes the difference visible.
+- **"Reference" is overloaded** while LegacyMode's References API exists.
+- **Pointer failures surface at read time**, later than PolarisMode's other relationship checks.
+  A pointer that is never read never fails, and one read only on an untested path fails silently
+  in production.
+- **Unload and delete diverge** for these kinds only, a new distinction to learn.
+- **Third-party caches** that manage relationships without the core graph must implement the
+  same unload and delete rule.
 
 ## Alternatives
 
-- **An option on `resource`/`collection`** — e.g. `options: { loaded: 'required' | 'optional' }`
-  or `options: { external: true }`. Rejected for the reasons in
-  [Why distinct field kinds](#why-distinct-field-kinds-rather-than-an-option): it hides the
-  contract in option semantics, makes the strict fields less strict, and forces the value type of
-  one kind to depend on an option.
-- **Reusing `belongsTo`/`hasMany` with `async: false, inverse: null` plus a `strict` flag.**
-  Rejected: it perpetuates the fields PolarisMode is moving away from and leaves the pointer
-  vs reference distinction, which is the important one, as a boolean.
-- **References return `T | null` like pointers, with no wrapper.** Simpler, but it throws away
-  the identity in exactly the case where the identity is the only thing the app has. Every
-  motivating use case for references — placeholders, deferred fetching, cross-system ids — needs
-  the identity when the record is absent. Listed as an unresolved question below, since the
-  wrapper's shape is the largest design surface in this RFC.
-- **Two kinds with a cardinality option** (`kind: 'pointer', options: { many: true }`). Rejected:
-  every other WarpDrive field kind encodes cardinality in the kind (`object`/`array`,
-  `schema-object`/`schema-array`, `resource`/`collection`, `belongsTo`/`hasMany`), and the value
-  type would again depend on an option.
-- **Plural kind names** (`pointers`, `references`) instead of `-array`. Purely a naming choice;
-  the `-array` suffix follows `schema-array` and is harder to misread. Open for bikeshedding.
-- **Storing pointers and references alongside attributes, outside the graph.** Considered
-  first: with no inverse and no fetching, the graph's machinery looked unnecessary, and the
-  attribute path gives change tracking for free. Rejected because it forfeits the one thing the
-  graph should do here, removing a deleted resource from everything that referenced it via the
-  implicit inverse, and because it would split relationship storage in two, leaving pointers
-  invisible to `getRelationship`, `changedRelationships`, the relationship notification channel,
-  and the graph explorer in [RFC 3](/rfcs/0003-warp-drive-devtools-extension.md).
-- **Treating unload as a client-side delete, as every sync relationship does today.** Rejected
-  because it masks exactly the broken promises pointers exist to expose, and discards the
-  identity references exist to preserve. An unloaded resource is still a real resource on the
-  server; a deleted one is not.
-- **Doing nothing**, and requiring apps to sideload or link every relationship before adopting
-  PolarisMode. This is the status quo, and it is the reason relationships are the blocking item
-  in #10408: a large class of real apps cannot get there from here without an API change.
+- **An option on `resource`/`collection`**, such as `options: { loaded: 'optional' }`. Rejected:
+  it hides the contract in option semantics, weakens the strict kinds, and makes a value type
+  depend on an option.
+- **Reusing `belongsTo`/`hasMany` with a `strict` flag.** Rejected: it perpetuates fields
+  PolarisMode is moving away from and reduces the pointer/reference distinction to a boolean.
+- **References return `T | null` with no wrapper.** Simpler, but it discards the identity in
+  exactly the case where the identity is all the app has. Left open below.
+- **Cardinality as an option** (`options: { many: true }`). Rejected: every other field kind
+  encodes cardinality in the kind.
+- **Storing outside the graph.** Considered first, since these fields need no inverse and no
+  fetching. Rejected: it forfeits pruning on delete and hides pointers from `getRelationship`,
+  `changedRelationships`, relationship notifications, and the graph explorer in
+  [RFC 3](/rfcs/0003-warp-drive-devtools-extension.md).
+- **Treating unload as a client-side delete**, as sync relationships do today. Rejected: it masks
+  the broken promises pointers exist to expose and discards the identity references exist to
+  preserve.
+- **Doing nothing.** Apps would have to sideload or link every relationship before adopting
+  PolarisMode, which is why relationships block #10408 today.
 
-Prior art: [MobX-State-Tree](https://mobx-state-tree.js.org/concepts/references) draws the
-same line with `types.reference` (throws when the target is not in the tree) and
-`types.safeReference` (resolves to `undefined`), and its users report the pair as one of the
-library's more useful distinctions. Normalized GraphQL caches (Apollo, Relay) store every
-relationship as a reference by identity and resolve at read time, which is the storage model
-this RFC adopts, but do not distinguish promised from optional presence at the schema level.
+Prior art: [MobX-State-Tree](https://mobx-state-tree.js.org/concepts/references) draws the same
+line with `types.reference` (throws when the target is missing) and `types.safeReference`
+(resolves to `undefined`). Normalized GraphQL caches store every relationship by identity and
+resolve at read time, but do not distinguish promised from optional presence in the schema.
 
 ## Unresolved questions
 
-- **The `reference` value shape.** `ReactiveReference<T> | null` with `key` and `data` is the
-  proposal. Alternatives are a plain `T | null` (see Alternatives), or a richer object that also
-  exposes the relationship's `meta`. Whether `meta` (and unused `links`) should be exposed on
-  `pointer-array`/`reference-array` at all, as `ManyArray` exposes them today, is part of the
-  same question.
-- **Kind names.** `pointer`/`pointer-array`/`reference`/`reference-array` versus plural forms,
-  or a different base word for either concept.
-- **How the graph marks unload-tolerant inverses.** Today `isReleasable` and the
-  dematerialized-inverse handling key off `inverseIsAsync`. Pointers and references need the same
-  retention without being async; whether that reuses the async branch behind a broader predicate
-  or gets its own flag on the edge definition is an implementation choice this RFC leaves open.
-- **Production behaviour for a missing pointer target in a `pointer-array`.** Omit the entry
-  (proposed, matches today's linksMode behaviour) versus preserve a `null` hole so the array's
-  length still reflects the relationship's membership.
-- **Whether LegacyMode availability should be gated**, e.g. behind the same feature flag that
-  gates other PolarisMode preview features, rather than unconditional, to avoid these kinds
-  spreading in LegacyMode schemas before the PolarisMode relationship story is complete.
-- **Sequencing relative to the `resource`/`collection` RFC.** #10408 proposes shipping the base
-  six first and these four after. This RFC is written to be independent so that order can be
-  decided on implementation readiness rather than on design coupling.
+- **The `reference` value shape.** `ReactiveReference<T> | null` with `key` and `data`, versus a
+  plain `T | null`, versus a richer object exposing the relationship's `meta`. Whether the array
+  kinds expose `meta` and `links` as `ManyArray` does is part of the same question.
+- **Kind names.** `-array` suffixes versus plurals, or a different base word for either concept.
+- **A missing pointer target in a production `pointer-array`.** Omit the entry (proposed) or leave
+  a `null` hole so the length reflects membership.
+- **Whether LegacyMode availability should be feature-gated** until the PolarisMode relationship
+  story is complete.
+- **Sequencing.** #10408 proposes the `resource`/`collection` kinds first and these four after;
+  this RFC is independent so the order can follow implementation readiness.
