@@ -23,7 +23,10 @@ const editable = await checkout<User>(user);
 editable.friends.data!.push(newFriend);
 
 const init = updateRecord(editable, { patch: true });
-init.body = JSON.stringify(serializePatch(store.cache, cacheKeyFor(editable)));
+init.body = JSON.stringify(
+  // a starting point: transform this into the shape your API expects
+  serializePatch(store.cache, cacheKeyFor(editable))
+);
 await store.request(init);
 ```
 
@@ -67,10 +70,12 @@ had friends `2` and `3` and `4` was added, `serializePatch` produces:
 record is being edited they are stale relative to `data` (see `doc.isDirty`); `meta.count` would
 still say `2` here, so sending them back gives the API a contradictory relationship.
 
-`serializePatch` handles this for you: it sends only the relationships that changed, and only their
-`data`. `serializeResources`, which serializes the whole record for a `POST` or `PUT`, copies each
-relationship from the cache as-is, `links` and `meta` included, so remove those before sending its
-output. `doc.toJSON()` is a description of the document for debugging, not a request body.
+The `@warp-drive/utilities/json-api` serializers are starting points, not finished request bodies:
+they serialize cache state, and only your app knows the exact shape its API accepts, so expect to
+transform their output. `serializePatch` includes only the relationships that changed, and only
+their `data`. `serializeResources`, which serializes the whole record, copies each relationship from
+the cache as-is, `links` and `meta` included, so remove those before sending it. `doc.toJSON()` is a
+description of the document for debugging, not a request body.
 
 ## Committing Without A Request
 
