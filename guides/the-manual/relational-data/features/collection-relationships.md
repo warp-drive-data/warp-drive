@@ -93,6 +93,23 @@ has its own cache entry, can carry `page`, `sort` and `filter` parameters, and w
 for how to keep the two apart and how to have WarpDrive warn you when a relationship grows too
 large.
 
+## Sorting And Filtering For Display
+
+`data` is the relationship itself, so derive a new array for display instead of reordering it:
+
+```ts
+const activeFriends = user.friends.data?.filter((friend) => friend.isActive) ?? [];
+const byName = [...(user.friends.data ?? [])].sort((a, b) => a.name.localeCompare(b.name));
+```
+
+Calling `sort()` directly on `editable.friends.data` **reorders the relationship** and marks it
+dirty, which is rarely what a list view wants. Reserve it for cases where the order is part of the
+data your API stores (e.g. a user-defined ordering that will be saved).
+
+In a template, put the derived array behind a getter or a [derivation](../../schemas/derivations.md)
+so it is recomputed only when the relationship changes. To sort or filter on the server instead,
+see [Large Collections](../advanced/large-collections.md#sorting-and-filtering-on-the-server).
+
 ## Fetching
 
 When the relationship carries a `related` link, `doc.fetch()` requests it and resolves with a
