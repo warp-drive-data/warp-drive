@@ -1,10 +1,273 @@
 import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
 
+import type { RequestManager } from '@warp-drive/core';
 import { useEmber } from '@warp-drive/diagnostic/ember';
 import { Request } from '@warp-drive/ember';
 import { EachLink, Paginate } from '@warp-drive/ember/experiments';
-import { PaginateSpec } from '@warp-drive-internal/specs/paginate-component.spec';
+import { type CollectionRequest, PaginateSpec } from '@warp-drive-internal/specs/paginate-component.spec';
+
+type ReloadProps = { store: RequestManager; request: CollectionRequest };
+type SourceReloadProps = { store: RequestManager; source: { request: CollectionRequest } };
+type SharedReloadProps = { store: RequestManager; requestA: CollectionRequest; requestB: CollectionRequest };
+type SecondPaginationProps = {
+  store: RequestManager;
+  requestA: CollectionRequest;
+  source: { requestB: CollectionRequest | null };
+};
+
+// the templates the reload scenarios render: the active page's items plus the
+// full link set (numbered links with gaps, prev/next/last) for the paged
+// surface, and the accumulated items plus sentinels for the infinite one
+
+function pagedReloadTemplate({ request, store }: ReloadProps) {
+  return <template>
+    <Paginate @request={{request}} @store={{store}}>
+      <:loading>
+        <span data-test-pending>Pending</span>
+      </:loading>
+      <:content as |pages features|>
+        {{#if features.isNavigating}}
+          <span data-test-navigating>Navigating</span>
+        {{/if}}
+        <Request @request={{pages.activePageRequest}} @store={{store}}>
+          <:content as |content|>
+            {{#each content.data as |user|}}
+              <span data-test-user-name>{{user.attributes.name}}</span>
+            {{/each}}
+          </:content>
+          <:loading><span data-test-loading-page>Loading page</span></:loading>
+        </Request>
+
+        <EachLink @pages={{pages}} as |state|>
+          {{#if state.prev}}
+            <button {{on "click" state.prev.setActive}} data-test-prev>{{state.prev.text}}</button>
+          {{/if}}
+          {{#each state.links as |link|}}
+            {{#if link.isReal}}
+              <button
+                {{on "click" (fn features.loadPage link.url)}}
+                data-test-load-page={{link.index}}
+              >{{link.text}}</button>
+            {{else}}
+              <button data-test-gap>.</button>
+            {{/if}}
+          {{/each}}
+          {{#if state.next}}
+            <button {{on "click" state.next.setActive}} data-test-next>{{state.next.text}}</button>
+          {{/if}}
+          {{#if state.last}}
+            <button {{on "click" state.last.setActive}} data-test-last>{{state.last.text}}</button>
+          {{/if}}
+        </EachLink>
+      </:content>
+      <:error as |error|>
+        <span data-test-error>{{error.message}}</span>
+      </:error>
+    </Paginate>
+  </template>;
+}
+
+function sourceReloadTemplate({ source, store }: SourceReloadProps) {
+  return <template>
+    <Paginate @request={{source.request}} @store={{store}}>
+      <:loading>
+        <span data-test-pending>Pending</span>
+      </:loading>
+      <:content as |pages features|>
+        {{#if features.isNavigating}}
+          <span data-test-navigating>Navigating</span>
+        {{/if}}
+        <Request @request={{pages.activePageRequest}} @store={{store}}>
+          <:content as |content|>
+            {{#each content.data as |user|}}
+              <span data-test-user-name>{{user.attributes.name}}</span>
+            {{/each}}
+          </:content>
+          <:loading><span data-test-loading-page>Loading page</span></:loading>
+        </Request>
+
+        <EachLink @pages={{pages}} as |state|>
+          {{#each state.links as |link|}}
+            {{#if link.isReal}}
+              <button
+                {{on "click" (fn features.loadPage link.url)}}
+                data-test-load-page={{link.index}}
+              >{{link.text}}</button>
+            {{else}}
+              <button data-test-gap>.</button>
+            {{/if}}
+          {{/each}}
+        </EachLink>
+      </:content>
+      <:error as |error|>
+        <span data-test-error>{{error.message}}</span>
+      </:error>
+    </Paginate>
+  </template>;
+}
+
+function infiniteReloadTemplate({ request, store }: ReloadProps) {
+  return <template>
+    <Paginate @request={{request}} @store={{store}} @mode="infinite">
+      <:loading>
+        <span data-test-pending>Pending</span>
+      </:loading>
+      <:content as |pages features|>
+        {{#if pages.hasPrevious}}
+          <Request @request={{pages.previousRequest}} @store={{store}}>
+            <:idle>
+              <button data-test-load-prev {{on "click" features.loadPrev}}>Load previous</button>
+            </:idle>
+            <:loading><span data-test-loading-prev>Loading previous</span></:loading>
+          </Request>
+        {{/if}}
+
+        {{#each pages.data as |user|}}
+          <span data-test-user-name>{{user.attributes.name}}</span>
+        {{/each}}
+
+        {{#if pages.hasNext}}
+          <Request @request={{pages.nextRequest}} @store={{store}}>
+            <:idle>
+              <button data-test-load-next {{on "click" features.loadNext}}>Load next</button>
+            </:idle>
+            <:loading><span data-test-loading-next>Loading next</span></:loading>
+          </Request>
+        {{/if}}
+      </:content>
+      <:error as |error|>
+        <span data-test-error>{{error.message}}</span>
+      </:error>
+    </Paginate>
+  </template>;
+}
+
+function sharedReloadTemplate({ requestA, requestB, store }: SharedReloadProps) {
+  return <template>
+    <div data-test-paginate="a">
+      <Paginate @request={{requestA}} @store={{store}}>
+        <:loading>
+          <span data-test-pending>Pending</span>
+        </:loading>
+        <:content as |pages features|>
+          <Request @request={{pages.activePageRequest}} @store={{store}}>
+            <:content as |content|>
+              {{#each content.data as |user|}}
+                <span data-test-user-name>{{user.attributes.name}}</span>
+              {{/each}}
+            </:content>
+            <:loading><span data-test-loading-page>Loading page</span></:loading>
+          </Request>
+
+          <EachLink @pages={{pages}} as |state|>
+            {{#each state.links as |link|}}
+              {{#if link.isReal}}
+                <button
+                  {{on "click" (fn features.loadPage link.url)}}
+                  data-test-load-page={{link.index}}
+                >{{link.text}}</button>
+              {{else}}
+                <button data-test-gap>.</button>
+              {{/if}}
+            {{/each}}
+            {{#if state.next}}
+              <button {{on "click" state.next.setActive}} data-test-next>{{state.next.text}}</button>
+            {{/if}}
+          </EachLink>
+        </:content>
+        <:error as |error|>
+          <span data-test-error>{{error.message}}</span>
+        </:error>
+      </Paginate>
+    </div>
+
+    <div data-test-paginate="b">
+      <Paginate @request={{requestB}} @store={{store}}>
+        <:loading>
+          <span data-test-pending>Pending</span>
+        </:loading>
+        <:content as |pages features|>
+          <Request @request={{pages.activePageRequest}} @store={{store}}>
+            <:content as |content|>
+              {{#each content.data as |user|}}
+                <span data-test-user-name>{{user.attributes.name}}</span>
+              {{/each}}
+            </:content>
+            <:loading><span data-test-loading-page>Loading page</span></:loading>
+          </Request>
+
+          <EachLink @pages={{pages}} as |state|>
+            {{#each state.links as |link|}}
+              {{#if link.isReal}}
+                <button
+                  {{on "click" (fn features.loadPage link.url)}}
+                  data-test-load-page={{link.index}}
+                >{{link.text}}</button>
+              {{else}}
+                <button data-test-gap>.</button>
+              {{/if}}
+            {{/each}}
+            {{#if state.next}}
+              <button {{on "click" state.next.setActive}} data-test-next>{{state.next.text}}</button>
+            {{/if}}
+          </EachLink>
+        </:content>
+        <:error as |error|>
+          <span data-test-error>{{error.message}}</span>
+        </:error>
+      </Paginate>
+    </div>
+  </template>;
+}
+
+function secondPaginationTemplate({ requestA, source, store }: SecondPaginationProps) {
+  return <template>
+    <div data-test-paginate="a">
+      <Paginate @request={{requestA}} @store={{store}}>
+        <:loading>
+          <span data-test-pending>Pending</span>
+        </:loading>
+        <:content as |pages|>
+          <Request @request={{pages.activePageRequest}} @store={{store}}>
+            <:content as |content|>
+              {{#each content.data as |user|}}
+                <span data-test-user-name>{{user.attributes.name}}</span>
+              {{/each}}
+            </:content>
+            <:loading><span data-test-loading-page>Loading page</span></:loading>
+          </Request>
+        </:content>
+        <:error as |error|>
+          <span data-test-error>{{error.message}}</span>
+        </:error>
+      </Paginate>
+    </div>
+
+    {{#if source.requestB}}
+      <div data-test-paginate="b">
+        <Paginate @request={{source.requestB}} @store={{store}}>
+          <:loading>
+            <span data-test-pending>Pending</span>
+          </:loading>
+          <:content as |pages|>
+            <Request @request={{pages.activePageRequest}} @store={{store}}>
+              <:content as |content|>
+                {{#each content.data as |user|}}
+                  <span data-test-user-name>{{user.attributes.name}}</span>
+                {{/each}}
+              </:content>
+              <:loading><span data-test-loading-page>Loading page</span></:loading>
+            </Request>
+          </:content>
+          <:error as |error|>
+            <span data-test-error>{{error.message}}</span>
+          </:error>
+        </Paginate>
+      </div>
+    {{/if}}
+  </template>;
+}
 
 PaginateSpec.use(useEmber(), function (b) {
   b
@@ -798,6 +1061,47 @@ PaginateSpec.use(useEmber(), function (b) {
         </Paginate>
       </template>;
     })
+
+    .test(
+      'reloading the first page after the collection grows by one page links the new last page',
+      pagedReloadTemplate
+    )
+    .test('reloading a middle page after the collection grows keeps the pages around it in order', pagedReloadTemplate)
+    .test('reloading the last page after the collection grows gives it a next page', pagedReloadTemplate)
+    .test(
+      'reloading the first page after the collection grows by several pages renders a gap before the new last page',
+      pagedReloadTemplate
+    )
+    .test('reloading a page with an unchanged document leaves the page graph as it was', pagedReloadTemplate)
+    .test(
+      'a changed @request that reloads the active page swaps in its document without a loading state',
+      sourceReloadTemplate
+    )
+    .test('a failed reload leaves the loaded page untouched', pagedReloadTemplate)
+    .test('a reload that omits links keeps the links recorded from the earlier load', pagedReloadTemplate)
+    .test('concurrent reloads of the same page resolve to the latest request', pagedReloadTemplate)
+    .test(
+      'a reload through one component updates the links of another component sharing the collection',
+      sharedReloadTemplate
+    )
+    .test(
+      'a new pagination over an already-loaded page adopts the newer request for everyone sharing the page',
+      secondPaginationTemplate
+    )
+    .test('reloading a page in an infinite run replaces its items in place', infiniteReloadTemplate)
+    .test('reloading the last page of an infinite run that gained a next page extends the run', infiniteReloadTemplate)
+    .test(
+      'reloading a page in an infinite run whose next page is gone drops the pages after it',
+      infiniteReloadTemplate
+    )
+    .test(
+      'reloading the entry page of an infinite run whose previous page is gone drops the pages before it',
+      infiniteReloadTemplate
+    )
+    .test(
+      'reloading a page whose next cursor changed drops the stale branch and follows the new one',
+      infiniteReloadTemplate
+    )
 
     // @ts-expect-error need to figure out how to do this for "compiled" versions of this type
     // If there's a typeerror here, we are missing a test.

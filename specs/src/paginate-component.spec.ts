@@ -30,7 +30,7 @@ type UserResource = {
   };
 };
 
-type CollectionRequest = Future<CollectionResourceDataDocument<UserResource>>;
+export type CollectionRequest = Future<CollectionResourceDataDocument<UserResource>>;
 
 class SimpleCacheHandler implements CacheHandler {
   _cache: Map<string, unknown> = new Map();
@@ -169,6 +169,65 @@ async function mockPageFailure(context: LocalTestContext, path: 'users/1' | 'use
   }));
 
   return url;
+}
+
+function pageUrls(count: number): string[] {
+  return Array.from({ length: count }, (_, index) => buildBaseURL({ resourcePath: `users/${index + 1}` }));
+}
+
+/**
+ * A page of a numbered collection: full `first`/`prev`/`self`/`next`/`last`
+ * links and `meta` page hints, for a collection of `totalPages` pages.
+ */
+function numberedPage(urls: string[], index: number, totalPages: number, data = [users[index]]) {
+  return {
+    data,
+    links: {
+      first: urls[0],
+      prev: index === 0 ? null : urls[index - 1],
+      self: urls[index],
+      next: index === totalPages - 1 ? null : urls[index + 1],
+      last: urls[totalPages - 1],
+    },
+    meta: {
+      currentPage: index + 1,
+      totalPages,
+    },
+  };
+}
+
+/** A forced re-request of a page, bypassing the cache handler. */
+function reloadRequest(manager: RequestManager, url: string): CollectionRequest {
+  return manager.request<CollectionResourceDataDocument<UserResource>>({
+    url,
+    method: 'GET',
+    cacheOptions: { reload: true },
+  });
+}
+
+/** The numbered links as rendered: a page number per real link, `.` per gap. */
+function numberedLinks(paginationLinks: { links: ReadonlyArray<{ isReal: boolean; index?: number }> }): string[] {
+  return paginationLinks.links.map((link) => (link.isReal ? `${link.index}` : '.'));
+}
+
+/**
+ * The page numbers of the shared page graph, in order. Bounded: a graph that
+ * loops back on itself reports `'cycle'` instead of hanging the test run.
+ */
+function graphPageNumbers(cache: { pages: Iterable<{ pageNumber: number }> }, limit = 10): Array<number | 'cycle'> {
+  const numbers: Array<number | 'cycle'> = [];
+  for (const page of cache.pages) {
+    if (numbers.length === limit) {
+      numbers.push('cycle');
+      break;
+    }
+    numbers.push(page.pageNumber);
+  }
+  return numbers;
+}
+
+function renderedNames(root: Element): string[] {
+  return Array.from(root.querySelectorAll('[data-test-user-name]')).map((element) => element.textContent?.trim() ?? '');
 }
 
 export interface PaginateSpecSignature extends Record<string, SpecTest<LocalTestContext, object>> {
@@ -342,6 +401,120 @@ export interface PaginateSpecSignature extends Record<string, SpecTest<LocalTest
     }
   >;
   're-requesting a loaded page updates the page graph with its new links and total': SpecTest<
+    LocalTestContext,
+    {
+      store: RequestManager;
+      request: CollectionRequest;
+    }
+  >;
+  'reloading the first page after the collection grows by one page links the new last page': SpecTest<
+    LocalTestContext,
+    {
+      store: RequestManager;
+      request: CollectionRequest;
+    }
+  >;
+  'reloading a middle page after the collection grows keeps the pages around it in order': SpecTest<
+    LocalTestContext,
+    {
+      store: RequestManager;
+      request: CollectionRequest;
+    }
+  >;
+  'reloading the last page after the collection grows gives it a next page': SpecTest<
+    LocalTestContext,
+    {
+      store: RequestManager;
+      request: CollectionRequest;
+    }
+  >;
+  'reloading the first page after the collection grows by several pages renders a gap before the new last page': SpecTest<
+    LocalTestContext,
+    {
+      store: RequestManager;
+      request: CollectionRequest;
+    }
+  >;
+  'reloading a page with an unchanged document leaves the page graph as it was': SpecTest<
+    LocalTestContext,
+    {
+      store: RequestManager;
+      request: CollectionRequest;
+    }
+  >;
+  'a changed @request that reloads the active page swaps in its document without a loading state': SpecTest<
+    LocalTestContext,
+    {
+      store: RequestManager;
+      source: { request: CollectionRequest };
+    }
+  >;
+  'a failed reload leaves the loaded page untouched': SpecTest<
+    LocalTestContext,
+    {
+      store: RequestManager;
+      request: CollectionRequest;
+    }
+  >;
+  'a reload that omits links keeps the links recorded from the earlier load': SpecTest<
+    LocalTestContext,
+    {
+      store: RequestManager;
+      request: CollectionRequest;
+    }
+  >;
+  'concurrent reloads of the same page resolve to the latest request': SpecTest<
+    LocalTestContext,
+    {
+      store: RequestManager;
+      request: CollectionRequest;
+    }
+  >;
+  'a reload through one component updates the links of another component sharing the collection': SpecTest<
+    LocalTestContext,
+    {
+      store: RequestManager;
+      requestA: CollectionRequest;
+      requestB: CollectionRequest;
+    }
+  >;
+  'a new pagination over an already-loaded page adopts the newer request for everyone sharing the page': SpecTest<
+    LocalTestContext,
+    {
+      store: RequestManager;
+      requestA: CollectionRequest;
+      source: { requestB: CollectionRequest | null };
+    }
+  >;
+  'reloading a page in an infinite run replaces its items in place': SpecTest<
+    LocalTestContext,
+    {
+      store: RequestManager;
+      request: CollectionRequest;
+    }
+  >;
+  'reloading the last page of an infinite run that gained a next page extends the run': SpecTest<
+    LocalTestContext,
+    {
+      store: RequestManager;
+      request: CollectionRequest;
+    }
+  >;
+  'reloading a page in an infinite run whose next page is gone drops the pages after it': SpecTest<
+    LocalTestContext,
+    {
+      store: RequestManager;
+      request: CollectionRequest;
+    }
+  >;
+  'reloading the entry page of an infinite run whose previous page is gone drops the pages before it': SpecTest<
+    LocalTestContext,
+    {
+      store: RequestManager;
+      request: CollectionRequest;
+    }
+  >;
+  'reloading a page whose next cursor changed drops the stale branch and follows the new one': SpecTest<
     LocalTestContext,
     {
       store: RequestManager;
@@ -2591,4 +2764,908 @@ export const PaginateSpec: SuiteBuilder<LocalTestContext, PaginateSpecSignature>
     assert.dom('[data-test-next]').doesNotExist('no next button renders');
     assert.equal(paginationState.activePageRequest, refreshedSecond, 'the re-requested page tracks its new request');
   })
+  .for('reloading the first page after the collection grows by one page links the new last page')
+  .use<{ store: RequestManager; request: CollectionRequest }>(async function (assert) {
+    const urls = pageUrls(3);
+
+    // repeated requests to the same url replay these in order
+    await GET(this, 'users/1', () => numberedPage(urls, 0, 2));
+    await GET(this, 'users/2', () => numberedPage(urls, 1, 2));
+    await GET(this, 'users/1', () => numberedPage(urls, 0, 3));
+    await GET(this, 'users/3', () => numberedPage(urls, 2, 3));
+
+    const request = this.manager.request<CollectionResourceDataDocument<UserResource>>({
+      url: urls[0],
+      method: 'GET',
+    });
+    const paginationState = getPaginationState(request);
+    const paginationLinks = getPaginationLinks(paginationState);
+    const paginationCache = getPaginationCache(urls[0]);
+
+    await request;
+    await paginationState.loadPage(urls[1]);
+    await paginationState.loadPage(urls[0]);
+
+    assert.equal(paginationState.totalPages, 2, 'the collection starts with 2 pages');
+    assert.deepEqual(numberedLinks(paginationLinks), ['1', '2'], 'both pages are linked');
+    assert.equal(paginationLinks.last?.url, urls[1], 'the second page is the last page');
+
+    // a page was appended to the collection; the first page is re-requested
+    // and now points at a new last page
+    const refreshed = reloadRequest(this.manager, urls[0]);
+    await paginationState.adoptPage(refreshed);
+
+    const graph = graphPageNumbers(paginationCache);
+    assert.deepEqual(graph, [1, 2, 3], 'the new last page is appended after the pages already in the graph');
+    if (graph.includes('cycle')) {
+      // iterating a cyclic graph never terminates: rendering the links would hang the tab
+      return;
+    }
+
+    // render only once the graph is known to terminate: the links iterate it
+    await this.render({ store: this.manager, request });
+    await request;
+    await this.h.rerender();
+
+    assert.equal(paginationState.totalPages, 3, 'the total reflects the re-requested document');
+    assert.equal(paginationLinks.last?.url, urls[2], 'the last link points at the new page');
+    assert.deepEqual(numberedLinks(paginationLinks), ['1', '2', '3'], 'the new page is numbered');
+    assert.equal(paginationState.activePageRequest, refreshed, 'the re-requested page tracks its new request');
+
+    await this.h.click('[data-test-load-page="3"]');
+    await paginationState.activePageRequest;
+    await this.h.rerender();
+
+    assert.equal(paginationState.activePage?.pageNumber, 3, 'the new page loads and becomes active');
+    assert.dom('[data-test-user-name]').hasText('Mehul Chaudhari', 'the new page renders');
+    assert.equal(paginationState.activePage?.prevLink, urls[1], 'the new page links back to the page before it');
+    assert.dom('[data-test-next]').doesNotExist('the new page is the end of the collection');
+    assert.deepEqual(
+      graphPageNumbers(paginationCache),
+      [1, 2, 3],
+      'the graph order is intact after loading the new page'
+    );
+  })
+
+  .for('reloading a middle page after the collection grows keeps the pages around it in order')
+  .use<{ store: RequestManager; request: CollectionRequest }>(async function (assert) {
+    const urls = pageUrls(4);
+
+    await GET(this, 'users/1', () => numberedPage(urls, 0, 3));
+    await GET(this, 'users/2', () => numberedPage(urls, 1, 3));
+    await GET(this, 'users/3', () => numberedPage(urls, 2, 3));
+    await GET(this, 'users/2', () => numberedPage(urls, 1, 4));
+    await GET(this, 'users/4', () => numberedPage(urls, 3, 4));
+
+    const request = this.manager.request<CollectionResourceDataDocument<UserResource>>({
+      url: urls[0],
+      method: 'GET',
+    });
+    const paginationState = getPaginationState(request);
+    const paginationLinks = getPaginationLinks(paginationState);
+    const paginationCache = getPaginationCache(urls[0]);
+
+    // visit every page, then settle on the middle one
+    await request;
+    await paginationState.loadPage(urls[1]);
+    await paginationState.loadPage(urls[2]);
+    await paginationState.loadPage(urls[1]);
+
+    assert.equal(paginationState.totalPages, 3, 'the collection starts with 3 pages');
+    assert.deepEqual(numberedLinks(paginationLinks), ['1', '2', '3'], 'all 3 pages are linked');
+    assert.equal(paginationState.activePage?.pageNumber, 2, 'the middle page is active');
+
+    // a page was appended to the collection; the middle page is re-requested
+    const refreshed = reloadRequest(this.manager, urls[1]);
+    await paginationState.adoptPage(refreshed);
+
+    const graph = graphPageNumbers(paginationCache);
+    assert.deepEqual(graph, [1, 2, 3, 4], 'the new last page is appended after the pages already in the graph');
+    if (graph.includes('cycle')) {
+      // iterating a cyclic graph never terminates: rendering the links would hang the tab
+      return;
+    }
+
+    // render only once the graph is known to terminate: the links iterate it
+    await this.render({ store: this.manager, request });
+    await request;
+    await this.h.rerender();
+
+    assert.equal(paginationState.totalPages, 4, 'the total reflects the re-requested document');
+    assert.deepEqual(numberedLinks(paginationLinks), ['1', '2', '3', '4'], 'the new page is numbered');
+    assert.equal(paginationState.activePage?.pageNumber, 2, 'the re-requested page stays active');
+    assert.dom('[data-test-user-name]').hasText('Leo Euclides', 'the re-requested page still renders');
+    assert.true(
+      Boolean(paginationState.activePage?.next?.isSuccess),
+      'the page after the re-requested one stays loaded'
+    );
+    assert.deepEqual(paginationState.activePage?.next?.data, [users[2]], 'its data is intact');
+
+    await this.h.click('[data-test-load-page="4"]');
+    await paginationState.activePageRequest;
+    await this.h.rerender();
+
+    assert.equal(paginationState.activePage?.pageNumber, 4, 'the new page loads and becomes active');
+    assert.dom('[data-test-user-name]').hasText('Benedikt Deicke', 'the new page renders');
+    assert.equal(paginationState.activePage?.prevLink, urls[2], 'the new page links back to the page before it');
+    assert.dom('[data-test-next]').doesNotExist('the new page is the end of the collection');
+    assert.deepEqual(
+      graphPageNumbers(paginationCache),
+      [1, 2, 3, 4],
+      'the graph order is intact after loading the new page'
+    );
+  })
+
+  .for('reloading the last page after the collection grows gives it a next page')
+  .use<{ store: RequestManager; request: CollectionRequest }>(async function (assert) {
+    const urls = pageUrls(3);
+
+    await GET(this, 'users/1', () => numberedPage(urls, 0, 2));
+    await GET(this, 'users/2', () => numberedPage(urls, 1, 2));
+    await GET(this, 'users/2', () => numberedPage(urls, 1, 3));
+    await GET(this, 'users/3', () => numberedPage(urls, 2, 3));
+
+    const request = this.manager.request<CollectionResourceDataDocument<UserResource>>({
+      url: urls[0],
+      method: 'GET',
+    });
+    const paginationState = getPaginationState(request);
+    const paginationLinks = getPaginationLinks(paginationState);
+    const paginationCache = getPaginationCache(urls[0]);
+
+    await this.render({ store: this.manager, request });
+    await request;
+    await this.h.rerender();
+
+    await paginationState.loadPage(urls[1]);
+    await this.h.rerender();
+
+    assert.equal(paginationState.activePage?.pageNumber, 2, 'the last page is active');
+    assert.equal(paginationLinks.next, null, 'the last page has no next link');
+    assert.dom('[data-test-next]').doesNotExist('no next button renders on the last page');
+    assert.deepEqual(numberedLinks(paginationLinks), ['1', '2'], 'both pages are linked');
+
+    // a page was appended to the collection; the (former) last page is
+    // re-requested and now has a next page
+    const refreshed = reloadRequest(this.manager, urls[1]);
+    await paginationState.adoptPage(refreshed);
+    await this.h.rerender();
+
+    assert.equal(paginationState.activePage?.nextLink, urls[2], 'the next link reflects the re-requested document');
+    assert.equal(paginationLinks.next?.url, urls[2], 'the next link points at the new page');
+    assert.dom('[data-test-next]').exists('a next button renders');
+    assert.equal(paginationState.totalPages, 3, 'the total reflects the re-requested document');
+    assert.equal(paginationLinks.last?.url, urls[2], 'the last link points at the new page');
+    assert.deepEqual(numberedLinks(paginationLinks), ['1', '2', '3'], 'the new page is numbered');
+    assert.deepEqual(graphPageNumbers(paginationCache), [1, 2, 3], 'the new page is appended to the graph');
+
+    await this.h.click('[data-test-next]');
+    await paginationState.activePageRequest;
+    await this.h.rerender();
+
+    assert.equal(paginationState.activePage?.pageNumber, 3, 'the new page loads and becomes active');
+    assert.dom('[data-test-user-name]').hasText('Mehul Chaudhari', 'the new page renders');
+    assert.dom('[data-test-next]').doesNotExist('the new page is the end of the collection');
+    assert.deepEqual(
+      graphPageNumbers(paginationCache),
+      [1, 2, 3],
+      'the graph order is intact after loading the new page'
+    );
+  })
+
+  .for('reloading the first page after the collection grows by several pages renders a gap before the new last page')
+  .use<{ store: RequestManager; request: CollectionRequest }>(async function (assert) {
+    const urls = pageUrls(5);
+
+    await GET(this, 'users/1', () => numberedPage(urls, 0, 2));
+    await GET(this, 'users/2', () => numberedPage(urls, 1, 2));
+    await GET(this, 'users/1', () => numberedPage(urls, 0, 5));
+    await GET(this, 'users/5', () => numberedPage(urls, 4, 5));
+
+    const request = this.manager.request<CollectionResourceDataDocument<UserResource>>({
+      url: urls[0],
+      method: 'GET',
+    });
+    const paginationState = getPaginationState(request);
+    const paginationLinks = getPaginationLinks(paginationState);
+    const paginationCache = getPaginationCache(urls[0]);
+
+    await request;
+    await paginationState.loadPage(urls[1]);
+    await paginationState.loadPage(urls[0]);
+
+    assert.deepEqual(numberedLinks(paginationLinks), ['1', '2'], 'both pages are linked');
+
+    // three pages were appended to the collection; the first page is
+    // re-requested and now points at a last page that is not adjacent to
+    // anything loaded
+    const refreshed = reloadRequest(this.manager, urls[0]);
+    await paginationState.adoptPage(refreshed);
+
+    const graph = graphPageNumbers(paginationCache);
+    assert.deepEqual(graph, [1, 2, 5], 'the new last page is appended after the pages already in the graph');
+    if (graph.includes('cycle')) {
+      // iterating a cyclic graph never terminates: rendering the links would hang the tab
+      return;
+    }
+
+    // render only once the graph is known to terminate: the links iterate it
+    await this.render({ store: this.manager, request });
+    await request;
+    await this.h.rerender();
+
+    assert.equal(paginationState.totalPages, 5, 'the total reflects the re-requested document');
+    assert.deepEqual(numberedLinks(paginationLinks), ['1', '2', '.', '5'], 'a gap separates the new last page');
+    const gap = paginationLinks.links[2];
+    assert.deepEqual(
+      gap && !gap.isReal ? gap.indexRange : null,
+      [3, 4],
+      'the gap covers the pages known only by count'
+    );
+    assert.equal(this.element.querySelectorAll('[data-test-gap]').length, 1, 'one gap renders');
+
+    await this.h.click('[data-test-load-page="5"]');
+    await paginationState.activePageRequest;
+    await this.h.rerender();
+
+    assert.equal(paginationState.activePage?.pageNumber, 5, 'the new last page loads and becomes active');
+    assert.dom('[data-test-user-name]').hasText('Jane Portman', 'the new last page renders');
+    assert.equal(paginationState.activePage?.prevLink, urls[3], 'the new last page links back to the page before it');
+    assert.deepEqual(numberedLinks(paginationLinks), ['1', '2', '.', '4', '5'], 'the page before it is now known');
+    assert.deepEqual(graphPageNumbers(paginationCache), [1, 2, 4, 5], 'the graph order is intact');
+  })
+
+  .for('reloading a page with an unchanged document leaves the page graph as it was')
+  .use<{ store: RequestManager; request: CollectionRequest }>(async function (assert) {
+    const urls = pageUrls(2);
+
+    await GET(this, 'users/1', () => numberedPage(urls, 0, 2));
+    await GET(this, 'users/2', () => numberedPage(urls, 1, 2));
+    await GET(this, 'users/1', () => numberedPage(urls, 0, 2));
+
+    const request = this.manager.request<CollectionResourceDataDocument<UserResource>>({
+      url: urls[0],
+      method: 'GET',
+    });
+    const paginationState = getPaginationState(request);
+    const paginationLinks = getPaginationLinks(paginationState);
+    const paginationCache = getPaginationCache(urls[0]);
+
+    await this.render({ store: this.manager, request });
+    await request;
+    await this.h.rerender();
+
+    await paginationState.loadPage(urls[1]);
+    await paginationState.loadPage(urls[0]);
+    await this.h.rerender();
+
+    const activePage = paginationState.activePage;
+    assert.deepEqual(numberedLinks(paginationLinks), ['1', '2'], 'both pages are linked');
+
+    // nothing changed server-side; the first page is re-requested
+    const refreshed = reloadRequest(this.manager, urls[0]);
+    const adopted = await paginationState.adoptPage(refreshed);
+    await this.h.rerender();
+
+    assert.deepEqual(adopted?.data, [users[0]], 'adoptPage resolves to the re-requested document');
+    assert.equal(paginationState.activePage, activePage, 'the page is the same shared page');
+    assert.equal(paginationState.activePageRequest, refreshed, 'the page tracks its new request');
+    assert.equal(paginationState.activePage?.pageNumber, 1, 'the page number is unchanged');
+    assert.equal(paginationState.totalPages, 2, 'the total is unchanged');
+    assert.deepEqual(numberedLinks(paginationLinks), ['1', '2'], 'the numbered links are unchanged');
+    assert.equal(paginationLinks.next?.url, urls[1], 'the next link is unchanged');
+    assert.equal(paginationLinks.last?.url, urls[1], 'the last link is unchanged');
+    assert.deepEqual(graphPageNumbers(paginationCache), [1, 2], 'the graph is unchanged');
+    assert.dom('[data-test-user-name]').hasText('Chris Thoburn', 'the page still renders');
+    assert.dom('[data-test-loading-page]').doesNotExist('no loading state was shown');
+  })
+
+  .for('a changed @request that reloads the active page swaps in its document without a loading state')
+  .use<{ store: RequestManager; source: { request: CollectionRequest } }>(async function (assert) {
+    const urls = pageUrls(2);
+
+    await GET(this, 'users/1', () => numberedPage(urls, 0, 2));
+    // the same page, with an item that changed since the first load
+    await GET(this, 'users/1', () => numberedPage(urls, 0, 2, [users[3]]));
+
+    const initialRequest = this.manager.request<CollectionResourceDataDocument<UserResource>>({
+      url: urls[0],
+      method: 'GET',
+    });
+
+    class RequestSource {
+      @signal request: CollectionRequest = initialRequest;
+    }
+    const source = new RequestSource();
+    const paginationState = getPaginationState(initialRequest);
+    const paginationLinks = getPaginationLinks(paginationState);
+
+    await this.render({ store: this.manager, source });
+    await initialRequest;
+    await this.h.rerender();
+
+    assert.dom('[data-test-user-name]').hasText('Chris Thoburn', 'the page renders');
+    assert.equal(paginationState.activePage?.pageNumber, 1, 'the page is active');
+
+    // a route-driven refresh: the arg swaps to a forced re-request of the same page
+    const reloaded = reloadRequest(this.manager, urls[0]);
+    source.request = reloaded;
+    await this.h.rerender();
+
+    assert.dom('[data-test-pending]').doesNotExist('no blocking loading state while the reload resolves');
+    assert.dom('[data-test-loading-page]').doesNotExist('no page loading state while the reload resolves');
+    assert.dom('[data-test-user-name]').hasText('Chris Thoburn', 'the existing content stays rendered');
+    assert.dom('[data-test-navigating]').exists('isNavigating is true while the reload resolves');
+
+    await reloaded;
+    await this.h.rerender();
+    await this.h.rerender();
+
+    assert.equal(getPaginationState(initialRequest), paginationState, 'the PaginationState reference is unchanged');
+    assert.dom('[data-test-user-name]').hasText('Benedikt Deicke', 'the re-requested document renders');
+    assert.deepEqual(paginationState.activePage?.data, [users[3]], 'the page holds the re-requested data');
+    assert.equal(paginationState.activePageRequest, reloaded, 'the page tracks its new request');
+    assert.equal(paginationState.activePage?.pageNumber, 1, 'the same page is active');
+    assert.dom('[data-test-navigating]').doesNotExist('the reload has settled');
+    assert.equal(paginationState.totalPages, 2, 'the collection total is intact');
+    assert.deepEqual(numberedLinks(paginationLinks), ['1', '2'], 'the numbered links are intact');
+  })
+
+  .for('a failed reload leaves the loaded page untouched')
+  .use<{ store: RequestManager; request: CollectionRequest }>(async function (assert) {
+    const urls = pageUrls(2);
+
+    await GET(this, 'users/1', () => numberedPage(urls, 0, 2));
+    await mockPageFailure(this, 'users/1');
+
+    const request = this.manager.request<CollectionResourceDataDocument<UserResource>>({
+      url: urls[0],
+      method: 'GET',
+    });
+    const paginationState = getPaginationState(request);
+    const paginationLinks = getPaginationLinks(paginationState);
+
+    await this.render({ store: this.manager, request });
+    await request;
+    await this.h.rerender();
+
+    assert.dom('[data-test-user-name]').hasText('Chris Thoburn', 'the page renders');
+
+    // the re-request fails (e.g. the server is briefly unavailable)
+    const refreshed = reloadRequest(this.manager, urls[0]);
+    const adopted = await paginationState.adoptPage(refreshed);
+    await this.h.rerender();
+
+    assert.equal(adopted, null, 'adoptPage resolves to null for a failed re-request');
+    assert.equal(paginationState.activePageRequest, request, 'the page keeps the request that loaded it');
+    assert.true(Boolean(paginationState.activePage?.isSuccess), 'the page is still loaded');
+    assert.false(Boolean(paginationState.activePage?.isError), 'the page is not in error');
+    assert.dom('[data-test-user-name]').hasText('Chris Thoburn', 'the loaded page still renders');
+    assert.dom('[data-test-error]').doesNotExist('no error renders');
+    assert.equal(paginationState.totalPages, 2, 'the total is untouched');
+    assert.deepEqual(numberedLinks(paginationLinks), ['1', '2'], 'the numbered links are untouched');
+  })
+
+  .for('a reload that omits links keeps the links recorded from the earlier load')
+  .use<{ store: RequestManager; request: CollectionRequest }>(async function (assert) {
+    const urls = pageUrls(3);
+
+    await GET(this, 'users/1', () => numberedPage(urls, 0, 3));
+    await GET(this, 'users/2', () => numberedPage(urls, 1, 3));
+    // the same page from an endpoint that only identifies the collection and
+    // the page itself, leaving its neighbors unstated
+    await GET(this, 'users/2', () => ({
+      data: [users[4]],
+      links: {
+        first: urls[0],
+        self: urls[1],
+      },
+      meta: {
+        currentPage: 2,
+        totalPages: 3,
+      },
+    }));
+
+    const request = this.manager.request<CollectionResourceDataDocument<UserResource>>({
+      url: urls[0],
+      method: 'GET',
+    });
+    const paginationState = getPaginationState(request);
+    const paginationLinks = getPaginationLinks(paginationState);
+    const paginationCache = getPaginationCache(urls[0]);
+
+    await this.render({ store: this.manager, request });
+    await request;
+    await this.h.rerender();
+
+    await paginationState.loadPage(urls[1]);
+    await this.h.rerender();
+
+    assert.equal(paginationState.activePage?.pageNumber, 2, 'the middle page is active');
+    assert.dom('[data-test-prev]').exists('a prev button renders');
+    assert.dom('[data-test-next]').exists('a next button renders');
+
+    const refreshed = reloadRequest(this.manager, urls[1]);
+    await paginationState.adoptPage(refreshed);
+    await this.h.rerender();
+
+    assert.dom('[data-test-user-name]').hasText('Jane Portman', 'the re-requested document renders');
+    assert.equal(paginationState.activePage?.prevLink, urls[0], 'the recorded prev link is kept');
+    assert.equal(paginationState.activePage?.nextLink, urls[2], 'the recorded next link is kept');
+    assert.equal(paginationState.activePage?.lastLink, urls[2], 'the recorded last link is kept');
+    assert.dom('[data-test-prev]').exists('the prev button still renders');
+    assert.dom('[data-test-next]').exists('the next button still renders');
+    assert.equal(paginationState.totalPages, 3, 'the total is intact');
+    assert.deepEqual(numberedLinks(paginationLinks), ['1', '2', '3'], 'the numbered links are intact');
+    assert.deepEqual(graphPageNumbers(paginationCache), [1, 2, 3], 'the graph is intact');
+  })
+
+  .for('concurrent reloads of the same page resolve to the latest request')
+  .use<{ store: RequestManager; request: CollectionRequest }>(async function (assert) {
+    const urls = pageUrls(2);
+
+    await GET(this, 'users/1', () => numberedPage(urls, 0, 2));
+    await GET(this, 'users/1', () => numberedPage(urls, 0, 2, [users[3]]));
+    await GET(this, 'users/1', () => numberedPage(urls, 0, 2, [users[4]]));
+
+    const request = this.manager.request<CollectionResourceDataDocument<UserResource>>({
+      url: urls[0],
+      method: 'GET',
+    });
+    const paginationState = getPaginationState(request);
+    const paginationCache = getPaginationCache(urls[0]);
+
+    await this.render({ store: this.manager, request });
+    await request;
+    await this.h.rerender();
+
+    // two re-requests of the same page in flight at once: the latest wins
+    const requestA = reloadRequest(this.manager, urls[0]);
+    const requestB = reloadRequest(this.manager, urls[0]);
+    const [a, b] = await Promise.all([paginationState.adoptPage(requestA), paginationState.adoptPage(requestB)]);
+    await this.h.rerender();
+
+    assert.equal(a, null, 'the superseded re-request commits nothing');
+    assert.deepEqual(b?.data, [users[4]], 'the latest re-request commits its document');
+    assert.equal(paginationState.activePageRequest, requestB, 'the page tracks the latest request');
+    assert.deepEqual(paginationState.activePage?.data, [users[4]], 'the page holds the latest data');
+    assert.dom('[data-test-user-name]').hasText('Jane Portman', 'the latest document renders');
+    assert.equal(paginationState.totalPages, 2, 'the total is intact');
+    assert.deepEqual(graphPageNumbers(paginationCache), [1, 2], 'the graph is intact');
+  })
+
+  .for('a reload through one component updates the links of another component sharing the collection')
+  .use<{ store: RequestManager; requestA: CollectionRequest; requestB: CollectionRequest }>(async function (assert) {
+    const urls = pageUrls(3);
+
+    await GET(this, 'users/1', () => numberedPage(urls, 0, 3));
+    await GET(this, 'users/3', () => numberedPage(urls, 2, 3));
+    // the collection shrinks to 2 pages
+    await GET(this, 'users/1', () => numberedPage(urls, 0, 2));
+    await GET(this, 'users/2', () => numberedPage(urls, 1, 2));
+
+    const requestA = this.manager.request<CollectionResourceDataDocument<UserResource>>({
+      url: urls[0],
+      method: 'GET',
+    });
+    const requestB = this.manager.request<CollectionResourceDataDocument<UserResource>>({
+      url: urls[2],
+      method: 'GET',
+    });
+    const stateA = getPaginationState(requestA);
+    const stateB = getPaginationState(requestB);
+    const linksA = getPaginationLinks(stateA);
+    const linksB = getPaginationLinks(stateB);
+    const paginationCache = getPaginationCache(urls[0]);
+
+    await this.render({ store: this.manager, requestA, requestB });
+    await requestA;
+    await requestB;
+    await this.h.rerender();
+
+    const componentB = this.element.querySelector('[data-test-paginate="b"]')!;
+
+    assert.deepEqual(numberedLinks(linksA), ['1', '2', '3'], 'component A links all 3 pages');
+    assert.deepEqual(numberedLinks(linksB), ['1', '2', '3'], 'component B links all 3 pages');
+    assert.equal(stateB.activePage?.pageNumber, 3, 'component B is on the last page');
+
+    // component A re-requests the first page, which now says the collection
+    // ends at page 2
+    const refreshed = reloadRequest(this.manager, urls[0]);
+    await stateA.adoptPage(refreshed);
+    await this.h.rerender();
+
+    assert.equal(stateA.totalPages, 2, 'component A sees the new total');
+    assert.equal(stateB.totalPages, 2, 'component B sees the new total');
+    assert.deepEqual(numberedLinks(linksA), ['1', '2'], 'component A no longer links the dropped page');
+    assert.deepEqual(numberedLinks(linksB), ['1', '2'], 'component B no longer links the dropped page');
+    assert.deepEqual(graphPageNumbers(paginationCache), [1, 2], 'the shared graph ends at the new last page');
+    assert.equal(stateB.activePage?.pageNumber, 3, 'component B stays on the page it was viewing');
+    assert.deepEqual(renderedNames(componentB), ['Mehul Chaudhari'], 'component B still renders that page');
+    assert.equal(componentB.querySelectorAll('[data-test-next]').length, 0, 'component B has no next page');
+
+    // component B navigates to the new last page
+    await stateB.loadPage(urls[1]);
+    await this.h.rerender();
+
+    assert.equal(stateB.activePage?.pageNumber, 2, 'component B moved to the new last page');
+    assert.deepEqual(renderedNames(componentB), ['Leo Euclides'], 'component B renders the new last page');
+    assert.equal(componentB.querySelectorAll('[data-test-next]').length, 0, 'the new last page has no next page');
+    assert.deepEqual(numberedLinks(linksB), ['1', '2'], 'component B links the 2 remaining pages');
+  })
+
+  .for('a new pagination over an already-loaded page adopts the newer request for everyone sharing the page')
+  .use<{ store: RequestManager; requestA: CollectionRequest; source: { requestB: CollectionRequest | null } }>(
+    async function (assert) {
+      const urls = pageUrls(2);
+
+      await GET(this, 'users/1', () => numberedPage(urls, 0, 2));
+      await GET(this, 'users/1', () => numberedPage(urls, 0, 2, [users[3]]));
+
+      const requestA = this.manager.request<CollectionResourceDataDocument<UserResource>>({
+        url: urls[0],
+        method: 'GET',
+      });
+      const stateA = getPaginationState(requestA);
+
+      class RequestSource {
+        @signal requestB: CollectionRequest | null = null;
+      }
+      const source = new RequestSource();
+
+      await this.render({ store: this.manager, requestA, source });
+      await requestA;
+      await this.h.rerender();
+
+      const componentA = this.element.querySelector('[data-test-paginate="a"]')!;
+      assert.deepEqual(renderedNames(componentA), ['Chris Thoburn'], 'component A renders the page');
+      assert.equal(stateA.activePageRequest, requestA, 'the page tracks the request that loaded it');
+
+      // a second component mounts over a forced re-request of the same page
+      const requestB = reloadRequest(this.manager, urls[0]);
+      const stateB = getPaginationState(requestB);
+      source.requestB = requestB;
+      await requestB;
+      await this.h.rerender();
+      await this.h.rerender();
+
+      const componentB = this.element.querySelector('[data-test-paginate="b"]')!;
+      assert.equal(stateB.activePage, stateA.activePage, 'both paginations share the page');
+      assert.equal(stateB.activePageRequest, requestB, 'the new pagination tracks its own request');
+      assert.equal(
+        stateA.activePageRequest,
+        requestB,
+        'the shared page tracks the newer request for the first pagination too'
+      );
+      assert.deepEqual(renderedNames(componentB), ['Benedikt Deicke'], 'component B renders the re-requested document');
+      assert.deepEqual(renderedNames(componentA), ['Benedikt Deicke'], 'component A renders the re-requested document');
+      assert.equal(stateB.totalPages, 2, 'the new pagination knows the total');
+      assert.deepEqual(numberedLinks(getPaginationLinks(stateB)), ['1', '2'], 'the new pagination links both pages');
+    }
+  )
+
+  .for('reloading a page in an infinite run replaces its items in place')
+  .use<{ store: RequestManager; request: CollectionRequest }>(async function (assert) {
+    const urls = pageUrls(3);
+
+    await GET(this, 'users/1', () => ({
+      data: [users[0]],
+      links: { first: urls[0], self: urls[0], next: urls[1] },
+    }));
+    await GET(this, 'users/2', () => ({
+      data: [users[1]],
+      links: { first: urls[0], prev: urls[0], self: urls[1], next: urls[2] },
+    }));
+    await GET(this, 'users/3', () => ({
+      data: [users[2]],
+      links: { first: urls[0], prev: urls[1], self: urls[2] },
+    }));
+    // the middle page, with an item that changed since the first load
+    await GET(this, 'users/2', () => ({
+      data: [users[4]],
+      links: { first: urls[0], prev: urls[0], self: urls[1], next: urls[2] },
+    }));
+
+    const request = this.manager.request<CollectionResourceDataDocument<UserResource>>({
+      url: urls[0],
+      method: 'GET',
+    });
+    const paginationState = getPaginationState(request);
+
+    await this.render({ store: this.manager, request });
+    await request;
+    await this.h.rerender();
+
+    await this.h.click('[data-test-load-next]');
+    await paginationState.nextRequest;
+    await this.h.rerender();
+    await this.h.click('[data-test-load-next]');
+    await paginationState.nextRequest;
+    await this.h.rerender();
+
+    assert.deepEqual(
+      renderedNames(this.element),
+      ['Chris Thoburn', 'Leo Euclides', 'Mehul Chaudhari'],
+      'all 3 pages render'
+    );
+
+    const refreshed = reloadRequest(this.manager, urls[1]);
+    await paginationState.adoptPage(refreshed);
+    await this.h.rerender();
+
+    assert.deepEqual(
+      Array.from(paginationState.data).map((user) => user.attributes.name),
+      ['Chris Thoburn', 'Jane Portman', 'Mehul Chaudhari'],
+      'the re-requested items replace the old ones at the same position'
+    );
+    assert.deepEqual(
+      renderedNames(this.element),
+      ['Chris Thoburn', 'Jane Portman', 'Mehul Chaudhari'],
+      'the run renders the new items in place'
+    );
+    assert.equal(Array.from(paginationState.pages).length, 3, 'the run still holds 3 pages');
+    assert.false(paginationState.hasNext, 'the end of the run is unchanged');
+    assert.false(paginationState.hasPrevious, 'the start of the run is unchanged');
+    assert.equal(paginationState.activePageRequest, refreshed, 'the re-requested page tracks its new request');
+  })
+
+  .for('reloading the last page of an infinite run that gained a next page extends the run')
+  .use<{ store: RequestManager; request: CollectionRequest }>(async function (assert) {
+    const urls = pageUrls(3);
+
+    await GET(this, 'users/1', () => ({
+      data: [users[0]],
+      links: { first: urls[0], self: urls[0], next: urls[1] },
+    }));
+    await GET(this, 'users/2', () => ({
+      data: [users[1]],
+      links: { first: urls[0], prev: urls[0], self: urls[1] },
+    }));
+    // a page was appended: the (former) last page now has a next link
+    await GET(this, 'users/2', () => ({
+      data: [users[1]],
+      links: { first: urls[0], prev: urls[0], self: urls[1], next: urls[2] },
+    }));
+    await GET(this, 'users/3', () => ({
+      data: [users[2]],
+      links: { first: urls[0], prev: urls[1], self: urls[2] },
+    }));
+
+    const request = this.manager.request<CollectionResourceDataDocument<UserResource>>({
+      url: urls[0],
+      method: 'GET',
+    });
+    const paginationState = getPaginationState(request);
+
+    await this.render({ store: this.manager, request });
+    await request;
+    await this.h.rerender();
+
+    await this.h.click('[data-test-load-next]');
+    await paginationState.nextRequest;
+    await this.h.rerender();
+
+    assert.deepEqual(renderedNames(this.element), ['Chris Thoburn', 'Leo Euclides'], 'both pages render');
+    assert.false(paginationState.hasNext, 'the run ends at the second page');
+    assert.dom('[data-test-load-next]').doesNotExist('no next sentinel renders at the end');
+
+    const refreshed = reloadRequest(this.manager, urls[1]);
+    await paginationState.adoptPage(refreshed);
+    await this.h.rerender();
+
+    assert.true(paginationState.hasNext, 'the re-requested document extends the collection');
+    assert.equal(paginationState.nextRequest, null, 'the next page is not requested until loadNext fires');
+    assert.dom('[data-test-load-next]').exists('the next sentinel renders again');
+    assert.deepEqual(
+      renderedNames(this.element),
+      ['Chris Thoburn', 'Leo Euclides'],
+      'the run is unchanged until the next page loads'
+    );
+
+    await this.h.click('[data-test-load-next]');
+    await paginationState.nextRequest;
+    await this.h.rerender();
+
+    assert.deepEqual(
+      renderedNames(this.element),
+      ['Chris Thoburn', 'Leo Euclides', 'Mehul Chaudhari'],
+      'the new page is appended to the run'
+    );
+    assert.equal(Array.from(paginationState.pages).length, 3, 'the run holds 3 pages');
+    assert.false(paginationState.hasNext, 'the run ends at the new page');
+  })
+
+  .for('reloading a page in an infinite run whose next page is gone drops the pages after it')
+  .use<{ store: RequestManager; request: CollectionRequest }>(async function (assert) {
+    const urls = pageUrls(3);
+
+    await GET(this, 'users/1', () => ({
+      data: [users[0]],
+      links: { first: urls[0], self: urls[0], next: urls[1] },
+    }));
+    await GET(this, 'users/2', () => ({
+      data: [users[1]],
+      links: { first: urls[0], prev: urls[0], self: urls[1], next: urls[2] },
+    }));
+    await GET(this, 'users/3', () => ({
+      data: [users[2]],
+      links: { first: urls[0], prev: urls[1], self: urls[2] },
+    }));
+    // the last page was removed: the middle page is now the end of the collection
+    await GET(this, 'users/2', () => ({
+      data: [users[1]],
+      links: { first: urls[0], prev: urls[0], self: urls[1], next: null },
+    }));
+
+    const request = this.manager.request<CollectionResourceDataDocument<UserResource>>({
+      url: urls[0],
+      method: 'GET',
+    });
+    const paginationState = getPaginationState(request);
+
+    await this.render({ store: this.manager, request });
+    await request;
+    await this.h.rerender();
+
+    await this.h.click('[data-test-load-next]');
+    await paginationState.nextRequest;
+    await this.h.rerender();
+    await this.h.click('[data-test-load-next]');
+    await paginationState.nextRequest;
+    await this.h.rerender();
+
+    assert.deepEqual(
+      renderedNames(this.element),
+      ['Chris Thoburn', 'Leo Euclides', 'Mehul Chaudhari'],
+      'all 3 pages render'
+    );
+
+    const refreshed = reloadRequest(this.manager, urls[1]);
+    await paginationState.adoptPage(refreshed);
+    await this.h.rerender();
+
+    assert.deepEqual(
+      Array.from(paginationState.data).map((user) => user.attributes.name),
+      ['Chris Thoburn', 'Leo Euclides'],
+      'the page after the re-requested one drops out of the run'
+    );
+    assert.deepEqual(
+      renderedNames(this.element),
+      ['Chris Thoburn', 'Leo Euclides'],
+      'the dropped page no longer renders'
+    );
+    assert.equal(Array.from(paginationState.pages).length, 2, 'the run holds 2 pages');
+    assert.false(paginationState.hasNext, 'the run ends at the re-requested page');
+    assert.equal(paginationState.nextRequest, null, 'there is no next page to request');
+    assert.dom('[data-test-load-next]').doesNotExist('no next sentinel renders');
+  })
+
+  .for('reloading the entry page of an infinite run whose previous page is gone drops the pages before it')
+  .use<{ store: RequestManager; request: CollectionRequest }>(async function (assert) {
+    const urls = pageUrls(2);
+
+    await GET(this, 'users/2', () => ({
+      data: [users[1]],
+      links: { prev: urls[0], self: urls[1] },
+    }));
+    await GET(this, 'users/1', () => ({
+      data: [users[0]],
+      links: { self: urls[0], next: urls[1] },
+    }));
+    // the page before was removed: the entry page is now the start of the collection
+    await GET(this, 'users/2', () => ({
+      data: [users[1]],
+      links: { prev: null, self: urls[1] },
+    }));
+
+    const request = this.manager.request<CollectionResourceDataDocument<UserResource>>({
+      url: urls[1],
+      method: 'GET',
+    });
+    const paginationState = getPaginationState(request);
+
+    await this.render({ store: this.manager, request });
+    await request;
+    await this.h.rerender();
+
+    assert.true(paginationState.hasPrevious, 'the entry page has a previous page');
+
+    await this.h.click('[data-test-load-prev]');
+    await paginationState.previousRequest;
+    await this.h.rerender();
+
+    assert.deepEqual(renderedNames(this.element), ['Chris Thoburn', 'Leo Euclides'], 'the previous page is prepended');
+    assert.false(paginationState.hasPrevious, 'the run starts at the first page');
+
+    const refreshed = reloadRequest(this.manager, urls[1]);
+    await paginationState.adoptPage(refreshed);
+    await this.h.rerender();
+
+    assert.deepEqual(
+      Array.from(paginationState.data).map((user) => user.attributes.name),
+      ['Leo Euclides'],
+      'the page before the re-requested one drops out of the run'
+    );
+    assert.deepEqual(renderedNames(this.element), ['Leo Euclides'], 'the dropped page no longer renders');
+    assert.equal(Array.from(paginationState.pages).length, 1, 'the run holds 1 page');
+    assert.false(paginationState.hasPrevious, 'the run starts at the re-requested page');
+    assert.equal(paginationState.previousRequest, null, 'there is no previous page to request');
+    assert.dom('[data-test-load-prev]').doesNotExist('no previous sentinel renders');
+    assert.equal(paginationState.activePageRequest, refreshed, 'the re-requested page tracks its new request');
+  })
+
+  .for('reloading a page whose next cursor changed drops the stale branch and follows the new one')
+  .use<{ store: RequestManager; request: CollectionRequest }>(async function (assert) {
+    const start = buildBaseURL({ resourcePath: 'users/1' });
+    const staleCursor = buildBaseURL({ resourcePath: 'users/cursor-stale' });
+    const freshCursor = buildBaseURL({ resourcePath: 'users/cursor-fresh' });
+
+    await GET(this, 'users/1', () => ({
+      data: [users[0]],
+      links: { self: start, next: staleCursor },
+    }));
+    await GET(this, 'users/cursor-stale', () => ({
+      data: [users[1]],
+      links: { prev: start, self: staleCursor },
+    }));
+    // the collection changed underneath the cursor: the first page now
+    // continues at a different cursor
+    await GET(this, 'users/1', () => ({
+      data: [users[0]],
+      links: { self: start, next: freshCursor },
+    }));
+    await GET(this, 'users/cursor-fresh', () => ({
+      data: [users[2]],
+      links: { prev: start, self: freshCursor },
+    }));
+
+    const request = this.manager.request<CollectionResourceDataDocument<UserResource>>({
+      url: start,
+      method: 'GET',
+    });
+    const paginationState = getPaginationState(request);
+
+    await this.render({ store: this.manager, request });
+    await request;
+    await this.h.rerender();
+
+    await this.h.click('[data-test-load-next]');
+    await paginationState.nextRequest;
+    await this.h.rerender();
+
+    assert.deepEqual(
+      renderedNames(this.element),
+      ['Chris Thoburn', 'Leo Euclides'],
+      'the stale cursor page is in the run'
+    );
+    assert.false(paginationState.hasNext, 'the run ends at the stale cursor page');
+
+    const refreshed = reloadRequest(this.manager, start);
+    await paginationState.adoptPage(refreshed);
+    await this.h.rerender();
+
+    assert.equal(paginationState.activePage?.nextLink, freshCursor, 'the next link follows the re-requested document');
+    assert.deepEqual(
+      Array.from(paginationState.data).map((user) => user.attributes.name),
+      ['Chris Thoburn'],
+      'the stale cursor page drops out of the run'
+    );
+    assert.deepEqual(renderedNames(this.element), ['Chris Thoburn'], 'the stale cursor page no longer renders');
+    assert.equal(Array.from(paginationState.pages).length, 1, 'the run holds 1 page');
+    assert.true(paginationState.hasNext, 'the fresh cursor page can be loaded');
+    assert.dom('[data-test-load-next]').exists('the next sentinel renders');
+
+    await this.h.click('[data-test-load-next]');
+    await paginationState.nextRequest;
+    await this.h.rerender();
+
+    assert.deepEqual(
+      renderedNames(this.element),
+      ['Chris Thoburn', 'Mehul Chaudhari'],
+      'the fresh cursor page is appended to the run'
+    );
+    assert.equal(Array.from(paginationState.pages).length, 2, 'the run holds 2 pages');
+    assert.false(paginationState.hasNext, 'the run ends at the fresh cursor page');
+  })
+
   .build();
