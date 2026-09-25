@@ -311,7 +311,7 @@ catalog:
   "@hono/node-ws": ^1.2.0
   "@html-next/vertical-collection": ^5.0.5
   "@mdit/plugin-footnote": ^1.1.1
-  "@nullvoxpopuli/ember-rolldown": ^2.8.1
+  "@nullvoxpopuli/ember-rolldown": ^2.9.0
   "@pnpm/find-workspace-dir": 1000.1.5
   "@pnpm/find-workspace-packages": 6.0.9
   "@pnpm/logger": 1100.0.0
@@ -369,17 +369,17 @@ catalog:
   expect-type: ^1.4.0
   express: ^5.2.1
   front-matter: ^4.0.2
-  fs-extra: ^11.4.0
+  fs-extra: ^11.4.1
   git-repo-version: ^1.0.2
   globals: ^17.12.0
   hono: ^4.13.8
-  ignore: ^7.0.9
+  ignore: ^7.0.10
   jscodeshift: ^17.4.0
   lerna-changelog: ^2.2.0
   mermaid: ^12.0.0
   mocha: ^12.0.2
   morgan: ^1.12.1
-  oxfmt: ^0.68.0
+  oxfmt: ^0.70.0
   oxlint: ^1.85.0
   oxlint-tsgolint: ^7.0.2002
   pretender: ^3.4.7
