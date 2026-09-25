@@ -3,10 +3,9 @@ import { service } from '@ember/service';
 import Component from '@glimmer/component';
 import { cached } from '@glimmer/tracking';
 
-// #remove-region-from-starter
-// #region import-bulk
+// #remove-from-starter
 import { bulkPatchCacheTodos, bulkPatchTodos } from '#app/data/builders/bulk.ts';
-// #endregion import-bulk
+// #end-remove-from-starter
 import type { Todo } from '#app/data/schemas/todo.ts';
 import type Store from '#app/data/store.ts';
 import { reportError } from '#app/helpers/error.ts';
@@ -45,11 +44,10 @@ export class ToggleAllTodos extends Component<{
     this.appState.onSaveStart();
 
     try {
-      // #replace-region-in-starter TODO (chapter 8): toggle every todo
-      // #region toggle-all
+      // #replace-in-starter TODO (chapter 8): toggle every todo
       await this.store.request(bulkPatchTodos({ completed }));
       bulkPatchCacheTodos(this.store, changed, completed);
-      // #endregion toggle-all
+      // #end-replace-in-starter
     } catch (e) {
       reportError(new Error('Could not toggle all todos', { cause: e }), { toast: true });
     }

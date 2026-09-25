@@ -20,8 +20,7 @@ interface Signature {
 
 export class TodoProvider extends Component<Signature> {
   <template>
-    {{! #replace-region-in-starter TODO (chapter 1): render @todoFuture with <Request> }}
-    <!-- #region todos-request -->
+    {{! #replace-in-starter TODO (chapter 1): render @todoFuture with <Request> }}
     <Request @request={{@todoFuture}} @autorefresh={{true}} @autorefreshBehavior="refresh">
 
       <:loading><LoadingSpinner /></:loading>
@@ -36,7 +35,7 @@ export class TodoProvider extends Component<Signature> {
       <:error as |error|>{{this.appState.onUnrecoverableError error}}</:error>
 
     </Request>
-    <!-- #endregion todos-request -->
+    {{! #end-replace-in-starter }}
   </template>
 
   @service declare private readonly appState: AppState;

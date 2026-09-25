@@ -3,10 +3,9 @@ import { service } from '@ember/service';
 
 import type { Future } from '@warp-drive/core/request';
 
-// #remove-region-from-starter
-// #region import-query
+// #remove-from-starter
 import { getActiveTodos } from '#app/data/builders/query.ts';
-// #endregion import-query
+// #end-remove-from-starter
 import type { TodosDocument } from '#app/data/schemas/todo.ts';
 import type Store from '#app/data/store.ts';
 
@@ -15,10 +14,9 @@ export default class ActiveTodos extends Route {
 
   model(): { todos?: Future<TodosDocument> } {
     return {
-      // #replace-region-in-starter TODO (chapter 3): request the active todos
-      // #region request-todos
+      // #replace-in-starter TODO (chapter 3): request the active todos
       todos: this.store.request(getActiveTodos()),
-      // #endregion request-todos
+      // #end-replace-in-starter
     };
   }
 }

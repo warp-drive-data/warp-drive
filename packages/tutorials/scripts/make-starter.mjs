@@ -9,18 +9,16 @@
  * A tutorial is any directory here with a `solution/`; its `starter/` is created
  * if missing. The solution says how its starter differs, next to the code it affects:
  *
- *   // #replace-region-in-starter TODO (chapter 4): send the create request
- *   // #region create-todo
+ *   // #replace-in-starter TODO (chapter 4): send the create request
  *   await this.store.request(createTodo(attributes));
- *   // #endregion create-todo
+ *   // #end-replace-in-starter
  *
- * - `// #replace-region-in-starter <text>` replaces the region directly below it,
- *   markers and all, with `// <text>`.
- * - `// #remove-region-from-starter` removes the region directly below it.
- * - In templates, write either as `{{! … }}` above `<!-- #region … -->`.
+ * - `// #replace-in-starter <text>` … `// #end-replace-in-starter` is replaced, markers
+ *   and all, with `// <text>`.
+ * - `// #remove-from-starter` … `// #end-remove-from-starter` is removed.
+ * - In templates, write each marker as `{{! … }}`.
+ * - Blocks can't nest.
  * - `// #omit-file-from-starter` as a file's first line leaves the file out.
- * - Other region markers are for the guides' snippet includes, so the starter
- *   keeps their code and drops the markers.
  * - Every text file is transformed, and binary files are copied as they are.
  *   Line endings are written as LF.
  * - The starter's package.json swaps `solution` for `starter` in its name and
@@ -31,16 +29,17 @@ import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const REGION_START = /^\s*(?:\/\/\s*#region|<!--\s*#region)\s+(\S+?)(?:\s*-->)?\s*$/;
-const REGION_END = /^\s*(?:\/\/\s*#endregion|<!--\s*#endregion)\s+(\S+?)(?:\s*-->)?\s*$/;
-const REPLACE = /^(\s*)(?:\/\/ #replace-region-in-starter (\S.*?)|\{\{! #replace-region-in-starter (\S.*?) \}\})\s*$/;
-const REMOVE = /^\s*(?:\/\/ #remove-region-from-starter|\{\{! #remove-region-from-starter \}\})\s*$/;
+// A marker is `// #name text` or, in a template, `{{! #name text }}`.
+const MARKER_LINE = /^(\s*)(?:\/\/ #(\S+)(?: (\S.*?))?|\{\{! #(\S+)(?: (\S.*?))? \}\})\s*$/;
+const BLOCKS = {
+  'replace-in-starter': 'end-replace-in-starter',
+  'remove-from-starter': 'end-remove-from-starter',
+};
+const ENDS = Object.values(BLOCKS);
 const OMIT = /^\s*\/\/ #omit-file-from-starter\s*$/;
-// Any line naming a directive, so a misspelled or malformed one fails instead of being ignored.
-const DIRECTIVE = /#(?:replace-region-in-starter|remove-region-from-starter|omit-file-from-starter)\b/;
-// Any line naming a region marker, so one REGION_START/REGION_END can't read (a name with a
-// space, say) fails instead of leaking into the starter.
-const MARKER = /#(?:end)?region\b/;
+// Any line naming something like a directive, so a misspelled, malformed or outdated one fails
+// instead of leaking into the starter.
+const DIRECTIVE = /#[\w-]*-starter\b/;
 
 const args = process.argv.slice(2);
 const check = args.includes('--check');
@@ -59,54 +58,35 @@ if (!known.length) {
 const tutorials = named.length ? named : known;
 
 function transform(file, source) {
-  const lines = source.split('\n');
   const out = [];
-  const open = [];
-  // Set by a replace or remove line: what replaces the region starting on the next line.
-  let pending = null;
-  // Depth of `open` at which the region being cut started, or -1 when not cutting.
-  let cutDepth = -1;
-  for (const [i, line] of lines.entries()) {
+  // The block being cut: its directive and the line it started on.
+  let open = null;
+  for (const [i, line] of source.split('\n').entries()) {
     const where = `${file}:${i + 1}`;
-    if (pending) {
-      if (!REGION_START.test(line)) throw new Error(`${where}: ${pending.directive} must be directly above a #region`);
-      if (pending.text) out.push(pending.text);
-      pending = null;
-      cutDepth = open.length;
+    const marker = MARKER_LINE.exec(line);
+    const name = marker && (marker[2] ?? marker[4]);
+    const text = marker && (marker[3] ?? marker[5]);
+    if (name in BLOCKS) {
+      if (open)
+        throw new Error(`${where}: #${name} inside the #${open.name} block from line ${open.line}; blocks can't nest`);
+      if ((name === 'replace-in-starter') !== (text !== undefined))
+        throw new Error(`${where}: malformed tutorial starter directive: ${line.trim()}`);
+      if (text !== undefined) out.push(marker[2] ? `${marker[1]}// ${text}` : `${marker[1]}{{! ${text} }}`);
+      open = { name, line: i + 1 };
+      continue;
     }
-    const replace = REPLACE.exec(line);
-    const remove = REMOVE.test(line);
-    if (replace || remove) {
-      const directive = replace ? '#replace-region-in-starter' : '#remove-region-from-starter';
-      if (cutDepth !== -1) throw new Error(`${where}: ${directive} inside a region that is already cut`);
-      let text = null;
-      if (replace) {
-        const [, indent, comment, templateComment] = replace;
-        text = comment !== undefined ? `${indent}// ${comment}` : `${indent}{{! ${templateComment} }}`;
-      }
-      pending = { directive, text };
+    if (ENDS.includes(name) && text === undefined) {
+      if (!open) throw new Error(`${where}: #${name} without a block to close`);
+      if (BLOCKS[open.name] !== name)
+        throw new Error(`${where}: #${name} can't close the #${open.name} block from line ${open.line}`);
+      open = null;
       continue;
     }
     if (OMIT.test(line)) throw new Error(`${where}: #omit-file-from-starter must be the file's first line`);
     if (DIRECTIVE.test(line)) throw new Error(`${where}: malformed tutorial starter directive: ${line.trim()}`);
-    const start = REGION_START.exec(line);
-    if (start) {
-      open.push(start[1]);
-      continue;
-    }
-    const end = REGION_END.exec(line);
-    if (end) {
-      if (open.at(-1) !== end[1]) throw new Error(`${where}: #endregion ${end[1]} does not close ${open.at(-1)}`);
-      open.pop();
-      if (open.length === cutDepth) cutDepth = -1;
-      continue;
-    }
-    if (MARKER.test(line))
-      throw new Error(`${where}: malformed region marker (names can't contain spaces): ${line.trim()}`);
-    if (cutDepth === -1) out.push(line);
+    if (!open) out.push(line);
   }
-  if (pending) throw new Error(`${file}: ${pending.directive} on the last line`);
-  if (open.length) throw new Error(`${file}: unclosed #region ${open.join(', ')}`);
+  if (open) throw new Error(`${file}:${open.line}: #${open.name} is never closed`);
   return out.join('\n');
 }
 

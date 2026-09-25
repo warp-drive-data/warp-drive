@@ -5,14 +5,12 @@ import Component from '@glimmer/component';
 import { Request } from '@warp-drive/ember';
 
 import { HandleError } from '#app/components/design-system/error.gts';
-// #remove-region-from-starter
-// #region import-bulk
+// #remove-from-starter
 import { bulkDeleteTodos } from '#app/data/builders/bulk.ts';
-// #endregion import-bulk
-// #remove-region-from-starter
-// #region import-query
+// #end-remove-from-starter
+// #remove-from-starter
 import { getCompletedTodos } from '#app/data/builders/query.ts';
-// #endregion import-query
+// #end-remove-from-starter
 import type { Todo } from '#app/data/schemas/todo.ts';
 import type Store from '#app/data/store.ts';
 import { reportError } from '#app/helpers/error.ts';
@@ -24,8 +22,7 @@ import type AppState from '#app/services/app-state.ts';
  * If there are no completed todos, nothing is rendered.
  */
 export const ClearCompletedTodos = <template>
-  {{! #replace-region-in-starter TODO (chapter 3): show the button when there are completed todos }}
-  <!-- #region completed-todos-request -->
+  {{! #replace-in-starter TODO (chapter 3): show the button when there are completed todos }}
   <Request @query={{(getCompletedTodos)}} @autorefresh={{true}} @autorefreshBehavior="refresh">
     <:content as |content|>
       <ClearCompleted @completed={{content.data}} />
@@ -34,7 +31,7 @@ export const ClearCompletedTodos = <template>
       <HandleError @error={{error}} @toast="Could not get completed todos for 'Clear Completed'." />
     </:error>
   </Request>
-  <!-- #endregion completed-todos-request -->
+  {{! #end-replace-in-starter }}
 </template>;
 
 class ClearCompleted extends Component<{
@@ -55,10 +52,9 @@ class ClearCompleted extends Component<{
     this.appState.onSaveStart();
 
     try {
-      // #replace-region-in-starter TODO (chapter 8): delete the completed todos
-      // #region clear-completed
+      // #replace-in-starter TODO (chapter 8): delete the completed todos
       await this.store.request(bulkDeleteTodos(this.args.completed));
-      // #endregion clear-completed
+      // #end-replace-in-starter
     } catch (e) {
       reportError(new Error('Could not clear completed todos', { cause: e }), { toast: true });
     }
