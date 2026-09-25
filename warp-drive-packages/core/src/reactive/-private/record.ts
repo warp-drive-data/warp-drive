@@ -14,7 +14,9 @@ import {
 import type { LegacyManyArray, Store } from '../../store/-private.ts';
 import { recordIdentifierFor, setRecordIdentifier } from '../../store/-private.ts';
 import { removeRecordIdentifier } from '../../store/-private/caches/instance-cache.ts';
-import type { ResourceKey } from '../../types/identifier.ts';
+import type { UpdateResourceRelationshipOperation } from '../../types/cache/operations.ts';
+import type { Relationship } from '../../types/cache/relationship.ts';
+import type { PersistedResourceKey, ResourceKey } from '../../types/identifier.ts';
 import { STRUCTURED } from '../../types/request.ts';
 import type { FieldSchema, GenericField, IdentityField } from '../../types/schema/fields.ts';
 import { RecordStore } from '../../types/symbols.ts';
@@ -673,9 +675,29 @@ export class ReactiveResource {
 
 async function _COMMIT(record: ReactiveResource): Promise<void> {
   await Promise.resolve();
-  const context = record[Context];
-  context.store.cache.willCommit(context.resourceKey, null);
-  context.store.cache.didCommit(context.resourceKey, null);
+  const { store, resourceKey } = record[Context];
+  const { cache } = store;
+
+  // the cache's commit bookkeeping covers attributes only: relationship state is expected to
+  // arrive with the response to a save request. There is no response here, so the local
+  // relationship state is what gets promoted to remote state.
+  const relationships = cache.changedRelationships(resourceKey);
+
+  cache.willCommit(resourceKey, null);
+  cache.didCommit(resourceKey, null);
+
+  if (relationships.size) {
+    const ops: UpdateResourceRelationshipOperation[] = [];
+    relationships.forEach((diff, field) => {
+      ops.push({
+        op: 'update',
+        record: resourceKey as PersistedResourceKey,
+        field,
+        value: { data: diff.localState } as Relationship<PersistedResourceKey>,
+      });
+    });
+    cache.patch(ops);
+  }
 }
 
 export function _CHECKOUT(record: ReactiveResource): ReactiveResource {
@@ -787,6 +809,10 @@ export function checkout<T>(resource: unknown): Promise<T & ReactiveResource> {
 /**
  * Forcibly commit all local changes on an editable resource to
  * the remote (immutable) version.
+ *
+ * This covers both fields and relationships: the local state of
+ * every relationship with uncommitted changes becomes its remote
+ * state, and the inverses are updated to match.
  *
  * This API should only be used cautiously. Typically a better
  * approach is for either the API or a Handler to reflect saved
