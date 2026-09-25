@@ -1,6 +1,6 @@
 ---
 title: Upgrading
-description: Find the permanent, versioned upgrade guides for each WarpDrive major, starting with the 4.x to 5.x guide, plus where deprecation guides currently live.
+description: Find the permanent, versioned upgrade guides, which one fits the ember-data or WarpDrive version your app is on, and where deprecation guides currently live.
 ---
 
 # Upgrading ***Warp*Drive**

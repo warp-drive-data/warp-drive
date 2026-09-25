@@ -1,5 +1,6 @@
 ---
 title: Migrating from ember-data
+description: Move an app on ember-data 1.x through 4.12 to the latest WarpDrive one route at a time, running a second `@warp-drive/*` store beside ember-data until ember-data can be removed.
 outline:
   level: 2,3
 ---
