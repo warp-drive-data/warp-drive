@@ -1,7 +1,6 @@
 import { DEBUG } from '@warp-drive/core/build-config/env';
 import { assert } from '@warp-drive/core/build-config/macros';
 
-import type { Store } from '../../index.ts';
 import type { ResourceKey } from '../../types.ts';
 import type {
   CollectionField,
@@ -11,7 +10,7 @@ import type {
   ResourceField,
 } from '../../types/schema/fields.ts';
 import { isRelationshipKind } from '../../types/schema/fields.ts';
-import { expandingGet, expandingSet, getStore } from './-utils.ts';
+import { expandingGet, expandingSet } from './-utils.ts';
 import { assertInheritedSchema } from './debug/assert-polymorphic-type.ts';
 import type { Graph } from './graph.ts';
 
@@ -34,12 +33,17 @@ export function isRelationshipField(field: FieldSchema): field is RelationshipFi
 export function temporaryConvertToLegacy(
   field: ResourceField | CollectionField
 ): LegacyBelongsToField | LegacyHasManyField {
-  return {
+  const legacy: LegacyBelongsToField | LegacyHasManyField = {
     kind: field.kind === 'resource' ? 'belongsTo' : 'hasMany',
     name: field.name,
     type: field.type,
     options: Object.assign({}, { async: false, inverse: null, resetOnRemoteUpdate: false as const }, field.options),
   };
+  // the graph keys edges by the field's cache key, so the sourceKey must survive the conversion
+  if (field.sourceKey) {
+    legacy.sourceKey = field.sourceKey;
+  }
+  return legacy;
 }
 
 /**
@@ -450,7 +454,7 @@ export function upgradeDefinition(
     assert(`Expected the inverse model to exist`, storeWrapper.schema.hasResource({ type: inverseType }));
     inverseDefinition = null;
   } else {
-    inverseKey = /*#__NOINLINE__*/ inverseForRelationship(getStore(storeWrapper), key, propertyName);
+    inverseKey = /*#__NOINLINE__*/ inverseNameFor(meta);
 
     // CASE: If we are polymorphic, and we declared an inverse that is non-null
     // we must assume that the lack of inverseKey means that there is no
@@ -485,6 +489,12 @@ export function upgradeDefinition(
 
       inverseDefinition = upgradeMeta(metaFromInverse);
     }
+  }
+
+  // from here on the inverse is addressed by its cache key (`sourceKey` when set), which is
+  // what `graph.get` and the definition cache are keyed by, not by its `name`
+  if (inverseDefinition) {
+    inverseKey = inverseDefinition.key;
   }
 
   // CASE: We have no inverse
@@ -621,14 +631,13 @@ export function upgradeDefinition(
   return info;
 }
 
-function inverseForRelationship(store: Store, resourceKey: ResourceKey | { type: string }, key: string) {
-  const fields = store.schema.fields(resourceKey);
-  const definition = fields.get(key);
-  if (!definition) {
-    return null;
-  }
-
-  assert(`Expected ${key} to be a relationship`, isRelationshipField(definition));
+/**
+ * The `name` of the field on the related type that `definition` declares as its inverse,
+ * or `null` when it declares no inverse.
+ *
+ * `options.inverse` always names the inverse by its `name`, never by its `sourceKey`.
+ */
+function inverseNameFor(definition: RelationshipField): string | null {
   assert(
     `Expected the relationship defintion to specify the inverse type or null.`,
     definition.options?.inverse === null ||
