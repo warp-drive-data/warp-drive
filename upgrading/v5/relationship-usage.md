@@ -188,7 +188,7 @@ relationship. Once *every* request that loads posts includes `comments`, the fie
 a sync relationship: change it to `async: false` and delete its Phase 1 shims, because the value
 is now the `ManyArray` itself. If the app has moved its requests off adapters and serializers, add
 `linksMode: true` at the same time so the relationship's link, when present, is fetched through
-`store.request`; [LinksMode](/guides/the-manual/misc/links-mode.md) explains the option.
+`store.request`; [LinksMode](/guides/the-manual/relational-data/features/links-mode.md) explains the option.
 
 **Request the link when the relationship is loaded on demand.** For a relationship the parent's
 request should not include, and whose payload carries a `related` link, load the link with a

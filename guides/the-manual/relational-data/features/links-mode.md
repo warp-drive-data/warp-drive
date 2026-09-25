@@ -1,6 +1,6 @@
 ---
+title: LinksMode (legacy belongsTo and hasMany)
 description: How LinksMode lets a legacy belongsTo or hasMany relationship load through store.request instead of an adapter, and the constraints it carries in LegacyMode and PolarisMode.
-draft: true
 ---
 
 # LinksMode
@@ -12,7 +12,7 @@ draft: true
 It allows that relationship to be fetched using the standard `request` experience instead of via the legacy `adapter` interface.
 
 LinksMode behaves *slightly* differently depending on whether
-you are using Model (including via [LegacyMode](../schemas/resources/legacy-mode.md)) or [PolarisMode](../schemas/resources/polaris-mode.md). We'll explain this nuance below.
+you are using Model (including via [LegacyMode](../../schemas/resources/legacy-mode.md)) or [PolarisMode](../../schemas/resources/polaris-mode.md). We'll explain this nuance below.
 
 > [!TIP]
 > The next-generation of reactive data which replaces Model is ReactiveResource.
