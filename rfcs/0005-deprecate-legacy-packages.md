@@ -2,10 +2,10 @@
 title: Deprecating the Legacy ember-data Packages and @warp-drive/core-types
 description: Proposes deprecating the ember-data package, every @ember-data/* package, and @warp-drive/core-types now, in favor of their already-shipping @warp-drive/* successors, with removal from publishing targeted for 6.0.
 warp-drive-rfc: 5
-emberjs-rfc:
-emberjs-pr:
-emberjs-branch:
-sync-hash:
+emberjs-rfc: 1240
+emberjs-pr: https://github.com/emberjs/rfcs/pull/1240
+emberjs-branch: rfc-5-deprecating-the-legacy-ember-data-packages-and-warp-drive-core-types
+sync-hash: c817665efd1d8b67b98c3641f6305aaecc575d282e8d7e050a0662c07baecbfc
 stage: proposed
 start-date: 2026-09-25T00:00:00.000Z
 release-date:
