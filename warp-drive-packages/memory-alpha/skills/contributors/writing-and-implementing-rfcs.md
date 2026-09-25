@@ -26,11 +26,18 @@ of any `emberjs/rfcs` number:
    overwritten and can desync the two copies. Don't start `title` with "WarpDrive" — the sync bot
    adds that prefix automatically for the `emberjs/rfcs` copy and its PR title, so a local title
    that already has it would end up doubled there.
-3. Open a PR labeled `:label: rfc` (see
+3. Review the draft for terseness and conciseness before opening the PR, and again after every
+   edit to it. Reviewers, and later implementers, read an RFC to learn what the public behavior
+   will be and why; anything else in it costs them time and can drift from the implementation
+   that ships. Omit internal implementation details unless they affect observable public
+   behavior, and where they do, describe the effect in brief rather than the mechanism. Keep
+   historical exposition minimal: enough to motivate the change, not a chronicle of how the
+   current behavior came to be.
+4. Open a PR labeled `:label: rfc` (see
    [Pull Request Labeling](/guides/contributing/submitting-prs.md#pull-request-labeling) for the
    PR mechanics). That label also triggers a docs-site PR preview so reviewers can read the
    rendered RFC, not just the raw markdown diff.
-4. Iterate on the PR like any other design discussion. Once there is team consensus to move
+5. Iterate on the PR like any other design discussion. Once there is team consensus to move
    forward, merging the PR is what publishes the RFC — see the next section for what that
    triggers.
 
