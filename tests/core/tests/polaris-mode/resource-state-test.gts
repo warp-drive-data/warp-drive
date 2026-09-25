@@ -1,7 +1,7 @@
 import { recordIdentifierFor, useRecommendedStore } from '@warp-drive/core';
 import type { ReactiveResourceState } from '@warp-drive/core/reactive';
 import { checkout, withDefaults } from '@warp-drive/core/reactive';
-import { Type } from '@warp-drive/core/types/symbols';
+import type { Type } from '@warp-drive/core/types/symbols';
 import type { RenderingTestContext } from '@warp-drive/diagnostic/ember';
 import { module, setupRenderingTest, test } from '@warp-drive/diagnostic/ember';
 import { JSONAPICache } from '@warp-drive/json-api';
@@ -44,10 +44,10 @@ function setup() {
     cache: JSONAPICache,
     handlers: [
       {
-        request() {
+        request<T>(): Promise<T> {
           const d = deferred();
           pending.push(d);
-          return d.promise;
+          return d.promise as Promise<T>;
         },
       },
     ],
@@ -204,7 +204,9 @@ module('Reactivity | $state', function (hooks) {
     const request = store.request(saveRequest(editable));
     await waitForPending(pending, 1);
 
-    const errors = [{ title: 'Invalid name', detail: 'name is required', source: { pointer: '/data/attributes/name' } }];
+    const errors = [
+      { title: 'Invalid name', detail: 'name is required', source: { pointer: '/data/attributes/name' } },
+    ];
     pending[0].reject(Object.assign(new Error('Unprocessable'), { content: { errors } }));
     await request.catch(() => {});
     await this.h.rerender();
