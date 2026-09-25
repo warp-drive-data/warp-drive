@@ -27,7 +27,7 @@ code, this page covers the fields.
 
 `belongsTo` and `hasMany` are not deprecated by this guide and continue to work. Migrate field by
 field, in whatever order suits the app; a `resource` field may declare a `belongsTo` or `hasMany`
-as its inverse and vice versa (see [Directionality](/guides/the-manual/relational-data/advanced/directionality.md)).
+as its inverse and vice versa (see [Inverses and Directionality](/guides/the-manual/relational-data/features/inverses.md)).
 
 ## What Changed
 
