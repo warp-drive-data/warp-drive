@@ -322,6 +322,12 @@ export {
   type RequestSubscription,
   type RequestLoadingState,
   type RequestState,
+  type SubscriptionArgs,
+  type RequestArgs,
+  type ContentFeatures,
+  type RecoveryFeatures,
+  type AutorefreshBehaviorCombos,
+  type AutorefreshBehaviorType,
 } from './signals/-private';
 
 export {

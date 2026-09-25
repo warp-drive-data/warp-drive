@@ -1,0 +1,68 @@
+# pr-preview.yml removes a preview on the PR's `closed` event, but GitHub does not
+# run pull_request workflows for a PR with a merge conflict, so a docs PR that is
+# closed while conflicting keeps its preview forever.
+name: docs PR preview sweep
+
+on:
+  schedule:
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pr-preview-sweep
+  cancel-in-progress: false
+
+jobs:
+  sweep:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout gh-pages
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: gh-pages
+          fetch-depth: 1
+      - name: Remove previews of closed PRs
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+
+          removed=()
+          for dir in pr-preview/pr-*/; do
+            dir="${dir%/}"
+            [ -d "$dir" ] || continue
+            number="${dir#pr-preview/pr-}"
+            if ! state="$(gh pr view "$number" --json state -q .state)"; then
+              echo "could not look up PR #$number; keeping $dir"
+              continue
+            fi
+            if [ "$state" != "OPEN" ]; then
+              git rm -r -q "$dir"
+              removed+=("$number")
+            fi
+          done
+
+          if [ "${#removed[@]}" -eq 0 ]; then
+            echo "no previews to remove"
+            exit 0
+          fi
+
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -q -m 'Remove previews for closed PRs' -m "$(printf '#%s\n' "${removed[@]}")"
+
+          for attempt in 1 2 3; do
+            if [ "$attempt" -gt 1 ]; then
+              git fetch origin gh-pages
+              git rebase origin/gh-pages
+            fi
+            if git push origin HEAD:gh-pages; then
+              exit 0
+            fi
+          done
+          echo "push to gh-pages failed after 3 attempts" >&2
+          exit 1
