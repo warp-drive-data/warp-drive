@@ -1,0 +1,3 @@
+{
+  "items": ["one-to-none", "one-to-one", "one-to-many", "many-to-none", "many-to-one", "many-to-many"]
+}

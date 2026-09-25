@@ -1,3 +1,7 @@
+---
+description: How to declare a collection relationship field, what its relationship document value contains, and how to fetch, mutate, and create records through it.
+---
+
 # Collection Relationships
 
 A **collection relationship** points at a set of related resources. In a schema it is a field with
@@ -41,7 +45,7 @@ user.friends.meta;         // { count: 2 } | undefined
 | --- | --- |
 | `[{ type, id }, ...]` | a reactive array of the related records |
 | `[]` | an empty array — the relationship is known to be empty |
-| absent | `undefined` — membership is unknown, use `doc.fetch()` (only valid when `async: true`) |
+| absent | `undefined` — membership is unknown (only valid when `async: true`); see [Fetching](#fetching) |
 
 Every referenced resource **must** be included in the payload; reading `data` when a member was
 never loaded throws. A sync (`async: false`) relationship must carry `data` whenever it appears in a
@@ -89,6 +93,23 @@ has its own cache entry, can carry `page`, `sort` and `filter` parameters, and w
 for how to keep the two apart and how to have WarpDrive warn you when a relationship grows too
 large.
 
+## Sorting And Filtering For Display
+
+`data` is the relationship itself, so derive a new array for display instead of reordering it:
+
+```ts
+const activeFriends = user.friends.data?.filter((friend) => friend.isActive) ?? [];
+const byName = [...(user.friends.data ?? [])].sort((a, b) => a.name.localeCompare(b.name));
+```
+
+Calling `sort()` directly on `editable.friends.data` **reorders the relationship** and marks it
+dirty, which is rarely what a list view wants. Reserve it for cases where the order is part of the
+data your API stores (e.g. a user-defined ordering that will be saved).
+
+In a template, put the derived array behind a getter or a [derivation](../../schemas/derivations.md)
+so it is recomputed only when the relationship changes. To sort or filter on the server instead,
+see [Large Collections](../advanced/large-collections.md#sorting-and-filtering-on-the-server).
+
 ## Fetching
 
 When the relationship carries a `related` link, `doc.fetch()` requests it and resolves with a
@@ -100,6 +121,15 @@ const { data: friends } = await user.friends.fetch();
 
 As with resource relationships, the response is cached and reactive but is not written back into
 the relationship's `data`.
+
+::: warning Only `fetch()` lists known to be small
+`fetch()` makes one request to the relationship's `related` link and loads whatever it returns
+in one go. It does not page through the result, and it does not add what it loads to `data`, so
+use it only for lists you know are small. If the list could be large, or users would page, sort
+or filter it, load it with a top-level request instead:
+[Large Collections](../advanced/large-collections.md) explains how, and
+[Pagination](../advanced/pagination.md) shows loading it a page at a time.
+:::
 
 ## Mutating
 
@@ -123,13 +153,14 @@ editable.friends = [a, b];                   // ❌ asserts
 
 A record may only appear once in a collection: adding a record that is already a member throws.
 
-In [LegacyMode](../../schemas/resources/legacy-mode.md) every record is editable. In
+Which records are editable depends on the schema's mode, not on the field kind. In
+[LegacyMode](../../schemas/resources/legacy-mode.md) every record is editable. In
 [PolarisMode](../../schemas/resources/polaris-mode.md) mutate the copy returned by
-[checkout](../../schemas/resources/polaris-mode.md); the immutable record and its array keep
+[checkout](../mutating/adding-and-removing.md); the immutable record and its array keep
 showing the remote membership until the change is saved or committed. Inverses follow the same
 rule.
 
-See [Adding & Removing](../mutating/adding-removing.md) and [Saving](../mutating/saving.md).
+See [Adding & Removing](../mutating/adding-and-removing.md) and [Saving](../mutating/saving.md).
 
 ## Creating Records
 

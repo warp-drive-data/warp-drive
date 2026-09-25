@@ -1,3 +1,7 @@
+---
+description: Why relationships are never paginated in WarpDrive, and how to page through related records with top-level requests, including through the relationship's own link.
+---
+
 # Pagination
 
 Relationships in WarpDrive are **not paginated**. A `collection` relationship (or `hasMany`) holds
@@ -14,7 +18,7 @@ request gives you things a relationship cannot:
 - each page is its own cached document with its own `links` and `meta`,
 - query parameters (`page`, `sort`, `filter`, `include`, `fields`) are part of the identity,
 - different sorts or filters of the same list coexist in the cache,
-- the [pagination utilities](#reactive-pagination) can walk `next`/`prev` links for you,
+- the [pagination utilities](../../experiments/pagination.md) can walk `next`/`prev` links for you,
 - the parent resource stays small and cheap to load.
 
 ## Requesting A Page
@@ -56,35 +60,12 @@ const { content } = await post.comments.fetch({ url: `${post.comments.links.rela
 `fetch()` issues a normal request and resolves with a top-level document; it does not change
 `post.comments.data`.
 
-## Reactive Pagination
+## Rendering Pages
 
-For UI, use the pagination utilities rather than awaiting pages by hand. The framework-agnostic
-`createPaginationSubscription` and `getPaginationState` live in `@warp-drive/core`, and
-`@warp-drive/ember` ships `<Paginate>` and `<EachLink>` (currently under
-`@warp-drive/ember/experiments`):
-
-```gjs
-import { Paginate, EachLink } from '@warp-drive/ember/experiments';
-import { Request } from '@warp-drive/ember';
-
-<template>
-  <Paginate @request={{@request}}>
-    <:content as |pages|>
-      <Request @request={{pages.activePageRequest}}>
-        <:content as |result|>
-          {{#each result.data as |comment|}}<Comment @comment={{comment}} />{{/each}}
-        </:content>
-      </Request>
-      <EachLink @pages={{pages}} as |state|>
-        <button {{on "click" state.activate}}>{{state.label}}</button>
-      </EachLink>
-    </:content>
-  </Paginate>
-</template>
-```
-
-`@mode="infinite"` renders all loaded pages as one list. See the component's API docs for the full
-set of arguments.
+To render pages in a UI, use the experimental pagination utilities instead of awaiting pages by
+hand: they take the request for the first page and follow its `next`/`prev` links. There is
+nothing relationship-specific about them; [Pagination](../../experiments/pagination.md) covers the
+`<Paginate />` and `<EachLink />` components and the JS API.
 
 ## Keeping Relationships And Lists Consistent
 

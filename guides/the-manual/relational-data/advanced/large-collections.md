@@ -1,3 +1,7 @@
+---
+description: When a list is too large for a collection relationship, how to load it as its own request instead, and how maxCollectionRelationshipSize enforces the limit.
+---
+
 # Large Collections
 
 A `collection` relationship holds the complete membership of a relationship and materializes a
@@ -24,6 +28,30 @@ Ask: *would a user ever want to page, sort or filter this list?* If yes, load it
 [top-level request](./pagination.md) and keep the relationship for bookkeeping (usually via the
 [inverse](../features/inverses.md) on the many side, e.g. `comment.post`). If no, and the list is
 bounded by the domain (a handful to a few dozen members), a `collection` relationship is a good fit.
+
+## Sorting And Filtering On The Server
+
+When the sorted or filtered result should come from the API — because the full set is large, or
+because the criteria are complex — use a top-level request with query parameters rather than the
+relationship:
+
+```ts
+import { query } from '@warp-drive/utilities/json-api';
+
+const { content } = await store.request(
+  query<Comment>('comment', {
+    filter: { post: post.id, approved: true },
+    sort: '-createdAt',
+    page: { size: 25 },
+  })
+);
+content.data; // Comment[]
+```
+
+The request gets its own cache entry keyed by its URL, so different sorts and filters of the same
+underlying list coexist without overwriting each other or the relationship. For sorting a list
+that is already loaded, see
+[Sorting And Filtering For Display](../features/collection-relationships.md#sorting-and-filtering-for-display).
 
 ## Enforcing It: `maxCollectionRelationshipSize`
 

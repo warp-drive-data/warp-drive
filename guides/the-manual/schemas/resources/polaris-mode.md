@@ -1,5 +1,5 @@
 ---
-description: Decide whether to try preview PolarisMode by weighing its immutable records and explicit editing against its current relationship and state-property limitations.
+description: What PolarisMode is, how it differs from LegacyMode, why it is still in preview, and which relationship field kinds it supports.
 ---
 
 # PolarisMode (preview)
@@ -7,6 +7,10 @@ description: Decide whether to try preview PolarisMode by weighing its immutable
 :::tip 💡 **PolarisMode is not yet recommended**
 Currently we recommend apps use [LegacyMode](./legacy-mode.md). PolarisMode is currently in
 preview and will become the recommendation in V6.
+
+Relationships are the exception: the `resource` and `collection` field kinds behave identically
+in LegacyMode and PolarisMode and are recommended in either mode today. See
+[Relational Fields](../relational-fields.md).
 :::
 
 PolarisMode will become the default recommendation for new apps beginning in V6. It is currently
@@ -21,6 +25,6 @@ In PolarisMode:
 - The mode removes the API cruft Model had accumulated (references, state props, currentState, methods etc)
 - ~~The mode enables deep reactivity for fields~~ (we have now enabled this for LegacyMode)
 - ~~enables advanced derivations, aliasing and transformations~~ (we have now enabled this for LegacyMode)
-- Relationships use the `resource` and `collection` field kinds, whose values are [relationship documents](../../relational-data/features/resource-relationships.md) (`data`/`links`/`meta`) that are mutated via `data` on a checked-out record. The legacy `belongsTo`/`hasMany` kinds are supported only in [LinksMode](../../misc/links-mode.md).
+- Relationships use the `resource` and `collection` field kinds (which work the same way in LegacyMode), whose values are [relationship documents](../../relational-data/features/resource-relationships.md) (`data`/`links`/`meta`) that are mutated via `data` on a checked-out record. The legacy `belongsTo`/`hasMany` kinds are supported only in [LinksMode](../../relational-data/features/links-mode.md).
 - **[preview limitation]** it has no access to reactive properties describing the resource state (such as `isNew` or `isDirty`) or utilities for working with local state like `rollback`
 - Async relationships are not wrapped in promise proxies, and there is no autofetch.

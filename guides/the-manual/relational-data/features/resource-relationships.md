@@ -1,3 +1,7 @@
+---
+description: How to declare a resource relationship field, what its relationship document value contains, and how to fetch, mutate, and create records through it.
+---
+
 # Resource Relationships
 
 A **resource relationship** points at a single related resource. In a schema it is a field with
@@ -121,9 +125,10 @@ editable.bestFriend.data = null;      // clear
 editable.bestFriend = otherUser;      // ❌ asserts
 ```
 
-In [LegacyMode](../../schemas/resources/legacy-mode.md) every record is editable. In
+Which records are editable depends on the schema's mode, not on the field kind. In
+[LegacyMode](../../schemas/resources/legacy-mode.md) every record is editable. In
 [PolarisMode](../../schemas/resources/polaris-mode.md) a record is immutable until it is
-[checked out](../../schemas/resources/polaris-mode.md) for editing; the immutable record keeps
+[checked out](../mutating/adding-and-removing.md) for editing; the immutable record keeps
 showing the last state received from the API while the checked-out copy shows local changes.
 
 ```ts
@@ -140,7 +145,7 @@ Setting `data` updates the [inverse](./inverses.md) as well, following the same 
 split: the inverse's immutable record is unchanged until the change is saved or committed, while a
 checked-out inverse reflects it immediately.
 
-See [Adding & Removing](../mutating/adding-removing.md) and [Saving](../mutating/saving.md).
+See [Adding & Removing](../mutating/adding-and-removing.md) and [Saving](../mutating/saving.md).
 
 ## Creating Records
 

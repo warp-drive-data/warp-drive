@@ -1,3 +1,7 @@
+---
+description: How to persist relationship edits with a request or by committing without one, and how saving related records works for resource, collection, and legacy fields.
+---
+
 # Saving
 
 Relationship edits live in the cache as local state until they are persisted. How you persist them
@@ -5,20 +9,32 @@ depends on how your app talks to its API.
 
 ## With Requests
 
-Build a request that serializes the record (including its changed relationships) and send it with
-`store.request`. The [builders guide](../../requests/builders.md) covers writing builders; the
-`@warp-drive/utilities` package ships JSON:API and REST builders such as `updateRecord`.
+Build a request for the record, attach a body describing its changes, and send it with
+`store.request`. The `@warp-drive/utilities` package ships JSON:API and REST builders such as
+`updateRecord`, which set the URL, method and headers but **not** the body; your app supplies that.
+The [builders guide](../../requests/builders.md) covers writing your own.
 
 ```ts
-import { updateRecord } from '@warp-drive/utilities/json-api';
+import { cacheKeyFor } from '@warp-drive/core';
+import { checkout } from '@warp-drive/core/reactive';
+import { serializePatch, updateRecord } from '@warp-drive/utilities/json-api';
 
-editable.friends.data.push(newFriend);
-await store.request(updateRecord(editable));
+const editable = await checkout<User>(user);
+editable.friends.data!.push(newFriend);
+
+const init = updateRecord(editable, { patch: true });
+init.body = JSON.stringify(
+  // a starting point: transform this into the shape your API expects
+  serializePatch(store.cache, cacheKeyFor(editable))
+);
+await store.request(init);
 ```
 
 When the response arrives the cache applies the returned payload as the new **remote** state: the
-relationship's membership becomes what the API said it is, and immutable records update. If the API
-does not echo relationships back, the in-flight local changes are committed as-is.
+relationship's membership becomes what the API said it is, and immutable records update. A
+relationship the response leaves out is **not** updated: its edits stay local, the document stays
+`isDirty`, and immutable records keep showing the old membership. Have the API return every
+relationship it saved, or push a payload that includes them once the save succeeds.
 
 ::: tip
 Relationship payloads use replace semantics: the `data` array in the response becomes the entire
@@ -28,22 +44,38 @@ to leave it untouched).
 
 ### Serialize Identifiers Only
 
-When a builder serializes a relationship for a request it should send **only the identifiers of
-`data`**, never the document's `links` or `meta`:
+In the request body, send a relationship as its `data` alone: the identifiers of the related
+records, without the `links` or `meta` the API sent you. For the example above, where `user:1`
+had friends `2` and `3` and `4` was added, `serializePatch` produces:
 
-```ts
-// ✅ what the API should receive for a collection relationship
-{ friends: { data: [{ type: 'user', id: '2' }, { type: 'user', id: '4' }] } }
-
-// ❌ do not echo server-owned fields back
-{ friends: { data: [...], links: { related: '/users/1/friends' }, meta: { count: 2 } } }
+```json
+{
+  "data": {
+    "type": "user",
+    "id": "1",
+    "relationships": {
+      "friends": {
+        "data": [
+          { "type": "user", "id": "2" },
+          { "type": "user", "id": "3" },
+          { "type": "user", "id": "4" }
+        ]
+      }
+    }
+  }
+}
 ```
 
 `links` and `meta` describe the server's view of the relationship as of the last response. While a
-record is being edited they are stale relative to `data` (see `doc.isDirty`), so echoing them back
-would send the API a contradictory relationship. `doc.toJSON()` is a shallow description of the
-document for debugging and `JSON.stringify`, not a request payload; use `recordIdentifierFor` (or
-the cache's `peek`) to build the identifiers you send.
+record is being edited they are stale relative to `data` (see `doc.isDirty`); `meta.count` would
+still say `2` here, so sending them back gives the API a contradictory relationship.
+
+The `@warp-drive/utilities/json-api` serializers are starting points, not finished request bodies:
+they serialize cache state, and only your app knows the exact shape its API accepts, so expect to
+transform their output. `serializePatch` includes only the relationships that changed, and only
+their `data`. `serializeResources`, which serializes the whole record, copies each relationship from
+the cache as-is, `links` and `meta` included, so remove those before sending it. `doc.toJSON()` is a
+description of the document for debugging, not a request body.
 
 ## Committing Without A Request
 

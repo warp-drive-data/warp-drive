@@ -1,5 +1,6 @@
 ---
 title: Migrating Relationships to resource and collection
+description: How to migrate belongsTo and hasMany fields to the resource and collection relationship kinds, which work the same in LegacyMode and PolarisMode, one field at a time.
 outline:
   level: 2,3
 ---
@@ -7,6 +8,10 @@ outline:
 # Migrating Relationships to `resource` and `collection`
 
 <SinceBadge version="5.10.0" /> &nbsp; authored 2026-09-24
+
+::: tip Using a coding agent?
+`@warp-drive/memory-alpha` ships a skill for this migration: [Migrate belongsTo and hasMany Fields to resource and collection](/skills/relationships/migrate-relationship-fields). Install the package and point your agent at `node_modules/@warp-drive/memory-alpha/skills/index.md`, which routes it to the right skill.
+:::
 
 This guide is for apps whose schemas use the legacy `belongsTo` and `hasMany` field kinds, whether
 declared with decorators on a `Model` or as fields on a `ReactiveResource` schema in
@@ -26,7 +31,7 @@ code, this page covers the fields.
 
 `belongsTo` and `hasMany` are not deprecated by this guide and continue to work. Migrate field by
 field, in whatever order suits the app; a `resource` field may declare a `belongsTo` or `hasMany`
-as its inverse and vice versa (see [Directionality](/guides/the-manual/relational-data/advanced/directionality.md)).
+as its inverse and vice versa (see [Inverses and Directionality](/guides/the-manual/relational-data/features/inverses.md)).
 
 ## What Changed
 
@@ -102,8 +107,10 @@ For every `belongsTo`/`hasMany` field, look at what the API actually sends for i
 | references in `data` but not the resources | nothing yet | See [Patterns Without a Migration Path](#patterns-without-a-migration-path). |
 | a large, pageable or filterable list | a top-level request, not a relationship | See [Large Collections](/guides/the-manual/relational-data/advanced/large-collections.md). |
 
-Fields declared `linksMode: true` fall in the first two rows depending on whether the API sends a
-link; `linksMode` itself has no meaning for the new kinds and is dropped.
+Fields declared `linksMode: true` (the [LinksMode](/guides/the-manual/relational-data/features/links-mode.md) option
+that loads a legacy relationship through `store.request` instead of an adapter) fall in the first
+two rows depending on whether the API sends a link; `linksMode` itself has no meaning for the new
+kinds and is dropped.
 
 ## Step 2: Convert the Field
 
@@ -124,7 +131,11 @@ Drop `linksMode` and `resetOnRemoteUpdate`. The new kinds always load through re
 remote update never discards unsaved local changes (the behavior `resetOnRemoteUpdate: false`
 opted into), so neither option has a meaning for them. If the field is
 typed, change `author: User` to `author: ReactiveRelationshipDocument<User | null>` and
-`comments: Comment[]` to `comments: ReactiveRelationshipDocument<Comment[]>`.
+`comments: Comment[]` to `comments: ReactiveRelationshipDocument<Comment[]>`:
+
+```ts
+import type { ReactiveRelationshipDocument } from '@warp-drive/core/reactive';
+```
 
 Field-level details are in [Relational Fields](/guides/the-manual/schemas/relational-fields.md).
 
@@ -167,7 +178,7 @@ and [Collection Relationships](/guides/the-manual/relational-data/features/colle
 In PolarisMode all of these require the
 [checked-out copy](/guides/the-manual/schemas/resources/polaris-mode.md) of the record; on the
 immutable record they assert. Saving is unchanged: serialize the identifiers in `data`, never `links` or `meta`. See
-[Adding & Removing](/guides/the-manual/relational-data/mutating/adding-removing.md) and
+[Adding & Removing](/guides/the-manual/relational-data/mutating/adding-and-removing.md) and
 [Saving](/guides/the-manual/relational-data/mutating/saving.md).
 
 ## Step 5: Load Async Relationships

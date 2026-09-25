@@ -16,6 +16,9 @@ There are currently two modes:
 - [LegacyMode (recommended)](./legacy-mode.md)
 - [PolarisMode (preview)](./polaris-mode.md)
 
+Relationship fields don't depend on the mode: the `resource` and `collection` kinds behave
+identically in both and are recommended in either.
+
 ## Why ResourceSchemas Matter
 
 ResourceSchemas give you clarity by making every field and relationship explicit. They provide consistency because the schema drives the cache, transforms and UI bindings. They bring reactivity so changes anywhere in a resource flow through to your app automatically. They also work across any JavaScript environment including Ember, React or a Node process without a DOM.
@@ -92,11 +95,15 @@ console.log(user.firstName);
 
 ## Common Field Kinds
 
-| Kind           | Purpose                                          |
-| -------------- | ------------------------------------------------ |
-| `field`        | Basic data (string, number, boolean)              |
-| `resource`     | One related record (similar to a belongs-to)       |
-| `collection`   | Multiple related records (similar to a has-many)   |
-| `schema-object`| Embedded object schema with no top level identity  |
+| Kind | Purpose |
+| --- | --- |
+| `field` | Basic data (string, number, boolean) |
+| `resource` | One related record, read as a relationship document whose `data` is the record or `null` |
+| `collection` | Multiple related records, read as a relationship document whose `data` is an array of records |
+| `schema-object` | Embedded object schema with no top level identity |
+
+`resource` and `collection` take the place of the legacy `belongsTo` and `hasMany` kinds, but they
+are not renames: the value is a document rather than the record, and an async relationship is
+never fetched on access. See [Relational Fields](../relational-fields.md).
 
 By defining your data with ResourceSchemas, you create a clear contract between your API, your cache and your UI. This makes your application more maintainable, predictable and ready for the future.

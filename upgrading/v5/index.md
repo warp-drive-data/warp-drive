@@ -9,6 +9,10 @@ outline:
 
 <SinceBadge version="5.0.0" /> &nbsp; authored 2023-06-10
 
+::: tip Using a coding agent?
+`@warp-drive/memory-alpha` ships skills for coding agents. None covers converting Models, adapters and serializers yet, but [Define a Resource Schema](/skills/schemas/define-a-resource-schema) and [Fetch and Cache Data](/skills/requests/fetch-and-cache-data) cover what they turn into, and the relationship migrations that follow this guide each have one; see [WarpDrive Agent Skills](/skills/overview). Install the package and point your agent at `node_modules/@warp-drive/memory-alpha/skills/index.md`, which routes it to the right skill.
+:::
+
 This guide will *likely* work for apps on 3.28 that have resolved EmberData deprecations from the 3.x series.
 
 This guide is primarily intended for apps that got ***"stuck"*** on either 4.6 (due to ModelFragments) or 4.12 (typically due to the ArrayLike deprecation)
@@ -422,7 +426,7 @@ export default useLegacyStore({
   - [LinksMode setting](/api/@warp-drive/legacy/types/LegacyModelAndNetworkAndRequestStoreSetupOptions#linksmode)
   - [legacyRequests setting](/api/@warp-drive/legacy/types/LegacyModelAndNetworkAndRequestStoreSetupOptions#legacyrequests)
   - [modelFragments setting](/api/@warp-drive/legacy/types/LegacyModelAndNetworkAndRequestStoreSetupOptions#modelfragments)
-  - About the [LinksMode feature](/guides/the-manual/misc/links-mode)
+  - About the [LinksMode feature](/guides/the-manual/relational-data/features/links-mode)
 - [Model Migration Support](/api/@warp-drive/legacy/model/migration-support/)
   - the legacy store uses the [DelegatingSchemaService](/api/@warp-drive/legacy/model/migration-support/classes/DelegatingSchemaService)
   - [withDefaults](/api/@warp-drive/legacy/model/migration-support/functions/withDefaults)
@@ -759,3 +763,11 @@ const UserSchema = withDefaults({
 - delete the store service
 - rename v2-store => store
 - rename packages and imports from `@warp-drive-mirror` to `@warp-drive`
+
+## Next: Relationships
+
+The converted schemas still declare relationships with the legacy `belongsTo` and `hasMany`
+kinds, which keep working. When you're ready to move them to the `resource` and `collection`
+kinds, follow [Migrating Relationships to resource and collection](./relationships.md) for the
+fields and [Migrating Async Relationship Usage](./relationship-usage.md) for the templates and
+getters that read them.
