@@ -6,8 +6,8 @@
  *   node packages/tutorials/scripts/make-starter.mjs todomvc-ember    # write one
  *   node packages/tutorials/scripts/make-starter.mjs --check          # fail if any starter/ is stale
  *
- * A tutorial is any directory here with both `solution/` and `starter/`. The
- * solution says how its starter differs, next to the code it affects:
+ * A tutorial is any directory here with a `solution/`; its `starter/` is created
+ * if missing. The solution says how its starter differs, next to the code it affects:
  *
  *   // #replace-region-in-starter TODO (chapter 4): send the create request
  *   // #region create-todo
@@ -21,12 +21,13 @@
  * - `// #omit-file-from-starter` as a file's first line leaves the file out.
  * - Other region markers are for the guides' snippet includes, so the starter
  *   keeps their code and drops the markers.
+ * - Every text file is transformed, and binary files are copied as they are.
+ *   Line endings are written as LF.
  * - The starter's package.json swaps `solution` for `starter` in its name and
  *   `repository.directory`, and `Completed` for `Starter` in its description.
  */
 import { execFileSync } from 'node:child_process';
-import { existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
-import { tmpdir } from 'node:os';
+import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -37,17 +38,25 @@ const REMOVE = /^\s*(?:\/\/ #remove-region-from-starter|\{\{! #remove-region-fro
 const OMIT = /^\s*\/\/ #omit-file-from-starter\s*$/;
 // Any line naming a directive, so a misspelled or malformed one fails instead of being ignored.
 const DIRECTIVE = /#(?:replace-region-in-starter|remove-region-from-starter|omit-file-from-starter)\b/;
-const TRANSFORMED = /\.(m?[jt]s|gts|gjs|html)$/;
+// Any line naming a region marker, so one REGION_START/REGION_END can't read (a name with a
+// space, say) fails instead of leaking into the starter.
+const MARKER = /#(?:end)?region\b/;
 
 const args = process.argv.slice(2);
 const check = args.includes('--check');
 const tutorialsDir = dirname(dirname(fileURLToPath(import.meta.url)));
 const named = args.filter((arg) => !arg.startsWith('--'));
-const tutorials = named.length
-  ? named
-  : readdirSync(tutorialsDir).filter(
-      (dir) => existsSync(join(tutorialsDir, dir, 'solution')) && existsSync(join(tutorialsDir, dir, 'starter'))
-    );
+const known = readdirSync(tutorialsDir).filter((dir) => existsSync(join(tutorialsDir, dir, 'solution')));
+const unknown = named.filter((name) => !known.includes(name));
+if (unknown.length) {
+  console.error(`Unknown tutorial: ${unknown.join(', ')}. Tutorials: ${known.join(', ') || 'none'}`);
+  process.exit(1);
+}
+if (!known.length) {
+  console.error(`No tutorials found: no directory in packages/tutorials has a solution/.`);
+  process.exit(1);
+}
+const tutorials = named.length ? named : known;
 
 function transform(file, source) {
   const lines = source.split('\n');
@@ -92,6 +101,8 @@ function transform(file, source) {
       if (open.length === cutDepth) cutDepth = -1;
       continue;
     }
+    if (MARKER.test(line))
+      throw new Error(`${where}: malformed region marker (names can't contain spaces): ${line.trim()}`);
     if (cutDepth === -1) out.push(line);
   }
   if (pending) throw new Error(`${file}: ${pending.directive} on the last line`);
@@ -99,84 +110,90 @@ function transform(file, source) {
   return out.join('\n');
 }
 
+// Edits the raw text rather than re-serializing, so the solution's formatting carries over.
 function starterPackageJson(source) {
   const pkg = JSON.parse(source);
-  const swap = (value, from, to, field) => {
+  const swaps = [
+    ['name', pkg.name, 'solution', 'starter'],
+    ['description', pkg.description, 'Completed', 'Starter'],
+    ['repository.directory', pkg.repository?.directory, 'solution', 'starter'],
+  ];
+  for (const [field, value, from, to] of swaps) {
     if (!value?.includes(from)) throw new Error(`solution/package.json: ${field} must contain "${from}"`);
-    return value.replace(from, to);
-  };
-  pkg.name = swap(pkg.name, 'solution', 'starter', 'name');
-  pkg.description = swap(pkg.description, 'Completed', 'Starter', 'description');
-  pkg.repository.directory = swap(pkg.repository?.directory, 'solution', 'starter', 'repository.directory');
-  return `${JSON.stringify(pkg, null, 2)}\n`;
+    source = source.replace(JSON.stringify(value), JSON.stringify(value.replace(from, to)));
+  }
+  return source;
 }
 
-// Writes the starter into outDir and returns its files, relative to starter/.
-function generate(solutionDir, outDir) {
-  // Tracked and new (untracked but not ignored) files, so build output is skipped.
-  const files = execFileSync('git', ['ls-files', '--cached', '--others', '--exclude-standard'], {
-    cwd: solutionDir,
-    encoding: 'utf8',
-  })
+// Tracked and new (untracked but not ignored) files that exist on disk, so build output and
+// unstaged deletions are skipped.
+function listFiles(dir, ...flags) {
+  if (!existsSync(dir)) return [];
+  return execFileSync('git', ['ls-files', ...flags], { cwd: dir, encoding: 'utf8' })
     .split('\n')
-    .filter(Boolean);
-  const written = [];
-  for (const file of files) {
-    let source = readFileSync(join(solutionDir, file), 'utf8');
-    if (TRANSFORMED.test(file)) {
-      if (OMIT.test(source.split('\n', 1)[0])) continue;
-      source = transform(file, source);
-    }
-    if (file === 'package.json') source = starterPackageJson(source);
-    mkdirSync(dirname(join(outDir, file)), { recursive: true });
-    writeFileSync(join(outDir, file), source);
-    written.push(file);
-  }
-  return written;
+    .filter((file) => file && existsSync(join(dir, file)));
 }
 
-function readOrNull(path) {
-  try {
-    return readFileSync(path, 'utf8');
-  } catch {
-    return null;
+// git's heuristic: a file with a NUL byte in its first 8000 bytes is binary.
+const isText = (buffer) => !buffer.subarray(0, 8000).includes(0);
+
+// Reads a file for comparison, with CRLF line endings normalized to LF in text files.
+function readNormalized(path) {
+  if (!existsSync(path)) return null;
+  const buffer = readFileSync(path);
+  return isText(buffer) ? Buffer.from(buffer.toString('utf8').replaceAll('\r\n', '\n')) : buffer;
+}
+
+// Returns the starter's files, relative to starter/, and their contents.
+function generate(solutionDir) {
+  const untracked = listFiles(solutionDir, '--others', '--exclude-standard');
+  if (untracked.length) console.error(`Including untracked files from solution/: ${untracked.join(', ')}`);
+  const files = new Map();
+  for (const file of listFiles(solutionDir, '--cached', '--others', '--exclude-standard')) {
+    const buffer = readFileSync(join(solutionDir, file));
+    if (!isText(buffer)) {
+      files.set(file, buffer);
+      continue;
+    }
+    let source = buffer.toString('utf8').replaceAll('\r\n', '\n');
+    if (OMIT.test(source.split('\n', 1)[0])) continue;
+    source = transform(file, source);
+    if (file === 'package.json') source = starterPackageJson(source);
+    files.set(file, Buffer.from(source));
   }
+  return files;
 }
 
 for (const tutorial of tutorials) {
   const tutorialDir = join(tutorialsDir, tutorial);
   const starterDir = join(tutorialDir, 'starter');
-  const outDir = mkdtempSync(join(tmpdir(), 'starter-'));
-  try {
-    const expected = generate(join(tutorialDir, 'solution'), outDir);
-    // Tracked files in starter/ that the generator no longer produces.
-    const tracked = execFileSync('git', ['ls-files', '.'], { cwd: starterDir, encoding: 'utf8' })
-      .split('\n')
-      .filter(Boolean);
-    const extra = tracked.filter((file) => !expected.includes(file));
-    const changed = expected.filter((file) => readOrNull(join(outDir, file)) !== readOrNull(join(starterDir, file)));
+  const expected = generate(join(tutorialDir, 'solution'));
+  // Files in starter/ that the generator no longer produces, tracked or not.
+  const extra = listFiles(starterDir, '--cached', '--others', '--exclude-standard').filter(
+    (file) => !expected.has(file)
+  );
+  const changed = [...expected.keys()].filter(
+    (file) => !readNormalized(join(starterDir, file))?.equals(expected.get(file))
+  );
 
-    if (check) {
-      if (changed.length || extra.length) {
-        console.error(`${tutorial}/starter is out of date. These files differ from what the generator produces:`);
-        for (const file of [...changed, ...extra]) console.error(`  ${file}`);
-        console.error(
-          `\nstarter/ is generated from solution/, so don't edit it directly. Make the change in` +
-            ` solution/, then run:\n  node packages/tutorials/scripts/make-starter.mjs ${tutorial}`
-        );
-        process.exitCode = 1;
-      } else {
-        console.log(`${tutorial}/starter is up to date.`);
-      }
+  if (check) {
+    if (changed.length || extra.length) {
+      console.error(`${tutorial}/starter is out of date. These files differ from what the generator produces:`);
+      for (const file of [...changed, ...extra]) console.error(`  ${file}`);
+      console.error(
+        `\nstarter/ is generated from solution/, so don't edit it directly. Make the change in` +
+          ` solution/, then run:\n  node packages/tutorials/scripts/make-starter.mjs ${tutorial}`
+      );
+      process.exitCode = 1;
     } else {
-      for (const file of changed) {
-        mkdirSync(dirname(join(starterDir, file)), { recursive: true });
-        writeFileSync(join(starterDir, file), readFileSync(join(outDir, file)));
-      }
-      for (const file of extra) rmSync(join(starterDir, file));
-      console.log(`${tutorial}/starter: ${changed.length} written, ${extra.length} removed.`);
+      console.log(`${tutorial}/starter is up to date.`);
     }
-  } finally {
-    rmSync(outDir, { recursive: true, force: true });
+  } else {
+    for (const file of changed) {
+      mkdirSync(dirname(join(starterDir, file)), { recursive: true });
+      writeFileSync(join(starterDir, file), expected.get(file));
+    }
+    for (const file of extra) rmSync(join(starterDir, file), { force: true });
+    console.log(`${tutorial}/starter: ${changed.length} written, ${extra.length} removed.`);
   }
 }
