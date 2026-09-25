@@ -1,5 +1,6 @@
 ---
 title: Overview
+description: Overview of relationships in WarpDrive, the resource and collection field kinds that work the same in LegacyMode and PolarisMode, and how they compare to the legacy belongsTo and hasMany kinds.
 ---
 
 # Relationships Guide
@@ -9,7 +10,8 @@ Relationships connect resources to each other: a `user` has a `bestFriend`, a `p
 resource schema, stores its state in a relational graph, and exposes it on records as a reactive
 value that updates as the cache changes.
 
-There are two kinds of relationship field, each with a legacy counterpart:
+There are two kinds of relationship field, each with a legacy counterpart. "Legacy" here describes
+the field kind and is separate from LegacyMode, the schema mode:
 
 | Cardinality | Field kind | Value on the record | Legacy field kind | Legacy value |
 | --- | --- | --- | --- | --- |

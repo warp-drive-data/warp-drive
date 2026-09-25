@@ -1,5 +1,6 @@
 ---
 title: Migrating 4.x to 5.x
+description: How to upgrade an EmberData 4.x app to WarpDrive 5.x by moving to native types, migrating with a second store, and converting Models to schemas.
 outline:
   level: 2,3
 ---
@@ -758,3 +759,11 @@ const UserSchema = withDefaults({
 - delete the store service
 - rename v2-store => store
 - rename packages and imports from `@warp-drive-mirror` to `@warp-drive`
+
+## Next: Relationships
+
+The converted schemas still declare relationships with the legacy `belongsTo` and `hasMany`
+kinds, which keep working. When you're ready to move them to the `resource` and `collection`
+kinds, follow [Migrating Relationships to resource and collection](./relationships.md) for the
+fields and [Migrating Async Relationship Usage](./relationship-usage.md) for the templates and
+getters that read them.

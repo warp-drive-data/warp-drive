@@ -1,3 +1,7 @@
+---
+description: How to declare a collection relationship field, what its relationship document value contains, and how to fetch, mutate, and create records through it.
+---
+
 # Collection Relationships
 
 A **collection relationship** points at a set of related resources. In a schema it is a field with
@@ -123,9 +127,10 @@ editable.friends = [a, b];                   // ❌ asserts
 
 A record may only appear once in a collection: adding a record that is already a member throws.
 
-In [LegacyMode](../../schemas/resources/legacy-mode.md) every record is editable. In
+Which records are editable depends on the schema's mode, not on the field kind. In
+[LegacyMode](../../schemas/resources/legacy-mode.md) every record is editable. In
 [PolarisMode](../../schemas/resources/polaris-mode.md) mutate the copy returned by
-[checkout](../../schemas/resources/polaris-mode.md); the immutable record and its array keep
+[checkout](../mutating/adding-removing.md); the immutable record and its array keep
 showing the remote membership until the change is saved or committed. Inverses follow the same
 rule.
 

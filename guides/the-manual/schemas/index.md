@@ -1,5 +1,6 @@
 ---
 title: Overview
+description: What schemas are in WarpDrive, how a ResourceSchema turns raw API data into records, and which schema mode, LegacyMode or PolarisMode, to choose.
 ---
 
 :::warning **🚧 Pardon Our Stardust!**
@@ -114,5 +115,8 @@ There are currently two modes:
 
 - [LegacyMode (recommended)](./resources/legacy-mode.md) - which we recommend for new and existing Ember apps.
 - [PolarisMode (preview)](./resources/polaris-mode.md) - which we recommend only for intrepid explorers probing the boundaries of our universe, and which will become the recommendation in V6.
+
+Relationship fields don't depend on the mode: the `resource` and `collection` kinds behave
+identically in both and are recommended in either. See [Relational Fields](./relational-fields.md).
 
 

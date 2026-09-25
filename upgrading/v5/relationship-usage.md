@@ -1,5 +1,6 @@
 ---
 title: Migrating Async Relationship Usage
+description: How to migrate templates, getters, and computed properties that read async belongsTo and hasMany relationships implicitly, in three phases ending on the resource and collection kinds.
 outline:
   level: 2,3
 ---

@@ -1,3 +1,7 @@
+---
+description: When a list is too large for a collection relationship, how to load it as its own request instead, and how maxCollectionRelationshipSize enforces the limit.
+---
+
 # Large Collections
 
 A `collection` relationship holds the complete membership of a relationship and materializes a

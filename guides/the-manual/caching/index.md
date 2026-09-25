@@ -2,6 +2,7 @@
 outline:
   level: 2,3
 title: Overview
+description: How the Store decides whether a request can use the cache, how responses, resources, fields and relationships are cached, and how mutations interact with the cache.
 ---
 
 # Caching

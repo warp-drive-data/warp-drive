@@ -1,4 +1,5 @@
 ---
+description: How LinksMode lets a legacy belongsTo or hasMany relationship load through store.request instead of an adapter, and the constraints it carries in LegacyMode and PolarisMode.
 draft: true
 ---
 

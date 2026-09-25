@@ -1,3 +1,7 @@
+---
+description: How the inverse option makes a relationship unidirectional or bidirectional, and how direction affects which records see an edit and what gets loaded.
+---
+
 # Directionality
 
 Every relationship has a direction: it is declared on one resource type and points at another.

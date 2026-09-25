@@ -1,3 +1,7 @@
+---
+description: What the async option means for resource and collection relationships, the payload contract each setting enforces, and how to choose between them.
+---
+
 # Sync vs Async
 
 Every relationship field declares `options.async`. For `resource` and `collection` fields the flag

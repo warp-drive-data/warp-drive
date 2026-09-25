@@ -1,3 +1,7 @@
+---
+description: How to add, remove, and replace related records on an editable record, including checkout for PolarisMode records and the legacy belongsTo and hasMany APIs.
+---
+
 # Adding & Removing
 
 Relationships are edited through the value of the field on an **editable** record. Which records
