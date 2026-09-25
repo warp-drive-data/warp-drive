@@ -245,8 +245,8 @@ catalogs:
       specifier: ^1.1.1
       version: 1.1.1
     '@nullvoxpopuli/ember-rolldown':
-      specifier: ^2.8.1
-      version: 2.8.1
+      specifier: ^2.9.0
+      version: 2.9.0
     '@pnpm/find-workspace-dir':
       specifier: 1000.1.5
       version: 1000.1.5
@@ -3489,7 +3489,7 @@ importers:
         version: 10.0.1(eslint@10.11.0)
       '@nullvoxpopuli/ember-rolldown':
         specifier: 'catalog:'
-        version: 2.8.1(c1e347cf7d38207c01b1cfb494a6fbd3)
+        version: 2.9.0(c1e347cf7d38207c01b1cfb494a6fbd3)
       '@rolldown/plugin-babel':
         specifier: 'catalog:'
         version: 0.2.4(@babel/core@7.29.7)
@@ -4735,12 +4735,6 @@ packages:
     peerDependencies:
       '@babel/core': ^7.0.0-0
 
-  '@babel/plugin-transform-typescript@7.29.7':
-    resolution: {integrity: sha512-jK52h8LaLc7JarhQV2ofeFMts4H7vnOXnqZNA6fYglBTZewRBE51KWt3BUltW1P+KoPsYkHoJeXePuz4zo2LMw==}
-    engines: {node: '>=6.9.0'}
-    peerDependencies:
-      '@babel/core': ^7.0.0-0
-
   '@babel/plugin-transform-typescript@7.29.9':
     resolution: {integrity: sha512-FFwIwzU+7SCOuxxV4YtJql6T9981ZVTm+FHO5GhVsRqCTdy0WwrEZh3l42ARpXruJUDGOptdduHW6Zr7pNPLNg==}
     engines: {node: '>=6.9.0'}
@@ -5611,12 +5605,12 @@ packages:
     engines: {node: '>=10'}
     deprecated: This functionality has been moved to @npmcli/fs
 
-  '@nullvoxpopuli/ember-build-tooling-utils@1.1.1':
-    resolution: {integrity: sha512-Gzww65UzON8BM4jecz5qAzSI2EHUw8NahyOfoLt0LtF4BqsXjMM1rgDYNAZFZsUciXCN8jLoWvwSubHtoPErVg==}
+  '@nullvoxpopuli/ember-build-tooling-utils@1.2.0':
+    resolution: {integrity: sha512-eAaAjBWbX1IjPlH5VSwggSVAxjmu8YMVFA+SHJiR/D5HFd9dDBcBaPxvFWY3kPdRDONVwOjp6sx27FH39qJLUQ==}
     engines: {node: '>= 24'}
 
-  '@nullvoxpopuli/ember-rolldown@2.8.1':
-    resolution: {integrity: sha512-wKpAdKgs6UpeheUcgUYMGCEa4vkgAv3OsVxvT6ulhGgY8nAY7y1IfHT6FvudxQHD8UtT9fxDKud1v378kOAgfQ==}
+  '@nullvoxpopuli/ember-rolldown@2.9.0':
+    resolution: {integrity: sha512-/Vk/koY0RBkUgO9aiuuj2/2F3ha/nfvkb8SRpkTilV83sHugzR0zLyXLdBrwMoL+F3/+oeDvJSgAo+lZFEfkZw==}
     engines: {node: '>= 24'}
     peerDependencies:
       tsdown: '>= 0.22.0'
@@ -12885,17 +12879,6 @@ snapshots:
       '@babel/core': 7.29.7
       '@babel/helper-plugin-utils': 7.29.7
 
-  '@babel/plugin-transform-typescript@7.29.7(@babel/core@7.29.7)':
-    dependencies:
-      '@babel/core': 7.29.7
-      '@babel/helper-annotate-as-pure': 7.29.7
-      '@babel/helper-create-class-features-plugin': 7.29.7(@babel/core@7.29.7)
-      '@babel/helper-plugin-utils': 7.29.7
-      '@babel/helper-skip-transparent-expression-wrappers': 7.29.7
-      '@babel/plugin-syntax-typescript': 7.29.7(@babel/core@7.29.7)
-    transitivePeerDependencies:
-      - supports-color
-
   '@babel/plugin-transform-typescript@7.29.9(@babel/core@7.29.7)':
     dependencies:
       '@babel/core': 7.29.7
@@ -14455,7 +14438,7 @@ snapshots:
       mkdirp: 1.0.4
       rimraf: 3.0.2
 
-  '@nullvoxpopuli/ember-build-tooling-utils@1.1.1':
+  '@nullvoxpopuli/ember-build-tooling-utils@1.2.0':
     dependencies:
       '@babel/core': 7.29.7
       '@rolldown/pluginutils': 1.0.1
@@ -14465,7 +14448,7 @@ snapshots:
       - rollup
       - supports-color
 
-  '@nullvoxpopuli/ember-build-tooling-utils@1.1.1(@types/babel__core@7.20.5)':
+  '@nullvoxpopuli/ember-build-tooling-utils@1.2.0(@types/babel__core@7.20.5)':
     dependencies:
       '@babel/core': 7.29.7
       '@rolldown/pluginutils': 1.0.1
@@ -14475,12 +14458,12 @@ snapshots:
       - rollup
       - supports-color
 
-  '@nullvoxpopuli/ember-rolldown@2.8.1(3e5691921da8db4b990c95acff33329d)':
+  '@nullvoxpopuli/ember-rolldown@2.9.0(3e5691921da8db4b990c95acff33329d)':
     dependencies:
       '@babel/core': 7.29.7
-      '@babel/plugin-transform-typescript': 7.29.7(@babel/core@7.29.7)
+      '@babel/plugin-transform-typescript': 7.29.9(@babel/core@7.29.7)
       '@embroider/core': 4.6.7
-      '@nullvoxpopuli/ember-build-tooling-utils': 1.1.1(@types/babel__core@7.20.5)
+      '@nullvoxpopuli/ember-build-tooling-utils': 1.2.0(@types/babel__core@7.20.5)
       babel-plugin-ember-template-compilation: 4.0.0
       content-tag: 4.2.0
       decorator-transforms: 2.4.0(@babel/core@7.29.7)
@@ -14496,12 +14479,12 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  '@nullvoxpopuli/ember-rolldown@2.8.1(93f26d40007f92b54417a9e6fadddb5f)':
+  '@nullvoxpopuli/ember-rolldown@2.9.0(93f26d40007f92b54417a9e6fadddb5f)':
     dependencies:
       '@babel/core': 7.29.7
-      '@babel/plugin-transform-typescript': 7.29.7(@babel/core@7.29.7)
+      '@babel/plugin-transform-typescript': 7.29.9(@babel/core@7.29.7)
       '@embroider/core': 4.6.7
-      '@nullvoxpopuli/ember-build-tooling-utils': 1.1.1
+      '@nullvoxpopuli/ember-build-tooling-utils': 1.2.0
       babel-plugin-ember-template-compilation: 4.0.0
       content-tag: 4.2.0
       decorator-transforms: 2.4.0(@babel/core@7.29.7)
@@ -14517,12 +14500,12 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  '@nullvoxpopuli/ember-rolldown@2.8.1(c1e347cf7d38207c01b1cfb494a6fbd3)':
+  '@nullvoxpopuli/ember-rolldown@2.9.0(c1e347cf7d38207c01b1cfb494a6fbd3)':
     dependencies:
       '@babel/core': 7.29.7
-      '@babel/plugin-transform-typescript': 7.29.7(@babel/core@7.29.7)
+      '@babel/plugin-transform-typescript': 7.29.9(@babel/core@7.29.7)
       '@embroider/core': 4.6.7
-      '@nullvoxpopuli/ember-build-tooling-utils': 1.1.1
+      '@nullvoxpopuli/ember-build-tooling-utils': 1.2.0
       babel-plugin-ember-template-compilation: 4.0.0
       content-tag: 4.2.0
       decorator-transforms: 2.4.0(@babel/core@7.29.7)
@@ -14538,12 +14521,12 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  '@nullvoxpopuli/ember-rolldown@2.8.1(e9992415c7d3482a31abfc3cf285128b)':
+  '@nullvoxpopuli/ember-rolldown@2.9.0(e9992415c7d3482a31abfc3cf285128b)':
     dependencies:
       '@babel/core': 7.29.7
-      '@babel/plugin-transform-typescript': 7.29.7(@babel/core@7.29.7)
+      '@babel/plugin-transform-typescript': 7.29.9(@babel/core@7.29.7)
       '@embroider/core': 4.6.7(@glint/template@1.9.0)
-      '@nullvoxpopuli/ember-build-tooling-utils': 1.1.1
+      '@nullvoxpopuli/ember-build-tooling-utils': 1.2.0
       babel-plugin-ember-template-compilation: 4.0.0
       content-tag: 4.2.0
       decorator-transforms: 2.4.0(@babel/core@7.29.7)
@@ -16426,7 +16409,7 @@ snapshots:
       '@babel/core': 7.29.7
       '@babel/eslint-parser': 8.0.6(@babel/core@7.29.7)(eslint@10.11.0)
       '@eslint/js': 10.0.1(eslint@10.11.0)
-      '@nullvoxpopuli/ember-rolldown': 2.8.1(c1e347cf7d38207c01b1cfb494a6fbd3)
+      '@nullvoxpopuli/ember-rolldown': 2.9.0(c1e347cf7d38207c01b1cfb494a6fbd3)
       '@rolldown/plugin-babel': 0.2.4(@babel/core@7.29.7)
       '@rollup/plugin-babel': 7.1.0(@babel/core@7.29.7)
       '@types/debug': 4.1.13
@@ -16480,7 +16463,7 @@ snapshots:
       '@babel/core': 7.29.7
       '@babel/eslint-parser': 8.0.6(@babel/core@7.29.7)(eslint@10.11.0)
       '@eslint/js': 10.0.1(eslint@10.11.0)
-      '@nullvoxpopuli/ember-rolldown': 2.8.1(93f26d40007f92b54417a9e6fadddb5f)
+      '@nullvoxpopuli/ember-rolldown': 2.9.0(93f26d40007f92b54417a9e6fadddb5f)
       '@rolldown/plugin-babel': 0.2.4(2499bed78c6fddfb007a23bc228d3603)
       '@rollup/plugin-babel': 7.1.0(@babel/core@7.29.7)
       '@types/debug': 4.1.13
@@ -16534,7 +16517,7 @@ snapshots:
       '@babel/core': 7.29.7
       '@babel/eslint-parser': 8.0.6(@babel/core@7.29.7)(eslint@10.11.0)
       '@eslint/js': 10.0.1(eslint@10.11.0)
-      '@nullvoxpopuli/ember-rolldown': 2.8.1(c1e347cf7d38207c01b1cfb494a6fbd3)
+      '@nullvoxpopuli/ember-rolldown': 2.9.0(c1e347cf7d38207c01b1cfb494a6fbd3)
       '@rolldown/plugin-babel': 0.2.4(4f8d24b6d0309488fec454bc40d3d125)
       '@rollup/plugin-babel': 7.1.0(@babel/core@7.29.7)
       '@types/debug': 4.1.13
@@ -16588,7 +16571,7 @@ snapshots:
       '@babel/core': 7.29.7
       '@babel/eslint-parser': 8.0.6(@babel/core@7.29.7)(eslint@10.11.0)
       '@eslint/js': 10.0.1(eslint@10.11.0)
-      '@nullvoxpopuli/ember-rolldown': 2.8.1(e9992415c7d3482a31abfc3cf285128b)
+      '@nullvoxpopuli/ember-rolldown': 2.9.0(e9992415c7d3482a31abfc3cf285128b)
       '@rolldown/plugin-babel': 0.2.4(4f8d24b6d0309488fec454bc40d3d125)
       '@rollup/plugin-babel': 7.1.0(@babel/core@7.29.7)
       '@types/debug': 4.1.13
@@ -16642,7 +16625,7 @@ snapshots:
       '@babel/core': 7.29.7
       '@babel/eslint-parser': 8.0.6(@babel/core@7.29.7)(eslint@10.11.0)
       '@eslint/js': 10.0.1(eslint@10.11.0)
-      '@nullvoxpopuli/ember-rolldown': 2.8.1(e9992415c7d3482a31abfc3cf285128b)
+      '@nullvoxpopuli/ember-rolldown': 2.9.0(e9992415c7d3482a31abfc3cf285128b)
       '@rolldown/plugin-babel': 0.2.4(e58299ea5a21f8d9bbfb2fc3115ebf84)
       '@rollup/plugin-babel': 7.1.0(@babel/core@7.29.7)
       '@types/debug': 4.1.13
@@ -16696,7 +16679,7 @@ snapshots:
       '@babel/core': 7.29.7
       '@babel/eslint-parser': 8.0.6(@babel/core@7.29.7)(eslint@10.11.0)
       '@eslint/js': 10.0.1(eslint@10.11.0)
-      '@nullvoxpopuli/ember-rolldown': 2.8.1(c1e347cf7d38207c01b1cfb494a6fbd3)
+      '@nullvoxpopuli/ember-rolldown': 2.9.0(c1e347cf7d38207c01b1cfb494a6fbd3)
       '@rolldown/plugin-babel': 0.2.4(02d9a2513d9ed1d532b075ffd9c2b5e7)
       '@rollup/plugin-babel': 7.1.0(@babel/core@7.29.7)
       '@types/debug': 4.1.13
@@ -16750,7 +16733,7 @@ snapshots:
       '@babel/core': 7.29.7
       '@babel/eslint-parser': 8.0.6(@babel/core@7.29.7)(eslint@10.11.0)
       '@eslint/js': 10.0.1(eslint@10.11.0)
-      '@nullvoxpopuli/ember-rolldown': 2.8.1(c1e347cf7d38207c01b1cfb494a6fbd3)
+      '@nullvoxpopuli/ember-rolldown': 2.9.0(c1e347cf7d38207c01b1cfb494a6fbd3)
       '@rolldown/plugin-babel': 0.2.4(2499bed78c6fddfb007a23bc228d3603)
       '@rollup/plugin-babel': 7.1.0(@babel/core@7.29.7)
       '@types/debug': 4.1.13
@@ -16804,7 +16787,7 @@ snapshots:
       '@babel/core': 7.29.7
       '@babel/eslint-parser': 8.0.6(@babel/core@7.29.7)(eslint@10.11.0)
       '@eslint/js': 10.0.1(eslint@10.11.0)
-      '@nullvoxpopuli/ember-rolldown': 2.8.1(3e5691921da8db4b990c95acff33329d)
+      '@nullvoxpopuli/ember-rolldown': 2.9.0(3e5691921da8db4b990c95acff33329d)
       '@rolldown/plugin-babel': 0.2.4(@babel/core@7.29.7)
       '@rollup/plugin-babel': 7.1.0(6ad958b0fac2ae7830d3cd04df3c1700)
       '@types/debug': 4.1.13
@@ -16858,7 +16841,7 @@ snapshots:
       '@babel/core': 7.29.7
       '@babel/eslint-parser': 8.0.6(@babel/core@7.29.7)(eslint@10.11.0)
       '@eslint/js': 10.0.1(eslint@10.11.0)
-      '@nullvoxpopuli/ember-rolldown': 2.8.1(e9992415c7d3482a31abfc3cf285128b)
+      '@nullvoxpopuli/ember-rolldown': 2.9.0(e9992415c7d3482a31abfc3cf285128b)
       '@rolldown/plugin-babel': 0.2.4(02d9a2513d9ed1d532b075ffd9c2b5e7)
       '@rollup/plugin-babel': 7.1.0(@babel/core@7.29.7)
       '@types/debug': 4.1.13
@@ -16912,7 +16895,7 @@ snapshots:
       '@babel/core': 7.29.7
       '@babel/eslint-parser': 8.0.6(@babel/core@7.29.7)(eslint@10.11.0)
       '@eslint/js': 10.0.1(eslint@10.11.0)
-      '@nullvoxpopuli/ember-rolldown': 2.8.1(93f26d40007f92b54417a9e6fadddb5f)
+      '@nullvoxpopuli/ember-rolldown': 2.9.0(93f26d40007f92b54417a9e6fadddb5f)
       '@rolldown/plugin-babel': 0.2.4(02d9a2513d9ed1d532b075ffd9c2b5e7)
       '@rollup/plugin-babel': 7.1.0(@babel/core@7.29.7)
       '@types/debug': 4.1.13
@@ -16966,7 +16949,7 @@ snapshots:
       '@babel/core': 7.29.7
       '@babel/eslint-parser': 8.0.6(@babel/core@7.29.7)(eslint@10.11.0)
       '@eslint/js': 10.0.1(eslint@10.11.0)
-      '@nullvoxpopuli/ember-rolldown': 2.8.1(c1e347cf7d38207c01b1cfb494a6fbd3)
+      '@nullvoxpopuli/ember-rolldown': 2.9.0(c1e347cf7d38207c01b1cfb494a6fbd3)
       '@rolldown/plugin-babel': 0.2.4(27025c10ee55843a9f1b40022c7ffe66)
       '@rollup/plugin-babel': 7.1.0(@babel/core@7.29.7)
       '@types/debug': 4.1.13
@@ -17020,7 +17003,7 @@ snapshots:
       '@babel/core': 7.29.7
       '@babel/eslint-parser': 8.0.6(@babel/core@7.29.7)(eslint@10.11.0)
       '@eslint/js': 10.0.1(eslint@10.11.0)
-      '@nullvoxpopuli/ember-rolldown': 2.8.1(c1e347cf7d38207c01b1cfb494a6fbd3)
+      '@nullvoxpopuli/ember-rolldown': 2.9.0(c1e347cf7d38207c01b1cfb494a6fbd3)
       '@rolldown/plugin-babel': 0.2.4(@babel/core@7.29.7)(vite@8.3.0)
       '@rollup/plugin-babel': 7.1.0(@babel/core@7.29.7)
       '@types/debug': 4.1.13
