@@ -4,8 +4,9 @@ title: Holodeck in Dev Mode
 
 # Holodeck in dev mode
 
-Ember apps can run their test suite in the browser from the dev server. You start `vite` with
-`pnpm start` and open `http://localhost:4200/tests`. If your tests use
+An app whose dev server also serves its test page can run the suite in the browser. You start
+`vite` with `pnpm start` and open `/tests`, which is `http://localhost:4200/tests` in the examples
+here. If your tests use
 [holodeck](/guides/the-manual/testing/index.md), that page fails when the suite runs, even though
 `pnpm test` passes.
 
@@ -70,9 +71,8 @@ address in `MOCK_HOST`. If yours differ from `7358`, copy the port from `testem.
 ## Run it with the dev server
 
 Add a script to `package.json` that starts both processes with
-[`concurrently`](https://www.npmjs.com/package/concurrently). Apps generated from Ember's app
-blueprint already have it for their lint scripts. Otherwise, add it with
-`pnpm add -D concurrently`.
+[`concurrently`](https://www.npmjs.com/package/concurrently). If your app doesn't have it yet, add
+it with `pnpm add -D concurrently`.
 
 ```json
 {

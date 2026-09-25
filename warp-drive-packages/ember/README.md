@@ -1169,13 +1169,6 @@ if (adopted === null) {
 }
 ```
 
-## Testing
-
-Mock requests in tests with [holodeck](https://warp-drive.io/guides/the-manual/testing/).
-Testem launches it only when it runs the suite, so running your tests from the dev server at
-`/tests` needs holodeck started separately. See
-[Holodeck in dev mode](https://warp-drive.io/guides/the-manual/cookbook/holodeck-in-dev-mode).
-
 ## Using .hbs
 
 The components and utils this library exports are intended for use with `
