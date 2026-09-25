@@ -12,8 +12,8 @@ import { MarkdownPageEvent } from 'typedoc-plugin-markdown';
  *
  * The description is the symbol's `@summary` tag, exactly as written, and nothing else. A
  * symbol without one gets a title-only entry: guessing a sentence out of the comment's prose
- * means parsing markdown, which is what this deliberately does not do. See "Summarize Every
- * Public Symbol With `@summary`" in guides/contributing/writing-documentation/writing-api-docs.md.
+ * means parsing markdown, which is what this deliberately does not do. See "Give Each API Page a
+ * `@summary`" in guides/contributing/writing-documentation/writing-api-docs.md.
  */
 
 const META_FILE = '_page-meta.json';

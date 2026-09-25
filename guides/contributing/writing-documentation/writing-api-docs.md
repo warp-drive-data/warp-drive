@@ -76,13 +76,20 @@ export function add(a: number, b: number): number {}
 
 ## Content Standards
 
-### Summarize Every Public Symbol With `@summary`
+### Give Each API Page a `@summary`
 
-Give every public symbol's doc comment a `@summary` tag: one sentence saying what the symbol
-does or is for. The docs site uses it, exactly as written, as the symbol's entry in `llms.txt`,
-the index coding agents read to decide which page to fetch (see
-[Frontmatter and Agent-Only Content](./writing-guides.md#frontmatter-and-agent-only-content)).
-A symbol without `@summary` is listed by name only; nothing is guessed from the comment's prose.
+`llms.txt`, the index coding agents read to decide which page to fetch, has one entry per API
+page (see [Frontmatter and Agent-Only Content](./writing-guides.md#frontmatter-and-agent-only-content)).
+The docs site takes that entry's description from a `@summary` tag, exactly as written; a page
+without one is listed by name only, and nothing is guessed from the comment's prose. So add a
+`@summary`, one sentence saying what the symbol does or is for, to the comment that owns a page:
+
+- an exported class, function, interface, type alias, variable, or enum, each of which gets its
+  own page
+- a `@module` comment, which owns that module's page
+
+Members don't need one. A method, property, or accessor renders on its parent's page, so its
+`@summary` is never read.
 
 ````ts
 /**
@@ -109,7 +116,8 @@ A symbol without `@summary` is listed by name only; nothing is guessed from the 
   TypeDoc tag, not a TSDoc one; TSDoc treats everything before `@remarks` as the summary and has
   no `@summary`.
 - For an overloaded function, put it on the implementation's comment or the first overload's.
-- A package landing page (`src/index.md`) has no doc comment, so it gets no description.
+- A package landing page built from `src/index.md` has no doc comment, so it can't carry one
+  and is listed by name only.
 
 ### Every Public API Should Have a Usage Example
 
