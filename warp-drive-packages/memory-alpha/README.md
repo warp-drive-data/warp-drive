@@ -32,6 +32,7 @@ other skill files, do not list or read whole directories — this table is enoug
 | Change a schema's `belongsTo`/`hasMany` field to `resource`/`collection` | `skills/relationships/migrate-relationship-fields.md` |
 | Move code that consumes an async `belongsTo`/`hasMany` implicitly (`#each` blocks, `.content`, getters reading through it) toward requests and `resource`/`collection` | `skills/relationships/migrate-async-relationship-usage.md` |
 | Re-record one holodeck mock, or review a test that sets `RECORD` | `skills/holodeck/using-record.md` |
+| Look up a guide, upgrade note, or API reference page that no row above covers — a concept, an option, a signature | `skills/docs/read-the-docs-as-markdown.md` |
 | You're contributing to WarpDrive itself, not just consuming it as a dependency | `skills/contributors/index.md` |
 
 This table is kept in sync with [`skills/index.md`](./skills/index.md), which is the same

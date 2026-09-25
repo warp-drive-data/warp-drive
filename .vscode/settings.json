@@ -15,22 +15,31 @@
     "^ember-data/.*$",
     "^ember-data$"
   ],
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  // Formatting mirrors CI: oxfmt (.oxfmtrc.jsonc, `pnpm lint:oxfmt`) formats everything it
+  // supports, Prettier (.prettierrc.js, `pnpm lint:prettier`) formats only *.gjs/*.gts because
+  // oxfmt cannot parse <template> tags yet. Languages neither tool checks in CI (markdown,
+  // handlebars, html, yaml) are not formatted on save, so the editor never produces a diff
+  // that lint would not have asked for.
+  "editor.defaultFormatter": "oxc.oxc-vscode",
   "editor.formatOnSave": true,
   "[javascript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.defaultFormatter": "oxc.oxc-vscode",
     "editor.formatOnSave": true
   },
   "[typescript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.formatOnSave": true
-  },
-  "[handlebars]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.defaultFormatter": "oxc.oxc-vscode",
     "editor.formatOnSave": true
   },
   "[json]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.defaultFormatter": "oxc.oxc-vscode",
+    "editor.formatOnSave": true
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "oxc.oxc-vscode",
+    "editor.formatOnSave": true
+  },
+  "[vue]": {
+    "editor.defaultFormatter": "oxc.oxc-vscode",
     "editor.formatOnSave": true
   },
   "[glimmer-js]": {
@@ -41,7 +50,17 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true
   },
+  "[handlebars]": {
+    "editor.formatOnSave": false
+  },
+  "[html]": {
+    "editor.formatOnSave": false
+  },
+  "[yaml]": {
+    "editor.formatOnSave": false
+  },
   "[markdown]": {
+    "editor.formatOnSave": false,
     "editor.detectIndentation": false,
     "editor.insertSpaces": false,
     "editor.tabSize": 4

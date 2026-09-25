@@ -21,6 +21,7 @@ Find the row below that matches what you're doing, or browse the categories in t
 | Change a schema's `belongsTo`/`hasMany` field to `resource`/`collection` | [Migrate belongsTo and hasMany Fields to resource and collection](/skills/relationships/migrate-relationship-fields.md) |
 | Move code that consumes an async `belongsTo`/`hasMany` implicitly (`#each` blocks, `.content`, getters reading through it) toward requests and `resource`/`collection` | [Migrate Async Relationship Usage](/skills/relationships/migrate-async-relationship-usage.md) |
 | Re-record one holodeck mock, or review a test that sets `RECORD` | [Use RECORD in Holodeck Mocks](/skills/holodeck/using-record.md) |
+| Look up a guide, upgrade note, or API reference page that no row above covers — a concept, an option, a signature | [Read the Docs as Markdown](/skills/docs/read-the-docs-as-markdown.md) |
 | You're contributing to WarpDrive itself, not just consuming it as a dependency | [Contributor Skills](/skills/contributors/index.md) |
 
 This is the same routing table an AI agent uses to find a skill — it just links out to readable

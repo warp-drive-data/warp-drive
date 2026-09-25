@@ -38,4 +38,5 @@ Each experiment is its own entry point.
 
 - [`pagination`](/api/@warp-drive/experiments/pagination/): reactive pagination primitives. The
   implementation lives in `@warp-drive/core`, but the API is published only from here while it is
-  experimental.
+  experimental. The `<Paginate />` and `<EachLink />` components that build on it are published from
+  [`@warp-drive/ember/experiments`](/api/@warp-drive/ember/experiments/).

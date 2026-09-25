@@ -12,6 +12,7 @@ complete a task.
 | Change a schema's `belongsTo`/`hasMany` field to `resource`/`collection` | `relationships/migrate-relationship-fields.md` |
 | Move code that consumes an async `belongsTo`/`hasMany` implicitly (`#each` blocks, `.content`, getters reading through it) toward requests and `resource`/`collection` | `relationships/migrate-async-relationship-usage.md` |
 | Re-record one holodeck mock, or review a test that sets `RECORD` | `holodeck/using-record.md` |
+| Look up a guide, upgrade note, or API reference page that no row above covers — a concept, an option, a signature | `docs/read-the-docs-as-markdown.md` |
 | You're contributing to WarpDrive itself, not just consuming it as a dependency | `contributors/index.md` |
 
 Each skill file is self-contained for its task and links out to any other skill file it
