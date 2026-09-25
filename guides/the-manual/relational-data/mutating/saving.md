@@ -28,8 +28,10 @@ await store.request(init);
 ```
 
 When the response arrives the cache applies the returned payload as the new **remote** state: the
-relationship's membership becomes what the API said it is, and immutable records update. If the API
-does not echo relationships back, the in-flight local changes are committed as-is.
+relationship's membership becomes what the API said it is, and immutable records update. A
+relationship the response leaves out is **not** updated: its edits stay local, the document stays
+`isDirty`, and immutable records keep showing the old membership. Have the API return every
+relationship it saved, or push a payload that includes them once the save succeeds.
 
 ::: tip
 Relationship payloads use replace semantics: the `data` array in the response becomes the entire
